@@ -1,6 +1,7 @@
 """Offline tests for short-horizon factor research safeguards."""
 
 import copy
+import datetime as dt
 import importlib.util
 import json
 import math
@@ -1008,6 +1009,81 @@ def test_annual_report_dates_and_symbol_mapping():
     assert RESEARCH.qlib_symbol("600000") == "SH600000"
     assert RESEARCH.qlib_symbol("300001") == "SZ300001"
     assert RESEARCH.qlib_symbol("200001") is None
+
+
+def test_quarterly_sync_rejects_unfinished_period_before_provider_access(
+    tmp_path,
+    monkeypatch,
+):
+    calls = 0
+
+    def forbidden_sync(*args, **kwargs):
+        nonlocal calls
+        calls += 1
+        raise AssertionError("future-quarter rejection must precede provider access")
+
+    monkeypatch.setattr(RESEARCH, "sync_fundamental_reports", forbidden_sync)
+    with pytest.raises(ValueError, match="latest completed calendar quarter"):
+        RESEARCH.sync_quarterly_fundamentals(
+            2025,
+            2026,
+            tmp_path / "quality.parquet",
+            tmp_path / "quality.json",
+            "2026-09-30",
+            as_of_date=dt.date(2026, 7, 27),
+        )
+    with pytest.raises(ValueError, match="--through-report-date is required"):
+        RESEARCH.sync_quarterly_fundamentals(
+            2025,
+            2026,
+            tmp_path / "quality.parquet",
+            tmp_path / "quality.json",
+            as_of_date=dt.date(2026, 7, 27),
+        )
+    assert calls == 0
+
+
+def test_quarterly_sync_binds_latest_completed_period_in_manifest_metadata(
+    tmp_path,
+    monkeypatch,
+):
+    observed: dict[str, object] = {}
+
+    def fake_sync(
+        report_dates,
+        output,
+        manifest,
+        *,
+        report_frequency,
+        manifest_metadata=None,
+    ):
+        observed.update(
+            {
+                "report_dates": list(report_dates),
+                "report_frequency": report_frequency,
+                "manifest_metadata": manifest_metadata,
+            }
+        )
+        return {"status": "completed"}
+
+    monkeypatch.setattr(RESEARCH, "sync_fundamental_reports", fake_sync)
+    result = RESEARCH.sync_quarterly_fundamentals(
+        2026,
+        2026,
+        tmp_path / "quality.parquet",
+        tmp_path / "quality.json",
+        "2026-06-30",
+        as_of_date=dt.date(2026, 7, 27),
+    )
+    assert result == {"status": "completed"}
+    assert observed == {
+        "report_dates": ["2026-03-31", "2026-06-30"],
+        "report_frequency": "quarterly",
+        "manifest_metadata": {
+            "through_report_date": "2026-06-30",
+            "latest_completed_quarter_end_at_sync": "2026-06-30",
+        },
+    }
 
 
 def test_listing_age_uses_provider_span_and_full_trading_calendar():
@@ -5784,11 +5860,11 @@ def test_research_frontier_audit_proves_empty_dual_gate_without_new_returns(
     assert "`new_data`" in report
 
 
-def test_three_day_iteration_status_binds_latest_tushare_minute_terminal_result():
+def test_three_day_iteration_status_binds_candidate49_future_only_registration():
     status = RESEARCH.load_three_day_iteration_status()
     terminal = status["post_frontier_terminal_mechanisms"]
-    assert len(terminal) == 46
-    assert len({item["mechanism"] for item in terminal}) == 46
+    assert len(terminal) == 48
+    assert len({item["mechanism"] for item in terminal}) == 48
     assert {Path(item["record"]["path"]).name for item in terminal} == {
         path.name
         for path in (RESEARCH.REPO_ROOT / "docs").glob("a_share_*record.json")
@@ -5797,9 +5873,10 @@ def test_three_day_iteration_status_binds_latest_tushare_minute_terminal_result(
         ).startswith(("terminal_", "rejected_"))
     }
     assert status["post_frontier_summary"] == {
-        "terminal_mechanism_count": 46,
+        "terminal_mechanism_count": 48,
         "admitted_factor_count": 0,
         "aggregation_candidate_count": 0,
+        "active_future_only_candidate_count": 1,
     }
     assert status["decision"]["aggregation_allowed"] is False
     assert status["decision"]["selection_allowed"] is False
@@ -6623,6 +6700,147 @@ def test_three_day_iteration_status_binds_latest_tushare_minute_terminal_result(
         status["selected_source_path"]["intraday_market_idiosyncratic_share_terminal"]
         is True
     )
+    assert (
+        status["selected_source_path"][
+            "intraday_opening_auction_amount_share_candidate_manifest_sha256"
+        ]
+        == "cb6acb3dcbad2ca459ac2f11ea80364593543adc852bf82ea3f177ae58154580"
+    )
+    assert (
+        status["selected_source_path"][
+            "intraday_opening_auction_amount_share_no_return_coverage_passed"
+        ]
+        is True
+    )
+    assert (
+        status["selected_source_path"][
+            "intraday_opening_auction_amount_share_no_return_uniqueness_passed"
+        ]
+        is True
+    )
+    assert status["selected_source_path"][
+        "intraday_opening_auction_amount_share_maximum_absolute_median_daily_rank_correlation"
+    ] == pytest.approx(0.3034674493047393)
+    assert (
+        status["selected_source_path"][
+            "intraday_opening_auction_amount_share_association_stability_passed"
+        ]
+        is False
+    )
+    assert (
+        status["selected_source_path"][
+            "intraday_opening_auction_amount_share_topk_viability_passed"
+        ]
+        is False
+    )
+    assert (
+        status["selected_source_path"][
+            "intraday_opening_auction_amount_share_terminal"
+        ]
+        is True
+    )
+    assert (
+        status["selected_source_path"][
+            "intraday_market_amount_profile_synchronization_candidate_manifest_sha256"
+        ]
+        == "40f9700a919cc22f30bd928133fb20bc6af3476a7952020d180f712d97f063f5"
+    )
+    assert (
+        status["selected_source_path"][
+            "intraday_market_amount_profile_synchronization_no_return_coverage_passed"
+        ]
+        is True
+    )
+    assert (
+        status["selected_source_path"][
+            "intraday_market_amount_profile_synchronization_no_return_uniqueness_passed"
+        ]
+        is True
+    )
+    assert status["selected_source_path"][
+        "intraday_market_amount_profile_synchronization_maximum_absolute_median_daily_rank_correlation"
+    ] == pytest.approx(0.5667050400934569)
+    assert (
+        status["selected_source_path"][
+            "intraday_market_amount_profile_synchronization_association_stability_passed"
+        ]
+        is False
+    )
+    assert (
+        status["selected_source_path"][
+            "intraday_market_amount_profile_synchronization_topk_viability_passed"
+        ]
+        is False
+    )
+    assert (
+        status["selected_source_path"][
+            "intraday_market_amount_profile_synchronization_terminal"
+        ]
+        is True
+    )
+    assert status["active_future_only_candidate"]["ordinal"] == 49
+    assert status["active_future_only_candidate"]["factor_name"] == (
+        "intraday_cumulative_vwap_crossing_rate_240m"
+    )
+    assert (
+        status["active_future_only_candidate"]["historical_return_diagnostic_allowed"]
+        is False
+    )
+    assert status["active_future_only_candidate"]["current_signal_exists"] is False
+    execution_protocol = status["active_future_only_candidate"][
+        "future_execution_protocol"
+    ]
+    assert execution_protocol["sha256"] == (
+        RESEARCH.CANDIDATE49_FUTURE_EXECUTION_PROTOCOL_SHA256
+    )
+    assert execution_protocol["paper_only"] is True
+    assert execution_protocol["real_future_signal_count"] == 0
+    assert execution_protocol["portfolio_return_exists"] is False
+    assert (
+        status["selected_source_path"][
+            "intraday_cumulative_vwap_crossing_rate_candidate_manifest_sha256"
+        ]
+        == "f3dd3417bd6adcaa06d8927865ea3f464ebc02df302b8f488e43450f7c620196"
+    )
+    assert (
+        status["selected_source_path"][
+            "intraday_cumulative_vwap_crossing_rate_no_return_uniqueness_passed"
+        ]
+        is True
+    )
+    assert status["selected_source_path"][
+        "intraday_cumulative_vwap_crossing_rate_maximum_absolute_median_daily_rank_correlation"
+    ] == pytest.approx(0.19764445307465522)
+    assert (
+        status["selected_source_path"][
+            "intraday_cumulative_vwap_crossing_rate_historical_forward_returns_read"
+        ]
+        is False
+    )
+    assert (
+        status["selected_source_path"][
+            "intraday_cumulative_vwap_crossing_rate_future_only_registered"
+        ]
+        is True
+    )
+    assert (
+        status["selected_source_path"][
+            "intraday_cumulative_vwap_crossing_rate_current_signal_exists"
+        ]
+        is False
+    )
+    assert status["selected_source_path"][
+        "intraday_cumulative_vwap_crossing_rate_source_to_signal_engine_ready"
+    ] is True
+    assert status["selected_source_path"][
+        "intraday_cumulative_vwap_crossing_rate_paper_execution_engine_ready"
+    ] is True
+    assert status["selected_source_path"][
+        "intraday_cumulative_vwap_crossing_rate_real_future_signal_count"
+    ] == 0
+    assert status["selected_source_path"][
+        "intraday_cumulative_vwap_crossing_rate_portfolio_return_exists"
+    ] is False
 
     report = RESEARCH.render_three_day_research_report(
         {"iterations": []},
@@ -6630,27 +6848,200 @@ def test_three_day_iteration_status_binds_latest_tushare_minute_terminal_result(
         three_day_iteration_status=status,
     )
     assert "当前迭代状态" in report
-    assert "前沿之后另有 46 条机制已到达终止门禁" in report
+    assert "前沿之后另有 48 条机制已到达终止门禁" in report
     assert "当前禁止聚合、评分、选股、定仓和下单" in report
-    assert "Tushare 原五因子来源覆盖门仍未通过" in report
-    assert "字段级清洗层保留 4 个因子并全部通过覆盖门" in report
-    assert (
-        "前四因子和之后十六个完成收益诊断的独立分钟机制均没有产生双门禁合格因子"
-        in report
+    assert "研究目标已转为纯前瞻验证" in report
+    assert "`intraday_cumulative_vwap_crossing_rate_240m`" in report
+    assert "771.40 万可计算" in report
+    assert "中位/P05 覆盖 99.916%/99.446%" in report
+    assert "二十四项唯一性全部通过" in report
+    assert "0.19764" in report
+    assert "首个合格信号只能来自 2026-07-27 或之后首个验收会话" in report
+    assert "没有候选 49 历史收益结论" in report
+    assert "纸面执行账本已完成离线验收" in report
+    assert "精确 60/200 个完成未来 Rank IC 的不可变门禁记录器" in report
+    assert "日线刷新自动延续唯一来源" in report
+    assert "在刷新阶段扫描全根、拒绝混源" in report
+    assert "日线 Parquet 在读取层只投影冻结字段" in report
+    assert "执行日限定 `date <= 当前处理会话`" in report
+    assert "不载入未声明列或未来会话行" in report
+    assert "未来季度质量读取只投影七个冻结字段" in report
+    assert "不载入 09:30 或 open/high/low" in report
+    assert "真实信号数、未来 Rank IC 数和组合收益仍全部为 0" in report
+    assert "每个信号日的同一当地日期 16:30 后刷新并冻结单独的季度质量" in report
+    assert "绝不覆盖历史研究已绑定的质量文件" in report
+    assert "不允许跨日补采该会话" in report
+
+
+def test_candidate49_report_overlays_validated_live_ledger_counts(
+    tmp_path,
+    monkeypatch,
+):
+    import a_share_tushare_candidate49_future_execution as future_execution
+    import a_share_tushare_intraday_cumulative_vwap_crossing_rate as candidate49
+
+    signal_path = tmp_path / "signal.json"
+    execution_path = tmp_path / "execution.json"
+    candidate49.initialize_future_ledgers(
+        signal_path=signal_path,
+        execution_path=execution_path,
     )
-    assert "终点收盘位置和收益偏度另在无收益近同义门停止" in report
-    assert (
-        "238 分钟收益留一法市场特异份额通过覆盖、容量和二十一个因子唯一性门" in report
+    monkeypatch.setattr(candidate49, "FUTURE_SIGNAL_LEDGER", signal_path)
+    monkeypatch.setattr(candidate49, "FUTURE_EXECUTION_LEDGER", execution_path)
+    state = future_execution._empty_state()
+    state.update(
+        {
+            "cumulative_net_return": 0.0123,
+            "completed_rank_ic_signals": 1,
+            "rank_ic_sum": 0.02,
+            "mean_rank_ic": 0.02,
+            "positive_rank_ic_signals": 1,
+            "positive_rank_ic_rate": 1.0,
+            "processed_signal_entry_ids": [
+                f"{candidate49.FUTURE_REGISTRATION_ID}:signal:2026-07-27"
+            ],
+        }
     )
-    assert "0.26563" in report
-    assert "平均 Rank IC 为 -0.01152" in report
-    assert "标准化执行感知累计 -58.55%" in report
-    assert "最大回撤 -78.94%" in report
-    assert "20 万元整手、双边 10bp 滑点累计 -18.38%" in report
-    assert "最大成交额参与率 1.0161%" in report
-    assert "稳定性和可执行 TopK 均未通过" in report
-    assert "未训练模型" in report
-    assert "Level2 继续延期" in report
+    monkeypatch.setattr(
+        future_execution,
+        "validate_reporting_state",
+        lambda **_: {
+            "signal_entries": [
+                {
+                    "entry_id": (
+                        f"{candidate49.FUTURE_REGISTRATION_ID}:"
+                        "signal:2026-07-27"
+                    )
+                }
+            ],
+            "execution_entries": [
+                {
+                    "session_date": "2026-07-30",
+                    "execution_protocol_sha256": (
+                        RESEARCH.CANDIDATE49_FUTURE_EXECUTION_PROTOCOL_SHA256
+                    ),
+                }
+            ],
+            "ending_state": state,
+            "latest_execution_session": "2026-07-30",
+            "evaluation": {
+                "status": "awaiting_60_completed_future_rank_ic_signals",
+                "candidate50_activation_allowed": False,
+                "execution_stop_required": False,
+            },
+        },
+    )
+    status = RESEARCH.overlay_candidate49_live_ledger_state(
+        RESEARCH.load_three_day_iteration_status()
+    )
+    source = status["selected_source_path"]
+    assert source[
+        "intraday_cumulative_vwap_crossing_rate_real_future_signal_count"
+    ] == 1
+    assert source[
+        "intraday_cumulative_vwap_crossing_rate_completed_future_rank_ic_count"
+    ] == 1
+    assert source[
+        "intraday_cumulative_vwap_crossing_rate_paper_portfolio_cumulative_net_return"
+    ] == pytest.approx(0.0123)
+    report = RESEARCH.render_three_day_research_report(
+        {"iterations": []},
+        {"signals": [], "settlements": []},
+        three_day_iteration_status=status,
+    )
+    assert "当前真实信号 1 个、已完成未来 Rank IC 1 个" in report
+    assert "纸面组合累计净收益 +1.23%" in report
+
+
+def test_candidate49_report_rejects_hash_valid_but_semantically_false_signal(
+    tmp_path,
+    monkeypatch,
+):
+    import a_share_tushare_candidate49_future_execution as future_execution
+    import a_share_tushare_intraday_cumulative_vwap_crossing_rate as candidate49
+
+    signal_path = tmp_path / "signal.json"
+    execution_path = tmp_path / "execution.json"
+    candidate49.initialize_future_ledgers(
+        signal_path=signal_path,
+        execution_path=execution_path,
+    )
+    monkeypatch.setattr(candidate49, "FUTURE_SIGNAL_LEDGER", signal_path)
+    monkeypatch.setattr(candidate49, "FUTURE_EXECUTION_LEDGER", execution_path)
+    candidate49.append_future_ledger_entry(
+        path=signal_path,
+        kind=candidate49.FUTURE_SIGNAL_LEDGER_KIND,
+        payload={
+            "entry_id": f"{candidate49.FUTURE_REGISTRATION_ID}:signal:2026-07-27",
+            "session_date": "2026-07-27",
+        },
+    )
+
+    with pytest.raises(
+        future_execution.Candidate49FutureExecutionError,
+        match="signal ledger",
+    ):
+        RESEARCH.overlay_candidate49_live_ledger_state(
+            RESEARCH.load_three_day_iteration_status()
+        )
+
+
+@pytest.mark.parametrize(
+    ("milestone_status", "completed", "expected"),
+    [
+        (
+            "interim_continue_to_200_without_promotion",
+            60,
+            "继续逐日追加同一公式的真实前瞻观察直至精确 200 个完成 Rank IC",
+        ),
+        (
+            "terminal_early_rejection",
+            60,
+            "候选 49 已按预登记第 60 样本联合非正规则终止",
+        ),
+        (
+            "terminal_full_gate_rejection",
+            200,
+            "候选 49 已在精确第 200 样本完整门禁终止",
+        ),
+        (
+            "full_gate_passed_continue_paper_observation_only",
+            200,
+            "至少两个独立前瞻通过因子前仍禁止聚合和下单",
+        ),
+    ],
+)
+def test_candidate49_report_routes_each_immutable_milestone_decision(
+    milestone_status,
+    completed,
+    expected,
+):
+    status = RESEARCH.load_three_day_iteration_status()
+    source = status["selected_source_path"]
+    source.update(
+        {
+            "intraday_cumulative_vwap_crossing_rate_real_future_signal_count": (
+                completed
+            ),
+            "intraday_cumulative_vwap_crossing_rate_completed_future_rank_ic_count": (
+                completed
+            ),
+            "intraday_cumulative_vwap_crossing_rate_portfolio_return_exists": True,
+            "intraday_cumulative_vwap_crossing_rate_paper_portfolio_cumulative_net_return": 0.01,
+            "intraday_cumulative_vwap_crossing_rate_milestone_evaluation_status": (
+                milestone_status
+            ),
+        }
+    )
+    report = RESEARCH.render_three_day_research_report(
+        {"iterations": []},
+        {"signals": [], "settlements": []},
+        three_day_iteration_status=status,
+    )
+    assert expected in report
+    if milestone_status.startswith("terminal_"):
+        assert "已经冻结的逐日季度质量快照继续作为原信号证据保留" in report
+        assert "不得覆盖或补写" in report
 
 
 def test_three_day_iteration_status_rejects_untracked_copy(tmp_path):

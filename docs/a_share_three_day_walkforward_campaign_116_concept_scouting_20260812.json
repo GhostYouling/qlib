@@ -1,0 +1,85 @@
+{
+  "schema_version": 1,
+  "kind": "a_share_three_day_walkforward_campaign116_concept_scouting",
+  "status": "one_existing_local_data_mechanism_selected_before_candidate_or_comparator_values",
+  "recorded_at": "2026-08-12T15:47:20+08:00",
+  "purpose": "Select exactly one economically interpretable mechanism from a finite catalog after Campaign115 terminalization, using only frozen definition metadata and accepted local source schema, before reading any Campaign116 source partition value, candidate value, comparator value, daily price, or forward return.",
+  "authoritative_inputs": {
+    "campaign115_terminal_state": {
+      "path": "docs/a_share_three_day_iteration_status_20260812_campaign115_terminal.json",
+      "sha256": "c68630055fd5953274a97a54311d8b76cec8720a5d9f4e0afe72010a69538e64"
+    },
+    "numeric_policy_v98": {
+      "path": "docs/a_share_three_day_walkforward_future_numeric_comparison_eligibility_policy_v98_20260812.json",
+      "sha256": "2b183bd2aaaa04e8fe9e0c56b7139f8e4e2b2f8ceed79865d14c58c864676bff"
+    },
+    "accepted_minute_source_manifest": {
+      "path": "/Volumes/DIsk/qlib-a-share-tushare-1m/metadata/rich_data/runs/tushare_stk_mins_1m_2019_2025_ea0cbb8f.json",
+      "required_before_implementation": true,
+      "values_read_during_scouting": false
+    },
+    "complete_definition_count": 141,
+    "complete_definition_order_sha256": "ccab6e3d9d81b0a02d4ff178fdd442b26a1e68e3655e1c6f5b2fcb28cd4a4559",
+    "numeric_comparator_count": 134,
+    "numeric_comparator_order_sha256": "31d788db467f558a0ac538315343090f1b3ad4cb27a26136a49ebaa88b2fdbf2"
+  },
+  "finite_prevalue_concept_catalog": [
+    {
+      "name": "intraday_amount_conditioned_directional_persistence_spread_236p",
+      "information_channel": "nonlinear_return_direction_transition_conditioned_on_same_session_activity_state",
+      "prospective_direction": "higher",
+      "decision": "selected_for_mechanism_audit_and_exact_no_return_preregistration",
+      "reason": "The frozen library contains unconditional sign runs, linear amount-return coupling, up-move amount share, and amount-clock summaries, but not the fixed difference between persistent directional transition balance in above-median versus non-above-median amount states. It can be constructed from the accepted local close/amount schema without a provider request."
+    },
+    {
+      "name": "intraday_range_conditioned_directional_persistence_spread_236p",
+      "decision": "rejected_before_values",
+      "reason": "Choosing between amount and range conditioning would be a conditioning-variable sweep. The catalog freezes amount state only."
+    },
+    {
+      "name": "intraday_amount_quantile_conditioned_directional_persistence",
+      "decision": "rejected_before_values",
+      "reason": "Multiple quantiles or tertiles introduce threshold search. Only the ordinary median and strict-above rule are allowed."
+    },
+    {
+      "name": "intraday_day_over_day_amount_profile_phase_shift",
+      "decision": "rejected_before_values",
+      "reason": "It is a transform of the terminal day-over-day amount-profile similarity branch and would be a prohibited rescue."
+    },
+    {
+      "name": "terminal_factor_model_or_subset_retry",
+      "decision": "rejected_before_values",
+      "reason": "Refitting, subsetting, or combining terminal factors is not a new information mechanism and is outside Campaign116."
+    },
+    {
+      "name": "limit_list_d_alternative_source_reconstruction",
+      "decision": "rejected_before_values",
+      "reason": "Reconstructing or substituting Campaign115's missing official queue fields would reopen or rescue the terminated source branch."
+    }
+  ],
+  "selection": {
+    "concepts_reviewed": 6,
+    "selected_candidate_count": 1,
+    "selected_candidate": "intraday_amount_conditioned_directional_persistence_spread_236p",
+    "selected_direction": "higher",
+    "candidate_formula_frozen_here": false,
+    "candidate_or_comparator_values_may_be_read_now": false,
+    "next_stage": "Complete a semantic mechanism audit and freeze one exact formula, support rule, source projection, coverage/capacity/uniqueness sequence, development protocol, costs, and prohibitions before values."
+  },
+  "research_boundary": {
+    "prior_definition_names_directions_and_terminal_results_read": true,
+    "source_schema_metadata_read": true,
+    "campaign116_source_partition_values_read": false,
+    "campaign116_candidate_values_read_or_computed": false,
+    "campaign116_comparator_values_read": false,
+    "historical_daily_price_or_forward_return_values_read": false,
+    "stress_2024_2025_opened": false,
+    "provider_request_issued": false,
+    "credential_loaded": false,
+    "candidate49_historical_backfill_performed": false,
+    "candidate49_ledgers_changed": false,
+    "second_prospective_candidate_created": false,
+    "current_scoring_selection_sizing_positions_or_orders_performed": false,
+    "investment_advice": false
+  }
+}

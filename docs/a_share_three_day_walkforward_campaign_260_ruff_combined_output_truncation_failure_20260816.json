@@ -1,0 +1,14 @@
+{
+  "schema_version": 1,
+  "kind": "a_share_three_day_walkforward_campaign260_infrastructure_failure",
+  "status": "combined_ruff_output_truncated_discarded",
+  "recorded_at": "2026-08-16T16:20:00+08:00",
+  "timestamp_semantics": "monotonic_logical_append_time_not_host_wall_clock_measurement",
+  "phase": "terminal_static_validation",
+  "failed_command_summary": "The first combined Ruff read-only check exceeded the available output context and was explicitly truncated.",
+  "result_consumed": false,
+  "recovery": "Reran Ruff independently for each of the eleven Campaign260 Python files with bounded output; all eleven checks exited 0.",
+  "scientific_result_changed": false,
+  "provider_or_web_request_issued": false,
+  "candidate49_ledgers_changed": false
+}

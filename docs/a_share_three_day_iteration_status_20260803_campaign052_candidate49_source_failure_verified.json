@@ -1,0 +1,53 @@
+{
+  "version": 1,
+  "kind": "a_share_three_day_iteration_status",
+  "status": "campaign052_terminal_candidate49_20260803_source_failure_verified_ready_for_campaign053_offline",
+  "recorded_at": "2026-08-03T09:02:00Z",
+  "authoritative_predecessor": {
+    "path": "docs/a_share_three_day_iteration_status_20260803_campaign052_verified.json",
+    "sha256": "3d312605ffe52d777fbda913b6df3478098da90a429bcf1a65497868e0f457f8"
+  },
+  "historical_research_state": {
+    "campaign052_terminal_state_unchanged": true,
+    "cumulative_historical_research_attempt_count": 300,
+    "cumulative_return_reading_development_trial_count": 266,
+    "current_historical_aggregation_candidate_count": 0,
+    "offline_campaign053_may_run_without_new_daily_bar_or_16_30_wait": true
+  },
+  "prospective_state": {
+    "active_candidate_count": 1,
+    "active_candidate": "Candidate49 intraday_cumulative_vwap_crossing_rate_240m",
+    "session_date": "2026-08-03",
+    "status": "failed_closed_at_stock_basic_no_same_day_retry",
+    "failure_record": {
+      "path": "docs/a_share_candidate49_20260803_daily_source_failure_record.json",
+      "sha256": "962afb0952395daa68e092fd7c08d7fd072ec65f04cd6c1616678229c0833a77"
+    },
+    "verification": {
+      "path": "docs/a_share_candidate49_20260803_daily_source_failure_verification.json",
+      "sha256": "3b9f68426ead85b7a43598d2dcf0ccf5b524b0a8a9879a83177e9f32c8547318"
+    },
+    "candidate49_signal_ledger": {
+      "path": "data/experiments/short_horizon/candidate49_future_signal_ledger.json",
+      "sha256": "5193f00d7f36da003f53cec387900da4c3d002299f5dfcfc1a95eaa199ed3a79",
+      "entry_count": 0
+    },
+    "candidate49_execution_ledger": {
+      "path": "data/experiments/short_horizon/candidate49_future_execution_ledger.json",
+      "sha256": "d57a3e61eac969e42cafa418ccd8c0a5ee65dcf69da145bb2c096c2a02a2ea4f",
+      "entry_count": 0
+    },
+    "candidate49_historical_backfill_performed": false,
+    "second_prospective_candidate_activation_allowed": false
+  },
+  "next_action": {
+    "historical": "Continue Campaign053 offline from a new independently preregistered mechanism.",
+    "prospective": "Preserve the 2026-08-03 failure and do not retry or re-request it today.",
+    "strict_prohibitions": [
+      "do not bypass the source-gate exit code",
+      "do not backfill Candidate49",
+      "do not activate a second prospective candidate",
+      "do not generate current scores selections sizes orders or investment advice"
+    ]
+  }
+}

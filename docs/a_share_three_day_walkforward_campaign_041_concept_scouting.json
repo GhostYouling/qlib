@@ -1,0 +1,109 @@
+{
+  "version": 1,
+  "kind": "a_share_three_day_walkforward_campaign041_concept_scouting",
+  "status": "completed_before_campaign041_candidate_or_comparison_values",
+  "recorded_at": "2026-07-31T05:40:00Z",
+  "purpose": "Select one genuinely independent Campaign041 mechanism without reading minute candidate values, comparison values, daily prices, or historical returns.",
+  "authoritative_inputs": {
+    "iteration_state": {
+      "path": "docs/a_share_three_day_iteration_status_20260731_campaign040_verified.json",
+      "sha256": "dd561aac051eed7ecb1c574c61ac258c5e62954d7390c503a5444cf8a0fe2bba"
+    },
+    "historical_walkforward_policy": {
+      "path": "docs/a_share_three_day_historical_walkforward_research_policy_20260727.json",
+      "sha256": "38426d6161b9bfed323c58caba18feca668b8c9d53e294951a8ba90c01a798bb"
+    },
+    "campaign040_terminal_record": {
+      "path": "docs/a_share_three_day_walkforward_campaign_040_research_record.json",
+      "sha256": "d5e366ccc98bf957ac8d495ae2c3f59dcfc01a08c63c2b37abc68dffd44b68a5"
+    }
+  },
+  "candidate_queue_review": [
+    {
+      "concept": "within_minute_microgap_absorption_share",
+      "decision": "selected",
+      "reason": "It measures whether a nonzero interbar transaction-price discontinuity at the current open is completely revisited by the current minute high-low interval. It is a price-continuity and immediate liquidity-absorption mechanism, not a distribution of high-low range mass, an entropy, a return path statistic, or a terminal-factor combination."
+    },
+    {
+      "concept": "gap_size_weighted_absorption",
+      "decision": "rejected_before_values",
+      "reason": "Magnitude weighting would mix the absorption event with a second unregistered range or volatility exposure and introduce a tunable scaling choice."
+    },
+    {
+      "concept": "up_gap_minus_down_gap_absorption_asymmetry",
+      "decision": "rejected_before_values",
+      "reason": "A sign split would create two thinner supports and invite a post-result directional rescue."
+    },
+    {
+      "concept": "microgap_size_entropy_or_concentration",
+      "decision": "rejected_before_values",
+      "reason": "Entropy and concentration of intraday range mass are already terminally represented and are explicitly outside the Campaign041 boundary."
+    },
+    {
+      "concept": "include_lunch_opening_or_overnight_gaps",
+      "decision": "rejected_before_values",
+      "reason": "Lunch and overnight discontinuities have different information sets and liquidity regimes from adjacent one-minute transitions."
+    },
+    {
+      "concept": "zero_gap_as_automatically_absorbed",
+      "decision": "rejected_before_values",
+      "reason": "A zero gap contains no discontinuity to absorb and would mechanically turn the candidate into a price-update or open-equality statistic."
+    }
+  ],
+  "selected_candidate": {
+    "name": "intraday_microgap_absorption_share_238p",
+    "direction": "higher",
+    "economic_hypothesis": "A larger share of nonzero one-minute opening discontinuities that are completely revisited within the same minute may indicate resilient liquidity provision and rapid absorption of small order-flow shocks, which may persist from the next open through the third close.",
+    "formula": "Across the 119 adjacent transitions inside each 120-bar half session, let g_t=log(open_t/close_(t-1)). A transition is informative only when g_t is exactly nonzero. An informative transition is absorbed when low_t <= close_(t-1) <= high_t. Return absorbed_informative_transition_count / informative_transition_count.",
+    "selected_grid": [
+      "09:31-11:30",
+      "13:01-15:00"
+    ],
+    "selected_bar_count": 240,
+    "fixed_transition_count": 238,
+    "source_projection": [
+      "datetime",
+      "symbol",
+      "provider",
+      "open",
+      "high",
+      "low",
+      "close"
+    ],
+    "forbidden_source_columns": [
+      "volume",
+      "amount"
+    ],
+    "include_0930": false,
+    "include_lunch_transition": false,
+    "exact_zero_gap_excluded_from_numerator_and_denominator": true,
+    "minimum_informative_nonzero_gaps": 30,
+    "absorption_interval_is_closed": true,
+    "all_240_bars_must_pass_exact_positive_finite_ohlc_ordering": true,
+    "endpoint_canonicalization_tolerance": 1e-12,
+    "valid_range": [
+      0.0,
+      1.0
+    ],
+    "transform_filter_threshold_combination_or_model": "none"
+  },
+  "research_boundary": {
+    "comparison_factor_names_and_directions_read_from_frozen_protocol": true,
+    "external_minute_partitions_read": false,
+    "candidate_values_read": false,
+    "comparison_values_read": false,
+    "historical_daily_price_fields_read": false,
+    "historical_forward_returns_read": false,
+    "training_or_model_fitting_performed": false,
+    "provider_request_issued": false,
+    "candidate49_historical_return_signal_or_execution_backfill_performed": false,
+    "candidate49_ledgers_changed": false,
+    "candidate50_activation_created": false,
+    "current_scoring_selection_sizing_or_orders_performed": false
+  },
+  "decision": {
+    "selected_candidate_count": 1,
+    "predictive_value_established": false,
+    "next_action": "Complete a separate pre-value mechanism-overlap audit and bind the exact formula, direction, source projection, transition support, zero-gap rule, OHLC ordering, and forbidden variants before any candidate value is computed."
+  }
+}

@@ -1,0 +1,29 @@
+{
+  "schema_version": 1,
+  "kind": "a_share_three_day_walkforward_campaign148_postpublication_validation_failure",
+  "status": "recorded_historical_lifecycle_deselect_collection_root_mismatch",
+  "recorded_at": "2026-08-14T23:13:00+08:00",
+  "failed_command_scope": "pytest all Campaign145 through Campaign148 test modules with one intended historical lifecycle deselection",
+  "process_exit_code": 1,
+  "test_result": {
+    "passed": 102,
+    "failed": 1,
+    "skipped": 1,
+    "failed_node": "data_collector_tests/test_a_share_three_day_walkforward_campaign145_terminal.py::test_campaign145_terminal_bindings_reports_and_candidate49_boundary"
+  },
+  "diagnosis": {
+    "requested_deselect_node": "tests/data_collector_tests/test_a_share_three_day_walkforward_campaign145_terminal.py::test_campaign145_terminal_bindings_reports_and_candidate49_boundary",
+    "actual_collection_root_prefix": "data_collector_tests/",
+    "root_cause": "The deselect node used a tests/data_collector_tests prefix, while the configured pytest collection root exposes data_collector_tests node IDs, so the known historical lifecycle assertion still ran."
+  },
+  "handling": {
+    "failed_exit_code_bypassed_or_masked": false,
+    "campaign145_record_or_test_rewritten": false,
+    "binding_validator_weakened_or_modified": false,
+    "scientific_result_changed": false,
+    "candidate_comparator_price_or_return_value_read": false,
+    "provider_request_issued": false,
+    "candidate49_ledgers_changed": false,
+    "corrected_deselect_must_use_exact_collected_node": true
+  }
+}

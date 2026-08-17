@@ -1,0 +1,171 @@
+{
+  "schema_version": 1,
+  "kind": "a_share_three_day_iteration_status",
+  "status": "campaign121_terminal_zero_survivors_v117_finalized_campaign122_prevalue_ready",
+  "recorded_at": "2026-08-14T02:51:00+08:00",
+  "authoritative_workspace": "/Volumes/DIsk/Disk-Coding/qlib",
+  "active_goal": {
+    "objective": "请持续迭代因子。",
+    "status": "active",
+    "completion_requested_or_recorded": false
+  },
+  "supersedes_without_rewriting": {
+    "path": "docs/a_share_three_day_iteration_status_20260814_campaign120_terminal_v3.json",
+    "sha256": "883fedede437c65f221d6ee4beaee4f1166b20618c44cb0c8ccc257c67cd4c86",
+    "preserved": true
+  },
+  "active_minute_data_root": {
+    "path": "/Volumes/DIsk/qlib-a-share-tushare-1m",
+    "source_run": "tushare_stk_mins_1m_2019_2025_ea0cbb8f",
+    "source_manifest_sha256": "9b3d959563c9d182f38981c6a36bdb3bc9b415de08487a9e1f9e850825c0839f"
+  },
+  "active_daily_data_root": {
+    "path": "/Volumes/DIsk/Disk-Coding/qlib/data/qlib/cn_a_share",
+    "accepted_calendar_end": "2026-07-13",
+    "used_only_by_frozen_historical_engine_this_round": true
+  },
+  "manage_qlib_a_share_data_skill": {
+    "path": "/Users/niyufei/.codex/skills/manage-qlib-a-share-data/SKILL.md",
+    "sha256": "565713a5f3aeb6a1acf23e397fcc21be28d0c3ea4ebf21c7f287a25bb94d78dc"
+  },
+  "candidate49_workflow_authority": {
+    "protocol": {
+      "path": "docs/a_share_tushare_candidate49_future_session_workflow_protocol.json",
+      "sha256": "6ff5636a3f7ef65e93452098186b3aecf9231d68873ab8a1070afb91d699ef7c"
+    },
+    "immutable_record_readiness": {
+      "path": "docs/a_share_candidate49_workflow_record_fd_pinned_read_readiness_20260726.json",
+      "sha256": "c1750e12c365ceeca0b38af3796a9a00cf4391fc571f89a975b71db30b06caa4"
+    },
+    "runner": {
+      "path": "scripts/a_share_tushare_candidate49_future_session_workflow.py",
+      "sha256": "0ee21715af9ee276cb4e50c4234ef15ad3d3b730b014712ae4ad19829908b69e"
+    }
+  },
+  "provider_credential": {
+    "env_path": "/Volumes/DIsk/Disk-Coding/qlib/.env",
+    "env_readable": true,
+    "tushare_token_present_nonempty": true,
+    "secret_printed_or_hashed": false
+  },
+  "authoritative_artifacts": {
+    "terminal_result": {
+      "path": "docs/a_share_three_day_walkforward_campaign_121_terminal_result_20260814.json",
+      "sha256": "86e7263632b820bf69bcd88a018b934e3cf9fb8a687478ad3cd0035aff2bd793"
+    },
+    "numeric_policy_v117": {
+      "path": "docs/a_share_three_day_walkforward_future_numeric_comparison_eligibility_policy_v117_20260814.json",
+      "sha256": "f9a701af28a503310d8571997212f4c6cac35c36b1c0ab161f52f37ccce1b3d2"
+    },
+    "attempt_ledger_v20": {
+      "path": "data/experiments/short_horizon/historical_walkforward/campaign_121/research_attempt_ledger_v20.json",
+      "sha256": "ac9bf70181a3c5a97e4829982d7232a95967dd13396f0a6068746a7951a263b0"
+    },
+    "trial_ledger": {
+      "path": "data/experiments/short_horizon/historical_walkforward/campaign_121/walkforward/trial_ledger.json",
+      "sha256": "b7274393905c1fbacd2c668cc48720e0476c24005defa97acb1de1305b4c4244"
+    },
+    "development_survivors": {
+      "path": "data/experiments/short_horizon/historical_walkforward/campaign_121/walkforward/development_survivors.json",
+      "sha256": "35c077cbcd2c13c1e05821b8e7e1332755fdaf43cc5c9149b129ea61de6b943b"
+    },
+    "closed_stress_record": {
+      "path": "data/experiments/short_horizon/historical_walkforward/campaign_121/walkforward/exposed_stress_consumption_record.json",
+      "sha256": "d2b53d9e58237d906343b78ffcb41239ccd06ac1416e6aaea2415be20029c363"
+    }
+  },
+  "campaign121_terminal": {
+    "factor": "intraday_terminal_close_direction_first_attainment_240m",
+    "direction": "higher",
+    "source_snapshot_partitions": 33015,
+    "source_snapshot_rows": 7724498,
+    "source_snapshot_eligible_rows": 7724498,
+    "median_daily_coverage": 0.9994517542211769,
+    "p05_daily_coverage": 0.9956886515772271,
+    "numeric_comparisons_passed": 138,
+    "maximum_observed_absolute_median_daily_rank_correlation": 0.3087784147680083,
+    "development_trial_count": 1,
+    "positive_mean_rank_ic_fold_count": 1,
+    "positive_normalized_return_fold_count": 2,
+    "positive_pilot_return_fold_count": 1,
+    "median_validation_mean_rank_ic": -0.0022819041204424476,
+    "median_validation_pilot_return_10bp": -0.025807855654168432,
+    "development_aggregate_pilot_return_20bp": -0.1718500339925697,
+    "worst_validation_normalized_drawdown": -0.2761310248574681,
+    "development_survivor_count": 0,
+    "stress_2024_2025_opened": false,
+    "stress_2024_2025_return_values_read": false,
+    "terminal": true,
+    "retry_or_rescue_allowed": false
+  },
+  "frozen_library": {
+    "complete_definition_count": 147,
+    "complete_definition_order_sha256": "3f3756a4128011d9cd718e97d23ee3b1c78022433b269c75bd715f304a055bf0",
+    "eligible_numeric_comparator_count": 139,
+    "eligible_numeric_comparator_order_sha256": "9c4de054ca1b83eced67eece256b024ebec3a6e1925de17a4cedfa7d36265161",
+    "campaign121_appended_once_for_future_duplicate_control": true
+  },
+  "effective_accounting": {
+    "campaign121_attempt_count": 36,
+    "campaign121_ledger_entry_count": 36,
+    "campaign121_infrastructure_failure_count": 26,
+    "campaign121_prevalue_scientific_attempt_count": 1,
+    "campaign121_complete_factor_attempt_count": 1,
+    "campaign121_return_reading_development_trial_count": 1,
+    "campaign121_development_survivor_count": 0,
+    "campaign121_stress_trial_count": 0,
+    "cumulative_historical_research_attempt_count": 992,
+    "cumulative_return_reading_development_trial_count": 306
+  },
+  "candidate49": {
+    "only_active_prospective_candidate": true,
+    "signal_ledger_sha256": "5193f00d7f36da003f53cec387900da4c3d002299f5dfcfc1a95eaa199ed3a79",
+    "signal_entry_count": 0,
+    "execution_ledger_sha256": "d57a3e61eac969e42cafa418ccd8c0a5ee65dcf69da145bb2c096c2a02a2ea4f",
+    "execution_entry_count": 0,
+    "historical_backfill_performed": false,
+    "prospective_registration_changed": false
+  },
+  "candidate49_daily_20260814": {
+    "local_day": "Friday",
+    "observed_local_time": "2026-08-14T02:50:48+08:00",
+    "before_same_day_16_30_gate": true,
+    "plan_executed": false,
+    "run_executed": false,
+    "staging_root_created_or_reused": false,
+    "reason": "Offline historical work is allowed at any time, but the prospective same-session daily workflow must not plan or run before 16:30 Asia/Singapore."
+  },
+  "reports": {
+    "terminal_report": {
+      "path": "docs/a_share_three_day_walkforward_campaign_121_terminal_report.md",
+      "sha256": "a970a1d02960d4eaaff2e80b1553ef984488b1230f86aab3adfbe42407db474c"
+    },
+    "current_research_report": {
+      "path": "data/experiments/short_horizon/current_research_report.md",
+      "sha256": "c6f42a375cbb7de3a319f3685d497cd3cedec69d7eee42b0e3e3c52e86805adf"
+    },
+    "three_day_research_report": {
+      "path": "data/experiments/short_horizon/three_day_research_report.md",
+      "sha256": "16a497e0e5a853967527389620999000595eac3867c6b8be7871b0a712a548e4"
+    }
+  },
+  "validation": {
+    "phase_appropriate_campaign121_tests": "31 passed, 1 lifecycle skip",
+    "terminal_test_sha256": "af793a0b2c7ac87639f423ae754480e3273d86b8eec834350b99a7669852edbf",
+    "black_campaign121_unfrozen_scope": "passed",
+    "ruff_campaign121_unfrozen_scope": "passed",
+    "all_authoritative_bindings_passed": true
+  },
+  "research_boundary": {
+    "campaign121_terminal_outputs_may_be_used_for_current_trading": false,
+    "campaign121_retry_or_rescue_allowed": false,
+    "stress_2024_2025_opened": false,
+    "provider_request_issued": false,
+    "candidate49_historical_backfill_performed": false,
+    "candidate49_ledgers_changed": false,
+    "second_prospective_candidate_created": false,
+    "current_scoring_selection_sizing_positions_or_orders_performed": false,
+    "investment_advice": false
+  },
+  "next_action": "The active goal continues. Campaign122 may begin offline at any local time only from a genuinely new prevalue-frozen mechanism; preserve Campaign121 terminal and keep Candidate49 as the sole prospective ledger."
+}

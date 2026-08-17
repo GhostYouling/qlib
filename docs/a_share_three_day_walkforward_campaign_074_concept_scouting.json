@@ -1,0 +1,119 @@
+{
+  "version": 1,
+  "kind": "a_share_three_day_walkforward_campaign074_concept_scouting",
+  "status": "selected_before_candidate_source_or_comparison_values",
+  "recorded_at": "2026-08-06T07:40:00+08:00",
+  "authoritative_state": {
+    "path": "docs/a_share_three_day_iteration_status_20260806_campaign073_verified.json",
+    "sha256": "e6348f26e3880055a8acb8d714624ae43da50998569fb41a5cb9af7eab51af77"
+  },
+  "numeric_comparator_policy": {
+    "path": "docs/a_share_three_day_walkforward_future_numeric_comparison_eligibility_policy_v9_20260806.json",
+    "sha256": "1af4a2432e0186a47a8a69ddefdda25756810cf47b11ff0688d0cbd832438c03",
+    "complete_definition_count": 105,
+    "eligible_numeric_comparator_count": 104,
+    "complete_definition_order_sha256": "bdc79e8c91fd43cd088437a47bdd805e0e4181fca2f4a6ff6714e0a033d34b61",
+    "eligible_numeric_comparator_order_sha256": "0d36cb313d4ded22343120b3f93c1f066aa3818415cb6ea186f354217eeacd6b"
+  },
+  "selection_rationale": {
+    "objective": "Prefer one dense point-in-time session-end activity mechanism that is economically different from return paths, nominal price discreteness, broad late-window activity, accounting operators, and old-factor combinations.",
+    "selected_family": "terminal_minute_amount_concentration",
+    "economic_anchor": "The fraction of completed-session CNY turnover concentrated in the provider's terminal 15:00 one-minute bucket measures session-end liquidity clustering. It is a terminal-bar concentration measure only and must not be described as a dedicated closing-auction order, imbalance, or trade feed.",
+    "rejected_before_values": [
+      {
+        "concept": "dedicated_closing_auction_order_imbalance_or_trade_share",
+        "reason": "The current data authorization does not include a separate closing-auction feed; the frozen raw source exposes only standard one-minute OHLCV amount bars, so no auction-only identity may be inferred."
+      },
+      {
+        "concept": "last_3_5_10_15_or_60_minute_amount_share",
+        "reason": "Choosing among alternative tail windows would create an unfrozen parameter search and overlaps the terminal late_amount_share_30m definition."
+      },
+      {
+        "concept": "terminal_bar_volume_share_or_amount_volume_blend",
+        "reason": "Selecting units or blending amount and volume would create a family search; only CNY amount share is selected."
+      },
+      {
+        "concept": "terminal_bar_amount_surprise_against_mean_median_or_prior_days",
+        "reason": "Benchmark choice and lookback length would add transforms and multi-session parameters not authorized for Campaign074."
+      },
+      {
+        "concept": "another_nominal_price_tick_update_or_digit_operator",
+        "reason": "Campaign073 exposed nominal price affordability and failed near price-update share; further price-discreteness permutations are same-family search."
+      },
+      {
+        "concept": "another_quarterly_rank_gap_floor_scale_or_transition_operator",
+        "reason": "Campaign066-Campaign072 already exposed a finite accounting-operator library; another permutation would be same-family search."
+      },
+      {
+        "concept": "threshold_board_industry_year_filter_residualization_or_old_factor_combination",
+        "reason": "Subsets, thresholds, neutralization, terminal-factor inputs, fitted weights, and models are outside Campaign074."
+      }
+    ]
+  },
+  "selected_candidate": {
+    "name": "intraday_terminal_bar_amount_share_240m",
+    "direction": "higher",
+    "economic_hypothesis": "A greater completed-session amount concentration in the terminal minute bucket may identify persistent session-end attention and liquidity demand whose state carries from the next open through the third close.",
+    "formula": "For every accepted stock day, require the exact 240 continuous-session amount bars at 09:31-11:30 and 13:01-15:00, require every amount to be finite and nonnegative and their sum S to be positive, and return amount_15:00/S.",
+    "stock_day_identity_projection": [
+      "trade_date",
+      "symbol",
+      "provider"
+    ],
+    "minute_source_projection": [
+      "datetime",
+      "symbol",
+      "provider",
+      "amount"
+    ],
+    "accepted_grid": "Exactly 120 amount bars at 09:31-11:30 and 120 at 13:01-15:00; standalone 09:30 is preserved in the raw 241-row source identity but excluded from numerator and denominator.",
+    "terminal_anchor": "Exactly the provider's 15:00 one-minute amount bucket; it is not relabeled as a separately licensed closing-auction feed.",
+    "normalization_rule": "Divide the nonnegative finite 15:00 amount by the positive sum of all exact 240 selected amount bars.",
+    "valid_range": {
+      "lower": 0.0,
+      "lower_inclusive": true,
+      "upper": 1.0,
+      "upper_inclusive": true
+    },
+    "missing_rule": "Missing unless the exact 240-bar selected grid exists, every selected amount is finite and nonnegative, the selected total is strictly positive, the identity is unique, and the ratio is finite in [0,1]. Never impute, clip, winsorize, substitute, threshold, rescale, or select another tail window.",
+    "multi_session_lookback_required": false,
+    "parameter_window_transform_threshold_filter_subset_regime_fit_or_model_search": false
+  },
+  "mandatory_pre_value_challenges": [
+    "late_amount_share_30m",
+    "intraday_amount_participation_entropy_240m",
+    "intraday_amount_profile_serial_persistence_240m",
+    "intraday_amount_center_of_mass_240m",
+    "intraday_opening_auction_amount_share_241m",
+    "intraday_market_amount_profile_synchronization_240m",
+    "intraday_morning_afternoon_amount_profile_similarity_120b",
+    "intraday_day_over_day_amount_profile_similarity_240b",
+    "intraday_amount_price_discovery_alignment_js_238p",
+    "intraday_terminal_nominal_share_price_affordability_rank_240m",
+    "intraday_cross_sectional_standardized_return_state_stability_236p",
+    "candidate49_intraday_cumulative_vwap_crossing_rate_240m_v1"
+  ],
+  "pre_value_infrastructure_failures": [
+    {
+      "path": "docs/a_share_three_day_walkforward_campaign_074_prevalue_workspace_root_mapping_failure_20260806.json",
+      "sha256": "eb8bbf300c8aba16f14fe45050e29efd7d10920b544dfc0ef63e2e9ea9c394bc"
+    },
+    {
+      "path": "docs/a_share_three_day_walkforward_campaign_074_prevalue_audit_filename_probe_failure_20260806.json",
+      "sha256": "8f9ffe1545351069769d250a912141340d5d2b925fc922b51a328158f25bd711"
+    }
+  ],
+  "research_boundary": {
+    "candidate_source_rows_read": false,
+    "candidate_values_read": false,
+    "comparison_values_read": false,
+    "historical_daily_price_fields_read": [],
+    "historical_forward_returns_read": false,
+    "provider_request_issued": false,
+    "candidate49_historical_backfill_performed": false,
+    "candidate49_ledgers_changed": false,
+    "second_prospective_candidate_created": false,
+    "current_scoring_selection_sizing_or_orders_performed": false,
+    "investment_advice": false
+  }
+}

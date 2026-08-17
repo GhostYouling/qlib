@@ -1,0 +1,121 @@
+{
+  "version": 1,
+  "kind": "a_share_tushare_intraday_opening_auction_amount_share_mechanism_overlap_reaudit",
+  "status": "selected_intraday_opening_auction_amount_share_before_candidate_values_comparison_values_or_forward_returns",
+  "recorded_at": "2026-07-23T11:00:14Z",
+  "purpose": "Re-audit the exhausted daily, event, univariate minute-path, amount-profile, and cross-sectional market-synchronization mechanisms without reading a new candidate value, and select one independently observable opening-auction participation mechanism from the already purchased immutable Tushare minute source.",
+  "current_research_state": {
+    "path": "docs/a_share_three_day_iteration_status_20260721.json",
+    "sha256": "14e8edaf98c7f94a10f0c63e64d8af1d6e3bb1b45dac3c3bb9aabdf2cb83e2b1",
+    "status": "aggregation_blocked_after_intraday_market_idiosyncratic_share_terminal_rejection_zero_dual_gate_factors",
+    "terminal_mechanism_count": 46,
+    "topk_qualified_factor_count": 0,
+    "dual_gate_qualified_factor_count": 0,
+    "aggregation_allowed": false
+  },
+  "prior_auction_context": {
+    "historical_permission_audit": {
+      "path": "docs/a_share_three_day_audit_opinion_mechanism_overlap_reaudit_20260717.json",
+      "sha256": "a13470c5dafa4c278035e7b17e56f896ae03932b4131b6d90830a2168282acdb"
+    },
+    "old_decision": "A specialty opening-or-closing-auction endpoint was not requested because the then-current 3000-point authorization did not include its separate entitlement.",
+    "why_the_source_boundary_changed_without_reopening_the_old_endpoint": "The user later separately purchased Tushare historical one-minute data. Its already accepted and completed immutable 241-row stock-session grid contains a standalone 09:30 row whose volume and amount are conserved in daily totals. No specialty auction endpoint, new entitlement, provider request, or old-contract retry is needed.",
+    "price_warning_preserved": "Some 09:30 rows carry positive reference prices with zero volume and amount, so no 09:30 price, open, high, low, close, gap, return, or VWAP enters this candidate. A zero 09:30 amount remains an observed zero, not a missing value or imputed auction."
+  },
+  "overlap_inventory": {
+    "terminal_minute_factors": [
+      "late_return_30m",
+      "late_amount_share_30m",
+      "late_vwap_to_day_vwap_30m",
+      "intraday_realized_volatility",
+      "afternoon_signed_amount_efficiency_120m",
+      "afternoon_drawdown_recovery_resilience_120m",
+      "intraday_amount_participation_entropy_240m",
+      "intraday_amount_profile_serial_persistence_240m",
+      "intraday_upside_semivariance_share_239m",
+      "intraday_terminal_close_location_240m",
+      "intraday_return_sign_run_imbalance_238p",
+      "intraday_volatility_resolution_238m",
+      "intraday_amount_lead_return_correlation_238p",
+      "intraday_amount_center_of_mass_240m",
+      "intraday_up_move_amount_share_238m",
+      "intraday_diffusive_variation_ratio_238m",
+      "intraday_amount_volatility_coupling_238p",
+      "intraday_return_variance_entropy_238m",
+      "intraday_return_skewness_238m",
+      "intraday_bar_vwap_close_pressure_240m",
+      "intraday_price_update_share_238m",
+      "intraday_market_idiosyncratic_share_238m"
+    ],
+    "closest_existing_mechanisms": {
+      "late_amount_share_30m": "Measures the final 30 continuous minutes' share of full-session amount. The selected candidate isolates the separately timestamped 09:30 opening-auction row and does not choose another continuous-session tail window.",
+      "intraday_amount_participation_entropy_240m": "Measures how evenly continuous-session amount is distributed across 240 bars and explicitly excludes 09:30. The selected candidate uses only the separately observed 09:30 amount as numerator and the conserved 241-row total as denominator; it does not measure dispersion.",
+      "intraday_amount_center_of_mass_240m": "Measures the timing center of mass across the 240 continuous-session bars and explicitly excludes 09:30. The selected candidate is unchanged by every permutation among those 240 bars as long as their total is unchanged.",
+      "intraday_amount_profile_serial_persistence_240m": "Measures adjacent continuous-session log-amount persistence. The selected candidate uses no adjacency, order, correlation, or continuous-session shape.",
+      "intraday_price_update_share_238m": "Measures close changes inside the two continuous half-sessions. The selected candidate reads no close or return and remains defined when every continuous close is constant.",
+      "intraday_market_idiosyncratic_share_238m": "Measures synchronization of a stock's minute returns with a leave-one-out market path. The selected candidate is a one-stock unitless activity share and reads no peer return."
+    }
+  },
+  "rejected_before_value_observation": [
+    {
+      "name": "opening_price_gap_or_auction_return",
+      "reason": "The historical 09:30 price can be a zero-activity reference placeholder and the original opening-gap protocol is terminally invalid. No price field may enter."
+    },
+    {
+      "name": "merge_0930_and_0931_activity_share",
+      "reason": "Merging would mix the separately observed auction with the first continuous bar and create a different window after seeing the source layout."
+    },
+    {
+      "name": "opening_volume_share_or_average_price",
+      "reason": "Volume and amount-to-volume transforms are different hypotheses and would reopen source-unit and price interpretation choices."
+    },
+    {
+      "name": "first_5_10_15_30_or_60_minute_amount_share",
+      "reason": "Those are tunable continuous-session windows and overlap the already terminal late-amount-share family."
+    },
+    {
+      "name": "low_auction_share_or_inverse_direction",
+      "reason": "The higher opening price-discovery participation direction is fixed before values and cannot be inverted after results."
+    },
+    {
+      "name": "thresholded_positive_only_event_only_or_board_specific_auction",
+      "reason": "Zero is a valid observed share. Thresholds, conditional samples, boards, industries, years, event filters, and selected subsets would create post-hoc search."
+    }
+  ],
+  "selected_candidate": {
+    "name": "intraday_opening_auction_amount_share_241m",
+    "direction": "higher",
+    "formula": "amount_09_30 / sum(amount over the exact 241-row source grid)",
+    "bar_grid": "Require exactly the standalone 09:30 row plus 09:31-11:30 and 13:01-15:00. The 09:30 amount enters numerator and denominator; every other amount enters only the denominator.",
+    "mechanism": "The factor measures what share of one stock's full-session CNY participation is concentrated in the separately reported opening auction, before continuous trading begins.",
+    "hypothesis": "A high close-known share indicates that overnight information attracted relatively strong matched participation during opening price discovery, which may continue from the next open through the third close.",
+    "economic_distinction": "The candidate is a unitless opening-auction participation share. It uses no price, return, amount-path ordering, entropy, serial dependence, VWAP, market peer, industry, valuation, event, or future-return field.",
+    "source_fields_allowed": [
+      "datetime",
+      "symbol",
+      "provider",
+      "amount"
+    ],
+    "zero_09_30_amount_is_valid_zero": true,
+    "all_241_amounts_required_finite_and_nonnegative": true,
+    "strictly_positive_full_session_amount_required": true,
+    "candidate_factor_values_observed_before_selection": false,
+    "terminal_factor_comparison_values_observed_before_selection": false,
+    "daily_prices_or_forward_returns_read_before_selection": false
+  },
+  "rejected_formula_search": {
+    "price_gap_return_vwap_or_ohlc_variant_allowed": false,
+    "volume_amount_per_volume_or_trade_size_variant_allowed": false,
+    "merge_0930_with_0931_allowed": false,
+    "continuous_opening_window_substitution_allowed": false,
+    "inverse_logit_rank_threshold_clip_impute_or_winsorize_allowed": false,
+    "board_industry_event_year_subset_filter_reweighting_or_retest_allowed": false
+  },
+  "decision": {
+    "freeze_separate_no_return_preregistration_before_candidate_values": true,
+    "coverage_capacity_and_all_twenty_two_minute_factor_uniqueness_required_before_daily_prices": true,
+    "same_history_direction_formula_window_transform_threshold_subset_filter_or_reweighting_search_allowed": false,
+    "aggregation_current_scoring_selection_sizing_or_orders_allowed": false,
+    "level2_intake_justified": false
+  }
+}

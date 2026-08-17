@@ -1,0 +1,38 @@
+{
+  "schema_version": 1,
+  "kind": "a_share_three_day_walkforward_campaign109_infrastructure_failure",
+  "status": "preserved_failed_build_after_source_read_before_snapshot_publication_coverage_or_comparator_values",
+  "recorded_at": "2026-08-07T21:59:45Z",
+  "failure_ordinal": 3,
+  "stage": "frozen_candidate_snapshot_build",
+  "failed_exit_code": 1,
+  "exception_type": "KeyError",
+  "exception_key": "volume",
+  "cause": "The source-to-source replacement renamed the base extractor token to extract_intrabar_body_magnitude_serial_persistence before the longer extract_active_trading_bar_share replacement could match. The generated _load_attached function therefore resolved the inherited activity extractor, which attempted to read volume from the frozen datetime/symbol/provider/open/close projection.",
+  "observed_binding": "extract_intrabar_body_magnitude_serial_persistence -> inherited Campaign105 activity extractor",
+  "required_binding": "extract_intrabar_body_magnitude_serial_persistence -> frozen Campaign109 body-magnitude persistence extractor",
+  "publication_state": {
+    "final_snapshot_root_exists": false,
+    "temporary_build_root_exists_after_failure_cleanup": false,
+    "snapshot_manifest_published": false
+  },
+  "narrow_recovery_contract": {
+    "allowed_change": "Bind only the generated symbol extract_intrabar_body_magnitude_serial_persistence to the already frozen Campaign109 extractor before invoking the inherited loader.",
+    "formula_direction_source_projection_grid_endpoint_support_gate_comparator_order_or_finite_catalog_change_allowed": false,
+    "original_builder_and_freeze_remain_immutable": true,
+    "new_entry_point_and_additive_recovery_freeze_required_before_retry": true,
+    "single_recovery_build_retry_allowed": true
+  },
+  "scientific_boundary": {
+    "minute_source_rows_read": true,
+    "partial_candidate_values_may_have_been_computed_transiently": true,
+    "candidate_values_published": false,
+    "coverage_values_read": false,
+    "comparator_values_read": false,
+    "historical_daily_price_or_forward_return_values_read": false,
+    "provider_request_issued": false,
+    "candidate49_ledgers_changed": false,
+    "current_scoring_selection_sizing_or_orders_performed": false
+  },
+  "next_action": "Publish and test one additive symbol-binding recovery entry point and implementation freeze before the single permitted rebuild retry."
+}

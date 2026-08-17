@@ -1,0 +1,44 @@
+{
+  "schema_version": 1,
+  "kind": "a_share_three_day_walkforward_campaign241_infrastructure_failure",
+  "recorded_at": "2026-08-16T08:12:00+08:00",
+  "timestamp_semantics": "monotonic_logical_append_time_not_host_wall_clock_measurement",
+  "status": "failed_cumulative_pytest_single_deselect_flag_exit_1_output_truncated",
+  "command": "fixed-record Campaign145-241 cumulative pytest runner with one --deselect token followed by 56 node ids",
+  "working_directory": "/Volumes/DIsk/Disk-Coding/qlib",
+  "observed_process_exit_code": 1,
+  "failure_reason": "pytest applied --deselect only to the first following node id; the other 55 mutable-report nodes were interpreted as ordinary requested tests and failed on their intentionally superseded publication hashes; the captured failure output was also truncated",
+  "observed_non_evidentiary_diagnostic": {
+    "test_file_count": 129,
+    "intended_deselection_node_count": 56,
+    "actual_deselected_node_count": 1,
+    "failed_test_count": 55,
+    "passed_test_count": 512,
+    "skipped_test_count": 1,
+    "output_truncated": true
+  },
+  "evidence_treatment": {
+    "output_discarded": true,
+    "used_as_scientific_evidence": false,
+    "used_as_validation_evidence": false,
+    "candidate_comparator_price_or_return_value_read": false,
+    "scientific_artifact_changed_by_failed_command": false
+  },
+  "recovery": {
+    "status": "prepared_for_independent_rerun",
+    "method": "construct the pytest argument vector by repeating the --deselect option separately for each of the 56 frozen node ids, assert the intended counts before subprocess execution, and rerun without masking its exit code",
+    "scientific_result_changed": false
+  },
+  "research_boundary": {
+    "candidate_or_comparator_value_read": false,
+    "daily_price_or_forward_return_read": false,
+    "provider_or_web_request_issued": false,
+    "provider_credential_presence_value_or_digest_read": false,
+    "candidate49_plan_or_run_executed": false,
+    "candidate49_ledgers_changed": false,
+    "second_prospective_candidate_created": false,
+    "stress_2024_2025_opened": false,
+    "current_scoring_selection_sizing_positions_or_orders_performed": false,
+    "investment_advice": false
+  }
+}

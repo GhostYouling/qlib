@@ -1,0 +1,83 @@
+{
+  "version": 166,
+  "kind": "a_share_three_day_walkforward_future_numeric_comparison_eligibility_policy",
+  "status": "campaign136_terminal_zero_survivors_final_accounting_v2_campaign137_prevalue_allowed",
+  "recorded_at": "2026-08-14T12:19:00+0800",
+  "authoritative_inputs": {
+    "policy_v165": {
+      "path": "docs/a_share_three_day_walkforward_future_numeric_comparison_eligibility_policy_v165_20260814.json",
+      "sha256": "a3a4f56bebfa703d540e57ed481f1c9f524768a77adb712e4fee8756bd98144c"
+    },
+    "campaign136_terminal_result": {
+      "path": "docs/a_share_three_day_walkforward_campaign_136_terminal_result_v4_20260814.json",
+      "sha256": "b5f9082311554ee4039f928983615d65ce634da5f69ff164a1ca75e3fc855454"
+    },
+    "campaign136_effective_attempt_ledger_delta": {
+      "path": "data/experiments/short_horizon/historical_walkforward/campaign_136/research_attempt_ledger_terminal_delta_v4.json",
+      "sha256": "a94de8ac38677bab39d321fce47353391b685480237d6acd7e1e9e685b5c4b6d",
+      "effective_entry_count": 15,
+      "chain_tip_sha256": "0d5b8a7577b20abda5697cc40563c7a99ad5e6d99a0e9c5fc976c7b31eb80ba9"
+    }
+  },
+  "supersedes_without_rewriting": {
+    "path": "docs/a_share_three_day_walkforward_future_numeric_comparison_eligibility_policy_v165_20260814.json",
+    "sha256": "a3a4f56bebfa703d540e57ed481f1c9f524768a77adb712e4fee8756bd98144c",
+    "preserved": true,
+    "library_order_changed": false,
+    "reason": "Advance only effective accounting for the recorded test-pointer patch-context failure; Campaign136 science and the frozen 152/141 orders are unchanged."
+  },
+  "effective_accounting": {
+    "campaign136_attempt_count": 15,
+    "campaign136_prevalue_concept_attempt_count": 6,
+    "campaign136_complete_factor_attempt_count": 1,
+    "campaign136_infrastructure_failure_count": 8,
+    "campaign136_return_reading_development_trial_count": 1,
+    "campaign136_development_survivor_count": 0,
+    "campaign136_stress_trial_count": 0,
+    "cumulative_historical_research_attempt_count": 1135,
+    "cumulative_return_reading_development_trial_count": 313
+  },
+  "complete_historical_feature_library": {
+    "factor_definition_count": 152,
+    "order_sha256": "60c465a3e2043efae6b92b8c5f3e007cd397a1cd0ec3094b4fa005665bbe5736",
+    "unchanged_from_v165": true
+  },
+  "numerical_comparator_eligibility": {
+    "eligible_numeric_comparator_count": 141,
+    "eligible_numeric_comparator_order_sha256": "ec1aebcb939ad516c58037a36a4aaadd4ad8b2abbd3c884705895c58da85a2ee",
+    "unchanged_from_v165": true,
+    "campaign136_numeric_series_appended_once_after_terminal_classification": true,
+    "campaign136_series_use": "future pre-return duplicate detection only",
+    "campaign136_retry_or_current_strategy_use_allowed": false
+  },
+  "campaign136_terminal_classification": {
+    "terminal": true,
+    "trial_id": "wf136_daily_realized_price_basis_adjustment_magnitude_1d_single_higher",
+    "positive_mean_rank_ic_fold_count": 1,
+    "positive_normalized_return_fold_count": 0,
+    "positive_pilot_10bp_return_fold_count": 0,
+    "development_survivor_count": 0,
+    "2024_2025_stress_opened": false,
+    "retry_reverse_rethreshold_filter_subset_reweight_fit_combine_stack_or_rescue_allowed": false
+  },
+  "future_campaign_boundary": {
+    "next_campaign": 137,
+    "must_begin_from_genuinely_new_prevalue_mechanism_or_separately_accepted_historically_versioned_point_in_time_source": true,
+    "campaign136_factor_retry_reverse_filter_subset_reweight_fit_combine_stack_or_rescue_allowed": false,
+    "complete_library_historical_combinations_remain_allowed_only_when_genuinely_new_and_prevalue_frozen": true,
+    "historical_offline_work_may_continue_at_any_local_time": true,
+    "candidate49_remains_separate_confirmation_layer": true
+  },
+  "research_boundary": {
+    "historical_2019_2023_daily_price_and_forward_return_values_read": true,
+    "stress_2024_2025_return_values_opened": false,
+    "provider_request_issued": false,
+    "provider_credential_value_or_digest_read": false,
+    "candidate49_historical_backfill_performed": false,
+    "candidate49_ledgers_changed": false,
+    "second_prospective_candidate_created": false,
+    "current_scoring_selection_sizing_positions_or_orders_performed": false,
+    "investment_advice": false
+  },
+  "next_action": "Continue Campaign137 genuinely new prevalue scouting offline at any local time; do not retry, reverse, filter, fit, combine or rescue Campaign136, and keep 2024-2025 closed for it."
+}

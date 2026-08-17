@@ -1,0 +1,65 @@
+{
+  "version": 3,
+  "kind": "a_share_three_day_walkforward_campaign055_research_record",
+  "status": "completed_zero_admissible_factors_with_current_test_selection_accounting",
+  "recorded_at": "2026-08-04T02:31:30+08:00",
+  "purpose": "Append the current-versus-historical test-selection failure without rewriting the immutable Campaign055 factor result or prior research records.",
+  "bindings": {
+    "research_record_v2": {
+      "path": "docs/a_share_three_day_walkforward_campaign_055_research_record_v2.json",
+      "sha256": "8988105f8038cdcd3b984b9550edb44d268588dddb7e7d41f64fba4e0348f08a"
+    },
+    "research_attempt_ledger_v3": {
+      "path": "data/experiments/short_horizon/historical_walkforward/campaign_055/research_attempt_ledger_v3.json",
+      "sha256": "00e9b655c863b13c287804c78421a60df8e25a69d57f256bbff3f6652fd6e455"
+    },
+    "historical_assertion_selection_failure": {
+      "path": "docs/a_share_three_day_walkforward_campaign_055_terminal_v2_historical_assertion_selection_failure_20260804.json",
+      "sha256": "1fa879a513ac4ecad90363ec478fb98e63340590a2e12e647c06372a39012e6b"
+    },
+    "no_return_audit": {
+      "path": "data/experiments/short_horizon/20260803T181825Z_campaign055_no_return_audit.json",
+      "sha256": "c931097cb92f6138c34bef7ad45e204cb17a25ae384d9fc1ad1b2622c0d66f7e"
+    }
+  },
+  "canonical_factor_result_unchanged": {
+    "factor": "intraday_price_update_clock_entropy_10b_238m",
+    "direction": "higher",
+    "median_coverage": 0.9963302258089495,
+    "p05_coverage": 0.9885011697690977,
+    "p05_eligible_names": 138.0,
+    "potential_non_overlapping_three_session_cohorts": 540,
+    "coverage_gate_passed": true,
+    "comparison_factor_count": 78,
+    "failed_comparison_factor": "intraday_price_update_share_238m",
+    "failed_comparison_median_daily_rank_correlation": 0.8780592267975353,
+    "absolute_uniqueness_limit": 0.8,
+    "uniqueness_gate_passed": false,
+    "admissible_factor_count": 0,
+    "historical_daily_price_fields_read": [],
+    "historical_forward_return_fields_read": false,
+    "development_folds_opened": false,
+    "stress_2024_2025_opened": false
+  },
+  "append_only_attempt_accounting": {
+    "prior_historical_research_attempt_count": 312,
+    "campaign055_infrastructure_only_failure_count": 7,
+    "campaign055_complete_factor_attempt_count": 1,
+    "campaign055_total_attempt_count": 8,
+    "cumulative_historical_research_attempt_count": 320,
+    "campaign055_historical_return_trial_count": 0,
+    "cumulative_return_reading_development_trial_count": 267
+  },
+  "prospective_boundary": {
+    "candidate49_signal_ledger_sha256": "5193f00d7f36da003f53cec387900da4c3d002299f5dfcfc1a95eaa199ed3a79",
+    "candidate49_execution_ledger_sha256": "d57a3e61eac969e42cafa418ccd8c0a5ee65dcf69da145bb2c096c2a02a2ea4f",
+    "candidate49_signal_entry_count": 0,
+    "candidate49_execution_entry_count": 0,
+    "candidate49_historical_backfill_performed": false,
+    "second_prospective_candidate_created": false,
+    "provider_request_issued_by_post_terminal_attempt": false,
+    "current_scoring_selection_sizing_or_orders_performed": false
+  },
+  "terminal_boundary": "Campaign055 cannot be inverted, rebinned, rewindowed, rescaled, filtered, rescued, rerun, modeled, or combined. Campaign056 must be independently preregistered before candidate or return values are read.",
+  "data_limitation": "The eligible universe derives from a current listing snapshot and can contain survivorship bias. Campaign055 read no historical daily price or forward return and establishes no predictive return claim."
+}

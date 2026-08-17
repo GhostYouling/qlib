@@ -1,0 +1,26 @@
+{
+  "schema_version": 1,
+  "kind": "a_share_three_day_walkforward_campaign086_v4_pre_freeze_symbol_case_test_failure",
+  "status": "failed_closed_before_v4_freeze_or_build_retry",
+  "recorded_at": "2026-08-07T01:39:00+08:00",
+  "stage": "v4_identity_repair_unit_tests",
+  "test_result": "twenty_two_passed_one_failed",
+  "failure": {
+    "test": "test_nonaccepted_symbol_formats_fail_closed[sh600145]",
+    "cause": "The draft v4 parser uppercased input before applying the exact accepted-prefix regular expression, so a lowercase representation outside the observed immutable manifest was accepted.",
+    "repair": "Remove parser-side uppercasing and accept only exact uppercase SH/SZ/BJ plus six digits. Upstream accepted identity normalization remains unchanged."
+  },
+  "failed_artifacts": {
+    "v4_runner_sha256": "0f3eb8aee341665d66384c1ff2052745aa7204b32b79b8e328e179480b92c25f",
+    "v4_tests_sha256": "dd839d32914b4d1be3c57417169e73bdded5a3942edc0fc6edfd9494f8a81be3"
+  },
+  "research_boundary": {
+    "additional_real_minute_source_rows_read": false,
+    "candidate_snapshot_published": false,
+    "comparison_values_read": false,
+    "historical_daily_price_fields_read": [],
+    "historical_forward_returns_read": false,
+    "provider_request_issued": false,
+    "candidate49_ledgers_changed": false
+  }
+}

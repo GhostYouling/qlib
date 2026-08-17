@@ -1,0 +1,48 @@
+{
+  "schema_version": 1,
+  "kind": "a_share_three_day_walkforward_campaign173_recorded_at_correction",
+  "status": "additive_effective_timestamp_correction_original_bytes_preserved",
+  "recorded_at": "2026-08-15T09:48:55+08:00",
+  "reason": "The four initial records used rounded planned wall-clock labels that were later than their actual publication mtimes; they are preserved and this record establishes the reached correction time without changing scientific content.",
+  "authoritative_inputs": {
+    "focused_timestamp_gate_failure": {
+      "path": "docs/a_share_three_day_walkforward_campaign_173_focused_timestamp_gate_failure_20260815.json",
+      "sha256": "TO_BE_BOUND_AFTER_FAILURE_PUBLICATION"
+    }
+  },
+  "preserved_original_records": [
+    {
+      "path": "docs/a_share_three_day_walkforward_campaign_173_enterprise_tax_position_compliance_source_frontier_20260815.json",
+      "sha256": "e4eaabeaca181e58e004a7a8968af5946136a602c106fe3241ff06ca41b1a40e",
+      "original_recorded_at": "2026-08-15T09:46:00+08:00",
+      "observed_filesystem_modified_at_seconds": "2026-08-15T09:45:44+08:00"
+    },
+    {
+      "path": "data/experiments/short_horizon/historical_walkforward/campaign_173/research_attempt_ledger.json",
+      "sha256": "5838aa4bbd4a93c916e632bea40270b5c59cff49ab96d9e7b2c0d962b7544cdf",
+      "original_recorded_at": "2026-08-15T09:46:30+08:00",
+      "observed_filesystem_modified_at_seconds": "2026-08-15T09:45:44+08:00"
+    },
+    {
+      "path": "docs/a_share_three_day_walkforward_campaign_173_terminal_result_20260815.json",
+      "sha256": "7f3de2e1a3ed588daaa7504a2da8fb857cead680563bc09d0a5adec3157eedbd",
+      "original_recorded_at": "2026-08-15T09:48:00+08:00",
+      "observed_filesystem_modified_at_seconds": "2026-08-15T09:46:25+08:00"
+    },
+    {
+      "path": "docs/a_share_three_day_walkforward_future_numeric_comparison_eligibility_policy_v255_20260815.json",
+      "sha256": "48c74df5563dd1d709f8ceb65c71260550fc6cfb027cd7e908a003e12a6f4fde",
+      "original_recorded_at": "2026-08-15T09:50:00+08:00",
+      "observed_filesystem_modified_at_seconds": "2026-08-15T09:47:41+08:00"
+    }
+  ],
+  "effective_timestamp_rule": "Use this correction record's reached recorded_at for Campaign173 publication sequencing; original per-file recorded_at fields remain disclosed invalid metadata and are not rewritten.",
+  "scientific_result_changed": false,
+  "research_boundary": {
+    "source_row_filing_document_tax_value_candidate_comparator_security_price_or_return_value_read": false,
+    "stress_2024_2025_opened": false,
+    "provider_or_web_request_issued": false,
+    "candidate49_ledgers_changed": false,
+    "second_prospective_candidate_created": false
+  }
+}

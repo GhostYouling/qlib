@@ -1,0 +1,24 @@
+{
+  "schema_version": 1,
+  "kind": "a_share_three_day_walkforward_campaign098_prevalue_format_failure",
+  "status": "preserved_before_feature_implementation_freeze_and_before_source_values",
+  "recorded_at": "2026-08-07T07:46:00Z",
+  "stage": "feature_implementation_prevalue_format_check",
+  "observed_result": {
+    "synthetic_tests_passed": 8,
+    "synthetic_tests_failed": 0,
+    "black_check_passed": false,
+    "files_requiring_mechanical_format": [
+      "scripts/a_share_three_day_walkforward_campaign098_features.py",
+      "tests/data_collector_tests/test_a_share_three_day_walkforward_campaign098_features.py"
+    ],
+    "ruff_passed": true
+  },
+  "authorized_repair": "Run Black on only the two listed Campaign098 files, then rerun the same tests and checks.",
+  "formula_direction_support_window_universe_cost_gate_or_search_space_changed": false,
+  "campaign098_source_rows_read": false,
+  "campaign098_candidate_or_comparator_values_read": false,
+  "historical_daily_price_or_forward_return_values_read": false,
+  "candidate49_ledgers_changed": false,
+  "provider_request_issued": false
+}

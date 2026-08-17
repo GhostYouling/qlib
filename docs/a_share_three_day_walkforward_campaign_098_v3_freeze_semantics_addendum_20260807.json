@@ -1,0 +1,19 @@
+{
+  "schema_version": 1,
+  "kind": "a_share_three_day_walkforward_campaign098_v3_freeze_semantics_addendum",
+  "status": "additive_precode_clarification_of_v3_verifier_freeze_validation",
+  "recorded_at": "2026-08-07T08:20:00Z",
+  "repair_protocol": {
+    "path": "docs/a_share_three_day_walkforward_campaign_098_verifier_provenance_repair_protocol_20260807.json",
+    "sha256": "fcb54cbfacbfcbdb44a14fe7ae904652dd801592b45594b782793de5e02ccb81"
+  },
+  "additional_exact_code_change_authorized": "Update _load_implementation_freeze to require the truthful v3 status frozen_after_snapshot_publication_before_successful_independent_verification, candidate_source_rows_read_before_freeze=true, candidate_values_computed_before_freeze=true, comparator_values_read_before_freeze=false, and historical return/provider access=false.",
+  "reason": "The v3 record is a postpublication verifier freeze, so it must not reuse v1's prevalue temporal claims.",
+  "snapshot_rebuild_rewrite_or_value_recalculation_allowed": false,
+  "coverage_or_capacity_metrics_computed_before_addendum": false,
+  "comparator_values_read_before_addendum": false,
+  "historical_daily_price_or_forward_return_values_read_before_addendum": false,
+  "formula_direction_support_window_universe_cost_gate_or_search_space_changed": false,
+  "candidate49_ledgers_changed": false,
+  "provider_request_issued": false
+}

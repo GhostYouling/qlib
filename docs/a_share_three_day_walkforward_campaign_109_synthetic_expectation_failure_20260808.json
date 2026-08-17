@@ -1,0 +1,21 @@
+{
+  "schema_version": 1,
+  "kind": "a_share_three_day_walkforward_campaign109_infrastructure_failure",
+  "status": "preserved_failed_synthetic_suite_before_source_candidate_or_comparator_values",
+  "recorded_at": "2026-08-07T21:52:00Z",
+  "failure_ordinal": 2,
+  "stage": "prevalue_feature_and_audit_synthetic_tests",
+  "cause": "Two assertions expected exact correlation one although the synthetic morning and afternoon body ramps used different slopes; pooling the fixed vectors correctly produced 0.9999869004367692.",
+  "failed_test_count": 2,
+  "passed_test_count": 4,
+  "repair": "Change only both synthetic expectations to require correlation above 0.999. The unchanged implementation then passed all six tests.",
+  "scientific_boundary": {
+    "formula_direction_fields_support_gates_or_catalog_changed": false,
+    "implementation_changed_by_repair": false,
+    "test_fixture_only_changed": true,
+    "source_candidate_or_comparator_values_read": false,
+    "historical_daily_price_or_forward_return_values_read": false,
+    "provider_request_issued": false,
+    "candidate49_ledgers_changed": false
+  }
+}

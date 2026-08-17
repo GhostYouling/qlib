@@ -1,0 +1,35 @@
+{
+  "version": 2,
+  "kind": "a_share_three_day_walkforward_campaign051_unified_report_supersession",
+  "status": "campaign051_v1_binding_preserved_v2_terminal_accounting_current",
+  "recorded_at": "2026-08-03T08:01:00Z",
+  "bindings": {
+    "campaign051_terminal_record_v1": {
+      "path": "docs/a_share_three_day_walkforward_campaign_051_research_record.json",
+      "sha256": "ca324171b64377ec64d5abc0cdcd6ba16ec31d7171638c3fe56ccfff08e06f70"
+    },
+    "campaign051_terminal_record_v2": {
+      "path": "docs/a_share_three_day_walkforward_campaign_051_research_record_v2.json",
+      "sha256": "1b07b424c4a2c04ffa28ddb486fa056cb4059267adb596de569fd4703d44f057"
+    },
+    "previous_unified_report_supersession": {
+      "path": "docs/a_share_three_day_walkforward_campaign_051_unified_report_supersession_20260803.json",
+      "sha256": "7786d57f9cfee837353f9c865e82eb865bb811970ce3da445ff4b7bfb32415d0"
+    },
+    "terminal_status_test_failure": {
+      "path": "docs/a_share_three_day_walkforward_campaign_051_terminal_status_test_failure_20260803.json",
+      "sha256": "7189fcf9165e28d65247deb166cf1fc51374f18234e3789fa289b538e5ee385b"
+    },
+    "current_unified_research_report": {
+      "path": "data/experiments/short_horizon/three_day_research_report.md",
+      "sha256": "eb05386c7af4dbd48fa84ccd63152a2f51743fac225fdf995d89ed6f7501beb5"
+    }
+  },
+  "semantic_boundary": {
+    "factor_result_or_gate_changed": false,
+    "accounting_correction_only": true,
+    "additional_historical_daily_price_or_forward_return_read": false,
+    "2024_2025_stress_return_read": false,
+    "candidate49_ledgers_changed": false
+  }
+}

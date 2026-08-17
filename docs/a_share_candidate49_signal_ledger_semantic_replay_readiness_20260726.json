@@ -1,0 +1,141 @@
+{
+  "version": 1,
+  "kind": "a_share_candidate49_signal_ledger_semantic_replay_readiness",
+  "status": "offline_signal_ledger_semantic_replay_passed_real_future_signal_pending",
+  "recorded_at": "2026-07-25T18:43:00Z",
+  "purpose": "Advance Candidate49 by proving that a valid hash chain is not accepted as proof of ranking correctness: every historical signal is deterministically rebuilt from its referenced raw and factor evidence before preflight readiness, collection, append, idempotent return, or paper execution.",
+  "advances": {
+    "path": "docs/a_share_candidate49_factor_snapshot_provenance_readiness_20260726.json",
+    "sha256": "9d35bdbea122236ae41d92c7390614fc5132ab5277c7cefff2079959c3dca14c"
+  },
+  "authoritative_research_state": {
+    "path": "docs/a_share_three_day_iteration_status_20260725_future_only.json",
+    "sha256": "d44e1cb3707cce194eed37e99cc90f865396b1de8c35e02a393a2a243d973466",
+    "active_future_only_candidate": "candidate49_intraday_cumulative_vwap_crossing_rate_240m_v1",
+    "aggregation_allowed": false,
+    "candidate50_activation_allowed": false
+  },
+  "candidate_contract": {
+    "factor_changed_by_this_work": false,
+    "factor_direction": "higher_intraday_cumulative_vwap_crossing_rate_240m",
+    "ranking_rule_changed_by_this_work": false,
+    "signal_timing_changed_by_this_work": false,
+    "quality_or_listing_gate_changed_by_this_work": false,
+    "three_session_holding_definition_changed_by_this_work": false,
+    "historical_return_backfill_allowed": false
+  },
+  "implementation_fingerprints": {
+    "source_to_signal": {
+      "path": "scripts/a_share_tushare_candidate49_future_observation.py",
+      "sha256": "2e67ea31424c18cc2e9fd8cebb93b8d5da7197679b17d416405831e8952ee8a4"
+    },
+    "paper_execution": {
+      "path": "scripts/a_share_tushare_candidate49_future_execution.py",
+      "sha256": "1b2c516f6890661c29fdf4c3651c03742eebe7599c7d0ef66b7b7e79d72258c3"
+    },
+    "source_to_signal_tests": {
+      "path": "tests/data_collector_tests/test_a_share_tushare_candidate49_future_observation.py",
+      "sha256": "e9da265594cc6ebfd8c4cd89d3e7e7946f21e167ea2900674eb65bcaee70ceaa"
+    },
+    "paper_execution_tests": {
+      "path": "tests/data_collector_tests/test_a_share_tushare_candidate49_future_execution.py",
+      "sha256": "ee81542de39c93e94673fd13b285971a3a8755b40290173a7f193a12952d8bd7"
+    },
+    "runbook": {
+      "path": "docs/a_share_data_pipeline.md",
+      "sha256": "c757b7987dd19c9eb5a11d41cb4e8ccd2463f9774a52cc357f393fbc959be7db"
+    }
+  },
+  "threat_model": {
+    "gap": "The generic ledger validator proved ordinals, previous-entry hashes, entry hashes, and the chain tip, but source-to-signal preflight did not recompute the Top-3 from factor evidence. A false ranking could therefore be inserted and all affected hashes recomputed while the combined preflight still returned ready.",
+    "red_test_result": "The first selected symbol was replaced by SZ999999, the entry SHA and chain-tip SHA were recomputed, and the former combined preflight returned ready_for_explicit_future_source_to_signal_collection.",
+    "rehashed_but_semantically_false_signal_allowed": false
+  },
+  "semantic_replay": {
+    "strict_chronological_unique_sessions_required": true,
+    "raw_manifest_path_rehashed": true,
+    "raw_manifest_sha256_must_match_signal": true,
+    "raw_dataset_sha256_must_match_signal": true,
+    "raw_registration_policy_and_session_revalidated": true,
+    "factor_manifest_path_rehashed": true,
+    "complete_factor_snapshot_contract_revalidated": true,
+    "factor_frame_sha256_must_match_signal": true,
+    "full_signal_payload_rebuilt": true,
+    "excluded_from_payload_equality_only": [
+      "ordinal",
+      "previous_entry_sha256",
+      "entry_sha256"
+    ],
+    "ranking_recomputed_as": "descending_factor_then_ascending_stock_code_top_3",
+    "execution_rule_revalidated": true,
+    "no_forward_return_and_no_order_flags_revalidated": true
+  },
+  "enforcement_points": {
+    "combined_preflight": true,
+    "fresh_collection_before_external_root_or_provider": true,
+    "before_signal_append_or_idempotent_return": true,
+    "paper_execution_before_settlement": true,
+    "failure_code": "candidate49_signal_ledger_semantics_not_accepted",
+    "provider_request_issued_on_failure": false
+  },
+  "test_fixture_migration": {
+    "former_placeholder_raw_manifest": "unused_raw_manifest.json",
+    "placeholder_retained": false,
+    "replacement": "Minimal but contract-complete raw manifest, raw quarterly-quality context, factor quality copies, full factor manifest, and production-generated signal payload.",
+    "production_validation_relaxed_for_old_fixture": false
+  },
+  "offline_proofs": {
+    "focused_observation_tests": {
+      "passed": 33,
+      "failed": 0
+    },
+    "focused_execution_tests": {
+      "passed": 20,
+      "failed": 0
+    },
+    "focused_candidate49_observation_execution_workflow_tests": {
+      "passed": 68,
+      "failed": 0,
+      "elapsed_seconds": 11.34
+    },
+    "new_red_cases": 1,
+    "new_red_case_passes_after_fix": true,
+    "full_data_collector_tests": {
+      "passed": 1107,
+      "failed": 0,
+      "warnings": 9,
+      "elapsed_seconds": 33.71
+    },
+    "ruff": "passed",
+    "python_compile": "passed"
+  },
+  "append_only_ledgers_after_offline_tests": {
+    "signal": {
+      "path": "data/experiments/short_horizon/candidate49_future_signal_ledger.json",
+      "sha256": "5193f00d7f36da003f53cec387900da4c3d002299f5dfcfc1a95eaa199ed3a79",
+      "entries": 0
+    },
+    "execution": {
+      "path": "data/experiments/short_horizon/candidate49_future_execution_ledger.json",
+      "sha256": "d57a3e61eac969e42cafa418ccd8c0a5ee65dcf69da145bb2c096c2a02a2ea4f",
+      "entries": 0
+    }
+  },
+  "side_effect_audit": {
+    "real_provider_check_performed": false,
+    "real_provider_request_issued": false,
+    "real_minute_rows_read": false,
+    "real_daily_rows_read": false,
+    "external_candidate49_session_root_created": false,
+    "signal_or_execution_entry_written": false,
+    "live_order_performed": false,
+    "active_data_root_mutated": false
+  },
+  "decision": {
+    "factor_to_signal_semantic_chain_ready": true,
+    "current_signal_exists": false,
+    "profitability_claim_allowed": false,
+    "selection_sizing_or_order_allowed": false,
+    "next_action": "On or after 2026-07-27 16:30 Asia/Shanghai, run the fail-closed Candidate49 workflow; require zero semantic-replay failures before any same-session minute request or signal append."
+  }
+}

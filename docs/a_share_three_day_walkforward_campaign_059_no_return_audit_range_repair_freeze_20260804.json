@@ -1,0 +1,65 @@
+{
+  "version": 1,
+  "kind": "a_share_three_day_walkforward_campaign059_no_return_audit_range_repair_freeze",
+  "status": "frozen_before_single_same_parameter_audit_continuation",
+  "frozen_at": "2026-08-04T20:23:06+08:00",
+  "campaign_id": "059",
+  "factor": "intraday_market_directional_sign_agreement_238m",
+  "direction": "higher",
+  "original_audit": {
+    "path": "scripts/a_share_three_day_walkforward_campaign059_no_return_audit.py",
+    "sha256": "8c24d2e973b00d9a13f98435795703d79be1eb8279565976a57d540d6ee6953b",
+    "implementation_freeze_path": "docs/a_share_three_day_walkforward_campaign_059_no_return_audit_implementation_freeze_20260804.json",
+    "implementation_freeze_sha256": "7c7f696f02e5c0ca8a3aebefaa6a5b8f6d59535e9aee318d253e94127238b11b"
+  },
+  "failed_attempt": {
+    "path": "docs/a_share_three_day_walkforward_campaign_059_no_return_audit_candidate_range_binding_failure_20260804.json",
+    "sha256": "2bacf172ffdd7414db6de5c9be274f9db23bd54b9480fc542fdba32cfa75f932",
+    "comparison_values_read": false,
+    "coverage_result_produced": false,
+    "daily_price_or_forward_return_read": false
+  },
+  "repair_launcher": {
+    "path": "scripts/a_share_three_day_walkforward_campaign059_no_return_audit_range_repair.py",
+    "sha256": "0f19ea9d49efa7c236016c455dfb165a292996b7aeedf8c75c096e4f31e50304",
+    "only_added_candidate_module_aliases": {
+      "LOWER_BOUND": 0.0,
+      "UPPER_BOUND": 1.0
+    },
+    "aliases_equal_frozen_factor_range": true,
+    "candidate_loader_factor_values_partition_bytes_formula_direction_coverage_uniqueness_comparison_order_or_return_boundary_changed": false
+  },
+  "repair_tests": {
+    "path": "tests/data_collector_tests/test_a_share_three_day_walkforward_campaign059_no_return_audit_range_repair.py",
+    "sha256": "19535c5e7ce7c31ed03f6f4024ef034e8cd86c0de19d01cd57a067e321efd000",
+    "combined_tests_passed": 24,
+    "combined_tests_failed": 0,
+    "range_identity_alias_only_isolation_and_conflict_failure_tested": true
+  },
+  "continuation_contract": {
+    "data_root": "/Volumes/DIsk/qlib-a-share-tushare-1m",
+    "experiment_root": "/Volumes/DIsk/Disk-Coding/qlib/data/experiments/short_horizon/historical_walkforward/campaign_059",
+    "workers": 4,
+    "expected_partitions": 33015,
+    "expected_rows": 7724498,
+    "expected_eligible_rows": 7583771,
+    "comparison_count": 90,
+    "comparison_order_sha256": "09bc36308ce5d3af7a484fd9b233a02a9f5d3f37cd5169d400ab72737071caee",
+    "maximum_same_parameter_continuations": 1,
+    "stop_before_comparisons_if_coverage_fails": true,
+    "stop_before_daily_price_and_returns_if_any_uniqueness_comparison_fails": true
+  },
+  "research_boundary": {
+    "formula_direction_or_market_benchmark_rule_changed": false,
+    "comparison_values_read_before_repair_freeze": false,
+    "historical_daily_price_fields_read": [],
+    "historical_forward_return_fields_read": false,
+    "candidate49_historical_return_read": false,
+    "candidate49_ledgers_changed_by_campaign059": false,
+    "training_or_model_fitting_performed": false,
+    "stress_2024_2025_opened": false,
+    "current_scoring_selection_sizing_or_orders_performed": false,
+    "provider_request_issued": false
+  },
+  "next_action": "Run the range-repair launcher exactly once with the frozen roots and workers=4."
+}

@@ -1,0 +1,17 @@
+{
+  "schema_version": 1,
+  "kind": "a_share_three_day_walkforward_campaign110_infrastructure_failure",
+  "status": "preserved_pre_audit_cli_description_failure",
+  "recorded_at": "2026-08-07T22:48:05Z",
+  "failure_ordinal": 6,
+  "stage": "no_return_pre_run_help_text_audit",
+  "observed": "Generated CLI description stated all-131 while the frozen runtime protocol and comparator order contain 133 factors.",
+  "repair_scope": "Change only the generated runtime __doc__ used by argparse to all-133 through an additive wrapper.",
+  "research_boundary": {
+    "coverage_or_capacity_metrics_computed": false,
+    "comparator_values_read": false,
+    "historical_daily_price_or_forward_return_values_read": false,
+    "provider_request_issued": false,
+    "candidate49_ledgers_changed": false
+  }
+}

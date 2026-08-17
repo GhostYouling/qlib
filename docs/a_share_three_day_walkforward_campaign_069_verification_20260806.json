@@ -1,0 +1,86 @@
+{
+  "version": 1,
+  "kind": "a_share_three_day_walkforward_campaign069_verification",
+  "status": "terminal_campaign069_and_candidate49_isolation_verified",
+  "recorded_at": "2026-08-06T04:09:35+08:00",
+  "purpose": "Bind Campaign069 terminal evidence, current append-only accounting, zero-survivor stress-closed semantics, current-node tests, unified report, and unchanged Candidate49 ledgers.",
+  "bindings": {
+    "research_record": {
+      "path": "docs/a_share_three_day_walkforward_campaign_069_research_record.json",
+      "sha256": "85f1161e86beba49a1b5841dec335d627171702a633270a47b52899dc11f24bd"
+    },
+    "terminal_freeze_v3": {
+      "path": "docs/a_share_three_day_walkforward_campaign_069_terminal_completion_freeze_v3_20260806.json",
+      "sha256": "06cc6a9b020254af4d6ef7e46fd3bc9fa1296a9d737cb9fc82da3d6e798f7739"
+    },
+    "current_accounting_correction": {
+      "path": "docs/a_share_three_day_walkforward_campaign_069_postcompletion_accounting_correction_v2_20260806.json",
+      "sha256": "40704800d8edd33fef47188eb2df76ced116f784557ddd1577d4d7c1a7efa32e"
+    },
+    "current_research_attempt_ledger": {
+      "path": "data/experiments/short_horizon/historical_walkforward/campaign_069/research_attempt_ledger_v4.json",
+      "sha256": "92756fc2a80777d4234368d2532b5476172810b446f3404bc4de825b664c651b"
+    },
+    "trial_ledger": {
+      "path": "data/experiments/short_horizon/historical_walkforward/campaign_069/walkforward/trial_ledger.json",
+      "sha256": "554ab4eceedb9fd5029e34c38a4bc962bf966603a7810a6f8d4ab8fc1ffb4e5f"
+    },
+    "development_survivors": {
+      "path": "data/experiments/short_horizon/historical_walkforward/campaign_069/walkforward/development_survivors.json",
+      "sha256": "f87be44d16edb46b9d1b67cbe0b5efea1e2fffd710039be265dbf1ef895ea518"
+    },
+    "exposed_stress_record": {
+      "path": "data/experiments/short_horizon/historical_walkforward/campaign_069/walkforward/exposed_stress_consumption_record.json",
+      "sha256": "d2ec184ee289e0efc4487f55290f17c50a034c79d3ac49fa1a3d1f6215430780"
+    },
+    "current_postcompletion_test": {
+      "path": "tests/data_collector_tests/test_a_share_three_day_walkforward_campaign069_postcompletion.py",
+      "sha256": "807186004c486ccfb09f9daad6cfd6f7a17b9df6fe3ad8474d706e7c7e2ba6a7"
+    },
+    "current_terminal_tests": {
+      "path": "tests/data_collector_tests/test_a_share_three_day_walkforward_campaign069_terminal_v3.py",
+      "sha256": "651fbaf9c358f3e87d52f651085cb7ce3d9fcacd8cbc38f4aa94c4af164e2044"
+    },
+    "candidate49_signal_ledger": {
+      "path": "data/experiments/short_horizon/candidate49_future_signal_ledger.json",
+      "sha256": "5193f00d7f36da003f53cec387900da4c3d002299f5dfcfc1a95eaa199ed3a79"
+    },
+    "candidate49_execution_ledger": {
+      "path": "data/experiments/short_horizon/candidate49_future_execution_ledger.json",
+      "sha256": "d57a3e61eac969e42cafa418ccd8c0a5ee65dcf69da145bb2c096c2a02a2ea4f"
+    },
+    "unified_report": {
+      "path": "data/experiments/short_horizon/three_day_research_report.md",
+      "sha256": "464c58855dc0606d6f61d58146bae0ffe78c0373dfb2774bf1b9b4c77dccfe49"
+    }
+  },
+  "test_receipt": {
+    "selection": "explicit current-node whitelist; four historical lifecycle nodes and superseded v1/v2 terminal binding tests were not selected",
+    "passed": 32,
+    "failed": 0,
+    "exit_code": 0
+  },
+  "result": {
+    "factor": "quarterly_profit_growth_roe_transition_gap_2r",
+    "numeric_no_return_comparisons_passed": 99,
+    "development_trial_count": 1,
+    "development_survivor_count": 0,
+    "stress_2024_2025_opened": false,
+    "stress_return_fields_read": false,
+    "same_campaign_rescue_allowed": false,
+    "campaign069_attempt_count": 6,
+    "campaign069_infrastructure_failure_count": 5,
+    "cumulative_historical_research_attempt_count": 414,
+    "cumulative_return_reading_development_trial_count": 275
+  },
+  "candidate49_boundary": {
+    "semantic_ledger_validation_exit_code": 0,
+    "semantic_ledger_validation_read_only": true,
+    "signal_entries": 0,
+    "execution_entries": 0,
+    "historical_return_or_ledger_backfill_performed": false,
+    "provider_request_issued": false,
+    "second_prospective_candidate_created": false,
+    "current_scoring_selection_sizing_or_orders_performed": false
+  }
+}

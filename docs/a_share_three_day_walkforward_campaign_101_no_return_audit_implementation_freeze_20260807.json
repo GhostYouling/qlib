@@ -1,0 +1,81 @@
+{
+  "schema_version": 1,
+  "kind": "a_share_three_day_walkforward_campaign101_no_return_audit_implementation_freeze",
+  "status": "frozen_after_candidate_snapshot_before_coverage_or_uniqueness_comparator_values",
+  "recorded_at": "2026-08-07T13:41:39Z",
+  "protocol": {
+    "path": "docs/a_share_three_day_walkforward_campaign_101_no_return_preregistration.json",
+    "sha256": "2d1919a7dd53e340158e6e59d48af65132625dd36725a417cef6119241f925c3"
+  },
+  "snapshot_binding": {
+    "path": "docs/a_share_three_day_walkforward_campaign_101_feature_snapshot_binding_20260807.json",
+    "sha256": "f82e4288a6626eb71d3c040a65f4a88c4d306706c1c4812283008af43d6d817e"
+  },
+  "audit_runner": {
+    "path": "scripts/a_share_three_day_walkforward_campaign101_no_return_audit.py",
+    "sha256": "1473cd993de0f38da2b711d7f34b391bfbdb85e570ad7cb1f7bd7614644b78b0"
+  },
+  "tests": {
+    "path": "tests/data_collector_tests/test_a_share_three_day_walkforward_campaign101_no_return_audit.py",
+    "sha256": "72669d47f0bebe3432fcfccdf1b7ce0e1934448ab9f411fd79b64acbf4a84add",
+    "result": "7 audit tests passed; 15 combined Campaign101 feature and audit tests passed"
+  },
+  "candidate_snapshot": {
+    "path": "/Volumes/DIsk/qlib-a-share-tushare-1m/derived/a_share/rich/tushare/minute_walkforward_campaign101_feature_library/tushare_stk_mins_1m_2019_2025_ea0cbb8f_walkforward_campaign101_feature_library_v1/snapshot_manifest.json",
+    "sha256": "7a2db929fff69f46edbc93d57cdca9cc4427c47dd542291b4f58d879dd91a3b6",
+    "dataset_sha256": "ed024ab2736b9766e1adb122b155189029f30a5d14e11d4d67a403ff9befef24",
+    "rows": 1331759,
+    "eligible_rows": 1327637
+  },
+  "eligibility_identity_source": {
+    "path": "/Volumes/DIsk/qlib-a-share-tushare-1m/derived/a_share/rich/tushare/compact_comparator_cache/campaign067_terminal_numeric98_v4/snapshot_manifest.json",
+    "sha256": "3d81068f07ac61fe4cd04bd1a893e58759c06d88213263135fec5244e309b57b",
+    "dataset_sha256": "4a56dac48c14b667b6ee431519266f27bb8ff7cc25c51d8dce3bbc7aebe0376f"
+  },
+  "final_comparator_source": {
+    "path": "/Volumes/DIsk/qlib-a-share-tushare-1m/derived/a_share/rich/tushare/minute_walkforward_campaign100_feature_library/tushare_stk_mins_1m_2019_2025_ea0cbb8f_walkforward_campaign100_feature_library_v1/snapshot_manifest.json",
+    "sha256": "31fa90e958d400aad250d369f4776f139664da869e9f152f8d4610e3351c20f4",
+    "dataset_sha256": "b6a2ea043502b1c7c97726befffa0fe872d693a0cfa1f477fc2da8eab81d106d"
+  },
+  "ordered_gate_contract": {
+    "coverage_first": true,
+    "comparison_count_if_coverage_passes": 129,
+    "comparison_order_sha256": "a029c53fb237cc1d34aec0a9f7b67856ffa1a67ffe0fc9620fb230680353263b",
+    "all_129_must_pass": true,
+    "maximum_absolute_median_daily_rank_correlation": 0.8,
+    "candidate_specific_comparator_drop_allowed": false,
+    "insufficient_overlap_fails_closed": true
+  },
+  "eligibility_source_columns_allowed_before_coverage": [
+    "stock_day_key"
+  ],
+  "coverage_or_capacity_metrics_computed_before_freeze": false,
+  "uniqueness_comparator_values_read_before_freeze": false,
+  "historical_daily_price_or_forward_return_values_read_before_freeze": false,
+  "provider_request_issued_before_freeze": false,
+  "candidate49_signal_ledger": {
+    "path": "data/experiments/short_horizon/candidate49_future_signal_ledger.json",
+    "sha256": "5193f00d7f36da003f53cec387900da4c3d002299f5dfcfc1a95eaa199ed3a79"
+  },
+  "candidate49_execution_ledger": {
+    "path": "data/experiments/short_horizon/candidate49_future_execution_ledger.json",
+    "sha256": "d57a3e61eac969e42cafa418ccd8c0a5ee65dcf69da145bb2c096c2a02a2ea4f"
+  },
+  "effective_attempt_ledger": {
+    "path": "data/experiments/short_horizon/historical_walkforward/campaign_101/research_attempt_ledger_v6.json",
+    "sha256": "a49559228f9f75d0e79b65376287bfc8cac59cfa59e9f54971432aa6b4ea9b7c",
+    "campaign101_attempt_count": 11,
+    "cumulative_historical_research_attempt_count": 735,
+    "cumulative_return_reading_development_trial_count": 294
+  },
+  "research_boundary": {
+    "source_factor_values_already_used_to_construct_candidate": true,
+    "source_values_used_as_uniqueness_comparators_before_freeze": false,
+    "historical_daily_price_fields_read": [],
+    "historical_forward_returns_read": false,
+    "training_or_model_fitting_performed": false,
+    "provider_request_issued": false,
+    "candidate49_ledgers_changed": false,
+    "current_scoring_selection_sizing_or_orders_performed": false
+  }
+}

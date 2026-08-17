@@ -1,0 +1,29 @@
+{
+  "schema_version": 1,
+  "kind": "a_share_three_day_walkforward_campaign176_infrastructure_failure",
+  "status": "recorded_overlap_search_command_rejected_before_process_creation",
+  "recorded_at": "2026-08-15T11:03:31+08:00",
+  "phase": "campaign176_pension_domain_overlap_search",
+  "failure": {
+    "observed": "The execution safety layer rejected a read-only ripgrep wrapper because its temporary-file cleanup used rm -f; no process was created.",
+    "recovery": "Repeat the exact term search with in-memory output capture and no deletion command. The corrected search exited zero and reported no exact pension-domain match.",
+    "corrected_search_result": "no_exact_pension_post_employment_defined_benefit_retirement_obligation_or_severance_benefit_domain_match"
+  },
+  "authoritative_inputs": {
+    "campaign175_state": {
+      "path": "docs/a_share_three_day_iteration_status_20260815_campaign175_prevalue_terminal.json",
+      "sha256": "1aad58e49fd501cc2477a2e8dcf591316a62cb80d1a007446f6cc12a0d657adb"
+    },
+    "eligibility_policy_v263": {
+      "path": "docs/a_share_three_day_walkforward_future_numeric_comparison_eligibility_policy_v263_20260815.json",
+      "sha256": "463c1e63cc52754f0ec24acdf4b6cf598003596e78e2965e002e8e1f7cc05a85"
+    }
+  },
+  "research_boundary": {
+    "source_row_filing_document_pension_obligation_plan_asset_candidate_comparator_security_price_or_return_value_read": false,
+    "provider_or_web_request_issued": false,
+    "provider_credential_presence_value_or_digest_read": false,
+    "repository_file_written_by_failed_command": false,
+    "stress_2024_2025_opened": false
+  }
+}

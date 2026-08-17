@@ -1,0 +1,48 @@
+{
+  "schema_version": 1,
+  "kind": "a_share_three_day_walkforward_campaign261_feature_snapshot_verification_result",
+  "status": "all_partitions_and_aggregate_verified_before_coverage_or_comparator_values",
+  "recorded_at": "2026-08-16T16:41:00+08:00",
+  "timestamp_semantics": "monotonic_logical_append_time_not_host_wall_clock_measurement",
+  "authoritative_inputs": {
+    "no_return_preregistration": {
+      "path": "docs/a_share_three_day_walkforward_campaign_261_no_return_preregistration_20260816.json",
+      "sha256": "25d0304b770c3c11fd5697e49996c250c9d9316692a9b5aa498bb5591fe9ccc6"
+    },
+    "implementation_freeze_v2": {
+      "path": "docs/a_share_three_day_walkforward_campaign_261_implementation_freeze_v2_20260816.json",
+      "sha256": "0af8f138c53a6a1ab99b27cdf368177c682e9e84e3fdb58ec70e4629df32118f"
+    },
+    "recovery_freeze": {
+      "path": "docs/a_share_three_day_walkforward_campaign_261_snapshot_build_recovery_freeze_20260816.json",
+      "sha256": "57f0f9129d2e87f13bf5be4a42d6ce6f60e5b88890ba7ba7dfc858b38ee1e8e4"
+    }
+  },
+  "verification": {
+    "command": "/Volumes/DIsk/Coding/anaconda3/bin/python3.12 -m scripts.a_share_three_day_walkforward_campaign261_features_recovery verify --manifest /Volumes/DIsk/qlib-a-share-tushare-1m/derived/a_share/rich/tushare/minute_walkforward_campaign261_feature_library/tushare_stk_mins_1m_2019_2025_ea0cbb8f_walkforward_campaign261_feature_library_v1/snapshot_manifest.json",
+    "exit_code": 0,
+    "manifest_path": "/Volumes/DIsk/qlib-a-share-tushare-1m/derived/a_share/rich/tushare/minute_walkforward_campaign261_feature_library/tushare_stk_mins_1m_2019_2025_ea0cbb8f_walkforward_campaign261_feature_library_v1/snapshot_manifest.json",
+    "manifest_sha256": "7d9c6de6fe3b93cd7f66ee3ac1b5b8a835543aa277ef8d37f4f7f866e52cce4d",
+    "dataset_sha256": "8e5b64004652fbee8daa0605739698a0a7675f2a29cb8c32c537641965bc8bc5",
+    "partitions": 33015,
+    "rows": 7724498,
+    "eligible_rows": 7724498,
+    "every_partition_byte_hash_verified": true,
+    "every_partition_frame_hash_verified": true,
+    "aggregate_dataset_digest_verified": true,
+    "exact_output_value_semantics_verified": true
+  },
+  "research_boundary": {
+    "candidate_values_read_for_verification": true,
+    "comparator_values_read": false,
+    "historical_daily_price_or_forward_return_values_read": false,
+    "stress_2024_2025_opened_for_returns": false,
+    "provider_request_issued": false,
+    "credential_loaded": false,
+    "candidate49_historical_backfill_performed": false,
+    "candidate49_ledgers_changed": false,
+    "second_prospective_candidate_created": false,
+    "current_scoring_selection_sizing_positions_or_orders_performed": false,
+    "investment_advice": false
+  }
+}

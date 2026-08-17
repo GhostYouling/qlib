@@ -1,0 +1,73 @@
+{
+  "version": 1,
+  "kind": "a_share_three_day_walkforward_campaign004_external_volume_read_blocker_escalation",
+  "checked_at": "2026-07-28T13:08:32+08:00",
+  "status": "blocked_after_three_consecutive_goal_turns_with_same_external_volume_read_stall",
+  "consecutive_goal_turn_evidence": {
+    "minimum_required": 3,
+    "observed": 3,
+    "same_blocking_condition": "The exact frozen Campaign004 snapshot manifest cannot complete a bounded one-byte read from /Volumes/DIsk.",
+    "first_record": {
+      "path": "docs/a_share_three_day_walkforward_campaign_004_external_volume_read_blocker_20260728.json",
+      "sha256": "9d7df15aa538ff5bdf8ee9b3bde7387f9ff50662fd5be47d9275174e8e823e69"
+    },
+    "followup_record": {
+      "path": "docs/a_share_three_day_walkforward_campaign_004_external_volume_read_blocker_followup_20260728.json",
+      "sha256": "fc4a9acbb864fb50633b1c32fd1d3f07fc4b88daf977ac68851d3c341e6b2b77"
+    },
+    "third_probe": {
+      "timeout_seconds": 5,
+      "exit_code": 124,
+      "byte_count_observed": 0,
+      "target": "/Volumes/DIsk/qlib-a-share-tushare-1m/derived/a_share/rich/tushare/minute_walkforward_campaign004_feature_library/tushare_stk_mins_1m_2019_2025_ea0cbb8f_walkforward_campaign004_feature_library_v1/snapshot_manifest.json"
+    }
+  },
+  "campaign004_state": {
+    "no_return_preregistration_sha256": "39e2147b75bcc3a0fd3cb39dee3932f794331142654f0bfe63679b2c8ecc2a4e",
+    "no_return_audit_infrastructure_repair_sha256": "41a9734be528c665f06e2b17d3f729048370e756a6e8addc2dcde5a6cafd4985",
+    "feature_runner_sha256": "b82c15355c0798897ebfc33e5b87ea4ebfd93f9692197e9b6c8b1d0719b1377b",
+    "walkforward_runner_sha256": "cb489806524a78a9687e70762242ad31f2cedf7c1834b066cb55ba09c312cc15",
+    "snapshot_manifest_sha256": "8eefc381d006997f1dcd95edcd9be4db8485e0c4954d6166d94f1981ae3b57fe",
+    "snapshot_dataset_sha256": "1359e755e669c7b949b26b2086d1c1328ec0cdf53b45ce7e67d117a274c7fc8a",
+    "no_return_audit_published": false,
+    "return_preregistration_frozen": false,
+    "historical_return_read_started": false,
+    "stress_2024_2025_opened": false
+  },
+  "candidate49_state": {
+    "signal_ledger_entry_count": 0,
+    "signal_ledger_sha256": "5193f00d7f36da003f53cec387900da4c3d002299f5dfcfc1a95eaa199ed3a79",
+    "execution_ledger_entry_count": 0,
+    "execution_ledger_sha256": "d57a3e61eac969e42cafa418ccd8c0a5ee65dcf69da145bb2c096c2a02a2ea4f",
+    "historical_backfill_performed": false,
+    "ledgers_changed": false
+  },
+  "credential_presence_only": {
+    "current_process": false,
+    "launchctl": true,
+    "secret_value_read_or_printed": false
+  },
+  "active_out_of_scope_volume_users": [
+    "Codex browser kernel below /Volumes/DIsk/Disk-Coding/cicd",
+    "agent-loop controller below /Volumes/DIsk/Disk-Coding/agent-loop",
+    "Next.js development server below /Volumes/DIsk/Disk-Coding/ArcloopFrontend",
+    "Astro/Vite development server below /Volumes/DIsk/Disk-Coding/ArcloopFrontend"
+  ],
+  "actions_not_taken": {
+    "out_of_scope_process_termination": false,
+    "forced_unmount_or_remount": false,
+    "provider_request": false,
+    "candidate50_start": false,
+    "terminal_factor_combination": false,
+    "current_score_selection_sizing_or_order": false
+  },
+  "resume_requirement": {
+    "external_state_change_required": true,
+    "accepted_options": [
+      "The user saves and stops the active processes using /Volumes/DIsk and safely remounts the volume.",
+      "The user explicitly authorizes stopping the listed out-of-scope processes and safely remounting /Volumes/DIsk."
+    ],
+    "first_resume_check": "Repeat the bounded one-byte read against the exact frozen Campaign004 snapshot manifest.",
+    "next_command_after_success": "PYTHONPATH=/opt/anaconda3/lib/python3.12/site-packages /opt/anaconda3/bin/python3 -S scripts/a_share_three_day_walkforward_campaign004_features.py audit --data-root /Volumes/DIsk/qlib-a-share-tushare-1m --workers 8"
+  }
+}

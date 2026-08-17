@@ -1,0 +1,178 @@
+{
+  "schema_version": 1,
+  "kind": "a_share_three_day_walkforward_campaign174_enterprise_market_risk_hedging_source_frontier",
+  "status": "terminal_prevalue_four_source_admission_deferrals_three_relabeling_or_operator_rejections_zero_selected",
+  "recorded_at": "2026-08-15T10:17:46+08:00",
+  "purpose": "Review a finite issuer foreign-exchange, interest-rate, commodity-price and derivative-hedging disclosure domain before opening source rows, filing text, exposure or hedge values, candidate values, comparators, security prices or returns.",
+  "authoritative_inputs": {
+    "campaign173_effective_state": {
+      "path": "docs/a_share_three_day_iteration_status_20260815_campaign173_prevalue_terminal.json",
+      "sha256": "41befc08c7b290bc82b0e9127d1a505bf85b55f3952293d1abe30bbb7b89cad1"
+    },
+    "campaign173_validation": {
+      "path": "docs/a_share_three_day_walkforward_campaign_173_terminal_validation_20260815.json",
+      "sha256": "cbc7fef23dc5cd95b7f8ad2368962d8e342d9c518c473c0af5f1063ca7db1088"
+    },
+    "eligibility_policy_v259": {
+      "path": "docs/a_share_three_day_walkforward_future_numeric_comparison_eligibility_policy_v259_20260815.json",
+      "sha256": "cc85941c03f9eba6878f150d970359df145dc8f5835c152356f23f7f2ee915c9"
+    },
+    "campaign163_supply_chain_frontier": {
+      "path": "docs/a_share_three_day_walkforward_campaign_163_supply_chain_disclosure_source_frontier_20260815.json",
+      "sha256": "3002f25ffc4ff1938933f0b4f3b998cacdb775ca0e27702c65cdc7afec0e80a3"
+    },
+    "campaign169_commercial_terms_frontier": {
+      "path": "docs/a_share_three_day_walkforward_campaign_169_commercial_pricing_terms_source_frontier_20260815.json",
+      "sha256": "a571bcc5bcbfc158da551e59d2984a907fd44b419d115619043a9b28ee3ab288"
+    },
+    "campaign172_insurance_frontier": {
+      "path": "docs/a_share_three_day_walkforward_campaign_172_enterprise_insurance_risk_transfer_source_frontier_20260815.json",
+      "sha256": "bf451b52aa778a6fe2a0d9e2a2fd9f99bc9c724bf9275a74574d2e68051ba2a5"
+    },
+    "campaign173_tax_frontier": {
+      "path": "docs/a_share_three_day_walkforward_campaign_173_enterprise_tax_position_compliance_source_frontier_20260815.json",
+      "sha256": "e4eaabeaca181e58e004a7a8968af5946136a602c106fe3241ff06ca41b1a40e"
+    }
+  },
+  "research_boundary": {
+    "finite_catalog_frozen_before_source_or_value_read": true,
+    "source_row_filing_document_exposure_hedge_derivative_candidate_comparator_security_price_or_return_value_read": false,
+    "local_schema_names_and_prior_records_only": true,
+    "provider_or_web_request_issued": false,
+    "provider_credential_presence_value_or_digest_read": false,
+    "stress_2024_2025_opened": false,
+    "candidate49_ledgers_changed": false,
+    "second_prospective_candidate_created": false
+  },
+  "repository_evidence": {
+    "complete_definition_count_reviewed": 158,
+    "eligible_numeric_comparator_count_reviewed": 142,
+    "existing_enterprise_market_risk_hedging_mechanism_in_complete_definitions": false,
+    "existing_enterprise_market_risk_hedging_mechanism_in_numeric_comparators": false,
+    "accepted_historical_issuer_exposure_and_hedge_primitive_present": false,
+    "complete_enterprise_market_risk_hedging_source_contract_present": false,
+    "supply_chain_boundary": "Campaign163 freezes supplier and logistics disclosure states. A purchase or supply contract does not establish commodity-price exposure, hedge designation, notional, maturity, effectiveness or settlement.",
+    "commercial_terms_boundary": "Campaign169 freezes customer and regulated pricing terms. Product price changes or pass-through clauses do not establish treasury exposure measurement or hedge coverage.",
+    "insurance_boundary": "Campaign172 freezes insurance and retained-loss source admission. Insurance transfers event loss; derivatives and natural hedges manage market-price, rate or currency exposure and require different identities and timing.",
+    "tax_boundary": "Campaign173 freezes issuer tax-position source admission. Derivative tax treatment or withholding does not establish the underlying exposure, hedge designation or effectiveness state.",
+    "point_in_time_boundary": "A current annual-report sensitivity table or derivative note cannot be projected backward without trade, exposure, designation, maturity, settlement, discontinuation, correction and first-public histories."
+  },
+  "mandatory_source_admission_gate": {
+    "must_freeze_before_any_formula_or_direction": [
+      "exact issuer filing, exchange announcement, trade repository, clearing, bank confirmation or licensed structured source with immutable bytes and stable observation identity",
+      "first-public timestamp, trading-session availability, exposure measurement date, trade date, designation date, effective date, maturity, termination, settlement, correction and supersession chain",
+      "issuer, listed security, subsidiary, branch, project, asset, liability, forecast transaction, firm commitment and counterparty mapping without current-state leakage",
+      "risk taxonomy separating transactional and translational foreign exchange, interest-rate repricing, commodity input/output price, equity, credit and other market risks",
+      "currency pair, benchmark rate, commodity grade, location, unit, tenor, quantity, notional, gross versus net exposure and natural-hedge semantics",
+      "instrument identity separating forwards, futures, swaps, options, collars, caps, floors, cross-currency swaps, embedded derivatives and non-derivative natural hedges",
+      "accounting designation separating cash-flow, fair-value and net-investment hedges from economic hedges, trading derivatives and undesignated positions",
+      "hedged item, hedging instrument, hedge ratio, effectiveness method, ineffectiveness, OCI, profit-or-loss recycling and discontinuation semantics",
+      "collateral, margin, liquidity, counterparty, netting, close-out, rollover, early termination and cash-settlement timing",
+      "missing, undisclosed, confidential, not-applicable, expired, terminated, true zero exposure, zero notional and zero hedge semantics without favorable absence coding",
+      "complete bounded 2019-2023 partition manifest, full-market denominator, issuer and counterparty identifier history, delisting coverage, pagination and one-shot acceptance gates",
+      "parser, identity, timing, unit, exposure-instrument linkage, designation, effectiveness and source-acceptance tests using no candidate, comparator, security-price or return values"
+    ],
+    "formula_direction_parameter_filter_subset_combination_or_model_choice_allowed_before_gate": false
+  },
+  "finite_prevalue_catalog": [
+    {
+      "catalog_id": "c174_01",
+      "name": "foreign_currency_transaction_translation_and_hedge_coverage_state",
+      "economic_state": "A close-known issuer foreign-currency exposure and its derivative or natural-hedge coverage state.",
+      "formula": null,
+      "direction": null,
+      "parameters_filters_subsets_combinations_models": [],
+      "new_issuer_state": true,
+      "complete_local_source_contract": false,
+      "decision": "deferred_source_admission_not_factor_failure",
+      "reason": "No accepted history freezes currency pair, transactional versus translational exposure, gross/net and natural-hedge basis, instrument and counterparty identity, notional, tenor, designation, maturity, settlement, first availability and complete 2019-2023 issuer coverage."
+    },
+    {
+      "catalog_id": "c174_02",
+      "name": "interest_rate_repricing_duration_and_hedge_state",
+      "economic_state": "A close-known issuer fixed/floating-rate exposure, repricing profile and cap, floor or swap hedge state.",
+      "formula": null,
+      "direction": null,
+      "parameters_filters_subsets_combinations_models": [],
+      "new_issuer_state": true,
+      "complete_local_source_contract": false,
+      "decision": "deferred_source_admission_not_factor_failure",
+      "reason": "Debt, deposit, lease and derivative notionals, benchmark and spread, repricing bucket, duration, embedded option, netting, collateral, hedge designation, effectiveness and point-in-time revision histories are not frozen in one accepted source contract."
+    },
+    {
+      "catalog_id": "c174_03",
+      "name": "commodity_input_output_price_exposure_and_hedge_state",
+      "economic_state": "A close-known issuer commodity input or output price exposure and its futures, option, swap or contractual natural-hedge state.",
+      "formula": null,
+      "direction": null,
+      "parameters_filters_subsets_combinations_models": [],
+      "new_issuer_state": true,
+      "complete_local_source_contract": false,
+      "decision": "deferred_source_admission_not_factor_failure",
+      "reason": "Commodity grade, geography, physical quantity, purchase/sale commitment, inventory, basis risk, unit conversion, hedge instrument, notional, maturity, rollover and first-public histories are absent from a complete cross-issuer contract."
+    },
+    {
+      "catalog_id": "c174_04",
+      "name": "derivative_designation_effectiveness_ineffectiveness_and_discontinuation_state",
+      "economic_state": "A close-known issuer hedge-accounting designation, effectiveness, ineffectiveness, recycling, termination or discontinuation state.",
+      "formula": null,
+      "direction": null,
+      "parameters_filters_subsets_combinations_models": [],
+      "new_issuer_state": true,
+      "complete_local_source_contract": false,
+      "decision": "deferred_source_admission_not_factor_failure",
+      "reason": "The repository lacks a complete point-in-time link among hedged item, instrument, designation, prospective/retrospective effectiveness, OCI and profit-or-loss amounts, recycling, forecast-transaction realization, termination and correction timing."
+    },
+    {
+      "catalog_id": "c174_05",
+      "name": "security_price_volatility_debt_contract_supply_contract_or_insurance_relabeling",
+      "economic_state": "An existing security-price, accounting, debt, commercial-contract, supply-chain or insurance state relabeled as enterprise market-risk hedging.",
+      "formula": null,
+      "direction": null,
+      "parameters_filters_subsets_combinations_models": [],
+      "new_issuer_state": false,
+      "complete_local_source_contract": false,
+      "decision": "rejected_terminal_security_price_accounting_contract_supply_chain_and_insurance_source_relabeling",
+      "reason": "Historical security volatility, debt terms, supplier contracts, pricing pass-through and insurance do not identify treasury exposure, hedge instrument, designation, hedge ratio, maturity or effectiveness; renaming them would not create a new primitive."
+    },
+    {
+      "catalog_id": "c174_06",
+      "name": "hedge_coverage_sensitivity_notional_effectiveness_direction_or_window_variant",
+      "economic_state": "A transform of an issuer exposure, derivative notional, sensitivity, hedge ratio, effectiveness or maturity against assets, revenue, costs, debt, equity or time.",
+      "formula": null,
+      "direction": null,
+      "parameters_filters_subsets_combinations_models": [],
+      "new_issuer_state": false,
+      "complete_local_source_contract": false,
+      "decision": "rejected_operator_direction_and_target_search_before_base_source_admission",
+      "reason": "Choosing higher or lower hedge coverage, raw versus net notional, sensitivity shock, accounting versus economic hedge, risk-class subset, maturity window or peer benchmark before source admission would multiply hypotheses; more hedging can signal resilience or greater underlying exposure."
+    },
+    {
+      "catalog_id": "c174_07",
+      "name": "combined_currency_rate_commodity_derivative_gap_score_or_model",
+      "economic_state": "Joint issuer exposure across foreign-exchange, interest-rate, commodity-price and hedge-effectiveness families.",
+      "formula": null,
+      "direction": null,
+      "parameters_filters_subsets_combinations_models": [],
+      "new_issuer_state": false,
+      "complete_local_source_contract": false,
+      "decision": "rejected_unadmitted_component_combination_weight_and_model_search",
+      "reason": "Combining four unadmitted heterogeneous source families or selecting weights, gaps, ranks, sensitivities, interactions, filters or models would expand the search before any component has a complete source contract."
+    }
+  ],
+  "gate_summary": {
+    "routes_reviewed": 7,
+    "genuinely_new_issuer_state_routes": 4,
+    "source_admission_deferrals_not_factor_failures": 4,
+    "relabeling_or_operator_route_rejections": 3,
+    "selected_candidate_count": 0,
+    "complete_factor_definition_created": false,
+    "numeric_comparator_created": false
+  },
+  "scientific_interpretation": {
+    "enterprise_market_risk_exposure_or_hedging_declared_ineffective": false,
+    "absence_of_an_admitted_historical_source_is_evidence_of_no_predictive_power": false,
+    "safe_conclusion": "Four distinct enterprise market-risk and hedging states remain deferred at source admission; security-price, accounting, contract, supply-chain or insurance relabeling, premature operator search and unadmitted combinations are closed before values."
+  },
+  "next_action": "Record all seven scientific decisions and the timestamp-format infrastructure failure in the Campaign174 hash chain, publish terminal accounting, and continue a different finite offline prevalue domain."
+}

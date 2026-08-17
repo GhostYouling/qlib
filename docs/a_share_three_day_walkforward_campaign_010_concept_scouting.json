@@ -1,0 +1,130 @@
+{
+  "version": 1,
+  "kind": "a_share_three_day_walkforward_campaign010_concept_scouting",
+  "status": "concept_only_one_new_mechanism_selected_no_formula_no_direction_no_values_no_returns",
+  "recorded_at": "2026-07-28T14:44:45Z",
+  "purpose": "Continue the three-session offline research program after Campaign009 failed its frozen development gates. This record considers only economic meaning and accepted source-schema feasibility, rejects terminal or near-synonym mechanisms before values, and selects at most one concept for a separate exact no-value overlap audit.",
+  "authoritative_bindings": {
+    "iteration_state": {
+      "path": "docs/a_share_three_day_iteration_status_20260728_campaign009.json",
+      "sha256": "ab9072891b5b903cd02cf05830213f8909287dccdb833a182843f7cb030ecf76",
+      "campaign010_concept_scouting_allowed": true,
+      "candidate50_prospective_activation_allowed": false
+    },
+    "campaign009_research_record": {
+      "path": "docs/a_share_three_day_walkforward_campaign_009_research_record.json",
+      "sha256": "4590efb674e78a82eca080cf042db76e6f73ded22ec56cad8714da4cc8c08769",
+      "terminal": true,
+      "development_survivor_count": 0,
+      "stress_interval_opened": false
+    },
+    "historical_walkforward_policy": {
+      "path": "docs/a_share_three_day_historical_walkforward_research_policy_20260727.json",
+      "sha256": "38426d6161b9bfed323c58caba18feca668b8c9d53e294951a8ba90c01a798bb"
+    }
+  },
+  "source_schema_boundary": {
+    "provider": "tushare",
+    "frequency": "1m",
+    "accepted_source_grid_rows": 241,
+    "joint_clean_manifest": {
+      "path_below_data_root": "derived/a_share/rich/tushare/minute_sentiment_clean/tushare_stk_mins_1m_2019_2025_ea0cbb8f_sentiment_clean_v1/snapshot_manifest.json",
+      "sha256": "453c6719cb3c7da42fed8807b28a2bfe988700283e9625a6db97912534f368de",
+      "dataset_sha256": "0e4fe7c05536cdfcecc2936bc880726902f5560061188ffff82ef7ee6f346983",
+      "partitions": 33015,
+      "rows": 7724498
+    },
+    "allowed_source_fields": [
+      "datetime",
+      "symbol",
+      "provider",
+      "high",
+      "low"
+    ],
+    "source_open_close_volume_and_amount_must_not_be_loaded": true,
+    "daily_price_or_return_substitution_allowed": false,
+    "provider_request_allowed": false
+  },
+  "concepts_rejected_before_formula_or_values": [
+    {
+      "concept": "campaign009_body_range_or_wick_variant",
+      "reason": "Campaign009 is terminal. Mean per-bar ratios, wick decomposition, candle-sign conditioning, thresholding, inversion, or another body/range aggregation would be prohibited rescue."
+    },
+    {
+      "concept": "between_close_path_efficiency_or_return_moment",
+      "reason": "Signed path efficiency, diffusive variation ratio, return-sign runs, variance entropy, skewness, semivariance, realized volatility, and volatility timing are terminal."
+    },
+    {
+      "concept": "activity_or_transaction_price_conditioning",
+      "reason": "Amount, share volume, amount/volume transaction price, activity response, price impact, absorption, and profile mechanisms are terminal and are excluded from this source boundary."
+    },
+    {
+      "concept": "opening_or_lunch_gap_geometry",
+      "reason": "The 09:30 row can be a reference placeholder, opening-gap mechanisms are terminal, and the lunch transition may not be treated as an adjacent trading-minute pair."
+    },
+    {
+      "concept": "terminal_position_or_directional_range_displacement",
+      "reason": "Terminal close location and directional price-path families are terminal. The selected concept must remain direction-neutral and may not privilege the final bar."
+    },
+    {
+      "concept": "market_or_industry_range_benchmark",
+      "reason": "Market-relative and cross-stock synchronization mechanisms are terminal. A peer benchmark would also introduce a different and unnecessarily broad measurement layer."
+    }
+  ],
+  "selected_concept": {
+    "concept_name": "intraday_adjacent_price_range_acceptance_continuity",
+    "candidate_ordinal": null,
+    "prospective_active": false,
+    "concept_status": "mechanism_only_not_yet_exactly_preregistered",
+    "direction": null,
+    "formula": null,
+    "allowed_source_fields": [
+      "datetime",
+      "symbol",
+      "provider",
+      "high",
+      "low"
+    ],
+    "mechanism": "Measure whether the price territory explored inside one minute remains shared with the immediately following tradable minute. This is a direction-neutral overlap of consecutive intrabar high-low intervals, not a candle body/range efficiency statistic, between-close return path, return moment, activity response, market benchmark, or transaction-price construction.",
+    "economic_question": "Do stock-days with greater continuity of locally accepted price ranges, and therefore less fleeting one-minute price exploration, carry short-horizon resilience from the next open through the third close?",
+    "mandatory_overlap_challenges_before_any_value": [
+      "intraday_intrabar_body_range_efficiency_240m",
+      "intraday_price_update_share_238m",
+      "intraday_diffusive_variation_ratio_238m",
+      "intraday_signed_path_efficiency_239m",
+      "intraday_terminal_close_location_240m",
+      "intraday_volatility_resolution_238m",
+      "intraday_return_variance_entropy_238m"
+    ],
+    "known_design_risks": [
+      "overlap versus containment, pair weighting, direction, zero-width handling, lunch treatment, and minimum informative-pair count create researcher degrees of freedom unless frozen before values",
+      "raw high-low ordering must be validated fail-closed rather than repaired",
+      "using open, close, candle direction, or wicks would reopen Campaign009 or directional path families",
+      "including the lunch transition or 09:30 would reopen invalid gap mechanisms",
+      "the candidate may still be statistically redundant with volatility, price-update, or Campaign009 values even if the economic measurement is distinct"
+    ]
+  },
+  "research_boundary": {
+    "external_minute_partitions_read": false,
+    "external_daily_partitions_read": false,
+    "candidate_values_computed_or_read": false,
+    "comparison_values_read": false,
+    "historical_daily_prices_read": false,
+    "historical_forward_returns_read": false,
+    "formula_or_direction_frozen": false,
+    "training_or_model_fitting_performed": false,
+    "prospective_candidate_created": false,
+    "candidate49_historical_return_read": false,
+    "candidate49_ledgers_changed": false,
+    "current_scoring_selection_sizing_or_order_performed": false,
+    "provider_request_issued": false,
+    "investment_advice": false
+  },
+  "decision": {
+    "selected_concept_count": 1,
+    "selected_concept_may_advance_directly_to_values": false,
+    "required_next_step": "Perform a separate no-value audit against all 33 prior terminal mechanisms. Only if the concept remains economically distinct may that audit freeze one exact formula, one direction, high-low ordering and zero-width semantics, no-return gates, and one finite trial before candidate or comparison values or returns are read.",
+    "candidate49_remains_only_prospective_candidate": true,
+    "candidate50_activation_allowed": false
+  }
+}

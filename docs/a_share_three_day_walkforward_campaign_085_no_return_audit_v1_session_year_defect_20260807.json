@@ -1,0 +1,44 @@
+{
+  "version": 1,
+  "kind": "a_share_three_day_walkforward_campaign085_no_return_audit_session_year_defect",
+  "status": "v1_audit_invalid_session_ordinal_misread_as_yyyymmdd_year",
+  "recorded_at": "2026-08-07T00:10:00+08:00",
+  "invalid_v1_audit": {
+    "path": "data/experiments/short_horizon/historical_walkforward/campaign_085/no_return/20260806T145252Z_campaign085_no_return_audit.json",
+    "sha256": "d0f874966bff8f170e10ccb74628eb956bf4e526869641f1d7a2fcfa55d55af9",
+    "preserved": true,
+    "accepted_as_factor_result": false
+  },
+  "root_cause": {
+    "stock_day_key_session_component_is_epoch_day_ordinal": true,
+    "v1_year_expression": "session // 10000",
+    "invalid_observed_years": [
+      1,
+      2
+    ],
+    "correct_year_source": "the immutable candidate snapshot file record's explicit year for every row in that partition",
+    "coverage_ratios_themselves_changed_by_year_bug": false,
+    "cohort_year_count_and_gate_changed_by_year_bug": true
+  },
+  "v1_read_boundary": {
+    "candidate_snapshot_values_read": true,
+    "coverage_or_capacity_metrics_computed": true,
+    "comparison_values_read": false,
+    "comparison_factor_count": 0,
+    "historical_daily_price_or_forward_return_values_read": false,
+    "provider_request_issued": false,
+    "candidate49_ledgers_changed": false
+  },
+  "authorized_v2_repair": {
+    "load_explicit_year_vector_from_candidate_snapshot_file_records": true,
+    "require_each_session_to_map_to_exactly_one_explicit_year": true,
+    "compute_cohorts_and_observed_years_from_explicit_year": true,
+    "rerun_coverage_from_snapshot_values_from_scratch": true,
+    "load_comparison_values_only_if_repaired_coverage_passes": true,
+    "formula_direction_source_snapshot_thresholds_comparison_order_or_return_gate_may_change": false,
+    "v1_audit_values_or_decision_reuse_allowed": false
+  },
+  "research_attempt_count_increment": 1,
+  "development_trial_count_increment": 0,
+  "factor_attempt_count_increment": 0
+}

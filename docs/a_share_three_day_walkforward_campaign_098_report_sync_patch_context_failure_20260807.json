@@ -1,0 +1,22 @@
+{
+  "schema_version": 1,
+  "kind": "a_share_three_day_walkforward_campaign098_report_sync_patch_context_failure",
+  "status": "recorded_append_only_before_retry",
+  "recorded_at": "2026-08-07T08:43:00Z",
+  "stage": "terminal_report_synchronization",
+  "failure": "A combined apply_patch used one Campaign097 tail sentence as the context anchor for three documents whose actual terminal paragraphs differed. Context verification failed and the patch was rejected atomically before any write.",
+  "affected_targets": [
+    "docs/a_share_three_day_walkforward_campaign_098_report.md",
+    "data/experiments/short_horizon/three_day_research_report.md",
+    "data/experiments/short_horizon/current_research_report.md",
+    "docs/a_share_data_pipeline.md"
+  ],
+  "target_files_changed_by_failed_patch": false,
+  "research_values_recomputed": false,
+  "new_historical_daily_price_or_forward_return_values_read": false,
+  "stress_2024_2025_return_fields_read": false,
+  "candidate49_historical_return_read": false,
+  "candidate49_ledgers_changed": false,
+  "provider_request_issued": false,
+  "authorized_repair": "Append the same frozen Campaign098 terminal facts to each document using its own exact current tail context; do not alter scientific metrics or boundaries."
+}

@@ -1,0 +1,37 @@
+{
+  "schema_version": 1,
+  "kind": "a_share_three_day_walkforward_campaign228_infrastructure_failure",
+  "recorded_at": "2026-08-16T03:40:00+08:00",
+  "timestamp_semantics": "monotonic_logical_append_time_not_host_wall_clock_measurement",
+  "attempt_id": "campaign228_infrastructure_001",
+  "phase": "mandatory_manage_qlib_skill_read",
+  "status": "failed_combined_skill_output_truncated_discarded_and_recovered",
+  "failure": {
+    "requested_line_ranges": [
+      "161-200",
+      "201-240",
+      "241-280",
+      "281-320"
+    ],
+    "observed_warning": "truncated output",
+    "original_token_count": 17005,
+    "returned_line_count": 152,
+    "cause": "Four long-line skill ranges were returned through one combined output budget."
+  },
+  "recovery": {
+    "method": "Discard the entire combined output and reread every line from 161 through 320 in independent five-line windows.",
+    "complete_line_range_recovered": true,
+    "failed_output_used_as_instruction_scientific_or_validation_evidence": false
+  },
+  "research_boundary": {
+    "repository_research_value_read_before_recovery": false,
+    "candidate_or_comparator_value_read": false,
+    "daily_price_or_forward_return_read": false,
+    "provider_or_web_request_issued": false,
+    "provider_credential_presence_value_or_digest_read": false,
+    "candidate49_plan_or_run_executed": false,
+    "candidate49_ledgers_changed": false,
+    "stress_2024_2025_opened": false,
+    "current_scoring_selection_sizing_positions_or_orders_performed": false
+  }
+}

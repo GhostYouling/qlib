@@ -1,0 +1,61 @@
+{
+  "schema_version": 1,
+  "kind": "a_share_three_day_walkforward_campaign151_snapshot_verifier_implementation_freeze",
+  "status": "verifier_and_synthetic_tests_frozen_before_candidate_partition_payload_reads",
+  "recorded_at": "2026-08-15T01:21:50+08:00",
+  "authoritative_inputs": {
+    "verification_protocol": {
+      "path": "docs/a_share_three_day_walkforward_campaign_151_snapshot_full_verification_protocol_20260815.json",
+      "sha256": "1d6658362584642416f46b2b2eea64d869813d2768db699d011d55c18a0f7836"
+    },
+    "snapshot_manifest": {
+      "path": "/Volumes/DIsk/qlib-a-share-tushare-1m/derived/a_share/rich/tushare/minute_walkforward_campaign151_feature_library/tushare_stk_mins_1m_2019_2025_ea0cbb8f_walkforward_campaign151_feature_library_v1/snapshot_manifest.json",
+      "sha256": "fdc23323e2ddc9e070f3c2a48fb5d05ebf9673b8c0c613ac88ecd0ea15054f83"
+    }
+  },
+  "frozen_implementation": {
+    "verifier_path": "scripts/a_share_three_day_walkforward_campaign151_snapshot_verify.py",
+    "verifier_sha256": "6e3f1dc9e9b3c1f665d702d346c066a0e6c8e7bb63e7ef9ab5a5204231e7a40f",
+    "verifier_test_path": "tests/data_collector_tests/test_a_share_three_day_walkforward_campaign151_snapshot_verify.py",
+    "verifier_test_sha256": "2039ccad2422d6249c6664c581c47f58526257f25e8e2c150a629cee95782304",
+    "metadata_only_plan": true,
+    "confirmed_full_verification_required": true,
+    "worker_range_inclusive": [
+      1,
+      8
+    ],
+    "every_partition_payload_read_only_after_ready_plan": true,
+    "receipt_written_by_verifier": false,
+    "receipt_publication_is_separate_append_only_step": true
+  },
+  "verification": {
+    "pytest_command": "/Volumes/DIsk/Coding/anaconda3/bin/python3.12 -m pytest -q tests/data_collector_tests/test_a_share_three_day_walkforward_campaign151_snapshot_verify.py",
+    "pytest_passed": 10,
+    "pytest_failed": 0,
+    "pytest_runtime": "2.30s",
+    "black": "passed; verifier reformatted and test unchanged",
+    "ruff": "passed",
+    "verified_behaviors": [
+      "protocol and manifest metadata bindings",
+      "snapshot path containment",
+      "zero-coverage frame semantics",
+      "eligible, value, duplicate-date and provider mutation rejection",
+      "partition byte, frame and sidecar binding",
+      "dataset digest equivalence",
+      "explicit confirmation and worker bounds"
+    ]
+  },
+  "research_boundary": {
+    "peer_benchmark_payload_read_before_freeze": true,
+    "candidate_partition_payloads_read_before_freeze": false,
+    "synthetic_temporary_partition_payloads_read": true,
+    "comparator_values_read": false,
+    "historical_daily_price_or_forward_return_values_read": false,
+    "stress_2024_2025_opened_for_return_evaluation": false,
+    "credential_loaded": false,
+    "provider_request_issued": false,
+    "candidate49_ledgers_changed": false,
+    "current_scoring_selection_sizing_positions_or_orders_performed": false
+  },
+  "next_action": "Run verifier plan. Only ready=true with exit zero authorizes one verify --workers 4 --confirm-snapshot-verification invocation."
+}

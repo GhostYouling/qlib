@@ -1,0 +1,27 @@
+{
+  "schema_version": 1,
+  "kind": "a_share_three_day_walkforward_campaign112_prevalue_infrastructure_failures",
+  "status": "one_preserved_read_only_command_failure_before_campaign112_values",
+  "recorded_at": "2026-08-09T00:44:19+08:00",
+  "failures": [
+    {
+      "attempt_id": "campaign112_infrastructure_001",
+      "stage": "campaign102_model_boundary_inspection",
+      "failure": "A zsh command used a nonexistent Campaign102 iteration-state glob; zsh rejected the unmatched glob after listing the intended Campaign100-102 files.",
+      "root_cause": "guessed filename pattern instead of first resolving exact paths with rg --files",
+      "repair": "Resolved and opened the exact Campaign102 concept, mechanism, preregistration, and terminal-result paths returned by rg --files.",
+      "target_file_mutated": false,
+      "campaign112_source_candidate_or_comparator_value_read": false,
+      "daily_price_or_forward_return_read": false,
+      "provider_request_issued": false
+    }
+  ],
+  "failure_count": 1,
+  "research_boundary": {
+    "campaign112_source_rows_read": false,
+    "campaign112_candidate_or_comparison_values_read": false,
+    "historical_daily_price_or_forward_return_values_read": false,
+    "provider_request_issued": false,
+    "candidate49_ledgers_changed": false
+  }
+}

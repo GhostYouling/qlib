@@ -1,0 +1,269 @@
+{
+  "version": 1,
+  "kind": "a_share_three_day_walkforward_campaign004_research_record",
+  "status": "completed_zero_development_survivors_stress_interval_not_opened",
+  "recorded_at": "2026-07-28T06:58:20Z",
+  "purpose": "Record the fourth finite historical three-session walk-forward campaign, including the three-factor no-return admission, all twelve frozen single-and-pair trials, the zero-survivor decision, and every research boundary.",
+  "campaign": {
+    "preregistration": {
+      "path": "docs/a_share_three_day_walkforward_campaign_004_preregistration.json",
+      "sha256": "e67811f265b2b744073391fa65698951b132065109f95fa47991b8254a5756e6"
+    },
+    "runner": {
+      "path": "scripts/a_share_three_day_walkforward_campaign004.py",
+      "sha256": "cb489806524a78a9687e70762242ad31f2cedf7c1834b066cb55ba09c312cc15"
+    },
+    "feature_and_no_return_runner": {
+      "path": "scripts/a_share_three_day_walkforward_campaign004_features.py",
+      "build_and_first_audit_sha256": "b82c15355c0798897ebfc33e5b87ea4ebfd93f9692197e9b6c8b1d0719b1377b",
+      "post_audit_fingerprint_bound_sha256": "46b4c8b36698e64612b4b2c98e8cb4e81041100327d93e862722a3c5fb84b33c"
+    }
+  },
+  "no_return_admission": {
+    "protocol": {
+      "path": "docs/a_share_three_day_walkforward_campaign_004_no_return_preregistration.json",
+      "sha256": "39e2147b75bcc3a0fd3cb39dee3932f794331142654f0bfe63679b2c8ecc2a4e"
+    },
+    "feature_snapshot": {
+      "path": "/Volumes/DIsk/qlib-a-share-tushare-1m/derived/a_share/rich/tushare/minute_walkforward_campaign004_feature_library/tushare_stk_mins_1m_2019_2025_ea0cbb8f_walkforward_campaign004_feature_library_v1/snapshot_manifest.json",
+      "sha256": "8eefc381d006997f1dcd95edcd9be4db8485e0c4954d6166d94f1981ae3b57fe",
+      "dataset_sha256": "1359e755e669c7b949b26b2086d1c1328ec0cdf53b45ce7e67d117a274c7fc8a",
+      "partition_count": 33015,
+      "row_count": 7724498
+    },
+    "audit": {
+      "path": "data/experiments/short_horizon/historical_walkforward/campaign_004/no_return/20260728T064945Z_campaign004_no_return_audit.json",
+      "sha256": "d7cdce80d0ac2923695b866a7cf034f5049ec4da1a5a8dd5fc36d4f41f1cb755",
+      "status": "completed_with_admissible_factors_pending_walkforward_preregistration",
+      "admissible_factor_count": 3,
+      "failed_factor_count": 0,
+      "historical_daily_price_fields_read": [],
+      "historical_forward_return_fields_read": false
+    },
+    "admissible_factors": [
+      {
+        "name": "intraday_market_neutral_late_residual_drift_238m",
+        "direction": "higher",
+        "median_coverage": 0.9983183851218558,
+        "p05_coverage": 0.9933708902303229,
+        "p05_eligible_names": 138,
+        "potential_non_overlapping_three_session_cohorts": 540
+      },
+      {
+        "name": "intraday_negative_return_absorption_rate_236p",
+        "direction": "higher",
+        "median_coverage": 0.9979260280964766,
+        "p05_coverage": 0.9926307688719946,
+        "p05_eligible_names": 138,
+        "potential_non_overlapping_three_session_cohorts": 540
+      },
+      {
+        "name": "intraday_signed_path_efficiency_239m",
+        "direction": "higher",
+        "median_coverage": 0.9983183851218558,
+        "p05_coverage": 0.9933708902303229,
+        "p05_eligible_names": 138,
+        "potential_non_overlapping_three_session_cohorts": 540
+      }
+    ],
+    "uniqueness_result": {
+      "all_three_factors_passed": true,
+      "absolute_median_daily_rank_correlation_limit": 0.8,
+      "maximum_observed_absolute_median_daily_rank_correlation": 0.7814714682770606,
+      "new_factor_pairwise_order_enforced": true
+    }
+  },
+  "completed_artifacts": {
+    "trial_ledger": {
+      "path": "data/experiments/short_horizon/historical_walkforward/campaign_004/walkforward/trial_ledger.json",
+      "sha256": "70e85d7ad28530f9a3487a134cd12a8690b85e377bb78d4c5abdd8bb9cd0768b",
+      "entry_count": 12,
+      "development_entry_count": 12,
+      "exposed_stress_entry_count": 0,
+      "infrastructure_failure_count": 0,
+      "chain_tip_sha256": "da8d35de9ec4159e417d073decdfc9489e3cd3b0a5be97629bc7aa5986f692ff"
+    },
+    "development_survivors": {
+      "path": "data/experiments/short_horizon/historical_walkforward/campaign_004/walkforward/development_survivors.json",
+      "sha256": "af1e6ccc95e07b23f6eb16bf64b16b6c837d578f08a74711e7d0e5bd627405e3",
+      "trial_decision_count": 12,
+      "operationally_admissible_count": 3,
+      "development_gate_passer_count": 0,
+      "selected_survivor_count": 0,
+      "stress_return_fields_read_when_frozen": false
+    },
+    "exposed_stress_consumption_record": {
+      "path": "data/experiments/short_horizon/historical_walkforward/campaign_004/walkforward/exposed_stress_consumption_record.json",
+      "sha256": "68e19dfe1cea4f2d5f6d05dcb51e5c9c32356763fa513476bdd3fa6b73455433",
+      "stress_interval_opened": false,
+      "reason": "zero_development_survivors"
+    },
+    "campaign_report": {
+      "path": "data/experiments/short_horizon/historical_walkforward/campaign_004/walkforward/campaign_report.json",
+      "sha256": "aa1d5d4a69e46074ef69d55b5a432d171f58fcd6c38adf98a13c184dd7d5e0cd"
+    }
+  },
+  "development_result": {
+    "period": {
+      "start": "2019-01-01",
+      "end": "2023-12-31"
+    },
+    "expanding_validation_years": [
+      2021,
+      2022,
+      2023
+    ],
+    "purge_signal_sessions_each_boundary": 3,
+    "frozen_trial_count": 12,
+    "trial_shape": {
+      "single_factor_trial_count": 3,
+      "unordered_factor_pair_count": 3,
+      "weights_per_pair": 3,
+      "pair_trial_count": 9
+    },
+    "infrastructure_failure_count": 0,
+    "operationally_admissible_count": 3,
+    "development_gate_passer_count": 0,
+    "selected_exposed_stress_survivor_count": 0,
+    "quality_failure_counts": {
+      "nonpositive_development_aggregate_20bp_return": 12,
+      "worst_validation_normalized_drawdown": 12,
+      "median_validation_pilot_return": 12,
+      "insufficient_positive_pilot_return_folds": 12,
+      "insufficient_positive_normalized_return_folds": 12,
+      "median_validation_spread": 7,
+      "median_validation_mean_rank_ic": 8,
+      "insufficient_positive_ic_folds": 8
+    },
+    "operational_failure_counts": {
+      "fold_1_board_lot_affordability": 9,
+      "fold_2_board_lot_affordability": 4,
+      "fold_3_board_lot_affordability": 3
+    },
+    "highest_median_validation_rank_ic_trial": {
+      "trial_id": "wf004_single__intraday_market_neutral_late_residual_drift_238m",
+      "positive_mean_rank_ic_fold_count": 2,
+      "median_validation_mean_rank_ic": 0.005287946429563945,
+      "median_validation_spread": -0.008561683589013646,
+      "positive_normalized_return_fold_count": 0,
+      "positive_pilot_return_fold_count": 0,
+      "median_validation_pilot_return": -0.07612772015142821,
+      "worst_validation_normalized_drawdown": -0.5858062161368345,
+      "development_aggregate_10bp_return": -0.23561535235808984,
+      "development_aggregate_20bp_return": -0.30735882704125983,
+      "conclusion": "The weak positive cross-fold IC median did not translate into a positive spread, executable return, drawdown, or cost result."
+    },
+    "least_negative_20bp_trial": {
+      "trial_id": "wf004_pair__intraday_market_neutral_late_residual_drift_238m__intraday_negative_return_absorption_rate_236p__w75_25",
+      "weights_in_canonical_pair_order": [
+        0.75,
+        0.25
+      ],
+      "positive_mean_rank_ic_fold_count": 2,
+      "median_validation_mean_rank_ic": 0.0011066639482076902,
+      "median_validation_spread": 0.003500361360508848,
+      "positive_normalized_return_fold_count": 0,
+      "positive_pilot_return_fold_count": 0,
+      "median_validation_pilot_return": -0.026404835454820086,
+      "worst_validation_normalized_drawdown": -0.3588769510680383,
+      "development_aggregate_10bp_return": -0.10885817255053243,
+      "development_aggregate_20bp_return": -0.17807670311458768,
+      "operationally_admissible": false,
+      "operational_rejection_reasons": [
+        "fold_1_board_lot_affordability",
+        "fold_3_board_lot_affordability"
+      ],
+      "conclusion": "This was simultaneously the least-negative 20bp trial and the best worst-drawdown trial, but it remained negative at 10bp and 20bp, had zero positive normalized or pilot-return folds, breached the frozen drawdown gate, and failed board-lot affordability in two validation folds."
+    }
+  },
+  "exposed_stress_result": {
+    "period": {
+      "start": "2024-01-01",
+      "end": "2025-12-31"
+    },
+    "classification": "historically_exposed_stress_replay_not_unseen_or_pristine",
+    "interval_opened": false,
+    "return_fields_read": false,
+    "reason": "The frozen development survivor gate selected zero trials, so the runner wrote the zero-survivor record without loading the 2024-2025 market or factor panels.",
+    "stress_trial_count": 0,
+    "frozen_gate_passer_count": 0
+  },
+  "interpretation": {
+    "campaign004_construction_family_supported_under_frozen_gates": false,
+    "market_neutral_late_residual_signal": "It had the strongest median validation Rank IC but a negative median spread and severe executable losses, so weak association did not survive portfolio implementation.",
+    "pairing_signal": "The 75/25 market-neutral-residual plus absorption blend improved the relative drawdown and cost result but remained decisively negative and operationally inadmissible. This descriptive near miss does not authorize a weight rescue.",
+    "post_result_formula_direction_weight_or_gate_change_performed": false,
+    "prior_terminal_factor_conclusions_changed": false,
+    "historical_pass_or_current_selection_claim": false
+  },
+  "next_iteration": {
+    "campaign_id": "a_share_three_day_walkforward_campaign_005",
+    "status": "concept_family_selected_pending_separate_no_return_preregistration_before_values",
+    "economic_question": "Can transaction-state transition, lunch repricing persistence, and directional price-impact asymmetry add genuinely different minute information rather than another terminal-price or aggregate-direction transform?",
+    "concept_queue_source": {
+      "path": "docs/a_share_three_day_inactive_mechanism_scouting_queue_delta_20260726.json",
+      "sha256": "60f280cfecbd390a4fb6388eb3c5a63a507506b542aeba937f60d583cc717835"
+    },
+    "proposed_complete_concept_library": [
+      "zero-return activity absorption",
+      "lunch repricing persistence",
+      "directional price-impact asymmetry"
+    ],
+    "formula_direction_and_parameter_status": "not_yet_frozen_and_no_value_may_be_read",
+    "required_before_any_campaign005_factor_or_return_value": [
+      "perform a no-return mechanism-overlap review against all terminal and Campaign004 definitions",
+      "freeze every formula, direction, timestamp window, zero/missing rule, denominator, valid range, source-field whitelist, and exact finite search catalog",
+      "implement synthetic formula tests before scanning the immutable 2019-2025 minute source",
+      "apply coverage, capacity, and all-terminal-factor uniqueness gates before any daily price or forward-return read",
+      "retain Candidate49 as the only prospective candidate and keep current scoring, selection, sizing, and orders forbidden"
+    ]
+  },
+  "candidate49_state_after_campaign": {
+    "signal_ledger": {
+      "path": "data/experiments/short_horizon/candidate49_future_signal_ledger.json",
+      "sha256": "5193f00d7f36da003f53cec387900da4c3d002299f5dfcfc1a95eaa199ed3a79",
+      "entry_count": 0
+    },
+    "execution_ledger": {
+      "path": "data/experiments/short_horizon/candidate49_future_execution_ledger.json",
+      "sha256": "d57a3e61eac969e42cafa418ccd8c0a5ee65dcf69da145bb2c096c2a02a2ea4f",
+      "entry_count": 0
+    },
+    "historical_return_backfill_performed": false,
+    "prospective_registration_changed": false
+  },
+  "verification": {
+    "campaign004_focused_tests": {
+      "command": "PYTHONPATH=/opt/anaconda3/lib/python3.12/site-packages /opt/anaconda3/bin/python3 -S -m pytest -q tests/data_collector_tests/test_a_share_three_day_walkforward_campaign004_features.py tests/data_collector_tests/test_a_share_three_day_walkforward_campaign004.py",
+      "passed": 11,
+      "failed": 0
+    },
+    "no_return_idempotent_validation": {
+      "status": "no_return_audit_ready",
+      "forward_return_fields_read": false
+    },
+    "development_idempotent_validation": {
+      "status": "development_already_complete_idempotent",
+      "trial_count": 12,
+      "survivor_count": 0,
+      "exposed_stress_return_fields_read": false
+    }
+  },
+  "research_boundary": {
+    "candidate49_historical_return_read": false,
+    "candidate49_ledgers_changed": false,
+    "candidate50_prospective_activation_created": false,
+    "stress_2024_2025_return_fields_read": false,
+    "current_scoring_performed": false,
+    "selection_sizing_or_orders_performed": false,
+    "provider_request_issued": false,
+    "investment_advice": false
+  },
+  "limitations": [
+    "The 2019-2023 development interval and all source minute history are historically exposed; the result is exploratory rather than pristine.",
+    "The holding universe derives from a current listing snapshot and may contain survivorship bias.",
+    "Twenty basis points per side is a deliberately severe robustness view, not a forecast that every future fill will incur exactly that slippage.",
+    "The least-negative pair is still negative at both 10bp and 20bp and may not be rescued by post-result reweighting.",
+    "A zero-survivor result rejects this frozen construction family under its gates; it does not prove that every independent minute mechanism or portfolio design is ineffective."
+  ]
+}

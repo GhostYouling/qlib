@@ -1,0 +1,108 @@
+{
+  "schema_version": 1,
+  "kind": "a_share_three_day_walkforward_campaign145_no_return_implementation_freeze",
+  "status": "snapshot_builder_audit_runner_and_synthetic_semantics_frozen_before_historical_source_values",
+  "recorded_at": "2026-08-14T20:12:18+08:00",
+  "authoritative_inputs": {
+    "no_return_preregistration": {
+      "path": "docs/a_share_three_day_walkforward_campaign_145_no_return_preregistration_20260814.json",
+      "sha256": "0c422531fc1d5ceffb4193d4bcd6b42227555d3cff0ec58f04c81a3aab19edd2"
+    },
+    "mechanism_overlap_audit": {
+      "path": "docs/a_share_three_day_walkforward_campaign_145_mechanism_overlap_audit_20260814.json",
+      "sha256": "bc45603ced25c8717dd8d3289e16b7be177859295501096e70c2d4dc57e74680"
+    },
+    "numeric_policy_v190": {
+      "path": "docs/a_share_three_day_walkforward_future_numeric_comparison_eligibility_policy_v190_20260814.json",
+      "sha256": "d6e8b359bd7b8af6678b91b0b8c10bbee40af0b06d2373c0897c5e3f159034ac"
+    }
+  },
+  "frozen_implementation": {
+    "pure_formula_path": "scripts/a_share_three_day_walkforward_campaign145_formula.py",
+    "pure_formula_sha256": "de1e26e01df4c2aa568092bc4cb6b0ae7b7b678d830aede9ce6e44fbd2a65e42",
+    "snapshot_builder_path": "scripts/a_share_three_day_walkforward_campaign145_features.py",
+    "snapshot_builder_sha256": "0ad827d3f0439413afcf21fd5a87ba7e80b7de940cf2abfcbb5f0a7b0311a639",
+    "ordered_audit_runner_path": "scripts/a_share_three_day_walkforward_campaign145_no_return_audit.py",
+    "ordered_audit_runner_sha256": "4ae095ce04d835c72c64a3e263357387269c87ba255b6c112f0b4c3ba4aafb53",
+    "source_projection": [
+      "datetime",
+      "symbol",
+      "provider",
+      "close",
+      "amount"
+    ],
+    "raw_manifest_sha256": "9b3d959563c9d182f38981c6a36bdb3bc9b415de08487a9e1f9e850825c0839f",
+    "joint_clean_manifest_sha256": "453c6719cb3c7da42fed8807b28a2bfe988700283e9625a6db97912534f368de",
+    "joint_clean_dataset_sha256": "0e4fe7c05536cdfcecc2936bc880726902f5560061188ffff82ef7ee6f346983",
+    "expected_partitions": 33015,
+    "expected_rows": 7724498,
+    "output_run_id": "tushare_stk_mins_1m_2019_2025_ea0cbb8f_walkforward_campaign145_feature_library_v1",
+    "candidate_appended_complete_definition_count": 154,
+    "candidate_appended_complete_definition_order_sha256": "dcea4c75bb9194ea2e522d803409e4005cf0185fe87c84f6f9810dbe51de2f75",
+    "numeric_comparator_count": 141,
+    "numeric_comparator_order_sha256": "ec1aebcb939ad516c58037a36a4aaadd4ad8b2abbd3c884705895c58da85a2ee",
+    "provider_request_allowed": false,
+    "credential_required": false
+  },
+  "synthetic_verification": {
+    "formula_test_path": "tests/data_collector_tests/test_a_share_three_day_walkforward_campaign145_formula.py",
+    "formula_test_sha256": "babd1a283f26e13fb5d22d67f916372d800bf175eaa81acb6ab2f369b8e9f05e",
+    "feature_test_path": "tests/data_collector_tests/test_a_share_three_day_walkforward_campaign145_features.py",
+    "feature_test_sha256": "15ab7acbbda8f4a810e92d61b668355395631856f941b114d2eae450297c3a1d",
+    "audit_test_path": "tests/data_collector_tests/test_a_share_three_day_walkforward_campaign145_no_return_audit.py",
+    "audit_test_sha256": "76c20bdc8fdea9f82ca177171ce1da117a22214759d36adb02adfc074222b069",
+    "black_passed": true,
+    "ruff_passed": true,
+    "pytest_command": "PYTHONPATH=. /Volumes/DIsk/Coding/anaconda3/bin/pytest -q tests/data_collector_tests/test_a_share_three_day_walkforward_campaign145_formula.py tests/data_collector_tests/test_a_share_three_day_walkforward_campaign145_features.py tests/data_collector_tests/test_a_share_three_day_walkforward_campaign145_no_return_audit.py",
+    "exit_code": 0,
+    "passed": 18,
+    "failed": 0
+  },
+  "pre_freeze_failures_preserved": [
+    {
+      "failure_id": "campaign145_infrastructure_001",
+      "path": "docs/a_share_three_day_walkforward_campaign_145_zsh_nomatch_inventory_failure_20260814.json",
+      "sha256": "db6be386c51bf650d108aa50bf2532d52ab6db189149ff1add7b8230cb8e140a"
+    },
+    {
+      "failure_id": "campaign145_infrastructure_002",
+      "path": "docs/a_share_three_day_walkforward_campaign_145_formula_black_failure_20260814.json"
+    },
+    {
+      "failure_id": "campaign145_infrastructure_003",
+      "path": "docs/a_share_three_day_walkforward_campaign_145_formula_nested_approx_test_failure_20260814.json"
+    },
+    {
+      "failure_id": "campaign145_infrastructure_004",
+      "path": "docs/a_share_three_day_walkforward_campaign_145_feature_import_ruff_failure_20260814.json"
+    },
+    {
+      "failure_id": "campaign145_infrastructure_005",
+      "path": "docs/a_share_three_day_walkforward_campaign_145_audit_path_test_failure_20260814.json"
+    }
+  ],
+  "execution_protocol": {
+    "plan_must_exit_zero_and_return_ready_true_before_build": true,
+    "build_requires_confirm_build": true,
+    "plan_reads_source_manifest_metadata_but_no_partition_rows": true,
+    "build_may_read_only_the_frozen_source_projection_and_joint_clean_identity": true,
+    "each_input_and_output_partition_byte_hash_verified": true,
+    "existing_final_output_never_overwritten": true,
+    "provider_request_allowed": false
+  },
+  "research_boundary": {
+    "campaign145_historical_source_rows_read": false,
+    "campaign145_candidate_values_computed_or_read": false,
+    "campaign145_comparator_values_read": false,
+    "historical_daily_price_or_forward_return_values_read": false,
+    "stress_2024_2025_opened": false,
+    "provider_request_issued": false,
+    "credential_loaded": false,
+    "candidate49_historical_backfill_performed": false,
+    "candidate49_ledgers_changed": false,
+    "second_prospective_candidate_created": false,
+    "current_scoring_selection_sizing_positions_or_orders_performed": false,
+    "investment_advice": false
+  },
+  "next_action": "Run the frozen feature builder plan. Only ready=true with process exit zero permits the one confirmed local snapshot build."
+}

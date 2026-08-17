@@ -1,0 +1,37 @@
+{
+  "schema_version": 1,
+  "kind": "a_share_three_day_walkforward_campaign097_prevalue_black_format_failure",
+  "status": "recorded_before_campaign097_source_benchmark_candidate_or_comparison_values",
+  "recorded_at": "2026-08-07T05:20:00Z",
+  "command_semantics": "Run the seven Campaign097 synthetic tests, Black check, and Ruff check before implementation freeze.",
+  "results": {
+    "synthetic_pytest_passed": 7,
+    "synthetic_pytest_failed": 0,
+    "black_check_passed": false,
+    "black_files_requiring_format": 2,
+    "ruff_check_passed": true
+  },
+  "preformat_files": [
+    {
+      "path": "scripts/a_share_three_day_walkforward_campaign097_features.py",
+      "sha256": "e97918acb591a5fc71cbefd21847732e4088f4bd24c728a54204f0b5fdcbb25f"
+    },
+    {
+      "path": "tests/data_collector_tests/test_a_share_three_day_walkforward_campaign097_features.py",
+      "sha256": "9c381af0ed4ae767275c671ddf5ad1cd4b9a112346c6153e35795571f72187ad"
+    }
+  ],
+  "authorized_repair": "Apply Black's deterministic formatting only, then rerun the identical tests and static checks. Do not change the formula, direction, support predicate, peer rule, source projection, gates, or search space.",
+  "research_boundary": {
+    "minute_source_rows_read": false,
+    "market_benchmark_values_computed": false,
+    "candidate_values_computed": false,
+    "comparison_values_read": false,
+    "daily_price_fields_read": [],
+    "forward_returns_read": false,
+    "provider_request_issued": false,
+    "candidate49_ledgers_changed": false
+  },
+  "research_attempt_count_increment": 1,
+  "attempt_class": "infrastructure_prevalue_format_check_failure"
+}

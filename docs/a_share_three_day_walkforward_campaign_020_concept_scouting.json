@@ -1,0 +1,105 @@
+{
+  "version": 1,
+  "kind": "a_share_three_day_walkforward_campaign020_concept_scouting",
+  "status": "one_independent_event_timing_concept_selected_before_candidate_values_comparison_values_or_returns",
+  "recorded_at": "2026-07-29T02:20:00Z",
+  "purpose": "Select one economically independent Campaign020 mechanism after Campaign019 stopped at coverage, without repairing or combining any terminal factor and without reading a Campaign020 value, comparison value, daily price, or forward return.",
+  "authoritative_boundary": {
+    "iteration_state": {
+      "path": "docs/a_share_three_day_iteration_status_20260729_campaign019.json",
+      "sha256": "77c11172bd6952b7a0b9b2be4e6ee4bd3782152c73516816567a26ed0297d47f"
+    },
+    "historical_walkforward_policy": {
+      "path": "docs/a_share_three_day_historical_walkforward_research_policy_20260727.json",
+      "sha256": "38426d6161b9bfed323c58caba18feca668b8c9d53e294951a8ba90c01a798bb"
+    },
+    "campaign019_terminal_record": {
+      "path": "docs/a_share_three_day_walkforward_campaign_019_research_record.json",
+      "sha256": "92d99a2a9d11165050686a8ec054e8e42e1e7b49ed5ef27ecab83bdbbe562d93"
+    }
+  },
+  "selected_concept": {
+    "concept_name": "quarterly_announcement_freshness",
+    "mechanism_family": "point_in_time_corporate_disclosure_timing",
+    "economic_question": "Does the recency of a newly available quarterly disclosure create short-lived information attention or post-disclosure drift that remains relevant from the next open through the third close?",
+    "economic_hypothesis": "More recently effective quarterly disclosures concentrate new firm-specific information and investor attention. A monotone decay in disclosure freshness may therefore rank three-session continuation without using any price, return, activity, or terminal factor value.",
+    "provisional_direction": "higher",
+    "allowed_source_fields": [
+      "datetime",
+      "symbol",
+      "provider",
+      "instrument",
+      "report_date",
+      "announcement_date"
+    ],
+    "forbidden_source_fields": [
+      "roe",
+      "net_profit",
+      "revenue_yoy",
+      "profit_yoy",
+      "minute open",
+      "minute high",
+      "minute low",
+      "minute close",
+      "minute volume",
+      "minute amount",
+      "daily open",
+      "daily high",
+      "daily low",
+      "daily close",
+      "daily volume",
+      "daily amount",
+      "forward return"
+    ],
+    "availability_rule": "A disclosure becomes usable only on the first accepted local session strictly after announcement_date. At each signal close use only the most recent effective disclosure whose effective session is no later than that signal session.",
+    "selected_decay_scale_sessions": 60,
+    "why_60_sessions": "Sixty accepted sessions is a fixed approximate quarter-length information-decay scale, selected before values with no window search."
+  },
+  "rejected_concepts": [
+    {
+      "concept": "upper_lower_wick_rejection_asymmetry",
+      "reason": "This reopens terminal Campaign009 body-range and wick variants and is not an independent mechanism."
+    },
+    {
+      "concept": "zero_return_volume_or_amount_absorption",
+      "reason": "Campaign005 terminally consumed zero-return activity absorption; changing activity units or normalization would be a prohibited repair."
+    },
+    {
+      "concept": "return_or_range_autocorrelation",
+      "reason": "These reopen terminal directional serial dependence, diffusive variation, Campaign012 range reversal, or Campaign019 continuity."
+    },
+    {
+      "concept": "activity_profile_timing_or_concentration",
+      "reason": "Amount and share-volume entropy, persistence, center of mass, late share, auction share, and market synchronization are terminal."
+    },
+    {
+      "concept": "terminal_factor_combination",
+      "reason": "Combining already terminated definitions is prohibited by the authoritative boundary and cannot create a Campaign020 rescue."
+    }
+  ],
+  "independence_claim_before_values": {
+    "uses_price_or_return_path": false,
+    "uses_intraday_ohlcv_or_amount": false,
+    "uses_terminal_factor_value": false,
+    "combines_terminal_factors": false,
+    "uses_candidate49_value_or_return": false,
+    "uses_only_accepted_stock_day_identity_plus_point_in_time_disclosure_identity_and_timing": true
+  },
+  "research_boundary": {
+    "campaign020_candidate_values_read": false,
+    "comparison_factor_values_read": false,
+    "historical_daily_price_fields_read": [],
+    "historical_forward_return_fields_read": false,
+    "candidate49_historical_return_read": false,
+    "candidate49_signal_or_execution_ledger_changed": false,
+    "candidate50_prospective_activation_created": false,
+    "training_or_model_fitting_performed": false,
+    "current_scoring_selection_sizing_or_orders_performed": false,
+    "provider_request_issued": false
+  },
+  "decision": {
+    "advance_to_separate_no_value_mechanism_overlap_audit": true,
+    "new_daily_bar_required": false,
+    "same_day_1630_wait_required": false
+  }
+}

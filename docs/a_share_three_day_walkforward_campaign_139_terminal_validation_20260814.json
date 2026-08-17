@@ -1,0 +1,54 @@
+{
+  "schema_version": 1,
+  "kind": "a_share_three_day_walkforward_campaign139_terminal_validation",
+  "status": "terminal_artifacts_bindings_tests_and_static_checks_passed",
+  "recorded_at": "2026-08-14T13:43:55+0800",
+  "authoritative_artifacts": {
+    "status": {
+      "path": "docs/a_share_three_day_iteration_status_20260814_campaign139_capacity_terminal_v2.json",
+      "sha256": "57d2a10a5d2a474b9e782e6b37260a370eec9c147d99f6f1f78268482bcef074"
+    },
+    "policy": {
+      "path": "docs/a_share_three_day_walkforward_future_numeric_comparison_eligibility_policy_v176_20260814.json",
+      "sha256": "2ea7906065afb30cd8f72789bcb39c656f3dc57ac919719365a2186f1db43c86"
+    },
+    "attempt_ledger": {
+      "path": "data/experiments/short_horizon/historical_walkforward/campaign_139/research_attempt_ledger_v4.json",
+      "sha256": "ab3c0d129fb795d6454c5b708c02922d878202bb2d806759066bc9fb91cc9f5f"
+    },
+    "final_report": {
+      "path": "docs/a_share_three_day_walkforward_campaign_139_terminal_report_v2.md",
+      "sha256": "b0189f4bc75ce17b26c8461e3e5d6a0dfc6f2bda871adb4d72e0c9df5b33d03f"
+    }
+  },
+  "implementation_and_test_hashes": {
+    "formula_runner_sha256": "8939c7e3b1deca67cd70fba9d100417d0fbadb9188033d90c464349641a81f18",
+    "source_runner_sha256": "5ea523eabe6742737678f3236235e2447453201624df4dd23fe5145f0b5b2e19",
+    "capacity_runner_sha256": "cb32f5a2d90773b33d6110545c55b7055a480c97912011cc932d93d47ca49497",
+    "formula_test_sha256": "0d324738729ae04ebf3ef33d1d82aa85e4778e8c3a480071bb3eb3892e546e4f",
+    "source_test_sha256": "6dc046ff0c60ca420ae39ee9aac0483c44014f190995dff43d39a41deaa7308a",
+    "capacity_test_sha256": "2c745e0296894f66b2b11b87ac2e46dd721e08ae88c3a791aa8fe415eca23801",
+    "terminal_test_sha256": "7c924f1ef07ed8bb7d5917bde2ded28adff43d9b64702f1a267ba58563e9bf25"
+  },
+  "validation_results": {
+    "terminal_result_binding_count_passed": 7,
+    "policy_binding_count_passed": 5,
+    "status_binding_count_passed": 7,
+    "failed_binding_count": 0,
+    "json_parse": "passed",
+    "pytest": "20 passed in 6.12s",
+    "black_check": "7 files would be left unchanged",
+    "ruff": "All checks passed",
+    "exit_code": 0
+  },
+  "research_boundary": {
+    "validation_read_new_research_values": false,
+    "historical_daily_price_or_forward_return_values_read": false,
+    "stress_2024_2025_opened": false,
+    "provider_request_issued": false,
+    "candidate49_ledgers_changed": false,
+    "current_scoring_selection_sizing_positions_or_orders_performed": false,
+    "investment_advice": false
+  },
+  "next_action": "Keep the goal active and begin Campaign140 offline from a genuinely new finite prevalue mechanism."
+}

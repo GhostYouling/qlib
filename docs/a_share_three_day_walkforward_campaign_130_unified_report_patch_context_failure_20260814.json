@@ -1,0 +1,18 @@
+{
+  "schema_version": 1,
+  "kind": "a_share_three_day_walkforward_campaign130_infrastructure_failure",
+  "status": "recorded_atomic_unified_report_patch_context_failure",
+  "recorded_at": "2026-08-14T07:46:42+08:00",
+  "stage": "campaign130_unified_report_publication",
+  "failed_command_summary": "One atomic apply_patch attempted to append Campaign130 to both unified reports using a Campaign129 context line that did not match the target bytes exactly; apply_patch rejected the whole patch before either write.",
+  "recovery_summary": "The exact report tails were read and each report is patched separately with its observed end context. No existing Campaign129 or earlier report text is changed.",
+  "failure_handling": {
+    "failed_exit_treated_as_success": false,
+    "target_files_written_by_failed_patch": false,
+    "provider_request_issued": false,
+    "credential_loaded": false,
+    "source_candidate_comparator_price_or_return_value_read": false,
+    "candidate49_ledger_changed": false,
+    "scientific_result_changed": false
+  }
+}

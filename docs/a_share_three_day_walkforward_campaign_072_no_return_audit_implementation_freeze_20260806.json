@@ -1,0 +1,43 @@
+{
+  "version": 1,
+  "kind": "a_share_three_day_walkforward_campaign072_no_return_audit_implementation_freeze",
+  "status": "frozen_after_verified_snapshot_before_coverage_or_comparison_values",
+  "recorded_at": "2026-08-06T06:14:00+08:00",
+  "protocol": {
+    "path": "docs/a_share_three_day_walkforward_campaign_072_no_return_preregistration.json",
+    "sha256": "32f16b1e8e07b0d60aa6646f66c52740e330fa02ef631803fb68b55a7e79cc98"
+  },
+  "snapshot_binding": {
+    "path": "docs/a_share_three_day_walkforward_campaign_072_feature_snapshot_binding_20260806.json",
+    "sha256": "eb36b61ecc800b13e40f8947da5b0fd049542df784baafc8f86a3c38c82b2d1d"
+  },
+  "sequence_record": {
+    "path": "docs/a_share_three_day_walkforward_campaign_072_audit_freeze_sequence_record_20260806.json",
+    "sha256": "cddf3537c70ea033cfc14a5e0b85e798d5d50ae9a4e4fba5228c792bf15f465f"
+  },
+  "audit_runner": {
+    "path": "scripts/a_share_three_day_walkforward_campaign072_no_return_audit.py",
+    "sha256": "039671f20239864fec864f92d121fba4f628618743dac87946d4410f9ab8228e"
+  },
+  "tests": {
+    "path": "tests/data_collector_tests/test_a_share_three_day_walkforward_campaign072_no_return_audit.py",
+    "sha256": "a8f0e9c2cf1584ab49f8dc5da0362675a195d37ec04c2e1f88beed6412d8b114",
+    "result": "4 passed",
+    "real_coverage_or_comparison_values_read": false
+  },
+  "ordered_gate_implementation": {
+    "coverage_first": true,
+    "comparison_loader_unreachable_before_coverage_pass": true,
+    "numeric_comparator_count": 102,
+    "numeric_comparator_order_sha256": "b473b8e32852dbbd1ca6beeb567805af55b77ec2e91222ec3e75e4bd64a64226",
+    "Campaign071_loaded_last_only_after_coverage": true,
+    "all_comparators_must_pass": true,
+    "structural_Campaign063_challenge_retained": true
+  },
+  "coverage_or_capacity_metrics_computed_before_freeze": false,
+  "comparison_values_read_before_freeze": false,
+  "historical_daily_price_fields_read_before_freeze": [],
+  "historical_forward_returns_read_before_freeze": false,
+  "provider_request_issued_before_freeze": false,
+  "candidate49_ledgers_changed": false
+}

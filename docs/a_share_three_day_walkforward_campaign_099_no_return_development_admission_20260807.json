@@ -1,0 +1,51 @@
+{
+  "schema_version": 1,
+  "kind": "a_share_three_day_walkforward_campaign099_no_return_audit",
+  "status": "completed_with_one_admissible_factor_pending_walkforward_preregistration",
+  "recorded_at": "2026-08-07T10:58:00Z",
+  "canonical_development_admission_wrapper": true,
+  "authoritative_audit": {
+    "path": "data/experiments/short_horizon/historical_walkforward/campaign_099/no_return/20260807T105112Z_campaign099_no_return_audit.json",
+    "sha256": "6df7bfca75a59d00b34a431e2fe5c57d9872587a43b270fa23c5f17ba6411f72"
+  },
+  "audit_implementation_freeze": {
+    "path": "docs/a_share_three_day_walkforward_campaign_099_no_return_audit_implementation_freeze_v3_20260807.json",
+    "sha256": "24bd189f01682dbfbf47616cb82688fc513e9b397be43974a59f762c0315e645"
+  },
+  "audit_activation_binding": {
+    "path": "docs/a_share_three_day_walkforward_campaign_099_no_return_audit_activation_binding_v3_20260807.json",
+    "sha256": "883f74fd3fb0f167f7107c862913ad44f7ad914f9f64f814bf611880d2eee768"
+  },
+  "no_return_protocol": {
+    "path": "docs/a_share_three_day_walkforward_campaign_099_no_return_preregistration.json",
+    "sha256": "a10f8cf03a1acda3a3632fd7a648f3ec22697ca4074e31d85e539788b37720fc"
+  },
+  "feature_snapshot_binding": {
+    "path": "docs/a_share_three_day_walkforward_campaign_099_feature_snapshot_binding_20260807.json",
+    "sha256": "e90f88f2fd3f102ecfc20610978e125320d2f51e8d155cb9b82e2759824c59f8"
+  },
+  "admissible_factor_count": 1,
+  "admissible_factor_names": [
+    "intraday_market_close_location_profile_synchronization_240m"
+  ],
+  "failed_factor_names": [],
+  "coverage_gate_passed": true,
+  "quality_listing_eligible_rows": 1331759,
+  "candidate_eligible_rows": 1328449,
+  "median_coverage": 0.9985369414262841,
+  "p05_coverage": 0.9935483870967742,
+  "p05_eligible_names": 138,
+  "potential_nonoverlapping_three_session_cohorts": 539,
+  "comparison_factor_count": 127,
+  "comparison_order_matches_preregistration": true,
+  "all_required_numeric_comparisons_passed": true,
+  "closest_numeric_comparator": "intraday_market_idiosyncratic_share_238m",
+  "closest_numeric_comparator_median_daily_rank_correlation": 0.7120505014243156,
+  "maximum_observed_absolute_median_daily_rank_correlation": 0.7120505014243156,
+  "historical_daily_price_fields_read": [],
+  "historical_forward_return_fields_read": false,
+  "provider_request_issued": false,
+  "candidate49_historical_return_read": false,
+  "candidate49_prospective_ledgers_changed": false,
+  "current_scoring_selection_sizing_or_orders_performed": false
+}

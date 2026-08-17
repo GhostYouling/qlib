@@ -1,0 +1,44 @@
+{
+  "schema_version": 1,
+  "kind": "a_share_three_day_walkforward_campaign113_adapter_formula_verification",
+  "status": "verified_adapter_formula_policy_ledgers_reports_and_candidate49_boundary",
+  "recorded_at": "2026-08-09T01:37:10+08:00",
+  "authoritative_status": {
+    "path": "docs/a_share_three_day_iteration_status_20260809_campaign113_adapter_formula.json",
+    "sha256": "33aeb5d1992d3b5bb3d24c18a0fc38c0808688bea473694d33b5b2d37c7dabb4"
+  },
+  "verification": {
+    "directed_pytest_result": "25 passed in 1.86s",
+    "black_check": "passed",
+    "ruff_check": "passed",
+    "bound_file_count_checked": 17,
+    "all_bound_file_sha256_values_match": true,
+    "ledger_v1_is_exact_prefix_of_v2": true,
+    "ledger_v2_to_v3_chain_continuity_passed": true,
+    "current_chain_tip_sha256": "3be0807c1cc584775028844a2f69b9082e85ff5c2ec8634ed7870780018c08a1",
+    "campaign113_total_attempt_count": 10,
+    "campaign113_total_infrastructure_failure_count": 8,
+    "cumulative_historical_research_attempt_count": 837,
+    "cumulative_return_reading_development_trial_count": 302
+  },
+  "scientific_state": {
+    "complete_definition_count": 141,
+    "numeric_comparator_count": 134,
+    "campaign113_complete_definition_count": 1,
+    "candidate_numeric_snapshot_count": 0,
+    "candidate_or_comparator_values_read": false,
+    "historical_daily_price_or_forward_return_values_read": false,
+    "stress_2024_2025_opened": false,
+    "historical_predictive_value_established": false
+  },
+  "operational_state": {
+    "programmatic_exchange_request_issued": false,
+    "candidate49_signal_ledger_entries": 0,
+    "candidate49_execution_ledger_entries": 0,
+    "candidate49_historical_backfill_performed": false,
+    "second_prospective_candidate_created": false,
+    "current_scoring_selection_sizing_or_orders_performed": false,
+    "investment_advice": false
+  },
+  "next_safe_action": "Freeze exact official static metadata endpoint/schema/pagination mapping and an atomic one-shot zero-return source-acceptance workflow before any exchange list/API request."
+}

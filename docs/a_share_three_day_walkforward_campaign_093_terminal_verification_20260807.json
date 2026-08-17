@@ -1,0 +1,51 @@
+{
+  "schema_version": 1,
+  "kind": "a_share_three_day_walkforward_campaign093_terminal_verification",
+  "status": "terminal_chain_verified_numeric_uniqueness_rejection_ready_for_campaign094_prevalue_research",
+  "recorded_at": "2026-08-07T02:07:46Z",
+  "terminal_state": {
+    "path": "docs/a_share_three_day_iteration_status_20260807_campaign093_terminal.json",
+    "sha256": "ffaa325909cd1d54e8a95d9ab7c7a30949e7a6672236ae20d8845ac73c66fe59"
+  },
+  "future_duplicate_policy_v37": {
+    "path": "docs/a_share_three_day_walkforward_future_numeric_comparison_eligibility_policy_v37_20260807.json",
+    "sha256": "0e0527d3f4fb5616f3eb7b24554eaa5fa71d354d89131193420cd1634de90fe0"
+  },
+  "terminal_test": {
+    "path": "tests/data_collector_tests/test_a_share_three_day_walkforward_campaign093_terminal.py",
+    "sha256": "a6021ac7fcb939b802697e2fcf986001cfb51d0c61dd752469ea904575c3520d"
+  },
+  "verification_results": {
+    "terminal_test_result": "5 passed",
+    "campaign093_and_candidate49_whitelist_result": "102 passed",
+    "terminal_chain_generic_binding_count": 23,
+    "terminal_chain_generic_binding_failures": 0,
+    "json_document_count_validated": 12,
+    "black_check_passed": true,
+    "ruff_check_passed": true,
+    "timestamp_not_after_observed_clock_test_passed": true,
+    "complete_definition_count": 125,
+    "complete_definition_order_sha256": "3742401d8d87cbeb3a104545c25c1eb279832915f42dc46f1367dcbdc28f740c",
+    "numeric_comparator_count": 123,
+    "numeric_comparator_order_sha256": "b92614c1366ec480913854adace1cad0d926a0e89c8bbebca70c81bf486cac3a"
+  },
+  "candidate49_verification": {
+    "signal_ledger_entry_count": 0,
+    "signal_ledger_sha256": "5193f00d7f36da003f53cec387900da4c3d002299f5dfcfc1a95eaa199ed3a79",
+    "execution_ledger_entry_count": 0,
+    "execution_ledger_sha256": "d57a3e61eac969e42cafa418ccd8c0a5ee65dcf69da145bb2c096c2a02a2ea4f",
+    "credential_present": true,
+    "credential_secret_printed_hashed_or_logged": false,
+    "provider_request_issued": false,
+    "historical_backfill_performed": false,
+    "same_day_plan_or_run_executed": false
+  },
+  "research_boundary": {
+    "research_values_or_returns_recomputed_for_terminal_verification": false,
+    "campaign093_development_or_2024_2025_return_fields_read": false,
+    "candidate49_ledgers_changed": false,
+    "second_prospective_candidate_created": false,
+    "current_scoring_selection_sizing_or_orders_performed": false,
+    "investment_advice": false
+  }
+}

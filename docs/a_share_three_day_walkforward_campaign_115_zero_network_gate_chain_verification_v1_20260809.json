@@ -1,0 +1,86 @@
+{
+  "schema_version": 1,
+  "kind": "a_share_three_day_walkforward_campaign115_zero_network_gate_chain_verification",
+  "status": "gate_chain_status_entry_verified_closed_without_masked_exit_or_research_value",
+  "recorded_at": "2026-08-09T10:00:00+08:00",
+  "recorded_at_semantics": "monotonic_logical_append_time_after_gate_chain_implementation_freeze_v1_not_host_wall_clock_measurement",
+  "bindings": {
+    "implementation_freeze_v1": {
+      "path": "docs/a_share_three_day_walkforward_campaign_115_zero_network_gate_chain_implementation_freeze_v1_20260809.json",
+      "sha256": "2be3193587e0d0fb027d9f4d532d10636d45efa6add41ca584bf0470d876579c"
+    },
+    "script": {
+      "path": "scripts/a_share_tushare_limit_up_queue_gate_chain.py",
+      "sha256": "1f3e04b171b00c7af37e183c19e174730d9e323f5b52b606fb8b14f06c633d67"
+    },
+    "test": {
+      "path": "tests/data_collector_tests/test_a_share_tushare_limit_up_queue_gate_chain.py",
+      "sha256": "d1dd02be3803828a330e3f395143d7d1c4e2764981e24b1506a41396a3446734"
+    }
+  },
+  "command_verification": {
+    "command": "/Volumes/DIsk/Coding/anaconda3/bin/python3.12 scripts/a_share_tushare_limit_up_queue_gate_chain.py status",
+    "process_exit_code": 0,
+    "status": "gate_chain_validated_with_one_or_more_scientific_plans_closed",
+    "all_scientific_plans_ready": false,
+    "plan_process_exit_codes_in_order": [
+      2,
+      2,
+      2,
+      2,
+      2
+    ],
+    "inspection_process_exit_codes_in_order": [
+      0,
+      0,
+      0,
+      0
+    ],
+    "acceptance_plan_blockers": [
+      "manual_5000_point_entitlement_confirmation"
+    ],
+    "acceptance_inspection_status": "no_attempt_journal",
+    "development_source_plan_blockers": [
+      "manual_5000_point_entitlement_confirmation",
+      "acceptance_success_committed"
+    ],
+    "semantic_verification_plan_blockers": [
+      "source_final_root_present",
+      "internal_source_manifest_present",
+      "repository_source_manifest_present",
+      "source_manifests_byte_identical"
+    ],
+    "semantic_receipt_inspection_status": "no_semantic_verification_receipt",
+    "ordered_no_return_plan_blockers": [
+      "semantic_verification_receipt_valid",
+      "source_final_root_present"
+    ],
+    "ordered_no_return_inspection_status": "no_ordered_no_return_audit",
+    "development_trial_plan_blockers": [
+      "ordered_no_return_audit_admitted_one_factor"
+    ],
+    "development_trial_inspection_status": "no_campaign115_development_trial"
+  },
+  "quality_verification": {
+    "black_check": "2 files would be left unchanged",
+    "ruff_check": "all checks passed",
+    "focused_tests": "3 passed in 9.68s",
+    "mismatched_plan_exit_negative_control": true,
+    "forbidden_provider_request_negative_control": true,
+    "real_clean_subprocess_status_regression": true
+  },
+  "research_boundary": {
+    "provider_action_authorized_by_status_command": false,
+    "confirmed_scientific_command_executed": false,
+    "provider_request_issued": false,
+    "credential_value_printed_hashed_or_persisted": false,
+    "candidate_or_comparator_values_read": false,
+    "historical_daily_price_or_forward_return_values_read": false,
+    "partition_year_2024_or_2025_values_read": false,
+    "candidate49_historical_backfill_performed": false,
+    "candidate49_ledgers_changed": false,
+    "second_prospective_candidate_created": false,
+    "current_scoring_selection_sizing_or_orders_performed": false,
+    "investment_advice": false
+  }
+}

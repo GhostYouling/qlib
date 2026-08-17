@@ -1,0 +1,193 @@
+{
+  "version": 1,
+  "kind": "a_share_three_day_walkforward_campaign006_mechanism_overlap_audit",
+  "status": "one_exact_mechanism_frozen_before_campaign006_candidate_or_comparison_values_or_returns",
+  "recorded_at": "2026-07-28T10:16:00Z",
+  "purpose": "Resolve the one Campaign006 concept into an exact, finite, no-value research mechanism. This audit freezes the formula, direction, timestamp and missing semantics, rejects alternative definitions, and challenges the mechanism against all 29 prior minute comparisons before any external minute partition, candidate value, comparison value, daily price, or forward return is opened.",
+  "authoritative_bindings": {
+    "concept_scouting": {
+      "path": "docs/a_share_three_day_walkforward_campaign_006_concept_scouting.json",
+      "sha256": "745bfd2e50b87b2a67f099ad31794b500dcd8e8ee204f9b697d278c2b0a4b767"
+    },
+    "iteration_state": {
+      "path": "docs/a_share_three_day_iteration_status_20260728_campaign005.json",
+      "sha256": "196873713efc1ab323b8511427a3e3613988b6013a5dcc2544a32901ca45ffc0"
+    },
+    "historical_walkforward_policy": {
+      "path": "docs/a_share_three_day_historical_walkforward_research_policy_20260727.json",
+      "sha256": "38426d6161b9bfed323c58caba18feca668b8c9d53e294951a8ba90c01a798bb"
+    },
+    "campaign005_research_record": {
+      "path": "docs/a_share_three_day_walkforward_campaign_005_research_record.json",
+      "sha256": "add4984c7bcfc9cd2aa9bd0b7ed31d324577b24378ec9f931ac16effbd69a604",
+      "terminal": true,
+      "development_survivors": 0,
+      "stress_2024_2025_opened": false
+    }
+  },
+  "source_schema_boundary": {
+    "provider": "tushare",
+    "frequency": "1m",
+    "accepted_source_grid_rows": 241,
+    "standalone_0930_row_preserved_but_excluded_from_formula": true,
+    "continuous_session_rows": "09:31-11:30 and 13:01-15:00",
+    "joint_clean_manifest": {
+      "path_below_data_root": "derived/a_share/rich/tushare/minute_sentiment_clean/tushare_stk_mins_1m_2019_2025_ea0cbb8f_sentiment_clean_v1/snapshot_manifest.json",
+      "sha256": "453c6719cb3c7da42fed8807b28a2bfe988700283e9625a6db97912534f368de",
+      "dataset_sha256": "0e4fe7c05536cdfcecc2936bc880726902f5560061188ffff82ef7ee6f346983",
+      "partitions": 33015,
+      "rows": 7724498
+    },
+    "allowed_transport_fields": [
+      "datetime",
+      "symbol",
+      "provider",
+      "close",
+      "volume",
+      "amount"
+    ],
+    "forbidden_source_fields": [
+      "open",
+      "high",
+      "low"
+    ],
+    "daily_price_or_return_substitution_allowed": false,
+    "provider_request_allowed": false
+  },
+  "comparison_catalog": {
+    "comparison_count": 29,
+    "maximum_allowed_absolute_median_daily_rank_correlation": 0.8,
+    "minimum_pairwise_names_per_session": 50,
+    "minimum_pairwise_sessions_per_comparison": 100,
+    "score_direction_normalization": "Convert every factor to its frozen higher-is-better score direction before same-session average-rank Spearman correlation.",
+    "factors": [
+      {"name": "late_return_30m", "score_direction": "higher"},
+      {"name": "late_amount_share_30m", "score_direction": "higher"},
+      {"name": "late_vwap_to_day_vwap_30m", "score_direction": "higher"},
+      {"name": "intraday_realized_volatility", "score_direction": "lower"},
+      {"name": "afternoon_signed_amount_efficiency_120m", "score_direction": "higher"},
+      {"name": "afternoon_drawdown_recovery_resilience_120m", "score_direction": "higher"},
+      {"name": "intraday_amount_participation_entropy_240m", "score_direction": "higher"},
+      {"name": "intraday_amount_profile_serial_persistence_240m", "score_direction": "higher"},
+      {"name": "intraday_upside_semivariance_share_239m", "score_direction": "higher"},
+      {"name": "intraday_terminal_close_location_240m", "score_direction": "higher"},
+      {"name": "intraday_return_sign_run_imbalance_238p", "score_direction": "higher"},
+      {"name": "intraday_volatility_resolution_238m", "score_direction": "higher"},
+      {"name": "intraday_amount_lead_return_correlation_238p", "score_direction": "higher"},
+      {"name": "intraday_amount_center_of_mass_240m", "score_direction": "higher"},
+      {"name": "intraday_up_move_amount_share_238m", "score_direction": "higher"},
+      {"name": "intraday_diffusive_variation_ratio_238m", "score_direction": "higher"},
+      {"name": "intraday_amount_volatility_coupling_238p", "score_direction": "higher"},
+      {"name": "intraday_return_variance_entropy_238m", "score_direction": "higher"},
+      {"name": "intraday_return_skewness_238m", "score_direction": "higher"},
+      {"name": "intraday_bar_vwap_close_pressure_240m", "score_direction": "higher"},
+      {"name": "intraday_price_update_share_238m", "score_direction": "higher"},
+      {"name": "intraday_market_idiosyncratic_share_238m", "score_direction": "higher"},
+      {"name": "intraday_opening_auction_amount_share_241m", "score_direction": "higher"},
+      {"name": "intraday_market_amount_profile_synchronization_240m", "score_direction": "higher"},
+      {"name": "intraday_cumulative_vwap_crossing_rate_240m", "score_direction": "higher", "comparison_only_no_historical_return_read": true},
+      {"name": "intraday_market_neutral_late_residual_drift_238m", "score_direction": "higher", "terminal_campaign": 4},
+      {"name": "intraday_negative_return_absorption_rate_236p", "score_direction": "higher", "terminal_campaign": 4},
+      {"name": "intraday_signed_path_efficiency_239m", "score_direction": "higher", "terminal_campaign": 4},
+      {"name": "intraday_zero_return_amount_intensity_238m", "score_direction": "higher", "terminal_campaign": 5}
+    ]
+  },
+  "candidate": {
+    "name": "intraday_transaction_price_path_confirmation_238p",
+    "direction": "higher",
+    "economic_hypothesis": "A close-return path that broadly agrees with the return path of per-minute executed value per share reflects transaction-confirmed price discovery rather than stale or mechanically marked closes; higher confirmation may persist from the next open through the third close.",
+    "formula": "PearsonCorr(log(close_t/close_t-1), log((amount_t/volume_t)/(amount_t-1/volume_t-1))) over retained within-half adjacent active-bar pairs",
+    "formula_steps": [
+      "Require the exact accepted 241-row source grid, preserve but exclude the standalone 09:30 row, and use the 240 bars at 09:31-11:30 and 13:01-15:00.",
+      "Require every selected close to be finite and strictly positive and every selected volume and amount to be finite and nonnegative.",
+      "Classify a bar as active only when both volume and amount are strictly positive; classify it as inactive only when both are exactly zero. If exactly one of volume or amount is zero, the stock-day is missing.",
+      "For each active bar define transaction_price_t=amount_t/volume_t. No provider-unit rescaling is applied because any positive constant unit multiplier cancels from adjacent log returns.",
+      "Form adjacent pairs separately within morning and afternoon. Exclude the 11:30-to-13:01 transition and retain a pair only when both endpoint bars are active; at most 238 pairs are possible.",
+      "Require at least 120 retained pairs. This fixed threshold demands at least one half-session-equivalent of active adjacent evidence and is not adjusted after coverage observation.",
+      "Compute the two retained vectors of adjacent log close returns and adjacent log transaction-price returns.",
+      "Require finite values and strictly positive population variance in both return vectors; otherwise the stock-day is missing.",
+      "Return their unweighted Pearson correlation. Do not clip, winsorize, rank, smooth, impute, or amount-weight the stock-day value."
+    ],
+    "source_fields_used_by_formula": [
+      "datetime",
+      "symbol",
+      "provider",
+      "close",
+      "volume",
+      "amount"
+    ],
+    "timestamp_semantics": "Exactly 119 possible adjacent pairs per half-session, no standalone 09:30 row and no lunch transition.",
+    "zero_missing_denominator_semantics": "Both-zero amount/volume bars are inactive and remove adjacent pairs; a one-sided zero pair invalidates the stock-day; fewer than 120 retained pairs or a constant return vector is missing.",
+    "valid_range": {
+      "lower": -1.0,
+      "lower_inclusive": true,
+      "upper": 1.0,
+      "upper_inclusive": true
+    },
+    "minimum_retained_pairs": 120,
+    "mechanism_distinction_before_values": [
+      "Bar-VWAP close pressure averages the level gap log(close_t/transaction_price_t), weighted by amount. This candidate correlates adjacent changes of the two price paths, is invariant to a constant level gap, and applies no amount weight.",
+      "Cumulative VWAP crossing counts sign changes of close around a causal cumulative own-stock VWAP. This candidate has no cumulative benchmark and counts no crossings.",
+      "Amount-volatility coupling correlates log amount with absolute close returns. This candidate correlates two signed price-return paths and does not correlate activity magnitude with volatility.",
+      "Diffusive variation ratio and price-update share use only the close path. This candidate requires an independently derived transaction-price path and measures cross-path confirmation.",
+      "Zero-return amount intensity conditions activity on exact unchanged closes. This candidate does not isolate zero returns or normalize activity by return state."
+    ],
+    "rejected_variants_before_values": [
+      "correlation or distance between price levels",
+      "mean, median, absolute, squared, or amount-weighted close-to-transaction-price gaps",
+      "sign-agreement rates or directional hit counts",
+      "lead, lag, Granger, or asymmetric response variants",
+      "including 09:30, the lunch transition, morning-only, afternoon-only, late-only, or auction-only windows",
+      "changing the 120-pair minimum, interpolating inactive bars, carrying transaction prices forward, or treating one-sided zero activity as valid",
+      "rank correlation, robust correlation, regression beta, R-squared, clipping, winsorization, filtering, or imputation",
+      "negation, lower-is-better direction, inversion, or any formula repair after values"
+    ]
+  },
+  "frozen_no_return_and_search_bounds": {
+    "coverage_basis": "finite candidate rows divided by quality-and-listing eligible buyable rows within 2019-2025",
+    "minimum_median_coverage": 0.95,
+    "minimum_p05_coverage": 0.9,
+    "minimum_p05_eligible_names": 50,
+    "minimum_non_overlapping_three_session_cohorts": 200,
+    "minimum_observed_calendar_years": 5,
+    "uniqueness_maximum_absolute_median_daily_rank_correlation": 0.8,
+    "uniqueness_minimum_pairwise_names_per_session": 50,
+    "uniqueness_minimum_pairwise_sessions_per_comparison": 100,
+    "finite_trial_catalog_if_admitted": [
+      {
+        "trial_id": "campaign006_single_transaction_price_path_confirmation",
+        "components": [
+          "intraday_transaction_price_path_confirmation_238p"
+        ],
+        "weights": [
+          1.0
+        ]
+      }
+    ],
+    "expected_trial_count_if_admitted": 1,
+    "pair_or_higher_order_trials": false,
+    "weight_threshold_filter_or_year_subset_search": false,
+    "old_terminal_factor_rescue_combinations": false
+  },
+  "research_boundary": {
+    "external_minute_partitions_read": false,
+    "external_daily_partitions_read": false,
+    "candidate_values_computed_or_read": false,
+    "comparison_values_read": false,
+    "historical_daily_prices_read": false,
+    "historical_forward_returns_read": false,
+    "prospective_candidate_created": false,
+    "candidate49_historical_return_read": false,
+    "candidate49_ledgers_changed": false,
+    "current_scoring_selection_sizing_or_order_performed": false,
+    "provider_request_issued": false,
+    "investment_advice": false
+  },
+  "decision": {
+    "mechanism_distinct_enough_for_no_return_materialization": true,
+    "candidate_may_advance_directly_to_return_read": false,
+    "required_next_step": "Implement and synthetically test only this exact formula, then freeze a hash-bound no-return protocol before external values. Apply coverage and capacity first; read comparison values only if those gates pass; read no daily price or forward return until the exact one-trial walk-forward preregistration is frozen.",
+    "candidate49_remains_only_prospective_candidate": true,
+    "candidate50_activation_allowed": false
+  }
+}

@@ -1,0 +1,96 @@
+{
+  "version": 1,
+  "kind": "a_share_three_day_walkforward_campaign064_verification",
+  "status": "all_current_campaign064_terminal_and_future_policy_checks_passed",
+  "recorded_at": "2026-08-05T12:31:00+08:00",
+  "bindings": {
+    "terminal_completion_freeze": {
+      "path": "docs/a_share_three_day_walkforward_campaign_064_terminal_completion_freeze_20260805.json",
+      "sha256": "145e7d8878f2ab14c31da2c9a986300d9fcb9f7e48e2b26b28ab1e7af8c89cab"
+    },
+    "research_record": {
+      "path": "docs/a_share_three_day_walkforward_campaign_064_research_record.json",
+      "sha256": "a93e0fde62975825b8cdda053b51bd869507fddbacd637f7b8e614e2600b010b"
+    },
+    "attempt_ledger": {
+      "path": "data/experiments/short_horizon/historical_walkforward/campaign_064/research_attempt_ledger_v11.json",
+      "sha256": "b5e34071bc939c8b0703d5df5af871d2c01e47d8a783fa4326a4f7a96120e5ce"
+    },
+    "completed_no_return_audit": {
+      "path": "data/experiments/short_horizon/historical_walkforward/campaign_064/no_return/20260805T041624Z_campaign064_no_return_audit.json",
+      "sha256": "55f3deef0cf8d58bf29a34e0af60cb290188dfe1f0e1d424e12e11ce18279c66"
+    },
+    "feature_snapshot_binding": {
+      "path": "docs/a_share_three_day_walkforward_campaign_064_feature_snapshot_binding_20260805.json",
+      "sha256": "ece4c6c3899d186a7d23d3408c3d4056ab6c062f754bb45eafa8d72661ed430d"
+    },
+    "future_numeric_comparison_eligibility_policy": {
+      "path": "docs/a_share_three_day_walkforward_future_numeric_comparison_eligibility_policy_20260805.json",
+      "sha256": "ab28928886b1f617a7be094e0afad241e24bacad9646360c35a05acd80e853b8"
+    }
+  },
+  "commands": [
+    {
+      "command": "PYTHONPATH=<repository-root>:<third-party-site-packages> python -S -m pytest -q tests/data_collector_tests/test_a_share_three_day_walkforward_campaign064_features.py tests/data_collector_tests/test_a_share_three_day_walkforward_campaign064_terminal_state.py tests/data_collector_tests/test_a_share_three_day_walkforward_future_numeric_comparison_eligibility_policy.py",
+      "passed": 16,
+      "failed": 0,
+      "exit_code": 0
+    },
+    {
+      "command": "bindings.validate_record(docs/a_share_three_day_walkforward_campaign_064_research_record.json)",
+      "binding_checks_passed": 7,
+      "binding_checks_failed": 0,
+      "exit_code": 0
+    },
+    {
+      "command": "bindings.validate_record(docs/a_share_three_day_walkforward_future_numeric_comparison_eligibility_policy_20260805.json)",
+      "binding_checks_passed": 7,
+      "binding_checks_failed": 0,
+      "exit_code": 0
+    },
+    {
+      "command": "bindings.validate_record(docs/a_share_three_day_walkforward_campaign_064_terminal_completion_freeze_20260805.json)",
+      "binding_checks_passed": 7,
+      "binding_checks_failed": 0,
+      "exit_code": 0
+    }
+  ],
+  "verified_semantics": {
+    "feature_snapshot_partitions_verified": 33015,
+    "feature_snapshot_rows_verified": 7724498,
+    "feature_snapshot_eligible_rows_verified": 7724498,
+    "coverage_gate_passed_before_comparison_values": true,
+    "median_coverage": 0.9994517542211769,
+    "p05_coverage": 0.9956886515772271,
+    "comparison_count": 95,
+    "comparison_order_matches_preregistration": true,
+    "numeric_comparison_pass_count": 94,
+    "sole_failed_comparison_is_terminal_campaign063": true,
+    "sole_failed_comparison_pairwise_sessions": 0,
+    "admissible_factor_count": 0,
+    "historical_daily_price_fields_read": [],
+    "historical_forward_returns_read": false,
+    "development_trial_count": 0,
+    "stress_2024_2025_opened": false,
+    "current_scores_selections_sizing_or_orders_performed": false,
+    "provider_request_issued": false
+  },
+  "future_policy_verification": {
+    "effective_start_campaign": 65,
+    "full_definition_count": 96,
+    "full_definition_order_sha256": "974e3acd06536dcfbcc13524932f771f3636ac32023b2712f5d2d76f4d1f2d92",
+    "numeric_comparator_count": 95,
+    "numeric_comparator_order_sha256": "2418a9e28bdc6b3484ede7b4e0ae6293131af2f4644930ca2c21bff9060c331d",
+    "Campaign063_retained_as_explicit_nonnumeric_mechanism_challenge": true,
+    "Campaign064_appended_as_last_numeric_comparator": true,
+    "candidate_specific_comparator_drop_allowed": false,
+    "Campaign064_retroactive_rescue_allowed": false
+  },
+  "prospective_isolation": {
+    "candidate49_signal_ledger_sha256": "5193f00d7f36da003f53cec387900da4c3d002299f5dfcfc1a95eaa199ed3a79",
+    "candidate49_execution_ledger_sha256": "d57a3e61eac969e42cafa418ccd8c0a5ee65dcf69da145bb2c096c2a02a2ea4f",
+    "candidate49_ledgers_unchanged": true,
+    "second_prospective_candidate_created": false
+  },
+  "result": "Campaign064 is terminal with zero admissible factors under its frozen protocol. Campaign065 may begin only under the separately frozen pre-candidate numerical-comparator eligibility policy."
+}

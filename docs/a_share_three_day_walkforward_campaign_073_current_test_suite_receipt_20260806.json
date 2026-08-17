@@ -1,0 +1,39 @@
+{
+  "version": 1,
+  "kind": "a_share_three_day_walkforward_campaign073_current_test_suite_receipt",
+  "status": "passed",
+  "recorded_at": "2026-08-06T07:25:20+08:00",
+  "command": "PYTHONPATH=. /Volumes/DIsk/Coding/anaconda3/bin/python -m pytest -q tests/data_collector_tests/test_a_share_three_day_walkforward_campaign073_features.py tests/data_collector_tests/test_a_share_three_day_walkforward_campaign073_no_return_audit.py tests/data_collector_tests/test_a_share_three_day_walkforward_campaign073_terminal.py",
+  "exit_code": 0,
+  "summary": "20 passed in 2.88s",
+  "selected_test_files": [
+    {
+      "path": "tests/data_collector_tests/test_a_share_three_day_walkforward_campaign073_features.py",
+      "sha256": "847abebd5c9682880495047a6228cfdf301e43bb560849802b7413d3edb5080f",
+      "test_count": 8
+    },
+    {
+      "path": "tests/data_collector_tests/test_a_share_three_day_walkforward_campaign073_no_return_audit.py",
+      "sha256": "847d3001deb7acfcd547540c033278cb0d04e88f8e0214e08750bb794ecc6c54",
+      "test_count": 6
+    },
+    {
+      "path": "tests/data_collector_tests/test_a_share_three_day_walkforward_campaign073_terminal.py",
+      "sha256": "39c60a53e95ca719e724b5ea27efad557ddededfb11f200f7c65eb9f6b629066",
+      "test_count": 6
+    }
+  ],
+  "asserted_current_semantics": {
+    "feature_implementation_and_exact_grid": true,
+    "frozen_103_comparator_order": true,
+    "coverage_passed": true,
+    "single_failed_comparator_exact": true,
+    "historical_daily_prices_or_forward_returns_unread": true,
+    "corrected_append_only_attempt_accounting": true,
+    "candidate49_ledgers_unchanged_and_semantically_valid": true
+  },
+  "historical_lifecycle_nodes_selected": false,
+  "provider_request_issued": false,
+  "filesystem_research_value_recomputation_performed_by_tests": false,
+  "live_order_performed": false
+}

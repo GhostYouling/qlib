@@ -1,0 +1,84 @@
+{
+  "version": 1,
+  "kind": "a_share_three_day_walkforward_campaign055_snapshot_v1_failure_repair_authorization",
+  "status": "v1_values_hash_verified_but_stale_protocol_evidence_rejected_metadata_only_v2_rebuild_authorized",
+  "recorded_at": "2026-08-04T00:31:00+08:00",
+  "stage": "first_external_feature_snapshot_publication_review",
+  "attempt_classification": "infrastructure_only_failure_after_candidate_values_before_comparison_or_returns",
+  "authoritative_inputs": {
+    "no_return_protocol": {
+      "path": "docs/a_share_three_day_walkforward_campaign_055_no_return_preregistration.json",
+      "sha256": "f469879dd83a22a15d497d903bc81c772d5d96dae81d4ac7e32edfba1ef0732f"
+    },
+    "frozen_base_runner": {
+      "path": "scripts/a_share_three_day_walkforward_campaign055_features.py",
+      "sha256": "d695e5acd9645f4706e238c95db2ea69df397004416ea4dd9f895385be603714"
+    },
+    "effective_v1_build_entrypoint": {
+      "path": "scripts/a_share_three_day_walkforward_campaign055_features_v4.py",
+      "sha256": "0ed81a3883cd00bf072972c431f49a6d17fc3e9a8ff5028afeffb85c9aaa60af"
+    },
+    "implementation_repair_freeze": {
+      "path": "docs/a_share_three_day_walkforward_campaign_055_implementation_freeze_repair_freeze_20260804.json",
+      "sha256": "648aaf8a2734089fa0225ac4f5fe6f1967abf98ac6284e15c40dc06cc6904485"
+    },
+    "v1_snapshot_manifest": {
+      "path": "/Volumes/DIsk/qlib-a-share-tushare-1m/derived/a_share/rich/tushare/minute_walkforward_campaign055_feature_library/tushare_stk_mins_1m_2019_2025_ea0cbb8f_walkforward_campaign055_feature_library_v1/snapshot_manifest.json",
+      "sha256": "6cbdfafb216c3064271c8eba301ce85dfa2ed27d14afb4073e96aff62be445b6",
+      "dataset_sha256": "cfcdcd23267207f1a2190086b034105c447d5570549864d5468949ea05543882"
+    }
+  },
+  "v1_value_evidence": {
+    "partitions": 33015,
+    "rows": 7724498,
+    "eligible_rows": 7664125,
+    "insufficient_update_event_rows": 60373,
+    "nonfinite_close_rows": 0,
+    "nonpositive_close_rows": 0,
+    "range_or_nonfinite_score_rows": 0,
+    "all_partition_byte_and_frame_hashes_valid": true,
+    "verified_partitions": 33015,
+    "verified_rows": 7724498
+  },
+  "failure": {
+    "reason": "The generic inherited publication layer retained campaign006_mechanism_overlap_audit_sha256 and campaign006_no_return_preregistration_sha256 in protocol_evidence. The latter misleadingly carried the Campaign055 protocol hash under a Campaign006 key.",
+    "stale_or_misleading_keys": [
+      "campaign006_mechanism_overlap_audit_sha256",
+      "campaign006_no_return_preregistration_sha256"
+    ],
+    "campaign055_keys_present_and_correct": true,
+    "factor_values_or_partition_hashes_failed": false,
+    "v1_allowed_for_coverage_comparison_or_return_diagnostics": false,
+    "v1_may_be_deleted_or_mutated": false
+  },
+  "data_boundary": {
+    "candidate_values_read": true,
+    "comparison_values_read": false,
+    "historical_daily_price_fields_read": [],
+    "historical_forward_return_fields_read": false,
+    "training_or_model_fitting_performed": false,
+    "provider_request_issued": false,
+    "candidate49_historical_backfill_performed": false,
+    "candidate49_ledgers_changed": false,
+    "current_scoring_selection_sizing_or_orders_performed": false
+  },
+  "authorized_repair": {
+    "scope": "Create a new v2 output run that recomputes the exact frozen factor and, after base manifest validation, removes every numbered campaign evidence key except campaign055_* before atomic publication.",
+    "output_run_id": "tushare_stk_mins_1m_2019_2025_ea0cbb8f_walkforward_campaign055_feature_library_v2",
+    "reuse_or_mutate_v1_partitions": false,
+    "factor_formula_direction_bins_minimum_event_missing_rule_or_values_may_change": false,
+    "protocol_coverage_uniqueness_comparison_order_or_trial_may_change": false,
+    "comparison_value_price_or_return_read_during_repair": false,
+    "v2_must_pass_clean_protocol_evidence_and_all_partition_hashes_before_binding": true
+  },
+  "prospective_isolation": {
+    "candidate49_signal_ledger": {
+      "path": "data/experiments/short_horizon/candidate49_future_signal_ledger.json",
+      "sha256": "5193f00d7f36da003f53cec387900da4c3d002299f5dfcfc1a95eaa199ed3a79"
+    },
+    "candidate49_execution_ledger": {
+      "path": "data/experiments/short_horizon/candidate49_future_execution_ledger.json",
+      "sha256": "d57a3e61eac969e42cafa418ccd8c0a5ee65dcf69da145bb2c096c2a02a2ea4f"
+    }
+  }
+}

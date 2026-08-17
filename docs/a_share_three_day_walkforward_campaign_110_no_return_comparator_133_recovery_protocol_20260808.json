@@ -1,0 +1,60 @@
+{
+  "schema_version": 1,
+  "kind": "a_share_three_day_walkforward_campaign110_no_return_comparator133_recovery_protocol",
+  "status": "frozen_after_incomplete_132_comparator_audit_before_comparator133_or_any_return",
+  "recorded_at": "2026-08-08T15:43:48Z",
+  "original_protocol": {
+    "path": "docs/a_share_three_day_walkforward_campaign_110_no_return_preregistration_20260808.json",
+    "sha256": "75999c8aad35d7197b233c578990bb95c0a8d87ca25821cdd2859ef56f210f56"
+  },
+  "original_activation": {
+    "path": "docs/a_share_three_day_walkforward_campaign_110_no_return_audit_activation_binding_20260808.json",
+    "sha256": "a248b09b73b2854a14398686dcf3d609a50601bb827d8590b8d093e40d3499e3"
+  },
+  "failed_audit": {
+    "path": "data/experiments/short_horizon/historical_walkforward/campaign_110/no_return/20260808T154348Z_campaign110_no_return_audit.json",
+    "sha256": "645a88d2263bb1231e597853a6cc24f221a0b6a7401cc6198702c94742f7727e"
+  },
+  "failure_record": {
+    "path": "docs/a_share_three_day_walkforward_campaign_110_comparator_133_binding_failure_20260808.json",
+    "sha256": "036ff31887fddfceb70c02ea2c4c3df821a9aa118e354cf58d3d363f2170c096"
+  },
+  "prior_audit_adapter_freeze": {
+    "path": "docs/a_share_three_day_walkforward_campaign_110_no_return_audit_adapter_freeze_v3_20260808.json",
+    "sha256": "f1c234574464efcec43f94b03b99e92e40e29ac847ecb16ee2457cee961570ed"
+  },
+  "exact_recovery": {
+    "existing_loader_function": "scripts.a_share_three_day_walkforward_campaign110_no_return_audit._load_comparisons_after_coverage",
+    "binding_target": "the globals dictionary used by the frozen run_no_return_audit function",
+    "required_comparator_count": 133,
+    "required_comparator_order_sha256": "b6fbcaffbc83699155d4291ebaa6a1b0066e4801b82b634cf27dfa6cee89eefc",
+    "last_comparator": "intraday_intrabar_body_magnitude_serial_persistence_238p",
+    "last_comparator_range": [
+      -1.0,
+      1.0
+    ],
+    "new_output_root": "/Volumes/DIsk/Disk-Coding/qlib/data/experiments/short_horizon/historical_walkforward/campaign_110/no_return_recovery_v1",
+    "single_recovery_run": true,
+    "all_133_results_and_source_receipts_must_be_present": true,
+    "comparison_order_must_match_preregistration": true,
+    "all_other_protocol_and_activation_semantics_unchanged": true
+  },
+  "prohibitions": {
+    "rewrite_or_delete_failed_audit": true,
+    "reuse_failed_audit_as_scientific_rejection": true,
+    "candidate_snapshot_rebuild_or_modification": true,
+    "candidate_formula_direction_anchor_support_range_or_gate_change": true,
+    "comparator_drop_reorder_imputation_or_threshold_change": true,
+    "historical_daily_price_or_forward_return_read": true,
+    "provider_request": true,
+    "candidate49_ledger_change": true
+  },
+  "research_boundary": {
+    "coverage_and_first_132_comparator_values_already_read": true,
+    "comparator_133_values_read_before_recovery_freeze": false,
+    "historical_daily_price_fields_read": [],
+    "historical_forward_return_fields_read": false,
+    "provider_request_issued": false
+  },
+  "next_action": "Implement and test only the exact loader-global binding and output-root enforcement, freeze its hashes, then execute one recovery audit."
+}

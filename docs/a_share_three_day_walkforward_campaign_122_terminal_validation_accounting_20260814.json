@@ -1,0 +1,32 @@
+{
+  "schema_version": 1,
+  "kind": "a_share_three_day_walkforward_campaign122_terminal_validation_accounting",
+  "status": "terminal_science_unchanged_final_accounting_six_attempts",
+  "recorded_at": "2026-08-14T03:11:19+08:00",
+  "authoritative_inputs": {
+    "terminal_result": {
+      "path": "docs/a_share_three_day_walkforward_campaign_122_terminal_result_20260814.json",
+      "sha256": "3674dfcff4f8dc284511ddba4985fb61fa9513657b7c96abcd8dd909c3a71fc0"
+    },
+    "policy_v119": {
+      "path": "docs/a_share_three_day_walkforward_future_numeric_comparison_eligibility_policy_v119_20260814.json",
+      "sha256": "7066e01797b5acc0a4549ab3c6024b667e38ebb535673c3df90afe260f542259"
+    },
+    "attempt_ledger_v2": {
+      "path": "data/experiments/short_horizon/historical_walkforward/campaign_122/research_attempt_ledger_v2.json",
+      "sha256": "c6ab89e01a05d583528ecaee337a1959a59e68e11d10f37746a0aa50372312b6"
+    }
+  },
+  "final_accounting": {
+    "campaign122_attempt_count": 6,
+    "campaign122_infrastructure_failure_count": 5,
+    "campaign122_prevalue_scientific_attempt_count": 1,
+    "campaign122_complete_factor_attempt_count": 0,
+    "campaign122_return_reading_development_trial_count": 0,
+    "cumulative_historical_research_attempt_count": 998,
+    "cumulative_return_reading_development_trial_count": 306
+  },
+  "scientific_result_changed": false,
+  "library_order_changed": false,
+  "candidate49_or_current_action_boundary_changed": false
+}

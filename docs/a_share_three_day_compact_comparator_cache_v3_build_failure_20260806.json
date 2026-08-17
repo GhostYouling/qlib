@@ -1,0 +1,48 @@
+{
+  "version": 1,
+  "kind": "a_share_three_day_compact_comparator_cache_build_failure",
+  "status": "recorded_before_additive_v4_equivalence_repair",
+  "recorded_at": "2026-08-06T00:31:48+08:00",
+  "failed_command": "PYTHONPATH=/Volumes/DIsk/Disk-Coding/qlib /Volumes/DIsk/Coding/anaconda3/bin/python -m scripts.a_share_three_day_compact_comparator_cache_v3 build --data-root /Volumes/DIsk/qlib-a-share-tushare-1m --output-root /Volumes/DIsk/qlib-a-share-tushare-1m/derived/a_share/rich/tushare/compact_comparator_cache/campaign067_terminal_numeric98_v3 --workers 4 --confirm-build",
+  "exit_code": 1,
+  "observed": {
+    "error_class": "scripts.a_share_three_day_compact_comparator_cache.CompactComparatorCacheError",
+    "error_message": "cache semantic equivalence failed at comparisons [84, 85]",
+    "comparison_indices_are_zero_based": true,
+    "formal_output_root_existed_after_failure": false,
+    "preserved_temporary_root": "/Volumes/DIsk/qlib-a-share-tushare-1m/derived/a_share/rich/tushare/compact_comparator_cache/.campaign067_terminal_numeric98_v3.l3cgdjon",
+    "preserved_working_matrix_bytes": 1044099184,
+    "temporary_year_partition_count": 7
+  },
+  "root_cause_status": "Pending read-only mismatch localization. The v3 proxy passed the Campaign058 missing-method boundary and completed all 98 column captures plus seven-year Parquet round trips, but two Campaign067 comparison result objects failed the frozen exact-equality gate.",
+  "repair_requirement": {
+    "v3_protocol_builder_tests_or_freeze_edit_allowed": false,
+    "v3_failed_temporary_values_reusable_for_v4_publication": false,
+    "v3_temporary_values_may_be_read_only_diagnostic_evidence": true,
+    "comparison_gate_or_expected_results_may_be_relaxed_or_rewritten": false,
+    "mismatch_names_and_every_differing_field_must_be_recorded": true,
+    "new_v4_output_root_required": true,
+    "campaign067_all_97_result_objects_must_be_exactly_equal": true
+  },
+  "frozen_v3_bindings": {
+    "protocol_sha256": "44b5274de5684ca29e7ee9b290072412b1d97428b70e64711b979cac154d0841",
+    "implementation_freeze_sha256": "5c20d65a332cd6aebfe155e15f8c7f0bd8a094b65ea3d63356bd5f080a91131f",
+    "builder_sha256": "cf39aa8293990ef00c1d429a96157cbd33c6fb41c5a630ddb8c9c9420a2fd200"
+  },
+  "candidate49_integrity_after_failure": {
+    "signal_ledger_sha256": "5193f00d7f36da003f53cec387900da4c3d002299f5dfcfc1a95eaa199ed3a79",
+    "execution_ledger_sha256": "d57a3e61eac969e42cafa418ccd8c0a5ee65dcf69da145bb2c096c2a02a2ea4f"
+  },
+  "research_effect": {
+    "all_comparison_factor_values_read": true,
+    "campaign067_candidate_factor_values_read": true,
+    "historical_daily_price_or_forward_return_values_read": false,
+    "provider_request_issued": false,
+    "current_scoring_selection_sizing_or_orders_performed": false,
+    "research_attempt_count_increment": 0,
+    "return_reading_development_trial_count_increment": 0,
+    "cache_infrastructure_failure_count_increment": 1,
+    "cumulative_cache_infrastructure_failure_count": 6
+  },
+  "next_action": "Use the preserved v3 temporary Parquet only for read-only mismatch localization, bind the exact diagnosis, then create and freeze a narrow v4 repair before any v4 real-value build."
+}

@@ -1,0 +1,70 @@
+{
+  "version": 1,
+  "kind": "a_share_three_day_walkforward_campaign060_no_return_audit_range_repair_freeze",
+  "status": "frozen_before_single_repaired_audit_retry",
+  "frozen_at": "2026-08-05T00:20:00+08:00",
+  "campaign_id": "060",
+  "factor": "intraday_day_over_day_directional_return_agreement_238b",
+  "direction": "higher",
+  "original_audit": {
+    "path": "scripts/a_share_three_day_walkforward_campaign060_no_return_audit.py",
+    "sha256": "ecedad2aec0cf823c603001e2733411879c87d9b2522c4d09d5b6a212fa19977",
+    "implementation_freeze_path": "docs/a_share_three_day_walkforward_campaign_060_no_return_audit_implementation_freeze_20260805.json",
+    "implementation_freeze_sha256": "864eb417bf3473f722a973eb9579fa4fb3db26caa67149950b35d10ad58b18df"
+  },
+  "failed_attempt": {
+    "path": "docs/a_share_three_day_walkforward_campaign_060_no_return_audit_range_binding_failure_20260805.json",
+    "sha256": "03eaa09c2dfe28aa5ce3dbd539f72640903d5e8580ef5294cb11bb4534897fd3",
+    "candidate_snapshot_values_read": true,
+    "comparison_values_read": false,
+    "coverage_result_artifact_written": false,
+    "daily_price_or_forward_return_read": false
+  },
+  "repair_launcher": {
+    "path": "scripts/a_share_three_day_walkforward_campaign060_no_return_audit_range_repair.py",
+    "sha256": "213492f268458cf2c3246cadccc54f3f7836ffdc0a65ac3500928c89089b192a",
+    "only_added_compatibility_attributes": [
+      "candidate.LOWER_BOUND=0.0",
+      "candidate.UPPER_BOUND=1.0"
+    ],
+    "proves_attributes_equal_frozen_FACTOR_RANGES": true,
+    "candidate_loader_formula_values_clipping_winsorization_scaling_transform_or_imputation_changed": false,
+    "coverage_uniqueness_comparison_order_and_return_boundaries_changed": false
+  },
+  "repair_tests": {
+    "path": "tests/data_collector_tests/test_a_share_three_day_walkforward_campaign060_no_return_audit_range_repair.py",
+    "sha256": "1ed81e0e3de6e7aa400a1e1477836bd4d22327e8735e45ea6c2ad6c3120ff5be",
+    "combined_tests_passed": 21,
+    "combined_tests_failed": 0
+  },
+  "research_attempt_ledger": {
+    "path": "data/experiments/short_horizon/historical_walkforward/campaign_060/research_attempt_ledger_v4.json",
+    "sha256": "1310d053b0d9c8f82454370921e5cba2b384d8093bc67c51304225f368bf42d2",
+    "campaign060_attempt_count": 8,
+    "cumulative_historical_research_attempt_count": 349,
+    "cumulative_return_reading_development_trial_count": 269
+  },
+  "retry_contract": {
+    "workers": 8,
+    "expected_partitions": 33015,
+    "expected_rows": 7724498,
+    "expected_eligible_rows": 5878602,
+    "comparison_count": 91,
+    "comparison_order_sha256": "abbf08eef9022adec5dfa0be4d15ae79a2007f4d424b7aa1d29522d8319e9312",
+    "maximum_repaired_retries": 1,
+    "stop_before_comparisons_if_coverage_fails": true,
+    "stop_before_daily_price_and_returns_if_any_uniqueness_comparison_fails": true
+  },
+  "research_boundary": {
+    "formula_direction_lag_zero_support_or_point_in_time_rule_changed": false,
+    "comparison_values_read_before_repair_freeze": false,
+    "historical_daily_price_fields_read": [],
+    "historical_forward_return_fields_read": false,
+    "candidate49_historical_return_read": false,
+    "candidate49_ledgers_changed_by_campaign060": false,
+    "training_or_model_fitting_performed": false,
+    "stress_2024_2025_opened": false,
+    "current_scoring_selection_sizing_or_orders_performed": false
+  },
+  "next_action": "Run the repair launcher exactly once with the frozen data root, experiment root, and workers=8."
+}

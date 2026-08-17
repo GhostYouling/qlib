@@ -1,0 +1,44 @@
+{
+  "schema_version": 1,
+  "kind": "a_share_three_day_walkforward_campaign094_no_return_audit_implementation_freeze",
+  "status": "frozen_before_campaign094_coverage_or_comparison_values",
+  "frozen_at": "2026-08-07T02:52:12Z",
+  "protocol": {
+    "path": "docs/a_share_three_day_walkforward_campaign_094_no_return_preregistration.json",
+    "sha256": "c79c7ee277401f140bd075756658bfc5533ddcf191a20c4dc5e63808a50cbe27"
+  },
+  "snapshot_binding": {
+    "path": "docs/a_share_three_day_walkforward_campaign_094_feature_snapshot_binding_20260807.json",
+    "sha256": "dc5778ad0788ed3bd0cc3fc8980110c5f741be29068f3eccad03144eccadf358"
+  },
+  "feature_compatibility_wrapper": {
+    "path": "scripts/a_share_three_day_walkforward_campaign094_features_v4.py",
+    "sha256": "e333a824d4c7729bd36e6d1997c47f3eead4ea68d5cec4f6c592b813832fb9a7"
+  },
+  "preactivation_interface_failure": {
+    "path": "docs/a_share_three_day_walkforward_campaign_094_no_return_static_eligible_count_interface_failure_20260807.json",
+    "sha256": "8cf7948950a564a099f1439a843e51c6d36c2d4e48c2dd5caee31194bff3a941"
+  },
+  "audit_runner": {
+    "path": "scripts/a_share_three_day_walkforward_campaign094_no_return_audit.py",
+    "sha256": "f5d3c8e06f9c0a44b3c17559fa47f486cf82813047e75bdb9f021ce1045a430b"
+  },
+  "tests": {
+    "path": "tests/data_collector_tests/test_a_share_three_day_walkforward_campaign094_no_return_audit.py",
+    "sha256": "f0b970aed7c2ef05d0e32ad8119568bd2f3f67baeecb80ef5e4a5a43d0762bc8",
+    "preactivation_result": "4 passed"
+  },
+  "candidate_factor_range": [
+    0.0,
+    0.25
+  ],
+  "candidate_eligible_rows": 1314834,
+  "complete_definition_count": 125,
+  "numeric_comparator_count": 123,
+  "coverage_or_capacity_metrics_computed_before_freeze": false,
+  "comparison_values_read_before_freeze": false,
+  "historical_daily_price_fields_read_before_freeze": [],
+  "historical_forward_returns_read_before_freeze": false,
+  "provider_request_issued_before_freeze": false,
+  "candidate49_ledgers_changed_before_freeze": false
+}

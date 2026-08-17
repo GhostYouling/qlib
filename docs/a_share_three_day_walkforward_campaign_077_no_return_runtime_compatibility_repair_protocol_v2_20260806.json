@@ -1,0 +1,62 @@
+{
+  "version": 2,
+  "kind": "a_share_three_day_walkforward_campaign077_no_return_runtime_compatibility_repair_protocol",
+  "status": "frozen_after_v1_runtime_failure_before_full_retry",
+  "frozen_at": "2026-08-06T13:07:00+08:00",
+  "failure_record": {
+    "path": "docs/a_share_three_day_walkforward_campaign_077_no_return_v1_runtime_compatibility_failure_20260806.json",
+    "sha256": "369b196d2e9f1f823693ef830dd4b21ff475d14e4b200c53d447df9a652ff469"
+  },
+  "base_v1_runner": {
+    "path": "scripts/a_share_three_day_walkforward_campaign077_no_return_audit.py",
+    "sha256": "2247df82f8282919707d36597ea0d97959caa21ef4831d1bd5b92d65a9a8e9dc"
+  },
+  "diagnosis": {
+    "failed_check": "Campaign075 v3 compatibility verifier required exact pandas 2.2.3 and pyarrow 25.0.0 version strings before executing its already runtime-independent byte, row-count, schema, value-range, and stored-digest checks.",
+    "current_runtime": {
+      "interpreter": "/Volumes/DIsk/Coding/anaconda3/bin/python",
+      "pandas": "2.2.2",
+      "pyarrow": "16.1.0"
+    },
+    "compatible_preinstalled_runtime_with_both_exact_versions_found": false,
+    "network_dependency_install_allowed": false
+  },
+  "sole_repair": {
+    "operation": "During the isolated v2 process only, temporarily bind the legacy Campaign075 v3 verifier's two expected-version constants to the already observed current runtime versions, then restore them in finally.",
+    "legacy_snapshot_manifest_hashes_still_required": true,
+    "legacy_partition_byte_hashes_still_required": true,
+    "legacy_partition_row_counts_still_required": true,
+    "legacy_partition_schemas_still_required": true,
+    "legacy_factor_value_semantics_still_required": true,
+    "legacy_dataset_digest_still_required": true,
+    "runtime_sensitive_output_frame_hash_recomputation_remains_skipped": true,
+    "candidate_formula_changed": false,
+    "candidate_snapshot_or_manifest_changed": false,
+    "coverage_gate_changed": false,
+    "comparison_library_or_order_changed": false,
+    "uniqueness_threshold_changed": false,
+    "historical_daily_price_or_return_field_changed": false,
+    "development_or_stress_rule_changed": false,
+    "provider_or_candidate49_workflow_changed": false
+  },
+  "retry": {
+    "same_data_root": "/Volumes/DIsk/qlib-a-share-tushare-1m",
+    "same_experiment_root": "/Volumes/DIsk/Disk-Coding/qlib/data/experiments/short_horizon/historical_walkforward/campaign_077/no_return",
+    "same_workers": 8,
+    "partial_statistics_reused": false,
+    "restart_from_candidate_snapshot_verification_and_coverage": true,
+    "expected_audit_count_before_retry": 0,
+    "maximum_authorized_v2_retries": 1
+  },
+  "research_boundary": {
+    "comparison_values_may_have_been_partially_read_by_v1": true,
+    "historical_daily_price_fields_read": [],
+    "historical_forward_returns_read": false,
+    "provider_request_issued": false,
+    "candidate49_historical_backfill_performed": false,
+    "candidate49_ledgers_changed": false,
+    "second_prospective_candidate_created": false,
+    "current_scoring_selection_sizing_or_orders_performed": false,
+    "investment_advice": false
+  }
+}

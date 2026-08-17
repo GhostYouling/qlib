@@ -1,0 +1,77 @@
+{
+  "version": 196,
+  "kind": "a_share_three_day_walkforward_future_numeric_comparison_eligibility_policy",
+  "status": "campaign146_terminal_zero_survivors_final_accounting_campaign147_prevalue_allowed",
+  "recorded_at": "2026-08-14T22:30:00+08:00",
+  "supersedes_without_rewriting": {
+    "path": "docs/a_share_three_day_walkforward_future_numeric_comparison_eligibility_policy_v195_20260814.json",
+    "sha256": "26505cbc81421bf3f3db45f8e0cfd6c8bb8a5f25d5ce6a0ff46767a3e775a4f5",
+    "preserved": true,
+    "complete_definition_order_changed": false,
+    "numeric_comparator_order_changed": false,
+    "scientific_result_changed": false,
+    "reason": "Advance only effective accounting for the terminal-test Black failure; Campaign146 science and the frozen 155/142 orders are unchanged."
+  },
+  "authoritative_inputs": {
+    "campaign146_terminal_result": {
+      "path": "docs/a_share_three_day_walkforward_campaign_146_terminal_result_v2_20260814.json",
+      "sha256": "40c89de7d2287a7a1acbe6078ac30163bc6d903d75be860c93129863a78b98d5"
+    },
+    "campaign146_effective_attempt_ledger_delta": {
+      "path": "data/experiments/short_horizon/historical_walkforward/campaign_146/research_attempt_ledger_v5.json",
+      "sha256": "da45d4bb3592b0b090681db9c9008b377b3728f74ed86a53b89fa1911adabf47",
+      "effective_entry_count": 20,
+      "chain_tip_sha256": "1fc1ec6ae143be34d0d021075977025c44b66533e306aa9a21b0753422d79df3"
+    }
+  },
+  "effective_accounting": {
+    "campaign146_attempt_count": 20,
+    "campaign146_prevalue_scientific_attempt_count": 6,
+    "campaign146_infrastructure_failure_count": 13,
+    "campaign146_complete_factor_attempt_count": 1,
+    "campaign146_return_reading_development_trial_count": 1,
+    "campaign146_development_survivor_count": 0,
+    "campaign146_stress_trial_count": 0,
+    "cumulative_historical_research_attempt_count": 1271,
+    "cumulative_return_reading_development_trial_count": 314
+  },
+  "complete_historical_feature_library": {
+    "factor_definition_count": 155,
+    "order_sha256": "2e4114edb26fa3aaebd145ef07fe4e2ac9c5d9dc4586cf70ff61c20e39b954ba",
+    "unchanged_from_v195": true
+  },
+  "numerical_comparator_eligibility": {
+    "eligible_numeric_comparator_count": 142,
+    "eligible_numeric_comparator_order_sha256": "5d1b35fb5a0d8ac9293008db9963c4a60a94dc940c237c3ed259e5ce44f14aaf",
+    "unchanged_from_v195": true,
+    "campaign146_numeric_series_appended_once_after_terminal_classification": true,
+    "campaign146_series_use": "future pre-return duplicate detection only",
+    "campaign146_retry_or_current_strategy_use_allowed": false
+  },
+  "campaign146_terminal_classification": {
+    "terminal": true,
+    "trial_id": "wf146_intraday_return_amount_cross_spectral_phase_lead_59f_single_higher",
+    "development_survivor_count": 0,
+    "2024_2025_stress_opened": false,
+    "retry_reverse_rethreshold_filter_subset_reweight_fit_combine_stack_or_rescue_allowed": false
+  },
+  "future_campaign_boundary": {
+    "next_campaign": 147,
+    "must_begin_from_genuinely_new_prevalue_mechanism_or_separately_accepted_historically_versioned_point_in_time_source": true,
+    "campaign146_factor_retry_reverse_filter_subset_reweight_fit_combine_stack_or_rescue_allowed": false,
+    "complete_library_historical_combinations_remain_allowed_only_when_genuinely_new_and_prevalue_frozen": true,
+    "historical_offline_work_may_continue_at_any_local_time": true,
+    "candidate49_remains_separate_confirmation_layer": true
+  },
+  "research_boundary": {
+    "historical_2019_2023_daily_price_and_forward_return_values_read": true,
+    "stress_2024_2025_return_values_opened": false,
+    "provider_request_issued": false,
+    "candidate49_historical_backfill_performed": false,
+    "candidate49_ledgers_changed": false,
+    "second_prospective_candidate_created": false,
+    "current_scoring_selection_sizing_positions_or_orders_performed": false,
+    "investment_advice": false
+  },
+  "next_action": "Continue Campaign147 genuinely new prevalue scouting offline at any local time; do not retry or rescue Campaign146."
+}

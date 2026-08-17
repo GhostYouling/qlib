@@ -1,0 +1,75 @@
+{
+  "version": 1,
+  "kind": "a_share_three_day_walkforward_campaign060_no_return_audit_implementation_freeze",
+  "status": "frozen_before_first_campaign060_comparison_value",
+  "recorded_at": "2026-08-05T00:12:00+08:00",
+  "purpose": "Bind the sole snapshot-bound Campaign060 ordered no-return audit after all pre-value adapter failures were preserved and before any of the 91 comparison values is opened.",
+  "no_return_protocol": {
+    "path": "docs/a_share_three_day_walkforward_campaign_060_no_return_preregistration.json",
+    "sha256": "1d8d41bcfde2cd0ae81e69eae0abb4fd7ef92fed9ec63dd8187e510cd02b92a3"
+  },
+  "snapshot_binding": {
+    "path": "docs/a_share_three_day_walkforward_campaign_060_feature_snapshot_binding_20260804.json",
+    "sha256": "6226c6381bd5b11eec41061c99e906fb736acbb70c922831bf81d9ed974682bd"
+  },
+  "base_audit": {
+    "path": "scripts/a_share_three_day_walkforward_campaign059_no_return_audit.py",
+    "sha256": "8c24d2e973b00d9a13f98435795703d79be1eb8279565976a57d540d6ee6953b",
+    "use": "immutable ordered coverage, capacity, aligned uniqueness, and artifact engine only; Campaign060 appends terminal Campaign059 and removes same-session market-benchmark requirements"
+  },
+  "audit_runner": {
+    "path": "scripts/a_share_three_day_walkforward_campaign060_no_return_audit.py",
+    "sha256": "ecedad2aec0cf823c603001e2733411879c87d9b2522c4d09d5b6a212fa19977",
+    "candidate": "intraday_day_over_day_directional_return_agreement_238b",
+    "comparison_count": 91,
+    "comparison_order_sha256": "abbf08eef9022adec5dfa0be4d15ae79a2007f4d424b7aa1d29522d8319e9312",
+    "coverage_must_pass_before_comparison_values": true,
+    "all_91_uniqueness_comparisons_must_pass": true
+  },
+  "audit_tests": {
+    "path": "tests/data_collector_tests/test_a_share_three_day_walkforward_campaign060_no_return_audit.py",
+    "sha256": "af278f412b70368646dcc6e719e0b2320245e61641b5f3c7e71abe55fbcb6835",
+    "combined_command": "PYTHONPATH=/Volumes/DIsk/Disk-Coding/qlib /opt/anaconda3/bin/python3 -m pytest -q tests/data_collector_tests/test_a_share_three_day_walkforward_campaign060_features.py tests/data_collector_tests/test_a_share_three_day_walkforward_campaign060_empty_partition_repair.py tests/data_collector_tests/test_a_share_three_day_walkforward_campaign060_no_return_audit.py",
+    "passed": 17,
+    "failed": 0
+  },
+  "pre_freeze_adapter_failure_records": [
+    {
+      "path": "docs/a_share_three_day_walkforward_campaign_060_audit_namespace_failures_20260805.json",
+      "sha256": "1b933e065562c091ad8e7944e9ad6944dca62f3f8e9db7bff95cb735bb9747dd",
+      "attempt_count": 2
+    },
+    {
+      "path": "docs/a_share_three_day_walkforward_campaign_060_audit_manifest_adapter_failure_20260805.json",
+      "sha256": "b95bc0dc12a1669529cbe264c7f4268757b0d3f5f9fd9de39c10f3015203bb07",
+      "attempt_count": 1
+    }
+  ],
+  "research_attempt_ledger": {
+    "path": "data/experiments/short_horizon/historical_walkforward/campaign_060/research_attempt_ledger_v3.json",
+    "sha256": "a59d18308ad14ca103566d1bedeefda1936200f9c54b8c1ff26a83ee77cb22c6",
+    "campaign060_attempt_count": 7,
+    "cumulative_historical_research_attempt_count": 348,
+    "cumulative_return_reading_development_trial_count": 269
+  },
+  "pre_audit_status": {
+    "audit_count": 0,
+    "comparison_first": "late_return_30m",
+    "comparison_last": "intraday_market_directional_sign_agreement_238m",
+    "snapshot_manifest_sha256": "3f328039fb7806c66a260a7fd723a3297e2e0ce5ba23e9bb11f39d963e7250cd",
+    "snapshot_dataset_sha256": "052e5c8e5090c173c1e9486b545eafaa3b1301e038c1acc72434222e683d5735"
+  },
+  "research_boundary_before_freeze": {
+    "candidate_snapshot_values_opened_by_audit": false,
+    "comparison_values_read": false,
+    "daily_price_fields_read": [],
+    "historical_forward_return_fields_read": false,
+    "development_or_stress_fold_opened": false,
+    "provider_request_issued": false,
+    "candidate49_historical_backfill_performed": false,
+    "candidate49_ledgers_changed": false,
+    "second_prospective_candidate_created": false,
+    "current_scoring_selection_sizing_or_orders_performed": false
+  },
+  "next_action": "Run exactly one snapshot-bound no-return audit. If coverage fails, stop before comparisons. If coverage passes, load all 91 comparisons once and terminalize on any absolute median daily rank correlation above 0.8."
+}

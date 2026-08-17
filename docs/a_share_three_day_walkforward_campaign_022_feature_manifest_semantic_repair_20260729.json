@@ -1,0 +1,45 @@
+{
+  "version": 1,
+  "kind": "a_share_three_day_walkforward_campaign022_feature_manifest_semantic_repair",
+  "status": "completed_without_formula_or_data_boundary_change",
+  "recorded_at": "2026-07-29T07:10:00Z",
+  "purpose": "Record the fail-closed Campaign022 manifest-validation interruption and the narrow orchestration repair that allowed already-computed partitions to be published without changing the frozen factor or reading returns.",
+  "failed_attempt": {
+    "command": "python scripts/a_share_three_day_walkforward_campaign022_features.py build --data-root /Volumes/DIsk/qlib-a-share-tushare-1m --experiment-root /Users/niyufei/Coding/qlib/data/experiments/short_horizon/historical_walkforward/campaign_022 --workers 8",
+    "exit_code": 1,
+    "completed_partition_count_before_failure": 33015,
+    "published_snapshot_created": false,
+    "partial_partition_checkpoint_preserved": true,
+    "error": "Campaign022 snapshot semantics changed"
+  },
+  "root_cause": "The reused Campaign006 builder validates its temporary in-memory manifest before the Campaign022 atomic-write adapter converts source_open_high_low_read from the inherited false value to the truthful final true value. The initial Campaign022 validator required the final value during both phases and correctly rejected the temporary manifest.",
+  "repair": {
+    "file": "scripts/a_share_three_day_walkforward_campaign022_features.py",
+    "change": "Require source_open_high_low_read=false only while require_fingerprint_constants=false, and require true for the published fingerprint-bound manifest.",
+    "formula_changed": false,
+    "direction_changed": false,
+    "source_projection_changed": false,
+    "positive_range_bar_gate_changed": false,
+    "coverage_or_uniqueness_gate_changed": false,
+    "comparison_catalog_changed": false,
+    "return_or_price_field_read": false,
+    "provider_request_issued": false
+  },
+  "recovery": {
+    "recomputed_partition_count": 0,
+    "resumed_partition_count": 33015,
+    "published_manifest_sha256": "987fae851b1b003ba5c171746a964f99d969bf660e99b6038feebb7deda3883c",
+    "published_dataset_sha256": "d3dd2cba290b662116c466d67543393c7cec4ef398bc0a6f010acbef05934e61",
+    "published_manifest_source_open_high_low_read": true,
+    "published_manifest_source_close_read": true,
+    "published_manifest_source_volume_read": false,
+    "published_manifest_source_amount_read": false,
+    "published_manifest_forward_return_fields_read": false
+  },
+  "research_boundary": {
+    "candidate49_historical_return_read": false,
+    "candidate49_signal_or_execution_ledger_changed": false,
+    "candidate50_prospective_activation_created": false,
+    "current_scoring_selection_sizing_or_orders_performed": false
+  }
+}

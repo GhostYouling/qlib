@@ -1,0 +1,53 @@
+{
+  "schema_version": 1,
+  "kind": "a_share_three_day_walkforward_campaign096_terminal_test_repair",
+  "status": "repaired_and_verified_without_research_value_reads",
+  "recorded_at": "2026-08-07T04:47:57Z",
+  "initial_revision_failure": {
+    "path": "docs/a_share_three_day_walkforward_campaign_096_terminal_test_initial_revision_failure_20260807.json",
+    "sha256": "c29f36966e849da073e551f8c238f5f190a5cf1e087e32c312676471341fd838"
+  },
+  "repair": {
+    "formatted_only_unfrozen_terminal_test": true,
+    "corrected_expected_terminal_freeze_sha256": "9254b853c41eca6688320f3987feeb2b3cecf7d1b3398878be5f26195b8a9d1e",
+    "frozen_research_code_or_artifact_changed": false
+  },
+  "repaired_test": {
+    "path": "tests/data_collector_tests/test_a_share_three_day_walkforward_campaign096_terminal.py",
+    "sha256": "ed91728543b593f7d5fbd635979362fff1442f3c3388110f19a097a86f2e0040"
+  },
+  "verification": {
+    "black_check": {
+      "exit_code": 0,
+      "result": "one file would be left unchanged"
+    },
+    "ruff_check": {
+      "exit_code": 0,
+      "result": "all checks passed"
+    },
+    "terminal_pytest": {
+      "exit_code": 0,
+      "result": "5 passed",
+      "elapsed_seconds": 1.85
+    }
+  },
+  "scientific_result_changed": false,
+  "research_boundary": {
+    "factor_or_snapshot_values_recomputed": false,
+    "comparison_values_read": false,
+    "historical_daily_price_fields_read": [],
+    "historical_forward_returns_read": false,
+    "stress_2024_2025_opened": false,
+    "provider_request_issued": false,
+    "candidate49_ledgers_changed": false,
+    "current_scoring_selection_sizing_or_orders_performed": false
+  },
+  "corrected_attempt_accounting": {
+    "campaign096_attempt_count": 7,
+    "campaign096_infrastructure_or_implementation_failure_count": 6,
+    "campaign096_complete_factor_attempt_count": 1,
+    "campaign096_return_reading_development_trial_count": 0,
+    "cumulative_historical_research_attempt_count": 666,
+    "cumulative_return_reading_development_trial_count": 291
+  }
+}

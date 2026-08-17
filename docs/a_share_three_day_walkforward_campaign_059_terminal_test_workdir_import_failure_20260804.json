@@ -1,0 +1,47 @@
+{
+  "version": 1,
+  "kind": "a_share_three_day_walkforward_campaign059_terminal_test_workdir_import_failure",
+  "status": "failed_collection_from_tests_working_directory_without_repository_module_path",
+  "recorded_at": "2026-08-04T23:02:00+08:00",
+  "purpose": "Preserve the third Campaign059 terminal-suite failure: the current suite was launched from the tests directory, so the repository root was absent from Python's module search path.",
+  "bindings": {
+    "prior_verified_authoritative_state": {
+      "path": "docs/a_share_three_day_iteration_status_20260804_campaign059_verified.json",
+      "sha256": "586549685b8aa200898504efb29fd3226f5a18ae5977a4ce9156967ff28c793a"
+    },
+    "prior_verification": {
+      "path": "docs/a_share_three_day_walkforward_campaign_059_verification_20260804.json",
+      "sha256": "3e1647e6cf50c8113333e9a0172fddd9f0838eca4e92f020b8821d22ff5d98b2"
+    },
+    "current_terminal_test_module": {
+      "path": "tests/data_collector_tests/test_a_share_three_day_walkforward_campaign059_terminal_v2.py",
+      "sha256": "45f677c24fdf10eb922e285e54a4e84ee5a30e6c34414b1ddb3b8df04af56d3c"
+    }
+  },
+  "observed_command_semantics": {
+    "working_directory": "/Volumes/DIsk/Disk-Coding/qlib/tests",
+    "repository_root_explicitly_present_in_pythonpath": false,
+    "passed": 0,
+    "failed": 0,
+    "deselected": 0,
+    "collection_errors": 7,
+    "error_class": "ModuleNotFoundError",
+    "missing_module": "scripts",
+    "error_classification": "terminal_test_invocation_environment_failure"
+  },
+  "authorized_correction": {
+    "run_from_repository_root": true,
+    "set_repository_root_as_explicit_pythonpath": true,
+    "test_selection_or_deselection_may_change": false,
+    "research_artifacts_formulas_directions_parameters_or_gates_may_change": false
+  },
+  "research_boundary": {
+    "candidate_feature_partitions_read": false,
+    "historical_daily_prices_or_forward_returns_recomputed": false,
+    "additional_return_reading_trial_created": false,
+    "stress_2024_2025_opened": false,
+    "candidate49_ledgers_changed": false,
+    "provider_request_issued": false,
+    "current_scoring_selection_sizing_or_orders_performed": false
+  }
+}

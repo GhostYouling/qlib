@@ -1,0 +1,93 @@
+{
+  "version": 195,
+  "kind": "a_share_three_day_walkforward_future_numeric_comparison_eligibility_policy",
+  "status": "campaign146_terminal_zero_survivors_numeric_series_appended_campaign147_prevalue_allowed",
+  "recorded_at": "2026-08-14T22:24:00+08:00",
+  "supersedes_without_rewriting": {
+    "path": "docs/a_share_three_day_walkforward_future_numeric_comparison_eligibility_policy_v194_20260814.json",
+    "sha256": "b9835d1d3ab888f50060707e22fdb5784bd8a433b1c16aba6473162b96be288b",
+    "preserved": true,
+    "reason": "Campaign146 completed its single frozen 2019-2023 trial, produced zero development survivors, and terminalized without opening 2024-2025. Its frozen numeric series is appended once only for future pre-return duplicate detection."
+  },
+  "authoritative_inputs": {
+    "campaign146_terminal_result": {
+      "path": "docs/a_share_three_day_walkforward_campaign_146_terminal_result_20260814.json",
+      "sha256": "3eb00d2921688672f563f689ce53bc3c9c8234401269aac8d63cbab814a4ea5e"
+    },
+    "campaign146_effective_attempt_ledger_delta": {
+      "path": "data/experiments/short_horizon/historical_walkforward/campaign_146/research_attempt_ledger_v4.json",
+      "sha256": "ce83ac0d7827d17ff32d0f4a206f4c88fa885ac4037483cec2b7423cd4893685",
+      "effective_entry_count": 19,
+      "chain_tip_sha256": "5ba9498dd1f7b1fe2e296a58794bd2ac6f10495476301bb9145ae2b16808d2eb"
+    },
+    "campaign146_ordered_uniqueness_audit": {
+      "path": "data/experiments/short_horizon/historical_walkforward/campaign_146/uniqueness/campaign146_ordered_uniqueness_audit.json",
+      "sha256": "22a81e2be318669f3a673f7deb4228e06fe8f87da55d069d9cd9dcfc97216d6b"
+    }
+  },
+  "effective_accounting": {
+    "campaign146_attempt_count": 19,
+    "campaign146_prevalue_scientific_attempt_count": 6,
+    "campaign146_infrastructure_failure_count": 12,
+    "campaign146_complete_factor_attempt_count": 1,
+    "campaign146_return_reading_development_trial_count": 1,
+    "campaign146_development_survivor_count": 0,
+    "campaign146_stress_trial_count": 0,
+    "cumulative_historical_research_attempt_count": 1270,
+    "cumulative_return_reading_development_trial_count": 314
+  },
+  "complete_historical_feature_library": {
+    "factor_definition_count": 155,
+    "order_sha256": "2e4114edb26fa3aaebd145ef07fe4e2ac9c5d9dc4586cf70ff61c20e39b954ba",
+    "prior_count": 154,
+    "prior_order_sha256": "dcea4c75bb9194ea2e522d803409e4005cf0185fe87c84f6f9810dbe51de2f75",
+    "campaign146_definition_appended_once": true,
+    "appended_definition": {
+      "name": "intraday_return_amount_cross_spectral_phase_lead_59f",
+      "score_direction": "higher"
+    }
+  },
+  "numerical_comparator_eligibility": {
+    "eligible_numeric_comparator_count": 142,
+    "eligible_numeric_comparator_order_sha256": "5d1b35fb5a0d8ac9293008db9963c4a60a94dc940c237c3ed259e5ce44f14aaf",
+    "prior_count": 141,
+    "prior_order_sha256": "ec1aebcb939ad516c58037a36a4aaadd4ad8b2abbd3c884705895c58da85a2ee",
+    "campaign146_numeric_series_appended_once_after_terminal_classification": true,
+    "campaign146_series_use": "future pre-return duplicate detection only",
+    "campaign146_retry_or_current_strategy_use_allowed": false
+  },
+  "campaign146_terminal_classification": {
+    "terminal": true,
+    "trial_id": "wf146_intraday_return_amount_cross_spectral_phase_lead_59f_single_higher",
+    "positive_mean_rank_ic_fold_count": 3,
+    "positive_normalized_return_fold_count": 2,
+    "positive_pilot_10bp_return_fold_count": 2,
+    "median_validation_mean_rank_ic": 0.01695367196711484,
+    "median_validation_spread": -0.00026719538775617127,
+    "worst_validation_normalized_drawdown": -0.37616136808041245,
+    "development_aggregate_20bp_return": -0.09481533266368902,
+    "development_survivor_count": 0,
+    "2024_2025_stress_opened": false,
+    "retry_reverse_rethreshold_filter_subset_reweight_fit_combine_stack_or_rescue_allowed": false
+  },
+  "future_campaign_boundary": {
+    "next_campaign": 147,
+    "must_begin_from_genuinely_new_prevalue_mechanism_or_separately_accepted_historically_versioned_point_in_time_source": true,
+    "campaign146_factor_retry_reverse_filter_subset_reweight_fit_combine_stack_or_rescue_allowed": false,
+    "complete_library_historical_combinations_remain_allowed_only_when_genuinely_new_and_prevalue_frozen": true,
+    "historical_offline_work_may_continue_at_any_local_time": true,
+    "candidate49_remains_separate_confirmation_layer": true
+  },
+  "research_boundary": {
+    "historical_2019_2023_daily_price_and_forward_return_values_read": true,
+    "stress_2024_2025_return_values_opened": false,
+    "provider_request_issued": false,
+    "provider_credential_value_or_digest_read": false,
+    "candidate49_historical_backfill_performed": false,
+    "candidate49_ledgers_changed": false,
+    "second_prospective_candidate_created": false,
+    "current_scoring_selection_sizing_positions_or_orders_performed": false,
+    "investment_advice": false
+  },
+  "next_action": "Continue Campaign147 genuinely new prevalue scouting offline at any local time; do not retry, reverse, filter, fit, combine or rescue Campaign146, and keep 2024-2025 closed for it."
+}

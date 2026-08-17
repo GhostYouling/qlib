@@ -1,0 +1,128 @@
+{
+  "schema_version": 1,
+  "kind": "a_share_three_day_walkforward_campaign114_official_metadata_discovery_failure",
+  "status": "failed_closed_on_search_result_source_row_exposure_before_formula_mapping_adapter_or_source_contract_freeze",
+  "recorded_at": "2026-08-09T02:32:47+08:00",
+  "authoritative_inputs": {
+    "iteration_state": {
+      "path": "docs/a_share_three_day_iteration_status_20260809_campaign114_source_discovery_v2.json",
+      "sha256": "be4a9981eca970c2672e34f45d066f91eb16af127865b272f297cc1a8b272178"
+    },
+    "numeric_policy_v82": {
+      "path": "docs/a_share_three_day_walkforward_future_numeric_comparison_eligibility_policy_v82_20260809.json",
+      "sha256": "c68165a819eb483a02c41d7803a153457fa02194f192b458dfe41204f4f95365"
+    },
+    "source_discovery_protocol": {
+      "path": "docs/a_share_three_day_walkforward_campaign_114_source_discovery_protocol_20260809.json",
+      "sha256": "4f345109f48c534fbe4f7f577aefca7a5da0de804598b6c6548e682b99e4a199"
+    }
+  },
+  "protocol_bound_execution": {
+    "search_vocabulary": [
+      "信息披露工作评价",
+      "信息披露考核",
+      "信息披露评价结果"
+    ],
+    "search_query_count": 9,
+    "search_domains": [
+      "sse.com.cn",
+      "szse.cn",
+      "docs.static.szse.cn"
+    ],
+    "official_html_open_attempt_count": 4,
+    "official_html_open_success_count": 3,
+    "official_html_open_timeout_count": 1,
+    "attachment_click_open_download_or_screenshot_count": 0,
+    "cookie_credential_proxy_or_signed_in_session_used": false,
+    "provider_token_used": false
+  },
+  "permitted_metadata_observed_before_failure": {
+    "sse": {
+      "official_index_page": "https://www.sse.com.cn/regulation/supervision/dynamic/",
+      "index_visible_result_periods": [
+        "2023-2024",
+        "2024-2025"
+      ],
+      "index_visible_publication_dates": [
+        "2024-10-09",
+        "2025-10-24"
+      ],
+      "official_2022_2023_page": "https://www.sse.com.cn/disclosure/credibility/supervision/dynamic/c/c_20231020_5727837.shtml",
+      "official_2022_2023_page_publication_date": "2023-10-20",
+      "official_2022_2023_page_exposed_attachment_label_without_attachment_open": true,
+      "published_grade_vocabulary_from_official_rule_page": [
+        "A",
+        "B",
+        "C",
+        "D"
+      ],
+      "all_mandatory_2019_2025_archive_years_proven": false
+    },
+    "szse": {
+      "official_2019_news_page": "https://www.szse.cn/aboutus/trends/news/t20200904_581285.html",
+      "official_2019_news_page_publication_date": "2020-09-04",
+      "official_2021_news_page": "https://www.szse.cn/aboutus/trends/news/t20220704_594615.html",
+      "official_2021_news_page_open_status": "timeout_after_search_metadata_identification",
+      "official_2025_rule_page": "https://www.szse.cn/lawrules/rule/allrules/bussiness/t20250314_612320.html",
+      "official_2025_rule_page_publication_date": "2025-03-14",
+      "published_grade_vocabulary_from_official_rule_metadata": [
+        "A",
+        "B",
+        "C",
+        "D"
+      ],
+      "all_mandatory_2019_2025_archive_years_proven": false
+    }
+  },
+  "hard_failure": {
+    "trigger": "The exact-vocabulary search against the official SZSE static-document domain returned a direct 2024-2025 evaluation attachment result and embedded issuer-level code, name and grade rows in the search response itself.",
+    "direct_attachment_opened_or_downloaded": false,
+    "search_response_exposed_attachment_source_rows": true,
+    "source_row_fields_exposed": [
+      "issuer_code",
+      "issuer_name",
+      "evaluation_grade"
+    ],
+    "source_row_count": null,
+    "individual_source_row_values_persisted_in_repository": false,
+    "attachment_url_sha256": "f71b562f5f134e41372c79c25f8a3dc28ce9153a3275c8eea7b6997f6742a661",
+    "attachment_bytes_requested_hashed_or_persisted": false,
+    "formula_or_grade_mapping_frozen_before_exposure": false,
+    "pure_adapter_frozen_before_exposure": false,
+    "source_contract_frozen_before_exposure": false,
+    "post_exposure_formula_mapping_adapter_or_source_contract_freeze_allowed": false
+  },
+  "mandatory_gate_result": {
+    "both_exchange_2019_2025_archive_gate_passed": false,
+    "all_mandatory_metadata_roles_proven": false,
+    "common_finite_grade_vocabulary_observed": true,
+    "stable_point_in_time_document_identity_for_every_required_year_proven": false,
+    "metadata_only_boundary_preserved": false,
+    "overall_passed": false
+  },
+  "terminal_decision": {
+    "campaign114_terminal": true,
+    "terminal_stage": "official_metadata_discovery_search_response_source_row_exposure",
+    "campaign114_attachment_or_source_row_request_allowed": false,
+    "campaign114_formula_mapping_adapter_or_source_contract_freeze_allowed": false,
+    "post_exposure_retry_with_alternate_search_engine_or_browser_allowed": false,
+    "one_exchange_or_partial_year_path_allowed": false,
+    "source_family_substitution_allowed": false,
+    "historical_predictive_value_established": false
+  },
+  "research_boundary": {
+    "official_html_index_or_result_pages_opened": true,
+    "official_attachment_clicked_opened_downloaded_screenshot_or_hashed": false,
+    "search_response_source_row_snippet_exposed": true,
+    "source_row_values_persisted_or_counted": false,
+    "candidate_or_comparator_values_read": false,
+    "historical_daily_price_or_forward_return_values_read": false,
+    "development_trial_count": 0,
+    "stress_2024_2025_opened": false,
+    "candidate49_historical_backfill_performed": false,
+    "candidate49_ledgers_changed": false,
+    "second_prospective_candidate_created": false,
+    "current_scoring_selection_sizing_or_orders_performed": false,
+    "investment_advice": false
+  }
+}

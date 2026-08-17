@@ -1,0 +1,29 @@
+{
+  "schema_version": 1,
+  "kind": "a_share_three_day_walkforward_campaign143_infrastructure_failure",
+  "status": "recorded_unretained_yielded_inventory_session_before_campaign143_values",
+  "recorded_at": "2026-08-14T15:20:34+0800",
+  "attempt_id": "campaign143_infrastructure_003",
+  "failure": {
+    "phase": "external_metadata_manifest_inventory",
+    "command_intent": "List comparator and Campaign118-139 JSON metadata under the accepted minute-data root.",
+    "terminal_process_exit_observed": false,
+    "cause": "The nested command yielded after the tool timeout and the wrapper printed partial output without retaining its session identifier or terminal exit code.",
+    "partial_text_used_as_binding_evidence": false,
+    "target_file_written": false,
+    "failed_exit_code_bypassed": false,
+    "later_success_may_mask_failure": false
+  },
+  "research_boundary": {
+    "filesystem_names_and_text_metadata_only": true,
+    "parquet_rows_or_column_values_read": false,
+    "candidate_or_comparator_values_read": false,
+    "historical_daily_price_or_forward_return_values_read": false,
+    "stress_2024_2025_opened": false,
+    "provider_request_issued": false,
+    "provider_credential_value_or_digest_read": false,
+    "candidate49_ledgers_changed": false,
+    "scientific_decision_made_by_failed_attempt": false
+  },
+  "safe_continuation": "Discard the partial inventory as evidence and use bounded repository metadata commands whose terminal exit code is observed."
+}

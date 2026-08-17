@@ -1,0 +1,60 @@
+{
+  "schema_version": 1,
+  "revision": 2,
+  "kind": "a_share_three_day_walkforward_campaign132_development_implementation_freeze_v2",
+  "status": "frozen_before_first_campaign132_v2_model_fit_and_return_open",
+  "recorded_at": "2026-08-14T09:37:42+08:00",
+  "campaign": 132,
+  "recovery_scope": "Bind the untouched frozen v1 runner and expose design.feature_names under the single helper alias component_columns; use a new output root and make no scientific change.",
+  "protocol": {
+    "path": "docs/a_share_three_day_walkforward_campaign_132_preregistration_20260814.json",
+    "sha256": "b4c3f6b3a69506c8a8f5ee71ffe05e487af0f71ae2b104adb3a79b2efc4ac0be"
+  },
+  "design_manifest": {
+    "path": "/Volumes/DIsk/qlib-a-share-tushare-1m/derived/a_share/rich/tushare/minute_walkforward_campaign132_design_matrix/tushare_stk_mins_1m_2019_2025_ea0cbb8f_walkforward_campaign132_numeric140_design_v1/snapshot_manifest.json",
+    "sha256": "043c17fea89f3b0956d643a7c6e3f4d73a11403b967213d2d57539a6a8316a49",
+    "dataset_sha256": "12ce3a64b5e13581392ded9890e2064db4ccca3945da3eb8ad7752c95366a9fc"
+  },
+  "design_audit": {
+    "path": "data/experiments/short_horizon/historical_walkforward/campaign_132/no_return/design_structural_audit.json",
+    "sha256": "86bb53552caf6f6d8f1fad688d2f3a7e39c75827f968bb1ee1510fff2394deec"
+  },
+  "frozen_v1_runner": {
+    "path": "scripts/a_share_three_day_walkforward_campaign132.py",
+    "sha256": "ba181f6c154cfde2066e501e7a67bc68f327ecc6ecc146dd8747cbcfa78e1a93",
+    "changed_by_v2": false
+  },
+  "runner": {
+    "path": "scripts/a_share_three_day_walkforward_campaign132_v2.py",
+    "sha256": "58743be5f89226939c7fa79fe7fa30cf953d01b4c5ed924e2dd35e805002559f"
+  },
+  "tests": {
+    "path": "tests/data_collector_tests/test_a_share_three_day_walkforward_campaign132_v2.py",
+    "sha256": "92ba2da751e5538e9156b0cf79e757c8ae9645204913ffb63b1ede67d3fb5a15",
+    "combined_v1_and_v2_result": "8 passed in 2.55s"
+  },
+  "v1_failure": {
+    "path": "docs/a_share_three_day_walkforward_campaign_132_v1_development_component_columns_failure_20260814.json",
+    "sha256": "deda1ea8d0db7b194f4c2cdec46670a1a72299a7c40aa454a84fdff6aa0cd684",
+    "failed_output_root": "data/experiments/short_horizon/historical_walkforward/campaign_132/walkforward",
+    "failed_output_root_reused": false
+  },
+  "v2_output_root": "data/experiments/short_horizon/historical_walkforward/campaign_132/walkforward_v2",
+  "trial_catalog_unchanged": true,
+  "model_configuration_unchanged": true,
+  "feature_library_order_and_support_unchanged": true,
+  "folds_costs_gates_and_lockbox_boundary_unchanged": true,
+  "prevalue_concept_attempts": 6,
+  "cumulative_infrastructure_failures_before_v2_run": 9,
+  "v1_training_or_validation_returns_may_have_been_read": true,
+  "v1_model_fit_performed": false,
+  "v2_model_fit_before_freeze": false,
+  "v2_training_or_validation_return_read_before_freeze": false,
+  "lockbox_2024_2025_return_read_before_freeze": false,
+  "provider_request_issued_before_freeze": false,
+  "credential_loaded_before_freeze": false,
+  "candidate49_historical_backfill_performed_before_freeze": false,
+  "candidate49_ledgers_changed_before_freeze": false,
+  "current_scoring_selection_sizing_or_orders_performed_before_freeze": false,
+  "investment_advice": false
+}

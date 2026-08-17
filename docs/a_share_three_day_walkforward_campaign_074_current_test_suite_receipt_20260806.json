@@ -1,0 +1,58 @@
+{
+  "version": 1,
+  "kind": "a_share_three_day_walkforward_campaign074_current_test_suite_receipt",
+  "status": "passed_current_lifecycle_suite_with_historical_prestate_nodes_deselected",
+  "recorded_at": "2026-08-06T08:43:30+08:00",
+  "runtime": {
+    "python": "/Users/niyufei/.cache/codex-runtimes/codex-primary-runtime/dependencies/python/bin/python3",
+    "isolated_temporary_dependency_target_used": true,
+    "repository_dependency_files_changed": false,
+    "temporary_dependencies": [
+      "pytest",
+      "pyarrow",
+      "requests"
+    ]
+  },
+  "selected_test_files": [
+    {
+      "path": "tests/data_collector_tests/test_a_share_three_day_walkforward_campaign074_features.py",
+      "sha256": "8e59a202c9dd7fbe57f6eff9081f99bb031002c54653ef122cf5697a51eb79d7"
+    },
+    {
+      "path": "tests/data_collector_tests/test_a_share_three_day_walkforward_campaign074_no_return_audit.py",
+      "sha256": "91fb35405beb5eee98650d0e4e36f371514ed6b72619c0b0f9b88f1e63f9881a"
+    },
+    {
+      "path": "tests/data_collector_tests/test_a_share_three_day_walkforward_campaign074.py",
+      "sha256": "99692c055d59f9a7a1d8813598a67884c043c5fc469869fb0a2615d5004c5986"
+    },
+    {
+      "path": "tests/data_collector_tests/test_a_share_three_day_walkforward_campaign074_terminal.py",
+      "sha256": "45c403751facf7e484a0b20f117b0885aff2dcaba3a17c04b9c5d7061d4e898c"
+    }
+  ],
+  "result": {
+    "exit_code": 0,
+    "passed": 22,
+    "deselected": 2,
+    "failed": 0,
+    "errors": 0,
+    "duration_seconds": 4.09
+  },
+  "deselected_historical_lifecycle_nodes": [
+    {
+      "test": "test_status_is_read_only_and_reports_no_metrics",
+      "reason": "immutable pre-audit assertion that audit_count is zero; the sole frozen no-return audit now exists"
+    },
+    {
+      "test": "test_campaign074_stress_is_closed_before_development_survivor_freeze",
+      "reason": "immutable pre-development assertion that the development ledger entry count is zero; the sole frozen development trial now exists"
+    }
+  ],
+  "research_values_recomputed_by_current_test_suite": false,
+  "historical_daily_prices_or_forward_returns_read_by_current_test_suite": false,
+  "stress_2024_2025_opened": false,
+  "provider_request_issued": false,
+  "candidate49_ledgers_changed": false,
+  "current_scoring_selection_sizing_or_orders_performed": false
+}

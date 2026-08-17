@@ -1,0 +1,38 @@
+{
+  "schema_version": 1,
+  "kind": "a_share_three_day_walkforward_campaign096_no_return_precoverage_range_registration_failure",
+  "status": "recorded_before_narrow_audit_implementation_repair_and_before_coverage_or_comparison_values",
+  "recorded_at": "2026-08-07T04:51:00Z",
+  "protocol": {
+    "path": "docs/a_share_three_day_walkforward_campaign_096_no_return_preregistration.json",
+    "sha256": "97d8cdd6cc3731de8e8d4db101db1b4b0ee62353c9c39ac71a8753fea4501924"
+  },
+  "snapshot_binding": {
+    "path": "docs/a_share_three_day_walkforward_campaign_096_feature_snapshot_binding_20260807.json",
+    "sha256": "c5a96fbcc3c9c2927aedc0b855c0eddf1633c1ea1cae1a9fd65de87a9389a68c"
+  },
+  "attempted_audit_runner": {
+    "path": "scripts/a_share_three_day_walkforward_campaign096_no_return_audit.py",
+    "observed_sha256_before_repair": "250d5ed8d4c83a512d5de9374107acb01dca32591f6f8c7bd30ba9c12505e72b"
+  },
+  "attempted_tests": {
+    "path": "tests/data_collector_tests/test_a_share_three_day_walkforward_campaign096_no_return_audit.py",
+    "observed_sha256": "45826828c9cfe105eaf422e94084677a72872b3df250d1cb785204e55f78c88b"
+  },
+  "test_result": "2 passed, 1 failed",
+  "observed_failure": "candidate range registered as [-1,1] instead of frozen [0,1]",
+  "root_cause": "The inherited audit base retains Campaign089's signed factor range. Campaign096's feature implementation and snapshot correctly use [0,1], but the no-return comparison engine registration was not yet overridden.",
+  "classification": "precoverage_audit_implementation_failure_not_factor_result",
+  "narrow_repair_boundary": "Install predecessor ranges, then register only Campaign096 as [0,1]; do not alter candidate values, comparisons, correlations, gates, or tests.",
+  "research_boundary": {
+    "coverage_or_capacity_metrics_computed": false,
+    "comparison_values_read": false,
+    "historical_daily_price_fields_read": [],
+    "historical_forward_returns_read": false,
+    "provider_request_issued": false,
+    "candidate49_ledgers_changed": false,
+    "development_trial_count_increment": 0,
+    "research_attempt_count_increment": 0,
+    "infrastructure_or_implementation_failure_count_increment": 1
+  }
+}

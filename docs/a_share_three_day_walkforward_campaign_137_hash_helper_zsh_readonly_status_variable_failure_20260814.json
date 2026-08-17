@@ -1,0 +1,28 @@
+{
+  "schema_version": 1,
+  "kind": "a_share_three_day_walkforward_campaign137_infrastructure_failure",
+  "recorded_at": "2026-08-14T12:27:22+0800",
+  "attempt_id": "campaign137_infrastructure_001",
+  "phase": "append_only_ledger_hash_preparation",
+  "status": "hash_helper_zsh_readonly_status_variable_failure",
+  "failure": {
+    "reason": "The read-only helper used zsh's reserved read-only variable name status and exited nonzero before printing hashes.",
+    "partial_ledger_written": false,
+    "failed_exit_code_bypassed": false
+  },
+  "recovery": {
+    "method": "Rename helper variables to outcome_value and phase_value, then recompute the entire chain from genesis.",
+    "recovery_exit_code": 0,
+    "scientific_result_changed": false
+  },
+  "research_boundary": {
+    "source_rows_read": false,
+    "candidate_or_comparator_values_read": false,
+    "historical_daily_price_or_forward_return_values_read": false,
+    "stress_2024_2025_opened": false,
+    "provider_request_issued": false,
+    "credential_loaded": false,
+    "candidate49_ledgers_changed": false,
+    "current_scoring_selection_sizing_positions_or_orders_performed": false
+  }
+}

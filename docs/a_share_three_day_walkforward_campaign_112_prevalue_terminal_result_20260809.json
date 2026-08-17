@@ -1,0 +1,83 @@
+{
+  "schema_version": 1,
+  "kind": "a_share_three_day_walkforward_campaign112_prevalue_terminal_result",
+  "status": "terminal_zero_independent_existing_data_candidates_before_source_candidate_comparison_or_return_values",
+  "recorded_at": "2026-08-09T00:44:19+08:00",
+  "authoritative_predecessor": {
+    "path": "docs/a_share_three_day_iteration_status_20260809_campaign111_prevalue_terminal.json",
+    "sha256": "90a9831c7100553dbd34e0e7724e683c5d073c9ec839c294ce3bdc5685803a9c"
+  },
+  "campaign112_records": {
+    "concept_scouting": {
+      "path": "docs/a_share_three_day_walkforward_campaign_112_concept_scouting_20260809.json",
+      "sha256": "d8267ad6011c6c613bca9d3f3b2ea068c7894b5d1ec49986940419d8173fb7a0"
+    },
+    "mechanism_source_frontier_audit": {
+      "path": "docs/a_share_three_day_walkforward_campaign_112_mechanism_source_frontier_audit_20260809.json",
+      "sha256": "5788de0c78ab6c631ba152bf4a5df5476601c37b9cab937e28438a2447840658"
+    },
+    "infrastructure_failures": {
+      "path": "docs/a_share_three_day_walkforward_campaign_112_prevalue_infrastructure_failures_20260809.json",
+      "sha256": "d5d6ad3cb26fae9cfd74ef4b141e395ae8b8463559f0ec8da614f12c6f577f0e"
+    },
+    "research_attempt_ledger": {
+      "path": "data/experiments/short_horizon/historical_walkforward/campaign_112/research_attempt_ledger_v1.json",
+      "sha256": "04e461110d134ed076051ace5245acfe90fb5d9eb74ccbab92a0396b1d73cfde",
+      "entry_count": 2,
+      "chain_tip_sha256": "516163bf18c8cf4a1fadf8908d2ae26b60015c51ed49a0e23883aecc515ec312"
+    }
+  },
+  "scientific_result": {
+    "complete_logical_definitions_reviewed": 140,
+    "reserved_numeric_comparators_not_loaded": 134,
+    "finite_concepts_reviewed": 6,
+    "existing_data_concepts_rejected": 5,
+    "new_source_concepts_deferred_without_registration": 1,
+    "genuinely_independent_existing_data_candidate_count": 0,
+    "frozen_numeric_factor_definition_count": 0,
+    "candidate_source_rows_read": false,
+    "candidate_values_computed_or_read": false,
+    "comparison_values_read": false,
+    "coverage_or_uniqueness_audit_count": 0,
+    "development_trial_count": 0,
+    "stress_trial_count": 0,
+    "development_survivor_count": 0,
+    "historical_predictive_value_established": false,
+    "terminal": true
+  },
+  "accounting": {
+    "campaign112_attempt_count": 2,
+    "campaign112_infrastructure_failure_count": 1,
+    "campaign112_prevalue_scientific_attempt_count": 1,
+    "campaign112_complete_factor_attempt_count": 0,
+    "campaign112_return_reading_development_trial_count": 0,
+    "cumulative_historical_research_attempt_count": 827,
+    "cumulative_return_reading_development_trial_count": 302
+  },
+  "unchanged_library": {
+    "complete_definition_count": 140,
+    "complete_definition_order_sha256": "c06e054bd76a7eb32a88a8a119abf5a0b7da2d017620ce7d870c9bb1c361c3c4",
+    "numeric_comparator_count": 134,
+    "numeric_comparator_order_sha256": "31d788db467f558a0ac538315343090f1b3ad4cb27a26136a49ebaa88b2fdbf2",
+    "reason": "Campaign112 created no complete formula or numeric snapshot; rejected proposals and the unregistered source direction are not factor definitions."
+  },
+  "frontier_result": {
+    "existing_minute_ohlcv_amount_semantic_frontier_saturated_under_current_rules": true,
+    "generic_complete_library_model_frontier_closed": true,
+    "new_source_required_before_next_factor_value": true,
+    "new_source_must_be_pre_row_frozen_and_point_in_time": true,
+    "top_list_is_not_yet_an_accepted_historical_source": true
+  },
+  "research_boundary": {
+    "historical_daily_price_fields_read": [],
+    "historical_forward_returns_read": false,
+    "stress_2024_2025_opened": false,
+    "provider_request_issued": false,
+    "candidate49_historical_backfill_performed": false,
+    "candidate49_ledgers_changed": false,
+    "second_prospective_candidate_created": false,
+    "current_scoring_selection_sizing_or_orders_performed": false,
+    "investment_advice": false
+  },
+  "next_action": "Freeze unchanged-order v74. Campaign113 may scout only a genuinely new point-in-time source contract before provider rows; do not continue transforming the exposed minute OHLCV/amount library or activate a second prospective candidate."
+}

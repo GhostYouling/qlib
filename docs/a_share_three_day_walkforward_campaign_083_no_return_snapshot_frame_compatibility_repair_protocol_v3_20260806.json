@@ -1,0 +1,81 @@
+{
+  "schema_version": 1,
+  "version": 3,
+  "kind": "a_share_three_day_walkforward_campaign083_no_return_snapshot_frame_compatibility_repair_protocol",
+  "status": "frozen_after_v2_pre_retry_frame_hash_failure_before_full_v3_retry",
+  "frozen_at": "2026-08-06T20:24:30+08:00",
+  "v2_failure_record": {
+    "path": "docs/a_share_three_day_walkforward_campaign_083_v2_pre_retry_snapshot_frame_hash_failure_20260806.json",
+    "sha256": "bcff3a9f3b4d7c6d1c77fd77e9c971ba46edb31ffa3c174b5b5cf105fdf825e5"
+  },
+  "v2_runtime_repair_protocol": {
+    "path": "docs/a_share_three_day_walkforward_campaign_083_no_return_runtime_compatibility_repair_protocol_v2_20260806.json",
+    "sha256": "730bcba595cced9640998e7e56453aaf0f828ce9dde39fafb2455054a426ae93"
+  },
+  "v2_implementation_freeze": {
+    "path": "docs/a_share_three_day_walkforward_campaign_083_no_return_audit_implementation_freeze_v2_20260806.json",
+    "sha256": "7071c548b5ab0cf9c5f9a0a494d202ae02677d6650f2a94a45acbd23645d8b02"
+  },
+  "original_v1_runner": {
+    "path": "scripts/a_share_three_day_walkforward_campaign083_no_return_audit.py",
+    "sha256": "ff9859120319a52c75aabcbd9d7f5b46c88166af0ca3fc460df981bf2fe71cf1"
+  },
+  "v2_runner": {
+    "path": "scripts/a_share_three_day_walkforward_campaign083_no_return_audit_v2.py",
+    "sha256": "6cc05dd63a16d4f5449fcca31e2efbb3c6d60803e5cb21640fbef1faa90b43a7"
+  },
+  "candidate_snapshot": {
+    "path": "/Volumes/DIsk/qlib-a-share-tushare-1m/derived/a_share/rich/tushare/minute_walkforward_campaign083_feature_library/tushare_stk_mins_1m_2019_2025_ea0cbb8f_walkforward_campaign083_feature_library_v1/snapshot_manifest.json",
+    "sha256": "e462a154f2da5374be671955b04d0e70b2bc02821a397e978e346dca75bf0618",
+    "dataset_sha256": "b9b9a54d1a1a040d22cae0dbabe1cdb556312a97f604efe1da38e437478cde52",
+    "partitions": 33015,
+    "rows": 7724498,
+    "eligible_rows": 7724498
+  },
+  "research_attempt_ledger_after_failure": {
+    "path": "data/experiments/short_horizon/historical_walkforward/campaign_083/research_attempt_ledger_v3.json",
+    "sha256": "1ff93c140be8bb1425f191e7e8b257b8b6ce2c26d3d840165234935755104a49"
+  },
+  "sole_compatibility_repair": {
+    "operation": "During the isolated v3 process only, replace the Campaign083 candidate snapshot verifier called by the unchanged v1 audit with a verifier that skips only cross-runtime recomputation of each stored output_frame_sha256 and restores the original verifier in finally.",
+    "candidate_manifest_byte_hash_still_required": true,
+    "candidate_manifest_dataset_digest_still_required": true,
+    "every_partition_path_containment_still_required": true,
+    "every_partition_byte_hash_still_required": true,
+    "every_partition_row_count_still_required": true,
+    "every_partition_exact_schema_still_required": true,
+    "every_partition_frozen_factor_value_semantics_still_required": true,
+    "aggregate_partition_row_and_eligible_counts_still_required": true,
+    "stored_dataset_digest_recomputed_from_stored_partition_receipts_still_required": true,
+    "runtime_sensitive_output_frame_hash_recomputation_skipped": true,
+    "candidate_snapshot_or_manifest_rewrite_allowed": false,
+    "original_legacy_runtime_gate_suppression_allowed": false,
+    "prior_comparator_verifier_change_allowed": false,
+    "candidate_formula_direction_coverage_gate_comparator_order_or_threshold_change_allowed": false,
+    "historical_daily_price_return_development_stress_provider_or_candidate49_change_allowed": false
+  },
+  "runtime": {
+    "numpy": "2.3.5",
+    "pandas": "2.2.2",
+    "pyarrow": "16.1.0",
+    "scipy": "1.15.3",
+    "pip_check_must_pass": true
+  },
+  "retry": {
+    "partial_statistics_reused": false,
+    "v2_full_retry_entered": false,
+    "restart_from_static_bindings_candidate_snapshot_compatibility_verification_and_coverage": true,
+    "expected_published_audit_count_before_retry": 0,
+    "maximum_authorized_v3_retries": 1
+  },
+  "research_boundary": {
+    "coverage_or_capacity_metrics_computed_before_protocol": false,
+    "comparison_values_read_before_protocol": false,
+    "historical_daily_price_fields_read": [],
+    "historical_forward_returns_read": false,
+    "provider_request_issued": false,
+    "candidate49_historical_backfill_performed": false,
+    "candidate49_ledgers_changed": false,
+    "current_scoring_selection_sizing_or_orders_performed": false
+  }
+}

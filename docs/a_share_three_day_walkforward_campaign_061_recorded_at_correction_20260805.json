@@ -1,0 +1,41 @@
+{
+  "version": 1,
+  "kind": "a_share_three_day_walkforward_campaign061_recorded_at_correction",
+  "status": "append_only_metadata_correction_without_frozen_artifact_rewrite",
+  "recorded_at": "2026-08-05T00:38:15+08:00",
+  "issue": "Four manually entered recorded_at values were later than the live system clock. The immutable files are not rewritten; filesystem birth and modification timestamps preserve their actual creation order before the Campaign061 source-value build began.",
+  "artifacts": [
+    {
+      "path": "docs/a_share_three_day_walkforward_campaign_061_concept_scouting.json",
+      "sha256": "87e12338a4450a951d106c7cd6e866e5528c60279aa3c2b9e792eb3e6f501025",
+      "declared_recorded_at": "2026-08-05T00:31:00+08:00",
+      "filesystem_birth_and_modified_at": "2026-08-05T00:25:54+08:00"
+    },
+    {
+      "path": "docs/a_share_three_day_walkforward_campaign_061_mechanism_overlap_audit.json",
+      "sha256": "3e2ea8227d439c9d3b3d1c3860ba3f0034df93367ea591e0f5f687994cce69e7",
+      "declared_recorded_at": "2026-08-05T00:35:00+08:00",
+      "filesystem_birth_and_modified_at": "2026-08-05T00:26:45+08:00"
+    },
+    {
+      "path": "docs/a_share_three_day_walkforward_campaign_061_no_return_preregistration.json",
+      "sha256": "8bb79b587a64dab98a3a32d6a04ad6be8985979519ed436bc4062bbe64ff8dab",
+      "declared_recorded_at": "2026-08-05T00:39:00+08:00",
+      "filesystem_birth_and_modified_at": "2026-08-05T00:28:05+08:00"
+    },
+    {
+      "path": "docs/a_share_three_day_walkforward_campaign_061_feature_implementation_freeze_20260805.json",
+      "sha256": "59f96ae378153d1231d4a163c9279b1c7a0d9615ce58358970d9bb09876daaa6",
+      "declared_recorded_at": "2026-08-05T00:47:00+08:00",
+      "filesystem_birth_and_modified_at": "2026-08-05T00:33:08+08:00"
+    }
+  ],
+  "campaign061_build_process_started_at": "2026-08-05T00:33:38+08:00",
+  "ordering_evidence": "The protocol and implementation freeze files existed with their final hashes at 00:28:05 and 00:33:08 respectively; the bound build process started later at 00:33:38.",
+  "formula_direction_lag_grid_zero_rule_comparison_order_gate_or_code_changed": false,
+  "frozen_artifact_rewritten": false,
+  "comparison_values_read_by_this_correction": false,
+  "daily_price_or_forward_return_read_by_this_correction": false,
+  "provider_request_issued": false,
+  "candidate49_ledgers_changed": false
+}

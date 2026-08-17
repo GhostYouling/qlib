@@ -1,0 +1,26 @@
+{
+  "schema_version": 1,
+  "kind": "a_share_three_day_walkforward_campaign101_development_activation_binding",
+  "status": "one_frozen_development_trial_authorized_before_return_read",
+  "recorded_at": "2026-08-07T14:04:45Z",
+  "implementation_freeze": {
+    "path": "docs/a_share_three_day_walkforward_campaign_101_development_implementation_freeze_20260807.json",
+    "sha256": "f1d018c27655f8dee923d0c2f7856fc6ea2b4c38edd3e647ddab513519024e37"
+  },
+  "development_preregistration": {
+    "path": "docs/a_share_three_day_walkforward_campaign_101_preregistration_v2.json",
+    "sha256": "5cff18c65510eb01e4771e04f62b54bf038579a25f9ee14ec73863fe43947b36"
+  },
+  "append_only_internal_ledger": {
+    "path": "data/experiments/short_horizon/historical_walkforward/campaign_101/walkforward/trial_ledger.json",
+    "sha256": "e55891b443344f47f98616d8707cb4fe9abc5c907443ac6a44f7efe268287713",
+    "entries_before_activation": 0
+  },
+  "trial_id": "wf101_full_numeric_library_directional_lower_quartile_consensus_129f_single_higher",
+  "remaining_complete_development_trials_authorized": 1,
+  "development_years_authorized": [2019, 2020, 2021, 2022, 2023],
+  "stress_2024_2025_authorized": false,
+  "provider_request_authorized": false,
+  "candidate49_historical_return_read_authorized": false,
+  "current_scoring_selection_sizing_or_orders_authorized": false
+}

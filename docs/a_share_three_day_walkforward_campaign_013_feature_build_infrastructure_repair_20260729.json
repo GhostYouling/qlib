@@ -1,0 +1,84 @@
+{
+  "version": 1,
+  "kind": "a_share_three_day_walkforward_campaign013_feature_build_infrastructure_repair",
+  "status": "prepublication_manifest_phase_adapter_repaired_without_formula_gate_or_value_change",
+  "recorded_at": "2026-07-28T18:27:26Z",
+  "purpose": "Preserve the first Campaign013 build failure as infrastructure evidence and authorize one exact retry that reuses hash-validated checkpoints without changing the frozen candidate, source fields, formula, direction, activity rules, support threshold, coverage gate, uniqueness catalog, or return boundary.",
+  "frozen_inputs": {
+    "concept_scouting": {
+      "path": "docs/a_share_three_day_walkforward_campaign_013_concept_scouting.json",
+      "sha256": "e4ed47f439cf3dd024ef2dde8669c72f422259c95c8c3df0728d6421db741e6f"
+    },
+    "mechanism_overlap_audit": {
+      "path": "docs/a_share_three_day_walkforward_campaign_013_mechanism_overlap_audit.json",
+      "sha256": "78262a1e90af0de4561329a21217ab5304925d7694877b9f84d61771fe77a715"
+    },
+    "no_return_preregistration": {
+      "path": "docs/a_share_three_day_walkforward_campaign_013_no_return_preregistration.json",
+      "sha256": "0a5c0225cba49ab11056e232b6ba9875f65c2734d318ef7644031472a9d76764"
+    },
+    "parent_feature_runner": {
+      "path": "scripts/a_share_three_day_walkforward_campaign012_features.py",
+      "sha256": "8ff031e7cdfc6e15cd62ef6dc9289b4cd509f1cd93693857d87cc9d2371b0df8"
+    }
+  },
+  "first_attempt": {
+    "command": "python scripts/a_share_three_day_walkforward_campaign013_features.py build --data-root /Volumes/DIsk/qlib-a-share-tushare-1m --workers 4",
+    "exit_code": 1,
+    "completed_symbol_count": 5396,
+    "expected_symbol_count": 5396,
+    "completed_partition_checkpoint_count": 33015,
+    "expected_partition_count": 33015,
+    "completed_partition_parquet_count": 33015,
+    "resumed_partition_count": 0,
+    "failure_phase": "inherited_prepublication_snapshot_manifest_validation_before_manifest_write_or_atomic_publication",
+    "exception": "Campaign013FeatureError: Campaign013 snapshot semantics changed",
+    "final_snapshot_manifest_exists": false,
+    "candidate_snapshot_published": false,
+    "comparison_values_read": false,
+    "daily_price_fields_read": [],
+    "historical_forward_returns_read": false,
+    "training_or_model_fitting_performed": false,
+    "candidate49_historical_return_read": false,
+    "candidate49_ledgers_changed": false,
+    "provider_request_issued": false
+  },
+  "root_cause": {
+    "inherited_manifest_phase": "The Campaign006 checkpoint engine intentionally emits no source_amount_read field before the Campaign013 wrapper converts and publishes the final manifest.",
+    "incorrect_campaign013_adapter": "The first Campaign013 validator required source_amount_read=true in both the inherited prepublication phase and final Campaign013 phase.",
+    "why_values_are_not_implicated": "All 33015 partition computations and checkpoint writes completed. The rejection occurred only after aggregate manifest assembly, before final manifest write and publication, and no gate or comparison was evaluated."
+  },
+  "repair": {
+    "scope": "validation_phase_adapter_only",
+    "prepublication_rule": "When require_fingerprint_constants=false, accept source_amount_read only as absent or true, matching the inherited engine's reconstructible manifest phase.",
+    "final_publication_rule": "When require_fingerprint_constants=true, continue to require source_amount_read=true together with the exact Campaign013 source field list and source_volume_read=true.",
+    "formula_changed": false,
+    "direction_changed": false,
+    "source_field_whitelist_changed": false,
+    "activity_or_vwap_containment_rule_changed": false,
+    "minimum_informative_active_bars_changed": false,
+    "coverage_capacity_or_uniqueness_gate_changed": false,
+    "comparison_catalog_changed": false,
+    "trial_catalog_changed": false,
+    "return_boundary_changed": false,
+    "checkpoint_reuse_allowed": true,
+    "post_repair_feature_runner": {
+      "path": "scripts/a_share_three_day_walkforward_campaign013_features.py",
+      "sha256": "6a3e913f2ad751db9aeb19f496284714360ff14025a8d09aad92820fe4edffe1"
+    },
+    "post_repair_formula_tests": {
+      "path": "tests/data_collector_tests/test_a_share_three_day_walkforward_campaign013_features.py",
+      "sha256": "ec6428f9906c0801f38d87acf405e5272521f73096b87177f0eef559d9b47cbd",
+      "passed": 12,
+      "added_regression": "The inherited prepublication manifest with an absent source_amount_read flag validates only in the prepublication phase; final Campaign013 validation remains strict."
+    }
+  },
+  "authorized_next_step": {
+    "exact_retry_command": "python scripts/a_share_three_day_walkforward_campaign013_features.py build --data-root /Volumes/DIsk/qlib-a-share-tushare-1m --workers 4",
+    "must_reuse_and_revalidate_all_33015_checkpoints": true,
+    "may_read_comparison_values": false,
+    "may_read_daily_prices_or_forward_returns": false,
+    "candidate49_remains_only_prospective_candidate": true,
+    "candidate50_activation_allowed": false
+  }
+}

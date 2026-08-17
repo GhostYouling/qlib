@@ -1,0 +1,64 @@
+{
+  "schema_version": 1,
+  "kind": "a_share_three_day_walkforward_campaign102_development_recovery_implementation_freeze",
+  "status": "frozen_after_predata_runtime_failure_before_any_model_fit_or_complete_trial",
+  "recorded_at": "2026-08-07T15:30:21Z",
+  "purpose": "Bind a runtime-only recovery that preserves the failed root and reruns the unchanged three-trial scientific campaign under the exact project Conda interpreter into a fresh output root.",
+  "recovery_runner": {
+    "path": "scripts/a_share_three_day_walkforward_campaign102_development_recovery.py",
+    "sha256": "13ef2ee41e189cc0fef96a965ede3ce1cdb5b951b79f8214dab45fdc1ce432bd"
+  },
+  "tests": {
+    "path": "tests/data_collector_tests/test_a_share_three_day_walkforward_campaign102_development_recovery.py",
+    "sha256": "0879808fadb845d22bf6351301cfe41dbd3ae9cdaa20e1f6390faaa36b64bfe6",
+    "pre_activation_result": "4_passed_1_activation_dependent_skipped"
+  },
+  "scientific_runner": {
+    "path": "scripts/a_share_three_day_walkforward_campaign102.py",
+    "sha256": "ba298ed23d0675f6fea5de85bbf085dcb7b88ef72e730031b90e1e6b350ca6db",
+    "changed_for_recovery": false
+  },
+  "original_development_freeze": {
+    "path": "docs/a_share_three_day_walkforward_campaign_102_development_implementation_freeze_20260807.json",
+    "sha256": "ef7d231ac87dac703b8de97d59b084ffc1de40d74acb131306e867eaaa39849b"
+  },
+  "runtime_failure": {
+    "path": "docs/a_share_three_day_walkforward_campaign_102_development_runtime_import_failure_20260807.json",
+    "sha256": "8f4829afd874620577078b681ee975aaf57e3a30beead2afcdbb11551dab7f0b"
+  },
+  "failed_artifact": {
+    "path": "data/experiments/short_horizon/historical_walkforward/campaign_102/walkforward/development_failure.json",
+    "sha256": "5bf1c93c153bae6b49848ae328d1999cadacc32c22168edc511fee6e703afbd8"
+  },
+  "failed_intent": {
+    "path": "data/experiments/short_horizon/historical_walkforward/campaign_102/walkforward/development_intent.json",
+    "sha256": "469be0f056407fd1f4d3c5aeb491d222c34241250a59ddfe97a4c880ff6328fb"
+  },
+  "exact_runtime": {
+    "path": "/Volumes/DIsk/Coding/anaconda3/bin/python3.12",
+    "sha256": "b21ee43bcb627125a1b54b1fceb97bad564afbab38235cb9d72cf1f278d5751c",
+    "version": "3.12.7",
+    "numpy": "1.26.4",
+    "pandas": "2.2.2",
+    "scipy": "1.13.1",
+    "qlib_data_import_verified": true,
+    "libcxx_path": "/Volumes/DIsk/Coding/anaconda3/lib/libc++.1.0.dylib",
+    "libcxx_sha256": "1b9318492353b7b7b3b48b9fa458d2b07b356a5eb8c0931952247fc17bf95c21",
+    "dyld_environment_override_allowed": false,
+    "alternate_runtime_allowed": false
+  },
+  "fresh_recovery_output_root": "/Volumes/DIsk/Disk-Coding/qlib/data/experiments/short_horizon/historical_walkforward/campaign_102/walkforward_recovery_v1",
+  "same_scientific_campaign": {
+    "trial_count": 3,
+    "formula_direction_target_regularization_grid_support_weights_folds_purge_cost_uniqueness_survivor_or_lockbox_rule_changed": false,
+    "duplicate_complete_trial_allowed": false
+  },
+  "complete_development_trial_count_before_recovery": 0,
+  "market_rows_or_return_values_read_before_recovery": false,
+  "model_fit_count_before_recovery": 0,
+  "lockbox_2024_2025_read_before_recovery": false,
+  "provider_request_issued_before_recovery": false,
+  "candidate49_historical_backfill_performed_before_recovery": false,
+  "candidate49_ledgers_changed_before_recovery": false,
+  "current_scoring_selection_sizing_or_orders_performed_before_recovery": false
+}

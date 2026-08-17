@@ -1,0 +1,104 @@
+{
+  "schema_version": 9,
+  "kind": "a_share_three_day_iteration_status",
+  "status": "campaign103_terminal_zero_survivors_candidate49_20260807_source_failed_closed_offline_campaign104_ready",
+  "recorded_at": "2026-08-08T00:52:00+08:00",
+  "supersedes_without_rewriting": {
+    "path": "docs/a_share_three_day_iteration_status_20260807_campaign102_terminal_v3.json",
+    "sha256": "a6350716feb03e0bdc9af8f6bf3c7f332fe49f6713df022c45543feb8d8e3ced",
+    "preserved": true,
+    "reason": "Append the completed Campaign103 no-return and 2019-2023 walk-forward evidence, all infrastructure failures, terminal zero-survivor decision, v60 numeric inventory, and current credential-safe status."
+  },
+  "campaign103_terminal": {
+    "result": {
+      "path": "docs/a_share_three_day_walkforward_campaign_103_terminal_result_binding_20260808.json",
+      "sha256": "a5131ed43186564a4161cdbb0669a25d65aa501379ba722bfb15a0bc23d950f2"
+    },
+    "attempt_ledger": {
+      "path": "data/experiments/short_horizon/historical_walkforward/campaign_103/research_attempt_ledger_v1.json",
+      "sha256": "0ad84fd42d406fd9ab6f288d9a8139cad9af7189f98d7a2fabe929a19af35bdd",
+      "entry_count": 14,
+      "infrastructure_failure_count": 13
+    },
+    "factor_name": "full_numeric_library_directional_rank_improvement_breadth_130f",
+    "numeric_comparison_count": 130,
+    "numeric_comparison_pass_count": 130,
+    "development_trial_count": 1,
+    "development_survivor_count": 0,
+    "stress_2024_2025_opened": false,
+    "stress_2024_2025_return_fields_read": false,
+    "terminal_no_retry_or_rescue": true
+  },
+  "effective_future_numeric_policy": {
+    "path": "docs/a_share_three_day_walkforward_future_numeric_comparison_eligibility_policy_v60_20260808.json",
+    "sha256": "8342009361e8d45bdff47706917d25c05ddaaa1ced9285a3303da3e9ad38100b",
+    "complete_definition_count": 134,
+    "complete_definition_order_sha256": "db734b25fed4046ff80a276448daf20918d410125ebae941373c5617816cf8dc",
+    "numeric_comparator_count": 131,
+    "numeric_comparator_order_sha256": "ab56a1791ae9a74b75d0a32cfb2346aa4bb6bfe266589be65825f8f51422f646"
+  },
+  "research_reports": {
+    "campaign103": {
+      "path": "docs/a_share_three_day_walkforward_campaign_103_report.md",
+      "sha256": "4fc4b7cb788c2ee27ac3beb35cc4185bb432b25f8583d7c179a87eb88141f601"
+    },
+    "current": {
+      "path": "data/experiments/short_horizon/current_research_report.md",
+      "sha256": "160559935bd163cd3432625826ce8cae2543fe97ce9732f4aa45d80b32d3e99e"
+    },
+    "three_day": {
+      "path": "data/experiments/short_horizon/three_day_research_report.md",
+      "sha256": "55e05dbd6e7e40236948d76979943a7129a0e7ae267aa7258d6630c4408abd3f"
+    }
+  },
+  "accounting": {
+    "campaign103_attempt_count": 14,
+    "campaign103_infrastructure_failure_count": 13,
+    "campaign103_complete_factor_attempt_count": 1,
+    "campaign103_return_reading_complete_development_trial_count": 1,
+    "cumulative_historical_research_attempt_count": 767,
+    "cumulative_return_reading_development_trial_count": 299
+  },
+  "candidate49_20260807_source_failure": {
+    "path": "docs/a_share_candidate49_20260807_daily_source_failure_record.json",
+    "sha256": "8b8eec87a1f20c424703cf70ea9eae87f09c7b1e5c9a5754c0bde9cc2f9c839f",
+    "failure_stage": "stock_basic",
+    "provider_calls_this_invocation": 4,
+    "same_day_retry_allowed": false,
+    "failure_record_preserved": true
+  },
+  "candidate49": {
+    "remains_only_active_prospective_candidate": true,
+    "signal_ledger_sha256": "5193f00d7f36da003f53cec387900da4c3d002299f5dfcfc1a95eaa199ed3a79",
+    "execution_ledger_sha256": "d57a3e61eac969e42cafa418ccd8c0a5ee65dcf69da145bb2c096c2a02a2ea4f",
+    "signal_entry_count": 0,
+    "execution_entry_count": 0,
+    "historical_backfill_performed": false,
+    "ledgers_changed": false,
+    "second_prospective_candidate_created": false
+  },
+  "provider_credential": {
+    "source": ".env",
+    "regular_file_non_symlink": true,
+    "mode": "0600",
+    "git_ignored": true,
+    "recognized_nonempty_token_key_count": 1,
+    "workflow_loader_observed_nonempty_token": true,
+    "secret_printed_hashed_logged_or_persisted": false
+  },
+  "provider_request_accounting": {
+    "campaign103_historical_research_provider_calls": 0,
+    "candidate49_20260807_provider_calls": 4,
+    "candidate49_same_day_retry_performed": false
+  },
+  "research_mode": {
+    "historical_walkforward_is_primary_iteration_engine": true,
+    "historical_offline_work_may_run_at_any_time": true,
+    "candidate49_future_observation_is_independent_confirmation_layer": true,
+    "wait_for_1630_or_new_daily_bar_required_for_historical_work": false,
+    "next_campaign_must_freeze_genuinely_new_mechanism_before_values": true
+  },
+  "current_scoring_selection_sizing_or_orders_performed": false,
+  "investment_advice": false,
+  "next_safe_action": "Do not retry or rescue Campaign103. Do not backfill Candidate49 or reuse the 2026-08-07 source failure invocation. Campaign104 offline concept scouting may begin under v60 before any candidate or comparison values."
+}

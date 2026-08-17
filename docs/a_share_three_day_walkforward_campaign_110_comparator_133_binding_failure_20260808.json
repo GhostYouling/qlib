@@ -1,0 +1,45 @@
+{
+  "schema_version": 1,
+  "kind": "a_share_three_day_walkforward_campaign110_infrastructure_failure",
+  "status": "invalid_incomplete_no_return_audit_preserved_before_any_daily_price_or_return",
+  "recorded_at": "2026-08-08T15:43:48Z",
+  "failure_ordinal": 7,
+  "stage": "ordered_numeric_uniqueness_loader",
+  "failed_audit": {
+    "path": "data/experiments/short_horizon/historical_walkforward/campaign_110/no_return/20260808T154348Z_campaign110_no_return_audit.json",
+    "sha256": "645a88d2263bb1231e597853a6cc24f221a0b6a7401cc6198702c94742f7727e",
+    "exit_code": 0,
+    "reported_status": "completed_zero_admissible_factors_stop_before_historical_daily_prices_or_returns",
+    "scientific_status": "invalid_infrastructure_evidence_not_a_uniqueness_rejection"
+  },
+  "observed": {
+    "coverage_gate_passed": true,
+    "median_coverage": 0.9994517542211769,
+    "p05_coverage": 0.9956886515772271,
+    "p05_eligible_names": 138.0,
+    "potential_non_overlapping_three_session_cohorts": 540,
+    "comparison_factor_count": 132,
+    "required_comparison_factor_count": 133,
+    "comparison_order_matches_preregistration": false,
+    "missing_comparator": "intraday_intrabar_body_magnitude_serial_persistence_238p",
+    "maximum_absolute_median_rank_correlation_among_incomplete_132": 0.719725962987115
+  },
+  "cause": "The final C105-generated audit function retained its own globals dictionary and therefore called the inherited 132-comparator loader instead of the already implemented Campaign110 133-comparator loader.",
+  "narrow_recovery": {
+    "allowed": "Bind the existing frozen Campaign110 133-comparator loader into the exact run function globals, enforce a new recovery output root, and rerun the unchanged coverage-first audit once.",
+    "factor_formula_direction_anchor_support_range_coverage_gate_uniqueness_threshold_comparator_order_or_library_change_allowed": false,
+    "candidate_or_comparator_value_reuse_required": false,
+    "historical_daily_price_or_forward_return_read_allowed": false
+  },
+  "research_boundary": {
+    "candidate_snapshot_rebuilt_or_modified": false,
+    "coverage_values_read": true,
+    "first_132_comparator_values_read": true,
+    "comparator_133_values_read": false,
+    "historical_daily_price_fields_read": [],
+    "historical_forward_return_fields_read": false,
+    "training_or_model_fitting_performed": false,
+    "provider_request_issued": false,
+    "candidate49_ledgers_changed": false
+  }
+}

@@ -1,0 +1,61 @@
+{
+  "version": 1,
+  "kind": "a_share_three_day_walkforward_campaign064_no_return_audit_c62_verifier_binding_repair",
+  "status": "c62_verifier_engine_global_reinstallation_authorized_after_first_93_comparisons_before_c62_c63_values_or_returns",
+  "recorded_at": "2026-08-05T10:21:00+08:00",
+  "purpose": "Preserve the second fail-closed Campaign064 audit attempt and authorize only restoration of the already frozen Campaign062 verifier column binding immediately before C62 snapshot verification.",
+  "authoritative_inputs": {
+    "no_return_protocol": {
+      "path": "docs/a_share_three_day_walkforward_campaign_064_no_return_preregistration.json",
+      "sha256": "441cbeef589593c2ef0ae3e58325f5ab0acb506cc54eaa040c79f26c8ca6a887"
+    },
+    "snapshot_binding": {
+      "path": "docs/a_share_three_day_walkforward_campaign_064_feature_snapshot_binding_20260805.json",
+      "sha256": "ece4c6c3899d186a7d23d3408c3d4056ab6c062f754bb45eafa8d72661ed430d"
+    },
+    "v2_audit_implementation_freeze": {
+      "path": "docs/a_share_three_day_walkforward_campaign_064_no_return_audit_implementation_freeze_v2_20260805.json",
+      "sha256": "f1faf16728d338dc7ed93aa44465545c1d9b10deb5e7f03b3081f88e967335e8"
+    },
+    "pre_repair_audit_runner": {
+      "path": "scripts/a_share_three_day_walkforward_campaign064_no_return_audit.py",
+      "sha256": "e7bd6569fc6a3776761f49d0d776c02cf1b91f42e05a7b5309a9159db46be751"
+    },
+    "pre_repair_tests": {
+      "path": "tests/data_collector_tests/test_a_share_three_day_walkforward_campaign064_no_return_audit.py",
+      "sha256": "608ec545cfbca28fd455afddf4c3cb13ad712638a2e903ac6df132f8e1c0e616"
+    },
+    "research_attempt_ledger": {
+      "path": "data/experiments/short_horizon/historical_walkforward/campaign_064/research_attempt_ledger_v9.json",
+      "sha256": "6b5b8f57a29a210b8ab1c2b72a5c7cc40a28b72257ec9e1b271c4f896c8b3bd6",
+      "attempt_count": 10,
+      "complete_factor_attempt_count": 0,
+      "return_reading_trial_count": 0
+    }
+  },
+  "observed_boundary": {
+    "coverage_gate_passed": true,
+    "first_93_comparison_values_read_and_evaluated": true,
+    "campaign062_comparison_values_read": false,
+    "campaign063_comparison_values_read": false,
+    "historical_daily_price_fields_read": false,
+    "historical_forward_returns_read": false,
+    "audit_record_published": false
+  },
+  "root_cause": {
+    "classification": "shared_inherited_verifier_engine_global_staleness_only",
+    "observed_requested_factor": "quarterly_announcement_delay_consistency_4q",
+    "frozen_campaign062_factor": "quarterly_announcement_peer_crowding_sparsity",
+    "detail": "Earlier historical snapshot verification mutates a shared inherited engine namespace. The C62 wrapper exposes _install_engine_globals specifically to restore its frozen OUTPUT_COLUMNS, but the C64 append adapter did not call it immediately before invoking the inherited verifier."
+  },
+  "authorized_repair": {
+    "exact_change": "Add a helper that calls c62_features._install_engine_globals(), then fail closed unless c62_features.base._engine_globals[OUTPUT_COLUMNS] exactly equals c62_features.OUTPUT_COLUMNS; call it immediately before c62_features.verify_snapshot_files.",
+    "required_test": "Deliberately replace the shared engine OUTPUT_COLUMNS with a stale tuple, call the helper, and assert exact restoration to the C62 tuple.",
+    "campaign062_snapshot_bytes_frames_values_or_manifest_may_change": false,
+    "candidate_or_first_93_comparison_values_may_change": false,
+    "comparison_order_threshold_support_or_gate_may_change": false,
+    "daily_price_or_return_access_allowed": false,
+    "retry_count_allowed": 1
+  },
+  "next_action": "Apply only the verifier binding restoration and regression, freeze v3 with the truthful post-comparison boundary, then retry the same complete audit."
+}

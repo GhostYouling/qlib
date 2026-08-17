@@ -1,0 +1,44 @@
+{
+  "schema_version": 1,
+  "kind": "a_share_three_day_walkforward_campaign118_coverage_recovery_freeze",
+  "status": "recovered_verifier_call_frozen_before_candidate_coverage_values",
+  "recorded_at": "2026-08-13T22:19:00+08:00",
+  "purpose": "Replace only the inherited broken snapshot-verifier call with the already frozen and passed recovery verifier while preserving the original coverage computation, gates, activation, output and no-return boundary.",
+  "frozen_recovery": {
+    "runner_path": "scripts/a_share_three_day_walkforward_campaign118_coverage_recovery.py",
+    "runner_sha256": "5904e7b27fcddbd2260c8a0cc8cd73f4e5ade3d2fd00f5c9da622cadadc18c57",
+    "test_path": "tests/data_collector_tests/test_a_share_three_day_walkforward_campaign118_coverage_recovery.py",
+    "test_sha256": "326bfc126aa3da8218d6e43f0a2c17997d4a9ce1ff90f63933b1467357e6d668",
+    "original_audit_runner_path": "scripts/a_share_three_day_walkforward_campaign118_no_return_audit.py",
+    "original_audit_runner_sha256": "b52f08b0b7b24b8c4dc5579f0105e1c14f02b0bc935387dbe509297f4cd2bbdf",
+    "recovery_verifier_path": "scripts/a_share_three_day_walkforward_campaign118_snapshot_verify_recovery.py",
+    "recovery_verifier_sha256": "4f201547304309d4aa98c0a5a21bc47c2a4cc7297b57a76227709f7d81985672",
+    "activation_binding_path": "docs/a_share_three_day_walkforward_campaign_118_coverage_activation_binding_20260813.json",
+    "activation_binding_sha256": "1474597355146439dc7d45b30ce24032076b78bfd694a6c30060c55d125da1d6",
+    "coverage_formula_or_gate_changed": false,
+    "snapshot_or_candidate_value_changed": false,
+    "output_path_changed": false
+  },
+  "synthetic_verification": {
+    "command": "/Volumes/DIsk/Coding/anaconda3/bin/python -m pytest -q tests/data_collector_tests/test_a_share_three_day_walkforward_campaign118_coverage_recovery.py",
+    "passed": 2,
+    "exit_code": 0,
+    "black_formatted": true,
+    "py_compile_passed": true,
+    "pre_freeze_infrastructure_test_failures": 1
+  },
+  "research_boundary": {
+    "candidate_coverage_values_read_before_freeze": false,
+    "comparator_values_read": false,
+    "numeric_comparator_count_read": 0,
+    "historical_daily_price_or_forward_return_values_read": false,
+    "stress_2024_2025_opened_for_returns": false,
+    "provider_request_issued": false,
+    "candidate49_same_day_retry_performed": false,
+    "candidate49_failed_response_rerequested": false,
+    "candidate49_historical_backfill_performed": false,
+    "candidate49_ledgers_changed": false,
+    "current_scoring_selection_sizing_positions_or_orders_performed": false,
+    "investment_advice": false
+  }
+}

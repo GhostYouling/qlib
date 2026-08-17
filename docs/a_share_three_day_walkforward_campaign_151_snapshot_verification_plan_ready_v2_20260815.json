@@ -1,0 +1,35 @@
+{
+  "schema_version": 2,
+  "kind": "a_share_three_day_walkforward_campaign151_snapshot_verification_plan_receipt",
+  "status": "corrected_ready_true_exit_zero_full_verification_authorized",
+  "recorded_at": "2026-08-15T01:24:25+08:00",
+  "supersedes_without_rewriting": {
+    "path": "docs/a_share_three_day_walkforward_campaign_151_snapshot_verification_plan_ready_20260815.json",
+    "sha256": "42f1a214bcb8fec961e2488ee4f1c79c7f01476cde721ec4f35e3a77a8489213",
+    "reason": "the first verifier failed before candidate partition reads on tuple comparison semantics"
+  },
+  "command": "/Volumes/DIsk/Coding/anaconda3/bin/python3.12 scripts/a_share_three_day_walkforward_campaign151_snapshot_verify.py plan",
+  "exit_code": 0,
+  "ready": true,
+  "authoritative_implementation_freeze": {
+    "path": "docs/a_share_three_day_walkforward_campaign_151_snapshot_verifier_implementation_freeze_v2_20260815.json",
+    "sha256": "154f43e87f76e5289d0747265ac861aa24cffe6c81073ed4dac75e67c00d76ea"
+  },
+  "snapshot_manifest_sha256": "fdc23323e2ddc9e070f3c2a48fb5d05ebf9673b8c0c613ac88ecd0ea15054f83",
+  "dataset_sha256": "ef60fd141ab02a6b1add10de6193d47d8baad83a407a2a11488a50ce5e5f9029",
+  "partitions": 33015,
+  "rows": 7724498,
+  "eligible_rows": 0,
+  "candidate_partition_or_benchmark_payload_opened_by_plan": false,
+  "candidate49_ledgers_changed": false,
+  "comparator_values_read": false,
+  "historical_daily_price_or_forward_return_values_read": false,
+  "provider_request_issued": false,
+  "credential_loaded": false,
+  "authorization": {
+    "verify_command": "/Volumes/DIsk/Coding/anaconda3/bin/python3.12 scripts/a_share_three_day_walkforward_campaign151_snapshot_verify.py verify --workers 4 --confirm-snapshot-verification",
+    "workers": 4,
+    "one_corrected_confirmed_verification": true,
+    "promotion_allowed": false
+  }
+}

@@ -1,0 +1,233 @@
+{
+  "schema_version": 1,
+  "kind": "a_share_three_day_walkforward_campaign099_mechanism_overlap_audit",
+  "status": "passed_semantic_and_support_review_before_campaign099_minute_source_or_candidate_values",
+  "recorded_at": "2026-08-07T09:12:00Z",
+  "concept_scouting": {
+    "path": "docs/a_share_three_day_walkforward_campaign_099_concept_scouting.json",
+    "sha256": "b8d80b64497733a336a533c7f009274846cc9512133711634cfddacd8f1f5018"
+  },
+  "authoritative_state": {
+    "path": "docs/a_share_three_day_iteration_status_20260807_campaign098_verified_v2.json",
+    "sha256": "9c2b064fc32bb0db03c2bc8e91c20783101a41102c1cee705a1cd919028bd133"
+  },
+  "numeric_comparator_policy": {
+    "path": "docs/a_share_three_day_walkforward_future_numeric_comparison_eligibility_policy_v47_20260807.json",
+    "sha256": "1f528805f5b6518acd96f2427544bf7448e109390d1ab37da39098bbb9661981"
+  },
+  "candidate": {
+    "name": "intraday_market_close_location_profile_synchronization_240m",
+    "direction": "higher",
+    "mechanism": "Same-date leave-one-out market synchronization of the fixed-clock continuous own-bar close-location pressure profile.",
+    "formula": "For d_i=log(high_i/low_i), use s_i=0 if d_i=0 and otherwise s_i=(log(close_i/low_i)-log(high_i/close_i))/d_i. Return the equal-clock-weight population Pearson correlation between the complete 240-state stock profile and its same-date leave-one-out peer mean.",
+    "source_projection": [
+      "datetime",
+      "symbol",
+      "provider",
+      "high",
+      "low",
+      "close"
+    ],
+    "exact_support_predicate": "The raw stock-day has the exact immutable 241-row identity; all 240 selected HLC tuples are finite, strictly positive, and ordered low<=close<=high; zero ranges contribute exact neutral state zero; every own state is finite in [-1,1]; every position has at least 50 other complete profiles; and own and leave-one-out market vectors both have strictly positive population variance.",
+    "zero_semantics": "A zero-range bar is retained at the same clock as state zero. There is no positive-range-count, adjacent-pair, return, activity, event-history, imputation, epsilon, smoothing, threshold, dropped-bar, or bridge rule.",
+    "candidate49_used_or_modified": false
+  },
+  "complete_library_review": {
+    "reconstruction_method": "Reconstruct Campaign098's exact frozen 129-definition and 126-comparator inputs, append Campaign098/higher exactly once, and verify v47's 130-definition and 127-comparator canonical order digests.",
+    "all_130_definitions_reviewed_in_frozen_order": true,
+    "complete_definition_order_sha256": "5146b99fc3c70723b0b62c541ba560b8456199d08546b81d2520fa69eb8a4b57",
+    "all_127_numeric_comparators_reviewed_in_frozen_order": true,
+    "numeric_comparator_order_sha256": "5777fbeab91e603c45d271dfe018388129bc7fab83cc9a77b7776529ba9d0990",
+    "candidate_is_exact_formula_duplicate": false,
+    "candidate_is_direction_only_duplicate": false,
+    "candidate_is_parameter_only_duplicate": false,
+    "candidate_is_an_inversion_of_a_terminal_factor": false,
+    "candidate_combines_terminal_factor_values": false,
+    "candidate_repairs_a_terminal_support_rule": false,
+    "candidate_changes_quality_listing_buyability_cost_or_walkforward_gates": false,
+    "rejected_range_clustering_autocorrelation_was_direction_only_duplicate_of_campaign012": true
+  },
+  "mandatory_prevalue_support_predicate_gate": {
+    "required_by_policy_v47": true,
+    "all_known_terminal_coverage_failures_through_campaign098_reviewed": true,
+    "inventory": [
+      {
+        "campaign": 5,
+        "factor": "intraday_lunch_repricing_persistence_119m",
+        "failed_support_class": "sparse lunch repricing plus retained post-lunch return support",
+        "relationship_to_campaign099": "not inherited; no lunch return or return threshold"
+      },
+      {
+        "campaign": 8,
+        "factor": "intraday_post_shock_share_volume_replenishment_236p",
+        "failed_support_class": "one-sided-zero share-volume response rule",
+        "relationship_to_campaign099": "not inherited; no volume and no response-pair support"
+      },
+      {
+        "campaign": 13,
+        "factor": "intraday_transaction_vwap_envelope_asymmetry_240m",
+        "failed_support_class": "amount/volume transaction price containment",
+        "relationship_to_campaign099": "not inherited; no amount, volume, or transaction price"
+      },
+      {
+        "campaign": 19,
+        "factor": "intraday_bar_direction_continuity_238p",
+        "failed_support_class": "at least 120 informative nonzero body-sign pairs",
+        "relationship_to_campaign099": "not inherited; no open, body sign, or pair minimum"
+      },
+      {
+        "campaign": 44,
+        "factor": "full_terminal_library_directional_percentile_consensus_66f",
+        "failed_support_class": "common finite intersection of terminal factors",
+        "relationship_to_campaign099": "not inherited; no old factor value is an input"
+      },
+      {
+        "campaigns": [52, 68, 70, 84],
+        "failed_support_class": "multi-quarter or prior-year event cold start",
+        "relationship_to_campaign099": "not inherited; same-session minute-only"
+      },
+      {
+        "campaign": 60,
+        "factor": "intraday_day_over_day_directional_return_agreement_238b",
+        "failed_support_class": "exact prior stock session plus 60 jointly nonzero returns",
+        "relationship_to_campaign099": "not inherited; no prior-day or return dependency"
+      },
+      {
+        "campaign": 63,
+        "factor": "intraday_cross_sectional_standardized_return_state_stability_236p",
+        "failed_support_class": "positive leave-one-out return variance at every position including structurally degenerate close",
+        "relationship_to_campaign099": "not inherited; peer input is own-bar close-location state, and only the two complete 240-vectors must be nonconstant"
+      },
+      {
+        "campaigns": [86, 96],
+        "factors": [
+          "intraday_intrabar_close_location_serial_persistence_238p",
+          "intraday_intrabar_close_location_total_variation_238p"
+        ],
+        "failed_support_class": "at least 120 adjacent positive-range close-location pairs",
+        "relationship_to_campaign099": "strictly broader on own-stock support: every valid zero-range bar becomes neutral zero, there is no positive-range or adjacent-pair minimum, and only whole-profile variance is required"
+      },
+      {
+        "campaign": 95,
+        "factor": "intraday_own_bar_close_location_entropy_10b_240m",
+        "failed_support_class": "prevalue semantic contradiction in exact fixed-bin reflection claim",
+        "relationship_to_campaign099": "not repaired or reused; no bins or entropy, and the selected continuous signed state is used only inside a leave-one-out market correlation"
+      }
+    ],
+    "passed_high_coverage_support_anchors": [
+      {
+        "factor": "intraday_market_range_profile_synchronization_240m",
+        "relationship": "same exact grid and leave-one-out 240-profile correlation engine with stricter positive-total-range normalization; it retained 1,328,449 of 1,331,759 quality/listing rows"
+      },
+      {
+        "factor": "intraday_intrabar_close_location_pressure_240m",
+        "relationship": "same positive ordered HLC validation with zero ranges contributing zero rather than being removed"
+      }
+    ],
+    "candidate_support_identical_to_known_failed_predicate": false,
+    "candidate_support_provably_no_broader_than_known_failed_predicate": false,
+    "source_or_support_change_frozen_before_values": true,
+    "decision": "pass_support_predicate_gate_before_source_rows_or_candidate_values"
+  },
+  "nearest_semantic_challenges": [
+    {
+      "name": "intraday_intrabar_close_location_pressure_240m",
+      "relationship": "Both use continuous close location inside each contemporaneous high-low interval.",
+      "distinction": "Pressure is an order-invariant own-stock directional aggregate. Campaign099 retains all clock positions and measures correlation to a leave-one-out market profile; profiles with the same own-stock mean can have different synchronization.",
+      "mandatory_numeric_challenge": true
+    },
+    {
+      "name": "intraday_intrabar_close_location_serial_persistence_238p",
+      "relationship": "Both use a continuous own-bar close-location sequence.",
+      "distinction": "The terminal factor correlates adjacent states within one stock and requires 120 positive-range pairs. Campaign099 never correlates adjacent clocks, retains zero ranges as neutral, and correlates the full profile with other stocks.",
+      "mandatory_numeric_challenge": true
+    },
+    {
+      "name": "intraday_intrabar_close_location_total_variation_238p",
+      "relationship": "Both preserve ordering of own-bar close-location states.",
+      "distinction": "Campaign096 averages within-stock absolute adjacent changes and failed its pair-support coverage gate. Campaign099 has no adjacent-pair operator or minimum and uses a cross-stock leave-one-out benchmark.",
+      "mandatory_numeric_challenge": true
+    },
+    {
+      "name": "intraday_own_bar_close_location_entropy_10b_240m",
+      "relationship": "Both start from own-bar close-location geometry.",
+      "distinction": "Campaign095 was rejected before values for a fixed-bin entropy semantic contradiction. Campaign099 never bins, computes entropy, asserts that reflection property, or reads a Campaign095 value.",
+      "mandatory_semantic_challenge": true,
+      "numeric_status": "ineligible_terminal_definition_semantic_challenge_only"
+    },
+    {
+      "name": "intraday_market_range_profile_synchronization_240m",
+      "relationship": "Both use the same-date leave-one-out equal-weight 240-clock profile correlation architecture.",
+      "distinction": "Campaign097 normalizes nonnegative high-low range mass and is invariant to close. Campaign099 uses signed scale-free close acceptance inside each bar, is invariant to range magnitude when the normalized state is fixed, and can change while every range profile is unchanged.",
+      "mandatory_numeric_challenge": true
+    },
+    {
+      "name": "intraday_market_directional_sign_agreement_238m",
+      "relationship": "Both measure same-date market-common directional state.",
+      "distinction": "The terminal factor compares signed adjacent close returns and drops jointly zero signs. Campaign099 reads own-bar HLC location, has no return or sign threshold, and retains all 240 clocks.",
+      "mandatory_numeric_challenge": true
+    },
+    {
+      "name": "candidate49_intraday_cumulative_vwap_crossing_rate_240m_v1",
+      "relationship": "Both use the completed standard-minute grid.",
+      "distinction": "Candidate49 uses causal cumulative VWAP, amount, volume, sign changes, and a future-only ledger. Campaign099 is historical-only HLC market-profile correlation and never touches Candidate49 artifacts.",
+      "mandatory_numeric_challenge": false
+    }
+  ],
+  "semantic_invariance_checks": [
+    {
+      "intervention": "Multiply every selected HLC price by any stock-day-specific positive constant.",
+      "result": "unchanged because every signed close-location state uses log-distance ratios"
+    },
+    {
+      "intervention": "Translate and positively rescale one bar's log-price interval while preserving its normalized close location.",
+      "result": "unchanged, distinguishing the candidate from range magnitude, nominal price, and gap factors"
+    },
+    {
+      "intervention": "Reflect every valid stock and peer state s to -s at every clock.",
+      "result": "unchanged because Pearson correlation is unchanged when both profiles reverse sign"
+    },
+    {
+      "intervention": "Permute one stock's clock states without applying the same permutation to the market profile.",
+      "result": "generally changes, distinguishing synchronization from marginal close-location moments or entropy"
+    },
+    {
+      "intervention": "Change high-low range magnitude while preserving each normalized close location.",
+      "result": "unchanged, distinguishing Campaign099 from Campaign097 market range synchronization"
+    },
+    {
+      "intervention": "Change open, amount, volume, daily fields, quarterly fields, returns, or Candidate49 observations while preserving HLC.",
+      "result": "unchanged"
+    }
+  ],
+  "prevalue_decision": {
+    "passed": true,
+    "selected_factor_count": 1,
+    "complete_definition_count_reviewed": 130,
+    "numeric_comparator_count_reserved_after_coverage": 127,
+    "candidate_source_rows_read": false,
+    "candidate_or_comparator_values_read": false,
+    "historical_daily_price_or_forward_return_values_read": false,
+    "provider_request_issued": false,
+    "required_next_step": "Freeze the v47-bound coverage-first protocol and sole conditional development trial, then freeze implementation and synthetic tests before any Campaign099 minute source row."
+  },
+  "prohibited_rescues": [
+    "replace synchronization with decoupling, one-minus correlation, rank correlation, covariance, beta, sign agreement, mutual information, selected clocks, subwindows, or another estimator",
+    "change zero-range neutral semantics, source grid, peer count, population-variance rule, direction, endpoint tolerance, years, folds, purge, costs, gates, or quality/listing universe",
+    "add range, amount, volume, return, capitalization, industry, quarterly, old-factor, threshold, filter, subset, regime, neutralization, residualization, fitted weight, model, or combination",
+    "rerun, invert, rescue, remove a failed comparator, backfill Candidate49, start Candidate50, or create current scores, selections, sizes, or orders"
+  ],
+  "research_boundary": {
+    "campaign099_source_rows_read": false,
+    "campaign099_candidate_values_read": false,
+    "campaign099_comparator_values_read": false,
+    "historical_daily_price_fields_read": [],
+    "historical_forward_returns_read": false,
+    "candidate49_historical_backfill_performed": false,
+    "candidate49_ledgers_changed": false,
+    "provider_request_issued": false,
+    "prospective_candidate_created": false,
+    "current_scoring_selection_sizing_or_orders_performed": false,
+    "investment_advice": false
+  }
+}

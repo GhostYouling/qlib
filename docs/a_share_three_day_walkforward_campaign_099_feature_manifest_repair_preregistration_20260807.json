@@ -1,0 +1,66 @@
+{
+  "schema_version": 1,
+  "kind": "a_share_three_day_walkforward_campaign099_feature_manifest_repair_preregistration",
+  "status": "frozen_after_fail_closed_diagnosis_before_repair_edit_or_resume",
+  "frozen_at": "2026-08-07T09:56:47Z",
+  "failure_record": {
+    "path": "docs/a_share_three_day_walkforward_campaign_099_feature_manifest_semantic_failure_20260807.json",
+    "sha256": "fef5cdc484b5031d8cdf4becb48fa53079bf97befc6ee77705a6d192fe4b7d1d"
+  },
+  "attempt_ledger_before_repair": {
+    "path": "data/experiments/short_horizon/historical_walkforward/campaign_099/research_attempt_ledger_v3.json",
+    "sha256": "5099040d4d46ae6dd2fd622ebcdb0d1deee26d635e08ff30d74d210d03d6d8a3"
+  },
+  "pre_repair_implementation": {
+    "feature_runner": {
+      "path": "scripts/a_share_three_day_walkforward_campaign099_features.py",
+      "sha256": "f4e57c9f40b181d62aa337fd133662d379eac92138690fbfd8cdfe25968df1fe"
+    },
+    "tests": {
+      "path": "tests/data_collector_tests/test_a_share_three_day_walkforward_campaign099_features.py",
+      "sha256": "f63b811175eb3fee07e9a37a13f7eff2fa9501c085da0e938214797ca6bb34bb"
+    },
+    "implementation_freeze": {
+      "path": "docs/a_share_three_day_walkforward_campaign_099_feature_implementation_freeze_20260807.json",
+      "sha256": "36d150280edc23f8e6542cd17c9a234a75309de285177d3b024df0a577dda6e0"
+    }
+  },
+  "diagnosis": {
+    "root_cause": "the Campaign099 manifest validator required final-envelope fields during the generic engine's mandatory pre-write validation, before the additive finalizer could create those fields",
+    "candidate_partition_values_changed": false,
+    "candidate_partition_checkpoint_validation_failed": false,
+    "quality_counter_validation_failed": false,
+    "market_benchmark_validation_failed": false,
+    "formula_or_direction_validation_failed": false,
+    "publication_occurred": false
+  },
+  "only_permitted_repair": {
+    "feature_runner": "split manifest envelope validation into an exact transient generic-engine envelope and an exact finalized Campaign099 envelope while retaining one unchanged common semantic predicate",
+    "tests": [
+      "prove the exact transient generic envelope is accepted before finalization",
+      "prove the exact finalized Campaign099 envelope is accepted",
+      "prove a mixed or weakened envelope is rejected"
+    ],
+    "resume": "reuse all 5396 benchmark checkpoints and all 33015 candidate partition checkpoints; require resumed_partitions=33015 and no candidate value recomputation"
+  },
+  "forbidden_changes": {
+    "factor_formula": true,
+    "factor_direction": true,
+    "source_fields": true,
+    "support_predicate": true,
+    "candidate_partition_bytes": true,
+    "coverage_or_capacity_gates": true,
+    "uniqueness_gate": true,
+    "comparison_order": true,
+    "historical_daily_price_or_forward_return_read": true,
+    "provider_request": true,
+    "candidate49_ledger_change": true
+  },
+  "scientific_boundary_at_freeze": {
+    "coverage_or_capacity_metrics_computed": false,
+    "comparison_factor_values_read": false,
+    "historical_daily_price_or_forward_return_values_read": false,
+    "training_or_model_fitting_performed": false,
+    "provider_request_issued": false
+  }
+}

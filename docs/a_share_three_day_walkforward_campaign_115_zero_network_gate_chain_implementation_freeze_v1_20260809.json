@@ -1,0 +1,58 @@
+{
+  "schema_version": 1,
+  "kind": "a_share_three_day_walkforward_campaign115_zero_network_gate_chain_implementation_freeze",
+  "status": "zero_network_gate_chain_status_entry_frozen_before_provider_or_research_values",
+  "recorded_at": "2026-08-09T09:56:00+08:00",
+  "recorded_at_semantics": "monotonic_logical_append_time_after_campaign115_infrastructure_025_not_host_wall_clock_measurement",
+  "authoritative_inputs": {
+    "iteration_state_v11": {
+      "path": "docs/a_share_three_day_iteration_status_20260809_campaign115_ordered_no_return_direct_entry_ready_v11.json",
+      "sha256": "7246d2d0d864a75bfa82781883d17023048637a659bfc13944f61b602fb1ad17"
+    },
+    "numeric_policy_v96": {
+      "path": "docs/a_share_three_day_walkforward_future_numeric_comparison_eligibility_policy_v96_20260809.json",
+      "sha256": "87b623f53e069c617e9099d030ccba73f0fef3cced18bc7bf1e822a7d4bf555a"
+    },
+    "failure_record": {
+      "path": "docs/a_share_three_day_walkforward_campaign_115_gate_chain_python_alias_failure_20260809.json",
+      "sha256": "65634f0d444c764404d87121aa63bb337673494c006094fe09178dcda24002b3"
+    }
+  },
+  "implementation": {
+    "script_path": "scripts/a_share_tushare_limit_up_queue_gate_chain.py",
+    "script_sha256": "1f3e04b171b00c7af37e183c19e174730d9e323f5b52b606fb8b14f06c633d67",
+    "test_path": "tests/data_collector_tests/test_a_share_tushare_limit_up_queue_gate_chain.py",
+    "test_sha256": "d1dd02be3803828a330e3f395143d7d1c4e2764981e24b1506a41396a3446734",
+    "command": "/Volumes/DIsk/Coding/anaconda3/bin/python3.12 scripts/a_share_tushare_limit_up_queue_gate_chain.py status",
+    "subprocess_count": 9,
+    "plan_stage_count": 5,
+    "inspection_stage_count": 4,
+    "preserves_each_child_process_exit_code": true,
+    "requires_one_json_object_per_child": true,
+    "requires_ready_exit_equivalence": true,
+    "rejects_forbidden_true_boundary_fields": true,
+    "provider_or_confirmed_run_interface_exposed": false
+  },
+  "frozen_stage_order": [
+    "acceptance_plan",
+    "acceptance_inspection",
+    "development_source_plan",
+    "semantic_verification_plan",
+    "semantic_receipt_inspection",
+    "ordered_no_return_plan",
+    "ordered_no_return_inspection",
+    "development_trial_plan",
+    "development_trial_inspection"
+  ],
+  "research_boundary": {
+    "provider_action_authorized_by_status_command": false,
+    "confirmed_scientific_command_executed": false,
+    "provider_request_issued": false,
+    "credential_value_printed_hashed_or_persisted": false,
+    "candidate_or_comparator_values_read": false,
+    "historical_daily_price_or_forward_return_values_read": false,
+    "partition_year_2024_or_2025_values_read": false,
+    "candidate49_historical_backfill_performed": false,
+    "current_scoring_selection_sizing_or_orders_performed": false
+  }
+}

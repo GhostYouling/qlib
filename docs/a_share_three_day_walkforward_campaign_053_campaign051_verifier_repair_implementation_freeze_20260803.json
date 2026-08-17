@@ -1,0 +1,58 @@
+{
+  "version": 1,
+  "kind": "a_share_three_day_walkforward_campaign053_campaign051_verifier_repair_implementation_freeze",
+  "status": "frozen_before_exact_no_return_audit_continuation",
+  "recorded_at": "2026-08-03T11:19:18Z",
+  "repair_authorization": {
+    "path": "docs/a_share_three_day_walkforward_campaign_053_no_return_audit_campaign051_verifier_failure_repair_20260803.json",
+    "sha256": "f70412a025886ef117eac7b9568a438c7edfdb3a4bf0ec5021f4017b300da20a"
+  },
+  "failed_entrypoint": {
+    "path": "scripts/a_share_three_day_walkforward_campaign053_features_v3.py",
+    "sha256": "e561a78f3409df7746b30e381ac752d33edbf6d8d24831d8cfae99b98d7a1608"
+  },
+  "repair_entrypoint": {
+    "path": "scripts/a_share_three_day_walkforward_campaign053_features_v4.py",
+    "sha256": "7ce884725f3ac9bc8027b91380a8d549b609818c92961e21db3992cc8f1e124f"
+  },
+  "focused_test": {
+    "path": "tests/data_collector_tests/test_a_share_three_day_walkforward_campaign053_no_return_audit_repair.py",
+    "sha256": "d014f8e238b95ac6181ca96240bfb8463ea79d733d4b82cf643bf51e7d6b48e4",
+    "passed": 2
+  },
+  "combined_campaign053_focused_tests": {
+    "command": "PYTHONPATH=. pytest -q tests/data_collector_tests/test_a_share_three_day_walkforward_campaign053_features.py tests/data_collector_tests/test_a_share_three_day_walkforward_campaign053_no_return_audit_repair.py",
+    "passed": 8,
+    "failed": 0
+  },
+  "frozen_repair_semantics": {
+    "target_snapshot": "campaign051_only",
+    "exact_columns": [
+      "trade_date",
+      "symbol",
+      "provider",
+      "intraday_close_range_occupancy_entropy_10b",
+      "intraday_close_range_occupancy_entropy_10b_eligible"
+    ],
+    "manifest_sha256": "13a2b7862cb2118dd8e42bcd94653973de603d840bd09f0762be219b840f032e",
+    "dataset_sha256": "2930b47c228f3e033f8130d9960e55668e688e02ba020a02d02ffa60987cabbd",
+    "partitions": 33015,
+    "rows": 7724498,
+    "partition_byte_hashes_required": true,
+    "partition_frame_hashes_required": true,
+    "formula_direction_gates_comparison_order_or_values_changed": false
+  },
+  "continuation": {
+    "entrypoint": "scripts/a_share_three_day_walkforward_campaign053_features_v5.py",
+    "same_parameters_required": true,
+    "maximum_exact_continuations": 1,
+    "no_completed_audit_exists_before_continuation": true
+  },
+  "research_boundary": {
+    "historical_forward_return_fields_read": false,
+    "provider_request_issued": false,
+    "candidate49_historical_return_read": false,
+    "second_prospective_candidate_created": false,
+    "current_scoring_selection_sizing_or_orders_performed": false
+  }
+}

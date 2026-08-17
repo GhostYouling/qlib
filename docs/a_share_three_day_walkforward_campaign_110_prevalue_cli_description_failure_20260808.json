@@ -1,0 +1,40 @@
+{
+  "schema_version": 1,
+  "kind": "a_share_three_day_walkforward_campaign110_prevalue_cli_description_failure",
+  "status": "preserved_prevalue_infrastructure_failure_superseded_by_v2_freeze",
+  "recorded_at": "2026-08-07T22:48:05Z",
+  "failed_implementation_freeze": {
+    "path": "docs/a_share_three_day_walkforward_campaign_110_no_return_implementation_freeze_20260808.json",
+    "sha256": "89f73a314468906ec5b89cd2962dea2b81c8d114a8e0f2de3cb4458ee9d7cead"
+  },
+  "failed_feature_builder": {
+    "path": "scripts/a_share_three_day_walkforward_campaign110_features.py",
+    "sha256_at_failure": "b4ca90245f59ad2b7323052ca9aa25e496d52a12c4cc14f2dcc2a1572938e67a"
+  },
+  "failed_ordered_audit_runner": {
+    "path": "scripts/a_share_three_day_walkforward_campaign110_no_return_audit.py",
+    "sha256_at_failure": "6d279f61ac53ce9311bcae9c1108454118187fb86acb20c6e533d4ab06e522a4"
+  },
+  "failure": {
+    "stage": "prebuild_help_text_audit",
+    "observed": "The generated CLI description inherited Campaign105 activity-clock wording, claimed volume/amount projection and claimed no price read.",
+    "actual_frozen_projection": [
+      "datetime",
+      "symbol",
+      "provider",
+      "open",
+      "close"
+    ],
+    "classification": "documentation_and_interface_infrastructure_failure_before_source_values",
+    "scientific_attempt_count": 0,
+    "candidate_source_rows_read": false,
+    "candidate_or_comparator_values_read": false,
+    "historical_daily_price_or_forward_return_values_read": false,
+    "provider_request_issued": false
+  },
+  "repair_scope": {
+    "formula_direction_anchor_support_range_comparator_order_or_gates_changed": false,
+    "only_generated_cli_description_and_v2_freeze_binding_changed": true,
+    "v1_freeze_rewritten": false
+  }
+}

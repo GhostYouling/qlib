@@ -1,0 +1,46 @@
+{
+  "schema_version": 3,
+  "kind": "a_share_three_day_walkforward_campaign099_no_return_audit_activation_binding",
+  "status": "postvalue_atomic_writer_repair_frozen_before_identical_retry",
+  "activated_at": "2026-08-07T10:35:43Z",
+  "implementation_freeze": {
+    "path": "docs/a_share_three_day_walkforward_campaign_099_no_return_audit_implementation_freeze_v3_20260807.json",
+    "sha256": "24bd189f01682dbfbf47616cb82688fc513e9b397be43974a59f762c0315e645"
+  },
+  "v2_activation_binding_preserved": {
+    "path": "docs/a_share_three_day_walkforward_campaign_099_no_return_audit_activation_binding_v2_20260807.json",
+    "sha256": "6069f657c9e52512fa4c1d63a902e6adb6608676a6c124f64b625ee207a351c7"
+  },
+  "snapshot_binding": {
+    "path": "docs/a_share_three_day_walkforward_campaign_099_feature_snapshot_binding_20260807.json",
+    "sha256": "e90f88f2fd3f102ecfc20610978e125320d2f51e8d155cb9b82e2759824c59f8"
+  },
+  "candidate_snapshot": {
+    "path": "/Volumes/DIsk/qlib-a-share-tushare-1m/derived/a_share/rich/tushare/minute_walkforward_campaign099_feature_library/tushare_stk_mins_1m_2019_2025_ea0cbb8f_walkforward_campaign099_feature_library_v1/snapshot_manifest.json",
+    "sha256": "90c495594de88e183ec920a09be7a1ef66c89d9967f59d2aa27fdd49650b4651",
+    "dataset_sha256": "52f904b975a7b79f383d39ef94ce04c724a234a9a53a2e924402d17a3f7c4972"
+  },
+  "eligibility_identity_source": {
+    "path": "/Volumes/DIsk/qlib-a-share-tushare-1m/derived/a_share/rich/tushare/compact_comparator_cache/campaign067_terminal_numeric98_v4/snapshot_manifest.json",
+    "sha256": "3d81068f07ac61fe4cd04bd1a893e58759c06d88213263135fec5244e309b57b"
+  },
+  "final_comparator_source": {
+    "path": "/Volumes/DIsk/qlib-a-share-tushare-1m/derived/a_share/rich/tushare/minute_walkforward_campaign098_feature_library/tushare_stk_mins_1m_2019_2025_ea0cbb8f_walkforward_campaign098_feature_library_v1/snapshot_manifest.json",
+    "sha256": "371429a81292a91ef2bfa1292f467c81bf73e176fbfbc9888084f74eaaac1dc5",
+    "dataset_sha256": "921f06fad98aed942550d86b1475c888aea6d2025c37d53ec55917401bd34b33"
+  },
+  "identical_retry_contract": {
+    "only_effective_change": "atomic JSON writer reference",
+    "candidate_loader_alignment_coverage_comparisons_payload_and_admissibility_unchanged": true,
+    "prior_in_memory_payload_unrecoverable": true,
+    "single_retry": true
+  },
+  "coverage_or_capacity_metrics_computed_before_activation": true,
+  "comparison_values_read_before_activation_conservative": true,
+  "historical_daily_price_or_forward_return_values_read_before_activation": false,
+  "provider_request_issued_before_activation": false,
+  "candidate49_historical_return_read": false,
+  "candidate49_ledgers_changed": false,
+  "current_scoring_selection_sizing_or_orders_performed": false,
+  "single_use": true
+}

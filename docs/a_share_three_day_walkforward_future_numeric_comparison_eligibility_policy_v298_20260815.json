@@ -1,0 +1,138 @@
+{
+  "version": 298,
+  "kind": "a_share_three_day_walkforward_future_numeric_comparison_eligibility_policy",
+  "status": "campaign201_terminal_prevalue_healthcare_provider_care_episode_and_reimbursement_lifecycle_campaign202_ready_after_validation_accounting_corrected_v3",
+  "recorded_at": "2026-08-15T18:22:38+08:00",
+  "timestamp_semantics": "monotonic logical append time after Campaign201 terminal result v4 and both third additive report corrections",
+  "supersedes_without_rewriting": {
+    "path": "docs/a_share_three_day_walkforward_future_numeric_comparison_eligibility_policy_v297_20260815.json",
+    "sha256": "8b63f3c445f14d5760263e3be561bbc9b95c3e43ee22af02dc0cb675399433b2",
+    "preserved": true,
+    "library_order_changed": false,
+    "scientific_result_changed": false,
+    "accounting_changed": true,
+    "cumulative_regression_expectation_changed": false
+  },
+  "authoritative_inputs": {
+    "terminal_result_v4": {
+      "path": "docs/a_share_three_day_walkforward_campaign_201_terminal_result_v4_20260815.json",
+      "sha256": "9d968a5dd6a12345d792a16d1d802dcb07de8630ef96d12d2f2cdc4aeb6c1079"
+    },
+    "healthcare_provider_care_episode_and_reimbursement_source_frontier": {
+      "path": "docs/a_share_three_day_walkforward_campaign_201_healthcare_provider_patient_referral_appointment_admission_care_episode_discharge_readmission_payer_claim_reimbursement_lifecycle_source_frontier_20260815.json",
+      "sha256": "4a90578ce9a73e37a6db8f6fcf9f610e01b0ef9e6606dcd77d825e7e4d573d4d"
+    },
+    "attempt_ledger_v4": {
+      "path": "data/experiments/short_horizon/historical_walkforward/campaign_201/research_attempt_ledger_v4.json",
+      "sha256": "081be95c1f89d86b10c9d6528309f9e1063a0c531c88d3d31b5ed43bced74330",
+      "campaign_effective_entry_count": 13,
+      "chain_tip_sha256": "72a138ff3803172dcbcf457ed5a58ccb36fee3a76055243d7a2c56b6e97923cd"
+    },
+    "focused_test_patch_failure": {
+      "path": "docs/a_share_three_day_walkforward_campaign_201_test_update_patch_context_failure_20260815.json",
+      "sha256": "f9f37d1dda6ae3a9f9018cbe0bc2a7e65b2afb2ebad8bc680f8532ad954bf742"
+    }
+  },
+  "mutable_unified_reports": {
+    "current": {
+      "path": "data/experiments/short_horizon/current_research_report.md",
+      "sha256_at_publication": "72d8037b7f718b2397332d0236f18757785ed55757bfb4d5744e05edc1a46aad",
+      "mutable_append_only_report_not_an_immutable_binding": true
+    },
+    "three_day": {
+      "path": "data/experiments/short_horizon/three_day_research_report.md",
+      "sha256_at_publication": "75d0de7fa26a60301294872923c8af36a3d4604193545296ee1004a9d2b8397c",
+      "mutable_append_only_report_not_an_immutable_binding": true
+    }
+  },
+  "campaign201_terminal_classification": {
+    "mechanism_domains_reviewed": 1,
+    "healthcare_provider_lifecycle_routes_reviewed": 7,
+    "genuinely_new_issuer_state_routes": 3,
+    "source_admission_deferrals_not_factor_failures": 3,
+    "relabeling_overlap_operator_or_combination_route_rejections": 4,
+    "selected_candidate_count": 0,
+    "infrastructure_failure_count": 6,
+    "scientific_result_changed_from_v297": false
+  },
+  "complete_historical_feature_library": {
+    "factor_definition_count": 158,
+    "order_sha256": "4819c7fd7c0795d7598a52f3c615e3f117d5f4ecd9332974bc8e3dfa57c96667",
+    "unchanged_from_v297": true
+  },
+  "numerical_comparator_eligibility": {
+    "eligible_numeric_comparator_count": 142,
+    "order_sha256": "5d1b35fb5a0d8ac9293008db9963c4a60a94dc940c237c3ed259e5ce44f14aaf",
+    "unchanged_from_v297": true
+  },
+  "effective_accounting": {
+    "campaign201_attempt_count": 13,
+    "campaign201_scientific_attempt_count": 7,
+    "campaign201_infrastructure_failure_count": 6,
+    "cumulative_historical_research_attempt_count": 1832,
+    "cumulative_return_reading_development_trial_count": 314
+  },
+  "deferred_source_boundary": {
+    "healthcare_provider_care_episode_and_reimbursement_lifecycle_declared_ineffective": false,
+    "current_provider_patient_episode_or_claim_state_may_be_historically_backfilled": false,
+    "protected_health_information_directly_identifiable_or_reidentifiable_patient_data_may_be_used": false,
+    "structurally_inapplicable_issuers_may_be_filled_with_zero_or_cross_sector_ranked": false,
+    "clinical_trial_incident_operating_kpi_customer_quality_support_pricing_insurer_payment_or_accounting_search_may_reopen_prior_campaigns": false,
+    "specialty_diagnosis_procedure_site_payer_severity_cohort_direction_threshold_age_window_subset_combination_or_model_search_may_precede_source_admission": false
+  },
+  "future_campaign_boundary": {
+    "next_campaign": 202,
+    "may_begin_after_campaign201_independent_validation": true,
+    "historical_offline_prevalue_work_may_continue_at_any_local_time": true,
+    "2024_2025_source_or_returns_remain_closed": true,
+    "candidate49_remains_separate_confirmation_layer": true
+  },
+  "cumulative_regression_boundary": {
+    "campaign145_through_campaign201_test_file_count": 89,
+    "required_exact_historical_lifecycle_nodes": [
+      "data_collector_tests/test_a_share_three_day_walkforward_campaign145_terminal.py::test_campaign145_terminal_bindings_reports_and_candidate49_boundary",
+      "data_collector_tests/test_a_share_three_day_walkforward_campaign161_initial_verification.py::test_campaign161_reports_and_candidate49_hashes",
+      "data_collector_tests/test_a_share_three_day_walkforward_campaign164_terminal.py::test_campaign164_reports_are_appended_exactly_once",
+      "data_collector_tests/test_a_share_three_day_walkforward_campaign170_terminal.py::test_campaign170_bindings_and_finite_frontier",
+      "data_collector_tests/test_a_share_three_day_walkforward_campaign171_terminal.py::test_campaign171_bindings_and_finite_frontier"
+    ],
+    "prior_mutable_report_nodes": [
+      "data_collector_tests/test_a_share_three_day_walkforward_campaign190_terminal.py::test_campaign190_reports_candidate49_and_boundaries",
+      "data_collector_tests/test_a_share_three_day_walkforward_campaign191_terminal.py::test_campaign191_reports_candidate49_and_research_boundaries",
+      "data_collector_tests/test_a_share_three_day_walkforward_campaign192_terminal.py::test_campaign192_reports_candidate49_and_research_boundaries",
+      "data_collector_tests/test_a_share_three_day_walkforward_campaign193_terminal.py::test_campaign193_reports_candidate49_and_research_boundaries",
+      "data_collector_tests/test_a_share_three_day_walkforward_campaign194_terminal.py::test_campaign194_reports_candidate49_and_research_boundaries",
+      "data_collector_tests/test_a_share_three_day_walkforward_campaign195_terminal.py::test_campaign195_reports_candidate49_and_research_boundaries",
+      "data_collector_tests/test_a_share_three_day_walkforward_campaign196_terminal.py::test_campaign196_reports_candidate49_and_research_boundaries",
+      "data_collector_tests/test_a_share_three_day_walkforward_campaign197_terminal.py::test_campaign197_reports_candidate49_and_research_boundaries",
+      "data_collector_tests/test_a_share_three_day_walkforward_campaign198_terminal.py::test_campaign198_reports_candidate49_and_research_boundaries",
+      "data_collector_tests/test_a_share_three_day_walkforward_campaign199_terminal.py::test_campaign199_reports_candidate49_and_research_boundaries",
+      "data_collector_tests/test_a_share_three_day_walkforward_campaign200_terminal.py::test_campaign200_reports_candidate49_and_research_boundaries"
+    ],
+    "expected_tests_passed_after_validation": 472,
+    "expected_tests_skipped_after_validation": 1,
+    "expected_nodes_deselected_after_validation": 16,
+    "final_results_must_be_recorded_in_terminal_validation": true,
+    "failed_or_truncated_invocations_recorded_and_excluded_from_validation": 6
+  },
+  "research_boundary": {
+    "failed_or_truncated_output_used_as_validation_or_scientific_evidence": false,
+    "source_patient_episode_claim_factor_comparator_security_price_or_return_value_read": false,
+    "protected_health_information_or_directly_identifiable_patient_data_read": false,
+    "stress_2024_2025_opened": false,
+    "provider_or_web_request_issued": false,
+    "provider_credential_presence_value_or_digest_read": false,
+    "candidate49_plan_or_run_executed": false,
+    "candidate49_ledgers_changed": false,
+    "second_prospective_candidate_created": false
+  },
+  "candidate49": {
+    "only_active_prospective_candidate": true,
+    "signal_ledger_sha256": "5193f00d7f36da003f53cec387900da4c3d002299f5dfcfc1a95eaa199ed3a79",
+    "signal_entry_count": 0,
+    "execution_ledger_sha256": "d57a3e61eac969e42cafa418ccd8c0a5ee65dcf69da145bb2c096c2a02a2ea4f",
+    "execution_entry_count": 0,
+    "completed_future_workflow_record_count": 0
+  },
+  "next_action": "Run fresh focused Campaign201, corrected Campaign145-201 cumulative and independent binding validation, then publish the active-goal state authorizing Campaign202."
+}

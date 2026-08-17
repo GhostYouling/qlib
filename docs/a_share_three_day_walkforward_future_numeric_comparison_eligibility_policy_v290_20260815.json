@@ -1,0 +1,114 @@
+{
+  "version": 290,
+  "kind": "a_share_three_day_walkforward_future_numeric_comparison_eligibility_policy",
+  "status": "campaign197_terminal_prevalue_loyalty_rewards_frontier_campaign198_ready_after_validation",
+  "recorded_at": "2026-08-15T17:14:15+08:00",
+  "timestamp_semantics": "monotonic logical append time after Campaign196 policy v289 and Campaign197 terminal publication",
+  "supersedes_without_rewriting": {
+    "path": "docs/a_share_three_day_walkforward_future_numeric_comparison_eligibility_policy_v289_20260815.json",
+    "sha256": "fb992fcf15f548b6bf0d4713efcda9876ea549d666c7c549d559522c1da530cc",
+    "preserved": true,
+    "library_order_changed": false,
+    "scientific_result_changed": true
+  },
+  "authoritative_inputs": {
+    "terminal_result": {
+      "path": "docs/a_share_three_day_walkforward_campaign_197_terminal_result_20260815.json",
+      "sha256": "8a0d9f16fcd8558939517a6e7c2f236a0d93170b0b70ca0fd845df37f7a30858"
+    },
+    "regulated_utility_domain_overlap_rejection": {
+      "path": "docs/a_share_three_day_walkforward_campaign_197_regulated_utility_rate_case_cost_recovery_domain_overlap_rejection_20260815.json",
+      "sha256": "db744ba035d3dd854a36f32b6d49f7c73f624d0ce6e9b7879e9c5f2c10312a3c"
+    },
+    "loyalty_rewards_lifecycle_source_frontier": {
+      "path": "docs/a_share_three_day_walkforward_campaign_197_loyalty_rewards_points_miles_issuance_outstanding_redemption_expiration_breakage_partner_settlement_lifecycle_source_frontier_20260815.json",
+      "sha256": "891fbf0a13d83b1a1d1ab53a6dc683752acaadd1c0795e58796f46f7ec40963d"
+    },
+    "attempt_ledger_v1": {
+      "path": "data/experiments/short_horizon/historical_walkforward/campaign_197/research_attempt_ledger_v1.json",
+      "sha256": "c0caaea176305b95e7608f4973d63a8e82612b310b4e291caba78c156a3284e6",
+      "campaign_effective_entry_count": 17,
+      "chain_tip_sha256": "f0893e779c982b0fc7cfef8b1cbd6f772ca774340810c8438d294863506a8e63"
+    }
+  },
+  "mutable_unified_reports": {
+    "current": {
+      "path": "data/experiments/short_horizon/current_research_report.md",
+      "sha256_at_publication": "b5b2dd341067d09ba4308b055920d41a761833ba479151a9a387fcf44ddd1a34",
+      "mutable_append_only_report_not_an_immutable_binding": true
+    },
+    "three_day": {
+      "path": "data/experiments/short_horizon/three_day_research_report.md",
+      "sha256_at_publication": "929786ee7570b540af5aa4c14a86915b8f3a30de4ec2705c7290118e0c9e0872",
+      "mutable_append_only_report_not_an_immutable_binding": true
+    }
+  },
+  "campaign197_terminal_classification": {
+    "mechanism_domains_reviewed": 2,
+    "regulated_utility_domain_rejected_as_campaign169_overlap": 1,
+    "loyalty_rewards_lifecycle_routes_reviewed": 7,
+    "genuinely_new_issuer_state_routes": 3,
+    "source_admission_deferrals_not_factor_failures": 3,
+    "relabeling_overlap_operator_or_combination_route_rejections": 4,
+    "selected_candidate_count": 0,
+    "infrastructure_failure_count": 9
+  },
+  "complete_historical_feature_library": {
+    "factor_definition_count": 158,
+    "order_sha256": "4819c7fd7c0795d7598a52f3c615e3f117d5f4ecd9332974bc8e3dfa57c96667",
+    "unchanged_from_v289": true
+  },
+  "numerical_comparator_eligibility": {
+    "eligible_numeric_comparator_count": 142,
+    "order_sha256": "5d1b35fb5a0d8ac9293008db9963c4a60a94dc940c237c3ed259e5ce44f14aaf",
+    "unchanged_from_v289": true
+  },
+  "effective_accounting": {
+    "campaign197_attempt_count": 17,
+    "campaign197_scientific_attempt_count": 8,
+    "campaign197_infrastructure_failure_count": 9,
+    "cumulative_historical_research_attempt_count": 1782,
+    "cumulative_return_reading_development_trial_count": 314
+  },
+  "deferred_source_boundary": {
+    "loyalty_rewards_obligation_lifecycle_state_declared_ineffective": false,
+    "current_member_dashboard_outstanding_points_balance_or_reward_catalog_may_be_historically_backfilled": false,
+    "structurally_non_loyalty_issuers_may_be_filled_with_zero_or_cross_sector_ranked": false,
+    "generic_member_count_retention_discount_rebate_cashback_contract_liability_deposit_fiduciary_inventory_or_security_price_search_may_reopen_prior_campaigns": false,
+    "currency_tier_partner_reward_category_region_channel_direction_threshold_age_window_subset_combination_or_model_search_may_precede_source_admission": false
+  },
+  "future_campaign_boundary": {
+    "next_campaign": 198,
+    "may_begin_after_campaign197_independent_validation": true,
+    "historical_offline_prevalue_work_may_continue_at_any_local_time": true,
+    "2024_2025_source_or_returns_remain_closed": true,
+    "candidate49_remains_separate_confirmation_layer": true
+  },
+  "cumulative_regression_boundary": {
+    "campaign145_through_campaign197_test_file_count": 85,
+    "campaign196_mutable_report_node_added_to_deselection_set": true,
+    "expected_tests_passed_after_validation": 468,
+    "expected_tests_skipped_after_validation": 1,
+    "expected_nodes_deselected_after_validation": 12,
+    "final_results_must_be_recorded_in_terminal_validation": true,
+    "failed_or_truncated_invocations_recorded_and_excluded_from_validation": 9
+  },
+  "research_boundary": {
+    "failed_or_truncated_output_used_as_validation_or_scientific_evidence": false,
+    "source_factor_comparator_security_price_or_return_value_read": false,
+    "stress_2024_2025_opened": false,
+    "provider_or_web_request_issued": false,
+    "provider_credential_presence_value_or_digest_read": false,
+    "candidate49_plan_or_run_executed": false,
+    "candidate49_ledgers_changed": false,
+    "second_prospective_candidate_created": false
+  },
+  "candidate49": {
+    "only_active_prospective_candidate": true,
+    "signal_ledger_sha256": "5193f00d7f36da003f53cec387900da4c3d002299f5dfcfc1a95eaa199ed3a79",
+    "signal_entry_count": 0,
+    "execution_ledger_sha256": "d57a3e61eac969e42cafa418ccd8c0a5ee65dcf69da145bb2c096c2a02a2ea4f",
+    "execution_entry_count": 0
+  },
+  "next_action": "Run focused Campaign197, corrected Campaign145-197 cumulative and independent binding validation, then publish the active-goal state authorizing Campaign198."
+}

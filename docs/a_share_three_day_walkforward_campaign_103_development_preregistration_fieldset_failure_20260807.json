@@ -1,0 +1,28 @@
+{
+  "version": 1,
+  "kind": "a_share_three_day_walkforward_campaign103_infrastructure_failure",
+  "status": "failed_in_synthetic_tests_before_development_return_read",
+  "recorded_at": "2026-08-07T17:15:00+08:00",
+  "stage": "development_preregistration_static_fieldset_validation",
+  "test_command_result": "2 passed, 3 failed",
+  "common_exception": "Campaign103 preregistration fields changed: unexpected repair_scope and supersedes_without_rewriting",
+  "root_cause": "The inherited schema permits only the original exact top-level field set. Additive lineage must be carried inside an already permitted governance_bindings member and in separate immutable records.",
+  "failed_preregistration": {
+    "path": "docs/a_share_three_day_walkforward_campaign_103_preregistration_v5.json"
+  },
+  "allowed_repair": "Create v6 with the exact inherited top-level field set, move no research semantics, and retain prior lineage through governance_bindings plus external immutable records.",
+  "research_boundary": {
+    "candidate_panel_values_read_by_failed_tests": false,
+    "historical_daily_price_fields_read": [],
+    "historical_forward_return_fields_read": false,
+    "development_trial_started": false,
+    "2024_2025_stress_opened": false,
+    "provider_request_issued": false,
+    "candidate49_ledgers_changed": false
+  },
+  "attempt_accounting": {
+    "campaign103_infrastructure_failure_increment": 1,
+    "campaign103_complete_factor_attempt_increment": 0,
+    "return_reading_development_trial_increment": 0
+  }
+}

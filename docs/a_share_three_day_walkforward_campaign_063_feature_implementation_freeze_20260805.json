@@ -1,0 +1,97 @@
+{
+  "version": 1,
+  "kind": "a_share_three_day_walkforward_campaign063_feature_implementation_freeze",
+  "status": "frozen_before_campaign063_source_values",
+  "recorded_at": "2026-08-05T06:05:00+08:00",
+  "purpose": "Bind the sole Campaign063 feature implementation and focused synthetic tests before any raw minute partition, frozen cross-sectional moment value, candidate value, comparison value, daily price, or forward return is read.",
+  "feature_runner": {
+    "path": "/Volumes/DIsk/Disk-Coding/qlib/scripts/a_share_three_day_walkforward_campaign063_features.py",
+    "sha256": "c6987c8cb59d1a6091eeceed923406fcee4c00d943da5665d0abef674b17ab1b"
+  },
+  "feature_tests": {
+    "path": "tests/data_collector_tests/test_a_share_three_day_walkforward_campaign063_features.py",
+    "sha256": "99be241822e4388fc83ab57faab51e5cf0bafbc59ebbb0d674f24374540e6665",
+    "focused_tests_passed": 8
+  },
+  "no_return_protocol": {
+    "path": "docs/a_share_three_day_walkforward_campaign_063_no_return_preregistration.json",
+    "sha256": "2effcee4ccbbba8d55f450c7add3eb6064968a60c9d856ac769aebd20e542dfb",
+    "binding_count": 18,
+    "bindings_passed": 18
+  },
+  "mechanism_overlap_audit": {
+    "path": "docs/a_share_three_day_walkforward_campaign_063_mechanism_overlap_audit.json",
+    "sha256": "2a0b637a975ce8fbd9db5086adcfe86b92c748cba9ba1064f428220f26d049ee"
+  },
+  "base_partition_engine": {
+    "path": "scripts/a_share_three_day_walkforward_campaign059_features.py",
+    "sha256": "d96954a319caf6b7dd45eafd46fae7db2a6176abc292529d00480b4a9ad10cc0",
+    "use": "immutable partition/checkpoint/hash/atomic-publication engine only; Campaign063 overrides protocol, state formula, leave-one-out moment reconstruction, output semantics, and manifest validation"
+  },
+  "frozen_moment_helper": {
+    "path": "scripts/a_share_three_day_walkforward_campaign031_features.py",
+    "sha256": "24fce3915f1321232573f413531b79c4fe9646c7bc192c7117d1358826d12df2",
+    "use": "fingerprint and load only the already frozen 238-position return sum, squared-sum, and count frame"
+  },
+  "frozen_implementation": {
+    "factor": "intraday_cross_sectional_standardized_return_state_stability_236p",
+    "direction": "higher",
+    "candidate_count": 1,
+    "development_trial_count": 1,
+    "comparison_factor_count": 94,
+    "source_projection": [
+      "datetime",
+      "symbol",
+      "provider",
+      "close"
+    ],
+    "benchmark_projection": [
+      "trade_date",
+      "return_position",
+      "return_sum",
+      "return_sum_squares",
+      "valid_stock_count"
+    ],
+    "selected_closes": 240,
+    "signed_return_positions": 238,
+    "within_half_adjacent_state_pairs": 236,
+    "leave_one_out_minimum_peers_each_position": 50,
+    "population_variance_denominator": "n",
+    "tiny_negative_variance_tolerance": 1e-18,
+    "strictly_positive_peer_variance_required_each_position": true,
+    "standardized_state": "(stock_return-peer_mean)/sqrt(peer_population_variance)",
+    "displacement": "equal-weight mean absolute adjacent difference across 118 morning plus 118 afternoon pairs",
+    "score": "1/(1+mean_absolute_displacement)",
+    "valid_range": "(0,1]",
+    "no_lunch_or_cross_session_pair": true,
+    "no_floor_fill_clip_winsorize_threshold_filter_fit_or_combination": true
+  },
+  "synthetic_acceptance": {
+    "tests_passed": 8,
+    "constant_state_score_exactly_one": true,
+    "lunch_jump_excluded": true,
+    "exact_236_pair_formula_verified": true,
+    "complete_stock_removed_from_peer_moments": true,
+    "incomplete_stock_not_removed_from_benchmark_population": true,
+    "nonpositive_material_negative_nonfinite_and_insufficient_peer_inputs_fail_closed": true,
+    "tiny_negative_variance_canonicalized_only_to_zero_then_fails_strict_positive_gate": true,
+    "wrong_shapes_raise": true
+  },
+  "source_partition_values_read_before_freeze": false,
+  "cross_sectional_moment_values_read_before_freeze": false,
+  "candidate_values_read_before_freeze": false,
+  "comparison_values_read_before_freeze": false,
+  "historical_daily_price_fields_read_before_freeze": [],
+  "historical_forward_return_fields_read_before_freeze": false,
+  "provider_request_issued_before_freeze": false,
+  "candidate49_historical_return_signal_execution_or_milestone_backfill_performed": false,
+  "candidate49_ledgers_changed": false,
+  "second_prospective_candidate_created": false,
+  "current_scoring_selection_sizing_or_orders_performed": false,
+  "decision": {
+    "feature_snapshot_build_allowed_after_freeze_and_binding_validation_exit_zero": true,
+    "formula_direction_peer_rule_grid_loss_transform_or_missing_rule_change_allowed": false,
+    "candidate49_remains_only_active_prospective_candidate": true,
+    "candidate50_activation_allowed": false
+  }
+}

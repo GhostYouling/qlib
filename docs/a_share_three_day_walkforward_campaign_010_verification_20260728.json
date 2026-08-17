@@ -1,0 +1,113 @@
+{
+  "version": 1,
+  "kind": "a_share_three_day_walkforward_campaign010_verification",
+  "status": "verified_terminal_no_return_uniqueness_rejection_and_idempotent_closed_development",
+  "recorded_at": "2026-07-28T15:45:18Z",
+  "authoritative_bindings": {
+    "iteration_state": {
+      "path": "docs/a_share_three_day_iteration_status_20260728_campaign010.json",
+      "sha256": "fa03536f5fdaf8a7732057ea9bd798be966321337fc9628ff190ad0cfe26ce98"
+    },
+    "research_record": {
+      "path": "docs/a_share_three_day_walkforward_campaign_010_research_record.json",
+      "sha256": "f8beb653f3f0215b4483e773360637c0713cf43b62d57e488a6006b326ab927d"
+    },
+    "no_return_preregistration": {
+      "path": "docs/a_share_three_day_walkforward_campaign_010_no_return_preregistration.json",
+      "sha256": "0981e5915f0ba5eff8f779b7ad594324bccfd75b0fb76f22916ed734d6443a53"
+    },
+    "feature_and_no_return_runner": {
+      "path": "scripts/a_share_three_day_walkforward_campaign010_features.py",
+      "sha256": "329d78f5d503991dafee59a10b3a49ea66acf0b2aaed83ef9a2096fb49dd7d4f"
+    }
+  },
+  "focused_and_cross_campaign_tests": {
+    "command": "PYTHONPATH=/opt/anaconda3/lib/python3.12/site-packages /opt/anaconda3/bin/python3 -S -m pytest -q tests/data_collector_tests/test_a_share_three_day_walkforward_campaign.py tests/data_collector_tests/test_a_share_three_day_walkforward_campaign002.py tests/data_collector_tests/test_a_share_three_day_walkforward_campaign002_completion_audit.py tests/data_collector_tests/test_a_share_three_day_walkforward_campaign003.py tests/data_collector_tests/test_a_share_three_day_walkforward_campaign003_completion_audit.py tests/data_collector_tests/test_a_share_three_day_walkforward_campaign004.py tests/data_collector_tests/test_a_share_three_day_walkforward_campaign004_features.py tests/data_collector_tests/test_a_share_three_day_walkforward_campaign005.py tests/data_collector_tests/test_a_share_three_day_walkforward_campaign005_features.py tests/data_collector_tests/test_a_share_three_day_walkforward_campaign006.py tests/data_collector_tests/test_a_share_three_day_walkforward_campaign006_features.py tests/data_collector_tests/test_a_share_three_day_walkforward_campaign007.py tests/data_collector_tests/test_a_share_three_day_walkforward_campaign007_features.py tests/data_collector_tests/test_a_share_three_day_walkforward_campaign008_features.py tests/data_collector_tests/test_a_share_three_day_walkforward_campaign009.py tests/data_collector_tests/test_a_share_three_day_walkforward_campaign009_features.py tests/data_collector_tests/test_a_share_three_day_walkforward_campaign010_features.py tests/data_collector_tests/test_a_share_three_day_walkforward_completion_audit.py tests/data_collector_tests/test_a_share_three_day_walkforward_policy.py tests/data_collector_tests/test_a_share_tushare_candidate49_future_session_workflow.py",
+    "passed": 146,
+    "failed": 0,
+    "duration_seconds": 4.02,
+    "campaign010_test_binding": {
+      "path": "tests/data_collector_tests/test_a_share_three_day_walkforward_campaign010_features.py",
+      "sha256": "97d968434ae28864631e2f66262150f42e27e568a13f6f30a5a7fc4ca8fccfdc",
+      "focused_test_count": 12
+    }
+  },
+  "idempotence": {
+    "feature_build_command": "PYTHONPATH=/opt/anaconda3/lib/python3.12/site-packages /opt/anaconda3/bin/python3 -S scripts/a_share_three_day_walkforward_campaign010_features.py build --data-root /Volumes/DIsk/qlib-a-share-tushare-1m --workers 4",
+    "feature_build_status": "snapshot_ready_existing_fingerprint_bound",
+    "no_return_audit_command": "PYTHONPATH=/opt/anaconda3/lib/python3.12/site-packages /opt/anaconda3/bin/python3 -S scripts/a_share_three_day_walkforward_campaign010_features.py audit --data-root /Volumes/DIsk/qlib-a-share-tushare-1m --workers 4",
+    "no_return_audit_status": "no_return_audit_ready_existing_fingerprint_bound",
+    "no_return_audit_path_unchanged": true,
+    "development_command_exists": false,
+    "development_trial_count": 0,
+    "development_survivor_count": 0,
+    "stress_interval_opened": false,
+    "stress_return_fields_read": false
+  },
+  "unified_report_semantic_validation": {
+    "command": "PYTHONPATH=/opt/anaconda3/lib/python3.12/site-packages /opt/anaconda3/bin/python3 -S scripts/a_share_short_horizon_factor_research.py report --output <temporary-path>/three_day_research_report.md",
+    "initial_attempt_status": "failed_before_report_write",
+    "initial_failure": "The Campaign010 walk-forward research record used a terminal_* status prefix and was therefore incorrectly included in the legacy 48-primary-terminal discovery set.",
+    "resolution": "Use the established Campaign008/009 walk-forward completed_* status family while the additive Campaign010 state separately records that the campaign is terminal. No metric, factor, gate, snapshot, audit, ledger, or decision changed.",
+    "final_status": "completed",
+    "temporary_report_sha256": "eee6a662721fe9c511dfa57830ded2d84ae071f26b2beda890cea82d8f51cead",
+    "temporary_report_lines": 622,
+    "paper_signals": 0,
+    "paper_settlements": 0,
+    "prospective_factor_signals": 0,
+    "prospective_factor_settlements": 0,
+    "candidate49_signal_and_execution_semantic_replay_passed": true,
+    "authoritative_report_file_rewritten": false
+  },
+  "artifact_verification": {
+    "feature_snapshot": {
+      "path": "/Volumes/DIsk/qlib-a-share-tushare-1m/derived/a_share/rich/tushare/minute_walkforward_campaign010_feature_library/tushare_stk_mins_1m_2019_2025_ea0cbb8f_walkforward_campaign010_feature_library_v1/snapshot_manifest.json",
+      "sha256": "e700c23b8c86e412153dd7ebd3bcb4a322f12b8a506cbbf5e4659490da50d69b",
+      "dataset_sha256": "55303f4934044fa2543d459aa378e28ff440b03b8a0a69d6866e14736d6bdcc0",
+      "partitions": 33015,
+      "rows": 7724498,
+      "eligible_factor_rows": 7509368
+    },
+    "no_return_audit": {
+      "path": "data/experiments/short_horizon/historical_walkforward/campaign_010/no_return/20260728T153818Z_campaign010_no_return_audit.json",
+      "sha256": "e86bd79edc830d68bcf72ab5148e42e030dae5df28087d6b68f0147a581fb262",
+      "coverage_and_capacity_gate_passed": true,
+      "uniqueness_gate_passed": false,
+      "admissible_factor_count": 0,
+      "minute_source_fields": [
+        "datetime",
+        "symbol",
+        "provider",
+        "high",
+        "low"
+      ],
+      "minute_open_read": false,
+      "minute_close_read": false,
+      "minute_volume_read": false,
+      "minute_amount_read": false,
+      "daily_price_fields_read": [],
+      "forward_return_fields_read": false
+    },
+    "no_return_infrastructure_repair": {
+      "path": "docs/a_share_three_day_walkforward_campaign_010_no_return_infrastructure_repair_20260728.json",
+      "sha256": "f2cb1b0cfe222bab987abd329048a56418e3a6450bdc92ca2c1b0a8486d736d2",
+      "failure_occurred_before_candidate_or_comparison_values": true,
+      "formula_direction_threshold_snapshot_or_catalog_changed": false
+    }
+  },
+  "semantic_verification": {
+    "frozen_catalog_trial_count_if_admitted": 1,
+    "actual_development_entry_count": 0,
+    "no_return_infrastructure_failure_count": 1,
+    "candidate49_historical_return_read": false,
+    "candidate49_signal_ledger_entries": 0,
+    "candidate49_signal_ledger_sha256": "5193f00d7f36da003f53cec387900da4c3d002299f5dfcfc1a95eaa199ed3a79",
+    "candidate49_execution_ledger_entries": 0,
+    "candidate49_execution_ledger_sha256": "d57a3e61eac969e42cafa418ccd8c0a5ee65dcf69da145bb2c096c2a02a2ea4f",
+    "candidate49_signal_or_execution_ledger_changed": false,
+    "candidate50_prospective_activation_created": false,
+    "current_scoring_selection_sizing_or_orders_performed": false,
+    "negative_duplicate_correlation_authorizes_inversion": false,
+    "inherited_progress_label_campaign006_is_display_only": true
+  }
+}

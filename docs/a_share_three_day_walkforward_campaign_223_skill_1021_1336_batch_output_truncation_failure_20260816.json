@@ -1,0 +1,14 @@
+{
+  "schema_version": 1,
+  "kind": "a_share_three_day_walkforward_campaign223_infrastructure_failure",
+  "recorded_at": "2026-08-16T02:05:00+08:00",
+  "timestamp_semantics": "monotonic_logical_append_time_not_host_wall_clock_measurement",
+  "attempt_id": "campaign223_infrastructure_002",
+  "phase": "mandatory_skill_lines_1021_1336_batch_read",
+  "status": "failed_combined_skill_batch_output_truncated_and_discarded",
+  "failure": "The combined 1021-1336 skill-range display exceeded the output limit and truncated the 1081-1320 portion; the partial display was not accepted as a complete instruction read.",
+  "writes_before_failure": false,
+  "scientific_value_read": false,
+  "result_consumed": false,
+  "recovery": "The missing 1081-1320 range was reread in bounded twenty-line segments and 1321-1336 was reread explicitly before repository research action."
+}

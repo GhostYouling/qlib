@@ -1,0 +1,69 @@
+{
+  "schema_version": 3,
+  "kind": "a_share_three_day_walkforward_campaign113_metadata_terminal_result",
+  "status": "terminal_official_metadata_schema_gate_failed_final_accounting_corrected",
+  "recorded_at": "2026-08-09T02:00:04+08:00",
+  "supersedes_without_rewriting": {
+    "path": "docs/a_share_three_day_walkforward_campaign_113_metadata_terminal_result_v2_20260809.json",
+    "sha256": "fcc933ae4d4478f5f088796627a4a7b4b4ef852190d994a8d03ed8364f47b56e",
+    "preserved": true,
+    "scientific_result_changed": false,
+    "reason": "The first final-test binding patch used pre-formatter context and made no change; its failed attempt is appended without changing research evidence."
+  },
+  "metadata_schema_failure": {
+    "path": "docs/a_share_official_exchange_enforcement_metadata_schema_failure_20260809.json",
+    "sha256": "ea44bd881db6f86fa311fe3c92f31aa465a1bdc845545a92bd2981ed917bbb65"
+  },
+  "latest_attempt_ledger": {
+    "path": "data/experiments/short_horizon/historical_walkforward/campaign_113/research_attempt_ledger_v6.json",
+    "sha256": "de92a8f3e1ef5b3bd4ac03d8f7098dac746500014afdb1e54059ae0fe43f7726",
+    "extends_v5_sha256": "606e517db8987206a059293878ba94298202972058491a8e6fce1e2e1532f44a",
+    "extension_entry_count": 1,
+    "total_attempt_count": 17,
+    "current_chain_tip_sha256": "b2a6974905ee40fa3142c8e5497121d67a5a06a6cef692c15c2708039d58ee4a"
+  },
+  "scientific_result": {
+    "factor_name": "official_exchange_enforcement_recovery_session_age_60sessions",
+    "score_direction": "higher",
+    "complete_factor_definition_count": 1,
+    "definition_retained_for_future_semantic_duplicate_control": true,
+    "metadata_schema_gate_passed": false,
+    "source_event_rows_accessed_persisted_or_counted": false,
+    "numeric_snapshot_created": false,
+    "numeric_comparator_appended": false,
+    "development_trial_count": 0,
+    "development_survivor_count": 0,
+    "stress_trial_count": 0,
+    "historical_predictive_value_established": false,
+    "terminal": true
+  },
+  "unchanged_library": {
+    "complete_definition_count": 141,
+    "complete_definition_order_sha256": "ccab6e3d9d81b0a02d4ff178fdd442b26a1e68e3655e1c6f5b2fcb28cd4a4559",
+    "numeric_comparator_count": 134,
+    "numeric_comparator_order_sha256": "31d788db467f558a0ac538315343090f1b3ad4cb27a26136a49ebaa88b2fdbf2"
+  },
+  "accounting": {
+    "campaign113_attempt_count": 17,
+    "campaign113_infrastructure_failure_count": 14,
+    "campaign113_prevalue_scientific_attempt_count": 3,
+    "campaign113_complete_factor_attempt_count": 1,
+    "campaign113_return_reading_development_trial_count": 0,
+    "cumulative_historical_research_attempt_count": 844,
+    "cumulative_return_reading_development_trial_count": 302
+  },
+  "research_boundary": {
+    "metadata_only_exchange_page_or_schema_requests_issued": true,
+    "source_event_rows_accessed_persisted_or_counted": false,
+    "source_event_row_count": null,
+    "candidate_or_comparison_values_read": false,
+    "historical_daily_price_or_forward_return_values_read": false,
+    "stress_2024_2025_opened": false,
+    "candidate49_historical_backfill_performed": false,
+    "candidate49_ledgers_changed": false,
+    "second_prospective_candidate_created": false,
+    "current_scoring_selection_sizing_or_orders_performed": false,
+    "investment_advice": false
+  },
+  "next_action": "Keep Campaign113 terminal; do not repair its schema or request source rows."
+}

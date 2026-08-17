@@ -1,0 +1,75 @@
+{
+  "schema_version": 1,
+  "kind": "a_share_three_day_walkforward_campaign128_ordered_uniqueness_implementation_freeze",
+  "status": "all_139_loader_and_gate_runner_frozen_before_comparator_values",
+  "recorded_at": "2026-08-14T06:21:00+0800",
+  "supersedes_without_rewriting": {
+    "path": "docs/a_share_three_day_walkforward_campaign_128_ordered_uniqueness_implementation_freeze_20260814.json",
+    "sha256": "1a9f003498c82f46ed47e6826cb1611b5e46477651ca4d613bd38bb56befbaeb",
+    "preserved": true,
+    "reason": "The first run exposed candidate values but failed before comparator 1 because legal missing candidate support was not filtered before the quality-listing merge."
+  },
+  "frozen_implementation": {
+    "runner_path": "scripts/a_share_three_day_walkforward_campaign128_ordered_uniqueness.py",
+    "runner_sha256": "79db267b2e3d5f4be2ff0dde98c4678fdfed33270caadce33c025df5e512f0f9",
+    "test_path": "tests/data_collector_tests/test_a_share_three_day_walkforward_campaign128_ordered_uniqueness.py",
+    "test_sha256": "5358a1a3f697803fe905c145db59dbd7e6d8a47d38be961387dadeeb489e5eba",
+    "protocol_sha256": "b6dab3dd821bad4b03888bfd97c357b6a2c20f6467cae6e33b0647bf44ac3acd",
+    "coverage_sha256": "8ccfbc0fb76b5c4187febbf8659fb29c864259efd4e3a8be3bc5d0db8a980605",
+    "prior_138_runner_sha256": "34a3818b8f582eaa82c10835ec23e11a68e3533ee0238479b769a4d6c1a5193d",
+    "comparison_count": 139,
+    "comparison_order_sha256": "9c4de054ca1b83eced67eece256b024ebec3a6e1925de17a4cedfa7d36265161",
+    "minimum_pairwise_names_per_session": 50,
+    "minimum_pairwise_sessions_per_comparison": 100,
+    "strict_maximum_absolute_median_daily_rank_correlation": 0.8,
+    "candidate_quality_listing_rows": 1319946,
+    "candidate_legal_missing_filter": "eligible flag true and finite factor value before quality-listing inner join",
+    "candidate_value_range": [
+      -1.0,
+      1.0
+    ],
+    "comparator_139_name": "intraday_terminal_close_direction_first_attainment_240m",
+    "comparator_139_value_range": [
+      0.0,
+      1.0
+    ],
+    "comparator_139_manifest_sha256": "e5789da9896535d8d67e0f0f3a7b2704f41292e4694b127a27999224abfad724",
+    "comparator_139_dataset_sha256": "cb476bcc93e7c88df6e2666af9d60d470c90f8a7670ea4553d2e9b877ab8a5b2",
+    "output_path": "data/experiments/short_horizon/historical_walkforward/campaign_128/uniqueness/campaign128_ordered_uniqueness_audit.json",
+    "single_use": true
+  },
+  "synthetic_verification": {
+    "pytest": "6 passed in 1.10s",
+    "black": "passed; 2 files left unchanged",
+    "ruff": "passed",
+    "strict_boundary_equality_rejected": true,
+    "reorder_and_missing_result_rejected": true,
+    "legal_missing_candidate_support_filtered_without_fill": true,
+    "comparator_values_read_by_tests": false
+  },
+  "failure_preserved": {
+    "path": "docs/a_share_three_day_walkforward_campaign_128_uniqueness_candidate_missing_filter_failure_20260814.json",
+    "sha256": "2055e7a1edcfa2e2c1df939de6b4e4cb006f483a33158242c218377d4d702a73"
+  },
+  "run_protocol": {
+    "new_plan_must_exit_zero_and_ready_true": true,
+    "run_requires_confirm_run": true,
+    "candidate_and_all_139_comparator_sources_verified_before_or_during_load": true,
+    "all_139_results_recorded_in_frozen_order_without_early_stop": true,
+    "raw_nan_preserved_until_pairwise_overlap": true,
+    "historical_daily_price_forward_return_or_provider_read_allowed": false
+  },
+  "research_boundary": {
+    "candidate_values_reopened_during_failed_run_before_v2": true,
+    "comparator_values_read_before_freeze": false,
+    "historical_daily_price_or_forward_return_values_read": false,
+    "stress_2024_2025_return_values_opened": false,
+    "provider_request_issued": false,
+    "credential_loaded": false,
+    "candidate49_historical_backfill_performed": false,
+    "candidate49_ledgers_changed": false,
+    "second_prospective_candidate_created": false,
+    "current_scoring_selection_sizing_positions_or_orders_performed": false,
+    "investment_advice": false
+  }
+}

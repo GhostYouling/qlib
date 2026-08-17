@@ -1,0 +1,19 @@
+{
+  "schema_version": 1,
+  "kind": "a_share_three_day_walkforward_campaign197_infrastructure_failure",
+  "status": "failed_git_status_output_truncated_discarded",
+  "recorded_at": "2026-08-15T17:03:00+08:00",
+  "phase": "campaign197_worktree_read_only_inventory",
+  "failure_class": "oversized_dirty_worktree_status_output_truncation",
+  "process_exit_code": 0,
+  "tool_output_truncated": true,
+  "failed_output_used_as_validation_or_scientific_evidence": false,
+  "failure_summary": "A broad git status over the intentionally large dirty research worktree exceeded the output budget and was truncated.",
+  "recovery": "Discard the incomplete listing and use only bounded path-specific diff or file inventories in later validation.",
+  "research_boundary": {
+    "candidate_source_comparator_security_price_or_return_value_read": false,
+    "provider_or_web_request_issued": false,
+    "provider_credential_presence_value_or_digest_read": false,
+    "candidate49_ledgers_changed": false
+  }
+}

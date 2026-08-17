@@ -1,0 +1,52 @@
+{
+  "version": 1,
+  "kind": "a_share_three_day_walkforward_campaign054_no_return_audit_candidate_loader_failure_repair_authorization",
+  "status": "failed_closed_before_coverage_and_comparisons_one_local_loader_repair_authorized",
+  "recorded_at": "2026-08-03T14:05:00Z",
+  "purpose": "Preserve the first snapshot-bound audit failure and authorize one isolated Campaign054 candidate-frame loader repair without changing factor values, gates, or comparison semantics.",
+  "audit_implementation_freeze": {
+    "path": "docs/a_share_three_day_walkforward_campaign_054_no_return_audit_implementation_freeze_20260803.json",
+    "sha256": "0d1653100e6eb4390a960a1c4f8a14a5e9dbc46aef440a6613c3c80bddf88ad9"
+  },
+  "failed_entrypoint": {
+    "path": "scripts/a_share_three_day_walkforward_campaign054_features_v6.py",
+    "sha256": "3b28ba76d31c81860f9948fd5acf3b744fb3767975458743bb29513982174387"
+  },
+  "candidate_snapshot_binding": {
+    "path": "docs/a_share_three_day_walkforward_campaign_054_snapshot_publication_binding_20260803.json",
+    "sha256": "bdce301c66e2426e3acfa51f1e46c2330d9c4dc65703fb41b491c592386edd13"
+  },
+  "failure": {
+    "exception": "KeyError: intraday_volume_weighted_transaction_price_bowley_skew_240m",
+    "site": "generic Campaign004 load_factor_frame range lookup",
+    "cause": "The generic loader's function-global FACTOR_RANGES dictionary is not the shared dictionary updated by the later Campaign054 engine installation, so the new factor key is absent even though the repaired snapshot schema and values were loaded.",
+    "candidate_snapshot_file_verification_completed_before_failure": true,
+    "campaign053_snapshot_file_verification_completed_before_failure": true,
+    "campaign052_snapshot_file_verification_completed_before_failure": true,
+    "campaign054_candidate_arrow_table_and_values_loaded_before_failure": true,
+    "coverage_gate_completed": false,
+    "comparison_values_read": false,
+    "audit_record_written": false,
+    "exit_code": 1
+  },
+  "authorized_repair": {
+    "replace_only_candidate_frame_loader": true,
+    "loader_semantics": "Read exactly trade_date, symbol, factor, and factor_eligible from the 33,015 manifest paths; require 7,724,498 rows, normalized unique stock-day keys, finite eligible values in [-1,1], null ineligible values, and categorical uppercase symbol.",
+    "mutate_generic_function_globals": false,
+    "factor_values_recomputed_or_changed": false,
+    "coverage_or_uniqueness_formula_changed": false,
+    "comparison_count_order_threshold_or_direction_changed": false,
+    "authorized_same_snapshot_audit_continuation_count": 1
+  },
+  "research_boundary": {
+    "campaign054_candidate_values_read": true,
+    "comparison_values_read": false,
+    "historical_daily_price_fields_read": [],
+    "historical_forward_return_fields_read": false,
+    "candidate49_historical_return_read": false,
+    "candidate49_ledgers_changed": false,
+    "provider_request_issued": false,
+    "second_prospective_candidate_created": false,
+    "current_scoring_selection_sizing_or_orders_performed": false
+  }
+}

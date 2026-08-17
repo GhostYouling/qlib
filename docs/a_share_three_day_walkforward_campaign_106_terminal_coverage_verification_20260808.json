@@ -1,0 +1,56 @@
+{
+  "schema_version": 1,
+  "kind": "a_share_three_day_walkforward_campaign106_terminal_coverage_verification",
+  "status": "coverage_reproduced_after_infrastructure_terminal_without_comparator_daily_price_or_return_decision",
+  "recorded_at": "2026-08-07T19:34:02Z",
+  "protocol": {
+    "path": "docs/a_share_three_day_walkforward_campaign_106_no_return_preregistration.json",
+    "sha256": "933b1f0bea9d092e67ba688d6270983e75e9002f2948f5e01f363d50cc4f2670"
+  },
+  "candidate_snapshot": {
+    "path": "/Volumes/DIsk/qlib-a-share-tushare-1m/derived/a_share/rich/tushare/minute_walkforward_campaign106_feature_library/tushare_stk_mins_1m_2019_2025_ea0cbb8f_walkforward_campaign106_feature_library_v1/snapshot_manifest.json",
+    "sha256": "0fa2bb014e0c51e7ad2254c479f21c2d5a1d32bec57be956a111f2ca5da3c572",
+    "dataset_sha256": "f52544dbce026cf9fca9489c85d80bb6fb69e5e880f5b7bf14fb82f09ae8de0c"
+  },
+  "terminal_infrastructure_failure": {
+    "path": "docs/a_share_three_day_walkforward_campaign_106_no_return_audit_recovery_v2_failure_20260808.json",
+    "sha256": "5213e48f388ed03185bbdd34c8cd800db6e01b4c8da7da70855f02a7de53de45"
+  },
+  "coverage": {
+    "quality_listing_eligible_rows": 1331759,
+    "candidate_eligible_rows": 1330171,
+    "calendar_sessions": 1632,
+    "median_coverage": 0.9994517542211769,
+    "p05_coverage": 0.9956886515772271,
+    "eligible_names_p05": 138.0,
+    "potential_non_overlapping_three_session_cohorts": 540,
+    "observed_cohort_years": [
+      2019,
+      2020,
+      2021,
+      2022,
+      2023,
+      2024,
+      2025
+    ],
+    "daily_coverage_frame_sha256": "e74dd25c02105a693696b698aef7dcd5ec29ea9f72e0d4738a025897cdb3d6e8",
+    "gate_passed_before_comparison_values": true
+  },
+  "scientific_interpretation": {
+    "coverage_pass_is_valid": true,
+    "all_132_uniqueness_decision_exists": false,
+    "factor_is_admissible": false,
+    "factor_is_rejected_by_uniqueness": false,
+    "overall_result": "inconclusive_due_to_infrastructure"
+  },
+  "research_boundary": {
+    "comparator_values_reread_for_this_terminal_verification": false,
+    "historical_daily_price_fields_read": [],
+    "historical_forward_returns_read": false,
+    "development_trial_started": false,
+    "stress_2024_2025_opened": false,
+    "provider_request_issued": false,
+    "candidate49_ledgers_changed": false,
+    "current_scoring_selection_sizing_or_orders_performed": false
+  }
+}

@@ -1,0 +1,175 @@
+{
+  "version": 1,
+  "kind": "a_share_three_day_walkforward_campaign036_no_return_preregistration",
+  "status": "frozen_before_campaign036_minute_candidate_comparison_daily_price_or_return_values",
+  "frozen_at": "2026-07-30T21:10:08Z",
+  "purpose": "Freeze the sole Campaign036 two-sided range-frontier-balance candidate, exact source projection and computation, complete 57-factor comparison library and order, no-return gates, one-trial development catalog, walk-forward split, and research boundaries before any Campaign036 minute partition or protected value is opened.",
+  "source_chain": {
+    "authoritative_state": {
+      "path": "docs/a_share_three_day_iteration_status_20260731_campaign035_verified.json",
+      "sha256": "39a838d3bcb15364ec4d78e51ece958a6ba5db5f0d953af2e8a4b9554f16e4fe"
+    },
+    "historical_walkforward_policy": {
+      "path": "docs/a_share_three_day_historical_walkforward_research_policy_20260727.json",
+      "sha256": "38426d6161b9bfed323c58caba18feca668b8c9d53e294951a8ba90c01a798bb"
+    },
+    "concept_scouting": {
+      "path": "docs/a_share_three_day_walkforward_campaign_036_concept_scouting.json",
+      "sha256": "31ef75791133bcda18e9a4cf16cd35abb59fda7d484a38432ce5d3e50c07a95a"
+    },
+    "mechanism_overlap_audit": {
+      "path": "docs/a_share_three_day_walkforward_campaign_036_mechanism_overlap_audit.json",
+      "sha256": "6e926816595e4c4f8850004977e827678d0bbd63118dcc4c1c507482e4ceec14"
+    },
+    "effective_campaign035_protocol_base": {
+      "path": "docs/a_share_three_day_walkforward_campaign_035_no_return_preregistration.json",
+      "sha256": "22ffd5a21b4104a8c1e0d110cc335a1a758649560ab2d10e9a9c16258f70d7c9",
+      "inherited_semantics": "All source-root identity, 2019-2025 session range, quality/listing eligibility, coverage gates, uniqueness estimator and thresholds, the complete ordered 56-factor comparison library, walk-forward folds, purge, execution costs, survivor gates, append-only accounting, stress opening rule, Candidate49 isolation, and current-output prohibitions remain unchanged unless an exact Campaign036 delta is stated below."
+    },
+    "campaign035_terminal_snapshot": {
+      "path": "/Volumes/DIsk/qlib-a-share-tushare-1m/derived/a_share/rich/tushare/minute_walkforward_campaign035_feature_library/tushare_stk_mins_1m_2019_2025_ea0cbb8f_walkforward_campaign035_feature_library_v1/snapshot_manifest.json",
+      "sha256": "33de221a37e0a19d3c1fffba3c8f0e64c20571581a7c72296b1a593c0acc91f4",
+      "dataset_sha256": "b557148b91a16dad9f028190723b2485f9eadd231c0aaded6b499d9dc1c68606"
+    },
+    "campaign035_no_return_audit": {
+      "path": "data/experiments/short_horizon/historical_walkforward/campaign_035/no_return/20260730T205353Z_campaign035_no_return_audit.json",
+      "sha256": "ca40ca05991c8ea3c56fe3b3d85dc782c4e2d22f69b51bd12f192c3b9f289b0a"
+    },
+    "campaign035_research_record": {
+      "path": "docs/a_share_three_day_walkforward_campaign_035_research_record.json",
+      "sha256": "4839e1ef69c3ab9bd72c4bd2748d134d0954dd1218acd0544601d82b9bca581e"
+    },
+    "candidate49_signal_ledger": {
+      "path": "data/experiments/short_horizon/candidate49_future_signal_ledger.json",
+      "sha256": "5193f00d7f36da003f53cec387900da4c3d002299f5dfcfc1a95eaa199ed3a79",
+      "entry_count": 0
+    },
+    "candidate49_execution_ledger": {
+      "path": "data/experiments/short_horizon/candidate49_future_execution_ledger.json",
+      "sha256": "d57a3e61eac969e42cafa418ccd8c0a5ee65dcf69da145bb2c096c2a02a2ea4f",
+      "entry_count": 0
+    }
+  },
+  "campaign036_delta_from_effective_campaign035_protocol": {
+    "campaign_id": "a_share_three_day_walkforward_campaign_036",
+    "candidate_factor_count": 1,
+    "comparison_factor_count": 57,
+    "development_trial_count_if_admitted": 1,
+    "candidate_replaces_campaign035_candidate": true,
+    "campaign035_candidate_appended_as_final_terminal_comparison": true,
+    "complete_comparison_library_construction": "Take the exact ordered 56 comparison factors materialized by effective_campaign035_protocol_base, then append exactly {name: intraday_return_weak_order_entropy_234t, score_direction: higher}. No deletion, reorder, substitution, sparse omission, or extra comparison is allowed.",
+    "inherited_comparison_count": 56,
+    "inherited_comparison_order_sha256": "c15a965426251d3c3e0d2bf9dae42cd8e231529cf6620871966513e13a09d4d0",
+    "appended_comparison": {
+      "name": "intraday_return_weak_order_entropy_234t",
+      "score_direction": "higher"
+    },
+    "comparison_order_sha256": "a0a67b8df0e2a9a90627df8b4b8f931fa2ac4439fbefcfd8d83da68e52373fee",
+    "other_inherited_semantics_changed": false
+  },
+  "candidate": {
+    "name": "intraday_two_sided_range_frontier_balance_238m",
+    "direction": "higher",
+    "formula": "For each 120-bar half independently and each t=1..119, let H_prev=max(high_0..high_(t-1)), L_prev=min(low_0..low_(t-1)), u_t=max(ln(high_t/H_prev),0), and d_t=max(ln(L_prev/low_t),0). Pool both halves, set U=sum(u_t), D=sum(d_t), and return 1-abs(U-D)/(U+D)=2*min(U,D)/(U+D).",
+    "source_projection": [
+      "datetime",
+      "symbol",
+      "provider",
+      "high",
+      "low"
+    ],
+    "forbidden_source_columns": [
+      "open",
+      "close",
+      "volume",
+      "amount"
+    ],
+    "selected_bar_count": 240,
+    "selected_grid": [
+      "09:31-11:30",
+      "13:01-15:00"
+    ],
+    "within_half_expansion_opportunity_count": 238,
+    "running_frontier_reset_each_half": true,
+    "include_lunch_transition": false,
+    "expansion_distance": "natural_log_boundary_ratio",
+    "inside_or_equal_boundary_contribution": 0.0,
+    "pool_before_balance": true,
+    "balance_transform": "1-abs(U-D)/(U+D)",
+    "algebraic_identity_check": "2*min(U,D)/(U+D)",
+    "identity_check_tolerance": 1e-12,
+    "zero_total_expansion_is_missing": true,
+    "valid_range": [
+      0.0,
+      1.0
+    ],
+    "missing_rule": "Any invalid, nonpositive, nonfinite, or unordered selected high-low pair; nonfinite expansion; U+D<=0; algebraic-identity disagreement above 1e-12; or score outside [0,1] makes the stock-day missing.",
+    "transform_scale_clip_threshold_filter": "none",
+    "event_count_arithmetic_distance_per_half_average_activity_weight_subwindow_board_or_year_search": false
+  },
+  "ordered_no_return_gates": {
+    "coverage_and_capacity_before_comparison_values": {
+      "minimum_median_coverage": 0.95,
+      "minimum_p05_coverage": 0.9,
+      "minimum_p05_eligible_names": 50,
+      "minimum_non_overlapping_three_session_cohorts": 200,
+      "minimum_observed_calendar_years": 5,
+      "comparison_values_read_before_coverage_pass": false
+    },
+    "uniqueness_after_coverage_only": {
+      "maximum_allowed_absolute_median_daily_rank_correlation": 0.8,
+      "minimum_pairwise_names_per_session": 50,
+      "minimum_pairwise_sessions_per_comparison": 100,
+      "complete_library_inherited_from_path": "docs/a_share_three_day_walkforward_campaign_035_no_return_preregistration.json",
+      "inherited_comparison_count": 56,
+      "inherited_comparison_order_sha256": "c15a965426251d3c3e0d2bf9dae42cd8e231529cf6620871966513e13a09d4d0",
+      "appended_comparison": {
+        "name": "intraday_return_weak_order_entropy_234t",
+        "score_direction": "higher"
+      },
+      "comparison_factor_count": 57,
+      "comparison_factor_order_sha256": "a0a67b8df0e2a9a90627df8b4b8f931fa2ac4439fbefcfd8d83da68e52373fee",
+      "all_57_must_pass": true
+    }
+  },
+  "finite_development_catalog_if_admitted": {
+    "trial_id": "wf036_intraday_two_sided_range_frontier_balance_238m_single_higher",
+    "kind": "single_factor",
+    "feature_set": [
+      "intraday_two_sided_range_frontier_balance_238m"
+    ],
+    "weights": [
+      1.0
+    ],
+    "complexity": 1,
+    "expected_trial_count": 1,
+    "weight_threshold_filter_window_year_or_model_search": false,
+    "development_interval": [
+      "2019-01-01",
+      "2023-12-31"
+    ],
+    "fold_count": 3,
+    "purge_local_signal_sessions": 3,
+    "t_plus_1_and_t_plus_3_must_remain_inside_partition": true,
+    "stress_opening_rule": "2024-2025 may open exactly once only for the frozen development survivor"
+  },
+  "research_boundary": {
+    "external_campaign036_minute_partitions_read": false,
+    "candidate_values_read": false,
+    "comparison_values_read": false,
+    "historical_daily_price_fields_read": false,
+    "historical_forward_returns_read": false,
+    "training_or_model_fitting_performed": false,
+    "provider_request_issued": false,
+    "candidate49_historical_return_signal_or_execution_backfill_performed": false,
+    "candidate50_activation_created": false,
+    "current_scoring_selection_sizing_or_orders_performed": false
+  },
+  "decision": {
+    "binding_validator_exit_zero_required_before_any_campaign036_minute_or_value": true,
+    "exact_candidate_count": 1,
+    "exact_comparison_count": 57,
+    "exact_development_trial_count_if_admitted": 1,
+    "post_value_formula_direction_window_filter_threshold_balance_transform_or_library_change_allowed": false
+  }
+}

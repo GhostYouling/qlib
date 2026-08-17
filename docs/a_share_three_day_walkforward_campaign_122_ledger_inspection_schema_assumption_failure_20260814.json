@@ -1,0 +1,25 @@
+{
+  "schema_version": 1,
+  "kind": "a_share_three_day_walkforward_campaign122_infrastructure_failure",
+  "status": "failed_append_only_ledger_inspection_before_any_campaign122_value",
+  "recorded_at": "2026-08-14T03:04:37+08:00",
+  "attempt_id": "campaign122_infrastructure_004",
+  "phase": "append_only_ledger_schema_reconstruction",
+  "failure": {
+    "failure_class": "python_schema_assumption_error",
+    "observed_exception": "TypeError: object of type 'NoneType' has no len()",
+    "exit_success": false,
+    "cause": "The read-only inspector assumed the terminal Campaign121 delta ledger contained a full entries array instead of one appended_entries delta plus a hash-bound predecessor."
+  },
+  "effect": {
+    "file_written_by_failed_command": false,
+    "source_value_read": false,
+    "candidate_value_read_or_computed": false,
+    "comparator_value_read": false,
+    "daily_price_or_forward_return_read": false,
+    "provider_request_issued": false,
+    "candidate49_ledger_changed": false,
+    "scientific_result_changed": false
+  },
+  "recovery": "Campaign121 ledger v1 and successive delta versions were inspected with their actual schema; Campaign122 uses an initial full entries array and later versions, if any, must append by predecessor hash."
+}

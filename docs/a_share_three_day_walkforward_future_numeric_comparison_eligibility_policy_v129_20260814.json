@@ -1,0 +1,85 @@
+{
+  "version": 129,
+  "kind": "a_share_three_day_walkforward_future_numeric_comparison_eligibility_policy",
+  "status": "campaign125_terminal_prevalue_zero_candidates_campaign126_scouting_allowed",
+  "recorded_at": "2026-08-14T04:21:33+0800",
+  "authoritative_inputs": {
+    "policy_v128": {
+      "path": "docs/a_share_three_day_walkforward_future_numeric_comparison_eligibility_policy_v128_20260814.json",
+      "sha256": "41dacd076738e8d495b5671fe46ff675cdee9457a1c3ca88522446f62b8dec61"
+    },
+    "campaign125_concept_scouting": {
+      "path": "docs/a_share_three_day_walkforward_campaign_125_concept_scouting_20260814.json",
+      "sha256": "d21c9279998644ce9de0eb86564211835626f860f194b5b21055c94595e6712f"
+    },
+    "campaign125_frontier_audit": {
+      "path": "docs/a_share_three_day_walkforward_campaign_125_mechanism_source_frontier_audit_20260814.json",
+      "sha256": "9157c0f703792596f71d46a61b8064dca694778a1bbe8bf87d4612b690a4b058"
+    },
+    "campaign125_attempt_ledger_v1": {
+      "path": "data/experiments/short_horizon/historical_walkforward/campaign_125/research_attempt_ledger_v1.json",
+      "sha256": "23a9b6f428785de879b123aa9975d050ad2fc6d47e36f8068eae6d41d5d972a0"
+    }
+  },
+  "supersedes_without_rewriting": {
+    "path": "docs/a_share_three_day_walkforward_future_numeric_comparison_eligibility_policy_v128_20260814.json",
+    "sha256": "41dacd076738e8d495b5671fe46ff675cdee9457a1c3ca88522446f62b8dec61",
+    "preserved": true,
+    "scientific_result_changed": true,
+    "library_order_changed": false,
+    "reason": "Record a finite zero-candidate prevalue campaign and its one infrastructure failure without opening source rows or values."
+  },
+  "effective_accounting": {
+    "campaign125_attempt_count": 2,
+    "campaign125_ledger_entry_count": 2,
+    "campaign125_infrastructure_failure_count": 1,
+    "campaign125_prevalue_scientific_attempt_count": 1,
+    "campaign125_complete_factor_attempt_count": 0,
+    "campaign125_source_acceptance_attempt_count": 0,
+    "campaign125_return_reading_development_trial_count": 0,
+    "campaign125_development_survivor_count": 0,
+    "campaign125_stress_trial_count": 0,
+    "cumulative_historical_research_attempt_count": 1022,
+    "cumulative_return_reading_development_trial_count": 306
+  },
+  "complete_historical_feature_library": {
+    "factor_definition_count": 149,
+    "order_sha256": "be9c6085af2202e8fa5b4c6d89608b712b27740b16b5e78d7d88ca0c4d9bc5e3",
+    "unchanged_from_v128": true
+  },
+  "numerical_comparator_eligibility": {
+    "eligible_numeric_comparator_count": 139,
+    "eligible_numeric_comparator_order_sha256": "9c4de054ca1b83eced67eece256b024ebec3a6e1925de17a4cedfa7d36265161",
+    "unchanged_from_v128": true,
+    "campaign125_definition_eligible_now_or_later": false
+  },
+  "campaign125_terminal_classification": {
+    "terminal": true,
+    "terminal_phase": "prevalue_mechanism_and_point_in_time_source_frontier",
+    "concepts_reviewed": 6,
+    "selected_candidate_count": 0,
+    "source_rows_or_values_read": false,
+    "historical_candidate_comparator_price_or_return_values_read": false,
+    "rejected_concept_repair_relabel_combination_or_run_allowed": false
+  },
+  "future_campaign_boundary": {
+    "next_campaign": 126,
+    "must_begin_from_genuinely_new_historically_versioned_point_in_time_mechanism": true,
+    "campaign125_rejected_concept_value_open_allowed": false,
+    "earlier_terminal_factor_combination_or_rescue_allowed": false
+  },
+  "research_boundary": {
+    "programmatic_provider_requests_issued": false,
+    "provider_credential_loaded": false,
+    "campaign125_source_rows_read": false,
+    "campaign125_candidate_values_computed_or_read": false,
+    "campaign125_comparator_values_read": false,
+    "historical_daily_price_or_forward_return_values_read": false,
+    "stress_2024_2025_opened": false,
+    "candidate49_historical_backfill_performed": false,
+    "candidate49_ledgers_changed": false,
+    "second_prospective_candidate_created": false,
+    "current_scoring_selection_sizing_positions_or_orders_performed": false,
+    "investment_advice": false
+  }
+}

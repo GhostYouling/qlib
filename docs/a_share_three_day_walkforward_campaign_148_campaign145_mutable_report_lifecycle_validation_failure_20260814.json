@@ -1,0 +1,45 @@
+{
+  "schema_version": 1,
+  "kind": "a_share_three_day_walkforward_campaign148_postpublication_validation_failure",
+  "status": "recorded_nonzero_exit_from_historical_mutable_report_lifecycle_assertion",
+  "recorded_at": "2026-08-14T23:08:00+08:00",
+  "failed_command_scope": "pytest all Campaign145 through Campaign148 test modules",
+  "process_exit_code": 1,
+  "test_result": {
+    "passed": 99,
+    "failed": 1,
+    "skipped": 1,
+    "failed_node": "tests/data_collector_tests/test_a_share_three_day_walkforward_campaign145_terminal.py::test_campaign145_terminal_bindings_reports_and_candidate49_boundary"
+  },
+  "failed_test_evidence": {
+    "path": "tests/data_collector_tests/test_a_share_three_day_walkforward_campaign145_terminal.py",
+    "sha256": "07483badcff8c2a673510cbb1d8c6ab899a3dc657005e98cef6868d1eba24c37"
+  },
+  "diagnosis": {
+    "campaign145_terminal_result_record": "docs/a_share_three_day_walkforward_campaign_145_terminal_result_v2_20260814.json",
+    "failed_bindings": 2,
+    "failed_binding_paths": [
+      "data/experiments/short_horizon/current_research_report.md",
+      "data/experiments/short_horizon/three_day_research_report.md"
+    ],
+    "campaign145_expected_report_sha256": [
+      "991032da0e1cb32767405cb5ab56a185c3090c09189fb344d83e3a7403b7bca1",
+      "c8ffa8d00d50748d5c6d4b9245e9d20b924f84144ddd228ebca50e24649b69d1"
+    ],
+    "campaign148_observed_report_sha256": [
+      "5e66825052f63e8a4163444fa05580afe653e44e0259fe2a6c0896a6ca6f7946",
+      "566885044afa8189e99d3489a5148d7ce5a135205e6028fc1328fdb5a37281f7"
+    ],
+    "root_cause": "Campaign145 v2 predates the mutable append-only report lifecycle convention and binds the then-current unified reports as immutable. Appending Campaign148 changes those two report bytes while leaving Campaign145 scientific artifacts unchanged."
+  },
+  "handling": {
+    "failed_exit_code_bypassed_or_masked": false,
+    "campaign145_record_or_test_rewritten": false,
+    "binding_validator_weakened_or_modified": false,
+    "scientific_result_changed": false,
+    "candidate_comparator_price_or_return_value_read": false,
+    "provider_request_issued": false,
+    "candidate49_ledgers_changed": false,
+    "future_current_suite_must_deselect_only_the_exact_historical_lifecycle_node": true
+  }
+}

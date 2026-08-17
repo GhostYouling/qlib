@@ -1,0 +1,57 @@
+{
+  "schema_version": 1,
+  "kind": "a_share_three_day_walkforward_campaign197_domain_overlap_rejection",
+  "status": "terminal_scientific_overlap_rejection_no_value_read",
+  "recorded_at": "2026-08-15T17:06:40+08:00",
+  "timestamp_semantics": "monotonic logical append time after the Campaign196 terminal authority",
+  "proposed_domain": "regulated_utility_rate_case_revenue_requirement_rate_base_tariff_trueup_refund_and_cost_recovery_lifecycle",
+  "decision": "rejected_existing_campaign169_regulated_tariff_rate_adjustment_source_domain",
+  "selected_for_factor_definition": false,
+  "formula": null,
+  "direction": null,
+  "parameters_filters_subsets_combinations_models": [],
+  "authoritative_inputs": {
+    "campaign196_effective_state": {
+      "path": "docs/a_share_three_day_iteration_status_20260815_campaign196_prevalue_terminal.json",
+      "sha256": "ced91440557e97dd5c16bc0b4ff108cbbf004d4e405033423db31e729b56d2ea"
+    },
+    "eligibility_policy_v289": {
+      "path": "docs/a_share_three_day_walkforward_future_numeric_comparison_eligibility_policy_v289_20260815.json",
+      "sha256": "fb992fcf15f548b6bf0d4713efcda9876ea549d666c7c549d559522c1da530cc"
+    },
+    "campaign169_commercial_pricing_frontier": {
+      "path": "docs/a_share_three_day_walkforward_campaign_169_commercial_pricing_terms_source_frontier_20260815.json",
+      "sha256": "a571bcc5bcbfc158da551e59d2984a907fd44b419d115619043a9b28ee3ab288"
+    }
+  },
+  "bounded_repository_search": {
+    "terms": [
+      "rate case",
+      "rate base",
+      "revenue requirement",
+      "regulatory asset",
+      "regulatory liability",
+      "tariff true-up",
+      "cost recovery",
+      "fuel adjustment",
+      "准许收入",
+      "监管资产",
+      "电价"
+    ],
+    "dedicated_prior_regulated_tariff_route_found": true,
+    "campaign169_catalog_id": "c169_02",
+    "campaign169_frozen_semantics": "proposal, approval and implementation stages, jurisdiction, customer class, rate base, retroactivity, appeals, issuer exposure, first availability and complete denominator",
+    "complete_output_observed": true
+  },
+  "reason": "Campaign169 already freezes the regulated tariff, fee or reimbursement-rate adjustment state, including proposal, approval, implementation, jurisdiction, customer class, rate base, retroactivity and appeals. Reopening a utility rate case, revenue-requirement or tariff true-up lifecycle would expand that same unadmitted base source rather than create an independent mechanism.",
+  "research_boundary": {
+    "source_row_utility_rate_tariff_factor_comparator_security_price_or_return_value_read": false,
+    "provider_or_web_request_issued": false,
+    "provider_credential_presence_value_or_digest_read": false,
+    "stress_2024_2025_opened": false,
+    "candidate49_ledgers_changed": false,
+    "second_prospective_candidate_created": false,
+    "current_scoring_selection_sizing_positions_or_orders_performed": false
+  },
+  "next_action": "Preserve this semantic rejection and inspect the distinct loyalty-rewards obligation lifecycle without reading source rows or values."
+}

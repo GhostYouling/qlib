@@ -1,0 +1,54 @@
+{
+  "version": 1,
+  "kind": "a_share_three_day_walkforward_campaign051_full_suite_cross_clone_failure",
+  "status": "full_suite_legacy_cross_clone_failures_recorded_campaign051_focused_green",
+  "recorded_at": "2026-08-03T08:15:00Z",
+  "test_run": {
+    "command": "PYTHONPATH=. python -m pytest -q tests/data_collector_tests",
+    "working_tree": "/Volumes/DIsk/Disk-Coding/qlib",
+    "passed": 1709,
+    "failed": 69,
+    "warnings": 13,
+    "duration_seconds": 164.27,
+    "campaign051_focused_passed": 27,
+    "campaign051_focused_failed": 0
+  },
+  "root_cause_evidence": {
+    "compatibility_path": "/Users/niyufei/Coding/qlib",
+    "compatibility_path_exists": false,
+    "only_extant_worktree": "/Volumes/DIsk/Disk-Coding/qlib",
+    "dominant_failures": [
+      "legacy ledgers and preregistrations bind absolute /Users/niyufei/Coding/qlib paths that cannot equal the current /Volumes path",
+      "legacy terminal tests bind historical unified-report hashes superseded by later append-only report additions",
+      "some old negative controls observe additive-wrapper module globals when the full suite shares one interpreter"
+    ],
+    "campaign051_factor_formula_gate_or_result_regression_observed": false
+  },
+  "bindings": {
+    "campaign051_research_record_v2": {
+      "path": "docs/a_share_three_day_walkforward_campaign_051_research_record_v2.json",
+      "sha256": "1b07b424c4a2c04ffa28ddb486fa056cb4059267adb596de569fd4703d44f057"
+    },
+    "post_result_test_transition_v2": {
+      "path": "docs/a_share_three_day_walkforward_campaign_051_post_result_test_transition_v2_20260803.json",
+      "sha256": "b4518e409781606aea5fb03ce446568c784d7bd18b5dbc4fe01d94cd82899276"
+    },
+    "current_campaign051_tests": {
+      "path": "tests/data_collector_tests/test_a_share_three_day_walkforward_campaign051.py",
+      "sha256": "122e4aed14dac776895ccaa525b3b3bd6b1bb19b5612571fa0ae355971c148f7"
+    },
+    "current_campaign051_terminal_tests": {
+      "path": "tests/data_collector_tests/test_a_share_three_day_walkforward_campaign051_terminal.py",
+      "sha256": "1f6f4640ae31dc2db0f2b14bf5b47c7f6118b7a486a6630ae784ab5d618548db"
+    }
+  },
+  "research_boundary": {
+    "historical_daily_price_fields_read": [],
+    "historical_forward_return_fields_read": false,
+    "2024_2025_stress_return_read": false,
+    "candidate49_historical_return_read": false,
+    "candidate49_ledgers_changed": false,
+    "provider_request_issued": false,
+    "current_scoring_selection_sizing_or_orders_performed": false
+  }
+}

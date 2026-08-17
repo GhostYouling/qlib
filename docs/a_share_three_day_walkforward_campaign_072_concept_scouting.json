@@ -1,0 +1,92 @@
+{
+  "version": 1,
+  "kind": "a_share_three_day_walkforward_campaign072_concept_scouting",
+  "status": "selected_before_candidate_source_or_comparison_values",
+  "recorded_at": "2026-08-06T05:46:00+08:00",
+  "authoritative_state": {
+    "path": "docs/a_share_three_day_iteration_status_20260806_campaign071_verified.json",
+    "sha256": "eb52a9b1e4fec548e9e8d2b2bd493bdc401616bb3c58728b0153eab958a8fc21"
+  },
+  "numeric_comparator_policy": {
+    "path": "docs/a_share_three_day_walkforward_future_numeric_comparison_eligibility_policy_v6_20260806.json",
+    "sha256": "b24c643d086a73e66844a0e988d65a46aff2f82986c544515422119dd19d7242",
+    "complete_definition_count": 103,
+    "eligible_numeric_comparator_count": 102,
+    "eligible_numeric_comparator_order_sha256": "b473b8e32852dbbd1ca6beeb567805af55b77ec2e91222ec3e75e4bd64a64226"
+  },
+  "selection_rationale": {
+    "objective": "Prefer one dense point-in-time accounting mechanism that is directly interpretable for a three-session horizon, needs no fitted parameter or multi-year cold start, and is not a renamed linear rank gap, announcement-timing transform, or minute-path statistic.",
+    "selected_family": "joint_profit_and_revenue_growth_floor",
+    "rejected_before_values": [
+      {
+        "concept": "quarterly_net_profit_scale_rank_change_1q",
+        "reason": "Substituting net-profit scale for the frozen roe_change field would be a field-parameter variant of an existing transition operator."
+      },
+      {
+        "concept": "full_historical_library_directional_percentile_consensus_102f",
+        "reason": "The exact all-component common-support consensus mechanism already terminated at Campaign044's coverage gate; relaxing common support would be a parameterized rescue of that terminal design rather than a new mechanism."
+      },
+      {
+        "concept": "profit_growth_roe_confirmation_from_two_existing_directional_ranks",
+        "reason": "A candidate-specific nonlinear subset of already terminal directional ranks would obscure whether any result came from the new raw-data mechanism or from selecting old components."
+      }
+    ]
+  },
+  "selected_candidate": {
+    "name": "quarterly_joint_profit_revenue_growth_floor_rank",
+    "direction": "higher",
+    "economic_hypothesis": "The lower of already-public profit and revenue year-over-year growth is a conservative growth floor: it is high only when both earnings and top-line expansion are strong, reducing one-off margin-only or sales-only signals that may reverse over the next three sessions.",
+    "formula": "After strict-next-session point-in-time activation and independent forward fill of finite profit_yoy and revenue_yoy, compute raw_floor=min(profit_yoy,revenue_yoy) on the common finite two-field stock-day universe, then compute its same-day average-tie percentile rank.",
+    "stock_day_identity_projection": [
+      "trade_date",
+      "symbol",
+      "provider"
+    ],
+    "quarterly_source_projection": [
+      "instrument",
+      "report_date",
+      "announcement_date",
+      "profit_yoy",
+      "revenue_yoy"
+    ],
+    "availability_rule": "Each report becomes usable only on the first accepted local session strictly after announcement_date.",
+    "same_effective_date_rule": "Sort instrument, effective session, report_date, and announcement_date, then keep the last row per instrument and effective session.",
+    "state_rule": "Independently forward-fill only finite profit_yoy and revenue_yoy inside each instrument after strict effective-session ordering; never backfill from a later disclosure.",
+    "raw_combination_rule": "Exactly min(profit_yoy,revenue_yoy) with no coefficient, threshold, clipping, winsorization, sign substitution, or alternate operator.",
+    "cross_section_rule": "On each stock day, require both states finite and compute the average-tie percentile rank of their raw minimum on that exact common finite universe.",
+    "valid_range": {
+      "lower": 0.0,
+      "lower_inclusive": false,
+      "upper": 1.0,
+      "upper_inclusive": true
+    },
+    "missing_rule": "Missing unless both already-effective growth states and the resulting rank are finite. Never impute, clip, winsorize, rescale, substitute, or choose a favorable report.",
+    "multi_year_difference_or_lookback_required": false,
+    "parameter_window_transform_threshold_filter_subset_regime_fit_or_model_search": false
+  },
+  "mandatory_pre_value_challenges": [
+    "quality_profit",
+    "quality_revenue",
+    "quality_growth",
+    "quality_score",
+    "quarterly_profit_revenue_growth_spread_pp",
+    "quarterly_quality_rank_balance_3f",
+    "quarterly_profit_revenue_acceleration_rank_gap_2r",
+    "quarterly_profit_growth_roe_transition_gap_2r",
+    "quarterly_net_profit_scale_rank",
+    "intraday_cross_sectional_standardized_return_state_stability_236p"
+  ],
+  "research_boundary": {
+    "candidate_source_rows_read": false,
+    "candidate_values_read": false,
+    "comparison_values_read": false,
+    "historical_daily_price_fields_read": [],
+    "historical_forward_returns_read": false,
+    "provider_request_issued": false,
+    "candidate49_historical_backfill_performed": false,
+    "candidate49_ledgers_changed": false,
+    "second_prospective_candidate_created": false,
+    "current_scoring_selection_sizing_or_orders_performed": false,
+    "investment_advice": false
+  }
+}

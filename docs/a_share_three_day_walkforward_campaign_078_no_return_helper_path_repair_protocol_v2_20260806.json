@@ -1,0 +1,52 @@
+{
+  "schema_version": 1,
+  "kind": "a_share_three_day_walkforward_campaign078_no_return_helper_path_repair_protocol",
+  "version": 2,
+  "status": "frozen_after_v1_helper_path_failure_before_full_retry",
+  "frozen_at": "2026-08-06T14:29:00+08:00",
+  "campaign_id": "a_share_three_day_walkforward_campaign_078",
+  "v1_evidence": {
+    "runner": {
+      "path": "scripts/a_share_three_day_walkforward_campaign078_no_return_audit.py",
+      "sha256": "5f194ab765b7d5e42cd6b2a34abb482c69196a3cf0f3d29b065afcb8e588c7a3"
+    },
+    "implementation_freeze": {
+      "path": "docs/a_share_three_day_walkforward_campaign_078_no_return_audit_implementation_freeze_20260806.json",
+      "sha256": "29a10c5550ae34a266bb1a933e03e52a2afcfc1406a8f9f349694dafeac90dd7"
+    },
+    "activation_binding": {
+      "path": "docs/a_share_three_day_walkforward_campaign_078_no_return_audit_activation_binding_20260806.json",
+      "sha256": "187fdcf3333719495b578fcae0de2ac35e25a831127b609eb5a27a525d8ca6f0"
+    },
+    "failure_record": {
+      "path": "docs/a_share_three_day_walkforward_campaign_078_no_return_v1_helper_path_failure_20260806.json",
+      "sha256": "9b19c97d0b88f458ce8a4d8ec48a2891a21cf5503d16629051ab14bcb3fafba2"
+    }
+  },
+  "sole_repair": {
+    "old_attribute_path": "c77_audit.c75_v5.v4.v3.v1.base.base._append_snapshot_comparison",
+    "new_attribute_path": "c77_audit.c76_audit.c75_v5.v4.v3.v1.base.base._append_snapshot_comparison",
+    "candidate_formula_changed": false,
+    "candidate_snapshot_or_manifest_changed": false,
+    "coverage_gate_changed": false,
+    "comparison_library_or_order_changed": false,
+    "uniqueness_threshold_changed": false,
+    "legacy_runtime_binding_changed": false,
+    "historical_daily_price_or_return_field_changed": false,
+    "development_or_stress_rule_changed": false,
+    "provider_or_candidate49_workflow_changed": false
+  },
+  "retry": {
+    "partial_statistics_reused": false,
+    "restart_from_candidate_snapshot_verification_and_coverage": true,
+    "expected_audit_count_before_retry": 0,
+    "maximum_authorized_v2_retries": 1,
+    "same_data_root_experiment_root_workers_protocol_snapshot_and_comparator_order_required": true
+  },
+  "research_boundary": {
+    "historical_daily_price_fields_read_by_v1": [],
+    "historical_forward_returns_read_by_v1": false,
+    "provider_request_issued_by_v1": false,
+    "candidate49_ledgers_changed_by_v1": false
+  }
+}

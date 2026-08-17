@@ -1,0 +1,91 @@
+{
+  "schema_version": 1,
+  "kind": "a_share_three_day_walkforward_campaign168_terminal_result",
+  "status": "final_effective_terminal_prevalue_goal_active",
+  "recorded_at": "2026-08-15T07:58:20+08:00",
+  "supersedes_without_rewriting": {
+    "path": "docs/a_share_three_day_walkforward_campaign_168_terminal_result_v2_20260815.json",
+    "sha256": "86403eee8c7d35f74296fcc34f062c7fc4eff6338eb98f9af9e359ec4244c877",
+    "preserved": true,
+    "scientific_result_changed": false,
+    "reason": "Append the focused-test timestamp failure and its additive correction without changing the finite frontier or scientific decision."
+  },
+  "authoritative_inputs": {
+    "eligibility_policy_v241_prior_accounting": {
+      "path": "docs/a_share_three_day_walkforward_future_numeric_comparison_eligibility_policy_v241_20260815.json",
+      "sha256": "3a248c1f6c54e370df89c9c607c2d9154fe13b0ac9a953c8e2f09a001a8bdcd6"
+    },
+    "operating_scale_adoption_kpi_source_frontier": {
+      "path": "docs/a_share_three_day_walkforward_campaign_168_operating_scale_adoption_kpi_source_frontier_20260815.json",
+      "sha256": "c5dc98f92266e2b7ef7349cb5260a8cde15ccd9c78442e661e4170b1ba47d18a"
+    },
+    "timestamp_correction": {
+      "path": "docs/a_share_three_day_walkforward_campaign_168_recorded_at_correction_20260815.json",
+      "sha256": "f5d516310d7c23008f2dd7bb2567d6b068ce14f98a04f1eb2caeeee185577bde"
+    },
+    "effective_infrastructure_failure_record": {
+      "path": "docs/a_share_three_day_walkforward_campaign_168_prevalue_infrastructure_failures_v3_20260815.json",
+      "sha256": "3ce1547e2ff31a55cc6b09b967ec62704d48f70294b2a3836566d6421489929e",
+      "effective_failure_count": 5
+    },
+    "effective_attempt_ledger": {
+      "path": "data/experiments/short_horizon/historical_walkforward/campaign_168/research_attempt_ledger_v3.json",
+      "sha256": "d1677ad9b95dc2cfa1b2a896c0eda5cb5ef8698d397e2cc937dec0a080d912fc",
+      "effective_entry_count": 12,
+      "chain_tip_sha256": "fa96babf8b8883f8f752365cc0d1a76947d82b1a62d93943b9eda7330d457d06"
+    }
+  },
+  "scientific_result": {
+    "terminal": true,
+    "terminal_phase": "finite_prevalue_operating_scale_adoption_kpi_source_admission",
+    "routes_reviewed": 7,
+    "genuinely_new_issuer_state_routes": 4,
+    "source_admission_deferrals_not_factor_failures": 4,
+    "leakage_or_operator_route_rejections": 3,
+    "selected_candidate_count": 0,
+    "complete_factor_definition_created": false,
+    "numeric_comparator_created": false,
+    "operating_scale_adoption_or_utilization_declared_ineffective": false,
+    "source_row_document_title_body_kpi_candidate_comparator_price_or_return_value_read": false,
+    "stress_2024_2025_opened": false
+  },
+  "effective_accounting": {
+    "campaign168_attempt_count": 12,
+    "campaign168_prevalue_scientific_attempt_count": 7,
+    "campaign168_infrastructure_failure_count": 5,
+    "campaign168_complete_factor_attempt_count": 0,
+    "campaign168_return_reading_development_trial_count": 0,
+    "campaign168_development_survivor_count": 0,
+    "campaign168_stress_trial_count": 0,
+    "cumulative_historical_research_attempt_count": 1475,
+    "cumulative_return_reading_development_trial_count": 314
+  },
+  "library_state": {
+    "complete_factor_definition_count": 158,
+    "complete_factor_definition_order_sha256": "4819c7fd7c0795d7598a52f3c615e3f117d5f4ecd9332974bc8e3dfa57c96667",
+    "eligible_numeric_comparator_count": 142,
+    "eligible_numeric_comparator_order_sha256": "5d1b35fb5a0d8ac9293008db9963c4a60a94dc940c237c3ed259e5ce44f14aaf",
+    "changed_by_campaign168": false
+  },
+  "candidate49": {
+    "only_active_prospective_candidate": true,
+    "signal_ledger_sha256": "5193f00d7f36da003f53cec387900da4c3d002299f5dfcfc1a95eaa199ed3a79",
+    "signal_entry_count": 0,
+    "execution_ledger_sha256": "d57a3e61eac969e42cafa418ccd8c0a5ee65dcf69da145bb2c096c2a02a2ea4f",
+    "execution_entry_count": 0,
+    "ledgers_changed": false
+  },
+  "research_boundary": {
+    "all_effective_failures_recorded": true,
+    "unrecovered_or_unrecorded_failed_exit_codes_bypassed_or_masked": false,
+    "source_row_document_title_body_kpi_candidate_comparator_price_or_return_value_read": false,
+    "stress_2024_2025_opened": false,
+    "provider_or_web_request_issued": false,
+    "provider_credential_presence_value_or_digest_read": false,
+    "candidate49_ledgers_changed": false,
+    "second_prospective_candidate_created": false,
+    "current_scoring_selection_sizing_positions_or_orders_performed": false,
+    "investment_advice": false
+  },
+  "next_action": "Publish final policy v242, rerun all Campaign168 gates with timestamp correction semantics, and bind the final active state and validation receipt."
+}

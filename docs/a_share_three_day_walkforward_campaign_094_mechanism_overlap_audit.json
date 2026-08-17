@@ -1,0 +1,161 @@
+{
+  "schema_version": 1,
+  "kind": "a_share_three_day_walkforward_campaign094_mechanism_overlap_audit",
+  "status": "passed_semantic_mechanism_review_before_campaign094_minute_source_or_comparison_values",
+  "recorded_at": "2026-08-07T02:13:54Z",
+  "concept_scouting": {
+    "path": "docs/a_share_three_day_walkforward_campaign_094_concept_scouting.json",
+    "sha256": "193fc6a87a157bccb07ebaed3f94c3fb53c6df65bea09801310e7c49d30d3797"
+  },
+  "authoritative_state": {
+    "path": "docs/a_share_three_day_iteration_status_20260807_campaign093_verified.json",
+    "sha256": "e9efe53051038628c9e7a1822be374a9052ce6d5b7c6a012d4c2212e286a03aa"
+  },
+  "historical_walkforward_policy": {
+    "path": "docs/a_share_three_day_historical_walkforward_research_policy_20260727.json",
+    "sha256": "38426d6161b9bfed323c58caba18feca668b8c9d53e294951a8ba90c01a798bb"
+  },
+  "numeric_comparator_policy": {
+    "path": "docs/a_share_three_day_walkforward_future_numeric_comparison_eligibility_policy_v37_20260807.json",
+    "sha256": "0e0527d3f4fb5616f3eb7b24554eaa5fa71d354d89131193420cd1634de90fe0",
+    "complete_definition_count": 125,
+    "numeric_comparator_count": 123,
+    "complete_definition_order_sha256": "3742401d8d87cbeb3a104545c25c1eb279832915f42dc46f1367dcbdc28f740c",
+    "numeric_comparator_order_sha256": "b92614c1366ec480913854adace1cad0d926a0e89c8bbebca70c81bf486cac3a"
+  },
+  "candidate": {
+    "name": "intraday_range_local_peak_clock_dispersion_236p",
+    "direction": "higher",
+    "mechanism": "Within-half clock dispersion of strict local maxima in the minute high-low log-range sequence, using only peak positions after the topology is identified.",
+    "formula": "For each half set q_i=ln(high_i/low_i), identify strict interior peaks q_i>q_i-1 and q_i>q_i+1 for i=1..118, map x_i=i/119, require at least two peaks, compute population Var(x) in each half, and average the two variances.",
+    "fixed_support": "Exactly 236 interior local-peak opportunities from the fixed 240 standard bars; exclude 09:30, endpoints, and every cross-lunch, cross-date, or cross-stock comparison.",
+    "zero_and_missing_semantics": "Exact-zero ranges and tied neighbors remain valid nonpeaks. Require all 240 high/low pairs finite, positive, and ordered plus at least two strict peaks per half. Never drop an opportunity, add jitter, break ties, fill, clip, threshold, or substitute.",
+    "reads_open_close_amount_volume_market_daily_quarterly_or_future_fields": false,
+    "candidate49_used_or_modified": false
+  },
+  "complete_library_review": {
+    "all_125_definitions_reviewed_in_frozen_order": true,
+    "all_123_numeric_comparators_reviewed_in_frozen_order": true,
+    "all_return_volatility_path_sign_frequency_range_gap_body_wick_amount_volume_transaction_price_market_peer_cross_day_event_quality_structural_composite_and_semantic_only_families_reviewed": true,
+    "candidate_is_exact_formula_duplicate": false,
+    "candidate_is_direction_only_duplicate": false,
+    "candidate_is_parameter_only_duplicate": false,
+    "candidate_is_an_inversion_of_a_terminal_factor": false,
+    "candidate_combines_terminal_factor_values": false,
+    "candidate_changes_quality_listing_buyability_cost_or_walkforward_gates": false,
+    "campaign093_formula_transform_direction_subset_filter_residualization_or_fit_reused": false,
+    "candidate49_remains_semantic_isolation_only": true
+  },
+  "nearest_semantic_challenges": [
+    {
+      "name": "intraday_range_clock_center_240m",
+      "relationship": "Both locate high-low range activity on the intraday clock.",
+      "distinction": "The terminal factor is the range-mass-weighted first clock moment across all 240 bars. Campaign094 discards every magnitude after strict local maxima are identified and averages the second central moment of unweighted peak positions separately inside each half. Moving nonpeak range mass changes the clock center but leaves Campaign094 unchanged when peak topology is preserved.",
+      "mandatory_numeric_challenge": true
+    },
+    {
+      "name": "intraday_amount_local_peak_density_238p",
+      "relationship": "Both use strict local maxima.",
+      "distinction": "The terminal factor counts amount peaks on adjacent amount triples. Campaign094 reads no amount, does not use peak count as the score, and measures the clock dispersion of range peaks with a two-per-half support rule.",
+      "mandatory_numeric_challenge": true
+    },
+    {
+      "name": "intraday_range_weak_order_entropy_236t and intraday_range_weak_order_time_reversal_divergence_236t",
+      "relationship": "All depend on the ordinal topology of three-bar range neighborhoods.",
+      "distinction": "Those factors tabulate the full weak-order pattern distribution or its reversal divergence across every interior triple. Campaign094 retains only strict center-maximum events and measures where they occur on the half-session clock; permuting identical local patterns across clock positions can change Campaign094 while leaving pattern frequencies unchanged.",
+      "mandatory_numeric_challenge": true
+    },
+    {
+      "name": "intraday_intrabar_range_participation_entropy_240m",
+      "relationship": "Both characterize dispersion of intraday range activity.",
+      "distinction": "Participation entropy uses normalized range magnitudes over all bars and is invariant to their clock permutation. Campaign094 is magnitude-free after peak detection and changes when peak clocks cluster or spread despite the same range-mass distribution.",
+      "mandatory_numeric_challenge": true
+    },
+    {
+      "name": "intraday_morning_afternoon_range_profile_similarity_120b",
+      "relationship": "Both keep morning and afternoon range structures separate.",
+      "distinction": "The terminal factor compares the two complete range profiles for similarity. Campaign094 never compares morning with afternoon; it computes peak-clock variance inside each half and then averages the two scalars.",
+      "mandatory_numeric_challenge": true
+    },
+    {
+      "name": "intraday_extreme_arrival_order_240m",
+      "relationship": "Both use intraday event timing.",
+      "distinction": "The terminal factor times global price high/low arrivals. Campaign094 ignores price levels and global extremes and instead uses every strict local maximum of bar range inside each half.",
+      "mandatory_numeric_challenge": true
+    },
+    {
+      "name": "intraday_range_amount_peak_timing_alignment_240m",
+      "relationship": "Both reference timing of range peaks.",
+      "distinction": "The terminal factor compares the single range-magnitude peak clock with the single amount peak clock. Campaign094 reads no amount and summarizes the dispersion of all strict local range-peak clocks, regardless of which peak has maximum magnitude.",
+      "mandatory_numeric_challenge": true
+    },
+    {
+      "name": "intraday_close_transition_range_quadratic_efficiency_238p",
+      "relationship": "Both read high-low ranges on the same fixed minute grid.",
+      "distinction": "Campaign093 pools squared range magnitudes against squared adjacent close transitions and reads close. Campaign094 reads no close, performs no magnitude allocation, and depends only on local range-peak positions.",
+      "mandatory_numeric_challenge": true
+    },
+    {
+      "name": "candidate49_intraday_cumulative_vwap_crossing_rate_240m_v1",
+      "relationship": "Both use the completed standard-minute grid.",
+      "distinction": "Candidate49 counts causal close-versus-cumulative-VWAP crossings and requires amount/volume. Campaign094 uses high/low range topology only and never touches the prospective ledgers.",
+      "mandatory_numeric_challenge": false
+    }
+  ],
+  "semantic_invariance_checks": [
+    {
+      "intervention": "Multiply all selected high and low prices by one positive constant.",
+      "result": "unchanged because every q_i is a log ratio"
+    },
+    {
+      "intervention": "Multiply every q_i in one stock-day by one common strictly positive constant.",
+      "result": "unchanged because strict local-peak topology and peak clocks are unchanged"
+    },
+    {
+      "intervention": "Change any range magnitude without changing whether any interior bar is a strict local peak.",
+      "result": "unchanged, distinguishing the factor from range mass, entropy, and magnitude-weighted clock statistics"
+    },
+    {
+      "intervention": "Move two peak clocks farther apart inside one half while preserving peak count and valid topology.",
+      "result": "increases that half's population peak-clock variance"
+    },
+    {
+      "intervention": "Permute local peak neighborhoods across clock positions while preserving their multiset and weak-order pattern counts.",
+      "result": "can change the score because only peak clock dispersion is measured"
+    },
+    {
+      "intervention": "Change open, close, amount, volume, market, quarterly, daily-price, or return states while preserving high and low.",
+      "result": "unchanged"
+    }
+  ],
+  "prevalue_semantic_decision": {
+    "passed": true,
+    "selected_factor_count": 1,
+    "complete_frozen_definition_count_reviewed": 125,
+    "numeric_comparator_count_reserved_for_postcoverage_test": 123,
+    "candidate_or_comparison_values_read": false,
+    "historical_daily_price_or_forward_return_values_read": false,
+    "provider_request_issued": false,
+    "required_next_step": "Freeze the exact v37-bound coverage-first no-return protocol and sole conditional development trial before source rows or candidate values."
+  },
+  "prohibited_rescues": [
+    "replace peak-clock variance with peak density, peak magnitude, entropy, range mass, or a cross-half statistic after results",
+    "change strict peaks to weak peaks, break ties, add jitter, or relax the two-peaks-per-half support",
+    "change direction, support, endpoint exclusion, lunch reset, clock normalization, variance convention, or averaging rule",
+    "add close direction, amount, volume, market, thresholds, filters, subwindows, regimes, neutralization, residualization, fitting, models, or combinations",
+    "remove a failed numeric comparator or select favorable years, costs, folds, or gates"
+  ],
+  "research_boundary": {
+    "campaign094_source_rows_read": false,
+    "campaign094_candidate_values_read": false,
+    "comparison_values_read": false,
+    "historical_daily_price_fields_read": [],
+    "historical_forward_returns_read": false,
+    "candidate49_historical_return_or_signal_backfill": false,
+    "candidate49_ledgers_changed": false,
+    "second_prospective_candidate_created": false,
+    "provider_request_issued": false,
+    "current_scoring_selection_sizing_or_orders_performed": false,
+    "investment_advice": false
+  }
+}

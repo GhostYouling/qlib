@@ -1,0 +1,45 @@
+{
+  "schema_version": 1,
+  "kind": "a_share_three_day_walkforward_campaign101_development_recovery_v2_activation_binding",
+  "status": "same_single_frozen_development_trial_reauthorized_after_namespace_only_failure",
+  "recorded_at": "2026-08-07T14:19:04Z",
+  "implementation_freeze": {
+    "path": "docs/a_share_three_day_walkforward_campaign_101_development_recovery_v2_implementation_freeze_20260807.json",
+    "sha256": "e741e8774da5b65e2b2d692c6093effba2b7c69978736f0d2755fa74fcf61785"
+  },
+  "failed_internal_ledger": {
+    "path": "data/experiments/short_horizon/historical_walkforward/campaign_101/walkforward/trial_ledger.json",
+    "sha256": "a4d13eae152f00b6cb956ecda73c0f0ed22729c20af647d574c03a4efe3b21af"
+  },
+  "development_preregistration": {
+    "path": "docs/a_share_three_day_walkforward_campaign_101_preregistration_v2.json",
+    "sha256": "5cff18c65510eb01e4771e04f62b54bf038579a25f9ee14ec73863fe43947b36"
+  },
+  "scientific_runner": {
+    "path": "scripts/a_share_three_day_walkforward_campaign101.py",
+    "sha256": "8353c819b0c1a0edd98eb0999849a626d5a97c913655e2068ec18fb05b9c9b27"
+  },
+  "recovery_runner": {
+    "path": "scripts/a_share_three_day_walkforward_campaign101_development_recovery_v2.py",
+    "sha256": "f932d2fdd1b773b21c8dbae19a6fc7b29f7a0179b62daeb2030d7b7f8dc370b7"
+  },
+  "candidate_snapshot": {
+    "path": "/Volumes/DIsk/qlib-a-share-tushare-1m/derived/a_share/rich/tushare/minute_walkforward_campaign101_feature_library/tushare_stk_mins_1m_2019_2025_ea0cbb8f_walkforward_campaign101_feature_library_v1/snapshot_manifest.json",
+    "sha256": "7a2db929fff69f46edbc93d57cdca9cc4427c47dd542291b4f58d879dd91a3b6",
+    "factor_eligible_rows": 1327637
+  },
+  "namespace_repair_authorized": {
+    "from_eligible_rows": 1328449,
+    "to_eligible_rows": 1327637,
+    "only_actual_loader_namespace_constant_may_change": true
+  },
+  "exact_python": "/Volumes/DIsk/Coding/anaconda3/bin/python3.12",
+  "trial_id": "wf101_full_numeric_library_directional_lower_quartile_consensus_129f_single_higher",
+  "remaining_complete_development_trials_authorized": 1,
+  "prior_infrastructure_failure_replay_or_deletion_authorized": false,
+  "new_formula_direction_parameter_filter_subset_combination_model_or_threshold_authorized": false,
+  "stress_2024_2025_authorized": false,
+  "provider_request_authorized": false,
+  "candidate49_historical_return_read_authorized": false,
+  "current_scoring_selection_sizing_or_orders_authorized": false
+}

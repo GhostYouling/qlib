@@ -1,0 +1,81 @@
+{
+  "schema_version": 1,
+  "kind": "a_share_three_day_walkforward_campaign206_terminal_validation",
+  "status": "focused_cumulative_independent_and_bounded_diff_validation_passed",
+  "recorded_at": "2026-08-15T20:40:00+08:00",
+  "timestamp_semantics": "monotonic logical append time after effective Campaign206 policy v307 and all completed fresh validation commands",
+  "authoritative_inputs": {
+    "policy_v307": {
+      "path": "docs/a_share_three_day_walkforward_future_numeric_comparison_eligibility_policy_v307_20260815.json",
+      "sha256": "3d743a10f6e443d8e20a4d629057fbb365dd9948820eded769bb9dc8880c29e8"
+    },
+    "terminal_result": {
+      "path": "docs/a_share_three_day_walkforward_campaign_206_terminal_result_20260815.json",
+      "sha256": "0172f1e10570b97295a039b8281ab90b5adcc28773df2b19858bd458c3f62486"
+    },
+    "attempt_ledger_v1": {
+      "path": "data/experiments/short_horizon/historical_walkforward/campaign_206/research_attempt_ledger_v1.json",
+      "sha256": "2e639c8148b5273849e294d2c7a131f1e8ce23d59e07dc8b2adf84ab9f11ae94"
+    },
+    "focused_test": {
+      "path": "tests/data_collector_tests/test_a_share_three_day_walkforward_campaign206_terminal.py",
+      "sha256": "274e64397c604e51cee1bfb5c846129c7d3eadce503866b3cfdc846f2bff8cc3"
+    }
+  },
+  "validation_results": {
+    "json_parse_passed": true,
+    "campaign206_final_json_files_parsed": 6,
+    "black_passed": true,
+    "ruff_passed": true,
+    "focused_campaign206_tests_passed": 2,
+    "focused_campaign206_duration_seconds": 0.08,
+    "campaign145_through_campaign206_test_file_count": 94,
+    "campaign145_through_campaign206_tests_passed": 477,
+    "campaign145_through_campaign206_tests_skipped": 1,
+    "campaign145_through_campaign206_nodes_deselected": 21,
+    "campaign145_through_campaign206_duration_seconds": 18.41,
+    "independent_validation_passed": true,
+    "bounded_git_diff_check_passed": true,
+    "direct_authoritative_reference_hashes_verified": 34,
+    "campaign206_attempt_entries_verified": 9,
+    "campaign206_evidence_hashes_verified": 9,
+    "campaign206_predecessor_ledger_hashes_verified": 1,
+    "campaign206_attempt_hash_chain_passed": true,
+    "finite_routes_verified": 7,
+    "source_gate_items_verified": 12,
+    "candidate49_ledgers_verified": 2,
+    "unified_reports_checked": 2,
+    "trailing_whitespace_check_passed": true,
+    "trailing_whitespace_files_checked": 9,
+    "failed_or_truncated_invocations_recorded_and_excluded": 2
+  },
+  "effective_accounting_verified": {
+    "campaign206_attempt_count": 9,
+    "campaign206_scientific_attempt_count": 7,
+    "campaign206_infrastructure_failure_count": 2,
+    "cumulative_historical_research_attempt_count": 1889,
+    "cumulative_return_reading_development_trial_count": 314
+  },
+  "candidate49": {
+    "only_active_prospective_candidate": true,
+    "signal_ledger_sha256": "5193f00d7f36da003f53cec387900da4c3d002299f5dfcfc1a95eaa199ed3a79",
+    "signal_entry_count": 0,
+    "execution_ledger_sha256": "d57a3e61eac969e42cafa418ccd8c0a5ee65dcf69da145bb2c096c2a02a2ea4f",
+    "execution_entry_count": 0,
+    "ledgers_changed": false
+  },
+  "research_boundary": {
+    "failed_or_truncated_output_used_as_scientific_or_validation_evidence": false,
+    "source_waste_customer_service_container_route_collection_load_transfer_sorting_recovery_recycling_treatment_disposal_ticket_manifest_contamination_hazardous_custody_bill_compliance_factor_comparator_security_price_or_return_value_read": false,
+    "customer_identity_address_precise_route_hazardous_material_security_location_identifiable_manifest_or_sensitive_facility_control_record_read": false,
+    "stress_2024_2025_opened": false,
+    "provider_or_web_request_issued": false,
+    "provider_credential_presence_value_or_digest_read": false,
+    "candidate49_plan_or_run_executed": false,
+    "candidate49_ledgers_changed": false,
+    "second_prospective_candidate_created": false,
+    "current_scoring_selection_sizing_positions_or_orders_performed": false,
+    "investment_advice": false
+  },
+  "next_action": "Publish the final Campaign206 active-goal state and authorize Campaign207 to scout a genuinely different finite offline prevalue mechanism while preserving all frozen boundaries."
+}

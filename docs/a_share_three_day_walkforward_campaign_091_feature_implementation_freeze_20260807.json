@@ -1,0 +1,36 @@
+{
+  "schema_version": 1,
+  "kind": "a_share_three_day_walkforward_campaign091_feature_implementation_freeze",
+  "status": "frozen_before_campaign091_minute_source_rows_or_candidate_values",
+  "frozen_at": "2026-08-07T07:11:00+08:00",
+  "protocol": {
+    "path": "docs/a_share_three_day_walkforward_campaign_091_no_return_preregistration.json",
+    "sha256": "d9e9ca112dc47211f0fcf983752d73c421adff1789a0873b1b95feaeaaba368b"
+  },
+  "feature_runner": {
+    "path": "scripts/a_share_three_day_walkforward_campaign091_features.py",
+    "sha256": "32a917420c3efd5579a8f0ed955b887d3952f016aada89b1bf11920833b04f00"
+  },
+  "tests": {
+    "path": "tests/data_collector_tests/test_a_share_three_day_walkforward_campaign091_features.py",
+    "sha256": "5ada547172c828ec55723ebbd9e5616ab41d985600512c4a0de08af717b0259a",
+    "synthetic_result": "4 passed"
+  },
+  "factor": "intraday_directional_range_mass_imbalance_240m",
+  "direction": "higher",
+  "raw_projection": [
+    "datetime",
+    "symbol",
+    "provider",
+    "open",
+    "high",
+    "low",
+    "close"
+  ],
+  "candidate_source_rows_read_before_freeze": false,
+  "candidate_values_computed_before_freeze": false,
+  "comparison_values_read_before_freeze": false,
+  "historical_daily_price_or_forward_return_values_read_before_freeze": false,
+  "provider_request_issued_before_freeze": false,
+  "candidate49_ledgers_changed_before_freeze": false
+}

@@ -1,0 +1,156 @@
+{
+  "schema_version": 1,
+  "kind": "a_share_three_day_walkforward_campaign164_human_capital_source_frontier",
+  "status": "terminal_prevalue_three_source_admission_deferrals_three_related_route_rejections_zero_selected",
+  "recorded_at": "2026-08-15T06:55:00+08:00",
+  "purpose": "Review a finite issuer human-capital and employee-productivity domain without opening annual-report documents, tables, source rows, candidate values, comparators or returns, and without treating missing source admission as factor ineffectiveness.",
+  "authoritative_inputs": {
+    "campaign163_effective_state": {
+      "path": "docs/a_share_three_day_iteration_status_20260815_campaign163_prevalue_terminal_v4.json",
+      "sha256": "a0280d866eeb7210508836f378ce068538b8018f8d7b7bb4ee6d15dcd4a42589"
+    },
+    "eligibility_policy_v233": {
+      "path": "docs/a_share_three_day_walkforward_future_numeric_comparison_eligibility_policy_v233_20260815.json",
+      "sha256": "e9259dfe0830dbe07afdda3fb0c6222524b715390bc1aa166e57e516003af291"
+    },
+    "campaign125_concept_scouting": {
+      "path": "docs/a_share_three_day_walkforward_campaign_125_concept_scouting_20260814.json",
+      "sha256": "d21c9279998644ce9de0eb86564211835626f860f194b5b21055c94595e6712f"
+    },
+    "campaign158_complete_local_field_matrix": {
+      "path": "docs/a_share_three_day_walkforward_campaign_158_local_schema_field_coverage_matrix_20260815.json",
+      "sha256": "3331d14a063490601507be363a75b22e3590b03494e33e87a131f09a1106a5ab"
+    },
+    "campaign158_residual_audit": {
+      "path": "docs/a_share_three_day_walkforward_campaign_158_local_schema_residual_audit_20260815.json",
+      "sha256": "0fbe75c7031e9787f9ce7787ce7cdcc06eafc4d9257bdd875fb678488b088f68"
+    },
+    "campaign159_remaining_source_inventory": {
+      "path": "docs/a_share_three_day_walkforward_campaign_159_remaining_local_source_schema_inventory_20260815.json",
+      "sha256": "d561a9707b6004cbec0685108ea3fa4453b21f587a7632a739b46b69e818e578"
+    },
+    "campaign159_remaining_source_audit": {
+      "path": "docs/a_share_three_day_walkforward_campaign_159_remaining_local_source_residual_audit_20260815.json",
+      "sha256": "6d4430f1eef33da89fe5eb7018d326c603a051446d16e066ac72c74d9d7a25ae"
+    }
+  },
+  "research_boundary": {
+    "finite_catalog_frozen_before_source_or_value_read": true,
+    "annual_report_document_pdf_table_source_row_candidate_comparator_price_or_return_value_read": false,
+    "local_schema_names_and_prior_records_only": true,
+    "provider_or_web_request_issued": false,
+    "provider_credential_presence_value_or_digest_read": false,
+    "stress_2024_2025_opened": false,
+    "candidate49_ledgers_changed": false,
+    "second_prospective_candidate_created": false
+  },
+  "repository_evidence": {
+    "current_profile_headcount_is_not_point_in_time": "Campaign125 already rejects Tushare stock_company employees because the current static row cannot reconstruct 2019-2023 point-in-time states.",
+    "historically_versioned_employee_primitives_present_in_accepted_local_schema": false,
+    "historically_versioned_employee_source_contract_present": false,
+    "interpretation": "Annual-report employee disclosures are a different potential source contract from a current company-profile row, but they remain unavailable for factor definition until their historical document and taxonomy semantics are frozen."
+  },
+  "mandatory_source_admission_gate": {
+    "must_freeze_before_any_formula_or_direction": [
+      "immutable annual-report document bytes and document identifier for every issuer-period",
+      "first public availability timestamp, later revision chain and the exact version usable at each signal time",
+      "consolidated-versus-parent employee and financial-statement scope",
+      "year-end, opening, closing and average-headcount semantics, including acquisitions, disposals and labor-dispatch workers",
+      "employee category taxonomy with non-overlap rules and mappings across issuer wording and annual schema changes",
+      "revenue, operating-profit and employee-compensation line identities, units, restatements and denominator scope",
+      "missing, undisclosed, not-applicable and genuine-zero semantics",
+      "issuer/security mapping and complete bounded 2019-2023 partition manifest",
+      "deterministic parser and acceptance tests that use no candidate, comparator, price or return values"
+    ],
+    "formula_direction_parameter_filter_subset_combination_or_model_choice_allowed_before_gate": false
+  },
+  "finite_prevalue_catalog": [
+    {
+      "catalog_id": "c164_01",
+      "name": "current_company_profile_employee_count_or_intensity",
+      "economic_state": "Current reported issuer headcount or a scale-normalized transform of it.",
+      "formula": null,
+      "direction": null,
+      "parameters_filters_subsets_combinations_models": [],
+      "new_issuer_state": false,
+      "complete_local_source_contract": false,
+      "decision": "rejected_exact_prior_point_in_time_leakage_route",
+      "reason": "Campaign125 already established that the current stock_company row is latest-state data without effective-date history. Reusing it in 2019-2023 would leak later state; scaling the same row would not repair its clock."
+    },
+    {
+      "catalog_id": "c164_02",
+      "name": "annual_report_revenue_per_average_employee_productivity",
+      "economic_state": "Issuer operating scale generated per historically reported average employee.",
+      "formula": null,
+      "direction": null,
+      "parameters_filters_subsets_combinations_models": [],
+      "new_issuer_state": true,
+      "complete_local_source_contract": false,
+      "decision": "deferred_source_admission_not_factor_failure",
+      "reason": "No accepted local contract freezes point-in-time annual-report headcount, average-headcount construction, consolidated revenue identity, revisions and complete 2019-2023 coverage."
+    },
+    {
+      "catalog_id": "c164_03",
+      "name": "annual_report_profit_per_employee_sibling_scale",
+      "economic_state": "Reported issuer earnings generated per employee.",
+      "formula": null,
+      "direction": null,
+      "parameters_filters_subsets_combinations_models": [],
+      "new_issuer_state": false,
+      "complete_local_source_contract": false,
+      "decision": "rejected_sibling_numerator_and_scale_search_before_source_admission",
+      "reason": "Choosing revenue, operating profit, net profit or another financial numerator against an unadmitted headcount denominator creates a post-concept numerator search. The finite frontier retains one productivity base route and closes sibling scales before values."
+    },
+    {
+      "catalog_id": "c164_04",
+      "name": "annual_report_research_and_development_personnel_share",
+      "economic_state": "Share of the issuer workforce reported as research-and-development personnel.",
+      "formula": null,
+      "direction": null,
+      "parameters_filters_subsets_combinations_models": [],
+      "new_issuer_state": true,
+      "complete_local_source_contract": false,
+      "decision": "deferred_source_admission_not_factor_failure",
+      "reason": "The accepted local library has no point-in-time, cross-issuer-stable R&D-personnel numerator and workforce denominator contract with revision and taxonomy handling."
+    },
+    {
+      "catalog_id": "c164_05",
+      "name": "annual_report_technical_or_education_workforce_composition",
+      "economic_state": "Composition of the issuer workforce by technical role or education category.",
+      "formula": null,
+      "direction": null,
+      "parameters_filters_subsets_combinations_models": [],
+      "new_issuer_state": true,
+      "complete_local_source_contract": false,
+      "decision": "deferred_source_admission_not_factor_failure",
+      "reason": "Issuer-defined role and education labels, overlapping categories, taxonomy changes and historical document availability are not frozen, so no comparable numeric series may be constructed yet."
+    },
+    {
+      "catalog_id": "c164_06",
+      "name": "employee_compensation_per_average_employee_or_productivity_joint_state",
+      "economic_state": "Issuer labor cost per employee, alone or combined with employee productivity.",
+      "formula": null,
+      "direction": null,
+      "parameters_filters_subsets_combinations_models": [],
+      "new_issuer_state": false,
+      "complete_local_source_contract": false,
+      "decision": "rejected_unadmitted_component_combination_and_denominator_search",
+      "reason": "Cash paid to and for employees is not interchangeable with annual compensation expense, and combining it with an unadmitted average-headcount series or a productivity route would search line identities, denominators and joint operators before source admission."
+    }
+  ],
+  "gate_summary": {
+    "routes_reviewed": 6,
+    "genuinely_new_issuer_state_routes": 3,
+    "source_admission_deferrals_not_factor_failures": 3,
+    "prior_leakage_or_related_route_rejections": 3,
+    "selected_candidate_count": 0,
+    "complete_factor_definition_created": false,
+    "numeric_comparator_created": false
+  },
+  "scientific_interpretation": {
+    "human_capital_or_employee_productivity_declared_ineffective": false,
+    "absence_of_an_admitted_historical_source_is_evidence_of_no_predictive_power": false,
+    "safe_conclusion": "The three new states remain deferred at source admission; the three related routes are closed before values to prevent leakage and multiplicity."
+  },
+  "next_action": "Record all six scientific decisions and the bounded filename-verification failure append-only, publish terminal accounting, and continue a different finite offline prevalue domain under the next policy."
+}

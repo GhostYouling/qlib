@@ -1,0 +1,35 @@
+{
+  "schema_version": 1,
+  "kind": "a_share_three_day_walkforward_campaign241_infrastructure_failure",
+  "recorded_at": "2026-08-16T08:05:00+08:00",
+  "timestamp_semantics": "monotonic_logical_append_time_not_host_wall_clock_measurement",
+  "status": "failed_chain_hash_python_inline_newline_quoting_exit_1",
+  "command": "/Volumes/DIsk/Coding/anaconda3/bin/python3.12 -c <multiline chain-hash program passed with literal escaped newlines>",
+  "working_directory": "/Volumes/DIsk/Disk-Coding/qlib",
+  "observed_process_exit_code": 1,
+  "failure_reason": "JSON stringification placed literal backslash-n sequences in the shell argument and Python raised SyntaxError before computing any chain hash",
+  "evidence_treatment": {
+    "output_discarded": true,
+    "used_as_scientific_evidence": false,
+    "used_as_validation_evidence": false,
+    "candidate_comparator_price_or_return_value_read": false,
+    "target_file_changed_by_failed_command": false
+  },
+  "recovery": {
+    "status": "completed",
+    "method": "compute the same frozen append-only chain locally from fixed shell records and SHA-256 without reading or writing research values",
+    "scientific_result_changed": false
+  },
+  "research_boundary": {
+    "candidate_or_comparator_value_read": false,
+    "daily_price_or_forward_return_read": false,
+    "provider_or_web_request_issued": false,
+    "provider_credential_presence_value_or_digest_read": false,
+    "candidate49_plan_or_run_executed": false,
+    "candidate49_ledgers_changed": false,
+    "second_prospective_candidate_created": false,
+    "stress_2024_2025_opened": false,
+    "current_scoring_selection_sizing_positions_or_orders_performed": false,
+    "investment_advice": false
+  }
+}

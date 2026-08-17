@@ -1,0 +1,25 @@
+{
+  "schema_version": 1,
+  "kind": "a_share_three_day_walkforward_campaign100_no_return_audit_prevalue_executable_bit_failure",
+  "status": "recorded_before_metadata_only_retry",
+  "recorded_at": "2026-08-07T12:20:52Z",
+  "stage": "prevalue_no_return_audit_static_gate",
+  "outcome": "seven_tests_and_black_passed_but_ruff_exe001_required_executable_mode_for_shebang_runner",
+  "formatted_runner": {
+    "path": "scripts/a_share_three_day_walkforward_campaign100_no_return_audit.py",
+    "sha256": "f6018a945fc842184b22b2af9e249399fbec3a83be9727602f66fab3203f1e48"
+  },
+  "tests": {
+    "path": "tests/data_collector_tests/test_a_share_three_day_walkforward_campaign100_no_return_audit.py",
+    "sha256": "4a9fded8fdfbf6332e7c9d9763eebe61c348ce4acd8d8e6fea1b9496a6cd85f8",
+    "result": "7 passed; Black passed"
+  },
+  "scientific_result_changed": false,
+  "candidate_values_read": false,
+  "coverage_or_capacity_metrics_computed": false,
+  "comparison_factor_values_read": false,
+  "historical_daily_price_or_forward_return_values_read": false,
+  "provider_request_issued": false,
+  "candidate49_ledgers_changed": false,
+  "retry_rule": "set only the executable permission bit, rerun identical tests and static gates, then freeze the same content hash"
+}

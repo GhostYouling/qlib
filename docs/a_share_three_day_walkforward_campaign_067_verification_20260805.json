@@ -1,0 +1,47 @@
+{
+  "version": 1,
+  "kind": "a_share_three_day_walkforward_campaign067_verification",
+  "status": "all_terminal_bindings_and_semantics_verified",
+  "recorded_at": "2026-08-05T20:14:00+08:00",
+  "bindings": {
+    "research_record": {"path": "docs/a_share_three_day_walkforward_campaign_067_research_record.json", "sha256": "42f01ecde7725f79f848c6ec6e26f67585b643557b10a28b0ee6e2eabca88e68"},
+    "terminal_freeze": {"path": "docs/a_share_three_day_walkforward_campaign_067_terminal_completion_freeze_20260805.json", "sha256": "618e389ebab51e7b9882232cd5575930a8b9231bf29ac3a1ea3c2721f8eca954"},
+    "campaign_report": {"path": "docs/a_share_three_day_walkforward_campaign_067_report.md", "sha256": "40ed45f98690ba0fe02140396978667409ec4aa075c2d897e5e5a8ceac1f2534"},
+    "trial_ledger": {"path": "data/experiments/short_horizon/historical_walkforward/campaign_067/walkforward/trial_ledger.json", "sha256": "0a78a6a1ed9c9aa55a6cc00e2275e1d96b95cfe86b7f050c16e5809bc2bf1c8b"},
+    "development_survivors": {"path": "data/experiments/short_horizon/historical_walkforward/campaign_067/walkforward/development_survivors.json", "sha256": "48bcb946116db41edbb05b1a99e7f0901c87877ad77dd17f79bdd67953c22a92"},
+    "exposed_stress_record": {"path": "data/experiments/short_horizon/historical_walkforward/campaign_067/walkforward/exposed_stress_consumption_record.json", "sha256": "e7276edd6391708ed0704c6662ea37471922269c3a171d2b40012962b384c232"},
+    "research_attempt_ledger": {"path": "data/experiments/short_horizon/historical_walkforward/campaign_067/research_attempt_ledger_v2.json", "sha256": "c3abed753c57731b070b76c09090034f3bea8cba6f9926ba340d883367323a1e"},
+    "unified_report": {"path": "data/experiments/short_horizon/three_day_research_report.md", "sha256": "46f34d458d964d9ac9a05a4a9359c32610e5fad1507526c9dd682a051cc13d64"},
+    "unified_report_generator": {"path": "scripts/a_share_short_horizon_factor_research.py", "sha256": "df3d239259d6b3f87204749dd60938ee332fa472e99522f0708fd265fd198a36"},
+    "terminal_tests": {"path": "tests/data_collector_tests/test_a_share_three_day_walkforward_campaign067_terminal.py", "sha256": "48ac764e7737eea45715f11816abb30b581cc4081e73165b4ed484eed0d839df"},
+    "terminal_validation_failure_record": {"path": "docs/a_share_three_day_walkforward_campaign_067_terminal_validation_failure_record_20260805.json", "sha256": "72aac5ac450cff86bfe1ef06d40f0c70a80646dae30c378edef00016351b08ec"},
+    "candidate49_daily_failure_record": {"path": "docs/a_share_candidate49_20260805_daily_source_failure_record.json", "sha256": "b2b6b07e1f0fca128ba9935dac6331319b2a7147e3d73e52b624853a2259bbbf"}
+  },
+  "binding_validation": {
+    "research_record_passed": 22,
+    "research_record_failed": 0,
+    "terminal_freeze_passed": 8,
+    "terminal_freeze_failed": 0,
+    "this_record_expected_bindings": 12
+  },
+  "tests": {
+    "first_terminal_suite_passed": 18,
+    "first_terminal_suite_failed": 2,
+    "failed_nodes_were_pre_state_only": true,
+    "corrected_terminal_suite_passed": 18,
+    "corrected_terminal_suite_failed": 0,
+    "corrected_terminal_suite_deselected": 2,
+    "bound_pre_state_tests_modified": false
+  },
+  "verified_semantics": {
+    "no_return_numeric_comparisons_passed": 97,
+    "development_trial_count": 1,
+    "development_survivor_count": 0,
+    "stress_2024_2025_opened": false,
+    "candidate49_signal_ledger_entries": 0,
+    "candidate49_execution_ledger_entries": 0,
+    "candidate49_ledger_semantics_valid": true,
+    "candidate49_same_day_provider_retry_allowed": false,
+    "current_scoring_selection_sizing_or_orders_performed": false
+  }
+}

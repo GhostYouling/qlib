@@ -1,0 +1,81 @@
+{
+  "version": 1,
+  "kind": "a_share_three_day_walkforward_campaign031_feature_snapshot_freeze",
+  "status": "candidate_snapshot_fingerprint_and_partition_replay_frozen_before_comparison_values",
+  "recorded_at": "2026-07-30T12:39:00Z",
+  "purpose": "Freeze the complete Campaign031 candidate snapshot and its post-publication code bindings after independent partition replay but before loading any of the 52 comparison-factor values.",
+  "source_chain": {
+    "no_return_preregistration": {
+      "path": "docs/a_share_three_day_walkforward_campaign_031_no_return_preregistration.json",
+      "sha256": "95951a357ffef3eee46f8d220d150fd00223b32f27f6cf93a92c4f6c17452f6d"
+    },
+    "feature_injection_repair": {
+      "path": "docs/a_share_three_day_walkforward_campaign_031_feature_injection_repair_20260730.json",
+      "sha256": "8e1be8922bebaed0fea288a0eecf7e20cd67eb63909cc43da56f014451fa4138"
+    },
+    "dispersion_benchmark_freeze": {
+      "path": "docs/a_share_three_day_walkforward_campaign_031_dispersion_benchmark_freeze_20260730.json",
+      "sha256": "5512e1025b8c833d9356e2a3e93cedeae42611504e956edf32c062a013c3a5ad"
+    },
+    "feature_runner": {
+      "path": "scripts/a_share_three_day_walkforward_campaign031_features.py",
+      "sha256": "4bd917b73217c28fdf703d27ec2d2c5fad4c58c3ba0dc190d934c17f68daa439"
+    },
+    "feature_tests": {
+      "path": "tests/data_collector_tests/test_a_share_three_day_walkforward_campaign031_features.py",
+      "sha256": "4e324e4b3c8d01ab464c51484fece00333d1243fb1013ba27af480c74ab1d5a2"
+    },
+    "feature_snapshot": {
+      "path": "/Volumes/DIsk/qlib-a-share-tushare-1m/derived/a_share/rich/tushare/minute_walkforward_campaign031_feature_library/tushare_stk_mins_1m_2019_2025_ea0cbb8f_walkforward_campaign031_feature_library_v1/snapshot_manifest.json",
+      "sha256": "4df07ce452454d742521e835f2b7954fe53c597ba47ec31438cb47fd2abbd086",
+      "dataset_sha256": "9858378a035142b36f19bf00b0b8c7847802e428f6798dc1900b2ae003bcd6b1"
+    },
+    "candidate49_signal_ledger": {
+      "path": "data/experiments/short_horizon/candidate49_future_signal_ledger.json",
+      "sha256": "5193f00d7f36da003f53cec387900da4c3d002299f5dfcfc1a95eaa199ed3a79",
+      "entry_count": 0
+    },
+    "candidate49_execution_ledger": {
+      "path": "data/experiments/short_horizon/candidate49_future_execution_ledger.json",
+      "sha256": "d57a3e61eac969e42cafa418ccd8c0a5ee65dcf69da145bb2c096c2a02a2ea4f",
+      "entry_count": 0
+    }
+  },
+  "snapshot_replay": {
+    "factor": "intraday_market_dispersion_decoupling_238m",
+    "direction": "higher",
+    "partitions": 33015,
+    "rows": 7724498,
+    "eligible_rows": 7695088,
+    "verified_partition_byte_and_frame_hashes": 33015,
+    "verified_rows": 7724498,
+    "all_partition_byte_and_frame_hashes_valid": true,
+    "resumed_partitions": 0,
+    "invalid_stock_or_dispersion_rows": 0,
+    "insufficient_peer_rows": 0,
+    "material_negative_variance_rows": 0,
+    "tiny_negative_variance_positions_canonicalized": 0,
+    "degenerate_stock_magnitude_variance_rows": 29410,
+    "degenerate_dispersion_variance_rows": 0,
+    "endpoint_canonicalized_rows": 0,
+    "invalid_final_range_rows": 0,
+    "comparison_factor_values_read": false,
+    "daily_price_fields_read": false,
+    "forward_return_fields_read": false
+  },
+  "decision": {
+    "snapshot_fingerprint_frozen": true,
+    "ordered_no_return_audit_allowed_after_binding_validation_exit_zero": true,
+    "formula_direction_filter_threshold_or_combination_change_allowed": false,
+    "candidate49_remains_only_active_prospective_candidate": true,
+    "candidate50_activation_allowed": false
+  },
+  "research_boundary": {
+    "comparison_values_read": false,
+    "daily_price_fields_read": false,
+    "forward_returns_read": false,
+    "candidate49_signal_or_execution_ledger_changed": false,
+    "current_scoring_selection_sizing_or_orders_performed": false,
+    "provider_request_issued": false
+  }
+}

@@ -1,0 +1,125 @@
+{
+  "version": 1,
+  "kind": "a_share_three_day_iteration_status",
+  "status": "campaign063_terminal_verified_structural_zero_coverage_ready_for_independent_next_campaign",
+  "recorded_at": "2026-08-05T07:06:00+08:00",
+  "supersedes_without_rewriting": {
+    "path": "docs/a_share_three_day_iteration_status_20260805_campaign062_verified_v2.json",
+    "sha256": "ba313597d16965f78383956967c619ba9b41b08e175c324d637b2833f79a1fe7"
+  },
+  "research_policy": {
+    "historical_walkforward_policy": {
+      "path": "docs/a_share_three_day_historical_walkforward_research_policy_20260727.json",
+      "sha256": "38426d6161b9bfed323c58caba18feca668b8c9d53e294951a8ba90c01a798bb"
+    },
+    "historical_research_may_run_without_new_daily_bar_or_16_30_wait": true,
+    "historical_results_may_generate_current_scores_selections_sizes_or_orders": false,
+    "historical_results_may_backfill_candidate49": false,
+    "development_partition": "2019-2023_three_frozen_expanding_train_validation_folds",
+    "purge_signal_sessions_each_boundary": 3,
+    "t_plus_1_and_t_plus_3_must_remain_in_same_partition": true,
+    "2024_2025_stress_may_open_only_for_a_frozen_full_campaign_with_development_survivors": true
+  },
+  "local_data_context": {
+    "active_repository_root": "/Volumes/DIsk/Disk-Coding/qlib",
+    "configured_compatibility_root": "/Users/niyufei/Coding/qlib",
+    "configured_compatibility_root_is_active_repository": false,
+    "active_daily_data_root": "/Volumes/DIsk/Disk-Coding/qlib/data",
+    "active_daily_source": "baostock",
+    "active_daily_calendar_end": "2026-07-13",
+    "historical_minute_data_root": "/Volumes/DIsk/qlib-a-share-tushare-1m",
+    "local_date": "2026-08-05",
+    "candidate49_same_day_16_30_boundary_reached_during_this_run": false,
+    "candidate49_plan_or_run_executed_by_campaign063": false,
+    "dotenv_path": "/Volumes/DIsk/Disk-Coding/qlib/.env",
+    "dotenv_mode": "0600",
+    "dotenv_is_regular_file_and_not_symlink": true,
+    "dotenv_is_git_ignored": true,
+    "tushare_token_present": true,
+    "credential_value_or_hash_printed_logged_or_persisted": false
+  },
+  "campaign063_current": {
+    "factor": "intraday_cross_sectional_standardized_return_state_stability_236p",
+    "direction": "higher",
+    "terminal": true,
+    "terminal_reason": "return_position236_has_exact_zero_peer_population_variance_on_all_1699_benchmark_dates",
+    "snapshot_partition_count": 33015,
+    "snapshot_row_count": 7724498,
+    "snapshot_eligible_row_count": 0,
+    "quality_listing_eligible_rows": 1331759,
+    "coverage_median": 0.0,
+    "coverage_p05": 0.0,
+    "frozen_comparison_factor_count": 94,
+    "comparison_values_read": false,
+    "historical_daily_prices_or_forward_returns_read": false,
+    "development_trial_count": 0,
+    "development_survivor_count": 0,
+    "stress_2024_2025_opened": false,
+    "stress_2024_2025_returns_read": false,
+    "attempt_accounting": {
+      "infrastructure_only_failure_count": 7,
+      "complete_factor_attempt_count": 1,
+      "distinct_research_attempt_count": 8,
+      "append_only_ledger_entry_count": 8,
+      "return_reading_development_trial_count": 0,
+      "cumulative_historical_research_attempt_count": 369,
+      "cumulative_return_reading_development_trial_count": 271
+    },
+    "immutable_terminal_artifacts": {
+      "current_research_record": {
+        "path": "docs/a_share_three_day_walkforward_campaign_063_research_record_v4.json",
+        "sha256": "1ae2c0aad4316331feccdccca57eb5e136908ab17a6df620a3fa0e8d1bfffc4f"
+      },
+      "current_terminal_completion_freeze": {
+        "path": "docs/a_share_three_day_walkforward_campaign_063_terminal_completion_freeze_v4_20260805.json",
+        "sha256": "1c1fcad6ee82da0bf2676bcd4854489cffb06bde3ae4231855ea05a47d9c8100"
+      },
+      "current_attempt_ledger": {
+        "path": "data/experiments/short_horizon/historical_walkforward/campaign_063/research_attempt_ledger_v8.json",
+        "sha256": "3ac26e5a2c8eefa51c6ec303c04500113ed6d454ceda6218626d3bfe36431d48"
+      },
+      "current_verification": {
+        "path": "docs/a_share_three_day_walkforward_campaign_063_verification_20260805.json",
+        "sha256": "e7c274c8d7e4f03dd5b55d6bbc81840b327859fa8200ca58311068d989e9857c"
+      }
+    }
+  },
+  "prospective_boundary": {
+    "active_candidate_count": 1,
+    "active_candidate": "Candidate49 intraday_cumulative_vwap_crossing_rate_240m",
+    "candidate49_signal_ledger": {
+      "path": "data/experiments/short_horizon/candidate49_future_signal_ledger.json",
+      "sha256": "5193f00d7f36da003f53cec387900da4c3d002299f5dfcfc1a95eaa199ed3a79",
+      "entry_count": 0
+    },
+    "candidate49_execution_ledger": {
+      "path": "data/experiments/short_horizon/candidate49_future_execution_ledger.json",
+      "sha256": "d57a3e61eac969e42cafa418ccd8c0a5ee65dcf69da145bb2c096c2a02a2ea4f",
+      "entry_count": 0
+    },
+    "candidate49_historical_return_signal_execution_or_milestone_backfill_performed": false,
+    "second_prospective_candidate_activation_allowed": false
+  },
+  "verification_summary": {
+    "current_campaign063_tests_passed": 31,
+    "current_campaign063_tests_failed": 0,
+    "historical_state_nodes_deselected": 2,
+    "current_verification_binding_checks_passed": 11,
+    "binding_checks_failed": 0,
+    "report_generator_idempotence_passed": true,
+    "candidate49_ledgers_rehashed_unchanged": true
+  },
+  "data_limitation": "The eligible universe derives from a current listing snapshot and can contain survivorship bias. This structural no-return result is historical research evidence, not pristine out-of-sample evidence and not investment advice.",
+  "next_action": {
+    "historical": "Begin the next campaign only from a genuinely independent pre-value-frozen mechanism; offline work may run at any time and does not wait for a new daily bar or 16:30.",
+    "prospective": "Before 16:30 Asia/Singapore on 2026-08-05 do not run the Candidate49 same-day workflow. At or after the boundary, use a new absolute-date staging root, run plan first, and run --confirm-run only if ready=true with exit code 0.",
+    "strict_prohibitions": [
+      "do not backfill Candidate49 historical returns signals executions or milestones",
+      "do not start a second prospective candidate",
+      "do not drop position236 floor or replace zero variance change the Campaign063 grid formula direction peer minimum transform gates or comparison order",
+      "do not rerun rescue invert model or combine Campaign063",
+      "do not open Campaign063 development or 2024-2025 stress returns",
+      "do not generate current scores selections position sizes orders or investment advice"
+    ]
+  }
+}

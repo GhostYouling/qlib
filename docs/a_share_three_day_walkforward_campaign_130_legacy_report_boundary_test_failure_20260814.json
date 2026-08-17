@@ -1,0 +1,27 @@
+{
+  "schema_version": 1,
+  "recorded_at": "2026-08-14T07:57:28+08:00",
+  "campaign_id": 130,
+  "phase": "campaign130_terminal_validation",
+  "status": "failed",
+  "failure_code": "legacy_campaign129_report_boundary_assertion_failure",
+  "operation": "Run the focused Campaign130, Campaign129 and generic numeric-policy pytest suite with the correct paths.",
+  "cause": "The frozen Campaign129 report test slices from the Campaign129 heading through end-of-file and forbids the substring for orders. The appended Campaign130 current report used the distinct market-data term order-book, triggering that broad legacy assertion.",
+  "observed_result": {
+    "passed": 17,
+    "failed": 1,
+    "failed_exit_code_treated_as_success": false
+  },
+  "recovery": "Preserve the old test and replace the Campaign130 unified-report wording with the semantically equivalent market-depth term, without changing the scientific result or any frozen boundary.",
+  "effects": {
+    "scientific_result_changed": false,
+    "historical_values_opened": false,
+    "candidate49_ledgers_changed": false
+  },
+  "boundaries": {
+    "candidate49_historical_backfill": false,
+    "second_prospective_candidate": false,
+    "current_scores_or_orders": false,
+    "pressure_2024_2025_opened": false
+  }
+}

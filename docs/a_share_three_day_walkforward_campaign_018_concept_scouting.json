@@ -1,0 +1,96 @@
+{
+  "version": 1,
+  "kind": "a_share_three_day_walkforward_campaign018_concept_scouting",
+  "status": "concept_only_one_new_mechanism_selected_no_formula_no_direction_no_values_no_returns",
+  "recorded_at": "2026-07-28T23:45:22Z",
+  "purpose": "Select one genuinely independent Campaign018 economic mechanism before fixing a formula, direction, candidate value, comparison value, daily price, or forward return.",
+  "authoritative_bindings": {
+    "prior_iteration_state": {
+      "path": "docs/a_share_three_day_iteration_status_20260729_campaign017.json",
+      "sha256": "a6d4e30219178ee70b34fbb8441e52313da53a3cbaaca4f543d11ccaa14dd857"
+    },
+    "historical_walkforward_policy": {
+      "path": "docs/a_share_three_day_historical_walkforward_research_policy_20260727.json",
+      "sha256": "38426d6161b9bfed323c58caba18feca668b8c9d53e294951a8ba90c01a798bb"
+    }
+  },
+  "selected_concept": {
+    "concept_name": "intraday_range_share_volume_confirmation",
+    "candidate_ordinal": null,
+    "prospective_active": false,
+    "concept_status": "mechanism_only_not_yet_exactly_preregistered",
+    "direction": null,
+    "formula": null,
+    "allowed_source_fields": [
+      "datetime",
+      "symbol",
+      "provider",
+      "high",
+      "low",
+      "volume"
+    ],
+    "mechanism": "Measure whether minutes with wider contemporaneous high-low auction ranges also attract more traded shares over the complete continuous-session grid.",
+    "economic_question": "Does synchronous confirmation of intrabar price discovery by share participation distinguish information-bearing range expansion from thin or stale range prints and persist from the next session open through the third close?",
+    "mandatory_overlap_challenges_before_any_value": [
+      "intraday_amount_volatility_coupling_238p",
+      "intraday_share_volume_transaction_price_coupling_238p",
+      "intraday_transaction_price_path_confirmation_238p",
+      "intraday_intrabar_range_participation_entropy_240m",
+      "intraday_intrabar_range_reversal_238p",
+      "intraday_midrange_width_change_coupling_238p",
+      "intraday_amount_participation_entropy_240m",
+      "intraday_amount_profile_serial_persistence_240m",
+      "candidate49_intraday_cumulative_vwap_crossing_rate_240m_v1"
+    ],
+    "known_design_risks": [
+      "share volume versus amount, range level versus change, contemporaneous versus lead-lag alignment, log transforms, correlation estimator, zero support, bar support, minimum activity, direction, and weighting are researcher degrees of freedom that must be frozen before values",
+      "the candidate may be statistically redundant with amount-volatility coupling or share-volume transaction-price coupling even though it tests a different source-field and timing mechanism",
+      "using close returns, implied transaction price, amount, open, selected subwindows, the standalone 09:30 row, thresholds, or market peers would reopen terminal mechanisms",
+      "no result may be inverted, rewindowed, filtered, combined with a terminal factor, or promoted prospectively inside Campaign018"
+    ]
+  },
+  "concepts_rejected_before_formula_or_values": [
+    {
+      "concept": "campaign017_range_change_or_sign_variant",
+      "reason": "Alternative estimators, signs, lags, range-change transforms, or thresholds would reopen Campaign012 or Campaign017."
+    },
+    {
+      "concept": "body_wick_close_location_or_breakout_variant",
+      "reason": "Bodies, wicks, close-in-range pressure, and breakout counts reopen Campaign009, Campaign013, or Campaign015."
+    },
+    {
+      "concept": "activity_profile_or_transaction_price_variant",
+      "reason": "Amount or share-volume timing, entropy, persistence, transaction-price, price-impact, and VWAP-crossing variants are terminal or prospective Candidate49 mechanisms."
+    },
+    {
+      "concept": "market_peer_or_return_path_variant",
+      "reason": "Market-relative, close-return moment, sign-run, path-efficiency, update-frequency, and volatility-allocation mechanisms are terminal."
+    }
+  ],
+  "source_schema_boundary": {
+    "provider": "tushare",
+    "frequency": "1m",
+    "source_grid_rows": 241,
+    "continuous_candidate_bars": 240,
+    "standalone_09_30_excluded": true,
+    "daily_price_fields_allowed": false,
+    "forward_return_fields_allowed": false,
+    "provider_request_allowed": false
+  },
+  "research_boundary": {
+    "campaign017_values_read_for_concept_selection": false,
+    "campaign018_candidate_values_read": false,
+    "comparison_values_read": false,
+    "daily_price_fields_read": false,
+    "forward_return_fields_read": false,
+    "candidate49_historical_return_read": false,
+    "candidate49_ledgers_changed": false,
+    "candidate50_started": false,
+    "current_scoring_selection_sizing_or_orders_allowed": false
+  },
+  "decision": {
+    "selected_for_separate_pre_value_mechanism_audit": "intraday_range_share_volume_confirmation",
+    "exact_formula_or_direction_fixed_here": false,
+    "campaign018_value_construction_allowed_by_this_record_alone": false
+  }
+}

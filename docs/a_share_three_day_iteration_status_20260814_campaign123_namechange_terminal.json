@@ -1,0 +1,157 @@
+{
+  "schema_version": 1,
+  "kind": "a_share_three_day_iteration_status",
+  "status": "campaign123_terminal_source_contract_failure_v124_finalized_campaign124_prevalue_ready",
+  "recorded_at": "2026-08-14T03:51:57+08:00",
+  "authoritative_workspace": "/Volumes/DIsk/Disk-Coding/qlib",
+  "active_goal": {
+    "objective": "请持续迭代因子。",
+    "status": "active",
+    "completion_requested_or_recorded": false
+  },
+  "supersedes_without_rewriting": {
+    "path": "docs/a_share_three_day_iteration_status_20260814_campaign123_namechange_prevalue.json",
+    "sha256": "ddd69f5adb81acea6458b170b40ef436993bc0311704dc3cdc3853ec2816e5f4",
+    "preserved": true
+  },
+  "active_minute_data_root": {
+    "path": "/Volumes/DIsk/qlib-a-share-tushare-1m",
+    "source_run": "tushare_stk_mins_1m_2019_2025_ea0cbb8f",
+    "source_manifest_sha256": "9b3d959563c9d182f38981c6a36bdb3bc9b415de08487a9e1f9e850825c0839f",
+    "campaign123_minute_values_read": false
+  },
+  "active_daily_data_root": {
+    "path": "/Volumes/DIsk/Disk-Coding/qlib/data/qlib/cn_a_share",
+    "accepted_calendar_end": "2026-07-13",
+    "campaign123_daily_values_read": false
+  },
+  "manage_qlib_a_share_data_skill": {
+    "path": "/Users/niyufei/.codex/skills/manage-qlib-a-share-data/SKILL.md",
+    "sha256": "565713a5f3aeb6a1acf23e397fcc21be28d0c3ea4ebf21c7f287a25bb94d78dc"
+  },
+  "provider_credential": {
+    "env_path": "/Volumes/DIsk/Disk-Coding/qlib/.env",
+    "regular_non_symlink": true,
+    "mode": "0600",
+    "tushare_token_present_nonempty": true,
+    "loaded_in_memory_for_campaign123_acceptance": true,
+    "secret_printed_hashed_or_persisted": false
+  },
+  "campaign123_authoritative_artifacts": {
+    "terminal_source_acceptance": {
+      "path": "docs/a_share_three_day_walkforward_campaign_123_namechange_source_acceptance_terminal_20260814.json",
+      "sha256": "2c3791a247db3a81eef1b1c3d743e5b8a672aabc24384ad0fe13fc640b3f88a1"
+    },
+    "numeric_policy_v124": {
+      "path": "docs/a_share_three_day_walkforward_future_numeric_comparison_eligibility_policy_v124_20260814.json",
+      "sha256": "8f1a972f98ed98cbde520515a6e341c0a27f6821d7cecf484ab54ef459773d18"
+    },
+    "attempt_ledger_v4": {
+      "path": "data/experiments/short_horizon/historical_walkforward/campaign_123/research_attempt_ledger_v4.json",
+      "sha256": "a4498c4dce67c7388b1f0dfebccfc0c78c82189b3b0e83b3288bc3bcc7e3163b"
+    },
+    "intent": {
+      "path": "data/metadata/rich_data/runs/campaign123_namechange_acceptance_intent_v1.json",
+      "sha256": "3cb7e1463c018d164ce3aafb9e69c01b7a8943c6ef54a378cbde58f6a3e01bb9",
+      "mode": "0600"
+    },
+    "failure_record": {
+      "path": "data/metadata/rich_data/runs/campaign123_namechange_acceptance_failure_v1.json",
+      "sha256": "f5289a91a9fe526386e39c7ab394da84cf3d50b5e6a08a23bf46cdf51c22895c",
+      "mode": "0600"
+    }
+  },
+  "campaign123_terminal": {
+    "candidate": "official_pure_security_rename_recency_60s",
+    "plan_ready": true,
+    "plan_exit_code": 0,
+    "run_exit_code": 2,
+    "provider_calls_issued": 7,
+    "failure_code": "source_schema_or_canonicalization_contract_failure",
+    "source_accepted": false,
+    "accepted_snapshot_or_manifest_created": false,
+    "historical_candidate_values_materialized": false,
+    "numeric_comparator_eligible": false,
+    "historical_predictive_value_established": false,
+    "prospective_candidate_registered": false,
+    "terminal": true,
+    "retry_relabel_field_reason_window_direction_threshold_source_substitution_or_rescue_allowed": false
+  },
+  "frozen_library": {
+    "complete_definition_count": 148,
+    "complete_definition_order_sha256": "fa9f0254b17d1a2b568e056b2696f24087f3f0668d7842a1bcbfdde1a87192e8",
+    "eligible_numeric_comparator_count": 139,
+    "eligible_numeric_comparator_order_sha256": "9c4de054ca1b83eced67eece256b024ebec3a6e1925de17a4cedfa7d36265161",
+    "campaign123_definition_kept_for_future_duplicate_detection_only": true
+  },
+  "effective_accounting": {
+    "campaign123_attempt_count": 15,
+    "campaign123_ledger_entry_count": 15,
+    "campaign123_infrastructure_failure_count": 11,
+    "campaign123_prevalue_scientific_attempt_count": 4,
+    "campaign123_complete_factor_attempt_count": 1,
+    "campaign123_source_acceptance_attempt_count": 1,
+    "campaign123_return_reading_development_trial_count": 0,
+    "campaign123_development_survivor_count": 0,
+    "campaign123_stress_trial_count": 0,
+    "cumulative_historical_research_attempt_count": 1014,
+    "cumulative_return_reading_development_trial_count": 306
+  },
+  "candidate49": {
+    "only_active_prospective_candidate": true,
+    "signal_ledger_sha256": "5193f00d7f36da003f53cec387900da4c3d002299f5dfcfc1a95eaa199ed3a79",
+    "signal_entry_count": 0,
+    "execution_ledger_sha256": "d57a3e61eac969e42cafa418ccd8c0a5ee65dcf69da145bb2c096c2a02a2ea4f",
+    "execution_entry_count": 0,
+    "historical_backfill_performed": false,
+    "prospective_registration_changed": false
+  },
+  "candidate49_daily_20260814": {
+    "local_day": "Friday",
+    "observed_local_time": "2026-08-14T03:51:57+08:00",
+    "before_same_day_16_30_gate": true,
+    "plan_executed": false,
+    "run_executed": false,
+    "staging_root_created_or_reused": false
+  },
+  "reports": {
+    "campaign123_terminal_report": {
+      "path": "docs/a_share_three_day_walkforward_campaign_123_namechange_terminal_report.md",
+      "sha256": "800b9f03a1923e3706ddf1f755a69d7b5f449cb25ab4bb3f1da364ca16c812ca"
+    },
+    "current_research_report": {
+      "path": "data/experiments/short_horizon/current_research_report.md",
+      "sha256": "272556c980eda2612caefdc6d60c83f66a7cf90690dadaedb9c253cd0692224b"
+    },
+    "three_day_research_report": {
+      "path": "data/experiments/short_horizon/three_day_research_report.md",
+      "sha256": "d79d47c7ccea0080bb2dceaaefbcd896428f405ab3b0b6859344683a05237ea2"
+    }
+  },
+  "validation": {
+    "campaign123_and_campaign122_directed_tests": "34 passed in 2.48s",
+    "black": "passed; 6 files left unchanged",
+    "ruff": "passed",
+    "terminal_test": {
+      "path": "tests/data_collector_tests/test_a_share_three_day_walkforward_campaign123_terminal.py",
+      "sha256": "8e4070ace7289e725a220d8c81bfa6d62d2ec596d89360bdaf61f760b6cce0aa"
+    },
+    "failed_exit_codes_recorded_and_not_overridden": true
+  },
+  "research_boundary": {
+    "programmatic_provider_requests_issued": true,
+    "provider_calls_issued": 7,
+    "provider_responses_read_in_memory": true,
+    "provider_response_retrieved_again_after_failure": false,
+    "raw_provider_rows_or_counts_persisted": false,
+    "campaign123_candidate_or_comparison_values_read": false,
+    "historical_daily_price_or_forward_return_values_read": false,
+    "stress_2024_2025_candidate_or_return_values_opened": false,
+    "candidate49_historical_backfill_performed": false,
+    "candidate49_ledgers_changed": false,
+    "second_prospective_candidate_created": false,
+    "current_scoring_selection_sizing_positions_or_orders_performed": false,
+    "investment_advice": false
+  },
+  "next_action": "The active goal continues. Begin Campaign124 offline at any local time only from a genuinely new prevalue mechanism or separately pre-accepted point-in-time source; preserve Campaign123 terminal, do not re-request namechange, and keep Candidate49 as the sole prospective ledger."
+}

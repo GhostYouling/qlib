@@ -1,0 +1,47 @@
+{
+  "schema_version": 1,
+  "kind": "a_share_three_day_walkforward_campaign082_infrastructure_failures",
+  "status": "append_only_two_additional_operational_failures_four_total_failures_all_corrected_without_gate_change",
+  "recorded_at": "2026-08-06T19:06:00+08:00",
+  "supersedes_without_rewriting": {
+    "path": "docs/a_share_three_day_walkforward_campaign_082_prevalue_infrastructure_failures_20260806.json",
+    "sha256": "41a89c521dc0bcc8f491a7f1e212bcf601275551534b2fdac85729c95ea8b1f5",
+    "preserved": true,
+    "failure_count": 2
+  },
+  "appended_failures": [
+    {
+      "ordinal": 3,
+      "stage": "postfreeze_feature_cli_status_invocation",
+      "observed": "Direct path execution of the frozen feature runner exited at import with ModuleNotFoundError for the scripts package before status logic or any source-value read.",
+      "root_cause": "repository modules require the package-mode entry point when the script directory rather than repository root is placed first on sys.path",
+      "correction": "Keep the frozen implementation unchanged and invoke it with the documented /Volumes/DIsk/Coding/anaconda3/bin/python3.12 -m scripts.a_share_three_day_walkforward_campaign082_features entry point."
+    },
+    {
+      "ordinal": 4,
+      "stage": "feature_snapshot_build_monitoring",
+      "observed": "One read-only monitoring wait referenced transient cell id 4910 instead of the live cell id 4932 and returned cell-not-found; the independent build session 45868 continued normally.",
+      "root_cause": "manual transient-cell identifier typo",
+      "correction": "Resume monitoring the unchanged build session and verify its final manifest and all 33,015 partition hashes independently."
+    }
+  ],
+  "corrected_result": {
+    "feature_snapshot_build_completed": true,
+    "feature_snapshot_partitions_verified": 33015,
+    "feature_snapshot_rows_verified": 7724498,
+    "no_return_coverage_gate_passed": true,
+    "numeric_comparisons_passed": 111,
+    "numeric_comparisons_required": 111,
+    "factor_formula_changed_after_values": false,
+    "protocol_gate_or_threshold_changed": false
+  },
+  "research_boundary": {
+    "historical_daily_price_fields_read": [],
+    "historical_forward_returns_read": false,
+    "provider_request_issued": false,
+    "credential_secret_printed_hashed_or_logged": false,
+    "candidate49_historical_backfill_performed": false,
+    "candidate49_ledgers_changed": false,
+    "current_scoring_selection_sizing_or_orders_performed": false
+  }
+}

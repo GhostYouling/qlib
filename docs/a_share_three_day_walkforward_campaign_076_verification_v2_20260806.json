@@ -1,0 +1,98 @@
+{
+  "version": 2,
+  "kind": "a_share_three_day_walkforward_campaign076_verification",
+  "status": "verified_terminal_zero_survivors_stress_closed_candidate49_preserved_current",
+  "recorded_at": "2026-08-06T12:01:00+08:00",
+  "supersedes_without_rewriting": {
+    "path": "docs/a_share_three_day_walkforward_campaign_076_verification_20260806.json",
+    "sha256": "e5de7d43c72b6bdd3502f936c09d2990f1c62fa1625a6362d55f6e322f7082a1",
+    "preserved": true
+  },
+  "verified_current_artifacts": {
+    "latest_iteration_state_v2": {
+      "path": "docs/a_share_three_day_iteration_status_20260806_campaign076_verified_v2.json",
+      "sha256": "0452344929fa4bab746aaa37aa0f19c758c626951a2e98c2c04bfbafe26397dc"
+    },
+    "terminal_completion_freeze_v2": {
+      "path": "docs/a_share_three_day_walkforward_campaign_076_terminal_completion_freeze_v2_20260806.json",
+      "sha256": "8feaa4ee8b58a4cc7e493608381f324ca0626adf7fa59f427121956a545d2e72"
+    },
+    "research_record_v4": {
+      "path": "docs/a_share_three_day_walkforward_campaign_076_research_record_v4.json",
+      "sha256": "bba48c181e38e531e502695c46d89bc899c3cbf02d5204bfe25e98345e056ab2"
+    },
+    "attempt_ledger_v6": {
+      "path": "data/experiments/short_horizon/historical_walkforward/campaign_076/research_attempt_ledger_v6.json",
+      "sha256": "73f127ad2f61636d0db2f38b4b987bdd7e3b7b7012afe1f4cb9d8031a826a33d"
+    },
+    "current_test_suite_receipt_v2": {
+      "path": "docs/a_share_three_day_walkforward_campaign_076_current_test_suite_receipt_v2_20260806.json",
+      "sha256": "767b78dc9c10353e55497fb5c41603bcdc1dfb2416ab373834acf80c07f5fb95"
+    }
+  },
+  "binding_validation": {
+    "exit_code": 0,
+    "current_record_count": 7,
+    "binding_count": 46,
+    "passed_binding_count": 46,
+    "failed_binding_count": 0,
+    "all_bindings_passed": true
+  },
+  "current_test_suite": {
+    "exit_code": 0,
+    "passed": 22,
+    "deselected_historical_lifecycle_nodes": 2,
+    "failed": 0,
+    "errors": 0
+  },
+  "research_result_checks": {
+    "snapshot_partition_count": 33015,
+    "snapshot_row_count": 7724498,
+    "snapshot_eligible_rows": 7724498,
+    "coverage_gate_passed": true,
+    "numeric_comparisons_completed": 106,
+    "numeric_comparisons_passed": 106,
+    "maximum_absolute_median_daily_rank_correlation": 0.6178537281567388,
+    "development_trial_count": 1,
+    "development_survivor_count": 0,
+    "stress_interval_opened": false,
+    "stress_return_fields_read": false
+  },
+  "future_numeric_policy_checks": {
+    "complete_definition_count": 108,
+    "complete_definition_order_sha256": "0b6758e579e190e35e0ac2e5bda666194369f0c71be4dc2a35b5ec744f419b94",
+    "numeric_comparator_count": 107,
+    "numeric_comparator_order_sha256": "b219b4879057a48600ba3e6d3d3a1a35ee6575d70b1476a71cf463ff8b63acc2"
+  },
+  "attempt_accounting_checks": {
+    "campaign076_infrastructure_failures": 11,
+    "campaign076_complete_factor_attempts": 1,
+    "campaign076_attempts": 12,
+    "campaign076_ledger_entries": 13,
+    "campaign076_return_reading_development_trials": 1,
+    "cumulative_historical_research_attempts": 468,
+    "cumulative_return_reading_development_trials": 278
+  },
+  "candidate49_checks": {
+    "signal_ledger_sha256": "5193f00d7f36da003f53cec387900da4c3d002299f5dfcfc1a95eaa199ed3a79",
+    "signal_ledger_entries": 0,
+    "execution_ledger_sha256": "d57a3e61eac969e42cafa418ccd8c0a5ee65dcf69da145bb2c096c2a02a2ea4f",
+    "execution_ledger_entries": 0,
+    "reporting_state_semantically_validated_read_only": true,
+    "historical_backfill_performed": false,
+    "provider_request_issued_by_campaign076": false,
+    "live_order_performed": false
+  },
+  "credential_check": {
+    "repository_env_mode": "0600",
+    "tushare_token_present_and_nonempty": true,
+    "secret_printed_hashed_logged_or_persisted": false
+  },
+  "prospective_workflow_check": {
+    "observed_local_time": "2026-08-06T11:50:47+08:00",
+    "observed_before_16_30_asia_singapore": true,
+    "candidate49_plan_or_run_performed": false,
+    "second_prospective_candidate_created": false
+  },
+  "conclusion": "Campaign076 is terminal with zero development survivors; 2024-2025 remains closed, Candidate49 remains the only prospective candidate, and Campaign077 may begin only as independent offline pre-value-frozen research using v12."
+}

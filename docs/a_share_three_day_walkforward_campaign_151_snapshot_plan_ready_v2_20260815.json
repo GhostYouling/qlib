@@ -1,0 +1,65 @@
+{
+  "schema_version": 2,
+  "kind": "a_share_three_day_walkforward_campaign151_snapshot_plan_receipt",
+  "status": "corrected_resume_ready_true_exit_zero_confirmed_build_authorized",
+  "recorded_at": "2026-08-15T00:45:12+08:00",
+  "supersedes_without_rewriting": {
+    "path": "docs/a_share_three_day_walkforward_campaign_151_snapshot_plan_ready_20260815.json",
+    "sha256": "ad6cdcb9249ae09b206d92e540a40848b0a9b919206119f1b565d772754cfd3e",
+    "reason": "the first authorized build failed closed on a valid empty joint-clean partition"
+  },
+  "command": "/Volumes/DIsk/Coding/anaconda3/bin/python3.12 scripts/a_share_three_day_walkforward_campaign151_snapshot.py plan --workers 4",
+  "exit_code": 0,
+  "ready": true,
+  "workers": 4,
+  "authoritative_activation": {
+    "path": "docs/a_share_three_day_walkforward_campaign_151_snapshot_runner_activation_v3_20260815.json",
+    "sha256": "ab564c33179b38a523f93301c63eba2044c9465ef925e174c114fdb5e7c95145"
+  },
+  "gates": {
+    "activation": true,
+    "frozen_authority": true,
+    "source_metadata": true,
+    "candidate49_ledgers": true,
+    "output": true,
+    "workers": true
+  },
+  "source_metadata": {
+    "raw_partitions": 33015,
+    "joint_partitions": 33015,
+    "joint_rows": 7724498,
+    "symbols": 5396
+  },
+  "output_observation": {
+    "final_root_exists": false,
+    "resume_partial": true,
+    "lock_available": true,
+    "free_bytes": 1655508131840,
+    "minimum_free_bytes": 10737418240,
+    "partial_payload_opened_by_plan": false
+  },
+  "candidate49": {
+    "signal_entries": 0,
+    "execution_entries": 0,
+    "ledgers_changed": false
+  },
+  "research_boundary": {
+    "historical_parquet_or_npz_payload_opened_by_plan": false,
+    "historical_minute_source_rows_or_values_read_by_plan": false,
+    "prior_authorized_build_historical_minute_amount_values_read": true,
+    "historical_price_values_read": false,
+    "candidate_or_comparator_values_read": false,
+    "historical_daily_price_or_forward_return_values_read": false,
+    "credential_loaded": false,
+    "provider_request_issued": false,
+    "candidate49_historical_backfill_performed": false,
+    "current_scoring_selection_sizing_positions_or_orders_performed": false
+  },
+  "authorization": {
+    "build_command": "/Volumes/DIsk/Coding/anaconda3/bin/python3.12 scripts/a_share_three_day_walkforward_campaign151_snapshot.py build --workers 4 --confirm-build",
+    "same_parameters": true,
+    "resume_corrected_checkpoint": true,
+    "at_most_one_successful_publication": true,
+    "promotion_allowed": false
+  }
+}

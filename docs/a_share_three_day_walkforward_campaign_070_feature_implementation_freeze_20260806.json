@@ -1,0 +1,72 @@
+{
+  "version": 1,
+  "kind": "a_share_three_day_walkforward_campaign070_feature_implementation_freeze",
+  "status": "frozen_before_campaign070_source_candidate_or_comparison_values",
+  "recorded_at": "2026-08-06T04:39:00+08:00",
+  "purpose": "Bind the corrected Campaign070 feature implementation and no-value tests before opening quarterly or stock-day source rows.",
+  "no_return_protocol": {
+    "path": "docs/a_share_three_day_walkforward_campaign_070_no_return_preregistration.json",
+    "sha256": "5474879454fbc3113fb386b4ebc4a1e1e0643a168511ebfe39d8bd9fc9a96952"
+  },
+  "mechanism_overlap_audit": {
+    "path": "docs/a_share_three_day_walkforward_campaign_070_mechanism_overlap_audit.json",
+    "sha256": "b561bd2b53051d25caeaf987345d87829623d7ca8c57481eb982158e86dfc9ec"
+  },
+  "numeric_comparison_policy": {
+    "path": "docs/a_share_three_day_walkforward_future_numeric_comparison_eligibility_policy_v3_20260806.json",
+    "sha256": "afdb235a9aac5d6cde01b5e4edf57cdd3da15fd3adac035c69f284408bead913"
+  },
+  "feature_runner": {
+    "path": "scripts/a_share_three_day_walkforward_campaign070_features.py",
+    "sha256": "c05335e002b8766c4591bf8be3a987888d807923ff6846ee1312ce50c5de168e"
+  },
+  "tests": {
+    "path": "tests/data_collector_tests/test_a_share_three_day_walkforward_campaign070_features.py",
+    "sha256": "4b26c0bcca80676dec792503a8dce660d40067d2c7d954613ad39735cb2bb1b4",
+    "passed": 5,
+    "failed": 0
+  },
+  "recorded_infrastructure_failure": {
+    "path": "docs/a_share_three_day_walkforward_campaign_070_feature_template_binding_failure_20260806.json",
+    "sha256": "fc442229840a0b7f73285fa1ae77a7360aed213dee2c16bba0caf3d868fa8f7d"
+  },
+  "implementation_semantics": {
+    "factor": "quarterly_announcement_delay_improvement_yoy_rank_1y",
+    "direction": "higher",
+    "quarterly_projection": [
+      "instrument",
+      "report_date",
+      "announcement_date"
+    ],
+    "stock_day_projection": [
+      "trade_date",
+      "symbol",
+      "provider"
+    ],
+    "event_match": "exact_same_instrument_report_date_minus_one_calendar_year",
+    "raw_improvement": "prior_delay_days_minus_current_delay_days",
+    "availability": "first_accepted_session_strictly_after_current_announcement",
+    "rank": "same_stock_day_average_tie_percentile",
+    "eligible_range": [
+      0.0,
+      1.0
+    ],
+    "numeric_comparator_count": 100,
+    "numeric_comparator_order_sha256": "d1c58576dcdef7980c279426f135440d05f8484d2f42d4b4866539b963a0b7ee"
+  },
+  "output_contract": {
+    "data_root": "/Volumes/DIsk/qlib-a-share-tushare-1m",
+    "run_id": "tushare_stk_mins_1m_2019_2025_ea0cbb8f_walkforward_campaign070_feature_library_v1",
+    "expected_partitions": 33015,
+    "expected_rows": 7724498,
+    "provider_request_allowed": false,
+    "daily_price_or_forward_return_read_allowed": false,
+    "comparison_values_read_during_build_allowed": false
+  },
+  "source_partition_or_quarterly_values_read_before_freeze": false,
+  "candidate_values_read_before_freeze": false,
+  "comparison_values_read_before_freeze": false,
+  "historical_daily_price_or_forward_return_read_before_freeze": false,
+  "provider_request_issued_before_freeze": false,
+  "candidate49_ledgers_changed_before_freeze": false
+}

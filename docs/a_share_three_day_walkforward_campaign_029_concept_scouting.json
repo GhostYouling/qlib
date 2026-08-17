@@ -1,0 +1,106 @@
+{
+  "version": 1,
+  "kind": "a_share_three_day_walkforward_campaign029_concept_scouting",
+  "status": "one_independent_same_minute_market_shock_magnitude_decoupling_concept_selected_before_candidate_values_comparison_values_or_returns",
+  "recorded_at": "2026-07-30T07:55:00Z",
+  "purpose": "Select one economically interpretable Campaign029 mechanism without opening a Campaign029 minute partition, market benchmark value, candidate value, comparison value, daily price, or forward return.",
+  "authoritative_boundary": {
+    "path": "docs/a_share_three_day_iteration_status_20260730_campaign028_verified.json",
+    "sha256": "ad92b00c2be1ecdd6ab23f0d33107a846d5039ff2dfe1f39fa8ba0d31f21670b",
+    "campaign029_concept_scouting_allowed": true,
+    "binding_validation_required_at_each_freeze_boundary": true,
+    "candidate49_remains_only_prospective_candidate": true,
+    "candidate50_activation_allowed": false
+  },
+  "historical_walkforward_policy": {
+    "path": "docs/a_share_three_day_historical_walkforward_research_policy_20260727.json",
+    "sha256": "38426d6161b9bfed323c58caba18feca668b8c9d53e294951a8ba90c01a798bb"
+  },
+  "selected_concept": {
+    "concept_name": "intraday_market_shock_magnitude_decoupling",
+    "mechanism_family": "same_minute_stock_absolute_return_to_leave_one_out_market_absolute_return_dependence",
+    "economic_question": "Does a stock's one-minute price-adjustment magnitude repeatedly rise and fall with the magnitude of same-minute market-wide shocks after removing the stock from the market benchmark?",
+    "economic_hypothesis": "Lower synchronization with same-minute market shock magnitudes can represent less crowded liquidity demand and lower common-shock fragility. A directionally higher decoupling score may therefore be associated with better resilience from the next open through the third close.",
+    "provisional_direction": "higher_decoupling",
+    "allowed_stock_source_fields": [
+      "datetime",
+      "symbol",
+      "provider",
+      "close"
+    ],
+    "allowed_frozen_market_benchmark_fields": [
+      "trade_date",
+      "return_position",
+      "return_sum",
+      "valid_stock_count"
+    ],
+    "forbidden_source_fields": [
+      "open",
+      "high",
+      "low",
+      "volume",
+      "amount",
+      "daily open",
+      "daily high",
+      "daily low",
+      "daily close",
+      "daily volume",
+      "daily amount",
+      "forward return",
+      "Level-2"
+    ],
+    "fixed_temporal_question": "Use the 119 adjacent close returns inside 09:31-11:30 and the 119 adjacent close returns inside 13:01-15:00. Match each stock return to the same fixed return position of its leave-one-out market mean. Exclude standalone 09:30, lunch, overnight, cross-day, cross-stock, lead-lag, and cross-half transitions.",
+    "mandatory_overlap_challenges_before_any_value": [
+      "intraday_market_idiosyncratic_share_238m",
+      "intraday_market_response_delay_asymmetry_236p",
+      "intraday_market_up_down_correlation_asymmetry_238m",
+      "intraday_market_neutral_late_residual_drift_238m",
+      "intraday_market_amount_profile_synchronization_240m",
+      "intraday_absolute_return_serial_persistence_236p",
+      "intraday_return_variance_entropy_238m",
+      "intraday_volatility_resolution_238m",
+      "intraday_diffusive_variation_ratio_238m",
+      "candidate49_intraday_cumulative_vwap_crossing_rate_240m_v1"
+    ],
+    "known_design_risks": [
+      "absolute versus squared returns, correlation versus regression, direction, exact-zero retention, peer threshold, and half-session boundary are researcher degrees of freedom unless frozen before values",
+      "the candidate may be statistically associated with signed market dependence or within-stock volatility-clustering factors even though it measures a different same-minute magnitude relation",
+      "low market-shock synchronization may mean resilience or simply weak information incorporation, so the higher-decoupling direction must be frozen before returns",
+      "using signed returns, market-return signs, leads or lags, subwindows, amount or volume weights, daily fields, terminal factor values, or cross-sectional return dispersion would change the mechanism"
+    ]
+  },
+  "rejected_concepts": [
+    {
+      "concept": "signed_return_autocorrelation_or_sign_run_count",
+      "reason": "This was explicitly rejected by Campaign028 scouting as too close to terminal return-sign-run and bar-direction-continuity families and is not reopened."
+    },
+    {
+      "concept": "cross_sectional_market_return_dispersion_sensitivity",
+      "reason": "This is economically interesting but needs a newly materialized return-squared benchmark and a second heavy full-source pass. The same-minute market-shock magnitude question can be isolated with the already-frozen leave-one-out sum/count benchmark."
+    },
+    {
+      "concept": "signed_market_beta_residual_or_lead_lag_variant",
+      "reason": "Signed same-minute correlation, residual drift, lead-lag asymmetry, and market-sign-conditioned dependence are already terminal historical families."
+    },
+    {
+      "concept": "terminal_factor_combination_or_rescue",
+      "reason": "Campaign029 must be one new raw stock-plus-market statistic; combining, inverting after results, filtering, or rescuing terminal factors is prohibited."
+    }
+  ],
+  "decision": {
+    "advance_to_separate_no_value_mechanism_overlap_audit": true,
+    "exact_formula_or_direction_fixed_here": false,
+    "new_daily_bar_required": false,
+    "same_day_1630_wait_required": false,
+    "candidate49_ledgers_changed": false
+  },
+  "research_boundary": {
+    "external_campaign029_minute_partitions_read": false,
+    "market_benchmark_values_read": false,
+    "candidate_values_read": false,
+    "comparison_values_read": false,
+    "daily_price_fields_read": false,
+    "forward_returns_read": false,
+    "provider_request_issued": false
+  }
+}

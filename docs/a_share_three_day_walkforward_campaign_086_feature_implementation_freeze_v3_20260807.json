@@ -1,0 +1,53 @@
+{
+  "schema_version": 1,
+  "kind": "a_share_three_day_walkforward_campaign086_feature_implementation_freeze_v3",
+  "status": "dispatch_repair_frozen_before_campaign086_feature_build_retry",
+  "frozen_at": "2026-08-07T01:24:00+08:00",
+  "protocol": {
+    "path": "docs/a_share_three_day_walkforward_campaign_086_no_return_preregistration.json",
+    "sha256": "033cd34013770b5b19ccb8579100c7ab920946de22b3936bc34a0898f4d2acb3"
+  },
+  "repair_protocol": {
+    "path": "docs/a_share_three_day_walkforward_campaign_086_v3_dispatch_repair_protocol_20260807.json",
+    "sha256": "22bed279ee8ba94149725cc9ef20cbbd68559d2a121bc1b2a6930bd7035e38f0"
+  },
+  "v1_implementation_freeze": {
+    "path": "docs/a_share_three_day_walkforward_campaign_086_feature_implementation_freeze_20260807.json",
+    "sha256": "9ea63a23935619537137376e464297bbc302bed26feff0ae719ad00656c47ebd"
+  },
+  "v2_implementation_freeze": {
+    "path": "docs/a_share_three_day_walkforward_campaign_086_feature_implementation_freeze_v2_20260807.json",
+    "sha256": "083772ea9eec1d26cf02cbc915b7ca21296b1b141a9aa831a3274a997d8522ba"
+  },
+  "v3_feature_runner": {
+    "path": "scripts/a_share_three_day_walkforward_campaign086_features_v3.py",
+    "sha256": "17c92d5d0512f0e02bc5997ade732730ba91addb98732af2518563a336ebe6b2"
+  },
+  "v3_tests": {
+    "path": "tests/data_collector_tests/test_a_share_three_day_walkforward_campaign086_features_v3.py",
+    "sha256": "dd17389e660b105146dff9f928c7321cfced05887ab3e3631a625e69f33517b7",
+    "combined_campaign086_pytest_passed": 15,
+    "combined_campaign086_pytest_failed": 0,
+    "ruff_passed": true
+  },
+  "attempt_ledger_before_retry": {
+    "path": "data/experiments/short_horizon/historical_walkforward/campaign_086/research_attempt_ledger_v6.json",
+    "sha256": "5c890cb407d6543228328fddccbb56c383fc11c7e88c40112dbd101b9be2fc07",
+    "campaign_attempt_count": 6,
+    "infrastructure_failure_count": 6
+  },
+  "dispatch_semantics": {
+    "original_v1_attach_reference_captured_before_replacement": true,
+    "empty_identity_returns_exact_v2_empty_schema": true,
+    "nonempty_identity_calls_only_captured_v1_reference": true,
+    "v1_and_v2_runners_and_freezes_preserved": true,
+    "factor_formula_direction_state_support_pair_and_endpoint_semantics_changed": false,
+    "eligible_universe_comparator_gate_or_development_semantics_changed": false
+  },
+  "candidate_snapshot_published_before_v3_freeze": false,
+  "comparison_values_read_before_v3_freeze": false,
+  "historical_daily_price_or_forward_return_values_read_before_v3_freeze": false,
+  "provider_request_issued_before_v3_freeze": false,
+  "candidate49_ledgers_changed_before_v3_freeze": false,
+  "current_scoring_selection_sizing_or_orders_performed_before_v3_freeze": false
+}

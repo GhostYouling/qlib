@@ -1,0 +1,91 @@
+{
+  "schema_version": 1,
+  "kind": "a_share_three_day_walkforward_campaign133_model_overlap_audit",
+  "status": "selected_one_anchored_monotone_marginal_additive_configuration_before_campaign133_scores_or_returns",
+  "recorded_at": "2026-08-14T01:59:48.518453+00:00",
+  "authoritative_inputs": {
+    "concept_scouting": {
+      "path": "docs/a_share_three_day_walkforward_campaign_133_concept_scouting_20260814.json",
+      "sha256": "3cd3e99ccc3fecca997b0d618e46591395376a0b35742ed540ea704312518e12"
+    },
+    "campaign102_model_audit": {
+      "path": "docs/a_share_three_day_walkforward_campaign_102_mechanism_overlap_audit.json",
+      "sha256": "386582b44aa3b8c76584d603f5181db19558707b896dc071aa2a29741d1c4b8d"
+    },
+    "campaign132_model_audit": {
+      "path": "docs/a_share_three_day_walkforward_campaign_132_model_overlap_audit_20260814.json",
+      "sha256": "929b2b38172f68d0838f68e8d22a4ae1abe83b3043fe52cce5044d0f5692fc76"
+    },
+    "numeric_policy_v159": {
+      "path": "docs/a_share_three_day_walkforward_future_numeric_comparison_eligibility_policy_v159_20260814.json",
+      "sha256": "e7665a5699cbb41b1f1a2ace542ce0dca2e43a53a99f66b51960c201991bce01"
+    }
+  },
+  "information_and_model_claim": {
+    "economic_information_added": false,
+    "modeling_question": "Can equal-weight training-only monotone marginal response calibration add portable nonlinear shape information while keeping every frozen factor direction and excluding interactions, fitted component weights and feature selection?",
+    "historical_policy_permission": "The walk-forward policy permits a new complete-library combination when the full library, transform, target, support, finite search catalog and all gates are frozen before model scores or returns.",
+    "prior_terminal_factor_status_changed": false
+  },
+  "nearest_consumed_families": [
+    {
+      "family": "Campaign102 bounded-simplex ridge",
+      "result": "distinct",
+      "reason": "Campaign133 never fits cross-component weights: every one of 140 components has exact final weight 1/140 after an identical frozen marginal transform. Campaign102 fitted bounded linear weights and no marginal response shape."
+    },
+    {
+      "family": "deterministic complete-library percentile consensus and lower-quartile consensus",
+      "result": "distinct_but_anchored",
+      "reason": "Half of each contribution is the original favorable percentile to prevent hidden deletion, while the other half is a training-only monotone target calibration. The validation score must still pass all 140 component uniqueness gates before validation returns."
+    },
+    {
+      "family": "Campaign132 monotone histogram gradient boosting",
+      "result": "distinct_and_not_a_retry",
+      "reason": "Campaign133 has no trees, leaves, boosting iterations, feature splits or interaction constraints. It fits 140 independent ten-bin monotone maps and averages them once. Campaign132 binaries and scores are not inputs and its parameters are not changed."
+    },
+    {
+      "family": "unanchored isotonic, spline GAM, subset, signed-weight and target-classification searches",
+      "result": "excluded",
+      "reason": "The selected catalog has one bin grid, one 50/50 anchor, one equal-weight aggregation, one target and one direction. Validation evidence cannot change any of them."
+    }
+  ],
+  "algebraic_and_counterfactual_checks": [
+    "Increasing one finite favorable percentile while holding the fitted ten-bin maps and all other inputs fixed cannot decrease its anchored contribution or the final score.",
+    "Every component contributes an exact 0.5/140 identity slope outside bin boundaries, so PAVA flattening cannot silently remove a component.",
+    "Changing a training target can change only the ten fitted levels for that training fold; changing a validation return cannot change a precomputed validation score or its uniqueness record.",
+    "Permuting component order together with its fitted map leaves the arithmetic mean unchanged, but dropping, duplicating or reweighting any component violates the frozen 140-order binding.",
+    "Changing Candidate49, current daily data, a provider credential or the 2024-2025 lockbox cannot change any Campaign133 training or validation score."
+  ],
+  "multiplicity_boundary": {
+    "feature_subset_count": 1,
+    "feature_subset": "all_140_in_frozen_order",
+    "target_count": 1,
+    "model_family_count": 1,
+    "bin_configuration_count": 1,
+    "anchor_configuration_count": 1,
+    "direction_configuration_count": 1,
+    "total_trial_count": 1,
+    "record_all_trials_and_failures": true
+  },
+  "admission": {
+    "selected": true,
+    "reason": "This is a finite marginal nonlinear complete-library combination rather than a parameter refresh of Campaign102 or Campaign132.",
+    "campaign132_design_values_may_be_reused_only_after_campaign133_full_preregistration": true,
+    "training_returns_may_be_read_only_after_runner_and_tests_are_fingerprint_frozen": true,
+    "validation_returns_may_be_read_only_after_each_fold_score_snapshot_and_all_140_uniqueness_comparisons_pass": true,
+    "stress_2024_2025_may_open_only_after_a_nonzero_complete_development_survivor_and_a_separate_once_only_lockbox_freeze": true
+  },
+  "research_boundary": {
+    "campaign133_model_scores_computed_or_read": false,
+    "campaign133_component_values_reopened": false,
+    "historical_daily_price_or_forward_return_values_read": false,
+    "stress_2024_2025_opened": false,
+    "provider_request_issued": false,
+    "credential_loaded": false,
+    "candidate49_historical_backfill_performed": false,
+    "candidate49_ledgers_changed": false,
+    "second_prospective_candidate_created": false,
+    "current_scoring_selection_sizing_positions_or_orders_performed": false,
+    "investment_advice": false
+  }
+}

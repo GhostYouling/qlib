@@ -1,0 +1,51 @@
+{
+  "schema_version": 1,
+  "kind": "a_share_three_day_walkforward_campaign145_coverage_recovery_runner_implementation_freeze",
+  "status": "coverage_recovery_runner_and_tests_frozen_before_coverage_statistics",
+  "recorded_at": "2026-08-14T20:38:01+08:00",
+  "purpose": "Bind the additive coverage runner after immutable snapshot recovery verification and before computing any candidate coverage statistic.",
+  "authoritative_inputs": {
+    "original_frozen_coverage_runner": {
+      "path": "scripts/a_share_three_day_walkforward_campaign145_no_return_audit.py",
+      "sha256": "4ae095ce04d835c72c64a3e263357387269c87ba255b6c112f0b4c3ba4aafb53"
+    },
+    "recovery_receipt": {
+      "path": "docs/a_share_three_day_walkforward_campaign_145_snapshot_recovery_verification_20260814.json",
+      "sha256": "6c953d3dd989e919fd82a65a21a1942fc2adc4afc63de459dfb8c6f9dd3dd263"
+    },
+    "incompatibility_record": {
+      "path": "docs/a_share_three_day_walkforward_campaign_145_inherited_coverage_runner_recovery_incompatibility_20260814.json",
+      "sha256": "2cadea52deabf92c049f4a9ef185c689118fb989e116da9fdcbe64bba8d7d359"
+    }
+  },
+  "frozen_implementation": {
+    "coverage_recovery_runner": "scripts/a_share_three_day_walkforward_campaign145_no_return_audit_recovery.py",
+    "coverage_recovery_runner_sha256": "5742ceea12fdcff55a1b2857446581b5517e7035b509b3a1936a03c31d8e1dff",
+    "coverage_recovery_test": "tests/data_collector_tests/test_a_share_three_day_walkforward_campaign145_no_return_audit_recovery.py",
+    "coverage_recovery_test_sha256": "e4c9ad13ddcc58f42968bad99844b728ae12e6d4113a81ed272f8ba7d652ef3c",
+    "original_frozen_coverage_runner_sha256": "4ae095ce04d835c72c64a3e263357387269c87ba255b6c112f0b4c3ba4aafb53",
+    "recovery_receipt_sha256": "6c953d3dd989e919fd82a65a21a1942fc2adc4afc63de459dfb8c6f9dd3dd263",
+    "coverage_gate_changed": false,
+    "comparator_or_return_reader_added": false,
+    "snapshot_rebuild_or_rewrite_allowed": false
+  },
+  "synthetic_verification": {
+    "formatter": "black",
+    "formatter_exit_code": 0,
+    "linter": "ruff check",
+    "linter_exit_code": 0,
+    "test_command": "PYTHONPATH=. pytest -q tests/data_collector_tests/test_a_share_three_day_walkforward_campaign145_no_return_audit_recovery.py",
+    "exit_code": 0,
+    "passed": 5
+  },
+  "research_boundary": {
+    "candidate_partition_values_read_only_for_integrity_verification_before_freeze": true,
+    "candidate_coverage_statistics_read_before_freeze": false,
+    "comparator_values_read": false,
+    "historical_daily_price_or_forward_return_values_read": false,
+    "stress_2024_2025_returns_opened": false,
+    "provider_request_issued": false,
+    "credential_loaded": false,
+    "candidate49_ledgers_changed": false
+  }
+}

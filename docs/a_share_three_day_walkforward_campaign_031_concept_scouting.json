@@ -1,0 +1,115 @@
+{
+  "version": 1,
+  "kind": "a_share_three_day_walkforward_campaign031_concept_scouting",
+  "status": "one_independent_intraday_cross_sectional_dispersion_sensitivity_concept_selected_before_benchmark_candidate_comparison_or_return_values",
+  "recorded_at": "2026-07-30T11:46:00Z",
+  "purpose": "Select one economically interpretable Campaign031 mechanism without opening a Campaign031 minute partition, cross-sectional dispersion benchmark value, candidate value, comparison value, daily price, or forward return.",
+  "authoritative_boundary": {
+    "path": "docs/a_share_three_day_iteration_status_20260730_campaign030_verified.json",
+    "sha256": "a34c7b3cf37480268a84a055788ab19a20dfa9b14a6a2aa8a1ec1c5b01ecc4c6",
+    "campaign031_concept_scouting_allowed": true,
+    "binding_validation_required_at_each_freeze_boundary": true,
+    "candidate49_remains_only_prospective_candidate": true,
+    "candidate50_activation_allowed": false
+  },
+  "historical_walkforward_policy": {
+    "path": "docs/a_share_three_day_historical_walkforward_research_policy_20260727.json",
+    "sha256": "38426d6161b9bfed323c58caba18feca668b8c9d53e294951a8ba90c01a798bb"
+  },
+  "selected_concept": {
+    "concept_name": "intraday_cross_sectional_dispersion_decoupling",
+    "mechanism_family": "same_minute_stock_absolute_return_dependence_on_leave_one_out_market_cross_sectional_return_dispersion",
+    "economic_question": "Does a stock's absolute one-minute return remain decoupled from broad cross-sectional return dispersion after removing that stock from the market state?",
+    "economic_hypothesis": "When an individual stock's minute volatility is tightly synchronized with broad cross-sectional dispersion, its price may be more exposed to market-wide liquidity fragmentation and crowded risk reduction. Lower sensitivity to the leave-one-out dispersion state may therefore indicate greater three-session resilience.",
+    "provisional_direction": "higher_negative_same_minute_magnitude_dispersion_correlation",
+    "allowed_stock_source_fields": [
+      "datetime",
+      "symbol",
+      "provider",
+      "close"
+    ],
+    "allowed_frozen_dispersion_benchmark_fields": [
+      "trade_date",
+      "return_position",
+      "return_sum",
+      "return_sum_squares",
+      "valid_stock_count"
+    ],
+    "forbidden_source_fields": [
+      "open",
+      "high",
+      "low",
+      "volume",
+      "amount",
+      "daily open",
+      "daily high",
+      "daily low",
+      "daily close",
+      "daily volume",
+      "daily amount",
+      "forward return",
+      "Level-2"
+    ],
+    "fixed_temporal_question": "Use exactly 238 adjacent close returns wholly inside 09:31-11:30 and 13:01-15:00. At every fixed return position compare the stock's absolute return with the same-position cross-sectional population dispersion of all other valid stocks. Exclude standalone 09:30, lunch, overnight, cross-day, lead-lag, cross-half, and selected-subwindow transitions.",
+    "mandatory_overlap_challenges_before_any_value": [
+      "intraday_market_shock_magnitude_decoupling_238m",
+      "intraday_market_correlation_resolution_119p",
+      "intraday_market_idiosyncratic_share_238m",
+      "intraday_market_up_down_correlation_asymmetry_238m",
+      "intraday_market_response_delay_asymmetry_236p",
+      "intraday_return_variance_entropy_238m",
+      "intraday_absolute_return_serial_persistence_236p",
+      "intraday_market_amount_profile_synchronization_240m",
+      "candidate49_intraday_cumulative_vwap_crossing_rate_240m_v1"
+    ],
+    "known_design_risks": [
+      "dispersion estimator, population versus sample denominator, leave-one-out arithmetic, tiny negative variance handling, peer threshold, magnitude transform, correlation sign, direction, and temporal support are researcher degrees of freedom unless frozen before values",
+      "the statistic may correlate with common-market magnitude coupling or pooled market idiosyncrasy even though cross-sectional dispersion is a different external state",
+      "low sensitivity can represent resilience or stale price adjustment, so the negative-correlation direction must be frozen before returns",
+      "using market mean magnitude, index volatility, cross-sectional absolute deviation, variance ranks, signs, leads or lags, weights, subwindows, terminal factor values, or fitted combinations would change the mechanism"
+    ],
+    "prior_deferred_evidence": {
+      "campaign029_concept_scouting": {
+        "path": "docs/a_share_three_day_walkforward_campaign_029_concept_scouting.json",
+        "sha256": "92a16be11087c243f8ce613c52cf0a9d1a2cd759e035eb2e94f84b03231d66c5"
+      },
+      "disposition": "Campaign029 identified cross-sectional market-return dispersion sensitivity as economically interesting but deferred it because a return-squared benchmark had not been materialized. It was not opened, tested, or terminated there."
+    }
+  },
+  "rejected_concepts": [
+    {
+      "concept": "intraday_range_or_return_time_allocation",
+      "reason": "Campaign021 and later scouting records explicitly classify range and return time-allocation variants as terminal, so a range center-of-mass factor is not reopened."
+    },
+    {
+      "concept": "market_mean_absolute_return_coupling",
+      "reason": "This would reformulate terminal Campaign029 market-shock magnitude decoupling rather than use the distinct cross-sectional dispersion state."
+    },
+    {
+      "concept": "market_beta_residual_variance_or_correlation_resolution",
+      "reason": "Pooled beta and residual share are terminal, while morning-to-afternoon signed correlation resolution was consumed by Campaign030."
+    },
+    {
+      "concept": "terminal_factor_combination_or_campaign030_rescue",
+      "reason": "Campaign031 must be one new raw stock-plus-dispersion statistic; Campaign030 cannot be rescued by inversion, filtering, combining, rewindowing, or changing its formula."
+    }
+  ],
+  "decision": {
+    "advance_to_separate_no_value_mechanism_overlap_audit": true,
+    "exact_formula_fixed_here": false,
+    "economic_direction_fixed_here": true,
+    "new_daily_bar_required": false,
+    "same_day_1630_wait_required": false,
+    "new_frozen_no_return_dispersion_benchmark_required": true,
+    "candidate49_ledgers_changed": false
+  },
+  "research_boundary": {
+    "external_campaign031_minute_partitions_read": false,
+    "dispersion_benchmark_values_read": false,
+    "candidate_values_read": false,
+    "comparison_values_read": false,
+    "daily_price_fields_read": false,
+    "forward_returns_read": false,
+    "provider_request_issued": false
+  }
+}

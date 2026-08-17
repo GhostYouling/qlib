@@ -1,0 +1,111 @@
+{
+  "version": 293,
+  "kind": "a_share_three_day_walkforward_future_numeric_comparison_eligibility_policy",
+  "status": "campaign199_terminal_prevalue_service_support_case_lifecycle_campaign200_ready_after_validation",
+  "recorded_at": "2026-08-15T18:08:00+08:00",
+  "timestamp_semantics": "monotonic logical append time after Campaign199 terminal result and both mutable report appends",
+  "supersedes_without_rewriting": {
+    "path": "docs/a_share_three_day_walkforward_future_numeric_comparison_eligibility_policy_v292_20260815.json",
+    "sha256": "6e842aef73fe9da2ba5986dbe08496a80f07fbd23697eab7b0e3e33537a7cace",
+    "preserved": true,
+    "library_order_changed": false,
+    "scientific_result_changed": true,
+    "accounting_changed": true
+  },
+  "authoritative_inputs": {
+    "terminal_result": {
+      "path": "docs/a_share_three_day_walkforward_campaign_199_terminal_result_20260815.json",
+      "sha256": "518c803d920f3df1b21c15c77f221c15d339411a8ed8d8476f8a1c9a5fe59191"
+    },
+    "service_support_case_lifecycle_source_frontier": {
+      "path": "docs/a_share_three_day_walkforward_campaign_199_service_support_case_entitlement_ticket_backlog_response_resolution_escalation_sla_lifecycle_source_frontier_20260815.json",
+      "sha256": "de556142e0efa1cb02c952e2508fdf11d46dcf166ed72e2051e1a2b2c2bd2a82"
+    },
+    "attempt_ledger": {
+      "path": "data/experiments/short_horizon/historical_walkforward/campaign_199/research_attempt_ledger_v1.json",
+      "sha256": "a6b9fbc2e5cfb80f12d05bf19d6f9c3c7c147e35b7d7a34b16ad86ff35daf941",
+      "campaign_effective_entry_count": 12,
+      "chain_tip_sha256": "105846378b029991369d933091ee98dbec0c64158df74f55f3a4e50ce8590864"
+    }
+  },
+  "mutable_unified_reports": {
+    "current": {
+      "path": "data/experiments/short_horizon/current_research_report.md",
+      "sha256_at_publication": "3a9c58f78ed5361173c7ea13f02cea0c52c96174ea7ef6e7dcf2edb5cfac5283",
+      "mutable_append_only_report_not_an_immutable_binding": true
+    },
+    "three_day": {
+      "path": "data/experiments/short_horizon/three_day_research_report.md",
+      "sha256_at_publication": "27b692b0c3c60c4f12f8c5cc7f6df5c4e92a5d7a71c3665775ce0262ffb30cd3",
+      "mutable_append_only_report_not_an_immutable_binding": true
+    }
+  },
+  "campaign199_terminal_classification": {
+    "mechanism_domains_reviewed": 1,
+    "service_support_case_lifecycle_routes_reviewed": 7,
+    "genuinely_new_issuer_state_routes": 3,
+    "source_admission_deferrals_not_factor_failures": 3,
+    "relabeling_overlap_operator_or_combination_route_rejections": 4,
+    "selected_candidate_count": 0,
+    "infrastructure_failure_count": 5
+  },
+  "complete_historical_feature_library": {
+    "factor_definition_count": 158,
+    "order_sha256": "4819c7fd7c0795d7598a52f3c615e3f117d5f4ecd9332974bc8e3dfa57c96667",
+    "unchanged_from_v292": true
+  },
+  "numerical_comparator_eligibility": {
+    "eligible_numeric_comparator_count": 142,
+    "order_sha256": "5d1b35fb5a0d8ac9293008db9963c4a60a94dc940c237c3ed259e5ce44f14aaf",
+    "unchanged_from_v292": true
+  },
+  "effective_accounting": {
+    "campaign199_attempt_count": 12,
+    "campaign199_scientific_attempt_count": 7,
+    "campaign199_infrastructure_failure_count": 5,
+    "cumulative_historical_research_attempt_count": 1806,
+    "cumulative_return_reading_development_trial_count": 314
+  },
+  "deferred_source_boundary": {
+    "service_support_case_lifecycle_state_declared_ineffective": false,
+    "current_service_dashboard_ticket_export_or_sla_scorecard_may_be_historically_backfilled": false,
+    "structurally_inapplicable_issuers_may_be_filled_with_zero_or_cross_sector_ranked": false,
+    "complaint_resolution_incident_scale_price_or_license_right_search_may_reopen_prior_campaigns": false,
+    "service_product_channel_priority_severity_tier_direction_threshold_age_window_subset_combination_or_model_search_may_precede_source_admission": false
+  },
+  "future_campaign_boundary": {
+    "next_campaign": 200,
+    "may_begin_after_campaign199_independent_validation": true,
+    "historical_offline_prevalue_work_may_continue_at_any_local_time": true,
+    "2024_2025_source_or_returns_remain_closed": true,
+    "candidate49_remains_separate_confirmation_layer": true
+  },
+  "cumulative_regression_boundary": {
+    "campaign145_through_campaign199_test_file_count": 87,
+    "campaign198_mutable_report_node_added_to_deselection_set": true,
+    "expected_tests_passed_after_validation": 470,
+    "expected_tests_skipped_after_validation": 1,
+    "expected_nodes_deselected_after_validation": 14,
+    "final_results_must_be_recorded_in_terminal_validation": true,
+    "failed_or_truncated_invocations_recorded_and_excluded_from_validation": 5
+  },
+  "research_boundary": {
+    "failed_or_truncated_output_used_as_validation_or_scientific_evidence": false,
+    "source_factor_comparator_security_price_or_return_value_read": false,
+    "stress_2024_2025_opened": false,
+    "provider_or_web_request_issued": false,
+    "provider_credential_presence_value_or_digest_read": false,
+    "candidate49_plan_or_run_executed": false,
+    "candidate49_ledgers_changed": false,
+    "second_prospective_candidate_created": false
+  },
+  "candidate49": {
+    "only_active_prospective_candidate": true,
+    "signal_ledger_sha256": "5193f00d7f36da003f53cec387900da4c3d002299f5dfcfc1a95eaa199ed3a79",
+    "signal_entry_count": 0,
+    "execution_ledger_sha256": "d57a3e61eac969e42cafa418ccd8c0a5ee65dcf69da145bb2c096c2a02a2ea4f",
+    "execution_entry_count": 0,
+    "completed_future_workflow_record_count": 0
+  },
+  "next_action": "Run focused Campaign199, corrected Campaign145-199 cumulative and independent binding validation, then publish the active-goal state authorizing Campaign200."
+}

@@ -1,0 +1,62 @@
+{
+  "schema_version": 1,
+  "kind": "a_share_three_day_walkforward_campaign101_development_recovery_implementation_freeze",
+  "status": "frozen_after_one_runtime_infrastructure_failure_before_any_complete_development_trial",
+  "recorded_at": "2026-08-07T14:08:42Z",
+  "recovery_runner": {
+    "path": "scripts/a_share_three_day_walkforward_campaign101_development_recovery.py",
+    "sha256": "8979c9fe8a7c47dd041a006d40a766afe8b295835327a0c03b72442ce6cbe518"
+  },
+  "tests": {
+    "path": "tests/data_collector_tests/test_a_share_three_day_walkforward_campaign101_development_recovery.py",
+    "sha256": "ae755f746f8a07d25fd19b162606d5f5d1de7edddeecb92884b1e3638a6f862a",
+    "result": "5 passed"
+  },
+  "scientific_runner": {
+    "path": "scripts/a_share_three_day_walkforward_campaign101.py",
+    "sha256": "8353c819b0c1a0edd98eb0999849a626d5a97c913655e2068ec18fb05b9c9b27"
+  },
+  "development_preregistration": {
+    "path": "docs/a_share_three_day_walkforward_campaign_101_preregistration_v2.json",
+    "sha256": "5cff18c65510eb01e4771e04f62b54bf038579a25f9ee14ec73863fe43947b36"
+  },
+  "original_development_freeze": {
+    "path": "docs/a_share_three_day_walkforward_campaign_101_development_implementation_freeze_20260807.json",
+    "sha256": "f1d018c27655f8dee923d0c2f7856fc6ea2b4c38edd3e647ddab513519024e37"
+  },
+  "original_development_activation": {
+    "path": "docs/a_share_three_day_walkforward_campaign_101_development_activation_binding_20260807.json",
+    "sha256": "7728e8d8a210ed041fb6a05355b9cd96722a4e637ae95097cc42ef7b943f8a75"
+  },
+  "runtime_failure": {
+    "path": "docs/a_share_three_day_walkforward_campaign_101_development_runtime_import_failure_20260807.json",
+    "sha256": "1e922a2e3aa552b19e46edb091fd3cb2a7d79109394ad2ed07172d5344d2b05f"
+  },
+  "failed_internal_ledger": {
+    "path": "data/experiments/short_horizon/historical_walkforward/campaign_101/walkforward/trial_ledger.json",
+    "sha256": "726bb925597461a6fb8eaac2ea073e62b74b221f83849a79683d3ad9ad6acae6",
+    "entry_count": 1,
+    "infrastructure_failure_count": 1,
+    "complete_development_trial_count": 0
+  },
+  "exact_runtime": {
+    "path": "/Volumes/DIsk/Coding/anaconda3/bin/python3.12",
+    "version": "3.12.7",
+    "qlib_data_import_verified": true,
+    "alternate_runtime_allowed": false
+  },
+  "same_scientific_trial": {
+    "trial_id": "wf101_full_numeric_library_directional_lower_quartile_consensus_129f_single_higher",
+    "formula_direction_folds_cost_survival_or_stress_rule_changed": false,
+    "remaining_complete_trial_count": 1
+  },
+  "research_attempt_ledger": {
+    "path": "data/experiments/short_horizon/historical_walkforward/campaign_101/research_attempt_ledger_v10.json",
+    "sha256": "9047e77a4936d3ca99aa64e6602de6c23a6c410b88289b96ac0298543e159936"
+  },
+  "complete_development_trial_count_before_recovery_freeze": 0,
+  "development_daily_price_or_forward_return_values_read_before_recovery_freeze": false,
+  "stress_2024_2025_read_before_recovery_freeze": false,
+  "provider_request_issued_before_recovery_freeze": false,
+  "candidate49_ledgers_changed_before_recovery_freeze": false
+}

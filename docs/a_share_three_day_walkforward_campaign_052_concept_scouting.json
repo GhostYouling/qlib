@@ -1,0 +1,113 @@
+{
+  "version": 1,
+  "kind": "a_share_three_day_walkforward_campaign052_concept_scouting",
+  "status": "selected_one_economically_independent_candidate_before_values",
+  "recorded_at": "2026-08-03T08:13:00Z",
+  "purpose": "Select one finite Campaign052 historical-only mechanism without reading its factor values, comparison values, daily prices, or forward returns.",
+  "authoritative_inputs": {
+    "campaign051_verified_state": {
+      "path": "docs/a_share_three_day_iteration_status_20260803_campaign051_verified.json",
+      "sha256": "71d63fa1f47a659e74c0b5a472762ca4be6ee07ea982626b80aad924b883612e"
+    },
+    "historical_walkforward_policy": {
+      "path": "docs/a_share_three_day_historical_walkforward_research_policy_20260727.json",
+      "sha256": "38426d6161b9bfed323c58caba18feca668b8c9d53e294951a8ba90c01a798bb"
+    },
+    "campaign051_no_return_protocol": {
+      "path": "docs/a_share_three_day_walkforward_campaign_051_no_return_preregistration_v2.json",
+      "sha256": "16636bb5196a362ca55b21696d88bc78b92d7ce10fbf70d252575f47b31c9e40"
+    }
+  },
+  "candidate_design_catalog": [
+    {
+      "design": "quarterly_announcement_delay_consistency_4q",
+      "decision": "selected",
+      "reason": "It measures the stability of the issuer's reporting process across four consecutive fiscal quarters. Existing disclosure factors measure only the latest announcement's age or latest report delay, not variation across a fixed multi-report history."
+    },
+    {
+      "design": "latest_announcement_freshness_or_latest_delay",
+      "decision": "rejected_before_values",
+      "reason": "These are the terminal quarterly_announcement_freshness_60s and quarterly_announcement_timeliness_days mechanisms."
+    },
+    {
+      "design": "mean_or_median_four_quarter_delay",
+      "decision": "rejected_before_values",
+      "reason": "A location statistic would mainly restate timeliness and introduce a post-selection choice among equivalent centers; Campaign052 freezes dispersion only."
+    },
+    {
+      "design": "announcement_interval_regularity",
+      "decision": "rejected_before_values",
+      "reason": "Calendar intervals between announcements are mechanically seasonal around annual and first-quarter reporting. The selected mechanism compares each announcement with its own fiscal period end instead."
+    },
+    {
+      "design": "three_eight_or_rolling_window_variants",
+      "decision": "rejected_before_values",
+      "reason": "Four consecutive fiscal quarters are fixed once to cover one reporting cycle; no lookback search is allowed."
+    },
+    {
+      "design": "mad_coefficient_of_variation_range_or_trend_variants",
+      "decision": "rejected_before_values",
+      "reason": "Population standard deviation is the sole dispersion estimator; alternate robust, scaled, range, or trend summaries would create an estimator search."
+    },
+    {
+      "design": "quarterly_value_fields_filters_or_terminal_combinations",
+      "decision": "rejected_before_values",
+      "reason": "ROE, profit, growth, price, activity, fitted weights, filters, regimes, terminal factor values, and models are outside Campaign052."
+    }
+  ],
+  "selected_candidate": {
+    "name": "quarterly_announcement_delay_consistency_4q",
+    "direction": "higher",
+    "economic_hypothesis": "Stable reporting delays across a complete four-quarter cycle indicate a repeatable disclosure process and lower near-term information-timing uncertainty, potentially leaving a more resilient close-known state for the next-open-to-third-close horizon.",
+    "formula": "For the latest four distinct effective reports whose report dates are four consecutive calendar quarter ends, let d_j be the nonnegative integer calendar days from report_date_j to announcement_date_j. Let sigma be the population standard deviation of the four d_j values. Return 1/(1+sigma).",
+    "stock_day_identity_projection": [
+      "datetime",
+      "symbol",
+      "provider"
+    ],
+    "quarterly_source_projection": [
+      "instrument",
+      "report_date",
+      "announcement_date"
+    ],
+    "quarterly_value_fields_forbidden": [
+      "roe",
+      "net_profit",
+      "revenue_yoy",
+      "profit_yoy"
+    ],
+    "lookback_reports": 4,
+    "report_period_rule": "the selected report dates must be distinct exact calendar quarter ends and consecutive in Q-DEC fiscal-quarter order",
+    "delay_definition": "integer calendar days announcement_date minus report_date",
+    "delay_rule": "each delay must be finite and nonnegative",
+    "availability_rule": "a report is usable only on accepted stock-days strictly after its announcement date",
+    "dispersion_estimator": "equal-weight population standard deviation over exactly four delays",
+    "normalization": "one divided by one plus population standard deviation",
+    "valid_range": {
+      "lower": 0.0,
+      "lower_inclusive": false,
+      "upper": 1.0,
+      "upper_inclusive": true
+    },
+    "transform_scale_clip_threshold_filter": "none",
+    "alternate_field_window_estimator_direction_scale_board_year_cost_regime_fit_combination_or_model_search": false
+  },
+  "decision": {
+    "selected_candidate_count": 1,
+    "finite_candidate_library": true,
+    "next_action": "perform a separate pre-value mechanism-overlap audit and freeze the exact 75-comparison no-return protocol before factor values"
+  },
+  "research_boundary": {
+    "candidate_values_read": false,
+    "comparison_values_read": false,
+    "historical_daily_price_fields_read": [],
+    "historical_forward_return_fields_read": false,
+    "candidate49_historical_return_read": false,
+    "candidate49_signal_or_execution_backfill_performed": false,
+    "candidate49_ledgers_changed": false,
+    "second_prospective_candidate_created": false,
+    "provider_request_issued": false,
+    "current_scoring_selection_sizing_or_orders_performed": false,
+    "investment_advice": false
+  }
+}

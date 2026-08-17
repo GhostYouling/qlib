@@ -1,0 +1,182 @@
+{
+  "schema_version": 1,
+  "kind": "a_share_three_day_walkforward_campaign096_mechanism_overlap_audit",
+  "status": "passed_semantic_mechanism_review_before_campaign096_minute_source_or_comparison_values",
+  "recorded_at": "2026-08-07T04:08:00Z",
+  "concept_scouting": {
+    "path": "docs/a_share_three_day_walkforward_campaign_096_concept_scouting.json",
+    "sha256": "e091236c967c54d099d95a38478a0c50fb9b197f9765de1273cd1c7236832c55"
+  },
+  "authoritative_state": {
+    "path": "docs/a_share_three_day_iteration_status_20260807_campaign095_verified.json",
+    "sha256": "b100ba8d347727e71f17799dbeeb1d7e2e1b34770148d217cf4ae4014c193b47"
+  },
+  "historical_walkforward_policy": {
+    "path": "docs/a_share_three_day_historical_walkforward_research_policy_20260727.json",
+    "sha256": "38426d6161b9bfed323c58caba18feca668b8c9d53e294951a8ba90c01a798bb"
+  },
+  "numeric_comparator_policy": {
+    "path": "docs/a_share_three_day_walkforward_future_numeric_comparison_eligibility_policy_v39_20260807.json",
+    "sha256": "26af71f841cf9d1880821b61853a347dfff9bc42652b2af09220aebf72de9bb6",
+    "complete_definition_count": 127,
+    "numeric_comparator_count": 124,
+    "complete_definition_order_sha256": "17ad9beb53d236171155211ea4cc4b9ec05b8edea7ebc51ca7705f84adc9e030",
+    "numeric_comparator_order_sha256": "d05f1cb7b68e950d508f2b0d13b7ef1847904edc6eb10453405917e04ed0e698"
+  },
+  "candidate": {
+    "name": "intraday_intrabar_close_location_total_variation_238p",
+    "direction": "higher",
+    "mechanism": "Unweighted L1 path length of continuous own-bar close-location states across informative adjacent transitions inside each half session.",
+    "formula": "For positive-range bar i set x_i=(log(close_i)-log(low_i))/log(high_i/low_i). Over adjacent pairs contained inside one half and having both states, return mean(abs(x_i-x_i-1)); require at least 120 retained pairs.",
+    "fixed_support": "Exactly 238 within-half adjacent opportunities from the fixed 240 standard bars; exclude 09:30 and the 11:30-to-13:01 transition.",
+    "zero_and_missing_semantics": "Require all selected HLC tuples finite, positive, and ordered. A zero-range bar has no state and removes only its incident pairs. Never bridge, fill, jitter, bucket, threshold, smooth, clip, or substitute. Require at least 120 retained pairs.",
+    "valid_range": "[0,1], with only 1e-12 endpoint canonicalization",
+    "reads_open_amount_volume_market_daily_quarterly_or_future_fields": false,
+    "candidate49_used_or_modified": false
+  },
+  "complete_library_review": {
+    "all_127_definitions_reviewed_in_frozen_order": true,
+    "all_124_numeric_comparators_reviewed_in_frozen_order": true,
+    "all_return_volatility_path_sign_frequency_range_gap_body_wick_amount_volume_transaction_price_market_peer_cross_day_event_quality_structural_composite_and_semantic_only_families_reviewed": true,
+    "candidate_is_exact_formula_duplicate": false,
+    "candidate_is_direction_only_duplicate": false,
+    "candidate_is_parameter_only_duplicate": false,
+    "candidate_is_an_inversion_of_a_terminal_factor": false,
+    "candidate_combines_terminal_factor_values": false,
+    "candidate_changes_quality_listing_buyability_cost_or_walkforward_gates": false,
+    "campaign095_formula_bin_entropy_reflection_claim_or_factor_value_reused_repaired_or_combined": false,
+    "candidate49_remains_semantic_isolation_only": true
+  },
+  "nearest_semantic_challenges": [
+    {
+      "name": "intraday_intrabar_close_location_serial_persistence_238p",
+      "relationship": "Both use adjacent within-half pairs of the same scale-free own-bar close-location state.",
+      "distinction": "Campaign086 estimates a standardized signed lag-one covariance and requires positive variance in both endpoint vectors. Campaign096 sums absolute state travel, is defined for a constant nonzero transition size, and responds to marginal scale as well as ordering. Equal lag correlation can coexist with different total variation, and equal total variation can coexist with different correlation.",
+      "mandatory_numeric_challenge": true
+    },
+    {
+      "name": "intraday_own_bar_close_location_entropy_10b_240m",
+      "relationship": "Both begin from own-bar HLC close-location states.",
+      "distinction": "Terminal Campaign095 is a fixed-bin marginal entropy definition and has no numeric values because its exact half-open bin formula contradicted a frozen unconditional reflection claim. Campaign096 never bins or reads that factor, preserves adjacency, and measures continuous L1 transition travel; it is not a repair, rebinning, reinterpretation, or combination of Campaign095.",
+      "mandatory_semantic_challenge": true,
+      "numeric_status": "ineligible_terminal_definition_semantic_challenge_only"
+    },
+    {
+      "name": "intraday_intrabar_close_location_pressure_240m",
+      "relationship": "Both use the close location inside the contemporaneous minute range.",
+      "distinction": "The terminal pressure factor is a directional order-invariant first moment. Campaign096 is reflection invariant, depends only on adjacent absolute changes, and can vary while the directional mean is fixed.",
+      "mandatory_numeric_challenge": true
+    },
+    {
+      "name": "intraday_close_range_occupancy_entropy_10b",
+      "relationship": "Both can increase when price states explore a wider support.",
+      "distinction": "Occupancy entropy bins global session close levels and is invariant to clock permutation. Campaign096 normalizes each close by its own bar range, uses no global price range, and changes with adjacent ordering.",
+      "mandatory_numeric_challenge": true
+    },
+    {
+      "name": "intraday_return_variance_entropy_238m, intraday_return_weak_order_entropy_234t, and intraday_return_spectral_entropy_59f",
+      "relationship": "All characterize intraday path variation or diversity.",
+      "distinction": "Those factors use adjacent close returns, ordinal triples, or frequency power. Campaign096 uses continuous own-bar close-location transitions and is invariant to arbitrary bar-specific log-interval translations and positive scalings that preserve each normalized state.",
+      "mandatory_numeric_challenge": true
+    },
+    {
+      "name": "intraday_bar_direction_continuity_238p and intraday_interbar_gap_body_confirmation_238p",
+      "relationship": "All use adjacent intraday transitions.",
+      "distinction": "Those factors require open-to-close sign or open gaps. Campaign096 reads no open, has no sign threshold, and measures continuous migration inside each contemporaneous range.",
+      "mandatory_numeric_challenge": true
+    },
+    {
+      "name": "intraday_adjacent_range_overlap_continuity_238p and intraday_range_boundary_translation_coherence_238p",
+      "relationship": "All use adjacent high-low information.",
+      "distinction": "The terminal factors compare absolute interval overlap or boundary translations. Campaign096 is invariant to moving or rescaling each bar's log interval while preserving x and uses close explicitly.",
+      "mandatory_numeric_challenge": true
+    },
+    {
+      "name": "intraday_transaction_vwap_envelope_asymmetry_240m",
+      "relationship": "Both locate an intrabar price statistic inside high-low geometry.",
+      "distinction": "Campaign013 uses amount/volume, has an order-invariant range-sum asymmetry, and failed coverage under exact VWAP containment. Campaign096 forbids amount and volume, uses close, retains adjacent ordering, and does not repair or reuse Campaign013's incompatible transaction-price contract.",
+      "mandatory_numeric_challenge": false,
+      "numeric_status": "terminal_low_coverage_definition_challenged_without_rescue"
+    },
+    {
+      "name": "intraday_range_local_peak_clock_dispersion_236p",
+      "relationship": "Both retain an aspect of intraday ordering on the fixed grid.",
+      "distinction": "Campaign094 uses only the clocks of strict local range peaks and reads no close. Campaign096 uses every informative adjacent close-location transition, ignores range-peak topology, and has no clock variance.",
+      "mandatory_numeric_challenge": true
+    },
+    {
+      "name": "intraday_cross_sectional_standardized_return_state_stability_236p and signal_day_turnover_rate_pct",
+      "relationship": "Both semantic-only definitions remain in the complete library.",
+      "distinction": "Peer-standardized return-state mobility and raw daily turnover have neither an own-bar HLC state nor a continuous adjacent L1 path operator.",
+      "mandatory_semantic_challenge": true,
+      "numeric_status": "undefined_or_ineligible_not_pass_not_fail"
+    },
+    {
+      "name": "candidate49_intraday_cumulative_vwap_crossing_rate_240m_v1",
+      "relationship": "Both use the completed standard-minute grid.",
+      "distinction": "Candidate49 counts genuinely future causal close-versus-cumulative-VWAP crossings and requires amount and volume. Campaign096 is historical-only, forms within-half own-bar HLC state transitions, and never enters Candidate49 ledgers.",
+      "mandatory_numeric_challenge": false
+    }
+  ],
+  "semantic_invariance_checks": [
+    {
+      "intervention": "Multiply every selected HLC price by one positive constant.",
+      "result": "unchanged because every x is a log-distance ratio"
+    },
+    {
+      "intervention": "Translate and positively rescale each bar's log-price interval while preserving its normalized close location.",
+      "result": "unchanged, distinguishing Campaign096 from interval-level, range-magnitude, gap, and nominal-price factors"
+    },
+    {
+      "intervention": "Reflect every informative state x to 1-x while preserving missing endpoints.",
+      "result": "unchanged because every absolute adjacent difference is unchanged"
+    },
+    {
+      "intervention": "Reverse the state order separately inside each half while preserving missing-state positions under the same reflection of clocks.",
+      "result": "unchanged because the multiset of undirected adjacent edge lengths is reversed"
+    },
+    {
+      "intervention": "Permute informative states inside a half without preserving adjacent edge lengths.",
+      "result": "can change, distinguishing Campaign096 from marginal mean and entropy summaries"
+    },
+    {
+      "intervention": "Increase one retained adjacent absolute state difference while holding every other retained edge and support fixed.",
+      "result": "increases the score by that increment divided by the retained-pair count"
+    },
+    {
+      "intervention": "Change open, amount, volume, market, quarterly, daily-price, or return states while preserving HLC.",
+      "result": "unchanged"
+    }
+  ],
+  "prevalue_semantic_decision": {
+    "passed": true,
+    "selected_factor_count": 1,
+    "complete_frozen_definition_count_reviewed": 127,
+    "numeric_comparator_count_reserved_for_postcoverage_test": 124,
+    "candidate_or_comparison_values_read": false,
+    "historical_daily_price_or_forward_return_values_read": false,
+    "provider_request_issued": false,
+    "required_next_step": "Freeze the exact v39-bound coverage-first no-return protocol and sole conditional development trial before source rows or candidate values."
+  },
+  "prohibited_rescues": [
+    "change L1 total variation to correlation, squared variation, entropy, sign changes, range, threshold share, directed movement, or another path norm",
+    "repair, rebin, relabel, rerun, transform, invert, filter, or combine terminal Campaign095",
+    "impute or bridge zero-range bars, change the 120-pair support, include lunch, add jitter, or drop unfavorable valid transitions",
+    "change direction, HLC state, endpoint tolerance, grid, years, costs, folds, or gates",
+    "add open, amount, volume, market, quarterly, thresholds, filters, regimes, neutralization, residualization, fitting, models, or combinations",
+    "remove a failed numeric comparator or select favorable years, costs, folds, or gates"
+  ],
+  "research_boundary": {
+    "campaign096_source_rows_read": false,
+    "campaign096_candidate_values_read": false,
+    "comparison_values_read": false,
+    "historical_daily_price_fields_read": [],
+    "historical_forward_returns_read": false,
+    "candidate49_historical_return_or_signal_backfill": false,
+    "candidate49_ledgers_changed": false,
+    "second_prospective_candidate_created": false,
+    "provider_request_issued": false,
+    "current_scoring_selection_sizing_or_orders_performed": false,
+    "investment_advice": false
+  }
+}

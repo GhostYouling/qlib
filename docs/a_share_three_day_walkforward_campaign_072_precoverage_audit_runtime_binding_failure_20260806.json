@@ -1,0 +1,39 @@
+{
+  "version": 1,
+  "kind": "a_share_three_day_walkforward_campaign072_precoverage_audit_runtime_binding_failure",
+  "status": "recorded_failed_exit_before_coverage_or_comparison_values",
+  "recorded_at": "2026-08-06T06:19:00+08:00",
+  "failed_command_stage": "first_activated_no_return_audit_static_binding_validation",
+  "exit_code": 1,
+  "frozen_inputs": {
+    "audit_runner_v1": {
+      "path_at_failure": "scripts/a_share_three_day_walkforward_campaign072_no_return_audit.py",
+      "sha256_at_failure": "039671f20239864fec864f92d121fba4f628618743dac87946d4410f9ab8228e"
+    },
+    "implementation_freeze_v1": {
+      "path": "docs/a_share_three_day_walkforward_campaign_072_no_return_audit_implementation_freeze_20260806.json",
+      "sha256": "3dcac167f9e755728cdedccddfbe5e15fd21265e91f5603f131832b51c70d90c"
+    },
+    "activation_binding_v1": {
+      "path": "docs/a_share_three_day_walkforward_campaign_072_no_return_audit_activation_binding_20260806.json",
+      "sha256": "35847e0b178959954f089de6848a14cb27b3001052575e721faf6cdc836e773a"
+    }
+  },
+  "observed_failure": {
+    "exception": "Campaign072NoReturnAuditError",
+    "message": "Campaign072 comparison order changed",
+    "stack_stage": "Campaign070 static verifier called the inherited Campaign071 load_protocol inside the inner generated runtime",
+    "root_cause": "Campaign072 overrides were installed only in the outer generated namespace; the inner runtime executing run_no_return_audit still held the inherited 102-definition Campaign071 protocol loader while expecting 103 definitions."
+  },
+  "evidence_boundary": {
+    "candidate_snapshot_value_frame_loaded": false,
+    "coverage_or_capacity_metrics_computed": false,
+    "comparison_values_read": false,
+    "historical_daily_price_fields_read": [],
+    "historical_forward_returns_read": false,
+    "provider_request_issued": false,
+    "candidate49_ledgers_changed": false,
+    "audit_artifact_published": false
+  },
+  "repair_rule": "Preserve v1 records unchanged; synchronize the exact frozen Campaign072 override map into both generated namespaces, add a regression test, then publish versioned v2 implementation and activation bindings before retrying."
+}

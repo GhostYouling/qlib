@@ -1,0 +1,123 @@
+{
+  "version": 1,
+  "kind": "a_share_three_day_walkforward_campaign041_verification",
+  "status": "terminal_pre_return_campaign041_and_candidate49_isolation_verified",
+  "recorded_at": "2026-07-31T07:35:32Z",
+  "purpose": "Bind the Campaign041 pre-return terminal record, final implementation and tests, immutable snapshot/audit evidence, documentation, unchanged prospective ledgers, credential presence, and pre-16:30 provider boundary after the full data-collector regression.",
+  "bindings": {
+    "research_record": {
+      "path": "docs/a_share_three_day_walkforward_campaign_041_research_record.json",
+      "sha256": "0a21f4d189509aa0c0efbf4cb05ab688374104adfe3d52114467da83e0606844"
+    },
+    "post_result_transition": {
+      "path": "docs/a_share_three_day_walkforward_campaign_041_post_result_transition_20260731.json",
+      "sha256": "1bec1eacf6e5d32c2b760b699251f362b492dd093ec3ce171444f2c02f865ed1"
+    },
+    "no_return_audit_freeze": {
+      "path": "docs/a_share_three_day_walkforward_campaign_041_no_return_audit_freeze_20260731.json",
+      "sha256": "359ea87674e6bdcd7228ca604731cefce6dc721cb38364739c91f42f45d30d93"
+    },
+    "feature_snapshot_freeze": {
+      "path": "docs/a_share_three_day_walkforward_campaign_041_feature_snapshot_freeze.json",
+      "sha256": "46a252a2e94027900a46e49fa1aa0afa1d875ce4b0306805e5043d59206f6479"
+    },
+    "feature_runner": {
+      "path": "scripts/a_share_three_day_walkforward_campaign041_features.py",
+      "sha256": "4c220a2fccaf5a89b7ea21a1940ef514dd47c38e86784fc13ee32a992e3061c5"
+    },
+    "feature_tests": {
+      "path": "tests/data_collector_tests/test_a_share_three_day_walkforward_campaign041_features.py",
+      "sha256": "4221f4918762c844ae5de7b167215a59f15d4066ab85d7d48207bf3d2642990c"
+    },
+    "terminal_tests": {
+      "path": "tests/data_collector_tests/test_a_share_three_day_walkforward_campaign041_terminal.py",
+      "sha256": "217a420dfb4600fd605244f8231baf37edac07d0ada77f08db88ebfe135cb47a"
+    },
+    "no_return_audit": {
+      "path": "data/experiments/short_horizon/historical_walkforward/campaign_041/no_return/20260731T072630Z_campaign041_no_return_audit.json",
+      "sha256": "fe00c12d6cb1ebfbb0c7eb31e7f43e188f845ae41a4efff5ebbc9d7230fcf52b"
+    },
+    "feature_snapshot": {
+      "path": "/Volumes/DIsk/qlib-a-share-tushare-1m/derived/a_share/rich/tushare/minute_walkforward_campaign041_feature_library/tushare_stk_mins_1m_2019_2025_ea0cbb8f_walkforward_campaign041_feature_library_v1/snapshot_manifest.json",
+      "sha256": "838f71169e90d33e9ebbfd34d62dd2c4969432454eeaa69ae6601bb6fdc95391",
+      "dataset_sha256": "d330e806262d5e3187649273aea14bb20e53d13cc18edfbc8d8dd0616aa0ac0b"
+    },
+    "unified_research_report": {
+      "path": "data/experiments/short_horizon/three_day_research_report.md",
+      "sha256": "942e68eb387aebfd35564a9d3bbb0cb41c4a2492ce3caf165631bbec43ee7efe"
+    },
+    "data_pipeline_documentation": {
+      "path": "docs/a_share_data_pipeline.md",
+      "sha256": "edb9bb3bcda55b6af0464ee33dc45d241dfc9c0bec84dae62f1e3ec10e5950ca"
+    },
+    "manage_qlib_a_share_data_skill": {
+      "path": "/Users/niyufei/.codex/skills/manage-qlib-a-share-data/SKILL.md",
+      "sha256": "e3fbe0460e15fe9b1704d41d035b5f32e85967dcf68c8dbc0d7fe5fa74b97cc9"
+    },
+    "candidate49_signal_ledger": {
+      "path": "data/experiments/short_horizon/candidate49_future_signal_ledger.json",
+      "sha256": "5193f00d7f36da003f53cec387900da4c3d002299f5dfcfc1a95eaa199ed3a79"
+    },
+    "candidate49_execution_ledger": {
+      "path": "data/experiments/short_horizon/candidate49_future_execution_ledger.json",
+      "sha256": "d57a3e61eac969e42cafa418ccd8c0a5ee65dcf69da145bb2c096c2a02a2ea4f"
+    },
+    "last_candidate49_source_failure_record": {
+      "path": "docs/a_share_candidate49_20260730_daily_source_failure_record.json",
+      "sha256": "7c3e85ff0c0110eb5cffb04189db7969e7f946b2f76cf25c2aeb66f91e1cdf79"
+    },
+    "candidate49_future_session_workflow": {
+      "path": "scripts/a_share_tushare_candidate49_future_session_workflow.py",
+      "sha256": "0ee21715af9ee276cb4e50c4234ef15ad3d3b730b014712ae4ad19829908b69e"
+    }
+  },
+  "verification_summary": {
+    "focused_campaign041_tests_passed": 13,
+    "focused_tests_failed": 0,
+    "full_data_collector_tests_passed": 1601,
+    "full_data_collector_tests_failed": 0,
+    "full_data_collector_test_warnings": 13,
+    "terminal_research_record_binding_count": 16,
+    "terminal_research_record_binding_failures": 0,
+    "no_return_audit_freeze_binding_count": 8,
+    "no_return_audit_freeze_binding_failures": 0,
+    "post_result_transition_binding_count": 14,
+    "post_result_transition_binding_failures": 0,
+    "candidate49_semantic_ledger_validation": "passed_read_only",
+    "candidate49_signal_entry_count": 0,
+    "candidate49_execution_entry_count": 0,
+    "candidate49_ledgers_unchanged": true,
+    "repository_dotenv_mode": "0600",
+    "TUSHARE_TOKEN_nonempty": true,
+    "secret_value_printed_hashed_or_persisted": false,
+    "active_daily_data_root": "/Users/niyufei/Coding/qlib/data",
+    "local_check_time": "2026-07-31T15:35:32+08:00",
+    "same_date_16_30_boundary_reached": false,
+    "provider_plan_or_run_attempted": false,
+    "current_scoring_selection_sizing_or_orders_performed": false
+  },
+  "terminal_decision": {
+    "campaign041_terminal": true,
+    "terminal_stage": "no_return_uniqueness_gate",
+    "coverage_gate_passed": true,
+    "uniqueness_gate_passed": false,
+    "failed_comparison_factors": [
+      "intraday_adjacent_range_overlap_continuity_238p",
+      "intraday_intrabar_range_participation_entropy_240m"
+    ],
+    "failed_absolute_median_daily_rank_correlations": [
+      0.836224378645272,
+      0.8017225564350808
+    ],
+    "development_preregistration_created": false,
+    "historical_daily_price_or_forward_return_read": false,
+    "development_trial_count": 0,
+    "2024_2025_opened": false,
+    "2024_2025_returns_read": false,
+    "historical_development_trial_count": 259,
+    "current_historical_aggregation_candidate_count": 0,
+    "candidate49_remains_only_active_prospective_candidate": true,
+    "candidate50_activation_allowed": false,
+    "campaign042_requires_independent_pre_value_concept": true
+  }
+}

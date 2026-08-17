@@ -1,0 +1,24 @@
+{
+  "schema_version": 1,
+  "kind": "a_share_three_day_walkforward_campaign121_infrastructure_failure",
+  "status": "recorded_during_metadata_only_tests_before_partition_reopen",
+  "recorded_at": "2026-08-14T02:14:00+08:00",
+  "attempt_id": "campaign121_infrastructure_011",
+  "phase": "snapshot_recovery_verifier_synthetic_validation",
+  "failure": {
+    "exit_code": 1,
+    "class": "missing_wrapper_constant_export",
+    "message": "Campaign121's feature wrapper does not export RAW_MANIFEST_SHA256 although the manifest and preregistration bind the immutable raw digest.",
+    "passed_tests": 2,
+    "failed_tests": 2
+  },
+  "safe_recovery": "Bind the already frozen literal raw-manifest SHA256 in the verifier only; do not modify the feature builder, manifest, partitions, protocol or formula.",
+  "research_boundary": {
+    "candidate_partition_values_reopened": false,
+    "comparator_values_read": false,
+    "historical_daily_price_or_forward_return_values_read": false,
+    "provider_request_issued": false,
+    "candidate49_ledgers_changed": false,
+    "scientific_result_changed": false
+  }
+}

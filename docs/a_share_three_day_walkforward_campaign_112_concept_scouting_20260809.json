@@ -1,0 +1,117 @@
+{
+  "schema_version": 1,
+  "kind": "a_share_three_day_walkforward_campaign112_concept_scouting",
+  "status": "terminal_zero_selected_candidates_before_campaign112_source_candidate_comparison_daily_price_or_return_values",
+  "recorded_at": "2026-08-09T00:44:19+08:00",
+  "purpose": "Review a finite Campaign112 catalog against the complete v73 mechanism and source-semantic frontier before reading any Campaign112 source row, candidate value, comparator value, daily price, or forward return.",
+  "authoritative_inputs": {
+    "iteration_state": {
+      "path": "docs/a_share_three_day_iteration_status_20260809_campaign111_prevalue_terminal.json",
+      "sha256": "90a9831c7100553dbd34e0e7724e683c5d073c9ec839c294ce3bdc5685803a9c"
+    },
+    "numeric_policy_v73": {
+      "path": "docs/a_share_three_day_walkforward_future_numeric_comparison_eligibility_policy_v73_20260809.json",
+      "sha256": "4e6080a952e5bd4227dc5de60421cafbea325ddfbe022a87db3452739dd7b7b2",
+      "complete_definition_count": 140,
+      "complete_definition_order_sha256": "c06e054bd76a7eb32a88a8a119abf5a0b7da2d017620ce7d870c9bb1c361c3c4",
+      "numeric_comparator_count": 134,
+      "numeric_comparator_order_sha256": "31d788db467f558a0ac538315343090f1b3ad4cb27a26136a49ebaa88b2fdbf2"
+    },
+    "historical_walkforward_policy": {
+      "path": "docs/a_share_three_day_historical_walkforward_research_policy_20260727.json",
+      "sha256": "38426d6161b9bfed323c58caba18feca668b8c9d53e294951a8ba90c01a798bb"
+    }
+  },
+  "finite_prevalue_concept_catalog": [
+    {
+      "name": "intraday_cross_sectional_return_rank_breadth_238m",
+      "proposed_formula": "At each of the 238 within-half return positions, average-tie percentile-rank every stock against the same-clock cross-section, then average one stock's 238 ranks.",
+      "decision": "rejected_before_source_rows_or_values",
+      "reason": "Campaign063 explicitly rejected cross-sectional percentile-rank state operators before values, and the frozen market-neutral drift, market sign, and relative-state families already consume the same synchronous peer-return information. Replacing the frozen z-state or residual statistic with a same-clock Borda average after their results is an operator rescue, not a new source state.",
+      "binding_evidence": [
+        "docs/a_share_three_day_walkforward_campaign_063_concept_scouting.json",
+        "docs/a_share_three_day_walkforward_campaign_063_mechanism_overlap_audit.json"
+      ]
+    },
+    {
+      "name": "intraday_one_tick_bid_ask_bounce_resilience_236p",
+      "proposed_formula": "Reward the absence of consecutive opposite-signed exact one-CNY-0.01-tick raw-close moves inside each half session.",
+      "decision": "rejected_before_source_rows_or_values",
+      "reason": "Campaign104 already rejected conditioning the exposed raw tick-grid state on adjacent price updates. Adding a two-transition reversal operator further recombines the terminal reversal-energy, direction-continuity, and tick-grid families after exposure; aggregate minute closes do not identify quoted bid-ask states.",
+      "binding_evidence": [
+        "docs/a_share_three_day_walkforward_campaign_104_concept_scouting.json",
+        "docs/a_share_three_day_walkforward_campaign_046_research_record.json"
+      ]
+    },
+    {
+      "name": "intraday_rolling_20_session_clock_profile_surprise_238b",
+      "proposed_formula": "Compare the current 238-position return profile with a same-stock, same-clock baseline estimated from the preceding 20 accepted stock sessions.",
+      "decision": "rejected_before_source_rows_or_values",
+      "reason": "The accepted minute snapshot begins in 2019, so an exact 20-session history creates a deterministic early-sample cold start already prohibited by the known-support gate. It also replaces the frozen exact-prior-session profile mechanisms with a selected rolling estimator and lookback after their results were observed.",
+      "nearest_frozen_definitions": [
+        "intraday_day_over_day_absolute_return_profile_similarity_238b",
+        "intraday_day_over_day_directional_return_agreement_238b",
+        "intraday_day_over_day_realized_variance_stability_238b"
+      ]
+    },
+    {
+      "name": "accepted_instrument_continuous_trading_streak_20s",
+      "proposed_formula": "Reset a capped 20-session continuity clock whenever a stock has no accepted market-session observation and rank the post-gap seasoning state higher.",
+      "decision": "rejected_before_source_rows_or_values",
+      "reason": "A missing minute stock-session is not an accepted point-in-time suspension event: it may reflect suspension, source omission, incomplete coverage, listing boundary, or delisting. Ranking that absence would turn a fail-closed data/eligibility state into a favorable or unfavorable factor without an accepted suspension-history source. It also behaves as an execution eligibility gate rather than a cross-sectional return mechanism.",
+      "required_new_semantics_if_revisited": "A separately fingerprinted point-in-time exchange suspension/resumption source that distinguishes true suspension from provider absence before any factor row."
+    },
+    {
+      "name": "full_numeric_library_tree_interaction_model_134f",
+      "proposed_formula": "Fit a nonlinear tree interaction model on all 134 frozen-direction numeric components inside each expanding training fold.",
+      "decision": "rejected_before_component_or_return_values",
+      "reason": "Campaign102 already consumed the separately frozen supervised complete-library family, and Campaign103/v73 explicitly forbid changing model, target, component treatment, reweighting, or interaction architecture as a retry. A tree now would select interactions after observing the bounded-simplex and later complete-library failures.",
+      "binding_evidence": [
+        "docs/a_share_three_day_walkforward_campaign_102_terminal_result_binding_20260807.json",
+        "docs/a_share_three_day_walkforward_campaign_103_concept_scouting.json"
+      ]
+    },
+    {
+      "name": "tushare_top_list_recent_event_intensity",
+      "proposed_formula": null,
+      "decision": "deferred_requires_new_source_acceptance_not_selected",
+      "reason": "The only accepted local top_list evidence is one completed-session entitlement sample whose raw table contains exact duplicates and remains pending event-time alignment and canonicalization. It is not a 2019-2025 point-in-time source and cannot support a historical formula, capacity gate, or walk-forward trial. Creating a full source would require a separate pre-row contract and provider workflow, which Campaign112 does not authorize.",
+      "binding_evidence": [
+        "data/metadata/rich_data/runs/20260716T081652Z_tushare_events_6264ce79.json"
+      ]
+    }
+  ],
+  "prevalue_decision": {
+    "complete_logical_definitions_reviewed": 140,
+    "complete_definition_order_sha256": "c06e054bd76a7eb32a88a8a119abf5a0b7da2d017620ce7d870c9bb1c361c3c4",
+    "concepts_reviewed": 6,
+    "rejected_concept_count": 5,
+    "deferred_new_source_concept_count": 1,
+    "selected_candidate_count": 0,
+    "genuinely_independent_existing_data_mechanism_found": false,
+    "campaign112_candidate_formula_frozen": false,
+    "campaign112_source_or_candidate_values_may_be_read": false,
+    "comparison_values_may_be_read": false,
+    "historical_daily_price_or_forward_return_values_may_be_read": false,
+    "terminalize_campaign112_without_feature_snapshot_or_development_trial": true
+  },
+  "research_boundary": {
+    "prior_definition_names_directions_protocols_schema_metadata_and_terminal_results_read": true,
+    "campaign112_source_rows_read": false,
+    "campaign112_candidate_values_computed_or_read": false,
+    "campaign112_comparator_values_read": false,
+    "historical_daily_price_fields_read": [],
+    "historical_forward_returns_read": false,
+    "provider_request_issued": false,
+    "candidate49_historical_backfill_performed": false,
+    "candidate49_ledgers_changed": false,
+    "second_prospective_candidate_created": false,
+    "current_scoring_selection_sizing_or_orders_performed": false,
+    "investment_advice": false
+  },
+  "frontier_conclusion": {
+    "existing_minute_ohlcv_amount_operator_search_should_continue": false,
+    "reason": "The proposed remaining transforms are post-exposure recombinations of a 140-definition library; another operator sweep would increase multiplicity without adding an identified state.",
+    "next_research_domain": "Only a separately accepted point-in-time source state not represented by aggregate minute OHLCV/amount, daily turnover, quarterly fields, or prior terminal event sources."
+  }
+}

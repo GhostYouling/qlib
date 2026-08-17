@@ -1,0 +1,109 @@
+{
+  "schema_version": 1,
+  "kind": "a_share_three_day_walkforward_campaign123_namechange_adapter_and_formula_freeze",
+  "status": "frozen_after_synthetic_tests_before_provider_request_source_candidate_comparator_price_or_return_values",
+  "recorded_at": "2026-08-14T03:25:04+08:00",
+  "authoritative_inputs": {
+    "source_contract": {
+      "path": "docs/a_share_three_day_walkforward_campaign_123_namechange_source_contract_20260814.json",
+      "sha256": "00cae705f293de929c7c9c168500efce1506b1ac0ceb2dd902b3c451039d9d8c"
+    },
+    "numeric_policy_v120": {
+      "path": "docs/a_share_three_day_walkforward_future_numeric_comparison_eligibility_policy_v120_20260814.json",
+      "sha256": "96e09b6fe659e4c856f05211ba36585ea60105ad5442f92bf9affd46ba6d01bc"
+    },
+    "historical_walkforward_policy": {
+      "path": "docs/a_share_three_day_historical_walkforward_research_policy_20260727.json",
+      "sha256": "38426d6161b9bfed323c58caba18feca668b8c9d53e294951a8ba90c01a798bb"
+    }
+  },
+  "pure_adapter_freeze": {
+    "implementation": {
+      "path": "scripts/a_share_three_day_walkforward_campaign123_namechange.py",
+      "sha256": "6c70f0ffd7b0f441ad32c298254bfe65ace9ad38123197e287f3b0ab93ed6eca"
+    },
+    "synthetic_tests": {
+      "path": "tests/data_collector_tests/test_a_share_three_day_walkforward_campaign123_namechange.py",
+      "sha256": "1e7cc39105ed73f176fd693814cdc401ddfaeda15b7c9e4a1a2097062665de11"
+    },
+    "source_contract_sha256_embedded_in_adapter": true,
+    "transport_or_cli_implementation_present": false,
+    "credential_or_environment_access_present": false,
+    "source_projection": [
+      "ts_code",
+      "start_date",
+      "end_date",
+      "ann_date",
+      "change_reason"
+    ],
+    "name_field_mechanically_rejected": true,
+    "strict_reason_token": "改名",
+    "strict_date_formats": {
+      "provider_dates": "YYYYMMDD",
+      "accepted_sessions": "YYYY-MM-DD"
+    },
+    "canonicalization": {
+      "supported_instruments": "SSE main board and SZSE main board/ChiNext only",
+      "cross_exchange_code_policy": "fatal",
+      "complete_unsupported_code_policy": "exclude_and_count",
+      "exact_repeat_policy": "collapse_and_count",
+      "same_instrument_start_date_conflict_policy": "fatal_even_across_reason_categories",
+      "free_text_normalization_or_classification": false
+    }
+  },
+  "single_factor_definition": {
+    "name": "official_pure_security_rename_recency_60s",
+    "formula": "For each signal session, the information date is max(start_date, ann_date), the event becomes effective on the first accepted local session strictly after that date, age is the accepted-session distance from the latest effective pure rename, and finite score is (59-age)/59 only for ages 0 through 59.",
+    "score_direction": "higher",
+    "raw_range": {
+      "minimum_inclusive": 0.0,
+      "maximum_inclusive": 1.0
+    },
+    "missing_rule": "No active pure rename is missing, never zero or an unaffected-control value.",
+    "age_0_score": 1.0,
+    "age_59_score": 0.0,
+    "age_60_state": "missing",
+    "latest_event_only": true,
+    "complete_definition_appended_now": true,
+    "numeric_comparator_appended_now": false,
+    "historical_candidate_values_materialized": false,
+    "prospective_candidate_registered": false
+  },
+  "complete_library_semantic_review": {
+    "complete_definition_count_reviewed_without_values": 147,
+    "complete_definition_order_sha256": "3f3756a4128011d9cd718e97d23ee3b1c78022433b269c75bd715f304a055bf0",
+    "eligible_numeric_comparator_count_reserved_without_values": 139,
+    "eligible_numeric_comparator_order_sha256": "9c4de054ca1b83eced67eece256b024ebec3a6e1925de17a4cedfa7d36265161",
+    "mechanism_overlap_audit": {
+      "path": "docs/a_share_three_day_walkforward_campaign_123_mechanism_overlap_audit_20260814.json",
+      "sha256": "4abda5abecc96cb3af7d7c80701935636a053ae642e390eaf8f25b1f028d326c"
+    },
+    "old_terminal_definition_or_result_rewritten": false,
+    "old_terminal_factor_combined": false
+  },
+  "verification": {
+    "black_check": "passed; 2 files left unchanged",
+    "ruff_check": "passed",
+    "synthetic_pytest": "12 passed in 0.06s",
+    "provider_rows_used_by_tests": false,
+    "historical_factor_or_return_values_used_by_tests": false
+  },
+  "next_gate": {
+    "allowed": "Freeze a one-shot entitlement-safe source acceptance planner bound to the exact projection, adapter, tests, contract, calendar, universe and failure semantics.",
+    "not_allowed": "Do not issue a provider request, load the credential, inspect or count provider rows, compute historical candidate/comparator values, read prices/returns, open 2024-2025, or register a second prospective candidate yet."
+  },
+  "research_boundary": {
+    "provider_request_issued": false,
+    "credential_loaded": false,
+    "provider_rows_read_persisted_or_counted": false,
+    "candidate_or_comparison_values_read": false,
+    "historical_daily_price_fields_read": [],
+    "historical_forward_returns_read": false,
+    "stress_2024_2025_opened": false,
+    "candidate49_historical_backfill_performed": false,
+    "candidate49_ledgers_changed": false,
+    "second_prospective_candidate_created": false,
+    "current_scoring_selection_sizing_positions_or_orders_performed": false,
+    "investment_advice": false
+  }
+}

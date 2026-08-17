@@ -1,0 +1,98 @@
+{
+  "version": 1,
+  "kind": "a_share_three_day_walkforward_campaign024_concept_scouting",
+  "status": "one_independent_directional_range_response_concept_selected_before_candidate_values_comparison_values_or_returns",
+  "recorded_at": "2026-07-29T09:21:33Z",
+  "purpose": "Select one economically interpretable Campaign024 mechanism without opening a Campaign024 minute partition, candidate value, comparison value, daily price, or forward return.",
+  "authoritative_boundary": {
+    "path": "docs/a_share_three_day_iteration_status_20260729_campaign023.json",
+    "sha256": "e48028360965e0cd22e9dab736bae7beb4d1a9d94a9c8f9ba7870ff9b92830cc",
+    "campaign024_concept_scouting_allowed": true,
+    "candidate49_remains_only_prospective_candidate": true,
+    "candidate50_activation_allowed": false
+  },
+  "selected_concept": {
+    "concept_name": "intraday_directional_range_response_coupling",
+    "mechanism_family": "one_minute_signed_body_to_next_range_response",
+    "economic_question": "Does the signed within-minute auction body predict expansion or contraction of the immediately following minute's traded range, indicating directional information followed by broader price discovery or acceptance?",
+    "economic_hypothesis": "If upward within-minute repricing is systematically followed by a wider next-minute traded interval, the initial directional information may be receiving continued price discovery rather than ending inside the source bar. That response pattern may persist from the next open through the third close.",
+    "provisional_direction": "higher",
+    "allowed_source_fields": [
+      "datetime",
+      "symbol",
+      "provider",
+      "open",
+      "high",
+      "low",
+      "close"
+    ],
+    "forbidden_source_fields": [
+      "volume",
+      "amount",
+      "daily open",
+      "daily high",
+      "daily low",
+      "daily close",
+      "daily volume",
+      "daily amount",
+      "forward return",
+      "Level-2"
+    ],
+    "fixed_temporal_question": "Use only one-step transitions wholly inside the 09:31-11:30 and 13:01-15:00 halves; exclude standalone 09:30, lunch, overnight, cross-day, and cross-stock transitions.",
+    "mandatory_overlap_challenges_before_any_value": [
+      "intraday_intrabar_body_range_efficiency_240m",
+      "intraday_intrabar_range_reversal_238p",
+      "intraday_gap_body_continuation_240m",
+      "intraday_midrange_width_change_coupling_238p",
+      "intraday_range_volume_coupling_240m",
+      "intraday_body_direction_continuity_238p",
+      "intraday_intrabar_close_location_pressure_240m",
+      "intraday_range_boundary_translation_coherence_238p",
+      "intraday_prior_range_breakout_intensity_238p",
+      "candidate49_intraday_cumulative_vwap_crossing_rate_240m_v1"
+    ],
+    "known_design_risks": [
+      "body definition, range definition, lag alignment, correlation versus covariance or regression, lunch handling, zero bodies or ranges, variance requirements, direction, and subwindows are researcher degrees of freedom unless frozen before values",
+      "the candidate may be statistically redundant with body-range efficiency, body-direction continuity, range reversal, boundary translation, or close-location pressure even though its lead-response question is different",
+      "a wider range after an up body may indicate continued information incorporation or unstable exhaustion, so the predictive direction must be frozen before returns",
+      "using contemporaneous body-range association, activity, thresholds, ranks, extra lags, market peers, or alternate subwindows would change the mechanism"
+    ]
+  },
+  "rejected_concepts": [
+    {
+      "concept": "own_return_lag_correlation_or_time_irreversibility",
+      "reason": "Directional serial dependence, sign-run, return skewness, and bipower/realized-variance families are terminal; changing the return transform or lag would reopen consumed mechanisms."
+    },
+    {
+      "concept": "intrabar_wick_or_open_location_asymmetry",
+      "reason": "Wick splits and open/close relocation inside the bar are too close to terminal body-range efficiency, own-bar close-location pressure, and the Campaign023 boundary family."
+    },
+    {
+      "concept": "range_timing_or_volatility_of_volatility",
+      "reason": "Range entropy, range reversal, volatility resolution, late-window, and time-allocation families are terminal; changing weights, partitions, or higher moments would be a prohibited variant."
+    },
+    {
+      "concept": "body_volume_confirmation",
+      "reason": "This would overlap terminal range-volume, amount-volatility, and up-move amount mechanisms and would violate their frozen prohibited substitutions."
+    },
+    {
+      "concept": "terminal_factor_combination",
+      "reason": "Combining, aggregating, or transforming Campaign001-Campaign023 terminal definitions is prohibited."
+    }
+  ],
+  "decision": {
+    "advance_to_separate_no_value_mechanism_overlap_audit": true,
+    "exact_formula_or_direction_fixed_here": false,
+    "new_daily_bar_required": false,
+    "same_day_1630_wait_required": false,
+    "candidate49_ledgers_changed": false
+  },
+  "research_boundary": {
+    "external_campaign024_minute_partitions_read": false,
+    "candidate_values_read": false,
+    "comparison_values_read": false,
+    "daily_price_fields_read": false,
+    "forward_returns_read": false,
+    "provider_request_issued": false
+  }
+}

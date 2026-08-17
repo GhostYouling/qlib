@@ -1,0 +1,56 @@
+{
+  "schema_version": 1,
+  "kind": "a_share_three_day_walkforward_campaign097_no_return_audit_implementation_freeze_v4",
+  "status": "total_denominator_alignment_repair_frozen_before_campaign097_coverage_comparison_or_return_values",
+  "frozen_at": "2026-08-07T06:19:00Z",
+  "purpose": "Restore the preregistered total quality-listing denominator by left-aligning candidate observations and retaining absent minute observations as missing before coverage is measured.",
+  "v3_audit_runner": {
+    "path": "scripts/a_share_three_day_walkforward_campaign097_no_return_audit_v3.py",
+    "sha256": "0e22daebbab70fc9aaa5cd1dcc1fb051a30f011e5a35e6f054c18ecfe9f804b4"
+  },
+  "v3_implementation_freeze": {
+    "path": "docs/a_share_three_day_walkforward_campaign_097_no_return_audit_implementation_freeze_v3_20260807.json",
+    "sha256": "8171fb7e6fa43b7fba7b675867e5be5800f070c378dd6f45da717beb53a73ba5"
+  },
+  "v3_activation_binding": {
+    "path": "docs/a_share_three_day_walkforward_campaign_097_no_return_audit_activation_binding_v3_20260807.json",
+    "sha256": "d25f59a838726bc8aa0824e76be1b55ae4ca93e99a4529a8ecc6fde4fdbcc11c"
+  },
+  "v3_failure_record": {
+    "path": "docs/a_share_three_day_walkforward_campaign_097_no_return_audit_total_denominator_alignment_failure_20260807.json",
+    "sha256": "3c7bb1611eff37ccb8602e3b0a9515c0e4e24eeb8c0a4f2e0865acb2981c7d95"
+  },
+  "v4_audit_runner": {
+    "path": "scripts/a_share_three_day_walkforward_campaign097_no_return_audit_v4.py",
+    "sha256": "34c1a7524244a8246c1a9ec89f1ade601f880c8f806368e9e5cb8e3d43f853c8"
+  },
+  "v4_tests": {
+    "path": "tests/data_collector_tests/test_a_share_three_day_walkforward_campaign097_no_return_audit_v4.py",
+    "sha256": "0077a3c02798b90551c4feead79ad582fea57cbbc2fabaa5a2de3092858cda62",
+    "result_with_v1_v2_and_v3_tests": "20 passed"
+  },
+  "repair_scope": "left-align candidate observations onto every frozen quality-listing denominator key and retain unmatched rows as NaN",
+  "frozen_alignment_semantics": {
+    "denominator": "all 1331759 frozen quality-listing stock_day_key rows in exact order",
+    "matched_candidate_key": "retain the exact frozen candidate value including formula-level NaN",
+    "unmatched_candidate_key": "retain denominator row and assign NaN",
+    "duplicate_candidate_key": "fail closed",
+    "nonmonotone_or_duplicate_denominator_key": "fail closed",
+    "finite_value_outside_minus_one_plus_one": "fail closed"
+  },
+  "unchanged_semantics": [
+    "full snapshot byte verification",
+    "factor formula and direction",
+    "coverage and capacity denominator and thresholds",
+    "125-comparator order and uniqueness thresholds",
+    "historical daily price and return embargo",
+    "Candidate49 isolation"
+  ],
+  "identity_missing_count_computed_before_v4_freeze": false,
+  "coverage_or_capacity_metrics_computed_before_v4_freeze": false,
+  "comparison_values_read_before_v4_freeze": false,
+  "historical_daily_price_or_forward_return_values_read_before_v4_freeze": false,
+  "provider_request_issued_before_v4_freeze": false,
+  "candidate49_ledgers_changed_before_v4_freeze": false,
+  "current_scoring_selection_sizing_or_orders_performed_before_v4_freeze": false
+}

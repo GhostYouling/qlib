@@ -1,0 +1,44 @@
+{
+  "schema_version": 1,
+  "kind": "a_share_three_day_walkforward_campaign118_development_activation_binding",
+  "status": "single_use_frozen_before_campaign118_2019_2023_daily_price_or_return_values",
+  "recorded_at": "2026-08-13T22:39:00+08:00",
+  "purpose": "Authorize exactly one frozen Campaign118 development trial on 2019-2023 only after no-return coverage and all 135 ordered uniqueness gates passed.",
+  "development_preregistration": {
+    "path": "docs/a_share_three_day_walkforward_campaign_118_preregistration.json",
+    "sha256": "b6cae5dcb7676e0beb237c1e29a00d1f240cd6171aa7e67bb4912a7255c52a93"
+  },
+  "runner": {
+    "path": "scripts/a_share_three_day_walkforward_campaign118.py",
+    "sha256": "6ed993342ed8d5be9c0cd8e4703981196f6e4734e0b6ed19ace4dc0d045cc93f"
+  },
+  "implementation_freeze": {
+    "path": "docs/a_share_three_day_walkforward_campaign_118_development_implementation_freeze_20260813.json",
+    "sha256": "b142c831dfd898896570c1f202d1399f56229db4cbfa39b68a12fe77e07f15b4"
+  },
+  "no_return_admission": {
+    "path": "data/experiments/short_horizon/historical_walkforward/campaign_118/uniqueness/campaign118_ordered_uniqueness_audit.json",
+    "sha256": "0cf2d60e8a2bbeb3fbbef2993207f8e52e72377a6a3d3acf7be11141fe8d06a4",
+    "admissible_factor_count": 1,
+    "numeric_comparisons_passed": 135,
+    "maximum_observed_absolute_median_daily_rank_correlation": 0.629874319235589
+  },
+  "candidate_snapshot": {
+    "path": "/Volumes/DIsk/qlib-a-share-tushare-1m/derived/a_share/rich/tushare/minute_walkforward_campaign118_feature_library/tushare_stk_mins_1m_2019_2025_ea0cbb8f_walkforward_campaign118_feature_library_v1/snapshot_manifest.json",
+    "sha256": "194c2ef2f81c1906c3e94a85e26ce97d7d82dba567b54128cf6e9086e3a027bd",
+    "dataset_sha256": "19495eb562683e1e14fbe5e9a9730e6d614b481f7642c3da824ea36fdb4d5e2b"
+  },
+  "trial_count": 1,
+  "trial_id": "wf118_intraday_top_decile_amount_event_spacing_entropy_25g_single_higher",
+  "trial_scope": "2019-2023 expanding walk-forward development only",
+  "single_use": true,
+  "research_boundary": {
+    "historical_daily_price_or_forward_return_values_read_before_activation": false,
+    "stress_2024_2025_opened_before_activation": false,
+    "candidate49_ledgers_changed_before_activation": false,
+    "provider_request_issued_before_activation": false
+  },
+  "stress_opening_rule": "Remain closed unless this sole frozen development trial survives every inherited gate and the nonzero survivor record is frozen before any 2024-2025 return read.",
+  "current_scoring_selection_sizing_positions_or_orders_allowed": false,
+  "investment_advice": false
+}

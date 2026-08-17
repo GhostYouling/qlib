@@ -1,0 +1,75 @@
+{
+  "version": 1,
+  "kind": "a_share_three_day_walkforward_campaign079_research_record",
+  "status": "terminal_prevalue_semantic_overlap_no_numeric_audit_or_returns",
+  "recorded_at": "2026-08-06T07:15:52Z",
+  "campaign_id": "a_share_three_day_walkforward_campaign_079",
+  "factor_definition": {
+    "name": "signal_day_turnover_rate_pct",
+    "direction": "higher",
+    "formula": "accepted provider raw signal-session turnover rate percentage",
+    "original_hypothesis": "High signal-day turnover may represent broad attention and ownership transfer that persists for three sessions.",
+    "terminal_rejection": "The raw turnover level is not independent from the previously tested turnover_surge/turnover-level/change family; changing the old normalization or window would be rescue, not a new mechanism.",
+    "same_campaign_redefinition_transform_lag_inversion_filter_model_or_combination_allowed": false
+  },
+  "prevalue_evidence": {
+    "concept_scouting": {
+      "path": "docs/a_share_three_day_walkforward_campaign_079_concept_scouting.json",
+      "sha256": "518dccfb1e8e27df1497c437ed27e989bdfb033c5e23351f74ff8a58d470be81"
+    },
+    "invalid_mechanism_audit": {
+      "path": "docs/a_share_three_day_walkforward_campaign_079_mechanism_overlap_audit.json",
+      "sha256": "d9c8a079a3052589398c32c46a6f057908475ee2bcf60391581e636ac881d741",
+      "preserved": true
+    },
+    "effective_correction": {
+      "path": "docs/a_share_three_day_walkforward_campaign_079_mechanism_overlap_correction_20260806.json",
+      "sha256": "ca74012410fb7beb6111cf5f14932bab5e3dfcbd01ee80d0384d01745f47c179"
+    },
+    "attempt_ledger": {
+      "path": "data/experiments/short_horizon/historical_walkforward/campaign_079/research_attempt_ledger_v1.json",
+      "sha256": "fb2e9279846543b045fe0067ba795af0f2c3c0d564fbc4b925a5ebcdd60e02a5"
+    },
+    "numeric_policy_v15": {
+      "path": "docs/a_share_three_day_walkforward_future_numeric_comparison_eligibility_policy_v15_20260806.json",
+      "sha256": "e4df7ab965b003d8f77cbdffa742127e8f118417e6165b52afa6ae30cc5cfb63"
+    }
+  },
+  "value_and_return_boundary": {
+    "daily_status_and_schema_metadata_read": true,
+    "daily_source_rows_read": false,
+    "candidate_values_computed": false,
+    "comparison_values_read": false,
+    "historical_daily_price_fields_read": [],
+    "historical_forward_returns_read": false,
+    "feature_snapshot_created": false,
+    "development_trial_count": 0,
+    "stress_2024_2025_opened": false,
+    "provider_request_issued": false
+  },
+  "attempt_accounting": {
+    "campaign079_infrastructure_failures": 0,
+    "campaign079_complete_factor_attempts": 1,
+    "campaign079_attempts": 1,
+    "campaign079_ledger_entries": 1,
+    "campaign079_return_reading_development_trials": 0,
+    "cumulative_historical_attempts": 484,
+    "cumulative_return_reading_development_trials": 280
+  },
+  "candidate49_future_only_layer": {
+    "remains_only_active_prospective_candidate": true,
+    "signal_ledger_sha256": "5193f00d7f36da003f53cec387900da4c3d002299f5dfcfc1a95eaa199ed3a79",
+    "signal_ledger_entries": 0,
+    "execution_ledger_sha256": "d57a3e61eac969e42cafa418ccd8c0a5ee65dcf69da145bb2c096c2a02a2ea4f",
+    "execution_ledger_entries": 0,
+    "historical_backfill_performed": false,
+    "provider_request_issued": false,
+    "second_prospective_candidate_created": false
+  },
+  "limitations_and_prohibitions": {
+    "current_listing_snapshot_survivorship_bias": true,
+    "historical_result_may_generate_current_scores_selection_sizing_orders_or_investment_advice": false,
+    "campaign079_may_be_reopened_or_rescued": false
+  },
+  "next_action": "Use v15 with 111 complete definitions and the unchanged 109 numeric comparators; Campaign080 may begin offline only from a genuinely independent pre-value-frozen mechanism."
+}

@@ -1,0 +1,118 @@
+{
+  "version": 1,
+  "kind": "a_share_three_day_walkforward_campaign038_verification",
+  "status": "terminal_campaign038_and_candidate49_isolation_verified",
+  "recorded_at": "2026-07-31T02:01:32Z",
+  "purpose": "Bind the Campaign038 terminal record, final tests, documentation, append-only result artifacts, unchanged prospective ledgers, and pre-16:30 provider boundary after the full repository data-collector regression.",
+  "bindings": {
+    "research_record": {
+      "path": "docs/a_share_three_day_walkforward_campaign_038_research_record.json",
+      "sha256": "8ce34322f63ff24eb3d439d85045bae01eac3a22883e62df6c96f1949f6ae902"
+    },
+    "post_result_test_transition": {
+      "path": "docs/a_share_three_day_walkforward_campaign_038_post_result_test_transition_20260731.json",
+      "sha256": "cc688c92cc97f64f5823f8ee7e5214b56382d62a91535e04ca9b5cdead6cbc30"
+    },
+    "campaign_preregistration": {
+      "path": "docs/a_share_three_day_walkforward_campaign_038_preregistration.json",
+      "sha256": "09324d96780d48be9550a22aa13501fece00070571d0c5503e4c437525dfc312"
+    },
+    "campaign_runner": {
+      "path": "scripts/a_share_three_day_walkforward_campaign038.py",
+      "sha256": "0a989ff4491e6275b48b20a581d7b677b2dbf6db0e40054fd3600ceb2336e6db"
+    },
+    "feature_runner": {
+      "path": "scripts/a_share_three_day_walkforward_campaign038_features.py",
+      "sha256": "7980db02fb6aba2766689cbd94d7b93a41268397dc116976e47b76cbeabb4664"
+    },
+    "campaign_tests": {
+      "path": "tests/data_collector_tests/test_a_share_three_day_walkforward_campaign038.py",
+      "sha256": "74fb9ee450f98a20dfda04d1e6f1e15853ca7ebb8330f1c2a049171dd866b728"
+    },
+    "terminal_tests": {
+      "path": "tests/data_collector_tests/test_a_share_three_day_walkforward_campaign038_terminal.py",
+      "sha256": "629d63448d63dbf6016b819ec21d8190e36c98e9ea18aa6ce3041279553b0941"
+    },
+    "feature_tests": {
+      "path": "tests/data_collector_tests/test_a_share_three_day_walkforward_campaign038_features.py",
+      "sha256": "5c6d5082466dde30dc079708331fff1dc87a1237bf227cf729eb4826b84f3ca4"
+    },
+    "trial_ledger": {
+      "path": "data/experiments/short_horizon/historical_walkforward/campaign_038/walkforward/trial_ledger.json",
+      "sha256": "526ed2e1a9193c90e49a9b8cbce754261b4b1e1bb3316cfb0bca14497df998f7"
+    },
+    "development_survivors": {
+      "path": "data/experiments/short_horizon/historical_walkforward/campaign_038/walkforward/development_survivors.json",
+      "sha256": "167186b51687abc60396a51fdc9d3a3d9d58b956e5723019623eda8cc2768517"
+    },
+    "unopened_stress_record": {
+      "path": "data/experiments/short_horizon/historical_walkforward/campaign_038/walkforward/exposed_stress_consumption_record.json",
+      "sha256": "0787ddd61f544f8c6c36ca60f5d7b136615299256fc823a83ce3fd9c8e470e58"
+    },
+    "campaign_report": {
+      "path": "data/experiments/short_horizon/historical_walkforward/campaign_038/walkforward/campaign_report.json",
+      "sha256": "98a9ec9b179ac7f583a8e38aa102513435daaec4b20955f3b69ebc2aaadd5bc9"
+    },
+    "unified_research_report": {
+      "path": "data/experiments/short_horizon/three_day_research_report.md",
+      "sha256": "720b2c0a8531f75a54a8500bc78febd1ac26fe1a7522fe45d9eaae18f235fd5e"
+    },
+    "data_pipeline_documentation": {
+      "path": "docs/a_share_data_pipeline.md",
+      "sha256": "8d75026e220171f5c9afd1eae966ff3226374c1092c9955fbcec11e2b6c2c20a"
+    },
+    "manage_qlib_a_share_data_skill": {
+      "path": "/Users/niyufei/.codex/skills/manage-qlib-a-share-data/SKILL.md",
+      "sha256": "687d1626d04b90cae9c1f59745486983a49cd3338dd721f34609ba47cccff16c"
+    },
+    "candidate49_signal_ledger": {
+      "path": "data/experiments/short_horizon/candidate49_future_signal_ledger.json",
+      "sha256": "5193f00d7f36da003f53cec387900da4c3d002299f5dfcfc1a95eaa199ed3a79"
+    },
+    "candidate49_execution_ledger": {
+      "path": "data/experiments/short_horizon/candidate49_future_execution_ledger.json",
+      "sha256": "d57a3e61eac969e42cafa418ccd8c0a5ee65dcf69da145bb2c096c2a02a2ea4f"
+    },
+    "last_candidate49_source_failure_record": {
+      "path": "docs/a_share_candidate49_20260730_daily_source_failure_record.json",
+      "sha256": "7c3e85ff0c0110eb5cffb04189db7969e7f946b2f76cf25c2aeb66f91e1cdf79"
+    },
+    "candidate49_future_session_workflow": {
+      "path": "scripts/a_share_tushare_candidate49_future_session_workflow.py",
+      "sha256": "0ee21715af9ee276cb4e50c4234ef15ad3d3b730b014712ae4ad19829908b69e"
+    }
+  },
+  "verification_summary": {
+    "focused_tests_passed": 14,
+    "focused_tests_failed": 0,
+    "full_data_collector_tests_passed": 1561,
+    "full_data_collector_tests_failed": 0,
+    "full_data_collector_test_warnings": 13,
+    "research_record_binding_count": 21,
+    "research_record_binding_failures": 0,
+    "post_result_transition_binding_count": 6,
+    "post_result_transition_binding_failures": 0,
+    "campaign_status_expected_trial_count": 1,
+    "campaign_status_ledger_entry_count": 1,
+    "campaign_status_selected_survivor_count": 0,
+    "campaign_status_stress": "not_opened_zero_development_survivors",
+    "development_idempotent_rerun_passed": true,
+    "candidate49_ledgers_unchanged": true,
+    "repository_dotenv_mode": "0600",
+    "TUSHARE_TOKEN_nonempty": true,
+    "secret_value_printed_hashed_or_persisted": false,
+    "same_date_16_30_boundary_reached": false,
+    "provider_plan_or_run_attempted": false,
+    "current_scoring_selection_sizing_or_orders_performed": false
+  },
+  "terminal_decision": {
+    "campaign038_terminal": true,
+    "2024_2025_opened": false,
+    "2024_2025_returns_read": false,
+    "historical_development_trial_count": 258,
+    "current_historical_aggregation_candidate_count": 0,
+    "candidate49_remains_only_active_prospective_candidate": true,
+    "candidate50_activation_allowed": false,
+    "campaign039_requires_independent_pre_value_concept": true
+  }
+}

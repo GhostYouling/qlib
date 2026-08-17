@@ -1,0 +1,59 @@
+{
+  "version": 1,
+  "kind": "a_share_three_day_walkforward_campaign045_feature_snapshot_publication_binding",
+  "status": "immutable_snapshot_published_before_comparison_daily_price_or_return_values",
+  "recorded_at": "2026-07-31T20:24:00Z",
+  "purpose": "Bind the first and only published Campaign045 feature snapshot before enabling its ordered no-return audit.",
+  "source_chain": {
+    "effective_prepublication_implementation_freeze": {
+      "path": "docs/a_share_three_day_walkforward_campaign_045_feature_implementation_freeze_v2_20260801.json",
+      "sha256": "41b2bad35c61c77a848e1f8446212a42e5f3decd991a4b472a1a17634e6b1fde"
+    },
+    "prepublication_feature_implementation": {
+      "path": "scripts/a_share_three_day_walkforward_campaign045_features.py",
+      "sha256": "f1ad590487d6bd28b0b42160eaab31f9a540c8f589b6e79a1511a251a524d116"
+    },
+    "no_return_preregistration": {
+      "path": "docs/a_share_three_day_walkforward_campaign_045_no_return_preregistration.json",
+      "sha256": "886fab70da8584fdf43cec921064b2891e5477b7118be979313e1950260b145e"
+    },
+    "snapshot_manifest": {
+      "path": "/Volumes/DIsk/qlib-a-share-tushare-1m/derived/a_share/rich/tushare/minute_walkforward_campaign045_feature_library/tushare_stk_mins_1m_2019_2025_ea0cbb8f_walkforward_campaign045_feature_library_v1/snapshot_manifest.json",
+      "sha256": "896ecf82cf6d9b8b0609bcb6b28345de57a91980ddd3d8d196e69a51ffbf72d8",
+      "dataset_sha256": "96d875a6e9699c771ba8f217400cc15c5d4c36ade2b86422c6ee8f8b2f179fae"
+    }
+  },
+  "snapshot_summary": {
+    "partitions": 33015,
+    "rows": 7724498,
+    "eligible_rows": 7692709,
+    "eligible_share": 0.995884264891251,
+    "degenerate_reactive_correlation_rows": 29432,
+    "degenerate_anticipatory_correlation_rows": 31767,
+    "invalid_nonpositive_close_or_negative_amount_rows": 0,
+    "range_or_nonfinite_score_rows": 0,
+    "resumed_partitions": 0,
+    "source_fields_read": [
+      "datetime",
+      "symbol",
+      "provider",
+      "close",
+      "amount"
+    ],
+    "source_open_high_low_or_volume_read": false,
+    "historical_daily_price_fields_read": [],
+    "historical_forward_return_fields_read": false,
+    "comparison_factor_values_read": false
+  },
+  "attempt_accounting": {
+    "campaign045_attempt_ordinal": 2,
+    "kind": "no_return_candidate_snapshot_attempt",
+    "first_attempt_was_pre_value_infrastructure_failure": true,
+    "return_reading_development_trials": 0
+  },
+  "decision": {
+    "snapshot_manifest_sha256_to_bind_in_runner": "896ecf82cf6d9b8b0609bcb6b28345de57a91980ddd3d8d196e69a51ffbf72d8",
+    "snapshot_dataset_sha256_to_bind_in_runner": "96d875a6e9699c771ba8f217400cc15c5d4c36ade2b86422c6ee8f8b2f179fae",
+    "next_action": "Bind only these two immutable fingerprints, rerun synthetic tests and full snapshot file verification, then execute coverage before any comparison value."
+  }
+}

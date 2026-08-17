@@ -1,0 +1,35 @@
+{
+  "version": 1,
+  "kind": "a_share_three_day_walkforward_campaign085_feature_implementation_prevalue_defect",
+  "status": "v1_unexecutable_parent_directory_creation_missing_before_temporary_root",
+  "recorded_at": "2026-08-06T23:38:00+08:00",
+  "campaign_id": "085",
+  "v1_implementation_freeze": {
+    "path": "docs/a_share_three_day_walkforward_campaign_085_feature_implementation_freeze_20260806.json",
+    "sha256": "741c65876e06835db0cc59b8422a798aa11bc2b620c76c0db2e2f3dc62b1c5f0"
+  },
+  "v1_feature_runner": {
+    "path": "scripts/a_share_three_day_walkforward_campaign085_features.py",
+    "sha256": "e4cafa22cec0a2f27c6055933ea37b553a388ed65f6a56601d45f39545a46400"
+  },
+  "evidence": {
+    "frozen_output_parent": "/Volumes/DIsk/qlib-a-share-tushare-1m/derived/a_share/rich/tushare/minute_walkforward_campaign085_feature_library",
+    "frozen_output_parent_existed": false,
+    "v1_builder_created_parent_before_tempfile_mkdtemp": false,
+    "formal_build_attempted": false,
+    "compact_cache_rows_read": false,
+    "candidate_values_computed": false,
+    "comparison_values_read": false,
+    "historical_daily_price_or_return_values_read": false,
+    "provider_request_issued": false
+  },
+  "authorized_v2_repair": {
+    "exact_change": "Create only the frozen Campaign085 output parent with parents=True and exist_ok=True immediately before tempfile.mkdtemp.",
+    "formula_direction_rank_universe_source_projection_output_root_gate_or_search_space_may_change": false,
+    "v1_formal_or_temporary_output_reuse_allowed": false,
+    "new_tests_and_new_implementation_freeze_required_before_cache_rows": true
+  },
+  "research_attempt_count_increment": 1,
+  "development_trial_count_increment": 0,
+  "factor_attempt_count_increment": 0
+}

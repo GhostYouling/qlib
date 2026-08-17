@@ -1,0 +1,60 @@
+{
+  "schema_version": 1,
+  "kind": "a_share_three_day_walkforward_campaign136_ordered_uniqueness_implementation_freeze",
+  "status": "all_140_design_loader_and_gate_runner_frozen_before_comparator_values",
+  "recorded_at": "2026-08-14T11:43:00+0800",
+  "frozen_implementation": {
+    "runner_path": "scripts/a_share_three_day_walkforward_campaign136_ordered_uniqueness.py",
+    "runner_sha256": "db3b4334998a4c4cc94d7dd2f2fe00e3ada4df0d45b37e2e35738fa6d1d81cc8",
+    "test_path": "tests/data_collector_tests/test_a_share_three_day_walkforward_campaign136_ordered_uniqueness.py",
+    "test_sha256": "a576fd758f9de9a7a7ce189b4ae9fff41dd9a5bf5203081a664f03798b8c72b3",
+    "protocol_sha256": "c412e7b63229f7a21c5ead00650bf1f55117f0a8eb6143f4609df6103096a740",
+    "coverage_sha256": "f79402a136db11d0186c93cf5347174d1427879a0823f6be071c87e476ad66ac",
+    "design_manifest_sha256": "043c17fea89f3b0956d643a7c6e3f4d73a11403b967213d2d57539a6a8316a49",
+    "design_dataset_sha256": "12ce3a64b5e13581392ded9890e2064db4ccca3945da3eb8ad7752c95366a9fc",
+    "comparison_count": 140,
+    "comparison_order_sha256": "c71bfe27486c9567afd3aca21e4b04053658c23ac651e7f4df7fd014b0c31efd",
+    "candidate_quality_listing_rows": 1331759,
+    "candidate_value_range": "finite [0,+infinity)",
+    "minimum_pairwise_names": 50,
+    "minimum_pairwise_sessions": 100,
+    "strict_maximum_absolute_median_correlation": 0.8,
+    "comparison_value_semantics": "Frozen numeric140 direction-normalized average-tie percentile ranks, reranked within each finite candidate-comparator pairwise session.",
+    "output_path": "data/experiments/short_horizon/historical_walkforward/campaign_136/uniqueness/campaign136_ordered_uniqueness_audit.json",
+    "single_use": true
+  },
+  "synthetic_verification_before_freeze": {
+    "pytest": "6 passed, 1 deselected in 4.46s",
+    "average_ties_and_positive_negative_rank_relationships_tested": true,
+    "constant_session_excluded": true,
+    "insufficient_pairwise_names_not_filled": true,
+    "strict_boundary_equality_rejected": true,
+    "missing_reordered_or_failed_result_rejected": true,
+    "legal_candidate_missing_support_filtered_without_fill": true,
+    "real_comparator_values_read": false
+  },
+  "run_protocol": {
+    "plan_must_exit_zero_and_ready_true": true,
+    "run_requires_confirm_run": true,
+    "candidate_snapshot_and_all_seven_numeric140_partitions_byte_and_frame_verified": true,
+    "all_140_results_recorded_in_frozen_order_without_early_stop": true,
+    "raw_nan_preserved_until_pairwise_overlap": true,
+    "historical_daily_ohlcv_forward_return_or_provider_read_allowed": false
+  },
+  "research_boundary": {
+    "candidate_values_were_read_for_coverage": true,
+    "comparator_values_read_before_freeze": false,
+    "numeric140_manifest_and_partition_schema_metadata_read_before_freeze": true,
+    "numeric140_partition_values_read_before_freeze": false,
+    "historical_daily_ohlcv_fields_read": [],
+    "historical_forward_returns_read": false,
+    "stress_2024_2025_return_values_opened": false,
+    "provider_request_issued": false,
+    "credential_loaded": false,
+    "candidate49_historical_backfill_performed": false,
+    "candidate49_ledgers_changed": false,
+    "second_prospective_candidate_created": false,
+    "current_scoring_selection_sizing_positions_or_orders_performed": false,
+    "investment_advice": false
+  }
+}

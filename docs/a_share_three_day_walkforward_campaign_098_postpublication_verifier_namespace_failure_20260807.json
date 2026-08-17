@@ -1,0 +1,33 @@
+{
+  "schema_version": 1,
+  "kind": "a_share_three_day_walkforward_campaign098_postpublication_verifier_failure",
+  "status": "preserved_after_immutable_snapshot_publication_before_successful_independent_verification",
+  "recorded_at": "2026-08-07T08:03:00Z",
+  "stage": "independent_snapshot_partition_verification",
+  "implementation_freeze_v1": {
+    "path": "docs/a_share_three_day_walkforward_campaign_098_feature_implementation_freeze_20260807.json",
+    "sha256": "b232128e4c30e011e68ee47cd29c46f19a685cb2f51815f28427dfaf3996143e"
+  },
+  "published_snapshot": {
+    "path": "/Volumes/DIsk/qlib-a-share-tushare-1m/derived/a_share/rich/tushare/minute_walkforward_campaign098_feature_library/tushare_stk_mins_1m_2019_2025_ea0cbb8f_walkforward_campaign098_feature_library_v1/snapshot_manifest.json",
+    "sha256": "371429a81292a91ef2bfa1292f467c81bf73e176fbfbc9888084f74eaaac1dc5",
+    "dataset_sha256": "921f06fad98aed942550d86b1475c888aea6d2025c37d53ec55917401bd34b33",
+    "rows": 1331759,
+    "eligible_rows": 1328449,
+    "partitions": 7
+  },
+  "failure": {
+    "exception": "AttributeError",
+    "message": "The verifier referenced c90.cache_v1, but cache_v1 exists only in the inherited generated-engine namespace.",
+    "failed_expression": "c90.cache_v1.canonical_column_sha256(values)",
+    "candidate_partition_rewritten": false,
+    "candidate_value_recomputed": false,
+    "comparison_value_read": false
+  },
+  "authorized_repair_boundary": "Resolve only canonical_column_sha256 through the already-frozen _ENGINE['cache_v1'] namespace, point the runner at an additive v2 implementation freeze, and add one no-value namespace regression test.",
+  "snapshot_mutation_or_rebuild_allowed": false,
+  "formula_direction_support_window_universe_cost_gate_or_search_space_changed": false,
+  "historical_daily_price_or_forward_return_values_read": false,
+  "candidate49_ledgers_changed": false,
+  "provider_request_issued": false
+}

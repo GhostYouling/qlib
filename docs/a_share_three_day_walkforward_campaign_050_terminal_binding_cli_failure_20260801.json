@@ -1,0 +1,44 @@
+{
+  "version": 1,
+  "kind": "a_share_three_day_walkforward_campaign050_terminal_binding_cli_failure",
+  "status": "infrastructure_only_failure_corrected_without_research_rerun",
+  "recorded_at": "2026-08-01T11:20:26Z",
+  "purpose": "Preserve the terminal binding-validator CLI invocation failure and authorize only an append-only accounting correction plus the documented positional-argument retry.",
+  "failed_invocation": {
+    "entrypoint": "scripts/a_share_three_day_preregistration_binding_validator.py",
+    "error_class": "argparse_unrecognized_argument",
+    "incorrect_argument": "--record",
+    "exit_code": 2,
+    "failed_invocation_count": 2,
+    "research_records_targeted": [
+      "docs/a_share_three_day_walkforward_campaign_050_research_record.json",
+      "docs/a_share_three_day_walkforward_campaign_050_unified_report_supersession_20260801.json"
+    ]
+  },
+  "corrected_read_only_retry": {
+    "argument_form": "two positional record paths followed by --data-root",
+    "exit_code": 0,
+    "record_count": 2,
+    "binding_count": 38,
+    "passed_binding_count": 38,
+    "failed_binding_count": 0
+  },
+  "research_boundary": {
+    "factor_formula_direction_parameter_filter_subset_combination_model_or_gate_changed": false,
+    "historical_daily_price_or_forward_return_read": false,
+    "2024_2025_stress_return_read": false,
+    "provider_request_issued": false,
+    "candidate49_ledgers_changed": false,
+    "current_scoring_selection_sizing_or_orders_performed": false,
+    "old_terminal_records_rewritten": false
+  },
+  "accounting_decision": {
+    "infrastructure_failure_counts_as_one_distinct_research_attempt": true,
+    "two_identical_parse_failures_from_one_batched_command_count_once": true,
+    "campaign050_attempt_count_before_correction": 5,
+    "campaign050_attempt_count_after_correction": 6,
+    "cumulative_historical_research_attempt_count_before_correction": 285,
+    "cumulative_historical_research_attempt_count_after_correction": 286,
+    "return_reading_development_trial_count_changed": false
+  }
+}

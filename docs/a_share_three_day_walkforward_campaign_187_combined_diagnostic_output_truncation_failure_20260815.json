@@ -1,0 +1,36 @@
+{
+  "schema_version": 1,
+  "kind": "a_share_three_day_walkforward_campaign187_infrastructure_failure",
+  "status": "recorded_recovered_no_scientific_evidence_consumed",
+  "recorded_at": "2026-08-15T13:35:30+08:00",
+  "failure_id": "campaign187_infrastructure_002",
+  "operation": "Combined read-only worktree status, overlap context, Campaign186 file listing, ledger and state inspection.",
+  "observed_failure": "The command exited zero but its output exceeded the orchestration limit and was truncated, so the combined output was not accepted as complete inspection evidence.",
+  "failure_class": "tool_output_truncation_incomplete_evidence",
+  "failed_or_incomplete_result_used_as_scientific_evidence": false,
+  "recovery": {
+    "method": "Split inspection into bounded commands for exact matching lines, adjacent-frontier summaries, immutable hashes and ledger structure.",
+    "complete_recovery_outputs_observed": true,
+    "recovered_semiconductor_matching_path_count": 3,
+    "recovered_hotel_matching_path_count": 5,
+    "campaign186_predecessor_ledger_sha256": "2cbd5e4791fedce9e1aa3ed86a4a2488b65f0ca990ef9d60f2f8d655c577264d"
+  },
+  "authoritative_inputs": {
+    "campaign186_effective_state": {
+      "path": "docs/a_share_three_day_iteration_status_20260815_campaign186_prevalue_terminal.json",
+      "sha256": "fc0aac22b58488d717bbf5e8c5a8892ea6820f5f93d3d152ef3ae1d980e9bf5c"
+    },
+    "eligibility_policy_v275": {
+      "path": "docs/a_share_three_day_walkforward_future_numeric_comparison_eligibility_policy_v275_20260815.json",
+      "sha256": "2353a563301ad8e4547d523a9ac031b42f53e49d627d86c2778f058bf537ef02"
+    }
+  },
+  "research_boundary": {
+    "scientific_attempt": false,
+    "source_factor_comparator_security_price_or_return_value_read": false,
+    "provider_or_web_request_issued": false,
+    "provider_credential_presence_value_or_digest_read": false,
+    "stress_2024_2025_opened": false,
+    "candidate49_ledgers_changed": false
+  }
+}

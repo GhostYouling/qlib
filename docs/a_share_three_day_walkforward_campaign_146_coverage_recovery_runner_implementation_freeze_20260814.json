@@ -1,0 +1,54 @@
+{
+  "schema_version": 1,
+  "kind": "a_share_three_day_walkforward_campaign146_coverage_recovery_runner_implementation_freeze",
+  "status": "coverage_recovery_runner_and_tests_frozen_before_coverage_statistics",
+  "recorded_at": "2026-08-14T21:43:00+08:00",
+  "purpose": "Bind the single-use Campaign146 coverage runner that consumes the recovery receipt while preserving the original frozen coverage formula and all no-return boundaries.",
+  "authoritative_inputs": {
+    "original_implementation_freeze": {
+      "path": "docs/a_share_three_day_walkforward_campaign_146_no_return_implementation_freeze_20260814.json",
+      "sha256": "673eff0bf3190a7af6c02dc9439c2688ed4e514e28888ef929f7c7c3c5da887d"
+    },
+    "recovery_verifier_implementation_freeze": {
+      "path": "docs/a_share_three_day_walkforward_campaign_146_snapshot_recovery_verifier_implementation_freeze_20260814.json",
+      "sha256": "9b2af298a58ad3c8fa5d378c5905b83578db3c40590421a91a3edbfd75d02c0d"
+    },
+    "recovery_receipt": {
+      "path": "docs/a_share_three_day_walkforward_campaign_146_snapshot_recovery_verification_20260814.json",
+      "sha256": "0098f33fb5759aafcfd39a97be086e849caa179e5d825f5d06d90bc0481dc44b"
+    },
+    "formatting_failure": {
+      "path": "docs/a_share_three_day_walkforward_campaign_146_coverage_recovery_runner_black_failure_20260814.json",
+      "sha256": "ac5c724d7c0a3f06714d3ca2b3d9c4d08ec5ab304d42e3509c5bb2948ff091f1"
+    }
+  },
+  "frozen_implementation": {
+    "coverage_recovery_runner_path": "scripts/a_share_three_day_walkforward_campaign146_no_return_audit_recovery.py",
+    "coverage_recovery_runner_sha256": "9bd26bd71e0ff30dd83984eabbfacd9fb8d16d7d0edb4b3c847ea1a9348b2791",
+    "coverage_recovery_test_path": "tests/data_collector_tests/test_a_share_three_day_walkforward_campaign146_no_return_audit_recovery.py",
+    "coverage_recovery_test_sha256": "0441fac08bbcbe7f43bf8b1ab017e77d21c4fc8c4dcec248c8feb89b51cbe5b4",
+    "original_frozen_coverage_runner_sha256": "55b7cfb06e3918d845ca53abd6f472278cb6c0cffabbe923136c1afd34b2b3ae",
+    "recovery_receipt_sha256": "0098f33fb5759aafcfd39a97be086e849caa179e5d825f5d06d90bc0481dc44b"
+  },
+  "synthetic_verification": {
+    "passed": 5,
+    "exit_code": 0,
+    "black_check_exit_code": 0,
+    "ruff_exit_code": 0,
+    "recovery_receipt_bound": true,
+    "coverage_gate_unchanged": true,
+    "negative_candidate_value_semantics_verified": true,
+    "activation_fail_closed": true,
+    "defective_verifier_not_called": true
+  },
+  "research_boundary": {
+    "candidate_coverage_statistics_read_before_freeze": false,
+    "comparator_values_read": false,
+    "historical_daily_price_or_forward_return_values_read": false,
+    "provider_request_issued": false,
+    "credential_loaded": false,
+    "candidate49_ledgers_changed": false,
+    "snapshot_or_partition_rewritten": false
+  },
+  "next_action": "Freeze the single-use coverage activation v2, run plan, and only if ready=true execute the confirmed coverage audit."
+}

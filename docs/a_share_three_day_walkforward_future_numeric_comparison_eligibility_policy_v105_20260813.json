@@ -1,0 +1,107 @@
+{
+  "version": 105,
+  "kind": "a_share_three_day_walkforward_future_numeric_comparison_eligibility_policy",
+  "status": "campaign117_terminal_development_rejection_before_campaign118_values",
+  "recorded_at": "2026-08-13T13:31:08Z",
+  "authoritative_inputs": {
+    "campaign117_terminal_result": {
+      "path": "docs/a_share_three_day_walkforward_campaign_117_terminal_result_20260813.json",
+      "sha256": "3fb74fe66e6ce590de31f93c7ea71d9a5c0b7d79aceb73e33ed074f922f667dd"
+    },
+    "campaign117_attempt_ledger_v2": {
+      "path": "data/experiments/short_horizon/historical_walkforward/campaign_117/research_attempt_ledger_v2.json",
+      "sha256": "a3ad2b162a9096ede8d88798f2c9ee849caed7c8da5ebd3a1767f56344aec7a8"
+    },
+    "campaign117_no_return_audit": {
+      "path": "data/experiments/short_horizon/historical_walkforward/campaign_117/uniqueness/campaign117_ordered_uniqueness_audit.json",
+      "sha256": "cb5d77b8fe81fce0464b1c3fe7d93ab345d9b7b1a78f045447e0bf2b6197f084"
+    },
+    "campaign117_feature_snapshot": {
+      "path": "/Volumes/DIsk/qlib-a-share-tushare-1m/derived/a_share/rich/tushare/minute_walkforward_campaign117_feature_library/tushare_stk_mins_1m_2019_2025_ea0cbb8f_walkforward_campaign117_feature_library_v1/snapshot_manifest.json",
+      "sha256": "114bb5dd2ac28d8e51e6a35c234cfe06f7d3810b4d7c46303e38af33d4566879",
+      "dataset_sha256": "4f5bf6ee2c26f6956178d6954aae92821530c90a6334375e8cf0e9938fa71c18"
+    }
+  },
+  "supersedes_without_rewriting": {
+    "path": "docs/a_share_three_day_walkforward_future_numeric_comparison_eligibility_policy_v104_20260812.json",
+    "sha256": "a9d44ce8b383a9ecb29f96b8df19ac1bc28e7cceaac8397c609be6130e4ef03b",
+    "preserved": true,
+    "complete_definition_order_changed": true,
+    "numeric_comparator_order_changed": true,
+    "reason": "Campaign117 passed the frozen coverage gate and all 134 ordered uniqueness checks, so its numeric definition is appended once to both future libraries despite failing the 2019-2023 development survivor gates."
+  },
+  "effective_accounting": {
+    "campaign117_attempt_count": 10,
+    "campaign117_ledger_entry_count": 10,
+    "campaign117_infrastructure_failure_count": 3,
+    "campaign117_prevalue_scientific_attempt_count": 1,
+    "campaign117_complete_factor_attempt_count": 1,
+    "campaign117_return_reading_development_trial_count": 1,
+    "campaign117_development_survivor_count": 0,
+    "cumulative_historical_research_attempt_count": 895,
+    "cumulative_return_reading_development_trial_count": 303
+  },
+  "complete_historical_feature_library": {
+    "exact_v104_prefix_preserved": true,
+    "campaign117_definition_appended_once": true,
+    "factor_definition_count": 143,
+    "order_sha256": "f7612c7dd7d4a0c015146d60a86e244d91b21a8b6638e4f84e7a18d035581d21",
+    "last_definition": {
+      "name": "intraday_amount_weak_order_entropy_236t",
+      "score_direction": "higher"
+    }
+  },
+  "numerical_comparator_eligibility": {
+    "exact_v104_prefix_preserved": true,
+    "campaign117_numeric_comparator_appended_once": true,
+    "eligible_numeric_comparator_count": 135,
+    "eligible_numeric_comparator_order_sha256": "50323aed7e13a7f0241677beefda6c847482844eea68cf51cb92c833cd316322",
+    "last_comparator": {
+      "name": "intraday_amount_weak_order_entropy_236t",
+      "score_direction": "higher",
+      "snapshot_manifest_path": "/Volumes/DIsk/qlib-a-share-tushare-1m/derived/a_share/rich/tushare/minute_walkforward_campaign117_feature_library/tushare_stk_mins_1m_2019_2025_ea0cbb8f_walkforward_campaign117_feature_library_v1/snapshot_manifest.json",
+      "snapshot_manifest_sha256": "114bb5dd2ac28d8e51e6a35c234cfe06f7d3810b4d7c46303e38af33d4566879",
+      "snapshot_dataset_sha256": "4f5bf6ee2c26f6956178d6954aae92821530c90a6334375e8cf0e9938fa71c18"
+    },
+    "minimum_pairwise_names_per_session": 50,
+    "minimum_pairwise_sessions_per_comparison": 100,
+    "strict_maximum_absolute_median_daily_rank_correlation": 0.8,
+    "all_135_eligible_numeric_comparators_must_pass": true,
+    "candidate_specific_comparator_drop_allowed": false,
+    "insufficient_pairwise_overlap_fails_closed": true
+  },
+  "campaign117_terminal_classification": {
+    "factor": "intraday_amount_weak_order_entropy_236t",
+    "score_direction": "higher",
+    "coverage_gate_passed": true,
+    "numeric_comparisons_completed": 134,
+    "numeric_comparisons_passed": 134,
+    "maximum_absolute_median_daily_rank_correlation": 0.7551091302367997,
+    "numeric_comparator_eligible": true,
+    "development_trial_count": 1,
+    "development_survivor_count": 0,
+    "development_aggregate_20bp_return": -0.10224930033360202,
+    "worst_validation_normalized_drawdown": -0.32845010193624835,
+    "stress_2024_2025_opened": false,
+    "retry_reverse_redefine_transform_filter_residualize_combine_or_rescue_allowed": false
+  },
+  "future_campaign_boundary": {
+    "next_campaign": 118,
+    "campaign117_retry_or_rescue_allowed": false,
+    "candidate_specific_subset_rescue_allowed": false,
+    "future_complete_library_mechanism_must_be_genuinely_new_and_prevalue_frozen": true,
+    "old_terminated_rejected_or_inconclusive_definitions_may_be_used_only_as_part_of_the_complete_prevalue_frozen_143_definition_or_135_numeric_library": true
+  },
+  "research_boundary": {
+    "campaign118_source_candidate_or_comparator_values_read_before_v105_freeze": false,
+    "historical_daily_price_or_forward_return_values_read_for_campaign117_development_2019_2023": true,
+    "stress_2024_2025_opened_for_campaign117": false,
+    "stress_2024_2025_return_values_read_for_campaign117": false,
+    "provider_request_issued_for_historical_campaign": false,
+    "candidate49_historical_backfill_performed": false,
+    "candidate49_ledgers_changed": false,
+    "second_prospective_candidate_created": false,
+    "current_scoring_selection_sizing_or_orders_performed": false,
+    "investment_advice": false
+  }
+}

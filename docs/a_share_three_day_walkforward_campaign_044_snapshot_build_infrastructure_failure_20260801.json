@@ -1,0 +1,60 @@
+{
+  "version": 1,
+  "kind": "a_share_three_day_walkforward_campaign044_snapshot_build_infrastructure_failure",
+  "status": "recorded_fail_closed_before_candidate_daily_price_or_return_values",
+  "recorded_at": "2026-07-31T17:35:02Z",
+  "purpose": "Preserve the first Campaign044 snapshot-build infrastructure failure and its exact evidence instead of silently repairing or omitting the attempt.",
+  "authoritative_inputs": {
+    "no_return_preregistration": {
+      "path": "docs/a_share_three_day_walkforward_campaign_044_no_return_preregistration.json",
+      "sha256": "1037d27b173f4fb63c75672c4da50c6616f1f1eb3ae1917ecf291fc2d2644f69"
+    },
+    "feature_implementation_freeze_v1": {
+      "path": "docs/a_share_three_day_walkforward_campaign_044_feature_implementation_freeze_20260801.json",
+      "sha256": "c510fae3a3714344fb140733bc6e4120b51e7d8d5d7c2d4e04bbab2dca286921"
+    }
+  },
+  "attempt": {
+    "attempt_id": "campaign044_snapshot_build_infrastructure_001",
+    "command": "PYTHONPATH=. python scripts/a_share_three_day_walkforward_campaign044_features.py build-snapshot --workers 8",
+    "phase_reached": "after all source snapshot byte/frame verification, at the first pass-1 aligned source load",
+    "error_type": "Campaign004FeatureError",
+    "error_message": "explicit comparison snapshot does not cover every candidate key",
+    "root_cause": "quality_listing_eligible_keys contains stock-day identities outside the immutable minute-source row universe; the strict source loader correctly requires every requested key to exist and rejected the un-intersected master key set",
+    "formula_or_direction_changed": false,
+    "source_terminal_factor_values_read_before_failure": true,
+    "source_value_scope": "The first aligned source scanner began reading terminal factor columns but rejected key coverage before returning an aligned factor array.",
+    "candidate_values_computed": false,
+    "score_cache_created": false,
+    "candidate_partition_created": false,
+    "candidate_snapshot_manifest_created": false,
+    "historical_daily_price_fields_read": [],
+    "historical_forward_return_fields_read": false,
+    "candidate49_factor_values_read": false,
+    "candidate49_historical_return_signal_or_execution_backfill_performed": false,
+    "candidate49_ledgers_changed": false,
+    "current_scoring_selection_sizing_or_orders_performed": false
+  },
+  "partial_output_audit": {
+    "path": "/Volumes/DIsk/qlib-a-share-tushare-1m/derived/a_share/rich/tushare/minute_walkforward_campaign044_feature_library/.tushare_stk_mins_1m_2019_2025_ea0cbb8f_walkforward_campaign044_feature_library_v1.partial",
+    "file_count": 0,
+    "score_cache_exists": false,
+    "partition_exists": false,
+    "recoverable": true
+  },
+  "frozen_correction_boundary": {
+    "allowed_change": "Intersect quality/listing eligible keys with the byte-bound Campaign043 anchor identity rows before invoking any aligned source-factor loader.",
+    "forbidden_changes": [
+      "candidate formula, direction, source factor order, common-support requirement, minimum names, tie method, weights, gates, folds, costs, survivor rules, or Candidate49 boundary",
+      "dropping the strict key-coverage check",
+      "filling a missing source row",
+      "reading a daily price or forward return before a new implementation freeze"
+    ],
+    "new_implementation_version_and_binding_required_before_retry": true
+  },
+  "decision": {
+    "infrastructure_attempt_recorded": true,
+    "historical_return_trial_count_incremented": false,
+    "next_action": "Implement and synthetically test only the pre-value identity-intersection correction, publish a v2 code fingerprint freeze bound to this failure, validate all bindings, then retry the same snapshot command once."
+  }
+}

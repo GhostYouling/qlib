@@ -1,0 +1,118 @@
+{
+  "version": 1,
+  "kind": "a_share_three_day_walkforward_campaign022_mechanism_overlap_audit",
+  "status": "passed_conceptual_independence_before_formula_values_comparisons_or_returns",
+  "recorded_at": "2026-07-29T05:43:00Z",
+  "purpose": "Resolve the selected own-bar close-location concept into one exact no-value mechanism and challenge it against the terminal and prospective families before any Campaign022 source partition, candidate value, comparison value, daily price, or forward return is opened.",
+  "concept_scouting": {
+    "path": "docs/a_share_three_day_walkforward_campaign_022_concept_scouting.json",
+    "sha256": "e8708e06040c97691e93b9ad795229abb7a43f0d818932a650ac9b1f80dd2061"
+  },
+  "selected_mechanism": {
+    "name": "intraday_intrabar_close_location_pressure_240m",
+    "direction": "higher",
+    "information_domain": "one_minute_own_bar_close_acceptance_location",
+    "formula": "(L-U)/(L+U), where L=sum_i(log(close_i/low_i)) and U=sum_i(log(high_i/close_i)) over exactly 240 continuous-session bars",
+    "economic_hypothesis": "A larger range-normalized excess of close-to-low distance over high-to-close distance means that transactions repeatedly finish near the upper part of their own minute ranges. Persistent within-bar demand acceptance may carry into the next three sessions.",
+    "source_fields": [
+      "datetime",
+      "symbol",
+      "provider",
+      "high",
+      "low",
+      "close"
+    ],
+    "selected_bar_grid": "exactly 240 one-minute bars at 09:31-11:30 and 13:01-15:00 after frozen timestamp normalization; standalone 09:30 is excluded",
+    "bar_rule": "Every selected high, low, and close must be finite and positive with exact low<=close<=high. A zero-range bar contributes zero to L, U, and the denominator and stays in fixed support.",
+    "minimum_positive_range_bar_count": 120,
+    "aggregation_rule": "Use the ratio of the two full-day summed log distances; never average per-bar close-location ratios and never weight by time, range, volume, or amount beyond the formula's own log-distance denominator.",
+    "missing_rule": "Any invalid, nonpositive, or misordered selected high/low/close; fewer than 120 positive-range bars; nonpositive total log range; nonfinite component or score; or score outside [-1,1] makes the stock-day missing.",
+    "endpoint_canonicalization_tolerance": 1E-12,
+    "valid_range": [
+      -1.0,
+      1.0
+    ]
+  },
+  "overlap_challenges": [
+    {
+      "family": "intraday_intrabar_body_range_efficiency_240m",
+      "result": "distinct",
+      "reason": "The terminal body-range factor divides absolute close-open displacement by high-low range and discards the direction of the close within the bar. Campaign022 reads no open and preserves whether the close is nearer the high or the low."
+    },
+    {
+      "family": "intraday_transaction_vwap_envelope_asymmetry_240m",
+      "result": "distinct",
+      "reason": "The low-coverage terminal Campaign013 factor locates transaction VWAP within the bar and requires amount/volume compatibility. Campaign022 forbids activity and transaction VWAP, locates the observed close instead, and is not a field-repair or tolerance change to Campaign013."
+    },
+    {
+      "family": "intraday_prior_range_breakout_pressure_238p",
+      "result": "distinct",
+      "reason": "Campaign015 compares the current close with the previous bar's closed interval across within-half transitions. Campaign022 compares each close only with its own simultaneous high-low interval, uses no prior bar, and is invariant to bar ordering."
+    },
+    {
+      "family": "signed_path_efficiency_terminal_location_and_return_sign_mechanisms",
+      "result": "distinct",
+      "reason": "Those factors depend on close-to-close path order, endpoint position in the day's close range, or adjacent return signs. Campaign022 uses no adjacent close and remains unchanged when the 240 complete bars are permuted."
+    },
+    {
+      "family": "range_overlap_entropy_reversal_revisit_and_width_change_mechanisms",
+      "result": "distinct",
+      "reason": "Those factors use high-low interval geometry, time order, or range magnitudes without the close's signed location inside its own bar. Holding all high-low intervals fixed while moving closes within them changes Campaign022 and leaves those range-only factors unchanged."
+    },
+    {
+      "family": "bar_direction_continuity_and_gap_body_confirmation",
+      "result": "distinct",
+      "reason": "Campaign019 and Campaign016 require open-close bodies or interbar gaps. Campaign022 forbids open and does not form adjacent pairs."
+    },
+    {
+      "family": "market_response_delay_market_idiosyncrasy_and_market_neutral_residuals",
+      "result": "distinct",
+      "reason": "Campaign022 uses no cross-stock benchmark, lagged market return, beta, residual, or peer threshold. It measures own-bar acceptance geometry rather than common-information timing."
+    },
+    {
+      "family": "activity_transaction_price_disclosure_and_event_mechanisms",
+      "result": "distinct",
+      "reason": "Campaign022 reads no volume, amount, transaction price, quarterly value, disclosure timing, or event field."
+    },
+    {
+      "family": "Candidate49 cumulative_vwap_crossing_rate",
+      "result": "distinct",
+      "reason": "Candidate49 measures causal cumulative transaction-VWAP crossings using close, volume, and amount. Campaign022 uses high/low/close only, no cumulative path or crossing count, and may not evaluate Candidate49 returns."
+    }
+  ],
+  "counterfactual_independence_tests": [
+    "Permuting all 240 complete bars leaves Campaign022 unchanged but generally changes close-path efficiency, return signs, terminal close location, prior-range breakout, gap-body confirmation, and Campaign021 lead-lag values.",
+    "Holding every high-low interval and transaction VWAP fixed while moving each close within its own interval changes Campaign022 but leaves range-only and transaction-VWAP-envelope factors unchanged.",
+    "Holding every close path fixed while asymmetrically widening each bar above or below its close changes Campaign022 but leaves close-only return, market-response, and Candidate49 crossing values unchanged.",
+    "Holding high, low, and close fixed while changing open, volume, amount, market peers, or announcement history leaves Campaign022 unchanged."
+  ],
+  "prohibited_variants": [
+    "replace logarithmic distances with arithmetic distances, per-bar ratios, bins, thresholds, counts, entropy, regression, rank correlation, or another denominator",
+    "use open, transaction VWAP, amount, volume, adjacent bars, path endpoints, market peers, subwindows, or the standalone 09:30 row",
+    "drop zero-range bars, change the 120-positive-range support, add containment tolerance, or change endpoint canonicalization after values",
+    "change direction, invert, filter, rewindow, year-select, board-select, industry-select, or combine the factor after returns",
+    "backfill or compare Candidate49 historical returns"
+  ],
+  "required_no_return_challenges": {
+    "coverage_and_capacity_before_comparison_values": true,
+    "statistical_uniqueness_against_43_frozen_prior_statistical_factors": true,
+    "semantic_only_challenges_for_campaign008_and_campaign013": true,
+    "maximum_allowed_absolute_median_daily_rank_correlation": 0.8
+  },
+  "research_boundary": {
+    "external_campaign022_minute_partitions_read": false,
+    "candidate_values_read": false,
+    "comparison_values_read": false,
+    "historical_daily_price_fields_read": [],
+    "historical_forward_return_fields_read": false,
+    "candidate49_historical_return_read": false,
+    "candidate49_signal_or_execution_ledger_changed": false,
+    "candidate50_prospective_activation_created": false,
+    "provider_request_issued": false
+  },
+  "decision": {
+    "conceptually_independent": true,
+    "advance_to_exact_finite_no_return_preregistration": true,
+    "predictive_value_established": false
+  }
+}

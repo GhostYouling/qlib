@@ -1,0 +1,48 @@
+{
+  "schema_version": 1,
+  "kind": "a_share_three_day_walkforward_campaign107_preregistration_binding_failure",
+  "status": "preserved_prevalue_binding_failure_no_source_or_research_values_read",
+  "recorded_at": "2026-08-07T20:04:00Z",
+  "campaign_id": "a_share_three_day_walkforward_campaign_107",
+  "invalid_preregistration": {
+    "path": "docs/a_share_three_day_walkforward_campaign_107_no_return_preregistration_20260808.json",
+    "sha256": "9c5665f0c10b73706b67e66a8acd503e2a1c191ef9e7f4f41f1b68ca29dc9a3e",
+    "preserved_unmodified": true
+  },
+  "binding_validation": {
+    "binding_count": 8,
+    "passed_count": 7,
+    "failed_count": 1,
+    "all_bindings_passed": false,
+    "failed_binding": {
+      "path": "data/metadata/rich_data/alignments/20260721T140521Z_tushare_1m_alignment_89ec2deb.json",
+      "stored_sha256": "2c8c85ba1155289d03c58caba18feca668b8c9d53e294951a8ba90c01a798bb",
+      "observed_sha256": "2c8c85ba1155289d03c3ebc1175a4a2504bf8022b849087840777ee41586e2a0",
+      "failure": "single transcription error in the accepted minute-alignment SHA-256 literal"
+    },
+    "other_binding_failure_detected": false
+  },
+  "authority_rebinding_required": {
+    "campaign106_iteration_state_v3": {
+      "path": "docs/a_share_three_day_iteration_status_20260808_campaign106_terminal_v3.json",
+      "sha256": "4dd06bbe5165541467fbb9a29215e83f6bd6254003e0919e3d2741efd51ffcf5"
+    },
+    "future_numeric_policy_v66": {
+      "path": "docs/a_share_three_day_walkforward_future_numeric_comparison_eligibility_policy_v66_20260808.json",
+      "sha256": "76033dc9623bdb85993232ee12518ebb80331d662a3fa5861bfedcc0cf8dc086"
+    },
+    "campaign106_completion_v2": {
+      "path": "docs/a_share_three_day_walkforward_campaign_106_terminal_completion_freeze_v2_20260808.json",
+      "sha256": "8efa1e4148280fc78d1a6bdb41637b5da036c03b1ce23008a74144988a0a3444"
+    }
+  },
+  "candidate_formula_direction_gate_fold_cost_or_library_order_changed": false,
+  "campaign107_minute_source_rows_read": false,
+  "campaign107_candidate_or_comparator_values_computed_or_read": false,
+  "historical_daily_prices_or_forward_returns_read": false,
+  "development_or_stress_started": false,
+  "provider_request_issued": false,
+  "candidate49_ledgers_changed": false,
+  "current_scoring_selection_sizing_or_orders_performed": false,
+  "repair_rule": "Keep the invalid preregistration immutable and publish one additive correction overlay that changes only the accepted-alignment hash and authoritative Campaign106 bindings; every scientific protocol field is inherited unchanged."
+}

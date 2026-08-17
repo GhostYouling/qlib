@@ -1,0 +1,98 @@
+{
+  "version": 1,
+  "kind": "a_share_three_day_walkforward_campaign031_no_return_audit_freeze",
+  "status": "one_factor_passed_coverage_capacity_and_all_52_uniqueness_gates_pending_walkforward_preregistration",
+  "recorded_at": "2026-07-30T14:10:00Z",
+  "purpose": "Freeze the Campaign031 no-return admissibility evidence and final no-return runner before any daily price or forward return is opened.",
+  "source_chain": {
+    "no_return_preregistration": {
+      "path": "docs/a_share_three_day_walkforward_campaign_031_no_return_preregistration.json",
+      "sha256": "95951a357ffef3eee46f8d220d150fd00223b32f27f6cf93a92c4f6c17452f6d"
+    },
+    "feature_snapshot_freeze": {
+      "path": "docs/a_share_three_day_walkforward_campaign_031_feature_snapshot_freeze_20260730.json",
+      "sha256": "dc85d9cd5b83bfd71bc13dc14ca39b0d3f8e23c0c1512b65915928a7088d5f97"
+    },
+    "feature_runner": {
+      "path": "scripts/a_share_three_day_walkforward_campaign031_features.py",
+      "sha256": "24fce3915f1321232573f413531b79c4fe9646c7bc192c7117d1358826d12df2"
+    },
+    "feature_snapshot": {
+      "path": "/Volumes/DIsk/qlib-a-share-tushare-1m/derived/a_share/rich/tushare/minute_walkforward_campaign031_feature_library/tushare_stk_mins_1m_2019_2025_ea0cbb8f_walkforward_campaign031_feature_library_v1/snapshot_manifest.json",
+      "sha256": "4df07ce452454d742521e835f2b7954fe53c597ba47ec31438cb47fd2abbd086",
+      "dataset_sha256": "9858378a035142b36f19bf00b0b8c7847802e428f6798dc1900b2ae003bcd6b1"
+    },
+    "no_return_audit": {
+      "path": "data/experiments/short_horizon/historical_walkforward/campaign_031/no_return/20260730T140740Z_campaign031_no_return_audit.json",
+      "sha256": "659c3282bd02d85f5b3da99e555ba25ec227bf6c8546e50f12bc5e8ad97e30d9"
+    },
+    "dispersion_benchmark_freeze": {
+      "path": "docs/a_share_three_day_walkforward_campaign_031_dispersion_benchmark_freeze_20260730.json",
+      "sha256": "5512e1025b8c833d9356e2a3e93cedeae42611504e956edf32c062a013c3a5ad"
+    },
+    "feature_tests": {
+      "path": "tests/data_collector_tests/test_a_share_three_day_walkforward_campaign031_features.py",
+      "sha256": "4e324e4b3c8d01ab464c51484fece00333d1243fb1013ba27af480c74ab1d5a2"
+    },
+    "candidate49_signal_ledger": {
+      "path": "data/experiments/short_horizon/candidate49_future_signal_ledger.json",
+      "sha256": "5193f00d7f36da003f53cec387900da4c3d002299f5dfcfc1a95eaa199ed3a79",
+      "entry_count": 0
+    },
+    "candidate49_execution_ledger": {
+      "path": "data/experiments/short_horizon/candidate49_future_execution_ledger.json",
+      "sha256": "d57a3e61eac969e42cafa418ccd8c0a5ee65dcf69da145bb2c096c2a02a2ea4f",
+      "entry_count": 0
+    }
+  },
+  "coverage_and_capacity": {
+    "factor": "intraday_market_dispersion_decoupling_238m",
+    "candidate_eligible_rows": 1328065,
+    "quality_listing_eligible_rows": 1331759,
+    "median_coverage": 0.9983183851218558,
+    "p05_coverage": 0.9933708902303229,
+    "eligible_names_p05": 138.0,
+    "potential_non_overlapping_three_session_cohorts": 540,
+    "observed_cohort_years": [
+      2019,
+      2020,
+      2021,
+      2022,
+      2023,
+      2024,
+      2025
+    ],
+    "gate_passed_before_comparison_values": true
+  },
+  "uniqueness": {
+    "frozen_comparison_factor_count": 52,
+    "all_required_comparisons_passed": true,
+    "maximum_allowed_absolute_median_daily_rank_correlation": 0.8,
+    "maximum_observed_absolute_median_daily_rank_correlation": 0.6909026460918624,
+    "nearest_comparison_factor": "intraday_volatility_resolution_238m",
+    "nearest_median_daily_rank_correlation": -0.6909026460918624,
+    "market_shock_magnitude_decoupling_median_daily_rank_correlation": 0.6297451414889692,
+    "comparison_values_loaded_after_coverage_pass": true,
+    "all_prior_snapshot_partition_byte_and_frame_hashes_valid": true
+  },
+  "decision": {
+    "admissible_factor_count": 1,
+    "admissible_factor_names": [
+      "intraday_market_dispersion_decoupling_238m"
+    ],
+    "walkforward_preregistration_allowed": true,
+    "daily_price_or_forward_return_read_allowed_before_walkforward_preregistration_binding_validation": false,
+    "formula_direction_filter_threshold_or_combination_change_allowed": false,
+    "candidate49_remains_only_active_prospective_candidate": true,
+    "candidate50_activation_allowed": false
+  },
+  "research_boundary": {
+    "historical_daily_price_fields_read": [],
+    "historical_forward_return_fields_read": false,
+    "candidate49_historical_return_read": false,
+    "candidate49_signal_or_execution_ledger_changed": false,
+    "training_or_model_fitting_performed": false,
+    "current_scoring_selection_sizing_or_orders_performed": false,
+    "provider_request_issued": false
+  }
+}

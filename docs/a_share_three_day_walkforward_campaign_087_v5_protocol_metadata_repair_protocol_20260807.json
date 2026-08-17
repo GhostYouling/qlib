@@ -1,0 +1,79 @@
+{
+  "schema_version": 1,
+  "kind": "a_share_three_day_walkforward_campaign087_v5_protocol_metadata_repair_protocol",
+  "status": "frozen_after_v4_semantic_failure_before_additive_corrected_manifest_publication_or_coverage",
+  "frozen_at": "2026-08-07T02:52:00+08:00",
+  "original_manifest": {
+    "path": "/Volumes/DIsk/qlib-a-share-tushare-1m/derived/a_share/rich/tushare/minute_walkforward_campaign087_feature_library/tushare_stk_mins_1m_2019_2025_ea0cbb8f_walkforward_campaign087_feature_library_v1/snapshot_manifest.json",
+    "sha256": "6abe71a2402dc7b34124c1cc2abee8c54730ce978e6057b7b02beb4a4bcce5bd",
+    "dataset_sha256": "acc712042d582fbcbb87d23e7e7e47e71c6cbeb9b8a33678c75bb0ea58070777",
+    "must_remain_immutable": true
+  },
+  "failed_v4_verifier_freeze": {
+    "path": "docs/a_share_three_day_walkforward_campaign_087_feature_verifier_implementation_freeze_v4_20260807.json",
+    "sha256": "f4aac3c92e405aa3a616cef16cbc48519d549f8e6bfcbc9e2b1388f55a0e2e05"
+  },
+  "failure_record": {
+    "path": "data/experiments/short_horizon/historical_walkforward/campaign_087/research_attempt_ledger_v9.json",
+    "sha256": "21745ab2a2f1d96b6ee4508ad89e51353962ca0aa5e31a0f876c45e89bd89e8a",
+    "ordinal": 9
+  },
+  "protocol_identity": {
+    "path": "docs/a_share_three_day_walkforward_campaign_087_no_return_preregistration.json",
+    "required_sha256": "9adc09b52ec1b9844f3dd99b2cf815046c4143d9ae584fcf135552b32c17114c",
+    "incorrect_in_original_manifest_sha256": "033cd34013770b5b19ccb8579100c7ab920946de22b3936bc34a0898f4d2acb3"
+  },
+  "frozen_partition_bytes": [
+    {
+      "year": 2019,
+      "sha256": "0460241d06d59639815af256e6f3bea6204c96b718fbd78ebe8fbd91148bea24"
+    },
+    {
+      "year": 2020,
+      "sha256": "adb6f1412a3be12d5db09f7a354dbd2840c1316285259813687ba2d745184cea"
+    },
+    {
+      "year": 2021,
+      "sha256": "989ba95fea774f507b4640d915eb2a717be59932b499570659e7134b4acf4bd6"
+    },
+    {
+      "year": 2022,
+      "sha256": "69284884355eb72241f747bd85de61f9e0118f58c89b04e9c7f207cda660a463"
+    },
+    {
+      "year": 2023,
+      "sha256": "ac0a9a82cbc03510eb1e93d2a237bc90966f44d92b14e9b1bf5b78a2a8254a64"
+    },
+    {
+      "year": 2024,
+      "sha256": "aa33a0e4535091617d94cee96afe1d475e2c8628c6dd271e99f822c85cec2590"
+    },
+    {
+      "year": 2025,
+      "sha256": "8514072f05250a42bdaebaabe30383d9fc0df28b75a147993f9d4a975a08e5ed"
+    }
+  ],
+  "allowed_v5_publication": {
+    "path": "/Volumes/DIsk/qlib-a-share-tushare-1m/derived/a_share/rich/tushare/minute_walkforward_campaign087_feature_library/tushare_stk_mins_1m_2019_2025_ea0cbb8f_walkforward_campaign087_feature_library_v1/snapshot_manifest_v5.json",
+    "must_be_absent_before_freeze": true,
+    "copy_all_original_fields_except": [
+      "kind",
+      "protocol.sha256",
+      "dataset_sha256",
+      "publication_metadata_repair"
+    ],
+    "new_kind": "a_share_three_day_walkforward_campaign087_feature_snapshot_v5_protocol_metadata_repair",
+    "required_protocol_sha256": "9adc09b52ec1b9844f3dd99b2cf815046c4143d9ae584fcf135552b32c17114c",
+    "dataset_sha256_rule": "Recompute the frozen Campaign087 dataset material after replacing only the protocol sha256 and adding no partition material.",
+    "original_manifest_or_partition_rewrite_allowed": false,
+    "candidate_value_recomputation_allowed": false
+  },
+  "required_v5_verification": [
+    "old manifest hash unchanged",
+    "new manifest differs only in the four allowed metadata locations",
+    "all seven partition byte/frame/canonical-value hashes pass",
+    "eligible flags exactly equal finite values and all values lie in [0,1]",
+    "1,331,759 compact stock-day keys are unique and strictly increasing",
+    "coverage, comparator, daily-price, forward-return, provider, Candidate49, and current-action boundaries remain closed"
+  ]
+}

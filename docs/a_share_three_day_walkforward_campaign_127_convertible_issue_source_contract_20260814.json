@@ -1,0 +1,155 @@
+{
+  "schema_version": 1,
+  "kind": "a_share_three_day_walkforward_campaign127_convertible_issue_source_contract",
+  "status": "frozen_zero_provider_rows_before_adapter_acceptance_factor_or_return_values",
+  "recorded_at": "2026-08-14T04:50:12+0800",
+  "purpose": "Freeze the exact low-entitlement cb_basic/cb_issue projections, referential join, point-in-time timing, 180-day online-demand formula, capacity and failure rules before any provider request or Campaign127 value.",
+  "authoritative_inputs": {
+    "campaign126_terminal_state": {
+      "path": "docs/a_share_three_day_iteration_status_20260814_campaign126_prevalue_terminal.json",
+      "sha256": "f53549305c6948e0c5463475cc76ee72268bad7a3316dec254e377d473429892"
+    },
+    "numeric_policy_v131": {
+      "path": "docs/a_share_three_day_walkforward_future_numeric_comparison_eligibility_policy_v131_20260814.json",
+      "sha256": "5d27732656ceeb7053c289548211cb6941c4c0effa7ca805b269ecc45c19bf49",
+      "complete_definition_count_preserved": 149,
+      "eligible_numeric_comparator_count_reserved": 139
+    },
+    "concept_scouting": {
+      "path": "docs/a_share_three_day_walkforward_campaign_127_concept_scouting_20260814.json",
+      "sha256": "fc3705c04a9cd64b9c66fa97c95b2e23e9d96652886c3ace55affb14fd7f0eb1"
+    },
+    "mechanism_overlap_audit": {
+      "path": "docs/a_share_three_day_walkforward_campaign_127_mechanism_overlap_audit_20260814.json",
+      "sha256": "9cfc9580f8b0bb60353a708f09db71522bdd2070c752637e63b24ac449dc178e"
+    },
+    "historical_walkforward_policy": {
+      "path": "docs/a_share_three_day_historical_walkforward_research_policy_20260727.json",
+      "sha256": "38426d6161b9bfed323c58caba18feca668b8c9d53e294951a8ba90c01a798bb"
+    }
+  },
+  "public_documentation_contract": {
+    "provider": "tushare",
+    "cb_basic": {
+      "official_url": "https://tushare.pro/document/2?doc_id=185",
+      "api_name": "cb_basic",
+      "documented_minimum_points": 2000,
+      "documented_maximum_rows_per_call": 2000,
+      "required_request_projection": [
+        "ts_code",
+        "stk_code",
+        "cb_type"
+      ]
+    },
+    "cb_issue": {
+      "official_url": "https://tushare.pro/document/2?doc_id=186",
+      "api_name": "cb_issue",
+      "documented_minimum_points": 2000,
+      "documented_maximum_rows_per_call": 2000,
+      "required_request_projection": [
+        "ts_code",
+        "ann_date",
+        "res_ann_date",
+        "onl_pch_excess"
+      ]
+    },
+    "forbidden_cb_basic_fields": "every field other than ts_code, stk_code and cb_type",
+    "forbidden_cb_issue_fields": "every field other than ts_code, ann_date, res_ann_date and onl_pch_excess",
+    "provider_request_authorized_by_this_contract": false,
+    "entitlement_success_assumed": false
+  },
+  "canonicalization_contract": {
+    "cb_basic_row_shape": "Exactly ts_code, stk_code and cb_type; missing or extra fields are fatal.",
+    "cb_issue_row_shape": "Exactly ts_code, ann_date, res_ann_date and onl_pch_excess; missing or extra fields are fatal.",
+    "bond_code": "Required six ASCII digits plus .SH or .SZ; malformed values and cross-exchange suffix conflicts are fatal.",
+    "underlying_stock": "SSE main board or SZSE main board/ChiNext only; malformed or cross-exchange codes are fatal, while complete classifiable unsupported stocks are excluded and counted.",
+    "cb_type": "Only exact uppercase CB is accepted. Complete non-CB types such as EB are excluded and counted; missing or non-string types are fatal.",
+    "ann_date": "Required complete valid strict YYYYMMDD date.",
+    "res_ann_date": "Required complete valid strict YYYYMMDD date not earlier than ann_date.",
+    "onl_pch_excess": "Required finite numeric non-boolean value strictly greater than zero.",
+    "basic_duplicate_policy": "One exact bond-to-stock/type relation per bond. Identical repeats collapse and count; any conflicting row is fatal.",
+    "issue_duplicate_policy": "One exact ann_date/res_ann_date/onl_pch_excess event per bond. Identical repeats collapse and count; any conflicting row is fatal.",
+    "join_policy": "Every issue row must join exactly one cb_basic row. Non-CB or unsupported-stock issues are excluded only through the validated mapping; an absent mapping is fatal.",
+    "normalized_event_fields": [
+      "instrument",
+      "bond_code",
+      "ann_date",
+      "res_ann_date",
+      "online_excess_multiple",
+      "provider"
+    ],
+    "provider_value": "tushare_cb_issue"
+  },
+  "point_in_time_contract": {
+    "timezone": "Asia/Shanghai",
+    "conservative_information_date": "res_ann_date",
+    "same_day_availability_allowed": false,
+    "effective_session": "first accepted local trading session strictly after res_ann_date",
+    "signal_support": "1 <= signal calendar date - res_ann_date <= 180 days",
+    "per_stock_event_selection": "Use the unique event with maximal res_ann_date within support. A same-stock same-maximal-res_ann_date tie across different bond codes is fatal.",
+    "signal_availability": "supported signal-session close",
+    "earliest_entry": "next accepted local trading-session open",
+    "exit": "third accepted local trading-session close after entry",
+    "holding_period_trading_sessions": 3
+  },
+  "single_factor_definition": {
+    "name": "convertible_issue_online_demand_180d",
+    "formula": "For the selected supported event, return log1p(onl_pch_excess); otherwise return missing.",
+    "score_direction": "higher",
+    "economic_interpretation": "A larger online excess-subscription multiple represents stronger primary-market demand for the issuer's completed convertible financing.",
+    "raw_value_type": "finite positive float",
+    "raw_value_range": {
+      "minimum_exclusive": 0.0,
+      "maximum_exclusive": "positive_infinity"
+    },
+    "event_age_rank_weight_or_tiebreaker": false,
+    "issue_size_price_cost_rating_conversion_or_bond_market_field_used": false,
+    "missing_semantics": "Missing when no accepted event lies in the 180-calendar-day support. Missing is never zero, imputed, clipped or ranked.",
+    "historical_candidate_values_materialized": false,
+    "complete_definition_appended_now": false,
+    "numeric_comparator_appended_now": false,
+    "prospective_candidate_registered": false
+  },
+  "source_acceptance_and_capacity_contract": {
+    "cb_basic_call_maximum": 1,
+    "cb_issue_request_years": [
+      2018,
+      2019,
+      2020,
+      2021,
+      2022,
+      2023,
+      2024,
+      2025
+    ],
+    "one_cb_issue_call_per_year_maximum": true,
+    "response_rows_at_or_above_2000": "fatal_possible_truncation",
+    "retry_allowed": false,
+    "minimum_supported_complete_issues_in_each_2019_2023_year": 20,
+    "minimum_supported_complete_issues_total_2019_2023": 150,
+    "factor_level_capacity_rule": {
+      "non_overlapping_three_session_cohorts": true,
+      "minimum_names_per_cohort": 6,
+      "minimum_distinct_finite_values_per_cohort": 2,
+      "minimum_complete_cohorts": 200,
+      "minimum_observed_calendar_years": 5,
+      "capacity_must_pass_before_139_comparison_values": true,
+      "capacity_must_pass_before_daily_price_or_forward_return_values": true
+    },
+    "failure_policy": "Any entitlement, schema, projection, code, date, relation, duplicate, join, positivity, coverage, variation, capacity or fingerprint failure terminates this exact mechanism before prices or returns. No source field, window, direction, missing rule, event selection, threshold, alternate CB endpoint, retry, rescue or combination is allowed."
+  },
+  "research_boundary": {
+    "programmatic_provider_request_issued": false,
+    "provider_credential_loaded": false,
+    "provider_rows_read_persisted_or_counted": false,
+    "candidate_or_comparison_values_read": false,
+    "historical_daily_price_fields_read": [],
+    "historical_forward_returns_read": false,
+    "stress_2024_2025_opened": false,
+    "candidate49_historical_backfill_performed": false,
+    "candidate49_ledgers_changed": false,
+    "second_prospective_candidate_created": false,
+    "current_scoring_selection_sizing_positions_or_orders_performed": false,
+    "investment_advice": false
+  }
+}

@@ -1,0 +1,36 @@
+{
+  "version": 1,
+  "kind": "a_share_three_day_walkforward_campaign089_no_return_audit",
+  "status": "completed_with_one_admissible_factor_pending_walkforward_preregistration",
+  "recorded_at": "2026-08-07T05:06:07+08:00",
+  "canonical_development_admission_wrapper": true,
+  "supersedes_incompatible_wrapper_without_rewriting": {
+    "path": "docs/a_share_three_day_walkforward_campaign_089_no_return_development_admission_20260807.json",
+    "sha256": "a162ab8eefa47ac22749db93ee76a7d4bcc4dc8e06a2a22a472fb37090ff2f18",
+    "reason": "The v1 wrapper preserved the scientific evidence but did not expose the exact top-level compatibility fields required by the frozen development loader."
+  },
+  "authoritative_audit": {
+    "path": "data/experiments/short_horizon/historical_walkforward/campaign_089/no_return/20260806T210238Z_campaign089_no_return_audit.json",
+    "sha256": "f7c2c0bbd48b18fb1ace54d722ab6c5bf9de2752e0c6c7540976d10ba98182d7"
+  },
+  "admissible_factor_names": [
+    "intraday_directional_amount_timing_spread_238m"
+  ],
+  "admissible_factor_count": 1,
+  "failed_factor_names": [],
+  "coverage_gate_passed": true,
+  "median_coverage": 0.9978991596638656,
+  "p05_coverage": 0.9921485989186077,
+  "p05_eligible_names": 138,
+  "potential_nonoverlapping_three_session_cohorts": 539,
+  "comparison_factor_count": 118,
+  "comparison_order_matches_preregistration": true,
+  "all_required_numeric_comparisons_passed": true,
+  "maximum_observed_absolute_median_daily_rank_correlation": 0.4092308593233217,
+  "historical_daily_price_fields_read": [],
+  "historical_forward_return_fields_read": false,
+  "candidate49_historical_return_read": false,
+  "candidate49_prospective_ledgers_changed": false,
+  "provider_request_issued": false,
+  "current_scoring_selection_sizing_or_orders_performed": false
+}

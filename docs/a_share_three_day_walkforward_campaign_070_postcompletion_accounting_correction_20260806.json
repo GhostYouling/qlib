@@ -1,0 +1,46 @@
+{
+  "version": 1,
+  "kind": "a_share_three_day_walkforward_campaign070_postcompletion_accounting_correction",
+  "status": "append_only_command_level_accounting_current",
+  "recorded_at": "2026-08-06T04:51:00+08:00",
+  "bindings": {
+    "prior_terminal_freeze": {
+      "path": "docs/a_share_three_day_walkforward_campaign_070_terminal_completion_freeze_20260806.json",
+      "sha256": "5a9b1cf4adff71dd729018e74bf758d8a0e2a0936347f6db63ae3c22c3a7f6c3"
+    },
+    "terminal_validation_failure": {
+      "path": "docs/a_share_three_day_walkforward_campaign_070_terminal_validation_failure_20260806.json",
+      "sha256": "176fbf51395eecf9c2ada2bb82f39d26af73d31b2f7cd0800cd3a58ebf2e1e87"
+    },
+    "current_research_attempt_ledger": {
+      "path": "data/experiments/short_horizon/historical_walkforward/campaign_070/research_attempt_ledger_v2.json",
+      "sha256": "6d914e047080028bcdc8aa4aa626cbbcbdd539c36344e05a5b70e07b4bb4adb2"
+    },
+    "current_unified_report": {
+      "path": "data/experiments/short_horizon/three_day_research_report.md",
+      "sha256": "d35665f2bd0a2596566246ad822f415d3f75bdb510c6a931adad562d6684912c"
+    }
+  },
+  "correction": {
+    "attempt_unit": "failed_command_not_failed_node",
+    "additional_infrastructure_failure_count": 1,
+    "campaign070_infrastructure_failure_count_before": 3,
+    "campaign070_infrastructure_failure_count_after": 4,
+    "campaign070_attempt_count_before": 4,
+    "campaign070_attempt_count_after": 5,
+    "cumulative_historical_research_attempt_count_before": 418,
+    "cumulative_historical_research_attempt_count_after": 419,
+    "cumulative_return_reading_development_trial_count_before": 275,
+    "cumulative_return_reading_development_trial_count_after": 275,
+    "factor_result_changed": false,
+    "coverage_result_changed": false,
+    "new_factor_comparison_price_or_return_values_read": false
+  },
+  "current_validation": {
+    "command_scope": "Campaign070 current-node whitelist excluding the one immutable prebuild lifecycle assertion",
+    "passed": 10,
+    "failed": 0,
+    "deselected_historical_lifecycle_nodes": 1,
+    "exit_code": 0
+  }
+}

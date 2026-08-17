@@ -1,0 +1,25 @@
+{
+  "schema_version": 1,
+  "kind": "a_share_three_day_walkforward_campaign100_no_return_audit_prevalue_black_failure",
+  "status": "recorded_before_mechanical_formatting_retry",
+  "recorded_at": "2026-08-07T12:19:59Z",
+  "stage": "prevalue_no_return_audit_test_and_format_gate",
+  "outcome": "seven_boundary_tests_passed_but_black_required_mechanical_runner_formatting",
+  "preformat_runner": {
+    "path": "scripts/a_share_three_day_walkforward_campaign100_no_return_audit.py",
+    "sha256": "6c8bcb83bb2834f4cfa272f990108ee1479f01c788d58e17e813ed23a3046ac5"
+  },
+  "tests": {
+    "path": "tests/data_collector_tests/test_a_share_three_day_walkforward_campaign100_no_return_audit.py",
+    "sha256": "4a9fded8fdfbf6332e7c9d9763eebe61c348ce4acd8d8e6fea1b9496a6cd85f8",
+    "result": "7 passed"
+  },
+  "scientific_result_changed": false,
+  "candidate_values_read": false,
+  "coverage_or_capacity_metrics_computed": false,
+  "comparison_factor_values_read": false,
+  "historical_daily_price_or_forward_return_values_read": false,
+  "provider_request_issued": false,
+  "candidate49_ledgers_changed": false,
+  "retry_rule": "apply Black's mechanical rewrite only, rerun the same tests and static gates, then freeze the exact resulting bytes"
+}

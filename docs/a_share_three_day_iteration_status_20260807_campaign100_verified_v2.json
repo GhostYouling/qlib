@@ -1,0 +1,100 @@
+{
+  "schema_version": 2,
+  "kind": "a_share_three_day_iteration_status",
+  "status": "campaign100_effectively_verified_terminal_numeric_uniqueness_rejection_ready_for_campaign101_offline_iteration",
+  "recorded_at": "2026-08-07T12:44:13Z",
+  "supersedes_without_rewriting": {
+    "path": "docs/a_share_three_day_iteration_status_20260807_campaign100_verified.json",
+    "sha256": "e00556b223057c3bf8fc5ef00ee294423d9d4f626202da0df51756d3ca051174",
+    "preserved": true,
+    "scientific_result_changed": false,
+    "reason": "Bind final additive accounting after the overbroad Black scope and terminal-test patch context failures."
+  },
+  "terminal_completion_freeze": {
+    "path": "docs/a_share_three_day_walkforward_campaign_100_terminal_completion_freeze_v2_20260807.json",
+    "sha256": "4eb8f4a45eaec7110d02c03276d171398ae943dc26ecae067cb7a6abd143b51b"
+  },
+  "effective_attempt_ledger": {
+    "path": "data/experiments/short_horizon/historical_walkforward/campaign_100/research_attempt_ledger_v9.json",
+    "sha256": "83db16f48a3242c8d514b9f7276db7dba61a3994c1816f6b2311fc7e3f63a868"
+  },
+  "effective_future_numeric_policy": {
+    "path": "docs/a_share_three_day_walkforward_future_numeric_comparison_eligibility_policy_v54_20260807.json",
+    "sha256": "517193a12ad592015a4af7579041abf79c508dbbdaf3e2a7d5f1d752f391458f",
+    "complete_definition_count": 132,
+    "complete_definition_order_sha256": "2d0c342fe9644092e562832fe928473c230cbf982c1fb32f9d5c41c0a3594a42",
+    "numeric_comparator_count": 129,
+    "numeric_comparator_order_sha256": "a029c53fb237cc1d34aec0a9f7b67856ffa1a67ffe0fc9620fb230680353263b"
+  },
+  "research_mode": {
+    "historical_walkforward_is_primary_iteration_engine": true,
+    "historical_offline_work_may_run_at_any_time": true,
+    "wait_for_1630_or_new_daily_bar_required_for_historical_work": false,
+    "candidate49_future_observation_is_independent_confirmation_layer": true,
+    "historical_results_may_generate_current_scores_selection_sizing_or_orders": false
+  },
+  "campaign100_terminal_result": {
+    "factor": "intraday_unchanged_close_range_absorption_share_238p",
+    "direction": "higher",
+    "feature_snapshot_rows": 1331759,
+    "feature_snapshot_finite_rows": 1328142,
+    "median_coverage": 0.9983557108069769,
+    "p05_coverage": 0.9933708902303229,
+    "numeric_comparison_count": 128,
+    "numeric_comparison_pass_count": 125,
+    "numeric_comparison_fail_count": 3,
+    "maximum_absolute_median_daily_rank_correlation": 0.9123522089342854,
+    "development_trial_count": 0,
+    "historical_daily_price_or_forward_return_values_read": false,
+    "development_survivor_count": 0,
+    "stress_2024_2025_opened": false,
+    "stress_2024_2025_return_fields_read": false,
+    "terminal": true,
+    "same_campaign_inverse_residual_filter_reweight_retry_rescue_or_combination_allowed": false
+  },
+  "final_accounting": {
+    "campaign100_attempt_count": 14,
+    "campaign100_ledger_entry_count": 15,
+    "campaign100_infrastructure_implementation_or_recording_failure_count": 6,
+    "campaign100_complete_no_return_factor_outcome_count": 1,
+    "campaign100_return_reading_development_trial_count": 0,
+    "campaign100_development_survivor_count": 0,
+    "campaign100_stress_trial_count": 0,
+    "cumulative_historical_research_attempt_count": 724,
+    "cumulative_return_reading_development_trial_count": 294
+  },
+  "active_data_roots": {
+    "daily_qlib_root": "/Volumes/DIsk/Disk-Coding/qlib/data/qlib/cn_a_share",
+    "daily_calendar_last_session": "2026-07-13",
+    "accepted_minute_root": "/Volumes/DIsk/qlib-a-share-tushare-1m"
+  },
+  "candidate49": {
+    "registration_id": "candidate49_intraday_cumulative_vwap_crossing_rate_240m_v1",
+    "remains_only_active_prospective_candidate": true,
+    "signal_ledger": {
+      "path": "data/experiments/short_horizon/candidate49_future_signal_ledger.json",
+      "sha256": "5193f00d7f36da003f53cec387900da4c3d002299f5dfcfc1a95eaa199ed3a79",
+      "entry_count": 0
+    },
+    "execution_ledger": {
+      "path": "data/experiments/short_horizon/candidate49_future_execution_ledger.json",
+      "sha256": "d57a3e61eac969e42cafa418ccd8c0a5ee65dcf69da145bb2c096c2a02a2ea4f",
+      "entry_count": 0
+    },
+    "historical_backfill_performed": false,
+    "ledgers_changed_by_campaign100": false,
+    "second_prospective_candidate_created": false
+  },
+  "provider_credential": {
+    "source": ".env",
+    "regular_file_non_symlink": true,
+    "mode": "0600",
+    "git_ignored": true,
+    "recognized_nonempty_token_key_count": 1,
+    "secret_printed_hashed_or_logged": false
+  },
+  "provider_request_issued_by_campaign100": false,
+  "current_scoring_selection_sizing_or_orders_performed": false,
+  "investment_advice": false,
+  "next_safe_action": "Start Campaign101 only with a genuinely new prevalue-frozen mechanism and support predicate, bind policy v54, append every attempt, and keep Candidate49 isolated."
+}

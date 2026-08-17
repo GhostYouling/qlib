@@ -1,0 +1,28 @@
+{
+  "schema_version": 1,
+  "kind": "a_share_three_day_walkforward_campaign097_development_activation_binding_v3",
+  "status": "active_loader_namespace_repair_frozen_after_two_append_only_failures_before_complete_development_trial",
+  "activated_at": "2026-08-07T06:55:20Z",
+  "purpose": "Authorize one remaining complete Campaign097 development trial through the exact active namespace repair while preserving both failure entries.",
+  "implementation_freeze_v3": {
+    "path": "docs/a_share_three_day_walkforward_campaign_097_development_implementation_freeze_v3_20260807.json",
+    "sha256": "396cd016cd23470987a08c92963a72892729dd0cfed1be4accb87521e4147640"
+  },
+  "v2_failure_record": {
+    "path": "docs/a_share_three_day_walkforward_campaign_097_development_v2_outer_namespace_failure_20260807.json",
+    "sha256": "8ce0c30a9d8522bbd4fdda9b6938ca45b50915eec527a1209c3a4c8ccbc3554c"
+  },
+  "append_only_internal_ledger": {
+    "path": "data/experiments/short_horizon/historical_walkforward/campaign_097/walkforward/trial_ledger.json",
+    "sha256": "8b22da7d62c831fd03294ab3b3a60ea7a339cf20ce5d824bb3d09c95de7b4fa2",
+    "entry_count": 2,
+    "chain_tip_sha256": "a85a1e2501710ca08788178c191b1349c42c9cb784878a01ff12f36541b9497d"
+  },
+  "remaining_complete_development_trials_authorized": 1,
+  "append_only_failure_entries_may_be_deleted_or_rewritten": false,
+  "trial_factor_fold_cost_gate_or_threshold_changed": false,
+  "stress_2024_2025_authorized": false,
+  "provider_request_issued": false,
+  "candidate49_ledgers_changed": false,
+  "current_scoring_selection_sizing_or_orders_performed": false
+}

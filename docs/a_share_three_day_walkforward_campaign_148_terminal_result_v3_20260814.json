@@ -1,0 +1,69 @@
+{
+  "schema_version": 1,
+  "kind": "a_share_three_day_walkforward_campaign148_terminal_result_accounting_correction",
+  "status": "terminal_prevalue_zero_candidates_all_validation_failures_appended",
+  "recorded_at": "2026-08-14T23:12:00+08:00",
+  "supersedes_without_rewriting": {
+    "path": "docs/a_share_three_day_walkforward_campaign_148_terminal_result_v2_20260814.json",
+    "sha256": "1a1880cf4d03f0d99b54ba937930af4eddd499160d29efec34fa62f33aa807f3",
+    "preserved": true,
+    "scientific_result_changed": false,
+    "reason": "Append the accounting-test Black failure whose exit was hidden by later successful shell commands, without changing the scientific decision."
+  },
+  "authoritative_inputs": {
+    "format_validation_failure": {
+      "path": "docs/a_share_three_day_walkforward_campaign_148_accounting_test_black_masked_failure_20260814.json",
+      "sha256": "0b1f0cd1f463e1f9bbf2c6e0f14837949a3b74bc8f05d4d5299609aa402d79bd"
+    },
+    "effective_attempt_ledger_v3": {
+      "path": "data/experiments/short_horizon/historical_walkforward/campaign_148/research_attempt_ledger_v3.json",
+      "sha256": "17bc31e54c68ac0a99e45b870677178cd956765585a1f30d184f08d6afc85374",
+      "effective_entry_count": 8,
+      "chain_tip_sha256": "b096009bb8be1cc5d9212c1072d666a9e6447cf9dda19c1b4b5266add5361df0"
+    },
+    "formatted_accounting_test": {
+      "path": "tests/data_collector_tests/test_a_share_three_day_walkforward_campaign148_accounting.py",
+      "sha256": "10a21fc88a27ed4a809292c4a7b5dfe6785cc48dfa0b6f2a91e839a63a026b72"
+    }
+  },
+  "scientific_result_unchanged": {
+    "terminal_phase": "prevalue_complete_library_consumed_family_and_semantic_independence_gate",
+    "finite_concepts_reviewed": 6,
+    "selected_candidate_count": 0,
+    "complete_factor_definition_created": false,
+    "source_candidate_comparator_daily_price_or_forward_return_values_read": false,
+    "stress_2024_2025_opened": false,
+    "complete_factor_definition_count": 155,
+    "complete_factor_definition_order_sha256": "2e4114edb26fa3aaebd145ef07fe4e2ac9c5d9dc4586cf70ff61c20e39b954ba",
+    "eligible_numeric_comparator_count": 142,
+    "eligible_numeric_comparator_order_sha256": "5d1b35fb5a0d8ac9293008db9963c4a60a94dc940c237c3ed259e5ce44f14aaf"
+  },
+  "effective_accounting": {
+    "campaign148_attempt_count": 8,
+    "campaign148_prevalue_concept_attempt_count": 6,
+    "campaign148_infrastructure_failure_count": 2,
+    "campaign148_complete_factor_attempt_count": 0,
+    "campaign148_return_reading_development_trial_count": 0,
+    "campaign148_development_survivor_count": 0,
+    "campaign148_stress_trial_count": 0,
+    "cumulative_historical_research_attempt_count": 1288,
+    "cumulative_return_reading_development_trial_count": 314
+  },
+  "validation_failure_handling": {
+    "black_failure_treated_as_success": false,
+    "failed_exit_code_bypassed_or_masked_in_research_decision": false,
+    "only_mechanical_unbound_test_formatting_performed": true,
+    "scientific_files_rewritten": false
+  },
+  "candidate49": {
+    "sole_prospective_candidate": true,
+    "signal_ledger_sha256": "5193f00d7f36da003f53cec387900da4c3d002299f5dfcfc1a95eaa199ed3a79",
+    "execution_ledger_sha256": "d57a3e61eac969e42cafa418ccd8c0a5ee65dcf69da145bb2c096c2a02a2ea4f",
+    "signal_entries": 0,
+    "execution_entries": 0,
+    "same_day_retry_performed": false,
+    "historical_backfill_performed": false,
+    "ledgers_changed": false
+  },
+  "next_action": "Run strict current validation with separate commands and the exact historical Campaign145 lifecycle node deselected, then keep Campaign149 offline scouting authorized."
+}

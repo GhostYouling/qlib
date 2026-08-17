@@ -1,0 +1,95 @@
+{
+  "version": 1,
+  "kind": "a_share_three_day_walkforward_campaign027_concept_scouting",
+  "status": "one_independent_morning_afternoon_return_profile_persistence_concept_selected_before_candidate_values_comparison_values_or_returns",
+  "recorded_at": "2026-07-30T04:45:00Z",
+  "purpose": "Select one economically interpretable Campaign027 mechanism without opening a Campaign027 minute partition, candidate value, comparison value, daily price, or forward return.",
+  "authoritative_boundary": {
+    "path": "docs/a_share_three_day_iteration_status_20260730_campaign026_verified.json",
+    "sha256": "9f738be125aee403b9da34e101d23aee957f24c809fc5e8bbc766998444ba3d8",
+    "campaign027_concept_scouting_allowed": true,
+    "binding_validation_required_at_each_freeze_boundary": true,
+    "candidate49_remains_only_prospective_candidate": true,
+    "candidate50_activation_allowed": false
+  },
+  "selected_concept": {
+    "concept_name": "intraday_morning_afternoon_return_profile_persistence",
+    "mechanism_family": "paired_half_session_close_return_shape_persistence",
+    "economic_question": "Does the afternoon reproduce the stock's morning minute-return shape at the same ordinal positions within the trading half, indicating recurring same-day information or execution flow that may persist from the next open through the third close?",
+    "economic_hypothesis": "A stock whose afternoon minute-return profile resembles its morning profile may be undergoing persistent same-day information assimilation or recurring execution flow rather than a one-off directional move. Higher profile persistence may carry from the next open through the third close.",
+    "provisional_direction": "higher",
+    "allowed_source_fields": [
+      "datetime",
+      "symbol",
+      "provider",
+      "close"
+    ],
+    "forbidden_source_fields": [
+      "open",
+      "high",
+      "low",
+      "volume",
+      "amount",
+      "market benchmark",
+      "daily open",
+      "daily high",
+      "daily low",
+      "daily close",
+      "daily volume",
+      "daily amount",
+      "forward return",
+      "Level-2"
+    ],
+    "fixed_temporal_question": "Use 119 adjacent close returns inside 09:31-11:30 and 119 adjacent close returns inside 13:01-15:00, paired only by their ordinal positions 1 through 119 within each half. Exclude standalone 09:30, lunch, overnight, cross-day, and cross-stock transitions.",
+    "mandatory_overlap_challenges_before_any_value": [
+      "intraday_amount_profile_serial_persistence_240m",
+      "intraday_return_sign_run_imbalance_238p",
+      "intraday_volatility_resolution_238m",
+      "intraday_diffusive_variation_ratio_238m",
+      "intraday_return_variance_entropy_238m",
+      "intraday_return_skewness_238m",
+      "intraday_market_response_delay_asymmetry_236p",
+      "intraday_market_up_down_correlation_asymmetry_238m",
+      "candidate49_intraday_cumulative_vwap_crossing_rate_240m_v1"
+    ],
+    "known_design_risks": [
+      "paired positions, correlation estimator, direction, zero-return retention, variance requirement, and half-session definition are researcher degrees of freedom unless frozen before values",
+      "the concept may be statistically associated with volatility allocation or return-shape factors even though those do not compare matched morning and afternoon return positions",
+      "profile repetition may reflect persistent informed flow or predictable intraday seasonality, so the higher direction must be frozen before returns",
+      "using signs, ranks, magnitudes, lags, reversals, subwindows, market residuals, amount or volume weights, or terminal factor values would change the mechanism"
+    ]
+  },
+  "rejected_concepts": [
+    {
+      "concept": "morning_afternoon_return_level_difference_or_ratio",
+      "reason": "This would reopen terminal volatility-resolution, signed-path, terminal-location, or late-return mechanisms rather than measure profile-shape repetition."
+    },
+    {
+      "concept": "morning_afternoon_sign_agreement_or_run_count",
+      "reason": "Sign agreement and run statistics are too close to the terminal return-sign-run family and add arbitrary zero-sign handling."
+    },
+    {
+      "concept": "amount_or_volume_weighted_profile_persistence",
+      "reason": "This would mix the new return-shape question with terminal amount-profile, amount-lead, and volume-price coupling mechanisms."
+    },
+    {
+      "concept": "terminal_factor_combination_or_rescue",
+      "reason": "Campaign027 must be one new raw close-path statistic; combining or transforming terminal factors is prohibited."
+    }
+  ],
+  "decision": {
+    "advance_to_separate_no_value_mechanism_overlap_audit": true,
+    "exact_formula_or_direction_fixed_here": false,
+    "new_daily_bar_required": false,
+    "same_day_1630_wait_required": false,
+    "candidate49_ledgers_changed": false
+  },
+  "research_boundary": {
+    "external_campaign027_minute_partitions_read": false,
+    "candidate_values_read": false,
+    "comparison_values_read": false,
+    "daily_price_fields_read": false,
+    "forward_returns_read": false,
+    "provider_request_issued": false
+  }
+}

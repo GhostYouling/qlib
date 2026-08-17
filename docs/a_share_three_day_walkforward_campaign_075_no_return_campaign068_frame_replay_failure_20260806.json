@@ -1,0 +1,46 @@
+{
+  "version": 1,
+  "kind": "a_share_three_day_walkforward_campaign075_infrastructure_failure",
+  "status": "recorded_after_failed_audit_no_audit_artifact_published",
+  "recorded_at": "2026-08-06T09:34:00+08:00",
+  "attempt_ordinal_within_campaign": 2,
+  "stage": "coverage_passed_then_frozen_comparator_snapshot_verification",
+  "command": "scripts/a_share_three_day_walkforward_campaign075_no_return_audit.py run --data-root /Volumes/DIsk/qlib-a-share-tushare-1m --workers 4",
+  "exit_code": 1,
+  "failure": {
+    "exception": "Campaign068FeatureV2Error",
+    "message": "v2 partition frame changed: Campaign068 sh600000/2019.parquet",
+    "candidate_coverage_gate_reached_and_passed": true,
+    "comparison_phase_entered": true,
+    "audit_artifact_published": false,
+    "daily_price_or_forward_return_values_read": false
+  },
+  "diagnosis": {
+    "campaign068_partition_path": "/Volumes/DIsk/qlib-a-share-tushare-1m/derived/a_share/rich/tushare/minute_walkforward_campaign068_feature_library/tushare_stk_mins_1m_2019_2025_ea0cbb8f_walkforward_campaign068_feature_library_v2/partitions/sh600000/2019.parquet",
+    "stored_and_observed_byte_sha256": "3a645c7bb15073db77c7acc16dae27c1d21f1746a23eb74599cc8485a1048dae",
+    "stored_frame_sha256": "f6f9443e1a35ea171c32c961667292fe3d7eb13d4cebc42277e74ac563d55537",
+    "current_runtime_frame_sha256": "ce1da1dd3aef99f9dd1be9f8c3969332213547eaaf6d2ee255d4ac33444d3603",
+    "parquet_schema": [
+      "trade_date: timestamp[ns]",
+      "symbol: string",
+      "provider: string",
+      "quarterly_profit_revenue_acceleration_rank_gap_2r: double",
+      "quarterly_profit_revenue_acceleration_rank_gap_2r_eligible: bool"
+    ],
+    "rows": 244,
+    "pandas_version": "2.2.3",
+    "pyarrow_version": "25.0.0",
+    "conclusion": "The immutable Parquet bytes match exactly, but the derived Arrow IPC frame hash is runtime-sensitive. No file or candidate/comparator definition changed."
+  },
+  "research_boundary": {
+    "factor_formula_direction_age_clock_or_values_changed": false,
+    "comparison_order_or_threshold_changed": false,
+    "campaign068_snapshot_file_changed": false,
+    "candidate_or_comparison_result_observed_from_failed_attempt": false,
+    "historical_daily_price_fields_read": [],
+    "historical_forward_returns_read": false,
+    "provider_request_issued": false,
+    "candidate49_ledgers_changed": false
+  },
+  "authorized_narrow_repair": "Create a versioned Campaign075 runtime-compatibility verifier that still requires every stored Campaign068 Parquet byte hash, exact row count and schema, signed value semantics, immutable manifest/dataset digest, and all source protocol/freeze bindings, but does not recompute the runtime-sensitive Arrow IPC frame hash. Restart the whole audit from coverage; do not reuse partial statistics."
+}

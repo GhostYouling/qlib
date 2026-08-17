@@ -1,0 +1,43 @@
+{
+  "version": 1,
+  "kind": "a_share_three_day_walkforward_campaign070_no_return_audit_activation_binding",
+  "status": "frozen_before_coverage_or_comparison_values",
+  "recorded_at": "2026-08-06T04:44:00+08:00",
+  "implementation_freeze": {
+    "path": "docs/a_share_three_day_walkforward_campaign_070_no_return_audit_implementation_freeze_20260806.json",
+    "sha256": "63623b926baa51a3fde15a7d231d05f8c4bea985fdf1a6c540355a748affb086"
+  },
+  "audit_runner": {
+    "path": "scripts/a_share_three_day_walkforward_campaign070_no_return_audit.py",
+    "sha256": "534ad73ff13459e3585c4349e49bbc65a2962ec433f93682db9c6fc88f4d54eb"
+  },
+  "tests": {
+    "path": "tests/data_collector_tests/test_a_share_three_day_walkforward_campaign070_no_return_audit.py",
+    "sha256": "829c1f8e248c8e07d6ab00dd644c695634a9d30e163ee547059e621c2a8817be"
+  },
+  "snapshot_binding": {
+    "path": "docs/a_share_three_day_walkforward_campaign_070_feature_snapshot_binding_20260806.json",
+    "sha256": "4c573c47ce247cac96c492ae37f93c39356303db18f05c093f1446a765e8aa34"
+  },
+  "candidate_snapshot": {
+    "path": "/Volumes/DIsk/qlib-a-share-tushare-1m/derived/a_share/rich/tushare/minute_walkforward_campaign070_feature_library/tushare_stk_mins_1m_2019_2025_ea0cbb8f_walkforward_campaign070_feature_library_v1/snapshot_manifest.json",
+    "sha256": "f828ee06ac609580880eb0bfcd2d1fbcaba590e872f57fe5639a468c67edcbd7",
+    "dataset_sha256": "35ea87d9e183b77a382a88789cedf96d79f6a102c5006e156bbde2ff87fd6efe",
+    "partitions": 33015,
+    "rows": 7724498,
+    "eligible_rows": 6353795
+  },
+  "candidate_snapshot_fully_verified_before_activation": true,
+  "coverage_or_capacity_metrics_computed_before_activation": false,
+  "comparison_values_read_before_activation": false,
+  "historical_daily_price_fields_read_before_activation": [],
+  "historical_forward_returns_read_before_activation": false,
+  "provider_request_issued_before_activation": false,
+  "candidate49_ledgers_changed_before_activation": false,
+  "decision": {
+    "audit_may_run_once": true,
+    "coverage_failure_must_stop_before_all_comparator_sources": true,
+    "coverage_pass_may_load_exactly_compact_cache_v4_then_campaign068_then_campaign069": true,
+    "daily_prices_or_returns_authorized": false
+  }
+}

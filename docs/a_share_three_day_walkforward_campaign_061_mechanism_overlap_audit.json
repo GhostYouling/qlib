@@ -1,0 +1,137 @@
+{
+  "version": 1,
+  "kind": "a_share_three_day_walkforward_campaign061_mechanism_overlap_audit",
+  "status": "passed_conceptual_independence_before_campaign061_source_candidate_comparison_daily_price_or_return_values",
+  "recorded_at": "2026-08-05T00:35:00+08:00",
+  "purpose": "Challenge the selected adjacent-session realized-variance stability mechanism against the complete 92-definition Campaign061 comparison catalog before reading any Campaign061 minute row, candidate value, comparison value, daily price, or forward return.",
+  "authoritative_boundary": {
+    "campaign060_verified_state": {
+      "path": "docs/a_share_three_day_iteration_status_20260805_campaign060_verified.json",
+      "sha256": "821c7a5a9c75189e577803a5b1dcd98e30632352ed710ac9c3624139689a065c"
+    },
+    "historical_walkforward_policy": {
+      "path": "docs/a_share_three_day_historical_walkforward_research_policy_20260727.json",
+      "sha256": "38426d6161b9bfed323c58caba18feca668b8c9d53e294951a8ba90c01a798bb"
+    },
+    "concept_scouting": {
+      "path": "docs/a_share_three_day_walkforward_campaign_061_concept_scouting.json",
+      "sha256": "87e12338a4450a951d106c7cd6e866e5528c60279aa3c2b9e792eb3e6f501025"
+    }
+  },
+  "inherited_definition_sources": {
+    "campaign060_protocol": {
+      "path": "docs/a_share_three_day_walkforward_campaign_060_no_return_preregistration.json",
+      "sha256": "1d8d41bcfde2cd0ae81e69eae0abb4fd7ef92fed9ec63dd8187e510cd02b92a3",
+      "comparison_count": 91
+    },
+    "campaign060_terminal_record": {
+      "path": "docs/a_share_three_day_walkforward_campaign_060_research_record.json",
+      "sha256": "889ab11013ba8cead84b0377cea15fdce0a405ce98d6a0d96eac08eb17bfbadd",
+      "appended_definition": "intraday_day_over_day_directional_return_agreement_238b"
+    },
+    "total_required_no_return_comparison_count": 92,
+    "campaign061_comparison_values_read": false
+  },
+  "selected_mechanism": {
+    "name": "intraday_day_over_day_realized_variance_stability_238b",
+    "direction": "higher",
+    "economic_hypothesis": "Persistence of stock-specific intraday volatility scale across adjacent sessions may represent a stable information and liquidity regime relevant to a three-session horizon.",
+    "formula": "2*min(sum(r_t^2),sum(r_t_minus_1^2))/(sum(r_t^2)+sum(r_t_minus_1^2)) across each session's exact 238 within-half log-close returns",
+    "source_projection": [
+      "datetime",
+      "symbol",
+      "provider",
+      "close"
+    ],
+    "calendar_lag": 1,
+    "strictly_positive_realized_variance_required_on_both_sessions": true,
+    "transform_threshold_filter_combination_or_model": "none"
+  },
+  "overlap_challenges": [
+    {
+      "family": "intraday_realized_volatility",
+      "result": "distinct_cross_session_scale_relation_pending_mandatory_statistical_uniqueness",
+      "reason": "The existing factor is a one-session volatility level with lower direction. Campaign061 is symmetric in t and t-1 and measures their scale stability: multiplying both sessions by the same return scale leaves Campaign061 unchanged while changing the level factor."
+    },
+    {
+      "family": "intraday_day_over_day_absolute_return_profile_similarity_238b",
+      "result": "distinct_scale_stability_pending_mandatory_statistical_uniqueness",
+      "reason": "Campaign057 normalizes each 238-bin absolute-return vector to unit mass and measures clock-shape similarity, so it discards total scale. Campaign061 sums squared returns and discards clock shape; two equal shapes with different scales separate the factors, while permuting bins inside a session changes Campaign057 but not Campaign061."
+    },
+    {
+      "family": "intraday_day_over_day_directional_return_agreement_238b",
+      "result": "distinct_magnitude_regime_pending_mandatory_statistical_uniqueness",
+      "reason": "Campaign060 discards nonzero magnitudes and compares aligned signs. Campaign061 discards signs and positions after summing squared returns. Sign flips affect only Campaign060, while rescaling one whole session affects only Campaign061."
+    },
+    {
+      "family": "intraday_volatility_resolution_238m_intraday_five_minute_variance_ratio_230w_and_intraday_return_variance_entropy_238m",
+      "result": "distinct_cross_date_total_scale_relation_pending_mandatory_statistical_uniqueness",
+      "reason": "Those statistics describe one-session temporal resolution or distribution of variation. Campaign061 neither changes sampling frequency nor allocates variation across time; it compares only total 1-minute within-half variance across two dates."
+    },
+    {
+      "family": "intraday_absolute_return_serial_persistence_236p_return_reversal_energy_share_236p_and_spectral_or_weak_order_entropy",
+      "result": "distinct",
+      "reason": "Those mechanisms depend on within-session order, adjacency, spectrum, or ranks. Campaign061 is invariant to any permutation of the 238 return positions within either session."
+    },
+    {
+      "family": "market_linear_magnitude_dispersion_response_and_residual_factors",
+      "result": "distinct",
+      "reason": "Campaign061 uses no peer return, market sum, peer count, dispersion, beta, response lag, or residual."
+    },
+    {
+      "family": "amount_volume_vwap_ohlc_range_gap_quarterly_disclosure_and_quality_factors",
+      "result": "distinct",
+      "reason": "Campaign061 reads only datetime, symbol, provider, and close and has no activity, transaction-price, OHLC range, accounting, disclosure, or quality state."
+    },
+    {
+      "family": "candidate49_cumulative_vwap_crossing_rate_240m",
+      "result": "distinct",
+      "reason": "Candidate49 uses causal own-session cumulative VWAP and remains future-only. Campaign061 reads no volume and creates no Candidate49 history, score, signal, execution, or milestone."
+    },
+    {
+      "family": "terminal_factor_combination_filter_threshold_or_model",
+      "result": "distinct",
+      "reason": "The score is computed directly from two adjacent stock-session close grids. It loads no terminal score and fits no weight, regime, filter, threshold, subset, or model."
+    }
+  ],
+  "design_choices_frozen_before_values": {
+    "candidate_count": 1,
+    "factor_name": "intraday_day_over_day_realized_variance_stability_238b",
+    "direction": "higher",
+    "current_session_count": 1,
+    "lookback_session_count": 1,
+    "accepted_calendar_lag": 1,
+    "close_count_per_session": 240,
+    "return_positions_per_session": 238,
+    "return_grid": "119 morning plus 119 afternoon adjacent natural-log close returns",
+    "bridge_missing_or_suspended_previous_stock_session": false,
+    "realized_variance": "unannualized sum of squared returns",
+    "score": "2_times_smaller_realized_variance_divided_by_sum",
+    "strictly_positive_realized_variance_required_on_both_sessions": true,
+    "valid_range": [
+      0.0,
+      1.0
+    ],
+    "lower_endpoint_is_eligible": false,
+    "upper_endpoint_is_eligible": true,
+    "parameter_filter_subset_model_or_combination_search": false
+  },
+  "research_boundary": {
+    "external_campaign061_minute_rows_read": false,
+    "campaign061_candidate_or_comparison_values_read": false,
+    "historical_daily_price_fields_read": [],
+    "historical_forward_return_fields_read": false,
+    "provider_request_issued": false,
+    "candidate49_historical_return_signal_execution_or_milestone_backfill_performed": false,
+    "candidate49_ledgers_changed": false,
+    "second_prospective_candidate_created": false,
+    "current_scoring_selection_sizing_or_orders_performed": false,
+    "investment_advice": false
+  },
+  "decision": {
+    "conceptual_independence_passed": true,
+    "statistical_independence_pending_all_92_comparisons": true,
+    "predictive_value_established": false,
+    "next_action": "Freeze one exact coverage-first 92-comparison no-return protocol before implementing or reading any Campaign061 source, candidate, or comparison value."
+  }
+}

@@ -1,0 +1,64 @@
+{
+  "version": 1,
+  "kind": "a_share_three_day_walkforward_campaign076_feature_snapshot_binding",
+  "status": "verified_before_campaign076_coverage_or_comparison_values",
+  "recorded_at": "2026-08-06T11:14:00+08:00",
+  "protocol": {
+    "path": "docs/a_share_three_day_walkforward_campaign_076_no_return_preregistration.json",
+    "sha256": "e1ac80f52e59e7dfff36154a41355ded291511d04c6c1d51eb5106af71167a01"
+  },
+  "feature_implementation_freeze": {
+    "path": "docs/a_share_three_day_walkforward_campaign_076_feature_implementation_freeze_20260806.json",
+    "sha256": "f88e0749d4e09a6b5b12ac11170c392d4618696b89aaa626ee7939f37e70b6c2"
+  },
+  "feature_runner": {
+    "path": "scripts/a_share_three_day_walkforward_campaign076_features.py",
+    "sha256": "fea05e1bea886616830f849a10a415fae888a19ec06208e814dd7c936a4b7270"
+  },
+  "feature_tests": {
+    "path": "tests/data_collector_tests/test_a_share_three_day_walkforward_campaign076_features.py",
+    "sha256": "45d89011745ed505c9b3ea49743f10adc46683375dd5ad0836218f35bb803d1b",
+    "passed": 9,
+    "failed": 0
+  },
+  "snapshot": {
+    "path": "/Volumes/DIsk/qlib-a-share-tushare-1m/derived/a_share/rich/tushare/minute_walkforward_campaign076_feature_library/tushare_stk_mins_1m_2019_2025_ea0cbb8f_walkforward_campaign076_feature_library_v1/snapshot_manifest.json",
+    "sha256": "dc23177c4125142fb2287fb3e19a4be8a3cd53b70abd3be91718979aaf200f32",
+    "dataset_sha256": "aef7cfb7cbc3ccaabe5552a4ed4f81ea8582d5f739153dd405b70e2a73b3a952",
+    "partitions": 33015,
+    "rows": 7724498,
+    "eligible_rows": 7724498,
+    "factor": "intraday_peak_amount_bar_recency_240m",
+    "direction": "higher"
+  },
+  "verification": {
+    "all_partition_byte_hashes_passed": true,
+    "all_partition_frame_hashes_passed": true,
+    "aggregate_dataset_digest_passed": true,
+    "finite_range_and_discrete_i_over_239_semantics_passed": true,
+    "source_fields_read": [
+      "datetime",
+      "symbol",
+      "provider",
+      "amount"
+    ],
+    "joint_clean_identity_projection_only": [
+      "trade_date",
+      "symbol",
+      "provider"
+    ],
+    "comparison_values_read": false,
+    "historical_daily_price_or_forward_return_values_read": false,
+    "provider_request_issued": false
+  },
+  "research_boundary": {
+    "coverage_or_capacity_metrics_computed_before_binding": false,
+    "comparison_values_read_before_binding": false,
+    "historical_daily_price_fields_read_before_binding": [],
+    "historical_forward_returns_read_before_binding": false,
+    "candidate49_ledgers_changed": false,
+    "second_prospective_candidate_created": false,
+    "current_scoring_selection_sizing_or_orders_performed": false
+  },
+  "next_action": "Freeze and synthetically test a coverage-first no-return audit, activate it against this exact snapshot, then compute coverage before any comparator value."
+}

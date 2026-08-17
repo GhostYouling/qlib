@@ -1,0 +1,134 @@
+{
+  "version": 1,
+  "kind": "a_share_three_day_walkforward_campaign046_mechanism_overlap_audit",
+  "status": "passed_conceptual_independence_before_campaign046_candidate_comparison_daily_price_or_return_values",
+  "recorded_at": "2026-07-31T22:06:00Z",
+  "purpose": "Challenge the selected Campaign046 return-reversal-energy mechanism against the complete terminal and prospective frontier before freezing a formula implementation or reading any Campaign046 candidate, comparison, daily-price, or return value.",
+  "authoritative_boundary": {
+    "path": "docs/a_share_three_day_iteration_status_20260801_campaign045_verified.json",
+    "sha256": "3c5ea3ce7bf2b67683c201cca2b36c1683e430a66902c0b75ff573913625a8b6"
+  },
+  "historical_walkforward_policy": {
+    "path": "docs/a_share_three_day_historical_walkforward_research_policy_20260727.json",
+    "sha256": "38426d6161b9bfed323c58caba18feca668b8c9d53e294951a8ba90c01a798bb"
+  },
+  "concept_scouting": {
+    "path": "docs/a_share_three_day_walkforward_campaign_046_concept_scouting.json",
+    "sha256": "9d96c723ee27f3a9069f1e4e7c7b3bddcc1ec9a5b7d2d748f76069785c2ef7b1"
+  },
+  "selected_mechanism": {
+    "name": "intraday_return_reversal_energy_share_236p",
+    "direction": "higher",
+    "information_domain": "within_half_adjacent_return_sign_reversal_energy_allocation",
+    "formula": "For each 120-close half, form 119 adjacent log returns and 118 ordered adjacent-return pairs (a,b). Pool the two halves to 236 pairs, set W=sum(abs(a*b)) and O=sum(abs(a*b) where a*b<0), and return O/W.",
+    "economic_hypothesis": "A higher fixed share indicates that more one-minute adjacent return-product energy is absorbed through direction reversal rather than propagated through continuation, potentially leaving a more resilient completed-session price-discovery state for the next-open-to-third-close horizon.",
+    "source_fields": [
+      "datetime",
+      "symbol",
+      "provider",
+      "close"
+    ],
+    "selected_bar_grid": "exactly 240 raw unadjusted one-minute closes at 09:31-11:30 and 13:01-15:00; standalone 09:30 is excluded",
+    "half_session_rule": "Form 119 returns and 118 ordered adjacent pairs independently inside each half; never include lunch, overnight, cross-day, or cross-stock transitions.",
+    "weight_rule": "Every pair contributes abs(a*b) to W. A pair contributes the same nonnegative weight to O only when a*b is strictly negative.",
+    "zero_rule": "Retain every exact-zero return in fixed support. A zero product contributes zero to O and W and does not bridge neighboring returns.",
+    "normalization_rule": "Require finite W>0 and return O/W; no centering, standardization, volatility scaling, clipping, winsorization, or rank transform is allowed.",
+    "bar_rule": "All 240 selected closes must be finite and strictly positive.",
+    "missing_rule": "Any invalid selected close, nonfinite log return/product/aggregate, W<=0, or score outside [0,1] before 1e-12 endpoint canonicalization makes the stock-day missing.",
+    "valid_range": [
+      0.0,
+      1.0
+    ]
+  },
+  "overlap_challenges": [
+    {
+      "family": "intraday_negative_return_absorption_rate_236p",
+      "result": "distinct_pending_statistical_uniqueness_gate",
+      "reason": "The terminal absorption factor conditions only on negative initiators followed by positive returns and weights by destination-bar CNY amount. Campaign046 treats positive-to-negative and negative-to-positive reversals symmetrically, weights by the exact adjacent return-product magnitude, and reads no amount."
+    },
+    {
+      "family": "intraday_return_sign_run_imbalance_238p_and_intraday_bar_direction_continuity_238p",
+      "result": "distinct_pending_statistical_uniqueness_gate",
+      "reason": "Those factors count sign states, with sign-run imbalance distinguishing positive from negative continuation and bar continuity using open-close bodies. Campaign046 uses between-close returns, treats both reversal directions identically, and weights by continuous return-product energy rather than counts."
+    },
+    {
+      "family": "intraday_absolute_return_serial_persistence_236p",
+      "result": "distinct_pending_statistical_uniqueness_gate",
+      "reason": "Campaign028 centers adjacent absolute-return vectors and measures Pearson magnitude persistence without signs. Campaign046 uses no correlation or centering and allocates their uncentered product energy exclusively by opposite versus same signs."
+    },
+    {
+      "family": "intraday_diffusive_variation_ratio_238m_and_intraday_five_minute_variance_ratio_230w",
+      "result": "distinct_pending_statistical_uniqueness_gate",
+      "reason": "Diffusive variation ignores product signs and scales total adjacent absolute products by realized variance; the five-minute ratio aggregates signed returns over overlapping windows. Campaign046 uses neither realized-variance nor multi-minute-sum denominators and measures the sign allocation of adjacent product energy."
+    },
+    {
+      "family": "intraday_return_time_reversal_asymmetry_236p",
+      "result": "distinct_pending_statistical_uniqueness_gate",
+      "reason": "Campaign039 uses a signed antisymmetric cubic contrast a*b*(a-b) and one post-pooling absolute value to measure time irreversibility. Campaign046 uses only abs(a*b) and a strict opposite-sign indicator; pair order reversal does not change its local contribution."
+    },
+    {
+      "family": "intraday_upside_semivariance_share_239m_return_skewness_and_weak_order_entropy",
+      "result": "distinct_pending_statistical_uniqueness_gate",
+      "reason": "Those mechanisms summarize marginal sign/moment or ordinal-state composition. Campaign046 is ordering-sensitive on adjacent return pairs, uses exact magnitudes, and contains no marginal moment, triple state, or entropy."
+    },
+    {
+      "family": "intraday_signed_path_efficiency_239m_half_session_chord_adherence_and_extreme_order",
+      "result": "distinct",
+      "reason": "Those mechanisms use endpoints, price-level geometry, chords, or extrema. Campaign046 has no price-level anchor or terminal displacement and depends only on adjacent within-half return products."
+    },
+    {
+      "family": "campaign045_volatility_activity_lead_lag_asymmetry_and_other_activity_mechanisms",
+      "result": "distinct",
+      "reason": "Campaign045 and the amount/volume families measure activity coupling, lead-lag, transaction prices, or arrival profiles. Campaign046 reads close only and contains no amount, volume, activity transform, or activity alignment."
+    },
+    {
+      "family": "market_quarterly_event_and_candidate49_mechanisms",
+      "result": "distinct",
+      "reason": "Campaign046 contains no peer benchmark, disclosure field, event timing, VWAP, volume, or amount and remains historical-research-only. Candidate49 stays future-only and enters only as a no-return comparison."
+    },
+    {
+      "family": "terminal_factor_combination_filter_or_model",
+      "result": "not_used",
+      "reason": "Campaign046 contains one exact raw-close statistic and no terminal factor value, fitted weight, filter, threshold, regime, or combination."
+    }
+  ],
+  "design_choices_frozen_before_values": {
+    "formula_family": "within_half_adjacent_return_opposite_sign_product_energy_share",
+    "direction": "higher",
+    "selected_bar_count": 240,
+    "half_session_bar_count": 120,
+    "within_half_return_count": 238,
+    "within_half_adjacent_return_pair_count": 236,
+    "include_0930": false,
+    "include_lunch_transition": false,
+    "adjacent_lag_only": 1,
+    "pair_weight": "abs(a*b)",
+    "opposite_sign_rule": "a*b<0 exactly",
+    "same_sign_pair_weight_in_numerator": 0.0,
+    "exact_zero_product_weight": 0.0,
+    "denominator": "sum(abs(a*b)) over all 236 fixed pairs",
+    "require_positive_denominator": true,
+    "endpoint_canonicalization_tolerance": 1e-12,
+    "parameter_filter_subset_model_or_combination_count": 0
+  },
+  "research_boundary": {
+    "external_minute_partitions_read": false,
+    "candidate_values_read": false,
+    "comparison_values_read": false,
+    "historical_daily_price_fields_read": false,
+    "historical_forward_returns_read": false,
+    "training_or_model_fitting_performed": false,
+    "provider_request_issued": false,
+    "candidate49_historical_return_signal_or_execution_backfill_performed": false,
+    "candidate49_ledgers_changed": false,
+    "candidate50_activation_created": false,
+    "current_scoring_selection_sizing_or_orders_performed": false,
+    "investment_advice": false
+  },
+  "decision": {
+    "conceptual_independence_passed": true,
+    "statistical_independence_pending_all_69_comparisons": true,
+    "predictive_value_established": false,
+    "next_action": "Bind this record, append terminal Campaign045 to the inherited 68-factor order, freeze one exact post-admission development trial, and run the binding validator before implementation."
+  }
+}

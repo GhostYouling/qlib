@@ -1,0 +1,40 @@
+{
+  "version": 1,
+  "kind": "a_share_three_day_walkforward_campaign103_no_return_result_binding",
+  "status": "one_admissible_factor_pending_frozen_development_trial",
+  "recorded_at": "2026-08-07T16:51:00+08:00",
+  "protocol": {
+    "path": "docs/a_share_three_day_walkforward_campaign_103_no_return_preregistration.json",
+    "sha256": "ea7aae7dcae02629cb00e39e6bff903b7ce2afe14aeb1e29b3b612d381297245"
+  },
+  "audit": {
+    "path": "data/experiments/short_horizon/historical_walkforward/campaign_103/no_return/no_return_audit.json",
+    "sha256": "2fd8837ee22a98c52f90c76abd043f7ae793dd8fe0d98e67fd2ab5e20e9e85d5",
+    "admissible_factor_count": 1,
+    "admissible_factor": "full_numeric_library_directional_rank_improvement_breadth_130f"
+  },
+  "coverage": {
+    "eligible_rows": 1315573,
+    "median": 0.9950980392156863,
+    "p05": 0.9220209265874977,
+    "p05_names": 138.0,
+    "potential_non_overlapping_three_session_cohorts": 539,
+    "gate_passed": true
+  },
+  "uniqueness": {
+    "comparison_count": 130,
+    "all_passed": true,
+    "maximum_absolute_median_daily_rank_correlation": 0.46933769346432125,
+    "nearest_factor": "full_terminal_library_directional_percentile_consensus_66f"
+  },
+  "research_boundary": {
+    "historical_daily_price_fields_read": [],
+    "historical_forward_return_fields_read": false,
+    "training_or_model_fitting_performed": false,
+    "provider_request_issued": false,
+    "candidate49_ledgers_changed": false,
+    "2024_2025_stress_opened": false,
+    "current_scoring_selection_sizing_or_orders_performed": false
+  },
+  "decision": "Exactly one preregistered 2019-2023 development trial may be frozen; 2024-2025 remains closed."
+}

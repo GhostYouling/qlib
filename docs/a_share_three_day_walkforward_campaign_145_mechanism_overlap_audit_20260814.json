@@ -1,0 +1,124 @@
+{
+  "schema_version": 1,
+  "kind": "a_share_three_day_walkforward_campaign145_mechanism_overlap_audit",
+  "status": "one_genuinely_new_contract_permitted_mechanism_selected_before_source_candidate_or_comparator_values",
+  "recorded_at": "2026-08-14T20:01:04+08:00",
+  "authoritative_inputs": {
+    "concept_scouting": {
+      "path": "docs/a_share_three_day_walkforward_campaign_145_concept_scouting_20260814.json",
+      "sha256": "bc1d0f6d4f4e57dad395a498dee83375f0a11e35b99e01cbc11cf0b68c46f1bf"
+    },
+    "numeric_policy_v190": {
+      "path": "docs/a_share_three_day_walkforward_future_numeric_comparison_eligibility_policy_v190_20260814.json",
+      "sha256": "d6e8b359bd7b8af6678b91b0b8c10bbee40af0b06d2373c0897c5e3f159034ac",
+      "complete_definition_count": 153,
+      "complete_definition_order_sha256": "bf66faef96d7058c7028da52757c65d8e0bf7978cf72d3967cd236e4da30b875",
+      "numeric_comparator_count": 141,
+      "numeric_comparator_order_sha256": "ec1aebcb939ad516c58037a36a4aaadd4ad8b2abbd3c884705895c58da85a2ee"
+    },
+    "raw_minute_manifest": {
+      "path": "/Volumes/DIsk/qlib-a-share-tushare-1m/raw/a_share/rich/tushare/minutes/1m/snapshots/tushare_stk_mins_1m_2019_2025_ea0cbb8f/snapshot_manifest.json",
+      "sha256": "9b3d959563c9d182f38981c6a36bdb3bc9b415de08487a9e1f9e850825c0839f"
+    }
+  },
+  "candidate": {
+    "name": "intraday_return_amount_cumulative_path_signed_area_238p",
+    "direction": "higher",
+    "economic_hypothesis": "Within-session transaction-amount arrival that precedes favorable signed price discovery produces a positive oriented path area and may indicate information-supported continuation from the next open through the third close.",
+    "source_projection": [
+      "datetime",
+      "symbol",
+      "provider",
+      "close",
+      "amount"
+    ],
+    "exact_formula": "For each 120-bar half separately, form 119 adjacent log-close returns r_i and use destination-bar nonnegative amount a_i. Let dx_i=r_i/sum_j(abs(r_j)), dy_i=a_i/sum_j(a_j), X_0=Y_0=0, X_i=sum_{j<=i}(dx_j), and Y_i=sum_{j<=i}(dy_j). The half score is 0.5*sum_i(Y_{i-1}*dx_i-X_{i-1}*dy_i). The stock-day score is the arithmetic mean of the morning and afternoon half scores.",
+    "valid_range_inclusive": [
+      -1.0,
+      1.0
+    ],
+    "point_in_time_known": "after the complete signal-session close"
+  },
+  "source_and_contract_gate": {
+    "accepted_full_historical_source_exists": true,
+    "historically_versioned_snapshot_exists": true,
+    "public_availability_clock_identified": true,
+    "original_collection_contract_permits_projected_minute_fields": true,
+    "new_provider_or_source_admission_required": false,
+    "provider_request_allowed": false,
+    "source_rows_read_for_this_audit": false
+  },
+  "nearest_complete_definition_review": [
+    {
+      "name": "intraday_amount_lead_return_correlation_238p",
+      "overlap": "Both use signed close returns and transaction amount with temporal order.",
+      "distinction": "The terminal factor is a one-step Pearson correlation between earlier log amount and the next return. Campaign145 is a within-half cumulative path line integral, uses destination amount mass, has no covariance normalization and captures global ordering rather than one-lag linear dependence."
+    },
+    {
+      "name": "intraday_amount_price_discovery_alignment_js_238p",
+      "overlap": "Both normalize amount and close-return-derived mass.",
+      "distinction": "The terminal factor is simultaneous, unsigned and order-insensitive after endpoint alignment. Campaign145 preserves return sign and path order and measures orientation; identical unsigned distributions can have opposite Campaign145 scores."
+    },
+    {
+      "name": "intraday_directional_amount_timing_spread_238m",
+      "overlap": "Both distinguish positive and negative return timing with amount.",
+      "distinction": "The terminal factor subtracts amount-weighted clock centroids conditional on return sign. Campaign145 has no positive/negative subset centroid or fixed clock coordinate; it integrates the two cumulative paths and weights signed return magnitude."
+    },
+    {
+      "name": "intraday_amount_volatility_coupling_238p",
+      "overlap": "Both join price change and amount.",
+      "distinction": "The terminal factor is pointwise Pearson dependence of absolute return and log amount. Campaign145 uses signed normalized increments and cumulative order with no pointwise correlation."
+    },
+    {
+      "name": "intraday_amount_center_of_mass_240m",
+      "overlap": "Both summarize when amount arrives.",
+      "distinction": "The terminal factor is an amount-only fixed-clock center. Campaign145 is translation-free in observation index within each half and requires a signed return path."
+    },
+    {
+      "name": "intraday_cumulative_vwap_crossing_rate_240m_candidate49",
+      "overlap": "Both contain a causal cumulative state.",
+      "distinction": "Candidate49 counts close crossings around cumulative transaction VWAP and remains prospective-only. Campaign145 forms no VWAP, reference crossing, volume ratio or Candidate49 value and cannot enter Candidate49's signal or execution ledgers."
+    }
+  ],
+  "semantic_decision": {
+    "all_153_complete_definitions_reviewed_in_frozen_order": true,
+    "candidate_is_exact_direction_parameter_or_operator_duplicate": false,
+    "candidate_combines_terminal_factor_values": false,
+    "candidate_uses_only_raw_accepted_point_in_time_fields": true,
+    "mechanism_independent_enough_for_one_exact_formula_freeze": true,
+    "numeric_distinctness_established": false,
+    "predictive_value_established": false,
+    "selected_candidate_count": 1
+  },
+  "frozen_exclusions": {
+    "absolute_or_squared_area": true,
+    "opposite_orientation_or_direction": true,
+    "full_day_concatenation_or_lunch_bridge": true,
+    "volume_substitution_or_amount_volume_blend": true,
+    "return_sign_only_or_absolute_return_substitution": true,
+    "alternate_normalization_closure_threshold_crossing_loop_lag_window_half_weight": true,
+    "market_or_industry_benchmark_residualization": true,
+    "filter_subset_fit_model_or_terminal_factor_combination": true
+  },
+  "next_gate": {
+    "freeze_formula_source_support_coverage_uniqueness_and_development_protocol_before_candidate_values": true,
+    "candidate_appended_complete_definition_count_if_frozen": 154,
+    "numeric_comparator_count_reserved_but_not_read": 141,
+    "maximum_allowed_absolute_median_daily_rank_correlation": 0.8,
+    "daily_prices_and_returns_closed_until_all_no_return_gates_pass": true
+  },
+  "research_boundary": {
+    "candidate_source_rows_read": false,
+    "candidate_values_computed_or_read": false,
+    "comparator_values_read": false,
+    "historical_daily_price_or_forward_return_values_read": false,
+    "stress_2024_2025_opened": false,
+    "provider_request_issued": false,
+    "credential_loaded_or_value_or_digest_read": false,
+    "candidate49_historical_backfill_performed": false,
+    "candidate49_ledgers_changed": false,
+    "second_prospective_candidate_created": false,
+    "current_scoring_selection_sizing_positions_or_orders_performed": false,
+    "investment_advice": false
+  }
+}

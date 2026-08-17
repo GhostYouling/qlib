@@ -1,0 +1,30 @@
+{
+  "version": 1,
+  "kind": "a_share_three_day_walkforward_campaign078_terminal_suite_deselect_prefix_failure",
+  "status": "recorded_twenty_one_current_nodes_passed_three_immutable_prestage_nodes_failed",
+  "recorded_at": "2026-08-06T14:58:53:z",
+  "failed_command_scope": "Campaign078 feature, no-return v1/v2, development, and terminal test files with three tests intended for exact deselection",
+  "failure_cause": "The --deselect node identifiers used the tests/data_collector_tests prefix, while pytest's configured collection root exposes data_collector_tests node identifiers, so none of the three historical pre-stage nodes were deselected.",
+  "observed_result": {
+    "passed": 21,
+    "failed": 3,
+    "intended_deselected": 3,
+    "failed_nodes": [
+      "data_collector_tests/test_a_share_three_day_walkforward_campaign078_no_return_audit.py::test_status_is_truthful_before_the_sole_audit",
+      "data_collector_tests/test_a_share_three_day_walkforward_campaign078_no_return_audit_v2.py::test_v2_pre_retry_status_is_zero_audits_and_no_returns",
+      "data_collector_tests/test_a_share_three_day_walkforward_campaign078_development.py::test_predevelopment_status_has_zero_ledger_and_closed_stress"
+    ],
+    "failure_semantics": "Each failure is an immutable pre-audit or pre-development status assertion that is expected to be false after the sole audit and development trial completed."
+  },
+  "boundaries": {
+    "count_failed_command_once_not_per_failed_node": true,
+    "candidate_or_comparator_values_recomputed": false,
+    "underlying_daily_price_or_forward_return_fields_recomputed": false,
+    "existing_frozen_research_artifacts_read_by_tests": true,
+    "development_recomputed": false,
+    "stress_2024_2025_opened": false,
+    "provider_request_issued": false,
+    "candidate49_ledgers_changed": false
+  },
+  "recovery": "Rerun the identical current suite with the exact data_collector_tests/... node identifiers emitted by pytest --collect-only; do not rewrite the historical tests."
+}

@@ -1,0 +1,81 @@
+{
+  "version": 1,
+  "kind": "a_share_three_day_walkforward_campaign060_additive_empty_partition_repair_freeze",
+  "status": "frozen_after_failed_build_and_before_repaired_resume",
+  "recorded_at": "2026-08-04T23:50:00+08:00",
+  "purpose": "Bind the only additive Campaign060 empty-partition compatibility launcher before resuming the preserved partial snapshot. The original feature implementation remains immutable.",
+  "authoritative_boundary": {
+    "path": "docs/a_share_three_day_iteration_status_20260804_campaign059_verified_v2.json",
+    "sha256": "4ba4d5fce6f6771f8e82e4c04deb8b8fc5f85a0443efd51e041b86514c95825a"
+  },
+  "no_return_protocol": {
+    "path": "docs/a_share_three_day_walkforward_campaign_060_no_return_preregistration.json",
+    "sha256": "1d8d41bcfde2cd0ae81e69eae0abb4fd7ef92fed9ec63dd8187e510cd02b92a3"
+  },
+  "original_implementation_freeze": {
+    "path": "docs/a_share_three_day_walkforward_campaign_060_feature_implementation_freeze_20260804.json",
+    "sha256": "ee6441831cf6ce1a61862fbef692a2540b9ef8f9b9e0bfff4436b4c6e8461f18"
+  },
+  "original_feature_runner": {
+    "path": "scripts/a_share_three_day_walkforward_campaign060_features.py",
+    "sha256": "6e9d51fbe18329e13e3f865c66597af56864313069d3d558ac46487347923e47"
+  },
+  "first_build_failure": {
+    "path": "docs/a_share_three_day_walkforward_campaign_060_empty_partition_build_failure_20260804.json",
+    "sha256": "4a0d8f98693700ea8504c852e1e035dbae991ee5ee89598b8584105a6e378f82"
+  },
+  "repair_launcher": {
+    "path": "scripts/a_share_three_day_walkforward_campaign060_empty_partition_repair.py",
+    "sha256": "09fbcfd133311107eb92d764523a21d94bee6245eaf95102e74192cab38bb0c5",
+    "delegates_every_nonempty_frame_to_frozen_original_extractor": true,
+    "only_changed_boundary": "An exact-column zero-row raw frame returns an empty profile dictionary and source_sessions=0.",
+    "verifies_bound_raw_manifest_exactly_six_empty_symbol_year_partitions": true,
+    "formula_direction_lag_grid_sign_zero_support_or_gate_changed": false
+  },
+  "repair_synthetic_tests": {
+    "path": "tests/data_collector_tests/test_a_share_three_day_walkforward_campaign060_empty_partition_repair.py",
+    "sha256": "2d2fded0a5db2c61579e16f5cebce2e97270d46f6ff414d4e77ebd5ee5839f06",
+    "combined_command": "PYTHONPATH=/Volumes/DIsk/Disk-Coding/qlib /opt/anaconda3/bin/python3 -m pytest -q tests/data_collector_tests/test_a_share_three_day_walkforward_campaign060_features.py tests/data_collector_tests/test_a_share_three_day_walkforward_campaign060_empty_partition_repair.py",
+    "passed": 12,
+    "failed": 0,
+    "empty_exact_columns_wrong_columns_nonempty_delegation_and_original_formula_semantics_tested": true
+  },
+  "research_attempt_ledger": {
+    "path": "data/experiments/short_horizon/historical_walkforward/campaign_060/research_attempt_ledger.json",
+    "sha256": "8d250c52c24ab38f6089b25f20812ec56d73be229eeff813746af97b0d23aa1f",
+    "campaign060_attempt_count": 3,
+    "cumulative_historical_research_attempt_count": 344,
+    "cumulative_return_reading_development_trial_count": 269
+  },
+  "preserved_partial_snapshot": {
+    "root": "/Volumes/DIsk/qlib-a-share-tushare-1m/derived/a_share/rich/tushare/minute_walkforward_campaign060_feature_library/.tushare_stk_mins_1m_2019_2025_ea0cbb8f_walkforward_campaign060_feature_library_v1.partial",
+    "complete_checkpoint_partitions": 33004,
+    "missing_partitions": 11,
+    "checkpoint_runner_and_original_implementation_hashes_must_still_validate": true,
+    "all_source_raw_and_clean_bytes_are_reverified_by_original_resume_path": true,
+    "formal_snapshot_published_before_repair": false
+  },
+  "value_exposure_before_repair_freeze": {
+    "raw_close_partition_values_read_by_failed_build": true,
+    "campaign060_candidate_values_computed_and_checkpointed": true,
+    "campaign060_candidate_values_manually_inspected_or_used_to_change_repair": false,
+    "comparison_factor_values_read": false,
+    "historical_daily_price_fields_read": [],
+    "historical_forward_return_fields_read": false,
+    "development_folds_opened": false,
+    "stress_2024_2025_opened": false
+  },
+  "immutable_research_semantics": {
+    "factor": "intraday_day_over_day_directional_return_agreement_238b",
+    "direction": "higher",
+    "alternate_formula_parameter_filter_subset_model_or_combination_added": false,
+    "ordered_coverage_then_uniqueness_gate_unchanged": true,
+    "comparison_library_count": 91,
+    "candidate49_historical_backfill_performed": false,
+    "candidate49_ledgers_changed": false,
+    "second_prospective_candidate_created": false,
+    "current_scoring_selection_sizing_or_orders_performed": false,
+    "provider_request_issued": false
+  },
+  "next_action": "Run only the bound repair launcher, require exit code zero and all 33015 partitions, then independently verify every published partition before any comparison factor is opened."
+}

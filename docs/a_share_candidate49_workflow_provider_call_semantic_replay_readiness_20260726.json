@@ -1,0 +1,160 @@
+{
+  "version": 1,
+  "kind": "a_share_candidate49_workflow_provider_call_semantic_replay_readiness",
+  "status": "offline_workflow_provider_call_semantic_replay_passed_real_future_workflow_record_pending",
+  "recorded_at": "2026-07-25T19:51:54Z",
+  "purpose": "Advance Candidate49 by making the minute-provider call total in every completed session workflow record reconstructible from the semantically validated one-call-per-symbol raw partitions instead of trusting a jointly editable workflow summary or a non-replayable child-process invocation count.",
+  "advances": {
+    "path": "docs/a_share_candidate49_workflow_final_record_semantic_replay_readiness_20260726.json",
+    "sha256": "16550fbc2655397c9941cf8b150e3201befd6a1487d1807f04a810256c924a70"
+  },
+  "authoritative_research_state": {
+    "path": "docs/a_share_three_day_iteration_status_20260725_future_only.json",
+    "sha256": "d44e1cb3707cce194eed37e99cc90f865396b1de8c35e02a393a2a243d973466",
+    "future_only_policy_path": "docs/a_share_three_day_future_only_minute_research_policy_20260725.json",
+    "future_only_policy_sha256": "52ca8bfa7201509fe891d0af3d1c87aeebd64e47e6ec6641e897849411df408c",
+    "active_future_only_candidate": "candidate49_intraday_cumulative_vwap_crossing_rate_240m_v1",
+    "aggregation_allowed": false,
+    "candidate50_activation_allowed": false
+  },
+  "candidate_contract": {
+    "factor_changed_by_this_work": false,
+    "factor_direction": "higher_intraday_cumulative_vwap_crossing_rate_240m",
+    "ranking_rule_changed_by_this_work": false,
+    "signal_timing_changed_by_this_work": false,
+    "execution_protocol_changed_by_this_work": false,
+    "cost_or_slippage_assumption_changed_by_this_work": false,
+    "milestone_gate_changed_by_this_work": false,
+    "three_session_holding_definition_changed_by_this_work": false,
+    "historical_return_backfill_allowed": false
+  },
+  "implementation_fingerprints": {
+    "session_workflow": {
+      "path": "scripts/a_share_tushare_candidate49_future_session_workflow.py",
+      "sha256": "6c2197fdfbdb233c60f686e466984c83d6255af9f33eb09321b5e124eb1a1dd4"
+    },
+    "source_to_signal": {
+      "path": "scripts/a_share_tushare_candidate49_future_observation.py",
+      "sha256": "8514e5aca9a06f374c8c9677e41681c4432a93a3bd9546dbb60480605c016a45"
+    },
+    "paper_execution_and_reporting_validator": {
+      "path": "scripts/a_share_tushare_candidate49_future_execution.py",
+      "sha256": "046a70bbd860ebaf46744e161c690d1275ab0327c8a42213bf955ec66e39a98b"
+    },
+    "session_workflow_tests": {
+      "path": "tests/data_collector_tests/test_a_share_tushare_candidate49_future_session_workflow.py",
+      "sha256": "19f4b1ef620073490b391cb90e4fb490b9cece7714ae90d2ad5e57a31e0adc33"
+    },
+    "source_to_signal_tests": {
+      "path": "tests/data_collector_tests/test_a_share_tushare_candidate49_future_observation.py",
+      "sha256": "b44eaf245d71e65a8b1cdb8d325561d3303446673cf4be1b0c8485eb20084ad1"
+    },
+    "execution_tests": {
+      "path": "tests/data_collector_tests/test_a_share_tushare_candidate49_future_execution.py",
+      "sha256": "dfe838ddba0e03f2902bf5eb0cc3c792adeb0423c52ac335cad1e1075f365f34"
+    },
+    "runbook": {
+      "path": "docs/a_share_data_pipeline.md",
+      "sha256": "00b7f608893628dd49e503313ce2c1c20c96658f1d0d27eab967649683f7f417"
+    }
+  },
+  "threat_model": {
+    "workflow_record_gap": "The former completed-record validator allowed candidate49_provider_calls_this_invocation to be any integer from zero through the raw-manifest total and only required the final collection step to repeat the same value. Both fields could therefore be changed together without changing a raw, factor, signal, daily, or quality artifact.",
+    "workflow_red_test": "test_completed_record_rejects_rewritten_candidate_provider_call_count",
+    "workflow_red_test_mutation": "Changed the completed workflow top-level Candidate49 provider-call count and the final collection-step count together from 50 to 0, then atomically rewrote the workflow JSON.",
+    "workflow_red_test_before_fix": "The former zero-request validator returned the completed workflow record without raising.",
+    "raw_manifest_gap": "The former raw-snapshot validator revalidated every partition and the dataset digest but did not recompute the manifest provider_calls or its other aggregate counters.",
+    "raw_manifest_red_test": "test_raw_manifest_rejects_false_provider_call_total",
+    "raw_manifest_red_test_mutation": "Changed only the published raw manifest provider_calls total from 50 to 0.",
+    "raw_manifest_red_test_before_fix": "The former raw-snapshot validator returned the altered manifest without raising.",
+    "false_zero_provider_call_total_accepted_after_fix": false
+  },
+  "semantic_reconstruction": {
+    "each_raw_partition_requires_exactly_one_logical_provider_call": true,
+    "raw_provider_call_total_recomputed_as_sum_of_partition_records": true,
+    "raw_row_total_recomputed": true,
+    "exact_241_grid_symbol_count_recomputed": true,
+    "daily_close_volume_amount_reconciled_symbol_count_recomputed": true,
+    "factor_source_eligible_symbol_count_recomputed": true,
+    "resume_and_current_publication_call_arithmetic_revalidated": true,
+    "final_record_field": "candidate49_raw_provider_calls_total",
+    "final_collection_step_field": "raw_provider_calls_total",
+    "non_replayable_child_provider_calls_this_invocation_persisted_in_final_record": false,
+    "top_level_and_final_step_must_equal_rebuilt_raw_total": true,
+    "zero_call_workflow_resume_preserves_original_raw_total": true,
+    "zero_call_resume_test": "test_completed_record_uses_raw_total_after_zero_call_resume",
+    "token_loaded_during_existing_record_validation": false,
+    "child_command_executed_during_existing_record_validation": false,
+    "provider_accessed_during_existing_record_validation": false
+  },
+  "offline_proofs": {
+    "session_workflow_tests": {
+      "passed": 19,
+      "failed": 0,
+      "elapsed_seconds": 0.86
+    },
+    "source_to_signal_tests": {
+      "passed": 35,
+      "failed": 0,
+      "elapsed_seconds": 10.19
+    },
+    "execution_tests": {
+      "passed": 23,
+      "failed": 0
+    },
+    "focused_candidate49_observation_execution_workflow_tests": {
+      "passed": 77,
+      "failed": 0,
+      "elapsed_seconds": 14.65
+    },
+    "new_red_cases": 2,
+    "new_zero_call_resume_cases": 1,
+    "new_cases_pass_after_fix": true,
+    "full_data_collector_tests": {
+      "passed": 1117,
+      "failed": 0,
+      "warnings": 9,
+      "elapsed_seconds": 37.16
+    },
+    "ruff": "passed",
+    "python_compile": "passed"
+  },
+  "real_state_after_offline_tests": {
+    "signal": {
+      "path": "data/experiments/short_horizon/candidate49_future_signal_ledger.json",
+      "sha256": "5193f00d7f36da003f53cec387900da4c3d002299f5dfcfc1a95eaa199ed3a79",
+      "entries": 0,
+      "chain_tip_sha256": "ab47c70a18fc84b6d347fe906c404504faa126d3ec581bf077beffb215788bbb"
+    },
+    "execution": {
+      "path": "data/experiments/short_horizon/candidate49_future_execution_ledger.json",
+      "sha256": "d57a3e61eac969e42cafa418ccd8c0a5ee65dcf69da145bb2c096c2a02a2ea4f",
+      "entries": 0,
+      "chain_tip_sha256": "f302b4b93c9fcc1478e2f917279d589190b79069e6638efc41cb7aa6cf3691e0"
+    },
+    "evaluation_records": 0,
+    "target_session_workflow_record_present": false,
+    "target_session": "2026-07-27",
+    "first_allowed_source_to_signal_time": "2026-07-27T16:30:00+08:00"
+  },
+  "side_effect_audit": {
+    "real_provider_check_performed": false,
+    "real_provider_request_issued": false,
+    "real_minute_rows_read": false,
+    "real_daily_rows_read_by_this_audit": false,
+    "real_signal_or_execution_entry_written": false,
+    "historical_candidate49_return_diagnostic_run": false,
+    "paper_execution_or_live_order_performed": false,
+    "active_data_root_mutated": false
+  },
+  "decision": {
+    "workflow_provider_call_semantic_replay_ready": true,
+    "real_candidate49_signal_ready": false,
+    "current_real_signal_count": 0,
+    "current_real_execution_entry_count": 0,
+    "current_real_evaluation_milestone_count": 0,
+    "profitability_claim_allowed": false,
+    "selection_sizing_or_order_allowed": false,
+    "next_action": "On or after 2026-07-27 16:30 Asia/Shanghai, run the fail-closed Candidate49 source-to-signal workflow. Any completed record must report the raw-publication total reconstructed from its one-call-per-symbol partitions, including when the successful workflow invocation itself reused the raw snapshot with zero new calls."
+  }
+}

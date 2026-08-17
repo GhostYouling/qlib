@@ -1,0 +1,133 @@
+{
+  "schema_version": 1,
+  "kind": "a_share_three_day_walkforward_campaign110_mechanism_support_audit",
+  "status": "passed_before_campaign110_source_candidate_or_comparator_values",
+  "recorded_at": "2026-08-07T22:48:05Z",
+  "authoritative_inputs": {
+    "concept_scouting": {
+      "path": "docs/a_share_three_day_walkforward_campaign_110_concept_scouting_20260808.json",
+      "sha256": "a97b1c01c10ec053bb46a15a0f61237d15b0edf8b2402a24a10ac2918ae78ce7"
+    },
+    "iteration_state": {
+      "path": "docs/a_share_three_day_iteration_status_20260808_campaign109_terminal.json",
+      "sha256": "72ef0f008fa8ccef5f811a3815726f426a242b664de149e0d9f2ef6f51a5e3f7"
+    },
+    "numeric_policy_v70": {
+      "path": "docs/a_share_three_day_walkforward_future_numeric_comparison_eligibility_policy_v70_20260808.json",
+      "sha256": "e526abc1a3c6f8c0d0cbbf74538efe4ee184d5b0ac812e60ee177d83d2fb33c6"
+    }
+  },
+  "candidate": {
+    "name": "intraday_open_reference_directional_occupancy_240m",
+    "direction": "higher",
+    "formula": "let p0=open_09_31; for every selected close c_i compute sign(log(c_i/p0)); return the arithmetic mean of all 240 fixed-support signs",
+    "source_projection": [
+      "datetime",
+      "symbol",
+      "provider",
+      "open",
+      "close"
+    ],
+    "source_grid": "validate the exact 241-row Tushare grid, then use exactly 09:31-11:30 and 13:01-15:00; exclude 09:30 and the lunch transition",
+    "valid_range": [
+      -1.0,
+      1.0
+    ],
+    "support": "the 09:31 open and all 240 selected closes must be finite and strictly positive",
+    "zero_semantics": "an exact equality c_i=p0 contributes zero; it remains in the fixed 240-bar denominator and is never dropped or bridged",
+    "reference_semantics": "the single 09:31 raw open is fixed for the whole stock-session; no VWAP, previous close, fitted anchor, tolerance or future field enters"
+  },
+  "complete_library_review": {
+    "definition_count": 139,
+    "order_sha256": "eb505226fcf171151c5a4ead04c08369136be1af88d64c1710f4ab34d83d83e0",
+    "all_definitions_reviewed_before_values": true,
+    "semantic_duplicate_found": false,
+    "nearest_mechanism_distinctions": [
+      {
+        "name": "late_return_30m",
+        "distinction": "It is a signed endpoint return over the last 30 minutes. Campaign110 counts the whole-session occupation time on either side of a fixed 09:31 opening reference and is unchanged by return magnitudes away from that reference."
+      },
+      {
+        "name": "intraday_signed_path_efficiency_239m",
+        "distinction": "It divides endpoint displacement by total absolute close-to-close path length. Campaign110 has no path-length denominator and uses 240 ternary position states relative to one fixed opening reference."
+      },
+      {
+        "name": "intraday_half_session_chord_adherence_240m and intraday_morning_afternoon_return_profile_persistence_119p",
+        "distinction": "Those mechanisms evaluate deviations from fitted endpoint chords or similarity between half-session return profiles. Campaign110 fits no chord, compares no profiles and preserves only above/equal/below states against one opening anchor."
+      },
+      {
+        "name": "intraday_close_range_occupancy_entropy_10b and intraday_own_bar_close_location_entropy_10b_240m",
+        "distinction": "Those are direction-neutral entropies over coarse global-range or own-bar locations. Campaign110 uses no high/low, no bins and retains directional occupation relative to the session opening reference."
+      },
+      {
+        "name": "intraday_cumulative_vwap_crossing_rate_240m",
+        "distinction": "The Candidate49 mechanism counts crossings around a time-varying cumulative amount-weighted VWAP. Campaign110 reads no amount or volume, uses one fixed raw opening anchor, and measures occupation rather than crossing frequency."
+      },
+      {
+        "name": "intraday_continuous_session_net_return_reversal_240m",
+        "distinction": "It is a bounded contrarian transform of the first-to-last continuous-session endpoint displacement. Campaign110 freezes the continuation direction and can differ when identical endpoints are reached through different occupation paths."
+      },
+      {
+        "name": "intraday_global_price_range_revisit_240m and intraday_extreme_arrival_order_240m",
+        "distinction": "Those use high/low frontier revisits or the ordering of global extremes. Campaign110 forbids high/low and depends only on how long closes remain on each side of the opening reference."
+      },
+      {
+        "name": "intraday_intrabar_body_magnitude_serial_persistence_238p",
+        "distinction": "Campaign109 correlates adjacent absolute open-to-close body magnitudes. Campaign110 neither correlates nor measures body magnitude; only the 09:31 open is used and all later opens are irrelevant."
+      }
+    ],
+    "full_family_review": {
+      "close_path_endpoint_and_return_families": "distinct by fixed-opening-reference ternary occupation over all 240 closes rather than return magnitude, endpoint, path length, serial dependence, spectrum or weak order",
+      "range_wick_close_location_and_body_families": "distinct because high/low and all later opens are forbidden",
+      "amount_volume_transaction_price_and_vwap_families": "distinct because activity and transaction-price fields are forbidden",
+      "market_cross_section_and_day_over_day_families": "distinct because the factor is single-stock, same-session and one-day only",
+      "quarterly_quality_listing_and_daily_metadata_families": "distinct because no quarterly, listing, turnover or daily value enters",
+      "full_library_consensus_families": "distinct because no terminal component, score, rank consensus or combination enters"
+    }
+  },
+  "support_review": {
+    "known_exact_grid_available": true,
+    "accepted_continuous_09_31_bar_available": true,
+    "standalone_09_30_placeholder_or_auction_semantics_used": false,
+    "uses_only_registered_raw_fields": true,
+    "known_one_sided_zero_activity_failure_relevant": false,
+    "known_exact_vwap_containment_failure_relevant": false,
+    "known_zero_body_support_failure_relevant": false,
+    "known_opening_auction_price_field_failure_relevant": false,
+    "reason_opening_auction_failure_not_inherited": "The candidate excludes the standalone 09:30 row and anchors only to the accepted continuous-auction 09:31 raw open.",
+    "identical_or_provably_narrower_than_known_terminal_coverage_failure": false,
+    "support_gate_passed": true
+  },
+  "uniqueness_risk_acknowledgement": {
+    "likely_neighbors": [
+      "late_return_30m",
+      "intraday_signed_path_efficiency_239m",
+      "intraday_half_session_chord_adherence_240m",
+      "intraday_close_range_occupancy_entropy_10b",
+      "intraday_cumulative_vwap_crossing_rate_240m",
+      "intraday_continuous_session_net_return_reversal_240m"
+    ],
+    "all_133_numeric_comparisons_required_after_coverage": true,
+    "candidate_specific_neighbor_drop_allowed": false,
+    "absolute_correlation_direction_invariant": true,
+    "scientific_or_numeric_admissibility_claimed_before_values": false
+  },
+  "decision": {
+    "mechanism_gate_passed": true,
+    "support_gate_passed": true,
+    "allowed_to_preregister_one_candidate": true,
+    "allowed_to_read_source_candidate_or_comparator_values_before_protocol_and_implementation_freeze": false
+  },
+  "research_boundary": {
+    "campaign110_source_rows_read": false,
+    "campaign110_candidate_or_comparator_values_read": false,
+    "historical_daily_price_or_forward_return_values_read": false,
+    "provider_request_issued": false,
+    "candidate49_historical_backfill_performed": false,
+    "candidate49_ledgers_changed": false,
+    "second_prospective_candidate_created": false,
+    "current_scoring_selection_sizing_or_orders_performed": false,
+    "investment_advice": false
+  },
+  "next_action": "Freeze one exact Campaign110 no-return protocol and the complete feature/audit implementation and test hashes before any Campaign110 source, candidate, comparator, daily-price or forward-return value."
+}

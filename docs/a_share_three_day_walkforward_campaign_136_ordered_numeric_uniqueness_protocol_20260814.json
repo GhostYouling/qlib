@@ -1,0 +1,87 @@
+{
+  "schema_version": 1,
+  "kind": "a_share_three_day_walkforward_campaign136_ordered_numeric_uniqueness_protocol",
+  "status": "all_140_ordered_comparators_frozen_after_coverage_pass_before_any_comparator_value",
+  "recorded_at": "2026-08-14T11:38:00+0800",
+  "authoritative_inputs": {
+    "no_return_preregistration_v2": {
+      "path": "docs/a_share_three_day_walkforward_campaign_136_no_return_preregistration_v2_20260814.json",
+      "sha256": "f23cc1df5d4ed640c82b75ae1b9575718e75977d51b3ce1c33a846534c71e4f0"
+    },
+    "candidate_snapshot": {
+      "path": "data/experiments/short_horizon/historical_walkforward/campaign_136/source_snapshot_v1/snapshot_manifest.json",
+      "sha256": "9a5c9ff824de22af6595d312b76230a3e4cf283c6e1d42e882aae96d11367b93",
+      "dataset_sha256": "c84b1f85eec3731736a4da411691c144a70a81e38b5013e5aeea5370f3c417ec",
+      "rows": 7751950,
+      "eligible_rows": 7750120
+    },
+    "coverage_result": {
+      "path": "data/experiments/short_horizon/historical_walkforward/campaign_136/coverage/campaign136_coverage_audit.json",
+      "sha256": "f79402a136db11d0186c93cf5347174d1427879a0823f6be071c87e476ad66ac",
+      "quality_listing_candidate_rows": 1331759,
+      "gate_passed_before_comparator_values": true
+    },
+    "numeric140_directional_rank_design_manifest": {
+      "path": "/Volumes/DIsk/qlib-a-share-tushare-1m/derived/a_share/rich/tushare/minute_walkforward_campaign132_design_matrix/tushare_stk_mins_1m_2019_2025_ea0cbb8f_walkforward_campaign132_numeric140_design_v1/snapshot_manifest.json",
+      "sha256": "043c17fea89f3b0956d643a7c6e3f4d73a11403b967213d2d57539a6a8316a49",
+      "dataset_sha256": "12ce3a64b5e13581392ded9890e2064db4ccca3945da3eb8ad7752c95366a9fc",
+      "rows": 1331759,
+      "feature_count": 140
+    }
+  },
+  "candidate": {
+    "name": "daily_realized_price_basis_adjustment_magnitude_1d",
+    "direction": "higher",
+    "value_range": "finite [0,+infinity)",
+    "quality_listing_candidate_rows_expected": 1331759,
+    "candidate_missing_fill_allowed": false
+  },
+  "comparison_order": {
+    "count": 140,
+    "order_sha256": "c71bfe27486c9567afd3aca21e4b04053658c23ac651e7f4df7fd014b0c31efd",
+    "construction": "Campaign132 current_feature_order() and its immutable numeric140 design manifest in exact column order.",
+    "comparison_value_semantics": "Precomputed frozen direction-normalized cross-sectional average-tie percentile ranks; each paired session is reranked with average ties before Spearman calculation.",
+    "source_direction_retained_in_each_result": true,
+    "absolute_correlation_invariant_to_direction_sign": true,
+    "removal_reorder_subset_early_stop_or_candidate_specific_fill_allowed": false
+  },
+  "exact_gate": {
+    "minimum_pairwise_names_per_session": 50,
+    "minimum_pairwise_sessions_per_comparison": 100,
+    "maximum_allowed_absolute_median_daily_rank_correlation": 0.8,
+    "strict_inequality": true,
+    "all_140_must_pass": true,
+    "insufficient_overlap_fails_closed": true,
+    "constant_candidate_or_comparator_session_is_not_a_qualifying_session": true,
+    "daily_rank_method": "average ties",
+    "aggregate": "absolute value of median daily Spearman rank correlation",
+    "raw_nan_preserved_until_pairwise_overlap": true
+  },
+  "execution_contract": {
+    "candidate_snapshot_and_numeric140_design_must_be_byte_and_semantically_verified": true,
+    "all_results_and_failures_recorded_in_frozen_order_without_early_stop": true,
+    "one_single_use_output": true,
+    "historical_daily_ohlcv_or_forward_return_values_allowed": false,
+    "provider_request_allowed": false
+  },
+  "decision": {
+    "if_all_140_strictly_pass": "Admit exactly the one preregistered Campaign136 development trial and freeze its 2019-2023 walk-forward implementation before opening any daily OHLCV or return value.",
+    "otherwise": "Terminalize Campaign136 before daily OHLCV or returns; no reversal, redefinition, filter, subset, combination, threshold or rescue."
+  },
+  "research_boundary": {
+    "candidate_values_read_for_coverage_before_protocol": true,
+    "comparator_values_read_before_protocol": false,
+    "numeric140_design_manifest_metadata_read_before_protocol": true,
+    "numeric140_design_partition_values_read_before_protocol": false,
+    "historical_daily_ohlcv_fields_read": [],
+    "historical_forward_returns_read": false,
+    "stress_2024_2025_return_values_opened": false,
+    "provider_request_issued": false,
+    "credential_loaded": false,
+    "candidate49_historical_backfill_performed": false,
+    "candidate49_ledgers_changed": false,
+    "second_prospective_candidate_created": false,
+    "current_scoring_selection_sizing_positions_or_orders_performed": false,
+    "investment_advice": false
+  }
+}

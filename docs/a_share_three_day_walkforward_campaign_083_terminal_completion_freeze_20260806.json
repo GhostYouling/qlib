@@ -1,0 +1,56 @@
+{
+  "attempt_accounting": {
+    "campaign083_complete_factor_attempts": 1,
+    "campaign083_historical_attempts": 22,
+    "campaign083_infrastructure_failures": 21,
+    "campaign083_ledger_entries": 23,
+    "campaign083_return_reading_development_trials": 1,
+    "cumulative_historical_attempts": 528,
+    "cumulative_return_reading_development_trials": 284
+  },
+  "candidate49_ledgers_changed": false,
+  "current_research_attempt_ledger": {
+    "path": "data/experiments/short_horizon/historical_walkforward/campaign_083/research_attempt_ledger_v11.json",
+    "sha256": "b2a33072d6f57a165dfcdfe880310c39ecc7506cc206b21bad18f827e1ede30b"
+  },
+  "current_scoring_selection_sizing_or_orders_performed": false,
+  "frozen_at": "2026-08-06T21:09:00+08:00",
+  "future_duplicate_detection_library": {
+    "complete_definition_count": 115,
+    "complete_definition_order_sha256": "c42c662c17bbeec105ef85f0d9ba63edabae32601d0b9701209057961f72adec",
+    "numeric_comparator_count": 113,
+    "numeric_comparator_order_sha256": "04e8161152715277f4ebdfc63e5cd19db60a8dcd204d3f05dd38ab8313a03078"
+  },
+  "future_numeric_comparator_policy_v19": {
+    "path": "docs/a_share_three_day_walkforward_future_numeric_comparison_eligibility_policy_v19_20260806.json",
+    "sha256": "dacfbcd9bfdb2b764bd52c71e09e50154a7ab8b4e7b2e183afdf52ddd96e32fa"
+  },
+  "investment_advice": false,
+  "kind": "a_share_three_day_walkforward_campaign083_terminal_completion_freeze",
+  "manage_qlib_a_share_data_skill": {
+    "path": "/Users/niyufei/.codex/skills/manage-qlib-a-share-data/SKILL.md",
+    "sha256": "90a99c54dd00f0c737e85c4c6dd48d906edbd0f591c61278885728eaf7806431"
+  },
+  "provider_request_issued": false,
+  "research_record": {
+    "path": "docs/a_share_three_day_walkforward_campaign_083_research_record.json",
+    "sha256": "1fdc2ecc2a9c6ef916ab3a629afce032468469e48dfe38d7f3e01fad0695fc3a"
+  },
+  "schema_version": 1,
+  "status": "terminal_zero_survivors_stress_closed_all_known_invocations_accounted",
+  "terminal_result": {
+    "aggregate_20bp_pilot_return": -0.1527499879151002,
+    "development_survivor_count": 0,
+    "development_trial_count": 1,
+    "direction": "higher",
+    "factor": "intraday_close_frontier_innovation_share_238p",
+    "numeric_comparisons_passed": 112,
+    "stress_2024_2025_opened": false,
+    "stress_return_fields_read": false
+  },
+  "terminal_test": {
+    "path": "tests/data_collector_tests/test_a_share_three_day_walkforward_campaign083_terminal.py",
+    "sha256": "ef3975db488e7581478d96fb70273fe2bad490c1b2b74f1052491e6dad704171"
+  },
+  "version": 1
+}

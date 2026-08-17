@@ -1,0 +1,36 @@
+{
+  "version": 1,
+  "kind": "a_share_three_day_walkforward_campaign052_infrastructure_failures",
+  "status": "three_fail_closed_infrastructure_attempts_recorded_no_research_boundary_breach",
+  "recorded_at": "2026-08-03T08:50:00Z",
+  "incidents": [
+    {
+      "incident_id": "campaign052_missing_configured_compatibility_workdir",
+      "stage": "initial_authority_and_skill_read",
+      "outcome": "command_did_not_start_because_configured_/Users_workdir_does_not_exist",
+      "correction": "used_the_only_extant_/Volumes_repository_after_read_only_resolution"
+    },
+    {
+      "incident_id": "campaign052_binding_validator_cli_shape",
+      "stage": "pre_value_binding_validation",
+      "outcome": "exit_2_unknown_validate_--record_interface_before_protected_values",
+      "correction": "used_the_validator_positional_interface_and_obtained_exit_0"
+    },
+    {
+      "incident_id": "campaign052_pytest_import_path",
+      "stage": "feature_test_collection",
+      "outcome": "collection_failed_no_module_named_scripts_without_repository_on_pythonpath",
+      "correction": "reran_the_same_tests_with_PYTHONPATH=. and_obtained_5_passed"
+    }
+  ],
+  "research_boundary": {
+    "factor_values_read_by_these_failures": false,
+    "comparison_factor_values_read": false,
+    "historical_daily_price_fields_read": [],
+    "historical_forward_return_fields_read": false,
+    "candidate49_historical_return_read": false,
+    "candidate49_ledgers_changed": false,
+    "provider_request_issued": false,
+    "formula_direction_window_gate_or_cost_changed": false
+  }
+}

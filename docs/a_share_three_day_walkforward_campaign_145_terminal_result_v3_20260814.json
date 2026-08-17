@@ -1,0 +1,100 @@
+{
+  "schema_version": 3,
+  "kind": "a_share_three_day_walkforward_campaign145_terminal_result_final_validation_accounting",
+  "status": "terminal_coverage_failure_final_validation_accounting",
+  "recorded_at": "2026-08-14T20:51:59+08:00",
+  "supersedes_without_rewriting": {
+    "path": "docs/a_share_three_day_walkforward_campaign_145_terminal_result_v2_20260814.json",
+    "sha256": "bdff5579ad8f9588185bb7a0dbc00551cccb8eee82b9d1cc6d220523be232edb",
+    "preserved": true,
+    "scientific_result_changed": false,
+    "reason": "Append the overbroad binding-inventory and masked combined-exit failure; preserve the terminal coverage conclusion and every frozen scientific input."
+  },
+  "authoritative_inputs": {
+    "complete_scientific_terminal_result": {
+      "path": "docs/a_share_three_day_walkforward_campaign_145_terminal_result_20260814.json",
+      "sha256": "54e20b56b4da9b01fb7fc80a03605418208b253ca65e03077c4819e66fc05505"
+    },
+    "prior_final_accounting": {
+      "path": "docs/a_share_three_day_walkforward_campaign_145_terminal_result_v2_20260814.json",
+      "sha256": "bdff5579ad8f9588185bb7a0dbc00551cccb8eee82b9d1cc6d220523be232edb"
+    },
+    "effective_attempt_ledger": {
+      "path": "data/experiments/short_horizon/historical_walkforward/campaign_145/research_attempt_ledger_v3.json",
+      "sha256": "a4425ef913d1fac5ed31120aefce1718fbbcb3b5b0b94e0588349d8f604c384a",
+      "effective_attempt_count": 10,
+      "effective_entry_count": 11,
+      "chain_tip_sha256": "e727b0d5fd291f92f0ab2e1c78f3bcfdefac9b07fda8773835abb31f7c65d37e"
+    },
+    "final_terminal_report": {
+      "path": "docs/a_share_three_day_walkforward_campaign_145_terminal_report_v2.md",
+      "sha256": "7f811e2015a65cf73cb584b1d7ae7f7811773b1906cbc92e7aefe6282dbcd9da"
+    }
+  },
+  "terminal_scientific_result": {
+    "factor": "intraday_return_amount_cumulative_path_signed_area_238p",
+    "direction": "higher",
+    "terminal_phase": "coverage_capacity_and_cross_sectional_variation_gate",
+    "coverage_gate_passed": false,
+    "median_daily_coverage": 0.5246269205322356,
+    "p05_daily_coverage": 0.20608206686930092,
+    "eligible_names_p05": 49.0,
+    "numeric_comparator_count_read": 0,
+    "historical_return_tested": false,
+    "development_trial_count": 0,
+    "stress_2024_2025_returns_opened": false,
+    "post_result_rescue_allowed": false
+  },
+  "library_after_campaign145": {
+    "complete_factor_definition_count": 154,
+    "complete_factor_definition_order_sha256": "dcea4c75bb9194ea2e522d803409e4005cf0185fe87c84f6f9810dbe51de2f75",
+    "eligible_numeric_comparator_count": 141,
+    "eligible_numeric_comparator_order_sha256": "ec1aebcb939ad516c58037a36a4aaadd4ad8b2abbd3c884705895c58da85a2ee",
+    "campaign145_definition_appended": true,
+    "campaign145_numeric_series_appended": false
+  },
+  "effective_accounting": {
+    "campaign145_attempt_count": 10,
+    "campaign145_ledger_entry_count": 11,
+    "campaign145_prevalue_scientific_attempt_count": 1,
+    "campaign145_infrastructure_failure_count": 9,
+    "campaign145_complete_factor_attempt_count": 1,
+    "campaign145_scientifically_decided_factor_attempt_count": 1,
+    "campaign145_return_reading_development_trial_count": 0,
+    "campaign145_development_survivor_count": 0,
+    "campaign145_stress_trial_count": 0,
+    "cumulative_historical_research_attempt_count": 1250,
+    "cumulative_return_reading_development_trial_count": 313
+  },
+  "validation_integrity": {
+    "broad_inventory_validation_passed": false,
+    "masked_combined_exit_treated_as_pass": false,
+    "binding_validator_changed_or_weakened": false,
+    "standalone_targeted_validation_required": true,
+    "scientific_result_changed": false
+  },
+  "candidate49": {
+    "sole_prospective_candidate": true,
+    "signal_ledger_sha256": "5193f00d7f36da003f53cec387900da4c3d002299f5dfcfc1a95eaa199ed3a79",
+    "execution_ledger_sha256": "d57a3e61eac969e42cafa418ccd8c0a5ee65dcf69da145bb2c096c2a02a2ea4f",
+    "signal_entries": 0,
+    "execution_entries": 0,
+    "same_day_retry_performed": false,
+    "historical_backfill_performed": false,
+    "ledgers_changed": false
+  },
+  "research_boundary": {
+    "campaign145_candidate_snapshot_and_coverage_values_read": true,
+    "campaign145_comparator_values_read": false,
+    "historical_daily_price_or_forward_return_values_read": false,
+    "stress_2024_2025_returns_opened": false,
+    "provider_request_issued": false,
+    "provider_credential_value_or_digest_read": false,
+    "candidate49_historical_backfill_performed": false,
+    "candidate49_ledgers_changed": false,
+    "second_prospective_candidate_created": false,
+    "current_scoring_selection_sizing_positions_or_orders_performed": false,
+    "investment_advice": false
+  },
+  "next_action": "Run standalone targeted binding validation, publish the validation record and active Campaign145 status, then continue only with Campaign146."
+}

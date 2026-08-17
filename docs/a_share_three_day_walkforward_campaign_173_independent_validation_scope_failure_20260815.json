@@ -1,0 +1,30 @@
+{
+  "schema_version": 1,
+  "kind": "a_share_three_day_walkforward_campaign173_independent_validation_scope_failure",
+  "status": "recorded_expected_invalid_v1_misclassified_as_authoritative_validation_failure",
+  "recorded_at": "2026-08-15T09:55:24+08:00",
+  "attempt": {
+    "phase": "independent_binding_validation",
+    "records_scanned_before_stop": 4,
+    "result": "nonzero_exit_on_known_invalid_v1_placeholder_binding",
+    "failure_reason": "The first scanner included the preserved invalid v1 timestamp correction in the positive authoritative-binding set instead of treating it as a negative control.",
+    "observed_mismatch": "TO_BE_BOUND_AFTER_FAILURE_PUBLICATION did not equal the actual focused-failure SHA-256",
+    "failure_exit_bypassed_or_masked": false,
+    "candidate_comparator_security_price_or_return_value_read": false
+  },
+  "negative_control_boundary": {
+    "invalid_v1_path": "docs/a_share_three_day_walkforward_campaign_173_recorded_at_correction_20260815.json",
+    "invalid_v1_sha256": "4e7244bf06de43e495b5d00e8fa7e49b10497fcb9112e0268acb0c2db4cfdd75",
+    "invalid_v1_must_fail_placeholder_resolution": true,
+    "invalid_v1_may_enter_positive_binding_set": false,
+    "effective_v2_path": "docs/a_share_three_day_walkforward_campaign_173_recorded_at_correction_v2_20260815.json",
+    "effective_v2_sha256": "00e270ee90b51fb1289dd731a02869beb19ab4089ea4b0e7b88d21fc218dd95e"
+  },
+  "scientific_effect": {
+    "formula_direction_catalog_or_decision_changed": false,
+    "candidate_or_comparator_value_read": false,
+    "security_price_or_return_read": false,
+    "candidate49_ledgers_changed": false
+  },
+  "recovery": "Rerun the scanner with v1 asserted only as an invalid negative control and v2 plus all effective records in the positive binding set."
+}

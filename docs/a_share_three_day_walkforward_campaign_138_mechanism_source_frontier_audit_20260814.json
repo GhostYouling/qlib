@@ -1,0 +1,111 @@
+{
+  "schema_version": 1,
+  "kind": "a_share_three_day_walkforward_campaign138_mechanism_source_frontier_audit",
+  "status": "terminal_prevalue_zero_candidates_after_accepted_schema_and_terminal_mechanism_review",
+  "recorded_at": "2026-08-14T12:48:00+0800",
+  "concept_scouting": {
+    "path": "docs/a_share_three_day_walkforward_campaign_138_concept_scouting_20260814.json",
+    "sha256": "0990663681ddd5d673a030e4918899ee1e43a3a980638ebe46a2d0a1c513a507"
+  },
+  "numeric_policy_v171": {
+    "path": "docs/a_share_three_day_walkforward_future_numeric_comparison_eligibility_policy_v171_20260814.json",
+    "sha256": "5f5c3ca45f32d69a26455a0dac95a8751f50da083b69c974238ca60c3b8fc903",
+    "complete_definition_count_reviewed": 152,
+    "complete_definition_order_sha256": "60c465a3e2043efae6b92b8c5f3e007cd397a1cd0ec3094b4fa005665bbe5736",
+    "eligible_numeric_comparator_count_reserved_but_not_loaded": 141,
+    "eligible_numeric_comparator_order_sha256": "ec1aebcb939ad516c58037a36a4aaadd4ad8b2abbd3c884705895c58da85a2ee"
+  },
+  "complete_mechanism_review": {
+    "all_152_complete_logical_definitions_and_terminal_histories_reviewed": true,
+    "all_141_numeric_comparators_reserved_but_not_loaded": true,
+    "candidate49_reviewed_semantically_but_excluded_from_historical_backfill": true,
+    "selected_candidate_count": 0,
+    "family_review": {
+      "earnings_sales_and_cashflow_yields": "PE, PS and PCF source fields are not present in the accepted point-in-time daily or fundamental schemas; no comparable valuation denominator can be reconstructed from the admitted quality aggregates.",
+      "book_to_market": "PB is absent from the active accepted daily contract and the separately admitted Tushare PB research branch is terminal with rerun, inversion, transform, subset and combination forbidden.",
+      "market_cap_and_share_count": "No total_mv, circ_mv, total_share or free_share field exists in the accepted contract. Current listing state cannot be projected backward without survivorship and look-ahead.",
+      "free_float_scarcity": "The separately frozen free-float branch failed the no-return uniqueness gate and explicitly forbids a same-source rerun or formula adjustment.",
+      "volume_turnover_price_reconstruction": "Inferring free shares from volume divided by turnover lacks stable provider-denominator and unit semantics, while combining it with nominal price reopens terminal raw-turnover and affordability domains.",
+      "new_high_point_provider_history": "Campaign138 is limited to the currently accepted data. A provider request for discarded BaoStock fields or Tushare daily_basic history would require a separately authorized source-admission campaign and cannot be smuggled into factor scouting."
+    },
+    "old_terminal_formula_direction_support_failure_or_result_changed": false
+  },
+  "evidence_bindings": {
+    "active_price_basis_contract": {
+      "path": "data/qlib/cn_a_share/price_basis.json",
+      "sha256": "68e9dbb83749779b34d5cf3b116195074c154ff74cb6de95ba67695bedc1f14f"
+    },
+    "tushare_daily_pb_terminal_record": {
+      "path": "docs/a_share_tushare_daily_pb_research_record.json",
+      "sha256": "2bcf42171babc96043053c2669351d5ce2b84541f5da91ff1e568136cec9eae3"
+    },
+    "free_float_scarcity_terminal_record": {
+      "path": "docs/a_share_tushare_free_float_scarcity_research_record.json",
+      "sha256": "9804ef63da08be5beec4a13460dc8ac0e36fdff3e203dd3f00dc9d148b88a24a"
+    },
+    "campaign079_raw_turnover_terminal_record": {
+      "path": "docs/a_share_three_day_walkforward_campaign_079_research_record.json",
+      "sha256": "4f6b770dc3e7d4b8a0e42ce7054add8b91852fd28b20c7fbadc81bce3a082fa9"
+    },
+    "campaign073_nominal_price_terminal_record": {
+      "path": "docs/a_share_three_day_walkforward_campaign_073_research_record_v2.json",
+      "sha256": "dc97df498f35cecbd8b5bb276e949849def5047dff12043f6e2ea6b76770b490"
+    },
+    "campaign125_point_in_time_source_audit": {
+      "path": "docs/a_share_three_day_walkforward_campaign_125_mechanism_source_frontier_audit_20260814.json",
+      "sha256": "9157c0f703792596f71d46a61b8064dca694778a1bbe8bf87d4612b690a4b058"
+    },
+    "status_cli_argument_failure": {
+      "path": "docs/a_share_three_day_walkforward_campaign_138_status_format_argument_failure_20260814.json",
+      "sha256": "7bb29c316798243df3cbe183c450381fb70b086246dc433339b7a60d0e37c5d3"
+    }
+  },
+  "source_metadata_review": {
+    "active_data_root": "/Volumes/DIsk/Disk-Coding/qlib/data",
+    "accepted_daily_source": "baostock",
+    "accepted_daily_field_name_order_sha256": "92b9272161e47d564d9af697657c02d1d6ce9bc7313607de7389b2fefb42a554",
+    "accepted_quality_field_name_order_sha256": "163968446ac6dc81cdfeca3eebceeba69468b07df072be854aaddce62f3a707a",
+    "accepted_forecast_field_name_order_sha256": "259f013152c52e73cf529055b26c8183185a9f2036a28fdb831bcc96a60d3abd",
+    "schema_metadata_only": true,
+    "programmatic_provider_request_issued": false,
+    "credential_present_without_value_or_digest_read": true,
+    "credential_loaded": false,
+    "source_rows_or_column_values_read": false,
+    "new_historically_versioned_point_in_time_source_admitted": false
+  },
+  "mandatory_prevalue_gate": {
+    "genuinely_new_information_mechanism_required": true,
+    "accepted_historically_versioned_point_in_time_source_required": true,
+    "post_exposure_proxy_reconstruction_relabel_parameter_sweep_or_rescue_forbidden": true,
+    "candidate_support_predicate_admitted": false,
+    "source_semantics_admitted": false,
+    "reason": "All six finite concepts fail before implementation: the required valuation/share fields are outside the accepted source contract, the PB/free-float branches are terminal, and the only derivable proxy has invalid semantics and terminal-domain overlap."
+  },
+  "terminal_decision": {
+    "campaign138_complete_factor_definition_created": false,
+    "campaign138_numeric_comparator_eligibility": false,
+    "campaign138_feature_snapshot_created": false,
+    "campaign138_source_acceptance_coverage_uniqueness_or_return_audit_run": false,
+    "campaign138_development_or_stress_trial_run": false,
+    "campaign138_may_repair_relabel_reparameterize_combine_or_run_any_rejected_concept": false,
+    "campaign138_may_request_new_provider_history": false,
+    "historical_predictive_value_established": false,
+    "next_policy_must_preserve_exact_152_definition_and_141_comparator_orders": true
+  },
+  "research_boundary": {
+    "campaign138_source_rows_read": false,
+    "campaign138_candidate_values_computed_or_read": false,
+    "campaign138_comparator_values_read": false,
+    "campaign138_historical_daily_price_or_forward_return_values_read": false,
+    "stress_2024_2025_opened": false,
+    "provider_request_issued": false,
+    "provider_credential_value_or_digest_read": false,
+    "candidate49_historical_backfill_performed": false,
+    "candidate49_ledgers_changed": false,
+    "second_prospective_candidate_created": false,
+    "current_scoring_selection_sizing_positions_or_orders_performed": false,
+    "investment_advice": false,
+    "inherited_current_listing_survivorship_limitation_remains": true
+  },
+  "next_action": "Record every Campaign138 concept plus the nonzero CLI failure in an append-only ledger, preserve the 152/141 orders, and begin Campaign139 only from a genuinely new mechanism backed by an already accepted point-in-time source or a separately authorized source-admission campaign."
+}

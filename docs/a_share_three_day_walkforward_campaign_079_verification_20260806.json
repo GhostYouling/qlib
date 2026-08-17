@@ -1,0 +1,94 @@
+{
+  "schema_version": 1,
+  "kind": "a_share_three_day_walkforward_campaign079_verification",
+  "status": "verified_terminal_prevalue_semantic_overlap_candidate49_preserved_current",
+  "recorded_at": "2026-08-06T07:20:59Z",
+  "verified_current_artifacts": {
+    "latest_iteration_state": {
+      "path": "docs/a_share_three_day_iteration_status_20260806_campaign079_verified.json",
+      "sha256": "a9898fcded0457b491a82f3678f62c23a27c7c35193c55122156fa322a5d3161"
+    },
+    "terminal_completion_freeze": {
+      "path": "docs/a_share_three_day_walkforward_campaign_079_terminal_completion_freeze_20260806.json",
+      "sha256": "8276da3aeb2714bc2d2f3b92b131b8cdc7e1747029fd1f0c1d69d559aab36f5d"
+    },
+    "research_record": {
+      "path": "docs/a_share_three_day_walkforward_campaign_079_research_record.json",
+      "sha256": "4f6b770dc3e7d4b8a0e42ce7054add8b91852fd28b20c7fbadc81bce3a082fa9"
+    },
+    "attempt_ledger_v1": {
+      "path": "data/experiments/short_horizon/historical_walkforward/campaign_079/research_attempt_ledger_v1.json",
+      "sha256": "fb2e9279846543b045fe0067ba795af0f2c3c0d564fbc4b925a5ebcdd60e02a5"
+    },
+    "numeric_policy_v15": {
+      "path": "docs/a_share_three_day_walkforward_future_numeric_comparison_eligibility_policy_v15_20260806.json",
+      "sha256": "e4df7ab965b003d8f77cbdffa742127e8f118417e6165b52afa6ae30cc5cfb63"
+    },
+    "terminal_tests": {
+      "path": "tests/data_collector_tests/test_a_share_three_day_walkforward_campaign079_terminal.py",
+      "sha256": "13cda0528c50a2a701ef15f13349e8b2604efd6477def70d81e410b646feffc2"
+    }
+  },
+  "binding_validation": {
+    "exit_code": 0,
+    "current_record_count": 4,
+    "binding_count": 25,
+    "passed_binding_count": 25,
+    "failed_binding_count": 0,
+    "all_bindings_passed": true
+  },
+  "current_test_suite": {
+    "exit_code": 0,
+    "passed": 6,
+    "failed": 0,
+    "errors": 0
+  },
+  "research_result_checks": {
+    "daily_status_and_schema_metadata_read": true,
+    "daily_source_rows_read": false,
+    "candidate_values_computed": false,
+    "comparison_values_read": false,
+    "historical_daily_price_fields_read": [],
+    "historical_forward_returns_read": false,
+    "feature_snapshot_created": false,
+    "development_trial_count": 0,
+    "stress_interval_opened": false,
+    "stress_return_fields_read": false
+  },
+  "future_numeric_policy_checks": {
+    "complete_definition_count": 111,
+    "complete_definition_order_sha256": "14479cf55ceab31f6705fc12b1e103d9da41f8b07f27ffdf4b87e63cac36ffdb",
+    "numeric_comparator_count": 109,
+    "numeric_comparator_order_sha256": "0893e0ff54c0094e48e67def84f0038a453fd11230629631e3e54120480a3529"
+  },
+  "attempt_accounting_checks": {
+    "campaign079_infrastructure_failures": 0,
+    "campaign079_complete_factor_attempts": 1,
+    "campaign079_attempts": 1,
+    "campaign079_ledger_entries": 1,
+    "campaign079_return_reading_development_trials": 0,
+    "cumulative_historical_research_attempts": 484,
+    "cumulative_return_reading_development_trials": 280
+  },
+  "candidate49_checks": {
+    "signal_ledger_sha256": "5193f00d7f36da003f53cec387900da4c3d002299f5dfcfc1a95eaa199ed3a79",
+    "signal_ledger_entries": 0,
+    "execution_ledger_sha256": "d57a3e61eac969e42cafa418ccd8c0a5ee65dcf69da145bb2c096c2a02a2ea4f",
+    "execution_ledger_entries": 0,
+    "historical_backfill_performed": false,
+    "provider_request_issued_by_campaign079": false,
+    "live_order_performed": false
+  },
+  "credential_check": {
+    "repository_env_mode": "0600",
+    "tushare_token_present_and_nonempty": true,
+    "secret_printed_hashed_logged_or_persisted": false
+  },
+  "prospective_workflow_check": {
+    "observed_local_time": "2026-08-06T15:18:10+08:00",
+    "observed_before_16_30_asia_singapore": true,
+    "candidate49_plan_or_run_performed": false,
+    "second_prospective_candidate_created": false
+  },
+  "conclusion": "Campaign079 is terminal before values because raw signal-day turnover belongs to the prior turnover family; Candidate49 remains the only prospective candidate, and Campaign080 may begin only as independent offline pre-value-frozen research using v15."
+}

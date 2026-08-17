@@ -1,0 +1,130 @@
+{
+  "schema_version": 1,
+  "kind": "a_share_three_day_walkforward_campaign123_concept_scouting",
+  "status": "one_genuinely_new_point_in_time_source_state_selected_before_provider_rows_factor_values_or_returns",
+  "recorded_at": "2026-08-14T03:25:04+08:00",
+  "purpose": "Continue the offline three-session research goal from Campaign122's terminal zero-candidate frontier by reviewing a finite public point-in-time source catalog and selecting at most one information state before any provider row, candidate value, comparator value, price, or return is opened.",
+  "authoritative_inputs": {
+    "iteration_state": {
+      "path": "docs/a_share_three_day_iteration_status_20260814_campaign122_terminal_v2.json",
+      "sha256": "67b64391b7bb8d542bfce8ffa753785680b23b9f0ffe00df2cd57626315630c0"
+    },
+    "numeric_policy_v120": {
+      "path": "docs/a_share_three_day_walkforward_future_numeric_comparison_eligibility_policy_v120_20260814.json",
+      "sha256": "96e09b6fe659e4c856f05211ba36585ea60105ad5442f92bf9affd46ba6d01bc",
+      "complete_definition_count": 147,
+      "complete_definition_order_sha256": "3f3756a4128011d9cd718e97d23ee3b1c78022433b269c75bd715f304a055bf0",
+      "eligible_numeric_comparator_count": 139,
+      "eligible_numeric_comparator_order_sha256": "9c4de054ca1b83eced67eece256b024ebec3a6e1925de17a4cedfa7d36265161"
+    },
+    "historical_walkforward_policy": {
+      "path": "docs/a_share_three_day_historical_walkforward_research_policy_20260727.json",
+      "sha256": "38426d6161b9bfed323c58caba18feca668b8c9d53e294951a8ba90c01a798bb"
+    }
+  },
+  "public_documentation_observed": {
+    "provider": "Tushare Pro",
+    "official_url": "https://tushare.pro/document/2?doc_id=100",
+    "api_name": "namechange",
+    "description": "历史名称变更记录",
+    "documented_input_roles": [
+      "ts_code",
+      "start_date",
+      "end_date"
+    ],
+    "documented_output_roles": [
+      "ts_code",
+      "name",
+      "start_date",
+      "end_date",
+      "ann_date",
+      "change_reason"
+    ],
+    "documented_example_reason_tokens": [
+      "改名",
+      "撤销ST",
+      "完成股改",
+      "未股改加S",
+      "ST",
+      "其他"
+    ],
+    "provider_rows_requested_or_read": false,
+    "entitlement_or_point_requirement_claimed": false,
+    "note": "The public page documents fields and example reason tokens but does not state a point threshold on this page. Campaign123 therefore freezes semantics first and leaves entitlement unresolved until a separate acceptance plan."
+  },
+  "finite_prevalue_concept_catalog": [
+    {
+      "catalog_id": "c123_01",
+      "name": "official_pure_security_rename_recency_60s",
+      "source_state": "completed_pure_security_rename_with_exact_provider_reason_token",
+      "decision": "selected_for_mechanism_overlap_audit_and_zero_row_source_contract",
+      "reason": "An exact provider-classified pure rename is a completed issuer identity and attention-reset event. It can be isolated without reading security-name text and without treating ST, ST exit, share-reform, or other status rows as renames. This is a new point-in-time source state rather than a transformation of the terminal price/minute library."
+    },
+    {
+      "catalog_id": "c123_02",
+      "name": "name_text_or_alias_sentiment",
+      "decision": "rejected_before_rows",
+      "reason": "Reading or scoring security-name text would revive the explicitly rejected text-interpretation branch, add uncontrolled token choices, and risk confusing status aliases with issuer identity changes."
+    },
+    {
+      "catalog_id": "c123_03",
+      "name": "st_or_st_exit_from_namechange",
+      "decision": "rejected_before_rows",
+      "reason": "ST membership and confirmed ST exit already have an immutable terminal source history. The exact tokens ST and 撤销ST are prohibited from the selected source state rather than used as a provider substitute."
+    },
+    {
+      "catalog_id": "c123_04",
+      "name": "share_reform_or_other_reason_recency",
+      "decision": "rejected_before_rows",
+      "reason": "完成股改, 未股改加S and 其他 describe heterogeneous status or residual categories. Combining or searching them would create post-document category selection and would not identify the same economic event."
+    },
+    {
+      "catalog_id": "c123_05",
+      "name": "rename_count_frequency_or_name_duration_grid",
+      "decision": "rejected_before_rows",
+      "reason": "Counts, frequency, prior-name spell duration, multiple recency windows and direction grids introduce an unnecessary search family. Campaign123 fixes one latest-event 60-session recency definition only."
+    },
+    {
+      "catalog_id": "c123_06",
+      "name": "rename_interacted_with_price_volume_board_industry_or_terminal_event",
+      "decision": "rejected_before_component_values",
+      "reason": "Interactions, subsets, neutralization and combinations would reopen terminal features and expand multiplicity. The selected mechanism remains a standalone event-state definition."
+    }
+  ],
+  "selected_candidate": {
+    "name": "official_pure_security_rename_recency_60s",
+    "selected_candidate_count": 1,
+    "provider_reason_token": "改名",
+    "direction": "higher",
+    "economic_hypothesis": "A recently completed pure security rename can mark an issuer identity or strategic-positioning reset that attracts and diffuses attention over the following sessions; more recent accepted events are therefore ranked higher for a three-session holding diagnostic.",
+    "fixed_active_window_sessions": 60,
+    "name_text_used": false,
+    "status_or_risk_warning_reason_used": false,
+    "historical_candidate_created": false,
+    "prospective_candidate_created": false
+  },
+  "research_boundary": {
+    "programmatic_provider_requests_issued": false,
+    "provider_credential_loaded": false,
+    "provider_rows_read_persisted_or_counted": false,
+    "campaign123_candidate_or_comparison_values_read": false,
+    "historical_daily_price_fields_read": [],
+    "historical_forward_returns_read": false,
+    "stress_2024_2025_opened": false,
+    "candidate49_historical_backfill_performed": false,
+    "candidate49_ledgers_changed": false,
+    "second_prospective_candidate_created": false,
+    "current_scoring_selection_sizing_positions_or_orders_performed": false,
+    "investment_advice": false
+  },
+  "decision": {
+    "may_advance_directly_to_source_or_factor_values": false,
+    "required_next_steps": [
+      "pass a complete no-value mechanism-overlap and source-identifiability audit",
+      "freeze a zero-row source contract",
+      "implement and test a pure zero-network adapter and exact one-factor formula",
+      "freeze an entitlement-safe one-shot acceptance workflow before any provider request"
+    ],
+    "candidate49_remains_only_active_prospective_candidate": true
+  }
+}

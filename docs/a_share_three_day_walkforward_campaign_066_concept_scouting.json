@@ -1,0 +1,96 @@
+{
+  "version": 1,
+  "kind": "a_share_three_day_walkforward_campaign066_concept_scouting",
+  "status": "selected_one_finite_historical_combination_candidate_before_campaign066_source_candidate_comparison_daily_price_or_return_values",
+  "recorded_at": "2026-08-05T15:22:00+08:00",
+  "purpose": "Select one exact Campaign066 historical-only factor combination after Campaign065, using definition and schema evidence only, before reading any Campaign066 source row, candidate value, comparison value, daily price, or forward return.",
+  "authoritative_inputs": {
+    "campaign065_verified_state": {"path": "docs/a_share_three_day_iteration_status_20260805_campaign065_verified.json", "sha256": "5b6a5f11c10bbeb233068f1bbac582b2b0ae5a1d3da8e9c36701531b82f10c26"},
+    "campaign066_pre_value_policy": {"path": "docs/a_share_three_day_walkforward_future_numeric_comparison_eligibility_policy_v2_20260805.json", "sha256": "bad778474b4119f3a8f617283e2b4719f076fe060f11275aed7e7c469d6d4bf2"},
+    "historical_walkforward_policy": {"path": "docs/a_share_three_day_historical_walkforward_research_policy_20260727.json", "sha256": "38426d6161b9bfed323c58caba18feca668b8c9d53e294951a8ba90c01a798bb"},
+    "quarterly_quality_metadata": {"path": "data/metadata/quarterly_quality_manifest.json", "sha256": "e3cf654babe37a82393c5530696bc1cc242b736cb88e1947b8444b638125ba8c", "data_path": "data/raw/a_share/fundamentals/quarterly_quality.parquet", "data_sha256": "3ac901a97928d2ed81ac72e3eaac9bdc148d36cf67b6abe70223699235ef059f"},
+    "older_quality_semantic_contract": {"path": "docs/a_share_tushare_audit_opinion_no_return_preregistration.json", "sha256": "5fb77e7060cbd1a03824d015cc33b75ffcf23b3afb5817e60b783e8bcaea3d69"}
+  },
+  "definition_only_inventory": {
+    "complete_historical_definition_count": 97,
+    "complete_historical_definition_order_sha256": "bc66abb94f62bef5fe9912059ade232c6c86b16b82f162df577fa8d74afeca7d",
+    "eligible_numeric_comparator_count": 96,
+    "eligible_numeric_comparator_order_sha256": "794dff48d649b8dec1fdf609583ad87260c3e71a681a48b9a0ce77726de4763b",
+    "structurally_nonnumeric_challenge": "intraday_cross_sectional_standardized_return_state_stability_236p",
+    "old_factor_definitions_used_as_frozen_inputs": ["quality_roe", "quality_profit", "quality_revenue"],
+    "old_factor_definition_values_read_for_selection": false,
+    "quarterly_source_rows_read": false,
+    "candidate_values_read": false,
+    "comparison_values_read": false,
+    "daily_price_or_forward_return_read": false
+  },
+  "candidate_design_catalog": [
+    {
+      "design": "quarterly_quality_rank_balance_3f",
+      "decision": "selected",
+      "reason": "The complement of the exact cross-sectional rank range measures agreement among profitability, profit growth, and revenue growth. It is translation-invariant across the three ranks, unlike the exposed mean-level quality_score, and uses one fixed range operator without fitting or weights."
+    },
+    {
+      "design": "quality_score_or_quality_growth",
+      "decision": "rejected_before_values",
+      "reason": "Those are already exposed mean-level definitions and would simply rerun old factors."
+    },
+    {
+      "design": "minimum_geometric_mean_or_product_of_three_quality_ranks",
+      "decision": "rejected_before_values",
+      "reason": "Those constructions remain primarily level rewards and introduce an avoidable operator search against the exposed mean composite."
+    },
+    {
+      "design": "standard_deviation_median_absolute_deviation_or_pairwise_distance",
+      "decision": "rejected_before_values",
+      "reason": "They are alternate dispersion transforms. The sole frozen dispersion is the exact max-minus-min range because it is bounded, transparent, and parameter-free."
+    },
+    {
+      "design": "raw_roe_profit_yoy_revenue_yoy_dispersion",
+      "decision": "rejected_before_values",
+      "reason": "The raw fields have incompatible units; cross-sectional percentile states provide the already-frozen comparable scale."
+    },
+    {
+      "design": "fresh_disclosure_filter_threshold_board_year_regime_or_minute_interaction",
+      "decision": "rejected_before_values",
+      "reason": "No announcement-age filter, balance threshold, subset, market regime, minute feature, fitted weight, model, or post-result interaction is searched."
+    }
+  ],
+  "selected_candidate": {
+    "name": "quarterly_quality_rank_balance_3f",
+    "direction": "higher",
+    "economic_hypothesis": "Broad agreement among already-public profitability, profit-growth, and revenue-growth ranks may represent less one-dimensional accounting quality and more resilient near-term repricing than a high average driven by only one component.",
+    "formula": "At each signal close t, derive the exact point-in-time cross-sectional average-tie percentile ranks r_roe, r_profit, and r_revenue on the common quality-eligible universe, then return 1 - (max(r_roe,r_profit,r_revenue) - min(r_roe,r_profit,r_revenue)).",
+    "stock_day_identity_projection": ["datetime", "symbol", "provider"],
+    "quarterly_source_projection": ["instrument", "report_date", "announcement_date", "roe", "profit_yoy", "revenue_yoy"],
+    "component_definition_inputs": ["quality_roe", "quality_profit", "quality_revenue"],
+    "availability_rule": "Each disclosure becomes usable only on the first accepted local session strictly after announcement_date.",
+    "same_effective_date_rule": "Sort by instrument, effective date, report_date, and announcement_date, then keep the last row per instrument and effective date before state propagation.",
+    "state_rule": "Forward-fill roe, profit_yoy, and revenue_yoy independently inside each instrument; never backfill from a later disclosure.",
+    "cross_section_rule": "On each stock day, require the common quality-eligible universe and compute pandas-compatible average-tie percentile ranks separately for roe, profit_yoy, and revenue_yoy.",
+    "combination_rule": "Exactly 1 minus the three-component rank range; no weights, centering, standardization, fitted coefficient, threshold, or alternate transform.",
+    "valid_range": {"lower": 0.0, "lower_inclusive": true, "upper": 1.0, "upper_inclusive": true},
+    "missing_rule": "Missing unless all three already-effective source states and all three percentile ranks are finite. Never impute, clip, winsorize, substitute, backfill, or select a favorable report.",
+    "parameter_window_transform_threshold_filter_subset_regime_fit_or_model_search": false
+  },
+  "research_boundary": {
+    "external_campaign066_minute_or_quarterly_rows_read": false,
+    "campaign066_candidate_or_comparison_values_read": false,
+    "historical_daily_price_fields_read": [],
+    "historical_forward_return_fields_read": false,
+    "provider_request_issued": false,
+    "candidate49_historical_return_signal_execution_or_milestone_backfill_performed": false,
+    "candidate49_ledgers_changed": false,
+    "second_prospective_candidate_created": false,
+    "current_scoring_selection_sizing_or_orders_performed": false,
+    "investment_advice": false
+  },
+  "decision": {
+    "selected_candidate_count": 1,
+    "finite_candidate_library": true,
+    "complete_old_factor_library_bound_before_combination": true,
+    "conceptual_independence_pending_separate_97_definition_overlap_audit": true,
+    "predictive_value_established": false,
+    "next_action": "Challenge the fixed three-rank balance combination against every one of the 97 frozen definitions, including its three components, the exposed quality composites, Campaign063, Campaign064, and Campaign065, before any Campaign066 source row or value is read."
+  }
+}

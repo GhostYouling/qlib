@@ -1,0 +1,89 @@
+{
+  "version": 1,
+  "kind": "a_share_three_day_walkforward_campaign037_no_return_audit_freeze",
+  "status": "one_factor_admitted_for_exactly_one_frozen_2019_2023_development_trial",
+  "recorded_at": "2026-07-31T00:06:26Z",
+  "purpose": "Bind the complete ordered Campaign037 no-return result before any historical daily price or forward return is opened.",
+  "authoritative_inputs": {
+    "no_return_preregistration": {
+      "path": "docs/a_share_three_day_walkforward_campaign_037_no_return_preregistration.json",
+      "sha256": "c452eecbe445dca6affbbef5ede038277dbc85b6eaa4ec806f4f05d7f66dbd05"
+    },
+    "feature_snapshot_freeze": {
+      "path": "docs/a_share_three_day_walkforward_campaign_037_feature_snapshot_freeze_20260731.json",
+      "sha256": "3e9d90b528e35dbbf3a328985868d95aaf32f9a5c28879a3c1e16ab7fa4c0e77"
+    },
+    "feature_snapshot": {
+      "path": "/Volumes/DIsk/qlib-a-share-tushare-1m/derived/a_share/rich/tushare/minute_walkforward_campaign037_feature_library/tushare_stk_mins_1m_2019_2025_ea0cbb8f_walkforward_campaign037_feature_library_v1/snapshot_manifest.json",
+      "sha256": "7bc83097d8dbe013c224d58cf9718ffa671edd70d873f91d741798186bb26f93",
+      "dataset_sha256": "61eeb96cc827b480efde5688ba63c656306e25361f77d08f73d19b9a929ee03e"
+    },
+    "no_return_audit": {
+      "path": "data/experiments/short_horizon/historical_walkforward/campaign_037/no_return/20260731T000547Z_campaign037_no_return_audit.json",
+      "sha256": "aa4980bca0606b24df5f20bb3ee213e96a9852cc257866b4b682b9a3c1af39c4"
+    }
+  },
+  "result": {
+    "factor": "intraday_five_minute_variance_ratio_230w",
+    "direction": "higher",
+    "quality_listing_eligible_rows": 1331759,
+    "candidate_eligible_rows": 1328065,
+    "median_coverage": 0.9983183851218558,
+    "p05_coverage": 0.9933708902303229,
+    "p05_eligible_names": 138.0,
+    "potential_non_overlapping_three_session_cohorts": 540,
+    "observed_years": [
+      2019,
+      2020,
+      2021,
+      2022,
+      2023,
+      2024,
+      2025
+    ],
+    "coverage_and_capacity_gate_passed": true,
+    "comparison_values_loaded_only_after_coverage_pass": true,
+    "comparison_factor_count": 58,
+    "comparison_order_matches_preregistration": true,
+    "all_58_uniqueness_comparisons_passed": true,
+    "maximum_absolute_median_daily_rank_correlation": 0.5164292904395714,
+    "nearest_comparison": {
+      "name": "intraday_global_price_range_revisit_240m",
+      "median_daily_rank_correlation": -0.5164292904395714
+    },
+    "admissible_factor_count": 1
+  },
+  "post_audit_validation": {
+    "feature_and_audit_runner": {
+      "path": "scripts/a_share_three_day_walkforward_campaign037_features.py",
+      "sha256": "7477b0bab7e3e8e978479e1a7b6efa226dd705146de694285959a9d5a75a0787"
+    },
+    "feature_tests": {
+      "path": "tests/data_collector_tests/test_a_share_three_day_walkforward_campaign037_features.py",
+      "sha256": "f7ca781a1400bee6ee18c5d8c86d3a54759653abb55b544aca858c8bb01103a7"
+    },
+    "command": "PYTHONPATH=. pytest -q tests/data_collector_tests/test_a_share_three_day_walkforward_campaign037_features.py",
+    "passed": 7,
+    "failed": 0,
+    "only_test_transition": "The bound-snapshot status test now also requires exactly one bound audit. Formula, protocol, source, and safety assertions are unchanged.",
+    "formula_direction_source_or_gate_changed": false
+  },
+  "research_boundary": {
+    "candidate_values_read": true,
+    "comparison_values_read": true,
+    "historical_daily_price_fields_read": false,
+    "historical_forward_returns_read": false,
+    "training_or_model_fitting_performed": false,
+    "provider_request_issued": false,
+    "candidate49_historical_return_signal_or_execution_backfill_performed": false,
+    "candidate49_prospective_ledgers_changed": false,
+    "candidate50_activation_created": false,
+    "current_scoring_selection_sizing_or_orders_performed": false
+  },
+  "authorization": {
+    "next_action": "Freeze the exact one-trial 2019-2023 walk-forward catalog and implementation fingerprints, validate all bindings, then execute the single higher-direction trial.",
+    "development_trial_count_allowed": 1,
+    "alternate_direction_horizon_weight_filter_threshold_model_or_combination_allowed": false,
+    "stress_2024_2025_opening_allowed_before_development_survivor": false
+  }
+}

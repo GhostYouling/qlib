@@ -1,0 +1,181 @@
+{
+  "version": 1,
+  "kind": "a_share_three_day_inactive_mechanism_scouting_queue_delta",
+  "status": "concept_only_delta_inactive_no_formula_no_direction_no_values_no_candidate_activation",
+  "recorded_at": "2026-07-25T20:36:48Z",
+  "purpose": "Extend the inactive three-session research reserve during Candidate49 prospective observation with economically interpretable mechanism concepts that use only the accepted close/volume/amount minute schema, without assigning a candidate ordinal, freezing a formula or direction, computing values, or reading prices and returns.",
+  "advances": {
+    "path": "docs/a_share_three_day_inactive_mechanism_scouting_queue_20260726.json",
+    "sha256": "00565a87b5eb4241de3dfdd24f96ef78756fb286655969351ec966bbe32afad3",
+    "existing_priorities_preserved": [
+      1,
+      2,
+      3
+    ]
+  },
+  "authoritative_state": {
+    "path": "docs/a_share_three_day_iteration_status_20260725_future_only.json",
+    "sha256": "d44e1cb3707cce194eed37e99cc90f865396b1de8c35e02a393a2a243d973466",
+    "active_candidate_count": 1,
+    "active_candidate": "candidate49_intraday_cumulative_vwap_crossing_rate_240m_v1",
+    "candidate50_activation_allowed": false,
+    "aggregation_allowed": false
+  },
+  "future_only_policy": {
+    "path": "docs/a_share_three_day_future_only_minute_research_policy_20260725.json",
+    "sha256": "52ca8bfa7201509fe891d0af3d1c87aeebd64e47e6ec6641e897849411df408c",
+    "maximum_simultaneously_active_new_candidate_mechanisms": 1,
+    "candidate50_activation_condition": "candidate49 is terminally rejected or completes its full 200-signal evaluation"
+  },
+  "schema_evidence": {
+    "fieldwise_cleaning_protocol": {
+      "path": "docs/a_share_tushare_one_minute_fieldwise_cleaning_protocol.json",
+      "sha256": "51e4fbf399411f62d35cbdb81d78651b4ceab17934264db0146cef61554d2fd6"
+    },
+    "source_columns_allowed": [
+      "datetime",
+      "symbol",
+      "provider",
+      "close",
+      "volume",
+      "amount"
+    ],
+    "source_open_high_low_must_not_be_loaded": true,
+    "daily_prices_substituted_into_minute_rows": false,
+    "external_minute_partition_opened_for_this_delta": false
+  },
+  "queue_delta_semantics": {
+    "candidate_ordinals_assigned": false,
+    "candidate50_registered_or_activated": false,
+    "formula_or_formula_sketch_frozen": false,
+    "directions_or_provisional_directions_assigned": false,
+    "derived_factor_code_or_snapshot_created": false,
+    "historical_or_future_candidate_values_read": false,
+    "entry_order_is_only_after_the_existing_three_entries": true,
+    "queue_entry_may_advance_directly_to_value_computation": false,
+    "required_next_step_for_one_entry": "Only after Candidate49 satisfies the activation condition and all earlier still-distinct entries are resolved, perform a fresh no-value mechanism-overlap audit for exactly one entry, then freeze one exact formula and direction before any value computation."
+  },
+  "inactive_append_only_entries": [
+    {
+      "scouting_priority": 4,
+      "concept_name": "intraday_zero_return_activity_absorption",
+      "candidate_ordinal": null,
+      "active": false,
+      "concept_status": "mechanism_only_not_preregistered",
+      "direction": null,
+      "formula": null,
+      "allowed_source_fields": [
+        "datetime",
+        "symbol",
+        "provider",
+        "close",
+        "amount"
+      ],
+      "mechanism": "Study whether substantial CNY trading activity can be absorbed while the observed minute close remains unchanged, as a possible liquidity-resilience or hidden-distribution mechanism.",
+      "economic_question": "Does unusually strong transaction activity without an immediate close update contain three-session information that is not already represented by price-update frequency or broad amount concentration?",
+      "mandatory_overlap_challenges_before_any_preregistration": [
+        "intraday_price_update_share_238m",
+        "intraday_amount_participation_entropy_240m",
+        "intraday_up_move_amount_share_238m",
+        "intraday_bar_vwap_close_pressure_240m"
+      ],
+      "known_design_risks": [
+        "minimum price tick and stale-close mechanics can mimic absorption",
+        "price-limit or halt-adjacent rows may dominate the concept",
+        "the economically plausible direction is ambiguous before a separate preregistration",
+        "multiple possible activity normalizations would create formula search"
+      ]
+    },
+    {
+      "scouting_priority": 5,
+      "concept_name": "intraday_lunch_repricing_persistence",
+      "candidate_ordinal": null,
+      "active": false,
+      "concept_status": "mechanism_only_not_preregistered",
+      "direction": null,
+      "formula": null,
+      "allowed_source_fields": [
+        "datetime",
+        "symbol",
+        "provider",
+        "close"
+      ],
+      "mechanism": "Isolate repricing across the midday non-trading interval and examine whether the subsequent afternoon path confirms or rejects that repricing.",
+      "economic_question": "Does information incorporated between the morning close and afternoon reopening persist over the next three sessions, independently of generic late return, terminal location, or full-day volatility allocation?",
+      "mandatory_overlap_challenges_before_any_preregistration": [
+        "late_return_30m",
+        "intraday_volatility_resolution_238m",
+        "intraday_terminal_close_location_240m",
+        "afternoon_drawdown_recovery_resilience_120m"
+      ],
+      "known_design_risks": [
+        "the exact 11:30 and 13:01 bar-label semantics must remain accepted",
+        "a one-transition signal may be noisy and sparse after quality gates",
+        "confirmation and rejection variants would create post-hoc direction search",
+        "the concept may collapse into an afternoon momentum or reversal synonym"
+      ]
+    },
+    {
+      "scouting_priority": 6,
+      "concept_name": "intraday_directional_price_impact_asymmetry",
+      "candidate_ordinal": null,
+      "active": false,
+      "concept_status": "mechanism_only_not_preregistered",
+      "direction": null,
+      "formula": null,
+      "allowed_source_fields": [
+        "datetime",
+        "symbol",
+        "provider",
+        "close",
+        "amount"
+      ],
+      "mechanism": "Compare the observed price response per unit of CNY activity on negative and positive within-session price moves as a possible asymmetry in sell-side versus buy-side liquidity.",
+      "economic_question": "Does a stock absorb one direction of price pressure more efficiently than the other in a way that remains informative for the next three sessions?",
+      "mandatory_overlap_challenges_before_any_preregistration": [
+        "intraday_amount_volatility_coupling_238p",
+        "intraday_up_move_amount_share_238m",
+        "intraday_bar_vwap_close_pressure_240m",
+        "intraday_return_skewness_238m"
+      ],
+      "known_design_risks": [
+        "small activity or return denominators can make ratios unstable",
+        "choice of return transformation and aggregation can create formula search",
+        "price-limit sessions can induce mechanical asymmetry",
+        "the economically plausible direction is ambiguous before a separate preregistration"
+      ]
+    }
+  ],
+  "forbidden_during_candidate49_active_state": [
+    "assign_candidate50_or_any_candidate_ordinal",
+    "freeze_formula_window_threshold_normalization_or_direction",
+    "open_external_minute_or_daily_partitions_for_these_concepts",
+    "compute_candidate_or_comparison_values",
+    "read_historical_daily_prices_or_forward_returns",
+    "create_factor_code_snapshot_model_or_combination",
+    "current_score_select_size_or_order",
+    "use_Level2_to_refine_or_rescue_a_concept"
+  ],
+  "research_boundary": {
+    "files_read_for_this_delta": "frozen policy/state, existing mechanism queue and records, minute source/cleaning schema metadata only",
+    "external_minute_partitions_read": false,
+    "external_daily_partitions_read": false,
+    "historical_candidate_values_read": false,
+    "historical_comparison_values_read": false,
+    "historical_daily_prices_read": false,
+    "historical_forward_returns_read": false,
+    "future_signal_or_execution_outcome_read": false,
+    "training_or_model_fitting_performed": false,
+    "selection_sizing_or_order_performed": false,
+    "provider_request_issued": false,
+    "investment_advice": false
+  },
+  "decision": {
+    "candidate49_remains_the_only_active_candidate": true,
+    "candidate50_activation_allowed_now": false,
+    "existing_queue_order_changed": false,
+    "inactive_concept_count_added": 3,
+    "next_action_before_candidate49_terminal_or_full_gate": "Continue Candidate49 prospective collection and paper settlement only; preserve this append-only concept delta without computing any of its values.",
+    "next_action_after_activation_condition": "Resolve the original queue in order. Only if priorities one through three are retired or consumed may priority four receive a fresh no-value overlap audit; no later entry may bypass an earlier still-distinct entry."
+  }
+}

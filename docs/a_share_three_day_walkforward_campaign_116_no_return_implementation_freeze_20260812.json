@@ -1,0 +1,77 @@
+{
+  "schema_version": 1,
+  "kind": "a_share_three_day_walkforward_campaign116_no_return_implementation_freeze",
+  "status": "pure_formula_and_synthetic_semantics_verified_before_historical_source_values",
+  "recorded_at": "2026-08-12T15:59:13+08:00",
+  "authoritative_inputs": {
+    "iteration_state": {
+      "path": "docs/a_share_three_day_iteration_status_20260812_campaign116_prevalue.json",
+      "sha256": "ce4763869d3dd7eadf0c8e8b0329f1acfb008649a0378f409fc339451192b38f"
+    },
+    "numeric_policy_v99": {
+      "path": "docs/a_share_three_day_walkforward_future_numeric_comparison_eligibility_policy_v99_20260812.json",
+      "sha256": "18ab42ee095db886b77e72601d01161ee851cfcf94ccab5efeb715d1cb043787"
+    },
+    "no_return_preregistration": {
+      "path": "docs/a_share_three_day_walkforward_campaign_116_no_return_preregistration_20260812.json",
+      "sha256": "d47d4f1b8d6d7742c17eb82712a85a1dbe8dbb6e8f44e0ff9190e36ef7115c2c"
+    }
+  },
+  "frozen_implementation": {
+    "path": "scripts/a_share_three_day_walkforward_campaign116_formula.py",
+    "sha256": "85874e279a96576bf6bdf18ac2fa882dae2c248077449faf9ecf7a01f4e7672d",
+    "factor_name": "intraday_amount_conditioned_directional_persistence_spread_236p",
+    "direction": "higher",
+    "input_shape": "n_by_240_close_and_amount",
+    "historical_source_reader_implemented": false,
+    "comparator_reader_implemented": false,
+    "daily_price_or_forward_return_reader_implemented": false,
+    "provider_adapter_implemented": false
+  },
+  "synthetic_verification": {
+    "test_path": "tests/data_collector_tests/test_a_share_three_day_walkforward_campaign116_formula.py",
+    "test_sha256": "c1ccf6d9577b82f4cffd0d2225f0af8d29c1634f9d449cf13fb530438feaea4d",
+    "command": "/Volumes/DIsk/Coding/anaconda3/bin/python3.12 -m pytest -q tests/data_collector_tests/test_a_share_three_day_walkforward_campaign116_formula.py",
+    "exit_code": 0,
+    "passed": 6,
+    "failed": 0,
+    "coverage": [
+      "preregistration fingerprint and finite search space",
+      "exact high-versus-ordinary activity-conditioned score",
+      "lunch transition exclusion",
+      "strict-above-median classification with equality ordinary",
+      "exact-zero return noninformation and minimum support",
+      "invalid source and fixed 240-bar shape fail-closed"
+    ],
+    "historical_source_fixture_used": false
+  },
+  "complete_definition_registration": {
+    "previous_count": 141,
+    "previous_order_sha256": "ccab6e3d9d81b0a02d4ff178fdd442b26a1e68e3655e1c6f5b2fcb28cd4a4559",
+    "appended_once": true,
+    "new_count": 142,
+    "new_order_sha256": "ed61b10f3acb939c10ae5759f33aafde377cc921dd99c642300603b50a4851c5",
+    "last_definition": {
+      "name": "intraday_amount_conditioned_directional_persistence_spread_236p",
+      "score_direction": "higher"
+    },
+    "order_digest_rule": "sha256 of compact sorted-key JSON array of [name,score_direction] pairs",
+    "numeric_comparator_appended": false,
+    "reason_numeric_not_appended": "No Campaign116 historical candidate snapshot or all-134 uniqueness result exists."
+  },
+  "research_boundary": {
+    "provider_request_issued": false,
+    "credential_loaded": false,
+    "campaign116_historical_source_rows_read": false,
+    "campaign116_candidate_values_computed_or_read": false,
+    "campaign116_comparator_values_read": false,
+    "historical_daily_price_or_forward_return_values_read": false,
+    "stress_2024_2025_opened": false,
+    "candidate49_historical_backfill_performed": false,
+    "candidate49_ledgers_changed": false,
+    "second_prospective_candidate_created": false,
+    "current_scoring_selection_sizing_positions_or_orders_performed": false,
+    "investment_advice": false
+  },
+  "next_action": "Implement a fingerprint-bound local snapshot builder and its static tests without changing the formula; only then run exactly one coverage-first no-return snapshot build against the accepted immutable minute source."
+}

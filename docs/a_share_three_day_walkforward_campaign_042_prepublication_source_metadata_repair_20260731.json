@@ -1,0 +1,61 @@
+{
+  "version": 1,
+  "kind": "a_share_three_day_walkforward_campaign042_prepublication_source_metadata_repair",
+  "status": "single_metadata_repair_authorized_after_fail_closed_prepublication_validation",
+  "recorded_at": "2026-07-31T08:10:00Z",
+  "purpose": "Preserve the failed first publication attempt and authorize only the missing close-only source metadata field needed to validate and atomically publish the already-computed Campaign042 partition checkpoints.",
+  "authoritative_inputs": {
+    "feature_implementation_freeze": {
+      "path": "docs/a_share_three_day_walkforward_campaign_042_feature_implementation_freeze.json",
+      "sha256": "828c16c6c7dc371e5a0eb32b0170bc5b6c0008e13ba003535faa9ce5ad7a611e"
+    },
+    "pre_repair_feature_runner": {
+      "path_at_failure": "scripts/a_share_three_day_walkforward_campaign042_features.py",
+      "observed_sha256": "206eaa36b7ab1f055f4c7b285f81cef0126687c9bdf293ab09ff4f17199c671d"
+    },
+    "no_return_preregistration": {
+      "path": "docs/a_share_three_day_walkforward_campaign_042_no_return_preregistration.json",
+      "sha256": "69a554576358c6f2330b4caa3c91d7bbfc67b576259a5f342a89912587d9e826"
+    }
+  },
+  "observed_failure": {
+    "command": "python scripts/a_share_three_day_walkforward_campaign042_features.py build --workers 8",
+    "exit_code": 1,
+    "failure_stage": "aggregate_manifest_validation_before_manifest_write_or_atomic_publication",
+    "error": "Campaign042 snapshot source-field metadata changed",
+    "completed_partition_checkpoints": 33015,
+    "completed_partition_metadata_files": 33015,
+    "hidden_partial_root_preserved": "/Volumes/DIsk/qlib-a-share-tushare-1m/derived/a_share/rich/tushare/minute_walkforward_campaign042_feature_library/.tushare_stk_mins_1m_2019_2025_ea0cbb8f_walkforward_campaign042_feature_library_v1.partial",
+    "final_snapshot_manifest_published": false,
+    "comparison_values_read": false,
+    "historical_daily_price_fields_read": false,
+    "historical_forward_returns_read": false
+  },
+  "root_cause": {
+    "classification": "publication_metadata_compatibility_only",
+    "detail": "The inherited aggregate manifest initially omits source_amount_read. Campaign042 correctly overwrites the high-low, close, and volume booleans before its local semantic check but did not set source_amount_read=false until the later atomic-write interception, which is necessarily after validation."
+  },
+  "authorized_repair": {
+    "exact_change": "When require_fingerprint_constants is false, set manifest[source_amount_read]=false alongside the already-frozen close-only source booleans before local semantic validation.",
+    "formula_change_allowed": false,
+    "direction_change_allowed": false,
+    "source_projection_change_allowed": false,
+    "partition_byte_change_allowed": false,
+    "quality_counter_change_allowed": false,
+    "comparison_library_or_order_change_allowed": false,
+    "gate_or_search_change_allowed": false,
+    "daily_price_or_return_access_allowed": false,
+    "resume_rule": "Revalidate and reuse all hash-bound hidden checkpoints; recompute no partition unless its checkpoint fails the inherited byte/frame validation."
+  },
+  "research_boundary": {
+    "candidate_partition_values_exist_only_in_hidden_unpublished_checkpoints": true,
+    "comparison_values_read": false,
+    "historical_daily_price_fields_read": false,
+    "historical_forward_returns_read": false,
+    "provider_request_issued": false,
+    "candidate49_ledgers_changed": false,
+    "candidate50_activation_created": false,
+    "current_scoring_selection_sizing_or_orders_performed": false
+  },
+  "next_action": "Apply only the authorized metadata assignment, rerun the synthetic tests and binding validator, then resume the build and require all 33015 checkpoints to validate before atomic publication."
+}

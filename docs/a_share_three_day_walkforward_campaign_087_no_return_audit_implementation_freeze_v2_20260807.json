@@ -1,0 +1,48 @@
+{
+  "schema_version": 1,
+  "kind": "a_share_three_day_walkforward_campaign087_no_return_audit_implementation_freeze_v2",
+  "status": "compact_append_repair_frozen_before_campaign087_v2_coverage_or_comparison_values",
+  "frozen_at": "2026-08-07T03:42:00+08:00",
+  "repair_protocol": {
+    "path": "docs/a_share_three_day_walkforward_campaign_087_no_return_audit_v2_compact_append_repair_protocol_20260807.json",
+    "sha256": "8d6fe0a178264c62ef51878e993be8cc6bca3bb76846be3036838e1f680e6aa0"
+  },
+  "v1_implementation_freeze": {
+    "path": "docs/a_share_three_day_walkforward_campaign_087_no_return_audit_implementation_freeze_20260807.json",
+    "sha256": "f4d4b9cfb4835fdef2c67839f3cabb96a752d1c226210b181a731cea28d6276d"
+  },
+  "v2_audit_runner": {
+    "path": "scripts/a_share_three_day_walkforward_campaign087_no_return_audit_v2.py",
+    "sha256": "f4bee2ea360d95f93a4d0bbc15fc6452c0cd285a49b03847fa4fb044cd1c210a"
+  },
+  "v2_tests": {
+    "path": "tests/data_collector_tests/test_a_share_three_day_walkforward_campaign087_no_return_audit_v2.py",
+    "sha256": "5fe7691c62d36b8857d6a17ca7ced9de0d5cf20508894357a60711384d62b22a",
+    "result_before_freeze": "5 passed and ruff passed",
+    "real_candidate_or_comparator_value_columns_read_by_tests": false
+  },
+  "append_only_attempt_ledger_at_v2_freeze": {
+    "path": "data/experiments/short_horizon/historical_walkforward/campaign_087/research_attempt_ledger_v13.json",
+    "sha256": "1be284786d4dbe916bb5a7ad914ea26ed4cc789a3daa74e7d55b0848cc146dfa",
+    "recorded_failures": 13,
+    "complete_factor_attempts": 0,
+    "prior_coverage_pass_evidence_preserved": true,
+    "prior_comparison_values_exposed": 114
+  },
+  "repair_semantics": {
+    "first_114_loader_changed": false,
+    "position_115_factor": "quarterly_freshness_market_neutral_late_drift_confirmation_product_2r",
+    "position_116_factor": "intraday_intrabar_close_location_serial_persistence_238p",
+    "positions_115_116_loader": "verified seven-partition stock_day_key direct alignment",
+    "all_116_must_pass": true,
+    "comparison_order_or_threshold_changed": false,
+    "candidate_or_comparator_values_transformed": false,
+    "v1_in_memory_results_reused": false
+  },
+  "coverage_or_capacity_metrics_computed_before_v2_freeze": false,
+  "comparison_values_read_before_v2_freeze": false,
+  "historical_daily_price_or_forward_return_values_read_before_v2_freeze": false,
+  "provider_request_issued_before_v2_freeze": false,
+  "candidate49_historical_backfill_or_ledger_change_before_v2_freeze": false,
+  "current_scoring_selection_sizing_or_orders_performed_before_v2_freeze": false
+}

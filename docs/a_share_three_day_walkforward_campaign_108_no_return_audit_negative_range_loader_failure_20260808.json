@@ -1,0 +1,35 @@
+{
+  "schema_version": 1,
+  "kind": "a_share_three_day_walkforward_campaign108_infrastructure_failure",
+  "status": "recorded_non_scientific_candidate_loader_range_failure",
+  "recorded_at": "2026-08-07T21:16:12Z",
+  "phase": "ordered_no_return_audit_candidate_load",
+  "failed_entry_point": {
+    "path": "scripts/a_share_three_day_walkforward_campaign108_no_return_audit_v2.py",
+    "sha256": "9e1a32366dfd538b5b78dfe80f13f8d2f757cf31e23f8449a1b6a4d1e33d390e"
+  },
+  "failure": {
+    "exit_code": 1,
+    "exception": "Campaign004FeatureError: intraday_continuous_session_net_return_reversal_240m values or keys are invalid",
+    "root_cause": "The inherited Campaign105 audit assigned the candidate loader range (0,1), contradicting Campaign108's frozen and verified [-1,1] range.",
+    "candidate_snapshot_verified_before_failure": true,
+    "candidate_values_read_before_failure": true,
+    "coverage_or_capacity_metrics_computed": false,
+    "comparator_values_read": false,
+    "historical_daily_price_or_forward_return_values_read": false,
+    "audit_result_published": false
+  },
+  "permitted_additive_recovery": {
+    "scope": "Change only the candidate loader validation range from (0,1) to (-1,1).",
+    "formula_direction_endpoints_transform_coverage_uniqueness_comparator_order_cost_fold_or_stress_gate_changed": false,
+    "candidate_snapshot_or_snapshot_binding_changed": false,
+    "same_132_comparators_required": true,
+    "one_recovery_run_allowed_after_new_script_and_activation_are_frozen": true
+  },
+  "research_boundary": {
+    "provider_request_issued": false,
+    "candidate49_ledgers_changed": false,
+    "current_scoring_selection_sizing_or_orders_performed": false
+  },
+  "next_action": "Freeze a range-only audit loader recovery and a replacement single-use activation before retrying the ordered audit."
+}

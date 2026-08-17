@@ -1,0 +1,176 @@
+{
+  "version": 1,
+  "kind": "a_share_three_day_iteration_status",
+  "status": "campaign042_terminal_verified_historical_walkforward_ready_for_independent_campaign043",
+  "recorded_at": "2026-07-31T09:39:00Z",
+  "authoritative_predecessor": {
+    "path": "docs/a_share_three_day_iteration_status_20260731_campaign041_verified.json",
+    "sha256": "4d16ebaa02f2029ba4913b9f5c65ae44e291c27036abce0497bca4abd3f515ba"
+  },
+  "research_policy": {
+    "historical_walkforward_policy": {
+      "path": "docs/a_share_three_day_historical_walkforward_research_policy_20260727.json",
+      "sha256": "38426d6161b9bfed323c58caba18feca668b8c9d53e294951a8ba90c01a798bb"
+    },
+    "historical_research_may_run_without_new_daily_bar_or_16_30_wait": true,
+    "historical_results_may_generate_current_scores_selections_sizes_or_orders": false,
+    "historical_results_may_backfill_candidate49": false
+  },
+  "fixed_strategy": {
+    "holding_period_local_sessions": 3,
+    "signal": "accepted local session close t",
+    "entry": "next accepted local session open t+1",
+    "exit": "third accepted local session close t+3",
+    "topk": 3,
+    "development_folds": 3,
+    "purge_signal_sessions_each_partition_boundary": 3,
+    "t_t_plus_1_t_plus_3_must_remain_in_same_partition": true,
+    "pilot_capital_cny": 200000,
+    "primary_pilot_cost_bps": 10,
+    "aggregate_survivor_cost_bps": 20
+  },
+  "campaign042": {
+    "factor": "intraday_lunch_repricing_persistence_2r",
+    "direction": "higher",
+    "formula": "g=log(close_13:01/close_11:30), a=log(close_15:00/close_13:01), score=2*g*a/(g^2+a^2)",
+    "feature_source_fields": [
+      "datetime",
+      "symbol",
+      "provider",
+      "close"
+    ],
+    "snapshot": {
+      "path": "/Volumes/DIsk/qlib-a-share-tushare-1m/derived/a_share/rich/tushare/minute_walkforward_campaign042_feature_library/tushare_stk_mins_1m_2019_2025_ea0cbb8f_walkforward_campaign042_feature_library_v1/snapshot_manifest.json",
+      "sha256": "c56a81a461aae4ea9d1f44c238dd381541e18425837872a17f3d34f8dc796acd",
+      "dataset_sha256": "9fe1a6095a70702ef3ce7ba6cbca8e1386749513b00e8494b37813a1639826c8",
+      "partitions": 33015,
+      "rows": 7724498,
+      "eligible_rows": 7449531,
+      "both_zero_rows": 274967,
+      "endpoint_canonicalized_rows": 30511,
+      "invalid_rows": 0,
+      "all_partition_byte_and_frame_hashes_valid": true,
+      "metadata_repair_only": true,
+      "candidate_values_or_dataset_sha256_changed_by_repair": false
+    },
+    "no_return": {
+      "median_coverage": 0.9803921568627451,
+      "p05_coverage": 0.9619713438735178,
+      "median_eligible_names": 924.0,
+      "p05_eligible_names": 136.0,
+      "non_overlapping_three_session_cohorts": 540,
+      "comparison_count": 63,
+      "comparison_pass_count": 63,
+      "comparison_order_matches_preregistration": true,
+      "maximum_absolute_median_daily_rank_correlation": 0.04175335669550704,
+      "nearest_comparison_factor": "intraday_global_price_range_revisit_240m",
+      "nearest_median_daily_rank_correlation": -0.04175335669550704,
+      "candidate49_median_daily_rank_correlation": -0.03437375966057727,
+      "campaign041_median_daily_rank_correlation": -0.0033078370852358137,
+      "historical_daily_price_fields_read": [],
+      "historical_forward_return_fields_read": false
+    },
+    "development": {
+      "trial_count": 1,
+      "validation_mean_rank_ic": [
+        -0.008747448053297947,
+        -0.0014188597730097816,
+        -0.002932028642535807
+      ],
+      "validation_normalized_return": [
+        -0.04183943781366328,
+        -0.29863464015849916,
+        -0.13939693369346773
+      ],
+      "validation_pilot_10bp_return": [
+        -0.024882007543187812,
+        -0.05341143840321205,
+        -0.03712164847104871
+      ],
+      "aggregate_mean_rank_ic": -0.0020511713534225044,
+      "aggregate_normalized_return": -0.15339197768320179,
+      "aggregate_normalized_maximum_drawdown": -0.5195613332141731,
+      "aggregate_pilot_0bp_return": -0.021468934337384726,
+      "aggregate_pilot_5bp_return": -0.07421575288275262,
+      "aggregate_pilot_10bp_return": -0.1186736370332554,
+      "aggregate_pilot_20bp_return": -0.18965983120625274,
+      "operational_gate_passed": true,
+      "quality_gate_passed": false,
+      "quality_rejection_count": 8,
+      "selected_survivor_count": 0
+    },
+    "stress_2024_2025": {
+      "status": "not_opened_zero_development_survivors",
+      "opened": false,
+      "return_fields_read": false
+    },
+    "terminal": true,
+    "terminal_stage": "development_quality_gate",
+    "terminal_reason": "all_validation_folds_negative_on_ic_spread_normalized_and_pilot_returns_with_drawdown_and_20bp_failures",
+    "rescue_inversion_reanchor_renormalize_rewindow_rescale_filter_threshold_rerun_or_combination_allowed": false,
+    "research_record": {
+      "path": "docs/a_share_three_day_walkforward_campaign_042_research_record.json",
+      "sha256": "95ed818100ce2529e6eea442702a09d0bf0ae2ffd35a0604927826f3431328fd"
+    },
+    "verification": {
+      "path": "docs/a_share_three_day_walkforward_campaign_042_verification_20260731.json",
+      "sha256": "fcd80aa316f254c698423b39de39f46eb5f619f8a54eee64c9ded6090c5b7f1d"
+    }
+  },
+  "iteration_accounting": {
+    "historical_development_trial_count_before_campaign042": 259,
+    "campaign042_development_trial_count": 1,
+    "historical_development_trial_count_after_campaign042": 260,
+    "current_historical_aggregation_candidate_count": 0
+  },
+  "prospective_boundary": {
+    "active_candidate_count": 1,
+    "active_candidate": "Candidate49 intraday_cumulative_vwap_crossing_rate_240m",
+    "candidate49_signal_ledger": {
+      "path": "data/experiments/short_horizon/candidate49_future_signal_ledger.json",
+      "sha256": "5193f00d7f36da003f53cec387900da4c3d002299f5dfcfc1a95eaa199ed3a79",
+      "entry_count": 0
+    },
+    "candidate49_execution_ledger": {
+      "path": "data/experiments/short_horizon/candidate49_future_execution_ledger.json",
+      "sha256": "d57a3e61eac969e42cafa418ccd8c0a5ee65dcf69da145bb2c096c2a02a2ea4f",
+      "entry_count": 0
+    },
+    "candidate49_20260731": {
+      "staging_root": "/Volumes/DIsk/qlib-a-share-tushare-daily-2026-07-31",
+      "plan_ready": true,
+      "plan_exit_code": 0,
+      "run_exit_code": 1,
+      "failed_gate": "stock_basic",
+      "failure_reason": "invalid_ts_code",
+      "same_day_retry_allowed": false,
+      "failure_record": {
+        "path": "docs/a_share_candidate49_20260731_daily_source_failure_record.json",
+        "sha256": "67effbc1bc364c8a312d5cb2003303b3cd7a48b7f805dac5a9b57b0f1185fd7f"
+      }
+    },
+    "candidate49_semantic_ledger_validation": "passed_read_only",
+    "candidate49_historical_return_signal_execution_or_milestone_backfill_performed": false,
+    "candidate50_activation_allowed": false
+  },
+  "verification_summary": {
+    "focused_tests_passed": 16,
+    "full_data_collector_tests_passed": 1617,
+    "full_data_collector_tests_failed": 0,
+    "binding_validation_passed": true,
+    "idempotent_development_rerun_passed": true,
+    "unified_report_semantic_replay_passed": true
+  },
+  "next_action": {
+    "historical": "Begin Campaign043 only from a genuinely independent mechanism with separate pre-value scouting, overlap audit, the complete prior comparison library, finite search freeze, and binding-validator exit code 0 before protected values. Offline work may run at any time.",
+    "prospective": "Do not retry the failed 2026-07-31 provider source gate. On a later accepted local trading date, use a new exact-date staging root and the same plan-then-confirmed-run boundary after 16:30 Asia/Singapore.",
+    "forbidden": [
+      "relax gates, invert, reanchor, renormalize, rescue, rewindow, rescale, filter, retune, rerun, or combine Campaign042",
+      "open Campaign042 2024-2025 stress after zero development survivors",
+      "retry or re-request the 2026-07-31 Candidate49 provider failure",
+      "historically backfill Candidate49",
+      "activate Candidate50",
+      "generate current scores, selections, sizes, or orders"
+    ]
+  }
+}

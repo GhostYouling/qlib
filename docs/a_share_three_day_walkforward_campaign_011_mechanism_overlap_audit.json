@@ -1,0 +1,200 @@
+{
+  "version": 1,
+  "kind": "a_share_three_day_walkforward_campaign011_mechanism_overlap_audit",
+  "status": "one_exact_mechanism_frozen_before_campaign011_candidate_or_comparison_values_or_returns",
+  "recorded_at": "2026-07-28T15:53:07Z",
+  "purpose": "Resolve the one Campaign011 concept into one exact and finite no-value mechanism. This audit freezes formula, direction, timestamp grid, high-low ordering, zero-range and entropy-support semantics, rejects alternative definitions, and challenges the mechanism against all 34 prior terminal mechanisms before any external minute partition, candidate value, comparison value, daily price, or forward return is opened.",
+  "authoritative_bindings": {
+    "concept_scouting": {
+      "path": "docs/a_share_three_day_walkforward_campaign_011_concept_scouting.json",
+      "sha256": "f3bb2a4f2641f4617de8fddbbb4fb933ae17531c17c4b88b5366ad5b4d31a6e5"
+    },
+    "iteration_state": {
+      "path": "docs/a_share_three_day_iteration_status_20260728_campaign010.json",
+      "sha256": "fa03536f5fdaf8a7732057ea9bd798be966321337fc9628ff190ad0cfe26ce98"
+    },
+    "historical_walkforward_policy": {
+      "path": "docs/a_share_three_day_historical_walkforward_research_policy_20260727.json",
+      "sha256": "38426d6161b9bfed323c58caba18feca668b8c9d53e294951a8ba90c01a798bb"
+    },
+    "campaign010_research_record": {
+      "path": "docs/a_share_three_day_walkforward_campaign_010_research_record.json",
+      "sha256": "f8beb653f3f0215b4483e773360637c0713cf43b62d57e488a6006b326ab927d",
+      "completed": true,
+      "usable_factor_values": true,
+      "development_return_read": false
+    }
+  },
+  "source_schema_boundary": {
+    "provider": "tushare",
+    "frequency": "1m",
+    "accepted_source_grid_rows": 241,
+    "standalone_0930_row_preserved_but_excluded_from_formula": true,
+    "continuous_session_rows": "09:31-11:30 and 13:01-15:00",
+    "joint_clean_manifest": {
+      "path_below_data_root": "derived/a_share/rich/tushare/minute_sentiment_clean/tushare_stk_mins_1m_2019_2025_ea0cbb8f_sentiment_clean_v1/snapshot_manifest.json",
+      "sha256": "453c6719cb3c7da42fed8807b28a2bfe988700283e9625a6db97912534f368de",
+      "dataset_sha256": "0e4fe7c05536cdfcecc2936bc880726902f5560061188ffff82ef7ee6f346983",
+      "partitions": 33015,
+      "rows": 7724498
+    },
+    "allowed_transport_fields": [
+      "datetime",
+      "symbol",
+      "provider",
+      "high",
+      "low"
+    ],
+    "forbidden_source_fields": [
+      "open",
+      "close",
+      "volume",
+      "amount"
+    ],
+    "daily_price_or_return_substitution_allowed": false,
+    "provider_request_allowed": false
+  },
+  "comparison_catalog": {
+    "semantic_terminal_mechanism_count": 34,
+    "statistical_comparison_factor_count": 33,
+    "base_statistical_comparison_catalog_binding": {
+      "path": "docs/a_share_three_day_walkforward_campaign_010_no_return_preregistration.json",
+      "sha256": "0981e5915f0ba5eff8f779b7ad594324bccfd75b0fb76f22916ed734d6443a53",
+      "json_pointer": "/ordered_no_return_gates/uniqueness_after_coverage_only/comparison_factors",
+      "bound_factor_count": 32
+    },
+    "campaign010_statistical_comparison": {
+      "name": "intraday_adjacent_range_overlap_continuity_238p",
+      "score_direction": "higher",
+      "snapshot_manifest": {
+        "path": "/Volumes/DIsk/qlib-a-share-tushare-1m/derived/a_share/rich/tushare/minute_walkforward_campaign010_feature_library/tushare_stk_mins_1m_2019_2025_ea0cbb8f_walkforward_campaign010_feature_library_v1/snapshot_manifest.json",
+        "sha256": "e700c23b8c86e412153dd7ebd3bcb4a322f12b8a506cbbf5e4659490da50d69b",
+        "dataset_sha256": "55303f4934044fa2543d459aa378e28ff440b03b8a0a69d6866e14736d6bdcc0"
+      }
+    },
+    "semantic_only_terminal_mechanism": {
+      "name": "intraday_post_shock_share_volume_replenishment_236p",
+      "campaign": 8,
+      "reason_not_statistically_compared": "Its immutable snapshot contains zero finite factor values because the frozen coverage gate failed."
+    },
+    "mandatory_entropy_and_range_challenges": [
+      {
+        "name": "intraday_return_variance_entropy_238m",
+        "distinction": "The terminal factor distributes squared between-close returns over 238 within-half return positions. Campaign011 distributes direction-neutral within-bar log high-low ranges over a fixed 240-bar support and reads no close."
+      },
+      {
+        "name": "intraday_amount_participation_entropy_240m",
+        "distinction": "The terminal factor distributes traded CNY amount over the same time support. Campaign011 forbids amount and volume and distributes price-range exploration."
+      },
+      {
+        "name": "intraday_intrabar_body_range_efficiency_240m",
+        "distinction": "Campaign009 aggregates the ratio of total open-close body movement to total intrabar range. Campaign011 forbids open and close and measures the concentration of range across time."
+      },
+      {
+        "name": "intraday_adjacent_range_overlap_continuity_238p",
+        "distinction": "Campaign010 compares adjacent interval intersections with their union spans. Campaign011 has no adjacency or interval-overlap calculation; the bar ranges enter only as nonnegative participation weights."
+      }
+    ],
+    "maximum_allowed_absolute_median_daily_rank_correlation": 0.8,
+    "minimum_pairwise_names_per_session": 50,
+    "minimum_pairwise_sessions_per_comparison": 100,
+    "score_direction_normalization": "Multiply lower-is-better comparison values by minus one before each daily rank correlation; retain the candidate's frozen higher direction."
+  },
+  "candidate": {
+    "name": "intraday_intrabar_range_participation_entropy_240m",
+    "direction": "higher",
+    "economic_hypothesis": "When one-minute high-low price exploration is spread broadly across the continuous session instead of concentrated in a few episodic range shocks, price discovery may be more orderly and resilient from the next open through the third close.",
+    "formula": "-sum(p_i * log(p_i)) / log(240), where p_i = log(high_i/low_i) / sum_j(log(high_j/low_j)) across the 240 continuous-session bars and zero-range terms contribute zero",
+    "formula_steps": [
+      "Require the exact accepted 241-row source grid, preserve but exclude the standalone 09:30 row, and select exactly the 240 bars at 09:31-11:30 and 13:01-15:00.",
+      "Require every selected high and low to be finite and strictly positive with exact raw ordering low_i <= high_i. Do not round, clamp, sort, repair, or apply a tolerance.",
+      "For each selected bar compute range_i = log(high_i/low_i). Require every range to be finite and nonnegative.",
+      "Keep all 240 positions as the fixed entropy support. A zero-range bar contributes zero probability and zero to the entropy sum; it is never dropped and no epsilon is added.",
+      "Require at least 120 bars with strictly positive range. This threshold is frozen before coverage observation and does not vary by stock, date, year, board, range magnitude, or liquidity.",
+      "Require total_range = sum(range_i) to be finite and strictly positive, then set p_i = range_i/total_range.",
+      "Compute Shannon entropy as minus the sum of p_i*log(p_i) over strictly positive p_i, divided by the fixed normalization log(240). Do not normalize by the observed positive-range count.",
+      "Canonicalize only floating-point endpoints within 1e-12 of 0 or 1; do not otherwise clip, rank, smooth, impute, sign, weight by amount or volume, threshold, residualize, or transform the value."
+    ],
+    "source_fields_used_by_formula": [
+      "datetime",
+      "symbol",
+      "provider",
+      "high",
+      "low"
+    ],
+    "timestamp_semantics": "Use each of the 240 continuous-session one-minute high-low intervals independently. Exclude the standalone 09:30 row, form no lunch or adjacent transition, use no overnight value, and do not privilege the opening, lunch, or terminal bar.",
+    "zero_missing_denominator_semantics": "A zero-range bar remains one of the fixed 240 support positions and contributes zero. Fewer than 120 positive-range bars, any invalid/nonpositive/nonfinite high or low, any low-above-high ordering violation, a nonfinite range, or a nonpositive/nonfinite aggregate range makes the stock-day missing.",
+    "valid_range": {
+      "lower": 0.0,
+      "lower_inclusive": true,
+      "upper": 1.0,
+      "upper_inclusive": true
+    },
+    "selected_bar_count": 240,
+    "minimum_positive_range_bars": 120,
+    "entropy_support_bar_count": 240,
+    "entropy_normalization": "log(240)",
+    "mechanism_distinction_before_values": [
+      "Return variance entropy allocates between-close squared-return variation over 238 return positions and reads close. This candidate reads no close and allocates within-bar direction-neutral log ranges over 240 bars.",
+      "Amount participation entropy allocates CNY trading activity and requires amount. This candidate forbids amount and volume; identical amount profiles can have different range entropy and identical range profiles can have different amount entropy.",
+      "Campaign009 compares total open-close body movement with total high-low range. This candidate forbids open and close, discards body efficiency, and measures only how range is distributed over time.",
+      "Campaign010 measures local persistence through adjacent high-low interval intersection. This candidate forms no adjacent pair, overlap, union, containment, or path statistic.",
+      "Realized volatility, diffusive variation, price-update share, sign runs, semivariance, and volatility timing are functions of successive closes. This candidate is invariant to close placement conditional on the high-low range vector."
+    ],
+    "rejected_variants_before_values": [
+      "Rényi, Tsallis, Gini, Herfindahl, effective-count, perplexity, top-quantile share, coefficient-of-variation, kurtosis, concentration, or another dispersion statistic",
+      "normalization by log of the positive-range count, dropping zero-range support, adding epsilon, using arithmetic high-low widths, squared ranges, absolute close returns, bodies, wicks, candle direction, or adjacent range overlap",
+      "amount, volume, duration, market, volatility, time-of-day, or stock-specific weighting",
+      "including 09:30, using morning-only, afternoon-only, late-only, terminal, lunch, overnight, or another timestamp support",
+      "changing the 120 positive-range minimum, treating an ordering violation as repairable, filling values, filtering years or stocks, or combining with terminal factors",
+      "lower-is-better inversion or any post-value direction choice"
+    ]
+  },
+  "frozen_no_return_and_search_bounds": {
+    "coverage_basis": "finite candidate rows divided by quality-and-listing eligible buyable rows within 2019-2025",
+    "minimum_median_coverage": 0.95,
+    "minimum_p05_coverage": 0.9,
+    "minimum_p05_eligible_names": 50,
+    "minimum_non_overlapping_three_session_cohorts": 200,
+    "minimum_observed_calendar_years": 5,
+    "uniqueness_maximum_absolute_median_daily_rank_correlation": 0.8,
+    "uniqueness_minimum_pairwise_names_per_session": 50,
+    "uniqueness_minimum_pairwise_sessions_per_comparison": 100,
+    "finite_trial_catalog_if_admitted": [
+      {
+        "trial_id": "campaign011_single_intrabar_range_participation_entropy",
+        "components": [
+          "intraday_intrabar_range_participation_entropy_240m"
+        ],
+        "weights": [
+          1.0
+        ]
+      }
+    ],
+    "expected_trial_count_if_admitted": 1,
+    "pair_or_higher_order_trials": false,
+    "weight_threshold_filter_or_year_subset_search": false,
+    "old_terminal_factor_rescue_combinations": false
+  },
+  "research_boundary": {
+    "external_minute_partitions_read": false,
+    "external_daily_partitions_read": false,
+    "candidate_values_computed_or_read": false,
+    "comparison_values_read": false,
+    "historical_daily_prices_read": false,
+    "historical_forward_returns_read": false,
+    "prospective_candidate_created": false,
+    "candidate49_historical_return_read": false,
+    "candidate49_ledgers_changed": false,
+    "current_scoring_selection_sizing_or_order_performed": false,
+    "provider_request_issued": false,
+    "investment_advice": false
+  },
+  "decision": {
+    "mechanism_distinct_enough_for_no_return_materialization": true,
+    "candidate_may_advance_directly_to_return_read": false,
+    "required_next_step": "Implement and synthetically test only this exact formula, then freeze a hash-bound no-return protocol before external candidate or comparison values. Apply coverage and capacity first; read the 33 usable comparison snapshots only if those gates pass; read no daily price or forward return until the exact one-trial walk-forward preregistration is frozen.",
+    "candidate49_remains_only_prospective_candidate": true,
+    "candidate50_activation_allowed": false
+  }
+}

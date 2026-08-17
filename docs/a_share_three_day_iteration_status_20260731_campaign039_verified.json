@@ -1,0 +1,193 @@
+{
+  "version": 1,
+  "kind": "a_share_three_day_iteration_status",
+  "status": "campaign039_terminal_verified_historical_walkforward_ready_for_independent_campaign040",
+  "recorded_at": "2026-07-31T03:45:16Z",
+  "authoritative_predecessor": {
+    "path": "docs/a_share_three_day_iteration_status_20260731_campaign038_verified.json",
+    "sha256": "4bc921c541f6044b9756d6843e576c3282e2011f9952de1800dd335c2d9a16e5"
+  },
+  "research_policy": {
+    "historical_walkforward_policy": {
+      "path": "docs/a_share_three_day_historical_walkforward_research_policy_20260727.json",
+      "sha256": "38426d6161b9bfed323c58caba18feca668b8c9d53e294951a8ba90c01a798bb"
+    },
+    "historical_research_may_run_without_new_daily_bar_or_16_30_wait": true,
+    "historical_results_may_generate_current_scores_selections_sizes_or_orders": false,
+    "historical_results_may_backfill_candidate49": false
+  },
+  "fixed_strategy": {
+    "holding_period_local_sessions": 3,
+    "signal": "accepted local session close t",
+    "entry": "next accepted local session open t+1",
+    "exit": "third accepted local session close t+3",
+    "topk": 3,
+    "development_folds": 3,
+    "purge_signal_sessions_each_partition_boundary": 3,
+    "t_t_plus_1_t_plus_3_must_remain_in_same_partition": true,
+    "pilot_capital_cny": 200000,
+    "primary_pilot_cost_bps": 10,
+    "aggregate_survivor_cost_bps": 20
+  },
+  "campaign039": {
+    "factor": "intraday_return_time_reversal_asymmetry_236p",
+    "direction": "higher",
+    "formula": "For each 120-close half independently, form 119 adjacent log returns and 118 ordered adjacent-return pairs (a,b). Pool both halves into T=sum(a^2*b-a*b^2) and Q=sum(abs(a*b)*(abs(a)+abs(b))) across exactly 236 pairs, then return abs(T)/Q.",
+    "feature_source_fields": [
+      "datetime",
+      "symbol",
+      "provider",
+      "close"
+    ],
+    "snapshot": {
+      "path": "/Volumes/DIsk/qlib-a-share-tushare-1m/derived/a_share/rich/tushare/minute_walkforward_campaign039_feature_library/tushare_stk_mins_1m_2019_2025_ea0cbb8f_walkforward_campaign039_feature_library_v1/snapshot_manifest.json",
+      "sha256": "cda070af6d700a32f5dba1c003a3a38c9921b1c75b29ac9b8a9aa4d39d169d17",
+      "dataset_sha256": "4d61fc2b98d2a1fc3f884668b23fcc763857926ba34abb08fab4f8ae6a3a4948",
+      "partitions": 33015,
+      "rows": 7724498,
+      "eligible_rows": 7692009,
+      "zero_normalization_rows": 32489,
+      "endpoint_canonicalized_rows": 0,
+      "invalid_nonpositive_nonfinite_component_or_range_rows": 0,
+      "all_partition_byte_and_frame_hashes_valid": true
+    },
+    "no_return": {
+      "median_coverage": 0.9981884043107445,
+      "p05_coverage": 0.9928739107791087,
+      "p05_eligible_names": 138.0,
+      "non_overlapping_three_session_cohorts": 540,
+      "comparison_count": 60,
+      "comparison_pass_count": 60,
+      "maximum_absolute_median_daily_rank_correlation": 0.30893779003802185,
+      "nearest_comparison_factor": "intraday_return_variance_entropy_238m",
+      "nearest_median_daily_rank_correlation": -0.30893779003802185,
+      "campaign038_median_daily_rank_correlation": -0.015114988042791344,
+      "admitted_to_development": true,
+      "historical_daily_price_fields_read": [],
+      "historical_forward_return_fields_read": false
+    },
+    "development": {
+      "preregistration_created": true,
+      "trial_count": 1,
+      "survivor_count": 0,
+      "positive_mean_rank_ic_fold_count": 1,
+      "positive_normalized_return_fold_count": 0,
+      "positive_pilot_return_fold_count": 0,
+      "median_validation_mean_rank_ic": -0.007920239443638337,
+      "median_validation_spread": -0.0026274940527572827,
+      "median_validation_pilot_return": -0.018172151397180758,
+      "worst_validation_normalized_drawdown": -0.44021940532538917,
+      "aggregate_mean_rank_ic": -0.002439789768923071,
+      "aggregate_normalized_return": -0.1266593841715251,
+      "aggregate_20bp_return": -0.16734396091273318,
+      "operationally_admissible": true,
+      "operational_rejection_reasons": [],
+      "validation_quality_gate_passed": false
+    },
+    "stress_2024_2025": {
+      "status": "not_opened_zero_development_survivors",
+      "opened": false,
+      "return_fields_read": false
+    },
+    "terminal": true,
+    "terminal_reason": "zero_development_survivors_after_ic_spread_all_normalized_and_pilot_return_fold_consistency_plus_drawdown_and_aggregate_20bp_quality_failures",
+    "rescue_inversion_rewindow_rescale_filter_threshold_rerun_or_combination_allowed": false,
+    "research_record": {
+      "path": "docs/a_share_three_day_walkforward_campaign_039_research_record.json",
+      "sha256": "d45fcbd75e918e72d3b84ae41c40578ac993cc3c334feeb566c1914f8aa2db8d"
+    },
+    "verification": {
+      "path": "docs/a_share_three_day_walkforward_campaign_039_verification_20260731.json",
+      "sha256": "c0b62d6b8124fd23d2ff315ea0f83e5bf4cc8d5490a4f742d6d63a0e40f335b7"
+    }
+  },
+  "historical_research_counts": {
+    "completed_development_trial_count": 259,
+    "current_historical_aggregation_candidate_count": 0,
+    "current_historical_aggregation_allowed": false,
+    "active_historical_campaign_count": 0,
+    "next_campaign_id_if_independent_concept_is_frozen": 40
+  },
+  "candidate49_current_state": {
+    "local_check_time": "2026-07-31T11:45:16+08:00",
+    "same_date_16_30_boundary_reached": false,
+    "provider_plan_or_run_attempted": false,
+    "last_provider_attempt_session": "2026-07-30",
+    "last_provider_attempt_status": "failed_at_stock_basic_no_same_day_retry",
+    "last_provider_failure_record": {
+      "path": "docs/a_share_candidate49_20260730_daily_source_failure_record.json",
+      "sha256": "7c3e85ff0c0110eb5cffb04189db7969e7f946b2f76cf25c2aeb66f91e1cdf79"
+    },
+    "active_daily_root": "/Users/niyufei/Coding/qlib/data",
+    "active_daily_root_mutated_by_campaign039": false,
+    "candidate49_signal_or_execution_stage_reached_by_campaign039": false
+  },
+  "credential_presence": {
+    "repository_dotenv_exists": true,
+    "repository_dotenv_mode": "0600",
+    "TUSHARE_TOKEN_nonempty": true,
+    "workflow_reads_repository_dotenv_token": true,
+    "secret_value_read_into_record": false,
+    "secret_value_printed_hashed_or_persisted": false,
+    "credential_readiness_does_not_authorize_provider_requests": true
+  },
+  "prospective_boundary": {
+    "active_candidate_count": 1,
+    "active_candidate": "Candidate49 intraday_cumulative_vwap_crossing_rate_240m",
+    "candidate49_signal_ledger": {
+      "path": "data/experiments/short_horizon/candidate49_future_signal_ledger.json",
+      "sha256": "5193f00d7f36da003f53cec387900da4c3d002299f5dfcfc1a95eaa199ed3a79",
+      "entry_count": 0
+    },
+    "candidate49_execution_ledger": {
+      "path": "data/experiments/short_horizon/candidate49_future_execution_ledger.json",
+      "sha256": "d57a3e61eac969e42cafa418ccd8c0a5ee65dcf69da145bb2c096c2a02a2ea4f",
+      "entry_count": 0
+    },
+    "candidate49_future_session_workflow": {
+      "path": "scripts/a_share_tushare_candidate49_future_session_workflow.py",
+      "sha256": "0ee21715af9ee276cb4e50c4234ef15ad3d3b730b014712ae4ad19829908b69e"
+    },
+    "candidate49_semantic_ledger_validation": "passed_after_repository_module_path_was_supplied",
+    "candidate49_historical_return_signal_execution_or_milestone_backfill_performed": false,
+    "candidate50_activation_allowed": false
+  },
+  "documentation": {
+    "unified_research_report": {
+      "path": "data/experiments/short_horizon/three_day_research_report.md",
+      "sha256": "22b721fb55423b9beca0c0b2c268e159f365bb2c253468f366277f9731a7b063"
+    },
+    "data_pipeline": {
+      "path": "docs/a_share_data_pipeline.md",
+      "sha256": "8f8bfb3c3c2e5a3afe56d87b8e4044c9a68f828783592161a8c5adb52b65a1d2"
+    },
+    "manage_qlib_a_share_data_skill": {
+      "path": "/Users/niyufei/.codex/skills/manage-qlib-a-share-data/SKILL.md",
+      "sha256": "8df293bdd280eac5a2c26e7267ffacdce793c7fcf273989102c4e05ffd65c63c"
+    }
+  },
+  "verification_summary": {
+    "focused_tests_passed": 14,
+    "full_data_collector_tests_passed": 1575,
+    "full_data_collector_tests_failed": 0,
+    "full_data_collector_test_warnings": 13,
+    "campaign039_research_record_binding_count": 21,
+    "campaign039_post_result_transition_binding_count": 6,
+    "campaign039_verification_binding_count": 19,
+    "binding_failures": 0,
+    "development_idempotent_rerun_passed": true,
+    "candidate49_ledgers_unchanged": true,
+    "current_scoring_selection_sizing_or_orders_performed": false
+  },
+  "next_action": {
+    "historical": "Begin Campaign040 only from a genuinely independent mechanism with separate pre-value scouting, mechanism audit, full 61-factor comparison library, and finite search freeze; offline work may run at any time.",
+    "prospective": "Do not perform a provider plan or run before the same-date 16:30 Asia/Singapore boundary. Candidate49 remains the only prospective candidate.",
+    "forbidden": [
+      "relax gates, invert, rescue, rewindow, rescale, filter, retune, rerun, or combine Campaign039",
+      "open Campaign039 2024-2025 stress after zero development survivors",
+      "historically backfill Candidate49",
+      "activate Candidate50",
+      "generate current scores, selections, sizes, or orders"
+    ]
+  }
+}

@@ -1,0 +1,83 @@
+{
+  "version": 2,
+  "kind": "a_share_three_day_walkforward_campaign047_feature_implementation_freeze",
+  "status": "effective_snapshot_fingerprint_bound_ready_for_ordered_no_return_audit",
+  "recorded_at": "2026-08-01T01:43:00Z",
+  "purpose": "Bind the additive Campaign047 runner version containing only the immutable snapshot manifest and dataset fingerprints, while preserving the exact prepublication runner and its prior freeze.",
+  "source_chain": {
+    "authoritative_state": {
+      "path": "docs/a_share_three_day_iteration_status_20260801_campaign046_verified.json",
+      "sha256": "dd4d80021dc6c90d629e9fba0555a8d6fdece0d4d472bdb6e63e2b1486d9b4a7"
+    },
+    "historical_walkforward_policy": {
+      "path": "docs/a_share_three_day_historical_walkforward_research_policy_20260727.json",
+      "sha256": "38426d6161b9bfed323c58caba18feca668b8c9d53e294951a8ba90c01a798bb"
+    },
+    "no_return_preregistration": {
+      "path": "docs/a_share_three_day_walkforward_campaign_047_no_return_preregistration.json",
+      "sha256": "9de50590193575a47382fd16d092e486e84ca565a5f1e23c6b4f2e361403df53"
+    },
+    "prepublication_implementation_freeze": {
+      "path": "docs/a_share_three_day_walkforward_campaign_047_feature_implementation_freeze_20260801.json",
+      "sha256": "4c7b174428c8daa1ed72c7dc9c13adcdbc42c0d520a364d794112d950aff3a75"
+    },
+    "snapshot_publication_binding": {
+      "path": "docs/a_share_three_day_walkforward_campaign_047_feature_snapshot_publication_binding_20260801.json",
+      "sha256": "43ec44df9693d0c4288d6a86bba4366d19c39a3f050f6724695d20e842131e11"
+    },
+    "effective_feature_runner": {
+      "path": "scripts/a_share_three_day_walkforward_campaign047_features_v2.py",
+      "sha256": "18b5a403024aafca3db2ca7a33d1209cd7a4140f6ccaf91c84276fc9b6b58e98"
+    },
+    "unchanged_synthetic_tests": {
+      "path": "tests/data_collector_tests/test_a_share_three_day_walkforward_campaign047_features.py",
+      "sha256": "5412ae213f16caa364207923fc6d047064910d3e988327882d138e2f23900649"
+    },
+    "snapshot_manifest": {
+      "path": "/Volumes/DIsk/qlib-a-share-tushare-1m/derived/a_share/rich/tushare/minute_walkforward_campaign047_feature_library/tushare_stk_mins_1m_2019_2025_ea0cbb8f_walkforward_campaign047_feature_library_v1/snapshot_manifest.json",
+      "sha256": "5d692215083bd5db0ef44c49364c16a845112167f85d219b581a04fab57ac4d7",
+      "dataset_sha256": "bbbf064183ea1a989e4f66734550e600f9afd59ecdc8268e6bb267207903433b"
+    }
+  },
+  "post_publication_validation": {
+    "prepublication_binding_validator_passed": true,
+    "snapshot_publication_binding_validator_passed": true,
+    "aggregate_binding_count_passed": 11,
+    "synthetic_tests_passed": 7,
+    "synthetic_tests_failed": 0,
+    "verified_partitions": 33015,
+    "verified_rows": 7724498,
+    "eligible_rows": 7693664,
+    "all_partition_byte_and_frame_hashes_present": true,
+    "snapshot_manifest_semantics_valid": true,
+    "status_reports_bound_snapshot": true,
+    "comparison_values_read": false,
+    "historical_daily_price_fields_read": false,
+    "historical_forward_returns_read": false
+  },
+  "code_delta_from_prepublication_runner": {
+    "snapshot_manifest_sha256_constant_bound": "5d692215083bd5db0ef44c49364c16a845112167f85d219b581a04fab57ac4d7",
+    "snapshot_dataset_sha256_constant_bound": "bbbf064183ea1a989e4f66734550e600f9afd59ecdc8268e6bb267207903433b",
+    "formula_direction_source_projection_alignment_or_gate_changed": false,
+    "comparison_order_or_trial_catalog_changed": false,
+    "other_code_changed": false
+  },
+  "research_boundary": {
+    "comparison_factor_values_read": false,
+    "historical_daily_price_fields_read": [],
+    "historical_forward_return_fields_read": false,
+    "candidate49_historical_return_read": false,
+    "candidate49_ledgers_changed": false,
+    "candidate50_activation_created": false,
+    "provider_request_issued": false,
+    "training_or_model_fitting_performed": false,
+    "current_scoring_selection_sizing_or_orders_performed": false,
+    "investment_advice": false
+  },
+  "decision": {
+    "effective_implementation_frozen": true,
+    "ordered_no_return_audit_allowed": true,
+    "daily_price_or_return_read_allowed": false,
+    "next_action": "Revalidate all bindings, then execute coverage and capacity first; load all 70 comparisons only if every frozen coverage gate passes."
+  }
+}

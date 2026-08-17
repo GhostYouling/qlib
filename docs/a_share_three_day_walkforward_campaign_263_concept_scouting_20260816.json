@@ -1,0 +1,91 @@
+{
+  "schema_version": 1,
+  "kind": "a_share_three_day_walkforward_campaign263_concept_scouting",
+  "status": "one_independent_finite_candidate_selected_before_campaign263_source_or_comparison_values",
+  "recorded_at": "2026-08-16T11:16:00Z",
+  "timestamp_semantics": "monotonic logical append time before any Campaign263 source row, candidate value, comparator value, daily price or return",
+  "authoritative_inputs": {
+    "campaign262_state": {
+      "path": "docs/a_share_three_day_iteration_status_20260816_campaign262_terminal.json",
+      "sha256": "e98a1c3bb24d40bcf50e0dc8a040700777c2b328fd9ec3e33bda392bd5e0f30f"
+    },
+    "numeric_policy_v407": {
+      "path": "docs/a_share_three_day_walkforward_future_numeric_comparison_eligibility_policy_v407_20260816.json",
+      "sha256": "62dd56694334338481c5341c00464f76ce166859db3e48d1c73fc2f3c8e431fa"
+    }
+  },
+  "finite_prevalue_concept_catalog": [
+    {
+      "catalog_id": "c263_01",
+      "name": "intraday_symmetric_price_impact_level_238p",
+      "prevalue_decision": "rejected_as_terminal_price_impact_and_return_amount_coupling_refresh",
+      "reason": "A return-per-signed-amount level reuses the exposed directional price-impact, up-move amount, amount-volatility and return-amount dependence families."
+    },
+    {
+      "catalog_id": "c263_02",
+      "name": "intraday_running_drawdown_area_resilience_240m",
+      "prevalue_decision": "rejected_as_frozen_drawdown_frontier_ulcer_refresh",
+      "reason": "Campaign111 already rejected a running-drawdown ulcer route as a rewrite of terminal drawdown and frontier mechanisms."
+    },
+    {
+      "catalog_id": "c263_03",
+      "name": "full_numeric_library_pairwise_interaction_refresh_142f",
+      "prevalue_decision": "rejected_as_terminal_complete_library_model_refresh",
+      "reason": "Campaign102/103/122/134/161 already closed refreshed subset, pairwise interaction, redundancy weighting and latent-model searches after exposure."
+    },
+    {
+      "catalog_id": "c263_04",
+      "name": "intraday_amount_profile_spectral_entropy_60f",
+      "prevalue_decision": "selected_for_exact_mechanism_overlap_audit_and_single_formula_freeze",
+      "reason": "It is a scale-invariant full-profile frequency-complexity functional. Amount-mass entropy discards clock order, amount weak-order entropy keeps only local ordinal triples, serial persistence uses only one adjacent-lag relation, return spectral entropy uses a different source, and return-amount cross spectral phase measures bivariate lead phase rather than univariate amount power dispersion."
+    },
+    {
+      "catalog_id": "c263_05",
+      "name": "intraday_amount_profile_spectral_concentration_60f",
+      "prevalue_decision": "rejected_as_direction_and_operator_sibling",
+      "reason": "Using one minus entropy or a Herfindahl concentration would create a post-selection operator/direction pair for the same spectrum."
+    },
+    {
+      "catalog_id": "c263_06",
+      "name": "intraday_amount_profile_spectral_entropy_resolution_2h",
+      "prevalue_decision": "rejected_as_half_session_aggregation_sweep",
+      "reason": "Subtracting, ratioing, minimizing or maximizing morning and afternoon entropy adds an aggregation and direction search."
+    },
+    {
+      "catalog_id": "c263_07",
+      "name": "intraday_amount_profile_selected_band_power_60f",
+      "prevalue_decision": "rejected_as_frequency_band_and_threshold_search",
+      "reason": "Low/high-frequency cutoffs or selected harmonics create avoidable band and threshold multiplicity; the selected candidate uses every nonzero real-DFT bin."
+    },
+    {
+      "catalog_id": "c263_08",
+      "name": "amount_spectral_terminal_factor_combination_or_model",
+      "prevalue_decision": "rejected_before_component_or_return_values_as_post_exposure_recombination",
+      "reason": "Campaign263 is one raw amount-profile definition with no old factor value, filter, fit, model or combination."
+    }
+  ],
+  "selected_candidate": {
+    "name": "intraday_amount_profile_spectral_entropy_60f",
+    "direction": "higher",
+    "source_projection": ["datetime", "symbol", "provider", "amount"],
+    "economic_hypothesis": "A stock whose completed-session trading-amount profile contains replenishment across many clock frequencies rather than one dominant slow schedule or isolated block may reflect broader liquidity participation that persists over the next three accepted sessions.",
+    "candidate_count": 1,
+    "direction_count": 1,
+    "window_count": 1,
+    "frequency_band_count": 1,
+    "threshold_filter_subset_fit_model_or_combination_count": 0
+  },
+  "research_boundary": {
+    "repository_metadata_and_terminal_history_read": true,
+    "campaign263_source_rows_read": false,
+    "campaign263_candidate_or_comparator_values_read": false,
+    "historical_daily_price_or_forward_return_values_read": false,
+    "stress_2024_2025_opened": false,
+    "provider_or_web_request_issued": false,
+    "provider_credential_presence_value_or_digest_read": false,
+    "candidate49_plan_or_run_executed": false,
+    "candidate49_ledgers_changed": false,
+    "current_scoring_selection_sizing_positions_or_orders_performed": false,
+    "investment_advice": false
+  }
+}

@@ -1,0 +1,37 @@
+{
+  "schema_version": 1,
+  "kind": "a_share_three_day_walkforward_campaign077_current_test_suite_receipt",
+  "status": "current_nodes_passed_historical_lifecycle_nodes_deselected",
+  "recorded_at": "2026-08-06T13:42:00+08:00",
+  "campaign_id": "a_share_three_day_walkforward_campaign_077",
+  "command_scope": [
+    "tests/data_collector_tests/test_a_share_three_day_walkforward_campaign077_features.py",
+    "tests/data_collector_tests/test_a_share_three_day_walkforward_campaign077_no_return_audit.py",
+    "tests/data_collector_tests/test_a_share_three_day_walkforward_campaign077_no_return_audit_v2.py",
+    "tests/data_collector_tests/test_a_share_three_day_walkforward_campaign077_development.py",
+    "tests/data_collector_tests/test_a_share_three_day_walkforward_campaign077_terminal.py"
+  ],
+  "deselected_historical_lifecycle_nodes": [
+    "data_collector_tests/test_a_share_three_day_walkforward_campaign077_no_return_audit.py::test_status_is_truthful_before_the_sole_audit",
+    "data_collector_tests/test_a_share_three_day_walkforward_campaign077_no_return_audit_v2.py::test_v2_pre_retry_status_is_zero_audits_and_no_returns",
+    "data_collector_tests/test_a_share_three_day_walkforward_campaign077_development.py::test_predevelopment_status_has_zero_ledger_and_closed_stress"
+  ],
+  "result": {
+    "exit_code": 0,
+    "passed": 21,
+    "failed": 0,
+    "errors": 0,
+    "deselected": 3,
+    "elapsed_seconds": 2.46
+  },
+  "terminal_test_file": {
+    "path": "tests/data_collector_tests/test_a_share_three_day_walkforward_campaign077_terminal.py",
+    "sha256": "d78c60789def9e203d4375d72ea337c8a9130a9ca266ee4047814a65c05fbd27"
+  },
+  "historical_lifecycle_nodes_preserved_unmodified": true,
+  "research_values_recomputed_by_test_suite": false,
+  "underlying_daily_price_or_forward_return_fields_read_by_test_suite": false,
+  "existing_frozen_artifacts_read_by_test_suite": true,
+  "provider_request_issued": false,
+  "candidate49_ledgers_changed": false
+}

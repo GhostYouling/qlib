@@ -1,0 +1,29 @@
+{
+  "schema_version": 1,
+  "kind": "a_share_three_day_walkforward_campaign133_infrastructure_failure",
+  "attempt_id": "campaign133_infrastructure_003",
+  "status": "recorded_post_v2_freeze_prevalue_direct_invocation_import_failure",
+  "recorded_at": "2026-08-14T10:12:00+08:00",
+  "stage": "frozen_v2_runner_plan_startup",
+  "error_type": "ModuleNotFoundError",
+  "error_summary": "Direct file execution did not place the repository root on sys.path, so importing the scripts package failed before plan logic began.",
+  "frozen_v2_implementation": {
+    "path": "docs/a_share_three_day_walkforward_campaign_133_development_implementation_freeze_v2_20260814.json",
+    "sha256": "90c1daa1b24a53713d550005855e4e68d90939bb448b0d6838c5b30e4c3c1dd5"
+  },
+  "failed_command_boundary": "/Volumes/DIsk/Coding/anaconda3/bin/python3.12 scripts/a_share_three_day_walkforward_campaign133.py plan",
+  "failed_exit_code": 1,
+  "repair_boundary": "Preserve the v2 freeze, add only a standard direct-execution repository-root bootstrap before importing scripts, include this failure in the append-only ledger, bind a v3 implementation, and rerun plan without bypassing the failed exit code. Do not change any scientific formula, trial, fold, gate or execution assumption.",
+  "research_boundary": {
+    "campaign133_plan_logic_entered": false,
+    "campaign133_component_or_candidate_values_read": false,
+    "campaign133_model_scores_computed": false,
+    "campaign133_model_fit_performed": false,
+    "historical_daily_price_or_forward_return_values_read": false,
+    "stress_2024_2025_opened": false,
+    "provider_credential_loaded": false,
+    "provider_request_issued": false,
+    "candidate49_ledgers_changed": false,
+    "current_scoring_selection_sizing_positions_or_orders_performed": false
+  }
+}

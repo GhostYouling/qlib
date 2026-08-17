@@ -1,0 +1,23 @@
+{
+  "schema_version": 1,
+  "kind": "a_share_three_day_walkforward_campaign250_infrastructure_failure",
+  "recorded_at": "2026-08-16T11:25:00+08:00",
+  "timestamp_semantics": "monotonic_logical_append_time_not_host_wall_clock_measurement",
+  "status": "failed_authoritative_hash_batch_assumed_wrong_campaign249_frontier_path",
+  "attempt_id": "campaign250_infrastructure_002",
+  "phase": "authoritative_state_verification",
+  "command_semantics": "A read-only fingerprint batch guessed docs/a_share_three_day_walkforward_campaign_249_public_vehicle_wash_equipment_service_lifecycle_source_frontier_20260816.json instead of the existing commercial_vehicle_wash path, emitted partial state and policy output, and exited 1 with FileNotFoundError.",
+  "disposition": "Discard every partial line from the failed batch as controlling evidence. Enumerate Campaign249 paths read-only, then verify each exact authoritative artifact, unified report and Candidate49 ledger independently with exit code zero.",
+  "research_boundary": {
+    "repository_file_written_by_failed_command": false,
+    "partial_hash_or_json_output_consumed_as_controlling_evidence": false,
+    "candidate_or_comparator_value_read": false,
+    "daily_price_or_forward_return_read": false,
+    "provider_or_web_request_issued": false,
+    "provider_credential_presence_value_or_digest_read": false,
+    "candidate49_plan_or_run_executed": false,
+    "candidate49_ledgers_changed": false,
+    "stress_2024_2025_opened": false,
+    "failed_or_truncated_output_used_as_scientific_or_validation_evidence": false
+  }
+}

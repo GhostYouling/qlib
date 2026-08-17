@@ -1,0 +1,70 @@
+{
+  "version": 1,
+  "kind": "a_share_three_day_iteration_status",
+  "status": "campaign074_no_return_admitted_development_preregistration_pending",
+  "recorded_at": "2026-08-06T08:17:00+08:00",
+  "authoritative_predecessor": {
+    "path": "docs/a_share_three_day_iteration_status_20260806_campaign073_verified.json",
+    "sha256": "e6348f26e3880055a8acb8d714624ae43da50998569fb41a5cb9af7eab51af77"
+  },
+  "campaign074": {
+    "factor": "intraday_terminal_bar_amount_share_240m",
+    "direction": "higher",
+    "snapshot_manifest_sha256": "5a993ce8b71c541a0b2d2402627d5f2b7f562cf1266bebcafe0606945086a3cd",
+    "snapshot_dataset_sha256": "d4fbb9eb8135674df16a50c96b5817f63e6461e99ee48df96537cd8ed930a4b5",
+    "snapshot_rows": 7724498,
+    "snapshot_eligible_rows": 7724498,
+    "no_return_audit": {
+      "path": "data/experiments/short_horizon/historical_walkforward/campaign_074/no_return/20260806T001358Z_campaign074_no_return_audit.json",
+      "sha256": "6256ca2db8ff21dcfb3e101e019957c2d1241fd893f290bd449ed462ace17009"
+    },
+    "coverage_gate_passed": true,
+    "numeric_comparisons_completed": 104,
+    "numeric_comparisons_passed": 104,
+    "maximum_absolute_median_daily_rank_correlation": 0.42555644028639117,
+    "admissible_factor_count": 1,
+    "development_trial_catalog": [
+      {
+        "trial_id": "wf074_intraday_terminal_bar_amount_share_240m_single_higher",
+        "feature_set": ["intraday_terminal_bar_amount_share_240m"],
+        "weights": [1.0],
+        "direction": "higher"
+      }
+    ],
+    "development_expected_trial_count": 1,
+    "historical_daily_price_fields_read": [],
+    "historical_forward_returns_read": false,
+    "stress_2024_2025_opened": false
+  },
+  "research_attempt_ledger": {
+    "path": "data/experiments/short_horizon/historical_walkforward/campaign_074/research_attempt_ledger_v1.json",
+    "sha256": "c39d6710d31655375983412cbd004a427905e4e95d3afbc4cf8409d5c4165656",
+    "campaign_attempts": 5,
+    "campaign_infrastructure_failures": 4,
+    "campaign_complete_factor_attempts": 1,
+    "campaign_return_reading_trials": 0,
+    "cumulative_historical_attempts": 447,
+    "cumulative_return_reading_development_trials": 275
+  },
+  "candidate49_future_only_layer": {
+    "remains_only_active_prospective_candidate": true,
+    "signal_ledger_sha256": "5193f00d7f36da003f53cec387900da4c3d002299f5dfcfc1a95eaa199ed3a79",
+    "signal_ledger_entries": 0,
+    "execution_ledger_sha256": "d57a3e61eac969e42cafa418ccd8c0a5ee65dcf69da145bb2c096c2a02a2ea4f",
+    "execution_ledger_entries": 0,
+    "historical_backfill_performed": false,
+    "second_prospective_candidate_created": false
+  },
+  "next_authorized_action": {
+    "freeze_exact_one_trial_2019_2023_development_preregistration": true,
+    "run_development_before_preregistration": false,
+    "open_2024_2025_before_nonzero_frozen_survivor": false,
+    "wait_for_16_30_or_new_daily_bar_required": false
+  },
+  "research_output_boundary": {
+    "historical_results_may_generate_current_scores_selection_sizing_orders_or_advice": false,
+    "candidate49_historical_backfill_allowed": false,
+    "current_listing_snapshot_survivorship_limitation": true,
+    "historically_exposed_development_not_pristine_holdout": true
+  }
+}

@@ -1,0 +1,71 @@
+{
+  "version": 1,
+  "kind": "a_share_three_day_walkforward_campaign073_feature_implementation_freeze",
+  "status": "frozen_before_campaign073_minute_source_values",
+  "recorded_at": "2026-08-06T07:02:00+08:00",
+  "protocol": {
+    "path": "docs/a_share_three_day_walkforward_campaign_073_no_return_preregistration.json",
+    "sha256": "473373e71a97b9daf25f97062682ec4ad1f8b05a778efad161c887aa586d5280"
+  },
+  "numeric_comparison_policy": {
+    "path": "docs/a_share_three_day_walkforward_future_numeric_comparison_eligibility_policy_v8_20260806.json",
+    "sha256": "c936e9df4bd8ac8cdb23ee27d16796a612341c84577ee60f727e8a3cf72cb1db",
+    "complete_definition_count": 104,
+    "numeric_comparator_count": 103
+  },
+  "concept_scouting": {
+    "path": "docs/a_share_three_day_walkforward_campaign_073_concept_scouting.json",
+    "sha256": "73ce8192b6c22ddcc06a0d9d85c23af9784cde30f09ffb3f6375d4cfba540bf0"
+  },
+  "mechanism_overlap_audit": {
+    "path": "docs/a_share_three_day_walkforward_campaign_073_mechanism_overlap_audit.json",
+    "sha256": "3f50568eacf9610583c91e531ea2d066b790ac57742d750e92d44308b9988885"
+  },
+  "feature_runner": {
+    "path": "scripts/a_share_three_day_walkforward_campaign073_features.py",
+    "sha256": "a487f940331c1de255ea2fd0ce0ab94195a5e88444d416938db96e801d83c989"
+  },
+  "synthetic_test": {
+    "path": "tests/data_collector_tests/test_a_share_three_day_walkforward_campaign073_features.py",
+    "sha256": "847abebd5c9682880495047a6228cfdf301e43bb560849802b7413d3edb5080f",
+    "command": "PYTHONPATH=/Volumes/DIsk/Disk-Coding/qlib /Volumes/DIsk/Coding/anaconda3/bin/python -m pytest -q tests/data_collector_tests/test_a_share_three_day_walkforward_campaign073_features.py",
+    "passed": 8,
+    "failed": 0,
+    "source_values_read": false,
+    "comparison_values_read": false,
+    "daily_price_or_forward_return_values_read": false
+  },
+  "frozen_implementation_semantics": {
+    "source_projection": [
+      "datetime",
+      "symbol",
+      "provider",
+      "close"
+    ],
+    "source_grid": "09:30 plus the exact 240 continuous-session bars; the factor selects 09:31-11:30 and 13:01-15:00",
+    "all_240_selected_closes_must_be_positive_finite": true,
+    "terminal_anchor": "raw unadjusted 15:00 nominal CNY close",
+    "cross_section_rank": "same-day pandas average-tie percentile rank",
+    "factor_formula": "one minus terminal-close percentile rank",
+    "factor_range": "[0,1)",
+    "alternate_anchor_adjustment_rank_tie_direction_threshold_filter_subset_or_model_allowed": false
+  },
+  "publication_contract": {
+    "output_root": "/Volumes/DIsk/qlib-a-share-tushare-1m/derived/a_share/rich/tushare/minute_walkforward_campaign073_feature_library/tushare_stk_mins_1m_2019_2025_ea0cbb8f_walkforward_campaign073_feature_library_v1",
+    "expected_partitions": 33015,
+    "expected_stock_day_rows": 7724498,
+    "atomic_partition_and_manifest_writes": true,
+    "manifest_and_partition_byte_and_frame_hashes_required": true,
+    "snapshot_values_may_be_opened_only_after_this_freeze": true
+  },
+  "research_boundary": {
+    "candidate_source_rows_read_before_freeze": false,
+    "candidate_values_read_before_freeze": false,
+    "comparison_values_read_before_freeze": false,
+    "historical_daily_price_fields_read": [],
+    "historical_forward_returns_read": false,
+    "market_data_provider_request_issued": false,
+    "candidate49_ledgers_changed": false,
+    "current_scoring_selection_sizing_or_orders_performed": false
+  }
+}

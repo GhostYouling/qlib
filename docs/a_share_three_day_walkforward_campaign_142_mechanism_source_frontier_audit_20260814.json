@@ -1,0 +1,127 @@
+{
+  "schema_version": 1,
+  "kind": "a_share_three_day_walkforward_campaign142_mechanism_source_frontier_audit",
+  "status": "terminal_prevalue_zero_candidates_after_complete_mechanism_source_and_clock_review",
+  "recorded_at": "2026-08-14T14:45:20+0800",
+  "purpose": "Apply the mandatory semantic-independence, accepted-full-source and public-availability-clock gates to every Campaign142 proposal before any protected value stage.",
+  "authoritative_inputs": {
+    "concept_scouting": {
+      "path": "docs/a_share_three_day_walkforward_campaign_142_concept_scouting_20260814.json",
+      "sha256": "11c2cb226150ccf5292e1c6ed45f7fd7898335b7a316157ccb3d7737c8153a70"
+    },
+    "numeric_policy_v181": {
+      "path": "docs/a_share_three_day_walkforward_future_numeric_comparison_eligibility_policy_v181_20260814.json",
+      "sha256": "fb972041f619d170e2df5c0c598d09f45b5e61811c59d5707eeabb8c04a76db9"
+    },
+    "campaign141_immutable_terminal_report": {
+      "path": "docs/a_share_three_day_walkforward_campaign_141_terminal_report.md",
+      "sha256": "f5642c040b2f59d25b195c846a7bacbb9e990f705e73f8555dd179ba004cea7a"
+    },
+    "campaign127_index_clock_rejection": {
+      "path": "docs/a_share_three_day_walkforward_campaign_127_concept_scouting_20260814.json",
+      "sha256": "fc3705c04a9cd64b9c66fa97c95b2e23e9d96652886c3ace55affb14fd7f0eb1"
+    },
+    "insider_terminal_protocol": {
+      "path": "docs/a_share_insider_open_market_diagnostic_preregistration.json",
+      "sha256": "f65eda0bbe539404399ef5b27db1bbbfb47910e81d4f3c19d3aae43672f183ff"
+    },
+    "campaign111_minute_frontier_review": {
+      "path": "docs/a_share_three_day_walkforward_campaign_111_concept_scouting_20260809.json",
+      "sha256": "2f366400dfbf408e92528a434c02f0156731a6503adeb943c0764825d514d7dd"
+    },
+    "recorded_inspection_failure": {
+      "path": "docs/a_share_three_day_walkforward_campaign_142_safe_credential_inspection_shell_parse_failure_20260814.json",
+      "sha256": "eecaa23c0c3ab8746bbd0d8864737e2bfd7295e7b3a16d748d2630fe666b7dc0"
+    }
+  },
+  "frozen_library_review": {
+    "complete_logical_definition_count": 153,
+    "complete_logical_definition_order_sha256": "bf66faef96d7058c7028da52757c65d8e0bf7978cf72d3967cd236e4da30b875",
+    "eligible_numeric_comparator_count_reserved_but_not_loaded": 141,
+    "eligible_numeric_comparator_order_sha256": "ec1aebcb939ad516c58037a36a4aaadd4ad8b2abbd3c884705895c58da85a2ee",
+    "all_terminal_formula_direction_support_failure_and_result_boundaries_reviewed": true,
+    "old_terminal_record_rewritten_or_reclassified": false,
+    "candidate49_semantics_reviewed_without_historical_signal_execution_or_return_backfill": true
+  },
+  "proposal_gate_results": [
+    {
+      "catalog_id": "c142_01",
+      "semantic_independence_passed": false,
+      "accepted_full_historical_source_passed": true,
+      "public_availability_clock_passed": true,
+      "reason": "Post-exposure threshold and transition operator on terminal net-profit state."
+    },
+    {
+      "catalog_id": "c142_02",
+      "semantic_independence_passed": true,
+      "accepted_full_historical_source_passed": false,
+      "public_availability_clock_passed": true,
+      "reason": "Only an acceptance sample exists; full historical source attempts are terminal failures."
+    },
+    {
+      "catalog_id": "c142_03",
+      "semantic_independence_passed": true,
+      "accepted_full_historical_source_passed": true,
+      "public_availability_clock_passed": false,
+      "reason": "Membership effective dates do not prove historical announcement availability."
+    },
+    {
+      "catalog_id": "c142_04",
+      "semantic_independence_passed": true,
+      "accepted_full_historical_source_passed": true,
+      "public_availability_clock_passed": false,
+      "reason": "Actual disclosure timestamps are absent; the stored availability clock is synthetic and cannot measure reporting delay."
+    },
+    {
+      "catalog_id": "c142_05",
+      "semantic_independence_passed": false,
+      "accepted_full_historical_source_passed": true,
+      "public_availability_clock_passed": true,
+      "reason": "Post-result event-family selection and reuse of a terminal crowding operator cannot rescue sparse terminal event branches."
+    },
+    {
+      "catalog_id": "c142_06",
+      "semantic_independence_passed": false,
+      "accepted_full_historical_source_passed": true,
+      "public_availability_clock_passed": true,
+      "reason": "Alternate range proxy/statistic for already terminal volatility-clustering and range-serial mechanisms."
+    }
+  ],
+  "mandatory_prevalue_gate": {
+    "finite_catalog_complete": true,
+    "genuinely_new_information_mechanism_required": true,
+    "accepted_full_historical_point_in_time_source_required": true,
+    "identifiable_public_availability_clock_required": true,
+    "post_exposure_threshold_transition_retiming_proxy_operator_refresh_family_selection_combination_or_rescue_forbidden": true,
+    "proposals_passing_all_gates": 0,
+    "selected_candidate_count": 0,
+    "candidate_support_predicate_frozen": false,
+    "formula_direction_parameter_filter_subset_model_or_development_catalog_frozen": false
+  },
+  "terminal_decision": {
+    "campaign142_complete_factor_definition_created": false,
+    "campaign142_numeric_comparator_eligibility": false,
+    "campaign142_feature_snapshot_created": false,
+    "campaign142_source_acceptance_coverage_uniqueness_or_return_audit_run": false,
+    "campaign142_development_or_stress_trial_run": false,
+    "campaign142_may_repair_relabel_reparameterize_retime_combine_or_run_any_rejected_concept": false,
+    "campaign142_may_request_new_provider_history_without_explicit_authorization": false,
+    "historical_predictive_value_established": false,
+    "next_policy_must_preserve_exact_153_definition_and_141_comparator_orders": true
+  },
+  "research_boundary": {
+    "source_schema_and_manifest_metadata_read": true,
+    "source_rows_or_column_values_read": false,
+    "candidate_or_comparator_values_read": false,
+    "historical_daily_price_or_forward_return_values_read": false,
+    "stress_2024_2025_opened": false,
+    "provider_request_issued": false,
+    "provider_credential_value_or_digest_read": false,
+    "candidate49_historical_backfill_performed": false,
+    "candidate49_ledgers_changed": false,
+    "second_prospective_candidate_created": false,
+    "current_scoring_selection_sizing_positions_or_orders_performed": false,
+    "investment_advice": false
+  },
+  "next_action": "Append all six rejected concepts and the read-only shell parse failure to the Campaign142 attempt chain, preserve 153/141, terminalize before values, and keep the active goal available for Campaign143 offline scouting."
+}

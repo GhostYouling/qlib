@@ -1,0 +1,69 @@
+{
+  "schema_version": 2,
+  "kind": "a_share_three_day_walkforward_campaign113_metadata_terminal_result",
+  "status": "terminal_official_metadata_schema_gate_failed_verification_accounting_corrected",
+  "recorded_at": "2026-08-09T01:58:03+08:00",
+  "supersedes_without_rewriting": {
+    "path": "docs/a_share_three_day_walkforward_campaign_113_metadata_terminal_result_20260809.json",
+    "sha256": "00455b471bbdc355971d464a923d41f1b1d2b9d83ae1801855a006834e3afea3",
+    "preserved": true,
+    "scientific_result_changed": false,
+    "reason": "One terminal verification command used an over-broad Black scope. It stopped before tests and changed no frozen file or research value; the failure is appended to the attempt chain."
+  },
+  "metadata_schema_failure": {
+    "path": "docs/a_share_official_exchange_enforcement_metadata_schema_failure_20260809.json",
+    "sha256": "ea44bd881db6f86fa311fe3c92f31aa465a1bdc845545a92bd2981ed917bbb65"
+  },
+  "latest_attempt_ledger": {
+    "path": "data/experiments/short_horizon/historical_walkforward/campaign_113/research_attempt_ledger_v5.json",
+    "sha256": "606e517db8987206a059293878ba94298202972058491a8e6fce1e2e1532f44a",
+    "extends_v4_sha256": "7f41cd52407e1d5322d92b0c7c0c8f78a810feb6e309a6230d5086387fd63f2f",
+    "extension_entry_count": 1,
+    "total_attempt_count": 16,
+    "current_chain_tip_sha256": "591451477d61870646bb5b710c0881cf9ef4dd0955957721229ddcf00e1b6ede"
+  },
+  "scientific_result": {
+    "factor_name": "official_exchange_enforcement_recovery_session_age_60sessions",
+    "score_direction": "higher",
+    "complete_factor_definition_count": 1,
+    "definition_retained_for_future_semantic_duplicate_control": true,
+    "metadata_schema_gate_passed": false,
+    "source_event_rows_accessed_persisted_or_counted": false,
+    "numeric_snapshot_created": false,
+    "numeric_comparator_appended": false,
+    "development_trial_count": 0,
+    "development_survivor_count": 0,
+    "stress_trial_count": 0,
+    "historical_predictive_value_established": false,
+    "terminal": true
+  },
+  "unchanged_library": {
+    "complete_definition_count": 141,
+    "complete_definition_order_sha256": "ccab6e3d9d81b0a02d4ff178fdd442b26a1e68e3655e1c6f5b2fcb28cd4a4559",
+    "numeric_comparator_count": 134,
+    "numeric_comparator_order_sha256": "31d788db467f558a0ac538315343090f1b3ad4cb27a26136a49ebaa88b2fdbf2"
+  },
+  "accounting": {
+    "campaign113_attempt_count": 16,
+    "campaign113_infrastructure_failure_count": 13,
+    "campaign113_prevalue_scientific_attempt_count": 3,
+    "campaign113_complete_factor_attempt_count": 1,
+    "campaign113_return_reading_development_trial_count": 0,
+    "cumulative_historical_research_attempt_count": 843,
+    "cumulative_return_reading_development_trial_count": 302
+  },
+  "research_boundary": {
+    "metadata_only_exchange_page_or_schema_requests_issued": true,
+    "source_event_rows_accessed_persisted_or_counted": false,
+    "source_event_row_count": null,
+    "candidate_or_comparison_values_read": false,
+    "historical_daily_price_or_forward_return_values_read": false,
+    "stress_2024_2025_opened": false,
+    "candidate49_historical_backfill_performed": false,
+    "candidate49_ledgers_changed": false,
+    "second_prospective_candidate_created": false,
+    "current_scoring_selection_sizing_or_orders_performed": false,
+    "investment_advice": false
+  },
+  "next_action": "Keep Campaign113 terminal; do not repair its schema or request source rows."
+}

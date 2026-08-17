@@ -1,0 +1,103 @@
+{
+  "schema_version": 1,
+  "kind": "a_share_three_day_walkforward_campaign146_ordered_numeric_uniqueness_protocol",
+  "status": "all_141_ordered_comparators_frozen_after_coverage_pass_before_any_comparator_value",
+  "recorded_at": "2026-08-14T21:46:00+08:00",
+  "purpose": "Freeze the exact all-141 numeric comparison sources, order, pairwise rank-correlation gate, execution and terminal decision before Campaign146 opens any comparator value.",
+  "authoritative_inputs": {
+    "numeric_policy_v194": {
+      "path": "docs/a_share_three_day_walkforward_future_numeric_comparison_eligibility_policy_v194_20260814.json",
+      "sha256": "b9835d1d3ab888f50060707e22fdb5784bd8a433b1c16aba6473162b96be288b"
+    },
+    "coverage_activation_v2": {
+      "path": "docs/a_share_three_day_walkforward_campaign_146_coverage_activation_binding_v2_20260814.json",
+      "sha256": "c27366aaf97b33f034d872302626215f6c21df999b1a45f8ddeb41cdc0ba21f7"
+    },
+    "coverage_result": {
+      "path": "data/experiments/short_horizon/historical_walkforward/campaign_146/coverage/campaign146_coverage_audit.json",
+      "sha256": "74c74d7cfb9e13d145251f8d266a5f44a62b78c6a45f8581132be7aeed68b83e",
+      "coverage_passed": true,
+      "quality_listing_eligible_rows": 1331759,
+      "candidate_eligible_rows": 1320628
+    },
+    "candidate_snapshot": {
+      "path": "/Volumes/DIsk/qlib-a-share-tushare-1m/derived/a_share/rich/tushare/minute_walkforward_campaign146_feature_library/tushare_stk_mins_1m_2019_2025_ea0cbb8f_walkforward_campaign146_feature_library_v1/snapshot_manifest.json",
+      "sha256": "951872dbdcfa2b00e9603d3be44b059c7d24204fba5757551afbcd46ee8a3f74",
+      "dataset_sha256": "7278ae76407215eab75e9ff0119d8c6a073e4d7ac9df5b7d349bc09e6cf889c4"
+    },
+    "numeric140_design_manifest": {
+      "path": "/Volumes/DIsk/qlib-a-share-tushare-1m/derived/a_share/rich/tushare/minute_walkforward_campaign132_design_matrix/tushare_stk_mins_1m_2019_2025_ea0cbb8f_walkforward_campaign132_numeric140_design_v1/snapshot_manifest.json",
+      "sha256": "043c17fea89f3b0956d643a7c6e3f4d73a11403b967213d2d57539a6a8316a49",
+      "dataset_sha256": "12ce3a64b5e13581392ded9890e2064db4ccca3945da3eb8ad7752c95366a9fc"
+    },
+    "comparator_141_campaign136_snapshot": {
+      "path": "data/experiments/short_horizon/historical_walkforward/campaign_136/source_snapshot_v1/snapshot_manifest.json",
+      "sha256": "9a5c9ff824de22af6595d312b76230a3e4cf283c6e1d42e882aae96d11367b93",
+      "dataset_sha256": "c84b1f85eec3731736a4da411691c144a70a81e38b5013e5aeea5370f3c417ec"
+    }
+  },
+  "comparison_order": {
+    "count": 141,
+    "order_sha256": "ec1aebcb939ad516c58037a36a4aaadd4ad8b2abbd3c884705895c58da85a2ee",
+    "construction": "The exact 140 definitions and direction-normalized rank columns from Campaign132 numeric140 design, followed once by daily_realized_price_basis_adjustment_magnitude_1d from the immutable Campaign136 snapshot.",
+    "first_140_design_order_sha256": "c71bfe27486c9567afd3aca21e4b04053658c23ac651e7f4df7fd014b0c31efd",
+    "last_factor": "daily_realized_price_basis_adjustment_magnitude_1d",
+    "last_factor_direction": "higher",
+    "comparison_value_semantics": "Precomputed frozen direction-normalized cross-sectional average-tie percentile ranks for the first 140; the 141st raw eligible value is reranked with average ties within each finite candidate-comparator session.",
+    "source_direction_retained_in_each_result": true,
+    "absolute_correlation_invariant_to_direction_sign": true,
+    "removal_reorder_subset_early_stop_or_candidate_specific_fill_allowed": false
+  },
+  "candidate_alignment": {
+    "quality_listing_candidate_rows_expected": 1320628,
+    "candidate_value_range_inclusive": [
+      -1.0,
+      1.0
+    ],
+    "candidate_missing_fill_allowed": false,
+    "numeric140_design_is_a_superset_of_candidate_keys": true,
+    "campaign136_snapshot_must_cover_every_candidate_key": true,
+    "cross_year_or_cross_stock_alignment_allowed": false
+  },
+  "exact_gate": {
+    "minimum_pairwise_names_per_session": 50,
+    "minimum_pairwise_sessions_per_comparison": 100,
+    "maximum_allowed_absolute_median_daily_rank_correlation": 0.8,
+    "strict_inequality": true,
+    "all_141_must_pass": true,
+    "insufficient_overlap_fails_closed": true,
+    "constant_candidate_or_comparator_session_is_not_a_qualifying_session": true,
+    "daily_rank_method": "average ties",
+    "aggregate": "absolute value of median daily Spearman rank correlation",
+    "raw_nan_preserved_until_pairwise_overlap": true
+  },
+  "execution_contract": {
+    "candidate_snapshot_numeric140_design_and_campaign136_snapshot_must_be_byte_and_semantically_verified": true,
+    "all_results_and_failures_recorded_in_frozen_order_without_early_stop": true,
+    "one_single_use_output": true,
+    "historical_daily_price_or_forward_return_values_allowed": false,
+    "provider_request_allowed": false
+  },
+  "decision": {
+    "if_all_141_strictly_pass": "Admit exactly the one preregistered Campaign146 development trial and freeze its 2019-2023 walk-forward implementation before opening any daily OHLCV or return value.",
+    "otherwise": "Terminalize Campaign146 before daily prices or returns; no inversion, redefinition, filter, subset, combination, threshold or rescue."
+  },
+  "research_boundary": {
+    "candidate_values_read_for_coverage_before_protocol": true,
+    "comparator_values_read_before_protocol": false,
+    "numeric140_design_manifest_metadata_read_before_protocol": true,
+    "numeric140_design_partition_values_read_before_protocol": false,
+    "campaign136_snapshot_manifest_metadata_read_before_protocol": true,
+    "campaign136_snapshot_partition_values_read_before_protocol": false,
+    "historical_daily_price_or_forward_return_values_read": false,
+    "stress_2024_2025_return_values_opened": false,
+    "provider_request_issued": false,
+    "credential_loaded": false,
+    "candidate49_historical_backfill_performed": false,
+    "candidate49_ledgers_changed": false,
+    "second_prospective_candidate_created": false,
+    "current_scoring_selection_sizing_positions_or_orders_performed": false,
+    "investment_advice": false
+  },
+  "next_action": "Implement and synthetically test the exact 141-source loader, subset alignment and ordered gate runner; fingerprint-freeze them before any comparator partition value is opened."
+}

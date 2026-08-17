@@ -1,0 +1,79 @@
+{
+  "version": 1,
+  "kind": "a_share_three_day_walkforward_campaign058_feature_snapshot_binding",
+  "status": "feature_snapshot_verified_pending_ordered_no_return_gates",
+  "recorded_at": "2026-08-04T16:50:53+08:00",
+  "campaign_id": "058",
+  "factor": "quarterly_profit_revenue_growth_spread_pp",
+  "formula": "profit_yoy_state_t - revenue_yoy_state_t",
+  "direction": "higher",
+  "authoritative_boundary": {
+    "path": "docs/a_share_three_day_iteration_status_20260804_campaign057_verified.json",
+    "sha256": "a83247eaa08b1276c2f538f5286e1b6e622fe8e93453145453c3eae6e1816ba4"
+  },
+  "feature_snapshot": {
+    "manifest_path": "/Volumes/DIsk/qlib-a-share-tushare-1m/derived/a_share/rich/tushare/minute_walkforward_campaign058_feature_library/tushare_stk_mins_1m_2019_2025_ea0cbb8f_walkforward_campaign058_feature_library_v1/snapshot_manifest.json",
+    "manifest_sha256": "c5bf57a70a2af71f30be87eec254710db65550f5dd7e041f219e862b4d97c00f",
+    "dataset_sha256": "59fb5ed46c76a4737bbc60de9707f7f3b10223b692de4f4a88fec4143891cd4c",
+    "partitions": 33015,
+    "rows": 7724498,
+    "eligible_rows": 7231483,
+    "missing_or_nonfinite_state_rows": 493015,
+    "survivorship_limitation": "The eligible universe derives from a current listing snapshot and may introduce survivorship bias."
+  },
+  "frozen_inputs": {
+    "feature_runner_path": "scripts/a_share_three_day_walkforward_campaign058_features.py",
+    "feature_runner_sha256": "78ebccb0f8e62f0977dbd41e33aaeef62bf12fc8547bc09ff7d92e8eccb2224c",
+    "implementation_freeze_path": "docs/a_share_three_day_walkforward_campaign_058_feature_implementation_freeze_20260804.json",
+    "implementation_freeze_sha256": "9539219b2a83beb58a3f701b6cae334051d18a2a37cb74778fa3e94c4110c38c",
+    "empty_partition_failure_path": "docs/a_share_three_day_walkforward_campaign_058_empty_partition_build_failure_20260804.json",
+    "empty_partition_failure_sha256": "8d7555d79fa0b56762bf2ba8ed0176b8dfbb0eabf4a731e3f009c1398601fda2",
+    "empty_partition_repair_freeze_path": "docs/a_share_three_day_walkforward_campaign_058_empty_partition_repair_freeze_20260804.json",
+    "empty_partition_repair_freeze_sha256": "bfa176f5c05a0815268d9f727445e35c6d078adff7020d6053acc5d941e59716",
+    "repair_launcher_path": "scripts/a_share_three_day_walkforward_campaign058_empty_partition_repair.py",
+    "repair_launcher_sha256": "c610e8b0bc7de99e609c5615a8ad69e6cf07829d244b2151bdebaa0408081e90",
+    "no_return_protocol_path": "docs/a_share_three_day_walkforward_campaign_058_no_return_preregistration.json",
+    "no_return_protocol_sha256": "e3c04b8f736604dca4adb21de367550bb281d4a156b8f990fa942c8757f8011a",
+    "mechanism_overlap_audit_sha256": "226d7535047b0321cf2fece05e63455254b381ae75bac42f3a2d0e184bd5a97f",
+    "source_manifest_sha256": "9b3d959563c9d182f38981c6a36bdb3bc9b415de08487a9e1f9e850825c0839f",
+    "joint_clean_manifest_sha256": "453c6719cb3c7da42fed8807b28a2bfe988700283e9625a6db97912534f368de",
+    "joint_clean_dataset_sha256": "0e4fe7c05536cdfcecc2936bc880726902f5560061188ffff82ef7ee6f346983",
+    "quarterly_source_sha256": "3ac901a97928d2ed81ac72e3eaac9bdc148d36cf67b6abe70223699235ef059f",
+    "quarterly_manifest_sha256": "e3cf654babe37a82393c5530696bc1cc242b736cb88e1947b8444b638125ba8c",
+    "calendar_sha256": "fda506597d26bcec953cdc0882042a5046ec1587db60490e16a01627fd43f53a"
+  },
+  "independent_verification": {
+    "command": "PYTHONPATH=/Volumes/DIsk/Disk-Coding/qlib python scripts/a_share_three_day_walkforward_campaign058_empty_partition_repair.py verify --manifest /Volumes/DIsk/qlib-a-share-tushare-1m/derived/a_share/rich/tushare/minute_walkforward_campaign058_feature_library/tushare_stk_mins_1m_2019_2025_ea0cbb8f_walkforward_campaign058_feature_library_v1/snapshot_manifest.json --workers 4",
+    "exit_code": 0,
+    "partitions_verified": 33015,
+    "rows_verified": 7724498,
+    "eligible_rows_verified": 7231483,
+    "all_partition_byte_and_frame_hashes_passed": true,
+    "repair_and_core_tests_passed": 13
+  },
+  "source_boundary": {
+    "minute_fields_read": [
+      "datetime",
+      "symbol",
+      "provider"
+    ],
+    "minute_price_or_activity_fields_read": false,
+    "quarterly_fields_read": [
+      "instrument",
+      "report_date",
+      "announcement_date",
+      "revenue_yoy",
+      "profit_yoy"
+    ],
+    "daily_price_fields_read": [],
+    "forward_return_fields_read": false,
+    "comparison_factor_values_read": false,
+    "candidate49_historical_return_read": false,
+    "candidate49_ledgers_changed_by_campaign058": false,
+    "training_or_model_fitting_performed": false,
+    "current_scoring_selection_sizing_or_orders_performed": false,
+    "prospective_candidate_activation_created": false,
+    "provider_request_issued_by_campaign058": false
+  },
+  "next_gate": "Run the frozen ordered no-return audit: coverage first, then exactly 89 uniqueness comparisons only if coverage passes. Do not read daily prices or forward returns unless every no-return gate passes."
+}

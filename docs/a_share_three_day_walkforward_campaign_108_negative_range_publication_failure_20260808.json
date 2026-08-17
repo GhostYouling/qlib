@@ -1,0 +1,49 @@
+{
+  "schema_version": 1,
+  "kind": "a_share_three_day_walkforward_campaign108_negative_range_publication_failure",
+  "status": "preserved_interrupted_build_failure_no_snapshot_published",
+  "recorded_at": "2026-08-07T20:51:59Z",
+  "failed_implementation": {
+    "path": "scripts/a_share_three_day_walkforward_campaign108_features.py",
+    "sha256": "ea1263d86a6ba7d8299dbceb04a63cd1b300af3ade2da6470810466ea15f262f"
+  },
+  "failed_implementation_freeze": {
+    "path": "docs/a_share_three_day_walkforward_campaign_108_no_return_implementation_freeze_v2_20260808.json",
+    "sha256": "0bb95a8dc8dfff96bdaf37b6d4aa5703a65bff2aa5eef1eda478125dc9f1758c"
+  },
+  "preserved_attempt_ledger": {
+    "path": "data/experiments/short_horizon/historical_walkforward/campaign_108/research_attempt_ledger_v1.json",
+    "sha256": "7b0c81c786971baaa21fdfb14e5618f6b5a552b868b60e60e2ffe383343af915"
+  },
+  "failure_evidence": {
+    "first_completed_year": 2019,
+    "partitions_processed": 3769,
+    "observed_published_eligible_count_in_partial_build_log": 446557,
+    "expected_identity_rows_for_2019": 884338,
+    "failure_detected_before_2020_completion": true,
+    "build_interrupted_intentionally": true,
+    "final_snapshot_root_published": false,
+    "temporary_partial_root_remaining_after_cleanup": false
+  },
+  "root_cause": "The frozen extractor correctly emitted negative scores for positive endpoint returns, but the inherited finalize_feature_frame and manifest range semantics still enforced [0,1] from the occupancy-factor base. Legitimate negative values were converted to missing before output.",
+  "candidate_formula_direction_endpoint_or_transform_changed": false,
+  "required_repair": {
+    "output_eligibility_range": [
+      -1.0,
+      1.0
+    ],
+    "manifest_factor_range": [
+      -1.0,
+      1.0
+    ],
+    "new_synthetic_case": "finalization must retain one negative, one zero and one positive score",
+    "additive_recovery_only": true
+  },
+  "coverage_or_comparator_values_read": false,
+  "historical_daily_prices_or_forward_returns_read": false,
+  "development_or_stress_started": false,
+  "provider_request_issued": false,
+  "candidate49_ledgers_changed": false,
+  "current_scoring_selection_sizing_or_orders_performed": false,
+  "next_action": "Preserve v1 and freeze-v2, publish additive feature/audit v2 plus freeze-v3, pass the negative-range finalization test, and rebuild from an absent final root."
+}

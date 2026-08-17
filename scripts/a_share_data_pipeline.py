@@ -9,10 +9,12 @@ The pipeline deliberately keeps two universes:
 The latter is useful when STAR Market prices are used as explanatory variables,
 while the former remains the universe that a stock-selection strategy may hold.
 
-Generated data defaults to ``<repository>/data`` and can be relocated with
-``QLIB_A_SHARE_DATA_ROOT``.  The script uses public Eastmoney endpoints
-directly, so no username, password, or API token is required.  It is
-intentionally a data-ingestion tool, not investment advice.
+Generated data defaults to ``<repository>/data``. It can be relocated with
+``QLIB_A_SHARE_DATA_ROOT`` or, when that override is absent, an atomically
+managed ``<repository>/.qlib_a_share_data_root`` pointer. Eastmoney and
+BaoStock are supported in-place acquisition sources; an accepted Tushare root
+is materialized and activated only through the isolated migration workflow.
+This is a data-ingestion tool, not investment advice.
 """
 
 from __future__ import annotations
@@ -38,11 +40,14 @@ SCRIPT_DIR = Path(__file__).resolve().parent
 if str(SCRIPT_DIR) not in sys.path:
     sys.path.insert(0, str(SCRIPT_DIR))
 
-from _a_share_runtime import (
+from _a_share_runtime import (  # noqa: E402
     latest_completed_session_date,
     resolve_data_root,
 )
-from _interprocess_lock import InterProcessFileLock, LockUnavailableError
+from _interprocess_lock import (  # noqa: E402
+    InterProcessFileLock,
+    LockUnavailableError,
+)
 
 REPO_ROOT = Path(__file__).resolve().parents[1]
 DATA_ROOT = resolve_data_root(REPO_ROOT)
@@ -62,6 +67,8 @@ DEFAULT_REFRESH_DAYS = 45
 DEFAULT_WORKERS = 3
 
 POINT_IN_TIME_PRICE_BASIS = "close_known_raw_pct_chg_chain_v1"
+SUPPORTED_DAILY_SOURCES = frozenset({"eastmoney", "baostock", "tushare"})
+IN_PLACE_SYNC_DAILY_SOURCES = frozenset({"eastmoney", "baostock"})
 POINT_IN_TIME_RAW_COLUMNS = (
     "raw_open",
     "raw_high",
@@ -664,6 +671,72 @@ def _latest_parquet_date(path: Path) -> dt.date | None:
         return None
 
 
+def inspect_existing_daily_sources(
+    raw_dir: Path = RAW_DIR,
+) -> tuple[set[str], list[str]]:
+    """Read only source labels needed to protect an incremental refresh."""
+
+    sources: set[str] = set()
+    invalid_files: list[str] = []
+    for path in sorted(raw_dir.glob("*.parquet")):
+        try:
+            values = pd.read_parquet(path, columns=["daily_source"])[
+                "daily_source"
+            ].astype("string")
+        except (OSError, ValueError, KeyError):
+            invalid_files.append(path.name)
+            continue
+        observed = {
+            str(value)
+            for value in values.dropna().unique()
+            if str(value) in SUPPORTED_DAILY_SOURCES
+        }
+        invalid = (
+            values.isna().any()
+            or len(observed) != values.dropna().nunique()
+            or not observed
+        )
+        if invalid:
+            invalid_files.append(path.name)
+        sources.update(observed)
+    return sources, invalid_files
+
+
+def resolve_sync_daily_source(
+    requested_source: str | None,
+    *,
+    force_full: bool,
+    raw_dir: Path = RAW_DIR,
+) -> str:
+    """Continue one accepted provider without mutating a nonempty root in place."""
+
+    existing_sources, invalid_files = inspect_existing_daily_sources(raw_dir)
+    if invalid_files or len(existing_sources) > 1:
+        detail = (
+            f"invalid_files={invalid_files[:3]}"
+            if invalid_files
+            else f"existing_sources={sorted(existing_sources)}"
+        )
+        raise PipelineError(
+            "daily refresh requires one valid existing daily source; "
+            f"{detail}. In-place --force-full cannot prove that every legacy or "
+            "orphan file was replaced; repair or migrate through a separate clean "
+            "staging root"
+        )
+    if requested_source is None:
+        return next(iter(existing_sources), "eastmoney")
+    if requested_source not in SUPPORTED_DAILY_SOURCES:
+        raise PipelineError(f"unsupported daily source: {requested_source}")
+    if existing_sources and requested_source not in existing_sources:
+        raise PipelineError(
+            f"in-place daily source switch from {sorted(existing_sources)} "
+            f"to {requested_source} is forbidden even with --force-full; omit "
+            "--source to continue the accepted provider, or migrate through a "
+            "separate clean staging root"
+        )
+    return requested_source
+
+
 def _atomic_write_parquet(data: pd.DataFrame, destination: Path) -> None:
     """Atomically write compressed source data without filling the local disk."""
 
@@ -903,7 +976,11 @@ def price_basis_quality_counts(bars: pd.DataFrame) -> dict[str, int]:
             (~bars["price_basis"].astype("string").eq(POINT_IN_TIME_PRICE_BASIS)).sum()
         ),
         "unsupported_daily_source_rows": int(
-            (~bars["daily_source"].astype("string").isin({"eastmoney", "baostock"})).sum()
+            (
+                ~bars["daily_source"]
+                .astype("string")
+                .isin(SUPPORTED_DAILY_SOURCES)
+            ).sum()
         ),
         "mixed_daily_source_rows": int(
             len(bars) if bars["daily_source"].astype("string").dropna().nunique() != 1 else 0
@@ -1235,26 +1312,42 @@ def materialize_qlib(instruments: list[Instrument], workers: int) -> dict[str, i
 def run_sync(args: argparse.Namespace) -> int:
     """Execute one idempotent collection/materialization run."""
 
-    start = parse_date(args.start)
-    end = (
-        parse_date(args.end)
-        if args.end
-        else dt.date.today()
-        if args.include_current_session
-        else latest_completed_session_date()
-    )
-    if start > end:
-        raise PipelineError("--start must not be later than --end")
-    for directory in (RAW_DIR, METADATA_DIR, RUNS_DIR, LOG_DIR, QLIB_DIR):
-        directory.mkdir(parents=True, exist_ok=True)
-
-    run_started = dt.datetime.now(dt.timezone.utc)
-    universe_client: Any = (
-        EastmoneyClient(timeout=args.timeout, retries=args.retries, delay=args.delay)
-        if args.source == "eastmoney"
-        else BaoStockClient()
-    )
     with PipelineLock(LOCK_PATH):
+        args.source = resolve_sync_daily_source(
+            args.source,
+            force_full=args.force_full,
+        )
+        if args.source not in IN_PLACE_SYNC_DAILY_SOURCES:
+            raise PipelineError(
+                "the active daily root is Tushare; refresh it only through "
+                "`scripts/a_share_tushare_daily_migration.py` in a separate "
+                "staging root, pass every acceptance gate, and perform a separate "
+                "crash-safe activation. The ordinary sync command will not mutate "
+                "an active Tushare root in place"
+            )
+        start = parse_date(args.start)
+        end = (
+            parse_date(args.end)
+            if args.end
+            else dt.date.today()
+            if args.include_current_session
+            else latest_completed_session_date()
+        )
+        if start > end:
+            raise PipelineError("--start must not be later than --end")
+        for directory in (RAW_DIR, METADATA_DIR, RUNS_DIR, LOG_DIR, QLIB_DIR):
+            directory.mkdir(parents=True, exist_ok=True)
+
+        run_started = dt.datetime.now(dt.timezone.utc)
+        universe_client: Any = (
+            EastmoneyClient(
+                timeout=args.timeout,
+                retries=args.retries,
+                delay=args.delay,
+            )
+            if args.source == "eastmoney"
+            else BaoStockClient()
+        )
         migrated_csv_files = migrate_csv_source_files()
         try:
             universe = (
@@ -1449,6 +1542,13 @@ def run_status(_: argparse.Namespace) -> int:
     return 0
 
 
+def run_data_root(_: argparse.Namespace) -> int:
+    """Print only the resolved active data root without scanning local data."""
+
+    print(DATA_ROOT)
+    return 0
+
+
 def run_materialize(_: argparse.Namespace) -> int:
     """Rebuild Qlib files from local source data without any network requests."""
 
@@ -1622,8 +1722,11 @@ def build_parser() -> argparse.ArgumentParser:
     sync.add_argument(
         "--source",
         choices=("eastmoney", "baostock"),
-        default="eastmoney",
-        help="daily-bar provider; BaoStock is sequential and can recover an unavailable Eastmoney history endpoint",
+        default=None,
+        help=(
+            "daily-bar provider; by default continue the one accepted local "
+            "provider, or use Eastmoney for an empty data root"
+        ),
     )
     sync.add_argument(
         "--adjust",
@@ -1632,7 +1735,14 @@ def build_parser() -> argparse.ArgumentParser:
         help="price basis requested from source; point_in_time is required for research materialization",
     )
     sync.add_argument("--refresh-days", type=int, default=DEFAULT_REFRESH_DAYS, help="tail window refreshed each run")
-    sync.add_argument("--force-full", action="store_true", help="redownload each selected symbol from --start")
+    sync.add_argument(
+        "--force-full",
+        action="store_true",
+        help=(
+            "redownload each selected symbol from --start using the same provider; "
+            "it never authorizes an in-place provider switch"
+        ),
+    )
     sync.add_argument(
         "--only-missing",
         action="store_true",
@@ -1680,6 +1790,11 @@ def build_parser() -> argparse.ArgumentParser:
     prune.set_defaults(func=run_prune_session)
     status = subparsers.add_parser("status", help="show local data and last run information")
     status.set_defaults(func=run_status)
+    data_root = subparsers.add_parser(
+        "data-root",
+        help="print the resolved active data root without scanning data or using the network",
+    )
+    data_root.set_defaults(func=run_data_root)
     return parser
 
 

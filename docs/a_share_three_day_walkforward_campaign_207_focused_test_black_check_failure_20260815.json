@@ -1,0 +1,22 @@
+{
+  "artifact_type": "campaign_infrastructure_failure_record",
+  "campaign_id": 207,
+  "recorded_at": "2026-08-15T20:55:00+08:00",
+  "phase": "campaign207_focused_test_black_check",
+  "requested_scope": "new_campaign207_terminal_test_module_only",
+  "status": "failed_campaign207_black_check_format_only_discarded",
+  "failure_class": "formatter_check_failure",
+  "scientific_trial": false,
+  "result_consumed": false,
+  "recovery": {
+    "action": "mechanically_format_only_the_unbound_new_campaign207_test_then_rerun_black_ruff_and_focused_tests"
+  },
+  "safety": {
+    "credentials_read": false,
+    "network_accessed": false,
+    "candidate49_plan_or_run_executed": false,
+    "candidate_or_comparator_values_read": false,
+    "historical_returns_read": false,
+    "research_thresholds_modified": false
+  }
+}

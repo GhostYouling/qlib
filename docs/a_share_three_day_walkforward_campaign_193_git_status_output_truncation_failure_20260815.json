@@ -1,0 +1,34 @@
+{
+  "schema_version": 1,
+  "kind": "a_share_three_day_walkforward_campaign193_infrastructure_failure",
+  "failure_id": "campaign193_infrastructure_002",
+  "status": "tool_output_truncation_recorded_recovered_no_scientific_evidence_consumed",
+  "recorded_at": "2026-08-15T15:29:00+08:00",
+  "timestamp_semantics": "monotonic logical append time after the Campaign192 terminal authority",
+  "phase": "campaign193_worktree_boundary_verification",
+  "failed_operation": "/usr/bin/git status --short over the complete dirty worktree",
+  "observed_failure": {
+    "tool_status": "completed_with_truncated_output",
+    "original_token_count": 104011,
+    "output_line_count": 4696,
+    "complete_output_available": false
+  },
+  "evidence_disposition": {
+    "entire_failed_output_discarded": true,
+    "used_as_scientific_or_validation_evidence": false,
+    "candidate_comparator_security_price_or_return_value_read": false
+  },
+  "recovery": {
+    "method": "Used a count-only full status plus a narrowly scoped status for Campaign192 and report/test handoff paths.",
+    "dirty_path_count": 4696,
+    "narrow_status_exit_code": 0,
+    "recovery_complete": true
+  },
+  "research_boundary": {
+    "user_changes_preserved": true,
+    "provider_or_web_request_issued": false,
+    "provider_credential_presence_value_or_digest_read": false,
+    "candidate49_ledgers_changed": false,
+    "stress_2024_2025_opened": false
+  }
+}

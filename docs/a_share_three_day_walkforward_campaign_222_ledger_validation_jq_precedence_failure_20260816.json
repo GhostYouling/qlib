@@ -1,0 +1,14 @@
+{
+  "schema_version": 1,
+  "kind": "a_share_three_day_walkforward_campaign222_infrastructure_failure",
+  "recorded_at": "2026-08-16T01:56:00+08:00",
+  "timestamp_semantics": "monotonic_logical_append_time_not_host_wall_clock_measurement",
+  "attempt_id": "campaign222_infrastructure_008",
+  "phase": "research_attempt_ledger_v1_structural_validation",
+  "status": "failed_jq_boolean_pipe_precedence_exit_5_output_discarded",
+  "failure": "A jq assertion omitted parentheses around the piped delta-entry length expression, attempted to take length of a boolean and exited 5.",
+  "writes_before_failure": false,
+  "scientific_value_read": false,
+  "result_consumed": false,
+  "recovery": "The same ledger was checked with explicit parentheses; entry count and delta length both equal 14 and the command exited zero."
+}

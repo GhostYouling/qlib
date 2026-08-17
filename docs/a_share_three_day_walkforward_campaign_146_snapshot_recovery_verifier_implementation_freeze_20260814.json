@@ -1,0 +1,53 @@
+{
+  "schema_version": 1,
+  "kind": "a_share_three_day_walkforward_campaign146_snapshot_recovery_verifier_implementation_freeze",
+  "status": "recovery_verifier_and_synthetic_semantics_frozen_before_recovery_partition_reads",
+  "recorded_at": "2026-08-14T21:39:15+08:00",
+  "purpose": "Bind the independent Campaign146 immutable snapshot recovery verifier and tests before any recovery partition frame is opened.",
+  "authoritative_inputs": {
+    "recovery_protocol": {
+      "path": "docs/a_share_three_day_walkforward_campaign_146_snapshot_recovery_verification_protocol_20260814.json",
+      "sha256": "737f2191a147125aa8f159133618b86248f4d0713f6b7659b6969524448e1d39"
+    },
+    "original_implementation_freeze": {
+      "path": "docs/a_share_three_day_walkforward_campaign_146_no_return_implementation_freeze_20260814.json",
+      "sha256": "673eff0bf3190a7af6c02dc9439c2688ed4e514e28888ef929f7c7c3c5da887d"
+    },
+    "verification_failure": {
+      "path": "docs/a_share_three_day_walkforward_campaign_146_snapshot_verification_failure_20260814.json",
+      "sha256": "a20a3e2c91acd9b26b746985039cc8b37719233088b8dfe0fbcc32f716ea9d7c"
+    },
+    "formatting_failure": {
+      "path": "docs/a_share_three_day_walkforward_campaign_146_recovery_verifier_black_failure_20260814.json",
+      "sha256": "9fd5acfeefabfb7725032ac06c3f0573646ec220ec897799af9745b52b61404a"
+    }
+  },
+  "frozen_implementation": {
+    "recovery_verifier_path": "scripts/a_share_three_day_walkforward_campaign146_snapshot_verify_recovery.py",
+    "recovery_verifier_sha256": "182b1237268c85ff1c28c3ac166735f4ffecb700849d9bd41e354b8e186043d3",
+    "recovery_test_path": "tests/data_collector_tests/test_a_share_three_day_walkforward_campaign146_snapshot_verify_recovery.py",
+    "recovery_test_sha256": "50601a896ebf446d46b730a1de058976538987de61583d38c128730b6ac67fa4"
+  },
+  "synthetic_verification": {
+    "passed": 5,
+    "exit_code": 0,
+    "black_check_exit_code": 0,
+    "ruff_exit_code": 0,
+    "metadata_support_header_semantics_bound": true,
+    "partition_path_containment_fail_closed": true,
+    "negative_value_semantics_verified": true,
+    "canonical_dataset_digest_verified": true,
+    "explicit_confirmation_and_worker_bounds_verified": true
+  },
+  "research_boundary": {
+    "recovery_partition_values_read_before_freeze": false,
+    "coverage_statistics_read": false,
+    "comparator_values_read": false,
+    "historical_daily_price_or_forward_return_values_read": false,
+    "provider_request_issued": false,
+    "credential_loaded": false,
+    "candidate49_ledgers_changed": false,
+    "snapshot_or_partition_rewritten": false
+  },
+  "next_action": "Run the recovery verifier plan; only if ready=true and exit code is zero run the full verifier with explicit confirmation, then publish its exact returned receipt without editing the snapshot."
+}

@@ -1,0 +1,137 @@
+{
+  "schema_version": 1,
+  "kind": "a_share_three_day_iteration_status",
+  "status": "campaign115_ordered_no_return_runner_ready_waiting_for_semantically_verified_source",
+  "recorded_at": "2026-08-09T07:36:00+08:00",
+  "recorded_at_semantics": "monotonic_logical_append_time_after_v7_recorded_at_06_20_and_policy_v93_recorded_at_07_31_not_host_wall_clock_measurement",
+  "supersedes_without_rewriting": {
+    "path": "docs/a_share_three_day_iteration_status_20260809_campaign115_semantic_verifier_ready_v7.json",
+    "sha256": "0913315da1b67ae5c2808e9bcb69fddc7eb736a4fb843ad79ff34e7f4408bdfe",
+    "preserved": true
+  },
+  "authoritative_artifacts": {
+    "numeric_policy_v93": {
+      "path": "docs/a_share_three_day_walkforward_future_numeric_comparison_eligibility_policy_v93_20260809.json",
+      "sha256": "7700825a730072b35fb8ca85dba27e2d3a544e74772741e015981cddb14b31f2"
+    },
+    "ordered_no_return_protocol": {
+      "path": "docs/a_share_three_day_walkforward_campaign_115_ordered_no_return_audit_protocol_20260809.json",
+      "sha256": "6d94e7fb638aed9f0423179a60ee3ad1a768b12c0de14a64c6dcc81168e6d12d"
+    },
+    "ordered_no_return_implementation_freeze_v4": {
+      "path": "docs/a_share_three_day_walkforward_campaign_115_ordered_no_return_audit_implementation_freeze_v4_20260809.json",
+      "sha256": "3b79bdea2ca29133e3b03a4bc7b60fa07549a240372cf07b2b4a6e7330538b57"
+    },
+    "ordered_no_return_verification_v1": {
+      "path": "docs/a_share_three_day_walkforward_campaign_115_ordered_no_return_audit_verification_v1_20260809.json",
+      "sha256": "8ff3ef1d7727328cc9b7bd8a5b06572df03875ec203ca9d26312907401798ff1"
+    },
+    "attempt_ledger_v11": {
+      "path": "data/experiments/short_horizon/historical_walkforward/campaign_115/research_attempt_ledger_v11.json",
+      "sha256": "72d1977ea6b9631acbf5c97e1b5d38ac61d6841e6ee59ccb60892a921ead777b"
+    },
+    "report_v9": {
+      "path": "docs/a_share_three_day_walkforward_campaign_115_prevalue_report_v9.md",
+      "sha256": "10676bc32d6cfb12f2ba5cac9839a48b69a1eae257b321e05e5905f20b5c8a66"
+    },
+    "unified_report": {
+      "path": "data/experiments/short_horizon/current_research_report.md",
+      "sha256": "c874b36d8c20a8c40865f11f21442c34dcc28ccc374f7ce4ec5721a9458450e7"
+    }
+  },
+  "operational_snapshot": {
+    "host_local_time_observed": "2026-08-09T05:18:01+08:00",
+    "host_local_time_zone": "Asia/Singapore",
+    "host_weekday_iso": 7,
+    "host_date_is_accepted_local_trading_session": false,
+    "active_data_root": "/Volumes/DIsk/Disk-Coding/qlib/data",
+    "candidate49_daily_workflow_plan_or_run_performed": false,
+    "repository_dotenv_and_credential_presence_semantics_inherited_from_v7": true,
+    "credential_value_read_printed_hashed_logged_or_persisted": false
+  },
+  "campaign115": {
+    "active_historical_campaign": true,
+    "selected_source_mechanism": "tushare_official_limit_up_queue_persistence",
+    "current_stage": "ordered_no_return_runner_ready_before_real_source_or_comparator_values",
+    "development_source_final_root_present": false,
+    "semantic_verification_receipt_status": "no_semantic_verification_receipt",
+    "ordered_no_return_runtime_binding": true,
+    "ordered_no_return_plan_ready": false,
+    "ordered_no_return_plan_exit_code": 2,
+    "ordered_no_return_plan_blockers": [
+      "semantic_verification_receipt_valid",
+      "source_final_root_present"
+    ],
+    "ordered_no_return_comparator_metadata_binding_count": 134,
+    "ordered_no_return_all_comparator_metadata_bindings_valid": true,
+    "ordered_no_return_audit_status": "no_ordered_no_return_audit",
+    "provider_rows_candidate_or_comparator_values_read": false,
+    "complete_factor_definition_count": 0,
+    "numeric_comparator_appended": false,
+    "development_return_trial_count": 0,
+    "stress_2024_2025_opened": false,
+    "next_allowed_action": "Keep the provider and return boundaries closed. After the full 1214-session development source exists, run the already-frozen semantic verifier plan and publish its immutable receipt only when ready=true with exit code zero. Then rerun the ordered no-return plan; only ready=true with exit code zero may authorize audit --confirm-no-return-audit. Coverage must pass before any comparator value, and the audit cannot authorize returns or current use."
+  },
+  "ordered_no_return_contract": {
+    "development_years": [
+      2019,
+      2020,
+      2021,
+      2022,
+      2023
+    ],
+    "exact_session_count": 1214,
+    "precoverage_parquet_columns": [
+      "stock_day_key"
+    ],
+    "coverage_failure_stops_before_comparator_values": true,
+    "eligible_numeric_comparator_count": 134,
+    "eligible_numeric_comparator_order_sha256": "31d788db467f558a0ac538315343090f1b3ad4cb27a26136a49ebaa88b2fdbf2",
+    "candidate_or_comparator_daily_rows_embedded": false,
+    "daily_price_forward_return_or_2024_2025_partition_read": false
+  },
+  "frozen_library": {
+    "complete_definition_count": 141,
+    "complete_definition_order_sha256": "ccab6e3d9d81b0a02d4ff178fdd442b26a1e68e3655e1c6f5b2fcb28cd4a4559",
+    "eligible_numeric_comparator_count": 134,
+    "eligible_numeric_comparator_order_sha256": "31d788db467f558a0ac538315343090f1b3ad4cb27a26136a49ebaa88b2fdbf2"
+  },
+  "candidate49": {
+    "only_active_prospective_candidate": true,
+    "signal_ledger_sha256": "5193f00d7f36da003f53cec387900da4c3d002299f5dfcfc1a95eaa199ed3a79",
+    "execution_ledger_sha256": "d57a3e61eac969e42cafa418ccd8c0a5ee65dcf69da145bb2c096c2a02a2ea4f",
+    "historical_backfill_performed": false
+  },
+  "accounting": {
+    "campaign115_attempt_count": 19,
+    "campaign115_infrastructure_failure_count": 17,
+    "campaign115_prevalue_scientific_attempt_count": 2,
+    "campaign115_complete_factor_attempt_count": 0,
+    "campaign115_return_reading_development_trial_count": 0,
+    "cumulative_historical_research_attempt_count": 872,
+    "cumulative_return_reading_development_trial_count": 302,
+    "latest_additive_entry": "campaign115_infrastructure_019",
+    "latest_additive_entry_read_real_research_values_or_issued_provider_request": false
+  },
+  "verification": {
+    "selected_campaign110_and_campaign115_regression": "68 passed in 9.82s",
+    "black_check": "2 files would be left unchanged",
+    "ruff_required_rules": "E4,E7,E9,F,I passed",
+    "ordered_no_return_runtime_binding": true,
+    "all_134_comparator_metadata_bindings_valid": true,
+    "real_ordered_no_return_plan_exit_code": 2,
+    "real_ordered_no_return_plan_candidate_or_comparator_values_read": false,
+    "real_ordered_no_return_audit_count": 0,
+    "legacy_campaign110_terminal_report_hash_failures_preserved": 2
+  },
+  "research_boundary": {
+    "candidate_or_comparator_values_read": false,
+    "historical_daily_price_or_forward_return_values_read": false,
+    "stress_2024_2025_opened": false,
+    "provider_request_issued": false,
+    "candidate49_ledgers_changed": false,
+    "second_prospective_candidate_created": false,
+    "current_scoring_selection_sizing_or_orders_performed": false,
+    "investment_advice": false
+  }
+}

@@ -1,0 +1,106 @@
+{
+  "version": 1,
+  "kind": "a_share_three_day_walkforward_campaign050_concept_scouting",
+  "status": "completed_before_campaign050_candidate_comparison_daily_price_or_return_values",
+  "recorded_at": "2026-08-01T07:44:00Z",
+  "purpose": "Select one genuinely distinct historical-only minute mechanism after Campaign049 without using any Campaign050 candidate, comparison, daily-price, or return value.",
+  "numbering_disambiguation": "Historical Campaign050 is a research-campaign identifier and does not activate prospective Candidate50; Candidate49 remains the only prospective ledger.",
+  "authoritative_inputs": {
+    "campaign049_verified_state": {
+      "path": "docs/a_share_three_day_iteration_status_20260801_campaign049_verified.json",
+      "sha256": "a82a795584c4c4243465f5175a243984467b06d16f659178c62781bb963dbe3e"
+    },
+    "historical_walkforward_policy": {
+      "path": "docs/a_share_three_day_historical_walkforward_research_policy_20260727.json",
+      "sha256": "38426d6161b9bfed323c58caba18feca668b8c9d53e294951a8ba90c01a798bb"
+    },
+    "campaign049_terminal_record": {
+      "path": "docs/a_share_three_day_walkforward_campaign_049_research_record.json",
+      "sha256": "f6c2fe3b79f6072c0c9274552e84d0689bec38483ad6609ad8187b69fda6a32c"
+    }
+  },
+  "candidate_design_catalog": [
+    {
+      "design": "half_session_extreme_shock_reversal_completion",
+      "decision": "selected",
+      "reason": "It measures whether each half-session's single largest absolute one-minute close shock is directionally retraced by that half-session's terminal close. No frozen factor selects one endogenous extreme return in each half and scores its remaining same-half terminal retracement."
+    },
+    {
+      "design": "all_adjacent_return_reversal_energy",
+      "decision": "rejected_before_values",
+      "reason": "Pooling every adjacent return pair would restate terminal intraday_return_reversal_energy_share_236p."
+    },
+    {
+      "design": "negative_return_only_absorption",
+      "decision": "rejected_before_values",
+      "reason": "Conditioning on all negative returns and their next moves would restate terminal intraday_negative_return_absorption_rate_236p and introduce a one-sided direction search."
+    },
+    {
+      "design": "maximum_drawdown_recovery",
+      "decision": "rejected_before_values",
+      "reason": "Selecting a running peak-to-trough drawdown and terminal recovery would restate terminal afternoon_drawdown_recovery_resilience_120m."
+    },
+    {
+      "design": "largest_shock_timing_or_amount_weighting",
+      "decision": "rejected_before_values",
+      "reason": "Timing alone reopens extreme-arrival and amount-center families; amount weighting reopens activity-price coupling and lead-lag families."
+    },
+    {
+      "design": "full_day_or_cross_lunch_extreme_reversal",
+      "decision": "rejected_before_values",
+      "reason": "A full-day winner would search across half-session definitions and admit the lunch transition; Campaign050 freezes two independent 119-return halves."
+    },
+    {
+      "design": "alternate_tie_window_direction_normalization_threshold_filter_or_combination",
+      "decision": "rejected_before_values",
+      "reason": "Campaign050 freezes earliest absolute-shock ties, one terminal retracement normalization, higher direction, and no alternative field, lag, window, threshold, filter, subset, weight, fit, model, or combination."
+    }
+  ],
+  "selected_candidate": {
+    "name": "intraday_half_session_extreme_shock_reversal_completion_2h",
+    "direction": "higher",
+    "economic_hypothesis": "Prompt directional retracement of the largest one-minute shock in both continuous half sessions is consistent with liquidity replenishment and completed price discovery rather than persistent inventory pressure, potentially leaving a more resilient close-known state for the next-open-to-third-close horizon.",
+    "formula": "Within each independent 120-close half-session form 119 adjacent log returns. Choose the earliest index k attaining the maximum absolute return, let s be that return, and let R=log(last_close_in_half/close_immediately_after_s). Define h=-2*s*R/(s^2+R^2). Return the arithmetic mean of the morning and afternoon h values.",
+    "source_projection": [
+      "datetime",
+      "symbol",
+      "provider",
+      "close"
+    ],
+    "selected_grid": [
+      "09:31-11:30",
+      "13:01-15:00"
+    ],
+    "selected_bar_count": 240,
+    "closes_per_half": 120,
+    "returns_per_half": 119,
+    "selected_extreme_count": 2,
+    "include_0930": false,
+    "include_lunch_transition": false,
+    "absolute_shock_tie_rule": "earliest index within each half-session",
+    "terminal_retracement_anchor": "close immediately after the selected extreme return to the final close of the same half-session",
+    "support_rule": "All 240 closes must be finite and strictly positive; each half-session must contain at least one exactly nonzero log return; exact zero nonselected returns remain in the fixed support.",
+    "normalization": "negative twice the selected shock times its same-half terminal retracement divided by their squared Euclidean energy",
+    "valid_range": [
+      -1.0,
+      1.0
+    ],
+    "endpoint_canonicalization_tolerance": 1e-12,
+    "transform_threshold_filter_combination_or_model": "none"
+  },
+  "research_boundary": {
+    "external_campaign050_minute_partitions_read": false,
+    "candidate_or_comparison_values_read": false,
+    "historical_daily_price_or_forward_return_read": false,
+    "provider_request_issued": false,
+    "candidate49_historical_return_signal_execution_or_milestone_backfill_performed": false,
+    "candidate49_ledgers_changed": false,
+    "candidate50_prospective_activation_created": false,
+    "current_scoring_selection_sizing_or_orders_performed": false
+  },
+  "decision": {
+    "selected_candidate_count": 1,
+    "predictive_value_established": false,
+    "next_action": "Complete a separate pre-value overlap audit against the full 73-factor comparison chain, then freeze the exact ordered no-return protocol."
+  }
+}

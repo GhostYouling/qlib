@@ -1,0 +1,95 @@
+{
+  "schema_version": 1,
+  "kind": "a_share_three_day_walkforward_campaign115_development_trial_verification",
+  "status": "verified_metadata_only_development_runner_waiting_for_ordered_no_return_admission",
+  "recorded_at": "2026-08-09T08:36:00+08:00",
+  "recorded_at_semantics": "monotonic_logical_append_time_after_standalone_real_plan_and_focused_regression_not_host_wall_clock_measurement",
+  "protocol": {
+    "path": "docs/a_share_three_day_walkforward_campaign_115_development_trial_protocol_20260809.json",
+    "sha256": "7a6a537c53c5dbc090105cc750559ba4e163eb5878b8b619104407a0172b94ef"
+  },
+  "implementation_freeze": {
+    "path": "docs/a_share_three_day_walkforward_campaign_115_development_trial_implementation_freeze_v1_20260809.json",
+    "sha256": "d7de827bcd637fbe2f3e7b378829e97e5bb1ec55dd8a431b44d7351234e7b67d"
+  },
+  "runner": {
+    "path": "scripts/a_share_tushare_limit_up_queue_walkforward.py",
+    "sha256": "a34c278cc1c3c97a0de8934452d94980b19f642a55f317502e2b89b707045d85"
+  },
+  "tests": {
+    "path": "tests/data_collector_tests/test_a_share_tushare_limit_up_queue_walkforward.py",
+    "sha256": "ec9d99bd8c2f1d8c78f316dc8b9489084d3b377e378da58c958c1e26fe580f8d",
+    "post_freeze_runner_suite": "10 passed in 0.32s",
+    "campaign115_selected_regression": "67 passed in 10.16s",
+    "black_check": "2 files would be left unchanged",
+    "ruff_required_rules": "E4,E7,E9,F,I passed"
+  },
+  "real_plan": {
+    "standalone_process_exit_code": 2,
+    "ready": false,
+    "checks": {
+      "development_protocol_valid": true,
+      "development_implementation_freeze_valid": true,
+      "ordered_no_return_audit_admitted_one_factor": false
+    },
+    "blockers": [
+      "ordered_no_return_audit_admitted_one_factor"
+    ],
+    "candidate_or_comparator_values_read": false,
+    "historical_daily_price_or_forward_return_values_read": false,
+    "partition_year_2024_or_2025_values_read": false,
+    "credential_loaded": false,
+    "provider_request_issued": false
+  },
+  "real_inspection": {
+    "standalone_process_exit_code": 0,
+    "valid": true,
+    "status": "no_campaign115_development_trial",
+    "trial_ledger_present": false,
+    "historical_daily_price_or_forward_return_values_read_by_inspection": false,
+    "partition_year_2024_or_2025_values_read": false,
+    "credential_loaded": false,
+    "provider_request_issued": false
+  },
+  "failure_accounting": [
+    {
+      "attempt_id": "campaign115_infrastructure_020",
+      "path": "docs/a_share_three_day_walkforward_campaign_115_workspace_authority_path_probe_failure_20260809.json",
+      "sha256": "4eb0864f17e81bf8450680c482587c6b1cbdaea2fda0f38883676ce13f41fd70"
+    },
+    {
+      "attempt_id": "campaign115_infrastructure_021",
+      "path": "docs/a_share_three_day_walkforward_campaign_115_development_trial_v1_ruff_unused_import_failure_20260809.json",
+      "sha256": "076d45929880d70e89655d392489952933448b86167f5de835159a917b517786"
+    },
+    {
+      "attempt_id": "campaign115_infrastructure_022",
+      "path": "docs/a_share_three_day_walkforward_campaign_115_development_trial_plan_exit_masking_failure_20260809.json",
+      "sha256": "617feadc31332cae27f998241a87f1ae8ef36701ca651addbacf64211931603c"
+    }
+  ],
+  "frozen_trial_contract": {
+    "trial_id": "wf115_tushare_official_limit_up_queue_persistence_single_higher",
+    "expected_trial_count": 1,
+    "validation_years": [2021, 2022, 2023],
+    "purge_signal_sessions": 3,
+    "t_plus_1_and_t_plus_3_must_share_partition": true,
+    "topk": 3,
+    "stress_2024_2025_runner_exposed": false
+  },
+  "research_boundary": {
+    "campaign115_candidate_or_comparator_values_read": false,
+    "historical_daily_price_or_forward_return_values_read": false,
+    "development_trial_run": false,
+    "partition_year_2024_or_2025_values_read": false,
+    "stress_2024_2025_opened": false,
+    "credential_loaded": false,
+    "provider_request_issued": false,
+    "candidate49_historical_backfill_performed": false,
+    "candidate49_ledgers_changed": false,
+    "second_prospective_candidate_created": false,
+    "current_scoring_selection_sizing_or_orders_performed": false,
+    "investment_advice": false
+  },
+  "next_action": "Keep return access closed. After the development source exists, its semantic receipt is valid, and the ordered no-return audit admits exactly one factor, rerun this runner's standalone plan. Only ready=true with process exit code zero may authorize the exact confirmed single 2019-2023 development trial."
+}

@@ -1,0 +1,102 @@
+{
+  "version": 1,
+  "kind": "a_share_three_day_walkforward_campaign039_concept_scouting",
+  "status": "one_independent_return_time_reversal_asymmetry_concept_selected_before_candidate_comparison_or_return_values",
+  "recorded_at": "2026-07-31T02:09:56Z",
+  "purpose": "Select exactly one economically interpretable Campaign039 mechanism after Campaign038's terminal development rejection without reading a Campaign039 minute partition, candidate value, comparison value, daily price, or forward return.",
+  "authoritative_boundary": {
+    "path": "docs/a_share_three_day_iteration_status_20260731_campaign038_verified.json",
+    "sha256": "4bc921c541f6044b9756d6843e576c3282e2011f9952de1800dd335c2d9a16e5"
+  },
+  "historical_walkforward_policy": {
+    "path": "docs/a_share_three_day_historical_walkforward_research_policy_20260727.json",
+    "sha256": "38426d6161b9bfed323c58caba18feca668b8c9d53e294951a8ba90c01a798bb"
+  },
+  "selected_concept": {
+    "concept_name": "intraday_return_time_reversal_asymmetry",
+    "mechanism_family": "within_half_adjacent_return_cubic_time_irreversibility",
+    "economic_question": "Within each completed half session, does the ordered sequence of adjacent one-minute returns exhibit a third-order structure that changes under time reversal, indicating an ordered shock-and-relaxation or information-assimilation process rather than time-reversible noise?",
+    "economic_hypothesis": "A larger normalized magnitude of the antisymmetric adjacent-return third moment indicates stronger intraday time irreversibility and a more ordered information-flow process. That non-equilibrium path structure may remain relevant from the next open through the third close.",
+    "provisional_direction": "higher",
+    "allowed_source_fields": [
+      "datetime",
+      "symbol",
+      "provider",
+      "close"
+    ],
+    "forbidden_source_fields": [
+      "open",
+      "high",
+      "low",
+      "volume",
+      "amount",
+      "market or industry benchmark",
+      "quarterly or event field",
+      "daily price",
+      "forward return",
+      "Level-2"
+    ],
+    "fixed_temporal_question": "Use exactly 119 within-half log-close returns in the morning and 119 in the afternoon, then exactly 118 ordered adjacent-return pairs per half. Pool the two halves without crossing lunch. Measure the absolute aggregate antisymmetric cubic contrast sum(r_t^2*r_(t+1)-r_t*r_(t+1)^2), normalized by sum(abs(r_t*r_(t+1))*(abs(r_t)+abs(r_(t+1)))).",
+    "mandatory_overlap_challenges_before_any_value": [
+      "intraday_return_skewness_238m",
+      "intraday_upside_semivariance_share_239m",
+      "intraday_absolute_return_serial_persistence_236p",
+      "intraday_diffusive_variation_ratio_238m",
+      "intraday_five_minute_variance_ratio_230w",
+      "intraday_return_sign_run_imbalance_238p",
+      "intraday_return_weak_order_entropy_234t",
+      "intraday_return_spectral_entropy_59f",
+      "intraday_half_session_chord_adherence_240m",
+      "candidate49_intraday_cumulative_vwap_crossing_rate_240m_v1"
+    ],
+    "known_design_risks": [
+      "A third-order adjacent-return statistic can correlate with marginal return skewness or upside semivariance even though its numerator is antisymmetric under time reversal and depends on ordered pairs.",
+      "The statistic can be influenced by large adjacent returns. No clipping, winsorization, volatility filter, fitted threshold, or alternative power is allowed after values are observed.",
+      "Taking the absolute value after aggregating removes the sign of the time arrow and retains only the magnitude of irreversibility. Taking absolute values pair by pair, changing the cubic contrast, or selecting a half would answer a different question and is not allowed.",
+      "A zero normalization denominator provides no informative adjacent-return interaction and must remain missing. Higher irreversibility may reflect ordered information assimilation or transient microstructure stress; the higher direction must stay fixed and the frozen gates must decide without inversion."
+    ]
+  },
+  "rejected_concepts": [
+    {
+      "concept": "return_skewness_kurtosis_semivariance_or_tail_variant",
+      "reason": "Marginal distribution-shape mechanisms are terminal. Campaign039 uses the order-sensitive antisymmetric contrast of adjacent returns and cannot be reduced to an unordered return moment."
+    },
+    {
+      "concept": "linear_autocorrelation_variance_ratio_or_absolute_return_persistence_variant",
+      "reason": "Linear and magnitude serial mechanisms are terminal. Campaign039 uses a normalized cubic time-reversal contrast rather than covariance, correlation, lagged products alone, or multi-minute variance aggregation."
+    },
+    {
+      "concept": "sign_run_weak_order_spectral_entropy_or_price_update_variant",
+      "reason": "Campaign039 contains no sign count, ordinal state count, equality count, DFT, entropy, or price-grid class. Exact-zero returns remain ordinary values inside the fixed cubic support."
+    },
+    {
+      "concept": "chord_efficiency_extreme_range_frontier_or_ohlc_geometry_variant",
+      "reason": "Price-level path and OHLC geometry mechanisms are terminal. Campaign039 uses only adjacent signed log-close returns and no price-level chord, extremum, range, wick, or frontier."
+    },
+    {
+      "concept": "amount_volume_transaction_price_vwap_market_quarterly_event_or_terminal_factor_combination",
+      "reason": "Campaign039 is one raw own-stock close-return statistic and contains no activity field, VWAP, peer benchmark, disclosure field, terminal factor value, filter, fitted model, or combination."
+    }
+  ],
+  "research_boundary": {
+    "external_minute_partitions_read": false,
+    "external_daily_partitions_read": false,
+    "candidate_values_read": false,
+    "comparison_values_read": false,
+    "historical_daily_price_fields_read": false,
+    "historical_forward_returns_read": false,
+    "training_or_model_fitting_performed": false,
+    "provider_request_issued": false,
+    "candidate49_historical_return_signal_or_execution_backfill_performed": false,
+    "candidate49_ledgers_changed": false,
+    "candidate50_activation_created": false,
+    "current_scoring_selection_sizing_or_orders_performed": false,
+    "investment_advice": false
+  },
+  "decision": {
+    "selected_concept_count": 1,
+    "selected_concept": "intraday_return_time_reversal_asymmetry",
+    "predictive_value_established": false,
+    "next_action": "Validate the concept bindings, then perform a separate no-value mechanism-overlap audit and freeze one exact formula, direction, support, missing semantics, and complete 60-factor comparison library before opening candidate or comparison values."
+  }
+}

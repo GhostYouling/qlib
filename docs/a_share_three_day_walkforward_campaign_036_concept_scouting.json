@@ -1,0 +1,94 @@
+{
+  "version": 1,
+  "kind": "a_share_three_day_walkforward_campaign036_concept_scouting",
+  "status": "one_independent_intraday_two_sided_range_frontier_balance_concept_selected_before_candidate_comparison_or_return_values",
+  "recorded_at": "2026-07-30T21:07:53Z",
+  "purpose": "Select one economically interpretable Campaign036 mechanism after Campaign035's terminal no-return uniqueness rejection, without opening a Campaign036 minute partition, candidate value, comparison value, daily price, or forward return.",
+  "authoritative_boundary": {
+    "path": "docs/a_share_three_day_iteration_status_20260731_campaign035_verified.json",
+    "sha256": "39a838d3bcb15364ec4d78e51ece958a6ba5db5f0d953af2e8a4b9554f16e4fe"
+  },
+  "selected_concept": {
+    "concept_name": "intraday_two_sided_range_frontier_balance",
+    "mechanism_family": "within_half_running_high_low_frontier_expansion_balance",
+    "economic_question": "During the completed signal session, did price discovery extend the observed high-low frontier in a balanced two-sided way, or was almost all new range created on only one side?",
+    "economic_hypothesis": "More balanced upward and downward frontier discovery can represent two-sided liquidity and less one-directional crowding. A higher fixed balance score may therefore be associated with greater resilience from the next open through the third close.",
+    "provisional_direction": "higher",
+    "allowed_source_fields": [
+      "datetime",
+      "symbol",
+      "provider",
+      "high",
+      "low"
+    ],
+    "forbidden_source_fields": [
+      "open",
+      "close",
+      "volume",
+      "amount",
+      "market or industry benchmark",
+      "quarterly or event field",
+      "daily price",
+      "forward return",
+      "Level-2"
+    ],
+    "fixed_temporal_question": "Use exactly the 240 raw unadjusted one-minute high-low intervals at 09:31-11:30 and 13:01-15:00. Reset the running frontier at the start of each half, measure only genuinely new upward-high and downward-low expansion, and compare the two accumulated expansion sides without crossing lunch.",
+    "mandatory_overlap_challenges_before_any_value": [
+      "intraday_extreme_arrival_order_240m",
+      "intraday_global_price_range_revisit_240m",
+      "intraday_prior_range_breakout_pressure_238p",
+      "intraday_range_boundary_translation_coherence_238p",
+      "intraday_adjacent_range_overlap_continuity_238p",
+      "intraday_intrabar_range_reversal_238p",
+      "intraday_intrabar_range_participation_entropy_240m",
+      "intraday_signed_path_efficiency_239m",
+      "intraday_return_weak_order_entropy_234t",
+      "intraday_price_update_share_238m",
+      "candidate49_intraday_cumulative_vwap_crossing_rate_240m_v1"
+    ],
+    "known_design_risks": [
+      "A balance score can be high when both sides expand materially or when both expansion totals are small; the exact zero-denominator and scale semantics must be frozen before values.",
+      "Running extrema are path-dependent and may overlap statistically with extreme-arrival order, range revisit, breakout pressure, or signed path efficiency even though their formulas and source fields differ.",
+      "Resetting or not resetting at lunch, counting frontier events instead of their log expansion, choosing arithmetic instead of log distances, or changing the balance transform would create researcher degrees of freedom unless exactly one version is frozen before values.",
+      "A high score can describe healthy two-sided discovery or noisy whipsaw. The higher direction must remain fixed and the ordinary no-return and walk-forward gates must decide the hypothesis without post-result inversion."
+    ]
+  },
+  "rejected_concepts": [
+    {
+      "concept": "weak_order_entropy_sign_runs_price_update_or_round_grid_variant",
+      "reason": "Campaign034, Campaign035, and price-update/sign-run branches are terminal; Campaign036 must not re-express sparse price updating through local ordinal-pattern diversity."
+    },
+    {
+      "concept": "return_spectral_moment_semivariance_or_tail_variant",
+      "reason": "Frequency, moment, semivariance, and tail-shape mechanisms are terminal and changing their transform would be a prohibited rescue."
+    },
+    {
+      "concept": "amount_volume_transaction_price_vwap_or_activity_profile_variant",
+      "reason": "Activity, transaction-price, price-impact, and cumulative-VWAP mechanisms are already terminal or reserved for Candidate49."
+    },
+    {
+      "concept": "extreme_arrival_order_or_global_range_revisit_reparameterization",
+      "reason": "Campaign025 and Campaign014 are terminal. Campaign036 may challenge them but cannot change their tie, union, timing, or direction rules."
+    },
+    {
+      "concept": "market_benchmark_quarterly_event_or_terminal_factor_combination",
+      "reason": "Campaign036 must be one own-stock high-low frontier statistic and may not introduce a benchmark, event field, terminal factor value, model, or combination."
+    }
+  ],
+  "decision": {
+    "advance_to_separate_no_value_mechanism_overlap_audit": true,
+    "exact_formula_or_direction_fixed_here": false,
+    "new_daily_bar_required": false,
+    "same_day_1630_wait_required": false,
+    "candidate49_ledgers_changed": false
+  },
+  "research_boundary": {
+    "external_campaign036_minute_partitions_read": false,
+    "candidate_values_read": false,
+    "comparison_values_read": false,
+    "daily_price_fields_read": false,
+    "forward_returns_read": false,
+    "provider_request_issued": false,
+    "current_scoring_selection_sizing_or_orders_performed": false
+  }
+}

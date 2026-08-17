@@ -1,0 +1,24 @@
+{
+  "schema_version": 1,
+  "kind": "a_share_three_day_walkforward_campaign124_infrastructure_failure_record",
+  "status": "recorded_recovered_no_scientific_change",
+  "recorded_at": "2026-08-14T04:18:00+08:00",
+  "failure_id": "campaign124_post_failure_report_search_glob_001",
+  "stage": "post_source_failure_unified_report_discovery",
+  "command_role": "Read-only search for Markdown files mentioning Campaign123 before locating the current unified report.",
+  "exit_code": 1,
+  "failure_code": "zsh_unmatched_optional_glob_before_rg",
+  "provider_request_issued_by_failed_command": false,
+  "provider_request_retried": false,
+  "credential_loaded_or_read": false,
+  "candidate_comparator_price_or_return_values_read": false,
+  "scientific_result_changed": false,
+  "recovery": "Use rg --files followed by a filename filter, without an optional shell glob. Do not repeat any provider request.",
+  "research_boundary": {
+    "campaign124_source_failure_remains_terminal": true,
+    "candidate49_ledgers_changed": false,
+    "second_prospective_candidate_created": false,
+    "current_scoring_selection_sizing_positions_or_orders_performed": false,
+    "investment_advice": false
+  }
+}

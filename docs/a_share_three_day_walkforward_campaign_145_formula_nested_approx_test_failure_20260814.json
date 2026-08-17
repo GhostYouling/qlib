@@ -1,0 +1,20 @@
+{
+  "schema_version": 1,
+  "kind": "a_share_three_day_walkforward_campaign145_infrastructure_failure",
+  "status": "recorded_append_only_before_formula_implementation_freeze_and_before_historical_values",
+  "recorded_at": "2026-08-14T20:06:19+08:00",
+  "failure_id": "campaign145_infrastructure_003",
+  "stage": "prevalue_pure_formula_synthetic_validation",
+  "command_scope": "Focused Campaign145 pure-formula pytest after formatting and static checks",
+  "exit_code": 1,
+  "observed": "5 tests passed and 2 tests failed before freeze.",
+  "cause": "The two directional examples passed the formula eligibility gate but the assertions used pytest.approx on a nested list, which that pytest runtime does not support.",
+  "repair_boundary": "Change only the two test assertions to numpy allclose; do not change formula, direction, source, support or expected values.",
+  "research_values_read": false,
+  "candidate_or_comparator_values_read": false,
+  "daily_price_or_forward_return_values_read": false,
+  "provider_request_issued": false,
+  "credential_loaded": false,
+  "candidate49_ledgers_changed": false,
+  "scientific_definition_changed": false
+}

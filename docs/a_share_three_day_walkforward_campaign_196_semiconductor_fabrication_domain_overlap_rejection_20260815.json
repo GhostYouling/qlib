@@ -1,0 +1,64 @@
+{
+  "schema_version": 1,
+  "kind": "a_share_three_day_walkforward_campaign196_domain_overlap_rejection",
+  "status": "terminal_scientific_overlap_rejection_no_value_read",
+  "recorded_at": "2026-08-15T16:25:00+08:00",
+  "timestamp_semantics": "monotonic logical append time after the Campaign195 terminal authority",
+  "proposed_domain": "semiconductor_fabrication_wafer_yield_capacity_utilization_process_node_qualification_and_production_ramp_lifecycle",
+  "decision": "rejected_existing_campaign167_operating_milestone_and_campaign168_operating_kpi_domains",
+  "selected_for_factor_definition": false,
+  "formula": null,
+  "direction": null,
+  "parameters_filters_subsets_combinations_models": [],
+  "authoritative_inputs": {
+    "campaign195_effective_state": {
+      "path": "docs/a_share_three_day_iteration_status_20260815_campaign195_prevalue_terminal.json",
+      "sha256": "01cc98eb21dc70de3dc31aa1b5b29712b878763730a365090f95e64c92c45127"
+    },
+    "eligibility_policy_v285": {
+      "path": "docs/a_share_three_day_walkforward_future_numeric_comparison_eligibility_policy_v285_20260815.json",
+      "sha256": "b15473abe73918cf588e10c63e8e3fac5a1f27abcfd73a6830a6b66679285bfe"
+    },
+    "campaign167_positive_operating_milestone_frontier": {
+      "path": "docs/a_share_three_day_walkforward_campaign_167_positive_operating_milestone_source_frontier_20260815.json",
+      "sha256": "dad4642e6902f7e94dadca4285408b078cc6c0915c8b96cfe1eb40895fe96199"
+    },
+    "campaign168_operating_kpi_frontier": {
+      "path": "docs/a_share_three_day_walkforward_campaign_168_operating_scale_adoption_kpi_source_frontier_20260815.json",
+      "sha256": "c5dc98f92266e2b7ef7349cb5260a8cde15ccd9c78442e661e4170b1ba47d18a"
+    },
+    "campaign187_prior_semiconductor_overlap_rejection": {
+      "path": "docs/a_share_three_day_walkforward_campaign_187_semiconductor_milestone_kpi_domain_overlap_rejection_20260815.json",
+      "sha256": "43a34271a9423096fb64c3517cfe5a88f908886458711a59a8a66ef9362537d1"
+    }
+  },
+  "bounded_repository_search": {
+    "terms": [
+      "semiconductor",
+      "wafer",
+      "fabrication yield",
+      "defect density",
+      "fab utilization",
+      "tape-out",
+      "process node",
+      "半导体",
+      "晶圆",
+      "良率",
+      "流片",
+      "制程"
+    ],
+    "dedicated_prior_overlap_rejection_found": true,
+    "complete_output_observed": true
+  },
+  "reason": "Fab commissioning, tape-out, process-node qualification and production ramp are sector-specific Campaign167 operating milestones. Wafer starts, output, utilization, cycle time, yield and defect density are sector-specific Campaign168 operating scale, utilization and quality KPIs. Campaign187 already froze this exact overlap rejection, so reopening it would be a semantic relabeling rather than a new mechanism.",
+  "research_boundary": {
+    "source_row_semiconductor_kpi_factor_comparator_security_price_or_return_value_read": false,
+    "provider_or_web_request_issued": false,
+    "provider_credential_presence_value_or_digest_read": false,
+    "stress_2024_2025_opened": false,
+    "candidate49_ledgers_changed": false,
+    "second_prospective_candidate_created": false,
+    "current_scoring_selection_sizing_positions_or_orders_performed": false
+  },
+  "next_action": "Preserve the prior semantic rejection and inspect a genuinely distinct finite prevalue source domain without reading source rows or values."
+}

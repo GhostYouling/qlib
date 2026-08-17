@@ -1,0 +1,78 @@
+{
+  "version": 1,
+  "kind": "a_share_three_day_walkforward_campaign038_feature_implementation_freeze",
+  "status": "feature_implementation_frozen_before_candidate_snapshot_values",
+  "recorded_at": "2026-07-31T00:39:03Z",
+  "purpose": "Bind the exact Campaign038 close-only feature implementation and synthetic tests before opening any external candidate partition.",
+  "authoritative_inputs": {
+    "authoritative_state": {
+      "path": "docs/a_share_three_day_iteration_status_20260731_campaign037_verified.json",
+      "sha256": "18c869dfe193e77c2a782648918817b7a263a34d0aa40a232a015a5439b21f28"
+    },
+    "mechanism_overlap_audit": {
+      "path": "docs/a_share_three_day_walkforward_campaign_038_mechanism_overlap_audit.json",
+      "sha256": "5e52025a526b6398eb15b7c9a2dd42c991de34b444f9449766e2b051f6da47a4"
+    },
+    "no_return_preregistration": {
+      "path": "docs/a_share_three_day_walkforward_campaign_038_no_return_preregistration.json",
+      "sha256": "824ede814080bc7d9de8b50569571292d257a3b7bff338c3cbf6939a27535651"
+    },
+    "frozen_close_only_base": {
+      "path": "scripts/a_share_three_day_walkforward_campaign033_features.py",
+      "sha256": "ae3a523b3fdf0de128a878346b4b0368744ddc61e32e89bc94c0abe3426f70d1"
+    }
+  },
+  "implementation": {
+    "feature_runner": {
+      "path": "scripts/a_share_three_day_walkforward_campaign038_features.py",
+      "sha256": "136bcc6a881032e92da261d51dab73f0eccf4fb47488e305621ffcfb9b9daa52"
+    },
+    "synthetic_tests": {
+      "path": "tests/data_collector_tests/test_a_share_three_day_walkforward_campaign038_features.py",
+      "sha256": "5c6d5082466dde30dc079708331fff1dc87a1237bf227cf729eb4826b84f3ca4"
+    },
+    "factor_name": "intraday_half_session_chord_adherence_240m",
+    "direction": "higher",
+    "source_projection": [
+      "datetime",
+      "symbol",
+      "provider",
+      "close"
+    ],
+    "selected_bar_count": 240,
+    "half_session_bar_count": 120,
+    "within_half_return_count": 238,
+    "chord_deviation_support_count": 240,
+    "travel_normalization_multiplier": 120,
+    "endpoint_interpolation_not_fitted_trend": true,
+    "include_0930_or_lunch_transition": false,
+    "daily_price_or_forward_return_access": false
+  },
+  "verification": {
+    "command": "python -m pytest -q tests/data_collector_tests/test_a_share_three_day_walkforward_campaign038_features.py",
+    "passed": 7,
+    "failed": 0,
+    "collection_or_skip_count": 0,
+    "formula_cases": [
+      "linear endpoint-chord adherence exceeds a wandering path",
+      "independent price-scale invariance for both halves",
+      "cross-lunch price-level jump invariance",
+      "zero-total-travel missing semantics",
+      "one constant half and exact-zero returns remain allowed",
+      "invalid and nonpositive close rejection",
+      "exact ordered 59-factor comparison materialization",
+      "close-only 241-row source projection"
+    ],
+    "external_minute_partition_read": false,
+    "candidate_value_read": false,
+    "comparison_value_read": false,
+    "daily_price_or_forward_return_read": false,
+    "provider_request_issued": false
+  },
+  "authorization": {
+    "next_action": "Validate this freeze and all predecessor bindings, then build exactly one immutable Campaign038 snapshot from the frozen historical minute root.",
+    "formula_direction_chord_window_missing_or_gate_change_allowed": false,
+    "historical_return_read_allowed_before_no_return_admission": false,
+    "candidate49_backfill_candidate50_activation_or_current_output_allowed": false
+  }
+}

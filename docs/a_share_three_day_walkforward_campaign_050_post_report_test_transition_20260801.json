@@ -1,0 +1,82 @@
+{
+  "version": 1,
+  "kind": "a_share_three_day_walkforward_campaign050_post_report_test_transition",
+  "status": "report_supersession_generator_persistence_and_full_suite_verified",
+  "recorded_at": "2026-08-01T11:39:00Z",
+  "purpose": "Preserve the report-pointer and low-temporary-disk failures, bind their scoped corrections, and record the final full-suite result without changing research gates.",
+  "bindings": {
+    "unified_report_supersession_v3": {
+      "path": "docs/a_share_three_day_walkforward_campaign_050_unified_report_supersession_v3_20260801.json",
+      "sha256": "51a117b50abbe3e32a2399f257661b72378d1a885d039140831265d2d72fefb2"
+    },
+    "current_report_generator": {
+      "path": "scripts/a_share_short_horizon_factor_research.py",
+      "sha256": "66ff393f7f372c6adfda3cbba4a08c2dc6249ce8b31f13fae49f676a6b3c38b2"
+    },
+    "current_unified_research_report": {
+      "path": "data/experiments/short_horizon/three_day_research_report.md",
+      "sha256": "02efd969c5367aae72bf5ff5f1304b5886072350a28d23a0cc5d208689fc4ae2"
+    },
+    "campaign043_terminal_tests": {
+      "path": "tests/data_collector_tests/test_a_share_three_day_walkforward_campaign043_terminal.py",
+      "sha256": "12258a72df481967a6e34451bd0f6b08c894534c5e484030f91ed9dea6138d9c"
+    },
+    "campaign047_terminal_tests": {
+      "path": "tests/data_collector_tests/test_a_share_three_day_walkforward_campaign047_terminal.py",
+      "sha256": "c460ca6a0b659771ea7ff82a856f8b256d8bbe7d88caa1f0032e66e7509208ff"
+    },
+    "campaign049_terminal_tests": {
+      "path": "tests/data_collector_tests/test_a_share_three_day_walkforward_campaign049_terminal.py",
+      "sha256": "5e04b4c2cd593ee53f5dde5abd5cb0447738cd0e0e3226d83e75eb8b529299d5"
+    },
+    "campaign050_terminal_tests": {
+      "path": "tests/data_collector_tests/test_a_share_three_day_walkforward_campaign050_terminal.py",
+      "sha256": "6aa505b0a3f65418035bbb02dbecec8a547b170fcf23163d4bf138629e50033d"
+    }
+  },
+  "verification_history": {
+    "first_full_suite": {
+      "passed": 1743,
+      "failed": 8,
+      "warnings": 13,
+      "historical_report_pointer_failures": 3,
+      "system_temporary_disk_headroom_failures": 5
+    },
+    "targeted_recheck_on_data_volume_tmp": {
+      "passed": 35,
+      "failed": 0
+    },
+    "second_full_suite": {
+      "passed": 1750,
+      "failed": 1,
+      "warnings": 13,
+      "only_failure": "the report generator rebuilt only through Campaign027 and removed the manual Campaign050 section"
+    },
+    "generator_idempotence": {
+      "campaign028_through_campaign050_heading_count": 23,
+      "consecutive_report_sha256_equal": true,
+      "historical_report_assertions_passed": 22,
+      "historical_report_assertions_failed": 0
+    },
+    "final_full_suite_on_data_volume_tmp": {
+      "passed": 1751,
+      "failed": 0,
+      "warnings": 13,
+      "duration_seconds": 122.40
+    }
+  },
+  "disk_boundary": {
+    "system_temporary_volume_available_bytes_was_below_one_gibibyte": true,
+    "pytest_tmp_moved_to_data_volume": true,
+    "production_copy_bytes_plus_one_gibibyte_headroom_gate_changed": false
+  },
+  "semantic_boundary": {
+    "old_research_or_supersession_records_rewritten": false,
+    "factor_formula_direction_parameter_filter_subset_combination_model_or_gate_changed": false,
+    "additional_historical_daily_price_or_forward_return_read": false,
+    "2024_2025_stress_return_read": false,
+    "provider_request_issued": false,
+    "candidate49_ledgers_changed": false,
+    "current_scoring_selection_sizing_or_orders_performed": false
+  }
+}

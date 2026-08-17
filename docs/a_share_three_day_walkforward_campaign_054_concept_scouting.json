@@ -1,0 +1,118 @@
+{
+  "version": 1,
+  "kind": "a_share_three_day_walkforward_campaign054_concept_scouting",
+  "status": "completed_before_campaign054_candidate_comparison_daily_price_or_return_values",
+  "recorded_at": "2026-08-03T13:12:00Z",
+  "purpose": "Select one economically distinct historical-only minute mechanism after Campaign053 using definitions only and no Campaign054 value, comparison value, daily price, or forward return.",
+  "authoritative_inputs": {
+    "campaign053_verified_state": {
+      "path": "docs/a_share_three_day_iteration_status_20260803_campaign053_verified_v2.json",
+      "sha256": "db9a88d848bee8610e6563fc3d56789c66c94c3465aee7024507fb0d9789418c"
+    },
+    "campaign053_research_record": {
+      "path": "docs/a_share_three_day_walkforward_campaign_053_research_record_v2.json",
+      "sha256": "ff21cfac8b47ec66f0a797180d97a7f2e4590a3a4e10f7361a314a37bd9503e1"
+    },
+    "campaign053_cross_module_verification": {
+      "path": "docs/a_share_three_day_walkforward_campaign_053_cross_module_verification_20260803.json",
+      "sha256": "68f1b419332a4293e2df86dec9625434babd668e15a8f66c28494b87480b710d"
+    },
+    "historical_walkforward_policy": {
+      "path": "docs/a_share_three_day_historical_walkforward_research_policy_20260727.json",
+      "sha256": "38426d6161b9bfed323c58caba18feca668b8c9d53e294951a8ba90c01a798bb"
+    }
+  },
+  "definition_only_inventory": {
+    "inherited_usable_comparison_definition_count": 77,
+    "composition": "The 76 definitions reconstructed by the frozen Campaign053 protocol in exact order, followed by terminal Campaign053.",
+    "campaign054_candidate_values_read": false,
+    "comparison_values_read": false,
+    "minute_partitions_read": false,
+    "daily_price_or_forward_return_read": false
+  },
+  "candidate_design_catalog": [
+    {
+      "design": "volume_weighted_transaction_price_bowley_skew",
+      "decision": "selected",
+      "reason": "It measures signed asymmetry of the full-session executed-price distribution using share-volume-weighted quartiles. No frozen factor measures robust skew of transaction-price levels across volume mass."
+    },
+    {
+      "design": "transaction_price_geometric_arithmetic_dispersion",
+      "decision": "rejected_before_values",
+      "reason": "That sign-neutral central-tendency disagreement is the terminal intraday_transaction_vwap_consensus_240m mechanism."
+    },
+    {
+      "design": "transaction_price_return_skewness",
+      "decision": "rejected_before_values",
+      "reason": "Time-ordered price changes would reopen the terminal return-skewness and transaction-price-path families; Campaign054 stays on unordered price-level volume quantiles."
+    },
+    {
+      "design": "late_or_half_session_transaction_price_location",
+      "decision": "rejected_before_values",
+      "reason": "Clock-window price location would restate late VWAP, terminal close location, amount timing, or morning/afternoon profile mechanisms."
+    },
+    {
+      "design": "amount_absolute_return_tail_alignment",
+      "decision": "rejected_before_values",
+      "reason": "That is the Campaign053 amount/price-update discovery family which is terminal and cannot be rescued or reformulated."
+    },
+    {
+      "design": "quantile_level_weight_direction_window_threshold_filter_or_model_search",
+      "decision": "rejected_before_values",
+      "reason": "Campaign054 freezes quartiles 0.25/0.50/0.75, share-volume weights, higher direction, the full 240-bar support, and no alternative transform, threshold, filter, subset, combination, fit, or model."
+    }
+  ],
+  "selected_candidate": {
+    "name": "intraday_volume_weighted_transaction_price_bowley_skew_240m",
+    "direction": "higher",
+    "economic_hypothesis": "A right-skewed distribution of executed transaction-price levels across share-volume mass indicates that meaningful trading reached a longer upper-price tail than lower-price tail, consistent with asymmetric willingness to execute at elevated prices that may persist from the next open through the third close.",
+    "formula": "On the exact 240-bar continuous grid, retain active bars with volume>0 and amount>0 after enforcing joint-zero inactivity and rejecting any one-sided zero. Let x_i=log(amount_i/volume_i) and w_i=volume_i. For tau in {0.25,0.50,0.75}, Q_tau is the smallest sorted x whose cumulative weight at prices <=x is at least tau*sum(w). Return (Q_0.75+Q_0.25-2*Q_0.50)/(Q_0.75-Q_0.25).",
+    "source_projection": [
+      "datetime",
+      "symbol",
+      "provider",
+      "volume",
+      "amount"
+    ],
+    "selected_grid": [
+      "09:31-11:30",
+      "13:01-15:00"
+    ],
+    "selected_bar_count": 240,
+    "include_0930": false,
+    "time_order_used_after_grid_selection": false,
+    "active_bar_rule": "volume>0 and amount>0; a joint-zero bar is inactive; any one-sided zero invalidates the stock-day",
+    "minimum_active_bars": 120,
+    "transaction_price": "amount/volume; the provider-unit constant cancels inside log-price quantile differences",
+    "quantile_probabilities": [
+      0.25,
+      0.5,
+      0.75
+    ],
+    "quantile_estimator": "left-continuous inverse of the share-volume-weighted empirical CDF: smallest sorted log transaction price whose inclusive cumulative weight reaches tau times total active weight",
+    "tie_semantics": "Aggregate weight implicitly at equal transaction prices through the inclusive empirical CDF; never break a price tie by clock order",
+    "missing_rule": "Require every raw volume and amount finite and nonnegative, every active transaction price finite and positive, at least 120 active bars, positive total active volume, and Q_0.75>Q_0.25",
+    "valid_range": [
+      -1.0,
+      1.0
+    ],
+    "endpoint_canonicalization_tolerance": 1e-12,
+    "transform_scale_clip_threshold_filter_subset_combination_fit_or_model": "none"
+  },
+  "research_boundary": {
+    "external_campaign054_minute_partitions_read": false,
+    "candidate_or_comparison_values_read": false,
+    "historical_daily_price_fields_read": [],
+    "historical_forward_return_fields_read": false,
+    "provider_request_issued": false,
+    "candidate49_historical_return_signal_execution_or_milestone_backfill_performed": false,
+    "candidate49_ledgers_changed": false,
+    "second_prospective_candidate_created": false,
+    "current_scoring_selection_sizing_or_orders_performed": false
+  },
+  "decision": {
+    "selected_candidate_count": 1,
+    "predictive_value_established": false,
+    "next_action": "Complete a separate pre-value overlap audit against the 77 inherited definitions, then freeze the exact 77-comparison no-return protocol before implementation or any value read."
+  }
+}

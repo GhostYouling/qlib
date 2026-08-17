@@ -1,0 +1,79 @@
+{
+  "schema_version": 1,
+  "kind": "a_share_three_day_walkforward_campaign160_prevalue_infrastructure_failures",
+  "status": "three_prevalue_infrastructure_failures_recorded_without_source_or_research_value_access",
+  "recorded_at": "2026-08-15T04:47:50+08:00",
+  "authoritative_predecessor": {
+    "path": "docs/a_share_three_day_iteration_status_20260815_campaign159_prevalue_terminal.json",
+    "sha256": "35d379d7c9e9da38d7029db3b37e68128259db7f05b26e00616e8b513ace22b2"
+  },
+  "failures": [
+    {
+      "attempt_id": "campaign160_infrastructure_001",
+      "phase": "bounded_local_adapter_source_discovery",
+      "command_scope": "Import the pinned public adapter package in the established Python 3.12 runtime and print its local source path/version.",
+      "exit_code": 1,
+      "failure": "ModuleNotFoundError: No module named 'akshare'",
+      "repeated_or_masked": false,
+      "source_or_schema_opened_before_failure": false,
+      "partial_output_or_target_write": false
+    },
+    {
+      "attempt_id": "campaign160_infrastructure_002",
+      "phase": "bounded_local_adapter_source_discovery",
+      "command_scope": "A second source-print Python invocation in the same non-fail-fast shell command.",
+      "exit_code": 1,
+      "failure": "ModuleNotFoundError: No module named 'akshare'",
+      "repeated_or_masked": false,
+      "cause": "The combined diagnostic did not use shell fail-fast, so the second independent Python invocation repeated the same missing-module failure.",
+      "source_or_schema_opened_before_failure": false,
+      "partial_output_or_target_write": false
+    },
+    {
+      "attempt_id": "campaign160_infrastructure_003",
+      "phase": "local_adapter_source_discovery",
+      "command_scope": "Recursive filename search below /Users/niyufei and /Volumes/DIsk for stock_report_em.py or AkShare paths.",
+      "exit_code": 130,
+      "failure": "The broad read-only search did not complete promptly and was explicitly interrupted with SIGINT; its yielded output was not retained as evidence.",
+      "repeated_or_masked": false,
+      "source_or_schema_opened_before_failure": false,
+      "partial_output_or_target_write": false
+    }
+  ],
+  "safe_recovery": {
+    "method": "Use importlib.find_spec plus fixed package-cache roots only.",
+    "python_runtime": "/Volumes/DIsk/Coding/anaconda3/bin/python3.12",
+    "akshare_import_spec_present": false,
+    "fixed_cache_roots_checked": [
+      {
+        "path": "/Users/niyufei/.cache/pip",
+        "exists": false,
+        "matching_paths": 0
+      },
+      {
+        "path": "/Users/niyufei/Library/Caches/pip",
+        "exists": true,
+        "matching_paths": 0
+      },
+      {
+        "path": "/Volumes/DIsk/Coding/anaconda3/pkgs",
+        "exists": true,
+        "matching_paths": 0
+      }
+    ],
+    "bounded_recovery_exit_code": 0,
+    "failed_exit_codes_bypassed_or_masked": false,
+    "package_install_or_network_recovery_attempted": false,
+    "interpretation": "The pinned adapter source cannot be inspected from the established local runtime or fixed caches in this campaign. This is not evidence that the provider field is absent and does not authorize guessed positions or a provider request."
+  },
+  "research_boundary": {
+    "source_row_response_or_column_value_read": false,
+    "candidate_or_comparator_value_read": false,
+    "daily_price_or_forward_return_value_read": false,
+    "stress_2024_2025_opened": false,
+    "provider_or_web_request_issued": false,
+    "provider_credential_presence_value_or_digest_read": false,
+    "candidate49_ledgers_changed": false,
+    "filesystem_target_written_before_this_failure_record": false
+  }
+}

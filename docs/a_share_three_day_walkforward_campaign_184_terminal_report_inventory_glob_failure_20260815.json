@@ -1,0 +1,43 @@
+{
+  "schema_version": 1,
+  "kind": "a_share_three_day_walkforward_campaign184_infrastructure_failure",
+  "status": "recorded_recovered_no_scientific_evidence_consumed_from_failed_command",
+  "recorded_at": "2026-08-15T12:54:23+08:00",
+  "phase": "offline_repository_domain_inventory",
+  "failure": {
+    "failure_kind": "zsh_unmatched_glob_aborted_compound_read_only_command",
+    "operation": "List Campaign160-183 terminal-report titles with a brace-expanded wildcard, then run a bounded product-warranty and recall overlap search.",
+    "observed_result": "zsh reported no matches for the first campaign160 wildcard and exited before executing the bounded overlap search.",
+    "exit_code": 1,
+    "output_after_failure_used_as_scientific_evidence": false,
+    "overlap_search_executed_by_failed_command": false,
+    "failure_masked_or_treated_as_success": false
+  },
+  "bounded_recovery": {
+    "method": "Use rg --files followed by an explicit filename regex for report inventory, then run a separately exit-audited bounded ripgrep search over docs, scripts and data/experiments/short_horizon.",
+    "report_inventory_exit_code": 0,
+    "overlap_search_exit_code": 0,
+    "overlap_match_file_count": 5,
+    "domain_named_artifact_count": 3,
+    "all_recovery_commands_exit_zero": true
+  },
+  "authoritative_inputs": {
+    "campaign183_effective_state": {
+      "path": "docs/a_share_three_day_iteration_status_20260815_campaign183_prevalue_terminal.json",
+      "sha256": "8b2706b9985e605281404ed2e6de099c3f9b054b8d2ad31213dbec7d2ce664a2"
+    },
+    "eligibility_policy_v272": {
+      "path": "docs/a_share_three_day_walkforward_future_numeric_comparison_eligibility_policy_v272_20260815.json",
+      "sha256": "8e95cd0a473e422f9f598df02d10816ff62d4e1f17a525bb80027b3623c9b46c"
+    }
+  },
+  "research_boundary": {
+    "provider_or_web_request_issued": false,
+    "provider_credential_presence_value_or_digest_read": false,
+    "source_row_factor_comparator_security_price_or_return_value_read": false,
+    "stress_2024_2025_opened": false,
+    "candidate49_ledgers_changed": false,
+    "current_scoring_selection_sizing_positions_or_orders_performed": false
+  },
+  "next_action": "Count this command once as a Campaign184 infrastructure failure, bind only the successful bounded recovery and do not reuse the unmatched glob."
+}

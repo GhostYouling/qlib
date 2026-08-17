@@ -1,0 +1,82 @@
+{
+  "schema_version": 1,
+  "record_type": "a_share_three_day_walkforward_campaign_004_verification",
+  "recorded_at_utc": "2026-07-28T07:08:02Z",
+  "scope": "post_freeze_regression_and_environment_verification_only",
+  "bound_artifacts": {
+    "campaign_004_research_record": {
+      "path": "docs/a_share_three_day_walkforward_campaign_004_research_record.json",
+      "sha256": "6e0dd1295a75c1f3eebe70a5cf327d98490bd76a43b307cf5fb416013d60c88e"
+    },
+    "authoritative_iteration_state": {
+      "path": "docs/a_share_three_day_iteration_status_20260728_campaign004.json",
+      "sha256": "2037007da4fe750b70715b9f0cf7e8d361cb9d6d18128fdb6c18b05486954749"
+    },
+    "campaign_004_walkforward_preregistration": {
+      "path": "docs/a_share_three_day_walkforward_campaign_004_preregistration.json",
+      "sha256": "e67811f265b2b744073391fa65698951b132065109f95fa47991b8254a5756e6"
+    },
+    "campaign_004_trial_ledger": {
+      "path": "data/experiments/short_horizon/historical_walkforward/campaign_004/walkforward/trial_ledger.json",
+      "sha256": "70e85d7ad28530f9a3487a134cd12a8690b85e377bb78d4c5abdd8bb9cd0768b",
+      "entry_count": 12
+    }
+  },
+  "test_evidence": {
+    "focused_campaign_004_and_policy": {
+      "result": "passed",
+      "passed": 17
+    },
+    "cross_campaign_001_through_004": {
+      "result": "passed",
+      "passed": 46
+    },
+    "first_full_data_collector_attempt": {
+      "result": "environment_failure_not_code_failure",
+      "passed_before_terminal_summary": 1113,
+      "failed": 9,
+      "errors": 108,
+      "warnings": 11,
+      "root_cause": "OSError_28_no_space_left_on_device_on_local_Data_volume_during_pytest_temporary_file_creation_and_capture",
+      "campaign_004_regression_inference_permitted": false
+    },
+    "full_data_collector_rerun": {
+      "result": "passed",
+      "passed": 1176,
+      "failed": 0,
+      "errors": 0,
+      "warnings": 9,
+      "elapsed_seconds": 44.82,
+      "environment": {
+        "temporary_root": "/Volumes/DIsk/qlib-pytest-campaign004.hfYAun",
+        "pytest_basetemp": "/Volumes/DIsk/qlib-pytest-campaign004.hfYAun/pytest",
+        "pytest_cacheprovider_disabled": true
+      }
+    }
+  },
+  "temporary_artifact_cleanup": {
+    "local_failed_attempt_directory": {
+      "path": "/private/var/folders/hq/12r3j2_56mzghs2rj45h91nm0000gn/T/pytest-of-niyufei/pytest-27",
+      "approximate_size_mib": 45,
+      "removed": true
+    },
+    "external_successful_rerun_directory": {
+      "path": "/Volumes/DIsk/qlib-pytest-campaign004.hfYAun",
+      "approximate_size_mib": 46,
+      "removed": true
+    },
+    "recoverability": "generated_pytest_temporary_files_only_not_recoverable_and_not_required"
+  },
+  "semantic_reverification": {
+    "campaign_004_development_trials": 12,
+    "campaign_004_development_survivors": 0,
+    "stress_2024_2025_opened": false,
+    "stress_2024_2025_return_fields_read": false,
+    "candidate49_historical_return_backfill": false,
+    "candidate49_signal_ledger_mutated": false,
+    "candidate49_execution_ledger_mutated": false,
+    "candidate50_created": false,
+    "current_scoring_selection_sizing_or_orders_created": false
+  },
+  "conclusion": "The complete data_collector_tests rerun passed after relocating only pytest temporary storage to the external volume. The earlier terminal summary was an environment-capacity failure and provides no evidence of a Campaign004 code or research-semantic regression. Frozen research outcomes and hashes were not changed."
+}

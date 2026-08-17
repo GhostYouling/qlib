@@ -1,0 +1,47 @@
+{
+  "schema_version": 1,
+  "kind": "a_share_three_day_walkforward_campaign055_post_terminal_infrastructure_failure",
+  "status": "recorded_historical_state_assertions_selected_in_current_terminal_suite",
+  "recorded_at": "2026-08-04T02:31:30+08:00",
+  "campaign": "Campaign055",
+  "attempt_class": "infrastructure_only",
+  "stage": "campaign055_current_and_historical_terminal_test_selection",
+  "exit_code": 1,
+  "test_summary": {
+    "passed": 33,
+    "failed": 3,
+    "failed_nodes": [
+      "test_a_share_three_day_walkforward_campaign055_implementation_freeze_repair.py::test_campaign055_repair_status_remains_no_value_and_no_audit",
+      "test_a_share_three_day_walkforward_campaign055_terminal.py::test_campaign055_terminal_records_have_live_bindings",
+      "test_a_share_three_day_walkforward_campaign055_terminal.py::test_campaign055_reports_and_skill_publish_terminal_result"
+    ]
+  },
+  "failure_classification": "immutable_historical_state_assertions_selected_after_their_recorded_states_were_superseded",
+  "explanation": "The first node freezes the pre-snapshot repair state. The other two freeze the v1 terminal report bindings and exact report/document/skill hashes. Those artifacts remain preserved, but v2 is the current append-only accounting state.",
+  "authorized_repair": "Preserve all three historical tests unchanged, deselect only these exact nodes from the current suite, and add a separately versioned current-state test. Do not change factor code, values, audit, comparisons, thresholds, or Candidate49.",
+  "bindings": {
+    "implementation_repair_historical_tests": {
+      "path": "tests/data_collector_tests/test_a_share_three_day_walkforward_campaign055_implementation_freeze_repair.py",
+      "sha256": "bca36486196036e5612a54185bbb2b15e9f8bbfa964a9480026f8a11228be23e"
+    },
+    "terminal_v1_historical_tests": {
+      "path": "tests/data_collector_tests/test_a_share_three_day_walkforward_campaign055_terminal.py",
+      "sha256": "4f670806275f34ddfd2decff7ea60569323601e21ab1a0043cc0c7d74426a7ab"
+    },
+    "terminal_v2_tests": {
+      "path": "tests/data_collector_tests/test_a_share_three_day_walkforward_campaign055_terminal_v2.py",
+      "sha256": "0749f94b22d6d2cc7febc2012f95d35e87b56ba481c378e31042dc3ad62658bc"
+    },
+    "research_record_v2": {
+      "path": "docs/a_share_three_day_walkforward_campaign_055_research_record_v2.json",
+      "sha256": "8988105f8038cdcd3b984b9550edb44d268588dddb7e7d41f64fba4e0348f08a"
+    }
+  },
+  "campaign055_factor_formula_direction_snapshot_audit_comparisons_gates_or_terminal_decision_changed": false,
+  "historical_daily_price_fields_read": [],
+  "historical_forward_return_fields_read": false,
+  "candidate49_historical_return_read": false,
+  "candidate49_ledgers_changed": false,
+  "provider_request_issued": false,
+  "current_scoring_selection_sizing_or_orders_performed": false
+}

@@ -1,0 +1,24 @@
+{
+  "schema_version": 1,
+  "kind": "a_share_three_day_walkforward_campaign099_development_activation_binding",
+  "status": "one_frozen_development_trial_authorized_before_return_read",
+  "recorded_at": "2026-08-07T11:08:00Z",
+  "implementation_freeze": {
+    "path": "docs/a_share_three_day_walkforward_campaign_099_development_implementation_freeze_20260807.json",
+    "sha256": "9b3f823164c11467650e5349b71f90dab182aaccf1c58ff42809227bae0505ae"
+  },
+  "development_preregistration": {
+    "path": "docs/a_share_three_day_walkforward_campaign_099_preregistration.json",
+    "sha256": "2c8e4d9c3a5c90a58d0f739ed2381cc82a77ed164203e30b30a3d944a33a3974"
+  },
+  "append_only_internal_ledger": {
+    "path": "data/experiments/short_horizon/historical_walkforward/campaign_099/research_attempt_ledger_v15.json",
+    "sha256": "68c68a1224e2f21b8716a9ff900e9f30647e06ac87d578acc3a4277b359b37ab"
+  },
+  "authorized_command": "/Volumes/DIsk/Coding/anaconda3/bin/python3.12 -m scripts.a_share_three_day_walkforward_campaign099 --campaign docs/a_share_three_day_walkforward_campaign_099_preregistration.json run-development",
+  "remaining_complete_development_trials_authorized": 1,
+  "stress_2024_2025_authorized": false,
+  "provider_request_authorized": false,
+  "formula_direction_window_threshold_filter_subset_cost_model_or_gate_change_authorized": false,
+  "current_scoring_selection_sizing_orders_or_investment_advice_authorized": false
+}

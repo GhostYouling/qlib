@@ -1,0 +1,88 @@
+{
+  "version": 1,
+  "kind": "a_share_three_day_iteration_status",
+  "status": "aggregation_blocked_after_intraday_market_amount_profile_synchronization_terminal_rejection_zero_dual_gate_factors",
+  "recorded_at": "2026-07-25T05:18:00Z",
+  "purpose": "Advance the fingerprint-bound three-session research state after candidate 48 without rewriting the complete prior ledger.",
+  "previous_authoritative_state": {
+    "path": "docs/a_share_three_day_iteration_status_20260723.json",
+    "sha256": "08c3a5b2a1039cd46b9be4715bd666d516cc8d4273d03c5b56ddf06969b115c9",
+    "terminal_mechanism_count": 47
+  },
+  "fixed_strategy": {
+    "price_basis": "close_known_raw_pct_chg_chain_v1",
+    "holding_period_local_sessions": 3,
+    "topk": 3,
+    "signal_time": "local close",
+    "entry": "next local session open",
+    "exit": "third local session close",
+    "pilot_initial_capital_cny": 200000,
+    "pilot_buy_lot_size_shares": 100,
+    "pilot_primary_slippage_rate_each_side": 0.001,
+    "pilot_maximum_daily_amount_participation": 0.01
+  },
+  "accepted_price_frontier": {
+    "path": "docs/a_share_three_day_research_frontier_audit.json",
+    "sha256": "0ab41e940afff20cdd5ce46849820ffd56a3072aa859c30d4caa6dd71c10d846",
+    "historical_factor_count": 43,
+    "stability_qualified_factor_count": 7,
+    "topk_qualified_factor_count": 0,
+    "dual_gate_qualified_factor_count": 0
+  },
+  "latest_terminal_mechanism": {
+    "ordinal": 48,
+    "mechanism": "tushare_intraday_market_amount_profile_synchronization_240m",
+    "terminal_gate": "association_stability_and_executable_topk",
+    "record": {
+      "path": "docs/a_share_tushare_intraday_market_amount_profile_synchronization_research_record.json",
+      "sha256": "75a41875b5133258d483c470d44f1fdd1cdd030573e03ce66c33c22d926874ed"
+    },
+    "no_return_coverage_passed": true,
+    "no_return_uniqueness_passed": true,
+    "maximum_absolute_median_daily_rank_correlation": 0.5667050400934569,
+    "forward_returns_read": true,
+    "diagnostic_cohorts": 539,
+    "mean_rank_ic": -0.011744812824529938,
+    "positive_rank_ic_rate": 0.45083487940630795,
+    "association_stability_passed": false,
+    "execution_aware_top3_net_cumulative_return": -0.536413733053481,
+    "pilot_cny_200000_net_cumulative_return_at_ten_bp_each_side": -0.1317638058590641,
+    "topk_viability_passed": false,
+    "dual_gate_passed": false,
+    "terminal": true
+  },
+  "research_counts": {
+    "terminal_mechanism_count": 48,
+    "dual_gate_qualified_factor_count": 0,
+    "aggregation_minimum_economically_distinct_dual_gate_factors": 2
+  },
+  "decision": {
+    "aggregation_allowed": false,
+    "current_scoring_allowed": false,
+    "selection_allowed": false,
+    "sizing_allowed": false,
+    "orders_allowed": false,
+    "level2_intake_justified": false,
+    "invert_reformulate_rewindow_threshold_subset_reweight_or_retest_latest_factor_on_2019_2025_allowed": false,
+    "new_research_price_or_forward_return_read_for_this_status": true
+  },
+  "next_research_action": {
+    "objective": "Freeze and test one genuinely distinct, economically motivated mechanism under the same ordered protocol.",
+    "required_order": [
+      "mechanism overlap audit",
+      "no-return preregistration",
+      "immutable candidate snapshot",
+      "coverage and CNY 200000 capacity eligibility",
+      "all-terminal-factor uniqueness",
+      "separate single-use return preregistration only after all no-return gates pass",
+      "association stability and executable Top3 audits"
+    ],
+    "forbidden_rescue_actions": [
+      "invert the market amount-profile synchronization direction",
+      "change its similarity, benchmark, window, threshold, subset, or weighting on 2019-2025",
+      "combine terminal factors on the same history",
+      "generate current scores, selections, sizing, or orders",
+      "purchase Level-2 solely to rescue a failed mechanism"
+    ]
+  }
+}

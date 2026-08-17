@@ -1,0 +1,62 @@
+{
+  "schema_version": 3,
+  "kind": "a_share_three_day_walkforward_campaign115_source_acceptance_runner_freeze",
+  "status": "runner_v3_crash_safe_one_shot_intent_frozen_before_provider_request",
+  "recorded_at": "2026-08-09T03:50:00+08:00",
+  "supersedes_without_rewriting": {
+    "path": "docs/a_share_three_day_walkforward_campaign_115_source_acceptance_runner_freeze_v2_20260809.json",
+    "sha256": "76cd00fe9501469e3677f59e5635d217838585724a8acc624ad93d9ffa500ff1",
+    "preserved": true,
+    "reason": "V2 bound the executable at runtime but did not durably consume the one allowed attempt before the provider call. A crash after the request and before success/failure publication could therefore permit a duplicate request. V3 makes the existing lock_path an immutable one-shot attempt intent before credential loading or provider access."
+  },
+  "protocol": {
+    "path": "docs/a_share_three_day_walkforward_campaign_115_source_acceptance_protocol_20260809.json",
+    "sha256": "ad9b789fccada781e77662f95d7d3edaffc5371d605a85a9304a178e3ad4cc6c"
+  },
+  "implementation": {
+    "runner_path": "scripts/a_share_tushare_limit_up_queue_acceptance.py",
+    "runner_sha256": "34fa8fcd094c9833fafcb480e392c0c1835605f3455fb89eaf6cd1008eefa400",
+    "test_path": "tests/data_collector_tests/test_a_share_tushare_limit_up_queue_acceptance.py",
+    "test_sha256": "196c0adcdf2d8170e689eb867ea77ec79569633bb8a6a4ab270ea086aff4044b",
+    "adapter_path": "scripts/a_share_tushare_limit_up_queue_persistence.py",
+    "adapter_sha256": "807d06f7dec4ca0a94beb28912b686e8cb01fbf36c7f473e69564de16af5f5dd",
+    "runtime_reads_this_freeze_before_credential_access": true,
+    "runtime_recomputes_runner_test_protocol_and_adapter_sha256": true,
+    "missing_malformed_or_mismatched_freeze_makes_plan_ready_false": true,
+    "changed_runner_or_test_makes_plan_ready_false": true,
+    "provider_call_only_exists_in_confirmed_run_path": true,
+    "maximum_provider_calls": 1,
+    "request_or_formula_semantics_changed_from_v2": false
+  },
+  "crash_safe_one_shot_intent": {
+    "path": "data/.campaign115_tushare_limit_queue_acceptance.lock",
+    "created_with_exclusive_no_follow_semantics": true,
+    "mode": "0600",
+    "required_regular_unique_inode": true,
+    "content_fsynced_before_credential_loading": true,
+    "parent_directory_fsynced_before_credential_loading": true,
+    "same_run_identity_pinned_by_device_and_inode": true,
+    "preexisting_marker_makes_public_plan_ready_false": true,
+    "marker_never_removed_by_runner": true,
+    "crash_before_or_after_provider_call_consumes_attempt": true,
+    "duplicate_provider_call_after_crash_allowed": false
+  },
+  "synthetic_verification": {
+    "tampered_freeze_rejected": true,
+    "preexisting_attempt_intent_rejected": true,
+    "same_run_pinned_attempt_intent_accepted": true,
+    "simulated_provider_failure_followed_by_failure_record_removal_still_rejects_second_call": true,
+    "manual_5000_point_entitlement_confirmation_still_required": true,
+    "plan_without_manual_confirmation_expected_exit_code": 2,
+    "plan_without_manual_confirmation_expected_provider_calls": 0
+  },
+  "research_boundary": {
+    "provider_request_issued": false,
+    "provider_rows_candidate_or_comparison_values_read": false,
+    "daily_price_or_forward_return_values_read": false,
+    "candidate49_ledgers_changed": false,
+    "second_prospective_candidate_created": false,
+    "current_scoring_selection_sizing_or_orders_performed": false,
+    "investment_advice": false
+  }
+}

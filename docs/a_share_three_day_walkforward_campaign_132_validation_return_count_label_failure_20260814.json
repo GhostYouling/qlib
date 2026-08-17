@@ -1,0 +1,51 @@
+{
+  "schema_version": 1,
+  "kind": "a_share_three_day_walkforward_infrastructure_failure_record",
+  "recorded_at": "2026-08-14T09:46:02+08:00",
+  "campaign": 132,
+  "attempt_id": "campaign132_infrastructure_011",
+  "phase": "infrastructure_failure",
+  "stage": "postdevelopment_terminal_report_semantic_validation",
+  "status": "failed_ambiguous_validation_return_reading_trial_count_label",
+  "failure": {
+    "original_report_field": "validation_return_reading_trial_count",
+    "original_report_value": 0,
+    "actual_computation": "count of model trials with exactly three validation metric records",
+    "correct_unambiguous_fields": {
+      "model_trials_with_at_least_one_validation_return_read": 3,
+      "total_model_fold_validation_return_reads": 5,
+      "model_trials_with_all_three_validation_folds_read": 0
+    },
+    "historical_return_result_changed": false,
+    "survivor_decision_changed": false,
+    "lockbox_decision_changed": false,
+    "scientific_result_changed": false
+  },
+  "immutable_original_evidence": {
+    "development_report": {
+      "path": "data/experiments/short_horizon/historical_walkforward/campaign_132/walkforward_v3/development_report.json",
+      "sha256": "7a06c835eda37199496440a4eb12da87e75b10e81d5d1895dc803803b7798dbe"
+    },
+    "trial_ledger": {
+      "path": "data/experiments/short_horizon/historical_walkforward/campaign_132/walkforward_v3/trial_ledger.json",
+      "sha256": "7fb54d2e8a66187b2cef48150b7fb4f8ec7a5da98c8f0bdd4e5a635b7cf30a99"
+    },
+    "survivors": {
+      "path": "data/experiments/short_horizon/historical_walkforward/campaign_132/walkforward_v3/development_survivors.json",
+      "sha256": "b30981e40be5009cb906435b5e93ecaf36cb852e985679a491d4d65bfc69014b"
+    }
+  },
+  "predecessor_failure": {
+    "path": "docs/a_share_three_day_walkforward_campaign_132_v2_development_support_state_failure_20260814.json",
+    "sha256": "1ac48281f2bcafb44799349b5cef45f807b695532bb85ffcbd3ee886c1186e93"
+  },
+  "recovery_boundary": {
+    "preserve_original_report_and_ledger_unchanged": true,
+    "append_failure_to_hash_chained_campaign132_ledger_v2": true,
+    "publish_unambiguous_corrected_terminal_report": true,
+    "model_or_research_result_change_allowed": false,
+    "open_2024_2025_lockbox_allowed": false,
+    "provider_request_or_credential_load_allowed": false,
+    "candidate49_change_allowed": false
+  }
+}

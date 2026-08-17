@@ -1,0 +1,42 @@
+{
+  "schema_version": 1,
+  "kind": "a_share_three_day_walkforward_campaign115_ordered_no_return_audit_implementation_freeze",
+  "status": "runner_frozen_after_protocol_before_campaign115_candidate_or_comparator_values",
+  "recorded_at": "2026-08-09T06:28:00+08:00",
+  "recorded_at_semantics": "monotonic_logical_append_time_after_campaign115_ordered_no_return_protocol_not_host_wall_clock_measurement",
+  "protocol": {
+    "path": "docs/a_share_three_day_walkforward_campaign_115_ordered_no_return_audit_protocol_20260809.json",
+    "sha256": "6d94e7fb638aed9f0423179a60ee3ad1a768b12c0de14a64c6dcc81168e6d12d"
+  },
+  "implementation": {
+    "runner_path": "scripts/a_share_tushare_limit_up_queue_no_return_audit.py",
+    "runner_sha256": "802716fcd3f9c04025489a6ef6d7a51f9344402b6884f2c61d60603bb980f8d3",
+    "test_path": "tests/data_collector_tests/test_a_share_tushare_limit_up_queue_no_return_audit.py",
+    "test_sha256": "36669fc17ea44f4cacec9fd5f0e5202f44ca392a924a247a8def60d7bcfc8a44"
+  },
+  "frozen_runtime_semantics": {
+    "plan_reads_no_parquet_candidate_or_comparator_values": true,
+    "plan_reads_no_daily_price_forward_return_or_2024_2025_partition": true,
+    "semantic_receipt_and_source_dataset_sha256_are_revalidated_before_candidate_use": true,
+    "coverage_reads_only_campaign102_stock_day_key_before_comparator_values": true,
+    "coverage_failure_publishes_once_and_stops_before_all_comparator_values": true,
+    "coverage_pass_opens_exactly_130_campaign102_components_plus_four_frozen_incremental_comparators": true,
+    "only_2019_2023_manifest_listed_partitions_can_be_read": true,
+    "all_134_comparators_use_pairwise_complete_average_tie_daily_spearman": true,
+    "daily_rows_or_candidate_comparator_values_are_not_embedded_in_the_audit_artifact": true,
+    "exclusive_private_atomic_audit_publication": true,
+    "credential_or_provider_access_exists": false
+  },
+  "research_boundary": {
+    "candidate_values_read_before_freeze": false,
+    "comparator_values_read_before_freeze": false,
+    "daily_price_or_forward_return_values_read_before_freeze": false,
+    "partition_year_2024_or_2025_values_read_before_freeze": false,
+    "provider_request_issued_before_freeze": false,
+    "credential_loaded_before_freeze": false,
+    "candidate49_ledgers_changed_before_freeze": false,
+    "second_prospective_candidate_created_before_freeze": false,
+    "current_scoring_selection_sizing_or_orders_performed_before_freeze": false,
+    "investment_advice": false
+  }
+}

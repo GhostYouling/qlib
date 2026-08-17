@@ -1,0 +1,38 @@
+{
+  "schema_version": 1,
+  "kind": "a_share_three_day_walkforward_campaign168_prevalue_infrastructure_failures",
+  "status": "eight_effective_infrastructure_failures_recorded_precise_test_patch_ready",
+  "recorded_at": "2026-08-15T08:07:25+08:00",
+  "authoritative_predecessor": {
+    "path": "docs/a_share_three_day_walkforward_campaign_168_prevalue_infrastructure_failures_v5_20260815.json",
+    "sha256": "27718a30eafaf5ce70eb10ab4dcfdbae6a18baf468217bac129569cf7caa8d21",
+    "effective_failure_count": 7,
+    "preserved": true
+  },
+  "delta_failures": [
+    {
+      "attempt_id": "campaign168_infrastructure_008",
+      "phase": "effective_terminal_test_update",
+      "status": "failed_atomic_patch_context_after_black_reformat",
+      "exit_code": 1,
+      "observed": "The large apply_patch expected the pre-Black multiline timestamp assertion shape; the formatter had compacted it, so context verification failed before any hunk was applied.",
+      "target_file_written_by_failure": false,
+      "candidate_comparator_price_or_return_value_read": false,
+      "failed_exit_code_bypassed_or_masked": false,
+      "recovery_rule": "Read exact formatted contexts and apply bounded independent hunks; preserve this failed patch as a zero-write infrastructure attempt."
+    }
+  ],
+  "effective_failure_count": 8,
+  "all_effective_failures_recorded": true,
+  "unrecovered_or_unrecorded_failed_exit_codes_bypassed_or_masked": false,
+  "research_boundary": {
+    "source_row_document_title_body_kpi_candidate_comparator_price_or_return_value_read": false,
+    "provider_or_web_request_issued": false,
+    "provider_credential_presence_value_or_digest_read": false,
+    "stress_2024_2025_opened": false,
+    "candidate49_ledgers_changed": false,
+    "second_prospective_candidate_created": false,
+    "current_scoring_selection_sizing_positions_or_orders_performed": false
+  },
+  "next_action": "Append failure 008, publish final effective accounting, then update the formatted test in exact small hunks."
+}

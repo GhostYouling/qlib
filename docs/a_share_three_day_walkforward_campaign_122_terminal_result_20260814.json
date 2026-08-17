@@ -1,0 +1,88 @@
+{
+  "schema_version": 1,
+  "kind": "a_share_three_day_walkforward_campaign122_terminal_result",
+  "status": "terminal_prevalue_zero_candidates_no_values_or_returns_opened",
+  "recorded_at": "2026-08-14T03:04:37+08:00",
+  "authoritative_inputs": {
+    "campaign121_terminal_state": {
+      "path": "docs/a_share_three_day_iteration_status_20260814_campaign121_terminal.json",
+      "sha256": "52d2c1b56d403661b7d63aec8825461dca9f9b6fd374b77e05b99ea7654f537f"
+    },
+    "numeric_policy_v117": {
+      "path": "docs/a_share_three_day_walkforward_future_numeric_comparison_eligibility_policy_v117_20260814.json",
+      "sha256": "f9a701af28a503310d8571997212f4c6cac35c36b1c0ab161f52f37ccce1b3d2"
+    },
+    "concept_scouting": {
+      "path": "docs/a_share_three_day_walkforward_campaign_122_concept_scouting_20260814.json",
+      "sha256": "142795add23be3a8ffe566d61a7748844675817416e56874d0c147d347f0fa9b"
+    },
+    "mechanism_source_frontier_audit": {
+      "path": "docs/a_share_three_day_walkforward_campaign_122_mechanism_source_frontier_audit_20260814.json",
+      "sha256": "66f36969eabc2adc0242a5dd96560a29afd2aa0e8701a1b740988e4fd23523bf"
+    },
+    "attempt_ledger_v1": {
+      "path": "data/experiments/short_horizon/historical_walkforward/campaign_122/research_attempt_ledger_v1.json",
+      "sha256": "0299dd4f860b7de7dc05e0839c986ab946e66cbd2d27374c3a346e5ad188058d"
+    }
+  },
+  "scientific_result": {
+    "finite_catalog_size": 6,
+    "selected_candidate_count": 0,
+    "complete_factor_attempt_count": 0,
+    "return_reading_development_trial_count": 0,
+    "development_survivor_count": 0,
+    "stress_trial_count": 0,
+    "conclusion": "No Campaign122 proposal constitutes a genuinely new information mechanism within the accepted existing-data boundary. The campaign terminates before formula implementation, source rows, candidate values, comparisons or returns."
+  },
+  "frozen_library": {
+    "complete_definition_count": 147,
+    "complete_definition_order_sha256": "3f3756a4128011d9cd718e97d23ee3b1c78022433b269c75bd715f304a055bf0",
+    "eligible_numeric_comparator_count": 139,
+    "eligible_numeric_comparator_order_sha256": "9c4de054ca1b83eced67eece256b024ebec3a6e1925de17a4cedfa7d36265161",
+    "campaign122_appended_definition_or_comparator": false
+  },
+  "effective_accounting": {
+    "campaign122_attempt_count": 5,
+    "campaign122_ledger_entry_count": 5,
+    "campaign122_infrastructure_failure_count": 4,
+    "campaign122_prevalue_scientific_attempt_count": 1,
+    "campaign122_complete_factor_attempt_count": 0,
+    "campaign122_return_reading_development_trial_count": 0,
+    "campaign122_development_survivor_count": 0,
+    "campaign122_stress_trial_count": 0,
+    "cumulative_historical_research_attempt_count": 997,
+    "cumulative_return_reading_development_trial_count": 306
+  },
+  "candidate49": {
+    "only_active_prospective_candidate": true,
+    "signal_ledger_sha256": "5193f00d7f36da003f53cec387900da4c3d002299f5dfcfc1a95eaa199ed3a79",
+    "signal_entry_count": 0,
+    "execution_ledger_sha256": "d57a3e61eac969e42cafa418ccd8c0a5ee65dcf69da145bb2c096c2a02a2ea4f",
+    "execution_entry_count": 0,
+    "historical_backfill_performed": false,
+    "prospective_registration_changed": false
+  },
+  "research_boundary": {
+    "campaign122_source_rows_read": false,
+    "campaign122_candidate_values_computed_or_read": false,
+    "campaign122_comparator_values_read": false,
+    "campaign122_historical_daily_price_or_forward_return_values_read": false,
+    "legacy_exposed_registry_metrics_read_during_frontier_reconstruction": true,
+    "stress_2024_2025_opened": false,
+    "provider_request_issued": false,
+    "credential_loaded": false,
+    "candidate49_historical_backfill_performed": false,
+    "candidate49_ledgers_changed": false,
+    "second_prospective_candidate_created": false,
+    "current_scoring_selection_sizing_positions_or_orders_performed": false,
+    "investment_advice": false
+  },
+  "terminal_decision": {
+    "terminal": true,
+    "retry_relabel_or_rescue_allowed": false,
+    "formula_or_feature_implementation_allowed": false,
+    "historical_predictive_value_established": false,
+    "campaign123_prevalue_scouting_allowed": true,
+    "campaign123_requirement": "Begin only from a genuinely new prevalue mechanism or a separately accepted point-in-time source; preserve all Campaign122 rejections and the unchanged library."
+  }
+}

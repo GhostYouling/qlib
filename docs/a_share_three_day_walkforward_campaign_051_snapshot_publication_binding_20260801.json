@@ -1,0 +1,76 @@
+{
+  "version": 1,
+  "kind": "a_share_three_day_walkforward_campaign051_snapshot_publication_binding",
+  "status": "immutable_feature_snapshot_bound_before_ordered_no_return_audit",
+  "recorded_at": "2026-08-01T12:35:40Z",
+  "purpose": "Bind the complete close-only Campaign051 feature snapshot, implementation-frozen build entrypoint, and independent file verification before any comparison-library value is loaded.",
+  "frozen_inputs": {
+    "no_return_preregistration": {
+      "path": "docs/a_share_three_day_walkforward_campaign_051_no_return_preregistration_v2.json",
+      "sha256": "16636bb5196a362ca55b21696d88bc78b92d7ce10fbf70d252575f47b31c9e40"
+    },
+    "preregistration_semantic_failure": {
+      "path": "docs/a_share_three_day_walkforward_campaign_051_preregistration_semantic_failure_20260801.json",
+      "sha256": "2ac684d7c09bc1523a17399f7563ced7e922e147bce3f8054dee71e60f4a0e4c"
+    },
+    "feature_implementation_freeze": {
+      "path": "docs/a_share_three_day_walkforward_campaign_051_feature_implementation_freeze_20260801.json",
+      "sha256": "7721ecac1ea54a12f4ed1f16a71be962205c983cf4a7462602c68c8131a6b688"
+    },
+    "build_entrypoint": {
+      "path": "scripts/a_share_three_day_walkforward_campaign051_features_v2.py",
+      "sha256": "ee05356df8f6cac5c4f26c5d65c8ab2ca813f3789d4415518f7435c9ccdbc930"
+    }
+  },
+  "snapshot": {
+    "manifest_path": "/Volumes/DIsk/qlib-a-share-tushare-1m/derived/a_share/rich/tushare/minute_walkforward_campaign051_feature_library/tushare_stk_mins_1m_2019_2025_ea0cbb8f_walkforward_campaign051_feature_library_v1/snapshot_manifest.json",
+    "manifest_sha256": "13a2b7862cb2118dd8e42bcd94653973de603d840bd09f0762be219b840f032e",
+    "dataset_sha256": "2930b47c228f3e033f8130d9960e55668e688e02ba020a02d02ffa60987cabbd",
+    "partitions": 33015,
+    "rows": 7724498,
+    "eligible_rows": 7695092,
+    "factor": "intraday_close_range_occupancy_entropy_10b",
+    "direction": "higher",
+    "status": "feature_library_complete_pending_ordered_no_return_gates"
+  },
+  "independent_file_verification": {
+    "verified_partitions": 33015,
+    "verified_rows": 7724498,
+    "all_partition_byte_and_frame_hashes_valid": true
+  },
+  "source_truth": {
+    "source_fields_read": ["datetime", "symbol", "provider", "close"],
+    "source_open_high_low_read": false,
+    "source_close_read": true,
+    "source_volume_read": false,
+    "source_amount_read": false
+  },
+  "quality": {
+    "base_rows": 7724498,
+    "eligible_rows": 7695092,
+    "zero_log_close_range_rows": 29406,
+    "nonfinite_close_rows": 0,
+    "nonpositive_close_rows": 0,
+    "invalid_location_or_bin_rows": 0,
+    "range_or_nonfinite_score_rows": 0,
+    "exact_repeated_close_positions_retained": 1528852049,
+    "empty_bin_positions": 3921794
+  },
+  "research_boundary": {
+    "candidate_feature_values_materialized": true,
+    "comparison_factor_values_read": false,
+    "coverage_or_capacity_result_computed": false,
+    "historical_daily_price_fields_read": [],
+    "historical_forward_return_fields_read": false,
+    "training_or_model_fitting_performed": false,
+    "provider_request_issued": false,
+    "candidate49_historical_return_read": false,
+    "candidate49_ledgers_changed": false,
+    "second_prospective_candidate_created": false,
+    "current_scoring_selection_sizing_or_orders_performed": false
+  },
+  "decision": {
+    "snapshot_accepted_for_ordered_no_return_audit": true,
+    "next_action": "Use a snapshot-fingerprint-bound entrypoint for exactly one coverage/capacity-first and conditional 74-comparison no-return audit."
+  }
+}

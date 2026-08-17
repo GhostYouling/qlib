@@ -1,0 +1,47 @@
+{
+  "schema_version": 1,
+  "kind": "a_share_three_day_walkforward_campaign136_formula_implementation_freeze",
+  "status": "frozen_and_synthetic_tests_passed_before_daily_source_values",
+  "recorded_at": "2026-08-14T11:07:00+08:00",
+  "preregistration": {
+    "path": "docs/a_share_three_day_walkforward_campaign_136_no_return_preregistration_20260814.json",
+    "sha256": "31e883b6e64250b51871aceee5da7376f4ee6891896c7b6ae4f60cc6422ea298"
+  },
+  "formula_implementation": {
+    "path": "scripts/a_share_three_day_walkforward_campaign136_formula.py",
+    "sha256": "cae28e29215f10b5182878d66a9e61973469b76c2163a844832f9e4842c4ca14"
+  },
+  "synthetic_tests": {
+    "path": "tests/data_collector_tests/test_a_share_three_day_walkforward_campaign136_formula.py",
+    "sha256": "5fcd47980741e3510b666560e11cf29b7db2cd09b9bd779bed45e3392f927fc3",
+    "result": "6 passed",
+    "black": "passed",
+    "ruff": "passed"
+  },
+  "frozen_semantics": {
+    "factor": "daily_realized_price_basis_adjustment_magnitude_1d",
+    "direction": "higher",
+    "formula": "abs(log(factor_t)-log(factor_p))",
+    "predecessor": "same symbol on immediately preceding accepted local trading session",
+    "source_identity": "both rows use close_known_raw_pct_chg_chain_v1 and baostock",
+    "exact_zero_valid": true,
+    "finite_strictly_positive_source_factors_required": true,
+    "threshold_tolerance_rounding_clip_fill_sign_window_filter_subset_model_or_combination_search": false
+  },
+  "research_boundary": {
+    "daily_source_file_bytes_hashed_for_identity": true,
+    "daily_source_values_decoded_or_read": false,
+    "candidate_values_computed_or_read": false,
+    "comparator_values_read": false,
+    "historical_daily_ohlcv_fields_read": [],
+    "historical_forward_returns_read": false,
+    "stress_2024_2025_opened": false,
+    "provider_request_issued": false,
+    "credential_loaded": false,
+    "candidate49_historical_backfill_performed": false,
+    "candidate49_ledgers_changed": false,
+    "current_scoring_selection_sizing_positions_or_orders_performed": false,
+    "investment_advice": false
+  },
+  "next_action": "Implement and freeze a source-bound snapshot builder and read-only verifier; do not decode source values until their code and tests are fingerprint-bound."
+}

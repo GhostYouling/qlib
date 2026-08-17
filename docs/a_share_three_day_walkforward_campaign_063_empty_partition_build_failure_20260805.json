@@ -1,0 +1,83 @@
+{
+  "version": 1,
+  "kind": "a_share_three_day_walkforward_campaign063_feature_build_infrastructure_failure",
+  "status": "failed_closed_before_snapshot_publication_comparison_values_daily_prices_or_returns",
+  "recorded_at": "2026-08-05T06:25:00+08:00",
+  "attempt_id": "campaign063_infrastructure_002_empty_raw_partition",
+  "command": "PYTHONPATH=<repository-root>:<third-party-site-packages> python -S scripts/a_share_three_day_walkforward_campaign063_features.py build --data-root /Volumes/DIsk/qlib-a-share-tushare-1m --workers 8",
+  "exit_code": 1,
+  "failure_stage": "source_partition_identity_validation",
+  "exception": "Campaign063 symbol build failed: SH600485: raw identity changed for SH600485",
+  "triggering_partition": {
+    "symbol": "SH600485",
+    "year": 2021,
+    "manifest_rows": 0,
+    "source_byte_sha256": "01321693d59afe3b633ec4736a32acb27474a4e0635101f9d762eac01332e2e3",
+    "source_frame_sha256": "328a8dd0a02c3d2766cc55071754d9de52a8ef84bd5c794d93aae6b0d9a5e056",
+    "exact_projected_columns": [
+      "datetime",
+      "symbol",
+      "provider",
+      "close"
+    ],
+    "identity_only_diagnosis": "The Parquet frame is intentionally zero-row, so its symbol/provider identity sets are empty and the original nonempty identity assertion fails."
+  },
+  "manifest_declared_empty_source_partitions": [
+    "SH600485/2021",
+    "SH600677/2021",
+    "SH600680/2019",
+    "SZ000670/2021",
+    "SZ002260/2020",
+    "SZ002260/2021"
+  ],
+  "preserved_partial_snapshot": {
+    "root": "/Volumes/DIsk/qlib-a-share-tushare-1m/derived/a_share/rich/tushare/minute_walkforward_campaign063_feature_library/.tushare_stk_mins_1m_2019_2025_ea0cbb8f_walkforward_campaign063_feature_library_v1.partial",
+    "complete_checkpoint_partitions": 33004,
+    "expected_total_partitions": 33015,
+    "missing_checkpoint_partitions": 11,
+    "deleted_or_rewritten": false
+  },
+  "frozen_inputs": {
+    "no_return_protocol": {
+      "path": "docs/a_share_three_day_walkforward_campaign_063_no_return_preregistration.json",
+      "sha256": "2effcee4ccbbba8d55f450c7add3eb6064968a60c9d856ac769aebd20e542dfb"
+    },
+    "original_feature_runner": {
+      "path": "scripts/a_share_three_day_walkforward_campaign063_features.py",
+      "sha256": "c6987c8cb59d1a6091eeceed923406fcee4c00d943da5665d0abef674b17ab1b"
+    },
+    "original_implementation_freeze": {
+      "path": "docs/a_share_three_day_walkforward_campaign_063_feature_implementation_freeze_20260805.json",
+      "sha256": "1cc8ce929ec540eb23fac617fe8fe426824fb82ec144b863a972b78a6af5918a"
+    },
+    "raw_manifest_sha256": "9b3d959563c9d182f38981c6a36bdb3bc9b415de08487a9e1f9e850825c0839f",
+    "cross_sectional_moment_manifest_sha256": "bbb82784b4daa21080045a17239868b1063d233607f125d03acab2aefb4fee50",
+    "cross_sectional_moment_frame_sha256": "c4933078610a4a14597a35d54ac98f9089a90522b73d8d428cde9e5eec79201f"
+  },
+  "value_boundary": {
+    "minute_close_and_cross_sectional_moment_values_read_by_failed_build": true,
+    "candidate_values_computed_and_checkpointed": true,
+    "candidate_values_manually_inspected_or_used_to_change_formula_direction_peer_rule_loss_transform_threshold_or_gate": false,
+    "comparison_values_read": false,
+    "historical_daily_price_fields_read": [],
+    "historical_forward_return_fields_read": false,
+    "development_folds_opened": false,
+    "stress_2024_2025_opened": false,
+    "candidate49_historical_backfill_performed": false,
+    "candidate49_ledgers_changed": false,
+    "provider_request_issued": false
+  },
+  "repair_boundary": {
+    "authorized": true,
+    "only_change_allowed": "An exact-column zero-row raw frame may return an empty signed-return profile dictionary and zero source-quality counters.",
+    "every_nonempty_frame_must_delegate_to_original_extractor": true,
+    "formula_direction_grid_peer_gate_variance_rule_loss_transform_coverage_uniqueness_or_development_protocol_may_change": false,
+    "partial_snapshot_must_resume_without_deleting_or_recomputing_valid_checkpoints": true
+  },
+  "counting": {
+    "campaign063_research_attempt_increment": 1,
+    "campaign063_infrastructure_only_failure_increment": 1,
+    "campaign063_complete_factor_attempt_increment": 0,
+    "return_reading_development_trial_increment": 0
+  }
+}

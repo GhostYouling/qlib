@@ -1,0 +1,24 @@
+{
+  "schema_version": 1,
+  "kind": "a_share_three_day_walkforward_campaign211_infrastructure_failure",
+  "recorded_at": "2026-08-15T22:24:00+08:00",
+  "timestamp_semantics": "monotonic_logical_append_time_not_host_wall_clock_measurement",
+  "status": "failed_combined_failure_records_and_report_tails_output_truncated_discarded",
+  "phase": "workspace_authority_inspection",
+  "failure": {
+    "scope": "two Campaign210 failure records plus the 90-line tails of both mutable unified reports requested in one orchestration result",
+    "observed": "the combined outer result reported truncation and did not preserve a complete independently usable report-tail view",
+    "recovery": "discard the combined result and reread each report only from its exact Campaign210 heading in separate bounded commands"
+  },
+  "research_boundary": {
+    "failed_output_used_as_scientific_or_validation_evidence": false,
+    "candidate_or_comparator_value_read": false,
+    "daily_price_or_forward_return_read": false,
+    "provider_or_web_request_issued": false,
+    "provider_credential_presence_value_or_digest_read": false,
+    "candidate49_plan_or_run_executed": false,
+    "candidate49_ledgers_changed": false,
+    "stress_2024_2025_opened": false,
+    "current_use_or_investment_advice": false
+  }
+}

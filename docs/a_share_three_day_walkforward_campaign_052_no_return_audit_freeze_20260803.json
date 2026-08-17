@@ -1,0 +1,84 @@
+{
+  "version": 1,
+  "kind": "a_share_three_day_walkforward_campaign052_no_return_audit_freeze",
+  "status": "terminal_zero_admissible_factors_before_comparison_values_or_historical_returns",
+  "recorded_at": "2026-08-03T08:51:00Z",
+  "purpose": "Bind the sole Campaign052 coverage-first no-return result and forbid post-value rescue.",
+  "authoritative_inputs": {
+    "no_return_preregistration": {
+      "path": "docs/a_share_three_day_walkforward_campaign_052_no_return_preregistration.json",
+      "sha256": "3cb9468f7cf113c5ada33a7d766e94ee3689811522f3550450ab0135b748ab0b"
+    },
+    "snapshot_publication_binding": {
+      "path": "docs/a_share_three_day_walkforward_campaign_052_snapshot_publication_binding_20260803.json",
+      "sha256": "8903320a59e651bee9f188a29ee9765cb206e7a26c8e7cd98baa9fef478d6d4d"
+    },
+    "snapshot_manifest": {
+      "path": "/Volumes/DIsk/qlib-a-share-tushare-1m/derived/a_share/rich/tushare/minute_walkforward_campaign052_feature_library/tushare_stk_mins_1m_2019_2025_ea0cbb8f_walkforward_campaign052_feature_library_v1/snapshot_manifest.json",
+      "sha256": "04547981bed8a78438d7988296f1b3887a7d67b6604df555b207fac0b85a26c4",
+      "dataset_sha256": "f9a6f08060c60c2183c587d6008ffa20f76735bdef46a989f02dff6ecba1a30e"
+    },
+    "no_return_audit": {
+      "path": "data/experiments/short_horizon/historical_walkforward/campaign_052/no_return/20260803T084328Z_campaign052_no_return_audit.json",
+      "sha256": "47559113a6ea3e9cf52525d5d1440f242d41d764c478ced9d7d51feedc48114c"
+    },
+    "effective_post_snapshot_audit_runner": {
+      "path": "scripts/a_share_three_day_walkforward_campaign052_features_v3.py",
+      "sha256": "6d91419868f25b108ad925f8ca435169c1869e78878feb7f5bee43416119e354"
+    }
+  },
+  "result": {
+    "candidate": "quarterly_announcement_delay_consistency_4q",
+    "direction": "higher",
+    "candidate_eligible_rows": 1101638,
+    "quality_listing_eligible_rows": 1331759,
+    "calendar_sessions": 1632,
+    "median_coverage": 0.9603942174559903,
+    "minimum_median_coverage": 0.95,
+    "p05_coverage": 0.0,
+    "minimum_p05_coverage": 0.9,
+    "eligible_names_p05": 0.0,
+    "minimum_p05_eligible_names": 50,
+    "potential_non_overlapping_three_session_cohorts": 469,
+    "minimum_non_overlapping_three_session_cohorts": 200,
+    "observed_calendar_year_count": 6,
+    "minimum_observed_calendar_years": 5,
+    "coverage_gate_passed": false,
+    "comparison_library_size": 75,
+    "comparison_values_loaded_after_coverage_pass": false,
+    "comparison_correlations_computed": 0,
+    "admissible_factor_count": 0
+  },
+  "semantic_boundary": {
+    "all_snapshot_partition_byte_and_frame_hashes_verified": true,
+    "stock_day_identity_fields_read": [
+      "datetime",
+      "symbol",
+      "provider"
+    ],
+    "quarterly_disclosure_fields_read": [
+      "instrument",
+      "report_date",
+      "announcement_date"
+    ],
+    "quarterly_value_fields_read": [],
+    "minute_open_high_low_close_volume_amount_fields_read": [],
+    "historical_daily_price_fields_read": [],
+    "historical_forward_return_fields_read": false,
+    "candidate49_historical_return_read": false,
+    "candidate49_prospective_ledgers_changed": false,
+    "training_or_model_fitting_performed": false,
+    "current_scoring_selection_sizing_or_orders_performed": false,
+    "predictive_value_established": false
+  },
+  "decision": {
+    "factor_terminal": true,
+    "terminal_stage": "coverage_and_capacity_before_comparison_values",
+    "terminal_reason": "frozen_p05_coverage_and_p05_eligible_name_gates_failed_because_early_history_lacked_four_effective_consecutive_quarterly_reports",
+    "comparison_values_or_correlations_allowed": false,
+    "historical_walkforward_allowed": false,
+    "2024_2025_stress_allowed": false,
+    "shorter_window_later_start_threshold_relaxation_imputation_filter_subset_model_combination_or_rescue_rerun_allowed": false,
+    "next_action": "Record the exact terminal attempt and start only an independently preregistered Campaign053 mechanism."
+  }
+}

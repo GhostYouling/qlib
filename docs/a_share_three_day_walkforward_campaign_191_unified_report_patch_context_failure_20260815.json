@@ -1,0 +1,29 @@
+{
+  "schema_version": 1,
+  "kind": "a_share_three_day_walkforward_campaign191_infrastructure_failure",
+  "status": "apply_patch_context_mismatch_zero_write_recorded_recovered",
+  "recorded_at": "2026-08-15T14:57:00+08:00",
+  "attempt_id": "campaign191_infrastructure_003",
+  "phase": "campaign191_unified_report_publication",
+  "operation": "Atomically append the Campaign191 section to both mutable unified reports.",
+  "observed_failure": {
+    "failure_class": "apply_patch_context_mismatch",
+    "failed_target": "data/experiments/short_horizon/current_research_report.md",
+    "reason": "The patch used only the suffix of the final Campaign190 paragraph, while the report stores that paragraph as one longer line.",
+    "files_written_by_failed_patch": 0,
+    "scientific_evidence_consumed_from_failure": false
+  },
+  "recovery": {
+    "method": "Read the exact final lines and retry with complete line context for each report.",
+    "recovered": true
+  },
+  "research_boundary": {
+    "source_factor_comparator_security_price_or_return_value_read": false,
+    "provider_or_web_request_issued": false,
+    "provider_credential_presence_value_or_digest_read": false,
+    "stress_2024_2025_opened": false,
+    "candidate49_ledgers_changed": false,
+    "second_prospective_candidate_created": false
+  },
+  "next_action": "Bind this recovered failure into the Campaign191 append-only attempt chain and validate both report headings exactly once."
+}

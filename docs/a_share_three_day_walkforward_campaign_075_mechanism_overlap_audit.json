@@ -1,0 +1,128 @@
+{
+  "version": 1,
+  "kind": "a_share_three_day_walkforward_campaign075_mechanism_overlap_audit",
+  "status": "passed_semantic_mechanism_review_before_campaign075_candidate_source_or_comparison_values",
+  "recorded_at": "2026-08-06T09:16:00+08:00",
+  "concept_scouting": {
+    "path": "docs/a_share_three_day_walkforward_campaign_075_concept_scouting.json",
+    "sha256": "682378a54f554e669182528db1e3e1a702c93223e5d128e12c952db64b7ac350"
+  },
+  "authoritative_state": {
+    "path": "docs/a_share_three_day_iteration_status_20260806_campaign074_verified.json",
+    "sha256": "b6796f8f6404c38c6f67cb9f7b554689671ae568ef50dbf6c1b2d73925b961b8"
+  },
+  "numeric_comparator_policy": {
+    "path": "docs/a_share_three_day_walkforward_future_numeric_comparison_eligibility_policy_v10_20260806.json",
+    "sha256": "2b01d476308a1a286825a2727a26eefb1aef20706a132d7e6cb3ea4664fa0d48",
+    "complete_definition_count": 106,
+    "numeric_comparator_count": 105,
+    "complete_definition_order_sha256": "9e36bbe2532e09294f2c677615c6245609abdb94c44557ee776e040c9f270b0c",
+    "numeric_comparator_order_sha256": "533f22783f42d7d00b51fcceda879a2881e1a484f4d70fc0f2ecb5a0210e6fcc"
+  },
+  "candidate": {
+    "name": "accepted_instrument_session_youth_20s",
+    "direction": "higher",
+    "mechanism": "new-listing seasoning and issuer-attention decay measured solely by negative accepted tradable-coverage session age after the inherited 20-session gate, with older instruments left-censored at the accepted history boundary",
+    "formula": "negative count of accepted market sessions from the accepted instrument start date through the signal date inclusive, defined only when the count is at least 20",
+    "no_price_volume_amount_turnover_financial_event_or_return_input": true,
+    "no_old_factor_value_input": true,
+    "candidate49_used_or_modified": false
+  },
+  "complete_library_review": {
+    "all_106_definitions_reviewed_in_frozen_order": true,
+    "all_pre_walkforward_terminal_price_volume_event_and_structural_families_reviewed": true,
+    "candidate_is_exact_formula_duplicate": false,
+    "candidate_is_direction_only_duplicate": false,
+    "candidate_is_parameter_only_duplicate": false,
+    "candidate_is_an_inversion_of_a_terminal_factor": false,
+    "candidate_combines_terminal_factor_values": false,
+    "candidate_changes_the_20_session_listing_gate": false
+  },
+  "semantic_invariance_checks": [
+    {
+      "intervention": "Hold instrument identity, accepted instrument start date, accepted calendar, and signal date fixed while changing every minute and daily OHLCV, amount, turnover, VWAP, return, and market-peer path.",
+      "campaign075_result": "unchanged",
+      "distinguishes_from": "all price, volatility, range, liquidity, transaction-price, activity-profile, market-coupling, and Candidate49 mechanisms"
+    },
+    {
+      "intervention": "Hold accepted instrument start date and accepted calendar fixed while changing every financial statement value and every corporate event date, count, content, or freshness state.",
+      "campaign075_result": "unchanged",
+      "distinguishes_from": "quarterly quality, scale, acceleration, announcement timing, peer crowding, and historical event families"
+    },
+    {
+      "intervention": "Hold accepted-instrument session age fixed while changing nominal price, free-float capitalization, free-float scarcity, board-lot affordability, and share turnover.",
+      "campaign075_result": "unchanged",
+      "distinguishes_from": "size, liquidity, free-float, nominal-price affordability, and daily turnover families"
+    },
+    {
+      "intervention": "Insert a non-accepted calendar day between accepted instrument start and signal date without changing the accepted market calendar.",
+      "campaign075_result": "unchanged",
+      "distinguishes_from": "calendar-day age and announcement-freshness clocks"
+    },
+    {
+      "intervention": "Move the accepted instrument start date by one accepted session while holding all market and issuer values fixed.",
+      "campaign075_result": "changes by exactly one",
+      "distinguishes_from": "quality/listing eligibility, which is binary after 20 sessions rather than an ordered post-gate state"
+    }
+  ],
+  "nearest_semantic_challenges": [
+    {
+      "name": "quality_and_listing_eligibility_state",
+      "relationship": "both use the known accepted instrument start date and accepted calendar",
+      "distinction": "the inherited gate only removes ages below 20; Campaign075 leaves that gate untouched and orders all already-eligible names by the exact remaining age count",
+      "mandatory_semantic_and_implementation_challenge": true
+    },
+    {
+      "name": "tushare_free_float_scarcity and free_float_cap_proxy",
+      "relationship": "younger listings can have smaller tradable floats",
+      "distinction": "Campaign075 reads no share count, capitalization, amount, turnover, or price and can change only when accepted-session age changes",
+      "mandatory_semantic_challenge": true
+    },
+    {
+      "name": "intraday_terminal_nominal_share_price_affordability_rank_240m",
+      "relationship": "both can proxy retail accessibility and attention",
+      "distinction": "Campaign073 ranks terminal CNY price cross-sectionally; Campaign075 is invariant to price and uses an issuer's listing clock only",
+      "mandatory_numeric_challenge": true
+    },
+    {
+      "name": "quarterly_announcement_freshness_60s and quarterly_announcement_peer_crowding_sparsity",
+      "relationship": "all are deterministic time or issuer-state features",
+      "distinction": "announcement factors reset when disclosures arrive or depend on peer publication counts; Campaign075 never resets and advances by one only on each accepted market session",
+      "mandatory_numeric_challenge": true
+    },
+    {
+      "name": "intraday_cross_sectional_standardized_return_state_stability_236p",
+      "relationship": "the structurally nonnumeric definition remains in the complete library",
+      "distinction": "minute peer-standardized return-state mobility versus a deterministic issuer listing clock",
+      "mandatory_semantic_challenge": true,
+      "numeric_status": "undefined_not_pass_not_fail"
+    },
+    {
+      "name": "candidate49_intraday_cumulative_vwap_crossing_rate_240m_v1",
+      "relationship": "the sole active prospective candidate remains a mandatory isolation challenge",
+      "distinction": "Candidate49 uses causal minute price/volume/amount crossings on genuinely future sessions; Campaign075 is historical-only metadata and never enters Candidate49 ledgers",
+      "candidate49_remains_isolated": true
+    }
+  ],
+  "pre_value_decision": {
+    "economically_independent_enough_to_preregister": true,
+    "numeric_uniqueness_still_required_against_all_105_eligible_comparators": true,
+    "strict_maximum_absolute_median_daily_rank_correlation": 0.8,
+    "minimum_pairwise_names_per_session": 50,
+    "minimum_pairwise_sessions_per_comparison": 100,
+    "drop_residualize_invert_clip_bucket_rank_neutralize_filter_or_rescue_after_failed_gate_allowed": false
+  },
+  "research_boundary": {
+    "campaign075_candidate_source_rows_read": false,
+    "campaign075_candidate_values_read": false,
+    "comparison_values_read": false,
+    "historical_daily_price_fields_read": [],
+    "historical_forward_returns_read": false,
+    "provider_request_issued": false,
+    "candidate49_historical_backfill_performed": false,
+    "candidate49_ledgers_changed": false,
+    "second_prospective_candidate_created": false,
+    "current_scoring_selection_sizing_or_orders_performed": false,
+    "investment_advice": false
+  }
+}

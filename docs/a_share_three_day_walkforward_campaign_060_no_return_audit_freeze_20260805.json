@@ -1,0 +1,61 @@
+{
+  "version": 1,
+  "kind": "a_share_three_day_walkforward_campaign060_no_return_audit_freeze",
+  "status": "sole_audit_completed_coverage_failed_comparisons_and_returns_not_opened",
+  "recorded_at": "2026-08-05T00:24:00+08:00",
+  "factor": "intraday_day_over_day_directional_return_agreement_238b",
+  "direction": "higher",
+  "protocol": {
+    "path": "docs/a_share_three_day_walkforward_campaign_060_no_return_preregistration.json",
+    "sha256": "1d8d41bcfde2cd0ae81e69eae0abb4fd7ef92fed9ec63dd8187e510cd02b92a3"
+  },
+  "snapshot_binding": {
+    "path": "docs/a_share_three_day_walkforward_campaign_060_feature_snapshot_binding_20260804.json",
+    "sha256": "6226c6381bd5b11eec41061c99e906fb736acbb70c922831bf81d9ed974682bd"
+  },
+  "audit_implementation_freeze": {
+    "path": "docs/a_share_three_day_walkforward_campaign_060_no_return_audit_implementation_freeze_20260805.json",
+    "sha256": "864eb417bf3473f722a973eb9579fa4fb3db26caa67149950b35d10ad58b18df"
+  },
+  "range_repair_freeze": {
+    "path": "docs/a_share_three_day_walkforward_campaign_060_no_return_audit_range_repair_freeze_20260805.json",
+    "sha256": "3e8eac82121b718b32db3c2044b21cc1f0b342805f6032d74000f51a7a8b77f1"
+  },
+  "completed_audit": {
+    "path": "data/experiments/short_horizon/historical_walkforward/campaign_060/20260804T160410Z_campaign060_no_return_audit.json",
+    "sha256": "880dfc060005f49aa9df6d3c3f479d6408dc3c1667cc45c1b274a5ebf9fdd748",
+    "status": "completed_zero_admissible_factors_stop_before_historical_returns",
+    "run_count": 1,
+    "candidate_eligible_rows_after_quality_and_listing": 1171969,
+    "quality_listing_eligible_rows": 1331759,
+    "median_coverage": 0.9033241252302026,
+    "p05_coverage": 0.7990173123486684,
+    "p05_eligible_names": 128.55,
+    "potential_non_overlapping_three_session_cohorts": 540,
+    "observed_years": 7,
+    "median_coverage_gate": 0.95,
+    "p05_coverage_gate": 0.9,
+    "coverage_gate_passed": false,
+    "comparison_values_loaded_after_coverage_pass": false,
+    "comparison_result_count": 0,
+    "admissible_factor_count": 0
+  },
+  "decision": {
+    "terminal_before_comparison_values": true,
+    "terminal_before_daily_price_or_forward_return": true,
+    "development_preregistration_allowed": false,
+    "development_trial_allowed": false,
+    "stress_2024_2025_allowed": false,
+    "invert_rewindow_change_zero_support_lower_coverage_filter_rerun_rescue_or_combine_allowed": false
+  },
+  "research_boundary": {
+    "candidate49_historical_return_read": false,
+    "candidate49_ledgers_changed": false,
+    "provider_request_issued": false,
+    "second_prospective_candidate_created": false,
+    "current_scoring_selection_sizing_or_orders_performed": false,
+    "investment_advice": false,
+    "current_listing_snapshot_survivorship_limitation": true
+  },
+  "next_action": "Terminalize Campaign060 additively. Campaign061 may begin offline only from a genuinely independent pre-value-frozen mechanism."
+}

@@ -1,0 +1,24 @@
+{
+  "schema_version": 1,
+  "kind": "a_share_three_day_walkforward_campaign121_infrastructure_failure",
+  "status": "recorded_before_coverage_result_or_comparator_values",
+  "recorded_at": "2026-08-14T02:27:00+08:00",
+  "attempt_id": "campaign121_infrastructure_016",
+  "phase": "coverage_gate_execution",
+  "failure": {
+    "exit_code": 1,
+    "class": "inherited_manifest_validator_rejected_preserved_stale_metadata",
+    "message": "The inherited coverage runner called Campaign105's snapshot verifier, which requires the truthful [0,1] range inside the immutable manifest and therefore rejected the deliberately preserved stale [-1,1] field.",
+    "coverage_output_created": false
+  },
+  "safe_recovery": "Freeze a Campaign121 coverage recovery runner that binds the successful full recovery result, bypasses only the known incompatible inherited manifest validator, reuses the unchanged candidate loader, eligibility base and coverage gate, and still keeps comparator values closed.",
+  "research_boundary": {
+    "candidate_values_read_before_failure": false,
+    "coverage_result_created": false,
+    "comparator_values_read": false,
+    "historical_daily_price_or_forward_return_values_read": false,
+    "provider_request_issued": false,
+    "candidate49_ledgers_changed": false,
+    "scientific_result_changed": false
+  }
+}

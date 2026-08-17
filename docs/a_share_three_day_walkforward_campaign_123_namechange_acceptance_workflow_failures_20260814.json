@@ -1,0 +1,40 @@
+{
+  "schema_version": 1,
+  "kind": "a_share_three_day_walkforward_campaign123_namechange_acceptance_workflow_failures",
+  "status": "three_pre_freeze_infrastructure_failures_recorded_and_recovered",
+  "recorded_at": "2026-08-14T03:38:00+08:00",
+  "failures": [
+    {
+      "failure_id": "campaign123_acceptance_black_001",
+      "stage": "first_workflow_format_check",
+      "exit_code": 1,
+      "failure": "Black reported mechanical formatting differences in the new workflow and synthetic tests.",
+      "recovery": "Black formatted only the two new files; final Black check left both unchanged."
+    },
+    {
+      "failure_id": "campaign123_acceptance_capture_assertion_002",
+      "stage": "first_workflow_synthetic_test",
+      "exit_code": 1,
+      "failure": "Seven tests passed and the only failure compared pytest CaptureResult directly with SimpleNamespace even though both captured strings were empty.",
+      "recovery": "The assertion now checks captured.out and captured.err independently; the expanded nine-test suite passed without weakening the no-secret-output requirement."
+    },
+    {
+      "failure_id": "campaign123_acceptance_patch_context_003",
+      "stage": "provider_call_counter_audit_fix",
+      "exit_code": 1,
+      "failure": "The first apply_patch for partial provider-call accounting used a pre-Black multiline context and was rejected atomically before modifying either file.",
+      "recovery": "The actual formatted context was read, smaller patches added a fail-accurate provider-call counter and direct-CLI repository path setup, and all checks passed."
+    }
+  ],
+  "final_validation": {
+    "black": "passed; 2 files left unchanged",
+    "ruff": "passed",
+    "pytest": "9 passed in 0.45s",
+    "direct_cli_help": "exit 0"
+  },
+  "scientific_result_changed_by_failures": false,
+  "provider_request_issued": false,
+  "credential_loaded": false,
+  "provider_rows_read_persisted_or_counted": false,
+  "candidate_comparator_price_or_return_values_read": false
+}

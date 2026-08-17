@@ -1,0 +1,166 @@
+{
+  "schema_version": 1,
+  "kind": "a_share_three_day_walkforward_campaign105_mechanism_support_audit",
+  "status": "passed_semantic_independence_and_support_predicate_review_before_campaign105_source_candidate_or_comparison_values",
+  "recorded_at": "2026-08-07T17:32:40Z",
+  "purpose": "Challenge Campaign105's exact trade-activity clock-occupancy mechanism against all 134 v62 logical definitions and every known failed support predicate before reading any Campaign105 minute source row, candidate value, comparator value, daily price, or forward return.",
+  "authoritative_inputs": {
+    "concept_scouting": {
+      "path": "docs/a_share_three_day_walkforward_campaign_105_concept_scouting.json",
+      "sha256": "dc9116c62fef98f9aea0029cd24bf88d6be4c914cd7ba42d8b8604664f564d93"
+    },
+    "iteration_state": {
+      "path": "docs/a_share_three_day_iteration_status_20260808_campaign104_prevalue_terminal.json",
+      "sha256": "3ebb8fdc3df361b78488a446adc664ebfec85481cadca82ba88c19d647d6f450"
+    },
+    "numeric_policy_v62": {
+      "path": "docs/a_share_three_day_walkforward_future_numeric_comparison_eligibility_policy_v62_20260808.json",
+      "sha256": "3259f771039a2c3eb64c33b548fd9b198e6cd36f154cb8ab33a06ca91d495dfa",
+      "complete_definition_count": 134,
+      "complete_definition_order_sha256": "db734b25fed4046ff80a276448daf20918d410125ebae941373c5617816cf8dc",
+      "numeric_comparator_count_reserved_after_coverage": 131,
+      "numeric_comparator_order_sha256": "ab56a1791ae9a74b75d0a32cfb2346aa4bb6bfe266589be65825f8f51422f646"
+    },
+    "campaign104_frontier_audit": {
+      "path": "docs/a_share_three_day_walkforward_campaign_104_mechanism_frontier_audit.json",
+      "sha256": "16a61ec45f48202f031272c94b106a2d5c5db68275ce3bdfe2b263c096e2e3be"
+    }
+  },
+  "candidate": {
+    "name": "intraday_active_trading_bar_share_240m",
+    "direction": "higher",
+    "mechanism": "fraction of the fixed continuous-auction clock grid occupied by positive aggregate trading activity",
+    "formula": "sum_i 1[volume_i>0 and amount_i>0] / 240 over exactly 09:31-11:30 and 13:01-15:00, after finite nonnegative checks and exact volume_i=0 iff amount_i=0 validation",
+    "source_projection": [
+      "datetime",
+      "symbol",
+      "provider",
+      "volume",
+      "amount"
+    ],
+    "joint_zero_rule": "valid inactive bar",
+    "one_sided_zero_rule": "whole stock-day missing",
+    "minimum_active_bars": 0,
+    "valid_range": [0.0, 1.0],
+    "candidate49_used_or_modified": false
+  },
+  "complete_library_review": {
+    "all_134_frozen_logical_definitions_reviewed_in_exact_v62_order": true,
+    "three_semantic_only_definitions_reviewed_without_numeric_coercion": [
+      "intraday_cross_sectional_standardized_return_state_stability_236p",
+      "signal_day_turnover_rate_pct",
+      "intraday_own_bar_close_location_entropy_10b_240m"
+    ],
+    "candidate49_reviewed_only_as_an_isolation_boundary": true,
+    "old_terminal_definition_formula_direction_failure_history_or_numeric_eligibility_changed": false,
+    "candidate_is_exact_formula_duplicate": false,
+    "candidate_is_direction_only_duplicate": false,
+    "candidate_is_parameter_or_window_only_duplicate": false,
+    "candidate_combines_old_factor_values": false,
+    "candidate_changes_quality_listing_buyability_cost_fold_purge_or_survivor_gates": false
+  },
+  "semantic_invariance_checks": [
+    {
+      "intervention": "Redistribute positive volume and amount magnitudes arbitrarily among bars while preserving exactly which bars are jointly positive versus jointly zero.",
+      "candidate_result": "unchanged",
+      "distinguishes_from": "amount or volume entropy, center, dispersion, serial persistence, peak timing, local peaks, half-profile similarity, day-over-day profile similarity, transaction-price distributions, and price-impact mechanisms"
+    },
+    {
+      "intervention": "Change every minute open, high, low, and close while preserving the valid volume/amount activity indicator at every selected clock position.",
+      "candidate_result": "unchanged",
+      "distinguishes_from": "price-update share and clock entropy, return, range, candle, gap, VWAP-crossing, market-relative, and closing-price mechanisms"
+    },
+    {
+      "intervention": "Turn one joint-zero bar into a jointly positive volume/amount bar while holding all already-active magnitudes and every price field fixed.",
+      "candidate_result": "increases by exactly 1/240",
+      "distinguishes_from": "normalized activity-profile factors whose values may remain unchanged under common positive rescaling but depend on magnitude allocation rather than binary clock occupancy"
+    },
+    {
+      "intervention": "Multiply every positive volume and amount by the same positive constant while preserving joint-zero positions.",
+      "candidate_result": "unchanged",
+      "distinguishes_from": "absolute activity, transaction-price only through its unaffected ratio, provider turnover intensity through its external tradable-share denominator, and nominal price or capitalization mechanisms"
+    },
+    {
+      "intervention": "Hold the active/inactive clock mask fixed while changing the provider turnover rate, quarterly fields, accepted listing age, or any previous or next session.",
+      "candidate_result": "unchanged",
+      "distinguishes_from": "turnover, disclosure, quality, structural-age, and day-over-day mechanisms"
+    }
+  ],
+  "nearest_terminal_family_challenges": [
+    {
+      "family": "intraday_price_update_share_238m and intraday_price_update_clock_entropy_10b_238m",
+      "result": "semantically_distinct_pending_all_131_numeric_comparisons",
+      "reason": "Those factors use exact close equality and never observe whether shares traded. Campaign105 reads no price: an active minute with an unchanged close counts active, and changing prices alone cannot change its value."
+    },
+    {
+      "family": "intraday_zero_return_amount_intensity_238m",
+      "result": "semantically_distinct_pending_all_131_numeric_comparisons",
+      "reason": "That factor conditions mean CNY amount on unchanged-close transitions and requires price. Campaign105 has no conditional amount mean, return classification, adjacency, or magnitude."
+    },
+    {
+      "family": "amount and volume profile concentration timing persistence peak and similarity families",
+      "result": "semantically_distinct_pending_all_131_numeric_comparisons",
+      "reason": "Those mechanisms retain magnitude or time allocation after normalizing a positive profile. Campaign105 discards every positive magnitude and clock order after validating the fixed grid, retaining only occupancy count."
+    },
+    {
+      "family": "transaction-price consensus skew path and Candidate49 cumulative-VWAP crossing",
+      "result": "semantically_distinct",
+      "reason": "Those mechanisms divide amount by volume or combine activity with price. Campaign105 never constructs transaction price or reads close, and Candidate49 remains prospective-only."
+    },
+    {
+      "family": "signal_day_turnover_rate_pct and historical turnover family",
+      "result": "semantically_distinct",
+      "reason": "Turnover measures total shares relative to an external tradable-share denominator and is invariant to minute occupancy. Campaign105 measures only how many fixed clock intervals contain a trade and is invariant to total positive activity scale."
+    },
+    {
+      "family": "Campaign104 odd-lot aggregate-volume residue proposal",
+      "result": "semantically_distinct_and_schema_identified",
+      "reason": "Campaign105 makes no inference about trade or order size. Aggregate positive activity directly identifies that at least one trade contributed to the minute, which the accepted volume/amount schema supports."
+    }
+  ],
+  "mandatory_prevalue_support_predicate_gate": {
+    "required_by_policy_v62": true,
+    "all_known_terminal_coverage_failures_through_campaign104_reviewed": true,
+    "known_failed_support_inventory": [
+      {"campaign": 5, "failed_support_class": "sparse lunch repricing plus retained post-lunch return support", "relationship": "not inherited; no price, return, lunch event, adjacency, or event minimum"},
+      {"campaign": 8, "failed_support_class": "one-sided-zero share-volume response rule", "relationship": "strictly broader: arbitrary joint-zero bars remain valid inactive observations and there is no adjacent positive-volume pair or 120-pair minimum; only a source-inconsistent amount/volume one-sided zero fails"},
+      {"campaign": 13, "failed_support_class": "amount/volume transaction-price containment", "relationship": "strictly broader: no transaction price, high-low containment, positive-range count, or active-bar minimum"},
+      {"campaign": 19, "failed_support_class": "at least 120 informative nonzero body-sign pairs", "relationship": "not inherited; no open, close, sign, pair, or positive-count requirement"},
+      {"campaign": 44, "failed_support_class": "all-terminal-factor common finite intersection", "relationship": "not inherited; one raw source mask only"},
+      {"campaigns": [52, 68, 70, 84], "failed_support_class": "multi-quarter or prior-year event cold start", "relationship": "not inherited; no event history or lookback"},
+      {"campaign": 60, "failed_support_class": "exact prior stock session plus jointly nonzero return floor", "relationship": "not inherited; same-session only and exact zeros are valid"},
+      {"campaign": 63, "failed_support_class": "positive leave-one-out variance at every return position", "relationship": "not inherited; no peer benchmark or variance"},
+      {"campaigns": [86, 96], "failed_support_class": "at least 120 adjacent positive-range close-location pairs", "relationship": "not inherited; no range, close location, adjacency, or minimum"},
+      {"campaign": 95, "failed_support_class": "prevalue fixed-bin semantic contradiction", "relationship": "not inherited; binary activity indicator and denominator 240 are exact without a state-alphabet ambiguity"}
+    ],
+    "candidate_exact_support_predicate": "Require the exact 240-row selected grid and finite nonnegative volume and amount on every bar; require exact zero-equivalence between volume and amount on every bar; joint-zero bars remain valid; no positive activity count, variance, event, pair, lookback, peer, range, or price support threshold.",
+    "candidate_support_identical_to_known_failed_predicate": false,
+    "candidate_support_provably_narrower_than_known_failed_predicate": false,
+    "threshold_selected_from_candidate_values_or_results": false,
+    "decision": "pass_before_campaign105_source_rows_or_values"
+  },
+  "prevalue_decision": {
+    "economically_independent_enough_to_preregister": true,
+    "support_predicate_passed_before_values": true,
+    "numeric_uniqueness_still_required_against_all_131_eligible_comparators": true,
+    "strict_maximum_absolute_median_daily_rank_correlation": 0.8,
+    "minimum_pairwise_names_per_session": 50,
+    "minimum_pairwise_sessions_per_comparison": 100,
+    "drop_invert_rescale_residualize_filter_threshold_rewindow_or_rescue_after_failure_allowed": false
+  },
+  "research_boundary": {
+    "prior_metadata_and_terminal_results_read": true,
+    "campaign105_minute_source_rows_read": false,
+    "campaign105_candidate_values_computed_or_read": false,
+    "campaign105_comparison_values_read": false,
+    "historical_daily_price_fields_read": [],
+    "historical_forward_returns_read": false,
+    "provider_request_issued": false,
+    "candidate49_historical_backfill_performed": false,
+    "candidate49_ledgers_changed": false,
+    "second_prospective_candidate_created": false,
+    "current_scoring_selection_sizing_or_orders_performed": false,
+    "investment_advice": false
+  },
+  "next_action": "Hash-bind this audit, then freeze one exact coverage-first 131-comparator no-return protocol and one conditional single-factor 2019-2023 trial before implementing or reading Campaign105 values."
+}

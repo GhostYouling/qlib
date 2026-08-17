@@ -1,0 +1,76 @@
+{
+  "schema_version": 1,
+  "kind": "a_share_three_day_walkforward_campaign139_source_implementation_freeze",
+  "status": "source_builder_frozen_before_campaign139_source_column_values",
+  "recorded_at": "2026-08-14T13:15:59+0800",
+  "frozen_implementation": {
+    "runner_path": "scripts/a_share_three_day_walkforward_campaign139_source.py",
+    "runner_sha256": "5ea523eabe6742737678f3236235e2447453201624df4dd23fe5145f0b5b2e19",
+    "test_path": "tests/data_collector_tests/test_a_share_three_day_walkforward_campaign139_source.py",
+    "test_sha256": "6dc046ff0c60ca420ae39ee9aac0483c44014f190995dff43d39a41deaa7308a",
+    "protocol_v1_path": "docs/a_share_three_day_walkforward_campaign_139_no_return_preregistration_20260814.json",
+    "protocol_v1_sha256": "def4153f0fdc112ddb5b6349b83449874be040546ef4a9e2a6527dc07e713a1c",
+    "protocol_v2_path": "docs/a_share_three_day_walkforward_campaign_139_no_return_preregistration_v2_20260814.json",
+    "protocol_v2_sha256": "eaeffa8e446ee8aa683b2eadee8b20a6c9430978d6d31bdd5696c9a6d4e373b3",
+    "protocol_v3_path": "docs/a_share_three_day_walkforward_campaign_139_no_return_preregistration_v3_20260814.json",
+    "protocol_v3_sha256": "33c1fcb340a925bfa11f58700ee58225388f0dd06f1b050cb276d68c80914edf",
+    "formula_path": "scripts/a_share_three_day_walkforward_campaign139_formula.py",
+    "formula_sha256": "8939c7e3b1deca67cd70fba9d100417d0fbadb9188033d90c464349641a81f18",
+    "formula_freeze_sha256": "82a16f747a6204641430bb1cc187469b175e9156d708c1c8bf14217604c1703a",
+    "forecast_source_sha256": "48bc11ea6749a590fcc260f6a5728e853f59f228f6cef7c5b0183f206895d734",
+    "forecast_manifest_sha256": "d824bf8194b871fc21ce66cab80f1f9158814fff0e9a5d77a2cfbaec967e562c",
+    "quality_source_sha256": "3ac901a97928d2ed81ac72e3eaac9bdc148d36cf67b6abe70223699235ef059f",
+    "quality_manifest_sha256": "e3cf654babe37a82393c5530696bc1cc242b736cb88e1947b8444b638125ba8c",
+    "calendar_sha256": "fda506597d26bcec953cdc0882042a5046ec1587db60490e16a01627fd43f53a",
+    "forecast_projection": [
+      "instrument",
+      "report_date",
+      "announcement_date",
+      "forecast_profit_yoy"
+    ],
+    "quality_projection": [
+      "instrument",
+      "report_date",
+      "announcement_date",
+      "profit_yoy"
+    ],
+    "output_columns": [
+      "effective_date",
+      "event_expiry_date",
+      "instrument",
+      "provider",
+      "report_date",
+      "realized_announcement_date",
+      "forecast_announcement_date",
+      "realized_profit_yoy",
+      "forecast_profit_yoy",
+      "raw_surprise"
+    ],
+    "output_root": "data/experiments/short_horizon/historical_walkforward/campaign_139/source_snapshot_v1",
+    "source_decode_is_local_only": true,
+    "provider_or_credential_interface_present": false,
+    "historical_price_or_return_field_interface_present": false,
+    "post_2025_rows_excluded_before_candidate_matching": true,
+    "atomic_exclusive_publication": true
+  },
+  "pre_freeze_validation": {
+    "focused_formula_and_source_tests": "11 passed in 2.06s",
+    "black_check": "4 files would be left unchanged",
+    "ruff": "All checks passed",
+    "exit_code": 0
+  },
+  "research_boundary": {
+    "source_schema_and_rowgroup_metadata_read": true,
+    "source_column_values_read_before_freeze": false,
+    "candidate_or_comparator_values_read_before_freeze": false,
+    "historical_price_or_return_values_read": false,
+    "stress_2024_2025_opened": false,
+    "provider_request_issued": false,
+    "provider_credential_value_or_digest_read": false,
+    "candidate49_historical_backfill_performed": false,
+    "candidate49_ledgers_changed": false,
+    "current_scoring_selection_sizing_positions_or_orders_performed": false,
+    "investment_advice": false
+  },
+  "next_action": "Run the exact source plan in a standalone process. Only ready=true with exit code zero permits the same frozen runner's run --confirm-source-build."
+}

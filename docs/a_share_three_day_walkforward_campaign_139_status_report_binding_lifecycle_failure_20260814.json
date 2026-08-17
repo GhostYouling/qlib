@@ -1,0 +1,33 @@
+{
+  "schema_version": 1,
+  "kind": "a_share_three_day_walkforward_campaign139_infrastructure_failure",
+  "status": "old_status_retained_pre_fix_terminal_report_hash_after_canonical_notation_repair",
+  "recorded_at": "2026-08-14T13:39:10+0800",
+  "stage": "campaign139_terminal_regression_validation_after_report_notation_repair",
+  "command_result": {
+    "black_check": "7 files would be left unchanged",
+    "ruff": "All checks passed",
+    "pytest_passed": 19,
+    "pytest_failed": 1,
+    "exit_code": 1,
+    "failed_test": "test_campaign139_terminal_status_goal_and_candidate49_isolation"
+  },
+  "binding_failure": {
+    "json_pointer": "/reports/campaign139_terminal_report",
+    "expected_pre_fix_sha256": "f80077b3ea027f00ad6853faa2e386527b83b0bc5c6d7a2dea1c4ad3ca7de8a1",
+    "observed_post_fix_sha256": "7f216e1cf790eac6e24f2f7fdaf1347d197f774ee9e6d64f8f2a722d4b4d6884",
+    "old_status_path": "docs/a_share_three_day_iteration_status_20260814_campaign139_capacity_terminal.json",
+    "old_status_preserved": true
+  },
+  "research_boundary": {
+    "failed_exit_code_bypassed": false,
+    "scientific_result_changed": false,
+    "formula_direction_matching_liveness_capacity_or_library_membership_changed": false,
+    "new_source_candidate_or_comparator_values_read": false,
+    "historical_daily_price_or_forward_return_values_read": false,
+    "stress_2024_2025_opened": false,
+    "provider_request_issued": false,
+    "candidate49_ledgers_changed": false
+  },
+  "next_action": "Preserve the old status bytes and publish an additive status bound to the corrected report and final accounting."
+}

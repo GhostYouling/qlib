@@ -1,0 +1,48 @@
+{
+  "version": 1,
+  "kind": "a_share_three_day_walkforward_campaign033_post_result_test_transition",
+  "status": "post_result_assertions_bound_without_changing_frozen_runner_or_results",
+  "recorded_at": "2026-07-30T17:30:38Z",
+  "purpose": "Explain and bind the deliberate transition from pre-return empty-output assertions to post-result terminal-state assertions while preserving the exact runner, preregistration, append-only ledger, survivor decision, and closed stress record.",
+  "bindings": {
+    "pre_return_implementation_freeze": {
+      "path": "docs/a_share_three_day_walkforward_campaign_033_development_implementation_freeze_20260730.json",
+      "sha256": "56d11ced08afa077b1fb8f58798a053956cd0935ae76f5af21d0ef92aca192c1"
+    },
+    "terminal_research_record": {
+      "path": "docs/a_share_three_day_walkforward_campaign_033_research_record.json",
+      "sha256": "b2f4c2f9ebd587e53e5ea3a889af9797b4e7e428e568f68ad525df455843b53d"
+    },
+    "unchanged_frozen_runner": {
+      "path": "scripts/a_share_three_day_walkforward_campaign033.py",
+      "sha256": "2e27892205b626b5d7a5e804cb17f4385d29d6a544c5c3670e6f1ed0d42d957d"
+    },
+    "post_result_test_file": {
+      "path": "tests/data_collector_tests/test_a_share_three_day_walkforward_campaign033.py",
+      "sha256": "60f4c78b53d151c40d52e41c12b96c5c5876f3f877fa042de32d6ae6f9f0f587"
+    },
+    "append_only_trial_ledger": {
+      "path": "data/experiments/short_horizon/historical_walkforward/campaign_033/walkforward/trial_ledger.json",
+      "sha256": "2fec760b7b966861cd3f66ba6eacdc479e8d27ccdf1cd3334cf7d21e83cfe319"
+    },
+    "development_survivors": {
+      "path": "data/experiments/short_horizon/historical_walkforward/campaign_033/walkforward/development_survivors.json",
+      "sha256": "c79bedd67743b4474e465ff86e54600a09804d6f2f341ca5de10a4cb8d3689f6"
+    },
+    "closed_stress_record": {
+      "path": "data/experiments/short_horizon/historical_walkforward/campaign_033/walkforward/exposed_stress_consumption_record.json",
+      "sha256": "f6b91792d4fd6a0235adfcd3ad30499cf54090e617e49daea02424686414fe61"
+    }
+  },
+  "transition": {
+    "pre_return_test_sha256": "19bacdaaeafd667da86aaba1246cc05eb79961da1238826ee439a3f0b294a14d",
+    "pre_return_assertion": "ledger_entry_count=0 and no stress record before the protected development run",
+    "post_result_test_sha256": "60f4c78b53d151c40d52e41c12b96c5c5876f3f877fa042de32d6ae6f9f0f587",
+    "post_result_assertion": "one append-only development entry, zero survivor, explicit unopened-stress record, canonical complexity one, exact eight rejection reasons, and Candidate49 isolation",
+    "runner_changed_after_return_read": false,
+    "formula_direction_cost_gate_fold_or_survivor_rule_changed": false,
+    "ledger_survivor_or_stress_record_rewritten": false,
+    "focused_tests_passed": 18,
+    "focused_tests_failed": 0
+  }
+}

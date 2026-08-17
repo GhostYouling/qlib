@@ -1,0 +1,43 @@
+{
+  "schema_version": 1,
+  "kind": "a_share_three_day_walkforward_campaign185_prevalue_domain_overlap_rejection",
+  "status": "rejected_exact_existing_campaign173_enterprise_tax_position_compliance_overlap",
+  "recorded_at": "2026-08-15T13:10:00+08:00",
+  "phase": "finite_prevalue_domain_selection",
+  "candidate_domain": "tax_incentive_tax_audit_dispute_loss_carryforward_lifecycle",
+  "bounded_search": {
+    "pattern_family": "tax holiday, tax incentive, uncertain tax position, tax audit, tax assessment, tax loss carryforward, deferred tax asset and exact Chinese equivalents",
+    "exit_code": 0,
+    "matching_file_count": 7,
+    "dedicated_existing_domain_found": true,
+    "factor_comparator_security_price_or_return_value_read": false
+  },
+  "authoritative_inputs": {
+    "campaign184_effective_state": {
+      "path": "docs/a_share_three_day_iteration_status_20260815_campaign184_prevalue_terminal.json",
+      "sha256": "11d155ea03b85b0fb9b6e7ce854b67f7c98d57be96c3af69d40800686342b5d8"
+    },
+    "campaign173_enterprise_tax_frontier": {
+      "path": "docs/a_share_three_day_walkforward_campaign_173_enterprise_tax_position_compliance_source_frontier_20260815.json",
+      "sha256": "e4eaabeaca181e58e004a7a8968af5946136a602c106fe3241ff06ca41b1a40e"
+    }
+  },
+  "scientific_decision": {
+    "formula": null,
+    "direction": null,
+    "parameters_filters_subsets_combinations_models": [],
+    "selected_for_campaign185_finite_catalog": false,
+    "reason": "Campaign173 already freezes tax incentives, tax loss carryforwards and deferred-tax recoverability, tax audit or dispute and cash-tax compliance states. Renaming or subdividing them would not create a genuinely independent mechanism.",
+    "existing_campaign_rewritten": false
+  },
+  "research_boundary": {
+    "provider_or_web_request_issued": false,
+    "provider_credential_presence_value_or_digest_read": false,
+    "source_row_factor_comparator_security_price_or_return_value_read": false,
+    "stress_2024_2025_opened": false,
+    "candidate49_ledgers_changed": false,
+    "second_prospective_candidate_created": false,
+    "current_scoring_selection_sizing_positions_or_orders_performed": false
+  },
+  "next_action": "Record this exact overlap once and continue Campaign185 with a genuinely different bounded offline mechanism domain."
+}

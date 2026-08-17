@@ -1,0 +1,107 @@
+{
+  "schema_version": 1,
+  "kind": "a_share_three_day_iteration_status_campaign240_prevalue_terminal",
+  "recorded_at": "2026-08-16T07:59:00+08:00",
+  "timestamp_semantics": "monotonic_logical_append_time_not_host_wall_clock_measurement",
+  "status": "campaign240_validation_passed_goal_active_campaign241_offline_prevalue_authorized",
+  "supersedes_without_rewriting": {
+    "path": "docs/a_share_three_day_iteration_status_20260816_campaign239_prevalue_terminal.json",
+    "sha256": "dc2018aee211a0e6dcf5144c1a41d6334b72378213cb6b4edb0fe6785c47bda7"
+  },
+  "authoritative_inputs": {
+    "historical_walkforward_policy": {
+      "path": "docs/a_share_three_day_historical_walkforward_research_policy_20260727.json",
+      "sha256": "38426d6161b9bfed323c58caba18feca668b8c9d53e294951a8ba90c01a798bb"
+    },
+    "frozen_source_frontier": {
+      "path": "docs/a_share_three_day_walkforward_campaign_240_compressed_air_service_lifecycle_source_frontier_20260816.json",
+      "sha256": "1bc3aecb77fdf0f5e66edd93f9ea9e835df5ce792118c51275ff5dd49be621d0"
+    },
+    "attempt_ledger_v1": {
+      "path": "data/experiments/short_horizon/historical_walkforward/campaign_240/research_attempt_ledger_v1.json",
+      "sha256": "651e18e4e8a9393dbda694641175478eb0a2d2ff58e681717daaff2891efed4e"
+    },
+    "terminal_result": {
+      "path": "docs/a_share_three_day_walkforward_campaign_240_terminal_result_20260816.json",
+      "sha256": "188c60fa7bbee07a5a232e044df11882c5f9273cb04180b0c98551f7d31df0d2"
+    },
+    "numeric_policy_v368": {
+      "path": "docs/a_share_three_day_walkforward_future_numeric_comparison_eligibility_policy_v368_20260816.json",
+      "sha256": "670282533c0987422ad572fc6cc566753f1e2ff5d2c0fa844d021499ef43864a"
+    },
+    "terminal_validation": {
+      "path": "docs/a_share_three_day_walkforward_campaign_240_terminal_validation_20260816.json",
+      "sha256": "2e22cae1e88530b27bea00074183f65f609004565832833b6578a060005e559a"
+    }
+  },
+  "campaign240": {
+    "terminal": true,
+    "terminal_stage": "prevalue_source_admission_and_overlap_gate",
+    "finite_route_count": 7,
+    "source_admission_deferral_count": 3,
+    "overlap_or_hypothesis_rejection_count": 4,
+    "selected_factor_count": 0,
+    "definition_or_comparator_append": false,
+    "development_trial_count": 0,
+    "stress_trial_count_2024_2025": 0
+  },
+  "effective_accounting": {
+    "campaign240_attempt_count": 9,
+    "campaign240_scientific_attempt_count": 7,
+    "campaign240_infrastructure_failure_count": 2,
+    "cumulative_historical_research_attempt_count": 2281,
+    "cumulative_return_reading_development_trial_count": 314,
+    "chain_tip_sha256": "ef8b06b00c91b557ba5f974f88c6a3dcd40d7f2e440c2a69670fbb708a7f5b50"
+  },
+  "library_state": {
+    "complete_factor_definition_count": 158,
+    "complete_factor_definition_order_sha256": "4819c7fd7c0795d7598a52f3c615e3f117d5f4ecd9332974bc8e3dfa57c96667",
+    "eligible_numeric_comparator_count": 142,
+    "eligible_numeric_comparator_order_sha256": "5d1b35fb5a0d8ac9293008db9963c4a60a94dc940c237c3ed259e5ce44f14aaf",
+    "changed_by_campaign240": false
+  },
+  "candidate49": {
+    "sole_prospective_candidate": true,
+    "signal_ledger_sha256": "5193f00d7f36da003f53cec387900da4c3d002299f5dfcfc1a95eaa199ed3a79",
+    "signal_entry_count": 0,
+    "execution_ledger_sha256": "d57a3e61eac969e42cafa418ccd8c0a5ee65dcf69da145bb2c096c2a02a2ea4f",
+    "execution_entry_count": 0,
+    "ledgers_changed": false
+  },
+  "future_campaign_boundary": {
+    "next_campaign": 241,
+    "historical_offline_prevalue_work_may_continue_at_any_local_time": true,
+    "2024_2025_source_or_returns_remain_closed": true,
+    "candidate49_remains_separate_confirmation_layer": true
+  },
+  "validation": {
+    "focused_pytest": "2 passed",
+    "cumulative_pytest": "511 passed, 1 skipped, 55 deselected",
+    "campaign145_through_campaign240_test_file_count": 128,
+    "black": "passed after mechanical formatting of the new unfrozen test",
+    "ruff": "passed",
+    "json_parse": "passed",
+    "unmasked_whitespace": "passed"
+  },
+  "publication_state": {
+    "current_report_sha256": "e9552294d40067f3131246cc70f8cd474fddf9f77d000ccbd41242f4305f7521",
+    "three_day_report_sha256": "a8fbded67e166bfbdb45cba61a0296af3e70d88b5f9b38fcd5a21ce4bd3092cf",
+    "terminal_test_sha256": "4bf2df3dffe1d89fad99ce4db3b2d91ac5a0cf5d7ce290dd78d6d421f9703a39"
+  },
+  "research_boundary": {
+    "historical_offline_prevalue_work_may_continue_at_any_local_time": true,
+    "failed_or_truncated_output_used_as_scientific_or_validation_evidence": false,
+    "frozen_source_frontier_rewritten": false,
+    "source_or_industrial_commercial_compressed_air_system_service_contract_asset_registry_preventive_maintenance_audit_leak_fault_repair_parts_energy_compliance_billing_factor_comparator_security_price_or_return_value_read": false,
+    "natural_person_employee_identity_exact_customer_premises_address_map_layout_compressor_room_protected_infrastructure_distribution_network_location_access_credential_live_technician_route_schedule_realtime_pressure_flow_leakage_energy_production_incident_readiness_posture_customer_identity_control_configuration_endpoint_vulnerability_proprietary_compressor_setting_lubricant_desiccant_formula_diagnostic_repair_procedure_private_audit_incident_narrative_legal_communication_payment_instrument_or_confidential_contract_price_read": false,
+    "stress_2024_2025_opened": false,
+    "provider_or_web_request_issued": false,
+    "provider_credential_presence_value_or_digest_read": false,
+    "candidate49_plan_or_run_executed": false,
+    "candidate49_ledgers_changed": false,
+    "second_prospective_candidate_created": false,
+    "current_scoring_selection_sizing_positions_or_orders_performed": false,
+    "investment_advice": false
+  },
+  "next_action": "Continue the active goal with a genuinely different Campaign241 finite zero-network offline prevalue domain; do not wait for 16:30 or a new daily bar."
+}

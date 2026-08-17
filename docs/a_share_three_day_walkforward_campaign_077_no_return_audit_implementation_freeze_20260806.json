@@ -1,0 +1,47 @@
+{
+  "version": 1,
+  "kind": "a_share_three_day_walkforward_campaign077_no_return_audit_implementation_freeze",
+  "status": "frozen_after_verified_snapshot_before_coverage_or_comparison_values",
+  "frozen_at": "2026-08-06T13:00:00+08:00",
+  "audit_runner": {
+    "path": "scripts/a_share_three_day_walkforward_campaign077_no_return_audit.py",
+    "sha256": "2247df82f8282919707d36597ea0d97959caa21ef4831d1bd5b92d65a9a8e9dc"
+  },
+  "tests": {
+    "path": "tests/data_collector_tests/test_a_share_three_day_walkforward_campaign077_no_return_audit.py",
+    "sha256": "6c4c560b7cc2203adbefdb092d5b4a1b8dd2f869411a39e1fcdcc0810da7b584",
+    "pre_freeze_execution": "3 passed, 1 live-binding test deselected",
+    "candidate_partition_values_loaded": false,
+    "comparison_values_loaded": false
+  },
+  "snapshot_binding": {
+    "path": "docs/a_share_three_day_walkforward_campaign_077_feature_snapshot_binding_20260806.json",
+    "sha256": "e26726129d1abeafdbe6333a083ac4a83e5ca37197d589f2b3cfac8ee03c4e96"
+  },
+  "candidate_snapshot": {
+    "path": "/Volumes/DIsk/qlib-a-share-tushare-1m/derived/a_share/rich/tushare/minute_walkforward_campaign077_feature_library/tushare_stk_mins_1m_2019_2025_ea0cbb8f_walkforward_campaign077_feature_library_v1/snapshot_manifest.json",
+    "sha256": "2449976e3bc95b66668496cee513277da21eff301677969f17053baf36fa18c8",
+    "dataset_sha256": "2b40ea3cb07a75b8dbddae124da86d32578120b74e616ff4ada5446d77010fc9",
+    "partitions": 33015,
+    "rows": 7724498,
+    "eligible_rows": 7724498
+  },
+  "ordered_gate_contract": {
+    "coverage_first": true,
+    "comparison_values_load_only_after_coverage_pass": true,
+    "numeric_comparator_count": 107,
+    "numeric_comparator_order_sha256": "b219b4879057a48600ba3e6d3d3a1a35ee6575d70b1476a71cf463ff8b63acc2",
+    "strict_maximum_absolute_median_daily_rank_correlation": 0.8,
+    "all_numeric_comparators_must_pass": true,
+    "daily_prices_or_forward_returns_load_only_after_uniqueness_pass_and_development_freeze": true
+  },
+  "coverage_or_capacity_metrics_computed_before_freeze": false,
+  "comparison_values_read_before_freeze": false,
+  "historical_daily_price_fields_read_before_freeze": [],
+  "historical_forward_returns_read_before_freeze": false,
+  "provider_request_issued_before_freeze": false,
+  "candidate49_historical_backfill_performed": false,
+  "candidate49_ledgers_changed": false,
+  "current_scoring_selection_sizing_or_orders_performed": false,
+  "investment_advice": false
+}

@@ -1,0 +1,138 @@
+{
+  "schema_version": 1,
+  "kind": "a_share_three_day_walkforward_campaign151_source_bound_builder_preregistration",
+  "status": "frozen_before_campaign151_historical_minute_or_peer_benchmark_values",
+  "recorded_at": "2026-08-15T00:22:17+08:00",
+  "purpose": "Freeze the exact two-pass source-bound peer benchmark, partition snapshot, recovery and publication semantics before implementing or reading any Campaign151 historical minute amount value.",
+  "authoritative_inputs": {
+    "campaign151_state_v2": {
+      "path": "docs/a_share_three_day_iteration_status_20260815_campaign151_formula_frozen_v2.json",
+      "sha256": "b11c239e9559283b6c44912bbc6afb0e64eb9bde02d3d913b25325e47eb44cc9"
+    },
+    "numeric_policy_v205": {
+      "path": "docs/a_share_three_day_walkforward_future_numeric_comparison_eligibility_policy_v205_20260815.json",
+      "sha256": "e8a45201021392d36cd5af61409719619fbfec8f2c31609490ca231a54974b59"
+    },
+    "campaign151_no_return_preregistration": {
+      "path": "docs/a_share_three_day_walkforward_campaign_151_no_return_preregistration_20260815.json",
+      "sha256": "99c2f95cad4058d004cc26aeecb5e710199ee930320beab97826a674cd6dff8c"
+    },
+    "campaign151_formula_module": {
+      "path": "scripts/a_share_three_day_walkforward_campaign151_formula.py",
+      "sha256": "e739c773543bf245ad02b73bdb552a41d294777f79cba5a7f2cb84af52f574fe"
+    },
+    "campaign151_formula_frozen_validation": {
+      "path": "docs/a_share_three_day_walkforward_campaign_151_formula_frozen_validation_20260815.json",
+      "sha256": "52ab888a7dfbedd68b7b80ea4c031b931709fcd3b15d96a3f049a527b02a19f6"
+    }
+  },
+  "source_contract": {
+    "data_root": "/Volumes/DIsk/qlib-a-share-tushare-1m",
+    "raw_manifest_path": "/Volumes/DIsk/qlib-a-share-tushare-1m/raw/a_share/rich/tushare/minutes/1m/snapshots/tushare_stk_mins_1m_2019_2025_ea0cbb8f/snapshot_manifest.json",
+    "raw_manifest_sha256": "9b3d959563c9d182f38981c6a36bdb3bc9b415de08487a9e1f9e850825c0839f",
+    "joint_clean_manifest_path": "/Volumes/DIsk/qlib-a-share-tushare-1m/derived/a_share/rich/tushare/minute_sentiment_clean/tushare_stk_mins_1m_2019_2025_ea0cbb8f_sentiment_clean_v1/snapshot_manifest.json",
+    "joint_clean_manifest_sha256": "453c6719cb3c7da42fed8807b28a2bfe988700283e9625a6db97912534f368de",
+    "joint_clean_dataset_sha256": "0e4fe7c05536cdfcecc2936bc880726902f5560061188ffff82ef7ee6f346983",
+    "calendar_path": "data/qlib/cn_a_share/calendars/day.txt",
+    "calendar_sha256": "fda506597d26bcec953cdc0882042a5046ec1587db60490e16a01627fd43f53a",
+    "calendar_interval": ["2019-01-01", "2025-12-31"],
+    "expected_raw_partition_count": 33015,
+    "expected_joint_partition_count": 33015,
+    "expected_joint_rows": 7724498,
+    "expected_symbol_count": 5396,
+    "raw_projection": ["datetime", "symbol", "provider", "amount"],
+    "joint_projection": ["trade_date", "symbol"],
+    "provider_request_allowed": false,
+    "credential_allowed": false
+  },
+  "exact_profile_extraction": {
+    "raw_stock_day_identity_rows": 241,
+    "raw_minute_identity": "09:30 plus exactly 09:31-11:30 and 13:01-15:00",
+    "selected_amount_positions": 240,
+    "standalone_09_30_excluded": true,
+    "joint_clean_base_dates_are_exact_required_output_keys": true,
+    "complete_profile_validity": "all 240 selected own amounts finite and nonnegative",
+    "positive_own_total_required_for_peer_membership": false,
+    "all_zero_complete_profile_is_a_valid_zero_peer_contribution": true,
+    "no_fill_clip_winsorize_interpolate_drop_or_provider_mix": true
+  },
+  "first_pass_peer_accumulator": {
+    "grouping": "exact normalized trade date and exact 240 clock positions",
+    "contribution": "Every complete profile contributes its raw amount vector and one scalar complete-profile count; invalid profiles contribute neither.",
+    "state": "float64 raw amount sums with int32 complete-profile counts over the frozen calendar",
+    "symbol_order": "uppercase lexical order",
+    "year_order": "integer ascending order within symbol",
+    "resume": "private partial-root NPZ binds this preregistration, both source manifests, calendar dates, array shapes and exact processed-symbol set",
+    "checkpoint_frequency": "after each deterministic symbol batch",
+    "publication": "private benchmark parquet contains only trade_date, profile_position, raw_amount_sum and complete_profile_count",
+    "no_candidate_comparator_price_or_return_value": true
+  },
+  "second_pass_leave_one_out_snapshot": {
+    "own_exclusion": "For a valid own profile subtract its exact raw vector and one from the same-date accumulator; an invalid own profile is not present and is not subtracted.",
+    "peer_count": "The same scalar leave-one-out complete-profile count applies to all 240 positions and must be at least 50.",
+    "peer_mean": "b_i=(raw_amount_sum_i-own_amount_i)/peer_count; require every b_i finite and strictly positive.",
+    "factor_callable": "scripts.a_share_three_day_walkforward_campaign151_formula::compute_relative_amount_share_clock_center",
+    "output_columns": [
+      "trade_date",
+      "symbol",
+      "provider",
+      "intraday_relative_amount_share_clock_center_240m",
+      "intraday_relative_amount_share_clock_center_240m_eligible"
+    ],
+    "one_output_row_per_joint_clean_key": true,
+    "invalid_factor_is_null_and_eligible_false": true,
+    "partition_order": "symbol uppercase then year ascending",
+    "parallel_worker_limit": [1, 8]
+  },
+  "output_contract": {
+    "output_run_id": "tushare_stk_mins_1m_2019_2025_ea0cbb8f_walkforward_campaign151_feature_library_v1",
+    "final_root": "/Volumes/DIsk/qlib-a-share-tushare-1m/derived/a_share/rich/tushare/minute_walkforward_campaign151_feature_library/tushare_stk_mins_1m_2019_2025_ea0cbb8f_walkforward_campaign151_feature_library_v1",
+    "partial_root": "/Volumes/DIsk/qlib-a-share-tushare-1m/derived/a_share/rich/tushare/minute_walkforward_campaign151_feature_library/.tushare_stk_mins_1m_2019_2025_ea0cbb8f_walkforward_campaign151_feature_library_v1.partial",
+    "lock_path": "/Volumes/DIsk/qlib-a-share-tushare-1m/.a_share_three_day_walkforward_campaign151.lock",
+    "exclusive_final_publication": true,
+    "published_root_never_overwritten": true,
+    "partial_checkpoints_never_treated_as_final": true,
+    "minimum_free_bytes_before_build": 10737418240
+  },
+  "snapshot_manifest_contract": {
+    "kind": "a_share_three_day_walkforward_campaign151_feature_snapshot",
+    "status": "candidate_feature_complete_pending_coverage_and_ordered_uniqueness",
+    "required_counts": {
+      "partitions": 33015,
+      "rows": 7724498
+    },
+    "dataset_digest": "sha256 of benchmark output byte hash followed by ordered symbol|year|partition output byte hash lines",
+    "required_negative_evidence": {
+      "daily_price_fields_read": [],
+      "comparison_factor_values_read": false,
+      "forward_return_fields_read": false,
+      "training_or_model_fitting_performed": false,
+      "candidate49_ledgers_changed": false,
+      "provider_request_issued": false,
+      "current_scoring_selection_sizing_positions_or_orders_performed": false
+    }
+  },
+  "build_authorization": {
+    "implementation_and_tests_must_be_fingerprint_frozen_first": true,
+    "separate_zero_value_plan_runner_must_bind_this_record_code_tests_and_freeze": true,
+    "plan_ready_true_and_exit_zero_required": true,
+    "confirmed_build_flag_required": true,
+    "failed_plan_exit_may_not_be_bypassed": true,
+    "at_most_one_successful_final_publication": true
+  },
+  "research_boundary": {
+    "historical_minute_source_rows_or_values_read": false,
+    "peer_benchmark_values_read": false,
+    "candidate_or_comparator_values_read": false,
+    "historical_daily_price_or_forward_return_values_read": false,
+    "stress_2024_2025_opened": false,
+    "credential_loaded": false,
+    "provider_request_issued": false,
+    "candidate49_historical_backfill_performed": false,
+    "candidate49_ledgers_changed": false,
+    "second_prospective_candidate_created": false,
+    "current_scoring_selection_sizing_positions_or_orders_performed": false,
+    "investment_advice": false
+  },
+  "next_action": "Implement and synthetically test exactly this source-bound builder without opening historical Parquet rows, then freeze code and tests before adding a zero-value plan runner."
+}

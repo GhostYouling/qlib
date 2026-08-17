@@ -1,0 +1,29 @@
+{
+  "schema_version": 1,
+  "kind": "a_share_three_day_walkforward_campaign171_black_check_failure",
+  "status": "failed_black_check_before_ruff_or_pytest_zero_write_recovery_authorized",
+  "recorded_at": "2026-08-15T08:58:00+08:00",
+  "purpose": "Preserve the first Campaign171 terminal gate failure and authorize only deterministic Black formatting before an unchanged full gate retry.",
+  "attempt": {
+    "attempt_id": "campaign171_infrastructure_004",
+    "phase": "terminal_test_format_lint_and_focused_gate",
+    "status": "failed_black_check_test_file_requires_formatting",
+    "command_scope": "python -m black --check Campaign171 test, then Ruff and focused pytest under fail-fast",
+    "observed": "Black reported that the Campaign171 terminal test would be reformatted and exited 1; fail-fast prevented Ruff and pytest from starting.",
+    "write_result": "zero_write",
+    "candidate_comparator_security_price_or_return_value_read": false
+  },
+  "recovery": {
+    "allowed_change": "Run Black once on only the Campaign171 terminal test file.",
+    "scientific_or_policy_semantics_may_change": false,
+    "required_retry": "Black check, Ruff check and focused pytest from repository root under fail-fast."
+  },
+  "research_boundary": {
+    "failure_ignored_or_bypassed": false,
+    "source_row_candidate_comparator_security_price_or_return_value_read": false,
+    "stress_2024_2025_opened": false,
+    "provider_or_web_request_issued": false,
+    "provider_credential_presence_value_or_digest_read": false,
+    "candidate49_ledgers_changed": false
+  }
+}

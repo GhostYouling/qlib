@@ -1,0 +1,53 @@
+{
+  "schema_version": 1,
+  "kind": "a_share_three_day_walkforward_campaign152_ordered_uniqueness_implementation_freeze",
+  "status": "all_142_source_loaders_alignment_and_gate_runner_frozen_before_comparator_values",
+  "recorded_at": "2026-08-15T02:48:00+08:00",
+  "frozen_implementation": {
+    "runner_path": "scripts/a_share_three_day_walkforward_campaign152_ordered_uniqueness.py",
+    "runner_sha256": "4efce4ebd0b51b9f0dc1b2801258c7d1747d57d7e4b25bab061fa489977adb47",
+    "test_path": "tests/data_collector_tests/test_a_share_three_day_walkforward_campaign152_ordered_uniqueness.py",
+    "test_sha256": "a08fb6981caecab8a9c2678689758d2c745172046413f2c610c38f4107da4f00",
+    "protocol_sha256": "8f6c0b1e12d6d88566f8a2eed972f1e198829886dab4c6acc6fba93f499b5fca",
+    "coverage_sha256": "235289d3151eee543282c502fe40ac3d4986663fc00a777f4b3dcbb11c01f01b",
+    "candidate_manifest_sha256": "36bab509de3b8a012033b4591a5efa942e57b01178f099cd48cbb699267ca267",
+    "candidate_dataset_sha256": "9ea1ebe6aad4867ce76d4fbc52fe46c80f5a3fca3096aa6e74a5e9c8292f4931",
+    "design_manifest_sha256": "043c17fea89f3b0956d643a7c6e3f4d73a11403b967213d2d57539a6a8316a49",
+    "design_dataset_sha256": "12ce3a64b5e13581392ded9890e2064db4ccca3945da3eb8ad7752c95366a9fc",
+    "campaign136_manifest_sha256": "9a5c9ff824de22af6595d312b76230a3e4cf283c6e1d42e882aae96d11367b93",
+    "campaign136_dataset_sha256": "c84b1f85eec3731736a4da411691c144a70a81e38b5013e5aeea5370f3c417ec",
+    "campaign146_manifest_sha256": "951872dbdcfa2b00e9603d3be44b059c7d24204fba5757551afbcd46ee8a3f74",
+    "campaign146_dataset_sha256": "7278ae76407215eab75e9ff0119d8c6a073e4d7ac9df5b7d349bc09e6cf889c4",
+    "comparison_count": 142,
+    "comparison_order_sha256": "5d1b35fb5a0d8ac9293008db9963c4a60a94dc940c237c3ed259e5ce44f14aaf",
+    "candidate_quality_listing_rows": 1330171,
+    "output_path": "data/experiments/short_horizon/historical_walkforward/campaign_152/uniqueness/campaign152_ordered_uniqueness_audit.json"
+  },
+  "synthetic_verification": {
+    "command": "python -m black --check <Campaign152 uniqueness runner and test> && python -m ruff check <same> && python -m pytest -q <Campaign152 uniqueness test>",
+    "exit_code": 0,
+    "passed": 6
+  },
+  "failed_prevalue_validation_attempts_preserved": [
+    {
+      "exit_code": 1,
+      "failure": "Black reported the new runner and test would be reformatted; Ruff and pytest did not run."
+    },
+    {
+      "exit_code": 1,
+      "failure": "After formatting, one synthetic test asserted a nonexistent qualifying_sessions field instead of the actual pairwise_sessions receipt field; five tests passed and one failed."
+    }
+  ],
+  "research_boundary": {
+    "comparator_values_read_before_freeze": false,
+    "historical_daily_price_or_forward_return_values_read": false,
+    "stress_2024_2025_opened_for_returns": false,
+    "provider_request_issued": false,
+    "credential_loaded": false,
+    "candidate49_historical_backfill_performed": false,
+    "candidate49_ledgers_changed": false,
+    "second_prospective_candidate_created": false,
+    "current_scoring_selection_sizing_positions_or_orders_performed": false,
+    "investment_advice": false
+  }
+}

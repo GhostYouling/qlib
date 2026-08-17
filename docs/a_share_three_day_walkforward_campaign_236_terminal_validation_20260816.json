@@ -1,0 +1,103 @@
+{
+  "schema_version": 1,
+  "kind": "a_share_three_day_walkforward_campaign236_terminal_validation",
+  "recorded_at": "2026-08-16T06:29:00+08:00",
+  "timestamp_semantics": "monotonic_logical_append_time_not_host_wall_clock_measurement",
+  "status": "passed_campaign236_terminal_evidence_and_cumulative_regression",
+  "authoritative_inputs": {
+    "terminal_result_v3": {
+      "path": "docs/a_share_three_day_walkforward_campaign_236_terminal_result_v3_20260816.json",
+      "sha256": "9a7cd6db93330e095ec6138076d5967262d48f2dbcbdaaca11cf967a6ff3d1c5"
+    },
+    "frozen_source_frontier": {
+      "path": "docs/a_share_three_day_walkforward_campaign_236_commercial_janitorial_contract_cleaning_scope_shift_task_inspection_consumables_quality_incident_billing_lifecycle_source_frontier_20260816.json",
+      "sha256": "e6a6d1edff41d24bf5c4b9b52d346ff964a071d657f1c1983ab2a2db2c9f2c02"
+    },
+    "attempt_ledger_v3": {
+      "path": "data/experiments/short_horizon/historical_walkforward/campaign_236/research_attempt_ledger_v3.json",
+      "sha256": "af995621150ca105eb9f022654360641f34877eb3ab7f542f48ad0b8258e4f1b"
+    },
+    "numeric_policy_v360": {
+      "path": "docs/a_share_three_day_walkforward_future_numeric_comparison_eligibility_policy_v360_20260816.json",
+      "sha256": "0910a792137c93e170c5b7c307043f389f10e7edf9866553aa196ffdf06d1039"
+    },
+    "candidate49_ledger_path_probe_failure": {
+      "path": "docs/a_share_three_day_walkforward_campaign_236_candidate49_ledger_path_probe_failure_20260816.json",
+      "sha256": "f07d8d8a7eceb648eee6718f200502d71cf4f0e5602468d960f43ad78d302e11",
+      "result_counts_consumed": false
+    },
+    "readonly_schema_probe_failure": {
+      "path": "docs/a_share_three_day_walkforward_campaign_236_readonly_schema_probe_failure_20260816.json",
+      "sha256": "10a52f82aa50f22417b788d54e1ccc69f49828d721977df03889e116842e720a",
+      "result_counts_consumed": false
+    },
+    "keyword_probe_exit_mask_failure": {
+      "path": "docs/a_share_three_day_walkforward_campaign_236_keyword_probe_exit_mask_failure_20260816.json",
+      "sha256": "a93612c26599261cb28d3418e0d62107b5ba8f7d1fd043e2436b8943ae17a55e",
+      "result_counts_consumed": false
+    },
+    "combined_report_tail_truncated_failure": {
+      "path": "docs/a_share_three_day_walkforward_campaign_236_combined_report_tail_truncated_failure_20260816.json",
+      "sha256": "d6e63011d79c9bf1b387bf3e5a58acb356ed0c290d6b22e0b42be1e44dc646bc",
+      "result_counts_consumed": false
+    },
+    "terminal_test_black_check_failure": {
+      "path": "docs/a_share_three_day_walkforward_campaign_236_terminal_test_black_check_failure_20260816.json",
+      "sha256": "4ed02a89afdf7354d683198cfdfb5521a76880ddecab55e25026e54e6e8587f7",
+      "result_counts_consumed": false
+    },
+    "terminal_test_accounting_patch_failure": {
+      "path": "docs/a_share_three_day_walkforward_campaign_236_terminal_test_accounting_patch_failure_20260816.json",
+      "sha256": "427a07bb6ea9192465fba33618adb30141b70114605d70470e988950ebaafb8e",
+      "result_counts_consumed": false
+    },
+    "terminal_test": {
+      "path": "tests/data_collector_tests/test_a_share_three_day_walkforward_campaign236_terminal.py",
+      "sha256": "1666c169db0b7d6daba3dce2c619788ccf9fb3e2b5019e4c9c7eb8dcaa13d355"
+    }
+  },
+  "validation_results": {
+    "focused_pytest": "2 passed",
+    "cumulative_pytest": "507 passed, 1 skipped, 51 deselected",
+    "campaign145_through_campaign236_test_file_count": 124,
+    "deselection_node_count": 51,
+    "black": "passed",
+    "ruff": "passed",
+    "json_parse": "passed",
+    "independent_reference_binding_and_chain_validation": "passed",
+    "candidate49_empty_ledger_semantics": "passed",
+    "unmasked_whitespace": "passed"
+  },
+  "publication_state": {
+    "current_report_sha256": "9a08a67d3a34bd0c2208bc8c5cb570bd964def40bc667d2745d225a343c33ee3",
+    "three_day_report_sha256": "24f053ebaa5dd40856c8cefe3686cb9440d83a6858942a9d031263ce9f88c90d",
+    "attempt_chain_tip_sha256": "28cde7b8080ee0437bcd22e797d5e42f132cab570d121b50a80a8d6348d6f667",
+    "cumulative_historical_research_attempt_count": 2231,
+    "cumulative_return_reading_development_trial_count": 314,
+    "complete_factor_definition_count": 158,
+    "eligible_numeric_comparator_count": 142
+  },
+  "candidate49": {
+    "only_active_prospective_candidate": true,
+    "signal_ledger_sha256": "5193f00d7f36da003f53cec387900da4c3d002299f5dfcfc1a95eaa199ed3a79",
+    "signal_entry_count": 0,
+    "execution_ledger_sha256": "d57a3e61eac969e42cafa418ccd8c0a5ee65dcf69da145bb2c096c2a02a2ea4f",
+    "execution_entry_count": 0
+  },
+  "research_boundary": {
+    "failed_or_truncated_output_used_as_validation_or_scientific_evidence": false,
+    "frozen_source_frontier_rewritten": false,
+    "accounting_publication_changed_scientific_routes_or_decisions": false,
+    "candidate_or_comparator_value_read": false,
+    "daily_price_or_forward_return_read": false,
+    "stress_2024_2025_opened": false,
+    "provider_or_web_request_issued": false,
+    "provider_credential_presence_value_or_digest_read": false,
+    "candidate49_plan_or_run_executed": false,
+    "candidate49_ledgers_changed": false,
+    "second_prospective_candidate_created": false,
+    "current_scoring_selection_sizing_positions_or_orders_performed": false,
+    "investment_advice": false
+  },
+  "next_action": "Publish the advancing Campaign236 state and keep the active goal authorized for Campaign237 zero-network offline prevalue research."
+}

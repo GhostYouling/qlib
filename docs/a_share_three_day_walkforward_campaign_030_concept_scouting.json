@@ -1,0 +1,105 @@
+{
+  "version": 1,
+  "kind": "a_share_three_day_walkforward_campaign030_concept_scouting",
+  "status": "one_independent_intraday_market_coupling_resolution_concept_selected_before_candidate_values_comparison_values_or_returns",
+  "recorded_at": "2026-07-30T09:34:00Z",
+  "purpose": "Select one economically interpretable Campaign030 mechanism without opening a Campaign030 minute partition, frozen market benchmark value, candidate value, comparison value, daily price, or forward return.",
+  "authoritative_boundary": {
+    "path": "docs/a_share_three_day_iteration_status_20260730_campaign029_verified.json",
+    "sha256": "ba1d7e7e9f96274ed2e735123af6c6ac71b0278e03faadcd4ef65d5bdaa4d1ef",
+    "campaign030_concept_scouting_allowed": true,
+    "binding_validation_required_at_each_freeze_boundary": true,
+    "candidate49_remains_only_prospective_candidate": true,
+    "candidate50_activation_allowed": false
+  },
+  "historical_walkforward_policy": {
+    "path": "docs/a_share_three_day_historical_walkforward_research_policy_20260727.json",
+    "sha256": "38426d6161b9bfed323c58caba18feca668b8c9d53e294951a8ba90c01a798bb"
+  },
+  "selected_concept": {
+    "concept_name": "intraday_market_coupling_resolution",
+    "mechanism_family": "morning_to_afternoon_change_in_same_minute_stock_leave_one_out_market_signed_return_dependence",
+    "economic_question": "Does a stock's signed one-minute return coupling to the leave-one-out broad market weaken rather than strengthen from the morning half to the afternoon half?",
+    "economic_hypothesis": "A decline in common-market coupling into the close can indicate that morning common-liquidity pressure has resolved and stock-specific price formation has resumed. Higher morning-to-afternoon coupling resolution may therefore be associated with better resilience from the next open through the third close.",
+    "provisional_direction": "higher_morning_minus_afternoon_signed_market_coupling",
+    "allowed_stock_source_fields": [
+      "datetime",
+      "symbol",
+      "provider",
+      "close"
+    ],
+    "allowed_frozen_market_benchmark_fields": [
+      "trade_date",
+      "return_position",
+      "return_sum",
+      "valid_stock_count"
+    ],
+    "forbidden_source_fields": [
+      "open",
+      "high",
+      "low",
+      "volume",
+      "amount",
+      "daily open",
+      "daily high",
+      "daily low",
+      "daily close",
+      "daily volume",
+      "daily amount",
+      "forward return",
+      "Level-2"
+    ],
+    "fixed_temporal_question": "Use the 119 adjacent close returns inside 09:31-11:30 as the morning block and the 119 adjacent close returns inside 13:01-15:00 as the afternoon block. Match every stock return only to the same fixed position of its leave-one-out market mean. Exclude standalone 09:30, lunch, overnight, cross-day, lead-lag, cross-half, and selected-subwindow transitions.",
+    "mandatory_overlap_challenges_before_any_value": [
+      "intraday_market_idiosyncratic_share_238m",
+      "intraday_market_neutral_late_residual_drift_238m",
+      "intraday_market_response_delay_asymmetry_236p",
+      "intraday_market_up_down_correlation_asymmetry_238m",
+      "intraday_market_shock_magnitude_decoupling_238m",
+      "intraday_morning_afternoon_return_profile_persistence_119p",
+      "intraday_volatility_resolution_238m",
+      "candidate49_intraday_cumulative_vwap_crossing_rate_240m_v1"
+    ],
+    "known_design_risks": [
+      "correlation versus beta, covariance or residual variance; morning-minus-afternoon versus absolute instability; direction; peer threshold; and half-session boundary are researcher degrees of freedom unless frozen before values",
+      "the statistic may be associated with overall market idiosyncrasy or market-sign asymmetry even though it measures a different morning-to-afternoon state change",
+      "declining market coupling can mean common-shock resolution or delayed market information incorporation, so the higher morning-minus-afternoon direction must be frozen before returns",
+      "using absolute returns, market signs, leads or lags, subwindows, fitted residual drift, amount or volume weights, terminal factor values, or cross-sectional dispersion would change the mechanism"
+    ]
+  },
+  "rejected_concepts": [
+    {
+      "concept": "absolute_market_correlation_instability",
+      "reason": "Negative absolute morning-afternoon correlation difference would answer exposure stability rather than common-shock resolution and has no preregistered directional decay hypothesis."
+    },
+    {
+      "concept": "signed_market_beta_or_residual_variance_difference",
+      "reason": "Beta and residual variance would materially overlap the terminal market-idiosyncratic-share family and introduce scale fitting absent from the selected correlation-state mechanism."
+    },
+    {
+      "concept": "market_sign_conditioned_or_lead_lag_correlation",
+      "reason": "Market-sign asymmetry and response-delay asymmetry are already terminal Campaign026 and Campaign021 mechanisms."
+    },
+    {
+      "concept": "terminal_factor_combination_or_campaign029_cost_rescue",
+      "reason": "Campaign030 must be one new raw stock-plus-market statistic; Campaign029 cannot be rescued by lowering cost, filtering, combining, or changing its formula."
+    }
+  ],
+  "decision": {
+    "advance_to_separate_no_value_mechanism_overlap_audit": true,
+    "exact_formula_fixed_here": false,
+    "economic_direction_fixed_here": true,
+    "new_daily_bar_required": false,
+    "same_day_1630_wait_required": false,
+    "candidate49_ledgers_changed": false
+  },
+  "research_boundary": {
+    "external_campaign030_minute_partitions_read": false,
+    "market_benchmark_values_read": false,
+    "candidate_values_read": false,
+    "comparison_values_read": false,
+    "daily_price_fields_read": false,
+    "forward_returns_read": false,
+    "provider_request_issued": false
+  }
+}

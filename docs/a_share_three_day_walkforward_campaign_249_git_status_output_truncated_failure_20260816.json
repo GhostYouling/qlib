@@ -1,0 +1,22 @@
+{
+  "schema_version": 1,
+  "kind": "a_share_three_day_walkforward_campaign249_infrastructure_failure",
+  "recorded_at": "2026-08-16T11:08:00+08:00",
+  "timestamp_semantics": "monotonic_logical_append_time_not_host_wall_clock_measurement",
+  "status": "failed_read_only_git_status_output_truncated",
+  "attempt_id": "campaign249_infrastructure_001",
+  "phase": "authoritative_state_verification",
+  "command_semantics": "A read-only git status --short command was included in a parallel state-verification batch. The very dirty worktree produced an output envelope that was truncated before complete delivery.",
+  "disposition": "Discard the truncated output as scientific and validation evidence. A later narrow git status --short --untracked-files=no command completed with exit code zero and was used only to identify pre-existing tracked modifications.",
+  "research_boundary": {
+    "repository_file_written_by_failed_command": false,
+    "candidate_or_comparator_value_read": false,
+    "daily_price_or_forward_return_read": false,
+    "provider_or_web_request_issued": false,
+    "provider_credential_presence_value_or_digest_read": false,
+    "candidate49_plan_or_run_executed": false,
+    "candidate49_ledgers_changed": false,
+    "stress_2024_2025_opened": false,
+    "failed_or_truncated_output_used_as_scientific_or_validation_evidence": false
+  }
+}

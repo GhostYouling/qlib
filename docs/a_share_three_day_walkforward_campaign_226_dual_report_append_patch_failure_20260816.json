@@ -1,0 +1,24 @@
+{
+  "schema_version": 1,
+  "kind": "a_share_three_day_walkforward_campaign226_infrastructure_failure",
+  "recorded_at": "2026-08-16T03:00:00+08:00",
+  "timestamp_semantics": "monotonic_logical_append_time_not_host_wall_clock_measurement",
+  "status": "failed_atomic_patch_invalid_hunk_before_any_target_write",
+  "phase": "dual_unified_report_append_patch",
+  "command_scope": "append the frozen Campaign226 terminal section to both mutable unified reports",
+  "failure": "The generated patch omitted required added-line prefixes inside the appended Markdown block, so apply_patch rejected the complete patch during verification.",
+  "recovery": "Both pre-patch report SHA-256 values were independently rechecked unchanged; the next patch uses explicit CommonMark lines in two valid update hunks, and accounting advances through immutable ledger/result v2 artifacts.",
+  "unchanged_report_sha256_after_failure": {
+    "current_research_report": "af7123c85b134a165a0bbdf57cffc9a32fbbc139e9395455753836b46e491ff7",
+    "three_day_research_report": "eaf1ddc7468c31bc26f228b377b210c2019282b76c2e0776dca6629b028dea25"
+  },
+  "research_boundary": {
+    "failed_output_used_as_scientific_or_validation_evidence": false,
+    "target_file_written_by_failed_patch": false,
+    "candidate_or_comparator_value_read": false,
+    "daily_price_or_forward_return_read": false,
+    "provider_or_web_request_issued": false,
+    "provider_credential_presence_value_or_digest_read": false,
+    "candidate49_plan_or_run_executed": false
+  }
+}

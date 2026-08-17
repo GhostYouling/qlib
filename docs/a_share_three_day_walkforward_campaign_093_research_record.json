@@ -1,0 +1,156 @@
+{
+  "schema_version": 1,
+  "version": 1,
+  "kind": "a_share_three_day_walkforward_campaign093_research_record",
+  "status": "terminal_zero_admissible_numeric_uniqueness_rejection_before_daily_prices_or_returns",
+  "recorded_at": "2026-08-07T02:02:11Z",
+  "candidate": {
+    "name": "intraday_close_transition_range_quadratic_efficiency_238p",
+    "direction": "higher",
+    "formula": "Within each 120-bar half form 119 pairs, set c_j=ln(close_j/close_j-1) and destination-bar h_j=ln(high_j/low_j), pool 238 pairs, define Q=sum(c_j^2), H=sum(h_j^2), and return Q/(Q+H).",
+    "economic_hypothesis": "A greater share of completed-session quadratic price variation in successive closing levels rather than temporary intrabar excursions indicates durable information incorporation that may continue over three accepted sessions.",
+    "formula_direction_window_transform_filter_subset_fit_model_or_combination_search": false
+  },
+  "immutable_chain": {
+    "concept_scouting": {
+      "path": "docs/a_share_three_day_walkforward_campaign_093_concept_scouting.json",
+      "sha256": "bb035b74a5507f5b20bcffc2c2780e158ceb7a253b6d21a6fc2013d4fbf18808"
+    },
+    "mechanism_overlap_audit": {
+      "path": "docs/a_share_three_day_walkforward_campaign_093_mechanism_overlap_audit.json",
+      "sha256": "c0f50dd19cfb983f08998fbafa80b9661872afc78074e806eefc8e5282019225"
+    },
+    "no_return_preregistration": {
+      "path": "docs/a_share_three_day_walkforward_campaign_093_no_return_preregistration.json",
+      "sha256": "ce1752e170f6690e2b501f14964736792b6e13e6619e4be53fd9f640bda621b2"
+    },
+    "feature_snapshot_binding": {
+      "path": "docs/a_share_three_day_walkforward_campaign_093_feature_snapshot_binding_20260807.json",
+      "sha256": "8f58573bfc2c1e46bc31da2673d17d70c2aa470b112a898ac3ee1868facab233",
+      "dataset_sha256": "bba3e4e71626b0ff2fa3860649da5187ef5c5412879b009f6890e9599ba3cf0b"
+    },
+    "no_return_audit_activation": {
+      "path": "docs/a_share_three_day_walkforward_campaign_093_no_return_audit_activation_binding_20260807.json",
+      "sha256": "d5aea046aa2e428d615cb80c0a8fa600bfb4d7ad6d7a1eb6046c208fe84f6613"
+    },
+    "no_return_audit_report": {
+      "path": "data/experiments/short_horizon/historical_walkforward/campaign_093/no_return/20260807T015739Z_campaign093_no_return_audit.json",
+      "sha256": "abe646197084f6245517dca694c0e1225f13fc23b4474e930d45b6c42eae1b85"
+    },
+    "final_attempt_ledger": {
+      "path": "data/experiments/short_horizon/historical_walkforward/campaign_093/research_attempt_ledger_v1.json",
+      "sha256": "fb545fce438d635c97a5081743761f044e0f5f2650f3ed6bbd1f53fbb606d54e"
+    }
+  },
+  "snapshot_result": {
+    "rows": 1331759,
+    "finite_rows": 1328155,
+    "missing_rows": 3604,
+    "partitions": 7,
+    "calendar_sessions": 1632,
+    "source_fields": [
+      "datetime",
+      "symbol",
+      "provider",
+      "high",
+      "low",
+      "close"
+    ],
+    "comparison_values_read_during_snapshot_build": false,
+    "historical_daily_price_or_forward_return_values_read_during_snapshot_build": false
+  },
+  "coverage_result": {
+    "gate_passed": true,
+    "median_coverage": 0.9983584130098127,
+    "p05_coverage": 0.9933774834437086,
+    "eligible_names_p05": 138,
+    "potential_non_overlapping_three_session_cohorts": 539,
+    "observed_years": [
+      2019,
+      2020,
+      2021,
+      2022,
+      2023,
+      2024,
+      2025
+    ]
+  },
+  "numeric_uniqueness_result": {
+    "comparison_count": 122,
+    "comparison_order_matches_preregistration": true,
+    "passed_count": 121,
+    "failed_count": 1,
+    "strict_maximum_absolute_median_daily_rank_correlation": 0.8,
+    "maximum_observed_absolute_median_daily_rank_correlation": 0.8461902085426161,
+    "failed_comparator": "intraday_intrabar_body_range_efficiency_240m",
+    "failed_comparator_pairwise_sessions": 1623,
+    "all_required_comparisons_passed": false,
+    "candidate_admissible": false
+  },
+  "terminal_decision": {
+    "development_trial_opened": false,
+    "development_return_fields_read": false,
+    "development_survivor_count": 0,
+    "stress_2024_2025_opened": false,
+    "stress_return_fields_read": false,
+    "rescue_or_reparameterization_allowed": false,
+    "reason": "The candidate exceeds the frozen strict uniqueness limit against the existing intrabar body-range efficiency mechanism."
+  },
+  "accounting": {
+    "campaign_attempt_count": 4,
+    "campaign_ledger_entry_count": 6,
+    "campaign_infrastructure_or_implementation_failure_count": 3,
+    "campaign_complete_factor_attempt_count": 1,
+    "campaign_return_reading_development_trial_count": 0,
+    "cumulative_historical_research_attempt_count": 650,
+    "cumulative_return_reading_development_trial_count": 290
+  },
+  "reporting_bindings": {
+    "current_report": {
+      "path": "data/experiments/short_horizon/current_research_report.md",
+      "sha256": "4868e71f6f159ea228635b8151076f777f995f1b6ec9d1026a7fa54a79af5662"
+    },
+    "unified_report": {
+      "path": "data/experiments/short_horizon/three_day_research_report.md",
+      "sha256": "b4e14916fe37582fe5741677980b7c17e246ab29452ccedec2716fa0e2107dc9"
+    },
+    "data_pipeline_documentation": {
+      "path": "docs/a_share_data_pipeline.md",
+      "sha256": "9cfcedf739fe6ea80f86e465214f70dd543cf4f210c250d626633505cd90c9c0"
+    },
+    "campaign093_present_in_all_three": true,
+    "final_attempt_and_cumulative_counts_present_in_all_three": true
+  },
+  "future_duplicate_detection_library": {
+    "complete_definition_count": 125,
+    "complete_definition_order_sha256": "3742401d8d87cbeb3a104545c25c1eb279832915f42dc46f1367dcbdc28f740c",
+    "numeric_comparator_count": 123,
+    "numeric_comparator_order_sha256": "b92614c1366ec480913854adace1cad0d926a0e89c8bbebca70c81bf486cac3a"
+  },
+  "candidate49_boundary": {
+    "remains_only_active_prospective_candidate": true,
+    "historical_backfill_performed": false,
+    "signal_ledger_entries": 0,
+    "signal_ledger_sha256": "5193f00d7f36da003f53cec387900da4c3d002299f5dfcfc1a95eaa199ed3a79",
+    "execution_ledger_entries": 0,
+    "execution_ledger_sha256": "d57a3e61eac969e42cafa418ccd8c0a5ee65dcf69da145bb2c096c2a02a2ea4f",
+    "credential_present": true,
+    "credential_secret_printed_hashed_or_logged": false,
+    "provider_request_issued": false,
+    "same_day_plan_or_run_executed": false,
+    "second_prospective_candidate_created": false
+  },
+  "research_boundary": {
+    "historical_daily_price_fields_read": [],
+    "historical_forward_returns_read": false,
+    "campaign093_formula_direction_gates_or_result_may_be_rewritten": false,
+    "campaign093_same_round_rescue_variant_or_combination_allowed": false,
+    "campaign093_stress_return_read_allowed": false,
+    "provider_request_issued": false,
+    "candidate49_historical_backfill_performed": false,
+    "candidate49_ledgers_changed": false,
+    "current_scoring_selection_sizing_or_orders_performed": false,
+    "investment_advice": false
+  },
+  "next_action": "Preserve Campaign093 as terminal, add its immutable high-coverage snapshot to future duplicate detection, and begin Campaign094 only with a genuinely distinct pre-value mechanism."
+}

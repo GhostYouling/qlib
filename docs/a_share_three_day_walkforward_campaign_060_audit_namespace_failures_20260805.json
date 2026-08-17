@@ -1,0 +1,42 @@
+{
+  "version": 1,
+  "kind": "a_share_three_day_walkforward_campaign060_infrastructure_failures",
+  "status": "two_pre_freeze_namespace_failures_recorded_and_resolved_before_audit_values",
+  "recorded_at": "2026-08-05T00:08:00+08:00",
+  "stage": "pre_value_no_return_audit_import_and_status",
+  "attempt_ordinals_within_campaign060": [
+    5,
+    6
+  ],
+  "failed_commands": [
+    {
+      "command": "PYTHONPATH=/Volumes/DIsk/Disk-Coding/qlib python scripts/a_share_three_day_walkforward_campaign060_no_return_audit.py --help",
+      "exit_code": 1,
+      "exception": "KeyError: '_generated'"
+    },
+    {
+      "command": "PYTHONPATH=/Volumes/DIsk/Disk-Coding/qlib python scripts/a_share_three_day_walkforward_campaign060_no_return_audit.py status --data-root /Volumes/DIsk/qlib-a-share-tushare-1m",
+      "exit_code": 1,
+      "exception": "KeyError: '_generated'"
+    }
+  ],
+  "root_cause": "The wrapper updated the outer exec namespace rather than the inherited Campaign059 inner runtime namespace.",
+  "repair": "Bind the inherited inner runtime explicitly and update only its frozen generated-function table.",
+  "final_audit_runner": {
+    "path": "scripts/a_share_three_day_walkforward_campaign060_no_return_audit.py",
+    "sha256": "ecedad2aec0cf823c603001e2733411879c87d9b2522c4d09d5b6a212fa19977"
+  },
+  "boundary": {
+    "candidate_snapshot_values_read": false,
+    "comparison_values_read": false,
+    "daily_price_or_forward_return_read": false,
+    "audit_artifact_written": false,
+    "provider_request_issued": false,
+    "candidate49_ledgers_changed": false
+  },
+  "accounting": {
+    "infrastructure_attempt_count": 2,
+    "factor_attempt_count": 0,
+    "return_reading_development_trial_count": 0
+  }
+}

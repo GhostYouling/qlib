@@ -1,0 +1,22 @@
+{
+  "schema_version": 1,
+  "kind": "a_share_three_day_walkforward_campaign252_infrastructure_failure",
+  "recorded_at": "2026-08-16T11:57:40+08:00",
+  "timestamp_semantics": "monotonic_logical_append_time_not_host_wall_clock_measurement",
+  "status": "failed_combined_mandatory_skill_reread_lines_261_300_output_truncated",
+  "attempt_id": "campaign252_infrastructure_002",
+  "phase": "mandatory_skill_read",
+  "command_semantics": "A combined five-output reread exceeded the delivery budget: lines 261-280 were truncated and lines 281-300 were omitted.",
+  "disposition": "Discard the incomplete 261-300 portion as scientific and validation evidence; independently reread 261-280 and 281-300 to complete the mandatory skill boundary.",
+  "research_boundary": {
+    "repository_file_written_by_failed_command": false,
+    "candidate_or_comparator_value_read": false,
+    "daily_price_or_forward_return_read": false,
+    "provider_or_web_request_issued": false,
+    "provider_credential_presence_value_or_digest_read": false,
+    "candidate49_plan_or_run_executed": false,
+    "candidate49_ledgers_changed": false,
+    "stress_2024_2025_opened": false,
+    "failed_or_truncated_output_used_as_scientific_or_validation_evidence": false
+  }
+}

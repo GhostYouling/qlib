@@ -1,0 +1,38 @@
+{
+  "schema_version": 1,
+  "kind": "a_share_three_day_walkforward_campaign115_ordered_no_return_legacy_campaign110_report_binding_regression_failure",
+  "status": "recorded_without_rewriting_legacy_campaign110_terminal_or_state",
+  "recorded_at": "2026-08-09T06:57:00+08:00",
+  "recorded_at_semantics": "monotonic_logical_append_time_after_campaign115_v3_focused_success_and_cross_campaign_regression_not_host_wall_clock_measurement",
+  "regression_command": {
+    "result": "72 passed, 2 failed in 10.18s",
+    "failing_test_file": "tests/data_collector_tests/test_a_share_three_day_walkforward_campaign110_terminal.py",
+    "failing_tests": [
+      "test_terminal_v2_preserves_scientific_outputs_and_corrected_ledger",
+      "test_state_bindings_candidate49_and_weekend_boundary"
+    ],
+    "failure_stage": "legacy_campaign110_terminal_and_state_bind_current_mutable_unified_report_to_an_old_sha256",
+    "expected_old_report_sha256": "8592bf600bef68ebd07cf29158702138e6124d23afc90f573fd2644fc60bb76b",
+    "observed_current_report_sha256": "1efc109077a2185237ca9ba92f8c2e0abb27fd8df0f2f57e4e9427c7beab0aaf"
+  },
+  "interpretation": {
+    "campaign115_runner_or_test_failed": false,
+    "campaign115_focused_tests_passed": "10 passed in 9.32s",
+    "other_selected_regression_tests_passed": 62,
+    "legacy_campaign110_artifact_rewritten": false,
+    "legacy_campaign110_test_rewritten": false,
+    "reason_not_repaired_in_place": "append_only_historical_terminal_and_state_records_must_not_be_rewritten_to_follow_a_later_mutable_unified_report"
+  },
+  "research_boundary": {
+    "candidate_values_read": false,
+    "comparator_values_read": false,
+    "daily_price_or_forward_return_values_read": false,
+    "partition_year_2024_or_2025_values_read": false,
+    "provider_request_issued": false,
+    "credential_loaded": false,
+    "candidate49_ledgers_changed": false,
+    "second_prospective_candidate_created": false,
+    "current_scoring_selection_sizing_or_orders_performed": false,
+    "investment_advice": false
+  }
+}

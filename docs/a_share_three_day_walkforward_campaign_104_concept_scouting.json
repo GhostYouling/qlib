@@ -1,0 +1,114 @@
+{
+  "schema_version": 1,
+  "kind": "a_share_three_day_walkforward_campaign104_concept_scouting",
+  "status": "terminal_zero_selected_candidates_before_campaign104_source_candidate_comparison_daily_price_or_return_values",
+  "recorded_at": "2026-08-07T17:14:00Z",
+  "purpose": "Review a finite set of offline Campaign104 concepts against the complete v61 mechanism history before reading any Campaign104 source row, candidate value, comparator value, daily price, or forward return.",
+  "authoritative_inputs": {
+    "iteration_state": {
+      "path": "docs/a_share_three_day_iteration_status_20260808_campaign103_terminal_v2.json",
+      "sha256": "7d1aa661066c7445bb9e2e2b984e8b2b9042f1b044f3b9defc30d69e7e52a4e2"
+    },
+    "numeric_policy_v61": {
+      "path": "docs/a_share_three_day_walkforward_future_numeric_comparison_eligibility_policy_v61_20260808.json",
+      "sha256": "bfced9733feba5975bc46b96f2596a9227a160849dbf50b41c958053edcc59a0",
+      "complete_definition_count": 134,
+      "complete_definition_order_sha256": "db734b25fed4046ff80a276448daf20918d410125ebae941373c5617816cf8dc",
+      "numeric_comparator_count": 131,
+      "numeric_comparator_order_sha256": "ab56a1791ae9a74b75d0a32cfb2346aa4bb6bfe266589be65825f8f51422f646"
+    },
+    "historical_walkforward_policy": {
+      "path": "docs/a_share_three_day_historical_walkforward_research_policy_20260727.json",
+      "sha256": "38426d6161b9bfed323c58caba18feca668b8c9d53e294951a8ba90c01a798bb"
+    }
+  },
+  "finite_prevalue_concept_catalog": [
+    {
+      "name": "intraday_transaction_price_path_efficiency_238p",
+      "proposed_formula": "On direct active adjacent amount/volume transaction-price pairs within each half-session, return abs(sum(log(p_j/p_j-1)))/sum(abs(log(p_j/p_j-1))), with p=amount/volume and no bridge across an inactive bar.",
+      "decision": "rejected_before_source_rows_or_values",
+      "reason": "Campaign007 explicitly froze transaction-price path efficiency, reversal, sign, lead, and lag transforms as prohibited Campaign006 repair rather than a new economic mechanism.",
+      "binding_evidence": {
+        "path": "docs/a_share_three_day_walkforward_campaign_007_concept_scouting.json",
+        "sha256": "324f03c09b4f28ebaeda2055772de35a1a89bd186919864f60db0ef9b1cc021d"
+      }
+    },
+    {
+      "name": "intraday_one_tick_close_update_share_238p",
+      "proposed_formula": "Among nonzero adjacent raw-close updates wholly inside the two continuous half-sessions, return the share whose absolute arithmetic change is exactly one CNY 0.01 tick.",
+      "decision": "rejected_before_source_rows_or_values",
+      "reason": "The statistic conditions Campaign034's already-exposed raw CNY tick-grid mechanism on the terminal adjacent price-update mechanism. It is an old-factor field/operator combination, not an independent raw mechanism, and would add nominal-price and board exposure after both families were observed.",
+      "binding_evidence": [
+        {
+          "path": "docs/a_share_three_day_walkforward_campaign_034_concept_scouting.json",
+          "sha256": "d68ac83ed93869579cff065b915432168e1d958dc7651dc826e42e4d98f3b76d"
+        },
+        {
+          "path": "docs/a_share_three_day_walkforward_campaign_034_mechanism_overlap_audit.json",
+          "sha256": "19ab4e57d2ddaf3890374c4c2c50df718203f2de32c86f60ba44010d564b6d80"
+        }
+      ]
+    },
+    {
+      "name": "full_numeric_library_directional_profile_persistence_131f",
+      "proposed_formula": "For exact current/prior accepted-session rows, compute a same-stock Pearson correlation between the paired current and prior frozen-direction component-rank vectors over all 131 numeric definitions.",
+      "decision": "rejected_before_source_values",
+      "reason": "It reuses Campaign103's exact temporal complete-library source, prior-session relation, and paired-support problem while replacing only the vote aggregator. v61 forbids Campaign103 support, vote, reweight, model, or combination rescue.",
+      "binding_evidence": {
+        "path": "docs/a_share_three_day_walkforward_campaign_103_concept_scouting.json",
+        "sha256": "e6c23541f2717668b88c4a1566725becf6bb40577df81aebf58829e33dd42d70"
+      }
+    },
+    {
+      "name": "intraday_prior_close_excursion_imbalance_238p",
+      "proposed_formula": "For each destination bar inside a half-session, measure positive log high excursion above the prior close and positive log prior-close excursion above the low, then return their signed mass imbalance.",
+      "decision": "rejected_before_source_rows_or_values",
+      "reason": "This combines the terminal two-sided running-range frontier family with the prior-close/destination-range gap-containment family and changes their anchor and magnitude allocation after exposure. It does not establish a new information domain.",
+      "binding_evidence": [
+        {
+          "path": "docs/a_share_three_day_walkforward_campaign_036_mechanism_overlap_audit.json",
+          "sha256": "6e926816595e4c4f8850004977e827678d0bbd63118dcc4c1c507482e4ceec14"
+        },
+        {
+          "path": "docs/a_share_three_day_walkforward_campaign_041_mechanism_overlap_audit.json",
+          "sha256": "2eee8a371218fe931274c577365c0ad3c1d9d0374665321791477ac9e422a3ba"
+        }
+      ]
+    },
+    {
+      "name": "intraday_odd_lot_aggregate_volume_residue_share_240m",
+      "proposed_formula": "Return the share of active standard minute bars whose aggregate share volume is not divisible by a presumed round-lot size.",
+      "decision": "rejected_before_source_rows_or_values",
+      "reason": "The accepted source provides bar-aggregate share volume, not order- or trade-size records. A residue of an aggregate cannot identify odd-lot participation, and the frozen source contract contains no point-in-time board-specific order-lot rule. The proposed economic interpretation is therefore unsupported by the available schema.",
+      "binding_evidence": {
+        "path": "data/metadata/rich_data/alignments/20260721T140521Z_tushare_1m_alignment_89ec2deb.json",
+        "sha256": "2c8c85ba1155289d03c3ebc1175a4a2504bf8022b849087840777ee41586e2",
+        "accepted_volume_unit": "shares"
+      }
+    }
+  ],
+  "prevalue_decision": {
+    "concepts_reviewed": 5,
+    "selected_candidate_count": 0,
+    "genuinely_independent_mechanism_found": false,
+    "campaign104_candidate_formula_frozen": false,
+    "campaign104_source_or_candidate_values_may_be_read": false,
+    "comparison_values_may_be_read": false,
+    "historical_daily_price_or_forward_return_values_may_be_read": false,
+    "terminalize_campaign104_without_feature_snapshot_or_development_trial": true
+  },
+  "research_boundary": {
+    "prior_definition_names_directions_protocols_and_schema_metadata_read": true,
+    "campaign104_source_rows_read": false,
+    "campaign104_candidate_values_computed_or_read": false,
+    "campaign104_comparator_values_read": false,
+    "historical_daily_price_fields_read": [],
+    "historical_forward_returns_read": false,
+    "provider_request_issued": false,
+    "candidate49_historical_backfill_performed": false,
+    "candidate49_ledgers_changed": false,
+    "second_prospective_candidate_created": false,
+    "current_scoring_selection_sizing_or_orders_performed": false,
+    "investment_advice": false
+  }
+}

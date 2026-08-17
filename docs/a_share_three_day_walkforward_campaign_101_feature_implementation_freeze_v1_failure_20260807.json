@@ -1,0 +1,26 @@
+{
+  "schema_version": 1,
+  "kind": "a_share_three_day_walkforward_campaign101_prevalue_infrastructure_failure",
+  "status": "first_implementation_freeze_preserved_but_declared_ineffective",
+  "recorded_at": "2026-08-07T13:19:58Z",
+  "stage": "feature_implementation_freeze_self_validation_before_source_values",
+  "ineffective_freeze": {
+    "path": "docs/a_share_three_day_walkforward_campaign_101_feature_implementation_freeze_20260807.json",
+    "sha256": "cfdbdab7034bf3a4480a3917ba4ced8167b14d6cc8ab2647623a17626278745e",
+    "may_be_rewritten": false,
+    "may_authorize_source_value_read": false
+  },
+  "failure": "The v1 freeze placed four required false-valued research-boundary assertions inside research_boundary, while the frozen builder's fail-closed validator required those fields at top level.",
+  "repair": "Preserve v1 unchanged, point the builder to a new v2 freeze path, rerun all synthetic/static checks after that one-line path change, and create v2 with both the nested full boundary and the four validator-required top-level assertions.",
+  "scientific_formula_direction_support_or_gate_changed": false,
+  "research_boundary": {
+    "source_factor_values_read": false,
+    "candidate_values_read": false,
+    "comparison_values_read": false,
+    "coverage_or_capacity_metrics_computed": false,
+    "historical_daily_price_fields_read": [],
+    "historical_forward_returns_read": false,
+    "provider_request_issued": false,
+    "candidate49_ledgers_changed": false
+  }
+}

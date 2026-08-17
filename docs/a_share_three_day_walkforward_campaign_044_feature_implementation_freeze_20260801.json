@@ -1,0 +1,97 @@
+{
+  "version": 1,
+  "kind": "a_share_three_day_walkforward_campaign044_feature_implementation_freeze",
+  "status": "frozen_after_synthetic_tests_before_source_factor_candidate_daily_price_or_return_values",
+  "recorded_at": "2026-07-31T17:20:00Z",
+  "purpose": "Bind the exact Campaign044 complete-terminal-library aggregation implementation and synthetic tests before any historical source-factor value is read.",
+  "authoritative_inputs": {
+    "iteration_state": {
+      "path": "docs/a_share_three_day_iteration_status_20260731_campaign043_verified.json",
+      "sha256": "24d677feded294b1690791a55280795d8210c9cc91b54886bcdcf93743142fc1"
+    },
+    "historical_walkforward_policy": {
+      "path": "docs/a_share_three_day_historical_walkforward_research_policy_20260727.json",
+      "sha256": "38426d6161b9bfed323c58caba18feca668b8c9d53e294951a8ba90c01a798bb"
+    },
+    "concept_scouting": {
+      "path": "docs/a_share_three_day_walkforward_campaign_044_concept_scouting.json",
+      "sha256": "d9fc4cf06d53e584b40f847706f281db80ac034bfe1288ccccd0dd69516910cb"
+    },
+    "mechanism_overlap_audit": {
+      "path": "docs/a_share_three_day_walkforward_campaign_044_mechanism_overlap_audit.json",
+      "sha256": "b48265b6daf85706e2915c32d0cbfc6ead5eba7ee27dc5796d6d880b07b2e3da"
+    },
+    "no_return_preregistration": {
+      "path": "docs/a_share_three_day_walkforward_campaign_044_no_return_preregistration.json",
+      "sha256": "1037d27b173f4fb63c75672c4da50c6616f1f1eb3ae1917ecf291fc2d2644f69"
+    }
+  },
+  "implementation": {
+    "path": "scripts/a_share_three_day_walkforward_campaign044_features.py",
+    "sha256": "b6e12b7eb571770edb2e8186daee1680e95bb60dc637432d4e4c1682ca5fb429",
+    "candidate_factor": "full_terminal_library_directional_percentile_consensus_66f",
+    "candidate_direction": "higher",
+    "source_terminal_factor_count": 66,
+    "source_terminal_factor_order_sha256": "71a34e7decf7ba4a456cff4e08b0ea034a3919ee62edf5eb3bec603eb50a5bed",
+    "active_candidate49_factor_excluded": "intraday_cumulative_vwap_crossing_rate_240m",
+    "formula": "On each signal session, require quality/listing-eligible common finite support across all 66 terminal factors and at least 50 names; compute every frozen-direction average-tie empirical percentile and take their arithmetic mean with weight 1/66.",
+    "common_support_before_ranking": true,
+    "all_components_required": true,
+    "minimum_common_support_names": 50,
+    "rank_method": "average_tie_empirical_percentile",
+    "higher_and_lower_frozen_directions_honored": true,
+    "missing_imputation_jitter_clip_winsorization_subset_weight_fit_or_alternate_aggregator": "none",
+    "two_pass_bounded_memory_construction": "First intersect all 66 finite source values on quality/listing master keys; remove sessions below 50 names; then reload the same verified sources and accumulate directional percentiles one factor at a time.",
+    "resumable_score_cache": true,
+    "partition_checkpointing": true,
+    "expected_partitions": 33015,
+    "expected_rows": 7724498,
+    "candidate49_snapshot_or_factor_value_loader_present": false,
+    "daily_price_or_forward_return_loader_present_in_feature_build": false
+  },
+  "tests": {
+    "path": "tests/data_collector_tests/test_a_share_three_day_walkforward_campaign044_features.py",
+    "sha256": "c24084806c42a32d0e9e709f082b087d12de374a0ce8a9faeb4046efde5b4f74",
+    "command": "PYTHONPATH=. pytest -q tests/data_collector_tests/test_a_share_three_day_walkforward_campaign044_features.py",
+    "result": "8 passed in 42.09s",
+    "coverage": [
+      "higher and lower frozen directions",
+      "average ties without jitter",
+      "all-component common support and reranking",
+      "minimum session support",
+      "duplicate and missing-column fail-closed behavior",
+      "exact 66-factor order and Candidate49 exclusion",
+      "source-manifest catalog order without factor-value reads",
+      "status path reads no factor value, daily price, or return"
+    ]
+  },
+  "pre_value_design_rejections_preserved": [
+    {
+      "factor_count": 65,
+      "reason": "contained active Candidate49 and would violate historical-backfill prohibition"
+    },
+    {
+      "factor_count": 64,
+      "reason": "comparison-derived subset omitted two frozen legacy terminal definitions"
+    }
+  ],
+  "research_boundary": {
+    "source_factor_names_definitions_directions_and_manifest_metadata_read": true,
+    "source_factor_values_read": false,
+    "candidate_values_read": false,
+    "historical_daily_price_fields_read": false,
+    "historical_forward_returns_read": false,
+    "training_or_model_fitting_performed": false,
+    "provider_request_issued": false,
+    "candidate49_factor_values_read_for_campaign044": false,
+    "candidate49_historical_return_signal_or_execution_backfill_performed": false,
+    "candidate49_ledgers_changed": false,
+    "candidate50_activation_created": false,
+    "current_scoring_selection_sizing_or_orders_performed": false
+  },
+  "decision": {
+    "implementation_frozen": true,
+    "binding_validator_must_pass_before_source_factor_values": true,
+    "next_action": "Validate this freeze and every preregistration binding, then build exactly one immutable Campaign044 composite snapshot from the verified 66-factor terminal source catalog."
+  }
+}

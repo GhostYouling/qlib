@@ -1,0 +1,17 @@
+{
+  "version": 1,
+  "kind": "a_share_three_day_walkforward_campaign074_infrastructure_failure",
+  "status": "append_only_recorded_prevalue_failure",
+  "recorded_at": "2026-08-06T07:35:30+08:00",
+  "stage": "prevalue_campaign073_evidence_probe",
+  "result": "read_only_jq_probe_used_nonexistent_campaign073_audit_timestamp",
+  "failed_path": "data/experiments/short_horizon/historical_walkforward/campaign_073/no_return/20260806T001446Z_campaign073_no_return_audit.json",
+  "recovery": "Resolved the immutable published audit path as 20260805T231452Z_campaign073_no_return_audit.json; no research computation was rerun.",
+  "candidate_source_rows_read": false,
+  "candidate_values_read": false,
+  "comparison_values_read": false,
+  "historical_daily_price_fields_read": [],
+  "historical_forward_returns_read": false,
+  "provider_request_issued": false,
+  "candidate49_ledgers_changed": false
+}

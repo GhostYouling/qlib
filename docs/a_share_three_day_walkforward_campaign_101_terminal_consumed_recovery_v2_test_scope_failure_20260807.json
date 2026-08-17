@@ -1,0 +1,37 @@
+{
+  "schema_version": 1,
+  "kind": "a_share_three_day_walkforward_campaign101_terminal_consumed_recovery_v2_test_scope_failure",
+  "status": "terminal_validation_scope_failed_without_research_value_change",
+  "recorded_at": "2026-08-07T14:35:16Z",
+  "failed_combined_result": {
+    "passed": 38,
+    "failed": 3,
+    "failed_file": "tests/data_collector_tests/test_a_share_three_day_walkforward_campaign101_development_recovery_v2.py",
+    "failed_assertions": [
+      "live ledger has exactly two infrastructure failures and no complete development trial",
+      "live ledger SHA equals the pre-recovery failed-ledger SHA",
+      "survivor and stress records do not yet exist"
+    ]
+  },
+  "root_cause": "The recovery-v2 tests are immutable activation-precondition tests bound before the successful development run. The append-only live state now correctly has a third complete development entry, a zero-survivor record, and a closed stress record, so those three precondition assertions are consumed historical evidence rather than current-state tests.",
+  "correction": {
+    "frozen_recovery_v2_test_modified": false,
+    "failed_activation_or_ledger_history_rewritten": false,
+    "current_state_suite_excludes_both_consumed_recovery_activation_test_files": true,
+    "current_state_suite": [
+      "tests/data_collector_tests/test_a_share_three_day_walkforward_campaign101_features.py",
+      "tests/data_collector_tests/test_a_share_three_day_walkforward_campaign101_no_return_audit.py",
+      "tests/data_collector_tests/test_a_share_three_day_walkforward_campaign101_development.py",
+      "tests/data_collector_tests/test_a_share_three_day_walkforward_campaign101_terminal.py",
+      "tests/data_collector_tests/test_a_share_three_day_walkforward_campaign101_terminal_v2.py",
+      "tests/data_collector_tests/test_a_share_three_day_walkforward_campaign101_terminal_v3.py"
+    ]
+  },
+  "read_boundary": {
+    "additional_candidate_factor_daily_price_or_forward_return_values_read": false,
+    "stress_2024_2025_read": false,
+    "provider_request_issued": false,
+    "candidate49_ledgers_changed": false,
+    "current_scoring_selection_sizing_or_orders_performed": false
+  }
+}

@@ -1,0 +1,103 @@
+{
+  "schema_version": 3,
+  "kind": "a_share_three_day_iteration_status",
+  "status": "campaign101_terminal_zero_survivors_verified_ready_for_campaign102_offline_iteration",
+  "recorded_at": "2026-08-07T14:28:20Z",
+  "supersedes_without_rewriting": {
+    "path": "docs/a_share_three_day_iteration_status_20260807_campaign100_verified_v2.json",
+    "sha256": "5a5465269ceab1e957e75226a21a8071a3b58a574fa9054501337010d61c4e41",
+    "preserved": true,
+    "scientific_result_changed": true,
+    "reason": "Campaign101 completed its sole frozen 2019-2023 development trial, produced zero survivors, and therefore kept 2024-2025 closed."
+  },
+  "terminal_completion_freeze": {
+    "path": "docs/a_share_three_day_walkforward_campaign_101_terminal_completion_freeze_20260807.json",
+    "sha256": "77a462de5b9548ccb51accecef9bcfa25ca0137676cda2e082c38ce1b1cc9201"
+  },
+  "effective_attempt_ledger": {
+    "path": "data/experiments/short_horizon/historical_walkforward/campaign_101/research_attempt_ledger_v13.json",
+    "sha256": "d86b6f57218abc9909d32f67abf009ad0408070772be9ae18f2fedc4f4816f87"
+  },
+  "effective_future_numeric_policy": {
+    "path": "docs/a_share_three_day_walkforward_future_numeric_comparison_eligibility_policy_v55_20260807.json",
+    "sha256": "5bf1898a106589ae127656405e0083dbcf36864249a6500d95be1a06281e299d",
+    "complete_definition_count": 133,
+    "complete_definition_order_sha256": "25cd0159c803bf69b0fce61449843db96a34ae4c56628deda9500433c97b45a1",
+    "numeric_comparator_count": 130,
+    "numeric_comparator_order_sha256": "c80d9b929536dd509d6c1a904f790831050e68200393de381f92ad9293ef69e7"
+  },
+  "research_mode": {
+    "historical_walkforward_is_primary_iteration_engine": true,
+    "historical_offline_work_may_run_at_any_time": true,
+    "wait_for_1630_or_new_daily_bar_required_for_historical_work": false,
+    "candidate49_future_observation_is_independent_confirmation_layer": true,
+    "historical_results_may_generate_current_scores_selection_sizing_or_orders": false
+  },
+  "campaign101_terminal_result": {
+    "factor": "full_numeric_library_directional_lower_quartile_consensus_129f",
+    "direction": "higher",
+    "feature_snapshot_rows": 1331759,
+    "feature_snapshot_finite_rows": 1327637,
+    "median_coverage": 0.9981238257410756,
+    "p05_coverage": 0.992066409032738,
+    "numeric_comparison_count": 129,
+    "numeric_comparison_pass_count": 129,
+    "maximum_absolute_median_daily_rank_correlation": 0.5578969529303937,
+    "development_trial_count": 1,
+    "development_positive_rank_ic_fold_count": 0,
+    "development_positive_normalized_return_fold_count": 0,
+    "development_positive_pilot_10bp_return_fold_count": 0,
+    "development_aggregate_20bp_return": -0.21717077405952845,
+    "worst_validation_normalized_drawdown": -0.35020163110644087,
+    "development_survivor_count": 0,
+    "stress_2024_2025_opened": false,
+    "stress_2024_2025_return_fields_read": false,
+    "terminal": true,
+    "same_campaign_inverse_residual_filter_reweight_alternate_quantile_retry_rescue_or_combination_allowed": false
+  },
+  "final_accounting": {
+    "campaign101_attempt_count": 19,
+    "campaign101_ledger_entry_count": 19,
+    "campaign101_infrastructure_implementation_or_recording_failure_count": 12,
+    "campaign101_complete_no_return_factor_outcome_count": 1,
+    "campaign101_return_reading_development_trial_count": 1,
+    "campaign101_development_survivor_count": 0,
+    "campaign101_stress_trial_count": 0,
+    "cumulative_historical_research_attempt_count": 743,
+    "cumulative_return_reading_development_trial_count": 295
+  },
+  "active_data_roots": {
+    "daily_qlib_root": "/Volumes/DIsk/Disk-Coding/qlib/data/qlib/cn_a_share",
+    "daily_calendar_last_session": "2026-07-13",
+    "accepted_minute_root": "/Volumes/DIsk/qlib-a-share-tushare-1m"
+  },
+  "candidate49": {
+    "registration_id": "candidate49_intraday_cumulative_vwap_crossing_rate_240m_v1",
+    "remains_only_active_prospective_candidate": true,
+    "signal_ledger": {
+      "path": "data/experiments/short_horizon/candidate49_future_signal_ledger.json",
+      "sha256": "5193f00d7f36da003f53cec387900da4c3d002299f5dfcfc1a95eaa199ed3a79",
+      "entry_count": 0
+    },
+    "execution_ledger": {
+      "path": "data/experiments/short_horizon/candidate49_future_execution_ledger.json",
+      "sha256": "d57a3e61eac969e42cafa418ccd8c0a5ee65dcf69da145bb2c096c2a02a2ea4f",
+      "entry_count": 0
+    },
+    "historical_backfill_performed": false,
+    "ledgers_changed_by_campaign101": false,
+    "second_prospective_candidate_created": false
+  },
+  "provider_credential": {
+    "source": ".env",
+    "regular_file_non_symlink": true,
+    "mode": "0600",
+    "git_ignored": true,
+    "recognized_nonempty_token_key_count": 1,
+    "secret_printed_hashed_or_logged": false
+  },
+  "provider_request_issued_by_campaign101": false,
+  "current_scoring_selection_sizing_or_orders_performed": false,
+  "investment_advice": false,
+  "next_safe_action": "Start Campaign102 offline only after a genuinely new mechanism, exact support predicate, complete 133-definition/130-numeric v55 library, finite search space, folds, costs, gates, data hashes, and code hashes are frozen before candidate or comparator values."
+}

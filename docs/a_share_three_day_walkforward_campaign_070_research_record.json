@@ -1,0 +1,168 @@
+{
+  "version": 1,
+  "kind": "a_share_three_day_walkforward_campaign070_research_record",
+  "status": "completed_zero_admissible_factors_coverage_failed_before_comparators_or_returns",
+  "recorded_at": "2026-08-06T04:50:00+08:00",
+  "campaign_id": "070",
+  "factor": {
+    "name": "quarterly_announcement_delay_improvement_yoy_rank_1y",
+    "direction": "higher",
+    "formula": "For each instrument and Q-DEC report date, subtract current nonnegative announcement delay days from the exact prior-year same-quarter delay, activate strictly after the current announcement, forward-fill finite effective state, then compute the same-stock-day average-tie percentile rank.",
+    "value_range": "(0,1] under the frozen average-tie percentile-rank definition; the verifier enforces the containing envelope [0,1]",
+    "source_fields": [
+      "instrument",
+      "report_date",
+      "announcement_date",
+      "trade_date",
+      "symbol",
+      "provider"
+    ],
+    "forbidden_source_fields_read": [
+      "open",
+      "high",
+      "low",
+      "close",
+      "volume",
+      "amount",
+      "roe",
+      "net_profit",
+      "revenue_yoy",
+      "profit_yoy"
+    ],
+    "factor_terminal": true,
+    "predictive_value_established": false
+  },
+  "immutable_chain": {
+    "authoritative_predecessor": {
+      "path": "docs/a_share_three_day_iteration_status_20260806_campaign069_verified.json",
+      "sha256": "48a02bd6a0e16901c30f14e2d0465d31d2bb19a319b07850c25c59fd86993e85"
+    },
+    "numeric_comparison_policy": {
+      "path": "docs/a_share_three_day_walkforward_future_numeric_comparison_eligibility_policy_v3_20260806.json",
+      "sha256": "afdb235a9aac5d6cde01b5e4edf57cdd3da15fd3adac035c69f284408bead913"
+    },
+    "concept_scouting": {
+      "path": "docs/a_share_three_day_walkforward_campaign_070_concept_scouting.json",
+      "sha256": "2d81306044649c5a77ad5ca3a21d96e0b2a59c223fccad5c42e1546bb202f08b"
+    },
+    "mechanism_overlap_audit": {
+      "path": "docs/a_share_three_day_walkforward_campaign_070_mechanism_overlap_audit.json",
+      "sha256": "b561bd2b53051d25caeaf987345d87829623d7ca8c57481eb982158e86dfc9ec"
+    },
+    "no_return_preregistration": {
+      "path": "docs/a_share_three_day_walkforward_campaign_070_no_return_preregistration.json",
+      "sha256": "5474879454fbc3113fb386b4ebc4a1e1e0643a168511ebfe39d8bd9fc9a96952"
+    },
+    "feature_implementation_freeze": {
+      "path": "docs/a_share_three_day_walkforward_campaign_070_feature_implementation_freeze_20260806.json",
+      "sha256": "e8acae466a4891fe22bf0bf9da46f3d7afefaf1e248a63888fc517f61f4b0347"
+    },
+    "snapshot_binding": {
+      "path": "docs/a_share_three_day_walkforward_campaign_070_feature_snapshot_binding_20260806.json",
+      "sha256": "4c573c47ce247cac96c492ae37f93c39356303db18f05c093f1446a765e8aa34"
+    },
+    "audit_sequence_record": {
+      "path": "docs/a_share_three_day_walkforward_campaign_070_audit_freeze_sequence_record_20260806.json",
+      "sha256": "360781d40a9925c25df40db049b2de862d0b969273b6ca67ca0485d89aaba85b"
+    },
+    "no_return_audit_implementation_freeze": {
+      "path": "docs/a_share_three_day_walkforward_campaign_070_no_return_audit_implementation_freeze_20260806.json",
+      "sha256": "63623b926baa51a3fde15a7d231d05f8c4bea985fdf1a6c540355a748affb086"
+    },
+    "no_return_audit_activation_binding": {
+      "path": "docs/a_share_three_day_walkforward_campaign_070_no_return_audit_activation_binding_20260806.json",
+      "sha256": "f1c35bfc3ef6dffa161591e5c8af364db7fbeb82274b0d35cfb7e6216718dc17"
+    },
+    "completed_no_return_audit": {
+      "path": "data/experiments/short_horizon/historical_walkforward/campaign_070/no_return/20260805T204241Z_campaign070_no_return_audit.json",
+      "sha256": "c5b806e938f0dd04bdb6908c3882c4f403302827ab64d37c3b339f3c0a0023bc"
+    },
+    "research_attempt_ledger": {
+      "path": "data/experiments/short_horizon/historical_walkforward/campaign_070/research_attempt_ledger_v1.json",
+      "sha256": "855124243d0f571b3f02e3fc98383b84c25cfce52f618ab5884286acfea62e47"
+    },
+    "campaign_report": {
+      "path": "docs/a_share_three_day_walkforward_campaign_070_report.md",
+      "sha256": "2cb28033cf55435b4291d79171551972ba36341cbf47b04bcd96286e2ea48005"
+    },
+    "unified_report": {
+      "path": "data/experiments/short_horizon/three_day_research_report.md",
+      "sha256": "fd3e5f6b181311e1fa42476c1263982b5b1c153cf38d481f9d5da16088304265"
+    },
+    "candidate49_daily_failure_record": {
+      "path": "docs/a_share_candidate49_20260805_daily_source_failure_record.json",
+      "sha256": "b2b6b07e1f0fca128ba9935dac6331319b2a7147e3d73e52b624853a2259bbbf"
+    }
+  },
+  "snapshot_result": {
+    "manifest_path": "/Volumes/DIsk/qlib-a-share-tushare-1m/derived/a_share/rich/tushare/minute_walkforward_campaign070_feature_library/tushare_stk_mins_1m_2019_2025_ea0cbb8f_walkforward_campaign070_feature_library_v1/snapshot_manifest.json",
+    "manifest_sha256": "f828ee06ac609580880eb0bfcd2d1fbcaba590e872f57fe5639a468c67edcbd7",
+    "dataset_sha256": "35ea87d9e183b77a382a88789cedf96d79f6a102c5006e156bbde2ff87fd6efe",
+    "partitions": 33015,
+    "rows": 7724498,
+    "eligible_rows": 6353795,
+    "missing_rows": 1370703,
+    "all_partition_byte_and_frame_hashes_passed": true
+  },
+  "no_return_result": {
+    "calendar_sessions": 1632,
+    "quality_listing_eligible_rows": 1331759,
+    "candidate_eligible_rows": 1122656,
+    "median_coverage": 0.9981114258734656,
+    "p05_coverage": 0.0,
+    "p05_eligible_names": 0.0,
+    "potential_non_overlapping_three_session_cohorts": 458,
+    "observed_cohort_years": [2020, 2021, 2022, 2023, 2024, 2025],
+    "coverage_gate_passed_before_comparison_values": false,
+    "numeric_comparison_count": 0,
+    "frozen_numeric_comparison_count_if_coverage_passed": 100,
+    "comparison_values_read": false,
+    "admissible_factor_count": 0,
+    "historical_daily_price_fields_read": [],
+    "historical_forward_returns_read": false,
+    "provider_request_issued": false
+  },
+  "development_result": {
+    "preregistered_trial_id": "wf070_quarterly_announcement_delay_improvement_yoy_rank_1y_single_higher",
+    "trial_count": 0,
+    "development_2019_2023_daily_prices_or_returns_opened": false,
+    "development_survivor_count": 0,
+    "stress_2024_2025_opened": false,
+    "stress_2024_2025_returns_read": false
+  },
+  "attempt_accounting": {
+    "campaign070_infrastructure_failures": 3,
+    "campaign070_complete_factor_attempts": 1,
+    "campaign070_distinct_research_attempts": 4,
+    "campaign070_append_only_ledger_entries": 4,
+    "campaign070_return_reading_development_trials": 0,
+    "cumulative_historical_research_attempts": 418,
+    "cumulative_return_reading_development_trials": 275
+  },
+  "candidate49_boundary": {
+    "signal_ledger": {
+      "path": "data/experiments/short_horizon/candidate49_future_signal_ledger.json",
+      "sha256": "5193f00d7f36da003f53cec387900da4c3d002299f5dfcfc1a95eaa199ed3a79",
+      "entry_count": 0
+    },
+    "execution_ledger": {
+      "path": "data/experiments/short_horizon/candidate49_future_execution_ledger.json",
+      "sha256": "d57a3e61eac969e42cafa418ccd8c0a5ee65dcf69da145bb2c096c2a02a2ea4f",
+      "entry_count": 0
+    },
+    "historical_backfill_performed": false,
+    "provider_request_issued_by_campaign070": false
+  },
+  "terminal_decision": {
+    "factor_terminal": true,
+    "same_campaign_inversion_relagging_threshold_filter_rescue_or_combination_allowed": false,
+    "development_2019_2023_opened": false,
+    "stress_2024_2025_opened": false,
+    "current_scoring_selection_sizing_or_orders_performed": false,
+    "investment_advice": false,
+    "survivorship_bias_disclosed": true,
+    "quarterly_revision_bias_disclosed": true,
+    "next_independent_offline_scouting_allowed": true
+  },
+  "data_limitation": "The eligible universe derives from a current listing snapshot and can contain survivorship bias, while the current quarterly snapshot can contain revision bias. Historical research is not pristine out-of-sample evidence and is not investment advice."
+}

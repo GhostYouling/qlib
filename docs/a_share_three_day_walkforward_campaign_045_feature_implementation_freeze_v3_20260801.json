@@ -1,0 +1,56 @@
+{
+  "version": 3,
+  "kind": "a_share_three_day_walkforward_campaign045_feature_implementation_freeze",
+  "status": "effective_snapshot_fingerprint_bound_ready_for_ordered_no_return_audit",
+  "recorded_at": "2026-07-31T20:27:00Z",
+  "purpose": "Bind the post-publication Campaign045 runner containing only the immutable snapshot manifest and dataset fingerprints, after replaying every partition byte and frame hash.",
+  "source_chain": {
+    "effective_prepublication_freeze": {
+      "path": "docs/a_share_three_day_walkforward_campaign_045_feature_implementation_freeze_v2_20260801.json",
+      "sha256": "41b2bad35c61c77a848e1f8446212a42e5f3decd991a4b472a1a17634e6b1fde"
+    },
+    "snapshot_publication_binding": {
+      "path": "docs/a_share_three_day_walkforward_campaign_045_feature_snapshot_publication_binding_20260801.json",
+      "sha256": "d08381568bea98789422b57a659991d0696165e9bdfee541db3bf1330ed2162c"
+    },
+    "no_return_preregistration": {
+      "path": "docs/a_share_three_day_walkforward_campaign_045_no_return_preregistration.json",
+      "sha256": "886fab70da8584fdf43cec921064b2891e5477b7118be979313e1950260b145e"
+    },
+    "effective_feature_runner": {
+      "path": "scripts/a_share_three_day_walkforward_campaign045_features.py",
+      "sha256": "60b9ee553dc55b384414b81a84be16a2f9a42eeea61a171c23ec2d07454cfaf9"
+    },
+    "snapshot_manifest": {
+      "path": "/Volumes/DIsk/qlib-a-share-tushare-1m/derived/a_share/rich/tushare/minute_walkforward_campaign045_feature_library/tushare_stk_mins_1m_2019_2025_ea0cbb8f_walkforward_campaign045_feature_library_v1/snapshot_manifest.json",
+      "sha256": "896ecf82cf6d9b8b0609bcb6b28345de57a91980ddd3d8d196e69a51ffbf72d8",
+      "dataset_sha256": "96d875a6e9699c771ba8f217400cc15c5d4c36ade2b86422c6ee8f8b2f179fae"
+    },
+    "synthetic_tests": {
+      "path": "tests/data_collector_tests/test_a_share_three_day_walkforward_campaign045_features.py",
+      "sha256": "9e0c8cb66dd119384ade8119df388f398b138e3c0295478c569f1cd06376e539"
+    }
+  },
+  "post_publication_validation": {
+    "synthetic_tests_passed": 6,
+    "verified_partitions": 33015,
+    "verified_rows": 7724498,
+    "all_partition_byte_and_frame_hashes_valid": true,
+    "snapshot_manifest_semantics_valid": true,
+    "status_reports_bound_snapshot": true,
+    "comparison_values_read": false,
+    "historical_daily_price_fields_read": false,
+    "historical_forward_returns_read": false
+  },
+  "code_delta_from_v2": {
+    "snapshot_manifest_sha256_constant_bound": "896ecf82cf6d9b8b0609bcb6b28345de57a91980ddd3d8d196e69a51ffbf72d8",
+    "snapshot_dataset_sha256_constant_bound": "96d875a6e9699c771ba8f217400cc15c5d4c36ade2b86422c6ee8f8b2f179fae",
+    "formula_direction_source_projection_alignment_or_gate_changed": false,
+    "other_code_changed": false
+  },
+  "decision": {
+    "ordered_no_return_audit_allowed": true,
+    "daily_price_or_return_read_allowed": false,
+    "next_action": "Execute coverage and capacity first; load all 68 comparisons only if every frozen coverage gate passes."
+  }
+}

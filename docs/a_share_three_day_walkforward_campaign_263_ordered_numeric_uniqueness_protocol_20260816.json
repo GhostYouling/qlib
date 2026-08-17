@@ -1,0 +1,61 @@
+{
+  "schema_version": 1,
+  "kind": "a_share_three_day_walkforward_campaign263_ordered_numeric_uniqueness_protocol",
+  "status": "all_142_ordered_comparators_frozen_after_coverage_pass_before_any_comparator_value",
+  "recorded_at": "2026-08-16T12:10:00Z",
+  "timestamp_semantics": "monotonic logical append time after coverage and before comparator values",
+  "authoritative_inputs": {
+    "coverage_audit": {
+      "path": "data/experiments/short_horizon/historical_walkforward/campaign_263/coverage/campaign263_coverage_audit.json",
+      "sha256": "4fb82c67252efefdce8466c09e99a9dc526c394b234f2996d8172178e620f0fe"
+    },
+    "candidate_snapshot": {
+      "path": "/Volumes/DIsk/qlib-a-share-tushare-1m/derived/a_share/rich/tushare/minute_walkforward_campaign263_feature_library/tushare_stk_mins_1m_2019_2025_ea0cbb8f_walkforward_campaign263_feature_library_v1/snapshot_manifest.json",
+      "sha256": "fea163cfc8ec9fd2d389597ea33579b7cb1e0becd60a23be74694c7cddcefdc4",
+      "dataset_sha256": "e9ee03f036cedd5a98badd64533ff9605e0d2bab046392a3ccd2afcbc3a225e7"
+    }
+  },
+  "comparison_order": {
+    "count": 142,
+    "order_sha256": "5d1b35fb5a0d8ac9293008db9963c4a60a94dc940c237c3ed259e5ce44f14aaf",
+    "first_140_source": "immutable compact numeric design in its exact frozen order",
+    "first_140_design_order_sha256": "c71bfe27486c9567afd3aca21e4b04053658c23ac651e7f4df7fd014b0c31efd",
+    "comparator_141": "intraday_return_amount_cumulative_path_signed_area_238p from the verified Campaign136 snapshot",
+    "comparator_142": "intraday_return_amount_cross_spectral_phase_lead_59f from the recovery-verified Campaign146 snapshot",
+    "removal_reorder_subset_early_stop_or_candidate_specific_fill_allowed": false
+  },
+  "candidate_alignment": {
+    "factor": "intraday_amount_profile_spectral_entropy_60f",
+    "quality_listing_candidate_rows_expected": 1330170,
+    "candidate_value_range": "finite in [0,1] inclusive",
+    "candidate_missing_fill_allowed": false,
+    "numeric140_design_is_a_superset_of_candidate_keys": true,
+    "campaign136_and_campaign146_comparators_use_exact_key_intersection_without_fill": true
+  },
+  "exact_gate": {
+    "minimum_pairwise_names_per_session": 50,
+    "minimum_pairwise_sessions_per_comparison": 100,
+    "maximum_allowed_absolute_median_daily_rank_correlation": 0.8,
+    "strict_inequality": true,
+    "all_142_must_pass": true,
+    "insufficient_overlap_fails_closed": true,
+    "all_results_recorded_without_early_stop": true
+  },
+  "source_access_order": [
+    "load and validate the candidate coverage authority",
+    "load the quality/listing-filtered candidate panel",
+    "load the first 140 compact design values in frozen order",
+    "load Campaign136 then Campaign146 on exact key intersections",
+    "record all 142 aggregate correlation results even after a failure"
+  ],
+  "research_boundary": {
+    "candidate_values_read_before_protocol": true,
+    "meaning": "Only the completed coverage aggregate was read before this protocol; no comparator value was read.",
+    "comparator_values_read_before_protocol": false,
+    "historical_daily_price_or_forward_return_values_read": false,
+    "stress_2024_2025_opened": false,
+    "provider_request_issued": false,
+    "candidate49_ledgers_changed": false
+  },
+  "next_action": "Freeze the exact runner and synthetic tests, run a metadata-only plan, then run all 142 comparisons only when ready=true and exit code is zero."
+}

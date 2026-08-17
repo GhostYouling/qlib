@@ -1,0 +1,17 @@
+{
+  "schema_version": 1,
+  "kind": "a_share_three_day_walkforward_campaign136_coverage_pre_freeze_error_message_expectation_failure",
+  "status": "recorded_and_corrected_before_real_coverage_values",
+  "recorded_at": "2026-08-14T11:34:00+0800",
+  "test_result": "1 failed, 4 passed, 1 deselected",
+  "failure": "The declared-missing synthetic case correctly failed closed at the earlier aggregate candidate-value validity check, but the test expected the later word 'missing' instead of the actual word 'values'.",
+  "resolution": "Change only the expected error-message pattern; keep runner logic and all frozen scientific semantics unchanged.",
+  "research_boundary": {
+    "real_candidate_coverage_values_read": false,
+    "comparator_values_read": false,
+    "historical_daily_ohlcv_fields_read": [],
+    "historical_forward_returns_read": false,
+    "provider_request_issued": false,
+    "candidate49_ledgers_changed": false
+  }
+}

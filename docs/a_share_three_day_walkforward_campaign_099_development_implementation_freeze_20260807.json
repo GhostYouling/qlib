@@ -1,0 +1,60 @@
+{
+  "schema_version": 1,
+  "kind": "a_share_three_day_walkforward_campaign099_development_implementation_freeze",
+  "status": "frozen_before_campaign099_development_daily_price_or_forward_return_read",
+  "recorded_at": "2026-08-07T11:07:00Z",
+  "purpose": "Freeze the direct Campaign098-to-Campaign099 one-trial runner, exact compact candidate loader, preregistration, tests, and append-only pre-return ledger before the only Campaign099 development return read.",
+  "base_runner": {
+    "path": "scripts/a_share_three_day_walkforward_campaign098.py",
+    "sha256": "6bfc39a91e0e0375c51103e31a90ce97ccd42320e90ebd3c19420e4cdb15ab1c"
+  },
+  "runner": {
+    "path": "scripts/a_share_three_day_walkforward_campaign099.py",
+    "sha256": "b251b3049095f05b4aec87d6f6784c12517ac32c1542dbc63eaf6f1511d4bef4"
+  },
+  "tests": {
+    "path": "tests/data_collector_tests/test_a_share_three_day_walkforward_campaign099_development.py",
+    "sha256": "4f9e77e45d5b6abe0f9f63d5cd93cb6086845ea858f889b0935c314fd909ee9e",
+    "result": "4 passed",
+    "black_check_passed": true,
+    "ruff_check_passed": true
+  },
+  "development_preregistration": {
+    "path": "docs/a_share_three_day_walkforward_campaign_099_preregistration.json",
+    "sha256": "2c8e4d9c3a5c90a58d0f739ed2381cc82a77ed164203e30b30a3d944a33a3974",
+    "binding_count": 17,
+    "all_bindings_passed": true
+  },
+  "no_return_development_admission": {
+    "path": "docs/a_share_three_day_walkforward_campaign_099_no_return_development_admission_20260807.json",
+    "sha256": "280106c0a1002ec230ca910954af8dd86fb867182ae177af1e699e25d33f7636",
+    "binding_count": 5,
+    "all_bindings_passed": true
+  },
+  "candidate_snapshot": {
+    "path": "/Volumes/DIsk/qlib-a-share-tushare-1m/derived/a_share/rich/tushare/minute_walkforward_campaign099_compact_feature_library/tushare_stk_mins_1m_2019_2025_ea0cbb8f_walkforward_campaign099_compact_feature_library_v1/snapshot_manifest.json",
+    "sha256": "a973f7d71a871e56294f50a0c39267006f9b859f1b9490599c89c51cbab5fe90",
+    "dataset_sha256": "1ac5ddd9c59401a48876df69e409ba86b6fd71923c5be61936efb30a56c3de9b",
+    "partition_count": 7,
+    "rows": 1331759,
+    "eligible_rows": 1328449,
+    "session_count": 1632
+  },
+  "append_only_internal_ledger": {
+    "path": "data/experiments/short_horizon/historical_walkforward/campaign_099/research_attempt_ledger_v15.json",
+    "sha256": "68c68a1224e2f21b8716a9ff900e9f30647e06ac87d578acc3a4277b359b37ab",
+    "entry_count": 16,
+    "campaign_attempt_count": 12
+  },
+  "trial_id": "wf099_intraday_market_close_location_profile_synchronization_240m_single_higher",
+  "expected_trial_count": 1,
+  "direct_base_transformation": "Apply only the frozen Campaign098-to-Campaign099 identifiers, admitted factor, compact manifest and dataset hashes, and eligible-row count; inherited folds, price loader, return construction, execution assumptions, costs, and survivor gates remain byte-bound.",
+  "complete_development_trial_count_before_freeze": 0,
+  "historical_daily_price_fields_read_before_freeze": [],
+  "historical_forward_return_fields_read_before_freeze": false,
+  "stress_2024_2025_read_before_freeze": false,
+  "candidate49_historical_return_read_before_freeze": false,
+  "candidate49_ledgers_changed_before_freeze": false,
+  "provider_request_issued_before_freeze": false,
+  "current_scoring_selection_sizing_or_orders_performed_before_freeze": false
+}

@@ -1,0 +1,178 @@
+{
+  "schema_version": 1,
+  "kind": "a_share_three_day_walkforward_campaign175_enterprise_lease_commitment_source_frontier",
+  "status": "terminal_prevalue_four_source_admission_deferrals_three_relabeling_or_operator_rejections_zero_selected",
+  "recorded_at": "2026-08-15T10:45:25+08:00",
+  "purpose": "Review a finite issuer lease-liability, right-of-use-asset, occupancy-commitment and lease-modification disclosure domain before opening source rows, filing text, lease or facility values, candidate values, comparators, security prices or returns.",
+  "authoritative_inputs": {
+    "campaign174_effective_state": {
+      "path": "docs/a_share_three_day_iteration_status_20260815_campaign174_prevalue_terminal_v2.json",
+      "sha256": "d1dc040b525cee0c0cfef0f98e2685567366860b1184a370eee06eb349d9585c"
+    },
+    "campaign174_validation": {
+      "path": "docs/a_share_three_day_walkforward_campaign_174_terminal_validation_20260815.json",
+      "sha256": "84222de91e3d012788c51d1d091c6335841f1dcd57dbad479e87d74b88428337"
+    },
+    "eligibility_policy_v262": {
+      "path": "docs/a_share_three_day_walkforward_future_numeric_comparison_eligibility_policy_v262_20260815.json",
+      "sha256": "b3233c5811dbe92da8345fb1346279293dc91b5cd97af2d8a4a292bac4a821f4"
+    },
+    "campaign161_debt_maturity_source_evidence": {
+      "path": "docs/a_share_three_day_walkforward_campaign_161_debt_maturity_source_evidence_20260815.json",
+      "sha256": "4ae1a1af546265c842e7ef13c107211c2ed75ab4907f3b37f8eb85753a00da65"
+    },
+    "campaign164_human_capital_frontier": {
+      "path": "docs/a_share_three_day_walkforward_campaign_164_human_capital_source_frontier_20260815.json",
+      "sha256": "c31878523b4391ef46305c724cd59f8c12b1d3fd1f0eefaaadb181d8bc47698f"
+    },
+    "campaign168_operating_scale_frontier": {
+      "path": "docs/a_share_three_day_walkforward_campaign_168_operating_scale_adoption_kpi_source_frontier_20260815.json",
+      "sha256": "c5dc98f92266e2b7ef7349cb5260a8cde15ccd9c78442e661e4170b1ba47d18a"
+    },
+    "campaign174_market_risk_frontier": {
+      "path": "docs/a_share_three_day_walkforward_campaign_174_enterprise_market_risk_hedging_source_frontier_20260815.json",
+      "sha256": "91d05a83734f5a08c82fbea9719a2b14abea399cc7edae37a909e29d7dbd0846"
+    }
+  },
+  "research_boundary": {
+    "finite_catalog_frozen_before_source_or_value_read": true,
+    "source_row_filing_document_lease_liability_right_of_use_asset_facility_candidate_comparator_security_price_or_return_value_read": false,
+    "repository_policy_and_prior_records_only": true,
+    "provider_or_web_request_issued": false,
+    "provider_credential_presence_value_or_digest_read": false,
+    "stress_2024_2025_opened": false,
+    "candidate49_ledgers_changed": false,
+    "second_prospective_candidate_created": false
+  },
+  "repository_evidence": {
+    "complete_definition_count_reviewed": 158,
+    "eligible_numeric_comparator_count_reviewed": 142,
+    "existing_enterprise_lease_commitment_mechanism_in_complete_definitions": false,
+    "existing_enterprise_lease_commitment_mechanism_in_numeric_comparators": false,
+    "accepted_historical_issuer_lease_contract_primitive_present": false,
+    "complete_enterprise_lease_commitment_source_contract_present": false,
+    "debt_maturity_boundary": "Campaign161 concerns debt-maturity source admission. Borrowing principal due dates do not identify leased asset, lessor, renewal option, variable payment, termination right, modification or occupancy dependence.",
+    "human_capital_boundary": "Campaign164 freezes workforce and employee-productivity disclosures. Headcount or compensation does not establish facility use rights or lease obligations.",
+    "operating_scale_boundary": "Campaign168 freezes stores, sites, installed assets, production and adoption KPIs. A site count does not establish ownership versus lease, payment schedule, renewal, closure cost or contract flexibility.",
+    "market_risk_boundary": "Campaign174 mentions lease notionals only inside an unadmitted interest-rate exposure state. Campaign175 does not infer rate sensitivity or hedge effectiveness; it requires separate contract-level use-right and occupancy semantics.",
+    "point_in_time_boundary": "A current annual-report lease note cannot be projected backward without contract identity, commencement, modification, exercise, termination, impairment, correction and first-public histories."
+  },
+  "mandatory_source_admission_gate": {
+    "must_freeze_before_any_formula_or_direction": [
+      "exact issuer filing, exchange announcement, statutory registry or licensed structured source with immutable bytes and stable observation identity",
+      "first-public timestamp, trading-session availability, reporting measurement date, lease commencement, modification, renewal, option exercise, termination, settlement, correction and supersession chain",
+      "issuer, listed security, subsidiary, branch, facility, land, building, equipment, vehicle, lessor and contract mapping without current-state leakage",
+      "lease taxonomy separating property, land-use right, equipment, vehicle, short-term, low-value, variable-payment, concession, sublease, finance lease and sale-and-leaseback states",
+      "currency, payment frequency, fixed and variable payment basis, discount rate, remaining term, maturity bucket, renewal and termination option semantics",
+      "right-of-use asset additions, depreciation, impairment, disposal and carrying-value identity linked to the corresponding lease liability where applicable",
+      "sale-and-leaseback transfer qualification, consideration, retained use right, financing substance, gain or loss and counterparty identity",
+      "lease modification, rent concession, scope increase or decrease, remeasurement, early termination, restoration obligation and cash-payment timing",
+      "owned-versus-leased facility identity and occupied, idle, closed, relocated or subleased state without treating missing disclosure as ownership or flexibility",
+      "missing, undisclosed, confidential, not-applicable, exempt short-term, exempt low-value, expired, terminated, true zero liability and zero payment semantics without favorable absence coding",
+      "complete bounded 2019-2023 partition manifest, full-market denominator, issuer and contract identifier history, delisting coverage, pagination and one-shot acceptance gates",
+      "parser, identity, timing, unit, asset-liability linkage, modification-chain and source-acceptance tests using no candidate, comparator, security-price or return values"
+    ],
+    "formula_direction_parameter_filter_subset_combination_or_model_choice_allowed_before_gate": false
+  },
+  "finite_prevalue_catalog": [
+    {
+      "catalog_id": "c175_01",
+      "name": "lease_liability_maturity_renewal_and_termination_option_state",
+      "economic_state": "A close-known issuer lease-payment maturity profile and exercisable renewal or termination flexibility for operating assets and facilities.",
+      "formula": null,
+      "direction": null,
+      "parameters_filters_subsets_combinations_models": [],
+      "new_issuer_state": true,
+      "complete_local_source_contract": false,
+      "decision": "deferred_source_admission_not_factor_failure",
+      "reason": "No accepted history freezes contract and asset identity, fixed/variable payments, discount rate, remaining term, maturity buckets, renewal and termination options, exercise judgments, modifications, first availability and complete 2019-2023 issuer coverage."
+    },
+    {
+      "catalog_id": "c175_02",
+      "name": "right_of_use_asset_addition_impairment_disposal_and_utilization_state",
+      "economic_state": "A close-known issuer change in leased operating capacity through right-of-use asset additions, impairments, disposals, closures or subleases.",
+      "formula": null,
+      "direction": null,
+      "parameters_filters_subsets_combinations_models": [],
+      "new_issuer_state": true,
+      "complete_local_source_contract": false,
+      "decision": "deferred_source_admission_not_factor_failure",
+      "reason": "The repository lacks a point-in-time link among facility or asset identity, commencement, carrying value, depreciation, impairment, closure, disposal, sublease, restoration obligation, correction and publication timing."
+    },
+    {
+      "catalog_id": "c175_03",
+      "name": "fixed_variable_short_term_and_low_value_lease_flexibility_state",
+      "economic_state": "A close-known issuer mix of committed fixed lease payments, variable payments and short-term or low-value exemptions as an operating-flexibility state.",
+      "formula": null,
+      "direction": null,
+      "parameters_filters_subsets_combinations_models": [],
+      "new_issuer_state": true,
+      "complete_local_source_contract": false,
+      "decision": "deferred_source_admission_not_factor_failure",
+      "reason": "Fixed versus variable consideration, sales or index linkage, exemption elections, expense-versus-cash identities, minimum commitments, unit normalization and historical revision semantics are not frozen in one complete cross-issuer contract."
+    },
+    {
+      "catalog_id": "c175_04",
+      "name": "sale_and_leaseback_modification_concession_and_early_termination_state",
+      "economic_state": "A close-known issuer financing or operating transition through sale-and-leaseback, lease modification, rent concession or early termination.",
+      "formula": null,
+      "direction": null,
+      "parameters_filters_subsets_combinations_models": [],
+      "new_issuer_state": true,
+      "complete_local_source_contract": false,
+      "decision": "deferred_source_admission_not_factor_failure",
+      "reason": "No admitted source links transaction and contract identity, transfer qualification, financing substance, consideration, retained use right, modification scope, concession period, remeasurement, termination payment, counterparty and first-public histories."
+    },
+    {
+      "catalog_id": "c175_05",
+      "name": "debt_maturity_rent_expense_store_count_capex_or_security_price_relabeling",
+      "economic_state": "An existing debt, accounting-expense, operating-scale, capital-expenditure or security-price state relabeled as enterprise lease commitment or flexibility.",
+      "formula": null,
+      "direction": null,
+      "parameters_filters_subsets_combinations_models": [],
+      "new_issuer_state": false,
+      "complete_local_source_contract": false,
+      "decision": "rejected_terminal_debt_accounting_scale_capex_and_security_price_source_relabeling",
+      "reason": "Borrowing maturities, aggregate rent expense, store counts, capex or price paths do not identify a lease contract, leased asset, payment basis, renewal option, modification or termination right; renaming them would not create a new primitive."
+    },
+    {
+      "catalog_id": "c175_06",
+      "name": "lease_burden_flexibility_maturity_direction_scale_or_window_variant",
+      "economic_state": "A transform of lease liability, right-of-use asset, lease payment, maturity, expense or facility state against assets, revenue, EBITDA, cash flow, debt, sites or time.",
+      "formula": null,
+      "direction": null,
+      "parameters_filters_subsets_combinations_models": [],
+      "new_issuer_state": false,
+      "complete_local_source_contract": false,
+      "decision": "rejected_operator_direction_denominator_and_window_search_before_base_source_admission",
+      "reason": "Choosing higher or lower lease burden, fixed versus variable mix, near versus long maturity, renewal assumption, denominator, industry subset, peer residual or event-age window before source admission would multiply hypotheses; more leasing can signal flexibility, growth or fixed-cost fragility."
+    },
+    {
+      "catalog_id": "c175_07",
+      "name": "combined_maturity_use_right_flexibility_and_modification_score_or_model",
+      "economic_state": "Joint issuer lease state across payment maturity, right-of-use assets, contractual flexibility and modification events.",
+      "formula": null,
+      "direction": null,
+      "parameters_filters_subsets_combinations_models": [],
+      "new_issuer_state": false,
+      "complete_local_source_contract": false,
+      "decision": "rejected_unadmitted_component_combination_weight_and_model_search",
+      "reason": "Combining four unadmitted heterogeneous source families or selecting weights, ranks, gaps, interactions, filters or models would expand the search before any component has a complete source contract."
+    }
+  ],
+  "gate_summary": {
+    "routes_reviewed": 7,
+    "genuinely_new_issuer_state_routes": 4,
+    "source_admission_deferrals_not_factor_failures": 4,
+    "relabeling_or_operator_route_rejections": 3,
+    "selected_candidate_count": 0,
+    "complete_factor_definition_created": false,
+    "numeric_comparator_created": false
+  },
+  "scientific_interpretation": {
+    "enterprise_lease_commitment_or_operating_flexibility_declared_ineffective": false,
+    "absence_of_an_admitted_historical_source_is_evidence_of_no_predictive_power": false,
+    "safe_conclusion": "Four distinct enterprise lease and operating-commitment states remain deferred at source admission; debt, accounting, scale, capex or security-price relabeling, premature operator search and unadmitted combinations are closed before values."
+  },
+  "next_action": "Record all seven scientific decisions and the two preserved authority-path discovery failures in the Campaign175 hash chain, publish terminal accounting, and continue a different finite offline prevalue domain."
+}

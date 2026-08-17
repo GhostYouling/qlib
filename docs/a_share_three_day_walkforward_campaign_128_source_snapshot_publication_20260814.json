@@ -1,0 +1,94 @@
+{
+  "schema_version": 1,
+  "kind": "a_share_three_day_walkforward_campaign128_source_snapshot_publication",
+  "status": "immutable_candidate_snapshot_published_and_recovery_verified_before_coverage",
+  "recorded_at": "2026-08-14T06:04:07+0800",
+  "attempt_id": "campaign128_source_acceptance_001",
+  "authoritative_inputs": {
+    "source_bound_implementation_freeze": {
+      "path": "docs/a_share_three_day_walkforward_campaign_128_source_bound_implementation_freeze_20260814.json",
+      "sha256": "edc8504c3199c6b1fc7104de14dcbfd28b39807bd61edb2c7dd830fd223023d4"
+    },
+    "source_bound_implementation_verification": {
+      "path": "docs/a_share_three_day_walkforward_campaign_128_source_bound_implementation_verification_20260814.json",
+      "sha256": "349575411b2bc44b1ba21b8082d7fcc8aac884e059b560ee4e5dad5da14cf233"
+    },
+    "numeric_policy_v138": {
+      "path": "docs/a_share_three_day_walkforward_future_numeric_comparison_eligibility_policy_v138_20260814.json",
+      "sha256": "6501e6343554e321a2cfd6930b6cae35d21f7bddc18276b77f0e57767b67b85b"
+    }
+  },
+  "plan": {
+    "command": "PYTHONPATH=/Volumes/DIsk/Disk-Coding/qlib /Volumes/DIsk/Coding/anaconda3/bin/python3.12 scripts/a_share_three_day_walkforward_campaign128_features.py plan",
+    "exit_code": 0,
+    "ready": true,
+    "raw_manifest_files": 33015,
+    "joint_clean_manifest_files": 33015,
+    "historical_minute_source_rows_read": false,
+    "candidate_or_comparator_values_read": false,
+    "historical_daily_price_or_forward_return_values_read": false,
+    "provider_request_issued": false
+  },
+  "build": {
+    "command": "PYTHONPATH=/Volumes/DIsk/Disk-Coding/qlib /Volumes/DIsk/Coding/anaconda3/bin/python3.12 scripts/a_share_three_day_walkforward_campaign128_features.py build --data-root /Volumes/DIsk/qlib-a-share-tushare-1m --workers 4 --confirm-build",
+    "exit_code": 0,
+    "output_manifest_path": "/Volumes/DIsk/qlib-a-share-tushare-1m/derived/a_share/rich/tushare/minute_walkforward_campaign128_feature_library/tushare_stk_mins_1m_2019_2025_ea0cbb8f_walkforward_campaign128_feature_library_v1/snapshot_manifest.json",
+    "output_manifest_sha256": "6ddc6358bffbfd6ae412744e96479b7bc6bc179ee0ae20cff9b3cb3e85b86e2f",
+    "dataset_sha256": "4644fdbf8ddbd046def730c9eaf848fdc56874f617ea2aefb50dedcffbc9bb4f",
+    "partitions": 33015,
+    "rows": 7724498,
+    "eligible_rows": 7580753,
+    "missing_rows": 143745,
+    "eligible_share": 0.9813910237,
+    "source_fields_read": [
+      "datetime",
+      "symbol",
+      "provider",
+      "volume",
+      "amount"
+    ],
+    "quality": {
+      "source_sessions": 7744653,
+      "invalid_raw_sessions": 0,
+      "one_sided_zero_sessions": 47,
+      "insufficient_morning_active_sessions": 53766,
+      "insufficient_afternoon_active_sessions": 83813,
+      "nonpositive_morning_dispersion_sessions": 12790,
+      "nonpositive_afternoon_dispersion_sessions": 59346
+    }
+  },
+  "read_only_recovery_verification": {
+    "command": "PYTHONPATH=/Volumes/DIsk/Disk-Coding/qlib /Volumes/DIsk/Coding/anaconda3/bin/python3.12 scripts/a_share_three_day_walkforward_campaign128_snapshot_verify_recovery.py --workers 8",
+    "exit_code": 0,
+    "status": "verified",
+    "manifest_sha256": "6ddc6358bffbfd6ae412744e96479b7bc6bc179ee0ae20cff9b3cb3e85b86e2f",
+    "dataset_sha256": "4644fdbf8ddbd046def730c9eaf848fdc56874f617ea2aefb50dedcffbc9bb4f",
+    "partitions": 33015,
+    "rows": 7724498,
+    "eligible_rows": 7580753
+  },
+  "interpretation_boundary": {
+    "candidate_source_values_for_2024_2025_materialized_under_single_pre_frozen_2019_2025_snapshot": true,
+    "2024_2025_returns_opened": false,
+    "2024_2025_is_pure_holdout": false,
+    "2024_2025_label_if_ever_opened_after_survival": "historically_exposed_quasi_out_of_sample",
+    "performance_conclusion_available": false
+  },
+  "next_gate": {
+    "allowed": "Freeze and run the structural coverage/variation/capacity gate using only the candidate snapshot and accepted identity/calendar semantics.",
+    "not_allowed": "Do not read any of 139 comparator values, daily prices, forward returns or stress returns before coverage passes."
+  },
+  "research_boundary": {
+    "provider_request_issued": false,
+    "provider_credential_loaded": false,
+    "candidate_snapshot_values_materialized": true,
+    "comparison_values_read": false,
+    "historical_daily_price_or_forward_return_values_read": false,
+    "stress_2024_2025_return_values_opened": false,
+    "candidate49_historical_backfill_performed": false,
+    "candidate49_ledgers_changed": false,
+    "second_prospective_candidate_created": false,
+    "current_scoring_selection_sizing_positions_or_orders_performed": false,
+    "investment_advice": false
+  }
+}

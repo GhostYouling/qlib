@@ -1,0 +1,86 @@
+{
+  "schema_version": 1,
+  "kind": "a_share_three_day_walkforward_campaign101_feature_implementation_freeze",
+  "status": "frozen_before_campaign101_source_factor_values_or_candidate_snapshot",
+  "recorded_at": "2026-08-07T13:18:47Z",
+  "protocol": {
+    "path": "docs/a_share_three_day_walkforward_campaign_101_no_return_preregistration.json",
+    "sha256": "2d1919a7dd53e340158e6e59d48af65132625dd36725a417cef6119241f925c3"
+  },
+  "source_catalog": {
+    "path": "docs/a_share_three_day_walkforward_campaign_101_source_catalog.json",
+    "sha256": "e47ce3727bb4fcc68832d1d5f686000734b80d72752c7661d747d5a5ef2b8323"
+  },
+  "feature_builder": {
+    "path": "scripts/a_share_three_day_walkforward_campaign101_features.py",
+    "sha256": "bf7c3456cfc0b1b3a91a8256982040c5fc142107c442c3fe36ec7ed3a109e1fc"
+  },
+  "synthetic_tests": {
+    "path": "tests/data_collector_tests/test_a_share_three_day_walkforward_campaign101_features.py",
+    "sha256": "308381dc9ee628972d8f1c741f67c642db0461336da60852cd0bb12f01a202c2",
+    "result": "7 passed",
+    "coverage": [
+      "higher/lower direction and average ties on the full finite session denominator",
+      "exact zero missing state and 33rd order statistic",
+      "97 finite-component admission boundary",
+      "invalid matrix shape and score range fail closed",
+      "complete 129-source order and Candidate49 exclusion",
+      "compact seven-partition source alignment",
+      "legacy symbol-year source filtering and identity alignment"
+    ]
+  },
+  "prevalue_static_verification": {
+    "frozen_protocol_and_source_catalog_bindings_passed": true,
+    "numeric_source_count": 129,
+    "numeric_source_order_sha256": "a029c53fb237cc1d34aec0a9f7b67856ffa1a67ffe0fc9620fb230680353263b",
+    "black_fast_py312_check_passed": true,
+    "ruff_check_passed": true,
+    "bytecode_compilation_passed": true,
+    "runner_executable_mode": "0755"
+  },
+  "implementation_contract": {
+    "base_rows": 1331759,
+    "base_sessions": 1632,
+    "year_partitions": [2019, 2020, 2021, 2022, 2023, 2024, 2025],
+    "component_rank": "average-tie percentile independently within each full quality/listing session using each source's frozen direction",
+    "missing_component_score": 0.0,
+    "minimum_finite_components": 97,
+    "zero_indexed_partition_index": 32,
+    "output_columns": [
+      "stock_day_key",
+      "full_numeric_library_directional_lower_quartile_consensus_129f",
+      "full_numeric_library_directional_lower_quartile_consensus_129f_eligible",
+      "full_numeric_library_directional_lower_quartile_consensus_129f_finite_component_count"
+    ],
+    "source_partition_bytes_rehashed_before_value_use": true,
+    "year_streaming_used_to_bound_memory": true,
+    "alternate_quantile_threshold_rank_tie_imputation_subset_weight_filter_model_or_regime_allowed": false
+  },
+  "pre_freeze_output_state": {
+    "output_root": "/Volumes/DIsk/qlib-a-share-tushare-1m/derived/a_share/rich/tushare/minute_walkforward_campaign101_feature_library/tushare_stk_mins_1m_2019_2025_ea0cbb8f_walkforward_campaign101_feature_library_v1",
+    "output_root_existed": false,
+    "candidate_snapshot_existed": false
+  },
+  "effective_attempt_ledger_before_freeze": {
+    "path": "data/experiments/short_horizon/historical_walkforward/campaign_101/research_attempt_ledger_v3.json",
+    "sha256": "41c0fabb05519ad6eeb547761c01d25225e56e3aa8d6a3bcb9354f81fd5689be",
+    "campaign101_attempt_count": 8,
+    "campaign101_ledger_entry_count": 8,
+    "cumulative_historical_research_attempt_count": 732,
+    "cumulative_return_reading_development_trial_count": 294
+  },
+  "research_boundary": {
+    "source_manifest_protocol_and_file_receipt_metadata_read": true,
+    "source_factor_values_read_before_freeze": false,
+    "candidate_values_read_before_freeze": false,
+    "comparison_values_read_before_freeze": false,
+    "coverage_or_capacity_metrics_computed_before_freeze": false,
+    "historical_daily_price_or_forward_return_values_read_before_freeze": false,
+    "training_or_model_fitting_performed_before_freeze": false,
+    "provider_request_issued_before_freeze": false,
+    "candidate49_history_signal_or_execution_backfilled_before_freeze": false,
+    "candidate49_ledgers_changed_before_freeze": false,
+    "second_prospective_candidate_created_before_freeze": false,
+    "current_scoring_selection_sizing_or_orders_performed_before_freeze": false
+  }
+}

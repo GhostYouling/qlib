@@ -1,0 +1,33 @@
+{
+  "schema_version": 1,
+  "kind": "a_share_three_day_walkforward_campaign101_generated_report_infrastructure_count_scope_failure",
+  "status": "post_result_reporting_scope_defect_recorded_without_rewriting_generated_artifacts",
+  "recorded_at": "2026-08-07T14:22:10Z",
+  "generated_campaign_report": {
+    "path": "data/experiments/short_horizon/historical_walkforward/campaign_101/walkforward/campaign_report.json",
+    "sha256": "7416eb1a02049b10c3a3fa781af0ac66988e44bee0c35b02fb67178fd98b9867",
+    "reported_infrastructure_failure_count": 0
+  },
+  "authoritative_internal_trial_ledger": {
+    "path": "data/experiments/short_horizon/historical_walkforward/campaign_101/walkforward/trial_ledger.json",
+    "sha256": "c72a835598e85b7829a019ed03911ca67606528da6fcf3378ae2fc7933cc61bd",
+    "entry_count": 3,
+    "infrastructure_failure_phase_entry_count": 2,
+    "complete_development_trial_count": 1
+  },
+  "root_cause": "The inherited report builder first filters entries to phase=development_walkforward_2019_2023 and then counts infrastructure_failed statuses only inside that filtered list, excluding the two append-only phase=infrastructure_failure entries.",
+  "scientific_impact": {
+    "trial_metrics_changed": false,
+    "survivor_count_changed": false,
+    "stress_open_state_changed": false,
+    "raw_generated_artifact_rewritten": false,
+    "authoritative_terminal_report_must_use_ledger_phase_count": true
+  },
+  "read_boundary": {
+    "additional_candidate_factor_daily_price_or_forward_return_values_read": false,
+    "stress_2024_2025_read": false,
+    "provider_request_issued": false,
+    "candidate49_ledgers_changed": false,
+    "current_scoring_selection_sizing_or_orders_performed": false
+  }
+}

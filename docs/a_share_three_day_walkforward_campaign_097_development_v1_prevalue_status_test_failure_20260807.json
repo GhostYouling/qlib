@@ -1,0 +1,36 @@
+{
+  "schema_version": 1,
+  "kind": "a_share_three_day_walkforward_campaign097_development_v1_prevalue_status_test_failure",
+  "status": "preserved_expected_postfailure_state_transition_test_failure_before_v2_activation",
+  "recorded_at": "2026-08-07T06:49:00Z",
+  "campaign": 97,
+  "attempt_class": "implementation_test_failure",
+  "attempt_count_increment": 1,
+  "development_trial_count_increment": 0,
+  "failed_test": "test_prevalue_status_and_boundaries_remain_closed",
+  "observed": "ledger_entry_count was 1",
+  "frozen_v1_expectation": "ledger_entry_count was 0 before the first development command",
+  "root_cause": "The frozen v1 test correctly captured the prevalue state but is intentionally immutable; after the append-only development-load failure it cannot continue to assert an empty ledger. The new v2 test must validate the preserved failure entry rather than rewriting historical evidence.",
+  "v1_tests": {
+    "path": "tests/data_collector_tests/test_a_share_three_day_walkforward_campaign097_development.py",
+    "sha256": "bb7b092c4b8593387385062571cdcbcb1675513773eacb63338983d1fd5ec959",
+    "combined_result": "1 failed, 7 passed",
+    "file_modified_after_v1_freeze": false
+  },
+  "v2_runner": {
+    "path": "scripts/a_share_three_day_walkforward_campaign097_v2.py",
+    "sha256": "fd6c22d393e8921df1aca2c426323fd054fd1198c45646f5e0ecd352dca58a09"
+  },
+  "v2_tests": {
+    "path": "tests/data_collector_tests/test_a_share_three_day_walkforward_campaign097_development_v2.py",
+    "sha256": "06ad2408c34cbaf827cee49b55113f4134c8077d7f83be3fe20d8fa285be93e8",
+    "tests_passed_before_combined_v1_failure": 4
+  },
+  "repair_boundary": "Do not modify the frozen v1 test. Freeze and use the additive v2 tests, which bind the one-entry append-only ledger and the exact compact namespace repair.",
+  "new_historical_daily_price_or_forward_return_values_read_by_test_command": false,
+  "complete_trial_metrics_computed": false,
+  "stress_2024_2025_read": false,
+  "provider_request_issued": false,
+  "candidate49_ledgers_changed": false,
+  "current_scoring_selection_sizing_or_orders_performed": false
+}

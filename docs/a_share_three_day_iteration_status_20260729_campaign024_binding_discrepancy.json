@@ -1,0 +1,132 @@
+{
+  "version": 24,
+  "kind": "a_share_three_day_iteration_status",
+  "status": "candidate49_future_only_preserved_campaign024_terminal_with_disclosed_preregistration_binding_defect",
+  "recorded_at": "2026-07-29T11:01:27Z",
+  "purpose": "Advance the authoritative three-session state additively after discovering one Campaign024 preregistration source-chain hash transcription defect, without rewriting frozen evidence, rerunning returns, or changing Candidate49.",
+  "previous_authoritative_state": {
+    "path": "docs/a_share_three_day_iteration_status_20260729_campaign024.json",
+    "sha256": "c3d6a40a99f84d9de299b844b5425701ba8f00e0a16b37617fe9003d76bc2725"
+  },
+  "latest_campaign_research_record": {
+    "path": "docs/a_share_three_day_walkforward_campaign_024_research_record.json",
+    "sha256": "9ad0e7e37414162bce30273b145dae3956e62c7e31a971791239d3fd8c67b05f",
+    "preserved_unchanged": true
+  },
+  "campaign024_binding_discrepancy": {
+    "path": "docs/a_share_three_day_walkforward_campaign_024_preregistration_binding_discrepancy_20260729.json",
+    "sha256": "e7058df6c8eb17c173284f12be1a429a594db79314a773d1750999f6a851ff28",
+    "frozen_protocol_rewritten": false,
+    "actual_campaign023_comparison_snapshot_byte_and_frame_verified": true,
+    "protocol_self_consistency_passed": false,
+    "campaign024_outputs_may_support_strategy_promotion": false,
+    "campaign024_evidence_classification": "terminal_diagnostic_with_disclosed_preregistration_binding_defect"
+  },
+  "research_counts": {
+    "terminal_primary_mechanism_count_before_walkforward_campaigns": 48,
+    "terminal_historical_walkforward_campaign_mechanism_count": 24,
+    "active_prospective_candidate_count": 1,
+    "completed_historical_walkforward_campaign_count": 24,
+    "recorded_historical_development_trial_count": 246,
+    "campaign024_development_trial_count": 1,
+    "campaign024_development_survivor_count": 0,
+    "dual_gate_qualified_prospective_factor_count": 0,
+    "current_aggregation_candidate_count": 0
+  },
+  "campaign024_terminal_result_preserved": {
+    "factor": "intraday_directional_range_response_coupling_238p",
+    "direction": "higher",
+    "no_return_comparison_snapshot_actually_used": {
+      "path": "/Volumes/DIsk/qlib-a-share-tushare-1m/derived/a_share/rich/tushare/minute_walkforward_campaign023_feature_library/tushare_stk_mins_1m_2019_2025_ea0cbb8f_walkforward_campaign023_feature_library_v1/snapshot_manifest.json",
+      "manifest_sha256": "64732b36c84cf95024e615569bd5626f5951282e24a2ea534ea3f09c03fc41c8",
+      "dataset_sha256": "443aa07644a31721eda4a3791ea24f3726049319aaabd917cb0ad00e5551d0b7",
+      "verified_partitions": 33015,
+      "verified_rows": 7724498
+    },
+    "development_survivor_count": 0,
+    "stress_2024_2025_opened": false,
+    "stress_2024_2025_return_read": false,
+    "terminal": true,
+    "rerun_or_repair_allowed": false
+  },
+  "active_prospective_candidate": {
+    "ordinal": 49,
+    "registration_id": "candidate49_intraday_cumulative_vwap_crossing_rate_240m_v1",
+    "factor_name": "intraday_cumulative_vwap_crossing_rate_240m",
+    "direction": "higher",
+    "historical_return_diagnostic_allowed": false,
+    "historical_signal_or_execution_backfill_allowed": false,
+    "signal_ledger": {
+      "path": "data/experiments/short_horizon/candidate49_future_signal_ledger.json",
+      "sha256": "5193f00d7f36da003f53cec387900da4c3d002299f5dfcfc1a95eaa199ed3a79",
+      "entry_count": 0
+    },
+    "execution_ledger": {
+      "path": "data/experiments/short_horizon/candidate49_future_execution_ledger.json",
+      "sha256": "d57a3e61eac969e42cafa418ccd8c0a5ee65dcf69da145bb2c096c2a02a2ea4f",
+      "entry_count": 0
+    },
+    "terminal": false
+  },
+  "historical_walkforward_track": {
+    "new_daily_session_required_before_research": false,
+    "same_day_1630_wait_required_before_research": false,
+    "development_interval": {
+      "start": "2019-01-01",
+      "end": "2023-12-31",
+      "method": "three expanding train-to-next-year validation folds"
+    },
+    "locked_campaign_backtest_interval": {
+      "start": "2024-01-01",
+      "end": "2025-12-31",
+      "classification": "one_shot_historically_exposed_quasi_out_of_sample",
+      "pristine_holdout": false
+    },
+    "campaign024_development_interval_opened": true,
+    "campaign024_stress_interval_opened": false,
+    "old_terminal_records_rewritten": false
+  },
+  "limitations": {
+    "survivorship_bias": "The holding universe is derived from a current listing snapshot and may omit historical delisted names.",
+    "campaign024_preregistration_integrity": "The frozen no-return protocol declared an incorrect Campaign023 comparison-manifest hash. The actual runner and audit used and verified the correct manifest and dataset, but Campaign024 is conservatively classified as diagnostic-only and cannot support promotion.",
+    "return_evidence": "Campaign024 used only the historically exposed 2019-2023 development interval; its zero-survivor result kept the 2024-2025 stress interval closed."
+  },
+  "next_research_action": {
+    "objective": "Install complete existing-path SHA-256 validation before selecting and freezing a genuinely different Campaign025 mechanism.",
+    "concept_status": "not_yet_selected_no_formula_no_direction_no_value",
+    "requires_new_daily_bar": false,
+    "required_order": [
+      "preserve Candidate49 future-only ledgers unchanged",
+      "validate every existing path/SHA-256 binding in concept, mechanism, no-return, and development preregistration records before candidate values",
+      "stop and create a corrected new campaign version if any binding fails; never edit a frozen protocol",
+      "exclude every exact terminal Campaign001-Campaign024 mechanism and any rescue combination",
+      "perform a no-value economic and formula-overlap review",
+      "freeze exact formula, direction, timestamp, missing-data, coverage, uniqueness, and finite search rules",
+      "run coverage and uniqueness before any historical return read",
+      "use only 2019-2023 expanding development folds for admitted factors",
+      "open 2024-2025 once only for a frozen development survivor"
+    ],
+    "forbidden_actions": [
+      "rewrite the frozen Campaign024 protocol hash",
+      "rerun or rescue Campaign024 after seeing its no-return or development results",
+      "backfill Candidate49 historical prices, returns, signals, executions, or milestones",
+      "start Candidate50 prospectively while Candidate49 remains active",
+      "use any historical result for a current score, selection, size, or order"
+    ]
+  },
+  "decision": {
+    "campaign024_remains_terminal": true,
+    "campaign024_strategy_promotion_allowed": false,
+    "campaign025_concept_scouting_allowed_only_after_complete_binding_validator": true,
+    "campaign025_requires_new_daily_bar_before_offline_research": false,
+    "campaign025_requires_1630_wait_before_offline_research": false,
+    "candidate49_future_observation_continues": true,
+    "candidate49_historical_return_diagnostic_allowed": false,
+    "candidate50_prospective_activation_allowed_while_candidate49_active": false,
+    "current_aggregation_allowed": false,
+    "current_scoring_allowed": false,
+    "selection_allowed": false,
+    "sizing_allowed": false,
+    "orders_allowed": false
+  }
+}

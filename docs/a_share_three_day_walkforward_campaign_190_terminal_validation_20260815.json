@@ -1,0 +1,84 @@
+{
+  "schema_version": 1,
+  "kind": "a_share_three_day_walkforward_campaign190_terminal_validation",
+  "status": "final_focused_cumulative_and_independent_validation_passed",
+  "recorded_at": "2026-08-15T14:29:59+08:00",
+  "authoritative_inputs": {
+    "terminal_result": {
+      "path": "docs/a_share_three_day_walkforward_campaign_190_terminal_result_20260815.json",
+      "sha256": "9f245725f64becc4432e0572eb9c5f55012196a348f793a374ef9569ff015f54"
+    },
+    "terminal_report": {
+      "path": "docs/a_share_three_day_walkforward_campaign_190_terminal_report_20260815.md",
+      "sha256": "4f20a3e0296b43dc622a8b670593786e89b611de40708ae53caa96d8d763065e"
+    },
+    "source_frontier": {
+      "path": "docs/a_share_three_day_walkforward_campaign_190_clinical_trial_evidence_lifecycle_source_frontier_20260815.json",
+      "sha256": "0703511d04d413c9ca0578b46cf8809de48780add3a6f8503796b2aa973b85fd"
+    },
+    "attempt_ledger": {
+      "path": "data/experiments/short_horizon/historical_walkforward/campaign_190/research_attempt_ledger_v1.json",
+      "sha256": "2df262c7d859c9bd2d8f7ded8a29d9fab5996fdc0adf7c288a3dcd0c9fdbeb3f"
+    },
+    "eligibility_policy_v279": {
+      "path": "docs/a_share_three_day_walkforward_future_numeric_comparison_eligibility_policy_v279_20260815.json",
+      "sha256": "aad2a606646e55ed04f882f43f661b04c10d155e269501841162489bf32f9796"
+    },
+    "terminal_tests": {
+      "path": "tests/data_collector_tests/test_a_share_three_day_walkforward_campaign190_terminal.py",
+      "sha256": "9e0265247534a8c4a4195554b09f670b410fe35cbbd94d862e5fd66c840f023b"
+    },
+    "manage_qlib_a_share_data_skill": {
+      "path": "/Users/niyufei/.codex/skills/manage-qlib-a-share-data/SKILL.md",
+      "sha256": "565713a5f3aeb6a1acf23e397fcc21be28d0c3ea4ebf21c7f287a25bb94d78dc"
+    }
+  },
+  "validation_results": {
+    "black_passed": true,
+    "ruff_passed": true,
+    "focused_campaign190_tests_passed": 2,
+    "focused_campaign190_duration_seconds": 0.08,
+    "campaign145_through_campaign190_test_file_count": 78,
+    "campaign145_through_campaign190_tests_passed": 461,
+    "campaign145_through_campaign190_tests_skipped": 1,
+    "campaign145_through_campaign190_exact_historical_lifecycle_nodes_deselected": 5,
+    "campaign145_through_campaign190_duration_seconds": 13.54,
+    "independent_validation_passed": true,
+    "direct_bindings_verified": 15,
+    "campaign190_attempt_entries_verified": 14,
+    "campaign190_evidence_hashes_verified": 14,
+    "campaign190_attempt_hash_chain_passed": true,
+    "finite_routes_verified": 7,
+    "source_gate_items_verified": 12,
+    "candidate49_ledgers_verified": 2,
+    "unified_reports_checked": 2
+  },
+  "effective_accounting_verified": {
+    "campaign190_attempt_count": 14,
+    "campaign190_prevalue_scientific_attempt_count": 7,
+    "campaign190_infrastructure_failure_count": 7,
+    "cumulative_historical_research_attempt_count": 1684,
+    "cumulative_return_reading_development_trial_count": 314
+  },
+  "candidate49": {
+    "only_active_prospective_candidate": true,
+    "signal_ledger_sha256": "5193f00d7f36da003f53cec387900da4c3d002299f5dfcfc1a95eaa199ed3a79",
+    "signal_entry_count": 0,
+    "execution_ledger_sha256": "d57a3e61eac969e42cafa418ccd8c0a5ee65dcf69da145bb2c096c2a02a2ea4f",
+    "execution_entry_count": 0,
+    "ledgers_changed": false
+  },
+  "research_boundary": {
+    "all_observed_infrastructure_failures_recorded_and_recovered": true,
+    "failed_or_truncated_output_used_as_scientific_evidence": false,
+    "source_factor_comparator_security_price_or_return_value_read": false,
+    "stress_2024_2025_opened": false,
+    "provider_or_web_request_issued": false,
+    "provider_credential_presence_value_or_digest_read": false,
+    "candidate49_ledgers_changed": false,
+    "second_prospective_candidate_created": false,
+    "current_scoring_selection_sizing_positions_or_orders_performed": false,
+    "investment_advice": false
+  },
+  "next_action": "Publish the final Campaign190 state and authorize Campaign191 to continue a genuinely different finite offline prevalue mechanism domain while preserving all prospective and 2024-2025 boundaries."
+}

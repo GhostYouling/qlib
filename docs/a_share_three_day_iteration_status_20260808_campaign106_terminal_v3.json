@@ -1,0 +1,109 @@
+{
+  "schema_version": 3,
+  "kind": "a_share_three_day_iteration_status",
+  "status": "campaign106_terminal_final_accounting_791_future_policy_v66_active",
+  "recorded_at": "2026-08-07T19:59:35Z",
+  "supersedes_without_rewriting": {
+    "path": "docs/a_share_three_day_iteration_status_20260808_campaign106_terminal_v2.json",
+    "sha256": "dca9da08f7adb96feae1545343388df1fa078dfe8808693cfaaab7bc1b9e1dfc",
+    "preserved": true,
+    "all_nonaccounting_state_inherited_unchanged": true
+  },
+  "authoritative_workspace": "/Volumes/DIsk/Disk-Coding/qlib",
+  "active_minute_data_root": "/Volumes/DIsk/qlib-a-share-tushare-1m",
+  "campaign106_terminal": {
+    "terminal_result": {
+      "path": "docs/a_share_three_day_walkforward_campaign_106_terminal_result_binding_v3_20260808.json",
+      "sha256": "9b0509b83e9d415f7670f0e53267fdf2de5a0e0041e58746ff5469d6b0ce31af"
+    },
+    "research_attempt_ledger": {
+      "path": "data/experiments/short_horizon/historical_walkforward/campaign_106/research_attempt_ledger_v5.json",
+      "sha256": "9e6d04d6652bce2d248bf07ccc10deed7e36ddf9427e9d064ec2d1ce73dcc25b",
+      "chain_tip_sha256": "fb37e08aef4fc5778e70ba77dfbdd757c7c39fd2e27165f027dc1d194c978959"
+    },
+    "latest_failure": {
+      "path": "docs/a_share_three_day_walkforward_campaign_106_accounting_correction_test_field_alias_failure_20260808.json",
+      "sha256": "ef000afbf992904a8fc051c278567f802f5eb8187ee7adbf8a4f2fb22ca91d39"
+    },
+    "factor": "intraday_nonzero_range_bar_share_240m",
+    "direction": "higher",
+    "scientific_result": "inconclusive_due_to_infrastructure",
+    "coverage_gate_passed": true,
+    "all_numeric_comparison_decision_completed": false,
+    "development_trial_count": 0,
+    "development_survivor_count": 0,
+    "stress_2024_2025_opened": false,
+    "attempt_count": 5,
+    "ledger_entry_count": 5,
+    "infrastructure_failure_count": 4,
+    "prevalue_scientific_attempt_count": 1,
+    "complete_factor_attempt_count": 1,
+    "scientifically_decided_factor_attempt_count": 0,
+    "return_reading_development_trial_count": 0,
+    "cumulative_historical_research_attempt_count": 791,
+    "cumulative_return_reading_development_trial_count": 300
+  },
+  "effective_future_numeric_policy": {
+    "path": "docs/a_share_three_day_walkforward_future_numeric_comparison_eligibility_policy_v66_20260808.json",
+    "sha256": "76033dc9623bdb85993232ee12518ebb80331d662a3fa5861bfedcc0cf8dc086",
+    "complete_definition_count": 136,
+    "complete_definition_order_sha256": "2099f016f5979a820b480a83aa28877504ea5238362feed551bb7cf583cbf7d0",
+    "numeric_comparator_count": 132,
+    "numeric_comparator_order_sha256": "7ed69afd1408e84dcc856583344166ffc9bcbb0add1aed63163b1d12a1be9a25"
+  },
+  "campaign107_prevalue_progress": {
+    "source_rows_or_candidate_comparison_values_read": false,
+    "selected_candidate": "intraday_exact_close_level_diversity_240m",
+    "first_preregistration_binding_valid": false,
+    "next_required_action": "Preserve and record the invalid first preregistration, then publish an additive binding correction against this v3 state and v66 before values."
+  },
+  "candidate49": {
+    "sole_active_prospective_candidate": true,
+    "signal_ledger_sha256": "5193f00d7f36da003f53cec387900da4c3d002299f5dfcfc1a95eaa199ed3a79",
+    "signal_ledger_entry_count": 0,
+    "execution_ledger_sha256": "d57a3e61eac969e42cafa418ccd8c0a5ee65dcf69da145bb2c096c2a02a2ea4f",
+    "execution_ledger_entry_count": 0,
+    "historical_backfill_performed": false
+  },
+  "provider_credential": {
+    "repository_dotenv_exists": true,
+    "repository_dotenv_is_regular_file": true,
+    "repository_dotenv_is_symlink": false,
+    "repository_dotenv_mode": "0600",
+    "repository_dotenv_git_ignored": true,
+    "tushare_token_entry_count": 1,
+    "tushare_token_nonempty": true,
+    "secret_printed_hashed_logged_or_persisted": false,
+    "provider_request_issued": false
+  },
+  "weekend_boundary": {
+    "local_date": "2026-08-08",
+    "accepted_local_trading_day": false,
+    "candidate49_plan_or_run_executed": false,
+    "new_daily_staging_root_created": false
+  },
+  "reports": {
+    "campaign106_report": {
+      "path": "docs/a_share_three_day_walkforward_campaign_106_report.md",
+      "sha256": "4fb696c7699d6c8c3c7b28f9d5f0a13917748a2ceff7ca1f0a194e38afbe466a"
+    },
+    "current_research_report": {
+      "path": "data/experiments/short_horizon/current_research_report.md",
+      "sha256": "1602f2e0161e8e385ab785e43e3389759086085ede28f77aef728819d4c15af0"
+    },
+    "three_day_research_report": {
+      "path": "data/experiments/short_horizon/three_day_research_report.md",
+      "sha256": "31efd97bf6e5b870855515daba57062737aa79a5f7e7ca8bb5dd4a853de855e5"
+    }
+  },
+  "research_boundary": {
+    "candidate50_or_second_prospective_candidate_created": false,
+    "provider_request_issued": false,
+    "candidate49_historical_backfill_performed": false,
+    "historical_daily_price_or_forward_return_values_read_by_new_failure": false,
+    "campaign107_values_read_before_effective_protocol": false,
+    "current_scoring_selection_sizing_or_orders_performed": false,
+    "investment_advice": false
+  },
+  "next_action": "Run the alias-aware completion test, freeze this 791-count state, then continue Campaign107's additive preregistration correction before any values."
+}

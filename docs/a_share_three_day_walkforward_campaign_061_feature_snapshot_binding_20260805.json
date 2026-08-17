@@ -1,0 +1,74 @@
+{
+  "version": 1,
+  "kind": "a_share_three_day_walkforward_campaign061_feature_snapshot_binding",
+  "status": "immutable_snapshot_published_and_fully_verified_before_comparison_values",
+  "recorded_at": "2026-08-05T01:07:10+08:00",
+  "purpose": "Freeze the successfully published Campaign061 snapshot after additive empty-partition repair and full byte/frame verification, before any of the 92 comparison values, daily prices, or forward returns are opened.",
+  "authoritative_boundary": {
+    "path": "docs/a_share_three_day_iteration_status_20260805_campaign060_verified.json",
+    "sha256": "821c7a5a9c75189e577803a5b1dcd98e30632352ed710ac9c3624139689a065c"
+  },
+  "no_return_protocol": {
+    "path": "docs/a_share_three_day_walkforward_campaign_061_no_return_preregistration.json",
+    "sha256": "8bb79b587a64dab98a3a32d6a04ad6be8985979519ed436bc4062bbe64ff8dab"
+  },
+  "original_implementation_freeze": {
+    "path": "docs/a_share_three_day_walkforward_campaign_061_feature_implementation_freeze_20260805.json",
+    "sha256": "59f96ae378153d1231d4a163c9279b1c7a0d9615ce58358970d9bb09876daaa6"
+  },
+  "empty_partition_repair_freeze": {
+    "path": "docs/a_share_three_day_walkforward_campaign_061_empty_partition_repair_freeze_20260805.json",
+    "sha256": "7abec8d6e7493df3fb32804c13e26d0d6b3c221165d7694c3528e3b3f69da752"
+  },
+  "recorded_at_correction": {
+    "path": "docs/a_share_three_day_walkforward_campaign_061_recorded_at_correction_20260805.json",
+    "sha256": "f4c45e26cb9df395ce8fecacc31d742b05831bc7ffb70e2be0e876d7e9999889"
+  },
+  "feature_runner": {
+    "path": "scripts/a_share_three_day_walkforward_campaign061_features.py",
+    "sha256": "a124d6cb08d1a23c322b5756fda14dfcff63fd3d139aeb67f1deb603d8231101"
+  },
+  "snapshot": {
+    "path": "/Volumes/DIsk/qlib-a-share-tushare-1m/derived/a_share/rich/tushare/minute_walkforward_campaign061_feature_library/tushare_stk_mins_1m_2019_2025_ea0cbb8f_walkforward_campaign061_feature_library_v1/snapshot_manifest.json",
+    "sha256": "15ed4b46192402f301218e20b1fe37233dd7547256fb9786692ce544fae20b3c",
+    "dataset_sha256": "a8a6261eaa92cd8eca7c25513236abf73f84f500da368a7b325634808fbb576a",
+    "partitions": 33015,
+    "rows": 7724498,
+    "eligible_rows": 7671540,
+    "factor": "intraday_day_over_day_realized_variance_stability_238b",
+    "direction": "higher"
+  },
+  "independent_verification": {
+    "command": "PYTHONPATH=/Volumes/DIsk/Disk-Coding/qlib /opt/anaconda3/bin/python3 scripts/a_share_three_day_walkforward_campaign061_features.py verify --manifest /Volumes/DIsk/qlib-a-share-tushare-1m/derived/a_share/rich/tushare/minute_walkforward_campaign061_feature_library/tushare_stk_mins_1m_2019_2025_ea0cbb8f_walkforward_campaign061_feature_library_v1/snapshot_manifest.json --workers 8",
+    "exit_code": 0,
+    "all_partition_byte_and_frame_hashes_passed": true,
+    "partitions_verified": 33015,
+    "rows_verified": 7724498,
+    "eligible_rows_verified": 7671540
+  },
+  "quality_summary": {
+    "eligible_rows": 7671540,
+    "missing_prior_stock_session_rows": 5393,
+    "nonpositive_or_nonfinite_current_realized_variance_rows": 29410,
+    "nonpositive_or_nonfinite_prior_realized_variance_rows": 32428,
+    "range_or_nonfinite_score_rows": 0
+  },
+  "repair_semantics": {
+    "manifest_declared_empty_partition_count": 6,
+    "all_nonempty_frames_delegated_to_original_extractor": true,
+    "formula_direction_lag_grid_scale_zero_or_gate_changed": false
+  },
+  "research_boundary": {
+    "candidate_values_exist_only_in_bound_snapshot": true,
+    "comparison_values_read_before_binding": false,
+    "daily_price_fields_read": [],
+    "historical_forward_return_fields_read": false,
+    "development_or_stress_fold_opened": false,
+    "provider_request_issued": false,
+    "candidate49_historical_backfill_performed": false,
+    "candidate49_ledgers_changed": false,
+    "second_prospective_candidate_created": false,
+    "current_scoring_selection_sizing_or_orders_performed": false
+  },
+  "next_action": "Freeze a snapshot-bound no-return audit implementation, validate every binding, then run coverage first. Open the 92 comparison values only if coverage and capacity pass."
+}

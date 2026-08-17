@@ -1,0 +1,59 @@
+{
+  "version": 2,
+  "kind": "a_share_three_day_compact_comparator_cache_implementation_freeze",
+  "status": "frozen_before_v2_comparator_values_or_cache_files_materialized",
+  "frozen_at": "2026-08-05T21:17:19+08:00",
+  "purpose": "Bind the additive v2 absent-source-key alignment repair, synthetic tests, failure evidence, and new output root before the first v2 inherited comparator value is loaded.",
+  "protocol": {
+    "path": "docs/a_share_three_day_compact_comparator_cache_protocol_v2_20260805.json",
+    "sha256": "98fa0318754c145ce645d647e591d32b89bc1b432db36028899c48220029dec9"
+  },
+  "authoritative_v1_protocol": {
+    "path": "docs/a_share_three_day_compact_comparator_cache_protocol_v1_20260805.json",
+    "sha256": "bf5247378056851ea004c08aad071c7a1ccf552cb1feaf6937251a26234c3273"
+  },
+  "builder": {
+    "path": "scripts/a_share_three_day_compact_comparator_cache_v2.py",
+    "sha256": "eb4a2873bc6120c33860b93288dc19185b2e7afe796a4389c94a5ec6f207ae20",
+    "syntax_validation_passed": true
+  },
+  "tests": {
+    "path": "tests/data_collector_tests/test_a_share_three_day_compact_comparator_cache_v2.py",
+    "sha256": "0365748d7567778d6b780f02188f3e33009f031688b80e69c261d8c546d411a0",
+    "command": "PYTHONPATH=/Volumes/DIsk/Disk-Coding/qlib /Volumes/DIsk/Coding/anaconda3/bin/python -m pytest -q tests/data_collector_tests/test_a_share_three_day_compact_comparator_cache_v2.py",
+    "passed": 6,
+    "failed": 0
+  },
+  "failure_evidence": [
+    {
+      "path": "docs/a_share_three_day_compact_comparator_cache_v1_build_failure_20260805.json",
+      "sha256": "9221d3b0c98b0ce9efb094a9e2e301d26e1fadd354f333e3ee2467227bdbd177"
+    },
+    {
+      "path": "docs/a_share_three_day_compact_comparator_cache_v2_prebuild_test_failure_20260805.json",
+      "sha256": "e9d1ad7b22d41f85dc984dcc88d740e70eaee032f8d318c02f299548f447ab1b"
+    },
+    {
+      "path": "docs/a_share_three_day_compact_comparator_cache_v2_prebuild_test_failure_2_20260805.json",
+      "sha256": "a127368ddfb9a0423f42a54284d79ddb4beaf107f149ddd4b3e6d7f47a03ad2a"
+    }
+  ],
+  "frozen_output": {
+    "data_root": "/Volumes/DIsk/qlib-a-share-tushare-1m",
+    "output_root": "/Volumes/DIsk/qlib-a-share-tushare-1m/derived/a_share/rich/tushare/compact_comparator_cache/campaign067_terminal_numeric98_v2",
+    "v1_failed_output_root": "/Volumes/DIsk/qlib-a-share-tushare-1m/derived/a_share/rich/tushare/compact_comparator_cache/campaign067_terminal_numeric98_v1",
+    "numeric_comparator_count": 98,
+    "numeric_order_sha256": "bca0ba26252fcb74afa3a31ee1baf63c9cedfe3db5fc86ef71b3d7d93bf88f81",
+    "eligibility_rows": 1331759,
+    "eligibility_keys_sha256": "afa157a76aec8ef9cc3bdc191c792189d2a512ecf7fd7ebb09d2fe8f2d75841f"
+  },
+  "v1_formal_output_existed_before_freeze": false,
+  "v2_cache_output_existed_before_freeze": false,
+  "v2_failed_temporary_output_existed_before_freeze": false,
+  "v2_comparison_factor_values_read_before_freeze": false,
+  "historical_daily_price_or_forward_return_values_read_before_freeze": false,
+  "candidate49_historical_return_read_before_freeze": false,
+  "provider_request_issued_before_freeze": false,
+  "current_scoring_selection_sizing_or_orders_performed_before_freeze": false,
+  "next_action": "Run the exact v2 build once with --confirm-build. Preserve and record any nonzero exit before any additive v3 repair; never edit this frozen v2 builder or tests in place."
+}

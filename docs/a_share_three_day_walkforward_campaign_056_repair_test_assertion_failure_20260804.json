@@ -1,0 +1,37 @@
+{
+  "version": 1,
+  "kind": "a_share_three_day_walkforward_campaign056_infrastructure_failure_record",
+  "status": "repair_test_assertion_failed_before_resume",
+  "recorded_at": "2026-08-03T19:37:05Z",
+  "campaign_id": "056",
+  "stage": "empty_partition_repair_synthetic_test",
+  "command": "PYTHONPATH=/Volumes/DIsk/Disk-Coding/qlib /opt/anaconda3/bin/python3 -m pytest -q tests/data_collector_tests/test_a_share_three_day_walkforward_campaign056_features.py tests/data_collector_tests/test_a_share_three_day_walkforward_campaign056_empty_partition_repair.py",
+  "actual_exit_code": 1,
+  "result": {
+    "passed": 9,
+    "failed": 1,
+    "failed_test": "test_repair_delegates_nonempty_frame_without_changing_values",
+    "failure_classification": "test_expectation_error",
+    "root_cause": "The test incorrectly asserted that the frozen nonempty extractor returns only source_sessions. It also returns source_rows, source_nonfinite_amount_rows, and source_negative_amount_rows.",
+    "production_repair_semantics_failed": false,
+    "candidate_or_comparison_values_read": false,
+    "daily_price_or_forward_return_read": false
+  },
+  "bound_files_before_correction": {
+    "repair_runner": {
+      "path": "scripts/a_share_three_day_walkforward_campaign056_empty_partition_repair.py",
+      "sha256": "5cd379056e6dab0ffafc7181523bdd553ec5b9fe0cd49107b1a282e2eba068f0"
+    },
+    "repair_test": {
+      "path": "tests/data_collector_tests/test_a_share_three_day_walkforward_campaign056_empty_partition_repair.py",
+      "sha256": "1ea09cce5d741b3368e9fa371b7767bcd2988b6477470004db5e1ca79117096b"
+    }
+  },
+  "authorized_correction": "Replace only the over-specific quality dictionary assertion with equality between repaired and original nonempty results plus source_sessions==1. Do not change the repair runner or production factor implementation.",
+  "factor_result_produced": false,
+  "historical_forward_return_fields_read": false,
+  "development_folds_opened": false,
+  "provider_request_issued": false,
+  "candidate49_ledgers_changed": false,
+  "current_scoring_selection_sizing_or_orders_performed": false
+}

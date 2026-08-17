@@ -1,0 +1,44 @@
+{
+  "schema_version": 1,
+  "kind": "a_share_three_day_walkforward_campaign132_structural_audit_implementation_freeze",
+  "status": "frozen_before_campaign132_daily_structural_coverage_read",
+  "recorded_at": "2026-08-14T09:25:16+08:00",
+  "campaign": 132,
+  "protocol": {
+    "path": "docs/a_share_three_day_walkforward_campaign_132_preregistration_20260814.json",
+    "sha256": "b4c3f6b3a69506c8a8f5ee71ffe05e487af0f71ae2b104adb3a79b2efc4ac0be"
+  },
+  "design_manifest": {
+    "path": "/Volumes/DIsk/qlib-a-share-tushare-1m/derived/a_share/rich/tushare/minute_walkforward_campaign132_design_matrix/tushare_stk_mins_1m_2019_2025_ea0cbb8f_walkforward_campaign132_numeric140_design_v1/snapshot_manifest.json",
+    "sha256": "043c17fea89f3b0956d643a7c6e3f4d73a11403b967213d2d57539a6a8316a49",
+    "dataset_sha256": "12ce3a64b5e13581392ded9890e2064db4ccca3945da3eb8ad7752c95366a9fc"
+  },
+  "inherited_structural_gate": {
+    "source_path": "docs/a_share_three_day_walkforward_campaign_102_no_return_preregistration.json",
+    "source_sha256": "5def1f153c4cca94f2d646598f09b810108688488b8aab0b2be345366364b8f9",
+    "thresholds_copied_without_change": true,
+    "thresholds_selected_from_campaign132_observations": false,
+    "minimum_median_coverage": 0.95,
+    "minimum_p05_coverage": 0.9,
+    "minimum_p05_eligible_names": 50,
+    "minimum_potential_non_overlapping_three_session_cohorts": 200,
+    "minimum_observed_cohort_years": 5
+  },
+  "audit_runner": {
+    "path": "scripts/a_share_three_day_walkforward_campaign132_audit.py",
+    "sha256": "6770867a5a51642f3a334081b976cef223c85a76401d0db85c2f000c1ef8da21"
+  },
+  "tests": {
+    "path": "tests/data_collector_tests/test_a_share_three_day_walkforward_campaign132_audit.py",
+    "sha256": "b5fb5ef510cf0fb0bcc5e9e2b174c741d611979f1a0d896b89da7f980fc8b215",
+    "result": "3 passed in 2.28s"
+  },
+  "daily_structural_coverage_read_before_freeze": false,
+  "component_values_were_read_by_the_already_frozen_design_build": true,
+  "historical_daily_price_or_forward_return_values_read_before_freeze": false,
+  "model_fitting_performed_before_freeze": false,
+  "provider_request_issued": false,
+  "credential_loaded": false,
+  "candidate49_ledgers_changed": false,
+  "current_scoring_selection_sizing_or_orders_performed": false
+}

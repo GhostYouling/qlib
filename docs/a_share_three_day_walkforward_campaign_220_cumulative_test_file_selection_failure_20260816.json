@@ -1,0 +1,33 @@
+{
+  "schema_version": 1,
+  "kind": "a_share_three_day_walkforward_campaign220_infrastructure_failure",
+  "recorded_at": "2026-08-16T01:14:00+08:00",
+  "timestamp_semantics": "monotonic_logical_append_time_not_host_wall_clock_measurement",
+  "status": "failed_before_pytest_collection_narrow_terminal_filename_pattern_discarded",
+  "phase": "cumulative_terminal_validation",
+  "command_summary": "Python pathlib selected only test_a_share_three_day_walkforward_campaign*_terminal.py for Campaign145-220, then asserted the frozen expected file count 108 before invoking pytest.",
+  "observed": {
+    "selected_test_file_count": 76,
+    "expected_test_file_count": 108,
+    "pytest_started": false,
+    "process_exit_code": 1,
+    "failure_type": "assertion_error_before_subprocess_run"
+  },
+  "repair_boundary": {
+    "authorized": true,
+    "exact_change": "Select every test_a_share_three_day_walkforward_campaign*.py file whose decimal campaign number is between 145 and 220 inclusive, while retaining the exact 35 frozen deselection node IDs.",
+    "formula_direction_route_or_gate_change": false
+  },
+  "research_boundary": {
+    "failed_output_used_as_validation_or_scientific_evidence": false,
+    "candidate_or_comparator_value_read": false,
+    "daily_price_or_forward_return_read": false,
+    "stress_2024_2025_opened": false,
+    "provider_or_web_request_issued": false,
+    "provider_credential_presence_value_or_digest_read": false,
+    "candidate49_plan_or_run_executed": false,
+    "candidate49_ledgers_changed": false,
+    "current_use_or_investment_advice": false
+  },
+  "next_action": "Append this failure to Campaign220 accounting, preserve the v1 ledger/result and v333 policy unchanged, and rerun the cumulative suite only with the corrected complete file selection."
+}

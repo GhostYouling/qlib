@@ -1,0 +1,91 @@
+{
+  "version": 1,
+  "kind": "a_share_three_day_walkforward_campaign058_infrastructure_failure_record",
+  "status": "failed_closed_before_feature_snapshot_publication",
+  "recorded_at": "2026-08-04T16:28:43+08:00",
+  "campaign_id": "058",
+  "factor": "quarterly_profit_revenue_growth_spread_pp",
+  "direction": "higher",
+  "authoritative_boundary": {
+    "path": "docs/a_share_three_day_iteration_status_20260804_campaign057_verified.json",
+    "sha256": "a83247eaa08b1276c2f538f5286e1b6e622fe8e93453145453c3eae6e1816ba4"
+  },
+  "no_return_protocol": {
+    "path": "docs/a_share_three_day_walkforward_campaign_058_no_return_preregistration.json",
+    "sha256": "e3c04b8f736604dca4adb21de367550bb281d4a156b8f990fa942c8757f8011a"
+  },
+  "implementation_freeze": {
+    "path": "docs/a_share_three_day_walkforward_campaign_058_feature_implementation_freeze_20260804.json",
+    "sha256": "9539219b2a83beb58a3f701b6cae334051d18a2a37cb74778fa3e94c4110c38c"
+  },
+  "feature_runner": {
+    "path": "scripts/a_share_three_day_walkforward_campaign058_features.py",
+    "sha256": "78ebccb0f8e62f0977dbd41e33aaeef62bf12fc8547bc09ff7d92e8eccb2224c"
+  },
+  "failed_command": "python scripts/a_share_three_day_walkforward_campaign058_features.py build --data-root /Volumes/DIsk/qlib-a-share-tushare-1m --workers 4",
+  "actual_exit_code": 1,
+  "failure": {
+    "error_class": "Campaign058FeatureError",
+    "error_message": "Campaign058 symbol build failed: SH600485: raw stock-day identity changed for SH600485",
+    "root_cause": "The frozen Campaign058 identity extractor rejected a legitimate zero-row raw symbol-year partition before it could return an empty quarterly-state mapping. The bound raw manifest explicitly records this partition as zero rows.",
+    "first_observed_partition": {
+      "symbol": "SH600485",
+      "year": 2021,
+      "manifest_rows": 0,
+      "byte_sha256": "01321693d59afe3b633ec4736a32acb27474a4e0635101f9d762eac01332e2e3"
+    },
+    "diagnosis_boundary": {
+      "source_manifest_metadata_read": true,
+      "raw_identity_fields_read_for_failed_symbol": [
+        "datetime",
+        "symbol",
+        "provider"
+      ],
+      "raw_minute_price_or_activity_fields_read_by_diagnosis": false,
+      "candidate_values_manually_inspected": false,
+      "comparison_values_read": false,
+      "daily_price_or_forward_return_read": false
+    }
+  },
+  "bound_source_empty_partitions": {
+    "count": 6,
+    "symbol_years": [
+      "SH600485/2021",
+      "SH600677/2021",
+      "SH600680/2019",
+      "SZ000670/2021",
+      "SZ002260/2020",
+      "SZ002260/2021"
+    ],
+    "all_share_the_manifest_declared_zero_row_parquet_sha256": "01321693d59afe3b633ec4736a32acb27474a4e0635101f9d762eac01332e2e3"
+  },
+  "preserved_partial_state": {
+    "root": "/Volumes/DIsk/qlib-a-share-tushare-1m/derived/a_share/rich/tushare/minute_walkforward_campaign058_feature_library/.tushare_stk_mins_1m_2019_2025_ea0cbb8f_walkforward_campaign058_feature_library_v1.partial",
+    "complete_parquet_partitions": 33004,
+    "complete_checkpoint_records": 33004,
+    "expected_partitions": 33015,
+    "missing_partitions": 11,
+    "build_lock_present_after_failure": false,
+    "formal_snapshot_manifest_published": false,
+    "partial_files_deleted_or_rewritten_by_diagnosis": false
+  },
+  "research_semantics": {
+    "infrastructure_only_attempt": true,
+    "factor_result_produced": false,
+    "ordered_no_return_audit_opened": false,
+    "comparison_factor_values_read": false,
+    "quarterly_candidate_source_values_read_by_failed_build": true,
+    "campaign058_candidate_values_computed_and_checkpointed": true,
+    "campaign058_candidate_values_manually_inspected_or_used_to_choose_repair": false,
+    "minute_price_or_activity_fields_read": false,
+    "historical_daily_price_fields_read": [],
+    "historical_forward_return_fields_read": false,
+    "development_folds_opened": false,
+    "stress_2024_2025_opened": false,
+    "provider_request_issued_by_campaign058": false,
+    "candidate49_ledgers_changed_by_campaign058": false,
+    "current_scoring_selection_sizing_or_orders_performed": false
+  },
+  "authorized_repair_boundary": "Additively permit a manifest-declared zero-row raw partition with the exact projected identity columns to yield an empty state dictionary and zero-valued source-quality counters. Do not change any nonempty-frame identity check, quarterly formula, direction, point-in-time availability rule, calendar, range, coverage gate, uniqueness gate, comparison library, development rule, or output value already computed.",
+  "next_action": "Freeze and test an additive compatibility launcher, resume from verified checkpoints, and publish no formal snapshot unless all 33015 partitions pass the original manifest semantics."
+}

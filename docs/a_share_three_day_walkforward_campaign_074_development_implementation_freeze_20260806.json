@@ -1,0 +1,61 @@
+{
+  "version": 1,
+  "kind": "a_share_three_day_walkforward_campaign074_development_implementation_freeze",
+  "status": "frozen_before_campaign074_2019_2023_daily_price_or_forward_return_read",
+  "recorded_at": "2026-08-06T08:22:00+08:00",
+  "development_preregistration": {
+    "path": "docs/a_share_three_day_walkforward_campaign_074_preregistration.json",
+    "sha256": "18989edcebc21b9e211c4a830a98d61eaeedd37c4e5fcb00d0ea67a02ba7d27c"
+  },
+  "development_runner": {
+    "path": "scripts/a_share_three_day_walkforward_campaign074.py",
+    "sha256": "8677b23a3cc64150a8e0136bdc7f81f22a1c121cda0e2912771e7c588746afc0",
+    "base_runner": "scripts/a_share_three_day_walkforward_campaign069.py",
+    "base_runner_sha256": "674641f16ab4a4d432e73567a75eca59124b29429a8e8305c482909aea341e15"
+  },
+  "pre_return_tests": {
+    "path": "tests/data_collector_tests/test_a_share_three_day_walkforward_campaign074.py",
+    "sha256": "99692c055d59f9a7a1d8813598a67884c043c5fc469869fb0a2615d5004c5986",
+    "result": "5 passed"
+  },
+  "no_return_audit": {
+    "path": "data/experiments/short_horizon/historical_walkforward/campaign_074/no_return/20260806T001358Z_campaign074_no_return_audit.json",
+    "sha256": "6256ca2db8ff21dcfb3e101e019957c2d1241fd893f290bd449ed462ace17009",
+    "admissible_factor_count": 1
+  },
+  "research_attempt_ledger_before_return_read": {
+    "path": "data/experiments/short_horizon/historical_walkforward/campaign_074/research_attempt_ledger_v1.json",
+    "sha256": "c39d6710d31655375983412cbd004a427905e4e95d3afbc4cf8409d5c4165656",
+    "cumulative_historical_attempts": 447,
+    "cumulative_return_reading_development_trials": 275
+  },
+  "trial_catalog": [
+    {
+      "trial_id": "wf074_intraday_terminal_bar_amount_share_240m_single_higher",
+      "feature_set": ["intraday_terminal_bar_amount_share_240m"],
+      "weights": [1.0],
+      "complexity": 1,
+      "direction": "higher"
+    }
+  ],
+  "walkforward_protocol": {
+    "fold_count": 3,
+    "validation_years": [2021, 2022, 2023],
+    "purge_signal_sessions_each_boundary": 3,
+    "label_containment_required": true,
+    "holding_period_sessions": 3,
+    "topk": 3,
+    "trial_count": 1,
+    "weight_fitting": false,
+    "threshold_search": false,
+    "year_subset_search": false,
+    "filter_search": false
+  },
+  "stress_2024_2025_opened_before_freeze": false,
+  "historical_daily_price_fields_read_before_freeze": [],
+  "historical_forward_returns_read_before_freeze": false,
+  "provider_request_issued_before_freeze": false,
+  "candidate49_historical_backfill_before_freeze": false,
+  "candidate49_ledgers_changed_before_freeze": false,
+  "current_scoring_selection_sizing_or_orders_performed_before_freeze": false
+}

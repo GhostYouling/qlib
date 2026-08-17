@@ -1,0 +1,26 @@
+{
+  "schema_version": 1,
+  "kind": "a_share_three_day_walkforward_campaign146_infrastructure_failure",
+  "status": "recorded_snapshot_manifest_semantics_verification_failure",
+  "recorded_at": "2026-08-14T21:35:28+08:00",
+  "attempt_id": "campaign146_infrastructure_003",
+  "stage": "postpublication_snapshot_integrity_verification_before_coverage_statistics",
+  "command": "python scripts/a_share_three_day_walkforward_campaign146_features.py verify --manifest /Volumes/DIsk/qlib-a-share-tushare-1m/derived/a_share/rich/tushare/minute_walkforward_campaign146_feature_library/tushare_stk_mins_1m_2019_2025_ea0cbb8f_walkforward_campaign146_feature_library_v1/snapshot_manifest.json --workers 8",
+  "exit_code": 1,
+  "failure": "The frozen verifier rejected Campaign146 snapshot manifest semantics before opening partition frames.",
+  "published_snapshot_build": {
+    "build_exit_code": 0,
+    "partitions": 33015,
+    "rows": 7724498,
+    "eligible_rows_reported_by_builder": 7630332
+  },
+  "required_recovery_boundary": "Do not edit the immutable published snapshot or frozen builder. Diagnose metadata-only first; if the stored bytes are self-consistent but a frozen header predicate is defective, freeze an independent recovery verifier and receipt before any coverage statistic.",
+  "scientific_effect": {
+    "coverage_statistics_read": false,
+    "comparator_value_read": false,
+    "daily_price_or_forward_return_read": false,
+    "stress_2024_2025_opened": false,
+    "provider_request_issued": false,
+    "candidate49_ledgers_changed": false
+  }
+}

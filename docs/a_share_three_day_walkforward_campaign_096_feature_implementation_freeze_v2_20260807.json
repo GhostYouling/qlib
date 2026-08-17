@@ -1,0 +1,45 @@
+{
+  "schema_version": 2,
+  "kind": "a_share_three_day_walkforward_campaign096_feature_implementation_freeze",
+  "status": "frozen_before_campaign096_minute_source_rows_or_candidate_values",
+  "frozen_at": "2026-08-07T04:36:00Z",
+  "supersedes_without_rewriting": {
+    "path": "docs/a_share_three_day_walkforward_campaign_096_feature_implementation_freeze_20260807.json",
+    "sha256": "ef2cfd3ed8ea4c421efe0c559b0726c886acd91a53f4eaa0eb8558a2bdc2204d",
+    "reason": "v1 build stopped before publication because the inherited quality aggregator required one legacy alias"
+  },
+  "repair_protocol": {
+    "path": "docs/a_share_three_day_walkforward_campaign_096_feature_build_quality_alias_repair_protocol_20260807.json",
+    "sha256": "d6c72d73fddf9c818e11cc985968f9a7d2e57a694d35d4e491696c3df07e4b2b"
+  },
+  "protocol": {
+    "path": "docs/a_share_three_day_walkforward_campaign_096_no_return_preregistration.json",
+    "sha256": "97d8cdd6cc3731de8e8d4db101db1b4b0ee62353c9c39ac71a8753fea4501924"
+  },
+  "feature_runner": {
+    "path": "scripts/a_share_three_day_walkforward_campaign096_features_v2.py",
+    "sha256": "404698e6417e73eba8157a97740536243b3e68a870955a05833bf3e3e57bce0e"
+  },
+  "tests": {
+    "path": "tests/data_collector_tests/test_a_share_three_day_walkforward_campaign096_features_v2.py",
+    "sha256": "9fd60d5cb0ac057cb7e2a63a5196ed5c65fff66eb94926b1369c1ded6ddc8994",
+    "synthetic_result": "4 passed"
+  },
+  "factor": "intraday_intrabar_close_location_total_variation_238p",
+  "direction": "higher",
+  "formula_or_value_logic_changed_from_v1": false,
+  "quality_schema_change": {
+    "added_alias": "zero_destination_range_pairs",
+    "identical_to": "zero_range_bars",
+    "factor_output_columns_changed": false,
+    "output_root_changed": false
+  },
+  "candidate_source_rows_read_after_repair_protocol_before_v2_freeze": false,
+  "candidate_values_recomputed_after_repair_protocol_before_v2_freeze": false,
+  "candidate_source_rows_read_before_freeze": false,
+  "candidate_values_computed_before_freeze": false,
+  "comparison_values_read_before_freeze": false,
+  "historical_daily_price_or_forward_return_values_read_before_freeze": false,
+  "provider_request_issued_before_freeze": false,
+  "candidate49_ledgers_changed_before_freeze": false
+}

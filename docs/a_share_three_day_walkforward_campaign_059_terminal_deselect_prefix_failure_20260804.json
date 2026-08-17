@@ -1,0 +1,46 @@
+{
+  "version": 1,
+  "kind": "a_share_three_day_walkforward_campaign059_terminal_deselect_prefix_failure",
+  "status": "failed_current_suite_on_unmatched_historical_node_deselect_prefix",
+  "recorded_at": "2026-08-04T22:47:00+08:00",
+  "purpose": "Preserve the first Campaign059 current terminal-suite invocation whose deselect prefix did not match pytest's collected node identifier.",
+  "bindings": {
+    "post_result_test_transition": {
+      "path": "docs/a_share_three_day_walkforward_campaign_059_post_result_test_transition_20260804.json",
+      "sha256": "b12733f806936eb1bcf8432733267721516d1ae3a9b8624789a6351ddf9cf411"
+    },
+    "pre_return_test_module": {
+      "path": "tests/data_collector_tests/test_a_share_three_day_walkforward_campaign059.py",
+      "sha256": "1c80d0eea9df76d76116ced91d9e79b80f9b1d75eaae51324dfbc35639566219"
+    },
+    "terminal_test_module_at_failure": {
+      "path": "tests/data_collector_tests/test_a_share_three_day_walkforward_campaign059_terminal.py",
+      "sha256": "9c23b58f33e6d6084e0a74c439cbc40e40fc7745b73111ac21521e96d026956e"
+    }
+  },
+  "observed_command_semantics": {
+    "selected_campaign059_test_modules": 7,
+    "requested_deselect_node": "tests/data_collector_tests/test_a_share_three_day_walkforward_campaign059.py::test_campaign059_stress_is_closed_before_development_survivor_freeze",
+    "pytest_collected_node_prefix": "data_collector_tests/",
+    "passed": 33,
+    "failed": 1,
+    "failed_node": "data_collector_tests/test_a_share_three_day_walkforward_campaign059.py::test_campaign059_stress_is_closed_before_development_survivor_freeze",
+    "failure_detail": "The immutable pre-return assertion expected ledger_entry_count=0, while the correct post-result value is 1 after the sole frozen development trial.",
+    "error_classification": "terminal_test_selection_infrastructure_failure"
+  },
+  "authorized_correction": {
+    "test_modules_or_assertions_may_be_rewritten": false,
+    "research_artifacts_or_gates_may_be_changed": false,
+    "exact_current_suite_deselect_node": "data_collector_tests/test_a_share_three_day_walkforward_campaign059.py::test_campaign059_stress_is_closed_before_development_survivor_freeze",
+    "rerun_scope": "Same seven frozen/current Campaign059 test modules with only the collected-node prefix corrected."
+  },
+  "research_boundary": {
+    "candidate_feature_partitions_read": false,
+    "historical_daily_prices_or_forward_returns_recomputed": false,
+    "additional_return_reading_trial_created": false,
+    "stress_2024_2025_opened": false,
+    "candidate49_ledgers_changed": false,
+    "provider_request_issued": false,
+    "current_scoring_selection_sizing_or_orders_performed": false
+  }
+}

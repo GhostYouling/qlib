@@ -1,0 +1,83 @@
+{
+  "version": 1,
+  "kind": "a_share_three_day_walkforward_campaign027_no_return_semantic_correction",
+  "status": "additive_correction_original_audit_preserved",
+  "recorded_at": "2026-07-30T05:58:00Z",
+  "purpose": "Correct two contradictory convenience booleans in the immutable Campaign027 no-return audit while preserving its candidate values, comparison values, gates, decisions, and file bytes.",
+  "immutable_evidence": {
+    "no_return_audit": {
+      "path": "data/experiments/short_horizon/historical_walkforward/campaign_027/no_return/20260730T054919Z_campaign027_no_return_audit.json",
+      "sha256": "efdbdca5b7bb41eb82e7680543d29675675919cbe1df97044289c5e43a1cf1e1"
+    },
+    "feature_snapshot": {
+      "path": "/Volumes/DIsk/qlib-a-share-tushare-1m/derived/a_share/rich/tushare/minute_walkforward_campaign027_feature_library/tushare_stk_mins_1m_2019_2025_ea0cbb8f_walkforward_campaign027_feature_library_v1/snapshot_manifest.json",
+      "sha256": "0c7082a9c249f1567ca85f1490cb63a7affb86fe7583e92fa13b6dc9e88dab50",
+      "dataset_sha256": "bdde7057d2f7174afccd7b5789d79c3c01cc56c13a7e14889d9913cd81851365"
+    },
+    "feature_runner": {
+      "path": "scripts/a_share_three_day_walkforward_campaign027_features.py",
+      "sha256": "3b1caf58520ad336fb00bcbfcd3484973f0fee43ee5441b743c6dd9784e2a575"
+    }
+  },
+  "observed_contradiction": {
+    "audit_source_fields_read": [
+      "datetime",
+      "symbol",
+      "provider",
+      "close"
+    ],
+    "audit_minute_open_high_low_read": true,
+    "audit_minute_close_read": false,
+    "cause": "The generated audit-body convenience fields retained Campaign025 high/low defaults; the generated status fields, raw-column contract, snapshot manifest, and partition reader were already close-only."
+  },
+  "authoritative_corrected_semantics": {
+    "source_fields_read": [
+      "datetime",
+      "symbol",
+      "provider",
+      "close"
+    ],
+    "minute_open_high_low_read": false,
+    "minute_open_read": false,
+    "minute_close_read": true,
+    "minute_volume_read": false,
+    "minute_amount_read": false,
+    "historical_daily_price_fields_read": [],
+    "historical_forward_return_fields_read": false
+  },
+  "supporting_evidence": {
+    "snapshot_manifest_source_fields_read": [
+      "datetime",
+      "symbol",
+      "provider",
+      "close"
+    ],
+    "snapshot_manifest_source_open_high_low_read": false,
+    "snapshot_manifest_source_close_read": true,
+    "snapshot_manifest_source_volume_read": false,
+    "snapshot_manifest_source_amount_read": false,
+    "snapshot_manifest_daily_price_fields_read": [],
+    "snapshot_manifest_forward_return_fields_read": false,
+    "verified_partition_count": 33015,
+    "verified_snapshot_rows": 7724498,
+    "runner_raw_columns": [
+      "datetime",
+      "symbol",
+      "provider",
+      "close"
+    ],
+    "audit_status_minute_open_high_low_read_by_status": false,
+    "audit_status_minute_close_read_by_status": true
+  },
+  "correction_boundary": {
+    "original_audit_rewritten": false,
+    "candidate_values_changed": false,
+    "comparison_values_changed": false,
+    "coverage_or_uniqueness_decision_changed": false,
+    "walkforward_preregistration_changed": false,
+    "development_return_values_changed": false,
+    "stress_interval_opened": false,
+    "candidate49_changed": false,
+    "current_scoring_selection_sizing_or_orders_performed": false
+  }
+}

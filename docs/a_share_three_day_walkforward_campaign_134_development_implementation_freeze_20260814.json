@@ -1,0 +1,87 @@
+{
+  "schema_version": 1,
+  "version": 1,
+  "kind": "a_share_three_day_walkforward_campaign134_development_implementation_freeze",
+  "status": "frozen_before_first_campaign134_component_value_graph_fit_or_return_read",
+  "recorded_at": "2026-08-14T10:33:57+08:00",
+  "purpose": "Bind the single Campaign134 redundancy-graph implementation and corrected synthetic tests before any real Campaign134 factor value, graph, score or historical return is opened.",
+  "protocol": {
+    "path": "docs/a_share_three_day_walkforward_campaign_134_preregistration_20260814.json",
+    "sha256": "9193053035f1961d22db0c214cb5d55c29570a0f93dac12a084bde50bcecd435"
+  },
+  "concept_scouting": {
+    "path": "docs/a_share_three_day_walkforward_campaign_134_concept_scouting_20260814.json",
+    "sha256": "3815a871a097ff8e42b64611056043539b6e859a710c0ce5ab15d1d1bc45c894"
+  },
+  "mechanism_overlap_audit": {
+    "path": "docs/a_share_three_day_walkforward_campaign_134_mechanism_overlap_audit_20260814.json",
+    "sha256": "9c7301140468b44ca827366d0b911452de170cfae2e9770cc1f47fd38f2b092d"
+  },
+  "design_manifest": {
+    "path": "/Volumes/DIsk/qlib-a-share-tushare-1m/derived/a_share/rich/tushare/minute_walkforward_campaign132_design_matrix/tushare_stk_mins_1m_2019_2025_ea0cbb8f_walkforward_campaign132_numeric140_design_v1/snapshot_manifest.json",
+    "sha256": "043c17fea89f3b0956d643a7c6e3f4d73a11403b967213d2d57539a6a8316a49",
+    "dataset_sha256": "12ce3a64b5e13581392ded9890e2064db4ccca3945da3eb8ad7752c95366a9fc"
+  },
+  "design_audit": {
+    "path": "data/experiments/short_horizon/historical_walkforward/campaign_132/no_return/design_structural_audit.json",
+    "sha256": "86bb53552caf6f6d8f1fad688d2f3a7e39c75827f968bb1ee1510fff2394deec"
+  },
+  "frozen_shared_runner": {
+    "path": "scripts/a_share_three_day_walkforward_campaign133.py",
+    "sha256": "aaebd401c017ef94a4d41322dc27fb87a9b7926b0c08e758f26dfd71042b5aae",
+    "reuse_boundary": "Only its audited Campaign132 design-runtime bootstrap and common chronological evaluation interfaces are reused. Campaign133 PAVA functions, fits and scores are never inputs."
+  },
+  "prevalue_infrastructure_failures": [
+    {
+      "path": "docs/a_share_three_day_walkforward_campaign_134_post_campaign133_missing_test_path_failure_20260814.json",
+      "sha256": "5443c236d5c23bbaf2c78531052f8c2f7c46ad184cd29cf51378586a98a4abd9"
+    },
+    {
+      "path": "docs/a_share_three_day_walkforward_campaign_134_initial_synthetic_test_failure_20260814.json",
+      "sha256": "5b388e18e75c92176e8c8a8a1e07d5f2cbdb9b37ee9f56db744d71fb59f86d50"
+    }
+  ],
+  "runner": {
+    "path": "scripts/a_share_three_day_walkforward_campaign134.py",
+    "sha256": "55d94cb2eaafd545b195b2201ce0731fcb4486ae17b97ce1d0cff0cfbd1024db"
+  },
+  "tests": {
+    "path": "tests/data_collector_tests/test_a_share_three_day_walkforward_campaign134.py",
+    "sha256": "0627670d9687a3898b97f2e8b07281a820c9f928b27de01b8d2aa810388b3dd5",
+    "result_before_freeze": "6 passed and ruff passed",
+    "runtime": "/Volumes/DIsk/Coding/anaconda3/bin/python3.12"
+  },
+  "frozen_trial": {
+    "trial_id": "wf134_complete140_corr80_component_balanced_consensus",
+    "source_feature_count": 140,
+    "source_feature_order_sha256": "c71bfe27486c9567afd3aca21e4b04053658c23ac651e7f4df7fd014b0c31efd",
+    "minimum_finite_components": 105,
+    "missing_fill": 0.5,
+    "daily_pair_minimum_names": 50,
+    "pair_minimum_sessions": 100,
+    "positive_edge_threshold": 0.8,
+    "graph_rule": "undirected_connected_components",
+    "within_component_aggregation": "arithmetic_mean",
+    "between_component_aggregation": "equal_arithmetic_mean",
+    "return_or_target_used_for_graph_fit": false,
+    "every_source_weight_strictly_positive": true,
+    "configuration_count": 1
+  },
+  "chronology": {
+    "real_component_value_or_return_open_requires_plan_ready_and_confirm_run": true,
+    "validation_return_open_requires_bound_fold_score_snapshot_and_all_140_uniqueness_pass": true,
+    "purge_signal_sessions": 3,
+    "lockbox_2024_2025_requires_nonzero_development_survivor_and_separate_freeze": true
+  },
+  "campaign134_component_values_read_before_freeze": false,
+  "campaign134_graph_fit_or_score_before_freeze": false,
+  "campaign134_training_or_validation_return_read_before_freeze": false,
+  "lockbox_2024_2025_return_read_before_freeze": false,
+  "provider_request_issued_before_freeze": false,
+  "credential_value_or_digest_read_before_freeze": false,
+  "candidate49_historical_backfill_before_freeze": false,
+  "candidate49_ledgers_changed_before_freeze": false,
+  "second_prospective_candidate_created_before_freeze": false,
+  "current_scoring_selection_sizing_positions_or_orders_before_freeze": false,
+  "investment_advice": false
+}

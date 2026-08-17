@@ -1,0 +1,25 @@
+{
+  "schema_version": 1,
+  "kind": "a_share_three_day_walkforward_campaign203_infrastructure_failure",
+  "status": "failed_atomic_dual_report_append_context_mismatch_zero_write",
+  "recorded_at": "2026-08-15T19:13:05+08:00",
+  "timestamp_semantics": "monotonic logical append time after Campaign203 terminal result v1 and before any Campaign203 mutable-report write",
+  "phase": "campaign203_mutable_report_append",
+  "failure": {
+    "observed_condition": "The first atomic two-report append patch could not match its expected Campaign202 terminal-line context in the current report and was rejected before either target write.",
+    "process_exit_code": null,
+    "atomic_patch_rejected": true,
+    "target_file_written": false,
+    "entire_failed_invocation_discarded": true,
+    "recovery": "Read each report tail independently and append the Campaign203 section with line-bounded end-of-file patches."
+  },
+  "research_boundary": {
+    "source_row_candidate_comparator_security_price_or_return_value_read": false,
+    "failed_or_truncated_output_used_as_scientific_or_validation_evidence": false,
+    "provider_or_web_request_issued": false,
+    "provider_credential_presence_value_or_digest_read": false,
+    "stress_2024_2025_opened": false,
+    "candidate49_plan_or_run_executed": false,
+    "candidate49_ledgers_changed": false
+  }
+}

@@ -1,0 +1,34 @@
+{
+  "schema_version": 1,
+  "kind": "a_share_three_day_walkforward_campaign231_infrastructure_failure",
+  "recorded_at": "2026-08-16T04:34:00+08:00",
+  "timestamp_semantics": "monotonic_logical_append_time_not_host_wall_clock_measurement",
+  "status": "failed_terminal_test_black_check_before_ruff_start",
+  "command": "/Volumes/DIsk/Coding/anaconda3/bin/python3.12 -m black --check tests/data_collector_tests/test_a_share_three_day_walkforward_campaign231_terminal.py && /Volumes/DIsk/Coding/anaconda3/bin/python3.12 -m ruff check tests/data_collector_tests/test_a_share_three_day_walkforward_campaign231_terminal.py",
+  "working_directory": "/Volumes/DIsk/Disk-Coding/qlib",
+  "observed_process_exit_code": 1,
+  "failure_reason": "black_reported_that_the_new_terminal_test_required_formatting_and_the_and_chain_stopped_before_ruff_started",
+  "evidence_treatment": {
+    "output_discarded_as_validation_evidence": true,
+    "used_as_scientific_evidence": false,
+    "used_as_validation_evidence": false
+  },
+  "recovery": {
+    "status": "completed",
+    "method": "ran_black_as_the_allowed_mechanical_formatter_then_ran_ruff_on_the_formatted_test",
+    "black": "reformatted_one_new_test_file",
+    "ruff": "passed"
+  },
+  "research_boundary": {
+    "candidate_or_comparator_value_read": false,
+    "daily_price_or_forward_return_read": false,
+    "provider_or_web_request_issued": false,
+    "provider_credential_presence_value_or_digest_read": false,
+    "candidate49_plan_or_run_executed": false,
+    "candidate49_ledgers_changed": false,
+    "second_prospective_candidate_created": false,
+    "stress_2024_2025_opened": false,
+    "current_scoring_selection_sizing_positions_or_orders_performed": false,
+    "investment_advice": false
+  }
+}

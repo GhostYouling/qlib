@@ -1,0 +1,16 @@
+{
+  "schema_version": 1,
+  "kind": "a_share_three_day_walkforward_campaign170_infrastructure_failure",
+  "status": "terminal_failed_apply_patch_context_mismatch_zero_write",
+  "recorded_at": "2026-08-15T08:38:26+08:00",
+  "phase": "unified_report_append_and_policy_publish",
+  "failed_operation": "A single atomic apply_patch attempted to append Campaign170 sections to both unified reports and add policy v248.",
+  "observed_failure": "The first expected context line was not a standalone line: the Campaign169 accounting sentence shares its line with preceding prose.",
+  "write_result": {
+    "atomic_patch_applied": false,
+    "unified_reports_changed_by_failed_operation": false,
+    "policy_v248_created_by_failed_operation": false,
+    "failure_exit_bypassed_or_masked": false
+  },
+  "recovery": "Read exact report tails, append with standalone end-of-file hunks, and publish corrected append-only Campaign170 accounting artifacts."
+}

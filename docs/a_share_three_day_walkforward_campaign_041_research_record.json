@@ -1,0 +1,238 @@
+{
+  "version": 1,
+  "kind": "a_share_three_day_walkforward_campaign041_research_record",
+  "status": "completed_zero_no_return_admissible_factors_stop_before_historical_returns",
+  "recorded_at": "2026-07-31T07:28:15Z",
+  "purpose": "Record Campaign041 from pre-value concept scouting through its immutable OHLC-only feature snapshot and terminal 62-factor uniqueness rejection. No daily price, forward return, training, development trial, or 2024-2025 stress return was opened.",
+  "prior_state": {
+    "path": "docs/a_share_three_day_iteration_status_20260731_campaign040_verified.json",
+    "sha256": "dd561aac051eed7ecb1c574c61ac258c5e62954d7390c503a5444cf8a0fe2bba"
+  },
+  "historical_walkforward_policy": {
+    "path": "docs/a_share_three_day_historical_walkforward_research_policy_20260727.json",
+    "sha256": "38426d6161b9bfed323c58caba18feca668b8c9d53e294951a8ba90c01a798bb"
+  },
+  "campaign": {
+    "concept_scouting": {
+      "path": "docs/a_share_three_day_walkforward_campaign_041_concept_scouting.json",
+      "sha256": "a14de52467575a53848d3140a6698de4575c1c8d805f688c3966e947df86fed0"
+    },
+    "mechanism_overlap_audit": {
+      "path": "docs/a_share_three_day_walkforward_campaign_041_mechanism_overlap_audit.json",
+      "sha256": "2eee8a371218fe931274c577365c0ad3c1d9d0374665321791477ac9e422a3ba"
+    },
+    "no_return_preregistration": {
+      "path": "docs/a_share_three_day_walkforward_campaign_041_no_return_preregistration.json",
+      "sha256": "6691fb6a382d6f2f481473f25a0060606edf59290bc822b635b23de25105ae7c"
+    },
+    "feature_implementation_freeze": {
+      "path": "docs/a_share_three_day_walkforward_campaign_041_feature_implementation_freeze.json",
+      "sha256": "5ef368825e4afbce94064a4edb9e80ed0fae23b11cb79838cdd2ea8f29badf6e"
+    },
+    "feature_manifest_metadata_infrastructure_repair": {
+      "path": "docs/a_share_three_day_walkforward_campaign_041_feature_manifest_metadata_infrastructure_repair_20260731.json",
+      "sha256": "8c0dcc35159b456623465513477f9107a583bfef8b058553997cacf6022ea82d"
+    },
+    "inherited_manifest_compatibility_repair": {
+      "path": "docs/a_share_three_day_walkforward_campaign_041_inherited_manifest_compatibility_repair_20260731.json",
+      "sha256": "2469cf6f63176bfaca561efa8db008eb2a6547e3d7884f8db44be23ff878d5cc"
+    },
+    "postvalidation_publication_metadata_repair": {
+      "path": "docs/a_share_three_day_walkforward_campaign_041_postvalidation_publication_metadata_repair_20260731.json",
+      "sha256": "c537428f43f9ca1d0d9b4d8b216c1f89b4fa8d8ae8416d54e484883ac431f5b4"
+    },
+    "feature_snapshot_freeze": {
+      "path": "docs/a_share_three_day_walkforward_campaign_041_feature_snapshot_freeze.json",
+      "sha256": "46a252a2e94027900a46e49fa1aa0afa1d875ce4b0306805e5043d59206f6479"
+    },
+    "no_return_audit_freeze": {
+      "path": "docs/a_share_three_day_walkforward_campaign_041_no_return_audit_freeze_20260731.json",
+      "sha256": "359ea87674e6bdcd7228ca604731cefce6dc721cb38364739c91f42f45d30d93"
+    },
+    "feature_and_no_return_runner": {
+      "path": "scripts/a_share_three_day_walkforward_campaign041_features.py",
+      "sha256": "4c220a2fccaf5a89b7ea21a1940ef514dd47c38e86784fc13ee32a992e3061c5"
+    }
+  },
+  "frozen_candidate": {
+    "name": "intraday_microgap_absorption_share_238p",
+    "direction": "higher",
+    "formula": "Across the 119 adjacent transitions inside each 120-bar half session, let g_t=log(open_t/close_(t-1)). A transition is informative only when g_t is exactly nonzero. An informative transition is absorbed when low_t <= close_(t-1) <= high_t. Return absorbed_informative_transition_count / informative_transition_count.",
+    "source_projection": [
+      "datetime",
+      "symbol",
+      "provider",
+      "open",
+      "high",
+      "low",
+      "close"
+    ],
+    "forbidden_source_columns": [
+      "volume",
+      "amount"
+    ],
+    "selected_bar_count": 240,
+    "fixed_transition_count": 238,
+    "separate_half_session_transition_counts": [
+      119,
+      119
+    ],
+    "include_0930": false,
+    "include_lunch_transition": false,
+    "exact_zero_gap_excluded_from_numerator_and_denominator": true,
+    "minimum_informative_nonzero_gaps": 30,
+    "absorption_interval_is_closed": true,
+    "all_240_bars_require_positive_finite_ordered_ohlc": true,
+    "endpoint_canonicalization_tolerance": 1e-12,
+    "post_result_formula_direction_window_denominator_filter_or_missing_rule_changed": false
+  },
+  "infrastructure_history": {
+    "failed_publication_attempts_recorded": 3,
+    "candidate_formula_or_dataset_bytes_changed_by_repairs": false,
+    "final_dataset_sha256_unchanged_across_metadata_repairs": true,
+    "repairs": [
+      "Correct truthful OHLC source-projection flags in the Campaign041 manifest layer after the inherited Campaign040 writer emitted high/low and close metadata inconsistent with the actual projection.",
+      "Isolate the inherited pre-publication validator's temporary volume placeholder without claiming volume was read by Campaign041.",
+      "Force the outer atomic writer to preserve the truthful final high/low=true, close=true, volume=false, amount=false metadata after postvalidation publication."
+    ],
+    "superseded_freezes_preserved": true,
+    "final_snapshot_reused_all_33015_verified_partitions": true
+  },
+  "no_return_admission": {
+    "feature_snapshot": {
+      "path": "/Volumes/DIsk/qlib-a-share-tushare-1m/derived/a_share/rich/tushare/minute_walkforward_campaign041_feature_library/tushare_stk_mins_1m_2019_2025_ea0cbb8f_walkforward_campaign041_feature_library_v1/snapshot_manifest.json",
+      "sha256": "838f71169e90d33e9ebbfd34d62dd2c4969432454eeaa69ae6601bb6fdc95391",
+      "dataset_sha256": "d330e806262d5e3187649273aea14bb20e53d13cc18edfbc8d8dd0616aa0ac0b",
+      "partition_count": 33015,
+      "row_count": 7724498,
+      "eligible_factor_rows": 7461292,
+      "insufficient_informative_gap_rows": 263206,
+      "fixed_transition_observations": 1838430524,
+      "informative_nonzero_gap_observations": 783613890,
+      "absorbed_informative_gap_observations": 495091836,
+      "invalid_nonpositive_nonfinite_or_misordered_ohlc_rows": 0,
+      "all_partition_byte_and_frame_hashes_valid": true,
+      "source_fields_read": [
+        "datetime",
+        "symbol",
+        "provider",
+        "open",
+        "high",
+        "low",
+        "close"
+      ],
+      "source_volume_read": false,
+      "source_amount_read": false,
+      "daily_price_fields_read": [],
+      "forward_return_fields_read": false
+    },
+    "audit": {
+      "path": "data/experiments/short_horizon/historical_walkforward/campaign_041/no_return/20260731T072630Z_campaign041_no_return_audit.json",
+      "sha256": "fe00c12d6cb1ebfbb0c7eb31e7f43e188f845ae41a4efff5ebbc9d7230fcf52b",
+      "status": "completed_zero_admissible_factors_stop_before_historical_returns",
+      "admissible_factor_count": 0,
+      "comparison_values_loaded_after_coverage_pass": true,
+      "comparison_factor_count": 62,
+      "comparison_pass_count": 60,
+      "comparison_fail_count": 2,
+      "comparison_order_matches_preregistration": true,
+      "historical_daily_price_fields_read": [],
+      "historical_forward_return_fields_read": false
+    },
+    "coverage_result": {
+      "quality_listing_eligible_rows": 1331759,
+      "candidate_eligible_rows": 1305369,
+      "median_coverage": 0.9940399591173085,
+      "p05_coverage": 0.9288590703181556,
+      "eligible_names_median": 937.0,
+      "p05_eligible_names": 138.0,
+      "potential_non_overlapping_three_session_cohorts": 540,
+      "observed_cohort_years": [
+        2019,
+        2020,
+        2021,
+        2022,
+        2023,
+        2024,
+        2025
+      ],
+      "coverage_gate_passed": true
+    },
+    "uniqueness_result": {
+      "maximum_allowed_absolute_median_daily_rank_correlation": 0.8,
+      "all_required_comparisons_passed": false,
+      "maximum_observed_absolute_median_daily_rank_correlation": 0.836224378645272,
+      "failed_comparisons": [
+        {
+          "factor": "intraday_adjacent_range_overlap_continuity_238p",
+          "median_daily_rank_correlation": 0.836224378645272,
+          "pairwise_sessions": 1623,
+          "minimum_pairwise_names_observed": 52,
+          "daily_rank_correlation_p05": 0.6747901985827572,
+          "daily_rank_correlation_p95": 0.9030827860995972
+        },
+        {
+          "factor": "intraday_intrabar_range_participation_entropy_240m",
+          "median_daily_rank_correlation": 0.8017225564350808,
+          "pairwise_sessions": 1623,
+          "minimum_pairwise_names_observed": 52,
+          "daily_rank_correlation_p05": 0.651528370950728,
+          "daily_rank_correlation_p95": 0.8673400438197966
+        }
+      ],
+      "other_60_comparisons_passed": true
+    }
+  },
+  "trial_accounting": {
+    "frozen_trial_count_if_admitted": 1,
+    "development_preregistration_created": false,
+    "development_trial_count": 0,
+    "cumulative_historical_development_trial_count_after_campaign": 259,
+    "training_or_model_fitting_performed": false,
+    "development_return_fields_read": false,
+    "stress_2024_2025_opened": false,
+    "stress_return_fields_read": false
+  },
+  "interpretation": {
+    "association_tested": false,
+    "coverage_supported": true,
+    "uniqueness_supported": false,
+    "operational_feasibility_supported": false,
+    "portfolio_translation_supported": false,
+    "conclusion": "The exact microgap absorption share is broadly computable but fails the pre-return uniqueness gate. Its median daily rank correlation is 0.836224 with intraday_adjacent_range_overlap_continuity_238p and 0.801723 with intraday_intrabar_range_participation_entropy_240m across 1,623 eligible sessions, exceeding the frozen absolute threshold of 0.8. This is a redundancy rejection before any predictive association or return test, not evidence that either direction predicts three-session returns.",
+    "mechanism_learning": "Counting whether prior closes fall inside the next minute's range is empirically another expression of adjacent range overlap and full-session intrabar range participation. Future independent concepts should avoid range-intersection, range-containment, range-mass concentration, and simple OHLC absorption restatements.",
+    "permitted_post_result_action": "record the rejection and advance only to a genuinely different Campaign042 concept with separate pre-value scouting and overlap audit",
+    "forbidden_post_result_actions": [
+      "invert the factor or reinterpret non-absorption as the signal",
+      "change the gap threshold, minimum informative gaps, interval endpoints, half-session reset, time grid, direction, threshold, or filter",
+      "remove either failed comparison or any other frozen comparison from the complete library",
+      "read Campaign041 historical returns, create a development trial, or open 2024-2025 stress",
+      "combine the factor with Campaign001-Campaign040 or any other terminal factor",
+      "create current scores, selections, sizes, orders, or Candidate50 activation"
+    ]
+  },
+  "candidate49_state_after_campaign": {
+    "signal_ledger": {
+      "path": "data/experiments/short_horizon/candidate49_future_signal_ledger.json",
+      "sha256": "5193f00d7f36da003f53cec387900da4c3d002299f5dfcfc1a95eaa199ed3a79",
+      "entry_count": 0
+    },
+    "execution_ledger": {
+      "path": "data/experiments/short_horizon/candidate49_future_execution_ledger.json",
+      "sha256": "d57a3e61eac969e42cafa418ccd8c0a5ee65dcf69da145bb2c096c2a02a2ea4f",
+      "entry_count": 0
+    },
+    "historical_return_backfill_performed": false,
+    "prospective_registration_changed": false
+  },
+  "next_iteration": {
+    "campaign_id": "a_share_three_day_walkforward_campaign_042",
+    "status": "requires_genuinely_independent_concept_scouting_then_separate_no_value_mechanism_audit",
+    "constraints": [
+      "must not repair or re-express microgap absorption, adjacent range overlap, range containment, intrabar range participation entropy, or minute-bin range-mass concentration",
+      "must freeze formula, direction, source fields, time grid, missing and denominator rules, full 63-factor comparison library, gates, and finite search before values",
+      "must retain the 2019-2023 three-fold expanding walk-forward and conditional one-shot 2024-2025 stress split",
+      "must not backfill Candidate49, activate Candidate50, or produce current scoring or order outputs"
+    ]
+  }
+}

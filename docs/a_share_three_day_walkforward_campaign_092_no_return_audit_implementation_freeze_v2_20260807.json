@@ -1,0 +1,39 @@
+{
+  "schema_version": 1,
+  "kind": "a_share_three_day_walkforward_campaign092_no_return_audit_implementation_freeze",
+  "status": "frozen_before_campaign092_coverage_or_comparison_values",
+  "frozen_at": "2026-08-07T00:30:23Z",
+  "supersedes_without_rewriting": {
+    "path": "docs/a_share_three_day_walkforward_campaign_092_no_return_audit_implementation_freeze_20260807.json",
+    "sha256": "b7f03fb694781c21b3a843e28afc816f34b6e66ddaaf795bfe75ddb7b9597a52",
+    "preserved": true
+  },
+  "repair_record": {
+    "path": "docs/a_share_three_day_walkforward_campaign_092_no_return_static_binding_interface_failure_20260807.json",
+    "sha256": "13dbfcdece0edbcf4510fc240dc9754ec9d84ee7e496c6869ff985ecae9ea135"
+  },
+  "feature_compatibility_wrapper": {
+    "path": "scripts/a_share_three_day_walkforward_campaign092_features_v2.py",
+    "sha256": "e90780063e8fd87e08e8d7a599153b3d03fac5aac7b12137347e3c834efb764a"
+  },
+  "audit_runner": {
+    "path": "scripts/a_share_three_day_walkforward_campaign092_no_return_audit_v2.py",
+    "sha256": "f05c0726dcdec58bcb4b891a72e8c3767be99141292dedd911ca8a8facf225eb"
+  },
+  "tests": {
+    "path": "tests/data_collector_tests/test_a_share_three_day_walkforward_campaign092_no_return_audit_v2.py",
+    "sha256": "43bdc6b7c369c8bbfb2e2f6bac62686702d81b86001597b61b3dc179675a8a52",
+    "preactivation_result": "2 passed"
+  },
+  "snapshot_binding": {
+    "path": "docs/a_share_three_day_walkforward_campaign_092_feature_snapshot_binding_20260807.json",
+    "sha256": "2c6f6c152802e3f2f51843ed4054a1377eb8c1bd366583221bfbc7c45a0ae931"
+  },
+  "coverage_or_capacity_metrics_computed_before_freeze": false,
+  "comparison_values_read_before_freeze": false,
+  "historical_daily_price_fields_read_before_freeze": [],
+  "historical_forward_returns_read_before_freeze": false,
+  "provider_request_issued_before_freeze": false,
+  "candidate49_ledgers_changed_before_freeze": false,
+  "formula_direction_snapshot_gates_and_orders_changed": false
+}

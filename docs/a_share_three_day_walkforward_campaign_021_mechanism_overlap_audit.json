@@ -1,0 +1,115 @@
+{
+  "version": 1,
+  "kind": "a_share_three_day_walkforward_campaign021_mechanism_overlap_audit",
+  "status": "passed_conceptual_independence_before_formula_values_comparisons_or_returns",
+  "recorded_at": "2026-07-29T04:01:00Z",
+  "purpose": "Resolve the selected market-response timing concept into one exact no-value mechanism and challenge it against the terminal and prospective families before any source partition, benchmark value, candidate value, comparison value, daily price, or forward return is opened.",
+  "concept_scouting": {
+    "path": "docs/a_share_three_day_walkforward_campaign_021_concept_scouting.json",
+    "sha256": "d5f7ea17f6f9ff6e0a4ce7e682d9e048dcb32c7ae7c9e25df3bf0dc2eeb82f54"
+  },
+  "selected_mechanism": {
+    "name": "intraday_market_response_delay_asymmetry_236p",
+    "direction": "higher",
+    "information_domain": "one_minute_cross_stock_market_lead_lag",
+    "formula": "rho_lag - rho_lead, where rho_lag is the population Pearson correlation between stock return r_i,t and the immediately preceding leave-one-out equal-weight market return m_-i,t-1, while rho_lead is the population Pearson correlation between r_i,t-1 and m_-i,t, over exactly 236 adjacent return pairs wholly inside the two trading halves",
+    "economic_hypothesis": "A larger stock-lag-minus-stock-lead dependence asymmetry indicates delayed common-information incorporation that may continue from the next open through the third close.",
+    "source_fields": [
+      "datetime",
+      "symbol",
+      "provider",
+      "close"
+    ],
+    "benchmark_fields": [
+      "trade_date",
+      "return_position",
+      "return_sum",
+      "valid_stock_count"
+    ],
+    "selected_bar_grid": "240 continuous-session minute closes after exact frozen timestamp normalization",
+    "return_grid": "119 adjacent log returns within 09:31-11:30 and 119 within 13:02-15:00, for 238 returns total",
+    "pair_grid": "118 adjacent return pairs per half and 236 total; the lunch transition and any cross-half pair are excluded",
+    "leave_one_out_rule": "For every date and return position subtract the stock's finite return and count from the frozen equal-weight market return sum and valid-stock count, then divide peer sum by peer count.",
+    "minimum_leave_one_out_peers_per_return_position": 50,
+    "correlation_estimator": "population Pearson correlation with equal pair weights",
+    "missing_rule": "Any invalid or nonpositive selected close, nonfinite stock or leave-one-out market return, fewer than 50 leave-one-out peers at any return position, nonpositive population variance in any of the four correlation vectors, nonfinite correlation, or score outside [-2,2] makes the stock-day missing.",
+    "endpoint_canonicalization_tolerance": 1e-12,
+    "valid_range": [
+      -2.0,
+      2.0
+    ]
+  },
+  "overlap_challenges": [
+    {
+      "family": "intraday_market_idiosyncratic_share_238m",
+      "result": "distinct",
+      "reason": "The terminal factor is one minus squared contemporaneous stock-market correlation and is invariant to swapping market returns one minute backward versus forward. Campaign021 subtracts a stock-leading correlation from a stock-lagging correlation and does not estimate contemporaneous R-squared."
+    },
+    {
+      "family": "intraday_market_neutral_late_residual_drift_238m",
+      "result": "distinct",
+      "reason": "The terminal factor estimates contemporaneous beta, residualizes stock returns, privileges the final 60 afternoon positions, and measures signed residual drift relative to residual path length. Campaign021 estimates no beta or residual, uses the complete two-half pair grid equally, and measures temporal lead-lag asymmetry."
+    },
+    {
+      "family": "own_stock_return_serial_dependence_sign_runs_and_bar_continuity",
+      "result": "distinct",
+      "reason": "Those factors relate one stock's returns or bar bodies to its own history. Campaign021 relates stock returns only to a leave-one-out peer benchmark and can change while the entire own-stock return vector is fixed."
+    },
+    {
+      "family": "market_amount_profile_synchronization",
+      "result": "distinct",
+      "reason": "The terminal synchronization factor uses same-minute amount-profile shape and no price return. Campaign021 forbids amount and volume and uses cross-lagged close returns."
+    },
+    {
+      "family": "daily trend_reversal_gap_range_volume_and_disclosure_freshness",
+      "result": "distinct",
+      "reason": "Campaign021 reads neither a daily OHLCV field nor a disclosure field and is invariant to announcement timing conditional on the minute close paths."
+    },
+    {
+      "family": "Candidate49 cumulative_vwap_crossing_rate",
+      "result": "distinct",
+      "reason": "Candidate49 measures own-stock close crossings around a cumulative transaction VWAP using volume and amount. Campaign021 uses neither transaction prices nor activity and may not evaluate Candidate49 returns."
+    },
+    {
+      "family": "range_candle_transaction_price_activity_and_event_mechanisms",
+      "result": "distinct",
+      "reason": "The candidate forbids high, low, open, volume, amount, transaction-price, quarterly-value, and event fields; its only cross-stock input is the frozen close-return sum/count benchmark."
+    }
+  ],
+  "counterfactual_independence_tests": [
+    "Holding every stock return fixed while shifting the leave-one-out market return vector one position changes Campaign021 but leaves all own-stock path, range, candle, activity, transaction-price, and disclosure factors unchanged.",
+    "Holding contemporaneous stock-market correlation fixed while reversing which series leads by one return position changes Campaign021 but leaves contemporaneous market idiosyncratic share unchanged.",
+    "Holding every minute close fixed while changing high, low, open, volume, amount, transaction VWAP, or announcement history leaves Campaign021 unchanged."
+  ],
+  "prohibited_variants": [
+    "use more than one lag, choose a lag after values, include the lunch transition, or select a subwindow",
+    "replace Pearson correlation with rank correlation, regression, covariance, mutual information, classification, sign agreement, or threshold counts",
+    "use contemporaneous correlation, beta, residual drift, market net return, own-return autocorrelation, or a terminal factor",
+    "change the 50-peer threshold, pair weighting, missing rule, direction, or endpoint tolerance after values",
+    "invert, filter, rewindow, year-select, board-select, industry-select, or combine the factor after returns",
+    "backfill or compare Candidate49 historical returns"
+  ],
+  "required_no_return_challenges": {
+    "coverage_and_capacity_before_comparison_values": true,
+    "statistical_uniqueness_against_42_frozen_prior_statistical_factors": true,
+    "semantic_only_challenges_for_campaign008_and_campaign013": true,
+    "maximum_allowed_absolute_median_daily_rank_correlation": 0.8
+  },
+  "research_boundary": {
+    "external_minute_partitions_read": false,
+    "market_benchmark_values_read": false,
+    "candidate_values_read": false,
+    "comparison_values_read": false,
+    "historical_daily_price_fields_read": [],
+    "historical_forward_return_fields_read": false,
+    "candidate49_historical_return_read": false,
+    "candidate49_signal_or_execution_ledger_changed": false,
+    "candidate50_prospective_activation_created": false,
+    "provider_request_issued": false
+  },
+  "decision": {
+    "conceptually_independent": true,
+    "advance_to_exact_finite_no_return_preregistration": true,
+    "predictive_value_established": false
+  }
+}

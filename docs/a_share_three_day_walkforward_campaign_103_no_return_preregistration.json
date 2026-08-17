@@ -1,0 +1,77 @@
+{
+  "version": 1,
+  "kind": "a_share_three_day_walkforward_campaign103_no_return_preregistration",
+  "status": "frozen_before_campaign103_candidate_paired_support_comparison_daily_price_or_return_values",
+  "frozen_at": "2026-08-07T16:28:00+08:00",
+  "purpose": "Bind the sole Campaign103 temporal breadth candidate, coverage-first no-return gates, all-130 uniqueness gate, and conditional one-trial walk-forward before any Campaign103 value is read.",
+  "authoritative_inputs": {
+    "concept_scouting": "docs/a_share_three_day_walkforward_campaign_103_concept_scouting.json",
+    "mechanism_overlap_audit": "docs/a_share_three_day_walkforward_campaign_103_mechanism_overlap_audit.json",
+    "source_catalog": "docs/a_share_three_day_walkforward_campaign_103_source_catalog.json",
+    "numeric_policy_v59_sha256": "4e6c7aea0be521773cda56ceea33d1665a82e9254b1e9198fa13b65e22d826b0"
+  },
+  "candidate": {
+    "name": "full_numeric_library_directional_rank_improvement_breadth_130f",
+    "direction": "higher",
+    "source_factor_count": 130,
+    "source_factor_order_sha256": "c80d9b929536dd509d6c1a904f790831050e68200393de381f92ad9293ef69e7",
+    "current_and_prior_support": "Both exact adjacent rows must have model_support_eligible=true, hence each has at least 98 finite components.",
+    "minimum_paired_components": 66,
+    "vote": {"current_greater_than_prior": 1.0, "exact_equal": 0.5, "current_less_than_prior": 0.0},
+    "aggregation": "arithmetic mean of all and only finite paired-component votes",
+    "valid_range": [0.0, 1.0],
+    "missing_semantics": "No bridge, carry, fill, imputation, component drop from the frozen library, prior-observed-row substitution, or candidate-specific support relaxation.",
+    "alternate_lag_window_vote_tie_pair_floor_direction_threshold_filter_subset_weight_fit_model_or_rescue_search": false
+  },
+  "ordered_no_return_gates": [
+    {
+      "gate": 1,
+      "name": "bindings_and_snapshot_verification",
+      "rule": "Revalidate every protocol/catalog/manifest/partition fingerprint and Campaign102 matrix semantics before reading component values."
+    },
+    {
+      "gate": 2,
+      "name": "structural_coverage_before_comparisons",
+      "rule": "On the immutable 1,331,759-row quality/current-listing base require median daily coverage >=0.95, P05 daily coverage >=0.90, P05 eligible names >=50, at least 200 non-overlapping three-session cohorts, and at least five observed years. Failure stops before any comparator value or historical return."
+    },
+    {
+      "gate": 3,
+      "name": "all_130_numeric_uniqueness",
+      "rule": "Compare the candidate with every exact current-session v59 numeric component. Each comparison requires at least 50 paired names per session and at least 100 qualifying sessions. Every absolute median daily Spearman correlation must be strictly below 0.8. Insufficient overlap fails closed and no comparator may be dropped."
+    }
+  ],
+  "finite_development_catalog_if_admitted": {
+    "trial_count": 1,
+    "trial_id": "wf103_full_numeric_library_directional_rank_improvement_breadth_130f_single_higher",
+    "factor": "full_numeric_library_directional_rank_improvement_breadth_130f",
+    "direction": "higher",
+    "training_or_fit": "none",
+    "folds": [
+      {"fold": 1, "train": [2019, 2020], "validation": 2021},
+      {"fold": 2, "train": [2019, 2020, 2021], "validation": 2022},
+      {"fold": 3, "train": [2019, 2020, 2021, 2022], "validation": 2023}
+    ],
+    "purge": "three signal sessions at every partition boundary; entry t+1 and exit t+3 must remain inside the same partition",
+    "execution": "Reuse the frozen one-factor next-open to third-close Top-3 execution engine, costs, quality/listing gates, board-lot checks, and survivor gates without override.",
+    "2024_2025": "Open once for the entire campaign only if the sole trial survives all 2019-2023 development gates; label it historically exposed quasi-out-of-sample. Otherwise leave it closed and unread."
+  },
+  "prohibitions": {
+    "campaign101_retry_or_rescue": true,
+    "campaign102_target_lambda_bound_subset_weight_or_missing_score_retry": true,
+    "candidate103_inversion_rerun_rescue_or_alternate_formula": true,
+    "candidate49_historical_return_signal_execution_or_milestone_backfill": true,
+    "second_prospective_candidate": true,
+    "provider_request": true,
+    "current_score_selection_sizing_order_or_investment_advice": true
+  },
+  "research_boundary": {
+    "campaign103_candidate_or_paired_support_values_read_before_freeze": false,
+    "campaign103_comparison_values_read_before_freeze": false,
+    "historical_daily_price_fields_read_before_freeze": [],
+    "historical_forward_return_fields_read_before_freeze": false,
+    "provider_request_issued": false,
+    "candidate49_ledgers_changed": false,
+    "current_scoring_selection_sizing_or_orders_performed": false
+  },
+  "decision": "Implement code and synthetic tests, fingerprint-freeze both, then build exactly one immutable no-return snapshot and run gates in order."
+}

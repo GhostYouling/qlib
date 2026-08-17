@@ -1,0 +1,109 @@
+{
+  "schema_version": 1,
+  "kind": "a_share_three_day_walkforward_campaign127_mechanism_overlap_audit",
+  "status": "one_primary_market_demand_mechanism_admitted_to_zero_row_contract_before_values",
+  "recorded_at": "2026-08-14T04:49:26+0800",
+  "concept_scouting": {
+    "path": "docs/a_share_three_day_walkforward_campaign_127_concept_scouting_20260814.json",
+    "sha256": "fc3705c04a9cd64b9c66fa97c95b2e23e9d96652886c3ace55affb14fd7f0eb1"
+  },
+  "numeric_policy_v131": {
+    "path": "docs/a_share_three_day_walkforward_future_numeric_comparison_eligibility_policy_v131_20260814.json",
+    "sha256": "5d27732656ceeb7053c289548211cb6941c4c0effa7ca805b269ecc45c19bf49",
+    "complete_definition_count_reviewed": 149,
+    "complete_definition_order_sha256": "be9c6085af2202e8fa5b4c6d89608b712b27740b16b5e78d7d88ca0c4d9bc5e3",
+    "eligible_numeric_comparator_count_reserved_but_not_loaded": 139,
+    "eligible_numeric_comparator_order_sha256": "9c4de054ca1b83eced67eece256b024ebec3a6e1925de17a4cedfa7d36265161"
+  },
+  "selected_mechanism": {
+    "factor_name": "convertible_issue_online_demand_180d",
+    "economic_state": "recent primary-market online demand for an issuer's completed convertible-bond issue",
+    "score_direction": "higher",
+    "source_tables": [
+      "Tushare cb_basic",
+      "Tushare cb_issue"
+    ],
+    "source_projection": {
+      "cb_basic": [
+        "ts_code",
+        "stk_code",
+        "cb_type"
+      ],
+      "cb_issue": [
+        "ts_code",
+        "ann_date",
+        "res_ann_date",
+        "onl_pch_excess"
+      ]
+    },
+    "mapping_rule": "Join exact convertible-bond ts_code; retain cb_type exactly CB and supported SSE/SZSE A-share stk_code only.",
+    "event_rule": "Require ann_date <= res_ann_date and a finite strictly positive onl_pch_excess. Activate only on the first accepted local session strictly after res_ann_date.",
+    "signal_rule": "At signal close, retain events with 1 <= signal_date - res_ann_date <= 180 calendar days. For each stock use the unique event with maximal res_ann_date; a same-date multi-bond tie is fatal.",
+    "formula": "log1p(onl_pch_excess) for the selected event; otherwise missing",
+    "event_age_rank_weight_or_tiebreaker": false,
+    "same_day_availability_allowed": false,
+    "missing_is_zero_control_or_imputation": false
+  },
+  "semantic_independence_review": {
+    "all_149_complete_definitions_reviewed_without_values": true,
+    "candidate49_excluded_from_historical_backfill": true,
+    "comparisons": {
+      "ipo_retail_ballot_scarcity_20to79s": "Campaign124 measures prelisting IPO allocation scarcity. Campaign127 measures a seasoned issuer's later convertible financing demand after an issuance-result announcement; it does not use IPO age or ballot.",
+      "financing_or_dilution_size": "Plan size, actual issue size, issue price, issue cost, completion ratio and conversion terms are excluded. The candidate ranks only observed online demand, so no firm-size or dilution field is swept.",
+      "ownership_and_holder_events": "The factor contains no holder identity, position, concentration, pledge, insider trade, fund holding or shareholder-count field.",
+      "analyst_survey_or_attention": "The demand observation is a primary-market subscription outcome, not analyst text, institutional survey attendance or secondary-market popularity.",
+      "stock_or_bond_price_path": "No stock or convertible-bond price, return, volume, amount, valuation, technical indicator or future response enters the source contract or formula.",
+      "audit_fundamental_or_disclosure_quality": "No financial statement, forecast, audit opinion, accounting ratio, announcement-text label or report-timing transform is used."
+    },
+    "genuinely_new_information_domain": true,
+    "post_exposure_field_operator_model_or_combination_retry": false
+  },
+  "source_identifiability_review": {
+    "cb_basic_official_url": "https://tushare.pro/document/2?doc_id=185",
+    "cb_issue_official_url": "https://tushare.pro/document/2?doc_id=186",
+    "documented_minimum_points_each": 2000,
+    "requires_5000_points": false,
+    "entitlement_or_response_success_observed": false,
+    "provider_rows_observed_or_counted": false,
+    "bond_to_stock_relation_used_as_signal": false,
+    "bond_to_stock_relation_role": "referential mapping only"
+  },
+  "mandatory_prevalue_gates": {
+    "one_exact_zero_row_contract_before_adapter": true,
+    "pure_adapter_and_synthetic_tests_before_transport": true,
+    "one_shot_entitlement_safe_acceptance_before_history": true,
+    "2018_warmup_plus_2019_2025_annual_source_windows": true,
+    "minimum_supported_complete_issues_per_2019_2023_year": 20,
+    "minimum_supported_complete_issues_total_2019_2023": 150,
+    "capacity_before_comparator_values": {
+      "minimum_non_overlapping_three_session_cohorts": 200,
+      "minimum_names_per_cohort": 6,
+      "minimum_distinct_finite_values_per_cohort": 2,
+      "minimum_observed_calendar_years": 5
+    },
+    "all_139_comparators_before_returns_if_capacity_passes": true,
+    "formula_field_window_direction_missing_rule_or_source_change_after_freeze": false
+  },
+  "decision": {
+    "selected_candidate_count": 1,
+    "zero_row_source_contract_may_be_frozen": true,
+    "provider_request_allowed_now": false,
+    "complete_definition_appended_now": false,
+    "numeric_comparator_appended_now": false,
+    "historical_values_or_returns_may_be_read_now": false,
+    "alternate_cb_field_rating_redemption_price_conversion_or_issue_size_rescue_allowed": false
+  },
+  "research_boundary": {
+    "programmatic_provider_request_issued": false,
+    "provider_credential_loaded": false,
+    "provider_rows_read_persisted_or_counted": false,
+    "candidate_or_comparator_values_read": false,
+    "historical_daily_price_or_forward_return_values_read": false,
+    "stress_2024_2025_opened": false,
+    "candidate49_historical_backfill_performed": false,
+    "candidate49_ledgers_changed": false,
+    "second_prospective_candidate_created": false,
+    "current_scoring_selection_sizing_positions_or_orders_performed": false,
+    "investment_advice": false
+  }
+}

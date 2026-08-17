@@ -1,0 +1,29 @@
+{
+  "schema_version": 1,
+  "kind": "a_share_three_day_walkforward_campaign115_infrastructure_failure",
+  "status": "bare_python_alias_missing_before_authority_and_credential_presence_verification",
+  "recorded_at": "2026-08-09T09:52:00+08:00",
+  "recorded_at_semantics": "monotonic_logical_append_time_after_campaign115_state_v11_not_host_wall_clock_measurement",
+  "attempt_id": "campaign115_infrastructure_025",
+  "phase": "infrastructure_failure",
+  "stage": "zero_network_authority_and_credential_presence_verification",
+  "failure": {
+    "process_exit_code": 127,
+    "normalized_error": "python_command_not_found",
+    "cause": "The authoritative worktree has no bare python executable on PATH; the credential-safe verification body did not start.",
+    "recovery": "Use the already frozen absolute Campaign115 Python runtime for executable stages and /usr/bin/python3 only for dependency-free local hash and metadata checks."
+  },
+  "research_boundary": {
+    "provider_request_issued": false,
+    "credential_loaded": false,
+    "credential_value_printed_hashed_or_persisted": false,
+    "campaign115_provider_rows_read": false,
+    "campaign115_candidate_or_comparison_values_read": false,
+    "historical_daily_price_or_forward_return_values_read": false,
+    "stress_2024_2025_opened": false,
+    "candidate49_ledgers_changed": false,
+    "second_prospective_candidate_created": false,
+    "current_scoring_selection_sizing_or_orders_performed": false,
+    "investment_advice": false
+  }
+}

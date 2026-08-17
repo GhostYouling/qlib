@@ -1,0 +1,25 @@
+{
+  "schema_version": 1,
+  "kind": "a_share_three_day_walkforward_campaign209_infrastructure_failure",
+  "recorded_at": "2026-08-15T22:06:00+08:00",
+  "timestamp_semantics": "monotonic_logical_append_time_not_host_wall_clock_measurement",
+  "status": "failed_black_check_formatting_difference_output_discarded_then_mechanically_reformatted",
+  "phase": "terminal_test_quality_check",
+  "failure": {
+    "target": "tests/data_collector_tests/test_a_share_three_day_walkforward_campaign209_terminal.py",
+    "observed": "Black check exited 1 because the new, not-yet-fingerprint-bound test required mechanical formatting; Ruff independently passed",
+    "recovery": "run Black only on the new test, retain the failed check as non-validation evidence, and publish additive accounting before validation"
+  },
+  "research_boundary": {
+    "failed_output_used_as_scientific_or_validation_evidence": false,
+    "scientific_result_changed": false,
+    "candidate_or_comparator_value_read": false,
+    "daily_price_or_forward_return_read": false,
+    "provider_or_web_request_issued": false,
+    "provider_credential_presence_value_or_digest_read": false,
+    "candidate49_plan_or_run_executed": false,
+    "candidate49_ledgers_changed": false,
+    "stress_2024_2025_opened": false,
+    "current_use_or_investment_advice": false
+  }
+}

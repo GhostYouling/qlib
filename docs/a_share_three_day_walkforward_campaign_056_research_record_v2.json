@@ -1,0 +1,79 @@
+{
+  "version": 2,
+  "kind": "a_share_three_day_walkforward_campaign056_research_record",
+  "status": "completed_zero_development_survivors_stress_interval_not_opened_terminal_test_selection_failure_recorded",
+  "recorded_at": "2026-08-04T11:36:00+08:00",
+  "purpose": "Supersede only Campaign056 post-terminal attempt accounting after an immutable historical-state test was selected into the current suite; preserve every factor value, metric, gate, and decision from v1.",
+  "bindings": {
+    "research_record_v1": {
+      "path": "docs/a_share_three_day_walkforward_campaign_056_research_record.json",
+      "sha256": "d22281354f220d43f8d293f2eaea9e7cd5fb68b07b412a40e062e45836be60c1"
+    },
+    "research_attempt_ledger_v5": {
+      "path": "data/experiments/short_horizon/historical_walkforward/campaign_056/research_attempt_ledger_v5.json",
+      "sha256": "cd2fa6db7443bae6e9318424c4e062501ad34432f78665853bd3707d913f5a9f"
+    },
+    "terminal_test_selection_failure": {
+      "path": "docs/a_share_three_day_walkforward_campaign_056_terminal_historical_assertion_selection_failure_20260804.json",
+      "sha256": "188b1d9d6873f878adf0a0534b7dceec7bc305cbf55a56dac9cae228f80d48c4"
+    },
+    "trial_ledger": {
+      "path": "data/experiments/short_horizon/historical_walkforward/campaign_056/walkforward/trial_ledger.json",
+      "sha256": "823967446ff945a04b03ff6b5819fc748328c894d0c07a1c77ea8eff9ba426dd"
+    },
+    "development_survivors": {
+      "path": "data/experiments/short_horizon/historical_walkforward/campaign_056/walkforward/development_survivors.json",
+      "sha256": "5b72dc0097234349e0d22e7212bff171881082f8762a543b951cfc36a303ada5"
+    },
+    "unopened_stress_record": {
+      "path": "data/experiments/short_horizon/historical_walkforward/campaign_056/walkforward/exposed_stress_consumption_record.json",
+      "sha256": "72523e8ac9ad47ec49ebf35d9e8b4cafd944bc4b22054be831e46a90239f6d1f"
+    }
+  },
+  "canonical_factor_result_unchanged": {
+    "factor": "intraday_day_over_day_amount_profile_similarity_240b",
+    "direction": "higher",
+    "median_coverage": 0.9991718413721302,
+    "p05_coverage": 0.9945110191453884,
+    "comparison_count": 79,
+    "all_comparisons_passed": true,
+    "maximum_absolute_median_daily_rank_correlation": 0.7471649347166686,
+    "development_trial_count": 1,
+    "validation_rank_ic": [-0.04687948439933215, -0.02835483788017809, -0.05066834243052904],
+    "validation_normalized_return": [-0.25281000802743314, -0.41429928016820505, -0.6028591763390986],
+    "validation_pilot_10bp_return": [-0.03054931947348838, -0.06020876908966888, -0.09581920134468469],
+    "development_aggregate_pilot_20bp_return": -0.19371124612024093,
+    "development_survivor_count": 0,
+    "stress_2024_2025_opened": false,
+    "stress_2024_2025_returns_read": false,
+    "factor_terminal": true
+  },
+  "append_only_attempt_accounting": {
+    "campaign056_ledger_entry_count": 5,
+    "campaign056_infrastructure_only_failure_count": 3,
+    "campaign056_complete_factor_attempt_count": 1,
+    "campaign056_distinct_attempt_count": 4,
+    "campaign056_return_reading_development_trial_count": 1,
+    "cumulative_historical_research_attempt_count": 325,
+    "cumulative_return_reading_development_trial_count": 268
+  },
+  "terminal_test_failure_semantics": {
+    "failure_was_historical_state_assertion_selection_only": true,
+    "historical_test_modified": false,
+    "factor_formula_direction_threshold_filter_or_result_changed": false,
+    "partition_factor_or_comparison_values_read": false,
+    "daily_price_or_forward_return_read": false,
+    "stress_2024_2025_opened": false,
+    "provider_request_issued": false,
+    "candidate49_ledger_changed": false
+  },
+  "prospective_boundary": {
+    "candidate49_signal_entry_count": 0,
+    "candidate49_execution_entry_count": 0,
+    "candidate49_historical_backfill_performed": false,
+    "second_prospective_candidate_created": false,
+    "provider_request_issued_by_post_terminal_attempt": false,
+    "current_scoring_selection_sizing_or_orders_performed": false
+  },
+  "next_boundary": "Run current terminal tests while excluding only the exact immutable pre-audit zero-count node. Campaign057 may begin offline only from a genuinely independent pre-value-frozen mechanism."
+}

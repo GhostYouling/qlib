@@ -1,0 +1,139 @@
+{
+  "version": 1,
+  "kind": "a_share_three_day_walkforward_campaign054_mechanism_overlap_audit",
+  "status": "passed_conceptual_independence_before_campaign054_candidate_comparison_daily_price_or_return_values",
+  "recorded_at": "2026-08-03T13:14:00Z",
+  "purpose": "Challenge the selected share-volume-weighted transaction-price distribution-skew mechanism against every nearby frozen family before any Campaign054 value is computed.",
+  "authoritative_boundary": {
+    "path": "docs/a_share_three_day_iteration_status_20260803_campaign053_verified_v2.json",
+    "sha256": "db9a88d848bee8610e6563fc3d56789c66c94c3465aee7024507fb0d9789418c"
+  },
+  "historical_walkforward_policy": {
+    "path": "docs/a_share_three_day_historical_walkforward_research_policy_20260727.json",
+    "sha256": "38426d6161b9bfed323c58caba18feca668b8c9d53e294951a8ba90c01a798bb"
+  },
+  "concept_scouting": {
+    "path": "docs/a_share_three_day_walkforward_campaign_054_concept_scouting.json",
+    "sha256": "69324618767c656cfc09aa5751523d3ecc5194b25a26e655c50bf937cc61656e"
+  },
+  "inherited_comparison_definition_source": {
+    "campaign053_protocol": {
+      "path": "docs/a_share_three_day_walkforward_campaign_053_no_return_preregistration.json",
+      "sha256": "829f9781ed6d7bbf2d6c5d318abf03838c5916bdf944fc46f28da13cf2a8b02c"
+    },
+    "campaign053_terminal_record": {
+      "path": "docs/a_share_three_day_walkforward_campaign_053_research_record_v2.json",
+      "sha256": "ff21cfac8b47ec66f0a797180d97a7f2e4590a3a4e10f7361a314a37bd9503e1"
+    },
+    "comparison_count_after_appending_campaign053": 77,
+    "comparison_values_read": false
+  },
+  "selected_mechanism": {
+    "name": "intraday_volume_weighted_transaction_price_bowley_skew_240m",
+    "direction": "higher",
+    "economic_hypothesis": "A right-skewed distribution of executed price levels across share-volume mass represents a longer upper execution tail and may identify persistent willingness to transact at elevated prices.",
+    "formula": "For active bars on the fixed 240-bar grid, x_i=log(amount_i/volume_i), w_i=volume_i, and Q_tau is the smallest sorted x with inclusive cumulative weight at least tau*sum(w). Return (Q_0.75+Q_0.25-2*Q_0.50)/(Q_0.75-Q_0.25).",
+    "source_projection": [
+      "datetime",
+      "symbol",
+      "provider",
+      "volume",
+      "amount"
+    ],
+    "selected_bar_count": 240,
+    "minimum_active_bars": 120,
+    "active_and_zero_semantics": "volume>0 and amount>0 active; joint-zero inactive; any one-sided zero invalidates the stock-day",
+    "quantiles": [
+      0.25,
+      0.5,
+      0.75
+    ],
+    "weight": "share volume",
+    "price_tie_semantics": "inclusive weighted empirical CDF with no clock-order tie break",
+    "valid_range": [
+      -1.0,
+      1.0
+    ],
+    "transform_threshold_filter_combination_or_model": "none"
+  },
+  "design_choices_frozen_before_values": {
+    "formula_family": "unordered_share_volume_weighted_transaction_price_level_quartile_asymmetry",
+    "direction": "higher",
+    "quantile_estimator": "left_continuous_weighted_empirical_inverse",
+    "quantile_probabilities": [
+      0.25,
+      0.5,
+      0.75
+    ],
+    "include_0930": false,
+    "include_lunch_transition": false,
+    "clock_order_used_after_grid_selection": false,
+    "source_volume_and_amount_read": true,
+    "source_open_high_low_close_read": false,
+    "parameter_filter_subset_model_or_combination_count": 0
+  },
+  "overlap_challenges": [
+    {
+      "family": "intraday_transaction_vwap_consensus_240m",
+      "result": "distinct_pending_statistical_uniqueness_gate",
+      "reason": "VWAP consensus compares share-volume-weighted arithmetic and geometric transaction-price centers and is sign-neutral dispersion. Campaign054 uses only weighted quartile locations and returns signed robust distribution asymmetry; equal dispersion can have opposite skew."
+    },
+    {
+      "family": "intraday_return_skewness_238m_and_return_distribution_families",
+      "result": "distinct_pending_statistical_uniqueness_gate",
+      "reason": "Return skewness uses time-ordered close changes. Campaign054 reads no close, computes no return, ignores clock order after grid selection, and measures price-level asymmetry across executed share mass."
+    },
+    {
+      "family": "intraday_transaction_price_path_confirmation_and_share_volume_transaction_price_coupling",
+      "result": "distinct_pending_statistical_uniqueness_gate",
+      "reason": "Those mechanisms form adjacent transaction-price returns and correlations with close returns or share-volume changes. Campaign054 forms no adjacent pair, change, correlation, close path, or time-order statistic."
+    },
+    {
+      "family": "late_vwap_to_day_vwap_bar_vwap_close_pressure_terminal_close_location",
+      "result": "distinct_pending_statistical_uniqueness_gate",
+      "reason": "Those factors locate a close or clock-window VWAP relative to another price anchor. Campaign054 reads no close, uses the full-day unordered weighted transaction-price distribution, and has no clock-window anchor."
+    },
+    {
+      "family": "campaign053_amount_price_discovery_alignment_and_other_activity_price_couplings",
+      "result": "distinct_pending_statistical_uniqueness_gate",
+      "reason": "Campaign053 compares amount mass with absolute close-return mass across return endpoints. Campaign054 reads no close or return and does not align activity with price updates; share volume is only the empirical distribution weight."
+    },
+    {
+      "family": "amount_participation_entropy_profile_persistence_center_of_mass_late_share_and_half_profile_similarity",
+      "result": "distinct_pending_statistical_uniqueness_gate",
+      "reason": "Those factors ask where amount occurs in clock time or how amount profiles repeat. Campaign054 discards clock order after selecting bars and sorts by transaction-price level; identical amount clocks can have opposite price-distribution skew."
+    },
+    {
+      "family": "candidate49_cumulative_vwap_crossing_rate_240m",
+      "result": "distinct",
+      "reason": "Candidate49 counts ordered close crossings around a causal cumulative VWAP. Campaign054 reads no close, constructs no causal anchor or crossing, and is historical-only without Candidate49 backfill."
+    },
+    {
+      "family": "intraday_round_tenth_close_avoidance_and_close_range_occupancy_entropy",
+      "result": "distinct",
+      "reason": "Those factors use minute close levels relative to a tick grid or completed-session close range. Campaign054 uses provider transaction prices derived from amount/volume, weighted price quantiles, no fixed price grid, and no close range."
+    },
+    {
+      "family": "terminal_factor_combination_filter_threshold_or_model",
+      "result": "distinct",
+      "reason": "Campaign054 contains one raw minute statistic and no terminal factor value, fitted weight, filter, threshold, regime, subset, combination, or model."
+    }
+  ],
+  "research_boundary": {
+    "external_campaign054_minute_partitions_read": false,
+    "candidate_or_comparison_values_read": false,
+    "historical_daily_price_fields_read": [],
+    "historical_forward_return_fields_read": false,
+    "provider_request_issued": false,
+    "candidate49_historical_return_signal_execution_or_milestone_backfill_performed": false,
+    "candidate49_ledgers_changed": false,
+    "second_prospective_candidate_created": false,
+    "current_scoring_selection_sizing_or_orders_performed": false
+  },
+  "decision": {
+    "conceptual_independence_passed": true,
+    "statistical_independence_pending_all_77_comparisons": true,
+    "predictive_value_established": false,
+    "next_action": "Bind this record, inherit the exact 76-factor Campaign053 comparison order, append terminal Campaign053 as comparison 77, freeze one exact conditional development trial, and validate all bindings before implementation."
+  }
+}

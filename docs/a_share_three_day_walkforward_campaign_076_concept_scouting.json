@@ -1,0 +1,136 @@
+{
+  "version": 1,
+  "kind": "a_share_three_day_walkforward_campaign076_concept_scouting",
+  "status": "selected_before_campaign076_minute_source_candidate_or_comparison_values",
+  "recorded_at": "2026-08-06T10:44:00+08:00",
+  "purpose": "Continue the offline three-session walk-forward program after terminal Campaign075 by selecting exactly one economically distinct point-in-time intraday mechanism before opening any Campaign076 minute source row, candidate value, comparison value, daily price, or forward return.",
+  "authoritative_bindings": {
+    "campaign075_verified_state": {
+      "path": "docs/a_share_three_day_iteration_status_20260806_campaign075_verified.json",
+      "sha256": "43629af8cf661370ca5ef34e3c2821be960027fe6506871558b864b90ff2fda0"
+    },
+    "historical_walkforward_policy": {
+      "path": "docs/a_share_three_day_historical_walkforward_research_policy_20260727.json",
+      "sha256": "38426d6161b9bfed323c58caba18feca668b8c9d53e294951a8ba90c01a798bb"
+    },
+    "numeric_comparator_policy_v11": {
+      "path": "docs/a_share_three_day_walkforward_future_numeric_comparison_eligibility_policy_v11_20260806.json",
+      "sha256": "5ab04c661040e4f073a0081f421500c758966266a23b60b2ec09c8a501fd6a2d",
+      "complete_definition_count": 107,
+      "complete_definition_order_sha256": "cf1aa9a8d0976b6c442c1283c07814a78f94501e5cae4f9b951fecf403881757",
+      "eligible_numeric_comparator_count": 106,
+      "eligible_numeric_comparator_order_sha256": "8a68220072bda50e86448d3f355760ab14f90b6d391b1389e174262f7ca215e1"
+    }
+  },
+  "definition_only_source_boundary": {
+    "source": "the immutable accepted local Tushare 2019-2025 one-minute source definition and exact standard continuous-session grid",
+    "minute_source_projection_if_later_admitted": [
+      "datetime",
+      "symbol",
+      "provider",
+      "amount"
+    ],
+    "stock_day_identity_projection_if_later_admitted": [
+      "trade_date",
+      "symbol",
+      "provider"
+    ],
+    "forbidden_before_protocol_and_implementation_freeze": [
+      "minute source rows",
+      "candidate values",
+      "comparison values",
+      "daily price fields",
+      "historical or forward returns",
+      "Candidate49 historical values or ledger additions"
+    ],
+    "candidate_source_rows_read": false,
+    "provider_request_allowed": false
+  },
+  "candidate_design_catalog": [
+    {
+      "design": "intraday_peak_amount_bar_recency_240m",
+      "decision": "selected_for_separate_complete_mechanism_overlap_audit",
+      "reason": "The location of the single dominant trading-attention burst measures when the session's strongest participation impulse arrived. It discards the peak size and the rest of the amount distribution, so it is not the amount center of mass, a late-window share, the terminal-bar share, participation entropy, or a price-extreme timing factor."
+    },
+    {
+      "design": "earliest_maximum_or_average_tied_maximum_position",
+      "decision": "rejected_before_values",
+      "reason": "Alternative tie rules would be representation variants. Campaign076 fixes the latest exact maximum occurrence once and does not compare tie rules."
+    },
+    {
+      "design": "top_k_peak_centroid_or_amount_quantile_arrival_time",
+      "decision": "rejected_before_values",
+      "reason": "Choosing k, a quantile, or a weighted peak set would introduce a parameter family and same-campaign rescue path."
+    },
+    {
+      "design": "amount_weighted_mean_bar_time",
+      "decision": "rejected_before_values_as_exact_prior_family",
+      "reason": "That is the already completed intraday_amount_center_of_mass_240m definition."
+    },
+    {
+      "design": "late_window_or_terminal_amount_share",
+      "decision": "rejected_before_values_as_terminal_family",
+      "reason": "late_amount_share_30m and intraday_terminal_bar_amount_share_240m already test aggregate tail allocation and the exact 15:00 bucket."
+    },
+    {
+      "design": "maximum_price_return_or_range_extreme_timing",
+      "decision": "rejected_before_values_as_prior_price_extreme_family",
+      "reason": "Campaign076 is amount-only; reopening price-extreme ordering or arrival would overlap completed price-path definitions."
+    },
+    {
+      "design": "cross_day_peak_time_persistence_interaction_or_regime_filter",
+      "decision": "rejected_before_values",
+      "reason": "Cross-day windows, interactions, thresholds, subsets, neutralization, models, and combinations are outside the one-factor library."
+    }
+  ],
+  "selected_candidate": {
+    "name": "intraday_peak_amount_bar_recency_240m",
+    "direction": "higher",
+    "economic_hypothesis": "A session whose strongest participation impulse arrives later may preserve unresolved attention and price-discovery pressure into the next three accepted sessions more often than a session whose dominant impulse is exhausted early.",
+    "formula": "Require the exact 240 standard continuous-session one-minute amount bars at 09:31-11:30 and 13:01-15:00. Require every amount to be finite and nonnegative and the 240-bar total to be positive. Locate the latest zero-based bar index i in [0,239] whose amount equals the session maximum exactly, and return i/239.",
+    "availability": "All required amounts and the complete grid are known only after the signal-session close. The value uses no future session, daily return, comparator, or Candidate49 observation.",
+    "tie_rule": "When the exact maximum occurs more than once, select the latest occurrence. Do not average, select the first, add epsilon, or use a tolerance.",
+    "valid_range": {
+      "lower": 0.0,
+      "lower_inclusive": true,
+      "upper": 1.0,
+      "upper_inclusive": true
+    },
+    "missing_rule": "Missing when the exact source identity or grid is invalid, any selected amount is nonfinite or negative, the total selected amount is nonfinite or nonpositive, or the resulting value is outside [0,1]. Never impute, clip, smooth, rank, bucket, winsorize, rescale, neutralize, or substitute another bar set.",
+    "parameter_window_transform_threshold_filter_subset_regime_fit_model_or_combination_search": false
+  },
+  "mandatory_pre_value_challenges": [
+    "all_107_frozen_historical_factor_definitions_in_exact_order",
+    "all_106_numeric_comparators_in_exact_order",
+    "intraday_amount_center_of_mass_240m",
+    "late_amount_share_30m",
+    "intraday_terminal_bar_amount_share_240m",
+    "intraday_amount_participation_entropy_240m",
+    "intraday_extreme_arrival_order_240m",
+    "intraday_opening_auction_amount_share_240m",
+    "intraday_am_pm_amount_distribution_similarity_120m",
+    "intraday_amount_profile_day_over_day_similarity_240m",
+    "intraday_market_amount_profile_synchronization_240m",
+    "intraday_cross_sectional_standardized_return_state_stability_236p",
+    "candidate49_intraday_cumulative_vwap_crossing_rate_240m_v1"
+  ],
+  "research_boundary": {
+    "campaign076_minute_source_rows_read": false,
+    "campaign076_candidate_values_read": false,
+    "comparison_values_read": false,
+    "historical_daily_price_fields_read": [],
+    "historical_forward_returns_read": false,
+    "provider_request_issued": false,
+    "candidate49_historical_backfill_performed": false,
+    "candidate49_ledgers_changed": false,
+    "second_prospective_candidate_created": false,
+    "current_scoring_selection_sizing_or_orders_performed": false,
+    "investment_advice": false
+  },
+  "decision": {
+    "selected_concept_count": 1,
+    "may_advance_directly_to_values": false,
+    "required_next_step": "Complete and bind one exhaustive no-value mechanism-overlap audit. Only if it passes may one exact no-return protocol, implementation, snapshot, coverage gate, 106-comparator uniqueness gate, and one finite 2019-2023 development trial be frozen before values.",
+    "candidate49_remains_only_active_prospective_candidate": true
+  }
+}

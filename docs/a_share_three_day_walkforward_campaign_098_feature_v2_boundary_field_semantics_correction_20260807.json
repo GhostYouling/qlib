@@ -1,0 +1,30 @@
+{
+  "schema_version": 1,
+  "kind": "a_share_three_day_walkforward_campaign098_feature_v2_boundary_field_semantics_correction",
+  "status": "append_only_correction_before_v2_verifier_execution",
+  "recorded_at": "2026-08-07T08:11:00Z",
+  "v2_implementation_freeze": {
+    "path": "docs/a_share_three_day_walkforward_campaign_098_feature_implementation_freeze_v2_20260807.json",
+    "sha256": "3652c0f1cdf5b60f9fb25dc421a1fc5ea2e3369d64d2030885502ab8a19fdb41"
+  },
+  "correction": {
+    "ambiguous_fields": [
+      "candidate_source_rows_read_before_freeze",
+      "candidate_values_computed_before_freeze"
+    ],
+    "correct_interpretation": "Those false values are inherited evidence about the original v1 feature implementation freeze, not claims about the later v2 verifier-repair freeze time.",
+    "actual_state_before_v2_freeze": {
+      "candidate_source_rows_read": true,
+      "candidate_values_computed": true,
+      "immutable_snapshot_already_published": true,
+      "comparator_values_read": false,
+      "historical_daily_price_or_forward_return_values_read": false
+    },
+    "scientific_candidate_snapshot_or_result_changed": false
+  },
+  "v2_record_may_be_rewritten": false,
+  "snapshot_rebuilt_rewritten_or_recalculated": false,
+  "formula_direction_support_window_universe_cost_gate_or_search_space_changed": false,
+  "candidate49_ledgers_changed": false,
+  "provider_request_issued": false
+}

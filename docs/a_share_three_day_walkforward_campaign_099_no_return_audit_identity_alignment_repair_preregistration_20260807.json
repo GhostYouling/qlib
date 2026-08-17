@@ -1,0 +1,68 @@
+{
+  "schema_version": 1,
+  "kind": "a_share_three_day_walkforward_campaign099_no_return_audit_identity_alignment_repair_preregistration",
+  "status": "frozen_after_identity_only_diagnosis_before_repair_or_coverage",
+  "frozen_at": "2026-08-07T10:15:47Z",
+  "failure_record": {
+    "path": "docs/a_share_three_day_walkforward_campaign_099_no_return_audit_identity_alignment_failure_20260807.json",
+    "sha256": "dd1f926aba17e5caf1c55c7b686e0579b35babd692384f348fd2263f0921e36b"
+  },
+  "attempt_ledger_before_repair": {
+    "path": "data/experiments/short_horizon/historical_walkforward/campaign_099/research_attempt_ledger_v8.json",
+    "sha256": "35d2b723e505d5ef7bf18383792c70e76b5a91d0902fc8eae73b8c43c214c7bc"
+  },
+  "pre_repair_implementation": {
+    "audit_runner": {
+      "path": "scripts/a_share_three_day_walkforward_campaign099_no_return_audit.py",
+      "sha256": "2a2ebb57a360d57b13bd69f2b0cddf40c2ae9bb115f0419233873a21acf605bf"
+    },
+    "tests": {
+      "path": "tests/data_collector_tests/test_a_share_three_day_walkforward_campaign099_no_return_audit.py",
+      "sha256": "46d4a7d85e2dea0274680681d411f4297a069cfd1849885c61d6338c68dfbd01"
+    }
+  },
+  "identity_only_diagnosis": {
+    "candidate_keys_are_unique_in_every_year": true,
+    "quality_listing_keys": 1331759,
+    "matched_quality_listing_keys": 1330171,
+    "missing_quality_listing_keys": 1588,
+    "missing_share": 0.001192417735,
+    "by_year": [
+      {"year": 2019, "eligibility_keys": 105761, "missing_keys": 285},
+      {"year": 2020, "eligibility_keys": 184069, "missing_keys": 284},
+      {"year": 2021, "eligibility_keys": 260062, "missing_keys": 447},
+      {"year": 2022, "eligibility_keys": 258274, "missing_keys": 211},
+      {"year": 2023, "eligibility_keys": 193615, "missing_keys": 88},
+      {"year": 2024, "eligibility_keys": 168612, "missing_keys": 77},
+      {"year": 2025, "eligibility_keys": 161366, "missing_keys": 196}
+    ],
+    "candidate_factor_values_read_by_diagnosis": false,
+    "comparison_factor_values_read": false,
+    "historical_daily_price_or_forward_return_values_read": false
+  },
+  "only_permitted_repair": {
+    "alignment": "left-align the frozen quality-listing stock_day_key denominator to unique candidate identities; assign NaN to each absent candidate identity so the unchanged coverage gate counts it as unavailable",
+    "receipt": "record matched and missing denominator identities overall and by year",
+    "tests": "prove absent identities become NaN, existing values are unchanged, duplicate candidate identities still fail, and out-of-range finite values still fail",
+    "freeze_files": "create additive v2 audit implementation freeze and v2 activation binding; preserve v1 records unchanged"
+  },
+  "forbidden_changes": {
+    "candidate_snapshot_or_partition_bytes": true,
+    "factor_formula_or_direction": true,
+    "coverage_or_capacity_thresholds": true,
+    "comparison_gate_or_order": true,
+    "imputation_of_missing_identity_with_finite_value": true,
+    "dropping_missing_denominator_identities": true,
+    "historical_daily_price_or_forward_return_read": true,
+    "provider_request": true,
+    "candidate49_ledger_change": true
+  },
+  "scientific_boundary_at_freeze": {
+    "candidate_values_read_by_failed_audit": true,
+    "coverage_or_capacity_metrics_computed": false,
+    "comparison_factor_values_read": false,
+    "historical_daily_price_or_forward_return_values_read": false,
+    "training_or_model_fitting_performed": false,
+    "provider_request_issued": false
+  }
+}

@@ -1,0 +1,55 @@
+{
+  "schema_version": 1,
+  "kind": "a_share_three_day_walkforward_campaign055_post_terminal_infrastructure_failure",
+  "status": "recorded_root_temp_volume_headroom_failure_authorized_isolated_large_volume_retest",
+  "created_at": "2026-08-04T02:28:15+08:00",
+  "campaign": "Campaign055",
+  "attempt_class": "infrastructure_only",
+  "stage": "post_terminal_combined_policy_candidate49_and_daily_migration_test_suite",
+  "command": "python -m pytest -q Campaign055 current tests, reporting, policy, Candidate49 workflow/execution/observation, and Tushare daily migration tests, excluding two recorded immutable prestate assertions",
+  "exit_code": 1,
+  "test_summary": {
+    "passed": 147,
+    "failed": 5,
+    "deselected_recorded_historical_prestate_assertions": 2,
+    "failed_scope": "five Tushare refresh-seed tests",
+    "common_failure": "temporary root volume lacked required copy bytes plus one GiB headroom",
+    "root_temp_volume_available_bytes_approximate": 814743552,
+    "external_minute_volume_available_bytes_approximate": 1683627180032
+  },
+  "failure_classification": "local_test_temporary_volume_capacity_only",
+  "campaign055_factor_formula_direction_snapshot_audit_comparisons_gates_or_terminal_decision_changed": false,
+  "authorized_repair": {
+    "scope": "rerun the unchanged daily-migration tests in a fresh subprocess whose pytest basetemp is on /Volumes/DIsk, then rerun the current combined suite without modifying migration code or tests",
+    "provider_request_allowed": false,
+    "factor_attempt_consumed": false
+  },
+  "bindings": {
+    "tushare_daily_migration_tests": {
+      "path": "tests/data_collector_tests/test_a_share_tushare_daily_migration.py",
+      "sha256": "3214b978508d37745ea6241af4aed83af6e508b7b43bd5f61eeaad826ce62fa2"
+    },
+    "tushare_daily_migration_implementation": {
+      "path": "scripts/a_share_tushare_daily_migration.py",
+      "sha256": "54e9ea86eb9747b8f28fe6a8d57d7f5bb8d51f3bd85270b36d8df19195367116"
+    },
+    "campaign055_terminal_tests": {
+      "path": "tests/data_collector_tests/test_a_share_three_day_walkforward_campaign055_terminal.py",
+      "sha256": "4f670806275f34ddfd2decff7ea60569323601e21ab1a0043cc0c7d74426a7ab"
+    },
+    "campaign055_research_record_v1": {
+      "path": "docs/a_share_three_day_walkforward_campaign_055_research_record.json",
+      "sha256": "c7e8cebdde4e6d280fb6cdd2ea1d25eb6d71bbc9595429f9df6d39decb5d86d3"
+    },
+    "campaign055_attempt_ledger_v1": {
+      "path": "data/experiments/short_horizon/historical_walkforward/campaign_055/research_attempt_ledger.json",
+      "sha256": "8b71a8cd94d064ca9f3ef1b3bd8eea113097cec04da7f60331f17c754ea0b187"
+    }
+  },
+  "historical_daily_price_fields_read": [],
+  "historical_forward_return_fields_read": false,
+  "candidate49_historical_return_read": false,
+  "candidate49_ledgers_changed": false,
+  "provider_request_issued": false,
+  "current_scoring_selection_sizing_or_orders_performed": false
+}

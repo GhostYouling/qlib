@@ -1,0 +1,23 @@
+{
+  "schema_version": 1,
+  "kind": "a_share_three_day_walkforward_campaign257_infrastructure_failure",
+  "recorded_at": "2026-08-16T13:35:00+08:00",
+  "timestamp_semantics": "monotonic_logical_append_time_not_host_wall_clock_measurement",
+  "status": "failed_cumulative_test_file_enumeration_glob_expected_145_observed_113_before_pytest",
+  "attempt_id": "campaign257_infrastructure_006",
+  "phase": "cumulative_regression_enumeration",
+  "command_semantics": "The cumulative runner enumerated only test_a_share_three_day_walkforward_campaign*_terminal.py files. Its preflight assertion observed 113 files instead of the frozen Campaign145-257 scope of 145 and exited before os.execv entered pytest.",
+  "disposition": "Discard the failed command as validation evidence. Re-enumerate every test_a_share_three_day_walkforward_campaign*.py file whose parsed campaign number is 145 through 257; preserve the 72-node frozen deselection catalog and rerun pytest only after the exact 145-file assertion passes.",
+  "research_boundary": {
+    "pytest_entered_by_failed_command": false,
+    "repository_file_written_by_failed_command": false,
+    "candidate_or_comparator_value_read": false,
+    "daily_price_or_forward_return_read": false,
+    "provider_or_web_request_issued": false,
+    "provider_credential_presence_value_or_digest_read": false,
+    "candidate49_plan_or_run_executed": false,
+    "candidate49_ledgers_changed": false,
+    "stress_2024_2025_opened": false,
+    "failed_or_truncated_output_used_as_scientific_or_validation_evidence": false
+  }
+}

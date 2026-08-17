@@ -1,0 +1,107 @@
+{
+  "schema_version": 1,
+  "kind": "a_share_three_day_walkforward_campaign124_new_share_adapter_and_formula_freeze",
+  "status": "frozen_after_synthetic_tests_before_provider_request_source_candidate_comparator_price_or_return_values",
+  "recorded_at": "2026-08-14T04:03:00+08:00",
+  "authoritative_inputs": {
+    "source_contract": {
+      "path": "docs/a_share_three_day_walkforward_campaign_124_new_share_source_contract_20260814.json",
+      "sha256": "6efcc73fac8f6a24335e869c82c83e15880ada55894569dec098b1eddf5836f1"
+    },
+    "numeric_policy_v124": {
+      "path": "docs/a_share_three_day_walkforward_future_numeric_comparison_eligibility_policy_v124_20260814.json",
+      "sha256": "8f1a972f98ed98cbde520515a6e341c0a27f6821d7cecf484ab54ef459773d18"
+    },
+    "historical_walkforward_policy": {
+      "path": "docs/a_share_three_day_historical_walkforward_research_policy_20260727.json",
+      "sha256": "38426d6161b9bfed323c58caba18feca668b8c9d53e294951a8ba90c01a798bb"
+    }
+  },
+  "pure_adapter_freeze": {
+    "implementation": {
+      "path": "scripts/a_share_three_day_walkforward_campaign124_new_share.py",
+      "sha256": "32cb20464702061ea30d48e585018e3979152f8943acac17937d687541979224"
+    },
+    "synthetic_tests": {
+      "path": "tests/data_collector_tests/test_a_share_three_day_walkforward_campaign124_new_share.py",
+      "sha256": "28d03dd0b0d12944d596e50dd7700ba216a96cda0e848a3ca221ded97566f001"
+    },
+    "source_contract_sha256_embedded_in_adapter": true,
+    "transport_or_cli_implementation_present": false,
+    "credential_or_environment_access_present": false,
+    "source_projection": [
+      "ts_code",
+      "ipo_date",
+      "issue_date",
+      "ballot"
+    ],
+    "forbidden_provider_fields_mechanically_rejected": true,
+    "strict_date_formats": {
+      "provider_dates": "YYYYMMDD",
+      "accepted_sessions": "YYYY-MM-DD"
+    },
+    "canonicalization": {
+      "supported_instruments": "SSE main board and SZSE main board/ChiNext only",
+      "cross_exchange_code_policy": "fatal",
+      "complete_unsupported_code_policy": "exclude_and_count",
+      "exact_repeat_policy": "collapse_and_count",
+      "one_supported_ipo_per_instrument_policy": "fatal_on_any_different_ipo_date_issue_date_or_ballot",
+      "rounding_tolerance_or_field_substitution": false
+    }
+  },
+  "single_factor_definition": {
+    "name": "ipo_retail_ballot_scarcity_20to79s",
+    "formula": "For a supported stock-day with inclusive accepted-session listing age from 20 through 79, return -ballot. Otherwise return missing.",
+    "score_direction": "higher",
+    "raw_range": {
+      "minimum_inclusive": -100.0,
+      "maximum_exclusive": 0.0
+    },
+    "missing_rule": "No accepted IPO event or listing age outside 20 through 79 is missing, never zero or an unaffected-control value.",
+    "listing_age_support_only": true,
+    "listing_age_rank_weight_or_tiebreaker": false,
+    "complete_definition_appended_now": true,
+    "numeric_comparator_appended_now": false,
+    "historical_candidate_values_materialized": false,
+    "prospective_candidate_registered": false
+  },
+  "complete_library_semantic_review": {
+    "prior_complete_definition_count_reviewed_without_values": 148,
+    "prior_complete_definition_order_sha256": "fa9f0254b17d1a2b568e056b2696f24087f3f0668d7842a1bcbfdde1a87192e8",
+    "complete_definition_count_after_append": 149,
+    "complete_definition_order_sha256_after_append": "be9c6085af2202e8fa5b4c6d89608b712b27740b16b5e78d7d88ca0c4d9bc5e3",
+    "eligible_numeric_comparator_count_reserved_without_values": 139,
+    "eligible_numeric_comparator_order_sha256": "9c4de054ca1b83eced67eece256b024ebec3a6e1925de17a4cedfa7d36265161",
+    "mechanism_overlap_audit": {
+      "path": "docs/a_share_three_day_walkforward_campaign_124_mechanism_overlap_audit_20260814.json",
+      "sha256": "dabea9eb5619f7ab910ebb03fba8cefc0025bce3b6e18e7ea182758716366244"
+    },
+    "old_terminal_definition_or_result_rewritten": false,
+    "old_terminal_factor_combined": false
+  },
+  "verification": {
+    "black_check": "passed; 2 files left unchanged",
+    "ruff_check": "passed",
+    "synthetic_pytest": "14 passed in 0.06s",
+    "provider_rows_used_by_tests": false,
+    "historical_factor_or_return_values_used_by_tests": false
+  },
+  "next_gate": {
+    "allowed": "Freeze a one-shot entitlement-safe source acceptance planner bound to the exact four-field projection, adapter, tests, contract, calendar, universe and failure semantics.",
+    "not_allowed": "Do not issue a provider request until that workflow and its tests are frozen and a policy explicitly authorizes one attempt. Do not inspect or count provider rows, compute historical candidate/comparator values, read prices/returns, open 2024-2025 candidate or return values, or register a second prospective candidate."
+  },
+  "research_boundary": {
+    "provider_request_issued": false,
+    "credential_loaded": false,
+    "provider_rows_read_persisted_or_counted": false,
+    "candidate_or_comparison_values_read": false,
+    "historical_daily_price_fields_read": [],
+    "historical_forward_returns_read": false,
+    "stress_2024_2025_opened": false,
+    "candidate49_historical_backfill_performed": false,
+    "candidate49_ledgers_changed": false,
+    "second_prospective_candidate_created": false,
+    "current_scoring_selection_sizing_positions_or_orders_performed": false,
+    "investment_advice": false
+  }
+}

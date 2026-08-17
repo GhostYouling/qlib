@@ -1,0 +1,43 @@
+{
+  "schema_version": 1,
+  "kind": "a_share_three_day_walkforward_campaign168_prevalue_infrastructure_failures",
+  "status": "five_effective_infrastructure_failures_recorded_timestamp_recovery_ready",
+  "recorded_at": "2026-08-15T07:56:20+08:00",
+  "authoritative_predecessor": {
+    "path": "docs/a_share_three_day_walkforward_campaign_168_prevalue_infrastructure_failures_v2_20260815.json",
+    "sha256": "2702efe4977c06228cc0412ece5cfdfc1575bb178f7495b142e0232c7e5a010c",
+    "effective_failure_count": 4,
+    "preserved": true
+  },
+  "delta_failures": [
+    {
+      "attempt_id": "campaign168_infrastructure_005",
+      "phase": "focused_terminal_test_after_verified_runtime",
+      "status": "failed_policy_v240_recorded_at_exceeded_original_file_mtime",
+      "exit_code": 1,
+      "observed": "Black reformatted one test file, Ruff passed, and pytest returned 4 passed plus 1 failed. The only failure showed policy v240 declared 2026-08-15T07:50:20+08:00 while its original file mtime was 2026-08-15T07:49:21.901610+08:00.",
+      "recovery": {
+        "path": "docs/a_share_three_day_walkforward_campaign_168_recorded_at_correction_20260815.json",
+        "sha256": "f5d516310d7c23008f2dd7bb2567d6b068ce14f98a04f1eb2caeeee185577bde",
+        "old_policy_bytes_preserved": true
+      },
+      "write_occurred": true,
+      "write_scope": "Mechanical Black formatting of the new Campaign168 test file only; no research artifact, source data or ledger was rewritten by the failed test.",
+      "candidate_comparator_price_or_return_value_read": false,
+      "failed_exit_code_bypassed_or_masked": false
+    }
+  ],
+  "effective_failure_count": 5,
+  "all_effective_failures_recorded": true,
+  "unrecovered_or_unrecorded_failed_exit_codes_bypassed_or_masked": false,
+  "research_boundary": {
+    "source_row_document_title_body_kpi_candidate_comparator_price_or_return_value_read": false,
+    "provider_or_web_request_issued": false,
+    "provider_credential_presence_value_or_digest_read": false,
+    "stress_2024_2025_opened": false,
+    "candidate49_ledgers_changed": false,
+    "second_prospective_candidate_created": false,
+    "current_scoring_selection_sizing_positions_or_orders_performed": false
+  },
+  "next_action": "Append the fifth failure from the existing Campaign168 chain tip, update tests to honor the additive timestamp correction, and rerun all gates fail-closed."
+}

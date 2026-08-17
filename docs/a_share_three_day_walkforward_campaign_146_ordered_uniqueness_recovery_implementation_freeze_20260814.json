@@ -1,0 +1,50 @@
+{
+  "schema_version": 1,
+  "kind": "a_share_three_day_walkforward_campaign146_ordered_uniqueness_recovery_implementation_freeze",
+  "status": "receipt_key_recovery_wrapper_frozen_before_comparator_values",
+  "recorded_at": "2026-08-14T21:59:00+08:00",
+  "purpose": "Bind the receipt-only recovery wrapper that changes the Campaign136 partition-count lookup from files to partitions while leaving the frozen all-141 audit unchanged.",
+  "authoritative_inputs": {
+    "recovery_protocol": {
+      "path": "docs/a_share_three_day_walkforward_campaign_146_ordered_uniqueness_recovery_protocol_20260814.json",
+      "sha256": "58f3d4508ecb4fb257b3b77597015444d0ec35d643bc6892ab35870d21b7e4e9"
+    },
+    "original_implementation_freeze": {
+      "path": "docs/a_share_three_day_walkforward_campaign_146_ordered_uniqueness_implementation_freeze_20260814.json",
+      "sha256": "b0070093183dee8dc7d36fc3fd6983a1f3f62c8873daeda834d4da3705374876"
+    },
+    "initial_validation_failure": {
+      "path": "docs/a_share_three_day_walkforward_campaign_146_ordered_uniqueness_recovery_initial_validation_failure_20260814.json",
+      "sha256": "573725aa74102a1c6b7b08a0ce2df1505c97ac636e4ae24ee3d752e36ab10867"
+    }
+  },
+  "frozen_implementation": {
+    "recovery_runner_path": "scripts/a_share_three_day_walkforward_campaign146_ordered_uniqueness_recovery.py",
+    "recovery_runner_sha256": "c38461e401e2068ec249d9f930a89e208941e7cd93b23b1f07b25a356cd787c0",
+    "recovery_test_path": "tests/data_collector_tests/test_a_share_three_day_walkforward_campaign146_ordered_uniqueness_recovery.py",
+    "recovery_test_sha256": "f855530d36dc58d199bc8c9a6826c492ef7a43cec07391767222db4fdcb05906",
+    "recovery_protocol_sha256": "58f3d4508ecb4fb257b3b77597015444d0ec35d643bc6892ab35870d21b7e4e9",
+    "original_runner_sha256": "fe9101c169b00be739b39d9ea4c983a8b0a7ee5f1910158a5ca908fdb2f5afe1",
+    "original_freeze_sha256": "b0070093183dee8dc7d36fc3fd6983a1f3f62c8873daeda834d4da3705374876",
+    "allowed_correction": "len(c136_manifest['files']) to len(c136_manifest['partitions']) in static receipt only"
+  },
+  "synthetic_verification": {
+    "passed": 5,
+    "exit_code": 0,
+    "black_check_exit_code": 0,
+    "ruff_exit_code": 0,
+    "recovery_protocol_receipt_only_semantics_bound": true,
+    "corrected_static_receipt_uses_partitions": true,
+    "original_runner_and_freeze_bound": true,
+    "explicit_confirmation_required": true,
+    "no_frozen_data_rewrite_paths_present": true
+  },
+  "research_boundary": {
+    "comparator_values_read_before_freeze": false,
+    "historical_daily_price_or_forward_return_values_read": false,
+    "provider_request_issued": false,
+    "credential_loaded": false,
+    "candidate49_ledgers_changed": false
+  },
+  "next_action": "Run the recovery plan; only ready=true with exit code zero may execute the full all-141 audit with --confirm-run."
+}

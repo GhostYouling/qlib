@@ -1,0 +1,71 @@
+{
+  "version": 1,
+  "kind": "a_share_three_day_walkforward_campaign026_no_return_context_repair",
+  "status": "frozen_before_candidate_or_comparison_values_or_returns",
+  "frozen_at": "2026-07-30T03:26:48Z",
+  "purpose": "Supply the point-in-time quality and listing context omitted from the immutable Campaign026 no-return preregistration without changing the candidate, ordered gates, thresholds, comparison library, search plan, or any return boundary.",
+  "observed_failure": {
+    "stage": "quality_listing_eligible_keys_before_candidate_frame_load",
+    "exit_code": 1,
+    "exception": "KeyError: calendar",
+    "snapshot_file_bytes_verified": true,
+    "candidate_value_arrays_loaded": false,
+    "comparison_factor_values_read": false,
+    "daily_price_fields_read": false,
+    "forward_return_fields_read": false,
+    "provider_request_performed": false
+  },
+  "repair_boundary": {
+    "original_preregistration_remains_immutable": true,
+    "candidate_formula_or_direction_changed": false,
+    "coverage_or_uniqueness_threshold_changed": false,
+    "comparison_library_changed": false,
+    "finite_search_plan_changed": false,
+    "development_or_stress_return_boundary_changed": false,
+    "only_missing_point_in_time_context_supplied": true
+  },
+  "source_chain": {
+    "campaign026_no_return_preregistration": {
+      "path": "docs/a_share_three_day_walkforward_campaign_026_no_return_preregistration.json",
+      "sha256": "b40643706488fb46d789db49aea24a0439a7f8c069bdc542d3c7f0f9e80e1e26"
+    },
+    "frozen_precedent_context": {
+      "path": "docs/a_share_three_day_walkforward_campaign_025_no_return_preregistration.json",
+      "sha256": "008d83fcb047601b99a74e6810d58eb26524bb6ebc08add230f4525eb7884904",
+      "use": "exact point_in_time_context only"
+    }
+  },
+  "point_in_time_context": {
+    "calendar": {
+      "path": "data/qlib/cn_a_share/calendars/day.txt",
+      "sha256": "fda506597d26bcec953cdc0882042a5046ec1587db60490e16a01627fd43f53a",
+      "sessions_2019_2025": 1699
+    },
+    "source_universe": {
+      "path": "data/qlib/cn_a_share/instruments/factor_main_chinext_star.txt",
+      "sha256": "cdded13c831b78045f4cfe80ba5d9a49f82152c615fef4267d00f992e7f53762"
+    },
+    "holding_universe": {
+      "path": "data/qlib/cn_a_share/instruments/buyable_main_chinext.txt",
+      "sha256": "77ccf8de2ed1e447e73b5d5ff1703fc2a8656d6adab34ef44017481730249db1"
+    },
+    "quarterly_quality": {
+      "path": "data/raw/a_share/fundamentals/quarterly_quality.parquet",
+      "sha256": "3ac901a97928d2ed81ac72e3eaac9bdc148d36cf67b6abe70223699235ef059f",
+      "manifest_path": "data/metadata/quarterly_quality_manifest.json",
+      "manifest_sha256": "e3cf654babe37a82393c5530696bc1cc242b736cb88e1947b8444b638125ba8c",
+      "availability": "strictly_next_local_session_after_announcement_date",
+      "maximum_age_days": 550,
+      "use": "quality_and_listing_eligibility_only"
+    },
+    "minimum_listing_sessions": 20,
+    "survivorship_limitation": "The current-listing-derived holding universe may introduce survivorship bias. Campaign026 is research-only and cannot be promoted without point-in-time listing and delisting history."
+  },
+  "required_execution_order": [
+    "validate this repair record and every path fingerprint",
+    "merge only point_in_time_context into the already validated immutable Campaign026 no-return preregistration",
+    "apply coverage and capacity before loading any comparison factor values",
+    "load comparison factor values only if coverage passes",
+    "read no forward returns until a separate development preregistration passes binding validation"
+  ]
+}

@@ -1,0 +1,18 @@
+{
+  "schema_version": 1,
+  "kind": "a_share_three_day_walkforward_campaign263_unified_report_patch_failure",
+  "status": "failed_patch_format_preserved_and_recovered_after_scientific_terminal_result",
+  "recorded_at": "2026-08-16T14:15:00Z",
+  "phase": "unified_report_publication",
+  "failure": "The first combined patch omitted diff prefixes for the added terminal report body and failed parser validation before any file write.",
+  "recovery": "Append this infrastructure failure to a terminal recovery ledger, publish a recovery terminal result and policy, then apply a valid report patch.",
+  "research_boundary": {
+    "failed_patch_changed_files": false,
+    "scientific_result_changed": false,
+    "stress_2024_2025_opened": false,
+    "provider_or_web_request_issued": false,
+    "candidate49_ledgers_changed": false,
+    "current_scoring_selection_sizing_positions_or_orders_performed": false,
+    "investment_advice": false
+  }
+}

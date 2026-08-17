@@ -1,0 +1,73 @@
+{
+  "version": 1,
+  "kind": "a_share_three_day_walkforward_campaign049_post_report_test_transition",
+  "status": "historical_campaign048_report_binding_preserved_campaign049_supersession_current",
+  "recorded_at": "2026-08-01T07:35:00Z",
+  "purpose": "Bind tests that now recognize the Campaign049 append-only report supersession without rewriting any historical record.",
+  "bindings": {
+    "campaign049_report_supersession": {
+      "path": "docs/a_share_three_day_walkforward_campaign_049_unified_report_supersession_20260801.json",
+      "sha256": "cca3fd66d8bc868e1b5333ad885f55d84be7ce4b8fe81e81a74d94b1d2577450"
+    },
+    "updated_campaign043_terminal_test": {
+      "path": "tests/data_collector_tests/test_a_share_three_day_walkforward_campaign043_terminal.py",
+      "sha256": "b4b64f24e5e565e745536533f87d996d262bc25e6b5de3e5b39c25e7bf6b3eb2"
+    },
+    "updated_campaign047_terminal_test": {
+      "path": "tests/data_collector_tests/test_a_share_three_day_walkforward_campaign047_terminal.py",
+      "sha256": "e14a909469219654a7a7cf71437992da65d477f23375f0fa4885bb69c25b092d"
+    },
+    "campaign049_terminal_test": {
+      "path": "tests/data_collector_tests/test_a_share_three_day_walkforward_campaign049_terminal.py",
+      "sha256": "74f0f9691df5ccb4871ac4f3955458af2265a452746a3b497ba45e2b06e8f11e"
+    }
+  },
+  "verification_transition": {
+    "first_candidate49_semantic_validation": {
+      "status": "failed_before_ledger_validation",
+      "reason": "direct Python import omitted the repository scripts directory, so the workflow's sibling execution module was not importable",
+      "exception_type": "ModuleNotFoundError",
+      "ledger_content_read_or_changed": false,
+      "credential_value_read_printed_hashed_or_persisted": false,
+      "historical_daily_price_or_forward_return_read": false
+    },
+    "candidate49_semantic_validation_retry": {
+      "status": "passed",
+      "repair": "add the repository scripts directory to the import path only",
+      "workflow_or_ledger_semantics_changed": false
+    },
+    "first_final_verification_publisher": {
+      "status": "failed_before_record_write",
+      "reason": "direct script execution omitted the repository root before importing the scripts package",
+      "exception_type": "ModuleNotFoundError",
+      "terminal_record_verification_or_state_written": false,
+      "historical_daily_price_or_forward_return_read": false
+    },
+    "final_verification_publisher_retry": {
+      "repair": "add the repository root to the import path before importing the binding validator",
+      "research_code_result_gate_or_fingerprint_changed": false
+    },
+    "first_focused_suite": {
+      "passed": 25,
+      "failed": 3,
+      "failures": [
+        "pre-freeze feature test observed wrapper-induced module-global mutation during joint collection",
+        "terminal test imported a wrapper namespace without a direct FACTOR_NAME export",
+        "terminal test imported a wrapper namespace without a direct _sha256 export"
+      ]
+    },
+    "focused_suite_retry": {
+      "passed": 28,
+      "failed": 0,
+      "repair": "terminal test imports the immutable base feature module; the frozen pre-value feature test and research implementation were not changed"
+    },
+    "research_attempt_count_increment": 0,
+    "classification": "post-terminal verification harness transition, not a new formula, direction, parameter, data, candidate-value, comparison-value, or return-reading attempt"
+  },
+  "semantic_boundary": {
+    "historical_campaign_records_or_supersessions_rewritten": false,
+    "test_change_only_tracks_new_current_report_hash": true,
+    "additional_historical_daily_price_or_forward_return_read": false,
+    "candidate49_ledgers_changed": false
+  }
+}

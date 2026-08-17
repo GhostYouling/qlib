@@ -1,0 +1,40 @@
+{
+  "schema_version": 1,
+  "kind": "a_share_three_day_walkforward_campaign086_feature_build_v3_symbol_encoding_failure",
+  "status": "failed_closed_no_candidate_snapshot_published",
+  "recorded_at": "2026-08-07T01:31:00+08:00",
+  "stage": "campaign086_v3_confirmed_feature_build_2019_compact_identity",
+  "exception": "Campaign086FeatureError: Campaign086 stock-day identity cannot compact",
+  "root_cause": {
+    "classification": "accepted_identity_symbol_format_mismatch",
+    "accepted_joint_clean_symbols": 5396,
+    "accepted_format": "two-letter exchange prefix plus six digits, for example SH600145",
+    "all_accepted_symbols_match_prefix_format": true,
+    "v1_parser_expected_format": "six digits plus dot plus two-letter exchange suffix, for example 600145.SH",
+    "encoding_equivalence": "Both representations map to the same frozen security number: exchange_id*1,000,000 + six_digit_code."
+  },
+  "output_state": {
+    "final_output_root_exists_after_cleanup": false,
+    "candidate_snapshot_manifest_published": false,
+    "candidate_partition_published": false,
+    "temporary_build_root_retained": false
+  },
+  "authorized_additive_repair": {
+    "scope": "Publish a v4 runner that accepts only the manifest-observed SH/SZ/BJ prefix plus six digits and applies the already frozen compact-key arithmetic; retain v3 attachment dispatch unchanged.",
+    "v1_v2_or_v3_runners_or_freezes_may_be_rewritten": false,
+    "factor_formula_or_gate_may_change": false,
+    "same_output_run_id_may_be_reused": true
+  },
+  "research_boundary": {
+    "real_minute_source_rows_read": true,
+    "candidate_values_computed_transiently_before_failure": true,
+    "candidate_snapshot_published": false,
+    "comparison_values_read": false,
+    "historical_daily_price_fields_read": [],
+    "historical_forward_returns_read": false,
+    "provider_request_issued": false,
+    "candidate49_historical_return_read": false,
+    "candidate49_ledgers_changed": false,
+    "current_scoring_selection_sizing_or_orders_performed": false
+  }
+}

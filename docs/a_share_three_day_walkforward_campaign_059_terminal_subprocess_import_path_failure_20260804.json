@@ -1,0 +1,53 @@
+{
+  "version": 1,
+  "kind": "a_share_three_day_walkforward_campaign059_terminal_subprocess_import_path_failure",
+  "status": "failed_current_suite_on_child_script_repository_import_path",
+  "recorded_at": "2026-08-04T23:03:00+08:00",
+  "purpose": "Preserve the fourth Campaign059 terminal-suite failure: collection succeeded from the repository root, but a test-spawned Python script did not receive a repository-root module path and could not import scripts.",
+  "bindings": {
+    "prior_workdir_import_failure": {
+      "path": "docs/a_share_three_day_walkforward_campaign_059_terminal_test_workdir_import_failure_20260804.json",
+      "sha256": "8d6f235586bc7d0aefde1a8caf1aff3f8d4964c5523fc0470aea4ea6ba57ea1b"
+    },
+    "prior_verified_authoritative_state": {
+      "path": "docs/a_share_three_day_iteration_status_20260804_campaign059_verified.json",
+      "sha256": "586549685b8aa200898504efb29fd3226f5a18ae5977a4ce9156967ff28c793a"
+    },
+    "current_terminal_test_module": {
+      "path": "tests/data_collector_tests/test_a_share_three_day_walkforward_campaign059_terminal_v2.py",
+      "sha256": "45f677c24fdf10eb922e285e54a4e84ee5a30e6c34414b1ddb3b8df04af56d3c"
+    }
+  },
+  "observed_command_semantics": {
+    "working_directory": "/Volumes/DIsk/Disk-Coding/qlib",
+    "repository_root_explicitly_present_in_pythonpath": false,
+    "passed": 32,
+    "failed": 1,
+    "deselected": 1,
+    "failed_node": "tests/data_collector_tests/test_a_share_three_day_walkforward_campaign059_terminal_v2.py::test_campaign059_v2_current_status_is_post_audit_and_stress_closed",
+    "failed_child_script": "scripts/a_share_three_day_walkforward_campaign059_no_return_audit_range_repair.py status",
+    "error_class": "ModuleNotFoundError",
+    "missing_module": "scripts",
+    "error_classification": "terminal_test_child_process_environment_failure"
+  },
+  "authorized_correction": {
+    "set_pythonpath_to_absolute_repository_root_for_main_and_child_processes": true,
+    "same_current_test_modules_and_exact_historical_node_deselection_required": true,
+    "research_artifacts_formulas_directions_parameters_or_gates_may_change": false
+  },
+  "successful_correction_observed": {
+    "explicit_pythonpath": "/Volumes/DIsk/Disk-Coding/qlib",
+    "passed": 33,
+    "failed": 0,
+    "deselected": 1
+  },
+  "research_boundary": {
+    "candidate_feature_partitions_read": false,
+    "historical_daily_prices_or_forward_returns_recomputed": false,
+    "additional_return_reading_trial_created": false,
+    "stress_2024_2025_opened": false,
+    "candidate49_ledgers_changed": false,
+    "provider_request_issued": false,
+    "current_scoring_selection_sizing_or_orders_performed": false
+  }
+}

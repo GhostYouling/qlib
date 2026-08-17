@@ -1,0 +1,30 @@
+{
+  "schema_version": 1,
+  "kind": "a_share_three_day_walkforward_campaign143_infrastructure_failure",
+  "status": "recorded_missing_predecessor_finalizer_probe_before_campaign143_values",
+  "recorded_at": "2026-08-14T15:20:33+0800",
+  "attempt_id": "campaign143_infrastructure_002",
+  "failure": {
+    "phase": "predecessor_artifact_pattern_review",
+    "command_intent": "Read a presumed Campaign142 finalizer and the actual terminal test pattern.",
+    "failed_component": "sed -n on scripts/a_share_three_day_walkforward_campaign142_finalize_v4.py",
+    "failed_component_exit_code": 2,
+    "outer_shell_exit_code": 0,
+    "cause": "The presumed finalizer does not exist; a later successful sed command supplied the compound shell's final zero exit code.",
+    "outer_zero_exit_treated_as_success": false,
+    "target_file_written": false,
+    "failed_component_bypassed": false,
+    "later_success_used_to_mask_failure": false
+  },
+  "research_boundary": {
+    "source_rows_or_column_values_read": false,
+    "candidate_or_comparator_values_read": false,
+    "historical_daily_price_or_forward_return_values_read": false,
+    "stress_2024_2025_opened": false,
+    "provider_request_issued": false,
+    "provider_credential_value_or_digest_read": false,
+    "candidate49_ledgers_changed": false,
+    "scientific_decision_made_by_failed_attempt": false
+  },
+  "safe_continuation": "Resolve exact paths with rg --files first and run every later diagnostic shell with set -euo pipefail."
+}

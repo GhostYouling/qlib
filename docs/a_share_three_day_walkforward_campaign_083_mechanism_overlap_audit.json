@@ -1,0 +1,189 @@
+{
+  "schema_version": 1,
+  "kind": "a_share_three_day_walkforward_campaign083_mechanism_overlap_audit",
+  "status": "passed_semantic_mechanism_review_before_campaign083_minute_source_or_comparison_values",
+  "recorded_at": "2026-08-06T19:40:00+08:00",
+  "concept_scouting": {
+    "path": "docs/a_share_three_day_walkforward_campaign_083_concept_scouting.json",
+    "sha256": "4a5900d0b6cc6fb1e1cf0f29efbfc56e4312eadcfff9b5f33a954e683b350685"
+  },
+  "authoritative_state": {
+    "path": "docs/a_share_three_day_iteration_status_20260806_campaign082_verified.json",
+    "sha256": "6c3ce9276b1d3d9530868e766d96a855bb625f00910baf585339e519f5e401fb"
+  },
+  "historical_walkforward_policy": {
+    "path": "docs/a_share_three_day_historical_walkforward_research_policy_20260727.json",
+    "sha256": "38426d6161b9bfed323c58caba18feca668b8c9d53e294951a8ba90c01a798bb"
+  },
+  "numeric_comparator_policy": {
+    "path": "docs/a_share_three_day_walkforward_future_numeric_comparison_eligibility_policy_v18_20260806.json",
+    "sha256": "05258e51c1e0a7c9805c1b68c1f936504c390f43646f3e71c67f1d5e4fc8db9c",
+    "complete_definition_count": 114,
+    "numeric_comparator_count": 112,
+    "complete_definition_order_sha256": "bc8ecccee5fa8278342253908e34167313041a23ae153bb3d64d3f60c285e04f",
+    "numeric_comparator_order_sha256": "78656b7dcd0df95703ccf663d261c61cb5f596ca368c3523907464fe25ed1f2b"
+  },
+  "candidate": {
+    "name": "intraday_close_frontier_innovation_share_238p",
+    "direction": "higher",
+    "mechanism": "fraction of within-half close positions that strictly expand the preceding running close frontier",
+    "formula": "For each 120-close half, count j=1..119 when c_j>max(c_0..c_(j-1)) or c_j<min(c_0..c_(j-1)); sum both half-session counts and divide by 238.",
+    "strict_tie_rule": "A close exactly equal to the preceding running minimum or maximum is not an innovation.",
+    "half_session_reset": true,
+    "no_open_high_low_volume_amount_return_daily_financial_event_peer_or_future_input": true,
+    "no_old_factor_value_input": true,
+    "candidate49_used_or_modified": false
+  },
+  "complete_library_review": {
+    "all_114_definitions_reviewed_in_frozen_order": true,
+    "all_pre_walkforward_terminal_price_volume_event_structural_and_composite_families_reviewed": true,
+    "candidate_is_exact_formula_duplicate": false,
+    "candidate_is_direction_only_duplicate": false,
+    "candidate_is_parameter_only_duplicate": false,
+    "candidate_is_an_inversion_of_a_terminal_factor": false,
+    "candidate_combines_terminal_factor_values": false,
+    "candidate_changes_any_quality_listing_or_buyability_gate": false,
+    "price_update_path_efficiency_extreme_timing_breakout_frontier_and_occupancy_families_explicitly_challenged": true,
+    "campaign079_invalid_turnover_mechanism_not_reused": true,
+    "campaign082_terminal_range_amount_peak_alignment_not_reused": true
+  },
+  "semantic_invariance_checks": [
+    {
+      "intervention": "Multiply every selected close by one common strictly positive constant.",
+      "campaign083_result": "unchanged because only strict running-order comparisons are used",
+      "distinguishes_from": "nominal-price affordability and any absolute price-level factor"
+    },
+    {
+      "intervention": "Apply any common strictly increasing transformation to all 240 closes without creating or removing exact equalities.",
+      "campaign083_result": "unchanged because the complete record-innovation indicator sequence is preserved",
+      "distinguishes_from": "signed path efficiency, breakout magnitude, chord deviation, realized variation, and close-range occupancy"
+    },
+    {
+      "intervention": "Change a nonrecord close to a different nonrecord value that remains inside the preceding and later running frontier.",
+      "campaign083_result": "unchanged",
+      "distinguishes_from": "ordinary price-update share, return entropy, spectral shape, serial correlation, variance ratio, and path travel"
+    },
+    {
+      "intervention": "Increase the magnitude of an existing strict record break without changing which positions are records.",
+      "campaign083_result": "unchanged",
+      "distinguishes_from": "range-frontier expansion, prior-range breakout pressure, signed path efficiency, and extreme-shock magnitude"
+    },
+    {
+      "intervention": "Reflect every close path vertically around a fixed log-price level while preserving exact equality structure.",
+      "campaign083_result": "unchanged because new highs and new lows exchange labels but the union count is preserved",
+      "distinguishes_from": "terminal close location, signed path efficiency, return-sign imbalance, directional body continuity, and extreme-arrival direction"
+    },
+    {
+      "intervention": "Hold the complete close path fixed and change every open, high, low, volume, amount, daily, quarterly, peer, and Candidate49 field.",
+      "campaign083_result": "unchanged",
+      "distinguishes_from": "OHLC geometry, high-low interval frontier, participation, transaction-price, market-peer, quarterly, daily, and prospective mechanisms"
+    },
+    {
+      "intervention": "Move an afternoon record event to the morning while preserving the total full-day sequence only through a lunch-crossing reconstruction.",
+      "campaign083_result": "may change because both running frontiers restart at lunch",
+      "distinguishes_from": "full-day terminal location and any statistic that treats 11:30 and 13:01 as adjacent"
+    }
+  ],
+  "nearest_semantic_challenges": [
+    {
+      "name": "intraday_price_update_share_238m",
+      "relationship": "both count exact close-state events on within-half adjacent positions",
+      "distinction": "price-update share counts every unequal adjacent close. Campaign083 counts only a strict expansion beyond all preceding closes in that half; arbitrarily many interior updates can change the prior factor without changing Campaign083.",
+      "mandatory_numeric_challenge": true
+    },
+    {
+      "name": "intraday_signed_path_efficiency_239m",
+      "relationship": "both respond to directional close paths",
+      "distinction": "signed path efficiency retains endpoint direction and magnitudes relative to total absolute travel. Campaign083 discards direction and magnitude and counts the union of strict high and low records separately by half.",
+      "mandatory_numeric_challenge": true
+    },
+    {
+      "name": "intraday_terminal_close_location_240m",
+      "relationship": "frequent one-sided records can move the terminal close toward an extreme",
+      "distinction": "terminal location uses only the final close relative to the full-day close range. Campaign083 can change after an early record event even when the final close and full-day range are fixed.",
+      "mandatory_numeric_challenge": true
+    },
+    {
+      "name": "intraday_prior_range_breakout_pressure_238p",
+      "relationship": "both identify movement beyond a preceding price boundary",
+      "distinction": "breakout pressure measures log distance of the current close outside only the immediately prior bar's high-low interval. Campaign083 reads no high or low, uses the complete preceding half-session close frontier, and counts events without magnitude.",
+      "mandatory_numeric_challenge": true
+    },
+    {
+      "name": "intraday_two_sided_range_frontier_balance_238m",
+      "relationship": "both update upward and downward running frontiers inside each half",
+      "distinction": "the prior factor uses bar high/low boundaries and the magnitudes of fresh upward/downward expansions to score their balance. Campaign083 reads close only, ignores expansion magnitude and balance, and counts the union of strict close-frontier innovations.",
+      "mandatory_numeric_challenge": true
+    },
+    {
+      "name": "intraday_extreme_arrival_order_240m",
+      "relationship": "both use ordering of price extremes",
+      "distinction": "extreme-arrival order uses the first global high and low times and their signed distance. Campaign083 resets at lunch, counts every sequential close record, and is unchanged when high/low record labels are exchanged.",
+      "mandatory_numeric_challenge": true
+    },
+    {
+      "name": "intraday_half_session_chord_adherence_240m and intraday_close_range_occupancy_entropy_10b",
+      "relationship": "all summarize completed close paths",
+      "distinction": "chord adherence measures magnitude deviation from endpoint lines and occupancy entropy measures unordered price-bin dispersion. Campaign083 uses only sequential record-event topology and is invariant to record-break magnitudes and many changes in bin occupancy.",
+      "mandatory_numeric_challenge": true
+    },
+    {
+      "name": "intraday_global_price_range_revisit_240m",
+      "relationship": "both concern whether the price path explores or revisits prior territory",
+      "distinction": "global revisit merges all high-low price intervals and is order invariant. Campaign083 reads close only and changes when the same close levels are permuted into a different record sequence.",
+      "mandatory_numeric_challenge": true
+    },
+    {
+      "name": "intraday_bar_direction_continuity_238p",
+      "relationship": "persistent candle direction may generate repeated close records",
+      "distinction": "body continuity uses open-to-close signs and adjacent same-sign pairs with a support threshold. Campaign083 reads no open and can record a new frontier after an opposite-sign or zero-body arrangement.",
+      "mandatory_numeric_challenge": true
+    },
+    {
+      "name": "intraday_range_amount_peak_timing_alignment_240m",
+      "relationship": "both retain timing structure while discarding many magnitudes",
+      "distinction": "Campaign082 scores the distance between one range maximum and one amount maximum. Campaign083 reads neither high/low nor amount and counts all strict sequential close-frontier innovations with no global-peak alignment.",
+      "mandatory_numeric_challenge": true
+    },
+    {
+      "name": "signal_day_turnover_rate_pct",
+      "relationship": "both could correlate with market attention",
+      "distinction": "Campaign079 is a terminal daily turnover-level semantic duplicate; Campaign083 is a close-only ordinal path statistic and never reads daily_basic.",
+      "numeric_status": "ineligible_terminal_definition_semantic_challenge_only"
+    },
+    {
+      "name": "intraday_cross_sectional_standardized_return_state_stability_236p",
+      "relationship": "the structurally nonnumeric definition remains in the complete semantic library",
+      "distinction": "peer-standardized return-state mobility versus single-stock strict close-frontier innovation topology",
+      "mandatory_semantic_challenge": true,
+      "numeric_status": "undefined_not_pass_not_fail"
+    },
+    {
+      "name": "candidate49_intraday_cumulative_vwap_crossing_rate_240m_v1",
+      "relationship": "the sole active prospective candidate remains an isolation challenge",
+      "distinction": "Candidate49 counts future-session sign crossings around causal cumulative VWAP. Campaign083 uses historical close running records only and never enters Candidate49 ledgers.",
+      "candidate49_remains_isolated": true
+    }
+  ],
+  "pre_value_decision": {
+    "economically_independent_enough_to_preregister": true,
+    "numeric_uniqueness_still_required_against_all_112_eligible_comparators": true,
+    "strict_maximum_absolute_median_daily_rank_correlation": 0.8,
+    "minimum_pairwise_names_per_session": 50,
+    "minimum_pairwise_sessions_per_comparison": 100,
+    "drop_residualize_invert_clip_bucket_rank_neutralize_filter_or_rescue_after_failed_gate_allowed": false
+  },
+  "research_boundary": {
+    "campaign083_minute_source_rows_read": false,
+    "campaign083_candidate_values_read": false,
+    "comparison_values_read": false,
+    "historical_daily_price_fields_read": [],
+    "historical_forward_returns_read": false,
+    "provider_request_issued": false,
+    "candidate49_historical_backfill_performed": false,
+    "candidate49_ledgers_changed": false,
+    "second_prospective_candidate_created": false,
+    "current_scoring_selection_sizing_or_orders_performed": false,
+    "investment_advice": false
+  }
+}

@@ -1,0 +1,57 @@
+{
+  "schema_version": 1,
+  "kind": "a_share_three_day_walkforward_campaign115_source_acceptance_runner_verification",
+  "status": "durable_attempt_journal_and_atomic_terminal_publication_verified_zero_network",
+  "recorded_at": "2026-08-09T04:25:00+08:00",
+  "recorded_at_semantics": "monotonic_logical_append_time_after_v3_recorded_at_04_00_not_host_wall_clock_measurement",
+  "supersedes_without_rewriting": {
+    "path": "docs/a_share_three_day_walkforward_campaign_115_source_acceptance_runner_verification_v3_20260809.json",
+    "sha256": "515b8d8397817599d0f971eeebce7245e8e795b1efba4e70cf218ff649498071",
+    "preserved": true
+  },
+  "runner_freeze_v4": {
+    "path": "docs/a_share_three_day_walkforward_campaign_115_source_acceptance_runner_freeze_v4_20260809.json",
+    "sha256": "0771cf07f877317a339b54a5527338814e718fce59ddbf49a8c72b199e3b8856"
+  },
+  "attempt_ledger_v6": {
+    "path": "data/experiments/short_horizon/historical_walkforward/campaign_115/research_attempt_ledger_v6.json",
+    "sha256": "25469e05e5a98dd1b7877dc962204c491c15d08f91349796fedd4a83d33db1ae"
+  },
+  "verification": {
+    "focused_runner_and_adapter_tests": "28 passed in 0.65s",
+    "campaign113_to_campaign115_joint_regression": "63 passed in 0.75s",
+    "black_check": "4 files unchanged",
+    "ruff_required_rules": "E4,E7,E9,F,I passed",
+    "partial_write_retry_test_passed": true,
+    "atomic_json_private_mode_test_passed": true,
+    "atomic_json_file_and_parent_fsync_path_tested": true,
+    "atomic_json_removes_published_record_when_parent_fsync_fails": true,
+    "journal_created_before_credential_loading": true,
+    "provider_call_authorized_event_observed_before_provider_function_entry": true,
+    "provider_failure_journal_contains_only_normalized_failure_state": true,
+    "simulated_first_provider_call_count": 1,
+    "failure_record_removed_before_second_plan": true,
+    "second_provider_call_rejected_by_persistent_journal": true,
+    "synthetic_success_journal_ends_at_manifest_publication_started": true,
+    "synthetic_success_manifest_and_factor_frame_published": true,
+    "real_plan_ready": false,
+    "real_plan_exit_code": 2,
+    "runtime_binding_check_passed": true,
+    "attempt_journal_available": true,
+    "real_plan_only_blocker": "manual_5000_point_entitlement_confirmation",
+    "provider_request_issued": false,
+    "real_attempt_journal_created": false,
+    "success_manifest_exists": false,
+    "failure_record_exists": false,
+    "credential_value_printed_hashed_or_persisted": false
+  },
+  "scientific_or_accounting_change": {
+    "formula_source_direction_date_or_gate_changed": false,
+    "complete_definition_count_changed": false,
+    "numeric_comparator_count_changed": false,
+    "research_attempt_count_changed": true,
+    "research_attempt_count_change_reason": "One prior runner-v3 verification command used the unavailable unqualified python executable and exited 127 before pytest collection. Additive ledger v6 records that infrastructure-only command once.",
+    "return_reading_trial_count_changed": false
+  },
+  "next_action": "Wait for explicit confirmation that the current account already has 5000 points. Do not supply the assertion flag or probe the provider by inference. A confirmed run will durably journal the possible provider call before entering the provider function and publish only credential-safe terminal evidence."
+}

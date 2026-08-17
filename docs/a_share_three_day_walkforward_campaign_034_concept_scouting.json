@@ -1,0 +1,97 @@
+{
+  "version": 1,
+  "kind": "a_share_three_day_walkforward_campaign034_concept_scouting",
+  "status": "one_independent_intraday_round_price_clustering_concept_selected_before_candidate_comparison_or_return_values",
+  "recorded_at": "2026-07-30T18:10:00Z",
+  "purpose": "Select one economically interpretable Campaign034 mechanism after Campaign033's terminal development rejection, without opening a Campaign034 minute partition, candidate value, comparison value, daily price, or forward return.",
+  "authoritative_boundary": {
+    "path": "docs/a_share_three_day_iteration_status_20260730_campaign033_verified.json",
+    "sha256": "b77415e771ac1096f8422574bcbd0ce5db81e235734f6b3fbda4dcd147d41496"
+  },
+  "selected_concept": {
+    "concept_name": "intraday_round_tenth_close_avoidance",
+    "mechanism_family": "raw_close_currency_grid_clustering",
+    "economic_question": "Does the completed signal session's one-minute close repeatedly settle on exact CNY 0.10 round-price points, or does price formation use the finer CNY 0.01 stock tick grid more diffusely?",
+    "economic_hypothesis": "Repeated settlement on round-tenth price points can reflect clustered limit prices, mechanical anchoring, and crowded queue formation. A higher avoidance share represents less round-price concentration and potentially more continuous price discovery from the next open through the third close.",
+    "provisional_direction": "higher",
+    "allowed_source_fields": [
+      "datetime",
+      "symbol",
+      "provider",
+      "close"
+    ],
+    "forbidden_source_fields": [
+      "open",
+      "high",
+      "low",
+      "volume",
+      "amount",
+      "market or industry benchmark",
+      "quarterly or event field",
+      "daily price",
+      "forward return",
+      "Level-2"
+    ],
+    "fixed_temporal_question": "Use exactly the 240 raw unadjusted one-minute closes at 09:31-11:30 and 13:01-15:00. Treat the CNY 0.01 stock price tick as the base integer grid, classify only exact multiples of ten base ticks as round-tenth closes, and measure the fixed-support share that avoids those round-tenth points.",
+    "mandatory_overlap_challenges_before_any_value": [
+      "intraday_price_update_share_238m",
+      "intraday_terminal_close_location_240m",
+      "intraday_global_price_range_revisit_240m",
+      "intraday_intrabar_body_range_efficiency_240m",
+      "intraday_intrabar_close_location_pressure_240m",
+      "intraday_return_spectral_entropy_59f",
+      "intraday_amount_profile_serial_persistence_240m",
+      "candidate49_intraday_cumulative_vwap_crossing_rate_240m_v1",
+      "quarterly_announcement_freshness_60s"
+    ],
+    "known_design_risks": [
+      "The absolute CNY grid can expose share-price-level and board-composition confounding; Campaign034 must not neutralize, residualize, filter, or retune that exposure after values.",
+      "Choosing CNY 0.05, CNY 0.10, CNY 0.50, CNY 1.00, multiple grids, a tolerance, or a price-scaled grid would create researcher degrees of freedom unless exactly one grid and one canonicalization rule are frozen before values.",
+      "Raw provider prices must reconcile to an exact CNY 0.01 integer tick before the modulo test; silently rounding a non-tick price would manufacture clustering.",
+      "The factor has discrete support in increments of 1/240 and may lack enough cross-sectional variation even if source coverage is complete.",
+      "Round-price avoidance may represent continuous price discovery or simply high nominal share price; the higher direction must remain fixed and the ordinary walk-forward gates must decide the hypothesis without a post-result control."
+    ]
+  },
+  "rejected_concepts": [
+    {
+      "concept": "return_entropy_frequency_band_phase_or_time_irreversibility_variant",
+      "reason": "Campaign033 and earlier return-path campaigns are terminal; altering entropy, bands, phase, lags, irreversibility, or sign sequencing would be a prohibited rescue."
+    },
+    {
+      "concept": "body_wick_range_overlap_union_or_close_location_variant",
+      "reason": "OHLC body, wick, range, overlap, union, breakout, and own-bar close-location families are terminal. Campaign034 may use only the raw close's external currency-grid identity, not an OHLC geometry transform."
+    },
+    {
+      "concept": "amount_volume_transaction_price_or_vwap_variant",
+      "reason": "Activity profiles, price impact, amount/volume transaction prices, and cumulative-VWAP crossings are terminal or reserved for Candidate49."
+    },
+    {
+      "concept": "market_mean_dispersion_breadth_beta_or_lead_lag_variant",
+      "reason": "Campaign021 and Campaign026-Campaign031 exhausted the allowed market-response branches."
+    },
+    {
+      "concept": "quarterly_timing_rescale_or_statement_value_sweep",
+      "reason": "Campaign020 and Campaign032 are terminal, and a timing rescale or statement-value sweep is not independent."
+    },
+    {
+      "concept": "terminal_factor_combination_or_rescue",
+      "reason": "Campaign034 must be one raw-close currency-grid statistic and may not combine, invert, filter, rewindow, or repair a terminal factor."
+    }
+  ],
+  "decision": {
+    "advance_to_separate_no_value_mechanism_overlap_audit": true,
+    "exact_formula_or_direction_fixed_here": false,
+    "new_daily_bar_required": false,
+    "same_day_1630_wait_required": false,
+    "candidate49_ledgers_changed": false
+  },
+  "research_boundary": {
+    "external_campaign034_minute_partitions_read": false,
+    "candidate_values_read": false,
+    "comparison_values_read": false,
+    "daily_price_fields_read": false,
+    "forward_returns_read": false,
+    "provider_request_issued": false,
+    "current_scoring_selection_sizing_or_orders_performed": false
+  }
+}

@@ -1,0 +1,105 @@
+{
+  "schema_version": 1,
+  "kind": "a_share_three_day_walkforward_campaign118_concept_scouting",
+  "status": "one_existing_local_data_mechanism_selected_before_campaign118_source_candidate_comparator_or_return_values",
+  "recorded_at": "2026-08-13T21:46:00+08:00",
+  "purpose": "Select exactly one economically interpretable Campaign118 mechanism from a finite catalog using only frozen definition metadata and accepted local source schema, before reading any Campaign118 source partition value, candidate value, comparator value, daily price, or forward return.",
+  "authoritative_inputs": {
+    "campaign117_terminal_state": {
+      "path": "docs/a_share_three_day_iteration_status_20260813_campaign117_terminal.json",
+      "sha256": "633e47749f87bf3bd299a2edf1e5bf08e05c97868f497e7cb3b79a788afe7200"
+    },
+    "historical_walkforward_policy": {
+      "path": "docs/a_share_three_day_historical_walkforward_research_policy_20260727.json",
+      "sha256": "38426d6161b9bfed323c58caba18feca668b8c9d53e294951a8ba90c01a798bb"
+    },
+    "numeric_policy_v106": {
+      "path": "docs/a_share_three_day_walkforward_future_numeric_comparison_eligibility_policy_v106_20260813.json",
+      "sha256": "b7ef1a9c855c24e48aa161f47c5b7334b0861db9a0aeda3275d457586e608159"
+    },
+    "manage_qlib_a_share_data_skill": {
+      "path": "/Users/niyufei/.codex/skills/manage-qlib-a-share-data/SKILL.md",
+      "sha256": "565713a5f3aeb6a1acf23e397fcc21be28d0c3ea4ebf21c7f287a25bb94d78dc"
+    },
+    "accepted_minute_source_manifest": {
+      "path": "/Volumes/DIsk/qlib-a-share-tushare-1m/metadata/rich_data/runs/tushare_stk_mins_1m_2019_2025_ea0cbb8f.json",
+      "sha256": "9b3d959563c9d182f38981c6a36bdb3bc9b415de08487a9e1f9e850825c0839f",
+      "values_read_during_scouting": false
+    },
+    "candidate49_20260813_failure_record": {
+      "path": "docs/a_share_candidate49_20260813_daily_source_failure_record.json",
+      "sha256": "76bb2d36dc10ef1ebdaa254212308001a00cd37720ce5896f0ad593afbfc04c8"
+    },
+    "candidate49_ledgers": {
+      "signal_ledger_sha256": "5193f00d7f36da003f53cec387900da4c3d002299f5dfcfc1a95eaa199ed3a79",
+      "signal_entry_count": 0,
+      "execution_ledger_sha256": "d57a3e61eac969e42cafa418ccd8c0a5ee65dcf69da145bb2c096c2a02a2ea4f",
+      "execution_entry_count": 0
+    },
+    "complete_definition_count": 143,
+    "complete_definition_order_sha256": "f7612c7dd7d4a0c015146d60a86e244d91b21a8b6638e4f84e7a18d035581d21",
+    "numeric_comparator_count": 135,
+    "numeric_comparator_order_sha256": "50323aed7e13a7f0241677beefda6c847482844eea68cf51cb92c833cd316322"
+  },
+  "finite_prevalue_concept_catalog": [
+    {
+      "name": "intraday_top_decile_amount_event_spacing_entropy_25g",
+      "information_channel": "fixed_count_extreme_liquidity_event_clock_spacing_complexity",
+      "prospective_direction": "higher",
+      "decision": "selected_for_mechanism_audit_and_exact_no_return_preregistration",
+      "reason": "The complete library measures amount mass, clock moments, local peaks, a global peak, threshold runs, adjacent path variation and weak-order triples, but does not reduce the day to a fixed count of top-decile liquidity events and measure the distribution of empty clock gaps between them. The statistic uses only accepted local amount and clock fields, discards magnitudes after event selection, and needs no provider request, price, or return."
+    },
+    {
+      "name": "intraday_amount_weak_order_time_reversal_or_transition_entropy",
+      "decision": "rejected_before_values",
+      "reason": "This would rescue or vary Campaign117 through another operator, direction, alphabet or transition lag rather than introduce a new information mechanism."
+    },
+    {
+      "name": "intraday_price_variance_or_fractal_scale_ratio",
+      "decision": "rejected_before_values",
+      "reason": "The complete library already has dense diffusive, realized-variance, five-minute and roughness mechanisms; another horizon or scaling ratio would be an exposed window sweep."
+    },
+    {
+      "name": "intraday_amount_change_point_or_scanned_threshold_count",
+      "decision": "rejected_before_values",
+      "reason": "Change-point penalties and scanned thresholds introduce open tuning choices and overlap the existing amount local-peak, threshold-run and path-efficiency families."
+    },
+    {
+      "name": "intraday_volume_weighted_price_curvature_or_vwap_path",
+      "decision": "rejected_before_values",
+      "reason": "The complete library already contains transaction-price, VWAP-consensus and price-activity coupling mechanisms; selecting a curvature operator or weighting scheme would expand the search after exposure."
+    },
+    {
+      "name": "terminal_factor_combination_or_full_library_model_retry",
+      "decision": "rejected_before_values",
+      "reason": "Refitting, subsetting, rescuing or recombining exposed terminal results is not a genuinely new raw-source information mechanism."
+    }
+  ],
+  "selection": {
+    "concepts_reviewed": 6,
+    "selected_candidate_count": 1,
+    "selected_candidate": "intraday_top_decile_amount_event_spacing_entropy_25g",
+    "selected_direction": "higher",
+    "candidate_formula_frozen_here": false,
+    "candidate_or_comparator_values_may_be_read_now": false,
+    "next_stage": "Complete a semantic overlap audit and freeze exactly one top-24 event selection rule, 25-gap entropy formula, support rule, source projection, ordered no-return gates, one-trial development protocol, costs and prohibitions before values."
+  },
+  "research_boundary": {
+    "prior_definition_names_directions_protocols_and_terminal_results_read": true,
+    "accepted_source_schema_metadata_read": true,
+    "campaign118_source_partition_values_read": false,
+    "campaign118_candidate_values_computed_or_read": false,
+    "campaign118_comparator_values_read": false,
+    "historical_daily_price_or_forward_return_values_read": false,
+    "stress_2024_2025_opened": false,
+    "provider_request_issued": false,
+    "credential_value_read_or_printed": false,
+    "candidate49_same_day_retry_performed": false,
+    "candidate49_failed_response_rerequested": false,
+    "candidate49_historical_backfill_performed": false,
+    "candidate49_ledgers_changed": false,
+    "second_prospective_candidate_created": false,
+    "current_scoring_selection_sizing_positions_or_orders_performed": false,
+    "investment_advice": false
+  }
+}

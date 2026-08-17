@@ -1,0 +1,76 @@
+{
+  "schema_version": 1,
+  "kind": "a_share_three_day_walkforward_campaign097_final_verification",
+  "status": "verified_terminal_current_node_suite_passed_ready_for_campaign098_offline_scouting",
+  "recorded_at": "2026-08-07T07:14:37Z",
+  "campaign": 97,
+  "terminal_completion_freeze": {
+    "path": "docs/a_share_three_day_walkforward_campaign_097_terminal_completion_freeze_20260807.json",
+    "sha256": "692c542bb298cc7c2debe8cfd2a246177e88537c44a5793222277fd6f78af299"
+  },
+  "current_node_tests": [
+    {
+      "path": "tests/data_collector_tests/test_a_share_three_day_walkforward_campaign097_features.py",
+      "sha256": "2b104430e1b5b1694cecbb8b97501f5b5d2afc8b11546ae7224431b44b5d53ac"
+    },
+    {
+      "path": "tests/data_collector_tests/test_a_share_three_day_walkforward_campaign097_compact_features.py",
+      "sha256": "0ff251208f9fd9d165e74a922843c4d7cf425068fe1e6a51c1c57309a3dfedf8"
+    },
+    {
+      "path": "tests/data_collector_tests/test_a_share_three_day_walkforward_campaign097_no_return_audit_v4.py",
+      "sha256": "0077a3c02798b90551c4feead79ad582fea57cbbc2fabaa5a2de3092858cda62"
+    },
+    {
+      "path": "tests/data_collector_tests/test_a_share_three_day_walkforward_campaign097_terminal.py",
+      "sha256": "7822a0be64234537b4c2c9ba2be924acc1625e44a2e1f56d120628cd0932c28b"
+    },
+    {
+      "path": "tests/data_collector_tests/test_a_share_three_day_walkforward_campaign097_terminal_v2.py",
+      "sha256": "4b205dcad764a5ba6556d8c987f68a678324e5a9a182473b3ea29d1a308421b1"
+    }
+  ],
+  "verification_summary": {
+    "pytest_passed": 26,
+    "pytest_failed": 0,
+    "black_files_checked": 5,
+    "black_passed": true,
+    "ruff_files_checked": 5,
+    "ruff_passed": true,
+    "terminal_completion_binding_count": 10,
+    "terminal_completion_binding_failures": 0,
+    "future_policy_binding_count": 4,
+    "future_policy_binding_failures": 0
+  },
+  "lifecycle_test_scope": {
+    "frozen_prevalue_tests_with_zero_ledger_assertions_rerun": false,
+    "reason": "They assert deliberately superseded lifecycle states and their prior failures are already preserved; the exact current-node terminal suites supersede them without rewriting."
+  },
+  "verified_terminal_result": {
+    "coverage_and_125_numeric_uniqueness_gates_passed": true,
+    "development_trial_count": 1,
+    "development_survivor_count": 0,
+    "stress_2024_2025_opened": false,
+    "stress_2024_2025_return_fields_read": false,
+    "campaign097_attempt_count": 13,
+    "campaign097_infrastructure_or_implementation_failure_count": 12,
+    "cumulative_historical_research_attempt_count": 679,
+    "cumulative_return_reading_development_trial_count": 292
+  },
+  "generated_campaign_report_discrepancy_preserved": {
+    "inherited_infrastructure_failure_count_field": 0,
+    "observed_internal_trial_ledger_infrastructure_failure_count": 2,
+    "authoritative_final_failure_count": 12,
+    "authoritative_source": "research_attempt_ledger_v4",
+    "generated_report_rewritten": false
+  },
+  "research_boundary": {
+    "campaign097_rerun_rescue_reweight_or_combination_allowed": false,
+    "campaign098_may_start_only_with_genuinely_new_prevalue_frozen_mechanism": true,
+    "candidate49_historical_backfill_performed": false,
+    "candidate49_ledgers_changed": false,
+    "provider_request_issued": false,
+    "current_scoring_selection_sizing_or_orders_performed": false,
+    "investment_advice": false
+  }
+}

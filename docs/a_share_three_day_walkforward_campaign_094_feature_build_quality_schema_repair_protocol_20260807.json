@@ -1,0 +1,61 @@
+{
+  "schema_version": 1,
+  "kind": "a_share_three_day_walkforward_campaign094_feature_build_quality_schema_repair_protocol",
+  "status": "frozen_before_repair_implementation_and_snapshot_retry",
+  "frozen_at": "2026-08-07T02:26:19Z",
+  "purpose": "Authorize only the additive Campaign094 quality-key compatibility adapter required to retry the exact frozen feature build.",
+  "bindings": {
+    "failure_record": {
+      "path": "docs/a_share_three_day_walkforward_campaign_094_feature_build_quality_schema_failure_20260807.json",
+      "sha256": "2cb67be4ea48ccc1df029113a21329b1a0c0f93656bb6356fcf299649589fd79"
+    },
+    "no_return_preregistration": {
+      "path": "docs/a_share_three_day_walkforward_campaign_094_no_return_preregistration.json",
+      "sha256": "c79c7ee277401f140bd075756658bfc5533ddcf191a20c4dc5e63808a50cbe27"
+    },
+    "feature_implementation_freeze_v1": {
+      "path": "docs/a_share_three_day_walkforward_campaign_094_feature_implementation_freeze_20260807.json",
+      "sha256": "d4b5bb63e412c091a4c32c45fcfcc4f431446d6f101e674a062425e6f534c743"
+    },
+    "feature_runner_v1": {
+      "path": "scripts/a_share_three_day_walkforward_campaign094_features.py",
+      "sha256": "d0e51bac3c27cf2d020a7f3df458273f7440554fd6d9e6b1927975492774e1f8"
+    }
+  },
+  "sole_runtime_repair": {
+    "input_quality_fields": [
+      "zero_range_bars"
+    ],
+    "inherited_compatibility_fields": {
+      "zero_destination_range_pairs": "identity integer copy of zero_range_bars",
+      "endpoint_canonicalized_sessions": "constant integer zero because the frozen Campaign094 candidate requires score greater than zero and performs no endpoint canonicalization"
+    },
+    "published_manifest_quality_fields_removed": [
+      "zero_destination_range_pairs",
+      "endpoint_canonicalized_sessions"
+    ],
+    "published_manifest_quality_field": "zero_range_bars",
+    "factor_values_recomputed_from_source": true,
+    "failed_attempt_candidate_values_reused": false,
+    "formula_or_eligibility_changed": false,
+    "source_projection_changed": false,
+    "output_factor_column_or_value_changed": false
+  },
+  "pre_retry_static_diagnosis": {
+    "performed_after_first_failure_without_reading_source_candidate_comparison_price_or_return_values": true,
+    "finding": "The same inherited totals mapping also contains endpoint_canonicalized_sessions; supplying a constant zero prevents a predictable second schema-only failure and does not alter candidate values."
+  },
+  "forbidden": {
+    "formula_direction_or_parameter_change": true,
+    "coverage_uniqueness_or_development_gate_change": true,
+    "comparison_daily_price_or_return_read_before_verified_snapshot": true,
+    "candidate49_history_or_ledger_change": true,
+    "provider_request": true
+  },
+  "required_before_retry": {
+    "versioned_runner_and_tests": true,
+    "versioned_implementation_freeze": true,
+    "all_hash_bindings_valid": true,
+    "snapshot_target_absent": true
+  }
+}

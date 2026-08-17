@@ -1,0 +1,44 @@
+{
+  "schema_version": 4,
+  "kind": "a_share_three_day_walkforward_campaign262_infrastructure_failures",
+  "status": "seven_failures_recorded_before_successful_snapshot_publication",
+  "recorded_at": "2026-08-16T18:05:00+08:00",
+  "timestamp_semantics": "monotonic_logical_append_time_not_host_wall_clock_measurement",
+  "supersedes_without_rewriting": {
+    "infrastructure_failures_v3": {
+      "path": "docs/a_share_three_day_walkforward_campaign_262_infrastructure_failures_v3_20260816.json",
+      "sha256": "3223523ec12daf136ec33380c39b3582150e44bd87e6d7b59ee09143f6481206",
+      "attempt_count": 6
+    }
+  },
+  "additional_failure": {
+    "attempt_id": "campaign262_infrastructure_007",
+    "operation": "Run independent Black --check after adding explicit post-failure research-boundary validation.",
+    "exit_code": 1,
+    "failure": "Black reported one Campaign262 feature-builder file would be reformatted. The file was formatted without scientific change; independent Black, Ruff and the two-file synthetic pytest scope then passed.",
+    "recovery_results": {
+      "black_check_exit": 0,
+      "ruff_exit": 0,
+      "pytest_exit": 0,
+      "pytest_passed": 15
+    }
+  },
+  "effective_accounting": {
+    "infrastructure_failure_count": 7,
+    "prevalue_scientific_attempt_count": 7,
+    "complete_factor_attempt_count": 0,
+    "return_reading_development_trial_count": 0
+  },
+  "research_boundary": {
+    "campaign262_minute_source_rows_read": true,
+    "campaign262_candidate_values_published_or_inspected": false,
+    "campaign262_comparator_values_read": false,
+    "historical_daily_price_or_forward_return_values_read": false,
+    "stress_2024_2025_opened": false,
+    "provider_or_web_request_issued": false,
+    "credential_value_presence_or_digest_read": false,
+    "candidate49_ledgers_changed": false,
+    "current_scoring_selection_sizing_positions_or_orders_performed": false,
+    "investment_advice": false
+  }
+}

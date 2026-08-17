@@ -1,0 +1,134 @@
+{
+  "version": 1,
+  "kind": "a_share_three_day_walkforward_campaign064_research_record",
+  "status": "completed_zero_admissible_factors_after_coverage_and_95_ordered_comparisons_stop_before_daily_prices_or_returns",
+  "recorded_at": "2026-08-05T12:21:00+08:00",
+  "campaign_id": "064",
+  "factor": {
+    "name": "intraday_range_weak_order_entropy_236t",
+    "direction": "higher",
+    "formula": "For the exact 236 overlapping within-half triples of x_i=ln(high_i/low_i), classify each exact zero-tolerance comparison key (cmp(x0,x1),cmp(x0,x2),cmp(x1,x2)) into one of the 13 transitive weak-order states and return -sum(p_k*ln(p_k))/ln(13).",
+    "value_range": "[0,1]",
+    "terminal_under_campaign064_protocol": true,
+    "terminal_reason": "The candidate passed every coverage/capacity gate and all 94 numerically evaluable uniqueness comparisons, but the frozen 95th comparison was terminal Campaign063, whose snapshot has zero eligible values and therefore zero pairwise sessions. The all-95-must-pass rule fails closed.",
+    "empirical_redundancy_with_evaluable_library_observed": false,
+    "maximum_absolute_median_daily_rank_correlation_among_94_evaluable_comparisons": 0.6368964824415881,
+    "same_campaign_rescue_or_redefinition_allowed": false
+  },
+  "immutable_inputs": {
+    "no_return_protocol": {
+      "path": "docs/a_share_three_day_walkforward_campaign_064_no_return_preregistration.json",
+      "sha256": "441cbeef589593c2ef0ae3e58325f5ab0acb506cc54eaa040c79f26c8ca6a887"
+    },
+    "feature_snapshot_binding": {
+      "path": "docs/a_share_three_day_walkforward_campaign_064_feature_snapshot_binding_20260805.json",
+      "sha256": "ece4c6c3899d186a7d23d3408c3d4056ab6c062f754bb45eafa8d72661ed430d"
+    },
+    "effective_no_return_audit_implementation_freeze": {
+      "path": "docs/a_share_three_day_walkforward_campaign_064_no_return_audit_implementation_freeze_v3_20260805.json",
+      "sha256": "af4d47b2d7f14fbb6ddbe55dcf8b53847ed00faf7120027ee8df72076fed03aa"
+    },
+    "turn_handoff_continuation": {
+      "path": "docs/a_share_three_day_walkforward_campaign_064_no_return_audit_turn_handoff_continuation_20260805.json",
+      "sha256": "942099d6d8de75437732212d7c1abe7dfe0f30a1114fb114a5a8ad5958af88d0"
+    },
+    "sole_completed_no_return_audit": {
+      "path": "data/experiments/short_horizon/historical_walkforward/campaign_064/no_return/20260805T041624Z_campaign064_no_return_audit.json",
+      "sha256": "55f3deef0cf8d58bf29a34e0af60cb290188dfe1f0e1d424e12e11ce18279c66"
+    },
+    "current_attempt_ledger": {
+      "path": "data/experiments/short_horizon/historical_walkforward/campaign_064/research_attempt_ledger_v11.json",
+      "sha256": "b5e34071bc939c8b0703d5df5af871d2c01e47d8a783fa4326a4f7a96120e5ce"
+    }
+  },
+  "snapshot": {
+    "manifest_path": "/Volumes/DIsk/qlib-a-share-tushare-1m/derived/a_share/rich/tushare/minute_walkforward_campaign064_feature_library/tushare_stk_mins_1m_2019_2025_ea0cbb8f_walkforward_campaign064_feature_library_v1/snapshot_manifest.json",
+    "manifest_sha256": "768ddf9babf07fc759d06b9e5d06bf4203d2e816bb8091e2daeb34f4ea21ea89",
+    "dataset_sha256": "676afa66570844ca8b5484f458801a95452249da0e277c9664eefd087acb152d",
+    "partition_count": 33015,
+    "row_count": 7724498,
+    "eligible_row_count": 7724498,
+    "all_partition_byte_and_frame_hashes_verified": true
+  },
+  "coverage_first_result": {
+    "calendar_session_count": 1632,
+    "quality_and_current_listing_eligible_rows": 1331759,
+    "candidate_eligible_rows": 1330171,
+    "median_coverage": 0.9994517542211769,
+    "p05_coverage": 0.9956886515772271,
+    "p05_eligible_names": 138.0,
+    "potential_non_overlapping_three_session_cohorts": 540,
+    "observed_calendar_years": [
+      2019,
+      2020,
+      2021,
+      2022,
+      2023,
+      2024,
+      2025
+    ],
+    "gate_passed_before_comparison_values": true
+  },
+  "ordered_uniqueness_result": {
+    "frozen_comparison_count": 95,
+    "comparison_order_sha256": "d471615fc35bc482efcfe0fea1e8f7b79dce8826b649d3a3e43c3ba784c2ed6b",
+    "comparison_order_matches_preregistration": true,
+    "comparison_values_loaded_after_coverage_pass": true,
+    "numeric_comparison_gate_pass_count": 94,
+    "comparison_gate_fail_count": 1,
+    "sole_failed_comparison": {
+      "name": "intraday_cross_sectional_standardized_return_state_stability_236p",
+      "source_campaign": 63,
+      "source_snapshot_eligible_rows": 0,
+      "pairwise_sessions": 0,
+      "minimum_pairwise_names_observed": 0,
+      "median_daily_rank_correlation": null,
+      "failure_classification": "preregistered_comparison_structurally_undefined_due_zero_source_values"
+    },
+    "all_required_comparisons_passed": false,
+    "admissible_factor_count": 0
+  },
+  "historical_research_boundary": {
+    "historical_daily_price_fields_read": [],
+    "historical_forward_returns_read": false,
+    "development_trial_count": 0,
+    "development_survivor_count": 0,
+    "stress_2024_2025_opened": false,
+    "stress_2024_2025_returns_read": false,
+    "training_or_model_fitting_performed": false,
+    "current_scoring_selection_sizing_or_orders_performed": false
+  },
+  "attempt_accounting": {
+    "infrastructure_only_failure_count": 10,
+    "successful_preparatory_snapshot_attempt_count": 1,
+    "complete_factor_attempt_count": 1,
+    "distinct_research_attempt_count": 12,
+    "append_only_ledger_entry_count": 12,
+    "return_reading_development_trial_count": 0,
+    "cumulative_historical_research_attempt_count": 381,
+    "cumulative_return_reading_development_trial_count": 271
+  },
+  "prospective_isolation": {
+    "candidate49_historical_return_signal_execution_or_milestone_backfill_performed": false,
+    "candidate49_signal_or_execution_ledgers_changed": false,
+    "second_prospective_candidate_created": false,
+    "provider_request_issued_by_campaign064": false
+  },
+  "policy_evidence_for_future_campaigns": {
+    "problem": "A prior terminal factor with zero eligible values cannot produce any pairwise rank-correlation session. If it remains an all-must-pass numerical comparator, every later candidate is mechanically rejected regardless of its own coverage or empirical uniqueness.",
+    "campaign064_decision_may_change": false,
+    "future_policy_may_be_frozen_before_next_candidate_values": true,
+    "future_rule_requirement": "Retain every old terminal factor in the exhaustive feature/mechanism/attempt library, but determine numerical-comparator eligibility solely from immutable prior evidence before the next candidate is defined: a comparison source must itself have at least 100 eligible pairwise-capable sessions. Structurally unavailable sources remain explicit nonnumeric challenges and cannot silently disappear or count as a pass/fail correlation.",
+    "candidate_specific_post_result_exception_allowed": false
+  },
+  "strict_prohibitions": [
+    "do not rescue invert redefine combine or rerun Campaign064",
+    "do not remove Campaign063 from Campaign064 after observing this failure",
+    "do not open Campaign064 development folds or 2024-2025 returns",
+    "do not backfill Candidate49 historical returns signals executions or milestones",
+    "do not activate a second prospective candidate",
+    "do not generate current scores selections position sizes orders or investment advice"
+  ],
+  "data_limitation": "The eligible universe derives from a current listing snapshot and can contain survivorship bias. This historical result is not pristine out-of-sample evidence and not investment advice.",
+  "next_action": "Freeze an additive future-campaign numerical-comparator eligibility policy from already immutable prior snapshots, then begin a genuinely new mechanism in Campaign065 without reopening Campaign064."
+}

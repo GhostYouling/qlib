@@ -1,0 +1,80 @@
+{
+  "schema_version": 1,
+  "kind": "a_share_three_day_walkforward_campaign118_no_return_implementation_freeze",
+  "status": "snapshot_builder_audit_runner_and_synthetic_semantics_frozen_before_historical_source_values",
+  "recorded_at": "2026-08-13T21:56:00+08:00",
+  "authoritative_inputs": {
+    "no_return_preregistration": {
+      "path": "docs/a_share_three_day_walkforward_campaign_118_no_return_preregistration_20260813.json",
+      "sha256": "f17d9feff0a812d7b7dad06cd24b2891e0d76d0a67e2b7e98dba4f74ae1d31ec"
+    },
+    "mechanism_overlap_audit": {
+      "path": "docs/a_share_three_day_walkforward_campaign_118_mechanism_overlap_audit_20260813.json",
+      "sha256": "a74cc3bfb1fab8df65a747a9b3db6fc15f314e1bb8761d8c3a8750edf2958777"
+    },
+    "raw_source_manifest": {
+      "path": "/Volumes/DIsk/qlib-a-share-tushare-1m/metadata/rich_data/runs/tushare_stk_mins_1m_2019_2025_ea0cbb8f.json",
+      "sha256": "9b3d959563c9d182f38981c6a36bdb3bc9b415de08487a9e1f9e850825c0839f"
+    },
+    "joint_clean_manifest": {
+      "path": "/Volumes/DIsk/qlib-a-share-tushare-1m/derived/a_share/rich/tushare/minute_sentiment_clean/tushare_stk_mins_1m_2019_2025_ea0cbb8f_sentiment_clean_v1/snapshot_manifest.json",
+      "sha256": "453c6719cb3c7da42fed8807b28a2bfe988700283e9625a6db97912534f368de",
+      "dataset_sha256": "0e4fe7c05536cdfcecc2936bc880726902f5560061188ffff82ef7ee6f346983"
+    }
+  },
+  "frozen_implementation": {
+    "pure_formula_path": "scripts/a_share_three_day_walkforward_campaign118_formula.py",
+    "pure_formula_sha256": "3ee704a0caf13bae5f7d008fcd8c383ae8c3935097029ecefabec241914b4a76",
+    "snapshot_builder_path": "scripts/a_share_three_day_walkforward_campaign118_features.py",
+    "snapshot_builder_sha256": "3972ce5130ef4a0e376d0eb3f2aa40fdda111308cd3f4e3c41105245dc6a22b9",
+    "ordered_audit_runner_path": "scripts/a_share_three_day_walkforward_campaign118_no_return_audit.py",
+    "ordered_audit_runner_sha256": "b52f08b0b7b24b8c4dc5579f0105e1c14f02b0bc935387dbe509297f4cd2bbdf",
+    "source_projection": [
+      "datetime",
+      "symbol",
+      "provider",
+      "amount"
+    ],
+    "factor": "intraday_top_decile_amount_event_spacing_entropy_25g",
+    "direction": "higher",
+    "event_count": 24,
+    "gap_count": 25,
+    "output_run_id": "tushare_stk_mins_1m_2019_2025_ea0cbb8f_walkforward_campaign118_feature_library_v1",
+    "expected_partitions": 33015,
+    "expected_rows": 7724498,
+    "numeric_comparator_count": 135,
+    "numeric_comparator_order_sha256": "50323aed7e13a7f0241677beefda6c847482844eea68cf51cb92c833cd316322",
+    "candidate_appended_complete_definition_count": 144,
+    "candidate_appended_complete_definition_order_sha256": "077e6c79356fe70193df4d424a004de5734ea395ef06df52e11e3804915d56f7"
+  },
+  "synthetic_verification": {
+    "command": "/Volumes/DIsk/Coding/anaconda3/bin/python -m pytest -q tests/data_collector_tests/test_a_share_three_day_walkforward_campaign118_formula.py tests/data_collector_tests/test_a_share_three_day_walkforward_campaign118_features.py tests/data_collector_tests/test_a_share_three_day_walkforward_campaign118_no_return_audit.py",
+    "formula_test_path": "tests/data_collector_tests/test_a_share_three_day_walkforward_campaign118_formula.py",
+    "formula_test_sha256": "6db514f0a85f97181d839f977e96dfef20fcbd9b3576caee0515d62edfde0405",
+    "feature_test_path": "tests/data_collector_tests/test_a_share_three_day_walkforward_campaign118_features.py",
+    "feature_test_sha256": "efe19d26d4303ba9318c2a5490e91632c811951947d26341b71f42f2a2ac90fe",
+    "audit_test_path": "tests/data_collector_tests/test_a_share_three_day_walkforward_campaign118_no_return_audit.py",
+    "audit_test_sha256": "d63938f8ff264507263404dace6cf7b64b914ad6a87e30cd8da234d4f592af6b",
+    "passed": 17,
+    "exit_code": 0,
+    "black_check_passed": true,
+    "py_compile_passed": true
+  },
+  "research_boundary": {
+    "campaign118_historical_source_rows_read": false,
+    "campaign118_candidate_values_computed_or_read": false,
+    "campaign118_comparator_values_read": false,
+    "historical_daily_price_or_forward_return_values_read": false,
+    "stress_2024_2025_opened": false,
+    "provider_request_issued": false,
+    "credential_loaded": false,
+    "candidate49_same_day_retry_performed": false,
+    "candidate49_failed_response_rerequested": false,
+    "candidate49_historical_backfill_performed": false,
+    "candidate49_ledgers_changed": false,
+    "second_prospective_candidate_created": false,
+    "current_scoring_selection_sizing_positions_or_orders_performed": false,
+    "investment_advice": false
+  },
+  "next_action": "Validate the frozen bindings, then perform exactly one local no-network snapshot build. No comparator or return value may be read before the coverage gate passes."
+}

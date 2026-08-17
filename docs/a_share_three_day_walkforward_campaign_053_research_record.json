@@ -1,0 +1,215 @@
+{
+  "version": 1,
+  "kind": "a_share_three_day_walkforward_campaign053_research_record",
+  "status": "completed_zero_admissible_factors_stop_before_historical_returns",
+  "recorded_at": "2026-08-03T12:58:00Z",
+  "purpose": "Record every Campaign053 attempt, exact amount/price-discovery factor, immutable snapshot, and uniqueness-stage terminal decision.",
+  "authoritative_inputs": {
+    "prior_iteration_state": {
+      "path": "docs/a_share_three_day_iteration_status_20260803_campaign052_candidate49_source_failure_verified.json",
+      "sha256": "a14c0259453052ba4ef051199ad4c200a7d5ea1919610dc7ca66bebfbc7c194f"
+    },
+    "historical_walkforward_policy": {
+      "path": "docs/a_share_three_day_historical_walkforward_research_policy_20260727.json",
+      "sha256": "38426d6161b9bfed323c58caba18feca668b8c9d53e294951a8ba90c01a798bb"
+    }
+  },
+  "frozen_evidence": {
+    "concept_scouting": {
+      "path": "docs/a_share_three_day_walkforward_campaign_053_concept_scouting.json",
+      "sha256": "937def81c3e162fce3a27636ad902b0df896101287918bd51c775f58ca32c30e"
+    },
+    "mechanism_overlap_audit": {
+      "path": "docs/a_share_three_day_walkforward_campaign_053_mechanism_overlap_audit.json",
+      "sha256": "7cf02ae931c97427bc93339ef1fdf8c7a9547ebccb666a4a649e0b13f9467dd4"
+    },
+    "no_return_preregistration": {
+      "path": "docs/a_share_three_day_walkforward_campaign_053_no_return_preregistration.json",
+      "sha256": "829f9781ed6d7bbf2d6c5d318abf03838c5916bdf944fc46f28da13cf2a8b02c"
+    },
+    "feature_implementation_freeze": {
+      "path": "docs/a_share_three_day_walkforward_campaign_053_feature_implementation_freeze_20260803.json",
+      "sha256": "98e6423515998a989458b51fd3896153a157cef27e53b489c0d818a2254c37be"
+    },
+    "snapshot_publication_binding": {
+      "path": "docs/a_share_three_day_walkforward_campaign_053_snapshot_publication_binding_20260803.json",
+      "sha256": "0bef2d554baad10c90a1be00e126ba92a76e7bc7625cbd88501d60d386a2350a"
+    },
+    "audit_failure_and_repair_authorization": {
+      "path": "docs/a_share_three_day_walkforward_campaign_053_no_return_audit_campaign051_verifier_failure_repair_20260803.json",
+      "sha256": "f70412a025886ef117eac7b9568a438c7edfdb3a4bf0ec5021f4017b300da20a"
+    },
+    "repair_implementation_freeze": {
+      "path": "docs/a_share_three_day_walkforward_campaign_053_campaign051_verifier_repair_implementation_freeze_20260803.json",
+      "sha256": "2a86d8f6bd2791d823c661bebec16f21664ddfadee1b9a362eea5bcbc3dbec16"
+    },
+    "no_return_audit_freeze": {
+      "path": "docs/a_share_three_day_walkforward_campaign_053_no_return_audit_freeze_20260803.json",
+      "sha256": "5a1f08845fd9b35cd93d9c62f01618f2d1f3f15049a47fe8bfd1c73e546c6cfe"
+    },
+    "feature_and_audit_runners": [
+      {
+        "path": "scripts/a_share_three_day_walkforward_campaign053_features.py",
+        "sha256": "4007eae34134d11bc057b3cd251050a18b36f0d79dac0ab5ecf5f5fcfb2407e3"
+      },
+      {
+        "path": "scripts/a_share_three_day_walkforward_campaign053_features_v2.py",
+        "sha256": "10fd4c43d0af5274154bde1965196d7f55cbbe2b35d4deeb0cef9b9ecf49c24a"
+      },
+      {
+        "path": "scripts/a_share_three_day_walkforward_campaign053_features_v3.py",
+        "sha256": "e561a78f3409df7746b30e381ac752d33edbf6d8d24831d8cfae99b98d7a1608"
+      },
+      {
+        "path": "scripts/a_share_three_day_walkforward_campaign053_features_v4.py",
+        "sha256": "7ce884725f3ac9bc8027b91380a8d549b609818c92961e21db3992cc8f1e124f"
+      },
+      {
+        "path": "scripts/a_share_three_day_walkforward_campaign053_features_v5.py",
+        "sha256": "83c3816baa58917ce31a142fcb2dca82a20550de0209ccda8756c6865a007dcb"
+      },
+      {
+        "path": "scripts/a_share_three_day_walkforward_campaign053_features_v6.py",
+        "sha256": "605625b8cfc9dcc8f73601840154e57e4d72212992c42d36cf7e6bb79ac59dad"
+      }
+    ],
+    "finalizer": {
+      "path": "scripts/a_share_three_day_walkforward_campaign053_finalize.py",
+      "sha256": "d736088597ce58c026fd500fd90bcc0b90e664da7a322e1f81f609af19898346"
+    },
+    "feature_tests": {
+      "path": "tests/data_collector_tests/test_a_share_three_day_walkforward_campaign053_features.py",
+      "sha256": "89b388d90bc7b70c6dcf9b7dc98121970f8d85dc8893a42e0fac754cbafc85c1"
+    },
+    "repair_tests": {
+      "path": "tests/data_collector_tests/test_a_share_three_day_walkforward_campaign053_no_return_audit_repair.py",
+      "sha256": "d014f8e238b95ac6181ca96240bfb8463ea79d733d4b82cf643bf51e7d6b48e4"
+    }
+  },
+  "factor_definition": {
+    "name": "intraday_amount_price_discovery_alignment_js_238p",
+    "direction": "higher",
+    "formula": "On the exact 240-bar grid, form 119 adjacent log-close returns within each half, excluding 09:30 and the lunch transition. For each of the 238 return endpoints use its nonnegative amount a_i. Let p_i=a_i/sum(a), q_i=abs(r_i)/sum(abs(r)), and m_i=(p_i+q_i)/2. Let JSD=0.5*sum(p_i*ln(p_i/m_i))+0.5*sum(q_i*ln(q_i/m_i)), with every zero contribution defined as zero. Return 1-JSD/ln(2).",
+    "source_projection": [
+      "datetime",
+      "symbol",
+      "provider",
+      "close",
+      "amount"
+    ],
+    "forbidden_source_columns": [
+      "open",
+      "high",
+      "low",
+      "volume"
+    ],
+    "accepted_minute_grid": "09:31--11:30 and 13:01--15:00 exactly 240 bars; source 09:30 identity row is excluded",
+    "return_pair_rule": "119 adjacent log-close returns independently within each half; no 09:30 return and no lunch transition",
+    "amount_alignment": "nonnegative amount at each return endpoint, exactly 238 values",
+    "missing_rule": "Require all 240 closes finite and strictly positive, all 238 endpoint amounts finite and nonnegative, positive total endpoint amount, and positive total absolute within-half return; otherwise missing.",
+    "zero_contribution_rule": "For KL terms, 0*ln(0/m) is exactly zero; m is positive wherever either distribution has positive mass.",
+    "normalization": "one minus Jensen-Shannon divergence divided by natural-log two",
+    "valid_range": {
+      "lower": 0.0,
+      "upper": 1.0,
+      "both_inclusive": true
+    },
+    "transform_scale_clip_threshold_filter": "none",
+    "alternate_field_pairing_window_direction_scale_board_year_cost_regime_fit_combination_or_model_search": false
+  },
+  "feature_snapshot": {
+    "path": "/Volumes/DIsk/qlib-a-share-tushare-1m/derived/a_share/rich/tushare/minute_walkforward_campaign053_feature_library/tushare_stk_mins_1m_2019_2025_ea0cbb8f_walkforward_campaign053_feature_library_v1/snapshot_manifest.json",
+    "sha256": "e0f0e9176580e9e6216049d026ab360aea0904e5d1db57d61311fe6da7d3c402",
+    "dataset_sha256": "d56d8628608faf32c97fb374cb05d06bfa0182d87f2d0467f5a08bca8c3f0f87",
+    "partitions": 33015,
+    "rows": 7724498,
+    "eligible_rows": 7695088,
+    "all_partition_byte_and_frame_hashes_valid": true,
+    "source_fields_read": [
+      "datetime",
+      "symbol",
+      "provider",
+      "close",
+      "amount"
+    ],
+    "daily_price_fields_read": [],
+    "forward_return_fields_read": false
+  },
+  "no_return_result": {
+    "path": "data/experiments/short_horizon/historical_walkforward/campaign_053/no_return/20260803T125238Z_campaign053_no_return_audit.json",
+    "sha256": "8228e32422686d020bdf7c6b00e54469d025884c23c234b48088428280bfd3ba",
+    "status": "completed_zero_admissible_factors_stop_before_historical_returns",
+    "calendar_sessions": 1632,
+    "quality_listing_eligible_rows": 1331759,
+    "candidate_eligible_rows": 1328065,
+    "median_coverage": 0.9983183851218558,
+    "minimum_median_coverage": 0.95,
+    "p05_coverage": 0.9933708902303229,
+    "minimum_p05_coverage": 0.9,
+    "median_eligible_names": 941.0,
+    "p05_eligible_names": 138.0,
+    "minimum_p05_eligible_names": 50,
+    "potential_three_session_cohorts": 540,
+    "observed_calendar_years": [
+      2019,
+      2020,
+      2021,
+      2022,
+      2023,
+      2024,
+      2025
+    ],
+    "coverage_gate_passed": true,
+    "comparison_factor_count": 76,
+    "comparison_order_matches_preregistration": true,
+    "failed_comparison_count": 1,
+    "failed_comparison_factor": "intraday_price_update_share_238m",
+    "failed_comparison_median_daily_rank_correlation": 0.8528583420588608,
+    "maximum_absolute_median_daily_rank_correlation": 0.8528583420588608,
+    "uniqueness_gate_passed": false,
+    "admissible_factor_count": 0,
+    "historical_daily_price_fields_read": [],
+    "historical_forward_return_fields_read": false
+  },
+  "append_only_attempt_accounting": {
+    "ledger": {
+      "path": "data/experiments/short_horizon/historical_walkforward/campaign_053/research_attempt_ledger.json",
+      "sha256": "07ebf4dd8d203e6264a22eed3a8849e35d52d8ab669fc6f93c269a78c2495e22"
+    },
+    "prior_historical_research_attempt_count": 300,
+    "campaign053_infrastructure_failure_count": 1,
+    "campaign053_complete_factor_attempt_count": 1,
+    "campaign053_total_attempt_count": 2,
+    "cumulative_historical_research_attempt_count": 302,
+    "campaign053_historical_return_trial_count": 0,
+    "cumulative_return_reading_development_trial_count": 266
+  },
+  "decision": {
+    "factor_terminal": true,
+    "terminal_stage": "no_return_uniqueness_gate_before_historical_returns",
+    "terminal_reason": "absolute_median_daily_rank_correlation_exceeded_0.8_against_intraday_price_update_share_238m",
+    "development_folds_opened": false,
+    "development_return_fields_read": false,
+    "2024_2025_stress_opened": false,
+    "2024_2025_returns_read": false,
+    "inversion_rewindow_rescale_threshold_filter_subset_model_combination_rerun_or_rescue_allowed": false,
+    "next_campaign_must_be_independently_preregistered": true,
+    "new_daily_bar_or_16_30_wait_required_for_next_offline_campaign": false
+  },
+  "prospective_boundary": {
+    "candidate49_signal_ledger": {
+      "path": "data/experiments/short_horizon/candidate49_future_signal_ledger.json",
+      "sha256": "5193f00d7f36da003f53cec387900da4c3d002299f5dfcfc1a95eaa199ed3a79",
+      "entry_count": 0
+    },
+    "candidate49_execution_ledger": {
+      "path": "data/experiments/short_horizon/candidate49_future_execution_ledger.json",
+      "sha256": "d57a3e61eac969e42cafa418ccd8c0a5ee65dcf69da145bb2c096c2a02a2ea4f",
+      "entry_count": 0
+    },
+    "candidate49_historical_return_signal_execution_or_milestone_backfill_performed": false,
+    "second_prospective_candidate_created": false,
+    "current_scoring_selection_sizing_or_orders_performed": false
+  },
+  "data_limitation": "The eligible universe derives from a current listing snapshot and can contain survivorship bias; no predictive return claim was evaluated."
+}

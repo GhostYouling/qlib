@@ -1,0 +1,57 @@
+{
+  "schema_version": 1,
+  "kind": "a_share_three_day_walkforward_campaign191_terminal_result",
+  "status": "terminal_prevalue_six_infrastructure_failures_recorded_recovered_goal_active",
+  "recorded_at": "2026-08-15T15:01:00+08:00",
+  "authoritative_inputs": {
+    "campaign190_state": {"path": "docs/a_share_three_day_iteration_status_20260815_campaign190_prevalue_terminal_v2.json", "sha256": "9a3f27e9ddc9a3ed03085a37a0a93a596dbd06e755d028501a1e74806bfbc5cc"},
+    "policy_v279": {"path": "docs/a_share_three_day_walkforward_future_numeric_comparison_eligibility_policy_v279_20260815.json", "sha256": "86767fd6762c305ac4e89cfe366fd42b397dd7c06ee2358e3b718394d4d6f52d"},
+    "source_frontier": {"path": "docs/a_share_three_day_walkforward_campaign_191_agricultural_biological_asset_production_cycle_source_frontier_20260815.json", "sha256": "ac0811f9017ebaf151fd3f5ccd6f14c62313aeafe1992904020bbe3fc1451039"},
+    "attempt_ledger": {"path": "data/experiments/short_horizon/historical_walkforward/campaign_191/research_attempt_ledger_v1.json", "sha256": "f999b4ae17d62ad54092644d9a47eb9135b5a8095a75fda17ea0bc79a51fd192", "effective_entry_count": 13, "chain_tip_sha256": "82ba4be7a0106095c4c4f1b0179dcf4a0e6cc9ecab0cfc39de7c236ac0ae59f9"}
+  },
+  "scientific_result": {
+    "terminal": true,
+    "terminal_phase": "finite_prevalue_agricultural_biological_asset_production_cycle_source_admission",
+    "routes_reviewed": 7,
+    "genuinely_new_issuer_state_routes": 4,
+    "source_admission_deferrals_not_factor_failures": 4,
+    "relabeling_operator_or_combination_route_rejections": 3,
+    "selected_candidate_count": 0,
+    "complete_factor_definition_created": false,
+    "numeric_comparator_created": false,
+    "agricultural_biological_production_state_declared_ineffective": false
+  },
+  "effective_accounting": {
+    "campaign191_attempt_count": 13,
+    "campaign191_prevalue_scientific_attempt_count": 7,
+    "campaign191_infrastructure_failure_count": 6,
+    "campaign191_return_reading_development_trial_count": 0,
+    "cumulative_historical_research_attempt_count": 1698,
+    "cumulative_return_reading_development_trial_count": 314
+  },
+  "library_state": {
+    "complete_factor_definition_count": 158,
+    "complete_factor_definition_order_sha256": "4819c7fd7c0795d7598a52f3c615e3f117d5f4ecd9332974bc8e3dfa57c96667",
+    "eligible_numeric_comparator_count": 142,
+    "eligible_numeric_comparator_order_sha256": "5d1b35fb5a0d8ac9293008db9963c4a60a94dc940c237c3ed259e5ce44f14aaf",
+    "changed_by_campaign191": false
+  },
+  "candidate49": {
+    "only_active_prospective_candidate": true,
+    "signal_ledger_sha256": "5193f00d7f36da003f53cec387900da4c3d002299f5dfcfc1a95eaa199ed3a79",
+    "signal_entry_count": 0,
+    "execution_ledger_sha256": "d57a3e61eac969e42cafa418ccd8c0a5ee65dcf69da145bb2c096c2a02a2ea4f",
+    "execution_entry_count": 0,
+    "ledgers_changed": false
+  },
+  "research_boundary": {
+    "source_factor_comparator_security_price_or_return_value_read": false,
+    "stress_2024_2025_opened": false,
+    "provider_or_web_request_issued": false,
+    "provider_credential_presence_value_or_digest_read": false,
+    "candidate49_ledgers_changed": false,
+    "second_prospective_candidate_created": false,
+    "current_scoring_selection_sizing_positions_or_orders_performed": false
+  },
+  "next_action": "Publish policy v280 and focused tests, then run focused, cumulative and independent validation before authorizing Campaign192."
+}

@@ -1,0 +1,59 @@
+{
+  "schema_version": 1,
+  "kind": "a_share_three_day_walkforward_campaign142_terminal_result_accounting_delta",
+  "status": "terminal_prevalue_zero_candidates_strict_validation_retry_pending",
+  "recorded_at": "2026-08-14T14:57:05+0800",
+  "supersedes_without_rewriting": {
+    "path": "docs/a_share_three_day_walkforward_campaign_142_terminal_result_v2_20260814.json",
+    "sha256": "93f806a6129e425e5b0786b7618387be0153a9e417c7bc4491d910e98873efef",
+    "preserved": true,
+    "scientific_result_changed": false,
+    "reason": "Append the failed unified-report patch attempt; no partial write occurred."
+  },
+  "authoritative_attempt_ledger": {
+    "path": "data/experiments/short_horizon/historical_walkforward/campaign_142/research_attempt_ledger_v3.json",
+    "sha256": "c9b8bed74d0024485aafc6d189cbc8963f9c1dd996e28819985c53b4ca109715",
+    "effective_entry_count": 9,
+    "chain_tip_sha256": "8b82e0a6ba071121846dcfd9fa8441be15eaf45b05b96298a5d6e1947c5a3a80"
+  },
+  "new_failure": {
+    "path": "docs/a_share_three_day_walkforward_campaign_142_unified_report_append_patch_context_failure_20260814.json",
+    "sha256": "de7a3a2b98a485bb4b99d1de8be53d5d3858b10608f8f151c6033374267fc65f",
+    "failed_exit_code_bypassed": false,
+    "partial_write_performed": false,
+    "scientific_result_changed": false
+  },
+  "terminal_scientific_result": {
+    "finite_concepts_reviewed": 6,
+    "selected_candidate_count": 0,
+    "complete_factor_definition_created": false,
+    "numeric_comparator_appended": false,
+    "source_candidate_comparator_daily_price_or_forward_return_values_read": false,
+    "stress_2024_2025_opened": false
+  },
+  "library_after_campaign142": {
+    "complete_definition_count": 153,
+    "complete_definition_order_sha256": "bf66faef96d7058c7028da52757c65d8e0bf7978cf72d3967cd236e4da30b875",
+    "eligible_numeric_comparator_count": 141,
+    "eligible_numeric_comparator_order_sha256": "ec1aebcb939ad516c58037a36a4aaadd4ad8b2abbd3c884705895c58da85a2ee"
+  },
+  "effective_accounting": {
+    "campaign142_attempt_count": 9,
+    "campaign142_prevalue_concept_attempt_count": 6,
+    "campaign142_infrastructure_failure_count": 3,
+    "campaign142_complete_factor_attempt_count": 0,
+    "campaign142_return_reading_development_trial_count": 0,
+    "campaign142_development_survivor_count": 0,
+    "campaign142_stress_trial_count": 0,
+    "cumulative_historical_research_attempt_count": 1192,
+    "cumulative_return_reading_development_trial_count": 313
+  },
+  "candidate49": {
+    "sole_prospective_candidate": true,
+    "signal_entries": 0,
+    "execution_entries": 0,
+    "historical_backfill_performed": false,
+    "ledgers_changed": false
+  },
+  "next_action": "Append the corrected report accounting with exact file-specific contexts, then run strict binding and focused compatibility validation."
+}

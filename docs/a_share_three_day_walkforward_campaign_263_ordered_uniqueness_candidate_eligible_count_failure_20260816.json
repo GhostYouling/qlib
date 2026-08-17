@@ -1,0 +1,14 @@
+{
+  "schema_version": 1,
+  "kind": "a_share_three_day_walkforward_campaign263_infrastructure_failure",
+  "status": "third_real_uniqueness_run_failed_after_candidate_snapshot_before_comparator_values",
+  "recorded_at": "2026-08-16T12:35:00Z",
+  "attempt_id": "campaign263_infrastructure_013",
+  "exit_code": 1,
+  "exception": "candidate value semantics changed",
+  "root_cause": "The inherited candidate_arrays passed total snapshot rows 7,724,498 as the expected formula-eligible count, while the verified Campaign263 manifest has 7,724,491 eligible rows and seven legitimate missing values.",
+  "candidate_snapshot_values_read": true,
+  "numeric_comparator_values_read": 0,
+  "historical_daily_price_or_forward_return_values_read": false,
+  "repair": "Pass the manifest-bound eligible count 7,724,491 to the unchanged loader; retain all seven missing rows and the exact 1,330,170 quality/listing candidate rows."
+}

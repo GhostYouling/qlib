@@ -1,0 +1,40 @@
+{
+  "version": 2,
+  "kind": "a_share_three_day_walkforward_campaign161_debt_maturity_implementation_freeze_test_failure",
+  "status": "implementation_freeze_v2_retired_after_local_test_failure_before_provider_request",
+  "recorded_at": "2026-08-15T05:36:10+08:00",
+  "campaign": 161,
+  "failed_freeze": {
+    "path": "docs/a_share_three_day_walkforward_campaign_161_debt_maturity_implementation_freeze_v2_20260815.json",
+    "sha256": "82966a0d65511161132e1fbf76db609a588b3885d48289749fd2423655d5cdd0"
+  },
+  "test_command": "/Volumes/DIsk/Coding/anaconda3/bin/python3.12 -m pytest -q tests/data_collector_tests/test_a_share_three_day_walkforward_campaign161_debt_maturity.py",
+  "result": {
+    "exit_code": 1,
+    "passed": 5,
+    "failed": 3,
+    "failure_scope": "safe false-valued boundary facts were incorrectly inserted into an all-true readiness-check map; the semantic-mutation fixture also exposed a path-relative testability defect",
+    "scientific_factor_values_or_returns_involved": false
+  },
+  "root_causes": [
+    {
+      "classification": "infrastructure_readiness_boolean_polarity_failure",
+      "detail": "credentials_required=false and three forbidden-action=false facts were treated as failed readiness checks"
+    },
+    {
+      "classification": "infrastructure_testability_path_failure",
+      "detail": "the additive correction validator derived its recorded path from a monkeypatched external test path"
+    }
+  ],
+  "recovery": "Rename readiness checks to positive safe predicates, compare the correction to the frozen recorded contract path, and publish a new implementation freeze.",
+  "research_boundary": {
+    "plan_ready": false,
+    "eastmoney_financial_data_api_request_issued": false,
+    "provider_response_row_or_column_value_read": false,
+    "candidate_or_comparator_value_read": false,
+    "historical_daily_price_or_forward_return_value_read": false,
+    "stress_2024_2025_opened": false,
+    "provider_credential_presence_value_or_digest_read": false,
+    "candidate49_ledgers_changed": false
+  }
+}

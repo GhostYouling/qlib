@@ -1,0 +1,47 @@
+{
+  "version": 2,
+  "kind": "a_share_three_day_walkforward_campaign076_postcompletion_failure_accounting_correction",
+  "status": "additive_current_accounting_supersedes_v1_without_rewriting",
+  "recorded_at": "2026-08-06T11:49:00+08:00",
+  "supersedes_without_rewriting": {
+    "path": "docs/a_share_three_day_walkforward_campaign_076_postcompletion_failure_accounting_correction_20260806.json",
+    "sha256": "b7527237e62853609bf896094a3ac9413c0d432bef3e6749bcc99b5efa0da1ab",
+    "preserved": true
+  },
+  "previous_current_attempt_ledger": {
+    "path": "data/experiments/short_horizon/historical_walkforward/campaign_076/research_attempt_ledger_v4.json",
+    "sha256": "16f100cded5754eb469d60ad9874e1d747f6736c5e0d5b00f69290a353c758fe",
+    "preserved": true
+  },
+  "previous_current_research_record": {
+    "path": "docs/a_share_three_day_walkforward_campaign_076_research_record_v2.json",
+    "sha256": "4d17dd1e425745c30fb37bf8e319e69989ba7bb815b2cb4056214494345b887f",
+    "preserved": true
+  },
+  "new_failure": {
+    "path": "docs/a_share_three_day_walkforward_campaign_076_terminal_deselect_path_failure_20260806.json",
+    "sha256": "d92047010b53b805212570fa85814e7876f83efeac7bf8bfe40202601d8af198",
+    "failed_command_count": 1,
+    "failed_assertion_count": 2,
+    "new_research_or_return_values_read": false
+  },
+  "current_attempt_ledger": {
+    "path": "data/experiments/short_horizon/historical_walkforward/campaign_076/research_attempt_ledger_v5.json",
+    "sha256": "256490f951deae30f2580fd8ca753ad3e098d04856d3dad0bba7d008cd464f1f"
+  },
+  "corrected_accounting": {
+    "campaign076_infrastructure_failure_count": 10,
+    "campaign076_complete_factor_attempt_count": 1,
+    "campaign076_attempt_count": 11,
+    "campaign076_ledger_entry_count": 12,
+    "campaign076_return_reading_development_trial_count": 1,
+    "cumulative_historical_research_attempt_count": 467,
+    "cumulative_return_reading_development_trial_count": 278
+  },
+  "unchanged_research_result": {
+    "numeric_comparisons_passed": 106,
+    "development_survivor_count": 0,
+    "stress_2024_2025_opened": false,
+    "stress_returns_read": false
+  }
+}

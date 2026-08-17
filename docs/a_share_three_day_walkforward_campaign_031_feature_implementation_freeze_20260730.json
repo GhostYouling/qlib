@@ -1,0 +1,77 @@
+{
+  "version": 1,
+  "kind": "a_share_three_day_walkforward_campaign031_feature_implementation_freeze",
+  "status": "candidate_formula_and_code_fingerprints_frozen_before_candidate_values",
+  "recorded_at": "2026-07-30T12:14:00Z",
+  "purpose": "Bind the exact Campaign031 feature implementation and focused tests after the no-return dispersion benchmark freeze but before any candidate partition is computed.",
+  "source_chain": {
+    "no_return_preregistration": {
+      "path": "docs/a_share_three_day_walkforward_campaign_031_no_return_preregistration.json",
+      "sha256": "95951a357ffef3eee46f8d220d150fd00223b32f27f6cf93a92c4f6c17452f6d"
+    },
+    "dispersion_benchmark_freeze": {
+      "path": "docs/a_share_three_day_walkforward_campaign_031_dispersion_benchmark_freeze_20260730.json",
+      "sha256": "5512e1025b8c833d9356e2a3e93cedeae42611504e956edf32c062a013c3a5ad"
+    },
+    "feature_runner": {
+      "path": "scripts/a_share_three_day_walkforward_campaign031_features.py",
+      "sha256": "8068e211f0673c6ee8d619ff45cd88caf298a7fe6dbf680834e2146038c3c35e"
+    },
+    "feature_tests": {
+      "path": "tests/data_collector_tests/test_a_share_three_day_walkforward_campaign031_features.py",
+      "sha256": "6e8b9755f196bb93143255231b985356c129295a3035c44fa8d8653b022c24cd"
+    },
+    "benchmark_tests": {
+      "path": "tests/data_collector_tests/test_a_share_three_day_walkforward_campaign031_dispersion_benchmark.py",
+      "sha256": "bd51c5f4f92b16d2c38c98e1fba15a5168c32f5f0f62466010777553a5d22844"
+    },
+    "authoritative_iteration_state": {
+      "path": "docs/a_share_three_day_iteration_status_20260730_campaign030_verified.json",
+      "sha256": "a34c7b3cf37480268a84a055788ab19a20dfa9b14a6a2aa8a1ec1c5b01ecc4c6"
+    },
+    "historical_walkforward_policy": {
+      "path": "docs/a_share_three_day_historical_walkforward_research_policy_20260727.json",
+      "sha256": "38426d6161b9bfed323c58caba18feca668b8c9d53e294951a8ba90c01a798bb"
+    }
+  },
+  "frozen_implementation": {
+    "factor": "intraday_market_dispersion_decoupling_238m",
+    "direction": "higher",
+    "candidate_count": 1,
+    "development_trial_count": 1,
+    "comparison_factor_count": 52,
+    "source_fields": [
+      "datetime",
+      "symbol",
+      "provider",
+      "close"
+    ],
+    "benchmark_fields": [
+      "trade_date",
+      "return_position",
+      "return_sum",
+      "return_sum_squares",
+      "valid_stock_count"
+    ],
+    "population_variance_denominator": "n",
+    "tiny_negative_variance_tolerance": 1e-18,
+    "minimum_leave_one_out_peers": 50,
+    "endpoint_canonicalization_tolerance": 1e-12,
+    "focused_tests_passed": 10
+  },
+  "decision": {
+    "candidate_snapshot_build_allowed_after_binding_validation_exit_zero": true,
+    "formula_direction_filter_threshold_or_combination_change_allowed": false,
+    "candidate49_remains_only_active_prospective_candidate": true,
+    "candidate50_activation_allowed": false
+  },
+  "research_boundary": {
+    "candidate_values_computed": false,
+    "comparison_values_read": false,
+    "daily_price_fields_read": false,
+    "forward_returns_read": false,
+    "candidate49_signal_or_execution_ledger_changed": false,
+    "current_scoring_selection_sizing_or_orders_performed": false,
+    "provider_request_issued": false
+  }
+}

@@ -1,0 +1,19 @@
+{
+  "schema_version": 1,
+  "kind": "a_share_three_day_walkforward_campaign196_infrastructure_failure",
+  "status": "failed_cumulative_regression_deselect_prefix_mismatch_output_discarded",
+  "recorded_at": "2026-08-15T16:48:00+08:00",
+  "phase": "campaign196_cumulative_campaign145_196_regression",
+  "failure_class": "pytest_deselect_node_ids_used_tests_prefix_outside_root_node_ids",
+  "process_exit_code": 1,
+  "tool_output_truncated": false,
+  "failed_output_used_as_validation_or_scientific_evidence": false,
+  "failure_summary": "The first cumulative command prefixed all eleven frozen deselection node IDs with tests/, while pytest emitted node IDs relative to the tests root. None of the intended mutable-report nodes was deselected, so the invocation failed on exactly those obsolete report-hash assertions.",
+  "recovery": "Discard the failed invocation and rerun the same 84-file Campaign145-196 suite with the policy-frozen data_collector_tests/... node IDs and no tests/ prefix.",
+  "research_boundary": {
+    "candidate_source_comparator_security_price_or_return_value_read": false,
+    "provider_or_web_request_issued": false,
+    "provider_credential_presence_value_or_digest_read": false,
+    "candidate49_ledgers_changed": false
+  }
+}

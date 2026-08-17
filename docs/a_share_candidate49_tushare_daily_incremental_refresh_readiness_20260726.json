@@ -1,0 +1,103 @@
+{
+  "version": 1,
+  "kind": "a_share_candidate49_tushare_daily_incremental_refresh_readiness",
+  "status": "completed_offline_no_factor_or_signal_change",
+  "recorded_at": "2026-07-25T16:51:10Z",
+  "purpose": "Remove repeated historical Tushare daily_basic requests from every post-activation Candidate49 signal-day refresh while preserving isolated staging, full local rebuild, acceptance, and crash-safe activation.",
+  "authoritative_research_state": {
+    "path": "docs/a_share_three_day_iteration_status_20260725_future_only.json",
+    "sha256": "d44e1cb3707cce194eed37e99cc90f865396b1de8c35e02a393a2a243d973466",
+    "candidate49_remains_only_active_future_only_mechanism": true,
+    "candidate50_started": false,
+    "historical_return_read": false,
+    "signal_or_execution_entry_appended": false
+  },
+  "supersedes_only_the_operational_refresh_method": {
+    "previous_readiness_record_path": "docs/a_share_candidate49_first_future_session_operational_readiness_20260726.json",
+    "previous_readiness_record_sha256": "4287168ef3b9f60d1fa6487ca2be05ae3dbef643c39cde0a20fde73fdb70ffa6",
+    "first_2026_07_27_migration_from_baostock_still_requires_initial_full_tushare_migration": true,
+    "previous_record_mutated": false
+  },
+  "frozen_protocol": {
+    "path": "docs/a_share_tushare_daily_provider_migration_protocol.json",
+    "sha256": "bf3278511b5b0fe7911e1cca44ac5dae3ce8a2b0633a9928aff727dfcfd25e1c",
+    "version": 2,
+    "provider_request_issued_while_amending": false
+  },
+  "implementation": {
+    "path": "scripts/a_share_tushare_daily_migration.py",
+    "sha256": "a8a0a5df85bff7db52388889e866027406d3218caec568de19aa5b3e435ba244",
+    "command": "seed-refresh",
+    "parent_requirement": "current_active_root_with_valid_tushare_migration_acceptance",
+    "target_requirement": "new_isolated_date_versioned_staging_with_later_completed_session_cutoff",
+    "copied_source_scope": [
+      "daily_session_checkpoints_outside_the_accepted_2019_2025_reference",
+      "all_daily_basic_session_checkpoints"
+    ],
+    "copied_canonical_raw_daily": false,
+    "copied_qlib": false,
+    "copied_trade_calendar": false,
+    "copied_stock_basic": false,
+    "hardlinks_allowed": false,
+    "seed_intent_before_first_copy": true,
+    "byte_and_frame_hash_validation_required": true,
+    "provider_scope_after_complete_seed": "trade_cal_plus_stock_basic_L_D_P_plus_only_missing_daily_and_daily_basic_sessions_after_parent_cutoff",
+    "full_local_canonical_and_qlib_rebuild_still_required": true,
+    "automatic_activation_allowed": false
+  },
+  "offline_acceptance": {
+    "test_path": "tests/data_collector_tests/test_a_share_tushare_daily_migration.py",
+    "test_sha256": "314b6c469f4d33bd75837df3798b01a18c0f8b217d357b882d2d00bf4ccdcf6a",
+    "focused_tests_passed": 18,
+    "verified_behaviors": [
+      "independent_copy_not_hardlink_and_parent_bytes_unchanged",
+      "interrupted_seed_resumes_only_verified_missing_checkpoint",
+      "seeded_sync_requests_only_sessions_after_parent_cutoff",
+      "completed_source_manifest_accepts_bound_seed_plus_newer_sessions",
+      "changed_parent_manifest_stops_before_provider_request",
+      "hardlinked_seed_checkpoint_is_rejected",
+      "existing_initial_migration_resume_and_activation_tests_remain_green"
+    ],
+    "fixture_provider_calls_for_two_session_parent_plus_one_new_session": {
+      "trade_cal": 1,
+      "stock_basic": 3,
+      "daily": 1,
+      "daily_basic": 1,
+      "historical_daily_or_daily_basic_re_requests": 0
+    },
+    "real_provider_request_issued": false,
+    "real_source_row_read": false,
+    "forward_return_field_read": false,
+    "combined_candidate49_and_daily_pipeline_tests_passed": 109,
+    "complete_data_collector_tests_passed": 1077,
+    "complete_data_collector_warning_count": 9
+  },
+  "documentation": {
+    "pipeline_path": "docs/a_share_data_pipeline.md",
+    "pipeline_sha256": "d257707f1b6fd52a2196aa4ccc8f64b23a311906f1b441e1d7d14b65d75c22e4",
+    "token_setup_path": "docs/a_share_tushare_token_setup.md",
+    "token_setup_sha256": "bf4aeb7e86a643233fd82a642cd78a5bd3ad5c6e0682922800470379b426d120",
+    "skill_path": "/Users/niyufei/.codex/skills/manage-qlib-a-share-data/SKILL.md"
+  },
+  "unchanged_runtime_state": {
+    "active_data_root": "/Users/niyufei/Coding/qlib/data",
+    "repository_data_root_pointer_present": false,
+    "active_provider": "baostock",
+    "active_calendar_end": "2026-07-13",
+    "latest_run_manifest_sha256": "1d141c6133e3a1fec2b645c0d67bc0c083655fa912f8a015ea80668f433c127b",
+    "price_basis_manifest_sha256": "68e9dbb83749779b34d5cf3b116195074c154ff74cb6de95ba67695bedc1f14f",
+    "candidate49_signal_ledger_sha256": "5193f00d7f36da003f53cec387900da4c3d002299f5dfcfc1a95eaa199ed3a79",
+    "candidate49_signal_entries": 0,
+    "candidate49_execution_ledger_sha256": "d57a3e61eac969e42cafa418ccd8c0a5ee65dcf69da145bb2c096c2a02a2ea4f",
+    "candidate49_execution_entries": 0,
+    "tushare_daily_staging_created": false,
+    "tushare_token_present_in_current_process": false,
+    "tushare_token_present_in_launchctl": false
+  },
+  "next_action": {
+    "before_first_signal": "After the 2026-07-27 close, complete the initial Tushare daily migration from the still-active BaoStock root, activate it, refresh future quarterly quality after 16:00, and pass the combined Candidate49 preflight.",
+    "after_first_tushare_activation": "For each later completed session, resolve the active root, seed a new date-versioned staging root, incrementally sync only missing source sessions, perform the full local build and acceptance, and explicitly activate before Candidate49 collection."
+  },
+  "active_root_mutated": false,
+  "aggregation_scoring_selection_sizing_or_orders_performed": false
+}

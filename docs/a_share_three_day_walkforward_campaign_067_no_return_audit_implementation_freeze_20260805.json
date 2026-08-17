@@ -1,0 +1,51 @@
+{
+  "version": 1,
+  "kind": "a_share_three_day_walkforward_campaign067_no_return_audit_implementation_freeze",
+  "status": "frozen_before_campaign067_coverage_metrics_or_comparison_values",
+  "recorded_at": "2026-08-05T18:36:00+08:00",
+  "protocol": {
+    "path": "docs/a_share_three_day_walkforward_campaign_067_no_return_preregistration.json",
+    "sha256": "94073ae194468b2aa95d40dd63b29c80332d8e1e5fa47c61ca94c640060d1d07"
+  },
+  "snapshot_binding": {
+    "path": "docs/a_share_three_day_walkforward_campaign_067_feature_snapshot_binding_20260805.json",
+    "sha256": "d622be3d6c2c3b0c6fdbaf910dee589188c84d232a17121109d6244401daccf9"
+  },
+  "audit_runner": {
+    "path": "scripts/a_share_three_day_walkforward_campaign067_no_return_audit.py",
+    "sha256": "35ccaa3233b5eb25967a8ad24d8ce5d731f3225fd43231668df4aeb8c1ac9697"
+  },
+  "candidate_snapshot_fully_verified_before_freeze": true,
+  "candidate_snapshot": {
+    "manifest_sha256": "1cdcf5daebcdef0c499e53d036362aa337111e122f5605c2d707f938f929eae1",
+    "dataset_sha256": "b078722e7f3055cbc1b6a863791dcf341b497971218200c2b92a4d213b1703ae",
+    "partitions": 33015,
+    "rows": 7724498,
+    "eligible_rows": 7230298
+  },
+  "frozen_order": {
+    "complete_definition_count": 98,
+    "complete_definition_order_sha256": "847e6e3e960da3b18106b91af742395fc44518bc37b91398b6191f853cc3b22c",
+    "numeric_comparator_count": 97,
+    "numeric_comparator_order_sha256": "e860581f2b2022a189259db7bf32e105960ca655fe2793d114e38315a251fbca",
+    "final_numeric_comparator": "quarterly_quality_rank_balance_3f",
+    "structurally_nonnumeric_challenge": "intraday_cross_sectional_standardized_return_state_stability_236p"
+  },
+  "io_semantics": {
+    "candidate_snapshot_full_verification_required": true,
+    "prior_snapshot_partition_verification_required": true,
+    "unsafe_completed_audit_receipt_shortcut_used": false,
+    "all_comparator_values_loaded_only_after_coverage_pass": true
+  },
+  "coverage_or_capacity_metrics_computed_before_freeze": false,
+  "comparison_values_read_before_freeze": false,
+  "historical_daily_price_fields_read_before_freeze": [],
+  "historical_forward_returns_read_before_freeze": false,
+  "provider_request_issued_before_freeze": false,
+  "candidate49_historical_backfill_performed": false,
+  "candidate49_ledgers_changed": false,
+  "decision": {
+    "audit_implementation_frozen": true,
+    "next_action": "Run the unique ordered no-return audit. Coverage must pass before any of the 97 comparison values is loaded."
+  }
+}

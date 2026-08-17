@@ -1,0 +1,90 @@
+{
+  "schema_version": 1,
+  "kind": "a_share_three_day_walkforward_campaign176_terminal_result",
+  "status": "terminal_prevalue_three_infrastructure_failures_accounted_goal_active",
+  "recorded_at": "2026-08-15T11:05:10+08:00",
+  "authoritative_inputs": {
+    "campaign175_effective_state": {
+      "path": "docs/a_share_three_day_iteration_status_20260815_campaign175_prevalue_terminal.json",
+      "sha256": "1aad58e49fd501cc2477a2e8dcf591316a62cb80d1a007446f6cc12a0d657adb"
+    },
+    "eligibility_policy_v263": {
+      "path": "docs/a_share_three_day_walkforward_future_numeric_comparison_eligibility_policy_v263_20260815.json",
+      "sha256": "463c1e63cc52754f0ec24acdf4b6cf598003596e78e2965e002e8e1f7cc05a85"
+    },
+    "post_employment_benefit_source_frontier": {
+      "path": "docs/a_share_three_day_walkforward_campaign_176_post_employment_benefit_source_frontier_20260815.json",
+      "sha256": "a7535aeea90e96fb540a5f2970ce43fd8713b4c8307963e1c3e0c0be7632a543"
+    },
+    "attempt_ledger": {
+      "path": "data/experiments/short_horizon/historical_walkforward/campaign_176/research_attempt_ledger_v1.json",
+      "sha256": "40b39afdf31d1b240993d549127abcfcd2f32f944cf5953eea89eb9070f61552",
+      "effective_entry_count": 10,
+      "chain_tip_sha256": "ccf4a55ab987f698abb5714506d11b00ed4369d26fd74e9591d2f5aa6e12a076"
+    },
+    "signal_ledger_path_probe_failure": {
+      "path": "docs/a_share_three_day_walkforward_campaign_176_candidate49_signal_ledger_path_probe_failure_20260815.json",
+      "sha256": "3531c0e5f4f7cc05763823e424af04396d9da558e5832d61b88c4ebfc1c64f30"
+    },
+    "overlap_search_command_rejection": {
+      "path": "docs/a_share_three_day_walkforward_campaign_176_overlap_search_command_rejection_20260815.json",
+      "sha256": "8fa3e591a748612d2ce68f728b79ea1d90306818226f0c181fc358caa07731c6"
+    },
+    "insurance_frontier_filename_probe_failure": {
+      "path": "docs/a_share_three_day_walkforward_campaign_176_insurance_frontier_filename_probe_failure_20260815.json",
+      "sha256": "6f82398796c7dd79302dc5e1118b341abf50118a0157fa9b65adb2729c355c88"
+    }
+  },
+  "scientific_result": {
+    "terminal": true,
+    "terminal_phase": "finite_prevalue_post_employment_benefit_source_admission",
+    "routes_reviewed": 7,
+    "genuinely_new_issuer_state_routes": 4,
+    "source_admission_deferrals_not_factor_failures": 4,
+    "relabeling_or_operator_route_rejections": 3,
+    "selected_candidate_count": 0,
+    "complete_factor_definition_created": false,
+    "numeric_comparator_created": false,
+    "post_employment_benefit_or_pension_funding_declared_ineffective": false,
+    "source_row_filing_document_pension_obligation_plan_asset_contribution_candidate_comparator_security_price_or_return_value_read": false,
+    "stress_2024_2025_opened": false
+  },
+  "effective_accounting": {
+    "campaign176_attempt_count": 10,
+    "campaign176_prevalue_scientific_attempt_count": 7,
+    "campaign176_infrastructure_failure_count": 3,
+    "campaign176_complete_factor_attempt_count": 0,
+    "campaign176_return_reading_development_trial_count": 0,
+    "campaign176_development_survivor_count": 0,
+    "campaign176_stress_trial_count": 0,
+    "cumulative_historical_research_attempt_count": 1560,
+    "cumulative_return_reading_development_trial_count": 314
+  },
+  "library_state": {
+    "complete_factor_definition_count": 158,
+    "complete_factor_definition_order_sha256": "4819c7fd7c0795d7598a52f3c615e3f117d5f4ecd9332974bc8e3dfa57c96667",
+    "eligible_numeric_comparator_count": 142,
+    "eligible_numeric_comparator_order_sha256": "5d1b35fb5a0d8ac9293008db9963c4a60a94dc940c237c3ed259e5ce44f14aaf",
+    "changed_by_campaign176": false
+  },
+  "candidate49": {
+    "only_active_prospective_candidate": true,
+    "signal_ledger_sha256": "5193f00d7f36da003f53cec387900da4c3d002299f5dfcfc1a95eaa199ed3a79",
+    "signal_entry_count": 0,
+    "execution_ledger_sha256": "d57a3e61eac969e42cafa418ccd8c0a5ee65dcf69da145bb2c096c2a02a2ea4f",
+    "execution_entry_count": 0,
+    "ledgers_changed": false
+  },
+  "research_boundary": {
+    "unrecovered_or_unrecorded_failed_exit_codes_bypassed_or_masked": false,
+    "source_row_filing_document_pension_obligation_plan_asset_contribution_candidate_comparator_security_price_or_return_value_read": false,
+    "stress_2024_2025_opened": false,
+    "provider_or_web_request_issued": false,
+    "provider_credential_presence_value_or_digest_read": false,
+    "candidate49_ledgers_changed": false,
+    "second_prospective_candidate_created": false,
+    "current_scoring_selection_sizing_positions_or_orders_performed": false,
+    "investment_advice": false
+  },
+  "next_action": "Publish the Campaign176 report and policy v264, append both unified reports once, bind focused tests, then run focused, corrected cumulative and independent validation before authorizing Campaign177."
+}

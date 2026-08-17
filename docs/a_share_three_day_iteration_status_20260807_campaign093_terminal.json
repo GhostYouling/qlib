@@ -1,0 +1,90 @@
+{
+  "schema_version": 1,
+  "kind": "a_share_three_day_iteration_status",
+  "status": "campaign093_terminal_numeric_uniqueness_rejection_ready_for_terminal_verification",
+  "recorded_at": "2026-08-07T02:04:52Z",
+  "supersedes_without_rewriting": {
+    "path": "docs/a_share_three_day_iteration_status_20260807_campaign092_verified.json",
+    "sha256": "0a6a79e05eb12c0303ba1c186d31adeca0d45abdea48b9de50101cde2523a57b",
+    "preserved": true,
+    "campaign093_terminal_chain_appended": true
+  },
+  "authoritative_campaign093_chain": {
+    "research_record": {
+      "path": "docs/a_share_three_day_walkforward_campaign_093_research_record.json",
+      "sha256": "3f12bd1e15e46aa94687cc5117320c0374af7c41ad14f1a042ff9000fb45c62e"
+    },
+    "terminal_completion_freeze": {
+      "path": "docs/a_share_three_day_walkforward_campaign_093_terminal_completion_freeze_20260807.json",
+      "sha256": "cca69a23127b53e155bf88d3a1e9d45bf460a8819092ed258a07c5b680959572"
+    },
+    "final_attempt_ledger": {
+      "path": "data/experiments/short_horizon/historical_walkforward/campaign_093/research_attempt_ledger_v1.json",
+      "sha256": "fb545fce438d635c97a5081743761f044e0f5f2650f3ed6bbd1f53fbb606d54e"
+    },
+    "future_duplicate_policy_v37": {
+      "path": "docs/a_share_three_day_walkforward_future_numeric_comparison_eligibility_policy_v37_20260807.json",
+      "sha256": "0e0527d3f4fb5616f3eb7b24554eaa5fa71d354d89131193420cd1634de90fe0"
+    }
+  },
+  "campaign093_result": {
+    "factor": "intraday_close_transition_range_quadratic_efficiency_238p",
+    "direction": "higher",
+    "coverage_gate_passed": true,
+    "median_coverage": 0.9983584130098127,
+    "p05_coverage": 0.9933774834437086,
+    "numeric_comparison_count": 122,
+    "numeric_comparisons_passed": 121,
+    "numeric_comparisons_failed": 1,
+    "maximum_absolute_median_daily_rank_correlation": 0.8461902085426161,
+    "failed_numeric_comparator": "intraday_intrabar_body_range_efficiency_240m",
+    "development_trial_count": 0,
+    "development_return_fields_read": false,
+    "development_survivor_count": 0,
+    "stress_2024_2025_opened": false,
+    "stress_return_fields_read": false
+  },
+  "final_accounting": {
+    "campaign093_attempt_count": 4,
+    "campaign093_infrastructure_or_implementation_failure_count": 3,
+    "campaign093_complete_factor_attempt_count": 1,
+    "campaign093_ledger_entry_count": 6,
+    "campaign093_return_reading_development_trial_count": 0,
+    "cumulative_historical_research_attempt_count": 650,
+    "cumulative_return_reading_development_trial_count": 290,
+    "complete_definition_count": 125,
+    "complete_definition_order_sha256": "3742401d8d87cbeb3a104545c25c1eb279832915f42dc46f1367dcbdc28f740c",
+    "numeric_comparator_count": 123,
+    "numeric_comparator_order_sha256": "b92614c1366ec480913854adace1cad0d926a0e89c8bbebca70c81bf486cac3a"
+  },
+  "candidate49": {
+    "status": "sole_active_prospective_candidate",
+    "signal_ledger_sha256": "5193f00d7f36da003f53cec387900da4c3d002299f5dfcfc1a95eaa199ed3a79",
+    "signal_ledger_entry_count": 0,
+    "execution_ledger_sha256": "d57a3e61eac969e42cafa418ccd8c0a5ee65dcf69da145bb2c096c2a02a2ea4f",
+    "execution_ledger_entry_count": 0,
+    "credential_present": true,
+    "credential_secret_printed_hashed_or_logged": false,
+    "provider_request_issued_this_iteration": false,
+    "same_day_plan_or_run_executed_this_iteration": false,
+    "historical_backfill_performed": false
+  },
+  "next_campaign_boundary": {
+    "campaign": 94,
+    "may_begin_prevalue_concept_and_mechanism_audit": true,
+    "must_bind_v37_policy": true,
+    "must_challenge_all_125_complete_definitions": true,
+    "must_pass_all_123_numeric_comparators_after_coverage": true,
+    "may_reuse_campaign093_formula_transform_direction_subset_filter_refit_or_rescue": false,
+    "may_read_candidate_or_comparison_values_before_freeze": false,
+    "may_read_historical_daily_price_or_forward_return_values_before_admissibility": false,
+    "offline_historical_research_may_run_at_any_local_time": true
+  },
+  "prohibited_actions": [
+    "Candidate49 historical backfill",
+    "a second prospective candidate",
+    "rewriting, reversing, relabeling, retuning, rescuing, residualizing, or combining Campaign093",
+    "opening Campaign093 development or 2024-2025 stress returns",
+    "current scoring, selection, sizing, orders, or investment advice"
+  ]
+}

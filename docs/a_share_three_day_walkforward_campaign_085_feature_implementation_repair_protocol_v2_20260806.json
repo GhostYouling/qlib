@@ -1,0 +1,36 @@
+{
+  "version": 2,
+  "kind": "a_share_three_day_walkforward_campaign085_feature_implementation_repair_protocol",
+  "status": "frozen_before_v2_code_or_compact_cache_rows",
+  "recorded_at": "2026-08-06T23:40:00+08:00",
+  "campaign_id": "085",
+  "v1_implementation_freeze": {
+    "path": "docs/a_share_three_day_walkforward_campaign_085_feature_implementation_freeze_20260806.json",
+    "sha256": "741c65876e06835db0cc59b8422a798aa11bc2b620c76c0db2e2f3dc62b1c5f0"
+  },
+  "prevalue_defect": {
+    "path": "docs/a_share_three_day_walkforward_campaign_085_feature_implementation_prevalue_defect_20260806.json",
+    "sha256": "8da998249b304a9324b70517958f67813d7f6d6bfe09e4f35de9030ef9a0e7ab"
+  },
+  "current_attempt_ledger": {
+    "path": "data/experiments/short_horizon/historical_walkforward/campaign_085/research_attempt_ledger_v2.json",
+    "sha256": "535f8df8e6905af472273a3f193bb92d4ac28de3c34ee708f386f91283b1b66b"
+  },
+  "authorized_code_delta": {
+    "new_helper": "Create the exact frozen output parent with parents=True and exist_ok=True, then allocate a temporary sibling directory with tempfile.mkdtemp.",
+    "build_call_site_change": "Replace the direct tempfile.mkdtemp call with the new helper.",
+    "new_test": "Use a temporary nested output root to prove the parent is created and the returned temporary directory is a sibling; remove the temporary directory after assertion.",
+    "all_other_code_changes_allowed": false
+  },
+  "invariants": {
+    "candidate_formula_direction_inputs_rank_universe_and_missing_semantics_changed": false,
+    "protocol_comparison_order_coverage_gate_development_catalog_or_output_root_changed": false,
+    "compact_cache_source_or_projection_changed": false,
+    "v1_output_or_candidate_values_reused": false,
+    "compact_cache_rows_read_before_repair_freeze": false,
+    "candidate_values_computed_before_repair_freeze": false,
+    "comparison_values_read_before_repair_freeze": false,
+    "historical_daily_price_or_return_values_read_before_repair_freeze": false,
+    "provider_request_issued_before_repair_freeze": false
+  }
+}

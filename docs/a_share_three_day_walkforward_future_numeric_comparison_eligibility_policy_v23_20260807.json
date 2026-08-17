@@ -1,0 +1,59 @@
+{
+  "version": 23,
+  "kind": "a_share_three_day_walkforward_future_numeric_comparison_eligibility_policy",
+  "status": "frozen_after_campaign085_reporting_synchronization_before_campaign086_values",
+  "recorded_at": "2026-08-07T00:25:00+08:00",
+  "supersedes_without_rewriting": {
+    "path": "docs/a_share_three_day_walkforward_future_numeric_comparison_eligibility_policy_v22_20260807.json",
+    "sha256": "d0ae24826fe0cded2a4ccb893daf4a2c5a89f3073615572282f3a4206052a0f7",
+    "preserved": true,
+    "definition_and_numeric_orders_changed": false
+  },
+  "authoritative_inputs": {
+    "campaign085_research_record_v3": {
+      "path": "docs/a_share_three_day_walkforward_campaign_085_research_record_v3.json",
+      "sha256": "98e820e1bdba60a74d0dbd697ed9b1a3b6aa99daf12dd0683334fa4532b490c8"
+    },
+    "campaign085_attempt_ledger_v27": {
+      "path": "data/experiments/short_horizon/historical_walkforward/campaign_085/research_attempt_ledger_v27.json",
+      "sha256": "bde7431eb5d2215caa2dcb48839cbd314c8f81faf1848a314c2b052a24aa86d6"
+    }
+  },
+  "complete_historical_feature_library": {
+    "factor_definition_count": 117,
+    "order_sha256": "462cd7b3aa1d7cd909e35b050025cf21094954b1f76925833f46f65c4d1317f8",
+    "last_definition": {
+      "name": "quarterly_freshness_market_neutral_late_drift_confirmation_product_2r",
+      "score_direction": "higher"
+    },
+    "all_v22_definitions_and_terminal_histories_preserved": true
+  },
+  "numerical_comparator_eligibility": {
+    "eligible_numeric_comparator_count": 115,
+    "eligible_numeric_comparator_order_sha256": "f22759b26333f8e1fdb5a8ca942afa96aca88b544311e608fd9ffbd5105c80ab",
+    "last_comparator": {
+      "name": "quarterly_freshness_market_neutral_late_drift_confirmation_product_2r",
+      "score_direction": "higher",
+      "source_campaign": 85,
+      "development_survivor_count": 0,
+      "stress_2024_2025_opened": false
+    },
+    "minimum_pairwise_names_per_session": 50,
+    "minimum_pairwise_sessions_per_comparison": 100,
+    "strict_maximum_absolute_median_daily_rank_correlation": 0.8,
+    "all_115_eligible_numeric_comparators_must_pass": true,
+    "candidate_specific_comparator_drop_allowed": false,
+    "insufficient_pairwise_overlap_fails_closed": true
+  },
+  "research_boundary": {
+    "campaign086_candidate_or_comparison_values_read_before_v23_freeze": false,
+    "historical_daily_price_fields_read_for_campaign086": [],
+    "historical_forward_returns_read_for_campaign086": false,
+    "provider_request_issued": false,
+    "candidate49_historical_backfill_performed": false,
+    "candidate49_ledgers_changed": false,
+    "second_prospective_candidate_created": false,
+    "current_scoring_selection_sizing_or_orders_performed": false,
+    "investment_advice": false
+  }
+}

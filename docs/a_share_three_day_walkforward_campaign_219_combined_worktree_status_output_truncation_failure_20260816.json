@@ -1,0 +1,26 @@
+{
+  "schema_version": 1,
+  "kind": "a_share_three_day_walkforward_campaign219_combined_worktree_status_output_truncation_failure",
+  "recorded_at": "2026-08-16T00:48:00+08:00",
+  "timestamp_semantics": "monotonic_logical_append_time_not_host_wall_clock_measurement",
+  "status": "infrastructure_failure_discarded_before_campaign219_scientific_frontier",
+  "phase": "campaign218_authority_and_worktree_status_review",
+  "failure": {
+    "command_scope": "A parallel read-only bundle included an unbounded git status together with exact state, hash and ledger checks.",
+    "observed": "The git-status section produced 5,045 lines and the combined tool output was truncated.",
+    "scientific_or_validation_evidence_consumed": false,
+    "target_file_written": false
+  },
+  "recovery": {
+    "method": "Discard the combined output as evidence and use independent bounded hash, JSON-semantic, date and Candidate49 ledger checks.",
+    "formula_direction_candidate_comparator_price_or_return_changed_or_read": false
+  },
+  "research_boundary": {
+    "provider_or_web_request_issued": false,
+    "provider_credential_presence_value_or_digest_read": false,
+    "candidate49_plan_or_run_executed": false,
+    "candidate49_ledgers_changed": false,
+    "stress_2024_2025_opened": false,
+    "current_use_or_investment_advice": false
+  }
+}

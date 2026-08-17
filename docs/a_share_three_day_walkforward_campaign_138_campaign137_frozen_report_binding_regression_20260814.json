@@ -1,0 +1,28 @@
+{
+  "schema_version": 1,
+  "kind": "a_share_three_day_walkforward_campaign138_infrastructure_failure",
+  "status": "recorded_nonzero_exit_not_bypassed_scientific_result_unchanged",
+  "recorded_at": "2026-08-14T12:52:40+0800",
+  "operation": {
+    "command_scope": "Campaign138 and Campaign137 terminal lifecycle tests",
+    "exit_code": 1,
+    "result_summary": "9 passed, 1 failed",
+    "failure_test": "test_campaign137_terminal_bindings_and_candidate49_isolation",
+    "failure_class": "immutable_prior_status_bound_to_pre_append_unified_report_hashes"
+  },
+  "diagnosis": {
+    "campaign138_tests_passed": true,
+    "campaign137_scientific_artifacts_changed": false,
+    "campaign137_status_rewritten": false,
+    "binding_validator_weakened": false,
+    "reason": "The immutable Campaign137 status bound the unified reports before Campaign138 appended its section. The append changes current report bytes by design, so the legacy status cannot remain a valid latest-report pointer."
+  },
+  "recovery": {
+    "failed_exit_code_bypassed": false,
+    "old_test_or_frozen_record_modified": false,
+    "scientific_result_changed": false,
+    "additional_source_candidate_comparator_daily_price_or_return_values_read": false,
+    "append_to_campaign138_effective_ledger": true,
+    "publish_new_effective_terminal_policy_and_status": true
+  }
+}

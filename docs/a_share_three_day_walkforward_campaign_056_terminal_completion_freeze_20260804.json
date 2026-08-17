@@ -1,0 +1,52 @@
+{
+  "version": 1,
+  "kind": "a_share_three_day_walkforward_campaign056_terminal_completion_freeze",
+  "status": "frozen_zero_development_survivors_stress_not_opened",
+  "recorded_at": "2026-08-04T11:33:00+08:00",
+  "bindings": {
+    "development_preregistration": {
+      "path": "docs/a_share_three_day_walkforward_campaign_056_preregistration.json",
+      "sha256": "d4a11a41e44e4c8e45c9a0874cc95622452d505e8c49d92880d09b1ebeaee298"
+    },
+    "development_implementation_freeze": {
+      "path": "docs/a_share_three_day_walkforward_campaign_056_development_implementation_freeze_20260804.json",
+      "sha256": "0bc1a0ab884c87e02671c4cd81b11df60b8a477ba2268cbcf90518b4c44463cc"
+    },
+    "research_record": {
+      "path": "docs/a_share_three_day_walkforward_campaign_056_research_record.json",
+      "sha256": "d22281354f220d43f8d293f2eaea9e7cd5fb68b07b412a40e062e45836be60c1"
+    },
+    "research_attempt_ledger": {
+      "path": "data/experiments/short_horizon/historical_walkforward/campaign_056/research_attempt_ledger_v4.json",
+      "sha256": "68687716114657e4b883b08ad7f703b61025d5218c13978728a3e03e3d67917a"
+    },
+    "development_trial_ledger": {
+      "path": "data/experiments/short_horizon/historical_walkforward/campaign_056/walkforward/trial_ledger.json",
+      "sha256": "823967446ff945a04b03ff6b5819fc748328c894d0c07a1c77ea8eff9ba426dd"
+    },
+    "development_survivors": {
+      "path": "data/experiments/short_horizon/historical_walkforward/campaign_056/walkforward/development_survivors.json",
+      "sha256": "5b72dc0097234349e0d22e7212bff171881082f8762a543b951cfc36a303ada5"
+    },
+    "exposed_stress_consumption_record": {
+      "path": "data/experiments/short_horizon/historical_walkforward/campaign_056/walkforward/exposed_stress_consumption_record.json",
+      "sha256": "72523e8ac9ad47ec49ebf35d9e8b4cafd944bc4b22054be831e46a90239f6d1f"
+    },
+    "campaign_report": {
+      "path": "data/experiments/short_horizon/historical_walkforward/campaign_056/walkforward/campaign_report.json",
+      "sha256": "170ac3966c484bbd88e693108832bbd1e2c29e3b7e3f1cef54ce201c2eea5ef4"
+    }
+  },
+  "frozen_semantics": {
+    "trial_id": "wf056_intraday_day_over_day_amount_profile_similarity_240b_single_higher",
+    "development_trial_count": 1,
+    "development_survivor_count": 0,
+    "stress_intent_exists": false,
+    "stress_record_exists": true,
+    "stress_interval_opened": false,
+    "stress_return_fields_read": false,
+    "candidate49_historical_return_read": false,
+    "current_scoring_selection_sizing_or_orders_allowed": false,
+    "factor_terminal": true
+  }
+}

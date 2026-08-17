@@ -1,0 +1,96 @@
+{
+  "schema_version": 1,
+  "kind": "a_share_three_day_walkforward_campaign084_feature_implementation_freeze",
+  "status": "frozen_before_campaign084_quarterly_source_or_candidate_values",
+  "frozen_at": "2026-08-06T22:20:00+08:00",
+  "protocol": {
+    "path": "docs/a_share_three_day_walkforward_campaign_084_no_return_preregistration.json",
+    "sha256": "c396f141c811978004c04b62f09caceef343a9860e43f48de1fe44419c9bcf70"
+  },
+  "concept_scouting": {
+    "path": "docs/a_share_three_day_walkforward_campaign_084_concept_scouting.json",
+    "sha256": "6fc1f9639364f83b4a7385efd726e87c23378302a2c82b43879ec6bf4afbcec4"
+  },
+  "mechanism_overlap_audit": {
+    "path": "docs/a_share_three_day_walkforward_campaign_084_mechanism_overlap_audit.json",
+    "sha256": "3b661b09a1f7fa4b3489027f4cbed5d5e5c524fecba9a3bd0ce1ed16a732c039"
+  },
+  "prevalue_infrastructure_failure_record": {
+    "path": "docs/a_share_three_day_walkforward_campaign_084_prevalue_infrastructure_failures_20260806.json",
+    "sha256": "79d45e74624e2227c377305bdd4c01ae05a86f815ae2793e0bc4c192c2a3a445"
+  },
+  "prevalue_format_failure_record": {
+    "path": "docs/a_share_three_day_walkforward_campaign_084_prevalue_format_failure_20260806.json",
+    "sha256": "a33ec1aea40e4dc77ea12155418964a1243474487bde8ef1c7c693bdb62a384f"
+  },
+  "research_attempt_ledger_before_source_read": {
+    "path": "data/experiments/short_horizon/historical_walkforward/campaign_084/research_attempt_ledger_v2.json",
+    "sha256": "77fa14951ad2caddb330290aa7f2053a9ff1e4cf236d5015f8bc53cb06fbc4be"
+  },
+  "feature_runner": {
+    "path": "scripts/a_share_three_day_walkforward_campaign084_features.py",
+    "sha256": "d80970ce7c46722db1a6475a4ee6853c1620e0fbe6396612797cea14ae42eed2"
+  },
+  "frozen_base_runner": {
+    "path": "scripts/a_share_three_day_walkforward_campaign066_features.py",
+    "sha256": "ff8bd4aef61f7eec00299d1b38e21c30e15a4e7b010d157b0ea60d0576adf614"
+  },
+  "tests": {
+    "path": "tests/data_collector_tests/test_a_share_three_day_walkforward_campaign084_features.py",
+    "sha256": "e4ee5e4ee4ae62282232ff433ba660dba45a60c214e5324afb68ead197464c9f",
+    "synthetic_tests_passed_before_freeze": 7,
+    "synthetic_tests_failed_after_format_correction": 0,
+    "initial_format_failure_preserved": true,
+    "black_check_passed_after_correction": true,
+    "ruff_check_passed": true,
+    "py_compile_passed": true,
+    "git_diff_check_passed": true
+  },
+  "frozen_semantics": {
+    "factor": "quarterly_profit_growth_level_acceleration_floor_2r",
+    "direction": "higher",
+    "quarterly_source_projection": [
+      "instrument",
+      "report_date",
+      "announcement_date",
+      "profit_yoy"
+    ],
+    "old_definition_inputs": [
+      "quality_profit",
+      "profit_yoy_acceleration"
+    ],
+    "same_fiscal_quarter_acceleration": "Within instrument and report month, current finite profit_yoy minus the immediately preceding report-year profit_yoy.",
+    "availability": "Both states become usable on the first accepted local session strictly after the newer report announcement date.",
+    "state_propagation": "Forward-fill finite profit_yoy and profit_yoy_acceleration independently after strict availability; never backfill.",
+    "rank_universe": "The exact common finite two-state stock-day cross-section.",
+    "rank_estimator": "pandas average-tie percentile rank independently for level and acceleration.",
+    "score": "min(r_profit_level,r_profit_acceleration)",
+    "valid_range": {
+      "lower": 0.0,
+      "lower_inclusive": false,
+      "upper": 1.0,
+      "upper_inclusive": true
+    },
+    "alternate_operator_scale_lag_window_direction_threshold_filter_subset_regime_neutralization_fit_model_or_additional_combination": false,
+    "numeric_comparator_count": 113,
+    "numeric_comparator_order_sha256": "04e8161152715277f4ebdfc63e5cd19db60a8dcd204d3f05dd38ab8313a03078",
+    "complete_definition_count": 115,
+    "complete_definition_order_sha256": "c42c662c17bbeec105ef85f0d9ba63edabae32601d0b9701209057961f72adec",
+    "campaign083_factor_used_or_combined": false
+  },
+  "research_boundary": {
+    "candidate_source_rows_read_before_freeze": false,
+    "candidate_historical_values_computed_before_freeze": false,
+    "comparison_values_read_before_freeze": false,
+    "historical_daily_price_fields_read_before_freeze": [],
+    "historical_forward_returns_read_before_freeze": false,
+    "provider_request_issued_before_freeze": false,
+    "credential_secret_printed_hashed_or_logged": false,
+    "candidate49_historical_backfill_performed": false,
+    "candidate49_ledgers_changed": false,
+    "second_prospective_candidate_created": false,
+    "current_scoring_selection_sizing_or_orders_performed": false,
+    "investment_advice": false
+  },
+  "next_action": "Replay all frozen bindings and synthetic tests once more; only if they pass may the immutable local quarterly projection and stock-day identity projection be opened to build and verify the Campaign084 snapshot."
+}

@@ -1,0 +1,41 @@
+{
+  "version": 2,
+  "kind": "a_share_three_day_walkforward_campaign075_development_runtime_repair_protocol",
+  "status": "frozen_after_dependency_import_failure_before_development_retry",
+  "recorded_at": "2026-08-06T10:18:00+08:00",
+  "failure_record": {
+    "path": "docs/a_share_three_day_walkforward_campaign_075_development_runtime_dependency_failure_20260806.json",
+    "sha256": "e1e01f04935a2ec3d11cb9637d15cbe6cfdf527be4e4e4e34aa352df2f848b12"
+  },
+  "sole_repair": {
+    "old_interpreter": "/Users/niyufei/.cache/codex-runtimes/codex-primary-runtime/dependencies/python/bin/python3",
+    "new_interpreter": "/Volumes/DIsk/Coding/anaconda3/bin/python",
+    "module_and_subcommand": "-m scripts.a_share_three_day_walkforward_campaign075 run-development",
+    "research_arguments_changed": false,
+    "preregistration_or_runner_rewritten": false,
+    "trial_ledger_reset_or_rewritten": false
+  },
+  "new_runtime_preflight": {
+    "python": "3.12.7",
+    "pandas": "2.2.2",
+    "numpy": "1.26.4",
+    "pyarrow": "16.1.0",
+    "setuptools_scm": "10.2.0",
+    "all_required_modules_present": true,
+    "market_price_or_return_values_read": false
+  },
+  "unchanged": {
+    "factor_formula_direction_and_missing_rule": true,
+    "single_trial_id_and_weight": true,
+    "three_folds_purge_and_label_containment": true,
+    "execution_costs_and_survivor_gates": true,
+    "2019_2023_development_only": true,
+    "2024_2025_stress_remains_closed_without_survivor": true,
+    "provider_and_candidate49_boundaries": true
+  },
+  "retry": {
+    "completed_development_metrics_reused": false,
+    "append_after_existing_infrastructure_failure_entry": true,
+    "exact_frozen_trial_evaluated_once_to_completion": true
+  }
+}

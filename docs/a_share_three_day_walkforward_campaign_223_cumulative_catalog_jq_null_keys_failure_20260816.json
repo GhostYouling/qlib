@@ -1,0 +1,14 @@
+{
+  "schema_version": 1,
+  "kind": "a_share_three_day_walkforward_campaign223_infrastructure_failure",
+  "recorded_at": "2026-08-16T02:12:00+08:00",
+  "timestamp_semantics": "monotonic_logical_append_time_not_host_wall_clock_measurement",
+  "attempt_id": "campaign223_infrastructure_004",
+  "phase": "cumulative_regression_deselection_catalog_inspection",
+  "status": "failed_jq_null_keys_exit_5_output_discarded",
+  "failure": "A read-only jq probe requested keys from a nonexistent deselection_catalog object in policy v311 and exited 5.",
+  "writes_before_failure": false,
+  "scientific_value_read": false,
+  "result_consumed": false,
+  "recovery": "The policy top-level keys and cumulative_regression_boundary keys were read in two bounded successful probes; the required_exact_historical_lifecycle_nodes and prior_mutable_report_nodes arrays remain the authoritative base catalog."
+}

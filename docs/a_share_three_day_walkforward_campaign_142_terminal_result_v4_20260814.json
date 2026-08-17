@@ -1,0 +1,59 @@
+{
+  "schema_version": 1,
+  "kind": "a_share_three_day_walkforward_campaign142_terminal_result_accounting_delta",
+  "status": "terminal_prevalue_zero_candidates_lifecycle_aware_compatibility_retry_pending",
+  "recorded_at": "2026-08-14T15:02:20+0800",
+  "supersedes_without_rewriting": {
+    "path": "docs/a_share_three_day_walkforward_campaign_142_terminal_result_v3_20260814.json",
+    "sha256": "c9763eb3849baab8e06c4c9b8e9a2bd71ef69619d23550e74cfcd3e292054478",
+    "preserved": true,
+    "scientific_result_changed": false,
+    "reason": "Append the predecessor compatibility failure caused only by cumulative unified-report hash lifecycle."
+  },
+  "authoritative_attempt_ledger": {
+    "path": "data/experiments/short_horizon/historical_walkforward/campaign_142/research_attempt_ledger_v4.json",
+    "sha256": "4a5557473f6b695ba90a312248aa64c921272c23b942b1ecfd2aad95a756e81e",
+    "effective_entry_count": 10,
+    "chain_tip_sha256": "3cd7725cd428650fc134d945a2b6a6ebb834c7f124d7ea33221495b90760f161"
+  },
+  "new_failure": {
+    "path": "docs/a_share_three_day_walkforward_campaign_142_campaign141_mutable_report_binding_compatibility_failure_20260814.json",
+    "sha256": "3c82b10b7a6d365f43c2fe94e8f01c0e4c645a77d69407ef9e0ec3b57461fa2f",
+    "failed_exit_code_bypassed": false,
+    "binding_validator_weakened_or_modified": false,
+    "scientific_result_changed": false
+  },
+  "terminal_scientific_result": {
+    "finite_concepts_reviewed": 6,
+    "selected_candidate_count": 0,
+    "complete_factor_definition_created": false,
+    "numeric_comparator_appended": false,
+    "source_candidate_comparator_daily_price_or_forward_return_values_read": false,
+    "stress_2024_2025_opened": false
+  },
+  "library_after_campaign142": {
+    "complete_definition_count": 153,
+    "complete_definition_order_sha256": "bf66faef96d7058c7028da52757c65d8e0bf7978cf72d3967cd236e4da30b875",
+    "eligible_numeric_comparator_count": 141,
+    "eligible_numeric_comparator_order_sha256": "ec1aebcb939ad516c58037a36a4aaadd4ad8b2abbd3c884705895c58da85a2ee"
+  },
+  "effective_accounting": {
+    "campaign142_attempt_count": 10,
+    "campaign142_prevalue_concept_attempt_count": 6,
+    "campaign142_infrastructure_failure_count": 4,
+    "campaign142_complete_factor_attempt_count": 0,
+    "campaign142_return_reading_development_trial_count": 0,
+    "campaign142_development_survivor_count": 0,
+    "campaign142_stress_trial_count": 0,
+    "cumulative_historical_research_attempt_count": 1193,
+    "cumulative_return_reading_development_trial_count": 313
+  },
+  "candidate49": {
+    "sole_prospective_candidate": true,
+    "signal_entries": 0,
+    "execution_entries": 0,
+    "historical_backfill_performed": false,
+    "ledgers_changed": false
+  },
+  "next_action": "Use lifecycle-aware predecessor compatibility assertions without changing the binding validator, then rerun the same strict suite."
+}

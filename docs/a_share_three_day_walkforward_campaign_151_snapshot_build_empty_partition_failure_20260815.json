@@ -1,0 +1,64 @@
+{
+  "schema_version": 1,
+  "kind": "a_share_three_day_walkforward_campaign151_snapshot_build_failure",
+  "status": "failed_exit_preserved_empty_joint_partition_diagnosed",
+  "recorded_at": "2026-08-15T00:41:35+08:00",
+  "attempt_id": "campaign151_infrastructure_006",
+  "authorization": {
+    "plan_receipt_path": "docs/a_share_three_day_walkforward_campaign_151_snapshot_plan_ready_20260815.json",
+    "plan_receipt_sha256": "ad6cdcb9249ae09b206d92e540a40848b0a9b919206119f1b565d772754cfd3e",
+    "plan_ready": true,
+    "plan_exit_code": 0,
+    "same_workers": 4,
+    "confirmed_build": true
+  },
+  "command": "/Volumes/DIsk/Coding/anaconda3/bin/python3.12 scripts/a_share_three_day_walkforward_campaign151_snapshot.py build --workers 4 --confirm-build",
+  "exit_code": 1,
+  "safe_error": "Campaign151FeatureError: joint-clean key identity changed for SH600145",
+  "progress_before_failure": {
+    "completed_peer_symbols": 96,
+    "expected_peer_symbols": 5396,
+    "final_snapshot_published": false,
+    "partial_accumulator_path": "/Volumes/DIsk/qlib-a-share-tushare-1m/derived/a_share/rich/tushare/minute_walkforward_campaign151_feature_library/.tushare_stk_mins_1m_2019_2025_ea0cbb8f_walkforward_campaign151_feature_library_v1.partial/.metadata/raw_amount_accumulator.npz",
+    "partial_accumulator_sha256": "6c9b656e09350d6601f1032ef932776cf27137eb3f85d40245dc62e0a0403559",
+    "partial_accumulator_date_count": 1699,
+    "partial_accumulator_profile_positions": 240,
+    "partial_accumulator_builder_protocol_sha256": "a7cd811fda8d925621a4d9e713f32723d01a1023d407943a309a78d8fb3530d7"
+  },
+  "diagnosis": {
+    "symbol": "SH600145",
+    "failing_year": 2019,
+    "joint_manifest_rows": 0,
+    "joint_actual_rows": 0,
+    "raw_manifest_rows": 58804,
+    "raw_actual_rows": 58804,
+    "raw_symbol_identity": "SH600145",
+    "raw_provider_identity": "tushare",
+    "root_cause": "the normalized joint-key validator compared the empty symbol set with the expected singleton before the intended empty-partition return",
+    "data_corruption_found": false,
+    "frozen_formula_change_required": false,
+    "peer_accumulator_semantics_change_required": false,
+    "narrow_correction": "allow an exactly column-conformant zero-row joint partition to return an empty contribution before singleton symbol validation"
+  },
+  "resume_safety": {
+    "existing_checkpoint_contains_only_frozen_raw_amount_accumulation": true,
+    "checkpoint_was_atomically_written_after_96_complete_symbols": true,
+    "failed_batch_was_not_added_before_list_materialization_completed": true,
+    "correction_does_not_change_any_nonempty_profile_contribution": true,
+    "corrected_builder_must_revalidate_checkpoint_before_reuse": true
+  },
+  "research_boundary": {
+    "historical_minute_amount_values_read": true,
+    "historical_price_values_read": false,
+    "candidate_or_comparator_values_read": false,
+    "historical_daily_price_or_forward_return_values_read": false,
+    "stress_2024_2025_opened_for_return_evaluation": false,
+    "credential_loaded": false,
+    "provider_request_issued": false,
+    "candidate49_historical_backfill_performed": false,
+    "candidate49_ledgers_changed": false,
+    "current_scoring_selection_sizing_positions_or_orders_performed": false
+  },
+  "failed_exit_code_bypassed_or_masked": false,
+  "next_action": "Add the narrow empty-partition regression, freeze a corrected builder and activation, rerun metadata-only plan, then resume only after ready=true and exit zero."
+}

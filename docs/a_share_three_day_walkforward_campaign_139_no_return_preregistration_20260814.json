@@ -1,0 +1,234 @@
+{
+  "schema_version": 1,
+  "kind": "a_share_three_day_walkforward_campaign139_no_return_preregistration",
+  "status": "frozen_one_candidate_before_campaign139_source_rows_candidate_comparator_price_or_return_values",
+  "recorded_at": "2026-08-14T13:07:14+0800",
+  "purpose": "Freeze Campaign139's only candidate, accepted source fingerprints, point-in-time join, event support, no-return gates, development folds, costs and closed stress interval before any Campaign139 source row or value is opened.",
+  "authoritative_inputs": {
+    "campaign138_terminal_state": {
+      "path": "docs/a_share_three_day_iteration_status_20260814_campaign138_prevalue_terminal_v2.json",
+      "sha256": "17989d6c5297cfd33a1379ad15caf68a2d8088f06a33ce8deaf44cbfcd85ded3"
+    },
+    "numeric_policy_v174": {
+      "path": "docs/a_share_three_day_walkforward_future_numeric_comparison_eligibility_policy_v174_20260814.json",
+      "sha256": "a3e23a2f2744359973b18b22c370f8f6cb3ded22c5b7e3e00f32c9c31179e103"
+    },
+    "historical_walkforward_policy": {
+      "path": "docs/a_share_three_day_historical_walkforward_research_policy_20260727.json",
+      "sha256": "38426d6161b9bfed323c58caba18feca668b8c9d53e294951a8ba90c01a798bb"
+    },
+    "concept_scouting": {
+      "path": "docs/a_share_three_day_walkforward_campaign_139_concept_scouting_20260814.json",
+      "sha256": "75ad4607d19dc8e5c38ed612990f69c4611e45bb53c820b8235e5b962a20cbcb"
+    },
+    "mechanism_overlap_audit": {
+      "path": "docs/a_share_three_day_walkforward_campaign_139_mechanism_overlap_audit_20260814.json",
+      "sha256": "bcb05690918bb6a5cbdcf125b53ec86760ad91c7c6f0983000271728c59b7ee7"
+    }
+  },
+  "source_contract": {
+    "performance_forecast": {
+      "path": "data/raw/a_share/fundamentals/performance_forecasts.parquet",
+      "sha256": "48bc11ea6749a590fcc260f6a5728e853f59f228f6cef7c5b0183f206895d734",
+      "manifest_path": "data/metadata/performance_forecasts_manifest.json",
+      "manifest_sha256": "d824bf8194b871fc21ce66cab80f1f9158814fff0e9a5d77a2cfbaec967e562c",
+      "projection": [
+        "instrument",
+        "report_date",
+        "announcement_date",
+        "forecast_profit_yoy"
+      ],
+      "manifest_rows": 42206
+    },
+    "quarterly_quality": {
+      "path": "data/raw/a_share/fundamentals/quarterly_quality.parquet",
+      "sha256": "3ac901a97928d2ed81ac72e3eaac9bdc148d36cf67b6abe70223699235ef059f",
+      "manifest_path": "data/metadata/quarterly_quality_manifest.json",
+      "manifest_sha256": "e3cf654babe37a82393c5530696bc1cc242b736cb88e1947b8444b638125ba8c",
+      "projection": [
+        "instrument",
+        "report_date",
+        "announcement_date",
+        "profit_yoy"
+      ],
+      "manifest_rows": 143776
+    },
+    "calendar": {
+      "path": "data/qlib/cn_a_share/calendars/day.txt",
+      "sha256": "fda506597d26bcec953cdc0882042a5046ec1587db60490e16a01627fd43f53a"
+    },
+    "factor_universe": {
+      "path": "data/qlib/cn_a_share/instruments/factor_main_chinext_star.txt",
+      "sha256": "cdded13c831b78045f4cfe80ba5d9a49f82152c615fef4267d00f992e7f53762"
+    },
+    "provider_request_allowed": false,
+    "credential_required": false,
+    "source_values_outside_development_2019_2023_allowed_before_stress_open": false,
+    "point_in_time_limitations": [
+      "Both inputs are current public historical-event snapshots rather than exchange-grade immutable revision archives.",
+      "The quarterly snapshot conservatively keeps the earliest currently visible notice per instrument/report period, but later corrections may have changed the value now visible.",
+      "The forecast snapshot may omit or revise history; this campaign makes no pristine point-in-time claim."
+    ]
+  },
+  "candidate": {
+    "name": "quarterly_realized_profit_growth_forecast_surprise_rank",
+    "direction": "higher",
+    "development_signal_start": "2019-01-01",
+    "development_signal_end": "2023-12-31",
+    "forecast_key": [
+      "instrument",
+      "report_date"
+    ],
+    "realized_key": [
+      "instrument",
+      "report_date"
+    ],
+    "join_rule": "For each realized key, retain finite forecast rows whose announcement_date is strictly earlier than the realized announcement_date and choose the maximum forecast announcement_date.",
+    "duplicate_rule": "Exact semantic duplicates may collapse. More than one distinct forecast value at the chosen latest key or more than one distinct realized value/announcement tuple per realized key fails closed.",
+    "raw_formula": "profit_yoy - forecast_profit_yoy",
+    "score_formula": "On each signal session, compute pandas-compatible average-tie percentile ranks over finite live raw surprises after every quality/listing gate.",
+    "availability_rule": "First accepted local session strictly after the realized announcement_date.",
+    "same_signal_session_collision_rule": "For one instrument, keep the latest effective event, then later report_date, only when its realized key is unique and valid.",
+    "event_age_calendar_days": 3,
+    "event_expiry_rule": "A candidate is live only when signal_date minus effective_date is an integer from zero through three calendar days; no later forward fill.",
+    "missing_and_invalid_rule": "Require matching instrument/report_date, strict prior forecast timing and both finite percentage-point values. Never fill, clip, winsorize, offset, divide, bucket, threshold, backfill or substitute another report period.",
+    "valid_raw_range": "finite real number",
+    "valid_score_range": "finite (0,1]",
+    "search_space": {
+      "candidate_count": 1,
+      "direction_count": 1,
+      "formula_count": 1,
+      "forecast_selection_rule_count": 1,
+      "event_age_choice_count": 1,
+      "thresholds": [],
+      "filters": [],
+      "subsets": [],
+      "models": [],
+      "fitted_weights": [],
+      "alternate_transforms_or_rescues_allowed": false
+    }
+  },
+  "ordered_no_return_gates": [
+    {
+      "gate": 1,
+      "name": "source_schema_fingerprint_join_and_duplicate_semantics",
+      "rule": "Revalidate every bound source/manifest/calendar/universe hash and exact projection. Reject malformed dates, non-quarter report dates, mismatched keys, nonfinite values, non-prior forecasts, conflicting duplicates and signal dates outside 2019-2023 before publishing a factor frame."
+    },
+    {
+      "gate": 2,
+      "name": "quality_listing_event_capacity",
+      "rule": "Apply the frozen quarterly-quality eligibility and 20 accepted-session listing gate before ranking. On the frozen non-overlapping three-signal-session grid require at least six finite names, two distinct raw surprises, 200 complete cohorts and all five development years."
+    },
+    {
+      "gate": 3,
+      "name": "ordered_numeric_uniqueness",
+      "rule": "Only after capacity passes, load all 141 frozen direction-normalized numeric comparators in exact order. For each comparator require at least six pairwise names on each qualifying event session and at least 100 pairwise sessions; every strict absolute median daily average-tie Spearman correlation must be below 0.8. Insufficient overlap fails closed."
+    }
+  ],
+  "comparison_contract": {
+    "complete_semantic_definition_count_reviewed_before_values": 152,
+    "complete_semantic_definition_order_sha256": "60c465a3e2043efae6b92b8c5f3e007cd397a1cd0ec3094b4fa005665bbe5736",
+    "numeric_comparator_count": 141,
+    "numeric_comparator_order_sha256": "ec1aebcb939ad516c58037a36a4aaadd4ad8b2abbd3c884705895c58da85a2ee",
+    "numeric140_design_manifest": {
+      "path": "/Volumes/DIsk/qlib-a-share-tushare-1m/derived/a_share/rich/tushare/minute_walkforward_campaign132_design_matrix/tushare_stk_mins_1m_2019_2025_ea0cbb8f_walkforward_campaign132_numeric140_design_v1/snapshot_manifest.json",
+      "sha256": "043c17fea89f3b0956d643a7c6e3f4d73a11403b967213d2d57539a6a8316a49"
+    },
+    "campaign136_comparator_manifest": {
+      "path": "data/experiments/short_horizon/historical_walkforward/campaign_136/source_snapshot_v1/snapshot_manifest.json",
+      "sha256": "9a5c9ff824de22af6595d312b76230a3e4cf283c6e1d42e882aae96d11367b93",
+      "factor": "daily_realized_price_basis_adjustment_magnitude_1d",
+      "direction": "higher"
+    },
+    "candidate_specific_comparator_drop_fill_residualization_neutralization_subset_or_early_stop_allowed": false,
+    "candidate_if_admitted_appended_definition_count": 153,
+    "candidate_if_admitted_numeric_comparator_count": 142,
+    "candidate49_historical_value_or_ledger_backfill_allowed": false
+  },
+  "development_contract_if_all_no_return_gates_pass": {
+    "candidate_library_count": 1,
+    "trial_count": 1,
+    "formula_direction_filter_subset_model_or_weight_search": false,
+    "expanding_folds": [
+      {
+        "fold": 1,
+        "training": [
+          "2019-01-01",
+          "2020-12-31"
+        ],
+        "validation": [
+          "2021-01-01",
+          "2021-12-31"
+        ]
+      },
+      {
+        "fold": 2,
+        "training": [
+          "2019-01-01",
+          "2021-12-31"
+        ],
+        "validation": [
+          "2022-01-01",
+          "2022-12-31"
+        ]
+      },
+      {
+        "fold": 3,
+        "training": [
+          "2019-01-01",
+          "2022-12-31"
+        ],
+        "validation": [
+          "2023-01-01",
+          "2023-12-31"
+        ]
+      }
+    ],
+    "purge_signal_sessions_before_every_split": 3,
+    "label_containment": "Both t+1 entry and t+3 exit must remain inside the same partition.",
+    "holding_period_local_sessions": 3,
+    "topk": 3,
+    "initial_capital_cny": 200000,
+    "target_entry_exposure_fraction_per_slot": 0.05,
+    "maximum_entry_exposure_fraction_per_signal": 0.15,
+    "buy_lot_size_shares": 100,
+    "commission_rate_each_side": 0.0001,
+    "transfer_fee_rate_each_side": 0.00002,
+    "sell_stamp_duty_rate": 0.0005,
+    "primary_adverse_slippage_rate_each_side": 0.001,
+    "maximum_daily_amount_participation": 0.01,
+    "survivor_rule": "Use the unchanged repository association, normalized-return, Top3 pilot, affordability, participation, drawdown, fold-consistency and aggregate 20bp gates; no gate may be changed after values."
+  },
+  "locked_stress_contract": {
+    "interval": [
+      "2024-01-01",
+      "2025-12-31"
+    ],
+    "status": "closed_and_unread",
+    "opening_rule": "May be opened once for the whole frozen campaign only after a nonzero 2019-2023 survivor record and a separate immutable stress-opening record.",
+    "classification_if_opened": "historically exposed quasi-out-of-sample, never pristine"
+  },
+  "candidate49_boundary": {
+    "sole_prospective_candidate": true,
+    "signal_ledger_path": "data/experiments/short_horizon/candidate49_future_signal_ledger.json",
+    "signal_ledger_sha256": "5193f00d7f36da003f53cec387900da4c3d002299f5dfcfc1a95eaa199ed3a79",
+    "execution_ledger_path": "data/experiments/short_horizon/candidate49_future_execution_ledger.json",
+    "execution_ledger_sha256": "d57a3e61eac969e42cafa418ccd8c0a5ee65dcf69da145bb2c096c2a02a2ea4f",
+    "historical_backfill_allowed": false,
+    "second_prospective_candidate_allowed": false
+  },
+  "research_boundary": {
+    "campaign139_source_rows_read_before_preregistration": false,
+    "campaign139_candidate_values_computed_or_read_before_preregistration": false,
+    "campaign139_comparator_values_read_before_preregistration": false,
+    "historical_daily_price_or_forward_return_values_read": false,
+    "stress_2024_2025_opened": false,
+    "provider_request_issued": false,
+    "provider_credential_value_or_digest_read": false,
+    "candidate49_historical_backfill_performed": false,
+    "candidate49_ledgers_changed": false,
+    "current_scoring_selection_sizing_positions_or_orders_performed": false,
+    "investment_advice": false
+  },
+  "next_action": "Implement and test the pure formula and a zero-value binding validator, freeze their hashes, then run plan. Source columns remain closed until the plan is ready with exit code zero."
+}

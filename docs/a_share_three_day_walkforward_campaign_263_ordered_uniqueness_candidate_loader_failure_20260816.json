@@ -1,0 +1,15 @@
+{
+  "schema_version": 1,
+  "kind": "a_share_three_day_walkforward_campaign263_infrastructure_failure",
+  "status": "first_real_uniqueness_run_failed_before_candidate_panel_or_comparator_values",
+  "recorded_at": "2026-08-16T12:22:00Z",
+  "attempt_id": "campaign263_infrastructure_011",
+  "exit_code": 1,
+  "exception_type": "KeyError",
+  "missing_export": "_load_candidate_frame",
+  "root_cause": "The nested Campaign263 coverage wrapper retained its private candidate loader in the inner execution globals but did not expose it on the wrapper namespace expected by the inherited uniqueness runner.",
+  "candidate_panel_values_read": false,
+  "numeric_comparator_values_read": 0,
+  "historical_daily_price_or_forward_return_values_read": false,
+  "authorized_repair": "Bind the already-frozen inner loader to the expected wrapper key and create a new runner freeze; change no loader body, candidate value, comparator source, order or gate."
+}

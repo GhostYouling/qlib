@@ -1,0 +1,35 @@
+{
+  "schema_version": 1,
+  "kind": "a_share_three_day_walkforward_campaign080_terminal_suite_deselect_prefix_failure",
+  "status": "recorded_and_corrected_without_research_recomputation",
+  "recorded_at": "2026-08-06T16:28:00+08:00",
+  "failed_command_result": {
+    "passed": 18,
+    "failed": 2,
+    "intended_deselections": 2,
+    "observed_deselections": 0,
+    "failed_nodes": [
+      "data_collector_tests/test_a_share_three_day_walkforward_campaign080_no_return_audit.py::test_status_is_truthful_before_the_sole_audit",
+      "data_collector_tests/test_a_share_three_day_walkforward_campaign080_development.py::test_predevelopment_status_has_zero_ledger_and_closed_stress"
+    ],
+    "failure_reason": "The command used tests/data_collector_tests/... deselect prefixes, while the configured collection root exposed node IDs beginning data_collector_tests/.... Both immutable historical lifecycle assertions therefore ran after their stages had completed."
+  },
+  "corrected_command_result": {
+    "passed": 18,
+    "failed": 0,
+    "deselected": 2,
+    "correction": "Use the exact collected data_collector_tests/... node IDs; no source or test file changed."
+  },
+  "terminal_test": {
+    "path": "tests/data_collector_tests/test_a_share_three_day_walkforward_campaign080_terminal.py",
+    "sha256": "08a6c2abe5a50ba29c3cb3a6bdc7c1e16018e2a4819b0453ab812646f9e44abe"
+  },
+  "research_boundary": {
+    "candidate_source_or_comparison_values_recomputed": false,
+    "historical_daily_price_or_return_values_recomputed": false,
+    "stress_2024_2025_opened": false,
+    "provider_request_issued": false,
+    "candidate49_ledgers_changed": false,
+    "research_result_changed": false
+  }
+}

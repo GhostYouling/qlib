@@ -1,0 +1,67 @@
+{
+  "version": 2,
+  "kind": "a_share_three_day_walkforward_campaign085_no_return_audit_repair_protocol",
+  "status": "frozen_before_v2_implementation_or_reexecution",
+  "recorded_at": "2026-08-07T00:18:00+08:00",
+  "invalid_v1_audit": {
+    "path": "data/experiments/short_horizon/historical_walkforward/campaign_085/no_return/20260806T145252Z_campaign085_no_return_audit.json",
+    "sha256": "d0f874966bff8f170e10ccb74628eb956bf4e526869641f1d7a2fcfa55d55af9",
+    "preserved": true,
+    "accepted_as_factor_result": false,
+    "values_or_decision_reusable_by_v2": false
+  },
+  "v1_implementation_freeze": {
+    "path": "docs/a_share_three_day_walkforward_campaign_085_no_return_audit_implementation_freeze_20260806.json",
+    "sha256": "d833baa3bdea890c00a5b5fa0d0ad74eb67047e61d17d3d645e629e0e41198c1"
+  },
+  "v1_activation_binding": {
+    "path": "docs/a_share_three_day_walkforward_campaign_085_no_return_audit_activation_binding_20260806.json",
+    "sha256": "9d96bb7551387acd25817a83bbd298a602134dab85ef3ee3634d3052c71d2da3"
+  },
+  "defect_record": {
+    "path": "docs/a_share_three_day_walkforward_campaign_085_no_return_audit_v1_session_year_defect_20260807.json",
+    "sha256": "d5861d445e42a710f7bbb4eb4512ee837b50a8d2cf422116a94dd6b9e669ec2d"
+  },
+  "research_attempt_ledger_before_repair": {
+    "path": "data/experiments/short_horizon/historical_walkforward/campaign_085/research_attempt_ledger_v6.json",
+    "sha256": "f1adf0f18e8d68bd251fd762141f8d54a0d964eec32cf3b06ed957c93cd30251"
+  },
+  "frozen_candidate_definition_and_data": {
+    "formula_direction_parameters_filters_and_source_snapshot_unchanged": true,
+    "coverage_capacity_thresholds_unchanged": true,
+    "numeric_comparator_count": 114,
+    "numeric_comparator_order_sha256": "03a0c534f3bc321d5bc452415e6207026030978c4ac5d433305b04a21db6cea9",
+    "uniqueness_threshold_unchanged": true,
+    "development_trial_and_return_gate_unchanged": true,
+    "candidate_snapshot_manifest_sha256": "fb8ea4bdb2b2f783a8c1d4e020f1dcdfca1697c779c732e50233fe7b040b4d28",
+    "candidate_snapshot_dataset_sha256": "368f7cb96c15186cd511ccd4120e89b577141aa9687df8b39f9dd17320db8fb9"
+  },
+  "authorized_v2_changes_only": {
+    "experiment_root": "data/experiments/short_horizon/historical_walkforward/campaign_085/no_return_v2",
+    "implementation_freeze": "docs/a_share_three_day_walkforward_campaign_085_no_return_audit_implementation_freeze_v2_20260807.json",
+    "activation_binding": "docs/a_share_three_day_walkforward_campaign_085_no_return_audit_activation_binding_v2_20260807.json",
+    "status_and_run_identifiers_are_v2_namespaced": true,
+    "load_candidate_arrays_returns_explicit_year_per_row_from_each_immutable_manifest_file_record_year": true,
+    "coverage_and_capacity_accepts_the_explicit_year_vector": true,
+    "each_session_must_map_to_exactly_one_explicit_year": true,
+    "observed_years_and_non_overlapping_three_session_cohorts_use_explicit_year_only": true,
+    "tests_use_epoch_day_session_ordinals_with_explicit_calendar_years": true,
+    "v2_rereads_candidate_snapshot_values_and_recomputes_coverage_from_scratch": true,
+    "comparison_values_load_only_after_repaired_coverage_passes": true,
+    "no_other_change_authorized": true
+  },
+  "v2_prevalue_rules": {
+    "black_ruff_and_targeted_tests_must_pass_before_implementation_freeze": true,
+    "implementation_freeze_must_bind_repaired_runner_and_tests": true,
+    "activation_binding_must_bind_implementation_freeze_and_unchanged_snapshot": true,
+    "status_must_report_zero_v2_audits_before_run": true,
+    "exactly_one_v2_audit_run_allowed": true,
+    "any_new_failure_is_append_only_infrastructure_evidence": true
+  },
+  "historical_daily_price_fields_read_for_repair": [],
+  "historical_forward_returns_read_for_repair": false,
+  "provider_request_issued_for_repair": false,
+  "candidate49_ledgers_changed_for_repair": false,
+  "second_prospective_candidate_created": false,
+  "current_scoring_selection_sizing_or_orders_performed": false
+}

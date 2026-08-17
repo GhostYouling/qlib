@@ -1,0 +1,95 @@
+{
+  "schema_version": 1,
+  "kind": "a_share_three_day_walkforward_campaign119_concept_scouting",
+  "status": "one_existing_local_data_mechanism_selected_before_campaign119_source_candidate_comparator_or_return_values",
+  "recorded_at": "2026-08-13T22:43:00+08:00",
+  "purpose": "Select exactly one economically interpretable Campaign119 mechanism from a finite catalog using only the frozen 144-definition frontier and accepted local source schema, before reading any Campaign119 source partition, candidate, comparator, daily-price or forward-return value.",
+  "authoritative_inputs": {
+    "campaign118_terminal_state": {
+      "path": "docs/a_share_three_day_iteration_status_20260813_campaign118_terminal.json",
+      "sha256": "1e49c58e8c7a4db55b1c1a4fbdda303550d01417a084d2666f0c79dd4ed85ffc"
+    },
+    "historical_walkforward_policy": {
+      "path": "docs/a_share_three_day_historical_walkforward_research_policy_20260727.json",
+      "sha256": "38426d6161b9bfed323c58caba18feca668b8c9d53e294951a8ba90c01a798bb"
+    },
+    "numeric_policy_v107": {
+      "path": "docs/a_share_three_day_walkforward_future_numeric_comparison_eligibility_policy_v107_20260813.json",
+      "sha256": "9fdf7df6ccf9fab631a7b56f0e4769b8d684f93a3c3cc0455e504cf2299b473a"
+    },
+    "manage_qlib_a_share_data_skill": {
+      "path": "/Users/niyufei/.codex/skills/manage-qlib-a-share-data/SKILL.md",
+      "sha256": "565713a5f3aeb6a1acf23e397fcc21be28d0c3ea4ebf21c7f287a25bb94d78dc"
+    },
+    "accepted_minute_source_manifest": {
+      "path": "/Volumes/DIsk/qlib-a-share-tushare-1m/metadata/rich_data/runs/tushare_stk_mins_1m_2019_2025_ea0cbb8f.json",
+      "sha256": "9b3d959563c9d182f38981c6a36bdb3bc9b415de08487a9e1f9e850825c0839f",
+      "values_read_during_scouting": false
+    },
+    "complete_definition_count": 144,
+    "complete_definition_order_sha256": "077e6c79356fe70193df4d424a004de5734ea395ef06df52e11e3804915d56f7",
+    "numeric_comparator_count": 136,
+    "numeric_comparator_order_sha256": "bb1b850f4277919eb1866e9bfb014577efca6d0f81b184a31b3c202f50eb0282"
+  },
+  "finite_prevalue_concept_catalog": [
+    {
+      "name": "intraday_range_boundary_direction_state_entropy_238p",
+      "information_channel": "within_half_joint_lower_upper_auction_boundary_direction_state_diversity",
+      "prospective_direction": "higher",
+      "decision": "selected_for_mechanism_audit_and_exact_no_return_preregistration",
+      "reason": "The complete library contains range magnitude, overlap, boundary correlation, clock moments, weak order and close-location summaries, but no full distribution of the nine exact joint lower/upper boundary movement-direction states. The statistic uses only accepted local high/low fields and no provider, price-return label or fitted parameter."
+    },
+    {
+      "name": "intraday_top_amount_event_gap_variant_or_direction_flip",
+      "decision": "rejected_before_values",
+      "reason": "Changing Campaign118 event count, gap operator or direction would be a prohibited terminal-factor rescue rather than a new mechanism."
+    },
+    {
+      "name": "intraday_volume_participation_entropy_240m",
+      "decision": "rejected_before_values",
+      "reason": "This is a field substitution of existing amount participation entropy and risks a high-correlation volume/amount sweep without adding a distinct state representation."
+    },
+    {
+      "name": "intraday_full_allen_interval_relation_entropy",
+      "decision": "rejected_before_values",
+      "reason": "Choosing among Allen interval alphabets and special handling for zero-width bars creates an open state-alphabet search. Campaign119 freezes only the nine exact lower/upper direction states."
+    },
+    {
+      "name": "intraday_boundary_state_transition_or_conditional_entropy",
+      "decision": "rejected_before_values",
+      "reason": "Transition matrices, lags and conditional entropy would introduce a second-order alphabet and lag/operator search beyond the selected marginal state mechanism."
+    },
+    {
+      "name": "terminal_factor_combination_or_model_retry",
+      "decision": "rejected_before_values",
+      "reason": "Refitting, subsetting, rescuing or recombining exposed terminal factors is not a genuinely new raw-source mechanism."
+    }
+  ],
+  "selection": {
+    "concepts_reviewed": 6,
+    "selected_candidate_count": 1,
+    "selected_candidate": "intraday_range_boundary_direction_state_entropy_238p",
+    "selected_direction": "higher",
+    "candidate_formula_frozen_here": false,
+    "candidate_or_comparator_values_may_be_read_now": false,
+    "next_stage": "Complete a semantic overlap audit and freeze the exact 240-bar grid, two within-half 119-pair supports, nine-state exact comparison alphabet, entropy formula, direction and missing semantics before values."
+  },
+  "research_boundary": {
+    "prior_definition_names_directions_protocols_and_terminal_results_read": true,
+    "accepted_source_schema_metadata_read": true,
+    "campaign119_source_partition_values_read": false,
+    "campaign119_candidate_values_computed_or_read": false,
+    "campaign119_comparator_values_read": false,
+    "historical_daily_price_or_forward_return_values_read": false,
+    "stress_2024_2025_opened": false,
+    "provider_request_issued": false,
+    "credential_value_read_or_printed": false,
+    "candidate49_same_day_retry_performed": false,
+    "candidate49_failed_response_rerequested": false,
+    "candidate49_historical_backfill_performed": false,
+    "candidate49_ledgers_changed": false,
+    "second_prospective_candidate_created": false,
+    "current_scoring_selection_sizing_positions_or_orders_performed": false,
+    "investment_advice": false
+  }
+}

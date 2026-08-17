@@ -1,0 +1,89 @@
+{
+  "version": 2,
+  "kind": "a_share_three_day_walkforward_future_numeric_comparison_eligibility_policy",
+  "status": "frozen_before_campaign066_candidate_definition_source_values_or_search",
+  "recorded_at": "2026-08-05T15:14:00+08:00",
+  "supersedes_without_rewriting": {
+    "path": "docs/a_share_three_day_walkforward_future_numeric_comparison_eligibility_policy_20260805.json",
+    "sha256": "ab28928886b1f617a7be094e0afad241e24bacad9646360c35a05acd80e853b8",
+    "effective_campaigns": "65_only_after_this_additive_freeze"
+  },
+  "purpose": "Append terminal Campaign065 to the complete historical mechanism library and to the numerically eligible comparison order before any Campaign066 candidate is defined or any candidate source value is read.",
+  "authoritative_inputs": {
+    "historical_walkforward_policy": {"path": "docs/a_share_three_day_historical_walkforward_research_policy_20260727.json", "sha256": "38426d6161b9bfed323c58caba18feca668b8c9d53e294951a8ba90c01a798bb"},
+    "prior_future_numeric_policy": {"path": "docs/a_share_three_day_walkforward_future_numeric_comparison_eligibility_policy_20260805.json", "sha256": "ab28928886b1f617a7be094e0afad241e24bacad9646360c35a05acd80e853b8"},
+    "campaign065_terminal_completion": {"path": "docs/a_share_three_day_walkforward_campaign_065_terminal_completion_freeze_20260805.json", "sha256": "827c75b6c8fa97f88d823913278f926d63d94cba76efabbb52bd416d88dd3946"},
+    "campaign065_research_record": {"path": "docs/a_share_three_day_walkforward_campaign_065_research_record.json", "sha256": "32d5dd18e5d14d30e327604ab02271c6ce74167ae96420d8aabca75f008590bc"},
+    "campaign065_snapshot_binding": {"path": "docs/a_share_three_day_walkforward_campaign_065_feature_snapshot_binding_20260805.json", "sha256": "08dd91f29ed7a44ceec8184fd760d2c0452a521a72efd3cb72fc707be7def137", "eligible_rows": 7724498},
+    "campaign065_completed_no_return_audit": {"path": "data/experiments/short_horizon/historical_walkforward/campaign_065/no_return/20260805T065707Z_campaign065_no_return_audit.json", "sha256": "0e04aec29c4cd4b2bced6ba57d6556350a0fba4318de3e339d63ce8ef19401c0", "coverage_passed": true, "numeric_comparisons_passed": 95}
+  },
+  "scope": {
+    "effective_start_campaign": 66,
+    "campaign065_result_or_gate_decision_changed": false,
+    "candidate49_prospective_workflow_changed": false,
+    "historical_results_may_generate_current_scores_selections_sizes_or_orders": false
+  },
+  "complete_historical_feature_library": {
+    "definition": "Reconstruct the exact 96-definition order bound by the prior policy, then append Campaign065 intraday_range_weak_order_time_reversal_divergence_236t/higher exactly once.",
+    "factor_definition_count": 97,
+    "order_sha256": "bc66abb94f62bef5fe9912059ade232c6c86b16b82f162df577fa8d74afeca7d",
+    "all_terminal_failed_rejected_and_surviving_definitions_retained": true,
+    "mechanism_overlap_catalog_must_use_all_97": true,
+    "attempt_and_failure_history_must_remain_append_only": true,
+    "old_terminal_record_or_formula_may_be_rewritten": false
+  },
+  "numerical_comparator_eligibility": {
+    "classification_time": "before_campaign066_candidate_definition_or_source_values",
+    "classification_inputs": "immutable prior snapshot and terminal records only",
+    "standalone_minimum_sessions_with_at_least_50_eligible_names": 100,
+    "candidate_pairwise_gate_still_requires_minimum_names_per_session": 50,
+    "candidate_pairwise_gate_still_requires_minimum_sessions_per_comparison": 100,
+    "candidate_pairwise_gate_still_requires_absolute_median_daily_rank_correlation_below": 0.8,
+    "eligible_numeric_comparator_count": 96,
+    "eligible_numeric_comparator_order_definition": "Take the complete 97-definition order and remove only the structurally unavailable Campaign063 factor; preserve every other relative position. Campaign065 is the final numeric comparator.",
+    "eligible_numeric_comparator_order_sha256": "794dff48d649b8dec1fdf609583ad87260c3e71a681a48b9a0ce77726de4763b",
+    "all_96_eligible_numeric_comparators_must_pass": true,
+    "no_candidate_specific_comparator_drop_allowed": true,
+    "insufficient_pairwise_overlap_for_an_eligible_source_still_fails_closed": true
+  },
+  "structurally_nonnumeric_mechanism_challenges": [
+    {
+      "name": "intraday_cross_sectional_standardized_return_state_stability_236p",
+      "score_direction": "higher",
+      "source_campaign": 63,
+      "source_snapshot_eligible_rows": 0,
+      "source_snapshot_pairwise_capable_sessions": 0,
+      "numeric_correlation_status": "undefined_not_pass_not_fail",
+      "mechanism_overlap_audit_required": true,
+      "formula_direction_terminal_reason_and_failure_history_retained": true,
+      "may_be_silently_omitted_from_reports": false,
+      "may_be_treated_as_numeric_gate_pass": false,
+      "may_be_treated_as_numeric_gate_fail_for_future_candidates": false
+    }
+  ],
+  "campaign065_newly_eligible_prior_comparator": {
+    "name": "intraday_range_weak_order_time_reversal_divergence_236t",
+    "score_direction": "higher",
+    "source_campaign": 65,
+    "source_snapshot_eligible_rows": 7724498,
+    "quality_listing_pairwise_capable_sessions": 1632,
+    "p05_eligible_names": 138.0,
+    "numeric_comparator_eligible_for_campaign066": true,
+    "terminal_with_zero_development_survivors_but_numerically_available": true
+  },
+  "anti_gaming_invariants": [
+    "Do not use a future candidate's values returns performance or correlations to decide which prior factors are numerical comparators.",
+    "Do not drop an eligible comparator after it fails support or correlation threshold gates.",
+    "Do not count the structurally unavailable source as a passing or failing correlation; retain it as an explicit nonnumeric mechanism challenge.",
+    "Do not remove any definition from the exhaustive feature mechanism attempt or failure library.",
+    "Do not apply this policy retroactively to rescue modify invert or combine Campaign065.",
+    "Do not weaken the 50-name 100-session or strict-below-0.8 numerical gates."
+  ],
+  "required_campaign066_bindings": {
+    "this_policy_must_be_hash_bound": true,
+    "full_97_definition_order_and_digest_must_be_verified_before_candidate_definition": true,
+    "96_numeric_comparator_order_and_digest_must_be_verified_before_candidate_values": true,
+    "Campaign063_must_appear_in_nonnumeric_mechanism_challenges": true,
+    "Campaign065_must_appear_as_the_last_numeric_comparator": true
+  }
+}

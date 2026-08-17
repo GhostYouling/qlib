@@ -1,0 +1,77 @@
+{
+  "version": 116,
+  "kind": "a_share_three_day_walkforward_future_numeric_comparison_eligibility_policy",
+  "status": "campaign121_terminal_final_accounting_and_lifecycle_validation_authority",
+  "recorded_at": "2026-08-14T04:10:00+08:00",
+  "authoritative_inputs": {
+    "policy_v115": {
+      "path": "docs/a_share_three_day_walkforward_future_numeric_comparison_eligibility_policy_v115_20260814.json",
+      "sha256": "8727980634a1f99f68c48416732717666047056ce1d8ae0cca0b34e9a6eb2e91"
+    },
+    "campaign121_attempt_ledger_v19": {
+      "path": "data/experiments/short_horizon/historical_walkforward/campaign_121/research_attempt_ledger_v19.json",
+      "sha256": "a3199c4bfc0e6c185584c20aef5724f6fdfd207d5e3ab70ee36b4c494356380c"
+    },
+    "campaign121_lifecycle_test_failure": {
+      "path": "docs/a_share_three_day_walkforward_campaign_121_terminal_coverage_lifecycle_test_failure_20260814.json",
+      "sha256": "9e44fbf4d67e6996998e51590f85c0e7d090a2e50a6d3dc934cc8a6274b251a7"
+    },
+    "campaign121_terminal_result": {
+      "path": "docs/a_share_three_day_walkforward_campaign_121_terminal_result_20260814.json",
+      "sha256": "86e7263632b820bf69bcd88a018b934e3cf9fb8a687478ad3cd0035aff2bd793"
+    }
+  },
+  "supersedes_without_rewriting": {
+    "path": "docs/a_share_three_day_walkforward_future_numeric_comparison_eligibility_policy_v115_20260814.json",
+    "sha256": "8727980634a1f99f68c48416732717666047056ce1d8ae0cca0b34e9a6eb2e91",
+    "preserved": true,
+    "scientific_result_changed": false,
+    "library_order_changed": false,
+    "reason": "Append the two obsolete precoverage lifecycle assertions encountered by the combined post-terminal regression. The accepted coverage artifact, frozen tests and scientific outputs remain unchanged."
+  },
+  "effective_accounting": {
+    "campaign121_attempt_count": 35,
+    "campaign121_ledger_entry_count": 35,
+    "campaign121_infrastructure_failure_count": 25,
+    "campaign121_prevalue_scientific_attempt_count": 1,
+    "campaign121_complete_factor_attempt_count": 1,
+    "campaign121_return_reading_development_trial_count": 1,
+    "campaign121_development_survivor_count": 0,
+    "campaign121_stress_trial_count": 0,
+    "cumulative_historical_research_attempt_count": 991,
+    "cumulative_return_reading_development_trial_count": 306
+  },
+  "complete_historical_feature_library": {
+    "factor_definition_count": 147,
+    "order_sha256": "3f3756a4128011d9cd718e97d23ee3b1c78022433b269c75bd715f304a055bf0",
+    "unchanged_from_v115": true
+  },
+  "numerical_comparator_eligibility": {
+    "eligible_numeric_comparator_count": 139,
+    "eligible_numeric_comparator_order_sha256": "9c4de054ca1b83eced67eece256b024ebec3a6e1925de17a4cedfa7d36265161",
+    "unchanged_from_v115": true
+  },
+  "campaign121_terminal_classification": {
+    "terminal": true,
+    "development_survivor_count": 0,
+    "stress_2024_2025_opened": false,
+    "retry_or_rescue_allowed": false,
+    "scientific_conclusion_unchanged_from_v115": true
+  },
+  "future_campaign_boundary": {
+    "next_campaign": 122,
+    "must_begin_from_genuinely_new_prevalue_frozen_mechanism": true,
+    "campaign121_rescue_or_return_reopen_allowed": false
+  },
+  "research_boundary": {
+    "development_trial_rerun_after_lifecycle_validation": false,
+    "stress_2024_2025_opened": false,
+    "provider_request_issued": false,
+    "credential_loaded": false,
+    "candidate49_historical_backfill_performed": false,
+    "candidate49_ledgers_changed": false,
+    "second_prospective_candidate_created": false,
+    "current_scoring_selection_sizing_positions_or_orders_performed": false,
+    "investment_advice": false
+  }
+}

@@ -1,0 +1,73 @@
+{
+  "version": 1,
+  "kind": "a_share_three_day_walkforward_campaign042_feature_snapshot_freeze",
+  "status": "immutable_snapshot_bound_before_comparison_values_or_returns",
+  "frozen_at": "2026-07-31T08:14:00Z",
+  "purpose": "Bind the atomically published Campaign042 close-only feature snapshot, its sole prepublication metadata repair, and the post-binding runner before any comparison value or historical return is opened.",
+  "authoritative_inputs": {
+    "no_return_preregistration": {
+      "path": "docs/a_share_three_day_walkforward_campaign_042_no_return_preregistration.json",
+      "sha256": "69a554576358c6f2330b4caa3c91d7bbfc67b576259a5f342a89912587d9e826"
+    },
+    "prepublication_metadata_repair": {
+      "path": "docs/a_share_three_day_walkforward_campaign_042_prepublication_source_metadata_repair_20260731.json",
+      "sha256": "cdb68e0897e0db189bc442634a68656b9fbbe1fa7d8c44ab7c98bd74d1933684"
+    },
+    "feature_runner": {
+      "path": "scripts/a_share_three_day_walkforward_campaign042_features.py",
+      "sha256": "67051640d3821b6f81bd3b88bb0ae5c5e66a9a1eb6db5d98275497155bc136e9"
+    },
+    "synthetic_tests": {
+      "path": "tests/data_collector_tests/test_a_share_three_day_walkforward_campaign042_features.py",
+      "sha256": "920858df636b0035904f665788a43d30c86f33f0b47ab089018c2df6d935be86"
+    },
+    "snapshot_manifest": {
+      "path": "/Volumes/DIsk/qlib-a-share-tushare-1m/derived/a_share/rich/tushare/minute_walkforward_campaign042_feature_library/tushare_stk_mins_1m_2019_2025_ea0cbb8f_walkforward_campaign042_feature_library_v1/snapshot_manifest.json",
+      "sha256": "c56a81a461aae4ea9d1f44c238dd381541e18425837872a17f3d34f8dc796acd",
+      "dataset_sha256": "9fe1a6095a70702ef3ce7ba6cbca8e1386749513b00e8494b37813a1639826c8"
+    }
+  },
+  "snapshot_summary": {
+    "partitions": 33015,
+    "rows": 7724498,
+    "eligible_rows": 7449531,
+    "both_components_zero_rows": 274967,
+    "exact_zero_lunch_return_rows": 1924853,
+    "exact_zero_afternoon_return_rows": 549727,
+    "endpoint_canonicalized_rows": 30511,
+    "invalid_or_nonpositive_close_rows": 0,
+    "range_or_nonfinite_rows": 0,
+    "resumed_partitions_after_metadata_repair": 33015,
+    "source_fields_read": [
+      "datetime",
+      "symbol",
+      "provider",
+      "close"
+    ],
+    "source_open_high_low_read": false,
+    "source_close_read": true,
+    "source_volume_read": false,
+    "source_amount_read": false
+  },
+  "validation": {
+    "synthetic_test_count": 8,
+    "synthetic_test_failures": 0,
+    "manifest_semantics_passed": true,
+    "manifest_fingerprint_bound_in_runner": true,
+    "dataset_fingerprint_bound_in_runner": true,
+    "comparison_values_read_before_freeze": false,
+    "historical_daily_price_fields_read_before_freeze": false,
+    "historical_forward_returns_read_before_freeze": false
+  },
+  "research_boundary": {
+    "candidate_values_published": true,
+    "comparison_values_read": false,
+    "historical_daily_price_fields_read": false,
+    "historical_forward_returns_read": false,
+    "provider_request_issued": false,
+    "candidate49_ledgers_changed": false,
+    "candidate50_activation_created": false,
+    "current_scoring_selection_sizing_or_orders_performed": false
+  },
+  "next_action": "Validate this snapshot freeze and all current bindings, then run the ordered no-return audit: coverage and capacity first, and only after a pass load the complete 63-factor comparison library."
+}

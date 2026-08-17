@@ -1,0 +1,100 @@
+{
+  "version": 1,
+  "kind": "a_share_three_day_walkforward_campaign051_concept_scouting",
+  "status": "completed_before_campaign051_candidate_comparison_daily_price_or_return_values",
+  "recorded_at": "2026-08-01T11:54:00Z",
+  "purpose": "Select one genuinely distinct historical-only minute mechanism after Campaign050 without using any Campaign051 candidate, comparison, daily-price, or return value.",
+  "numbering_disambiguation": "Historical Campaign051 is a research-campaign identifier and does not activate prospective Candidate51; Candidate49 remains the only prospective ledger.",
+  "authoritative_inputs": {
+    "campaign050_verified_state": {
+      "path": "docs/a_share_three_day_iteration_status_20260801_campaign050_verified.json",
+      "sha256": "df758b530a7af5d811bb5ec59a97761d6ed0fe5ebb5a81e94b59cca455c0e0b7"
+    },
+    "historical_walkforward_policy": {
+      "path": "docs/a_share_three_day_historical_walkforward_research_policy_20260727.json",
+      "sha256": "38426d6161b9bfed323c58caba18feca668b8c9d53e294951a8ba90c01a798bb"
+    },
+    "campaign050_terminal_record": {
+      "path": "docs/a_share_three_day_walkforward_campaign_050_research_record_v2.json",
+      "sha256": "f896771fed934c934a964e7e343371299820b0b8ae03d963f2ae284a98c67a29"
+    }
+  },
+  "candidate_design_catalog": [
+    {
+      "design": "close_range_occupancy_entropy_10b",
+      "decision": "selected",
+      "reason": "It measures how the 240 close observations occupy ten fixed relative log-price locations inside their own completed-session range. No frozen factor summarizes the order-invariant distribution of close dwell time across normalized price states."
+    },
+    {
+      "design": "return_spectral_or_variance_entropy",
+      "decision": "rejected_before_values",
+      "reason": "Entropy of return-frequency power or squared-return participation would restate terminal return spectral entropy and return variance entropy."
+    },
+    {
+      "design": "amount_or_range_participation_entropy",
+      "decision": "rejected_before_values",
+      "reason": "Entropy of amount or intrabar high-low range mass would restate terminal amount-participation and range-participation entropy mechanisms."
+    },
+    {
+      "design": "terminal_location_or_range_revisit",
+      "decision": "rejected_before_values",
+      "reason": "Using only the last close would restate terminal close location; using merged OHLC intervals would restate global price-range revisit."
+    },
+    {
+      "design": "half_session_or_time_ordered_occupancy",
+      "decision": "rejected_before_values",
+      "reason": "Separate half-session histograms, state transitions, duration runs, and time weighting would add an unregistered timing search rather than the selected full-session order-invariant price-state distribution."
+    },
+    {
+      "design": "alternate_bin_count_boundary_scale_direction_threshold_filter_or_combination",
+      "decision": "rejected_before_values",
+      "reason": "Campaign051 fixes ten equal-width bins in normalized log-price space, higher entropy, exact boundary rules, and no alternate bin count, scale, field, direction, threshold, filter, subset, fit, model, or combination."
+    }
+  ],
+  "selected_candidate": {
+    "name": "intraday_close_range_occupancy_entropy_10b",
+    "direction": "higher",
+    "economic_hypothesis": "Broad occupation of the completed-session relative close-price range is consistent with distributed two-sided price discovery rather than a fleeting excursion or terminal congestion, potentially leaving a more resilient close-known state for the next-open-to-third-close horizon.",
+    "formula": "Across the 240 selected closes, let x_i=log(close_i), x_min=min(x), x_max=max(x), and z_i=(x_i-x_min)/(x_max-x_min). Assign b_i=min(floor(10*z_i),9), let p_j=count(b_i=j)/240 for j=0..9, and return -sum_{j:p_j>0}(p_j*log(p_j))/log(10).",
+    "source_projection": [
+      "datetime",
+      "symbol",
+      "provider",
+      "close"
+    ],
+    "selected_grid": [
+      "09:31-11:30",
+      "13:01-15:00"
+    ],
+    "selected_bar_count": 240,
+    "bin_count": 10,
+    "bin_coordinate": "normalized natural-log close location over the full selected session",
+    "bin_boundary_rule": "left-closed right-open equal-width bins except the exact global maximum is assigned to bin 9",
+    "include_0930": false,
+    "include_lunch_transition": false,
+    "order_invariant": true,
+    "support_rule": "All 240 closes must be finite and strictly positive and the global log-close range must be finite and strictly positive; exact repeated closes remain repeated observations.",
+    "normalization": "natural-log Shannon entropy divided by log(10)",
+    "valid_range": [
+      0.0,
+      1.0
+    ],
+    "endpoint_canonicalization_tolerance": 1e-12,
+    "transform_threshold_filter_combination_or_model": "none"
+  },
+  "research_boundary": {
+    "external_campaign051_minute_partitions_read": false,
+    "candidate_or_comparison_values_read": false,
+    "historical_daily_price_or_forward_return_read": false,
+    "provider_request_issued": false,
+    "candidate49_historical_return_signal_execution_or_milestone_backfill_performed": false,
+    "candidate49_ledgers_changed": false,
+    "second_prospective_candidate_created": false,
+    "current_scoring_selection_sizing_or_orders_performed": false
+  },
+  "decision": {
+    "selected_candidate_count": 1,
+    "predictive_value_established": false,
+    "next_action": "Complete a separate pre-value overlap audit against the full 74-factor comparison chain, then freeze the exact ordered no-return protocol."
+  }
+}

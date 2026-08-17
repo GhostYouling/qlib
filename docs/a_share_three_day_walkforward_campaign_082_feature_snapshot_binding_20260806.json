@@ -1,0 +1,77 @@
+{
+  "schema_version": 1,
+  "kind": "a_share_three_day_walkforward_campaign082_feature_snapshot_binding",
+  "status": "verified_snapshot_frozen_before_coverage_or_comparison_values",
+  "recorded_at": "2026-08-06T18:50:00+08:00",
+  "protocol": {
+    "path": "docs/a_share_three_day_walkforward_campaign_082_no_return_preregistration.json",
+    "sha256": "acc55fb8b3a4b79f005ab23033dccb781dca1fd71b162a71dfeb04f7aa91bf88"
+  },
+  "feature_implementation_freeze": {
+    "path": "docs/a_share_three_day_walkforward_campaign_082_feature_implementation_freeze_20260806.json",
+    "sha256": "d784c13196a30675d5c3a18c49941dca97e581308fe7e96321f92aa57e11ff83"
+  },
+  "feature_runner": {
+    "path": "scripts/a_share_three_day_walkforward_campaign082_features.py",
+    "sha256": "f8db6e9ac0bd25c9e0a8ff827fd650f6b54fd3e5344d0598fda9c68d4d7eeafd"
+  },
+  "candidate_snapshot": {
+    "path": "/Volumes/DIsk/qlib-a-share-tushare-1m/derived/a_share/rich/tushare/minute_walkforward_campaign082_feature_library/tushare_stk_mins_1m_2019_2025_ea0cbb8f_walkforward_campaign082_feature_library_v1/snapshot_manifest.json",
+    "sha256": "928d1466963c55605ad446bfa44f75997b9a967fe510c454cc42684ae3db1b65",
+    "dataset_sha256": "e1a310820c6551d02eb1a09611c798fad78e14a66ddb4e7f85f4d6495497ad27",
+    "factor": "intraday_range_amount_peak_timing_alignment_240m",
+    "direction": "higher",
+    "partitions": 33015,
+    "rows": 7724498,
+    "eligible_rows": 7699914,
+    "missing_rows": 24584
+  },
+  "independent_file_verification": {
+    "status": "verified",
+    "verified_partitions": 33015,
+    "verified_rows": 7724498,
+    "verified_eligible_rows": 7699914,
+    "dataset_sha256": "e1a310820c6551d02eb1a09611c798fad78e14a66ddb4e7f85f4d6495497ad27",
+    "continuous_score_range_validated": true,
+    "comparison_values_read": false,
+    "historical_daily_price_or_forward_return_values_read": false,
+    "provider_request_issued": false
+  },
+  "quality": {
+    "joint_clean_base_rows": 7724498,
+    "candidate_eligible_rows": 7699914,
+    "candidate_missing_rows": 24584,
+    "raw_source_sessions_examined": 7744653,
+    "raw_source_nonpositive_maximum_range_sessions": 44648,
+    "raw_source_nonpositive_maximum_amount_sessions": 19831,
+    "raw_source_invalid_high_low_grid_sessions": 0,
+    "raw_source_invalid_amount_grid_sessions": 0,
+    "raw_source_invalid_alignment_score_sessions": 0,
+    "interpretation": "Raw-source quality counts include sessions outside the accepted joint-clean identity projection and may overlap. Exactly 24,584 accepted joint-clean stock-days are missing under the frozen nonpositive-maximum semantics; no imputation or rescue was applied."
+  },
+  "research_boundary": {
+    "source_fields_read": [
+      "datetime",
+      "symbol",
+      "provider",
+      "high",
+      "low",
+      "amount"
+    ],
+    "stock_day_identity_fields_read": [
+      "trade_date",
+      "symbol",
+      "provider"
+    ],
+    "comparison_values_read": false,
+    "coverage_or_capacity_metrics_computed": false,
+    "historical_daily_price_fields_read": [],
+    "historical_forward_returns_read": false,
+    "candidate49_historical_backfill_performed": false,
+    "candidate49_ledgers_changed": false,
+    "second_prospective_candidate_created": false,
+    "provider_request_issued": false,
+    "current_scoring_selection_sizing_or_orders_performed": false
+  },
+  "next_action": "Freeze the no-return audit runner and tests against this exact manifest, then run coverage before loading any of the 111 numeric comparator value streams."
+}

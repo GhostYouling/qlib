@@ -1,0 +1,130 @@
+{
+  "version": 1,
+  "kind": "a_share_three_day_walkforward_campaign059_concept_scouting",
+  "status": "selected_one_economically_independent_candidate_before_campaign059_source_candidate_benchmark_comparison_daily_price_or_return_values",
+  "recorded_at": "2026-08-04T19:18:28+08:00",
+  "purpose": "Select one finite historical-only Campaign059 mechanism after Campaign058 from frozen definitions and source schemas only, before reading any Campaign059 minute row, market-benchmark value, candidate value, comparison value, daily price, or forward return.",
+  "authoritative_inputs": {
+    "campaign058_verified_state": {
+      "path": "docs/a_share_three_day_iteration_status_20260804_campaign058_verified.json",
+      "sha256": "51e449985216b6c752f937ecd712237ffd45c87339f8f19ad11fcbd504f1452b"
+    },
+    "campaign058_research_record": {
+      "path": "docs/a_share_three_day_walkforward_campaign_058_research_record.json",
+      "sha256": "da8005f813548eb9439fb66308f00ed1acad590c7866c563e92e6e09c3902cba"
+    },
+    "campaign058_no_return_protocol": {
+      "path": "docs/a_share_three_day_walkforward_campaign_058_no_return_preregistration.json",
+      "sha256": "e3c04b8f736604dca4adb21de367550bb281d4a156b8f990fa942c8757f8011a"
+    },
+    "historical_walkforward_policy": {
+      "path": "docs/a_share_three_day_historical_walkforward_research_policy_20260727.json",
+      "sha256": "38426d6161b9bfed323c58caba18feca668b8c9d53e294951a8ba90c01a798bb"
+    },
+    "frozen_market_benchmark_contract": {
+      "path": "docs/a_share_three_day_walkforward_campaign_029_no_return_preregistration.json",
+      "sha256": "6bf84e6a6b9b40338447e3ff08784a09df2a76f780cbdfb09980e93f0268baf3",
+      "manifest_sha256": "954b71d571bcd89cbf4eae4eedad014091a9b40e6b2b083e0071cbf870634ef0",
+      "frame_sha256": "5412520f379a3d7584f18a0fd5a0b55fd8b68ed3a49d76ff6430a330eee9d4a1"
+    }
+  },
+  "definition_only_inventory": {
+    "campaign058_required_comparison_definition_count": 89,
+    "campaign058_terminal_definition_appended_for_campaign059": "quarterly_profit_revenue_growth_spread_pp",
+    "campaign059_required_comparison_definition_count": 90,
+    "market_peer_families_already_terminal": [
+      "intraday_market_idiosyncratic_share_238m",
+      "intraday_market_response_delay_asymmetry_236p",
+      "intraday_market_up_down_correlation_asymmetry_238m",
+      "intraday_market_shock_magnitude_decoupling_238m",
+      "intraday_market_correlation_resolution_119p",
+      "intraday_market_dispersion_decoupling_238m"
+    ],
+    "campaign059_minute_rows_read": false,
+    "campaign059_market_benchmark_values_read": false,
+    "campaign059_candidate_values_read": false,
+    "comparison_values_read_for_campaign059_selection": false,
+    "daily_price_or_forward_return_read_for_campaign059_selection": false
+  },
+  "candidate_design_catalog": [
+    {
+      "design": "intraday_market_directional_sign_agreement_238m",
+      "decision": "selected",
+      "reason": "Equal-position sign agreement measures how often a stock joins the broad market direction while discarding return magnitude. It is not determined by linear correlation, beta, residual variance, market-shock magnitude, morning-minus-afternoon correlation, or dispersion exposure."
+    },
+    {
+      "design": "opening_or_overnight_gap_return",
+      "decision": "rejected_before_values",
+      "reason": "The historical 09:30 price has terminally invalid placeholder semantics, and reopening a previous-close opening-gap mechanism would violate the frozen historical boundary."
+    },
+    {
+      "design": "signed_return_autocorrelation_jump_share_kurtosis_or_tail_score",
+      "decision": "rejected_before_values",
+      "reason": "Directional serial dependence, bipower-to-realized variation, return-variance entropy, skewness, and their tail or jump complements are already terminal families."
+    },
+    {
+      "design": "market_return_pearson_correlation_beta_residual_variance_or_half_session_difference",
+      "decision": "rejected_before_values",
+      "reason": "Those magnitude-sensitive market-exposure mechanisms are already represented by terminal factors and may not be rewindowed, inverted, or rescued."
+    },
+    {
+      "design": "sign_agreement_with_zero_as_agreement_sign_weighting_or_market_regime_split",
+      "decision": "rejected_before_values",
+      "reason": "Counting zero-zero as agreement would confound sparse price updating; weighting by magnitude or conditioning on a regime would create formula and filter searches."
+    },
+    {
+      "design": "alternate_minimum_informative_counts_or_selected_subwindows",
+      "decision": "rejected_before_values",
+      "reason": "The complete 238-position grid and one fixed minimum of 60 jointly nonzero positions are the sole support rule; no threshold or window sweep is allowed."
+    },
+    {
+      "design": "terminal_factor_combination_or_fitted_market_model",
+      "decision": "rejected_before_values",
+      "reason": "Campaign059 computes one direct source statistic and neither loads terminal scores into its formula nor fits weights, thresholds, filters, subsets, or models."
+    }
+  ],
+  "selected_candidate": {
+    "name": "intraday_market_directional_sign_agreement_238m",
+    "direction": "higher",
+    "economic_hypothesis": "A stock that repeatedly joins the contemporaneous broad-market direction across the full continuous session exhibits common-information demand confirmation rather than isolated stock-specific noise, which may persist from the next open through the third close.",
+    "formula": "Across the exact 238 within-half signed log-close return positions, compute the frozen leave-one-out equal-weight market return from return_sum and valid_stock_count. A position is informative only when both the stock return and leave-one-out market return are finite and exactly nonzero. Return the number of equal-sign informative positions divided by the informative-position count.",
+    "source_projection": [
+      "datetime",
+      "symbol",
+      "provider",
+      "close"
+    ],
+    "benchmark_projection": [
+      "trade_date",
+      "return_position",
+      "return_sum",
+      "valid_stock_count"
+    ],
+    "accepted_grid": "Exactly 120 closes at 09:31-11:30 and 120 closes at 13:01-15:00; form 119 adjacent returns independently inside each half, exclude standalone 09:30 and the lunch transition.",
+    "leave_one_out_rule": "At every fixed return position subtract the stock return and its finite-observation count from the frozen market sum and count; require at least 50 other finite peers at every position.",
+    "zero_semantics": "A position with an exact-zero stock return or exact-zero leave-one-out market return is noninformative and is neither an agreement nor a disagreement.",
+    "minimum_informative_positions": 60,
+    "missing_rule": "Missing unless both complete 238-position return vectors are finite, every position has at least 50 leave-one-out peers, at least 60 positions are jointly nonzero, and the final score is finite in [0,1].",
+    "parameter_window_transform_direction_threshold_filter_subset_combination_fit_or_model_search": false
+  },
+  "research_boundary": {
+    "external_campaign059_minute_rows_read": false,
+    "campaign059_market_benchmark_values_read": false,
+    "campaign059_candidate_or_comparison_values_read": false,
+    "historical_daily_price_fields_read": [],
+    "historical_forward_return_fields_read": false,
+    "provider_request_issued": false,
+    "candidate49_historical_return_signal_execution_or_milestone_backfill_performed": false,
+    "candidate49_ledgers_changed": false,
+    "second_prospective_candidate_created": false,
+    "current_scoring_selection_sizing_or_orders_performed": false,
+    "investment_advice": false
+  },
+  "decision": {
+    "selected_candidate_count": 1,
+    "finite_candidate_library": true,
+    "conceptual_independence_pending_separate_overlap_audit": true,
+    "predictive_value_established": false,
+    "next_action": "Challenge the fixed sign-agreement statistic against all 90 required definitions, then freeze one exact coverage-first no-return protocol before any Campaign059 source, benchmark, candidate, or comparison value is read."
+  }
+}

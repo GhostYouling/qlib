@@ -1,0 +1,47 @@
+{
+  "schema_version": 2,
+  "kind": "a_share_three_day_walkforward_campaign094_feature_implementation_freeze_v2",
+  "status": "quality_schema_repair_frozen_before_campaign094_snapshot_retry",
+  "frozen_at": "2026-08-07T02:32:00Z",
+  "purpose": "Bind the additive quality-key compatibility entrypoint and its tests before retrying the exact frozen Campaign094 feature snapshot.",
+  "protocol": {
+    "path": "docs/a_share_three_day_walkforward_campaign_094_no_return_preregistration.json",
+    "sha256": "c79c7ee277401f140bd075756658bfc5533ddcf191a20c4dc5e63808a50cbe27"
+  },
+  "v1_implementation_freeze": {
+    "path": "docs/a_share_three_day_walkforward_campaign_094_feature_implementation_freeze_20260807.json",
+    "sha256": "d4b5bb63e412c091a4c32c45fcfcc4f431446d6f101e674a062425e6f534c743"
+  },
+  "failure_record": {
+    "path": "docs/a_share_three_day_walkforward_campaign_094_feature_build_quality_schema_failure_20260807.json",
+    "sha256": "2cb67be4ea48ccc1df029113a21329b1a0c0f93656bb6356fcf299649589fd79"
+  },
+  "repair_protocol": {
+    "path": "docs/a_share_three_day_walkforward_campaign_094_feature_build_quality_schema_repair_protocol_20260807.json",
+    "sha256": "98cce1cd8a1c9df986557381bbee3423d5d8c8ec10aa52e135311151afbdaab0"
+  },
+  "v2_feature_runner": {
+    "path": "scripts/a_share_three_day_walkforward_campaign094_features_v2.py",
+    "sha256": "2925f324198625608794479a8b081658ab4e837f1e3ee44c7292643dd7fbfe38"
+  },
+  "v2_tests": {
+    "path": "tests/data_collector_tests/test_a_share_three_day_walkforward_campaign094_features_v2.py",
+    "sha256": "951dd3a3f2dd233ebbb5e22c93019a4f425a518046bcc7c467cdc4d6fb30ebb6",
+    "combined_with_v1_result": "8 passed"
+  },
+  "repair": {
+    "scope": "quality-counter name compatibility only",
+    "temporary_aliases": {
+      "zero_destination_range_pairs": "zero_range_bars",
+      "endpoint_canonicalized_sessions": 0
+    },
+    "temporary_aliases_removed_from_published_manifest": true,
+    "factor_formula_direction_source_projection_or_values_changed": false,
+    "coverage_uniqueness_development_or_return_gate_changed": false
+  },
+  "snapshot_target_absent_before_v2_freeze": true,
+  "comparison_values_read_before_v2_freeze": false,
+  "historical_daily_price_or_forward_return_values_read_before_v2_freeze": false,
+  "provider_request_issued_before_v2_freeze": false,
+  "candidate49_ledgers_changed_before_v2_freeze": false
+}

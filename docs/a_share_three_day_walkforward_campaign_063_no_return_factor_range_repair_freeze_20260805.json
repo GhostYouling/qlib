@@ -1,0 +1,54 @@
+{
+  "version": 1,
+  "kind": "a_share_three_day_walkforward_campaign063_additive_no_return_factor_range_repair_freeze",
+  "status": "frozen_after_generic_factor_range_failure_and_before_single_audit_resume",
+  "recorded_at": "2026-08-05T07:27:00+08:00",
+  "purpose": "Bind the only additive registration of Campaign063's already frozen factor range in the shared no-return loader before resuming the still-unconsumed audit.",
+  "no_return_protocol": {
+    "path": "docs/a_share_three_day_walkforward_campaign_063_no_return_preregistration.json",
+    "sha256": "2effcee4ccbbba8d55f450c7add3eb6064968a60c9d856ac769aebd20e542dfb"
+  },
+  "audit_implementation_freeze": {
+    "path": "docs/a_share_three_day_walkforward_campaign_063_no_return_audit_implementation_freeze_20260805.json",
+    "sha256": "39eccb5ebefa40129de2496573452edc2b23a4d8cf6f9c3a1b31aaa31efd7192"
+  },
+  "factor_range_failure": {
+    "path": "docs/a_share_three_day_walkforward_campaign_063_no_return_factor_range_namespace_failure_20260805.json",
+    "sha256": "b1d79a204c583dc11daa11f967642c8f9e7a63814d3d031199fa917bcc4fa2a9"
+  },
+  "repair_launcher": {
+    "path": "scripts/a_share_three_day_walkforward_campaign063_no_return_factor_range_repair.py",
+    "sha256": "6087d288d3f9c6e6e19f0ea0a2ad1e0425b7c2dcbe6d2bc6cf3ce5b453ab84d7",
+    "only_registration": {
+      "factor": "intraday_cross_sectional_standardized_return_state_stability_236p",
+      "generic_factor_range": [
+        0.0,
+        1.0
+      ]
+    },
+    "fails_on_conflicting_existing_range": true,
+    "generic_factor_loader_or_coverage_function_changed": false,
+    "candidate_snapshot_bytes_changed": false,
+    "formula_direction_peer_grid_variance_loss_transform_or_gate_changed": false,
+    "comparison_or_return_path_added": false
+  },
+  "repair_tests": {
+    "path": "tests/data_collector_tests/test_a_share_three_day_walkforward_campaign063_no_return_factor_range_repair.py",
+    "sha256": "d88a3a618bb2ed017139048aa12c63fef241db81b846208abe94a7e17d13eb32",
+    "combined_campaign063_tests_passed": 23,
+    "combined_campaign063_tests_failed": 0,
+    "exact_range_only_loader_identity_coverage_identity_and_conflict_failure_tested": true
+  },
+  "research_boundary": {
+    "audit_record_exists_before_repair": false,
+    "comparison_values_read": false,
+    "historical_daily_price_fields_read": [],
+    "historical_forward_returns_read": false,
+    "development_folds_opened": false,
+    "stress_2024_2025_opened": false,
+    "candidate49_historical_backfill_performed": false,
+    "candidate49_ledgers_changed": false,
+    "provider_request_issued": false
+  },
+  "next_action": "Run only the bound factor-range repair launcher once; require a zero-admissible audit record and no comparison or return access."
+}

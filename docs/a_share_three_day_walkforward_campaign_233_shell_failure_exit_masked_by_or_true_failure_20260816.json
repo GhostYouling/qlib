@@ -1,0 +1,35 @@
+{
+  "schema_version": 1,
+  "kind": "a_share_three_day_walkforward_campaign233_infrastructure_failure",
+  "recorded_at": "2026-08-16T05:38:00+08:00",
+  "timestamp_semantics": "monotonic_logical_append_time_not_host_wall_clock_measurement",
+  "status": "failed_mixed_inspection_masked_one_missing_path_with_shell_or_true",
+  "command": "read one Campaign232 failure record then attempt a guessed Campaign231 failure path with stderr suppressed and shell or-true",
+  "working_directory": "/Volumes/DIsk/Disk-Coding/qlib",
+  "observed_process_exit_code": 0,
+  "underlying_failed_operation": "the_guessed_Campaign231_path_did_not_exist_but_shell_or_true_masked_that_nonzero_exit",
+  "failure_reason": "failure_exit_masking_is_not_an_accepted_research_or_validation_pattern_even_for_read_only_format_inspection",
+  "evidence_treatment": {
+    "output_discarded": true,
+    "used_as_scientific_evidence": false,
+    "used_as_validation_evidence": false,
+    "target_file_changed_by_failed_command": false
+  },
+  "recovery": {
+    "status": "completed",
+    "method": "discard_the_entire_mixed_output_and_re_read_the_known_Campaign232_failure_record_in_a_fresh_command_without_exit_masking",
+    "scientific_result_changed": false
+  },
+  "research_boundary": {
+    "candidate_or_comparator_value_read": false,
+    "daily_price_or_forward_return_read": false,
+    "provider_or_web_request_issued": false,
+    "provider_credential_presence_value_or_digest_read": false,
+    "candidate49_plan_or_run_executed": false,
+    "candidate49_ledgers_changed": false,
+    "second_prospective_candidate_created": false,
+    "stress_2024_2025_opened": false,
+    "current_scoring_selection_sizing_positions_or_orders_performed": false,
+    "investment_advice": false
+  }
+}

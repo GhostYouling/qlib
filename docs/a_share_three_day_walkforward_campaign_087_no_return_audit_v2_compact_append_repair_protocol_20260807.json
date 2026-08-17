@@ -1,0 +1,70 @@
+{
+  "schema_version": 1,
+  "kind": "a_share_three_day_walkforward_campaign087_no_return_audit_v2_compact_append_repair_protocol",
+  "status": "frozen_after_v1_audit_failure_before_v2_coverage_or_comparison_values",
+  "frozen_at": "2026-08-07T03:33:00+08:00",
+  "failed_v1_audit_runner": {
+    "path": "scripts/a_share_three_day_walkforward_campaign087_no_return_audit.py",
+    "sha256": "7512b21d30ad301faaa8f89d0d828e409a61ab357fee0400632ec5d55e210fef"
+  },
+  "v1_audit_implementation_freeze": {
+    "path": "docs/a_share_three_day_walkforward_campaign_087_no_return_audit_implementation_freeze_20260807.json",
+    "sha256": "f4d4b9cfb4835fdef2c67839f3cabb96a752d1c226210b181a731cea28d6276d"
+  },
+  "v1_audit_activation_binding": {
+    "path": "docs/a_share_three_day_walkforward_campaign_087_no_return_audit_activation_binding_20260807.json",
+    "sha256": "8b170f9e0b447a36c78ab1807b9b6fdecd7c34c0ff09588522f87264637cec11"
+  },
+  "failure_record": {
+    "path": "data/experiments/short_horizon/historical_walkforward/campaign_087/research_attempt_ledger_v12.json",
+    "sha256": "3f5ebc5c4e151058176b71b32d2f3f0a47f909364eb93619b3ce4f17bcdce280",
+    "ordinal": 12,
+    "coverage_passed": true,
+    "comparison_values_completed_in_memory": 114,
+    "audit_output_created": false
+  },
+  "frozen_compact_comparator_snapshots": [
+    {
+      "factor": "quarterly_freshness_market_neutral_late_drift_confirmation_product_2r",
+      "position_one_based": 115,
+      "manifest_path": "/Volumes/DIsk/qlib-a-share-tushare-1m/derived/a_share/rich/tushare/minute_walkforward_campaign085_feature_library/tushare_stk_mins_1m_2019_2025_ea0cbb8f_walkforward_campaign085_feature_library_v1/snapshot_manifest.json",
+      "manifest_sha256": "fb8ea4bdb2b2f783a8c1d4e020f1dcdfca1697c779c732e50233fe7b040b4d28",
+      "dataset_sha256": "368f7cb96c15186cd511ccd4120e89b577141aa9687df8b39f9dd17320db8fb9",
+      "partitions": 7,
+      "rows": 1331759,
+      "direction": "higher"
+    },
+    {
+      "factor": "intraday_intrabar_close_location_serial_persistence_238p",
+      "position_one_based": 116,
+      "manifest_path": "/Volumes/DIsk/qlib-a-share-tushare-1m/derived/a_share/rich/tushare/minute_walkforward_campaign086_feature_library/tushare_stk_mins_1m_2019_2025_ea0cbb8f_walkforward_campaign086_feature_library_v1/snapshot_manifest.json",
+      "manifest_sha256": "848ce713344f1ce805e3180344107d1d4bee5f8350bbcf52f8089e391fae3803",
+      "dataset_sha256": "49cf11b5d69fa38a72f1a977975e290d4ed0bfd2205be6c50ba08dc64844b8e3",
+      "partitions": 7,
+      "rows": 1331759,
+      "direction": "higher"
+    }
+  ],
+  "allowed_v2_change": {
+    "scope": "After the unchanged first 114 comparison loader completes, verify C85 and C86 through their frozen campaign verifiers, concatenate each snapshot's seven stock_day_key/value partitions directly, require unique strictly increasing keys and exact candidate-key coverage, and call the same frozen aligned-comparison engine in positions 115 and 116.",
+    "candidate_or_comparator_transform_changed": false,
+    "comparison_order_changed": false,
+    "correlation_method_or_threshold_changed": false,
+    "coverage_gate_changed": false,
+    "audit_must_restart_from_coverage": true,
+    "reuse_of_v1_in_memory_results_allowed": false
+  },
+  "required_v2_output_repair_receipt": {
+    "v1_failure_record_sha256": "3f5ebc5c4e151058176b71b32d2f3f0a47f909364eb93619b3ce4f17bcdce280",
+    "first_114_loader_unchanged": true,
+    "C85_compact_loader_used": true,
+    "C86_compact_loader_used": true,
+    "all_116_sources_loaded_in_frozen_order": true
+  },
+  "forbidden_v2_actions": [
+    "drop, reorder, residualize, invert, clip, or replace any comparator",
+    "change the strict absolute median daily rank-correlation threshold of 0.8 or pairwise support gates",
+    "read historical daily price or forward-return fields before complete no-return admissibility",
+    "modify Candidate49 ledgers, backfill Candidate49, create a second prospective candidate, issue provider requests, or generate current scores, selections, sizing, or orders"
+  ]
+}

@@ -1,0 +1,73 @@
+{
+  "schema_version": 8,
+  "kind": "a_share_three_day_iteration_status",
+  "status": "campaign102_terminal_zero_survivors_candidate49_20260807_source_failed_closed_offline_campaign103_ready",
+  "recorded_at": "2026-08-07T15:51:00Z",
+  "supersedes_without_rewriting": {
+    "path": "docs/a_share_three_day_iteration_status_20260807_campaign102_terminal_v2.json",
+    "sha256": "4dad518dd6a17fe0cb48906607520fe019fd40ebe8ec4cb9aeea2fd749a6a042",
+    "preserved": true,
+    "campaign102_scientific_result_or_accounting_changed": false,
+    "reason": "Append the separately authorized Candidate49 2026-08-07 provider source failure after .env credential recovery."
+  },
+  "campaign102_terminal_completion": {
+    "path": "docs/a_share_three_day_walkforward_campaign_102_terminal_completion_freeze_20260807.json",
+    "sha256": "b2dd1c30b7d0fcb87dca9ecf8aa1c3efd5c9803924b6baa9aacacc80fdb64d7e",
+    "development_trial_count": 3,
+    "development_survivor_count": 0,
+    "lockbox_2024_2025_opened": false
+  },
+  "effective_future_numeric_policy": {
+    "path": "docs/a_share_three_day_walkforward_future_numeric_comparison_eligibility_policy_v59_20260807.json",
+    "sha256": "4e6c7aea0be521773cda56ceea33d1665a82e9254b1e9198fa13b65e22d826b0",
+    "complete_definition_count": 133,
+    "numeric_comparator_count": 130
+  },
+  "candidate49_20260807_source_failure": {
+    "path": "docs/a_share_candidate49_20260807_daily_source_failure_record.json",
+    "sha256": "8b8eec87a1f20c424703cf70ea9eae87f09c7b1e5c9a5754c0bde9cc2f9c839f",
+    "plan_ready": true,
+    "plan_exit_code": 0,
+    "run_exit_code": 1,
+    "failure_stage": "stock_basic",
+    "error": "Tushare stock_basic contains an invalid ts_code",
+    "provider_calls_this_invocation": 4,
+    "provider_continuation_allowed": false,
+    "same_day_retry_allowed": false,
+    "active_daily_root_mutated": false
+  },
+  "candidate49": {
+    "remains_only_active_prospective_candidate": true,
+    "signal_ledger_sha256": "5193f00d7f36da003f53cec387900da4c3d002299f5dfcfc1a95eaa199ed3a79",
+    "execution_ledger_sha256": "d57a3e61eac969e42cafa418ccd8c0a5ee65dcf69da145bb2c096c2a02a2ea4f",
+    "signal_entry_count": 0,
+    "execution_entry_count": 0,
+    "historical_backfill_performed": false,
+    "ledgers_changed": false,
+    "second_prospective_candidate_created": false
+  },
+  "provider_credential": {
+    "source": ".env",
+    "regular_file_non_symlink": true,
+    "mode": "0600",
+    "git_ignored": true,
+    "recognized_nonempty_token_key_count": 1,
+    "credential_accepted_by_plan": true,
+    "secret_printed_hashed_logged_or_persisted": false
+  },
+  "provider_request_accounting": {
+    "campaign102_historical_research_provider_calls": 0,
+    "candidate49_20260807_provider_calls": 4,
+    "same_day_further_provider_calls_allowed": false
+  },
+  "research_mode": {
+    "historical_walkforward_is_primary_iteration_engine": true,
+    "historical_offline_work_may_run_at_any_time": true,
+    "candidate49_future_observation_is_independent_confirmation_layer": true,
+    "candidate49_failure_does_not_block_offline_campaign103": true,
+    "wait_for_1630_or_new_daily_bar_required_for_historical_work": false
+  },
+  "current_scoring_selection_sizing_or_orders_performed": false,
+  "investment_advice": false,
+  "next_safe_action": "Do not retry Candidate49 or re-request stock_basic on 2026-08-07. Continue Campaign103 offline under v59 with a genuinely new prevalue-frozen mechanism."
+}

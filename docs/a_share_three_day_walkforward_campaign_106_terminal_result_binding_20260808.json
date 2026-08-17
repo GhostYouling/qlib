@@ -1,0 +1,121 @@
+{
+  "schema_version": 1,
+  "kind": "a_share_three_day_walkforward_campaign106_terminal_result_binding",
+  "status": "campaign106_terminal_infrastructure_inconclusive_no_development_or_stress",
+  "recorded_at": "2026-08-07T19:34:29Z",
+  "preregistration": {
+    "path": "docs/a_share_three_day_walkforward_campaign_106_no_return_preregistration.json",
+    "sha256": "933b1f0bea9d092e67ba688d6270983e75e9002f2948f5e01f363d50cc4f2670"
+  },
+  "implementation_freeze": {
+    "path": "docs/a_share_three_day_walkforward_campaign_106_no_return_implementation_freeze_v2_20260808.json",
+    "sha256": "a832b5c3500d7fb7e4aeaa97204689b84ad9f15664424d270d79626824da224f"
+  },
+  "authoritative_artifacts": {
+    "feature_snapshot_binding": {
+      "path": "docs/a_share_three_day_walkforward_campaign_106_feature_snapshot_binding_20260808.json",
+      "sha256": "6d88eb81201bf3cc1663d4ec43733fbc5cadf8e7695f3c1c92bba09b9fbdd859"
+    },
+    "first_audit_failure": {
+      "path": "docs/a_share_three_day_walkforward_campaign_106_no_return_audit_failure_20260808.json",
+      "sha256": "e07e26303427f6f9eaa90b8fb77553685f99aee8ec5b9f1f9dfc9db00a9f03ee"
+    },
+    "single_recovery_failure": {
+      "path": "docs/a_share_three_day_walkforward_campaign_106_no_return_audit_recovery_v2_failure_20260808.json",
+      "sha256": "5213e48f388ed03185bbdd34c8cd800db6e01b4c8da7da70855f02a7de53de45"
+    },
+    "terminal_coverage_verification": {
+      "path": "docs/a_share_three_day_walkforward_campaign_106_terminal_coverage_verification_20260808.json",
+      "sha256": "3a309c13202633a8d2778c0463aee2871887355ad7fc950e74a1c1835a78a318"
+    },
+    "research_attempt_ledger": {
+      "path": "data/experiments/short_horizon/historical_walkforward/campaign_106/research_attempt_ledger_v3.json",
+      "sha256": "f694aad33ac7667499b62a3be8e84b60554fc70e972c567ebb9451d6941f6bb5",
+      "attempt_count": 3,
+      "entry_count": 3,
+      "chain_tip_sha256": "22d1b82243bbd25c477d99309c37e21027b66eca413fc846e2f646c07bacfd32"
+    }
+  },
+  "candidate_definition": {
+    "name": "intraday_nonzero_range_bar_share_240m",
+    "score_direction": "higher",
+    "formula": "For exactly 240 standard bars require finite strictly positive high and low with low<=high, count bars where high>low, and divide by 240; high==low is valid non-varying.",
+    "complete_definition_eligible_for_future_inventory": true,
+    "numeric_comparator_eligible_for_future_uniqueness": false,
+    "numeric_ineligibility_reason": "The all-132 uniqueness decision was not completed because the frozen comparator-132 adapter failed and its single recovery was consumed.",
+    "retry_reverse_redefine_filter_residualize_combine_or_rescue_allowed": false
+  },
+  "no_return_evidence": {
+    "feature_snapshot": {
+      "path": "/Volumes/DIsk/qlib-a-share-tushare-1m/derived/a_share/rich/tushare/minute_walkforward_campaign106_feature_library/tushare_stk_mins_1m_2019_2025_ea0cbb8f_walkforward_campaign106_feature_library_v1/snapshot_manifest.json",
+      "sha256": "0fa2bb014e0c51e7ad2254c479f21c2d5a1d32bec57be956a111f2ca5da3c572",
+      "dataset_sha256": "f52544dbce026cf9fca9489c85d80bb6fb69e5e880f5b7bf14fb82f09ae8de0c",
+      "rows": 7724498,
+      "eligible_rows": 7724498,
+      "missing_rows": 0
+    },
+    "coverage": {
+      "quality_listing_rows": 1331759,
+      "candidate_eligible_rows": 1330171,
+      "calendar_sessions": 1632,
+      "median_coverage": 0.9994517542211769,
+      "p05_coverage": 0.9956886515772271,
+      "eligible_names_p05": 138.0,
+      "potential_non_overlapping_three_session_cohorts": 540,
+      "observed_cohort_years": [
+        2019,
+        2020,
+        2021,
+        2022,
+        2023,
+        2024,
+        2025
+      ],
+      "gate_passed_before_comparison_values": true
+    },
+    "numeric_comparison_count_required": 132,
+    "numeric_comparison_decision_count_published": 0,
+    "first_131_results_computed_in_failed_processes_but_not_published_or_used": true,
+    "comparator_132_correlation_computed": false,
+    "all_numeric_comparisons_passed": null,
+    "scientific_admissibility": "inconclusive_due_to_infrastructure",
+    "historical_daily_price_fields_read": [],
+    "historical_forward_return_fields_read": false
+  },
+  "development": {
+    "trial_id": "wf106_intraday_nonzero_range_bar_share_240m_single_higher",
+    "development_trial_started": false,
+    "complete_development_trial_count": 0,
+    "development_survivor_count": 0,
+    "reason": "No all-132 no-return admissibility decision exists."
+  },
+  "exposed_stress": {
+    "status": "not_opened_no_admissible_development_trial",
+    "interval_2024_2025_opened": false,
+    "return_fields_read": false,
+    "stress_trial_count": 0
+  },
+  "accounting": {
+    "campaign106_attempt_count": 3,
+    "campaign106_ledger_entry_count": 3,
+    "campaign106_infrastructure_failure_count": 2,
+    "campaign106_prevalue_scientific_attempt_count": 1,
+    "campaign106_complete_factor_attempt_count": 1,
+    "campaign106_scientifically_decided_factor_attempt_count": 0,
+    "campaign106_return_reading_complete_development_trial_count": 0,
+    "campaign106_development_survivor_count": 0,
+    "campaign106_stress_trial_count": 0,
+    "cumulative_historical_research_attempt_count": 787,
+    "cumulative_return_reading_development_trial_count": 300
+  },
+  "boundaries": {
+    "provider_request_issued": false,
+    "candidate49_historical_return_read": false,
+    "candidate49_historical_signal_execution_or_milestone_backfill_performed": false,
+    "candidate49_ledgers_changed": false,
+    "second_prospective_candidate_created": false,
+    "current_scoring_selection_sizing_or_orders_performed": false,
+    "investment_advice": false
+  },
+  "next_action": "Append this definition only to the complete semantic inventory, keep the v63 132-factor numeric comparator order unchanged, and require future campaigns to test comparator missingness before values."
+}

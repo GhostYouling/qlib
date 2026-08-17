@@ -1,0 +1,140 @@
+{
+  "schema_version": 1,
+  "kind": "a_share_three_day_walkforward_campaign261_infrastructure_failure_record",
+  "status": "sixteen_failures_preserved_without_changing_terminal_science",
+  "recorded_at": "2026-08-16T16:45:00+08:00",
+  "timestamp_semantics": "monotonic_logical_append_time_not_host_wall_clock_measurement",
+  "failures": [
+    {
+      "attempt_id": "campaign261_infrastructure_001",
+      "phase": "mandatory_skill_read",
+      "status": "failed_skill_lines_201_300_output_truncated",
+      "result_consumed": false,
+      "recovery": "Re-read lines 201-250 and 251-300 completely before task actions."
+    },
+    {
+      "attempt_id": "campaign261_infrastructure_002",
+      "phase": "mandatory_skill_read",
+      "status": "failed_skill_lines_301_350_output_truncated",
+      "result_consumed": false,
+      "recovery": "Re-read lines 301-350 with a larger output budget before task actions."
+    },
+    {
+      "attempt_id": "campaign261_infrastructure_003",
+      "phase": "authority_worktree_inventory",
+      "status": "failed_unbounded_dirty_worktree_status_output_truncated",
+      "result_consumed": false,
+      "recovery": "Use path-scoped Git status and direct authoritative JSON reads."
+    },
+    {
+      "attempt_id": "campaign261_infrastructure_004",
+      "phase": "candidate49_ledger_verification",
+      "status": "failed_guessed_jsonl_ledger_paths_in_shasum",
+      "result_consumed": false,
+      "recovery": "Resolve exact JSON ledger paths from frozen scripts before hashing."
+    },
+    {
+      "attempt_id": "campaign261_infrastructure_005",
+      "phase": "candidate49_ledger_verification",
+      "status": "failed_guessed_jsonl_ledger_paths_in_wc",
+      "result_consumed": false,
+      "recovery": "Verify data/experiments/short_horizon/candidate49_future_signal_ledger.json and candidate49_future_execution_ledger.json."
+    },
+    {
+      "attempt_id": "campaign261_infrastructure_006",
+      "phase": "repository_instruction_discovery",
+      "status": "failed_broad_parent_find_remained_running_past_yield_and_was_terminated",
+      "result_consumed": false,
+      "recovery": "Use repository-scoped rg; no AGENTS.md exists in the authoritative worktree."
+    },
+    {
+      "attempt_id": "campaign261_infrastructure_007",
+      "phase": "repository_instruction_discovery",
+      "status": "compound_no_agents_rg_probe_exited_one_on_expected_absence",
+      "result_consumed": true,
+      "recovery": "Treat the empty repository-scoped result as no AGENTS.md and do not use the nonzero exit as scientific evidence."
+    },
+    {
+      "attempt_id": "campaign261_infrastructure_008",
+      "phase": "campaign260_pattern_inspection",
+      "status": "failed_multi_artifact_inspection_output_truncated",
+      "result_consumed": false,
+      "recovery": "Re-read every required Campaign260 artifact and implementation in bounded separate commands."
+    },
+    {
+      "attempt_id": "campaign261_infrastructure_009",
+      "phase": "candidate49_ledger_semantic_verification",
+      "status": "initial_jq_object_length_counted_top_level_keys_not_entries",
+      "result_consumed": false,
+      "recovery": "Use .entries|length; both ledgers have exactly zero entries and their frozen hashes match."
+    },
+    {
+      "attempt_id": "campaign261_infrastructure_010",
+      "phase": "prevalue_formula_and_feature_formatting",
+      "status": "black_check_reported_four_files_would_reformat",
+      "result_consumed": false,
+      "recovery": "Run Black before implementation freeze and rerun the same 15 synthetic tests."
+    },
+    {
+      "attempt_id": "campaign261_infrastructure_011",
+      "phase": "prevalue_postformat_validation",
+      "status": "combined_command_failed_ruff_e402_after_black_split_delayed_imports",
+      "result_consumed": false,
+      "recovery": "Add the file-level E402 exception required by dynamic frozen-source loading, then run pytest, Ruff and Black independently; all passed."
+    },
+    {
+      "attempt_id": "campaign261_infrastructure_012",
+      "phase": "prevalue_cli_semantic_check",
+      "status": "implementation_freeze_v1_retained_inherited_session_total_help_text",
+      "result_consumed": false,
+      "artifact": "docs/a_share_three_day_walkforward_campaign_261_help_text_prevalue_failure_20260816.json",
+      "recovery": "Preserve v1, correct only generated help prose before values, and publish additive implementation freeze v2."
+    },
+    {
+      "attempt_id": "campaign261_infrastructure_013",
+      "phase": "candidate_snapshot_build",
+      "status": "failed_missing_inherited_manifest_counter_positive_amount_bars",
+      "result_consumed": false,
+      "artifact": "docs/a_share_three_day_walkforward_campaign_261_initial_snapshot_build_failure_20260816.json",
+      "recovery": "Use the separately frozen counter-only recovery wrapper; candidate frames remain exactly equal and the full rebuild succeeded."
+    },
+    {
+      "attempt_id": "campaign261_infrastructure_014",
+      "phase": "candidate_snapshot_build_monitoring",
+      "status": "one_write_stdin_poll_tool_call_had_invalid_javascript_quote",
+      "result_consumed": false,
+      "recovery": "Correct the poll call and continue the unchanged background build session, which later exited zero."
+    },
+    {
+      "attempt_id": "campaign261_infrastructure_015",
+      "phase": "coverage_plan_entrypoint",
+      "status": "direct_script_plan_failed_repository_scripts_package_import",
+      "result_consumed": false,
+      "recovery": "Run the byte-identical frozen runner through python -m scripts.a_share_three_day_walkforward_campaign261_no_return_audit; plan was ready and the sole coverage run passed."
+    },
+    {
+      "attempt_id": "campaign261_infrastructure_016",
+      "phase": "ordered_uniqueness_output_semantics",
+      "status": "immutable_audit_inherited_stale_campaign153_next_action_text",
+      "result_consumed": false,
+      "recovery": "Preserve the immutable numeric audit and use Campaign261 terminal artifacts to state the correct next campaign is 262. Numeric results and every boundary field are unaffected."
+    }
+  ],
+  "effective_infrastructure_failure_count": 16,
+  "research_boundary": {
+    "failed_or_truncated_output_used_as_scientific_or_validation_evidence": false,
+    "candidate_snapshot_values_read": true,
+    "numeric_comparator_values_read": true,
+    "historical_daily_price_or_forward_return_values_read": false,
+    "return_reading_development_trial_count": 0,
+    "stress_2024_2025_opened": false,
+    "provider_or_web_request_issued": false,
+    "provider_credential_presence_value_or_digest_read": false,
+    "candidate49_plan_or_run_executed": false,
+    "candidate49_historical_backfill_performed": false,
+    "candidate49_ledgers_changed": false,
+    "second_prospective_candidate_created": false,
+    "current_scoring_selection_sizing_positions_or_orders_performed": false,
+    "investment_advice": false
+  }
+}

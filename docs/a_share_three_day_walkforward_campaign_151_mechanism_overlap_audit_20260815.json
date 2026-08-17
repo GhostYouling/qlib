@@ -1,0 +1,145 @@
+{
+  "schema_version": 1,
+  "kind": "a_share_three_day_walkforward_campaign151_mechanism_overlap_audit",
+  "status": "selected_relative_activity_clock_mechanism_distinct_before_source_or_factor_values",
+  "recorded_at": "2026-08-15T00:05:11+08:00",
+  "purpose": "Challenge the sole selected Campaign151 mechanism against the complete frozen library and reject its five alternatives before any historical minute value, benchmark value, factor value, comparator, price or return is opened.",
+  "authoritative_inputs": {
+    "concept_scouting": {
+      "path": "docs/a_share_three_day_walkforward_campaign_151_concept_scouting_20260815.json",
+      "sha256": "35a6cef7a56f5b1d629082bb5cd1565217acc66271d4311689b70d23903f6520"
+    },
+    "numeric_policy_v203": {
+      "path": "docs/a_share_three_day_walkforward_future_numeric_comparison_eligibility_policy_v203_20260814.json",
+      "sha256": "081d1f7ab63cfbf5242dda4fe755315aae25b5dd3a1f97a39e4fd99ad2c4215d"
+    },
+    "campaign150_frontier_audit": {
+      "path": "docs/a_share_three_day_walkforward_campaign_150_mechanism_frontier_audit_20260814.json",
+      "sha256": "778847d1417b23a4e5456ae470b49e65550fa31d706612debbc8535cff8ca469"
+    }
+  },
+  "candidate": {
+    "name": "intraday_relative_amount_share_clock_center_240m",
+    "direction": "higher",
+    "information_state": "stock_minute_amount_relative_to_same_date_same_clock_leave_one_out_peer_mean_amount",
+    "mechanism": "full_session_clock_center_of_normalized_pointwise_relative_activity_mass",
+    "source_projection": ["datetime", "symbol", "provider", "amount"],
+    "raw_terminal_factor_values_used": false
+  },
+  "exact_prevalue_mechanism": {
+    "bar_grid": "Exactly 09:31-11:30 and 13:01-15:00 in the immutable 241-row source identity; 09:30 is excluded and lunch, overnight, cross-date and cross-stock transitions are never formed.",
+    "peer_state": "At each of the 240 positions require at least 50 other complete stock-day profiles, take their arithmetic mean amount b_i, and require every b_i finite and strictly positive.",
+    "own_state": "Require every own amount a_i finite and nonnegative. Exact zeros remain zero.",
+    "relative_mass": "z_i=a_i/b_i; require sum_i(z_i)>0; q_i=z_i/sum_j(z_j).",
+    "clock": "x_i=i/239 for zero-based i=0,...,239.",
+    "score": "sum_i(q_i*x_i), with only 1e-12 endpoint canonicalization to [0,1].",
+    "valid_range": [0.0, 1.0]
+  },
+  "nearest_complete_definition_review": [
+    {
+      "name": "intraday_amount_center_of_mass_240m",
+      "overlap": "Both use the fixed amount clock and return a normalized center.",
+      "distinction": "The terminal factor normalizes the stock's own amount vector. Campaign151 first divides every clock by the same-clock leave-one-out peer mean. Holding the own vector fixed while changing the peer clock changes Campaign151 but not the terminal factor."
+    },
+    {
+      "name": "intraday_market_amount_profile_synchronization_240m",
+      "overlap": "Both require complete own and leave-one-out market amount profiles.",
+      "distinction": "The terminal factor correlates separately normalized own and peer profiles and is high for shape agreement. Campaign151 forms the pointwise ratio, normalizes that ratio as relative market-share mass, and locates its clock center. A stock exactly matching the peer shape has Campaign151 score 0.5 regardless of the common U-shape."
+    },
+    {
+      "name": "intraday_directional_amount_timing_spread_238m",
+      "overlap": "Both summarize the timing of transaction amount.",
+      "distinction": "The terminal factor partitions endpoint amount by the sign of own returns. Campaign151 reads no price or return and partitions nothing by direction."
+    },
+    {
+      "name": "intraday_amount_clock_dispersion_240m",
+      "overlap": "Both are moments of a 240-position activity distribution.",
+      "distinction": "The terminal factor is the second moment of own normalized amount. Campaign151 is the first moment of a different raw relational state, the own-to-peer pointwise amount ratio."
+    },
+    {
+      "name": "intraday_day_over_day_amount_profile_similarity_240b",
+      "overlap": "Both compare an own amount profile with another profile.",
+      "distinction": "The terminal factor compares the same stock across adjacent accepted dates. Campaign151 is same-date cross-sectional, uses no prior date and measures relative-share timing rather than profile similarity."
+    },
+    {
+      "name": "intraday_top_decile_amount_event_spacing_entropy_25g and intraday_amount_weak_order_entropy_236t",
+      "overlap": "All use minute amount ordering or timing.",
+      "distinction": "Those definitions use within-stock thresholds or weak orders and ignore peer magnitudes. Campaign151 preserves cross-sectional relative magnitudes at all 240 clocks and uses neither threshold nor symbolic state."
+    }
+  ],
+  "invariance_challenges": {
+    "common_per_clock_market_scale": "Multiplying every stock and peer amount at a clock by the same positive scalar leaves every a_i/b_i and Campaign151 unchanged, while it can change own-only clock moments.",
+    "own_only_common_scale": "Multiplying all 240 own amounts by one positive scalar leaves Campaign151 unchanged.",
+    "peer_clock_change": "Changing the peer clock while holding every own amount fixed can change Campaign151 and leaves all own-only amount factors unchanged.",
+    "exact_peer_shape_match": "If a_i=c*b_i for one positive constant c at every clock, q is uniform and the exact score is 0.5 regardless of the common intraday market shape.",
+    "no_terminal_score_composition": true
+  },
+  "proposal_gate_results": [
+    {
+      "catalog_id": "c151_01",
+      "name": "intraday_relative_amount_share_clock_center_240m",
+      "accepted_historical_source_and_original_contract_permits_inputs": true,
+      "semantically_independent_from_terminal_library": true,
+      "passed": true
+    },
+    {
+      "catalog_id": "c151_02",
+      "name": "intraday_relative_range_share_clock_center_240m",
+      "accepted_historical_source_and_original_contract_permits_inputs": true,
+      "semantically_independent_from_terminal_library": false,
+      "passed": false
+    },
+    {
+      "catalog_id": "c151_03",
+      "name": "intraday_relative_return_variance_share_clock_center_238m",
+      "accepted_historical_source_and_original_contract_permits_inputs": true,
+      "semantically_independent_from_terminal_library": false,
+      "passed": false
+    },
+    {
+      "catalog_id": "c151_04",
+      "name": "intraday_cross_sectional_amount_rank_transition_entropy_240m",
+      "accepted_historical_source_and_original_contract_permits_inputs": true,
+      "semantically_independent_from_terminal_library": false,
+      "passed": false
+    },
+    {
+      "catalog_id": "c151_05",
+      "name": "intraday_relative_transaction_price_activity_clock_center_240m",
+      "accepted_historical_source_and_original_contract_permits_inputs": true,
+      "semantically_independent_from_terminal_library": false,
+      "passed": false
+    },
+    {
+      "catalog_id": "c151_06",
+      "name": "intraday_relative_amount_share_late_early_ratio_60m",
+      "accepted_historical_source_and_original_contract_permits_inputs": true,
+      "semantically_independent_from_terminal_library": false,
+      "passed": false
+    }
+  ],
+  "semantic_decision": {
+    "complete_definition_count_reviewed": 155,
+    "complete_definition_order_sha256": "2e4114edb26fa3aaebd145ef07fe4e2ac9c5d9dc4586cf70ff61c20e39b954ba",
+    "selected_candidate_count": 1,
+    "mechanism_independent_enough_for_single_prevalue_formula_freeze": true,
+    "numeric_distinctness_established": false,
+    "predictive_value_established": false,
+    "same_mechanism_alternate_statistic_window_threshold_rank_bin_peer_aggregation_or_direction_allowed": false,
+    "old_terminal_factor_combination_or_reclassification_performed": false
+  },
+  "research_boundary": {
+    "minute_source_rows_read": false,
+    "peer_benchmark_values_read": false,
+    "candidate_or_comparator_values_read": false,
+    "historical_daily_price_or_forward_return_values_read": false,
+    "stress_2024_2025_opened": false,
+    "credential_loaded": false,
+    "provider_request_issued": false,
+    "candidate49_historical_backfill_performed": false,
+    "candidate49_ledgers_changed": false,
+    "second_prospective_candidate_created": false,
+    "current_scoring_selection_sizing_positions_or_orders_performed": false,
+    "investment_advice": false
+  }
+}

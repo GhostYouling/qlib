@@ -1,0 +1,18 @@
+{
+  "schema_version": 1,
+  "kind": "a_share_three_day_walkforward_campaign121_infrastructure_failure",
+  "status": "recorded_append_only_without_scientific_change",
+  "recorded_at": "2026-08-14T04:01:00+08:00",
+  "attempt_id": "campaign121_infrastructure_033",
+  "stage": "terminal_and_unified_report_append",
+  "failure": "The first apply_patch used a report-tail sentence that was not present verbatim, so patch verification failed before the multi-file patch made any write.",
+  "effects": {
+    "files_written_by_failed_patch": 0,
+    "scientific_result_changed": false,
+    "research_values_read_or_recomputed": false,
+    "development_trial_rerun": false,
+    "stress_2024_2025_opened": false,
+    "candidate49_ledgers_changed": false
+  },
+  "safe_recovery": "Read the actual tail and append the same terminal prose with apply_patch; preserve this failure and advance accounting only."
+}

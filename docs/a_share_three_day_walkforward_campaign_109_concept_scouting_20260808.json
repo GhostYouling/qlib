@@ -1,0 +1,86 @@
+{
+  "schema_version": 1,
+  "kind": "a_share_three_day_walkforward_campaign109_concept_scouting",
+  "status": "finite_prevalue_catalog_one_genuinely_new_candidate_selected",
+  "recorded_at": "2026-08-07T21:46:02Z",
+  "authoritative_inputs": {
+    "iteration_state": {
+      "path": "docs/a_share_three_day_iteration_status_20260808_campaign108_terminal_v2.json",
+      "sha256": "ba4a421795e02159bcd5f64683fcd3d3238e375e882a702c13622db77381d1c7"
+    },
+    "numeric_policy_v69": {
+      "path": "docs/a_share_three_day_walkforward_future_numeric_comparison_eligibility_policy_v69_20260808.json",
+      "sha256": "36ec8d963d733e5d6b44df7a3654b8e40444468e470b44b11cc19f6989a527b8",
+      "complete_definition_count": 138,
+      "complete_definition_order_sha256": "6b0deb2e6d3f610e9fb18cc31636b92ac8a6f644a08b3e461c3f301966738b68",
+      "numeric_comparator_count": 132,
+      "numeric_comparator_order_sha256": "7ed69afd1408e84dcc856583344166ffc9bcbb0add1aed63163b1d12a1be9a25"
+    },
+    "campaign108_completion": {
+      "path": "docs/a_share_three_day_walkforward_campaign_108_terminal_completion_freeze_20260808.json",
+      "sha256": "454c28fcc677a8043bb682593a5738ef3de2938623a65c526bcc73f17fa4b2e5"
+    }
+  },
+  "finite_concept_catalog": [
+    {
+      "ordinal": 1,
+      "concept": "within-bar body-magnitude serial persistence",
+      "decision": "selected",
+      "candidate_name": "intraday_intrabar_body_magnitude_serial_persistence_238p",
+      "reason": "It measures whether the absolute open-to-close displacement of one minute persists into the next minute inside each trading half. The complete 138-definition library contains close-to-close absolute-return persistence, body direction continuity, body-to-range efficiency, gap/body coupling and close-location persistence, but not adjacent dependence of same-bar body magnitudes."
+    },
+    {
+      "ordinal": 2,
+      "concept": "share-volume clock dispersion",
+      "decision": "rejected_before_values",
+      "reason": "It would reuse the exact Campaign077 amount-clock variance mechanism with a field substitution and is not sufficiently independent."
+    },
+    {
+      "ordinal": 3,
+      "concept": "half-session body-magnitude profile similarity",
+      "decision": "rejected_before_values",
+      "reason": "It is a direct profile-similarity variant of terminal return/range/amount half-session similarity mechanisms and adds no new dependence operator."
+    },
+    {
+      "ordinal": 4,
+      "concept": "longest unchanged-close run",
+      "decision": "rejected_before_values",
+      "reason": "It is a sparse-price-update reexpression of exact update share, update-clock entropy and exact-close diversity."
+    },
+    {
+      "ordinal": 5,
+      "concept": "wick-magnitude serial persistence",
+      "decision": "rejected_before_values",
+      "reason": "The library already covers wick balance, close location, close-location persistence and range persistence; this candidate has higher semantic collision risk than the selected body-only mechanism."
+    }
+  ],
+  "selected_candidate": {
+    "name": "intraday_intrabar_body_magnitude_serial_persistence_238p",
+    "direction": "higher",
+    "formula": "population Pearson correlation between adjacent abs(log(close/open)) values over 119 morning plus 119 afternoon within-half pairs",
+    "source_projection": [
+      "datetime",
+      "symbol",
+      "provider",
+      "open",
+      "close"
+    ],
+    "economic_hypothesis": "Persistent one-minute body magnitude may identify sustained execution imbalance or liquidity disturbance that survives the close and carries into the next few sessions.",
+    "valid_range": [
+      -1.0,
+      1.0
+    ],
+    "alternate_direction_window_lag_transform_threshold_filter_subset_regime_weight_fit_model_or_combination_search": false
+  },
+  "research_boundary": {
+    "campaign109_source_rows_read": false,
+    "campaign109_candidate_or_comparator_values_read": false,
+    "historical_daily_price_or_forward_return_values_read": false,
+    "provider_request_issued": false,
+    "candidate49_historical_backfill_performed": false,
+    "candidate49_ledgers_changed": false,
+    "current_scoring_selection_sizing_or_orders_performed": false,
+    "investment_advice": false
+  },
+  "next_action": "Audit the selected mechanism against every frozen definition and known support failure before protocol or implementation freeze and before any source, candidate or comparator value."
+}

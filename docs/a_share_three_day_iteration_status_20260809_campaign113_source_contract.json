@@ -1,0 +1,156 @@
+{
+  "schema_version": 17,
+  "kind": "a_share_three_day_iteration_status",
+  "status": "campaign113_source_contract_frozen_future_policy_v75_active",
+  "recorded_at": "2026-08-09T01:07:09+08:00",
+  "supersedes_without_rewriting": {
+    "path": "docs/a_share_three_day_iteration_status_20260809_campaign112_prevalue_terminal.json",
+    "sha256": "a8b56171ec20a130a1485aa9316d72e030ad928900eb4b7368c30b79e95c53b8",
+    "preserved": true,
+    "campaign112_scientific_result_or_accounting_changed": false
+  },
+  "workspace_resolution": {
+    "heartbeat_declared_workspace": "/Users/niyufei/Coding/qlib",
+    "heartbeat_declared_path_is_repository": false,
+    "authoritative_workspace": "/Volumes/DIsk/Disk-Coding/qlib",
+    "authoritative_workspace_git_head": "16deeb0f",
+    "reason": "The declared /Users path contains no git repository or Campaign112 authority files; all predecessor fingerprints resolve only in the established /Volumes worktree."
+  },
+  "active_daily_data_root": "/Volumes/DIsk/Disk-Coding/qlib/data",
+  "active_minute_data_root": "/Volumes/DIsk/qlib-a-share-tushare-1m",
+  "local_session_status": {
+    "local_date": "2026-08-09",
+    "timezone": "Asia/Singapore",
+    "weekday": "Sunday",
+    "accepted_local_trading_day": false,
+    "candidate49_provider_workflow_allowed_today": false,
+    "candidate49_plan_or_run_executed": false,
+    "new_daily_staging_root_created": false
+  },
+  "campaign113_stage": {
+    "source_contract": {
+      "path": "docs/a_share_official_exchange_enforcement_source_contract_20260809.json",
+      "sha256": "d4eda5eb2fefd7e2795251bd4926fc7e7157ea264fcabc430904c40d5dfd91e4",
+      "source_state": "formal_exchange_enforcement_action",
+      "programmatic_network_access_authorized": false,
+      "factor_formula_or_direction_registered": false
+    },
+    "source_contract_freeze_result": {
+      "path": "docs/a_share_three_day_walkforward_campaign_113_source_contract_freeze_result_20260809.json",
+      "sha256": "a95bf2f1393ddda3c61316ebff400d8b532327d72b355b0a6342d5824a28acc4"
+    },
+    "attempt_ledger": {
+      "path": "data/experiments/short_horizon/historical_walkforward/campaign_113/research_attempt_ledger_v1.json",
+      "sha256": "cbd03219dd11a6dd260d57af28202e95a017d5da729fa5c437613d53aa2f912f",
+      "entry_count": 6,
+      "infrastructure_failure_count": 5,
+      "prevalue_scientific_attempt_count": 1,
+      "chain_tip_sha256": "733aeb776e737a23a0b22474fc9ac01ded969d9cc26e7e6358d420cb47f45380"
+    },
+    "source_concepts_reviewed": 5,
+    "terminal_or_blocked_sources_rejected": 4,
+    "new_source_contracts_frozen": 1,
+    "complete_factor_definition_count": 0,
+    "candidate_source_or_comparison_values_read": false,
+    "development_trial_count": 0,
+    "stress_2024_2025_opened": false,
+    "campaign_terminal": false
+  },
+  "accounting": {
+    "campaign113_attempt_count": 6,
+    "campaign113_infrastructure_failure_count": 5,
+    "campaign113_complete_factor_attempt_count": 0,
+    "campaign113_return_reading_development_trial_count": 0,
+    "cumulative_historical_research_attempt_count": 833,
+    "cumulative_return_reading_development_trial_count": 302
+  },
+  "effective_future_numeric_policy": {
+    "path": "docs/a_share_three_day_walkforward_future_numeric_comparison_eligibility_policy_v75_20260809.json",
+    "sha256": "cdcb577806c6555528fa189fcda5e8da5c4135192eb121c6acbc2d6781cf5407",
+    "complete_definition_count": 140,
+    "complete_definition_order_sha256": "c06e054bd76a7eb32a88a8a119abf5a0b7da2d017620ce7d870c9bb1c361c3c4",
+    "numeric_comparator_count": 134,
+    "numeric_comparator_order_sha256": "31d788db467f558a0ac538315343090f1b3ad4cb27a26136a49ebaa88b2fdbf2"
+  },
+  "candidate49": {
+    "registration_id": "candidate49_intraday_cumulative_vwap_crossing_rate_240m_v1",
+    "remains_only_active_prospective_candidate": true,
+    "signal_ledger": {
+      "path": "data/experiments/short_horizon/candidate49_future_signal_ledger.json",
+      "sha256": "5193f00d7f36da003f53cec387900da4c3d002299f5dfcfc1a95eaa199ed3a79",
+      "entry_count": 0
+    },
+    "execution_ledger": {
+      "path": "data/experiments/short_horizon/candidate49_future_execution_ledger.json",
+      "sha256": "d57a3e61eac969e42cafa418ccd8c0a5ee65dcf69da145bb2c096c2a02a2ea4f",
+      "entry_count": 0
+    },
+    "latest_preserved_source_failure": {
+      "path": "docs/a_share_candidate49_20260807_daily_source_failure_record.json",
+      "sha256": "8b8eec87a1f20c424703cf70ea9eae87f09c7b1e5c9a5754c0bde9cc2f9c839f",
+      "failure_stage": "stock_basic",
+      "same_day_retry_allowed": false
+    },
+    "historical_backfill_performed": false,
+    "ledgers_changed_by_campaign113": false,
+    "second_prospective_candidate_created": false
+  },
+  "provider_credential": {
+    "source": ".env",
+    "repository_dotenv_exists": true,
+    "repository_dotenv_is_regular_file": true,
+    "repository_dotenv_is_symlink": false,
+    "repository_dotenv_mode": "0600",
+    "repository_dotenv_git_ignored": true,
+    "tushare_token_entry_count": 1,
+    "tushare_token_nonempty": true,
+    "secret_printed_hashed_logged_or_persisted": false,
+    "provider_request_issued": false
+  },
+  "verification": {
+    "command": "/Users/niyufei/.cache/codex-runtimes/codex-primary-runtime/dependencies/python/bin/python3 -m pytest -q tests/data_collector_tests/test_a_share_three_day_walkforward_campaign113_source_contract.py tests/data_collector_tests/test_a_share_three_day_walkforward_campaign112_prevalue_terminal.py",
+    "result": "13 passed in 1.69s",
+    "campaign113_test": {
+      "path": "tests/data_collector_tests/test_a_share_three_day_walkforward_campaign113_source_contract.py",
+      "sha256": "bb3d84b6482e078c072dfb078c9dc6a1db2385eb61be4861859a89e6ab469c5c"
+    }
+  },
+  "reports": {
+    "campaign113_report": {
+      "path": "docs/a_share_three_day_walkforward_campaign_113_report.md",
+      "sha256": "8c41680443fa847d1989251361208c5987f6bea60da1aa1ede20ce59a3960e62"
+    },
+    "current_research_report": {
+      "path": "data/experiments/short_horizon/current_research_report.md",
+      "sha256": "943cd58cfd104f7afc0ccf34bf317ca82757367ce329cb59a82eb03f6d0be03b"
+    },
+    "three_day_research_report": {
+      "path": "data/experiments/short_horizon/three_day_research_report.md",
+      "sha256": "0d59add1f32800de7aa8ad20e8779f73aa95b067fbf2e240834a586875221f62"
+    },
+    "data_pipeline": {
+      "path": "docs/a_share_data_pipeline.md",
+      "sha256": "2634c3a8622538e04cb2a7b4e9a88767513a44ee0b479dfad98f21ffdf8e01ce"
+    }
+  },
+  "research_mode": {
+    "historical_walkforward_is_primary_iteration_engine": true,
+    "historical_offline_work_allowed_at_any_local_time": true,
+    "new_daily_bar_or_1630_wait_required_for_historical_iteration": false,
+    "candidate49_future_observation_is_independent_confirmation_layer": true,
+    "campaign113_current_stage_is_source_contract_not_factor_validation": true
+  },
+  "research_boundary": {
+    "official_page_labels_or_search_index_snippets_observed": true,
+    "programmatic_source_requests_issued": false,
+    "programmatic_source_rows_read_persisted_or_counted": false,
+    "historical_daily_price_or_forward_return_values_read": false,
+    "stress_2024_2025_opened": false,
+    "candidate49_historical_backfill_performed": false,
+    "candidate49_ledgers_changed": false,
+    "second_prospective_candidate_created": false,
+    "current_scoring_selection_sizing_or_orders_performed": false,
+    "investment_advice": false
+  },
+  "next_safe_action": "Continue Campaign113 offline without waiting for 16:30: implement the pure finite-label schema-role and canonicalization adapter with synthetic fixtures, freeze adapter/test hashes and endpoint metadata mapping, then freeze exactly one formula/direction/window/missing/range definition before any programmatic exchange source request. Candidate49 remains separate and future-only."
+}

@@ -1,0 +1,62 @@
+{
+  "schema_version": 1,
+  "kind": "a_share_three_day_walkforward_campaign102_design_snapshot_binding",
+  "status": "immutable_design_verified_and_structurally_admitted_before_model_fit_or_returns",
+  "recorded_at": "2026-08-07T15:19:00Z",
+  "protocol": {
+    "path": "docs/a_share_three_day_walkforward_campaign_102_no_return_preregistration.json",
+    "sha256": "5def1f153c4cca94f2d646598f09b810108688488b8aab0b2be345366364b8f9"
+  },
+  "implementation_freeze": {
+    "path": "docs/a_share_three_day_walkforward_campaign_102_design_implementation_freeze_20260807.json",
+    "sha256": "901c47a15444a0fa060d7f29831a8336fc882dc296d61d57c5beb56b90ae6212"
+  },
+  "builder": {
+    "path": "scripts/a_share_three_day_walkforward_campaign102_design.py",
+    "sha256": "6c86ba3b198902389355c22ff79b40cac1a7ffa0218d19b59c8397e54b1a5216"
+  },
+  "snapshot": {
+    "path": "/Volumes/DIsk/qlib-a-share-tushare-1m/derived/a_share/rich/tushare/minute_walkforward_campaign102_design_matrix/tushare_stk_mins_1m_2019_2025_ea0cbb8f_walkforward_campaign102_design_matrix_v1/snapshot_manifest.json",
+    "sha256": "fc9ab498462439731785a0eabbde370c1fd883c8d771eba312c85aa912d3cebe",
+    "dataset_sha256": "cceec2b790d134a89914e83e0697c1e6abff605a85fd85be74de68067faddb92",
+    "disk_size": "494M",
+    "partitions": 7,
+    "rows": 1331759,
+    "eligible_rows": 1327637,
+    "calendar_sessions": 1632,
+    "component_count": 130,
+    "component_order_sha256": "c80d9b929536dd509d6c1a904f790831050e68200393de381f92ad9293ef69e7"
+  },
+  "structural_audit": {
+    "path": "data/experiments/short_horizon/historical_walkforward/campaign_102/no_return/design_structural_audit.json",
+    "sha256": "87001a379815e027787bf51763451f5235ae619b9d2ade12a5790cc753f77b90",
+    "status": "passed_ready_for_sequential_training_fit",
+    "median_coverage": 0.9981238257410756,
+    "p05_coverage": 0.992066409032738,
+    "p05_eligible_names": 138.0,
+    "potential_non_overlapping_three_session_cohorts": 540,
+    "observed_cohort_years": [2019, 2020, 2021, 2022, 2023, 2024, 2025]
+  },
+  "independent_verification": {
+    "status": "verified",
+    "rows": 1331759,
+    "eligible_rows": 1327637,
+    "calendar_sessions": 1632,
+    "partitions": 7
+  },
+  "support_equivalence_check": {
+    "campaign101_eligible_rows": 1327637,
+    "campaign102_eligible_rows": 1327637,
+    "equal": true,
+    "interpretation": "The frozen 98/130 predicate is exactly the preregistered Campaign101-support equivalence and was not tuned after seeing Campaign102 values."
+  },
+  "campaign102_design_matrix_values_read": true,
+  "model_fitting_performed": false,
+  "historical_daily_price_fields_read": [],
+  "historical_forward_return_fields_read": false,
+  "provider_request_issued": false,
+  "candidate49_historical_backfill_performed": false,
+  "candidate49_ledgers_changed": false,
+  "current_scoring_selection_sizing_or_orders_performed": false,
+  "next_action": "Implement and fingerprint the chronological fold runner; freeze it before the first training-return read."
+}

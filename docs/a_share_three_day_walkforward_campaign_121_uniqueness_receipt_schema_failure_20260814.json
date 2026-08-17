@@ -1,0 +1,26 @@
+{
+  "schema_version": 1,
+  "kind": "a_share_three_day_walkforward_campaign121_infrastructure_failure",
+  "status": "recorded_before_any_comparator_value",
+  "recorded_at": "2026-08-14T02:47:00+08:00",
+  "attempt_id": "campaign121_infrastructure_025",
+  "phase": "uniqueness_result_receipt_schema_validation",
+  "failure": {
+    "class": "comparator_138_receipt_missing_after_template_transformation",
+    "message": "The first transformed result schema retained comparator_137 and the all-138 flag but did not add the new comparator_138 source receipt."
+  },
+  "repair": "Add comparator_138 bound to c120_receipt and a synthetic code-constant assertion; do not change any loader, factor, order, gate or threshold.",
+  "validation_after_repair": {
+    "pytest": "5 passed",
+    "black": "passed",
+    "ruff": "passed"
+  },
+  "research_boundary": {
+    "candidate_values_reopened_for_uniqueness": false,
+    "comparator_values_read": false,
+    "historical_daily_price_or_forward_return_values_read": false,
+    "provider_request_issued": false,
+    "candidate49_ledgers_changed": false,
+    "scientific_result_changed": false
+  }
+}

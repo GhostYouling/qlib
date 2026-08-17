@@ -1,0 +1,25 @@
+{
+  "artifact_type": "campaign_infrastructure_failure_record",
+  "campaign_id": 207,
+  "recorded_at": "2026-08-15T20:50:00+08:00",
+  "phase": "append_only_trial_ledger_v1_independent_validation",
+  "requested_scope": "campaign207_ledger_chain_counts_and_evidence_bindings",
+  "status": "failed_ledger_v1_validation_assertion_discarded",
+  "failure_class": "ledger_validation_assertion_failure",
+  "scientific_trial": false,
+  "result_consumed": false,
+  "invalid_artifact": {
+    "path": "data/experiments/short_horizon/historical_walkforward/campaign_207/research_attempt_ledger_v1.json"
+  },
+  "recovery": {
+    "action": "diagnose_with_bounded_field_level_checks_and_publish_v2_with_explicit_supersession_without_rewriting_v1"
+  },
+  "safety": {
+    "credentials_read": false,
+    "network_accessed": false,
+    "candidate49_plan_or_run_executed": false,
+    "candidate_or_comparator_values_read": false,
+    "historical_returns_read": false,
+    "research_thresholds_modified": false
+  }
+}

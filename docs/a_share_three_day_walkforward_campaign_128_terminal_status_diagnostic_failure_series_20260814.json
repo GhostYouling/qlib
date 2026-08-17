@@ -1,0 +1,40 @@
+{
+  "schema_version": 1,
+  "kind": "a_share_three_day_walkforward_campaign128_infrastructure_failure_series",
+  "status": "three_terminal_status_diagnostic_failures_recovered_read_only",
+  "recorded_at": "2026-08-14T07:01:45+08:00",
+  "incidents": [
+    {
+      "attempt_id": "campaign128_infrastructure_009",
+      "status": "failed_daily_data_root_check_wrong_python_environment",
+      "failure": "The system python3 lacked pandas while importing scripts/a_share_data_pipeline.py.",
+      "recovery": "The frozen Anaconda Python 3.12 runtime returned /Volumes/DIsk/Disk-Coding/qlib/data.",
+      "provider_request_issued": false,
+      "research_values_read": false
+    },
+    {
+      "attempt_id": "campaign128_infrastructure_010",
+      "status": "failed_candidate49_ledger_jq_expression_precedence",
+      "failure": "A jq array expression applied .chain_tip_sha256 to the intermediate entries array because grouping was omitted.",
+      "recovery": "No ledger byte changed; a grouped object expression was used later.",
+      "provider_request_issued": false,
+      "research_values_read": false
+    },
+    {
+      "attempt_id": "campaign128_infrastructure_011",
+      "status": "failed_candidate49_ledger_top_level_array_assumption",
+      "failure": "The first recovery expression incorrectly treated the ledger object as a top-level array.",
+      "recovery": "The final grouped object expression verified both ledgers have zero entries and preserved chain tips.",
+      "provider_request_issued": false,
+      "research_values_read": false
+    }
+  ],
+  "candidate49_signal_entry_count_after_recovery": 0,
+  "candidate49_execution_entry_count_after_recovery": 0,
+  "candidate49_signal_ledger_sha256": "5193f00d7f36da003f53cec387900da4c3d002299f5dfcfc1a95eaa199ed3a79",
+  "candidate49_execution_ledger_sha256": "d57a3e61eac969e42cafa418ccd8c0a5ee65dcf69da145bb2c096c2a02a2ea4f",
+  "secret_printed_or_hashed": false,
+  "development_trial_rerun": false,
+  "stress_2024_2025_opened": false,
+  "scientific_result_changed": false
+}

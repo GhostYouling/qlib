@@ -1,0 +1,47 @@
+{
+  "schema_version": 1,
+  "kind": "a_share_three_day_walkforward_campaign117_infrastructure_failure",
+  "status": "initial_snapshot_verifier_rejected_truthful_manifest_before_partition_verification",
+  "recorded_at": "2026-08-13T20:59:40+08:00",
+  "attempt_id": "campaign117_infrastructure_001",
+  "stage": "post_build_manifest_semantic_verification",
+  "command_exit_code": 1,
+  "error_class": "Campaign117FeatureError",
+  "error": "Campaign117 manifest semantics changed",
+  "root_cause": "The dynamically inherited validator retained Campaign105 expectations weak_order_state_count==0 and positive_total_amount_required==false, while the frozen Campaign117 builder truthfully published 13 and true. The pure formula, source projection, output bytes, scientific gates and candidate values are not implicated.",
+  "frozen_implementation": {
+    "path": "docs/a_share_three_day_walkforward_campaign_117_no_return_implementation_freeze_20260813.json",
+    "sha256": "aed04a80f21f5e1a6ed2e5a3f51446943a0f924f95d788f2e03a5014f1c3129e",
+    "preserved": true,
+    "builder_or_formula_will_be_modified": false
+  },
+  "candidate_snapshot": {
+    "path": "/Volumes/DIsk/qlib-a-share-tushare-1m/derived/a_share/rich/tushare/minute_walkforward_campaign117_feature_library/tushare_stk_mins_1m_2019_2025_ea0cbb8f_walkforward_campaign117_feature_library_v1/snapshot_manifest.json",
+    "sha256": "114bb5dd2ac28d8e51e6a35c234cfe06f7d3810b4d7c46303e38af33d4566879",
+    "dataset_sha256": "4f5bf6ee2c26f6956178d6954aae92821530c90a6334375e8cf0e9938fa71c18",
+    "partitions": 33015,
+    "rows": 7724498,
+    "eligible_rows": 7724498,
+    "preserved_without_rebuild": true
+  },
+  "recovery_boundary": {
+    "allowed": "Append and pre-freeze a dedicated verifier that accepts only the exact truthful Campaign117 manifest semantics and exact already-published snapshot fingerprint, then verify every existing partition byte/frame hash.",
+    "formula_or_direction_change_allowed": false,
+    "source_rebuild_allowed": false,
+    "coverage_or_uniqueness_gate_change_allowed": false,
+    "comparator_or_return_values_may_be_read_before_recovery_pass": false
+  },
+  "research_boundary": {
+    "candidate_snapshot_built": true,
+    "candidate_partition_verification_completed": false,
+    "comparator_values_read": false,
+    "numeric_comparator_count_read": 0,
+    "historical_daily_price_or_forward_return_values_read": false,
+    "stress_2024_2025_opened_for_returns": false,
+    "provider_request_issued": false,
+    "candidate49_historical_backfill_performed": false,
+    "candidate49_ledgers_changed": false,
+    "current_scoring_selection_sizing_positions_or_orders_performed": false,
+    "investment_advice": false
+  }
+}

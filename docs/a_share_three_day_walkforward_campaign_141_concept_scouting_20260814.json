@@ -1,0 +1,219 @@
+{
+  "schema_version": 1,
+  "kind": "a_share_three_day_walkforward_campaign141_concept_scouting",
+  "status": "terminal_zero_selected_candidates_after_complete_definition_and_accepted_schema_review",
+  "recorded_at": "2026-08-14T14:14:30+0800",
+  "purpose": "Review one finite Campaign141 catalog against all 153 complete logical definitions, the historical terminal registry and accepted local point-in-time schemas without opening any Campaign141 source row, candidate value, comparator value, daily price or forward return.",
+  "authoritative_inputs": {
+    "campaign140_terminal_state": {
+      "path": "docs/a_share_three_day_iteration_status_20260814_campaign140_prevalue_terminal_v2.json",
+      "sha256": "699667efe72e00c18a9b104b6706d858ba14bbe4fb529aefaadba57643e74450",
+      "cumulative_historical_research_attempt_count": 1175,
+      "cumulative_return_reading_development_trial_count": 313
+    },
+    "numeric_policy_v178": {
+      "path": "docs/a_share_three_day_walkforward_future_numeric_comparison_eligibility_policy_v178_20260814.json",
+      "sha256": "5d8d9d58452ea3ef2e7a0e13dfc01a43bcf6d26f93aa68d9fac44922699fd4de",
+      "complete_definition_count_reviewed": 153,
+      "complete_definition_order_sha256": "bf66faef96d7058c7028da52757c65d8e0bf7978cf72d3967cd236e4da30b875",
+      "eligible_numeric_comparator_count_reserved_but_not_loaded": 141,
+      "eligible_numeric_comparator_order_sha256": "ec1aebcb939ad516c58037a36a4aaadd4ad8b2abbd3c884705895c58da85a2ee"
+    },
+    "historical_walkforward_policy": {
+      "path": "docs/a_share_three_day_historical_walkforward_research_policy_20260727.json",
+      "sha256": "38426d6161b9bfed323c58caba18feca668b8c9d53e294951a8ba90c01a798bb"
+    },
+    "historical_terminal_registry": {
+      "path": "docs/a_share_three_day_research_frontier_contract.json",
+      "sha256": "36ac39c68fedebf2fdf999475e10452278bbeff4f42b1c41963539867539eeaf"
+    }
+  },
+  "accepted_local_schema_audit": {
+    "active_data_root": "/Volumes/DIsk/Disk-Coding/qlib/data",
+    "inspection_method": "pyarrow Parquet schema and manifest metadata only; no row group or column value opened",
+    "schema_families": [
+      {
+        "name": "quarterly_quality",
+        "path": "data/raw/a_share/fundamentals/quarterly_quality.parquet",
+        "manifest_path": "data/metadata/quarterly_quality_manifest.json",
+        "manifest_sha256": "e3cf654babe37a82393c5530696bc1cc242b736cb88e1947b8444b638125ba8c",
+        "field_names": ["instrument", "report_date", "announcement_date", "roe", "net_profit", "revenue_yoy", "profit_yoy"],
+        "field_name_order_sha256": "163968446ac6dc81cdfeca3eebceeba69468b07df072be854aaddce62f3a707a"
+      },
+      {
+        "name": "performance_forecasts",
+        "path": "data/raw/a_share/fundamentals/performance_forecasts.parquet",
+        "manifest_path": "data/metadata/performance_forecasts_manifest.json",
+        "manifest_sha256": "d824bf8194b871fc21ce66cab80f1f9158814fff0e9a5d77a2cfbaec967e562c",
+        "field_names": ["instrument", "report_date", "announcement_date", "forecast_type", "forecast_turnaround", "forecast_profit_yoy", "forecast_profit_yoy_width"],
+        "field_name_order_sha256": "259f013152c52e73cf529055b26c8183185a9f2036a28fdb831bcc96a60d3abd"
+      },
+      {
+        "name": "institutional_survey_timing",
+        "path": "data/raw/a_share/events/institutional_survey_timing.parquet",
+        "manifest_path": "data/metadata/institutional_survey_timing_manifest.json",
+        "manifest_sha256": "07b6e405e9b73177921ce06ba5020e4f6c48c05a553948619309b18d2b03fe97",
+        "field_names": ["instrument", "announcement_date", "institutional_survey_latest_receive_end_date", "institutional_survey_disclosure_lag_days"],
+        "field_name_order_sha256": "875dadf0a634bde64234ae14b953336a2253aa6a41dfff2668c34dfad763fe8c"
+      },
+      {
+        "name": "analyst_rating_changes",
+        "path": "data/raw/a_share/events/analyst_rating_changes.parquet",
+        "manifest_path": "data/metadata/analyst_rating_changes_manifest.json",
+        "manifest_sha256": "483d7ec7fa5c44b3b0639bd5516d2b6fd34c75c749cdf12b1f71e71202759f54",
+        "field_names": ["instrument", "announcement_date", "analyst_rating_upgrade_share", "analyst_valid_rating_report_count"],
+        "field_name_order_sha256": "7b71ad9039022f3a8effc71585817d4f4dbcf5828cfee8dbefb284b8f6e3adb6"
+      },
+      {
+        "name": "restricted_share_unlocks",
+        "path": "data/raw/a_share/events/restricted_share_unlocks.parquet",
+        "manifest_path": "data/metadata/restricted_share_unlocks_manifest.json",
+        "manifest_sha256": "acbaf0e946e35856cb16d498d5303125b70140e105f89ca18d863d36e8bfdda1",
+        "field_names": ["instrument", "event_date", "restricted_unlock_total_share_ratio", "restricted_unlock_actual_shares"],
+        "field_name_order_sha256": "1a7f6e977d5e7ac3b650328f7502a11b3225e52dd3c8a10a287dd3b6a61c295b"
+      },
+      {
+        "name": "balance_sheet_resilience",
+        "path": "data/raw/a_share/rich/eastmoney/balance_sheet_resilience/acceptance/20260716T224734Z_eastmoney_balance_sheet_resilience_acceptance_a890a7c4/balance_sheet_resilience.parquet",
+        "manifest_path": "data/metadata/rich_data/runs/20260716T225547Z_eastmoney_balance_sheet_resilience_b960bfe6.json",
+        "manifest_sha256": "b69e71c57ecbef956709e853d5da6054fd28f6c44d53ead2b51273641ecba9fe",
+        "field_names": ["instrument", "report_date", "announcement_date", "total_assets", "total_liabilities", "eastmoney_balance_sheet_resilience", "provider"],
+        "field_name_order_sha256": "a0df78e1fe81e451db19e927372d52e3556438e66a578eba43a70fc313c14a29"
+      },
+      {
+        "name": "monetary_funds_asset_intensity",
+        "path": "data/raw/a_share/rich/eastmoney/monetary_funds_asset_intensity/acceptance/20260721T060142Z_eastmoney_monetary_funds_asset_intensity_acceptance_5196e914/monetary_funds_asset_intensity.parquet",
+        "manifest_path": "data/metadata/rich_data/runs/20260721T061812Z_eastmoney_monetary_funds_asset_intensity_full_ef43d4e5.json",
+        "manifest_sha256": "ee9d7cacd2097b840b2f0cfafd177fd5bb8203fea5df95b292ca14e962eba885",
+        "field_names": ["instrument", "report_date", "announcement_date", "monetary_funds", "total_assets", "eastmoney_monetary_funds_asset_intensity", "provider"],
+        "field_name_order_sha256": "82784eecf6efcf7e3c0528f2410837fc7c82e7783203d2db32c25bc2e4b19dea"
+      },
+      {
+        "name": "related_party_transaction_sparsity",
+        "path": "data/raw/a_share/rich/eastmoney/related_party_transaction_sparsity/acceptance/20260720T125250Z_eastmoney_related_party_transaction_sparsity_acceptance_db9e2dde/related_party_transaction_sparsity.parquet",
+        "manifest_path": "data/metadata/rich_data/runs/20260720T130538Z_eastmoney_related_party_transaction_sparsity_full_53f2347e.json",
+        "manifest_sha256": "e8a668ffda6668040f1129c60d402aa9731560801475fe2644f7fb7146b089e9",
+        "field_names": ["announcement_date", "instrument", "related_party_transaction_count", "eastmoney_related_party_transaction_sparsity", "provider"],
+        "field_name_order_sha256": "a7aa61a07b4c29108478178d5201c9efe6fc88f35d7565c79caa7bd72042759f"
+      },
+      {
+        "name": "audit_opinion",
+        "path": "data/raw/a_share/rich/tushare/audit_opinion/acceptance/20260716T182013Z_tushare_audit_opinion_acceptance_e6843d5a/audit_opinion.parquet",
+        "manifest_path": "data/metadata/rich_data/runs/20260716T183642Z_tushare_audit_opinion_full_7a9aa307.json",
+        "manifest_sha256": "251589504b721ac303b9b7f9c09b8771b58929c25bc2a5ed6eaf64b5209a977d",
+        "field_names": ["announcement_date", "instrument", "tushare_is_standard_unqualified_audit_opinion", "audit_report_count", "provider"],
+        "field_name_order_sha256": "fe92c57ae7491d623474811112ada660502de7ff8aa17244a42ffc67159495d2"
+      }
+    ]
+  },
+  "finite_prevalue_concept_catalog": [
+    {
+      "catalog_id": "c141_01",
+      "name": "quarterly_growth_quality_residual_or_roe_adjusted_profit_growth",
+      "hypothetical_formula": "cross-sectional residual of profit_yoy after a fixed linear adjustment for roe, or equivalently rank(profit_yoy)-rank(roe)",
+      "direction": "higher",
+      "parameters": "same effective quarterly snapshot; fixed rank gap or linear residual",
+      "filters": "finite profit_yoy and roe",
+      "subset_or_combination": "terminal quarterly growth and profitability states",
+      "model": "fixed two-field residualization",
+      "prevalue_decision": "rejected_as_terminal_quarterly_rank_gap_residualization_or_neutralization_refresh",
+      "reason": "Quarterly growth, ROE, quality levels, rank gaps, accelerations and peer adjustments are already complete terminal definitions. Residualizing one exposed accounting state by another is a model/operator refresh, not a newly observed information mechanism."
+    },
+    {
+      "catalog_id": "c141_02",
+      "name": "forecast_turnaround_confirmed_by_realized_profitability",
+      "hypothetical_formula": "forecast_turnaround indicator multiplied by the latest positive realized ROE or profit-growth rank",
+      "direction": "higher",
+      "parameters": "latest effective forecast and quarterly snapshot",
+      "filters": "finite forecast turnaround and realized profitability state",
+      "subset_or_combination": "terminal management-forecast and quarterly-quality branches",
+      "model": null,
+      "prevalue_decision": "rejected_as_forecast_terminal_family_and_realized_quarterly_cross_source_confirmation",
+      "reason": "Forecast type, turnaround, width, freshness and forecast surprise are terminal, as are realized quarterly quality states. Confirmation after both histories is an exposed cross-source combination and cannot rescue Campaign139 capacity."
+    },
+    {
+      "catalog_id": "c141_03",
+      "name": "institutional_survey_promptness_confirmed_by_analyst_attention",
+      "hypothetical_formula": "negative institutional_survey_disclosure_lag_days plus analyst_valid_rating_report_count rank",
+      "direction": "higher",
+      "parameters": "latest effective survey and analyst disclosures",
+      "filters": "both fields finite",
+      "subset_or_combination": "terminal survey-timing and analyst-attention branches",
+      "model": null,
+      "prevalue_decision": "rejected_as_post_exposure_survey_and_analyst_attention_consensus",
+      "reason": "Survey counts, freshness and disclosure delay are terminal, and analyst report count/upgrade states are terminal. A rank sum is only a cross-source attention consensus wrapper around two exposed event families."
+    },
+    {
+      "catalog_id": "c141_04",
+      "name": "restricted_unlock_pressure_scaled_by_free_float_scarcity",
+      "hypothetical_formula": "restricted_unlock_total_share_ratio multiplied by free-float scarcity",
+      "direction": "higher",
+      "parameters": "latest effective unlock event and structural float snapshot",
+      "filters": "both finite and positive",
+      "subset_or_combination": "terminal supply event and structural-float normalization",
+      "model": null,
+      "prevalue_decision": "rejected_as_terminal_unlock_event_and_free_float_normalization_rescue",
+      "reason": "Restricted unlock pressure completed a terminal return diagnostic, while free-float scarcity failed its frozen no-return uniqueness gate and explicitly forbids combination. Scaling the event cannot reopen either branch."
+    },
+    {
+      "catalog_id": "c141_05",
+      "name": "balance_sheet_resilience_and_monetary_funds_joint_safety",
+      "hypothetical_formula": "rank(eastmoney_balance_sheet_resilience)+rank(eastmoney_monetary_funds_asset_intensity)",
+      "direction": "higher",
+      "parameters": "same latest effective report period",
+      "filters": "both accepted states finite",
+      "subset_or_combination": "two terminal balance-sheet safety factors",
+      "model": "fixed equal-weight rank sum",
+      "prevalue_decision": "rejected_as_post_exposure_accounting_safety_ensemble",
+      "reason": "Both rich accounting factors completed their frozen capacity/uniqueness or return paths. An equal-weight safety score is an after-result ensemble of terminal factors rather than a distinct point-in-time observation."
+    },
+    {
+      "catalog_id": "c141_06",
+      "name": "related_party_sparsity_confirmed_by_clean_audit_opinion",
+      "hypothetical_formula": "eastmoney_related_party_transaction_sparsity multiplied by tushare_is_standard_unqualified_audit_opinion",
+      "direction": "higher",
+      "parameters": "latest effective disclosures",
+      "filters": "both states finite",
+      "subset_or_combination": "terminal governance and reporting-reliability factors",
+      "model": null,
+      "prevalue_decision": "rejected_as_terminal_governance_reliability_combination_and_capacity_bypass",
+      "reason": "Related-party sparsity is terminal and audit opinion stopped at its frozen no-return capacity gate with combinations expressly closed. A confirmation product does not create audit cohorts or a new governance state."
+    }
+  ],
+  "selection": {
+    "concepts_reviewed": 6,
+    "rejected_concept_count": 6,
+    "selected_candidate_count": 0,
+    "selected_candidate": null,
+    "finite_candidate_library": true,
+    "genuinely_new_independent_mechanism_found": false,
+    "reason": "Every proposal is a residualization, confirmation, scaling or ensemble of terminal mechanisms. The larger historical sample remains available, but scientific reuse requires a preregistered independent mechanism rather than another arithmetic wrapper."
+  },
+  "research_boundary": {
+    "schema_and_terminal_history_metadata_read": true,
+    "parquet_schema_only_inspection_performed": true,
+    "parquet_rows_or_column_values_read": false,
+    "programmatic_provider_request_issued": false,
+    "provider_credential_present_without_value_or_digest_read": true,
+    "provider_credential_loaded": false,
+    "campaign141_candidate_values_computed_or_read": false,
+    "campaign141_comparator_values_read": false,
+    "historical_daily_price_fields_read": [],
+    "historical_forward_returns_read": false,
+    "stress_2024_2025_opened": false,
+    "candidate49_historical_backfill_performed": false,
+    "candidate49_ledgers_changed": false,
+    "second_prospective_candidate_created": false,
+    "current_scoring_selection_sizing_positions_or_orders_performed": false,
+    "investment_advice": false,
+    "inherited_current_listing_survivorship_limitation_remains": true
+  },
+  "decision": {
+    "create_campaign141_formula_feature_or_model_implementation": false,
+    "run_source_acceptance_coverage_uniqueness_or_return_trial": false,
+    "request_new_provider_history": false,
+    "append_complete_definition_or_numeric_comparator": false,
+    "terminalize_campaign141_prevalue": true,
+    "next_campaign_requirement": "Begin Campaign142 only from a genuinely new finite prevalue mechanism supported by accepted historically versioned point-in-time data; preserve all Campaign141 rejections and Candidate49 as the sole prospective ledger."
+  }
+}

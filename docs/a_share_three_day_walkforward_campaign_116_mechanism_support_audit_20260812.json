@@ -1,0 +1,91 @@
+{
+  "schema_version": 1,
+  "kind": "a_share_three_day_walkforward_campaign116_mechanism_support_audit",
+  "status": "independent_raw_state_transition_mechanism_admitted_only_to_exact_no_return_preregistration",
+  "recorded_at": "2026-08-12T15:47:30+08:00",
+  "purpose": "Challenge the selected Campaign116 idea against the complete 141-definition semantic library, the 134 eligible numeric comparators, raw-source support, and likely execution interpretation before freezing a formula or reading source values.",
+  "authoritative_inputs": {
+    "concept_scouting": {
+      "path": "docs/a_share_three_day_walkforward_campaign_116_concept_scouting_20260812.json",
+      "sha256": "38028997eb595a58f28976f387cd5489d3bafc07c58a923a3f61bac1da306b68"
+    },
+    "numeric_policy_v98": {
+      "path": "docs/a_share_three_day_walkforward_future_numeric_comparison_eligibility_policy_v98_20260812.json",
+      "sha256": "2b183bd2aaaa04e8fe9e0c56b7139f8e4e2b2f8ceed79865d14c58c864676bff"
+    },
+    "accepted_minute_source_manifest": {
+      "path": "/Volumes/DIsk/qlib-a-share-tushare-1m/metadata/rich_data/runs/tushare_stk_mins_1m_2019_2025_ea0cbb8f.json",
+      "sha256": "9b3d959563c9d182f38981c6a36bdb3bc9b415de08487a9e1f9e850825c0839",
+      "source_values_read_for_this_audit": false
+    }
+  },
+  "selected_mechanism": {
+    "name": "intraday_amount_conditioned_directional_persistence_spread_236p",
+    "information_channel": "within-session signed return transition state conditional on a predetermined binary amount regime",
+    "economic_hypothesis": "Persistent upward transitions that occur disproportionately in high-activity minutes may reflect informed demand continuation, while the same transition balance in ordinary-activity minutes acts as a within-stock-day control.",
+    "prospective_direction": "higher",
+    "factor_formula_frozen_in_this_audit": false
+  },
+  "mandatory_semantic_overlap_challenges": [
+    {
+      "existing_family": "intraday_return_sign_run_imbalance_238p",
+      "decision": "distinct_but_requires_numeric_uniqueness",
+      "reason": "The existing factor is an unconditional run statistic. Campaign116 compares signed persistent-transition balance between fixed amount states and cannot use the old factor value."
+    },
+    {
+      "existing_family": "intraday_up_move_amount_share_238m",
+      "decision": "distinct_but_high_overlap_risk_requires_numeric_uniqueness",
+      "reason": "Up-move amount share weights positive individual returns by amount. Campaign116 uses adjacent two-return persistence states and equal-weight conditional group means, but a high correlation is plausible and must fail closed at the all-134 comparison gate."
+    },
+    {
+      "existing_family": "intraday_amount_lead_return_correlation_238p_and_directional_price_impact_asymmetry",
+      "decision": "distinct_nonlinear_state_statistic_requires_numeric_uniqueness",
+      "reason": "Those factors use continuous correlation or impact asymmetry. Campaign116 fixes a median state and signed two-step persistence contrast without fitting or alternate lags."
+    },
+    {
+      "existing_family": "intraday_above_median_amount_longest_run_240m",
+      "decision": "shared_threshold_only_not_shared_mechanism",
+      "reason": "The existing factor measures clustering of the amount state itself. Campaign116 uses the same ordinary-median convention only as a predetermined condition and measures return-transition direction."
+    },
+    {
+      "existing_family": "terminal_factor_combinations_and_models",
+      "decision": "not_a_combination",
+      "reason": "No existing factor value, percentile, weight, subset, fitted parameter, or model output enters the raw formula."
+    }
+  ],
+  "source_and_support_challenges": {
+    "source_projection_candidate": ["datetime", "symbol", "provider", "close", "amount"],
+    "raw_open_high_low_volume_needed": false,
+    "exact_continuous_auction_grid_required": "09:31-11:30_and_13:01-15:00_exactly_240_bars",
+    "within_half_return_count": 238,
+    "within_half_adjacent_return_pair_count": 236,
+    "lunch_transition_allowed": false,
+    "amount_state_threshold_search_allowed": false,
+    "minimum_group_support_must_be_frozen_before_values": true,
+    "expected_sparse_or_constant_failure_must_remain_missing": true,
+    "survivorship_limitation": "The local research universe uses a current listing snapshot; historical performance remains vulnerable to survivorship bias and cannot support promotion without point-in-time listing/delisting data."
+  },
+  "admission_decision": {
+    "genuinely_independent_prevalue_mechanism_found": true,
+    "admitted_stage": "exact_formula_support_and_no_return_preregistration_only",
+    "complete_factor_attempt_created": false,
+    "provider_request_allowed": false,
+    "source_candidate_or_comparator_values_allowed": false,
+    "daily_price_or_forward_return_values_allowed": false,
+    "reason": "Semantic distinction is provisional. The candidate must still freeze one exact formula and pass coverage, capacity, range, variation, duplicate, and every numeric uniqueness comparison before any return."
+  },
+  "research_boundary": {
+    "campaign116_source_partition_values_read": false,
+    "campaign116_candidate_values_read_or_computed": false,
+    "campaign116_comparator_values_read": false,
+    "historical_daily_price_or_forward_return_values_read": false,
+    "stress_2024_2025_opened": false,
+    "provider_request_issued": false,
+    "credential_loaded": false,
+    "candidate49_historical_backfill_performed": false,
+    "candidate49_ledgers_changed": false,
+    "second_prospective_candidate_created": false,
+    "current_scoring_selection_sizing_positions_or_orders_performed": false,
+    "investment_advice": false
+  }
+}

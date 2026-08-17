@@ -1,0 +1,65 @@
+{
+  "schema_version": 1,
+  "kind": "a_share_three_day_walkforward_campaign088_feature_implementation_freeze_v3",
+  "status": "builder_order_repair_frozen_before_campaign088_minute_source_rows_or_candidate_values",
+  "frozen_at": "2026-08-07T03:35:40+08:00",
+  "protocol": {
+    "path": "docs/a_share_three_day_walkforward_campaign_088_no_return_preregistration.json",
+    "sha256": "903d8ea131d5e5d9c7d53447c03d715a2ef3eefc96482b6a3521f33a05171eab"
+  },
+  "v1_implementation_freeze": {
+    "path": "docs/a_share_three_day_walkforward_campaign_088_feature_implementation_freeze_20260807.json",
+    "sha256": "53eda7ab435403620b6a5ee4750c176997dee6c29a575fd7f152ba9dfe637fb3",
+    "preserved": true
+  },
+  "cli_import_repair_protocol": {
+    "path": "docs/a_share_three_day_walkforward_campaign_088_feature_cli_import_repair_protocol_20260807.json",
+    "sha256": "a46ff6bbbed95f9e379b75e41c9cde4a887c29307c8f289d7965aa83d22c08e9"
+  },
+  "v2_implementation_freeze": {
+    "path": "docs/a_share_three_day_walkforward_campaign_088_feature_implementation_freeze_v2_20260807.json",
+    "sha256": "645ad6dd1a1be7f0e5eb6fb24510ab806fb57d453811aa0a6f18277dd3fdd576",
+    "preserved": true
+  },
+  "order_monkeypatch_repair_protocol": {
+    "path": "docs/a_share_three_day_walkforward_campaign_088_builder_order_monkeypatch_repair_protocol_20260807.json",
+    "sha256": "da0fd6996a592efd529a10a3578117119f0572776295f1311bc33c453d159b68"
+  },
+  "feature_runner": {
+    "path": "scripts/a_share_three_day_walkforward_campaign088_features.py",
+    "sha256": "17d87b6aa699d5ccaf9ec685306783808fdf87c46661fb0d2aa3d65bcdc5d7bc"
+  },
+  "tests": {
+    "path": "tests/data_collector_tests/test_a_share_three_day_walkforward_campaign088_features.py",
+    "sha256": "75a47e7066297006893b56f5e4da2260e2630bfd852107ba8eca53197f033f78",
+    "synthetic_tests_passed": 8,
+    "builder_adapter_order_regression_test_passed": true,
+    "warnings_treated_as_errors": true,
+    "black_check_passed": true,
+    "ruff_check_passed": true
+  },
+  "repair_scope": {
+    "v26_orders_cached_before_builder_monkeypatch": true,
+    "defensive_reconstruction_copies_returned": true,
+    "direct_file_repo_root_bootstrap_preserved": true,
+    "formula_changed": false,
+    "direction_changed": false,
+    "source_projection_or_grid_changed": false,
+    "definition_or_numeric_order_changed": false,
+    "coverage_uniqueness_or_return_gate_changed": false
+  },
+  "frozen_library": {
+    "complete_definition_count": 119,
+    "complete_definition_order_sha256": "0de791d223395722a74dfec4e4b2e469550c9a34e6f5ff64af4087287da0abb5",
+    "numeric_comparator_count": 117,
+    "numeric_comparator_order_sha256": "cc176eda08a1dc587a44fe9130dea4bd72db64b3d93a3646b53da593adb8cc1c"
+  },
+  "candidate_source_rows_read_before_freeze": false,
+  "candidate_values_computed_before_freeze": false,
+  "comparison_values_read_before_freeze": false,
+  "historical_daily_price_or_forward_return_values_read_before_freeze": false,
+  "provider_request_issued_before_freeze": false,
+  "candidate49_historical_backfill_performed": false,
+  "candidate49_ledgers_changed": false,
+  "current_scoring_selection_sizing_or_orders_performed": false
+}

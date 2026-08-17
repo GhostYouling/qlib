@@ -1,0 +1,143 @@
+{
+  "version": 34,
+  "kind": "a_share_three_day_iteration_status",
+  "status": "candidate49_future_only_preserved_campaign032_terminal_before_returns_verified_ready_for_campaign033_concept",
+  "recorded_at": "2026-07-30T15:52:00Z",
+  "purpose": "Advance the additive authority after verifying Campaign032's pre-value reporting fix, immutable feature/no-return evidence, uniqueness rejection before historical returns, Candidate49 isolation, 2026-07-30 provider failure, documentation, and full tests.",
+  "previous_authoritative_state": {
+    "path": "docs/a_share_three_day_iteration_status_20260730_campaign031_verified.json",
+    "sha256": "026e2905aa2de7287435f2f7276ef2e5f8f257dccd57779506acf2fcea7c3564"
+  },
+  "historical_walkforward_policy": {
+    "path": "docs/a_share_three_day_historical_walkforward_research_policy_20260727.json",
+    "sha256": "38426d6161b9bfed323c58caba18feca668b8c9d53e294951a8ba90c01a798bb"
+  },
+  "campaign032_verification": {
+    "path": "docs/a_share_three_day_walkforward_campaign_032_verification_20260730.json",
+    "sha256": "6de070595d1ebdc5b71ae901d3df12bf811b72f6ae4adacae8155298f1f7d921",
+    "binding_validation_exit_code": 0,
+    "binding_count": 24,
+    "failed_binding_count": 0,
+    "current_chain_record_count": 7,
+    "current_chain_binding_count": 39,
+    "current_chain_failed_binding_count": 0,
+    "focused_tests_passed": 49,
+    "full_data_collector_tests_passed": 1482
+  },
+  "campaign032_terminal_boundary": {
+    "factor": "quarterly_announcement_timeliness_days",
+    "direction": "higher",
+    "formula": "negative integer calendar-day difference from report_date to announcement_date for the latest effective quarterly report at signal session t",
+    "research_record": {
+      "path": "docs/a_share_three_day_walkforward_campaign_032_research_record.json",
+      "sha256": "eaf9691aee28ccbc5130989835a224b5071780d4b931578948e01d7a5ba385d7"
+    },
+    "feature_snapshot": {
+      "path": "/Volumes/DIsk/qlib-a-share-tushare-1m/derived/a_share/rich/tushare/minute_walkforward_campaign032_feature_library/tushare_stk_mins_1m_2019_2025_ea0cbb8f_walkforward_campaign032_feature_library_v1/snapshot_manifest.json",
+      "sha256": "8e64ad897fe725ab4ed800b0203ddd88a6c1431e2386744e1d2b13867d848c65",
+      "dataset_sha256": "c72008162f6655e7ce34da114641f451aa04d32df61ac4c77222f7f8ad1d787f"
+    },
+    "median_coverage": 0.9994517542211769,
+    "p05_coverage": 0.9956886515772271,
+    "comparison_count": 53,
+    "comparison_pass_count": 52,
+    "comparison_fail_count": 1,
+    "failed_comparison_factor": "quarterly_announcement_freshness_60s",
+    "failed_comparison_median_daily_rank_correlation": -0.9793254451074888,
+    "failed_comparison_absolute_median_daily_rank_correlation": 0.9793254451074888,
+    "maximum_allowed_absolute_median_daily_rank_correlation": 0.8,
+    "admissible_factor_count": 0,
+    "development_preregistration_created": false,
+    "development_trial_count": 0,
+    "development_return_read": false,
+    "stress_2024_2025_opened": false,
+    "stress_2024_2025_return_read": false,
+    "terminal": true,
+    "strategy_promotion_allowed": false,
+    "rerun_repair_invert_rescue_or_combine_allowed": false
+  },
+  "campaign032_reporting_semantics": {
+    "helper": {
+      "path": "scripts/a_share_three_day_walkforward_reporting.py",
+      "sha256": "6291a8bfd11bd90dbef42edd6252368f67498bdc2be39661ebf4b7d08f0ac969"
+    },
+    "canonical_rule": "complexity equals the count of distinct nonempty feature_set entries; single_factor requires exactly one",
+    "fix_frozen_before_any_campaign032_protected_value": true,
+    "campaign031_immutable_result_rewritten": false,
+    "future_campaigns_must_preserve_rule": true
+  },
+  "research_counts": {
+    "terminal_historical_walkforward_campaign_mechanism_count": 32,
+    "completed_historical_walkforward_campaign_count": 32,
+    "recorded_historical_development_trial_count": 253,
+    "campaign032_development_trial_count_added": 0,
+    "active_prospective_candidate_count": 1,
+    "current_aggregation_candidate_count": 0
+  },
+  "active_prospective_candidate": {
+    "ordinal": 49,
+    "registration_id": "candidate49_intraday_cumulative_vwap_crossing_rate_240m_v1",
+    "historical_return_diagnostic_allowed": false,
+    "signal_ledger": {
+      "path": "data/experiments/short_horizon/candidate49_future_signal_ledger.json",
+      "sha256": "5193f00d7f36da003f53cec387900da4c3d002299f5dfcfc1a95eaa199ed3a79",
+      "entry_count": 0
+    },
+    "execution_ledger": {
+      "path": "data/experiments/short_horizon/candidate49_future_execution_ledger.json",
+      "sha256": "d57a3e61eac969e42cafa418ccd8c0a5ee65dcf69da145bb2c096c2a02a2ea4f",
+      "entry_count": 0
+    }
+  },
+  "candidate49_session_2026_07_30": {
+    "staging_root": "/Volumes/DIsk/qlib-a-share-tushare-daily-2026-07-30",
+    "plan_ready": true,
+    "plan_exit_code": 0,
+    "confirmed_run_exit_code": 1,
+    "failure_stage": "stock_basic",
+    "failure_reason": "Tushare stock_basic contains an invalid ts_code",
+    "credential_missing_is_not_the_failure": true,
+    "same_day_retry_performed_or_allowed": false,
+    "active_daily_root_mutated": false,
+    "candidate49_signal_or_execution_stage_reached": false,
+    "original_failure_record": {
+      "path": "docs/a_share_candidate49_20260730_daily_source_failure_record.json",
+      "sha256": "7c3e85ff0c0110eb5cffb04189db7969e7f946b2f76cf25c2aeb66f91e1cdf79"
+    },
+    "additive_binding_correction": {
+      "path": "docs/a_share_candidate49_20260730_daily_source_failure_record_binding_correction.json",
+      "sha256": "a97067e55bdbd59cf12dbaf49072b592fa1be2359aa66646771a0dca844f257e",
+      "binding_validation_exit_code": 0
+    }
+  },
+  "credential_presence": {
+    "repository_dotenv_exists": true,
+    "repository_dotenv_mode": "0600",
+    "TUSHARE_TOKEN_nonempty": true,
+    "workflow_reads_repository_dotenv_token": true,
+    "secret_value_read_into_record": false,
+    "secret_value_printed_hashed_or_persisted": false,
+    "credential_readiness_does_not_authorize_provider_requests": true
+  },
+  "next_research_action": {
+    "campaign_id": "a_share_three_day_walkforward_campaign_033",
+    "objective": "Scout one genuinely independent concept, perform a separate no-value mechanism-overlap audit, and freeze an exact finite fingerprint-bound no-return protocol before opening candidate or comparison values.",
+    "requires_new_daily_bar": false,
+    "requires_same_day_1630_wait": false,
+    "binding_validation_required_at_each_freeze_boundary": true,
+    "development_interval_if_admitted": [
+      "2019-01-01",
+      "2023-12-31"
+    ],
+    "stress_interval_opening_rule": "2024-2025 may open exactly once only for a frozen development survivor"
+  },
+  "decision": {
+    "campaign032_terminal_verified": true,
+    "campaign033_concept_scouting_allowed_now": true,
+    "campaign033_candidate_values_allowed_before_binding_validation": false,
+    "candidate49_remains_only_active_prospective_candidate": true,
+    "candidate49_same_day_retry_allowed": false,
+    "candidate50_activation_allowed": false,
+    "current_aggregation_scoring_selection_sizing_or_orders_allowed": false
+  }
+}

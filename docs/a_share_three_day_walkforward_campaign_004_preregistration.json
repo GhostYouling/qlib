@@ -1,0 +1,311 @@
+{
+  "version": 1,
+  "kind": "a_share_three_day_walkforward_campaign004_preregistration",
+  "campaign_id": "a_share_three_day_walkforward_campaign_004",
+  "status": "frozen_before_campaign004_2019_2023_development_return_read",
+  "frozen_at": "2026-07-28T06:52:51Z",
+  "purpose": "Evaluate the complete three-factor Campaign004 minute-feature library under a finite preregistered search containing every admissible single factor and every two-factor directional-rank blend at the three fixed canonical weights. This is historical walk-forward research only; it does not reopen terminal factors, backfill Candidate49, create Candidate50, or authorize current scoring, selection, sizing, or orders.",
+  "evidence_classification": {
+    "development_2019_2023": "historically_exposed_expanding_walkforward_exploration",
+    "stress_replay_2024_2025": "historically_exposed_stress_replay_not_unseen_or_pristine",
+    "reason": "All seven market years and the source minute history already existed locally. The exact Campaign004 formulas, directions, no-return gates, finite trial catalog, folds, survivor rule, and stress gates were frozen before the first Campaign004 historical return read, but this cannot restore pristine unseen status.",
+    "survivorship_bias_warning": "The local holding universe derives from a current listing snapshot and may contain survivorship bias; no historical result may be promoted without point-in-time listing and delisting evidence."
+  },
+  "governance_bindings": {
+    "authoritative_iteration_state": {
+      "path": "docs/a_share_three_day_iteration_status_20260727_walkforward.json",
+      "sha256": "75e639c4b8579983bfcda8da19c221d018b7b62cd68fac9e94822f6c3ed73267"
+    },
+    "historical_walkforward_policy": {
+      "path": "docs/a_share_three_day_historical_walkforward_research_policy_20260727.json",
+      "sha256": "38426d6161b9bfed323c58caba18feca668b8c9d53e294951a8ba90c01a798bb"
+    }
+  },
+  "campaign003_bindings": {
+    "preregistration": {
+      "path": "docs/a_share_three_day_walkforward_campaign_003_preregistration.json",
+      "sha256": "7c2f9339aabe093bd40acde3f352ac147f30f119aa5a341252df992788be05c0"
+    }
+  },
+  "no_return_bindings": {
+    "protocol": {
+      "path": "docs/a_share_three_day_walkforward_campaign_004_no_return_preregistration.json",
+      "sha256": "39e2147b75bcc3a0fd3cb39dee3932f794331142654f0bfe63679b2c8ecc2a4e"
+    },
+    "feature_snapshot": {
+      "path": "/Volumes/DIsk/qlib-a-share-tushare-1m/derived/a_share/rich/tushare/minute_walkforward_campaign004_feature_library/tushare_stk_mins_1m_2019_2025_ea0cbb8f_walkforward_campaign004_feature_library_v1/snapshot_manifest.json",
+      "sha256": "8eefc381d006997f1dcd95edcd9be4db8485e0c4954d6166d94f1981ae3b57fe"
+    },
+    "audit": {
+      "path": "data/experiments/short_horizon/historical_walkforward/campaign_004/no_return/20260728T064945Z_campaign004_no_return_audit.json",
+      "sha256": "d7cdce80d0ac2923695b866a7cf034f5049ec4da1a5a8dd5fc36d4f41f1cb755"
+    }
+  },
+  "implementation": {
+    "script": {
+      "path": "scripts/a_share_three_day_walkforward_campaign004.py",
+      "sha256": "cb489806524a78a9687e70762242ad31f2cedf7c1834b066cb55ba09c312cc15"
+    },
+    "development_command": "python scripts/a_share_three_day_walkforward_campaign004.py run-development",
+    "exposed_stress_command": "python scripts/a_share_three_day_walkforward_campaign004.py run-exposed-stress --confirm-exposed-stress",
+    "output_root": "data/experiments/short_horizon/historical_walkforward/campaign_004/walkforward"
+  },
+  "daily_data_bindings": {
+    "provider_uri": {
+      "kind": "directory",
+      "path": "data/qlib/cn_a_share"
+    },
+    "price_basis": {
+      "path": "data/qlib/cn_a_share/price_basis.json",
+      "sha256": "68e9dbb83749779b34d5cf3b116195074c154ff74cb6de95ba67695bedc1f14f"
+    },
+    "quarterly_quality": {
+      "path": "data/raw/a_share/fundamentals/quarterly_quality.parquet",
+      "sha256": "3ac901a97928d2ed81ac72e3eaac9bdc148d36cf67b6abe70223699235ef059f"
+    },
+    "quarterly_quality_manifest": {
+      "path": "data/metadata/quarterly_quality_manifest.json",
+      "sha256": "e3cf654babe37a82393c5530696bc1cc242b736cb88e1947b8444b638125ba8c"
+    },
+    "calendar": {
+      "path": "data/qlib/cn_a_share/calendars/day.txt",
+      "sha256": "fda506597d26bcec953cdc0882042a5046ec1587db60490e16a01627fd43f53a"
+    },
+    "buyable_universe": {
+      "path": "data/qlib/cn_a_share/instruments/buyable_main_chinext.txt",
+      "sha256": "77ccf8de2ed1e447e73b5d5ff1703fc2a8656d6adab34ef44017481730249db1"
+    }
+  },
+  "execution_policy_bindings": {
+    "normalized_execution": {
+      "path": "docs/a_share_three_day_prospective_execution_policy.json",
+      "sha256": "72c3c3871e153372ed9e7691c9d89ba1aeb2f6d02cc839761fefa5fee085e1bc"
+    },
+    "cny_200000_board_lot_pilot": {
+      "path": "docs/a_share_three_day_pilot_execution_policy.json",
+      "sha256": "72235cd29fc14d43538238150bb2823dae1dd05b027b2c86a9872de89cc0d3f9"
+    }
+  },
+  "factor_library": [
+    {
+      "feature_id": "wf004_f01",
+      "name": "intraday_market_neutral_late_residual_drift_238m",
+      "direction": "higher",
+      "formula": "sum(e_i,t for the final 60 afternoon returns ending 14:01-15:00) / sum(abs(e_i,t) over all 238 within-half returns), where e_i,t=r_i,t-beta_i*m_-i,t, beta_i=sum(r_i,t*m_-i,t)/sum(m_-i,t^2), and m_-i,t is the equal-weight leave-one-out market return",
+      "economic_hypothesis": "After removing the contemporaneous equal-weight leave-one-out market component, a stock whose residual price discovery is concentrated positively in the final 60 afternoon return positions may carry firm-specific information from the next open through the third close.",
+      "dataset_group": "campaign004_new_factors",
+      "partition_root": "/Volumes/DIsk/qlib-a-share-tushare-1m/derived/a_share/rich/tushare/minute_walkforward_campaign004_feature_library/tushare_stk_mins_1m_2019_2025_ea0cbb8f_walkforward_campaign004_feature_library_v1/partitions",
+      "bindings": [
+        {
+          "path": "/Volumes/DIsk/qlib-a-share-tushare-1m/derived/a_share/rich/tushare/minute_walkforward_campaign004_feature_library/tushare_stk_mins_1m_2019_2025_ea0cbb8f_walkforward_campaign004_feature_library_v1/snapshot_manifest.json",
+          "sha256": "8eefc381d006997f1dcd95edcd9be4db8485e0c4954d6166d94f1981ae3b57fe"
+        },
+        {
+          "path": "docs/a_share_three_day_walkforward_campaign_004_no_return_preregistration.json",
+          "sha256": "39e2147b75bcc3a0fd3cb39dee3932f794331142654f0bfe63679b2c8ecc2a4e"
+        },
+        {
+          "path": "data/experiments/short_horizon/historical_walkforward/campaign_004/no_return/20260728T064945Z_campaign004_no_return_audit.json",
+          "sha256": "d7cdce80d0ac2923695b866a7cf034f5049ec4da1a5a8dd5fc36d4f41f1cb755"
+        }
+      ]
+    },
+    {
+      "feature_id": "wf004_f02",
+      "name": "intraday_negative_return_absorption_rate_236p",
+      "direction": "higher",
+      "formula": "sum(amount_at_destination_of_r_t for within-half adjacent pairs with r_t<0 and r_t+1>0) / sum(amount_at_destination_of_r_t for within-half adjacent pairs with r_t<0)",
+      "economic_hypothesis": "A high fraction of amount arriving on negative one-minute moves that are immediately followed by a positive one-minute move may identify intraday selling pressure that is absorbed rather than propagated, with possible persistence over the next three-session holding rule.",
+      "dataset_group": "campaign004_new_factors",
+      "partition_root": "/Volumes/DIsk/qlib-a-share-tushare-1m/derived/a_share/rich/tushare/minute_walkforward_campaign004_feature_library/tushare_stk_mins_1m_2019_2025_ea0cbb8f_walkforward_campaign004_feature_library_v1/partitions",
+      "bindings": [
+        {
+          "path": "/Volumes/DIsk/qlib-a-share-tushare-1m/derived/a_share/rich/tushare/minute_walkforward_campaign004_feature_library/tushare_stk_mins_1m_2019_2025_ea0cbb8f_walkforward_campaign004_feature_library_v1/snapshot_manifest.json",
+          "sha256": "8eefc381d006997f1dcd95edcd9be4db8485e0c4954d6166d94f1981ae3b57fe"
+        },
+        {
+          "path": "docs/a_share_three_day_walkforward_campaign_004_no_return_preregistration.json",
+          "sha256": "39e2147b75bcc3a0fd3cb39dee3932f794331142654f0bfe63679b2c8ecc2a4e"
+        },
+        {
+          "path": "data/experiments/short_horizon/historical_walkforward/campaign_004/no_return/20260728T064945Z_campaign004_no_return_audit.json",
+          "sha256": "d7cdce80d0ac2923695b866a7cf034f5049ec4da1a5a8dd5fc36d4f41f1cb755"
+        }
+      ]
+    },
+    {
+      "feature_id": "wf004_f03",
+      "name": "intraday_signed_path_efficiency_239m",
+      "direction": "higher",
+      "formula": "log(close_15:00/close_09:31) / sum(abs(adjacent log close return)) over the collapsed 240-close path including the 11:30-to-13:01 pair",
+      "economic_hypothesis": "A high signed displacement relative to total intraday path variation represents directionally efficient price discovery rather than oscillation and may persist from the next open through the third close.",
+      "dataset_group": "campaign004_new_factors",
+      "partition_root": "/Volumes/DIsk/qlib-a-share-tushare-1m/derived/a_share/rich/tushare/minute_walkforward_campaign004_feature_library/tushare_stk_mins_1m_2019_2025_ea0cbb8f_walkforward_campaign004_feature_library_v1/partitions",
+      "bindings": [
+        {
+          "path": "/Volumes/DIsk/qlib-a-share-tushare-1m/derived/a_share/rich/tushare/minute_walkforward_campaign004_feature_library/tushare_stk_mins_1m_2019_2025_ea0cbb8f_walkforward_campaign004_feature_library_v1/snapshot_manifest.json",
+          "sha256": "8eefc381d006997f1dcd95edcd9be4db8485e0c4954d6166d94f1981ae3b57fe"
+        },
+        {
+          "path": "docs/a_share_three_day_walkforward_campaign_004_no_return_preregistration.json",
+          "sha256": "39e2147b75bcc3a0fd3cb39dee3932f794331142654f0bfe63679b2c8ecc2a4e"
+        },
+        {
+          "path": "data/experiments/short_horizon/historical_walkforward/campaign_004/no_return/20260728T064945Z_campaign004_no_return_audit.json",
+          "sha256": "d7cdce80d0ac2923695b866a7cf034f5049ec4da1a5a8dd5fc36d4f41f1cb755"
+        }
+      ]
+    }
+  ],
+  "search_space": {
+    "admissible_factor_names_canonical": [
+      "intraday_market_neutral_late_residual_drift_238m",
+      "intraday_negative_return_absorption_rate_236p",
+      "intraday_signed_path_efficiency_239m"
+    ],
+    "single_factor_rule": "Evaluate every admissible factor exactly once at weight 1.0.",
+    "pair_rule": "Evaluate every unordered pair exactly at the three weights below, applied in canonical factor-name order.",
+    "pair_weight_grid_for_canonical_factor_order": [
+      [
+        0.25,
+        0.75
+      ],
+      [
+        0.5,
+        0.5
+      ],
+      [
+        0.75,
+        0.25
+      ]
+    ],
+    "all_components_required": true,
+    "directional_rank_method": "same-day average percentile rank with each factor's frozen higher direction",
+    "weight_fitting": false,
+    "threshold_search": false,
+    "year_subset_search": false,
+    "filter_search": false,
+    "triple_or_higher_order_combinations": false,
+    "expected_single_trial_count": 3,
+    "expected_pair_trial_count": 9,
+    "expected_trial_count": 12,
+    "record_every_trial_and_infrastructure_failure": true,
+    "post_result_change_requires_new_campaign_version": true
+  },
+  "walkforward_folds": [
+    {
+      "fold": 1,
+      "training": {
+        "start": "2019-01-01",
+        "end": "2020-12-31"
+      },
+      "validation": {
+        "start": "2021-01-01",
+        "end": "2021-12-31"
+      }
+    },
+    {
+      "fold": 2,
+      "training": {
+        "start": "2019-01-01",
+        "end": "2021-12-31"
+      },
+      "validation": {
+        "start": "2022-01-01",
+        "end": "2022-12-31"
+      }
+    },
+    {
+      "fold": 3,
+      "training": {
+        "start": "2019-01-01",
+        "end": "2022-12-31"
+      },
+      "validation": {
+        "start": "2023-01-01",
+        "end": "2023-12-31"
+      }
+    }
+  ],
+  "split_protocol": {
+    "global_signal_grid": "start at the first accepted local 2019 session and take every third local session",
+    "signal": "close t",
+    "entry": "next accepted local session open t+1",
+    "exit": "third accepted local session close t+3",
+    "purge_signal_sessions_each_boundary": 3,
+    "label_containment_required": true,
+    "quality_maximum_age_days": 550,
+    "minimum_listing_sessions": 20,
+    "minimum_signal_names": 50,
+    "topk": 3
+  },
+  "survivor_rule": {
+    "purpose": "Admit only operationally valid gate constructions that pass fold-consistency, drawdown, pilot-cost, and aggregate 20bp robustness gates before the exposed stress interval is read.",
+    "minimum_validation_association_cohorts_per_fold": 60,
+    "minimum_board_lot_affordability_rate_each_fold": 0.9,
+    "maximum_daily_amount_participation_each_fold": 0.01,
+    "terminal_unresolved_positions_each_fold": 0,
+    "positive_ic_fold_count_gte": 2,
+    "median_validation_mean_rank_ic_gt": 0.0,
+    "median_validation_spread_gt": 0.0,
+    "positive_normalized_return_fold_count_gte": 2,
+    "positive_pilot_return_fold_count_gte": 2,
+    "median_validation_pilot_return_gt": 0.0,
+    "worst_normalized_drawdown_gte": -0.25,
+    "development_aggregate_20bp_return_gt": 0.0,
+    "operational_and_validation_quality_gates_are_both_required": true,
+    "ranking_order": [
+      "positive validation mean-Rank-IC fold count descending",
+      "positive validation 10bp pilot-return fold count descending",
+      "positive validation normalized-return fold count descending",
+      "median validation mean Rank IC descending",
+      "median validation 10bp pilot return descending",
+      "2019-2023 aggregate 20bp pilot return descending",
+      "worst validation normalized drawdown descending",
+      "trial_id ascending"
+    ],
+    "maximum_exposed_stress_survivors": 8,
+    "post_result_rule_change_allowed": false
+  },
+  "exposed_stress_replay": {
+    "start": "2024-01-01",
+    "end": "2025-12-31",
+    "classification": "historically_exposed_stress_replay_not_unseen_or_pristine",
+    "opening_rule": "Open only after all 42 development trials are retained and the survivor record is frozen.",
+    "consumption_rule": "Evaluate every frozen survivor exactly once, retain every outcome, and mark the replay consumed.",
+    "frozen_comparison_gates": {
+      "mean_rank_ic_gt": 0.0,
+      "positive_rank_ic_rate_gt": 0.5,
+      "mean_top3_minus_bottom3_spread_gt": 0.0,
+      "each_year_mean_rank_ic_gt": 0.0,
+      "normalized_return_gt": 0.0,
+      "normalized_drawdown_gte": -0.2,
+      "each_year_normalized_return_gt": 0.0,
+      "normalized_terminal_unresolved_positions": 0,
+      "pilot_10bp_return_gt": 0.0,
+      "pilot_20bp_return_gt": 0.0,
+      "each_year_pilot_10bp_return_gt": 0.0,
+      "board_lot_affordability_gte": 0.9,
+      "maximum_daily_amount_participation_lte": 0.01,
+      "pilot_terminal_unresolved_positions": 0
+    },
+    "pass_is_research_only": true,
+    "pass_can_activate_candidate50": false,
+    "pass_can_generate_current_score_selection_size_or_order": false
+  },
+  "candidate49_boundary": {
+    "registration_id": "candidate49_intraday_cumulative_vwap_crossing_rate_240m_v1",
+    "included_in_feature_library": false,
+    "historical_return_read_allowed": false,
+    "historical_signal_execution_or_milestone_backfill_allowed": false,
+    "prospective_ledgers_changed_by_campaign": false
+  },
+  "research_output_boundary": {
+    "current_scoring_allowed": false,
+    "selection_allowed": false,
+    "sizing_allowed": false,
+    "orders_allowed": false,
+    "prospective_candidate_activation_allowed": false,
+    "investment_advice": false
+  }
+}

@@ -1,0 +1,27 @@
+{
+  "schema_version": 1,
+  "kind": "a_share_three_day_walkforward_campaign117_no_return_audit",
+  "status": "completed_with_one_admissible_factor_pending_walkforward_preregistration",
+  "recorded_at": "2026-08-13T13:25:52Z",
+  "purpose": "Expose the frozen Campaign117 ordered no-return result through the inherited exact-one-trial development interface without recomputation or return reading.",
+  "authoritative_no_return_audit": {
+    "path": "data/experiments/short_horizon/historical_walkforward/campaign_117/uniqueness/campaign117_ordered_uniqueness_audit.json",
+    "sha256": "cb5d77b8fe81fce0464b1c3fe7d93ab345d9b7b1a78f045447e0bf2b6197f084"
+  },
+  "authoritative_result_status": "all_134_uniqueness_gates_passed_ready_to_freeze_one_development_trial",
+  "admissible_factor_names": [
+    "intraday_amount_weak_order_entropy_236t"
+  ],
+  "admissible_factor_count": 1,
+  "failed_factor_names": [],
+  "coverage_gate_passed": true,
+  "all_134_numeric_comparisons_passed": true,
+  "maximum_observed_absolute_median_daily_rank_correlation": 0.7551091302367997,
+  "historical_daily_price_fields_read": [],
+  "historical_forward_return_fields_read": false,
+  "candidate49_historical_return_read": false,
+  "candidate49_prospective_ledgers_changed": false,
+  "current_scoring_selection_sizing_or_orders_performed": false,
+  "provider_request_issued": false,
+  "interface_only_no_recomputation": true
+}

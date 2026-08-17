@@ -1,0 +1,82 @@
+{
+  "schema_version": 1,
+  "kind": "a_share_three_day_walkforward_campaign089_feature_snapshot_binding",
+  "status": "candidate_snapshot_verified_pending_coverage_first_no_return_audit",
+  "recorded_at": "2026-08-07T04:46:55+08:00",
+  "protocol": {
+    "path": "docs/a_share_three_day_walkforward_campaign_089_no_return_preregistration.json",
+    "sha256": "444e6aecdd82ad8f9ca909063bb42a5bf6453b826067f637e2bc54977d14e1be"
+  },
+  "implementation_freeze": {
+    "path": "docs/a_share_three_day_walkforward_campaign_089_feature_implementation_freeze_20260807.json",
+    "sha256": "c7420539aad1e0736a53c7dedb0ed32553e758408b66e60877bec6d87fd65a77"
+  },
+  "feature_runner": {
+    "path": "scripts/a_share_three_day_walkforward_campaign089_features.py",
+    "sha256": "64c0dc5a2331446e9acf57a00411b67bf3543d49104d89cdde07c91e8c2ee407"
+  },
+  "candidate_snapshot": {
+    "path": "/Volumes/DIsk/qlib-a-share-tushare-1m/derived/a_share/rich/tushare/minute_walkforward_campaign089_feature_library/tushare_stk_mins_1m_2019_2025_ea0cbb8f_walkforward_campaign089_feature_library_v1/snapshot_manifest.json",
+    "sha256": "3ab55cc6f61bebb6713aeacb9e54125c20183295b862717617be0b13c9d0a204",
+    "dataset_sha256": "c4f8794f42f1fffe2847ade875232827c8ca532a7fd75dd1123686c41456655a",
+    "factor": "intraday_directional_amount_timing_spread_238m",
+    "direction": "higher",
+    "factor_range": [
+      -1,
+      1
+    ],
+    "rows": 1331759,
+    "eligible_rows": 1327577,
+    "missing_rows": 4182,
+    "partitions": 7,
+    "calendar_sessions": 1632
+  },
+  "source_evidence": {
+    "raw_manifest_sha256": "9b3d959563c9d182f38981c6a36bdb3bc9b415de08487a9e1f9e850825c0839f",
+    "joint_clean_manifest_sha256": "453c6719cb3c7da42fed8807b28a2bfe988700283e9625a6db97912534f368de",
+    "joint_clean_dataset_sha256": "0e4fe7c05536cdfcecc2936bc880726902f5560061188ffff82ef7ee6f346983",
+    "raw_fields_read": [
+      "datetime",
+      "symbol",
+      "provider",
+      "close",
+      "amount"
+    ],
+    "identity_fields_read": [
+      "trade_date",
+      "symbol",
+      "provider"
+    ],
+    "raw_partitions_read": 33015,
+    "raw_rows_read": 1866461373,
+    "source_sessions_read": 7744653
+  },
+  "quality": {
+    "valid_directional_timing_sessions": 7688962,
+    "invalid_selected_source_sessions": 0,
+    "nonpositive_up_mass_sessions": 50480,
+    "nonpositive_down_mass_sessions": 54644,
+    "zero_returns": 665936248,
+    "zero_destination_amounts": 82059782
+  },
+  "verification": {
+    "all_partition_byte_hashes_passed": true,
+    "all_partition_frame_hashes_passed": true,
+    "all_canonical_factor_value_hashes_passed": true,
+    "signed_factor_range_passed": true,
+    "eligible_flags_equal_finite_values": true,
+    "stock_day_keys_unique_and_strictly_increasing": true,
+    "eligible_universe_key_hash_passed": true,
+    "dataset_digest_passed": true
+  },
+  "comparison_values_read": false,
+  "coverage_or_capacity_metrics_computed_before_binding": false,
+  "historical_daily_price_fields_read": [],
+  "historical_forward_returns_read": false,
+  "training_or_model_fitting_performed": false,
+  "candidate49_historical_backfill_performed": false,
+  "candidate49_ledgers_changed": false,
+  "provider_request_issued": false,
+  "current_scoring_selection_sizing_or_orders_performed": false,
+  "next_gate": "Freeze the no-return audit implementation and activation binding, then compute coverage before any comparator value."
+}

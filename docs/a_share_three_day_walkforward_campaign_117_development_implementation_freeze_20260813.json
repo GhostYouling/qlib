@@ -1,0 +1,51 @@
+{
+  "schema_version": 1,
+  "kind": "a_share_three_day_walkforward_campaign117_development_implementation_freeze",
+  "status": "frozen_before_campaign117_2019_2023_development_return_read",
+  "recorded_at": "2026-08-13T13:25:52Z",
+  "purpose": "Byte-freeze the Campaign117 exact-one-trial runner, preregistration and tests before the first historical daily-price or forward-return value can be loaded.",
+  "development_preregistration": {
+    "path": "docs/a_share_three_day_walkforward_campaign_117_preregistration.json",
+    "sha256": "593e1b3cd8edb6859d98ad53197bee383191842ae970d94aa1ceb691285c7c70"
+  },
+  "development_runner": {
+    "path": "scripts/a_share_three_day_walkforward_campaign117.py",
+    "sha256": "5d80f88d673ea452793332d5ecedbba259b3fa01dff331386b0a648e78ffed5b",
+    "frozen_base_runner": {
+      "path": "scripts/a_share_three_day_walkforward_campaign080.py",
+      "sha256": "b4c4b781392c87f01b9542c2317611a936d431b0328cea9d21ea90b8f68a324b"
+    }
+  },
+  "tests": {
+    "path": "tests/data_collector_tests/test_a_share_three_day_walkforward_campaign117_development.py",
+    "sha256": "6bedf7562e4808963c933f78b01dc7b2d33f96017963a42345f942f9efd8a767",
+    "passed": 7
+  },
+  "no_return_admission": {
+    "path": "data/experiments/short_horizon/historical_walkforward/campaign_117/uniqueness/campaign117_ordered_uniqueness_audit.json",
+    "sha256": "cb5d77b8fe81fce0464b1c3fe7d93ab345d9b7b1a78f045447e0bf2b6197f084",
+    "admissible_factor_count": 1,
+    "numeric_comparisons_passed": 134
+  },
+  "trial_catalog": [
+    {
+      "trial_id": "wf117_intraday_amount_weak_order_entropy_236t_single_higher",
+      "feature_set": [
+        "intraday_amount_weak_order_entropy_236t"
+      ],
+      "weights": [
+        1.0
+      ],
+      "direction": "higher",
+      "complexity": 1
+    }
+  ],
+  "trial_count": 1,
+  "historical_daily_price_fields_read_before_freeze": [],
+  "historical_forward_returns_read_before_freeze": false,
+  "stress_2024_2025_opened_before_freeze": false,
+  "candidate49_ledgers_changed_before_freeze": false,
+  "provider_request_issued_before_freeze": false,
+  "current_scoring_selection_sizing_positions_or_orders_performed": false,
+  "post_result_code_preregistration_parameter_filter_subset_direction_or_gate_change_allowed": false
+}

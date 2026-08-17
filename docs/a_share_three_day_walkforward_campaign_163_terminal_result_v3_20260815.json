@@ -1,0 +1,83 @@
+{
+  "schema_version": 1,
+  "kind": "a_share_three_day_walkforward_campaign163_terminal_result",
+  "status": "final_effective_v3_terminal_prevalue_accounting_complete_goal_active",
+  "recorded_at": "2026-08-15T06:38:35+08:00",
+  "supersedes_without_rewriting": {
+    "path": "docs/a_share_three_day_walkforward_campaign_163_terminal_result_v2_20260815.json",
+    "sha256": "a052f53ade7e5c28b8388fe76e4c0bcf4fdc9a9bd020b47215d57caeb335982d",
+    "preserved": true,
+    "scientific_result_changed": false,
+    "reason": "Append the zero-write test-patch context failure and its clean nine-test recovery."
+  },
+  "authoritative_inputs": {
+    "campaign163_v2_terminal_result": {
+      "path": "docs/a_share_three_day_walkforward_campaign_163_terminal_result_v2_20260815.json",
+      "sha256": "a052f53ade7e5c28b8388fe76e4c0bcf4fdc9a9bd020b47215d57caeb335982d"
+    },
+    "supply_chain_source_frontier": {
+      "path": "docs/a_share_three_day_walkforward_campaign_163_supply_chain_disclosure_source_frontier_20260815.json",
+      "sha256": "3002f25ffc4ff1938933f0b4f3b998cacdb775ca0e27702c65cdc7afec0e80a3"
+    },
+    "effective_infrastructure_failures": {
+      "path": "docs/a_share_three_day_walkforward_campaign_163_prevalue_infrastructure_failure_v3_20260815.json",
+      "sha256": "b309694e85ddea66b5dbc454519a34dd24e7a6ad47c5b34bd4081929f72c8ef1"
+    },
+    "effective_attempt_ledger": {
+      "path": "data/experiments/short_horizon/historical_walkforward/campaign_163/research_attempt_ledger_v3.json",
+      "sha256": "e87003d57d700aa250ba19cd7bac8100742e7b61d364fc2f36f47170203a8b5c",
+      "effective_entry_count": 9,
+      "chain_tip_sha256": "10881bfe20a5dffab138ae90b38a808ea9dafe72e17c24dbc68fbf67da67f766"
+    }
+  },
+  "unchanged_scientific_result": {
+    "terminal": true,
+    "terminal_phase": "finite_prevalue_supply_chain_disclosure_source_admission",
+    "routes_reviewed": 6,
+    "genuinely_new_issuer_state_routes": 3,
+    "source_admission_deferrals_not_factor_failures": 3,
+    "related_operator_window_or_subset_rejections": 3,
+    "selected_candidate_count": 0,
+    "complete_factor_definition_created": false,
+    "annual_report_pdf_table_source_row_candidate_comparator_price_or_return_value_read": false,
+    "stress_2024_2025_opened": false
+  },
+  "effective_accounting": {
+    "campaign163_attempt_count": 9,
+    "campaign163_prevalue_scientific_attempt_count": 6,
+    "campaign163_infrastructure_failure_count": 3,
+    "campaign163_complete_factor_attempt_count": 0,
+    "campaign163_return_reading_development_trial_count": 0,
+    "campaign163_development_survivor_count": 0,
+    "campaign163_stress_trial_count": 0,
+    "cumulative_historical_research_attempt_count": 1430,
+    "cumulative_return_reading_development_trial_count": 314
+  },
+  "library_state": {
+    "complete_factor_definition_count": 158,
+    "complete_factor_definition_order_sha256": "4819c7fd7c0795d7598a52f3c615e3f117d5f4ecd9332974bc8e3dfa57c96667",
+    "eligible_numeric_comparator_count": 142,
+    "eligible_numeric_comparator_order_sha256": "5d1b35fb5a0d8ac9293008db9963c4a60a94dc940c237c3ed259e5ce44f14aaf",
+    "changed_by_campaign163": false
+  },
+  "candidate49": {
+    "only_active_prospective_candidate": true,
+    "signal_ledger_sha256": "5193f00d7f36da003f53cec387900da4c3d002299f5dfcfc1a95eaa199ed3a79",
+    "signal_entry_count": 0,
+    "execution_ledger_sha256": "d57a3e61eac969e42cafa418ccd8c0a5ee65dcf69da145bb2c096c2a02a2ea4f",
+    "execution_entry_count": 0,
+    "ledgers_changed": false
+  },
+  "research_boundary": {
+    "failed_exit_codes_bypassed_or_masked": false,
+    "annual_report_pdf_table_source_row_candidate_comparator_price_or_return_value_read": false,
+    "stress_2024_2025_opened": false,
+    "provider_or_web_request_issued": false,
+    "provider_credential_presence_value_or_digest_read": false,
+    "candidate49_ledgers_changed": false,
+    "second_prospective_candidate_created": false,
+    "current_scoring_selection_sizing_positions_or_orders_performed": false,
+    "investment_advice": false
+  },
+  "next_action": "Publish final effective v3 policy/state/validation, then continue Campaign164 offline."
+}

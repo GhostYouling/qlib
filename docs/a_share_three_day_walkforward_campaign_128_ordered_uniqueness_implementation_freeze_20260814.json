@@ -1,0 +1,63 @@
+{
+  "schema_version": 1,
+  "kind": "a_share_three_day_walkforward_campaign128_ordered_uniqueness_implementation_freeze",
+  "status": "all_139_loader_and_gate_runner_frozen_before_comparator_values",
+  "recorded_at": "2026-08-14T06:16:00+0800",
+  "frozen_implementation": {
+    "runner_path": "scripts/a_share_three_day_walkforward_campaign128_ordered_uniqueness.py",
+    "runner_sha256": "83bd5f8c1382ef8cd244582a021d64f57accf17f586c926befe0170369737a79",
+    "test_path": "tests/data_collector_tests/test_a_share_three_day_walkforward_campaign128_ordered_uniqueness.py",
+    "test_sha256": "f58318041909e880251c13f56820fd355658d8d5a4269d3f8b2849e0b4e83374",
+    "protocol_sha256": "b6dab3dd821bad4b03888bfd97c357b6a2c20f6467cae6e33b0647bf44ac3acd",
+    "coverage_sha256": "8ccfbc0fb76b5c4187febbf8659fb29c864259efd4e3a8be3bc5d0db8a980605",
+    "prior_138_runner_sha256": "34a3818b8f582eaa82c10835ec23e11a68e3533ee0238479b769a4d6c1a5193d",
+    "comparison_count": 139,
+    "comparison_order_sha256": "9c4de054ca1b83eced67eece256b024ebec3a6e1925de17a4cedfa7d36265161",
+    "minimum_pairwise_names_per_session": 50,
+    "minimum_pairwise_sessions_per_comparison": 100,
+    "strict_maximum_absolute_median_daily_rank_correlation": 0.8,
+    "candidate_quality_listing_rows": 1319946,
+    "candidate_value_range": [
+      -1.0,
+      1.0
+    ],
+    "comparator_139_name": "intraday_terminal_close_direction_first_attainment_240m",
+    "comparator_139_value_range": [
+      0.0,
+      1.0
+    ],
+    "comparator_139_manifest_sha256": "e5789da9896535d8d67e0f0f3a7b2704f41292e4694b127a27999224abfad724",
+    "comparator_139_dataset_sha256": "cb476bcc93e7c88df6e2666af9d60d470c90f8a7670ea4553d2e9b877ab8a5b2",
+    "output_path": "data/experiments/short_horizon/historical_walkforward/campaign_128/uniqueness/campaign128_ordered_uniqueness_audit.json",
+    "single_use": true
+  },
+  "synthetic_verification": {
+    "pytest": "5 passed in 2.67s",
+    "black": "passed after formatting",
+    "ruff": "passed",
+    "strict_boundary_equality_rejected": true,
+    "reorder_and_missing_result_rejected": true,
+    "comparator_values_read": false
+  },
+  "run_protocol": {
+    "plan_must_exit_zero_and_ready_true": true,
+    "run_requires_confirm_run": true,
+    "candidate_and_all_139_comparator_sources_verified_before_or_during_load": true,
+    "all_139_results_recorded_in_frozen_order_without_early_stop": true,
+    "raw_nan_preserved_until_pairwise_overlap": true,
+    "historical_daily_price_forward_return_or_provider_read_allowed": false
+  },
+  "research_boundary": {
+    "candidate_values_reopened_for_uniqueness_before_freeze": false,
+    "comparator_values_read_before_freeze": false,
+    "historical_daily_price_or_forward_return_values_read": false,
+    "stress_2024_2025_return_values_opened": false,
+    "provider_request_issued": false,
+    "credential_loaded": false,
+    "candidate49_historical_backfill_performed": false,
+    "candidate49_ledgers_changed": false,
+    "second_prospective_candidate_created": false,
+    "current_scoring_selection_sizing_positions_or_orders_performed": false,
+    "investment_advice": false
+  }
+}

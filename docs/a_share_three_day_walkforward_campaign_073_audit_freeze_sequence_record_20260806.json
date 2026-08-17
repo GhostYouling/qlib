@@ -1,0 +1,27 @@
+{
+  "version": 1,
+  "kind": "a_share_three_day_walkforward_campaign073_audit_freeze_sequence_record",
+  "status": "recorded_before_coverage_or_comparison_values",
+  "recorded_at": "2026-08-06T07:19:00+08:00",
+  "observation": "The feature runner and synthetic tests were frozen before Campaign073 minute source values, but the separate coverage-first no-return audit runner had not yet been implemented when the immutable candidate snapshot was built and verified.",
+  "scope": {
+    "feature_implementation_frozen_before_source_values": true,
+    "candidate_snapshot_built_and_verified": true,
+    "coverage_or_capacity_metrics_computed": false,
+    "comparison_values_read": false,
+    "historical_daily_price_fields_read": [],
+    "historical_forward_returns_read": false,
+    "provider_request_issued": false,
+    "candidate49_ledgers_changed": false
+  },
+  "interpretation": {
+    "protocol_or_candidate_definition_changed": false,
+    "candidate_snapshot_changed_or_rebuilt": false,
+    "gate_or_comparator_order_changed": false,
+    "infrastructure_attempt_increment": 1,
+    "complete_factor_attempt_increment": 0,
+    "return_reading_trial_increment": 0,
+    "predictive_evidence": false
+  },
+  "repair_boundary": "Implement and freeze the audit runner and its tests now, then bind that exact implementation to the already immutable verified snapshot before any coverage metric or comparator value is read. No retrospective claim that the audit runner preceded the snapshot is allowed."
+}

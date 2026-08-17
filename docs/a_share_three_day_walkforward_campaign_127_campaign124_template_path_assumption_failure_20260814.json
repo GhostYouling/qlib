@@ -1,0 +1,20 @@
+{
+  "schema_version": 1,
+  "kind": "a_share_three_day_walkforward_infrastructure_failure_record",
+  "campaign": 127,
+  "attempt_id": "campaign127_infrastructure_002",
+  "recorded_at": "2026-08-14T04:47:38+0800",
+  "phase": "prevalue_template_inspection",
+  "status": "failed_exit_code_preserved",
+  "failure_class": "campaign124_template_path_assumption_error",
+  "command_scope": "Read Campaign124 concept, adapter/formula freeze, source contract, synthetic test and acceptance runner as read-only structural references.",
+  "observed_failure": "The three documented JSON artifacts were read, then sed failed because two guessed test and runner paths did not exist.",
+  "state_change_before_failure": false,
+  "provider_request_issued": false,
+  "provider_credential_loaded": false,
+  "candidate_or_comparator_values_read": false,
+  "daily_price_or_forward_return_values_read": false,
+  "candidate49_ledgers_changed": false,
+  "corrective_boundary": "Preserve this record, resolve Campaign124 paths only from rg --files, and inspect the returned files without assuming names.",
+  "failed_exit_code_overridden_or_treated_as_success": false
+}

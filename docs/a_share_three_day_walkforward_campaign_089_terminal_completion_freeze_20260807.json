@@ -1,0 +1,53 @@
+{
+  "schema_version": 1,
+  "kind": "a_share_three_day_walkforward_campaign089_terminal_completion_freeze",
+  "status": "terminal_zero_development_survivors_frozen_before_future_campaign_values",
+  "frozen_at": "2026-08-07T05:17:20+08:00",
+  "research_record": {
+    "path": "docs/a_share_three_day_walkforward_campaign_089_research_record.json",
+    "sha256": "d81988356f7afb4bb6335a59e796c037530c2fdcce2e2c7c9e439f78bb2ae344"
+  },
+  "final_attempt_ledger": {
+    "path": "data/experiments/short_horizon/historical_walkforward/campaign_089/research_attempt_ledger_v8.json",
+    "sha256": "b68a6fcb401b1f36a7c720572e23b74da6853791249d92f89d18688a3a2d8eff",
+    "attempt_count": 9,
+    "ledger_entry_count": 11,
+    "return_reading_development_trial_count": 1
+  },
+  "terminal_result": {
+    "factor": "intraday_directional_amount_timing_spread_238m",
+    "direction": "higher",
+    "coverage_gate_passed": true,
+    "numeric_comparison_count": 118,
+    "numeric_comparisons_passed": 118,
+    "maximum_absolute_median_daily_rank_correlation": 0.4092308593233217,
+    "development_trial_count": 1,
+    "positive_mean_rank_ic_fold_count": 2,
+    "positive_normalized_return_fold_count": 1,
+    "positive_pilot_return_fold_count": 0,
+    "development_aggregate_20bp_return": -0.1671183640113627,
+    "worst_validation_normalized_drawdown": -0.3487686269124175,
+    "development_survivor_count": 0,
+    "stress_2024_2025_opened": false,
+    "stress_return_fields_read": false
+  },
+  "final_accounting": {
+    "cumulative_historical_research_attempt_count": 621,
+    "cumulative_return_reading_development_trial_count": 287
+  },
+  "immutability": {
+    "campaign089_formula_direction_gates_or_result_may_change": false,
+    "campaign089_reverse_relabel_rewindow_filter_refit_rescue_retest_or_combination_allowed": false,
+    "campaign089_stress_return_read_allowed": false,
+    "old_artifacts_or_failure_entries_rewritten": false,
+    "future_duplicate_detection_may_reference_numeric_snapshot": true
+  },
+  "research_boundary": {
+    "provider_request_issued": false,
+    "candidate49_historical_backfill_performed": false,
+    "candidate49_ledgers_changed": false,
+    "second_prospective_candidate_created": false,
+    "current_scoring_selection_sizing_or_orders_performed": false,
+    "investment_advice": false
+  }
+}

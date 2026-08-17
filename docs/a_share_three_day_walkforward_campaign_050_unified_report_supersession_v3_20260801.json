@@ -1,0 +1,50 @@
+{
+  "version": 3,
+  "kind": "a_share_three_day_walkforward_campaign050_unified_report_supersession",
+  "status": "campaign050_v2_report_binding_preserved_generator_rebuild_current",
+  "recorded_at": "2026-08-01T11:36:00Z",
+  "purpose": "Preserve the Campaign050 v2 report pointer while binding the generator-backed Campaign028-050 terminal summaries and current Campaign050 accounting.",
+  "bindings": {
+    "campaign050_terminal_record_v2": {
+      "path": "docs/a_share_three_day_walkforward_campaign_050_research_record_v2.json",
+      "sha256": "f896771fed934c934a964e7e343371299820b0b8ae03d963f2ae284a98c67a29"
+    },
+    "previous_campaign050_supersession_v2": {
+      "path": "docs/a_share_three_day_walkforward_campaign_050_unified_report_supersession_v2_20260801.json",
+      "sha256": "c20e9e6e5d7f834c372d48fb7a1263690e1f6512a9e343d44c3f339b7db93d2d"
+    },
+    "terminal_binding_cli_failure": {
+      "path": "docs/a_share_three_day_walkforward_campaign_050_terminal_binding_cli_failure_20260801.json",
+      "sha256": "2cb69884400de76832e71e28db742257daa4dde58792955bd1c8a604e860561b"
+    },
+    "current_report_generator": {
+      "path": "scripts/a_share_short_horizon_factor_research.py",
+      "sha256": "66ff393f7f372c6adfda3cbba4a08c2dc6249ce8b31f13fae49f676a6b3c38b2"
+    },
+    "current_unified_research_report": {
+      "path": "data/experiments/short_horizon/three_day_research_report.md",
+      "sha256": "02efd969c5367aae72bf5ff5f1304b5886072350a28d23a0cc5d208689fc4ae2"
+    }
+  },
+  "historical_binding": {
+    "record": "docs/a_share_three_day_walkforward_campaign_050_unified_report_supersession_v2_20260801.json",
+    "json_pointer": "/bindings/current_unified_research_report",
+    "expected_sha256": "36f5e4740d965e983ea35225bbd373208173745beef80dba2753328ee45392c0",
+    "current_sha256": "02efd969c5367aae72bf5ff5f1304b5886072350a28d23a0cc5d208689fc4ae2",
+    "historical_record_rewritten": false
+  },
+  "generator_verification": {
+    "campaign028_through_campaign050_terminal_heading_count": 23,
+    "consecutive_rebuild_sha256_equal": true,
+    "historical_terminal_report_assertions_passed": 22,
+    "historical_terminal_report_assertions_failed": 0
+  },
+  "semantic_boundary": {
+    "campaign050_factor_result_or_gate_changed": false,
+    "report_persistence_repair_only": true,
+    "additional_historical_daily_price_or_forward_return_read": false,
+    "2024_2025_stress_return_read": false,
+    "candidate49_ledgers_changed": false,
+    "current_scoring_selection_sizing_or_orders_performed": false
+  }
+}

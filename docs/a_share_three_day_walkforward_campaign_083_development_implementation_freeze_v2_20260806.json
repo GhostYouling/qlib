@@ -1,0 +1,78 @@
+{
+  "schema_version": 1,
+  "version": 2,
+  "kind": "a_share_three_day_walkforward_campaign083_development_implementation_freeze",
+  "status": "frozen_before_campaign083_full_development_retry_after_dependency_repair",
+  "frozen_at": "2026-08-06T12:52:00Z",
+  "repair_protocol": {
+    "path": "docs/a_share_three_day_walkforward_campaign_083_development_dependency_repair_protocol_v3_20260806.json",
+    "sha256": "1b0403eec03652a0f2b852612c9f138e2a2611586ff07a284055329283439350"
+  },
+  "original_implementation_freeze": {
+    "path": "docs/a_share_three_day_walkforward_campaign_083_development_implementation_freeze_20260806.json",
+    "sha256": "253c1c03d868a1bb7d8d9363a4cac2b599b5f75116395c4b7b243900c8b8da15"
+  },
+  "development_preregistration": {
+    "path": "docs/a_share_three_day_walkforward_campaign_083_preregistration.json",
+    "sha256": "13da1fb31d3849bb792b140847018fe44b8760e8c8d02ae1ba6e082ff467f087"
+  },
+  "unchanged_development_runner": {
+    "path": "scripts/a_share_three_day_walkforward_campaign083.py",
+    "sha256": "0a527a67fb4674eefec816f13442f07fa740f90c08a91a33d97db79fd5727640"
+  },
+  "repair_state_tests": {
+    "path": "tests/data_collector_tests/test_a_share_three_day_walkforward_campaign083_development_v2.py",
+    "sha256": "85e554f5c5c1ecab24f3f19a9ed8de96475753207f6d9746da31a6e4087c4964",
+    "pre_freeze_result": "3 passed, 1 v2 implementation-freeze test deselected",
+    "black_py312_check_passed": true,
+    "ruff_check_passed": true
+  },
+  "research_attempt_ledger_before_retry": {
+    "path": "data/experiments/short_horizon/historical_walkforward/campaign_083/research_attempt_ledger_v8.json",
+    "sha256": "aadba1037beec68dc00acad5a6429d49afc9870138477b3634081f0dfd07ca62",
+    "campaign_attempt_count": 17,
+    "campaign_infrastructure_failure_count": 16,
+    "campaign_complete_factor_attempt_count": 1,
+    "campaign_return_reading_development_trial_count": 0
+  },
+  "preserved_base_trial_ledger": {
+    "path": "data/experiments/short_horizon/historical_walkforward/campaign_083/walkforward/trial_ledger.json",
+    "sha256": "a61171fd4d371b4abe31bbb70662a2d5ef058b70a063211d1f762e11b2eedf6b",
+    "entry_count": 1,
+    "entry_phase": "infrastructure_failure",
+    "entry_trial_id": "wf083_infrastructure__development_load_001",
+    "complete_development_trial_count": 0
+  },
+  "dependency_repair_receipt": {
+    "qlib_import_passed": true,
+    "qlib_version": "0.9.8.dev30",
+    "numpy": "2.3.5",
+    "pandas": "2.2.2",
+    "pyarrow": "16.1.0",
+    "scipy": "1.15.3",
+    "pip_check_passed": true
+  },
+  "frozen_trial_unchanged": {
+    "trial_id": "wf083_intraday_close_frontier_innovation_share_238p_single_higher",
+    "feature_set": [
+      "intraday_close_frontier_innovation_share_238p"
+    ],
+    "weights": [
+      1
+    ],
+    "direction": "higher",
+    "expected_trial_count": 1,
+    "purge_signal_sessions": 3,
+    "t_plus_1_and_t_plus_3_must_share_partition": true
+  },
+  "partial_market_data_or_statistics_reused": false,
+  "market_execution_data_loaded_before_retry": false,
+  "historical_daily_price_fields_read_before_retry": [],
+  "historical_forward_returns_read_before_retry": false,
+  "stress_2024_2025_opened_before_retry": false,
+  "provider_request_issued_before_retry": false,
+  "candidate49_historical_backfill_performed": false,
+  "candidate49_ledgers_changed": false,
+  "current_scoring_selection_sizing_or_orders_performed": false,
+  "authorization": "Run the unchanged full development command at most once, appending its complete trial after the preserved infrastructure failure."
+}

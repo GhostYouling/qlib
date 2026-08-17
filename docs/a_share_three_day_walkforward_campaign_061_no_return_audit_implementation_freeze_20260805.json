@@ -1,0 +1,63 @@
+{
+  "version": 1,
+  "kind": "a_share_three_day_walkforward_campaign061_no_return_audit_implementation_freeze",
+  "status": "frozen_before_first_campaign061_comparison_value",
+  "recorded_at": "2026-08-05T01:10:35+08:00",
+  "purpose": "Bind the sole snapshot-bound Campaign061 ordered no-return audit before any of the 92 comparison values is opened.",
+  "no_return_protocol": {
+    "path": "docs/a_share_three_day_walkforward_campaign_061_no_return_preregistration.json",
+    "sha256": "8bb79b587a64dab98a3a32d6a04ad6be8985979519ed436bc4062bbe64ff8dab"
+  },
+  "snapshot_binding": {
+    "path": "docs/a_share_three_day_walkforward_campaign_061_feature_snapshot_binding_20260805.json",
+    "sha256": "232117b95fe4ff426c8ca6a4742f647d53a0697f9a4497479ef557fe59d919ce"
+  },
+  "base_audit": {
+    "path": "scripts/a_share_three_day_walkforward_campaign060_no_return_audit.py",
+    "sha256": "ecedad2aec0cf823c603001e2733411879c87d9b2522c4d09d5b6a212fa19977",
+    "use": "immutable ordered coverage, capacity, aligned uniqueness, and artifact engine only; Campaign061 appends terminal Campaign060"
+  },
+  "audit_runner": {
+    "path": "scripts/a_share_three_day_walkforward_campaign061_no_return_audit.py",
+    "sha256": "afea274393bef9fd2fe59747f0437fad2fbfef604cfe2a4f689822d83d6d6d43",
+    "candidate": "intraday_day_over_day_realized_variance_stability_238b",
+    "comparison_count": 92,
+    "comparison_order_sha256": "c6b4ce432891c251443d8672705d1ecf0977912c1f3e82d42c00863001288c76",
+    "coverage_must_pass_before_comparison_values": true,
+    "all_92_uniqueness_comparisons_must_pass": true
+  },
+  "audit_tests": {
+    "path": "tests/data_collector_tests/test_a_share_three_day_walkforward_campaign061_no_return_audit.py",
+    "sha256": "1b5f53ff5aae08b46003a278a4b1e84347511d456748ac2f119c9a6f8a062686",
+    "combined_command": "PYTHONPATH=/Volumes/DIsk/Disk-Coding/qlib /opt/anaconda3/bin/python3 -m pytest -q tests/data_collector_tests/test_a_share_three_day_walkforward_campaign061_features.py tests/data_collector_tests/test_a_share_three_day_walkforward_campaign061_empty_partition_repair.py tests/data_collector_tests/test_a_share_three_day_walkforward_campaign061_no_return_audit.py",
+    "passed": 18,
+    "failed": 0
+  },
+  "research_attempt_ledger": {
+    "path": "data/experiments/short_horizon/historical_walkforward/campaign_061/research_attempt_ledger.json",
+    "sha256": "01a69560239206981c323e7dac13b6b7f387ea78ef7e0a098a5498aec1fd4d16",
+    "campaign061_attempt_count": 2,
+    "cumulative_historical_research_attempt_count": 353,
+    "cumulative_return_reading_development_trial_count": 269
+  },
+  "pre_audit_status": {
+    "audit_count": 0,
+    "comparison_first": "late_return_30m",
+    "comparison_last": "intraday_day_over_day_directional_return_agreement_238b",
+    "snapshot_manifest_sha256": "15ed4b46192402f301218e20b1fe37233dd7547256fb9786692ce544fae20b3c",
+    "snapshot_dataset_sha256": "a8a6261eaa92cd8eca7c25513236abf73f84f500da368a7b325634808fbb576a"
+  },
+  "research_boundary_before_freeze": {
+    "candidate_snapshot_values_opened_by_audit": false,
+    "comparison_values_read": false,
+    "daily_price_fields_read": [],
+    "historical_forward_return_fields_read": false,
+    "development_or_stress_fold_opened": false,
+    "provider_request_issued": false,
+    "candidate49_historical_backfill_performed": false,
+    "candidate49_ledgers_changed": false,
+    "second_prospective_candidate_created": false,
+    "current_scoring_selection_sizing_or_orders_performed": false
+  },
+  "next_action": "Run exactly one snapshot-bound no-return audit. If coverage fails, stop before comparisons. If coverage passes, load all 92 comparisons once and terminalize on any absolute median daily rank correlation above 0.8."
+}

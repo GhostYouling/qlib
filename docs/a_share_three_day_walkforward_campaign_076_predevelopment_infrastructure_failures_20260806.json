@@ -1,0 +1,70 @@
+{
+  "version": 1,
+  "kind": "a_share_three_day_walkforward_campaign076_predevelopment_infrastructure_failure_register",
+  "status": "seven_failures_preserved_before_development_return_read",
+  "recorded_at": "2026-08-06T11:50:00+08:00",
+  "entries": [
+    {
+      "ordinal": 1,
+      "stage": "workspace_and_credential_status_probe",
+      "result": "requested workspace entry was not the repository root and had no python alias",
+      "exit_code": 127,
+      "research_values_read": false
+    },
+    {
+      "ordinal": 2,
+      "stage": "system_python_pipeline_status_probe",
+      "result": "system python3 lacked pandas and numpy",
+      "exit_code": 1,
+      "research_values_read": false
+    },
+    {
+      "ordinal": 3,
+      "stage": "bundled_python_pipeline_status_probe",
+      "result": "bundled runtime lacked requests for the daily pipeline status subcommands; rich-data status itself completed",
+      "exit_code": 0,
+      "subcommand_failure_observed": true,
+      "research_values_read": false
+    },
+    {
+      "ordinal": 4,
+      "stage": "repository_env_loader_symbol_probe",
+      "result": "attempted to import nonexistent load_local_env from scripts._a_share_runtime; Candidate49 uses its own frozen _load_token implementation",
+      "exit_code": 1,
+      "research_values_read": false
+    },
+    {
+      "ordinal": 5,
+      "stage": "candidate49_dotenv_test_in_bundled_runtime",
+      "result": "bundled runtime lacked pytest; identical selected tests later passed 7/7 under the provisioned Anaconda interpreter",
+      "exit_code": 1,
+      "research_values_read": false
+    },
+    {
+      "ordinal": 6,
+      "stage": "campaign076_preregistration_binding_validation",
+      "result": "repeated the previously known unsupported --record CLI syntax; the positional-argument retry passed 10/10 bindings",
+      "exit_code": 2,
+      "research_values_read": false
+    },
+    {
+      "ordinal": 7,
+      "stage": "campaign076_no_return_audit_v1_final_record_timestamp",
+      "result": "coverage and comparison work completed in memory but final record publication failed because the timestamp target module lacked research; v2 restarted without partial-statistic reuse and completed",
+      "exit_code": 1,
+      "failure_record": {
+        "path": "docs/a_share_three_day_walkforward_campaign_076_no_return_v1_timestamp_provider_failure_20260806.json",
+        "sha256": "38e30c627a9c7bc4ebe352f4f4121797009f90579397b5150d2a4579894de3fd"
+      },
+      "candidate_values_read": true,
+      "comparison_values_may_have_been_read": true,
+      "historical_daily_price_or_return_values_read": false
+    }
+  ],
+  "failure_count": 7,
+  "all_failures_separate_from_the_single_complete_factor_attempt": true,
+  "historical_daily_price_fields_read": [],
+  "historical_forward_returns_read": false,
+  "provider_request_issued": false,
+  "candidate49_ledgers_changed": false
+}

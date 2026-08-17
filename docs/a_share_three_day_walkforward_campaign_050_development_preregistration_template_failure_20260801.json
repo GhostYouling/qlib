@@ -1,0 +1,75 @@
+{
+  "version": 1,
+  "kind": "a_share_three_day_walkforward_campaign050_development_preregistration_template_failure",
+  "status": "failed_closed_before_historical_daily_price_or_return_read",
+  "recorded_at": "2026-08-01T10:55:07Z",
+  "purpose": "Preserve the second Campaign050 development-boundary status failure and bind the exact inherited loader conditions before a final additive runner and preregistration version.",
+  "bindings": {
+    "development_preregistration_v2": {
+      "path": "docs/a_share_three_day_walkforward_campaign_050_preregistration_v2.json",
+      "sha256": "c6ec3f71b9ce397ddb69e1558a16b85a7a4de34a7e2533215194a9724d1c1da6"
+    },
+    "development_runner_v2": {
+      "path": "scripts/a_share_three_day_walkforward_campaign050_v2.py",
+      "sha256": "5624d24cffdc23d62f06ca6046d10a26f2f3108ec5b6d3fc58e387ac7d53f56d"
+    },
+    "first_semantic_failure": {
+      "path": "docs/a_share_three_day_walkforward_campaign_050_development_preregistration_semantic_failure_20260801.json",
+      "sha256": "88432c5a374f0bb696ad8f5bf9f297b6cd45e2125f193102d20bd6c6b650b838"
+    },
+    "no_return_audit_freeze": {
+      "path": "docs/a_share_three_day_walkforward_campaign_050_no_return_audit_freeze_20260801.json",
+      "sha256": "b0eb9b4c0bfdc001a485c5140f390309fe35fe0cf6f4535a0ab6dd5f4de5ff35"
+    }
+  },
+  "observed_status_command": "PYTHONPATH=. python scripts/a_share_three_day_walkforward_campaign050_v2.py status",
+  "observed_exit_code": 1,
+  "observed_preregistration_binding_validation": {
+    "binding_count": 21,
+    "passed": 21,
+    "failed": 0
+  },
+  "failure": {
+    "class": "pre_return_campaign004_template_identity_error",
+    "detail": "The v2 template_binding pointed to the preserved Campaign050 v1 record. The inherited loader requires template_binding to remain the exact terminal Campaign004 preregistration so that folds, execution assumptions, survivor gates, and stress rules are inherited from the frozen root template.",
+    "required_template": {
+      "path": "docs/a_share_three_day_walkforward_campaign_004_preregistration.json",
+      "sha256": "e67811f265b2b744073391fa65698951b132065109f95fa47991b8254a5756e6"
+    },
+    "output_root_file_count_after_failure": 0,
+    "development_ledger_entry_count": 0,
+    "stress_intent_exists": false,
+    "stress_record_exists": false
+  },
+  "full_loader_conditions_read_before_repair": {
+    "exact_top_level_field_set_required": true,
+    "terminal_campaign004_template_required": true,
+    "implementation_key_set": [
+      "development_command",
+      "exposed_stress_command",
+      "output_root",
+      "script"
+    ],
+    "implementation_script_must_identify_executing_runner": true,
+    "single_higher_factor_and_absolute_partition_root_required": true,
+    "finite_search_and_all_output_boundaries_fail_closed": true
+  },
+  "authorized_additive_repair": {
+    "v1_or_v2_preregistration_rewritten": false,
+    "v1_or_v2_runner_rewritten": false,
+    "new_dynamic_runner_with_its_own_file_identity_required": true,
+    "new_preregistration_must_restore_campaign004_template_binding": true,
+    "new_preregistration_must_use_exact_implementation_key_set": true,
+    "factor_trial_direction_folds_purge_costs_gates_or_stress_rule_changed": false
+  },
+  "research_boundary": {
+    "historical_daily_price_fields_read": [],
+    "historical_forward_returns_read": false,
+    "training_or_model_fitting_performed": false,
+    "provider_request_issued": false,
+    "candidate49_historical_return_signal_execution_or_milestone_backfill_performed": false,
+    "candidate49_prospective_ledgers_changed": false,
+    "candidate50_activation_created": false,
+    "current_scoring_selection_sizing_or_orders_performed": false
+  }
+}

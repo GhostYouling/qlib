@@ -1,0 +1,37 @@
+{
+  "schema_version": 1,
+  "kind": "a_share_three_day_walkforward_campaign055_infrastructure_failure",
+  "status": "recorded_pre_return_test_expectation_failure_authorized_test_only_repair",
+  "created_at": "2026-08-04T00:58:28+08:00",
+  "campaign": "Campaign055",
+  "attempt_class": "infrastructure_only",
+  "stage": "pre_return_audit_implementation_tests_before_freeze",
+  "command": "python -m pytest -q tests/data_collector_tests/test_a_share_three_day_walkforward_campaign055_no_return_audit.py",
+  "exit_code": 1,
+  "test_summary": {
+    "passed": 4,
+    "failed": 2,
+    "failure_one": "test expected the first frozen comparison to be momentum_5, while the preregistered ordered catalog correctly starts with late_return_30m",
+    "failure_two": "test expected the observed eligible sample maximum to equal the theoretical entropy upper bound 1.0, while the immutable snapshot maximum is 0.9999587450126793"
+  },
+  "failure_classification": "test_expectation_only",
+  "implementation_changed": false,
+  "formula_direction_threshold_filter_model_or_comparison_catalog_changed": false,
+  "authorized_repair": {
+    "scope": "change only the two erroneous expected literals in the still-unfrozen Campaign055 pre-return test module",
+    "implementation_retry_authorized": false,
+    "factor_attempt_consumed": false
+  },
+  "bindings": {
+    "audit_implementation_path": "scripts/a_share_three_day_walkforward_campaign055_features_v7.py",
+    "audit_implementation_sha256": "75dd159bd7f88be5521506bbcad95ae1516a620fb7d84247563b0898cbbf5540",
+    "failed_test_path": "tests/data_collector_tests/test_a_share_three_day_walkforward_campaign055_no_return_audit.py",
+    "failed_test_sha256": "ef2f7116dfc3bae117bf5f8b59e72caa3565edcb1b05f7e21debbcf9e813f56d"
+  },
+  "historical_daily_price_fields_read": [],
+  "historical_forward_return_fields_read": false,
+  "candidate49_historical_return_read": false,
+  "candidate49_prospective_ledgers_changed": false,
+  "second_prospective_candidate_created": false,
+  "current_scoring_selection_sizing_or_orders_performed": false
+}

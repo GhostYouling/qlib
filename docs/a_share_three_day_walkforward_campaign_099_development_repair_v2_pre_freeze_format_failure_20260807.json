@@ -1,0 +1,25 @@
+{
+  "schema_version": 1,
+  "kind": "a_share_three_day_walkforward_campaign099_development_repair_infrastructure_failure",
+  "status": "recorded_before_formatting_or_repair_activation",
+  "recorded_at": "2026-08-07T11:15:00Z",
+  "stage": "development_repair_v2_pre_freeze_test_and_format",
+  "outcome": "three_nonactivation_tests_passed_then_black_check_required_formatting_for_both_new_files",
+  "test_result": "3 passed, 1 deselected",
+  "black_exit_code": 1,
+  "ruff_not_run_due_to_fail_fast_chain": true,
+  "affected_files": [
+    "scripts/a_share_three_day_walkforward_campaign099_development_repair_v2.py",
+    "tests/data_collector_tests/test_a_share_three_day_walkforward_campaign099_development_repair_v2.py"
+  ],
+  "scientific_boundary": {
+    "formula_direction_data_folds_costs_execution_or_gates_changed": false,
+    "new_historical_daily_price_or_forward_return_values_read": false,
+    "complete_development_trial_count": 0,
+    "stress_2024_2025_return_fields_read": false,
+    "candidate49_historical_return_read": false,
+    "provider_request_issued": false,
+    "current_scoring_selection_sizing_or_orders_performed": false
+  },
+  "next_action": "Append this failure, format both new files mechanically, rerun tests and lint, then freeze the resulting exact bytes before retry."
+}

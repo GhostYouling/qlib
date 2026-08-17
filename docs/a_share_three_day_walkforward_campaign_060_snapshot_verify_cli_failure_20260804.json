@@ -1,0 +1,43 @@
+{
+  "version": 1,
+  "kind": "a_share_three_day_walkforward_campaign060_infrastructure_failure",
+  "status": "recorded_post_publication_verify_cli_failure_corrected_without_snapshot_change",
+  "recorded_at": "2026-08-04T23:58:00+08:00",
+  "stage": "independent_snapshot_verification",
+  "attempt_ordinal_within_campaign060": 4,
+  "failed_command": "PYTHONPATH=/Volumes/DIsk/Disk-Coding/qlib python scripts/a_share_three_day_walkforward_campaign060_features.py verify --data-root /Volumes/DIsk/qlib-a-share-tushare-1m --workers 8",
+  "failed_exit_code": 2,
+  "failure": "The verify subcommand requires --manifest; --data-root is not an accepted verify argument.",
+  "successful_command": "PYTHONPATH=/Volumes/DIsk/Disk-Coding/qlib python scripts/a_share_three_day_walkforward_campaign060_features.py verify --manifest /Volumes/DIsk/qlib-a-share-tushare-1m/derived/a_share/rich/tushare/minute_walkforward_campaign060_feature_library/tushare_stk_mins_1m_2019_2025_ea0cbb8f_walkforward_campaign060_feature_library_v1/snapshot_manifest.json --workers 8",
+  "successful_exit_code": 0,
+  "successful_result": {
+    "partitions_verified": 33015,
+    "rows_verified": 7724498,
+    "eligible_rows_verified": 5878602,
+    "all_partition_byte_and_frame_hashes_passed": true
+  },
+  "frozen_feature_runner": {
+    "path": "scripts/a_share_three_day_walkforward_campaign060_features.py",
+    "sha256": "6e9d51fbe18329e13e3f865c66597af56864313069d3d558ac46487347923e47"
+  },
+  "snapshot": {
+    "path": "/Volumes/DIsk/qlib-a-share-tushare-1m/derived/a_share/rich/tushare/minute_walkforward_campaign060_feature_library/tushare_stk_mins_1m_2019_2025_ea0cbb8f_walkforward_campaign060_feature_library_v1/snapshot_manifest.json",
+    "sha256": "3f328039fb7806c66a260a7fd723a3297e2e0ce5ba23e9bb11f39d963e7250cd",
+    "dataset_sha256": "052e5c8e5090c173c1e9486b545eafaa3b1301e038c1acc72434222e683d5735"
+  },
+  "boundary": {
+    "snapshot_bytes_changed_by_correction": false,
+    "comparison_values_read": false,
+    "daily_price_or_forward_return_read": false,
+    "provider_request_issued": false,
+    "candidate49_ledgers_changed": false,
+    "current_scoring_selection_sizing_or_orders_performed": false
+  },
+  "accounting": {
+    "counts_as_infrastructure_attempt": true,
+    "counts_as_factor_attempt": false,
+    "counts_as_return_reading_development_trial": false,
+    "cumulative_historical_research_attempt_count_after_record": 345,
+    "cumulative_return_reading_development_trial_count_after_record": 269
+  }
+}

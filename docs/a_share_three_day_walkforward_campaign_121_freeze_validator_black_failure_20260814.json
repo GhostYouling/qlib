@@ -1,0 +1,24 @@
+{
+  "schema_version": 1,
+  "kind": "a_share_three_day_walkforward_campaign121_infrastructure_failure",
+  "status": "recorded_after_fourteen_tests_before_any_source_or_research_value",
+  "recorded_at": "2026-08-14T01:52:00+08:00",
+  "attempt_id": "campaign121_infrastructure_007",
+  "phase": "campaign_specific_freeze_validator_static_format_validation",
+  "passed_before_failure": "14 tests",
+  "failure": {
+    "exit_code": 1,
+    "class": "black_format_check_failure",
+    "affected_path": "scripts/a_share_three_day_walkforward_campaign121_features.py"
+  },
+  "safe_recovery": "Apply deterministic formatting only, rerun the same checks, and bind v2 to the formatted bytes before source access.",
+  "research_boundary": {
+    "source_rows_read": false,
+    "candidate_values_computed_or_read": false,
+    "comparator_values_read": false,
+    "historical_daily_price_or_forward_return_values_read": false,
+    "provider_request_issued": false,
+    "candidate49_ledgers_changed": false,
+    "scientific_result_changed": false
+  }
+}

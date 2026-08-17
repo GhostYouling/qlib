@@ -1,0 +1,98 @@
+{
+  "version": 1,
+  "kind": "a_share_three_day_walkforward_campaign021_concept_scouting",
+  "status": "one_independent_market_response_timing_concept_selected_before_candidate_values_comparison_values_or_returns",
+  "recorded_at": "2026-07-29T03:59:00Z",
+  "purpose": "Select one economically interpretable Campaign021 mechanism without opening a minute partition, candidate value, comparison value, daily price, or forward return.",
+  "authoritative_boundary": {
+    "path": "docs/a_share_three_day_iteration_status_20260729_campaign020.json",
+    "sha256": "0efac48bd62d5cc54ae1c88164224ceb2099bb4754e8073415df44e2593c9c2a",
+    "campaign021_concept_scouting_allowed": true,
+    "candidate49_remains_only_prospective_candidate": true,
+    "candidate50_activation_allowed": false
+  },
+  "selected_concept": {
+    "concept_name": "intraday_market_response_delay_asymmetry",
+    "mechanism_family": "cross_stock_intraday_market_information_lead_lag",
+    "economic_question": "Does a stock respond more strongly to the immediately preceding broad-market minute move than the broad market responds to the stock's immediately preceding move, revealing delayed market-information incorporation that remains relevant from the next open through the third close?",
+    "economic_hypothesis": "A positive stock-lag-minus-stock-lead dependence asymmetry indicates gradual absorption of common information rather than contemporaneous exposure or an own-stock return pattern. Greater delayed incorporation may persist over the next three sessions.",
+    "provisional_direction": "higher",
+    "allowed_source_fields": [
+      "datetime",
+      "symbol",
+      "provider",
+      "close"
+    ],
+    "allowed_frozen_benchmark_fields": [
+      "trade_date",
+      "return_position",
+      "return_sum",
+      "valid_stock_count"
+    ],
+    "forbidden_source_fields": [
+      "open",
+      "high",
+      "low",
+      "volume",
+      "amount",
+      "daily open",
+      "daily high",
+      "daily low",
+      "daily close",
+      "daily volume",
+      "daily amount",
+      "forward return",
+      "Level-2"
+    ],
+    "fixed_temporal_question": "Compare exactly one-minute stock-lag and stock-lead dependence over all 236 adjacent return pairs wholly inside the two trading halves; never include the lunch transition or select a subwindow.",
+    "mandatory_overlap_challenges_before_any_value": [
+      "intraday_market_idiosyncratic_share_238m",
+      "intraday_market_neutral_late_residual_drift_238m",
+      "directional_serial_dependence_20",
+      "intraday_return_sign_run_imbalance_238p",
+      "intraday_bar_direction_continuity_238p",
+      "intraday_market_amount_profile_synchronization_240m",
+      "candidate49_intraday_cumulative_vwap_crossing_rate_240m_v1"
+    ],
+    "known_design_risks": [
+      "lag definition, lead definition, lunch handling, equal weighting, leave-one-out construction, correlation estimator, peer threshold, degeneracy handling, endpoint tolerance, and direction are researcher degrees of freedom unless frozen before values",
+      "the candidate may be statistically redundant with contemporaneous market idiosyncrasy or late market-neutral residual drift even though it asks a lead-lag timing question",
+      "correlation asymmetry measures delayed common-information incorporation, not the sign of a single market move, so predictive direction must be frozen and tested rather than interpreted as guaranteed",
+      "using beta residuals, a late window, multiple lags, own-return autocorrelation, market net return, volume, amount, or a terminal factor would change the mechanism"
+    ]
+  },
+  "rejected_concepts": [
+    {
+      "concept": "intraday_range_or_return_jump_share",
+      "reason": "Return-variance entropy already terminally tests diffuse price discovery versus a few jumps; bipower, tail, or concentration substitutions would be a prohibited variant."
+    },
+    {
+      "concept": "intraday_range_or_activity_center_of_mass",
+      "reason": "Volatility resolution, amount center of mass, late participation, and range time-allocation variants are terminal."
+    },
+    {
+      "concept": "quarterly_disclosure_delay_or_decay_variant",
+      "reason": "Changing Campaign020's disclosure clock, lag, decay, or threshold would be a prohibited repair of a terminal factor."
+    },
+    {
+      "concept": "terminal_factor_combination",
+      "reason": "Combining or transforming Campaign001-Campaign020 terminal definitions is prohibited."
+    }
+  ],
+  "decision": {
+    "advance_to_separate_no_value_mechanism_overlap_audit": true,
+    "exact_formula_or_direction_fixed_here": false,
+    "new_daily_bar_required": false,
+    "same_day_1630_wait_required": false,
+    "candidate49_ledgers_changed": false
+  },
+  "research_boundary": {
+    "external_minute_partitions_read": false,
+    "market_benchmark_values_read": false,
+    "candidate_values_read": false,
+    "comparison_values_read": false,
+    "daily_price_fields_read": false,
+    "forward_returns_read": false,
+    "provider_request_issued": false
+  }
+}

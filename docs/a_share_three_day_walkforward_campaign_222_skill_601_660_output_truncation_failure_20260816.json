@@ -1,0 +1,14 @@
+{
+  "schema_version": 1,
+  "kind": "a_share_three_day_walkforward_campaign222_infrastructure_failure",
+  "recorded_at": "2026-08-16T01:49:00+08:00",
+  "timestamp_semantics": "monotonic_logical_append_time_not_host_wall_clock_measurement",
+  "attempt_id": "campaign222_infrastructure_003",
+  "phase": "mandatory_skill_lines_601_660_read",
+  "status": "failed_skill_range_output_truncated_and_discarded",
+  "failure": "The 601-660 skill-range display was truncated and was not accepted as a complete instruction read.",
+  "writes_before_failure": false,
+  "scientific_value_read": false,
+  "result_consumed": false,
+  "recovery": "Lines 601-630 and 631-660 were reread separately and completed before research action."
+}

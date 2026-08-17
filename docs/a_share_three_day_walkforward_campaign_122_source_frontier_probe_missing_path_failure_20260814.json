@@ -1,0 +1,25 @@
+{
+  "schema_version": 1,
+  "kind": "a_share_three_day_walkforward_campaign122_infrastructure_failure",
+  "status": "failed_document_path_probe_before_any_campaign122_value",
+  "recorded_at": "2026-08-14T03:04:37+08:00",
+  "attempt_id": "campaign122_infrastructure_003",
+  "phase": "prior_source_frontier_reconstruction",
+  "failure": {
+    "failure_class": "missing_document_path",
+    "observed_stderr": "sed: docs/a_share_three_day_walkforward_campaign_117_concept_scouting_20260811.json: No such file or directory",
+    "exit_success": false,
+    "cause": "The probe used 20260811 in a Campaign117 filename whose frozen date token is 20260813."
+  },
+  "effect": {
+    "file_written_by_failed_command": false,
+    "source_value_read": false,
+    "candidate_value_read_or_computed": false,
+    "comparator_value_read": false,
+    "daily_price_or_forward_return_read": false,
+    "provider_request_issued": false,
+    "candidate49_ledger_changed": false,
+    "scientific_result_changed": false
+  },
+  "recovery": "The repository file catalog was listed and the exact Campaign116-Campaign121 concept-scouting paths were read without changing any frozen artifact."
+}

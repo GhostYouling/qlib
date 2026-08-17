@@ -1,0 +1,50 @@
+{
+  "schema_version": 1,
+  "kind": "a_share_three_day_walkforward_campaign097_terminal_test_repair",
+  "status": "terminal_test_repaired_and_verified_without_new_research_values_or_returns",
+  "recorded_at": "2026-08-07T07:05:00Z",
+  "campaign": 97,
+  "terminal_verification": {
+    "path": "docs/a_share_three_day_walkforward_campaign_097_terminal_verification_20260807.json",
+    "sha256": "e2bdfaf91a58d58de27a37aaeb578ac9c6452cda7a2c9774b89a675f36e10996"
+  },
+  "preserved_failures": [
+    {
+      "path": "docs/a_share_three_day_walkforward_campaign_097_terminal_test_initial_failure_20260807.json",
+      "sha256": "0c17acd2bd4ded4f4aa0e1727763fb6b7964385289d16666ca6019611cfb2a63"
+    },
+    {
+      "path": "docs/a_share_three_day_walkforward_campaign_097_terminal_test_metric_key_failure_20260807.json",
+      "sha256": "d9edc724bece202fd35d9195c4c59190dff218aa6f8fb73f88a662207a84e91d"
+    }
+  ],
+  "effective_terminal_test": {
+    "path": "tests/data_collector_tests/test_a_share_three_day_walkforward_campaign097_terminal.py",
+    "sha256": "7822a0be64234537b4c2c9ba2be924acc1625e44a2e1f56d120628cd0932c28b"
+  },
+  "repairs": [
+    "use the exact development_walkforward_2019_2023 phase string",
+    "use the exact 0.0020 each-side slippage sensitivity key",
+    "apply Black mechanical formatting"
+  ],
+  "verification": {
+    "black_check_passed": true,
+    "ruff_check_passed": true,
+    "pytest_passed": 6,
+    "pytest_failed": 0
+  },
+  "scientific_or_workflow_effect": {
+    "factor_or_snapshot_values_recomputed": false,
+    "new_historical_daily_price_values_read": false,
+    "new_historical_forward_return_values_read": false,
+    "development_or_stress_trial_rerun": false,
+    "candidate49_ledger_changed": false,
+    "provider_request_issued": false,
+    "campaign097_scientific_result_changed": false
+  },
+  "attempt_accounting": {
+    "preserved_terminal_test_failure_count": 2,
+    "research_attempt_count_increment": 2,
+    "development_trial_count_increment": 0
+  }
+}

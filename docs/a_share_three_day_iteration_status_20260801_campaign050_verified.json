@@ -1,0 +1,164 @@
+{
+  "version": 1,
+  "kind": "a_share_three_day_iteration_status",
+  "status": "campaign050_terminal_verified_historical_walkforward_ready_for_independent_campaign051",
+  "recorded_at": "2026-08-01T11:44:00Z",
+  "authoritative_predecessor": {
+    "path": "docs/a_share_three_day_iteration_status_20260801_campaign049_verified.json",
+    "sha256": "a82a795584c4c4243465f5175a243984467b06d16f659178c62781bb963dbe3e"
+  },
+  "research_policy": {
+    "historical_walkforward_policy": {
+      "path": "docs/a_share_three_day_historical_walkforward_research_policy_20260727.json",
+      "sha256": "38426d6161b9bfed323c58caba18feca668b8c9d53e294951a8ba90c01a798bb"
+    },
+    "historical_research_may_run_without_new_daily_bar_or_16_30_wait": true,
+    "every_formula_direction_parameter_subset_filter_model_combination_and_infrastructure_failure_counted": true,
+    "historical_results_may_generate_current_scores_selections_sizes_or_orders": false,
+    "historical_results_may_backfill_candidate49": false
+  },
+  "fixed_strategy": {
+    "holding_period_local_sessions": 3,
+    "signal": "accepted local session close t",
+    "entry": "next accepted local session open t+1",
+    "exit": "third accepted local session close t+3",
+    "topk": 3,
+    "development_folds": 3,
+    "purge_signal_sessions_each_partition_boundary": 3,
+    "t_t_plus_1_t_plus_3_must_remain_in_same_partition": true,
+    "pilot_capital_cny": 200000,
+    "primary_pilot_cost_bps": 10,
+    "aggregate_survivor_cost_bps": 20
+  },
+  "campaign050": {
+    "factor": "intraday_half_session_extreme_shock_reversal_completion_2h",
+    "direction": "higher",
+    "formula": "Within each independent 120-close half-session form 119 adjacent log returns. Choose the earliest index k attaining the maximum absolute return, let s be that return, and let R=log(last_close_in_half/close_immediately_after_s). Define h=-2*s*R/(s^2+R^2). Return the arithmetic mean of the morning and afternoon h values.",
+    "no_return": {
+      "median_coverage": 0.9935888543513072,
+      "p05_coverage": 0.9815616797900263,
+      "p05_eligible_names": 138.0,
+      "potential_non_overlapping_three_session_cohorts": 540,
+      "comparison_factor_count": 73,
+      "comparison_order_matches_preregistration": true,
+      "all_required_comparisons_passed": true,
+      "maximum_observed_absolute_median_daily_rank_correlation": 0.14951072905283694,
+      "nearest_comparison_factor": "intraday_global_price_range_revisit_240m",
+      "admissible_factor_count": 1
+    },
+    "development": {
+      "trial_id": "wf050_intraday_half_session_extreme_shock_reversal_completion_2h_single_higher",
+      "trial_count": 1,
+      "validation_mean_rank_ic": [
+        0.009969874742032177,
+        0.0005635670666854743,
+        -0.0036545873679205885
+      ],
+      "validation_normalized_return": [
+        0.23210460291658008,
+        -0.16237229490099314,
+        -0.2342374194740462
+      ],
+      "validation_pilot_10bp_return": [
+        0.0077443752486621165,
+        -0.046999906704844885,
+        -0.05836597025557744
+      ],
+      "development_pilot_0bp_return": -0.01577495407774432,
+      "development_pilot_5bp_return": -0.05908229059744796,
+      "development_pilot_10bp_return": -0.10111489679198316,
+      "development_pilot_20bp_return": -0.1840317181252532,
+      "development_survivor_count": 0,
+      "2024_2025_stress_opened": false,
+      "2024_2025_returns_read": false
+    },
+    "attempt_accounting": {
+      "infrastructure_only_failures": 5,
+      "complete_factor_attempts": 1,
+      "campaign050_distinct_attempts": 6,
+      "campaign050_ledger_entries": 7,
+      "campaign050_return_reading_development_trials": 1,
+      "cumulative_historical_research_attempts": 286,
+      "cumulative_return_reading_development_trials": 265
+    },
+    "terminal": {
+      "factor_terminal": true,
+      "reason": "Only 2021 was profitable; 2022 and 2023 normalized and 10bp returns were negative, and the frozen spread, fold-consistency, pilot-return, drawdown, and aggregate-20bp gates failed.",
+      "invert_repair_rewindow_rescale_filter_threshold_rerun_rescue_or_combine_allowed": false,
+      "current_score_selection_size_order_or_investment_advice_allowed": false
+    },
+    "hash_semantics": {
+      "development_survivors_file_byte_sha256": "91408d7004dc2e6169b83c2fd7d4cf9d595f10cc720d596e93f95b024e2fedcb",
+      "development_survivors_canonical_json_value_sha256": "dbecc392ca29249e9aab600a5908ce80fa5950d80327370de57ebb4a961a3603",
+      "two_hashes_are_expected_to_differ": true
+    },
+    "authoritative_records": {
+      "research_record": {
+        "path": "docs/a_share_three_day_walkforward_campaign_050_research_record_v2.json",
+        "sha256": "f896771fed934c934a964e7e343371299820b0b8ae03d963f2ae284a98c67a29"
+      },
+      "verification": {
+        "path": "docs/a_share_three_day_walkforward_campaign_050_verification_v3_20260801.json",
+        "sha256": "f80a22949a31a40351c15a2b290e130c82c663dcb2b5b1c13cb617aea6c9c09c"
+      },
+      "unified_report_supersession": {
+        "path": "docs/a_share_three_day_walkforward_campaign_050_unified_report_supersession_v3_20260801.json",
+        "sha256": "51a117b50abbe3e32a2399f257661b72378d1a885d039140831265d2d72fefb2"
+      }
+    }
+  },
+  "cumulative_state": {
+    "cumulative_historical_research_attempt_count_after_campaign050": 286,
+    "cumulative_return_reading_development_trial_count_after_campaign050": 265,
+    "current_historical_aggregation_candidate_count": 0
+  },
+  "local_data_context": {
+    "active_daily_data_root": "/Users/niyufei/Coding/qlib/data",
+    "local_date": "2026-08-01",
+    "local_weekday": "Saturday",
+    "candidate49_same_day_workflow_applicable": false,
+    "dotenv_path": "/Users/niyufei/Coding/qlib/.env",
+    "dotenv_is_regular_non_symlink_file": true,
+    "dotenv_is_git_ignored": true,
+    "dotenv_mode": "0600",
+    "tushare_token_present": true,
+    "credential_value_printed_hashed_or_persisted_in_records": false,
+    "provider_request_issued_by_campaign050_or_credential_verification": false
+  },
+  "prospective_boundary": {
+    "active_candidate_count": 1,
+    "active_candidate": "Candidate49 intraday_cumulative_vwap_crossing_rate_240m",
+    "candidate49_signal_ledger": {
+      "path": "data/experiments/short_horizon/candidate49_future_signal_ledger.json",
+      "sha256": "5193f00d7f36da003f53cec387900da4c3d002299f5dfcfc1a95eaa199ed3a79",
+      "entry_count": 0
+    },
+    "candidate49_execution_ledger": {
+      "path": "data/experiments/short_horizon/candidate49_future_execution_ledger.json",
+      "sha256": "d57a3e61eac969e42cafa418ccd8c0a5ee65dcf69da145bb2c096c2a02a2ea4f",
+      "entry_count": 0
+    },
+    "candidate49_historical_return_signal_execution_or_milestone_backfill_performed": false,
+    "second_prospective_candidate_activation_allowed": false
+  },
+  "verification_summary": {
+    "all_authoritative_bindings_passed": true,
+    "campaign050_focused_tests_passed": 27,
+    "historical_report_assertions_passed": 22,
+    "targeted_report_and_disk_recheck_passed": 35,
+    "full_data_collector_tests_passed": 1751,
+    "full_data_collector_tests_failed": 0,
+    "full_data_collector_test_warnings": 13
+  },
+  "next_action": {
+    "historical": "Begin Campaign051 only from an independent mechanism with pre-value scouting, mechanism-overlap audit, finite fingerprint-bound protocol, and append-only accounting. Offline work may run at any time.",
+    "prospective": "Today is Saturday, so do not run Candidate49 provider workflow. On the next accepted local trading date use a new absolute-date staging root and retain the same-day post-16:30 ready=true gate.",
+    "strict_prohibitions": [
+      "do not backfill Candidate49 historical returns signals executions or milestones",
+      "do not start a second prospective candidate",
+      "do not invert repair rewindow rescale filter threshold rerun rescue or combine Campaign050",
+      "do not open Campaign050 2024-2025 stress",
+      "do not generate current scores selections position sizes orders or investment advice"
+    ]
+  }
+}

@@ -1,0 +1,101 @@
+{
+  "schema_version": 1,
+  "kind": "a_share_three_day_walkforward_campaign145_concept_scouting",
+  "status": "finite_prevalue_catalog_completed_one_candidate_selected_for_exact_mechanism_audit",
+  "recorded_at": "2026-08-14T20:00:15+08:00",
+  "purpose": "Continue the active three-session factor goal from Campaign144 without waiting for a new daily bar, while rejecting exposed operator refreshes before any Campaign145 source or research value is read.",
+  "authoritative_inputs": {
+    "campaign144_active_state": {
+      "path": "docs/a_share_three_day_iteration_status_20260814_campaign144_prevalue_terminal_v2.json",
+      "sha256": "c757c227f3f7b981fe3c3650ce07e57019d0fefa6bc205d221d78fedae7f183b"
+    },
+    "numeric_policy_v190": {
+      "path": "docs/a_share_three_day_walkforward_future_numeric_comparison_eligibility_policy_v190_20260814.json",
+      "sha256": "d6e8b359bd7b8af6678b91b0b8c10bbee40af0b06d2373c0897c5e3f159034ac",
+      "complete_definition_count": 153,
+      "complete_definition_order_sha256": "bf66faef96d7058c7028da52757c65d8e0bf7978cf72d3967cd236e4da30b875",
+      "numeric_comparator_count": 141,
+      "numeric_comparator_order_sha256": "ec1aebcb939ad516c58037a36a4aaadd4ad8b2abbd3c884705895c58da85a2ee"
+    },
+    "raw_minute_manifest": {
+      "path": "/Volumes/DIsk/qlib-a-share-tushare-1m/raw/a_share/rich/tushare/minutes/1m/snapshots/tushare_stk_mins_1m_2019_2025_ea0cbb8f/snapshot_manifest.json",
+      "sha256": "9b3d959563c9d182f38981c6a36bdb3bc9b415de08487a9e1f9e850825c0839f"
+    },
+    "joint_clean_manifest": {
+      "path": "/Volumes/DIsk/qlib-a-share-tushare-1m/derived/a_share/rich/tushare/minute_sentiment_clean/tushare_stk_mins_1m_2019_2025_ea0cbb8f_sentiment_clean_v1/snapshot_manifest.json",
+      "sha256": "453c6719cb3c7da42fed8807b28a2bfe988700283e9625a6db97912534f368de",
+      "dataset_sha256": "0e4fe7c05536cdfcecc2936bc880726902f5560061188ffff82ef7ee6f346983"
+    }
+  },
+  "finite_prevalue_concept_catalog": [
+    {
+      "catalog_id": "c145_01",
+      "name": "intraday_return_amount_cumulative_path_signed_area_238p",
+      "mechanism": "Within each fixed half-session, compare the ordering of cumulative signed return innovation and cumulative transaction-amount arrival through one oriented path area, then average the two half-session areas.",
+      "decision": "selected_for_exact_mechanism_overlap_audit",
+      "reason": "This is a global ordered path-geometry statistic. It is neither a pointwise dependence coefficient, an unsigned distribution-alignment score, an amount-clock summary, a crossing count, nor a complete-library combination."
+    },
+    {
+      "catalog_id": "c145_02",
+      "name": "intraday_return_amount_cumulative_path_absolute_area_238p",
+      "mechanism": "Discard the orientation of the same cumulative return-amount path area.",
+      "decision": "rejected_before_values",
+      "reason": "Absolute area is an alternate direction-destroying transform inside the selected mechanism and would create a post-selection sibling search."
+    },
+    {
+      "catalog_id": "c145_03",
+      "name": "intraday_cumulative_return_amount_path_loop_count_238p",
+      "mechanism": "Count crossings or loops after thresholding the same two cumulative paths.",
+      "decision": "rejected_before_values",
+      "reason": "Threshold and crossing choices are researcher degrees of freedom and approach Candidate49's frozen cumulative-crossing family without an independent observation domain."
+    },
+    {
+      "catalog_id": "c145_04",
+      "name": "intraday_range_amount_cumulative_path_signed_area_240m",
+      "mechanism": "Replace signed close return by intrabar range mass in the path-area construction.",
+      "decision": "rejected_before_values",
+      "reason": "This is a functional refresh of the terminal range-amount alignment, timing and profile families."
+    },
+    {
+      "catalog_id": "c145_05",
+      "name": "intraday_return_volume_cumulative_path_signed_area_238p",
+      "mechanism": "Replace amount by share volume in the selected path-area construction.",
+      "decision": "rejected_before_values",
+      "reason": "Volume versus amount is an alternate activity-field choice inside one mechanism; only transaction amount is selected before values."
+    },
+    {
+      "catalog_id": "c145_06",
+      "name": "complete_141_numeric_library_path_signature_model",
+      "mechanism": "Fit or aggregate path-signature terms over the complete numeric factor library.",
+      "decision": "rejected_before_values",
+      "reason": "This would reopen the terminal complete-library model, interaction and robust-consensus frontier rather than introduce a new observed state."
+    }
+  ],
+  "selection": {
+    "selected_candidate_count": 1,
+    "selected_catalog_id": "c145_01",
+    "source_projection_reserved_but_not_read": [
+      "datetime",
+      "symbol",
+      "provider",
+      "close",
+      "amount"
+    ],
+    "direction_reserved": "higher",
+    "source_contract_admission_pending_exact_mechanism_audit": true,
+    "candidate_values_read": false,
+    "comparator_values_read": false,
+    "daily_price_or_forward_return_values_read": false
+  },
+  "research_boundary": {
+    "schema_and_manifest_metadata_only": true,
+    "provider_request_issued": false,
+    "credential_loaded_or_value_or_digest_read": false,
+    "candidate49_historical_backfill_performed": false,
+    "candidate49_ledgers_changed": false,
+    "second_prospective_candidate_created": false,
+    "stress_2024_2025_opened": false,
+    "current_scoring_selection_sizing_positions_or_orders_performed": false,
+    "investment_advice": false
+  }
+}

@@ -1,0 +1,35 @@
+{
+  "schema_version": 1,
+  "kind": "a_share_three_day_walkforward_campaign241_infrastructure_failure",
+  "recorded_at": "2026-08-16T08:19:00+08:00",
+  "timestamp_semantics": "monotonic_logical_append_time_not_host_wall_clock_measurement",
+  "status": "failed_terminal_test_accounting_switch_patch_context_mismatch",
+  "command": "apply_patch switching Campaign241 terminal test from v1/v369 accounting to v3/v370 accounting",
+  "working_directory": "/Users/niyufei/Coding/qlib",
+  "observed_process_exit_code": 1,
+  "failure_reason": "the patch expected a long failure-path line layout that no longer matched the Black-formatted test and reported verification failure",
+  "evidence_treatment": {
+    "output_discarded": true,
+    "used_as_scientific_evidence": false,
+    "used_as_validation_evidence": false,
+    "candidate_comparator_price_or_return_value_read": false,
+    "test_file_treated_as_unfrozen_until_recovery": true
+  },
+  "recovery": {
+    "status": "prepared_from_bounded_current_file_read",
+    "method": "use the independently reread current test text and smaller exact hunks, remove the observed duplicate chain call, then run Black before freezing the test hash",
+    "scientific_result_changed": false
+  },
+  "research_boundary": {
+    "candidate_or_comparator_value_read": false,
+    "daily_price_or_forward_return_read": false,
+    "provider_or_web_request_issued": false,
+    "provider_credential_presence_value_or_digest_read": false,
+    "candidate49_plan_or_run_executed": false,
+    "candidate49_ledgers_changed": false,
+    "second_prospective_candidate_created": false,
+    "stress_2024_2025_opened": false,
+    "current_scoring_selection_sizing_positions_or_orders_performed": false,
+    "investment_advice": false
+  }
+}

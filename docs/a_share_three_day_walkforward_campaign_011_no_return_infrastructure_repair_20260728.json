@@ -1,0 +1,59 @@
+{
+  "version": 1,
+  "kind": "a_share_three_day_walkforward_campaign011_no_return_infrastructure_repair",
+  "status": "one_exact_no_return_retry_allowed_after_missing_inherited_constant_binding",
+  "recorded_at": "2026-07-28T16:20:18Z",
+  "purpose": "Preserve the first Campaign011 no-return audit failure and authorize only the missing inherited Campaign009 constant bindings required by the already-frozen 33-factor comparison sequence.",
+  "frozen_inputs_unchanged": {
+    "concept_scouting": {
+      "path": "docs/a_share_three_day_walkforward_campaign_011_concept_scouting.json",
+      "sha256": "f3bb2a4f2641f4617de8fddbbb4fb933ae17531c17c4b88b5366ad5b4d31a6e5"
+    },
+    "mechanism_overlap_audit": {
+      "path": "docs/a_share_three_day_walkforward_campaign_011_mechanism_overlap_audit.json",
+      "sha256": "fe50e938523f49fe8038e72036b2d3d7c8a08ef3c5870747d5f967b910679eed"
+    },
+    "no_return_protocol": {
+      "path": "docs/a_share_three_day_walkforward_campaign_011_no_return_preregistration.json",
+      "sha256": "3e530c7a2f76e6a1eecdb18c6058a1d20fb1e3e54aaffb5ae4b3a857d5112e56"
+    },
+    "candidate_snapshot": {
+      "path": "/Volumes/DIsk/qlib-a-share-tushare-1m/derived/a_share/rich/tushare/minute_walkforward_campaign011_feature_library/tushare_stk_mins_1m_2019_2025_ea0cbb8f_walkforward_campaign011_feature_library_v1/snapshot_manifest.json",
+      "sha256": "36efe15038681d3a2fc154dfd3ce6d918c54ab56d1a5e803ee7aa86c295f4084",
+      "dataset_sha256": "078dcb053e641813978ed96542fb9c69fbf3108ac490d3463e870b640feeee11"
+    }
+  },
+  "failed_invocation": {
+    "command": "PYTHONPATH=/opt/anaconda3/lib/python3.12/site-packages /opt/anaconda3/bin/python3 -S scripts/a_share_three_day_walkforward_campaign011_features.py audit --data-root /Volumes/DIsk/qlib-a-share-tushare-1m --experiment-root data/experiments/short_horizon/historical_walkforward/campaign_011/no_return --workers 4",
+    "exit_code": 1,
+    "error_type": "NameError",
+    "error": "C9_SNAPSHOT_PATH was not defined in the generated Campaign011 namespace",
+    "failure_stage": "after local candidate coverage computation and before invoking the first Campaign009 snapshot verification or loading its comparison values",
+    "audit_artifact_written": false,
+    "comparison_values_loaded": false,
+    "daily_price_fields_read": [],
+    "historical_forward_return_fields_read": false,
+    "candidate49_historical_return_read": false,
+    "provider_request_issued": false
+  },
+  "authorized_repair": {
+    "script": "scripts/a_share_three_day_walkforward_campaign011_features.py",
+    "change": "Inject the already-frozen Campaign009 snapshot path, manifest hash, dataset hash, factor names, and output columns from the hash-bound Campaign010 parent module into the generated namespace alongside the new Campaign010 comparison constants.",
+    "formula_changed": false,
+    "direction_changed": false,
+    "source_fields_changed": false,
+    "snapshot_changed": false,
+    "coverage_or_capacity_gate_changed": false,
+    "comparison_catalog_or_order_changed": false,
+    "uniqueness_threshold_changed": false,
+    "trial_catalog_changed": false,
+    "return_access_allowed": false,
+    "retry_count_authorized": 1
+  },
+  "research_boundary": {
+    "candidate49_ledgers_changed": false,
+    "candidate50_activated": false,
+    "current_scoring_selection_sizing_or_order_performed": false,
+    "investment_advice": false
+  }
+}

@@ -1,0 +1,142 @@
+{
+  "schema_version": 1,
+  "kind": "a_share_three_day_walkforward_campaign162_daily_ohlcv_residual_catalog",
+  "status": "terminal_prevalue_zero_selected_from_six_complete_daily_ohlcv_routes",
+  "recorded_at": "2026-08-15T06:12:21+08:00",
+  "purpose": "Close the remaining obvious daily OHLCV transformation routes without reading local daily values, candidate values, comparator values or returns, and without rescuing a terminal factor by changing its window, direction or estimator.",
+  "authoritative_inputs": {
+    "campaign161_effective_state": {
+      "path": "docs/a_share_three_day_iteration_status_20260815_campaign161_terminal_v4.json",
+      "sha256": "5bbc4c5c1f08a96713557ae1b3adc102b8cc1c144c3523cac66143e51cbb85a1"
+    },
+    "eligibility_policy_v228": {
+      "path": "docs/a_share_three_day_walkforward_future_numeric_comparison_eligibility_policy_v228_20260815.json",
+      "sha256": "91572f8a4941c99f7758a0b72f6ef6a6ce3d780c2fba59f954b2d174239bb951"
+    },
+    "short_horizon_factor_registry": {
+      "path": "scripts/a_share_short_horizon_factor_research.py",
+      "sha256": "df3d239259d6b3f87204749dd60938ee332fa472e99522f0708fd265fd198a36"
+    },
+    "campaign059_scouting": {
+      "path": "docs/a_share_three_day_walkforward_campaign_059_concept_scouting.json",
+      "sha256": "778fa407dd2fa3f86690ee60950fffb12ac3922bbca2e7f77eadd8370a5270ac"
+    },
+    "campaign075_scouting": {
+      "path": "docs/a_share_three_day_walkforward_campaign_075_concept_scouting.json",
+      "sha256": "682378a54f554e669182528db1e3e1a702c93223e5d128e12c952db64b7ac350"
+    },
+    "campaign084_scouting": {
+      "path": "docs/a_share_three_day_walkforward_campaign_084_concept_scouting.json",
+      "sha256": "6fc1f9639364f83b4a7385efd726e87c23378302a2c82b43879ec6bf4afbcec4"
+    },
+    "campaign014_scouting": {
+      "path": "docs/a_share_three_day_walkforward_campaign_014_concept_scouting.json",
+      "sha256": "0ccf17baa24347e2ad8fb83298bf7fd37a30c7fc916d407dc78c492e1c700f55"
+    },
+    "campaign149_scouting": {
+      "path": "docs/a_share_three_day_walkforward_campaign_149_concept_scouting_20260814.json",
+      "sha256": "f9e8398edbf4e5a9989f6f2679d44beed262cdb24e92ce3c5b0813925760c39a"
+    },
+    "intraday_demand_persistence_preregistration": {
+      "path": "docs/a_share_intraday_demand_persistence_preregistration.json",
+      "sha256": "641128ec36faf868fad2ffe78a70c14d96c9414acff5fc30403e9e7283c25297"
+    }
+  },
+  "inspection_contract": {
+    "finite_catalog_frozen_before_any_value": true,
+    "catalog_size": 6,
+    "formula_or_direction_may_be_opened_only_for_a_genuinely_new_survivor": true,
+    "old_terminal_definition_window_direction_estimator_or_interaction_rescue_allowed": false,
+    "daily_file_or_row_value_read_allowed_for_catalog_selection": false,
+    "provider_or_web_request_allowed": false,
+    "2024_2025_allowed": false
+  },
+  "finite_prevalue_catalog": [
+    {
+      "catalog_id": "c162_01",
+      "name": "daily_overnight_gap_return_refresh",
+      "proposed_state": "Signal-day daily open relative to the previous close.",
+      "formula": null,
+      "direction": null,
+      "parameters_filters_subsets_combinations_models": [],
+      "decision": "rejected_exact_old_daily_comparator_and_invalid_minute_source_variant",
+      "reason": "The accepted registry already contains gap_1. Recomputing it is an exact old comparator; substituting the standalone historical 09:30 minute row is separately terminal because that row has placeholder semantics."
+    },
+    {
+      "catalog_id": "c162_02",
+      "name": "signal_day_daily_open_to_close_return",
+      "proposed_state": "Full-session signed return from the signal-day daily open to close.",
+      "formula": null,
+      "direction": null,
+      "parameters_filters_subsets_combinations_models": [],
+      "decision": "rejected_terminal_window_variant_before_values",
+      "reason": "Campaign084 already closes this exact design as a window change of terminal late-return and signed close-path families; neither momentum nor reversal direction may be reopened."
+    },
+    {
+      "catalog_id": "c162_03",
+      "name": "daily_overnight_intraday_gap_digestion_or_disagreement",
+      "proposed_state": "Interaction, agreement or disagreement between the daily overnight gap and same-session open-to-close move.",
+      "formula": null,
+      "direction": null,
+      "parameters_filters_subsets_combinations_models": [],
+      "decision": "rejected_terminal_component_interaction_and_direction_rescue",
+      "reason": "gap_1, intraday_strength and opening_gap_digestion already expose the two components and their digestion state. Agreement, product, ratio, sign split or inversion would only recombine terminal definitions."
+    },
+    {
+      "catalog_id": "c162_04",
+      "name": "daily_candlestick_body_wick_or_close_location",
+      "proposed_state": "Daily body efficiency, upper/lower wick asymmetry or closing location inside the daily high-low range.",
+      "formula": null,
+      "direction": null,
+      "parameters_filters_subsets_combinations_models": [],
+      "decision": "rejected_terminal_ohlc_geometry_family_before_values",
+      "reason": "Campaign014 and earlier frozen audits explicitly close bodies, wick asymmetry, signed candle placement and terminal close location as Campaign009 or close-pressure mechanism refreshes."
+    },
+    {
+      "catalog_id": "c162_05",
+      "name": "daily_named_ohlc_volatility_estimator_or_disagreement",
+      "proposed_state": "Parkinson, Garman-Klass, Rogers-Satchell, Yang-Zhang, true-range or estimator-disagreement transforms on daily OHLC.",
+      "formula": null,
+      "direction": null,
+      "parameters_filters_subsets_combinations_models": [],
+      "decision": "rejected_terminal_range_body_gap_volatility_operator_recombination",
+      "reason": "The accepted registry already has volatility, amplitude and gap families, while Campaign149 closes named OHLC estimator disagreement as deterministic recombination of terminal range, body, gap and volatility operators."
+    },
+    {
+      "catalog_id": "c162_06",
+      "name": "daily_obv_mfi_cmf_or_range_volume_pressure",
+      "proposed_state": "On-balance volume, money-flow index, Chaikin-style accumulation/distribution or daily range-volume pressure.",
+      "formula": null,
+      "direction": null,
+      "parameters_filters_subsets_combinations_models": [],
+      "decision": "rejected_terminal_daily_price_activity_recombination_before_values",
+      "reason": "volume_surge, turnover_surge, liquidity, signed_volume_pressure, return_turnover_correlation, intraday_strength and close-location families already consume the same direction, range and activity inputs. A named cumulative indicator adds a window and normalization search, not a new observed state."
+    }
+  ],
+  "decision": {
+    "concepts_reviewed": 6,
+    "selected_candidate_count": 0,
+    "selected_candidate": null,
+    "complete_factor_definition_created": false,
+    "formula_direction_feature_snapshot_adapter_or_model_created": false,
+    "source_acceptance_coverage_uniqueness_development_or_stress_stage_run": false,
+    "complete_definition_count_after_campaign162": 158,
+    "numeric_comparator_count_after_campaign162": 142,
+    "scientific_interpretation": "These six routes are rejected as exact old definitions or terminal-family re-expression; Campaign162 does not claim that an unobserved genuinely new daily state is ineffective."
+  },
+  "research_boundary": {
+    "source_file_row_or_column_value_read": false,
+    "candidate_or_comparator_value_read": false,
+    "historical_daily_price_or_forward_return_value_read": false,
+    "stress_2024_2025_opened": false,
+    "provider_or_web_request_issued": false,
+    "provider_credential_presence_value_or_digest_read": false,
+    "campaign161_retried_or_reinterpreted": false,
+    "candidate49_historical_backfill_performed": false,
+    "candidate49_ledgers_changed": false,
+    "second_prospective_candidate_created": false,
+    "current_scoring_selection_sizing_positions_or_orders_performed": false,
+    "investment_advice": false
+  },
+  "next_action": "Record all six scientific rejections and both infrastructure failures append-only, preserve 158/142, and allow Campaign163 only from a genuinely new finite prevalue mechanism or a separately accepted point-in-time source contract."
+}

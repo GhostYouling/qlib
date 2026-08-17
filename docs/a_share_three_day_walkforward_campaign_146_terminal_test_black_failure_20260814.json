@@ -1,0 +1,27 @@
+{
+  "schema_version": 1,
+  "kind": "a_share_three_day_walkforward_campaign146_infrastructure_failure",
+  "status": "recorded_terminal_test_black_failure_scientific_result_unchanged",
+  "recorded_at": "2026-08-14T22:27:22+08:00",
+  "attempt_id": "campaign146_infrastructure_013",
+  "stage": "terminal_publication_validation",
+  "failure": {
+    "check": "black_check",
+    "exit_code": 1,
+    "result": "one new terminal test file would be reformatted",
+    "path": "tests/data_collector_tests/test_a_share_three_day_walkforward_campaign146_terminal.py"
+  },
+  "successful_checks_in_same_validation_round": {
+    "terminal_pytest_passed": 6,
+    "terminal_pytest_failed": 0,
+    "ruff_exit_code": 0
+  },
+  "resolution": "Mechanically format only the new Campaign146 terminal test, append this failure to the attempt chain, and supersede accounting records without changing terminal science.",
+  "scientific_effect": {
+    "development_result_changed": false,
+    "additional_price_or_return_values_read": false,
+    "stress_2024_2025_opened": false,
+    "provider_request_issued": false,
+    "candidate49_ledgers_changed": false
+  }
+}

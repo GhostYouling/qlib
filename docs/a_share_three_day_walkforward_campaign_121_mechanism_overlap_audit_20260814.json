@@ -1,0 +1,113 @@
+{
+  "schema_version": 1,
+  "kind": "a_share_three_day_walkforward_campaign121_mechanism_overlap_audit",
+  "status": "conditionally_distinct_pending_fixed_support_coverage_and_all_138_ordered_numeric_comparisons",
+  "recorded_at": "2026-08-14T01:24:00+08:00",
+  "purpose": "Freeze and challenge Campaign121's endpoint first-attainment mechanism against all nearby terminal families before any source row or value is read.",
+  "concept_scouting": {
+    "path": "docs/a_share_three_day_walkforward_campaign_121_concept_scouting_20260814.json",
+    "sha256": "2142030d21858b7029b51719c8408ccb9a580d841812b7dab04d1756b1ec09fe"
+  },
+  "candidate": {
+    "name": "intraday_terminal_close_direction_first_attainment_240m",
+    "direction": "higher",
+    "information_domain": "completed_session_terminal_level_directional_first_passage_clock",
+    "source_fields": [
+      "datetime",
+      "symbol",
+      "provider",
+      "open",
+      "close"
+    ],
+    "selected_bar_grid": "Exactly 240 continuous-auction bars at 09:31-11:30 and 13:01-15:00. The first selected bar's raw open is open_09_31; the ordered raw closes are close_1 through close_240, with close_240 at 15:00. The standalone 09:30 row is loaded only for exact raw-grid validation and excluded from the formula.",
+    "direction_rule": "Set d=+1 when close_240>open_09_31, d=-1 when close_240<open_09_31 and d=0 on exact equality. No tolerance, logarithm or return magnitude is used.",
+    "first_attainment_rule": "For d=+1, tau is the smallest 1-based i with close_i>=close_240. For d=-1, tau is the smallest i with close_i<=close_240. The terminal close guarantees tau in [1,240]. For d=0 no directional target exists and the score is frozen to zero.",
+    "formula": "score=0 when d=0; otherwise score=(240-tau)/239",
+    "normalization": "fixed 239-position span only",
+    "valid_range_inclusive": [
+      0.0,
+      1.0
+    ],
+    "validity": "Require the exact grid, one provider and symbol, and finite strictly positive open_09_31 plus all 240 closes. Exact equality is preserved; no imputation or adjustment is allowed.",
+    "economic_hypothesis": "A terminal directional level reached earlier in the completed session is less dependent on a last-minute print and is more consistent with early information acceptance, which may carry from the next open through the third close."
+  },
+  "overlap_challenges": [
+    {
+      "factor": "intraday_open_reference_directional_occupancy_240m",
+      "result": "distinct_pending_numeric_gate",
+      "reason": "The terminal factor averages all 240 close signs relative to a fixed opening reference and discards their order. Campaign121 uses the open only to orient one endogenous terminal-close target, then retains the first passage time. Two paths can have identical open-relative occupation counts yet reach the same terminal level at different minutes."
+    },
+    {
+      "factor": "intraday_extreme_arrival_order_240m",
+      "result": "distinct_pending_numeric_gate",
+      "reason": "Extreme-arrival order times the first session high and low. Campaign121 reads no high or low, and its terminal close can be strictly inside the session extremes; fixing high/low arrival order does not fix first passage of the terminal close level."
+    },
+    {
+      "factor": "intraday_terminal_close_location_240m",
+      "result": "distinct_pending_numeric_gate",
+      "reason": "Terminal close location is a magnitude ratio against the full-session high-low range and contains no clock order. Campaign121 is invariant to high and low changes that preserve open and closes and can change under a permutation of pre-terminal closes that leaves the final close and range location fixed."
+    },
+    {
+      "factor": "intraday_close_frontier_innovation_share_238p",
+      "result": "distinct_pending_numeric_gate",
+      "reason": "Frontier innovation counts repeated close record extensions throughout the path. Campaign121 records exactly one first passage of the realized endpoint target; paths may have the same record count but different terminal-level arrival time, or the same arrival time but different later record counts."
+    },
+    {
+      "factor": "intraday_half_session_chord_adherence_240m",
+      "result": "distinct_pending_numeric_gate",
+      "reason": "Chord adherence aggregates distance from two fitted endpoint lines and resets at lunch. Campaign121 uses no distance, mean or half-session reset and is determined by one full-session directional first-passage clock."
+    },
+    {
+      "factor": "intraday_continuous_session_net_return_reversal_240m",
+      "result": "distinct_pending_numeric_gate",
+      "reason": "The terminal factor transforms endpoint net return behavior. Campaign121 discards endpoint displacement magnitude after exact directional orientation and can vary solely by reordering pre-terminal closes."
+    },
+    {
+      "factor": "intraday_return_direction_dictionary_phrase_count_238s",
+      "result": "distinct_pending_numeric_gate",
+      "reason": "Campaign120 resets at lunch and parses all adjacent ternary close-direction symbols. Campaign121 uses neither a symbol sequence nor parser: magnitude changes that preserve every adjacent direction can move the terminal-level first passage, while many different direction strings can share the same tau."
+    },
+    {
+      "factor": "Candidate49 intraday_cumulative_vwap_crossing_rate_240m",
+      "result": "distinct_and_isolated_pending_numeric_gate",
+      "reason": "Candidate49 counts repeated own-close crossings around a causal amount/volume-weighted moving reference. Campaign121 reads neither amount nor volume, counts one endpoint first passage, and never enters or changes the prospective ledgers."
+    }
+  ],
+  "frozen_counterfactuals": [
+    "Permuting pre-terminal closes can change tau while preserving the first open, terminal close, daily high-low range and terminal close location.",
+    "Changing high, low, volume or amount while preserving the first open and all closes leaves Campaign121 unchanged.",
+    "Changing close magnitudes without changing adjacent direction symbols can move the terminal target crossing and therefore change Campaign121 while leaving Campaign120's symbol parser unchanged.",
+    "Changing later closes after the first terminal-level passage can alter occupation, chord, frontier and parser summaries while leaving Campaign121 unchanged."
+  ],
+  "rejected_variants_before_values": [
+    "last passage, median passage, passage count, recross count, duration beyond target or post-attainment maintenance",
+    "high, low, VWAP, previous close, lunch close, volume or amount reference levels",
+    "morning-only, afternoon-only, half-reset, late-only, 09:30-inclusive or alternate windows",
+    "log-time, square-root-time, rank, nonlinear decay, target tolerance, volatility scaling or displacement weighting",
+    "lower direction, inverse score, thresholds, filters, board/year/stock subsets, neutralization, residualization, models or combinations",
+    "any Campaign120 parser rescue, terminal-factor repair or Candidate49 historical backfill"
+  ],
+  "decision": {
+    "semantic_gate_passed": true,
+    "candidate_count": 1,
+    "implementation_allowed_only_after_no_return_preregistration": true,
+    "source_rows_or_candidate_values_allowed_now": false,
+    "all_138_numeric_comparators_must_pass_in_frozen_order": true,
+    "strict_absolute_median_daily_rank_correlation_lt": 0.8,
+    "post_value_formula_direction_reference_operator_support_or_normalization_change_allowed": false
+  },
+  "research_boundary": {
+    "source_rows_read": false,
+    "candidate_values_read_or_computed": false,
+    "comparator_values_read": false,
+    "historical_daily_price_fields_read": [],
+    "historical_forward_returns_read": false,
+    "stress_2024_2025_opened": false,
+    "provider_request_issued": false,
+    "credential_loaded": false,
+    "candidate49_historical_backfill_performed": false,
+    "candidate49_ledgers_changed": false,
+    "current_scoring_selection_sizing_positions_or_orders_performed": false,
+    "investment_advice": false
+  }
+}

@@ -1,0 +1,34 @@
+{
+  "schema_version": 1,
+  "kind": "a_share_three_day_walkforward_campaign233_infrastructure_failure",
+  "recorded_at": "2026-08-16T05:36:00+08:00",
+  "timestamp_semantics": "monotonic_logical_append_time_not_host_wall_clock_measurement",
+  "status": "failed_report_sha256_query_used_two_nonexistent_docs_paths_and_exited_nonzero",
+  "command": "shasum -a 256 Campaign232 authority files plus docs/a_share_research_report_current.md and docs/a_share_three_day_research_report.md",
+  "working_directory": "/Volumes/DIsk/Disk-Coding/qlib",
+  "observed_process_exit_code": 1,
+  "failure_reason": "the_two_mutable_reports_live_under_data/experiments/short_horizon_not_docs_so_shasum_rejected_both_guessed_paths",
+  "evidence_treatment": {
+    "output_discarded": true,
+    "used_as_scientific_evidence": false,
+    "used_as_validation_evidence": false,
+    "target_file_changed_by_failed_command": false
+  },
+  "recovery": {
+    "status": "completed",
+    "method": "read_the_campaign232_terminal_test_for_the_exact_report_paths_then_hash_each_real_report_in_a_fresh_bounded_command",
+    "scientific_result_changed": false
+  },
+  "research_boundary": {
+    "candidate_or_comparator_value_read": false,
+    "daily_price_or_forward_return_read": false,
+    "provider_or_web_request_issued": false,
+    "provider_credential_presence_value_or_digest_read": false,
+    "candidate49_plan_or_run_executed": false,
+    "candidate49_ledgers_changed": false,
+    "second_prospective_candidate_created": false,
+    "stress_2024_2025_opened": false,
+    "current_scoring_selection_sizing_positions_or_orders_performed": false,
+    "investment_advice": false
+  }
+}

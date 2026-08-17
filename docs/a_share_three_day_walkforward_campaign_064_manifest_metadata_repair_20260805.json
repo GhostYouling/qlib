@@ -1,0 +1,86 @@
+{
+  "version": 1,
+  "kind": "a_share_three_day_walkforward_campaign064_manifest_metadata_repair",
+  "status": "metadata_only_repair_authorized_before_snapshot_publication",
+  "recorded_at": "2026-08-05T07:50:00+08:00",
+  "purpose": "Preserve the fail-closed Campaign064 aggregate-manifest rejection and authorize only the dynamic manifest-template adapter correction needed to describe the already frozen high/low-only, zero-lookback computation truthfully.",
+  "authoritative_inputs": {
+    "no_return_preregistration": {
+      "path": "docs/a_share_three_day_walkforward_campaign_064_no_return_preregistration.json",
+      "sha256": "441cbeef589593c2ef0ae3e58325f5ab0acb506cc54eaa040c79f26c8ca6a887"
+    },
+    "pre_repair_implementation_freeze": {
+      "path": "docs/a_share_three_day_walkforward_campaign_064_feature_implementation_freeze_20260805.json",
+      "sha256": "05b65cb001dfeec100c3ed3bcb105c9d59d26d0c4cdae8415d75ce589f5593b8"
+    },
+    "pre_repair_feature_runner": {
+      "path": "scripts/a_share_three_day_walkforward_campaign064_features.py",
+      "sha256": "774f47073de3520a1b7fd818e5b8e16ac145f406c86d999368d35ec90b8aa21d"
+    },
+    "pre_repair_feature_tests": {
+      "path": "tests/data_collector_tests/test_a_share_three_day_walkforward_campaign064_features.py",
+      "sha256": "48884ee480a97937ab1f9119741ec772392ff883fb737155226577925c193d1f"
+    },
+    "research_attempt_ledger": {
+      "path": "data/experiments/short_horizon/historical_walkforward/campaign_064/research_attempt_ledger_v4.json",
+      "sha256": "37eeb912de46d343bac0dca727ffb2986451091ddbde5eac059c6e7816afa073",
+      "attempt_count": 5,
+      "complete_factor_attempt_count": 0,
+      "return_reading_trial_count": 0
+    }
+  },
+  "observed_failure": {
+    "failure_stage": "aggregate_manifest_validation_before_final_manifest_write_or_atomic_snapshot_publication",
+    "completed_symbol_group_checkpoints": 5396,
+    "expected_symbol_group_checkpoints": 5396,
+    "final_snapshot_published": false,
+    "observed_generated_manifest_fields": {
+      "source_open_high_low_close_volume_read": true,
+      "source_close_read": true,
+      "source_amount_read": false,
+      "cross_session_lookback": 1,
+      "source_high_low_read": "missing"
+    },
+    "truthful_required_manifest_fields": {
+      "source_open_high_low_close_volume_read": true,
+      "source_high_low_read": true,
+      "source_close_read": false,
+      "source_amount_read": false,
+      "cross_session_lookback": 0
+    },
+    "candidate_partition_or_formula_failure_observed": false,
+    "comparison_values_read": false,
+    "historical_daily_price_fields_read": false,
+    "historical_forward_returns_read": false
+  },
+  "root_cause": {
+    "classification": "dynamic_generated_manifest_template_substitution_mismatch_only",
+    "detail": "Campaign057-to-Campaign064 outer substitutions transform the inherited aggregate manifest fragment before the Campaign064 inner adapter executes. The inner adapter searched for the earlier false/amount=true fragment, matched zero times, and left inherited close-read and one-session-lookback labels in the in-memory manifest. The high/low source projection, exact 240-bar grid, candidate formula, output partitions, and checkpoint hashes use Campaign064 semantics independently of these labels."
+  },
+  "authorized_repair": {
+    "exact_runner_changes": [
+      "Change only the inner source adapter search fragment from the pre-outer-substitution false/amount=true form to the actually generated source_open_high_low_close_volume_read=true, source_close_read=true, source_amount_read=false, cross_session_lookback=1 form.",
+      "Retain the already frozen replacement fragment that emits source_open_high_low_close_volume_read=true, source_high_low_read=true, source_close_read=false, source_amount_read=false, and cross_session_lookback=0.",
+      "Point DEFAULT_IMPLEMENTATION_FREEZE to the additive v2 implementation freeze that will bind this repair; do not rewrite v1."
+    ],
+    "exact_test_change": "Add one synthetic regression assertion that the generated publication template contains the truthful high/low-only and zero-lookback fragment before any snapshot retry.",
+    "formula_direction_grid_tuple_alphabet_tie_entropy_or_missing_rule_change_allowed": false,
+    "source_projection_or_output_column_change_allowed": false,
+    "candidate_partition_byte_frame_or_value_change_allowed": false,
+    "comparison_library_order_gate_search_or_cost_change_allowed": false,
+    "daily_price_or_return_access_allowed": false,
+    "resume_rule": "Revalidate and reuse every existing hash-bound unpublished checkpoint; recompute no symbol group unless its checkpoint fails the frozen byte/frame/hash checks."
+  },
+  "research_boundary": {
+    "candidate_partition_values_exist_only_in_unpublished_checkpoints": true,
+    "snapshot_manifest_or_dataset_published": false,
+    "comparison_values_read": false,
+    "historical_daily_price_fields_read": false,
+    "historical_forward_returns_read": false,
+    "provider_request_issued": false,
+    "candidate49_ledgers_changed": false,
+    "second_prospective_candidate_created": false,
+    "current_scoring_selection_sizing_or_orders_performed": false
+  },
+  "next_action": "Apply only the authorized adapter and regression-test changes, freeze implementation v2, rerun focused tests and binding validation, then retry atomic snapshot publication using checkpoint validation."
+}

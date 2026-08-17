@@ -1,0 +1,30 @@
+{
+  "schema_version": 1,
+  "kind": "a_share_three_day_walkforward_campaign145_infrastructure_failure",
+  "status": "recorded_append_only_after_candidate_snapshot_build_before_partition_verification",
+  "recorded_at": "2026-08-14T20:27:00+08:00",
+  "failure_id": "campaign145_infrastructure_006",
+  "stage": "candidate_snapshot_independent_verification",
+  "command_scope": "Frozen Campaign145 feature verifier over the published snapshot manifest with four workers",
+  "exit_code": 1,
+  "snapshot_manifest": {
+    "path": "/Volumes/DIsk/qlib-a-share-tushare-1m/derived/a_share/rich/tushare/minute_walkforward_campaign145_feature_library/tushare_stk_mins_1m_2019_2025_ea0cbb8f_walkforward_campaign145_feature_library_v1/snapshot_manifest.json",
+    "sha256": "58d3686906d71da431397576c883e8c4b727225e98cc6791ae5923e5ff5f965f",
+    "partitions": 33015,
+    "rows": 7724498,
+    "factor_eligible_rows": 3954911,
+    "dataset_sha256": "d7cde236c58871314718febfb72f4e72d2cb6bab6729ee0f979b335e92a2acc0"
+  },
+  "observed_failure": "The generated verifier stopped at manifest semantics before reading a partition.",
+  "root_cause": "The generated build wrote Campaign145's intended half_session_pair_count=119, positive_half_denominators_required=true and signed_return_and_amount_magnitudes_used=true, while the inherited verifier still expected the predecessor values 0/false/false. The inherited manifest writer also retained factor_ranges=[0,1] even though the frozen formula and per-partition validator permit [-1,1].",
+  "scientific_formula_changed": false,
+  "partition_values_read_by_failed_verifier": false,
+  "candidate_snapshot_rebuild_or_overwrite_allowed": false,
+  "narrow_recovery_allowed": "Freeze a separate verifier before another partition read. It must bind the original manifest bytes, require the exact known header discrepancy, validate every partition byte/frame hash and actual [-1,1] value semantics, recompute the aggregate digest, and publish an additive correction receipt without rewriting any snapshot byte.",
+  "comparator_values_read": false,
+  "daily_price_or_forward_return_values_read": false,
+  "stress_2024_2025_opened": false,
+  "provider_request_issued": false,
+  "credential_loaded": false,
+  "candidate49_ledgers_changed": false
+}

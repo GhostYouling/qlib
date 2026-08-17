@@ -1,0 +1,37 @@
+{
+  "schema_version": 1,
+  "kind": "a_share_three_day_walkforward_campaign221_infrastructure_failure",
+  "recorded_at": "2026-08-16T01:31:00+08:00",
+  "timestamp_semantics": "monotonic_logical_append_time_not_host_wall_clock_measurement",
+  "attempt_id": "campaign221_infrastructure_002",
+  "phase": "adjacent_source_frontier_structure_inspection",
+  "status": "failed_after_hash_output_before_complete_summary_type_unsafe_string_slice",
+  "failure": {
+    "command_purpose": "Read bounded structural summaries for adjacent terminal source-frontier domains without opening source rows or research values.",
+    "observed_error": "KeyError: slice(None, 500, None)",
+    "cause": "The read-only summary script assumed every scientific_interpretation member was a string; at least one adjacent record stores an object.",
+    "partial_hash_and_summary_output_used_as_validation_or_scientific_evidence": false,
+    "repair": "Repeat only a type-safe structural check over gate-summary objects and count the exact Campaign163-220 frontier files."
+  },
+  "repair_result": {
+    "type_safe_structure_check_passed": true,
+    "campaign163_through_campaign220_source_frontier_file_count": 58
+  },
+  "side_effects": {
+    "file_written_or_changed": false,
+    "source_or_candidate_value_read": false,
+    "comparator_value_read": false,
+    "daily_price_or_forward_return_read": false,
+    "provider_or_web_request_issued": false,
+    "provider_credential_presence_value_or_digest_read": false,
+    "candidate49_plan_or_run_executed": false,
+    "candidate49_ledgers_changed": false,
+    "stress_2024_2025_opened": false,
+    "current_scoring_selection_sizing_positions_or_orders_performed": false
+  },
+  "accounting": {
+    "counts_as_one_infrastructure_failure": true,
+    "counts_as_scientific_attempt": false,
+    "counts_as_return_reading_trial": false
+  }
+}

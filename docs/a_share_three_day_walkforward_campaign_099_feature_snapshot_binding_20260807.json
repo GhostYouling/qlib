@@ -1,0 +1,84 @@
+{
+  "schema_version": 1,
+  "kind": "a_share_three_day_walkforward_campaign099_feature_snapshot_binding",
+  "status": "immutable_no_return_feature_snapshot_and_market_benchmark_verified_before_coverage_or_comparator_values",
+  "recorded_at": "2026-08-07T10:02:53Z",
+  "factor": {
+    "name": "intraday_market_close_location_profile_synchronization_240m",
+    "direction": "higher",
+    "range": [-1, 1],
+    "zero_range_state": 0.0
+  },
+  "protocol": {
+    "path": "docs/a_share_three_day_walkforward_campaign_099_no_return_preregistration.json",
+    "sha256": "a10f8cf03a1acda3a3632fd7a648f3ec22697ca4074e31d85e539788b37720fc"
+  },
+  "effective_feature_runner": {
+    "path": "scripts/a_share_three_day_walkforward_campaign099_features.py",
+    "sha256": "ad08cece9d0c939703cc049e2033bc891d3d1ce379d343f8f981c9c29051d880"
+  },
+  "effective_repair_implementation_freeze": {
+    "path": "docs/a_share_three_day_walkforward_campaign_099_feature_manifest_repair_implementation_freeze_20260807.json",
+    "sha256": "c52132d442403b40768a57606691f0349b9bc19e104f0f5390a09f90a600f36e"
+  },
+  "attempt_ledger_before_binding": {
+    "path": "data/experiments/short_horizon/historical_walkforward/campaign_099/research_attempt_ledger_v6.json",
+    "sha256": "c8f45720a630f0b37324f4499db87a198050e2a2eda8a7817d6bfec0e0b98586"
+  },
+  "snapshot": {
+    "path": "/Volumes/DIsk/qlib-a-share-tushare-1m/derived/a_share/rich/tushare/minute_walkforward_campaign099_feature_library/tushare_stk_mins_1m_2019_2025_ea0cbb8f_walkforward_campaign099_feature_library_v1/snapshot_manifest.json",
+    "sha256": "90c495594de88e183ec920a09be7a1ef66c89d9967f59d2aa27fdd49650b4651",
+    "dataset_sha256": "52f904b975a7b79f383d39ef94ce04c724a234a9a53a2e924402d17a3f7c4972",
+    "partitions": 33015,
+    "rows": 7724498,
+    "eligible_rows": 7699914,
+    "missing_rows": 24584,
+    "resumed_partitions": 33015
+  },
+  "market_close_location_profile_benchmark": {
+    "path": "/Volumes/DIsk/qlib-a-share-tushare-1m/derived/a_share/rich/tushare/minute_walkforward_campaign099_feature_library/tushare_stk_mins_1m_2019_2025_ea0cbb8f_walkforward_campaign099_feature_library_v1/market_close_location_profile_benchmark_240m.parquet",
+    "sha256": "b564e03f74b00df369c28bdbf407fc975a17ebf9c024074064785c5d0a4682ac",
+    "frame_sha256": "f67f4468bdcd7dc91e5423dff9e2d7ead2420e57a2cce35d73642348721a8caa",
+    "rows": 407760,
+    "trade_dates": 1699,
+    "profile_positions_per_date": 240,
+    "processed_symbols": 5396,
+    "minimum_complete_profile_count": 3549,
+    "p05_complete_profile_count": 3584.9,
+    "median_complete_profile_count": 4713.0,
+    "maximum_complete_profile_count": 5170
+  },
+  "quality_totals": {
+    "invalid_required_hlc_rows": 0,
+    "nonfinite_or_out_of_range_profile_rows": 0,
+    "zero_range_state_count": 363074887,
+    "endpoint_canonicalized_state_count": 0,
+    "insufficient_leave_one_out_peer_rows": 0,
+    "constant_own_profile_rows": 24584,
+    "constant_market_profile_rows": 0,
+    "nonfinite_correlation_rows": 0,
+    "range_violation_rows": 0
+  },
+  "independent_verification": {
+    "status": "verified",
+    "all_byte_and_aggregate_checks_passed": true,
+    "partitions_verified": 33015,
+    "rows_verified": 7724498,
+    "eligible_rows_verified": 7699914,
+    "partition_bytes_verified": 298080828,
+    "market_benchmark_bytes_verified": 3605622
+  },
+  "source_fields_read": ["datetime", "symbol", "provider", "high", "low", "close"],
+  "market_benchmark_values_computed": true,
+  "candidate_values_computed": true,
+  "candidate_partition_values_recomputed_during_repair_or_resume": false,
+  "coverage_or_capacity_metrics_computed_before_binding": false,
+  "comparator_values_read_before_binding": false,
+  "historical_daily_price_or_forward_return_values_read": false,
+  "training_or_model_fitting_performed": false,
+  "candidate49_historical_backfill_performed": false,
+  "candidate49_ledgers_changed": false,
+  "provider_request_issued": false,
+  "current_scoring_selection_sizing_or_orders_performed": false,
+  "next_action": "freeze the no-return audit implementation and activation against this exact full snapshot before coverage; read all 127 comparator values only if coverage passes"
+}

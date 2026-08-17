@@ -1,0 +1,109 @@
+{
+  "version": 1,
+  "kind": "a_share_three_day_future_only_minute_research_policy",
+  "status": "frozen_before_candidate_49_values_comparison_values_future_prices_or_future_returns",
+  "frozen_at": "2026-07-25T05:31:15Z",
+  "purpose": "Replace further same-history return mining with a prospective minute-factor research track after forty-eight terminal mechanisms produced zero dual-gate factors.",
+  "triggering_state": {
+    "path": "docs/a_share_three_day_iteration_status_20260725.json",
+    "sha256": "355b992452b73607034a182699d4fff337905e484229441e7ae138db1ffdefef",
+    "terminal_mechanism_count": 48,
+    "completed_minute_return_diagnostic_count": 18,
+    "topk_qualified_factor_count": 0,
+    "dual_gate_qualified_factor_count": 0,
+    "aggregation_allowed": false
+  },
+  "research_goal_adjustment": {
+    "old_operational_goal": "Continue proposing independent factors and reading each factor's 2019-2025 return after no-return gates pass.",
+    "new_operational_goal": "Use 2019-2025 minute data only to prove formula integrity, coverage, capacity, and non-duplication; evaluate candidate 49 and later candidates only on observations whose signal session is first seen after this policy.",
+    "reason": "After repeated use of the same 2019-2025 outcome history, another historical return diagnostic has increasing selection-bias risk even when the individual formula is preregistered.",
+    "active_goal_remains": "Develop a reliable three-local-session A-share stock-selection process, but prioritize out-of-sample validity over the speed or count of historical factor trials."
+  },
+  "prospective_boundary": {
+    "registration_time_utc": "2026-07-25T05:31:15Z",
+    "earliest_eligible_signal_session": "the first accepted local provider-calendar session on or after 2026-07-27",
+    "signal_time": "after the accepted local session close and after the complete minute snapshot is atomically published",
+    "entry": "next accepted local session open",
+    "exit": "third accepted local session close after entry",
+    "backfill_before_registration_allowed": false,
+    "historical_2019_2025_candidate_factor_values_allowed": true,
+    "historical_2019_2025_terminal_comparison_values_allowed": "only after coverage and capacity pass",
+    "historical_2019_2025_daily_price_or_forward_return_read_allowed": false,
+    "post_registration_price_or_return_read_allowed": "only after the corresponding source session is atomically accepted and was not available to the research process before registration"
+  },
+  "candidate_admission_order": [
+    "mechanism-overlap audit before candidate values",
+    "formula and field-whitelist preregistration before candidate values",
+    "immutable 2019-2025 candidate snapshot without daily prices or forward returns",
+    "coverage and CNY 200000 board-lot capacity eligibility before comparison values",
+    "all-terminal-factor uniqueness audit",
+    "one immutable prospective registration before the first eligible future signal",
+    "append-only future minute observation",
+    "append-only signal and execution ledgers",
+    "early rejection or full promotion gate without changing the registered formula"
+  ],
+  "future_observation_protocol": {
+    "signal_frequency": "every accepted local session once the factor and eligibility set are complete",
+    "topk": 3,
+    "pilot_initial_capital_cny": 200000,
+    "pilot_buy_lot_size_shares": 100,
+    "maximum_entry_exposure_fraction_per_signal": 0.15,
+    "target_entry_exposure_fraction_per_slot": 0.05,
+    "commission_rate_each_side": 0.0001,
+    "transfer_fee_rate_each_side": 0.00002,
+    "sell_stamp_duty_rate": 0.0005,
+    "primary_adverse_slippage_rate_each_side": 0.001,
+    "maximum_daily_amount_participation": 0.01,
+    "unfilled_entry_policy": "keep the slot in cash without replacement",
+    "blocked_exit_policy": "retain the position and retry on later accepted closes for at most twenty local sessions",
+    "overlapping_positions": "allowed only in one shared cash-constrained portfolio; no cohort may spend cash not available before its entry",
+    "same_session_amount_use": "after-outcome capacity audit only and never a fill claim or ranking input"
+  },
+  "gates": {
+    "minimum_historical_no_return_median_coverage": 0.95,
+    "minimum_historical_no_return_p05_coverage": 0.9,
+    "minimum_historical_no_return_p05_names": 50,
+    "minimum_historical_no_return_non_overlapping_capacity_cohorts": 200,
+    "maximum_absolute_median_daily_rank_correlation_to_every_terminal_factor": 0.8,
+    "early_rejection": {
+      "minimum_completed_future_signal_sessions": 60,
+      "rule": "Retire without inversion or replacement when mean future Rank IC is nonpositive and the shared CNY 200000 portfolio net return at the primary cost is nonpositive.",
+      "promotion_allowed": false
+    },
+    "full_evaluation": {
+      "minimum_completed_future_signal_sessions": 200,
+      "minimum_future_mean_rank_ic": 0,
+      "minimum_future_positive_rank_ic_rate": 0.5,
+      "minimum_shared_portfolio_net_cumulative_return": 0,
+      "maximum_allowed_drawdown": -0.2,
+      "minimum_board_lot_affordability": 0.9,
+      "maximum_daily_amount_participation": 0.01,
+      "terminal_unresolved_positions": 0,
+      "promotion_result": "Passing one factor permits continued paper observation only; historical aggregation still requires at least two economically independent prospectively passing factors."
+    }
+  },
+  "multiplicity_control": {
+    "maximum_simultaneously_active_new_candidate_mechanisms": 1,
+    "candidate_50_activation_allowed": "only after candidate 49 is terminally rejected or has completed the full 200-signal evaluation",
+    "direction_formula_window_transform_threshold_filter_subset_weight_and_topk_changes_after_registration_allowed": false,
+    "failed_candidate_inversion_or_same_mechanism_replacement_allowed": false
+  },
+  "forbidden_actions": [
+    "read candidate 49 historical daily prices or forward returns",
+    "use 2026-07-14 through registration-time observations as a hidden holdout",
+    "backfill a future ledger with sessions already available before registration",
+    "activate multiple new mechanisms in parallel",
+    "combine, score, select, size, or order from the forty-eight terminal mechanisms",
+    "change gates after observing a future result",
+    "purchase or scrape Level-2 solely to rescue a failed Level-1 mechanism"
+  ],
+  "research_boundary": {
+    "candidate_49_factor_values_observed_before_policy": false,
+    "candidate_49_comparison_values_observed_before_policy": false,
+    "candidate_49_daily_price_fields_read_before_policy": false,
+    "candidate_49_forward_return_fields_read_before_policy": false,
+    "future_signal_or_execution_outcome_observed_before_policy": false,
+    "current_scoring_selection_sizing_or_orders_allowed": false,
+    "investment_advice": false
+  }
+}

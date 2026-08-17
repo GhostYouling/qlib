@@ -1,0 +1,34 @@
+{
+  "schema_version": 1,
+  "kind": "a_share_three_day_walkforward_campaign110_no_return_comparator133_recovery_implementation_freeze",
+  "status": "frozen_before_comparator133_or_recovery_audit_values",
+  "recorded_at": "2026-08-08T15:43:48Z",
+  "protocol": {
+    "path": "docs/a_share_three_day_walkforward_campaign_110_no_return_comparator_133_recovery_protocol_20260808.json",
+    "sha256": "07ffa70076d41d921eba8cfde86155f97b2398aee521f2850b88ef58b4682e7d"
+  },
+  "entry_point": {
+    "path": "scripts/a_share_three_day_walkforward_campaign110_no_return_audit_v5.py",
+    "sha256": "0ac1026cb1db7d6fbf083a08d7ce806a49d855de90e8bd3e9307d714cb1a22ba"
+  },
+  "synthetic_test": {
+    "path": "tests/data_collector_tests/test_a_share_three_day_walkforward_campaign110_no_return_audit_v5.py",
+    "sha256": "ca8d6c41364fc3a61d545241291a9755c45c712fb1c0688e38f22c997c65d452",
+    "pre_freeze_result": "3 passed"
+  },
+  "scope": {
+    "exact_existing_loader_object_bound_into_run_globals": true,
+    "recovery_output_root_enforced": "/Volumes/DIsk/Disk-Coding/qlib/data/experiments/short_horizon/historical_walkforward/campaign_110/no_return_recovery_v1",
+    "required_comparator_count": 133,
+    "candidate_formula_direction_anchor_support_range_coverage_uniqueness_threshold_or_order_changed": false,
+    "historical_daily_price_or_forward_return_read_exposed": false
+  },
+  "research_boundary": {
+    "first_132_comparator_values_already_read_by_failed_audit": true,
+    "comparator_133_values_read_before_freeze": false,
+    "historical_daily_price_or_forward_return_values_read_before_freeze": false,
+    "provider_request_issued_before_freeze": false,
+    "candidate49_ledgers_changed": false
+  },
+  "next_action": "Validate this freeze and run exactly one recovery audit; accept an outcome only when all 133 ordered results and source receipts are present."
+}

@@ -1,0 +1,68 @@
+{
+  "schema_version": 1,
+  "kind": "a_share_three_day_walkforward_campaign083_no_return_audit_implementation_freeze",
+  "status": "frozen_after_verified_snapshot_before_coverage_or_comparison_values",
+  "frozen_at": "2026-08-06T20:17:00+08:00",
+  "protocol": {
+    "path": "docs/a_share_three_day_walkforward_campaign_083_no_return_preregistration.json",
+    "sha256": "31271774531c1bd761d3963740be959fe329974b2bb1c8d6b6038fd62ede35af"
+  },
+  "snapshot_binding": {
+    "path": "docs/a_share_three_day_walkforward_campaign_083_feature_snapshot_binding_20260806.json",
+    "sha256": "6a37b02574f506e4f2043b91788bef9c8a93e3535985867293531bde22be5b2c"
+  },
+  "audit_runner": {
+    "path": "scripts/a_share_three_day_walkforward_campaign083_no_return_audit.py",
+    "sha256": "ff9859120319a52c75aabcbd9d7f5b46c88166af0ca3fc460df981bf2fe71cf1"
+  },
+  "tests": {
+    "path": "tests/data_collector_tests/test_a_share_three_day_walkforward_campaign083_no_return_audit.py",
+    "sha256": "a03ee016e9a2f921fefbd593a15e4fd33d01df2711eb4001f738381bef2c4d1f",
+    "preactivation_tests_passed": 4,
+    "preactivation_tests_failed": 0,
+    "black_py312_check_passed": true,
+    "ruff_check_passed": true,
+    "py_compile_passed": true
+  },
+  "legacy_comparator_runtime": {
+    "campaign082_no_return_audit_runner": {
+      "path": "scripts/a_share_three_day_walkforward_campaign082_no_return_audit.py",
+      "sha256": "4e058411211e47bb2f18fb64c7a5960f18ec4567c25a6675e0ece0cf311de5a2"
+    },
+    "campaign082_no_return_audit_implementation_freeze": {
+      "path": "docs/a_share_three_day_walkforward_campaign_082_no_return_audit_implementation_freeze_20260806.json",
+      "sha256": "a3e763897a5809bf1881306c0b4420ab2af2037dd3157cdeb74d7936f4ebb55a"
+    },
+    "campaign082_no_return_audit_activation_binding": {
+      "path": "docs/a_share_three_day_walkforward_campaign_082_no_return_audit_activation_binding_20260806.json",
+      "sha256": "f814bffaa406b40e301148af1419e6b5226dc2b1ae7efe40c85578da7af974e8"
+    },
+    "append_only_extension": "Load the exact Campaign082 111-comparator stream, then append only the independently verified Campaign082 factor snapshot as comparator 112."
+  },
+  "frozen_gate_semantics": {
+    "coverage_first": true,
+    "minimum_median_coverage": 0.95,
+    "minimum_p05_coverage": 0.9,
+    "minimum_p05_eligible_names": 50,
+    "minimum_non_overlapping_three_session_cohorts": 200,
+    "minimum_observed_calendar_years": 5,
+    "numeric_comparator_count": 112,
+    "numeric_comparator_order_sha256": "78656b7dcd0df95703ccf663d261c61cb5f596ca368c3523907464fe25ed1f2b",
+    "complete_definition_count": 114,
+    "complete_definition_order_sha256": "bc8ecccee5fa8278342253908e34167313041a23ae153bb3d64d3f60c285e04f",
+    "maximum_allowed_absolute_median_daily_rank_correlation": 0.8,
+    "minimum_pairwise_names_per_session": 50,
+    "minimum_pairwise_sessions_per_comparison": 100,
+    "all_112_numeric_comparators_must_pass": true,
+    "campaign063_and_campaign079_remain_semantic_only": true
+  },
+  "coverage_or_capacity_metrics_computed_before_freeze": false,
+  "comparison_values_read_before_freeze": false,
+  "historical_daily_price_fields_read_before_freeze": [],
+  "historical_forward_returns_read_before_freeze": false,
+  "provider_request_issued_before_freeze": false,
+  "candidate49_historical_backfill_performed": false,
+  "candidate49_ledgers_changed": false,
+  "current_scoring_selection_sizing_or_orders_performed": false,
+  "next_action": "Create a separate activation binding to this exact runner, tests, snapshot, protocol, and legacy comparator runtime; then run the sole Campaign083 no-return audit once."
+}

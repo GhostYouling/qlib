@@ -1,0 +1,22 @@
+{
+  "schema_version": 1,
+  "kind": "a_share_three_day_walkforward_campaign145_infrastructure_failure",
+  "status": "recorded_append_only_after_recovery_receipt_before_coverage_activation",
+  "recorded_at": "2026-08-14T20:34:51+08:00",
+  "failure_id": "campaign145_infrastructure_007",
+  "stage": "coverage_runner_preexecution_compatibility_check",
+  "exit_code": null,
+  "observed_failure": "The frozen inherited coverage runner cannot consume the additive recovery receipt: it calls the original defective snapshot verifier and requires candidate_snapshot_values_read_before_activation=false even though the recovery verifier truthfully read candidate values solely for integrity and semantic verification.",
+  "command_executed": false,
+  "reason_command_was_not_executed": "Static inspection proved it would fail before coverage statistics and would force a false research-boundary declaration.",
+  "scientific_formula_changed": false,
+  "original_coverage_runner_changed": false,
+  "narrow_recovery_allowed": "Freeze an additive coverage runner that binds the original runner and recovery receipt, distinguishes integrity verification from coverage-statistic exposure, rechecks immutable partition bytes, and preserves the preregistered coverage gate.",
+  "snapshot_rebuild_or_rewrite_allowed": false,
+  "comparator_values_read": false,
+  "daily_price_or_forward_return_values_read": false,
+  "stress_2024_2025_returns_opened": false,
+  "provider_request_issued": false,
+  "credential_loaded": false,
+  "candidate49_ledgers_changed": false
+}

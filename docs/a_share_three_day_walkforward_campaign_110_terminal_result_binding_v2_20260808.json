@@ -1,0 +1,43 @@
+{
+  "schema_version": 1,
+  "kind": "a_share_three_day_walkforward_campaign110_terminal_result_binding",
+  "status": "campaign110_terminal_development_rejection_zero_survivors_stress_closed_accounting_corrected",
+  "recorded_at": "2026-08-08T16:09:46Z",
+  "supersedes_without_rewriting": {
+    "path": "docs/a_share_three_day_walkforward_campaign_110_terminal_result_binding_20260808.json",
+    "sha256": "0cb6c4749050082c334ddba3a82d9db15996c1b8908c52b6997fed0e5dc63a7e",
+    "scientific_result_preserved": true,
+    "development_outputs_preserved": true,
+    "correction_scope": "Append the terminal report-patch infrastructure failure and corrected attempt accounting only."
+  },
+  "research_attempt_ledger": {
+    "path": "data/experiments/short_horizon/historical_walkforward/campaign_110/research_attempt_ledger_v4.json",
+    "sha256": "c901844ffe593984d594dcde5a2ffd5ae7e1e63d6f769e5f9d7cbb1419860d62",
+    "attempt_count": 13,
+    "ledger_entry_count": 13,
+    "infrastructure_failure_count": 12,
+    "scientifically_decided_factor_attempt_count": 1,
+    "return_reading_complete_development_trial_count": 1
+  },
+  "preserved_scientific_outputs": {
+    "no_return_audit": {"path": "data/experiments/short_horizon/historical_walkforward/campaign_110/no_return_recovery_v1/20260808T155731Z_campaign110_no_return_audit.json", "sha256": "4b6dc87f01e3ad2645a44c1556d138d9d3efcb8fb4a809a439f47371bd7143ae"},
+    "development_trial_ledger": {"path": "data/experiments/short_horizon/historical_walkforward/campaign_110/walkforward/trial_ledger.json", "sha256": "be223014ce65d724541cc23b789cf2559485ddb513ccd3dae6b3e9f2896791c0"},
+    "development_survivors": {"path": "data/experiments/short_horizon/historical_walkforward/campaign_110/walkforward/development_survivors.json", "sha256": "b82e55e95bd23c2dfff920ffe205def15edb483f7b550c323f1dec37b08b165f", "selected_survivor_count": 0},
+    "exposed_stress_record": {"path": "data/experiments/short_horizon/historical_walkforward/campaign_110/walkforward/exposed_stress_consumption_record.json", "sha256": "a21dfb754b2c8666bf7922e08b468568a3084066a50245bbdc7bd2a8c7a18b23", "status": "not_opened_zero_development_survivors", "stress_interval_opened": false, "stress_return_fields_read": false}
+  },
+  "reports": {
+    "campaign110_report": {"path": "docs/a_share_three_day_walkforward_campaign_110_report.md", "sha256": "167ad64ee5767583e83ebb23d7255c9beacd203343e84490d7a2b952aa9b6888"},
+    "current_research_report": {"path": "data/experiments/short_horizon/current_research_report.md", "sha256": "8592bf600bef68ebd07cf29158702138e6124d23afc90f573fd2644fc60bb76b"},
+    "three_day_research_report": {"path": "data/experiments/short_horizon/three_day_research_report.md", "sha256": "b6ea1c6c92b5352a1bf12de00166b0e780027b169da7ff57a2ef6dd5ccfbf52f"}
+  },
+  "scientific_result": "rejected_by_frozen_2019_2023_development_survivor_gates",
+  "development_survivor_count": 0,
+  "stress_2024_2025_opened": false,
+  "cumulative_historical_research_attempt_count": 822,
+  "cumulative_return_reading_development_trial_count": 302,
+  "provider_request_issued": false,
+  "candidate49_historical_backfill_performed": false,
+  "candidate49_ledgers_changed": false,
+  "current_scoring_selection_sizing_or_orders_performed": false,
+  "investment_advice": false
+}

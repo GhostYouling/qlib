@@ -1,0 +1,41 @@
+{
+  "schema_version": 1,
+  "kind": "a_share_three_day_walkforward_campaign143_infrastructure_failure",
+  "status": "recorded_not_bypassed_no_values_read",
+  "recorded_at": "2026-08-14T15:47:00+0800",
+  "attempt_id": "campaign143_infrastructure_010",
+  "phase": "strict_publication_validation",
+  "failure": {
+    "operation": "Black check of the new versioned Campaign143 terminal test",
+    "process_exit_code": 1,
+    "test_path": "tests/data_collector_tests/test_a_share_three_day_walkforward_campaign143_terminal.py",
+    "preformat_test_sha256": "3d18574c31835619fac490122d349997f11be0ee023b8d079a64f3746e3a8490",
+    "stderr_summary": "Black reported that the single new test file would be reformatted.",
+    "test_execution_started": false,
+    "failed_exit_code_bypassed": false,
+    "later_success_used_to_mask_failure": false
+  },
+  "safe_recovery": {
+    "preserve_this_failure_record": true,
+    "append_a_new_ledger_delta_before_formatting": true,
+    "allowed_action": "Apply Black's deterministic formatting to only the new Campaign143 terminal test, then rerun the complete style gate.",
+    "scientific_assertion_change_allowed": false,
+    "weaken_or_modify_style_gate": false
+  },
+  "completed_checks_before_failure": {
+    "campaign143_json_records_parsed": 17,
+    "effective_binding_records_passed": 7,
+    "effective_binding_checks_passed": 46
+  },
+  "research_boundary": {
+    "source_rows_or_column_values_read": false,
+    "candidate_or_comparator_values_read": false,
+    "historical_daily_price_or_forward_return_values_read": false,
+    "stress_2024_2025_opened": false,
+    "provider_request_issued": false,
+    "provider_credential_value_or_digest_read": false,
+    "candidate49_historical_backfill_performed": false,
+    "candidate49_ledgers_changed": false,
+    "current_scoring_selection_sizing_positions_or_orders_performed": false
+  }
+}

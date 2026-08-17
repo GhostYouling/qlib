@@ -1,0 +1,56 @@
+{
+  "schema_version": 1,
+  "kind": "a_share_three_day_walkforward_campaign078_no_return_audit_freeze",
+  "status": "frozen_one_admissible_factor_before_daily_prices_or_development_returns",
+  "recorded_at": "2026-08-06T14:40:00+08:00",
+  "campaign_id": "a_share_three_day_walkforward_campaign_078",
+  "audit": {
+    "path": "data/experiments/short_horizon/historical_walkforward/campaign_078/no_return/20260806T063847Z_campaign078_no_return_audit.json",
+    "sha256": "0f991f013bec5fe06c9e40dea9bce3c720b749f0aad84e53a8bc2c419828e088"
+  },
+  "v2_implementation_freeze": {
+    "path": "docs/a_share_three_day_walkforward_campaign_078_no_return_audit_implementation_freeze_v2_20260806.json",
+    "sha256": "bcd52a26798434ab7bb3cce0516d30bd42b70e34e98b8b9bbe464a371810999d"
+  },
+  "v2_runner": {
+    "path": "scripts/a_share_three_day_walkforward_campaign078_no_return_audit_v2.py",
+    "sha256": "4ab0c306d37d9d6da6fedc368dcc9510028c860bd9e6e6ec84548b1ed5b4d5cb"
+  },
+  "candidate_snapshot": {
+    "manifest_path": "/Volumes/DIsk/qlib-a-share-tushare-1m/derived/a_share/rich/tushare/minute_walkforward_campaign078_feature_library/tushare_stk_mins_1m_2019_2025_ea0cbb8f_walkforward_campaign078_feature_library_v1/snapshot_manifest.json",
+    "manifest_sha256": "a8d2f2a68dba3f7f3a3f34ac8d203f1381e429612ded6daf6c6447e0ed983071",
+    "dataset_sha256": "225c539824978df0cc3e4b34a9520aa919ffa77ba73246c21e1bdb6122a0227d",
+    "partitions": 33015,
+    "rows": 7724498,
+    "eligible_rows": 7724498
+  },
+  "coverage": {
+    "quality_listing_eligible_rows": 1331759,
+    "candidate_eligible_rows": 1330171,
+    "median": 0.9994517542211769,
+    "p05": 0.9956886515772271,
+    "p05_eligible_names": 138,
+    "potential_non_overlapping_three_session_cohorts": 540,
+    "gate_passed": true
+  },
+  "uniqueness": {
+    "numeric_comparison_count": 108,
+    "numeric_comparison_order_sha256": "7bdadc28e8d79b87cc16dcdbbd5e50964fa6ea8de9a5fb32023ddb05422fd1bc",
+    "comparisons_passed": 108,
+    "maximum_absolute_median_daily_rank_correlation": 0.1895045287399153,
+    "maximum_comparator": "intraday_amount_profile_serial_persistence_240m",
+    "maximum_signed_median_daily_rank_correlation": -0.1895045287399153,
+    "gate_passed": true
+  },
+  "v1_failure_preserved": {
+    "path": "docs/a_share_three_day_walkforward_campaign_078_no_return_v1_helper_path_failure_20260806.json",
+    "sha256": "9b19c97d0b88f458ce8a4d8ec48a2891a21cf5503d16629051ab14bcb3fafba2",
+    "partial_statistics_reused": false
+  },
+  "historical_daily_price_fields_read_before_admission": [],
+  "historical_forward_returns_read_before_admission": false,
+  "provider_request_issued": false,
+  "candidate49_ledgers_changed": false,
+  "admitted_development_trial_count": 1,
+  "stress_2024_2025_opened": false
+}

@@ -1,0 +1,94 @@
+{
+  "version": 124,
+  "kind": "a_share_three_day_walkforward_future_numeric_comparison_eligibility_policy",
+  "status": "campaign123_terminal_source_schema_or_canonicalization_failure_campaign124_prevalue_allowed",
+  "recorded_at": "2026-08-14T03:48:28+08:00",
+  "authoritative_inputs": {
+    "policy_v123": {
+      "path": "docs/a_share_three_day_walkforward_future_numeric_comparison_eligibility_policy_v123_20260814.json",
+      "sha256": "98d696abe86efe2c4f40b0d6ecf626e27360af37d46547f31c96e245df38b4de"
+    },
+    "campaign123_terminal_source_acceptance": {
+      "path": "docs/a_share_three_day_walkforward_campaign_123_namechange_source_acceptance_terminal_20260814.json",
+      "sha256": "2c3791a247db3a81eef1b1c3d743e5b8a672aabc24384ad0fe13fc640b3f88a1"
+    },
+    "campaign123_attempt_ledger_v4": {
+      "path": "data/experiments/short_horizon/historical_walkforward/campaign_123/research_attempt_ledger_v4.json",
+      "sha256": "a4498c4dce67c7388b1f0dfebccfc0c78c82189b3b0e83b3288bc3bcc7e3163b"
+    }
+  },
+  "supersedes_without_rewriting": {
+    "path": "docs/a_share_three_day_walkforward_future_numeric_comparison_eligibility_policy_v123_20260814.json",
+    "sha256": "98d696abe86efe2c4f40b0d6ecf626e27360af37d46547f31c96e245df38b4de",
+    "preserved": true,
+    "scientific_result_changed": true,
+    "library_order_changed": false,
+    "reason": "The only authorized source acceptance attempt issued all seven annual calls and failed the frozen schema/canonicalization gate. The exact source/formula is terminal with no retry or rescue."
+  },
+  "effective_accounting": {
+    "campaign123_attempt_count": 15,
+    "campaign123_ledger_entry_count": 15,
+    "campaign123_infrastructure_failure_count": 11,
+    "campaign123_prevalue_scientific_attempt_count": 4,
+    "campaign123_complete_factor_attempt_count": 1,
+    "campaign123_source_acceptance_attempt_count": 1,
+    "campaign123_return_reading_development_trial_count": 0,
+    "campaign123_development_survivor_count": 0,
+    "campaign123_stress_trial_count": 0,
+    "cumulative_historical_research_attempt_count": 1014,
+    "cumulative_return_reading_development_trial_count": 306
+  },
+  "complete_historical_feature_library": {
+    "factor_definition_count": 148,
+    "order_sha256": "fa9f0254b17d1a2b568e056b2696f24087f3f0668d7842a1bcbfdde1a87192e8",
+    "unchanged_from_v123": true,
+    "terminal_latest_definition": {
+      "name": "official_pure_security_rename_recency_60s",
+      "score_direction": "higher",
+      "source_accepted": false,
+      "kept_for_future_duplicate_detection_only": true
+    }
+  },
+  "numerical_comparator_eligibility": {
+    "eligible_numeric_comparator_count": 139,
+    "eligible_numeric_comparator_order_sha256": "9c4de054ca1b83eced67eece256b024ebec3a6e1925de17a4cedfa7d36265161",
+    "unchanged_from_v123": true,
+    "campaign123_definition_eligible_now_or_later": false
+  },
+  "campaign123_terminal_classification": {
+    "terminal": true,
+    "terminal_phase": "source_schema_or_canonicalization_acceptance",
+    "plan_ready_and_exit_zero": true,
+    "run_exit_code": 2,
+    "provider_calls_issued": 7,
+    "failure_code": "source_schema_or_canonicalization_contract_failure",
+    "accepted_snapshot_or_manifest_created": false,
+    "historical_candidate_comparator_price_or_return_values_read": false,
+    "retry_relabel_field_reason_window_direction_threshold_source_substitution_or_rescue_allowed": false,
+    "source_acceptance_authorization_remaining": false
+  },
+  "future_campaign_boundary": {
+    "next_campaign": 124,
+    "must_begin_from_genuinely_new_prevalue_mechanism_or_separately_preaccepted_point_in_time_source": true,
+    "campaign123_namechange_retry_or_value_open_allowed": false,
+    "campaign123_provider_response_detail_retrieval_allowed": false,
+    "earlier_terminal_factor_combination_or_rescue_allowed": false
+  },
+  "research_boundary": {
+    "programmatic_provider_requests_issued": true,
+    "provider_calls_issued": 7,
+    "credential_loaded_for_source_acceptance": true,
+    "secret_printed_hashed_or_persisted": false,
+    "provider_responses_read_in_memory": true,
+    "raw_provider_rows_or_counts_persisted": false,
+    "campaign123_candidate_values_computed_or_read": false,
+    "campaign123_comparator_values_read": false,
+    "historical_daily_price_or_forward_return_values_read": false,
+    "stress_2024_2025_candidate_or_return_values_opened": false,
+    "candidate49_historical_backfill_performed": false,
+    "candidate49_ledgers_changed": false,
+    "second_prospective_candidate_created": false,
+    "current_scoring_selection_sizing_positions_or_orders_performed": false,
+    "investment_advice": false
+  }
+}

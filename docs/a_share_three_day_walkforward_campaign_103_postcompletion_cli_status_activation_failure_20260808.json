@@ -1,0 +1,57 @@
+{
+  "version": 1,
+  "kind": "a_share_three_day_walkforward_campaign103_infrastructure_failure",
+  "status": "postcompletion_cli_status_failed_before_readonly_status_body",
+  "recorded_at": "2026-08-08T00:38:32+08:00",
+  "stage": "postcompletion_cli_status_activation_precheck",
+  "command_exit_code": 1,
+  "exception": "Campaign103 development activation binding changed",
+  "root_cause": "The generic inherited CLI activation loader requires the live append-only ledger byte hash to equal the pre-run activation hash. The authorized development run correctly appended the completed trial, so the postcompletion ledger no longer equals the pre-run activation snapshot even though its prefix and chain remain valid.",
+  "allowed_terminal_handling": "Do not alter or rerun the now-terminal Campaign103 runner. Preserve this command failure, validate the completed ledger and artifacts through the runner's same read-only status function directly, and bind the result in additive terminal documentation and tests.",
+  "completed_evidence_before_failure": {
+    "trial_ledger": {
+      "path": "data/experiments/short_horizon/historical_walkforward/campaign_103/walkforward/trial_ledger.json",
+      "sha256": "244fd32d508138fbcdfb6a432d528037d3f1548dd70f2f6a01aac8eb2bb810c2",
+      "entries": 3,
+      "chain_tip_sha256": "ffee1a6f008fbcb2387d49eb82510f0a994cadc3b1cd6911384ae819e5098a11"
+    },
+    "survivor_record": {
+      "path": "data/experiments/short_horizon/historical_walkforward/campaign_103/walkforward/development_survivors.json",
+      "sha256": "8a3adecd90aa26031316cd5352f67ae7bbb6f975c36bf4f30d12be7b5cabb749",
+      "selected_survivor_count": 0
+    },
+    "stress_record": {
+      "path": "data/experiments/short_horizon/historical_walkforward/campaign_103/walkforward/exposed_stress_consumption_record.json",
+      "sha256": "c2fc3e0fcf041729365d12116796e539a79483aed0286d57b26bd8e34b0b18d6",
+      "status": "not_opened_zero_development_survivors"
+    }
+  },
+  "corrected_readonly_verification": {
+    "method": "direct_call_to_campaign103_status_with_identical_campaign_and_output_root",
+    "ledger_entry_count": 3,
+    "selected_survivor_count": 0,
+    "stress_record_exists": true,
+    "stress_status": "not_opened_zero_development_survivors",
+    "candidate49_historical_return_read": false,
+    "current_scoring_selection_sizing_or_orders_allowed": false
+  },
+  "data_access": {
+    "new_candidate_or_comparison_values_read": false,
+    "new_daily_price_or_forward_return_fields_read": false,
+    "research_metrics_recomputed": false,
+    "ledger_changed": false,
+    "2024_2025_stress_opened": false,
+    "2024_2025_return_fields_read": false
+  },
+  "research_boundary": {
+    "provider_request_issued": false,
+    "candidate49_historical_return_read": false,
+    "candidate49_ledgers_changed": false,
+    "current_scoring_selection_sizing_or_orders_performed": false
+  },
+  "attempt_accounting": {
+    "campaign103_infrastructure_failure_increment": 1,
+    "campaign103_complete_factor_attempt_increment": 0,
+    "return_reading_complete_development_trial_increment": 0
+  }
+}

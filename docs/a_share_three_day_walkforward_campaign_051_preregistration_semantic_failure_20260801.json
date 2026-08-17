@@ -1,0 +1,44 @@
+{
+  "schema_version": 1,
+  "kind": "a_share_three_day_walkforward_campaign051_preregistration_semantic_failure",
+  "status": "recorded_before_any_external_campaign051_candidate_comparison_daily_price_or_return_value_read",
+  "recorded_at": "2026-08-01T12:09:03Z",
+  "failed_artifact": {
+    "path": "docs/a_share_three_day_walkforward_campaign_051_no_return_preregistration.json",
+    "sha256": "67d060b34564d8c868f61720f988bb346f087b72ac464376a9b4613cf618ec51"
+  },
+  "failure": {
+    "stage": "synthetic_implementation_test_before_feature_implementation_freeze",
+    "test_command": "python -m pytest -q tests/data_collector_tests/test_a_share_three_day_walkforward_campaign051_features.py",
+    "failed_test": "test_campaign051_protocol_is_finite_and_binding_valid",
+    "reason": "The preregistered 74-factor comparison-order digest did not equal the digest of the exact inherited Campaign050 order followed by terminal Campaign050.",
+    "recorded_digest": "1f82ffdfdefa454841c6085d09035b8fdd6132fdca74f31a3a2f6a705076c309",
+    "computed_digest": "08639819d24bbb65f1181a31edd788dfc5ac4a6ee56312f600861612d2dec573",
+    "test_result": "1_failed_11_passed"
+  },
+  "preceding_infrastructure_attempt": {
+    "command": "pytest -q tests/data_collector_tests/test_a_share_three_day_walkforward_campaign051_features.py",
+    "result": "collection_failed_before_tests",
+    "reason": "Direct pytest invocation did not place the repository root on sys.path, so the scripts namespace could not be imported.",
+    "candidate_values_read": false,
+    "comparison_values_read": false,
+    "historical_forward_returns_read": false
+  },
+  "repair_policy": {
+    "original_artifact_preserved": true,
+    "silent_rewrite_forbidden": true,
+    "replacement": "Create a separately hashed v2 protocol correcting only the comparison-order digest and explicitly binding this failure record before any candidate value is read."
+  },
+  "research_boundary": {
+    "external_campaign051_minute_partitions_read": false,
+    "candidate_values_read": false,
+    "comparison_values_read": false,
+    "historical_daily_price_fields_read": false,
+    "historical_forward_returns_read": false,
+    "candidate49_historical_return_read": false,
+    "candidate49_ledgers_changed": false,
+    "second_prospective_candidate_created": false,
+    "provider_request_issued": false,
+    "current_scoring_selection_sizing_or_orders_performed": false
+  }
+}

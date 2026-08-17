@@ -1,0 +1,25 @@
+{
+  "schema_version": 1,
+  "kind": "a_share_three_day_walkforward_campaign086_v3_dispatch_repair_protocol",
+  "status": "frozen_before_v3_runner_creation_or_build_retry",
+  "frozen_at": "2026-08-07T01:20:00+08:00",
+  "failure_record": {
+    "path": "docs/a_share_three_day_walkforward_campaign_086_feature_build_v2_recursion_failure_20260807.json",
+    "sha256": "e18772921e84bb260bbbf50bd07186e36f3b5ad2887709bc2b5e09dfe945c9cc"
+  },
+  "v1_runner_sha256": "ed59f42461a89cc58738c922e87ac821b548dabd8ac1ce0f99eca68cef3b9f8a",
+  "v1_freeze_sha256": "9ea63a23935619537137376e464297bbc302bed26feff0ae719ad00656c47ebd",
+  "v2_runner_sha256": "5d5047d8d13963ac5e2aa2b6629c3d6e34ac5c0cc6b4e268bc943d96d57ad57e",
+  "v2_freeze_sha256": "083772ea9eec1d26cf02cbc915b7ca21296b1b141a9aa831a3274a997d8522ba",
+  "allowed_v3_delta": [
+    "Capture original_attach_values = v1.attach_values at v3 module import before temporary replacement.",
+    "Return v2.empty_attached_frame for an empty accepted identity.",
+    "Call original_attach_values for every nonempty identity.",
+    "Bind the final manifest to v3 runner, v3 freeze, this protocol, and both preserved earlier freezes."
+  ],
+  "forbidden_delta": "Any candidate formula, input, direction, support, grid, pair, correlation, eligible-universe, comparator, gate, development, stress, price, return, or provider-network change.",
+  "candidate_snapshot_published_before_protocol": false,
+  "comparison_values_read_before_protocol": false,
+  "historical_daily_price_or_forward_return_values_read_before_protocol": false,
+  "provider_request_issued_before_protocol": false
+}

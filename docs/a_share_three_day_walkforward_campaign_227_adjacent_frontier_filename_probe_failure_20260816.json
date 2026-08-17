@@ -1,0 +1,20 @@
+{
+  "schema_version": 1,
+  "kind": "a_share_three_day_walkforward_campaign227_infrastructure_failure",
+  "recorded_at": "2026-08-16T03:25:00+08:00",
+  "timestamp_semantics": "monotonic_logical_append_time_not_host_wall_clock_measurement",
+  "status": "failed_adjacent_frontier_batch_read_missing_guessed_filename_output_discarded",
+  "phase": "campaign227_adjacent_source_frontier_filename_and_hash_probe",
+  "command_scope": "read-only batch inspection of Campaign175, 185, 195, 196, 224, 225 and 226 source-frontier records",
+  "failure": "The guessed Campaign224 path did not exist, so the batch command exited nonzero after printing partial predecessor summaries.",
+  "recovery": "The complete failed output was discarded. Exact adjacent frontier filenames were first enumerated with rg and then all seven records were reread successfully from their exact paths.",
+  "research_boundary": {
+    "failed_partial_output_used_as_scientific_or_validation_evidence": false,
+    "repository_file_written_by_failed_command": false,
+    "candidate_or_comparator_value_read": false,
+    "daily_price_or_forward_return_read": false,
+    "provider_or_web_request_issued": false,
+    "provider_credential_presence_value_or_digest_read": false,
+    "candidate49_plan_or_run_executed": false
+  }
+}

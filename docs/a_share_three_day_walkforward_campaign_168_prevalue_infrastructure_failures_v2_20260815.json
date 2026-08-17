@@ -1,0 +1,51 @@
+{
+  "schema_version": 1,
+  "kind": "a_share_three_day_walkforward_campaign168_prevalue_infrastructure_failures",
+  "status": "four_effective_infrastructure_failures_recorded_before_test_retry",
+  "recorded_at": "2026-08-15T07:51:20+08:00",
+  "supersedes_without_rewriting": {
+    "path": "docs/a_share_three_day_walkforward_campaign_168_prevalue_infrastructure_failures_20260815.json",
+    "sha256": "e9d216b930a16c6d09fd70a4ef6f2dad01c56de996ed44ec4f9bd857f38c42bd",
+    "preserved": true,
+    "effective_predecessor_failure_count": 2
+  },
+  "delta_failures": [
+    {
+      "attempt_id": "campaign168_infrastructure_003",
+      "phase": "campaign168_test_runtime_bootstrap",
+      "status": "failed_presumed_dot_venv_python_path_did_not_exist",
+      "exit_code": 127,
+      "cause": "The initial chained formatting, lint and focused-test command presumed .venv/bin/python, but this workspace has no such interpreter; the shell stopped before Black, Ruff or pytest executed.",
+      "recovery": "Resolved /Volumes/DIsk/Coding/anaconda3/bin/python and fail-closed verified Python 3.12.7 plus importable black, pytest and ruff before retry.",
+      "write_occurred": false,
+      "candidate_comparator_price_or_return_value_read": false,
+      "failed_exit_code_bypassed_or_masked": false
+    },
+    {
+      "attempt_id": "campaign168_infrastructure_004",
+      "phase": "python_runtime_discovery_protocol",
+      "status": "failed_optional_uv_probe_exit_was_masked_by_true",
+      "observed_inner_exit_code": 1,
+      "shell_exit_code": 0,
+      "cause": "A diagnostic command used `command -v uv || true`; the optional uv probe was absent and its nonzero status was masked even though subsequent runtime discovery remained read-only.",
+      "recovery": "Recorded the protocol violation explicitly and replaced optional masked probes with an exact fail-closed Anaconda interpreter and dependency check.",
+      "write_occurred": false,
+      "candidate_comparator_price_or_return_value_read": false,
+      "failed_exit_code_bypassed_or_masked": true,
+      "masked_exit_is_now_recorded_and_not_used_as_gate_success": true
+    }
+  ],
+  "effective_failure_count": 4,
+  "all_effective_failures_recorded": true,
+  "unrecovered_or_unrecorded_failed_exit_codes_bypassed_or_masked": false,
+  "research_boundary": {
+    "source_row_document_title_body_kpi_candidate_comparator_price_or_return_value_read": false,
+    "provider_or_web_request_issued": false,
+    "provider_credential_presence_value_or_digest_read": false,
+    "stress_2024_2025_opened": false,
+    "candidate49_ledgers_changed": false,
+    "second_prospective_candidate_created": false,
+    "current_scoring_selection_sizing_positions_or_orders_performed": false
+  },
+  "next_action": "Append both failures from the existing Campaign168 chain tip, supersede provisional terminal accounting, and rerun formatting, lint and tests with the verified interpreter."
+}

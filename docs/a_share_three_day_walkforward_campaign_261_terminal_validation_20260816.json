@@ -1,0 +1,99 @@
+{
+  "schema_version": 1,
+  "kind": "a_share_three_day_walkforward_campaign261_terminal_validation",
+  "status": "passed_terminal_reference_science_accounting_static_focused_and_cumulative_validation",
+  "recorded_at": "2026-08-16T17:00:00+08:00",
+  "timestamp_semantics": "monotonic_logical_append_time_not_host_wall_clock_measurement",
+  "authoritative_inputs": {
+    "terminal_result_v3": {
+      "path": "docs/a_share_three_day_walkforward_campaign_261_terminal_result_v3_20260816.json",
+      "sha256": "0612b8fee0e71864460ba7977253276853096355d08d5ef417edadd8087c0112"
+    },
+    "numeric_policy_v404": {
+      "path": "docs/a_share_three_day_walkforward_future_numeric_comparison_eligibility_policy_v404_20260816.json",
+      "sha256": "fb2a95214db33763c6b14fe132c0c29eafad9a15ee4ea8fdafb58de3e2eb9fed"
+    },
+    "attempt_ledger_v3": {
+      "path": "data/experiments/short_horizon/historical_walkforward/campaign_261/research_attempt_ledger_v3.json",
+      "sha256": "70bc0284711ba8aa659bf55b35ed22a18f2d8fcc95ff2900345f73a5da719d69"
+    },
+    "terminal_report": {
+      "path": "docs/a_share_three_day_walkforward_campaign_261_terminal_report.md",
+      "sha256": "fc960368bee01f478cbaeb7fc203f9fcaa95a2bd550bae622e50747105ce3a0a"
+    },
+    "current_research_report": {
+      "path": "data/experiments/short_horizon/current_research_report.md",
+      "sha256": "87ce41d88c7ebab85bc5a3bb9b0932e6ea2f31d7748921ae484ba2e732c99699"
+    },
+    "three_day_research_report": {
+      "path": "data/experiments/short_horizon/three_day_research_report.md",
+      "sha256": "7cc04f39e71df7fc5c85da0279aff4e44d0828eea7e598a30b1440a0b688fb8c"
+    },
+    "terminal_test": {
+      "path": "tests/data_collector_tests/test_a_share_three_day_walkforward_campaign261_terminal.py",
+      "sha256": "b261cecc8cc53b253916a1ace3d0c4b1aaf8d9756b732f4ddfb5923ab9a82200"
+    }
+  },
+  "reference_and_semantic_validation": {
+    "all_current_json_parsed": true,
+    "all_authoritative_input_paths_exist": true,
+    "all_authoritative_input_sha256_values_match": true,
+    "ledger_v1_chain_valid": true,
+    "ledger_v2_delta_chain_valid": true,
+    "ledger_v3_delta_chain_valid": true,
+    "effective_attempt_count": 28,
+    "effective_infrastructure_failure_attempt_count": 22,
+    "effective_prevalue_scientific_attempt_count": 6,
+    "failed_or_truncated_output_used_as_scientific_or_validation_evidence": false,
+    "candidate49_signal_entry_count": 0,
+    "candidate49_execution_entry_count": 0
+  },
+  "focused_validation": {
+    "campaign261_test_file_count": 6,
+    "passed": 36,
+    "failed": 0,
+    "pytest_exit_code": 0,
+    "black_checked_file_count": 1,
+    "black_would_change_file_count": 0,
+    "black_exit_code": 0,
+    "ruff_checked_file_count": 1,
+    "ruff_error_count": 0,
+    "ruff_exit_code": 0
+  },
+  "cumulative_validation": {
+    "campaign_range": "145-261",
+    "test_file_count": 159,
+    "base_deselection_node_count": 22,
+    "additional_deselection_node_count": 53,
+    "total_exact_deselection_node_count": 75,
+    "passed": 594,
+    "failed": 0,
+    "skipped": 1,
+    "deselected": 75,
+    "pytest_exit_code": 0,
+    "final_run_elapsed_seconds": 17.05
+  },
+  "scientific_validation": {
+    "coverage_gate_passed": true,
+    "all_142_numeric_comparisons_recorded": true,
+    "numeric_uniqueness_passed": false,
+    "failing_comparator_count": 2,
+    "development_trial_count": 0,
+    "stress_trial_count_2024_2025": 0,
+    "selected_factor_count": 0,
+    "terminal_before_return_reading": true
+  },
+  "research_boundary": {
+    "historical_daily_price_or_forward_return_values_read": false,
+    "stress_2024_2025_opened": false,
+    "provider_or_web_request_issued": false,
+    "provider_credential_presence_value_or_digest_read": false,
+    "candidate49_plan_or_run_executed": false,
+    "candidate49_historical_backfill_performed": false,
+    "candidate49_ledgers_changed": false,
+    "second_prospective_candidate_created": false,
+    "current_scoring_selection_sizing_positions_or_orders_performed": false,
+    "investment_advice": false
+  },
+  "next_action": "Keep the persistent goal active and begin Campaign262 with one independent finite offline prevalue mechanism; do not wait for 16:30 or open returns before all prevalue gates pass."
+}

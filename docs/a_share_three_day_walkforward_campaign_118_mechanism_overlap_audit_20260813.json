@@ -1,0 +1,194 @@
+{
+  "schema_version": 1,
+  "kind": "a_share_three_day_walkforward_campaign118_mechanism_overlap_audit",
+  "status": "one_genuinely_distinct_fixed_count_liquidity_event_spacing_mechanism_and_exact_formula_frozen_before_values",
+  "recorded_at": "2026-08-13T21:47:00+08:00",
+  "purpose": "Challenge the selected Campaign118 event-clock mechanism against the complete 143-definition frontier and freeze exactly one formula, direction, source projection, support rule, event count, tie rule and missing semantics before any Campaign118 source or candidate value is read.",
+  "authoritative_inputs": {
+    "concept_scouting": {
+      "path": "docs/a_share_three_day_walkforward_campaign_118_concept_scouting_20260813.json",
+      "sha256": "d24b6d76990af4b68e3134889a99d918412a492e908672a8fa7e60e623e9d064"
+    },
+    "campaign117_terminal_state": {
+      "path": "docs/a_share_three_day_iteration_status_20260813_campaign117_terminal.json",
+      "sha256": "633e47749f87bf3bd299a2edf1e5bf08e05c97868f497e7cb3b79a788afe7200"
+    },
+    "historical_walkforward_policy": {
+      "path": "docs/a_share_three_day_historical_walkforward_research_policy_20260727.json",
+      "sha256": "38426d6161b9bfed323c58caba18feca668b8c9d53e294951a8ba90c01a798bb"
+    },
+    "numeric_policy_v106": {
+      "path": "docs/a_share_three_day_walkforward_future_numeric_comparison_eligibility_policy_v106_20260813.json",
+      "sha256": "b7ef1a9c855c24e48aa161f47c5b7334b0861db9a0aeda3275d457586e608159"
+    },
+    "complete_definition_count": 143,
+    "complete_definition_order_sha256": "f7612c7dd7d4a0c015146d60a86e244d91b21a8b6638e4f84e7a18d035581d21",
+    "numeric_comparator_count": 135,
+    "numeric_comparator_order_sha256": "50323aed7e13a7f0241677beefda6c847482844eea68cf51cb92c833cd316322"
+  },
+  "frozen_candidate": {
+    "name": "intraday_top_decile_amount_event_spacing_entropy_25g",
+    "direction": "higher",
+    "information_domain": "fixed_count_extreme_cny_liquidity_event_clock_spacing_complexity",
+    "economic_hypothesis": "When the day's strongest one-minute CNY-liquidity events are distributed across the trading clock rather than clustered into one burst, participation and liquidity replenishment may be more orderly and persistent from the next open through the third close.",
+    "source_projection": [
+      "datetime",
+      "symbol",
+      "provider",
+      "amount"
+    ],
+    "forbidden_source_fields": [
+      "open",
+      "high",
+      "low",
+      "close",
+      "volume",
+      "daily_price",
+      "forward_return"
+    ],
+    "grid": {
+      "selected_rows": 240,
+      "selected_minutes": "09:31-11:30 and 13:01-15:00",
+      "zero_based_clock_indices": "0 through 239 in the selected-minute order",
+      "event_count": 24,
+      "event_fraction": "exactly 24/240 = 10%",
+      "gap_count": 25,
+      "non_event_count": 216,
+      "standalone_09_30_loaded_for_formula": false,
+      "lunch_is_one_adjacent_selected_clock_step": true,
+      "cross_day_or_cross_stock_events": 0
+    },
+    "exact_formula": {
+      "source_validity": "Require exactly 240 finite nonnegative raw CNY amount values and a strictly positive total amount. Retain zero amounts and exact amount ties.",
+      "event_selection": "Sort the 240 pairs (amount,index) by descending raw amount and then ascending zero-based clock index; select exactly the first 24 indices. The earlier index is the deterministic winner at the top-24 boundary when amounts tie. No percentile interpolation is used.",
+      "event_order": "Sort the selected indices to q_0 < ... < q_23.",
+      "gap_counts": "Define g_0=q_0; for i=1,...,23 define g_i=q_i-q_(i-1)-1; and define g_24=239-q_23. Each gap counts non-event selected-grid bars before, between or after events, and sum_i g_i is exactly 216.",
+      "probabilities": "For i=0,...,24 define p_i=g_i/216, retaining zero gaps.",
+      "score": "-sum over p_i>0 of p_i*ln(p_i), divided by ln(25).",
+      "valid_range_inclusive": [
+        0.0,
+        1.0
+      ],
+      "support": "Require exactly 24 distinct selected event indices, exactly 25 integer nonnegative gaps summing to 216, a finite score and an in-range score; otherwise missing. Amount magnitudes are discarded after deterministic event selection."
+    },
+    "search_space": {
+      "candidate_count": 1,
+      "direction_count": 1,
+      "fields": [
+        "amount"
+      ],
+      "event_counts": [
+        24
+      ],
+      "event_fractions": [
+        0.1
+      ],
+      "tie_rules": [
+        "descending_amount_then_ascending_clock_index"
+      ],
+      "gap_definitions": [
+        "25_edge_and_inter_event_non_event_counts"
+      ],
+      "operators": [
+        "normalized_Shannon_entropy"
+      ],
+      "windows": [
+        "one_fixed_240_bar_continuous_grid"
+      ],
+      "filters": [],
+      "subsets": [],
+      "models": [],
+      "alternate_field_direction_event_count_fraction_tie_rule_gap_definition_operator_window_threshold_filter_subset_fit_model_or_combination_search": false
+    }
+  },
+  "overlap_challenges": [
+    {
+      "family": "amount_mass_distribution_and_linear_clock_moments",
+      "definitions": [
+        "intraday_amount_participation_entropy_240m",
+        "intraday_amount_clock_dispersion_240m",
+        "intraday_amount_center_of_mass_240m",
+        "intraday_amount_profile_serial_persistence_240m",
+        "intraday_amount_path_efficiency_238p"
+      ],
+      "distinction": "Those definitions retain all normalized amount masses, cardinal differences, correlations or weighted clock moments. Campaign118 uses amount only to select a fixed 24-event set, then discards every magnitude and measures the full 25-gap event-clock distribution. Arbitrary changes to non-event magnitudes that preserve the top-24 index set cannot change Campaign118 but generally change those factors."
+    },
+    {
+      "family": "amount_peaks_threshold_runs_and_single_clock_events",
+      "definitions": [
+        "intraday_amount_local_peak_density_238p",
+        "intraday_above_median_amount_longest_run_240m",
+        "intraday_peak_amount_bar_recency_240m",
+        "intraday_terminal_bar_amount_share_240m"
+      ],
+      "distinction": "A local-peak count depends on neighbor comparisons, the longest run depends on a median threshold, and recency or terminal share retains one event or mass. Campaign118 always selects exactly 24 global amount-order events, includes non-local maxima, has no median or magnitude threshold, and uses every edge and inter-event gap. Equal peak count, longest run and global-peak recency can coexist with different Campaign118 spacing entropy."
+    },
+    {
+      "family": "amount_local_ordinal_complexity",
+      "definitions": [
+        "intraday_amount_weak_order_entropy_236t"
+      ],
+      "distinction": "Campaign117 pools all local triple weak-order states and has no absolute clock label or extreme-event selection. Campaign118 ignores local triple order after identifying the top 24 amounts and explicitly retains their global clock gaps. A clock permutation preserves Campaign117's marginal state distribution in constructed cases while changing Campaign118, and changes among non-event bars can change Campaign117 while leaving Campaign118 fixed."
+    },
+    {
+      "family": "cross_half_cross_day_and_market_activity_profiles",
+      "definitions": [
+        "intraday_morning_afternoon_amount_profile_similarity_120b",
+        "intraday_day_over_day_amount_profile_similarity_240b",
+        "intraday_market_amount_profile_synchronization_240m"
+      ],
+      "distinction": "Campaign118 has no aligned second profile, prior day or market series. It is a single-stock-day event-clock statistic; changing another stock, day or aligned magnitude profile cannot change it when the current top-24 index set stays fixed."
+    },
+    {
+      "family": "return_conditioned_or_price_activity_coupling",
+      "definitions": [
+        "intraday_amount_volatility_coupling_238p",
+        "intraday_amount_lead_return_correlation_238p",
+        "intraday_up_move_amount_share_238m",
+        "intraday_zero_return_amount_intensity_238m",
+        "intraday_volatility_activity_lead_lag_asymmetry_236p",
+        "intraday_amount_conditioned_directional_persistence_spread_236p"
+      ],
+      "distinction": "Campaign118 never reads a price, return, sign or volatility state. Arbitrarily changing the full OHLC path while preserving amount leaves Campaign118 unchanged and can change every listed price-activity factor."
+    },
+    {
+      "family": "full_library_models_and_exposed_terminal_combinations",
+      "definitions": [
+        "full_numeric_library_bounded_simplex_ridge_130f",
+        "full_numeric_library_directional_rank_improvement_breadth_130f",
+        "full_numeric_library_directional_lower_quartile_consensus_129f"
+      ],
+      "distinction": "Campaign118 is one raw-source state definition frozen without component values, return-fitted weights, subsets or rescue logic; it is not a model or ensemble of exposed terminal scores."
+    }
+  ],
+  "independence_interventions": [
+    "Change any or all non-event amount magnitudes while preserving finite nonnegative support and the exact top-24 index set: Campaign118 is unchanged while all-mass, path-difference and serial-correlation factors may change.",
+    "Apply any strictly increasing transform to all 240 amount values: the deterministic top-24 index set and Campaign118 are unchanged while cardinal amount definitions generally change.",
+    "Move one selected event to an unselected clock position without changing the multiset of 240 amount magnitudes: amount participation entropy is unchanged while Campaign118 can change.",
+    "Change local ordering solely among the 216 non-event bars: Campaign118 is unchanged while amount weak-order entropy and local peak density can change.",
+    "Change every OHLC and return value while preserving amount: Campaign118 is unchanged while all price, return and price-activity definitions may change."
+  ],
+  "decision": {
+    "genuinely_new_mechanism": true,
+    "semantic_duplicate_of_any_complete_definition": false,
+    "terminal_factor_rescue_or_recombination": false,
+    "exact_formula_direction_event_count_and_tie_rule_frozen": true,
+    "candidate_values_may_be_read_now": false,
+    "next_stage": "Freeze the full ordered coverage-capacity-uniqueness-development protocol and bind the pure implementation before opening source values."
+  },
+  "research_boundary": {
+    "campaign118_source_partition_values_read": false,
+    "campaign118_candidate_values_computed_or_read": false,
+    "campaign118_comparator_values_read": false,
+    "historical_daily_price_or_forward_return_values_read": false,
+    "stress_2024_2025_opened": false,
+    "provider_request_issued": false,
+    "candidate49_same_day_retry_performed": false,
+    "candidate49_failed_response_rerequested": false,
+    "candidate49_historical_backfill_performed": false,
+    "candidate49_ledgers_changed": false,
+    "second_prospective_candidate_created": false,
+    "current_scoring_selection_sizing_positions_or_orders_performed": false,
+    "investment_advice": false
+  }
+}

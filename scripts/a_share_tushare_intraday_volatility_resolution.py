@@ -32,7 +32,7 @@ SCRIPT_DIR = Path(__file__).resolve().parent
 if str(SCRIPT_DIR) not in sys.path:
     sys.path.insert(0, str(SCRIPT_DIR))
 
-import a_share_tushare_intraday_return_sign_run_imbalance as previous
+import a_share_tushare_intraday_return_sign_run_imbalance as previous  # noqa: E402
 
 
 foundation = previous.foundation
@@ -288,6 +288,7 @@ def validate_repository_chain(spec: dict[str, Any]) -> dict[str, Any]:
     # immutable repository/PIT binding through the shared validator.
     current_spec = dict(spec)
     current_link = dict(spec["current_research_state"])
+    current_link["path"] = str(research.DEFAULT_THREE_DAY_ITERATION_STATUS)
     current_link["sha256"] = research.THREE_DAY_ITERATION_STATUS_SHA256
     current_spec["current_research_state"] = current_link
     evidence = foundation.validate_repository_chain(current_spec)

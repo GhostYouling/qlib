@@ -1,0 +1,156 @@
+{
+  "schema_version": 1,
+  "kind": "a_share_three_day_walkforward_campaign106_no_return_preregistration",
+  "status": "frozen_before_campaign106_minute_source_candidate_comparator_daily_price_or_return_values",
+  "recorded_at": "2026-08-07T18:54:51Z",
+  "purpose": "Freeze Campaign106's sole intrabar price-variation clock-occupancy factor, source fields, support, coverage-first all-132 uniqueness gates, and conditional one-trial walk-forward before any Campaign106 source row, candidate value, comparator value, daily price, or forward return is read.",
+  "authoritative_inputs": {
+    "iteration_state": {
+      "path": "docs/a_share_three_day_iteration_status_20260808_campaign105_terminal.json",
+      "sha256": "b84143a49e14f40ef2151ec03e7c774e42ab01389f68acacef4297de1b81e8ae"
+    },
+    "numeric_policy_v63": {
+      "path": "docs/a_share_three_day_walkforward_future_numeric_comparison_eligibility_policy_v63_20260808.json",
+      "sha256": "2ec29422ce2938c22307095879acfd60397f03c0c70355d68466fd4179ec4ce8",
+      "complete_definition_count": 135,
+      "complete_definition_order_sha256": "f77f069f07f05bca7b3d478d0e411945a27f6ecf9e8437c02f73900975eb89b3",
+      "numeric_comparator_count": 132,
+      "numeric_comparator_order_sha256": "7ed69afd1408e84dcc856583344166ffc9bcbb0add1aed63163b1d12a1be9a25"
+    },
+    "historical_walkforward_policy": {
+      "path": "docs/a_share_three_day_historical_walkforward_research_policy_20260727.json",
+      "sha256": "38426d6161b9bfed323c58caba18feca668b8c9d53e294951a8ba90c01a798bb"
+    },
+    "concept_scouting": {
+      "path": "docs/a_share_three_day_walkforward_campaign_106_concept_scouting.json",
+      "sha256": "dca7a6a390178264c60cbd2aa327f6f2b0e3904b4da2e36ac5af5966d2615de6"
+    },
+    "mechanism_support_audit": {
+      "path": "docs/a_share_three_day_walkforward_campaign_106_mechanism_support_audit.json",
+      "sha256": "185ef069986578db40ff99dc87fb4fe9b7e8676b918d86357a02d1f7e7305e09"
+    },
+    "accepted_minute_alignment": {
+      "path": "data/metadata/rich_data/alignments/20260721T140521Z_tushare_1m_alignment_89ec2deb.json",
+      "sha256": "2c8c85ba1155289d03c3ebc1175a4a2504bf8022b849087840777ee41586e2a0"
+    }
+  },
+  "candidate": {
+    "name": "intraday_nonzero_range_bar_share_240m",
+    "direction": "higher",
+    "economic_hypothesis": "Transaction prices varying inside more one-minute intervals may indicate broader continuous price discovery and liquidity that persist over the next-open to third-close horizon.",
+    "formula": "For exactly 240 bars at 09:31-11:30 and 13:01-15:00, require finite strictly positive high_i and low_i with low_i<=high_i; set varying_i=1 when high_i>low_i and 0 when high_i=low_i; return sum(varying_i)/240.",
+    "source_projection": [
+      "datetime",
+      "symbol",
+      "provider",
+      "high",
+      "low"
+    ],
+    "source_fields_forbidden": [
+      "open",
+      "close",
+      "volume",
+      "amount",
+      "daily price",
+      "forward return",
+      "old factor value",
+      "Candidate49 historical value"
+    ],
+    "source_grid": {
+      "accepted_rows_required": 241,
+      "selected_rows": 240,
+      "standalone_09_30_preserved_but_not_loaded_for_formula": true,
+      "selected_clock": "09:31-11:30 and 13:01-15:00",
+      "lunch_transition_or_cross_day_pair_created": false
+    },
+    "range_occupancy_semantics": {
+      "finite_strictly_positive_high_and_low_required": true,
+      "low_not_above_high_required": true,
+      "zero_range": "valid non-varying bar",
+      "positive_range": "varying bar",
+      "minimum_nonzero_range_bar_count": 0,
+      "positive_total_range_required": false,
+      "range_magnitude_used": false,
+      "clock_order_used_after_exact_grid_validation": false
+    },
+    "valid_range": [0.0, 1.0],
+    "endpoint_canonicalization": "No canonicalization is required because an exact integer count divided by 240 lies in [0,1].",
+    "alternate_direction_window_formula_range_rule_minimum_transform_threshold_filter_subset_regime_weight_fit_model_or_combination_search": false
+  },
+  "source_snapshot_contract": {
+    "data_root": "/Volumes/DIsk/qlib-a-share-tushare-1m",
+    "immutable_source_run": "tushare_stk_mins_1m_2019_2025_ea0cbb8f",
+    "joint_clean_manifest_path_below_data_root": "derived/a_share/rich/tushare/minute_sentiment_clean/tushare_stk_mins_1m_2019_2025_ea0cbb8f_sentiment_clean_v1/snapshot_manifest.json",
+    "joint_clean_manifest_sha256": "453c6719cb3c7da42fed8807b28a2bfe988700283e9625a6db97912534f368de",
+    "joint_clean_dataset_sha256": "0e4fe7c05536cdfcecc2936bc880726902f5560061188ffff82ef7ee6f346983",
+    "expected_partitions": 33015,
+    "expected_rows": 7724498,
+    "output_run_id": "tushare_stk_mins_1m_2019_2025_ea0cbb8f_walkforward_campaign106_feature_library_v1",
+    "output_manifest_path_below_data_root": "derived/a_share/rich/tushare/minute_walkforward_campaign106_feature_library/tushare_stk_mins_1m_2019_2025_ea0cbb8f_walkforward_campaign106_feature_library_v1/snapshot_manifest.json",
+    "resume_rule": "Hash-bound partition checkpoints may be reused only when protocol, implementation, source, formula, fields, and output schema fingerprints are unchanged.",
+    "provider_request_allowed": false
+  },
+  "ordered_no_return_gates": [
+    {
+      "gate": 1,
+      "name": "binding_source_and_snapshot_verification",
+      "rule": "Before source rows, revalidate the exact protocol and implementation fingerprints and immutable source manifest. After publication, verify every partition byte/frame hash, exact source projection, formula, counts, and dataset digest."
+    },
+    {
+      "gate": 2,
+      "name": "structural_coverage_and_capacity_before_comparison_values",
+      "rule": "On the immutable quality/current-listing base require median daily coverage >=0.95, P05 daily coverage >=0.90, P05 eligible names >=50, at least 200 non-overlapping three-signal-session cohorts, and at least five observed years. Failure stops before any comparator value, daily price, or forward return."
+    },
+    {
+      "gate": 3,
+      "name": "all_132_numeric_uniqueness_after_coverage_only",
+      "rule": "Compare the candidate in exact v63 order with all 132 eligible numeric comparators. Each comparison requires at least 50 paired names per session and at least 100 qualifying sessions. Every absolute median daily Spearman rank correlation must be strictly below 0.8; insufficient overlap fails closed and no comparator may be removed."
+    }
+  ],
+  "comparison_contract": {
+    "complete_v63_semantic_definition_count_reviewed_before_values": 135,
+    "numeric_comparator_count": 132,
+    "numeric_comparator_order_sha256": "7ed69afd1408e84dcc856583344166ffc9bcbb0add1aed63163b1d12a1be9a25",
+    "direction_normalization": "Use every comparator's frozen higher-is-better direction before same-session average-tie Spearman correlation.",
+    "candidate_specific_drop_residualization_neutralization_or_subset_allowed": false,
+    "Candidate49_historical_return_signal_execution_or_milestone_read_allowed": false
+  },
+  "finite_development_catalog_if_admitted": {
+    "trial_count": 1,
+    "trial_id": "wf106_intraday_nonzero_range_bar_share_240m_single_higher",
+    "factor": "intraday_nonzero_range_bar_share_240m",
+    "direction": "higher",
+    "training_or_fit": "none",
+    "folds": [
+      {"fold": 1, "train": [2019, 2020], "validation": 2021},
+      {"fold": 2, "train": [2019, 2020, 2021], "validation": 2022},
+      {"fold": 3, "train": [2019, 2020, 2021, 2022], "validation": 2023}
+    ],
+    "purge": "Purge three signal sessions at every train/validation boundary; t+1 entry and t+3 exit must remain in the same partition.",
+    "execution": "Reuse the frozen one-factor next-open to third-close Top-3 execution engine, quality/listing gates, board-lot checks, amount-participation checks, cost grid, and survivor gates without override.",
+    "stress_2024_2025": "Open once for the whole campaign only if this sole trial survives every 2019-2023 development gate after the library, search space, cost, gates, and all fingerprints are frozen; label it historically exposed quasi-out-of-sample. Otherwise leave it closed and unread."
+  },
+  "prohibitions": {
+    "candidate_inversion_rewindow_rescale_threshold_filter_subset_regime_fit_model_combination_or_rescue": true,
+    "Campaign105_retry_or_relabel": true,
+    "terminal_factor_repair_or_combination": true,
+    "Candidate49_historical_return_signal_execution_or_milestone_backfill": true,
+    "second_prospective_candidate": true,
+    "provider_request": true,
+    "current_score_selection_sizing_order_or_investment_advice": true
+  },
+  "research_boundary": {
+    "campaign106_source_rows_read_before_freeze": false,
+    "campaign106_candidate_values_computed_or_read_before_freeze": false,
+    "campaign106_comparison_values_read_before_freeze": false,
+    "historical_daily_price_fields_read_before_freeze": [],
+    "historical_forward_returns_read_before_freeze": false,
+    "provider_request_issued": false,
+    "candidate49_historical_backfill_performed": false,
+    "candidate49_ledgers_changed": false,
+    "second_prospective_candidate_created": false,
+    "current_scoring_selection_sizing_or_orders_performed": false,
+    "investment_advice": false
+  },
+  "next_action": "Validate all record bindings, implement and synthetic-test the exact no-return builder and ordered audit, fingerprint-freeze both, then and only then read the immutable minute source to build one snapshot."
+}

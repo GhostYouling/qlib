@@ -1,0 +1,53 @@
+{
+  "version": 1,
+  "kind": "a_share_three_day_walkforward_campaign069_no_return_audit_execution_failure",
+  "status": "second_infrastructure_failure_after_coverage_pass_and_comparator_value_open_before_audit_publication_or_return_read",
+  "recorded_at": "2026-08-06T03:52:00+08:00",
+  "command": "PYTHONPATH=/Volumes/DIsk/Disk-Coding/qlib /Volumes/DIsk/Coding/anaconda3/bin/python scripts/a_share_three_day_walkforward_campaign069_no_return_audit_v2.py run --data-root /Volumes/DIsk/qlib-a-share-tushare-1m --experiment-root data/experiments/short_horizon/historical_walkforward/campaign_069/no_return --workers 8",
+  "exit_code": 1,
+  "frozen_inputs": {
+    "v2_runner": {
+      "path": "scripts/a_share_three_day_walkforward_campaign069_no_return_audit_v2.py",
+      "sha256": "bc42919451913cded07c35d2a58d0ee9093d3353305b24afe7e72ff63d10d4f4"
+    },
+    "v2_implementation_freeze": {
+      "path": "docs/a_share_three_day_walkforward_campaign_069_no_return_audit_implementation_freeze_v2_20260806.json",
+      "sha256": "8c8781b15753508420db3abc4c054d8c660c3b8e99bc5ea441382cca6082e8d4"
+    },
+    "candidate_snapshot_manifest_sha256": "6023becea579d0f6ed6ac27316421294f13fd6759d6d51790a31940526e363b7",
+    "candidate_snapshot_dataset_sha256": "7c4b2e446bf4ebb64b4d3e992510610b1f0059fde868dff0bf02a06b7ce75960"
+  },
+  "failure": {
+    "exception_type": "Campaign004FeatureError",
+    "message": "quarterly_profit_revenue_acceleration_rank_gap_2r candidate keys changed",
+    "failing_stage": "sort_campaign068_comparator_keys_after_candidate_coverage_pass",
+    "root_cause": "The generic candidate-array sorter requires every value finite, but a comparator must retain its structurally missing early values for the frozen pairwise-complete correlation rule.",
+    "candidate_coverage_gate_passed": true,
+    "coverage_metrics_persisted": false,
+    "compact_cache_comparison_values_opened": true,
+    "campaign068_snapshot_values_loaded": true,
+    "campaign068_comparator_correlation_completed": false,
+    "audit_artifact_written": false
+  },
+  "research_boundary": {
+    "historical_daily_price_fields_read": [],
+    "historical_forward_return_fields_read": false,
+    "candidate49_historical_return_read": false,
+    "provider_request_issued": false,
+    "candidate49_prospective_ledgers_changed": false,
+    "second_prospective_candidate_created": false,
+    "current_scoring_selection_sizing_or_orders_performed": false
+  },
+  "attempt_accounting": {
+    "Campaign069_infrastructure_failure_increment": 1,
+    "Campaign069_complete_factor_attempt_increment": 0,
+    "historical_return_reading_trial_increment": 0,
+    "cumulative_historical_research_attempt_count_after_record": 410,
+    "cumulative_return_reading_development_trial_count": 274
+  },
+  "decision": {
+    "v1_and_v2_runners_and_both_failure_records_remain_immutable": true,
+    "same_parameter_retry_allowed_only_after_frozen_comparator_key_alignment_repair": true,
+    "candidate_finiteness_or_formula_direction_comparator_order_coverage_gate_uniqueness_gate_or_data_may_change": false
+  }
+}

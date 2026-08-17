@@ -1,0 +1,65 @@
+{
+  "schema_version": 1,
+  "kind": "a_share_three_day_walkforward_campaign120_terminal_accounting_correction",
+  "status": "append_only_final_test_pointer_failures_accounted_without_scientific_result_change",
+  "recorded_at": "2026-08-14T01:15:48+08:00",
+  "supersedes_without_rewriting": {
+    "path": "docs/a_share_three_day_walkforward_campaign_120_terminal_accounting_correction_v2_20260814.json",
+    "sha256": "05ca6c932a17cc1718fd5cef759fe1cde96f0a125de41bb371b736ce7407f028",
+    "preserved": true
+  },
+  "scientific_terminal_result": {
+    "path": "docs/a_share_three_day_walkforward_campaign_120_terminal_result_20260814.json",
+    "sha256": "d18cfd7ef17c09a6a259179c1e4528b5bea030cf385156363ce3c991882a87d5",
+    "preserved": true
+  },
+  "final_attempt_ledger": {
+    "path": "data/experiments/short_horizon/historical_walkforward/campaign_120/research_attempt_ledger_v5.json",
+    "sha256": "fbb4d96323fe88eb58ac0ada9fd52998e3db07e77e03af521c2356854f2bc91e"
+  },
+  "correction": {
+    "added_attempt_ids": [
+      "campaign120_infrastructure_018",
+      "campaign120_infrastructure_019"
+    ],
+    "campaign120_attempt_count_before": 19,
+    "campaign120_attempt_count_after": 21,
+    "campaign120_infrastructure_failure_count_before": 13,
+    "campaign120_infrastructure_failure_count_after": 15,
+    "cumulative_historical_research_attempt_count_before": 954,
+    "cumulative_historical_research_attempt_count_after": 956,
+    "cumulative_return_reading_development_trial_count_before_and_after": 305,
+    "scientific_result_changed": false,
+    "library_order_changed": false,
+    "research_value_read_after_terminal": false
+  },
+  "validation": {
+    "focused_campaign119_and_campaign120_tests": "36 passed",
+    "final_authority_terminal_tests": "6 passed",
+    "black_campaign120_scope": "passed",
+    "ruff_campaign120_scope": "passed"
+  },
+  "reports": {
+    "campaign120_terminal_report": {
+      "path": "docs/a_share_three_day_walkforward_campaign_120_terminal_report.md",
+      "sha256": "24a1b3aba383528f8f83dc41d4ac0b8b71205c55ad7e0279300fe4acf852fbf8"
+    },
+    "current_research_report": {
+      "path": "data/experiments/short_horizon/current_research_report.md",
+      "sha256": "cb75468ece36d8819ab4007c8f45f7a1bc761fa5c6cb85e7f590e43c521a2abe"
+    },
+    "three_day_research_report": {
+      "path": "data/experiments/short_horizon/three_day_research_report.md",
+      "sha256": "bafd032bc1ff906957e96a332e7b20adb63fcb4e399daf5343e19ea4ee61242f"
+    }
+  },
+  "research_boundary": {
+    "historical_daily_price_or_forward_return_values_read_after_terminal": false,
+    "development_trial_started": false,
+    "stress_2024_2025_opened": false,
+    "provider_request_issued": false,
+    "candidate49_ledgers_changed": false,
+    "current_scoring_selection_sizing_or_orders_performed": false,
+    "investment_advice": false
+  }
+}

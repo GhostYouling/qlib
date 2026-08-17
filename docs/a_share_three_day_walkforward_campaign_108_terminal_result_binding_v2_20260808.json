@@ -1,0 +1,88 @@
+{
+  "schema_version": 2,
+  "kind": "a_share_three_day_walkforward_campaign108_terminal_result_binding",
+  "status": "campaign108_terminal_uniqueness_rejection_postterminal_accounting_corrected",
+  "recorded_at": "2026-08-07T21:33:31Z",
+  "supersedes_without_rewriting": {
+    "path": "docs/a_share_three_day_walkforward_campaign_108_terminal_result_binding_20260808.json",
+    "sha256": "81fd6c5d2c1bca72548b08c35efc9f62d8bd75153b7c5b813cb42919029ad763",
+    "preserved": true,
+    "scientific_semantics_changed": false,
+    "accounting_changed": true
+  },
+  "no_return_result": {
+    "path": "docs/a_share_three_day_walkforward_campaign_108_no_return_result_binding_20260808.json",
+    "sha256": "9dcba89b05b931be0c183b2b984ab1ab92a17e76602b01535027296e2cc1b2d8"
+  },
+  "research_attempt_ledger": {
+    "path": "data/experiments/short_horizon/historical_walkforward/campaign_108/research_attempt_ledger_v8.json",
+    "sha256": "adeadbc8786fdeea4af099fcf2a730ae0bb3f8bab971eee11f9914951baf6dc8",
+    "attempt_count": 7,
+    "ledger_entry_count": 8,
+    "chain_tip_sha256": "43f42208629018be88d1dab9b329d619eb0b94bae7b05e5c50e50894a0f88676"
+  },
+  "preserved_failures": [
+    {
+      "path": "docs/a_share_three_day_walkforward_campaign_108_negative_range_publication_failure_20260808.json",
+      "sha256": "68e4e1bfde7fad1ceb0f68c2a12672e7d9a9595d59b2fc5413714e2295a74887"
+    },
+    {
+      "path": "docs/a_share_three_day_walkforward_campaign_108_snapshot_binding_json_validation_cli_failure_20260808.json",
+      "sha256": "0a7725bcd86ff410d963c33793cbc76312d590a14571049f6d66ed369439e2b6"
+    },
+    {
+      "path": "docs/a_share_three_day_walkforward_campaign_108_postbuild_recovery_test_lifecycle_failure_20260808.json",
+      "sha256": "4c039b568c689679326316f539c8724c86422bb308985cc94b84c15c276a33bd"
+    },
+    {
+      "path": "docs/a_share_three_day_walkforward_campaign_108_no_return_audit_negative_range_loader_failure_20260808.json",
+      "sha256": "3d2ae034a0bd3a69911d17c3fdbdb861386230ca3afd320a97012ef0be4a34f2"
+    },
+    {
+      "path": "docs/a_share_three_day_walkforward_campaign_108_audit_loader_recovery_generation_hook_failure_20260808.json",
+      "sha256": "2030f02b469fe239bc8671e39d36082dc6fb6874726cc42d4740819f874dda67"
+    },
+    {
+      "path": "docs/a_share_three_day_walkforward_campaign_108_terminal_ledger_zip_length_failure_20260808.json",
+      "sha256": "6618e4cfcf552b3df1c7972f2846d4b9e0c860312b42632eac4acd7594e35700"
+    }
+  ],
+  "scientific_terminal_semantics": {
+    "factor": "intraday_continuous_session_net_return_reversal_240m",
+    "direction": "higher",
+    "coverage_gate_passed": true,
+    "numeric_comparisons_completed": 132,
+    "failed_numeric_comparisons": 1,
+    "maximum_absolute_median_daily_rank_correlation": 0.9734820997581389,
+    "maximum_comparison_factor": "intraday_signed_path_efficiency_239m",
+    "scientific_result": "rejected_as_numerically_redundant",
+    "development_trial_count": 0,
+    "development_survivor_count": 0,
+    "stress_2024_2025_opened": false,
+    "retry_reverse_redefine_endpoint_shift_transform_filter_residualize_combine_or_rescue_allowed": false
+  },
+  "accounting": {
+    "campaign108_attempt_count": 7,
+    "campaign108_ledger_entry_count": 8,
+    "campaign108_infrastructure_failure_count": 6,
+    "campaign108_prevalue_scientific_attempt_count": 1,
+    "campaign108_complete_factor_attempt_count": 1,
+    "campaign108_scientifically_decided_factor_attempt_count": 1,
+    "campaign108_return_reading_complete_development_trial_count": 0,
+    "campaign108_development_survivor_count": 0,
+    "campaign108_stress_trial_count": 0,
+    "cumulative_historical_research_attempt_count": 801,
+    "cumulative_return_reading_development_trial_count": 300
+  },
+  "boundaries": {
+    "historical_daily_price_fields_read": [],
+    "historical_forward_returns_read": false,
+    "provider_request_issued": false,
+    "candidate49_historical_backfill_performed": false,
+    "candidate49_ledgers_changed": false,
+    "second_prospective_candidate_created": false,
+    "current_scoring_selection_sizing_or_orders_performed": false,
+    "investment_advice": false
+  },
+  "next_action": "Publish v69 accounting correction while preserving the 138 complete definitions, 132 numeric comparators and scientific rejection."
+}

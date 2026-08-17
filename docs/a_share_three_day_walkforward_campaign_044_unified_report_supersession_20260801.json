@@ -1,0 +1,36 @@
+{
+  "version": 1,
+  "kind": "a_share_three_day_walkforward_campaign044_unified_report_supersession",
+  "status": "campaign043_report_binding_preserved_historically_campaign044_report_current",
+  "recorded_at": "2026-07-31T19:24:00Z",
+  "purpose": "Preserve Campaign043's immutable unified-report fingerprint while explicitly binding the append-only Campaign044 report update instead of rewriting the prior terminal record.",
+  "bindings": {
+    "campaign043_terminal_record": {
+      "path": "docs/a_share_three_day_walkforward_campaign_043_research_record.json",
+      "sha256": "44bd70909c20106ed920f5a77b5f9d54b28d3317b19c7392314a235cdd8939ba"
+    },
+    "campaign044_terminal_record": {
+      "path": "docs/a_share_three_day_walkforward_campaign_044_research_record.json",
+      "sha256": "3e343e8387fd16db75f7e8a5c87025e712082ea50aa9e360083af7f0d3f2b615"
+    },
+    "current_unified_research_report": {
+      "path": "data/experiments/short_horizon/three_day_research_report.md",
+      "sha256": "e3362f18ba0c7d92418345a95e048e9321735ac61b7177c3a2ab02abc547d2fe"
+    }
+  },
+  "historical_binding": {
+    "record": "docs/a_share_three_day_walkforward_campaign_043_research_record.json",
+    "json_pointer": "/development_artifacts/unified_research_report",
+    "expected_sha256": "ca26044bcf474ba7f4ed0c986aad2313fbb008370b2bbaae592c5f433c78859e",
+    "current_sha256": "e3362f18ba0c7d92418345a95e048e9321735ac61b7177c3a2ab02abc547d2fe",
+    "only_expected_failed_binding_count": 1,
+    "historical_record_rewritten": false
+  },
+  "semantic_boundary": {
+    "campaign043_result_or_gate_changed": false,
+    "campaign044_result_or_gate_changed": false,
+    "report_update_is_append_only": true,
+    "historical_daily_price_or_forward_return_read": false,
+    "candidate49_ledgers_changed": false
+  }
+}

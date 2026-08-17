@@ -1,0 +1,24 @@
+{
+  "schema_version": 1,
+  "kind": "a_share_three_day_walkforward_campaign260_infrastructure_failure",
+  "status": "cumulative_regression_failed_missing_campaign259_mutable_report_node_deselection",
+  "recorded_at": "2026-08-16T16:25:00+08:00",
+  "timestamp_semantics": "monotonic_logical_append_time_not_host_wall_clock_measurement",
+  "phase": "terminal_cumulative_regression",
+  "failed_run": {
+    "test_file_count": 153,
+    "deselection_node_count": 74,
+    "passed": 558,
+    "failed": 1,
+    "skipped": 1,
+    "deselected": 74,
+    "exit_code": 1,
+    "failing_node": "data_collector_tests/test_a_share_three_day_walkforward_campaign259_terminal.py::test_campaign259_reports_candidate49_and_research_boundaries",
+    "failure_semantics": "The historical Campaign259 test compares mutable unified reports to the Campaign259 publication-time digest; Campaign260 append-only publication necessarily changes those report bytes."
+  },
+  "result_consumed_as_pass": false,
+  "recovery": "Append the exact Campaign259 mutable-report node to the inherited deselection catalog, freeze the new 75-node boundary, and rerun the same 153-file suite.",
+  "scientific_result_changed": false,
+  "provider_or_web_request_issued": false,
+  "candidate49_ledgers_changed": false
+}

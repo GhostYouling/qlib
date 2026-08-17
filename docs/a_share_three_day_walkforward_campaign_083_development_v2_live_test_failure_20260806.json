@@ -1,0 +1,32 @@
+{
+  "schema_version": 1,
+  "kind": "a_share_three_day_walkforward_campaign083_development_v2_live_test_failure",
+  "status": "failed_closed_before_full_development_retry_or_return_read",
+  "recorded_at": "2026-08-06T20:54:00+08:00",
+  "stage": "development_v2_implementation_freeze_live_test",
+  "observed": "Three tests passed and the v2 live-freeze test raised KeyError: development_runner after all seven implementation-freeze bindings had passed.",
+  "root_cause": "The v2 freeze intentionally names the unchanged runner binding unchanged_development_runner, while the copied test retained the original development_runner key.",
+  "correction": "Preserve the v2 freeze and test unchanged, create a v3 test bound to a superseding v3 implementation freeze, and assert unchanged_development_runner. No runner, preregistration, trial, data, cost, or gate changes are allowed.",
+  "failed_v2_implementation_freeze": {
+    "path": "docs/a_share_three_day_walkforward_campaign_083_development_implementation_freeze_v2_20260806.json",
+    "sha256": "c4b5dee099e8c08e679c5ac04eab32056adf986906f5fbce78b3a6468ab34853",
+    "binding_count": 7,
+    "bindings_passed": 7
+  },
+  "test_result": {
+    "passed": 3,
+    "failed": 1,
+    "complete_development_trial_count": 0
+  },
+  "research_boundary": {
+    "market_execution_data_loaded": false,
+    "historical_daily_price_fields_read": [],
+    "historical_forward_returns_read": false,
+    "partial_statistics_reused": false,
+    "stress_2024_2025_opened": false,
+    "provider_request_issued": false,
+    "candidate49_historical_backfill_performed": false,
+    "candidate49_ledgers_changed": false,
+    "current_scoring_selection_sizing_or_orders_performed": false
+  }
+}

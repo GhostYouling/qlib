@@ -1,0 +1,107 @@
+{
+  "schema_version": 1,
+  "kind": "a_share_three_day_walkforward_campaign114_concept_scouting",
+  "status": "one_candidate_selected_for_metadata_only_source_discovery_before_formula_source_rows_or_values",
+  "recorded_at": "2026-08-09T02:14:55+08:00",
+  "purpose": "Review a finite Campaign114 catalog against the complete v80 mechanism and source-semantic frontier before defining a factor or reading any Campaign114 official archive row, attachment, candidate value, comparator value, daily price, or forward return.",
+  "authoritative_inputs": {
+    "iteration_state": {
+      "path": "docs/a_share_three_day_iteration_status_20260809_campaign113_metadata_terminal_v3.json",
+      "sha256": "80d16dc7ada427376fd8eeb65b60acc55629fb44f934c0229f44757667532e77"
+    },
+    "numeric_policy_v80": {
+      "path": "docs/a_share_three_day_walkforward_future_numeric_comparison_eligibility_policy_v80_20260809.json",
+      "sha256": "cc56b81b4520fb5aeb2e7add89209c60a305cbfb1142e15d61cfdc9837708eaa",
+      "complete_definition_count": 141,
+      "complete_definition_order_sha256": "ccab6e3d9d81b0a02d4ff178fdd442b26a1e68e3655e1c6f5b2fcb28cd4a4559",
+      "numeric_comparator_count": 134,
+      "numeric_comparator_order_sha256": "31d788db467f558a0ac538315343090f1b3ad4cb27a26136a49ebaa88b2fdbf2"
+    },
+    "historical_walkforward_policy": {
+      "path": "docs/a_share_three_day_historical_walkforward_research_policy_20260727.json",
+      "sha256": "38426d6161b9bfed323c58caba18feca668b8c9d53e294951a8ba90c01a798bb"
+    },
+    "research_frontier_contract": {
+      "path": "docs/a_share_three_day_research_frontier_contract.json",
+      "sha256": "36ac39c68fedebf2fdf999475e10452278bbeff4f42b1c41963539867539eeaf"
+    },
+    "research_frontier_audit": {
+      "path": "docs/a_share_three_day_research_frontier_audit.json",
+      "sha256": "0ab41e940afff20cdd5ce46849820ffd56a3072aa859c30d4caa6dd71c10d846"
+    }
+  },
+  "finite_prevalue_concept_catalog": [
+    {
+      "name": "official_exchange_information_disclosure_evaluation_grade",
+      "proposed_state": "An annual issuer-level information-disclosure work evaluation grade published by each issuer's listing exchange, used only after point-in-time publication timing and a common finite grade vocabulary are proven.",
+      "prospective_direction_only": "higher_for_better_published_grade",
+      "decision": "selected_for_metadata_only_source_discovery",
+      "reason": "A holistic exchange evaluation of disclosure work is an external regulatory assessment distinct from audit-opinion binaries, issuer correction counts, inquiry/enforcement events, accounting fields, and minute price-volume paths. Selection proves only semantic independence; it does not prove that both exchanges expose a stable 2019-2025 archive or that their grade vocabularies can be frozen without seeing issuer rows.",
+      "formula_frozen": false,
+      "source_contract_frozen": false,
+      "official_archive_proven": false
+    },
+    {
+      "name": "annual_report_text_readability_or_sentiment",
+      "proposed_state": "Text-derived readability or sentiment from annual reports.",
+      "decision": "rejected_before_source_rows_or_values",
+      "reason": "Document extraction, tokenization, dictionaries, model versions, section boundaries, language normalization, and OCR would create a broad adaptive text-mining search family rather than one finite source state. It is not admissible without a separate complete text-method freeze."
+    },
+    {
+      "name": "board_independence_ratio_from_current_company_snapshot",
+      "proposed_state": "Independent-director share calculated from a current company snapshot.",
+      "decision": "rejected_before_source_rows_or_values",
+      "reason": "A current company snapshot is not a 2019-2025 point-in-time governance history and would introduce look-ahead and survivorship risk."
+    },
+    {
+      "name": "additional_financial_statement_field_sweep",
+      "proposed_state": "Search unused balance-sheet, income-statement, or cash-flow fields and their ratios.",
+      "decision": "rejected_before_source_rows_or_values",
+      "reason": "The accounting-field family has already been repeatedly exposed; choosing another field or transform after observing prior outcomes is a statement-field rescue sweep rather than a new identified source state."
+    },
+    {
+      "name": "shareholder_meeting_or_general_announcement_intensity",
+      "proposed_state": "Count shareholder-meeting or general issuer announcements in a rolling window.",
+      "decision": "rejected_before_source_rows_or_values",
+      "reason": "This is another issuer-authored disclosure-count mechanism overlapping the frozen announcement-frequency, correction-burden, contract, guarantee, incentive and inquiry families."
+    },
+    {
+      "name": "full_numeric_library_nonlinear_interaction_model",
+      "proposed_state": "Fit a tree, neural network, or other nonlinear model over the 134 frozen numeric components.",
+      "decision": "rejected_before_component_or_return_values",
+      "reason": "Campaign102 and Campaign103 already consumed or closed complete-library fitting and aggregation routes. Changing the model family after those results is an exposed model retry, not an independent factor mechanism."
+    }
+  ],
+  "prevalue_decision": {
+    "complete_logical_definitions_reviewed": 141,
+    "complete_definition_order_sha256": "ccab6e3d9d81b0a02d4ff178fdd442b26a1e68e3655e1c6f5b2fcb28cd4a4559",
+    "concepts_reviewed": 6,
+    "rejected_concept_count": 5,
+    "selected_candidate_count": 1,
+    "selected_candidate": "official_exchange_information_disclosure_evaluation_grade",
+    "selection_scope": "metadata_only_source_discovery",
+    "campaign114_complete_factor_definition_count": 0,
+    "campaign114_numeric_comparator_count": 0,
+    "formula_direction_mapping_window_or_missing_rule_frozen": false,
+    "campaign114_source_rows_attachments_or_values_may_be_read": false,
+    "comparison_values_may_be_read": false,
+    "historical_daily_price_or_forward_return_values_may_be_read": false
+  },
+  "research_boundary": {
+    "prior_definition_names_directions_protocols_schema_metadata_and_terminal_results_read": true,
+    "search_engine_result_metadata_observed": true,
+    "official_exchange_archive_page_or_attachment_opened": false,
+    "campaign114_source_rows_or_attachments_read": false,
+    "campaign114_candidate_values_computed_or_read": false,
+    "campaign114_comparator_values_read": false,
+    "historical_daily_price_fields_read": [],
+    "historical_forward_returns_read": false,
+    "provider_credential_used": false,
+    "candidate49_historical_backfill_performed": false,
+    "candidate49_ledgers_changed": false,
+    "second_prospective_candidate_created": false,
+    "current_scoring_selection_sizing_or_orders_performed": false,
+    "investment_advice": false
+  },
+  "next_stage": "Freeze a finite official SSE/SZSE metadata-discovery protocol. Only after both exchanges prove a stable 2019-2025 issuer-code, evaluation-year, publication-date, grade and document-identity archive may a later campaign stage freeze an exact grade mapping, point-in-time timing, pure adapter and source contract before opening any attachment or issuer row."
+}

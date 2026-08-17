@@ -1,0 +1,64 @@
+{
+  "schema_version": 1,
+  "kind": "a_share_three_day_walkforward_campaign082_feature_implementation_freeze",
+  "status": "frozen_before_campaign082_minute_source_values",
+  "frozen_at": "2026-08-06T18:25:10+08:00",
+  "protocol": {
+    "path": "docs/a_share_three_day_walkforward_campaign_082_no_return_preregistration.json",
+    "sha256": "acc55fb8b3a4b79f005ab23033dccb781dca1fd71b162a71dfeb04f7aa91bf88"
+  },
+  "mechanism_overlap_audit": {
+    "path": "docs/a_share_three_day_walkforward_campaign_082_mechanism_overlap_audit.json",
+    "sha256": "1bd30fc809c54eb1503fd30170313cd0d5a3b567f4d9875bc0f60e2ce944f282"
+  },
+  "prevalue_infrastructure_failure_record": {
+    "path": "docs/a_share_three_day_walkforward_campaign_082_prevalue_infrastructure_failures_20260806.json",
+    "sha256": "41a89c521dc0bcc8f491a7f1e212bcf601275551534b2fdac85729c95ea8b1f5"
+  },
+  "research_attempt_ledger_before_source_read": {
+    "path": "data/experiments/short_horizon/historical_walkforward/campaign_082/research_attempt_ledger_v1.json",
+    "sha256": "ee515155ee74d156cea45641a186fa6004259fce651564ea4b1ba9d48f65cd28"
+  },
+  "feature_runner": {
+    "path": "scripts/a_share_three_day_walkforward_campaign082_features.py",
+    "sha256": "f8db6e9ac0bd25c9e0a8ff827fd650f6b54fd3e5344d0598fda9c68d4d7eeafd"
+  },
+  "tests": {
+    "path": "tests/data_collector_tests/test_a_share_three_day_walkforward_campaign082_features.py",
+    "sha256": "b1c6e595df3565f1a802733f34ad01d68dbd31b22da12e5b3e672c969f4f096a",
+    "synthetic_tests_passed_before_freeze": 10,
+    "synthetic_tests_failed": 0
+  },
+  "frozen_semantics": {
+    "factor": "intraday_range_amount_peak_timing_alignment_240m",
+    "direction": "higher",
+    "selected_bar_count": 240,
+    "range_transform": "numpy.log(float64 high/low) with finite strictly positive high and low and low<=high",
+    "range_peak": "last exact occurrence of the strictly positive maximum log range",
+    "amount_peak": "last exact occurrence of the strictly positive maximum finite nonnegative amount",
+    "score": "1-abs(last_range_peak_index-last_amount_peak_index)/239",
+    "tie_epsilon_rounding_prominence_or_stochastic_rule": false,
+    "floating_point_clipping_or_endpoint_canonicalization": false,
+    "valid_range": [
+      0.0,
+      1.0
+    ],
+    "numeric_comparator_count": 111,
+    "numeric_comparator_order_sha256": "591432918754f7da24f468d152bbbc1b337127dd5fdc30f0f214ea776ca757aa",
+    "complete_definition_count": 113,
+    "complete_definition_order_sha256": "0938f041bcdd591bc8977204d78df502514aa1230942199b006e8fd72bdb68a2"
+  },
+  "research_boundary": {
+    "candidate_source_rows_read_before_freeze": false,
+    "candidate_historical_values_computed_before_freeze": false,
+    "comparison_values_read_before_freeze": false,
+    "historical_daily_price_fields_read_before_freeze": [],
+    "historical_forward_returns_read_before_freeze": false,
+    "provider_request_issued_before_freeze": false,
+    "candidate49_historical_backfill_performed": false,
+    "candidate49_ledgers_changed": false,
+    "second_prospective_candidate_created": false,
+    "current_scoring_selection_sizing_or_orders_performed": false
+  },
+  "next_action": "Run the full frozen feature test suite; only if it passes may the immutable local minute and stock-day identity projections be opened to build the Campaign082 snapshot."
+}

@@ -1,0 +1,39 @@
+{
+  "schema_version": 1,
+  "kind": "a_share_three_day_walkforward_campaign151_snapshot_verifier_failure",
+  "status": "failed_exit_preserved_benchmark_tuple_comparison_diagnosed",
+  "recorded_at": "2026-08-15T01:22:57+08:00",
+  "attempt_id": "campaign151_infrastructure_007",
+  "authorization": {
+    "verification_plan_receipt_path": "docs/a_share_three_day_walkforward_campaign_151_snapshot_verification_plan_ready_20260815.json",
+    "verification_plan_receipt_sha256": "42f1a214bcb8fec961e2488ee4f1c79c7f01476cde721ec4f35e3a77a8489213",
+    "ready": true,
+    "exit_code": 0,
+    "workers": 4,
+    "confirmed_verification": true
+  },
+  "command": "/Volumes/DIsk/Coding/anaconda3/bin/python3.12 scripts/a_share_three_day_walkforward_campaign151_snapshot_verify.py verify --workers 4 --confirm-snapshot-verification",
+  "exit_code": 1,
+  "safe_error": "ValueError: Lengths must be equal",
+  "failure_location": "peer benchmark exact 0..239 position tuple comparison",
+  "root_cause": "pandas Series.eq interpreted the 240-element expected tuple as a vector to align against the 1699-element Series rather than comparing each stored tuple object",
+  "narrow_correction": "map an exact object-level tuple equality predicate over each date's stored position tuple",
+  "benchmark_payload_read": true,
+  "candidate_partition_payloads_read": false,
+  "snapshot_mutated": false,
+  "verification_receipt_written": false,
+  "failed_exit_code_bypassed_or_masked": false,
+  "research_boundary": {
+    "candidate_values_read": true,
+    "peer_benchmark_values_read": true,
+    "candidate_partition_values_read_by_failed_verification": false,
+    "comparator_values_read": false,
+    "historical_daily_price_or_forward_return_values_read": false,
+    "stress_2024_2025_opened_for_return_evaluation": false,
+    "credential_loaded": false,
+    "provider_request_issued": false,
+    "candidate49_ledgers_changed": false,
+    "current_scoring_selection_sizing_positions_or_orders_performed": false
+  },
+  "next_action": "Add a synthetic exact-position-object comparison regression, freeze verifier v2, run a new metadata-only plan, then retry one confirmed full verification."
+}

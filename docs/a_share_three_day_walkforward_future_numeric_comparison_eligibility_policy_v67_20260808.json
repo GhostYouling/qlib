@@ -1,0 +1,128 @@
+{
+  "version": 67,
+  "kind": "a_share_three_day_walkforward_future_numeric_comparison_eligibility_policy",
+  "status": "frozen_after_campaign107_uniqueness_rejection_before_campaign108_values",
+  "recorded_at": "2026-08-07T20:34:00Z",
+  "supersedes_without_rewriting": {
+    "path": "docs/a_share_three_day_walkforward_future_numeric_comparison_eligibility_policy_v66_20260808.json",
+    "sha256": "76033dc9623bdb85993232ee12518ebb80331d662a3fa5861bfedcc0cf8dc086",
+    "preserved": true,
+    "complete_definition_order_changed": true,
+    "numeric_comparator_order_changed": false,
+    "reason": "Campaign107 produced a complete verified factor definition but failed five frozen uniqueness comparisons. The definition is retained for semantic duplicate control and excluded from numeric comparator eligibility."
+  },
+  "authoritative_inputs": {
+    "campaign107_terminal_result": {
+      "path": "docs/a_share_three_day_walkforward_campaign_107_terminal_result_binding_20260808.json",
+      "sha256": "95c49bcb1b0f90ea48364cb129848de55f9daffc62a1fb9c433642f57947c5d7"
+    },
+    "campaign107_attempt_ledger": {
+      "path": "data/experiments/short_horizon/historical_walkforward/campaign_107/research_attempt_ledger_v3.json",
+      "sha256": "b2d15e4ddcd1ec1c910f5669446b3f7e66e2d3751494fc36a1ace2d5cdb54ff3"
+    },
+    "campaign107_no_return_audit": {
+      "path": "data/experiments/short_horizon/historical_walkforward/campaign_107/no_return/20260807T203221Z_campaign107_no_return_audit.json",
+      "sha256": "d6800131f3d0be150ee4edadbc80ef0a51a3d0a4899906d77ee57a2fed3cf606"
+    }
+  },
+  "campaign107_terminal_classification": {
+    "factor": "intraday_exact_close_level_diversity_240m",
+    "score_direction": "higher",
+    "coverage_gate_passed": true,
+    "numeric_comparisons_completed": 132,
+    "failed_numeric_comparison_count": 5,
+    "maximum_absolute_median_daily_rank_correlation": 0.9315530906961503,
+    "maximum_comparison_factor": "intraday_price_update_share_238m",
+    "numeric_comparator_eligible": false,
+    "development_trial_count": 0,
+    "development_survivor_count": 0,
+    "stress_2024_2025_opened": false,
+    "retry_reverse_redefine_round_tolerate_bin_filter_residualize_combine_or_rescue_allowed": false
+  },
+  "complete_historical_feature_library": {
+    "exact_v66_order_preserved_as_prefix": true,
+    "campaign107_definition_appended": true,
+    "factor_definition_count": 137,
+    "order_sha256": "26233fd1fe697b08268910286fb077fbda894e8e572af020959b1997e4285baa",
+    "last_definition": {
+      "name": "intraday_exact_close_level_diversity_240m",
+      "score_direction": "higher"
+    }
+  },
+  "numerical_comparator_eligibility": {
+    "exact_v66_order_preserved": true,
+    "campaign107_numeric_comparator_appended": false,
+    "eligible_numeric_comparator_count": 132,
+    "eligible_numeric_comparator_order_sha256": "7ed69afd1408e84dcc856583344166ffc9bcbb0add1aed63163b1d12a1be9a25",
+    "last_comparator": {
+      "name": "intraday_active_trading_bar_share_240m",
+      "score_direction": "higher"
+    },
+    "minimum_pairwise_names_per_session": 50,
+    "minimum_pairwise_sessions_per_comparison": 100,
+    "strict_maximum_absolute_median_daily_rank_correlation": 0.8,
+    "all_132_eligible_numeric_comparators_must_pass": true,
+    "candidate_specific_comparator_drop_allowed": false,
+    "insufficient_pairwise_overlap_fails_closed": true
+  },
+  "semantic_only_or_non_numeric_eligible_definitions": [
+    {
+      "name": "intraday_cross_sectional_standardized_return_state_stability_236p",
+      "reason": "semantic-only terminal definition"
+    },
+    {
+      "name": "signal_day_turnover_rate_pct",
+      "reason": "semantic-only terminal definition"
+    },
+    {
+      "name": "intraday_own_bar_close_location_entropy_10b_240m",
+      "reason": "semantic-only terminal definition"
+    },
+    {
+      "name": "intraday_nonzero_range_bar_share_240m",
+      "reason": "all-132 uniqueness decision infrastructure-inconclusive"
+    },
+    {
+      "name": "intraday_exact_close_level_diversity_240m",
+      "reason": "failed five frozen numeric uniqueness comparisons"
+    }
+  ],
+  "mandatory_prevalue_support_and_adapter_gates_for_campaign108_and_later": {
+    "all_v66_support_and_missingness_gates_inherited": true,
+    "exact_close_level_count_collision_or_diversity_reexpression_requires_prevalue_rejection": true,
+    "price_update_share_weak_order_entropy_price_clock_entropy_terminal_price_rank_and_unchanged_close_absorption_overlap_must_be_audited": true,
+    "every_raw_factor_comparator_range_must_be_registered_before_values": true,
+    "comparator_alignment_must_preserve_missing_values_for_pairwise_overlap": true
+  },
+  "future_campaign_boundary": {
+    "campaign106_retry_or_rescue_allowed": false,
+    "campaign107_retry_reverse_redefine_round_tolerate_bin_filter_residualize_combine_or_rescue_allowed": false,
+    "candidate_specific_subset_rescue_allowed": false,
+    "future_complete_library_mechanism_must_be_genuinely_new_and_prevalue_frozen": true,
+    "old_terminated_rejected_or_inconclusive_definitions_may_be_used_only_as_part_of_the_complete_prevalue_frozen_137_definition_or_132_numeric_library": true
+  },
+  "final_accounting": {
+    "campaign107_attempt_count": 3,
+    "campaign107_ledger_entry_count": 4,
+    "campaign107_infrastructure_failure_count": 2,
+    "campaign107_prevalue_scientific_attempt_count": 1,
+    "campaign107_complete_factor_attempt_count": 1,
+    "campaign107_scientifically_decided_factor_attempt_count": 1,
+    "campaign107_return_reading_development_trial_count": 0,
+    "campaign107_development_survivor_count": 0,
+    "campaign107_stress_trial_count": 0,
+    "cumulative_historical_research_attempt_count": 794,
+    "cumulative_return_reading_development_trial_count": 300
+  },
+  "research_boundary": {
+    "campaign108_source_candidate_or_comparator_values_read_before_v67_freeze": false,
+    "historical_daily_price_fields_read_for_campaign107": [],
+    "historical_forward_returns_read_for_campaign107": false,
+    "provider_request_issued": false,
+    "candidate49_historical_backfill_performed": false,
+    "candidate49_ledgers_changed": false,
+    "second_prospective_candidate_created": false,
+    "current_scoring_selection_sizing_or_orders_performed": false,
+    "investment_advice": false
+  }
+}

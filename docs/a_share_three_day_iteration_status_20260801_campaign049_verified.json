@@ -1,0 +1,133 @@
+{
+  "version": 1,
+  "kind": "a_share_three_day_iteration_status",
+  "status": "campaign049_terminal_verified_historical_walkforward_ready_for_independent_campaign050",
+  "recorded_at": "2026-08-01T07:37:00Z",
+  "authoritative_predecessor": {
+    "path": "docs/a_share_three_day_iteration_status_20260801_campaign048_verified.json",
+    "sha256": "8bcb5d4749bf77d6f9e0f47a93da2283d67654820a7890de9f01d2c4cd74386f"
+  },
+  "research_policy": {
+    "historical_walkforward_policy": {
+      "path": "docs/a_share_three_day_historical_walkforward_research_policy_20260727.json",
+      "sha256": "38426d6161b9bfed323c58caba18feca668b8c9d53e294951a8ba90c01a798bb"
+    },
+    "historical_research_may_run_without_new_daily_bar_or_16_30_wait": true,
+    "historical_results_may_generate_current_scores_selections_sizes_or_orders": false,
+    "historical_results_may_backfill_candidate49": false
+  },
+  "fixed_strategy": {
+    "holding_period_local_sessions": 3,
+    "signal": "accepted local session close t",
+    "entry": "next accepted local session open t+1",
+    "exit": "third accepted local session close t+3",
+    "development_folds": 3,
+    "purge_signal_sessions_each_partition_boundary": 3,
+    "t_t_plus_1_t_plus_3_must_remain_in_same_partition": true
+  },
+  "campaign049": {
+    "numbering_disambiguation": "historical Campaign049 is not prospective Candidate49",
+    "factor": "intraday_morning_afternoon_amount_profile_similarity_120b",
+    "direction": "higher",
+    "no_return": {
+      "median_coverage": 0.9981114258734656,
+      "p05_coverage": 0.9906542056074766,
+      "comparison_factor_count": 72,
+      "maximum_observed_absolute_median_daily_rank_correlation": 0.8715970553916501,
+      "failed_comparison": "intraday_amount_participation_entropy_240m",
+      "admissible_factor_count": 0
+    },
+    "development": {
+      "conditional_trial_id_never_opened": "wf049_intraday_morning_afternoon_amount_profile_similarity_120b_single_higher",
+      "trial_count": 0,
+      "development_preregistration_created": false,
+      "historical_daily_price_or_forward_return_read": false,
+      "2024_2025_stress_opened": false
+    },
+    "attempt_accounting": {
+      "campaign049_attempts": 1,
+      "campaign049_return_reading_development_trials": 0,
+      "cumulative_historical_research_attempts": 280,
+      "cumulative_return_reading_development_trials": 264
+    },
+    "terminal": {
+      "factor_terminal": true,
+      "reason": "Frozen uniqueness correlation with intraday_amount_participation_entropy_240m was 0.871597, above 0.8.",
+      "invert_repair_redistance_renormalize_rewindow_rescale_filter_threshold_rerun_rescue_or_combine_allowed": false
+    },
+    "authoritative_records": {
+      "research_record": {
+        "path": "docs/a_share_three_day_walkforward_campaign_049_research_record.json",
+        "sha256": "f6c2fe3b79f6072c0c9274552e84d0689bec38483ad6609ad8187b69fda6a32c"
+      },
+      "verification": {
+        "path": "docs/a_share_three_day_walkforward_campaign_049_verification_20260801.json",
+        "sha256": "9b0163f3c6f975009ac489b348c33c7e92ff9bcd2bdd2eba2d1ed84646d4eb74"
+      },
+      "unified_report_supersession": {
+        "path": "docs/a_share_three_day_walkforward_campaign_049_unified_report_supersession_20260801.json",
+        "sha256": "cca3fd66d8bc868e1b5333ad885f55d84be7ce4b8fe81e81a74d94b1d2577450"
+      }
+    }
+  },
+  "cumulative_state": {
+    "cumulative_historical_research_attempt_count_after_campaign049": 280,
+    "cumulative_return_reading_development_trial_count_after_campaign049": 264,
+    "current_historical_aggregation_candidate_count": 0
+  },
+  "local_data_context": {
+    "active_daily_data_root": "/Users/niyufei/Coding/qlib/data",
+    "rich_minute_data_root": "/Volumes/DIsk/qlib-a-share-tushare-1m",
+    "local_date": "2026-08-01",
+    "local_weekday": "Saturday",
+    "candidate49_same_day_workflow_applicable": false,
+    "dotenv_path": "/Users/niyufei/Coding/qlib/.env",
+    "dotenv_is_regular_non_symlink_file": true,
+    "dotenv_is_git_ignored": true,
+    "dotenv_mode": "0600",
+    "tushare_token_present_for_workflow_resolution": true,
+    "credential_value_printed_hashed_or_persisted_in_records": false,
+    "provider_request_issued_by_campaign049_or_credential_verification": false
+  },
+  "prospective_boundary": {
+    "active_candidate_count": 1,
+    "active_candidate": "Candidate49 intraday_cumulative_vwap_crossing_rate_240m",
+    "candidate49_signal_ledger": {
+      "path": "data/experiments/short_horizon/candidate49_future_signal_ledger.json",
+      "sha256": "5193f00d7f36da003f53cec387900da4c3d002299f5dfcfc1a95eaa199ed3a79",
+      "entry_count": 0
+    },
+    "candidate49_execution_ledger": {
+      "path": "data/experiments/short_horizon/candidate49_future_execution_ledger.json",
+      "sha256": "d57a3e61eac969e42cafa418ccd8c0a5ee65dcf69da145bb2c096c2a02a2ea4f",
+      "entry_count": 0
+    },
+    "candidate49_historical_return_signal_execution_or_milestone_backfill_performed": false,
+    "candidate50_activation_allowed": false
+  },
+  "verification_summary": {
+    "binding_records_validated": 3,
+    "binding_count": 31,
+    "passed_binding_count": 31,
+    "focused_campaign049_tests_passed": 28,
+    "first_focused_campaign049_transition_tests_passed": 25,
+    "first_focused_campaign049_transition_tests_failed": 3,
+    "verification_environment_import_failures_recorded": 2,
+    "full_data_collector_tests_passed": 1724,
+    "full_data_collector_tests_failed": 0,
+    "full_data_collector_test_warnings": 13,
+    "candidate49_semantic_ledger_validation_passed_read_only": true,
+    "candidate49_ledgers_rehashed_unchanged": true
+  },
+  "next_action": {
+    "historical": "Begin historical Campaign050 only from an independent mechanism with separate pre-value scouting, overlap audit, finite fingerprint-bound protocol, and binding-validator exit code 0. Offline work may run at any time.",
+    "prospective": "Saturday has no Candidate49 provider phase. On the next accepted local trading date use a new absolute-date staging root and retain the post-16:30 ready=true gate.",
+    "strict_prohibitions": [
+      "do not backfill Candidate49 historical returns signals executions or milestones",
+      "do not start a second prospective candidate",
+      "do not invert repair redistance renormalize rewindow rescale filter threshold rerun rescue or combine Campaign049",
+      "do not open Campaign049 development or 2024-2025 stress",
+      "do not generate current scores selections position sizes orders or investment advice"
+    ]
+  }
+}

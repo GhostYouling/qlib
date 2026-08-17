@@ -1,0 +1,48 @@
+{
+  "schema_version": 1,
+  "kind": "a_share_three_day_walkforward_campaign088_builder_order_monkeypatch_repair_protocol",
+  "status": "frozen_after_pre_source_failure_before_order_cache_repair",
+  "frozen_at": "2026-08-07T03:34:11+08:00",
+  "failure": {
+    "stage": "c86_builder_protocol_validation_before_input_requirements",
+    "exception": "Campaign087FeatureError: Campaign087 numeric comparison order changed",
+    "cause": "The C86 builder adapter temporarily replaces c86.FACTOR_NAME before calling Campaign088.load_protocol; Campaign087's reconstruction function reads that mutable predecessor symbol and therefore sees the Campaign088 name instead of its frozen Campaign086 predecessor.",
+    "exit_code": 1,
+    "output_root_created": false,
+    "campaign088_minute_source_rows_read": false,
+    "campaign088_candidate_values_computed": false,
+    "comparison_daily_price_or_forward_return_values_read": false
+  },
+  "preserved_v2_chain": {
+    "feature_runner": {
+      "path": "scripts/a_share_three_day_walkforward_campaign088_features.py",
+      "sha256": "7ce927a5b13193c1728b1e55cb19085fd773ae9a2c63017a7ba9547edc4c61ea"
+    },
+    "implementation_freeze_v2": {
+      "path": "docs/a_share_three_day_walkforward_campaign_088_feature_implementation_freeze_v2_20260807.json",
+      "sha256": "645ad6dd1a1be7f0e5eb6fb24510ab806fb57d453811aa0a6f18277dd3fdd576"
+    },
+    "build_activation": {
+      "path": "docs/a_share_three_day_walkforward_campaign_088_feature_build_activation_binding_20260807.json",
+      "sha256": "be395774e9380399816262ab696161cd576857f5269294d7db371c3032d88fc8"
+    },
+    "tests": {
+      "path": "tests/data_collector_tests/test_a_share_three_day_walkforward_campaign088_features.py",
+      "sha256": "2843d861a97bc06b92568e18b55c6f26e60e5eb49444adb6b00db424a6a3a5ee"
+    }
+  },
+  "permitted_repair": {
+    "scope": "Materialize immutable copies of Campaign087's validated 116-comparator and 118-definition orders at Campaign088 module import before any C86 builder monkeypatch, append Campaign087 as the v26 final item, and have Campaign088 reconstruction return defensive copies of those immutable tuples.",
+    "formula_changed": false,
+    "candidate_direction_changed": false,
+    "definition_or_numeric_order_changed": false,
+    "source_projection_or_grid_changed": false,
+    "coverage_uniqueness_or_return_gate_changed": false,
+    "new_v3_implementation_freeze_and_activation_required": true
+  },
+  "research_boundary": {
+    "provider_request_issued": false,
+    "candidate49_ledgers_changed": false,
+    "current_scoring_selection_sizing_or_orders_performed": false
+  }
+}

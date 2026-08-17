@@ -1,0 +1,103 @@
+{
+  "schema_version": 1,
+  "kind": "a_share_three_day_walkforward_campaign096_concept_scouting",
+  "status": "selected_before_campaign096_minute_source_candidate_comparison_daily_price_or_return_values",
+  "recorded_at": "2026-08-07T04:07:00Z",
+  "purpose": "Select exactly one economically independent offline three-session factor after terminal Campaign095, before opening any Campaign096 minute source row, candidate value, comparator value, daily price, or forward return.",
+  "authoritative_boundary": {
+    "campaign095_verified_state": {
+      "path": "docs/a_share_three_day_iteration_status_20260807_campaign095_verified.json",
+      "sha256": "b100ba8d347727e71f17799dbeeb1d7e2e1b34770148d217cf4ae4014c193b47"
+    },
+    "numeric_comparison_policy_v39": {
+      "path": "docs/a_share_three_day_walkforward_future_numeric_comparison_eligibility_policy_v39_20260807.json",
+      "sha256": "26af71f841cf9d1880821b61853a347dfff9bc42652b2af09220aebf72de9bb6",
+      "complete_definition_count": 127,
+      "complete_definition_order_sha256": "17ad9beb53d236171155211ea4cc4b9ec05b8edea7ebc51ca7705f84adc9e030",
+      "numeric_comparator_count": 124,
+      "numeric_comparator_order_sha256": "d05f1cb7b68e950d508f2b0d13b7ef1847904edc6eb10453405917e04ed0e698"
+    },
+    "historical_walkforward_policy": {
+      "path": "docs/a_share_three_day_historical_walkforward_research_policy_20260727.json",
+      "sha256": "38426d6161b9bfed323c58caba18feca668b8c9d53e294951a8ba90c01a798bb"
+    },
+    "campaign095_prevalue_failure": {
+      "path": "docs/a_share_three_day_walkforward_campaign_095_prevalue_reflection_semantic_failure_20260807.json",
+      "sha256": "6c047dfcc4e2e0fa46c30c29a0828d37f31516671679e65912c6228b4ff45684"
+    }
+  },
+  "finite_candidate_design_catalog": [
+    {
+      "design": "intraday_intrabar_close_location_total_variation_238p",
+      "decision": "selected_for_complete_prevalue_mechanism_audit",
+      "reason": "It measures the continuous path length of own-bar close-location states across adjacent within-half transitions. It is neither the directional mean, marginal entropy, lag-one correlation, clock distribution, nor a binned or thresholded state summary."
+    },
+    {
+      "design": "intraday_amount_weighted_transaction_vwap_range_location_pressure_240m",
+      "decision": "rejected_before_values",
+      "reason": "It would reuse Campaign013's known amount/volume versus raw high-low containment incompatibility and would be a weighting variation of the terminal transaction-VWAP envelope family, so it is neither efficient nor an independent campaign."
+    },
+    {
+      "design": "close_location_entropy_rebinned_reflected_or_boundary_repaired_variants",
+      "decision": "rejected_before_values",
+      "reason": "Any such variant would repair or redefine terminal Campaign095 after its frozen semantic failure."
+    },
+    {
+      "design": "close_location_lag_correlation_or_sign_transition_variants",
+      "decision": "rejected_before_values",
+      "reason": "Lag correlation is already terminal Campaign086, while thresholded sign states would add an arbitrary boundary and reopen direction-search families."
+    },
+    {
+      "design": "squared_variation_range_weighted_amount_weighted_clock_weighted_or_half_specific_variants",
+      "decision": "rejected_before_values",
+      "reason": "Alternative norms, weights, half asymmetries, and subwindows would create a post-result search catalog and overlap existing range, activity, and clock mechanisms."
+    },
+    {
+      "design": "filter_rank_neutralization_residualization_fit_combination_or_model_variants",
+      "decision": "rejected_before_values",
+      "reason": "Filters, ranks, regimes, neutralization, residualization, fitting, combinations, and models are outside this one-factor finite catalog."
+    }
+  ],
+  "selected_candidate": {
+    "name": "intraday_intrabar_close_location_total_variation_238p",
+    "direction": "higher",
+    "economic_hypothesis": "Repeated migration of minute closes across their own auction ranges indicates active two-sided price discovery and liquidity replenishment rather than a pinned local state, and that auction renewal may persist from the next open through the third close.",
+    "formula": "For every positive-range selected bar compute x_i=(log(close_i)-log(low_i))/log(high_i/low_i). Form adjacent pairs separately within the morning and afternoon halves, retain only pairs whose two endpoint states exist, require at least 120 retained pairs, and return the unweighted arithmetic mean of abs(x_i-x_i-1).",
+    "source_projection": [
+      "datetime",
+      "symbol",
+      "provider",
+      "high",
+      "low",
+      "close"
+    ],
+    "source_grid": "Require the raw 09:30 row for immutable source identity; use exactly 09:31-11:30 and 13:01-15:00, exclude 09:30, form 119 adjacent opportunities separately inside each half, and exclude the lunch transition.",
+    "support": "Require every selected high, low, and close to be finite and strictly positive with low<=close<=high. A zero-range bar has no state and removes only its directly incident pairs; never bridge, impute, or replace it. Require at least 120 informative adjacent pairs.",
+    "valid_range": "[0,1] under float64 arithmetic; canonicalize only endpoints within 1e-12 and otherwise never clip.",
+    "parameter_window_transform_threshold_filter_subset_regime_fit_combination_or_model_search": false
+  },
+  "definition_only_review": {
+    "all_127_complete_definitions_reconstructed_in_frozen_order": true,
+    "all_124_numeric_comparators_reserved_in_frozen_order": true,
+    "candidate_or_comparator_values_read": false,
+    "old_factor_or_cache_values_read_for_selection": false
+  },
+  "research_boundary": {
+    "campaign096_minute_source_rows_read": false,
+    "campaign096_candidate_values_read": false,
+    "comparison_values_read": false,
+    "historical_daily_price_fields_read": [],
+    "historical_forward_return_fields_read": false,
+    "provider_request_issued": false,
+    "candidate49_historical_backfill_performed": false,
+    "candidate49_ledgers_changed": false,
+    "second_prospective_candidate_created": false,
+    "current_scoring_selection_sizing_or_orders_performed": false,
+    "investment_advice": false
+  },
+  "decision": {
+    "selected_candidate_count": 1,
+    "predictive_value_established": false,
+    "next_action": "Challenge the exact candidate against all 127 complete definitions, then freeze the v39-bound coverage-first no-return protocol before any Campaign096 source row or value."
+  }
+}

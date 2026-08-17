@@ -1,0 +1,111 @@
+{
+  "version": 1,
+  "kind": "a_share_candidate49_daily_root_provenance_readiness",
+  "status": "offline_same_active_root_binding_passed_real_future_signal_pending",
+  "recorded_at": "2026-07-25T18:09:25Z",
+  "purpose": "Advance the Tushare daily execution handoff by proving that the declared Qlib provider context and every raw daily quote must come from the same immutable active data root.",
+  "advances": {
+    "path": "docs/a_share_candidate49_tushare_daily_execution_handoff_readiness_20260726.json",
+    "sha256": "3e9615dfcf85f61c6579ba171a56ca4e04041da711e5f0304396b37ffaf6b9ac"
+  },
+  "authoritative_research_state": {
+    "path": "docs/a_share_three_day_iteration_status_20260725_future_only.json",
+    "sha256": "d44e1cb3707cce194eed37e99cc90f865396b1de8c35e02a393a2a243d973466",
+    "active_future_only_candidate": "candidate49_intraday_cumulative_vwap_crossing_rate_240m_v1",
+    "aggregation_allowed": false,
+    "candidate50_activation_allowed": false
+  },
+  "execution_protocol": {
+    "path": "docs/a_share_tushare_candidate49_future_execution_protocol.json",
+    "sha256": "b9b4ea8906924c8303cb7a434db5f21ed6383ce7d794e50936b675acfa869486",
+    "changed_by_this_work": false
+  },
+  "implementation_fingerprints": {
+    "paper_execution": {
+      "path": "scripts/a_share_tushare_candidate49_future_execution.py",
+      "sha256": "d96736338e5759a1872be6afd2501b3176fb15783f949258864a5a19c0868250"
+    },
+    "paper_execution_tests": {
+      "path": "tests/data_collector_tests/test_a_share_tushare_candidate49_future_execution.py",
+      "sha256": "5890b62df00e3cfea1d287de7e7aaf7d48ca5c5444c09044b3bcea78dbc30437"
+    },
+    "runbook": {
+      "path": "docs/a_share_data_pipeline.md",
+      "sha256": "0dfbdfd1b1140c4fb215b85494f8dcf0c85bab22899518ff939cf2ec75182bee"
+    }
+  },
+  "threat_model": {
+    "gap": "provider_uri and daily_raw_root were independently supplied, so a price-basis manifest declaring Tushare could be paired with daily Parquet from another provider or an unrelated versioned root while the resulting snapshot still reported Tushare.",
+    "red_test_result": "The new unrelated-root test failed before the fix because paper settlement completed instead of stopping.",
+    "mislabelled_or_cross_version_daily_quotes_allowed": false
+  },
+  "enforced_binding": {
+    "provider_uri_layout": "<active-root>/qlib/cn_a_share",
+    "daily_raw_root_layout": "<the-same-active-root>/raw/a_share/daily",
+    "checked_before_ledger_initialization": true,
+    "checked_before_daily_snapshot_publication": true,
+    "failure_code": "daily_raw_root_not_bound_to_accepted_provider_root",
+    "different_active_roots_in_one_processed_session_allowed": false,
+    "later_session_versioned_root_rollover_allowed": true
+  },
+  "immutable_daily_snapshot_provenance": {
+    "bound_manifest_fields": [
+      "daily_raw_root.path",
+      "daily_raw_root.layout",
+      "daily_raw_root.source_file_sha256_column"
+    ],
+    "source_layout": "lowercase_symbol_parquet",
+    "per_symbol_source_file_sha256_stored": true,
+    "calendar_path_and_sha256_stored": true,
+    "buyable_universe_path_and_sha256_stored": true,
+    "price_basis_path_and_sha256_stored": true,
+    "unregistered_daily_source_column_loaded": false,
+    "future_daily_rows_loaded": false
+  },
+  "offline_proofs": {
+    "focused_execution_tests": {
+      "passed": 20,
+      "failed": 0
+    },
+    "new_provenance_test": "An unrelated but byte-identical daily directory is rejected before a daily snapshot or execution-ledger entry is written.",
+    "tushare_end_to_end_proof_retained": true,
+    "versioned_root_rollover_proof_retained": true,
+    "full_data_collector_tests": {
+      "passed": 1096,
+      "failed": 0,
+      "warnings": 9,
+      "elapsed_seconds": 29.75
+    },
+    "ruff": "passed",
+    "python_compile": "passed"
+  },
+  "append_only_ledgers_after_offline_tests": {
+    "signal": {
+      "path": "data/experiments/short_horizon/candidate49_future_signal_ledger.json",
+      "sha256": "5193f00d7f36da003f53cec387900da4c3d002299f5dfcfc1a95eaa199ed3a79",
+      "entries": 0
+    },
+    "execution": {
+      "path": "data/experiments/short_horizon/candidate49_future_execution_ledger.json",
+      "sha256": "d57a3e61eac969e42cafa418ccd8c0a5ee65dcf69da145bb2c096c2a02a2ea4f",
+      "entries": 0
+    }
+  },
+  "side_effect_audit": {
+    "provider_request_issued": false,
+    "real_minute_rows_read": false,
+    "real_daily_execution_snapshot_written": false,
+    "signal_or_execution_entry_written": false,
+    "live_order_performed": false,
+    "active_data_root_mutated": false
+  },
+  "decision": {
+    "accepted_tushare_daily_root_can_settle_candidate49": true,
+    "cross_root_daily_substitution_allowed": false,
+    "daily_data_can_replace_candidate49_minute_signal": false,
+    "historical_backfill_allowed": false,
+    "current_signal_exists": false,
+    "selection_sizing_or_order_allowed": false,
+    "next_action": "Wait for the first eligible session close, atomically activate that session's accepted Tushare root, then collect the same-session minute signal from the registered workflow."
+  }
+}

@@ -1,0 +1,91 @@
+{
+  "version": 1,
+  "kind": "a_share_three_day_walkforward_campaign031_development_implementation_freeze",
+  "status": "development_runner_and_boundaries_frozen_before_2019_2023_return_read",
+  "frozen_at": "2026-07-30T14:14:00Z",
+  "purpose": "Bind the exact Campaign031 development implementation, tests, no-return evidence, and prospective-ledger state before the one frozen 2019-2023 walk-forward trial may read daily prices or forward returns.",
+  "bindings": {
+    "campaign_preregistration": {
+      "path": "docs/a_share_three_day_walkforward_campaign_031_preregistration.json",
+      "sha256": "288438e77d9da91300472cb57651efd79c565fb3d761609f30f8fcd74cea1ab0"
+    },
+    "no_return_audit_freeze": {
+      "path": "docs/a_share_three_day_walkforward_campaign_031_no_return_audit_freeze_20260730.json",
+      "sha256": "8318a88831fec1e998fe9eb43bfe119fef7b8c1f0c91f9b904822087441ab91d"
+    },
+    "campaign_runner": {
+      "path": "scripts/a_share_three_day_walkforward_campaign031.py",
+      "sha256": "888bb4e29cef275fa8b55dd354610596d5cc9f1312d7757d8a378741055f7758"
+    },
+    "feature_runner": {
+      "path": "scripts/a_share_three_day_walkforward_campaign031_features.py",
+      "sha256": "24fce3915f1321232573f413531b79c4fe9646c7bc192c7117d1358826d12df2"
+    },
+    "campaign_tests": {
+      "path": "tests/data_collector_tests/test_a_share_three_day_walkforward_campaign031.py",
+      "sha256": "b06f99acca1d206e31120a0ec5bf4c03506835ec4b4212fafcc3bcff392965bf"
+    },
+    "feature_tests": {
+      "path": "tests/data_collector_tests/test_a_share_three_day_walkforward_campaign031_features.py",
+      "sha256": "4e324e4b3c8d01ab464c51484fece00333d1243fb1013ba27af480c74ab1d5a2"
+    },
+    "benchmark_tests": {
+      "path": "tests/data_collector_tests/test_a_share_three_day_walkforward_campaign031_dispersion_benchmark.py",
+      "sha256": "bd51c5f4f92b16d2c38c98e1fba15a5168c32f5f0f62466010777553a5d22844"
+    },
+    "binding_validator": {
+      "path": "scripts/a_share_three_day_preregistration_binding_validator.py",
+      "sha256": "a6ab81a645fb25be2594937356e873c62737167dc88569d9b4b46bba6b7dcc4f"
+    },
+    "candidate49_signal_ledger": {
+      "path": "data/experiments/short_horizon/candidate49_future_signal_ledger.json",
+      "sha256": "5193f00d7f36da003f53cec387900da4c3d002299f5dfcfc1a95eaa199ed3a79"
+    },
+    "candidate49_execution_ledger": {
+      "path": "data/experiments/short_horizon/candidate49_future_execution_ledger.json",
+      "sha256": "d57a3e61eac969e42cafa418ccd8c0a5ee65dcf69da145bb2c096c2a02a2ea4f"
+    }
+  },
+  "frozen_development_run": {
+    "command": "python scripts/a_share_three_day_walkforward_campaign031.py run-development",
+    "development_years": [
+      2019,
+      2020,
+      2021,
+      2022,
+      2023
+    ],
+    "fold_count": 3,
+    "signal_session_purge_count": 3,
+    "candidate_count": 1,
+    "trial_count": 1,
+    "factor": "intraday_market_dispersion_decoupling_238m",
+    "direction": "higher",
+    "weight": 1.0,
+    "threshold_or_filter_search": false,
+    "weight_or_model_fitting": false,
+    "combination_search": false,
+    "stress_2024_2025_open": false
+  },
+  "pre_return_read_verification": {
+    "focused_test_command": "python -m pytest -q tests/data_collector_tests/test_a_share_three_day_walkforward_campaign031_dispersion_benchmark.py tests/data_collector_tests/test_a_share_three_day_walkforward_campaign031_features.py tests/data_collector_tests/test_a_share_three_day_walkforward_campaign031.py",
+    "focused_tests_passed": 13,
+    "focused_tests_failed": 0,
+    "development_ledger_entry_count": 0,
+    "stress_intent_exists": false,
+    "stress_record_exists": false,
+    "candidate49_signal_ledger_entry_count": 0,
+    "candidate49_execution_ledger_entry_count": 0,
+    "candidate49_historical_return_read": false,
+    "current_scoring_selection_sizing_or_orders_allowed": false
+  },
+  "decision": {
+    "development_run_allowed_only_after_this_record_binding_validation_exit_zero": true,
+    "exposed_stress_run_allowed_now": false,
+    "post_result_rescue_inversion_repair_rewindow_filter_threshold_retune_or_combination_allowed": false,
+    "candidate49_historical_signal_return_execution_or_milestone_backfill_allowed": false,
+    "candidate50_activation_allowed": false,
+    "provider_request_allowed_or_required": false,
+    "investment_or_current_selection_claim_allowed": false
+  }
+}

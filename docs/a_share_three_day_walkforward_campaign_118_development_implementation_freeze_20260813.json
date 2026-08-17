@@ -1,0 +1,56 @@
+{
+  "schema_version": 1,
+  "kind": "a_share_three_day_walkforward_campaign118_development_implementation_freeze",
+  "status": "frozen_before_campaign118_2019_2023_development_return_read",
+  "recorded_at": "2026-08-13T22:38:00+08:00",
+  "purpose": "Byte-freeze the Campaign118 exact-one-trial runner, preregistration and tests before the first historical daily-price or forward-return value can be loaded.",
+  "development_preregistration": {
+    "path": "docs/a_share_three_day_walkforward_campaign_118_preregistration.json",
+    "sha256": "b6cae5dcb7676e0beb237c1e29a00d1f240cd6171aa7e67bb4912a7255c52a93"
+  },
+  "development_runner": {
+    "path": "scripts/a_share_three_day_walkforward_campaign118.py",
+    "sha256": "6ed993342ed8d5be9c0cd8e4703981196f6e4734e0b6ed19ace4dc0d045cc93f",
+    "frozen_template_runner": {
+      "path": "scripts/a_share_three_day_walkforward_campaign117.py",
+      "sha256": "5d80f88d673ea452793332d5ecedbba259b3fa01dff331386b0a648e78ffed5b"
+    },
+    "frozen_base_runner": {
+      "path": "scripts/a_share_three_day_walkforward_campaign080.py",
+      "sha256": "b4c4b781392c87f01b9542c2317611a936d431b0328cea9d21ea90b8f68a324b"
+    }
+  },
+  "tests": {
+    "path": "tests/data_collector_tests/test_a_share_three_day_walkforward_campaign118_development.py",
+    "sha256": "2fdbcae768740ed3d1b1b71a37878a231c22edaa5903dc46ac7cae640fd41efe",
+    "passed": 7
+  },
+  "no_return_admission": {
+    "path": "data/experiments/short_horizon/historical_walkforward/campaign_118/uniqueness/campaign118_ordered_uniqueness_audit.json",
+    "sha256": "0cf2d60e8a2bbeb3fbbef2993207f8e52e72377a6a3d3acf7be11141fe8d06a4",
+    "admissible_factor_count": 1,
+    "numeric_comparisons_passed": 135,
+    "maximum_observed_absolute_median_daily_rank_correlation": 0.629874319235589
+  },
+  "trial_catalog": [
+    {
+      "trial_id": "wf118_intraday_top_decile_amount_event_spacing_entropy_25g_single_higher",
+      "feature_set": [
+        "intraday_top_decile_amount_event_spacing_entropy_25g"
+      ],
+      "weights": [
+        1.0
+      ],
+      "direction": "higher",
+      "complexity": 1
+    }
+  ],
+  "trial_count": 1,
+  "historical_daily_price_fields_read_before_freeze": [],
+  "historical_forward_returns_read_before_freeze": false,
+  "stress_2024_2025_opened_before_freeze": false,
+  "candidate49_ledgers_changed_before_freeze": false,
+  "provider_request_issued_before_freeze": false,
+  "current_scoring_selection_sizing_positions_or_orders_performed": false,
+  "post_result_code_preregistration_parameter_filter_subset_direction_or_gate_change_allowed": false
+}

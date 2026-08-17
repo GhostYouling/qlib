@@ -1,0 +1,50 @@
+{
+  "version": 1,
+  "kind": "a_share_three_day_walkforward_campaign073_no_return_audit_implementation_freeze",
+  "status": "frozen_after_verified_snapshot_before_coverage_or_comparison_values",
+  "recorded_at": "2026-08-06T07:25:00+08:00",
+  "protocol": {
+    "path": "docs/a_share_three_day_walkforward_campaign_073_no_return_preregistration.json",
+    "sha256": "473373e71a97b9daf25f97062682ec4ad1f8b05a778efad161c887aa586d5280"
+  },
+  "snapshot_binding": {
+    "path": "docs/a_share_three_day_walkforward_campaign_073_feature_snapshot_binding_20260806.json",
+    "sha256": "0bf34d781cff79f9f8e8262173a78699232cfa5271bd12b2fb897a9173698ae7"
+  },
+  "sequence_record": {
+    "path": "docs/a_share_three_day_walkforward_campaign_073_audit_freeze_sequence_record_20260806.json",
+    "sha256": "3a424a8fb29ad2d691a2692d65b11e0dacf784a8b4cbf7755892ce8660489d52"
+  },
+  "audit_runner": {
+    "path": "scripts/a_share_three_day_walkforward_campaign073_no_return_audit.py",
+    "sha256": "7a3341038aed1ec0e73088c491c5df587c3d275808e968daaccbe21660032647"
+  },
+  "tests": {
+    "path": "tests/data_collector_tests/test_a_share_three_day_walkforward_campaign073_no_return_audit.py",
+    "sha256": "847d3001deb7acfcd547540c033278cb0d04e88f8e0214e08750bb794ecc6c54",
+    "pre_freeze_selected_passed": 5,
+    "pre_freeze_selected_failed": 0,
+    "pre_freeze_deselected_freeze_binding_test": 1
+  },
+  "candidate_snapshot_existed_before_freeze": true,
+  "candidate_snapshot_was_immutable_and_independently_verified": true,
+  "coverage_or_capacity_metrics_computed_before_freeze": false,
+  "comparison_values_read_before_freeze": false,
+  "historical_daily_price_fields_read_before_freeze": [],
+  "historical_forward_returns_read_before_freeze": false,
+  "provider_request_issued_before_freeze": false,
+  "candidate49_ledgers_changed_before_freeze": false,
+  "io_semantics": {
+    "candidate_coverage_is_computed_before_any_comparator_values": true,
+    "all_comparator_loaders_are_coverage_guarded": true,
+    "compact_cache_values_load_only_after_all_coverage_gates_pass": true,
+    "campaign068_through_campaign072_values_load_only_after_all_coverage_gates_pass": true,
+    "missing_comparator_values_are_preserved_for_pairwise_complete_correlation": true,
+    "all_103_numeric_comparators_run_in_frozen_order_if_coverage_passes": true,
+    "historical_daily_prices_or_returns_read_during_no_return_audit": false
+  },
+  "decision": {
+    "implementation_frozen_before_coverage_or_comparison_values": true,
+    "next_action": "Create an additive activation binding for this exact implementation and verified snapshot, then execute the audit once."
+  }
+}

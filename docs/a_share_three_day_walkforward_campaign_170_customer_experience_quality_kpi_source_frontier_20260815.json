@@ -1,0 +1,151 @@
+{
+  "schema_version": 1,
+  "kind": "a_share_three_day_walkforward_campaign170_customer_experience_quality_kpi_source_frontier",
+  "status": "terminal_prevalue_four_source_admission_deferrals_three_incident_or_operator_rejections_zero_selected",
+  "recorded_at": "2026-08-15T08:33:15+08:00",
+  "purpose": "Review a finite customer-experience, product/service-quality and retention KPI domain before opening source rows, document text, quality values, candidate values, comparators, prices or returns.",
+  "authoritative_inputs": {
+    "campaign169_effective_state": {"path": "docs/a_share_three_day_iteration_status_20260815_campaign169_prevalue_terminal.json", "sha256": "3ad7747800f89b336ccd01fed5ee33511c0d1322d781626b2765d3a93edf9177"},
+    "campaign169_validation": {"path": "docs/a_share_three_day_walkforward_campaign_169_terminal_validation_20260815.json", "sha256": "60e55528c1fc549bd4aee74d8425103a37dc2c12803848056858ee06e11c9d04"},
+    "eligibility_policy_v247": {"path": "docs/a_share_three_day_walkforward_future_numeric_comparison_eligibility_policy_v247_20260815.json", "sha256": "86a885531d32555d60ccc4eb90c58ee3f59f1151592d06a9c360aff3576e60e6"},
+    "campaign166_operational_incident_frontier": {"path": "docs/a_share_three_day_walkforward_campaign_166_operational_incident_disclosure_source_frontier_20260815.json", "sha256": "96ecd0259613a6649674804a676b3d82205fe11ba3b01986db6b675d00ea78d1"},
+    "campaign168_operating_kpi_frontier": {"path": "docs/a_share_three_day_walkforward_campaign_168_operating_scale_adoption_kpi_source_frontier_20260815.json", "sha256": "c5dc98f92266e2b7ef7349cb5260a8cde15ccd9c78442e661e4170b1ba47d18a"},
+    "campaign159_remaining_source_inventory": {"path": "docs/a_share_three_day_walkforward_campaign_159_remaining_local_source_schema_inventory_20260815.json", "sha256": "d561a9707b6004cbec0685108ea3fa4453b21f587a7632a739b46b69e818e578"},
+    "campaign159_remaining_source_audit": {"path": "docs/a_share_three_day_walkforward_campaign_159_remaining_local_source_residual_audit_20260815.json", "sha256": "6d4430f1eef33da89fe5eb7018d326c603a051446d16e066ac72c74d9d7a25ae"}
+  },
+  "research_boundary": {
+    "finite_catalog_frozen_before_source_or_value_read": true,
+    "source_row_document_title_body_quality_kpi_candidate_comparator_price_or_return_value_read": false,
+    "local_schema_names_and_prior_records_only": true,
+    "provider_or_web_request_issued": false,
+    "provider_credential_presence_value_or_digest_read": false,
+    "stress_2024_2025_opened": false,
+    "candidate49_ledgers_changed": false,
+    "second_prospective_candidate_created": false
+  },
+  "repository_evidence": {
+    "accepted_historical_customer_experience_or_quality_kpi_primitive_present": false,
+    "complete_customer_experience_or_quality_source_contract_present": false,
+    "incident_boundary": "Product recalls, operational interruptions, safety incidents and enforcement outcomes are Campaign166 or earlier event families and cannot be relabeled as recurring quality KPIs.",
+    "operating_scale_boundary": "Customer counts and active-user scale were reviewed in Campaign168; retention, churn and repeat behavior require their own point-in-time numerator and denominator rather than a post-hoc count transform.",
+    "domain_distinction": "Returns, defects, complaints and retention are recurring outcome rates rather than one-off incidents or security-price transforms, but no complete local point-in-time contract admits them."
+  },
+  "mandatory_source_admission_gate": {
+    "must_freeze_before_any_formula_or_direction": [
+      "exact official filing, issuer report, regulator complaint dataset or audited service-quality source with immutable bytes and observation identifier",
+      "first public timestamp, reporting period, revision, restatement, withdrawal and trading-session availability",
+      "issuer, listed security, subsidiary, brand, geography, channel, customer class, product and service mapping without current-state leakage",
+      "taxonomy separating returns, refunds, warranty claims, repairs, defects, failures, scrap, rework, yield, complaints, satisfaction, retention, churn, renewal and repeat purchase",
+      "numerator, eligible-population denominator, cohort, exposure period, sold-versus-shipped basis and gross-versus-net event semantics",
+      "voluntary service action, mandatory recall, regulator complaint, litigation claim and routine warranty distinction",
+      "severity, duplicate case, reopened case, resolved case, partial refund, replacement, goodwill and no-fault return semantics",
+      "customer cohort entry, exit, pause, reactivation, contract renewal, subscription downgrade and product migration rules",
+      "industry comparability and deterministic exclusions for incompatible products, service cycles or complaint regimes",
+      "missing, undisclosed, unknown, not-applicable, true zero and suppressed-small-count semantics without favorable absence coding",
+      "complete bounded 2019-2023 partition manifest, full-market denominator, delisting coverage, pagination and one-shot acceptance gates",
+      "parser, identity, timing, denominator and source-acceptance tests using no candidate, comparator, price or return values"
+    ],
+    "formula_direction_parameter_filter_subset_combination_or_model_choice_allowed_before_gate": false
+  },
+  "finite_prevalue_catalog": [
+    {
+      "catalog_id": "c170_01",
+      "name": "product_return_refund_warranty_claim_or_service_cost_rate",
+      "economic_state": "A historically published rate of customer returns, refunds, warranty claims, repairs or related service cost against an eligible installed or sold base.",
+      "formula": null,
+      "direction": null,
+      "parameters_filters_subsets_combinations_models": [],
+      "new_issuer_state": true,
+      "complete_local_source_contract": false,
+      "decision": "deferred_source_admission_not_factor_failure",
+      "reason": "No admitted source freezes numerator, sold/installed denominator, voluntary versus mandatory action, product cohort, severity, period, first availability, revisions and full 2019-2023 coverage."
+    },
+    {
+      "catalog_id": "c170_02",
+      "name": "defect_failure_yield_rework_or_scrap_rate_disclosure",
+      "economic_state": "A recurring operating-quality measure of conforming output, failures, rework or scrap.",
+      "formula": null,
+      "direction": null,
+      "parameters_filters_subsets_combinations_models": [],
+      "new_issuer_state": true,
+      "complete_local_source_contract": false,
+      "decision": "deferred_source_admission_not_factor_failure",
+      "reason": "Inspection stage, unit, production denominator, internal/external failure, product mix, plant scope, restatement, first-public time and comparable history are not frozen."
+    },
+    {
+      "catalog_id": "c170_03",
+      "name": "customer_complaint_resolution_or_satisfaction_metric",
+      "economic_state": "A historically published measure of complaints, service resolution, satisfaction or recommendation for a defined customer population.",
+      "formula": null,
+      "direction": null,
+      "parameters_filters_subsets_combinations_models": [],
+      "new_issuer_state": true,
+      "complete_local_source_contract": false,
+      "decision": "deferred_source_admission_not_factor_failure",
+      "reason": "Survey frame, regulator versus issuer complaint channel, duplicate and resolved-case rules, response bias, denominator, first-public timestamp and complete coverage lack an accepted contract."
+    },
+    {
+      "catalog_id": "c170_04",
+      "name": "customer_retention_churn_renewal_or_repeat_purchase_rate",
+      "economic_state": "A historically published cohort outcome describing persistence of customer relationships rather than current customer count.",
+      "formula": null,
+      "direction": null,
+      "parameters_filters_subsets_combinations_models": [],
+      "new_issuer_state": true,
+      "complete_local_source_contract": false,
+      "decision": "deferred_source_admission_not_factor_failure",
+      "reason": "Customer cohort, eligible contract, gross/net retention, pause/reactivation, renewal period, product migration, first availability, revision and market denominator are not frozen."
+    },
+    {
+      "catalog_id": "c170_05",
+      "name": "recall_safety_incident_enforcement_or_litigation_relabeling",
+      "economic_state": "A one-off adverse event stream relabeled as a recurring quality KPI.",
+      "formula": null,
+      "direction": null,
+      "parameters_filters_subsets_combinations_models": [],
+      "new_issuer_state": false,
+      "complete_local_source_contract": false,
+      "decision": "rejected_terminal_incident_enforcement_and_recall_source_relabeling",
+      "reason": "Recall, safety, operational interruption, enforcement and litigation families are terminal or separately governed. Counting their events under a quality label does not create a new source state."
+    },
+    {
+      "catalog_id": "c170_06",
+      "name": "quality_kpi_change_threshold_severity_peer_or_window_variant",
+      "economic_state": "A transformation of a quality or experience KPI over time, severity or peers.",
+      "formula": null,
+      "direction": null,
+      "parameters_filters_subsets_combinations_models": [],
+      "new_issuer_state": false,
+      "complete_local_source_contract": false,
+      "decision": "rejected_operator_and_target_search_before_base_source_admission",
+      "reason": "Choosing level versus change, threshold, severity, lag, seasonality, peer group, product subset or reporting window before base-source admission would multiply hypotheses and can exploit denominator changes."
+    },
+    {
+      "catalog_id": "c170_07",
+      "name": "combined_customer_experience_quality_retention_breadth_or_model",
+      "economic_state": "Joint issuer exposure across returns, defects, complaints and retention outcomes.",
+      "formula": null,
+      "direction": null,
+      "parameters_filters_subsets_combinations_models": [],
+      "new_issuer_state": false,
+      "complete_local_source_contract": false,
+      "decision": "rejected_unadmitted_component_combination_weight_and_model_search",
+      "reason": "Combining four unadmitted, denominator-sensitive and industry-heterogeneous families or selecting weights and models would expand the search before any component has a complete source contract."
+    }
+  ],
+  "gate_summary": {
+    "routes_reviewed": 7,
+    "genuinely_new_issuer_state_routes": 4,
+    "source_admission_deferrals_not_factor_failures": 4,
+    "incident_or_operator_route_rejections": 3,
+    "selected_candidate_count": 0,
+    "complete_factor_definition_created": false,
+    "numeric_comparator_created": false
+  },
+  "scientific_interpretation": {
+    "customer_experience_quality_or_retention_declared_ineffective": false,
+    "absence_of_an_admitted_historical_source_is_evidence_of_no_predictive_power": false,
+    "safe_conclusion": "Four recurring customer/quality outcome states remain deferred at source admission; incident relabeling, premature transforms and unadmitted combinations are closed before values."
+  },
+  "next_action": "Record all seven decisions in the Campaign170 hash chain, publish terminal accounting, and continue a different finite offline prevalue domain."
+}

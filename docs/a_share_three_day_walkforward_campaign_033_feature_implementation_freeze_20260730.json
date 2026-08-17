@@ -1,0 +1,89 @@
+{
+  "version": 1,
+  "kind": "a_share_three_day_walkforward_campaign033_feature_implementation_freeze",
+  "status": "frozen_and_synthetic_tested_before_campaign033_historical_minute_partition_or_candidate_values",
+  "recorded_at": "2026-07-30T16:05:00Z",
+  "purpose": "Bind the exact Campaign033 close-only spectral-entropy implementation, inherited publication/comparison machinery, protocol, and synthetic tests before opening any historical minute partition or candidate value.",
+  "authoritative_state": {
+    "path": "docs/a_share_three_day_iteration_status_20260730_campaign032_verified.json",
+    "sha256": "fdad546c4318772b3138dce47404694504714dea8485ecb949f6ffe97f4f62b7"
+  },
+  "concept_scouting": {
+    "path": "docs/a_share_three_day_walkforward_campaign_033_concept_scouting.json",
+    "sha256": "3b6314768a34828b57bc0bd71459b259a85b32d5061ceb851625a9b8e5c21eea"
+  },
+  "mechanism_overlap_audit": {
+    "path": "docs/a_share_three_day_walkforward_campaign_033_mechanism_overlap_audit.json",
+    "sha256": "fc932c2f9172d81bccb503f94d03e6407e2b807044eaab13d167f4a817289c1c"
+  },
+  "no_return_preregistration": {
+    "path": "docs/a_share_three_day_walkforward_campaign_033_no_return_preregistration.json",
+    "sha256": "3e5546941b5954f96fc5a2d7dc7fbcf03b48d063ea1414133c2c17ae191fad4f"
+  },
+  "feature_runner": {
+    "path": "scripts/a_share_three_day_walkforward_campaign033_features.py",
+    "sha256": "5779a88c07992f1c969ec2409baec31387a152b9b84f7db109cf4b838db53c54"
+  },
+  "frozen_base_feature_runner": {
+    "path": "scripts/a_share_three_day_walkforward_campaign028_features.py",
+    "sha256": "eb0eeb690c07fd28ccae71c6125021535edb9aa18a0c669110b18dc52457f317"
+  },
+  "frozen_comparison_orchestrator": {
+    "path": "scripts/a_share_three_day_walkforward_campaign032_features.py",
+    "sha256": "2f7490fbdf298101ab6cd7ce9bdaeab235a8c00351c5d3626ad761d07c9f23ee"
+  },
+  "feature_tests": {
+    "path": "tests/data_collector_tests/test_a_share_three_day_walkforward_campaign033_features.py",
+    "sha256": "b7cd1532c39fee0e3e444236ded695800a2301162f928746d67e3bc9770aa4ba",
+    "focused_with_reporting_tests_passed": 13,
+    "failed": 0
+  },
+  "candidate49_signal_ledger": {
+    "path": "data/experiments/short_horizon/candidate49_future_signal_ledger.json",
+    "sha256": "5193f00d7f36da003f53cec387900da4c3d002299f5dfcfc1a95eaa199ed3a79",
+    "entry_count": 0
+  },
+  "candidate49_execution_ledger": {
+    "path": "data/experiments/short_horizon/candidate49_future_execution_ledger.json",
+    "sha256": "d57a3e61eac969e42cafa418ccd8c0a5ee65dcf69da145bb2c096c2a02a2ea4f",
+    "entry_count": 0
+  },
+  "implementation_semantics": {
+    "factor": "intraday_return_spectral_entropy_59f",
+    "source_projection": [
+      "datetime",
+      "symbol",
+      "provider",
+      "close"
+    ],
+    "selected_closes": 240,
+    "returns_per_half": 119,
+    "positive_frequency_bins": 59,
+    "half_session_demeaning": true,
+    "power_pooling": "morning plus afternoon squared complex magnitude per matching frequency before entropy",
+    "entropy": "natural-log Shannon entropy divided by log(59)",
+    "valid_range": [
+      0.0,
+      1.0
+    ],
+    "synthetic_impulse_entropy": 1.0,
+    "synthetic_single_frequency_entropy": 0.0,
+    "synthetic_constant_close_path_missing": true,
+    "floating_noise_tolerance_added": false
+  },
+  "research_boundary": {
+    "external_campaign033_minute_partitions_read": false,
+    "candidate_values_read": false,
+    "comparison_values_read": false,
+    "daily_price_fields_read": false,
+    "forward_returns_read": false,
+    "provider_request_issued": false,
+    "candidate49_historical_return_signal_or_execution_backfill_performed": false,
+    "current_scoring_selection_sizing_or_orders_performed": false
+  },
+  "decision": {
+    "binding_validator_exit_zero_required_before_snapshot_build": true,
+    "snapshot_build_allowed_after_validation": true,
+    "comparison_or_return_values_allowed_before_snapshot_binding": false
+  }
+}

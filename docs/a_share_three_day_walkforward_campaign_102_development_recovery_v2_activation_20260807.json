@@ -1,0 +1,25 @@
+{
+  "schema_version": 1,
+  "kind": "a_share_three_day_walkforward_campaign102_development_recovery_v2_activation",
+  "status": "same_three_frozen_trials_reauthorized_with_equivalent_session_index_repair",
+  "recorded_at": "2026-08-07T15:35:00Z",
+  "implementation_freeze": {
+    "path": "docs/a_share_three_day_walkforward_campaign_102_development_recovery_v2_implementation_freeze_20260807.json",
+    "sha256": "e52c1fadf2abac2e38d66da064fabf36dc51f5cf7073ed15365d638d65cf50b0"
+  },
+  "preserved_failed_roots": [
+    "/Volumes/DIsk/Disk-Coding/qlib/data/experiments/short_horizon/historical_walkforward/campaign_102/walkforward",
+    "/Volumes/DIsk/Disk-Coding/qlib/data/experiments/short_horizon/historical_walkforward/campaign_102/walkforward_recovery_v1"
+  ],
+  "fresh_recovery_output_root": "/Volumes/DIsk/Disk-Coding/qlib/data/experiments/short_horizon/historical_walkforward/campaign_102/walkforward_recovery_v2",
+  "remaining_complete_development_trial_count": 3,
+  "training_return_reread_authorized_only_for_same_incomplete_fold1_fit": true,
+  "model_fit_or_validation_result_reuse_from_failed_attempt": false,
+  "scientific_method_change_authorized": false,
+  "lockbox_2024_2025_authorized": false,
+  "provider_request_authorized": false,
+  "candidate49_historical_backfill_authorized": false,
+  "candidate49_ledger_change_authorized": false,
+  "current_scoring_selection_sizing_or_orders_authorized": false,
+  "investment_advice": false
+}

@@ -1,0 +1,175 @@
+{
+  "version": 1,
+  "kind": "a_share_three_day_walkforward_campaign033_research_record",
+  "status": "completed_zero_development_survivors_stress_interval_not_opened",
+  "recorded_at": "2026-07-30T17:29:02Z",
+  "purpose": "Preserve every Campaign033 admissibility and development result, the exact terminal rejection, and the closed 2024-2025/Candidate49 boundaries without post-result rescue.",
+  "bindings": {
+    "no_return_audit_freeze": {
+      "path": "docs/a_share_three_day_walkforward_campaign_033_no_return_audit_freeze_20260730.json",
+      "sha256": "c49f5630a3692aacfae96285f277504c07f3fb15a267a9a5c57f5fcfd2b15351"
+    },
+    "development_preregistration": {
+      "path": "docs/a_share_three_day_walkforward_campaign_033_preregistration.json",
+      "sha256": "1c15aec7e148e4d9e039654fe090e85629c85d57e8e8ca9d5844a9e067eb49b3"
+    },
+    "development_implementation_freeze": {
+      "path": "docs/a_share_three_day_walkforward_campaign_033_development_implementation_freeze_20260730.json",
+      "sha256": "56d11ced08afa077b1fb8f58798a053956cd0935ae76f5af21d0ef92aca192c1"
+    },
+    "campaign_runner": {
+      "path": "scripts/a_share_three_day_walkforward_campaign033.py",
+      "sha256": "2e27892205b626b5d7a5e804cb17f4385d29d6a544c5c3670e6f1ed0d42d957d"
+    },
+    "trial_ledger": {
+      "path": "data/experiments/short_horizon/historical_walkforward/campaign_033/walkforward/trial_ledger.json",
+      "sha256": "2fec760b7b966861cd3f66ba6eacdc479e8d27ccdf1cd3334cf7d21e83cfe319"
+    },
+    "development_survivors": {
+      "path": "data/experiments/short_horizon/historical_walkforward/campaign_033/walkforward/development_survivors.json",
+      "sha256": "c79bedd67743b4474e465ff86e54600a09804d6f2f341ca5de10a4cb8d3689f6",
+      "canonical_value_sha256": "e125db62685aff4946204d081d98049bf1c7a46a19389cf83b820689e9b5faa1"
+    },
+    "closed_stress_record": {
+      "path": "data/experiments/short_horizon/historical_walkforward/campaign_033/walkforward/exposed_stress_consumption_record.json",
+      "sha256": "f6b91792d4fd6a0235adfcd3ad30499cf54090e617e49daea02424686414fe61"
+    },
+    "campaign_report": {
+      "path": "data/experiments/short_horizon/historical_walkforward/campaign_033/walkforward/campaign_report.json",
+      "sha256": "d186d35920bfd42bda73ee435f6bd985e7bf57b7a1df53d07ae6b547b46b043b"
+    },
+    "candidate49_signal_ledger": {
+      "path": "data/experiments/short_horizon/candidate49_future_signal_ledger.json",
+      "sha256": "5193f00d7f36da003f53cec387900da4c3d002299f5dfcfc1a95eaa199ed3a79",
+      "entry_count": 0
+    },
+    "candidate49_execution_ledger": {
+      "path": "data/experiments/short_horizon/candidate49_future_execution_ledger.json",
+      "sha256": "d57a3e61eac969e42cafa418ccd8c0a5ee65dcf69da145bb2c096c2a02a2ea4f",
+      "entry_count": 0
+    }
+  },
+  "no_return_result": {
+    "factor": "intraday_return_spectral_entropy_59f",
+    "direction": "higher",
+    "median_coverage": 0.9983183851218558,
+    "p05_coverage": 0.9933708902303229,
+    "non_overlapping_three_session_cohorts": 540,
+    "comparison_factor_count": 54,
+    "comparison_pass_count": 54,
+    "maximum_absolute_median_daily_rank_correlation": 0.2455419199904494,
+    "admitted_to_development": true
+  },
+  "development_result": {
+    "trial_count": 1,
+    "ledger_entry_count": 1,
+    "ledger_chain_tip_sha256": "b193bee116d2ed9bb014ed32d067e63a2075bbdba8e0fed9c51197d1742f977c",
+    "trial_id": "wf033_single__intraday_return_spectral_entropy_59f",
+    "feature_set": [
+      "intraday_return_spectral_entropy_59f"
+    ],
+    "complexity": 1,
+    "validation_folds": [
+      {
+        "year": 2021,
+        "cohorts": 74,
+        "mean_rank_ic": -0.012842055549907973,
+        "mean_top3_minus_bottom3_gross_return": -0.0028096931652996588,
+        "normalized_return": -0.1685611983925348,
+        "normalized_drawdown": -0.3196299009967023,
+        "pilot_10bp_return": -0.012912445411456752,
+        "pilot_10bp_drawdown": -0.04095445968288092
+      },
+      {
+        "year": 2022,
+        "cohorts": 73,
+        "mean_rank_ic": -0.010157971845812684,
+        "mean_top3_minus_bottom3_gross_return": 0.0015765421462487685,
+        "normalized_return": -0.2748484871446003,
+        "normalized_drawdown": -0.36068477556128153,
+        "pilot_10bp_return": -0.052561597242774316,
+        "pilot_10bp_drawdown": -0.06573428054658947
+      },
+      {
+        "year": 2023,
+        "cohorts": 74,
+        "mean_rank_ic": -0.029073008943548858,
+        "mean_top3_minus_bottom3_gross_return": -0.0065694579923827505,
+        "normalized_return": -0.40688675625708215,
+        "normalized_drawdown": -0.5021740663562466,
+        "pilot_10bp_return": -0.07376166398942285,
+        "pilot_10bp_drawdown": -0.09532620402447511
+      }
+    ],
+    "positive_mean_rank_ic_fold_count": 0,
+    "positive_normalized_return_fold_count": 0,
+    "positive_pilot_return_fold_count": 0,
+    "median_validation_mean_rank_ic": -0.012842055549907973,
+    "median_validation_spread": -0.0028096931652996588,
+    "median_validation_normalized_return": -0.2748484871446003,
+    "median_validation_pilot_return": -0.052561597242774316,
+    "worst_validation_normalized_drawdown": -0.5021740663562466,
+    "development_aggregate": {
+      "cohorts": 375,
+      "mean_rank_ic": -0.010941397713690567,
+      "mean_top3_minus_bottom3_gross_return": -0.0005472773481160402,
+      "normalized_return": -0.3015472716326939,
+      "normalized_drawdown": -0.7336324973487676,
+      "pilot_10bp_return": -0.09331777386187345,
+      "pilot_10bp_drawdown": -0.16531162110179387,
+      "pilot_20bp_return": -0.17806729769548213,
+      "pilot_20bp_drawdown": -0.2215552493605064
+    },
+    "operationally_admissible": true,
+    "operational_rejection_reasons": [],
+    "validation_quality_gate_passed": false,
+    "validation_quality_rejection_reasons": [
+      "insufficient_positive_ic_folds",
+      "median_validation_mean_rank_ic",
+      "median_validation_spread",
+      "insufficient_positive_normalized_return_folds",
+      "insufficient_positive_pilot_return_folds",
+      "median_validation_pilot_return",
+      "worst_validation_normalized_drawdown",
+      "nonpositive_development_aggregate_20bp_return"
+    ],
+    "development_survivor_gate_passed": false,
+    "selected_survivor_count": 0
+  },
+  "stress_and_prospective_boundary": {
+    "stress_record_status": "not_opened_zero_development_survivors",
+    "stress_interval_opened": false,
+    "stress_return_fields_read": false,
+    "candidate49_historical_return_read": false,
+    "candidate49_prospective_ledgers_changed": false,
+    "candidate50_prospective_activation_created": false,
+    "current_scoring_selection_sizing_or_orders_performed": false
+  },
+  "decision": {
+    "factor_terminal": true,
+    "reason": "The frozen higher-direction factor failed every positive-fold count gate, the median IC/spread/pilot gates, the drawdown gate, and the aggregate 20bp return gate.",
+    "development_trial_count": 1,
+    "development_rescue_inversion_rewindow_filter_threshold_retune_or_combination_allowed": false,
+    "stress_2024_2025_opening_allowed": false,
+    "candidate49_remains_only_active_prospective_candidate": true,
+    "candidate50_activation_allowed": false,
+    "investment_or_current_selection_claim_allowed": false
+  },
+  "infrastructure_and_semantic_record": {
+    "pre_return_failures_and_repairs_preserved": [
+      "nested prior-snapshot verification scheduling repair",
+      "missing inherited holding_period_sessions coverage-context repair",
+      "survivor-decision namespace injection repair",
+      "single-trial stress-opening text repair",
+      "direct CLI reporting-helper import repair"
+    ],
+    "survivor_record_hash_semantics": {
+      "closed_stress_record_uses_canonical_json_value_sha256": true,
+      "canonical_value_sha256": "e125db62685aff4946204d081d98049bf1c7a46a19389cf83b820689e9b5faa1",
+      "survivor_file_byte_sha256": "c79bedd67743b4474e465ff86e54600a09804d6f2f341ca5de10a4cb8d3689f6",
+      "mismatch_or_drift": false
+    },
+    "infrastructure_failure_count_in_trial_ledger": 0,
+    "result_after_direction_formula_or_gate_mutation": false
+  }
+}

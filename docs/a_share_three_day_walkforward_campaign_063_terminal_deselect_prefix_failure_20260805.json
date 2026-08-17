@@ -1,0 +1,32 @@
+{
+  "version": 1,
+  "kind": "a_share_three_day_walkforward_campaign063_terminal_deselect_prefix_failure",
+  "status": "recorded_thirty_three_passed_two_failed_deselect_prefix_mismatch",
+  "recorded_at": "2026-08-05T07:02:00+08:00",
+  "stage": "post_terminal_current_campaign063_combined_suite",
+  "result": {
+    "passed": 33,
+    "failed": 2,
+    "deselected": 0,
+    "versioned_current_terminal_tests_passed": 6
+  },
+  "failure": "The two --deselect arguments used node ids beginning tests/data_collector_tests, while pytest collected the exact nodes beginning data_collector_tests, so neither historical-state node was excluded.",
+  "collected_exact_nodes": [
+    "data_collector_tests/test_a_share_three_day_walkforward_campaign063_no_return_audit.py::test_status_is_comparison_and_return_closed_before_audit",
+    "data_collector_tests/test_a_share_three_day_walkforward_campaign063_terminal.py::test_campaign063_reports_are_current_and_generator_is_idempotent"
+  ],
+  "versioned_current_test_module": {
+    "path": "tests/data_collector_tests/test_a_share_three_day_walkforward_campaign063_terminal_v2.py",
+    "sha256": "42ef42e03c3a61ae5f6e8c2a0c1f846a98a10bad25cda366b44b2d464a27087b"
+  },
+  "research_boundary": {
+    "candidate_or_comparison_partition_values_read": false,
+    "historical_daily_prices_or_forward_returns_read": false,
+    "development_or_stress_opened": false,
+    "provider_request_issued": false,
+    "candidate49_ledgers_changed": false,
+    "current_scoring_selection_sizing_or_orders_performed": false
+  },
+  "research_result_changed": false,
+  "authorized_retry": "Rerun the identical current suite with only the two exact collected node ids deselected; do not edit either historical module or the byte-bound v2 module."
+}

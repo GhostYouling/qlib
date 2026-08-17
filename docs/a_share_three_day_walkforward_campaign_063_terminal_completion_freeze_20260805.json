@@ -1,0 +1,51 @@
+{
+  "version": 1,
+  "kind": "a_share_three_day_walkforward_campaign063_terminal_completion_freeze",
+  "status": "frozen_zero_admissible_factors_before_comparisons_prices_or_returns",
+  "recorded_at": "2026-08-05T06:52:00+08:00",
+  "bindings": {
+    "research_record": {
+      "path": "docs/a_share_three_day_walkforward_campaign_063_research_record.json",
+      "sha256": "4ec365cf6395650af31c5063219b3afb643d61b6934610c5961c1b19659a2e3c"
+    },
+    "research_attempt_ledger": {
+      "path": "data/experiments/short_horizon/historical_walkforward/campaign_063/research_attempt_ledger_v5.json",
+      "sha256": "21d7f2fc7f1faa13db1a1206ef333fae2b90dfde728d106c0cfeae55fc8597a5"
+    },
+    "sole_completed_no_return_audit": {
+      "path": "data/experiments/short_horizon/historical_walkforward/campaign_063/no_return/20260804T224823Z_campaign063_no_return_audit.json",
+      "sha256": "06a8b4aace41d9567c8afb26755b6c5f932845a31dc842459ac3d148ab73c7c0"
+    },
+    "structural_variance_diagnosis": {
+      "path": "docs/a_share_three_day_walkforward_campaign_063_structural_peer_variance_diagnosis_20260805.json",
+      "sha256": "4795d140af58aecfb638eaf5abdd97fe513f18bffead731ec93fe16c72fd0171"
+    }
+  },
+  "frozen_semantics": {
+    "factor": "intraday_cross_sectional_standardized_return_state_stability_236p",
+    "direction": "higher",
+    "factor_terminal": true,
+    "terminal_structural_position": 236,
+    "benchmark_date_count_with_exact_zero_full_population_variance_at_position236": 1699,
+    "snapshot_candidate_eligible_rows": 0,
+    "quality_listing_eligible_rows": 1331759,
+    "median_coverage": 0.0,
+    "p05_coverage": 0.0,
+    "frozen_comparison_count": 94,
+    "comparison_values_read": false,
+    "historical_daily_prices_or_forward_returns_read": false,
+    "development_trial_count": 0,
+    "development_survivor_count": 0,
+    "stress_2024_2025_opened": false,
+    "campaign063_infrastructure_only_failure_count": 4,
+    "campaign063_complete_factor_attempt_count": 1,
+    "campaign063_distinct_attempt_count": 5,
+    "campaign063_ledger_entry_count": 5,
+    "cumulative_historical_research_attempt_count": 366,
+    "cumulative_return_reading_development_trial_count": 271,
+    "candidate49_ledgers_changed": false,
+    "provider_request_issued": false,
+    "current_scoring_selection_sizing_or_orders_performed": false
+  },
+  "permanent_boundary": "Do not alter the position grid, strict-positive variance requirement, direction, transform, peer minimum, formula, gates, or comparison order; do not rerun, rescue, model, invert, combine, or open returns for Campaign063."
+}

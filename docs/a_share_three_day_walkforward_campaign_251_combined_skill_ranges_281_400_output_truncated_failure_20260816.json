@@ -1,0 +1,22 @@
+{
+  "schema_version": 1,
+  "kind": "a_share_three_day_walkforward_campaign251_infrastructure_failure",
+  "recorded_at": "2026-08-16T11:43:00+08:00",
+  "timestamp_semantics": "monotonic_logical_append_time_not_host_wall_clock_measurement",
+  "status": "failed_combined_mandatory_skill_ranges_281_400_output_truncated",
+  "attempt_id": "campaign251_infrastructure_001",
+  "phase": "mandatory_skill_read",
+  "command_semantics": "One combined mandatory read of manage-qlib-a-share-data SKILL.md ranges 241-280, 281-320, 321-360 and 361-400 returned a delivery truncated inside the 281-400 portion, so the incomplete combined output could not establish those ranges.",
+  "disposition": "Discard the incomplete 281-400 portion as scientific and validation evidence. Independently reread 281-320, 321-360 and 361-400 with complete exit-zero outputs before any repository research action; the fully visible 241-280 range remained valid.",
+  "research_boundary": {
+    "repository_file_written_by_failed_command": false,
+    "candidate_or_comparator_value_read": false,
+    "daily_price_or_forward_return_read": false,
+    "provider_or_web_request_issued": false,
+    "provider_credential_presence_value_or_digest_read": false,
+    "candidate49_plan_or_run_executed": false,
+    "candidate49_ledgers_changed": false,
+    "stress_2024_2025_opened": false,
+    "failed_or_truncated_output_used_as_scientific_or_validation_evidence": false
+  }
+}

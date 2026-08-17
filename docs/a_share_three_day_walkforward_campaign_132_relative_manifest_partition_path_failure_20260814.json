@@ -1,0 +1,31 @@
+{
+  "schema_version": 1,
+  "kind": "a_share_three_day_walkforward_infrastructure_failure_record",
+  "recorded_at": "2026-08-14T08:56:53+08:00",
+  "campaign": 132,
+  "attempt_id": "campaign132_infrastructure_001",
+  "phase": "infrastructure_failure",
+  "stage": "prevalue_existing_design_schema_inspection",
+  "status": "failed_relative_manifest_partition_path_resolution",
+  "failed_command_exit_code": 1,
+  "failure": {
+    "exception": "FileNotFoundError",
+    "requested_path": "partitions/2019.parquet",
+    "cause": "The read-only inspector treated a path relative to the immutable Campaign102 snapshot manifest as relative to the repository working directory.",
+    "parquet_schema_or_component_values_read": false,
+    "historical_daily_price_or_forward_return_values_read": false,
+    "scientific_result_changed": false
+  },
+  "authoritative_predecessor": {
+    "path": "docs/a_share_three_day_iteration_status_20260814_campaign131_prevalue_terminal_v4.json",
+    "sha256": "99371746a8ce6a1f2123975f74712808b99c306a3fe208433eefe208213da1e6"
+  },
+  "recovery_boundary": {
+    "append_failure_to_campaign132_ledger": true,
+    "resolve_partition_path_against_manifest_parent": true,
+    "reuse_or_mutate_immutable_campaign102_snapshot": false,
+    "override_or_mask_failed_exit_code": false,
+    "provider_request_or_credential_load_allowed": false,
+    "candidate49_change_allowed": false
+  }
+}

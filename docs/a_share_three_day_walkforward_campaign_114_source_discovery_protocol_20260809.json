@@ -1,0 +1,110 @@
+{
+  "schema_version": 1,
+  "kind": "a_share_three_day_walkforward_campaign114_source_discovery_protocol",
+  "status": "frozen_before_official_archive_page_attachment_or_issuer_row_access",
+  "recorded_at": "2026-08-09T02:14:55+08:00",
+  "purpose": "Constrain the next Campaign114 step to deterministic metadata-only discovery of official SSE and SZSE information-disclosure evaluation archives, without observing issuer grades, attachments, factor values, prices, or returns.",
+  "authoritative_inputs": {
+    "campaign114_concept_scouting": {
+      "path": "docs/a_share_three_day_walkforward_campaign_114_concept_scouting_20260809.json",
+      "sha256": "381b0644fd981d862d3a5e3df036c56c11379ff89d9f51d6b83694d83a158745"
+    },
+    "numeric_policy_v80": {
+      "path": "docs/a_share_three_day_walkforward_future_numeric_comparison_eligibility_policy_v80_20260809.json",
+      "sha256": "cc56b81b4520fb5aeb2e7add89209c60a305cbfb1142e15d61cfdc9837708eaa"
+    },
+    "historical_walkforward_policy": {
+      "path": "docs/a_share_three_day_historical_walkforward_research_policy_20260727.json",
+      "sha256": "38426d6161b9bfed323c58caba18feca668b8c9d53e294951a8ba90c01a798bb"
+    }
+  },
+  "selected_source_family": {
+    "name": "official_exchange_information_disclosure_evaluation_grade",
+    "mandatory_publishers": [
+      "Shanghai Stock Exchange",
+      "Shenzhen Stock Exchange"
+    ],
+    "mandatory_archive_years": [
+      2019,
+      2020,
+      2021,
+      2022,
+      2023,
+      2024,
+      2025
+    ],
+    "semantic_unit": "one official annual issuer-level disclosure-work evaluation grade",
+    "prospective_direction_only": "higher_for_better_published_grade",
+    "exact_numeric_mapping_frozen": false,
+    "reason_mapping_not_frozen": "No issuer row or attachment may be opened until metadata proves the exact finite grade vocabulary used by both exchanges. A later mapping must be frozen from official schema or explanatory metadata before any issuer-grade row is exposed; otherwise the source terminates."
+  },
+  "finite_search_vocabulary": [
+    "信息披露工作评价",
+    "信息披露考核",
+    "信息披露评价结果"
+  ],
+  "permitted_metadata_only_actions": [
+    "Navigate or query public unsigned official SSE and SZSE static search, navigation or index pages using only the finite search vocabulary.",
+    "Record the official page URL, catalog or page identifier, exact visible archive labels, publication date labels, pagination metadata and attachment href without opening the attachment.",
+    "Hash the literal official page URL or attachment href as a document-identity candidate without requesting its bytes.",
+    "Record a zero-result, transport, response-shape, missing-year or missing-role failure without retrying through a different source family."
+  ],
+  "forbidden_actions": [
+    "Open, download, screenshot, parse, hash or count any PDF, XLS, XLSX, CSV, ZIP or other evaluation attachment.",
+    "Read, persist, count or infer any issuer code, issuer name, evaluation year or grade row from an attachment, list response or page body.",
+    "Use search-engine snippets as source evidence beyond documenting discovery failure.",
+    "Use cookies, credentials, signed-in browser state, proxy rotation, anti-bot workarounds or provider tokens.",
+    "Use a third-party mirror, news report, broker report, manual name matching, OCR or text mining to fill a missing exchange, year, role or grade vocabulary.",
+    "Drop either exchange, change the source family, widen the search vocabulary after observing results, or infer a grade mapping from issuer rows.",
+    "Read candidate values, any of the 134 comparator values, historical daily prices, forward returns or 2024-2025 stress data."
+  ],
+  "mandatory_metadata_roles_before_source_contract": [
+    "official_exchange_domain",
+    "archive_or_catalog_identity",
+    "issuer_code_role",
+    "evaluation_year_role",
+    "publication_date_role",
+    "finite_grade_vocabulary",
+    "attachment_or_document_identity_role",
+    "stable_pagination_or_year_navigation"
+  ],
+  "acceptance_gate": {
+    "both_exchanges_must_pass": true,
+    "all_2019_2025_years_must_be_identifiable_before_any_attachment_or_row": true,
+    "all_mandatory_metadata_roles_must_be_exact_and_unambiguous": true,
+    "common_finite_grade_vocabulary_must_be_published_in_metadata_or_official_explanation": true,
+    "point_in_time_publication_date_must_be_available": true,
+    "stable_official_document_identity_must_be_available": true,
+    "success_only_authorizes_later_formula_adapter_and_source_contract_freeze": true,
+    "success_does_not_authorize_attachment_or_issuer_row_access": true
+  },
+  "failure_policy": {
+    "terminate_if_either_exchange_or_any_required_year_or_role_fails": true,
+    "post_exposure_label_expansion_or_positional_guessing_allowed": false,
+    "one_exchange_research_path_allowed": false,
+    "third_party_fill_allowed": false,
+    "source_family_substitution_allowed": false,
+    "formula_or_mapping_rescue_allowed": false
+  },
+  "mandatory_later_freeze_before_any_attachment_or_row": [
+    "exact official endpoints, archive identifiers and permitted request parameters",
+    "pure schema-role and canonicalization adapter implemented only with synthetic fixtures",
+    "exact grade vocabulary and numeric mapping",
+    "publication-time availability rule, signal window, missing semantics and raw range",
+    "duplicate/conflict policy and issuer-code normalization",
+    "2019-2023 capacity gate and complete 134-comparator reservation",
+    "atomic source-acceptance workflow, data/code fingerprints and tests"
+  ],
+  "research_boundary_at_freeze": {
+    "search_engine_result_metadata_observed_before_protocol": true,
+    "official_exchange_archive_page_opened": false,
+    "official_exchange_attachment_or_issuer_row_opened": false,
+    "source_rows_read_persisted_or_counted": false,
+    "candidate_or_comparator_values_read": false,
+    "historical_daily_price_or_forward_return_values_read": false,
+    "provider_credential_used": false,
+    "candidate49_ledgers_changed": false,
+    "second_prospective_candidate_created": false,
+    "investment_advice": false
+  }
+}

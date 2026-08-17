@@ -1,0 +1,17 @@
+{
+  "schema_version": 1,
+  "kind": "a_share_three_day_walkforward_campaign205_infrastructure_failure",
+  "status": "failed_skill_tail_batch_output_truncated_discarded",
+  "recorded_at": "2026-08-15T20:12:00+08:00",
+  "phase": "campaign205_manage_qlib_a_share_data_skill_read",
+  "failure": "One batched read of SKILL.md lines 970-1336 completed at the shell but the orchestration output was truncated, so it was discarded as evidence.",
+  "recovery": "The exact remaining ranges were reread individually with line numbers through line 1336 and an EOF probe beyond line 1336 returned no content.",
+  "research_boundary": {
+    "candidate_comparator_security_price_or_return_value_read": false,
+    "provider_or_web_request_issued": false,
+    "provider_credential_presence_value_or_digest_read": false,
+    "candidate49_plan_or_run_executed": false,
+    "candidate49_ledgers_changed": false,
+    "stress_2024_2025_opened": false
+  }
+}

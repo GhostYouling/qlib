@@ -1,0 +1,113 @@
+{
+  "version": 1,
+  "kind": "a_share_three_day_walkforward_campaign023_mechanism_overlap_audit",
+  "status": "passed_conceptual_independence_before_formula_values_comparisons_or_returns",
+  "recorded_at": "2026-07-29T07:28:00Z",
+  "purpose": "Resolve the selected range-boundary concept into one exact no-value mechanism and challenge it against terminal and prospective families before any Campaign023 source partition, candidate value, comparison value, daily price, or forward return is opened.",
+  "concept_scouting": {
+    "path": "docs/a_share_three_day_walkforward_campaign_023_concept_scouting.json",
+    "sha256": "4b56205deddacf2121a4a5591c9ff0369d40422d097f491cab43a1b520e268c5"
+  },
+  "selected_mechanism": {
+    "name": "intraday_range_boundary_translation_coherence_238p",
+    "direction": "higher",
+    "information_domain": "one_minute_high_low_boundary_change_covariance",
+    "formula": "population PearsonCorr(delta_log_high_t, delta_log_low_t) over exactly 238 adjacent transitions wholly inside the two trading halves",
+    "economic_hypothesis": "When minute highs and lows translate in the same direction, the whole traded interval is being accepted at a new level. More coherent boundary translation may indicate persistent information incorporation that carries from the next open through the third close.",
+    "source_fields": [
+      "datetime",
+      "symbol",
+      "provider",
+      "high",
+      "low"
+    ],
+    "selected_bar_grid": "exactly 240 one-minute bars at 09:31-11:30 and 13:01-15:00 after frozen timestamp normalization; standalone 09:30 is excluded",
+    "transition_rule": "Form 119 adjacent log-high changes and 119 adjacent log-low changes separately inside each trading half, concatenate the two halves in chronological order, and compute one population Pearson correlation across the fixed 238-pair support.",
+    "zero_change_rule": "Retain every exact-zero high or low change and every same-sign or opposite-sign pair; do not filter, bridge, rank, threshold, or add an activity condition.",
+    "variance_rule": "Both complete 238-element change vectors must have strictly positive population variance; otherwise the stock-day is missing.",
+    "bar_rule": "Every selected high and low must be finite and positive with exact low<=high. Zero-range bars are valid and remain in fixed support.",
+    "missing_rule": "Any invalid, nonpositive, or misordered selected high/low; nonfinite log change; nonpositive variance in either change vector; nonfinite correlation; or correlation outside [-1,1] makes the stock-day missing.",
+    "endpoint_canonicalization_tolerance": 1E-12,
+    "valid_range": [
+      -1.0,
+      1.0
+    ]
+  },
+  "overlap_challenges": [
+    {
+      "family": "intraday_midrange_width_change_coupling_238p",
+      "result": "distinct",
+      "reason": "Campaign017 correlates midpoint change with width change and is driven by asymmetry between upper- and lower-boundary change variances. Campaign023 correlates the upper- and lower-boundary changes themselves and is driven by their covariance. With equal upper/lower change variances, Campaign017 is zero while Campaign023 can vary across its full range."
+    },
+    {
+      "family": "intraday_adjacent_range_overlap_continuity_238p",
+      "result": "distinct",
+      "reason": "Campaign010 aggregates geometric intersection relative to union for adjacent closed intervals. Campaign023 ignores overlap lengths and asks whether the two interval boundaries co-move after log differencing."
+    },
+    {
+      "family": "intraday_intrabar_range_reversal_238p",
+      "result": "distinct",
+      "reason": "Campaign012 correlates successive range widths. Holding every width sequence fixed while translating each interval changes Campaign023 but leaves range-width reversal unchanged."
+    },
+    {
+      "family": "intraday_global_price_range_revisit_240m_and_range_entropy",
+      "result": "distinct",
+      "reason": "Global revisit and range entropy are order-invariant functions of interval coverage or width allocation. Campaign023 is order-sensitive and depends on adjacent boundary changes, not merged coverage or width shares."
+    },
+    {
+      "family": "intraday_intrabar_body_range_efficiency_and_close_location_pressure",
+      "result": "distinct",
+      "reason": "Campaign009 and Campaign022 use open/close position inside each simultaneous range and are invariant to bar ordering. Campaign023 forbids open/close and changes when the same 240 complete intervals are permuted."
+    },
+    {
+      "family": "close_path_gap_body_breakout_and_return_sign_mechanisms",
+      "result": "distinct",
+      "reason": "Those terminal factors require closes, opens, close-to-close returns, prior-range close breakouts, or gaps. Campaign023 uses only high/low boundary changes and is unchanged when valid opens and closes move inside fixed intervals."
+    },
+    {
+      "family": "activity_transaction_price_market_and_disclosure_mechanisms",
+      "result": "distinct",
+      "reason": "Campaign023 reads no volume, amount, transaction VWAP, market peer, beta, residual, quarterly value, disclosure timing, or event field."
+    },
+    {
+      "family": "Candidate49 cumulative_vwap_crossing_rate",
+      "result": "distinct",
+      "reason": "Candidate49 measures close crossings of causal cumulative transaction VWAP using close, volume, and amount. Campaign023 forbids those fields, uses no cumulative path or crossing count, and may not evaluate Candidate49 returns."
+    }
+  ],
+  "counterfactual_independence_tests": [
+    "With equal upper- and lower-boundary change variances, changing their covariance changes Campaign023 while the Campaign017 midpoint-width correlation remains zero.",
+    "Holding every log range width fixed while translating successive intervals changes Campaign023 but leaves range entropy and range-width reversal unchanged.",
+    "Permuting the same 240 complete high-low intervals generally changes Campaign023 but leaves own-bar body/range, close-location, range entropy, and global merged-width totals unchanged.",
+    "Holding high and low fixed while changing open, close, volume, amount, market peers, or announcement history leaves Campaign023 unchanged."
+  ],
+  "prohibited_variants": [
+    "replace population Pearson correlation with regression beta, covariance, rank correlation, sign agreement, counts, thresholds, bins, or another normalization",
+    "use arithmetic boundary changes, widths alone, midpoint alone, close, open, volume, amount, market peers, subwindows, extra lags, or the standalone 09:30 row",
+    "drop zero changes or zero-range bars, include lunch or overnight transitions, or change endpoint canonicalization after values",
+    "change direction, invert, filter, rewindow, year-select, board-select, industry-select, or combine the factor after returns",
+    "backfill or compare Candidate49 historical returns"
+  ],
+  "required_no_return_challenges": {
+    "coverage_and_capacity_before_comparison_values": true,
+    "statistical_uniqueness_against_44_frozen_prior_statistical_factors": true,
+    "semantic_only_challenges_for_campaign008_and_campaign013": true,
+    "maximum_allowed_absolute_median_daily_rank_correlation": 0.8
+  },
+  "research_boundary": {
+    "external_campaign023_minute_partitions_read": false,
+    "candidate_values_read": false,
+    "comparison_values_read": false,
+    "historical_daily_price_fields_read": [],
+    "historical_forward_return_fields_read": false,
+    "candidate49_historical_return_read": false,
+    "candidate49_signal_or_execution_ledger_changed": false,
+    "candidate50_prospective_activation_created": false,
+    "provider_request_issued": false
+  },
+  "decision": {
+    "conceptually_independent": true,
+    "advance_to_exact_finite_no_return_preregistration": true,
+    "predictive_value_established": false
+  }
+}

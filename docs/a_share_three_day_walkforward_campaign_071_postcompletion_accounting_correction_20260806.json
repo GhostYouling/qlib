@@ -1,0 +1,61 @@
+{
+  "version": 1,
+  "kind": "a_share_three_day_walkforward_campaign071_postcompletion_accounting_correction",
+  "status": "append_only_terminal_validation_failures_recorded_without_research_replay",
+  "recorded_at": "2026-08-06T05:24:00+08:00",
+  "research_close_accounting": {
+    "path": "data/experiments/short_horizon/historical_walkforward/campaign_071/research_attempt_ledger.json",
+    "sha256": "4ff438242c8630a5547a53d4b1188d234ff87020bdb00b178c5ad399f3a6b371",
+    "cumulative_historical_research_attempt_count": 424,
+    "cumulative_return_reading_development_trial_count": 275
+  },
+  "postcompletion_failed_commands": [
+    {
+      "ordinal": 1,
+      "stage": "terminal_current_state_pytest",
+      "result": "failed_command_two_failed_nodes",
+      "failure": "new terminal test called an inherited template status function with an incompatible historical binding and asserted two nonexistent Candidate49 reporting payload keys",
+      "failed_node_count": 2,
+      "candidate_or_comparison_values_read": false,
+      "daily_price_or_forward_return_values_read": false,
+      "provider_request_issued": false
+    },
+    {
+      "ordinal": 2,
+      "stage": "independent_snapshot_verification_command",
+      "result": "failed_before_snapshot_read",
+      "failure": "standalone feature verification command omitted the repository root from PYTHONPATH and failed while importing the scripts package",
+      "failed_node_count": 1,
+      "candidate_or_comparison_values_read": false,
+      "daily_price_or_forward_return_values_read": false,
+      "provider_request_issued": false
+    }
+  ],
+  "corrected_accounting": {
+    "postcompletion_failed_command_count": 2,
+    "postcompletion_failed_node_count": 3,
+    "campaign071_infrastructure_failure_count": 6,
+    "campaign071_complete_factor_attempt_count": 1,
+    "campaign071_attempt_count": 7,
+    "campaign071_return_reading_development_trial_count": 0,
+    "cumulative_historical_research_attempt_count": 426,
+    "cumulative_return_reading_development_trial_count": 275,
+    "attempt_unit": "failed_command_not_failed_node"
+  },
+  "research_result_unchanged": {
+    "factor": "quarterly_net_profit_scale_rank",
+    "coverage_gate_passed": true,
+    "failed_uniqueness_comparison": "quarterly_roe_profit_scale_efficiency_gap_2r",
+    "failed_absolute_median_daily_rank_correlation": 0.8058886587328898,
+    "admissible_factor_count": 0,
+    "historical_daily_price_or_forward_return_values_read": false,
+    "development_or_stress_opened": false,
+    "candidate49_ledgers_changed": false
+  },
+  "immutability": {
+    "research_close_ledger_rewritten": false,
+    "research_record_rewritten": false,
+    "no_return_audit_rewritten_or_rerun": false,
+    "failed_commands_bypass_allowed": false
+  }
+}

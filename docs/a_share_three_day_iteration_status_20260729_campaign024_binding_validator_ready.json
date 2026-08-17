@@ -1,0 +1,78 @@
+{
+  "version": 25,
+  "kind": "a_share_three_day_iteration_status",
+  "status": "candidate49_future_only_preserved_campaign024_terminal_binding_validator_ready_for_campaign025_concept",
+  "recorded_at": "2026-07-29T11:07:17Z",
+  "purpose": "Advance the additive state after installing the complete fail-closed preregistration binding validator required by the Campaign024 discrepancy record.",
+  "previous_authoritative_state": {
+    "path": "docs/a_share_three_day_iteration_status_20260729_campaign024_binding_discrepancy.json",
+    "sha256": "748cee197bf7bb199ab8d253c44414258ac6a320aeb7c7acce9bb65bf06708c6"
+  },
+  "binding_validator_activation": {
+    "path": "docs/a_share_three_day_preregistration_binding_validator_activation_20260729.json",
+    "sha256": "ca07f930cb6e617e9f917b2afba3ebd43a0e12e86eddda7ad05006205be50913",
+    "script": {
+      "path": "scripts/a_share_three_day_preregistration_binding_validator.py",
+      "sha256": "a6ab81a645fb25be2594937356e873c62737167dc88569d9b4b46bba6b7dcc4f"
+    },
+    "campaign024_negative_control_exit_code": 2,
+    "campaign024_positive_control_passed": true,
+    "bypass_failed_validation_allowed": false
+  },
+  "campaign024_terminal_boundary": {
+    "research_record": {
+      "path": "docs/a_share_three_day_walkforward_campaign_024_research_record.json",
+      "sha256": "9ad0e7e37414162bce30273b145dae3956e62c7e31a971791239d3fd8c67b05f"
+    },
+    "binding_discrepancy": {
+      "path": "docs/a_share_three_day_walkforward_campaign_024_preregistration_binding_discrepancy_20260729.json",
+      "sha256": "e7058df6c8eb17c173284f12be1a429a594db79314a773d1750999f6a851ff28"
+    },
+    "evidence_classification": "terminal_diagnostic_with_disclosed_preregistration_binding_defect",
+    "strategy_promotion_allowed": false,
+    "development_survivor_count": 0,
+    "stress_2024_2025_opened": false,
+    "rerun_repair_or_rescue_allowed": false
+  },
+  "research_counts": {
+    "terminal_historical_walkforward_campaign_mechanism_count": 24,
+    "completed_historical_walkforward_campaign_count": 24,
+    "recorded_historical_development_trial_count": 246,
+    "active_prospective_candidate_count": 1,
+    "current_aggregation_candidate_count": 0
+  },
+  "active_prospective_candidate": {
+    "ordinal": 49,
+    "registration_id": "candidate49_intraday_cumulative_vwap_crossing_rate_240m_v1",
+    "historical_return_diagnostic_allowed": false,
+    "signal_ledger": {
+      "path": "data/experiments/short_horizon/candidate49_future_signal_ledger.json",
+      "sha256": "5193f00d7f36da003f53cec387900da4c3d002299f5dfcfc1a95eaa199ed3a79",
+      "entry_count": 0
+    },
+    "execution_ledger": {
+      "path": "data/experiments/short_horizon/candidate49_future_execution_ledger.json",
+      "sha256": "d57a3e61eac969e42cafa418ccd8c0a5ee65dcf69da145bb2c096c2a02a2ea4f",
+      "entry_count": 0
+    }
+  },
+  "next_research_action": {
+    "objective": "Scout one genuinely independent Campaign025 concept without opening any Campaign025 candidate, comparison, daily-price, or return value.",
+    "concept_status": "not_yet_selected_no_formula_no_direction_no_value",
+    "requires_new_daily_bar": false,
+    "requires_same_day_1630_wait": false,
+    "binding_validation_required_at_each_freeze_boundary": true,
+    "development_interval_if_admitted": [
+      "2019-01-01",
+      "2023-12-31"
+    ],
+    "stress_interval_opening_rule": "2024-2025 may open exactly once only for a frozen development survivor"
+  },
+  "decision": {
+    "campaign025_concept_scouting_allowed_now": true,
+    "campaign025_candidate_values_allowed_before_binding_validation": false,
+    "candidate49_remains_only_active_prospective_candidate": true,
+    "candidate50_activation_allowed": false,
+    "current_aggregation_scoring_selection_sizing_or_orders_allowed": false
+  }
+}

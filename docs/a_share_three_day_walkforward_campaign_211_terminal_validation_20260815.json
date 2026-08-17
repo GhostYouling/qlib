@@ -1,0 +1,72 @@
+{
+  "schema_version": 1,
+  "kind": "a_share_three_day_walkforward_campaign211_terminal_validation",
+  "recorded_at": "2026-08-15T22:38:00+08:00",
+  "timestamp_semantics": "monotonic_logical_append_time_not_host_wall_clock_measurement",
+  "status": "passed_focused_cumulative_and_independent_validation_after_excluding_failed_invocations",
+  "authoritative_inputs": {
+    "terminal_result_v3": {
+      "path": "docs/a_share_three_day_walkforward_campaign_211_terminal_result_v3_20260815.json",
+      "sha256": "de9f49c0522c02a077375544d57e389ef742ffdb8546d70baf0f7f0b80c2f079"
+    },
+    "attempt_ledger_v3": {
+      "path": "data/experiments/short_horizon/historical_walkforward/campaign_211/research_attempt_ledger_v3.json",
+      "sha256": "4312b7152c3e88440c9837df59850c135e9bc3592893763c940f6633cf557c11"
+    },
+    "numeric_policy_v320": {
+      "path": "docs/a_share_three_day_walkforward_future_numeric_comparison_eligibility_policy_v320_20260815.json",
+      "sha256": "49bdb0a87456421d8384e3e170e855b4e6edb345633ad1276121b2c93b1ec059"
+    },
+    "terminal_test": {
+      "path": "tests/data_collector_tests/test_a_share_three_day_walkforward_campaign211_terminal.py",
+      "sha256": "61edb84ceab6772fa79bc6cc38baabb00f7e14a8b5caf9170b6846e41b7bd251"
+    }
+  },
+  "focused_validation": {
+    "command_scope": "tests/data_collector_tests/test_a_share_three_day_walkforward_campaign211_terminal.py",
+    "passed": 2,
+    "failed": 0,
+    "skipped": 0,
+    "exit_code": 0
+  },
+  "cumulative_validation": {
+    "campaign_test_range": "145-211",
+    "test_file_count": 99,
+    "campaign_number_parse_base": 10,
+    "passed": 482,
+    "failed": 0,
+    "skipped": 1,
+    "deselected_exact_historical_or_mutable_report_nodes": 26,
+    "exit_code": 0,
+    "earlier_octal_diagnostic_invocation_excluded": true
+  },
+  "independent_validation": {
+    "json_files_parsed": 15,
+    "ledger_entry_count": 13,
+    "ledger_chain_tip_sha256": "068e148d05faa0a0cb8b4c8e7a7b0a62a923d118d3fefbce0f077a7b481c933c",
+    "report_hashes_verified": 2,
+    "candidate49_signal_entry_count": 0,
+    "candidate49_execution_entry_count": 0,
+    "invalid_policy_v319_preserved_and_excluded": true,
+    "stress_2024_2025_opened": false,
+    "exit_code": 0
+  },
+  "quality_validation": {
+    "black_check": "passed",
+    "ruff_check": "passed"
+  },
+  "research_boundary": {
+    "failed_or_truncated_output_used": false,
+    "candidate_or_comparator_value_read": false,
+    "daily_price_or_forward_return_read": false,
+    "stress_2024_2025_opened": false,
+    "provider_or_web_request_issued": false,
+    "provider_credential_presence_value_or_digest_read": false,
+    "candidate49_plan_or_run_executed": false,
+    "candidate49_ledgers_changed": false,
+    "second_prospective_candidate_created": false,
+    "current_scoring_selection_sizing_positions_or_orders_performed": false,
+    "investment_advice": false
+  },
+  "next_action": "Publish a new additive state authorizing Campaign212 offline prevalue research in a genuinely different domain."
+}

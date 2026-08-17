@@ -1,0 +1,102 @@
+{
+  "schema_version": 1,
+  "kind": "a_share_three_day_walkforward_campaign135_concept_scouting",
+  "status": "terminal_zero_selected_candidates_before_formula_source_candidate_comparator_price_or_return_values",
+  "recorded_at": "2026-08-14T10:56:11+08:00",
+  "purpose": "Review a finite Campaign135 catalog against all 151 complete logical definitions and frozen terminal histories, reject exposed operator refreshes before values, and admit only a genuinely independent three-session mechanism.",
+  "authoritative_inputs": {
+    "campaign134_terminal_state": {
+      "path": "docs/a_share_three_day_iteration_status_20260814_campaign134_terminal.json",
+      "sha256": "f89be3513124da16c78c8652d3a3d2dff14a9b4f8a06247642a0926e6d4354f6"
+    },
+    "numeric_policy_v161": {
+      "path": "docs/a_share_three_day_walkforward_future_numeric_comparison_eligibility_policy_v161_20260814.json",
+      "sha256": "8b9affa45d6d484ad83a6f20c457f6dfbee59b450b4ab8607a1b970a0cb6b629",
+      "complete_definition_count_reviewed": 151,
+      "complete_definition_order_sha256": "91c2da3018330edbaddbb60b86370dcd9732425590f0565c70790b990002e0b5",
+      "eligible_numeric_comparator_count_reserved_but_not_loaded": 140,
+      "eligible_numeric_comparator_order_sha256": "c71bfe27486c9567afd3aca21e4b04053658c23ac651e7f4df7fd014b0c31efd"
+    },
+    "historical_walkforward_policy": {
+      "path": "docs/a_share_three_day_historical_walkforward_research_policy_20260727.json",
+      "sha256": "38426d6161b9bfed323c58caba18feca668b8c9d53e294951a8ba90c01a798bb"
+    }
+  },
+  "finite_prevalue_concept_catalog": [
+    {
+      "catalog_id": "c135_01",
+      "name": "intraday_running_close_extreme_recency_balance_240m",
+      "source": "accepted one-minute close snapshot",
+      "proposed_definition": "Across the full 240-close path, average the age since the latest running low minus the age since the latest running high, with exact ties refreshing the relevant record age.",
+      "prevalue_decision": "rejected_as_explicit_campaign083_recency_and_signed_frontier_recombination_before_formula_or_values",
+      "reason": "Campaign083 rejected both close-frontier last-innovation recency and signed high-versus-low frontier imbalance before values. Averaging record ages over all clocks changes the summary functional but recombines those two exposed choices; it is not a new information domain and may not be rescued by a later uniqueness result."
+    },
+    {
+      "catalog_id": "c135_02",
+      "name": "intraday_cross_sectional_cumulative_return_rank_occupancy_240m",
+      "source": "accepted one-minute close snapshot plus same-position peers",
+      "prevalue_decision": "rejected_as_campaign063_peer_rank_operator_refresh_before_values",
+      "reason": "Campaign063 explicitly rejected cross-sectional percentile ranks, bucket persistence and alternate peer-state operators before freezing its standardized state-mobility definition; its terminal state forbids changing the peer statistic, formula or transform. Replacing return-state mobility with average cumulative-return rank occupancy would reopen that frozen peer-construction search."
+    },
+    {
+      "catalog_id": "c135_03",
+      "name": "intraday_full_session_median_close_crossing_or_recross_count",
+      "source": "accepted one-minute close snapshot",
+      "prevalue_decision": "rejected_as_exposed_crossing_and_passage_count_family_before_values",
+      "reason": "Candidate49 is the isolated causal cumulative-VWAP crossing mechanism, while Campaign121 froze out passage count, recross count and alternate reference levels before values. Changing the anchor to the completed-session median is a reference substitution inside the same crossing family."
+    },
+    {
+      "catalog_id": "c135_04",
+      "name": "intraday_amount_or_range_gini_hhi_top_share_refresh",
+      "source": "accepted one-minute amount or high-low snapshot",
+      "prevalue_decision": "rejected_as_terminal_concentration_functional_sweep_before_values",
+      "reason": "Amount participation entropy and intrabar range participation entropy already consume unordered concentration; Campaign011 and Campaign128 explicitly reject Gini, Herfindahl, top-share and related dispersion substitutes."
+    },
+    {
+      "catalog_id": "c135_05",
+      "name": "complete_library_robust_vote_trimmed_mean_or_cluster_refresh",
+      "source": "complete frozen historical feature library",
+      "prevalue_decision": "rejected_as_post_exposure_complete_library_operator_refresh_before_values",
+      "reason": "Campaign044, Campaign101, Campaign102, Campaign103 and Campaign132-134 already consume deterministic consensus, lower-tail consensus, supervised weights, temporal breadth, nonlinear fits and correlation components. A trimmed vote, threshold or reclustering rule after those outcomes is a prohibited exposed-library refresh."
+    },
+    {
+      "catalog_id": "c135_06",
+      "name": "daily_opening_gap_or_zero_volume_resumption_proxy",
+      "source": "accepted daily OHLCV rows",
+      "prevalue_decision": "rejected_as_invalid_source_semantics_or_terminal_source_proxy_before_values",
+      "reason": "The prior-close opening-gap branch is permanently invalid under the historical 09:30 semantics, and Campaign113 already terminalized suspension/resumption capacity. Inferring either state from daily gaps or zero-volume rows would downgrade frozen source semantics rather than add a new point-in-time source."
+    }
+  ],
+  "selection": {
+    "concepts_reviewed": 6,
+    "rejected_concept_count": 6,
+    "selected_candidate_count": 0,
+    "selected_candidate": null,
+    "genuinely_new_independent_mechanism_found": false,
+    "reason": "Each proposal is an explicit prevalue rejection, a terminal-family operator or reference refresh, a source-semantic downgrade, or a post-exposure complete-library recombination."
+  },
+  "research_boundary": {
+    "repository_metadata_and_terminal_history_read": true,
+    "programmatic_provider_request_issued": false,
+    "provider_credential_loaded": false,
+    "campaign135_source_rows_read": false,
+    "campaign135_candidate_values_computed_or_read": false,
+    "campaign135_comparator_values_read": false,
+    "historical_daily_price_fields_read": [],
+    "historical_forward_returns_read": false,
+    "stress_2024_2025_opened": false,
+    "candidate49_historical_backfill_performed": false,
+    "candidate49_ledgers_changed": false,
+    "second_prospective_candidate_created": false,
+    "current_scoring_selection_sizing_positions_or_orders_performed": false,
+    "investment_advice": false,
+    "inherited_current_listing_survivorship_limitation_remains": true
+  },
+  "decision": {
+    "create_campaign135_formula_feature_or_model_implementation": false,
+    "run_source_acceptance_coverage_uniqueness_or_return_trial": false,
+    "append_complete_definition_or_numeric_comparator": false,
+    "terminalize_campaign135_prevalue": true,
+    "next_campaign_requirement": "Begin Campaign136 only from a genuinely new prevalue mechanism or a separately accepted point-in-time source; preserve every Campaign135 rejection, the exact 151-definition/140-comparator orders, and Candidate49 as the sole prospective ledger."
+  }
+}

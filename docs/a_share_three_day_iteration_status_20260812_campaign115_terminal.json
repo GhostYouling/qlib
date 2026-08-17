@@ -1,0 +1,98 @@
+{
+  "schema_version": 13,
+  "kind": "a_share_three_day_iteration_status",
+  "status": "campaign115_terminal_before_values_campaign116_offline_prevalue_allowed",
+  "recorded_at": "2026-08-12T15:47:10+08:00",
+  "supersedes_without_rewriting": {
+    "path": "docs/a_share_three_day_iteration_status_20260809_campaign115_zero_network_gate_chain_ready_v12.json",
+    "sha256": "bbe7ef3e0a40d5a9c2322dad76e29f36de63ac85f8ddb8bebbf39b24add20169",
+    "preserved": true,
+    "scientific_values_changed": false,
+    "factor_library_changed": false,
+    "numeric_comparator_order_changed": false,
+    "accounting_changed": false,
+    "campaign_activity_changed": true
+  },
+  "authoritative_artifacts": {
+    "terminal_decision": {
+      "path": "docs/a_share_three_day_walkforward_campaign_115_entitlement_independent_terminal_20260812.json",
+      "sha256": "7eb6f7a49a0235b85ee752f01a357986da4366a37d9d8cf7b9dd9dcc2f6306cf"
+    },
+    "numeric_policy_v98": {
+      "path": "docs/a_share_three_day_walkforward_future_numeric_comparison_eligibility_policy_v98_20260812.json",
+      "sha256": "2b183bd2aaaa04e8fe9e0c56b7139f8e4e2b2f8ceed79865d14c58c864676bff"
+    },
+    "terminal_report_v14": {
+      "path": "docs/a_share_three_day_walkforward_campaign_115_terminal_report_v14.md",
+      "sha256": "5bd00ed4eb049789288b980356659ce532daba3211d1270fb2d2fa4e35cff866"
+    },
+    "attempt_ledger_v16_preserved": {
+      "path": "data/experiments/short_horizon/historical_walkforward/campaign_115/research_attempt_ledger_v16.json",
+      "sha256": "a02dbf7ca815e2d42b00ec09f69fbcac850b7c96c3b276d585395eac615c4229"
+    }
+  },
+  "workspace": {
+    "authoritative_git_worktree": "/Volumes/DIsk/Disk-Coding/qlib",
+    "application_workspace_path": "/Users/niyufei/Coding/qlib",
+    "application_workspace_is_git_worktree": false
+  },
+  "campaign115": {
+    "active_historical_campaign": false,
+    "terminal": true,
+    "terminal_before_provider_values": true,
+    "terminal_reason": "explicit_user_scope_decision_to_continue_without_limit_list_d_or_5000_point_dependency",
+    "account_entitlement_inferred": false,
+    "predictive_result": "not_tested",
+    "provider_request_issued": false,
+    "provider_rows_candidate_or_comparator_values_read": false,
+    "historical_daily_price_or_forward_return_values_read": false,
+    "stress_2024_2025_opened": false,
+    "reopen_repair_rescue_source_substitution_or_same_formula_retry_allowed": false
+  },
+  "campaign116": {
+    "may_start": true,
+    "current_stage": "not_yet_started_at_this_state",
+    "offline_work_allowed_at_any_local_time": true,
+    "must_use_existing_accepted_local_data": true,
+    "provider_request_allowed": false,
+    "must_begin_with_finite_prevalue_concept_catalog_and_independence_audit": true,
+    "candidate_or_comparator_values_may_be_read_before_freeze": false
+  },
+  "frozen_library": {
+    "complete_definition_count": 141,
+    "complete_definition_order_sha256": "ccab6e3d9d81b0a02d4ff178fdd442b26a1e68e3655e1c6f5b2fcb28cd4a4559",
+    "eligible_numeric_comparator_count": 134,
+    "eligible_numeric_comparator_order_sha256": "31d788db467f558a0ac538315343090f1b3ad4cb27a26136a49ebaa88b2fdbf2"
+  },
+  "accounting": {
+    "campaign115_attempt_count": 25,
+    "campaign115_infrastructure_failure_count": 23,
+    "campaign115_prevalue_scientific_attempt_count": 2,
+    "campaign115_complete_factor_attempt_count": 0,
+    "campaign115_return_reading_development_trial_count": 0,
+    "cumulative_historical_research_attempt_count": 878,
+    "cumulative_return_reading_development_trial_count": 302
+  },
+  "candidate49": {
+    "only_active_prospective_candidate": true,
+    "signal_ledger_path": "data/experiments/short_horizon/candidate49_future_signal_ledger.json",
+    "signal_ledger_sha256": "5193f00d7f36da003f53cec387900da4c3d002299f5dfcfc1a95eaa199ed3a79",
+    "signal_entry_count": 0,
+    "execution_ledger_path": "data/experiments/short_horizon/candidate49_future_execution_ledger.json",
+    "execution_ledger_sha256": "d57a3e61eac969e42cafa418ccd8c0a5ee65dcf69da145bb2c096c2a02a2ea4f",
+    "execution_entry_count": 0,
+    "historical_backfill_performed": false
+  },
+  "research_boundary": {
+    "credential_loaded": false,
+    "credential_value_printed_hashed_or_persisted": false,
+    "provider_request_issued": false,
+    "candidate_or_comparator_values_read": false,
+    "historical_daily_price_or_forward_return_values_read": false,
+    "stress_2024_2025_opened": false,
+    "second_prospective_candidate_created": false,
+    "current_scoring_selection_sizing_positions_or_orders_performed": false,
+    "investment_advice": false
+  },
+  "next_safe_action": "Start Campaign116 from one finite, economically independent mechanism using only existing accepted local historical data; freeze formula, direction, support, no-return gates, costs, and walk-forward protocol before candidate or comparator values."
+}

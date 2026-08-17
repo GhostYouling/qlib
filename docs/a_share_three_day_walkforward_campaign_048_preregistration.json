@@ -1,0 +1,157 @@
+{
+  "version": 1,
+  "kind": "a_share_three_day_walkforward_campaign048_preregistration",
+  "campaign_id": "a_share_three_day_walkforward_campaign_048",
+  "status": "frozen_before_campaign048_2019_2023_development_return_read",
+  "frozen_at": "2026-08-01T05:12:00Z",
+  "purpose": "Freeze the only Campaign048 factor admitted by the ordered no-return gates and the exact pre-value trial identifier before any 2019-2023 daily price or forward-return field is opened.",
+  "evidence_classification": {
+    "development_2019_2023": "historically exposed expanding walk-forward research, not unseen or pristine",
+    "stress_2024_2025": "historically exposed stress replay; remains closed until a frozen nonzero development-survivor record exists",
+    "point_in_time_limitation": "The local holding universe derives from a current listing snapshot and can contain survivorship bias.",
+    "investment_or_current_selection_claim_allowed": false
+  },
+  "template_binding": {
+    "path": "docs/a_share_three_day_walkforward_campaign_004_preregistration.json",
+    "sha256": "e67811f265b2b744073391fa65698951b132065109f95fa47991b8254a5756e6"
+  },
+  "governance_bindings": {
+    "authoritative_iteration_state": {
+      "path": "docs/a_share_three_day_iteration_status_20260801_campaign047_verified.json",
+      "sha256": "74fceafcd407fa8972e68231be51c73757278ea770bf0f543ee9faa0e8c254ca"
+    },
+    "historical_walkforward_policy": {
+      "path": "docs/a_share_three_day_historical_walkforward_research_policy_20260727.json",
+      "sha256": "38426d6161b9bfed323c58caba18feca668b8c9d53e294951a8ba90c01a798bb"
+    },
+    "future_only_policy": {
+      "path": "docs/a_share_three_day_iteration_status_20260725_future_only.json",
+      "sha256": "d44e1cb3707cce194eed37e99cc90f865396b1de8c35e02a393a2a243d973466"
+    },
+    "concept_scouting": {
+      "path": "docs/a_share_three_day_walkforward_campaign_048_concept_scouting.json",
+      "sha256": "65907e3414678cd4bcecd24c5996b4fd4e1d382f904c333f0d0fabaeb81d41c2"
+    },
+    "mechanism_overlap_audit": {
+      "path": "docs/a_share_three_day_walkforward_campaign_048_mechanism_overlap_audit.json",
+      "sha256": "a876b4cb47083cceebc2fdc443784f8039ac3bfbc6014287528eaa50c61c489f"
+    },
+    "campaign047_terminal_record": {
+      "path": "docs/a_share_three_day_walkforward_campaign_047_research_record.json",
+      "sha256": "a92d65886e943c4ef043bb0baeb01e08e9cc02253bd97cbd776dd66195f4feb9"
+    }
+  },
+  "no_return_bindings": {
+    "protocol": {
+      "path": "docs/a_share_three_day_walkforward_campaign_048_no_return_preregistration.json",
+      "sha256": "8adef382963cadcf7e19635ec1cc40e152f0a5f3feddfb1c673303de4687f1ab"
+    },
+    "audit": {
+      "path": "data/experiments/short_horizon/historical_walkforward/campaign_048/no_return/20260801T050642Z_campaign048_no_return_audit.json",
+      "sha256": "33d16864a3b641e3d1c4b5fc6b96f995add3cfd4d104a6aad7bb686d4fd8534c"
+    },
+    "audit_freeze": {
+      "path": "docs/a_share_three_day_walkforward_campaign_048_no_return_audit_freeze_20260801.json",
+      "sha256": "2a7a67ece68a1ccb6925c87861a7090d74f034bba5fc5065b08ec22abaa199b6"
+    },
+    "feature_snapshot": {
+      "path": "/Volumes/DIsk/qlib-a-share-tushare-1m/derived/a_share/rich/tushare/minute_walkforward_campaign048_feature_library/tushare_stk_mins_1m_2019_2025_ea0cbb8f_walkforward_campaign048_feature_library_v1/snapshot_manifest.json",
+      "sha256": "49e5f7f83e8a5a4d34deb494602c8582da9dc645a0f7e5c8aef6ef824a3bc017",
+      "dataset_sha256": "d294401092beb8e8cd0b84c1991e3ba5a158318cdab4b63c4920120fafe9db1b"
+    },
+    "feature_and_no_return_runner": {
+      "path": "scripts/a_share_three_day_walkforward_campaign048_features_v3.py",
+      "sha256": "b1767a4fdd9567aa40550b7c79fc51abc4b9e995141fb68257e9708696bf7367"
+    }
+  },
+  "implementation": {
+    "script": {
+      "path": "scripts/a_share_three_day_walkforward_campaign048.py",
+      "sha256": "1c392b379f48d3220b9cdb7026ccc17f9a052dd89e787622d32b57116d5fb9e3"
+    },
+    "development_command": "PYTHONPATH=. python scripts/a_share_three_day_walkforward_campaign048.py run-development",
+    "exposed_stress_command": "PYTHONPATH=. python scripts/a_share_three_day_walkforward_campaign048.py run-exposed-stress --confirm-exposed-stress",
+    "output_root": "/Users/niyufei/Coding/qlib/data/experiments/short_horizon/historical_walkforward/campaign_048/walkforward"
+  },
+  "factor_library": [
+    {
+      "feature_id": "wf048_f01",
+      "name": "intraday_two_sided_wick_absorption_balance_240m",
+      "direction": "higher",
+      "formula": "Across exactly 240 bars at 09:31-11:30 and 13:01-15:00, define lower wick l_i=log(min(open_i,close_i)/low_i) and upper wick u_i=log(high_i/max(open_i,close_i)). Pool L=sum(l_i) and U=sum(u_i) and return 2*min(L,U)/(L+U).",
+      "economic_hypothesis": "Balanced rejection of both intraminute extremes is consistent with continuous two-sided liquidity absorption rather than one-sided pressure, potentially leaving a more resilient completed-session state for the next-open-to-third-close horizon.",
+      "dataset_group": "campaign048_new_factors",
+      "partition_root": "/Volumes/DIsk/qlib-a-share-tushare-1m/derived/a_share/rich/tushare/minute_walkforward_campaign048_feature_library/tushare_stk_mins_1m_2019_2025_ea0cbb8f_walkforward_campaign048_feature_library_v1/partitions",
+      "bindings": [
+        {
+          "path": "/Volumes/DIsk/qlib-a-share-tushare-1m/derived/a_share/rich/tushare/minute_walkforward_campaign048_feature_library/tushare_stk_mins_1m_2019_2025_ea0cbb8f_walkforward_campaign048_feature_library_v1/snapshot_manifest.json",
+          "sha256": "49e5f7f83e8a5a4d34deb494602c8582da9dc645a0f7e5c8aef6ef824a3bc017"
+        },
+        {
+          "path": "docs/a_share_three_day_walkforward_campaign_048_no_return_preregistration.json",
+          "sha256": "8adef382963cadcf7e19635ec1cc40e152f0a5f3feddfb1c673303de4687f1ab"
+        },
+        {
+          "path": "data/experiments/short_horizon/historical_walkforward/campaign_048/no_return/20260801T050642Z_campaign048_no_return_audit.json",
+          "sha256": "33d16864a3b641e3d1c4b5fc6b96f995add3cfd4d104a6aad7bb686d4fd8534c"
+        },
+        {
+          "path": "docs/a_share_three_day_walkforward_campaign_048_no_return_audit_freeze_20260801.json",
+          "sha256": "2a7a67ece68a1ccb6925c87861a7090d74f034bba5fc5065b08ec22abaa199b6"
+        }
+      ]
+    }
+  ],
+  "search_space": {
+    "admissible_factor_names_canonical": [
+      "intraday_two_sided_wick_absorption_balance_240m"
+    ],
+    "single_factor_rule": "Evaluate the only admissible factor exactly once at weight 1.0 using trial_id wf048_intraday_two_sided_wick_absorption_balance_240m_single_higher.",
+    "pair_rule": "No pair exists because exactly one factor passed both no-return gates.",
+    "all_components_required": true,
+    "directional_rank_method": "same-day average percentile rank using the frozen higher direction",
+    "weight_fitting": false,
+    "threshold_search": false,
+    "year_subset_search": false,
+    "filter_search": false,
+    "triple_or_higher_order_combinations": false,
+    "old_terminal_factor_rescue_combinations": false,
+    "pair_weight_grid_for_canonical_factor_order": [
+      [
+        0.25,
+        0.75
+      ],
+      [
+        0.5,
+        0.5
+      ],
+      [
+        0.75,
+        0.25
+      ]
+    ],
+    "expected_single_trial_count": 1,
+    "expected_pair_trial_count": 0,
+    "expected_trial_count": 1,
+    "record_every_trial_and_infrastructure_failure": true,
+    "post_result_change_requires_new_campaign_version": true
+  },
+  "candidate49_boundary": {
+    "registration_id": "candidate49_intraday_cumulative_vwap_crossing_rate_240m_v1",
+    "included_in_feature_library": false,
+    "historical_return_read_allowed": false,
+    "historical_signal_execution_or_milestone_backfill_allowed": false,
+    "prospective_ledgers_changed_by_campaign": false
+  },
+  "research_output_boundary": {
+    "current_scoring_allowed": false,
+    "selection_allowed": false,
+    "sizing_allowed": false,
+    "orders_allowed": false,
+    "prospective_candidate_activation_allowed": false,
+    "campaign004_rescue_or_reweight_allowed": false,
+    "terminated_factor_rescue_or_combination_allowed": false,
+    "investment_advice": false,
+    "campaign004_through_campaign047_rescue_or_reweight_allowed": false
+  }
+}

@@ -1,0 +1,52 @@
+{
+  "version": 2,
+  "kind": "a_share_three_day_walkforward_campaign085_feature_implementation_freeze",
+  "status": "frozen_v2_parent_creation_repair_before_compact_cache_rows_candidate_or_comparison_values",
+  "recorded_at": "2026-08-06T23:47:00+08:00",
+  "protocol": {
+    "path": "docs/a_share_three_day_walkforward_campaign_085_no_return_preregistration.json",
+    "sha256": "c08bf9ec921e97ceafa44b143ef6da0bee8223b65841f09093a01358f61936e6"
+  },
+  "superseded_v1_implementation_freeze": {
+    "path": "docs/a_share_three_day_walkforward_campaign_085_feature_implementation_freeze_20260806.json",
+    "sha256": "741c65876e06835db0cc59b8422a798aa11bc2b620c76c0db2e2f3dc62b1c5f0",
+    "preserved": true
+  },
+  "repair_protocol": {
+    "path": "docs/a_share_three_day_walkforward_campaign_085_feature_implementation_repair_protocol_v2_20260806.json",
+    "sha256": "92f873d020d0103f980501ec46b4b80c3a378dfd4c3908da17d2e65c9fbede1c"
+  },
+  "feature_runner": {
+    "path": "scripts/a_share_three_day_walkforward_campaign085_features.py",
+    "sha256": "309239597b52ae364771112f9d1de9bc4231662226ed11b1d69f2d4770e569c8"
+  },
+  "tests": {
+    "path": "tests/data_collector_tests/test_a_share_three_day_walkforward_campaign085_features.py",
+    "sha256": "e8325db91dc6f7e80130dee46036d4a8c086d302e9a363f44586df37317a071c",
+    "passed": 7,
+    "failed": 0,
+    "black_and_ruff_passed": true
+  },
+  "prevalue_infrastructure_failure_record": {
+    "path": "docs/a_share_three_day_walkforward_campaign_085_prevalue_infrastructure_failures_v2_20260806.json",
+    "sha256": "5bfcb726c67a01ccc00af47abe4f2039a1fcc0021ed84dd15d5177a340fc8fae"
+  },
+  "research_attempt_ledger": {
+    "path": "data/experiments/short_horizon/historical_walkforward/campaign_085/research_attempt_ledger_v3.json",
+    "sha256": "ce49e3f252855c0af9fcdbb3f6a52e031f0af06adedac76c76de7cf71a8d51d4"
+  },
+  "authorized_delta_verified": {
+    "exact_frozen_output_parent_created_before_temporary_sibling": true,
+    "temporary_root_is_sibling_of_frozen_output": true,
+    "formula_direction_inputs_rank_universe_missing_semantics_source_projection_and_output_root_unchanged": true,
+    "all_other_v1_semantics_unchanged": true
+  },
+  "compact_cache_rows_read_before_freeze": false,
+  "candidate_values_computed_before_freeze": false,
+  "comparison_values_read_before_freeze": false,
+  "historical_daily_price_or_forward_return_values_read_before_freeze": false,
+  "provider_request_issued_before_freeze": false,
+  "candidate49_ledgers_changed_before_freeze": false,
+  "second_prospective_candidate_created": false,
+  "current_scoring_selection_sizing_or_orders_performed": false
+}

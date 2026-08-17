@@ -1,0 +1,72 @@
+{
+  "schema_version": 1,
+  "kind": "a_share_three_day_walkforward_campaign146_snapshot_recovery_verification_protocol",
+  "status": "frozen_before_recovery_partition_reads",
+  "recorded_at": "2026-08-14T21:35:28+08:00",
+  "purpose": "Verify the immutable Campaign146 snapshot without rewriting it after the original frozen verifier retained three Campaign105 support-header predicates.",
+  "authoritative_inputs": {
+    "implementation_freeze": {
+      "path": "docs/a_share_three_day_walkforward_campaign_146_no_return_implementation_freeze_20260814.json",
+      "sha256": "673eff0bf3190a7af6c02dc9439c2688ed4e514e28888ef929f7c7c3c5da887d"
+    },
+    "verification_failure": {
+      "path": "docs/a_share_three_day_walkforward_campaign_146_snapshot_verification_failure_20260814.json",
+      "sha256": "a20a3e2c91acd9b26b746985039cc8b37719233088b8dfe0fbcc32f716ea9d7c"
+    },
+    "snapshot_manifest": {
+      "path": "/Volumes/DIsk/qlib-a-share-tushare-1m/derived/a_share/rich/tushare/minute_walkforward_campaign146_feature_library/tushare_stk_mins_1m_2019_2025_ea0cbb8f_walkforward_campaign146_feature_library_v1/snapshot_manifest.json",
+      "sha256": "951872dbdcfa2b00e9603d3be44b059c7d24204fba5757551afbcd46ee8a3f74",
+      "dataset_sha256": "7278ae76407215eab75e9ff0119d8c6a073e4d7ac9df5b7d349bc09e6cf889c4",
+      "partitions": 33015,
+      "rows": 7724498,
+      "eligible_rows": 7630332
+    }
+  },
+  "known_frozen_verifier_predicate_discrepancy": {
+    "published_manifest_values": {
+      "positive_frequency_count_per_half": 59,
+      "positive_half_spectral_denominators_required": true,
+      "signed_return_and_amount_magnitudes_used": true
+    },
+    "defective_inherited_expectations": {
+      "positive_frequency_count_per_half": 0,
+      "positive_half_spectral_denominators_required": false,
+      "signed_return_and_amount_magnitudes_used": false
+    },
+    "effective_values_from_preregistration_formula_and_builder_publication": {
+      "positive_frequency_count_per_half": 59,
+      "positive_half_spectral_denominators_required": true,
+      "signed_return_and_amount_magnitudes_used": true,
+      "factor_range_inclusive": [
+        -1.0,
+        1.0
+      ]
+    },
+    "snapshot_manifest_or_partition_rewrite_allowed": false,
+    "formula_direction_source_support_gate_or_catalog_change_allowed": false
+  },
+  "recovery_verification": {
+    "metadata_first": true,
+    "require_explicit_confirmation_before_partition_reads": true,
+    "verify_every_partition_path_containment": true,
+    "verify_every_partition_byte_sha256": true,
+    "verify_every_partition_frame_sha256": true,
+    "verify_exact_output_schema_rows_eligibility_and_range": true,
+    "recompute_ordered_dataset_sha256": true,
+    "recheck_manifest_sha256_after_all_partitions": true,
+    "write_or_repair_snapshot": false,
+    "read_comparator_values": false,
+    "read_daily_price_or_forward_return_values": false
+  },
+  "research_boundary": {
+    "recovery_partition_values_read_before_freeze": false,
+    "coverage_statistics_read": false,
+    "comparator_values_read": false,
+    "historical_daily_price_or_forward_return_values_read": false,
+    "provider_request_issued": false,
+    "credential_loaded": false,
+    "candidate49_ledgers_changed": false,
+    "snapshot_or_partition_rewritten": false
+  },
+  "next_action": "Implement and synthetically test a recovery verifier, bind its exact bytes, run plan, and only when ready=true execute the explicitly confirmed full verification."
+}

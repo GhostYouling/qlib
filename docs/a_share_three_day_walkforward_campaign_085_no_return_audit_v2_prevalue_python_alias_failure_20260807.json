@@ -1,0 +1,27 @@
+{
+  "version": 1,
+  "kind": "a_share_three_day_walkforward_campaign085_no_return_audit_v2_prevalue_environment_failure",
+  "status": "python_command_absent_before_lint_or_tests",
+  "recorded_at": "2026-08-07T00:22:00+08:00",
+  "repair_protocol": {
+    "path": "docs/a_share_three_day_walkforward_campaign_085_no_return_audit_repair_protocol_v2_20260807.json",
+    "sha256": "57753b98cd069b9d554bf4de2e6cffd2f0664c8c997bd4a4477344ea92473a46"
+  },
+  "failed_command_sequence": "python -m black --check <runner> <tests> && python -m ruff check <runner> <tests> && python -m pytest -q <tests>",
+  "exit_code": 127,
+  "stderr": "zsh: command not found: python",
+  "black_executed": false,
+  "ruff_executed": false,
+  "tests_executed": false,
+  "authorized_recovery": "use the Codex bundled Python executable without changing source, tests, formula, gates, or data",
+  "candidate_snapshot_values_read": false,
+  "coverage_or_capacity_metrics_computed": false,
+  "comparison_values_read": false,
+  "historical_daily_price_fields_read": [],
+  "historical_forward_returns_read": false,
+  "provider_request_issued": false,
+  "candidate49_ledgers_changed": false,
+  "research_attempt_count_increment": 1,
+  "factor_attempt_count_increment": 0,
+  "development_trial_count_increment": 0
+}

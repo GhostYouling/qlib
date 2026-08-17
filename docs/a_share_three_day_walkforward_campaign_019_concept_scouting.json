@@ -1,0 +1,97 @@
+{
+  "version": 1,
+  "kind": "a_share_three_day_walkforward_campaign019_concept_scouting",
+  "status": "concept_only_one_new_mechanism_selected_no_formula_no_direction_no_values_no_returns",
+  "recorded_at": "2026-07-29T01:07:36Z",
+  "purpose": "Select one genuinely independent Campaign019 economic mechanism before fixing a formula, direction, candidate value, comparison value, daily price, or forward return.",
+  "authoritative_bindings": {
+    "prior_iteration_state": {
+      "path": "docs/a_share_three_day_iteration_status_20260729_campaign018.json",
+      "sha256": "7d054e627d925267f7ee731251154df8a73afeba6d490e3f68aa42494f91e74b"
+    },
+    "historical_walkforward_policy": {
+      "path": "docs/a_share_three_day_historical_walkforward_research_policy_20260727.json",
+      "sha256": "38426d6161b9bfed323c58caba18feca668b8c9d53e294951a8ba90c01a798bb"
+    }
+  },
+  "selected_concept": {
+    "concept_name": "intraday_bar_direction_continuity",
+    "candidate_ordinal": null,
+    "prospective_active": false,
+    "concept_status": "mechanism_only_not_yet_exactly_preregistered",
+    "direction": null,
+    "formula": null,
+    "allowed_source_fields": [
+      "datetime",
+      "symbol",
+      "provider",
+      "open",
+      "close"
+    ],
+    "mechanism": "Measure whether the signed open-to-close auction outcome inside one minute bar tends to continue into the next bar within the same trading half.",
+    "economic_question": "Does persistent minute-by-minute auction direction reveal sustained order-flow pressure that remains relevant from the next local open through the third local close?",
+    "mandatory_overlap_challenges_before_any_value": [
+      "intraday_return_sign_run_imbalance_238p",
+      "intraday_interbar_gap_body_confirmation_238p",
+      "intraday_intrabar_body_range_efficiency_240m",
+      "intraday_signed_path_efficiency_239m",
+      "intraday_price_update_share_238m",
+      "intraday_transaction_price_path_confirmation_238p",
+      "candidate49_intraday_cumulative_vwap_crossing_rate_240m_v1"
+    ],
+    "known_design_risks": [
+      "body definition, zero-body handling, adjacency, lunch support, continuation statistic, minimum informative pairs, direction, and endpoint semantics are researcher degrees of freedom that must be frozen before values",
+      "the candidate may be statistically redundant with close-to-close sign runs even though open-to-close body direction is a distinct auction state",
+      "using gaps, body magnitude, ranges, wicks, close returns, transaction prices, volume, amount, selected subwindows, the standalone 09:30 row, thresholds, or market peers would reopen terminal mechanisms",
+      "no result may be inverted, rewindowed, filtered, combined with a terminal factor, or promoted prospectively inside Campaign019"
+    ]
+  },
+  "concepts_rejected_before_formula_or_values": [
+    {
+      "concept": "campaign018_range_volume_mismatch_or_lead_lag_variant",
+      "reason": "Alternative statistics, zero-state classifications, changes, lags, subwindows, or thresholds would reopen Campaign018."
+    },
+    {
+      "concept": "range_serial_persistence_or_reversal_variant",
+      "reason": "Positive or negative serial dependence of intrabar range magnitudes would invert or reformulate terminal Campaign012."
+    },
+    {
+      "concept": "wick_body_range_or_breakout_variant",
+      "reason": "Body magnitude, wick, close-in-range, and breakout transforms reopen Campaign009, Campaign013, or Campaign015."
+    },
+    {
+      "concept": "close_return_sign_run_or_gap_body_variant",
+      "reason": "A close-to-close sign-run direction statistic or a gap-to-body sign/correlation statistic would reopen the terminal sign-run or Campaign016 mechanisms; only the distinct unsigned continuity of within-bar open-to-close direction remains eligible for a separate overlap audit."
+    },
+    {
+      "concept": "activity_profile_transaction_price_or_market_peer_variant",
+      "reason": "Amount/share-volume profiles, implied transaction prices, VWAP crossings, and market-relative paths are terminal or prospective Candidate49 mechanisms."
+    }
+  ],
+  "source_schema_boundary": {
+    "provider": "tushare",
+    "frequency": "1m",
+    "source_grid_rows": 241,
+    "continuous_candidate_bars": 240,
+    "standalone_09_30_excluded": true,
+    "daily_price_fields_allowed": false,
+    "forward_return_fields_allowed": false,
+    "provider_request_allowed": false
+  },
+  "research_boundary": {
+    "campaign018_values_read_for_concept_selection": false,
+    "campaign019_candidate_values_read": false,
+    "comparison_values_read": false,
+    "daily_price_fields_read": false,
+    "forward_return_fields_read": false,
+    "candidate49_historical_return_read": false,
+    "candidate49_ledgers_changed": false,
+    "candidate50_started": false,
+    "current_scoring_selection_sizing_or_orders_allowed": false
+  },
+  "decision": {
+    "selected_for_separate_pre_value_mechanism_audit": "intraday_bar_direction_continuity",
+    "exact_formula_or_direction_fixed_here": false,
+    "campaign019_value_construction_allowed_by_this_record_alone": false
+  }
+}

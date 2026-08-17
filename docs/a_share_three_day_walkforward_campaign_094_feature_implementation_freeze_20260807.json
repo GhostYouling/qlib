@@ -1,0 +1,40 @@
+{
+  "schema_version": 1,
+  "kind": "a_share_three_day_walkforward_campaign094_feature_implementation_freeze",
+  "status": "frozen_before_campaign094_minute_source_rows_or_candidate_values",
+  "frozen_at": "2026-08-07T02:22:23Z",
+  "protocol": {
+    "path": "docs/a_share_three_day_walkforward_campaign_094_no_return_preregistration.json",
+    "sha256": "c79c7ee277401f140bd075756658bfc5533ddcf191a20c4dc5e63808a50cbe27"
+  },
+  "feature_runner": {
+    "path": "scripts/a_share_three_day_walkforward_campaign094_features.py",
+    "sha256": "d0e51bac3c27cf2d020a7f3df458273f7440554fd6d9e6b1927975492774e1f8"
+  },
+  "tests": {
+    "path": "tests/data_collector_tests/test_a_share_three_day_walkforward_campaign094_features.py",
+    "sha256": "37474f6224a18cf7981e6df96da0905e612104d14e27ca15695d359c409d9bea",
+    "synthetic_result": "4 passed"
+  },
+  "factor": "intraday_range_local_peak_clock_dispersion_236p",
+  "direction": "higher",
+  "raw_projection": [
+    "datetime",
+    "symbol",
+    "provider",
+    "high",
+    "low"
+  ],
+  "selected_bar_count": 240,
+  "interior_local_peak_opportunity_count": 236,
+  "minimum_strict_local_peaks_per_half": 2,
+  "clock_denominator": 119,
+  "population_variance_ddof": 0,
+  "lunch_reset": true,
+  "candidate_source_rows_read_before_freeze": false,
+  "candidate_values_computed_before_freeze": false,
+  "comparison_values_read_before_freeze": false,
+  "historical_daily_price_or_forward_return_values_read_before_freeze": false,
+  "provider_request_issued_before_freeze": false,
+  "candidate49_ledgers_changed_before_freeze": false
+}

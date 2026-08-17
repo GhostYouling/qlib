@@ -1,0 +1,42 @@
+{
+  "version": 3,
+  "kind": "a_share_three_day_walkforward_campaign075_no_return_audit_implementation_freeze",
+  "status": "frozen_before_full_retry_with_finite_campaign068_to_campaign074_adapter",
+  "recorded_at": "2026-08-06T09:52:00+08:00",
+  "repair_protocol": {
+    "path": "docs/a_share_three_day_walkforward_campaign_075_no_return_runtime_compatibility_repair_protocol_v3_20260806.json",
+    "sha256": "927b86a173f2789a20261a101a1fff43605d05cab8d2755a20076e1e0b51bedd"
+  },
+  "v3_runner": {
+    "path": "scripts/a_share_three_day_walkforward_campaign075_no_return_audit_v3.py",
+    "sha256": "48a848d12047b352b5fe42bee57cff4e8653a5fb642a403fb853afee0c1b9db3"
+  },
+  "tests": {
+    "path": "tests/data_collector_tests/test_a_share_three_day_walkforward_campaign075_no_return_audit_v3.py",
+    "sha256": "04d310e8919ce99e6c049ef7082f4fefb1663b13c039f0630d76d4a4dd9c721c",
+    "passed": 4,
+    "failed": 0
+  },
+  "adapter_scope": [
+    68,
+    69,
+    70,
+    71,
+    72,
+    73,
+    74
+  ],
+  "runtime": {
+    "pandas": "2.2.3",
+    "pyarrow": "25.0.0"
+  },
+  "partial_statistics_reused": false,
+  "snapshot_files_rewritten": false,
+  "stored_frame_hashes_or_dataset_digests_rewritten": false,
+  "campaign075_factor_or_gate_changed": false,
+  "historical_daily_price_fields_read_before_retry": [],
+  "historical_forward_returns_read_before_retry": false,
+  "provider_request_issued_before_retry": false,
+  "candidate49_ledgers_changed": false,
+  "next_action": "Restart the full Campaign075 audit from candidate snapshot verification and coverage with the finite frozen adapter list."
+}

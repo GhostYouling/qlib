@@ -1,0 +1,118 @@
+{
+  "version": 1,
+  "kind": "a_share_candidate49_first_session_readonly_workflow_plan",
+  "status": "not_ready_only_time_and_token_blockers_no_write_no_request",
+  "recorded_at": "2026-07-25T18:51:25Z",
+  "purpose": "Record the final real-environment, day-before, read-only workflow plan for the first eligible Candidate49 session and distinguish expected time gating from user-local credential availability without storing or printing the credential.",
+  "authoritative_state": {
+    "path": "docs/a_share_three_day_iteration_status_20260725_future_only.json",
+    "sha256": "d44e1cb3707cce194eed37e99cc90f865396b1de8c35e02a393a2a243d973466",
+    "active_candidate": "candidate49_intraday_cumulative_vwap_crossing_rate_240m_v1"
+  },
+  "workflow_protocol": {
+    "path": "docs/a_share_tushare_candidate49_future_session_workflow_protocol.json",
+    "sha256": "6ff5636a3f7ef65e93452098186b3aecf9231d68873ab8a1070afb91d699ef7c"
+  },
+  "command": [
+    "python",
+    "scripts/a_share_tushare_candidate49_future_session_workflow.py",
+    "plan",
+    "--session",
+    "2026-07-27",
+    "--staging-root",
+    "/Volumes/DIsk/qlib-a-share-tushare-daily-2026-07-27",
+    "--minute-data-root",
+    "/Volumes/DIsk/qlib-a-share-tushare-1m"
+  ],
+  "result": {
+    "status": "not_ready_no_write",
+    "ready": false,
+    "process_exit_code": 2,
+    "recommended_cli_exit_code": 2,
+    "failures": [
+      "signal_session_has_not_arrived",
+      "TUSHARE_TOKEN_not_available_to_workflow"
+    ],
+    "time_failures": [
+      "signal_session_has_not_arrived"
+    ],
+    "next_phase": "initial_tushare_daily_migration_from_baostock"
+  },
+  "active_daily_state": {
+    "active_data_root": "/Users/niyufei/Coding/qlib/data",
+    "active_daily_source": "baostock",
+    "active_calendar_end": "2026-07-13",
+    "price_basis": "close_known_raw_pct_chg_chain_v1",
+    "price_basis_status": "passed"
+  },
+  "accepted_historical_tushare_daily_reference": {
+    "path": "/Volumes/DIsk/qlib-a-share-tushare-1m/raw/a_share/rich/tushare/daily/snapshots/tushare_daily_2019_2025_acf72e28/snapshot_manifest.json",
+    "sha256": "87feded06b6726d282abf52c8fd1c30340728ae37c2de201a3a8f30e1a556e2d",
+    "valid": true,
+    "requested_start": "2019-01-01",
+    "requested_end": "2025-12-31",
+    "annual_partitions": 7,
+    "sessions": 1699,
+    "rows": 7989350,
+    "covered_daily_sessions_will_be_requested_again": false
+  },
+  "local_operational_state": {
+    "staging_root": "/Volumes/DIsk/qlib-a-share-tushare-daily-2026-07-27",
+    "staging_root_present": false,
+    "staging_source_snapshot_present": false,
+    "staging_acceptance_present": false,
+    "minute_data_root": "/Volumes/DIsk/qlib-a-share-tushare-1m",
+    "candidate49_observation_lock_present": false,
+    "candidate49_execution_lock_present": false,
+    "published_2026_07_27_minute_root_present": false,
+    "partial_2026_07_27_minute_root_present": false,
+    "disk_free_bytes": 1779073994752,
+    "disk_free_gib": 1656.892
+  },
+  "credential_presence_only": {
+    "current_process_tushare_token_present": false,
+    "launchctl_tushare_token_present": false,
+    "token_value_read_into_record": false,
+    "token_value_printed": false,
+    "reason_reconfiguration_may_be_needed": "launchctl setenv is scoped to the current macOS login session and commonly disappears after logout or restart; using read -s with a variable name other than token can also leave the later token variable empty."
+  },
+  "append_only_ledgers": {
+    "signal": {
+      "path": "data/experiments/short_horizon/candidate49_future_signal_ledger.json",
+      "sha256": "5193f00d7f36da003f53cec387900da4c3d002299f5dfcfc1a95eaa199ed3a79",
+      "entries": 0
+    },
+    "execution": {
+      "path": "data/experiments/short_horizon/candidate49_future_execution_ledger.json",
+      "sha256": "d57a3e61eac969e42cafa418ccd8c0a5ee65dcf69da145bb2c096c2a02a2ea4f",
+      "entries": 0
+    }
+  },
+  "side_effect_audit": {
+    "filesystem_write_performed_by_plan": false,
+    "provider_request_issued": false,
+    "historical_candidate49_return_diagnostic_run": false,
+    "forward_return_fields_read": false,
+    "signal_or_execution_entry_written": false,
+    "live_order_performed": false,
+    "active_data_root_mutated": false
+  },
+  "required_user_local_action": {
+    "send_token_to_codex_or_chat": false,
+    "write_token_to_repository_or_shell_history": false,
+    "safe_mac_zsh_hidden_input_lines": [
+      "read -s \"token?请粘贴 Tushare Token，随后按回车：\"; echo",
+      "launchctl setenv TUSHARE_TOKEN \"$token\"",
+      "unset token"
+    ],
+    "presence_only_check": "test -n \"$(launchctl getenv TUSHARE_TOKEN)\" && echo \"launchctl：已配置\" || echo \"launchctl：未配置\"",
+    "codex_restart_required_for_direct_environment_inheritance": true,
+    "workflow_can_also_read_launchctl_without_restart": true
+  },
+  "decision": {
+    "safe_local_weekend_repairs_remaining": false,
+    "token_is_the_only_user_local_non_time_blocker": true,
+    "formal_run_before_2026_07_27_16_30_asia_shanghai_allowed": false,
+    "next_action": "Reconfigure only Token presence locally without sharing its value. On 2026-07-27 at or after 16:30 Asia/Shanghai, rerun plan and require ready=true/exit 0, then run the same workflow with run --confirm-run."
+  }
+}

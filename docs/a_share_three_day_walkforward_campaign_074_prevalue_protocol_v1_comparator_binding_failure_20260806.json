@@ -1,0 +1,35 @@
+{
+  "version": 1,
+  "kind": "a_share_three_day_walkforward_campaign074_infrastructure_failure",
+  "status": "append_only_recorded_prevalue_failure",
+  "recorded_at": "2026-08-06T07:49:00+08:00",
+  "stage": "prevalue_feature_synthetic_test_and_protocol_source_validation",
+  "result": "campaign074_no_return_protocol_v1_omitted_campaign072_research_record_and_snapshot_binding_paths",
+  "failed_test_result": {
+    "passed": 7,
+    "failed": 1,
+    "failing_test": "test_protocol_and_frozen_orders_are_valid_without_candidate_values",
+    "failure": "Campaign073-compatible comparator-source validator resolved the absent Campaign072 research-record path to the repository root and failed closed."
+  },
+  "invalid_protocol": {
+    "path": "docs/a_share_three_day_walkforward_campaign_074_no_return_preregistration.json",
+    "sha256": "c2b1bafd0ddca2cf86ed2715a2403324b6c37493f9be7accc6d4a48ff7adfe4c",
+    "may_be_used": false
+  },
+  "feature_runner_at_failure": {
+    "path": "scripts/a_share_three_day_walkforward_campaign074_features.py",
+    "sha256": "73fc9019ac2a7bfe23df536b5342e2b24b16dd3649e7cf9d86b69f92aee206f1"
+  },
+  "tests_at_failure": {
+    "path": "tests/data_collector_tests/test_a_share_three_day_walkforward_campaign074_features.py",
+    "sha256": "8e59a202c9dd7fbe57f6eff9081f99bb031002c54653ef122cf5697a51eb79d7"
+  },
+  "recovery": "Preserve v1 and append a v2 preregistration with the missing immutable Campaign072 record and snapshot-binding paths; no factor formula, direction, gate, or comparison order changes.",
+  "candidate_source_rows_read": false,
+  "candidate_values_read": false,
+  "comparison_values_read": false,
+  "historical_daily_price_fields_read": [],
+  "historical_forward_returns_read": false,
+  "provider_request_issued": false,
+  "candidate49_ledgers_changed": false
+}

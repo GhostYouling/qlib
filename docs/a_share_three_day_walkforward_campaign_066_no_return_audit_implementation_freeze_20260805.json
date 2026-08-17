@@ -1,0 +1,30 @@
+{
+  "version": 1,
+  "kind": "a_share_three_day_walkforward_campaign066_no_return_audit_implementation_freeze",
+  "status": "frozen_before_campaign066_coverage_metrics_or_comparison_values",
+  "recorded_at": "2026-08-05T15:45:00+08:00",
+  "audit_runner": {"path": "scripts/a_share_three_day_walkforward_campaign066_no_return_audit.py", "sha256": "7bce85e3ee7aa4008699b91db3a7d2d43a6d3d2f8cb0584d9abb43bd4069304f"},
+  "audit_tests": {"path": "tests/data_collector_tests/test_a_share_three_day_walkforward_campaign066_no_return_audit.py", "sha256": "35a675c7903f1b4aa88dffaaca2d0e5ea3a9dd1589218c528a0ce1689799a13f", "passed": 6, "failed": 0},
+  "snapshot_binding": {"path": "docs/a_share_three_day_walkforward_campaign_066_feature_snapshot_binding_20260805.json", "sha256": "8e32d9dfed246b98feb042e253055afd05324c7cfe4d62f7fb46d5d4e52e48f3"},
+  "no_return_preregistration": {"path": "docs/a_share_three_day_walkforward_campaign_066_no_return_preregistration.json", "sha256": "ab850ef8ff194c1172070e2ffd388eff2d7924354abf06a8b32c5bd43584a278"},
+  "current_attempt_ledger": {"path": "data/experiments/short_horizon/historical_walkforward/campaign_066/research_attempt_ledger_v8.json", "sha256": "68bfa61b2907e5b2b12e2dbe243b78bbf9d8a0634a9dacf2a6123e26bc046e1c"},
+  "candidate_snapshot_materialized_and_fully_verified_before_freeze": true,
+  "coverage_or_capacity_metrics_computed_before_freeze": false,
+  "comparison_values_read_before_freeze": false,
+  "historical_daily_price_fields_read_before_freeze": [],
+  "historical_forward_returns_read_before_freeze": false,
+  "provider_request_issued_before_freeze": false,
+  "frozen_gate_order": {
+    "first": "candidate coverage and capacity only",
+    "second_if_first_passes": "all 96 numeric comparisons in exact digest order",
+    "third_if_all_comparisons_pass": "one separately preregistered 2019-2023 development trial",
+    "Campaign063": "explicit nonnumeric mechanism challenge, never silently pass or fail",
+    "comparison_drop_or_post_result_rule_change_allowed": false
+  },
+  "research_boundary": {
+    "candidate49_historical_return_signal_execution_or_milestone_backfill_performed": false,
+    "candidate49_ledgers_changed": false,
+    "second_prospective_candidate_created": false,
+    "current_scoring_selection_sizing_or_orders_performed": false
+  }
+}

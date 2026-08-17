@@ -1,0 +1,38 @@
+{
+  "schema_version": 1,
+  "kind": "a_share_three_day_walkforward_campaign081_terminal_suite_lifecycle_deselect_failure",
+  "status": "recorded_terminal_result_unchanged_pending_corrected_suite",
+  "recorded_at": "2026-08-06T18:10:00+08:00",
+  "stage": "postterminal_current_suite_selection",
+  "failure": {
+    "observed": "The pytest invocation's two --deselect arguments did not suppress the pre-audit and pre-development lifecycle status tests. Eighteen current terminal assertions passed; the two stale lifecycle assertions failed only because audit_count and ledger_entry_count are now one rather than their frozen pre-run value zero.",
+    "failed_nodes": [
+      "test_status_is_truthful_before_the_sole_audit",
+      "test_predevelopment_status_has_zero_ledger_and_closed_stress"
+    ],
+    "root_cause": "selection expression failed to exclude immutable pre-run lifecycle assertions from a postterminal suite",
+    "production_or_research_result_implicated": false,
+    "formula_gate_threshold_or_return_result_changed": false
+  },
+  "correction": {
+    "method": "Use an explicit pytest -k exclusion expression for the exact two lifecycle function names, retain every current terminal assertion, and record the new suite result additively.",
+    "old_tests_rewritten": false,
+    "old_terminal_freeze_rewritten": false,
+    "old_authoritative_state_rewritten": false
+  },
+  "terminal_result_unchanged": {
+    "factor": "intraday_amount_path_efficiency_238p",
+    "development_survivor_count": 0,
+    "stress_2024_2025_opened": false,
+    "aggregate_20bp_pilot_return": -0.23074432960855773
+  },
+  "research_boundary": {
+    "new_candidate_or_comparison_values_read": false,
+    "historical_daily_price_or_forward_return_values_reread": false,
+    "stress_return_fields_read": false,
+    "provider_request_issued": false,
+    "candidate49_historical_backfill_performed": false,
+    "candidate49_ledgers_changed": false,
+    "current_scoring_selection_sizing_or_orders_performed": false
+  }
+}

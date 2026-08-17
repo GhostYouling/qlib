@@ -1,0 +1,122 @@
+{
+  "schema_version": 1,
+  "kind": "a_share_three_day_walkforward_campaign111_concept_scouting",
+  "status": "terminal_zero_selected_candidates_before_campaign111_source_candidate_comparison_daily_price_or_return_values",
+  "recorded_at": "2026-08-08T16:33:35Z",
+  "purpose": "Review a finite Campaign111 concept catalog against the complete v72 mechanism history before reading any Campaign111 source row, candidate value, comparator value, daily price, or forward return.",
+  "authoritative_inputs": {
+    "iteration_state": {
+      "path": "docs/a_share_three_day_iteration_status_20260808_campaign110_terminal.json",
+      "sha256": "51cefc798c363868444af9627e1f714638491efe3e19a577b6df650b64de7fe0"
+    },
+    "numeric_policy_v72": {
+      "path": "docs/a_share_three_day_walkforward_future_numeric_comparison_eligibility_policy_v72_20260808.json",
+      "sha256": "876002b103301ea2c86a39f73218769423994713a2f9fffd4f0de007a45ad254",
+      "complete_definition_count": 140,
+      "complete_definition_order_sha256": "c06e054bd76a7eb32a88a8a119abf5a0b7da2d017620ce7d870c9bb1c361c3c4",
+      "numeric_comparator_count": 134,
+      "numeric_comparator_order_sha256": "31d788db467f558a0ac538315343090f1b3ad4cb27a26136a49ebaa88b2fdbf2"
+    },
+    "historical_walkforward_policy": {
+      "path": "docs/a_share_three_day_historical_walkforward_research_policy_20260727.json",
+      "sha256": "38426d6161b9bfed323c58caba18feca668b8c9d53e294951a8ba90c01a798bb"
+    }
+  },
+  "finite_prevalue_concept_catalog": [
+    {
+      "name": "intraday_return_sign_balance_238m",
+      "proposed_formula": "Across the 238 within-half close returns, divide positive-minus-negative return counts by their nonzero count.",
+      "decision": "rejected_before_source_rows_or_values",
+      "reason": "The terminal return-sign-run definition expressly forbids changing its sign, zero, and run handling after exposure. Removing pair order to use marginal sign counts would be a same-family rescue and also overlaps upside-semivariance, signed-path, bar-direction, and opening-reference direction families.",
+      "nearest_frozen_definitions": [
+        "intraday_return_sign_run_imbalance_238p",
+        "intraday_upside_semivariance_share_239m",
+        "intraday_signed_path_efficiency_239m",
+        "intraday_open_reference_directional_occupancy_240m"
+      ]
+    },
+    {
+      "name": "intraday_running_drawdown_ulcer_resilience_240m",
+      "proposed_formula": "Negate the root mean square log drawdown from the running close peak over the completed 240-close path.",
+      "decision": "rejected_before_source_rows_or_values",
+      "reason": "This changes the window, trough aggregation, and recovery summary of the already terminal drawdown-recovery family after its result was observed, while recombining the running-frontier and path-adherence families. The frozen terminal boundary forbids changing the path or trough rule to rescue that mechanism.",
+      "nearest_frozen_definitions": [
+        "afternoon_drawdown_recovery_resilience_120m",
+        "intraday_close_frontier_innovation_share_238p",
+        "intraday_half_session_chord_adherence_240m",
+        "intraday_global_price_range_revisit_240m"
+      ]
+    },
+    {
+      "name": "intraday_amihud_absolute_price_impact_238m",
+      "proposed_formula": "Aggregate absolute within-half close displacement per unit destination-bar CNY amount.",
+      "decision": "rejected_before_source_rows_or_values",
+      "reason": "The frozen same-bar VWAP-pressure protocol rejected Amihud-style ratios before values as liquidity, size, volatility, and direction-search variants. It would also remove the frozen directional decomposition from the terminal directional-price-impact asymmetry rather than introduce a new source state.",
+      "binding_evidence": [
+        "docs/a_share_tushare_intraday_bar_vwap_close_pressure_no_return_preregistration.json",
+        "docs/a_share_three_day_walkforward_campaign_005_mechanism_overlap_audit.json"
+      ]
+    },
+    {
+      "name": "intraday_amount_weighted_transaction_vwap_range_location_pressure_240m",
+      "proposed_formula": "Locate amount/volume inside each same-bar high-low envelope and average the signed location using amount weights.",
+      "decision": "rejected_before_source_rows_or_values",
+      "reason": "Campaign013 already froze this transaction-VWAP envelope family and failed support because 7,616,444 of 7,724,498 stock-days contained at least one active transaction VWAP outside its raw high-low envelope. Campaign096 separately rejected the amount-weighted variant before values. Reopening it would be both a known-failed-support retry and a weighting rescue.",
+      "binding_evidence": [
+        "docs/a_share_three_day_walkforward_campaign_013_research_record.json",
+        "docs/a_share_three_day_walkforward_campaign_096_concept_scouting.json"
+      ]
+    },
+    {
+      "name": "intraday_open_reference_crossing_rate_239p",
+      "proposed_formula": "Count close crossings around the fixed 09:31 opening reference over the 240 selected closes.",
+      "decision": "rejected_before_source_rows_or_values",
+      "reason": "v72 explicitly requires prevalue rejection of opening-reference directional-occupancy reexpressions. Replacing occupation time with crossing count also copies Candidate49's crossing operator while substituting its causal cumulative VWAP anchor, so it is not an independent mechanism.",
+      "nearest_frozen_definitions": [
+        "intraday_open_reference_directional_occupancy_240m",
+        "intraday_cumulative_vwap_crossing_rate_240m"
+      ]
+    },
+    {
+      "name": "full_numeric_library_bounded_simplex_refit_134f",
+      "proposed_formula": "Refit a nonnegative bounded complete-library ensemble after appending the latest numeric factors.",
+      "decision": "rejected_before_component_or_return_values",
+      "reason": "Campaign102 already consumed the complete-library bounded-simplex ridge family at three frozen penalties, and later complete-library consensus and improvement aggregators are terminal. Refreshing the component count or penalty after observing those results is model reweighting and retry, not a new economic mechanism.",
+      "binding_evidence": [
+        "docs/a_share_three_day_walkforward_campaign_102_terminal_result_binding_20260807.json",
+        "docs/a_share_three_day_walkforward_campaign_103_terminal_result_binding_v2_20260808.json"
+      ]
+    }
+  ],
+  "prevalue_decision": {
+    "complete_logical_definitions_reviewed": 140,
+    "complete_definition_order_sha256": "c06e054bd76a7eb32a88a8a119abf5a0b7da2d017620ce7d870c9bb1c361c3c4",
+    "concepts_reviewed": 6,
+    "selected_candidate_count": 0,
+    "genuinely_independent_mechanism_found": false,
+    "campaign111_candidate_formula_frozen": false,
+    "campaign111_source_or_candidate_values_may_be_read": false,
+    "comparison_values_may_be_read": false,
+    "historical_daily_price_or_forward_return_values_may_be_read": false,
+    "terminalize_campaign111_without_feature_snapshot_or_development_trial": true
+  },
+  "research_boundary": {
+    "prior_definition_names_directions_protocols_schema_metadata_and_terminal_results_read": true,
+    "campaign111_source_rows_read": false,
+    "campaign111_candidate_values_computed_or_read": false,
+    "campaign111_comparator_values_read": false,
+    "historical_daily_price_fields_read": [],
+    "historical_forward_returns_read": false,
+    "provider_request_issued": false,
+    "candidate49_historical_backfill_performed": false,
+    "candidate49_ledgers_changed": false,
+    "second_prospective_candidate_created": false,
+    "current_scoring_selection_sizing_or_orders_performed": false,
+    "investment_advice": false
+  },
+  "next_frontier_without_formula_or_direction": {
+    "status": "concept_only_not_a_candidate_or_campaign112_preregistration",
+    "economic_question": "Can a separately accepted source identify a genuinely new order-flow, ownership, or event state that aggregate minute OHLCV/amount and the frozen quarterly fields do not already encode?",
+    "source_rows_values_formula_direction_or_candidate_ordinal_created": false
+  }
+}

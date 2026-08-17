@@ -1,0 +1,34 @@
+{
+  "schema_version": 1,
+  "kind": "a_share_three_day_walkforward_campaign101_development_recovery_activation_binding",
+  "status": "same_single_frozen_development_trial_reauthorized_after_runtime_only_failure",
+  "recorded_at": "2026-08-07T14:09:17Z",
+  "implementation_freeze": {
+    "path": "docs/a_share_three_day_walkforward_campaign_101_development_recovery_implementation_freeze_20260807.json",
+    "sha256": "0f29d351af17df51857ece3af48292de9ee19e29fe3834962bbd824130445a95"
+  },
+  "failed_internal_ledger": {
+    "path": "data/experiments/short_horizon/historical_walkforward/campaign_101/walkforward/trial_ledger.json",
+    "sha256": "726bb925597461a6fb8eaac2ea073e62b74b221f83849a79683d3ad9ad6acae6"
+  },
+  "development_preregistration": {
+    "path": "docs/a_share_three_day_walkforward_campaign_101_preregistration_v2.json",
+    "sha256": "5cff18c65510eb01e4771e04f62b54bf038579a25f9ee14ec73863fe43947b36"
+  },
+  "scientific_runner": {
+    "path": "scripts/a_share_three_day_walkforward_campaign101.py",
+    "sha256": "8353c819b0c1a0edd98eb0999849a626d5a97c913655e2068ec18fb05b9c9b27"
+  },
+  "recovery_runner": {
+    "path": "scripts/a_share_three_day_walkforward_campaign101_development_recovery.py",
+    "sha256": "8979c9fe8a7c47dd041a006d40a766afe8b295835327a0c03b72442ce6cbe518"
+  },
+  "exact_python": "/Volumes/DIsk/Coding/anaconda3/bin/python3.12",
+  "trial_id": "wf101_full_numeric_library_directional_lower_quartile_consensus_129f_single_higher",
+  "remaining_complete_development_trials_authorized": 1,
+  "prior_infrastructure_failure_replay_or_deletion_authorized": false,
+  "stress_2024_2025_authorized": false,
+  "provider_request_authorized": false,
+  "candidate49_historical_return_read_authorized": false,
+  "current_scoring_selection_sizing_or_orders_authorized": false
+}

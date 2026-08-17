@@ -1,0 +1,93 @@
+{
+  "schema_version": 1,
+  "version": 2,
+  "kind": "a_share_three_day_walkforward_campaign136_source_bound_implementation_freeze",
+  "status": "frozen_before_campaign136_daily_source_candidate_comparator_ohlcv_or_return_values",
+  "recorded_at": "2026-08-14T11:23:30+0800",
+  "supersedes_without_rewriting": {
+    "source_bound_implementation_freeze_v1": {
+      "path": "docs/a_share_three_day_walkforward_campaign_136_source_bound_implementation_freeze_20260814.json",
+      "sha256": "13798b1494d34c03582fabfb27457cd47515e54485b662d464516ceb7e49fc98",
+      "preserved": true
+    },
+    "runtime_failure": {
+      "path": "docs/a_share_three_day_walkforward_campaign_136_source_build_nullable_identity_failure_20260814.json",
+      "sha256": "1d7697c66bb32efda3b5e5d1ae56f7d5e5b7701df8c11013a47c0fd59fa3a99a"
+    },
+    "only_semantic_change": "None. Replace a nullable missing source-identity pair result with false before bool conversion, exactly implementing the already-frozen missing-predecessor-is-ineligible rule.",
+    "formula_direction_source_projection_date_range_threshold_tolerance_or_filter_changed": false
+  },
+  "authoritative_inputs": {
+    "no_return_preregistration_v2": {
+      "path": "docs/a_share_three_day_walkforward_campaign_136_no_return_preregistration_v2_20260814.json",
+      "sha256": "f23cc1df5d4ed640c82b75ae1b9575718e75977d51b3ce1c33a846534c71e4f0"
+    },
+    "formula_freeze_v2": {
+      "path": "docs/a_share_three_day_walkforward_campaign_136_formula_implementation_freeze_v2_20260814.json",
+      "sha256": "207cb1771f99f42738cce2c3bbfbf88a454a92daa77a7e099f126ac1e8815ec6"
+    }
+  },
+  "frozen_implementation": {
+    "protocol_sha256": "f23cc1df5d4ed640c82b75ae1b9575718e75977d51b3ce1c33a846534c71e4f0",
+    "formula_path": "scripts/a_share_three_day_walkforward_campaign136_formula.py",
+    "formula_sha256": "4a57b79716269cf3acd21bb7b6909ce80ab5378f89d25fb27d97a02f815e7b66",
+    "formula_freeze_sha256": "207cb1771f99f42738cce2c3bbfbf88a454a92daa77a7e099f126ac1e8815ec6",
+    "feature_builder_path": "scripts/a_share_three_day_walkforward_campaign136_features.py",
+    "feature_builder_sha256": "96354fe17c12bdcbe60a659ed492303d1df6c0f2c00d9081685e54b581332642",
+    "source_file_count": 5451,
+    "source_total_bytes": 1502484498,
+    "source_file_identity_order_sha256": "d7dca618dbef6620e1c4782cb970178afa5777e3f1101a916df5eb6b8bf37cab",
+    "source_projection": [
+      "date",
+      "symbol",
+      "factor",
+      "price_basis",
+      "daily_source"
+    ],
+    "output_columns": [
+      "trade_date",
+      "symbol",
+      "provider",
+      "daily_realized_price_basis_adjustment_magnitude_1d",
+      "daily_realized_price_basis_adjustment_magnitude_1d_eligible"
+    ],
+    "output_signal_start": "2019-01-01",
+    "output_signal_end": "2025-12-31"
+  },
+  "synthetic_tests": [
+    {
+      "path": "tests/data_collector_tests/test_a_share_three_day_walkforward_campaign136_features.py",
+      "sha256": "d8e98da092028ec1a5727a814e506423b3b75630ddc73aeb801bb9f7b3fa5f3d"
+    },
+    {
+      "path": "tests/data_collector_tests/test_a_share_three_day_walkforward_campaign136_formula.py",
+      "sha256": "5fcd47980741e3510b666560e11cf29b7db2cd09b9bd779bed45e3392f927fc3"
+    }
+  ],
+  "build_protocol": {
+    "fresh_plan_must_exit_zero_and_return_ready_true_before_retry": true,
+    "retry_requires_confirm_run": true,
+    "run_reads_only_the_exact_five_column_projection": true,
+    "missing_predecessor_identity_maps_to_false_without_imputation": true,
+    "each_output_partition_byte_hash_verified": true,
+    "temporary_output_removed_on_failure": true,
+    "existing_final_output_never_overwritten": true,
+    "provider_request_allowed": false
+  },
+  "research_boundary": {
+    "campaign136_daily_source_values_were_decoded_in_failed_v1_run": true,
+    "campaign136_candidate_computation_started_in_failed_v1_run": true,
+    "campaign136_candidate_snapshot_published": false,
+    "campaign136_comparator_values_read": false,
+    "historical_daily_ohlcv_fields_read": [],
+    "historical_forward_returns_read": false,
+    "stress_2024_2025_opened": false,
+    "provider_request_issued": false,
+    "credential_loaded": false,
+    "candidate49_historical_backfill_performed": false,
+    "candidate49_ledgers_changed": false,
+    "second_prospective_candidate_created": false,
+    "current_scoring_selection_sizing_positions_or_orders_performed": false,
+    "investment_advice": false
+  }
+}

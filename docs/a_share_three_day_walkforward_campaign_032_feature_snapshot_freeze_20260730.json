@@ -1,0 +1,81 @@
+{
+  "version": 1,
+  "kind": "a_share_three_day_walkforward_campaign032_feature_snapshot_freeze",
+  "status": "candidate_snapshot_fingerprint_and_partition_replay_frozen_before_comparison_values",
+  "recorded_at": "2026-07-30T15:18:00Z",
+  "purpose": "Freeze the complete Campaign032 candidate snapshot and post-publication code binding before loading any of the 53 comparison-factor values.",
+  "source_chain": {
+    "no_return_preregistration": {
+      "path": "docs/a_share_three_day_walkforward_campaign_032_no_return_preregistration_v2.json",
+      "sha256": "d03dc148d2169622cc2fdbe2248dbe336ccbd5c316f8a4faa708b16a69e44f8a"
+    },
+    "implementation_freeze": {
+      "path": "docs/a_share_three_day_walkforward_campaign_032_feature_implementation_freeze_20260730.json",
+      "sha256": "6dffa692d0578633fb615b21b6240489836465a0efaa37e63627f6022ac7398c"
+    },
+    "feature_runner_before_snapshot_binding": {
+      "historical_path_label": "scripts/a_share_three_day_walkforward_campaign032_features.py",
+      "observed_sha256_before_binding": "2886ec80a807f9d991ed5ff130c6a2891f7d2f7a032b4314240204428107b616",
+      "historical_build_code": true
+    },
+    "feature_runner_after_snapshot_binding": {
+      "path": "scripts/a_share_three_day_walkforward_campaign032_features.py",
+      "sha256": "8508f32bbe9dad20fd0d6dcec9771784ef126e6c27b03c37db8abe33264329ad",
+      "current_binding_code": true
+    },
+    "feature_snapshot": {
+      "path": "/Volumes/DIsk/qlib-a-share-tushare-1m/derived/a_share/rich/tushare/minute_walkforward_campaign032_feature_library/tushare_stk_mins_1m_2019_2025_ea0cbb8f_walkforward_campaign032_feature_library_v1/snapshot_manifest.json",
+      "sha256": "8e64ad897fe725ab4ed800b0203ddd88a6c1431e2386744e1d2b13867d848c65",
+      "dataset_sha256": "c72008162f6655e7ce34da114641f451aa04d32df61ac4c77222f7f8ad1d787f"
+    },
+    "candidate49_signal_ledger": {
+      "path": "data/experiments/short_horizon/candidate49_future_signal_ledger.json",
+      "sha256": "5193f00d7f36da003f53cec387900da4c3d002299f5dfcfc1a95eaa199ed3a79",
+      "entry_count": 0
+    },
+    "candidate49_execution_ledger": {
+      "path": "data/experiments/short_horizon/candidate49_future_execution_ledger.json",
+      "sha256": "d57a3e61eac969e42cafa418ccd8c0a5ee65dcf69da145bb2c096c2a02a2ea4f",
+      "entry_count": 0
+    }
+  },
+  "snapshot_replay": {
+    "factor": "quarterly_announcement_timeliness_days",
+    "direction": "higher",
+    "partitions": 33015,
+    "rows": 7724498,
+    "eligible_rows": 7233196,
+    "no_prior_effective_disclosure_rows": 491302,
+    "positive_or_noninteger_delay_score_rows": 0,
+    "resumed_hash_validated_partitions": 4378,
+    "first_attempt_worker_count": 4,
+    "resumed_worker_count": 8,
+    "rejected_worker_count_attempt": 12,
+    "rejected_worker_count_read_candidate_value": false,
+    "all_partition_byte_and_frame_hashes_pending_precomparison_replay": true,
+    "comparison_factor_values_read": false,
+    "daily_price_fields_read": false,
+    "forward_return_fields_read": false
+  },
+  "implementation_transition": {
+    "formula_direction_source_projection_or_missing_rule_changed": false,
+    "snapshot_artifact_rewritten_after_publication": false,
+    "only_snapshot_manifest_and_dataset_fingerprints_bound_in_current_runner": true,
+    "focused_tests_after_binding_passed": 7
+  },
+  "decision": {
+    "snapshot_fingerprint_frozen": true,
+    "ordered_no_return_audit_allowed_after_binding_validation_exit_zero": true,
+    "formula_direction_filter_threshold_or_combination_change_allowed": false,
+    "candidate49_remains_only_active_prospective_candidate": true,
+    "candidate50_activation_allowed": false
+  },
+  "research_boundary": {
+    "comparison_values_read": false,
+    "daily_price_fields_read": false,
+    "forward_returns_read": false,
+    "candidate49_signal_or_execution_ledger_changed": false,
+    "current_scoring_selection_sizing_or_orders_performed": false,
+    "provider_request_issued_for_campaign032": false
+  }
+}

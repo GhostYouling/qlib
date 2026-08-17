@@ -1,0 +1,111 @@
+{
+  "version": 1,
+  "kind": "a_share_three_day_walkforward_campaign064_feature_implementation_freeze",
+  "status": "frozen_before_campaign064_source_values",
+  "repair_status": "metadata_only_repair_frozen_after_unpublished_checkpoint_generation_before_snapshot_publication",
+  "recorded_at": "2026-08-05T07:53:00+08:00",
+  "purpose": "Bind the original pre-value Campaign064 factor implementation together with the sole metadata-template repair, updated regression test, and append-only failure ledger before any retry can publish the existing hash-bound checkpoints.",
+  "feature_runner": {
+    "path": "/Volumes/DIsk/Disk-Coding/qlib/scripts/a_share_three_day_walkforward_campaign064_features.py",
+    "sha256": "bd0bae815f9230b082e7eb17c76556c7d58e56c78db5a01c3325889fa5e4cc38"
+  },
+  "feature_tests": {
+    "path": "tests/data_collector_tests/test_a_share_three_day_walkforward_campaign064_features.py",
+    "sha256": "0dff9f9b932efa5b0bcd283060239c3670d5155221879f922995558ced31cbe6",
+    "focused_tests_passed": 9,
+    "focused_tests_failed": 0
+  },
+  "no_return_protocol": {
+    "path": "docs/a_share_three_day_walkforward_campaign_064_no_return_preregistration.json",
+    "sha256": "441cbeef589593c2ef0ae3e58325f5ab0acb506cc54eaa040c79f26c8ca6a887",
+    "binding_count": 16,
+    "bindings_passed": 16
+  },
+  "original_pre_value_implementation_freeze": {
+    "path": "docs/a_share_three_day_walkforward_campaign_064_feature_implementation_freeze_20260805.json",
+    "sha256": "05b65cb001dfeec100c3ed3bcb105c9d59d26d0c4cdae8415d75ce589f5593b8"
+  },
+  "manifest_metadata_repair_authorization": {
+    "path": "docs/a_share_three_day_walkforward_campaign_064_manifest_metadata_repair_20260805.json",
+    "sha256": "73bb93c63eb52daeaabdc9dafec84cada009a67e0da68ec95799d069ba96fdce"
+  },
+  "research_attempt_ledger": {
+    "path": "data/experiments/short_horizon/historical_walkforward/campaign_064/research_attempt_ledger_v4.json",
+    "sha256": "37eeb912de46d343bac0dca727ffb2986451091ddbde5eac059c6e7816afa073",
+    "attempt_count": 5,
+    "complete_factor_attempt_count": 0,
+    "return_reading_trial_count": 0
+  },
+  "mechanism_overlap_audit": {
+    "path": "docs/a_share_three_day_walkforward_campaign_064_mechanism_overlap_audit.json",
+    "sha256": "422dd1a23708c069ff55b14105032e5fbf1ac2ed77cbd6d2439be896ef11cbae"
+  },
+  "base_partition_engine": {
+    "path": "scripts/a_share_three_day_walkforward_campaign057_features.py",
+    "sha256": "3706ac11c551dd02c8d6d8cf30c95a6f076d6a6e6c5dbba4beb07dde10aca66a",
+    "use": "immutable partition, checkpoint, hash, and atomic-publication engine only"
+  },
+  "frozen_implementation": {
+    "factor": "intraday_range_weak_order_entropy_236t",
+    "direction": "higher",
+    "candidate_count": 1,
+    "development_trial_count_if_admitted": 1,
+    "comparison_factor_count": 95,
+    "source_projection": [
+      "datetime",
+      "symbol",
+      "provider",
+      "high",
+      "low"
+    ],
+    "forbidden_source_fields": [
+      "open",
+      "close",
+      "volume",
+      "amount"
+    ],
+    "selected_bars": 240,
+    "range_transform": "ln(high/low)",
+    "within_half_overlapping_triples": 236,
+    "weak_order_state_count": 13,
+    "comparison_tolerance": 0.0,
+    "exact_ties_retained": true,
+    "entropy": "natural_log_Shannon_divided_by_ln13",
+    "valid_range": "[0,1]",
+    "no_lunch_cross_session_or_prior_session_input": true,
+    "no_fill_jitter_tolerance_drop_clip_winsorize_threshold_filter_fit_or_combination": true
+  },
+  "metadata_only_repair": {
+    "generated_template_source_open_high_low_close_volume_read": true,
+    "generated_template_source_high_low_read": true,
+    "generated_template_source_close_read": false,
+    "generated_template_source_amount_read": false,
+    "generated_template_cross_session_lookback": 0,
+    "factor_formula_or_value_code_changed": false,
+    "candidate_partition_bytes_or_frames_changed": false,
+    "unpublished_checkpoint_reuse_required": true
+  },
+  "source_partition_values_read_before_freeze": false,
+  "candidate_values_read_before_freeze": false,
+  "comparison_values_read_before_freeze": false,
+  "historical_daily_price_fields_read_before_freeze": [],
+  "historical_forward_return_fields_read_before_freeze": false,
+  "provider_request_issued_before_freeze": false,
+  "original_factor_freeze_preceded_all_source_or_candidate_values": true,
+  "metadata_repair_freeze_followed_unpublished_checkpoint_generation": true,
+  "snapshot_published_before_metadata_repair_freeze": false,
+  "comparison_values_read_before_metadata_repair_freeze": false,
+  "historical_daily_price_fields_read_before_metadata_repair_freeze": [],
+  "historical_forward_return_fields_read_before_metadata_repair_freeze": false,
+  "provider_request_issued_before_metadata_repair_freeze": false,
+  "candidate49_historical_return_signal_execution_or_milestone_backfill_performed": false,
+  "candidate49_ledgers_changed": false,
+  "second_prospective_candidate_created": false,
+  "current_scoring_selection_sizing_or_orders_performed": false,
+  "decision": {
+    "snapshot_retry_allowed_after_binding_validation_exit_zero": true,
+    "formula_direction_grid_tuple_alphabet_tie_entropy_missing_rule_or_partition_change_allowed": false,
+    "candidate49_remains_only_active_prospective_candidate": true,
+    "candidate50_activation_allowed": false
+  }
+}

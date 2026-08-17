@@ -1,0 +1,54 @@
+{
+  "schema_version": 1,
+  "kind": "a_share_three_day_walkforward_campaign088_terminal_completion_freeze_v2",
+  "status": "terminal_numeric_uniqueness_rejection_and_reporting_sync_frozen_before_campaign089_values",
+  "frozen_at": "2026-08-07T04:13:29+08:00",
+  "supersedes_without_rewriting": {
+    "path": "docs/a_share_three_day_walkforward_campaign_088_terminal_completion_freeze_20260807.json",
+    "sha256": "4c8517a13b3a7d61a036eaf8ff305f83c3d2ae94a22e82247a62bbe3b409f415",
+    "preserved": true
+  },
+  "research_record_v2": {
+    "path": "docs/a_share_three_day_walkforward_campaign_088_research_record_v2.json",
+    "sha256": "c2721427fd88d8963d1386fe7cebba7626a5121a23e3d0fa9630bfa1853a6446"
+  },
+  "final_attempt_ledger": {
+    "path": "data/experiments/short_horizon/historical_walkforward/campaign_088/research_attempt_ledger_v7.json",
+    "sha256": "a62f448b2c4a801c1b1c3b87bf80aa56f4f6fc46e7f97f47ea8c5180542bb7f1",
+    "attempt_count": 11,
+    "ledger_entry_count": 12,
+    "return_reading_development_trial_count": 0
+  },
+  "terminal_result": {
+    "factor": "intraday_bipower_jump_variation_share_238m",
+    "coverage_gate_passed": true,
+    "numeric_comparison_count": 117,
+    "numeric_comparisons_passed": 116,
+    "numeric_comparisons_failed": 1,
+    "failed_comparator": "intraday_diffusive_variation_ratio_238m",
+    "maximum_absolute_median_daily_rank_correlation": 0.9982848969650057,
+    "strict_limit": 0.8,
+    "development_trial_opened": false,
+    "development_survivor_count": 0,
+    "stress_2024_2025_opened": false,
+    "scientific_result_changed_by_reporting_sync": false
+  },
+  "final_accounting": {
+    "cumulative_historical_research_attempt_count": 612,
+    "cumulative_return_reading_development_trial_count": 286
+  },
+  "immutability": {
+    "campaign088_formula_direction_gate_or_result_may_change": false,
+    "campaign088_rescue_retest_or_return_read_allowed": false,
+    "old_terminal_artifacts_rewritten": false,
+    "future_duplicate_detection_may_reference_snapshot": true
+  },
+  "research_boundary": {
+    "historical_daily_price_fields_read": [],
+    "historical_forward_returns_read": false,
+    "provider_request_issued": false,
+    "candidate49_historical_backfill_performed": false,
+    "candidate49_ledgers_changed": false,
+    "current_scoring_selection_sizing_or_orders_performed": false
+  }
+}

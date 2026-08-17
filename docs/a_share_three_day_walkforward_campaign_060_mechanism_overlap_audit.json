@@ -1,0 +1,141 @@
+{
+  "version": 1,
+  "kind": "a_share_three_day_walkforward_campaign060_mechanism_overlap_audit",
+  "status": "passed_conceptual_independence_before_campaign060_source_candidate_comparison_daily_price_or_return_values",
+  "recorded_at": "2026-08-04T23:13:00+08:00",
+  "purpose": "Challenge the selected consecutive-session same-clock directional recurrence mechanism against the complete 91-definition Campaign060 comparison catalog before reading any Campaign060 minute row, candidate value, comparison value, daily price, or forward return.",
+  "authoritative_boundary": {
+    "campaign059_verified_state": {
+      "path": "docs/a_share_three_day_iteration_status_20260804_campaign059_verified_v2.json",
+      "sha256": "4ba4d5fce6f6771f8e82e4c04deb8b8fc5f85a0443efd51e041b86514c95825a"
+    },
+    "historical_walkforward_policy": {
+      "path": "docs/a_share_three_day_historical_walkforward_research_policy_20260727.json",
+      "sha256": "38426d6161b9bfed323c58caba18feca668b8c9d53e294951a8ba90c01a798bb"
+    },
+    "concept_scouting": {
+      "path": "docs/a_share_three_day_walkforward_campaign_060_concept_scouting.json",
+      "sha256": "fbc769e09178ef908a7e0ebcb571dc792a93c21034f9ed88ecf3f089cc6588a2"
+    }
+  },
+  "inherited_definition_sources": {
+    "campaign059_protocol": {
+      "path": "docs/a_share_three_day_walkforward_campaign_059_no_return_preregistration.json",
+      "sha256": "50cf7b067b1dfd5dc31d6c6ef85090788abdf6a2bbc054eda6e7c3824d5c60d6",
+      "comparison_count": 90
+    },
+    "campaign059_terminal_record": {
+      "path": "docs/a_share_three_day_walkforward_campaign_059_research_record_v4.json",
+      "sha256": "e74ca3ec35d2d7d69c5048b667cf177783ec8cf5d58df3c36b123d214b0f0154",
+      "appended_definition": "intraday_market_directional_sign_agreement_238m"
+    },
+    "total_required_no_return_comparison_count": 91,
+    "campaign060_comparison_values_read": false
+  },
+  "selected_mechanism": {
+    "name": "intraday_day_over_day_directional_return_agreement_238b",
+    "direction": "higher",
+    "economic_hypothesis": "Repeated same-clock direction on consecutive accepted sessions may represent persistent scheduled order flow or information assimilation relevant to a three-session horizon.",
+    "formula": "equal-sign jointly nonzero position count divided by jointly nonzero position count across the exact 238 aligned within-half signed return positions of t and accepted-calendar t-1",
+    "source_projection": [
+      "datetime",
+      "symbol",
+      "provider",
+      "close"
+    ],
+    "calendar_lag": 1,
+    "minimum_informative_positions": 60,
+    "transform_threshold_filter_combination_or_model": "none"
+  },
+  "overlap_challenges": [
+    {
+      "family": "intraday_day_over_day_absolute_return_profile_similarity_238b",
+      "result": "distinct_sign_recurrence_pending_mandatory_statistical_uniqueness",
+      "reason": "Campaign057 discards direction, normalizes absolute-return mass, and applies Jensen-Shannon similarity. Campaign060 discards nonzero magnitude, retains direction, uses no distribution normalization, and can change while both absolute-return profiles remain identical."
+    },
+    {
+      "family": "intraday_day_over_day_amount_profile_similarity_240b",
+      "result": "distinct",
+      "reason": "Campaign056 is invariant to price and compares CNY amount distributions. Campaign060 reads no amount and compares signed close returns."
+    },
+    {
+      "family": "intraday_market_directional_sign_agreement_238m",
+      "result": "distinct_cross_date_own_stock_relation_pending_mandatory_statistical_uniqueness",
+      "reason": "Campaign059 compares one stock with leave-one-out peers on the same session. Campaign060 loads no peer benchmark and instead compares the same stock at the same clocks on two consecutive accepted sessions. Holding current stock returns fixed while changing peers affects only Campaign059; changing the prior stock session affects only Campaign060."
+    },
+    {
+      "family": "intraday_return_sign_run_imbalance_238p_and_return_reversal_energy_share_236p",
+      "result": "distinct_cross_session_nonadjacent_relation_pending_mandatory_statistical_uniqueness",
+      "reason": "Those factors classify adjacent returns inside one session. Campaign060 never pairs adjacent return positions with each other; it aligns equal clock positions across dates."
+    },
+    {
+      "family": "intraday_morning_afternoon_return_profile_persistence_119p",
+      "result": "distinct_binary_cross_date_relation_pending_mandatory_statistical_uniqueness",
+      "reason": "Campaign027 uses magnitude-sensitive Pearson correlation between morning and afternoon ordinal positions within one date. Campaign060 uses binary direction votes across consecutive dates and pools both halves without morning-to-afternoon pairing."
+    },
+    {
+      "family": "price_update_share_clock_entropy_and_weak_order_entropy",
+      "result": "material_zero_return_confound_pending_mandatory_statistical_uniqueness",
+      "reason": "Exact-zero returns are excluded from Campaign060's denominator rather than counted as agreement, update, time-bin mass, or weak-order ties. The fixed 91-factor screen must reject the candidate if remaining sparse-update exposure dominates; no residualization or threshold change is allowed."
+    },
+    {
+      "family": "market_linear_magnitude_dispersion_response_and_residual_factors",
+      "result": "distinct",
+      "reason": "Campaign060 uses no market sum, peer count, dispersion, beta, residual, lead, lag, magnitude, or market-state condition."
+    },
+    {
+      "family": "ohlc_range_body_wick_gap_activity_transaction_price_vwap_quarterly_and_disclosure_factors",
+      "result": "distinct",
+      "reason": "Campaign060 reads only datetime, symbol, provider, and close and has no OHLC range, activity, transaction-price, accounting, or disclosure state."
+    },
+    {
+      "family": "candidate49_cumulative_vwap_crossing_rate_240m",
+      "result": "distinct",
+      "reason": "Candidate49 uses causal own-session cumulative VWAP and remains future-only. Campaign060 reads no volume and creates no Candidate49 history, score, signal, execution, or milestone."
+    },
+    {
+      "family": "terminal_factor_combination_filter_threshold_or_model",
+      "result": "distinct",
+      "reason": "The score is computed directly from two adjacent stock-session close grids. It loads no terminal score and fits no weight, regime, filter, threshold, subset, or model."
+    }
+  ],
+  "design_choices_frozen_before_values": {
+    "candidate_count": 1,
+    "factor_name": "intraday_day_over_day_directional_return_agreement_238b",
+    "direction": "higher",
+    "current_session_count": 1,
+    "lookback_session_count": 1,
+    "accepted_calendar_lag": 1,
+    "close_count_per_session": 240,
+    "return_positions_per_session": 238,
+    "return_grid": "119 morning plus 119 afternoon adjacent natural-log close returns",
+    "bridge_missing_or_suspended_previous_stock_session": false,
+    "informative_pair_rule": "current_return != 0 and prior_return != 0",
+    "minimum_informative_positions": 60,
+    "agreement_rule": "mathematical_signs_equal",
+    "score": "agreement_count_divided_by_informative_count",
+    "valid_range": [
+      0.0,
+      1.0
+    ],
+    "parameter_filter_subset_model_or_combination_search": false
+  },
+  "research_boundary": {
+    "external_campaign060_minute_rows_read": false,
+    "campaign060_candidate_or_comparison_values_read": false,
+    "historical_daily_price_fields_read": [],
+    "historical_forward_return_fields_read": false,
+    "provider_request_issued": false,
+    "candidate49_historical_return_signal_execution_or_milestone_backfill_performed": false,
+    "candidate49_ledgers_changed": false,
+    "second_prospective_candidate_created": false,
+    "current_scoring_selection_sizing_or_orders_performed": false,
+    "investment_advice": false
+  },
+  "decision": {
+    "conceptual_independence_passed": true,
+    "statistical_independence_pending_all_91_comparisons": true,
+    "predictive_value_established": false,
+    "next_action": "Freeze one exact coverage-first 91-comparison no-return protocol before implementing or reading any Campaign060 source, candidate, or comparison value."
+  }
+}

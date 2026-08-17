@@ -1,0 +1,101 @@
+{
+  "schema_version": 1,
+  "kind": "a_share_three_day_iteration_status",
+  "recorded_at": "2026-08-16T04:21:00+08:00",
+  "timestamp_semantics": "monotonic_logical_append_time_not_host_wall_clock_measurement",
+  "status": "campaign230_validation_passed_goal_active_campaign231_offline_prevalue_authorized",
+  "supersedes_without_rewriting": {
+    "path": "docs/a_share_three_day_iteration_status_20260816_campaign229_prevalue_terminal.json",
+    "sha256": "3c20857ad4f6099751c5435e52d0cf4868945a776dc9671eb005d02823a6b47b"
+  },
+  "authoritative_inputs": {
+    "deathcare_preneed_atneed_funeral_cremation_interment_cemetery_inventory_perpetual_care_lifecycle_source_frontier": {
+      "path": "docs/a_share_three_day_walkforward_campaign_230_deathcare_preneed_atneed_funeral_cremation_interment_cemetery_inventory_perpetual_care_lifecycle_source_frontier_20260816.json",
+      "sha256": "7f6884731990f477f9bc41c7c6ec6025c818ccdb8e0e9a402cfbc70ec600ba1b"
+    },
+    "attempt_ledger_v5": {
+      "path": "data/experiments/short_horizon/historical_walkforward/campaign_230/research_attempt_ledger_v5.json",
+      "sha256": "b1b6835abde04c24a6fe3bf93294db33a16e8efaf59f5cf77e5aae1d9d7cb030"
+    },
+    "terminal_result_v3": {
+      "path": "docs/a_share_three_day_walkforward_campaign_230_terminal_result_v3_20260816.json",
+      "sha256": "f6df39edb78b219e95d2fd3f4ebf6764a76630454df3036c696847e48125f8e3"
+    },
+    "policy_v350": {
+      "path": "docs/a_share_three_day_walkforward_future_numeric_comparison_eligibility_policy_v350_20260816.json",
+      "sha256": "04a1b43fb49ee917951366d445ac2505e38630961f1e1a4150d31bec1a0dffee"
+    },
+    "terminal_validation": {
+      "path": "docs/a_share_three_day_walkforward_campaign_230_terminal_validation_20260816.json",
+      "sha256": "468923a7e5362a1f29cdab8c393bb7d9db09c3a69b9b1f5aa8d923c55624407e"
+    }
+  },
+  "campaign230": {
+    "terminal": true,
+    "terminal_stage": "prevalue_source_admission_and_overlap_gate",
+    "finite_route_count": 7,
+    "source_admission_deferral_count": 3,
+    "overlap_or_hypothesis_rejection_count": 4,
+    "selected_factor_count": 0,
+    "definition_or_comparator_append": false,
+    "development_trial_count": 0,
+    "stress_trial_count_2024_2025": 0
+  },
+  "effective_accounting": {
+    "campaign230_attempt_count": 11,
+    "campaign230_scientific_attempt_count": 7,
+    "campaign230_infrastructure_failure_count": 4,
+    "cumulative_historical_research_attempt_count": 2165,
+    "cumulative_return_reading_development_trial_count": 314,
+    "chain_tip_sha256": "edc32dc71748fff7a9741f7408d268bd61e9bec45c3674ced696838843125c57"
+  },
+  "library_state": {
+    "complete_factor_definition_count": 158,
+    "complete_factor_definition_order_sha256": "4819c7fd7c0795d7598a52f3c615e3f117d5f4ecd9332974bc8e3dfa57c96667",
+    "eligible_numeric_comparator_count": 142,
+    "eligible_numeric_comparator_order_sha256": "5d1b35fb5a0d8ac9293008db9963c4a60a94dc940c237c3ed259e5ce44f14aaf",
+    "changed_by_campaign230": false
+  },
+  "candidate49": {
+    "sole_prospective_candidate": true,
+    "signal_ledger_sha256": "5193f00d7f36da003f53cec387900da4c3d002299f5dfcfc1a95eaa199ed3a79",
+    "signal_entry_count": 0,
+    "execution_ledger_sha256": "d57a3e61eac969e42cafa418ccd8c0a5ee65dcf69da145bb2c096c2a02a2ea4f",
+    "execution_entry_count": 0,
+    "ledgers_changed": false
+  },
+  "validation": {
+    "focused_pytest": "2 passed",
+    "cumulative_pytest": "501 passed, 1 skipped, 45 deselected",
+    "campaign145_through_campaign230_test_file_count": 118,
+    "black": "passed",
+    "ruff": "passed",
+    "json_parse": "passed"
+  },
+  "publication_state": {
+    "current_report_sha256": "f28a3ce6b1e43d1fa0be3e7673921e7a0d8b866f1252aaaf3984b1b2bf655b3f",
+    "three_day_report_sha256": "f83ff641cd6ec9308f50f4bc680590ce443782c3f0a7c74593bbaf7149c4f714"
+  },
+  "research_boundary": {
+    "historical_offline_prevalue_work_may_continue_at_any_local_time": true,
+    "failed_or_truncated_output_used_as_scientific_or_validation_evidence": false,
+    "frozen_source_frontier_rewritten": false,
+    "source_or_deathcare_preneed_atneed_funeral_cremation_interment_cemetery_inventory_perpetual_care_factor_comparator_security_price_or_return_value_read": false,
+    "decedent_family_beneficiary_or_natural_person_identity_cause_of_death_medical_fact_exact_disposition_location_access_credential_payment_instrument_private_authorization_contract_price_legal_communication_security_configuration_or_sensitive_preference_read": false,
+    "stress_2024_2025_opened": false,
+    "provider_or_web_request_issued": false,
+    "provider_credential_presence_value_or_digest_read": false,
+    "candidate49_plan_or_run_executed": false,
+    "candidate49_ledgers_changed": false,
+    "second_prospective_candidate_created": false,
+    "current_scoring_selection_sizing_positions_or_orders_performed": false,
+    "investment_advice": false
+  },
+  "future_campaign_boundary": {
+    "next_campaign": 231,
+    "historical_offline_prevalue_work_may_continue_at_any_local_time": true,
+    "2024_2025_source_or_returns_remain_closed": true,
+    "candidate49_remains_separate_confirmation_layer": true
+  },
+  "next_action": "Continue the active goal with a genuinely different Campaign231 finite zero-network offline prevalue domain; do not wait for 16:30 or a new daily bar."
+}

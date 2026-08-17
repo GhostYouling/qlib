@@ -1,0 +1,37 @@
+{
+  "schema_version": 1,
+  "kind": "a_share_three_day_walkforward_campaign155_infrastructure_failure",
+  "status": "recorded_nonzero_schema_inspection_exit_before_repair",
+  "recorded_at": "2026-08-15T03:24:10+08:00",
+  "failed_command_scope": "Inspect the current universe metadata with an object-shaped jq projection after hashing the source records",
+  "exit_code_nonzero": true,
+  "exact_exit_code_not_captured": true,
+  "observed_stderr": "jq: error: Cannot index array with string status",
+  "root_cause": "data/metadata/universe_latest.json is a top-level array, while the first read-only inspection assumed a top-level object.",
+  "safe_repair": {
+    "command": "Inspect only top-level type, row count, and first-row field names with an array-shaped jq projection.",
+    "repaired_result": {
+      "container_type": "array",
+      "row_count": 5536,
+      "field_names": [
+        "board",
+        "code",
+        "float_market_cap",
+        "is_st",
+        "listing_date",
+        "market_cap",
+        "name",
+        "symbol"
+      ]
+    },
+    "repaired_exit_code": 0
+  },
+  "research_boundary": {
+    "universe_row_values_read": false,
+    "candidate_or_comparator_values_read": false,
+    "historical_daily_price_or_forward_return_values_read": false,
+    "scientific_result_changed": false,
+    "candidate49_ledgers_changed": false,
+    "failed_exit_code_bypassed_or_masked": false
+  }
+}

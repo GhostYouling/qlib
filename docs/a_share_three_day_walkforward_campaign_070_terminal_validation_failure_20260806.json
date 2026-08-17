@@ -1,0 +1,30 @@
+{
+  "version": 1,
+  "kind": "a_share_three_day_walkforward_campaign070_terminal_validation_failure",
+  "status": "preserved_postcompletion_lifecycle_assertion_failure",
+  "recorded_at": "2026-08-06T04:47:00+08:00",
+  "failed_scope": "Combined Campaign070 feature and no-return audit test suite after terminal completion",
+  "exit_code": 1,
+  "observed_result": {
+    "passed_nodes": 10,
+    "failed_nodes": 1,
+    "failed_node": "tests/data_collector_tests/test_a_share_three_day_walkforward_campaign070_features.py::test_status_is_no_value_and_no_return",
+    "cause": "The test was intentionally frozen before snapshot construction and asserts snapshot_absent_pre_build. Terminal status correctly reports snapshot_present after the immutable build."
+  },
+  "repair": "Do not edit the frozen historical test. Validate the current terminal node set with an explicit whitelist that excludes only this lifecycle-bound prebuild assertion.",
+  "research_boundary": {
+    "new_candidate_or_comparison_values_read": false,
+    "historical_daily_price_fields_read": [],
+    "historical_forward_returns_read": false,
+    "provider_request_issued": false,
+    "candidate49_ledgers_changed": false,
+    "predictive_result_changed": false
+  },
+  "attempt_accounting": {
+    "infrastructure_attempt_increment": 1,
+    "complete_factor_attempt_increment": 0,
+    "return_reading_trial_increment": 0,
+    "failed_command_count": 1,
+    "failed_node_count_is_not_the_attempt_unit": true
+  }
+}

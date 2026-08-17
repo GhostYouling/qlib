@@ -1,0 +1,113 @@
+{
+  "schema_version": 1,
+  "kind": "a_share_three_day_walkforward_future_numeric_comparison_eligibility_policy",
+  "version": 316,
+  "recorded_at": "2026-08-15T22:09:00+08:00",
+  "timestamp_semantics": "monotonic_logical_append_time_not_host_wall_clock_measurement",
+  "status": "campaign209_terminal_prevalue_freight_parcel_logistics_lifecycle_accounting_corrected_campaign210_ready_after_validation",
+  "supersedes_without_rewriting": {
+    "path": "docs/a_share_three_day_walkforward_future_numeric_comparison_eligibility_policy_v315_20260815.json",
+    "sha256": "05e422359eb85eaea43142566d3fbd2d5f5caaefd46678f489b0c32e42053e4b"
+  },
+  "authoritative_inputs": {
+    "terminal_result_v2": {
+      "path": "docs/a_share_three_day_walkforward_campaign_209_terminal_result_v2_20260815.json",
+      "sha256": "a0236b04a7633acb66ae5bb0be6951b91d7308371e7734be348a59a0542a551c"
+    },
+    "freight_parcel_logistics_lifecycle_source_frontier": {
+      "path": "docs/a_share_three_day_walkforward_campaign_209_freight_parcel_logistics_shipment_booking_waybill_pickup_sortation_linehaul_last_mile_delivery_return_claim_billing_settlement_lifecycle_source_frontier_20260815.json",
+      "sha256": "9e34af1f33afdb650bb818c014ede3b9d04bc7c20bb2323e947789b9dbe7f2b8"
+    },
+    "attempt_ledger_v2": {
+      "path": "data/experiments/short_horizon/historical_walkforward/campaign_209/research_attempt_ledger_v2.json",
+      "sha256": "ccd7f5e96b4bdf29bb3bfe9698ae5a92981686d66726f7d009002767ad81e7a3",
+      "campaign_effective_entry_count": 13,
+      "chain_tip_sha256": "e9008f1a477b6d980da4227718dd38696aa74a4938ab6910f4c306620b29f716"
+    },
+    "deselection_catalog_policy_v311": {
+      "path": "docs/a_share_three_day_walkforward_future_numeric_comparison_eligibility_policy_v311_20260815.json",
+      "sha256": "1da984fe0740a5c4bfd1521db59fb3497e29f3021c04a621a45babe020bba65d"
+    }
+  },
+  "campaign209_terminal_classification": {
+    "route_count": 7,
+    "source_admission_deferral_count": 3,
+    "overlap_or_hypothesis_rejection_count": 4,
+    "selected_factor_count": 0,
+    "definition_or_comparator_append": false,
+    "return_read": false
+  },
+  "complete_historical_feature_library": {
+    "factor_definition_count": 158,
+    "order_sha256": "4819c7fd7c0795d7598a52f3c615e3f117d5f4ecd9332974bc8e3dfa57c96667",
+    "unchanged_from_v315": true
+  },
+  "numerical_comparator_eligibility": {
+    "eligible_numeric_comparator_count": 142,
+    "order_sha256": "5d1b35fb5a0d8ac9293008db9963c4a60a94dc940c237c3ed259e5ce44f14aaf",
+    "unchanged_from_v315": true
+  },
+  "effective_accounting": {
+    "campaign209_attempt_count": 13,
+    "campaign209_scientific_attempt_count": 7,
+    "campaign209_infrastructure_failure_count": 6,
+    "cumulative_historical_research_attempt_count": 1933,
+    "cumulative_return_reading_development_trial_count": 314
+  },
+  "candidate49": {
+    "only_active_prospective_candidate": true,
+    "signal_ledger_sha256": "5193f00d7f36da003f53cec387900da4c3d002299f5dfcfc1a95eaa199ed3a79",
+    "signal_entry_count": 0,
+    "execution_ledger_sha256": "d57a3e61eac969e42cafa418ccd8c0a5ee65dcf69da145bb2c096c2a02a2ea4f",
+    "execution_entry_count": 0,
+    "completed_future_workflow_record_count": 0
+  },
+  "mutable_unified_reports": {
+    "current": {
+      "path": "data/experiments/short_horizon/current_research_report.md",
+      "sha256_at_publication": "1dd1cd68da834e0d2c55906b5e4b22ecde004bee8f5415a6a9d49db3be353e52",
+      "mutable_append_only_report_not_an_immutable_binding": true
+    },
+    "three_day": {
+      "path": "data/experiments/short_horizon/three_day_research_report.md",
+      "sha256_at_publication": "a37e535965ccd296d36738babfac81fdec7ea288fbbc0fbf3465cdd11c7953f4",
+      "mutable_append_only_report_not_an_immutable_binding": true
+    }
+  },
+  "cumulative_regression_boundary": {
+    "working_directory": "repository_root",
+    "test_paths_are_repository_relative": true,
+    "pytest_rootdir_observed_by_collect_only": "tests",
+    "policy_node_id_prefix": "",
+    "deselection_catalog_path": "docs/a_share_three_day_walkforward_future_numeric_comparison_eligibility_policy_v311_20260815.json",
+    "carried_forward_additional_deselected_node": "data_collector_tests/test_a_share_three_day_walkforward_campaign207_terminal.py::test_campaign207_reports_candidate49_and_research_boundaries",
+    "additional_deselected_node": "data_collector_tests/test_a_share_three_day_walkforward_campaign208_terminal.py::test_campaign208_reports_candidate49_and_research_boundaries",
+    "campaign145_through_campaign209_test_file_count": 97,
+    "deselection_node_count": 24,
+    "expected_tests_passed_after_validation": 480,
+    "expected_tests_skipped_after_validation": 1,
+    "expected_nodes_deselected_after_validation": 24,
+    "final_results_must_be_recorded_in_terminal_validation": true
+  },
+  "future_campaign_boundary": {
+    "next_campaign": 210,
+    "may_begin_after_campaign209_independent_validation": true,
+    "historical_offline_prevalue_work_may_continue_at_any_local_time": true,
+    "2024_2025_source_or_returns_remain_closed": true,
+    "candidate49_remains_separate_confirmation_layer": true
+  },
+  "research_boundary": {
+    "failed_or_truncated_output_used_as_validation_or_scientific_evidence": false,
+    "source_freight_parcel_logistics_lifecycle_factor_comparator_security_price_or_return_value_read": false,
+    "privacy_sensitive_record_read": false,
+    "stress_2024_2025_opened": false,
+    "provider_or_web_request_issued": false,
+    "provider_credential_presence_value_or_digest_read": false,
+    "candidate49_plan_or_run_executed": false,
+    "candidate49_ledgers_changed": false,
+    "second_prospective_candidate_created": false,
+    "current_scoring_selection_sizing_positions_or_orders_performed": false,
+    "investment_advice": false
+  },
+  "next_action": "Run focused, cumulative and independent Campaign209 validation against additive v2 accounting; only then publish Campaign210 offline prevalue authorization."
+}

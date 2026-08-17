@@ -1,0 +1,15 @@
+{
+  "schema_version": 1,
+  "kind": "a_share_three_day_walkforward_campaign260_infrastructure_failure",
+  "status": "unified_report_patch_rejected_before_write_invalid_added_line_prefixes",
+  "recorded_at": "2026-08-16T16:14:00+08:00",
+  "phase": "unified_report_append",
+  "failure": "apply_patch verification failed because added Markdown lines were not prefixed as diff additions",
+  "current_report_changed_by_failed_patch": false,
+  "three_day_report_changed_by_failed_patch": false,
+  "result_consumed": false,
+  "recovery": "Regenerated every added line with an explicit plus prefix and applied both report patches successfully.",
+  "scientific_result_changed": false,
+  "provider_or_web_request_issued": false,
+  "candidate49_ledgers_changed": false
+}

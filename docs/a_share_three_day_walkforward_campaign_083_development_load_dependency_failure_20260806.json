@@ -1,0 +1,49 @@
+{
+  "schema_version": 1,
+  "kind": "a_share_three_day_walkforward_campaign083_development_load_dependency_failure",
+  "status": "failed_closed_and_recorded_before_market_data_or_return_read",
+  "recorded_at": "2026-08-06T20:46:00+08:00",
+  "failed_command": "python -m scripts.a_share_three_day_walkforward_campaign083 run-development",
+  "exit_code": 1,
+  "stage": "qlib_import_before_market_execution_data_load",
+  "exception": "ModuleNotFoundError: No module named 'setuptools_scm'",
+  "root_cause": "The isolated Codex runtime contained the frozen numeric research dependencies but not the repository-declared setuptools-scm package required by qlib/__init__.py.",
+  "base_trial_ledger_record": {
+    "path": "data/experiments/short_horizon/historical_walkforward/campaign_083/walkforward/trial_ledger.json",
+    "sha256": "a61171fd4d371b4abe31bbb70662a2d5ef058b70a063211d1f762e11b2eedf6b",
+    "entry_count": 1,
+    "entry_phase": "infrastructure_failure",
+    "entry_trial_id": "wf083_infrastructure__development_load_001",
+    "entry_status": "infrastructure_failed",
+    "development_aggregate_metrics": {},
+    "feature_set": [],
+    "candidate49_historical_return_read": false
+  },
+  "frozen_development_bindings": {
+    "preregistration": {
+      "path": "docs/a_share_three_day_walkforward_campaign_083_preregistration.json",
+      "sha256": "13da1fb31d3849bb792b140847018fe44b8760e8c8d02ae1ba6e082ff467f087"
+    },
+    "runner": {
+      "path": "scripts/a_share_three_day_walkforward_campaign083.py",
+      "sha256": "0a527a67fb4674eefec816f13442f07fa740f90c08a91a33d97db79fd5727640"
+    },
+    "implementation_freeze": {
+      "path": "docs/a_share_three_day_walkforward_campaign_083_development_implementation_freeze_20260806.json",
+      "sha256": "253c1c03d868a1bb7d8d9363a4cac2b599b5f75116395c4b7b243900c8b8da15"
+    }
+  },
+  "research_boundary": {
+    "complete_development_trial_count": 0,
+    "market_execution_data_loaded": false,
+    "historical_daily_price_fields_read": [],
+    "historical_forward_returns_read": false,
+    "partial_statistics_reused": false,
+    "stress_2024_2025_opened": false,
+    "provider_request_issued": false,
+    "candidate49_historical_backfill_performed": false,
+    "candidate49_ledgers_changed": false,
+    "current_scoring_selection_sizing_or_orders_performed": false
+  },
+  "required_recovery": "Install the repository-declared setuptools-scm package in the isolated runtime, verify qlib imports and all frozen development bindings without market or return reads, then permit at most one full restart with the existing infrastructure-failure entry preserved."
+}

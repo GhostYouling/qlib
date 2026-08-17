@@ -1,0 +1,45 @@
+{
+  "version": 1,
+  "kind": "a_share_three_day_walkforward_campaign053_concept_scouting",
+  "status": "completed_before_campaign053_candidate_or_return_values",
+  "frozen_at": "2026-08-03T09:05:00Z",
+  "purpose": "Select exactly one economically independent, dense minute mechanism without reading Campaign053 factor values, comparison values, daily prices, or returns.",
+  "authoritative_inputs": {
+    "current_iteration_state": {
+      "path": "docs/a_share_three_day_iteration_status_20260803_campaign052_candidate49_source_failure_verified.json",
+      "sha256": "a14c0259453052ba4ef051199ad4c200a7d5ea1919610dc7ca66bebfbc7c194f"
+    },
+    "historical_walkforward_policy": {
+      "path": "docs/a_share_three_day_historical_walkforward_research_policy_20260727.json",
+      "sha256": "38426d6161b9bfed323c58caba18feca668b8c9d53e294951a8ba90c01a798bb"
+    }
+  },
+  "candidate_catalog_frozen_before_values": [
+    {
+      "name": "intraday_amount_price_discovery_alignment_js_238p",
+      "decision": "selected",
+      "economic_mechanism": "Whether trading value is concentrated in the same within-session intervals where absolute price discovery occurs, using a bounded distributional similarity rather than a linear covariance.",
+      "direction": "higher",
+      "reason": "Directly measures transaction-support alignment of price discovery and is structurally distinct from time-profile entropy, linear amount-volatility coupling, lead-lag correlation, and disclosure timing."
+    },
+    {
+      "name": "intraday_return_amount_mutual_information_3x3",
+      "decision": "rejected_before_values",
+      "reason": "Requires arbitrary bin edges and sparse contingency-cell policy, creating an avoidable finite-parameter search."
+    },
+    {
+      "name": "intraday_absolute_return_amount_rank_correlation_238p",
+      "decision": "rejected_before_values",
+      "reason": "Too directly re-expresses the terminal linear amount-volatility coupling mechanism."
+    }
+  ],
+  "selected_candidate_count": 1,
+  "candidate_values_read": false,
+  "comparison_values_read": false,
+  "historical_daily_price_fields_read": [],
+  "historical_forward_return_fields_read": false,
+  "candidate49_historical_return_read": false,
+  "provider_request_issued": false,
+  "current_scoring_selection_sizing_or_orders_performed": false,
+  "next_action": "Freeze the exact formula, source projection, overlap rationale, ordered no-return gates, and one-trial conditional development catalog before reading any Campaign053 candidate value."
+}

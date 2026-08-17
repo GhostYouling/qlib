@@ -1,0 +1,35 @@
+{
+  "version": 1,
+  "kind": "a_share_three_day_walkforward_campaign048_post_report_test_transition",
+  "status": "historical_campaign047_report_binding_expected_stale_campaign048_supersession_current",
+  "recorded_at": "2026-08-01T05:31:00Z",
+  "purpose": "Bind the test transition that preserves Campaign047's immutable old report hash while recognizing Campaign048's append-only report supersession.",
+  "bindings": {
+    "campaign048_report_supersession": {
+      "path": "docs/a_share_three_day_walkforward_campaign_048_unified_report_supersession_v2_20260801.json",
+      "sha256": "9c6354a191176e3ed40786461a6197df5cc189676022e4f1405110af1dd3b2a2"
+    },
+    "updated_campaign047_terminal_test": {
+      "path": "tests/data_collector_tests/test_a_share_three_day_walkforward_campaign047_terminal.py",
+      "sha256": "fc03c3b8c46bcfa00e2f44e619406dede8ebde574873b72ae4ff714897579e42"
+    },
+    "campaign048_terminal_test": {
+      "path": "tests/data_collector_tests/test_a_share_three_day_walkforward_campaign048_terminal.py",
+      "sha256": "41065fb27f6de16ead04b78d9472c7f5097de6e0c405aa19668ff3a052929f47"
+    }
+  },
+  "first_full_suite": {
+    "passed": 1709,
+    "failed": 1,
+    "warnings": 13,
+    "only_failure": "Campaign047 terminal test still required its historical unified-report binding to match the Campaign048-appended report."
+  },
+  "semantic_boundary": {
+    "campaign047_record_rewritten": false,
+    "campaign048_record_or_result_changed": false,
+    "test_now_requires_exactly_one_historical_report_binding_mismatch": true,
+    "current_supersession_bindings_must_all_pass": true,
+    "additional_historical_daily_price_or_forward_return_read": false,
+    "candidate49_ledgers_changed": false
+  }
+}

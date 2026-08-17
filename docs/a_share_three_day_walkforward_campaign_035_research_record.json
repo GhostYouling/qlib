@@ -1,0 +1,178 @@
+{
+  "version": 1,
+  "kind": "a_share_three_day_walkforward_campaign035_research_record",
+  "status": "completed_zero_no_return_admissible_factors_stop_before_historical_returns",
+  "recorded_at": "2026-07-30T20:56:00Z",
+  "purpose": "Record Campaign035 from pre-value concept scouting through its immutable close-only feature snapshot and terminal 56-factor uniqueness rejection. No daily price, forward return, training, development trial, or 2024-2025 stress return was opened.",
+  "prior_state": {
+    "path": "docs/a_share_three_day_iteration_status_20260731_campaign034_verified.json",
+    "sha256": "c304581a049ed921e1f6f112ea781ac2d3c35bac9951a1053a4e90640d947ea7"
+  },
+  "campaign": {
+    "concept_scouting": {
+      "path": "docs/a_share_three_day_walkforward_campaign_035_concept_scouting.json",
+      "sha256": "7ecc7668458f9211082688a6e93de44261b1dfd509cea75c1d98c4d29366ee9c"
+    },
+    "mechanism_overlap_audit": {
+      "path": "docs/a_share_three_day_walkforward_campaign_035_mechanism_overlap_audit.json",
+      "sha256": "e4e8ca0f4228f123a749c549b1a4d7df4bf5cdeec7e544291612ae8b1b91d48e"
+    },
+    "no_return_preregistration": {
+      "path": "docs/a_share_three_day_walkforward_campaign_035_no_return_preregistration.json",
+      "sha256": "22ffd5a21b4104a8c1e0d110cc335a1a758649560ab2d10e9a9c16258f70d7c9"
+    },
+    "feature_implementation_freeze": {
+      "path": "docs/a_share_three_day_walkforward_campaign_035_feature_implementation_freeze_20260731.json",
+      "sha256": "d2a72189ae4e6f5de15ea466387f4ae201393f86e1b09a2e8110e2859c450715"
+    },
+    "feature_snapshot_freeze": {
+      "path": "docs/a_share_three_day_walkforward_campaign_035_feature_snapshot_freeze_20260731.json",
+      "sha256": "0920089bd20943f62f48ae54153af305f90b9f2db7377013e7983470c523db5f"
+    },
+    "no_return_audit_freeze": {
+      "path": "docs/a_share_three_day_walkforward_campaign_035_no_return_audit_freeze_20260731.json",
+      "sha256": "6688ea3923b809dcbeb75644b195f18113b1f0268ac2f2e04c526666f2be3492"
+    },
+    "feature_and_no_return_runner": {
+      "path": "scripts/a_share_three_day_walkforward_campaign035_features.py",
+      "post_audit_fingerprint_bound_sha256": "54fa3c4a856e5635ea85733e5ea199f5a0ebc5d4fa6bb187695dd6aca3188931"
+    }
+  },
+  "frozen_candidate": {
+    "name": "intraday_return_weak_order_entropy_234t",
+    "direction": "higher",
+    "formula": "For each half form 119 adjacent log-close returns and its 117 overlapping length-three return tuples. Classify all 234 tuples into the 13 exact weak orderings of three values; with p_k=count_k/234, return -sum_{p_k>0}(p_k*ln(p_k))/ln(13).",
+    "source_projection": [
+      "datetime",
+      "symbol",
+      "provider",
+      "close"
+    ],
+    "selected_bar_count": 240,
+    "fixed_tuple_support": 234,
+    "weak_order_state_count": 13,
+    "exact_ties_retained": true,
+    "comparison_tolerance": 0.0,
+    "lunch_return_or_tuple_included": false,
+    "post_result_formula_direction_state_alphabet_tie_rule_window_filter_or_missing_rule_changed": false
+  },
+  "no_return_admission": {
+    "feature_snapshot": {
+      "path": "/Volumes/DIsk/qlib-a-share-tushare-1m/derived/a_share/rich/tushare/minute_walkforward_campaign035_feature_library/tushare_stk_mins_1m_2019_2025_ea0cbb8f_walkforward_campaign035_feature_library_v1/snapshot_manifest.json",
+      "sha256": "33de221a37e0a19d3c1fffba3c8f0e64c20571581a7c72296b1a593c0acc91f4",
+      "dataset_sha256": "b557148b91a16dad9f028190723b2485f9eadd231c0aaded6b499d9dc1c68606",
+      "partition_count": 33015,
+      "row_count": 7724498,
+      "finite_factor_rows": 7724498,
+      "exact_tie_tuple_observations": 630100770,
+      "invalid_required_close_rows": 0,
+      "nonpositive_close_rows": 0,
+      "nonfinite_return_rows": 0,
+      "inadmissible_weak_order_rows": 0,
+      "state_count_mismatch_rows": 0,
+      "range_or_nonfinite_rows": 0,
+      "all_partition_byte_and_frame_hashes_valid": true,
+      "source_fields_read": [
+        "datetime",
+        "symbol",
+        "provider",
+        "close"
+      ],
+      "daily_price_fields_read": [],
+      "forward_return_fields_read": false
+    },
+    "audit": {
+      "path": "data/experiments/short_horizon/historical_walkforward/campaign_035/no_return/20260730T205353Z_campaign035_no_return_audit.json",
+      "sha256": "ca40ca05991c8ea3c56fe3b3d85dc782c4e2d22f69b51bd12f192c3b9f289b0a",
+      "status": "completed_zero_admissible_factors_stop_before_historical_returns",
+      "admissible_factor_count": 0,
+      "comparison_values_loaded_after_coverage_pass": true,
+      "comparison_factor_count": 56,
+      "comparison_pass_count": 55,
+      "comparison_order_matches_preregistration": true,
+      "historical_daily_price_fields_read": [],
+      "historical_forward_return_fields_read": false
+    },
+    "coverage_result": {
+      "quality_listing_eligible_rows": 1331759,
+      "candidate_eligible_rows": 1330171,
+      "median_coverage": 0.9994517542211769,
+      "p05_coverage": 0.9956886515772271,
+      "p05_eligible_names": 138,
+      "potential_non_overlapping_three_session_cohorts": 540,
+      "observed_cohort_years": [
+        2019,
+        2020,
+        2021,
+        2022,
+        2023,
+        2024,
+        2025
+      ],
+      "coverage_gate_passed": true
+    },
+    "uniqueness_result": {
+      "all_required_comparisons_passed": false,
+      "maximum_absolute_median_daily_rank_correlation": 0.8831373194357716,
+      "failed_comparison_factor": "intraday_price_update_share_238m",
+      "failed_comparison_median_daily_rank_correlation": -0.8831373194357716,
+      "failed_comparison_pairwise_sessions": 1623,
+      "failed_comparison_minimum_pairwise_names_observed": 52,
+      "failed_comparison_daily_rank_correlation_p05": -0.953271625493018,
+      "failed_comparison_daily_rank_correlation_p95": -0.7261287002002045,
+      "other_55_comparisons_passed": true
+    }
+  },
+  "trial_accounting": {
+    "frozen_trial_count_if_admitted": 1,
+    "development_preregistration_created": false,
+    "development_trial_count": 0,
+    "cumulative_historical_development_trial_count_after_campaign": 255,
+    "training_or_model_fitting_performed": false,
+    "development_return_fields_read": false,
+    "stress_2024_2025_opened": false,
+    "stress_return_fields_read": false
+  },
+  "interpretation": {
+    "association_tested": false,
+    "coverage_supported": true,
+    "uniqueness_supported": false,
+    "operational_feasibility_supported": false,
+    "portfolio_translation_supported": false,
+    "conclusion": "The exact 13-state weak-order entropy is broadly computable but fails the pre-return uniqueness gate. Its median daily rank correlation with intraday_price_update_share_238m is -0.883137 across 1,623 eligible sessions, so the frozen absolute threshold of 0.8 is exceeded. This is a redundancy rejection before any predictive association or return test, not evidence that either sign predicts three-session returns.",
+    "mechanism_learning": "A high diversity of exact three-return weak order states is empirically close to the inverse of sparse minute-to-minute price updating in the accepted A-share grid. Future independent concepts should avoid re-expressing update frequency through local ordinal-pattern diversity.",
+    "permitted_post_result_action": "record the rejection and advance only to a genuinely different Campaign036 concept with separate pre-value scouting and overlap audit",
+    "forbidden_post_result_actions": [
+      "invert the factor because the failed comparison correlation is negative",
+      "drop exact ties, add jitter or tolerance, change the weak-order alphabet, tuple length, overlap, half-session window, entropy normalization, direction, threshold, or filter",
+      "remove intraday_price_update_share_238m or any other frozen comparison from the complete library",
+      "read Campaign035 historical returns, create a development trial, or open 2024-2025 stress",
+      "combine the factor with Campaign001-Campaign034 or any other terminal factor",
+      "create current scores, selections, sizes, orders, or Candidate50 activation"
+    ]
+  },
+  "candidate49_state_after_campaign": {
+    "signal_ledger": {
+      "path": "data/experiments/short_horizon/candidate49_future_signal_ledger.json",
+      "sha256": "5193f00d7f36da003f53cec387900da4c3d002299f5dfcfc1a95eaa199ed3a79",
+      "entry_count": 0
+    },
+    "execution_ledger": {
+      "path": "data/experiments/short_horizon/candidate49_future_execution_ledger.json",
+      "sha256": "d57a3e61eac969e42cafa418ccd8c0a5ee65dcf69da145bb2c096c2a02a2ea4f",
+      "entry_count": 0
+    },
+    "historical_return_backfill_performed": false,
+    "prospective_registration_changed": false
+  },
+  "next_iteration": {
+    "campaign_id": "a_share_three_day_walkforward_campaign_036",
+    "status": "requires_genuinely_independent_concept_scouting_then_separate_no_value_mechanism_audit",
+    "constraints": [
+      "must not repair or re-express weak-order entropy, ordinal patterns, price-update frequency, or sparse price movement",
+      "must freeze formula, direction, source fields, time grid, missing and denominator rules, full comparison library, gates, and finite search before values",
+      "must retain the 2019-2023 three-fold expanding walk-forward and conditional one-shot 2024-2025 stress split",
+      "must not backfill Candidate49, activate Candidate50, or produce current scoring or order outputs"
+    ]
+  }
+}

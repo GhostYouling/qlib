@@ -1,0 +1,44 @@
+{
+  "schema_version": 2,
+  "kind": "a_share_three_day_walkforward_campaign260_ordered_uniqueness_implementation_freeze",
+  "status": "all_142_source_loaders_alignment_and_gate_runner_frozen_before_comparator_values",
+  "recorded_at": "2026-08-16T15:58:00+08:00",
+  "frozen_implementation": {
+    "runner_path": "scripts/a_share_three_day_walkforward_campaign260_ordered_uniqueness.py",
+    "runner_sha256": "550c275aab38fb7ebf3a0c3f7ad9f3ef57e348604e8f9382dbd61c5a21e9613f",
+    "test_path": "tests/data_collector_tests/test_a_share_three_day_walkforward_campaign260_ordered_uniqueness.py",
+    "test_sha256": "facdebf183a0866b568b006fb0af92516460cf0cc8e9163286f30d1ab9f0b5cd",
+    "protocol_sha256": "36138407f724989f0b644bfcf61fcc84192f7fd6c56c97dde0ce8872d8bae982",
+    "coverage_sha256": "ea32c4c63cb52c0db394b315b12ed54ee7c4f74355e063fbc7f38cf077f4b6c8",
+    "candidate_manifest_sha256": "5e229b9c6d67614ea8104982ec959d55a11d2d388ad86e1c38ece62c42b3b356",
+    "candidate_dataset_sha256": "9077695bd82a2f4e0f65e4cfd81af346cc1d5e9760c9d8e188a6a8ac78bf591d",
+    "design_manifest_sha256": "043c17fea89f3b0956d643a7c6e3f4d73a11403b967213d2d57539a6a8316a49",
+    "design_dataset_sha256": "12ce3a64b5e13581392ded9890e2064db4ccca3945da3eb8ad7752c95366a9fc",
+    "campaign136_manifest_sha256": "9a5c9ff824de22af6595d312b76230a3e4cf283c6e1d42e882aae96d11367b93",
+    "campaign136_dataset_sha256": "c84b1f85eec3731736a4da411691c144a70a81e38b5013e5aeea5370f3c417ec",
+    "campaign146_manifest_sha256": "951872dbdcfa2b00e9603d3be44b059c7d24204fba5757551afbcd46ee8a3f74",
+    "campaign146_dataset_sha256": "7278ae76407215eab75e9ff0119d8c6a073e4d7ac9df5b7d349bc09e6cf889c4",
+    "comparison_count": 142,
+    "comparison_order_sha256": "5d1b35fb5a0d8ac9293008db9963c4a60a94dc940c237c3ed259e5ce44f14aaf",
+    "candidate_quality_listing_rows": 1330171,
+    "campaign136_partition_count_key": "partitions",
+    "output_path": "data/experiments/short_horizon/historical_walkforward/campaign_260/uniqueness/campaign260_ordered_uniqueness_audit.json"
+  },
+  "synthetic_verification": {
+    "command": "/Volumes/DIsk/Coding/anaconda3/bin/python3.12 -m pytest -q tests/data_collector_tests/test_a_share_three_day_walkforward_campaign260_ordered_uniqueness.py",
+    "exit_code": 0,
+    "passed": 7
+  },
+  "research_boundary": {
+    "comparator_values_read_before_freeze": false,
+    "historical_daily_price_or_forward_return_values_read": false,
+    "stress_2024_2025_opened_for_returns": false,
+    "provider_request_issued": false,
+    "credential_loaded": false,
+    "candidate49_historical_backfill_performed": false,
+    "candidate49_ledgers_changed": false,
+    "second_prospective_candidate_created": false,
+    "current_scoring_selection_sizing_positions_or_orders_performed": false,
+    "investment_advice": false
+  }
+}

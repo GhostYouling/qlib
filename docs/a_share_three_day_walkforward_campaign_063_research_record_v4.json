@@ -1,0 +1,50 @@
+{
+  "version": 4,
+  "kind": "a_share_three_day_walkforward_campaign063_research_record",
+  "status": "completed_zero_admissible_factors_stop_before_comparisons_or_returns_deselect_prefix_failure_recorded",
+  "recorded_at": "2026-08-05T07:04:00+08:00",
+  "campaign_id": "063",
+  "supersedes_without_rewriting": {
+    "path": "docs/a_share_three_day_walkforward_campaign_063_research_record_v3.json",
+    "sha256": "d6add0ad9f274f2071c60b61b1c43b3745475712ac44da3d3570c94b8f753738"
+  },
+  "current_research_attempt_ledger": {
+    "path": "data/experiments/short_horizon/historical_walkforward/campaign_063/research_attempt_ledger_v8.json",
+    "sha256": "3ac26e5a2c8eefa51c6ec303c04500113ed6d454ceda6218626d3bfe36431d48"
+  },
+  "post_result_deselect_prefix_failure": {
+    "path": "docs/a_share_three_day_walkforward_campaign_063_terminal_deselect_prefix_failure_20260805.json",
+    "sha256": "3303e5da552c66a12684d3fbcb52605b335d939d633e97e310a89458899640ce"
+  },
+  "inherited_research_semantics": {
+    "factor": "intraday_cross_sectional_standardized_return_state_stability_236p",
+    "direction": "higher",
+    "factor_terminal": true,
+    "terminal_reason": "position236_has_exact_zero_peer_population_variance_on_all_1699_benchmark_dates",
+    "candidate_eligible_rows": 0,
+    "quality_listing_eligible_rows": 1331759,
+    "median_coverage": 0.0,
+    "p05_coverage": 0.0,
+    "comparison_values_read": false,
+    "historical_daily_prices_or_forward_returns_read": false,
+    "development_trial_count": 0,
+    "development_survivor_count": 0,
+    "stress_2024_2025_opened": false,
+    "provider_request_issued": false,
+    "candidate49_historical_backfill_or_ledger_change": false,
+    "current_scoring_selection_sizing_or_orders_performed": false,
+    "research_result_or_gate_decision_changed_by_v4": false
+  },
+  "current_attempt_accounting": {
+    "campaign063_infrastructure_only_failures": 7,
+    "campaign063_complete_factor_attempts": 1,
+    "campaign063_distinct_research_attempts": 8,
+    "campaign063_append_only_ledger_entries": 8,
+    "campaign063_return_reading_development_trials": 0,
+    "cumulative_historical_research_attempts": 369,
+    "cumulative_return_reading_development_trials": 271
+  },
+  "current_test_policy": "Preserve all byte-bound historical modules. Current validation uses the exact collected data_collector_tests node ids to deselect only the two recorded historical-state assertions and runs the versioned current terminal module unchanged.",
+  "strict_prohibition": "Do not drop position 236, floor or replace zero variance, change the grid/formula/direction/gates, rerun, rescue, invert, model, combine, open Campaign063 returns, or generate current trading output.",
+  "data_limitation": "The eligible universe derives from a current listing snapshot and can contain survivorship bias. This structural no-return result is historical research evidence, not pristine out-of-sample evidence and not investment advice."
+}

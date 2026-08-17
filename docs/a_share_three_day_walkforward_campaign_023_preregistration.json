@@ -1,0 +1,156 @@
+{
+  "version": 1,
+  "kind": "a_share_three_day_walkforward_campaign023_preregistration",
+  "campaign_id": "a_share_three_day_walkforward_campaign_023",
+  "status": "frozen_before_campaign023_2019_2023_development_return_read",
+  "frozen_at": "2026-07-29T08:43:00Z",
+  "purpose": "Freeze the only Campaign023 factor admitted by the ordered no-return gates and its single development trial before any 2019-2023 daily price or forward-return field is opened.",
+  "evidence_classification": {
+    "development_2019_2023": "historically exposed expanding walk-forward research, not unseen or pristine",
+    "stress_2024_2025": "historically exposed stress replay; remains closed until a frozen nonzero development-survivor record exists",
+    "point_in_time_limitation": "The local holding universe derives from a current listing snapshot and can contain survivorship bias.",
+    "investment_or_current_selection_claim_allowed": false
+  },
+  "template_binding": {
+    "path": "docs/a_share_three_day_walkforward_campaign_004_preregistration.json",
+    "sha256": "e67811f265b2b744073391fa65698951b132065109f95fa47991b8254a5756e6"
+  },
+  "governance_bindings": {
+    "authoritative_iteration_state": {
+      "path": "docs/a_share_three_day_iteration_status_20260729_campaign022.json",
+      "sha256": "fb41c096c16a4c6f50a81fc4daa2b0a73bc3ecf18b80fbddd2ed1f21ffa366f8"
+    },
+    "historical_walkforward_policy": {
+      "path": "docs/a_share_three_day_historical_walkforward_research_policy_20260727.json",
+      "sha256": "38426d6161b9bfed323c58caba18feca668b8c9d53e294951a8ba90c01a798bb"
+    },
+    "future_only_policy": {
+      "path": "docs/a_share_three_day_iteration_status_20260725_future_only.json",
+      "sha256": "d44e1cb3707cce194eed37e99cc90f865396b1de8c35e02a393a2a243d973466"
+    },
+    "campaign022_terminal_record": {
+      "path": "docs/a_share_three_day_walkforward_campaign_022_research_record.json",
+      "sha256": "8f5cc7f0cde494a824d100debd55504222fa70d882c01ecc411df89053a4ff78"
+    },
+    "concept_scouting": {
+      "path": "docs/a_share_three_day_walkforward_campaign_023_concept_scouting.json",
+      "sha256": "4b56205deddacf2121a4a5591c9ff0369d40422d097f491cab43a1b520e268c5"
+    },
+    "mechanism_overlap_audit": {
+      "path": "docs/a_share_three_day_walkforward_campaign_023_mechanism_overlap_audit.json",
+      "sha256": "0a686cacdcce6e281e1b3c7100a5230f61308f09a9acb692859c44d24fad30c7"
+    }
+  },
+  "no_return_bindings": {
+    "protocol": {
+      "path": "docs/a_share_three_day_walkforward_campaign_023_no_return_preregistration.json",
+      "sha256": "bf796a2b251fcd8ff717180c59d74da4e664dca85fbdb96d9d565fc801bcf61b"
+    },
+    "audit": {
+      "path": "data/experiments/short_horizon/historical_walkforward/campaign_023/no_return/20260729T084202Z_campaign023_no_return_audit.json",
+      "sha256": "d44a4a1d0147515655e11cc5456d87ff5067d2f6e15b0a78b7b4313d0a87ac08"
+    },
+    "feature_snapshot": {
+      "path": "/Volumes/DIsk/qlib-a-share-tushare-1m/derived/a_share/rich/tushare/minute_walkforward_campaign023_feature_library/tushare_stk_mins_1m_2019_2025_ea0cbb8f_walkforward_campaign023_feature_library_v1/snapshot_manifest.json",
+      "sha256": "64732b36c84cf95024e615569bd5626f5951282e24a2ea534ea3f09c03fc41c8",
+      "dataset_sha256": "443aa07644a31721eda4a3791ea24f3726049319aaabd917cb0ad00e5551d0b7"
+    },
+    "feature_and_no_return_runner": {
+      "path": "scripts/a_share_three_day_walkforward_campaign023_features.py",
+      "sha256": "2de8207b904332d8c4dda0b284bf1f1853d72874db9f1ad92d4cfd633da7f154"
+    }
+  },
+  "implementation": {
+    "script": {
+      "path": "scripts/a_share_three_day_walkforward_campaign023.py",
+      "sha256": "6ffa421679d0bd39062087ccee8f03d14c6a985fa6b71d13247b8a37a7ac1ada"
+    },
+    "development_command": "python scripts/a_share_three_day_walkforward_campaign023.py run-development",
+    "exposed_stress_command": "python scripts/a_share_three_day_walkforward_campaign023.py run-exposed-stress --confirm-exposed-stress",
+    "output_root": "/Users/niyufei/Coding/qlib/data/experiments/short_horizon/historical_walkforward/campaign_023/walkforward"
+  },
+  "factor_library": [
+    {
+      "feature_id": "wf023_f01",
+      "name": "intraday_range_boundary_translation_coherence_238p",
+      "direction": "higher",
+      "formula": "population PearsonCorr(delta_log_high_t, delta_log_low_t) over exactly 238 adjacent transitions wholly inside the two trading halves",
+      "economic_hypothesis": "When minute highs and lows translate in the same direction, the whole traded interval is being accepted at a new level. More coherent boundary translation may indicate persistent information incorporation that carries from the next open through the third close.",
+      "dataset_group": "campaign023_new_factors",
+      "partition_root": "/Volumes/DIsk/qlib-a-share-tushare-1m/derived/a_share/rich/tushare/minute_walkforward_campaign023_feature_library/tushare_stk_mins_1m_2019_2025_ea0cbb8f_walkforward_campaign023_feature_library_v1/partitions",
+      "bindings": [
+        {
+          "path": "/Volumes/DIsk/qlib-a-share-tushare-1m/derived/a_share/rich/tushare/minute_walkforward_campaign023_feature_library/tushare_stk_mins_1m_2019_2025_ea0cbb8f_walkforward_campaign023_feature_library_v1/snapshot_manifest.json",
+          "sha256": "64732b36c84cf95024e615569bd5626f5951282e24a2ea534ea3f09c03fc41c8"
+        },
+        {
+          "path": "docs/a_share_three_day_walkforward_campaign_023_no_return_preregistration.json",
+          "sha256": "bf796a2b251fcd8ff717180c59d74da4e664dca85fbdb96d9d565fc801bcf61b"
+        },
+        {
+          "path": "data/experiments/short_horizon/historical_walkforward/campaign_023/no_return/20260729T084202Z_campaign023_no_return_audit.json",
+          "sha256": "d44a4a1d0147515655e11cc5456d87ff5067d2f6e15b0a78b7b4313d0a87ac08"
+        }
+      ]
+    }
+  ],
+  "search_space": {
+    "admissible_factor_names_canonical": [
+      "intraday_range_boundary_translation_coherence_238p"
+    ],
+    "single_factor_rule": "Evaluate the only admissible factor exactly once at weight 1.0.",
+    "pair_rule": "No pair exists because exactly one factor passed both no-return gates.",
+    "all_components_required": true,
+    "directional_rank_method": "same-day average percentile rank using the frozen higher direction",
+    "weight_fitting": false,
+    "threshold_search": false,
+    "year_subset_search": false,
+    "filter_search": false,
+    "triple_or_higher_order_combinations": false,
+    "old_terminal_factor_rescue_combinations": false,
+    "pair_weight_grid_for_canonical_factor_order": [
+      [0.25, 0.75],
+      [0.5, 0.5],
+      [0.75, 0.25]
+    ],
+    "expected_single_trial_count": 1,
+    "expected_pair_trial_count": 0,
+    "expected_trial_count": 1,
+    "record_every_trial_and_infrastructure_failure": true,
+    "post_result_change_requires_new_campaign_version": true
+  },
+  "candidate49_boundary": {
+    "registration_id": "candidate49_intraday_cumulative_vwap_crossing_rate_240m_v1",
+    "included_in_feature_library": false,
+    "historical_return_read_allowed": false,
+    "historical_signal_execution_or_milestone_backfill_allowed": false,
+    "prospective_ledgers_changed_by_campaign": false
+  },
+  "research_output_boundary": {
+    "current_scoring_allowed": false,
+    "selection_allowed": false,
+    "sizing_allowed": false,
+    "orders_allowed": false,
+    "prospective_candidate_activation_allowed": false,
+    "campaign004_rescue_or_reweight_allowed": false,
+    "campaign005_rescue_or_reweight_allowed": false,
+    "campaign006_rescue_or_reweight_allowed": false,
+    "campaign007_rescue_or_reweight_allowed": false,
+    "campaign008_rescue_or_reweight_allowed": false,
+    "campaign009_rescue_or_reweight_allowed": false,
+    "campaign010_rescue_or_reweight_allowed": false,
+    "campaign011_rescue_or_reweight_allowed": false,
+    "campaign012_rescue_or_reweight_allowed": false,
+    "campaign013_rescue_or_reweight_allowed": false,
+    "campaign014_rescue_or_reweight_allowed": false,
+    "campaign015_rescue_or_reweight_allowed": false,
+    "campaign016_rescue_or_reweight_allowed": false,
+    "campaign017_rescue_or_reweight_allowed": false,
+    "campaign018_rescue_or_reweight_allowed": false,
+    "campaign019_rescue_or_reweight_allowed": false,
+    "campaign020_rescue_or_reweight_allowed": false,
+    "campaign021_rescue_or_reweight_allowed": false,
+    "campaign022_rescue_or_reweight_allowed": false,
+    "investment_advice": false
+  }
+}

@@ -1,0 +1,129 @@
+{
+  "version": 1,
+  "kind": "a_share_three_day_walkforward_campaign026_mechanism_overlap_audit",
+  "status": "passed_conceptual_independence_before_formula_values_benchmark_values_comparisons_or_returns",
+  "recorded_at": "2026-07-30T02:58:00Z",
+  "purpose": "Resolve the selected market-direction-conditional dependence concept into one exact no-value mechanism and challenge it against terminal and prospective families before any Campaign026 source partition, frozen benchmark value, candidate value, comparison value, daily price, or forward return is opened.",
+  "concept_scouting": {
+    "path": "docs/a_share_three_day_walkforward_campaign_026_concept_scouting.json",
+    "sha256": "4ce94269c659cf1271215a49cb2147d6a5e8fac21b9fe6b8265929230c61b97f"
+  },
+  "authoritative_boundary": {
+    "path": "docs/a_share_three_day_iteration_status_20260729_campaign025_verified.json",
+    "sha256": "42adda7cdde41d6ac1ea81fde4b3fb1c20091ca1a22ceaf7678e559763246809"
+  },
+  "historical_walkforward_policy": {
+    "path": "docs/a_share_three_day_historical_walkforward_research_policy_20260727.json",
+    "sha256": "38426d6161b9bfed323c58caba18feca668b8c9d53e294951a8ba90c01a798bb"
+  },
+  "selected_mechanism": {
+    "name": "intraday_market_up_down_correlation_asymmetry_238m",
+    "direction": "higher",
+    "information_domain": "leave_one_out_market_sign_conditional_synchronous_return_dependence",
+    "formula": "population PearsonCorr(stock_return, leave_one_out_market_return | leave_one_out_market_return>0) minus population PearsonCorr(stock_return, leave_one_out_market_return | leave_one_out_market_return<0) over exactly 238 within-half return positions",
+    "economic_hypothesis": "A higher value means the stock participates more consistently in synchronous broad-market rises than in synchronous broad-market declines, representing upside participation with relative downside resilience that may carry from the next open through the third close.",
+    "source_fields": [
+      "datetime",
+      "symbol",
+      "provider",
+      "close"
+    ],
+    "frozen_benchmark_fields": [
+      "trade_date",
+      "return_position",
+      "return_sum",
+      "valid_stock_count"
+    ],
+    "return_grid": "Form 119 adjacent log-close returns inside each 120-close half at 09:31-11:30 and 13:01-15:00, concatenate morning then afternoon into exactly 238 positions, and exclude standalone 09:30 and the lunch transition.",
+    "leave_one_out_rule": "At each return position subtract the stock's own finite return and count from the frozen equal-weight market return sum and valid-stock count, then divide the remaining sum by the remaining count.",
+    "peer_rule": "Require at least 50 other finite stock returns at every one of the 238 positions.",
+    "market_sign_rule": "Use the exact sign of each synchronous leave-one-out market return. Positive positions enter only the up correlation, negative positions enter only the down correlation, and exact-zero positions enter neither subset.",
+    "minimum_sign_support": "Require at least 30 positive-market and 30 negative-market return positions for the stock-day.",
+    "correlation_rule": "Use equal-pair-weight population Pearson correlation separately inside the positive-market and negative-market subsets. Retain exact-zero stock returns. Require positive population variance in both the stock and market vectors in both subsets.",
+    "asymmetry_rule": "Subtract the negative-market correlation from the positive-market correlation. Do not use beta, covariance, regression intercepts, magnitude weights, leads, lags, thresholds, quantiles, or subwindows.",
+    "endpoint_rule": "Canonicalize only values within 1e-12 beyond -2 or +2 to that endpoint; otherwise any nonfinite value or value outside [-2,2] is missing.",
+    "missing_rule": "Any invalid close-return grid, insufficient leave-one-out peers, fewer than 30 observations in either nonzero market-sign subset, degenerate correlation component, nonfinite score, or out-of-range score makes the stock-day missing; never fill, clip statistically, repair, or substitute.",
+    "valid_range": [
+      -2.0,
+      2.0
+    ]
+  },
+  "overlap_challenges": [
+    {
+      "family": "intraday_market_idiosyncratic_share_238m",
+      "result": "distinct",
+      "reason": "Market-idiosyncratic share decomposes unconditional whole-session variance against a synchronous market path. Campaign026 keeps the synchronous path but compares two market-sign-conditional correlations and does not estimate residual variance."
+    },
+    {
+      "family": "intraday_market_neutral_late_residual_drift_238m",
+      "result": "distinct",
+      "reason": "The terminal residual-drift mechanism uses a fitted whole-session market relation to measure late residual direction. Campaign026 uses no late window, fitted residual, or drift and instead compares full-session conditional correlations."
+    },
+    {
+      "family": "intraday_market_response_delay_asymmetry_236p",
+      "result": "distinct",
+      "reason": "Campaign021 subtracts one-minute stock-lag and stock-lead cross correlations. Campaign026 is strictly synchronous at each of 238 positions, has no lead or lag, and partitions only by market sign."
+    },
+    {
+      "family": "intraday_return_skewness_238m_and_upside_semivariance_share_239m",
+      "result": "distinct",
+      "reason": "Those mechanisms measure the stock's own unconditional return-distribution asymmetry. Campaign026 conditions a bivariate dependence statistic on an external leave-one-out market state."
+    },
+    {
+      "family": "intraday_return_sign_run_imbalance_238p",
+      "result": "distinct",
+      "reason": "Sign-run imbalance measures adjacent own-return sign persistence. Campaign026 retains return magnitude inside correlations, uses no adjacent sign pairs, and conditions on synchronous market sign."
+    },
+    {
+      "family": "intraday_market_amount_profile_synchronization_240m",
+      "result": "distinct",
+      "reason": "Amount-profile synchronization compares normalized intraday activity shapes without prices. Campaign026 reads only close-derived returns and a frozen return benchmark, and reads no amount."
+    },
+    {
+      "family": "candidate49_cumulative_vwap_crossing_rate",
+      "result": "distinct",
+      "reason": "Candidate49 measures causal cumulative-VWAP crossings from close, volume, and amount. Campaign026 reads no volume or amount and has no cumulative VWAP or crossing count."
+    },
+    {
+      "family": "terminal_factor_combination_or_rescue",
+      "result": "not_used",
+      "reason": "Campaign026 contains one new close-plus-frozen-market statistic and no terminal factor value, transform, filter, model, or combination."
+    }
+  ],
+  "design_choices_frozen_before_values": {
+    "formula_family": "positive-market correlation minus negative-market correlation",
+    "direction": "higher",
+    "same_minute_only": true,
+    "lead_or_lag_allowed": false,
+    "market_zero_positions_excluded": true,
+    "stock_zero_returns_retained": true,
+    "minimum_positions_per_nonzero_market_sign": 30,
+    "minimum_leave_one_out_peers_per_position": 50,
+    "correlation_estimator": "population_pearson_equal_pair_weight",
+    "selected_return_count": 238,
+    "include_0930": false,
+    "include_lunch_transition": false,
+    "endpoint_canonicalization_tolerance": 1e-12,
+    "subwindow_or_year_selection_allowed": false,
+    "magnitude_weighting_allowed": false,
+    "terminal_factor_input_allowed": false
+  },
+  "decision": {
+    "conceptually_independent": true,
+    "advance_to_exact_no_return_preregistration": true,
+    "candidate_benchmark_or_comparison_values_may_be_read_now": false,
+    "binding_validator_exit_zero_required_before_next_stage": true,
+    "candidate49_remains_only_active_prospective_candidate": true,
+    "candidate50_activation_allowed": false,
+    "current_aggregation_scoring_selection_sizing_or_orders_allowed": false
+  },
+  "research_boundary": {
+    "external_campaign026_minute_partitions_read": false,
+    "frozen_market_benchmark_values_read": false,
+    "candidate_values_read": false,
+    "comparison_values_read": false,
+    "daily_price_fields_read": false,
+    "forward_returns_read": false,
+    "provider_request_issued": false
+  }
+}

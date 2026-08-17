@@ -1,0 +1,44 @@
+{
+  "schema_version": 1,
+  "kind": "a_share_three_day_walkforward_campaign083_v2_pre_retry_snapshot_frame_hash_failure",
+  "status": "failed_closed_before_v2_audit_coverage_or_comparison_values",
+  "recorded_at": "2026-08-06T20:23:45+08:00",
+  "stage": "post_runtime_repair_pre_retry_candidate_snapshot_verification",
+  "exit_code": 1,
+  "exception": "Campaign083FeatureError: partition frame changed: partitions/sh600000/2019.parquet",
+  "runtime": {
+    "numpy": "2.3.5",
+    "pandas": "2.2.2",
+    "pyarrow": "16.1.0",
+    "scipy": "1.15.3",
+    "pip_check": "no_broken_requirements"
+  },
+  "static_tests_before_failure": {
+    "campaign083_feature_no_return_v1_and_v2_tests_passed": 19,
+    "failed": 0
+  },
+  "first_failed_partition_diagnosis": {
+    "relative_path": "partitions/sh600000/2019.parquet",
+    "byte_hash_matches_manifest": true,
+    "row_count_matches_manifest": true,
+    "columns_match_frozen_schema": true,
+    "eligible_rows_under_frozen_value_semantics": 244,
+    "stored_build_runtime_frame_hash": "8339d6efd0da3ebd7cc45340f98c47ffd76619a62b2f4ae8fea9a8e83f173a9b",
+    "observed_repaired_runtime_frame_hash": "7b597ff3f8940a4162cc39e8dd3487cc849c9b3f846e5ff2f6ae24fcd2e9a9f6",
+    "frame_hash_matches": false
+  },
+  "root_cause": "The Campaign083 partition byte identity, schema, row count, and factor value semantics remain valid, but c74._frame_sha256 is runtime-sensitive across the build pair pandas 2.2.3/pyarrow 25.0.0 and the legacy-comparator pair pandas 2.2.2/pyarrow 16.1.0.",
+  "published_v2_audit_count": 0,
+  "v2_retry_entered": false,
+  "partial_statistics_reused": false,
+  "candidate_snapshot_or_manifest_rewritten": false,
+  "coverage_or_capacity_metrics_computed": false,
+  "comparison_values_read": false,
+  "historical_daily_price_fields_read": [],
+  "historical_forward_returns_read": false,
+  "provider_request_issued": false,
+  "candidate49_historical_backfill_performed": false,
+  "candidate49_ledgers_changed": false,
+  "current_scoring_selection_sizing_or_orders_performed": false,
+  "required_recovery": "Freeze a v3 compatibility verifier before retry. It may skip only cross-runtime recomputation of stored output_frame_sha256 while still requiring the immutable manifest byte hash, every partition byte hash, path containment, row count, exact schema, frozen factor value semantics, eligible-row total, and stored dataset digest. It may not rewrite any snapshot or change any research gate."
+}

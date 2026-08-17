@@ -1,0 +1,24 @@
+{
+  "schema_version": 1,
+  "kind": "a_share_three_day_walkforward_campaign203_infrastructure_failure",
+  "status": "failed_wrong_mutable_report_path_hash_check_output_discarded",
+  "recorded_at": "2026-08-15T19:30:53+08:00",
+  "timestamp_semantics": "monotonic logical append time after Campaign203 ledger v4 and before final Campaign203 validation",
+  "phase": "campaign203_final_artifact_hash_verification",
+  "failure": {
+    "observed_condition": "A final SHA-256 verification command used two incorrect docs/ report paths instead of the authoritative data/experiments/short_horizon mutable report paths and exited nonzero after hashing the ledger and terminal result.",
+    "process_exit_code": 1,
+    "failed_invocation_output_used_as_validation_evidence": false,
+    "files_changed_by_failed_invocation": false,
+    "recovery": "Resolve the report paths from the Campaign203 focused test, record this failure additively, and rerun all final artifact hashes and validations from fresh processes with the authoritative paths."
+  },
+  "research_boundary": {
+    "source_row_candidate_comparator_security_price_or_return_value_read": false,
+    "failed_or_truncated_output_used_as_scientific_or_validation_evidence": false,
+    "provider_or_web_request_issued": false,
+    "provider_credential_presence_value_or_digest_read": false,
+    "stress_2024_2025_opened": false,
+    "candidate49_plan_or_run_executed": false,
+    "candidate49_ledgers_changed": false
+  }
+}

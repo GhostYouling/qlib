@@ -1,0 +1,91 @@
+{
+  "version": 1,
+  "kind": "a_share_three_day_walkforward_campaign060_verification",
+  "status": "terminal_coverage_failure_verified_no_comparison_or_return_opened",
+  "recorded_at": "2026-08-05T00:15:00+08:00",
+  "research_record": {
+    "path": "docs/a_share_three_day_walkforward_campaign_060_research_record.json",
+    "sha256": "889ab11013ba8cead84b0377cea15fdce0a405ce98d6a0d96eac08eb17bfbadd"
+  },
+  "terminal_test": {
+    "path": "tests/data_collector_tests/test_a_share_three_day_walkforward_campaign060_terminal.py",
+    "sha256": "57f8e9aacf68b90781c00a244aa74194e578362145b89c029edc70e970cce312"
+  },
+  "current_test_suite": {
+    "explicit_pythonpath": "/Volumes/DIsk/Disk-Coding/qlib",
+    "passed": 24,
+    "failed": 0,
+    "deselected": 2,
+    "deselected_exact_historical_nodes": [
+      "data_collector_tests/test_a_share_three_day_walkforward_campaign060_no_return_audit.py::test_status_is_pre_audit_and_no_return",
+      "data_collector_tests/test_a_share_three_day_walkforward_campaign060_no_return_audit_range_repair.py::test_repaired_status_remains_pre_audit"
+    ]
+  },
+  "preserved_terminal_test_failure": {
+    "path": "docs/a_share_three_day_walkforward_campaign_060_terminal_pre_audit_assertion_failure_20260805.json",
+    "sha256": "a3774d7b7e8327fbee8cb03e64e7643fbfc94f966648a2de9eb789b69f210c31"
+  },
+  "current_attempt_ledger": {
+    "path": "data/experiments/short_horizon/historical_walkforward/campaign_060/research_attempt_ledger_v6.json",
+    "sha256": "3efed2c60a19d99080b118fc2d257e027e957091822bb68b82f828cf62a1c744"
+  },
+  "documentation": {
+    "campaign_report": {
+      "path": "docs/a_share_three_day_walkforward_campaign_060_report.md",
+      "sha256": "cb1380bfd66ff9221677d8bce9a53e86ad214e248b2db793cc82318d22475580"
+    },
+    "canonical_report": {
+      "path": "data/experiments/short_horizon/three_day_research_report.md",
+      "sha256": "da0974bca9fee1a9f835ed19e2cc8e92f93260bea82b40c0673c08ab04619bcc"
+    },
+    "canonical_report_generator": {
+      "path": "scripts/a_share_short_horizon_factor_research.py",
+      "sha256": "a2e7e81df995212024e92d3020552e4213a39ca24d79a81fcade3d2243c570b9"
+    },
+    "pipeline_document": {
+      "path": "docs/a_share_data_pipeline.md",
+      "sha256": "2c0fcf30eee2f03a0d15f22bfa19a66da3819b06c85cd050aaea4275c024f57f"
+    },
+    "data_management_skill": {
+      "path": "/Users/niyufei/.codex/skills/manage-qlib-a-share-data/SKILL.md",
+      "sha256": "fadd108b37bc94d4b74c41499b168434e1b5c800e519a9ab410c654366a1464b"
+    }
+  },
+  "semantic_verification": {
+    "factor": "intraday_day_over_day_directional_return_agreement_238b",
+    "direction": "higher",
+    "median_coverage": 0.9033241252302026,
+    "minimum_median_coverage": 0.95,
+    "p05_coverage": 0.7990173123486684,
+    "minimum_p05_coverage": 0.9,
+    "coverage_gate_passed": false,
+    "comparison_values_read": false,
+    "historical_daily_price_fields_read": [],
+    "historical_forward_return_fields_read": false,
+    "development_2019_2023_opened": false,
+    "stress_2024_2025_opened": false,
+    "campaign060_attempt_count": 10,
+    "campaign060_infrastructure_only_failure_count": 9,
+    "campaign060_complete_factor_attempt_count": 1,
+    "cumulative_historical_research_attempt_count": 351,
+    "cumulative_return_reading_development_trial_count": 269
+  },
+  "prospective_isolation": {
+    "candidate49_signal_ledger": {
+      "path": "data/experiments/short_horizon/candidate49_future_signal_ledger.json",
+      "sha256": "5193f00d7f36da003f53cec387900da4c3d002299f5dfcfc1a95eaa199ed3a79",
+      "entry_count": 0
+    },
+    "candidate49_execution_ledger": {
+      "path": "data/experiments/short_horizon/candidate49_future_execution_ledger.json",
+      "sha256": "d57a3e61eac969e42cafa418ccd8c0a5ee65dcf69da145bb2c096c2a02a2ea4f",
+      "entry_count": 0
+    },
+    "historical_backfill_performed": false,
+    "provider_request_issued_by_campaign060": false,
+    "current_scoring_selection_sizing_or_orders_performed": false
+  },
+  "all_binding_checks_passed": true,
+  "semantic_gate_and_isolation_checks_passed": true,
+  "report_generator_idempotence_passed": true
+}

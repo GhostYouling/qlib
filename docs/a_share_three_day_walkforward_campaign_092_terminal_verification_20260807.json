@@ -1,0 +1,48 @@
+{
+  "schema_version": 1,
+  "kind": "a_share_three_day_walkforward_campaign092_terminal_verification",
+  "status": "terminal_chain_verified_zero_survivors_ready_for_campaign093_prevalue_research",
+  "recorded_at": "2026-08-07T00:58:30Z",
+  "terminal_state": {
+    "path": "docs/a_share_three_day_iteration_status_20260807_campaign092_terminal.json",
+    "sha256": "a289bebf3dc148e912e461dd169207e50ff5b712dcbcde500a30633106d55906"
+  },
+  "future_duplicate_policy_v36": {
+    "path": "docs/a_share_three_day_walkforward_future_numeric_comparison_eligibility_policy_v36_20260807.json",
+    "sha256": "8e2d23139dbe5f423a5b96fb1230a2f5f0f3c04e3bced33753aa38ac5d7554f8"
+  },
+  "terminal_test": {
+    "path": "tests/data_collector_tests/test_a_share_three_day_walkforward_campaign092_terminal.py",
+    "sha256": "2e4a13b436fdfa61e942f0250da04d1a41fcb816abf0c6ad1951501774ee70ef"
+  },
+  "verification_results": {
+    "terminal_test_result": "5 passed",
+    "current_node_whitelist_result": "15 passed",
+    "terminal_chain_generic_binding_count": 18,
+    "terminal_chain_generic_binding_failures": 0,
+    "black_check_passed": true,
+    "ruff_check_passed": true,
+    "timestamp_not_after_observed_clock_test_passed": true,
+    "complete_definition_count": 124,
+    "complete_definition_order_sha256": "a77f964349dd9c5d924bb8d6e2000682791cd765ff4b9c5c50576309cf815758",
+    "numeric_comparator_count": 122,
+    "numeric_comparator_order_sha256": "8e5afb41c25060c7071e713ecc9589a6db8a706da5c441349dc298fca26da390"
+  },
+  "candidate49_verification": {
+    "signal_ledger_entry_count": 0,
+    "signal_ledger_sha256": "5193f00d7f36da003f53cec387900da4c3d002299f5dfcfc1a95eaa199ed3a79",
+    "execution_ledger_entry_count": 0,
+    "execution_ledger_sha256": "d57a3e61eac969e42cafa418ccd8c0a5ee65dcf69da145bb2c096c2a02a2ea4f",
+    "provider_request_issued": false,
+    "historical_backfill_performed": false,
+    "same_day_plan_or_run_executed": false
+  },
+  "research_boundary": {
+    "research_values_or_returns_recomputed_for_terminal_verification": false,
+    "campaign092_2024_2025_stress_return_fields_read": false,
+    "candidate49_ledgers_changed": false,
+    "second_prospective_candidate_created": false,
+    "current_scoring_selection_sizing_or_orders_performed": false,
+    "investment_advice": false
+  }
+}

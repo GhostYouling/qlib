@@ -1,0 +1,140 @@
+{
+  "version": 1,
+  "kind": "a_share_candidate49_daily_file_identity_readiness",
+  "status": "offline_daily_file_identity_gate_passed_real_future_signal_pending",
+  "recorded_at": "2026-07-25T18:28:18Z",
+  "purpose": "Advance Candidate49 source-to-signal provenance by proving that a correctly named daily root cannot import a root-external or shared-inode daily Parquet through a symbolic link, hard link, or non-regular file.",
+  "advances": {
+    "path": "docs/a_share_candidate49_source_signal_daily_root_provenance_readiness_20260726.json",
+    "sha256": "557be5da5f696d3c4e7acf937d24395836a7d3109d37f99350d5c5bddcbcca0b"
+  },
+  "authoritative_research_state": {
+    "path": "docs/a_share_three_day_iteration_status_20260725_future_only.json",
+    "sha256": "d44e1cb3707cce194eed37e99cc90f865396b1de8c35e02a393a2a243d973466",
+    "active_future_only_candidate": "candidate49_intraday_cumulative_vwap_crossing_rate_240m_v1",
+    "aggregation_allowed": false,
+    "candidate50_activation_allowed": false
+  },
+  "candidate_contract": {
+    "factor_changed_by_this_work": false,
+    "factor_direction": "higher_intraday_cumulative_vwap_crossing_rate_240m",
+    "signal_timing_changed_by_this_work": false,
+    "quality_or_listing_gate_changed_by_this_work": false,
+    "three_session_holding_definition_changed_by_this_work": false,
+    "historical_return_backfill_allowed": false
+  },
+  "implementation_fingerprints": {
+    "source_to_signal": {
+      "path": "scripts/a_share_tushare_candidate49_future_observation.py",
+      "sha256": "ed90dac65e01841f4ac618da5514f10be79da48fcf85c2393ec9ebc3f0bbed0d"
+    },
+    "source_to_signal_tests": {
+      "path": "tests/data_collector_tests/test_a_share_tushare_candidate49_future_observation.py",
+      "sha256": "2e67137e3c6f7bd44c6866952d19e6cbe6cacac2d6eb84d73e9658abea714b49"
+    },
+    "runbook": {
+      "path": "docs/a_share_data_pipeline.md",
+      "sha256": "8583295c3343e26ff5672d936cf0517ab758a0f6a52dfab8cd5dcb8a9fe49c88"
+    }
+  },
+  "threat_model": {
+    "gap": "The previous same-active-root gate validated the daily root path but followed individual Parquet symbolic links and accepted files whose inode was hard-linked outside that root. The partition then recorded the root-local spelling and SHA without proving private file identity.",
+    "red_test_result": "Before the fix, both a root-external symbolic link and a two-link shared inode failed to raise, reached the minute fetcher, and began provider-call accounting.",
+    "linked_or_non_regular_daily_source_allowed": false
+  },
+  "pre_request_daily_file_identity_gate": {
+    "active_universe_source": "<active-root>/qlib/cn_a_share/instruments/buyable_main_chinext.txt",
+    "root_symlink_allowed": false,
+    "symbol_parquet_symlink_allowed": false,
+    "non_regular_file_allowed": false,
+    "required_link_count": 1,
+    "resolved_parent_must_equal_daily_raw_root": true,
+    "checked_before_ledger_initialization": true,
+    "checked_before_external_session_root_creation": true,
+    "checked_before_provider_permission_check": true,
+    "checked_before_first_provider_request": true,
+    "preflight_summary_fields": [
+      "active_symbols_checked",
+      "regular_private_daily_files",
+      "missing_daily_files",
+      "symlinks_allowed",
+      "hardlinks_allowed",
+      "provider_request_issued"
+    ]
+  },
+  "per_symbol_immutable_evidence": {
+    "identity_fields": [
+      "resolved_path",
+      "device",
+      "inode",
+      "link_count",
+      "size_bytes",
+      "modified_time_ns"
+    ],
+    "complete_file_sha256_stored": true,
+    "identity_checked_before_projected_read": true,
+    "identity_and_sha256_rechecked_after_projected_read": true,
+    "daily_projection_fields_unchanged": [
+      "date",
+      "raw_close",
+      "raw_volume",
+      "amount",
+      "price_basis"
+    ],
+    "daily_source_column_loaded": false,
+    "minute_open_high_low_used": false
+  },
+  "offline_proofs": {
+    "focused_observation_tests": {
+      "passed": 28,
+      "failed": 0
+    },
+    "focused_candidate49_observation_execution_workflow_tests": {
+      "passed": 63,
+      "failed": 0,
+      "elapsed_seconds": 8.2
+    },
+    "red_symbolic_link_test": "A regular daily file moved outside the accepted root and replaced by a symbolic link was formerly accepted and caused a fetch; it is now rejected before any state or provider side effect.",
+    "red_hard_link_test": "A regular daily file moved outside the accepted root and hard-linked back into it was formerly accepted and caused a fetch; it is now rejected because link_count is two.",
+    "daily_root_symbolic_link_test": "A symbolic link at the canonical daily-root path is rejected before any state or provider side effect.",
+    "zero_write_combined_preflight_test": "A linked daily file returns ready=false and exit code 2 without modifying any fixture byte or creating the external data root.",
+    "full_data_collector_tests": {
+      "passed": 1102,
+      "failed": 0,
+      "warnings": 9,
+      "elapsed_seconds": 30.56
+    },
+    "ruff": "passed",
+    "python_compile": "passed"
+  },
+  "append_only_ledgers_after_offline_tests": {
+    "signal": {
+      "path": "data/experiments/short_horizon/candidate49_future_signal_ledger.json",
+      "sha256": "5193f00d7f36da003f53cec387900da4c3d002299f5dfcfc1a95eaa199ed3a79",
+      "entries": 0
+    },
+    "execution": {
+      "path": "data/experiments/short_horizon/candidate49_future_execution_ledger.json",
+      "sha256": "d57a3e61eac969e42cafa418ccd8c0a5ee65dcf69da145bb2c096c2a02a2ea4f",
+      "entries": 0
+    }
+  },
+  "side_effect_audit": {
+    "real_provider_check_performed": false,
+    "real_provider_request_issued": false,
+    "real_minute_rows_read": false,
+    "real_daily_rows_read": false,
+    "external_candidate49_session_root_created": false,
+    "signal_or_execution_entry_written": false,
+    "live_order_performed": false,
+    "active_data_root_mutated": false
+  },
+  "decision": {
+    "accepted_tushare_daily_data_remains_usable": true,
+    "private_regular_daily_file_identity_required": true,
+    "daily_data_can_replace_candidate49_minute_path": false,
+    "current_signal_exists": false,
+    "selection_sizing_or_order_allowed": false,
+    "next_action": "On or after 2026-07-27 16:30 Asia/Shanghai, run the fail-closed Candidate49 session workflow and require the same-session Tushare daily root to pass both root provenance and per-file identity gates before minute collection."
+  }
+}

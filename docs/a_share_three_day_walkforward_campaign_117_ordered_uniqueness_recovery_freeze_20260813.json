@@ -1,0 +1,47 @@
+{
+  "schema_version": 1,
+  "kind": "a_share_three_day_walkforward_campaign117_ordered_uniqueness_recovery_freeze",
+  "status": "sole_skill_binding_drift_recovery_frozen_before_any_comparator_value",
+  "recorded_at": "2026-08-13T21:14:30+08:00",
+  "purpose": "Accept only the append-only current skill fingerprint as the sole failed historical adapter binding while preserving the original Campaign107 range, NaN, sort and alignment implementations and every Campaign117 uniqueness gate.",
+  "authoritative_failure": {
+    "path": "docs/a_share_three_day_walkforward_campaign_117_ordered_uniqueness_infrastructure_failure_20260813.json",
+    "sha256": "351664b36cbefd2ba5d6c0b969e37bb72cc95fc6a44715b15d1d087acc5f2ed1"
+  },
+  "frozen_recovery": {
+    "runner_path": "scripts/a_share_three_day_walkforward_campaign117_ordered_uniqueness_recovery.py",
+    "runner_sha256": "b3c2a8aae9116b878189239053620bb69526c13db4bded270524bc3f159d9b85",
+    "test_path": "tests/data_collector_tests/test_a_share_three_day_walkforward_campaign117_ordered_uniqueness_recovery.py",
+    "test_sha256": "ebdc02c6ac0d03bd8ab7abf975b79161895902fe4672e49a0a88e33709344a46",
+    "base_runner_path": "scripts/a_share_three_day_walkforward_campaign117_ordered_uniqueness.py",
+    "base_runner_sha256": "d1ac2e3359ccbd6a7b6ea223b62774dfd1b79611cb1ff9bc1cfab74e6e9406be",
+    "adapter_recovery_path": "scripts/a_share_three_day_walkforward_campaign117_adapter_binding_recovery.py",
+    "adapter_recovery_sha256": "d054c871e5535f9892689998822db5b62ae0f63bd77c6849491d52dd2161c3ac",
+    "current_skill_path": "/Users/niyufei/.codex/skills/manage-qlib-a-share-data/SKILL.md",
+    "current_skill_sha256": "5f05f0986c78355b75fa397545aed7fc7d474892849c475e3869dbddf09fdcad",
+    "historical_expected_skill_sha256": "8e541bf7c5d77f27a0b0562bd1235878b46c1074c53d79f64a21c417a68ad470",
+    "non_skill_binding_failure_count": 0,
+    "adapter_range_nan_sort_or_alignment_code_changed": false,
+    "comparison_count_or_order_changed": false,
+    "uniqueness_gate_changed": false
+  },
+  "synthetic_verification": {
+    "command": "/Volumes/DIsk/Coding/anaconda3/bin/python3.12 -m pytest -q tests/data_collector_tests/test_a_share_three_day_walkforward_campaign117_ordered_uniqueness_recovery.py",
+    "passed": 2,
+    "exit_code": 0,
+    "black_formatted": true,
+    "py_compile_passed": true
+  },
+  "research_boundary": {
+    "candidate_values_previously_reopened_for_key_alignment": true,
+    "comparator_values_read_before_freeze": false,
+    "numeric_comparator_count_read_before_freeze": 0,
+    "historical_daily_price_or_forward_return_values_read": false,
+    "stress_2024_2025_opened_for_returns": false,
+    "provider_request_issued": false,
+    "candidate49_historical_backfill_performed": false,
+    "candidate49_ledgers_changed": false,
+    "current_scoring_selection_sizing_positions_or_orders_performed": false,
+    "investment_advice": false
+  }
+}

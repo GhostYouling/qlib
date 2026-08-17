@@ -1,0 +1,27 @@
+{
+  "schema_version": 1,
+  "kind": "a_share_three_day_walkforward_campaign107_snapshot_verify_cli_argument_failure",
+  "status": "preserved_argument_parser_failure_before_snapshot_value_verification",
+  "recorded_at": "2026-08-07T20:27:10Z",
+  "failed_command_semantics": {
+    "entry_point": "scripts/a_share_three_day_walkforward_campaign107_features.py verify",
+    "entry_point_sha256": "9ee33b5001b83d5dd23299651513917995dbdce453f45cfedf5d0f02ce69014a",
+    "invalid_argument": "--data-root /Volumes/DIsk/qlib-a-share-tushare-1m",
+    "required_argument": "--manifest <absolute snapshot_manifest.json path>",
+    "exit_stage": "argparse before command dispatch",
+    "exit_code": 2
+  },
+  "preserved_attempt_ledger": {
+    "path": "data/experiments/short_horizon/historical_walkforward/campaign_107/research_attempt_ledger_v1.json",
+    "sha256": "7333234ace9b3dd34df4910f0917833d482b9ea3c19ace94a9ccc336befeb814"
+  },
+  "snapshot_manifest_created_before_failure": true,
+  "snapshot_partition_or_value_read_by_failed_verify_command": false,
+  "coverage_or_comparator_values_read": false,
+  "historical_daily_prices_or_forward_returns_read": false,
+  "formula_direction_gate_fold_cost_filter_model_or_library_order_changed": false,
+  "provider_request_issued": false,
+  "candidate49_ledgers_changed": false,
+  "current_scoring_selection_sizing_or_orders_performed": false,
+  "repair_rule": "Append this infrastructure attempt and rerun the identical frozen verifier with only the required absolute --manifest argument."
+}

@@ -1,0 +1,104 @@
+{
+  "schema_version": 1,
+  "kind": "a_share_three_day_iteration_status",
+  "status": "campaign094_verified_terminal_zero_survivors_ready_for_campaign095_offline_iteration",
+  "recorded_at": "2026-08-07T03:35:32Z",
+  "observed_local_time": "2026-08-07T11:35:32+08:00",
+  "timezone": "Asia/Singapore",
+  "supersedes_without_rewriting": {
+    "path": "docs/a_share_three_day_iteration_status_20260807_campaign094_terminal.json",
+    "sha256": "643d8228fc0c62c713a9817b6d59ac229002296e64a63ec9cae738550ed4295e",
+    "preserved": true,
+    "scientific_result_changed": false
+  },
+  "terminal_verification": {
+    "path": "docs/a_share_three_day_walkforward_campaign_094_terminal_verification_20260807.json",
+    "sha256": "9e275433e42fbe3f659443093564c4807ec3ec3a84b3dda01a590b6995f49f94"
+  },
+  "effective_research_record": {
+    "path": "docs/a_share_three_day_walkforward_campaign_094_research_record_v4.json",
+    "sha256": "880770f8f3101b06fea008b627847d94a46d7fdbf3b137a83fe45603d1fa8989"
+  },
+  "effective_terminal_freeze": {
+    "path": "docs/a_share_three_day_walkforward_campaign_094_terminal_completion_freeze_v4_20260807.json",
+    "sha256": "af776dd34ef3ed51157a2fa1296f91ff73c7c3c64e39f16dd039eff073eb3b38"
+  },
+  "effective_attempt_ledger": {
+    "path": "data/experiments/short_horizon/historical_walkforward/campaign_094/research_attempt_ledger_v5.json",
+    "sha256": "6ac6f09b9b9551ab17ded43ff7398d13d27ea54d8231e33f6a65561ca5495a84"
+  },
+  "effective_future_numeric_policy": {
+    "path": "docs/a_share_three_day_walkforward_future_numeric_comparison_eligibility_policy_v38_20260807.json",
+    "sha256": "38994cc61f350f40a9a85d75a30a6e36831d968416799284413247e8d2cd4b42"
+  },
+  "campaign094_result": {
+    "factor": "intraday_range_local_peak_clock_dispersion_236p",
+    "direction": "higher",
+    "coverage_gate_passed": true,
+    "numeric_uniqueness_comparisons_passed": 123,
+    "development_trial_count": 1,
+    "development_survivor_count": 0,
+    "development_aggregate_20bp_return": -0.16037181216484475,
+    "terminal_reason": "frozen_2019_2023_development_quality_gates_failed",
+    "stress_2024_2025_opened": false,
+    "stress_2024_2025_return_fields_read": false
+  },
+  "final_accounting": {
+    "campaign094_attempt_count": 8,
+    "campaign094_ledger_entry_count": 11,
+    "campaign094_infrastructure_or_implementation_failure_count": 7,
+    "campaign094_complete_factor_attempt_count": 1,
+    "campaign094_return_reading_development_trial_count": 1,
+    "cumulative_historical_research_attempt_count": 658,
+    "cumulative_return_reading_development_trial_count": 291
+  },
+  "candidate49": {
+    "status": "only_active_prospective_candidate_empty_ledgers_unchanged",
+    "signal_ledger_entry_count": 0,
+    "signal_ledger_sha256": "5193f00d7f36da003f53cec387900da4c3d002299f5dfcfc1a95eaa199ed3a79",
+    "execution_ledger_entry_count": 0,
+    "execution_ledger_sha256": "d57a3e61eac969e42cafa418ccd8c0a5ee65dcf69da145bb2c096c2a02a2ea4f",
+    "provider_credential": {
+      "source": ".env",
+      "recognized_nonempty_token_key_count": 1,
+      "regular_file": true,
+      "mode": "0600",
+      "secret_printed_hashed_or_logged": false
+    },
+    "same_day_workflow": {
+      "eligible_only_after_local_16_30": true,
+      "plan_run_during_this_iteration": false,
+      "provider_request_issued": false,
+      "historical_backfill_performed": false
+    }
+  },
+  "local_daily_data": {
+    "root": "/Volumes/DIsk/Disk-Coding/qlib/data",
+    "calendar_last_session": "2026-07-13"
+  },
+  "next_campaign_boundary": {
+    "campaign": 95,
+    "historical_offline_work_may_run_at_any_time": true,
+    "must_bind_policy": {
+      "path": "docs/a_share_three_day_walkforward_future_numeric_comparison_eligibility_policy_v38_20260807.json",
+      "sha256": "38994cc61f350f40a9a85d75a30a6e36831d968416799284413247e8d2cd4b42"
+    },
+    "complete_definition_count": 126,
+    "complete_definition_order_sha256": "332d461e2b00bf6645eeb74cd59d3710d63f88b34add8afaadf4807ea712263d",
+    "numeric_comparator_count": 124,
+    "numeric_comparator_order_sha256": "d05f1cb7b68e950d508f2b0d13b7ef1847904edc6eb10453405917e04ed0e698",
+    "requirements": [
+      "independent mechanism and exact formula frozen before candidate values",
+      "append every attempt failure formula direction parameter filter subset combination and model",
+      "2019-2023 only for development with three frozen purged folds",
+      "do not open 2024-2025 unless a survivor exists and the entire finite campaign is frozen"
+    ]
+  },
+  "strict_prohibitions": [
+    "do not backfill Candidate49 historical returns signals executions or milestones",
+    "do not start a second prospective candidate",
+    "do not invert repair rewindow rescale filter threshold rerun rescue or combine Campaign094",
+    "do not open Campaign094 2024-2025 stress",
+    "do not generate current scores selections position sizes orders or investment advice"
+  ]
+}

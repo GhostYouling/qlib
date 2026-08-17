@@ -1,0 +1,63 @@
+{
+  "schema_version": 1,
+  "kind": "a_share_three_day_walkforward_campaign101_feature_snapshot_binding",
+  "status": "immutable_candidate_snapshot_verified_before_coverage_or_uniqueness_comparator_values",
+  "recorded_at": "2026-08-07T13:37:00Z",
+  "protocol": {
+    "path": "docs/a_share_three_day_walkforward_campaign_101_no_return_preregistration.json",
+    "sha256": "2d1919a7dd53e340158e6e59d48af65132625dd36725a417cef6119241f925c3"
+  },
+  "feature_implementation_freeze": {
+    "path": "docs/a_share_three_day_walkforward_campaign_101_feature_implementation_freeze_v3_20260807.json",
+    "sha256": "39dc7f056c772eeea69d42b30f0ed3384fbdbaa1159e511019499dfb3a1b0188"
+  },
+  "feature_runner": {
+    "path": "scripts/a_share_three_day_walkforward_campaign101_features.py",
+    "sha256": "61bbb490c862f53548eedffa01265a3b814c29ef9bb489142aed07896d3168f4"
+  },
+  "snapshot": {
+    "path": "/Volumes/DIsk/qlib-a-share-tushare-1m/derived/a_share/rich/tushare/minute_walkforward_campaign101_feature_library/tushare_stk_mins_1m_2019_2025_ea0cbb8f_walkforward_campaign101_feature_library_v1/snapshot_manifest.json",
+    "sha256": "7a2db929fff69f46edbc93d57cdca9cc4427c47dd542291b4f58d879dd91a3b6",
+    "dataset_sha256": "ed024ab2736b9766e1adb122b155189029f30a5d14e11d4d67a403ff9befef24",
+    "partitions": 7,
+    "rows": 1331759,
+    "eligible_rows": 1327637,
+    "missing_rows": 4122,
+    "calendar_sessions": 1632
+  },
+  "factor": {
+    "name": "full_numeric_library_directional_lower_quartile_consensus_129f",
+    "direction": "higher",
+    "range": [0, 1],
+    "lower_inclusive": false,
+    "upper_inclusive": true,
+    "finite_rows": 1327637,
+    "source_factor_count": 129,
+    "source_factor_order_sha256": "a029c53fb237cc1d34aec0a9f7b67856ffa1a67ffe0fc9620fb230680353263b",
+    "minimum_finite_components": 97,
+    "zero_indexed_order_statistic": 32
+  },
+  "independent_verification": {
+    "status": "verified",
+    "dataset_sha256": "ed024ab2736b9766e1adb122b155189029f30a5d14e11d4d67a403ff9befef24",
+    "partitions": 7,
+    "rows": 1331759,
+    "eligible_rows": 1327637,
+    "calendar_sessions": 1632
+  },
+  "failed_build_preserved": {
+    "path": "docs/a_share_three_day_walkforward_campaign_101_feature_build_missing_component_alignment_failure_20260807.json",
+    "sha256": "d29fa87a0420957f06cf8d2952bb1e7157e474a01a5c9d57b5f7e56b58952424"
+  },
+  "source_factor_values_read": true,
+  "candidate_values_computed": true,
+  "coverage_or_capacity_metrics_computed_before_binding": false,
+  "uniqueness_comparator_values_read_before_binding": false,
+  "historical_daily_price_or_forward_return_values_read": false,
+  "training_or_model_fitting_performed": false,
+  "candidate49_historical_backfill_performed": false,
+  "candidate49_ledgers_changed": false,
+  "provider_request_issued": false,
+  "current_scoring_selection_sizing_or_orders_performed": false,
+  "next_action": "Freeze a single-use coverage-first no-return audit implementation against this exact snapshot; load all 129 comparator values only if coverage passes."
+}

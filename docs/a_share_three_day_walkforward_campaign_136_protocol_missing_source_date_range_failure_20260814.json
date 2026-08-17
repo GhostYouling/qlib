@@ -1,0 +1,35 @@
+{
+  "schema_version": 1,
+  "kind": "a_share_three_day_walkforward_campaign136_infrastructure_failure",
+  "status": "recorded_before_daily_source_values_candidate_values_or_returns",
+  "recorded_at": "2026-08-14T11:08:00+08:00",
+  "phase": "source_bound_builder_design_review",
+  "failure_code": "protocol_v1_missing_explicit_output_signal_date_range",
+  "failed_artifacts": {
+    "protocol_v1": {
+      "path": "docs/a_share_three_day_walkforward_campaign_136_no_return_preregistration_20260814.json",
+      "sha256": "31e883b6e64250b51871aceee5da7376f4ee6891896c7b6ae4f60cc6422ea298"
+    },
+    "formula_freeze_v1": {
+      "path": "docs/a_share_three_day_walkforward_campaign_136_formula_implementation_freeze_20260814.json",
+      "sha256": "a11df6f97c140fb018b820f88e4e593512f4ae3ed27190fed7cfdd8c706e4a33"
+    }
+  },
+  "diagnosis": "The accepted daily root extends beyond the 2019-2025 historical campaign interval, but protocol v1 did not explicitly freeze output signal start/end or the one predecessor session allowed before the start. Executing a builder would therefore rely on an unstated date default.",
+  "failed_exit_or_run": {
+    "source_builder_executed": false,
+    "source_values_decoded": false,
+    "candidate_values_computed": false,
+    "comparator_values_read": false,
+    "historical_daily_ohlcv_or_forward_return_values_read": false
+  },
+  "allowed_recovery": "Create a v2 preregistration that changes only the missing source/output date boundary, binds v1 without rewriting it, then rebind and retest the same formula before implementing or running a source builder.",
+  "forbidden_recovery": "Do not change the factor, direction, predecessor, source projection, source identity, formula, zero rule, gates, comparisons, folds, thresholds, filters, models or Candidate49 boundary.",
+  "research_boundary": {
+    "provider_request_issued": false,
+    "credential_loaded": false,
+    "candidate49_ledgers_changed": false,
+    "stress_2024_2025_opened": false,
+    "current_scoring_selection_sizing_positions_or_orders_performed": false
+  }
+}

@@ -1,0 +1,18 @@
+{
+  "schema_version": 1,
+  "kind": "a_share_three_day_walkforward_campaign120_terminal_test_black_failure",
+  "status": "recorded_after_scientific_terminal_without_research_value_change",
+  "recorded_at": "2026-08-14T01:10:24+08:00",
+  "attempt_id": "campaign120_infrastructure_017",
+  "failed_stage": "terminal_regression_static_format_validation",
+  "failure": "Black --check required mechanical formatting only in the new Campaign120 terminal test; ten other scoped files were already formatted, and the command stopped before Ruff and pytest.",
+  "repair": "Format only the unfrozen terminal test, then rerun the same Black, Ruff and pytest scope.",
+  "scientific_result_library_order_or_research_values_changed": false,
+  "research_boundary": {
+    "historical_daily_price_or_forward_return_values_read_after_terminal": false,
+    "development_trial_started": false,
+    "stress_2024_2025_opened": false,
+    "provider_request_issued": false,
+    "candidate49_ledgers_changed": false
+  }
+}

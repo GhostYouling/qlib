@@ -1,0 +1,104 @@
+{
+  "schema_version": 1,
+  "kind": "a_share_three_day_iteration_status",
+  "status": "campaign115_read_only_attempt_forensics_verified_manual_entitlement_confirmation_missing",
+  "recorded_at": "2026-08-09T04:52:00+08:00",
+  "recorded_at_semantics": "monotonic_logical_append_time_after_v4_recorded_at_04_30_not_host_wall_clock_measurement",
+  "supersedes_without_rewriting": {
+    "path": "docs/a_share_three_day_iteration_status_20260809_campaign115_acceptance_wait_v4.json",
+    "sha256": "b5ae4b83377d40cd1954039291fb587df6f28d918c249c11aeb2dde056a902fb",
+    "preserved": true
+  },
+  "authoritative_artifacts": {
+    "numeric_policy_v90": {
+      "path": "docs/a_share_three_day_walkforward_future_numeric_comparison_eligibility_policy_v90_20260809.json",
+      "sha256": "6ee127cbbe86631397ddafba2942412b69a8ab051b2a7b244fcafa89a5c9a42c"
+    },
+    "acceptance_protocol": {
+      "path": "docs/a_share_three_day_walkforward_campaign_115_source_acceptance_protocol_20260809.json",
+      "sha256": "ad9b789fccada781e77662f95d7d3edaffc5371d605a85a9304a178e3ad4cc6c"
+    },
+    "acceptance_runner_freeze_v5": {
+      "path": "docs/a_share_three_day_walkforward_campaign_115_source_acceptance_runner_freeze_v5_20260809.json",
+      "sha256": "b7cf4b1ac4f4196359884d5aa50409ee79685abf8affa59b37a7e154dbeb28d7"
+    },
+    "acceptance_runner_verification_v5": {
+      "path": "docs/a_share_three_day_walkforward_campaign_115_source_acceptance_runner_verification_v5_20260809.json",
+      "sha256": "c4e4d28d1b3532718b1a1c0c86308faa451dd09e2e3abe6ed67bbf86de3919ff"
+    },
+    "attempt_ledger_v7": {
+      "path": "data/experiments/short_horizon/historical_walkforward/campaign_115/research_attempt_ledger_v7.json",
+      "sha256": "494784d8df22c46e8bd5f446e2adebb8e18a92c9a43c0dd1e1e5c06d293a00c4"
+    },
+    "report_v6": {
+      "path": "docs/a_share_three_day_walkforward_campaign_115_prevalue_report_v6.md",
+      "sha256": "81f57cbb9bf7dc972070aec1ada780bf0464e7cd38494d275eeb883ac92fc6d1"
+    }
+  },
+  "campaign115": {
+    "active_historical_campaign": true,
+    "selected_source_mechanism": "tushare_official_limit_up_queue_persistence",
+    "current_stage": "read_only_attempt_forensics_runner_waiting_for_manual_entitlement_confirmation",
+    "runner_v5_runtime_binding": true,
+    "read_only_attempt_forensics_verified": true,
+    "real_attempt_inspection_status": "no_attempt_journal",
+    "real_attempt_inspection_exit_code": 0,
+    "real_attempt_inspection_loaded_credential": false,
+    "real_attempt_inspection_issued_provider_request": false,
+    "real_attempt_journal_created": false,
+    "real_plan_ready": false,
+    "real_plan_exit_code": 2,
+    "real_plan_only_blocker": "manual_5000_point_entitlement_confirmation",
+    "provider_request_issued": false,
+    "provider_rows_or_candidate_values_read": false,
+    "success_or_failure_output_created": false,
+    "complete_factor_definition_count": 0,
+    "numeric_comparator_appended": false,
+    "development_return_trial_count": 0,
+    "stress_2024_2025_opened": false,
+    "next_allowed_action": "Only after the user explicitly confirms that the currently configured account already has at least 5000 points, rerun the frozen plan with the manual assertion; run the one request only if ready=true and exit code is zero. If any attempt journal later exists, inspect-attempt may classify it read-only but never authorizes retry."
+  },
+  "frozen_library": {
+    "complete_definition_count": 141,
+    "complete_definition_order_sha256": "ccab6e3d9d81b0a02d4ff178fdd442b26a1e68e3655e1c6f5b2fcb28cd4a4559",
+    "eligible_numeric_comparator_count": 134,
+    "eligible_numeric_comparator_order_sha256": "31d788db467f558a0ac538315343090f1b3ad4cb27a26136a49ebaa88b2fdbf2"
+  },
+  "candidate49": {
+    "only_active_prospective_candidate": true,
+    "signal_ledger_sha256": "5193f00d7f36da003f53cec387900da4c3d002299f5dfcfc1a95eaa199ed3a79",
+    "execution_ledger_sha256": "d57a3e61eac969e42cafa418ccd8c0a5ee65dcf69da145bb2c096c2a02a2ea4f",
+    "historical_backfill_performed": false
+  },
+  "accounting": {
+    "campaign115_attempt_count": 7,
+    "campaign115_infrastructure_failure_count": 5,
+    "campaign115_prevalue_scientific_attempt_count": 2,
+    "campaign115_complete_factor_attempt_count": 0,
+    "campaign115_return_reading_development_trial_count": 0,
+    "cumulative_historical_research_attempt_count": 860,
+    "cumulative_return_reading_development_trial_count": 302,
+    "latest_additive_entry": "campaign115_infrastructure_007",
+    "latest_additive_entry_read_research_values_or_issued_provider_request": false
+  },
+  "verification": {
+    "focused_runner_and_adapter_tests": "31 passed in 0.67s",
+    "campaign113_to_campaign115_joint_regression": "66 passed in 0.86s",
+    "black_check": "4 files unchanged",
+    "ruff_required_rules": "E4,E7,E9,F,I passed",
+    "invalid_journal_or_terminal_evidence_exit_code": 2,
+    "real_plan_runner_v5_runtime_binding": true,
+    "real_plan_exit_code": 2,
+    "real_plan_provider_request_issued": false,
+    "real_attempt_journal_count": 0,
+    "provider_output_count": 0
+  },
+  "research_boundary": {
+    "candidate_or_comparator_values_read": false,
+    "historical_daily_price_or_forward_return_values_read": false,
+    "stress_2024_2025_opened": false,
+    "second_prospective_candidate_created": false,
+    "current_scoring_selection_sizing_or_orders_performed": false,
+    "investment_advice": false
+  }
+}

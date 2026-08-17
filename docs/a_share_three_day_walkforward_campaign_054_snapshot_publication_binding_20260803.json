@@ -1,0 +1,72 @@
+{
+  "version": 1,
+  "kind": "a_share_three_day_walkforward_campaign054_snapshot_publication_binding",
+  "status": "immutable_repaired_v2_snapshot_verified_before_comparison_or_return_values",
+  "recorded_at": "2026-08-03T13:53:00Z",
+  "authoritative_inputs": {
+    "no_return_protocol": {
+      "path": "docs/a_share_three_day_walkforward_campaign_054_no_return_preregistration.json",
+      "sha256": "938d4e5b73356c949ca298e6850aa4bea02a8204b333f793128f97aaf04fd176"
+    },
+    "original_implementation_freeze": {
+      "path": "docs/a_share_three_day_walkforward_campaign_054_feature_implementation_freeze_20260803.json",
+      "sha256": "965bb952c21b53bf0c72b28ade7e1a39a30d9f009687b601d33f3a95860d6288"
+    },
+    "v1_failure_repair_authorization": {
+      "path": "docs/a_share_three_day_walkforward_campaign_054_snapshot_v1_prebinding_failure_repair_20260803.json",
+      "sha256": "e5df12f500470243f232c1ccb3265eb5df517e82199efd2afb7ddb2bbca99e87"
+    },
+    "repair_implementation_freeze": {
+      "path": "docs/a_share_three_day_walkforward_campaign_054_snapshot_repair_implementation_freeze_20260803.json",
+      "sha256": "c8e784a2c86b87ac256f0cc230835de4ed387555da3b40b5d78b20db8cd246d3"
+    },
+    "effective_builder": {
+      "path": "scripts/a_share_three_day_walkforward_campaign054_features_v4.py",
+      "sha256": "9dd9195477538e764dba4b7efc93f23b77dd550d6e116347b1340f98456e8fb5"
+    },
+    "snapshot_manifest": {
+      "path": "/Volumes/DIsk/qlib-a-share-tushare-1m/derived/a_share/rich/tushare/minute_walkforward_campaign054_feature_library/tushare_stk_mins_1m_2019_2025_ea0cbb8f_walkforward_campaign054_feature_library_v2/snapshot_manifest.json",
+      "sha256": "e61ec157d2119575bc53444d0c8e3c808a4c1113ace8ffa7ed2866bb5e431904",
+      "dataset_sha256": "dbabb7ae1321f172b0ce3c3c4e6713f606245b8e2cc07387e5bacc77d58cfd7e"
+    }
+  },
+  "snapshot_summary": {
+    "partitions": 33015,
+    "rows": 7724498,
+    "factor_eligible_rows": 7675743,
+    "invalid_raw_rows": 0,
+    "one_sided_zero_rows": 47,
+    "insufficient_active_bar_rows": 41847,
+    "invalid_active_price_rows": 0,
+    "nonpositive_quantile_spread_rows": 6861,
+    "range_or_nonfinite_score_rows": 0,
+    "all_partition_byte_and_frame_hashes_valid": true,
+    "verified_partitions": 33015,
+    "verified_rows": 7724498,
+    "stale_inherited_campaign_evidence_keys": []
+  },
+  "failed_snapshot_preservation": {
+    "v1_manifest_sha256": "dd893a54fe04e336bcff3730c96e1181e7c429ccb9b25a7a768c0d96a07d93ed",
+    "v1_dataset_sha256": "e5fc04bd260a0f5d04ed53d32dfa2e33d0481f7160ed106e61d78222ef336cf6",
+    "v1_preserved_without_mutation_or_deletion": true,
+    "v1_may_enter_coverage_uniqueness_or_return_analysis": false
+  },
+  "research_boundary": {
+    "source_fields_read": [
+      "datetime",
+      "symbol",
+      "provider",
+      "volume",
+      "amount"
+    ],
+    "minute_open_high_low_close_fields_read": [],
+    "comparison_factor_values_read": false,
+    "historical_daily_price_fields_read": [],
+    "historical_forward_return_fields_read": false,
+    "candidate49_historical_return_read": false,
+    "candidate49_ledgers_changed": false,
+    "provider_request_issued": false,
+    "current_scoring_selection_sizing_or_orders_performed": false
+  },
+  "next_action": "Bind this repaired manifest, dataset, and publication record into an additive audit-only entrypoint before running the coverage gate and, conditionally, the 77 uniqueness comparisons."
+}

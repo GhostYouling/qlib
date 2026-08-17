@@ -1,0 +1,68 @@
+{
+  "schema_version": 1,
+  "kind": "a_share_three_day_walkforward_campaign141_terminal_result_additive_correction",
+  "status": "terminal_prevalue_zero_candidates_final_accounting",
+  "recorded_at": "2026-08-14T14:22:20+0800",
+  "supersedes_without_rewriting": {
+    "path": "docs/a_share_three_day_walkforward_campaign_141_terminal_result_20260814.json",
+    "sha256": "4cc5a3c29aa7da7ff18b57d5480034e4d7767861f7ed08f1cc589321925e5bf9",
+    "preserved": true,
+    "scientific_result_changed": false
+  },
+  "authoritative_inputs": {
+    "initial_validation_failure": {
+      "path": "docs/a_share_three_day_walkforward_campaign_141_initial_validation_failure_20260814.json",
+      "sha256": "78195219b4a36c360a1386c5033773b6d5a2423ebc0eea847fbe6d0f22a251af"
+    },
+    "effective_attempt_ledger": {
+      "path": "data/experiments/short_horizon/historical_walkforward/campaign_141/research_attempt_ledger_v2.json",
+      "sha256": "6253d3104686ffa784cf29e949aa5e3a06fc9d739d684466ce39c7b95c042928",
+      "effective_entry_count": 7,
+      "chain_tip_sha256": "bf3d81712f3ce2db1eca9385f7577dc0ef9c4c33b540e6ab1d57479d7c179204"
+    }
+  },
+  "unchanged_scientific_result": {
+    "terminal_phase": "prevalue_semantic_independence_gate",
+    "finite_concepts_reviewed": 6,
+    "selected_candidate_count": 0,
+    "complete_factor_definition_created": false,
+    "numeric_comparator_appended": false,
+    "formula_feature_snapshot_or_model_created": false,
+    "source_candidate_comparator_daily_price_or_forward_return_values_read": false,
+    "2024_2025_stress_opened": false
+  },
+  "library_after_final_accounting": {
+    "complete_definition_count": 153,
+    "complete_definition_order_sha256": "bf66faef96d7058c7028da52757c65d8e0bf7978cf72d3967cd236e4da30b875",
+    "eligible_numeric_comparator_count": 141,
+    "eligible_numeric_comparator_order_sha256": "ec1aebcb939ad516c58037a36a4aaadd4ad8b2abbd3c884705895c58da85a2ee"
+  },
+  "effective_accounting": {
+    "campaign141_attempt_count": 7,
+    "campaign141_prevalue_concept_attempt_count": 6,
+    "campaign141_infrastructure_failure_count": 1,
+    "campaign141_complete_factor_attempt_count": 0,
+    "campaign141_return_reading_development_trial_count": 0,
+    "campaign141_development_survivor_count": 0,
+    "campaign141_stress_trial_count": 0,
+    "cumulative_historical_research_attempt_count": 1182,
+    "cumulative_return_reading_development_trial_count": 313
+  },
+  "failure_handling": {
+    "masked_aggregate_exit_recorded": true,
+    "failed_check_treated_as_passed": false,
+    "format_remediation_applied": true,
+    "old_artifact_rewritten": false,
+    "scientific_result_changed": false
+  },
+  "candidate49": {
+    "sole_prospective_candidate": true,
+    "signal_ledger_sha256": "5193f00d7f36da003f53cec387900da4c3d002299f5dfcfc1a95eaa199ed3a79",
+    "signal_entries": 0,
+    "execution_ledger_sha256": "d57a3e61eac969e42cafa418ccd8c0a5ee65dcf69da145bb2c096c2a02a2ea4f",
+    "execution_entries": 0,
+    "historical_backfill_performed": false,
+    "ledgers_changed": false
+  },
+  "next_action": "Keep the goal active and begin Campaign142 offline only from a genuinely new finite prevalue mechanism; preserve all Campaign141 records and Candidate49 unchanged."
+}

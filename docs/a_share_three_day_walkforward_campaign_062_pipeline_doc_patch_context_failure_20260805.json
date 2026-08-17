@@ -1,0 +1,17 @@
+{
+  "version": 1,
+  "kind": "a_share_three_day_walkforward_campaign062_pipeline_document_patch_context_failure",
+  "status": "recorded_post_result_infrastructure_failure_no_document_mutation",
+  "recorded_at": "2026-08-05T05:15:00+08:00",
+  "stage": "terminal_documentation_append",
+  "failed_operation": "apply_patch searched for a Campaign061 sentence that was not byte-identical to the current pipeline-document tail",
+  "failure_effect": "The patch was rejected before any file edit; docs/a_share_data_pipeline.md remained unchanged by the failed operation.",
+  "authorized_repair": "Append the frozen Campaign062 section using the exact current end-of-file context without changing any research artifact, metric, gate, or decision.",
+  "research_attempt_count_increment": 1,
+  "development_trial_count_increment": 0,
+  "candidate_or_comparison_values_read": false,
+  "historical_daily_prices_or_forward_returns_recomputed": false,
+  "provider_request_issued": false,
+  "candidate49_ledgers_changed": false,
+  "current_scoring_selection_sizing_or_orders_performed": false
+}

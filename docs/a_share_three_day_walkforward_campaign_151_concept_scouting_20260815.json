@@ -1,0 +1,156 @@
+{
+  "schema_version": 1,
+  "kind": "a_share_three_day_walkforward_campaign151_finite_prevalue_concept_scouting",
+  "status": "one_genuinely_new_cross_sectional_relative_activity_clock_mechanism_selected_before_values",
+  "recorded_at": "2026-08-15T00:04:13+08:00",
+  "purpose": "Review a finite six-concept catalog against the frozen 155-definition and 142-comparator library, select at most one contract-permitted mechanism, and stop before every historical source, candidate, comparator, price or return value.",
+  "authoritative_inputs": {
+    "campaign150_terminal_state": {
+      "path": "docs/a_share_three_day_iteration_status_20260814_campaign150_prevalue_terminal.json",
+      "sha256": "c75b64b5403e804e903b1da597c702db2dbe433cfba6bb97bc48d5481db7874b"
+    },
+    "numeric_policy_v203": {
+      "path": "docs/a_share_three_day_walkforward_future_numeric_comparison_eligibility_policy_v203_20260814.json",
+      "sha256": "081d1f7ab63cfbf5242dda4fe755315aae25b5dd3a1f97a39e4fd99ad2c4215d",
+      "complete_definition_count": 155,
+      "complete_definition_order_sha256": "2e4114edb26fa3aaebd145ef07fe4e2ac9c5d9dc4586cf70ff61c20e39b954ba",
+      "numeric_comparator_count": 142,
+      "numeric_comparator_order_sha256": "5d1b35fb5a0d8ac9293008db9963c4a60a94dc940c237c3ed259e5ce44f14aaf"
+    },
+    "historical_walkforward_policy": {
+      "path": "docs/a_share_three_day_historical_walkforward_research_policy_20260727.json",
+      "sha256": "38426d6161b9bfed323c58caba18feca668b8c9d53e294951a8ba90c01a798bb"
+    },
+    "campaign150_concept_scouting": {
+      "path": "docs/a_share_three_day_walkforward_campaign_150_concept_scouting_20260814.json",
+      "sha256": "ab9073f932952de76228715f47477b3643e730b1547db3c95b8eb08b9c8d6376"
+    },
+    "campaign150_frontier_audit": {
+      "path": "docs/a_share_three_day_walkforward_campaign_150_mechanism_frontier_audit_20260814.json",
+      "sha256": "778847d1417b23a4e5456ae470b49e65550fa31d706612debbc8535cff8ca469"
+    }
+  },
+  "complete_definition_inventory_reconstruction": {
+    "reconstructor": "scripts.a_share_three_day_walkforward_campaign146_features::reconstruct_complete_definitions",
+    "definition_count": 155,
+    "definition_order_sha256": "2e4114edb26fa3aaebd145ef07fe4e2ac9c5d9dc4586cf70ff61c20e39b954ba",
+    "numeric_comparator_count": 142,
+    "numeric_comparator_order_sha256": "5d1b35fb5a0d8ac9293008db9963c4a60a94dc940c237c3ed259e5ce44f14aaf",
+    "historical_factor_values_read_for_reconstruction": false
+  },
+  "finite_prevalue_concept_catalog": [
+    {
+      "catalog_id": "c151_01",
+      "name": "intraday_relative_amount_share_clock_center_240m",
+      "hypothetical_formula": "At each fixed minute divide the stock amount by the same-minute leave-one-out peer mean amount, normalize the 240 positive relative-activity values to unit mass, and take their fixed [0,1] clock center.",
+      "direction": "higher",
+      "parameters": "exact 240-bar grid, leave-one-out peer minimum 50, peer mean denominator, unit-mass normalization and x_i=i/239",
+      "filters": [
+        "accepted_240_bar_session_only",
+        "at_least_50_complete_leave_one_out_peers_at_every_clock"
+      ],
+      "subsets": [],
+      "combinations": [],
+      "models": [],
+      "prevalue_decision": "selected_for_exact_mechanism_overlap_audit_and_single_formula_freeze",
+      "reason": "It measures migration of a stock's contemporaneous market activity share across the session. Own-amount clock center is invariant to the peer clock, while market-profile synchronization measures shape agreement rather than the clock center of the pointwise own-to-peer ratio. No terminal factor value enters the formula."
+    },
+    {
+      "catalog_id": "c151_02",
+      "name": "intraday_relative_range_share_clock_center_240m",
+      "hypothetical_formula": "Replace amount with each bar's high-low range before the same leave-one-out ratio-clock operation.",
+      "direction": "higher",
+      "parameters": "proposed range transform and peer benchmark",
+      "filters": ["accepted_240_bar_session_only"],
+      "subsets": [],
+      "combinations": [],
+      "models": [],
+      "prevalue_decision": "rejected_as_terminal_range_clock_and_market_range_profile_recombination",
+      "reason": "Range clock center, range clock variance and market range-profile synchronization already consume this observation. A peer ratio would recombine exposed range-clock and benchmark operators."
+    },
+    {
+      "catalog_id": "c151_03",
+      "name": "intraday_relative_return_variance_share_clock_center_238m",
+      "hypothetical_formula": "Use squared within-half returns relative to the same-clock peer mean squared return and summarize their clock center.",
+      "direction": "higher",
+      "parameters": "proposed return grid, peer denominator and normalization",
+      "filters": ["accepted_240_bar_session_only"],
+      "subsets": [],
+      "combinations": [],
+      "models": [],
+      "prevalue_decision": "rejected_as_terminal_variance_timing_market_shock_and_dispersion_recombination",
+      "reason": "Volatility resolution, return-variance entropy, market shock decoupling and market dispersion already expose return-energy timing relative to peers. The ratio-clock operator is a post-exposure recombination in that family."
+    },
+    {
+      "catalog_id": "c151_04",
+      "name": "intraday_cross_sectional_amount_rank_transition_entropy_240m",
+      "hypothetical_formula": "Cross-sectionally rank each stock's minute amount and summarize within-stock rank-bin transition entropy.",
+      "direction": "higher",
+      "parameters": "proposed rank bins, tie rule and transition normalization",
+      "filters": ["accepted_240_bar_session_only", "at_least_50_peers_per_clock"],
+      "subsets": [],
+      "combinations": [],
+      "models": ["rank_state_transition_entropy"],
+      "prevalue_decision": "rejected_as_terminal_amount_weak_order_market_profile_and_rank_mobility_operator_refresh",
+      "reason": "Amount weak-order entropy and market amount-profile synchronization already consume activity ordering and peer shape, while Campaign150 rejected return-rank mobility entropy. Swapping the state field to amount is an operator refresh."
+    },
+    {
+      "catalog_id": "c151_05",
+      "name": "intraday_relative_transaction_price_activity_clock_center_240m",
+      "hypothetical_formula": "Weight the relative amount-share clock by transaction-price displacement from the market transaction-price profile.",
+      "direction": "higher",
+      "parameters": "proposed price displacement, sign and joint weighting",
+      "filters": ["accepted_240_bar_session_only"],
+      "subsets": [],
+      "combinations": ["relative_amount_share", "transaction_price_displacement"],
+      "models": [],
+      "prevalue_decision": "rejected_as_post_exposure_transaction_price_and_market_activity_combination",
+      "reason": "Transaction-price consensus, skew, dispersion resolution and amount-price alignment are terminal. Adding price displacement to the selected raw activity-share state would combine exposed domains and add sign freedom."
+    },
+    {
+      "catalog_id": "c151_06",
+      "name": "intraday_relative_amount_share_late_early_ratio_60m",
+      "hypothetical_formula": "Compare the average relative amount share in proposed early and late subwindows.",
+      "direction": "higher",
+      "parameters": "proposed 60-minute endpoints and ratio normalization",
+      "filters": ["accepted_240_bar_session_only"],
+      "subsets": ["opening_60m", "closing_60m"],
+      "combinations": [],
+      "models": [],
+      "prevalue_decision": "rejected_as_selected_mechanism_subwindow_threshold_variant",
+      "reason": "Once the full-grid relative-share clock center is selected, early/late window lengths and ratio normalizations are alternate parameterizations of the same mechanism and are frozen out before values."
+    }
+  ],
+  "selection": {
+    "concepts_reviewed": 6,
+    "selected_candidate_count": 1,
+    "selected_candidate": "intraday_relative_amount_share_clock_center_240m",
+    "genuinely_new_contract_permitted_mechanism_found": true,
+    "reason": "The selected factor is the first raw minute mechanism in the complete library whose state is the pointwise own-to-leave-one-out-peer amount ratio and whose statistic is the full-grid clock center of that normalized relative activity mass."
+  },
+  "selected_candidate": {
+    "name": "intraday_relative_amount_share_clock_center_240m",
+    "direction": "higher",
+    "economic_hypothesis": "A stock whose share of contemporaneous market trading activity migrates toward the close may reflect strengthening late-session attention that can persist from the next open through the third close.",
+    "source_projection": ["datetime", "symbol", "provider", "amount"],
+    "provider_request_required": false,
+    "historical_candidate_created": false,
+    "prospective_candidate_created": false
+  },
+  "research_boundary": {
+    "source_contract_schema_formula_manifest_and_terminal_metadata_read": true,
+    "source_rows_or_column_values_read": false,
+    "campaign151_candidate_values_computed_or_read": false,
+    "campaign151_comparator_values_read": false,
+    "historical_daily_price_or_forward_return_values_read": false,
+    "stress_2024_2025_opened": false,
+    "provider_request_issued": false,
+    "provider_credential_value_or_digest_read": false,
+    "candidate49_historical_backfill_performed": false,
+    "candidate49_ledgers_changed": false,
+    "second_prospective_candidate_created": false,
+    "current_scoring_selection_sizing_positions_or_orders_performed": false,
+    "investment_advice": false,
+    "inherited_current_listing_survivorship_limitation_remains": true
+  }
+}

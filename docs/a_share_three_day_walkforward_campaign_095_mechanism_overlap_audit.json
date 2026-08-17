@@ -1,0 +1,169 @@
+{
+  "schema_version": 1,
+  "kind": "a_share_three_day_walkforward_campaign095_mechanism_overlap_audit",
+  "status": "passed_semantic_mechanism_review_before_campaign095_minute_source_or_comparison_values",
+  "recorded_at": "2026-08-07T03:46:20Z",
+  "concept_scouting": {
+    "path": "docs/a_share_three_day_walkforward_campaign_095_concept_scouting.json",
+    "sha256": "3a869f9a07a1ed3b740b1931bbbb598cb537146ac048771b81bde2a33d5c357d"
+  },
+  "authoritative_state": {
+    "path": "docs/a_share_three_day_iteration_status_20260807_campaign094_verified.json",
+    "sha256": "b51f2a4b365652c760838f93ffb3e4cfea69546edfaf39acab972e231bab0939"
+  },
+  "historical_walkforward_policy": {
+    "path": "docs/a_share_three_day_historical_walkforward_research_policy_20260727.json",
+    "sha256": "38426d6161b9bfed323c58caba18feca668b8c9d53e294951a8ba90c01a798bb"
+  },
+  "numeric_comparator_policy": {
+    "path": "docs/a_share_three_day_walkforward_future_numeric_comparison_eligibility_policy_v38_20260807.json",
+    "sha256": "38994cc61f350f40a9a85d75a30a6e36831d968416799284413247e8d2cd4b42",
+    "complete_definition_count": 126,
+    "numeric_comparator_count": 124,
+    "complete_definition_order_sha256": "332d461e2b00bf6645eeb74cd59d3710d63f88b34add8afaadf4807ea712263d",
+    "numeric_comparator_order_sha256": "d05f1cb7b68e950d508f2b0d13b7ef1847904edc6eb10453405917e04ed0e698"
+  },
+  "candidate": {
+    "name": "intraday_own_bar_close_location_entropy_10b_240m",
+    "direction": "higher",
+    "mechanism": "Order-invariant marginal diversity of scale-free close acceptance locations inside each bar's own high-low auction interval.",
+    "formula": "For every positive-range selected bar use x=(log(close)-log(low))/(log(high)-log(low)); map x into ten equal-width fixed bins with exact x=1 in bin 9; require at least 120 informative bars; return normalized Shannon entropy over the ten counts.",
+    "fixed_support": "Exactly 240 standard bars create at most 240 own-bar state opportunities. Zero-range bars are noninformative, no time is bridged, and at least 120 positive-range states are required.",
+    "zero_and_missing_semantics": "Finite positive ordered HLC is mandatory. A high=low bar adds no state. Retain exact x=0 and x=1 as bins 0 and 9. Never impute, jitter, weight, clip beyond 1e-12 endpoint canonicalization, or replace a state.",
+    "reads_open_amount_volume_market_daily_quarterly_or_future_fields": false,
+    "candidate49_used_or_modified": false
+  },
+  "complete_library_review": {
+    "all_126_definitions_reviewed_in_frozen_order": true,
+    "all_124_numeric_comparators_reviewed_in_frozen_order": true,
+    "all_return_volatility_path_sign_frequency_range_gap_body_wick_close_location_amount_volume_transaction_price_market_peer_cross_day_event_quality_structural_composite_and_semantic_only_families_reviewed": true,
+    "candidate_is_exact_formula_duplicate": false,
+    "candidate_is_direction_only_duplicate": false,
+    "candidate_is_parameter_only_duplicate": false,
+    "candidate_is_an_inversion_of_a_terminal_factor": false,
+    "candidate_combines_terminal_factor_values": false,
+    "candidate_changes_quality_listing_buyability_cost_or_walkforward_gates": false,
+    "campaign094_formula_transform_direction_subset_filter_residualization_or_fit_reused": false,
+    "candidate49_remains_semantic_isolation_only": true
+  },
+  "nearest_semantic_challenges": [
+    {
+      "name": "intraday_intrabar_close_location_pressure_240m",
+      "relationship": "Both use the close location inside the contemporaneous minute range.",
+      "distinction": "The terminal factor is a directional first-moment pressure statistic. Campaign095 is reflection invariant because exchanging high-side and low-side locations permutes entropy bins without changing counts; it measures marginal diversity and discards directional mean pressure.",
+      "mandatory_numeric_challenge": true
+    },
+    {
+      "name": "intraday_intrabar_close_location_serial_persistence_238p",
+      "relationship": "Both use the same scale-free own-bar HLC state.",
+      "distinction": "The terminal factor uses adjacent within-half order and population correlation. Campaign095 is invariant to every permutation of its informative state sequence and depends only on ten marginal counts; sequences can have identical Campaign095 entropy and arbitrary serial persistence.",
+      "mandatory_numeric_challenge": true
+    },
+    {
+      "name": "intraday_close_range_occupancy_entropy_10b",
+      "relationship": "Both use the same frozen ten-bin normalized Shannon operator.",
+      "distinction": "The terminal factor normalizes all log closes by the completed session's global close range and therefore measures price-path level occupancy. Campaign095 normalizes every close by its own bar interval and is invariant to bar-specific interval translation and positive log-width scaling when the local state is preserved.",
+      "mandatory_numeric_challenge": true
+    },
+    {
+      "name": "intraday_intrabar_range_participation_entropy_240m",
+      "relationship": "Both are order-invariant minute-level entropy statistics involving high and low.",
+      "distinction": "Range participation entropy normalizes high-low range magnitudes across clock time and ignores where the close lands inside a range. Campaign095 discards range magnitudes after state construction and counts local close-acceptance states.",
+      "mandatory_numeric_challenge": true
+    },
+    {
+      "name": "intraday_return_weak_order_entropy_234t and intraday_return_spectral_entropy_59f",
+      "relationship": "All measure distributional diversity with entropy.",
+      "distinction": "The return factors encode local return order patterns or frequency power from adjacent closes. Campaign095 forms no return, lag, ordinal tuple, frequency, or power and is order invariant.",
+      "mandatory_numeric_challenge": true
+    },
+    {
+      "name": "intraday_intrabar_body_range_efficiency_240m and intraday_two_sided_wick_absorption_balance_240m",
+      "relationship": "All use within-bar OHLC geometry.",
+      "distinction": "Those terminal factors depend on open, body size, or wick balance. Campaign095 reads no open and uses only the distribution of normalized HLC close states, regardless of body or wick decomposition.",
+      "mandatory_numeric_challenge": true
+    },
+    {
+      "name": "intraday_price_update_share_238m and intraday_price_update_clock_entropy_10b_238m",
+      "relationship": "Illiquidity can influence both equality-based price updates and the availability or concentration of local HLC states.",
+      "distinction": "Campaign095 never compares adjacent closes or bins update clocks. Zero-range bars are noninformative rather than counted as nonupdates, and all numeric comparisons remain mandatory.",
+      "mandatory_numeric_challenge": true
+    },
+    {
+      "name": "intraday_range_local_peak_clock_dispersion_236p",
+      "relationship": "Both read minute high and low on the same fixed grid.",
+      "distinction": "Campaign094 ignores close and measures the clock variance of strict local range maxima. Campaign095 has no local-extremum or clock statistic and is invariant to state ordering.",
+      "mandatory_numeric_challenge": true
+    },
+    {
+      "name": "intraday_cross_sectional_standardized_return_state_stability_236p and signal_day_turnover_rate_pct",
+      "relationship": "Both semantic-only definitions remain in the complete library.",
+      "distinction": "Peer-standardized return mobility and raw daily turnover have neither an own-bar HLC state nor a marginal entropy operator.",
+      "mandatory_semantic_challenge": true,
+      "numeric_status": "undefined_or_ineligible_not_pass_not_fail"
+    },
+    {
+      "name": "candidate49_intraday_cumulative_vwap_crossing_rate_240m_v1",
+      "relationship": "Both use the completed standard-minute grid.",
+      "distinction": "Candidate49 counts causal close-versus-cumulative-VWAP crossings and requires amount and volume. Campaign095 is historical-only, reads HLC only, and never enters Candidate49 ledgers.",
+      "mandatory_numeric_challenge": false
+    }
+  ],
+  "semantic_invariance_checks": [
+    {
+      "intervention": "Multiply every selected HLC price by one positive constant.",
+      "result": "unchanged because each state uses log-distance ratios"
+    },
+    {
+      "intervention": "Translate or positively rescale each bar's log-price interval while preserving its normalized close location.",
+      "result": "unchanged, distinguishing Campaign095 from global price-path occupancy and range magnitude statistics"
+    },
+    {
+      "intervention": "Reflect every informative state x to 1-x.",
+      "result": "unchanged because the ten bin counts are reversed and Shannon entropy is permutation invariant"
+    },
+    {
+      "intervention": "Permute all informative bars across the two half sessions without changing the state multiset.",
+      "result": "unchanged, distinguishing the factor from serial persistence, clock, run, and transition mechanisms"
+    },
+    {
+      "intervention": "Concentrate the same informative support in fewer bins.",
+      "result": "weakly decreases normalized Shannon entropy"
+    },
+    {
+      "intervention": "Change open, amount, volume, market, quarterly, daily-price, or return states while preserving HLC.",
+      "result": "unchanged"
+    }
+  ],
+  "prevalue_semantic_decision": {
+    "passed": true,
+    "selected_factor_count": 1,
+    "complete_frozen_definition_count_reviewed": 126,
+    "numeric_comparator_count_reserved_for_postcoverage_test": 124,
+    "candidate_or_comparison_values_read": false,
+    "historical_daily_price_or_forward_return_values_read": false,
+    "provider_request_issued": false,
+    "required_next_step": "Freeze the exact v38-bound coverage-first no-return protocol and sole conditional development trial before source rows or candidate values."
+  },
+  "prohibited_rescues": [
+    "change ten bins, equal-width boundaries, entropy normalization, or exact-maximum bin semantics after results",
+    "replace entropy with mean, variance, concentration, threshold share, divergence, serial dependence, run, or clock statistics",
+    "impute zero-range bars, alter the 120-state support, add jitter, drop unfavorable valid states, or select subwindows",
+    "change direction, HLC state, endpoint tolerance, grid, years, costs, folds, or gates",
+    "add open, amount, volume, market, quarterly, thresholds, filters, regimes, neutralization, residualization, fitting, models, or combinations",
+    "remove a failed numeric comparator or select favorable years, costs, folds, or gates"
+  ],
+  "research_boundary": {
+    "campaign095_source_rows_read": false,
+    "campaign095_candidate_values_read": false,
+    "comparison_values_read": false,
+    "historical_daily_price_fields_read": [],
+    "historical_forward_returns_read": false,
+    "candidate49_historical_return_or_signal_backfill": false,
+    "candidate49_ledgers_changed": false,
+    "second_prospective_candidate_created": false,
+    "provider_request_issued": false,
+    "current_scoring_selection_sizing_or_orders_performed": false,
+    "investment_advice": false
+  }
+}

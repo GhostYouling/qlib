@@ -1,0 +1,60 @@
+{
+  "schema_version": 1,
+  "kind": "a_share_three_day_walkforward_campaign136_formula_implementation_freeze",
+  "status": "v2_frozen_and_synthetic_tests_passed_before_daily_source_values",
+  "recorded_at": "2026-08-14T11:10:00+08:00",
+  "supersedes_v1_without_rewriting": {
+    "path": "docs/a_share_three_day_walkforward_campaign_136_formula_implementation_freeze_20260814.json",
+    "sha256": "a11df6f97c140fb018b820f88e4e593512f4ae3ed27190fed7cfdd8c706e4a33",
+    "preserved": true,
+    "reason": "Protocol v1 omitted the explicit 2019-2025 output signal range; no formula semantics changed."
+  },
+  "recorded_v1_failure": {
+    "path": "docs/a_share_three_day_walkforward_campaign_136_protocol_missing_source_date_range_failure_20260814.json",
+    "sha256": "7708253a3cea8e3c06bdd347bb40c0b56fab9f656e62de32b88cc5871e699502"
+  },
+  "preregistration_v2": {
+    "path": "docs/a_share_three_day_walkforward_campaign_136_no_return_preregistration_v2_20260814.json",
+    "sha256": "f23cc1df5d4ed640c82b75ae1b9575718e75977d51b3ce1c33a846534c71e4f0"
+  },
+  "formula_implementation": {
+    "path": "scripts/a_share_three_day_walkforward_campaign136_formula.py",
+    "sha256": "4a57b79716269cf3acd21bb7b6909ce80ab5378f89d25fb27d97a02f815e7b66"
+  },
+  "synthetic_tests": {
+    "path": "tests/data_collector_tests/test_a_share_three_day_walkforward_campaign136_formula.py",
+    "sha256": "5fcd47980741e3510b666560e11cf29b7db2cd09b9bd779bed45e3392f927fc3",
+    "result": "6 passed",
+    "black": "passed",
+    "ruff": "passed"
+  },
+  "frozen_semantics": {
+    "factor": "daily_realized_price_basis_adjustment_magnitude_1d",
+    "direction": "higher",
+    "formula": "abs(log(factor_t)-log(factor_p))",
+    "output_signal_start": "2019-01-01",
+    "output_signal_end": "2025-12-31",
+    "source_predecessor_calendar_sessions_before_start": 1,
+    "predecessor": "same symbol on immediately preceding accepted local trading session",
+    "source_identity": "both rows use close_known_raw_pct_chg_chain_v1 and baostock",
+    "exact_zero_valid": true,
+    "finite_strictly_positive_source_factors_required": true,
+    "threshold_tolerance_rounding_clip_fill_sign_window_filter_subset_model_or_combination_search": false
+  },
+  "research_boundary": {
+    "daily_source_file_bytes_hashed_for_identity": true,
+    "daily_source_values_decoded_or_read": false,
+    "candidate_values_computed_or_read": false,
+    "comparator_values_read": false,
+    "historical_daily_ohlcv_fields_read": [],
+    "historical_forward_returns_read": false,
+    "stress_2024_2025_opened": false,
+    "provider_request_issued": false,
+    "credential_loaded": false,
+    "candidate49_historical_backfill_performed": false,
+    "candidate49_ledgers_changed": false,
+    "current_scoring_selection_sizing_positions_or_orders_performed": false,
+    "investment_advice": false
+  },
+  "next_action": "Implement and freeze the source-bound builder and verifier against protocol v2; source decoding remains forbidden until those code and test fingerprints are frozen."
+}

@@ -1,0 +1,66 @@
+{
+  "schema_version": 1,
+  "kind": "a_share_three_day_walkforward_campaign104_prevalue_infrastructure_failures",
+  "status": "six_prevalue_infrastructure_failures_recorded_before_campaign104_values",
+  "recorded_at": "2026-08-07T17:16:47Z",
+  "common_boundary": {
+    "filesystem_or_json_metadata_only": true,
+    "campaign104_source_rows_read": false,
+    "campaign104_candidate_or_comparison_values_read": false,
+    "historical_daily_price_or_forward_return_values_read": false,
+    "files_changed_by_failed_commands": false,
+    "provider_request_issued": false,
+    "credential_value_printed_hashed_or_logged": false,
+    "candidate49_ledgers_changed": false
+  },
+  "failures": [
+    {
+      "failure_id": "campaign104_infrastructure_001",
+      "stage": "v61_definition_inventory_metadata_probe",
+      "failure": "jq compile error from using length(.definitions) instead of a valid jq filter; the same syntax root cause emitted twice inside one shell invocation and is counted once.",
+      "observed_exit_code": null,
+      "common_root_cause_count": 1
+    },
+    {
+      "failure_id": "campaign104_infrastructure_002",
+      "stage": "historical_concept_metadata_listing",
+      "failure": "jq @tsv rejected object-valued fields in a read-only concept selection loop.",
+      "observed_exit_code": null,
+      "common_root_cause_count": 1
+    },
+    {
+      "failure_id": "campaign104_infrastructure_003",
+      "stage": "campaign103_terminal_filename_probe",
+      "failure": "A read-only rg command used a nonexistent guessed Campaign103 terminal-result filename before the exact versioned filename was listed.",
+      "observed_exit_code": null,
+      "common_root_cause_count": 1
+    },
+    {
+      "failure_id": "campaign104_infrastructure_004",
+      "stage": "v61_definition_order_probe",
+      "failure": "jq attempted to iterate a nonexistent complete_definition_order field; v61 stores only the frozen count and digest while the exact order is reconstructed from prior immutable artifacts.",
+      "observed_exit_code": 5,
+      "common_root_cause_count": 1
+    },
+    {
+      "failure_id": "campaign104_infrastructure_005",
+      "stage": "campaign100_source_catalog_filename_probe",
+      "failure": "A read-only sed command used a nonexistent guessed Campaign100 source-catalog filename; no file was created or changed.",
+      "observed_exit_code": null,
+      "common_root_cause_count": 1
+    },
+    {
+      "failure_id": "campaign104_infrastructure_006",
+      "stage": "append_only_ledger_hash_preparation",
+      "failure": "A local hash-preparation loop attempted to assign zsh's read-only status parameter. The command stopped before producing chain hashes or changing any target file.",
+      "observed_exit_code": 1,
+      "common_root_cause_count": 1
+    }
+  ],
+  "accounting": {
+    "failed_command_root_cause_count": 6,
+    "infrastructure_failure_count": 6,
+    "complete_factor_attempt_count": 0,
+    "return_reading_development_trial_count": 0
+  }
+}

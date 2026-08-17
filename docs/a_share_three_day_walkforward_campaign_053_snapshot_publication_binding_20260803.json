@@ -1,0 +1,50 @@
+{
+  "version": 1,
+  "kind": "a_share_three_day_walkforward_campaign053_snapshot_publication_binding",
+  "status": "immutable_snapshot_verified_before_comparison_or_return_values",
+  "recorded_at": "2026-08-03T09:32:00Z",
+  "authoritative_inputs": {
+    "no_return_protocol": {
+      "path": "docs/a_share_three_day_walkforward_campaign_053_no_return_preregistration.json",
+      "sha256": "829f9781ed6d7bbf2d6c5d318abf03838c5916bdf944fc46f28da13cf2a8b02c"
+    },
+    "implementation_freeze": {
+      "path": "docs/a_share_three_day_walkforward_campaign_053_feature_implementation_freeze_20260803.json",
+      "sha256": "98e6423515998a989458b51fd3896153a157cef27e53b489c0d818a2254c37be"
+    },
+    "effective_builder": {
+      "path": "scripts/a_share_three_day_walkforward_campaign053_features_v2.py",
+      "sha256": "10fd4c43d0af5274154bde1965196d7f55cbbe2b35d4deeb0cef9b9ecf49c24a"
+    },
+    "snapshot_manifest": {
+      "path": "/Volumes/DIsk/qlib-a-share-tushare-1m/derived/a_share/rich/tushare/minute_walkforward_campaign053_feature_library/tushare_stk_mins_1m_2019_2025_ea0cbb8f_walkforward_campaign053_feature_library_v1/snapshot_manifest.json",
+      "sha256": "e0f0e9176580e9e6216049d026ab360aea0904e5d1db57d61311fe6da7d3c402",
+      "dataset_sha256": "d56d8628608faf32c97fb374cb05d06bfa0182d87f2d0467f5a08bca8c3f0f87"
+    }
+  },
+  "snapshot_summary": {
+    "partitions": 33015,
+    "rows": 7724498,
+    "factor_eligible_rows": 7695088,
+    "zero_total_absolute_return_rows": 29410,
+    "invalid_close_rows": 0,
+    "invalid_amount_rows": 0,
+    "zero_total_endpoint_amount_rows": 0,
+    "range_or_nonfinite_score_rows": 0,
+    "all_partition_byte_and_frame_hashes_valid": true,
+    "verified_partitions": 33015,
+    "verified_rows": 7724498
+  },
+  "research_boundary": {
+    "source_fields_read": ["datetime", "symbol", "provider", "close", "amount"],
+    "minute_open_high_low_volume_fields_read": [],
+    "comparison_factor_values_read": false,
+    "historical_daily_price_fields_read": [],
+    "historical_forward_return_fields_read": false,
+    "candidate49_historical_return_read": false,
+    "candidate49_ledgers_changed": false,
+    "provider_request_issued": false,
+    "current_scoring_selection_sizing_or_orders_performed": false
+  },
+  "next_action": "Bind this manifest, dataset, and publication record into an additive audit-only entrypoint before running ordered no-return gates."
+}

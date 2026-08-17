@@ -1,0 +1,60 @@
+{
+  "schema_version": 1,
+  "kind": "a_share_three_day_walkforward_campaign082_prevalue_infrastructure_failures",
+  "status": "two_failures_recorded_and_corrected_before_implementation_freeze_or_source_values",
+  "recorded_at": "2026-08-06T18:23:00+08:00",
+  "failures": [
+    {
+      "ordinal": 1,
+      "stage": "feature_test_template_inspection",
+      "observed": "The first repository search named tests/test_a_share_three_day_walkforward_campaign081_features.py and tests/test_a_share_three_day_walkforward_campaign081_no_return_audit.py, which do not exist; rg returned the valid script matches and a nonzero exit because the two test paths were wrong.",
+      "root_cause": "omitted tests/data_collector_tests directory",
+      "correction": "Resolve the existing tests with rg --files and use tests/data_collector_tests/test_a_share_three_day_walkforward_campaign081_features.py and the corresponding no-return audit test."
+    },
+    {
+      "ordinal": 2,
+      "stage": "feature_runner_format_validation",
+      "observed": "The first black --check invocation reported that the new runner and synthetic test required formatting; it made no change and exited nonzero.",
+      "root_cause": "new prevalue implementation had not yet been mechanically formatted",
+      "correction": "Run the pinned interpreter's black formatter, rerun all 10 synthetic tests, then require black --check, ruff check, and py_compile to pass before publishing the implementation freeze."
+    }
+  ],
+  "corrected_prevalue_result": {
+    "protocol_binding_count": 11,
+    "protocol_bindings_passed": 11,
+    "synthetic_tests_passed": 10,
+    "synthetic_tests_failed": 0,
+    "feature_runner_py_compile_passed": true,
+    "black_format_applied_before_freeze": true,
+    "ruff_check_passed": true,
+    "factor_formula_changed_after_values": false,
+    "protocol_changed_after_values": false,
+    "gate_or_threshold_changed": false
+  },
+  "bindings_after_correction": {
+    "protocol": {
+      "path": "docs/a_share_three_day_walkforward_campaign_082_no_return_preregistration.json",
+      "sha256": "acc55fb8b3a4b79f005ab23033dccb781dca1fd71b162a71dfeb04f7aa91bf88"
+    },
+    "feature_runner": {
+      "path": "scripts/a_share_three_day_walkforward_campaign082_features.py",
+      "sha256": "f8db6e9ac0bd25c9e0a8ff827fd650f6b54fd3e5344d0598fda9c68d4d7eeafd"
+    },
+    "tests": {
+      "path": "tests/data_collector_tests/test_a_share_three_day_walkforward_campaign082_features.py",
+      "sha256": "b1c6e595df3565f1a802733f34ad01d68dbd31b22da12e5b3e672c969f4f096a"
+    }
+  },
+  "research_boundary": {
+    "candidate_source_rows_read": false,
+    "candidate_historical_values_computed": false,
+    "comparison_values_read": false,
+    "historical_daily_price_fields_read": [],
+    "historical_forward_returns_read": false,
+    "provider_request_issued": false,
+    "credential_secret_printed_hashed_or_logged": false,
+    "candidate49_historical_backfill_performed": false,
+    "candidate49_ledgers_changed": false,
+    "current_scoring_selection_sizing_or_orders_performed": false
+  }
+}

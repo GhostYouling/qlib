@@ -1,0 +1,397 @@
+{
+  "candidates": [
+    {
+      "direction": "higher",
+      "economic_hypothesis": "After removing the contemporaneous equal-weight leave-one-out market component, a stock whose residual price discovery is concentrated positively in the final 60 afternoon return positions may carry firm-specific information from the next open through the third close.",
+      "formula": "sum(e_i,t for the final 60 afternoon returns ending 14:01-15:00) / sum(abs(e_i,t) over all 238 within-half returns), where e_i,t=r_i,t-beta_i*m_-i,t, beta_i=sum(r_i,t*m_-i,t)/sum(m_-i,t^2), and m_-i,t is the equal-weight leave-one-out market return",
+      "formula_steps": [
+        "Use only the 240 closes ending 09:31-11:30 and 13:01-15:00; preserve but exclude the standalone 09:30 source row.",
+        "Form 119 adjacent log close returns separately inside each half-session, yielding 238 aligned positions; exclude the 11:30-to-13:01 lunch return.",
+        "At every trade date and return position, use the frozen equal-weight market sum and valid-stock count, subtract the stock's own return and one valid observation, and divide to obtain the leave-one-out market return.",
+        "Require at least 50 other valid stocks at every return position.",
+        "Fit one full-day through-origin beta exactly as sum(stock_return * leave_one_out_market_return) divided by sum(leave_one_out_market_return squared); a zero market-energy denominator is missing.",
+        "Subtract beta times the leave-one-out market return from each stock return.",
+        "Sum residuals only over the final 60 afternoon returns ending 14:01 through 15:00, corresponding to combined return indices 178 through 237 inclusive.",
+        "Divide that signed late residual sum by total absolute residual variation over all 238 positions; a zero denominator is missing.",
+        "Only a 1e-12 floating-point endpoint canonicalization to the closed interval [-1,1] is allowed."
+      ],
+      "name": "intraday_market_neutral_late_residual_drift_238m",
+      "queue_priority": 1,
+      "rejected_variants_before_values": [
+        "intercepted regression",
+        "index, industry, board, size, value, amount, volume, or volatility weighted market benchmarks",
+        "non-leave-one-out benchmark",
+        "beta clipping, winsorization, robust regression, ranks, thresholds, or sign transforms",
+        "morning, full-afternoon, 30-minute, 90-minute, lunch-inclusive, or 09:30-inclusive late windows",
+        "absolute, squared, negative, inverted, or low-score direction"
+      ],
+      "source_fields_allowed": [
+        "datetime",
+        "symbol",
+        "provider",
+        "close",
+        "amount"
+      ],
+      "source_fields_used_by_formula": [
+        "datetime",
+        "symbol",
+        "provider",
+        "close"
+      ],
+      "valid_range": [
+        -1,
+        1
+      ]
+    },
+    {
+      "direction": "higher",
+      "economic_hypothesis": "A high fraction of amount arriving on negative one-minute moves that are immediately followed by a positive one-minute move may identify intraday selling pressure that is absorbed rather than propagated, with possible persistence over the next three-session holding rule.",
+      "formula": "sum(amount_at_destination_of_r_t for within-half adjacent pairs with r_t<0 and r_t+1>0) / sum(amount_at_destination_of_r_t for within-half adjacent pairs with r_t<0)",
+      "formula_steps": [
+        "Use only the 240 closes and amounts ending 09:31-11:30 and 13:01-15:00; preserve but exclude standalone 09:30.",
+        "Require every selected close to be finite and strictly positive and every selected amount to be finite and nonnegative.",
+        "Form 119 adjacent log close returns separately in each half-session and then 118 adjacent return pairs per half, yielding 236 pairs.",
+        "Exclude both the lunch return and the cross-half adjacent return pair.",
+        "For each initiating return r_t, assign the amount on r_t's destination bar; do not assign the amount of r_t+1.",
+        "The denominator sums that destination amount only where r_t is strictly negative.",
+        "The numerator sums the same weights only where r_t is strictly negative and r_t+1 is strictly positive.",
+        "Zero returns are neither negative initiators nor positive recoveries; a zero total negative-return amount is missing.",
+        "Only a 1e-12 floating-point endpoint canonicalization to the closed interval [0,1] is allowed."
+      ],
+      "name": "intraday_negative_return_absorption_rate_236p",
+      "queue_priority": 2,
+      "rejected_variants_before_values": [
+        "return-magnitude, volume, VWAP, price-impact, or equal-count weighting",
+        "multi-bar recovery, cumulative recovery, thresholded moves, or non-strict signs",
+        "amount on the recovery bar rather than the initiating return destination bar",
+        "lunch, 09:30, cross-half pair, morning-only, afternoon-only, or late-only variants",
+        "downside propagation, inversion, negative direction, ranks, clipping, or imputation"
+      ],
+      "source_fields_allowed": [
+        "datetime",
+        "symbol",
+        "provider",
+        "close",
+        "amount"
+      ],
+      "source_fields_used_by_formula": [
+        "datetime",
+        "symbol",
+        "provider",
+        "close",
+        "amount"
+      ],
+      "valid_range": [
+        0,
+        1
+      ]
+    },
+    {
+      "direction": "higher",
+      "economic_hypothesis": "A high signed displacement relative to total intraday path variation represents directionally efficient price discovery rather than oscillation and may persist from the next open through the third close.",
+      "formula": "log(close_15:00/close_09:31) / sum(abs(adjacent log close return)) over the collapsed 240-close path including the 11:30-to-13:01 pair",
+      "formula_steps": [
+        "Use only the 240 closes ending 09:31-11:30 and 13:01-15:00; preserve but exclude standalone 09:30.",
+        "Require all 240 closes to be finite and strictly positive.",
+        "Collapse the lunch clock gap so 11:30 and 13:01 are adjacent observations and form all 239 adjacent log close returns, including that pair.",
+        "Use log(15:00 close divided by 09:31 close) as the signed numerator.",
+        "Use the sum of the absolute values of all 239 adjacent log returns as the denominator.",
+        "A zero total path variation is missing.",
+        "Only a 1e-12 floating-point endpoint canonicalization to the closed interval [-1,1] is allowed."
+      ],
+      "name": "intraday_signed_path_efficiency_239m",
+      "queue_priority": 3,
+      "rejected_variants_before_values": [
+        "absolute, squared, unsigned, negative, or inverted efficiency",
+        "simple-price differences, high-low range, source open/high/low, VWAP, amount, or volume",
+        "lunch-excluded, 09:30-inclusive, half-session, opening, afternoon, or late windows",
+        "thresholds, ranks, clipping, winsorization, smoothing, or imputation"
+      ],
+      "source_fields_allowed": [
+        "datetime",
+        "symbol",
+        "provider",
+        "close",
+        "amount"
+      ],
+      "source_fields_used_by_formula": [
+        "datetime",
+        "symbol",
+        "provider",
+        "close"
+      ],
+      "valid_range": [
+        -1,
+        1
+      ]
+    }
+  ],
+  "finite_post_admissibility_search": {
+    "all_components_required": true,
+    "candidate_count_variable": "n equals the number of factors passing both ordered no-return gates",
+    "exact_trial_catalog_freeze_required_before_first_2019_2023_return_read": true,
+    "pair_directional_rank_weight_grid_in_canonical_factor_order": [
+      [
+        0.25,
+        0.75
+      ],
+      [
+        0.5,
+        0.5
+      ],
+      [
+        0.75,
+        0.25
+      ]
+    ],
+    "search_formula": "n single-factor trials plus 3 times n-choose-2 unordered pair trials",
+    "single_factor_trials": true,
+    "maximum_trial_count_if_all_three_admissible": 12,
+    "minimum_names": 50,
+    "weight_fitting": false,
+    "threshold_search": false,
+    "year_subset_search": false,
+    "filter_search": false,
+    "triple_or_higher_order_combinations": false,
+    "old_terminal_factor_rescue_combinations": false,
+    "candidate49_inclusion": false,
+    "post_result_catalog_change_requires_new_campaign_version": true
+  },
+  "frozen_at": "2026-07-28T03:28:02Z",
+  "implementation_reference": {
+    "path": "scripts/a_share_three_day_walkforward_campaign004_features.py",
+    "pre_value_formula_tests": {
+      "command": "python -m pytest -q tests/data_collector_tests/test_a_share_three_day_walkforward_campaign004_features.py",
+      "passed": 6
+    },
+    "script_sha256_before_protocol_hash_binding": "f1b59e3da45884a5005f9c034169a2763b438f661d068f377af74588493d8b96"
+  },
+  "kind": "a_share_three_day_walkforward_campaign004_no_return_preregistration",
+  "ordered_no_return_gates": {
+    "coverage_and_capacity_before_comparison_values": {
+      "coverage_basis": "candidate finite rows divided by quality-and-listing eligible buyable rows within 2019-2025",
+      "failed_gate_policy": "record this exact factor as inadmissible and stop it before terminal-factor comparison values, daily prices, or forward returns",
+      "holding_period_sessions": 3,
+      "minimum_median_coverage": 0.95,
+      "minimum_non_overlapping_three_session_cohorts": 200,
+      "minimum_observed_calendar_years": 5,
+      "minimum_p05_coverage": 0.9,
+      "minimum_p05_eligible_names": 50,
+      "pilot_buy_lot_size_shares": 100,
+      "pilot_capital_cny": 200000
+    },
+    "uniqueness_after_coverage_only": {
+      "candidate49_is_a_no_return_comparison_only": true,
+      "comparison_factors": [
+        {
+          "name": "late_return_30m",
+          "score_direction": "higher"
+        },
+        {
+          "name": "late_amount_share_30m",
+          "score_direction": "higher"
+        },
+        {
+          "name": "late_vwap_to_day_vwap_30m",
+          "score_direction": "higher"
+        },
+        {
+          "name": "intraday_realized_volatility",
+          "score_direction": "lower"
+        },
+        {
+          "name": "afternoon_signed_amount_efficiency_120m",
+          "score_direction": "higher"
+        },
+        {
+          "name": "afternoon_drawdown_recovery_resilience_120m",
+          "score_direction": "higher"
+        },
+        {
+          "name": "intraday_amount_participation_entropy_240m",
+          "score_direction": "higher"
+        },
+        {
+          "name": "intraday_amount_profile_serial_persistence_240m",
+          "score_direction": "higher"
+        },
+        {
+          "name": "intraday_upside_semivariance_share_239m",
+          "score_direction": "higher"
+        },
+        {
+          "name": "intraday_terminal_close_location_240m",
+          "score_direction": "higher"
+        },
+        {
+          "name": "intraday_return_sign_run_imbalance_238p",
+          "score_direction": "higher"
+        },
+        {
+          "name": "intraday_volatility_resolution_238m",
+          "score_direction": "higher"
+        },
+        {
+          "name": "intraday_amount_lead_return_correlation_238p",
+          "score_direction": "higher"
+        },
+        {
+          "name": "intraday_amount_center_of_mass_240m",
+          "score_direction": "higher"
+        },
+        {
+          "name": "intraday_up_move_amount_share_238m",
+          "score_direction": "higher"
+        },
+        {
+          "name": "intraday_diffusive_variation_ratio_238m",
+          "score_direction": "higher"
+        },
+        {
+          "name": "intraday_amount_volatility_coupling_238p",
+          "score_direction": "higher"
+        },
+        {
+          "name": "intraday_return_variance_entropy_238m",
+          "score_direction": "higher"
+        },
+        {
+          "name": "intraday_return_skewness_238m",
+          "score_direction": "higher"
+        },
+        {
+          "name": "intraday_bar_vwap_close_pressure_240m",
+          "score_direction": "higher"
+        },
+        {
+          "name": "intraday_price_update_share_238m",
+          "score_direction": "higher"
+        },
+        {
+          "name": "intraday_market_idiosyncratic_share_238m",
+          "score_direction": "higher"
+        },
+        {
+          "name": "intraday_opening_auction_amount_share_241m",
+          "score_direction": "higher"
+        },
+        {
+          "name": "intraday_market_amount_profile_synchronization_240m",
+          "score_direction": "higher"
+        },
+        {
+          "name": "intraday_cumulative_vwap_crossing_rate_240m",
+          "score_direction": "higher"
+        }
+      ],
+      "failed_gate_policy": "record this exact factor as inadmissible without inversion or historical return access",
+      "maximum_allowed_absolute_median_daily_rank_correlation": 0.8,
+      "method": "Within each identical quality-listing-candidate-and-comparison-eligible stock-day cross-section, compute pairwise-complete Spearman correlation between directional percentile scores, then take each comparison factor's median daily correlation.",
+      "minimum_pairwise_names_per_session": 50,
+      "minimum_pairwise_sessions_per_comparison": 100,
+      "new_campaign_factor_order": [
+        "intraday_market_neutral_late_residual_drift_238m",
+        "intraday_negative_return_absorption_rate_236p",
+        "intraday_signed_path_efficiency_239m"
+      ],
+      "new_factor_pairwise_rule": "Each coverage-passing factor must also pass against every earlier coverage-and-uniqueness-passing Campaign004 factor in the frozen order.",
+      "screen_end": "2025-12-31",
+      "screen_start": "2019-01-01"
+    }
+  },
+  "point_in_time_context": {
+    "calendar": {
+      "development_sessions": 1699,
+      "path": "data/qlib/cn_a_share/calendars/day.txt",
+      "sha256": "fda506597d26bcec953cdc0882042a5046ec1587db60490e16a01627fd43f53a"
+    },
+    "holding_universe": {
+      "path": "data/qlib/cn_a_share/instruments/buyable_main_chinext.txt",
+      "sha256": "77ccf8de2ed1e447e73b5d5ff1703fc2a8656d6adab34ef44017481730249db1"
+    },
+    "minimum_listing_sessions": 20,
+    "quarterly_quality": {
+      "availability": "strictly_next_local_session_after_announcement_date",
+      "manifest_path": "data/metadata/quarterly_quality_manifest.json",
+      "manifest_sha256": "e3cf654babe37a82393c5530696bc1cc242b736cb88e1947b8444b638125ba8c",
+      "maximum_age_days": 550,
+      "path": "data/raw/a_share/fundamentals/quarterly_quality.parquet",
+      "quality_state_semantics": "after_effective_date_sort_and_dedup_forward fill roe net_profit revenue_yoy and profit_yoy independently",
+      "sha256": "3ac901a97928d2ed81ac72e3eaac9bdc148d36cf67b6abe70223699235ef059f"
+    },
+    "source_universe": {
+      "path": "data/qlib/cn_a_share/instruments/factor_main_chinext_star.txt",
+      "sha256": "cdded13c831b78045f4cfe80ba5d9a49f82152c615fef4267d00f992e7f53762"
+    },
+    "survivorship_limitation": "The current-listing-derived holding universe may introduce survivorship bias; Campaign004 remains research-only and cannot be promoted without point-in-time listing and delisting evidence."
+  },
+  "purpose": "Expand the offline three-session research library with three genuinely distinct, fully frozen minute mechanisms, reject weak-coverage or duplicate branches before returns, and then permit only a finite predeclared 2019-2023 walk-forward search over admissible singles and pairs.",
+  "research_boundary": {
+    "aggregation_or_prospective_promotion_allowed": false,
+    "candidate49_historical_return_read": false,
+    "candidate49_prospective_ledgers_changed": false,
+    "candidate50_prospective_activation_allowed": false,
+    "current_scoring_selection_sizing_or_orders_allowed": false,
+    "daily_price_fields_read_before_admissibility": false,
+    "forward_return_fields_read_before_admissibility": false,
+    "historical_return_read_allowed_only_after_exact_walkforward_preregistration": true,
+    "provider_credential_required": false,
+    "provider_request_allowed": false,
+    "stress_2024_2025_return_read_allowed_before_survivors_are_frozen": false
+  },
+  "source_chain": {
+    "campaign003_terminal_record": {
+      "path": "docs/a_share_three_day_walkforward_campaign_003_research_record.json",
+      "sha256": "fddfd9c2ebba420c5901e26f6029f75b16a89db84507b19ce8bcb159b037be99"
+    },
+    "candidate49_future_observation_registration": {
+      "historical_return_comparison_allowed": false,
+      "path": "docs/a_share_tushare_intraday_cumulative_vwap_crossing_rate_future_observation_registration.json",
+      "sha256": "431cb0b3b078823f08b888bf4c499bcc5088309a2e58e9de5cb9a9aaa849ffa9"
+    },
+    "candidate49_no_return_protocol": {
+      "path": "docs/a_share_tushare_intraday_cumulative_vwap_crossing_rate_no_return_preregistration.json",
+      "sha256": "cefa5f23b5214e123d0bdea1511a398cb4a70c0ee4cc8da7d1f69f52bdbe4aeb"
+    },
+    "historical_walkforward_policy": {
+      "path": "docs/a_share_three_day_historical_walkforward_research_policy_20260727.json",
+      "sha256": "38426d6161b9bfed323c58caba18feca668b8c9d53e294951a8ba90c01a798bb"
+    },
+    "inactive_mechanism_queue": {
+      "path": "docs/a_share_three_day_inactive_mechanism_scouting_queue_20260726.json",
+      "sha256": "00565a87b5eb4241de3dfdd24f96ef78756fb286655969351ec966bbe32afad3",
+      "selected_priorities": [
+        1,
+        2,
+        3
+      ]
+    },
+    "joint_clean_manifest": {
+      "dataset_sha256": "0e4fe7c05536cdfcecc2936bc880726902f5560061188ffff82ef7ee6f346983",
+      "partitions": 33015,
+      "path_below_data_root": "derived/a_share/rich/tushare/minute_sentiment_clean/tushare_stk_mins_1m_2019_2025_ea0cbb8f_sentiment_clean_v1/snapshot_manifest.json",
+      "rows": 7724498,
+      "sha256": "453c6719cb3c7da42fed8807b28a2bfe988700283e9625a6db97912534f368de"
+    },
+    "market_return_benchmark": {
+      "benchmark_byte_sha256": "5437805f84c5c637904a62664cc3ec677e0155f5a215b0df7c38ed0cc35b88bf",
+      "benchmark_frame_sha256": "5412520f379a3d7584f18a0fd5a0b55fd8b68ed3a49d76ff6430a330eee9d4a1",
+      "benchmark_path_below_data_root": "derived/a_share/rich/tushare/minute_intraday_market_idiosyncratic_share/tushare_stk_mins_1m_2019_2025_ea0cbb8f_intraday_market_idiosyncratic_share_v1/market_benchmark_238m.parquet",
+      "manifest_path_below_data_root": "derived/a_share/rich/tushare/minute_intraday_market_idiosyncratic_share/tushare_stk_mins_1m_2019_2025_ea0cbb8f_intraday_market_idiosyncratic_share_v1/snapshot_manifest.json",
+      "manifest_sha256": "954b71d571bcd89cbf4eae4eedad014091a9b40e6b2b083e0071cbf870634ef0",
+      "return_positions": 238,
+      "trade_dates": 1699
+    },
+    "raw_minute_manifest": {
+      "frequency": "1m",
+      "partitions": 33015,
+      "path_below_data_root": "raw/a_share/rich/tushare/minutes/1m/snapshots/tushare_stk_mins_1m_2019_2025_ea0cbb8f/snapshot_manifest.json",
+      "provider": "tushare",
+      "rows": 1866461373,
+      "run_id": "tushare_stk_mins_1m_2019_2025_ea0cbb8f",
+      "sha256": "9b3d959563c9d182f38981c6a36bdb3bc9b415de08487a9e1f9e850825c0839f"
+    }
+  },
+  "status": "frozen_before_campaign004_candidate_or_comparison_values_or_returns",
+  "version": 1
+}

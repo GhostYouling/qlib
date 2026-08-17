@@ -1,0 +1,232 @@
+{
+  "schema_version": 1,
+  "kind": "a_share_official_exchange_enforcement_metadata_schema_failure",
+  "status": "terminal_two_exchange_schema_gate_failed_before_source_row_access",
+  "recorded_at": "2026-08-09T01:48:00+08:00",
+  "authoritative_inputs": {
+    "source_contract": {
+      "path": "docs/a_share_official_exchange_enforcement_source_contract_20260809.json",
+      "sha256": "d4eda5eb2fefd7e2795251bd4926fc7e7157ea264fcabc430904c40d5dfd91e4"
+    },
+    "adapter_and_formula_freeze": {
+      "path": "docs/a_share_official_exchange_enforcement_adapter_formula_freeze_20260809.json",
+      "sha256": "830e9a3d86d2877bbdbf22bd5eeb57ef6e26fbb6a23c25bed740fc31e06ea859"
+    },
+    "effective_numeric_policy_v76": {
+      "path": "docs/a_share_three_day_walkforward_future_numeric_comparison_eligibility_policy_v76_20260809.json",
+      "sha256": "8a7ed91b75f3260c921eaae4017721cfafedf2e508bddf14e80f3a5f8ebf1504"
+    }
+  },
+  "probe_boundary": {
+    "official_static_listing_page_gets": 3,
+    "successful_official_static_asset_gets": 11,
+    "failed_static_asset_locator_commands": 3,
+    "szse_metadata_only_catalog_requests": 2,
+    "credentials_cookies_proxy_or_browser_session_used": false,
+    "response_data_member_accessed": false,
+    "response_data_member_persisted_hashed_or_counted": false,
+    "source_event_row_fields_read": false,
+    "source_event_row_count": null,
+    "document_body_fetches": 0,
+    "historical_factor_or_comparator_values_read": false,
+    "price_or_forward_return_values_read": false
+  },
+  "official_static_assets": {
+    "sse_listing_page": {
+      "url": "https://www.sse.com.cn/regulation/supervision/measures/",
+      "sha256": "612ff6b5cb9d94b6e8ea29b2392679e6a7b37fd7b79c1c27173ddae41e0e584c"
+    },
+    "sse_table_config": {
+      "url": "https://www.sse.com.cn/xhtml/js/common/table_config.js?v=V3.7.4",
+      "sha256": "750c15d4ab8ab1c5612b9c7cdf2f438493c44c66818567ea19c712a4f5da960f"
+    },
+    "sse_page_script": {
+      "url": "https://www.sse.com.cn/xhtml/home/2021public/querySearch/search_regulatoryInformation_2021.js",
+      "sha256": "1c2c64ac77688b89eea6d5f0245d527b9dfea85461a8db995c75652b1f7eba02"
+    },
+    "szse_regulatory_measure_page": {
+      "url": "https://www.szse.cn/disclosure/supervision/measure/measure/index.html",
+      "sha256": "4b3f388547b4035cb9850bef864b7e03afb4651ea152ab0a9cece1c40e22af3e"
+    },
+    "szse_disciplinary_action_page": {
+      "url": "https://www.szse.cn/disclosure/supervision/measure/pushish/index.html",
+      "sha256": "71b5ac00987ffdeb57f87e2fea00151f539fc396e06d83c1f530081d8de511b8"
+    },
+    "szse_path_config": {
+      "url": "https://www.szse.cn/szsePath.js",
+      "sha256": "83fd11aea1932b7e705760071eb04d978495bca96a7c573014f4b5fb181d5882"
+    },
+    "szse_concatversion": {
+      "url": "https://res.szse.cn/common/js/concatversion.js",
+      "sha256": "9366dce587b3d8fd51899c64ced8b59d7c5285ba00640c7844be9dfe2433d068",
+      "resolved_sjs_version": "1.2.219",
+      "production_minification_rule_observed": true
+    },
+    "szse_generic_report_script": {
+      "url": "https://res.static.szse.cn/modules/report/js/report_new.min.js?version=1.2.219",
+      "sha256": "e5466cb1981aee69592030da07ba279d0e3c05ebc273014670a30fce3e4381d9"
+    }
+  },
+  "sse_metadata_mapping": {
+    "schema_gate_passed": true,
+    "channel_code": "measures_15093",
+    "endpoint": "https://query.sse.com.cn/commonSoaQuery.do",
+    "transport": "JSONP",
+    "jsonp_parameter": "jsonCallBack",
+    "fixed_parameters": {
+      "isPagination": true,
+      "pageHelp.pageSize": 25,
+      "pageHelp.beginPage": 1,
+      "pageHelp.cacheSize": 1,
+      "pageHelp.endPage": 1,
+      "sqlId": "BS_KCB_GGLL_NEW",
+      "siteId": 28,
+      "channelId": "10007,10008,10009,10010",
+      "order": "createTime|desc,stockcode|asc"
+    },
+    "page_number_parameter": "pageHelp.pageNo",
+    "filter_parameters": [
+      "type",
+      "stockcode",
+      "extTeacher",
+      "extWTFL",
+      "createTime",
+      "createTimeEnd"
+    ],
+    "exact_visible_labels": [
+      "证券代码",
+      "证券简称",
+      "监管类型",
+      "处理事由",
+      "涉及对象",
+      "处理日期"
+    ],
+    "semantic_field_mapping_from_static_renderer": {
+      "issuer_code": "extSECURITY_CODE",
+      "issuer_name_ignored": "extGSJC",
+      "action_type_or_family": "extWTFL",
+      "document_link_gate": "extDWDM == '1'",
+      "document_link_source": "docURL",
+      "document_title_ignored": "docTitle",
+      "involved_party_ignored": "extTeacher",
+      "action_date": "createTime first 10 characters"
+    },
+    "static_renderer_normalizations_observed_but_not_adopted": [
+      "监管关注 is displayed as 监管警示",
+      "the long public-ineligibility text is displayed as 公开认定...",
+      "docURL is rendered with an http:// prefix"
+    ]
+  },
+  "szse_metadata_mapping": {
+    "endpoint": "https://www.szse.cn/api/report/ShowReport/data",
+    "transport": "JSON",
+    "fixed_query": "SHOWTYPE=JSON",
+    "catalog_parameter": "CATALOGID",
+    "page_number_parameter": "PAGENO",
+    "tab_parameter": "TABKEY",
+    "tab_page_size_parameter": "<tabkey>PAGESIZE",
+    "regulatory_measure": {
+      "catalog_id": "1800_jgxxgk",
+      "tabkey": "tab1",
+      "default_page_size": 20,
+      "metadata_name": "监管措施",
+      "exact_columns": {
+        "gkxx_gdrq": "采取监管措施日期",
+        "gkxx_gsdm": "公司代码",
+        "gkxx_gsjc": "公司简称",
+        "gkxx_jgcs": "监管措施",
+        "gkxx_sjdx": "涉及对象",
+        "hjnr": "函件内容"
+      },
+      "source_rows_accessed_or_counted": false
+    },
+    "disciplinary_action": {
+      "catalog_id": "1800_jgxxgk_cf",
+      "tabkey": "tab2",
+      "default_page_size": 20,
+      "metadata_name": "纪律处分",
+      "exact_columns": {
+        "ck": "查看全文",
+        "jc_gsjc": "公司简称",
+        "xx_bt": "标题",
+        "xx_cflb": "处分类别",
+        "xx_fwrq": "处分日期",
+        "xx_gsdm": "公司代码"
+      },
+      "source_rows_accessed_or_counted": false
+    }
+  },
+  "finite_role_schema_gate": {
+    "required_roles": [
+      "issuer_code",
+      "action_type_or_family",
+      "action_date",
+      "document_link"
+    ],
+    "sse": {
+      "resolved": {
+        "issuer_code": "证券代码",
+        "action_type_or_family": "监管类型",
+        "action_date": "处理日期",
+        "document_link": "处理事由"
+      },
+      "passed": true
+    },
+    "szse_regulatory_measure": {
+      "resolved": {
+        "issuer_code": "公司代码",
+        "action_type_or_family": "监管措施"
+      },
+      "unresolved_required_roles": [
+        "action_date",
+        "document_link"
+      ],
+      "non_whitelisted_observed_labels": [
+        "采取监管措施日期",
+        "函件内容"
+      ],
+      "passed": false
+    },
+    "szse_disciplinary_action": {
+      "resolved": {
+        "issuer_code": "公司代码"
+      },
+      "unresolved_required_roles": [
+        "action_type_or_family",
+        "action_date",
+        "document_link"
+      ],
+      "non_whitelisted_observed_labels": [
+        "处分类别",
+        "处分日期",
+        "查看全文"
+      ],
+      "passed": false
+    },
+    "both_exchanges_required": true,
+    "overall_passed": false
+  },
+  "terminal_decision": {
+    "campaign113_terminal": true,
+    "terminal_stage": "official_metadata_finite_role_schema_gate",
+    "reason": "Both exchanges are mandatory and the exact frozen SZSE label whitelist cannot resolve every required role. The source contract forbids adding labels after metadata exposure, guessing positional mappings, mining row text, dropping SZSE, or changing the source family.",
+    "label_expansion_or_adapter_repair_allowed": false,
+    "programmatic_source_row_acceptance_allowed": false,
+    "factor_materialization_capacity_uniqueness_or_return_allowed": false,
+    "frozen_factor_definition_retained_for_future_semantic_duplicate_control": true,
+    "numeric_comparator_appended": false,
+    "new_prospective_candidate_created": false
+  },
+  "research_boundary": {
+    "source_event_rows_accessed_persisted_or_counted": false,
+    "candidate_or_comparison_values_read": false,
+    "historical_daily_price_fields_read": [],
+    "historical_forward_returns_read": false,
+    "stress_2024_2025_opened": false,
+    "candidate49_historical_backfill_performed": false,
+    "candidate49_ledgers_changed": false,
+    "second_prospective_candidate_created": false,
+    "current_scoring_selection_sizing_or_orders_performed": false,
+    "investment_advice": false
+  }
+}

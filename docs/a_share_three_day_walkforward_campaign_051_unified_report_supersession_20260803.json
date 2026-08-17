@@ -1,0 +1,23 @@
+{
+  "version": 1,
+  "kind": "a_share_three_day_walkforward_campaign051_unified_report_supersession",
+  "status": "campaign051_terminal_record_bound_to_current_unified_report",
+  "recorded_at": "2026-08-03T07:56:00Z",
+  "purpose": "Bind the append-only Campaign051 terminal record and current unified research report without rewriting earlier campaign evidence.",
+  "bindings": {
+    "campaign051_terminal_record": {
+      "path": "docs/a_share_three_day_walkforward_campaign_051_research_record.json",
+      "sha256": "ca324171b64377ec64d5abc0cdcd6ba16ec31d7171638c3fe56ccfff08e06f70"
+    },
+    "current_unified_research_report": {
+      "path": "data/experiments/short_horizon/three_day_research_report.md",
+      "sha256": "edea8b9b6613e50f453142fea9b0441ea683dfbf70ab0f27fdfe42d8d47225ad"
+    }
+  },
+  "semantic_boundary": {
+    "report_update_is_append_only_in_meaning": true,
+    "additional_historical_daily_price_or_forward_return_read": false,
+    "2024_2025_stress_return_read": false,
+    "candidate49_ledgers_changed": false
+  }
+}

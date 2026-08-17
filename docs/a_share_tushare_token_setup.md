@@ -1,6 +1,6 @@
 # Tushare Token 安全配置
 
-本项目只从环境变量 `TUSHARE_TOKEN` 读取 Tushare 凭据。真实 Token 不得写入 Git、源码、YAML、Notebook、日志、研究清单、聊天或带明文参数的 shell 命令。
+本项目通常只从环境变量 `TUSHARE_TOKEN` 读取 Tushare 凭据。Candidate49 统一工作流还支持仓库根目录中被 Git 忽略的 `.env`，读取优先级为“当前进程环境 → `.env` → `launchctl`”。真实 Token 不得写入 Git、源码、YAML、Notebook、日志、研究清单、聊天或带明文参数的 shell 命令。
 
 本指南适用于本仓库 `GhostYouling/qlib` 的数据命令，与 GitHub 登录、提交和推送认证无关。若希望凭据只在本项目的一条命令中可见，优先使用下文“配置范围说明”里的单进程注入；`launchctl setenv` 是为了让新启动的 Codex 等 macOS 图形程序继承变量，它作用于当前登录会话，并不是仓库级密钥存储。
 
@@ -22,7 +22,7 @@ unset token
 python scripts/a_share_rich_data.py status
 ```
 
-只确认输出中的 Tushare 环境变量与 SDK 为“已就绪”；不要运行会输出 Token 明文的检查命令。仓库提交只包含变量名和以上安全模板，不包含本机 `launchctl` 值、真实 Token 或 `.env` 文件。仓库的 `.gitignore` 同时忽略 `.env` 与 `.env.*`；这只是防误提交的第二道保护，不代表允许把 Token 落盘。
+只确认输出中的 Tushare 环境变量与 SDK 为“已就绪”；不要运行会输出 Token 明文的检查命令。仓库提交只包含变量名和以上安全模板，不包含本机 `launchctl` 值、真实 Token 或 `.env` 文件。仓库的 `.gitignore` 同时忽略 `.env` 与 `.env.*`。如使用 Candidate49 的本地 `.env`，应将权限限制为当前用户可读写（`chmod 600 .env`）；工作流只解析 `TUSHARE_TOKEN=...`，不会执行该文件、展开变量或加载其他键。
 
 ### 配置成功的判定
 
@@ -133,6 +133,32 @@ exit "$rc"
 Eastmoney 资产负债表韧性来源是公共接口，完全不读取 `TUSHARE_TOKEN`，也不消耗 Tushare 积分；不要用本节的 Token 包装器运行它。该分支已经完成唯一验收、全量快照、无收益审计和收益/执行诊断，并在稳定性与 Top‑3 门禁终止。终止记录是 [`a_share_eastmoney_balance_sheet_resilience_diagnostic_record.json`](a_share_eastmoney_balance_sheet_resilience_diagnostic_record.json)（SHA‑256 `b7c2888e14fab0dfa4b3f65806ac8dac6e1c46e8390df144c631869ed6da2fcf`）。无论 Token 是否配置，都不得重跑该分支，也不得继续聚合、评分、选股或下单。
 
 对仍处于活动状态且文档明确批准的命令，继续使用第 4 节的包装方式：只替换其中的 Python 子命令，保留空值检查、`TUSHARE_TOKEN="$token"` 的单进程注入、退出码保存和 `unset token`。`--allow-large`（若某个活动合同明确要求）只表示显式确认长任务，不能放宽合同或后续门禁。运行期间不要启动第二份相同同步；若出现锁，先确认现有进程，不要直接删除锁文件。
+
+#### Tushare 日线迁移是当前获准的数据恢复路径
+
+当活动 BaoStock 日线因匿名黑名单无法更新时，可以按 [`a_share_tushare_daily_provider_migration_protocol.json`](a_share_tushare_daily_provider_migration_protocol.json) 使用 Tushare 日线。先运行不需要 Token 的 `preflight`；只有它除 Token 外全部通过后，才把第 4 节包装器中的 Python 子命令替换为：
+
+```zsh
+TUSHARE_TOKEN="$token" python scripts/a_share_tushare_daily_migration.py \
+  sync-source \
+  --staging-root /Volumes/DIsk/qlib-a-share-tushare-daily-staging \
+  --through-date <latest-completed-session> \
+  --allow-network
+```
+
+不要把 `TUSHARE_TOKEN="$token"` 再嵌套进一个已经设置该变量的包装器；上面只展示实际子命令形态。真实执行仍应由第 4 节的空值判断包围，并在结束后 `unset token`。迁移器复用现有 2019–2025 Tushare `daily` 快照，只补缺失日线，同时对全期请求 `daily_basic.turnover_rate`，避免从 BaoStock 填换手率。它只写外置 staging；成功后还要离线运行 `build` 并看到 `accepted_staging_pending_explicit_crash_safe_activation`。
+
+源同步中断时，只有在 `source_manifest.json` 尚未发布且协议、截止日不变的情况下才允许按哈希续传。源清单一旦发布就是不可变快照：同截止日重跑只做本地复核，不发请求；要更新到更晚交易日必须指定新的 staging 根。若先运行了 `build --skip-materialize`，普通 `build` 只会在重新核验源清单、构建清单、股票池、Tushare 单源文件和价格基准后继续 Qlib 物化。
+
+活动根已经是验收通过的 Tushare 版本时，下一次日更先运行不需要 Token 的 `seed-refresh`，把父版本的已验收源会话独立复制并逐文件验哈希到带日期的新 staging。随后再用本节包装器向 `sync-source --allow-network` 注入 Token；供应商侧只会收到新的交易日历/股票列表请求和父截止日之后缺少的 `daily`、`daily_basic` 请求，不会重下旧的每日指标。该播种命令禁止硬链接，不复制父根的日线成品或 Qlib，且不替代后续完整 `build`、验收和原子激活。活动根还是 BaoStock 时不得使用播种模式；第一份 Tushare 根仍走初始迁移。完整命令见 [`a_share_data_pipeline.md`](a_share_data_pipeline.md)。
+
+该验收状态出现后，先在不设置 `QLIB_A_SHARE_DATA_ROOT` 的进程中运行 `activation-preflight`。只有输出 `ready=true`，才可运行独立的 `activate --confirm-activation`；它通过仓库根目录 `.qlib_a_share_data_root` 原子切换，并在新根状态失败时恢复原指针。激活命令不使用 Tushare Token，也不发网络请求。不得手工把 staging 复制到当前 `data/`、删除旧 BaoStock 根或改符号链接，也不得让 Candidate49 在显式激活和激活后目标会话预检前使用它。完整命令和白名单复制边界见 [`a_share_data_pipeline.md`](a_share_data_pipeline.md)。
+
+激活后不要再假定活动数据根是仓库的 `data/`。用 `python scripts/a_share_data_pipeline.py data-root` 获取原子指针解析后的绝对路径；Candidate49 当天 16:00 后的 `quarterly_quality_future.parquet` 和对应清单必须写在该根下。命令只打印路径，不扫描日线、不写文件也不访问网络。把未来质量文件写入旧 BaoStock `data/` 会被最终预检拒绝。
+
+Candidate49 的真实未来会话优先使用 [`a_share_tushare_candidate49_future_session_workflow.py`](../scripts/a_share_tushare_candidate49_future_session_workflow.py)，而不是手工复制整串命令。`plan` 完全不写入、不请求供应商，并会显示已验收 2019–2025 Tushare 日线参考的路径、哈希、7 个分区、1,699 个交易日和 7,989,350 行；这些覆盖日的 `daily` 不会重下，但 `daily_basic` 仍按合同补齐。`run --confirm-run` 只在目标交易日当地时间 16:30 后运行，并按“当前进程环境 → 仓库 `.env` → `launchctl`”读取 Token。Token 不进入命令参数；日线本地构建/激活、状态、价格审计和公开季度质量子进程均会显式移除 Token，只有 Tushare 日线预检/同步与 Candidate49 组合预检/分钟采集子进程获得它。最终记录还会保存复用会话数、重复请求数（必须为 0）、新增 `daily`/`daily_basic` 请求数和日线调用总数。任一步失败立即停止，完整命令和不可变记录位置见 [`a_share_data_pipeline.md`](a_share_data_pipeline.md)。不要在该工作流运行时另开一份日线迁移或 Candidate49 采集进程。
+
+同一信号日重跑会从最后一个哈希验证通过的边界继续：可复用已完成的日线 source、acceptance、活动 Tushare 根和同日季度质量；若只在分钟采集阶段失败，不会再次下载日线或重刷质量。不要手工删除 staging、quality 或分钟 partial 来“重新开始”；跨过当地午夜的分钟 partial 只能保留为失败证据，不能补录。
 
 #### 自由流通股稀缺度分支已终止
 

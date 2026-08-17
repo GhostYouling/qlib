@@ -1,0 +1,58 @@
+{
+  "version": 1,
+  "kind": "a_share_three_day_walkforward_campaign070_terminal_completion_freeze",
+  "status": "terminal_coverage_rejection_before_comparators_prices_or_returns",
+  "recorded_at": "2026-08-06T04:52:00+08:00",
+  "bindings": {
+    "research_record": {
+      "path": "docs/a_share_three_day_walkforward_campaign_070_research_record.json",
+      "sha256": "9f8450e791c7afafbb6fe971eebe3815c8ab5c9c28b4907a75840058c1402900"
+    },
+    "no_return_audit": {
+      "path": "data/experiments/short_horizon/historical_walkforward/campaign_070/no_return/20260805T204241Z_campaign070_no_return_audit.json",
+      "sha256": "c5b806e938f0dd04bdb6908c3882c4f403302827ab64d37c3b339f3c0a0023bc"
+    },
+    "research_attempt_ledger": {
+      "path": "data/experiments/short_horizon/historical_walkforward/campaign_070/research_attempt_ledger_v1.json",
+      "sha256": "855124243d0f571b3f02e3fc98383b84c25cfce52f618ab5884286acfea62e47"
+    },
+    "campaign_report": {
+      "path": "docs/a_share_three_day_walkforward_campaign_070_report.md",
+      "sha256": "2cb28033cf55435b4291d79171551972ba36341cbf47b04bcd96286e2ea48005"
+    },
+    "unified_report": {
+      "path": "data/experiments/short_horizon/three_day_research_report.md",
+      "sha256": "fd3e5f6b181311e1fa42476c1263982b5b1c153cf38d481f9d5da16088304265"
+    },
+    "candidate49_signal_ledger": {
+      "path": "data/experiments/short_horizon/candidate49_future_signal_ledger.json",
+      "sha256": "5193f00d7f36da003f53cec387900da4c3d002299f5dfcfc1a95eaa199ed3a79"
+    },
+    "candidate49_execution_ledger": {
+      "path": "data/experiments/short_horizon/candidate49_future_execution_ledger.json",
+      "sha256": "d57a3e61eac969e42cafa418ccd8c0a5ee65dcf69da145bb2c096c2a02a2ea4f"
+    }
+  },
+  "terminal_decision": {
+    "factor": "quarterly_announcement_delay_improvement_yoy_rank_1y",
+    "direction": "higher",
+    "coverage_gate_passed": false,
+    "failed_frozen_metrics": [
+      "p05_coverage",
+      "p05_eligible_names"
+    ],
+    "numeric_comparison_values_read": false,
+    "development_trial_count": 0,
+    "development_survivor_count": 0,
+    "stress_2024_2025_opened": false,
+    "same_campaign_rescue_allowed": false,
+    "campaign070_attempt_count": 4,
+    "campaign070_infrastructure_failure_count": 3,
+    "campaign070_return_reading_development_trial_count": 0,
+    "cumulative_historical_research_attempt_count": 418,
+    "cumulative_return_reading_development_trial_count": 275,
+    "candidate49_ledgers_changed": false,
+    "provider_request_issued": false,
+    "current_scoring_selection_sizing_or_orders_performed": false
+  }
+}

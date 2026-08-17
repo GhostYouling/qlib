@@ -1,0 +1,60 @@
+{
+  "version": 1,
+  "kind": "a_share_three_day_walkforward_campaign068_postcompletion_test_failure",
+  "status": "recorded_before_additive_terminal_lifecycle_test_transition",
+  "recorded_at": "2026-08-06T03:10:00+08:00",
+  "command": "PYTHONPATH=/Volumes/DIsk/Disk-Coding/qlib /Volumes/DIsk/Coding/anaconda3/bin/python -m pytest -q tests/data_collector_tests/test_a_share_three_day_walkforward_campaign068_features_v2.py tests/data_collector_tests/test_a_share_three_day_walkforward_campaign068_no_return_audit.py tests/data_collector_tests/test_a_share_three_day_walkforward_campaign068_terminal.py",
+  "exit_code": 1,
+  "summary": {
+    "passed": 11,
+    "failed": 3,
+    "elapsed_seconds": 2.3
+  },
+  "failed_nodes": [
+    {
+      "node": "tests/data_collector_tests/test_a_share_three_day_walkforward_campaign068_features_v2.py::test_campaign068_v2_status_does_not_accept_v1_snapshot",
+      "test_file_sha256": "49756cd5a3802c1198b993f172198e3200e57b277ac3382706db2637388b905d",
+      "expected": "snapshot_absent_pre_build",
+      "observed": "snapshot_present",
+      "classification": "frozen_prebuild_lifecycle_assertion_selected_after_successful_publication",
+      "research_semantics_changed": false
+    },
+    {
+      "node": "tests/data_collector_tests/test_a_share_three_day_walkforward_campaign068_no_return_audit.py::test_campaign068_status_does_not_load_comparison_values",
+      "test_file_sha256": "62fb23a73f9de22e7b9414ad583ad955ccd0b405b171f22f9985b0811c895591",
+      "expected_audit_count": 0,
+      "observed_audit_count": 1,
+      "classification": "frozen_pre_audit_lifecycle_assertion_selected_after_successful_terminal_audit",
+      "research_semantics_changed": false
+    },
+    {
+      "node": "tests/data_collector_tests/test_a_share_three_day_walkforward_campaign068_terminal.py::test_campaign068_terminal_artifact_bindings_are_current",
+      "test_file_sha256_before_repair": "b2c4ca4c03d80f98be0ae375b29dc30076a17e5e760c6c5dad54f5d7fc3e4b89",
+      "expected_status_binding_count": 5,
+      "observed_status_binding_count": 6,
+      "classification": "new_terminal_test_expected_count_typo",
+      "research_semantics_changed": false
+    }
+  ],
+  "repair_policy": {
+    "edit_frozen_v2_feature_tests": false,
+    "edit_frozen_no_return_audit_tests": false,
+    "deselect_only_the_two_obsolete_lifecycle_nodes_in_the_corrected_suite": true,
+    "add_postcompletion_assertions_for_snapshot_present_and_audit_count_one": true,
+    "correct_unfrozen_terminal_binding_count_assertion": true,
+    "change_candidate_formula_values_coverage_or_terminal_decision": false
+  },
+  "research_effect": {
+    "infrastructure_failure_count_increment": 3,
+    "historical_research_attempt_count_increment": 3,
+    "cumulative_historical_research_attempt_count": 407,
+    "return_reading_development_trial_count_increment": 0,
+    "cumulative_return_reading_development_trial_count": 274,
+    "comparison_values_read": false,
+    "historical_daily_price_fields_read": [],
+    "historical_forward_returns_read": false,
+    "provider_request_issued": false,
+    "candidate49_ledgers_changed": false,
+    "current_scoring_selection_sizing_or_orders_performed": false
+  }
+}

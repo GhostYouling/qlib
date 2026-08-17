@@ -1,0 +1,21 @@
+{
+  "version": 1,
+  "kind": "a_share_three_day_walkforward_campaign066_report_binding",
+  "status": "campaign066_and_candidate49_daily_status_present_once_in_unified_report",
+  "recorded_at": "2026-08-05T17:53:00+08:00",
+  "bindings": {
+    "authoritative_state": {"path": "docs/a_share_three_day_iteration_status_20260805_campaign066_verified.json", "sha256": "5a54cdda40f981f08316953599d3f7156781ebfbd17aa776b7009c986b4ecfce"},
+    "research_record": {"path": "docs/a_share_three_day_walkforward_campaign_066_research_record.json", "sha256": "ebcfb647ae9efa64fc5256ef77d681b57aa10a905c042a83f23c7ae8e3be5dde"},
+    "campaign_report": {"path": "docs/a_share_three_day_walkforward_campaign_066_report.md", "sha256": "9726aceb9e1692456fbb6cc34848fa6e4ddfb50ec423836e6783dd3664e6592b"},
+    "verification": {"path": "docs/a_share_three_day_walkforward_campaign_066_verification_20260805.json", "sha256": "2220e06b779723764608e650b25df1b96a849ade2d87821e4095a7804543fa49"},
+    "unified_report": {"path": "data/experiments/short_horizon/three_day_research_report.md", "sha256": "a226f275b60d59238397c4cdd828e4e0106ee580e5547e2153a496f734e5822f"},
+    "unified_report_generator": {"path": "scripts/a_share_short_horizon_factor_research.py", "sha256": "df3d239259d6b3f87204749dd60938ee332fa472e99522f0708fd265fd198a36"},
+    "candidate49_daily_failure_record": {"path": "docs/a_share_candidate49_20260805_daily_source_failure_record.json", "sha256": "b2b6b07e1f0fca128ba9935dac6331319b2a7147e3d73e52b624853a2259bbbf"}
+  },
+  "report_semantics": {
+    "campaign066_section_count": 1,
+    "candidate49_2026_08_05_section_count": 1,
+    "historical_results_labeled_as_non_investment_research": true,
+    "candidate49_source_failure_not_misreported_as_factor_return_failure": true
+  }
+}

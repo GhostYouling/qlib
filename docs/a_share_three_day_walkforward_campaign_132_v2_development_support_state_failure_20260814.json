@@ -1,0 +1,56 @@
+{
+  "schema_version": 1,
+  "kind": "a_share_three_day_walkforward_infrastructure_failure_record",
+  "recorded_at": "2026-08-14T09:38:57+08:00",
+  "campaign": 132,
+  "attempt_id": "campaign132_infrastructure_010",
+  "phase": "infrastructure_failure",
+  "stage": "frozen_v2_fold1_design_support_verification",
+  "status": "failed_absent_design_support_state_helper_after_training_market_open",
+  "failed_command_exit_code": 1,
+  "failure": {
+    "exception": "AttributeError",
+    "cause": "The untouched frozen v1 runner also referenced design.support_state(), while the design module computes the same state inline through finite_count >= MINIMUM_FINITE_COMPONENTS.",
+    "market_execution_fields_loaded": true,
+    "training_or_validation_returns_may_have_been_read": true,
+    "model_fit_performed": false,
+    "validation_score_snapshot_written": false,
+    "validation_returns_read": false,
+    "lockbox_2024_2025_return_fields_read": false,
+    "scientific_result_changed": false
+  },
+  "frozen_v2_evidence": {
+    "runner": {
+      "path": "scripts/a_share_three_day_walkforward_campaign132_v2.py",
+      "sha256": "58743be5f89226939c7fa79fe7fa30cf953d01b4c5ed924e2dd35e805002559f"
+    },
+    "implementation_freeze": {
+      "path": "docs/a_share_three_day_walkforward_campaign_132_development_implementation_freeze_v2_20260814.json",
+      "sha256": "4bf4036c71e8d74373f8ba2bb38cf28bc39dae0c33afc8140c5238198f771282"
+    },
+    "intent": {
+      "path": "data/experiments/short_horizon/historical_walkforward/campaign_132/walkforward_v2/development_intent.json",
+      "sha256": "ff891374a01677d49658ace2b6920030b882887225b62a1dab78c1721aaa192a"
+    },
+    "failure": {
+      "path": "data/experiments/short_horizon/historical_walkforward/campaign_132/walkforward_v2/development_failure.json",
+      "sha256": "9896f21c0ec08369ba113474ceedb4a004a3ac1e2db9c5f75984c90fedb6de9d"
+    }
+  },
+  "predecessor_failure": {
+    "path": "docs/a_share_three_day_walkforward_campaign_132_v1_development_component_columns_failure_20260814.json",
+    "sha256": "deda1ea8d0db7b194f4c2cdec46670a1a72299a7c40aa454a84fdff6aa0cd684"
+  },
+  "recovery_boundary": {
+    "append_failure_to_campaign132_ledger": true,
+    "preserve_v1_and_v2_runners_freezes_intents_and_failures_unchanged": true,
+    "create_explicit_v3_compatibility_runner_tests_freeze_and_new_output_root": true,
+    "audit_all_frozen_v1_design_module_attribute_references_before_v3": true,
+    "only_mechanical_interface_compatibility_repairs_allowed": true,
+    "model_or_research_definition_change_allowed": false,
+    "reuse_failed_v1_or_v2_output_root": false,
+    "override_or_mask_failed_exit_code": false,
+    "provider_request_or_credential_load_allowed": false,
+    "candidate49_change_allowed": false
+  }
+}

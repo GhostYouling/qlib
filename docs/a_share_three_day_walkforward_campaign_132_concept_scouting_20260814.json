@@ -1,0 +1,103 @@
+{
+  "schema_version": 1,
+  "kind": "a_share_three_day_walkforward_campaign132_concept_scouting",
+  "status": "finite_complete_library_monotone_model_family_selected_before_component_or_return_values",
+  "recorded_at": "2026-08-14T09:03:00+08:00",
+  "purpose": "Continue the user-directed historical factor-combination engine with a finite current-library campaign while preserving every prior terminal factor record and Candidate49 as a separate prospective layer.",
+  "authoritative_inputs": {
+    "campaign131_state": {
+      "path": "docs/a_share_three_day_iteration_status_20260814_campaign131_prevalue_terminal_v4.json",
+      "sha256": "99371746a8ce6a1f2123975f74712808b99c306a3fe208433eefe208213da1e6"
+    },
+    "numeric_policy_v158": {
+      "path": "docs/a_share_three_day_walkforward_future_numeric_comparison_eligibility_policy_v158_20260814.json",
+      "sha256": "9e5c84c38aca839877a0723e35fcb7c4925127971da0e9d9789c24e55a239baf"
+    },
+    "historical_walkforward_policy": {
+      "path": "docs/a_share_three_day_historical_walkforward_research_policy_20260727.json",
+      "sha256": "38426d6161b9bfed323c58caba18feca668b8c9d53e294951a8ba90c01a798bb"
+    }
+  },
+  "finite_prevalue_concept_catalog": [
+    {
+      "catalog_id": "c132_01",
+      "name": "complete_140_numeric_library_monotone_histogram_gradient_boosting",
+      "decision": "selected_as_three_configuration_finite_model_family",
+      "reason": "The user-frozen historical policy explicitly permits complete-library combinations and model fitting inside development folds. Direction-normalized inputs plus positive monotonic constraints preserve every frozen factor direction, while a fixed three-level interaction catalog tests nonlinear complementarity without selecting a subset or reclassifying an old terminal factor."
+    },
+    {
+      "catalog_id": "c132_02",
+      "name": "complete_library_signed_linear_ridge_or_unconstrained_weights",
+      "decision": "rejected_before_values",
+      "reason": "Negative coefficients could systematically invert frozen terminal directions and would reopen the signed-weight family that Campaign102 deliberately excluded."
+    },
+    {
+      "catalog_id": "c132_03",
+      "name": "complete_library_l1_subset_or_top_feature_selection",
+      "decision": "rejected_before_values",
+      "reason": "Sparse selection would turn previously exposed factor outcomes into a subset search and violate the requirement to reuse the complete frozen feature library."
+    },
+    {
+      "catalog_id": "c132_04",
+      "name": "unconstrained_random_forest_neural_network_or_generic_boosting",
+      "decision": "rejected_before_values",
+      "reason": "Unconstrained nonlinear models can invert directions and introduce architecture, initialization and hyperparameter multiplicity outside a finite interpretable campaign."
+    },
+    {
+      "catalog_id": "c132_05",
+      "name": "bounded_simplex_ridge_consensus_or_improvement_refit",
+      "decision": "rejected_before_values",
+      "reason": "Campaign102 and the later consensus/improvement definitions already consumed those exact linear and deterministic aggregation families; changing their component count would be a retry."
+    },
+    {
+      "catalog_id": "c132_06",
+      "name": "minute_sequence_transformer_recurrent_or_convolutional_model",
+      "decision": "rejected_before_values",
+      "reason": "Returning to raw terminal minute paths would reopen an exposed operator frontier, abandon the complete frozen factor library, and add large architecture search multiplicity."
+    }
+  ],
+  "selected_family": {
+    "feature_library": "all_current_140_numeric_comparators_in_frozen_order",
+    "feature_order_sha256": "c71bfe27486c9567afd3aca21e4b04053658c23ac651e7f4df7fd014b0c31efd",
+    "direction_normalization": "Every component is its average-tie cross-sectional favorable-direction percentile in (0,1]; missing is preserved through design construction and deterministically filled with neutral 0.5 only at model input.",
+    "model": "sklearn.ensemble.HistGradientBoostingRegressor_1.5.1",
+    "monotonic_constraints": "positive_one_for_all_140_direction_normalized_features",
+    "configuration_count": 3,
+    "configuration_order": [
+      "wf132_monotone_hgb_no_interactions_140f",
+      "wf132_monotone_hgb_pairwise_interactions_140f",
+      "wf132_monotone_hgb_unrestricted_interactions_140f"
+    ],
+    "only_varying_parameter": "interaction_cst in [no_interactions, pairwise, null]",
+    "shared_fixed_parameters": {
+      "loss": "squared_error",
+      "learning_rate": 0.05,
+      "max_iter": 120,
+      "max_leaf_nodes": 7,
+      "min_samples_leaf": 500,
+      "l2_regularization": 1.0,
+      "max_features": 1.0,
+      "max_bins": 63,
+      "early_stopping": false,
+      "random_state": 132
+    }
+  },
+  "prevalue_decision": {
+    "concepts_reviewed": 6,
+    "selected_model_configuration_count": 3,
+    "complete_current_library_required": true,
+    "old_terminal_records_rewritten_or_reclassified": false,
+    "component_factor_values_read_before_selection": false,
+    "historical_daily_price_or_forward_return_values_read_before_selection": false,
+    "stress_2024_2025_opened": false
+  },
+  "research_boundary": {
+    "provider_request_issued": false,
+    "credential_loaded": false,
+    "candidate49_historical_backfill_performed": false,
+    "candidate49_ledgers_changed": false,
+    "second_prospective_candidate_created": false,
+    "current_scoring_selection_sizing_positions_or_orders_performed": false,
+    "investment_advice": false
+  }
+}

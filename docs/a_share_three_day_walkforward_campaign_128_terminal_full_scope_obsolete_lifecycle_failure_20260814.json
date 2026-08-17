@@ -1,0 +1,28 @@
+{
+  "schema_version": 1,
+  "kind": "a_share_three_day_walkforward_campaign128_infrastructure_failure",
+  "status": "failed_full_scope_obsolete_prepublication_lifecycle_assertions_after_terminal",
+  "recorded_at": "2026-08-14T06:59:00+08:00",
+  "stage": "terminal_full_campaign128_regression_scope",
+  "command_scope": "pytest -q tests/data_collector_tests/*campaign128*.py",
+  "result": {
+    "passed": 54,
+    "failed": 6,
+    "skipped": 1
+  },
+  "failed_assertion_semantics": [
+    "coverage output must be absent before coverage",
+    "feature snapshot status must be absent before build",
+    "ordered uniqueness output must be absent before uniqueness",
+    "prevalue output root must be absent",
+    "prevalue status must retain old report hashes",
+    "recovery manifest must be absent before build"
+  ],
+  "interpretation": "All six failures are immutable prepublication lifecycle assertions whose required artifacts now legitimately exist. The new development and terminal tests passed inside the same run. No scientific metric, frozen gate, trial decision or artifact byte was changed in response.",
+  "frozen_old_tests_rewritten": false,
+  "new_research_values_read": false,
+  "development_trial_rerun": false,
+  "stress_2024_2025_opened": false,
+  "candidate49_ledgers_changed": false,
+  "scientific_result_changed": false
+}

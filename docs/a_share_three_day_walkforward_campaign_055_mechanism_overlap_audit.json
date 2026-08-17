@@ -1,0 +1,125 @@
+{
+  "version": 1,
+  "kind": "a_share_three_day_walkforward_campaign055_mechanism_overlap_audit",
+  "status": "passed_conceptual_independence_before_campaign055_candidate_comparison_daily_price_or_return_values",
+  "recorded_at": "2026-08-03T16:04:00Z",
+  "purpose": "Challenge the selected binary price-update clock-dispersion mechanism against nearby frozen families before any Campaign055 value is computed.",
+  "authoritative_boundary": {
+    "path": "docs/a_share_three_day_iteration_status_20260803_campaign054_verified.json",
+    "sha256": "63d0bcb883af148064b01661c2bb743b59be0416c4bcbd9b272a68ec95f4bc88"
+  },
+  "historical_walkforward_policy": {
+    "path": "docs/a_share_three_day_historical_walkforward_research_policy_20260727.json",
+    "sha256": "38426d6161b9bfed323c58caba18feca668b8c9d53e294951a8ba90c01a798bb"
+  },
+  "concept_scouting": {
+    "path": "docs/a_share_three_day_walkforward_campaign_055_concept_scouting.json",
+    "sha256": "567a19211d9ca058e688768e2dcfe3d1bd0afb0b4b1c0f59e079987b08c2070b"
+  },
+  "inherited_comparison_definition_source": {
+    "campaign054_protocol": {
+      "path": "docs/a_share_three_day_walkforward_campaign_054_no_return_preregistration.json",
+      "sha256": "938d4e5b73356c949ca298e6850aa4bea02a8204b333f793128f97aaf04fd176"
+    },
+    "campaign054_terminal_record": {
+      "path": "docs/a_share_three_day_walkforward_campaign_054_research_record.json",
+      "sha256": "678c52ff5a8899f0cac55605aea00e2ace033f277a6053568a70c1a5884a676a"
+    },
+    "comparison_count_after_appending_campaign054": 78,
+    "campaign055_comparison_values_read": false
+  },
+  "selected_mechanism": {
+    "name": "intraday_price_update_clock_entropy_10b_238m",
+    "direction": "higher",
+    "economic_hypothesis": "Broad clock-time dispersion of binary close updates across both continuous-auction halves represents sustained price discovery rather than isolated bursts.",
+    "formula": "On the fixed 240-close grid, create 119 within-half adjacent comparisons in each half, mark exact close inequality, count events in five fixed bins per half using floor(5*k/119), and return ten-bin Shannon entropy divided by ln(10), requiring at least 20 events.",
+    "source_projection": [
+      "datetime",
+      "symbol",
+      "provider",
+      "close"
+    ],
+    "selected_bar_count": 240,
+    "total_within_half_transition_count": 238,
+    "clock_bin_count": 10,
+    "minimum_update_events": 20,
+    "event_carries_sign_or_magnitude": false,
+    "valid_range": [
+      0.0,
+      1.0
+    ],
+    "transform_threshold_filter_combination_or_model": "none"
+  },
+  "design_choices_frozen_before_values": {
+    "formula_family": "binary_close_update_event_clock_dispersion_entropy",
+    "direction": "higher",
+    "morning_bin_count": 5,
+    "afternoon_bin_count": 5,
+    "bin_mapping": "floor(5*k/119) separately by half",
+    "minimum_update_events": 20,
+    "include_0930": false,
+    "include_lunch_transition": false,
+    "source_open_high_low_volume_amount_read": false,
+    "update_sign_or_magnitude_used": false,
+    "parameter_filter_subset_model_or_combination_count": 0
+  },
+  "overlap_challenges": [
+    {
+      "family": "intraday_price_update_share_238m",
+      "result": "distinct_pending_statistical_uniqueness_gate",
+      "reason": "Update share counts how many transitions changed. Campaign055 conditions on at least twenty events and measures only their ten-bin clock allocation; identical update counts can have entropy near zero or one."
+    },
+    {
+      "family": "intraday_close_range_occupancy_entropy_10b",
+      "result": "distinct_pending_statistical_uniqueness_gate",
+      "reason": "Campaign051 bins completed-session close levels by price range. Campaign055 bins binary update-event incidence by clock time, discards price levels after equality tests, and does not use the completed-session range."
+    },
+    {
+      "family": "return_entropy_volatility_skewness_directional_efficiency_and_sign_persistence",
+      "result": "distinct_pending_statistical_uniqueness_gate",
+      "reason": "Those mechanisms use return sign, magnitude, ordering, or distribution. Campaign055 retains only equality versus inequality and ignores sign, magnitude, and within-bin event order."
+    },
+    {
+      "family": "amount_volume_profile_entropy_center_of_mass_late_share_and_half_profile_similarity",
+      "result": "distinct_pending_statistical_uniqueness_gate",
+      "reason": "Those families locate traded amount or volume in clock time. Campaign055 reads neither amount nor volume and gives every binary close-update event unit weight."
+    },
+    {
+      "family": "campaign053_amount_price_discovery_alignment_js_238p",
+      "result": "distinct_pending_statistical_uniqueness_gate",
+      "reason": "Campaign053 aligns amount mass with absolute-return mass at 238 endpoints. Campaign055 has no amount or return magnitude and summarizes only fixed-bin incidence of nonzero close changes."
+    },
+    {
+      "family": "campaign054_volume_weighted_transaction_price_bowley_skew_240m",
+      "result": "distinct_pending_statistical_uniqueness_gate",
+      "reason": "Campaign054 sorts volume-weighted transaction-price levels and ignores clock order. Campaign055 reads close only, uses no transaction price or weight, and measures clock dispersion of equality changes."
+    },
+    {
+      "family": "candidate49_cumulative_vwap_crossing_rate_240m",
+      "result": "distinct",
+      "reason": "Candidate49 counts ordered crossings around a causal cumulative VWAP and requires volume. Campaign055 constructs no anchor or crossing, reads no volume, and remains historical-only without Candidate49 backfill."
+    },
+    {
+      "family": "terminal_factor_combination_filter_threshold_or_model",
+      "result": "distinct",
+      "reason": "Campaign055 contains one raw close-event statistic and no terminal factor value, fitted weight, regime, filter, threshold, subset, combination, or model."
+    }
+  ],
+  "research_boundary": {
+    "external_campaign055_minute_partitions_read": false,
+    "campaign055_candidate_or_comparison_values_read": false,
+    "historical_daily_price_fields_read": [],
+    "historical_forward_return_fields_read": false,
+    "provider_request_issued": false,
+    "candidate49_historical_return_signal_execution_or_milestone_backfill_performed": false,
+    "candidate49_ledgers_changed": false,
+    "second_prospective_candidate_created": false,
+    "current_scoring_selection_sizing_or_orders_performed": false
+  },
+  "decision": {
+    "conceptual_independence_passed": true,
+    "statistical_independence_pending_all_78_comparisons": true,
+    "predictive_value_established": false,
+    "next_action": "Freeze one exact 78-comparison coverage-first no-return protocol, with one conditional development trial only if admitted, before implementing or reading Campaign055 values."
+  }
+}

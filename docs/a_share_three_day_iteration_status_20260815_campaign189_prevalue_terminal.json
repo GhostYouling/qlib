@@ -1,0 +1,26 @@
+{
+  "schema_version": 1,
+  "kind": "a_share_three_day_iteration_status",
+  "status": "campaign189_final_terminal_validation_passed_goal_active_campaign190_offline_prevalue_authorized",
+  "recorded_at": "2026-08-15T14:08:13+08:00",
+  "supersedes_without_rewriting": {"path": "docs/a_share_three_day_iteration_status_20260815_campaign189_prevalue_in_progress.json", "sha256": "455dbda0fcfbce78e075cde515cb0ca16255c58dea4ff4445091ba43fa17e9e5", "preserved": true, "scientific_result_changed": false, "reason": "Advance the frozen Campaign189 checkpoint through terminal publication and validation without changing its scientific decision."},
+  "authoritative_inputs": {
+    "source_frontier": {"path": "docs/a_share_three_day_walkforward_campaign_189_insurer_underwriting_claims_reserve_source_frontier_20260815.json", "sha256": "bb2c53b83cfb869e033955059fb5ca194a9b5e6f6268b1befc4c19b7a8cdfd16"},
+    "terminal_result": {"path": "docs/a_share_three_day_walkforward_campaign_189_terminal_result_20260815.json", "sha256": "85deb18232cdbe228ae69aa9ca214d068aaa2cddae8c983573852a8a4c8f3201"},
+    "terminal_report": {"path": "docs/a_share_three_day_walkforward_campaign_189_terminal_report_20260815.md", "sha256": "2139ee4e234d1b279138847d17d66018ac888a8c7f8dbd7965b2af24b9e4049e"},
+    "attempt_ledger": {"path": "data/experiments/short_horizon/historical_walkforward/campaign_189/research_attempt_ledger_v1.json", "sha256": "6ae1bdc25de2ae70ead8bd0bf2931ffd00a8c0eb145c8a477b23f1dafd3cad06"},
+    "policy_v278": {"path": "docs/a_share_three_day_walkforward_future_numeric_comparison_eligibility_policy_v278_20260815.json", "sha256": "5f3835df282b5961875178c534c79ade46e7d7b989500680f87728ae4a169aac"},
+    "terminal_tests": {"path": "tests/data_collector_tests/test_a_share_three_day_walkforward_campaign189_terminal.py", "sha256": "5374ab701e6504ccc8c20d3bd094cdcdd21b3006401a42631519d24ed83b0ed4"},
+    "terminal_validation": {"path": "docs/a_share_three_day_walkforward_campaign_189_terminal_validation_20260815.json", "sha256": "1ed983c81fd1384804e7fc0a41df83d4ddd91bb1f292e315f4a929d867b08b22"},
+    "manage_skill": {"path": "/Users/niyufei/.codex/skills/manage-qlib-a-share-data/SKILL.md", "sha256": "565713a5f3aeb6a1acf23e397fcc21be28d0c3ea4ebf21c7f287a25bb94d78dc"}
+  },
+  "goal": {"objective": "请持续迭代因子。", "status": "active", "campaign189_completed": true, "campaign190_offline_scouting_authorized": true, "campaign190_started": false, "second_prospective_candidate_authorized": false},
+  "campaign189": {"terminal": true, "terminal_phase": "finite_prevalue_insurer_underwriting_claims_reserve_source_admission", "finite_concept_count": 7, "source_admission_deferrals_not_factor_failures": 4, "relabeling_operator_or_combination_route_rejections": 3, "selected_candidate_count": 0, "insurer_underwriting_claims_reserve_state_declared_ineffective": false, "source_factor_comparator_security_price_or_return_value_read": false, "stress_2024_2025_opened": false, "chain_tip_sha256": "ad2b9be55d73798c3ae503a97bf8b6d5af14667c019df312cefeefbed5a0b924"},
+  "effective_accounting": {"campaign189_attempt_count": 7, "campaign189_prevalue_scientific_attempt_count": 7, "campaign189_infrastructure_failure_count": 0, "campaign189_return_reading_development_trial_count": 0, "cumulative_historical_research_attempt_count": 1670, "cumulative_return_reading_development_trial_count": 314},
+  "library_state": {"complete_factor_definition_count": 158, "complete_factor_definition_order_sha256": "4819c7fd7c0795d7598a52f3c615e3f117d5f4ecd9332974bc8e3dfa57c96667", "eligible_numeric_comparator_count": 142, "eligible_numeric_comparator_order_sha256": "5d1b35fb5a0d8ac9293008db9963c4a60a94dc940c237c3ed259e5ce44f14aaf"},
+  "candidate49": {"sole_prospective_candidate": true, "signal_ledger_sha256": "5193f00d7f36da003f53cec387900da4c3d002299f5dfcfc1a95eaa199ed3a79", "signal_entry_count": 0, "execution_ledger_sha256": "d57a3e61eac969e42cafa418ccd8c0a5ee65dcf69da145bb2c096c2a02a2ea4f", "execution_entry_count": 0, "ledgers_changed": false},
+  "candidate49_daily_20260815": {"local_weekday": "Saturday", "accepted_local_trading_day": false, "credential_presence_checked": false, "plan_run": false, "run_run": false},
+  "validation_results": {"focused_tests_passed": 5, "cumulative_test_files": 77, "cumulative_tests_passed": 459, "cumulative_tests_skipped": 1, "cumulative_nodes_deselected": 5, "independent_validation_passed": true, "direct_bindings_verified": 22},
+  "research_boundary": {"unrecovered_or_unrecorded_failed_exit_codes_bypassed_or_masked": false, "source_factor_comparator_security_price_or_return_value_read": false, "stress_2024_2025_opened": false, "provider_or_web_request_issued": false, "provider_credential_presence_value_or_digest_read": false, "candidate49_ledgers_changed": false, "second_prospective_candidate_created": false, "current_scoring_selection_sizing_positions_or_orders_performed": false, "investment_advice": false},
+  "next_action": "Begin Campaign190 finite offline prevalue research in a genuinely different mechanism domain; keep Candidate49 as the sole prospective confirmation layer."
+}

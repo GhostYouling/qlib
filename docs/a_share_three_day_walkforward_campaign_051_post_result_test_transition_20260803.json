@@ -1,0 +1,37 @@
+{
+  "version": 1,
+  "kind": "a_share_three_day_walkforward_campaign051_post_result_test_transition",
+  "status": "pre_return_test_fingerprint_preserved_terminal_assertions_current",
+  "recorded_at": "2026-08-03T07:49:00Z",
+  "purpose": "Preserve the exact pre-return test fingerprint while binding the one-trial, zero-survivor, unopened-stress terminal assertions.",
+  "bindings": {
+    "development_implementation_freeze": {
+      "path": "docs/a_share_three_day_walkforward_campaign_051_development_implementation_freeze_20260803.json",
+      "sha256": "7e3a512dc990539759e65d4a7810691539311a2b1eb9d357c1fd9e44dd8b1891"
+    },
+    "current_campaign_tests": {
+      "path": "tests/data_collector_tests/test_a_share_three_day_walkforward_campaign051.py",
+      "sha256": "1258a118610cacbe05dcce7e8aab8328888406f6e354ecb03735810c592ae950"
+    },
+    "terminal_tests": {
+      "path": "tests/data_collector_tests/test_a_share_three_day_walkforward_campaign051_terminal.py",
+      "sha256": "d5cfad2194cf6f72df32593335fe184f4c94b0045e7d3224269e1c71c50356ab"
+    },
+    "terminal_publisher": {
+      "path": "scripts/a_share_three_day_walkforward_campaign051_finalize.py",
+      "sha256": "9500118c9caa034e690e610f5564c998f5856f78bb05909f92d6930ffd04fa66"
+    }
+  },
+  "historical_test_binding": {
+    "path": "tests/data_collector_tests/test_a_share_three_day_walkforward_campaign051.py",
+    "expected_pre_return_sha256": "79e663fe9f5cb21e6d81c07f5cf9d524eb92181a19563c2a500bd4c69c016ba4",
+    "current_post_result_sha256": "1258a118610cacbe05dcce7e8aab8328888406f6e354ecb03735810c592ae950",
+    "development_freeze_rewritten": false
+  },
+  "semantic_boundary": {
+    "formula_direction_cost_fold_purge_or_gate_changed": false,
+    "additional_historical_daily_price_or_forward_return_read": false,
+    "2024_2025_stress_return_read": false,
+    "candidate49_ledgers_changed": false
+  }
+}

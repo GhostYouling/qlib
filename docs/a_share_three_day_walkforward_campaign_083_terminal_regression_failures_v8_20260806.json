@@ -1,0 +1,35 @@
+{
+  "additional_failure_count": 1,
+  "additional_failures": [
+    {
+      "failure_record_ordinal": 5,
+      "historical_daily_price_or_forward_return_fields_read": false,
+      "outcome": "The credential-safe verification command proved the dotenv and ledger assertions, but the chained rg source search named a nonexistent legacy scripts/a_share_tushare_daily.py path and therefore returned a nonzero command status.",
+      "repair": "Repeat source inspection against only the existing Candidate49 workflow and test paths.",
+      "repair_result": "The workflow's safe dotenv parser, environment-first fallback order, token redaction, and child-environment injection were inspected successfully without printing the token.",
+      "stage": "credential_loader_source_path_verification"
+    }
+  ],
+  "campaign_id": "a_share_three_day_walkforward_campaign_083",
+  "candidate49_historical_return_read": false,
+  "candidate49_ledgers_changed": false,
+  "cumulative_failure_count": 5,
+  "current_scoring_selection_sizing_or_orders_performed": false,
+  "historical_forward_returns_read_by_failures": false,
+  "kind": "a_share_three_day_walkforward_campaign083_terminal_regression_failures",
+  "provider_request_issued": false,
+  "recorded_at": "2026-08-06T21:41:00+08:00",
+  "research_semantics": {
+    "campaign083_development_result_changed": false,
+    "campaign083_formula_direction_or_gate_changed": false,
+    "stress_2024_2025_opened": false,
+    "stress_return_fields_read": false
+  },
+  "schema_version": 1,
+  "status": "fifth_terminal_verification_infrastructure_failure_recorded_then_repaired",
+  "supersedes_without_rewriting": {
+    "path": "docs/a_share_three_day_walkforward_campaign_083_terminal_regression_failures_v7_20260806.json",
+    "preserved": true,
+    "sha256": "90acb427c82a497f0745f3c735d4c518fd6bc3cc56e7e10d0065eff5e873508f"
+  }
+}

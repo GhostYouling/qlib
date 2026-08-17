@@ -1,0 +1,125 @@
+{
+  "schema_version": 3,
+  "kind": "a_share_three_day_iteration_status",
+  "status": "campaign147_terminal_prevalue_zero_candidates_goal_active_candidate49_daily_failed_closed",
+  "recorded_at": "2026-08-14T22:57:00+08:00",
+  "supersedes_without_rewriting": {
+    "path": "docs/a_share_three_day_iteration_status_20260814_campaign146_terminal_v3.json",
+    "sha256": "0a8c80424c988c2afe82e80ac87c5b15e1c466dd8845ffffcd349ebd7442e0ef",
+    "preserved": true,
+    "scientific_result_changed": false,
+    "reason": "Advance the active goal after Campaign147 reviewed and recorded six prevalue concepts, selected no semantically independent candidate, and passed strict publication validation."
+  },
+  "authoritative_policy": {
+    "path": "docs/a_share_three_day_walkforward_future_numeric_comparison_eligibility_policy_v198_20260814.json",
+    "sha256": "c5a661fd78f4b4aceb9f5054201faff980470b4b7f704bd66d3d03bf12abb070",
+    "factor_definition_count": 155,
+    "factor_definition_order_sha256": "2e4114edb26fa3aaebd145ef07fe4e2ac9c5d9dc4586cf70ff61c20e39b954ba",
+    "eligible_numeric_comparator_count": 142,
+    "eligible_numeric_comparator_order_sha256": "5d1b35fb5a0d8ac9293008db9963c4a60a94dc940c237c3ed259e5ce44f14aaf"
+  },
+  "campaign147": {
+    "terminal": true,
+    "terminal_phase": "prevalue_complete_library_consumed_family_and_semantic_independence_gate",
+    "finite_concepts_reviewed": 6,
+    "selected_candidate_count": 0,
+    "complete_factor_definition_created": false,
+    "return_reading_development_trial_count": 0,
+    "stress_2024_2025_returns_opened": false,
+    "terminal_result": {
+      "path": "docs/a_share_three_day_walkforward_campaign_147_terminal_result_20260814.json",
+      "sha256": "66e3ea798cf8158e246a4a368a8939fbddd435febec078145f8e511428500096"
+    },
+    "terminal_validation": {
+      "path": "docs/a_share_three_day_walkforward_campaign_147_terminal_validation_20260814.json",
+      "sha256": "91bd4070a9c28d05c352c01ceb4defd2c0b72debf375d848729346f5a8d971e6"
+    },
+    "effective_attempt_ledger": {
+      "path": "data/experiments/short_horizon/historical_walkforward/campaign_147/research_attempt_ledger_v1.json",
+      "sha256": "d6b96a048bc4be7b3cb7a4a5765edbacfa8b4db91a5580dec9ed408c5a5c42ad",
+      "effective_attempt_count": 7,
+      "effective_entry_count": 7,
+      "chain_tip_sha256": "2080fab6d899a07ca37b384ca8c028c1d74dc715bb8e0aff4da311e327d4c3b6"
+    }
+  },
+  "effective_accounting": {
+    "campaign147_attempt_count": 7,
+    "campaign147_prevalue_scientific_attempt_count": 6,
+    "campaign147_infrastructure_failure_count": 1,
+    "campaign147_complete_factor_attempt_count": 0,
+    "campaign147_return_reading_development_trial_count": 0,
+    "campaign147_development_survivor_count": 0,
+    "campaign147_stress_trial_count": 0,
+    "cumulative_historical_research_attempt_count": 1280,
+    "cumulative_return_reading_development_trial_count": 314
+  },
+  "candidate49_daily_20260814": {
+    "run_status": "failed_closed",
+    "failure_stage": "stock_basic",
+    "provider_calls_this_invocation": 4,
+    "same_day_retry_allowed": false,
+    "same_day_retry_performed": false,
+    "failure_record": {
+      "path": "docs/a_share_candidate49_20260814_daily_source_failure_record.json",
+      "sha256": "d5d120632a526031eace5424a7940af746569bfb1e9d8e4115a886ede164b408"
+    },
+    "failure_verification": {
+      "path": "docs/a_share_candidate49_20260814_daily_source_failure_verification.json",
+      "sha256": "ea1853aef1cf0a8fdc70bdac61c191d13025d103117c30c2b412692a7094f761"
+    }
+  },
+  "candidate49": {
+    "sole_prospective_candidate": true,
+    "signal_ledger": {
+      "path": "data/experiments/short_horizon/candidate49_future_signal_ledger.json",
+      "sha256": "5193f00d7f36da003f53cec387900da4c3d002299f5dfcfc1a95eaa199ed3a79",
+      "entries": 0
+    },
+    "execution_ledger": {
+      "path": "data/experiments/short_horizon/candidate49_future_execution_ledger.json",
+      "sha256": "d57a3e61eac969e42cafa418ccd8c0a5ee65dcf69da145bb2c096c2a02a2ea4f",
+      "entries": 0
+    },
+    "historical_backfill_performed": false,
+    "ledgers_changed": false
+  },
+  "reports": {
+    "campaign147_terminal_report": {
+      "path": "docs/a_share_three_day_walkforward_campaign_147_terminal_report.md",
+      "sha256": "a53a479421a92043630d89807afd974225413b504651e978d9154b4e67333871"
+    },
+    "current_research_report": {
+      "path": "data/experiments/short_horizon/current_research_report.md",
+      "sha256_at_publication": "dcc7e582596ecea074c1f001424f67faf2cf0f28a7a590ebaa05ae4c7d3e3d27",
+      "accounting_scope": "through_campaign147_infrastructure_001",
+      "mutable_append_only_report_not_an_immutable_binding": true
+    },
+    "three_day_research_report": {
+      "path": "data/experiments/short_horizon/three_day_research_report.md",
+      "sha256_at_publication": "8ccc75d54791ec095d60c31b76b31ff5c8bd6cdf761b96a5fd89db5fac71a541",
+      "accounting_scope": "through_campaign147_infrastructure_001",
+      "mutable_append_only_report_not_an_immutable_binding": true
+    }
+  },
+  "research_boundary": {
+    "campaign147_source_rows_or_column_values_read": false,
+    "campaign147_candidate_or_comparator_values_read": false,
+    "historical_2019_2023_daily_price_or_forward_return_values_read_by_campaign147": false,
+    "stress_2024_2025_returns_opened": false,
+    "provider_request_issued_by_campaign147": false,
+    "provider_credential_value_or_digest_logged_hashed_or_persisted": false,
+    "candidate49_historical_backfill_performed": false,
+    "candidate49_ledgers_changed": false,
+    "second_prospective_candidate_created": false,
+    "current_scoring_selection_sizing_positions_or_orders_performed": false,
+    "investment_advice": false,
+    "inherited_current_listing_survivorship_limitation_remains": true
+  },
+  "goal": {
+    "objective": "请持续迭代因子。",
+    "status": "active",
+    "campaign147_scientific_decision_and_strict_publication_completed": true,
+    "campaign148_offline_scouting_authorized": true
+  },
+  "next_action": "Do not retry Candidate49 on 2026-08-14. Continue Campaign148 zero-network offline prevalue scouting from a genuinely new mechanism or separately accepted historically versioned point-in-time source; do not retry or rescue Campaign147."
+}

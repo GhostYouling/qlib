@@ -1,0 +1,95 @@
+{
+  "version": 1,
+  "kind": "a_share_three_day_walkforward_campaign050_feature_build_infrastructure_repair",
+  "status": "infrastructure_only_empty_joint_partition_repair_authorizes_exact_resume",
+  "recorded_at": "2026-08-01T07:59:46Z",
+  "purpose": "Record the first Campaign050 feature-build failure and authorize only the canonical empty-joint-base short circuit needed to resume the exact frozen close-only materialization.",
+  "frozen_inputs": {
+    "mechanism_overlap_audit": {
+      "path": "docs/a_share_three_day_walkforward_campaign_050_mechanism_overlap_audit.json",
+      "sha256": "26679fc013e1606857f5c8b608c132058b6be410d3b04854435022af7986c33a"
+    },
+    "no_return_preregistration": {
+      "path": "docs/a_share_three_day_walkforward_campaign_050_no_return_preregistration.json",
+      "sha256": "32c3e889e736e050fb0326f2bceb6ddd820ae7a0b9c5f6bac09c90a5afebb10e"
+    },
+    "feature_implementation_freeze": {
+      "path": "docs/a_share_three_day_walkforward_campaign_050_feature_implementation_freeze_20260801.json",
+      "sha256": "264c207abe3149d1b4083609a275da26e74d97fcc0bdc8dccde076a1fa847205"
+    },
+    "bound_feature_entrypoint": {
+      "path": "scripts/a_share_three_day_walkforward_campaign050_features_v2.py",
+      "sha256": "f450a953e44f4a9fd325d1aea7dc113dbd84fa9079761079ac6a1fa9a3292b97"
+    },
+    "factor": "intraday_half_session_extreme_shock_reversal_completion_2h",
+    "formula": "For each independent 120-close half, select the earliest maximum-absolute adjacent log return s, set R to the log return from immediately after s to the half close, compute -2*s*R/(s^2+R^2), and equally average the two half scores.",
+    "direction": "higher",
+    "source_fields": [
+      "datetime",
+      "symbol",
+      "provider",
+      "close"
+    ]
+  },
+  "failed_attempt": {
+    "command": "python scripts/a_share_three_day_walkforward_campaign050_features_v2.py build --data-root /Volumes/DIsk/qlib-a-share-tushare-1m --workers 4",
+    "exit_code": 1,
+    "failure_symbol": "SH600145",
+    "failure_partition_year": 2019,
+    "failure_reason": "The hash-bound joint-clean base partition was valid and intentionally empty, but the Campaign050 identity check compared its empty symbol set with the expected singleton before returning a canonical empty output partition.",
+    "source_evidence": {
+      "joint_base_partition": {
+        "path": "/Volumes/DIsk/qlib-a-share-tushare-1m/derived/a_share/rich/tushare/minute_sentiment_clean/tushare_stk_mins_1m_2019_2025_ea0cbb8f_sentiment_clean_v1/partitions/sh600145/2019.parquet",
+        "sha256": "462e72c134d1d81f2381c36548188a317896097452653ab8105fbe20cd9a8ce2"
+      },
+      "joint_base_rows": 0,
+      "joint_base_manifest_declared_eligible_rows": 0,
+      "joint_base_manifest_declared_missing_local_daily_sessions": 244
+    },
+    "partial_checkpoint_state_after_failure": {
+      "parquet_checkpoints": 801,
+      "json_sidecars": 801,
+      "published_final_snapshot": false,
+      "coverage_audit_created": false,
+      "comparison_values_read": false,
+      "daily_price_fields_read": [],
+      "forward_return_fields_read": false
+    }
+  },
+  "repair": {
+    "description": "After exact schema and trade-date normalization, return the canonical empty Campaign050 output and base_rows=0 when the hash-validated joint-clean partition has zero rows; retain every existing identity, timestamp, grid, numeric, formula, and checkpoint validation for nonempty partitions.",
+    "implementation_form": "additive wrapper only; the frozen Campaign050 runner and implementation-freeze record remain byte-identical",
+    "formula_changed": false,
+    "direction_changed": false,
+    "source_fields_changed": false,
+    "timestamp_or_half_session_changed": false,
+    "tie_rule_changed": false,
+    "zero_or_missing_semantics_for_nonempty_partitions_changed": false,
+    "coverage_capacity_or_uniqueness_gate_changed": false,
+    "trial_catalog_changed": false,
+    "existing_checkpoint_reuse_requires_hash_validation": true,
+    "same_command_and_parameters_only": true
+  },
+  "post_repair_implementation": {
+    "wrapper_path": "scripts/a_share_three_day_walkforward_campaign050_features_v3.py",
+    "test_path": "tests/data_collector_tests/test_a_share_three_day_walkforward_campaign050_feature_build_repair.py",
+    "expected_test_count": 2,
+    "required_regressions": [
+      "canonical empty joint-base partition returns an empty Campaign050 frame with base_rows=0",
+      "nonempty Campaign050 focused semantics remain covered by the frozen 11-test suite"
+    ],
+    "must_be_fingerprint_bound_before_resume": true
+  },
+  "research_boundary": {
+    "provider_request_issued": false,
+    "provider_credential_read": false,
+    "candidate_values_materialized_only_in_partial_checkpoints": true,
+    "comparison_values_read": false,
+    "daily_price_fields_read": [],
+    "historical_forward_return_fields_read": false,
+    "candidate49_historical_return_read": false,
+    "candidate49_ledgers_changed": false,
+    "candidate50_prospective_activation_created": false,
+    "current_scoring_selection_sizing_or_orders_performed": false
+  }
+}

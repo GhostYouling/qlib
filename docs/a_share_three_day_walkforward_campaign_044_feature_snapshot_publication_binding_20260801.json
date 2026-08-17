@@ -1,0 +1,62 @@
+{
+  "version": 1,
+  "kind": "a_share_three_day_walkforward_campaign044_feature_snapshot_publication_binding",
+  "status": "published_and_code_fingerprints_bound_before_no_return_audit",
+  "recorded_at": "2026-07-31T18:20:00Z",
+  "purpose": "Bind the immutable Campaign044 composite snapshot and the exact post-publication fingerprint-only code change before any coverage audit, component correlation, daily price, or return read.",
+  "authoritative_inputs": {
+    "implementation_freeze_v2": {
+      "path": "docs/a_share_three_day_walkforward_campaign_044_feature_implementation_freeze_v2_20260801.json",
+      "sha256": "8f854d3ab5ae97cc146554306c246ac1e643e273b8bd8bf09ce1d9d041d5eedd"
+    },
+    "snapshot_build_infrastructure_failure_001": {
+      "path": "docs/a_share_three_day_walkforward_campaign_044_snapshot_build_infrastructure_failure_20260801.json",
+      "sha256": "0bd6bdec08fec54fc19fc254d258e0376f8c30309c4a64d22b60ce9c01a0213f"
+    }
+  },
+  "publication": {
+    "path": "/Volumes/DIsk/qlib-a-share-tushare-1m/derived/a_share/rich/tushare/minute_walkforward_campaign044_feature_library/tushare_stk_mins_1m_2019_2025_ea0cbb8f_walkforward_campaign044_feature_library_v1/snapshot_manifest.json",
+    "sha256": "ab5d08bf5c9ca8737c32b13e8a6fcc68d9cfb26fc8cdb43377d34bde5d724964",
+    "dataset_sha256": "295c023b3f6a76605ab0413f6ab9410e2dabcb4cb2d262de7a62618818a55487",
+    "partitions": 33015,
+    "rows": 7724498,
+    "candidate_factor": "full_terminal_library_directional_percentile_consensus_66f",
+    "candidate_eligible_rows": 646568,
+    "eligible_sessions": 1622,
+    "eligible_names_min": 67,
+    "eligible_names_median": 423.0,
+    "quality_listing_and_minute_identity_master_rows": 1330171,
+    "all_component_common_rows_before_minimum_session_support": 646683,
+    "source_terminal_factor_count": 66,
+    "source_terminal_factor_order_sha256": "71a34e7decf7ba4a456cff4e08b0ea034a3919ee62edf5eb3bec603eb50a5bed",
+    "resumed_partitions": 0
+  },
+  "score_cache": {
+    "path": "/Volumes/DIsk/qlib-a-share-tushare-1m/derived/a_share/rich/tushare/minute_walkforward_campaign044_feature_library/tushare_stk_mins_1m_2019_2025_ea0cbb8f_walkforward_campaign044_feature_library_v1/score_cache.parquet",
+    "sha256": "7ea8dc1475de2b6b804c6ea384cf1957685ef9258fa721772f7d3093707baa66",
+    "frame_sha256": "5d8f39a93d16acf897ac87ffef3579c80c7228821d0c5cd4f286ecd68548fdb2",
+    "rows": 646568
+  },
+  "implementation_fingerprint_binding": {
+    "path": "scripts/a_share_three_day_walkforward_campaign044_features.py",
+    "sha256": "4ec01af1d416d34b5a140f32033fd152fa0ae3c866c2b15f29f53a0978608af1",
+    "pre_publication_sha256": "4a95a02139d501e3a5c8b92e959bd4e038ae5eebffb0760e96bb69bc819dd41a",
+    "only_change_after_snapshot_values": "Set SNAPSHOT_MANIFEST_SHA256 and SNAPSHOT_DATASET_SHA256 to the observed immutable publication fingerprints.",
+    "candidate_formula_direction_library_values_eligibility_dataset_sha256_or_partitions_changed": false
+  },
+  "semantic_boundary": {
+    "source_terminal_factor_values_read": true,
+    "candidate_values_materialized": true,
+    "candidate49_factor_values_read": false,
+    "candidate49_historical_return_signal_or_execution_backfill_performed": false,
+    "historical_daily_price_fields_read": [],
+    "historical_forward_return_fields_read": false,
+    "training_or_model_fitting_performed": false,
+    "current_scoring_selection_sizing_or_orders_performed": false,
+    "predictive_value_established": false
+  },
+  "decision": {
+    "publication_bound": true,
+    "next_action": "Validate this binding and the post-publication code, verify every Campaign044 partition, then run the frozen coverage-first no-return audit. Coverage failure must stop before component correlations and all historical returns."
+  }
+}

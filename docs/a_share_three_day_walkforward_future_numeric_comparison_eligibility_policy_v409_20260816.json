@@ -1,0 +1,75 @@
+{
+  "schema_version": 1,
+  "kind": "a_share_three_day_walkforward_future_numeric_comparison_eligibility_policy",
+  "version": 409,
+  "status": "campaign263_terminal_definition_and_numeric_comparator_appended_after_uniqueness_pass_development_zero_survivors",
+  "recorded_at": "2026-08-16T14:13:00Z",
+  "timestamp_semantics": "monotonic logical append time after Campaign263 terminal result and before Campaign264 prevalue work",
+  "supersedes_without_rewriting": {
+    "path": "docs/a_share_three_day_walkforward_future_numeric_comparison_eligibility_policy_v408_20260816.json",
+    "sha256": "3b303b088e87ee96a45379f11870fd9349a6d70e188e5448d71df9ce0a89cfe6"
+  },
+  "authoritative_campaign263_terminal_result": {
+    "path": "docs/a_share_three_day_walkforward_campaign_263_terminal_result_20260816.json",
+    "sha256": "825c5b28a1916b949a0ab7d0f5357b47b95619e4df2580389e6bf0b3bd0e2b89"
+  },
+  "complete_historical_feature_library": {
+    "factor_definition_count": 162,
+    "order_sha256": "974f2c1f16a85eb43a0bd1e8db768dbe120cd8826c1754d5f220bf9f1d4a3ea0",
+    "prior_factor_definition_count": 161,
+    "prior_order_sha256": "e387d2865b8957a933c522c2cd9ae890612ab45993307f97693ec73fa5288144",
+    "last_definition": {
+      "name": "intraday_amount_profile_spectral_entropy_60f",
+      "score_direction": "higher",
+      "status": "terminal_zero_development_survivors_definition_retained_for_duplicate_control"
+    },
+    "campaign263_definition_appended_once": true
+  },
+  "numerical_comparator_eligibility": {
+    "eligible_numeric_comparator_count": 143,
+    "order_sha256": "f4fbf3d578e2c80c29425716a30d60a3df01d67d04e37f1651236c4dff899588",
+    "prior_eligible_numeric_comparator_count": 142,
+    "prior_order_sha256": "5d1b35fb5a0d8ac9293008db9963c4a60a94dc940c237c3ed259e5ce44f14aaf",
+    "appended_factor": {
+      "name": "intraday_amount_profile_spectral_entropy_60f",
+      "score_direction": "higher"
+    },
+    "campaign263_numeric_comparator_appended": true,
+    "reason": "The definition passed coverage and every one of the 142 frozen numeric uniqueness gates. Comparator eligibility controls future duplicate detection and does not imply development survival, selection or investment value."
+  },
+  "campaign263_terminal_boundary": {
+    "coverage_gate_passed": true,
+    "all_142_numeric_uniqueness_gates_passed": true,
+    "maximum_observed_absolute_median_daily_rank_correlation": 0.7210231781829792,
+    "development_trial_count": 1,
+    "development_survivor_count": 0,
+    "stress_2024_2025_opened": false,
+    "current_use_allowed": false,
+    "retry_rescue_reweight_or_combination_allowed": false
+  },
+  "future_campaign_boundary": {
+    "next_campaign": 264,
+    "historical_offline_prevalue_work_may_continue_at_any_local_time": true,
+    "new_mechanism_must_be_independent_and_finite_before_values": true,
+    "complete_definition_library_count": 162,
+    "numeric_comparator_count": 143,
+    "development_returns_remain_closed_until_future_candidate_passes_coverage_and_all_143_ordered_uniqueness_gates": true
+  },
+  "candidate49": {
+    "sole_prospective_candidate": true,
+    "historical_backfill_allowed": false,
+    "second_prospective_candidate_allowed": false,
+    "signal_ledger_sha256": "5193f00d7f36da003f53cec387900da4c3d002299f5dfcfc1a95eaa199ed3a79",
+    "execution_ledger_sha256": "d57a3e61eac969e42cafa418ccd8c0a5ee65dcf69da145bb2c096c2a02a2ea4f"
+  },
+  "research_boundary": {
+    "historical_2019_2023_development_returns_read": true,
+    "stress_2024_2025_opened": false,
+    "provider_or_web_request_issued": false,
+    "provider_credential_presence_value_or_digest_read": false,
+    "candidate49_plan_or_run_executed": false,
+    "candidate49_ledgers_changed": false,
+    "current_scoring_selection_sizing_positions_or_orders_performed": false,
+    "investment_advice": false
+  }
+}

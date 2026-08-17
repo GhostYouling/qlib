@@ -1,0 +1,100 @@
+{
+  "version": 1,
+  "kind": "a_share_three_day_walkforward_campaign041_post_result_transition",
+  "status": "staged_pre_value_fingerprints_preserved_and_terminal_audit_binding_activated_without_result_change",
+  "recorded_at": "2026-07-31T07:35:32Z",
+  "purpose": "Preserve every immutable pre-value, infrastructure-repair, and pre-comparison freeze while documenting the permitted append-only runner, test, report, documentation, and skill transitions required to bind and verify the terminal no-return rejection.",
+  "terminal_evidence": {
+    "research_record": {
+      "path": "docs/a_share_three_day_walkforward_campaign_041_research_record.json",
+      "sha256": "0a21f4d189509aa0c0efbf4cb05ab688374104adfe3d52114467da83e0606844"
+    },
+    "no_return_audit_freeze": {
+      "path": "docs/a_share_three_day_walkforward_campaign_041_no_return_audit_freeze_20260731.json",
+      "sha256": "359ea87674e6bdcd7228ca604731cefce6dc721cb38364739c91f42f45d30d93"
+    },
+    "no_return_audit": {
+      "path": "data/experiments/short_horizon/historical_walkforward/campaign_041/no_return/20260731T072630Z_campaign041_no_return_audit.json",
+      "sha256": "fe00c12d6cb1ebfbb0c7eb31e7f43e188f845ae41a4efff5ebbc9d7230fcf52b"
+    }
+  },
+  "staged_freezes_preserved_without_rewrite": {
+    "pre_value_feature_implementation_freeze": {
+      "path": "docs/a_share_three_day_walkforward_campaign_041_feature_implementation_freeze.json",
+      "sha256": "5ef368825e4afbce94064a4edb9e80ed0fae23b11cb79838cdd2ea8f29badf6e",
+      "original_validation": "6_of_6_passed_before_candidate_snapshot_values",
+      "current_expected_binding_difference": "feature runner gained frozen snapshot and terminal audit SHA-256 bindings plus the separately recorded publication-metadata compatibility repairs",
+      "current_validator_summary": "5_passed_1_expected_historical_fingerprint_difference"
+    },
+    "feature_manifest_metadata_infrastructure_repair": {
+      "path": "docs/a_share_three_day_walkforward_campaign_041_feature_manifest_metadata_infrastructure_repair_20260731.json",
+      "sha256": "8c0dcc35159b456623465513477f9107a583bfef8b058553997cacf6022ea82d",
+      "current_validator_summary": "3_passed_1_expected_pre_repair_runner_fingerprint_difference"
+    },
+    "inherited_manifest_compatibility_repair": {
+      "path": "docs/a_share_three_day_walkforward_campaign_041_inherited_manifest_compatibility_repair_20260731.json",
+      "sha256": "2469cf6f63176bfaca561efa8db008eb2a6547e3d7884f8db44be23ff878d5cc",
+      "current_validator_summary": "3_passed_1_expected_post_first_retry_runner_fingerprint_difference"
+    },
+    "postvalidation_publication_metadata_repair": {
+      "path": "docs/a_share_three_day_walkforward_campaign_041_postvalidation_publication_metadata_repair_20260731.json",
+      "sha256": "c537428f43f9ca1d0d9b4d8b216c1f89b4fa8d8ae8416d54e484883ac431f5b4",
+      "current_validator_summary": "4_passed_1_expected_pre_repair_runner_fingerprint_difference"
+    },
+    "pre_comparison_feature_snapshot_freeze": {
+      "path": "docs/a_share_three_day_walkforward_campaign_041_feature_snapshot_freeze.json",
+      "sha256": "46a252a2e94027900a46e49fa1aa0afa1d875ce4b0306805e5043d59206f6479",
+      "original_validation": "8_of_8_passed_before_comparison_values",
+      "current_expected_binding_difference": "feature runner gained only the immutable terminal no-return audit SHA-256 binding after the audit completed",
+      "current_validator_summary": "7_passed_1_expected_historical_fingerprint_difference"
+    }
+  },
+  "terminal_implementation": {
+    "feature_and_no_return_runner": {
+      "path": "scripts/a_share_three_day_walkforward_campaign041_features.py",
+      "sha256": "4c220a2fccaf5a89b7ea21a1940ef514dd47c38e86784fc13ee32a992e3061c5"
+    },
+    "feature_tests": {
+      "path": "tests/data_collector_tests/test_a_share_three_day_walkforward_campaign041_features.py",
+      "sha256": "4221f4918762c844ae5de7b167215a59f15d4066ab85d7d48207bf3d2642990c"
+    },
+    "terminal_tests": {
+      "path": "tests/data_collector_tests/test_a_share_three_day_walkforward_campaign041_terminal.py",
+      "sha256": "217a420dfb4600fd605244f8231baf37edac07d0ada77f08db88ebfe135cb47a"
+    }
+  },
+  "test_execution": {
+    "focused_campaign041_tests_passed": 13,
+    "focused_tests_failed": 0,
+    "full_data_collector_tests_passed": 1601,
+    "full_data_collector_tests_failed": 0,
+    "full_data_collector_test_warnings": 13,
+    "terminal_audit_idempotent_rerun_passed": true
+  },
+  "documentation": {
+    "unified_research_report": {
+      "path": "data/experiments/short_horizon/three_day_research_report.md",
+      "sha256": "942e68eb387aebfd35564a9d3bbb0cb41c4a2492ce3caf165631bbec43ee7efe"
+    },
+    "data_pipeline": {
+      "path": "docs/a_share_data_pipeline.md",
+      "sha256": "edb9bb3bcda55b6af0464ee33dc45d241dfc9c0bec84dae62f1e3ec10e5950ca"
+    },
+    "manage_qlib_a_share_data_skill": {
+      "path": "/Users/niyufei/.codex/skills/manage-qlib-a-share-data/SKILL.md",
+      "sha256": "e3fbe0460e15fe9b1704d41d035b5f32e85967dcf68c8dbc0d7fe5fa74b97cc9"
+    }
+  },
+  "semantic_boundary": {
+    "factor_formula_changed_after_candidate_values": false,
+    "direction_changed_after_candidate_values": false,
+    "candidate_partition_files_or_values_changed_after_snapshot_freeze": false,
+    "dataset_sha256_changed_after_snapshot_freeze": false,
+    "comparison_values_or_no_return_decision_changed": false,
+    "development_preregistration_runner_ledger_or_trial_created": false,
+    "historical_daily_price_or_forward_return_read": false,
+    "2024_2025_opened": false,
+    "candidate49_ledger_changed": false,
+    "current_scoring_selection_sizing_or_orders_performed": false
+  }
+}

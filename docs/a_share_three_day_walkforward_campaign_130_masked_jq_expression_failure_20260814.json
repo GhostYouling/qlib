@@ -1,0 +1,18 @@
+{
+  "schema_version": 1,
+  "kind": "a_share_three_day_walkforward_campaign130_infrastructure_failure",
+  "status": "recorded_read_only_jq_expression_failure_masked_by_later_command",
+  "recorded_at": "2026-08-14T07:41:17+08:00",
+  "stage": "campaign130_existing_event_source_terminal_evidence_review",
+  "failed_command_summary": "A read-only jq object expression had invalid // precedence and exited nonzero, while a later sha256sum in the same shell command returned zero and masked the subcommand failure.",
+  "recovery_summary": "The needed terminal evidence was taken from the already unified report and immutable manifests; the jq failure was not treated as a successful data read and no scientific gate was bypassed.",
+  "failure_handling": {
+    "failed_subcommand_treated_as_success": false,
+    "overall_shell_exit_was_misleadingly_zero": true,
+    "provider_request_issued": false,
+    "credential_loaded": false,
+    "source_candidate_comparator_price_or_return_value_read": false,
+    "candidate49_ledger_changed": false,
+    "scientific_result_changed": false
+  }
+}

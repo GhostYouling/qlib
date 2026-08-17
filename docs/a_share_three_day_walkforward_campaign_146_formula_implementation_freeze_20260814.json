@@ -1,0 +1,50 @@
+{
+  "schema_version": 1,
+  "kind": "a_share_three_day_walkforward_campaign146_formula_implementation_freeze",
+  "status": "pure_formula_and_synthetic_tests_frozen_before_historical_source_values",
+  "recorded_at": "2026-08-14T21:14:13+08:00",
+  "authoritative_inputs": {
+    "no_return_preregistration": {
+      "path": "docs/a_share_three_day_walkforward_campaign_146_no_return_preregistration_20260814.json",
+      "sha256": "7ad8c1bd0ab56521609bf02fcd2f4effa9fb49753ee5703fb3bf3d55c1527e47"
+    },
+    "mechanism_overlap_audit": {
+      "path": "docs/a_share_three_day_walkforward_campaign_146_mechanism_overlap_audit_20260814.json",
+      "sha256": "0e9c9db630b3efa4b7a08a59e992d26c9502b61fe8c2ebdc95ad232572883d5c"
+    },
+    "formatting_failure_record": {
+      "path": "docs/a_share_three_day_walkforward_campaign_146_formula_black_failure_20260814.json",
+      "sha256": "6c8c1589d48a4d3eed0b40ccd376a7adff85484612cbb57b77d4effffad55c24"
+    }
+  },
+  "implementation": {
+    "formula": {
+      "path": "scripts/a_share_three_day_walkforward_campaign146_formula.py",
+      "sha256": "ff7ac6fd2bde2e7bf6ef215bedaee541a9c57cc5e7fe196ef96e945a1a4f3492"
+    },
+    "synthetic_tests": {
+      "path": "tests/data_collector_tests/test_a_share_three_day_walkforward_campaign146_formula.py",
+      "sha256": "f84219a21697fc89551d692d962016147f02cfe2a195aebf1c5b8658142c0016"
+    }
+  },
+  "verification": {
+    "pytest": "6 passed",
+    "black_check": "passed_after_recorded_mechanical_formatting",
+    "ruff": "passed",
+    "amount_leading_return_orientation": "positive",
+    "return_leading_amount_orientation": "negative",
+    "contemporaneous_impulse_orientation": "zero",
+    "constant_spectral_denominator_and_invalid_source": "missing"
+  },
+  "research_boundary": {
+    "historical_source_rows_read": false,
+    "candidate_values_computed_or_read": false,
+    "comparator_values_read": false,
+    "daily_price_or_forward_return_values_read": false,
+    "stress_2024_2025_opened": false,
+    "credential_loaded": false,
+    "provider_request_issued": false,
+    "candidate49_ledgers_changed": false,
+    "current_use_or_investment_advice": false
+  }
+}

@@ -1,0 +1,126 @@
+{
+  "version": 1,
+  "kind": "a_share_tushare_intraday_market_amount_profile_synchronization_mechanism_overlap_reaudit",
+  "status": "frozen_before_candidate_factor_values_comparison_values_or_forward_returns",
+  "frozen_at": "2026-07-25T00:08:18Z",
+  "purpose": "Re-audit the forty-seven terminal three-session mechanisms without reading a new candidate value and select one cross-stock liquidity-participation mechanism that is not a rescue or transformation of a terminal factor.",
+  "current_research_state": {
+    "path": "docs/a_share_three_day_iteration_status_20260723.json",
+    "sha256": "08c3a5b2a1039cd46b9be4715bd666d516cc8d4273d03c5b56ddf06969b115c9",
+    "terminal_mechanism_count": 47,
+    "dual_gate_qualified_factor_count": 0,
+    "aggregation_allowed": false
+  },
+  "latest_terminal_binding": {
+    "path": "docs/a_share_tushare_intraday_opening_auction_amount_share_research_record.json",
+    "sha256": "b70a8ec547bdc36db408adc86b809456caac9a774d074de913369b3349899abd",
+    "factor_name": "intraday_opening_auction_amount_share_241m",
+    "terminal_decision": "retire_without_inversion_rewindowing_filtering_combination_or_retest"
+  },
+  "overlap_reaudit": {
+    "intraday_amount_participation_entropy_240m": "Measures the concentration of one stock's own normalized continuous-session amount profile. The selected candidate instead measures alignment with a leave-one-out market profile; two stocks with equal entropy can have different market-profile synchronization.",
+    "intraday_amount_profile_serial_persistence_240m": "Measures adjacent-position dependence within one stock-day. The selected candidate compares the whole aligned profile with other stocks and can change while the stock's own serial persistence is fixed.",
+    "intraday_amount_center_of_mass_240m": "Measures the time location of one stock's own amount. The selected candidate depends on the shape of the leave-one-out market profile, not only the stock's amount-weighted average position.",
+    "late_amount_share_30m": "Measures a fixed late-session subtotal of one stock. The selected candidate uses all 240 aligned continuous positions and a cross-stock benchmark.",
+    "intraday_amount_volatility_coupling_238p": "Measures within-stock synchronous coupling between amount and absolute price movement. The selected candidate reads no price and compares normalized amount profiles across stocks.",
+    "intraday_amount_lead_return_correlation_238p": "Measures within-stock lagged amount-return dependence. The selected candidate reads no return and has no lead-lag transform.",
+    "intraday_up_move_amount_share_238m": "Allocates amount by the sign of one stock's price move. The selected candidate is direction-blind and reads no price.",
+    "intraday_opening_auction_amount_share_241m": "Measures only the separately reported 09:30 amount share. The selected candidate explicitly excludes 09:30 and measures continuous-session cross-stock profile alignment.",
+    "intraday_market_idiosyncratic_share_238m": "Measures cross-stock synchronization of aligned minute returns. The selected candidate uses normalized amount participation only; a change in prices with every amount fixed changes the terminal return factor but not this candidate.",
+    "all_other_price_path_factors": "Realized volatility, semivariance, recovery, close location, sign runs, volatility resolution, diffusive ratio, variance entropy, skewness, VWAP pressure, price-update share, late return and late VWAP all require price behavior that this candidate never reads.",
+    "daily_fundamental_event_or_regime_factors": "Those mechanisms use daily, point-in-time fundamental, event, or shared regime states. This candidate is a stock-specific cross-sectional comparison of already purchased minute amount profiles."
+  },
+  "alternatives_rejected_before_value_observation": [
+    {
+      "name": "market_amount_profile_idiosyncratic_share",
+      "formula": "1-corr(stock_profile, leave_one_out_market_profile)^2",
+      "reason": "This is the inverse/residualized direction of the selected synchronization mechanism and is not a separately testable candidate."
+    },
+    {
+      "name": "negative_or_absolute_synchronization",
+      "formula": "-corr(...) or abs(corr(...))",
+      "reason": "Direction and transformation shopping are prohibited."
+    },
+    {
+      "name": "auction_inclusive_profile",
+      "formula": "Include the separately timestamped 09:30 row",
+      "reason": "This would partially recycle the terminal opening-auction mechanism and expose the known special-row semantics."
+    },
+    {
+      "name": "volume_or_trade_count_substitution",
+      "formula": "Normalize volume or an unavailable trade-count field",
+      "reason": "The observable is frozen to CNY amount and no substitution is allowed."
+    },
+    {
+      "name": "alternative_similarity_or_regression",
+      "formula": "Cosine similarity, rank correlation, beta, R-squared, robust regression, distance, lagged correlation, or dynamic time warping",
+      "reason": "These are transformations of the same frozen profile-alignment mechanism."
+    },
+    {
+      "name": "alternative_peer_benchmark",
+      "formula": "Index, industry, board, exchange, size, selected-peer, median, trimmed, weighted, or non-leave-one-out market profile",
+      "reason": "Peer selection and weighting would add post-result degrees of freedom."
+    },
+    {
+      "name": "window_threshold_subset_or_filter_variants",
+      "formula": "Morning, afternoon, late, high-amount, event, board, year, liquidity, volatility, or other subsets",
+      "reason": "Rewindowing, thresholding, filtering, and subset rescue are prohibited."
+    }
+  ],
+  "selected_candidate": {
+    "name": "intraday_market_amount_profile_synchronization_240m",
+    "diagnostic_direction": "higher",
+    "signal_time": "after_signal_session_close",
+    "source_fields_allowed": [
+      "datetime",
+      "symbol",
+      "provider",
+      "amount"
+    ],
+    "source_fields_forbidden": [
+      "open",
+      "high",
+      "low",
+      "close",
+      "volume",
+      "any_daily_price",
+      "any_forward_return"
+    ],
+    "source_grid": {
+      "morning_continuous_bar_ends": "09:31-11:30",
+      "afternoon_continuous_bar_ends": "13:01-15:00",
+      "positions": 240,
+      "09_30_included": false
+    },
+    "own_profile": "For stock i and aligned position t, p_i,t=amount_i,t/sum_t(amount_i,t) over the exact 240-position continuous-session grid.",
+    "peer_pool": "Every other source stock-day on the same trade date with a valid nonnegative 240-position amount profile.",
+    "leave_one_out_market_profile": "At every aligned position, subtract p_i,t from the same-date cross-sectional profile sum and one from the valid-profile count, then divide by the remaining count.",
+    "minimum_leave_one_out_peers_at_every_position": 50,
+    "formula": "PearsonCorr(p_i, mean(p_j for valid j != i)) with an intercept across the 240 aligned positions",
+    "validity": {
+      "exact_240_position_grid_required": true,
+      "all_amount_values_finite_and_nonnegative": true,
+      "strictly_positive_continuous_session_amount": true,
+      "constant_own_or_leave_one_out_profile_policy": "missing",
+      "finite_range": [
+        -1,
+        1
+      ],
+      "floating_point_endpoint_canonicalization_tolerance": 1e-12
+    },
+    "hypothesis": "A high value means the stock's intraday liquidity participation follows broad-market liquidity waves rather than isolated bursts, indicating more orderly and broadly sponsored trading that may persist from the next open through the third close.",
+    "economic_distinction": "The factor is not computable from a single stock-day. Holding the stock's own normalized amount profile fixed while changing other stocks' profiles can change its value. It reads no price, return, 09:30 amount, volume, fundamental, event, industry, capitalization, or forward-return field."
+  },
+  "research_boundary": {
+    "candidate_factor_values_observed_before_freeze": false,
+    "terminal_factor_comparison_values_observed_for_this_candidate_before_freeze": false,
+    "daily_price_fields_read_before_freeze": false,
+    "forward_return_fields_read_before_freeze": false,
+    "training_or_model_fitting_performed": false,
+    "inversion_rewindowing_thresholding_subsetting_filtering_reweighting_or_combination_allowed": false,
+    "current_scoring_selection_sizing_or_orders_allowed": false,
+    "level2_intake_justified": false,
+    "investment_advice": false
+  },
+  "decision": "Proceed only to a separately hash-bound no-return preregistration. Do not compute a candidate value until that second artifact is frozen."
+}

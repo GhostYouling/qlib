@@ -1,0 +1,31 @@
+{
+  "schema_version": 1,
+  "kind": "a_share_three_day_walkforward_campaign263_recovery_patch_context_failures",
+  "status": "two_failed_patch_context_checks_preserved_and_recovered_before_return_read",
+  "recorded_at": "2026-08-16T13:56:00Z",
+  "failures": [
+    {
+      "failure_id": "campaign263_infrastructure_016",
+      "phase": "development_runner_recovery",
+      "status": "failed_apply_patch_context_for_v2_default_preregistration_path_without_file_change",
+      "recovery": "The formatted source was inspected and a narrower context-correct patch was applied."
+    },
+    {
+      "failure_id": "campaign263_infrastructure_017",
+      "phase": "predevelopment_ledger_recovery",
+      "status": "failed_apply_patch_context_for_formatted_superseded_checkpoint_block_without_file_change",
+      "recovery": "The formatted ledger source was inspected and split into narrow context-correct patches."
+    }
+  ],
+  "failure_count": 2,
+  "research_boundary": {
+    "failed_patches_changed_files": false,
+    "failed_output_used_as_scientific_or_validation_evidence": false,
+    "historical_daily_price_or_forward_return_values_read": false,
+    "stress_2024_2025_opened": false,
+    "provider_or_web_request_issued": false,
+    "candidate49_ledgers_changed": false,
+    "current_scoring_selection_sizing_positions_or_orders_performed": false,
+    "investment_advice": false
+  }
+}

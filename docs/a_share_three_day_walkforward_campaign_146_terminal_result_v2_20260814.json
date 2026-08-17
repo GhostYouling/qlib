@@ -1,0 +1,77 @@
+{
+  "schema_version": 2,
+  "kind": "a_share_three_day_walkforward_campaign146_terminal_result_final_accounting",
+  "status": "terminal_no_development_survivor_stress_not_opened_terminal_validation_failure_accounted",
+  "recorded_at": "2026-08-14T22:29:00+08:00",
+  "supersedes_without_rewriting": {
+    "path": "docs/a_share_three_day_walkforward_campaign_146_terminal_result_20260814.json",
+    "sha256": "3eb00d2921688672f563f689ce53bc3c9c8234401269aac8d63cbab814a4ea5e",
+    "preserved": true,
+    "scientific_result_changed": false,
+    "reason": "Append the terminal-test Black nonzero exit and its mechanical recovery to effective accounting without changing Campaign146 science."
+  },
+  "authoritative_scientific_result": {
+    "path": "docs/a_share_three_day_walkforward_campaign_146_terminal_result_20260814.json",
+    "sha256": "3eb00d2921688672f563f689ce53bc3c9c8234401269aac8d63cbab814a4ea5e"
+  },
+  "effective_attempt_ledger": {
+    "path": "data/experiments/short_horizon/historical_walkforward/campaign_146/research_attempt_ledger_v5.json",
+    "sha256": "da45d4bb3592b0b090681db9c9008b377b3728f74ed86a53b89fa1911adabf47",
+    "effective_entry_count": 20,
+    "chain_tip_sha256": "1fc1ec6ae143be34d0d021075977025c44b66533e306aa9a21b0753422d79df3"
+  },
+  "terminal_scientific_result": {
+    "factor": "intraday_return_amount_cross_spectral_phase_lead_59f",
+    "direction": "higher",
+    "development_trial_count": 1,
+    "positive_mean_rank_ic_fold_count": 3,
+    "positive_normalized_return_fold_count": 2,
+    "positive_pilot_10bp_return_fold_count": 2,
+    "median_validation_mean_rank_ic": 0.01695367196711484,
+    "median_validation_spread": -0.00026719538775617127,
+    "worst_validation_normalized_drawdown": -0.37616136808041245,
+    "development_aggregate_20bp_return": -0.09481533266368902,
+    "development_survivor_count": 0,
+    "stress_2024_2025_returns_opened": false,
+    "post_result_rescue_allowed": false
+  },
+  "library_after_campaign146": {
+    "complete_factor_definition_count": 155,
+    "complete_factor_definition_order_sha256": "2e4114edb26fa3aaebd145ef07fe4e2ac9c5d9dc4586cf70ff61c20e39b954ba",
+    "eligible_numeric_comparator_count": 142,
+    "eligible_numeric_comparator_order_sha256": "5d1b35fb5a0d8ac9293008db9963c4a60a94dc940c237c3ed259e5ce44f14aaf"
+  },
+  "effective_accounting": {
+    "campaign146_attempt_count": 20,
+    "campaign146_prevalue_scientific_attempt_count": 6,
+    "campaign146_infrastructure_failure_count": 13,
+    "campaign146_complete_factor_attempt_count": 1,
+    "campaign146_return_reading_development_trial_count": 1,
+    "campaign146_development_survivor_count": 0,
+    "campaign146_stress_trial_count": 0,
+    "cumulative_historical_research_attempt_count": 1271,
+    "cumulative_return_reading_development_trial_count": 314
+  },
+  "candidate49": {
+    "sole_prospective_candidate": true,
+    "signal_ledger_sha256": "5193f00d7f36da003f53cec387900da4c3d002299f5dfcfc1a95eaa199ed3a79",
+    "execution_ledger_sha256": "d57a3e61eac969e42cafa418ccd8c0a5ee65dcf69da145bb2c096c2a02a2ea4f",
+    "signal_entries": 0,
+    "execution_entries": 0,
+    "same_day_retry_performed": false,
+    "historical_backfill_performed": false,
+    "ledgers_changed": false
+  },
+  "research_boundary": {
+    "historical_2019_2023_daily_price_or_forward_return_values_read": true,
+    "additional_price_or_return_values_read_during_accounting_recovery": false,
+    "stress_2024_2025_returns_opened": false,
+    "provider_request_issued": false,
+    "candidate49_historical_backfill_performed": false,
+    "candidate49_ledgers_changed": false,
+    "second_prospective_candidate_created": false,
+    "current_scoring_selection_sizing_positions_or_orders_performed": false,
+    "investment_advice": false
+  },
+  "next_action": "Publish final accounting and continue only with a genuinely new Campaign147 prevalue mechanism; do not rescue Campaign146."
+}

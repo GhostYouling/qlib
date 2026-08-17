@@ -1,0 +1,62 @@
+{
+  "schema_version": 2,
+  "kind": "a_share_three_day_walkforward_campaign145_coverage_activation_binding_v2",
+  "status": "frozen_after_recovery_verified_snapshot_before_candidate_coverage_statistics",
+  "recorded_at": "2026-08-14T20:38:28+08:00",
+  "implementation_freezes": {
+    "original_campaign145": {
+      "path": "docs/a_share_three_day_walkforward_campaign_145_no_return_implementation_freeze_20260814.json",
+      "sha256": "cf4de349f6ef40b8cd4a6bfcc9fb2f6c484632dea84bb34da3287ca1dc01ae44"
+    },
+    "recovery_verifier": {
+      "path": "docs/a_share_three_day_walkforward_campaign_145_snapshot_recovery_verifier_implementation_freeze_20260814.json",
+      "sha256": "0999f8fa646abfa0ebc045df557c9b0f0a33f1aff6cad8ef0619f82d79f0412f"
+    },
+    "coverage_recovery_runner": {
+      "path": "docs/a_share_three_day_walkforward_campaign_145_coverage_recovery_runner_implementation_freeze_20260814.json",
+      "sha256": "14121545faf7fc4baeca19f7c33db437895123f104bae1312dddfb9181cf0609"
+    }
+  },
+  "candidate_snapshot": {
+    "path": "/Volumes/DIsk/qlib-a-share-tushare-1m/derived/a_share/rich/tushare/minute_walkforward_campaign145_feature_library/tushare_stk_mins_1m_2019_2025_ea0cbb8f_walkforward_campaign145_feature_library_v1/snapshot_manifest.json",
+    "sha256": "58d3686906d71da431397576c883e8c4b727225e98cc6791ae5923e5ff5f965f",
+    "dataset_sha256": "d7cde236c58871314718febfb72f4e72d2cb6bab6729ee0f979b335e92a2acc0",
+    "partitions": 33015,
+    "rows": 7724498,
+    "eligible_rows": 3954911,
+    "effective_factor_range": {
+      "intraday_return_amount_cumulative_path_signed_area_238p": [
+        -1.0,
+        1.0
+      ]
+    }
+  },
+  "recovery_verification_receipt": {
+    "path": "docs/a_share_three_day_walkforward_campaign_145_snapshot_recovery_verification_20260814.json",
+    "sha256": "6c953d3dd989e919fd82a65a21a1942fc2adc4afc63de459dfb8c6f9dd3dd263"
+  },
+  "coverage_gate": {
+    "holding_period_sessions": 3,
+    "minimum_median_daily_coverage": 0.95,
+    "minimum_p05_daily_coverage": 0.9,
+    "minimum_p05_eligible_names": 50,
+    "minimum_non_overlapping_three_signal_session_cohorts": 200,
+    "minimum_observed_cohort_years": 5,
+    "minimum_nonconstant_cross_sectional_sessions": 200,
+    "cross_sectional_distinctness": "exact finite float values without rounding tolerance or binning"
+  },
+  "numeric_comparator_count": 141,
+  "numeric_comparator_order_sha256": "ec1aebcb939ad516c58037a36a4aaadd4ad8b2abbd3c884705895c58da85a2ee",
+  "output_path": "data/experiments/short_horizon/historical_walkforward/campaign_145/coverage/campaign145_coverage_audit.json",
+  "single_use": true,
+  "research_boundary": {
+    "candidate_partition_values_read_only_for_integrity_verification_before_activation": true,
+    "candidate_coverage_statistics_read_before_activation": false,
+    "comparator_values_read_before_activation": false,
+    "historical_daily_price_or_forward_return_values_read": false,
+    "stress_2024_2025_returns_opened": false,
+    "provider_request_issued": false,
+    "credential_loaded": false,
+    "candidate49_ledgers_changed": false
+  }
+}

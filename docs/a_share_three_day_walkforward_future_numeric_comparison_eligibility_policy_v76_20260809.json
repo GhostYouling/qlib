@@ -1,0 +1,110 @@
+{
+  "version": 76,
+  "kind": "a_share_three_day_walkforward_future_numeric_comparison_eligibility_policy",
+  "status": "frozen_after_campaign113_adapter_and_single_definition_before_metadata_probe_source_or_numeric_values",
+  "recorded_at": "2026-08-09T01:26:32+08:00",
+  "supersedes_without_rewriting": {
+    "path": "docs/a_share_three_day_walkforward_future_numeric_comparison_eligibility_policy_v75_20260809.json",
+    "sha256": "cdcb577806c6555528fa189fcda5e8da5c4135192eb121c6acbc2d6781cf5407",
+    "preserved": true,
+    "complete_definition_order_changed": true,
+    "numeric_comparator_order_changed": false,
+    "reason": "Campaign113 froze a complete formula after the pure adapter and synthetic tests passed, so the definition is appended once for future semantic duplicate control. It has no numeric snapshot and therefore is not appended to the numeric comparison registry."
+  },
+  "authoritative_inputs": {
+    "campaign113_source_contract": {
+      "path": "docs/a_share_official_exchange_enforcement_source_contract_20260809.json",
+      "sha256": "d4eda5eb2fefd7e2795251bd4926fc7e7157ea264fcabc430904c40d5dfd91e4"
+    },
+    "campaign113_adapter_formula_freeze": {
+      "path": "docs/a_share_official_exchange_enforcement_adapter_formula_freeze_20260809.json",
+      "sha256": "830e9a3d86d2877bbdbf22bd5eeb57ef6e26fbb6a23c25bed740fc31e06ea859"
+    },
+    "campaign113_adapter_formula_result": {
+      "path": "docs/a_share_three_day_walkforward_campaign_113_adapter_formula_result_20260809.json",
+      "sha256": "a718aa5f6f8db37799b55ab6d77ce4b2713927ea979354b347be87eaa0061ff6"
+    },
+    "campaign113_attempt_ledger": {
+      "path": "data/experiments/short_horizon/historical_walkforward/campaign_113/research_attempt_ledger_v2.json",
+      "sha256": "a4bc15990edc15e2f374b7f23981cbcec923daecb3ddc656d12aeb4daff06a2c"
+    }
+  },
+  "campaign113_stage_classification": {
+    "pure_adapter_frozen": true,
+    "synthetic_test_suite_passed": true,
+    "complete_factor_definition_count": 1,
+    "factor_name": "official_exchange_enforcement_recovery_session_age_60sessions",
+    "numeric_snapshot_count": 0,
+    "development_trial_count": 0,
+    "stress_2024_2025_opened": false,
+    "campaign113_terminal": false,
+    "next_stage": "official_static_metadata_endpoint_schema_pagination_mapping_then_atomic_one_shot_acceptance_freeze"
+  },
+  "complete_historical_feature_library": {
+    "exact_v75_prefix_preserved": true,
+    "campaign113_definition_appended_once": true,
+    "factor_definition_count": 141,
+    "order_sha256": "ccab6e3d9d81b0a02d4ff178fdd442b26a1e68e3655e1c6f5b2fcb28cd4a4559",
+    "last_definition": {
+      "name": "official_exchange_enforcement_recovery_session_age_60sessions",
+      "score_direction": "higher"
+    }
+  },
+  "numerical_comparator_eligibility": {
+    "exact_v75_order_preserved": true,
+    "campaign113_numeric_comparator_appended": false,
+    "reason_not_appended": "No candidate numeric snapshot exists and no coverage/capacity/uniqueness value has been read.",
+    "eligible_numeric_comparator_count": 134,
+    "eligible_numeric_comparator_order_sha256": "31d788db467f558a0ac538315343090f1b3ad4cb27a26136a49ebaa88b2fdbf2",
+    "last_comparator": {
+      "name": "intraday_open_reference_directional_occupancy_240m",
+      "score_direction": "higher"
+    },
+    "minimum_pairwise_names_per_session": 50,
+    "minimum_pairwise_sessions_per_comparison": 100,
+    "strict_maximum_absolute_median_daily_rank_correlation": 0.8,
+    "all_134_eligible_numeric_comparators_must_pass": true,
+    "candidate_specific_comparator_drop_allowed": false,
+    "insufficient_pairwise_overlap_fails_closed": true
+  },
+  "mandatory_pre_source_gates_for_campaign113_next_stage": {
+    "source_contract_adapter_test_and_formula_sha256_must_match": true,
+    "official_static_metadata_endpoint_schema_and_pagination_mapping_frozen_without_rows": true,
+    "one_shot_atomic_source_acceptance_workflow_frozen": true,
+    "both_exchanges_and_three_fixed_acceptance_windows_required": true,
+    "all_local_universe_calendar_policy_fingerprints_revalidated": true,
+    "programmatic_source_list_or_api_request_allowed_before_all_gates": false,
+    "formula_direction_window_missing_or_range_change_allowed": false
+  },
+  "future_campaign_boundary": {
+    "top_list_suspend_d_holdertrade_repurchase_or_cninfo_lawsuit_rescue_allowed": false,
+    "existing_minute_ohlcv_amount_operator_or_model_recombination_allowed": false,
+    "source_schema_label_expansion_after_metadata_or_row_exposure_allowed": false,
+    "drop_one_exchange_or_substitute_window_after_source_exposure_allowed": false,
+    "select_formula_direction_window_or_weight_from_acceptance_rows_allowed": false,
+    "historical_definition_can_create_current_scores_or_orders": false,
+    "candidate49_remains_only_active_prospective_candidate": true
+  },
+  "final_accounting": {
+    "campaign113_attempt_count": 9,
+    "campaign113_infrastructure_failure_count": 7,
+    "campaign113_prevalue_scientific_attempt_count": 2,
+    "campaign113_complete_factor_attempt_count": 1,
+    "campaign113_return_reading_development_trial_count": 0,
+    "cumulative_historical_research_attempt_count": 836,
+    "cumulative_return_reading_development_trial_count": 302
+  },
+  "research_boundary": {
+    "programmatic_source_requests_issued": false,
+    "programmatic_source_rows_read_persisted_or_counted": false,
+    "campaign113_candidate_or_comparator_values_read": false,
+    "historical_daily_price_fields_read_for_campaign113": [],
+    "historical_forward_returns_read_for_campaign113": false,
+    "stress_2024_2025_opened": false,
+    "candidate49_historical_backfill_performed": false,
+    "candidate49_ledgers_changed": false,
+    "second_prospective_candidate_created": false,
+    "current_scoring_selection_sizing_or_orders_performed": false,
+    "investment_advice": false
+  }
+}

@@ -1,0 +1,36 @@
+{
+  "schema_version": 1,
+  "kind": "a_share_three_day_walkforward_campaign174_infrastructure_failure",
+  "status": "preserved_nonzero_cumulative_regression_invocation_failure",
+  "recorded_at": "2026-08-15T10:28:01+08:00",
+  "phase": "cumulative_regression_invocation",
+  "attempt_id": "campaign174_infrastructure_003",
+  "failed_command_scope": "intended Campaign145-Campaign174 test files with five exact lifecycle deselections",
+  "exit_code": 2,
+  "failure": {
+    "cause": "The zsh array construction used a quoted ${(f)\"$(...)\"} expansion that produced no explicit Campaign test path arguments for pytest.",
+    "observed_effect": "Pytest fell back to repository-wide discovery and stopped during collection on 13 unrelated optional-dependency or preserved historical-audit errors.",
+    "representative_unrelated_collection_errors": [
+      "ModuleNotFoundError: gym",
+      "ModuleNotFoundError: torch",
+      "ModuleNotFoundError: pymongo",
+      "ModuleNotFoundError: yahooquery",
+      "Campaign108 v1 audit recovery hooks changed"
+    ],
+    "scientific_interpretation": "This invocation did not execute the intended cumulative Campaign145-Campaign174 regression set and is not evidence for or against any Campaign174 route."
+  },
+  "recovery": {
+    "failed_exit_preserved": true,
+    "same_command_not_retried": true,
+    "corrected_method": "Materialize the 62 matching file paths as explicit newline-delimited arguments using a POSIX-safe read loop, retain the five exact deselections, and require pytest exit code zero.",
+    "missing_optional_dependencies_will_not_be_installed_for_this_scope_error": true
+  },
+  "research_boundary": {
+    "candidate_comparator_security_price_or_return_value_read": false,
+    "stress_2024_2025_opened": false,
+    "provider_or_web_request_issued": false,
+    "provider_credential_presence_value_or_digest_read": false,
+    "candidate49_ledgers_changed": false,
+    "current_scoring_selection_sizing_positions_or_orders_performed": false
+  }
+}

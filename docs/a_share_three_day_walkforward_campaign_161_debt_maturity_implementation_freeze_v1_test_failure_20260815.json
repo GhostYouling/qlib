@@ -1,0 +1,38 @@
+{
+  "version": 1,
+  "kind": "a_share_three_day_walkforward_campaign161_debt_maturity_implementation_freeze_test_failure",
+  "status": "implementation_freeze_v1_retired_after_local_test_failure_before_provider_request",
+  "recorded_at": "2026-08-15T05:33:20+08:00",
+  "campaign": 161,
+  "failed_freeze": {
+    "path": "docs/a_share_three_day_walkforward_campaign_161_debt_maturity_implementation_freeze_20260815.json",
+    "sha256": "c9ea1603d489b91d5e7dcf0822a416104012656d5e4fac31e6513c4a36dccc21"
+  },
+  "test_command": "/Volumes/DIsk/Coding/anaconda3/bin/python3.12 -m pytest -q tests/data_collector_tests/test_a_share_three_day_walkforward_campaign161_debt_maturity.py",
+  "result": {
+    "exit_code": 1,
+    "passed": 5,
+    "failed": 3,
+    "failure_scope": "plan, rejection lifecycle and semantic-mutation tests were blocked by a preregistered policy digest transcription error",
+    "scientific_factor_values_or_returns_involved": false
+  },
+  "root_cause": {
+    "contract_path": "docs/a_share_eastmoney_debt_maturity_resilience_data_contract_20260815.json",
+    "contract_sha256": "c901436aecec2927c722e6f5d59d8d4e82fe73ec611dafe6f4be7403c1a42831",
+    "binding": "historical_walkforward_policy",
+    "recorded_sha256": "38426d6161b9bfed323c58caba18feca168b8c9d53e294951a8ba90c01a798bb",
+    "observed_sha256": "38426d6161b9bfed323c58caba18feca668b8c9d53e294951a8ba90c01a798bb",
+    "classification": "infrastructure_binding_transcription_failure"
+  },
+  "recovery": "Publish an additive binding correction and a new implementation freeze; do not rewrite the original contract or freeze.",
+  "research_boundary": {
+    "plan_ready": false,
+    "eastmoney_financial_data_api_request_issued": false,
+    "provider_response_row_or_column_value_read": false,
+    "candidate_or_comparator_value_read": false,
+    "historical_daily_price_or_forward_return_value_read": false,
+    "stress_2024_2025_opened": false,
+    "provider_credential_presence_value_or_digest_read": false,
+    "candidate49_ledgers_changed": false
+  }
+}

@@ -1,0 +1,29 @@
+{
+  "schema_version": 1,
+  "kind": "a_share_three_day_walkforward_campaign086_no_return_audit_pre_freeze_lint_failure",
+  "status": "failed_closed_before_real_coverage_or_comparison_values",
+  "recorded_at": "2026-08-07T02:02:00+08:00",
+  "stage": "no_return_audit_pre_freeze_lint_and_synthetic_tests",
+  "result": {
+    "ruff": "failed_one_unused_import",
+    "pytest": "three_passed_zero_failed"
+  },
+  "failure": {
+    "rule": "F401",
+    "detail": "hashlib imported but unused",
+    "repair": "Remove only the unused import before hashing and freezing the audit implementation."
+  },
+  "failed_artifacts": {
+    "audit_runner_sha256": "7f198050e5fac7497caf33f529a6fa73819660c0c08f5aaf642df8e588650dec",
+    "tests_sha256": "d73d1ba6e7511943015195af1f7bfcd1a4e3bdee020ede2be4254977b4cffcbb"
+  },
+  "research_boundary": {
+    "synthetic_coverage_test_only": true,
+    "real_candidate_coverage_or_capacity_metrics_computed": false,
+    "comparison_values_read": false,
+    "historical_daily_price_fields_read": [],
+    "historical_forward_returns_read": false,
+    "provider_request_issued": false,
+    "candidate49_ledgers_changed": false
+  }
+}

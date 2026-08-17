@@ -1,0 +1,64 @@
+{
+  "schema_version": 1,
+  "kind": "a_share_three_day_walkforward_campaign115_development_source_semantic_verifier_freeze",
+  "status": "verifier_effective_frozen_before_development_source_candidate_or_comparator_values",
+  "recorded_at": "2026-08-09T05:56:00+08:00",
+  "recorded_at_semantics": "monotonic_logical_append_time_after_recorded_v3_synthetic_failure_not_host_wall_clock_measurement",
+  "supersedes_without_rewriting": {
+    "path": "docs/a_share_three_day_walkforward_campaign_115_development_source_semantic_verifier_freeze_v3_20260809.json",
+    "sha256": "7b85daa72ec189b2b60a5f5c09c31de65657ad50d9ffdf5dcb6d44609f57b5e1",
+    "preserved": true
+  },
+  "failure_evidence": {
+    "path": "docs/a_share_three_day_walkforward_campaign_115_development_source_semantic_verifier_synthetic_receipt_path_failure_20260809.json",
+    "sha256": "33103635e81c9f041c9d5bc5d087009f574000c5cf8a567be0ad86ad2f8fd9b5",
+    "root_cause_counted_once": true
+  },
+  "protocol": {
+    "path": "docs/a_share_three_day_walkforward_campaign_115_development_source_semantic_verification_protocol_20260809.json",
+    "sha256": "4422a3d054746ad9b1f47f18f67e8bb40dfd5c62ecb0223262dd96ba8c7792f6"
+  },
+  "implementation": {
+    "verifier_path": "scripts/a_share_tushare_limit_up_queue_development_verify.py",
+    "verifier_sha256": "7b0769d1766d88a076dfca2b3a9537401436145e9e3bad10def12192a812dbfa",
+    "test_path": "tests/data_collector_tests/test_a_share_tushare_limit_up_queue_development_verify.py",
+    "test_sha256": "f2ff76e307edb188b3e654da22da8be05dfe85a0d3996f6fdbaee31424996984",
+    "source_runner_path": "scripts/a_share_tushare_limit_up_queue_development.py",
+    "source_runner_sha256": "73e1d2a9f2c81c99aa9ab812cad1df9e04e37c8290992ba3edc584aa9094df82",
+    "source_runner_freeze_path": "docs/a_share_three_day_walkforward_campaign_115_development_source_runner_freeze_v1_20260809.json",
+    "source_runner_freeze_sha256": "7991e43b7737a6de8e65cdf6c8675ff6a3d6db194f69772a053959f1665aa909",
+    "adapter_path": "scripts/a_share_tushare_limit_up_queue_persistence.py",
+    "adapter_sha256": "807d06f7dec4ca0a94beb28912b686e8cb01fbf36c7f473e69564de16af5f5dd",
+    "runtime_recomputes_every_bound_sha256": true
+  },
+  "narrow_repair": {
+    "real_bound_repository_source_manifest_path_remains_repository_relative": true,
+    "only_monkeypatched_synthetic_source_outside_repository_uses_absolute_display_path": true,
+    "source_or_receipt_authority_formula_direction_semantic_checks_or_research_gates_changed": false
+  },
+  "frozen_semantic_checks": {
+    "source_root_and_session_entry_allowlists": true,
+    "all_1214_checkpoint_factor_bytes_and_request_intents_revalidated": true,
+    "exact_point_in_time_active_universe_order_per_session": true,
+    "exact_factor_columns_trade_date_provider_boolean_event_and_range": true,
+    "non_event_exact_zero_policy": true,
+    "event_row_count_equals_checkpoint": true,
+    "source_row_ceiling_per_session": 5000,
+    "source_manifest_aggregates_and_ordered_checkpoint_hash_recomputed": true,
+    "internal_and_repository_source_manifests_byte_identical": true,
+    "semantic_frame_and_dataset_fingerprints_recomputed": true,
+    "candidate_or_comparator_values_embedded_in_receipt": false
+  },
+  "research_boundary": {
+    "real_development_source_candidate_values_read": false,
+    "comparison_values_read": false,
+    "historical_daily_price_or_forward_return_values_read": false,
+    "stress_2024_2025_opened": false,
+    "provider_request_issued": false,
+    "credential_loaded": false,
+    "candidate49_ledgers_changed": false,
+    "second_prospective_candidate_created": false,
+    "current_scoring_selection_sizing_or_orders_performed": false,
+    "investment_advice": false
+  }
+}

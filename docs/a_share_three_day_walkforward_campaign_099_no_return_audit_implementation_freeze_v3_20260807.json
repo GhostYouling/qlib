@@ -1,0 +1,57 @@
+{
+  "schema_version": 3,
+  "kind": "a_share_three_day_walkforward_campaign099_no_return_audit_implementation_freeze",
+  "status": "postvalue_atomic_writer_repair_frozen_before_identical_retry",
+  "frozen_at": "2026-08-07T10:35:43Z",
+  "postvalue_repair_preregistration": {
+    "path": "docs/a_share_three_day_walkforward_campaign_099_no_return_audit_atomic_writer_repair_preregistration_20260807.json",
+    "sha256": "1961cb4428e404cbc7759f3b117db46a787b38a768c1a5314fd824e7b898cac5"
+  },
+  "v2_implementation_freeze_preserved": {
+    "path": "docs/a_share_three_day_walkforward_campaign_099_no_return_audit_implementation_freeze_v2_20260807.json",
+    "sha256": "d0b90fd26b9bf71c5cec2ca014dd0282987bad29852ba9ef54d74bbb7cd97e8b"
+  },
+  "audit_runner": {
+    "path": "scripts/a_share_three_day_walkforward_campaign099_no_return_audit.py",
+    "sha256": "44d76f54aa8fb474344ba9d24f0d4a20570f466442d542202300caa9237c4ddb"
+  },
+  "tests": {
+    "path": "tests/data_collector_tests/test_a_share_three_day_walkforward_campaign099_no_return_audit.py",
+    "sha256": "4c8176374b2c7deeb323cf2b338b744863fa616f946ad05414a78f2bb1b7ae4a",
+    "result": "7 passed; Black and Ruff passed after exact writer repair"
+  },
+  "snapshot_binding": {
+    "path": "docs/a_share_three_day_walkforward_campaign_099_feature_snapshot_binding_20260807.json",
+    "sha256": "e90f88f2fd3f102ecfc20610978e125320d2f51e8d155cb9b82e2759824c59f8"
+  },
+  "attempt_ledger_before_freeze": {
+    "path": "data/experiments/short_horizon/historical_walkforward/campaign_099/research_attempt_ledger_v10.json",
+    "sha256": "61db2b289abe9d641ccd7685d082647b599cd7205c776f998a8efcbf8c1f6292"
+  },
+  "eligibility_identity_source": {
+    "path": "/Volumes/DIsk/qlib-a-share-tushare-1m/derived/a_share/rich/tushare/compact_comparator_cache/campaign067_terminal_numeric98_v4/snapshot_manifest.json",
+    "sha256": "3d81068f07ac61fe4cd04bd1a893e58759c06d88213263135fec5244e309b57b"
+  },
+  "final_comparator_source": {
+    "path": "/Volumes/DIsk/qlib-a-share-tushare-1m/derived/a_share/rich/tushare/minute_walkforward_campaign098_feature_library/tushare_stk_mins_1m_2019_2025_ea0cbb8f_walkforward_campaign098_feature_library_v1/snapshot_manifest.json",
+    "sha256": "371429a81292a91ef2bfa1292f467c81bf73e176fbfbc9888084f74eaaac1dc5",
+    "dataset_sha256": "921f06fad98aed942550d86b1475c888aea6d2025c37d53ec55917401bd34b33"
+  },
+  "postvalue_repair_contract": {
+    "only_computational_change": false,
+    "atomic_writer_reference": "definitions.c97.base.foundation.atomic_write_json",
+    "payload_schema_or_values_changed": false,
+    "candidate_loader_or_alignment_changed": false,
+    "coverage_or_comparison_logic_changed": false,
+    "rerun_required_only_because_in_memory_payload_was_not_recoverable": true
+  },
+  "eligibility_source_columns_allowed_before_coverage": ["stock_day_key"],
+  "coverage_or_capacity_metrics_computed_before_freeze": true,
+  "comparison_values_read_before_freeze_conservative": true,
+  "historical_daily_price_or_forward_return_values_read_before_freeze": false,
+  "provider_request_issued_before_freeze": false,
+  "candidate_and_no_return_values_were_read_by_failed_v2_execution": true,
+  "candidate49_historical_return_read": false,
+  "candidate49_ledgers_changed": false,
+  "current_scoring_selection_sizing_or_orders_performed": false
+}

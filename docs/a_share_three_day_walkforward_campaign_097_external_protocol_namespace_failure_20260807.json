@@ -1,0 +1,38 @@
+{
+  "schema_version": 1,
+  "kind": "a_share_three_day_walkforward_campaign097_external_protocol_namespace_failure",
+  "status": "recorded_before_partition_enumeration_or_campaign097_minute_source_values",
+  "recorded_at": "2026-08-07T05:27:00Z",
+  "failed_runner": {
+    "path": "scripts/a_share_three_day_walkforward_campaign097_features.py",
+    "sha256": "c11b3485b91d6f7ad64ba9d9eac89187714663860d6879477e5191e5c9d007d1"
+  },
+  "attempted_stage": "initial real two-pass Campaign097 feature build",
+  "failure": {
+    "exception": "Campaign097FeatureError",
+    "message": "amount-profile protocol fingerprint mismatch: the compatibility helper expected the temporarily installed Campaign097 protocol SHA while opening the immutable old amount-profile protocol",
+    "root_cause": "The stored old load function still resolved PREREGISTRATION_SHA256 through the mutable old module namespace after Campaign097 activation. The old protocol bytes were correct; the namespace binding was not isolated."
+  },
+  "stage_receipt": {
+    "campaign097_protocol_loaded_and_validated": true,
+    "repository_bindings_validated": true,
+    "external_source_chain_validated": false,
+    "raw_partition_map_enumerated": false,
+    "minute_source_rows_read": false,
+    "market_benchmark_accumulator_created": false,
+    "market_benchmark_values_computed": false,
+    "candidate_partition_created": false,
+    "candidate_values_computed": false,
+    "partial_root_exists_after_failure": false
+  },
+  "authorized_additive_repair": "Load and SHA-verify the immutable old protocol JSON directly from its fixed path before calling only the old external raw/joint chain validator. Do not change the Campaign097 formula, direction, source fields, support predicate, benchmark arithmetic, output semantics, gates, or search space.",
+  "research_boundary": {
+    "comparison_values_read": false,
+    "daily_price_fields_read": [],
+    "forward_returns_read": false,
+    "provider_request_issued": false,
+    "candidate49_ledgers_changed": false
+  },
+  "research_attempt_count_increment": 1,
+  "attempt_class": "infrastructure_prevalue_external_validation_namespace_failure"
+}

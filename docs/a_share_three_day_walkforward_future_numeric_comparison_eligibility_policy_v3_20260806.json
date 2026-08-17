@@ -1,0 +1,109 @@
+{
+  "version": 3,
+  "kind": "a_share_three_day_walkforward_future_numeric_comparison_eligibility_policy",
+  "status": "frozen_before_campaign070_candidate_source_or_comparison_values",
+  "recorded_at": "2026-08-06T04:26:00+08:00",
+  "supersedes_without_rewriting": {
+    "path": "docs/a_share_three_day_walkforward_future_numeric_comparison_eligibility_policy_v2_20260805.json",
+    "sha256": "bad778474b4119f3a8f617283e2b4719f076fe060f11275aed7e7c469d6d4bf2",
+    "effective_through_campaign": 69
+  },
+  "purpose": "Append terminal Campaign069 to the complete historical definition order and the eligible numeric comparator order before Campaign070 reads a source row, candidate value, comparison value, daily price, or forward return.",
+  "authoritative_inputs": {
+    "latest_verified_state": {
+      "path": "docs/a_share_three_day_iteration_status_20260806_campaign069_verified.json",
+      "sha256": "48a02bd6a0e16901c30f14e2d0465d31d2bb19a319b07850c25c59fd86993e85"
+    },
+    "historical_walkforward_policy": {
+      "path": "docs/a_share_three_day_historical_walkforward_research_policy_20260727.json",
+      "sha256": "38426d6161b9bfed323c58caba18feca668b8c9d53e294951a8ba90c01a798bb"
+    },
+    "campaign069_terminal_freeze": {
+      "path": "docs/a_share_three_day_walkforward_campaign_069_terminal_completion_freeze_v3_20260806.json",
+      "sha256": "06cc6a9b020254af4d6ef7e46fd3bc9fa1296a9d737cb9fc82da3d6e798f7739"
+    },
+    "campaign069_research_record": {
+      "path": "docs/a_share_three_day_walkforward_campaign_069_research_record.json",
+      "sha256": "85f1161e86beba49a1b5841dec335d627171702a633270a47b52899dc11f24bd"
+    },
+    "campaign069_snapshot_binding": {
+      "path": "docs/a_share_three_day_walkforward_campaign_069_feature_snapshot_binding_20260806.json",
+      "sha256": "b98b14a2ad5b0c95a5a69b48b46fc751df0e877f8daf4cc495ff447193e6eec0",
+      "snapshot_manifest_path": "/Volumes/DIsk/qlib-a-share-tushare-1m/derived/a_share/rich/tushare/minute_walkforward_campaign069_feature_library/tushare_stk_mins_1m_2019_2025_ea0cbb8f_walkforward_campaign069_feature_library_v1/snapshot_manifest.json",
+      "snapshot_manifest_sha256": "6023becea579d0f6ed6ac27316421294f13fd6759d6d51790a31940526e363b7",
+      "dataset_sha256": "7c4b2e446bf4ebb64b4d3e992510610b1f0059fde868dff0bf02a06b7ce75960",
+      "eligible_rows": 7229697
+    },
+    "campaign069_no_return_audit": {
+      "path": "data/experiments/short_horizon/historical_walkforward/campaign_069/no_return/20260805T195018Z_campaign069_no_return_audit.json",
+      "sha256": "1f05b0943a58e8414c898113d2e0db7b58f703d076d593f9f6c36fd6bc2df6d9",
+      "coverage_passed": true,
+      "numeric_comparisons_passed": 99,
+      "pairwise_capable_sessions": 1623
+    }
+  },
+  "scope": {
+    "effective_start_campaign": 70,
+    "campaign069_result_or_gate_decision_changed": false,
+    "candidate49_prospective_workflow_changed": false,
+    "historical_results_may_generate_current_scores_selections_sizes_orders_or_advice": false
+  },
+  "complete_historical_feature_library": {
+    "definition": "Reconstruct the exact Campaign069 prior 100-definition order, then append quarterly_profit_growth_roe_transition_gap_2r/higher exactly once.",
+    "factor_definition_count": 101,
+    "order_sha256": "0bc65c0bcae2dd089ceb8c67ea606be483673caac5cbce4ce9dc9e89b04fd124",
+    "all_terminal_failed_rejected_and_surviving_definitions_retained": true,
+    "structurally_nonnumeric_definition_retained": "intraday_cross_sectional_standardized_return_state_stability_236p",
+    "old_terminal_record_formula_direction_or_failure_history_may_be_rewritten": false
+  },
+  "numerical_comparator_eligibility": {
+    "classification_time": "before_campaign070_candidate_source_or_comparison_values",
+    "eligible_numeric_comparator_count": 100,
+    "eligible_numeric_comparator_order_definition": "Use compact-cache v4's exact 98 logical comparators, append Campaign068/higher, then append Campaign069/higher exactly once.",
+    "eligible_numeric_comparator_order_sha256": "d1c58576dcdef7980c279426f135440d05f8484d2f42d4b4866539b963a0b7ee",
+    "newly_appended_comparator": {
+      "name": "quarterly_profit_growth_roe_transition_gap_2r",
+      "score_direction": "higher",
+      "source_campaign": 69,
+      "source_snapshot_eligible_rows": 7229697,
+      "source_pairwise_capable_sessions": 1623,
+      "numeric_comparator_eligible_for_campaign070": true,
+      "terminal_with_zero_development_survivors_but_numerically_available": true
+    },
+    "minimum_pairwise_names_per_session": 50,
+    "minimum_pairwise_sessions_per_comparison": 100,
+    "strict_maximum_absolute_median_daily_rank_correlation": 0.8,
+    "all_100_eligible_numeric_comparators_must_pass": true,
+    "candidate_specific_comparator_drop_allowed": false,
+    "insufficient_pairwise_overlap_fails_closed": true
+  },
+  "structurally_nonnumeric_mechanism_challenges": [
+    {
+      "name": "intraday_cross_sectional_standardized_return_state_stability_236p",
+      "score_direction": "higher",
+      "source_campaign": 63,
+      "numeric_status": "undefined_not_pass_not_fail",
+      "mechanism_overlap_audit_required": true,
+      "may_be_silently_omitted_or_counted_as_pass_or_fail": false
+    }
+  ],
+  "anti_gaming_invariants": [
+    "Do not use Campaign070 values, returns, or correlations to choose prior comparators.",
+    "Do not omit Campaign069 after it fails a future candidate's uniqueness gate.",
+    "Do not count Campaign063 as a numerical pass or failure; retain its explicit structural challenge.",
+    "Do not rescue, invert, rerun, or rewrite Campaign069.",
+    "Do not weaken the 50-name, 100-session, or strict-below-0.8 gates."
+  ],
+  "research_boundary": {
+    "campaign070_source_rows_read_before_freeze": false,
+    "campaign070_candidate_or_comparison_values_read_before_freeze": false,
+    "historical_daily_price_fields_read": [],
+    "historical_forward_returns_read": false,
+    "provider_request_issued": false,
+    "candidate49_historical_backfill_performed": false,
+    "candidate49_ledgers_changed": false,
+    "second_prospective_candidate_created": false,
+    "current_scoring_selection_sizing_or_orders_performed": false,
+    "investment_advice": false
+  }
+}

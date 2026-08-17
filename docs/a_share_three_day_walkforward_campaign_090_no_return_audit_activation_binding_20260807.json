@@ -1,0 +1,36 @@
+{
+  "schema_version": 1,
+  "kind": "a_share_three_day_walkforward_campaign090_no_return_audit_activation_binding",
+  "status": "frozen_before_campaign090_coverage_or_comparison_values",
+  "recorded_at": "2026-08-07T06:06:00+08:00",
+  "purpose": "Activate exactly one Campaign090 no-return audit against the immutable candidate snapshot and frozen implementation without yet computing coverage or reading comparator values.",
+  "implementation_freeze": {
+    "path": "docs/a_share_three_day_walkforward_campaign_090_no_return_audit_implementation_freeze_20260807.json",
+    "sha256": "972a7f618e0c6fad8a9d290cdd0122aae564c0e1a68917c53510b55dd9978ca1"
+  },
+  "snapshot_binding": {
+    "path": "docs/a_share_three_day_walkforward_campaign_090_feature_snapshot_binding_20260807.json",
+    "sha256": "c2d34eed453c3bcce072088b05e9f5703f33e544641f39707e4cbdd75a54c455"
+  },
+  "candidate_snapshot": {
+    "path": "/Volumes/DIsk/qlib-a-share-tushare-1m/derived/a_share/rich/tushare/minute_walkforward_campaign090_feature_library/tushare_stk_mins_1m_2019_2025_ea0cbb8f_walkforward_campaign090_feature_library_v1/snapshot_manifest.json",
+    "sha256": "c065e81f4eec91b214a3e1f69d8e15e567fac5bd879e173c5b985777ab4ba2ed",
+    "dataset_sha256": "d1da6b2c1d059038e473c55a15c76ba2efaf1a282d5a6bec1f302cd37a76ca31",
+    "rows": 1331759,
+    "eligible_rows": 1328449,
+    "partitions": 7
+  },
+  "coverage_or_capacity_metrics_computed_before_activation": false,
+  "comparison_values_read_before_activation": false,
+  "historical_daily_price_or_forward_return_values_read_before_activation": [],
+  "historical_forward_returns_read_before_activation": false,
+  "provider_request_issued_before_activation": false,
+  "research_boundary": {
+    "run_count_before_activation": 0,
+    "candidate49_historical_backfill_performed": false,
+    "candidate49_ledgers_changed": false,
+    "second_prospective_candidate_created": false,
+    "current_scoring_selection_sizing_or_orders_performed": false
+  },
+  "next_action": "Run the single frozen audit. Coverage must be evaluated first; comparator values may load only if every coverage and capacity gate passes."
+}

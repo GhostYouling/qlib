@@ -1,0 +1,116 @@
+{
+  "schema_version": 1,
+  "kind": "a_share_three_day_walkforward_future_numeric_comparison_eligibility_policy",
+  "version": 317,
+  "recorded_at": "2026-08-15T22:18:00+08:00",
+  "timestamp_semantics": "monotonic_logical_append_time_not_host_wall_clock_measurement",
+  "status": "campaign210_terminal_prevalue_professional_services_engagement_lifecycle_campaign211_ready_after_validation",
+  "supersedes_without_rewriting": {
+    "path": "docs/a_share_three_day_walkforward_future_numeric_comparison_eligibility_policy_v316_20260815.json",
+    "sha256": "a24cf54006346b6d0970ea7e46929fcd88d297030f02107fc6be9aba96a2d7fa"
+  },
+  "authoritative_inputs": {
+    "terminal_result": {
+      "path": "docs/a_share_three_day_walkforward_campaign_210_terminal_result_20260815.json",
+      "sha256": "d20f6a7e62a797eb5725846a1e7da2608c05d6c6bdf5a50391104192bd586368"
+    },
+    "professional_services_engagement_lifecycle_source_frontier": {
+      "path": "docs/a_share_three_day_walkforward_campaign_210_professional_services_client_opportunity_proposal_engagement_sow_staffing_timesheet_deliverable_acceptance_unbilled_invoice_collection_dispute_settlement_lifecycle_source_frontier_20260815.json",
+      "sha256": "27bf3ea2cb147c3a55cd463d9db8e6e5cc58395f618bfcb3d996daf5b06bf8d7"
+    },
+    "attempt_ledger_v1": {
+      "path": "data/experiments/short_horizon/historical_walkforward/campaign_210/research_attempt_ledger_v1.json",
+      "sha256": "32f0e1e37d62402513f82318e8bde84a320a0e50887dfb6f38949a83fdcbb939",
+      "campaign_effective_entry_count": 10,
+      "chain_tip_sha256": "c699395197571d5d54d264f81e26ef0c7beff8429bb23b47de39259040e8f14d"
+    },
+    "deselection_catalog_policy_v311": {
+      "path": "docs/a_share_three_day_walkforward_future_numeric_comparison_eligibility_policy_v311_20260815.json",
+      "sha256": "1da984fe0740a5c4bfd1521db59fb3497e29f3021c04a621a45babe020bba65d"
+    }
+  },
+  "campaign210_terminal_classification": {
+    "route_count": 7,
+    "source_admission_deferral_count": 3,
+    "overlap_or_hypothesis_rejection_count": 4,
+    "selected_factor_count": 0,
+    "definition_or_comparator_append": false,
+    "return_read": false
+  },
+  "complete_historical_feature_library": {
+    "factor_definition_count": 158,
+    "order_sha256": "4819c7fd7c0795d7598a52f3c615e3f117d5f4ecd9332974bc8e3dfa57c96667",
+    "unchanged_from_v316": true
+  },
+  "numerical_comparator_eligibility": {
+    "eligible_numeric_comparator_count": 142,
+    "order_sha256": "5d1b35fb5a0d8ac9293008db9963c4a60a94dc940c237c3ed259e5ce44f14aaf",
+    "unchanged_from_v316": true
+  },
+  "effective_accounting": {
+    "campaign210_attempt_count": 10,
+    "campaign210_scientific_attempt_count": 7,
+    "campaign210_infrastructure_failure_count": 3,
+    "cumulative_historical_research_attempt_count": 1943,
+    "cumulative_return_reading_development_trial_count": 314
+  },
+  "candidate49": {
+    "only_active_prospective_candidate": true,
+    "signal_ledger_sha256": "5193f00d7f36da003f53cec387900da4c3d002299f5dfcfc1a95eaa199ed3a79",
+    "signal_entry_count": 0,
+    "execution_ledger_sha256": "d57a3e61eac969e42cafa418ccd8c0a5ee65dcf69da145bb2c096c2a02a2ea4f",
+    "execution_entry_count": 0,
+    "completed_future_workflow_record_count": 0
+  },
+  "mutable_unified_reports": {
+    "current": {
+      "path": "data/experiments/short_horizon/current_research_report.md",
+      "sha256_at_publication": "bb20f4e1ebf2d9863a81276a3f1943e21b231729548a9d1d662393cc6ecf3019",
+      "mutable_append_only_report_not_an_immutable_binding": true
+    },
+    "three_day": {
+      "path": "data/experiments/short_horizon/three_day_research_report.md",
+      "sha256_at_publication": "9298c76fd2e89fd4fec2688f11d0b23b52ca0f1280410245279ff466b4dc9062",
+      "mutable_append_only_report_not_an_immutable_binding": true
+    }
+  },
+  "cumulative_regression_boundary": {
+    "working_directory": "repository_root",
+    "test_paths_are_repository_relative": true,
+    "pytest_rootdir_observed_by_collect_only": "tests",
+    "policy_node_id_prefix": "",
+    "deselection_catalog_path": "docs/a_share_three_day_walkforward_future_numeric_comparison_eligibility_policy_v311_20260815.json",
+    "carried_forward_additional_deselected_nodes": [
+      "data_collector_tests/test_a_share_three_day_walkforward_campaign207_terminal.py::test_campaign207_reports_candidate49_and_research_boundaries",
+      "data_collector_tests/test_a_share_three_day_walkforward_campaign208_terminal.py::test_campaign208_reports_candidate49_and_research_boundaries"
+    ],
+    "additional_deselected_node": "data_collector_tests/test_a_share_three_day_walkforward_campaign209_terminal.py::test_campaign209_reports_candidate49_and_research_boundaries",
+    "campaign145_through_campaign210_test_file_count": 98,
+    "deselection_node_count": 25,
+    "expected_tests_passed_after_validation": 481,
+    "expected_tests_skipped_after_validation": 1,
+    "expected_nodes_deselected_after_validation": 25,
+    "final_results_must_be_recorded_in_terminal_validation": true
+  },
+  "future_campaign_boundary": {
+    "next_campaign": 211,
+    "may_begin_after_campaign210_independent_validation": true,
+    "historical_offline_prevalue_work_may_continue_at_any_local_time": true,
+    "2024_2025_source_or_returns_remain_closed": true,
+    "candidate49_remains_separate_confirmation_layer": true
+  },
+  "research_boundary": {
+    "failed_or_truncated_output_used_as_validation_or_scientific_evidence": false,
+    "source_professional_services_engagement_lifecycle_factor_comparator_security_price_or_return_value_read": false,
+    "privacy_sensitive_record_read": false,
+    "stress_2024_2025_opened": false,
+    "provider_or_web_request_issued": false,
+    "provider_credential_presence_value_or_digest_read": false,
+    "candidate49_plan_or_run_executed": false,
+    "candidate49_ledgers_changed": false,
+    "second_prospective_candidate_created": false,
+    "current_scoring_selection_sizing_positions_or_orders_performed": false,
+    "investment_advice": false
+  },
+  "next_action": "Run focused, cumulative and independent Campaign210 validation; only then publish Campaign211 offline prevalue authorization."
+}

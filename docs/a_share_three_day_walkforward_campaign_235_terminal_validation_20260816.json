@@ -1,0 +1,78 @@
+{
+  "schema_version": 1,
+  "kind": "a_share_three_day_walkforward_campaign235_terminal_validation",
+  "recorded_at": "2026-08-16T06:09:00+08:00",
+  "timestamp_semantics": "monotonic_logical_append_time_not_host_wall_clock_measurement",
+  "status": "passed_campaign235_terminal_evidence_and_cumulative_regression",
+  "authoritative_inputs": {
+    "terminal_result": {
+      "path": "docs/a_share_three_day_walkforward_campaign_235_terminal_result_20260816.json",
+      "sha256": "474a405a7cf002a0546492a2cb9469c8b6c2b12c88766f6a848ead593dc3dc25"
+    },
+    "frozen_source_frontier": {
+      "path": "docs/a_share_three_day_walkforward_campaign_235_commercial_landscaping_grounds_maintenance_contract_work_order_irrigation_plant_tree_health_materials_billing_lifecycle_source_frontier_20260816.json",
+      "sha256": "8fd721be7f639a947be863fb9d1d5fb7053f98a40654bf2966940ad10f24aa39"
+    },
+    "attempt_ledger_v1": {
+      "path": "data/experiments/short_horizon/historical_walkforward/campaign_235/research_attempt_ledger_v1.json",
+      "sha256": "2ad86a161268dce14026a41ba5597814c036198c9dc7213e214798df9d252297"
+    },
+    "numeric_policy_v357": {
+      "path": "docs/a_share_three_day_walkforward_future_numeric_comparison_eligibility_policy_v357_20260816.json",
+      "sha256": "17d634eb087e88f96231799c6ace128700e1497aa1a527ad1fc04cd7d433a6f9"
+    },
+    "failed_mandatory_skill_read_chunk": {
+      "path": "docs/a_share_three_day_walkforward_campaign_235_skill_read_output_truncated_failure_20260816.json",
+      "sha256": "27bdd618c0b09c03cb38db649dd68c193274d2775e79fcda5217ac5009b3d438",
+      "result_counts_consumed": false
+    },
+    "terminal_test": {
+      "path": "tests/data_collector_tests/test_a_share_three_day_walkforward_campaign235_terminal.py",
+      "sha256": "3064a48d39dc2aafe38d627cbc61171542c125ef65daf8e9558b3b43db77aa5a"
+    }
+  },
+  "validation_results": {
+    "focused_pytest": "2 passed",
+    "cumulative_pytest": "506 passed, 1 skipped, 50 deselected",
+    "campaign145_through_campaign235_test_file_count": 123,
+    "deselection_node_count": 50,
+    "black": "passed",
+    "ruff": "passed",
+    "json_parse": "passed",
+    "independent_reference_binding_and_chain_validation": "passed",
+    "candidate49_empty_ledger_semantics": "passed",
+    "unmasked_whitespace": "passed"
+  },
+  "publication_state": {
+    "current_report_sha256": "0d785bbff85dcd539a761e21c467898abb131a970e071f36029d7ff2f3ec6ab8",
+    "three_day_report_sha256": "53fc7e9433f223969a835ea88599ba005bfa291a47e1e990e4b9b955634445c6",
+    "attempt_chain_tip_sha256": "56dc16bdb7372bdf014b8afa8a808ba17027818e16b62510db3c5ca0254ca035",
+    "cumulative_historical_research_attempt_count": 2218,
+    "cumulative_return_reading_development_trial_count": 314,
+    "complete_factor_definition_count": 158,
+    "eligible_numeric_comparator_count": 142
+  },
+  "candidate49": {
+    "only_active_prospective_candidate": true,
+    "signal_ledger_sha256": "5193f00d7f36da003f53cec387900da4c3d002299f5dfcfc1a95eaa199ed3a79",
+    "signal_entry_count": 0,
+    "execution_ledger_sha256": "d57a3e61eac969e42cafa418ccd8c0a5ee65dcf69da145bb2c096c2a02a2ea4f",
+    "execution_entry_count": 0
+  },
+  "research_boundary": {
+    "failed_or_truncated_output_used_as_validation_or_scientific_evidence": false,
+    "frozen_source_frontier_rewritten": false,
+    "accounting_publication_changed_scientific_routes_or_decisions": false,
+    "candidate_or_comparator_value_read": false,
+    "daily_price_or_forward_return_read": false,
+    "stress_2024_2025_opened": false,
+    "provider_or_web_request_issued": false,
+    "provider_credential_presence_value_or_digest_read": false,
+    "candidate49_plan_or_run_executed": false,
+    "candidate49_ledgers_changed": false,
+    "second_prospective_candidate_created": false,
+    "current_scoring_selection_sizing_positions_or_orders_performed": false,
+    "investment_advice": false
+  },
+  "next_action": "Publish the advancing Campaign235 state and keep the active goal authorized for Campaign236 zero-network offline prevalue research."
+}

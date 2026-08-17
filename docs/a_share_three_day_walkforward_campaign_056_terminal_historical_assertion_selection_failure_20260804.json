@@ -1,0 +1,36 @@
+{
+  "version": 1,
+  "kind": "a_share_three_day_walkforward_campaign056_terminal_historical_assertion_selection_failure",
+  "status": "recorded_test_selection_failure_no_research_value_or_return_read",
+  "recorded_at": "2026-08-04T11:35:00+08:00",
+  "purpose": "Preserve the first combined Campaign056 terminal-suite result without modifying an immutable pre-audit assertion.",
+  "bindings": {
+    "historical_no_return_test_module": {
+      "path": "tests/data_collector_tests/test_a_share_three_day_walkforward_campaign056_no_return_audit.py",
+      "sha256": "9f53961e90d7310855cbfc2186c2993c7992737178fa8c8057a4ed795c1da1c7"
+    },
+    "terminal_test_module": {
+      "path": "tests/data_collector_tests/test_a_share_three_day_walkforward_campaign056_terminal.py",
+      "sha256": "c253e445113f498b0446653bbc1dfd4474325f7da877c6b277ffc7a7ce53d50e"
+    },
+    "prior_attempt_ledger": {
+      "path": "data/experiments/short_horizon/historical_walkforward/campaign_056/research_attempt_ledger_v4.json",
+      "sha256": "68687716114657e4b883b08ad7f703b61025d5218c13978728a3e03e3d67917a"
+    }
+  },
+  "failed_run": {
+    "passed": 23,
+    "failed": 1,
+    "failed_node_id": "tests/data_collector_tests/test_a_share_three_day_walkforward_campaign056_no_return_audit.py::test_campaign056_status_reads_no_partition_values_or_returns",
+    "observed_audit_count": 1,
+    "historical_expected_audit_count": 0,
+    "cause": "The immutable pre-audit test correctly described the earlier state but was incorrectly selected into a post-audit terminal suite.",
+    "repair": "Keep the historical test unchanged and exclude only that exact node from the current terminal suite; verify current audit_count=1 through terminal records and live bindings.",
+    "factor_formula_direction_threshold_filter_or_result_changed": false,
+    "partition_factor_or_comparison_values_read": false,
+    "daily_price_or_forward_return_read": false,
+    "stress_2024_2025_opened": false,
+    "provider_request_issued": false,
+    "candidate49_ledger_changed": false
+  }
+}

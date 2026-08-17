@@ -1,0 +1,113 @@
+{
+  "version": 1,
+  "kind": "a_share_three_day_walkforward_campaign057_concept_scouting",
+  "status": "completed_before_campaign057_source_candidate_comparison_daily_price_or_return_values",
+  "recorded_at": "2026-08-04T03:50:00Z",
+  "purpose": "Select one economically distinct historical-only mechanism after Campaign056 using frozen definitions and source metadata only, before any Campaign057 source partition, candidate value, comparison value, daily price, or forward return is read.",
+  "authoritative_inputs": {
+    "campaign056_verified_state": {
+      "path": "docs/a_share_three_day_iteration_status_20260804_campaign056_verified.json",
+      "sha256": "0e51c9273071bebf270b81ab11a2551235338798419f05b58519f396cc099b3e"
+    },
+    "campaign056_research_record": {
+      "path": "docs/a_share_three_day_walkforward_campaign_056_research_record_v2.json",
+      "sha256": "fe4befadfca85d5d59a8441ad8c027a6a5c133883ba60b624dbeb1ac8f706401"
+    },
+    "historical_walkforward_policy": {
+      "path": "docs/a_share_three_day_historical_walkforward_research_policy_20260727.json",
+      "sha256": "38426d6161b9bfed323c58caba18feca668b8c9d53e294951a8ba90c01a798bb"
+    }
+  },
+  "definition_only_inventory": {
+    "inherited_usable_comparison_definition_count": 80,
+    "composition": "The 79 definitions reconstructed by the frozen Campaign056 protocol in exact order, followed by terminal Campaign056.",
+    "campaign057_source_partitions_read": false,
+    "campaign057_candidate_values_read": false,
+    "comparison_values_read_for_campaign057_selection": false,
+    "daily_price_or_forward_return_read_for_campaign057_selection": false
+  },
+  "candidate_design_catalog": [
+    {
+      "design": "day_over_day_absolute_return_profile_similarity_238b",
+      "decision": "selected",
+      "reason": "It compares the stock's normalized within-half absolute-return clock with the same stock on the immediately preceding accepted market session. None of the 80 frozen definitions measures cross-session persistence of the complete intraday volatility schedule."
+    },
+    {
+      "design": "day_over_day_signed_return_profile_correlation_238p",
+      "decision": "rejected_before_values",
+      "reason": "Signed correlation would mix timing persistence with directional continuation and cancellation, reopening the return-profile, drift, reversal, and response families rather than isolating volatility-clock persistence."
+    },
+    {
+      "design": "day_over_day_high_low_range_profile_similarity",
+      "decision": "rejected_before_values",
+      "reason": "High-low range mass already has terminal entropy and morning-versus-afternoon profile-similarity mechanisms; changing only the session pairing would remain too close to that range family."
+    },
+    {
+      "design": "day_over_day_close_update_mask_similarity",
+      "decision": "rejected_before_values",
+      "reason": "An equality-mask comparison would re-express terminal price-update share and price-update clock entropy, with the same sparse-trading confound."
+    },
+    {
+      "design": "day_over_day_amount_or_amount_return_joint_profile",
+      "decision": "rejected_before_values",
+      "reason": "Campaign056 already fixes cross-session amount-clock similarity and Campaign053 fixes same-session amount/absolute-return alignment. Reusing amount would violate the independent-mechanism requirement."
+    },
+    {
+      "design": "alternate_lag_distance_window_sign_weight_threshold_filter_or_model",
+      "decision": "rejected_before_values",
+      "reason": "Exactly one preceding accepted market session, 238 fixed within-half absolute returns, equal-mixture Jensen-Shannon similarity, higher direction, and no threshold, filter, subset, fit, model, or combination are frozen once."
+    }
+  ],
+  "selected_candidate": {
+    "name": "intraday_day_over_day_absolute_return_profile_similarity_238b",
+    "direction": "higher",
+    "economic_hypothesis": "A repeated minute-by-minute volatility schedule across consecutive accepted sessions may reflect persistent information-release or execution timing rather than a one-day shock; that schedule persistence may remain relevant from the next open through the third close.",
+    "formula": "For signal session t and the immediately preceding accepted market session t-1, form 119 adjacent log-close returns separately inside each 120-close half, pool their 238 absolute magnitudes x_t,i and x_t-1,i in fixed order, normalize each vector to p and q, compute equal-mixture natural-log Jensen-Shannon divergence, and return 1-JSD/ln(2).",
+    "source_projection": [
+      "datetime",
+      "symbol",
+      "provider",
+      "close"
+    ],
+    "selected_close_grid": [
+      "09:31-11:30",
+      "13:01-15:00"
+    ],
+    "selected_close_count_per_session": 240,
+    "absolute_return_bin_count_per_session": 238,
+    "return_construction": "119 adjacent natural-log close returns within each half; never form the lunch transition",
+    "session_pair_rule": "signal session and exactly the immediately preceding accepted local market-calendar session",
+    "maximum_session_lag": 1,
+    "bridge_stock_suspension_or_missing_previous_market_session": false,
+    "include_0930": false,
+    "include_lunch_transition": false,
+    "absolute_return_semantics": "all 240 closes must be finite and positive; exact-zero within-half returns remain at their fixed bins",
+    "normalization": "normalize each session independently by its strictly positive sum of 238 absolute returns",
+    "distance": "equal-mixture Jensen-Shannon divergence with natural logarithms",
+    "similarity": "one minus divergence divided by ln(2)",
+    "missing_rule": "Require both exact 240-close grids, an exact calendar-adjacent session pair inside the bound raw interval, finite positive closes throughout, and strictly positive total absolute return in both sessions. Missing, duplicated, off-grid, suspended, flat, or invalid prior-session observations are never bridged, filled, or repaired.",
+    "valid_range": [
+      0.0,
+      1.0
+    ],
+    "endpoint_canonicalization_tolerance": 1e-12,
+    "alternate_field_lag_window_distance_direction_scale_clip_threshold_filter_subset_combination_fit_or_model": "none"
+  },
+  "research_boundary": {
+    "external_campaign057_minute_partitions_read": false,
+    "campaign057_candidate_or_comparison_values_read": false,
+    "historical_daily_price_fields_read": [],
+    "historical_forward_return_fields_read": false,
+    "provider_request_issued": false,
+    "candidate49_historical_return_signal_execution_or_milestone_backfill_performed": false,
+    "candidate49_ledgers_changed": false,
+    "second_prospective_candidate_created": false,
+    "current_scoring_selection_sizing_or_orders_performed": false
+  },
+  "decision": {
+    "selected_candidate_count": 1,
+    "conceptual_independence_pending_separate_overlap_audit": true,
+    "predictive_value_established": false,
+    "next_action": "Complete a separate pre-value overlap audit against all 80 inherited definitions, then freeze one exact coverage-first 80-comparison no-return protocol before implementation or any Campaign057 source value read."
+  }
+}

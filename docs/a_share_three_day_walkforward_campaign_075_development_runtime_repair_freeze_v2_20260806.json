@@ -1,0 +1,37 @@
+{
+  "version": 2,
+  "kind": "a_share_three_day_walkforward_campaign075_development_runtime_repair_freeze",
+  "status": "frozen_before_identical_development_trial_retry",
+  "recorded_at": "2026-08-06T10:19:00+08:00",
+  "repair_protocol": {
+    "path": "docs/a_share_three_day_walkforward_campaign_075_development_runtime_repair_protocol_v2_20260806.json",
+    "sha256": "48a7c2d9d74224f7addf33fb3829fa496745b0d088ce86610be9a615a0b153f1"
+  },
+  "development_preregistration": {
+    "path": "docs/a_share_three_day_walkforward_campaign_075_preregistration.json",
+    "sha256": "945c4b3a062cd85342955f72e1fc6f22f5b5d9928177504fab17832a548e5015",
+    "binding_count": 22,
+    "all_bindings_passed_under_new_interpreter": true
+  },
+  "development_runner": {
+    "path": "scripts/a_share_three_day_walkforward_campaign075.py",
+    "sha256": "c56c0dcfb82363626dcbdd67c1551688daefc4b1d3c2323dc134e9e9202ac99b"
+  },
+  "append_only_trial_ledger_before_retry": {
+    "path": "data/experiments/short_horizon/historical_walkforward/campaign_075/walkforward/trial_ledger.json",
+    "sha256": "d3929319800b27608c88b4d603d274ae0bb3ec0e497506e9f1e88a7d4329d91b",
+    "entry_count": 1,
+    "chain_tip_sha256": "d13acf07ff17da915c6713768087fdd05723b678d0514e945c7853568f1a3c97",
+    "failed_entry_preserved": true
+  },
+  "retry_command": "/Volumes/DIsk/Coding/anaconda3/bin/python -m scripts.a_share_three_day_walkforward_campaign075 run-development",
+  "interpreter_only_change": true,
+  "research_arguments_changed": false,
+  "factor_direction_weights_folds_costs_gates_or_data_bindings_changed": false,
+  "historical_daily_price_fields_read_before_retry": [],
+  "historical_forward_returns_read_before_retry": false,
+  "stress_2024_2025_opened_before_retry": false,
+  "provider_request_issued_before_retry": false,
+  "candidate49_ledgers_changed_before_retry": false,
+  "next_action": "Run the identical frozen Campaign075 development trial once under the provisioned Anaconda interpreter and append after the infrastructure-failure ledger entry."
+}

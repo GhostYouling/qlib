@@ -1,0 +1,35 @@
+{
+  "schema_version": 1,
+  "kind": "a_share_three_day_walkforward_campaign144_infrastructure_failure",
+  "status": "recorded_before_campaign144_terminal_validation",
+  "recorded_at": "2026-08-14T19:29:25+08:00",
+  "attempt_id": "campaign144_infrastructure_009",
+  "failure": {
+    "phase": "new_terminal_test_black_check",
+    "process_exit_code": 1,
+    "test_path": "tests/data_collector_tests/test_a_share_three_day_walkforward_campaign144_terminal.py",
+    "preformat_sha256": "3dc536fdd201604ec34930a19f76ecfc1b42539ec51e332b74f133fad833a3ea",
+    "cause": "Black --check reported that the new Campaign144 terminal test required deterministic formatting.",
+    "pytest_started": false,
+    "failed_exit_code_bypassed": false,
+    "later_success_used_to_mask_failure": false
+  },
+  "safe_recovery": {
+    "preserve_this_record": true,
+    "allowed_action": "Run Black formatting on only the new unfrozen Campaign144 test, then rerun Black, Ruff and the focused tests as separate commands.",
+    "scientific_result_or_frozen_threshold_change_allowed": false
+  },
+  "research_boundary": {
+    "source_rows_or_column_values_read": false,
+    "candidate_or_comparator_values_read": false,
+    "historical_daily_price_or_forward_return_values_read": false,
+    "stress_2024_2025_opened": false,
+    "provider_request_issued": false,
+    "provider_credential_value_or_digest_read": false,
+    "candidate49_historical_backfill_performed": false,
+    "candidate49_ledgers_changed": false,
+    "second_prospective_candidate_created": false,
+    "current_scoring_selection_sizing_positions_or_orders_performed": false,
+    "investment_advice": false
+  }
+}

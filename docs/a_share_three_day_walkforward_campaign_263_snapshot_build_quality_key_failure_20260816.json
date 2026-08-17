@@ -1,0 +1,26 @@
+{
+  "schema_version": 1,
+  "kind": "a_share_three_day_walkforward_campaign263_infrastructure_failure",
+  "status": "first_real_build_failed_before_publication_on_inherited_quality_key_name",
+  "recorded_at": "2026-08-16T11:31:00Z",
+  "attempt_id": "campaign263_infrastructure_006",
+  "command_stage": "feature_snapshot_build",
+  "exit_code": 1,
+  "exception_type": "KeyError",
+  "missing_key": "nonpositive_total_amount_sessions",
+  "root_cause": "The inherited aggregate builder retained the prior generic quality-key name while Campaign263 exposed the more precise nonpositive_half_total_sessions key.",
+  "publication": {
+    "snapshot_manifest_published": false,
+    "final_snapshot_root_exists": false,
+    "partial_candidate_values_computed": true,
+    "partial_candidate_values_inspected": false,
+    "partial_root_retained_by_builder": false
+  },
+  "authorized_narrow_repair": "Add an aggregate-only compatibility alias equal to nonpositive_half_total_sessions; do not change formula, direction, source projection, support, output values, gates or output path.",
+  "research_boundary": {
+    "comparator_values_read": false,
+    "historical_daily_price_or_forward_return_values_read": false,
+    "provider_request_issued": false,
+    "candidate49_ledgers_changed": false
+  }
+}

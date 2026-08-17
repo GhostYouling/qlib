@@ -1,0 +1,136 @@
+{
+  "schema_version": 1,
+  "kind": "a_share_three_day_walkforward_campaign078_concept_scouting",
+  "status": "selected_before_campaign078_minute_source_candidate_or_comparison_values",
+  "recorded_at": "2026-08-06T13:47:00+08:00",
+  "purpose": "Select exactly one economically distinct offline three-session factor after terminal Campaign077, before opening any Campaign078 minute source row, candidate value, comparison value, daily price, or forward return.",
+  "authoritative_bindings": {
+    "campaign077_verified_state": {
+      "path": "docs/a_share_three_day_iteration_status_20260806_campaign077_verified.json",
+      "sha256": "18e4c49be1b266af326e3a0f1548eb65b126c5f38787bc119becff73b4811582"
+    },
+    "historical_walkforward_policy": {
+      "path": "docs/a_share_three_day_historical_walkforward_research_policy_20260727.json",
+      "sha256": "38426d6161b9bfed323c58caba18feca668b8c9d53e294951a8ba90c01a798bb"
+    },
+    "numeric_comparator_policy_v13": {
+      "path": "docs/a_share_three_day_walkforward_future_numeric_comparison_eligibility_policy_v13_20260806.json",
+      "sha256": "fa8c48949ba1d57a10003c04003018d72bb9a54030111bc2ce3fbf9e1c042643",
+      "complete_definition_count": 109,
+      "complete_definition_order_sha256": "69bd56c8489064aa68e9cff7a6479f85e11ce23f855d79ba6a66bef9e72b08bc",
+      "eligible_numeric_comparator_count": 108,
+      "eligible_numeric_comparator_order_sha256": "7bdadc28e8d79b87cc16dcdbbd5e50964fa6ea8de9a5fb32023ddb05422fd1bc"
+    },
+    "manage_qlib_a_share_data_skill": {
+      "path": "/Users/niyufei/.codex/skills/manage-qlib-a-share-data/SKILL.md",
+      "sha256": "768695086117c5e9fb0a666debb83186837a8e5dab223ca89f89a02f9b440ed4"
+    }
+  },
+  "definition_only_source_boundary": {
+    "source": "immutable accepted local Tushare 2019-2025 one-minute source definition and exact standard continuous-session grid",
+    "minute_source_projection_if_later_admitted": [
+      "datetime",
+      "symbol",
+      "provider",
+      "amount"
+    ],
+    "stock_day_identity_projection_if_later_admitted": [
+      "trade_date",
+      "symbol",
+      "provider"
+    ],
+    "forbidden_before_protocol_and_implementation_freeze": [
+      "minute source rows",
+      "candidate values",
+      "comparison values",
+      "daily price fields",
+      "historical or forward returns",
+      "Candidate49 historical values or ledger additions"
+    ],
+    "candidate_source_rows_read": false,
+    "provider_request_allowed": false
+  },
+  "candidate_design_catalog": [
+    {
+      "design": "intraday_amount_local_peak_density_238p",
+      "decision": "selected_for_separate_complete_mechanism_overlap_audit",
+      "reason": "The normalized count of strict interior local amount peaks measures the topology and fragmentation of renewed participation bursts. It is ordinal, scale-invariant, and does not use peak magnitude or absolute peak time."
+    },
+    {
+      "design": "intraday_amount_local_turning_point_density",
+      "decision": "rejected_before_values",
+      "reason": "Counting both maxima and minima would create a closely related same-campaign variant and an avoidable rescue path."
+    },
+    {
+      "design": "intraday_amount_local_peak_prominence_or_threshold_count",
+      "decision": "rejected_before_values",
+      "reason": "Prominence, quantile, and magnitude thresholds introduce a tunable parameter family and mix topology with concentration."
+    },
+    {
+      "design": "intraday_amount_peak_recency_or_peak_share",
+      "decision": "rejected_before_values_as_prior_families",
+      "reason": "The latest maximum position is Campaign076; peak magnitude share belongs to the concentration family."
+    },
+    {
+      "design": "amount_entropy_dispersion_or_center_of_mass",
+      "decision": "rejected_before_values_as_prior_families",
+      "reason": "Those are permutation-invariant concentration, temporal second-moment, or temporal first-moment summaries already represented in the frozen library."
+    },
+    {
+      "design": "subwindow_cross_day_market_residualized_or_filtered_peak_density",
+      "decision": "rejected_before_values",
+      "reason": "Subwindows, cross-day transformations, peer residualization, filters, thresholds, subsets, fitting, models, and combinations are outside this one-factor campaign."
+    }
+  ],
+  "selected_candidate": {
+    "name": "intraday_amount_local_peak_density_238p",
+    "direction": "higher",
+    "economic_hypothesis": "More frequent distinct minute-level participation bursts can reflect repeated renewal of attention rather than one exhausted block of trading, potentially supporting three-session continuation.",
+    "formula": "Require the exact 240 standard continuous-session amount bars a_0,...,a_239. Count interior indices i=1,...,238 satisfying a_i>a_(i-1) and a_i>a_(i+1), and divide the count by the exact combinatorial maximum 119.",
+    "tie_rule": "A tie with either adjacent bar is not a strict local peak; it is valid and contributes zero, never missing and never broken by first/last occurrence.",
+    "availability": "Known at signal-session close after all 240 exact amount bars are available; no future session, daily return, comparator, or Candidate49 observation is used.",
+    "valid_range": {
+      "lower": 0.0,
+      "lower_inclusive": true,
+      "upper": 1.0,
+      "upper_inclusive": true
+    },
+    "missing_rule": "Missing when source identity or grid is invalid, any selected amount is nonfinite or negative, the selected amount sum is nonfinite or nonpositive, or the computed value is nonfinite or outside [0,1]. Never impute, smooth, bucket, rank, winsorize, rescale, neutralize, or substitute another bar set.",
+    "parameter_window_threshold_prominence_tie_direction_filter_subset_regime_fit_model_or_combination_search": false
+  },
+  "mandatory_pre_value_challenges": [
+    "all_109_frozen_historical_factor_definitions_in_exact_order",
+    "all_108_numeric_comparators_in_exact_order",
+    "intraday_amount_profile_serial_persistence_240m",
+    "intraday_amount_participation_entropy_240m",
+    "intraday_amount_center_of_mass_240m",
+    "intraday_peak_amount_bar_recency_240m",
+    "intraday_amount_clock_dispersion_240m",
+    "late_amount_share_30m",
+    "intraday_terminal_bar_amount_share_240m",
+    "intraday_morning_afternoon_amount_profile_similarity_120b",
+    "intraday_day_over_day_amount_profile_similarity_240b",
+    "intraday_market_amount_profile_synchronization_240m",
+    "intraday_cross_sectional_standardized_return_state_stability_236p",
+    "candidate49_intraday_cumulative_vwap_crossing_rate_240m_v1"
+  ],
+  "research_boundary": {
+    "campaign078_minute_source_rows_read": false,
+    "campaign078_candidate_values_read": false,
+    "comparison_values_read": false,
+    "historical_daily_price_fields_read": [],
+    "historical_forward_returns_read": false,
+    "provider_request_issued": false,
+    "candidate49_historical_backfill_performed": false,
+    "candidate49_ledgers_changed": false,
+    "second_prospective_candidate_created": false,
+    "current_scoring_selection_sizing_or_orders_performed": false,
+    "investment_advice": false
+  },
+  "decision": {
+    "selected_concept_count": 1,
+    "may_advance_directly_to_values": false,
+    "required_next_step": "Complete and bind one exhaustive no-value mechanism-overlap audit; only then freeze the exact no-return protocol, code, tests, and implementation fingerprints before any source or candidate value.",
+    "candidate49_remains_only_active_prospective_candidate": true
+  }
+}

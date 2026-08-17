@@ -1,0 +1,17 @@
+{
+  "schema_version": 1,
+  "kind": "a_share_three_day_walkforward_campaign263_preregistration_header_contract_failure",
+  "status": "failed_exact_header_contract_preserved_and_recovered_before_return_read",
+  "recorded_at": "2026-08-16T14:04:00Z",
+  "phase": "development_preregistration_load",
+  "failure": "The second recovery preregistration kept schema version 1 but changed the exact status and added lifecycle metadata; the inherited engine requires the original status and exact top-level field set.",
+  "recovery": "Keep the preregistration schema byte-semantically identical except for the runner, ledger and command bindings; store lifecycle recovery evidence in separate immutable records.",
+  "research_boundary": {
+    "historical_daily_price_or_forward_return_values_read": false,
+    "stress_2024_2025_opened": false,
+    "provider_or_web_request_issued": false,
+    "candidate49_ledgers_changed": false,
+    "current_scoring_selection_sizing_positions_or_orders_performed": false,
+    "investment_advice": false
+  }
+}

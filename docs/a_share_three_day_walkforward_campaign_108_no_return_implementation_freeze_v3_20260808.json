@@ -1,0 +1,71 @@
+{
+  "schema_version": 3,
+  "kind": "a_share_three_day_walkforward_campaign108_no_return_implementation_freeze",
+  "status": "additive_range_recovery_frozen_before_snapshot_rebuild_coverage_or_comparator_values",
+  "recorded_at": "2026-08-07T20:56:00Z",
+  "supersedes_without_rewriting": {
+    "path": "docs/a_share_three_day_walkforward_campaign_108_no_return_implementation_freeze_v2_20260808.json",
+    "sha256": "0bb95a8dc8dfff96bdaf37b6d4aa5703a65bff2aa5eef1eda478125dc9f1758c",
+    "preserved": true
+  },
+  "failed_attempt": {
+    "path": "docs/a_share_three_day_walkforward_campaign_108_negative_range_publication_failure_20260808.json",
+    "sha256": "68e4e1bfde7fad1ceb0f68c2a12672e7d9a9595d59b2fc5413714e2295a74887"
+  },
+  "attempt_ledger": {
+    "path": "data/experiments/short_horizon/historical_walkforward/campaign_108/research_attempt_ledger_v2.json",
+    "sha256": "80ad613a1b83f564f9be3cab02f77bbe3b5ca1f7e7fd07337bf4fbee4c0404ed",
+    "attempt_count": 2,
+    "infrastructure_failure_count": 1,
+    "cumulative_historical_research_attempt_count": 796
+  },
+  "protocol": {
+    "path": "docs/a_share_three_day_walkforward_campaign_108_no_return_preregistration_20260808.json",
+    "sha256": "d196415b08996bb8ff68959abe2e6325f7c4dcfe4119494a96e86a66ec8a4339"
+  },
+  "feature_builder": {
+    "path": "scripts/a_share_three_day_walkforward_campaign108_features_v2.py",
+    "sha256": "5e2982ede1d47402ca5f42b1f4a71f1cfb9d864475a2224fb5320689969118d3"
+  },
+  "ordered_audit_runner": {
+    "path": "scripts/a_share_three_day_walkforward_campaign108_no_return_audit_v2.py",
+    "sha256": "9e1a32366dfd538b5b78dfe80f13f8d2f757cf31e23f8449a1b6a4d1e33d390e"
+  },
+  "synthetic_tests": [
+    {
+      "path": "tests/data_collector_tests/test_a_share_three_day_walkforward_campaign108_features_v2.py",
+      "sha256": "330e89241610a82ce8d0d319f3976a8468a3c87f71260ee951ab6eb1a2246e04"
+    },
+    {
+      "path": "tests/data_collector_tests/test_a_share_three_day_walkforward_campaign108_no_return_audit_v2.py",
+      "sha256": "79a189851600ecf6b3087708d1f07737d79ec37dbcddfe300109ead510f23d3c"
+    }
+  ],
+  "pre_freeze_recovery_test_result": "6 passed, 1 recovery-freeze test intentionally deselected",
+  "recovery": {
+    "only_change": "publish and validate the preregistered [-1,1] range instead of inherited [0,1]",
+    "candidate_formula_direction_endpoints_or_transform_changed": false,
+    "source_projection_grid_coverage_uniqueness_fold_cost_or_stress_gate_changed": false,
+    "negative_zero_and_positive_scores_retained_by_finalization": true,
+    "manifest_factor_range": [
+      -1.0,
+      1.0
+    ],
+    "second_recovery_allowed": false
+  },
+  "complete_definition_count": 137,
+  "complete_definition_order_sha256": "26233fd1fe697b08268910286fb077fbda894e8e572af020959b1997e4285baa",
+  "numeric_comparator_count": 132,
+  "numeric_comparator_order_sha256": "7ed69afd1408e84dcc856583344166ffc9bcbb0add1aed63163b1d12a1be9a25",
+  "research_boundary": {
+    "failed_build_source_rows_and_candidate_values_read": true,
+    "final_snapshot_published_before_recovery_freeze": false,
+    "coverage_or_comparator_values_read_before_recovery_freeze": false,
+    "historical_daily_price_or_forward_return_values_read_before_recovery_freeze": false,
+    "provider_request_issued_before_recovery_freeze": false,
+    "candidate49_ledgers_changed": false,
+    "second_prospective_candidate_created": false,
+    "current_scoring_selection_sizing_or_orders_performed": false
+  },
+  "next_action": "Run the full recovery suite, confirm the final root is absent, then rebuild once with the exact frozen v2 entry point."
+}

@@ -1,0 +1,68 @@
+{
+  "schema_version": 1,
+  "kind": "a_share_three_day_walkforward_campaign081_feature_implementation_freeze",
+  "status": "frozen_before_campaign081_minute_source_values",
+  "frozen_at": "2026-08-06T17:09:00+08:00",
+  "protocol": {
+    "path": "docs/a_share_three_day_walkforward_campaign_081_no_return_preregistration.json",
+    "sha256": "84400ac6f7dca933333dcfbd314753328e9e00f905d94c68632528c8767a6853"
+  },
+  "mechanism_overlap_audit": {
+    "path": "docs/a_share_three_day_walkforward_campaign_081_mechanism_overlap_audit.json",
+    "sha256": "cd8700591703f2b35ecf33103bbc26d092fefd90d3aa33b15fa78d4dfdb873c1"
+  },
+  "prevalue_infrastructure_failure_record": {
+    "path": "docs/a_share_three_day_walkforward_campaign_081_prevalue_infrastructure_failures_20260806.json",
+    "sha256": "4c0cb22bedce22d391b25b4616db983fe3029203b23d0c25a644d1e0b7955ab6"
+  },
+  "research_attempt_ledger_before_source_read": {
+    "path": "data/experiments/short_horizon/historical_walkforward/campaign_081/research_attempt_ledger_v1.json",
+    "sha256": "19bc2238028713484b7b7f0d636bcb0f22485f61c3f5cc17aa6a3151f8b22869"
+  },
+  "feature_runner": {
+    "path": "scripts/a_share_three_day_walkforward_campaign081_features.py",
+    "sha256": "1148538bbe6b4d933eb544fbe1e1aff4aa39acd27c39a8bd859efa13a1603b6d"
+  },
+  "tests": {
+    "path": "tests/data_collector_tests/test_a_share_three_day_walkforward_campaign081_features.py",
+    "sha256": "7bb6abd56264228265da1ec6449c7f3732f6514163a5320fcd8d09ef22217b93",
+    "synthetic_nonfreeze_tests_passed_before_freeze": 5,
+    "synthetic_nonfreeze_tests_failed": 0
+  },
+  "frozen_semantics": {
+    "factor": "intraday_amount_path_efficiency_238p",
+    "direction": "higher",
+    "selected_bar_count": 240,
+    "half_session_bar_count": 120,
+    "within_half_transition_count": 119,
+    "pooled_transition_count": 238,
+    "amount_transform": "numpy.log1p on float64 finite nonnegative amount",
+    "half_endpoint_numerator": "absolute last-minus-first transformed amount",
+    "half_variation_denominator": "sum of absolute adjacent transformed-amount differences",
+    "pooled_score": "sum of the two endpoint numerators divided by sum of the two variation denominators",
+    "lunch_boundary_is_hard_break": true,
+    "zero_pooled_variation_is_missing": true,
+    "floating_point_clipping_or_canonicalization": false,
+    "valid_range": [
+      0.0,
+      1.0
+    ],
+    "numeric_comparator_count": 110,
+    "numeric_comparator_order_sha256": "dc6319ac2f7c9d5811a8bee3f8fd9dbd174d2451739ef201aad31c36a9f25ce3",
+    "complete_definition_count": 112,
+    "complete_definition_order_sha256": "a31457db36af9a8ddac4e08890c87f50ef6554bb46918f022749bd9cccbc1c55"
+  },
+  "research_boundary": {
+    "candidate_source_rows_read_before_freeze": false,
+    "candidate_historical_values_computed_before_freeze": false,
+    "comparison_values_read_before_freeze": false,
+    "historical_daily_price_fields_read_before_freeze": [],
+    "historical_forward_returns_read_before_freeze": false,
+    "provider_request_issued_before_freeze": false,
+    "candidate49_historical_backfill_performed": false,
+    "candidate49_ledgers_changed": false,
+    "second_prospective_candidate_created": false,
+    "current_scoring_selection_sizing_or_orders_performed": false
+  },
+  "next_action": "Run the full feature test suite; only if it passes may the immutable local minute and stock-day identity projections be opened exactly once to build the Campaign081 snapshot."
+}

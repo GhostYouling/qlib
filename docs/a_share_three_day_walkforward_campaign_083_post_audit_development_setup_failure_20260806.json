@@ -1,0 +1,24 @@
+{
+  "schema_version": 1,
+  "kind": "a_share_three_day_walkforward_campaign083_post_audit_development_setup_failure",
+  "status": "one_template_search_failure_recorded_before_development_preregistration_or_return_read",
+  "recorded_at": "2026-08-06T20:39:10+08:00",
+  "failure": {
+    "stage": "development_template_discovery",
+    "observed": "A zsh command included unmatched scripts/a_share_three_day_walkforward_campaign082*development* and test path globs, so zsh exited nonzero after successfully printing the requested frozen Campaign082 documents.",
+    "root_cause": "The Campaign082 development runner is named scripts/a_share_three_day_walkforward_campaign082.py rather than containing development in its filename, and zsh nomatch rejected the nonexistent pattern.",
+    "correction": "Resolve exact runner and test paths with rg --files and explicit filenames; do not use unmatched shell globs."
+  },
+  "research_boundary": {
+    "no_return_audit_completed_and_admitted": true,
+    "development_preregistration_frozen": false,
+    "development_trial_run": false,
+    "historical_daily_price_fields_read": [],
+    "historical_forward_returns_read": false,
+    "stress_2024_2025_opened": false,
+    "provider_request_issued": false,
+    "candidate49_historical_backfill_performed": false,
+    "candidate49_ledgers_changed": false,
+    "current_scoring_selection_sizing_or_orders_performed": false
+  }
+}

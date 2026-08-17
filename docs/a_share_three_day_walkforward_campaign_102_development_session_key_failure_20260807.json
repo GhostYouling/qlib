@@ -1,0 +1,44 @@
+{
+  "schema_version": 1,
+  "kind": "a_share_three_day_walkforward_campaign102_development_infrastructure_failure",
+  "status": "preserved_after_fold1_training_return_read_before_model_fit_or_validation",
+  "recorded_at": "2026-08-07T15:33:00Z",
+  "stage": "fold_1_session_equal_sufficient_statistics_before_optimizer",
+  "failed_recovery": "walkforward_recovery_v1",
+  "failed_command_exit_code": 1,
+  "failure": "The frozen sufficient-statistics helper created a dictionary from numpy.datetime64 unique values converted through tolist(), then looked it up using numpy.datetime64 scalars; the representation mismatch raised KeyError for 2019-04-30.",
+  "preserved_artifacts": {
+    "development_intent": {
+      "path": "data/experiments/short_horizon/historical_walkforward/campaign_102/walkforward_recovery_v1/development_intent.json",
+      "sha256": "9d158530d6e0b0981c695a7a976a83b34b9d03d9680e22adbb097d1339cfb0a9"
+    },
+    "development_failure": {
+      "path": "data/experiments/short_horizon/historical_walkforward/campaign_102/walkforward_recovery_v1/development_failure.json",
+      "sha256": "c1352638402b4e47fe416d7a0d4696c30e3602b9d316a2d160a0b3e6c2f471f4"
+    }
+  },
+  "authorized_equivalent_repair": {
+    "old_count_mapping": "unique, counts = np.unique(session_values, return_counts=True); count_map = dict(zip(unique.tolist(), counts.tolist())); row_weight_i = 1/(T*count_map[session_i])",
+    "new_count_mapping": "unique, inverse, counts = np.unique(session_values, return_inverse=True, return_counts=True); row_weight_i = 1/(T*counts[inverse_i])",
+    "mathematical_result_changed": false,
+    "target_observations_session_equal_weighting_objective_constraints_optimizer_or_trials_changed": false,
+    "repair_may_access_values_before_new_freeze": false
+  },
+  "research_boundary": {
+    "fold1_training_market_rows_loaded": true,
+    "fold1_training_daily_prices_and_forward_returns_read": true,
+    "fold1_target_percentiles_computed": true,
+    "sufficient_statistics_completed": false,
+    "model_fit_count": 0,
+    "weight_vectors_observed": 0,
+    "validation_score_or_uniqueness_count": 0,
+    "validation_return_read_count": 0,
+    "complete_development_trial_count": 0,
+    "lockbox_2024_2025_read": false,
+    "provider_request_issued": false,
+    "candidate49_historical_backfill_performed": false,
+    "candidate49_ledgers_changed": false,
+    "current_scoring_selection_sizing_or_orders_performed": false
+  },
+  "next_action": "Freeze a v2 recovery harness with only the equivalent vectorized count-index repair, preserve both failed roots, and use a fresh recovery_v2 output root under the same exact project runtime."
+}

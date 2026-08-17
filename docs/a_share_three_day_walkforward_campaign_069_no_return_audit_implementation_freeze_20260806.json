@@ -1,0 +1,48 @@
+{
+  "version": 1,
+  "kind": "a_share_three_day_walkforward_campaign069_no_return_audit_implementation_freeze",
+  "status": "frozen_before_campaign069_source_rows_candidate_values_coverage_metrics_or_comparison_values",
+  "recorded_at": "2026-08-06T03:31:00+08:00",
+  "protocol": {
+    "path": "docs/a_share_three_day_walkforward_campaign_069_no_return_preregistration.json",
+    "sha256": "c044776cff0031ac3e65a4a3de51c06b90e1c1c0c1ba94895f79e900628dffe1"
+  },
+  "feature_implementation_freeze": {
+    "path": "docs/a_share_three_day_walkforward_campaign_069_feature_implementation_freeze_20260806.json",
+    "sha256": "c46767b49273b1cd7a1fa028f4f76dec88511e70d6f37280dbeb6c404d0d5183"
+  },
+  "audit_runner": {
+    "path": "scripts/a_share_three_day_walkforward_campaign069_no_return_audit.py",
+    "sha256": "6b02c861740bb46e47097a6f688be0cf1783d3d7a02e508c906d1e18ca87a478"
+  },
+  "tests": {
+    "path": "tests/data_collector_tests/test_a_share_three_day_walkforward_campaign069_no_return_audit.py",
+    "sha256": "1bdfb80ba5ede0c736155f3261068a4bc07b31a738371df775f026da0d5ad559",
+    "pre_freeze_selected_passed": 4,
+    "pre_freeze_selected_failed": 0,
+    "pre_freeze_deselected_freeze_binding_test": 1
+  },
+  "candidate_snapshot_existed_before_freeze": false,
+  "campaign069_source_or_candidate_values_read_before_freeze": false,
+  "coverage_or_capacity_metrics_computed_before_freeze": false,
+  "comparison_values_read_before_freeze": false,
+  "historical_daily_price_fields_read_before_freeze": [],
+  "historical_forward_returns_read_before_freeze": false,
+  "provider_request_issued_before_freeze": false,
+  "candidate49_ledgers_changed_before_freeze": false,
+  "io_semantics": {
+    "candidate_snapshot_must_be_built_and_independently_verified_before_a_separate_activation_binding": true,
+    "candidate_snapshot_hash_is_not_guessed_before_build": true,
+    "candidate_coverage_is_computed_before_comparator_values": true,
+    "both_comparator_loaders_are_coverage_guarded": true,
+    "compact_cache_values_load_only_after_all_coverage_gates_pass": true,
+    "dynamic_quality_values_rebuilt_after_candidate_key_intersection": true,
+    "campaign068_snapshot_values_load_only_after_all_coverage_gates_pass": true,
+    "all_99_comparators_run_in_frozen_order_if_coverage_passes": true,
+    "historical_daily_prices_or_returns_read_during_no_return_audit": false
+  },
+  "decision": {
+    "implementation_frozen_before_any_campaign069_value": true,
+    "next_action": "Run the full five-test implementation suite, build and independently verify the immutable candidate snapshot, then create the exact additive activation binding before computing coverage."
+  }
+}

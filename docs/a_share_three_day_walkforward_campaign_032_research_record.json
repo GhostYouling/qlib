@@ -1,0 +1,152 @@
+{
+  "version": 1,
+  "kind": "a_share_three_day_walkforward_campaign032_research_record",
+  "status": "completed_zero_no_return_admissible_factors_stop_before_historical_returns",
+  "recorded_at": "2026-07-30T15:46:00Z",
+  "purpose": "Record Campaign032 from the pre-value reporting-semantic repair and concept freeze through its immutable feature snapshot and terminal uniqueness rejection, without opening historical daily prices, forward returns, development folds, or the 2024-2025 stress interval.",
+  "prior_state": {
+    "path": "docs/a_share_three_day_iteration_status_20260730_campaign031_verified.json",
+    "sha256": "026e2905aa2de7287435f2f7276ef2e5f8f257dccd57779506acf2fcea7c3564"
+  },
+  "campaign": {
+    "concept_scouting": {
+      "path": "docs/a_share_three_day_walkforward_campaign_032_concept_scouting.json",
+      "sha256": "92a2911e6f0839fe7fd1570e6126d68622c0742192f6227336212ff00a29a10e"
+    },
+    "mechanism_overlap_audit": {
+      "path": "docs/a_share_three_day_walkforward_campaign_032_mechanism_overlap_audit.json",
+      "sha256": "3b736aea9d09e4cd3f8ce371f015c73d0fac6f0b261e8426306b403cc0395bca"
+    },
+    "effective_no_return_preregistration": {
+      "path": "docs/a_share_three_day_walkforward_campaign_032_no_return_preregistration_v2.json",
+      "sha256": "d03dc148d2169622cc2fdbe2248dbe336ccbd5c316f8a4faa708b16a69e44f8a"
+    },
+    "feature_snapshot_freeze": {
+      "path": "docs/a_share_three_day_walkforward_campaign_032_feature_snapshot_freeze_20260730.json",
+      "sha256": "e9e5d15cf9afe2f19e0508b335d91fdd156c11c3253dcb33292dc679b7231813"
+    },
+    "no_return_audit_freeze": {
+      "path": "docs/a_share_three_day_walkforward_campaign_032_no_return_audit_freeze_20260730.json",
+      "sha256": "1c5a7ec863d183e04d2473028d46f6613af1f25c7705ccef63fc6bb7db3a6b63"
+    }
+  },
+  "pre_value_reporting_repair": {
+    "helper": {
+      "path": "scripts/a_share_three_day_walkforward_reporting.py",
+      "sha256": "6291a8bfd11bd90dbef42edd6252368f67498bdc2be39661ebf4b7d08f0ac969"
+    },
+    "activation_record": {
+      "path": "docs/a_share_three_day_walkforward_campaign_032_reporting_semantics_activation_20260730.json",
+      "sha256": "07ca7a3589671cabc96c736058a2bf6068e8daca402a96c78037913bdfb88b89"
+    },
+    "canonical_complexity_rule": "The display complexity is the count of distinct nonempty feature_set entries; single_factor requires exactly one.",
+    "campaign031_immutable_result_rewritten": false,
+    "protected_values_read_before_repair_freeze": false
+  },
+  "frozen_factor": {
+    "name": "quarterly_announcement_timeliness_days",
+    "direction": "higher",
+    "formula": "negative integer calendar-day difference from report_date to announcement_date for the latest effective quarterly report at signal session t",
+    "effective_time": "first accepted stock-day session strictly after announcement_date",
+    "tie_break": "instrument, effective session, report_date, announcement_date; keep last",
+    "missing_rule": "missing when no prior effective disclosure or when delay is positive, noninteger, or nonfinite",
+    "scale_clip_threshold_filter_or_weight": false,
+    "source_fields_read": [
+      "datetime",
+      "symbol",
+      "provider",
+      "instrument",
+      "report_date",
+      "announcement_date"
+    ],
+    "quarterly_value_fields_read": [],
+    "minute_price_volume_amount_fields_read": [],
+    "daily_price_fields_read": [],
+    "forward_return_fields_read": false
+  },
+  "feature_snapshot": {
+    "path": "/Volumes/DIsk/qlib-a-share-tushare-1m/derived/a_share/rich/tushare/minute_walkforward_campaign032_feature_library/tushare_stk_mins_1m_2019_2025_ea0cbb8f_walkforward_campaign032_feature_library_v1/snapshot_manifest.json",
+    "sha256": "8e64ad897fe725ab4ed800b0203ddd88a6c1431e2386744e1d2b13867d848c65",
+    "dataset_sha256": "c72008162f6655e7ce34da114641f451aa04d32df61ac4c77222f7f8ad1d787f",
+    "partition_count": 33015,
+    "row_count": 7724498,
+    "eligible_factor_rows": 7233196,
+    "no_prior_effective_disclosure_rows": 491302,
+    "positive_or_noninteger_delay_rows": 0
+  },
+  "ordered_no_return_result": {
+    "audit": {
+      "path": "data/experiments/short_horizon/historical_walkforward/campaign_032/no_return/20260730T154237Z_campaign032_no_return_audit.json",
+      "sha256": "6096b9d725f5fc1e7f98467bb334a211350bcc86edda28132439fc98f28f8af9"
+    },
+    "quality_listing_eligible_rows": 1331759,
+    "candidate_eligible_rows": 1330171,
+    "calendar_sessions": 1632,
+    "median_coverage": 0.9994517542211769,
+    "p05_coverage": 0.9956886515772271,
+    "p05_eligible_names": 138.0,
+    "potential_non_overlapping_three_session_cohorts": 540,
+    "coverage_and_capacity_gate_passed": true,
+    "statistical_comparison_count": 53,
+    "statistical_comparison_pass_count": 52,
+    "statistical_comparison_fail_count": 1,
+    "uniqueness_gate_passed": false,
+    "maximum_allowed_absolute_median_daily_rank_correlation": 0.8,
+    "maximum_observed_absolute_median_daily_rank_correlation": 0.9793254451074888,
+    "failed_comparison_factor": "quarterly_announcement_freshness_60s",
+    "failed_comparison_median_daily_rank_correlation": -0.9793254451074888,
+    "admissible_factor_count": 0
+  },
+  "trial_accounting": {
+    "development_preregistration_created": false,
+    "development_trial_count": 0,
+    "cumulative_historical_development_trial_count_after_campaign": 253,
+    "training_or_model_fitting_performed": false,
+    "development_return_fields_read": false,
+    "stress_2024_2025_opened": false,
+    "stress_return_fields_read": false
+  },
+  "interpretation": {
+    "coverage_supported": true,
+    "statistical_uniqueness_supported": false,
+    "predictive_association_tested": false,
+    "portfolio_translation_tested": false,
+    "conclusion": "The exact reporting-lag score has adequate coverage but near-duplicates the frozen quarterly announcement freshness score geometry under the absolute-correlation rule. The negative sign of the correlation does not authorize direction inversion or a rescue, and no return evidence was read.",
+    "current_listing_survivorship_bias": "The quality/listing holding universe derives from a current listing snapshot and can contain survivorship bias; this no-return rejection is research evidence only."
+  },
+  "terminal_decision": {
+    "campaign032_terminal": true,
+    "reason": "One of 53 required uniqueness comparisons exceeded the frozen absolute 0.8 limit.",
+    "do_not_invert_or_rescue": true,
+    "prohibited_followups": [
+      "invert the higher direction because the duplicate correlation was negative",
+      "change calendar days to sessions, rescale, clip, threshold, filter, winsorize, bucket, or retime the exact reporting delay",
+      "choose a report subset, year subset, stock subset, board, regime, cost, or missing-value repair after observing the rejection",
+      "combine Campaign032 with Campaign020 or any other terminal factor",
+      "read Campaign032 historical returns, create a development preregistration, open 2019-2023 folds, or open 2024-2025 stress returns",
+      "backfill Candidate49, activate Candidate50, or create current scores, selections, sizing, or orders"
+    ],
+    "next_allowed_historical_step": "Start Campaign033 only from genuinely independent concept-only scouting, a separate pre-value mechanism-overlap audit, and a new finite exact no-return preregistration."
+  },
+  "candidate49_state_after_campaign": {
+    "signal_ledger": {
+      "path": "data/experiments/short_horizon/candidate49_future_signal_ledger.json",
+      "sha256": "5193f00d7f36da003f53cec387900da4c3d002299f5dfcfc1a95eaa199ed3a79",
+      "entry_count": 0
+    },
+    "execution_ledger": {
+      "path": "data/experiments/short_horizon/candidate49_future_execution_ledger.json",
+      "sha256": "d57a3e61eac969e42cafa418ccd8c0a5ee65dcf69da145bb2c096c2a02a2ea4f",
+      "entry_count": 0
+    },
+    "historical_return_backfill_performed": false,
+    "prospective_registration_changed": false
+  },
+  "next_iteration": {
+    "campaign_id": "a_share_three_day_walkforward_campaign_033",
+    "status": "concept_only_scouting_allowed_now",
+    "requires_new_daily_bar": false,
+    "requires_same_day_1630_wait": false,
+    "must_start_from_independent_economic_mechanism": true
+  }
+}

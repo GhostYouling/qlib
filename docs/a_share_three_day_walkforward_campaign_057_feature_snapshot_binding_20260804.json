@@ -1,0 +1,82 @@
+{
+  "version": 1,
+  "kind": "a_share_three_day_walkforward_campaign057_feature_snapshot_binding",
+  "status": "complete_and_independently_verified_pending_ordered_no_return_gates",
+  "recorded_at": "2026-08-04T04:33:13Z",
+  "campaign_id": "057",
+  "factor": "intraday_day_over_day_absolute_return_profile_similarity_238b",
+  "direction": "higher",
+  "no_return_protocol": {
+    "path": "docs/a_share_three_day_walkforward_campaign_057_no_return_preregistration.json",
+    "sha256": "9eb8607e91e952b9e22e436374d68de0a90df251065720bed8a6285f2e3b7ff1"
+  },
+  "original_implementation_freeze": {
+    "path": "docs/a_share_three_day_walkforward_campaign_057_feature_implementation_freeze_20260804.json",
+    "sha256": "44b889f9deb49b7fc3bbe1293a42e77dd5844502cba723d32d6eb7d46c118a7e"
+  },
+  "additive_repair_freeze": {
+    "path": "docs/a_share_three_day_walkforward_campaign_057_empty_partition_repair_freeze_20260804.json",
+    "sha256": "3aa8267e9ee35dccf7fb843aebf6977c57d428d61b3df5ec82f26652ff7be422",
+    "binding_validation_passed": true,
+    "binding_count_passed": 8,
+    "binding_count_failed": 0
+  },
+  "snapshot_manifest": {
+    "path": "/Volumes/DIsk/qlib-a-share-tushare-1m/derived/a_share/rich/tushare/minute_walkforward_campaign057_feature_library/tushare_stk_mins_1m_2019_2025_ea0cbb8f_walkforward_campaign057_feature_library_v1/snapshot_manifest.json",
+    "sha256": "7aba63621b2c6bd2b9d511d11ab56fc5331ae1dcf7a3c6055dbe6455d437d0ed",
+    "output_run_id": "tushare_stk_mins_1m_2019_2025_ea0cbb8f_walkforward_campaign057_feature_library_v1",
+    "dataset_sha256": "b24d183b15feb98015d7353160740273ffb5acc14dcf0031a984d9eb3003f19d",
+    "partitions": 33015,
+    "rows": 7724498,
+    "eligible_rows": 7671540,
+    "formal_publication_atomic_rename_completed": true
+  },
+  "independent_output_verification": {
+    "command": "PYTHONPATH=/Volumes/DIsk/Disk-Coding/qlib /opt/anaconda3/bin/python3 scripts/a_share_three_day_walkforward_campaign057_features.py verify --manifest /Volumes/DIsk/qlib-a-share-tushare-1m/derived/a_share/rich/tushare/minute_walkforward_campaign057_feature_library/tushare_stk_mins_1m_2019_2025_ea0cbb8f_walkforward_campaign057_feature_library_v1/snapshot_manifest.json --workers 16",
+    "actual_exit_code": 0,
+    "partitions_verified": 33015,
+    "rows_verified": 7724498,
+    "eligible_rows_verified": 7671540,
+    "all_partition_byte_and_frame_hashes_passed": true
+  },
+  "quality_summary": {
+    "missing_prior_stock_session_rows": 5393,
+    "nonpositive_current_total_absolute_return_rows": 29410,
+    "nonpositive_prior_total_absolute_return_rows": 32428,
+    "source_nonfinite_close_rows": 0,
+    "source_nonpositive_close_rows": 0,
+    "range_or_nonfinite_score_rows": 0,
+    "endpoint_canonicalized_rows": 938,
+    "exact_zero_absolute_return_bins_retained": 665936248
+  },
+  "publication_provenance": {
+    "manifest_feature_runner_is_the_immutable_original_core": true,
+    "repair_launcher_only_changed_empty_input_acceptance": true,
+    "every_nonempty_partition_used_the_original_frozen_extractor": true,
+    "all_source_raw_and_clean_partition_bytes_reverified_during_resume": true,
+    "previous_complete_checkpoint_values_recomputed_or_parameter_tuned": false
+  },
+  "research_boundary": {
+    "comparison_factor_values_read": false,
+    "historical_daily_price_fields_read": [],
+    "historical_forward_return_fields_read": false,
+    "coverage_gate_opened": false,
+    "uniqueness_gate_opened": false,
+    "development_folds_opened": false,
+    "stress_2024_2025_opened": false,
+    "candidate49_historical_return_signal_execution_or_milestone_backfill_performed": false,
+    "candidate49_ledgers_changed": false,
+    "second_prospective_candidate_created": false,
+    "current_scoring_selection_sizing_or_orders_performed": false,
+    "provider_request_issued": false
+  },
+  "attempt_accounting": {
+    "campaign057_attempt_count": 1,
+    "campaign057_infrastructure_only_failure_count": 1,
+    "campaign057_complete_factor_attempt_count_before_no_return_gates": 0,
+    "cumulative_historical_research_attempt_count": 326,
+    "cumulative_return_reading_development_trial_count": 268,
+    "successful_unchanged_repair_resume_consumes_additional_attempt": false
+  },
+  "next_action": "Freeze the Campaign057 no-return audit implementation against this snapshot binding, then execute coverage first and uniqueness only if coverage passes. Do not read daily prices or forward returns before both gates pass."
+}

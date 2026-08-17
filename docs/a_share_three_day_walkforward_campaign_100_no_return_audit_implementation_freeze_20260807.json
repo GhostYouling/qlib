@@ -1,0 +1,60 @@
+{
+  "schema_version": 1,
+  "kind": "a_share_three_day_walkforward_campaign100_no_return_audit_implementation_freeze",
+  "status": "frozen_after_candidate_snapshot_before_coverage_or_comparator_values",
+  "frozen_at": "2026-08-07T12:21:44Z",
+  "protocol": {
+    "path": "docs/a_share_three_day_walkforward_campaign_100_no_return_preregistration.json",
+    "sha256": "0bd9dbe069895b8e7c82accbf9834fa6b90adbbd7673c5e42b914107903ddb15"
+  },
+  "audit_runner": {
+    "path": "scripts/a_share_three_day_walkforward_campaign100_no_return_audit.py",
+    "sha256": "f6018a945fc842184b22b2af9e249399fbec3a83be9727602f66fab3203f1e48"
+  },
+  "tests": {
+    "path": "tests/data_collector_tests/test_a_share_three_day_walkforward_campaign100_no_return_audit.py",
+    "sha256": "4a9fded8fdfbf6332e7c9d9763eebe61c348ce4acd8d8e6fea1b9496a6cd85f8",
+    "result": "7 passed; Black and Ruff passed"
+  },
+  "snapshot_binding": {
+    "path": "docs/a_share_three_day_walkforward_campaign_100_feature_snapshot_binding_20260807.json",
+    "sha256": "b68b9500dcebe02e3d224a94b52ab61cdfc6607dd4486fb5c2c7a46f3dbc6d9e"
+  },
+  "attempt_ledger_before_freeze": {
+    "path": "data/experiments/short_horizon/historical_walkforward/campaign_100/research_attempt_ledger_v4.json",
+    "sha256": "dc7f3395c529a3883796343893cdaddb5902ced4495ba9938f46d2bb5b47299b"
+  },
+  "eligibility_identity_source": {
+    "path": "/Volumes/DIsk/qlib-a-share-tushare-1m/derived/a_share/rich/tushare/compact_comparator_cache/campaign067_terminal_numeric98_v4/snapshot_manifest.json",
+    "sha256": "3d81068f07ac61fe4cd04bd1a893e58759c06d88213263135fec5244e309b57b"
+  },
+  "final_comparator_source": {
+    "path": "/Volumes/DIsk/qlib-a-share-tushare-1m/derived/a_share/rich/tushare/minute_walkforward_campaign099_compact_feature_library/tushare_stk_mins_1m_2019_2025_ea0cbb8f_walkforward_campaign099_compact_feature_library_v1/snapshot_manifest.json",
+    "sha256": "a973f7d71a871e56294f50a0c39267006f9b859f1b9490599c89c51cbab5fe90",
+    "dataset_sha256": "1ac5ddd9c59401a48876df69e409ba86b6fd71923c5be61936efb30a56c3de9b"
+  },
+  "comparison_contract": {
+    "complete_definition_count": 131,
+    "complete_definition_order_sha256": "065077dfa5df9331906141f938204efedb3274e252d3b94c8fa1e9beebb5fc2e",
+    "numeric_comparator_count": 128,
+    "numeric_comparator_order_sha256": "12ebf65ee86e23e606875a9a78165f0410bfdb320bdc99d159097ec669583756",
+    "absolute_median_daily_rank_correlation_must_be_below": 0.8,
+    "minimum_pairwise_sessions": 100,
+    "minimum_names_per_session": 50,
+    "insufficient_overlap_fails_closed": true
+  },
+  "eligibility_source_columns_allowed_before_coverage": [
+    "stock_day_key"
+  ],
+  "candidate_source_columns_allowed_before_coverage": [
+    "stock_day_key",
+    "intraday_unchanged_close_range_absorption_share_238p"
+  ],
+  "coverage_or_capacity_metrics_computed_before_freeze": false,
+  "comparison_values_read_before_freeze": false,
+  "historical_daily_price_or_forward_return_values_read_before_freeze": false,
+  "provider_request_issued_before_freeze": false,
+  "candidate49_historical_return_read": false,
+  "candidate49_ledgers_changed": false,
+  "current_scoring_selection_sizing_or_orders_performed": false
+}

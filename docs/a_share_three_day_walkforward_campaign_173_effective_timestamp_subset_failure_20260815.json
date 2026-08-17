@@ -1,0 +1,35 @@
+{
+  "schema_version": 1,
+  "kind": "a_share_three_day_walkforward_campaign173_effective_timestamp_subset_failure",
+  "status": "recorded_known_original_timestamp_record_misclassified_in_effective_subset",
+  "recorded_at": "2026-08-15T10:03:21+08:00",
+  "attempt": {
+    "phase": "corrected_independent_validation",
+    "positive_hash_binding_set_passed_before_timestamp_subset": true,
+    "invalid_v1_placeholder_negative_control_passed_before_timestamp_subset": true,
+    "result": "nonzero_exit_when_initial_ledger_entered_effective_timestamp_subset",
+    "failure_reason": "The scanner correctly excluded invalid v1 from positive binding but reused its positive-record list for timestamp checks; that list still included the initial Campaign173 ledger whose future recorded_at defect is already preserved and corrected additively.",
+    "failure_exit_bypassed_or_masked": false,
+    "candidate_comparator_security_price_or_return_value_read": false
+  },
+  "recovery": {
+    "positive_hash_binding_set_and_effective_timestamp_set_must_be_distinct": true,
+    "effective_timestamp_set": [
+      "docs/a_share_three_day_walkforward_campaign_173_focused_timestamp_gate_failure_20260815.json",
+      "docs/a_share_three_day_walkforward_campaign_173_timestamp_correction_placeholder_failure_20260815.json",
+      "docs/a_share_three_day_walkforward_campaign_173_recorded_at_correction_v2_20260815.json",
+      "docs/a_share_three_day_walkforward_campaign_173_independent_validation_scope_failure_20260815.json",
+      "docs/a_share_three_day_walkforward_campaign_173_test_binding_patch_context_failure_20260815.json",
+      "docs/a_share_three_day_walkforward_campaign_173_effective_timestamp_subset_failure_20260815.json",
+      "data/experiments/short_horizon/historical_walkforward/campaign_173/research_attempt_ledger_v5.json",
+      "docs/a_share_three_day_walkforward_campaign_173_terminal_result_v5_20260815.json",
+      "docs/a_share_three_day_walkforward_future_numeric_comparison_eligibility_policy_v259_20260815.json"
+    ]
+  },
+  "scientific_effect": {
+    "formula_direction_catalog_or_decision_changed": false,
+    "candidate_or_comparator_value_read": false,
+    "security_price_or_return_read": false,
+    "candidate49_ledgers_changed": false
+  }
+}

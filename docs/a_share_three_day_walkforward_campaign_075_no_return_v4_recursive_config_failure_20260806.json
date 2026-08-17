@@ -1,0 +1,39 @@
+{
+  "schema_version": 1,
+  "kind": "a_share_three_day_walkforward_campaign075_infrastructure_failure",
+  "campaign": 75,
+  "campaign_attempt_ordinal": 5,
+  "stage": "no_return_audit_v4_full_restart",
+  "status": "failed_closed_before_first_comparator_snapshot_values_and_before_returns",
+  "recorded_at": "2026-08-06T10:02:00+08:00",
+  "command": "python scripts/a_share_three_day_walkforward_campaign075_no_return_audit_v4.py --workers 4",
+  "exit_code": 1,
+  "error_type": "RecursionError",
+  "error_summary": "The v4 corrected snapshot-config function called v3._snapshot_configs after that symbol had been monkeypatched to the corrected function itself.",
+  "failed_call": "Campaign075 no-return audit -> first appended Campaign068-Campaign074 snapshot verifier -> v3.verify_snapshot_compatibly -> patched v3._snapshot_configs -> v4._corrected_snapshot_configs recursion",
+  "frozen_inputs": {
+    "v4_overlay_sha256": "dac49c32040bb94d98c0f29f9ddcd6f733a2ffdf340354d420c0bb8590183581",
+    "v4_runner_sha256": "8b428dcc7a8605a7dd49c678c605db9d70830aa81655531d4b6b55157f197374",
+    "v4_tests_sha256": "b8958d7b2c1050afcbb8cee9dc640be5947b48932768b6fbe7157428c2b512e2",
+    "v4_implementation_freeze_sha256": "b3b6b9deb081e4315597490d218eb2cbab9f7c2d7f00725b1e00576793232a3e"
+  },
+  "evidence_boundary": {
+    "candidate_snapshot_verification_completed_before_failure": true,
+    "coverage_gate_reached_and_passed_before_failure": true,
+    "coverage_statistics_persisted_or_reused": false,
+    "first_comparator_snapshot_values_loaded": false,
+    "completed_numeric_comparisons": 0,
+    "audit_artifact_written": false,
+    "historical_daily_price_fields_read": [],
+    "historical_forward_returns_read": false,
+    "training_or_model_fitting_performed": false,
+    "provider_request_issued": false,
+    "candidate49_ledgers_changed": false
+  },
+  "immutability": {
+    "v4_overlay_runner_tests_and_freeze_must_not_be_rewritten": true,
+    "candidate_or_comparator_snapshot_files_rewritten": false,
+    "partial_statistics_may_be_reused": false
+  },
+  "next_action": "Freeze v5 with a captured reference to the original v3 snapshot-config function, then restart the complete no-return audit from candidate verification and coverage."
+}

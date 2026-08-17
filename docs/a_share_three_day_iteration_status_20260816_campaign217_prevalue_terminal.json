@@ -1,0 +1,95 @@
+{
+  "schema_version": 1,
+  "kind": "a_share_three_day_iteration_status_campaign217_prevalue_terminal",
+  "recorded_at": "2026-08-16T00:27:00+08:00",
+  "timestamp_semantics": "monotonic_logical_append_time_not_host_wall_clock_measurement",
+  "status": "campaign217_validation_passed_goal_active_campaign218_offline_prevalue_authorized",
+  "supersedes_without_rewriting": {
+    "path": "docs/a_share_three_day_iteration_status_20260816_campaign216_prevalue_terminal.json",
+    "sha256": "02d52b674ee4fc11da06bd253e1438632ece88b0fdd9414234ca5637a9fa5dac"
+  },
+  "authoritative_inputs": {
+    "semiconductor_lifecycle_source_frontier": {
+      "path": "docs/a_share_three_day_walkforward_campaign_217_semiconductor_design_tapeout_mask_wafer_fabrication_lot_probe_yield_packaging_assembly_test_qualification_release_rma_failure_analysis_lifecycle_source_frontier_20260816.json",
+      "sha256": "6fda8e4def10893362a3a82178f0f107890c45509347cf840ae12fd436618fa4"
+    },
+    "attempt_ledger_v1": {
+      "path": "data/experiments/short_horizon/historical_walkforward/campaign_217/research_attempt_ledger_v1.json",
+      "sha256": "a55854088134e21d3f60c6fbb296b57fe64c4048fefbdbeb015b1f163b97c4c3"
+    },
+    "terminal_result": {
+      "path": "docs/a_share_three_day_walkforward_campaign_217_terminal_result_20260816.json",
+      "sha256": "bb8211d13d470cd6cbf6884ed656c45c03b2607c328cb1f37a8fa85ab49333cf"
+    },
+    "policy_v328": {
+      "path": "docs/a_share_three_day_walkforward_future_numeric_comparison_eligibility_policy_v328_20260816.json",
+      "sha256": "6534978b32f512e097c287851f803b1cf191215f1165ea3c51fd665d31622644"
+    },
+    "terminal_validation": {
+      "path": "docs/a_share_three_day_walkforward_campaign_217_terminal_validation_20260816.json",
+      "sha256": "ffb8eb18b8893167991c7d60d260bc127c947e129ac7ddefa8aeb5e907518842"
+    }
+  },
+  "campaign217": {
+    "terminal": true,
+    "terminal_stage": "prevalue_source_admission_and_overlap_gate",
+    "finite_route_count": 7,
+    "source_admission_deferral_count": 3,
+    "overlap_or_hypothesis_rejection_count": 4,
+    "selected_factor_count": 0,
+    "definition_or_comparator_append": false,
+    "development_trial_count": 0,
+    "stress_trial_count_2024_2025": 0
+  },
+  "effective_accounting": {
+    "campaign217_attempt_count": 13,
+    "campaign217_scientific_attempt_count": 7,
+    "campaign217_infrastructure_failure_count": 6,
+    "cumulative_historical_research_attempt_count": 2023,
+    "cumulative_return_reading_development_trial_count": 314,
+    "chain_tip_sha256": "9fcb7414c0bfcfd5d76753400c3094bc6bb8f3d9fedf55f1c0b2825c2223f5b5"
+  },
+  "library_state": {
+    "complete_factor_definition_count": 158,
+    "complete_factor_definition_order_sha256": "4819c7fd7c0795d7598a52f3c615e3f117d5f4ecd9332974bc8e3dfa57c96667",
+    "eligible_numeric_comparator_count": 142,
+    "eligible_numeric_comparator_order_sha256": "5d1b35fb5a0d8ac9293008db9963c4a60a94dc940c237c3ed259e5ce44f14aaf",
+    "changed_by_campaign217": false
+  },
+  "candidate49": {
+    "sole_prospective_candidate": true,
+    "signal_ledger_sha256": "5193f00d7f36da003f53cec387900da4c3d002299f5dfcfc1a95eaa199ed3a79",
+    "signal_entry_count": 0,
+    "execution_ledger_sha256": "d57a3e61eac969e42cafa418ccd8c0a5ee65dcf69da145bb2c096c2a02a2ea4f",
+    "execution_entry_count": 0,
+    "ledgers_changed": false
+  },
+  "goal": {
+    "continuous_factor_iteration": "active",
+    "completed_by_campaign217": false,
+    "next_historical_campaign": 218,
+    "offline_iteration_may_continue_without_waiting_for_1630_or_new_daily_data": true
+  },
+  "validation_results": {
+    "focused": "2 passed",
+    "cumulative": "488 passed, 1 skipped, 32 deselected",
+    "independent": "passed",
+    "black": "passed",
+    "ruff": "passed"
+  },
+  "research_boundary": {
+    "historical_offline_prevalue_work_may_continue_at_any_local_time": true,
+    "failed_or_truncated_output_used_as_scientific_or_validation_evidence": false,
+    "source_semiconductor_lifecycle_factor_comparator_security_price_or_return_value_read": false,
+    "export_controlled_or_customer_confidential_design_process_test_or_yield_artifact_read": false,
+    "stress_2024_2025_opened": false,
+    "provider_or_web_request_issued": false,
+    "provider_credential_presence_value_or_digest_read": false,
+    "candidate49_plan_or_run_executed": false,
+    "candidate49_ledgers_changed": false,
+    "second_prospective_candidate_created": false,
+    "current_scoring_selection_sizing_positions_or_orders_performed": false,
+    "investment_advice": false
+  },
+  "next_action": "Begin Campaign218 finite offline prevalue research in a genuinely different mechanism domain; keep Candidate49 as the sole prospective confirmation layer and keep 2024-2025 closed."
+}

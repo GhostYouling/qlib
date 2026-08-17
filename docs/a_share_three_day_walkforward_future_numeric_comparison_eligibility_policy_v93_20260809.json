@@ -1,0 +1,118 @@
+{
+  "version": 93,
+  "kind": "a_share_three_day_walkforward_future_numeric_comparison_eligibility_policy",
+  "status": "campaign115_ordered_no_return_runner_frozen_and_verified_zero_value",
+  "recorded_at": "2026-08-09T07:31:00+08:00",
+  "recorded_at_semantics": "monotonic_logical_append_time_after_v92_recorded_at_06_16_and_ordered_no_return_v4_verification_not_host_wall_clock_measurement",
+  "supersedes_without_rewriting": {
+    "path": "docs/a_share_three_day_walkforward_future_numeric_comparison_eligibility_policy_v92_20260809.json",
+    "sha256": "a3d2a1c81c6fd71e7a7e931156ad25182823043f8ab516085f074d6080b924a2",
+    "preserved": true,
+    "complete_definition_order_changed": false,
+    "numeric_comparator_order_changed": false,
+    "accounting_changed": true,
+    "reason": "The fingerprint-bound Campaign115 ordered no-return runner now verifies the exact 134-comparator metadata chain and remains closed until the 1214-session semantic source receipt exists. Seven infrastructure failures were recorded additively; no candidate, comparator, price, return, 2024-2025, credential, or provider value was opened."
+  },
+  "authoritative_inputs": {
+    "iteration_state_v7": {
+      "path": "docs/a_share_three_day_iteration_status_20260809_campaign115_semantic_verifier_ready_v7.json",
+      "sha256": "0913315da1b67ae5c2808e9bcb69fddc7eb736a4fb843ad79ff34e7f4408bdfe"
+    },
+    "ordered_no_return_protocol": {
+      "path": "docs/a_share_three_day_walkforward_campaign_115_ordered_no_return_audit_protocol_20260809.json",
+      "sha256": "6d94e7fb638aed9f0423179a60ee3ad1a768b12c0de14a64c6dcc81168e6d12d"
+    },
+    "ordered_no_return_implementation_freeze_v4": {
+      "path": "docs/a_share_three_day_walkforward_campaign_115_ordered_no_return_audit_implementation_freeze_v4_20260809.json",
+      "sha256": "3b79bdea2ca29133e3b03a4bc7b60fa07549a240372cf07b2b4a6e7330538b57"
+    },
+    "ordered_no_return_verification_v1": {
+      "path": "docs/a_share_three_day_walkforward_campaign_115_ordered_no_return_audit_verification_v1_20260809.json",
+      "sha256": "8ff3ef1d7727328cc9b7bd8a5b06572df03875ec203ca9d26312907401798ff1"
+    },
+    "attempt_ledger_v11": {
+      "path": "data/experiments/short_horizon/historical_walkforward/campaign_115/research_attempt_ledger_v11.json",
+      "sha256": "72d1977ea6b9631acbf5c97e1b5d38ac61d6841e6ee59ccb60892a921ead777b"
+    },
+    "report_v9": {
+      "path": "docs/a_share_three_day_walkforward_campaign_115_prevalue_report_v9.md",
+      "sha256": "10676bc32d6cfb12f2ba5cac9839a48b69a1eae257b321e05e5905f20b5c8a66"
+    },
+    "unified_report": {
+      "path": "data/experiments/short_horizon/current_research_report.md",
+      "sha256": "c874b36d8c20a8c40865f11f21442c34dcc28ccc374f7ce4ec5721a9458450e7"
+    }
+  },
+  "campaign115_prevalue_classification": {
+    "terminal": false,
+    "stage": "ordered_no_return_runner_ready_waiting_for_complete_semantically_verified_development_source",
+    "ordered_no_return_plan_ready": false,
+    "ordered_no_return_plan_exit_code": 2,
+    "ordered_no_return_plan_blockers": [
+      "semantic_verification_receipt_valid",
+      "source_final_root_present"
+    ],
+    "ordered_no_return_plan_candidate_or_comparator_values_read": false,
+    "ordered_no_return_audit_status": "no_ordered_no_return_audit",
+    "provider_request_issued": false,
+    "complete_factor_definition_count": 0,
+    "numeric_snapshot_count": 0,
+    "development_trial_count": 0,
+    "stress_2024_2025_opened": false
+  },
+  "complete_historical_feature_library": {
+    "exact_v92_order_preserved": true,
+    "factor_definition_count": 141,
+    "order_sha256": "ccab6e3d9d81b0a02d4ff178fdd442b26a1e68e3655e1c6f5b2fcb28cd4a4559"
+  },
+  "numerical_comparator_eligibility": {
+    "exact_v92_order_preserved": true,
+    "eligible_numeric_comparator_count": 134,
+    "eligible_numeric_comparator_order_sha256": "31d788db467f558a0ac538315343090f1b3ad4cb27a26136a49ebaa88b2fdbf2",
+    "campaign115_numeric_comparator_appended": false
+  },
+  "ordered_no_return_freeze": {
+    "candidate_factor": "tushare_official_limit_up_queue_persistence",
+    "candidate_direction": "higher",
+    "development_years": [
+      2019,
+      2020,
+      2021,
+      2022,
+      2023
+    ],
+    "exact_session_count": 1214,
+    "exact_session_order_sha256": "63559370c9abfe3b8e24d133d1cc102658e9f3a144c507a1c12928d93ad95059",
+    "coverage_reads_only_stock_day_key_before_comparator_values": true,
+    "minimum_median_coverage": 0.95,
+    "minimum_p05_coverage": 0.9,
+    "minimum_p05_names": 50,
+    "minimum_three_session_cohorts": 200,
+    "minimum_years": 5,
+    "comparator_count": 134,
+    "minimum_pairwise_names_per_session": 50,
+    "minimum_pairwise_sessions": 100,
+    "maximum_absolute_median_daily_average_tie_spearman_strict": 0.8,
+    "plan_reads_parquet_candidate_or_comparator_values": false,
+    "daily_price_forward_return_or_2024_2025_values_read": false
+  },
+  "current_accounting": {
+    "campaign115_attempt_count": 19,
+    "campaign115_infrastructure_failure_count": 17,
+    "campaign115_prevalue_scientific_attempt_count": 2,
+    "campaign115_complete_factor_attempt_count": 0,
+    "campaign115_return_reading_development_trial_count": 0,
+    "cumulative_historical_research_attempt_count": 872,
+    "cumulative_return_reading_development_trial_count": 302
+  },
+  "research_boundary": {
+    "provider_request_issued": false,
+    "provider_rows_candidate_or_comparison_values_read": false,
+    "historical_daily_price_or_forward_return_values_read": false,
+    "stress_2024_2025_opened": false,
+    "candidate49_ledgers_changed": false,
+    "second_prospective_candidate_created": false,
+    "current_scoring_selection_sizing_or_orders_performed": false,
+    "investment_advice": false
+  }
+}

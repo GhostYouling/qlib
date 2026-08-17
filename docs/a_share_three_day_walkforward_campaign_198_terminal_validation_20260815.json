@@ -1,0 +1,78 @@
+{
+  "schema_version": 1,
+  "kind": "a_share_three_day_walkforward_campaign198_terminal_validation",
+  "status": "focused_cumulative_independent_and_bounded_diff_validation_passed",
+  "recorded_at": "2026-08-15T17:43:00+08:00",
+  "timestamp_semantics": "monotonic logical append time after Campaign198 policy v292 and all completed validation commands",
+  "authoritative_inputs": {
+    "policy_v292": {
+      "path": "docs/a_share_three_day_walkforward_future_numeric_comparison_eligibility_policy_v292_20260815.json",
+      "sha256": "6e842aef73fe9da2ba5986dbe08496a80f07fbd23697eab7b0e3e33537a7cace"
+    },
+    "terminal_result_v2": {
+      "path": "docs/a_share_three_day_walkforward_campaign_198_terminal_result_v2_20260815.json",
+      "sha256": "50b9a671a2bbd7144592ba9670b2e0b801b5d76ade3ee2c224f9ee3c67fc4873"
+    },
+    "attempt_ledger_v2": {
+      "path": "data/experiments/short_horizon/historical_walkforward/campaign_198/research_attempt_ledger_v2.json",
+      "sha256": "06f95def429917381c38b9eb35cef551ccd8d333de22823fb8d9996af4bf6565"
+    },
+    "focused_test": {
+      "path": "tests/data_collector_tests/test_a_share_three_day_walkforward_campaign198_terminal.py",
+      "sha256": "a8c5db783860f36d0514257a954f9b6367d56d325cb6c4d2c2ff2079b5551d67"
+    }
+  },
+  "validation_results": {
+    "json_parse_passed": true,
+    "campaign198_current_json_files_parsed": 12,
+    "black_passed": true,
+    "ruff_passed": true,
+    "focused_campaign198_tests_passed": 2,
+    "focused_campaign198_duration_seconds": 0.07,
+    "campaign145_through_campaign198_test_file_count": 86,
+    "campaign145_through_campaign198_tests_passed": 469,
+    "campaign145_through_campaign198_tests_skipped": 1,
+    "campaign145_through_campaign198_nodes_deselected": 13,
+    "campaign145_through_campaign198_duration_seconds": 14.03,
+    "independent_validation_passed": true,
+    "bounded_git_diff_check_passed": true,
+    "direct_bindings_verified": 18,
+    "campaign198_attempt_entries_verified": 12,
+    "campaign198_evidence_hashes_verified": 12,
+    "campaign198_attempt_hash_chain_passed": true,
+    "finite_routes_verified": 7,
+    "source_gate_items_verified": 12,
+    "candidate49_ledgers_verified": 2,
+    "unified_reports_checked": 2,
+    "trailing_whitespace_check_passed": true,
+    "failed_or_truncated_invocations_recorded_and_excluded": 5
+  },
+  "effective_accounting_verified": {
+    "campaign198_attempt_count": 12,
+    "campaign198_scientific_attempt_count": 7,
+    "campaign198_infrastructure_failure_count": 5,
+    "cumulative_historical_research_attempt_count": 1794,
+    "cumulative_return_reading_development_trial_count": 314
+  },
+  "candidate49": {
+    "only_active_prospective_candidate": true,
+    "signal_ledger_sha256": "5193f00d7f36da003f53cec387900da4c3d002299f5dfcfc1a95eaa199ed3a79",
+    "signal_entry_count": 0,
+    "execution_ledger_sha256": "d57a3e61eac969e42cafa418ccd8c0a5ee65dcf69da145bb2c096c2a02a2ea4f",
+    "execution_entry_count": 0,
+    "ledgers_changed": false
+  },
+  "research_boundary": {
+    "failed_or_truncated_output_used_as_scientific_or_validation_evidence": false,
+    "source_factor_comparator_security_price_or_return_value_read": false,
+    "stress_2024_2025_opened": false,
+    "provider_or_web_request_issued": false,
+    "provider_credential_presence_value_or_digest_read": false,
+    "candidate49_plan_or_run_executed": false,
+    "candidate49_ledgers_changed": false,
+    "second_prospective_candidate_created": false,
+    "current_scoring_selection_sizing_positions_or_orders_performed": false,
+    "investment_advice": false
+  },
+  "next_action": "Publish the final Campaign198 active-goal state and authorize Campaign199 to scout a genuinely different finite offline prevalue mechanism while preserving all frozen boundaries."
+}

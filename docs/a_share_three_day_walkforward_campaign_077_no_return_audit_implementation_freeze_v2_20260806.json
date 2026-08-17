@@ -1,0 +1,44 @@
+{
+  "version": 2,
+  "kind": "a_share_three_day_walkforward_campaign077_no_return_audit_implementation_freeze",
+  "status": "frozen_before_full_retry_with_runtime_version_gate_only_repair",
+  "frozen_at": "2026-08-06T13:12:00+08:00",
+  "repair_protocol": {
+    "path": "docs/a_share_three_day_walkforward_campaign_077_no_return_runtime_compatibility_repair_protocol_v2_20260806.json",
+    "sha256": "e1a0567bd83f4ae75288fa2c7c50de504ff613a873bd967802ef546cca788841"
+  },
+  "v1_failure_record": {
+    "path": "docs/a_share_three_day_walkforward_campaign_077_no_return_v1_runtime_compatibility_failure_20260806.json",
+    "sha256": "369b196d2e9f1f823693ef830dd4b21ff475d14e4b200c53d447df9a652ff469"
+  },
+  "v1_runner": {
+    "path": "scripts/a_share_three_day_walkforward_campaign077_no_return_audit.py",
+    "sha256": "2247df82f8282919707d36597ea0d97959caa21ef4831d1bd5b92d65a9a8e9dc"
+  },
+  "v2_runner": {
+    "path": "scripts/a_share_three_day_walkforward_campaign077_no_return_audit_v2.py",
+    "sha256": "0effc90c4bac5a9eec633b8bfbfd8f8965b709e212153fe5dc8af49e3e91f133"
+  },
+  "tests": {
+    "path": "tests/data_collector_tests/test_a_share_three_day_walkforward_campaign077_no_return_audit_v2.py",
+    "sha256": "46d61584dbaf059dc97b7c006a795768f8259705671e507b6dda07202a771ff6",
+    "pre_freeze_execution": "3 passed, 1 live-freeze test deselected"
+  },
+  "sole_implementation_change": {
+    "legacy_expected_pandas_before": "2.2.3",
+    "legacy_expected_pyarrow_before": "25.0.0",
+    "isolated_process_expected_pandas_during_validation": "2.2.2",
+    "isolated_process_expected_pyarrow_during_validation": "16.1.0",
+    "constants_restored_in_finally": true,
+    "manifest_partition_byte_row_schema_value_and_dataset_digest_checks_unchanged": true,
+    "formula_direction_coverage_comparison_order_uniqueness_threshold_or_research_fields_changed": false
+  },
+  "partial_statistics_reused": false,
+  "candidate_snapshot_or_manifest_rewritten": false,
+  "historical_daily_price_fields_read_before_retry": [],
+  "historical_forward_returns_read_before_retry": false,
+  "provider_request_issued_before_retry": false,
+  "candidate49_historical_backfill_performed": false,
+  "candidate49_ledgers_changed": false,
+  "next_action": "Run the exact v2 command once with the same data root, experiment root, workers, protocol, candidate snapshot, gates, and comparison order; restart from candidate verification and coverage."
+}

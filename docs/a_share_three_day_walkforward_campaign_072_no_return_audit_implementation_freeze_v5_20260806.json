@@ -1,0 +1,65 @@
+{
+  "version": 5,
+  "kind": "a_share_three_day_walkforward_campaign072_no_return_audit_implementation_freeze",
+  "status": "frozen_after_recorded_inner_helper_failure_before_repaired_retry",
+  "recorded_at": "2026-08-06T07:00:00+08:00",
+  "supersedes_failed_v4_without_rewriting": {
+    "implementation_freeze_v4": {
+      "path": "docs/a_share_three_day_walkforward_campaign_072_no_return_audit_implementation_freeze_v4_20260806.json",
+      "sha256": "a04977aed4e2c1bd5c35fa18cc2a27b930ca830d155b87d34a59db66ac166b89"
+    },
+    "activation_binding_v4": {
+      "path": "docs/a_share_three_day_walkforward_campaign_072_no_return_audit_activation_binding_v4_20260806.json",
+      "sha256": "7b8c43aa968010c9420a9b3dae3cfcf7d72a8ce183732b853b1e1ab1fd899d98"
+    }
+  },
+  "prior_postcoverage_failure": {
+    "path": "docs/a_share_three_day_walkforward_campaign_072_postcoverage_inner_append_helper_failure_20260806.json",
+    "sha256": "35c2357609669aa6f2680ea56a10ebc3a3a4b970ce8697a1785b2efd1f94bcbd"
+  },
+  "protocol": {
+    "path": "docs/a_share_three_day_walkforward_campaign_072_no_return_preregistration.json",
+    "sha256": "32f16b1e8e07b0d60aa6646f66c52740e330fa02ef631803fb68b55a7e79cc98"
+  },
+  "snapshot_binding": {
+    "path": "docs/a_share_three_day_walkforward_campaign_072_feature_snapshot_binding_20260806.json",
+    "sha256": "eb36b61ecc800b13e40f8947da5b0fd049542df784baafc8f86a3c38c82b2d1d"
+  },
+  "sequence_record": {
+    "path": "docs/a_share_three_day_walkforward_campaign_072_audit_freeze_sequence_record_20260806.json",
+    "sha256": "cddf3537c70ea033cfc14a5e0b85e798d5d50ae9a4e4fba5228c792bf15f465f"
+  },
+  "audit_runner": {
+    "path": "scripts/a_share_three_day_walkforward_campaign072_no_return_audit.py",
+    "sha256": "0818a5f7fca3f7c8902fb417cce6e88c5522016dc259bc520bd6d67562d8e483"
+  },
+  "tests": {
+    "path": "tests/data_collector_tests/test_a_share_three_day_walkforward_campaign072_no_return_audit.py",
+    "sha256": "753ca79e0a5554bfdaa9e97587ea4921721f2c42a146e60183fc9276bfa6cc9e",
+    "result": "8 passed",
+    "real_coverage_or_comparison_values_read_by_tests": false,
+    "regressions": [
+      "Campaign072 override map reaches the actual inner runtime",
+      "inherited Campaign070 compatibility fingerprints are exact",
+      "layered comparison counts are 101 then 102",
+      "snapshot append helper is resolved from the executing inner runtime",
+      "status truthfully preserves prior coverage and comparison reads"
+    ]
+  },
+  "ordered_gate_implementation": {
+    "coverage_first_was_satisfied_in_prior_failed_runs": true,
+    "numeric_comparator_count": 102,
+    "numeric_comparator_order_sha256": "b473b8e32852dbbd1ca6beeb567805af55b77ec2e91222ec3e75e4bd64a64226",
+    "Campaign071_loaded_last": true,
+    "all_comparators_must_pass": true,
+    "structural_Campaign063_challenge_retained": true,
+    "no_formula_direction_gate_or_comparator_changed_after_values": true
+  },
+  "coverage_or_capacity_metrics_previously_computed": true,
+  "comparison_values_previously_read": true,
+  "audit_artifact_previously_published": false,
+  "historical_daily_price_fields_read": [],
+  "historical_forward_returns_read": false,
+  "provider_request_issued": false,
+  "candidate49_ledgers_changed": false
+}

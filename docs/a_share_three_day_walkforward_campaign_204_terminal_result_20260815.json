@@ -1,0 +1,77 @@
+{
+  "schema_version": 1,
+  "kind": "a_share_three_day_walkforward_campaign204_terminal_result",
+  "status": "terminal_prevalue_utility_customer_connection_delivery_billing_and_restoration_lifecycle_zero_selected_goal_active",
+  "recorded_at": "2026-08-15T20:00:00+08:00",
+  "timestamp_semantics": "monotonic logical publication time after the Campaign204 source frontier and attempt ledger v1",
+  "authoritative_inputs": {
+    "utility_customer_connection_delivery_billing_and_restoration_source_frontier": {
+      "path": "docs/a_share_three_day_walkforward_campaign_204_utility_customer_connection_metering_consumption_billing_arrears_disconnection_reconnection_outage_restoration_lifecycle_source_frontier_20260815.json",
+      "sha256": "4aa19120d9f18b0ac6303fb6350ae51216c6d7971d51fc41de339dfe5caf46e6"
+    },
+    "attempt_ledger_v1": {
+      "path": "data/experiments/short_horizon/historical_walkforward/campaign_204/research_attempt_ledger_v1.json",
+      "sha256": "cc68214c26829ef070a7b75e3cb74d78132dc45e29008505c4b3d173f6a0fbfb",
+      "effective_entry_count": 10,
+      "chain_tip_sha256": "5a91b0635c823ea4dbbe755411d8c777851068945c5247e1154d3b69ce0c7d42"
+    },
+    "campaign203_state": {
+      "path": "docs/a_share_three_day_iteration_status_20260815_campaign203_prevalue_terminal.json",
+      "sha256": "ac0f869ad05d8e51d1c1bbe0813d8e946d7ad12b010a424e9ebe7eb2877d8958"
+    },
+    "policy_v304": {
+      "path": "docs/a_share_three_day_walkforward_future_numeric_comparison_eligibility_policy_v304_20260815.json",
+      "sha256": "4721525d498e00e05c45a739b281395af7c78e23be841aa3a68d0180b94a6536"
+    }
+  },
+  "scientific_result": {
+    "terminal": true,
+    "terminal_phase": "finite_prevalue_utility_customer_connection_metering_delivery_interruption_restoration_billing_arrears_disconnection_reconnection_lifecycle_source_admission",
+    "utility_customer_lifecycle_routes_reviewed": 7,
+    "genuinely_new_issuer_state_routes": 3,
+    "source_admission_deferrals_not_factor_failures": 3,
+    "relabeling_overlap_operator_or_combination_route_rejections": 4,
+    "selected_candidate_count": 0,
+    "complete_factor_definition_created": false,
+    "numeric_comparator_created": false,
+    "predictive_ineffectiveness_claimed_for_deferred_states": false
+  },
+  "effective_accounting": {
+    "campaign204_attempt_count": 10,
+    "campaign204_prevalue_scientific_attempt_count": 7,
+    "campaign204_infrastructure_failure_count": 3,
+    "campaign204_return_reading_development_trial_count": 0,
+    "cumulative_historical_research_attempt_count": 1869,
+    "cumulative_return_reading_development_trial_count": 314
+  },
+  "library_state": {
+    "complete_factor_definition_count": 158,
+    "complete_factor_definition_order_sha256": "4819c7fd7c0795d7598a52f3c615e3f117d5f4ecd9332974bc8e3dfa57c96667",
+    "eligible_numeric_comparator_count": 142,
+    "eligible_numeric_comparator_order_sha256": "5d1b35fb5a0d8ac9293008db9963c4a60a94dc940c237c3ed259e5ce44f14aaf",
+    "changed_by_campaign204": false
+  },
+  "candidate49": {
+    "only_active_prospective_candidate": true,
+    "signal_ledger_sha256": "5193f00d7f36da003f53cec387900da4c3d002299f5dfcfc1a95eaa199ed3a79",
+    "signal_entry_count": 0,
+    "execution_ledger_sha256": "d57a3e61eac969e42cafa418ccd8c0a5ee65dcf69da145bb2c096c2a02a2ea4f",
+    "execution_entry_count": 0,
+    "ledgers_changed": false,
+    "completed_future_workflow_record_count": 0
+  },
+  "research_boundary": {
+    "failed_or_truncated_output_used_as_scientific_or_validation_evidence": false,
+    "source_utility_customer_connection_meter_read_consumption_outage_restoration_bill_arrears_disconnection_reconnection_factor_comparator_security_price_or_return_value_read": false,
+    "directly_identifiable_customer_precise_consumption_or_critical_infrastructure_control_record_read": false,
+    "stress_2024_2025_opened": false,
+    "provider_or_web_request_issued": false,
+    "provider_credential_presence_value_or_digest_read": false,
+    "candidate49_plan_or_run_executed": false,
+    "candidate49_ledgers_changed": false,
+    "second_prospective_candidate_created": false,
+    "current_scoring_selection_sizing_positions_or_orders_performed": false,
+    "investment_advice": false
+  },
+  "next_action": "Append the Campaign204 terminal result once to both mutable reports, bind policy v305, run fresh focused, cumulative and independent validation, and keep the continuing goal active for Campaign205."
+}

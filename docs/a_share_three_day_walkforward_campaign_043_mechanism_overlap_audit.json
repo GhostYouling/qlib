@@ -1,0 +1,157 @@
+{
+  "version": 1,
+  "kind": "a_share_three_day_walkforward_campaign043_mechanism_overlap_audit",
+  "status": "completed_before_campaign043_candidate_comparison_daily_price_or_return_values",
+  "recorded_at": "2026-07-31T09:48:00Z",
+  "purpose": "Determine conceptual independence of the exact Campaign043 transaction-VWAP-consensus mechanism before implementing it or reading any protected value.",
+  "authoritative_inputs": {
+    "iteration_state": {
+      "path": "docs/a_share_three_day_iteration_status_20260731_campaign042_verified.json",
+      "sha256": "07048d0f0d16a6847f9be0bada8b257d46a06156bec8058a3fbced855548f334"
+    },
+    "concept_scouting": {
+      "path": "docs/a_share_three_day_walkforward_campaign_043_concept_scouting.json",
+      "sha256": "de9fefd2b5ddb5ee4931b376830327d9c8e8cb78966ab14408f9c7457f044288"
+    },
+    "campaign042_terminal_record": {
+      "path": "docs/a_share_three_day_walkforward_campaign_042_research_record.json",
+      "sha256": "95ed818100ce2529e6eea442702a09d0bf0ae2ffd35a0604927826f3431328fd"
+    },
+    "complete_prior_factor_library": {
+      "path": "docs/a_share_three_day_walkforward_campaign_042_no_return_preregistration.json",
+      "sha256": "69a554576358c6f2330b4caa3c91d7bbfc67b576259a5f342a89912587d9e826",
+      "prior_comparison_count": 63,
+      "prior_comparison_order_sha256": "2318bc5774032e9a41519936dde4943a9d5f577b5c05999d2fe0f8bef617fa77",
+      "campaign042_candidate_appended_for_campaign043": {
+        "name": "intraday_lunch_repricing_persistence_2r",
+        "score_direction": "higher"
+      },
+      "campaign043_comparison_count": 64,
+      "campaign043_comparison_order_sha256": "c2a81a12274ab6b485c5f42577edc30320ef1292c4af1e33ed6b53127d1ba350"
+    }
+  },
+  "candidate": {
+    "name": "intraday_transaction_vwap_consensus_240m",
+    "direction": "higher",
+    "formula": "For each active continuous-session bar i, let p_i=amount_i/volume_i and w_i=volume_i/sum_j(volume_j). Return exp(sum_i(w_i*log(p_i))) / sum_i(w_i*p_i).",
+    "source_projection": [
+      "datetime",
+      "symbol",
+      "provider",
+      "volume",
+      "amount"
+    ]
+  },
+  "mechanism_family_review": [
+    {
+      "family": "bar_transaction_price_level_and_vwap_mechanisms",
+      "result": "distinct_pending_statistical_uniqueness_gate",
+      "nearest_prior_factors": [
+        "intraday_bar_vwap_close_pressure_240m",
+        "intraday_transaction_price_path_confirmation_238p",
+        "intraday_share_volume_transaction_price_coupling_238p",
+        "intraday_transaction_vwap_envelope_asymmetry_240m",
+        "intraday_cumulative_vwap_crossing_rate_240m"
+      ],
+      "reason": "Prior mechanisms compare bar transaction prices with close, high-low envelopes, share-volume changes, close-return paths, or causal cumulative VWAP crossings. Campaign043 compares no bar with another field or time and uses no path order: it measures only the scale-free volume-weighted dispersion of positive active-bar transaction-price levels through the exact weighted geometric-to-arithmetic mean ratio."
+    },
+    {
+      "family": "close_return_volatility_path_and_range_dispersion",
+      "result": "distinct_pending_statistical_uniqueness_gate",
+      "nearest_prior_factors": [
+        "intraday_realized_volatility",
+        "intraday_diffusive_variation_ratio_238m",
+        "intraday_return_variance_entropy_238m",
+        "intraday_global_price_range_revisit_240m",
+        "intraday_five_minute_variance_ratio_230w",
+        "intraday_half_session_chord_adherence_240m"
+      ],
+      "reason": "Those factors use close increments, return energy, high-low interval geometry, temporal order, or fitted endpoint chords. Campaign043 reads no close/high/low, takes no difference or lag, and is invariant to permutation of the same active transaction-price/volume pairs. Statistical dependence on volatility remains explicitly challenged by all 64 frozen comparisons."
+    },
+    {
+      "family": "amount_and_share_volume_profile_shape",
+      "result": "distinct_pending_statistical_uniqueness_gate",
+      "nearest_prior_factors": [
+        "intraday_amount_participation_entropy_240m",
+        "intraday_amount_profile_serial_persistence_240m",
+        "intraday_amount_center_of_mass_240m",
+        "intraday_market_amount_profile_synchronization_240m",
+        "intraday_opening_auction_amount_share_241m"
+      ],
+      "reason": "Campaign043 does not score the concentration, serial order, clock-time center, market synchronization, or opening share of amount or volume. Volume is used only as the economically exact weight for the dispersion of amount/volume price levels, and time-bin order is discarded."
+    },
+    {
+      "family": "range_overlap_containment_absorption_and_intrabar_geometry",
+      "result": "distinct",
+      "reason": "Campaign043 reads no open, high, low, close, candle body, wick, interval, frontier, containment, overlap, range mass, or absorption event."
+    },
+    {
+      "family": "market_peer_quarterly_event_and_lunch_boundary",
+      "result": "distinct",
+      "nearest_prior_factors": [
+        "intraday_market_idiosyncratic_share_238m",
+        "quarterly_announcement_freshness_60s",
+        "intraday_lunch_repricing_persistence_2r"
+      ],
+      "reason": "No cross-stock benchmark, disclosure, event, daily price, return target, lunch jump, or endpoint follow-through enters the formula."
+    },
+    {
+      "family": "candidate49_cumulative_vwap_crossing_rate",
+      "result": "distinct",
+      "reason": "Candidate49 uses close signs around a causal cumulative VWAP in future-only sessions. Campaign043 uses historical amount and volume only, ignores close and temporal crossings, reads no Candidate49 values or returns, and cannot enter Candidate49 signal or execution ledgers."
+    },
+    {
+      "family": "terminal_factor_combination_or_rescue",
+      "result": "not_used",
+      "reason": "Campaign043 contains one raw weighted-mean inequality statistic and no prior factor value, learned weight, filter, threshold, transform search, fitted model, regime split, or combination."
+    }
+  ],
+  "design_choices_frozen_before_values": {
+    "formula_family": "volume_weighted_geometric_to_arithmetic_transaction_price_consensus",
+    "direction": "higher",
+    "selected_bar_count": 240,
+    "include_0930": false,
+    "selected_grid": [
+      "09:31-11:30",
+      "13:01-15:00"
+    ],
+    "active_bar_rule": "volume>0 and amount>0",
+    "joint_zero_rule": "volume=0 and amount=0 is inactive and excluded",
+    "one_sided_zero_rule": "exactly one of volume or amount is zero makes the stock-day missing",
+    "negative_or_nonfinite_rule": "any selected volume or amount that is negative or nonfinite makes the stock-day missing",
+    "transaction_price": "p_i=amount_i/volume_i on active bars",
+    "weight": "w_i=volume_i/sum_active(volume)",
+    "weighted_geometric_mean": "G=exp(sum_i(w_i*log(p_i)))",
+    "weighted_arithmetic_mean": "A=sum_i(w_i*p_i)",
+    "score": "G/A",
+    "minimum_active_bars": 120,
+    "constant_transaction_price_day": "valid score 1",
+    "valid_lower_bound": 0.0,
+    "valid_upper_bound": 1.0,
+    "endpoint_canonicalization_tolerance": 1e-12,
+    "alternate_center_weight_dispersion_transform_subwindow_inverse_or_scale_search_allowed": false,
+    "threshold_filter_year_cost_board_regime_or_model_search_allowed": false,
+    "ohlc_close_market_quarterly_event_daily_price_return_or_terminal_factor_input_allowed": false
+  },
+  "research_boundary": {
+    "comparison_factor_names_and_directions_read_from_frozen_protocol": true,
+    "external_minute_partitions_read": false,
+    "candidate_values_read": false,
+    "comparison_values_read": false,
+    "historical_daily_price_fields_read": false,
+    "historical_forward_returns_read": false,
+    "training_or_model_fitting_performed": false,
+    "provider_request_issued": false,
+    "candidate49_historical_return_signal_or_execution_backfill_performed": false,
+    "candidate49_ledgers_changed": false,
+    "candidate50_activation_created": false,
+    "current_scoring_selection_sizing_or_orders_performed": false,
+    "investment_advice": false
+  },
+  "decision": {
+    "conceptual_independence_passed": true,
+    "statistical_independence_pending_all_64_comparisons": true,
+    "predictive_value_established": false,
+    "next_action": "Validate all bindings, then freeze a fingerprint-bound no-return protocol with this exact candidate and the complete ordered 64-factor comparison library before implementation."
+  }
+}

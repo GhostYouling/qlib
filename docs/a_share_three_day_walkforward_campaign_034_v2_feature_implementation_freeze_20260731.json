@@ -1,0 +1,85 @@
+{
+  "version": 1,
+  "kind": "a_share_three_day_walkforward_campaign034_v2_feature_implementation_freeze",
+  "status": "corrected_v2_feature_implementation_frozen_before_candidate_snapshot_values",
+  "recorded_at": "2026-07-30T18:17:51Z",
+  "purpose": "Fingerprint-bind the narrowly repaired Campaign034 partition dispatch, its separate v2 destination, and regression evidence before the corrected full-market candidate snapshot is built.",
+  "authoritative_inputs": {
+    "iteration_status": {
+      "path": "docs/a_share_three_day_iteration_status_20260730_campaign033_verified.json",
+      "sha256": "b77415e771ac1096f8422574bcbd0ce5db81e235734f6b3fbda4dcd147d41496"
+    },
+    "no_return_preregistration": {
+      "path": "docs/a_share_three_day_walkforward_campaign_034_no_return_preregistration.json",
+      "sha256": "de5d6a4795cbe31bbb5b4cb74c4f663503c72c6301d144672916c22eaaab737c"
+    },
+    "invalid_v1_snapshot_repair": {
+      "path": "docs/a_share_three_day_walkforward_campaign_034_invalid_v1_snapshot_repair_20260731.json",
+      "sha256": "56a3a0c7d85394bfb97681b3fc68514810aa2bbf7220eb32851a1598dc484efe"
+    },
+    "corrected_feature_runner": {
+      "path": "scripts/a_share_three_day_walkforward_campaign034_features.py",
+      "sha256": "9c0cc98c6d9bc9599ca51b428b07b33d0c1e5c80312b715492046994fe7dbda4"
+    },
+    "corrected_feature_tests": {
+      "path": "tests/data_collector_tests/test_a_share_three_day_walkforward_campaign034_features.py",
+      "sha256": "ad83af2b29c94e534deee0e22866ebdadeab0aa6c4c5af8f945f0e1b695eea67"
+    },
+    "candidate49_signal_ledger": {
+      "path": "data/experiments/short_horizon/candidate49_future_signal_ledger.json",
+      "sha256": "5193f00d7f36da003f53cec387900da4c3d002299f5dfcfc1a95eaa199ed3a79",
+      "entry_count": 0
+    },
+    "candidate49_execution_ledger": {
+      "path": "data/experiments/short_horizon/candidate49_future_execution_ledger.json",
+      "sha256": "d57a3e61eac969e42cafa418ccd8c0a5ee65dcf69da145bb2c096c2a02a2ea4f",
+      "entry_count": 0
+    }
+  },
+  "implementation": {
+    "factor": "intraday_round_tenth_close_avoidance_240m",
+    "direction": "higher",
+    "formula": "1 - count(q_i mod 10 = 0) / 240, where q_i = nearest_integer(100 * close_i) after exact CNY 0.01 tick validation",
+    "partition_compute_injection_verified": true,
+    "partition_quality_keys_required": [
+      "intraday_round_tenth_close_avoidance_240m__non_tick_grid_close_rows",
+      "intraday_round_tenth_close_avoidance_240m__round_tenth_close_observations"
+    ],
+    "spectral_quality_keys_forbidden": [
+      "intraday_round_tenth_close_avoidance_240m__endpoint_canonicalized_rows",
+      "intraday_round_tenth_close_avoidance_240m__nonfinite_power_rows",
+      "intraday_round_tenth_close_avoidance_240m__nonfinite_return_rows",
+      "intraday_round_tenth_close_avoidance_240m__nonpositive_total_power_rows"
+    ],
+    "v2_output_root": "/Volumes/DIsk/qlib-a-share-tushare-1m/derived/a_share/rich/tushare/minute_walkforward_campaign034_feature_library/tushare_stk_mins_1m_2019_2025_ea0cbb8f_walkforward_campaign034_feature_library_v2",
+    "v2_output_root_existed_at_freeze": false,
+    "invalid_v1_output_root_remains_separate_and_immutable": true,
+    "formula_direction_source_bar_grid_tolerance_or_gate_changed": false
+  },
+  "verification": {
+    "python_compile_exit_code": 0,
+    "focused_test_count": 19,
+    "focused_tests_passed": 19,
+    "focused_tests_failed": 0,
+    "partition_level_synthetic_value_for_all_non_round_fen_closes": 1.0,
+    "partition_level_synthetic_eligible": true,
+    "initial_test_collection_attempt": {
+      "exit_code": 2,
+      "failure": "ModuleNotFoundError: No module named 'scripts'",
+      "cause": "repository root was absent from PYTHONPATH",
+      "tests_executed": 0,
+      "candidate_or_comparison_values_read": false,
+      "historical_returns_read": false,
+      "resolved_by": "rerun the identical focused test set with PYTHONPATH=."
+    }
+  },
+  "authorization": {
+    "v2_candidate_snapshot_build_allowed_after_binding_validation_exit_zero": true,
+    "v1_snapshot_use_rewrite_or_deletion_allowed": false,
+    "comparison_values_may_be_read_before_corrected_coverage_gate_passes": false,
+    "historical_returns_may_be_read_before_corrected_no_return_admission": false,
+    "candidate49_historical_backfill_allowed": false,
+    "candidate50_activation_allowed": false,
+    "current_scoring_selection_sizing_or_orders_allowed": false
+  }
+}

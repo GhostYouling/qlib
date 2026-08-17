@@ -1,0 +1,55 @@
+{
+  "schema_version": 1,
+  "kind": "a_share_three_day_walkforward_campaign078_feature_snapshot_binding",
+  "status": "verified_immutable_snapshot_before_comparison_values",
+  "recorded_at": "2026-08-06T14:02:00+08:00",
+  "campaign_id": "a_share_three_day_walkforward_campaign_078",
+  "factor": "intraday_amount_local_peak_density_238p",
+  "direction": "higher",
+  "snapshot": {
+    "manifest_path": "/Volumes/DIsk/qlib-a-share-tushare-1m/derived/a_share/rich/tushare/minute_walkforward_campaign078_feature_library/tushare_stk_mins_1m_2019_2025_ea0cbb8f_walkforward_campaign078_feature_library_v1/snapshot_manifest.json",
+    "manifest_sha256": "a8d2f2a68dba3f7f3a3f34ac8d203f1381e429612ded6daf6c6447e0ed983071",
+    "dataset_sha256": "225c539824978df0cc3e4b34a9520aa919ffa77ba73246c21e1bdb6122a0227d",
+    "partitions": 33015,
+    "rows": 7724498,
+    "eligible_rows": 7724498,
+    "all_partition_byte_hashes_passed": true,
+    "all_partition_frame_hashes_passed": true,
+    "aggregate_dataset_digest_passed": true
+  },
+  "frozen_inputs": {
+    "protocol": {
+      "path": "docs/a_share_three_day_walkforward_campaign_078_no_return_preregistration.json",
+      "sha256": "173609bb9bf18b54fa82f160171af9f2127466d8ec37c5f8be48cecbe91a4756"
+    },
+    "implementation_freeze": {
+      "path": "docs/a_share_three_day_walkforward_campaign_078_feature_implementation_freeze_20260806.json",
+      "sha256": "6ab52b93d405ef49c57a4cfbc445b58dd9ca4c03362b8a2330c97dcb79e2e5dc"
+    },
+    "feature_runner": {
+      "path": "scripts/a_share_three_day_walkforward_campaign078_features.py",
+      "sha256": "ee1a6c2767870452f2c066f4cbe7f9ef8aa8b19ed9dd3901bdf864ccbde3c799"
+    },
+    "feature_tests": {
+      "path": "tests/data_collector_tests/test_a_share_three_day_walkforward_campaign078_features.py",
+      "sha256": "11473df899dbd6a95cdf5ee7d662d49bd637341fdafe2baf57b9d547acb53bca"
+    }
+  },
+  "quality": {
+    "accepted_identity_rows": 7724498,
+    "accepted_candidate_eligible_rows": 7724498,
+    "accepted_candidate_missing_rows": 0,
+    "raw_source_sessions": 7744653,
+    "raw_nonpositive_total_amount_sessions_outside_accepted_identity": 19831,
+    "invalid_amount_grid_sessions": 0
+  },
+  "research_boundary": {
+    "comparison_values_read": false,
+    "historical_daily_price_fields_read": [],
+    "historical_forward_returns_read": false,
+    "provider_request_issued": false,
+    "candidate49_ledgers_changed": false,
+    "current_scoring_selection_sizing_or_orders_performed": false
+  },
+  "next_action": "Run the sole frozen no-return audit in strict coverage-first order; comparison values may be read only after coverage passes."
+}

@@ -1,0 +1,20 @@
+{
+  "schema_version": 1,
+  "kind": "a_share_three_day_walkforward_campaign226_infrastructure_failure",
+  "recorded_at": "2026-08-16T03:10:00+08:00",
+  "timestamp_semantics": "monotonic_logical_append_time_not_host_wall_clock_measurement",
+  "status": "failed_atomic_patch_stale_black_context_before_any_target_write",
+  "phase": "campaign226_terminal_test_v342_update_patch",
+  "command_scope": "advance the current Campaign226 terminal test from policy v341/result v3 to policy v342/result v4",
+  "failure": "One update hunk expected the pre-Black multiline assertion layout, while the file contained Black's compact comparison layout; apply_patch rejected the complete patch before any target write.",
+  "recovery": "The actual formatted test bytes were reread, and the retry uses small exact hunks for constants, ledger-chain assertions, report corrections and final accounting.",
+  "research_boundary": {
+    "failed_output_used_as_scientific_or_validation_evidence": false,
+    "target_file_written_by_failed_patch": false,
+    "candidate_or_comparator_value_read": false,
+    "daily_price_or_forward_return_read": false,
+    "provider_or_web_request_issued": false,
+    "provider_credential_presence_value_or_digest_read": false,
+    "candidate49_plan_or_run_executed": false
+  }
+}

@@ -1,0 +1,124 @@
+{
+  "version": 1,
+  "kind": "a_share_three_day_walkforward_campaign034_mechanism_overlap_audit",
+  "status": "passed_conceptual_independence_before_minute_candidate_comparison_or_return_values",
+  "recorded_at": "2026-07-30T18:12:00Z",
+  "purpose": "Resolve the selected round-price-clustering concept into one exact finite no-value mechanism and challenge it against terminal and prospective families before any Campaign034 source partition, candidate value, comparison value, daily price, or forward return is opened.",
+  "concept_scouting": {
+    "path": "docs/a_share_three_day_walkforward_campaign_034_concept_scouting.json",
+    "sha256": "d68ac83ed93869579cff065b915432168e1d958dc7651dc826e42e4d98f3b76d"
+  },
+  "authoritative_boundary": {
+    "path": "docs/a_share_three_day_iteration_status_20260730_campaign033_verified.json",
+    "sha256": "b77415e771ac1096f8422574bcbd0ce5db81e235734f6b3fbda4dcd147d41496"
+  },
+  "historical_walkforward_policy": {
+    "path": "docs/a_share_three_day_historical_walkforward_research_policy_20260727.json",
+    "sha256": "38426d6161b9bfed323c58caba18feca668b8c9d53e294951a8ba90c01a798bb"
+  },
+  "selected_mechanism": {
+    "name": "intraday_round_tenth_close_avoidance_240m",
+    "direction": "higher",
+    "information_domain": "raw_unadjusted_close_currency_grid_clustering",
+    "formula": "1 - count(q_i mod 10 = 0) / 240, where q_i = nearest_integer(100 * close_i) after exact CNY 0.01 tick validation",
+    "economic_hypothesis": "A higher value means fewer one-minute closes settle on exact CNY 0.10 round-price points, representing less clustered price anchoring and potentially more continuous price discovery from the next open through the third close.",
+    "source_fields": [
+      "datetime",
+      "symbol",
+      "provider",
+      "close"
+    ],
+    "selected_bar_grid": "exactly 240 raw unadjusted one-minute closes at 09:31-11:30 and 13:01-15:00 after frozen timestamp normalization; standalone 09:30 is excluded and bar order does not enter the formula",
+    "base_tick_rule": "For every selected close compute x_i=100*close_i in CNY fen. Require x_i finite and within absolute 1e-6 fen of its nearest integer; otherwise the whole stock-day is missing. Only after that validation set q_i to the nearest integer.",
+    "round_tenth_rule": "A selected close is round-tenth exactly when integer q_i is divisible by 10, corresponding to a CNY price ending in .00, .10, .20, ..., .90. No CNY 0.05, CNY 0.50, CNY 1.00, multi-grid, adaptive-grid, price-scaled, or board-specific alternative is allowed.",
+    "aggregation_rule": "Count round-tenth closes across the fixed 240 support positions and return one minus that count divided by 240. Repeated identical closes remain separate support observations. Do not deduplicate, time-weight, activity-weight, or condition on whether price changed.",
+    "bar_rule": "All 240 selected closes must be finite, strictly positive, and accepted by the exact CNY 0.01 tick validation before the modulo test.",
+    "missing_rule": "Any invalid, nonpositive, nonfinite, or non-CNY-0.01-grid selected close, any nonfinite score, or any score outside [0,1] makes the stock-day missing.",
+    "valid_range": [
+      0.0,
+      1.0
+    ]
+  },
+  "overlap_challenges": [
+    {
+      "family": "intraday_price_update_share_238m",
+      "result": "distinct_pending_statistical_uniqueness_gate",
+      "reason": "Price-update share compares adjacent closes for exact equality and is invariant to their currency digits. Campaign034 ignores adjacency and equality, so a path may update every minute while every close remains on a round-tenth point, or remain unchanged at a non-round point."
+    },
+    {
+      "family": "intraday_terminal_close_location_and_signed_path_efficiency",
+      "result": "distinct_pending_statistical_uniqueness_gate",
+      "reason": "Terminal location and path efficiency depend on ordered displacement relative to a path range. Campaign034 is invariant to bar permutation, contains no first/last displacement, and depends only on membership in an external CNY price grid."
+    },
+    {
+      "family": "intraday_global_price_range_revisit_and_adjacent_range_overlap",
+      "result": "distinct_pending_statistical_uniqueness_gate",
+      "reason": "Range-revisit and overlap mechanisms use one-minute high-low intervals in continuous price space. Campaign034 forbids high and low, constructs no interval, union, occupancy bin, or overlap, and tests only each raw close's exact currency-grid residue. It does not repair or replace either terminal range formula with a tick-grid approximation."
+    },
+    {
+      "family": "intraday_intrabar_body_range_efficiency_and_close_location_pressure",
+      "result": "distinct_pending_statistical_uniqueness_gate",
+      "reason": "Body efficiency and own-bar close pressure use OHLC geometry and are scale-invariant within each bar. Campaign034 forbids open/high/low and uses absolute raw CNY close digits; identical candle geometry shifted by CNY 0.01 can change Campaign034 while leaving both terminal factors unchanged."
+    },
+    {
+      "family": "intraday_return_spectral_entropy_and_other_return_path_statistics",
+      "result": "distinct_pending_statistical_uniqueness_gate",
+      "reason": "Return-path mechanisms depend on differences, signs, magnitudes, moments, lags, or frequency power and are invariant to multiplying the complete price path by many constants. Campaign034 forms no return and deliberately retains the absolute CNY grid residue."
+    },
+    {
+      "family": "amount_or_share_volume_profile_mechanisms",
+      "result": "distinct",
+      "reason": "Campaign034 reads no amount or volume, contains no time profile, center of mass, entropy, persistence, activity support, or cross-stock activity benchmark."
+    },
+    {
+      "family": "candidate49_cumulative_vwap_crossing_rate",
+      "result": "distinct",
+      "reason": "Candidate49 counts ordered close crossings around a causal cumulative amount/volume anchor and is future-only. Campaign034 reads close only, uses no crossing or transaction anchor, is invariant to bar order, and remains historical-research-only."
+    },
+    {
+      "family": "quarterly_announcement_freshness_or_timeliness",
+      "result": "distinct",
+      "reason": "Campaign020 and Campaign032 use disclosure dates and no intraday price. Campaign034 uses only completed-session raw minute closes and no quarterly field."
+    },
+    {
+      "family": "terminal_factor_combination_or_rescue",
+      "result": "not_used",
+      "reason": "Campaign034 contains one raw-close currency-grid statistic and no terminal factor value, transform, filter, model, or combination."
+    }
+  ],
+  "design_choices_frozen_before_values": {
+    "formula_family": "fixed_support_raw_close_round_tenth_avoidance_share",
+    "direction": "higher",
+    "selected_bar_count": 240,
+    "include_0930": false,
+    "include_lunch_transition": false,
+    "raw_unadjusted_price_required": true,
+    "base_tick_cny": 0.01,
+    "round_price_grid_cny": 0.10,
+    "tick_integer_tolerance_fen": 1e-06,
+    "support_denominator": 240,
+    "retain_repeated_identical_closes": true,
+    "bar_order_used": false,
+    "price_change_conditioning_allowed": false,
+    "other_grid_tolerance_rescaling_residualization_or_multi_grid_search_allowed": false,
+    "subwindow_year_filter_threshold_or_board_selection_allowed": false,
+    "market_quarterly_activity_or_terminal_factor_input_allowed": false
+  },
+  "decision": {
+    "conceptually_independent": true,
+    "advance_to_exact_no_return_preregistration": true,
+    "candidate_or_comparison_values_may_be_read_now": false,
+    "binding_validator_exit_zero_required_before_next_stage": true,
+    "candidate49_remains_only_active_prospective_candidate": true,
+    "candidate50_activation_allowed": false,
+    "current_aggregation_scoring_selection_sizing_or_orders_allowed": false
+  },
+  "research_boundary": {
+    "external_campaign034_minute_partitions_read": false,
+    "candidate_values_read": false,
+    "comparison_values_read": false,
+    "daily_price_fields_read": false,
+    "forward_returns_read": false,
+    "provider_request_issued": false
+  }
+}

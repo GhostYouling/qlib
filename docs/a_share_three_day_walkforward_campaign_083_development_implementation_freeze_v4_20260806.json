@@ -1,0 +1,91 @@
+{
+  "schema_version": 1,
+  "version": 4,
+  "kind": "a_share_three_day_walkforward_campaign083_development_implementation_freeze",
+  "status": "frozen_before_campaign083_conda_compatible_full_development_retry",
+  "frozen_at": "2026-08-06T13:03:00Z",
+  "binary_runtime_repair_protocol": {
+    "path": "docs/a_share_three_day_walkforward_campaign_083_development_binary_runtime_repair_protocol_v4_20260806.json",
+    "sha256": "e066f12328a63390bbb92d4a8b402061fc37c3a7d08092fdba018d63c14a4ba2"
+  },
+  "previous_implementation_freeze": {
+    "path": "docs/a_share_three_day_walkforward_campaign_083_development_implementation_freeze_v3_20260806.json",
+    "sha256": "f308232e1d8c5bb88d0c60738bfd273eee2c1a2d62a903c091496762b1e7cfe3"
+  },
+  "development_preregistration": {
+    "path": "docs/a_share_three_day_walkforward_campaign_083_preregistration.json",
+    "sha256": "13da1fb31d3849bb792b140847018fe44b8760e8c8d02ae1ba6e082ff467f087"
+  },
+  "unchanged_development_runner": {
+    "path": "scripts/a_share_three_day_walkforward_campaign083.py",
+    "sha256": "0a527a67fb4674eefec816f13442f07fa740f90c08a91a33d97db79fd5727640"
+  },
+  "authorized_interpreter": {
+    "path": "/Volumes/DIsk/Coding/anaconda3/bin/python3.12",
+    "sha256": "b21ee43bcb627125a1b54b1fceb97bad564afbab38235cb9d72cf1f278d5751c"
+  },
+  "required_libcxx": {
+    "path": "/Volumes/DIsk/Coding/anaconda3/lib/libc++.1.0.dylib",
+    "sha256": "1b9318492353b7b7b3b48b9fa458d2b07b356a5eb8c0931952247fc17bf95c21"
+  },
+  "tests": {
+    "path": "tests/data_collector_tests/test_a_share_three_day_walkforward_campaign083_development_v4.py",
+    "sha256": "5a502217b1765b2df3ba966d377f21239753a86470d78559cc1329b96852dcb8",
+    "pre_freeze_result": "3 passed, 1 v4 implementation-freeze test deselected",
+    "black_py312_check_passed": true,
+    "ruff_check_passed": true,
+    "test_interpreter": "/Volumes/DIsk/Coding/anaconda3/bin/python3.12"
+  },
+  "research_attempt_ledger_before_retry": {
+    "path": "data/experiments/short_horizon/historical_walkforward/campaign_083/research_attempt_ledger_v10.json",
+    "sha256": "c51a1bf0378c713f516cd2f3a8dae55fbfb0aab14409ad38730b324cb38d95a5",
+    "campaign_attempt_count": 22,
+    "campaign_infrastructure_failure_count": 21,
+    "campaign_complete_factor_attempt_count": 1,
+    "campaign_return_reading_development_trial_count": 0
+  },
+  "preserved_base_trial_ledger": {
+    "path": "data/experiments/short_horizon/historical_walkforward/campaign_083/walkforward/trial_ledger.json",
+    "sha256": "a8db9dcecf49fe6ea93636324904993370165db224351bddb494e62a42332ae6",
+    "entry_count": 2,
+    "entry_phases": [
+      "infrastructure_failure",
+      "infrastructure_failure"
+    ],
+    "complete_development_trial_count": 0
+  },
+  "compatible_runtime_receipt": {
+    "qlib_data_import_passed": true,
+    "qlib_version": "0.9.8.dev30",
+    "numpy": "1.26.4",
+    "pandas": "2.2.2",
+    "pyarrow": "16.1.0",
+    "scipy": "1.13.1",
+    "pytest": "9.0.3",
+    "dynamic_library_environment_override_used": false,
+    "known_unrelated_global_pip_conflicts_disclosed": true
+  },
+  "frozen_trial_unchanged": {
+    "trial_id": "wf083_intraday_close_frontier_innovation_share_238p_single_higher",
+    "feature_set": [
+      "intraday_close_frontier_innovation_share_238p"
+    ],
+    "weights": [
+      1
+    ],
+    "direction": "higher",
+    "expected_trial_count": 1,
+    "purge_signal_sessions": 3,
+    "t_plus_1_and_t_plus_3_must_share_partition": true
+  },
+  "partial_market_data_or_statistics_reused": false,
+  "market_execution_data_loaded_before_retry": false,
+  "historical_daily_price_fields_read_before_retry": [],
+  "historical_forward_returns_read_before_retry": false,
+  "stress_2024_2025_opened_before_retry": false,
+  "provider_request_issued_before_retry": false,
+  "candidate49_historical_backfill_performed": false,
+  "candidate49_ledgers_changed": false,
+  "current_scoring_selection_sizing_or_orders_performed": false,
+  "authorization": "Under the exact authorized interpreter and without any DYLD override, run the unchanged development command at most once and append a complete trial after the two preserved infrastructure failures."
+}

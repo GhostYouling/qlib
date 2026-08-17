@@ -1,0 +1,21 @@
+{
+  "schema_version": 1,
+  "kind": "a_share_three_day_walkforward_campaign121_infrastructure_failure",
+  "status": "recorded_before_any_comparator_value",
+  "recorded_at": "2026-08-14T02:54:00+08:00",
+  "attempt_id": "campaign121_infrastructure_027",
+  "phase": "ordered_uniqueness_static_receipt_validation",
+  "failure": {
+    "class": "stale_prior_and_comparator_receipt_labels",
+    "message": "The candidate and comparator sources were correctly bound, but the transformed static receipt keys still said prior_136/comparator_137 instead of prior_137/comparator_138; the first synthetic assertion also inspected the wrong function's constants."
+  },
+  "repair": "Correct only the result labels and test target, preserve the v2 freeze, and bind a v3 freeze to the repaired runner and five passing tests.",
+  "research_boundary": {
+    "candidate_values_reopened_for_uniqueness": false,
+    "comparator_values_read": false,
+    "historical_daily_price_or_forward_return_values_read": false,
+    "provider_request_issued": false,
+    "candidate49_ledgers_changed": false,
+    "scientific_result_changed": false
+  }
+}

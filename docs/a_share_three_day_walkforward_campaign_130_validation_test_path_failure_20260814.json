@@ -1,0 +1,27 @@
+{
+  "schema_version": 1,
+  "recorded_at": "2026-08-14T07:53:50+08:00",
+  "campaign_id": 130,
+  "phase": "campaign130_terminal_validation",
+  "status": "failed",
+  "failure_code": "validation_test_path_not_found",
+  "operation": "Run focused Campaign130, Campaign129 and generic numeric-policy pytest validation.",
+  "cause": "The command named test_a_share_three_day_walkforward_future_numeric_comparison_policy.py, but the repository file is test_a_share_three_day_walkforward_future_numeric_comparison_eligibility_policy.py.",
+  "observed_result": {
+    "exit_code": 4,
+    "tests_run": 0,
+    "failed_exit_code_treated_as_success": false
+  },
+  "effects": {
+    "scientific_result_changed": false,
+    "historical_values_opened": false,
+    "candidate49_ledgers_changed": false
+  },
+  "recovery": "Preserve this failure and rerun the same focused suite with the discovered exact file path.",
+  "boundaries": {
+    "candidate49_historical_backfill": false,
+    "second_prospective_candidate": false,
+    "current_scores_or_orders": false,
+    "pressure_2024_2025_opened": false
+  }
+}

@@ -1,0 +1,24 @@
+{
+  "schema_version": 1,
+  "kind": "a_share_three_day_walkforward_campaign261_infrastructure_failure",
+  "attempt_id": "campaign261_infrastructure_help_text_prevalue",
+  "status": "frozen_v1_cli_help_retained_inherited_session_total_description_before_values",
+  "recorded_at": "2026-08-16T16:37:00+08:00",
+  "timestamp_semantics": "monotonic_logical_append_time_not_host_wall_clock_measurement",
+  "evidence": {
+    "implementation_freeze_v1": "docs/a_share_three_day_walkforward_campaign_261_implementation_freeze_20260816.json",
+    "observed_help_fragment": "Build Campaign261's session total amount magnitude snapshot without returns.",
+    "root_cause": "The frozen Campaign152 engine's argparse prose was not replaced even though all bound formula, factor names, columns and functions were Campaign261-specific."
+  },
+  "repair_scope": "Before any source value, replace only inherited dynamic help prose, rerun exact synthetic tests and publish an additive v2 implementation freeze.",
+  "research_boundary": {
+    "historical_source_rows_read": false,
+    "candidate_or_comparator_values_read": false,
+    "historical_daily_price_or_forward_return_values_read": false,
+    "stress_2024_2025_opened": false,
+    "provider_request_issued": false,
+    "credential_loaded": false,
+    "candidate49_ledgers_changed": false,
+    "scientific_result_changed": false
+  }
+}

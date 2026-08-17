@@ -1,0 +1,32 @@
+{
+  "schema_version": 1,
+  "kind": "a_share_three_day_walkforward_infrastructure_failure_record",
+  "recorded_at": "2026-08-14T09:21:19+08:00",
+  "campaign": 132,
+  "attempt_id": "campaign132_infrastructure_006",
+  "phase": "infrastructure_failure",
+  "stage": "postbuild_design_snapshot_verification_invocation",
+  "status": "failed_missing_required_manifest_argument",
+  "failed_command_exit_code": 2,
+  "failure": {
+    "exception": "argparse_required_argument_error",
+    "missing_argument": "--manifest",
+    "cause": "The first verify invocation omitted the required immutable snapshot manifest path.",
+    "verification_body_executed": false,
+    "published_snapshot_changed": false,
+    "historical_daily_price_or_forward_return_values_read": false,
+    "scientific_result_changed": false
+  },
+  "predecessor_failure": {
+    "path": "docs/a_share_three_day_walkforward_campaign_132_pytest_repository_import_path_failure_20260814.json",
+    "sha256": "0c2b07987992e053a0b9368ff7c31bef64567f75ecb8c695179a1076b1525454"
+  },
+  "recovery_boundary": {
+    "append_failure_to_campaign132_ledger": true,
+    "rerun_same_verify_with_the_published_snapshot_manifest": true,
+    "snapshot_or_research_definition_change_allowed": false,
+    "override_or_mask_failed_exit_code": false,
+    "provider_request_or_credential_load_allowed": false,
+    "candidate49_change_allowed": false
+  }
+}

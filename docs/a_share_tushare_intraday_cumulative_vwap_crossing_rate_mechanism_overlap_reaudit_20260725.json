@@ -1,0 +1,142 @@
+{
+  "version": 1,
+  "kind": "a_share_tushare_intraday_cumulative_vwap_crossing_rate_mechanism_overlap_reaudit",
+  "status": "frozen_before_candidate_factor_values_comparison_values_daily_prices_or_forward_returns",
+  "frozen_at": "2026-07-25T05:31:15Z",
+  "purpose": "Select candidate 49 as one economically distinct Level-1 minute mechanism while moving all predictive evaluation to a post-registration future-only track.",
+  "current_research_state": {
+    "path": "docs/a_share_three_day_iteration_status_20260725.json",
+    "sha256": "355b992452b73607034a182699d4fff337905e484229441e7ae138db1ffdefef",
+    "terminal_mechanism_count": 48,
+    "dual_gate_qualified_factor_count": 0,
+    "aggregation_allowed": false
+  },
+  "future_only_policy": {
+    "path": "docs/a_share_three_day_future_only_minute_research_policy_20260725.json",
+    "sha256": "52ca8bfa7201509fe891d0af3d1c87aeebd64e47e6ec6641e897849411df408c",
+    "historical_return_read_allowed": false,
+    "earliest_eligible_signal_session": "the first accepted local provider-calendar session on or after 2026-07-27"
+  },
+  "latest_terminal_binding": {
+    "path": "docs/a_share_tushare_intraday_market_amount_profile_synchronization_research_record.json",
+    "sha256": "75a41875b5133258d483c470d44f1fdd1cdd030573e03ce66c33c22d926874ed",
+    "factor_name": "intraday_market_amount_profile_synchronization_240m",
+    "terminal_decision": "retire_without_inversion_similarity_benchmark_window_filter_combination_or_retest"
+  },
+  "selected_candidate": {
+    "ordinal": 49,
+    "name": "intraday_cumulative_vwap_crossing_rate_240m",
+    "prospective_direction": "higher",
+    "signal_time": "after_signal_session_close",
+    "source_fields_allowed": [
+      "datetime",
+      "symbol",
+      "provider",
+      "close",
+      "volume",
+      "amount"
+    ],
+    "source_fields_forbidden": [
+      "open",
+      "high",
+      "low",
+      "any_daily_price",
+      "any_forward_return",
+      "trade_count",
+      "order",
+      "quote",
+      "queue",
+      "Level-2"
+    ],
+    "source_grid": {
+      "morning_continuous_bar_ends": "09:31-11:30",
+      "afternoon_continuous_bar_ends": "13:01-15:00",
+      "positions": 240,
+      "09_30_included": false,
+      "lunch_gap_collapsed_to_adjacent_observation_positions": true
+    },
+    "formula_steps": [
+      "Require the exact immutable 240-position continuous-session grid for a stock-day already present in the joint-clean base.",
+      "Require every close to be finite and strictly positive and every volume and amount to be finite and nonnegative.",
+      "Reject the whole stock-day when exactly one of volume or amount is zero at any position; retain a joint zero as an inactive bar.",
+      "At each position t compute cumulative_volume_t and cumulative_amount_t from positions 1 through t.",
+      "A position has a cumulative VWAP only when both cumulative sums are finite and strictly positive; cumulative_vwap_t=cumulative_amount_t/cumulative_volume_t.",
+      "For every valid cumulative-VWAP position compute the exact sign of log(close_t/cumulative_vwap_t).",
+      "Drop exact-zero deviation signs only from the crossing sequence; do not fill, jitter, round, or assign them to either side.",
+      "Require at least two nonzero deviation signs and divide the count of adjacent sign changes by the number of adjacent nonzero-sign pairs.",
+      "Only a 1e-12 floating-point endpoint canonicalization to [0,1] is allowed."
+    ],
+    "formula": "mean(1[sign(log(close_t/cumulative_vwap_t)) changes between adjacent nonzero deviation signs]) over the exact 240-position continuous-session path",
+    "validity": {
+      "exact_240_position_grid_required": true,
+      "close_finite_and_strictly_positive": true,
+      "volume_and_amount_finite_and_nonnegative": true,
+      "joint_zero_volume_amount_bar_policy": "inactive_but_retained_in_the_grid",
+      "one_sided_zero_volume_or_amount_policy": "whole_stock_day_missing",
+      "fewer_than_two_nonzero_deviation_signs_policy": "missing",
+      "allowed_closed_interval": [
+        0,
+        1
+      ],
+      "endpoint_canonicalization_tolerance": 1e-12
+    },
+    "hypothesis": "Frequent price crossings around the stock's own running traded-value anchor indicate continuous two-sided price discovery instead of a one-way temporary displacement; the higher direction is preregistered as a liquidity-resilience signal for the next-open through third-close horizon.",
+    "economic_distinction": "The factor measures pathwise alternation around a causal cumulative traded-value anchor. It is not determined by terminal location, return magnitude, return sign share, unchanged-minute share, amount timing, amount-profile shape, bar-level close-to-VWAP pressure, market synchronization, fundamentals, events, or a daily price."
+  },
+  "overlap_reaudit": {
+    "late_vwap_to_day_vwap_30m": "Uses a fixed late-window VWAP relative to the full-day VWAP; the candidate counts the order of crossings around a causal running VWAP over all 240 positions.",
+    "intraday_bar_vwap_close_pressure_240m": "Averages signed log close versus each bar's own amount/volume VWAP with amount weights; the candidate uses cumulative amount and volume and discards deviation magnitude after its exact sign.",
+    "intraday_terminal_close_location_240m": "Uses only the terminal close relative to the day's close range; the candidate can differ for paths with the same terminal close and range.",
+    "intraday_return_sign_run_imbalance_238p": "Counts consecutive raw-return sign pairs; the candidate signs deviations from a path-dependent cumulative VWAP anchor rather than adjacent returns.",
+    "intraday_price_update_share_238m": "Counts whether adjacent closes differ; the candidate requires alternation around a causal value anchor and can be zero despite every close updating.",
+    "intraday_amount_center_of_mass_240m": "Uses amount timing alone; holding close fixed is necessary for the candidate, while holding all amount values fixed does not determine its crossing sequence.",
+    "intraday_amount_volatility_coupling_238p": "Correlates absolute return with destination amount; the candidate uses neither return magnitude nor a correlation.",
+    "intraday_market_idiosyncratic_share_238m": "Compares stock returns with a leave-one-out market return; the candidate is single-stock and uses no peer benchmark.",
+    "intraday_market_amount_profile_synchronization_240m": "Compares normalized amount profiles across stocks and reads no price; the candidate uses one stock's close, cumulative amount, and cumulative volume with no cross-stock benchmark.",
+    "all_other_terminal_minute_factors": "They measure volatility, semivariance, entropy, skewness, diffusive variation, amount concentration/persistence/direction, opening-auction participation, afternoon efficiency/recovery, or market synchronization rather than causal cumulative-VWAP crossing order.",
+    "daily_fundamental_event_or_regime_factors": "Those mechanisms use daily, accounting, event, or shared market-state observables and cannot reconstruct this 240-position within-stock sequence."
+  },
+  "alternatives_rejected_before_value_observation": [
+    {
+      "name": "low_crossing_or_trend_persistence_direction",
+      "reason": "This is the inversion of the frozen higher resilience direction."
+    },
+    {
+      "name": "crossing_count_or_signed_crossing_imbalance",
+      "reason": "Changing the denominator or separating upward and downward crossings adds post-result degrees of freedom."
+    },
+    {
+      "name": "bar_vwap_daily_vwap_or_future_vwap_anchor",
+      "reason": "Those are different or non-causal anchors and overlap terminal VWAP mechanisms."
+    },
+    {
+      "name": "epsilon_band_rounding_or_zero_sign_carry",
+      "reason": "Any tolerance band, price rounding, jitter, or zero-sign fill would create a tunable crossing definition."
+    },
+    {
+      "name": "morning_afternoon_late_or_auction_windows",
+      "reason": "Window selection and inclusion of the ambiguous 09:30 row are prohibited."
+    },
+    {
+      "name": "amount_only_volume_only_equal_weight_or_typical_price_vwap",
+      "reason": "The running traded-value anchor is frozen to cumulative CNY amount divided by cumulative shares and raw close."
+    },
+    {
+      "name": "threshold_subset_filter_weight_or_combination",
+      "reason": "Liquidity, volatility, event, year, board, industry, market-state, magnitude, and crossing-count filters or combinations are prohibited."
+    }
+  ],
+  "research_boundary": {
+    "candidate_factor_values_observed_before_freeze": false,
+    "terminal_factor_comparison_values_observed_for_this_candidate_before_freeze": false,
+    "historical_daily_price_fields_read_for_this_candidate": false,
+    "historical_forward_return_fields_read_for_this_candidate": false,
+    "future_signal_or_execution_outcome_observed_before_freeze": false,
+    "training_or_model_fitting_performed": false,
+    "same_history_return_diagnostic_allowed": false,
+    "current_scoring_selection_sizing_or_orders_allowed": false,
+    "level2_intake_justified": false,
+    "investment_advice": false
+  },
+  "decision": "Proceed only to a separately hash-bound no-return preregistration, then build candidate values and run ordered historical coverage, capacity, and twenty-four-factor uniqueness without historical prices or forward returns."
+}

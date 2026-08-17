@@ -1,0 +1,86 @@
+{
+  "version": 2,
+  "kind": "a_share_three_day_iteration_status",
+  "status": "campaign081_terminal_verified_zero_survivors_all_verification_invocations_accounted",
+  "recorded_at": "2026-08-06T18:15:00+08:00",
+  "supersedes_without_rewriting": {
+    "path": "docs/a_share_three_day_iteration_status_20260806_campaign081_verified.json",
+    "sha256": "830ec79572d5b313abf2406155220ec55fe887adaad862c160acd34b63550ab0",
+    "preserved": true
+  },
+  "current_terminal_completion_freeze": {
+    "path": "docs/a_share_three_day_walkforward_campaign_081_terminal_completion_freeze_v2_20260806.json",
+    "sha256": "fa6f558f46657729bb21038a5a610898a30af4a859ba5256ee73ba067b8c72cc"
+  },
+  "postterminal_verification_failure_record": {
+    "path": "docs/a_share_three_day_walkforward_campaign_081_terminal_suite_lifecycle_deselect_failure_20260806.json",
+    "sha256": "8b2659ce9a4bcad95c6b284ca2c6e5894ecbffc508782978bbdda55d49470d53"
+  },
+  "current_research_attempt_ledger": {
+    "path": "data/experiments/short_horizon/historical_walkforward/campaign_081/research_attempt_ledger_v4.json",
+    "sha256": "24525c24085d41a9cf41f83d401ed97b6f99e8aa372b70fb70199a2f0763e6e0"
+  },
+  "future_numeric_comparator_policy_v17": {
+    "path": "docs/a_share_three_day_walkforward_future_numeric_comparison_eligibility_policy_v17_20260806.json",
+    "sha256": "32b863a9e10ff26c665a9854f0863bb38e6b91dda25115cb44a57b452f97db36"
+  },
+  "campaign081_terminal_result_unchanged": {
+    "factor": "intraday_amount_path_efficiency_238p",
+    "direction": "higher",
+    "numeric_comparisons_passed": 110,
+    "development_trial_count": 1,
+    "development_survivor_count": 0,
+    "stress_2024_2025_opened": false,
+    "stress_return_fields_read": false,
+    "aggregate_20bp_pilot_return": -0.23074432960855773
+  },
+  "corrected_attempt_accounting": {
+    "campaign081_infrastructure_failures": 8,
+    "campaign081_complete_factor_attempts": 1,
+    "campaign081_attempts": 9,
+    "campaign081_ledger_entries": 10,
+    "campaign081_return_reading_development_trials": 1,
+    "cumulative_historical_research_attempts": 500,
+    "cumulative_return_reading_development_trials": 282
+  },
+  "corrected_suite_result": {
+    "passed": 21,
+    "failed": 0,
+    "deselected_immutable_pre_run_lifecycle_nodes": 2
+  },
+  "future_duplicate_detection_library": {
+    "complete_definition_count": 113,
+    "complete_definition_order_sha256": "0938f041bcdd591bc8977204d78df502514aa1230942199b006e8fd72bdb68a2",
+    "numeric_comparator_count": 111,
+    "numeric_comparator_order_sha256": "591432918754f7da24f468d152bbbc1b337127dd5fdc30f0f214ea776ca757aa"
+  },
+  "candidate49_future_only_layer": {
+    "remains_only_active_prospective_candidate": true,
+    "signal_ledger_entries": 0,
+    "signal_ledger_sha256": "5193f00d7f36da003f53cec387900da4c3d002299f5dfcfc1a95eaa199ed3a79",
+    "execution_ledger_entries": 0,
+    "execution_ledger_sha256": "d57a3e61eac969e42cafa418ccd8c0a5ee65dcf69da145bb2c096c2a02a2ea4f",
+    "historical_backfill_performed": false,
+    "provider_request_issued": false,
+    "second_prospective_candidate_created": false
+  },
+  "credential_state": {
+    "repository_dotenv_is_regular_non_symlink_mode_0600_and_git_ignored": true,
+    "workflow_loads_nonempty_tushare_token": true,
+    "secret_printed_hashed_or_logged": false
+  },
+  "historical_research_boundary": {
+    "offline_historical_research_may_continue_without_waiting_for_16_30": true,
+    "campaign081_stress_opened": false,
+    "candidate49_historical_return_or_ledger_backfill_allowed": false,
+    "may_generate_current_score_selection_sizing_order_or_advice": false,
+    "provider_request_issued": false
+  },
+  "next_offline_research": {
+    "campaign082_scouting_authorized": true,
+    "must_start_from_one_genuinely_independent_prevalue_frozen_mechanism": true,
+    "must_use_v17_complete_and_numeric_orders": true,
+    "campaign081_formula_direction_or_failure_may_be_rewritten": false,
+    "candidate49_remains_separate_prospective_confirmation_layer": true
+  }
+}

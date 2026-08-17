@@ -1,0 +1,180 @@
+{
+  "version": 38,
+  "kind": "a_share_three_day_iteration_status",
+  "status": "campaign036_terminal_verified_zero_historical_aggregation_candidates_candidate49_only_prospective",
+  "recorded_at": "2026-07-30T22:39:47Z",
+  "purpose": "Make the verified Campaign036 zero-survivor result authoritative while preserving the dual-track historical walk-forward and Candidate49 prospective boundaries.",
+  "previous_authoritative_state": {
+    "path": "docs/a_share_three_day_iteration_status_20260731_campaign035_verified.json",
+    "sha256": "39a838d3bcb15364ec4d78e51ece958a6ba5db5f0d953af2e8a4b9554f16e4fe"
+  },
+  "governance": {
+    "historical_walkforward_policy": {
+      "path": "docs/a_share_three_day_historical_walkforward_research_policy_20260727.json",
+      "sha256": "38426d6161b9bfed323c58caba18feca668b8c9d53e294951a8ba90c01a798bb"
+    },
+    "historical_research_may_run_without_new_daily_bar_or_16_30_wait": true,
+    "historical_results_may_generate_current_scores_selections_sizes_or_orders": false,
+    "historical_results_may_backfill_candidate49": false
+  },
+  "fixed_strategy": {
+    "holding_period_local_sessions": 3,
+    "signal": "accepted local session close t",
+    "entry": "next accepted local session open t+1",
+    "exit": "third accepted local session close t+3",
+    "topk": 3,
+    "development_folds": 3,
+    "purge_signal_sessions_each_partition_boundary": 3,
+    "t_t_plus_1_t_plus_3_must_remain_in_same_partition": true,
+    "pilot_capital_cny": 200000,
+    "primary_pilot_cost_bps": 10,
+    "aggregate_survivor_cost_bps": 20
+  },
+  "campaign036": {
+    "factor": "intraday_two_sided_range_frontier_balance_238m",
+    "direction": "higher",
+    "formula": "For each 120-bar half independently and each t=1..119, let H_prev=max(high_0..high_(t-1)), L_prev=min(low_0..low_(t-1)), u_t=max(ln(high_t/H_prev),0), and d_t=max(ln(L_prev/low_t),0). Pool both halves, set U=sum(u_t), D=sum(d_t), and return 1-abs(U-D)/(U+D)=2*min(U,D)/(U+D).",
+    "feature_source_fields": [
+      "datetime",
+      "symbol",
+      "provider",
+      "high",
+      "low"
+    ],
+    "snapshot": {
+      "path": "/Volumes/DIsk/qlib-a-share-tushare-1m/derived/a_share/rich/tushare/minute_walkforward_campaign036_feature_library/tushare_stk_mins_1m_2019_2025_ea0cbb8f_walkforward_campaign036_feature_library_v1/snapshot_manifest.json",
+      "sha256": "5c3b1d3fa07036537acc3d8f99073cbecee03c4d58575950af09f1f80250f4d3",
+      "dataset_sha256": "4658449f8db54334c810faeefc63a318316c5d68462b0e4d782318172910bbdb",
+      "partitions": 33015,
+      "rows": 7724498,
+      "eligible_rows": 7690919,
+      "zero_total_expansion_rows": 33579,
+      "identity_mismatch_rows": 0,
+      "all_partition_byte_and_frame_hashes_valid": true
+    },
+    "no_return": {
+      "median_coverage": 0.9981114258734656,
+      "p05_coverage": 0.9926261068499587,
+      "p05_eligible_names": 137.55,
+      "non_overlapping_three_session_cohorts": 540,
+      "comparison_count": 57,
+      "comparison_pass_count": 57,
+      "maximum_absolute_median_daily_rank_correlation": 0.2176356115276716,
+      "nearest_comparison_factor": "intraday_global_price_range_revisit_240m",
+      "admitted_to_development": true,
+      "historical_daily_price_fields_read": [],
+      "historical_forward_return_fields_read": false
+    },
+    "development": {
+      "preregistration_created": true,
+      "trial_count": 1,
+      "survivor_count": 0,
+      "positive_mean_rank_ic_fold_count": 0,
+      "positive_normalized_return_fold_count": 2,
+      "positive_pilot_return_fold_count": 0,
+      "median_validation_mean_rank_ic": -0.004622210838261696,
+      "median_validation_spread": -0.0008459196841293895,
+      "median_validation_pilot_return": -0.027670513846986267,
+      "worst_validation_normalized_drawdown": -0.2721311857812545,
+      "aggregate_mean_rank_ic": -0.005984376554683039,
+      "aggregate_normalized_return": -0.4341524504754978,
+      "aggregate_20bp_return": -0.25365553339451885,
+      "operationally_admissible": true,
+      "validation_quality_gate_passed": false
+    },
+    "stress_2024_2025": {
+      "status": "not_opened_zero_development_survivors",
+      "opened": false,
+      "return_fields_read": false
+    },
+    "terminal": true,
+    "terminal_reason": "zero_development_survivors_after_seven_frozen_validation_quality_gate_failures",
+    "rescue_inversion_rewindow_rescale_filter_threshold_rerun_or_combination_allowed": false,
+    "research_record": {
+      "path": "docs/a_share_three_day_walkforward_campaign_036_research_record.json",
+      "sha256": "c51c2b8200db2e39c3da53ca9e57f9f13fd793afe6a5ddd098028ccce5b73d26"
+    },
+    "verification": {
+      "path": "docs/a_share_three_day_walkforward_campaign_036_verification_20260731.json",
+      "sha256": "79af1a14f699420610ae02d3f027566afca1178059bf81d345b51ec59448d65a"
+    }
+  },
+  "historical_research_counts": {
+    "completed_development_trial_count": 256,
+    "current_historical_aggregation_candidate_count": 0,
+    "current_historical_aggregation_allowed": false,
+    "active_historical_campaign_count": 0,
+    "next_campaign_id_if_independent_concept_is_frozen": 37
+  },
+  "candidate49_current_state": {
+    "local_check_time": "2026-07-31T06:39:47+08:00",
+    "same_date_16_30_boundary_reached": false,
+    "provider_plan_or_run_attempted": false,
+    "last_provider_attempt_session": "2026-07-30",
+    "last_provider_attempt_status": "failed_at_stock_basic_no_same_day_retry",
+    "active_daily_root_mutated_by_campaign036": false,
+    "candidate49_signal_or_execution_stage_reached_by_campaign036": false
+  },
+  "credential_presence": {
+    "repository_dotenv_exists": true,
+    "repository_dotenv_mode": "0600",
+    "TUSHARE_TOKEN_nonempty": true,
+    "workflow_reads_repository_dotenv_token": true,
+    "secret_value_read_into_record": false,
+    "secret_value_printed_hashed_or_persisted": false,
+    "credential_readiness_does_not_authorize_provider_requests": true
+  },
+  "prospective_boundary": {
+    "active_candidate_count": 1,
+    "active_candidate": "Candidate49 intraday_cumulative_vwap_crossing_rate_240m",
+    "candidate49_signal_ledger": {
+      "path": "data/experiments/short_horizon/candidate49_future_signal_ledger.json",
+      "sha256": "5193f00d7f36da003f53cec387900da4c3d002299f5dfcfc1a95eaa199ed3a79",
+      "entry_count": 0
+    },
+    "candidate49_execution_ledger": {
+      "path": "data/experiments/short_horizon/candidate49_future_execution_ledger.json",
+      "sha256": "d57a3e61eac969e42cafa418ccd8c0a5ee65dcf69da145bb2c096c2a02a2ea4f",
+      "entry_count": 0
+    },
+    "candidate49_historical_return_signal_execution_or_milestone_backfill_performed": false,
+    "candidate50_activation_allowed": false
+  },
+  "documentation": {
+    "unified_research_report": {
+      "path": "data/experiments/short_horizon/three_day_research_report.md",
+      "sha256": "8a698f7529b88c0bb8bc23dabd320f36684b0107c78ecebd414d8e180641288f"
+    },
+    "data_pipeline": {
+      "path": "docs/a_share_data_pipeline.md",
+      "sha256": "8dd6b3ad38bc7586af2f1f6373a223f2e6c400e0ec4f11fc9b544fbd003a4d99"
+    },
+    "manage_qlib_a_share_data_skill": {
+      "path": "/Users/niyufei/.codex/skills/manage-qlib-a-share-data/SKILL.md",
+      "sha256": "0fbfd4c642966bce84de3b930bedd358369738a37c0ec01747cfdf2b6bbea97b"
+    }
+  },
+  "verification_summary": {
+    "focused_tests_passed": 29,
+    "full_data_collector_tests_passed": 1533,
+    "full_data_collector_tests_failed": 0,
+    "full_data_collector_test_warnings": 13,
+    "campaign036_research_record_binding_count": 20,
+    "campaign036_verification_binding_count": 16,
+    "binding_failures": 0,
+    "development_idempotent_rerun_passed": true,
+    "candidate49_ledgers_unchanged": true,
+    "current_scoring_selection_sizing_or_orders_performed": false
+  },
+  "next_action": {
+    "historical": "Begin Campaign037 only from a genuinely independent mechanism with separate pre-value scouting, mechanism audit, full 58-factor comparison library, and finite search freeze; offline work may run at any time.",
+    "prospective": "Do not perform a provider plan or run before the same-date 16:30 Asia/Singapore boundary. Candidate49 remains the only prospective candidate.",
+    "forbidden": [
+      "invert, rescue, rewindow, rescale, filter, retune, rerun, or combine Campaign036",
+      "open Campaign036 2024-2025 stress after zero development survivors",
+      "historically backfill Candidate49",
+      "activate Candidate50",
+      "generate current scores, selections, sizes, or orders"
+    ]
+  }
+}

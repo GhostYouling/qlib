@@ -1,0 +1,72 @@
+{
+  "schema_version": 1,
+  "kind": "a_share_three_day_walkforward_campaign084_no_return_audit_implementation_freeze",
+  "status": "frozen_after_verified_snapshot_before_coverage_or_comparison_values",
+  "frozen_at": "2026-08-06T22:35:00+08:00",
+  "protocol": {
+    "path": "docs/a_share_three_day_walkforward_campaign_084_no_return_preregistration.json",
+    "sha256": "c396f141c811978004c04b62f09caceef343a9860e43f48de1fe44419c9bcf70"
+  },
+  "feature_implementation_freeze": {
+    "path": "docs/a_share_three_day_walkforward_campaign_084_feature_implementation_freeze_20260806.json",
+    "sha256": "b0525799bf1c3668d7cce1f2beb5c6b363eb96c2fdad3ca425ab3f8c386534eb"
+  },
+  "snapshot_binding": {
+    "path": "docs/a_share_three_day_walkforward_campaign_084_feature_snapshot_binding_v2_20260806.json",
+    "sha256": "45e4dde42acb65ed25993f0f83f18b8430fc93fd424b5d3eb53aecd296dc48b0"
+  },
+  "research_attempt_ledger": {
+    "path": "data/experiments/short_horizon/historical_walkforward/campaign_084/research_attempt_ledger_v3.json",
+    "sha256": "65d97d06b29a33cc6306fb32dfc1ac1a3d788ebb4773e18a0569685bb5612a14"
+  },
+  "audit_runner": {
+    "path": "scripts/a_share_three_day_walkforward_campaign084_no_return_audit.py",
+    "sha256": "ab1ebfbb410f0164eb5b4f84f2606763491ca75b5a0d92fed909db458343db2d"
+  },
+  "tests": {
+    "path": "tests/data_collector_tests/test_a_share_three_day_walkforward_campaign084_no_return_audit.py",
+    "sha256": "eb763644a36cfaacc9ef52d3015823f1fa457fdb8c869a5b562cf58693b590c1",
+    "passed_before_freeze": 4,
+    "failed_before_freeze": 0,
+    "black_check_passed": true,
+    "ruff_check_passed": true,
+    "py_compile_passed": true
+  },
+  "candidate_snapshot": {
+    "path": "/Volumes/DIsk/qlib-a-share-tushare-1m/derived/a_share/rich/tushare/minute_walkforward_campaign084_feature_library/tushare_stk_mins_1m_2019_2025_ea0cbb8f_walkforward_campaign084_feature_library_v1/snapshot_manifest.json",
+    "sha256": "68a547c9d85f6437382a16704f601074264c8206dd5fe4d23adaff20079f5994",
+    "dataset_sha256": "eaae6e206284f605e6d673a89166ab996e4f246d59955f4d8f427ff7d8aecc5a",
+    "factor": "quarterly_profit_growth_level_acceleration_floor_2r",
+    "rows": 7724498,
+    "eligible_rows": 6321289
+  },
+  "frozen_audit_semantics": {
+    "coverage_runs_before_any_comparator_value": true,
+    "coverage_thresholds": {
+      "minimum_median_coverage": 0.95,
+      "minimum_p05_coverage": 0.9,
+      "minimum_p05_eligible_names": 50,
+      "minimum_non_overlapping_three_session_cohorts": 200,
+      "minimum_observed_calendar_years": 5
+    },
+    "numeric_comparator_count": 113,
+    "numeric_comparator_order_sha256": "04e8161152715277f4ebdfc63e5cd19db60a8dcd204d3f05dd38ab8313a03078",
+    "complete_definition_count": 115,
+    "complete_definition_order_sha256": "c42c662c17bbeec105ef85f0d9ba63edabae32601d0b9701209057961f72adec",
+    "maximum_allowed_absolute_median_daily_rank_correlation": 0.8,
+    "minimum_pairwise_names_per_session": 50,
+    "minimum_pairwise_sessions_per_comparison": 100,
+    "candidate_specific_comparator_drop_allowed": false,
+    "insufficient_pairwise_overlap_fails_closed": true
+  },
+  "coverage_or_capacity_metrics_computed_before_freeze": false,
+  "comparison_values_read_before_freeze": false,
+  "historical_daily_price_fields_read_before_freeze": [],
+  "historical_forward_returns_read_before_freeze": false,
+  "provider_request_issued_before_freeze": false,
+  "candidate49_historical_backfill_performed": false,
+  "candidate49_ledgers_changed": false,
+  "current_scoring_selection_sizing_or_orders_performed": false,
+  "survivorship_limitation": "The accepted buyable universe uses a current listing snapshot, so later coverage and historical results retain survivorship bias.",
+  "next_action": "Publish one activation binding against this exact implementation and snapshot, then run the one coverage-first no-return audit."
+}

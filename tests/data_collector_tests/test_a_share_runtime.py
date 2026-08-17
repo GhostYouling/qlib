@@ -31,6 +31,36 @@ def test_resolve_data_root_supports_absolute_and_repository_relative_paths(tmp_p
     )
 
 
+def test_resolve_data_root_uses_local_pointer_only_without_environment_override(
+    tmp_path,
+):
+    pointed = tmp_path / "external"
+    pointer = tmp_path / RUNTIME.DATA_ROOT_POINTER_NAME
+    pointer.write_text(f"{pointed}\n", encoding="utf-8")
+
+    assert RUNTIME.resolve_data_root(tmp_path, {}) == pointed.resolve()
+    explicit = tmp_path / "explicit"
+    assert (
+        RUNTIME.resolve_data_root(
+            tmp_path,
+            {RUNTIME.DATA_ROOT_ENV: str(explicit)},
+        )
+        == explicit.resolve()
+    )
+
+
+def test_resolve_data_root_rejects_a_multiline_or_empty_pointer(tmp_path):
+    pointer = tmp_path / RUNTIME.DATA_ROOT_POINTER_NAME
+    for value in ("", "one\ntwo\n"):
+        pointer.write_text(value, encoding="utf-8")
+        try:
+            RUNTIME.resolve_data_root(tmp_path, {})
+        except RuntimeError as exc:
+            assert "invalid A-share data-root pointer" in str(exc)
+        else:
+            raise AssertionError("invalid pointer was accepted")
+
+
 def test_count_and_latest_path_streams_without_sorting(tmp_path):
     paths = [
         tmp_path / name for name in ("20260101.json", "20260301.json", "20260201.json")

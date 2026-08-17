@@ -1,0 +1,16 @@
+{
+  "schema_version": 1,
+  "kind": "a_share_three_day_walkforward_campaign100_terminal_test_patch_context_failure",
+  "status": "recorded_before_exact_formatted_context_retry",
+  "recorded_at": "2026-08-07T12:41:34Z",
+  "stage": "terminal_test_effective_ledger_binding_update",
+  "outcome": "multi_hunk_patch_rejected_because_black_had_wrapped_one_expected_assertion_before_any_target_write",
+  "target": "tests/data_collector_tests/test_a_share_three_day_walkforward_campaign100_terminal.py",
+  "target_written_by_failed_patch": false,
+  "scientific_result_changed": false,
+  "candidate_or_comparator_values_read": false,
+  "historical_daily_price_or_forward_return_values_read": false,
+  "provider_request_issued": false,
+  "candidate49_ledgers_changed": false,
+  "retry_rule": "inspect the exact formatted lines, bind the newly effective ledger, and apply only precise minimal hunks"
+}

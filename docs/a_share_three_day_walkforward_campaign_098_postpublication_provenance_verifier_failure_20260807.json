@@ -1,0 +1,33 @@
+{
+  "schema_version": 1,
+  "kind": "a_share_three_day_walkforward_campaign098_postpublication_provenance_verifier_failure",
+  "status": "preserved_after_v2_namespace_repair_before_successful_independent_verification",
+  "recorded_at": "2026-08-07T08:14:00Z",
+  "v2_implementation_freeze": {
+    "path": "docs/a_share_three_day_walkforward_campaign_098_feature_implementation_freeze_v2_20260807.json",
+    "sha256": "3652c0f1cdf5b60f9fb25dc421a1fc5ea2e3369d64d2030885502ab8a19fdb41"
+  },
+  "v2_boundary_semantics_correction": {
+    "path": "docs/a_share_three_day_walkforward_campaign_098_feature_v2_boundary_field_semantics_correction_20260807.json",
+    "sha256": "ef2f0e9ef2b5777976293a59c713136fc440a9f62a60f4471e8174c5679eef3e"
+  },
+  "immutable_snapshot": {
+    "path": "/Volumes/DIsk/qlib-a-share-tushare-1m/derived/a_share/rich/tushare/minute_walkforward_campaign098_feature_library/tushare_stk_mins_1m_2019_2025_ea0cbb8f_walkforward_campaign098_feature_library_v1/snapshot_manifest.json",
+    "sha256": "371429a81292a91ef2bfa1292f467c81bf73e176fbfbc9888084f74eaaac1dc5"
+  },
+  "failure": {
+    "exception": "Campaign098FeatureError",
+    "message": "Campaign098 manifest semantics changed",
+    "root_cause": "The verifier required the snapshot manifest to claim the current v2 verifier runner and v2 repair freeze hashes, but immutable publication correctly retained the original v1 builder runner and v1 implementation-freeze hashes.",
+    "snapshot_manifest_implementation_freeze_sha256": "b232128e4c30e011e68ee47cd29c46f19a685cb2f51815f28427dfaf3996143e",
+    "snapshot_manifest_feature_runner_sha256": "c37124971238368ca233b38e9b3532fb52cf8e613e70d490afc15478e5107355",
+    "snapshot_mutated": false,
+    "candidate_values_recomputed": false,
+    "comparator_values_read": false
+  },
+  "authorized_next_repair_boundary": "Separate immutable publication provenance from current verifier provenance: require the snapshot's exact v1 freeze and v1 runner hashes while independently binding the current verifier through a new additive v3 implementation freeze.",
+  "formula_direction_support_window_universe_cost_gate_or_search_space_changed": false,
+  "historical_daily_price_or_forward_return_values_read": false,
+  "candidate49_ledgers_changed": false,
+  "provider_request_issued": false
+}

@@ -1,0 +1,37 @@
+{
+  "schema_version": 1,
+  "kind": "a_share_three_day_walkforward_campaign153_infrastructure_failure",
+  "status": "recorded_nonzero_exit_without_masking_or_scientific_change",
+  "recorded_at": "2026-08-15T02:45:45+08:00",
+  "stage": "focused_terminal_validation",
+  "command_scope": "Black format and check, Ruff, then focused Campaign153 pytest",
+  "observed_result": {
+    "exit_code": 1,
+    "tests_passed": 8,
+    "tests_failed": 1,
+    "failing_test": "test_campaign153_accepted_schemas_do_not_contain_required_new_states",
+    "normalized_failure": "KeyError fields"
+  },
+  "root_cause": "The full-history daily snapshot manifest binds its accepted field list through acceptance_manifest_path and acceptance_manifest_sha256; the new test incorrectly attempted to read fields directly from the upper-level full-history manifest.",
+  "repair": {
+    "scope": "test_only",
+    "test_path": "tests/data_collector_tests/test_a_share_three_day_walkforward_campaign153_terminal.py",
+    "read_bound_acceptance_manifest": true,
+    "validate_acceptance_manifest_sha256_before_field_assertions": true,
+    "scientific_artifact_formula_direction_source_or_gate_changed": false,
+    "source_candidate_comparator_price_or_forward_return_value_read": false
+  },
+  "post_repair_validation": {
+    "black": "passed",
+    "ruff": "passed",
+    "focused_tests": "9 passed in 2.18s",
+    "failed_exit_code_bypassed_or_masked": false
+  },
+  "research_boundary": {
+    "provider_request_issued": false,
+    "provider_credential_value_or_digest_read": false,
+    "candidate49_ledgers_changed": false,
+    "stress_2024_2025_opened": false,
+    "current_scoring_selection_sizing_positions_or_orders_performed": false
+  }
+}

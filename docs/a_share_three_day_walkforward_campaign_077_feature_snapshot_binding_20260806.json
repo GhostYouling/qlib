@@ -1,0 +1,67 @@
+{
+  "version": 1,
+  "kind": "a_share_three_day_walkforward_campaign077_feature_snapshot_binding",
+  "status": "verified_snapshot_frozen_before_coverage_or_comparison_values",
+  "recorded_at": "2026-08-06T12:55:00+08:00",
+  "protocol": {
+    "path": "docs/a_share_three_day_walkforward_campaign_077_no_return_preregistration.json",
+    "sha256": "25a2076ca62467ef0917674bf692c3daf8ed2f02434085ac46c969a2197bcd10"
+  },
+  "feature_implementation_freeze": {
+    "path": "docs/a_share_three_day_walkforward_campaign_077_feature_implementation_freeze_20260806.json",
+    "sha256": "034ed5cc259f90f6c0d7aefa7e9efb35c7b87d9cbffc075fda33a5e8a970da2a"
+  },
+  "feature_runner": {
+    "path": "scripts/a_share_three_day_walkforward_campaign077_features.py",
+    "sha256": "4af86e77459e7ee8e5a2991e81e3176bc56ee8b2ad8eb0858912ee7aef19cf1d"
+  },
+  "tests": {
+    "path": "tests/data_collector_tests/test_a_share_three_day_walkforward_campaign077_features.py",
+    "sha256": "e8e69643455785e22c5ec63531eb79138a0a6146acf85b8c04dd4a84e66f1174",
+    "result": "5 passed"
+  },
+  "snapshot_manifest": {
+    "path": "/Volumes/DIsk/qlib-a-share-tushare-1m/derived/a_share/rich/tushare/minute_walkforward_campaign077_feature_library/tushare_stk_mins_1m_2019_2025_ea0cbb8f_walkforward_campaign077_feature_library_v1/snapshot_manifest.json",
+    "sha256": "2449976e3bc95b66668496cee513277da21eff301677969f17053baf36fa18c8",
+    "dataset_sha256": "2b40ea3cb07a75b8dbddae124da86d32578120b74e616ff4ada5446d77010fc9",
+    "partitions": 33015,
+    "rows": 7724498,
+    "eligible_rows": 7724498,
+    "factor": "intraday_amount_clock_dispersion_240m",
+    "direction": "higher"
+  },
+  "independent_verification": {
+    "status": "verified",
+    "partitions": 33015,
+    "rows": 7724498,
+    "eligible_rows": 7724498,
+    "dataset_sha256": "2b40ea3cb07a75b8dbddae124da86d32578120b74e616ff4ada5446d77010fc9",
+    "all_partition_byte_and_frame_hashes_passed": true,
+    "aggregate_digest_passed": true
+  },
+  "quality": {
+    "accepted_snapshot_missing_rows": 0,
+    "raw_source_nonpositive_total_amount_sessions": 19831,
+    "interpretation": "The nonpositive raw-source sessions are outside the accepted joint-clean stock-day identity; every one of the 7,724,498 accepted rows has a finite factor value."
+  },
+  "research_boundary": {
+    "candidate_source_fields_read": [
+      "datetime",
+      "symbol",
+      "provider",
+      "amount"
+    ],
+    "candidate_values_computed": true,
+    "coverage_or_capacity_metrics_computed": false,
+    "comparison_values_read": false,
+    "historical_daily_price_fields_read": [],
+    "historical_forward_returns_read": false,
+    "provider_request_issued": false,
+    "candidate49_historical_backfill_performed": false,
+    "candidate49_ledgers_changed": false,
+    "second_prospective_candidate_created": false,
+    "current_scoring_selection_sizing_or_orders_performed": false,
+    "investment_advice": false
+  },
+  "next_action": "Freeze and activate the coverage-first no-return audit implementation before computing coverage; load all 107 comparison values only if coverage passes."
+}

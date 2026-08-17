@@ -1,0 +1,123 @@
+{
+  "schema_version": 1,
+  "kind": "a_share_three_day_walkforward_campaign109_mechanism_support_audit",
+  "status": "passed_before_campaign109_source_candidate_or_comparator_values",
+  "recorded_at": "2026-08-07T21:48:00Z",
+  "authoritative_inputs": {
+    "concept_scouting": {
+      "path": "docs/a_share_three_day_walkforward_campaign_109_concept_scouting_20260808.json",
+      "sha256": "bd6c2ae38b0670fc3bad93fdfdb3b20b9ab3263a0064909585b9c24660a34ca3"
+    },
+    "iteration_state": {
+      "path": "docs/a_share_three_day_iteration_status_20260808_campaign108_terminal_v2.json",
+      "sha256": "ba4a421795e02159bcd5f64683fcd3d3238e375e882a702c13622db77381d1c7"
+    },
+    "numeric_policy_v69": {
+      "path": "docs/a_share_three_day_walkforward_future_numeric_comparison_eligibility_policy_v69_20260808.json",
+      "sha256": "36ec8d963d733e5d6b44df7a3654b8e40444468e470b44b11cc19f6989a527b8"
+    }
+  },
+  "candidate": {
+    "name": "intraday_intrabar_body_magnitude_serial_persistence_238p",
+    "direction": "higher",
+    "formula": "let b_i=abs(log(close_i/open_i)) on the 240 continuous-session bars; pool the 119 adjacent (b_t,b_t+1) pairs from each half and return their population Pearson correlation",
+    "source_projection": [
+      "datetime",
+      "symbol",
+      "provider",
+      "open",
+      "close"
+    ],
+    "source_grid": "validate the exact 241-row Tushare grid, then use exactly 09:31-11:30 and 13:01-15:00; exclude 09:30 and the lunch transition",
+    "valid_range": [
+      -1.0,
+      1.0
+    ],
+    "support": "all 240 opens and closes finite and strictly positive; both fixed 238-element lag and lead body-magnitude vectors have strictly positive population variance",
+    "zero_semantics": "exact-zero bodies remain in fixed support and are never dropped or bridged"
+  },
+  "complete_library_review": {
+    "definition_count": 138,
+    "order_sha256": "6b0deb2e6d3f610e9fb18cc31636b92ac8a6f644a08b3e461c3f301966738b68",
+    "all_definitions_reviewed_before_values": true,
+    "semantic_duplicate_found": false,
+    "nearest_mechanism_distinctions": [
+      {
+        "name": "intraday_absolute_return_serial_persistence_236p",
+        "distinction": "It correlates adjacent absolute close-to-close returns. Campaign109 correlates same-bar absolute open-to-close bodies, excluding interbar gaps from both operands; the two are not monotone transforms of one another."
+      },
+      {
+        "name": "intraday_intrabar_body_range_efficiency_240m",
+        "distinction": "It is an order-invariant ratio of total absolute body mass to total high-low range mass. Campaign109 reads no high/low and measures adjacent dependence rather than aggregate body size."
+      },
+      {
+        "name": "intraday_bar_direction_continuity_238p",
+        "distinction": "It discards body magnitude and counts same-sign body pairs. Campaign109 discards body sign and retains magnitude dependence."
+      },
+      {
+        "name": "intraday_interbar_gap_body_confirmation_238p and intraday_body_next_microgap_reversal_238p",
+        "distinction": "Those mechanisms relate signed bodies to interbar gaps. Campaign109 contains no prior-close/current-open boundary and no signed relation."
+      },
+      {
+        "name": "intraday_intrabar_close_location_serial_persistence_238p",
+        "distinction": "It tracks close position inside each high-low interval. Campaign109 reads neither high nor low and tracks absolute open-close displacement."
+      },
+      {
+        "name": "intraday_directional_range_response_coupling_238p",
+        "distinction": "It correlates a signed body with the next bar's high-low range. Campaign109 correlates direction-neutral body magnitude with the next body magnitude."
+      },
+      {
+        "name": "intraday_continuous_session_net_return_reversal_240m and intraday_signed_path_efficiency_239m",
+        "distinction": "They measure endpoint or signed path displacement. Campaign109 is invariant to body sign and endpoint net displacement and uses only adjacent body magnitudes."
+      }
+    ],
+    "full_family_review": {
+      "close_path_and_endpoint_families": "distinct by own-bar open-close magnitude and fixed adjacent dependence",
+      "range_wick_close_location_families": "distinct because high/low are forbidden",
+      "amount_volume_transaction_price_families": "distinct because activity fields are forbidden",
+      "market_cross_section_and_day_over_day_families": "distinct because the factor is single-stock same-session and one-day only",
+      "quarterly_quality_and_listing_families": "distinct because no quarterly or listing value enters the factor",
+      "full_library_consensus_families": "distinct because no terminal component value or combination enters the factor"
+    }
+  },
+  "support_review": {
+    "known_exact_grid_available": true,
+    "uses_only_registered_raw_fields": true,
+    "known_one_sided_zero_activity_failure_relevant": false,
+    "known_exact_vwap_containment_failure_relevant": false,
+    "known_zero_body_support_failure_relevant": false,
+    "reason_zero_body_failure_not_inherited": "Campaign019 required at least 120 informative nonzero sign pairs; Campaign109 retains every zero body and requires only nondegenerate magnitude variance.",
+    "identical_or_provably_narrower_than_known_terminal_coverage_failure": false,
+    "support_gate_passed": true
+  },
+  "uniqueness_risk_acknowledgement": {
+    "likely_neighbors": [
+      "intraday_absolute_return_serial_persistence_236p",
+      "intraday_intrabar_body_range_efficiency_240m",
+      "intraday_bar_direction_continuity_238p",
+      "intraday_directional_range_response_coupling_238p",
+      "intraday_intrabar_close_location_serial_persistence_238p"
+    ],
+    "all_132_numeric_comparisons_required_after_coverage": true,
+    "candidate_specific_neighbor_drop_allowed": false,
+    "absolute_correlation_direction_invariant": true,
+    "scientific_or_numeric_admissibility_claimed_before_values": false
+  },
+  "decision": {
+    "mechanism_gate_passed": true,
+    "support_gate_passed": true,
+    "allowed_to_preregister_one_candidate": true,
+    "allowed_to_read_source_candidate_or_comparator_values_before_protocol_and_implementation_freeze": false
+  },
+  "research_boundary": {
+    "campaign109_source_rows_read": false,
+    "campaign109_candidate_or_comparator_values_read": false,
+    "historical_daily_price_or_forward_return_values_read": false,
+    "provider_request_issued": false,
+    "candidate49_historical_backfill_performed": false,
+    "candidate49_ledgers_changed": false,
+    "current_scoring_selection_sizing_or_orders_performed": false,
+    "investment_advice": false
+  },
+  "next_action": "Freeze one exact Campaign109 protocol and its complete implementation/test hashes before source, candidate, comparator, daily-price or forward-return values."
+}

@@ -1,0 +1,74 @@
+{
+  "schema_version": 1,
+  "kind": "a_share_three_day_walkforward_campaign083_feature_implementation_freeze",
+  "status": "frozen_before_campaign083_minute_source_values",
+  "frozen_at": "2026-08-06T19:54:00+08:00",
+  "protocol": {
+    "path": "docs/a_share_three_day_walkforward_campaign_083_no_return_preregistration.json",
+    "sha256": "31271774531c1bd761d3963740be959fe329974b2bb1c8d6b6038fd62ede35af"
+  },
+  "mechanism_overlap_audit": {
+    "path": "docs/a_share_three_day_walkforward_campaign_083_mechanism_overlap_audit.json",
+    "sha256": "fab8ec22717b83e444923e4d74a88878b11d4ab239e1c37eb3658e3c37d5c0fa"
+  },
+  "prevalue_infrastructure_failure_record": {
+    "path": "docs/a_share_three_day_walkforward_campaign_083_prevalue_infrastructure_failures_20260806.json",
+    "sha256": "61cf56f699bb694fd898f0996db1212f8ef6c1bae8c77bba3c6d9a5ed45677d6"
+  },
+  "research_attempt_ledger_before_source_read": {
+    "path": "data/experiments/short_horizon/historical_walkforward/campaign_083/research_attempt_ledger_v1.json",
+    "sha256": "c6a8401f9c68115414451f4e25c4de9646ab57dbb331befe953b7c6dea23fcf7"
+  },
+  "feature_runner": {
+    "path": "scripts/a_share_three_day_walkforward_campaign083_features.py",
+    "sha256": "6d5d1c15bc146ccb6f86bb63e7183ca3b99ead49a1f748dcd8d954c760dca697"
+  },
+  "tests": {
+    "path": "tests/data_collector_tests/test_a_share_three_day_walkforward_campaign083_features.py",
+    "sha256": "8e9d47a1665b4b32e8eb2fb81565f9ea39a1b32b88d87f8d95cd04692d63b497",
+    "synthetic_tests_passed_before_freeze": 11,
+    "synthetic_tests_failed_after_correction": 0,
+    "initial_fixture_failure_preserved_in_failure_record": true,
+    "black_py312_check_passed": true,
+    "ruff_check_passed": true,
+    "py_compile_passed": true
+  },
+  "frozen_semantics": {
+    "factor": "intraday_close_frontier_innovation_share_238p",
+    "direction": "higher",
+    "selected_bar_count": 240,
+    "half_session_bar_count": 120,
+    "within_half_opportunity_count": 119,
+    "pooled_opportunity_count": 238,
+    "close_rule": "every selected close is finite, strictly positive, and represented as float64",
+    "frontier_initialization": "the first close of each 120-close half independently initializes running_min and running_max and contributes no opportunity",
+    "innovation_rule": "at each of the next 119 positions count exactly one iff close is strictly greater than the preceding running_max or strictly less than the preceding running_min, then update both frontiers",
+    "lunch_reset": "restart both frontiers at 13:01; never compare the afternoon first close with the morning frontier",
+    "tie_rule": "exact equality to a preceding frontier is a non-innovation",
+    "constant_path_rule": "valid with score zero",
+    "score": "(morning_innovation_count+afternoon_innovation_count)/238.0",
+    "epsilon_rounding_tick_conversion_jitter_clipping_imputation_or_stochastic_rule": false,
+    "valid_range": [
+      0.0,
+      1.0
+    ],
+    "numeric_comparator_count": 112,
+    "numeric_comparator_order_sha256": "78656b7dcd0df95703ccf663d261c61cb5f596ca368c3523907464fe25ed1f2b",
+    "complete_definition_count": 114,
+    "complete_definition_order_sha256": "bc8ecccee5fa8278342253908e34167313041a23ae153bb3d64d3f60c285e04f"
+  },
+  "research_boundary": {
+    "candidate_source_rows_read_before_freeze": false,
+    "candidate_historical_values_computed_before_freeze": false,
+    "comparison_values_read_before_freeze": false,
+    "historical_daily_price_fields_read_before_freeze": [],
+    "historical_forward_returns_read_before_freeze": false,
+    "provider_request_issued_before_freeze": false,
+    "credential_secret_printed_hashed_or_logged": false,
+    "candidate49_historical_backfill_performed": false,
+    "candidate49_ledgers_changed": false,
+    "second_prospective_candidate_created": false,
+    "current_scoring_selection_sizing_or_orders_performed": false
+  },
+  "next_action": "Run the complete frozen feature suite once more; only if it passes may the immutable local minute close projection and stock-day identity projection be opened to build and verify the Campaign083 snapshot."
+}

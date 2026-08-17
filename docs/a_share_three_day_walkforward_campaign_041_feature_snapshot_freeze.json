@@ -1,0 +1,86 @@
+{
+  "version": 1,
+  "kind": "a_share_three_day_walkforward_campaign041_feature_snapshot_freeze",
+  "status": "frozen_after_full_snapshot_verification_before_comparison_values",
+  "frozen_at": "2026-07-31T06:20:24Z",
+  "purpose": "Bind the corrected immutable Campaign041 OHLC microgap-absorption snapshot and all additive publication-repair evidence before the ordered no-return gates may read comparison-factor values.",
+  "authoritative_inputs": {
+    "iteration_state": {
+      "path": "docs/a_share_three_day_iteration_status_20260731_campaign040_verified.json",
+      "sha256": "dd561aac051eed7ecb1c574c61ac258c5e62954d7390c503a5444cf8a0fe2bba"
+    },
+    "no_return_preregistration": {
+      "path": "docs/a_share_three_day_walkforward_campaign_041_no_return_preregistration.json",
+      "sha256": "6691fb6a382d6f2f481473f25a0060606edf59290bc822b635b23de25105ae7c"
+    },
+    "feature_runner": {
+      "path": "scripts/a_share_three_day_walkforward_campaign041_features.py",
+      "sha256": "2d6798b09491665fe9e2f72fc45a2489908bcf2577e90fa7868dc04c05a38f47"
+    },
+    "synthetic_tests": {
+      "path": "tests/data_collector_tests/test_a_share_three_day_walkforward_campaign041_features.py",
+      "sha256": "4221f4918762c844ae5de7b167215a59f15d4066ab85d7d48207bf3d2642990c"
+    },
+    "first_metadata_repair": {
+      "path": "docs/a_share_three_day_walkforward_campaign_041_feature_manifest_metadata_infrastructure_repair_20260731.json",
+      "sha256": "8c0dcc35159b456623465513477f9107a583bfef8b058553997cacf6022ea82d"
+    },
+    "inherited_validator_repair": {
+      "path": "docs/a_share_three_day_walkforward_campaign_041_inherited_manifest_compatibility_repair_20260731.json",
+      "sha256": "2469cf6f63176bfaca561efa8db008eb2a6547e3d7884f8db44be23ff878d5cc"
+    },
+    "postvalidation_publication_repair": {
+      "path": "docs/a_share_three_day_walkforward_campaign_041_postvalidation_publication_metadata_repair_20260731.json",
+      "sha256": "c537428f43f9ca1d0d9b4d8b216c1f89b4fa8d8ae8416d54e484883ac431f5b4"
+    },
+    "feature_snapshot_manifest": {
+      "path": "/Volumes/DIsk/qlib-a-share-tushare-1m/derived/a_share/rich/tushare/minute_walkforward_campaign041_feature_library/tushare_stk_mins_1m_2019_2025_ea0cbb8f_walkforward_campaign041_feature_library_v1/snapshot_manifest.json",
+      "sha256": "838f71169e90d33e9ebbfd34d62dd2c4969432454eeaa69ae6601bb6fdc95391"
+    }
+  },
+  "snapshot_contract": {
+    "factor_name": "intraday_microgap_absorption_share_238p",
+    "direction": "higher",
+    "dataset_sha256": "d330e806262d5e3187649273aea14bb20e53d13cc18edfbc8d8dd0616aa0ac0b",
+    "rows": 7724498,
+    "partitions": 33015,
+    "eligible_rows": 7461292,
+    "resumed_partitions": 33015,
+    "source_fields_read": [
+      "datetime",
+      "symbol",
+      "provider",
+      "open",
+      "high",
+      "low",
+      "close"
+    ],
+    "source_open_high_low_read": true,
+    "source_close_read": true,
+    "source_volume_read": false,
+    "source_amount_read": false,
+    "comparison_factor_values_read": false,
+    "historical_daily_price_fields_read": false,
+    "historical_forward_returns_read": false
+  },
+  "verification": {
+    "synthetic_tests_passed": 8,
+    "synthetic_tests_failed": 0,
+    "verified_partitions": 33015,
+    "verified_rows": 7724498,
+    "all_partition_byte_and_frame_hashes_valid": true,
+    "idempotent_build_exit_code": 0,
+    "dataset_sha256_unchanged_across_metadata_repairs": true,
+    "corrected_manifest_semantics_valid_with_bound_fingerprints": true
+  },
+  "research_boundary": {
+    "provider_request_issued": false,
+    "comparison_values_read_before_freeze": false,
+    "historical_daily_price_fields_read_before_freeze": false,
+    "historical_forward_returns_read_before_freeze": false,
+    "candidate49_ledgers_changed": false,
+    "candidate50_activation_created": false,
+    "current_scoring_selection_sizing_or_orders_performed": false
+  },
+  "next_action": "Run the frozen ordered no-return audit: coverage and capacity first, and only if that gate passes load the exact 62-factor comparison library in preregistered order."
+}

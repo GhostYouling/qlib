@@ -1,0 +1,67 @@
+{
+  "version": 1,
+  "kind": "a_share_three_day_walkforward_campaign063_additive_manifest_namespace_repair_freeze",
+  "status": "frozen_after_manifest_namespace_failure_and_before_publication_resume",
+  "recorded_at": "2026-08-05T06:50:00+08:00",
+  "purpose": "Bind the only additive Campaign063 publication-namespace repair before revalidating the preserved 33015 checkpoints and constructing the top-level manifest.",
+  "authoritative_boundary": {
+    "path": "docs/a_share_three_day_iteration_status_20260805_campaign062_verified_v2.json",
+    "sha256": "ba313597d16965f78383956967c619ba9b41b08e175c324d637b2833f79a1fe7"
+  },
+  "no_return_protocol": {
+    "path": "docs/a_share_three_day_walkforward_campaign_063_no_return_preregistration.json",
+    "sha256": "2effcee4ccbbba8d55f450c7add3eb6064968a60c9d856ac769aebd20e542dfb"
+  },
+  "prior_repair_freeze": {
+    "path": "docs/a_share_three_day_walkforward_campaign_063_empty_partition_repair_freeze_20260805.json",
+    "sha256": "030397749f6a4fd44bd814430fd4f7afb3304762103bd0893b4b0e78f6444e51"
+  },
+  "manifest_namespace_failure": {
+    "path": "docs/a_share_three_day_walkforward_campaign_063_manifest_namespace_failure_20260805.json",
+    "sha256": "6e555d9c9856fbda1f890051c0f97ddc6ae24bfda09c8a8910dd163de4a12a0a"
+  },
+  "repair_launcher": {
+    "path": "scripts/a_share_three_day_walkforward_campaign063_manifest_namespace_repair.py",
+    "sha256": "855ce297d0f520d092cc8b3448d9d8527da4b7e0b8f86bda4ea7a3f1cc935e18",
+    "injected_names": [
+      "campaign004",
+      "MARKET_BENCHMARK_MANIFEST_SHA256",
+      "MARKET_BENCHMARK_BYTE_SHA256",
+      "MARKET_BENCHMARK_FRAME_SHA256",
+      "MINIMUM_LEAVE_ONE_OUT_PEERS",
+      "MINIMUM_INFORMATIVE_POSITIONS"
+    ],
+    "injected_values_equal_frozen_campaign063_module_values": true,
+    "campaign004_alias_is_frozen_campaign031_moment_helper": true,
+    "minimum_informative_positions_alias_is_exact_236_adjacent_pair_count": true,
+    "partition_extractor_compute_output_manifest_validator_formula_direction_or_gate_changed": false
+  },
+  "repair_tests": {
+    "path": "tests/data_collector_tests/test_a_share_three_day_walkforward_campaign063_manifest_namespace_repair.py",
+    "sha256": "99c1ac438f276458878e0b9f87e575356a373f17181c3c06138595db1bd370a9",
+    "combined_command": "PYTHONPATH=<repository-root>:<third-party-site-packages> python -S -m pytest -q tests/data_collector_tests/test_a_share_three_day_walkforward_campaign063_features.py tests/data_collector_tests/test_a_share_three_day_walkforward_campaign063_empty_partition_repair.py tests/data_collector_tests/test_a_share_three_day_walkforward_campaign063_manifest_namespace_repair.py",
+    "passed": 16,
+    "failed": 0,
+    "exact_name_set_value_identity_computation_boundary_and_conflict_failure_tested": true
+  },
+  "preserved_partial_snapshot": {
+    "root": "/Volumes/DIsk/qlib-a-share-tushare-1m/derived/a_share/rich/tushare/minute_walkforward_campaign063_feature_library/.tushare_stk_mins_1m_2019_2025_ea0cbb8f_walkforward_campaign063_feature_library_v1.partial",
+    "complete_checkpoint_partitions": 33015,
+    "complete_output_partitions": 33015,
+    "top_level_manifest_written": false,
+    "formal_snapshot_published": false,
+    "resume_must_revalidate_all_checkpoints": true
+  },
+  "research_boundary": {
+    "candidate_values_manually_inspected_or_used_to_change_repair": false,
+    "comparison_values_read": false,
+    "historical_daily_price_fields_read": [],
+    "historical_forward_return_fields_read": false,
+    "development_folds_opened": false,
+    "stress_2024_2025_opened": false,
+    "candidate49_historical_backfill_performed": false,
+    "candidate49_ledgers_changed": false,
+    "provider_request_issued": false
+  },
+  "next_action": "Run only the bound namespace-repair launcher, require exit code zero and a validated published manifest, then independently verify all 33015 partition bytes and frames before any comparison value is opened."
+}

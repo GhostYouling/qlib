@@ -1,0 +1,39 @@
+{
+  "schema_version": 1,
+  "kind": "a_share_three_day_walkforward_campaign139_infrastructure_failure",
+  "status": "prevalue_source_range_contract_not_physically_enforceable_with_single_cross_period_rowgroups",
+  "recorded_at": "2026-08-14T13:15:59+0800",
+  "attempt_id": "campaign139_infrastructure_004",
+  "phase": "source_runner_design_before_source_values",
+  "metadata_observation": {
+    "performance_forecast_row_groups": 1,
+    "performance_forecast_rows": 42206,
+    "performance_forecast_announcement_min": "2019-01-14",
+    "performance_forecast_announcement_max": "2026-07-14",
+    "quarterly_quality_row_groups": 1,
+    "quarterly_quality_rows": 143776,
+    "quarterly_quality_announcement_min": "2019-04-08",
+    "quarterly_quality_announcement_max": "2026-07-10",
+    "inspection_method": "Parquet schema and row-group metadata statistics only; no column chunk or row value decoded."
+  },
+  "failure": {
+    "v1_constraint": "source_values_outside_development_2019_2023_allowed_before_stress_open=false",
+    "cause": "A single row group spans development, locked historical and later dates. Parquet cannot truthfully promise that selected numeric column chunks are decoded only for 2019-2023 rows.",
+    "failed_exit_code_bypassed": false,
+    "source_value_read_before_detection": false
+  },
+  "authorized_additive_correction": "Preserve v1 and add v2 before any source value. Permit one fingerprint-bound local decode of the accepted source columns, discard rows outside the frozen report/announcement range before candidate matching, allow 2019-2025 feature construction, and keep every 2024-2025 price/return field and stress result closed.",
+  "scientific_semantics_unchanged": {
+    "factor": "quarterly_realized_profit_growth_forecast_surprise_rank",
+    "direction": "higher",
+    "formula_join_event_age_filters_subsets_models_and_gates_changed": false,
+    "locked_stress_return_policy_changed": false
+  },
+  "research_boundary": {
+    "parquet_row_or_column_value_read": false,
+    "candidate_or_comparator_value_read": false,
+    "historical_price_or_return_value_read": false,
+    "provider_request_issued": false,
+    "candidate49_ledgers_changed": false
+  }
+}

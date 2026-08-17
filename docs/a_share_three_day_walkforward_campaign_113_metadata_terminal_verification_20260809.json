@@ -1,0 +1,105 @@
+{
+  "schema_version": 1,
+  "kind": "a_share_three_day_walkforward_campaign113_metadata_terminal_verification",
+  "status": "verified_terminal_metadata_schema_gate_ledgers_policy_reports_and_candidate49_boundary",
+  "recorded_at": "2026-08-09T02:04:07+08:00",
+  "authoritative_status": {
+    "path": "docs/a_share_three_day_iteration_status_20260809_campaign113_metadata_terminal_v2.json",
+    "sha256": "82614461c9ded52cfadbc6d9dbecc2faf4815f9f485da46fe36c0f25d360eff9"
+  },
+  "future_numeric_policy": {
+    "path": "docs/a_share_three_day_walkforward_future_numeric_comparison_eligibility_policy_v79_20260809.json",
+    "sha256": "28cc7103ca6e8a6079955fe871ad27479c6a5c11dd611aada1d15c6126da1ed8",
+    "complete_definition_count": 141,
+    "complete_definition_order_sha256": "ccab6e3d9d81b0a02d4ff178fdd442b26a1e68e3655e1c6f5b2fcb28cd4a4559",
+    "numeric_comparator_count": 134,
+    "numeric_comparator_order_sha256": "31d788db467f558a0ac538315343090f1b3ad4cb27a26136a49ebaa88b2fdbf2"
+  },
+  "campaign_artifacts": {
+    "metadata_schema_failure": {
+      "path": "docs/a_share_official_exchange_enforcement_metadata_schema_failure_20260809.json",
+      "sha256": "ea44bd881db6f86fa311fe3c92f31aa465a1bdc845545a92bd2981ed917bbb65"
+    },
+    "terminal_result": {
+      "path": "docs/a_share_three_day_walkforward_campaign_113_metadata_terminal_result_v3_20260809.json",
+      "sha256": "42eb0e1c1b1310751386cfe9512b4e563670311e5efc8017479de5fad878c752"
+    },
+    "latest_attempt_ledger": {
+      "path": "data/experiments/short_horizon/historical_walkforward/campaign_113/research_attempt_ledger_v6.json",
+      "sha256": "de92a8f3e1ef5b3bd4ac03d8f7098dac746500014afdb1e54059ae0fe43f7726",
+      "extends_v5_sha256": "606e517db8987206a059293878ba94298202972058491a8e6fce1e2e1532f44a",
+      "extension_entry_count": 1,
+      "total_attempt_count": 17,
+      "total_infrastructure_failure_count": 14,
+      "current_chain_tip_sha256": "b2a6974905ee40fa3142c8e5497121d67a5a06a6cef692c15c2708039d58ee4a"
+    }
+  },
+  "reports": {
+    "campaign113_report": {
+      "path": "docs/a_share_three_day_walkforward_campaign_113_report.md",
+      "sha256": "73a6591a1e63636a5aaa8ebb9b3d279f11ca2dd8425fcc47d98b5258e9ea053c"
+    },
+    "current_research_report": {
+      "path": "data/experiments/short_horizon/current_research_report.md",
+      "sha256": "d7356c8f0dd0eebc28b26698f13d53f18bc556255f0a8e010d4cf758f881a016"
+    },
+    "three_day_research_report": {
+      "path": "data/experiments/short_horizon/three_day_research_report.md",
+      "sha256": "485bd5e65c68cd48cba643d30bc384338a0fcd3365ce8e66ec32992d4669922a"
+    },
+    "data_pipeline": {
+      "path": "docs/a_share_data_pipeline.md",
+      "sha256": "08c5a8f1ce23cc43352ee78502c04e4ab4ff15050796ec3c3ee38bf49cb7da87"
+    }
+  },
+  "test_module": {
+    "path": "tests/data_collector_tests/test_a_share_three_day_walkforward_campaign113_metadata_terminal.py",
+    "sha256": "ec4ecbf38a1d6407ec826a2afad4fb65cf07669f9d4cb26b73bb1474c5d133fe"
+  },
+  "test_receipts": [
+    {
+      "scope": "Current Campaign113 adapter, synthetic adapter, source-contract stage, adapter/formula stage, metadata terminal stage and Campaign112 predecessor semantics",
+      "result": "33 passed in 2.92s",
+      "exit_code": 0
+    },
+    {
+      "scope": "Black check on unchanged adapter, synthetic adapter test and new terminal test",
+      "result": "3 files would be left unchanged",
+      "exit_code": 0
+    },
+    {
+      "scope": "Ruff check on unchanged adapter, synthetic adapter test and new terminal test",
+      "result": "All checks passed",
+      "exit_code": 0
+    }
+  ],
+  "verified_assertions": {
+    "sse_required_schema_role_count": 4,
+    "sse_required_schema_roles_resolved": 4,
+    "szse_regulatory_measure_unresolved_required_role_count": 2,
+    "szse_disciplinary_action_unresolved_required_role_count": 3,
+    "metadata_schema_gate_passed": false,
+    "campaign113_terminal": true,
+    "post_exposure_label_expansion_or_adapter_repair_allowed": false,
+    "metadata_only_exchange_page_or_schema_requests_issued": true,
+    "source_event_rows_accessed_persisted_or_counted": false,
+    "source_event_row_count": null,
+    "candidate_or_comparison_values_read": false,
+    "historical_daily_price_or_forward_return_values_read": false,
+    "development_trial_count": 0,
+    "stress_2024_2025_opened": false,
+    "cumulative_historical_research_attempt_count": 844,
+    "cumulative_return_reading_development_trial_count": 302,
+    "candidate49_signal_entry_count": 0,
+    "candidate49_execution_entry_count": 0,
+    "candidate49_signal_ledger_sha256": "5193f00d7f36da003f53cec387900da4c3d002299f5dfcfc1a95eaa199ed3a79",
+    "candidate49_execution_ledger_sha256": "d57a3e61eac969e42cafa418ccd8c0a5ee65dcf69da145bb2c096c2a02a2ea4f",
+    "candidate49_ledgers_unchanged": true,
+    "candidate49_provider_workflow_run_today": false,
+    "candidate49_historical_backfill_performed": false,
+    "second_prospective_candidate_created": false,
+    "current_scoring_selection_sizing_or_orders_performed": false,
+    "investment_advice": false
+  },
+  "next_safe_action": "Keep Campaign113 terminal. Continue only with a genuinely independent future offline pre-row mechanism; Candidate49 remains the sole prospective confirmation layer."
+}

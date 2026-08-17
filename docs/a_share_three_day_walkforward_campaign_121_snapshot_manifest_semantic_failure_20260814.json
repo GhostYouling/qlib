@@ -1,0 +1,36 @@
+{
+  "schema_version": 1,
+  "kind": "a_share_three_day_walkforward_campaign121_infrastructure_failure",
+  "status": "published_snapshot_preserved_read_only_recovery_required",
+  "recorded_at": "2026-08-14T02:09:00+08:00",
+  "attempt_id": "campaign121_infrastructure_010",
+  "phase": "postpublication_manifest_semantic_validation",
+  "immutable_snapshot_manifest": {
+    "path": "/Volumes/DIsk/qlib-a-share-tushare-1m/derived/a_share/rich/tushare/minute_walkforward_campaign121_feature_library/tushare_stk_mins_1m_2019_2025_ea0cbb8f_walkforward_campaign121_feature_library_v1/snapshot_manifest.json",
+    "sha256": "e5789da9896535d8d67e0f0f3a7b2704f41292e4694b127a27999224abfad724",
+    "dataset_sha256": "cb476bcc93e7c88df6e2666af9d60d470c90f8a7670ea4553d2e9b877ab8a5b2",
+    "partitions": 33015,
+    "rows": 7724498,
+    "eligible_rows": 7724498
+  },
+  "semantic_discrepancies": {
+    "factor_range": {
+      "observed_stale_manifest_value": [-1.0, 1.0],
+      "truthful_frozen_value": [0.0, 1.0]
+    },
+    "fixed_denominator": {
+      "observed_stale_manifest_value": 240,
+      "truthful_frozen_value": 239
+    }
+  },
+  "cause": "The immutable builder inherited two descriptive fields from Campaign110 although its formula, factor name, output columns, eligibility and implementation freeze point to Campaign121.",
+  "recovery": "Do not rewrite the manifest or any partition. Freeze a dedicated read-only verifier that binds the observed stale metadata, validates every byte/frame hash and enforces the truthful [0,1] 239-position lattice.",
+  "research_boundary": {
+    "snapshot_rewritten": false,
+    "comparator_values_read": false,
+    "historical_daily_price_or_forward_return_values_read": false,
+    "provider_request_issued": false,
+    "candidate49_ledgers_changed": false,
+    "scientific_result_changed": false
+  }
+}

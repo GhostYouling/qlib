@@ -1,0 +1,19 @@
+{
+  "schema_version": 1,
+  "kind": "a_share_three_day_walkforward_campaign120_ordered_uniqueness_black_failure",
+  "status": "recorded_before_candidate_reopen_or_comparator_values",
+  "recorded_at": "2026-08-14T00:53:35+08:00",
+  "attempt_id": "campaign120_infrastructure_013",
+  "failed_stage": "all_137_runner_static_format_validation",
+  "failure": "Black --check required mechanical formatting in the unfrozen ordered uniqueness runner and stopped before Ruff and the four synthetic tests.",
+  "repair": "Bind the already-created protocol hash, format only the unfrozen runner, then rerun Black, Ruff and the same four tests before freezing or reading any comparator value.",
+  "formula_direction_order_gate_or_comparator_library_changed": false,
+  "research_boundary": {
+    "candidate_values_reopened_for_uniqueness": false,
+    "comparator_values_read": false,
+    "numeric_comparator_count_read": 0,
+    "historical_daily_price_or_forward_return_values_read": false,
+    "provider_request_issued": false,
+    "candidate49_ledgers_changed": false
+  }
+}

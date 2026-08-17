@@ -1,0 +1,47 @@
+{
+  "schema_version": 1,
+  "kind": "a_share_three_day_walkforward_campaign185_prevalue_terminated_source_family_rejection",
+  "status": "rejected_cninfo_equity_incentive_title_source_family_already_terminal",
+  "recorded_at": "2026-08-15T13:10:00+08:00",
+  "phase": "finite_prevalue_domain_selection",
+  "candidate_domain": "employee_equity_incentive_grant_vesting_exercise_forfeiture_cancellation_lifecycle",
+  "bounded_search": {
+    "pattern_family": "share-based compensation, equity incentive plan, restricted stock award, stock option grant, vesting, exercise, forfeiture, cancellation and exact Chinese equivalents",
+    "exit_code": 0,
+    "matching_file_count": 9,
+    "terminal_source_family_evidence_found": true,
+    "factor_comparator_security_price_or_return_value_read": false
+  },
+  "authoritative_inputs": {
+    "campaign184_effective_state": {
+      "path": "docs/a_share_three_day_iteration_status_20260815_campaign184_prevalue_terminal.json",
+      "sha256": "11d155ea03b85b0fb9b6e7ce854b67f7c98d57be96c3af69d40800686342b5d8"
+    },
+    "campaign156_terminal_report": {
+      "path": "docs/a_share_three_day_walkforward_campaign_156_terminal_report.md",
+      "sha256": "117c7d61d3bbdfe32bae4f14b946474cc71566dc1c94e1600940e5546175f6d1"
+    },
+    "data_pipeline_equity_incentive_terminal_record": {
+      "path": "docs/a_share_data_pipeline.md",
+      "sha256": "81bb69d93877a017bae47e275c4df0ad121cebc986fc35b164c6c922edb64229"
+    }
+  },
+  "scientific_decision": {
+    "formula": null,
+    "direction": null,
+    "parameters_filters_subsets_combinations_models": [],
+    "selected_for_campaign185_finite_catalog": false,
+    "reason": "The CNInfo equity-incentive draft-title source passed source acceptance but terminated on full-history title structure. Splitting it post hoc into grant, vesting, exercise, forfeiture or cancellation would reopen a terminal source family rather than add an independent source.",
+    "terminal_source_family_rewritten_or_retried": false
+  },
+  "research_boundary": {
+    "provider_or_web_request_issued": false,
+    "provider_credential_presence_value_or_digest_read": false,
+    "source_row_factor_comparator_security_price_or_return_value_read": false,
+    "stress_2024_2025_opened": false,
+    "candidate49_ledgers_changed": false,
+    "second_prospective_candidate_created": false,
+    "current_scoring_selection_sizing_positions_or_orders_performed": false
+  },
+  "next_action": "Record this terminal-family rejection once and continue only with a genuinely independent source mechanism."
+}

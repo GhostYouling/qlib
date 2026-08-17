@@ -1,0 +1,42 @@
+{
+  "schema_version": 1,
+  "kind": "a_share_three_day_walkforward_campaign132_design_implementation_freeze",
+  "status": "frozen_before_campaign132_component_factor_values_or_historical_returns",
+  "recorded_at": "2026-08-14T09:12:04+08:00",
+  "frozen_implementation": {
+    "protocol_path": "docs/a_share_three_day_walkforward_campaign_132_preregistration_20260814.json",
+    "protocol_sha256": "b4c3f6b3a69506c8a8f5ee71ffe05e487af0f71ae2b104adb3a79b2efc4ac0be",
+    "builder_path": "scripts/a_share_three_day_walkforward_campaign132_design.py",
+    "builder_sha256": "efbb0db0afa6519a6ba9a149ec913c0522c7500f781320b1a5f2a7aa685453de",
+    "test_path": "tests/data_collector_tests/test_a_share_three_day_walkforward_campaign132_design.py",
+    "test_sha256": "8d9ad0300ab9173fef5e28c9d1c05309a926af425d62977628c097adc6af9cd6",
+    "runtime": "/Volumes/DIsk/Coding/anaconda3/bin/python3.12",
+    "feature_count": 140,
+    "feature_order_sha256": "c71bfe27486c9567afd3aca21e4b04053658c23ac651e7f4df7fd014b0c31efd",
+    "minimum_finite_components": 105,
+    "appended_feature_count": 10,
+    "year_partition_count": 7,
+    "source_manifest_count": 11,
+    "output_run_id": "tushare_stk_mins_1m_2019_2025_ea0cbb8f_walkforward_campaign132_numeric140_design_v1",
+    "partial_output_policy": "preserve_hidden_partial_and_fail_closed",
+    "existing_final_output_reuse_allowed": false
+  },
+  "pre_freeze_validation": {
+    "synthetic_test": "5 passed in 7.44s",
+    "black": "2 files would be left unchanged before final freeze hook; builder mechanically reformatted after hook insertion",
+    "ruff": "passed after final freeze hook insertion",
+    "test_used_component_factor_values": false,
+    "test_used_historical_daily_price_or_forward_return_values": false
+  },
+  "research_boundary": {
+    "component_factor_values_read_before_freeze": false,
+    "historical_daily_price_or_forward_return_values_read_before_freeze": false,
+    "stress_2024_2025_opened_before_freeze": false,
+    "provider_request_issued_before_freeze": false,
+    "credential_loaded_before_freeze": false,
+    "candidate49_historical_backfill_performed_before_freeze": false,
+    "candidate49_ledgers_changed_before_freeze": false,
+    "second_prospective_candidate_created_before_freeze": false,
+    "current_use_or_investment_advice_before_freeze": false
+  }
+}

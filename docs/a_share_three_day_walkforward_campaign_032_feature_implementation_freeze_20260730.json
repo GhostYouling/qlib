@@ -1,0 +1,65 @@
+{
+  "version": 1,
+  "kind": "a_share_three_day_walkforward_campaign032_feature_implementation_freeze",
+  "status": "implementation_and_tests_frozen_before_stock_day_quarterly_or_candidate_values",
+  "recorded_at": "2026-07-30T15:02:00Z",
+  "purpose": "Bind the Campaign032 implementation after the corrected no-return preregistration passed and before building any candidate value.",
+  "no_return_preregistration": {
+    "path": "docs/a_share_three_day_walkforward_campaign_032_no_return_preregistration_v2.json",
+    "sha256": "d03dc148d2169622cc2fdbe2248dbe336ccbd5c316f8a4faa708b16a69e44f8a"
+  },
+  "feature_runner": {
+    "path": "scripts/a_share_three_day_walkforward_campaign032_features.py",
+    "sha256": "2886ec80a807f9d991ed5ff130c6a2891f7d2f7a032b4314240204428107b616"
+  },
+  "feature_tests": {
+    "path": "tests/data_collector_tests/test_a_share_three_day_walkforward_campaign032_features.py",
+    "sha256": "b17fb53de5bf1c070d9d2d96c2c849b90a8a57ee4afbc56fe0418a78aa19c46a",
+    "focused_tests_passed": 7
+  },
+  "reporting_helper": {
+    "path": "scripts/a_share_three_day_walkforward_reporting.py",
+    "sha256": "6291a8bfd11bd90dbef42edd6252368f67498bdc2be39661ebf4b7d08f0ac969"
+  },
+  "implementation_contract": {
+    "factor": "quarterly_announcement_timeliness_days",
+    "direction": "higher",
+    "formula": "-1 * exact integer calendar days from report_date to announcement_date for the latest effective report",
+    "source_projection": [
+      "datetime",
+      "symbol",
+      "provider",
+      "instrument",
+      "report_date",
+      "announcement_date"
+    ],
+    "quarterly_value_fields_read": [],
+    "minute_price_volume_amount_fields_read": [],
+    "daily_price_fields_read": [],
+    "forward_return_fields_read": [],
+    "complete_comparison_factor_count": 53,
+    "development_trial_count_if_admitted": 1
+  },
+  "verification": {
+    "python_compile_passed": true,
+    "feature_and_reporting_tests_passed": 14,
+    "prebuild_status_snapshot_exists": false,
+    "prebuild_status_audit_count": 0,
+    "prebuild_status_no_return_audit_sha256_bound": false
+  },
+  "research_boundary": {
+    "campaign032_stock_day_partitions_read": false,
+    "quarterly_event_rows_read": false,
+    "candidate_values_read": false,
+    "comparison_values_read": false,
+    "daily_price_fields_read": false,
+    "forward_returns_read": false,
+    "provider_request_issued_for_campaign032": false,
+    "candidate49_historical_return_signal_or_execution_backfill_performed": false,
+    "current_scoring_selection_sizing_or_orders_performed": false
+  },
+  "decision": {
+    "binding_validation_required_before_build": true,
+    "candidate_snapshot_build_allowed_only_after_exit_zero": true
+  }
+}

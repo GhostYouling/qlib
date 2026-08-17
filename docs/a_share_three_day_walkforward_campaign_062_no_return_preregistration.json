@@ -1,0 +1,266 @@
+{
+  "version": 1,
+  "kind": "a_share_three_day_walkforward_campaign062_no_return_preregistration",
+  "status": "frozen_before_campaign062_source_candidate_comparison_daily_price_or_return_values",
+  "recorded_at": "2026-08-05T03:24:00+08:00",
+  "purpose": "Freeze the sole Campaign062 disclosure-attention candidate, exact point-in-time source projection, ordered coverage-first gates, complete 93-factor comparison catalog, one finite development trial, and strict research boundary before any Campaign062 value is read.",
+  "candidate": {
+    "name": "quarterly_announcement_peer_crowding_sparsity",
+    "direction": "higher",
+    "formula": "For every unique instrument-report_date event, count distinct instruments sharing its exact report_date and announcement_date in the frozen quarterly source. For each stock-day select the latest event effective on the first accepted session strictly after announcement_date, resolving simultaneous effective events by later report_date then later announcement_date, and return 1/peer_count.",
+    "economic_hypothesis": "Less crowded standardized quarterly disclosure dates reduce cross-issuer competition for investor attention and may support three-session firm-specific information diffusion.",
+    "stock_day_identity_projection": [
+      "datetime",
+      "symbol",
+      "provider"
+    ],
+    "quarterly_source_projection": [
+      "instrument",
+      "report_date",
+      "announcement_date"
+    ],
+    "forbidden_quarterly_value_fields": [
+      "roe",
+      "net_profit",
+      "revenue_yoy",
+      "profit_yoy"
+    ],
+    "forbidden_minute_source_columns": [
+      "open",
+      "high",
+      "low",
+      "close",
+      "volume",
+      "amount"
+    ],
+    "event_identity": [
+      "instrument",
+      "report_date"
+    ],
+    "event_identity_must_be_unique": true,
+    "peer_group_keys": [
+      "report_date",
+      "announcement_date"
+    ],
+    "peer_identity": "distinct instrument",
+    "issuer_included_in_peer_count": true,
+    "availability_rule": "announcement_date is strictly earlier than the stock-day; the effective position is the first accepted local session after announcement_date",
+    "simultaneous_effective_event_rule": "sort by effective position, report_date, announcement_date and retain the last event for an issuer at one effective position",
+    "score_rule": "1 divided by positive integer peer_count",
+    "minimum_peer_count": 1,
+    "endpoint_canonicalization_tolerance": null,
+    "valid_range": {
+      "lower": 0.0,
+      "lower_inclusive": false,
+      "upper": 1.0,
+      "upper_inclusive": true
+    },
+    "missing_rule": "Missing before the first effective event or for any invalid/duplicate event identity, nonpositive peer count, nonfinite score, or score outside (0,1]. Never impute, repair, clip, bucket, subset, or substitute an event.",
+    "alternate_field_window_peer_group_transform_direction_threshold_filter_subset_board_year_cost_regime_fit_combination_or_model_search": false
+  },
+  "source_chain": {
+    "concept_scouting": {
+      "path": "docs/a_share_three_day_walkforward_campaign_062_concept_scouting.json",
+      "sha256": "5f0c54f992ca4aeab2a72c2f8f0b277b408913f3be8a5f240373be62347ddf24"
+    },
+    "mechanism_overlap_audit": {
+      "path": "docs/a_share_three_day_walkforward_campaign_062_mechanism_overlap_audit.json",
+      "sha256": "789957bf33c4689a13a0338f31235ef0bc9d5074cefd704a2398873a4977387b"
+    },
+    "authoritative_iteration_state": {
+      "path": "docs/a_share_three_day_iteration_status_20260805_campaign061_verified.json",
+      "sha256": "537f7c1b45ddb20b9b02da2c44380eebc9ae88c608eda729eb282d53ef770419"
+    },
+    "historical_walkforward_policy": {
+      "path": "docs/a_share_three_day_historical_walkforward_research_policy_20260727.json",
+      "sha256": "38426d6161b9bfed323c58caba18feca668b8c9d53e294951a8ba90c01a798bb"
+    },
+    "future_only_policy": {
+      "path": "docs/a_share_three_day_future_only_minute_research_policy_20260725.json",
+      "sha256": "52ca8bfa7201509fe891d0af3d1c87aeebd64e47e6ec6641e897849411df408c"
+    },
+    "accepted_local_calendar": {
+      "path": "data/qlib/cn_a_share/calendars/day.txt",
+      "sha256": "fda506597d26bcec953cdc0882042a5046ec1587db60490e16a01627fd43f53a",
+      "use": "strict next-session disclosure effectiveness"
+    },
+    "raw_minute_manifest": {
+      "path_below_data_root": "raw/a_share/rich/tushare/minutes/1m/snapshots/tushare_stk_mins_1m_2019_2025_ea0cbb8f/snapshot_manifest.json",
+      "sha256": "9b3d959563c9d182f38981c6a36bdb3bc9b415de08487a9e1f9e850825c0839f",
+      "projected_columns": [
+        "datetime",
+        "symbol",
+        "provider"
+      ],
+      "price_or_activity_fields_read": false
+    },
+    "joint_clean_manifest": {
+      "path_below_data_root": "derived/a_share/rich/tushare/minute_sentiment_clean/tushare_stk_mins_1m_2019_2025_ea0cbb8f_sentiment_clean_v1/snapshot_manifest.json",
+      "sha256": "453c6719cb3c7da42fed8807b28a2bfe988700283e9625a6db97912534f368de",
+      "dataset_sha256": "0e4fe7c05536cdfcecc2936bc880726902f5560061188ffff82ef7ee6f346983",
+      "partitions": 33015,
+      "rows": 7724498,
+      "use": "accepted stock-day key grid only"
+    },
+    "quarterly_disclosure_source": {
+      "path": "data/raw/a_share/fundamentals/quarterly_quality.parquet",
+      "sha256": "3ac901a97928d2ed81ac72e3eaac9bdc148d36cf67b6abe70223699235ef059f",
+      "manifest_path": "data/metadata/quarterly_quality_manifest.json",
+      "manifest_sha256": "e3cf654babe37a82393c5530696bc1cc242b736cb88e1947b8444b638125ba8c",
+      "rows": 143776,
+      "projected_columns": [
+        "instrument",
+        "report_date",
+        "announcement_date"
+      ],
+      "forbidden_value_columns": [
+        "roe",
+        "net_profit",
+        "revenue_yoy",
+        "profit_yoy"
+      ]
+    },
+    "prior_comparison_catalog": {
+      "path": "docs/a_share_three_day_walkforward_campaign_061_no_return_preregistration.json",
+      "sha256": "8bb79b587a64dab98a3a32d6a04ad6be8985979519ed436bc4062bbe64ff8dab",
+      "reconstructed_factor_count": 92
+    },
+    "campaign061_terminal_record": {
+      "path": "docs/a_share_three_day_walkforward_campaign_061_research_record.json",
+      "sha256": "e644f6612f65dbde37ce1174c9e6e9c6ff30ea9f43f79b40ac003723374748d3"
+    },
+    "campaign061_statistical_snapshot": {
+      "path": "/Volumes/DIsk/qlib-a-share-tushare-1m/derived/a_share/rich/tushare/minute_walkforward_campaign061_feature_library/tushare_stk_mins_1m_2019_2025_ea0cbb8f_walkforward_campaign061_feature_library_v1/snapshot_manifest.json",
+      "sha256": "15ed4b46192402f301218e20b1fe37233dd7547256fb9786692ce544fae20b3c",
+      "dataset_sha256": "a8a6261eaa92cd8eca7c25513236abf73f84f500da368a7b325634808fbb576a",
+      "factor": "intraday_day_over_day_realized_variance_stability_238b",
+      "score_direction": "higher"
+    },
+    "candidate49_future_observation_registration": {
+      "path": "docs/a_share_tushare_intraday_cumulative_vwap_crossing_rate_future_observation_registration.json",
+      "sha256": "431cb0b3b078823f08b888bf4c499bcc5088309a2e58e9de5cb9a9aaa849ffa9",
+      "historical_return_comparison_allowed": false
+    },
+    "candidate49_signal_ledger": {
+      "path": "data/experiments/short_horizon/candidate49_future_signal_ledger.json",
+      "sha256": "5193f00d7f36da003f53cec387900da4c3d002299f5dfcfc1a95eaa199ed3a79",
+      "entry_count": 0
+    },
+    "candidate49_execution_ledger": {
+      "path": "data/experiments/short_horizon/candidate49_future_execution_ledger.json",
+      "sha256": "d57a3e61eac969e42cafa418ccd8c0a5ee65dcf69da145bb2c096c2a02a2ea4f",
+      "entry_count": 0
+    }
+  },
+  "ordered_no_return_gates": {
+    "coverage_and_capacity_before_comparison_values": {
+      "coverage_basis": "candidate finite rows divided by quality-and-listing eligible buyable rows within 2019-2025",
+      "minimum_median_coverage": 0.95,
+      "minimum_p05_coverage": 0.9,
+      "minimum_p05_eligible_names": 50,
+      "minimum_non_overlapping_three_session_cohorts": 200,
+      "minimum_observed_calendar_years": 5,
+      "holding_period_sessions": 3,
+      "comparison_values_read_before_coverage_pass": false,
+      "failed_gate_policy": "Record the exact Campaign062 factor as terminal and stop before comparison values, daily prices, or forward returns."
+    },
+    "uniqueness_after_coverage_only": {
+      "screen_start": "2019-01-01",
+      "screen_end": "2025-12-31",
+      "method": "Within each identical quality-listing-candidate-and-comparison-eligible stock-day cross-section, compute pairwise-complete Spearman correlation between directional percentile scores, then take each comparison factor's median daily correlation.",
+      "maximum_allowed_absolute_median_daily_rank_correlation": 0.8,
+      "minimum_pairwise_names_per_session": 50,
+      "minimum_pairwise_sessions_per_comparison": 100,
+      "candidate49_is_no_return_comparison_only": true,
+      "comparison_factor_count": 93,
+      "comparison_factor_order_sha256": "a2667fbc29a2c3ad0cbe7e1d4d6d51f634170ef5e499b825d9d2147a8b9a24cb",
+      "comparison_order_definition": "Take all 92 reconstructed comparison factors from the bound Campaign061 protocol in exact order, then append terminal Campaign061 exactly once.",
+      "appended_comparison_factors": [
+        {
+          "name": "intraday_day_over_day_realized_variance_stability_238b",
+          "score_direction": "higher",
+          "source": "campaign061_statistical_snapshot"
+        }
+      ],
+      "comparison_values_read_before_coverage_pass": false,
+      "failed_gate_policy": "Stop before daily price or forward return; do not invert, remove a failed comparison, change peer grouping, or rescue the factor.",
+      "all_93_must_pass": true
+    }
+  },
+  "finite_development_catalog_if_admitted": {
+    "trial_id": "wf062_quarterly_announcement_peer_crowding_sparsity_single_higher",
+    "feature_set": [
+      "quarterly_announcement_peer_crowding_sparsity"
+    ],
+    "weights": [
+      1.0
+    ],
+    "direction": "higher",
+    "expected_trial_count": 1,
+    "alternate_weight_threshold_filter_window_peer_group_year_cost_regime_model_or_combination_search": false
+  },
+  "point_in_time_and_execution_semantics": {
+    "development_interval": "2019-01-01 through 2023-12-31 only",
+    "folds": [
+      {
+        "fold": 1,
+        "train": "2019-01-01 through 2020-12-31",
+        "validation": "2021-01-01 through 2021-12-31"
+      },
+      {
+        "fold": 2,
+        "train": "2019-01-01 through 2021-12-31",
+        "validation": "2022-01-01 through 2022-12-31"
+      },
+      {
+        "fold": 3,
+        "train": "2019-01-01 through 2022-12-31",
+        "validation": "2023-01-01 through 2023-12-31"
+      }
+    ],
+    "purge_signal_sessions_at_every_split": 3,
+    "signal_at": "session_t_close",
+    "entry_at": "session_t_plus_1_raw_open",
+    "exit_at": "session_t_plus_3_raw_close",
+    "entry_and_exit_must_remain_inside_same_partition": true,
+    "top_k": 3,
+    "pilot_capital_cny": 200000,
+    "pilot_slot_weight": 0.05,
+    "pilot_maximum_new_exposure": 0.15,
+    "pilot_lot_size_shares": 100,
+    "pilot_adverse_slippage_each_side_bps": [
+      0,
+      5,
+      10,
+      20
+    ],
+    "primary_pilot_slippage_each_side_bps": 10,
+    "aggregate_robustness_slippage_each_side_bps": 20,
+    "daily_amount_participation_limit": 0.01,
+    "stress_2024_2025_open_rule": "once for the complete frozen campaign only if the sole development trial passes every frozen survivor gate",
+    "stress_label": "historically_exposed_quasi_out_of_sample_not_pure_holdout"
+  },
+  "research_boundary": {
+    "stock_day_datetime_symbol_provider_identity_read_before_admissibility": true,
+    "quarterly_instrument_report_announcement_fields_read_before_admissibility": true,
+    "quarterly_value_fields_read_by_candidate_before_admissibility": false,
+    "minute_price_volume_amount_fields_read_before_admissibility": false,
+    "comparison_values_read_before_coverage_pass": false,
+    "daily_price_fields_read_before_admissibility": false,
+    "forward_return_fields_read_before_admissibility": false,
+    "candidate49_historical_return_read": false,
+    "candidate49_signal_or_execution_backfill_allowed": false,
+    "candidate49_ledgers_may_change": false,
+    "second_prospective_candidate_created": false,
+    "provider_request_issued": false,
+    "current_scoring_selection_sizing_or_orders_allowed": false,
+    "investment_advice": false,
+    "current_listing_snapshot_survivorship_limitation": true
+  },
+  "decision": {
+    "candidate_library_size": 1,
+    "comparison_library_size": 93,
+    "development_trial_count_if_admitted": 1,
+    "next_action": "Pass binding validation, implement and freeze the feature runner, then read only identity/timing source fields to build the immutable no-return snapshot."
+  }
+}

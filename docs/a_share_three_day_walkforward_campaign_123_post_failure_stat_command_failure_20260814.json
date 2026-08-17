@@ -1,0 +1,13 @@
+{
+  "schema_version": 1,
+  "kind": "a_share_three_day_walkforward_campaign123_infrastructure_failure",
+  "status": "recorded_post_terminal_read_only_mode_check_path_failure_recovered",
+  "recorded_at": "2026-08-14T03:48:28+08:00",
+  "stage": "post_source_failure_record_verification",
+  "failure": "The combined read-only verification successfully parsed the intent and failure records and confirmed both accepted outputs were absent, then its final bare stat invocation failed because stat was not on that command environment's PATH.",
+  "recovery": "A separate /usr/bin/stat invocation verified both records are regular 0600 files and their SHA-256 fingerprints were recorded without another provider request.",
+  "scientific_result_changed": false,
+  "provider_request_retried": false,
+  "provider_response_retrieved_again": false,
+  "candidate_comparator_price_or_return_values_read": false
+}

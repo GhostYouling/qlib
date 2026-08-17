@@ -1,0 +1,23 @@
+{
+  "schema_version": 1,
+  "kind": "a_share_three_day_walkforward_campaign094_terminal_verification_infrastructure_failure",
+  "status": "preserved_before_effective_chain_binding_scan",
+  "recorded_at": "2026-08-07T03:23:43Z",
+  "stage": "first_generic_all_campaign094_json_binding_scan",
+  "exit_code": 1,
+  "failure": "The generic binding validator was called on a narrative-only failure record with no path+sha256 pair and correctly rejected the unsupported input class.",
+  "diagnosis": "A later exploratory scan also showed expected historical-stage mismatches for the preactivation manifest path after its authorized atomic v3 activation and for the v1 research report after additive reporting. These preserved historical records are not the effective terminal chain.",
+  "repair": "Validate JSON syntax for all Campaign094 records, run generic fingerprint validation only on the effective terminal chain and current bindings, and preserve superseded preactivation/report stage records without pretending their mutable target paths remain current.",
+  "research_boundary": {
+    "research_values_or_returns_recomputed": false,
+    "additional_historical_daily_price_or_forward_return_values_read": false,
+    "stress_2024_2025_return_fields_read": false,
+    "provider_request_issued": false,
+    "candidate49_ledgers_changed": false
+  },
+  "attempt_accounting": {
+    "campaign094_attempt_ordinal": 7,
+    "kind": "postresult_terminal_scan_infrastructure_failure",
+    "counts_as_return_reading_development_trial": false
+  }
+}

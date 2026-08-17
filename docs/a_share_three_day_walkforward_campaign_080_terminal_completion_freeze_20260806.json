@@ -1,0 +1,81 @@
+{
+  "schema_version": 1,
+  "kind": "a_share_three_day_walkforward_campaign080_terminal_completion_freeze",
+  "status": "terminal_zero_survivors_stress_closed_before_campaign081_values",
+  "frozen_at": "2026-08-06T16:25:00+08:00",
+  "research_record": {
+    "path": "docs/a_share_three_day_walkforward_campaign_080_research_record.json",
+    "sha256": "41321b02ce94f8cbc5e18a187f3e04092899816e0b67ed9436cb44c048c00af8"
+  },
+  "unified_report": {
+    "path": "docs/a_share_three_day_walkforward_campaign_080_report.md",
+    "sha256": "935b7010c85a8a4f21a7525cd61543add6aa0a1603ed758506bc6480fc37c84c"
+  },
+  "numeric_comparator_policy_v16": {
+    "path": "docs/a_share_three_day_walkforward_future_numeric_comparison_eligibility_policy_v16_20260806.json",
+    "sha256": "ac8c3a4aa6a0ea62aea0d3294ca522ce47b4fe38c83e059a32db31a4f07085e8"
+  },
+  "research_attempt_ledger": {
+    "path": "data/experiments/short_horizon/historical_walkforward/campaign_080/research_attempt_ledger_v2.json",
+    "sha256": "788b9a5881df2f0b5c5f42413f6e17c1b5ec59380038ad545ac6a9a59d3e2555"
+  },
+  "development_trial_ledger": {
+    "path": "data/experiments/short_horizon/historical_walkforward/campaign_080/walkforward/trial_ledger.json",
+    "sha256": "d0f4416a18c2abf331e6d4ac138e5741ac7947a0ef2466371a6a333027719adf"
+  },
+  "development_survivor_record": {
+    "path": "data/experiments/short_horizon/historical_walkforward/campaign_080/walkforward/development_survivors.json",
+    "sha256": "67490767ad78bb1501cc8ab670bf0dc87a987872dfdd7350c9cadb8cbb056319"
+  },
+  "closed_stress_record": {
+    "path": "data/experiments/short_horizon/historical_walkforward/campaign_080/walkforward/exposed_stress_consumption_record.json",
+    "sha256": "ad1679d45e6f2a45bf110d4430c92b9a8befd7bd8bb1cc0055931eab1f7e9157"
+  },
+  "campaign_report": {
+    "path": "data/experiments/short_horizon/historical_walkforward/campaign_080/walkforward/campaign_report.json",
+    "sha256": "a1af4816436f4f53f7f0d38d5ec088366477eed9f9fc1c067ec1e1f0e6c1f898"
+  },
+  "manage_qlib_a_share_data_skill": {
+    "path": "/Users/niyufei/.codex/skills/manage-qlib-a-share-data/SKILL.md",
+    "sha256": "000c2cbed4195d03fbb42038d0b7029be8e7b617ad11d7eb4f23c3d879ad077d"
+  },
+  "terminal_semantics": {
+    "factor": "intraday_above_median_amount_longest_run_240m",
+    "direction": "higher",
+    "no_return_comparisons_passed": 109,
+    "no_return_comparison_count": 109,
+    "development_trial_count": 1,
+    "development_survivor_count": 0,
+    "stress_2024_2025_opened": false,
+    "stress_return_fields_read": false,
+    "may_invert_rewindow_requantile_retie_cross_lunch_rescale_filter_rerun_rescue_or_combine": false
+  },
+  "attempt_accounting": {
+    "campaign080_infrastructure_failures": 1,
+    "campaign080_complete_factor_attempts": 1,
+    "campaign080_historical_attempts": 2,
+    "campaign080_return_reading_development_trials": 1,
+    "cumulative_historical_attempts": 486,
+    "cumulative_return_reading_development_trials": 281
+  },
+  "future_library": {
+    "complete_definition_count": 112,
+    "complete_definition_order_sha256": "a31457db36af9a8ddac4e08890c87f50ef6554bb46918f022749bd9cccbc1c55",
+    "numeric_comparator_count": 110,
+    "numeric_comparator_order_sha256": "dc6319ac2f7c9d5811a8bee3f8fd9dbd174d2451739ef201aad31c36a9f25ce3"
+  },
+  "candidate49": {
+    "signal_ledger_path": "data/experiments/short_horizon/candidate49_future_signal_ledger.json",
+    "signal_ledger_sha256": "5193f00d7f36da003f53cec387900da4c3d002299f5dfcfc1a95eaa199ed3a79",
+    "signal_ledger_entries": 0,
+    "execution_ledger_path": "data/experiments/short_horizon/candidate49_future_execution_ledger.json",
+    "execution_ledger_sha256": "d57a3e61eac969e42cafa418ccd8c0a5ee65dcf69da145bb2c096c2a02a2ea4f",
+    "execution_ledger_entries": 0,
+    "historical_backfill_performed": false,
+    "second_prospective_candidate_created": false
+  },
+  "provider_request_issued": false,
+  "current_scoring_selection_sizing_or_orders_performed": false,
+  "investment_advice": false,
+  "next_action": "Campaign081 may begin offline only from a genuinely independent pre-value-frozen mechanism using policy v16."
+}

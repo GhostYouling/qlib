@@ -1,0 +1,41 @@
+{
+  "schema_version": 1,
+  "kind": "a_share_three_day_walkforward_campaign078_current_test_suite_receipt",
+  "status": "current_nodes_passed_historical_lifecycle_nodes_deselected",
+  "recorded_at": "2026-08-06T07:05:42Z",
+  "campaign_id": "a_share_three_day_walkforward_campaign_078",
+  "command_scope": [
+    "tests/data_collector_tests/test_a_share_three_day_walkforward_campaign078_features.py",
+    "tests/data_collector_tests/test_a_share_three_day_walkforward_campaign078_no_return_audit.py",
+    "tests/data_collector_tests/test_a_share_three_day_walkforward_campaign078_no_return_audit_v2.py",
+    "tests/data_collector_tests/test_a_share_three_day_walkforward_campaign078_development.py",
+    "tests/data_collector_tests/test_a_share_three_day_walkforward_campaign078_terminal.py"
+  ],
+  "deselected_historical_lifecycle_nodes": [
+    "data_collector_tests/test_a_share_three_day_walkforward_campaign078_no_return_audit.py::test_status_is_truthful_before_the_sole_audit",
+    "data_collector_tests/test_a_share_three_day_walkforward_campaign078_no_return_audit_v2.py::test_v2_pre_retry_status_is_zero_audits_and_no_returns",
+    "data_collector_tests/test_a_share_three_day_walkforward_campaign078_development.py::test_predevelopment_status_has_zero_ledger_and_closed_stress"
+  ],
+  "result": {
+    "exit_code": 0,
+    "passed": 21,
+    "failed": 0,
+    "errors": 0,
+    "deselected": 3,
+    "elapsed_seconds": 4.08
+  },
+  "terminal_test_file": {
+    "path": "tests/data_collector_tests/test_a_share_three_day_walkforward_campaign078_terminal.py",
+    "sha256": "f53f008be5577da8d880bb3ec7069264360e3a107aff4f711ff1b83cb08e33cb"
+  },
+  "prior_deselect_prefix_failure_preserved": {
+    "path": "docs/a_share_three_day_walkforward_campaign_078_terminal_suite_deselect_prefix_failure_20260806.json",
+    "sha256": "6b3ab6c8518621150008ac52ffb138924448301b0a63b48e6ab6979a17a31ce2"
+  },
+  "historical_lifecycle_nodes_preserved_unmodified": true,
+  "research_values_recomputed_by_test_suite": false,
+  "underlying_daily_price_or_forward_return_fields_read_by_test_suite": false,
+  "existing_frozen_artifacts_read_by_test_suite": true,
+  "provider_request_issued": false,
+  "candidate49_ledgers_changed": false
+}

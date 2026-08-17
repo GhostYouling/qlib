@@ -1,0 +1,31 @@
+{
+  "schema_version": 1,
+  "kind": "a_share_three_day_walkforward_campaign142_infrastructure_failure",
+  "status": "unified_report_append_patch_context_mismatch_no_partial_write",
+  "recorded_at": "2026-08-14T14:56:49+0800",
+  "attempt_id": "campaign142_infrastructure_003",
+  "phase": "unified_report_accounting_append",
+  "failure": {
+    "command_class": "apply_patch_three_report_append",
+    "process_exit_code": 1,
+    "stderr_summary": "Patch verification could not find the expected current_research_report context line.",
+    "partial_write_performed": false,
+    "failed_exit_code_bypassed": false,
+    "later_success_used_to_mask_this_exit": false
+  },
+  "safe_retry": {
+    "allowed_after_append_only_failure_recording": true,
+    "method": "Read the exact report tails and append with file-specific exact contexts.",
+    "scientific_configuration_may_change": false
+  },
+  "research_boundary": {
+    "source_rows_or_column_values_read": false,
+    "candidate_or_comparator_values_read": false,
+    "historical_daily_price_or_forward_return_values_read": false,
+    "stress_2024_2025_opened": false,
+    "provider_request_issued": false,
+    "provider_credential_value_or_digest_read": false,
+    "candidate49_ledgers_changed": false,
+    "scientific_result_changed": false
+  }
+}

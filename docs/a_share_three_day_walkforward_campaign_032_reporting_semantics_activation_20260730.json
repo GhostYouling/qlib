@@ -1,0 +1,56 @@
+{
+  "version": 1,
+  "kind": "a_share_three_day_walkforward_campaign032_reporting_semantics_activation",
+  "status": "canonical_feature_count_complexity_reporting_active_before_campaign032_protected_values",
+  "recorded_at": "2026-07-30T14:37:00Z",
+  "purpose": "Remove the inherited Campaign031 display-only complexity ambiguity before any Campaign032 candidate, comparison, daily-price, or forward-return value is opened.",
+  "authoritative_boundary": {
+    "path": "docs/a_share_three_day_iteration_status_20260730_campaign031_verified.json",
+    "sha256": "026e2905aa2de7287435f2f7276ef2e5f8f257dccd57779506acf2fcea7c3564",
+    "campaign032_fix_required_before_any_protected_value": true
+  },
+  "campaign031_disclosure": {
+    "immutable_survivor_record_complexity": 2,
+    "canonical_single_factor_complexity": 1,
+    "gate_or_ranking_affected": false,
+    "immutable_campaign031_result_rewritten": false
+  },
+  "implementation": {
+    "path": "scripts/a_share_three_day_walkforward_reporting.py",
+    "sha256": "6291a8bfd11bd90dbef42edd6252368f67498bdc2be39661ebf4b7d08f0ac969",
+    "canonical_rule": "complexity equals the count of distinct nonempty preregistered feature names in trial feature_set",
+    "single_factor_consistency_rule": "kind=single_factor requires exactly one feature",
+    "ambiguous_or_duplicate_feature_set_policy": "fail_closed",
+    "inherited_survivor_decision_mutated_in_place": false
+  },
+  "verification": {
+    "test_path": "tests/data_collector_tests/test_a_share_three_day_walkforward_reporting.py",
+    "test_sha256": "2d2335256497e7e6a01930a0aaf60b19cedabcec4feda5b4476f9fdfd6e88d4a",
+    "focused_tests_passed": 7,
+    "python_compile_passed": true,
+    "single_factor_inherited_complexity_two_recomputed_as_one": true,
+    "multi_factor_complexity_uses_exact_feature_count": true,
+    "empty_invalid_duplicate_or_inconsistent_feature_sets_rejected": true
+  },
+  "campaign032_integration_contract": {
+    "required_before_development_run": true,
+    "required_action": "The Campaign032 runner must replace only the inherited survivor-decision complexity field through with_canonical_complexity and bind this implementation SHA-256 before reading development returns.",
+    "formula_direction_folds_costs_gates_or_ranking_changed": false
+  },
+  "research_boundary": {
+    "campaign032_external_minute_partitions_read": false,
+    "campaign032_candidate_values_read": false,
+    "campaign032_comparison_values_read": false,
+    "campaign032_daily_price_fields_read": false,
+    "campaign032_forward_returns_read": false,
+    "candidate49_historical_return_signal_or_execution_backfill_performed": false,
+    "provider_request_issued_for_campaign032": false,
+    "current_scoring_selection_sizing_or_orders_performed": false
+  },
+  "decision": {
+    "campaign032_reporting_semantics_gate_passed": true,
+    "campaign032_concept_scouting_allowed": true,
+    "campaign032_protected_values_allowed_before_separate_freeze_validation": false,
+    "candidate49_remains_only_active_prospective_candidate": true
+  }
+}

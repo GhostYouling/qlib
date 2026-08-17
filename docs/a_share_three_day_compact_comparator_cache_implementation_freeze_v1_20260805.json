@@ -1,0 +1,46 @@
+{
+  "version": 1,
+  "kind": "a_share_three_day_compact_comparator_cache_implementation_freeze",
+  "status": "frozen_before_compact_comparator_values_or_cache_files_materialized",
+  "frozen_at": "2026-08-05T12:27:00Z",
+  "purpose": "Bind the cache builder, verifier, synthetic semantic-equivalence tests, exact output root, and frozen protocol before the first inherited comparator value is loaded for cache materialization.",
+  "protocol": {
+    "path": "docs/a_share_three_day_compact_comparator_cache_protocol_v1_20260805.json",
+    "sha256": "bf5247378056851ea004c08aad071c7a1ccf552cb1feaf6937251a26234c3273",
+    "binding_validation_passed": true
+  },
+  "builder": {
+    "path": "scripts/a_share_three_day_compact_comparator_cache.py",
+    "sha256": "9d78ac449c74cf0709bcd5a479eabc39eed487dc6c09fed1dd71c8127911f6a5",
+    "syntax_validation_passed": true
+  },
+  "tests": {
+    "path": "tests/data_collector_tests/test_a_share_three_day_compact_comparator_cache.py",
+    "sha256": "b7714f9d68c9e14da6fb91bd8edf5a9b84d26f0a73e17e3a8fd1fd3a107e224a",
+    "command": "PYTHONPATH=/Volumes/DIsk/Disk-Coding/qlib /Volumes/DIsk/Coding/anaconda3/bin/python -m pytest -q tests/data_collector_tests/test_a_share_three_day_compact_comparator_cache.py",
+    "passed": 7,
+    "failed": 0
+  },
+  "prebuild_test_failure_record": {
+    "path": "docs/a_share_three_day_compact_comparator_cache_prebuild_test_failure_v1_20260805.json",
+    "sha256": "95f590553f7ab96306c13fa02e49c78eb28a881181345aceffbb0fc9d3761f08",
+    "cache_infrastructure_failure_count": 1,
+    "comparison_values_read": false
+  },
+  "frozen_output": {
+    "data_root": "/Volumes/DIsk/qlib-a-share-tushare-1m",
+    "output_root": "/Volumes/DIsk/qlib-a-share-tushare-1m/derived/a_share/rich/tushare/compact_comparator_cache/campaign067_terminal_numeric98_v1",
+    "numeric_comparator_count": 98,
+    "numeric_order_sha256": "bca0ba26252fcb74afa3a31ee1baf63c9cedfe3db5fc86ef71b3d7d93bf88f81",
+    "eligibility_rows": 1331759,
+    "eligibility_keys_sha256": "afa157a76aec8ef9cc3bdc191c792189d2a512ecf7fd7ebb09d2fe8f2d75841f",
+    "cache_output_existed_before_freeze": false
+  },
+  "cache_output_existed_before_freeze": false,
+  "comparison_factor_values_read_before_freeze": false,
+  "historical_daily_price_or_forward_return_values_read_before_freeze": false,
+  "candidate49_historical_return_read_before_freeze": false,
+  "provider_request_issued_before_freeze": false,
+  "current_scoring_selection_sizing_or_orders_performed_before_freeze": false,
+  "next_action": "Run the exact cache build once with --confirm-build. Any nonzero exit must be recorded before an additive implementation repair; never edit this frozen builder or tests in place."
+}

@@ -1,0 +1,122 @@
+{
+  "schema_version": 1,
+  "kind": "a_share_three_day_walkforward_campaign120_mechanism_overlap_audit",
+  "status": "conditionally_distinct_pending_fixed_support_coverage_and_all_137_ordered_numeric_comparisons",
+  "recorded_at": "2026-08-13T23:58:57+08:00",
+  "purpose": "Freeze the exact Campaign120 dictionary-phrase mechanism and challenge it against every nearby terminal family before any source row or value is read.",
+  "concept_scouting": {
+    "path": "docs/a_share_three_day_walkforward_campaign_120_concept_scouting_20260813.json",
+    "sha256": "1b7ff07c675577c601a64d3818eba860e8bf1c880ab066c9047e573a0fe4dbfb"
+  },
+  "candidate": {
+    "name": "intraday_return_direction_dictionary_phrase_count_238s",
+    "direction": "higher",
+    "information_domain": "within_half_ternary_close_direction_incremental_dictionary_phrase_novelty",
+    "source_fields": [
+      "datetime",
+      "symbol",
+      "provider",
+      "close"
+    ],
+    "selected_bar_grid": "Exactly 240 raw unadjusted one-minute closes at 09:31-11:30 and 13:01-15:00; preserve but exclude standalone 09:30.",
+    "direction_sequence": "Inside each 120-close half form exactly 119 symbols: -1 when close_t<close_t-1, 0 on exact numeric equality, and +1 when close_t>close_t-1. Do not form a lunch or overnight symbol.",
+    "parser": [
+      "Reset an empty phrase dictionary and cursor i=0 at the start of each 119-symbol half.",
+      "At cursor i, find the longest nonempty prefix w of the remaining suffix that is already an exact dictionary member; when no member matches, w is the empty word.",
+      "If at least one symbol remains after w, emit phrase w followed by that next symbol, add the emitted phrase to the dictionary, advance past it, and increment the phrase count by one.",
+      "If w consumes the entire remaining suffix, emit that reused suffix once as the terminal phrase, do not add it again, increment the phrase count by one, and stop.",
+      "Continue until all 119 symbols are consumed. Sum morning and afternoon phrase counts; dictionaries never cross lunch, session, stock or date."
+    ],
+    "formula": "dictionary_phrase_count(morning_119_direction_symbols) + dictionary_phrase_count(afternoon_119_direction_symbols)",
+    "alphabet_order": [
+      -1,
+      0,
+      1
+    ],
+    "normalization": "none because both sequences have the same frozen length 119",
+    "valid_range_conservative": [
+      2,
+      238
+    ],
+    "validity": "All 240 closes must be finite and strictly positive; every symbol and phrase must be consumed exactly once under the frozen parser; the result must be a finite integer in [2,238]. Constant and partially unchanged paths are valid.",
+    "economic_hypothesis": "Higher incremental phrase novelty represents a wider completed-session repertoire of direction motifs and less dominance by stale or mechanically repeating micro-paths, potentially indicating more resilient information absorption over the next three sessions."
+  },
+  "overlap_challenges": [
+    {
+      "factor": "intraday_return_sign_run_imbalance_238p",
+      "result": "distinct_pending_numeric_gate",
+      "reason": "The terminal factor retains only the imbalance of adjacent ++ versus -- counts and includes the lunch return. Campaign120 resets at lunch and parses every -1/0/+1 symbol into variable-length dictionary phrases. Synthetic sequences (-1,-1,-1,-1,-1,-1,0,-1) and (-1,-1,-1,-1,-1,0,-1,-1) have identical marginal and adjacent-pair counts but frozen parser counts 5 and 4."
+    },
+    {
+      "factor": "intraday_bar_direction_continuity_238p",
+      "result": "distinct_pending_numeric_gate",
+      "reason": "Bar-direction continuity reads open-close body signs and collapses them to one informative-pair continuation rate with a 120-pair support threshold. Campaign120 reads no open, has no threshold, retains zeros as symbols and preserves longer phrase recurrence."
+    },
+    {
+      "factor": "intraday_return_weak_order_entropy_234t",
+      "result": "distinct_pending_numeric_gate",
+      "reason": "Weak-order entropy classifies overlapping triples by the relative magnitudes of three returns and discards all ordering beyond its pooled 13-state histogram. Campaign120 is invariant to magnitude changes that preserve direction symbols and retains variable-length chronological phrase recurrence; residual empirical redundancy must still pass the strict numeric gate."
+    },
+    {
+      "factor": "intraday_return_spectral_entropy_59f",
+      "result": "distinct_pending_numeric_gate",
+      "reason": "Spectral entropy uses demeaned signed return magnitudes and distributes Fourier power across 59 frequencies. Campaign120 uses no magnitude, mean, Fourier coefficient or entropy and is a discrete dictionary parsing statistic."
+    },
+    {
+      "factor": "intraday_price_update_clock_entropy_10b_238m",
+      "result": "distinct_pending_numeric_gate",
+      "reason": "Clock entropy retains only ten time-bin counts of exact close changes and discards direction and within-bin order. Holding every update location fixed while changing its direction motifs can change Campaign120 without changing clock entropy."
+    },
+    {
+      "factor": "intraday_exact_close_level_diversity_240m",
+      "result": "distinct_pending_numeric_gate",
+      "reason": "Exact-level diversity is invariant to a permutation of the 240 close multiset and uses no clock order. Such a permutation can change Campaign120's symbol sequence and phrase parsing."
+    },
+    {
+      "factor": "intraday_active_trading_bar_share_240m and amount/volume activity families",
+      "result": "distinct_pending_numeric_gate",
+      "reason": "Campaign120 reads no amount or volume and imposes no active-trading predicate; activity may be empirically associated with phrase novelty but is not part of its definition."
+    },
+    {
+      "factor": "Campaign119 boundary-direction state entropy",
+      "result": "distinct_pending_numeric_gate",
+      "reason": "Campaign119 uses high and low joint boundary changes and a pooled nine-state histogram. Campaign120 reads close only and parses ordered ternary close-direction phrases; it does not transition or reparse Campaign119 states."
+    }
+  ],
+  "frozen_counterfactuals": [
+    "Changing return magnitudes without changing exact close-direction symbols leaves Campaign120 unchanged but can change return weak-order and spectral entropy.",
+    "Keeping the ternary marginal and adjacent-pair counts fixed can still change Campaign120 because phrase discovery depends on longer chronological context.",
+    "Permuting the same exact close-level multiset can change Campaign120 while leaving exact-close-level diversity unchanged.",
+    "Changing amount, volume, high, low or open while preserving all selected closes leaves Campaign120 unchanged."
+  ],
+  "rejected_variants_before_values": [
+    "LZ76, LZ77, compressor byte length, suffix-tree, grammar, Kolmogorov proxy or another parser",
+    "normalization by log length, theoretical entropy rate, dictionary size, phrase-length mean, longest phrase or separate-half average",
+    "binary zero-drop, zero-to-up, zero-to-down, tolerance-based equality, return-magnitude bins, weak-order states, high-low states, body signs, amount states or joint alphabets",
+    "dictionary persistence across lunch, days or stocks; inclusion of 09:30 or a lunch return; morning-only, afternoon-only, late-only or alternate windows",
+    "lower direction, inverse score, thresholds, filters, board/year/stock subsets, transformations, residualization, models or combinations",
+    "any rescue, recomputation or change to a terminal factor or Candidate49 historical boundary"
+  ],
+  "decision": {
+    "semantic_gate_passed": true,
+    "candidate_count": 1,
+    "implementation_allowed_only_after_no_return_preregistration": true,
+    "source_rows_or_candidate_values_allowed_now": false,
+    "all_137_comparators_must_pass_in_frozen_order": true,
+    "strict_absolute_median_daily_rank_correlation_lt": 0.8,
+    "post_value_formula_direction_parser_or_support_change_allowed": false
+  },
+  "research_boundary": {
+    "source_rows_read": false,
+    "candidate_values_read_or_computed": false,
+    "comparator_values_read": false,
+    "historical_daily_price_fields_read": [],
+    "historical_forward_returns_read": false,
+    "stress_2024_2025_opened": false,
+    "provider_request_issued": false,
+    "candidate49_historical_backfill_performed": false,
+    "candidate49_ledgers_changed": false,
+    "current_scoring_selection_sizing_positions_or_orders_performed": false,
+    "investment_advice": false
+  }
+}

@@ -1,0 +1,106 @@
+{
+  "schema_version": 1,
+  "kind": "a_share_three_day_walkforward_campaign128_concept_scouting",
+  "status": "one_genuinely_new_offline_transaction_price_distribution_resolution_mechanism_selected_before_values",
+  "recorded_at": "2026-08-14T05:24:10+0800",
+  "purpose": "Continue the active three-session historical research goal after Campaign127 by reviewing a finite six-concept catalog against all 150 complete logical definitions before any Campaign128 source row, candidate value, comparator value, price or return is opened.",
+  "authoritative_inputs": {
+    "campaign127_terminal_state": {
+      "path": "docs/a_share_three_day_iteration_status_20260814_campaign127_convertible_issue_terminal.json",
+      "sha256": "43b901830da100d55c7bb37eb65785e6f725be9e7d703a3de011a26c1e6220b1"
+    },
+    "numeric_policy_v135": {
+      "path": "docs/a_share_three_day_walkforward_future_numeric_comparison_eligibility_policy_v135_20260814.json",
+      "sha256": "35dead2d6bcf8402acdcebfade4a1eecb94921051663f1bbd3c9db104604c7f8",
+      "complete_definition_count": 150,
+      "complete_definition_order_sha256": "c3713559f968c7f79b070398742ef625733e9c178d4e0c0010805fa12c5d5142",
+      "eligible_numeric_comparator_count_reserved_but_not_loaded": 139,
+      "eligible_numeric_comparator_order_sha256": "9c4de054ca1b83eced67eece256b024ebec3a6e1925de17a4cedfa7d36265161"
+    },
+    "historical_walkforward_policy": {
+      "path": "docs/a_share_three_day_historical_walkforward_research_policy_20260727.json",
+      "sha256": "38426d6161b9bfed323c58caba18feca668b8c9d53e294951a8ba90c01a798bb"
+    }
+  },
+  "complete_definition_inventory_reconstruction": {
+    "base_reconstructor": "scripts/a_share_three_day_walkforward_campaign121_features.py::reconstruct_complete_definitions",
+    "base_definition_count": 147,
+    "appended_terminal_point_in_time_definitions": [
+      "official_pure_security_rename_recency_60s",
+      "ipo_retail_ballot_scarcity_20to79s",
+      "convertible_issue_online_demand_180d"
+    ],
+    "reconstructed_definition_count": 150,
+    "reconstructed_order_sha256": "c3713559f968c7f79b070398742ef625733e9c178d4e0c0010805fa12c5d5142",
+    "matches_numeric_policy_v135": true,
+    "historical_factor_values_read_for_reconstruction": false
+  },
+  "finite_prevalue_concept_catalog": [
+    {
+      "catalog_id": "c128_01",
+      "name": "intraday_transaction_price_dispersion_resolution_2h",
+      "source_state": "morning_to_afternoon_change_in_volume_weighted_transaction_price_interquartile_dispersion",
+      "decision": "selected_for_exact_mechanism_overlap_audit_and_single_formula_freeze",
+      "reason": "It measures within-session convergence of the executed-price distribution, not close-return variance, whole-day transaction-price consensus, amount-clock shape or transaction-price skew. It uses the already accepted immutable minute source and requires no provider request."
+    },
+    {
+      "catalog_id": "c128_02",
+      "name": "intraday_transaction_price_skew_resolution_2h",
+      "decision": "rejected_before_values",
+      "reason": "Morning-to-afternoon Bowley-skew change would be a direct temporal extension of the terminal full-day transaction-price Bowley-skew definition and creates a same-source statistic sweep."
+    },
+    {
+      "catalog_id": "c128_03",
+      "name": "intraday_market_relative_transaction_price_dispersion_resolution_2h",
+      "decision": "rejected_before_values",
+      "reason": "Adding a market-relative residual introduces benchmark, peer-minimum and residualization choices after extensive market-state exposure; it is not a required part of the selected issuer-level distribution mechanism."
+    },
+    {
+      "catalog_id": "c128_04",
+      "name": "intraday_transaction_price_dispersion_resolution_with_activity_filter",
+      "decision": "rejected_before_values",
+      "reason": "Conditioning or weighting the score by active-bar share would combine the new statistic with the terminal active-trading-bar mechanism and add a filter rescue path."
+    },
+    {
+      "catalog_id": "c128_05",
+      "name": "intraday_amount_distribution_gini_concentration_240m",
+      "decision": "rejected_before_values",
+      "reason": "An orderless inequality statistic is an alternate concentration functional adjacent to terminal amount participation entropy; testing it here would be a concentration-measure sweep rather than a distinct information state."
+    },
+    {
+      "catalog_id": "c128_06",
+      "name": "quarterly_transaction_price_resolution_confirmation_product",
+      "decision": "rejected_before_values",
+      "reason": "Multiplying the candidate by a quarterly state would combine exposed terminal factors and create post-hoc feature selection. Campaign128 remains a single unfitted historical factor."
+    }
+  ],
+  "selected_candidate": {
+    "name": "intraday_transaction_price_dispersion_resolution_2h",
+    "selected_candidate_count": 1,
+    "score_direction": "higher",
+    "economic_hypothesis": "A volume-weighted executed-price distribution that narrows from morning to afternoon indicates price discovery convergence and reduced disagreement into the close, which may persist over the next three sessions.",
+    "source_projection": [
+      "datetime",
+      "symbol",
+      "provider",
+      "volume",
+      "amount"
+    ],
+    "provider_request_required": false,
+    "historical_candidate_created": false,
+    "prospective_candidate_created": false
+  },
+  "research_boundary": {
+    "programmatic_provider_request_issued": false,
+    "provider_credential_loaded": false,
+    "minute_source_rows_read": false,
+    "candidate_or_comparison_values_read": false,
+    "historical_daily_price_or_forward_return_values_read": false,
+    "stress_2024_2025_opened": false,
+    "candidate49_historical_backfill_performed": false,
+    "candidate49_ledgers_changed": false,
+    "second_prospective_candidate_created": false,
+    "current_scoring_selection_sizing_positions_or_orders_performed": false,
+    "investment_advice": false
+  }
+}

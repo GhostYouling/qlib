@@ -1,0 +1,37 @@
+{
+  "version": 2,
+  "kind": "a_share_three_day_walkforward_campaign050_post_result_test_transition",
+  "status": "terminal_accounting_correction_and_current_assertions_bound",
+  "recorded_at": "2026-08-01T11:23:00Z",
+  "purpose": "Preserve the first post-result transition and bind the additive CLI-failure accounting correction plus current terminal assertions.",
+  "supersedes": {
+    "path": "docs/a_share_three_day_walkforward_campaign_050_post_result_test_transition_20260801.json",
+    "sha256": "ab3f468ede434dd8e8f1cca34c1a49c6ec1a81d8d86ba1964cf68862e53bfe36"
+  },
+  "bindings": {
+    "terminal_binding_cli_failure": {
+      "path": "docs/a_share_three_day_walkforward_campaign_050_terminal_binding_cli_failure_20260801.json",
+      "sha256": "2cb69884400de76832e71e28db742257daa4dde58792955bd1c8a604e860561b"
+    },
+    "current_campaign_tests": {
+      "path": "tests/data_collector_tests/test_a_share_three_day_walkforward_campaign050.py",
+      "sha256": "53404a715b2f21e08d92b8f4c51c89b2faf448a8feade7a0fb1e2a0d3b6e65ce"
+    },
+    "current_terminal_tests": {
+      "path": "tests/data_collector_tests/test_a_share_three_day_walkforward_campaign050_terminal.py",
+      "sha256": "6aa505b0a3f65418035bbb02dbecec8a547b170fcf23163d4bf138629e50033d"
+    },
+    "correction_publisher": {
+      "path": "scripts/a_share_three_day_walkforward_campaign050_finalize_v2.py",
+      "sha256": "348c25d4f4e4a210020ea45af593912ba14cd62ec571ca2e05ede220385b539f"
+    }
+  },
+  "semantic_boundary": {
+    "test_change": "point terminal accounting assertions to additive v2 evidence and include the verification-only failure",
+    "formula_direction_cost_fold_purge_or_gate_changed": false,
+    "additional_historical_daily_price_or_forward_return_read": false,
+    "2024_2025_stress_return_read": false,
+    "candidate49_ledgers_changed": false,
+    "old_transition_rewritten": false
+  }
+}

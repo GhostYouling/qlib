@@ -1,0 +1,40 @@
+{
+  "schema_version": 1,
+  "kind": "a_share_three_day_walkforward_campaign092_feature_implementation_freeze",
+  "status": "frozen_before_campaign092_minute_source_rows_or_candidate_values",
+  "frozen_at": "2026-08-07T00:13:16Z",
+  "protocol": {
+    "path": "docs/a_share_three_day_walkforward_campaign_092_no_return_preregistration.json",
+    "sha256": "fdab87de6012a2dd5e6f2538905f5ebc5464f3887242ac4a657a8545724500c5"
+  },
+  "feature_runner": {
+    "path": "scripts/a_share_three_day_walkforward_campaign092_features.py",
+    "sha256": "7c951f408d99a15244b952e3ef12816f2d464fc9878b206107ea953ec3678d52"
+  },
+  "tests": {
+    "path": "tests/data_collector_tests/test_a_share_three_day_walkforward_campaign092_features.py",
+    "sha256": "ca0ae5dbd6d4102a065c4225285494e3e845d91ee553f87c1152b7fcdd5f48ed",
+    "synthetic_result": "4 passed"
+  },
+  "factor": "intraday_interbar_gap_discovery_share_238p",
+  "direction": "higher",
+  "raw_projection": [
+    "datetime",
+    "symbol",
+    "provider",
+    "open",
+    "high",
+    "low",
+    "close"
+  ],
+  "selected_bar_count": 240,
+  "gap_pair_count": 238,
+  "destination_range_count": 238,
+  "lunch_reset": true,
+  "candidate_source_rows_read_before_freeze": false,
+  "candidate_values_computed_before_freeze": false,
+  "comparison_values_read_before_freeze": false,
+  "historical_daily_price_or_forward_return_values_read_before_freeze": false,
+  "provider_request_issued_before_freeze": false,
+  "candidate49_ledgers_changed_before_freeze": false
+}

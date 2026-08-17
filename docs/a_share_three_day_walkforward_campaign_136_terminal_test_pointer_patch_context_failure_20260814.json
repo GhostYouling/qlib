@@ -1,0 +1,25 @@
+{
+  "schema_version": 1,
+  "kind": "a_share_three_day_walkforward_campaign136_infrastructure_failure",
+  "recorded_at": "2026-08-14T12:16:00+0800",
+  "attempt_id": "campaign136_infrastructure_008",
+  "phase": "terminal_lifecycle_test_pointer_update",
+  "status": "terminal_test_pointer_patch_context_failure",
+  "failure": {
+    "reason": "Black had changed the STATUS constant layout, so the first exact-context pointer patch did not match.",
+    "partial_edit_performed": false,
+    "failed_exit_code_bypassed": false
+  },
+  "recovery": {
+    "method": "Read the formatted file and apply one exact-context patch against the observed layout.",
+    "scientific_artifacts_changed": false
+  },
+  "research_boundary": {
+    "additional_historical_return_values_read": false,
+    "stress_2024_2025_opened": false,
+    "provider_request_issued": false,
+    "credential_value_or_digest_read": false,
+    "candidate49_ledgers_changed": false,
+    "current_scoring_selection_sizing_positions_or_orders_performed": false
+  }
+}

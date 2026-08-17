@@ -1,0 +1,30 @@
+{
+  "schema_version": 1,
+  "kind": "a_share_three_day_walkforward_campaign229_infrastructure_failure",
+  "recorded_at": "2026-08-16T03:58:00+08:00",
+  "timestamp_semantics": "monotonic_logical_append_time_not_host_wall_clock_measurement",
+  "status": "failed_verbose_jq_validation_output_truncated_and_discarded",
+  "command": "jq -e . docs/a_share_three_day_walkforward_campaign_229_franchise_network_development_store_operations_royalty_compliance_lifecycle_source_frontier_20260816.json",
+  "working_directory": "/Volumes/DIsk/Disk-Coding/qlib",
+  "observed_process_exit_code": 0,
+  "failure_reason": "the_validator_echoed_the_complete_json_object_and_the_tool_output_was_truncated",
+  "evidence_treatment": {
+    "output_discarded": true,
+    "used_as_scientific_evidence": false,
+    "used_as_validation_evidence": false,
+    "used_to_assert_json_validity": false
+  },
+  "recovery_rule": "rerun_a_silent_parser_that_emits_only_a_bounded_success_marker",
+  "research_boundary": {
+    "candidate_or_comparator_value_read": false,
+    "daily_price_or_forward_return_read": false,
+    "provider_or_web_request_issued": false,
+    "provider_credential_presence_value_or_digest_read": false,
+    "candidate49_plan_or_run_executed": false,
+    "candidate49_ledgers_changed": false,
+    "second_prospective_candidate_created": false,
+    "stress_2024_2025_opened": false,
+    "current_scoring_selection_sizing_positions_or_orders_performed": false,
+    "investment_advice": false
+  }
+}

@@ -1,0 +1,113 @@
+{
+  "schema_version": 1,
+  "kind": "a_share_three_day_iteration_status",
+  "recorded_at": "2026-08-16T12:41:00+08:00",
+  "timestamp_semantics": "monotonic_logical_append_time_not_host_wall_clock_measurement",
+  "status": "campaign254_validation_passed_goal_active_campaign255_offline_prevalue_authorized",
+  "supersedes_without_rewriting": {
+    "path": "docs/a_share_three_day_iteration_status_20260816_campaign253_prevalue_terminal.json",
+    "sha256": "b3f403e030566cede0f156bb38de90d80131ad77a57daa26dbaf60a41ee264d7"
+  },
+  "authoritative_inputs": {
+    "historical_walkforward_policy": {
+      "path": "docs/a_share_three_day_historical_walkforward_research_policy_20260727.json",
+      "sha256": "38426d6161b9bfed323c58caba18feca668b8c9d53e294951a8ba90c01a798bb"
+    },
+    "parking_domain_overlap_rejection_v2": {
+      "path": "docs/a_share_three_day_walkforward_campaign_254_commercial_parking_access_revenue_control_equipment_domain_overlap_rejection_v2_20260816.json",
+      "sha256": "f104d58fc13450f70ef72bf611ecba71ef0ba1043750ab66c28ac58a660fec6f"
+    },
+    "frozen_source_frontier": {
+      "path": "docs/a_share_three_day_walkforward_campaign_254_commercial_audiovisual_conference_room_equipment_service_lifecycle_source_frontier_20260816.json",
+      "sha256": "59775e826579032adc5ec8cbb93f1c317040959e5617e8651d3ed94f7c320258"
+    },
+    "attempt_ledger_v1": {
+      "path": "data/experiments/short_horizon/historical_walkforward/campaign_254/research_attempt_ledger_v1.json",
+      "sha256": "68c9c9593acb9880351b800e6ebc5eb454c324a99b793bf8985ca6473a82be47"
+    },
+    "terminal_result": {
+      "path": "docs/a_share_three_day_walkforward_campaign_254_terminal_result_20260816.json",
+      "sha256": "9e7f647c4fe82adaf038cec95aa3bc7364ae253de37684e8735883c86bd3f203"
+    },
+    "numeric_policy_v386": {
+      "path": "docs/a_share_three_day_walkforward_future_numeric_comparison_eligibility_policy_v386_20260816.json",
+      "sha256": "aa92c3c79464daa410c462f2dc9469fc659ebc23339a50bc9877b6ef999b20dc"
+    },
+    "terminal_validation": {
+      "path": "docs/a_share_three_day_walkforward_campaign_254_terminal_validation_20260816.json",
+      "sha256": "35b19e3c8f784e1b904e9e084c14b61c7099ee581558b443f1bfbb7ef9f6c26b"
+    }
+  },
+  "campaign254": {
+    "terminal": true,
+    "terminal_stage": "prevalue_domain_overlap_source_admission_and_overlap_gate",
+    "pre_catalog_domain_overlap_rejection_count": 1,
+    "finite_route_count": 7,
+    "source_admission_deferral_count": 3,
+    "overlap_or_hypothesis_rejection_count_within_catalog": 4,
+    "selected_factor_count": 0,
+    "definition_or_comparator_append": false,
+    "development_trial_count": 0,
+    "stress_trial_count_2024_2025": 0
+  },
+  "effective_accounting": {
+    "campaign254_attempt_count": 18,
+    "campaign254_infrastructure_failure_count": 10,
+    "campaign254_scientific_attempt_count": 8,
+    "cumulative_historical_research_attempt_count": 2431,
+    "cumulative_return_reading_development_trial_count": 314,
+    "chain_tip_sha256": "899751a9a56b80a6e30f16b7da844c9a1daa96d70abe50d42a1c55053cd859d6"
+  },
+  "library_state": {
+    "changed_by_campaign254": false,
+    "complete_factor_definition_count": 158,
+    "complete_factor_definition_order_sha256": "4819c7fd7c0795d7598a52f3c615e3f117d5f4ecd9332974bc8e3dfa57c96667",
+    "eligible_numeric_comparator_count": 142,
+    "eligible_numeric_comparator_order_sha256": "5d1b35fb5a0d8ac9293008db9963c4a60a94dc940c237c3ed259e5ce44f14aaf"
+  },
+  "candidate49": {
+    "sole_prospective_candidate": true,
+    "signal_entry_count": 0,
+    "execution_entry_count": 0,
+    "signal_ledger_sha256": "5193f00d7f36da003f53cec387900da4c3d002299f5dfcfc1a95eaa199ed3a79",
+    "execution_ledger_sha256": "d57a3e61eac969e42cafa418ccd8c0a5ee65dcf69da145bb2c096c2a02a2ea4f",
+    "ledgers_changed": false
+  },
+  "research_boundary": {
+    "candidate_or_comparator_value_read": false,
+    "daily_price_or_forward_return_read": false,
+    "provider_or_web_request_issued": false,
+    "provider_credential_presence_value_or_digest_read": false,
+    "candidate49_plan_or_run_executed": false,
+    "candidate49_ledgers_changed": false,
+    "second_prospective_candidate_created": false,
+    "stress_2024_2025_opened": false,
+    "current_scoring_selection_sizing_positions_or_orders_performed": false,
+    "failed_or_truncated_output_used_as_scientific_or_validation_evidence": false,
+    "investment_advice": false
+  },
+  "future_campaign_boundary": {
+    "next_campaign": 255,
+    "historical_offline_prevalue_work_may_continue_at_any_local_time": true,
+    "candidate49_remains_separate_confirmation_layer": true,
+    "2024_2025_source_or_returns_remain_closed": true
+  },
+  "next_action": "Continue the active goal with a genuinely different Campaign255 finite zero-network offline prevalue domain; do not wait for 16:30 or a new daily bar.",
+  "publication_state": {
+    "numeric_policy_version": 386,
+    "current_report_sha256": "b44bc21b6f8294585528d9e9c650378f251509a9ad55d79916eb57c0d5b27c6d",
+    "three_day_report_sha256": "1aee6794998b76d767d02ed0d39e457858a4be7fbe1e811bfa50474f5ed8713d",
+    "terminal_validation_passed": true
+  },
+  "validation": {
+    "black": "passed; 1 file would be left unchanged",
+    "ruff": "passed",
+    "json_parse": "16 Campaign254 pre-validation, correction, append-only accounting or policy JSON files plus terminal validation and advancing state passed",
+    "scoped_report_whitespace_and_unique_heading": "passed",
+    "focused_pytest": "2 passed",
+    "campaign145_through_campaign254_test_file_count": 142,
+    "cumulative_pytest": "525 passed, 1 skipped, 69 deselected",
+    "reference_binding_and_all_eighteen_ledger_chain_entries": "passed",
+    "candidate49_empty_ledger_semantics": "passed"
+  }
+}

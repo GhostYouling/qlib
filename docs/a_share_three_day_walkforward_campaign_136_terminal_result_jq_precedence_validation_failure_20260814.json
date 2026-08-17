@@ -1,0 +1,26 @@
+{
+  "schema_version": 1,
+  "kind": "a_share_three_day_walkforward_campaign136_infrastructure_failure",
+  "recorded_at": "2026-08-14T12:01:00+0800",
+  "attempt_id": "campaign136_infrastructure_006",
+  "phase": "terminal_artifact_validation",
+  "status": "terminal_result_jq_precedence_validation_failure",
+  "failed_command_semantics": "The unparenthesized jq expression piped the preceding boolean into length and exited nonzero.",
+  "failed_exit_code_bypassed": false,
+  "affected_scientific_values": false,
+  "recovery": {
+    "method": "Parenthesize the status comparison and fold-array length comparison independently.",
+    "corrected_check_exit_code": 0,
+    "terminal_result_path": "docs/a_share_three_day_walkforward_campaign_136_terminal_result_20260814.json",
+    "terminal_result_sha256": "e34b9ff71f509768e9cf971d894748e130b49ab93e323191bcf4a3b286bc2ee0",
+    "terminal_result_bytes_changed": false
+  },
+  "research_boundary": {
+    "additional_historical_return_values_read": false,
+    "stress_2024_2025_opened": false,
+    "provider_request_issued": false,
+    "credential_value_or_digest_read": false,
+    "candidate49_ledgers_changed": false,
+    "current_scoring_selection_sizing_positions_or_orders_performed": false
+  }
+}

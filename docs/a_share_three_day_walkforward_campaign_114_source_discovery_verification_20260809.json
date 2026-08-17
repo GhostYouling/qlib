@@ -1,0 +1,78 @@
+{
+  "schema_version": 1,
+  "kind": "a_share_three_day_walkforward_campaign114_source_discovery_verification",
+  "status": "verified_protocol_bound_prevalue_source_discovery_policy_v82_and_append_only_chain",
+  "recorded_at": "2026-08-09T02:28:13+08:00",
+  "authoritative_status": {
+    "path": "docs/a_share_three_day_iteration_status_20260809_campaign114_source_discovery_v2.json",
+    "sha256": "be4a9981eca970c2672e34f45d066f91eb16af127865b272f297cc1a8b272178"
+  },
+  "future_numeric_policy": {
+    "path": "docs/a_share_three_day_walkforward_future_numeric_comparison_eligibility_policy_v82_20260809.json",
+    "sha256": "c68165a819eb483a02c41d7803a153457fa02194f192b458dfe41204f4f95365",
+    "complete_definition_count": 141,
+    "numeric_comparator_count": 134
+  },
+  "prevalue_result": {
+    "path": "docs/a_share_three_day_walkforward_campaign_114_prevalue_source_discovery_result_v2_20260809.json",
+    "sha256": "a1d6e0d2a961f873fa502027539b4963cd8658397137cc0b8e9e4658142c0b2c"
+  },
+  "latest_attempt_ledger": {
+    "path": "data/experiments/short_horizon/historical_walkforward/campaign_114/research_attempt_ledger_v2.json",
+    "sha256": "d7167c0ce582e89cea4f14f1626e35336dd0c0840e4d4442d1f9a992d5aa9a75",
+    "extends_v1_sha256": "8b6ea6fd3c8c51cb80a2284d85926b918ed72c27b4ff54ecd2efb6d05c83ffa8",
+    "total_attempt_count": 5,
+    "total_infrastructure_failure_count": 4,
+    "current_chain_tip_sha256": "ddd480e9b7a5d7a1dfd8f553be5ccd716d443165f8ed08378337cb30cb8b3fc5"
+  },
+  "test_receipts": [
+    {
+      "scope": "Initial Campaign114 plus Campaign113 metadata-terminal and Campaign112 predecessor directed suite",
+      "result": "23 passed, 1 failed due solely to a chained-equality test assertion",
+      "exit_code": 1,
+      "failure_recorded_in_attempt_ledger_v2": true
+    },
+    {
+      "scope": "Corrected Campaign114 plus Campaign113 metadata-terminal and Campaign112 predecessor directed suite",
+      "result": "24 passed in 1.87s",
+      "exit_code": 0
+    },
+    {
+      "scope": "Campaign114 current-state standalone replay after status receipt publication",
+      "result": "8 passed in 0.04s",
+      "exit_code": 0
+    },
+    {
+      "scope": "Black format/check and Ruff check on the new Campaign114 test",
+      "result": "passed",
+      "exit_code": 0
+    },
+    {
+      "scope": "All Campaign114 JSON parse checks, current artifact hashes and scoped git diff whitespace check",
+      "result": "passed",
+      "exit_code": 0
+    }
+  ],
+  "verified_assertions": {
+    "finite_concepts_reviewed": 6,
+    "metadata_discovery_candidates_selected": 1,
+    "selected_candidate": "official_exchange_information_disclosure_evaluation_grade",
+    "both_exchange_metadata_gate_required": true,
+    "source_contract_or_formula_frozen": false,
+    "complete_factor_definition_count": 0,
+    "source_rows_or_attachments_accessed_persisted_or_counted": false,
+    "candidate_or_comparison_values_read": false,
+    "historical_daily_price_or_forward_return_values_read": false,
+    "development_trial_count": 0,
+    "stress_2024_2025_opened": false,
+    "cumulative_historical_research_attempt_count": 850,
+    "cumulative_return_reading_development_trial_count": 302,
+    "candidate49_signal_entry_count": 0,
+    "candidate49_execution_entry_count": 0,
+    "candidate49_historical_backfill_performed": false,
+    "second_prospective_candidate_created": false,
+    "current_scoring_selection_sizing_or_orders_performed": false,
+    "investment_advice": false
+  },
+  "next_safe_action": "Use the frozen three-term unsigned official SSE/SZSE metadata-discovery protocol only. If either exchange, any 2019-2025 archive year, exact mandatory role or common finite grade vocabulary fails, terminate Campaign114 without opening attachments or issuer rows."
+}

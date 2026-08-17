@@ -1,0 +1,49 @@
+{
+  "version": 1,
+  "kind": "a_share_three_day_walkforward_campaign066_feature_snapshot_binding",
+  "status": "snapshot_complete_and_independently_verified_before_coverage_comparison_or_return_values",
+  "recorded_at": "2026-08-05T15:41:11+08:00",
+  "factor": "quarterly_quality_rank_balance_3f",
+  "direction": "higher",
+  "bindings": {
+    "snapshot_manifest": {"path": "/Volumes/DIsk/qlib-a-share-tushare-1m/derived/a_share/rich/tushare/minute_walkforward_campaign066_feature_library/tushare_stk_mins_1m_2019_2025_ea0cbb8f_walkforward_campaign066_feature_library_v1/snapshot_manifest.json", "sha256": "e46a0647007700e8b5682d76bffec6a9602f9b615a7801bf1554e4a72c442354"},
+    "no_return_preregistration": {"path": "docs/a_share_three_day_walkforward_campaign_066_no_return_preregistration.json", "sha256": "ab850ef8ff194c1172070e2ffd388eff2d7924354abf06a8b32c5bd43584a278"},
+    "effective_feature_implementation_freeze": {"path": "docs/a_share_three_day_walkforward_campaign_066_feature_implementation_freeze_v2_20260805.json", "sha256": "f23b0fcfd278442f1ba40e8e05f88aa774263173c2714f13bea00d4de64eb8b2"},
+    "feature_runner": {"path": "scripts/a_share_three_day_walkforward_campaign066_features.py", "sha256": "ff8bd4aef61f7eec00299d1b38e21c30e15a4e7b010d157b0ea60d0576adf614"},
+    "feature_tests": {"path": "tests/data_collector_tests/test_a_share_three_day_walkforward_campaign066_features.py", "sha256": "f20cc04b89ae789418c945a99fc0ea99bbe2aeab817df6ce13c32b826697747c"},
+    "current_attempt_ledger": {"path": "data/experiments/short_horizon/historical_walkforward/campaign_066/research_attempt_ledger_v7.json", "sha256": "2d78cfcd8ef0e9868fe1891be42e577c806606ce674488d31a54b149dd7e4d73"}
+  },
+  "snapshot": {
+    "dataset_sha256": "8727bae79ee4450e530268be882c89fed710eff599d549ee68d8023ebfb2dd0d",
+    "partition_count": 33015,
+    "row_count": 7724498,
+    "eligible_row_count": 7228585,
+    "missing_or_nonfinite_state_row_count": 495913,
+    "all_partition_byte_hashes_verified": true,
+    "all_partition_frame_hashes_verified": true,
+    "all_partition_row_counts_verified": true,
+    "all_eligible_values_finite_and_inside_closed_0_1": true,
+    "all_ineligible_values_missing": true,
+    "zero_row_partitions_preserved": true
+  },
+  "source_and_formula_semantics": {
+    "quarterly_fields_read": ["instrument", "report_date", "announcement_date", "roe", "profit_yoy", "revenue_yoy"],
+    "stock_day_identity_fields_read": ["trade_date", "symbol", "provider"],
+    "strict_next_session_availability": true,
+    "independent_per_field_forward_fill": true,
+    "average_tie_daily_percentile_ranks": true,
+    "formula": "1-(max(r_roe,r_profit,r_revenue)-min(r_roe,r_profit,r_revenue))",
+    "daily_price_fields_read": [],
+    "historical_forward_return_fields_read": false,
+    "comparison_factor_values_read": false,
+    "provider_request_issued": false
+  },
+  "prospective_boundary": {
+    "candidate49_historical_return_signal_execution_or_milestone_backfill_performed": false,
+    "candidate49_ledgers_changed": false,
+    "second_prospective_candidate_created": false,
+    "current_scoring_selection_sizing_or_orders_performed": false
+  },
+  "data_limitation": "The quarterly source is a current public snapshot and can contain later corrections; the eligible stock universe also derives from a current listing snapshot. This is historical research infrastructure, not pristine point-in-time vendor evidence or investment advice.",
+  "next_action": "Freeze the no-return audit implementation, then open coverage metrics first; only after coverage passes may the 96 frozen numeric comparison values be read."
+}

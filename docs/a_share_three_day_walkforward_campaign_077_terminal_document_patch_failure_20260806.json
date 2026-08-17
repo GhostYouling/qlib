@@ -1,0 +1,24 @@
+{
+  "schema_version": 1,
+  "kind": "a_share_three_day_walkforward_campaign077_terminal_document_patch_failure",
+  "status": "failed_before_any_target_write_preserved",
+  "recorded_at": "2026-08-06T13:36:00+08:00",
+  "campaign_id": "a_share_three_day_walkforward_campaign_077",
+  "failure_ordinal": 8,
+  "stage": "terminal_multi_document_append",
+  "cause": "The atomic three-file apply_patch referenced a unified-report terminal line that did not exist, so patch verification rejected the complete patch before any target file was written.",
+  "targets_attempted": [
+    "data/experiments/short_horizon/three_day_research_report.md",
+    "docs/a_share_data_pipeline.md",
+    "/Users/niyufei/.codex/skills/manage-qlib-a-share-data/SKILL.md"
+  ],
+  "target_files_changed_by_failed_command": false,
+  "candidate_or_comparator_values_read": false,
+  "daily_price_fields_read": [],
+  "forward_returns_read": false,
+  "development_recomputed": false,
+  "stress_2024_2025_opened": false,
+  "provider_request_issued": false,
+  "candidate49_ledgers_changed": false,
+  "repair": "Append each document independently against its exact current terminal context, while preserving this failure as a counted append-only infrastructure attempt."
+}

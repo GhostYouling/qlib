@@ -1,0 +1,102 @@
+{
+  "version": 121,
+  "kind": "a_share_three_day_walkforward_future_numeric_comparison_eligibility_policy",
+  "status": "campaign123_namechange_complete_definition_appended_before_source_values_numeric_eligibility_pending",
+  "recorded_at": "2026-08-14T03:25:04+08:00",
+  "authoritative_inputs": {
+    "policy_v120": {
+      "path": "docs/a_share_three_day_walkforward_future_numeric_comparison_eligibility_policy_v120_20260814.json",
+      "sha256": "96e09b6fe659e4c856f05211ba36585ea60105ad5442f92bf9affd46ba6d01bc"
+    },
+    "campaign123_adapter_and_formula_freeze": {
+      "path": "docs/a_share_three_day_walkforward_campaign_123_namechange_adapter_formula_freeze_20260814.json",
+      "sha256": "8fdca7bd7e41f9371618e8e36874c84b2ea74a4325db1722295a86ef82adac14"
+    },
+    "campaign123_attempt_ledger_v1": {
+      "path": "data/experiments/short_horizon/historical_walkforward/campaign_123/research_attempt_ledger_v1.json",
+      "sha256": "4ebd990b667738f097ccf394e3c6fa49f094cac53e0c59e5007c3c1961ed4152"
+    },
+    "campaign123_source_contract": {
+      "path": "docs/a_share_three_day_walkforward_campaign_123_namechange_source_contract_20260814.json",
+      "sha256": "00cae705f293de929c7c9c168500efce1506b1ac0ceb2dd902b3c451039d9d8c"
+    }
+  },
+  "supersedes_without_rewriting": {
+    "path": "docs/a_share_three_day_walkforward_future_numeric_comparison_eligibility_policy_v120_20260814.json",
+    "sha256": "96e09b6fe659e4c856f05211ba36585ea60105ad5442f92bf9affd46ba6d01bc",
+    "preserved": true,
+    "prior_complete_definition_count": 147,
+    "prior_complete_definition_order_sha256": "3f3756a4128011d9cd718e97d23ee3b1c78022433b269c75bd715f304a055bf0",
+    "prior_numeric_comparator_count": 139,
+    "prior_numeric_comparator_order_sha256": "9c4de054ca1b83eced67eece256b024ebec3a6e1925de17a4cedfa7d36265161"
+  },
+  "effective_accounting": {
+    "campaign123_attempt_count": 7,
+    "campaign123_ledger_entry_count": 7,
+    "campaign123_infrastructure_failure_count": 5,
+    "campaign123_prevalue_scientific_attempt_count": 2,
+    "campaign123_complete_factor_attempt_count": 1,
+    "campaign123_return_reading_development_trial_count": 0,
+    "campaign123_development_survivor_count": 0,
+    "campaign123_stress_trial_count": 0,
+    "cumulative_historical_research_attempt_count": 1006,
+    "cumulative_return_reading_development_trial_count": 306
+  },
+  "complete_historical_feature_library": {
+    "factor_definition_count": 148,
+    "order_sha256": "fa9f0254b17d1a2b568e056b2696f24087f3f0668d7842a1bcbfdde1a87192e8",
+    "prior_factor_definition_count": 147,
+    "prior_order_sha256": "3f3756a4128011d9cd718e97d23ee3b1c78022433b269c75bd715f304a055bf0",
+    "appended_definition": {
+      "name": "official_pure_security_rename_recency_60s",
+      "score_direction": "higher",
+      "source_contract_frozen": true,
+      "pure_adapter_and_synthetic_tests_frozen": true,
+      "provider_source_accepted": false,
+      "historical_values_materialized": false
+    },
+    "order_digest_rule": "SHA-256 of compact sorted-key JSON encoding of the ordered [name, score_direction] pairs, preserving Unicode code points."
+  },
+  "numerical_comparator_eligibility": {
+    "eligible_numeric_comparator_count": 139,
+    "eligible_numeric_comparator_order_sha256": "9c4de054ca1b83eced67eece256b024ebec3a6e1925de17a4cedfa7d36265161",
+    "unchanged_from_v120": true,
+    "campaign123_definition_eligible_now": false,
+    "reason": "The logical definition is complete but no provider row, coverage/capacity evidence, factor snapshot, uniqueness comparison, or development return diagnostic exists."
+  },
+  "campaign123_gate_state": {
+    "concept_scouting_passed": true,
+    "mechanism_overlap_and_source_identifiability_passed": true,
+    "zero_row_source_contract_frozen": true,
+    "pure_adapter_and_synthetic_tests_frozen": true,
+    "one_shot_provider_acceptance_workflow_frozen": false,
+    "provider_request_issued": false,
+    "provider_source_accepted": false,
+    "capacity_gate_passed": false,
+    "all_139_numeric_comparators_loaded_or_tested": false,
+    "historical_development_trial_run": false,
+    "stress_2024_2025_opened": false,
+    "terminal": false
+  },
+  "future_campaign_boundary": {
+    "next_stage": "campaign123_entitlement_safe_one_shot_source_acceptance_workflow_freeze",
+    "formula_window_direction_reason_projection_or_missing_rule_change_allowed": false,
+    "provider_request_allowed_now": false,
+    "numeric_comparator_append_allowed_now": false,
+    "campaign124_allowed_now": false
+  },
+  "research_boundary": {
+    "programmatic_provider_request_issued": false,
+    "credential_loaded": false,
+    "provider_rows_read_persisted_or_counted": false,
+    "campaign123_candidate_values_computed_or_read": false,
+    "campaign123_comparator_values_read": false,
+    "historical_daily_price_or_forward_return_values_read": false,
+    "stress_2024_2025_opened": false,
+    "candidate49_historical_backfill_performed": false,
+    "candidate49_ledgers_changed": false,
+    "second_prospective_candidate_created": false,
+    "current_scoring_selection_sizing_positions_or_orders_performed": false,
+    "investment_advice": false
+  }
+}

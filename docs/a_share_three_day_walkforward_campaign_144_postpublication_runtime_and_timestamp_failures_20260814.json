@@ -1,0 +1,107 @@
+{
+  "schema_version": 1,
+  "kind": "a_share_three_day_walkforward_campaign144_infrastructure_failure_batch",
+  "status": "recorded_before_effective_accounting_republication",
+  "recorded_at": "2026-08-14T19:41:26+08:00",
+  "attempts": [
+    {
+      "attempt_id": "campaign144_infrastructure_013",
+      "phase": "postpublication_black_runtime_selection",
+      "process_exit_code": 1,
+      "command_runtime": "/usr/bin/python3 selected through PATH",
+      "cause": "The selected system Python did not provide the black module."
+    },
+    {
+      "attempt_id": "campaign144_infrastructure_014",
+      "phase": "postpublication_ruff_runtime_selection",
+      "process_exit_code": 1,
+      "command_runtime": "/usr/bin/python3 selected through PATH",
+      "cause": "The selected system Python did not provide the ruff module."
+    },
+    {
+      "attempt_id": "campaign144_infrastructure_015",
+      "phase": "postpublication_pytest_runtime_selection",
+      "process_exit_code": 1,
+      "command_runtime": "/usr/bin/python3 selected through PATH",
+      "cause": "The selected system Python did not provide the pytest module."
+    },
+    {
+      "attempt_id": "campaign144_infrastructure_016",
+      "phase": "postpublication_black_bundled_runtime_selection",
+      "process_exit_code": 1,
+      "command_runtime": "/Users/niyufei/.cache/codex-runtimes/codex-primary-runtime/dependencies/python/bin/python3",
+      "cause": "The bundled artifact Python did not provide the black module."
+    },
+    {
+      "attempt_id": "campaign144_infrastructure_017",
+      "phase": "postpublication_ruff_bundled_runtime_selection",
+      "process_exit_code": 1,
+      "command_runtime": "/Users/niyufei/.cache/codex-runtimes/codex-primary-runtime/dependencies/python/bin/python3",
+      "cause": "The bundled artifact Python did not provide the ruff module."
+    },
+    {
+      "attempt_id": "campaign144_infrastructure_018",
+      "phase": "postpublication_pytest_bundled_runtime_selection",
+      "process_exit_code": 1,
+      "command_runtime": "/Users/niyufei/.cache/codex-runtimes/codex-primary-runtime/dependencies/python/bin/python3",
+      "cause": "The bundled artifact Python did not provide the pytest module."
+    },
+    {
+      "attempt_id": "campaign144_infrastructure_019",
+      "phase": "postpublication_pytest_repo_import_path",
+      "process_exit_code": 2,
+      "command_runtime": "/Volumes/DIsk/Coding/anaconda3/bin/pytest",
+      "cause": "Pytest collection could not import the repository scripts package because the repository root was absent from PYTHONPATH."
+    },
+    {
+      "attempt_id": "campaign144_infrastructure_020",
+      "phase": "policy_v189_future_recorded_at",
+      "process_exit_code": null,
+      "artifact": {
+        "path": "docs/a_share_three_day_walkforward_future_numeric_comparison_eligibility_policy_v189_20260814.json",
+        "sha256": "c98fed40f66a8331e5a626afe4b9caf7ca8d938443a739d3a29779b86743624e"
+      },
+      "cause": "The manually chosen recorded_at value was later than the observed local clock at file creation."
+    },
+    {
+      "attempt_id": "campaign144_infrastructure_021",
+      "phase": "iteration_status_future_recorded_at",
+      "process_exit_code": null,
+      "artifact": {
+        "path": "docs/a_share_three_day_iteration_status_20260814_campaign144_prevalue_terminal.json",
+        "sha256": "ee84d301474fc6cd93f826e9d1f31c77edd99dd87ddf610d08a618ee6d5fc13f"
+      },
+      "cause": "The manually chosen recorded_at value was later than the observed local clock at file creation."
+    }
+  ],
+  "successful_recovery": {
+    "black_command": "/Volumes/DIsk/Coding/anaconda3/bin/black --check tests/data_collector_tests/test_a_share_three_day_walkforward_campaign144_terminal.py",
+    "black_exit_code": 0,
+    "ruff_command": "/Volumes/DIsk/Coding/anaconda3/bin/ruff check tests/data_collector_tests/test_a_share_three_day_walkforward_campaign144_terminal.py",
+    "ruff_exit_code": 0,
+    "pytest_command": "PYTHONPATH=. /Volumes/DIsk/Coding/anaconda3/bin/pytest -q tests/data_collector_tests/test_a_share_three_day_walkforward_campaign144_terminal.py",
+    "pytest_exit_code": 0,
+    "pytest_passed": 6,
+    "pytest_failed": 0,
+    "later_success_used_to_mask_failures": false
+  },
+  "safe_recovery": {
+    "preserve_this_record": true,
+    "append_all_nine_failures_to_effective_ledger": true,
+    "supersede_invalid_timestamp_records_without_rewriting": true,
+    "scientific_result_or_frozen_threshold_change_allowed": false
+  },
+  "research_boundary": {
+    "source_rows_or_column_values_read": false,
+    "candidate_or_comparator_values_read": false,
+    "historical_daily_price_or_forward_return_values_read": false,
+    "stress_2024_2025_opened": false,
+    "provider_request_issued": false,
+    "provider_credential_value_or_digest_read": false,
+    "candidate49_historical_backfill_performed": false,
+    "candidate49_ledgers_changed": false,
+    "second_prospective_candidate_created": false,
+    "current_scoring_selection_sizing_positions_or_orders_performed": false,
+    "investment_advice": false
+  }
+}

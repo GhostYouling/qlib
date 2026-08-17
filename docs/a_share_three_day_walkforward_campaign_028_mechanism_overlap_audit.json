@@ -1,0 +1,133 @@
+{
+  "version": 1,
+  "kind": "a_share_three_day_walkforward_campaign028_mechanism_overlap_audit",
+  "status": "passed_conceptual_independence_before_formula_values_comparisons_or_returns",
+  "recorded_at": "2026-07-30T06:16:00Z",
+  "purpose": "Resolve the selected adjacent absolute-return-persistence concept into one exact no-value mechanism and challenge it against terminal and prospective families before any Campaign028 source partition, candidate value, comparison value, daily price, or forward return is opened.",
+  "concept_scouting": {
+    "path": "docs/a_share_three_day_walkforward_campaign_028_concept_scouting.json",
+    "sha256": "01185248774d490a3765477ddc5e6fcf30d2a224324f429c4c07dc7cf11cfad7"
+  },
+  "authoritative_boundary": {
+    "path": "docs/a_share_three_day_iteration_status_20260730_campaign027_verified.json",
+    "sha256": "22ee738e0b264c590b4f1e210af27252e1be6c073e935b53c3b768354eb02cb2"
+  },
+  "historical_walkforward_policy": {
+    "path": "docs/a_share_three_day_historical_walkforward_research_policy_20260727.json",
+    "sha256": "38426d6161b9bfed323c58caba18feca668b8c9d53e294951a8ba90c01a798bb"
+  },
+  "selected_mechanism": {
+    "name": "intraday_absolute_return_serial_persistence_236p",
+    "direction": "higher",
+    "information_domain": "adjacent_within_half_close_return_magnitude_dependence",
+    "formula": "population PearsonCorr(abs(r_t), abs(r_t+1)) across the 118 adjacent return-magnitude pairs inside each 120-close trading half, pooled to 236 equal-weight pairs",
+    "economic_hypothesis": "A higher value means one-minute price-adjustment intensity persists into the next minute, consistent with clustered information assimilation or liquidity demand that may carry from the next open through the third close.",
+    "source_fields": [
+      "datetime",
+      "symbol",
+      "provider",
+      "close"
+    ],
+    "selected_bar_grid": "exactly 240 one-minute closes at 09:31-11:30 and 13:01-15:00 after frozen timestamp normalization; standalone 09:30 is excluded and no return or pair crosses lunch",
+    "return_rule": "Form 119 adjacent natural-log close returns separately inside each 120-close half, then take the exact absolute value of every return.",
+    "pairing_rule": "Within each half pair absolute-return positions 1 through 118 with positions 2 through 119. Pool the 118 morning and 118 afternoon pairs in chronological half order; use no pair across lunch.",
+    "correlation_rule": "Use equal-pair-weight population Pearson correlation across all 236 lag and lead absolute-return pairs.",
+    "zero_rule": "Retain every exact-zero return magnitude in every fixed lag or lead position; never remove, bridge, replace, or tolerance-reclassify zero returns.",
+    "variance_rule": "Require strictly positive population variance in both complete 236-element lag and lead magnitude vectors.",
+    "bar_rule": "All 240 selected closes must be finite and strictly positive before log returns are formed.",
+    "endpoint_rule": "Only values within 1e-12 of -1 or +1 may be canonicalized to the exact endpoint; no statistical clipping is allowed.",
+    "missing_rule": "Any invalid or nonpositive selected close, nonfinite return magnitude, nonpositive variance in either vector, nonfinite score, or score outside [-1,1] after endpoint canonicalization makes the stock-day missing.",
+    "valid_range": [
+      -1.0,
+      1.0
+    ]
+  },
+  "overlap_challenges": [
+    {
+      "family": "intraday_diffusive_variation_ratio_238m",
+      "result": "distinct_pending_statistical_uniqueness_gate",
+      "reason": "The diffusive-variation factor compares aggregate quadratic variation with adjacent absolute-return products and is a scale decomposition. Campaign028 separately centers the lag and lead magnitude vectors and measures their serial dependence; it is invariant to their separate additive levels after centering. Statistical proximity remains an explicit 0.8-gated comparison."
+    },
+    {
+      "family": "intraday_return_variance_entropy_and_skewness",
+      "result": "distinct_pending_statistical_uniqueness_gate",
+      "reason": "Entropy and skewness summarize order-invariant marginal concentration or signed third moments. Campaign028 is ordering-sensitive and uses adjacent absolute-return covariance without signed third moments or entropy bins."
+    },
+    {
+      "family": "intraday_volatility_resolution_238m",
+      "result": "distinct",
+      "reason": "Volatility resolution compares total morning and afternoon squared-return mass. Campaign028 pools both halves and measures only within-half one-step magnitude persistence, not the allocation of volatility across halves."
+    },
+    {
+      "family": "intraday_return_sign_run_imbalance_and_bar_direction_continuity",
+      "result": "distinct",
+      "reason": "Those mechanisms retain direction signs and discard or subordinate magnitude. Campaign028 removes every sign before pairing and measures continuous magnitude dependence rather than sign agreement counts."
+    },
+    {
+      "family": "intraday_amount_profile_serial_persistence_240m",
+      "result": "distinct",
+      "reason": "The amount-profile factor correlates adjacent log1p(CNY amount) levels. Campaign028 reads no amount or volume and correlates adjacent absolute close returns formed separately inside each trading half."
+    },
+    {
+      "family": "intraday_intrabar_range_reversal_238p",
+      "result": "distinct",
+      "reason": "Range reversal uses high-low widths from neighboring OHLC bars and freezes a reversal orientation. Campaign028 reads close only, uses between-close return magnitudes, and freezes higher serial persistence."
+    },
+    {
+      "family": "intraday_directional_range_response_coupling_238p",
+      "result": "distinct",
+      "reason": "Campaign024 correlates a signed open-close body with the next bar's high-low range. Campaign028 uses neither open/high/low nor direction and correlates adjacent absolute close returns."
+    },
+    {
+      "family": "intraday_morning_afternoon_return_profile_persistence_119p",
+      "result": "distinct",
+      "reason": "Campaign027 correlates signed morning and afternoon returns at equal ordinal positions across lunch. Campaign028 never pairs the halves, removes signs, and measures only one-step magnitude persistence inside each half."
+    },
+    {
+      "family": "candidate49_cumulative_vwap_crossing_rate",
+      "result": "distinct",
+      "reason": "Candidate49 measures repeated close crossings of causal cumulative VWAP using close, volume, and amount. Campaign028 reads close only, contains no VWAP or crossing count, and remains historical-research-only."
+    },
+    {
+      "family": "terminal_factor_combination_or_rescue",
+      "result": "not_used",
+      "reason": "Campaign028 contains one raw close-path statistic and no terminal factor value, transform, filter, model, or combination."
+    }
+  ],
+  "design_choices_frozen_before_values": {
+    "formula_family": "within_half_adjacent_absolute_return_population_pearson_correlation",
+    "direction": "higher",
+    "return_count": 238,
+    "paired_return_count": 236,
+    "selected_bar_count": 240,
+    "include_0930": false,
+    "include_lunch_return_or_pair": false,
+    "adjacent_lag_only": 1,
+    "absolute_return_transform": true,
+    "squared_return_transform": false,
+    "retain_exact_zero_returns": true,
+    "require_positive_variance_in_both_vectors": true,
+    "endpoint_canonicalization_tolerance": 1e-12,
+    "subwindow_or_year_selection_allowed": false,
+    "sign_or_magnitude_filter_allowed": false,
+    "market_amount_or_volume_input_allowed": false,
+    "terminal_factor_input_allowed": false
+  },
+  "decision": {
+    "conceptually_independent": true,
+    "advance_to_exact_no_return_preregistration": true,
+    "candidate_or_comparison_values_may_be_read_now": false,
+    "binding_validator_exit_zero_required_before_next_stage": true,
+    "candidate49_remains_only_active_prospective_candidate": true,
+    "candidate50_activation_allowed": false,
+    "current_aggregation_scoring_selection_sizing_or_orders_allowed": false
+  },
+  "research_boundary": {
+    "external_campaign028_minute_partitions_read": false,
+    "candidate_values_read": false,
+    "comparison_values_read": false,
+    "daily_price_fields_read": false,
+    "forward_returns_read": false,
+    "provider_request_issued": false
+  }
+}

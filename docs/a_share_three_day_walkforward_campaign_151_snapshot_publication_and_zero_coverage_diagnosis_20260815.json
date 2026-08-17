@@ -1,0 +1,84 @@
+{
+  "schema_version": 1,
+  "kind": "a_share_three_day_walkforward_campaign151_snapshot_publication_zero_coverage_diagnosis",
+  "status": "snapshot_published_zero_eligible_rows_partition_verification_required_before_terminalization",
+  "recorded_at": "2026-08-15T01:17:31+08:00",
+  "authorization": {
+    "corrected_plan_receipt_path": "docs/a_share_three_day_walkforward_campaign_151_snapshot_plan_ready_v2_20260815.json",
+    "corrected_plan_receipt_sha256": "813e87a89d0364b4adaefe1c1be3c2f94692c1b63159de8dfd61f47a45c9f059",
+    "ready": true,
+    "exit_code": 0,
+    "workers": 4,
+    "confirmed_build": true,
+    "same_parameters": true
+  },
+  "publication": {
+    "manifest_path": "/Volumes/DIsk/qlib-a-share-tushare-1m/derived/a_share/rich/tushare/minute_walkforward_campaign151_feature_library/tushare_stk_mins_1m_2019_2025_ea0cbb8f_walkforward_campaign151_feature_library_v1/snapshot_manifest.json",
+    "manifest_sha256": "fdc23323e2ddc9e070f3c2a48fb5d05ebf9673b8c0c613ac88ecd0ea15054f83",
+    "dataset_sha256": "ef60fd141ab02a6b1add10de6193d47d8baad83a407a2a11488a50ce5e5f9029",
+    "partitions": 33015,
+    "rows": 7724498,
+    "symbols": 5396,
+    "trade_dates": 1699,
+    "factor_name": "intraday_relative_amount_share_clock_center_240m",
+    "factor_direction": "higher",
+    "final_root_published": true,
+    "partial_root_exists_after_publication": false,
+    "promotion_allowed": false
+  },
+  "coverage_header": {
+    "eligible_rows": 0,
+    "complete_profile_rows": 7724498,
+    "insufficient_leave_one_out_peer_rows": 0,
+    "invalid_required_amount_rows": 0,
+    "invalid_score_rows": 0,
+    "nonpositive_peer_clock_rows": 7724498,
+    "nonpositive_relative_total_rows": 0
+  },
+  "independent_peer_benchmark_diagnosis": {
+    "benchmark_path": "/Volumes/DIsk/qlib-a-share-tushare-1m/derived/a_share/rich/tushare/minute_walkforward_campaign151_feature_library/tushare_stk_mins_1m_2019_2025_ea0cbb8f_walkforward_campaign151_feature_library_v1/raw_amount_peer_benchmark_240m.parquet",
+    "benchmark_byte_sha256": "2f8c309f9a02715b749fb961f40218650967674435e8bae1ef09024877293903",
+    "benchmark_frame_sha256": "f9b7d4c35de39fec7ed7ba6ebb1501ee39b489651e71e41fa5739605082e95ee",
+    "rows": 407760,
+    "nonpositive_rows": 1701,
+    "trade_dates_with_at_least_one_nonpositive_clock": 1699,
+    "positions_with_any_nonpositive_sum": [
+      30,
+      31,
+      238
+    ],
+    "position_238_clock": "14:59",
+    "position_238_nonpositive_dates": 1699,
+    "position_238_minimum": 0.0,
+    "position_238_median": 0.0,
+    "position_238_maximum": 0.0,
+    "positions_30_and_31_only_nonpositive_date": "2022-12-06",
+    "complete_profile_count_minimum": 3549,
+    "complete_profile_count_median": 4713.0,
+    "complete_profile_count_maximum": 5170,
+    "deduction": "because every complete profile amount is finite and nonnegative, a position-238 aggregate sum of zero on every date forces the leave-one-out peer mean at 14:59 to zero for every stock-date; the frozen all-240-peer-means-strictly-positive gate therefore rejects every row"
+  },
+  "precommitted_interpretation": {
+    "candidate_factor_rescue_or_formula_edit_allowed": false,
+    "drop_14_59_after_observation_allowed": false,
+    "change_positive_peer_gate_after_observation_allowed": false,
+    "if_full_partition_integrity_matches_manifest": "terminate Campaign151 before return reading for zero eligible coverage",
+    "if_partition_integrity_fails": "record infrastructure failure and do not read returns",
+    "numerical_comparator_library_append_allowed_now": false,
+    "historical_daily_price_or_forward_return_read_allowed_now": false
+  },
+  "research_boundary": {
+    "campaign151_candidate_values_read": true,
+    "peer_benchmark_values_read": true,
+    "candidate_partition_values_read_after_publication": false,
+    "comparator_values_read": false,
+    "historical_daily_price_or_forward_return_values_read": false,
+    "stress_2024_2025_opened_for_return_evaluation": false,
+    "credential_loaded": false,
+    "provider_request_issued": false,
+    "candidate49_historical_backfill_performed": false,
+    "candidate49_ledgers_changed": false,
+    "current_scoring_selection_sizing_positions_or_orders_performed": false
+  },
+  "next_action": "Freeze an independent whole-snapshot partition verifier before any candidate partition payload is read after publication. Verify all bytes, frames, keys, ordering, zero eligible flags and NaN factor values; then terminalize without returns only if every check passes."
+}

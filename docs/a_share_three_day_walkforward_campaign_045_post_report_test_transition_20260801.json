@@ -1,0 +1,67 @@
+{
+  "version": 1,
+  "kind": "a_share_three_day_walkforward_campaign045_post_report_test_transition",
+  "status": "campaign045_terminal_assertions_activated_and_report_supersession_chain_advanced_without_prior_record_rewrite",
+  "recorded_at": "2026-07-31T21:38:00Z",
+  "purpose": "Record the Campaign045 terminal tests and the additive update needed for Campaign043's historical unified-report binding to follow the immutable Campaign044 then Campaign045 supersession chain.",
+  "bindings": {
+    "campaign043_verification_historical": {
+      "path": "docs/a_share_three_day_walkforward_campaign_043_verification_20260731.json",
+      "sha256": "3d72f4bd78c2c4127ae99d9abbe2c782ab838d6b51ad9456d9ad4a8002cd1a88"
+    },
+    "campaign045_research_record": {
+      "path": "docs/a_share_three_day_walkforward_campaign_045_research_record.json",
+      "sha256": "1fea52800552ed3823c5b3803af37b2e373a194dc1915beec4334270ec374e81"
+    },
+    "campaign045_report_supersession": {
+      "path": "docs/a_share_three_day_walkforward_campaign_045_unified_report_supersession_20260801.json",
+      "sha256": "87104865eef2f60a4628b372ca69f7b09f2906b86e232861a7991a96c86832ba"
+    },
+    "unified_research_report": {
+      "path": "data/experiments/short_horizon/three_day_research_report.md",
+      "sha256": "d57811a8cdaaad14a36e4db4d442e2be30563db0dae6b3f252ca85a5565e9cc3"
+    },
+    "campaign045_runner_tests": {
+      "path": "tests/data_collector_tests/test_a_share_three_day_walkforward_campaign045.py",
+      "sha256": "f6c7d8df62f7bc9027598c5374da015e6c91ad00a16e98cdebfdede6a46de57f"
+    },
+    "campaign045_terminal_tests": {
+      "path": "tests/data_collector_tests/test_a_share_three_day_walkforward_campaign045_terminal.py",
+      "sha256": "79ee46a483b97e41b323deb63b70d464f6cf95732f635bab5c0726d998876ba4"
+    },
+    "campaign045_feature_tests": {
+      "path": "tests/data_collector_tests/test_a_share_three_day_walkforward_campaign045_features.py",
+      "sha256": "9e0c8cb66dd119384ade8119df388f398b138e3c0295478c569f1cd06376e539"
+    },
+    "campaign043_terminal_tests_current": {
+      "path": "tests/data_collector_tests/test_a_share_three_day_walkforward_campaign043_terminal.py",
+      "sha256": "1dd265995ea463975d125a988ce4004b171fb7165f66a4cd27f4ff3431881113"
+    }
+  },
+  "historical_test_transition": {
+    "path": "tests/data_collector_tests/test_a_share_three_day_walkforward_campaign043_terminal.py",
+    "historical_campaign043_verification_expected_sha256": "0d214704ced613328bb4dbcac19686d0232fba91ba138b72bb9d1e8b48409769",
+    "current_sha256": "1dd265995ea463975d125a988ce4004b171fb7165f66a4cd27f4ff3431881113",
+    "change": "Point the historical report-binding assertion to the new Campaign045 supersession record and require the Campaign044 supersession record to remain unrevised.",
+    "campaign043_verification_rewritten": false,
+    "campaign044_supersession_rewritten": false
+  },
+  "test_execution": {
+    "focused_transition_and_campaign045_tests_passed": 20,
+    "focused_transition_and_campaign045_tests_failed": 0,
+    "full_data_collector_tests_passed": 1664,
+    "full_data_collector_tests_failed": 0,
+    "full_data_collector_test_warnings": 13,
+    "idempotent_development_rerun_status": "development_already_complete_idempotent",
+    "idempotent_terminal_artifact_hashes_unchanged": true
+  },
+  "semantic_boundary": {
+    "factor_formula_direction_or_parameter_changed": false,
+    "snapshot_candidate_or_comparison_values_changed": false,
+    "trial_ledger_survivor_stress_or_campaign_report_changed": false,
+    "fold_purge_cost_execution_or_survivor_gate_changed": false,
+    "2024_2025_opened": false,
+    "candidate49_ledger_changed": false,
+    "current_scoring_selection_sizing_or_orders_performed": false
+  }
+}

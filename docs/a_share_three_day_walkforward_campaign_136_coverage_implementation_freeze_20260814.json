@@ -1,0 +1,65 @@
+{
+  "schema_version": 1,
+  "kind": "a_share_three_day_walkforward_campaign136_coverage_implementation_freeze",
+  "status": "coverage_only_runner_frozen_before_candidate_coverage_values",
+  "recorded_at": "2026-08-14T11:35:00+0800",
+  "frozen_implementation": {
+    "runner_path": "scripts/a_share_three_day_walkforward_campaign136_coverage_audit.py",
+    "runner_sha256": "3e08036359c9514fdb50910464c16f4f2c840ea1f68b4fdc47704545ca40c056",
+    "test_path": "tests/data_collector_tests/test_a_share_three_day_walkforward_campaign136_coverage_audit.py",
+    "test_sha256": "2976fcfb0517d2fc1052a3155e2bb38839de39667a03a51a28f4a0766b572e38",
+    "source_publication_sha256": "27bfda432f405248021068ebc275b2cca679c8e8bd49bed0e388f73c3b32b232",
+    "snapshot_manifest_sha256": "9a5c9ff824de22af6595d312b76230a3e4cf283c6e1d42e882aae96d11367b93",
+    "snapshot_dataset_sha256": "c84b1f85eec3731736a4da411691c144a70a81e38b5013e5aeea5370f3c417ec",
+    "snapshot_rows": 7751950,
+    "snapshot_eligible_rows": 7750120,
+    "expected_gate": {
+      "holding_period_sessions": 3,
+      "minimum_median_daily_coverage": 0.95,
+      "minimum_p05_daily_coverage": 0.9,
+      "minimum_p05_eligible_names": 50,
+      "minimum_non_overlapping_three_signal_session_cohorts": 200,
+      "minimum_observed_cohort_years": 5,
+      "minimum_nonconstant_cross_sectional_sessions": 200,
+      "candidate_value_range": "finite [0,+infinity)",
+      "cross_sectional_distinctness": "exact finite float values without rounding tolerance or binning"
+    },
+    "numeric_comparator_count": 140,
+    "numeric_comparator_order_sha256": "c71bfe27486c9567afd3aca21e4b04053658c23ac651e7f4df7fd014b0c31efd",
+    "output_path": "data/experiments/short_horizon/historical_walkforward/campaign_136/coverage/campaign136_coverage_audit.json",
+    "single_use": true
+  },
+  "synthetic_verification_before_freeze": {
+    "pytest": "5 passed, 1 deselected in 1.07s",
+    "real_candidate_coverage_values_read": false,
+    "complete_five_year_panel_passed": true,
+    "sparse_missing_panel_not_rescued": true,
+    "finite_nonnegative_unbounded_range_tested": true,
+    "negative_and_ineligible_nonmissing_values_rejected": true
+  },
+  "pre_freeze_failure_preserved": {
+    "path": "docs/a_share_three_day_walkforward_campaign_136_coverage_pre_freeze_error_message_expectation_failure_20260814.json",
+    "sha256": "2e3f9be626595caa0c0591d79c430aac9bf4ff4ff3c6a9abdd2472dc56fc8228"
+  },
+  "run_protocol": {
+    "plan_must_exit_zero_and_ready_true": true,
+    "run_requires_confirm_coverage_audit": true,
+    "snapshot_is_byte_and_semantically_verified_before_coverage_read": true,
+    "output_is_atomic_exclusive": true,
+    "comparator_ohlcv_forward_return_or_provider_read_allowed": false
+  },
+  "research_boundary": {
+    "candidate_coverage_values_read_before_freeze": false,
+    "comparator_values_read": false,
+    "historical_daily_ohlcv_fields_read": [],
+    "historical_forward_returns_read": false,
+    "stress_2024_2025_return_values_opened": false,
+    "provider_request_issued": false,
+    "credential_loaded": false,
+    "candidate49_historical_backfill_performed": false,
+    "candidate49_ledgers_changed": false,
+    "second_prospective_candidate_created": false,
+    "current_scoring_selection_sizing_positions_or_orders_performed": false,
+    "investment_advice": false
+  }
+}

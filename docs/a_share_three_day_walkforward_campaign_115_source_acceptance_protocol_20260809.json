@@ -1,0 +1,121 @@
+{
+  "schema_version": 1,
+  "kind": "a_share_three_day_walkforward_campaign115_source_acceptance_protocol",
+  "status": "frozen_before_acceptance_runner_implementation_or_provider_request",
+  "recorded_at": "2026-08-09T03:18:00+08:00",
+  "purpose": "Permit at most one fixed-date Tushare limit_list_d entitlement/schema/formula acceptance only after every local binding passes and the user explicitly confirms that the currently configured account already has the documented 5000-point entitlement.",
+  "authoritative_inputs": {
+    "iteration_state": {
+      "path": "docs/a_share_three_day_iteration_status_20260809_campaign115_prevalue.json",
+      "sha256": "b0f73644a9d74ecddb1cafc70764a4875895b180ffe55db127b889d089315250"
+    },
+    "numeric_policy_v85": {
+      "path": "docs/a_share_three_day_walkforward_future_numeric_comparison_eligibility_policy_v85_20260809.json",
+      "sha256": "16eb9674782cd929a3d9ad9c2465629c49ab144dcf0116b7c280bef378a1b123"
+    },
+    "source_contract": {
+      "path": "docs/a_share_tushare_limit_up_queue_persistence_data_contract_20260809.json",
+      "sha256": "41627b182e3d5f6d5de663f589abc06b204bd425971afe1de4a7c20d237caa42"
+    },
+    "zero_row_adapter_freeze": {
+      "path": "docs/a_share_three_day_walkforward_campaign_115_zero_row_adapter_implementation_freeze_20260809.json",
+      "sha256": "29a93bbf2a2863fce51c7010226271cf2e7f28cf6afac3aca6b32fbd024c9a20"
+    },
+    "attempt_ledger_v4": {
+      "path": "data/experiments/short_horizon/historical_walkforward/campaign_115/research_attempt_ledger_v4.json",
+      "sha256": "6383b4f07e8931e3ca9bf5d027afcdcea237549a4608a145073e97952831bb06"
+    }
+  },
+  "known_entitlement_evidence": {
+    "documented_minimum_points": 5000,
+    "prior_account_points": 3000,
+    "prior_2026_07_13_limit_list_d_result": "provider_rejected_for_insufficient_points",
+    "repository_dotenv_token_presence_proves_entitlement": false,
+    "a_different_or_updated_token_is_assumed_to_have_5000_points": false,
+    "network_probe_to_guess_points_allowed": false,
+    "required_manual_assertion": "the user explicitly confirms that the currently configured Tushare account already has at least 5000 points and authorizes the one fixed-date acceptance request",
+    "purchasing_or_recommending_extra_access_to_make_the_test_pass": false
+  },
+  "fixed_request": {
+    "provider": "tushare",
+    "api": "limit_list_d",
+    "trade_date": "2026-07-13",
+    "fields_in_exact_order": [
+      "ts_code",
+      "trade_date",
+      "limit",
+      "last_time",
+      "open_times"
+    ],
+    "maximum_provider_calls": 1,
+    "maximum_attempts": 1,
+    "alternate_date_symbol_field_or_endpoint_retry_allowed": false,
+    "request_all_market_event_roster": true
+  },
+  "bound_local_context": {
+    "repository": "/Volumes/DIsk/Disk-Coding/qlib",
+    "active_data_root": "/Volumes/DIsk/Disk-Coding/qlib/data",
+    "buyable_universe_path": "data/qlib/cn_a_share/instruments/buyable_main_chinext.txt",
+    "buyable_universe_sha256": "77ccf8de2ed1e447e73b5d5ff1703fc2a8656d6adab34ef44017481730249db1",
+    "active_names_on_fixed_date": 4592,
+    "calendar_path": "data/qlib/cn_a_share/calendars/day.txt",
+    "calendar_sha256": "fda506597d26bcec953cdc0882042a5046ec1587db60490e16a01627fd43f53a",
+    "fixed_date_is_local_session": true,
+    "dotenv_path": ".env",
+    "dotenv_required_regular_non_symlink": true,
+    "dotenv_required_mode": "0600",
+    "dotenv_required_git_ignored": true,
+    "exactly_one_nonempty_tushare_token_assignment_required": true,
+    "credential_value_print_hash_log_or_persist_allowed": false
+  },
+  "runner_interface": {
+    "plan_command": "python scripts/a_share_tushare_limit_up_queue_acceptance.py plan",
+    "plan_with_manual_entitlement_assertion": "python scripts/a_share_tushare_limit_up_queue_acceptance.py plan --confirm-current-account-has-5000-points",
+    "run_command": "python scripts/a_share_tushare_limit_up_queue_acceptance.py run --confirm-current-account-has-5000-points --confirm-run",
+    "plan_is_read_only": true,
+    "plan_issues_provider_request": false,
+    "plan_without_manual_entitlement_assertion_ready": false,
+    "run_requires_ready_true_and_plan_exit_zero_with_identical_parameters": true,
+    "run_without_both_confirmation_flags_rejected_before_credential_or_provider_access": true
+  },
+  "atomic_outputs": {
+    "success_manifest": "data/metadata/rich_data/runs/campaign115_tushare_limit_queue_acceptance_20260713.json",
+    "success_factor_frame": "data/raw/a_share/rich/tushare/limit_up_queue_persistence/acceptance/campaign115_20260713/factor.parquet",
+    "failure_record": "data/metadata/rich_data/runs/campaign115_tushare_limit_queue_acceptance_20260713_failure.json",
+    "lock_path": "data/.campaign115_tushare_limit_queue_acceptance.lock",
+    "preexisting_success_or_failure_makes_future_plan_terminal": true,
+    "partial_success_frame_published_on_failure": false,
+    "raw_provider_response_persisted": false,
+    "plaintext_provider_error_persisted": false
+  },
+  "success_gates": {
+    "source_rows_minimum": 1,
+    "source_rows_strictly_below": 5000,
+    "exact_field_order": true,
+    "all_dates_equal_fixed_date": true,
+    "duplicate_stock_date_keys": 0,
+    "allowed_limit_states": [
+      "D",
+      "U",
+      "Z"
+    ],
+    "minimum_valid_u_rows": 1,
+    "all_u_last_time_and_open_times_valid": true,
+    "full_active_universe_factor_rows": 4592,
+    "candidate_formula_recomputed_by_frozen_adapter": true,
+    "price_comparator_or_return_fields_read": false
+  },
+  "failure_semantics": {
+    "any_provider_permission_empty_schema_domain_duplicate_date_row_ceiling_formula_write_or_binding_failure": "write one credential-safe terminal failure record and never retry this Campaign115 source branch",
+    "provider_error_text_may_be_re_requested_or_persisted": false,
+    "failure_can_be_repaired_by_changing_token_date_fields_formula_or_adapter": false
+  },
+  "research_boundary": {
+    "provider_request_issued_before_protocol_freeze": false,
+    "provider_rows_candidate_values_comparator_values_daily_prices_or_returns_read": false,
+    "candidate49_ledgers_changed": false,
+    "second_prospective_candidate_created": false,
+    "current_scoring_selection_sizing_or_orders_performed": false,
+    "investment_advice": false
+  }
+}

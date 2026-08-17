@@ -1,0 +1,31 @@
+{
+  "version": 1,
+  "kind": "a_share_three_day_walkforward_future_numeric_comparison_eligibility_policy_v7_binding_failure",
+  "status": "recorded_invalid_policy_do_not_use",
+  "recorded_at": "2026-08-06T06:37:00+08:00",
+  "invalid_policy": {
+    "path": "docs/a_share_three_day_walkforward_future_numeric_comparison_eligibility_policy_v7_20260806.json",
+    "sha256": "3700937758012c82e3e2021291795b3e3f8b0b48fa1886cfbcdd8a3afd5bbb95"
+  },
+  "failed_binding": {
+    "path": "docs/a_share_three_day_walkforward_campaign_072_terminal_completion_freeze_20260806.json",
+    "recorded_sha256": "3dafceae4a22d529607745543f3281935d8529930010483b0b6e2e132051f58f",
+    "actual_sha256": "3dafceae9338b8ca5de0e9f3457975d5999726f827c029f2a2f8d0429b79758f",
+    "cause": "A shortened handoff summary value was mistaken for the full file digest during policy authoring."
+  },
+  "impact": {
+    "campaign073_source_rows_read": false,
+    "campaign073_candidate_values_read": false,
+    "campaign073_comparison_values_read": false,
+    "historical_daily_price_or_forward_return_values_read": false,
+    "provider_request_issued": false,
+    "candidate49_ledgers_changed": false,
+    "policy_v7_may_be_used": false
+  },
+  "required_repair": "Publish a new immutable policy version with the actual Campaign072 terminal-freeze digest and revalidate every bound input before any Campaign073 values are opened.",
+  "attempt_accounting": {
+    "campaign073_infrastructure_failure_increment": 1,
+    "campaign073_complete_factor_attempt_increment": 0,
+    "campaign073_return_reading_trial_increment": 0
+  }
+}

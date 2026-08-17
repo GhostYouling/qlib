@@ -1,0 +1,24 @@
+{
+  "schema_version": 1,
+  "kind": "a_share_three_day_walkforward_campaign211_infrastructure_failure",
+  "recorded_at": "2026-08-15T22:26:00+08:00",
+  "timestamp_semantics": "monotonic_logical_append_time_not_host_wall_clock_measurement",
+  "status": "failed_append_chain_hash_calculation_webcrypto_runtime_unavailable",
+  "phase": "append_only_ledger_construction",
+  "failure": {
+    "scope": "calculate the ten then-known Campaign211 entry hashes in the isolated orchestration JavaScript runtime",
+    "observed": "the runtime raised ReferenceError because the Web Crypto global was unavailable before emitting any chain hash",
+    "recovery": "record the failure, add it as a distinct ledger entry, and calculate the complete eleven-entry chain with the repository host shasum utility"
+  },
+  "research_boundary": {
+    "failed_output_used_as_scientific_or_validation_evidence": false,
+    "candidate_or_comparator_value_read": false,
+    "daily_price_or_forward_return_read": false,
+    "provider_or_web_request_issued": false,
+    "provider_credential_presence_value_or_digest_read": false,
+    "candidate49_plan_or_run_executed": false,
+    "candidate49_ledgers_changed": false,
+    "stress_2024_2025_opened": false,
+    "current_use_or_investment_advice": false
+  }
+}

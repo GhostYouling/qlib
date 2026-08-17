@@ -1,0 +1,98 @@
+{
+  "version": 1,
+  "kind": "a_share_three_day_iteration_status",
+  "status": "campaign055_exact_no_return_protocol_frozen_before_candidate_values",
+  "recorded_at": "2026-08-03T16:08:00Z",
+  "authoritative_predecessor": {
+    "path": "docs/a_share_three_day_iteration_status_20260803_campaign054_verified.json",
+    "sha256": "63d0bcb883af148064b01661c2bb743b59be0416c4bcbd9b272a68ec95f4bc88"
+  },
+  "research_policy": {
+    "historical_walkforward_policy": {
+      "path": "docs/a_share_three_day_historical_walkforward_research_policy_20260727.json",
+      "sha256": "38426d6161b9bfed323c58caba18feca668b8c9d53e294951a8ba90c01a798bb"
+    },
+    "historical_research_may_run_without_new_daily_bar_or_16_30_wait": true,
+    "historical_results_may_generate_current_scores_selections_sizes_or_orders": false,
+    "historical_results_may_backfill_candidate49": false
+  },
+  "campaign054_terminal_summary": {
+    "terminal": true,
+    "development_survivor_count": 0,
+    "stress_2024_2025_opened": false,
+    "historical_research_attempt_count_after_campaign054": 312,
+    "return_reading_development_trial_count_after_campaign054": 267,
+    "current_historical_aggregation_candidate_count": 0
+  },
+  "campaign055": {
+    "factor": "intraday_price_update_clock_entropy_10b_238m",
+    "direction": "higher",
+    "phase": "exact_no_return_protocol_frozen_before_implementation_or_values",
+    "candidate_values_read": false,
+    "comparison_values_read": false,
+    "daily_price_fields_read": [],
+    "forward_return_fields_read": false,
+    "comparison_library_size": 78,
+    "comparison_order_sha256": "2a9d3188624bd7dd2556de5754f1ce401b0b04c2b47ca8cf15dae46a56253de6",
+    "conditional_development_trial_count": 1,
+    "authoritative_records": {
+      "concept_scouting": {
+        "path": "docs/a_share_three_day_walkforward_campaign_055_concept_scouting.json",
+        "sha256": "567a19211d9ca058e688768e2dcfe3d1bd0afb0b4b1c0f59e079987b08c2070b"
+      },
+      "mechanism_overlap_audit": {
+        "path": "docs/a_share_three_day_walkforward_campaign_055_mechanism_overlap_audit.json",
+        "sha256": "01fe62e9bafafe600e7bf62cb31db884735705b06b14fc782af8780621f69a11"
+      },
+      "no_return_preregistration": {
+        "path": "docs/a_share_three_day_walkforward_campaign_055_no_return_preregistration.json",
+        "sha256": "f469879dd83a22a15d497d903bc81c772d5d96dae81d4ac7e32edfba1ef0732f"
+      }
+    }
+  },
+  "local_data_context": {
+    "active_repository_root": "/Volumes/DIsk/Disk-Coding/qlib",
+    "configured_compatibility_root": "/Users/niyufei/Coding/qlib",
+    "configured_compatibility_root_exists": false,
+    "active_daily_data_root": "/Volumes/DIsk/Disk-Coding/qlib/data",
+    "historical_minute_data_root": "/Volumes/DIsk/qlib-a-share-tushare-1m",
+    "local_date": "2026-08-03",
+    "dotenv_path": "/Volumes/DIsk/Disk-Coding/qlib/.env",
+    "dotenv_is_git_ignored_and_mode_0600": true,
+    "tushare_token_present": true,
+    "credential_value_or_hash_read_printed_logged_or_persisted": false,
+    "provider_request_issued_by_campaign055_preregistration": false
+  },
+  "prospective_boundary": {
+    "active_candidate_count": 1,
+    "active_candidate": "Candidate49 intraday_cumulative_vwap_crossing_rate_240m",
+    "candidate49_signal_ledger": {
+      "path": "data/experiments/short_horizon/candidate49_future_signal_ledger.json",
+      "sha256": "5193f00d7f36da003f53cec387900da4c3d002299f5dfcfc1a95eaa199ed3a79",
+      "entry_count": 0
+    },
+    "candidate49_execution_ledger": {
+      "path": "data/experiments/short_horizon/candidate49_future_execution_ledger.json",
+      "sha256": "d57a3e61eac969e42cafa418ccd8c0a5ee65dcf69da145bb2c096c2a02a2ea4f",
+      "entry_count": 0
+    },
+    "candidate49_20260803_source_failure": {
+      "path": "docs/a_share_candidate49_20260803_daily_source_failure_record.json",
+      "sha256": "962afb0952395daa68e092fd7c08d7fd072ec65f04cd6c1616678229c0833a77"
+    },
+    "candidate49_20260803_same_day_retry_allowed": false,
+    "candidate49_historical_backfill_performed": false,
+    "second_prospective_candidate_activation_allowed": false
+  },
+  "next_action": {
+    "historical": "Implement and test only the frozen Campaign055 factor, fingerprint-freeze its implementation, then build a new immutable feature snapshot before any comparison or return read.",
+    "prospective": "Do not retry Candidate49 on 2026-08-03; the repository dotenv credential is for a later eligible trading-day post-16:30 workflow only.",
+    "strict_prohibitions": [
+      "do not compute Campaign055 values before implementation fingerprint freeze",
+      "do not alter bins minimum event count direction formula or gates",
+      "do not read daily prices or returns before coverage and all 78 comparisons pass",
+      "do not backfill Candidate49 or start another prospective candidate",
+      "do not generate current scores selections position sizes orders or investment advice"
+    ]
+  }
+}

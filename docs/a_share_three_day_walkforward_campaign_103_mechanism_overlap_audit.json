@@ -1,0 +1,98 @@
+{
+  "version": 1,
+  "kind": "a_share_three_day_walkforward_campaign103_mechanism_overlap_audit",
+  "status": "passed_semantic_mechanism_and_support_review_before_campaign103_values",
+  "recorded_at": "2026-08-07T16:26:00+08:00",
+  "purpose": "Challenge the exact Campaign103 temporal complete-library mechanism and its support predicate before reading a Campaign103 value.",
+  "authoritative_boundary": {
+    "concept_scouting": "docs/a_share_three_day_walkforward_campaign_103_concept_scouting.json",
+    "numeric_policy_v59_sha256": "4e6c7aea0be521773cda56ceea33d1665a82e9254b1e9198fa13b65e22d826b0",
+    "campaign102_mechanism_audit_sha256": "386582b44aa3b8c76584d603f5181db19558707b896dc071aa2a29741d1c4b8d"
+  },
+  "selected_mechanism": {
+    "name": "full_numeric_library_directional_rank_improvement_breadth_130f",
+    "direction": "higher",
+    "family": "consecutive_session_complete_library_directional_rank_change_breadth",
+    "dependency_acknowledged": "Every input is an old frozen numeric definition. Independence is claimed for the temporal breadth operator, not for new raw data.",
+    "invariance": "Adding the same component-specific offset to both sessions without changing their ordering leaves that component vote unchanged; changing a current level without crossing its prior level need not change the candidate.",
+    "nonidentity_witness": "Two stocks can have identical current-session static consensus or fitted current score but opposite improvement breadth because their prior-session component vectors differ."
+  },
+  "overlap_challenges": [
+    {
+      "family": "Campaign044 and Campaign101 static complete-library aggregation",
+      "result": "distinct_temporal_operator",
+      "reason": "Those mechanisms aggregate current directional levels. Campaign103 compares every component with its own exact-prior directional rank and aggregates only the signs of change; it does not retry a mean, lower quartile, quantile, or static vote."
+    },
+    {
+      "family": "Campaign102 bounded-simplex ridge",
+      "result": "distinct_nonfitted_nontargeted_operator",
+      "reason": "Campaign103 reads no training target, learns no coefficient, uses no lambda or bound, selects no subset, and gives every observed component pair one equal vote."
+    },
+    {
+      "family": "Campaign056 day-over-day amount-profile similarity",
+      "result": "distinct_cross_library_relative_state_change",
+      "reason": "Campaign056 compares two 240-bin within-stock amount distributions with Jensen-Shannon similarity. Campaign103 compares 130 heterogeneous cross-sectional directional ranks and rewards improvement rather than temporal shape similarity."
+    },
+    {
+      "family": "Campaign060 day-over-day directional-return agreement",
+      "result": "distinct_domain_and_operator",
+      "reason": "Campaign060 votes on same-clock signs of 238 intraday returns and rewards repetition. Campaign103 votes on changes in 130 factor ranks and rewards broad relative improvement; it reads no minute return or clock position."
+    },
+    {
+      "family": "single-factor lag, delta, acceleration, announcement-improvement, or prior-quarter definitions",
+      "result": "distinct_complete_library_meta_mechanism",
+      "reason": "No source definition is altered or individually differenced in raw units. The sole statistic is an equal breadth vote over the complete frozen 130-factor rank library."
+    }
+  ],
+  "mandatory_prevalue_support_predicate_gate": {
+    "required_by_policy_v59": true,
+    "all_known_terminal_coverage_failures_through_campaign102_reviewed": true,
+    "inventory": [
+      {"campaign": 5, "failed_support_class": "sparse lunch repricing plus retained post-lunch return support", "relationship_to_campaign103": "not inherited; there is no lunch or retained-return predicate"},
+      {"campaign": 8, "failed_support_class": "one-sided-zero share-volume response rule", "relationship_to_campaign103": "not inherited; a missing source is only an unavailable pair and no volume-response rule is applied"},
+      {"campaign": 13, "failed_support_class": "amount/volume transaction-price containment", "relationship_to_campaign103": "not inherited as an all-components intersection"},
+      {"campaign": 19, "failed_support_class": "at least 120 informative nonzero body-sign pairs", "relationship_to_campaign103": "not inherited; exact ties are valid half votes and there is no nonzero-return minimum"},
+      {"campaign": 44, "failed_support_class": "all terminal components finite on one common stock-day", "relationship_to_campaign103": "not inherited; each adjacent row needs only the already-passed 98-of-130 support and the paired intersection floor is the automatic set-theoretic lower bound 66"},
+      {"campaigns": [52, 68, 70, 84], "failed_support_class": "multi-quarter or prior-year event cold start", "relationship_to_campaign103": "no individual event component is mandatory; unavailable component pairs are omitted while both rows retain the frozen complete-library support"},
+      {"campaign": 60, "failed_support_class": "exact prior stock session plus at least 60 jointly nonzero minute returns", "relationship_to_campaign103": "the predicates are not identical and neither is a provable subset: Campaign103 has no exact 240-minute-grid or nonzero-return rule, while Campaign060 had no 98-of-130 design-support rule"},
+      {"campaign": 63, "failed_support_class": "positive leave-one-out variance at a structurally degenerate close position", "relationship_to_campaign103": "not inherited; no positionwise peer variance is required"},
+      {"campaigns": [86, 96], "failed_support_class": "at least 120 adjacent positive-range close-location pairs", "relationship_to_campaign103": "not inherited; no positive-range or adjacent-minute-pair count is used"},
+      {"campaign": 95, "failed_support_class": "prevalue semantic contradiction in fixed-bin reflection claim", "relationship_to_campaign103": "the semantic-only definition is absent from the 130 numeric inputs and is not repaired"}
+    ],
+    "passed_support_anchors": [
+      {
+        "factor": "Campaign101 and Campaign102 complete-library support",
+        "relationship": "Each single-session row uses the exact immutable 98-of-130 support with prior median/P05 coverage 0.9981238257410756/0.992066409032738. Campaign103 adds only exact calendar adjacency and the matching instrument row; it does not tune a component threshold from new values."
+      },
+      {
+        "factor": "Campaign056 exact-prior-session amount profile",
+        "relationship": "An exact-prior-session mechanism previously retained 1,329,886 of 1,331,759 quality/listing rows and passed coverage, showing that calendar adjacency alone is not the failed Campaign060 nonzero-return predicate. This is prior immutable support evidence, not Campaign103 tuning."
+      }
+    ],
+    "minimum_finite_components_each_session": 98,
+    "minimum_paired_components": 66,
+    "paired_floor_is_automatic_inclusion_exclusion_lower_bound": true,
+    "candidate_support_identical_to_known_failed_predicate": false,
+    "candidate_support_provably_narrower_than_known_failed_predicate": false,
+    "support_threshold_selected_from_campaign103_values_or_coverage_results": false,
+    "decision": "pass_support_predicate_gate_before_campaign103_values"
+  },
+  "research_boundary": {
+    "campaign103_candidate_or_paired_support_values_read": false,
+    "campaign103_comparison_values_read": false,
+    "historical_daily_price_fields_read": [],
+    "historical_forward_return_fields_read": false,
+    "provider_request_issued": false,
+    "candidate49_historical_backfill_performed": false,
+    "candidate49_ledgers_changed": false,
+    "second_prospective_candidate_created": false,
+    "current_scoring_selection_sizing_or_orders_performed": false
+  },
+  "decision": {
+    "conceptual_mechanism_passed": true,
+    "mandatory_support_predicate_passed_before_values": true,
+    "statistical_uniqueness_pending_all_130_comparators": true,
+    "predictive_value_established": false,
+    "next_action": "Freeze the exact source catalog and coverage-first no-return protocol, then implement fingerprint-bound code and synthetic tests before reading Campaign103 values."
+  }
+}

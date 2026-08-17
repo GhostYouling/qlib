@@ -1,0 +1,58 @@
+{
+  "version": 4,
+  "kind": "a_share_three_day_compact_comparator_cache_implementation_freeze",
+  "status": "frozen_before_v4_comparator_raw_auxiliary_or_cache_values_materialized",
+  "frozen_at": "2026-08-06T00:44:25+08:00",
+  "protocol": {
+    "path": "docs/a_share_three_day_compact_comparator_cache_protocol_v4_20260806.json",
+    "sha256": "19f2086ec4e19b25f69800ee750cef0dc51cc3150e29808f2d9e2585b055d533"
+  },
+  "builder": {
+    "path": "scripts/a_share_three_day_compact_comparator_cache_v4.py",
+    "sha256": "1b0cb7b8673e64417fd701f7cfbe21b1c870c66cb854cd71a44c565cd3e2d3a2"
+  },
+  "tests": {
+    "path": "tests/data_collector_tests/test_a_share_three_day_compact_comparator_cache_v4.py",
+    "sha256": "b00eddb205047ba57177171440400d08cfff32f7a53c84e82c856b93b181c427"
+  },
+  "bound_diagnosis": {
+    "path": "docs/a_share_three_day_compact_comparator_cache_v3_equivalence_diagnosis_20260806.json",
+    "sha256": "7f90fe174da2bf7f5fb6b347d6c296a8bc399d2723039617e2dde9062e2a99da"
+  },
+  "pre_freeze_test_receipts": [
+    {
+      "command": "PYTHONPATH=/Volumes/DIsk/Disk-Coding/qlib /Volumes/DIsk/Coding/anaconda3/bin/python -m pytest -q tests/data_collector_tests/test_a_share_three_day_compact_comparator_cache_v4.py",
+      "passed": 8,
+      "failed": 0
+    },
+    {
+      "command": "PYTHONPATH=/Volumes/DIsk/Disk-Coding/qlib /Volumes/DIsk/Coding/anaconda3/bin/python -m pytest -q tests/data_collector_tests/test_a_share_three_day_compact_comparator_cache_v2.py tests/data_collector_tests/test_a_share_three_day_compact_comparator_cache_v3.py tests/data_collector_tests/test_a_share_three_day_compact_comparator_cache_v4.py",
+      "passed": 20,
+      "failed": 0
+    }
+  ],
+  "frozen_semantics": {
+    "logical_numeric_comparator_count": 98,
+    "fixed_materialized_comparator_count": 96,
+    "dynamic_recipe_comparators": [
+      "quality_growth",
+      "quality_score"
+    ],
+    "raw_auxiliary_columns": [
+      "quality_raw_roe",
+      "quality_raw_profit_yoy",
+      "quality_raw_revenue_yoy"
+    ],
+    "physical_float64_column_count": 99,
+    "candidate_intersection_precedes_dynamic_session_ranking": true,
+    "campaign067_exact_97_result_object_gate_required": true,
+    "global_materialized_dynamic_quality_values_stored": false
+  },
+  "v4_cache_output_existed_before_freeze": false,
+  "v4_comparison_or_raw_auxiliary_values_read_before_freeze": false,
+  "historical_daily_price_or_forward_return_values_read_before_freeze": false,
+  "provider_request_issued_before_freeze": false,
+  "candidate49_history_signal_or_execution_backfilled_before_freeze": false,
+  "failed_v1_v2_or_v3_temporary_values_reused_before_freeze": false,
+  "current_scoring_selection_sizing_or_orders_performed_before_freeze": false
+}

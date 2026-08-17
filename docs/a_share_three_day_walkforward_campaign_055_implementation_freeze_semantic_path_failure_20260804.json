@@ -1,0 +1,70 @@
+{
+  "version": 1,
+  "kind": "a_share_three_day_walkforward_campaign055_infrastructure_failure",
+  "status": "pre_candidate_value_implementation_freeze_semantic_path_failure_preserved_repair_authorized",
+  "recorded_at": "2026-08-04T00:13:00+08:00",
+  "stage": "implementation_freeze_binding_self_check",
+  "attempt_classification": "infrastructure_only_failure",
+  "invocation": "import scripts.a_share_three_day_walkforward_campaign055_features_v2; wrapper.runner._load_implementation_freeze()",
+  "observed_exception_type": "Campaign055FeatureError",
+  "observed_exception_message": "Campaign055 implementation freeze semantics changed",
+  "cause": "The frozen base reader looked for candidate_values_read_before_freeze, comparison_values_read_before_freeze, and historical_daily_price_or_forward_returns_read_before_freeze at the record top level, while the immutable freeze stores those truthful fields under pre_freeze_execution_evidence.",
+  "authoritative_inputs": {
+    "no_return_protocol": {
+      "path": "docs/a_share_three_day_walkforward_campaign_055_no_return_preregistration.json",
+      "sha256": "f469879dd83a22a15d497d903bc81c772d5d96dae81d4ac7e32edfba1ef0732f"
+    },
+    "frozen_base_runner": {
+      "path": "scripts/a_share_three_day_walkforward_campaign055_features.py",
+      "sha256": "d695e5acd9645f4706e238c95db2ea69df397004416ea4dd9f895385be603714"
+    },
+    "implementation_freeze": {
+      "path": "docs/a_share_three_day_walkforward_campaign_055_feature_implementation_freeze_20260804.json",
+      "sha256": "ef050cb578ff06775ee43e3119488ad5fbfc39a86d3931abfec642b3d4d01f4a"
+    },
+    "failed_binding_wrapper": {
+      "path": "scripts/a_share_three_day_walkforward_campaign055_features_v2.py",
+      "sha256": "3c07d8d294846f8e3508d69e010baa8a8ea07997281ce96194dad19141be97e1"
+    },
+    "pre_value_tests": {
+      "path": "tests/data_collector_tests/test_a_share_three_day_walkforward_campaign055_features.py",
+      "sha256": "017fd0fd0d909da41d6f78536afeab98200fc44b39249973d4cb961ab51c01e2"
+    }
+  },
+  "observed_execution": {
+    "wrapper_status_completed_before_self_check": true,
+    "wrapper_status_snapshot_exists": false,
+    "wrapper_status_audit_count": 0,
+    "pre_value_factor_tests_after_failure_passed": 9,
+    "pre_value_factor_tests_after_failure_failed": 0,
+    "external_campaign055_snapshot_manifest_present": false,
+    "campaign055_experiment_artifact_count": 0,
+    "candidate_values_read": false,
+    "comparison_values_read": false,
+    "historical_daily_price_fields_read": [],
+    "historical_forward_return_fields_read": false,
+    "provider_request_issued": false
+  },
+  "authorized_repair": {
+    "scope": "Add a new wrapper that fingerprint-checks the failed wrapper, base runner, freeze, and this failure record, then validates the three booleans only at pre_freeze_execution_evidence before installing the repaired loader.",
+    "base_runner_may_change": false,
+    "implementation_freeze_may_change": false,
+    "protocol_formula_direction_bins_minimum_event_gates_comparison_order_or_trial_may_change": false,
+    "candidate_value_comparison_value_price_or_return_read_during_repair": false,
+    "same_exact_snapshot_build_after_repair_allowed": true
+  },
+  "prospective_isolation": {
+    "candidate49_signal_ledger": {
+      "path": "data/experiments/short_horizon/candidate49_future_signal_ledger.json",
+      "sha256": "5193f00d7f36da003f53cec387900da4c3d002299f5dfcfc1a95eaa199ed3a79"
+    },
+    "candidate49_execution_ledger": {
+      "path": "data/experiments/short_horizon/candidate49_future_execution_ledger.json",
+      "sha256": "d57a3e61eac969e42cafa418ccd8c0a5ee65dcf69da145bb2c096c2a02a2ea4f"
+    },
+    "candidate49_historical_backfill_performed": false,
+    "candidate49_ledgers_changed": false,
+    "second_prospective_candidate_created": false,
+    "current_scoring_selection_sizing_or_orders_performed": false
+  }
+}

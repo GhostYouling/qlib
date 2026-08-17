@@ -1,0 +1,52 @@
+{
+  "version": 1,
+  "kind": "a_share_three_day_walkforward_campaign063_no_return_audit_infrastructure_failure",
+  "status": "failed_closed_before_coverage_result_comparison_values_daily_prices_or_returns",
+  "recorded_at": "2026-08-05T07:22:00+08:00",
+  "attempt_id": "campaign063_infrastructure_004_factor_range_namespace",
+  "command": "PYTHONPATH=<repository-root>:<third-party-site-packages> python -S scripts/a_share_three_day_walkforward_campaign063_no_return_audit.py run --data-root /Volumes/DIsk/qlib-a-share-tushare-1m --experiment-root <campaign063-no-return-root> --workers 8",
+  "exit_code": 1,
+  "failure_stage": "generic_candidate_frame_validation_before_coverage_result",
+  "exception": "KeyError: 'intraday_cross_sectional_standardized_return_state_stability_236p'",
+  "root_cause": "The generic frozen factor-frame loader reads FACTOR_RANGES from its shared Campaign004 namespace, but the new Campaign063 factor's already frozen (0,1] range had not been registered in that namespace.",
+  "value_boundary": {
+    "candidate_snapshot_partitions_loaded": true,
+    "candidate_eligible_values_present": 0,
+    "candidate_values_manually_inspected_or_used_to_change_formula_direction_peer_rule_loss_transform_threshold_or_gate": false,
+    "quality_listing_coverage_result_computed": false,
+    "comparison_values_read": false,
+    "historical_daily_price_fields_read": [],
+    "historical_forward_return_fields_read": false,
+    "development_folds_opened": false,
+    "stress_2024_2025_opened": false,
+    "candidate49_historical_backfill_performed": false,
+    "candidate49_ledgers_changed": false,
+    "provider_request_issued": false
+  },
+  "immutable_inputs": {
+    "audit_runner": {
+      "path": "scripts/a_share_three_day_walkforward_campaign063_no_return_audit.py",
+      "sha256": "86e1b87fe72ff4ffc54da36a40cb573a3c0ee51b143799bdd063020a749f7f4c"
+    },
+    "audit_implementation_freeze": {
+      "path": "docs/a_share_three_day_walkforward_campaign_063_no_return_audit_implementation_freeze_20260805.json",
+      "sha256": "39eccb5ebefa40129de2496573452edc2b23a4d8cf6f9c3a1b31aaa31efd7192"
+    },
+    "snapshot_manifest_sha256": "12fc8d8bf7df432608f4cb63b7c5337f2cd46d2a029c34d8b3e60c0f8906a098",
+    "snapshot_dataset_sha256": "fd040477f3af2948976fda9a71f6d04a0bd9b9713a1b9b5a6dedf2f06f0c76df"
+  },
+  "repair_boundary": {
+    "authorized": true,
+    "only_change_allowed": "Add FACTOR_RANGES['intraday_cross_sectional_standardized_return_state_stability_236p'] = (0.0, 1.0) to the shared loader namespace if absent; fail on conflict.",
+    "factor_loader_function_or_candidate_bytes_may_change": false,
+    "coverage_formula_or_gate_may_change": false,
+    "comparison_or_return_path_may_be_added": false,
+    "audit_must_remain_single_use": true
+  },
+  "counting": {
+    "campaign063_research_attempt_increment": 1,
+    "campaign063_infrastructure_only_failure_increment": 1,
+    "campaign063_complete_factor_attempt_increment": 0,
+    "return_reading_development_trial_increment": 0
+  }
+}

@@ -1,0 +1,81 @@
+{
+  "schema_version": 1,
+  "kind": "a_share_three_day_walkforward_campaign097_concept_scouting",
+  "status": "selected_one_concept_before_campaign097_source_candidate_comparison_daily_price_or_return_values",
+  "recorded_at": "2026-08-07T05:04:31Z",
+  "purpose": "Select exactly one economically interpretable historical-only three-session mechanism after Campaign096, before reading Campaign097 minute rows, candidate values, comparator values, daily prices, or forward returns.",
+  "authoritative_state": {
+    "path": "docs/a_share_three_day_iteration_status_20260807_campaign096_verified.json",
+    "sha256": "4e7f7bb5678b5f81c133c8e5bf256c2a369a2734ac3fa2d2995f5629b83c1a56"
+  },
+  "numeric_comparator_policy": {
+    "path": "docs/a_share_three_day_walkforward_future_numeric_comparison_eligibility_policy_v41_20260807.json",
+    "sha256": "00ff7f93fcbdf09f8c75f81f1c1bc9e247d32a3088f50967316cc9f9a3bae9c5",
+    "complete_definition_count": 128,
+    "complete_definition_order_sha256": "9380287d8339113cb01fa99670c77078f9be82b7463c06c1e7debb92b1add48b",
+    "numeric_comparator_count": 125,
+    "numeric_comparator_order_sha256": "50a737e640cac8e063aab8be0b483a6d9be87d0e5ddd1e1395e625ab371a4cae"
+  },
+  "historical_walkforward_policy": {
+    "path": "docs/a_share_three_day_historical_walkforward_research_policy_20260727.json",
+    "sha256": "38426d6161b9bfed323c58caba18feca668b8c9d53e294951a8ba90c01a798bb"
+  },
+  "selected_candidate": {
+    "name": "intraday_market_range_profile_synchronization_240m",
+    "direction": "higher",
+    "economic_hypothesis": "A stock whose intraday high-low range is allocated across clock minutes in the same pattern as the contemporaneous leave-one-out market may be participating in broad, liquid information arrival rather than isolated idiosyncratic stress, and that synchronized state may persist from the next open through the third close.",
+    "formula": "For each accepted stock-day use q_i=log(high_i/low_i) on exactly 240 standard bars and normalize p_i=q_i/sum(q). On the same date, sum every complete normalized profile by clock position, subtract the candidate stock, divide by the leave-one-out peer count to obtain m_i, and return the population Pearson correlation Corr(p,m) across the 240 aligned positions.",
+    "source_projection": [
+      "datetime",
+      "symbol",
+      "provider",
+      "high",
+      "low"
+    ],
+    "source_grid": "Require the immutable raw 241-row stock-day identity, select exactly 09:31-11:30 and 13:01-15:00, exclude 09:30, and preserve all 240 fixed clock positions.",
+    "profile_support": "Require every selected high and low finite and strictly positive with low<=high; exact high=low is a valid zero range; require only a strictly positive finite sum of all 240 log ranges. No positive-range minimum, adjacent-pair minimum, bridge, imputation, epsilon, threshold, or dropped bar is allowed.",
+    "peer_support": "The benchmark contains only complete normalized profiles. Remove the candidate stock exactly, require at least 50 leave-one-out peers at every clock position, and require both the stock and leave-one-out market 240-vectors to have strictly positive population sum of squared deviations.",
+    "estimator": "Equal-clock-weight float64 population Pearson correlation, with only 1e-12 canonicalization of numerical overshoot at -1 or +1.",
+    "valid_range": {
+      "lower": -1,
+      "lower_inclusive": true,
+      "upper": 1,
+      "upper_inclusive": true
+    },
+    "availability": "Known only after the signal-session 15:00 bar and the same-session accepted peer cross-section; no later session, daily return, Candidate49 observation, or provider request enters the factor.",
+    "parameter_direction_window_transform_threshold_filter_subset_regime_fit_model_or_combination_search": false
+  },
+  "prevalue_rejected_alternatives": [
+    {
+      "design": "amount_profile_gini_hhi_or_lorenz_concentration",
+      "reason": "Campaign011 explicitly consumed unordered amount-profile breadth and rejected Gini, Herfindahl, effective-count, top-share, and other concentration transforms as direct near-synonyms."
+    },
+    {
+      "design": "own_range_entropy_spectral_entropy_or_concentration",
+      "reason": "Range participation entropy, weak-order entropy, clock center, local-peak dispersion, and morning-afternoon similarity are terminal own-stock range-profile families; changing the summary operator would be formula rescue."
+    },
+    {
+      "design": "intrabar_close_location_support_repair",
+      "reason": "Campaign086 and Campaign096 share the same failed positive-range adjacent-pair support. Imputation, bridging, a lower pair threshold, another norm, or another direction is prohibited."
+    },
+    {
+      "design": "return_autocorrelation_sign_complexity_or_amihud_ratio",
+      "reason": "Return serial dependence, sign runs, weak-order and spectral complexity, and Amihud-style return-to-amount ratios were already consumed or explicitly rejected in frozen terminal protocols."
+    }
+  ],
+  "research_boundary": {
+    "campaign097_source_rows_read": false,
+    "campaign097_candidate_values_read": false,
+    "campaign097_comparator_values_read": false,
+    "historical_daily_price_fields_read": [],
+    "historical_forward_returns_read": false,
+    "training_or_model_fitting_performed": false,
+    "stress_2024_2025_opened": false,
+    "candidate49_historical_backfill_performed": false,
+    "candidate49_ledgers_changed": false,
+    "provider_request_issued": false,
+    "prospective_candidate_created": false,
+    "current_scoring_selection_sizing_or_orders_performed": false,
+    "investment_advice": false
+  }
+}

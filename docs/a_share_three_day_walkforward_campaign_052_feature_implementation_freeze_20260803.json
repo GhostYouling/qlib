@@ -1,0 +1,53 @@
+{
+  "version": 1,
+  "kind": "a_share_three_day_walkforward_campaign052_feature_implementation_freeze",
+  "status": "frozen_before_campaign052_candidate_values",
+  "frozen_at": "2026-08-03T08:25:00Z",
+  "purpose": "Bind the exact Campaign052 implementation after protocol and synthetic formula validation but before quarterly source rows, candidate values, or comparison values are read by Campaign052.",
+  "feature_runner": {
+    "path": "scripts/a_share_three_day_walkforward_campaign052_features.py",
+    "sha256": "8a8a389f5b6f8d3cacd3d10ad6d0f2bd44eae4bf8b2e680fb22987f1944c3875"
+  },
+  "no_return_protocol": {
+    "path": "docs/a_share_three_day_walkforward_campaign_052_no_return_preregistration.json",
+    "sha256": "3cb9468f7cf113c5ada33a7d766e94ee3689811522f3550450ab0135b748ab0b"
+  },
+  "mechanism_overlap_audit": {
+    "path": "docs/a_share_three_day_walkforward_campaign_052_mechanism_overlap_audit.json",
+    "sha256": "a7e505bb65890dd90f505b4f999e028c03893ed434b18c6923c943a9086371ee"
+  },
+  "implementation_contract": {
+    "factor": "quarterly_announcement_delay_consistency_4q",
+    "direction": "higher",
+    "lookback_reports": 4,
+    "fiscal_quarter_calendar": "Q-DEC",
+    "delay_unit": "calendar_day",
+    "dispersion_estimator": "population_standard_deviation",
+    "normalization": "1/(1+sigma)",
+    "stock_day_identity_projection": [
+      "datetime",
+      "symbol",
+      "provider"
+    ],
+    "quarterly_source_projection": [
+      "instrument",
+      "report_date",
+      "announcement_date"
+    ],
+    "quarterly_value_fields_read": [],
+    "minute_price_volume_amount_fields_read": [],
+    "comparison_factor_count_if_coverage_passes": 75,
+    "synthetic_equal_delay_score": 1.0,
+    "synthetic_nonconsecutive_window_missing": true
+  },
+  "candidate_values_read_before_freeze": false,
+  "comparison_values_read_before_freeze": false,
+  "quarterly_source_rows_read_for_campaign052_before_freeze": false,
+  "historical_daily_price_fields_read_before_freeze": [],
+  "historical_forward_returns_read_before_freeze": false,
+  "candidate49_historical_return_read": false,
+  "candidate49_ledgers_changed": false,
+  "second_prospective_candidate_created": false,
+  "provider_request_issued": false,
+  "current_scoring_selection_sizing_or_orders_performed": false
+}

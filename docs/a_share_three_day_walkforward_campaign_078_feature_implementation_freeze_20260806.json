@@ -1,0 +1,71 @@
+{
+  "schema_version": 1,
+  "kind": "a_share_three_day_walkforward_campaign078_feature_implementation_freeze",
+  "status": "frozen_before_campaign078_minute_source_values",
+  "frozen_at": "2026-08-06T13:50:00+08:00",
+  "campaign_id": "a_share_three_day_walkforward_campaign_078",
+  "factor": {
+    "name": "intraday_amount_local_peak_density_238p",
+    "direction": "higher",
+    "formula": "count i=1..238 with amount_i>amount_(i-1) and amount_i>amount_(i+1), divided by 119, on the exact 240 standard continuous-session bars",
+    "strict_tie_rule": "ties are valid non-peaks",
+    "valid_range": [
+      0.0,
+      1.0
+    ],
+    "same_campaign_variants_or_rescue_count": 0
+  },
+  "protocol": {
+    "path": "docs/a_share_three_day_walkforward_campaign_078_no_return_preregistration.json",
+    "sha256": "173609bb9bf18b54fa82f160171af9f2127466d8ec37c5f8be48cecbe91a4756"
+  },
+  "mechanism_overlap_audit": {
+    "path": "docs/a_share_three_day_walkforward_campaign_078_mechanism_overlap_audit.json",
+    "sha256": "06e676dbbc11a4df08eec26431a7be277f9a068fe81f99665079caea5b254042"
+  },
+  "feature_runner": {
+    "path": "scripts/a_share_three_day_walkforward_campaign078_features.py",
+    "sha256": "ee1a6c2767870452f2c066f4cbe7f9ef8aa8b19ed9dd3901bdf864ccbde3c799"
+  },
+  "tests": {
+    "path": "tests/data_collector_tests/test_a_share_three_day_walkforward_campaign078_features.py",
+    "sha256": "11473df899dbd6a95cdf5ee7d662d49bd637341fdafe2baf57b9d547acb53bca"
+  },
+  "authoritative_state": {
+    "path": "docs/a_share_three_day_iteration_status_20260806_campaign077_verified.json",
+    "sha256": "18e4c49be1b266af326e3a0f1548eb65b126c5f38787bc119becff73b4811582"
+  },
+  "numeric_comparator_policy_v13": {
+    "path": "docs/a_share_three_day_walkforward_future_numeric_comparison_eligibility_policy_v13_20260806.json",
+    "sha256": "fa8c48949ba1d57a10003c04003018d72bb9a54030111bc2ce3fbf9e1c042643"
+  },
+  "implementation_invariants": {
+    "source_bar_count": 241,
+    "selected_bar_count": 240,
+    "interior_comparison_count": 238,
+    "strict_local_peak_maximum": 119,
+    "tie_epsilon": null,
+    "all_selected_amounts_finite_and_nonnegative": true,
+    "selected_amount_total_strictly_positive": true,
+    "candidate_output_columns": [
+      "trade_date",
+      "symbol",
+      "provider",
+      "intraday_amount_local_peak_density_238p",
+      "intraday_amount_local_peak_density_238p_eligible"
+    ],
+    "expected_partitions": 33015,
+    "expected_rows": 7724498
+  },
+  "research_boundary": {
+    "candidate_source_rows_read_before_freeze": false,
+    "candidate_values_computed_before_freeze": false,
+    "comparison_values_read_before_freeze": false,
+    "historical_daily_price_fields_read_before_freeze": [],
+    "historical_forward_returns_read_before_freeze": false,
+    "provider_request_issued_before_freeze": false,
+    "candidate49_ledgers_changed_before_freeze": false,
+    "current_scoring_selection_sizing_or_orders_performed": false
+  },
+  "authorized_next_action": "Run the frozen synthetic feature tests, then build exactly one immutable Campaign078 candidate snapshot from the bound local source; do not read comparison values until the coverage gate passes."
+}

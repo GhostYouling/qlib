@@ -1,0 +1,45 @@
+{
+  "schema_version": 1,
+  "kind": "a_share_three_day_walkforward_campaign109_development_activation_binding",
+  "status": "single_use_frozen_before_campaign109_2019_2023_daily_price_or_return_values",
+  "recorded_at": "2026-08-07T22:33:48Z",
+  "development_preregistration": {
+    "path": "docs/a_share_three_day_walkforward_campaign_109_preregistration.json",
+    "sha256": "18f46d2b4a63a0d3dab6d596760387274f099dc8731b007d942f9e84b082a89f"
+  },
+  "runner": {
+    "path": "scripts/a_share_three_day_walkforward_campaign109.py",
+    "sha256": "a3e9dabd2fd046d9e73c291e88111b77d37cac3219e4447018f63c46cb2baef5"
+  },
+  "implementation_freeze": {
+    "path": "docs/a_share_three_day_walkforward_campaign_109_development_implementation_freeze_20260808.json",
+    "sha256": "7cb2e431cdfa1d57f889d63667329a116212d34469751b3f524ea25a0c11da61"
+  },
+  "research_attempt_ledger_before_return_read": {
+    "path": "data/experiments/short_horizon/historical_walkforward/campaign_109/research_attempt_ledger_v4.json",
+    "sha256": "26b90e0b2f07f275bbd8ef987d32c405f183298aa57ee10c4c0aeb1fe87cc567",
+    "campaign_return_reading_development_trial_count": 0,
+    "cumulative_return_reading_development_trial_count": 300
+  },
+  "no_return_admission": {
+    "path": "data/experiments/short_horizon/historical_walkforward/campaign_109/no_return/20260807T222738Z_campaign109_no_return_audit.json",
+    "sha256": "50f7586d006464c055eab4e58c95a30711fb0680c3fcb611e9e3db7ed0cd183d",
+    "coverage_gate_passed": true,
+    "numeric_comparisons_passed": 132,
+    "admissible_factor_count": 1
+  },
+  "candidate_snapshot": {
+    "path": "/Volumes/DIsk/qlib-a-share-tushare-1m/derived/a_share/rich/tushare/minute_walkforward_campaign109_feature_library/tushare_stk_mins_1m_2019_2025_ea0cbb8f_walkforward_campaign109_feature_library_v1/snapshot_manifest.json",
+    "sha256": "b212eac0921bbca2c3a84c6eceb7f6741939c52ccb96a21e3897d1533c8b6aba",
+    "dataset_sha256": "f222c80e80acb9872cc7e29a0fc89ab37e51bc1ee02f40f19f683c3757fcdb90"
+  },
+  "trial_count": 1,
+  "trial_id": "wf109_intraday_intrabar_body_magnitude_serial_persistence_238p_single_higher",
+  "historical_daily_price_or_forward_return_values_read_before_activation": false,
+  "stress_2024_2025_opened_before_activation": false,
+  "candidate49_ledgers_changed_before_activation": false,
+  "provider_request_issued_before_activation": false,
+  "current_scoring_selection_sizing_or_orders_performed_before_activation": false,
+  "single_use": true,
+  "next_action": "Run exactly one 2019-2023 development trial. Do not open 2024-2025 unless the frozen survivor record selects this trial."
+}

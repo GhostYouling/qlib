@@ -1,0 +1,26 @@
+{
+  "schema_version": 1,
+  "kind": "a_share_three_day_walkforward_campaign121_infrastructure_failure",
+  "status": "recorded_after_tests_and_black_before_any_source_or_research_value",
+  "recorded_at": "2026-08-14T01:40:00+08:00",
+  "attempt_id": "campaign121_infrastructure_004",
+  "phase": "feature_builder_static_lint_validation",
+  "passed_before_failure": "10 tests and Black",
+  "failure": {
+    "exit_code": 1,
+    "class": "ruff_unused_import",
+    "rule": "F401",
+    "affected_path": "scripts/a_share_three_day_walkforward_campaign121_features.py",
+    "symbol": "json"
+  },
+  "safe_recovery": "Remove only the unused import and rerun the identical tests and static checks before implementation freeze.",
+  "research_boundary": {
+    "source_rows_read": false,
+    "candidate_values_computed_or_read": false,
+    "comparator_values_read": false,
+    "historical_daily_price_or_forward_return_values_read": false,
+    "provider_request_issued": false,
+    "candidate49_ledgers_changed": false,
+    "scientific_result_changed": false
+  }
+}

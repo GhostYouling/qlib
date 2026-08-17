@@ -1,0 +1,31 @@
+{
+  "schema_version": 1,
+  "kind": "a_share_three_day_walkforward_campaign108_infrastructure_failure",
+  "status": "recorded_non_scientific_terminal_test_zip_length_failure",
+  "recorded_at": "2026-08-07T21:33:31Z",
+  "phase": "terminal_append_only_ledger_test",
+  "failed_test": {
+    "path": "tests/data_collector_tests/test_a_share_three_day_walkforward_campaign108_terminal.py",
+    "sha256": "72affc1f48fa8a780d39d452a1642bbe55136f2ee23a7d50fd3b7dd0186b3a3f",
+    "result": "1 failed, 4 passed"
+  },
+  "failure": {
+    "exception": "ValueError: zip() argument 2 is shorter than argument 1",
+    "root_cause": "The test zipped all seven ledger paths against the six successor ledger records with strict=True instead of zipping LEDGERS[:-1] against the six successors.",
+    "ledger_content_read": true,
+    "research_values_read": false,
+    "scientific_result_changed": false
+  },
+  "correction": {
+    "only_change": "Use LEDGERS[:-1] for the predecessor side of the six-link continuity check.",
+    "terminal_scientific_artifacts_rewritten": false,
+    "append_accounting_correction_required": true
+  },
+  "research_boundary": {
+    "historical_daily_price_or_forward_return_values_read": false,
+    "provider_request_issued": false,
+    "candidate49_ledgers_changed": false,
+    "current_scoring_selection_sizing_or_orders_performed": false
+  },
+  "next_action": "Append one infrastructure failure, preserve all prior terminal nodes, and publish corrected accounting bindings after the fixed test passes."
+}

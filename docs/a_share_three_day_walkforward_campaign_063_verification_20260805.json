@@ -1,0 +1,98 @@
+{
+  "version": 1,
+  "kind": "a_share_three_day_walkforward_campaign063_verification",
+  "status": "terminal_structural_zero_coverage_before_comparisons_or_returns_verified",
+  "recorded_at": "2026-08-05T07:05:00+08:00",
+  "bindings": {
+    "current_research_record": {
+      "path": "docs/a_share_three_day_walkforward_campaign_063_research_record_v4.json",
+      "sha256": "1ae2c0aad4316331feccdccca57eb5e136908ab17a6df620a3fa0e8d1bfffc4f"
+    },
+    "current_terminal_completion_freeze": {
+      "path": "docs/a_share_three_day_walkforward_campaign_063_terminal_completion_freeze_v4_20260805.json",
+      "sha256": "1c1fcad6ee82da0bf2676bcd4854489cffb06bde3ae4231855ea05a47d9c8100"
+    },
+    "current_research_attempt_ledger": {
+      "path": "data/experiments/short_horizon/historical_walkforward/campaign_063/research_attempt_ledger_v8.json",
+      "sha256": "3ac26e5a2c8eefa51c6ec303c04500113ed6d454ceda6218626d3bfe36431d48"
+    },
+    "current_terminal_tests": {
+      "path": "tests/data_collector_tests/test_a_share_three_day_walkforward_campaign063_terminal_v3.py",
+      "sha256": "e44c02685822e1170a7ccec5b8d6426fecb0a19b6830263cb3ab01827235e080"
+    },
+    "campaign_report": {
+      "path": "docs/a_share_three_day_walkforward_campaign_063_report.md",
+      "sha256": "7231e0d31766b4729cd633efa1fde3bfec325305bc75f74c56005c0ce2610e08"
+    },
+    "canonical_report": {
+      "path": "data/experiments/short_horizon/three_day_research_report.md",
+      "sha256": "dbd2f376e1f1cfc00626b42df9e0fd887a31ad54a0a75028c5799297df0b399d"
+    },
+    "canonical_report_generator": {
+      "path": "scripts/a_share_short_horizon_factor_research.py",
+      "sha256": "846e328d1c51a545859b972ab1bb68c40f8fbc16ff22b00c8ed09e1099c21324"
+    },
+    "pipeline_document": {
+      "path": "docs/a_share_data_pipeline.md",
+      "sha256": "4b85c8a5966036f70262cfb98dd2af3fddc11f396585b8b30a2bdcce219ef95d"
+    },
+    "data_management_skill": {
+      "path": "/Users/niyufei/.codex/skills/manage-qlib-a-share-data/SKILL.md",
+      "sha256": "3784b1d75118a3e97a503461fcd3bb049989674ab801e4b35da3970b14ebfc65"
+    },
+    "candidate49_signal_ledger": {
+      "path": "data/experiments/short_horizon/candidate49_future_signal_ledger.json",
+      "sha256": "5193f00d7f36da003f53cec387900da4c3d002299f5dfcfc1a95eaa199ed3a79"
+    },
+    "candidate49_execution_ledger": {
+      "path": "data/experiments/short_horizon/candidate49_future_execution_ledger.json",
+      "sha256": "d57a3e61eac969e42cafa418ccd8c0a5ee65dcf69da145bb2c096c2a02a2ea4f"
+    }
+  },
+  "semantic_verification": {
+    "factor": "intraday_cross_sectional_standardized_return_state_stability_236p",
+    "factor_terminal": true,
+    "snapshot_partition_count": 33015,
+    "snapshot_row_count": 7724498,
+    "snapshot_eligible_row_count": 0,
+    "position236_zero_variance_dates": 1699,
+    "benchmark_trade_dates": 1699,
+    "quality_listing_eligible_rows": 1331759,
+    "median_coverage": 0.0,
+    "p05_coverage": 0.0,
+    "comparison_values_read": false,
+    "historical_daily_prices_or_forward_returns_read": false,
+    "development_trial_count": 0,
+    "stress_2024_2025_opened": false,
+    "campaign063_infrastructure_only_failure_count": 7,
+    "campaign063_complete_factor_attempt_count": 1,
+    "campaign063_distinct_attempt_count": 8,
+    "campaign063_ledger_entry_count": 8,
+    "cumulative_historical_research_attempt_count": 369,
+    "cumulative_return_reading_development_trial_count": 271
+  },
+  "tests": {
+    "pre_terminal_feature_and_repair_tests_passed_before_audit": 23,
+    "first_terminal_combined_suite_passed": 27,
+    "first_terminal_combined_suite_failed": 2,
+    "deselect_prefix_suite_passed": 33,
+    "deselect_prefix_suite_failed": 2,
+    "current_campaign063_suite_passed": 31,
+    "current_campaign063_suite_failed": 0,
+    "historical_state_nodes_deselected": 2,
+    "current_exact_node_deselects_matched": true,
+    "report_generator_idempotence_passed": true
+  },
+  "prospective_isolation": {
+    "candidate49_signal_entry_count": 0,
+    "candidate49_execution_entry_count": 0,
+    "candidate49_historical_backfill_performed": false,
+    "second_prospective_candidate_created": false,
+    "provider_request_issued_by_campaign063": false,
+    "current_scoring_selection_sizing_or_orders_performed": false
+  },
+  "all_current_campaign063_binding_checks_passed": true,
+  "semantic_gate_and_isolation_checks_passed": true,
+  "report_generator_idempotence_passed": true,
+  "data_limitation": "The eligible universe derives from a current listing snapshot and can contain survivorship bias. This structural no-return result is historical research evidence, not pristine out-of-sample evidence and not investment advice."
+}

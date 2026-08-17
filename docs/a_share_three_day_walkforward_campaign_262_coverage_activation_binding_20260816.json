@@ -1,0 +1,64 @@
+{
+  "schema_version": 1,
+  "kind": "a_share_three_day_walkforward_campaign262_coverage_activation_binding",
+  "status": "frozen_after_verified_snapshot_before_candidate_coverage_values",
+  "recorded_at": "2026-08-16T18:12:00+08:00",
+  "timestamp_semantics": "monotonic_logical_append_time_not_host_wall_clock_measurement",
+  "implementation_freeze": {
+    "path": "docs/a_share_three_day_walkforward_campaign_262_implementation_freeze_v3_20260816.json",
+    "sha256": "9683e39b02f3517983abd363216a476e7544c08b2462b2b2280e022a8189ac2c"
+  },
+  "snapshot_verification": {
+    "path": "docs/a_share_three_day_walkforward_campaign_262_feature_snapshot_verification_result_20260816.json",
+    "sha256": "feda207c0a265f9852ec42a91456361419d9c57337302c779c820efa7ec577da"
+  },
+  "infrastructure_failures": {
+    "path": "docs/a_share_three_day_walkforward_campaign_262_infrastructure_failures_v6_20260816.json",
+    "sha256": "b06fea5f2e0929427cff56db8338b48b988a67d8265bf9b32c13dd5c054c8e72",
+    "effective_failure_count": 9
+  },
+  "candidate_snapshot": {
+    "path": "/Volumes/DIsk/qlib-a-share-tushare-1m/derived/a_share/rich/tushare/minute_walkforward_campaign262_feature_library/tushare_stk_mins_1m_2019_2025_ea0cbb8f_walkforward_campaign262_feature_library_v1/snapshot_manifest.json",
+    "sha256": "9bae791bd718231d6341b6f3a7205b3eae25e96aec7c2db0b2b22209e06d9d32",
+    "dataset_sha256": "704da679bba6f247bfaba243df8cc4ecc3b7ac195565fe9ef7e0ff838c7e710b",
+    "partitions": 33015,
+    "rows": 7724498,
+    "eligible_rows": 7724498
+  },
+  "coverage_runner": {
+    "path": "scripts/a_share_three_day_walkforward_campaign262_no_return_audit.py",
+    "sha256": "6087212a13b0b77b0583835c38d11f00758efe99c64bca5e7777094d73ce9c60",
+    "test_path": "tests/data_collector_tests/test_a_share_three_day_walkforward_campaign262_no_return_audit.py",
+    "test_sha256": "03cfd20631628fc5e916c114a544809b78bd065136e85fbd565b7b6b63403f1a",
+    "synthetic_test_exit_code": 0,
+    "synthetic_tests_passed": 4
+  },
+  "coverage_gate": {
+    "holding_period_sessions": 3,
+    "minimum_median_daily_coverage": 0.95,
+    "minimum_p05_daily_coverage": 0.9,
+    "minimum_p05_eligible_names": 50,
+    "minimum_non_overlapping_three_signal_session_cohorts": 200,
+    "minimum_observed_cohort_years": 5,
+    "minimum_nonconstant_cross_sectional_sessions": 200,
+    "cross_sectional_distinctness": "exact finite float values without rounding tolerance or binning"
+  },
+  "numeric_comparator_count": 142,
+  "numeric_comparator_order_sha256": "5d1b35fb5a0d8ac9293008db9963c4a60a94dc940c237c3ed259e5ce44f14aaf",
+  "output_path": "data/experiments/short_horizon/historical_walkforward/campaign_262/coverage/campaign262_coverage_audit.json",
+  "single_use": true,
+  "research_boundary": {
+    "candidate_snapshot_values_read_for_verification_before_activation": true,
+    "candidate_snapshot_values_read_before_activation": false,
+    "meaning_of_previous_field": "No candidate aggregate coverage or cross-sectional statistic was read before this activation; byte/frame verification necessarily read snapshot values.",
+    "comparator_values_read_before_activation": false,
+    "historical_daily_price_or_forward_return_values_read": false,
+    "stress_2024_2025_opened_for_returns": false,
+    "provider_request_issued": false,
+    "credential_loaded": false,
+    "candidate49_historical_backfill_performed": false,
+    "candidate49_ledgers_changed": false,
+    "current_scoring_selection_sizing_positions_or_orders_performed": false,
+    "investment_advice": false
+  }
+}

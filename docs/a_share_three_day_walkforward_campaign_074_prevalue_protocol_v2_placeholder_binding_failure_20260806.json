@@ -1,0 +1,22 @@
+{
+  "version": 1,
+  "kind": "a_share_three_day_walkforward_campaign074_infrastructure_failure",
+  "status": "append_only_recorded_prevalue_failure",
+  "recorded_at": "2026-08-06T07:51:00+08:00",
+  "stage": "prevalue_protocol_v2_publication_review",
+  "result": "protocol_v2_contained_unresolved_failure_record_sha256_placeholder",
+  "invalid_protocol": {
+    "path": "docs/a_share_three_day_walkforward_campaign_074_no_return_preregistration_v2.json",
+    "sha256": "c8efaa25408e26fc6ebd8f48d0d8244cf86b5fa19430af4dad8dad53cf0b2fe4",
+    "may_be_used": false
+  },
+  "invalid_literal": "TO_BE_BOUND_AFTER_PUBLICATION",
+  "recovery": "Preserve v2 and append a compact v3 repair overlay that binds immutable v1 plus the exact missing Campaign072 record and snapshot-binding evidence.",
+  "candidate_source_rows_read": false,
+  "candidate_values_read": false,
+  "comparison_values_read": false,
+  "historical_daily_price_fields_read": [],
+  "historical_forward_returns_read": false,
+  "provider_request_issued": false,
+  "candidate49_ledgers_changed": false
+}

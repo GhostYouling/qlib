@@ -1,0 +1,160 @@
+{
+  "schema_version": 1,
+  "kind": "a_share_three_day_walkforward_campaign152_finite_prevalue_concept_scouting",
+  "status": "one_genuinely_new_absolute_liquidity_magnitude_mechanism_selected_before_values",
+  "recorded_at": "2026-08-15T01:50:00+08:00",
+  "purpose": "Review a finite six-concept catalog against the frozen 156-definition and 142-comparator library, select at most one contract-permitted historical mechanism, and stop before every minute-source, candidate, comparator, daily-price or forward-return value.",
+  "authoritative_inputs": {
+    "campaign151_terminal_state_v3": {
+      "path": "docs/a_share_three_day_iteration_status_20260815_campaign151_terminal_v3.json",
+      "sha256": "5a7357e87eb87a3eb76f987e01cab6f816a5fedfd84ebc169933060cdcf863d9"
+    },
+    "numeric_policy_v208": {
+      "path": "docs/a_share_three_day_walkforward_future_numeric_comparison_eligibility_policy_v208_20260815.json",
+      "sha256": "b904387571a5f63636b329050c1ad26d54b21cf4dc9a7dbc79dd548eadcd9ce8",
+      "complete_definition_count": 156,
+      "complete_definition_order_sha256": "928e7eff198f44fa3112d7e8ff94571c1ad18b85a1ee50a38f3896baf555847c",
+      "numeric_comparator_count": 142,
+      "numeric_comparator_order_sha256": "5d1b35fb5a0d8ac9293008db9963c4a60a94dc940c237c3ed259e5ce44f14aaf"
+    },
+    "campaign151_effective_ledger_v5": {
+      "path": "data/experiments/short_horizon/historical_walkforward/campaign_151/research_attempt_ledger_v5.json",
+      "sha256": "ff2c470ba310f7e4a1705334abef51a7de8cc637d8a31688e9ad52a2b8b5a575",
+      "chain_tip_sha256": "e6d46cb7f483188862dbcb6b8ac44e53dbf63544d87bb9171a2996fff0ee2328",
+      "cumulative_historical_research_attempt_count": 1318,
+      "cumulative_return_reading_development_trial_count": 314
+    },
+    "historical_walkforward_policy": {
+      "path": "docs/a_share_three_day_historical_walkforward_research_policy_20260727.json",
+      "sha256": "38426d6161b9bfed323c58caba18feca668b8c9d53e294951a8ba90c01a798bb"
+    },
+    "campaign151_concept_scouting": {
+      "path": "docs/a_share_three_day_walkforward_campaign_151_concept_scouting_20260815.json",
+      "sha256": "35a6cef7a56f5b1d629082bb5cd1565217acc66271d4311689b70d23903f6520"
+    },
+    "campaign151_mechanism_overlap_audit": {
+      "path": "docs/a_share_three_day_walkforward_campaign_151_mechanism_overlap_audit_20260815.json",
+      "sha256": "f8b32dd0d22cf01b35ec81c18011573b100bc449f91c77abf2a359d7f7e11455"
+    }
+  },
+  "complete_definition_inventory_reconstruction": {
+    "reconstructor": "Campaign146 complete definitions plus the immutable terminal Campaign151 definition",
+    "definition_count": 156,
+    "definition_order_sha256": "928e7eff198f44fa3112d7e8ff94571c1ad18b85a1ee50a38f3896baf555847c",
+    "numeric_comparator_count": 142,
+    "numeric_comparator_order_sha256": "5d1b35fb5a0d8ac9293008db9963c4a60a94dc940c237c3ed259e5ce44f14aaf",
+    "historical_factor_values_read_for_reconstruction": false
+  },
+  "finite_prevalue_concept_catalog": [
+    {
+      "catalog_id": "c152_01",
+      "name": "intraday_session_total_amount_magnitude_240m",
+      "hypothetical_formula": "For the exact 240 continuous-auction bars, require finite nonnegative raw CNY amount and a strictly positive sum S; return log1p(S).",
+      "direction": "higher",
+      "parameters": "exact 240-bar grid, raw CNY unit, natural log1p transform and no cross-sectional or time-series normalization",
+      "filters": ["accepted_240_bar_session_only", "strictly_positive_session_total_amount"],
+      "subsets": [],
+      "combinations": [],
+      "models": [],
+      "prevalue_decision": "selected_for_exact_mechanism_overlap_audit_and_single_formula_freeze",
+      "reason": "The complete library contains activity support, turnover rate and many normalized amount timing, shape and coupling statistics, but no absolute session CNY-liquidity magnitude. log1p is strictly increasing and therefore only provides a finite stable serialization of total amount; it creates no threshold, fit or learned parameter."
+    },
+    {
+      "catalog_id": "c152_02",
+      "name": "intraday_session_market_amount_share_240m",
+      "hypothetical_formula": "Divide each stock's session total amount by the same-date sum across eligible stocks.",
+      "direction": "higher",
+      "parameters": "proposed same-date market denominator",
+      "filters": ["accepted_240_bar_session_only"],
+      "subsets": [],
+      "combinations": [],
+      "models": [],
+      "prevalue_decision": "rejected_as_exact_same_date_rank_equivalent_normalization",
+      "reason": "For a fixed signal date the positive market denominator is common to every stock, so cross-sectional ordering is exactly the selected total-amount ordering while adding a peer-support gate."
+    },
+    {
+      "catalog_id": "c152_03",
+      "name": "intraday_positive_bar_mean_amount_240m",
+      "hypothetical_formula": "Divide session total amount by the count of strictly positive amount bars.",
+      "direction": "higher",
+      "parameters": "proposed positive-bar support normalization",
+      "filters": ["accepted_240_bar_session_only"],
+      "subsets": [],
+      "combinations": ["session_total_amount", "active_trading_bar_share"],
+      "models": [],
+      "prevalue_decision": "rejected_as_selected_magnitude_and_terminal_activity_support_combination",
+      "reason": "The denominator is the already terminal active-bar support state, so the proposal is a post-exposure combination rather than an independent observation."
+    },
+    {
+      "catalog_id": "c152_04",
+      "name": "intraday_maximum_bar_amount_magnitude_240m",
+      "hypothetical_formula": "Return log1p of the largest amount among the exact 240 bars.",
+      "direction": "higher",
+      "parameters": "proposed single maximum estimator",
+      "filters": ["accepted_240_bar_session_only"],
+      "subsets": [],
+      "combinations": [],
+      "models": [],
+      "prevalue_decision": "rejected_as_tail_estimator_variant_of_selected_magnitude_and_terminal_peak_family",
+      "reason": "It replaces full-session liquidity magnitude with one exposed extreme and reopens the terminal peak-magnitude/peak-timing family through an alternate estimator."
+    },
+    {
+      "catalog_id": "c152_05",
+      "name": "intraday_session_total_share_volume_magnitude_240m",
+      "hypothetical_formula": "Return log1p of total raw provider share volume over the exact 240 bars.",
+      "direction": "higher",
+      "parameters": "proposed provider volume denomination",
+      "filters": ["accepted_240_bar_session_only"],
+      "subsets": [],
+      "combinations": ["session_amount_magnitude", "transaction_price_level"],
+      "models": [],
+      "prevalue_decision": "rejected_as_denomination_sensitive_amount_price_recombination",
+      "reason": "Raw share volume changes with lot and corporate-action denomination and is approximately monetary amount divided by the already exposed transaction-price/affordability state; it is not a cleaner independent liquidity channel."
+    },
+    {
+      "catalog_id": "c152_06",
+      "name": "intraday_session_total_amount_growth_1s",
+      "hypothetical_formula": "Compare current total amount with the immediately previous accepted session's total amount.",
+      "direction": "higher",
+      "parameters": "proposed prior-session ratio or log difference",
+      "filters": ["accepted_240_bar_session_only", "immediately_previous_accepted_session_required"],
+      "subsets": [],
+      "combinations": [],
+      "models": [],
+      "prevalue_decision": "rejected_as_selected_magnitude_family_window_and_change_operator_variant",
+      "reason": "Once absolute total amount is selected, choosing ratio versus difference and one versus multiple prior sessions is an alternate temporal parameterization of the same liquidity-magnitude state and is frozen out before values."
+    }
+  ],
+  "selection": {
+    "concepts_reviewed": 6,
+    "selected_candidate_count": 1,
+    "selected_candidate": "intraday_session_total_amount_magnitude_240m",
+    "genuinely_new_contract_permitted_mechanism_found": true,
+    "reason": "This is the first complete-library definition whose raw information state is absolute full-session CNY transaction-amount magnitude rather than activity support, a normalized intraday distribution, a price/return coupling, turnover normalization or a peer-relative clock statistic."
+  },
+  "selected_candidate": {
+    "name": "intraday_session_total_amount_magnitude_240m",
+    "direction": "higher",
+    "economic_hypothesis": "Greater full-session monetary trading capacity and attention may reduce next-open execution friction and sustain short-lived demand through the third close.",
+    "source_projection": ["datetime", "symbol", "provider", "amount"],
+    "provider_request_required": false,
+    "historical_candidate_created": false,
+    "prospective_candidate_created": false
+  },
+  "research_boundary": {
+    "source_contract_schema_formula_manifest_and_terminal_metadata_read": true,
+    "source_rows_or_column_values_read": false,
+    "campaign152_candidate_values_computed_or_read": false,
+    "campaign152_comparator_values_read": false,
+    "historical_daily_price_or_forward_return_values_read": false,
+    "stress_2024_2025_opened": false,
+    "provider_request_issued": false,
+    "provider_credential_value_or_digest_read": false,
+    "candidate49_historical_backfill_performed": false,
+    "candidate49_ledgers_changed": false,
+    "second_prospective_candidate_created": false,
+    "current_scoring_selection_sizing_positions_or_orders_performed": false,
+    "investment_advice": false,
+    "inherited_current_listing_survivorship_limitation_remains": true
+  }
+}

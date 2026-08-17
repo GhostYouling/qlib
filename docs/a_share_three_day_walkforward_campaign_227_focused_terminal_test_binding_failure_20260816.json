@@ -1,0 +1,20 @@
+{
+  "schema_version": 1,
+  "kind": "a_share_three_day_walkforward_campaign227_infrastructure_failure",
+  "recorded_at": "2026-08-16T03:33:00+08:00",
+  "timestamp_semantics": "monotonic_logical_append_time_not_host_wall_clock_measurement",
+  "status": "failed_historical_policy_binding_character_mismatch_one_pass_one_fail",
+  "phase": "campaign227_focused_terminal_test_v1",
+  "command_scope": "focused two-test Campaign227 terminal validation",
+  "failure": "One test passed and one failed because the frozen Campaign227 source-frontier record copied one hexadecimal character incorrectly in the historical walk-forward policy SHA-256 binding.",
+  "recovery": "The source frontier remains immutable. Independent successful reads identified the single index-19 mismatch, and an additive binding-correction record supplies the actual historical-policy hash without changing any route, decision, gate or scientific conclusion.",
+  "research_boundary": {
+    "failed_test_output_used_as_validation_or_scientific_evidence": false,
+    "frozen_source_frontier_rewritten": false,
+    "candidate_or_comparator_value_read": false,
+    "daily_price_or_forward_return_read": false,
+    "provider_or_web_request_issued": false,
+    "provider_credential_presence_value_or_digest_read": false,
+    "candidate49_plan_or_run_executed": false
+  }
+}

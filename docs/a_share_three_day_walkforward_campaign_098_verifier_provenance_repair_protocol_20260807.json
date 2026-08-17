@@ -1,0 +1,40 @@
+{
+  "schema_version": 1,
+  "kind": "a_share_three_day_walkforward_campaign098_verifier_provenance_repair_protocol",
+  "status": "frozen_after_second_verifier_failure_before_v3_code_change_or_successful_verification",
+  "recorded_at": "2026-08-07T08:18:00Z",
+  "implementation_freeze_v2": {
+    "path": "docs/a_share_three_day_walkforward_campaign_098_feature_implementation_freeze_v2_20260807.json",
+    "sha256": "3652c0f1cdf5b60f9fb25dc421a1fc5ea2e3369d64d2030885502ab8a19fdb41"
+  },
+  "first_repair_protocol": {
+    "path": "docs/a_share_three_day_walkforward_campaign_098_verifier_namespace_repair_protocol_20260807.json",
+    "sha256": "5f66fb9d13a0f11541c4eec76110f2324d45dab060a0bbd44f9f7ee4ff196fde"
+  },
+  "second_failure_record_as_corrected": {
+    "path": "docs/a_share_three_day_walkforward_campaign_098_provenance_failure_binding_correction_20260807.json",
+    "sha256": "5f3020667976c58fde4d54da2f5a1b190f772c9ca1d2aa394a3eabb145b4429e"
+  },
+  "immutable_snapshot": {
+    "path": "/Volumes/DIsk/qlib-a-share-tushare-1m/derived/a_share/rich/tushare/minute_walkforward_campaign098_feature_library/tushare_stk_mins_1m_2019_2025_ea0cbb8f_walkforward_campaign098_feature_library_v1/snapshot_manifest.json",
+    "sha256": "371429a81292a91ef2bfa1292f467c81bf73e176fbfbc9888084f74eaaac1dc5"
+  },
+  "frozen_publication_provenance": {
+    "feature_runner_sha256": "c37124971238368ca233b38e9b3532fb52cf8e613e70d490afc15478e5107355",
+    "implementation_freeze_sha256": "b232128e4c30e011e68ee47cd29c46f19a685cb2f51815f28427dfaf3996143e"
+  },
+  "exact_code_changes_authorized": [
+    "Point DEFAULT_IMPLEMENTATION_FREEZE to the additive v3 verifier freeze.",
+    "Add immutable publication runner and v1 implementation-freeze hash constants.",
+    "Require the snapshot manifest's feature_runner and implementation_freeze hashes to equal those immutable publication constants instead of the current verifier files.",
+    "Add one no-value regression that checks the snapshot's two provenance fields against the frozen constants."
+  ],
+  "all_other_code_changes_authorized": false,
+  "snapshot_rebuild_rewrite_or_value_recalculation_allowed": false,
+  "coverage_or_capacity_metrics_computed_before_protocol": false,
+  "comparator_values_read_before_protocol": false,
+  "historical_daily_price_or_forward_return_values_read_before_protocol": false,
+  "candidate49_ledgers_changed": false,
+  "provider_request_issued": false,
+  "formula_direction_support_window_universe_cost_gate_or_search_space_changed": false
+}

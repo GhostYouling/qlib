@@ -1,0 +1,103 @@
+{
+  "version": 1,
+  "kind": "a_share_three_day_walkforward_campaign064_feature_implementation_freeze",
+  "status": "frozen_before_campaign064_source_values",
+  "recorded_at": "2026-08-05T07:36:00+08:00",
+  "purpose": "Bind the sole Campaign064 high/low feature implementation, exact-column empty-partition behavior, and focused synthetic tests before any raw minute partition, candidate value, comparison value, daily price, or forward return is read.",
+  "feature_runner": {
+    "path": "/Volumes/DIsk/Disk-Coding/qlib/scripts/a_share_three_day_walkforward_campaign064_features.py",
+    "sha256": "774f47073de3520a1b7fd818e5b8e16ac145f406c86d999368d35ec90b8aa21d"
+  },
+  "feature_tests": {
+    "path": "tests/data_collector_tests/test_a_share_three_day_walkforward_campaign064_features.py",
+    "sha256": "48884ee480a97937ab1f9119741ec772392ff883fb737155226577925c193d1f",
+    "focused_tests_passed": 8
+  },
+  "no_return_protocol": {
+    "path": "docs/a_share_three_day_walkforward_campaign_064_no_return_preregistration.json",
+    "sha256": "441cbeef589593c2ef0ae3e58325f5ab0acb506cc54eaa040c79f26c8ca6a887",
+    "binding_count": 16,
+    "bindings_passed": 16
+  },
+  "mechanism_overlap_audit": {
+    "path": "docs/a_share_three_day_walkforward_campaign_064_mechanism_overlap_audit.json",
+    "sha256": "422dd1a23708c069ff55b14105032e5fbf1ac2ed77cbd6d2439be896ef11cbae"
+  },
+  "research_attempt_ledger": {
+    "path": "data/experiments/short_horizon/historical_walkforward/campaign_064/research_attempt_ledger_v1.json",
+    "sha256": "8f4e446f4a51d32f3468dd46738d5980b17b55cbc11f1ec71b456179b8491053",
+    "attempt_count": 1,
+    "infrastructure_failure_count": 1,
+    "complete_factor_attempt_count": 0
+  },
+  "base_partition_engine": {
+    "path": "scripts/a_share_three_day_walkforward_campaign057_features.py",
+    "sha256": "3706ac11c551dd02c8d6d8cf30c95a6f076d6a6e6c5dbba4beb07dde10aca66a",
+    "use": "immutable partition/checkpoint/hash/atomic-publication engine only; Campaign064 overrides protocol, source projection, formula, zero-lookback semantics, output, and manifest validation"
+  },
+  "frozen_implementation": {
+    "factor": "intraday_range_weak_order_entropy_236t",
+    "direction": "higher",
+    "candidate_count": 1,
+    "development_trial_count_if_admitted": 1,
+    "comparison_factor_count": 95,
+    "source_projection": [
+      "datetime",
+      "symbol",
+      "provider",
+      "high",
+      "low"
+    ],
+    "forbidden_source_fields": [
+      "open",
+      "close",
+      "volume",
+      "amount"
+    ],
+    "selected_bars": 240,
+    "range_transform": "ln(high/low)",
+    "within_half_overlapping_triples": 236,
+    "weak_order_state_count": 13,
+    "comparison_tolerance": 0.0,
+    "exact_ties_retained": true,
+    "entropy": "natural_log_Shannon_divided_by_ln13",
+    "valid_range": "[0,1]",
+    "no_lunch_cross_session_or_prior_session_input": true,
+    "no_fill_jitter_tolerance_drop_clip_winsorize_threshold_filter_fit_or_combination": true
+  },
+  "empty_partition_rule": {
+    "known_manifest_declared_zero_row_partitions": 6,
+    "accepted_only_when_raw_frame_has_exact_frozen_columns_and_zero_rows": true,
+    "accepted_only_when_joint_base_frame_has_exact_frozen_columns_and_zero_rows": true,
+    "nonempty_partition_semantics_delegated_unchanged": true,
+    "empty_raw_with_nonempty_joint_base_is_fatal": true,
+    "reason": "The immutable raw and joint-clean manifests already declare six zero-row partitions. This infrastructure behavior is frozen before source values and cannot admit a partial nonempty partition."
+  },
+  "synthetic_acceptance": {
+    "tests_passed": 8,
+    "constant_range_exact_ties_score_zero": true,
+    "strictly_increasing_range_state_score_zero": true,
+    "morning_and_afternoon_are_separate": true,
+    "all_13_transitive_weak_order_codes_frozen": true,
+    "nonfinite_nonpositive_low_misordered_and_wrong_shape_inputs_fail_closed": true,
+    "exact_95_factor_comparison_order_reconstructed": true,
+    "high_low_only_241_to_240_grid_partition_path_verified": true,
+    "exact_column_empty_partition_path_verified": true
+  },
+  "source_partition_values_read_before_freeze": false,
+  "candidate_values_read_before_freeze": false,
+  "comparison_values_read_before_freeze": false,
+  "historical_daily_price_fields_read_before_freeze": [],
+  "historical_forward_return_fields_read_before_freeze": false,
+  "provider_request_issued_before_freeze": false,
+  "candidate49_historical_return_signal_execution_or_milestone_backfill_performed": false,
+  "candidate49_ledgers_changed": false,
+  "second_prospective_candidate_created": false,
+  "current_scoring_selection_sizing_or_orders_performed": false,
+  "decision": {
+    "feature_snapshot_build_allowed_after_freeze_and_binding_validation_exit_zero": true,
+    "formula_direction_grid_tuple_alphabet_tie_entropy_or_missing_rule_change_allowed": false,
+    "candidate49_remains_only_active_prospective_candidate": true,
+    "candidate50_activation_allowed": false
+  }
+}

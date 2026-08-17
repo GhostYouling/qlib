@@ -1,0 +1,21 @@
+{
+  "schema_version": 1,
+  "kind": "a_share_three_day_walkforward_campaign226_infrastructure_failure",
+  "recorded_at": "2026-08-16T03:07:00+08:00",
+  "timestamp_semantics": "monotonic_logical_append_time_not_host_wall_clock_measurement",
+  "status": "failed_overbroad_glob_638_files_before_pytest_start",
+  "phase": "campaign145_226_test_file_selection",
+  "command_scope": "construct the frozen Campaign145-226 cumulative regression test-file list",
+  "failure": "The initial glob matched every numbered walk-forward campaign test and returned 638 files instead of the frozen 114-file Campaign145-226 range; the pre-pytest assertion stopped the command.",
+  "recovery": "The retry parses the campaign number from each filename, retains only 145 through 226 inclusive, independently asserts 114 unique paths, and only then starts pytest with the 41 frozen deselections.",
+  "research_boundary": {
+    "failed_output_used_as_scientific_or_validation_evidence": false,
+    "pytest_started_by_failed_command": false,
+    "repository_file_written_by_failed_command": false,
+    "candidate_or_comparator_value_read": false,
+    "daily_price_or_forward_return_read": false,
+    "provider_or_web_request_issued": false,
+    "provider_credential_presence_value_or_digest_read": false,
+    "candidate49_plan_or_run_executed": false
+  }
+}

@@ -1,0 +1,40 @@
+{
+  "version": 3,
+  "kind": "a_share_three_day_walkforward_campaign069_no_return_audit_implementation_freeze",
+  "status": "frozen_before_v3_same_parameter_retry_or_additional_comparator_value_read",
+  "recorded_at": "2026-08-06T03:47:53+08:00",
+  "repair_protocol": {
+    "path": "docs/a_share_three_day_walkforward_campaign_069_no_return_audit_comparator_alignment_repair_protocol_20260806.json",
+    "sha256": "843255899622d681d3fae06115de909bb996b08af47633e70363cbbcf8c83cf1"
+  },
+  "failure_record": {
+    "path": "docs/a_share_three_day_walkforward_campaign_069_no_return_audit_execution_failure_2_20260806.json",
+    "sha256": "b58b273f79d9ed931af2ef2d36089e5d7f0c09accf988683389cdf9422624794"
+  },
+  "v2_freeze": {
+    "path": "docs/a_share_three_day_walkforward_campaign_069_no_return_audit_implementation_freeze_v2_20260806.json",
+    "sha256": "8c8781b15753508420db3abc4c054d8c660c3b8e99bc5ea441382cca6082e8d4"
+  },
+  "v3_runner": {
+    "path": "scripts/a_share_three_day_walkforward_campaign069_no_return_audit_v3.py",
+    "sha256": "8fad953bf2b93bec59d6a00f651a4a8e085e9ae0e025d9d8ea250a40a64eff05"
+  },
+  "tests": {
+    "path": "tests/data_collector_tests/test_a_share_three_day_walkforward_campaign069_no_return_audit_v3.py",
+    "sha256": "2b78163058ec32a40bed041c8aa4def6e79ac941e5ebfb0429a86e606e2d8d2a",
+    "pre_freeze_selected_passed": 4,
+    "pre_freeze_selected_failed": 0,
+    "pre_freeze_deselected_freeze_binding_test": 1
+  },
+  "sole_code_change": "Keep the Campaign069 candidate sorter unchanged, but permit only the Campaign068 comparator to retain preregistered leading NaNs while preserving unique compact stock-day keys and exact key alignment; pairwise-complete correlation remains unchanged.",
+  "candidate_or_comparator_values_read_after_second_failure_before_freeze": false,
+  "historical_daily_price_fields_read_before_freeze": [],
+  "historical_forward_returns_read_before_freeze": false,
+  "provider_request_issued_before_freeze": false,
+  "candidate49_ledgers_changed_before_freeze": false,
+  "decision": {
+    "same_parameter_v3_retry_authorized": true,
+    "formula_direction_comparator_order_gates_or_data_changed": false,
+    "daily_price_or_return_access_authorized": false
+  }
+}

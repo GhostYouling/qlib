@@ -1,0 +1,18 @@
+{
+  "schema_version": 1,
+  "kind": "a_share_three_day_walkforward_campaign133_postrun_infrastructure_failure",
+  "attempt_id": "campaign133_infrastructure_004",
+  "status": "recorded_postrun_read_only_summary_command_failure",
+  "recorded_at": "2026-08-14T10:17:00+08:00",
+  "stage": "terminal_result_read_only_summary",
+  "error_type": "JqInputCompositionError",
+  "error_summary": "A read-only jq command consumed repeated input documents with an invalid input expression and exited nonzero with 'break'.",
+  "repair_boundary": "Preserve the completed Campaign133 output and append-only trial ledger unchanged. Re-read the same bound JSON with a correct slurpfile expression; do not rerun any fold, model or return evaluation.",
+  "scientific_result_changed": false,
+  "campaign133_development_rerun_allowed": false,
+  "historical_return_values_newly_read_by_failed_command": false,
+  "lockbox_2024_2025_opened": false,
+  "provider_request_issued": false,
+  "candidate49_ledgers_changed": false,
+  "current_scoring_selection_sizing_positions_or_orders_performed": false
+}

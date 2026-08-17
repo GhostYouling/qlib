@@ -1,0 +1,45 @@
+{
+  "version": 1,
+  "kind": "a_share_three_day_walkforward_campaign048_unified_report_supersession",
+  "status": "campaign047_report_binding_preserved_historically_campaign048_report_current",
+  "recorded_at": "2026-08-01T05:27:00Z",
+  "purpose": "Preserve Campaign047's immutable unified-report fingerprint and supersession chain while binding the append-only Campaign048 report update.",
+  "bindings": {
+    "campaign047_terminal_record": {
+      "path": "docs/a_share_three_day_walkforward_campaign_047_research_record.json",
+      "sha256": "a92d65886e943c4ef043bb0baeb01e08e9cc02253bd97cbd776dd66195f4feb9"
+    },
+    "campaign048_terminal_record": {
+      "path": "docs/a_share_three_day_walkforward_campaign_048_research_record.json",
+      "sha256": "353e7b106fe1d1bf534ee2640eb9cac38cfe2a9fd1abe63b41f87de2dfe79114"
+    },
+    "previous_campaign047_supersession": {
+      "path": "docs/a_share_three_day_walkforward_campaign_047_unified_report_supersession_20260801.json",
+      "sha256": "4944890bfc1eab28a68103a288bfa4e519f2ba068c027a6b71b64230c896b766"
+    },
+    "previous_campaign048_supersession": {
+      "path": "docs/a_share_three_day_walkforward_campaign_048_unified_report_supersession_20260801.json",
+      "sha256": "8c84b37470e14bd41e5ba189a29e9885e7609e5eea74e041b8ba2f6fdf282718"
+    },
+    "current_unified_research_report": {
+      "path": "data/experiments/short_horizon/three_day_research_report.md",
+      "sha256": "978716f842189224e051720c68dc9814b6a7df082a9eeac57a89bd80c8a6cc32"
+    }
+  },
+  "historical_binding": {
+    "record": "docs/a_share_three_day_walkforward_campaign_048_unified_report_supersession_20260801.json",
+    "json_pointer": "/bindings/current_unified_research_report",
+    "expected_sha256": "b789dc0ac89eeeb0b93f5d1d0ec91d27d34972e612e236e5625f76d78bdbc6aa",
+    "current_sha256": "978716f842189224e051720c68dc9814b6a7df082a9eeac57a89bd80c8a6cc32",
+    "historical_record_rewritten": false,
+    "previous_supersession_rewritten": false
+  },
+  "semantic_boundary": {
+    "campaign047_result_or_gate_changed": false,
+    "campaign048_result_or_gate_changed_after_values": false,
+    "report_update_is_append_only": true,
+    "additional_historical_daily_price_or_forward_return_read": false,
+    "2024_2025_stress_return_read": false,
+    "candidate49_ledgers_changed": false
+  }
+}

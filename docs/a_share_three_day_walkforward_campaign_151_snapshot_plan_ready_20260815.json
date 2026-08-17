@@ -1,0 +1,57 @@
+{
+  "schema_version": 1,
+  "kind": "a_share_three_day_walkforward_campaign151_snapshot_plan_receipt",
+  "status": "ready_true_exit_zero_confirmed_build_authorized",
+  "recorded_at": "2026-08-15T00:39:56+08:00",
+  "command": "/Volumes/DIsk/Coding/anaconda3/bin/python3.12 scripts/a_share_three_day_walkforward_campaign151_snapshot.py plan --workers 4",
+  "exit_code": 0,
+  "ready": true,
+  "workers": 4,
+  "authoritative_activation": {
+    "path": "docs/a_share_three_day_walkforward_campaign_151_snapshot_runner_activation_v2_20260815.json",
+    "sha256": "911dd0dd6dcf2fd7a015d2971dee219867402169aad5e4a51ad60296b5789485"
+  },
+  "gates": {
+    "activation": true,
+    "frozen_authority": true,
+    "source_metadata": true,
+    "candidate49_ledgers": true,
+    "output": true,
+    "workers": true
+  },
+  "source_metadata": {
+    "raw_partitions": 33015,
+    "joint_partitions": 33015,
+    "joint_rows": 7724498,
+    "symbols": 5396
+  },
+  "output_observation": {
+    "final_root_exists": false,
+    "resume_partial": false,
+    "lock_available": true,
+    "free_bytes": 1655510499328,
+    "minimum_free_bytes": 10737418240
+  },
+  "candidate49": {
+    "signal_entries": 0,
+    "execution_entries": 0,
+    "ledgers_changed": false
+  },
+  "research_boundary": {
+    "historical_parquet_or_npz_payload_opened": false,
+    "historical_minute_source_rows_or_values_read": false,
+    "peer_benchmark_values_read": false,
+    "candidate_or_comparator_values_read": false,
+    "historical_daily_price_or_forward_return_values_read": false,
+    "credential_loaded": false,
+    "provider_request_issued": false,
+    "candidate49_historical_backfill_performed": false,
+    "current_scoring_selection_sizing_positions_or_orders_performed": false
+  },
+  "authorization": {
+    "build_command": "/Volumes/DIsk/Coding/anaconda3/bin/python3.12 scripts/a_share_three_day_walkforward_campaign151_snapshot.py build --workers 4 --confirm-build",
+    "same_parameters": true,
+    "at_most_one_successful_publication": true,
+    "promotion_allowed": false
+  }
+}

@@ -1,0 +1,208 @@
+{
+  "schema_version": 1,
+  "kind": "a_share_three_day_walkforward_campaign123_namechange_source_contract",
+  "status": "frozen_zero_provider_rows_before_transport_adapter_factor_values_or_returns",
+  "recorded_at": "2026-08-14T03:25:04+08:00",
+  "purpose": "Freeze one point-in-time source state, schema, normalization, timing, formula, capacity, and failure contract for pure security renames before any Tushare namechange request, response row, historical factor value, comparator value, price, or return is opened.",
+  "authoritative_inputs": {
+    "iteration_state": {
+      "path": "docs/a_share_three_day_iteration_status_20260814_campaign122_terminal_v2.json",
+      "sha256": "67b64391b7bb8d542bfce8ffa753785680b23b9f0ffe00df2cd57626315630c0"
+    },
+    "numeric_policy_v120": {
+      "path": "docs/a_share_three_day_walkforward_future_numeric_comparison_eligibility_policy_v120_20260814.json",
+      "sha256": "96e09b6fe659e4c856f05211ba36585ea60105ad5442f92bf9affd46ba6d01bc",
+      "complete_definition_count_preserved": 147,
+      "complete_definition_order_sha256": "3f3756a4128011d9cd718e97d23ee3b1c78022433b269c75bd715f304a055bf0",
+      "eligible_numeric_comparator_count_reserved": 139,
+      "eligible_numeric_comparator_order_sha256": "9c4de054ca1b83eced67eece256b024ebec3a6e1925de17a4cedfa7d36265161"
+    },
+    "concept_scouting": {
+      "path": "docs/a_share_three_day_walkforward_campaign_123_concept_scouting_20260814.json",
+      "sha256": "a9a8a793f84c1d0d85e03e33b7bca05dcd102f53dc52246f7bc7781cac369885",
+      "binding_state": "bound"
+    },
+    "mechanism_overlap_audit": {
+      "path": "docs/a_share_three_day_walkforward_campaign_123_mechanism_overlap_audit_20260814.json",
+      "sha256": "4abda5abecc96cb3af7d7c80701935636a053ae642e390eaf8f25b1f028d326c",
+      "binding_state": "bound"
+    },
+    "historical_walkforward_policy": {
+      "path": "docs/a_share_three_day_historical_walkforward_research_policy_20260727.json",
+      "sha256": "38426d6161b9bfed323c58caba18feca668b8c9d53e294951a8ba90c01a798bb"
+    }
+  },
+  "public_documentation_contract": {
+    "provider": "tushare",
+    "official_url": "https://tushare.pro/document/2?doc_id=100",
+    "api_name": "namechange",
+    "documented_description": "历史名称变更记录",
+    "documented_inputs": {
+      "ts_code": "optional TS code",
+      "start_date": "optional announcement start date",
+      "end_date": "optional announcement end date"
+    },
+    "documented_outputs": [
+      "ts_code",
+      "name",
+      "start_date",
+      "end_date",
+      "ann_date",
+      "change_reason"
+    ],
+    "required_request_projection": [
+      "ts_code",
+      "start_date",
+      "end_date",
+      "ann_date",
+      "change_reason"
+    ],
+    "forbidden_request_or_persistence_fields": [
+      "name"
+    ],
+    "point_or_entitlement_requirement": "unresolved_from_this_public_page",
+    "provider_request_authorized_by_this_contract": false
+  },
+  "source_state_contract": {
+    "accepted_change_reason": "改名",
+    "reason_match": "exact Unicode code-point equality after no normalization",
+    "rejected_reason_examples": [
+      "撤销ST",
+      "ST",
+      "完成股改",
+      "未股改加S",
+      "其他"
+    ],
+    "unknown_nonempty_reason_policy": "exclude_and_count_without_reclassification",
+    "missing_or_non_string_reason_policy": "fatal",
+    "security_name_read_or_used": false,
+    "free_text_or_alias_parser_allowed": false
+  },
+  "canonicalization_contract": {
+    "row_shape": "Each supplied row must be a mapping with exactly the five projected fields. Extra fields, including name, are fatal so that data minimization is mechanically testable.",
+    "ts_code": "Require exactly six ASCII digits followed by .SH or .SZ. Map SSE main-board prefixes 600/601/603/605 to SHxxxxxx and SZSE main/SME/ChiNext prefixes 000/001/002/003/300/301 to SZxxxxxx. Complete STAR, BSE, B-share, fund, bond or other classifiable unsupported codes are excluded and counted; malformed or cross-exchange codes are fatal.",
+    "start_date": "Required complete valid strict YYYYMMDD calendar date.",
+    "ann_date": "Required complete valid strict YYYYMMDD calendar date.",
+    "end_date": "Optional null or complete valid strict YYYYMMDD date; if present it must not precede start_date. It is retained only for source consistency and never changes factor age.",
+    "normalized_columns": [
+      "instrument",
+      "start_date",
+      "ann_date",
+      "end_date",
+      "change_reason",
+      "provider"
+    ],
+    "provider_value": "tushare_namechange",
+    "normalized_event_key": [
+      "instrument",
+      "start_date",
+      "ann_date",
+      "change_reason"
+    ],
+    "exact_repeat_policy": "Collapse byte-identical normalized events and count repeats.",
+    "conflict_policy": "The same instrument and start_date with different ann_date, end_date, or reason is fatal. No latest-row choice, majority vote, text reconciliation, or name inspection is allowed."
+  },
+  "point_in_time_contract": {
+    "timezone": "Asia/Shanghai",
+    "event_information_date": "max(start_date, ann_date)",
+    "same_day_availability_allowed": false,
+    "effective_session": "first accepted local trading session strictly after event_information_date",
+    "signal_availability": "effective_session close",
+    "earliest_entry": "next accepted local trading-session open after signal availability",
+    "exit": "third accepted local trading-session close after entry",
+    "holding_period_trading_sessions": 3,
+    "later_name_text_revision_or_outcome_allowed": false
+  },
+  "single_factor_definition": {
+    "name": "official_pure_security_rename_recency_60s",
+    "formula": "For signal session s, let e be the latest effective session among canonical exact-reason 改名 events. Let age=session_index(s)-session_index(e). If 0 <= age <= 59, return (59-age)/59; otherwise return missing.",
+    "score_direction": "higher",
+    "active_window_sessions": 60,
+    "latest_event_only": true,
+    "raw_value_type": "finite float",
+    "raw_value_range": {
+      "minimum_inclusive": 0.0,
+      "maximum_inclusive": 1.0
+    },
+    "missing_semantics": "Missing when no canonical pure-rename event has become effective in the active 60-session window. Source absence is never converted to zero, a favorable state, an unaffected control, or an imputed value.",
+    "winsorization_clipping_neutralization_residualization_filter_subset_regime_fit_model_or_combination": false,
+    "historical_candidate_values_materialized": false,
+    "numeric_comparator_appended_now": false,
+    "prospective_candidate_registered": false
+  },
+  "source_acceptance_and_capacity_contract": {
+    "historical_scope_after_all_pre_request_gates": {
+      "announcement_start": "20190101",
+      "announcement_end": "20251231",
+      "atomic_publication": true
+    },
+    "fixed_zero_return_acceptance_windows": [
+      {
+        "label": "2019_full_year",
+        "start": "20190101",
+        "end": "20191231"
+      },
+      {
+        "label": "2022_full_year",
+        "start": "20220101",
+        "end": "20221231"
+      },
+      {
+        "label": "2025_full_year",
+        "start": "20250101",
+        "end": "20251231"
+      }
+    ],
+    "minimum_pure_rename_events_per_acceptance_window": 2,
+    "minimum_pure_rename_events_total": 30,
+    "minimum_distinct_supported_instruments_total": 25,
+    "minimum_distinct_event_information_dates_total": 20,
+    "factor_level_capacity_rule": {
+      "non_overlapping_three_session_cohorts": true,
+      "minimum_names_per_cohort": 6,
+      "minimum_distinct_finite_values_per_cohort": 2,
+      "minimum_complete_cohorts": 200,
+      "minimum_observed_calendar_years": 5,
+      "minimum_listing_age_sessions": 20,
+      "capacity_must_pass_before_139_comparison_values": true,
+      "capacity_must_pass_before_daily_price_or_forward_return_values": true
+    },
+    "failure_policy": "Any entitlement, schema, projection, date, identity, duplicate, conflict, coverage, variation, capacity, or fingerprint failure terminates this exact source/formula before prices or returns. No field addition, name parsing, reason expansion, window change, direction flip, threshold reduction, source substitution, retry, rescue, or combination is allowed."
+  },
+  "frozen_context_fingerprints": {
+    "holding_universe": {
+      "path": "data/qlib/cn_a_share/instruments/buyable_main_chinext.txt",
+      "sha256": "77ccf8de2ed1e447e73b5d5ff1703fc2a8656d6adab34ef44017481730249db1"
+    },
+    "local_calendar": {
+      "path": "data/qlib/cn_a_share/calendars/day.txt",
+      "sha256": "fda506597d26bcec953cdc0882042a5046ec1587db60490e16a01627fd43f53a"
+    },
+    "data_management_skill": {
+      "path": "/Users/niyufei/.codex/skills/manage-qlib-a-share-data/SKILL.md",
+      "sha256": "565713a5f3aeb6a1acf23e397fcc21be28d0c3ea4ebf21c7f287a25bb94d78dc"
+    }
+  },
+  "mandatory_next_gate_before_any_provider_request": {
+    "pure_zero_network_adapter_and_synthetic_tests_frozen": true,
+    "adapter_source_and_test_sha256_recorded": true,
+    "source_contract_sha256_embedded_in_adapter": true,
+    "all_147_complete_definitions_semantically_reviewed": true,
+    "all_139_numeric_comparators_reserved_without_loading": true,
+    "one_shot_acceptance_plan_bound_to_projection_entitlement_limits_and_failure_semantics": true
+  },
+  "research_boundary": {
+    "provider_request_issued": false,
+    "provider_credential_loaded": false,
+    "provider_rows_read_persisted_or_counted": false,
+    "candidate_or_comparison_values_read": false,
+    "historical_daily_price_fields_read": [],
+    "historical_forward_returns_read": false,
+    "stress_2024_2025_opened": false,
+    "candidate49_historical_backfill_performed": false,
+    "candidate49_ledgers_changed": false,
+    "second_prospective_candidate_created": false,
+    "current_scoring_selection_sizing_positions_or_orders_performed": false,
+    "investment_advice": false
+  }
+}

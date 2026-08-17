@@ -1,0 +1,32 @@
+{
+  "schema_version": 1,
+  "kind": "a_share_three_day_walkforward_campaign163_prevalue_infrastructure_failures",
+  "status": "three_failures_recorded_latest_patch_context_failure_recovered",
+  "recorded_at": "2026-08-15T06:38:16+08:00",
+  "authoritative_predecessor": {
+    "path": "docs/a_share_three_day_walkforward_campaign_163_prevalue_infrastructure_failure_v2_20260815.json",
+    "sha256": "3b1419363e400bfa4fffe8aaae163538d736f59e2780f347bcffc8d802919cd3",
+    "effective_failure_count": 2
+  },
+  "delta_failure": {
+    "attempt_id": "campaign163_infrastructure_003",
+    "phase": "effective_v2_terminal_test_update",
+    "status": "failed_monolithic_apply_patch_context_mismatch_zero_write",
+    "failure": "A monolithic test update expected a pre-Black multiline assertion and apply_patch rejected the entire patch before writing any hunk.",
+    "recovery": "Read the exact formatted test context and applied four small precise patches; Black, Ruff and the nine focused tests then passed.",
+    "partial_target_write": false,
+    "focused_recovery_tests_passed": 9,
+    "failed_exit_code_bypassed_or_masked": false,
+    "source_row_candidate_comparator_price_or_return_value_read": false
+  },
+  "effective_failure_count": 3,
+  "research_boundary": {
+    "annual_report_pdf_table_or_response_value_read": false,
+    "candidate_or_comparator_value_read": false,
+    "historical_daily_price_or_forward_return_value_read": false,
+    "provider_or_web_request_issued": false,
+    "provider_credential_presence_value_or_digest_read": false,
+    "stress_2024_2025_opened": false,
+    "candidate49_ledgers_changed": false
+  }
+}

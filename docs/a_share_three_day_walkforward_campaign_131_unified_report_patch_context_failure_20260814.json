@@ -1,0 +1,29 @@
+{
+  "schema_version": 1,
+  "kind": "a_share_three_day_walkforward_campaign131_unified_report_patch_context_failure",
+  "status": "recorded_atomic_patch_rejected_before_any_target_write",
+  "recorded_at": "2026-08-14T08:15:02+08:00",
+  "phase": "terminal_reporting",
+  "failure": {
+    "tool": "apply_patch",
+    "reason": "The three-file atomic patch expected a Campaign130 summary sentence that did not exactly match either unified report tail.",
+    "campaign131_terminal_report_created": false,
+    "current_research_report_changed": false,
+    "three_day_research_report_changed": false,
+    "failed_result_treated_as_success": false
+  },
+  "recovery": {
+    "action": "Inspect the exact report tails, create the Campaign131 report separately, and append a new versioned section using actual terminal context.",
+    "scientific_result_changed": false,
+    "library_order_changed": false
+  },
+  "research_boundary": {
+    "source_rows_candidate_values_comparator_values_prices_or_returns_read": false,
+    "stress_2024_2025_opened": false,
+    "provider_request_issued": false,
+    "credential_loaded": false,
+    "candidate49_historical_backfill_performed": false,
+    "candidate49_ledgers_changed": false,
+    "current_scoring_selection_sizing_positions_or_orders_performed": false
+  }
+}

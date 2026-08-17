@@ -1,0 +1,44 @@
+{
+  "version": 1,
+  "kind": "a_share_three_day_walkforward_campaign047_post_result_test_transition",
+  "status": "development_freeze_preserved_historically_terminal_test_current",
+  "recorded_at": "2026-08-01T03:11:00Z",
+  "purpose": "Preserve the development-time test fingerprint while switching the same test module from the necessarily pre-result empty-ledger assertion to terminal zero-survivor assertions after immutable results exist.",
+  "bindings": {
+    "development_implementation_freeze": {
+      "path": "docs/a_share_three_day_walkforward_campaign_047_development_implementation_freeze_20260801.json",
+      "sha256": "1b4516edda765ffd4552a1627869cd80d2634bbd194632fac259fe3e21949fe1"
+    },
+    "terminal_campaign_test": {
+      "path": "tests/data_collector_tests/test_a_share_three_day_walkforward_campaign047.py",
+      "sha256": "d6b6b0d6fa4a79f5003ccbdd67c86a07e2379a188196fea4e86e0c6116b30630"
+    },
+    "trial_ledger": {
+      "path": "data/experiments/short_horizon/historical_walkforward/campaign_047/walkforward/trial_ledger.json",
+      "sha256": "b98aedc82f995250654461e67a4af5dc70efdf448b7f969e6fbab355d2cac956"
+    },
+    "development_survivors": {
+      "path": "data/experiments/short_horizon/historical_walkforward/campaign_047/walkforward/development_survivors.json",
+      "sha256": "e36bef11cc9100e6559871975687b9bd3270281caba864f33d252208a078392d"
+    },
+    "unopened_stress_record": {
+      "path": "data/experiments/short_horizon/historical_walkforward/campaign_047/walkforward/exposed_stress_consumption_record.json",
+      "sha256": "032c1fb62dde7190216f9988ad9c8c7da14f34b05f5a4a3635244e9e2aafe1a6"
+    }
+  },
+  "historical_binding": {
+    "record": "docs/a_share_three_day_walkforward_campaign_047_development_implementation_freeze_20260801.json",
+    "json_pointer": "/bindings/development_boundary_tests",
+    "expected_pre_result_sha256": "77650afb82bf471b605355b401b15734811d9038ca759679a34ccfa56d275062",
+    "current_terminal_sha256": "d6b6b0d6fa4a79f5003ccbdd67c86a07e2379a188196fea4e86e0c6116b30630",
+    "only_expected_failed_binding_count": 1,
+    "development_freeze_rewritten": false
+  },
+  "semantic_boundary": {
+    "factor_formula_direction_or_gate_changed": false,
+    "development_result_or_artifact_changed": false,
+    "additional_historical_daily_price_or_forward_return_read": false,
+    "2024_2025_stress_return_read": false,
+    "candidate49_ledgers_changed": false
+  }
+}

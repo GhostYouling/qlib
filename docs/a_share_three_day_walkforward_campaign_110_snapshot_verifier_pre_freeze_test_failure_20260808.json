@@ -1,0 +1,20 @@
+{
+  "schema_version": 1,
+  "kind": "a_share_three_day_walkforward_campaign110_infrastructure_failure",
+  "status": "preserved_failed_pre_freeze_synthetic_test_repaired_before_partition_values",
+  "recorded_at": "2026-08-07T22:48:05Z",
+  "failure_ordinal": 4,
+  "stage": "snapshot_verifier_pre_freeze_synthetic_test",
+  "failed_result": "1 failed, 5 passed",
+  "cause": "The first verify-only accounting check compared raw-source state totals with the smaller joint-clean output row count. The manifest correctly counts states over raw_source_sessions, while the published output contains the joint-clean identity subset.",
+  "repair": "Bind nonzero plus equal reference states to raw_source_sessions times 240 and raw_source_rows_read to raw_source_sessions times 241. No factor value, partition, manifest, formula, direction, range or gate changed.",
+  "repaired_result": "6 passed",
+  "research_boundary": {
+    "manifest_metadata_read": true,
+    "partition_values_read": false,
+    "coverage_or_comparator_values_read": false,
+    "historical_daily_price_or_forward_return_values_read": false,
+    "snapshot_modified": false,
+    "provider_request_issued": false
+  }
+}

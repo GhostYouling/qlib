@@ -1,0 +1,125 @@
+{
+  "schema_version": 1,
+  "kind": "a_share_three_day_walkforward_campaign085_concept_scouting",
+  "status": "selected_one_historical_combination_before_campaign085_source_candidate_comparison_daily_price_or_return_values",
+  "recorded_at": "2026-08-06T23:15:00+08:00",
+  "purpose": "Select one finite and economically interpretable Campaign085 historical-only combination from the complete frozen 116-definition library before reading any Campaign085 source row, candidate value, comparison value, daily price, or forward return.",
+  "authoritative_inputs": {
+    "campaign084_verified_iteration_state": {
+      "path": "docs/a_share_three_day_iteration_status_20260806_campaign084_verified_v3.json",
+      "sha256": "48b59866a0cf777ad05ee8a5f7b7652b460e30db097b1eb3525f2a55b8ac317e"
+    },
+    "historical_walkforward_policy": {
+      "path": "docs/a_share_three_day_historical_walkforward_research_policy_20260727.json",
+      "sha256": "38426d6161b9bfed323c58caba18feca668b8c9d53e294951a8ba90c01a798bb"
+    },
+    "numeric_comparator_policy_v20": {
+      "path": "docs/a_share_three_day_walkforward_future_numeric_comparison_eligibility_policy_v20_20260806.json",
+      "sha256": "4dda0043a129dd6d986dfec75bb032b4df81c3648e01e7109c10cd97cf5d294d"
+    },
+    "compact_comparator_cache_v4_publication_binding": {
+      "path": "docs/a_share_three_day_compact_comparator_cache_v4_publication_binding_20260806.json",
+      "sha256": "244f70b88be0396f7473c6664835cbb3cdad9135b6692b77c74018b1d53c925b"
+    }
+  },
+  "definition_only_inventory": {
+    "complete_historical_definition_count": 116,
+    "complete_historical_definition_order_sha256": "d30cad0f1e422e3e4ba80392f42316a968511f53593e1826c1c1bb7171d04253",
+    "eligible_numeric_comparator_count": 114,
+    "eligible_numeric_comparator_order_sha256": "03a0c534f3bc321d5bc452415e6207026030978c4ac5d433305b04a21db6cea9",
+    "complete_library_reconstructed_before_candidate_selection": true,
+    "all_terminal_failed_rejected_and_surviving_definitions_retained": true,
+    "frozen_old_definition_inputs": [
+      "quarterly_announcement_freshness_60s",
+      "intraday_market_neutral_late_residual_drift_238m"
+    ],
+    "campaign084_input_or_combination_use": false,
+    "old_factor_or_comparator_values_read_for_selection": false,
+    "candidate_source_rows_read": false,
+    "candidate_values_read": false,
+    "comparison_values_read": false,
+    "daily_price_or_forward_return_read": false
+  },
+  "finite_candidate_design_catalog": [
+    {
+      "design": "quarterly_freshness_market_neutral_late_drift_confirmation_product_2r",
+      "decision": "selected",
+      "reason": "The fixed product of announcement-freshness rank and market-neutral late residual-drift rank is high only when a recent disclosure is accompanied by same-day idiosyncratic late-session confirmation. It combines exactly two pre-existing definitions and introduces no fitted coefficient, threshold, window, filter, subset, regime, or model."
+    },
+    {
+      "design": "quarterly_announcement_freshness_or_market_neutral_late_drift_standalone",
+      "decision": "rejected_exact_old_definition",
+      "reason": "Both standalone inputs already exist in the complete historical library and cannot be rerun as new candidates."
+    },
+    {
+      "design": "freshness_late_drift_minimum_mean_maximum_geometric_mean_or_harmonic_mean",
+      "decision": "rejected_operator_search_before_values",
+      "reason": "Opening multiple confirmation operators would create avoidable multiplicity. The sole selected operator is the exact product of the two common-universe percentile ranks."
+    },
+    {
+      "design": "announcement_freshness_times_raw_late_return",
+      "decision": "rejected_terminal_family_before_values",
+      "reason": "Raw late return would reopen the terminal late-return and signed close-path families; the selected mechanism specifically requires the already frozen market-neutral residual."
+    },
+    {
+      "design": "announcement_freshness_times_turnover_or_amount_surge",
+      "decision": "rejected_terminal_and_prevalue_invalid_families",
+      "reason": "Turnover/activity confirmation is already covered extensively and would reuse the prevalue-invalid Campaign079 turnover family."
+    },
+    {
+      "design": "freshness_and_late_drift_with_profit_growth_roe_revenue_or_campaign084_component",
+      "decision": "rejected_component_and_rescue_expansion_before_values",
+      "reason": "Adding accounting level or acceleration would create a third component and could become a Campaign084 rescue. Campaign085 is invariant to profit, revenue, ROE, and Campaign084 values."
+    },
+    {
+      "design": "recent_announcement_day_threshold_and_positive_residual_drift_filter",
+      "decision": "rejected_threshold_search_before_values",
+      "reason": "Hard age and sign thresholds would add two fitted or selected cutoffs. The selected product remains continuous and threshold-free."
+    },
+    {
+      "design": "announcement_day_only_or_board_year_size_market_regime_subset",
+      "decision": "rejected_filter_and_subset_search_before_values",
+      "reason": "No event-day, board, year, size, or market-regime subset is opened; every frozen eligible stock-day is evaluated under one formula."
+    }
+  ],
+  "selected_candidate": {
+    "name": "quarterly_freshness_market_neutral_late_drift_confirmation_product_2r",
+    "direction": "higher",
+    "economic_hypothesis": "A recently disclosed quarterly report that is still followed by positive market-neutral late-session drift may reflect idiosyncratic information diffusion rather than broad-market movement; requiring both states to rank highly may identify under-reaction over the next three sessions.",
+    "formula": "On each exact common finite stock-day cross-section, compute average-tie percentile ranks r_freshness of quarterly_announcement_freshness_60s and r_late_residual of intraday_market_neutral_late_residual_drift_238m, then return r_freshness * r_late_residual.",
+    "old_definition_inputs": [
+      "quarterly_announcement_freshness_60s",
+      "intraday_market_neutral_late_residual_drift_238m"
+    ],
+    "input_source_after_freeze": "candidate-independent compact comparator cache v4 with exact frozen logical semantics",
+    "cross_section_rule": "Require both old-definition values finite on the exact same stock-day identity cross-section and compute pandas-compatible average-tie percentile ranks separately before multiplication.",
+    "combination_rule": "Exactly r_freshness * r_late_residual with two implicit unit exponents; do not rerank components on different identities and do not fit weights.",
+    "valid_range": {
+      "lower": 0.0,
+      "lower_inclusive": false,
+      "upper": 1.0,
+      "upper_inclusive": true
+    },
+    "missing_rule": "Missing unless both frozen input values, both common-universe percentile ranks, and their product are finite. Never impute, clip, winsorize, substitute, backfill, threshold, or choose a favorable report/session.",
+    "parameter_window_transform_threshold_filter_subset_regime_fit_or_model_search": false
+  },
+  "research_boundary": {
+    "campaign085_cache_or_source_rows_read": false,
+    "campaign085_candidate_or_comparison_values_read": false,
+    "historical_daily_price_fields_read": [],
+    "historical_forward_return_fields_read": false,
+    "provider_request_issued": false,
+    "candidate49_historical_backfill_performed": false,
+    "candidate49_ledgers_changed": false,
+    "second_prospective_candidate_created": false,
+    "current_scoring_selection_sizing_or_orders_performed": false,
+    "investment_advice": false
+  },
+  "decision": {
+    "selected_candidate_count": 1,
+    "finite_candidate_library": true,
+    "complete_old_factor_library_bound_before_combination": true,
+    "predictive_value_established": false,
+    "next_action": "Perform an exhaustive 116-definition semantic mechanism-overlap audit, then freeze one 114-comparator coverage-first no-return protocol before opening cache rows or candidate values."
+  }
+}

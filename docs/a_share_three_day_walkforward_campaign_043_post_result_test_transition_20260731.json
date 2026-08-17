@@ -1,0 +1,88 @@
+{
+  "version": 1,
+  "kind": "a_share_three_day_walkforward_campaign043_post_result_test_transition",
+  "status": "pre_result_fingerprints_preserved_terminal_assertions_activated_and_unified_report_history_restored_without_result_change",
+  "recorded_at": "2026-07-31T12:19:17Z",
+  "purpose": "Preserve the pre-return runner and test fingerprints while documenting the required post-result terminal assertions, restoration of Campaign028-Campaign043 unified-report evidence after shared-engine regeneration, and historical treatment of Campaign042's superseded report binding.",
+  "research_record": {
+    "path": "docs/a_share_three_day_walkforward_campaign_043_research_record.json",
+    "sha256": "44bd70909c20106ed920f5a77b5f9d54b28d3317b19c7392314a235cdd8939ba",
+    "status": "completed_zero_development_survivors_stress_interval_not_opened"
+  },
+  "test_lifecycle": {
+    "campaign_test_path": "tests/data_collector_tests/test_a_share_three_day_walkforward_campaign043.py",
+    "pre_result_sha256": "481338a839c644f3da8289808d6fad2d681b248bab0fd512758be131af0c011c",
+    "post_result": {
+      "path": "tests/data_collector_tests/test_a_share_three_day_walkforward_campaign043.py",
+      "sha256": "337b7e07b7015ab7b1f34a77dcd15eafd07610d70a221e9a32d28b5f23a44e60"
+    },
+    "change": "Replace the preregistered zero-ledger assertion with the observed immutable terminal state: one ledger entry, zero survivors, and a not-opened zero-survivor stress record.",
+    "separate_terminal_tests": {
+      "path": "tests/data_collector_tests/test_a_share_three_day_walkforward_campaign043_terminal.py",
+      "sha256": "0d214704ced613328bb4dbcac19686d0232fba91ba138b72bb9d1e8b48409769"
+    },
+    "feature_tests": {
+      "path": "tests/data_collector_tests/test_a_share_three_day_walkforward_campaign043_features.py",
+      "sha256": "b1027553aea71aeee09c22c57497f7d2b04a2a2a3285f14ba8a7910d230f1bd9"
+    },
+    "campaign042_historical_report_binding_test": {
+      "path": "tests/data_collector_tests/test_a_share_three_day_walkforward_campaign042_terminal.py",
+      "sha256": "7025482eeb82a0e79e1a02ff5824beb96ca6ed0d40b08bfe6174fe6685e9450e"
+    },
+    "campaign042_test_semantics": "The immutable Campaign042 research record retains the report SHA observed when it was frozen. The evolving unified report is allowed to differ only at that one recognized binding; all other 22 Campaign042 record bindings must remain current."
+  },
+  "documentation": {
+    "unified_research_report": {
+      "path": "data/experiments/short_horizon/three_day_research_report.md",
+      "sha256": "ca26044bcf474ba7f4ed0c986aad2313fbb008370b2bbaae592c5f433c78859e",
+      "restored_campaign_sections": [
+        28,
+        29,
+        30,
+        31,
+        32,
+        33,
+        34,
+        35,
+        36,
+        37,
+        38,
+        39,
+        40,
+        41,
+        42,
+        43
+      ]
+    },
+    "data_pipeline": {
+      "path": "docs/a_share_data_pipeline.md",
+      "sha256": "c8f3fd9aa5f8b62e9f43d9433d8d1ab629a6446ac8e67ccc1de33afaac00336b"
+    },
+    "manage_qlib_a_share_data_skill": {
+      "path": "/Users/niyufei/.codex/skills/manage-qlib-a-share-data/SKILL.md",
+      "sha256": "406da4186d540c80900c2cddad7bd43b94a467a2c66950b1d188161c056a0504"
+    }
+  },
+  "test_execution": {
+    "focused_test_count": 21,
+    "focused_tests_passed": 21,
+    "focused_tests_failed": 0,
+    "full_data_collector_test_count": 1634,
+    "full_data_collector_tests_passed": 1634,
+    "full_data_collector_tests_failed": 0,
+    "full_data_collector_test_warnings": 13,
+    "idempotent_development_rerun_status": "development_already_complete_idempotent",
+    "idempotent_artifact_hashes_unchanged": true
+  },
+  "semantic_boundary": {
+    "factor_formula_changed": false,
+    "direction_changed": false,
+    "snapshot_or_candidate_values_changed": false,
+    "comparison_values_or_no_return_decision_changed": false,
+    "trial_ledger_survivor_stress_or_campaign_report_changed_by_post_result_transition": false,
+    "fold_purge_cost_execution_or_survivor_gate_changed": false,
+    "2024_2025_opened": false,
+    "candidate49_ledger_changed": false,
+    "current_scoring_selection_sizing_or_orders_performed": false
+  }
+}

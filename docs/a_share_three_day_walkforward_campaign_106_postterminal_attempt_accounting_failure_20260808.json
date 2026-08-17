@@ -1,0 +1,57 @@
+{
+  "schema_version": 1,
+  "kind": "a_share_three_day_walkforward_campaign106_postterminal_attempt_accounting_failure",
+  "status": "preserved_accounting_error_discovered_after_terminal_publication",
+  "recorded_at": "2026-08-07T19:54:35Z",
+  "campaign_id": "a_share_three_day_walkforward_campaign_106",
+  "preserved_inputs": {
+    "campaign105_terminal_result": {
+      "path": "docs/a_share_three_day_walkforward_campaign_105_terminal_result_binding_20260808.json",
+      "sha256": "118820900341dc3a3d540abfab5676dabee439280469a33475a1953bbe6cecf9",
+      "terminal_cumulative_historical_research_attempt_count": 786
+    },
+    "campaign106_terminal_result_v1": {
+      "path": "docs/a_share_three_day_walkforward_campaign_106_terminal_result_binding_20260808.json",
+      "sha256": "dcdde1bcf74ac4dcb20affc57e1bea79598201e0662bb851465416686c2ce2d9"
+    },
+    "campaign106_attempt_ledger_v3": {
+      "path": "data/experiments/short_horizon/historical_walkforward/campaign_106/research_attempt_ledger_v3.json",
+      "sha256": "f694aad33ac7667499b62a3be8e84b60554fc70e972c567ebb9451d6941f6bb5",
+      "entry_count": 3,
+      "attempt_count": 3,
+      "infrastructure_failure_count": 2,
+      "published_cumulative_historical_research_attempt_count": 787
+    },
+    "future_numeric_policy_v64": {
+      "path": "docs/a_share_three_day_walkforward_future_numeric_comparison_eligibility_policy_v64_20260808.json",
+      "sha256": "7453bf020364e8b27035e94b7e527d874a271b9aaa51008445610c464803805e"
+    },
+    "iteration_state_v1": {
+      "path": "docs/a_share_three_day_iteration_status_20260808_campaign106_terminal.json",
+      "sha256": "3d8abfac748b7ae9d90646be602457259674fc1c3eeeaa81c4b82ec43a40e601"
+    },
+    "completion_freeze_v1": {
+      "path": "docs/a_share_three_day_walkforward_campaign_106_terminal_completion_freeze_20260808.json",
+      "sha256": "0daf1ad598d38c1e66885316e74caf33a53fb95d330a48cdcb20d470b110d62a"
+    }
+  },
+  "failure": {
+    "description": "The published cumulative count advanced from Campaign105's 786 to 787 even though the Campaign106 v3 append-only ledger contained three attempts: one prevalue scientific attempt and two infrastructure failures.",
+    "expected_before_this_discovery": 789,
+    "published": 787,
+    "excluded_existing_infrastructure_attempts": 2,
+    "this_postterminal_accounting_discovery_is_an_additional_infrastructure_attempt": true,
+    "effective_campaign106_attempt_count_after_recording_this_failure": 4,
+    "effective_campaign106_infrastructure_failure_count_after_recording_this_failure": 3,
+    "corrected_cumulative_historical_research_attempt_count": 790
+  },
+  "scientific_result_changed": false,
+  "factor_definition_direction_formula_or_gate_changed": false,
+  "complete_definition_or_numeric_comparator_order_changed": false,
+  "historical_daily_prices_or_forward_returns_read": false,
+  "development_or_stress_recomputed": false,
+  "provider_request_issued": false,
+  "candidate49_ledgers_changed": false,
+  "current_scoring_selection_sizing_or_orders_performed": false,
+  "repair_rule": "Preserve every prior artifact and publish an additive ledger v4, terminal result v2, policy v65, iteration state v2, and completion freeze v2 with cumulative count 790."
+}

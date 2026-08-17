@@ -1,0 +1,31 @@
+{
+  "version": 3,
+  "kind": "a_share_three_day_walkforward_campaign072_no_return_audit_activation_binding",
+  "status": "frozen_before_coverage_or_comparison_values",
+  "recorded_at": "2026-08-06T06:35:00+08:00",
+  "supersedes_failed_activation_without_rewriting": {
+    "path": "docs/a_share_three_day_walkforward_campaign_072_no_return_audit_activation_binding_v2_20260806.json",
+    "sha256": "7d3f29711fa6f775194e2bbe4cbf4f802e1f674169ee69fda5f95763721c5bea"
+  },
+  "implementation_freeze": {
+    "path": "docs/a_share_three_day_walkforward_campaign_072_no_return_audit_implementation_freeze_v3_20260806.json",
+    "sha256": "1fbf4058b946b49af16645f37e52d85ccf6da4a13575343302375ccb15d7aa29"
+  },
+  "snapshot_binding": {
+    "path": "docs/a_share_three_day_walkforward_campaign_072_feature_snapshot_binding_20260806.json",
+    "sha256": "eb36b61ecc800b13e40f8947da5b0fd049542df784baafc8f86a3c38c82b2d1d"
+  },
+  "candidate_snapshot": {
+    "path": "/Volumes/DIsk/qlib-a-share-tushare-1m/derived/a_share/rich/tushare/minute_walkforward_campaign072_feature_library/tushare_stk_mins_1m_2019_2025_ea0cbb8f_walkforward_campaign072_feature_library_v1/snapshot_manifest.json",
+    "sha256": "14ca00ed8b9a233475445a2cedc4a0bbd57c35030e6de2948c80177156c98c2c",
+    "dataset_sha256": "7baf6939336261bb307fd3dc13ccb8e9676eacbcc7e7d1139e019fb3b96f90b3",
+    "eligible_rows": 7231483
+  },
+  "coverage_or_capacity_metrics_computed_before_activation": false,
+  "comparison_values_read_before_activation": false,
+  "historical_daily_price_fields_read_before_activation": [],
+  "historical_forward_returns_read_before_activation": false,
+  "provider_request_issued_before_activation": false,
+  "candidate49_ledgers_changed": false,
+  "activation": "exactly one v3 coverage-first no-return audit may now run; comparison values remain conditional on coverage pass"
+}

@@ -1,0 +1,25 @@
+{
+  "version": 1,
+  "kind": "a_share_three_day_walkforward_campaign085_development_prevalue_implementation_failure",
+  "status": "first_runner_lint_failed_before_preregistration_or_return_read",
+  "recorded_at": "2026-08-07T01:43:00+08:00",
+  "no_return_audit_freeze_sha256": "ff66571601cacda701fe1b7ba982bb750883b790248321e75f52a58bbdd445f4",
+  "black_format_and_check_passed": true,
+  "ruff_exit_code": 1,
+  "ruff_findings": [
+    "EXE001 runner executable bit absent",
+    "I001 imports not sorted",
+    "C401 generator should be a set comprehension"
+  ],
+  "tests_executed": false,
+  "development_preregistration_created": false,
+  "authorized_recovery": "set the runner executable bit and apply only the import-order and set-comprehension lint fixes before creating the development preregistration",
+  "candidate_values_read": false,
+  "historical_daily_price_fields_read": [],
+  "historical_forward_returns_read": false,
+  "provider_request_issued": false,
+  "candidate49_ledgers_changed": false,
+  "research_attempt_count_increment": 1,
+  "factor_attempt_count_increment": 0,
+  "development_trial_count_increment": 0
+}

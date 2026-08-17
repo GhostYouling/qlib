@@ -1,0 +1,56 @@
+{
+  "schema_version": 1,
+  "kind": "a_share_three_day_walkforward_campaign097_development_implementation_freeze_v3",
+  "status": "active_loader_namespace_repair_frozen_after_two_append_only_failures_before_complete_development_trial",
+  "frozen_at": "2026-08-07T06:55:00Z",
+  "purpose": "Freeze the compact loader binding in the exact wrapped-generator globals used by the active development contextmanager, preserving both earlier failures and all trial semantics.",
+  "v2_runner": {
+    "path": "scripts/a_share_three_day_walkforward_campaign097_v2.py",
+    "sha256": "3fa9185b13455e0d9d5cfce1aec3a22b0ef9a4ba2c21fa6846070e8aad322df3"
+  },
+  "v2_implementation_freeze": {
+    "path": "docs/a_share_three_day_walkforward_campaign_097_development_implementation_freeze_v2_20260807.json",
+    "sha256": "7ec30b2cf9728102c1adcc4d7064d37a0616e4fcb98a1f49a91157951120b5dd"
+  },
+  "v2_activation_binding": {
+    "path": "docs/a_share_three_day_walkforward_campaign_097_development_activation_binding_v2_20260807.json",
+    "sha256": "88a49b0c3781d12f9609286468ccdfdd87961ff12820e3a2ac94a3970d44fdda"
+  },
+  "v2_failure_record": {
+    "path": "docs/a_share_three_day_walkforward_campaign_097_development_v2_outer_namespace_failure_20260807.json",
+    "sha256": "8ce0c30a9d8522bbd4fdda9b6938ca45b50915eec527a1209c3a4c8ccbc3554c"
+  },
+  "v3_runner": {
+    "path": "scripts/a_share_three_day_walkforward_campaign097_v3.py",
+    "sha256": "1bedcd85664a93fe304d40341d4866ad778694a47f5a4b2b46913c3e678e5793"
+  },
+  "v3_tests": {
+    "path": "tests/data_collector_tests/test_a_share_three_day_walkforward_campaign097_development_v3.py",
+    "sha256": "4f757296f60a69d5ee1271b1090c83b181e35259596fd2e630edebe00bdecaf0",
+    "result": "4 passed",
+    "black_check_passed": true,
+    "ruff_check_passed": true
+  },
+  "append_only_internal_ledger": {
+    "path": "data/experiments/short_horizon/historical_walkforward/campaign_097/walkforward/trial_ledger.json",
+    "sha256": "8b22da7d62c831fd03294ab3b3a60ea7a339cf20ce5d824bb3d09c95de7b4fa2",
+    "entry_count": 2,
+    "chain_tip_sha256": "a85a1e2501710ca08788178c191b1349c42c9cb784878a01ff12f36541b9497d"
+  },
+  "repair_scope": "patch only the decorated compact contextmanager wrapped-generator globals loader binding",
+  "namespace_invariants": {
+    "contextmanager_has_wrapped_generator": true,
+    "wrapped_generator_globals_is_run_development_globals": true,
+    "patched_name": "_load_compact_factor_panel",
+    "patched_value": "frozen v2 Campaign097 compact loader",
+    "restored_after_command": true
+  },
+  "trial_factor_fold_cost_gate_or_threshold_changed": false,
+  "complete_development_trial_count_before_v3_freeze": 0,
+  "historical_daily_price_values_already_read_by_failures": true,
+  "historical_forward_return_values_may_have_been_read_by_failures": true,
+  "stress_2024_2025_read_before_v3_freeze": false,
+  "provider_request_issued_before_v3_freeze": false,
+  "candidate49_ledgers_changed_before_v3_freeze": false,
+  "current_scoring_selection_sizing_or_orders_performed_before_v3_freeze": false
+}

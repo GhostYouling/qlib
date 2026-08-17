@@ -1,0 +1,35 @@
+{
+  "version": 4,
+  "kind": "a_share_three_day_walkforward_campaign075_no_return_audit_implementation_freeze",
+  "status": "frozen_before_full_retry_after_single_campaign070_sha_transcription_correction",
+  "recorded_at": "2026-08-06T10:01:00+08:00",
+  "correction_overlay": {
+    "path": "docs/a_share_three_day_walkforward_campaign_075_no_return_runtime_compatibility_correction_overlay_v4_20260806.json",
+    "sha256": "dac49c32040bb94d98c0f29f9ddcd6f733a2ffdf340354d420c0bb8590183581"
+  },
+  "v4_runner": {
+    "path": "scripts/a_share_three_day_walkforward_campaign075_no_return_audit_v4.py",
+    "sha256": "8b428dcc7a8605a7dd49c678c605db9d70830aa81655531d4b6b55157f197374"
+  },
+  "tests": {
+    "path": "tests/data_collector_tests/test_a_share_three_day_walkforward_campaign075_no_return_audit_v4.py",
+    "sha256": "b8958d7b2c1050afcbb8cee9dc640be5947b48932768b6fbe7157428c2b512e2",
+    "passed": 3,
+    "failed": 0
+  },
+  "base_v3_runner_preserved": true,
+  "base_v3_protocol_preserved": true,
+  "corrected_fields": [
+    "finite_compatibility_snapshot_list[2].manifest_sha256"
+  ],
+  "partial_statistics_reused": false,
+  "snapshot_or_manifest_files_rewritten": false,
+  "factor_formula_direction_age_clock_or_missing_rule_changed": false,
+  "coverage_or_uniqueness_gate_changed": false,
+  "comparator_library_or_order_changed": false,
+  "historical_daily_price_fields_read_before_retry": [],
+  "historical_forward_returns_read_before_retry": false,
+  "provider_request_issued_before_retry": false,
+  "candidate49_ledgers_changed": false,
+  "next_action": "Restart the complete Campaign075 no-return audit from candidate snapshot verification and coverage."
+}

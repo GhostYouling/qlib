@@ -1,0 +1,49 @@
+{
+  "schema_version": 1,
+  "kind": "a_share_three_day_walkforward_campaign078_no_return_audit_implementation_freeze",
+  "status": "frozen_after_verified_snapshot_before_coverage_or_comparison_values",
+  "frozen_at": "2026-08-06T14:03:00+08:00",
+  "campaign_id": "a_share_three_day_walkforward_campaign_078",
+  "audit_runner": {
+    "path": "scripts/a_share_three_day_walkforward_campaign078_no_return_audit.py",
+    "sha256": "5f194ab765b7d5e42cd6b2a34abb482c69196a3cf0f3d29b065afcb8e588c7a3"
+  },
+  "tests": {
+    "path": "tests/data_collector_tests/test_a_share_three_day_walkforward_campaign078_no_return_audit.py",
+    "sha256": "0d271f25112ee60a6f95f4bf8b33e36534bcda76d22b09e8f8d757904f0b3f19"
+  },
+  "protocol": {
+    "path": "docs/a_share_three_day_walkforward_campaign_078_no_return_preregistration.json",
+    "sha256": "173609bb9bf18b54fa82f160171af9f2127466d8ec37c5f8be48cecbe91a4756"
+  },
+  "snapshot_binding": {
+    "path": "docs/a_share_three_day_walkforward_campaign_078_feature_snapshot_binding_20260806.json",
+    "sha256": "75a9fe0927308ddcbeccf128b89145e5f82e5c8272c52404494c6c95f4a9b1dc"
+  },
+  "legacy_comparator_runtime_binding": {
+    "repair_protocol": {
+      "path": "docs/a_share_three_day_walkforward_campaign_077_no_return_runtime_compatibility_repair_protocol_v2_20260806.json",
+      "sha256": "e1a0567bd83f4ae75288fa2c7c50de504ff613a873bd967802ef546cca788841"
+    },
+    "campaign077_v2_runner": {
+      "path": "scripts/a_share_three_day_walkforward_campaign077_no_return_audit_v2.py",
+      "sha256": "0effc90c4bac5a9eec633b8bfbfd8f8965b709e212153fe5dc8af49e3e91f133"
+    },
+    "purpose": "Reuse the already frozen runtime-version binding only while verifying the unchanged legacy comparator snapshots; do not alter stored hashes, schemas, values, comparison order, or candidate semantics.",
+    "candidate_formula_or_snapshot_changed_by_binding": false,
+    "comparison_library_or_order_changed_by_binding": false
+  },
+  "frozen_gate_order": [
+    "verify all candidate snapshot partition bytes, frames, rows, semantics, and dataset digest",
+    "compute quality/listing coverage and three-session capacity without comparator values",
+    "only after coverage passes load all 108 comparators in frozen order and apply strict uniqueness",
+    "stop before daily prices or forward returns on any failure"
+  ],
+  "coverage_or_capacity_metrics_computed_before_freeze": false,
+  "comparison_values_read_before_freeze": false,
+  "historical_daily_price_fields_read_before_freeze": [],
+  "historical_forward_returns_read_before_freeze": false,
+  "provider_request_issued_before_freeze": false,
+  "candidate49_ledgers_changed_before_freeze": false,
+  "development_or_model_fitting_performed_before_freeze": false
+}

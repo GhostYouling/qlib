@@ -1,0 +1,21 @@
+{
+  "schema_version": 1,
+  "kind": "a_share_three_day_walkforward_campaign208_infrastructure_failure",
+  "recorded_at": "2026-08-15T21:46:00+08:00",
+  "timestamp_semantics": "monotonic_logical_append_time_not_host_wall_clock_measurement",
+  "status": "failed_atomic_report_append_patch_context_mismatch_no_write",
+  "attempt_class": "infrastructure_failure",
+  "phase": "documentation_patch",
+  "scientific_attempt": false,
+  "result_consumed": false,
+  "safety_breach": false,
+  "failure": "The first two-report append patch matched only a suffix of the real final paragraph and was atomically rejected before either target write.",
+  "recovery": "A later patch used the complete exact final paragraph and appended identical Campaign208 sections to both reports.",
+  "research_boundary": {
+    "candidate_or_comparator_value_read": false,
+    "daily_price_or_forward_return_read": false,
+    "provider_or_web_request_issued": false,
+    "candidate49_ledgers_changed": false,
+    "stress_2024_2025_opened": false
+  }
+}

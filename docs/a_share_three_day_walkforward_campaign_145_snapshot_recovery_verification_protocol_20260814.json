@@ -1,0 +1,70 @@
+{
+  "schema_version": 1,
+  "kind": "a_share_three_day_walkforward_campaign145_snapshot_recovery_verification_protocol",
+  "status": "frozen_before_recovery_partition_reads",
+  "recorded_at": "2026-08-14T20:27:00+08:00",
+  "purpose": "Verify the immutable Campaign145 snapshot after the inherited manifest-semantic validator failed, without rebuilding, rewriting or relaxing the frozen formula or research gates.",
+  "authoritative_inputs": {
+    "implementation_freeze": {
+      "path": "docs/a_share_three_day_walkforward_campaign_145_no_return_implementation_freeze_20260814.json"
+    },
+    "verification_failure": {
+      "path": "docs/a_share_three_day_walkforward_campaign_145_snapshot_manifest_semantics_verification_failure_20260814.json"
+    },
+    "snapshot_manifest": {
+      "path": "/Volumes/DIsk/qlib-a-share-tushare-1m/derived/a_share/rich/tushare/minute_walkforward_campaign145_feature_library/tushare_stk_mins_1m_2019_2025_ea0cbb8f_walkforward_campaign145_feature_library_v1/snapshot_manifest.json",
+      "sha256": "58d3686906d71da431397576c883e8c4b727225e98cc6791ae5923e5ff5f965f",
+      "dataset_sha256": "d7cde236c58871314718febfb72f4e72d2cb6bab6729ee0f979b335e92a2acc0",
+      "partitions": 33015,
+      "rows": 7724498,
+      "eligible_rows": 3954911
+    }
+  },
+  "known_manifest_header_discrepancy": {
+    "stored_factor_ranges": {
+      "intraday_return_amount_cumulative_path_signed_area_238p": [
+        0.0,
+        1.0
+      ]
+    },
+    "effective_formula_range_from_preregistration_and_partition_validator": {
+      "intraday_return_amount_cumulative_path_signed_area_238p": [
+        -1.0,
+        1.0
+      ]
+    },
+    "stored_half_session_pair_count": 119,
+    "stored_positive_half_denominators_required": true,
+    "stored_signed_return_and_amount_magnitudes_used": true,
+    "inherited_verifier_expected_predecessor_metadata": {
+      "half_session_pair_count": 0,
+      "positive_half_denominators_required": false,
+      "signed_return_and_amount_magnitudes_used": false
+    }
+  },
+  "required_recovery_checks": [
+    "Require the exact original manifest path and byte SHA-256 and refuse every rewrite.",
+    "Require the exact known header discrepancy and every other frozen source, formula, count and research-boundary field.",
+    "For all 33015 partitions require path containment, stored byte SHA-256, stored frame SHA-256, exact output schema, stored row count and actual finite eligible values in [-1,1] with missing values only when eligibility is false.",
+    "Recompute the ordered aggregate dataset digest and require d7cde236c58871314718febfb72f4e72d2cb6bab6729ee0f979b335e92a2acc0.",
+    "Require total rows 7724498 and eligible rows 3954911.",
+    "Publish one exclusive additive receipt identifying [-1,1] as effective; never modify the original manifest or partition bytes."
+  ],
+  "forbidden_recovery_actions": {
+    "snapshot_rebuild_overwrite_reformat_or_partition_rewrite": true,
+    "formula_direction_support_range_or_gate_change": true,
+    "candidate_or_comparator_drop_fill_clamp_or_rescale": true,
+    "daily_price_forward_return_or_2024_2025_stress_read": true,
+    "provider_request_or_credential_load": true,
+    "candidate49_backfill_or_ledger_change": true
+  },
+  "research_boundary": {
+    "recovery_partition_values_read_before_this_protocol": false,
+    "comparator_values_read": false,
+    "historical_daily_price_or_forward_return_values_read": false,
+    "stress_2024_2025_opened": false,
+    "provider_request_issued": false,
+    "credential_loaded": false,
+    "candidate49_ledgers_changed": false
+  }
+}

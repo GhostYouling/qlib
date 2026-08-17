@@ -1,0 +1,34 @@
+{
+  "schema_version": 1,
+  "kind": "a_share_three_day_walkforward_campaign141_infrastructure_failure",
+  "status": "recorded_and_remediated_without_scientific_result_change",
+  "recorded_at": "2026-08-14T14:21:40+0800",
+  "attempt_id": "campaign141_infrastructure_001",
+  "validation_scope": {
+    "json_parse_file_count": 6,
+    "black_check_path": "tests/data_collector_tests/test_a_share_three_day_walkforward_campaign141_terminal.py",
+    "ruff_check_path": "tests/data_collector_tests/test_a_share_three_day_walkforward_campaign141_terminal.py",
+    "pytest_path": "tests/data_collector_tests/test_a_share_three_day_walkforward_campaign141_terminal.py"
+  },
+  "observed_results": {
+    "json_parse_passed": true,
+    "black_check_passed": false,
+    "black_exit_code": 1,
+    "black_output_class": "would_reformat_one_file",
+    "ruff_check_passed": true,
+    "focused_pytest_passed_count": 5,
+    "focused_pytest_failed_count": 0,
+    "combined_shell_exit_code": 0,
+    "combined_exit_was_masked_by_later_successful_commands": true
+  },
+  "cause": "The first combined validation command did not enable shell errexit, so Black's formatting-only exit 1 was followed by successful Ruff and pytest commands and the aggregate shell exit became 0.",
+  "response": {
+    "masked_failure_explicitly_recorded": true,
+    "black_format_applied": true,
+    "failed_check_treated_as_passed": false,
+    "scientific_artifact_changed": false,
+    "scientific_result_changed": false,
+    "old_record_rewritten": false,
+    "next_validation_must_run_with_errexit": true
+  }
+}

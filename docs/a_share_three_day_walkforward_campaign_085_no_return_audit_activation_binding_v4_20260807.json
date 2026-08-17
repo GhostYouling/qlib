@@ -1,0 +1,46 @@
+{
+  "version": 4,
+  "kind": "a_share_three_day_walkforward_campaign085_no_return_audit_activation_binding_v4",
+  "status": "v4_frozen_before_full_restart_or_comparison_values",
+  "recorded_at": "2026-08-07T01:18:00+08:00",
+  "implementation_freeze": {
+    "path": "docs/a_share_three_day_walkforward_campaign_085_no_return_audit_implementation_freeze_v4_20260807.json",
+    "sha256": "d15c8238380ac3185b6a681e9426c6042a7e8f7591124cb65974c191f53aa44a"
+  },
+  "repair_protocol": {
+    "path": "docs/a_share_three_day_walkforward_campaign_085_no_return_audit_repair_protocol_v4_20260807.json",
+    "sha256": "55395871191233404c84707f37361e651de5afefd0c71dde7c12f54557b6d2d2"
+  },
+  "snapshot_binding": {
+    "path": "docs/a_share_three_day_walkforward_campaign_085_feature_snapshot_binding_20260806.json",
+    "sha256": "ce70c107d654b1d6151fde87bd5f177ee458cb2db825080cf1c6206df249ba4f"
+  },
+  "candidate_snapshot": {
+    "path": "/Volumes/DIsk/qlib-a-share-tushare-1m/derived/a_share/rich/tushare/minute_walkforward_campaign085_feature_library/tushare_stk_mins_1m_2019_2025_ea0cbb8f_walkforward_campaign085_feature_library_v1/snapshot_manifest.json",
+    "sha256": "fb8ea4bdb2b2f783a8c1d4e020f1dcdfca1697c779c732e50233fe7b040b4d28",
+    "dataset_sha256": "368f7cb96c15186cd511ccd4120e89b577141aa9687df8b39f9dd17320db8fb9",
+    "rows": 1331759,
+    "eligible_rows": 1328065,
+    "file_record_years": [
+      2019,
+      2020,
+      2021,
+      2022,
+      2023,
+      2024,
+      2025
+    ]
+  },
+  "campaign077_runtime_adapter_validated_before_activation": true,
+  "campaign083_snapshot_adapter_validated_before_activation": true,
+  "v1_v2_and_v3_partial_statistics_reused": false,
+  "v4_experiment_root_is_new_and_empty": "data/experiments/short_horizon/historical_walkforward/campaign_085/no_return_v4",
+  "coverage_or_capacity_metrics_computed_before_activation": false,
+  "comparison_values_read_before_activation": false,
+  "historical_daily_price_fields_read_before_activation": [],
+  "historical_forward_returns_read_before_activation": false,
+  "provider_request_issued_before_activation": false,
+  "candidate49_ledgers_changed_before_activation": false,
+  "second_prospective_candidate_created": false,
+  "current_scoring_selection_sizing_or_orders_performed": false
+}

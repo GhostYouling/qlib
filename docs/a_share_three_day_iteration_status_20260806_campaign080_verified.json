@@ -1,0 +1,121 @@
+{
+  "schema_version": 1,
+  "kind": "a_share_three_day_iteration_status",
+  "status": "campaign080_terminal_verified_zero_survivors_candidate49_preserved_campaign081_offline_scouting_authorized_current",
+  "recorded_at": "2026-08-06T08:26:00Z",
+  "authoritative_predecessor": {
+    "path": "docs/a_share_three_day_iteration_status_20260806_campaign079_verified.json",
+    "sha256": "a9898fcded0457b491a82f3678f62c23a27c7c35193c55122156fa322a5d3161"
+  },
+  "active_data_roots": {
+    "historical_minute_root": "/Volumes/DIsk/qlib-a-share-tushare-1m",
+    "daily_root": "/Volumes/DIsk/Disk-Coding/qlib/data"
+  },
+  "campaign080_result": {
+    "factor": "intraday_above_median_amount_longest_run_240m",
+    "direction": "higher",
+    "terminal_gate": "2019_2023_development_survivor_gate",
+    "feature_snapshot_rows": 7724498,
+    "feature_snapshot_eligible_rows": 7724498,
+    "coverage_gate_passed": true,
+    "numeric_comparisons_passed": 109,
+    "numeric_comparison_count": 109,
+    "maximum_absolute_median_daily_rank_correlation": 0.5120572125572724,
+    "development_trial_count": 1,
+    "development_survivor_count": 0,
+    "validation_mean_rank_ic_2021_2022_2023": [
+      -0.03407568185766916,
+      -0.03777943451170531,
+      -0.04791119048113904
+    ],
+    "validation_pilot_10bp_return_2021_2022_2023": [
+      0.060378330722620666,
+      -0.06769066216255426,
+      -0.023476719518328637
+    ],
+    "development_aggregate_20bp_return": -0.17584418246214684,
+    "stress_2024_2025_opened": false,
+    "stress_returns_read": false,
+    "terminal": true,
+    "same_campaign_rescue_allowed": false
+  },
+  "current_terminal_evidence": {
+    "research_record": {
+      "path": "docs/a_share_three_day_walkforward_campaign_080_research_record.json",
+      "sha256": "41321b02ce94f8cbc5e18a187f3e04092899816e0b67ed9436cb44c048c00af8"
+    },
+    "numeric_policy_v16": {
+      "path": "docs/a_share_three_day_walkforward_future_numeric_comparison_eligibility_policy_v16_20260806.json",
+      "sha256": "ac8c3a4aa6a0ea62aea0d3294ca522ce47b4fe38c83e059a32db31a4f07085e8"
+    },
+    "attempt_ledger_v2": {
+      "path": "data/experiments/short_horizon/historical_walkforward/campaign_080/research_attempt_ledger_v2.json",
+      "sha256": "788b9a5881df2f0b5c5f42413f6e17c1b5ec59380038ad545ac6a9a59d3e2555"
+    },
+    "terminal_completion_freeze": {
+      "path": "docs/a_share_three_day_walkforward_campaign_080_terminal_completion_freeze_20260806.json",
+      "sha256": "31f4b4b4e6a76bfec34b3dc17c59a035e8618fcc3188cbd9722269c0d68d993d"
+    },
+    "unified_report": {
+      "path": "docs/a_share_three_day_walkforward_campaign_080_report.md",
+      "sha256": "935b7010c85a8a4f21a7525cd61543add6aa0a1603ed758506bc6480fc37c84c"
+    },
+    "manage_qlib_a_share_data_skill": {
+      "path": "/Users/niyufei/.codex/skills/manage-qlib-a-share-data/SKILL.md",
+      "sha256": "000c2cbed4195d03fbb42038d0b7029be8e7b617ad11d7eb4f23c3d879ad077d"
+    }
+  },
+  "attempt_accounting": {
+    "campaign080_infrastructure_failures": 1,
+    "campaign080_complete_factor_attempts": 1,
+    "campaign080_attempts": 2,
+    "campaign080_ledger_entries": 3,
+    "campaign080_return_reading_development_trials": 1,
+    "cumulative_historical_research_attempts": 486,
+    "cumulative_return_reading_development_trials": 281
+  },
+  "candidate49_future_only_layer": {
+    "remains_only_active_prospective_candidate": true,
+    "signal_ledger_path": "data/experiments/short_horizon/candidate49_future_signal_ledger.json",
+    "signal_ledger_sha256": "5193f00d7f36da003f53cec387900da4c3d002299f5dfcfc1a95eaa199ed3a79",
+    "signal_ledger_entries": 0,
+    "execution_ledger_path": "data/experiments/short_horizon/candidate49_future_execution_ledger.json",
+    "execution_ledger_sha256": "d57a3e61eac969e42cafa418ccd8c0a5ee65dcf69da145bb2c096c2a02a2ea4f",
+    "execution_ledger_entries": 0,
+    "historical_backfill_performed": false,
+    "provider_request_issued_this_campaign": false,
+    "same_day_plan_or_run_performed": false,
+    "reason_same_day_workflow_not_run": "credential verification and historical work occurred before 16:30 Asia/Singapore; no prospective provider action was required for this user turn",
+    "second_prospective_candidate_created": false,
+    "live_order_performed": false
+  },
+  "credential_state": {
+    "repository_env_path": "/Volumes/DIsk/Disk-Coding/qlib/.env",
+    "repository_env_regular_file": true,
+    "repository_env_is_symlink": false,
+    "repository_env_mode": "0600",
+    "repository_env_git_ignored": true,
+    "workflow_loads_nonempty_tushare_token": true,
+    "process_environment_token_required": false,
+    "secret_printed_hashed_logged_or_persisted": false
+  },
+  "next_offline_research": {
+    "campaign081_scouting_authorized": true,
+    "wait_for_new_daily_bar_required": false,
+    "wait_for_16_30_required": false,
+    "complete_definition_count": 112,
+    "complete_definition_order_sha256": "a31457db36af9a8ddac4e08890c87f50ef6554bb46918f022749bd9cccbc1c55",
+    "numeric_comparator_count": 110,
+    "numeric_comparator_order_sha256": "dc6319ac2f7c9d5811a8bee3f8fd9dbd174d2451739ef201aad31c36a9f25ce3"
+  },
+  "historical_research_boundary": {
+    "may_generate_current_score_selection_sizing_order_or_advice": false,
+    "campaign080_may_be_inverted_requantiled_retied_cross_lunch_filtered_rerun_rescued_or_combined": false,
+    "current_listing_snapshot_survivorship_bias": true
+  },
+  "prospective_workflow_check": {
+    "observed_local_time": "2026-08-06T15:23:37+08:00",
+    "observed_before_16_30_asia_singapore": true,
+    "candidate49_plan_or_run_performed": false
+  }
+}

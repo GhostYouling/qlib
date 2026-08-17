@@ -1,0 +1,81 @@
+{
+  "schema_version": 1,
+  "kind": "a_share_three_day_walkforward_campaign115_development_source_runner_verification",
+  "status": "development_source_runner_v1_verified_zero_network_before_source_access",
+  "recorded_at": "2026-08-09T05:22:00+08:00",
+  "recorded_at_semantics": "monotonic_logical_append_time_after_attempt_ledger_v9_recorded_at_05_18_not_host_wall_clock_measurement",
+  "authoritative_inputs": {
+    "development_source_protocol": {
+      "path": "docs/a_share_three_day_walkforward_campaign_115_development_source_protocol_20260809.json",
+      "sha256": "836f10c9465c8cff03cf44233adf284f6e003d144c169ae003dd450a78c486e2"
+    },
+    "development_source_runner_freeze_v1": {
+      "path": "docs/a_share_three_day_walkforward_campaign_115_development_source_runner_freeze_v1_20260809.json",
+      "sha256": "7991e43b7737a6de8e65cdf6c8675ff6a3d6db194f69772a053959f1665aa909"
+    },
+    "attempt_ledger_v9": {
+      "path": "data/experiments/short_horizon/historical_walkforward/campaign_115/research_attempt_ledger_v9.json",
+      "sha256": "a9ea1be0385be5ff608f554d382b0f81ce8aa059f058d683e1030ccbff6b67f6"
+    }
+  },
+  "implementation_fingerprints": {
+    "runner_path": "scripts/a_share_tushare_limit_up_queue_development.py",
+    "runner_sha256": "73e1d2a9f2c81c99aa9ab812cad1df9e04e37c8290992ba3edc584aa9094df82",
+    "test_path": "tests/data_collector_tests/test_a_share_tushare_limit_up_queue_development.py",
+    "test_sha256": "ceeda9b14b5f42873d02c27d3cf79c8e02eac3d31a65e5f193c75ac4be834246",
+    "adapter_sha256": "807d06f7dec4ca0a94beb28912b686e8cb01fbf36c7f473e69564de16af5f5dd",
+    "acceptance_runner_sha256": "920cd2183444c7a28c653f71846468aa8f0baf5031a039e7bdd17b59beac9b52"
+  },
+  "verification": {
+    "focused_development_runner_tests": "9 passed in 0.47s",
+    "campaign113_to_campaign115_including_development_joint_regression": "86 passed in 1.17s",
+    "black_check": "2 files would be left unchanged",
+    "ruff_required_rules": "E4,E7,E9,F,I passed",
+    "ledger_v8_chain_valid": true,
+    "ledger_v9_chain_valid": true,
+    "real_plan_exit_code": 2,
+    "real_plan_ready": false,
+    "real_plan_session_count": 1214,
+    "real_plan_completed_session_prefix": 0,
+    "real_plan_remaining_provider_calls": 1214,
+    "real_plan_blockers_in_order": [
+      "manual_5000_point_entitlement_confirmation",
+      "acceptance_success_committed"
+    ],
+    "real_plan_runtime_binding": true,
+    "real_plan_partial_prefix_valid_or_absent": true,
+    "real_plan_credential_loaded": false,
+    "real_plan_provider_request_issued": false,
+    "acceptance_inspection_exit_code": 0,
+    "acceptance_inspection_status": "no_attempt_journal",
+    "acceptance_inspection_valid": true,
+    "acceptance_inspection_terminal_evidence_state": "not_started",
+    "acceptance_inspection_credential_loaded": false,
+    "repository_dotenv_exists": true,
+    "repository_dotenv_mode": "0600",
+    "repository_dotenv_nonempty_supported_token_assignments": 1,
+    "credential_value_printed_hashed_logged_or_persisted": false,
+    "development_lock_exists_after_plan": false,
+    "development_partial_root_exists_after_plan": false,
+    "development_final_root_exists_after_plan": false,
+    "development_run_manifest_exists_after_plan": false,
+    "development_failure_record_exists_after_plan": false
+  },
+  "scientific_state": {
+    "provider_request_issued": false,
+    "provider_rows_or_candidate_values_read": false,
+    "comparison_values_read": false,
+    "historical_daily_price_or_forward_return_values_read": false,
+    "complete_factor_definition_count": 0,
+    "numeric_comparator_appended": false,
+    "development_return_trial_count": 0,
+    "stress_2024_2025_opened": false
+  },
+  "candidate49_preservation": {
+    "sole_active_prospective_candidate": true,
+    "signal_ledger_sha256": "5193f00d7f36da003f53cec387900da4c3d002299f5dfcfc1a95eaa199ed3a79",
+    "execution_ledger_sha256": "d57a3e61eac969e42cafa418ccd8c0a5ee65dcf69da145bb2c096c2a02a2ea4f",
+    "historical_backfill_performed": false
+  },
+  "next_action": "Do not issue any provider request until the user explicitly confirms that the currently configured account already has at least 5000 points and the one-shot acceptance has committed success. Then rerun the bound development plan with the assertion; only a ready=true exit-zero plan permits the separately confirmed sequential 1214-session sync."
+}

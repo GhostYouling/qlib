@@ -1,0 +1,134 @@
+{
+  "version": 1,
+  "kind": "a_share_three_day_walkforward_campaign057_mechanism_overlap_audit",
+  "status": "passed_conceptual_independence_before_campaign057_source_candidate_comparison_daily_price_or_return_values",
+  "recorded_at": "2026-08-04T03:52:00Z",
+  "purpose": "Challenge the selected cross-session absolute-return-clock persistence mechanism against all nearby frozen families before any Campaign057 source partition or value is read.",
+  "authoritative_boundary": {
+    "path": "docs/a_share_three_day_iteration_status_20260804_campaign056_verified.json",
+    "sha256": "0e51c9273071bebf270b81ab11a2551235338798419f05b58519f396cc099b3e"
+  },
+  "historical_walkforward_policy": {
+    "path": "docs/a_share_three_day_historical_walkforward_research_policy_20260727.json",
+    "sha256": "38426d6161b9bfed323c58caba18feca668b8c9d53e294951a8ba90c01a798bb"
+  },
+  "concept_scouting": {
+    "path": "docs/a_share_three_day_walkforward_campaign_057_concept_scouting.json",
+    "sha256": "442b67293771c00d956a6972261774fadbb1700233792ec8aebfc288f7256621"
+  },
+  "inherited_comparison_definition_source": {
+    "campaign056_protocol": {
+      "path": "docs/a_share_three_day_walkforward_campaign_056_no_return_preregistration.json",
+      "sha256": "7e7c9502e1018431f33a072dd12f8aa8f55a83b4afca30528245d1ea04ad1682"
+    },
+    "campaign056_terminal_record": {
+      "path": "docs/a_share_three_day_walkforward_campaign_056_research_record_v2.json",
+      "sha256": "fe4befadfca85d5d59a8441ad8c027a6a5c133883ba60b624dbeb1ac8f706401"
+    },
+    "comparison_count_after_appending_campaign056": 80,
+    "comparison_factor_order_sha256": "67e70655596658de91c8285ff998c17e8d2a7d83d0f571d416182e635e8180ae",
+    "campaign057_comparison_values_read": false
+  },
+  "selected_mechanism": {
+    "name": "intraday_day_over_day_absolute_return_profile_similarity_238b",
+    "direction": "higher",
+    "economic_hypothesis": "High repetition of a stock's normalized 238-bin absolute-return clock on consecutive accepted sessions may indicate persistent information-release or execution timing relevant to a three-session holding horizon.",
+    "formula": "Construct 119 within-half absolute log-close returns in each half for both the signal session and its exact accepted-calendar predecessor, normalize each 238-bin session vector, and return equal-mixture natural-log Jensen-Shannon similarity 1-JSD/ln(2).",
+    "source_projection": [
+      "datetime",
+      "symbol",
+      "provider",
+      "close"
+    ],
+    "selected_close_count_per_session": 240,
+    "absolute_return_bin_count_per_session": 238,
+    "session_pair_lag": 1,
+    "previous_session_definition": "immediately preceding accepted local market-calendar session; never previous observed stock day across a suspension or missing session",
+    "valid_range": [
+      0.0,
+      1.0
+    ],
+    "transform_threshold_filter_combination_or_model": "none"
+  },
+  "design_choices_frozen_before_values": {
+    "formula_family": "cross_session_full_clock_absolute_return_distribution_similarity",
+    "direction": "higher",
+    "current_session_count": 1,
+    "lookback_session_count": 1,
+    "calendar_lag": 1,
+    "close_count_per_session": 240,
+    "absolute_return_bin_count_per_session": 238,
+    "return_definition": "adjacent natural-log closes separately within each half",
+    "distance": "equal_mixture_jensen_shannon_natural_log",
+    "normalization": "independent_positive_total_absolute_return_per_session",
+    "include_0930": false,
+    "include_lunch_transition": false,
+    "source_open_high_low_volume_amount_read": false,
+    "bridge_missing_or_suspended_previous_session": false,
+    "parameter_filter_subset_model_or_combination_count": 0
+  },
+  "overlap_challenges": [
+    {
+      "family": "intraday_day_over_day_amount_profile_similarity_240b",
+      "result": "distinct_pending_statistical_uniqueness_gate",
+      "reason": "Campaign056 measures cross-session persistence of CNY activity mass and is invariant to all prices. Campaign057 measures cross-session persistence of absolute close-return mass and is invariant to amount; either profile can change while the other remains fixed."
+    },
+    {
+      "family": "intraday_morning_afternoon_range_profile_similarity_120b_and_range_entropy",
+      "result": "distinct_pending_statistical_uniqueness_gate",
+      "reason": "Campaign040 and range entropy use contemporaneous high-low ranges and compare halves or concentration within one session. Campaign057 uses close-to-close absolute returns, compares dates, and reads no high or low."
+    },
+    {
+      "family": "intraday_morning_afternoon_return_profile_persistence_119p",
+      "result": "distinct_pending_statistical_uniqueness_gate",
+      "reason": "Campaign027 correlates signed morning and afternoon returns inside one date. Campaign057 discards sign, uses a probability-distance statistic, and compares the full two-half clock across consecutive dates."
+    },
+    {
+      "family": "absolute_return_serial_persistence_variance_entropy_spectral_entropy_and_variance_ratio",
+      "result": "distinct_pending_statistical_uniqueness_gate",
+      "reason": "Those terminal factors summarize adjacency, concentration, frequency content, or multi-scale variance inside one session. Campaign057 contains no within-session serial or spectral comparison and asks whether absolute-return mass recurs at the same clock bins on the next accepted date."
+    },
+    {
+      "family": "price_update_share_price_update_clock_entropy_and_weak_order_entropy",
+      "result": "material_confound_pending_statistical_uniqueness_gate",
+      "reason": "Exact-zero absolute returns affect the normalized support, so sparse price updating may correlate with Campaign057. The fixed all-80 uniqueness screen must reject it if this confound dominates; no threshold, zero removal, or residualization is allowed."
+    },
+    {
+      "family": "intraday_amount_price_discovery_alignment_js_238p",
+      "result": "distinct_pending_statistical_uniqueness_gate",
+      "reason": "Campaign053 compares amount mass with same-session absolute-return mass. Campaign057 never reads amount and compares the stock's absolute-return mass only with its own prior accepted session."
+    },
+    {
+      "family": "market_shock_dispersion_idiosyncratic_and_response_families",
+      "result": "distinct_pending_statistical_uniqueness_gate",
+      "reason": "Campaign057 loads no market or peer benchmark and cannot distinguish common from idiosyncratic volatility. It measures only the stock's own cross-date clock persistence."
+    },
+    {
+      "family": "candidate49_cumulative_vwap_crossing_rate_240m",
+      "result": "distinct",
+      "reason": "Candidate49 counts ordered close crossings around a causal same-session cumulative VWAP and requires volume. Campaign057 has no price anchor or crossing, reads no volume, and remains historical-only without Candidate49 backfill."
+    },
+    {
+      "family": "terminal_factor_combination_filter_threshold_or_model",
+      "result": "distinct",
+      "reason": "Campaign057 computes one raw two-session close statistic. It loads no terminal factor value and contains no fitted weight, regime, filter, threshold, subset, combination, or model."
+    }
+  ],
+  "research_boundary": {
+    "external_campaign057_minute_partitions_read": false,
+    "campaign057_candidate_or_comparison_values_read": false,
+    "historical_daily_price_fields_read": [],
+    "historical_forward_return_fields_read": false,
+    "provider_request_issued": false,
+    "candidate49_historical_return_signal_execution_or_milestone_backfill_performed": false,
+    "candidate49_ledgers_changed": false,
+    "second_prospective_candidate_created": false,
+    "current_scoring_selection_sizing_or_orders_performed": false
+  },
+  "decision": {
+    "conceptual_independence_passed": true,
+    "statistical_independence_pending_all_80_comparisons": true,
+    "predictive_value_established": false,
+    "next_action": "Freeze one exact coverage-first 80-comparison no-return protocol, with one conditional development trial only if admitted, before implementing or reading Campaign057 source values."
+  }
+}

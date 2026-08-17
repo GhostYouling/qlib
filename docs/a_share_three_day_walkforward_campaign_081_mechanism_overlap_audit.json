@@ -1,0 +1,182 @@
+{
+  "schema_version": 1,
+  "kind": "a_share_three_day_walkforward_campaign081_mechanism_overlap_audit",
+  "status": "passed_semantic_mechanism_review_before_campaign081_minute_source_or_comparison_values",
+  "recorded_at": "2026-08-06T16:59:00+08:00",
+  "concept_scouting": {
+    "path": "docs/a_share_three_day_walkforward_campaign_081_concept_scouting.json",
+    "sha256": "e7f60fd5311465a5a27e0e2796b34a453beb1e18a430212b3a012ebb23e1345c"
+  },
+  "authoritative_state": {
+    "path": "docs/a_share_three_day_iteration_status_20260806_campaign080_verified_v4.json",
+    "sha256": "6faab964c6a35ccfba859844b12a5caf7471be37dae910438dd8aa69d76d9309"
+  },
+  "historical_walkforward_policy": {
+    "path": "docs/a_share_three_day_historical_walkforward_research_policy_20260727.json",
+    "sha256": "38426d6161b9bfed323c58caba18feca668b8c9d53e294951a8ba90c01a798bb"
+  },
+  "numeric_comparator_policy": {
+    "path": "docs/a_share_three_day_walkforward_future_numeric_comparison_eligibility_policy_v16_20260806.json",
+    "sha256": "ac8c3a4aa6a0ea62aea0d3294ca522ce47b4fe38c83e059a32db31a4f07085e8",
+    "complete_definition_count": 112,
+    "numeric_comparator_count": 110,
+    "complete_definition_order_sha256": "a31457db36af9a8ddac4e08890c87f50ef6554bb46918f022749bd9cccbc1c55",
+    "numeric_comparator_order_sha256": "dc6319ac2f7c9d5811a8bee3f8fd9dbd174d2451739ef201aad31c36a9f25ce3"
+  },
+  "candidate": {
+    "name": "intraday_amount_path_efficiency_238p",
+    "direction": "higher",
+    "mechanism": "unsigned endpoint displacement divided by total absolute path variation of log1p amount, pooled across two separately reset 120-bar half sessions",
+    "formula": "x_i=log1p(amount_i); for each half h, E_h=abs(x_last-x_first) and V_h=sum(abs(diff(x))) over 119 within-half transitions; score=(E_morning+E_afternoon)/(V_morning+V_afternoon)",
+    "lunch_transition_excluded": true,
+    "no_price_return_daily_financial_event_peer_or_future_input": true,
+    "no_old_factor_value_input": true,
+    "candidate49_used_or_modified": false
+  },
+  "complete_library_review": {
+    "all_112_definitions_reviewed_in_frozen_order": true,
+    "all_pre_walkforward_terminal_price_volume_event_structural_and_composite_families_reviewed": true,
+    "candidate_is_exact_formula_duplicate": false,
+    "candidate_is_direction_only_duplicate": false,
+    "candidate_is_parameter_only_duplicate": false,
+    "candidate_is_an_inversion_of_a_terminal_factor": false,
+    "candidate_combines_terminal_factor_values": false,
+    "candidate_changes_any_quality_listing_or_buyability_gate": false,
+    "same_functional_family_as_price_path_efficiency_explicitly_challenged": true,
+    "campaign079_invalid_turnover_mechanism_not_reused": true,
+    "campaign080_terminal_threshold_run_mechanism_not_reused": true
+  },
+  "semantic_invariance_checks": [
+    {
+      "intervention": "Reverse minute order separately inside each 120-bar half while preserving every amount value and half membership.",
+      "campaign081_result": "unchanged because both the absolute endpoint displacement and total absolute variation are reversal invariant",
+      "distinguishes_from": "amount center of mass, clock dispersion, peak recency, late-window share, and terminal-bar share"
+    },
+    {
+      "intervention": "Permute fixed interior log-amount values within a half while preserving its first value, last value, and complete amount multiset.",
+      "campaign081_result": "generally changes through total variation while the endpoint numerator and permutation-invariant amount entropy remain fixed",
+      "distinguishes_from": "amount entropy, concentration, totals, and any multiset-only statistic"
+    },
+    {
+      "intervention": "Replace a monotone path between fixed endpoints by a zigzag path using interior values within the same endpoint range.",
+      "campaign081_result": "decreases whenever the added reversals increase total variation; a nonconstant monotone half has efficiency one",
+      "distinguishes_from": "endpoint-only amount change and range-only summaries"
+    },
+    {
+      "intervention": "Construct two paths with the same endpoints and total variation but different numbers of strict adjacent local maxima.",
+      "campaign081_result": "unchanged",
+      "distinguishes_from": "intraday_amount_local_peak_density_238p"
+    },
+    {
+      "intervention": "Change the last morning and first afternoon log amounts while holding all within-half transitions fixed by translating each complete half independently.",
+      "campaign081_result": "unchanged and no 11:30-to-13:01 transition is introduced",
+      "distinguishes_from": "an artificial cross-lunch path and absolute amount-level summaries"
+    },
+    {
+      "intervention": "Multiply every nominal amount by a common positive constant.",
+      "campaign081_result": "not asserted invariant because log1p(c*a) is not an additive shift of log1p(a); this sensitivity is frozen and cannot be retroactively normalized away",
+      "distinguishes_from": "rank-only or common-scale-invariant amount topology while preventing a false invariance claim"
+    },
+    {
+      "intervention": "Hold all 240 amount values fixed while changing minute and daily OHLC, returns, ranges, transaction prices, financial statements, issuer events, turnover fields, and market-peer paths.",
+      "campaign081_result": "unchanged",
+      "distinguishes_from": "all price-path, return-state, transaction-price, turnover, event, fundamental, market-coupling, and Candidate49 mechanisms"
+    }
+  ],
+  "nearest_semantic_challenges": [
+    {
+      "name": "intraday_signed_path_efficiency_239m",
+      "relationship": "the closest frozen functional family because both divide endpoint displacement by accumulated absolute path movement",
+      "distinction": "the prior factor is signed and uses the one-session close-price path; Campaign081 is directionless, uses only log1p amount, pools two unsigned half-session ratios through their raw numerator and denominator components, and resets at lunch. The input economics are price discovery versus participation-schedule coherence, but numeric redundancy remains a mandatory empirical question.",
+      "mandatory_numeric_challenge": true
+    },
+    {
+      "name": "afternoon_signed_amount_efficiency_120m",
+      "relationship": "both involve intraday amount and an efficiency ratio",
+      "distinction": "the prior factor is the signed sum of amount-weighted afternoon close returns divided by weighted absolute returns and includes the 11:30-to-13:01 price move; Campaign081 uses amount as the path itself, has no price or signed return, treats both halves symmetrically, and excludes lunch adjacency.",
+      "mandatory_numeric_challenge": true
+    },
+    {
+      "name": "intraday_diffusive_variation_ratio_238m",
+      "relationship": "both contrast a path-scale movement with accumulated variation",
+      "distinction": "the prior factor uses close returns and a diffusive price-variation construction; Campaign081 uses unsigned log-amount endpoint displacement over L1 variation, separately reset at lunch.",
+      "mandatory_numeric_challenge": true
+    },
+    {
+      "name": "intraday_amount_profile_serial_persistence_240m",
+      "relationship": "both use ordering of the one-session amount path",
+      "distinction": "serial persistence is a linear adjacent-level association; Campaign081 is a nonlinear endpoint-to-total-variation geometry that is reversal invariant and can be one for every nonconstant monotone path regardless of slope.",
+      "mandatory_numeric_challenge": true
+    },
+    {
+      "name": "intraday_amount_local_peak_density_238p",
+      "relationship": "both respond to amount-path reversals",
+      "distinction": "local peak density counts strict adjacent maxima; Campaign081 measures the aggregate excess travel beyond endpoints. Paths can share peak count but differ in travel magnitude, or share endpoints and total variation while differing in peak count.",
+      "mandatory_numeric_challenge": true
+    },
+    {
+      "name": "intraday_above_median_amount_longest_run_240m",
+      "relationship": "both summarize within-half persistence of the amount path and reset at lunch",
+      "distinction": "Campaign080 is an ordinal binary threshold-duration statistic invariant to monotone transforms; Campaign081 is a continuous log-amount geometry using every transition magnitude and no median threshold.",
+      "mandatory_numeric_challenge": true
+    },
+    {
+      "name": "intraday_amount_participation_entropy_240m",
+      "relationship": "both summarize one stock-day's exact amount bars",
+      "distinction": "entropy depends on normalized amount mass but ignores order; Campaign081 changes under interior permutations and focuses on path travel relative to endpoints.",
+      "mandatory_numeric_challenge": true
+    },
+    {
+      "name": "intraday_amount_center_of_mass_240m, intraday_amount_clock_dispersion_240m, intraday_peak_amount_bar_recency_240m, late_amount_share_30m, and intraday_terminal_bar_amount_share_240m",
+      "relationship": "all can react to a migrating activity schedule",
+      "distinction": "the prior factors retain absolute clock location or mass; Campaign081 is invariant to reversal inside each half and uses no absolute clock weights beyond the lunch reset.",
+      "mandatory_numeric_challenge": true
+    },
+    {
+      "name": "intraday_morning_afternoon_amount_profile_similarity_120b, intraday_day_over_day_amount_profile_similarity_240b, and intraday_market_amount_profile_synchronization_240m",
+      "relationship": "all inspect amount-path shape",
+      "distinction": "the prior factors compare against another half, day, or market profile; Campaign081 uses one stock-day path and no reference profile, lag, or peer.",
+      "mandatory_numeric_challenge": true
+    },
+    {
+      "name": "signal_day_turnover_rate_pct",
+      "relationship": "both concern trading activity",
+      "distinction": "Campaign079's terminally invalid definition is a daily aggregate turnover level from daily_basic; Campaign081 uses only intraday amount-path geometry and never requests daily_basic.",
+      "numeric_status": "ineligible_terminal_definition_semantic_challenge_only"
+    },
+    {
+      "name": "intraday_cross_sectional_standardized_return_state_stability_236p",
+      "relationship": "the structurally nonnumeric definition remains in the complete semantic library",
+      "distinction": "peer-standardized return-state mobility versus single-stock directionless amount-path efficiency",
+      "mandatory_semantic_challenge": true,
+      "numeric_status": "undefined_not_pass_not_fail"
+    },
+    {
+      "name": "candidate49_intraday_cumulative_vwap_crossing_rate_240m_v1",
+      "relationship": "the sole active prospective candidate remains an isolation challenge",
+      "distinction": "Candidate49 measures future-session price crossings of cumulative VWAP; Campaign081 is an offline historical amount-path feature and never enters Candidate49 ledgers.",
+      "candidate49_remains_isolated": true
+    }
+  ],
+  "pre_value_decision": {
+    "economically_independent_enough_to_preregister": true,
+    "numeric_uniqueness_still_required_against_all_110_eligible_comparators": true,
+    "strict_maximum_absolute_median_daily_rank_correlation": 0.8,
+    "minimum_pairwise_names_per_session": 50,
+    "minimum_pairwise_sessions_per_comparison": 100,
+    "drop_residualize_invert_clip_bucket_rank_neutralize_filter_or_rescue_after_failed_gate_allowed": false
+  },
+  "research_boundary": {
+    "campaign081_minute_source_rows_read": false,
+    "campaign081_candidate_values_read": false,
+    "comparison_values_read": false,
+    "historical_daily_price_fields_read": [],
+    "historical_forward_returns_read": false,
+    "provider_request_issued": false,
+    "candidate49_historical_backfill_performed": false,
+    "candidate49_ledgers_changed": false,
+    "second_prospective_candidate_created": false,
+    "current_scoring_selection_sizing_or_orders_performed": false,
+    "investment_advice": false
+  }
+}

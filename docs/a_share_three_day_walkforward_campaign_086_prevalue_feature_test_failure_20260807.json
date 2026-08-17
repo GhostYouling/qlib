@@ -1,0 +1,43 @@
+{
+  "schema_version": 1,
+  "kind": "a_share_three_day_walkforward_campaign086_prevalue_feature_test_failure",
+  "status": "failed_closed_before_real_minute_source_rows_or_candidate_values",
+  "recorded_at": "2026-08-07T00:48:00+08:00",
+  "stage": "prevalue_feature_implementation_unit_tests",
+  "command_scope": {
+    "ruff": "passed",
+    "pytest": "seven_passed_two_failed"
+  },
+  "failures": [
+    {
+      "test": "test_positive_and_negative_serial_endpoints",
+      "cause": "The positive endpoint fixture pooled half-sessions with different affine lead-lag relations, so its population correlation was legitimately below one.",
+      "repair": "Use identical half-session state sequences for the exact positive-correlation endpoint fixture; do not change the frozen candidate formula."
+    },
+    {
+      "test": "test_constant_state_and_invalid_source_are_missing",
+      "cause": "The raw second-moment-minus-squared-mean variance expression produced a tiny positive cancellation residue for an exactly constant reconstructed state.",
+      "repair": "Compute population variances and covariance from explicitly centered retained pair vectors; preserve the strict positive-variance gate."
+    }
+  ],
+  "failed_artifacts": {
+    "feature_runner": {
+      "path": "scripts/a_share_three_day_walkforward_campaign086_features.py",
+      "sha256": "1ba5b7253adea81ceef12ccecdcd9e4b595a41ae4033ef92d7e67b818de3e9dc"
+    },
+    "tests": {
+      "path": "tests/data_collector_tests/test_a_share_three_day_walkforward_campaign086_features.py",
+      "sha256": "3839082646bd5c531bd8151ae404a8b3616bb0c14fe23197c8f36f87acc8a88f"
+    }
+  },
+  "research_boundary": {
+    "real_minute_source_rows_read": false,
+    "candidate_values_computed": false,
+    "comparison_values_read": false,
+    "historical_daily_price_fields_read": [],
+    "historical_forward_returns_read": false,
+    "provider_request_issued": false,
+    "candidate49_ledgers_changed": false,
+    "current_scoring_selection_sizing_or_orders_performed": false
+  }
+}

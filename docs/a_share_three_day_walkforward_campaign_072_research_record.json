@@ -1,0 +1,138 @@
+{
+  "version": 1,
+  "kind": "a_share_three_day_walkforward_campaign072_research_record",
+  "status": "completed_zero_no_return_admissible_factors_stop_before_historical_returns",
+  "recorded_at": "2026-08-06T07:25:00+08:00",
+  "factor": {
+    "name": "quarterly_joint_profit_revenue_growth_floor_rank",
+    "direction": "higher",
+    "formula": "After strict-next-session point-in-time activation and independent finite forward fill, compute min(profit_yoy,revenue_yoy) and then its same-day average-tie percentile rank.",
+    "economic_mechanism": "conservative joint earnings-and-sales growth floor rather than a single-field rank, rank average, signed spread, acceleration gap, or announcement timing transform",
+    "same_campaign_rescue_allowed": false
+  },
+  "evidence": {
+    "numeric_comparison_policy": {
+      "path": "docs/a_share_three_day_walkforward_future_numeric_comparison_eligibility_policy_v6_20260806.json",
+      "sha256": "b24c643d086a73e66844a0e988d65a46aff2f82986c544515422119dd19d7242"
+    },
+    "concept_scouting": {
+      "path": "docs/a_share_three_day_walkforward_campaign_072_concept_scouting.json",
+      "sha256": "7be36bc1aa1959db86a64309b8f78c3900ea9d55fa813c68a1e29267777ae7fb"
+    },
+    "mechanism_audit": {
+      "path": "docs/a_share_three_day_walkforward_campaign_072_mechanism_overlap_audit.json",
+      "sha256": "b02f240a66ed271fdd05cf75eb325c8c69a6f996749db8e708edc65aba1280ae"
+    },
+    "no_return_preregistration": {
+      "path": "docs/a_share_three_day_walkforward_campaign_072_no_return_preregistration.json",
+      "sha256": "32f16b1e8e07b0d60aa6646f66c52740e330fa02ef631803fb68b55a7e79cc98"
+    },
+    "feature_implementation_freeze": {
+      "path": "docs/a_share_three_day_walkforward_campaign_072_feature_implementation_freeze_20260806.json",
+      "sha256": "5be2e0c4b286aee80c67267818b45f2176d339415f986f31c1625613f796f214"
+    },
+    "snapshot_binding": {
+      "path": "docs/a_share_three_day_walkforward_campaign_072_feature_snapshot_binding_20260806.json",
+      "sha256": "eb36b61ecc800b13e40f8947da5b0fd049542df784baafc8f86a3c38c82b2d1d"
+    },
+    "audit_implementation_freeze": {
+      "path": "docs/a_share_three_day_walkforward_campaign_072_no_return_audit_implementation_freeze_v5_20260806.json",
+      "sha256": "cba82c4b1da6151b11639e04ebff747c4e53ae041250a67c25fabc787c7fb61c"
+    },
+    "audit_activation": {
+      "path": "docs/a_share_three_day_walkforward_campaign_072_no_return_audit_activation_binding_v5_20260806.json",
+      "sha256": "e3c10211451b312b12b779684c0521e92e28801adb91522651a17a83247a2aa0"
+    },
+    "no_return_audit": {
+      "path": "data/experiments/short_horizon/historical_walkforward/campaign_072/no_return/20260805T221540Z_campaign072_no_return_audit.json",
+      "sha256": "d574fa66c316fe27f00698179b64a90fa86dae7adde5d25d0caca33967063054"
+    },
+    "no_return_audit_freeze": {
+      "path": "docs/a_share_three_day_walkforward_campaign_072_no_return_audit_freeze_20260806.json",
+      "sha256": "3674517cb4ca250077693f0aece71f60ad34e54d2b1b2c5cb893f68852420a65"
+    },
+    "attempt_ledger": {
+      "path": "data/experiments/short_horizon/historical_walkforward/campaign_072/research_attempt_ledger.json",
+      "sha256": "e87982267f69c1e056b20c522eba308523dc845b7c81d6ac021c840b66c87278"
+    }
+  },
+  "snapshot": {
+    "manifest_path": "/Volumes/DIsk/qlib-a-share-tushare-1m/derived/a_share/rich/tushare/minute_walkforward_campaign072_feature_library/tushare_stk_mins_1m_2019_2025_ea0cbb8f_walkforward_campaign072_feature_library_v1/snapshot_manifest.json",
+    "manifest_sha256": "14ca00ed8b9a233475445a2cedc4a0bbd57c35030e6de2948c80177156c98c2c",
+    "dataset_sha256": "7baf6939336261bb307fd3dc13ccb8e9676eacbcc7e7d1139e019fb3b96f90b3",
+    "partitions": 33015,
+    "rows": 7724498,
+    "factor_eligible_rows": 7231483
+  },
+  "ordered_no_return_result": {
+    "quality_listing_eligible_rows": 1331759,
+    "candidate_eligible_rows": 1330171,
+    "median_coverage": 0.9994517542211769,
+    "p05_coverage": 0.9956886515772271,
+    "p05_eligible_names": 138.0,
+    "potential_three_session_cohorts": 540,
+    "observed_years": 7,
+    "coverage_gate_passed": true,
+    "numeric_comparator_count": 102,
+    "numeric_comparisons_completed": 102,
+    "numeric_comparisons_passed": 99,
+    "failed_comparisons": [
+      {
+        "name": "quality_revenue",
+        "median_daily_rank_correlation": 0.8984481039202764,
+        "absolute_median_daily_rank_correlation": 0.8984481039202764,
+        "pairwise_sessions": 1623
+      },
+      {
+        "name": "quality_growth",
+        "median_daily_rank_correlation": 0.9132455824123146,
+        "absolute_median_daily_rank_correlation": 0.9132455824123146,
+        "pairwise_sessions": 1623
+      },
+      {
+        "name": "quality_score",
+        "median_daily_rank_correlation": 0.8279200836772669,
+        "absolute_median_daily_rank_correlation": 0.8279200836772669,
+        "pairwise_sessions": 1623
+      }
+    ],
+    "strict_maximum_allowed": 0.8,
+    "admissible_factor_count": 0
+  },
+  "historical_return_boundary": {
+    "daily_price_fields_read": [],
+    "forward_returns_read": false,
+    "development_preregistration_created": false,
+    "development_trial_count": 0,
+    "development_survivor_count": 0,
+    "stress_2024_2025_opened": false,
+    "stress_returns_read": false
+  },
+  "attempt_accounting": {
+    "campaign072_infrastructure_failures": 10,
+    "campaign072_complete_factor_attempts": 1,
+    "campaign072_attempts": 11,
+    "campaign072_return_reading_trials": 0,
+    "cumulative_historical_attempts": 437,
+    "cumulative_return_reading_development_trials": 275
+  },
+  "candidate49": {
+    "remains_only_active_prospective_candidate": true,
+    "signal_ledger_entries": 0,
+    "execution_ledger_entries": 0,
+    "historical_backfill_performed": false,
+    "provider_request_issued_by_campaign072": false
+  },
+  "decision": {
+    "Campaign072_terminal": true,
+    "reason": "three mandatory numeric uniqueness comparisons exceeded the frozen strict absolute 0.8 limit",
+    "do_not_invert_rescale_residualize_filter_rerun_rescue_or_combine": true,
+    "next_campaign_may_begin_offline_without_waiting_for_16_30": true,
+    "historical_result_may_generate_current_score_selection_size_order_or_advice": false
+  },
+  "limitations": [
+    "The historical universe uses a current listing snapshot and can contain survivorship bias.",
+    "Quarterly data may contain later revisions.",
+    "The result is a redundancy rejection, not evidence about predictive returns and not investment advice."
+  ]
+}

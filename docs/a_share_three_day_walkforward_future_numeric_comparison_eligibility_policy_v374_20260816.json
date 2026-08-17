@@ -1,0 +1,151 @@
+{
+  "schema_version": 1,
+  "kind": "a_share_three_day_walkforward_future_numeric_comparison_eligibility_policy",
+  "version": 374,
+  "recorded_at": "2026-08-16T09:08:00+08:00",
+  "timestamp_semantics": "monotonic_logical_append_time_not_host_wall_clock_measurement",
+  "status": "campaign243_terminal_two_infrastructure_failures_accounted_campaign244_ready_pending_independent_validation",
+  "supersedes_without_rewriting": {
+    "path": "docs/a_share_three_day_walkforward_future_numeric_comparison_eligibility_policy_v373_20260816.json",
+    "sha256": "ca864dcdc6bd439abd3440b1270f1dca13667e9f1c481ef7853c2208a9767362"
+  },
+  "authoritative_inputs": {
+    "attempt_ledger_v1": {
+      "path": "data/experiments/short_horizon/historical_walkforward/campaign_243/research_attempt_ledger_v1.json",
+      "sha256": "98f5919e5b842224cae6fef59ad7dae79a4d61b4bb5e46e71c32f9c1fa414d95",
+      "campaign_effective_entry_count": 9,
+      "chain_tip_sha256": "ba332b9fec5a2bb35138fd5c42f1d83c57b6b236d73a0515938753e467a2564d"
+    },
+    "frozen_source_frontier": {
+      "path": "docs/a_share_three_day_walkforward_campaign_243_commercial_electrical_power_system_service_lifecycle_source_frontier_20260816.json",
+      "sha256": "59ed94c81eb7b229cccc7e8dc2bb4f8cddb15deabca8a1d29f9d99d429a404a2"
+    },
+    "terminal_result": {
+      "path": "docs/a_share_three_day_walkforward_campaign_243_terminal_result_20260816.json",
+      "sha256": "52013e99f5c773f268ed6703faeb5f0606f401b8e23e6ab17cf0644e76609cc4"
+    },
+    "deselection_catalog_policy_v311": {
+      "path": "docs/a_share_three_day_walkforward_future_numeric_comparison_eligibility_policy_v311_20260815.json",
+      "sha256": "1da984fe0740a5c4bfd1521db59fb3497e29f3021c04a621a45babe020bba65d"
+    }
+  },
+  "complete_historical_feature_library": {
+    "factor_definition_count": 158,
+    "order_sha256": "4819c7fd7c0795d7598a52f3c615e3f117d5f4ecd9332974bc8e3dfa57c96667",
+    "unchanged_from_v373": true
+  },
+  "numerical_comparator_eligibility": {
+    "eligible_numeric_comparator_count": 142,
+    "order_sha256": "5d1b35fb5a0d8ac9293008db9963c4a60a94dc940c237c3ed259e5ce44f14aaf",
+    "unchanged_from_v373": true
+  },
+  "effective_accounting": {
+    "campaign243_attempt_count": 9,
+    "campaign243_infrastructure_failure_count": 2,
+    "campaign243_scientific_attempt_count": 7,
+    "cumulative_historical_research_attempt_count": 2316,
+    "cumulative_return_reading_development_trial_count": 314
+  },
+  "candidate49": {
+    "only_active_prospective_candidate": true,
+    "signal_entry_count": 0,
+    "execution_entry_count": 0,
+    "completed_future_workflow_record_count": 0,
+    "signal_ledger_sha256": "5193f00d7f36da003f53cec387900da4c3d002299f5dfcfc1a95eaa199ed3a79",
+    "execution_ledger_sha256": "d57a3e61eac969e42cafa418ccd8c0a5ee65dcf69da145bb2c096c2a02a2ea4f"
+  },
+  "mutable_unified_reports": {
+    "current": {
+      "path": "data/experiments/short_horizon/current_research_report.md",
+      "sha256_at_publication": "702f4531dc22bf4f473b030ebcae8cc689317a7442ed5d06852c319c69fcf080",
+      "mutable_append_only_report_not_an_immutable_binding": true
+    },
+    "three_day": {
+      "path": "data/experiments/short_horizon/three_day_research_report.md",
+      "sha256_at_publication": "294b4af7d6f7718d942719b6e385c66ad8820365321f15d2fc8f4889b0887ba8",
+      "mutable_append_only_report_not_an_immutable_binding": true
+    }
+  },
+  "cumulative_regression_boundary": {
+    "working_directory": "repository_root",
+    "pytest_rootdir_observed_by_collect_only": "tests",
+    "test_paths_are_repository_relative": true,
+    "policy_node_id_prefix": "",
+    "campaign145_through_campaign243_test_file_count": 131,
+    "deselection_catalog_path": "docs/a_share_three_day_walkforward_future_numeric_comparison_eligibility_policy_v311_20260815.json",
+    "carried_forward_additional_deselected_nodes": [
+      "data_collector_tests/test_a_share_three_day_walkforward_campaign207_terminal.py::test_campaign207_reports_candidate49_and_research_boundaries",
+      "data_collector_tests/test_a_share_three_day_walkforward_campaign208_terminal.py::test_campaign208_reports_candidate49_and_research_boundaries",
+      "data_collector_tests/test_a_share_three_day_walkforward_campaign209_terminal.py::test_campaign209_reports_candidate49_and_research_boundaries",
+      "data_collector_tests/test_a_share_three_day_walkforward_campaign210_terminal.py::test_campaign210_reports_candidate49_and_research_boundaries",
+      "data_collector_tests/test_a_share_three_day_walkforward_campaign211_terminal.py::test_campaign211_reports_candidate49_and_research_boundaries",
+      "data_collector_tests/test_a_share_three_day_walkforward_campaign212_terminal.py::test_campaign212_reports_candidate49_and_research_boundaries",
+      "data_collector_tests/test_a_share_three_day_walkforward_campaign213_terminal.py::test_campaign213_reports_candidate49_and_research_boundaries",
+      "data_collector_tests/test_a_share_three_day_walkforward_campaign214_terminal.py::test_campaign214_reports_candidate49_and_research_boundaries",
+      "data_collector_tests/test_a_share_three_day_walkforward_campaign215_terminal.py::test_campaign215_reports_candidate49_and_research_boundaries",
+      "data_collector_tests/test_a_share_three_day_walkforward_campaign216_terminal.py::test_campaign216_reports_candidate49_and_research_boundaries",
+      "data_collector_tests/test_a_share_three_day_walkforward_campaign217_terminal.py::test_campaign217_reports_candidate49_and_research_boundaries",
+      "data_collector_tests/test_a_share_three_day_walkforward_campaign218_terminal.py::test_campaign218_reports_candidate49_and_research_boundaries",
+      "data_collector_tests/test_a_share_three_day_walkforward_campaign219_terminal.py::test_campaign219_reports_candidate49_and_research_boundaries",
+      "data_collector_tests/test_a_share_three_day_walkforward_campaign220_terminal.py::test_campaign220_reports_candidate49_and_research_boundaries",
+      "data_collector_tests/test_a_share_three_day_walkforward_campaign221_terminal.py::test_campaign221_reports_candidate49_and_research_boundaries",
+      "data_collector_tests/test_a_share_three_day_walkforward_campaign222_terminal.py::test_campaign222_reports_candidate49_and_research_boundaries",
+      "data_collector_tests/test_a_share_three_day_walkforward_campaign223_terminal.py::test_campaign223_reports_candidate49_and_research_boundaries",
+      "data_collector_tests/test_a_share_three_day_walkforward_campaign224_terminal.py::test_campaign224_reports_candidate49_and_research_boundaries",
+      "data_collector_tests/test_a_share_three_day_walkforward_campaign225_terminal.py::test_campaign225_reports_candidate49_and_research_boundaries",
+      "data_collector_tests/test_a_share_three_day_walkforward_campaign226_terminal.py::test_campaign226_reports_candidate49_and_research_boundaries",
+      "data_collector_tests/test_a_share_three_day_walkforward_campaign227_terminal.py::test_campaign227_reports_candidate49_and_research_boundaries",
+      "data_collector_tests/test_a_share_three_day_walkforward_campaign228_terminal.py::test_campaign228_reports_candidate49_and_research_boundaries",
+      "data_collector_tests/test_a_share_three_day_walkforward_campaign229_terminal.py::test_campaign229_reports_candidate49_and_research_boundaries",
+      "data_collector_tests/test_a_share_three_day_walkforward_campaign230_terminal.py::test_campaign230_reports_candidate49_and_research_boundaries",
+      "data_collector_tests/test_a_share_three_day_walkforward_campaign231_terminal.py::test_campaign231_reports_candidate49_and_research_boundaries",
+      "data_collector_tests/test_a_share_three_day_walkforward_campaign232_terminal.py::test_campaign232_reports_candidate49_and_research_boundaries",
+      "data_collector_tests/test_a_share_three_day_walkforward_campaign233_terminal.py::test_campaign233_reports_candidate49_and_research_boundaries",
+      "data_collector_tests/test_a_share_three_day_walkforward_campaign234_terminal.py::test_campaign234_reports_candidate49_and_research_boundaries",
+      "data_collector_tests/test_a_share_three_day_walkforward_campaign235_terminal.py::test_campaign235_reports_candidate49_and_research_boundaries",
+      "data_collector_tests/test_a_share_three_day_walkforward_campaign236_terminal.py::test_campaign236_reports_candidate49_and_research_boundaries",
+      "data_collector_tests/test_a_share_three_day_walkforward_campaign237_terminal.py::test_campaign237_reports_candidate49_and_research_boundaries",
+      "data_collector_tests/test_a_share_three_day_walkforward_campaign238_terminal.py::test_campaign238_reports_candidate49_and_research_boundaries",
+      "data_collector_tests/test_a_share_three_day_walkforward_campaign239_terminal.py::test_campaign239_reports_candidate49_and_research_boundaries",
+      "data_collector_tests/test_a_share_three_day_walkforward_campaign240_terminal.py::test_campaign240_reports_candidate49_and_research_boundaries",
+      "data_collector_tests/test_a_share_three_day_walkforward_campaign241_terminal.py::test_campaign241_reports_candidate49_and_research_boundaries",
+      "data_collector_tests/test_a_share_three_day_walkforward_campaign242_terminal.py::test_campaign242_reports_candidate49_and_research_boundaries"
+    ],
+    "deselection_node_count": 58,
+    "expected_tests_passed_after_validation": 514,
+    "expected_tests_skipped_after_validation": 1,
+    "expected_nodes_deselected_after_validation": 58,
+    "all_failed_or_truncated_commands_recorded_and_excluded": true,
+    "final_results_must_be_recorded_in_terminal_validation": true
+  },
+  "future_campaign_boundary": {
+    "next_campaign": 244,
+    "may_begin_after_campaign243_independent_validation": true,
+    "historical_offline_prevalue_work_may_continue_at_any_local_time": true,
+    "candidate49_remains_separate_confirmation_layer": true,
+    "2024_2025_source_or_returns_remain_closed": true
+  },
+  "research_boundary": {
+    "frozen_source_frontier_rewritten": false,
+    "source_or_commercial_electrical_power_system_service_contract_asset_registry_preventive_maintenance_power_quality_fault_repair_parts_compliance_billing_factor_comparator_security_price_or_return_value_read": false,
+    "natural_person_employee_identity_exact_customer_premises_address_map_layout_single_line_diagram_panel_circuit_breaker_asset_location_access_credential_live_technician_route_schedule_realtime_load_voltage_frequency_power_quality_battery_fuel_alarm_fault_outage_redundancy_occupancy_incident_security_readiness_posture_customer_identity_control_protection_setting_remote_endpoint_vulnerability_proprietary_diagnostic_isolation_switching_commissioning_repair_procedure_private_inspection_test_fault_incident_narrative_legal_communication_payment_instrument_or_confidential_contract_price_read": false,
+    "provider_or_web_request_issued": false,
+    "provider_credential_presence_value_or_digest_read": false,
+    "candidate49_plan_or_run_executed": false,
+    "candidate49_ledgers_changed": false,
+    "second_prospective_candidate_created": false,
+    "stress_2024_2025_opened": false,
+    "current_scoring_selection_sizing_positions_or_orders_performed": false,
+    "failed_or_truncated_output_used_as_validation_or_scientific_evidence": false,
+    "investment_advice": false
+  },
+  "next_action": "Run independent Campaign243 immutable-binding, report-semantic, Candidate49 and exact Campaign145-243 cumulative validation with one --deselect option per frozen node; only after all pass publish terminal validation and authorize Campaign244 offline prevalue work.",
+  "campaign243_terminal_classification": {
+    "route_count": 7,
+    "source_admission_deferral_count": 3,
+    "overlap_or_hypothesis_rejection_count": 4,
+    "selected_factor_count": 0,
+    "definition_or_comparator_append": false,
+    "return_read": false
+  }
+}

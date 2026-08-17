@@ -1,0 +1,72 @@
+{
+  "schema_version": 1,
+  "kind": "a_share_three_day_walkforward_campaign115_development_source_runner_freeze",
+  "status": "runner_v1_frozen_zero_network_before_development_source_access",
+  "recorded_at": "2026-08-09T05:08:00+08:00",
+  "recorded_at_semantics": "monotonic_logical_append_time_after_development_protocol_not_host_wall_clock_measurement",
+  "protocol": {
+    "path": "docs/a_share_three_day_walkforward_campaign_115_development_source_protocol_20260809.json",
+    "sha256": "836f10c9465c8cff03cf44233adf284f6e003d144c169ae003dd450a78c486e2"
+  },
+  "implementation": {
+    "runner_path": "scripts/a_share_tushare_limit_up_queue_development.py",
+    "runner_sha256": "73e1d2a9f2c81c99aa9ab812cad1df9e04e37c8290992ba3edc584aa9094df82",
+    "test_path": "tests/data_collector_tests/test_a_share_tushare_limit_up_queue_development.py",
+    "test_sha256": "ceeda9b14b5f42873d02c27d3cf79c8e02eac3d31a65e5f193c75ac4be834246",
+    "adapter_path": "scripts/a_share_tushare_limit_up_queue_persistence.py",
+    "adapter_sha256": "807d06f7dec4ca0a94beb28912b686e8cb01fbf36c7f473e69564de16af5f5dd",
+    "acceptance_runner_path": "scripts/a_share_tushare_limit_up_queue_acceptance.py",
+    "acceptance_runner_sha256": "920cd2183444c7a28c653f71846468aa8f0baf5031a039e7bdd17b59beac9b52",
+    "runtime_recomputes_all_bound_sha256_values": true,
+    "changed_runner_test_protocol_adapter_or_acceptance_runner_makes_plan_ready_false": true
+  },
+  "frozen_interface": {
+    "zero_network_plan": "python scripts/a_share_tushare_limit_up_queue_development.py plan",
+    "confirmed_plan": "python scripts/a_share_tushare_limit_up_queue_development.py plan --confirm-current-account-has-5000-points",
+    "network_run": "python scripts/a_share_tushare_limit_up_queue_development.py run --confirm-current-account-has-5000-points --allow-network --confirm-development-sync",
+    "local_finalize": "python scripts/a_share_tushare_limit_up_queue_development.py finalize-local",
+    "plan_loads_credential": false,
+    "plan_issues_provider_request": false,
+    "local_finalize_loads_credential": false,
+    "local_finalize_issues_provider_request": false,
+    "network_run_before_acceptance_success_or_without_all_flags": false
+  },
+  "frozen_state_machine": {
+    "exact_session_count": 1214,
+    "exact_session_order_sha256": "63559370c9abfe3b8e24d133d1cc102658e9f3a144c507a1c12928d93ad95059",
+    "provider_parallelism": 1,
+    "minimum_request_interval_seconds": 1.05,
+    "overall_intent_fsynced_before_credential_loading": true,
+    "per_session_request_intent_fsynced_before_provider_call": true,
+    "request_intent_without_checkpoint_is_terminal_no_retry": true,
+    "completed_checkpoint_prefix_hash_verified_before_resume": true,
+    "unknown_gap_changed_or_nonprefix_partition_rejected_before_provider_access": true,
+    "caught_failure_deletes_partial_root_and_publishes_credential_safe_terminal_record": true,
+    "all_session_directories_and_final_root_use_atomic_replace_and_directory_fsync": true,
+    "post_final_root_repository_manifest_repair_is_local_only": true,
+    "minimum_sessions_with_valid_u_rows": 200,
+    "raw_provider_response_persisted": false
+  },
+  "synthetic_verification_contract": {
+    "exact_calendar_and_active_span_tests": true,
+    "real_preacceptance_plan_zero_credential_zero_provider": true,
+    "exact_checkpoint_prefix_resume_test": true,
+    "inflight_request_no_retry_test": true,
+    "unknown_partition_rejection_test": true,
+    "two_session_atomic_success_test": true,
+    "provider_failure_cleanup_and_terminal_record_test": true,
+    "missing_flags_rejected_before_write_test": true,
+    "symlink_lock_rejection_test": true
+  },
+  "research_boundary": {
+    "provider_request_issued": false,
+    "provider_rows_or_candidate_values_read": false,
+    "comparison_values_read": false,
+    "historical_daily_price_or_forward_return_values_read": false,
+    "stress_2024_2025_opened": false,
+    "candidate49_ledgers_changed": false,
+    "second_prospective_candidate_created": false,
+    "current_scoring_selection_sizing_or_orders_performed": false,
+    "investment_advice": false
+  }
+}

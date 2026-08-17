@@ -1,0 +1,106 @@
+{
+  "version": 1,
+  "kind": "a_share_three_day_walkforward_campaign004_external_volume_read_blocker_followup",
+  "checked_at": "2026-07-28T13:04:35+08:00",
+  "status": "external_volume_read_stall_reconfirmed_before_no_return_audit_retry",
+  "authoritative_boundaries": {
+    "historical_walkforward_policy": {
+      "path": "docs/a_share_three_day_historical_walkforward_research_policy_20260727.json",
+      "sha256": "38426d6161b9bfed323c58caba18feca668b8c9d53e294951a8ba90c01a798bb"
+    },
+    "candidate49_state": {
+      "path": "docs/a_share_three_day_iteration_status_20260725_future_only.json",
+      "sha256": "d44e1cb3707cce194eed37e99cc90f865396b1de8c35e02a393a2a243d973466"
+    },
+    "walkforward_state": {
+      "path": "docs/a_share_three_day_iteration_status_20260727_walkforward.json",
+      "sha256": "75e639c4b8579983bfcda8da19c221d018b7b62cd68fac9e94822f6c3ed73267"
+    },
+    "original_blocker_record": {
+      "path": "docs/a_share_three_day_walkforward_campaign_004_external_volume_read_blocker_20260728.json",
+      "sha256": "9d7df15aa538ff5bdf8ee9b3bde7387f9ff50662fd5be47d9275174e8e823e69"
+    }
+  },
+  "campaign004_frozen_inputs": {
+    "no_return_preregistration": {
+      "path": "docs/a_share_three_day_walkforward_campaign_004_no_return_preregistration.json",
+      "sha256": "39e2147b75bcc3a0fd3cb39dee3932f794331142654f0bfe63679b2c8ecc2a4e"
+    },
+    "no_return_audit_infrastructure_repair": {
+      "path": "docs/a_share_three_day_walkforward_campaign_004_no_return_audit_infrastructure_repair_20260728.json",
+      "sha256": "41a9734be528c665f06e2b17d3f729048370e756a6e8addc2dcde5a6cafd4985"
+    },
+    "feature_runner": {
+      "path": "scripts/a_share_three_day_walkforward_campaign004_features.py",
+      "sha256": "b82c15355c0798897ebfc33e5b87ea4ebfd93f9692197e9b6c8b1d0719b1377b"
+    },
+    "walkforward_runner": {
+      "path": "scripts/a_share_three_day_walkforward_campaign004.py",
+      "sha256": "cb489806524a78a9687e70762242ad31f2cedf7c1834b066cb55ba09c312cc15"
+    },
+    "candidate_snapshot": {
+      "manifest_path": "/Volumes/DIsk/qlib-a-share-tushare-1m/derived/a_share/rich/tushare/minute_walkforward_campaign004_feature_library/tushare_stk_mins_1m_2019_2025_ea0cbb8f_walkforward_campaign004_feature_library_v1/snapshot_manifest.json",
+      "manifest_sha256": "8eefc381d006997f1dcd95edcd9be4db8485e0c4954d6166d94f1981ae3b57fe",
+      "dataset_sha256": "1359e755e669c7b949b26b2086d1c1328ec0cdf53b45ce7e67d117a274c7fc8a",
+      "partition_count": 33015,
+      "row_count": 7724498
+    }
+  },
+  "read_only_probe": {
+    "method": "descriptor_open_then_one_byte_read_with_five_second_alarm",
+    "result": "timeout_after_5s",
+    "byte_count_observed": 0,
+    "manifest_or_factor_value_loaded": false,
+    "daily_price_field_loaded": false,
+    "forward_return_field_loaded": false,
+    "provider_request_issued": false
+  },
+  "local_state": {
+    "resolved_daily_data_root": "/Users/niyufei/Coding/qlib/data",
+    "provider_credential_presence_only": {
+      "current_process": false,
+      "launchctl": true,
+      "secret_value_read_or_printed": false
+    },
+    "candidate49_signal_ledger": {
+      "path": "data/experiments/short_horizon/candidate49_future_signal_ledger.json",
+      "entry_count": 0,
+      "sha256": "5193f00d7f36da003f53cec387900da4c3d002299f5dfcfc1a95eaa199ed3a79"
+    },
+    "candidate49_execution_ledger": {
+      "path": "data/experiments/short_horizon/candidate49_future_execution_ledger.json",
+      "entry_count": 0,
+      "sha256": "d57a3e61eac969e42cafa418ccd8c0a5ee65dcf69da145bb2c096c2a02a2ea4f"
+    }
+  },
+  "external_volume_context": {
+    "mount_path": "/Volumes/DIsk",
+    "device_identifier": "disk7s1",
+    "filesystem": "APFS",
+    "mounted": true,
+    "active_out_of_scope_processes_observed": [
+      "Codex browser kernel below /Volumes/DIsk/Disk-Coding/cicd",
+      "agent-loop controller below /Volumes/DIsk/Disk-Coding/agent-loop",
+      "Next.js development server below /Volumes/DIsk/Disk-Coding/ArcloopFrontend",
+      "Astro development server below /Volumes/DIsk/Disk-Coding/ArcloopFrontend"
+    ],
+    "forced_unmount_or_process_termination_performed": false,
+    "reason": "Those processes are outside the authorized qlib data root, so stopping them or remounting the shared volume requires explicit user authority."
+  },
+  "research_boundary": {
+    "candidate49_historical_return_backfill_performed": false,
+    "candidate49_ledgers_changed": false,
+    "candidate50_started": false,
+    "terminal_factor_combination_performed": false,
+    "current_scoring_selection_sizing_or_orders_performed": false,
+    "campaign004_no_return_audit_published": false,
+    "campaign004_return_preregistration_frozen": false,
+    "campaign004_return_read_started": false,
+    "stress_2024_2025_opened": false
+  },
+  "safe_resume": {
+    "condition": "The exact Campaign004 snapshot manifest must complete a bounded one-byte read before the frozen no-return audit may be retried.",
+    "retry_command": "PYTHONPATH=/opt/anaconda3/lib/python3.12/site-packages /opt/anaconda3/bin/python3 -S scripts/a_share_three_day_walkforward_campaign004_features.py audit --data-root /Volumes/DIsk/qlib-a-share-tushare-1m --workers 8",
+    "after_audit": "Only after a successful immutable no-return audit may the exact admissible factor catalog and finite trial list be frozen before any 2019-2023 return read."
+  }
+}

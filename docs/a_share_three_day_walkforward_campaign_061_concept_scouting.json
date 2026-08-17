@@ -1,0 +1,109 @@
+{
+  "version": 1,
+  "kind": "a_share_three_day_walkforward_campaign061_concept_scouting",
+  "status": "selected_one_economically_independent_candidate_before_campaign061_source_candidate_comparison_daily_price_or_return_values",
+  "recorded_at": "2026-08-05T00:31:00+08:00",
+  "purpose": "Select one finite historical-only Campaign061 mechanism from frozen definitions and source schemas before reading any Campaign061 minute row, candidate value, comparison value, daily price, or forward return.",
+  "authoritative_inputs": {
+    "campaign060_verified_state": {
+      "path": "docs/a_share_three_day_iteration_status_20260805_campaign060_verified.json",
+      "sha256": "821c7a5a9c75189e577803a5b1dcd98e30632352ed710ac9c3624139689a065c"
+    },
+    "campaign060_research_record": {
+      "path": "docs/a_share_three_day_walkforward_campaign_060_research_record.json",
+      "sha256": "889ab11013ba8cead84b0377cea15fdce0a405ce98d6a0d96eac08eb17bfbadd"
+    },
+    "campaign060_no_return_protocol": {
+      "path": "docs/a_share_three_day_walkforward_campaign_060_no_return_preregistration.json",
+      "sha256": "1d8d41bcfde2cd0ae81e69eae0abb4fd7ef92fed9ec63dd8187e510cd02b92a3"
+    },
+    "historical_walkforward_policy": {
+      "path": "docs/a_share_three_day_historical_walkforward_research_policy_20260727.json",
+      "sha256": "38426d6161b9bfed323c58caba18feca668b8c9d53e294951a8ba90c01a798bb"
+    }
+  },
+  "definition_only_inventory": {
+    "campaign060_required_comparison_definition_count": 91,
+    "campaign060_terminal_definition_appended_for_campaign061": "intraday_day_over_day_directional_return_agreement_238b",
+    "campaign061_required_comparison_definition_count": 92,
+    "nearest_scale_shape_direction_and_volatility_families": [
+      "intraday_realized_volatility",
+      "intraday_volatility_resolution_238m",
+      "intraday_five_minute_variance_ratio_230w",
+      "intraday_day_over_day_absolute_return_profile_similarity_238b",
+      "intraday_day_over_day_directional_return_agreement_238b"
+    ],
+    "campaign061_minute_rows_read": false,
+    "campaign061_candidate_values_read": false,
+    "comparison_values_read_for_campaign061_selection": false,
+    "daily_price_or_forward_return_read_for_campaign061_selection": false
+  },
+  "candidate_design_catalog": [
+    {
+      "design": "intraday_day_over_day_realized_variance_stability_238b",
+      "decision": "selected",
+      "reason": "The score isolates persistence of total within-half realized variance across adjacent accepted sessions while discarding sign and clock shape; this is a cross-session volatility-regime mechanism rather than a same-day volatility level, scale-free profile similarity, or directional recurrence statistic."
+    },
+    {
+      "design": "day_over_day_realized_variance_change_ratio_or_log_difference",
+      "decision": "rejected_before_values",
+      "reason": "A signed change requires an ungrounded higher-versus-lower direction choice. The selected bounded symmetric stability coefficient freezes one scale-comparison mechanism."
+    },
+    {
+      "design": "alternate_lags_rolling_volatility_windows_or_half_session_variants",
+      "decision": "rejected_before_values",
+      "reason": "Only the exact prior accepted market session and the full fixed 238-return grid are allowed; no lag, window, or half-session search is admitted."
+    },
+    {
+      "design": "cross_session_absolute_return_profile_similarity_or_directional_agreement",
+      "decision": "rejected_before_values",
+      "reason": "Campaign057 and Campaign060 already terminalized cross-session clock-shape and sign-recurrence families; Campaign061 aggregates squared returns before comparing session scale."
+    },
+    {
+      "design": "epsilon_floor_zero_variance_imputation_or_suspension_bridging",
+      "decision": "rejected_before_values",
+      "reason": "A zero-variance day makes the ratio undefined for the economic mechanism and a missing stock session must never be bridged."
+    },
+    {
+      "design": "terminal_factor_combination_filter_or_model",
+      "decision": "rejected_before_values",
+      "reason": "Campaign061 computes one direct close-derived statistic and loads no terminal score into its formula."
+    }
+  ],
+  "selected_candidate": {
+    "name": "intraday_day_over_day_realized_variance_stability_238b",
+    "direction": "higher",
+    "economic_hypothesis": "A stable stock-specific intraday volatility regime across adjacent sessions may indicate persistent information intensity and liquidity conditions, making the next three-session path more regular than an abrupt volatility-regime transition.",
+    "formula": "For signal session t and its immediately preceding accepted market session t-1, form 119 signed adjacent natural-log close returns independently inside each 120-close half. Let RV_t and RV_t_minus_1 be the sums of squared values across their exact 238 positions. Return 2 times min(RV_t,RV_t_minus_1) divided by RV_t plus RV_t_minus_1.",
+    "source_projection": [
+      "datetime",
+      "symbol",
+      "provider",
+      "close"
+    ],
+    "accepted_grid": "Exactly 120 closes at 09:31-11:30 and 120 closes at 13:01-15:00 on both sessions; exclude standalone 09:30 and the lunch transition.",
+    "prior_session_rule": "Exactly the immediately preceding accepted local market-calendar session; never the previous observed stock day across a suspension or missing partition.",
+    "zero_semantics": "Individual exact-zero returns contribute zero squared variation. Both session realized variances must be finite and strictly positive; no epsilon or imputation is permitted.",
+    "missing_rule": "Missing unless both exact 240-close stock-session grids exist, all selected closes and 238 derived returns are finite, both realized variances are strictly positive, and the score is finite in (0,1].",
+    "parameter_lag_window_transform_direction_threshold_filter_subset_combination_fit_or_model_search": false
+  },
+  "research_boundary": {
+    "external_campaign061_minute_rows_read": false,
+    "campaign061_candidate_or_comparison_values_read": false,
+    "historical_daily_price_fields_read": [],
+    "historical_forward_return_fields_read": false,
+    "provider_request_issued": false,
+    "candidate49_historical_return_signal_execution_or_milestone_backfill_performed": false,
+    "candidate49_ledgers_changed": false,
+    "second_prospective_candidate_created": false,
+    "current_scoring_selection_sizing_or_orders_performed": false,
+    "investment_advice": false
+  },
+  "decision": {
+    "selected_candidate_count": 1,
+    "finite_candidate_library": true,
+    "conceptual_independence_pending_separate_overlap_audit": true,
+    "predictive_value_established": false,
+    "next_action": "Challenge the fixed cross-session realized-variance stability statistic against all 92 required definitions, then freeze one exact coverage-first no-return protocol before any Campaign061 source, candidate, or comparison value is read."
+  }
+}

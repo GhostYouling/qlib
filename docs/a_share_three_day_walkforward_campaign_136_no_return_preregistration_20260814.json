@@ -1,0 +1,213 @@
+{
+  "schema_version": 1,
+  "version": 1,
+  "kind": "a_share_three_day_walkforward_campaign136_no_return_preregistration",
+  "status": "frozen_before_campaign136_daily_factor_source_candidate_comparator_ohlcv_or_return_values",
+  "recorded_at": "2026-08-14T11:05:00+08:00",
+  "authoritative_inputs": {
+    "campaign135_terminal_state": {
+      "path": "docs/a_share_three_day_iteration_status_20260814_campaign135_prevalue_terminal.json",
+      "sha256": "2246925f9c89ff67ef52a6b1b5374aa2040d968765722a5577d33773227e97a5"
+    },
+    "historical_walkforward_policy": {
+      "path": "docs/a_share_three_day_historical_walkforward_research_policy_20260727.json",
+      "sha256": "38426d6161b9bfed323c58caba18feca668b8c9d53e294951a8ba90c01a798bb"
+    },
+    "numeric_policy_v162": {
+      "path": "docs/a_share_three_day_walkforward_future_numeric_comparison_eligibility_policy_v162_20260814.json",
+      "sha256": "06b06c2f36450dd38d8a3528a0b87f4677ec44ab76b38936689f984e8ba9a901",
+      "complete_definition_count": 151,
+      "complete_definition_order_sha256": "91c2da3018330edbaddbb60b86370dcd9732425590f0565c70790b990002e0b5",
+      "numeric_comparator_count": 140,
+      "numeric_comparator_order_sha256": "c71bfe27486c9567afd3aca21e4b04053658c23ac651e7f4df7fd014b0c31efd"
+    },
+    "concept_scouting": {
+      "path": "docs/a_share_three_day_walkforward_campaign_136_concept_scouting_20260814.json",
+      "sha256": "f300a27e6084f6bc16d98eb027524dcbaff3f3ebb3a1bdc525bafe5f1f1b8793"
+    },
+    "mechanism_overlap_audit": {
+      "path": "docs/a_share_three_day_walkforward_campaign_136_mechanism_overlap_audit_20260814.json",
+      "sha256": "e65eb9cad6b0ed8508d8bba7791b780b1b29658002eb63b2457ee96db6dd9697"
+    }
+  },
+  "source_snapshot_contract": {
+    "daily_root": "/Volumes/DIsk/Disk-Coding/qlib/data/raw/a_share/daily",
+    "source_file_glob": "*.parquet",
+    "source_file_count": 5451,
+    "source_total_bytes": 1502484498,
+    "source_file_identity_order_sha256": "d7dca618dbef6620e1c4782cb970178afa5777e3f1101a916df5eb6b8bf37cab",
+    "source_identity_digest_rule": "SHA256 of compact JSON [[basename,size_bytes,sha256_bytes],...] in lexicographic basename order",
+    "accepted_price_basis_manifest": {
+      "path": "data/qlib/cn_a_share/price_basis.json",
+      "sha256": "68e9dbb83749779b34d5cf3b116195074c154ff74cb6de95ba67695bedc1f14f",
+      "status": "passed",
+      "price_basis": "close_known_raw_pct_chg_chain_v1",
+      "daily_sources": [
+        "baostock"
+      ],
+      "raw_files": 5451,
+      "rows": 11425582,
+      "future_corporate_actions_used": false
+    },
+    "calendar": {
+      "path": "data/qlib/cn_a_share/calendars/day.txt",
+      "sha256": "fda506597d26bcec953cdc0882042a5046ec1587db60490e16a01627fd43f53a"
+    },
+    "factor_universe": {
+      "path": "data/qlib/cn_a_share/instruments/factor_main_chinext_star.txt",
+      "sha256": "cdded13c831b78045f4cfe80ba5d9a49f82152c615fef4267d00f992e7f53762"
+    },
+    "output_run_id": "a_share_daily_walkforward_campaign136_price_basis_adjustment_v1",
+    "output_root": "data/experiments/short_horizon/historical_walkforward/campaign_136/source_snapshot_v1",
+    "provider_request_allowed": false,
+    "credential_required": false
+  },
+  "candidate": {
+    "name": "daily_realized_price_basis_adjustment_magnitude_1d",
+    "direction": "higher",
+    "economic_hypothesis": "A larger realized reference-price continuity adjustment may produce short-lived attention and mechanical rebalancing that carries from the next open through the third close.",
+    "source_projection": [
+      "date",
+      "symbol",
+      "factor",
+      "price_basis",
+      "daily_source"
+    ],
+    "source_fields_forbidden": [
+      "open",
+      "high",
+      "low",
+      "close",
+      "volume",
+      "amount",
+      "vwap",
+      "change",
+      "pct_chg",
+      "turnover",
+      "raw_open",
+      "raw_high",
+      "raw_low",
+      "raw_close",
+      "raw_volume",
+      "raw_vwap",
+      "forward_return"
+    ],
+    "predecessor_contract": {
+      "lag_count": 1,
+      "predecessor": "immediately preceding accepted local trading session from the frozen calendar",
+      "same_symbol_row_required_on_both_dates": true,
+      "suspension_listing_or_missing_gap_bridge_allowed": false,
+      "previous_source_row_substitution_allowed": false
+    },
+    "source_identity_contract": {
+      "price_basis_on_both_rows": "close_known_raw_pct_chg_chain_v1",
+      "daily_source_on_both_rows": "baostock",
+      "finite_strictly_positive_factor_on_both_rows": true
+    },
+    "exact_formula": {
+      "score": "abs(log(factor_t/factor_p))",
+      "valid_range": "finite [0,+infinity)",
+      "exact_factor_equality": "valid zero",
+      "chain_level_invariance": "multiplying factor_t and factor_p by one common positive constant leaves the score unchanged",
+      "threshold_tolerance_rounding_clip_fill_or_event_classification": false
+    },
+    "interpretation_limit": "Do not label a nonzero value as an official dividend, split, rights or other corporate-action event; the factor is only the accepted price-basis adjustment magnitude.",
+    "search_space": {
+      "candidate_count": 1,
+      "direction_count": 1,
+      "lag_count": 1,
+      "formula_operator_count": 1,
+      "thresholds": [],
+      "recency_or_decay_windows": [],
+      "filters": [],
+      "subsets": [],
+      "models": [],
+      "alternate_sign_lag_window_threshold_tolerance_filter_subset_fit_model_residualization_or_combination_search": false
+    }
+  },
+  "comparison_contract": {
+    "complete_semantic_definition_count_reviewed_before_values": 151,
+    "prior_complete_definition_order_sha256": "91c2da3018330edbaddbb60b86370dcd9732425590f0565c70790b990002e0b5",
+    "candidate_appended_complete_definition_count": 152,
+    "candidate_appended_complete_definition_order_sha256": "60c465a3e2043efae6b92b8c5f3e007cd397a1cd0ec3094b4fa005665bbe5736",
+    "numeric_comparator_count": 140,
+    "numeric_comparator_order_sha256": "c71bfe27486c9567afd3aca21e4b04053658c23ac651e7f4df7fd014b0c31efd",
+    "candidate_numeric_order_if_admitted_count": 141,
+    "candidate_numeric_order_if_admitted_sha256": "ec1aebcb939ad516c58037a36a4aaadd4ad8b2abbd3c884705895c58da85a2ee",
+    "direction_normalization": "use every comparator's frozen score direction",
+    "candidate_specific_comparator_drop_fill_residualization_neutralization_or_subset_allowed": false,
+    "candidate49_historical_return_signal_execution_or_milestone_read_allowed": false
+  },
+  "ordered_no_return_gates": [
+    {
+      "gate": 1,
+      "name": "binding_source_identity_formula_implementation_and_verification",
+      "rule": "Before decoding any historical source value, freeze and test the pure formula and source identity verifier. Recompute the 5451-file byte identity, price-basis manifest, calendar, universe, exact five-column projection, calendar-adjacent join, source identity, formula, zero/missing rules and output digest before publication."
+    },
+    {
+      "gate": 2,
+      "name": "structural_coverage_variation_and_capacity_before_comparator_values",
+      "rule": "On the immutable quality/current-listing base require median daily coverage >=0.95, P05 daily coverage >=0.90, P05 eligible names >=50, at least 200 non-overlapping three-signal-session cohorts, at least five observed years, all candidate values finite and nonnegative, and at least 200 nonconstant cross-sectional sessions. Exact zeros remain valid. Failure stops before comparator, OHLCV or forward-return values."
+    },
+    {
+      "gate": 3,
+      "name": "all_140_numeric_uniqueness_after_coverage_only",
+      "rule": "Compare in exact v162 numeric order with all 140 eligible numeric comparators. Each comparison requires at least 50 paired names per session and at least 100 qualifying sessions. Every absolute median daily average-tie Spearman correlation must be strictly below 0.8; insufficient overlap fails closed and no comparator may be removed."
+    }
+  ],
+  "finite_development_catalog_if_admitted": {
+    "trial_count": 1,
+    "trial_id": "wf136_daily_realized_price_basis_adjustment_magnitude_1d_single_higher",
+    "factor": "daily_realized_price_basis_adjustment_magnitude_1d",
+    "direction": "higher",
+    "training_or_fit": "none",
+    "folds": [
+      {
+        "fold": 1,
+        "train": [
+          2019,
+          2020
+        ],
+        "validation": 2021
+      },
+      {
+        "fold": 2,
+        "train": [
+          2019,
+          2020,
+          2021
+        ],
+        "validation": 2022
+      },
+      {
+        "fold": 3,
+        "train": [
+          2019,
+          2020,
+          2021,
+          2022
+        ],
+        "validation": 2023
+      }
+    ],
+    "purge": "Purge three signal sessions at every train/validation boundary; t+1 entry and t+3 exit must remain in the same partition.",
+    "execution": "Reuse the frozen one-factor next-open to third-close Top-3 engine, CNY 200000 board-lot pilot, quality/listing gates, amount-participation checks, 0/5/10/20bp cost grid and survivor gates without override.",
+    "stress_2024_2025": "Open once only if the sole trial survives every 2019-2023 gate and a nonzero survivor record freezes the campaign; label historically exposed quasi-out-of-sample. Otherwise keep closed and unread."
+  },
+  "research_boundary": {
+    "daily_source_file_bytes_hashed_for_identity": true,
+    "campaign136_daily_source_values_decoded_or_read": false,
+    "campaign136_candidate_values_computed_or_read": false,
+    "campaign136_comparator_values_read": false,
+    "historical_daily_ohlcv_fields_read": [],
+    "historical_forward_returns_read": false,
+    "stress_2024_2025_opened": false,
+    "provider_request_issued": false,
+    "credential_loaded": false,
+    "candidate49_historical_backfill_performed": false,
+    "candidate49_ledgers_changed": false,
+    "second_prospective_candidate_created": false,
+    "current_scoring_selection_sizing_positions_or_orders_performed": false,
+    "investment_advice": false
+  }
+}

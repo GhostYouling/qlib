@@ -1,0 +1,20 @@
+{
+  "schema_version": 1,
+  "kind": "a_share_three_day_walkforward_campaign145_infrastructure_failure",
+  "status": "recorded_append_only_before_implementation_freeze_and_before_historical_values",
+  "recorded_at": "2026-08-14T20:11:47+08:00",
+  "failure_id": "campaign145_infrastructure_005",
+  "stage": "prevalue_coverage_audit_synthetic_validation",
+  "command_scope": "Focused Campaign145 formula, feature and no-return audit suite",
+  "exit_code": 1,
+  "observed": "17 tests passed and one path-label assertion failed.",
+  "cause": "The test expected campaign145 without the repository's standard campaign_145 separator in the activation and snapshot paths.",
+  "repair_boundary": "Correct only the two test string expectations to campaign_145; paths, formula, source, gates and implementation remain unchanged.",
+  "research_values_read": false,
+  "candidate_or_comparator_values_read": false,
+  "daily_price_or_forward_return_values_read": false,
+  "provider_request_issued": false,
+  "credential_loaded": false,
+  "candidate49_ledgers_changed": false,
+  "scientific_definition_changed": false
+}

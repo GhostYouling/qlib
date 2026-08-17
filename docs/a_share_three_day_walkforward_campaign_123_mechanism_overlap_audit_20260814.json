@@ -1,0 +1,129 @@
+{
+  "schema_version": 1,
+  "kind": "a_share_three_day_walkforward_campaign123_mechanism_overlap_and_source_identifiability_audit",
+  "status": "passed_for_one_zero_row_source_contract_before_adapter_or_values",
+  "recorded_at": "2026-08-14T03:25:04+08:00",
+  "purpose": "Challenge the sole Campaign123 proposal against the complete frozen feature library and the nearest terminal source mechanisms without reading provider rows, factor values, comparator values, prices, or returns.",
+  "authoritative_inputs": {
+    "concept_scouting": {
+      "path": "docs/a_share_three_day_walkforward_campaign_123_concept_scouting_20260814.json",
+      "sha256": "a9a8a793f84c1d0d85e03e33b7bca05dcd102f53dc52246f7bc7781cac369885",
+      "binding_state": "bound"
+    },
+    "numeric_policy_v120": {
+      "path": "docs/a_share_three_day_walkforward_future_numeric_comparison_eligibility_policy_v120_20260814.json",
+      "sha256": "96e09b6fe659e4c856f05211ba36585ea60105ad5442f92bf9affd46ba6d01bc",
+      "complete_definition_count_reviewed": 147,
+      "complete_definition_order_sha256": "3f3756a4128011d9cd718e97d23ee3b1c78022433b269c75bd715f304a055bf0",
+      "eligible_numeric_comparator_count_reserved_but_not_loaded": 139,
+      "eligible_numeric_comparator_order_sha256": "9c4de054ca1b83eced67eece256b024ebec3a6e1925de17a4cedfa7d36265161"
+    },
+    "st_recovery_overlap_reaudit": {
+      "path": "docs/a_share_three_day_st_recovery_mechanism_overlap_reaudit_20260717.json",
+      "sha256": "a916021e4fa6fca094d03cdb6a3360b12c4c4fc09f7e7250dd6f2fde7dc5bc55"
+    },
+    "management_continuity_acceptance": {
+      "path": "docs/a_share_tushare_management_continuity_source_acceptance_record.json",
+      "sha256": "e42380d3bbf4509c25533fc8f0b9eec7113bdf219b14ab78a86e50ea6aa703a8"
+    },
+    "accepted_instrument_youth_scouting": {
+      "path": "docs/a_share_three_day_walkforward_campaign_075_concept_scouting.json",
+      "sha256": "682378a54f554e669182528db1e3e1a702c93223e5d128e12c952db64b7ac350"
+    },
+    "official_enforcement_source_contract_freeze_result": {
+      "path": "docs/a_share_three_day_walkforward_campaign_113_source_contract_freeze_result_20260809.json",
+      "sha256": "a95bf2f1393ddda3c61316ebff400d8b532327d72b355b0a6342d5824a28acc4"
+    }
+  },
+  "candidate": {
+    "name": "official_pure_security_rename_recency_60s",
+    "source_state": "provider_row_with_exact_change_reason_equal_to_改名",
+    "free_text_or_security_name_read": false,
+    "st_share_reform_or_other_reason_used": false
+  },
+  "nearest_mechanism_challenges": [
+    {
+      "mechanism": "name_text_or_name_change_based_st_semantics",
+      "decision": "independent_under_exact_exclusion_contract",
+      "reason": "The prior rejection concerned extracting ST state or semantics from names and name-change text when an official ST membership source exists. Campaign123 never requests or reads name, rejects ST and 撤销ST rows, and accepts only the provider's exact non-status reason token 改名."
+    },
+    {
+      "mechanism": "tushare_st_recovery_speed",
+      "decision": "independent",
+      "reason": "ST recovery requires daily risk-warning membership, an observed spell, two-session exit confirmation and reciprocal prior duration. Campaign123 uses none of those rows or states and excludes every risk-warning reason token."
+    },
+    {
+      "mechanism": "management_continuity_share",
+      "decision": "independent",
+      "reason": "Management continuity measures executive appointment and departure overlap from management records. A completed security rename is an issuer identity event and does not use a person, tenure, title, appointment, departure or announcement-count value."
+    },
+    {
+      "mechanism": "accepted_instrument_session_youth_20s",
+      "decision": "independent",
+      "reason": "Accepted-instrument youth is fixed by tradable-coverage start and ranks every seasoned instrument. Rename recency is sparse, event-dated, missing for unaffected issuers and never substitutes listing age."
+    },
+    {
+      "mechanism": "official_exchange_enforcement_recovery_session_age_60sessions",
+      "decision": "independent_but_same_recency_operator_not_a_source_overlap",
+      "reason": "The prior factor measures elapsed clean sessions after a formal compliance action and scores older events higher. Campaign123 measures recency after a voluntary or corporate identity change and scores newer events higher. The fixed session-age operator is generic point-in-time bookkeeping; source state, economic channel and ordering are different."
+    },
+    {
+      "mechanism": "equity_incentive_plan_or_other_corporate_event_recency",
+      "decision": "independent",
+      "reason": "Rename rows contain no incentive plan, employee, award, exercise, price, quantity, target, buyback, contract, litigation or financing state. No terminal event row is joined or used as a filter."
+    },
+    {
+      "mechanism": "quarterly_announcement_freshness_or_event_count_attention",
+      "decision": "independent",
+      "reason": "Campaign123 uses the latest single completed rename only. It does not count generic announcements, use reporting deadlines, compare peers, or treat repeated disclosure volume as attention."
+    }
+  ],
+  "source_identifiability": {
+    "exact_provider_api": "namechange",
+    "exact_required_reason_token": "改名",
+    "exact_requested_fields": [
+      "ts_code",
+      "start_date",
+      "end_date",
+      "ann_date",
+      "change_reason"
+    ],
+    "explicitly_forbidden_field": "name",
+    "fuzzy_reason_matching_allowed": false,
+    "row_text_classification_allowed": false,
+    "reason_family_expansion_allowed": false,
+    "source_state_identifiable_before_values": true,
+    "entitlement_and_historical_capacity_established": false
+  },
+  "complete_library_review": {
+    "all_147_complete_logical_definitions_reviewed_without_values": true,
+    "all_139_numeric_comparators_reserved_but_not_loaded": true,
+    "old_terminal_definition_or_result_rewritten": false,
+    "old_terminal_factor_combined": false,
+    "post_result_window_direction_filter_or_subset_selected": false,
+    "genuinely_new_information_state": true
+  },
+  "audit_decision": {
+    "pass": true,
+    "selected_candidate_count": 1,
+    "may_freeze_zero_row_source_contract": true,
+    "may_implement_pure_synthetic_adapter_after_contract": true,
+    "may_request_provider_rows_now": false,
+    "may_compute_historical_factor_or_comparator_values_now": false,
+    "may_read_price_or_return_values_now": false
+  },
+  "research_boundary": {
+    "provider_request_issued": false,
+    "credential_loaded": false,
+    "provider_rows_read_persisted_or_counted": false,
+    "candidate_or_comparison_values_read": false,
+    "historical_daily_price_fields_read": [],
+    "historical_forward_returns_read": false,
+    "stress_2024_2025_opened": false,
+    "candidate49_historical_backfill_performed": false,
+    "candidate49_ledgers_changed": false,
+    "second_prospective_candidate_created": false,
+    "current_scoring_selection_sizing_positions_or_orders_performed": false,
+    "investment_advice": false
+  }
+}

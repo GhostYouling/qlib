@@ -1,0 +1,41 @@
+{
+  "version": 1,
+  "kind": "a_share_three_day_walkforward_campaign103_infrastructure_failure",
+  "status": "development_data_load_failed_and_recorded_before_complete_trial_metrics",
+  "recorded_at": "2026-08-08T00:34:45+08:00",
+  "stage": "2019_2023_development_candidate_panel_load",
+  "command_exit_code": 1,
+  "ledger_entry": {
+    "trial_id": "wf103_infrastructure__development_load_002",
+    "entry_sha256": "08bdba87183c8934360e4c157c8af700596a695436395a03b1d5de95a1e373e6"
+  },
+  "exception": "Campaign103 candidate snapshot semantics changed",
+  "root_cause": "The previous repair wrote the Campaign103 loader into the callable returned by contextlib.contextmanager. That callable resolves wrapper globals from contextlib.py, while the generator body that patches base.load_factor_panel resolves _load_compact_factor_panel from _temporary_compact_factor_loader.__wrapped__.__globals__. The generator therefore still installed the inherited Campaign089 loader.",
+  "allowed_repair": "Bind the already-tested Campaign103 loader into the context manager generator's exact __wrapped__.__globals__, assert both the wrapper and generator paths separately, and add a regression test that enters the context and proves base.load_factor_panel is the Campaign103 loader. Preserve the two-entry ledger, all factor semantics, folds, execution policy, costs, and gates.",
+  "append_only_ledger_after_failure": {
+    "path": "data/experiments/short_horizon/historical_walkforward/campaign_103/walkforward/trial_ledger.json",
+    "sha256": "9eeb8b40ded51398513a2b0066e40422f5dd2ca282e1e650279c69d41b278a3d",
+    "entries": 2,
+    "chain_tip_sha256": "08bdba87183c8934360e4c157c8af700596a695436395a03b1d5de95a1e373e6"
+  },
+  "data_access": {
+    "2019_2023_execution_quote_instruments_loaded": 4661,
+    "daily_execution_quote_fields_read_before_failure": true,
+    "candidate_factor_panel_completed": false,
+    "complete_development_metrics_computed": false,
+    "complete_development_trial_count_increment": 0,
+    "2024_2025_stress_opened": false,
+    "2024_2025_return_fields_read": false
+  },
+  "research_boundary": {
+    "provider_request_issued": false,
+    "candidate49_historical_return_read": false,
+    "candidate49_ledgers_changed": false,
+    "current_scoring_selection_sizing_or_orders_performed": false
+  },
+  "attempt_accounting": {
+    "campaign103_infrastructure_failure_increment": 1,
+    "campaign103_complete_factor_attempt_increment": 0,
+    "return_reading_complete_development_trial_increment": 0
+  }
+}

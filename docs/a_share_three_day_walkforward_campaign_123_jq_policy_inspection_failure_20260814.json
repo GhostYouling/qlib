@@ -1,0 +1,23 @@
+{
+  "schema_version": 1,
+  "kind": "a_share_three_day_walkforward_campaign123_infrastructure_failure",
+  "status": "recorded_failed_read_only_policy_shape_query_before_provider_rows_or_values",
+  "recorded_at": "2026-08-14T03:25:04+08:00",
+  "stage": "numeric_policy_shape_inspection",
+  "failure": "A read-only jq expression applied an object-key projection after an array-producing stream and exited with type errors. The policy file remained unchanged; a direct bounded file read then established the correct compact v120 shape.",
+  "scientific_result_changed": false,
+  "files_modified_by_failed_command": false,
+  "research_boundary": {
+    "provider_request_issued": false,
+    "credential_loaded": false,
+    "provider_rows_read_persisted_or_counted": false,
+    "candidate_or_comparison_values_read": false,
+    "historical_daily_price_fields_read": [],
+    "historical_forward_returns_read": false,
+    "stress_2024_2025_opened": false,
+    "candidate49_ledgers_changed": false,
+    "second_prospective_candidate_created": false,
+    "current_scoring_selection_sizing_positions_or_orders_performed": false,
+    "investment_advice": false
+  }
+}

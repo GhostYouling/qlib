@@ -1,0 +1,74 @@
+{
+  "schema_version": 1,
+  "kind": "a_share_three_day_walkforward_campaign099_feature_manifest_semantic_failure",
+  "status": "recorded_before_any_repair_or_retry",
+  "recorded_at": "2026-08-07T09:51:24Z",
+  "stage": "postcompute_prepublication_snapshot_manifest_semantic_gate",
+  "command_boundary": {
+    "command": "build",
+    "data_root": "/Volumes/DIsk/qlib-a-share-tushare-1m",
+    "workers": 4,
+    "provider_request_issued": false
+  },
+  "frozen_inputs": {
+    "feature_runner": {
+      "path": "scripts/a_share_three_day_walkforward_campaign099_features.py",
+      "sha256": "f4e57c9f40b181d62aa337fd133662d379eac92138690fbfd8cdfe25968df1fe"
+    },
+    "feature_implementation_freeze": {
+      "path": "docs/a_share_three_day_walkforward_campaign_099_feature_implementation_freeze_20260807.json",
+      "sha256": "36d150280edc23f8e6542cd17c9a234a75309de285177d3b024df0a577dda6e0"
+    },
+    "protocol_sha256": "a10f8cf03a1acda3a3632fd7a648f3ec22697ca4074e31d85e539788b37720fc"
+  },
+  "observed_progress_before_failure": {
+    "market_profile_symbols_completed": 5396,
+    "candidate_symbols_completed": 5396,
+    "candidate_partitions_completed": 33015,
+    "candidate_rows": 7724498,
+    "candidate_eligible_rows": 7699914,
+    "resumed_partitions": 0
+  },
+  "observed_quality_from_all_partition_checkpoints": {
+    "base_rows": 7724498,
+    "constant_market_profile_rows": 0,
+    "constant_own_profile_rows": 24584,
+    "eligible_rows": 7699914,
+    "endpoint_canonicalized_rows": 0,
+    "endpoint_canonicalized_state_count": 0,
+    "insufficient_leave_one_out_peer_rows": 0,
+    "invalid_required_amount_rows": 0,
+    "invalid_required_hlc_rows": 0,
+    "nonfinite_correlation_rows": 0,
+    "nonfinite_or_out_of_range_profile_rows": 0,
+    "nonpositive_total_amount_rows": 0,
+    "range_violation_rows": 0,
+    "zero_range_state_count": 363074887
+  },
+  "failure": {
+    "exception_type": "Campaign099FeatureError",
+    "message": "Campaign099 snapshot semantics changed",
+    "origin": "scripts/a_share_three_day_walkforward_campaign099_features.py:_validate_snapshot_manifest",
+    "exit_code": 1
+  },
+  "publication_state_after_failure": {
+    "published": false,
+    "snapshot_manifest_exists": false,
+    "partial_root_exists": true,
+    "partial_partition_file_count": 33015,
+    "partial_checkpoint_file_count": 33015,
+    "partial_root": "/Volumes/DIsk/qlib-a-share-tushare-1m/derived/a_share/rich/tushare/minute_walkforward_campaign099_feature_library/.tushare_stk_mins_1m_2019_2025_ea0cbb8f_walkforward_campaign099_feature_library_v1.partial"
+  },
+  "scientific_boundary": {
+    "candidate_feature_values_computed": true,
+    "coverage_or_capacity_metrics_computed": false,
+    "comparison_factor_values_read": false,
+    "historical_daily_price_or_forward_return_values_read": false,
+    "training_or_model_fitting_performed": false,
+    "candidate49_historical_return_read": false,
+    "candidate49_ledgers_changed": false,
+    "provider_request_issued": false,
+    "current_scoring_selection_sizing_or_orders_performed": false
+  },
+  "next_allowed_action": "diagnose the fail-closed manifest predicate from immutable completed checkpoints, append a repair freeze, then resume without recomputing feature values"
+}

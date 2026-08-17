@@ -1,0 +1,383 @@
+{
+  "version": 1,
+  "kind": "a_share_three_day_walkforward_campaign065_mechanism_overlap_audit",
+  "status": "passed_exhaustive_conceptual_independence_before_campaign065_source_candidate_comparison_daily_price_or_return_values",
+  "recorded_at": "2026-08-05T12:34:00+08:00",
+  "purpose": "Verify one Campaign065 mechanism against every frozen historical factor definition, retain the structurally nonnumeric Campaign063 challenge explicitly, and freeze the exact candidate before any Campaign065 value is opened.",
+  "authoritative_boundary": {
+    "concept_scouting": {
+      "path": "docs/a_share_three_day_walkforward_campaign_065_concept_scouting.json",
+      "sha256": "737b4761212b9cf9ccab05e88f23a2bb4256972c56c89eb4c5cf35fa2c8020c8"
+    },
+    "campaign064_verified_iteration_state": {
+      "path": "docs/a_share_three_day_iteration_status_20260805_campaign064_verified.json",
+      "sha256": "05c1a5d1202774a84f8e8f0a25196e4d7d55064551a0b08509d0bffe92d8750f"
+    },
+    "campaign065_plus_numeric_comparator_eligibility_policy": {
+      "path": "docs/a_share_three_day_walkforward_future_numeric_comparison_eligibility_policy_20260805.json",
+      "sha256": "ab28928886b1f617a7be094e0afad241e24bacad9646360c35a05acd80e853b8"
+    },
+    "campaign064_completed_no_return_audit": {
+      "path": "data/experiments/short_horizon/historical_walkforward/campaign_064/no_return/20260805T041624Z_campaign064_no_return_audit.json",
+      "sha256": "55f3deef0cf8d58bf29a34e0af60cb290188dfe1f0e1d424e12e11ce18279c66"
+    }
+  },
+  "research_boundary": {
+    "offline_zero_network": true,
+    "full_historical_definition_order_verified_before_exact_candidate_definition": true,
+    "campaign065_source_values_read": false,
+    "campaign065_candidate_values_read": false,
+    "campaign065_comparison_values_read": false,
+    "historical_daily_price_fields_read": [],
+    "historical_forward_return_fields_read": false,
+    "provider_request_issued": false,
+    "candidate49_historical_backfill_or_ledger_change": false,
+    "second_prospective_candidate_created": false,
+    "current_scoring_selection_sizing_or_orders_performed": false
+  },
+  "complete_historical_library_evaluation": {
+    "definition_count": 96,
+    "definition_order_sha256": "974e3acd06536dcfbcc13524932f771f3636ac32023b2712f5d2d76f4d1f2d92",
+    "evaluated_definition_names_in_frozen_order": [
+      "late_return_30m",
+      "late_amount_share_30m",
+      "late_vwap_to_day_vwap_30m",
+      "intraday_realized_volatility",
+      "afternoon_signed_amount_efficiency_120m",
+      "afternoon_drawdown_recovery_resilience_120m",
+      "intraday_amount_participation_entropy_240m",
+      "intraday_amount_profile_serial_persistence_240m",
+      "intraday_upside_semivariance_share_239m",
+      "intraday_terminal_close_location_240m",
+      "intraday_return_sign_run_imbalance_238p",
+      "intraday_volatility_resolution_238m",
+      "intraday_amount_lead_return_correlation_238p",
+      "intraday_amount_center_of_mass_240m",
+      "intraday_up_move_amount_share_238m",
+      "intraday_diffusive_variation_ratio_238m",
+      "intraday_amount_volatility_coupling_238p",
+      "intraday_return_variance_entropy_238m",
+      "intraday_return_skewness_238m",
+      "intraday_bar_vwap_close_pressure_240m",
+      "intraday_price_update_share_238m",
+      "intraday_market_idiosyncratic_share_238m",
+      "intraday_opening_auction_amount_share_241m",
+      "intraday_market_amount_profile_synchronization_240m",
+      "intraday_market_neutral_late_residual_drift_238m",
+      "intraday_negative_return_absorption_rate_236p",
+      "intraday_signed_path_efficiency_239m",
+      "intraday_zero_return_amount_intensity_238m",
+      "intraday_lunch_repricing_persistence_119m",
+      "intraday_directional_price_impact_asymmetry_238m",
+      "intraday_transaction_price_path_confirmation_238p",
+      "intraday_share_volume_transaction_price_coupling_238p",
+      "intraday_intrabar_body_range_efficiency_240m",
+      "intraday_adjacent_range_overlap_continuity_238p",
+      "intraday_intrabar_range_participation_entropy_240m",
+      "intraday_intrabar_range_reversal_238p",
+      "intraday_global_price_range_revisit_240m",
+      "intraday_prior_range_breakout_pressure_238p",
+      "intraday_interbar_gap_body_confirmation_238p",
+      "intraday_midrange_width_change_coupling_238p",
+      "intraday_range_share_volume_confirmation_240m",
+      "intraday_bar_direction_continuity_238p",
+      "quarterly_announcement_freshness_60s",
+      "intraday_market_response_delay_asymmetry_236p",
+      "intraday_intrabar_close_location_pressure_240m",
+      "intraday_range_boundary_translation_coherence_238p",
+      "intraday_directional_range_response_coupling_238p",
+      "intraday_extreme_arrival_order_240m",
+      "intraday_market_up_down_correlation_asymmetry_238m",
+      "intraday_morning_afternoon_return_profile_persistence_119p",
+      "intraday_absolute_return_serial_persistence_236p",
+      "intraday_market_shock_magnitude_decoupling_238m",
+      "intraday_market_correlation_resolution_119p",
+      "intraday_market_dispersion_decoupling_238m",
+      "quarterly_announcement_timeliness_days",
+      "intraday_return_spectral_entropy_59f",
+      "intraday_round_tenth_close_avoidance_240m",
+      "intraday_return_weak_order_entropy_234t",
+      "intraday_two_sided_range_frontier_balance_238m",
+      "intraday_five_minute_variance_ratio_230w",
+      "intraday_half_session_chord_adherence_240m",
+      "intraday_return_time_reversal_asymmetry_236p",
+      "intraday_morning_afternoon_range_profile_similarity_120b",
+      "intraday_microgap_absorption_share_238p",
+      "intraday_lunch_repricing_persistence_2r",
+      "intraday_transaction_vwap_consensus_240m",
+      "intraday_cumulative_vwap_crossing_rate_240m",
+      "full_terminal_library_directional_percentile_consensus_66f",
+      "intraday_volatility_activity_lead_lag_asymmetry_236p",
+      "intraday_return_reversal_energy_share_236p",
+      "intraday_body_next_microgap_reversal_238p",
+      "intraday_two_sided_wick_absorption_balance_240m",
+      "intraday_morning_afternoon_amount_profile_similarity_120b",
+      "intraday_half_session_extreme_shock_reversal_completion_2h",
+      "intraday_close_range_occupancy_entropy_10b",
+      "quarterly_announcement_delay_consistency_4q",
+      "intraday_amount_price_discovery_alignment_js_238p",
+      "intraday_volume_weighted_transaction_price_bowley_skew_240m",
+      "intraday_price_update_clock_entropy_10b_238m",
+      "intraday_day_over_day_amount_profile_similarity_240b",
+      "intraday_day_over_day_absolute_return_profile_similarity_238b",
+      "quality_roe",
+      "quality_profit",
+      "quality_revenue",
+      "quality_growth",
+      "quality_score",
+      "roe_change",
+      "revenue_yoy_acceleration",
+      "profit_yoy_acceleration",
+      "quarterly_profit_revenue_growth_spread_pp",
+      "intraday_market_directional_sign_agreement_238m",
+      "intraday_day_over_day_directional_return_agreement_238b",
+      "intraday_day_over_day_realized_variance_stability_238b",
+      "quarterly_announcement_peer_crowding_sparsity",
+      "intraday_cross_sectional_standardized_return_state_stability_236p",
+      "intraday_range_weak_order_entropy_236t"
+    ],
+    "every_definition_assigned_to_at_least_one_mechanism_challenge": true,
+    "terminal_failed_rejected_surviving_and_combination_definitions_retained": true,
+    "campaign063_nonnumeric_challenge_retained": {
+      "name": "intraday_cross_sectional_standardized_return_state_stability_236p",
+      "position_one_based": 95,
+      "numeric_gate_role": "undefined_not_pass_not_fail",
+      "mechanism_challenge_role": "mandatory"
+    },
+    "campaign064_last_numeric_comparator_retained": {
+      "name": "intraday_range_weak_order_entropy_236t",
+      "position_one_based": 96,
+      "numeric_gate_position_one_based_after_campaign063_filter": 95
+    }
+  },
+  "numeric_comparator_boundary": {
+    "eligible_comparator_count": 95,
+    "eligible_comparator_order_sha256": "2418a9e28bdc6b3484ede7b4e0ae6293131af2f4644930ca2c21bff9060c331d",
+    "classification_frozen_before_candidate_definition_or_values": true,
+    "all_95_must_pass": true,
+    "minimum_pairwise_names_per_session": 50,
+    "minimum_pairwise_sessions_per_comparison": 100,
+    "maximum_allowed_absolute_median_daily_rank_correlation": 0.8,
+    "candidate_specific_drop_allowed": false,
+    "comparison_values_may_be_opened_only_after_coverage_passes": true
+  },
+  "selected_mechanism": {
+    "name": "intraday_range_weak_order_time_reversal_divergence_236t",
+    "direction": "higher",
+    "information_domain": "within_half_intrabar_log_range_ordinal_time_arrow",
+    "economic_hypothesis": "A larger forward-versus-reverse divergence in local intraday volatility-state evolution may indicate unresolved directional information assimilation that remains relevant from the next open through the third close.",
+    "source_projection": [
+      "datetime",
+      "symbol",
+      "provider",
+      "high",
+      "low"
+    ],
+    "forbidden_source_fields": [
+      "open",
+      "close",
+      "volume",
+      "amount"
+    ],
+    "bar_grid": "Exactly 120 high/low bars in 09:31--11:30 and exactly 120 in 13:01--15:00; exclude 09:30 and never cross lunch.",
+    "range_rule": "For every selected bar require finite low>0 and finite high>=low, then x=ln(high/low). Exact high=low produces x=0 and is retained.",
+    "triple_rule": "Within each half form every overlapping consecutive triple (x_i,x_{i+1},x_{i+2}) for i=0..117, giving exactly 118 morning and 118 afternoon triples and 236 pooled triples with equal weight.",
+    "weak_order_rule": "Classify each triple by the exact zero-tolerance key (cmp(x0,x1),cmp(x0,x2),cmp(x1,x2)), with cmp in {-1,0,+1}; require one of the 13 transitive weak-order states and retain all ties.",
+    "time_reversal_rule": "For every weak-order state s represented by (x0,x1,x2), define R(s) as the state of (x2,x1,x0). Let p_s be the observed pooled frequency and q_s=p_R(s). R is the exact fixed involution induced by triple reversal; no state pairing is learned or selected.",
+    "formula": "Let m_s=(p_s+q_s)/2 over all 13 states. Score=[0.5*sum_{p_s>0} p_s*ln(p_s/m_s)+0.5*sum_{q_s>0} q_s*ln(q_s/m_s)]/ln(2).",
+    "zero_semantics": "If the empirical state distribution is exactly invariant under reversal, including an all-tied path, score zero is valid. No pseudocount is required because each positive p_s or q_s has positive m_s.",
+    "valid_range": {
+      "lower": 0.0,
+      "lower_inclusive": true,
+      "upper": 1.0,
+      "upper_inclusive": true
+    },
+    "missing_rule": "Missing for an incomplete fixed grid, invalid/nonfinite high or low, high<low, nonfinite log range, an unrecognized/nontransitive state, a triple count other than 236, a nonfinite divergence, or a score outside [0,1] before 1e-12 endpoint canonicalization. Never fill, jitter, clip, winsorize, threshold, filter, or substitute.",
+    "endpoint_canonicalization_tolerance": 1e-12,
+    "alternate_range_transform_tuple_length_alphabet_tie_window_state_pairing_divergence_direction_subwindow_threshold_filter_subset_board_year_cost_regime_fit_combination_or_model_search": false
+  },
+  "overlap_challenges": [
+    {
+      "definitions": [
+        "intraday_range_weak_order_entropy_236t"
+      ],
+      "result": "distinct_pending_strict_numeric_uniqueness_gate",
+      "reason": "Campaign064 is the Shannon entropy H(p) of the forward 13-state distribution. Campaign065 is JSD(p,Rp), which is zero for any reversal-balanced distribution regardless of entropy and can be positive for distributions with equal or similar entropy. Reversing every range path preserves Campaign064 exactly and swaps p with Rp while preserving Campaign065; rebalancing each reversal pair can change Campaign065 without fixing H(p)."
+    },
+    {
+      "definitions": [
+        "intraday_return_time_reversal_asymmetry_236p",
+        "intraday_return_weak_order_entropy_234t",
+        "intraday_return_spectral_entropy_59f",
+        "intraday_return_sign_run_imbalance_238p",
+        "intraday_absolute_return_serial_persistence_236p",
+        "intraday_return_reversal_energy_share_236p",
+        "intraday_return_variance_entropy_238m",
+        "intraday_return_skewness_238m",
+        "intraday_upside_semivariance_share_239m",
+        "intraday_diffusive_variation_ratio_238m",
+        "intraday_five_minute_variance_ratio_230w"
+      ],
+      "result": "distinct_pending_statistical_uniqueness_gate",
+      "reason": "These mechanisms use signed or absolute close returns, Fourier power, moments, run structure, or variance aggregation. Campaign065 has no close or return magnitude and uses only reversal-pair imbalance in ordinal high-low range triples."
+    },
+    {
+      "definitions": [
+        "intraday_intrabar_range_participation_entropy_240m",
+        "intraday_adjacent_range_overlap_continuity_238p",
+        "intraday_intrabar_range_reversal_238p",
+        "intraday_global_price_range_revisit_240m",
+        "intraday_prior_range_breakout_pressure_238p",
+        "intraday_midrange_width_change_coupling_238p",
+        "intraday_range_boundary_translation_coherence_238p",
+        "intraday_directional_range_response_coupling_238p",
+        "intraday_two_sided_range_frontier_balance_238m",
+        "intraday_morning_afternoon_range_profile_similarity_120b",
+        "intraday_intrabar_body_range_efficiency_240m",
+        "intraday_intrabar_close_location_pressure_240m",
+        "intraday_close_range_occupancy_entropy_10b",
+        "intraday_two_sided_wick_absorption_balance_240m"
+      ],
+      "result": "distinct_pending_statistical_uniqueness_gate",
+      "reason": "These factors retain range shares, price interval levels, overlap, frontier, midrange, close location, wick/body geometry, clock bins, or morning-afternoon alignment. Campaign065 is invariant to common strictly increasing range transforms and to price-level translations that preserve local range weak orders."
+    },
+    {
+      "definitions": [
+        "intraday_amount_participation_entropy_240m",
+        "intraday_amount_profile_serial_persistence_240m",
+        "intraday_amount_lead_return_correlation_238p",
+        "intraday_amount_center_of_mass_240m",
+        "intraday_amount_volatility_coupling_238p",
+        "intraday_range_share_volume_confirmation_240m",
+        "intraday_share_volume_transaction_price_coupling_238p",
+        "intraday_amount_price_discovery_alignment_js_238p",
+        "intraday_morning_afternoon_amount_profile_similarity_120b",
+        "intraday_day_over_day_amount_profile_similarity_240b",
+        "intraday_opening_auction_amount_share_241m",
+        "intraday_zero_return_amount_intensity_238m",
+        "late_amount_share_30m",
+        "afternoon_signed_amount_efficiency_120m",
+        "intraday_up_move_amount_share_238m",
+        "intraday_volatility_activity_lead_lag_asymmetry_236p"
+      ],
+      "result": "distinct_pending_statistical_uniqueness_gate",
+      "reason": "Campaign065 reads no amount or volume and contains no activity weight, participation profile, activity-price coupling, center of mass, or lead-lag statistic."
+    },
+    {
+      "definitions": [
+        "late_vwap_to_day_vwap_30m",
+        "intraday_bar_vwap_close_pressure_240m",
+        "intraday_transaction_price_path_confirmation_238p",
+        "intraday_transaction_vwap_consensus_240m",
+        "intraday_volume_weighted_transaction_price_bowley_skew_240m",
+        "intraday_cumulative_vwap_crossing_rate_240m",
+        "intraday_directional_price_impact_asymmetry_238m"
+      ],
+      "result": "distinct_pending_statistical_uniqueness_gate_or_future_only_challenge",
+      "reason": "Transaction-price and VWAP mechanisms require amount/volume or close relative to a price anchor. Campaign065 has neither. Candidate49 remains future-only and is challenged without historical Candidate49 returns or ledger backfill."
+    },
+    {
+      "definitions": [
+        "intraday_market_idiosyncratic_share_238m",
+        "intraday_market_amount_profile_synchronization_240m",
+        "intraday_market_neutral_late_residual_drift_238m",
+        "intraday_market_response_delay_asymmetry_236p",
+        "intraday_market_up_down_correlation_asymmetry_238m",
+        "intraday_market_shock_magnitude_decoupling_238m",
+        "intraday_market_correlation_resolution_119p",
+        "intraday_market_dispersion_decoupling_238m",
+        "intraday_market_directional_sign_agreement_238m",
+        "intraday_cross_sectional_standardized_return_state_stability_236p"
+      ],
+      "result": "distinct_pending_statistical_uniqueness_gate_with_campaign063_nonnumeric",
+      "reason": "These factors require synchronous peers, market moments, residuals, correlation, dispersion, or standardized return states. Campaign065 is a standalone stock-day high-low range sequence. Campaign063 remains an explicit nonnumeric mechanism challenge and is not silently treated as a pass or fail."
+    },
+    {
+      "definitions": [
+        "intraday_day_over_day_absolute_return_profile_similarity_238b",
+        "intraday_day_over_day_directional_return_agreement_238b",
+        "intraday_day_over_day_realized_variance_stability_238b",
+        "intraday_morning_afternoon_return_profile_persistence_119p",
+        "intraday_day_over_day_amount_profile_similarity_240b",
+        "intraday_lunch_repricing_persistence_119m",
+        "intraday_lunch_repricing_persistence_2r"
+      ],
+      "result": "distinct_pending_statistical_uniqueness_gate",
+      "reason": "These factors align separate days, halves, or lunch endpoints. Campaign065 pools fixed local triples inside each half and creates no cross-day, cross-half, or lunch transition."
+    },
+    {
+      "definitions": [
+        "late_return_30m",
+        "intraday_realized_volatility",
+        "afternoon_drawdown_recovery_resilience_120m",
+        "intraday_terminal_close_location_240m",
+        "intraday_volatility_resolution_238m",
+        "intraday_price_update_share_238m",
+        "intraday_price_update_clock_entropy_10b_238m",
+        "intraday_negative_return_absorption_rate_236p",
+        "intraday_signed_path_efficiency_239m",
+        "intraday_bar_direction_continuity_238p",
+        "intraday_extreme_arrival_order_240m",
+        "intraday_round_tenth_close_avoidance_240m",
+        "intraday_half_session_chord_adherence_240m",
+        "intraday_microgap_absorption_share_238p",
+        "intraday_body_next_microgap_reversal_238p",
+        "intraday_half_session_extreme_shock_reversal_completion_2h",
+        "intraday_interbar_gap_body_confirmation_238p"
+      ],
+      "result": "distinct_pending_statistical_uniqueness_gate",
+      "reason": "These price-path mechanisms use endpoint direction, close updates, drawdown, gaps, shocks, extrema timing, or price-level geometry. Campaign065 discards direction and levels after forming unsigned log ranges."
+    },
+    {
+      "definitions": [
+        "quarterly_announcement_freshness_60s",
+        "quarterly_announcement_timeliness_days",
+        "quarterly_announcement_delay_consistency_4q",
+        "quarterly_announcement_peer_crowding_sparsity",
+        "quality_roe",
+        "quality_profit",
+        "quality_revenue",
+        "quality_growth",
+        "quality_score",
+        "roe_change",
+        "revenue_yoy_acceleration",
+        "profit_yoy_acceleration",
+        "quarterly_profit_revenue_growth_spread_pp"
+      ],
+      "result": "distinct_pending_statistical_uniqueness_gate",
+      "reason": "Campaign065 reads no accounting, announcement, peer disclosure, quarterly, or fundamental field."
+    },
+    {
+      "definitions": [
+        "full_terminal_library_directional_percentile_consensus_66f"
+      ],
+      "result": "distinct_pending_statistical_uniqueness_gate_no_combination",
+      "reason": "Campaign065 is one source statistic and consumes no prior factor value, percentile consensus, fit, residual, model, or combination."
+    }
+  ],
+  "counterfactual_independence_tests": [
+    "Holding all 240 high-low ranges fixed while changing admissible closes, open, volume, amount, peer populations, and quarterly records leaves Campaign065 unchanged.",
+    "Any common strictly increasing transform of the 240 range values preserves all weak-order states and Campaign065 while generally changing magnitude-, variance-, covariance-, and range-share factors.",
+    "Replacing p by any reversal-balanced distribution can change Campaign064 entropy while Campaign065 remains zero; moving mass within a reversal pair can make Campaign065 positive without uniquely determining entropy.",
+    "Reversing every within-half range path swaps p and q and leaves symmetric Jensen-Shannon divergence unchanged, whereas cubic signed-return time-arrow and endpoint-direction statistics may change.",
+    "Translating or reshaping price intervals while preserving the ordering of their log widths leaves Campaign065 unchanged but can change interval overlap, frontier, revisit, wick, body, and boundary factors.",
+    "Changing a cross-sectional peer return population while holding one stock's high-low path fixed changes Campaign063 and market-relative factors but leaves Campaign065 unchanged."
+  ],
+  "rejected_variants_before_values": [
+    "total variation, Hellinger, Wasserstein, directed KL, unnormalized Jensen-Shannon, pseudocounts, smoothing, or learned reversal pairing",
+    "strict permutation states, tie dropping, jitter, tolerance bands, rank averaging, a different state alphabet, or tuple length other than three",
+    "Markov transition matrices, conditional entropy, mutual information, transfer entropy, spectral measures, compression, higher lag, or nonoverlapping tuples",
+    "raw high-low difference, true range, Parkinson variance, close return, volume/amount weighting, market adjustment, or residualization",
+    "morning-only, afternoon-only, lunch-spanning, cross-day, board, year, liquidity, volatility, event, or price-level subsets",
+    "lower direction, inverse divergence, thresholds, filters, winsorization, combinations, fitting, or models"
+  ],
+  "decision": {
+    "complete_historical_definition_count_verified": 96,
+    "complete_historical_definition_order_verified": true,
+    "structurally_nonnumeric_campaign063_challenge_retained": true,
+    "conceptual_independence_passed": true,
+    "statistical_independence_pending_all_95_numeric_comparisons": true,
+    "predictive_value_established": false,
+    "next_action": "Hash-bind this audit and freeze exact source fingerprints, coverage-first gates, the 95 eligible numeric comparator order with Campaign064 last, code, and synthetic tests before opening any Campaign065 source value."
+  }
+}

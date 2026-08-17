@@ -1,0 +1,73 @@
+{
+  "version": 1,
+  "kind": "a_share_three_day_walkforward_campaign064_checkpoint_identity_lineage_repair",
+  "status": "exact_pre_repair_checkpoint_identity_pair_acceptance_authorized_before_snapshot_publication",
+  "recorded_at": "2026-08-05T08:03:00+08:00",
+  "purpose": "Allow the repaired runner to validate and reuse the 33,015 unpublished factor partitions without rewriting their truthful original runner/freeze lineage or recomputing candidate values.",
+  "authoritative_inputs": {
+    "manifest_metadata_repair": {
+      "path": "docs/a_share_three_day_walkforward_campaign_064_manifest_metadata_repair_20260805.json",
+      "sha256": "73bb93c63eb52daeaabdc9dafec84cada009a67e0da68ec95799d069ba96fdce"
+    },
+    "v2_implementation_freeze": {
+      "path": "docs/a_share_three_day_walkforward_campaign_064_feature_implementation_freeze_v2_20260805.json",
+      "sha256": "75b04a65396b01803884b659f1ae639f089002b1941575170e8d585d18cf249b"
+    },
+    "pre_lineage_repair_runner": {
+      "path": "scripts/a_share_three_day_walkforward_campaign064_features.py",
+      "sha256": "bd0bae815f9230b082e7eb17c76556c7d58e56c78db5a01c3325889fa5e4cc38"
+    },
+    "pre_lineage_repair_tests": {
+      "path": "tests/data_collector_tests/test_a_share_three_day_walkforward_campaign064_features.py",
+      "sha256": "0dff9f9b932efa5b0bcd283060239c3670d5155221879f922995558ced31cbe6"
+    },
+    "research_attempt_ledger": {
+      "path": "data/experiments/short_horizon/historical_walkforward/campaign_064/research_attempt_ledger_v6.json",
+      "sha256": "dbe1bdda3608d6c50c6aa2a2eeada474ee25ec2a0b134c92b49a24a748f9829d",
+      "attempt_count": 7,
+      "complete_factor_attempt_count": 0,
+      "return_reading_trial_count": 0
+    }
+  },
+  "failure_evidence": {
+    "existing_unpublished_partition_checkpoints": 33015,
+    "first_reported_checkpoint": "SH600004/2019",
+    "checkpoint_kind_protocol_symbol_year_output_byte_output_frame_and_row_checks_passed_or_remain_required": true,
+    "sole_observed_identity_difference": "existing checkpoints bind the original pre-repair runner/v1-freeze pair rather than the repaired runner/v2-freeze pair",
+    "snapshot_published": false,
+    "candidate_formula_recomputed": false,
+    "checkpoint_metadata_or_partition_bytes_changed": false
+  },
+  "authorized_repair": {
+    "accepted_checkpoint_identity_pairs": [
+      {
+        "role": "current_exact_pair",
+        "feature_runner_sha256": "runtime_current_runner_sha256_argument",
+        "implementation_freeze_sha256": "runtime_current_implementation_freeze_sha256_argument"
+      },
+      {
+        "role": "original_pre_manifest-repair_pair",
+        "feature_runner_sha256": "774f47073de3520a1b7fd818e5b8e16ac145f406c86d999368d35ec90b8aa21d",
+        "implementation_freeze_sha256": "05b65cb001dfeec100c3ed3bcb105c9d59d26d0c4cdae8415d75ce589f5593b8"
+      }
+    ],
+    "mixed_old_new_or_any_other_identity_pair_allowed": false,
+    "all_existing_kind_symbol_year_protocol_output_byte_output_frame_and_row_checks_retained": true,
+    "checkpoint_metadata_rewrite_allowed": false,
+    "partition_byte_frame_or_value_change_allowed": false,
+    "formula_direction_grid_tuple_alphabet_tie_entropy_missing_rule_or_source_projection_change_allowed": false,
+    "comparison_daily_price_or_return_access_allowed": false,
+    "required_regression_test": "A synthetic hash-bound old-pair checkpoint must pass, while a mixed identity pair must fail closed."
+  },
+  "research_boundary": {
+    "candidate_values_already_exist_only_in_unpublished_checkpoints": true,
+    "comparison_values_read": false,
+    "historical_daily_price_fields_read": false,
+    "historical_forward_returns_read": false,
+    "provider_request_issued": false,
+    "candidate49_ledgers_changed": false,
+    "second_prospective_candidate_created": false,
+    "current_scoring_selection_sizing_or_orders_performed": false
+  },
+  "next_action": "Implement the exact two-pair validator, add the synthetic pass/fail regression, bind both in implementation freeze v3, then retry checkpoint validation and atomic publication."
+}

@@ -1,0 +1,148 @@
+{
+  "version": 1,
+  "kind": "a_share_three_day_walkforward_campaign031_mechanism_overlap_audit",
+  "status": "passed_conceptual_independence_before_dispersion_benchmark_candidate_comparison_or_return_values",
+  "recorded_at": "2026-07-30T11:49:00Z",
+  "purpose": "Resolve the selected cross-sectional-dispersion concept into one exact no-value mechanism and challenge it against terminal and prospective families before any Campaign031 source partition, dispersion benchmark value, candidate value, comparison value, daily price, or forward return is opened.",
+  "concept_scouting": {
+    "path": "docs/a_share_three_day_walkforward_campaign_031_concept_scouting.json",
+    "sha256": "835845ff18fdb501b5008b46ecf73b68523db3bbbe8c3eb3fdc793dbc0339c7b"
+  },
+  "authoritative_boundary": {
+    "path": "docs/a_share_three_day_iteration_status_20260730_campaign030_verified.json",
+    "sha256": "a34c7b3cf37480268a84a055788ab19a20dfa9b14a6a2aa8a1ec1c5b01ecc4c6"
+  },
+  "historical_walkforward_policy": {
+    "path": "docs/a_share_three_day_historical_walkforward_research_policy_20260727.json",
+    "sha256": "38426d6161b9bfed323c58caba18feca668b8c9d53e294951a8ba90c01a798bb"
+  },
+  "selected_mechanism": {
+    "name": "intraday_market_dispersion_decoupling_238m",
+    "direction": "higher",
+    "information_domain": "same_minute_stock_absolute_return_dependence_on_leave_one_out_cross_sectional_population_return_dispersion",
+    "formula": "negative population PearsonCorr(abs(stock_return), sqrt(population variance of all other valid stock returns at the same date and return position)) over exactly 238 within-half return positions",
+    "economic_hypothesis": "A higher value means the stock's absolute one-minute movement is less synchronized with broad leave-one-out cross-sectional return dispersion, representing lower exposure to market-wide liquidity fragmentation that may improve resilience from the next open through the third close.",
+    "source_fields": [
+      "datetime",
+      "symbol",
+      "provider",
+      "close"
+    ],
+    "frozen_dispersion_benchmark_fields": [
+      "trade_date",
+      "return_position",
+      "return_sum",
+      "return_sum_squares",
+      "valid_stock_count"
+    ],
+    "return_grid": "Form exactly 119 adjacent natural-log close returns inside each 120-close half at 09:31-11:30 and 13:01-15:00, yielding 238 fixed positions. Exclude standalone 09:30 and the lunch transition.",
+    "benchmark_population_rule": "A stock-day contributes its complete 238-element return vector to the same-date benchmark only when all 238 returns are finite. For every date and position accumulate float64 return_sum, float64 return_sum_squares, and integer valid_stock_count in lexicographically sorted symbol order over the accepted joint-clean stock-day key grid.",
+    "leave_one_out_rule": "At every fixed position subtract the stock return from return_sum, its exact square from return_sum_squares, and one from valid_stock_count. Require at least 50 remaining stocks at every position.",
+    "dispersion_rule": "For every position compute the leave-one-out population variance as return_sum_squares/n minus (return_sum/n)^2, without Bessel correction. Canonicalize a negative variance to exact zero only when it is at least -1e-18; a variance below -1e-18 is invalid. Take the nonnegative square root. Retain exact-zero dispersion values at their fixed positions.",
+    "correlation_rule": "Compute one equal-position-weight population Pearson correlation between the complete 238-element absolute stock-return vector and complete 238-element leave-one-out dispersion vector. Require strictly positive population variance in both vectors.",
+    "direction_rule": "Multiply the exact population correlation by negative one once so higher means lower magnitude-dispersion coupling. Do not use absolute correlation, one-minus-correlation, beta, residuals, ranks, signs, thresholds, or subwindows.",
+    "zero_rule": "Retain every exact-zero stock return as exact-zero magnitude and every exact-zero leave-one-out dispersion at its fixed position without removal, bridging, replacement, tolerance reclassification, or sign conditioning.",
+    "endpoint_rule": "Canonicalize the final correlation only when it lies within 1e-12 beyond -1 or +1 before applying the exact negative-one direction transform; otherwise a nonfinite or out-of-range score is missing.",
+    "missing_rule": "Any invalid close-return grid, insufficient leave-one-out peer position, materially negative leave-one-out variance, nonfinite magnitude or dispersion, nonpositive population variance in either complete 238-element vector, invalid correlation, nonfinite score, or score outside [-1,1] makes the stock-day missing; never fill, statistically clip, repair, or substitute.",
+    "valid_range": [
+      -1.0,
+      1.0
+    ]
+  },
+  "overlap_challenges": [
+    {
+      "family": "intraday_market_shock_magnitude_decoupling_238m",
+      "result": "distinct_pending_statistical_uniqueness_gate",
+      "reason": "Campaign029 correlates stock absolute returns with the absolute leave-one-out cross-sectional mean return, a common directional shock magnitude. Campaign031 correlates them with the leave-one-out cross-sectional population standard deviation, which can change while the market mean is fixed and measures breadth fragmentation rather than common direction."
+    },
+    {
+      "family": "intraday_market_correlation_resolution_119p",
+      "result": "distinct_pending_statistical_uniqueness_gate",
+      "reason": "Campaign030 retains signed stock and market-mean returns and subtracts two half-session correlations. Campaign031 discards stock signs only after constructing returns, uses cross-sectional dispersion rather than a mean path, and computes one pooled fixed-support correlation."
+    },
+    {
+      "family": "intraday_market_idiosyncratic_share_238m",
+      "result": "distinct_pending_statistical_uniqueness_gate",
+      "reason": "Market-idiosyncratic share fits a signed stock exposure to the leave-one-out mean return and measures residual-to-total variance. Campaign031 fits no signed beta or residual and instead measures whether stock magnitude co-moves with cross-sectional dispersion through time."
+    },
+    {
+      "family": "intraday_market_up_down_correlation_asymmetry_238m",
+      "result": "distinct",
+      "reason": "Campaign026 conditions signed stock-market dependence on positive versus negative mean-market states. Campaign031 never conditions on market sign and its external state is nonnegative cross-sectional dispersion."
+    },
+    {
+      "family": "intraday_market_response_delay_asymmetry_236p",
+      "result": "distinct",
+      "reason": "Campaign021 compares stock-lead and stock-lag signed correlations. Campaign031 uses only synchronous same-position magnitudes and has no lead or lag."
+    },
+    {
+      "family": "intraday_return_variance_entropy_238m",
+      "result": "distinct_pending_statistical_uniqueness_gate",
+      "reason": "Return-variance entropy is an unordered concentration statistic of the stock's own squared returns. Campaign031 preserves each fixed position and asks whether absolute stock returns align with an independently constructed leave-one-out cross-sectional dispersion path."
+    },
+    {
+      "family": "intraday_absolute_return_serial_persistence_236p",
+      "result": "distinct_pending_statistical_uniqueness_gate",
+      "reason": "Campaign028 correlates the stock's adjacent absolute returns with each other. Campaign031 has no own-return lag and relates each magnitude only to a same-minute external dispersion state."
+    },
+    {
+      "family": "intraday_market_amount_profile_synchronization_240m",
+      "result": "distinct",
+      "reason": "Market amount-profile synchronization uses normalized turnover allocation and a leave-one-out amount profile. Campaign031 reads no amount or volume and measures cross-sectional close-return dispersion."
+    },
+    {
+      "family": "candidate49_cumulative_vwap_crossing_rate",
+      "result": "distinct",
+      "reason": "Candidate49 measures causal cumulative-VWAP crossings from close, volume, and amount. Campaign031 reads no volume or amount and has no cumulative VWAP or crossing count."
+    },
+    {
+      "family": "range_or_return_time_allocation_and_terminal_factor_combination",
+      "result": "not_used",
+      "reason": "Campaign031 contains one new close-plus-dispersion statistic and no range center of mass, terminal factor value, fitted transform, filter, model, combination, or Campaign030 rescue."
+    }
+  ],
+  "design_choices_frozen_before_values": {
+    "formula_family": "negative synchronous population correlation of stock absolute return and leave-one-out cross-sectional population return dispersion",
+    "direction": "higher",
+    "signed_stock_return_before_magnitude": true,
+    "absolute_stock_return_in_final_correlation": true,
+    "cross_sectional_dispersion_estimator": "leave_one_out_population_standard_deviation_from_sum_sum_squares_and_count",
+    "benchmark_contribution_requires_complete_238_position_vector": true,
+    "benchmark_symbol_accumulation_order": "lexicographically_sorted_symbol",
+    "population_denominator": "n",
+    "bessel_correction_allowed": false,
+    "minimum_leave_one_out_peers_per_position": 50,
+    "tiny_negative_variance_canonicalization_tolerance": 1e-18,
+    "correlation_estimator": "population_pearson_equal_position_weight",
+    "return_positions": 238,
+    "same_minute_only": true,
+    "include_0930": false,
+    "include_lunch_transition": false,
+    "exact_zero_returns_and_dispersion_retained": true,
+    "endpoint_canonicalization_tolerance": 1e-12,
+    "mean_absolute_deviation_or_rank_dispersion_allowed": false,
+    "lead_or_lag_allowed": false,
+    "sign_or_subwindow_conditioning_allowed": false,
+    "subwindow_or_year_selection_allowed": false,
+    "activity_or_market_cap_weighting_allowed": false,
+    "terminal_factor_input_allowed": false
+  },
+  "decision": {
+    "conceptually_independent": true,
+    "advance_to_exact_no_return_preregistration": true,
+    "dispersion_benchmark_candidate_or_comparison_values_may_be_read_now": false,
+    "binding_validator_exit_zero_required_before_next_stage": true,
+    "candidate49_remains_only_active_prospective_candidate": true,
+    "candidate50_activation_allowed": false,
+    "current_aggregation_scoring_selection_sizing_or_orders_allowed": false
+  },
+  "research_boundary": {
+    "external_campaign031_minute_partitions_read": false,
+    "dispersion_benchmark_values_read": false,
+    "candidate_values_read": false,
+    "comparison_values_read": false,
+    "daily_price_fields_read": false,
+    "forward_returns_read": false,
+    "provider_request_issued": false
+  }
+}

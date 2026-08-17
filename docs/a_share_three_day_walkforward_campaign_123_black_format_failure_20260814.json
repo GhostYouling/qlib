@@ -1,0 +1,28 @@
+{
+  "schema_version": 1,
+  "kind": "a_share_three_day_walkforward_campaign123_infrastructure_failure",
+  "status": "recorded_mechanical_format_check_failure_recovered_and_reverified",
+  "recorded_at": "2026-08-14T03:25:04+08:00",
+  "stage": "adapter_and_synthetic_test_format_check",
+  "failure": "The first available-runtime Black check reported that the new adapter and synthetic test required mechanical formatting. In the same parallel check, Ruff passed and all 12 synthetic tests passed. Black then reformatted only those two files, after which Black, Ruff, and all 12 tests passed.",
+  "failed_check_exit_code": 1,
+  "scientific_formula_or_assertion_changed": false,
+  "recovery": {
+    "black": "passed",
+    "ruff": "passed",
+    "pytest": "12 passed in 0.06s"
+  },
+  "research_boundary": {
+    "provider_request_issued": false,
+    "credential_loaded": false,
+    "provider_rows_read_persisted_or_counted": false,
+    "candidate_or_comparison_values_read": false,
+    "historical_daily_price_fields_read": [],
+    "historical_forward_returns_read": false,
+    "stress_2024_2025_opened": false,
+    "candidate49_ledgers_changed": false,
+    "second_prospective_candidate_created": false,
+    "current_scoring_selection_sizing_positions_or_orders_performed": false,
+    "investment_advice": false
+  }
+}

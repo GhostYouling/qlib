@@ -1,0 +1,89 @@
+{
+  "schema_version": 1,
+  "kind": "a_share_three_day_walkforward_campaign113_metadata_terminal_result",
+  "status": "terminal_official_metadata_schema_gate_failed_before_source_rows_or_values",
+  "recorded_at": "2026-08-09T01:50:00+08:00",
+  "authoritative_predecessor": {
+    "path": "docs/a_share_three_day_iteration_status_20260809_campaign113_adapter_formula.json",
+    "sha256": "33aeb5d1992d3b5bb3d24c18a0fc38c0808688bea473694d33b5b2d37c7dabb4"
+  },
+  "metadata_schema_failure": {
+    "path": "docs/a_share_official_exchange_enforcement_metadata_schema_failure_20260809.json",
+    "sha256": "ea44bd881db6f86fa311fe3c92f31aa465a1bdc845545a92bd2981ed917bbb65"
+  },
+  "attempt_ledger": {
+    "path": "data/experiments/short_horizon/historical_walkforward/campaign_113/research_attempt_ledger_v4.json",
+    "sha256": "7f41cd52407e1d5322d92b0c7c0c8f78a810feb6e309a6230d5086387fd63f2f",
+    "extends_sha256": "7d869067fe42cbea07c2acf763244b0f36753de37d7605f9ba11e725e5b76a54",
+    "entry_count": 5,
+    "total_attempt_count": 15,
+    "chain_tip_sha256": "909475243723207dea0f0aa268a8f50ed36ab783df6ed12bad9dc0b07dcc0e94"
+  },
+  "scientific_result": {
+    "factor_name": "official_exchange_enforcement_recovery_session_age_60sessions",
+    "score_direction": "higher",
+    "complete_factor_definition_count": 1,
+    "definition_retained_for_future_semantic_duplicate_control": true,
+    "sse_required_schema_roles_resolved": 4,
+    "sse_required_schema_role_count": 4,
+    "szse_regulatory_measure_unresolved_required_roles": [
+      "action_date",
+      "document_link"
+    ],
+    "szse_disciplinary_action_unresolved_required_roles": [
+      "action_type_or_family",
+      "action_date",
+      "document_link"
+    ],
+    "both_exchanges_required": true,
+    "metadata_schema_gate_passed": false,
+    "source_acceptance_or_materialization_allowed": false,
+    "numeric_snapshot_created": false,
+    "numeric_comparator_appended": false,
+    "coverage_capacity_or_uniqueness_audit_count": 0,
+    "development_trial_count": 0,
+    "development_survivor_count": 0,
+    "stress_trial_count": 0,
+    "historical_predictive_value_established": false,
+    "terminal": true
+  },
+  "unchanged_library": {
+    "complete_definition_count": 141,
+    "complete_definition_order_sha256": "ccab6e3d9d81b0a02d4ff178fdd442b26a1e68e3655e1c6f5b2fcb28cd4a4559",
+    "numeric_comparator_count": 134,
+    "numeric_comparator_order_sha256": "31d788db467f558a0ac538315343090f1b3ad4cb27a26136a49ebaa88b2fdbf2",
+    "reason": "The complete formula was frozen before metadata exposure and remains a semantic duplicate-control definition. No candidate snapshot exists, so it never becomes a numeric comparator."
+  },
+  "accounting": {
+    "campaign113_attempt_count": 15,
+    "campaign113_infrastructure_failure_count": 12,
+    "campaign113_prevalue_scientific_attempt_count": 3,
+    "campaign113_complete_factor_attempt_count": 1,
+    "campaign113_return_reading_development_trial_count": 0,
+    "cumulative_historical_research_attempt_count": 842,
+    "cumulative_return_reading_development_trial_count": 302
+  },
+  "research_boundary": {
+    "metadata_only_exchange_page_or_schema_requests_issued": true,
+    "source_event_rows_accessed_persisted_or_counted": false,
+    "source_event_row_count": null,
+    "candidate_or_comparison_values_read": false,
+    "historical_daily_price_fields_read": [],
+    "historical_forward_returns_read": false,
+    "stress_2024_2025_opened": false,
+    "candidate49_historical_backfill_performed": false,
+    "candidate49_ledgers_changed": false,
+    "second_prospective_candidate_created": false,
+    "current_scoring_selection_sizing_or_orders_performed": false,
+    "investment_advice": false
+  },
+  "terminal_prohibitions": {
+    "post_exposure_schema_label_expansion": true,
+    "fuzzy_or_positional_field_mapping": true,
+    "drop_szse_or_change_source_family": true,
+    "request_source_rows_for_campaign113": true,
+    "reverse_or_repair_formula": true,
+    "open_2019_2023_development_or_2024_2025_stress": true
+  },
+  "next_action": "Keep Campaign113 terminal and preserve its complete definition only for semantic duplicate control. Any later offline campaign must start from a genuinely independent pre-row mechanism and must not repair or reopen this branch."
+}

@@ -1,0 +1,130 @@
+{
+  "schema_version": 1,
+  "kind": "a_share_three_day_walkforward_future_numeric_comparison_eligibility_policy",
+  "version": 339,
+  "recorded_at": "2026-08-16T02:32:00+08:00",
+  "timestamp_semantics": "monotonic_logical_append_time_not_host_wall_clock_measurement",
+  "status": "campaign224_terminal_campaign225_ready_after_validation",
+  "supersedes_without_rewriting": {
+    "path": "docs/a_share_three_day_walkforward_future_numeric_comparison_eligibility_policy_v338_20260816.json",
+    "sha256": "3736d66aff62d4c0a77c8df725b193b49da725658b73a4d593531f0da0426581"
+  },
+  "authoritative_inputs": {
+    "terminal_result": {
+      "path": "docs/a_share_three_day_walkforward_campaign_224_terminal_result_20260816.json",
+      "sha256": "921abc120c896b557f5a9bcc01e4fae463ccdab23c688581f546f72981c97f4d"
+    },
+    "consumer_lending_origination_servicing_collections_recovery_lifecycle_source_frontier": {
+      "path": "docs/a_share_three_day_walkforward_campaign_224_consumer_lending_origination_servicing_collections_recovery_lifecycle_source_frontier_20260816.json",
+      "sha256": "66cf7206be16a663ba1c21abe315635910ea2c9c40e0ec061e3ce21f19d37709"
+    },
+    "attempt_ledger_v2": {
+      "path": "data/experiments/short_horizon/historical_walkforward/campaign_224/research_attempt_ledger_v2.json",
+      "sha256": "0641ab6477028f5aee2fd9f9452a2039d4963e7c0b176ad10920458b23225764",
+      "campaign_effective_entry_count": 11,
+      "chain_tip_sha256": "5aa4fc359f884360d5aa9f03e3efec04593aa36f9caf1c6a47e7b81a9c13ba2b"
+    },
+    "deselection_catalog_policy_v311": {
+      "path": "docs/a_share_three_day_walkforward_future_numeric_comparison_eligibility_policy_v311_20260815.json",
+      "sha256": "1da984fe0740a5c4bfd1521db59fb3497e29f3021c04a621a45babe020bba65d"
+    }
+  },
+  "campaign224_terminal_classification": {
+    "route_count": 7,
+    "source_admission_deferral_count": 3,
+    "overlap_or_hypothesis_rejection_count": 4,
+    "selected_factor_count": 0,
+    "definition_or_comparator_append": false,
+    "return_read": false
+  },
+  "complete_historical_feature_library": {
+    "factor_definition_count": 158,
+    "order_sha256": "4819c7fd7c0795d7598a52f3c615e3f117d5f4ecd9332974bc8e3dfa57c96667",
+    "unchanged_from_v338": true
+  },
+  "numerical_comparator_eligibility": {
+    "eligible_numeric_comparator_count": 142,
+    "order_sha256": "5d1b35fb5a0d8ac9293008db9963c4a60a94dc940c237c3ed259e5ce44f14aaf",
+    "unchanged_from_v338": true
+  },
+  "effective_accounting": {
+    "campaign224_attempt_count": 11,
+    "campaign224_scientific_attempt_count": 7,
+    "campaign224_infrastructure_failure_count": 4,
+    "cumulative_historical_research_attempt_count": 2099,
+    "cumulative_return_reading_development_trial_count": 314
+  },
+  "candidate49": {
+    "only_active_prospective_candidate": true,
+    "signal_ledger_sha256": "5193f00d7f36da003f53cec387900da4c3d002299f5dfcfc1a95eaa199ed3a79",
+    "signal_entry_count": 0,
+    "execution_ledger_sha256": "d57a3e61eac969e42cafa418ccd8c0a5ee65dcf69da145bb2c096c2a02a2ea4f",
+    "execution_entry_count": 0,
+    "completed_future_workflow_record_count": 0
+  },
+  "mutable_unified_reports": {
+    "current": {
+      "path": "data/experiments/short_horizon/current_research_report.md",
+      "sha256_at_publication": "f22f7e793b5b06e4ff5fb844fcc55ff46703d6c0f99c447839db5f19e5041fb4",
+      "mutable_append_only_report_not_an_immutable_binding": true
+    },
+    "three_day": {
+      "path": "data/experiments/short_horizon/three_day_research_report.md",
+      "sha256_at_publication": "8703f609a20d0c578ba11bc8d7d206ebfd70c9cad3191b8d6aa7880dada084e7",
+      "mutable_append_only_report_not_an_immutable_binding": true
+    }
+  },
+  "cumulative_regression_boundary": {
+    "working_directory": "repository_root",
+    "test_paths_are_repository_relative": true,
+    "pytest_rootdir_observed_by_collect_only": "tests",
+    "policy_node_id_prefix": "",
+    "deselection_catalog_path": "docs/a_share_three_day_walkforward_future_numeric_comparison_eligibility_policy_v311_20260815.json",
+    "carried_forward_additional_deselected_nodes": [
+      "data_collector_tests/test_a_share_three_day_walkforward_campaign207_terminal.py::test_campaign207_reports_candidate49_and_research_boundaries",
+      "data_collector_tests/test_a_share_three_day_walkforward_campaign208_terminal.py::test_campaign208_reports_candidate49_and_research_boundaries",
+      "data_collector_tests/test_a_share_three_day_walkforward_campaign209_terminal.py::test_campaign209_reports_candidate49_and_research_boundaries",
+      "data_collector_tests/test_a_share_three_day_walkforward_campaign210_terminal.py::test_campaign210_reports_candidate49_and_research_boundaries",
+      "data_collector_tests/test_a_share_three_day_walkforward_campaign211_terminal.py::test_campaign211_reports_candidate49_and_research_boundaries",
+      "data_collector_tests/test_a_share_three_day_walkforward_campaign212_terminal.py::test_campaign212_reports_candidate49_and_research_boundaries",
+      "data_collector_tests/test_a_share_three_day_walkforward_campaign213_terminal.py::test_campaign213_reports_candidate49_and_research_boundaries",
+      "data_collector_tests/test_a_share_three_day_walkforward_campaign214_terminal.py::test_campaign214_reports_candidate49_and_research_boundaries",
+      "data_collector_tests/test_a_share_three_day_walkforward_campaign215_terminal.py::test_campaign215_reports_candidate49_and_research_boundaries",
+      "data_collector_tests/test_a_share_three_day_walkforward_campaign216_terminal.py::test_campaign216_reports_candidate49_and_research_boundaries",
+      "data_collector_tests/test_a_share_three_day_walkforward_campaign217_terminal.py::test_campaign217_reports_candidate49_and_research_boundaries",
+      "data_collector_tests/test_a_share_three_day_walkforward_campaign218_terminal.py::test_campaign218_reports_candidate49_and_research_boundaries",
+      "data_collector_tests/test_a_share_three_day_walkforward_campaign219_terminal.py::test_campaign219_reports_candidate49_and_research_boundaries",
+      "data_collector_tests/test_a_share_three_day_walkforward_campaign220_terminal.py::test_campaign220_reports_candidate49_and_research_boundaries",
+      "data_collector_tests/test_a_share_three_day_walkforward_campaign221_terminal.py::test_campaign221_reports_candidate49_and_research_boundaries",
+      "data_collector_tests/test_a_share_three_day_walkforward_campaign222_terminal.py::test_campaign222_reports_candidate49_and_research_boundaries",
+      "data_collector_tests/test_a_share_three_day_walkforward_campaign223_terminal.py::test_campaign223_reports_candidate49_and_research_boundaries"
+    ],
+    "campaign145_through_campaign224_test_file_count": 112,
+    "deselection_node_count": 39,
+    "expected_tests_passed_after_validation": 495,
+    "expected_tests_skipped_after_validation": 1,
+    "expected_nodes_deselected_after_validation": 39,
+    "final_results_must_be_recorded_in_terminal_validation": true
+  },
+  "future_campaign_boundary": {
+    "next_campaign": 225,
+    "may_begin_after_campaign224_independent_validation": true,
+    "historical_offline_prevalue_work_may_continue_at_any_local_time": true,
+    "2024_2025_source_or_returns_remain_closed": true,
+    "candidate49_remains_separate_confirmation_layer": true
+  },
+  "research_boundary": {
+    "failed_or_truncated_output_used_as_validation_or_scientific_evidence": false,
+    "source_or_consumer_lending_origination_servicing_collections_recovery_lifecycle_factor_comparator_security_price_or_return_value_read": false,
+    "borrower_identity_credit_report_income_employer_bank_account_payment_credential_device_location_collections_communication_kyc_sensitive_personal_underwriting_model_fraud_security_or_trade_secret_artifact_read": false,
+    "stress_2024_2025_opened": false,
+    "provider_or_web_request_issued": false,
+    "provider_credential_presence_value_or_digest_read": false,
+    "candidate49_plan_or_run_executed": false,
+    "candidate49_ledgers_changed": false,
+    "second_prospective_candidate_created": false,
+    "current_scoring_selection_sizing_positions_or_orders_performed": false,
+    "investment_advice": false
+  },
+  "next_action": "Add and run the Campaign224 terminal test, run the exact Campaign145-224 cumulative regression with 39 explicit historical mutable-report deselections, publish terminal validation and activate Campaign225 offline prevalue research."
+}

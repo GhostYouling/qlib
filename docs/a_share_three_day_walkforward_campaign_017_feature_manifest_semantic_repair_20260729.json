@@ -1,0 +1,59 @@
+{
+  "version": 1,
+  "kind": "a_share_three_day_walkforward_campaign017_feature_manifest_semantic_repair",
+  "status": "completed_before_no_return_audit_without_factor_value_change",
+  "recorded_at": "2026-07-28T23:30:42Z",
+  "purpose": "Record the fail-closed correction of one inherited top-level source-read boolean after all Campaign017 feature partitions were built but before the snapshot fingerprint was bound or any comparison value or return was read.",
+  "affected_snapshot": {
+    "path": "/Volumes/DIsk/qlib-a-share-tushare-1m/derived/a_share/rich/tushare/minute_walkforward_campaign017_feature_library/tushare_stk_mins_1m_2019_2025_ea0cbb8f_walkforward_campaign017_feature_library_v1/snapshot_manifest.json",
+    "manifest_sha256_before_correction": "cf98767e2f49ad3da7b5006b96ddacf9a3d22095e7fa220e18ac58786cf3c24b",
+    "manifest_sha256_after_correction": "04b588681f64a61525407f7de5501e38244256e100d9895dbbee8635127e358a",
+    "dataset_sha256_before_and_after": "e91a17f29edbd59f82801469187ac16c8bc460e08a1c2d6110cc4b2e99e17276",
+    "partitions_before_and_after": 33015,
+    "rows_before_and_after": 7724498,
+    "eligible_factor_rows_before_and_after": 7699914
+  },
+  "observed_mismatch": {
+    "actual_source_fields_read": [
+      "datetime",
+      "symbol",
+      "provider",
+      "high",
+      "low"
+    ],
+    "inherited_top_level_source_close_read_before_correction": true,
+    "correct_top_level_source_close_read": false,
+    "partition_factor_values_or_eligibility_changed": false,
+    "partition_byte_or_frame_hash_changed": false,
+    "dataset_sha256_changed": false
+  },
+  "repair": {
+    "manifest_change": "Change only the top-level source_close_read boolean from true to false.",
+    "implementation_change": "Require source_close_read=false in published and pre-publication validation and emit false when promoting the Campaign017 manifest.",
+    "rebuild_attempt_result": "The corrected fail-closed builder refused to overwrite the already published unbound snapshot, so no partition was regenerated or overwritten.",
+    "post_repair_status": "The corrected manifest was fingerprint-bound and the full no-return audit subsequently verified all 33015 candidate partitions."
+  },
+  "frozen_evidence": {
+    "no_return_protocol": {
+      "path": "docs/a_share_three_day_walkforward_campaign_017_no_return_preregistration.json",
+      "sha256": "4676afee54b66b558dfd96dc238cbc4d8545aa728fbcf27ec09a8681001929ba"
+    },
+    "feature_runner_after_repair_and_all_fingerprint_bindings": {
+      "path": "scripts/a_share_three_day_walkforward_campaign017_features.py",
+      "sha256": "527c0d1223a87d31d4cd24feee74774e39c07ec672393c9261cbf986e81bdeda"
+    },
+    "no_return_audit_after_repair": {
+      "path": "data/experiments/short_horizon/historical_walkforward/campaign_017/no_return/20260728T232431Z_campaign017_no_return_audit.json",
+      "sha256": "be1c69e7184209f74d7d86ca9be0dff4281da7984461c1d35b7de0dbc7d5da92"
+    }
+  },
+  "research_boundary": {
+    "comparison_factor_values_read_before_correction": false,
+    "daily_price_fields_read_before_correction": false,
+    "forward_return_fields_read_before_correction": false,
+    "provider_request_issued": false,
+    "candidate49_historical_return_read": false,
+    "candidate49_ledgers_changed": false,
+    "current_scoring_selection_sizing_or_orders_performed": false
+  }
+}

@@ -1,0 +1,55 @@
+{
+  "schema_version": 1,
+  "kind": "a_share_three_day_walkforward_campaign097_feature_implementation_freeze_v2",
+  "status": "effective_additive_namespace_repair_frozen_before_campaign097_minute_source_or_benchmark_values",
+  "recorded_at": "2026-08-07T05:30:00Z",
+  "supersedes_without_rewriting": {
+    "path": "docs/a_share_three_day_walkforward_campaign_097_feature_implementation_freeze_20260807.json",
+    "sha256": "3169497ec4f9c61e55ef0f52800a4cc8eadb5db36f9ad5e8cb960bff585c2848"
+  },
+  "protocol": {
+    "path": "docs/a_share_three_day_walkforward_campaign_097_no_return_preregistration.json",
+    "sha256": "a36a7b4e6153c66c5fa5825ebf20a2a30d6764e040be6e84e4202e66413b1d56"
+  },
+  "preserved_external_namespace_failure": {
+    "path": "docs/a_share_three_day_walkforward_campaign_097_external_protocol_namespace_failure_20260807.json",
+    "sha256": "e7844f9d9a946e504748451a7f44a83039678e73885c477294783fa5926a64aa"
+  },
+  "effective_feature_runner": {
+    "path": "scripts/a_share_three_day_walkforward_campaign097_features.py",
+    "sha256": "81473f082130cb490dd9572b9baa8613daaee3ba778cb46d6e3aeea1b417d16f"
+  },
+  "unchanged_synthetic_tests": {
+    "path": "tests/data_collector_tests/test_a_share_three_day_walkforward_campaign097_features.py",
+    "sha256": "2b104430e1b5b1694cecbb8b97501f5b5d2afc8b11546ae7224431b44b5d53ac",
+    "passed": 7,
+    "failed": 0
+  },
+  "narrow_repair": {
+    "changed": "The external-chain compatibility call now SHA-verifies and parses the immutable old amount-profile protocol directly before invoking only its raw/joint source validator.",
+    "unchanged": [
+      "Campaign097 factor name, formula, direction, source projection, time grid, zero-range semantics, positive-total rule, peer population, leave-one-out arithmetic, peer minimum, correlation estimator, endpoint tolerance and range",
+      "support-predicate decision and all coverage, uniqueness, development, stress, cost and prohibition gates",
+      "candidate output columns and deterministic benchmark accumulation order"
+    ],
+    "old_factor_protocol_or_result_reused": false,
+    "old_raw_and_joint_fingerprint_validation_only": true
+  },
+  "validation_receipt": {
+    "synthetic_pytest_passed": 7,
+    "synthetic_pytest_failed": 0,
+    "black_check_passed": true,
+    "ruff_check_passed": true,
+    "source_or_candidate_values_read_by_validation": false
+  },
+  "research_boundary": {
+    "minute_source_rows_read_before_effective_freeze": false,
+    "market_benchmark_values_computed_before_effective_freeze": false,
+    "candidate_values_computed_before_effective_freeze": false,
+    "comparison_values_read": false,
+    "daily_price_fields_read": [],
+    "forward_returns_read": false,
+    "provider_request_issued": false,
+    "candidate49_ledgers_changed": false
+  }
+}

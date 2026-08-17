@@ -1,0 +1,26 @@
+{
+  "artifact_type": "campaign_infrastructure_failure_record",
+  "campaign_id": 207,
+  "recorded_at": "2026-08-15T20:44:00+08:00",
+  "phase": "campaign206_authority_pointer_verification",
+  "status": "failed_campaign206_assumed_paths_not_found_discarded",
+  "failure_class": "incorrect_assumed_artifact_paths",
+  "scientific_trial": false,
+  "result_consumed": false,
+  "missing_assumed_paths": [
+    "docs/a_share_three_day_walkforward_campaign_206_terminal_result_binding_20260815.json",
+    "docs/a_share_three_day_walkforward_campaign_206_research_attempt_ledger.json",
+    "docs/a_share_three_day_walkforward_campaign_206_validation_20260815.json"
+  ],
+  "recovery": {
+    "action": "resolve_actual_paths_from_bounded_workspace_file_inventory_then_follow_only_state_bound_paths"
+  },
+  "safety": {
+    "credentials_read": false,
+    "network_accessed": false,
+    "candidate49_plan_or_run_executed": false,
+    "candidate_or_comparator_values_read": false,
+    "historical_returns_read": false,
+    "research_thresholds_modified": false
+  }
+}

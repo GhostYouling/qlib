@@ -1,0 +1,22 @@
+{
+  "schema_version": 1,
+  "kind": "a_share_three_day_walkforward_campaign100_no_return_audit_module_path_failure",
+  "status": "recorded_before_identical_module_mode_retry",
+  "recorded_at": "2026-08-07T12:23:20Z",
+  "stage": "frozen_no_return_audit_process_start",
+  "outcome": "direct_script_invocation_failed_at_first_repository_import_before_static_binding_or_any_value_read",
+  "failed_command_boundary": {
+    "invocation_mode": "python path/to/script.py",
+    "exit_code": 1,
+    "exception_class": "ModuleNotFoundError",
+    "missing_module": "scripts"
+  },
+  "frozen_runner_content_changed": false,
+  "candidate_values_read": false,
+  "coverage_or_capacity_metrics_computed": false,
+  "comparison_factor_values_read": false,
+  "historical_daily_price_or_forward_return_values_read": false,
+  "provider_request_issued": false,
+  "candidate49_ledgers_changed": false,
+  "retry_rule": "invoke the same frozen runner as a repository module with identical audit parameters"
+}

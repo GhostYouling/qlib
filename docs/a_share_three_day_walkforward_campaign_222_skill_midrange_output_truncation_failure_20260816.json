@@ -1,0 +1,14 @@
+{
+  "schema_version": 1,
+  "kind": "a_share_three_day_walkforward_campaign222_infrastructure_failure",
+  "recorded_at": "2026-08-16T01:48:00+08:00",
+  "timestamp_semantics": "monotonic_logical_append_time_not_host_wall_clock_measurement",
+  "attempt_id": "campaign222_infrastructure_002",
+  "phase": "mandatory_skill_lines_241_360_read",
+  "status": "failed_skill_midrange_output_truncated_and_discarded",
+  "failure": "The 241-360 skill-range display was truncated. No incomplete sentence or omitted boundary was used.",
+  "writes_before_failure": false,
+  "scientific_value_read": false,
+  "result_consumed": false,
+  "recovery": "Lines 241-300 and 301-360 were reread as separate complete outputs."
+}

@@ -1,0 +1,140 @@
+{
+  "version": 1,
+  "kind": "a_share_three_day_walkforward_campaign051_no_return_audit_freeze",
+  "status": "one_factor_admitted_before_any_campaign051_historical_return_read",
+  "frozen_at": "2026-08-03T07:38:00Z",
+  "purpose": "Freeze the completed Campaign051 ordered no-return audit, its full infrastructure-failure history, and the only admissible factor before any 2019-2023 daily-price or forward-return value is opened.",
+  "finite_development_catalog": {
+    "trial_id": "wf051_intraday_close_range_occupancy_entropy_10b_single_higher",
+    "feature_set": [
+      "intraday_close_range_occupancy_entropy_10b"
+    ],
+    "weights": [
+      1.0
+    ],
+    "direction": "higher",
+    "expected_trial_count": 1,
+    "alternate_weight_threshold_filter_window_year_cost_regime_model_or_combination_search": false
+  },
+  "admission": {
+    "factor": "intraday_close_range_occupancy_entropy_10b",
+    "direction": "higher",
+    "admissible_factor_count": 1,
+    "coverage_gate_passed_before_comparison_values": true,
+    "calendar_sessions": 1632,
+    "candidate_eligible_rows": 1328066,
+    "median_coverage": 0.9983183851218558,
+    "p05_coverage": 0.9933708902303229,
+    "p05_eligible_names": 138.0,
+    "potential_non_overlapping_three_session_cohorts": 540,
+    "observed_cohort_years": [
+      2019,
+      2020,
+      2021,
+      2022,
+      2023,
+      2024,
+      2025
+    ],
+    "comparison_factor_count": 74,
+    "comparison_order_sha256": "08639819d24bbb65f1181a31edd788dfc5ac4a6ee56312f600861612d2dec573",
+    "comparison_order_matches_preregistration": true,
+    "unique_comparison_names": true,
+    "all_required_comparisons_passed": true,
+    "maximum_observed_absolute_median_daily_rank_correlation": 0.28285023942554827,
+    "nearest_comparison_factor": "intraday_amount_center_of_mass_240m",
+    "maximum_allowed_absolute_median_daily_rank_correlation": 0.8,
+    "final_comparison_factor": "intraday_half_session_extreme_shock_reversal_completion_2h",
+    "final_comparison_absolute_median_daily_rank_correlation": 0.005962846694849676
+  },
+  "decision": {
+    "no_return_gates_passed": true,
+    "development_return_read_allowed_after_separate_exact_preregistration_and_runner_freeze": true,
+    "development_trials_allowed": 1,
+    "2024_2025_stress_opened": false,
+    "candidate49_promotion_or_backfill_allowed": false
+  },
+  "bindings": {
+    "authoritative_iteration_state_before_campaign051": {
+      "path": "docs/a_share_three_day_iteration_status_20260801_campaign050_verified.json",
+      "sha256": "df758b530a7af5d811bb5ec59a97761d6ed0fe5ebb5a81e94b59cca455c0e0b7"
+    },
+    "historical_walkforward_policy": {
+      "path": "docs/a_share_three_day_historical_walkforward_research_policy_20260727.json",
+      "sha256": "38426d6161b9bfed323c58caba18feca668b8c9d53e294951a8ba90c01a798bb"
+    },
+    "protocol": {
+      "path": "docs/a_share_three_day_walkforward_campaign_051_no_return_preregistration_v2.json",
+      "sha256": "16636bb5196a362ca55b21696d88bc78b92d7ce10fbf70d252575f47b31c9e40"
+    },
+    "snapshot_publication_binding": {
+      "path": "docs/a_share_three_day_walkforward_campaign_051_snapshot_publication_binding_20260801.json",
+      "sha256": "f24916ca77a05ba7c988777b5d85656afae004d0034f1c44c060ad4bfbf81526"
+    },
+    "candidate_snapshot": {
+      "path": "/Volumes/DIsk/qlib-a-share-tushare-1m/derived/a_share/rich/tushare/minute_walkforward_campaign051_feature_library/tushare_stk_mins_1m_2019_2025_ea0cbb8f_walkforward_campaign051_feature_library_v1/snapshot_manifest.json",
+      "sha256": "13a2b7862cb2118dd8e42bcd94653973de603d840bd09f0762be219b840f032e",
+      "dataset_sha256": "2930b47c228f3e033f8130d9960e55668e688e02ba020a02d02ffa60987cabbd"
+    },
+    "successful_audit_entrypoint": {
+      "path": "scripts/a_share_three_day_walkforward_campaign051_features_v7.py",
+      "sha256": "d2429683efce7973906907c940fdca90426f70d109998853d08c9bb3c9220c2b"
+    },
+    "completed_audit": {
+      "path": "data/experiments/short_horizon/historical_walkforward/campaign_051/no_return/20260803T073502Z_campaign051_no_return_audit.json",
+      "sha256": "e5effeea374db0e18256be69caac92e68a5a42e8b3b095db90c42fa4e65240cf"
+    },
+    "semantic_failure_v1": {
+      "path": "docs/a_share_three_day_walkforward_campaign_051_preregistration_semantic_failure_20260801.json",
+      "sha256": "2ac684d7c09bc1523a17399f7563ced7e922e147bce3f8054dee71e60f4a0e4c"
+    },
+    "execution_interruption": {
+      "path": "docs/a_share_three_day_walkforward_campaign_051_no_return_audit_execution_interruption_20260803.json",
+      "sha256": "bbc26de53550f2823663f71e0c89dd4fb2af82e985f506d6b79f62ab26fdcaaf"
+    },
+    "detached_launch_failure": {
+      "path": "docs/a_share_three_day_walkforward_campaign_051_detached_launch_failure_repair_20260803.json",
+      "sha256": "51112634baa6d08f66d1f2eae8ba3f2006261eb3c2dcdb3d931e256f9da4087a"
+    },
+    "persistent_workdir_failure": {
+      "path": "docs/a_share_three_day_walkforward_campaign_051_persistent_session_workdir_failure_repair_20260803.json",
+      "sha256": "2793eb349dbe24aae9b75a1c6a29b6be1cf15db3cd070aa2e15fbe68c908edee"
+    },
+    "campaign050_verifier_failure_repair": {
+      "path": "docs/a_share_three_day_walkforward_campaign_051_no_return_audit_campaign050_verifier_failure_repair_20260803.json",
+      "sha256": "da97b374f28c8538e515781765ab72923853832840d26d846e12834b2d532648"
+    },
+    "campaign050_verifier_implementation_freeze": {
+      "path": "docs/a_share_three_day_walkforward_campaign_051_campaign050_verifier_repair_implementation_freeze_20260803.json",
+      "sha256": "d23e1c78cf07f46ccadacbab4a7b900934550885bc25c17a4662201930035413"
+    },
+    "candidate49_eintr_failure_repair": {
+      "path": "docs/a_share_three_day_walkforward_campaign_051_no_return_audit_candidate49_eintr_failure_repair_20260803.json",
+      "sha256": "f85f187014638ae23260bd0fb8dc342641b6029d25d5e4c5840d271b72885fae"
+    },
+    "candidate49_eintr_implementation_freeze": {
+      "path": "docs/a_share_three_day_walkforward_campaign_051_candidate49_eintr_repair_implementation_freeze_20260803.json",
+      "sha256": "225836adf69b63efa53499e2601deb5a1c0125d8ce26b2482834b76ea1358c12"
+    }
+  },
+  "file_verification": {
+    "candidate_snapshot_partitions": 33015,
+    "candidate_snapshot_rows": 7724498,
+    "candidate_snapshot_eligible_rows": 7695092,
+    "candidate49_snapshot_partitions": 33015,
+    "campaign044_through_campaign050_each_verified_partitions": 33015,
+    "all_recorded_partition_byte_and_frame_hashes_valid": true
+  },
+  "research_boundary": {
+    "historical_daily_price_fields_read": [],
+    "historical_forward_return_fields_read": false,
+    "training_or_model_fitting_performed": false,
+    "provider_request_issued": false,
+    "candidate49_historical_return_read": false,
+    "candidate49_signal_or_execution_backfill_performed": false,
+    "candidate49_ledgers_changed": false,
+    "second_prospective_candidate_created": false,
+    "current_scoring_selection_sizing_or_orders_performed": false,
+    "investment_advice": false
+  }
+}

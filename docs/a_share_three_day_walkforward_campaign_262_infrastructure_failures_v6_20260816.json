@@ -1,0 +1,44 @@
+{
+  "schema_version": 6,
+  "kind": "a_share_three_day_walkforward_campaign262_infrastructure_failures",
+  "status": "nine_failures_recorded_before_coverage_activation",
+  "recorded_at": "2026-08-16T18:11:00+08:00",
+  "timestamp_semantics": "monotonic_logical_append_time_not_host_wall_clock_measurement",
+  "supersedes_without_rewriting": {
+    "infrastructure_failures_v5": {
+      "path": "docs/a_share_three_day_walkforward_campaign_262_infrastructure_failures_v5_20260816.json",
+      "sha256": "5518033c312e2d8e012506ec243343bf9f7377b1368322307d4f3aafb3ddcac9",
+      "attempt_count": 8
+    }
+  },
+  "additional_failure": {
+    "attempt_id": "campaign262_infrastructure_009",
+    "operation": "Run independent Black --check on the new coverage-only wrapper and synthetic test.",
+    "exit_code": 1,
+    "failure": "Black reported the wrapper would be reformatted. The wrapper was formatted before coverage activation; independent Black, Ruff and the four-test synthetic scope then passed.",
+    "recovery_results": {
+      "black_check_exit": 0,
+      "ruff_exit": 0,
+      "pytest_exit": 0,
+      "pytest_passed": 4
+    }
+  },
+  "effective_accounting": {
+    "infrastructure_failure_count": 9,
+    "prevalue_scientific_attempt_count": 7,
+    "complete_factor_attempt_count": 1,
+    "return_reading_development_trial_count": 0
+  },
+  "research_boundary": {
+    "campaign262_candidate_snapshot_published_and_verified": true,
+    "campaign262_coverage_values_read": false,
+    "campaign262_comparator_values_read": false,
+    "historical_daily_price_or_forward_return_values_read": false,
+    "stress_2024_2025_opened": false,
+    "provider_or_web_request_issued": false,
+    "credential_value_presence_or_digest_read": false,
+    "candidate49_ledgers_changed": false,
+    "current_scoring_selection_sizing_positions_or_orders_performed": false,
+    "investment_advice": false
+  }
+}

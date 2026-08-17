@@ -1,0 +1,141 @@
+{
+  "version": 1,
+  "kind": "a_share_three_day_walkforward_campaign077_concept_scouting",
+  "status": "selected_before_campaign077_minute_source_candidate_or_comparison_values",
+  "recorded_at": "2026-08-06T12:08:00+08:00",
+  "purpose": "Select exactly one economically distinct offline three-session factor after terminal Campaign076, before opening any Campaign077 minute source row, candidate value, comparison value, daily price, or forward return.",
+  "authoritative_bindings": {
+    "campaign076_verified_state_v2": {
+      "path": "docs/a_share_three_day_iteration_status_20260806_campaign076_verified_v2.json",
+      "sha256": "0452344929fa4bab746aaa37aa0f19c758c626951a2e98c2c04bfbafe26397dc"
+    },
+    "historical_walkforward_policy": {
+      "path": "docs/a_share_three_day_historical_walkforward_research_policy_20260727.json",
+      "sha256": "38426d6161b9bfed323c58caba18feca668b8c9d53e294951a8ba90c01a798bb"
+    },
+    "numeric_comparator_policy_v12": {
+      "path": "docs/a_share_three_day_walkforward_future_numeric_comparison_eligibility_policy_v12_20260806.json",
+      "sha256": "8bf3f6a261816bcf0e71c86cada1224b91c8a75042040ae50dbc371076447484",
+      "complete_definition_count": 108,
+      "complete_definition_order_sha256": "0b6758e579e190e35e0ac2e5bda666194369f0c71be4dc2a35b5ec744f419b94",
+      "eligible_numeric_comparator_count": 107,
+      "eligible_numeric_comparator_order_sha256": "b219b4879057a48600ba3e6d3d3a1a35ee6575d70b1476a71cf463ff8b63acc2"
+    },
+    "manage_qlib_a_share_data_skill": {
+      "path": "/Users/niyufei/.codex/skills/manage-qlib-a-share-data/SKILL.md",
+      "sha256": "0643fe22f2b12e9ecc3b1b6e9f2d0ec09455084ad29a47601299547ef48818d9"
+    }
+  },
+  "definition_only_source_boundary": {
+    "source": "immutable accepted local Tushare 2019-2025 one-minute source definition and exact standard continuous-session grid",
+    "minute_source_projection_if_later_admitted": [
+      "datetime",
+      "symbol",
+      "provider",
+      "amount"
+    ],
+    "stock_day_identity_projection_if_later_admitted": [
+      "trade_date",
+      "symbol",
+      "provider"
+    ],
+    "forbidden_before_protocol_and_implementation_freeze": [
+      "minute source rows",
+      "candidate values",
+      "comparison values",
+      "daily price fields",
+      "historical or forward returns",
+      "Candidate49 historical values or ledger additions"
+    ],
+    "candidate_source_rows_read": false,
+    "provider_request_allowed": false
+  },
+  "candidate_design_catalog": [
+    {
+      "design": "intraday_amount_clock_dispersion_240m",
+      "decision": "selected_for_separate_complete_mechanism_overlap_audit",
+      "reason": "The amount-weighted second central moment of normalized clock time measures how far trading attention is spread in time. It is invariant to a common positive amount scale and to time reversal, but changes when the same amount masses are moved farther apart. No terminal definition measures this exact temporal second moment."
+    },
+    {
+      "design": "amount_weighted_clock_standard_deviation",
+      "decision": "rejected_before_values",
+      "reason": "Taking a square root is a monotone representation of the selected variance statistic and would create a redundant same-campaign variant."
+    },
+    {
+      "design": "amount_weighted_clock_mean",
+      "decision": "rejected_before_values_as_exact_prior_family",
+      "reason": "That is the terminal intraday_amount_center_of_mass_240m first-moment definition."
+    },
+    {
+      "design": "amount_distribution_entropy_or_peak_share",
+      "decision": "rejected_before_values_as_concentration_family",
+      "reason": "Entropy and peak share measure probability-mass concentration without the selected factor's pairwise clock-distance geometry."
+    },
+    {
+      "design": "late_window_terminal_or_opening_amount_share",
+      "decision": "rejected_before_values_as_terminal_family",
+      "reason": "Fixed-window shares measure mass inside a chosen tail or auction bucket, not the translation-invariant second central moment across all 240 standard bars."
+    },
+    {
+      "design": "amount_clock_dispersion_by_half_or_selected_subwindow",
+      "decision": "rejected_before_values",
+      "reason": "Half-session splits and subwindows would introduce an avoidable parameter family and rescue path."
+    },
+    {
+      "design": "cross_day_dispersion_change_interaction_or_regime_filter",
+      "decision": "rejected_before_values",
+      "reason": "Cross-day transformations, interactions, thresholds, filters, subsets, neutralization, fitting, models, and combinations are outside this one-factor campaign."
+    }
+  ],
+  "selected_candidate": {
+    "name": "intraday_amount_clock_dispersion_240m",
+    "direction": "higher",
+    "economic_hypothesis": "Trading attention distributed across widely separated parts of the signal session can represent sustained or repeatedly renewed participation rather than a single exhausted central burst, making three-session continuation more plausible.",
+    "formula": "Require the exact 240 standard continuous-session amount bars at 09:31-11:30 and 13:01-15:00. Let x_i=i/239, A=sum_i amount_i, w_i=amount_i/A, and mu=sum_i w_i*x_i. Return 4*sum_i w_i*(x_i-mu)^2.",
+    "normalization_reason": "For support x_i in [0,1], the population variance is at most 1/4, so multiplication by four fixes the exact range [0,1].",
+    "availability": "Known at signal-session close after all 240 exact amount bars are available; no future session, daily return, comparator, or Candidate49 observation is used.",
+    "valid_range": {
+      "lower": 0.0,
+      "lower_inclusive": true,
+      "upper": 1.0,
+      "upper_inclusive": true
+    },
+    "missing_rule": "Missing when source identity or grid is invalid, any selected amount is nonfinite or negative, the selected amount sum is nonfinite or nonpositive, or the computed value is nonfinite or outside [0,1] except for at most 1e-12 floating-point endpoint canonicalization. Never impute, clip an economically out-of-range value, smooth, bucket, rank, winsorize, rescale, neutralize, or substitute another bar set.",
+    "parameter_window_transform_threshold_filter_subset_regime_fit_model_or_combination_search": false
+  },
+  "mandatory_pre_value_challenges": [
+    "all_108_frozen_historical_factor_definitions_in_exact_order",
+    "all_107_numeric_comparators_in_exact_order",
+    "intraday_amount_center_of_mass_240m",
+    "intraday_amount_participation_entropy_240m",
+    "intraday_peak_amount_bar_recency_240m",
+    "late_amount_share_30m",
+    "intraday_terminal_bar_amount_share_240m",
+    "intraday_opening_auction_amount_share_241m",
+    "intraday_amount_profile_serial_persistence_240m",
+    "intraday_morning_afternoon_amount_profile_similarity_120b",
+    "intraday_day_over_day_amount_profile_similarity_240b",
+    "intraday_market_amount_profile_synchronization_240m",
+    "intraday_cross_sectional_standardized_return_state_stability_236p",
+    "candidate49_intraday_cumulative_vwap_crossing_rate_240m_v1"
+  ],
+  "research_boundary": {
+    "campaign077_minute_source_rows_read": false,
+    "campaign077_candidate_values_read": false,
+    "comparison_values_read": false,
+    "historical_daily_price_fields_read": [],
+    "historical_forward_returns_read": false,
+    "provider_request_issued": false,
+    "candidate49_historical_backfill_performed": false,
+    "candidate49_ledgers_changed": false,
+    "second_prospective_candidate_created": false,
+    "current_scoring_selection_sizing_or_orders_performed": false,
+    "investment_advice": false
+  },
+  "decision": {
+    "selected_concept_count": 1,
+    "may_advance_directly_to_values": false,
+    "required_next_step": "Complete and bind one exhaustive no-value mechanism-overlap audit; only then freeze the exact no-return protocol, code, tests, and implementation fingerprints before any source or candidate value.",
+    "candidate49_remains_only_active_prospective_candidate": true
+  }
+}

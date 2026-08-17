@@ -1,0 +1,183 @@
+{
+  "schema_version": 1,
+  "kind": "a_share_three_day_walkforward_campaign088_mechanism_overlap_audit",
+  "status": "passed_semantic_mechanism_review_before_campaign088_minute_source_or_comparison_values",
+  "recorded_at": "2026-08-07T03:34:00+08:00",
+  "concept_scouting": {
+    "path": "docs/a_share_three_day_walkforward_campaign_088_concept_scouting.json",
+    "sha256": "93e7ef7980f200641c314c7927a2c95753078bbd354017e06fc0aedd49c62ccf"
+  },
+  "authoritative_state": {
+    "path": "docs/a_share_three_day_iteration_status_20260807_campaign087_verified.json",
+    "sha256": "4309f34fd2f5168c4b27701d9a15011e24886c25c62cdc3ad9a4c9e7caee175c"
+  },
+  "historical_walkforward_policy": {
+    "path": "docs/a_share_three_day_historical_walkforward_research_policy_20260727.json",
+    "sha256": "38426d6161b9bfed323c58caba18feca668b8c9d53e294951a8ba90c01a798bb"
+  },
+  "numeric_comparator_policy": {
+    "path": "docs/a_share_three_day_walkforward_future_numeric_comparison_eligibility_policy_v26_20260807.json",
+    "sha256": "f3f896ba4609699d1fa7bca5f613004b7e1dcc5eb4145268fc68f93f17479bc3",
+    "complete_definition_count": 119,
+    "numeric_comparator_count": 117,
+    "complete_definition_order_sha256": "0de791d223395722a74dfec4e4b2e469550c9a34e6f5ff64af4087287da0abb5",
+    "numeric_comparator_order_sha256": "cc176eda08a1dc587a44fe9130dea4bd72db64b3d93a3646b53da593adb8cc1c"
+  },
+  "candidate": {
+    "name": "intraday_bipower_jump_variation_share_238m",
+    "direction": "higher",
+    "mechanism": "Nonnegative share of fixed-session minute quadratic variation not explained by within-half adjacent absolute-return bipower variation",
+    "formula": "With 238 within-half log-close returns and 236 allowed adjacent pairs, RV=sum r_i^2, BV=(pi/2)*(238/236)*sum |r_i|*|r_{i+1}|, and score=max(RV-BV,0)/RV.",
+    "zero_rule": "Exact zero returns remain in RV and all incident bipower products as zeros. Require all returns and pairs and strictly positive finite RV; use no epsilon, dropped pair, smoothing, winsorization, or searched threshold.",
+    "fixed_grid": "Exactly 240 closes at 09:31-11:30 and 13:01-15:00; exclude required raw 09:30 and never join the lunch boundary.",
+    "no_open_high_low_volume_amount_market_benchmark_daily_financial_event_peer_or_future_input": true,
+    "no_old_factor_value_input": true,
+    "candidate49_used_or_modified": false
+  },
+  "complete_library_review": {
+    "all_119_definitions_reviewed_in_frozen_order": true,
+    "all_pre_walkforward_terminal_return_volatility_path_sign_frequency_range_amount_market_peer_event_quality_structural_and_composite_families_reviewed": true,
+    "candidate_is_exact_formula_duplicate": false,
+    "candidate_is_direction_only_duplicate": false,
+    "candidate_is_parameter_only_duplicate": false,
+    "candidate_is_an_inversion_of_a_terminal_factor": false,
+    "candidate_combines_terminal_factor_values": false,
+    "candidate_changes_any_quality_listing_or_buyability_gate": false,
+    "return_volatility_scale_serial_reversal_entropy_semivariance_and_market_shock_families_explicitly_challenged": true,
+    "campaign087_terminal_factor_not_reused_or_rescued": true,
+    "candidate49_remains_semantic_isolation_only": true
+  },
+  "semantic_invariance_checks": [
+    {
+      "intervention": "Multiply every selected close by one common strictly positive constant.",
+      "campaign088_result": "unchanged because all 238 inputs are log-close ratios",
+      "distinguishes_from": "nominal-price affordability and price-level factors"
+    },
+    {
+      "intervention": "Multiply all 238 returns by one common nonzero scalar in an abstract return-vector test.",
+      "campaign088_result": "unchanged because RV and BV both scale by the scalar squared",
+      "distinguishes_from": "realized-volatility level and raw jump-magnitude factors"
+    },
+    {
+      "intervention": "Reverse the sign of every return while preserving magnitudes.",
+      "campaign088_result": "unchanged",
+      "distinguishes_from": "semivariance, signed drift, directional pressure, and return-sign factors"
+    },
+    {
+      "intervention": "Concentrate a fixed RV budget into one isolated return instead of distributing it across adjacent returns.",
+      "campaign088_result": "generally increases because adjacent bipower support falls",
+      "distinguishes_from": "RV level and order-free squared-return summaries"
+    },
+    {
+      "intervention": "Permute a fixed return multiset within each half while preserving RV.",
+      "campaign088_result": "generally changes because the 236 adjacent absolute-return products change",
+      "distinguishes_from": "return variance entropy based only on bucket totals and order-free semivariance"
+    },
+    {
+      "intervention": "Reverse return order separately inside each half.",
+      "campaign088_result": "unchanged because the undirected adjacent product set is preserved",
+      "distinguishes_from": "time-reversal asymmetry and lead-lag factors"
+    },
+    {
+      "intervention": "Change high, low, volume, amount, or market/peer paths while selected closes remain fixed.",
+      "campaign088_result": "unchanged",
+      "distinguishes_from": "range, activity, impact, market-residual, and Campaign087 range/amount alignment mechanisms"
+    }
+  ],
+  "nearest_semantic_challenges": [
+    {
+      "name": "intraday_realized_volatility",
+      "relationship": "both use the same 238 within-half log-close returns and RV",
+      "distinction": "Realized volatility retains only RV level. Campaign088 is homogeneous of degree zero and compares RV with adjacent bipower variation to estimate a discontinuous share.",
+      "mandatory_numeric_challenge": true
+    },
+    {
+      "name": "intraday_diffusive_variation_ratio_238m",
+      "relationship": "both normalize a return-path variation quantity",
+      "distinction": "The terminal ratio contrasts path displacement or diffusive aggregation with realized variation, whereas Campaign088 uses no net displacement and subtracts an adjacent absolute-product estimator from RV.",
+      "mandatory_numeric_challenge": true
+    },
+    {
+      "name": "intraday_volatility_resolution_238m and intraday_five_minute_variance_ratio_230w",
+      "relationship": "all distinguish forms of variation beyond one raw RV level",
+      "distinction": "Those compare fixed sampling resolutions or coarse aggregation. Campaign088 stays on the one-minute grid and uses bipower products, with no five-minute return or scale choice.",
+      "mandatory_numeric_challenge": true
+    },
+    {
+      "name": "intraday_absolute_return_serial_persistence_236p",
+      "relationship": "both use adjacent absolute-return pairs",
+      "distinction": "Serial persistence is a centered Pearson correlation with marginal variance normalization. Campaign088 uses the uncentered bipower sum with the fixed pi/2 correction and normalizes against RV to estimate a jump share.",
+      "mandatory_numeric_challenge": true
+    },
+    {
+      "name": "intraday_return_reversal_energy_share_236p",
+      "relationship": "both use within-half adjacent return pairs",
+      "distinction": "Reversal energy depends on sign changes and signed pair structure. Campaign088 is invariant to every return sign and responds only to quadratic versus adjacent absolute-product variation.",
+      "mandatory_numeric_challenge": true
+    },
+    {
+      "name": "intraday_return_spectral_entropy_59f and intraday_return_variance_entropy_238m",
+      "relationship": "all describe how return variation is distributed",
+      "distinction": "Spectral and clock-bucket entropy measure frequency or allocation dispersion. Campaign088 is a fixed bipower residual share and has no spectrum, bin, or entropy calculation.",
+      "mandatory_numeric_challenge": true
+    },
+    {
+      "name": "intraday_upside_semivariance_share_239m",
+      "relationship": "both normalize a component of total return variation",
+      "distinction": "Semivariance share depends on return sign. Campaign088 is sign-invariant and isolates discontinuity through adjacent absolute products.",
+      "mandatory_numeric_challenge": true
+    },
+    {
+      "name": "intraday_market_shock_magnitude_decoupling_238m",
+      "relationship": "both can respond to isolated large returns",
+      "distinction": "Market shock decoupling requires a contemporaneous peer/market path. Campaign088 is entirely own-stock and has no benchmark, beta, residual, or cross-section.",
+      "mandatory_numeric_challenge": true
+    },
+    {
+      "name": "intraday_range_amount_profile_alignment_js_240m",
+      "relationship": "the latest terminal numeric comparator must be challenged",
+      "distinction": "Campaign087 uses high, low, and amount probability profiles with Jensen-Shannon similarity and reads no close. Campaign088 uses only adjacent close returns, RV, and bipower variation and reads no high, low, or amount.",
+      "mandatory_numeric_challenge": true
+    },
+    {
+      "name": "intraday_cross_sectional_standardized_return_state_stability_236p",
+      "relationship": "the structurally nonnumeric definition remains in the complete semantic library",
+      "distinction": "Peer-standardized signed state mobility versus own-stock sign-invariant bipower jump share",
+      "mandatory_semantic_challenge": true,
+      "numeric_status": "undefined_not_pass_not_fail"
+    },
+    {
+      "name": "signal_day_turnover_rate_pct",
+      "relationship": "the pre-value terminal definition remains a semantic challenge",
+      "distinction": "Raw daily turnover level supplies neither minute close returns nor the RV/bipower decomposition.",
+      "numeric_status": "ineligible_terminal_definition_semantic_challenge_only"
+    },
+    {
+      "name": "candidate49_intraday_cumulative_vwap_crossing_rate_240m_v1",
+      "relationship": "the sole prospective candidate remains an isolation challenge",
+      "distinction": "Candidate49 counts genuinely future causal cumulative-VWAP sign crossings. Campaign088 is historical-only, reads no amount or VWAP, and never enters Candidate49 ledgers.",
+      "candidate49_remains_isolated": true
+    }
+  ],
+  "pre_value_decision": {
+    "economically_independent_enough_to_preregister": true,
+    "numeric_uniqueness_still_required_against_all_117_eligible_comparators": true,
+    "strict_maximum_absolute_median_daily_rank_correlation": 0.8,
+    "minimum_pairwise_names_per_session": 50,
+    "minimum_pairwise_sessions_per_comparison": 100,
+    "drop_residualize_invert_clip_beyond_positive_part_bucket_rank_neutralize_filter_or_rescue_after_failed_gate_allowed": false
+  },
+  "research_boundary": {
+    "campaign088_minute_source_rows_read": false,
+    "campaign088_candidate_values_read": false,
+    "comparison_values_read": false,
+    "historical_daily_price_fields_read": [],
+    "historical_forward_returns_read": false,
+    "provider_request_issued": false,
+    "candidate49_historical_backfill_performed": false,
+    "candidate49_ledgers_changed": false,
+    "second_prospective_candidate_created": false,
+    "current_scoring_selection_sizing_or_orders_performed": false,
+    "investment_advice": false
+  }
+}

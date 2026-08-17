@@ -1,0 +1,25 @@
+{
+  "schema_version": 1,
+  "kind": "a_share_three_day_walkforward_campaign100_snapshot_binding_validator_interpreter_failure",
+  "status": "recorded_before_validator_retry",
+  "recorded_at": "2026-08-07T12:15:54Z",
+  "stage": "post_snapshot_binding_pre_no_return_implementation",
+  "outcome": "shell_python_alias_absent_before_validator_import_or_candidate_or_comparator_value_read",
+  "failed_command_boundary": {
+    "interpreter_requested": "python",
+    "exit_code": 127,
+    "stderr_class": "command_not_found"
+  },
+  "snapshot_binding": {
+    "path": "docs/a_share_three_day_walkforward_campaign_100_feature_snapshot_binding_20260807.json",
+    "sha256": "b68b9500dcebe02e3d224a94b52ab61cdfc6607dd4486fb5c2c7a46f3dbc6d9e"
+  },
+  "scientific_result_changed": false,
+  "candidate_values_read_by_failed_command": false,
+  "coverage_or_capacity_metrics_computed": false,
+  "comparison_factor_values_read": false,
+  "historical_daily_price_or_forward_return_values_read": false,
+  "provider_request_issued": false,
+  "candidate49_ledgers_changed": false,
+  "retry_rule": "resolve the repository Python runtime, record this failure append-only, then rerun the identical read-only validator"
+}

@@ -1,0 +1,177 @@
+{
+  "version": 1,
+  "kind": "a_share_three_day_walkforward_campaign069_mechanism_overlap_audit",
+  "status": "passed_conceptual_independence_before_campaign069_source_candidate_comparison_daily_price_or_return_values",
+  "recorded_at": "2026-08-06T03:37:00+08:00",
+  "purpose": "Challenge the selected point-in-time profit-growth-versus-ROE rank gap against the complete 100-definition terminal library before any Campaign069 source row, candidate value, comparison value, daily price, or forward return is read.",
+  "authoritative_boundary": {
+    "verified_state": {
+      "path": "docs/a_share_three_day_iteration_status_20260806_campaign068_terminal_v3.json",
+      "sha256": "40831def40e4ee1d07719676a8b05e75df2bff26356e9f78db653e80c8ea58d3"
+    },
+    "concept_scouting": {
+      "path": "docs/a_share_three_day_walkforward_campaign_069_concept_scouting.json",
+      "sha256": "9ce3d47d314a151e14ad63a5e87b1316f8235ea1be6db5c2f2a6f0b267947868"
+    },
+    "campaign068_terminal_research_record": {
+      "path": "docs/a_share_three_day_walkforward_campaign_068_research_record.json",
+      "sha256": "e8711163c8bce0136dc44b7fe42daa07655b43a37fb325798b75a8c351cafbfc"
+    }
+  },
+  "complete_definition_inventory": {
+    "complete_definition_count": 100,
+    "complete_definition_order_sha256": "ba1d04cb281f0ed64ae792cc68be6257e2e53716d2c294138d0336ca01d59e7d",
+    "numeric_comparator_count": 99,
+    "numeric_comparator_order_sha256": "7f1ed85abfeb4688c0b07f892b497942a202f09ac8806ea095b6c9050f670538",
+    "structurally_nonnumeric_definition": "intraday_cross_sectional_standardized_return_state_stability_236p",
+    "candidate068_appended_exactly_once": true,
+    "all_old_definitions_frozen_before_combination": true,
+    "old_factor_or_cache_values_read": false
+  },
+  "selected_mechanism": {
+    "name": "quarterly_profit_growth_roe_transition_gap_2r",
+    "direction": "higher",
+    "economic_hypothesis": "A positive gap between profit YoY growth rank and current ROE rank represents an improving growth-to-profitability transition that may remain under-repriced over three sessions.",
+    "formula": "r_profit_yoy-r_roe after strict-next-session availability, independent state propagation, and separate same-session average-tie percentile ranks on the common finite two-field cross-section.",
+    "source_fields": [
+      "instrument",
+      "report_date",
+      "announcement_date",
+      "roe",
+      "profit_yoy"
+    ],
+    "fit_threshold_filter_subset_or_model": "none"
+  },
+  "overlap_challenges": [
+    {
+      "family": "direct_profit_growth_and_roe_levels",
+      "definitions": [
+        "quality_profit",
+        "quality_roe"
+      ],
+      "result": "distinct_signed_joint_relation_pending_mandatory_statistical_uniqueness",
+      "reason": "Each direct factor changes under a common shift of only its own rank, while the candidate measures their signed relative position. Both direct inputs remain mandatory numerical confounds; conceptual distinction is not treated as statistical proof."
+    },
+    {
+      "family": "campaign066_three_field_quality_balance",
+      "definitions": [
+        "quality_score",
+        "quarterly_quality_rank_balance_3f"
+      ],
+      "result": "distinct_pending_mandatory_statistical_uniqueness",
+      "reason": "Campaign066 rewards agreement among ROE, profit growth, and revenue growth regardless of which component leads. Campaign069 omits revenue growth and preserves the signed profit-growth-minus-ROE ordering."
+    },
+    {
+      "family": "campaign067_profitability_scale_efficiency",
+      "definitions": [
+        "quarterly_roe_profit_scale_efficiency_gap_2r"
+      ],
+      "result": "distinct_pending_mandatory_statistical_uniqueness",
+      "reason": "Campaign067 subtracts absolute net-profit scale rank from ROE rank. Campaign069 reads no net_profit and instead subtracts ROE rank from profit_yoy growth rank; changing net-profit scale alone changes Campaign067 but not Campaign069."
+    },
+    {
+      "family": "campaign068_growth_acceleration_operating_leverage",
+      "definitions": [
+        "profit_yoy_acceleration",
+        "revenue_yoy_acceleration",
+        "quarterly_profit_revenue_acceleration_rank_gap_2r"
+      ],
+      "result": "distinct_no_rescue_pending_mandatory_statistical_uniqueness",
+      "reason": "Campaign069 requires no prior-period difference and reads current profit_yoy plus ROE. Campaign068 contrasts two same-quarter growth accelerations and is terminally rejected; none of its missing early states is filled or reinterpreted."
+    },
+    {
+      "family": "campaign058_current_growth_spread",
+      "definitions": [
+        "quality_revenue",
+        "quality_growth",
+        "quarterly_profit_revenue_growth_spread_pp"
+      ],
+      "result": "distinct_pending_mandatory_statistical_uniqueness",
+      "reason": "Campaign058 contrasts or aggregates profit and revenue growth. Campaign069 uses no revenue_yoy and instead contrasts profit growth with current profitability efficiency measured by ROE."
+    },
+    {
+      "family": "roe_change",
+      "definitions": [
+        "roe_change"
+      ],
+      "result": "distinct_pending_mandatory_statistical_uniqueness",
+      "reason": "The candidate uses the current disclosed ROE state and no prior-period ROE difference. Equal current ROE can coexist with different ROE changes and vice versa."
+    },
+    {
+      "family": "quarterly_disclosure_timing_and_peer_crowding",
+      "result": "distinct",
+      "reason": "Disclosure dates determine only when states become available; freshness, timeliness, delay consistency, and peer crowding do not enter the score."
+    },
+    {
+      "family": "all_minute_price_return_range_volume_amount_vwap_entropy_reversal_profile_market_and_peer_response_factors",
+      "result": "distinct",
+      "reason": "Campaign069 reads no minute field, market path, leave-one-out benchmark, return, price, range, volume, amount, transaction price, or VWAP."
+    },
+    {
+      "family": "candidate49_cumulative_vwap_crossing_rate_240m",
+      "result": "distinct",
+      "reason": "Candidate49 remains the sole prospective factor and counts close-versus-cumulative-VWAP crossings. Campaign069 is historical-only point-in-time accounting research and cannot backfill Candidate49."
+    },
+    {
+      "family": "terminal_factor_search_filter_threshold_regime_or_model",
+      "result": "distinct_frozen_combination",
+      "reason": "Only two named already-exposed fields are combined with fixed rank semantics and coefficients +1/-1. No inverse, alternate pair, threshold, subset, year, regime, filter, weight, or model is selected."
+    }
+  ],
+  "counterfactual_checks": [
+    {
+      "test": "common_rank_translation",
+      "result": "candidate_unchanged_direct_levels_change",
+      "meaning": "The candidate measures a relative transition gap, not common quality level."
+    },
+    {
+      "test": "profit_growth_and_roe_rank_order_reversal",
+      "result": "candidate_sign_reverses",
+      "meaning": "The frozen sign distinguishes growth outrunning ROE from established ROE outrunning growth."
+    },
+    {
+      "test": "fixed_profit_yoy_and_roe_vary_net_profit_or_revenue_yoy",
+      "result": "candidate_unchanged_campaign067_campaign058_or_campaign068_inputs_can_change",
+      "meaning": "The score is not a re-expression or rescue of the three prior quarterly combinations."
+    },
+    {
+      "test": "fixed_quarterly_states_vary_minute_paths",
+      "result": "candidate_unchanged_minute_factors_can_change",
+      "meaning": "The candidate cannot reproduce intraday mechanisms."
+    }
+  ],
+  "design_choices_frozen_before_values": {
+    "candidate_count": 1,
+    "factor_name": "quarterly_profit_growth_roe_transition_gap_2r",
+    "direction": "higher",
+    "source_fields": [
+      "profit_yoy",
+      "roe"
+    ],
+    "availability": "first accepted session strictly after announcement_date",
+    "state_propagation": "independent per field inside instrument",
+    "rank_method": "average",
+    "rank_pct": true,
+    "formula_operator": "profit_yoy_rank_minus_roe_rank",
+    "multi_year_difference_or_lookback": false,
+    "parameter_filter_subset_model_or_alternate_transform_search": false
+  },
+  "research_boundary": {
+    "campaign069_source_candidate_or_comparison_values_read": false,
+    "historical_daily_price_fields_read": [],
+    "historical_forward_return_fields_read": false,
+    "provider_request_issued": false,
+    "candidate49_historical_return_signal_or_execution_backfill": false,
+    "candidate49_ledgers_changed": false,
+    "second_prospective_candidate_created": false,
+    "current_scoring_selection_sizing_or_orders_performed": false,
+    "investment_advice": false
+  },
+  "decision": {
+    "conceptual_independence_passed": true,
+    "statistical_independence_pending_all_99_numeric_comparisons": true,
+    "complete_library_coverage_required": true,
+    "predictive_value_established": false,
+    "next_action": "Freeze the Campaign069 coverage-first protocol, exact 98-cache-plus-Campaign068-snapshot comparator split, feature implementation, audit implementation, and tests before reading any Campaign069 value."
+  }
+}

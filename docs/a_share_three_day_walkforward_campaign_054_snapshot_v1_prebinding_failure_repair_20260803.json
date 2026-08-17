@@ -1,0 +1,69 @@
+{
+  "version": 1,
+  "kind": "a_share_three_day_walkforward_campaign054_snapshot_v1_prebinding_failure_repair_authorization",
+  "status": "failed_snapshot_preserved_and_one_additive_v2_rebuild_authorized_before_comparison_values",
+  "recorded_at": "2026-08-03T13:35:00Z",
+  "purpose": "Preserve the first unbound Campaign054 snapshot as infrastructure evidence and authorize one formula-preserving, separately versioned repair before any comparison, daily-price, or forward-return value is read.",
+  "frozen_protocol": {
+    "path": "docs/a_share_three_day_walkforward_campaign_054_no_return_preregistration.json",
+    "sha256": "938d4e5b73356c949ca298e6850aa4bea02a8204b333f793128f97aaf04fd176"
+  },
+  "frozen_implementation": {
+    "path": "docs/a_share_three_day_walkforward_campaign_054_feature_implementation_freeze_20260803.json",
+    "sha256": "965bb952c21b53bf0c72b28ade7e1a39a30d9f009687b601d33f3a95860d6288"
+  },
+  "bound_entrypoint_used": {
+    "path": "scripts/a_share_three_day_walkforward_campaign054_features_v2.py",
+    "sha256": "8fa465b07e7b056c0f038bbfe4c43684a44dea415f7534e78af55951406430a7"
+  },
+  "failed_unbound_snapshot": {
+    "path": "/Volumes/DIsk/qlib-a-share-tushare-1m/derived/a_share/rich/tushare/minute_walkforward_campaign054_feature_library/tushare_stk_mins_1m_2019_2025_ea0cbb8f_walkforward_campaign054_feature_library_v1/snapshot_manifest.json",
+    "sha256": "dd893a54fe04e336bcff3730c96e1181e7c429ccb9b25a7a768c0d96a07d93ed",
+    "dataset_sha256": "e5fc04bd260a0f5d04ed53d32dfa2e33d0481f7160ed106e61d78222ef336cf6",
+    "rows": 7724498,
+    "partitions": 33015,
+    "eligible_rows": 7675737,
+    "comparison_values_read": false,
+    "historical_daily_price_fields_read": [],
+    "historical_forward_return_fields_read": false
+  },
+  "failures": [
+    {
+      "failure": "stale_inherited_protocol_evidence_keys",
+      "observed": [
+        "campaign006_mechanism_overlap_audit_sha256",
+        "campaign006_no_return_preregistration_sha256"
+      ],
+      "risk": "The keys are ignored by the Campaign054 validator but are semantically misleading in a newly published authoritative snapshot."
+    },
+    {
+      "failure": "six_theoretical_range_rows_rejected_by_numerical_cancellation",
+      "observed_quality_key": "intraday_volume_weighted_transaction_price_bowley_skew_240m__range_or_nonfinite_score_rows",
+      "observed_count": 6,
+      "risk": "The algebraically direct numerator Q75+Q25-2*Q50 can cancel when log-price locations have a large common offset and a tiny interquartile spread, even though the exact Bowley skew lies in [-1,1]."
+    }
+  ],
+  "authorized_repair": {
+    "new_output_run_id": "tushare_stk_mins_1m_2019_2025_ea0cbb8f_walkforward_campaign054_feature_library_v2",
+    "preserve_v1_without_mutation_or_deletion": true,
+    "formula_semantics_changed": false,
+    "stable_numerator": "(Q75-Q50)-(Q50-Q25)",
+    "denominator": "(Q75-Q50)+(Q50-Q25), algebraically equal to Q75-Q25",
+    "evidence_cleanup": "Remove inherited campaign-number-prefixed evidence keys before publication, then retain only applicable non-campaign evidence and exact campaign054_* evidence.",
+    "candidate_direction_quantiles_weights_grid_filters_and_missing_rules_changed": false,
+    "authorized_external_rebuild_count": 1,
+    "comparison_values_may_open_during_repair": false,
+    "daily_price_or_forward_return_values_may_open_during_repair": false
+  },
+  "research_boundary": {
+    "campaign054_minute_volume_and_amount_values_read": true,
+    "comparison_values_read": false,
+    "historical_daily_price_fields_read": [],
+    "historical_forward_return_fields_read": false,
+    "candidate49_historical_return_signal_execution_or_milestone_backfill_performed": false,
+    "candidate49_ledgers_changed": false,
+    "provider_request_issued": false,
+    "second_prospective_candidate_created": false,
+    "current_scoring_selection_sizing_or_orders_performed": false
+  }
+}

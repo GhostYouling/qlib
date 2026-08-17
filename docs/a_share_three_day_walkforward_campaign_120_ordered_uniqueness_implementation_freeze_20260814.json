@@ -1,0 +1,52 @@
+{
+  "schema_version": 1,
+  "kind": "a_share_three_day_walkforward_campaign120_ordered_uniqueness_implementation_freeze",
+  "status": "all_137_loader_and_gate_runner_frozen_before_comparator_values",
+  "recorded_at": "2026-08-14T00:54:11+08:00",
+  "frozen_implementation": {
+    "runner_path": "scripts/a_share_three_day_walkforward_campaign120_ordered_uniqueness.py",
+    "runner_sha256": "9ddf794394ebd4b26a7eb01f1f6d1499c16ec5baf8786c6e7e45d4298678f7b2",
+    "test_path": "tests/data_collector_tests/test_a_share_three_day_walkforward_campaign120_ordered_uniqueness.py",
+    "test_sha256": "455a57424c63af799f26d68d57534ce04ff14399966eabf21eec28e8255ba1b1",
+    "protocol_path": "docs/a_share_three_day_walkforward_campaign_120_ordered_numeric_uniqueness_protocol_20260814.json",
+    "protocol_sha256": "5fddef525ebe25c038c087ed08dd9433771d09be9e54fc0c27673fe7abd748c5",
+    "coverage_path": "data/experiments/short_horizon/historical_walkforward/campaign_120/coverage/campaign120_coverage_audit.json",
+    "coverage_sha256": "24e72a08db0c70a98ca7aa6094bbf34a1e37dc94f2575e8aed510afb16e9a539",
+    "base119_runner_path": "scripts/a_share_three_day_walkforward_campaign119_ordered_uniqueness.py",
+    "base119_runner_sha256": "2405dc8a90650bfa69a21b91f670a86578b2d80a9420366fc12068e3839150da",
+    "current_skill_sha256": "565713a5f3aeb6a1acf23e397fcc21be28d0c3ea4ebf21c7f287a25bb94d78dc",
+    "comparison_count": 137,
+    "comparison_order_sha256": "aaac5973c5f93e4cb6275f0b5ae92bc04ce1f7968b100785d8763565fa095621",
+    "minimum_pairwise_names_per_session": 50,
+    "minimum_pairwise_sessions_per_comparison": 100,
+    "maximum_allowed_absolute_median_daily_rank_correlation": 0.8,
+    "strict_inequality": true,
+    "all_137_must_pass": true,
+    "comparator_134": "intraday_open_reference_directional_occupancy_240m",
+    "comparator_135": "intraday_amount_weak_order_entropy_236t",
+    "comparator_136": "intraday_top_decile_amount_event_spacing_entropy_25g",
+    "comparator_137": "intraday_range_boundary_direction_state_entropy_238p"
+  },
+  "synthetic_verification": {
+    "command": "python -m pytest -q tests/data_collector_tests/test_a_share_three_day_walkforward_campaign120_ordered_uniqueness.py",
+    "passed": 4,
+    "exit_code": 0,
+    "black_formatted": true,
+    "ruff_check_passed": true,
+    "compileall_passed": true
+  },
+  "research_boundary": {
+    "candidate_values_reopened_for_uniqueness_before_freeze": false,
+    "comparator_values_read_before_freeze": false,
+    "numeric_comparator_count_read_before_freeze": 0,
+    "historical_daily_price_or_forward_return_values_read": false,
+    "stress_2024_2025_opened_for_returns": false,
+    "provider_request_issued": false,
+    "credential_loaded": false,
+    "candidate49_historical_backfill_performed": false,
+    "candidate49_ledgers_changed": false,
+    "current_scoring_selection_sizing_positions_or_orders_performed": false,
+    "investment_advice": false
+  },
+  "next_action": "Run the frozen plan; only exit zero and ready=true may be followed by one confirmed all-137 audit."
+}

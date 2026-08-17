@@ -1,0 +1,36 @@
+{
+  "schema_version": 1,
+  "kind": "a_share_three_day_walkforward_campaign101_development_infrastructure_failure",
+  "status": "recorded_in_both_internal_and_global_append_only_ledgers_before_complete_trial",
+  "recorded_at": "2026-08-07T14:06:00Z",
+  "stage": "development_data_load_before_market_rows_or_return_values",
+  "failed_runtime": "/Users/niyufei/.cache/codex-runtimes/codex-primary-runtime/dependencies/python/bin/python3",
+  "failure": "The repository's rolling.cpython-312-darwin.so requires libc++.1.dylib from the project Anaconda runtime, but the Codex Python runtime did not provide that library on its loader path.",
+  "internal_trial_ledger": {
+    "path": "data/experiments/short_horizon/historical_walkforward/campaign_101/walkforward/trial_ledger.json",
+    "sha256": "726bb925597461a6fb8eaac2ea073e62b74b221f83849a79683d3ad9ad6acae6",
+    "entry_count": 1,
+    "last_phase": "infrastructure_failure",
+    "last_trial_id": "wf101_infrastructure__development_load_001",
+    "complete_development_trial_count": 0
+  },
+  "verified_recovery_runtime": {
+    "path": "/Volumes/DIsk/Coding/anaconda3/bin/python3.12",
+    "version": "3.12.7",
+    "numpy": "1.26.4",
+    "pandas": "2.2.2",
+    "qlib_data_import_passed": true,
+    "libcxx_path": "/Volumes/DIsk/Coding/anaconda3/lib/libc++.1.dylib"
+  },
+  "recovery_rule": "Freeze a separate recovery harness and activation that validate the original scientific runner/preregistration, the one-entry infrastructure-failure ledger, exact correct runtime, zero complete development trials, and closed 2024-2025 stress before calling the same run_development function.",
+  "scientific_trial_formula_direction_folds_cost_or_survival_gate_changed": false,
+  "research_boundary": {
+    "market_rows_loaded_by_failed_run": false,
+    "development_daily_price_fields_read": [],
+    "development_forward_returns_read": false,
+    "complete_development_trial_count": 0,
+    "stress_2024_2025_read": false,
+    "provider_request_issued": false,
+    "candidate49_ledgers_changed": false
+  }
+}

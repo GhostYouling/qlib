@@ -1,0 +1,35 @@
+{
+  "schema_version": 1,
+  "kind": "a_share_three_day_walkforward_campaign099_feature_manifest_repair_black_failure",
+  "status": "recorded_before_mechanical_formatting",
+  "recorded_at": "2026-08-07T09:58:16Z",
+  "repair_preregistration": {
+    "path": "docs/a_share_three_day_walkforward_campaign_099_feature_manifest_repair_preregistration_20260807.json",
+    "sha256": "bd4677a046e361c67728000aa5f4c7a8d252ce0cacb51ce5201b6c640cf64718"
+  },
+  "pre_format_files": {
+    "feature_runner": {
+      "path": "scripts/a_share_three_day_walkforward_campaign099_features.py",
+      "sha256": "ad08cece9d0c939703cc049e2033bc891d3d1ce379d343f8f981c9c29051d880"
+    },
+    "tests": {
+      "path": "tests/data_collector_tests/test_a_share_three_day_walkforward_campaign099_features.py",
+      "sha256": "a576367be5afdf7cba3f78e080fd12fab3202df7042abc60aab49e23ec84fdc1"
+    }
+  },
+  "observed_gates": {
+    "pytest": "9 passed",
+    "ruff": "passed",
+    "black": "would reformat only the Campaign099 feature test file",
+    "black_exit_code": 1
+  },
+  "allowed_repair": "run Black on the exact two Campaign099 feature files, then rerun the unchanged nine tests, Black check, and Ruff",
+  "scientific_boundary": {
+    "candidate_feature_values_read_or_recomputed": false,
+    "coverage_or_capacity_metrics_computed": false,
+    "comparison_factor_values_read": false,
+    "historical_daily_price_or_forward_return_values_read": false,
+    "provider_request_issued": false,
+    "candidate49_ledgers_changed": false
+  }
+}

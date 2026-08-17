@@ -1,0 +1,52 @@
+{
+  "schema_version": 1,
+  "kind": "a_share_three_day_walkforward_campaign118_infrastructure_failure",
+  "status": "initial_snapshot_verifier_rejected_truthful_manifest_before_partition_verification",
+  "recorded_at": "2026-08-13T22:11:00+08:00",
+  "attempt_id": "campaign118_infrastructure_001",
+  "stage": "post_build_manifest_semantic_verification",
+  "command_exit_code": 1,
+  "error_class": "Campaign118FeatureError",
+  "error": "Campaign118 manifest semantics changed",
+  "root_cause": "The dynamically inherited validator retained Campaign105 expectations event_count==0 while the frozen Campaign118 builder truthfully published the preregistered event_count==24. Positive-total and post-selection magnitude semantics were published correctly. The pure formula, source projection, output bytes, scientific gates and candidate values are not implicated.",
+  "frozen_implementation": {
+    "path": "docs/a_share_three_day_walkforward_campaign_118_no_return_implementation_freeze_20260813.json",
+    "sha256": "b9115e4b23c8cf4d48ef6bc6a22833d4c6f0924cb06f42919b89ca62192b941a",
+    "preserved": true,
+    "builder_or_formula_will_be_modified": false
+  },
+  "candidate_snapshot": {
+    "path": "/Volumes/DIsk/qlib-a-share-tushare-1m/derived/a_share/rich/tushare/minute_walkforward_campaign118_feature_library/tushare_stk_mins_1m_2019_2025_ea0cbb8f_walkforward_campaign118_feature_library_v1/snapshot_manifest.json",
+    "sha256": "194c2ef2f81c1906c3e94a85e26ce97d7d82dba567b54128cf6e9086e3a027bd",
+    "dataset_sha256": "19495eb562683e1e14fbe5e9a9730e6d614b481f7642c3da824ea36fdb4d5e2b",
+    "partitions": 33015,
+    "rows": 7724498,
+    "eligible_rows": 7724498,
+    "preserved_without_rebuild": true
+  },
+  "recovery_boundary": {
+    "allowed": "Append and pre-freeze a dedicated verifier that accepts only the exact truthful Campaign118 manifest semantics and exact already-published snapshot fingerprint, then verify every existing partition byte/frame hash.",
+    "formula_or_direction_change_allowed": false,
+    "source_rebuild_allowed": false,
+    "coverage_or_uniqueness_gate_change_allowed": false,
+    "comparator_or_return_values_may_be_read_before_recovery_pass": false
+  },
+  "research_boundary": {
+    "candidate_snapshot_built": true,
+    "candidate_manifest_metadata_read_for_failure_diagnosis": true,
+    "candidate_partition_values_opened_after_build": false,
+    "candidate_partition_verification_completed": false,
+    "coverage_or_capacity_metrics_computed": false,
+    "comparator_values_read": false,
+    "numeric_comparator_count_read": 0,
+    "historical_daily_price_or_forward_return_values_read": false,
+    "stress_2024_2025_opened_for_returns": false,
+    "provider_request_issued": false,
+    "candidate49_same_day_retry_performed": false,
+    "candidate49_failed_response_rerequested": false,
+    "candidate49_historical_backfill_performed": false,
+    "candidate49_ledgers_changed": false,
+    "current_scoring_selection_sizing_positions_or_orders_performed": false,
+    "investment_advice": false
+  }
+}

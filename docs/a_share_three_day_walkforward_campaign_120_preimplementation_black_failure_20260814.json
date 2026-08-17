@@ -1,0 +1,18 @@
+{
+  "schema_version": 1,
+  "kind": "a_share_three_day_walkforward_campaign120_preimplementation_black_failure",
+  "status": "recorded_before_historical_source_or_candidate_values",
+  "recorded_at": "2026-08-14T00:11:47+08:00",
+  "failed_stage": "unfrozen_feature_and_audit_static_format_validation",
+  "failure": "Black --check required mechanical formatting in the unfrozen Campaign120 feature builder and feature test; three other scoped files were already formatted.",
+  "repair": "Apply Black only to the five unfrozen Campaign120 implementation and synthetic-test files, then rerun compile, Black, Ruff and the same synthetic tests.",
+  "scientific_formula_parser_direction_support_or_gate_changed": false,
+  "research_boundary": {
+    "historical_source_rows_read": false,
+    "candidate_values_computed_or_read": false,
+    "comparator_values_read": false,
+    "daily_price_or_forward_return_values_read": false,
+    "provider_request_issued": false,
+    "candidate49_ledgers_changed": false
+  }
+}

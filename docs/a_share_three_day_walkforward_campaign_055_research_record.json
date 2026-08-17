@@ -1,0 +1,169 @@
+{
+  "version": 1,
+  "kind": "a_share_three_day_walkforward_campaign055_research_record",
+  "status": "completed_zero_admissible_factors_stop_before_historical_returns",
+  "recorded_at": "2026-08-04T02:24:00+08:00",
+  "purpose": "Record the terminal Campaign055 uniqueness rejection, append-only attempt accounting, and strict separation from Candidate49 prospective observation.",
+  "authoritative_inputs": {
+    "concept_scouting": {
+      "path": "docs/a_share_three_day_walkforward_campaign_055_concept_scouting.json",
+      "sha256": "567a19211d9ca058e688768e2dcfe3d1bd0afb0b4b1c0f59e079987b08c2070b"
+    },
+    "mechanism_overlap_audit": {
+      "path": "docs/a_share_three_day_walkforward_campaign_055_mechanism_overlap_audit.json",
+      "sha256": "01fe62e9bafafe600e7bf62cb31db884735705b06b14fc782af8780621f69a11"
+    },
+    "no_return_preregistration": {
+      "path": "docs/a_share_three_day_walkforward_campaign_055_no_return_preregistration.json",
+      "sha256": "f469879dd83a22a15d497d903bc81c772d5d96dae81d4ac7e32edfba1ef0732f"
+    },
+    "feature_implementation_freeze": {
+      "path": "docs/a_share_three_day_walkforward_campaign_055_feature_implementation_freeze_20260804.json",
+      "sha256": "ef050cb578ff06775ee43e3119488ad5fbfc39a86d3931abfec642b3d4d01f4a"
+    },
+    "implementation_repair_freeze": {
+      "path": "docs/a_share_three_day_walkforward_campaign_055_implementation_freeze_repair_freeze_20260804.json",
+      "sha256": "648aaf8a2734089fa0225ac4f5fe6f1967abf98ac6284e15c40dc06cc6904485"
+    },
+    "snapshot_repair_implementation_freeze": {
+      "path": "docs/a_share_three_day_walkforward_campaign_055_snapshot_repair_implementation_freeze_20260804.json",
+      "sha256": "5ea65079404c0fb547ffcdb5c1a4f1b5b497864454c1a609b34569d170fe3457"
+    },
+    "snapshot_publication_binding": {
+      "path": "docs/a_share_three_day_walkforward_campaign_055_snapshot_publication_binding_20260804.json",
+      "sha256": "40b360edadb1fd90f227e8743d4f80d4205f4bce9ad247a110ec197410967697"
+    },
+    "no_return_audit_implementation_freeze": {
+      "path": "docs/a_share_three_day_walkforward_campaign_055_no_return_audit_implementation_freeze_20260804.json",
+      "sha256": "9f7e30b6f29f4eddde4f70e9a1b26f2f652634dd69c39c4c946612533d58e634"
+    },
+    "no_return_audit_freeze": {
+      "path": "docs/a_share_three_day_walkforward_campaign_055_no_return_audit_freeze_20260804.json",
+      "sha256": "3486e16e86b90d4ddb99279f00a911cd988d608e478933265d28fc496faebf60"
+    },
+    "research_attempt_ledger": {
+      "path": "data/experiments/short_horizon/historical_walkforward/campaign_055/research_attempt_ledger.json",
+      "sha256": "8b71a8cd94d064ca9f3ef1b3bd8eea113097cec04da7f60331f17c754ea0b187"
+    }
+  },
+  "factor_definition": {
+    "name": "intraday_price_update_clock_entropy_10b_238m",
+    "direction": "higher",
+    "source_projection": [
+      "datetime",
+      "symbol",
+      "provider",
+      "close"
+    ],
+    "accepted_minute_grid": "09:31--11:30 and 13:01--15:00 exactly 240 closes; 09:30 is excluded",
+    "transition_rule": "Form exactly 119 adjacent close transitions independently within each half; exclude the lunch transition; update event is exact close_t != close_t_minus_1; discard update sign and magnitude.",
+    "clock_bins": "Within each half, transition k=0..118 maps to floor(5*k/119); concatenate morning and afternoon into ten fixed bins with sizes 24,24,24,24,23,24,24,24,24,23.",
+    "formula": "For total update count U at least 20, let p_b be the share of updates in each of the ten fixed clock bins and return -sum_b p_b*ln(p_b)/ln(10), with zero contributions equal to zero.",
+    "missing_rule": "Require all 240 closes finite and strictly positive and at least 20 exact close-update events; otherwise missing.",
+    "valid_range": {
+      "lower": 0.0,
+      "upper": 1.0,
+      "both_inclusive": true
+    },
+    "alternate_bins_threshold_direction_transform_filter_subset_combination_model_or_fit": "none"
+  },
+  "feature_snapshot": {
+    "authoritative_v2": {
+      "path": "/Volumes/DIsk/qlib-a-share-tushare-1m/derived/a_share/rich/tushare/minute_walkforward_campaign055_feature_library/tushare_stk_mins_1m_2019_2025_ea0cbb8f_walkforward_campaign055_feature_library_v2/snapshot_manifest.json",
+      "sha256": "f78d62adf2772d64e718e7fdc4138c40325f6c02d17073dd5db0d1271216009e",
+      "dataset_sha256": "cfcdcd23267207f1a2190086b034105c447d5570549864d5468949ea05543882",
+      "partitions": 33015,
+      "rows": 7724498,
+      "eligible_rows": 7664125,
+      "all_partition_byte_and_frame_hashes_valid": true
+    },
+    "rejected_v1_preserved_unchanged": {
+      "path": "/Volumes/DIsk/qlib-a-share-tushare-1m/derived/a_share/rich/tushare/minute_walkforward_campaign055_feature_library/tushare_stk_mins_1m_2019_2025_ea0cbb8f_walkforward_campaign055_feature_library_v1/snapshot_manifest.json",
+      "sha256": "6cbdfafb216c3064271c8eba301ce85dfa2ed27d14afb4073e96aff62be445b6",
+      "dataset_sha256": "cfcdcd23267207f1a2190086b034105c447d5570549864d5468949ea05543882",
+      "downstream_use_allowed": false,
+      "rejection_reason": "stale inherited numbered-campaign protocol evidence"
+    },
+    "source_fields_read": [
+      "datetime",
+      "symbol",
+      "provider",
+      "close"
+    ],
+    "daily_price_fields_read": [],
+    "forward_return_fields_read": false
+  },
+  "no_return_result": {
+    "path": "data/experiments/short_horizon/20260803T181825Z_campaign055_no_return_audit.json",
+    "sha256": "c931097cb92f6138c34bef7ad45e204cb17a25ae384d9fc1ad1b2622c0d66f7e",
+    "status": "completed_zero_admissible_factors_stop_before_historical_returns",
+    "calendar_sessions": 1632,
+    "quality_listing_eligible_rows": 1331759,
+    "candidate_eligible_rows": 1325182,
+    "median_coverage": 0.9963302258089495,
+    "minimum_median_coverage": 0.95,
+    "p05_coverage": 0.9885011697690977,
+    "minimum_p05_coverage": 0.9,
+    "median_eligible_names": 939.0,
+    "p05_eligible_names": 138.0,
+    "minimum_p05_eligible_names": 50,
+    "potential_three_session_cohorts": 540,
+    "observed_calendar_years": [
+      2019,
+      2020,
+      2021,
+      2022,
+      2023,
+      2024,
+      2025
+    ],
+    "coverage_gate_passed": true,
+    "comparison_factor_count": 78,
+    "comparison_order_matches_preregistration": true,
+    "failed_comparison_count": 1,
+    "failed_comparison_factor": "intraday_price_update_share_238m",
+    "failed_comparison_median_daily_rank_correlation": 0.8780592267975353,
+    "maximum_absolute_median_daily_rank_correlation": 0.8780592267975353,
+    "uniqueness_gate_passed": false,
+    "admissible_factor_count": 0,
+    "historical_daily_price_fields_read": [],
+    "historical_forward_return_fields_read": false
+  },
+  "decision": {
+    "factor_terminal": true,
+    "terminal_stage": "no_return_uniqueness_gate_before_historical_returns",
+    "terminal_reason": "absolute_median_daily_rank_correlation_exceeded_0.8_against_intraday_price_update_share_238m",
+    "development_folds_opened": false,
+    "development_return_fields_read": false,
+    "2024_2025_stress_opened": false,
+    "2024_2025_returns_read": false,
+    "inversion_rebin_rewindow_rescale_threshold_filter_subset_model_combination_rerun_or_rescue_allowed": false,
+    "next_campaign_must_be_independently_preregistered": true,
+    "new_daily_bar_or_16_30_wait_required_for_next_offline_campaign": false
+  },
+  "append_only_attempt_accounting": {
+    "prior_historical_research_attempt_count": 312,
+    "campaign055_infrastructure_only_failure_count": 5,
+    "campaign055_complete_factor_attempt_count": 1,
+    "campaign055_total_attempt_count": 6,
+    "cumulative_historical_research_attempt_count": 318,
+    "campaign055_historical_return_trial_count": 0,
+    "cumulative_return_reading_development_trial_count": 267
+  },
+  "prospective_boundary": {
+    "candidate49_signal_ledger": {
+      "path": "data/experiments/short_horizon/candidate49_future_signal_ledger.json",
+      "sha256": "5193f00d7f36da003f53cec387900da4c3d002299f5dfcfc1a95eaa199ed3a79",
+      "entry_count": 0
+    },
+    "candidate49_execution_ledger": {
+      "path": "data/experiments/short_horizon/candidate49_future_execution_ledger.json",
+      "sha256": "d57a3e61eac969e42cafa418ccd8c0a5ee65dcf69da145bb2c096c2a02a2ea4f",
+      "entry_count": 0
+    },
+    "candidate49_historical_return_signal_execution_or_milestone_backfill_performed": false,
+    "second_prospective_candidate_created": false,
+    "current_scoring_selection_sizing_or_orders_performed": false
+  },
+  "data_limitation": "The eligible universe derives from a current listing snapshot and can contain survivorship bias. Campaign055 read no historical daily price or forward return, so it establishes no predictive return claim."
+}

@@ -1,0 +1,52 @@
+{
+  "schema_version": 1,
+  "kind": "a_share_three_day_walkforward_campaign260_snapshot_build_recovery_freeze",
+  "status": "counter_schema_only_recovery_frozen_before_retry",
+  "recorded_at": "2026-08-16T15:22:00+08:00",
+  "supersedes_without_rewriting": {
+    "initial_implementation_freeze": {
+      "path": "docs/a_share_three_day_walkforward_campaign_260_implementation_freeze_20260816.json",
+      "sha256": "4a31ed0b8b3f983617970c4e04d0ba36ec4c14dcf7a7d2de98b00c9861887bd3"
+    },
+    "failure_record": {
+      "path": "docs/a_share_three_day_walkforward_campaign_260_initial_snapshot_build_failure_20260816.json",
+      "sha256": "15ae7af43c5d9f8569b771f35bce544cd02949b42efd455ce7c7ed4006dbc03e"
+    }
+  },
+  "recovery_scope": "Add only the inherited manifest accumulator keys positive_amount_bars and zero_amount_bars, counted across formula-eligible sessions. Candidate frames and values are byte-for-byte identical to the original extractor for the same input.",
+  "candidate_formula_or_value_semantics_changed": false,
+  "source_projection_grid_eligibility_direction_or_gate_changed": false,
+  "output_run_id": "tushare_stk_mins_1m_2019_2025_ea0cbb8f_walkforward_campaign260_feature_library_v1",
+  "code": {
+    "base_builder_path": "scripts/a_share_three_day_walkforward_campaign260_features.py",
+    "base_builder_sha256": "9c13373796d2023acbacc786ea74dd4d1cf63cc60cd5f1152a5b4c52a375d77b",
+    "recovery_runner_path": "scripts/a_share_three_day_walkforward_campaign260_features_recovery.py",
+    "recovery_runner_sha256": "07219ea3d44421faa96280a8abe018622632be54d342405b8808f443d911e300"
+  },
+  "tests": {
+    "recovery_test_path": "tests/data_collector_tests/test_a_share_three_day_walkforward_campaign260_features_recovery.py",
+    "recovery_test_sha256": "f3acb54e0f3ba794b6fbd7581656122a0ad95a73597172c31126ac3487a7d5f1",
+    "command": "/Volumes/DIsk/Coding/anaconda3/bin/python3.12 -m pytest -q tests/data_collector_tests/test_a_share_three_day_walkforward_campaign260_features_recovery.py",
+    "exit_code": 0,
+    "passed": 3
+  },
+  "retry_contract": {
+    "single_retry_command": "/Volumes/DIsk/Coding/anaconda3/bin/python3.12 scripts/a_share_three_day_walkforward_campaign260_features_recovery.py build --workers 8 --confirm-build",
+    "final_output_root_verified_empty_before_retry": true,
+    "initial_partial_output_used_as_evidence": false,
+    "failed_or_truncated_output_used_as_scientific_evidence": false
+  },
+  "research_boundary": {
+    "source_rows_were_read_by_failed_initial_build": true,
+    "comparator_values_read_before_retry": false,
+    "historical_daily_price_or_forward_return_values_read": false,
+    "stress_2024_2025_opened": false,
+    "provider_request_issued": false,
+    "provider_credential_presence_value_or_digest_read": false,
+    "candidate49_historical_backfill_performed": false,
+    "candidate49_ledgers_changed": false,
+    "second_prospective_candidate_created": false,
+    "current_scoring_selection_sizing_positions_or_orders_performed": false,
+    "investment_advice": false
+  }
+}

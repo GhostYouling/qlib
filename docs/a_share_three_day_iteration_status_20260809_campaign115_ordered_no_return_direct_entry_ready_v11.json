@@ -1,0 +1,151 @@
+{
+  "schema_version": 11,
+  "kind": "a_share_three_day_iteration_status",
+  "status": "campaign115_ordered_no_return_direct_entry_repaired_waiting_for_explicit_entitlement_and_source",
+  "recorded_at": "2026-08-09T09:48:00+08:00",
+  "recorded_at_semantics": "monotonic_logical_append_time_after_numeric_policy_v96_and_zero_network_gate_chain_plans_not_host_wall_clock_measurement",
+  "supersedes_without_rewriting": {
+    "path": "docs/a_share_three_day_iteration_status_20260809_campaign115_development_trial_ready_v10.json",
+    "sha256": "76a423beef985e9735a27bab80f7df8e17e0c986a591fd51e1846d4f5289835e",
+    "preserved": true
+  },
+  "authoritative_artifacts": {
+    "numeric_policy_v96": {
+      "path": "docs/a_share_three_day_walkforward_future_numeric_comparison_eligibility_policy_v96_20260809.json",
+      "sha256": "87b623f53e069c617e9099d030ccba73f0fef3cced18bc7bf1e822a7d4bf555a"
+    },
+    "ordered_no_return_protocol": {
+      "path": "docs/a_share_three_day_walkforward_campaign_115_ordered_no_return_audit_protocol_20260809.json",
+      "sha256": "6d94e7fb638aed9f0423179a60ee3ad1a768b12c0de14a64c6dcc81168e6d12d"
+    },
+    "ordered_no_return_implementation_freeze_v5": {
+      "path": "docs/a_share_three_day_walkforward_campaign_115_ordered_no_return_audit_implementation_freeze_v5_20260809.json",
+      "sha256": "c964abe5d55f202958525ff93d743944a77baed6e6b40cb0aa1c1377e35a560d"
+    },
+    "ordered_no_return_verification_v2": {
+      "path": "docs/a_share_three_day_walkforward_campaign_115_ordered_no_return_audit_verification_v2_20260809.json",
+      "sha256": "5c34832949180f05b8c60079cb89d435491ac4071cf359084442671009853c12"
+    },
+    "attempt_ledger_v15": {
+      "path": "data/experiments/short_horizon/historical_walkforward/campaign_115/research_attempt_ledger_v15.json",
+      "sha256": "592f2674606168588510b572b230ea687f43c222f32cd3cd36d823d9511d1e9d"
+    },
+    "report_v12": {
+      "path": "docs/a_share_three_day_walkforward_campaign_115_prevalue_report_v12.md",
+      "sha256": "7cb9e6acfd0e5fd8467781a7483e19ed2294e8c8afbeed0b0aef5437e4da4c1f"
+    },
+    "unified_report": {
+      "path": "data/experiments/short_horizon/current_research_report.md",
+      "sha256": "851033f16fa096338edf2c0a8daf86e0941fcbbde12923a86afac575ec90e901"
+    }
+  },
+  "operational_snapshot": {
+    "host_local_date": "2026-08-09",
+    "host_local_time_zone": "Asia/Singapore",
+    "host_weekday_iso": 7,
+    "host_date_is_accepted_local_trading_session": false,
+    "authoritative_git_worktree": "/Volumes/DIsk/Disk-Coding/qlib",
+    "active_data_root": "/Volumes/DIsk/Disk-Coding/qlib/data",
+    "dotenv_present": true,
+    "dotenv_mode_0600": true,
+    "dotenv_git_ignored": true,
+    "tushare_token_nonempty": true,
+    "credential_value_read_printed_hashed_logged_or_persisted": false,
+    "candidate49_daily_workflow_plan_or_run_performed": false
+  },
+  "candidate49": {
+    "only_active_prospective_candidate": true,
+    "signal_ledger_path": "data/experiments/short_horizon/candidate49_future_signal_ledger.json",
+    "signal_ledger_sha256": "5193f00d7f36da003f53cec387900da4c3d002299f5dfcfc1a95eaa199ed3a79",
+    "signal_entry_count": 0,
+    "execution_ledger_path": "data/experiments/short_horizon/candidate49_future_execution_ledger.json",
+    "execution_ledger_sha256": "d57a3e61eac969e42cafa418ccd8c0a5ee65dcf69da145bb2c096c2a02a2ea4f",
+    "execution_entry_count": 0,
+    "historical_backfill_performed": false
+  },
+  "campaign115": {
+    "active_historical_campaign": true,
+    "selected_source_mechanism": "tushare_official_limit_up_queue_persistence",
+    "current_stage": "ordered_no_return_direct_entry_repaired_before_candidate_or_comparator_values",
+    "acceptance_plan_ready": false,
+    "acceptance_plan_process_exit_code": 2,
+    "acceptance_plan_blockers": [
+      "manual_5000_point_entitlement_confirmation"
+    ],
+    "development_source_plan_ready": false,
+    "development_source_plan_process_exit_code": 2,
+    "development_source_plan_blockers": [
+      "manual_5000_point_entitlement_confirmation",
+      "acceptance_success_committed"
+    ],
+    "development_source_final_root_present": false,
+    "semantic_verification_plan_ready": false,
+    "semantic_verification_plan_process_exit_code": 2,
+    "semantic_verification_receipt_status": "no_semantic_verification_receipt",
+    "ordered_no_return_direct_plan_importable": true,
+    "ordered_no_return_plan_ready": false,
+    "ordered_no_return_plan_process_exit_code": 2,
+    "ordered_no_return_plan_blockers": [
+      "semantic_verification_receipt_valid",
+      "source_final_root_present"
+    ],
+    "ordered_no_return_runtime_binding": true,
+    "all_134_comparator_metadata_bindings_valid": true,
+    "ordered_no_return_audit_status": "no_ordered_no_return_audit",
+    "development_trial_plan_ready": false,
+    "development_trial_plan_process_exit_code": 2,
+    "development_trial_plan_blockers": [
+      "ordered_no_return_audit_admitted_one_factor"
+    ],
+    "development_trial_inspection_status": "no_campaign115_development_trial",
+    "frozen_trial_count": 1,
+    "development_return_trial_count": 0,
+    "provider_rows_candidate_or_comparator_values_read": false,
+    "historical_daily_price_or_forward_return_values_read": false,
+    "stress_2024_2025_opened": false,
+    "next_allowed_action": "Do not assert account entitlement on the user's behalf. After the user explicitly confirms the currently configured account already has at least 5000 points, rerun the frozen acceptance plan with its confirmation flag; only ready=true and process exit code zero may authorize its one-shot provider run. Otherwise keep all values closed."
+  },
+  "frozen_library": {
+    "complete_definition_count": 141,
+    "complete_definition_order_sha256": "ccab6e3d9d81b0a02d4ff178fdd442b26a1e68e3655e1c6f5b2fcb28cd4a4559",
+    "eligible_numeric_comparator_count": 134,
+    "eligible_numeric_comparator_order_sha256": "31d788db467f558a0ac538315343090f1b3ad4cb27a26136a49ebaa88b2fdbf2",
+    "changed_by_this_iteration": false
+  },
+  "accounting": {
+    "campaign115_attempt_count": 24,
+    "campaign115_infrastructure_failure_count": 22,
+    "campaign115_prevalue_scientific_attempt_count": 2,
+    "campaign115_complete_factor_attempt_count": 0,
+    "campaign115_return_reading_development_trial_count": 0,
+    "cumulative_historical_research_attempt_count": 877,
+    "cumulative_return_reading_development_trial_count": 302,
+    "latest_additive_entry": "campaign115_infrastructure_024",
+    "latest_additive_entry_read_real_research_values_or_issued_provider_request": false
+  },
+  "verification": {
+    "focused_ordered_no_return_regression": "11 passed in 14.91s",
+    "direct_protocol_entry_repaired": true,
+    "direct_protocol_plan_exit_code": 2,
+    "direct_protocol_plan_candidate_or_comparator_values_read": false,
+    "zero_network_gate_chain_plan_exit_codes": {
+      "acceptance": 2,
+      "development_source": 2,
+      "semantic_verifier": 2,
+      "ordered_no_return": 2,
+      "development_trial": 2
+    }
+  },
+  "research_boundary": {
+    "candidate_or_comparator_values_read": false,
+    "historical_daily_price_or_forward_return_values_read": false,
+    "partition_year_2024_or_2025_values_read": false,
+    "stress_2024_2025_opened": false,
+    "credential_loaded": false,
+    "provider_request_issued": false,
+    "candidate49_ledgers_changed": false,
+    "second_prospective_candidate_created": false,
+    "current_scoring_selection_sizing_or_orders_performed": false,
+    "investment_advice": false
+  }
+}

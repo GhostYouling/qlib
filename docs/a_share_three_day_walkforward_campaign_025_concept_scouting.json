@@ -1,0 +1,96 @@
+{
+  "version": 1,
+  "kind": "a_share_three_day_walkforward_campaign025_concept_scouting",
+  "status": "one_independent_intraday_extreme_arrival_order_concept_selected_before_candidate_values_comparison_values_or_returns",
+  "recorded_at": "2026-07-29T11:20:00Z",
+  "purpose": "Select one economically interpretable Campaign025 mechanism without opening a Campaign025 minute partition, candidate value, comparison value, daily price, or forward return.",
+  "authoritative_boundary": {
+    "path": "docs/a_share_three_day_iteration_status_20260729_campaign024_binding_validator_ready.json",
+    "sha256": "626e1a9264d1b544143c1d5361ed68f103b524cb7f1f48706cbb6f06a870fd34",
+    "campaign025_concept_scouting_allowed": true,
+    "binding_validation_required_at_each_freeze_boundary": true,
+    "candidate49_remains_only_prospective_candidate": true,
+    "candidate50_activation_allowed": false
+  },
+  "selected_concept": {
+    "concept_name": "intraday_extreme_arrival_order",
+    "mechanism_family": "one_minute_global_price_extreme_temporal_order",
+    "economic_question": "Does the session establish its low before its high, rather than its high before its low, indicating upward rather than downward intraday price discovery?",
+    "economic_hypothesis": "A session whose global low is established earlier and global high later represents an upward sequence of price discovery that may persist from the next open through the third close. The reverse sequence represents late downward discovery.",
+    "provisional_direction": "higher",
+    "allowed_source_fields": [
+      "datetime",
+      "symbol",
+      "provider",
+      "high",
+      "low"
+    ],
+    "forbidden_source_fields": [
+      "open",
+      "close",
+      "volume",
+      "amount",
+      "daily open",
+      "daily high",
+      "daily low",
+      "daily close",
+      "daily volume",
+      "daily amount",
+      "forward return",
+      "Level-2"
+    ],
+    "fixed_temporal_question": "Use the ordered 240 one-minute high/low intervals at 09:31-11:30 and 13:01-15:00, excluding standalone 09:30 while collapsing the lunch clock gap to adjacent observation positions.",
+    "mandatory_overlap_challenges_before_any_value": [
+      "intraday_terminal_close_location_240m",
+      "intraday_signed_path_efficiency_239m",
+      "intraday_global_price_range_revisit_240m",
+      "intraday_prior_range_breakout_pressure_238p",
+      "intraday_intrabar_range_participation_entropy_240m",
+      "intraday_intrabar_range_reversal_238p",
+      "intraday_midrange_width_change_coupling_238p",
+      "intraday_range_boundary_translation_coherence_238p",
+      "intraday_intrabar_close_location_pressure_240m",
+      "intraday_directional_range_response_coupling_238p",
+      "candidate49_intraday_cumulative_vwap_crossing_rate_240m_v1"
+    ],
+    "known_design_risks": [
+      "high-versus-low tie selection, first-versus-last occurrence, time normalization, flat sessions, direction, and subwindows are researcher degrees of freedom unless frozen before values",
+      "the concept may be statistically associated with terminal close location, signed path efficiency, prior-range breakout pressure, or boundary translation even though none measures global-extreme arrival order",
+      "a low-before-high sequence may reflect durable upward discovery or exhausted late chasing, so direction must be frozen before returns",
+      "using close extrema, arithmetic price displacement, duration between extrema, amplitude weights, counts, filters, alternate tie rules, or separate morning and afternoon scores would change the mechanism"
+    ]
+  },
+  "rejected_concepts": [
+    {
+      "concept": "wick_balance_or_intrabar_open_close_relocation",
+      "reason": "These are too close to terminal body-range efficiency, own-bar close-location pressure, boundary translation, and Campaign024 directional-range response."
+    },
+    {
+      "concept": "range_volatility_clustering_or_higher_moments",
+      "reason": "Range entropy, range reversal, volatility resolution, variance entropy, skewness, and range-response families are terminal; changing moments or lags would reopen consumed mechanisms."
+    },
+    {
+      "concept": "amount_or_volume_weighted_extreme_timing",
+      "reason": "This would mix the new ordering question with terminal amount center-of-mass, profile, volatility-coupling, and range-volume mechanisms."
+    },
+    {
+      "concept": "terminal_factor_combination",
+      "reason": "Combining, aggregating, or transforming Campaign001-Campaign024 terminal definitions is prohibited."
+    }
+  ],
+  "decision": {
+    "advance_to_separate_no_value_mechanism_overlap_audit": true,
+    "exact_formula_or_direction_fixed_here": false,
+    "new_daily_bar_required": false,
+    "same_day_1630_wait_required": false,
+    "candidate49_ledgers_changed": false
+  },
+  "research_boundary": {
+    "external_campaign025_minute_partitions_read": false,
+    "candidate_values_read": false,
+    "comparison_values_read": false,
+    "daily_price_fields_read": false,
+    "forward_returns_read": false,
+    "provider_request_issued": false
+  }
+}

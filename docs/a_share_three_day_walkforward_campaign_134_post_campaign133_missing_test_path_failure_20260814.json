@@ -1,0 +1,21 @@
+{
+  "schema_version": 1,
+  "kind": "a_share_three_day_walkforward_campaign134_infrastructure_failure",
+  "attempt_id": "campaign134_infrastructure_001",
+  "status": "recorded_prevalue_post_campaign133_verification_test_path_failure",
+  "recorded_at": "2026-08-14T10:25:00+08:00",
+  "stage": "campaign133_terminal_transition_verification",
+  "error_type": "PytestMissingPath",
+  "error_summary": "Campaign133's explicit terminal verifier passed, then the chained pytest command named a nonexistent policy-v159 test file and pytest exited 4 before running tests.",
+  "repair_boundary": "Preserve Campaign133 terminal evidence, discover actual related test paths read-only, run only existing tests, and carry this failure into Campaign134's future append-only ledger. Do not change or rerun Campaign133 scientific evidence.",
+  "campaign133_terminal_verifier_passed_before_failure": true,
+  "campaign133_scientific_result_changed": false,
+  "campaign133_development_rerun_allowed": false,
+  "campaign134_component_values_read": false,
+  "campaign134_model_scores_computed": false,
+  "historical_return_values_newly_read_by_failure": false,
+  "lockbox_2024_2025_opened": false,
+  "provider_request_issued": false,
+  "candidate49_ledgers_changed": false,
+  "current_scoring_selection_sizing_positions_or_orders_performed": false
+}

@@ -1,0 +1,28 @@
+{
+  "schema_version": 1,
+  "kind": "a_share_three_day_walkforward_campaign136_v2_freeze_boundary_validator_failure",
+  "status": "recorded_before_retry",
+  "recorded_at": "2026-08-14T11:24:30+0800",
+  "stage": "source_bound_recovery_v2_static_verification",
+  "implementation_freeze_v2": {
+    "path": "docs/a_share_three_day_walkforward_campaign_136_source_bound_implementation_freeze_v2_20260814.json",
+    "sha256": "9e74d7a9d1128a024bbc1e5569375ed70bab6818765951d57010068fc286d863"
+  },
+  "test_result": "2 failed, 12 passed",
+  "failure": "The builder's freeze validator still required the pre-first-run false keys, while the truthful v2 recovery freeze records that the failed v1 run decoded source rows and started candidate computation without publishing a snapshot.",
+  "allowed_recovery": "Validate the truthful v2 recovery boundary keys: prior source decode and candidate computation were true, snapshot publication was false, and comparator/OHLCV/return reads remained false.",
+  "scientific_effect": {
+    "formula_changed": false,
+    "candidate_definition_changed": false,
+    "source_values_read_by_failed_static_test": false,
+    "threshold_direction_or_date_range_changed": false
+  },
+  "research_boundary": {
+    "campaign136_candidate_snapshot_published": false,
+    "campaign136_comparator_values_read": false,
+    "historical_daily_ohlcv_fields_read": [],
+    "historical_forward_returns_read": false,
+    "provider_request_issued": false,
+    "candidate49_ledgers_changed": false
+  }
+}

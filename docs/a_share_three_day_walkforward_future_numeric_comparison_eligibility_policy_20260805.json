@@ -1,0 +1,111 @@
+{
+  "version": 1,
+  "kind": "a_share_three_day_walkforward_future_numeric_comparison_eligibility_policy",
+  "status": "frozen_before_campaign065_candidate_definition_source_values_or_search",
+  "recorded_at": "2026-08-05T12:25:00+08:00",
+  "purpose": "Keep the exhaustive historical factor library complete while preventing a prior factor with structurally zero usable values from becoming a permanent, undefined all-must-pass numerical correlation gate for every future campaign.",
+  "authoritative_inputs": {
+    "historical_walkforward_policy": {
+      "path": "docs/a_share_three_day_historical_walkforward_research_policy_20260727.json",
+      "sha256": "38426d6161b9bfed323c58caba18feca668b8c9d53e294951a8ba90c01a798bb"
+    },
+    "campaign063_terminal_completion": {
+      "path": "docs/a_share_three_day_walkforward_campaign_063_terminal_completion_freeze_v4_20260805.json",
+      "sha256": "1c1fcad6ee82da0bf2676bcd4854489cffb06bde3ae4231855ea05a47d9c8100"
+    },
+    "campaign063_snapshot_binding": {
+      "path": "docs/a_share_three_day_walkforward_campaign_063_feature_snapshot_binding_20260805.json",
+      "sha256": "96b6ba12cd59db5bfce6afc58704fb283e209f135a3bc38be55698938899db91",
+      "eligible_rows": 0
+    },
+    "campaign064_protocol": {
+      "path": "docs/a_share_three_day_walkforward_campaign_064_no_return_preregistration.json",
+      "sha256": "441cbeef589593c2ef0ae3e58325f5ab0acb506cc54eaa040c79f26c8ca6a887"
+    },
+    "campaign064_snapshot_binding": {
+      "path": "docs/a_share_three_day_walkforward_campaign_064_feature_snapshot_binding_20260805.json",
+      "sha256": "ece4c6c3899d186a7d23d3408c3d4056ab6c062f754bb45eafa8d72661ed430d",
+      "eligible_rows": 7724498
+    },
+    "campaign064_completed_audit": {
+      "path": "data/experiments/short_horizon/historical_walkforward/campaign_064/no_return/20260805T041624Z_campaign064_no_return_audit.json",
+      "sha256": "55f3deef0cf8d58bf29a34e0af60cb290188dfe1f0e1d424e12e11ce18279c66",
+      "coverage_passed": true,
+      "numeric_comparisons_passed": 94,
+      "undefined_zero_value_comparisons": 1
+    },
+    "campaign064_terminal_research_record": {
+      "path": "docs/a_share_three_day_walkforward_campaign_064_research_record.json",
+      "sha256": "a93e0fde62975825b8cdda053b51bd869507fddbacd637f7b8e614e2600b010b"
+    }
+  },
+  "scope": {
+    "effective_start_campaign": 65,
+    "campaign064_result_or_gate_decision_changed": false,
+    "candidate49_prospective_workflow_changed": false,
+    "historical_results_may_generate_current_scores_selections_sizes_or_orders": false
+  },
+  "complete_historical_feature_library": {
+    "definition": "Reconstruct all 95 Campaign064 comparison definitions from the bound Campaign064 protocol in exact order, then append Campaign064 intraday_range_weak_order_entropy_236t/higher exactly once.",
+    "factor_definition_count": 96,
+    "order_sha256": "974e3acd06536dcfbcc13524932f771f3636ac32023b2712f5d2d76f4d1f2d92",
+    "all_terminal_failed_rejected_and_surviving_definitions_retained": true,
+    "mechanism_overlap_catalog_must_use_all_96": true,
+    "attempt_and_failure_history_must_remain_append_only": true,
+    "old_terminal_record_or_formula_may_be_rewritten": false
+  },
+  "numerical_comparator_eligibility": {
+    "classification_time": "before_campaign065_candidate_definition_or_source_values",
+    "classification_inputs": "immutable prior snapshot and terminal records only",
+    "standalone_minimum_sessions_with_at_least_50_eligible_names": 100,
+    "candidate_pairwise_gate_still_requires_minimum_names_per_session": 50,
+    "candidate_pairwise_gate_still_requires_minimum_sessions_per_comparison": 100,
+    "candidate_pairwise_gate_still_requires_absolute_median_daily_rank_correlation_below": 0.8,
+    "eligible_numeric_comparator_count": 95,
+    "eligible_numeric_comparator_order_definition": "Take the complete 96-definition order and remove only the exact structurally unavailable Campaign063 factor named below; preserve the relative order of all remaining factors.",
+    "eligible_numeric_comparator_order_sha256": "2418a9e28bdc6b3484ede7b4e0ae6293131af2f4644930ca2c21bff9060c331d",
+    "all_95_eligible_numeric_comparators_must_pass": true,
+    "no_candidate_specific_comparator_drop_allowed": true,
+    "insufficient_pairwise_overlap_for_an_eligible_source_still_fails_closed": true
+  },
+  "structurally_nonnumeric_mechanism_challenges": [
+    {
+      "name": "intraday_cross_sectional_standardized_return_state_stability_236p",
+      "score_direction": "higher",
+      "source_campaign": 63,
+      "source_snapshot_eligible_rows": 0,
+      "source_snapshot_pairwise_capable_sessions": 0,
+      "numeric_correlation_status": "undefined_not_pass_not_fail",
+      "mechanism_overlap_audit_required": true,
+      "formula_direction_terminal_reason_and_failure_history_retained": true,
+      "may_be_silently_omitted_from_reports": false,
+      "may_be_treated_as_numeric_gate_pass": false,
+      "may_be_treated_as_numeric_gate_fail_for_future_candidates": false
+    }
+  ],
+  "campaign064_newly_eligible_prior_comparator": {
+    "name": "intraday_range_weak_order_entropy_236t",
+    "score_direction": "higher",
+    "source_campaign": 64,
+    "source_snapshot_eligible_rows": 7724498,
+    "quality_listing_pairwise_capable_sessions": 1632,
+    "p05_eligible_names": 138.0,
+    "numeric_comparator_eligible_for_campaign065": true,
+    "terminal_under_campaign064_protocol_but_numerically_available": true
+  },
+  "anti_gaming_invariants": [
+    "Do not use a future candidate's values returns performance or correlations to decide which prior factors are numerical comparators.",
+    "Do not drop an eligible comparator after it fails correlation support or threshold gates.",
+    "Do not count a structurally unavailable source as a passing or failing correlation; keep it as an explicit nonnumeric mechanism challenge.",
+    "Do not remove any definition from the exhaustive feature mechanism attempt or failure library.",
+    "Do not apply this policy retroactively to rescue Campaign064.",
+    "Do not weaken the 50-name 100-session or strict-below-0.8 numerical gates."
+  ],
+  "required_campaign065_bindings": {
+    "this_policy_must_be_hash_bound": true,
+    "full_96_definition_order_and_digest_must_be_verified_before_candidate_definition": true,
+    "95_numeric_comparator_order_and_digest_must_be_verified_before_candidate_values": true,
+    "Campaign063_must_appear_in_nonnumeric_mechanism_challenges": true,
+    "Campaign064_must_appear_as_the_last_numeric_comparator": true
+  }
+}

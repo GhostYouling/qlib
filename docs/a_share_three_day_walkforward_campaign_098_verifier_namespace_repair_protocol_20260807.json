@@ -1,0 +1,31 @@
+{
+  "schema_version": 1,
+  "kind": "a_share_three_day_walkforward_campaign098_verifier_namespace_repair_protocol",
+  "status": "frozen_after_verifier_failure_before_code_change_or_successful_verification",
+  "recorded_at": "2026-08-07T08:05:00Z",
+  "implementation_freeze_v1": {
+    "path": "docs/a_share_three_day_walkforward_campaign_098_feature_implementation_freeze_20260807.json",
+    "sha256": "b232128e4c30e011e68ee47cd29c46f19a685cb2f51815f28427dfaf3996143e"
+  },
+  "failure_record": {
+    "path": "docs/a_share_three_day_walkforward_campaign_098_postpublication_verifier_namespace_failure_20260807.json",
+    "sha256": "06c8aa51d7eab9a24823dba40f2b9ac4250b34514e2dcb912c00497d27c24049"
+  },
+  "immutable_snapshot": {
+    "path": "/Volumes/DIsk/qlib-a-share-tushare-1m/derived/a_share/rich/tushare/minute_walkforward_campaign098_feature_library/tushare_stk_mins_1m_2019_2025_ea0cbb8f_walkforward_campaign098_feature_library_v1/snapshot_manifest.json",
+    "sha256": "371429a81292a91ef2bfa1292f467c81bf73e176fbfbc9888084f74eaaac1dc5"
+  },
+  "exact_code_changes_authorized": [
+    "Change DEFAULT_IMPLEMENTATION_FREEZE to docs/a_share_three_day_walkforward_campaign_098_feature_implementation_freeze_v2_20260807.json.",
+    "In verify_snapshot_files only, replace c90.cache_v1.canonical_column_sha256(values) with _ENGINE['cache_v1'].canonical_column_sha256(values).",
+    "Add one synthetic no-value test proving cache_v1 is available in _ENGINE and is not an exported c90 module attribute."
+  ],
+  "all_other_code_changes_authorized": false,
+  "snapshot_rebuild_rewrite_or_value_recalculation_allowed": false,
+  "coverage_or_capacity_metrics_computed_before_repair_freeze": false,
+  "comparator_values_read_before_repair_freeze": false,
+  "historical_daily_price_or_forward_return_values_read_before_repair_freeze": false,
+  "candidate49_ledgers_changed": false,
+  "provider_request_issued": false,
+  "formula_direction_support_window_universe_cost_gate_or_search_space_changed": false
+}

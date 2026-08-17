@@ -1,0 +1,52 @@
+{
+  "schema_version": 3,
+  "kind": "a_share_three_day_walkforward_campaign098_feature_implementation_freeze",
+  "status": "frozen_after_snapshot_publication_before_successful_independent_verification",
+  "recorded_at": "2026-08-07T08:23:00Z",
+  "supersedes_without_rewriting": {
+    "path": "docs/a_share_three_day_walkforward_campaign_098_feature_implementation_freeze_v2_20260807.json",
+    "sha256": "3652c0f1cdf5b60f9fb25dc421a1fc5ea2e3369d64d2030885502ab8a19fdb41"
+  },
+  "provenance_repair_protocol": {
+    "path": "docs/a_share_three_day_walkforward_campaign_098_verifier_provenance_repair_protocol_20260807.json",
+    "sha256": "fcb54cbfacbfcbdb44a14fe7ae904652dd801592b45594b782793de5e02ccb81"
+  },
+  "v3_freeze_semantics_addendum": {
+    "path": "docs/a_share_three_day_walkforward_campaign_098_v3_freeze_semantics_addendum_20260807.json",
+    "sha256": "8e34e097102092e2d54c526feb8ef7cb0db2e67ccf829b6b9bdba64b825d9b54"
+  },
+  "protocol": {
+    "path": "docs/a_share_three_day_walkforward_campaign_098_no_return_preregistration.json",
+    "sha256": "31dcecebeea81adab163acd76e21616e6b35726a2798bb4ca72cee4252ca78bd"
+  },
+  "feature_runner": {
+    "path": "scripts/a_share_three_day_walkforward_campaign098_features.py",
+    "sha256": "51940abaad3510024778016f1487d8fd7f73e8f3bbd39b4d7444cbfa15dcbc98"
+  },
+  "tests": {
+    "path": "tests/data_collector_tests/test_a_share_three_day_walkforward_campaign098_features.py",
+    "sha256": "b4eb3b5da38d114ae89d5417b2bc1550d5136508108bc12ce2b2a3c315158045",
+    "passed": 10,
+    "failed": 0
+  },
+  "immutable_publication_provenance": {
+    "snapshot": {
+      "path": "/Volumes/DIsk/qlib-a-share-tushare-1m/derived/a_share/rich/tushare/minute_walkforward_campaign098_feature_library/tushare_stk_mins_1m_2019_2025_ea0cbb8f_walkforward_campaign098_feature_library_v1/snapshot_manifest.json",
+      "sha256": "371429a81292a91ef2bfa1292f467c81bf73e176fbfbc9888084f74eaaac1dc5",
+      "dataset_sha256": "921f06fad98aed942550d86b1475c888aea6d2025c37d53ec55917401bd34b33"
+    },
+    "publication_runner_sha256": "c37124971238368ca233b38e9b3532fb52cf8e613e70d490afc15478e5107355",
+    "publication_implementation_freeze_sha256": "b232128e4c30e011e68ee47cd29c46f19a685cb2f51815f28427dfaf3996143e"
+  },
+  "repair_scope": "independent verifier provenance separation only",
+  "candidate_source_rows_read_before_freeze": true,
+  "candidate_values_computed_before_freeze": true,
+  "comparator_values_read_before_freeze": false,
+  "historical_daily_price_or_forward_return_values_read_before_freeze": false,
+  "provider_request_issued_before_freeze": false,
+  "snapshot_rebuilt_rewritten_or_recalculated": false,
+  "formula_direction_support_window_universe_cost_gate_or_search_space_changed": false,
+  "black_passed": true,
+  "ruff_passed": true,
+  "next_action": "Run the current verifier once against the immutable v1 publication and freeze the resulting snapshot binding before coverage."
+}

@@ -1,0 +1,55 @@
+{
+  "schema_version": 1,
+  "kind": "a_share_three_day_walkforward_campaign121_feature_snapshot_verification_result",
+  "status": "verified_by_frozen_read_only_recovery_verifier",
+  "recorded_at": "2026-08-14T02:22:00+08:00",
+  "factor": {
+    "name": "intraday_terminal_close_direction_first_attainment_240m",
+    "direction": "higher",
+    "truthful_value_range_verified": [0.0, 1.0],
+    "truthful_position_lattice_denominator": 239,
+    "observed_value_minimum": 0.0,
+    "observed_value_maximum": 1.0
+  },
+  "snapshot": {
+    "manifest_path": "/Volumes/DIsk/qlib-a-share-tushare-1m/derived/a_share/rich/tushare/minute_walkforward_campaign121_feature_library/tushare_stk_mins_1m_2019_2025_ea0cbb8f_walkforward_campaign121_feature_library_v1/snapshot_manifest.json",
+    "manifest_sha256": "e5789da9896535d8d67e0f0f3a7b2704f41292e4694b127a27999224abfad724",
+    "dataset_sha256": "cb476bcc93e7c88df6e2666af9d60d470c90f8a7670ea4553d2e9b877ab8a5b2",
+    "partitions": 33015,
+    "rows": 7724498,
+    "eligible_rows": 7724498,
+    "all_partition_byte_hashes_verified": true,
+    "all_partition_frame_hashes_verified": true
+  },
+  "recovery_authority": {
+    "verifier": {
+      "path": "scripts/a_share_three_day_walkforward_campaign121_snapshot_verify_recovery.py",
+      "sha256": "6c4d0677f417c7abd20e03095cab081f24426c6751c95f269e4d2698b075bb8f"
+    },
+    "freeze": {
+      "path": "docs/a_share_three_day_walkforward_campaign_121_snapshot_verifier_recovery_freeze_20260814.json",
+      "sha256": "f24aff4bf8965c3521a94cd38f30a69d9277194d028addcd0b16577c30c90649"
+    }
+  },
+  "manifest_metadata_discrepancy_preserved": {
+    "factor_range": {
+      "observed": [-1.0, 1.0],
+      "truthful": [0.0, 1.0]
+    },
+    "fixed_denominator": {
+      "observed": 240,
+      "truthful": 239
+    },
+    "manifest_or_partition_rewritten": false
+  },
+  "research_boundary": {
+    "candidate_partition_values_read_only_for_frozen_verification": true,
+    "comparator_values_read": false,
+    "historical_daily_price_or_forward_return_values_read": false,
+    "provider_request_issued": false,
+    "candidate49_ledgers_changed": false,
+    "current_scoring_selection_sizing_or_orders_performed": false,
+    "investment_advice": false
+  },
+  "next_action": "Freeze a single-use coverage activation and execute Gate 2 before any comparator value is read."
+}

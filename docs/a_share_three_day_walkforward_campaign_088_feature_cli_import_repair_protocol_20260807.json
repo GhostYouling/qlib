@@ -1,0 +1,43 @@
+{
+  "schema_version": 1,
+  "kind": "a_share_three_day_walkforward_campaign088_feature_cli_import_repair_protocol",
+  "status": "frozen_before_cli_import_repair_and_before_campaign088_source_values",
+  "frozen_at": "2026-08-07T03:31:14+08:00",
+  "failure": {
+    "command_form": "/Volumes/DIsk/Coding/anaconda3/bin/python3.12 scripts/a_share_three_day_walkforward_campaign088_features.py status --data-root /Volumes/DIsk/qlib-a-share-tushare-1m",
+    "exception": "ModuleNotFoundError: No module named 'scripts'",
+    "actual_exit_was_nonzero": true,
+    "source_candidate_comparator_daily_price_or_return_values_read": false
+  },
+  "preserved_v1": {
+    "feature_runner": {
+      "path": "scripts/a_share_three_day_walkforward_campaign088_features.py",
+      "sha256": "33b24f06dfc8e8da10dc20be9ae013d7ce82dfeb0cfd331eb895c8a30c15822e"
+    },
+    "implementation_freeze": {
+      "path": "docs/a_share_three_day_walkforward_campaign_088_feature_implementation_freeze_20260807.json",
+      "sha256": "53eda7ab435403620b6a5ee4750c176997dee6c29a575fd7f152ba9dfe637fb3"
+    },
+    "tests": {
+      "path": "tests/data_collector_tests/test_a_share_three_day_walkforward_campaign088_features.py",
+      "sha256": "2843d861a97bc06b92568e18b55c6f26e60e5eb49444adb6b00db424a6a3a5ee"
+    }
+  },
+  "permitted_repair": {
+    "scope": "Before importing repository modules during direct file execution only, add the immutable repository root to sys.path when __package__ is empty.",
+    "formula_changed": false,
+    "candidate_direction_changed": false,
+    "source_projection_or_grid_changed": false,
+    "coverage_uniqueness_or_return_gate_changed": false,
+    "tests_may_change": false,
+    "new_v2_implementation_freeze_required_before_source_values": true
+  },
+  "research_boundary": {
+    "campaign088_minute_source_rows_read": false,
+    "campaign088_candidate_values_computed": false,
+    "comparison_values_read": false,
+    "historical_daily_price_or_forward_return_values_read": false,
+    "provider_request_issued": false,
+    "candidate49_ledgers_changed": false
+  }
+}

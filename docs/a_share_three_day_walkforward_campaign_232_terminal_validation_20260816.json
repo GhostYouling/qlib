@@ -1,0 +1,83 @@
+{
+  "schema_version": 1,
+  "kind": "a_share_three_day_walkforward_campaign232_terminal_validation",
+  "recorded_at": "2026-08-16T04:50:00+08:00",
+  "timestamp_semantics": "monotonic_logical_append_time_not_host_wall_clock_measurement",
+  "status": "passed_campaign232_terminal_evidence_and_cumulative_regression",
+  "authoritative_inputs": {
+    "terminal_result_v2": {
+      "path": "docs/a_share_three_day_walkforward_campaign_232_terminal_result_v2_20260816.json",
+      "sha256": "4fd4b859041c60bce7d72cf3e95d0e6cf02695353c50ab15c1ff7912b60fa1c6"
+    },
+    "frozen_source_frontier": {
+      "path": "docs/a_share_three_day_walkforward_campaign_232_commercial_parking_reservation_access_occupancy_charging_payment_enforcement_incident_maintenance_turnover_lifecycle_source_frontier_20260816.json",
+      "sha256": "8824f942e2830287cf191190ba6c3899837ab8d22e9190014d59af0efe02b8e4"
+    },
+    "attempt_ledger_v3": {
+      "path": "data/experiments/short_horizon/historical_walkforward/campaign_232/research_attempt_ledger_v3.json",
+      "sha256": "c2204c647c7f638e295a84c04e6cc67679c364aba7f326b794cdccad3c09e147"
+    },
+    "numeric_policy_v353": {
+      "path": "docs/a_share_three_day_walkforward_future_numeric_comparison_eligibility_policy_v353_20260816.json",
+      "sha256": "70db69c50446b425dac9c4086cd47a8ae1137d2f7f6c66948dd23af7f9ebaed9"
+    },
+    "failed_skill_chunk_read": {
+      "path": "docs/a_share_three_day_walkforward_campaign_232_skill_chunk_output_truncated_failure_20260816.json",
+      "sha256": "4634323cfce968232b4282d3c6f504a39b933a321c53feb26f9d1a316e6c225d",
+      "result_counts_consumed": false
+    },
+    "failed_current_report_append_patch": {
+      "path": "docs/a_share_three_day_walkforward_campaign_232_current_report_append_patch_context_failure_20260816.json",
+      "sha256": "c7decc1a85f34c1ad62ba539dd5e48d9df8fbcb5c25ba3691f30fa84054e3615",
+      "result_counts_consumed": false
+    },
+    "terminal_test": {
+      "path": "tests/data_collector_tests/test_a_share_three_day_walkforward_campaign232_terminal.py",
+      "sha256": "b48ad85ea843962d41575c772bdfa29c8567416404cd8fd88ee9f4443a1fa47a"
+    }
+  },
+  "validation_results": {
+    "focused_pytest": "2 passed",
+    "cumulative_pytest": "503 passed, 1 skipped, 47 deselected",
+    "campaign145_through_campaign232_test_file_count": 120,
+    "deselection_node_count": 47,
+    "black": "passed",
+    "ruff": "passed",
+    "json_parse": "passed",
+    "independent_reference_binding_and_chain_validation": "passed",
+    "candidate49_empty_ledger_semantics": "passed",
+    "unmasked_whitespace": "passed"
+  },
+  "publication_state": {
+    "current_report_sha256": "4fc0d639eed0c5124f0f8ef210efc64d9d47552d3f9f202eebe5cb11b9caa22a",
+    "three_day_report_sha256": "5ff1dfb457f0179ef4b32391090531aa282f088ecd019e487a0ea8fbb127dfdc",
+    "attempt_chain_tip_sha256": "5dae1870104e83de722b7e69ea6c3219c32231126ba1b45454418b9039617878",
+    "cumulative_historical_research_attempt_count": 2186,
+    "cumulative_return_reading_development_trial_count": 314,
+    "complete_factor_definition_count": 158,
+    "eligible_numeric_comparator_count": 142
+  },
+  "candidate49": {
+    "only_active_prospective_candidate": true,
+    "signal_ledger_sha256": "5193f00d7f36da003f53cec387900da4c3d002299f5dfcfc1a95eaa199ed3a79",
+    "signal_entry_count": 0,
+    "execution_ledger_sha256": "d57a3e61eac969e42cafa418ccd8c0a5ee65dcf69da145bb2c096c2a02a2ea4f",
+    "execution_entry_count": 0
+  },
+  "research_boundary": {
+    "failed_or_truncated_output_used_as_validation_or_scientific_evidence": false,
+    "frozen_source_frontier_rewritten": false,
+    "accounting_publication_changed_scientific_routes_or_decisions": false,
+    "candidate_or_comparator_value_read": false,
+    "daily_price_or_forward_return_read": false,
+    "stress_2024_2025_opened": false,
+    "provider_or_web_request_issued": false,
+    "provider_credential_presence_value_or_digest_read": false,
+    "candidate49_plan_or_run_executed": false,
+    "candidate49_ledgers_changed": false,
+    "second_prospective_candidate_created": false,
+    "current_scoring_selection_sizing_positions_or_orders_performed": false,
+    "investment_advice": false
+  },
+  "next_action": "Publish the advancing Campaign232 state and keep the active goal authorized for Campaign233 zero-network offline prevalue research."
+}

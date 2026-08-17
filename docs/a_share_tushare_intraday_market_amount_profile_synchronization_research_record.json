@@ -1,0 +1,199 @@
+{
+  "version": 1,
+  "kind": "a_share_tushare_intraday_market_amount_profile_synchronization_research_record",
+  "status": "terminal_rejected_at_association_stability_and_executable_topk_gates",
+  "recorded_at": "2026-07-25T05:16:00Z",
+  "purpose": "Record the fingerprint-bound construction, ordered no-return admission, and single historical three-session diagnostic for Tushare intraday market amount-profile synchronization.",
+  "factor": {
+    "name": "intraday_market_amount_profile_synchronization_240m",
+    "direction": "higher",
+    "formula": "corr(amount_i/sum(amount_i), leave_one_out_equal_weight_mean_j(amount_j/sum(amount_j))) across exact aligned 09:31-15:00 positions",
+    "economic_hypothesis": "A high value means the stock's continuous-session liquidity participation follows broad-market liquidity waves rather than isolated bursts, potentially indicating orderly broad sponsorship that could persist for three sessions.",
+    "source_fields": [
+      "datetime",
+      "symbol",
+      "provider",
+      "amount"
+    ],
+    "raw_price_or_volume_used": false,
+    "standalone_09_30_row_excluded": true,
+    "continuous_session_profile_positions": 240,
+    "leave_one_out_equal_weight_market_profile": true,
+    "minimum_leave_one_out_peers_at_every_position": 50,
+    "daily_prices_substituted_into_minute_rows": false
+  },
+  "source_chain": {
+    "raw_minute_manifest_sha256": "9b3d959563c9d182f38981c6a36bdb3bc9b415de08487a9e1f9e850825c0839f",
+    "joint_clean_manifest_sha256": "453c6719cb3c7da42fed8807b28a2bfe988700283e9625a6db97912534f368de",
+    "prior_opening_auction_amount_share_manifest_sha256": "cb6acb3dcbad2ca459ac2f11ea80364593543adc852bf82ea3f177ae58154580",
+    "candidate_manifest": {
+      "path_below_data_root": "derived/a_share/rich/tushare/minute_intraday_market_amount_profile_synchronization/tushare_stk_mins_1m_2019_2025_ea0cbb8f_intraday_market_amount_profile_synchronization_v1/snapshot_manifest.json",
+      "sha256": "40f9700a919cc22f30bd928133fb20bc6af3476a7952020d180f712d97f063f5",
+      "dataset_sha256": "26d82a495393cee45293d0ca00c444f88b2e25900d2ccc92fc0be5329fdf63a8",
+      "partitions": 33015,
+      "rows": 7724498,
+      "eligible_rows": 7724498,
+      "invalid_required_amount_rows": 0,
+      "nonpositive_total_amount_rows": 0,
+      "insufficient_leave_one_out_peer_rows": 0,
+      "constant_own_profile_rows": 0,
+      "constant_market_profile_rows": 0,
+      "nonfinite_correlation_rows": 0,
+      "endpoint_canonicalized_rows": 0,
+      "range_violation_rows": 0,
+      "market_benchmark_output_byte_sha256": "cb9336d42a90f83e4c3148e0cbd01245221ad3ae6cb520dac99c6289ee2e4f74",
+      "market_benchmark_output_frame_sha256": "7c9b9d9aa31e6a3ba59bb2486480de4b278006a9b7d9cc170e2ec018370b5906"
+    },
+    "raw_minute_rows_mutated": false,
+    "candidate_snapshot_contains_forward_returns": false
+  },
+  "ordered_protocol": {
+    "mechanism_overlap_reaudit": {
+      "path": "docs/a_share_tushare_intraday_market_amount_profile_synchronization_mechanism_overlap_reaudit_20260725.json",
+      "sha256": "24127b8326f29175a88a74ecb5c21cb508b3fc9bb5a68ee5f7e003f29b84d17f"
+    },
+    "no_return_preregistration": {
+      "path": "docs/a_share_tushare_intraday_market_amount_profile_synchronization_no_return_preregistration.json",
+      "sha256": "f560442de1a344ddcfee4ec42e14bfaa8e1abf9f1015506f011fee27121e6845",
+      "factor_values_observed_before_registration": false,
+      "forward_returns_read_before_registration": false
+    },
+    "no_return_audit": {
+      "path": "data/experiments/short_horizon/20260725T010933Z_intraday_market_amount_profile_synchronization_no_return_audit.json",
+      "sha256": "516dd4e88b31790a30c5477a7a6a4a05591a2fdb48f4a43fa4f31044245c3ca3",
+      "status": "passed_no_return_coverage_capacity_and_uniqueness_pending_separate_return_diagnostic_preregistration",
+      "forward_returns_read": false
+    },
+    "diagnostic_preregistration": {
+      "path": "docs/a_share_tushare_intraday_market_amount_profile_synchronization_diagnostic_preregistration.json",
+      "sha256": "279c6c248aaa517d36db00ac39a5336742bf2404b99888c311f398bca8ebefb5",
+      "forward_returns_read_before_registration": false
+    }
+  },
+  "no_return_results": {
+    "quality_listing_eligible_rows": 1331759,
+    "candidate_eligible_rows": 1330171,
+    "median_coverage": 0.9994517542211769,
+    "p05_coverage": 0.9956886515772271,
+    "p05_eligible_names": 138,
+    "potential_non_overlapping_three_session_cohorts": 540,
+    "observed_calendar_years": [
+      2019,
+      2020,
+      2021,
+      2022,
+      2023,
+      2024,
+      2025
+    ],
+    "coverage_and_capacity_gate_passed": true,
+    "comparison_factor_count": 23,
+    "maximum_absolute_median_daily_rank_correlation_to_twenty_three_terminal_factors": 0.5667050400934569,
+    "maximum_allowed_absolute_median_daily_rank_correlation": 0.8,
+    "nearest_comparison_factor": "intraday_amount_center_of_mass_240m",
+    "nearest_comparison_directional_median_daily_rank_correlation": -0.5667050400934569,
+    "all_twenty_three_uniqueness_gates_passed": true
+  },
+  "historical_artifacts": {
+    "diagnostic": {
+      "run_id": "20260725T051451Z",
+      "path": "data/experiments/short_horizon/20260725T051451Z_factor_diagnostic.json",
+      "sha256": "154fae15db6775fc1f9ae6cc853eee11fb54559e032f4c29a5e89f7057d439a1"
+    },
+    "stability_audit": {
+      "run_id": "20260725T051520Z",
+      "path": "data/experiments/short_horizon/20260725T051520Z_factor_stability_audit.json",
+      "sha256": "a58ac6bcd186d65dbb810ad892bf4ce0048dda719356834e2fe8f25725f8abfe"
+    },
+    "topk_viability_audit": {
+      "run_id": "20260725T051521Z",
+      "path": "data/experiments/short_horizon/20260725T051521Z_factor_topk_viability_audit.json",
+      "sha256": "f3a46baf5302fb6cb4c1d03e45f3a609f5a6e8290893779e26941f376e4a5d71"
+    },
+    "single_use_consumption_marker": {
+      "path": "data/experiments/short_horizon/intraday_market_amount_profile_synchronization_240m_historical_consumption.json",
+      "sha256": "a67862b618171518c5d835e6e9fde38af3a3393becc094c32cd094d0cf3adfad",
+      "forward_return_fields_read": true
+    }
+  },
+  "fixed_strategy": {
+    "price_basis": "close_known_raw_pct_chg_chain_v1",
+    "development_start": "2019-01-01",
+    "development_end": "2025-12-31",
+    "holding_period_local_sessions": 3,
+    "non_overlapping_cohorts": true,
+    "topk": 3,
+    "signal_time": "after local close",
+    "entry": "next local session open",
+    "exit": "third local session close",
+    "open_cost": 0.00012,
+    "close_cost": 0.00062,
+    "pilot_initial_capital_cny": 200000,
+    "pilot_buy_lot_size_shares": 100,
+    "pilot_primary_slippage_rate_each_side": 0.001,
+    "pilot_maximum_daily_amount_participation": 0.01
+  },
+  "return_results": {
+    "cohorts": 539,
+    "mean_rank_ic": -0.011744812824529938,
+    "median_rank_ic": -0.015435227319070162,
+    "positive_rank_ic_rate": 0.45083487940630795,
+    "mean_top3_minus_bottom3_gross_return": -0.0029455702272390668,
+    "mean_forward_gross_return_by_factor_quintile": {
+      "1": 0.0019850256807354503,
+      "2": 0.002103486860083811,
+      "3": 0.00226386637276507,
+      "4": 0.002338924338806069,
+      "5": 0.0024078618346978927
+    },
+    "years_with_nonpositive_mean_rank_ic": [
+      2019,
+      2020,
+      2021,
+      2022,
+      2023
+    ],
+    "association_stability_gate_passed": false,
+    "execution_aware_complete_signal_count": 533,
+    "execution_aware_top3_net_cumulative_return": -0.536413733053481,
+    "execution_aware_top3_maximum_drawdown": -0.8000915660703071,
+    "years_with_nonpositive_execution_aware_return": [
+      2019,
+      2020,
+      2021,
+      2022,
+      2023,
+      2025
+    ],
+    "pilot_net_cumulative_return_at_zero_bp_each_side": -0.028998629249850083,
+    "pilot_net_cumulative_return_at_five_bp_each_side": -0.0824799608432013,
+    "pilot_net_cumulative_return_at_ten_bp_each_side": -0.1317638058590641,
+    "pilot_net_cumulative_return_at_twenty_bp_each_side": -0.23171181316155243,
+    "pilot_maximum_drawdown_at_ten_bp_each_side": -0.1884626457891334,
+    "pilot_board_lot_affordability_rate": 0.8799249530956847,
+    "pilot_maximum_daily_amount_participation": 0.0004074745219262403,
+    "pilot_terminal_unresolved_positions": 0,
+    "topk_viability_gate_passed": false,
+    "dual_gate_passed": false
+  },
+  "decision": {
+    "terminally_reject_exact_factor_direction": true,
+    "invert_reformulate_rewindow_threshold_subset_reweight_or_retest_on_2019_2025_allowed": false,
+    "aggregation_candidate_added": false,
+    "aggregation_allowed": false,
+    "current_scoring_allowed": false,
+    "selection_allowed": false,
+    "sizing_allowed": false,
+    "orders_allowed": false,
+    "level2_intake_justified": false,
+    "terminal_reason": "The exact higher market amount-profile synchronization factor was fully covered and distinct but failed both fixed gates. Mean Rank IC was -0.01174, only 45.08% of cohorts were positive, the Top3-minus-Bottom3 spread was -0.2946%, and five of seven annual mean IC values were nonpositive. The normalized execution-aware Top3 ledger lost 53.64% with 80.01% drawdown. The CNY 200,000 board-lot ledger lost 13.18% at ten basis points per side and still lost 2.90% with zero slippage. Its 0.0407% maximum filled-trade daily-amount participation remained far below the one-percent capacity limit, so capacity does not explain the failure."
+  },
+  "research_boundary": {
+    "coverage_or_uniqueness_proved_predictive_value": false,
+    "independence_without_historical_association_does_not_authorize_use": true,
+    "same_history_combination_return_evaluation_performed": false,
+    "training_or_model_fitting_performed": false,
+    "current_stock_list_generated": false,
+    "next_step": "Retire this exact higher-direction market amount-profile synchronization on 2019-2025. Do not invert, reformulate, re-window, threshold, subset, combine, current-score, select, size, order, or purchase Level-2 to rescue it. Freeze a genuinely distinct mechanism before observing any new candidate values or returns."
+  }
+}

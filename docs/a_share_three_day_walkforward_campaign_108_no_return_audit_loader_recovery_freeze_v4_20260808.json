@@ -1,0 +1,54 @@
+{
+  "schema_version": 4,
+  "kind": "a_share_three_day_walkforward_campaign108_no_return_audit_loader_recovery_freeze",
+  "status": "range_only_loader_recovery_frozen_before_coverage_or_comparator_values",
+  "recorded_at": "2026-08-07T21:17:57Z",
+  "failed_audit": {
+    "path": "docs/a_share_three_day_walkforward_campaign_108_no_return_audit_negative_range_loader_failure_20260808.json",
+    "sha256": "3d2ae034a0bd3a69911d17c3fdbdb861386230ca3afd320a97012ef0be4a34f2",
+    "preserved": true
+  },
+  "preserved_failed_entry_point": {
+    "path": "scripts/a_share_three_day_walkforward_campaign108_no_return_audit_v2.py",
+    "sha256": "9e1a32366dfd538b5b78dfe80f13f8d2f757cf31e23f8449a1b6a4d1e33d390e"
+  },
+  "recovered_audit": {
+    "path": "scripts/a_share_three_day_walkforward_campaign108_no_return_audit_v3.py",
+    "sha256": "d96ddee9bbd89eed12a18d6763b17706b3a72f07b0a456633c0eb5e05dd3adc2"
+  },
+  "synthetic_tests": [
+    {
+      "path": "tests/data_collector_tests/test_a_share_three_day_walkforward_campaign108_no_return_audit_v3.py",
+      "sha256": "b37b3b1160f425a35b690c633470488e58f75ac231f4bece9b6cc049a88e57bc"
+    }
+  ],
+  "attempt_ledger": {
+    "path": "data/experiments/short_horizon/historical_walkforward/campaign_108/research_attempt_ledger_v5.json",
+    "sha256": "7125158818f6abba3d7e1ac0a803094cf13f66141060ab29a93fe63853f4af8e",
+    "attempt_count": 5,
+    "infrastructure_failure_count": 4,
+    "cumulative_historical_research_attempt_count": 799
+  },
+  "candidate_snapshot_binding": {
+    "path": "docs/a_share_three_day_walkforward_campaign_108_feature_snapshot_binding_20260808.json",
+    "sha256": "9bc56a9e8cac745b9f405e173c28b1d6b5a9faff5f74220c1bff9bf566581591",
+    "dataset_sha256": "da56afa190e7721f2e94fa124c747d54ec3d54eeeb717954e5ae6dcb56c0a3b2"
+  },
+  "consumed_activation": {
+    "path": "docs/a_share_three_day_walkforward_campaign_108_no_return_audit_activation_binding_20260808.json",
+    "sha256": "06789150d1a6c0036ed98abc1db5c2b8cf0f63f770ed02250cdee5da9ff1a30f",
+    "preserved": true
+  },
+  "scientific_boundary": {
+    "only_change": "candidate loader validation range (0,1) to (-1,1)",
+    "formula_direction_endpoints_transform_snapshot_coverage_uniqueness_comparator_order_cost_fold_or_stress_gate_changed": false,
+    "coverage_or_capacity_metrics_computed_before_freeze": false,
+    "comparator_values_read_before_freeze": false,
+    "historical_daily_price_or_forward_return_values_read_before_freeze": false,
+    "provider_request_issued_before_freeze": false,
+    "candidate49_ledgers_changed": false,
+    "current_scoring_selection_sizing_or_orders_performed": false
+  },
+  "single_recovery_run": true,
+  "next_action": "Freeze a replacement single-use activation against the same snapshot and comparators, run tests, then execute the recovered ordered audit once."
+}

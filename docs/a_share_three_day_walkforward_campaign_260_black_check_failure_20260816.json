@@ -1,0 +1,21 @@
+{
+  "schema_version": 1,
+  "kind": "a_share_three_day_walkforward_campaign260_infrastructure_failure",
+  "status": "postvalue_black_check_failed_frozen_bytes_preserved",
+  "recorded_at": "2026-08-16T16:19:00+08:00",
+  "timestamp_semantics": "monotonic_logical_append_time_not_host_wall_clock_measurement",
+  "phase": "terminal_static_validation",
+  "failed_command_summary": "A read-only Black check across the eleven Campaign260 Python files exited 1: nine files would be reformatted and two would remain unchanged.",
+  "independent_bounded_recheck": {
+    "method": "one_file_per_black_check",
+    "would_reformat_file_count": 9,
+    "unchanged_file_count": 2,
+    "all_checks_read_only": true
+  },
+  "result_consumed_as_pass": false,
+  "files_changed": false,
+  "recovery_or_waiver": "Preserve the already frozen and scientifically consumed file bytes. Record the nonzero formatter result explicitly; rely on per-file Ruff, syntax, focused pytest, reference-graph, and cumulative regression checks for executable validation.",
+  "scientific_result_changed": false,
+  "provider_or_web_request_issued": false,
+  "candidate49_ledgers_changed": false
+}

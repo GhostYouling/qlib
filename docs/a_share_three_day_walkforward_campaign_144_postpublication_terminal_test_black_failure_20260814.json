@@ -1,0 +1,37 @@
+{
+  "schema_version": 1,
+  "kind": "a_share_three_day_walkforward_campaign144_infrastructure_failure",
+  "status": "recorded_before_final_effective_accounting_republication",
+  "recorded_at": "2026-08-14T19:45:52+08:00",
+  "attempt_id": "campaign144_infrastructure_022",
+  "failure": {
+    "phase": "postpublication_effective_lifecycle_terminal_test_black_check",
+    "process_exit_code": 1,
+    "test_path": "tests/data_collector_tests/test_a_share_three_day_walkforward_campaign144_terminal.py",
+    "preformat_sha256": "aade046dd49f910e8e70853a30f27e00f9c821693602dbcc01c14c7b8d10f82d",
+    "cause": "Black --check reported that the lifecycle update adding ledger v4 and terminal result v4 required deterministic formatting.",
+    "ruff_same_batch_exit_code": 0,
+    "pytest_same_batch_exit_code": 0,
+    "pytest_same_batch_passed": 6,
+    "failed_exit_code_bypassed": false,
+    "later_success_used_to_mask_failure": false
+  },
+  "safe_recovery": {
+    "preserve_this_record": true,
+    "allowed_action": "Append this failure, advance effective accounting, run Black formatting on only the unfrozen Campaign144 test, and rerun Black, Ruff and the focused test.",
+    "scientific_result_or_frozen_threshold_change_allowed": false
+  },
+  "research_boundary": {
+    "source_rows_or_column_values_read": false,
+    "candidate_or_comparator_values_read": false,
+    "historical_daily_price_or_forward_return_values_read": false,
+    "stress_2024_2025_opened": false,
+    "provider_request_issued": false,
+    "provider_credential_value_or_digest_read": false,
+    "candidate49_historical_backfill_performed": false,
+    "candidate49_ledgers_changed": false,
+    "second_prospective_candidate_created": false,
+    "current_scoring_selection_sizing_positions_or_orders_performed": false,
+    "investment_advice": false
+  }
+}

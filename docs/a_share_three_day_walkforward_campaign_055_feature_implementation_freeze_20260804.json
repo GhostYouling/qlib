@@ -1,0 +1,90 @@
+{
+  "version": 1,
+  "kind": "a_share_three_day_walkforward_campaign055_feature_implementation_freeze",
+  "status": "frozen_before_campaign055_candidate_values",
+  "recorded_at": "2026-08-04T00:10:00+08:00",
+  "purpose": "Bind the exact tested Campaign055 feature implementation before reading any external Campaign055 minute partition or candidate value.",
+  "authoritative_inputs": {
+    "preregistered_iteration_state": {
+      "path": "docs/a_share_three_day_iteration_status_20260803_campaign055_preregistered.json",
+      "sha256": "9922133daf7bbdbb41e6aae3f2215ff1f8ef2e50538983d75a96c2b12401ff66"
+    },
+    "mechanism_overlap_audit": {
+      "path": "docs/a_share_three_day_walkforward_campaign_055_mechanism_overlap_audit.json",
+      "sha256": "01fe62e9bafafe600e7bf62cb31db884735705b06b14fc782af8780621f69a11"
+    }
+  },
+  "no_return_protocol": {
+    "path": "docs/a_share_three_day_walkforward_campaign_055_no_return_preregistration.json",
+    "sha256": "f469879dd83a22a15d497d903bc81c772d5d96dae81d4ac7e32edfba1ef0732f"
+  },
+  "feature_runner": {
+    "path": "scripts/a_share_three_day_walkforward_campaign055_features.py",
+    "sha256": "d695e5acd9645f4706e238c95db2ea69df397004416ea4dd9f895385be603714"
+  },
+  "pre_value_tests": {
+    "path": "tests/data_collector_tests/test_a_share_three_day_walkforward_campaign055_features.py",
+    "sha256": "017fd0fd0d909da41d6f78536afeab98200fc44b39249973d4cb961ab51c01e2",
+    "combined_command": "python -m pytest -q tests/data_collector_tests/test_a_share_three_day_walkforward_campaign055_features.py tests/data_collector_tests/test_a_share_three_day_walkforward_policy.py tests/data_collector_tests/test_a_share_three_day_walkforward_campaign054_terminal_state.py",
+    "passed": 19,
+    "failed": 0
+  },
+  "frozen_implementation": {
+    "factor": "intraday_price_update_clock_entropy_10b_238m",
+    "direction": "higher",
+    "source_projection": [
+      "datetime",
+      "symbol",
+      "provider",
+      "close"
+    ],
+    "selected_bar_count": 240,
+    "within_half_transition_count": 119,
+    "total_transition_count": 238,
+    "clock_bin_count": 10,
+    "bin_sizes_in_order": [
+      24,
+      24,
+      24,
+      24,
+      23,
+      24,
+      24,
+      24,
+      24,
+      23
+    ],
+    "minimum_update_events": 20,
+    "lunch_transition_included": false,
+    "update_sign_or_magnitude_used": false,
+    "valid_range": [
+      0.0,
+      1.0
+    ],
+    "alternate_parameter_direction_transform_filter_combination_fit_or_model": false
+  },
+  "pre_freeze_execution_evidence": {
+    "syntax_check_passed": true,
+    "local_status_only_invocation_passed": true,
+    "external_campaign055_snapshot_manifest_present": false,
+    "campaign055_experiment_artifact_count": 0,
+    "candidate_values_read_before_freeze": false,
+    "comparison_values_read_before_freeze": false,
+    "historical_daily_price_or_forward_returns_read_before_freeze": false,
+    "provider_request_issued_before_freeze": false
+  },
+  "prospective_isolation": {
+    "candidate49_signal_ledger": {
+      "path": "data/experiments/short_horizon/candidate49_future_signal_ledger.json",
+      "sha256": "5193f00d7f36da003f53cec387900da4c3d002299f5dfcfc1a95eaa199ed3a79"
+    },
+    "candidate49_execution_ledger": {
+      "path": "data/experiments/short_horizon/candidate49_future_execution_ledger.json",
+      "sha256": "d57a3e61eac969e42cafa418ccd8c0a5ee65dcf69da145bb2c096c2a02a2ea4f"
+    },
+    "candidate49_historical_backfill_performed": false,
+    "second_prospective_candidate_created": false,
+    "current_scoring_selection_sizing_or_orders_performed": false
+  },
+  "next_action": "Create an additive wrapper that binds this freeze without changing the frozen feature module, rerun pre-value tests, then build the immutable Campaign055 snapshot."
+}

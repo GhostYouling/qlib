@@ -1,0 +1,95 @@
+{
+  "version": 1,
+  "kind": "a_share_three_day_walkforward_campaign045_feature_implementation_freeze",
+  "status": "implementation_and_synthetic_semantics_frozen_before_external_candidate_values",
+  "recorded_at": "2026-07-31T20:08:00Z",
+  "purpose": "Bind the exact Campaign045 feature implementation and its synthetic tests after the no-return protocol passed every binding but before any external Campaign045 candidate or comparison value is opened.",
+  "source_chain": {
+    "authoritative_state": {
+      "path": "docs/a_share_three_day_iteration_status_20260801_campaign044_verified.json",
+      "sha256": "7859c2edc55f147fd49cc95baf133c7a0bb0a724fa4b630f3d5196dc93691998"
+    },
+    "concept_scouting": {
+      "path": "docs/a_share_three_day_walkforward_campaign_045_concept_scouting.json",
+      "sha256": "262a3ff730d5c23dc7c744c8665ad3cc5bfb44c9a70be7766f25b10d1773960f"
+    },
+    "mechanism_overlap_audit": {
+      "path": "docs/a_share_three_day_walkforward_campaign_045_mechanism_overlap_audit.json",
+      "sha256": "c6f5f8b9a19e2867deca7d1c4fbdbdbd565ebb8d1cf4eb5df6d3587205ebb83e"
+    },
+    "no_return_preregistration": {
+      "path": "docs/a_share_three_day_walkforward_campaign_045_no_return_preregistration.json",
+      "sha256": "886fab70da8584fdf43cec921064b2891e5477b7118be979313e1950260b145e"
+    },
+    "feature_implementation": {
+      "path": "scripts/a_share_three_day_walkforward_campaign045_features.py",
+      "sha256": "c2e9f1ae3f6f76900bc331b28b7c36124d580510dd2a2a3e40436782c4a5f94b"
+    },
+    "synthetic_tests": {
+      "path": "tests/data_collector_tests/test_a_share_three_day_walkforward_campaign045_features.py",
+      "sha256": "9e0c8cb66dd119384ade8119df388f398b138e3c0295478c569f1cd06376e539"
+    }
+  },
+  "frozen_implementation": {
+    "factor": "intraday_volatility_activity_lead_lag_asymmetry_236p",
+    "direction": "higher",
+    "source_projection": [
+      "datetime",
+      "symbol",
+      "provider",
+      "close",
+      "amount"
+    ],
+    "forbidden_source_fields": [
+      "open",
+      "high",
+      "low",
+      "volume",
+      "daily_price",
+      "forward_return"
+    ],
+    "selected_bar_count": 240,
+    "within_half_return_count": 238,
+    "adjacent_pair_count": 236,
+    "include_0930": false,
+    "include_lunch_transition": false,
+    "score": "Corr(abs(r_j),log1p(amount_destination_{j+1})))-Corr(log1p(amount_destination_j),abs(r_{j+1}))",
+    "population_equal_pair_weight": true,
+    "exact_zero_return_and_amount_positions_retained": true,
+    "strictly_positive_variance_required_for_both_correlations": true,
+    "valid_range": [-2.0, 2.0],
+    "endpoint_canonicalization_tolerance": 1e-12,
+    "alternate_field_lag_window_transform_component_direction_scale_filter_threshold_fit_combination_or_model": "none"
+  },
+  "pre_value_validation": {
+    "concept_mechanism_and_protocol_binding_count": 24,
+    "concept_mechanism_and_protocol_failed_binding_count": 0,
+    "comparison_factor_count": 68,
+    "comparison_factor_unique_name_count": 68,
+    "comparison_factor_order_sha256": "86bf315f3e7cf1fa7cc4a70118830807a4e7a311efbab34c2b0df02e0c617a1f",
+    "synthetic_tests_passed": 6,
+    "synthetic_tests_failed": 0,
+    "formula_matches_independent_manual_calculation": true,
+    "zero_semantics_tested": true,
+    "invalid_and_degenerate_rows_fail_closed": true,
+    "exact_0930_exclusion_tested": true,
+    "wrong_source_projection_fails_closed": true
+  },
+  "research_boundary": {
+    "external_campaign045_minute_partitions_read": false,
+    "candidate_values_read": false,
+    "comparison_values_read": false,
+    "historical_daily_price_fields_read": false,
+    "historical_forward_returns_read": false,
+    "provider_request_issued": false,
+    "candidate49_historical_return_signal_execution_or_milestone_backfill_performed": false,
+    "candidate49_ledgers_changed": false,
+    "candidate50_activation_created": false,
+    "current_scoring_selection_sizing_or_orders_performed": false,
+    "investment_advice": false
+  },
+  "decision": {
+    "implementation_ready_for_one_immutable_no_return_snapshot": true,
+    "next_action": "Revalidate this freeze and the no-return protocol, then build exactly one immutable Campaign045 candidate snapshot before binding its manifest and dataset fingerprints."
+  }
+}

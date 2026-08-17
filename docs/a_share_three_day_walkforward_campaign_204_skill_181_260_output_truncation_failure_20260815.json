@@ -1,0 +1,23 @@
+{
+  "schema_version": 1,
+  "kind": "a_share_three_day_walkforward_campaign204_infrastructure_failure",
+  "status": "failed_skill_181_260_retry_output_truncated_discarded",
+  "recorded_at": "2026-08-15T19:43:00+08:00",
+  "timestamp_semantics": "monotonic logical append time after Campaign204 infrastructure attempt 001",
+  "phase": "campaign204_manage_qlib_a_share_data_skill_read",
+  "attempt_id": "campaign204_infrastructure_002",
+  "failure": {
+    "operation": "retry SKILL.md lines 181-260 in one output",
+    "observed": "the retry command completed but the tool output was again truncated by the output limit",
+    "disposition": "discarded as incomplete evidence; lines 181-1336 were subsequently read in bounded complete segments and an empty 1337-1345 read proved EOF"
+  },
+  "research_boundary": {
+    "factor_comparator_security_price_or_return_value_read": false,
+    "failed_or_truncated_output_used_as_scientific_evidence": false,
+    "provider_or_web_request_issued": false,
+    "provider_credential_presence_value_or_digest_read": false,
+    "stress_2024_2025_opened": false,
+    "candidate49_plan_or_run_executed": false,
+    "candidate49_ledgers_changed": false
+  }
+}

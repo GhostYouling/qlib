@@ -1,0 +1,46 @@
+{
+  "schema_version": 1,
+  "kind": "a_share_three_day_walkforward_campaign107_raw_comparator_adapter_implementation_freeze",
+  "status": "frozen_after_all_synthetic_cases_before_campaign107_protected_values",
+  "recorded_at": "2026-08-07T19:46:39Z",
+  "contract": {
+    "path": "docs/a_share_three_day_walkforward_campaign_107_raw_comparator_adapter_contract_20260808.json",
+    "sha256": "6b8ac9484b3e46ebd7bd0857eb99e24bba4ede3c8781891d0b150de0cae19962"
+  },
+  "implementation": {
+    "path": "scripts/a_share_three_day_walkforward_campaign107_comparator_adapter.py",
+    "sha256": "1795cd7b1223f565e5d0a6ac47a0532fd1b36412dc082472f272698e6a904a4a"
+  },
+  "synthetic_test": {
+    "path": "tests/data_collector_tests/test_a_share_three_day_walkforward_campaign107_comparator_adapter.py",
+    "sha256": "768587473030d1222c9aebb89e3bd183add0fd5ce6a021ef6e7417a802421da7",
+    "result": "10 passed"
+  },
+  "verified_cases": {
+    "finite_lower_interior_upper_values": true,
+    "legal_nan_preserved_through_stable_sort_and_alignment": true,
+    "positive_infinity_rejected": true,
+    "negative_infinity_rejected": true,
+    "below_range_rejected": true,
+    "above_range_rejected": true,
+    "duplicate_compact_key_rejected": true,
+    "missing_target_identity_rejected": true,
+    "conflicting_registration_rejected": true,
+    "identical_registration_idempotent": true,
+    "nonnumeric_payload_not_silently_converted_to_missing": true
+  },
+  "frozen_usage": {
+    "register_every_raw_numeric_comparator_range_before_loading": true,
+    "use_sorted_raw_comparator_arrays_instead_of_candidate_only_sorter": true,
+    "preserve_nan_until_frozen_pairwise_overlap_gate": true,
+    "candidate_specific_drop_imputation_or_rescue_allowed": false
+  },
+  "research_boundary": {
+    "campaign107_source_rows_read_before_freeze": false,
+    "campaign107_candidate_or_comparator_values_read_before_freeze": false,
+    "historical_daily_price_or_forward_return_values_read_before_freeze": false,
+    "provider_request_issued_before_freeze": false,
+    "candidate49_ledgers_changed": false
+  },
+  "next_action": "Use this exact adapter in Campaign107's ordered no-return audit after a genuinely new candidate is selected and frozen."
+}

@@ -1,0 +1,120 @@
+{
+  "schema_version": 1,
+  "kind": "a_share_three_day_walkforward_campaign139_mechanism_overlap_audit",
+  "status": "one_cross_source_expectation_realization_mechanism_admitted_before_source_or_candidate_values",
+  "recorded_at": "2026-08-14T13:07:14+0800",
+  "concept_scouting": {
+    "path": "docs/a_share_three_day_walkforward_campaign_139_concept_scouting_20260814.json",
+    "sha256": "75ad4607d19dc8e5c38ed612990f69c4611e45bb53c820b8235e5b962a20cbcb"
+  },
+  "numeric_policy_v174": {
+    "path": "docs/a_share_three_day_walkforward_future_numeric_comparison_eligibility_policy_v174_20260814.json",
+    "sha256": "a3e23a2f2744359973b18b22c370f8f6cb3ded22c5b7e3e00f32c9c31179e103",
+    "complete_definition_count_reviewed": 152,
+    "complete_definition_order_sha256": "60c465a3e2043efae6b92b8c5f3e007cd397a1cd0ec3094b4fa005665bbe5736",
+    "eligible_numeric_comparator_count_reserved_but_not_loaded": 141,
+    "eligible_numeric_comparator_order_sha256": "ec1aebcb939ad516c58037a36a4aaadd4ad8b2abbd3c884705895c58da85a2ee",
+    "complete_library_historical_combinations_allowed_only_when_genuinely_new_and_prevalue_frozen": true
+  },
+  "candidate": {
+    "name": "quarterly_realized_profit_growth_forecast_surprise_rank",
+    "direction": "higher",
+    "raw_formula": "profit_yoy_at_realized_disclosure - latest_strictly_prior_same_period_forecast_profit_yoy",
+    "score_formula": "same-effective-session average-tie cross-sectional percentile rank of finite raw surprise",
+    "availability": "first accepted local session strictly after the realized quarterly announcement",
+    "event_age_calendar_days": 3,
+    "exact_source_fields": {
+      "performance_forecast": [
+        "instrument",
+        "report_date",
+        "announcement_date",
+        "forecast_profit_yoy"
+      ],
+      "quarterly_quality": [
+        "instrument",
+        "report_date",
+        "announcement_date",
+        "profit_yoy"
+      ]
+    },
+    "search_or_fit_performed": false
+  },
+  "complete_mechanism_review": {
+    "all_152_complete_logical_definitions_and_terminal_histories_reviewed": true,
+    "all_141_numeric_comparators_reserved_but_not_loaded": true,
+    "candidate49_reviewed_semantically_but_excluded_from_historical_backfill": true,
+    "family_review": {
+      "forecast_profit_growth_level": "The terminal forecast factor ranks the forecast midpoint when it is announced. Campaign139 is unavailable then and reads the later realized disclosure; shifting realized growth while holding the forecast fixed changes Campaign139 but not forecast magnitude.",
+      "forecast_precision_freshness_and_turnaround": "Campaign139 reads no forecast width, forecast age, type or turnaround state and applies no category filter. Those terminal directions cannot gate or scale the surprise.",
+      "realized_profit_growth_level_and_acceleration": "Quality-profit, quality-growth, profit acceleration and their composites rank realized accounting states without an issuer expectation anchor. Shifting both realized and prior forecast growth by the same amount leaves Campaign139 unchanged while changing exposed levels.",
+      "quarterly_rank_gaps_floors_and_balances": "Existing quarterly combinations compare profitability, scale, revenue and acceleration cross-sectional ranks. Campaign139 instead forms one within-stock same-report-period forecast error before any cross-sectional rank and uses no ROE, revenue, scale or acceleration field.",
+      "announcement_freshness_timeliness_and_crowding": "Those definitions are invariant to forecast and realized values conditional on disclosure dates. Campaign139 changes when the values change while dates remain fixed.",
+      "earnings_express_and_forecast_confirmation_rejection": "Campaign131 rejected joining two terminal forward-looking earnings branches, including the failed express source. Campaign139 uses no express source or second forecast; it compares one already-public expectation with the later realized value for the exact same report period. The later realization is the information event, not confirmation by another exposed forecast score.",
+      "complete_library_models_and_consensus": "Campaign139 has one fixed difference and one fixed direction. It does not load, average, gate, weight, fit, cluster or calibrate old factor scores.",
+      "price_volume_minute_event_ownership_valuation_and_capital_structure": "No price, volume, amount, ownership, valuation, share count, market state or provider call enters the source join or formula."
+    },
+    "old_terminal_formula_direction_support_failure_or_result_changed": false,
+    "old_terminal_record_rewritten_or_reclassified": false
+  },
+  "algebraic_and_counterfactual_checks_before_values": [
+    {
+      "check": "common_shift_invariance",
+      "result": "Adding one common percentage-point constant to both realized and forecast growth leaves the raw surprise and score unchanged."
+    },
+    {
+      "check": "forecast_only_change",
+      "result": "Changing the latest prior forecast while holding realized growth and all dates fixed changes Campaign139 but leaves realized-growth factors unchanged."
+    },
+    {
+      "check": "realized_only_change",
+      "result": "Changing realized growth while holding the prior forecast and dates fixed changes Campaign139 but leaves forecast magnitude, precision, freshness and type factors unchanged."
+    },
+    {
+      "check": "timing_only_change",
+      "result": "Changing announcement timing while preserving the matched values changes availability but not the raw surprise; this separates value news from timing-factor magnitude."
+    },
+    {
+      "check": "unrelated_fields",
+      "result": "Changing ROE, revenue growth, net-profit scale, minute bars, daily prices, ownership or valuation while preserving the two matched percentage-point values leaves Campaign139 unchanged."
+    }
+  ],
+  "source_semantic_audit": {
+    "accepted_existing_sources_only": true,
+    "new_source_admission_or_provider_request_required": false,
+    "same_instrument_and_report_period_required": true,
+    "forecast_must_strictly_precede_realized_announcement": true,
+    "latest_prior_forecast_rule_frozen": true,
+    "later_forecast_revision_or_other_period_substitution_allowed": false,
+    "conflicting_duplicate_latest_forecast_or_realized_key_policy": "fail_closed",
+    "forecast_and_realized_values_share_percentage_point_units": true,
+    "current_public_snapshot_revision_risk_preserved": true,
+    "exchange_grade_point_in_time_claimed": false
+  },
+  "mandatory_prevalue_gate": {
+    "genuinely_new_information_relation_required": true,
+    "passed": true,
+    "candidate_count_admitted": 1,
+    "reason": "The exact same-period expectation error is a relation between two dated states, not a relabel, parameter sweep or fitted rescue of either component level. Its formula, direction, join, availability, event age, support and rejected alternatives were fixed before any Campaign139 source value."
+  },
+  "research_boundary": {
+    "performance_forecast_or_quarterly_parquet_rows_read": false,
+    "campaign139_source_column_values_read": false,
+    "campaign139_candidate_values_computed_or_read": false,
+    "campaign139_comparator_values_read": false,
+    "historical_daily_price_or_forward_return_values_read": false,
+    "stress_2024_2025_opened": false,
+    "provider_request_issued": false,
+    "provider_credential_value_or_digest_read": false,
+    "candidate49_historical_backfill_performed": false,
+    "candidate49_ledgers_changed": false,
+    "second_prospective_candidate_created": false,
+    "current_scoring_selection_sizing_positions_or_orders_performed": false,
+    "investment_advice": false
+  },
+  "decision": {
+    "candidate_semantically_admitted_for_exact_no_return_preregistration": true,
+    "source_or_candidate_values_authorized_before_preregistration_and_implementation_freeze": false,
+    "historical_predictive_value_established": false,
+    "next_action": "Freeze a one-candidate source/join/capacity/ordered-uniqueness protocol and pure formula implementation, bind every source and policy fingerprint, then run a zero-value plan before opening any source column."
+  }
+}

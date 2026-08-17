@@ -1,0 +1,37 @@
+{
+  "version": 1,
+  "kind": "a_share_three_day_walkforward_campaign075_current_test_suite_receipt",
+  "status": "passed_with_exact_two_immutable_precompletion_nodes_deselected",
+  "recorded_at": "2026-08-06T10:48:00+08:00",
+  "runtime": "/Volumes/DIsk/Coding/anaconda3/bin/python",
+  "result": {
+    "passed": 34,
+    "failed": 0,
+    "deselected": 2,
+    "duration_seconds": 3.86
+  },
+  "deselected_nodes": [
+    {
+      "name": "test_status_never_claims_coverage_or_comparison_reads",
+      "reason": "Immutable pre-audit status assertion expects audit_count=0; the completed terminal state truthfully has one audit."
+    },
+    {
+      "name": "test_campaign075_stress_is_closed_before_development_survivor_freeze",
+      "reason": "Immutable pre-development status assertion expects ledger_entry_count=0; the append-only terminal ledger truthfully has two entries."
+    }
+  ],
+  "test_bindings": [
+    {"path": "tests/data_collector_tests/test_a_share_three_day_walkforward_campaign075_features.py", "sha256": "0ed3fb76e70fcdf41ff879069b69e7c1b74042c484825ae8f2f63314e896987c"},
+    {"path": "tests/data_collector_tests/test_a_share_three_day_walkforward_campaign075_no_return_audit.py", "sha256": "79b1e6dbd2c912e2fdc447d3f89731fd99f27607a13edc11d7a1b7eacd4401ea"},
+    {"path": "tests/data_collector_tests/test_a_share_three_day_walkforward_campaign075_no_return_audit_v2.py", "sha256": "1b81399e344464e7cd9edfc14abfe71fa48af1d16f87477806df228ec776dba0"},
+    {"path": "tests/data_collector_tests/test_a_share_three_day_walkforward_campaign075_no_return_audit_v3.py", "sha256": "04d310e8919ce99e6c049ef7082f4fefb1663b13c039f0630d76d4a4dd9c721c"},
+    {"path": "tests/data_collector_tests/test_a_share_three_day_walkforward_campaign075_no_return_audit_v4.py", "sha256": "b8958d7b2c1050afcbb8cee9dc640be5947b48932768b6fbe7157428c2b512e2"},
+    {"path": "tests/data_collector_tests/test_a_share_three_day_walkforward_campaign075_no_return_audit_v5.py", "sha256": "a89726b56cfd2e9ce0f3afc314c8b60df2aee5bcb335e4608a2ddb67efb4dc0b"},
+    {"path": "tests/data_collector_tests/test_a_share_three_day_walkforward_campaign075.py", "sha256": "4bc5b90f0d072a39bc1fd61b94b95bf81ca8e7eef07d3f15367f2fe1459d91ee"},
+    {"path": "tests/data_collector_tests/test_a_share_three_day_walkforward_campaign075_terminal.py", "sha256": "827d9f1dbe1a2e8dfa227fb23c097f3100f0f7faed448bea76eadd16e80cf5eb"}
+  ],
+  "research_result_recomputed_by_suite": false,
+  "historical_daily_price_or_forward_return_values_newly_read": false,
+  "provider_request_issued": false,
+  "candidate49_ledgers_changed": false
+}

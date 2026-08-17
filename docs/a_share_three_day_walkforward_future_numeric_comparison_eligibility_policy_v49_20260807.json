@@ -1,0 +1,119 @@
+{
+  "version": 49,
+  "kind": "a_share_three_day_walkforward_future_numeric_comparison_eligibility_policy",
+  "status": "frozen_after_campaign099_terminal_test_format_failure_accounting_before_campaign100_values",
+  "recorded_at": "2026-08-07T11:34:00Z",
+  "supersedes_without_rewriting": {
+    "path": "docs/a_share_three_day_walkforward_future_numeric_comparison_eligibility_policy_v48_20260807.json",
+    "sha256": "1ce72e1782e0a0584f7dc634e60ee1d59126ee459bb57a897c2fbcd1cd9c5151",
+    "preserved": true,
+    "definition_and_numeric_orders_changed": false,
+    "reason": "Preserve the exact Campaign099 scientific result and v48 131/128 orders while appending the terminal-test Black formatting failure to effective accounting."
+  },
+  "authoritative_inputs": {
+    "campaign099_terminal_verification": {
+      "path": "docs/a_share_three_day_walkforward_campaign_099_terminal_verification_20260807.json",
+      "sha256": "0ab2b0295d7d3c1d44834c24b8decfd167a598b7a2e8421e337dc5c6aa145003"
+    },
+    "campaign099_effective_attempt_ledger": {
+      "path": "data/experiments/short_horizon/historical_walkforward/campaign_099/research_attempt_ledger_v19.json",
+      "sha256": "0cfc8aab8632d2ba7eacdedc880c60c4d71e2509ed1872b3860600ca42cb8153"
+    },
+    "campaign099_terminal_test_format_failure": {
+      "path": "docs/a_share_three_day_walkforward_campaign_099_terminal_test_format_failure_20260807.json",
+      "sha256": "6dbcb7a54100c6c8009ee92caf2506c2c8c1fa914c84736b2eff3fdc1246f1c8"
+    },
+    "campaign099_terminal_tests": {
+      "path": "tests/data_collector_tests/test_a_share_three_day_walkforward_campaign099_terminal.py",
+      "sha256": "5d51747b8679a890d4517378bfc0fc614e6b372930a46196e9136438d4c12a14"
+    },
+    "campaign099_no_return_admission": {
+      "path": "docs/a_share_three_day_walkforward_campaign_099_no_return_development_admission_20260807.json",
+      "sha256": "280106c0a1002ec230ca910954af8dd86fb867182ae177af1e699e25d33f7636"
+    },
+    "campaign099_authoritative_no_return_audit": {
+      "path": "data/experiments/short_horizon/historical_walkforward/campaign_099/no_return/20260807T105112Z_campaign099_no_return_audit.json",
+      "sha256": "6df7bfca75a59d00b34a431e2fe5c57d9872587a43b270fa23c5f17ba6411f72"
+    }
+  },
+  "complete_historical_feature_library": {
+    "definition": "Retain the exact v48 131-definition order without append, drop, or reorder.",
+    "factor_definition_count": 131,
+    "order_sha256": "065077dfa5df9331906141f938204efedb3274e252d3b94c8fa1e9beebb5fc2e",
+    "last_definition": {
+      "name": "intraday_market_close_location_profile_synchronization_240m",
+      "score_direction": "higher"
+    },
+    "all_v48_definitions_and_terminal_histories_preserved": true,
+    "old_terminal_record_formula_direction_or_failure_history_may_be_rewritten": false
+  },
+  "numerical_comparator_eligibility": {
+    "classification_time": "unchanged from v48 after terminal-test formatting failure and before Campaign100 candidate or comparison values",
+    "eligible_numeric_comparator_count": 128,
+    "eligible_numeric_comparator_order_definition": "Retain the exact v48 128-comparator order without append, drop, or reorder.",
+    "eligible_numeric_comparator_order_sha256": "12ebf65ee86e23e606875a9a78165f0410bfdb320bdc99d159097ec669583756",
+    "last_comparator": {
+      "name": "intraday_market_close_location_profile_synchronization_240m",
+      "score_direction": "higher",
+      "source_campaign": 99,
+      "source_campaign_coverage_gate_passed": true,
+      "source_campaign_all_127_numeric_comparisons_passed": true,
+      "maximum_absolute_median_daily_rank_correlation": 0.7120505014243156,
+      "development_trial_count": 1,
+      "development_survivor_count": 0,
+      "stress_2024_2025_opened": false,
+      "numeric_snapshot_rows": 1331759,
+      "numeric_snapshot_finite_rows": 1328449,
+      "calendar_sessions": 1632,
+      "sessions_with_at_least_50_finite_names": 1623,
+      "session_capacity_verified_with_frozen_stock_day_key_decoder": true,
+      "numeric_comparator_eligible_for_campaign100": true
+    },
+    "minimum_pairwise_names_per_session": 50,
+    "minimum_pairwise_sessions_per_comparison": 100,
+    "strict_maximum_absolute_median_daily_rank_correlation": 0.8,
+    "all_128_eligible_numeric_comparators_must_pass": true,
+    "candidate_specific_comparator_drop_allowed": false,
+    "insufficient_pairwise_overlap_fails_closed": true
+  },
+  "semantic_only_definitions": [
+    "intraday_cross_sectional_standardized_return_state_stability_236p",
+    "signal_day_turnover_rate_pct",
+    "intraday_own_bar_close_location_entropy_10b_240m"
+  ],
+  "mandatory_prevalue_support_predicate_gate_for_campaign100_and_later": {
+    "required": true,
+    "all_known_terminal_coverage_failures_must_be_reviewed": true,
+    "identical_or_provably_narrower_failed_support_is_rejected_before_values": true
+  },
+  "anti_gaming_invariants": {
+    "campaign099_may_be_redefined_reweighted_transformed_inverted_filtered_rerun_rescued_or_combined": false,
+    "campaign099_development_or_stress_may_be_reopened": false,
+    "campaign099_terminal_failure_history_may_be_rewritten": false,
+    "comparison_order_may_be_changed_for_campaign100": false,
+    "candidate49_may_be_added_to_historical_library": false,
+    "historical_output_may_generate_current_scores_selection_sizing_orders_or_investment_advice": false
+  },
+  "final_accounting": {
+    "campaign099_attempt_count": 15,
+    "campaign099_ledger_entry_count": 20,
+    "campaign099_infrastructure_implementation_or_recording_failure_count": 12,
+    "campaign099_complete_no_return_factor_outcome_count": 1,
+    "campaign099_return_reading_development_trial_count": 1,
+    "campaign099_development_survivor_count": 0,
+    "campaign099_stress_trial_count": 0,
+    "cumulative_historical_research_attempt_count": 707,
+    "cumulative_return_reading_development_trial_count": 294
+  },
+  "research_boundary": {
+    "campaign100_candidate_or_comparison_values_read_before_v49_freeze": false,
+    "campaign099_terminal_development_rejection_rewritten": false,
+    "campaign099_stress_2024_2025_opened": false,
+    "candidate49_historical_backfill_performed": false,
+    "candidate49_ledgers_changed": false,
+    "provider_request_issued": false,
+    "second_prospective_candidate_created": false,
+    "current_scoring_selection_sizing_or_orders_performed": false,
+    "investment_advice": false
+  }
+}

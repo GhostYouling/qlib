@@ -1,0 +1,28 @@
+{
+  "schema_version": 1,
+  "kind": "a_share_three_day_walkforward_campaign216_infrastructure_failure",
+  "recorded_at": "2026-08-16T00:03:00+08:00",
+  "timestamp_semantics": "monotonic_logical_append_time_not_host_wall_clock_measurement",
+  "attempt_id": "campaign216_infrastructure_003",
+  "phase": "adjacent_terminal_frontier_inventory",
+  "status": "failed_jq_tsv_serialization_of_object_scientific_interpretation_discarded",
+  "failure": {
+    "operation": "read nine adjacent immutable source frontiers and serialize kind, purpose and scientific_interpretation as TSV",
+    "cause": "several historical scientific_interpretation fields are JSON objects and cannot be encoded by jq @tsv",
+    "recovery": "discard the partial combined output and reread the same bounded fields as complete JSON objects"
+  },
+  "recovery_verification": {
+    "adjacent_frontier_count": 9,
+    "complete_json_object_retry_exit_code": 0,
+    "failed_partial_output_used_as_scientific_evidence": false
+  },
+  "research_boundary": {
+    "candidate_or_comparator_security_price_or_return_value_read": false,
+    "stress_2024_2025_opened": false,
+    "provider_or_web_request_issued": false,
+    "provider_credential_presence_value_or_digest_read": false,
+    "candidate49_plan_or_run_executed": false,
+    "candidate49_ledgers_changed": false,
+    "current_use_or_investment_advice": false
+  }
+}

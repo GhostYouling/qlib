@@ -1,0 +1,46 @@
+{
+  "version": 2,
+  "kind": "a_share_three_day_walkforward_campaign074_postcompletion_failure_accounting_correction",
+  "status": "additive_current_accounting_supersedes_v1_without_rewriting",
+  "recorded_at": "2026-08-06T08:36:00+08:00",
+  "supersedes_without_rewriting": {
+    "path": "docs/a_share_three_day_walkforward_campaign_074_postcompletion_failure_accounting_correction_20260806.json",
+    "sha256": "c02283e9294208b58165587a4f366d46011f89426ae7aa2cd524656bd8940932",
+    "preserved": true
+  },
+  "previous_current_attempt_ledger": {
+    "path": "data/experiments/short_horizon/historical_walkforward/campaign_074/research_attempt_ledger_v3.json",
+    "sha256": "e287d35ad131e04854516628417677fadd3dfea60cf9392e2589d7098a3e9fda",
+    "preserved": true
+  },
+  "previous_current_research_record": {
+    "path": "docs/a_share_three_day_walkforward_campaign_074_research_record_v2.json",
+    "sha256": "b9538538efcc5482be8ef7e8b7f18cf05b3ee1cdbd387566146aa75f92ef6c3d",
+    "preserved": true
+  },
+  "new_failures": {
+    "path": "docs/a_share_three_day_walkforward_campaign_074_terminal_test_runtime_failures_20260806.json",
+    "sha256": "4cd108e894844845deca991a55e9db468131d0df74bc80f5a7ff58cecf36a9ec",
+    "failed_command_count": 2,
+    "test_collection_started": false,
+    "candidate_or_comparison_values_recomputed": false,
+    "historical_daily_price_or_forward_return_values_read": false
+  },
+  "corrected_accounting": {
+    "campaign074_infrastructure_failure_count": 7,
+    "campaign074_complete_factor_attempt_count": 1,
+    "campaign074_attempt_count": 8,
+    "campaign074_ledger_entry_count": 9,
+    "campaign074_return_reading_development_trial_count": 1,
+    "cumulative_historical_research_attempt_count": 450,
+    "cumulative_return_reading_development_trial_count": 276
+  },
+  "unchanged_research_result": {
+    "coverage_gate_passed": true,
+    "numeric_comparisons_completed": 104,
+    "numeric_comparisons_passed": 104,
+    "development_survivor_count": 0,
+    "stress_2024_2025_opened": false,
+    "stress_returns_read": false
+  }
+}

@@ -1,0 +1,147 @@
+{
+  "schema_version": 1,
+  "kind": "a_share_three_day_walkforward_campaign144_mechanism_contract_frontier_audit",
+  "status": "terminal_prevalue_zero_candidates_after_complete_combination_operator_source_contract_and_semantic_review",
+  "recorded_at": "2026-08-14T19:28:00+08:00",
+  "purpose": "Apply the mandatory complete-library, consumed-operator, original-source-contract and semantic-independence gates to all six Campaign144 proposals before any protected value stage.",
+  "authoritative_inputs": {
+    "concept_scouting": {
+      "path": "docs/a_share_three_day_walkforward_campaign_144_concept_scouting_20260814.json",
+      "sha256": "b571883acccb961e5dde10783df1f05cd75b28b705f0396b7a20affce6c88d77"
+    },
+    "campaign134_model_audit": {
+      "path": "docs/a_share_three_day_walkforward_campaign_134_mechanism_overlap_audit_20260814.json",
+      "sha256": "9c7301140468b44ca827366d0b911452de170cfae2e9770cc1f47fd38f2b092d"
+    },
+    "campaign135_scouting": {
+      "path": "docs/a_share_three_day_walkforward_campaign_135_concept_scouting_20260814.json",
+      "sha256": "412ac49636d5b958a328d690906db084b573530295e8f57fba375c8368112a84"
+    },
+    "campaign056_prior_session_profile_scouting": {
+      "path": "docs/a_share_three_day_walkforward_campaign_056_concept_scouting.json",
+      "sha256": "d05060ef83eafb0f8be11fb32a8eb95a5f7d7a17421ee19086ca676ff2762717"
+    },
+    "campaign057_prior_session_profile_scouting": {
+      "path": "docs/a_share_three_day_walkforward_campaign_057_concept_scouting.json",
+      "sha256": "442b67293771c00d956a6972261774fadbb1700233792ec8aebfc288f7256621"
+    },
+    "campaign086_close_location_scouting": {
+      "path": "docs/a_share_three_day_walkforward_campaign_086_concept_scouting_v2.json",
+      "sha256": "76cf7fca133f557482d7379634b66e806b4e07ecd7ca5dbd2559d2c44060845d"
+    },
+    "campaign099_market_peer_scouting": {
+      "path": "docs/a_share_three_day_walkforward_campaign_099_concept_scouting.json",
+      "sha256": "b8d80b64497733a336a533c7f009274846cc9512133711634cfddacd8f1f5018"
+    },
+    "sw_industry_source_contract": {
+      "path": "docs/a_share_tushare_sw_industry_breadth_data_contract.json",
+      "sha256": "e8dc45f6302bb6a4f1173da3698064bf7133930616b2fcd3338061f2fc508e66"
+    },
+    "sw_industry_terminal_record": {
+      "path": "docs/a_share_tushare_sw_industry_breadth_research_record.json",
+      "sha256": "14089c6854060f69d69eafb712ed4f29f1861ec993b5cff9a48b53fae325bfa3"
+    },
+    "campaign007_transaction_price_volume_scouting": {
+      "path": "docs/a_share_three_day_walkforward_campaign_007_concept_scouting.json",
+      "sha256": "324f03c09b4f28ebaeda2055772de35a1a89bd186919864f60db0ef9b1cc021d"
+    },
+    "campaign043_transaction_price_consensus_scouting": {
+      "path": "docs/a_share_three_day_walkforward_campaign_043_concept_scouting.json",
+      "sha256": "de9fefd2b5ddb5ee4931b376830327d9c8e8cb78966ab14408f9c7457f044288"
+    }
+  },
+  "proposal_gate_results": [
+    {
+      "catalog_id": "c144_01",
+      "name": "complete_141_numeric_library_corr80_component_balanced_consensus",
+      "complete_current_library_used": true,
+      "original_source_contract_permits_inputs": true,
+      "new_model_or_combination_family": false,
+      "semantically_independent_from_terminal_library": false,
+      "passed": false,
+      "terminal_reason": "Exact Campaign134 family; a 140-to-141 component-count refresh after a prefit uniqueness failure is prohibited."
+    },
+    {
+      "catalog_id": "c144_02",
+      "name": "complete_141_numeric_library_semantic_domain_balanced_consensus",
+      "complete_current_library_used": true,
+      "original_source_contract_permits_inputs": true,
+      "new_model_or_combination_family": false,
+      "semantically_independent_from_terminal_library": false,
+      "passed": false,
+      "terminal_reason": "Discretionary semantic regrouping refreshes the terminal correlation-component and consensus weighting frontier."
+    },
+    {
+      "catalog_id": "c144_03",
+      "name": "complete_141_numeric_library_consensus_minus_cross_factor_disagreement",
+      "complete_current_library_used": true,
+      "original_source_contract_permits_inputs": true,
+      "new_model_or_combination_family": false,
+      "semantically_independent_from_terminal_library": false,
+      "passed": false,
+      "terminal_reason": "A location-plus-dispersion robust aggregator is an after-result refresh inside the complete-library operator family closed by Campaign135."
+    },
+    {
+      "catalog_id": "c144_04",
+      "name": "intraday_day_over_day_own_bar_close_location_profile_similarity_240b",
+      "accepted_full_historical_source": true,
+      "public_availability_clock_identified": true,
+      "original_source_contract_permits_inputs": true,
+      "semantically_independent_from_terminal_library": false,
+      "passed": false,
+      "terminal_reason": "It composes the terminal exact-prior-session profile operator with the terminal own-bar close-location state after both outcomes."
+    },
+    {
+      "catalog_id": "c144_05",
+      "name": "intraday_sw_l1_close_location_profile_synchronization_240m",
+      "accepted_full_historical_source": true,
+      "public_availability_clock_identified": true,
+      "original_source_contract_permits_candidate_use": false,
+      "semantically_independent_from_terminal_library": "not_reached_after_contract_failure",
+      "passed": false,
+      "terminal_reason": "The SW source contract freezes one independent breadth factor and forbids an industry-price or benchmark rescue; Campaign099 also pre-rejected this benchmark branch."
+    },
+    {
+      "catalog_id": "c144_06",
+      "name": "intraday_volume_weighted_minus_time_weighted_transaction_price_displacement_240m",
+      "accepted_full_historical_source": true,
+      "public_availability_clock_identified": true,
+      "original_source_contract_permits_candidate_use": true,
+      "semantically_independent_from_terminal_library": false,
+      "passed": false,
+      "terminal_reason": "It changes the level, weighting and center choices inside the terminal transaction-price/volume coupling and consensus families."
+    }
+  ],
+  "gate_summary": {
+    "finite_proposals_reviewed": 6,
+    "proposals_using_complete_141_library": 3,
+    "proposals_using_accepted_minute_source": 3,
+    "proposals_passing_complete_library_or_source_contract_gate": 5,
+    "proposals_passing_consumed_operator_and_semantic_independence_gate": 0,
+    "selected_candidate_count": 0,
+    "formula_direction_parameter_filter_subset_model_or_development_catalog_frozen": false
+  },
+  "decision": {
+    "campaign144_terminal_phase": "prevalue_complete_library_operator_source_contract_and_semantic_independence_gate",
+    "campaign144_source_acceptance_coverage_uniqueness_or_return_stage_run": false,
+    "complete_definition_count_after_campaign144": 153,
+    "numeric_comparator_count_after_campaign144": 141,
+    "2024_2025_lockbox_opened": false,
+    "rejected_proposal_retry_threshold_change_reclustering_regrouping_center_change_benchmark_swap_or_rescue_allowed": false
+  },
+  "research_boundary": {
+    "source_contract_schema_formula_manifest_and_terminal_metadata_read": true,
+    "source_rows_or_column_values_read": false,
+    "candidate_or_comparator_values_read": false,
+    "historical_daily_price_or_forward_return_values_read": false,
+    "stress_2024_2025_opened": false,
+    "provider_request_issued": false,
+    "provider_credential_value_or_digest_read": false,
+    "candidate49_historical_backfill_performed": false,
+    "candidate49_ledgers_changed": false,
+    "second_prospective_candidate_created": false,
+    "current_scoring_selection_sizing_positions_or_orders_performed": false,
+    "investment_advice": false
+  },
+  "next_action": "Record all six scientific concept attempts and all eight infrastructure failures append-only, terminalize Campaign144 before values, preserve 153/141, and keep the active goal available for Campaign145 offline scouting."
+}

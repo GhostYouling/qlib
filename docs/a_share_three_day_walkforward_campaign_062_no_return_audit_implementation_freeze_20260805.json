@@ -1,0 +1,46 @@
+{
+  "version": 1,
+  "kind": "a_share_three_day_walkforward_campaign062_no_return_audit_implementation_freeze",
+  "status": "frozen_before_campaign062_comparison_daily_price_or_return_values",
+  "recorded_at": "2026-08-05T04:00:00+08:00",
+  "purpose": "Bind the coverage-first Campaign062 no-return audit before any of the 93 comparison values, daily prices, or forward returns are opened.",
+  "no_return_protocol": {
+    "path": "docs/a_share_three_day_walkforward_campaign_062_no_return_preregistration.json",
+    "sha256": "3588dbf1d83764d14abad1784fd93d47c844569f6ff25eb5e97dc6df314fc370"
+  },
+  "snapshot_binding": {
+    "path": "docs/a_share_three_day_walkforward_campaign_062_feature_snapshot_binding_20260805.json",
+    "sha256": "7143546783e59f7872cb4771385672311b4efcdd229353194d743ad5daf10d32"
+  },
+  "audit_runner": {
+    "path": "scripts/a_share_three_day_walkforward_campaign062_no_return_audit.py",
+    "sha256": "bb0ac2bc1ec2df9cb98ad90bb06d646e10076b8d625cff3b87d5df87bb0c3a60",
+    "candidate_factor": "quarterly_announcement_peer_crowding_sparsity",
+    "coverage_first": true,
+    "comparison_count_only_after_coverage_pass": 93,
+    "comparison_order_sha256": "a2667fbc29a2c3ad0cbe7e1d4d6d51f634170ef5e499b825d9d2147a8b9a24cb"
+  },
+  "tests": {
+    "path": "tests/data_collector_tests/test_a_share_three_day_walkforward_campaign062_no_return_audit.py",
+    "sha256": "72015857f24cb72a37506be91c8d986382286287bf85f9b6ff1d66dd2cbe643e",
+    "combined_command": "PYTHONPATH=/Volumes/DIsk/Disk-Coding/qlib /opt/anaconda3/bin/python3 -m pytest -q tests/data_collector_tests/test_a_share_three_day_walkforward_campaign062_features.py tests/data_collector_tests/test_a_share_three_day_walkforward_campaign062_no_return_audit.py",
+    "combined_passed": 9,
+    "combined_failed": 0
+  },
+  "ordered_semantics": {
+    "verify_all_33015_candidate_partitions_before_coverage": true,
+    "load_quality_and_current_listing_keys_before_coverage": true,
+    "comparison_values_read_only_if_all_coverage_capacity_gates_pass": true,
+    "all_93_comparisons_required_in_frozen_order": true,
+    "maximum_absolute_median_daily_rank_correlation": 0.8,
+    "daily_price_or_forward_return_read": false
+  },
+  "comparison_values_read_before_freeze": false,
+  "historical_daily_price_fields_read_before_freeze": [],
+  "historical_forward_returns_read_before_freeze": false,
+  "candidate49_historical_return_read_before_freeze": false,
+  "candidate49_ledgers_changed_before_freeze": false,
+  "provider_request_issued_before_freeze": false,
+  "current_scoring_selection_sizing_or_orders_performed_before_freeze": false,
+  "next_action": "Run the sole Campaign062 no-return audit once."
+}

@@ -1,0 +1,38 @@
+{
+  "schema_version": 1,
+  "kind": "a_share_three_day_walkforward_campaign168_recorded_at_correction",
+  "status": "effective_two_record_timestamp_corrections_old_bytes_preserved",
+  "recorded_at": "2026-08-15T08:03:10+08:00",
+  "authoritative_predecessor": {
+    "path": "docs/a_share_three_day_walkforward_campaign_168_recorded_at_correction_20260815.json",
+    "sha256": "f5d516310d7c23008f2dd7bb2567d6b068ce14f98a04f1eb2caeeee185577bde",
+    "preserved": true,
+    "effective_predecessor_correction_count": 1
+  },
+  "unchanged_predecessor_correction": {
+    "source": "authoritative_predecessor.corrected_record",
+    "path": "docs/a_share_three_day_walkforward_future_numeric_comparison_eligibility_policy_v240_20260815.json"
+  },
+  "delta_correction": {
+    "path": "data/experiments/short_horizon/historical_walkforward/campaign_168/research_attempt_ledger_v3.json",
+    "sha256": "d1677ad9b95dc2cfa1b2a896c0eda5cb5ef8698d397e2cc937dec0a080d912fc",
+    "invalid_declared_recorded_at": "2026-08-15T07:57:20+08:00",
+    "original_file_mtime": "2026-08-15T07:57:19.343807+08:00",
+    "effective_recorded_at_from_original_file_mtime_floor": "2026-08-15T07:57:19+08:00"
+  },
+  "effective_correction_count": 2,
+  "correction_rules": {
+    "old_files_rewritten": false,
+    "predecessor_correction_rewritten": false,
+    "scientific_decision_changed": false,
+    "library_or_comparator_order_changed": false,
+    "future_publications_must_bind_this_v2": true,
+    "recorded_at_must_never_be_prefilled_ahead_of_reached_wall_clock": true
+  },
+  "research_boundary": {
+    "source_row_document_title_body_kpi_candidate_comparator_price_or_return_value_read": false,
+    "stress_2024_2025_opened": false,
+    "candidate49_ledgers_changed": false,
+    "current_scoring_selection_sizing_positions_or_orders_performed": false
+  }
+}

@@ -1,0 +1,41 @@
+{
+  "schema_version": 1,
+  "kind": "a_share_three_day_walkforward_campaign123_stage_integration_failures",
+  "status": "two_failures_recorded_and_recovered_before_final_stage_publication",
+  "recorded_at": "2026-08-14T03:25:04+08:00",
+  "failures": [
+    {
+      "failure_id": "campaign123_stage_black_001",
+      "stage": "stage_binding_test_format_check",
+      "exit_code": 1,
+      "failure": "Black reported that the newly added stage-binding test required mechanical formatting.",
+      "recovery": "Black reformatted that test; the final Black check left all three Campaign123 files unchanged."
+    },
+    {
+      "failure_id": "campaign123_stage_pytest_path_002",
+      "stage": "combined_stage_test_collection",
+      "exit_code": 2,
+      "failure": "The external pytest executable did not add the repository root to sys.path, so the Campaign123 stage test and the existing Campaign122 terminal test failed collection with ModuleNotFoundError for scripts.",
+      "recovery": "The same fixed test selection was rerun with explicit PYTHONPATH=. and all 21 tests passed. No assertion was weakened or skipped."
+    }
+  ],
+  "final_validation": {
+    "black": "passed; 3 files left unchanged",
+    "ruff": "passed",
+    "pytest_with_explicit_repository_pythonpath": "21 passed in 2.49s"
+  },
+  "scientific_result_changed": false,
+  "research_boundary": {
+    "provider_request_issued": false,
+    "credential_loaded": false,
+    "provider_rows_read_persisted_or_counted": false,
+    "candidate_or_comparison_values_read": false,
+    "historical_daily_price_fields_read": [],
+    "historical_forward_returns_read": false,
+    "stress_2024_2025_opened": false,
+    "candidate49_ledgers_changed": false,
+    "second_prospective_candidate_created": false,
+    "current_scoring_selection_sizing_positions_or_orders_performed": false,
+    "investment_advice": false
+  }
+}

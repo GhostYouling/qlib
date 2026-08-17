@@ -1,0 +1,105 @@
+{
+  "version": 1,
+  "kind": "a_share_three_day_iteration_status",
+  "status": "campaign070_terminal_verified_candidate49_future_only_preserved_campaign071_offline_scouting_authorized",
+  "recorded_at": "2026-08-06T04:57:00+08:00",
+  "authoritative_predecessor": {
+    "path": "docs/a_share_three_day_iteration_status_20260806_campaign069_verified.json",
+    "sha256": "48a02bd6a0e16901c30f14e2d0465d31d2bb19a319b07850c25c59fd86993e85"
+  },
+  "campaign070_terminal_evidence": {
+    "research_record": {
+      "path": "docs/a_share_three_day_walkforward_campaign_070_research_record.json",
+      "sha256": "9f8450e791c7afafbb6fe971eebe3815c8ab5c9c28b4907a75840058c1402900"
+    },
+    "terminal_freeze": {
+      "path": "docs/a_share_three_day_walkforward_campaign_070_terminal_completion_freeze_v2_20260806.json",
+      "sha256": "709bca421b054b9329599e4e31525f2807dedecd0785bdd17fe19bd3f853e236"
+    },
+    "verification": {
+      "path": "docs/a_share_three_day_walkforward_campaign_070_verification_20260806.json",
+      "sha256": "05a9515ffbf3debef56493df81238101a67885c19bea866d08107ca6d79cfa5f"
+    },
+    "campaign_report": {
+      "path": "docs/a_share_three_day_walkforward_campaign_070_report.md",
+      "sha256": "2cb28033cf55435b4291d79171551972ba36341cbf47b04bcd96286e2ea48005"
+    },
+    "current_research_attempt_ledger": {
+      "path": "data/experiments/short_horizon/historical_walkforward/campaign_070/research_attempt_ledger_v2.json",
+      "sha256": "6d914e047080028bcdc8aa4aa626cbbcbdd539c36344e05a5b70e07b4bb4adb2"
+    },
+    "postcompletion_accounting_correction": {
+      "path": "docs/a_share_three_day_walkforward_campaign_070_postcompletion_accounting_correction_20260806.json",
+      "sha256": "6577c2b80205c019ae7b7a7f5edf622772f5ba8a2fbd829820e53ba250ca4726"
+    },
+    "unified_report": {
+      "path": "data/experiments/short_horizon/three_day_research_report.md",
+      "sha256": "d35665f2bd0a2596566246ad822f415d3f75bdb510c6a931adad562d6684912c"
+    }
+  },
+  "campaign070_result": {
+    "factor": "quarterly_announcement_delay_improvement_yoy_rank_1y",
+    "direction": "higher",
+    "snapshot_partitions": 33015,
+    "snapshot_rows": 7724498,
+    "snapshot_eligible_rows": 6353795,
+    "median_coverage": 0.9981114258734656,
+    "p05_coverage": 0.0,
+    "p05_eligible_names": 0.0,
+    "coverage_gate_passed": false,
+    "frozen_numeric_comparator_count": 100,
+    "numeric_comparator_values_read": false,
+    "historical_daily_price_or_return_values_read": false,
+    "development_trial_count": 0,
+    "development_survivor_count": 0,
+    "stress_2024_2025_opened": false,
+    "factor_terminal": true,
+    "same_campaign_rescue_allowed": false
+  },
+  "attempt_accounting": {
+    "campaign070_infrastructure_failure_count": 4,
+    "campaign070_complete_factor_attempt_count": 1,
+    "campaign070_attempt_count": 5,
+    "campaign070_ledger_entry_count": 5,
+    "campaign070_return_reading_development_trial_count": 0,
+    "cumulative_historical_research_attempt_count": 419,
+    "cumulative_return_reading_development_trial_count": 275,
+    "attempt_unit": "failed_command_or_explicit_infrastructure_lifecycle_attempt_not_failed_node"
+  },
+  "candidate49_future_only_layer": {
+    "active_candidate": "candidate49_intraday_cumulative_vwap_crossing_rate_240m_v1",
+    "last_closed_daily_failure": {
+      "path": "docs/a_share_candidate49_20260805_daily_source_failure_record.json",
+      "sha256": "b2b6b07e1f0fca128ba9935dac6331319b2a7147e3d73e52b624853a2259bbbf"
+    },
+    "signal_ledger": {
+      "path": "data/experiments/short_horizon/candidate49_future_signal_ledger.json",
+      "sha256": "5193f00d7f36da003f53cec387900da4c3d002299f5dfcfc1a95eaa199ed3a79",
+      "entries": 0
+    },
+    "execution_ledger": {
+      "path": "data/experiments/short_horizon/candidate49_future_execution_ledger.json",
+      "sha256": "d57a3e61eac969e42cafa418ccd8c0a5ee65dcf69da145bb2c096c2a02a2ea4f",
+      "entries": 0
+    },
+    "semantic_ledger_validation_exit_code": 0,
+    "repository_env_regular_file_and_nonempty_token_present": true,
+    "secret_printed_hashed_or_persisted": false,
+    "local_check_time_before_16_30": true,
+    "same_day_workflow_plan_or_run_executed": false,
+    "historical_signal_return_or_execution_backfill_allowed": false,
+    "candidate50_activation_allowed": false,
+    "provider_request_issued_by_campaign070": false
+  },
+  "next_offline_research": {
+    "campaign071_definition_scouting_allowed": true,
+    "campaign070_may_be_rescued_redefined_inverted_relagged_filtered_or_combined": false,
+    "campaign070_must_be_appended_to_complete_logical_definition_order": true,
+    "campaign070_numeric_comparator_eligibility_must_be_decided_and_frozen_before_campaign071_values": true,
+    "prefer_mechanisms_without_a_multi_year_cold_start_under_the_2019_start_boundary": true,
+    "candidate_definition_complete_library_search_space_costs_gates_data_and_code_fingerprints_must_be_frozen_before_values_or_returns": true,
+    "stress_2024_2025_remains_campaign_locked_and_closed": true,
+    "historical_results_may_generate_current_scores_selection_sizing_or_orders": false
+  },
+  "data_limitation": "The eligible universe derives from a current listing snapshot and can contain survivorship bias; quarterly data may contain later revisions. Historical research is not investment advice."
+}

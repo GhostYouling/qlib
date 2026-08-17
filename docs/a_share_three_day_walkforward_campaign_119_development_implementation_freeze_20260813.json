@@ -1,0 +1,56 @@
+{
+  "schema_version": 1,
+  "kind": "a_share_three_day_walkforward_campaign119_development_implementation_freeze",
+  "status": "frozen_before_campaign119_2019_2023_development_return_read",
+  "recorded_at": "2026-08-13T23:52:00+08:00",
+  "purpose": "Byte-freeze the Campaign119 exact-one-trial runner, preregistration and tests before the first historical daily-price or forward-return value can be loaded.",
+  "development_preregistration": {
+    "path": "docs/a_share_three_day_walkforward_campaign_119_preregistration.json",
+    "sha256": "ea8be7af38ef4d49c71b1afce7be1151c46fcdb2281cf3c875b90ed3b2fd8c05"
+  },
+  "development_runner": {
+    "path": "scripts/a_share_three_day_walkforward_campaign119.py",
+    "sha256": "8277eac7daec2e478aa4b170401ac9a02bb69736f5c92cab77f5629750210c3b",
+    "frozen_template_runner": {
+      "path": "scripts/a_share_three_day_walkforward_campaign118.py",
+      "sha256": "6ed993342ed8d5be9c0cd8e4703981196f6e4734e0b6ed19ace4dc0d045cc93f"
+    },
+    "frozen_base_runner": {
+      "path": "scripts/a_share_three_day_walkforward_campaign080.py",
+      "sha256": "b4c4b781392c87f01b9542c2317611a936d431b0328cea9d21ea90b8f68a324b"
+    }
+  },
+  "tests": {
+    "path": "tests/data_collector_tests/test_a_share_three_day_walkforward_campaign119_development.py",
+    "sha256": "5b3a71df88ee8be456dd9b1ae2373a6d423ca39a0c0f9ec6ce1a24765744f78c",
+    "passed": 7
+  },
+  "no_return_admission": {
+    "path": "data/experiments/short_horizon/historical_walkforward/campaign_119/uniqueness/campaign119_ordered_uniqueness_audit.json",
+    "sha256": "1b62ac7b1289f46f5c8d53971ec63835effaf7189e934b86789bfcefc84a8d45",
+    "admissible_factor_count": 1,
+    "numeric_comparisons_passed": 136,
+    "maximum_observed_absolute_median_daily_rank_correlation": 0.6831614880623444
+  },
+  "trial_catalog": [
+    {
+      "trial_id": "wf119_intraday_range_boundary_direction_state_entropy_238p_single_higher",
+      "feature_set": [
+        "intraday_range_boundary_direction_state_entropy_238p"
+      ],
+      "weights": [
+        1.0
+      ],
+      "direction": "higher",
+      "complexity": 1
+    }
+  ],
+  "trial_count": 1,
+  "historical_daily_price_fields_read_before_freeze": [],
+  "historical_forward_returns_read_before_freeze": false,
+  "stress_2024_2025_opened_before_freeze": false,
+  "candidate49_ledgers_changed_before_freeze": false,
+  "provider_request_issued_before_freeze": false,
+  "current_scoring_selection_sizing_positions_or_orders_performed": false,
+  "post_result_code_preregistration_parameter_filter_subset_direction_or_gate_change_allowed": false
+}

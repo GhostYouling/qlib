@@ -1,0 +1,188 @@
+{
+  "version": 1,
+  "kind": "a_share_three_day_walkforward_campaign019_verification",
+  "status": "verified_terminal_no_return_coverage_rejection_before_comparisons_or_returns",
+  "recorded_at": "2026-07-29T01:56:50Z",
+  "authoritative_bindings": {
+    "iteration_state": {
+      "path": "docs/a_share_three_day_iteration_status_20260729_campaign019.json",
+      "sha256": "77c11172bd6952b7a0b9b2be4e6ee4bd3782152c73516816567a26ed0297d47f"
+    },
+    "research_record": {
+      "path": "docs/a_share_three_day_walkforward_campaign_019_research_record.json",
+      "sha256": "92d99a2a9d11165050686a8ec054e8e42e1e7b49ed5ef27ecab83bdbbe562d93"
+    },
+    "concept_scouting": {
+      "path": "docs/a_share_three_day_walkforward_campaign_019_concept_scouting.json",
+      "sha256": "749f63c0acb05622ac8e547933d06d3311a37d9a237f166d9b9b4d2f3e0dd010"
+    },
+    "mechanism_overlap_audit": {
+      "path": "docs/a_share_three_day_walkforward_campaign_019_mechanism_overlap_audit.json",
+      "sha256": "29e7dc24776e458cd471414a076029dfb232fb5299f10fd333b6f9c4e7522606"
+    },
+    "no_return_preregistration": {
+      "path": "docs/a_share_three_day_walkforward_campaign_019_no_return_preregistration.json",
+      "sha256": "de68ec246a0b0944ef75edc2594e8909c89b9118de3cd01bdad7cc1b902f011f"
+    },
+    "feature_and_no_return_runner": {
+      "path": "scripts/a_share_three_day_walkforward_campaign019_features.py",
+      "sha256": "79c39072bc2515541acdaffdb3c3f43a5fabb1e4e8d13ba0e47c8ee4e6477a48"
+    }
+  },
+  "focused_and_cross_campaign_tests": {
+    "command": "python -m pytest -q tests/data_collector_tests/test_a_share_three_day_walkforward_campaign*.py tests/data_collector_tests/test_a_share_tushare_candidate49_future_session_workflow.py tests/data_collector_tests/test_a_share_short_horizon_factor_research.py",
+    "passed": 539,
+    "failed": 0,
+    "warnings": 12,
+    "duration_seconds": 20.5,
+    "campaign019_focused_tests": {
+      "path": "tests/data_collector_tests/test_a_share_three_day_walkforward_campaign019_features.py",
+      "sha256": "2a314597f8014ccfbe83015520ddace1be68a67eb9654ecc7da8bc90876b10ee",
+      "passed": 9,
+      "failed": 0
+    }
+  },
+  "idempotence_and_status": {
+    "feature_status_with_authoritative_external_data_root": "snapshot_ready",
+    "feature_snapshot_sha256_bound": true,
+    "no_return_audit_status": "no_return_audit_ready",
+    "no_return_audit_sha256_bound": true,
+    "no_return_audit_count": 1,
+    "no_return_audit_idempotent_path": "data/experiments/short_horizon/historical_walkforward/campaign_019/no_return/20260729T014807Z_campaign019_no_return_audit.json",
+    "development_runner_created": false,
+    "development_trial_count": 0,
+    "stress_interval_opened": false,
+    "stress_return_fields_read": false
+  },
+  "build_validation_correction_record": {
+    "initial_partition_computation": {
+      "partitions_completed": 33015,
+      "exit_code": 1,
+      "failure_stage": "temporary_manifest_semantic_validation",
+      "reason": "The inherited Campaign018 temporary builder manifest retained source_volume_read=true before the Campaign019 atomic-write adapter could emit the final open/close-only manifest.",
+      "final_manifest_published": false,
+      "provider_request_performed": false,
+      "comparison_values_read": false,
+      "daily_price_or_forward_return_read": false
+    },
+    "correction": {
+      "scope": "Validate the inherited temporary flag as inherited, while continuing to require the final Campaign019 manifest to declare source_close_read=true and source_volume_read=false.",
+      "failure_exit_code_bypassed": false,
+      "computed_partitions_deleted_or_rewritten": false,
+      "resumed_partition_count": 33015,
+      "corrected_exit_code": 0,
+      "final_manifest_semantics_verified": true
+    }
+  },
+  "unified_report_semantic_validation": {
+    "command": "python scripts/a_share_short_horizon_factor_research.py report --output <temporary-path>/three_day_research_report.md",
+    "status": "completed",
+    "iterations": 18,
+    "temporary_report_sha256": "eee6a662721fe9c511dfa57830ded2d84ae071f26b2beda890cea82d8f51cead",
+    "temporary_report_lines": 622,
+    "paper_signals": 0,
+    "paper_settlements": 0,
+    "prospective_factor_registrations": 1,
+    "prospective_factor_signals": 0,
+    "prospective_factor_settlements": 0,
+    "candidate49_signal_and_execution_semantic_replay_passed": true,
+    "authoritative_report_file_rewritten": false,
+    "campaign019_is_recorded_in_append_only_campaign_documents_not_as_a_prospective_registration": true
+  },
+  "artifact_verification": {
+    "feature_snapshot": {
+      "path": "/Volumes/DIsk/qlib-a-share-tushare-1m/derived/a_share/rich/tushare/minute_walkforward_campaign019_feature_library/tushare_stk_mins_1m_2019_2025_ea0cbb8f_walkforward_campaign019_feature_library_v1/snapshot_manifest.json",
+      "sha256": "7c4f7268f33af3274a9057241b9bd45df3c2565729a684a07f48105cdf9474cb",
+      "dataset_sha256": "66efe683268dbcc681591ee9918ba2948f3c4420232c4e1f4c57371d0ac24ecc",
+      "partitions": 33015,
+      "rows": 7724498,
+      "eligible_factor_rows": 2623556,
+      "rows_with_zero_body": 7724498,
+      "zero_body_observations": 746337349,
+      "insufficient_informative_pair_rows": 5100942,
+      "zero_denominator_rows": 34816,
+      "invalid_required_open_close_rows": 0,
+      "source_fields_read": [
+        "datetime",
+        "symbol",
+        "provider",
+        "open",
+        "close"
+      ],
+      "source_open_read": true,
+      "source_close_read": true,
+      "source_high_low_read": false,
+      "source_volume_read": false,
+      "source_amount_read": false,
+      "daily_price_fields_read": [],
+      "forward_return_fields_read": false,
+      "comparison_values_read_before_coverage_gate": false
+    },
+    "no_return_audit": {
+      "path": "data/experiments/short_horizon/historical_walkforward/campaign_019/no_return/20260729T014807Z_campaign019_no_return_audit.json",
+      "sha256": "ccb7c4582a4944fe6c26423d07d25cefc488f3200fb70e45ec738ea8c716f10e",
+      "quality_listing_eligible_rows": 1331759,
+      "candidate_eligible_rows": 702955,
+      "median_coverage": 0.5629049174432891,
+      "p05_coverage": 0.39160894200061813,
+      "p05_eligible_names": 85.0,
+      "potential_non_overlapping_three_session_cohorts": 539,
+      "observed_calendar_years": 7,
+      "coverage_and_capacity_gate_passed": false,
+      "comparison_values_loaded": false,
+      "statistical_comparison_count_executed": 0,
+      "admissible_factor_count": 0,
+      "historical_daily_price_fields_read": [],
+      "historical_forward_return_fields_read": false,
+      "candidate49_historical_return_read": false,
+      "training_or_model_fitting_performed": false
+    }
+  },
+  "documentation": {
+    "pipeline_path": "docs/a_share_data_pipeline.md",
+    "pipeline_sha256_after_campaign019_section": "496422ed1a7e8c9f00fd0ceacf5a33839e36a8eb6adc284dfa058fa8b2c0caf6",
+    "skill_path": "/Users/niyufei/.codex/skills/manage-qlib-a-share-data/SKILL.md",
+    "skill_sha256_after_campaign019_boundary": "2dede881f4b3ecd3ee291a6ecabc92647b86b8e1dc7a7e25cd8c628c9029bde5",
+    "historical_sample_split_requirement_preserved": true,
+    "campaign020_may_start_without_waiting_for_a_new_daily_bar": true
+  },
+  "semantic_verification": {
+    "cumulative_development_trial_count": 241,
+    "campaign019_development_trial_count": 0,
+    "campaign019_return_direction_tested": false,
+    "candidate49_historical_return_read": false,
+    "candidate49_signal_ledger_entries": 0,
+    "candidate49_signal_ledger_sha256": "5193f00d7f36da003f53cec387900da4c3d002299f5dfcfc1a95eaa199ed3a79",
+    "candidate49_execution_ledger_entries": 0,
+    "candidate49_execution_ledger_sha256": "d57a3e61eac969e42cafa418ccd8c0a5ee65dcf69da145bb2c096c2a02a2ea4f",
+    "candidate49_signal_or_execution_ledger_changed": false,
+    "candidate50_prospective_activation_created": false,
+    "current_scoring_selection_sizing_or_orders_performed": false,
+    "provider_credentials_present_in_process": {
+      "TUSHARE_TOKEN": false,
+      "JQDATA_USERNAME": false,
+      "JQDATA_PASSWORD": false,
+      "RQDATA_USERNAME": false,
+      "RQDATA_PASSWORD": false
+    },
+    "provider_credentials_present_in_launchctl": {
+      "TUSHARE_TOKEN": false,
+      "JQDATA_USERNAME": false,
+      "JQDATA_PASSWORD": false,
+      "RQDATA_USERNAME": false,
+      "RQDATA_PASSWORD": false
+    },
+    "provider_request_performed": false,
+    "candidate49_same_day_workflow_plan_run_before_1630": false,
+    "candidate49_completed_workflow_record_count": 0,
+    "current_data_root": "/Users/niyufei/Coding/qlib/data",
+    "current_listing_snapshot_survivorship_bias_remains_explicit": true
+  },
+  "next_action": {
+    "campaign_id": "a_share_three_day_walkforward_campaign_020",
+    "status": "concept_only_scouting_allowed_now",
+    "requires_new_daily_bar": false,
+    "must_start_from_independent_economic_mechanism": true,
+    "campaign019_threshold_relaxation_zero_bridge_inversion_repair_or_combination_forbidden": true
+  }
+}

@@ -1,0 +1,92 @@
+{
+  "schema_version": 1,
+  "kind": "a_share_three_day_walkforward_campaign258_terminal_validation",
+  "recorded_at": "2026-08-16T14:16:00+08:00",
+  "timestamp_semantics": "monotonic_logical_append_time_not_host_wall_clock_measurement",
+  "status": "campaign258_terminal_validation_passed_campaign259_offline_prevalue_ready",
+  "authoritative_inputs": {
+    "campaign258_source_frontier": {
+      "path": "docs/a_share_three_day_walkforward_campaign_258_commercial_railway_signalling_rolling_stock_subsystem_equipment_service_lifecycle_source_frontier_20260816.json",
+      "sha256": "fa3497510ed7162b4623348de5776dea2eec021a29b41baa51568eb00b4cdb95"
+    },
+    "campaign258_attempt_ledger_v2": {
+      "path": "data/experiments/short_horizon/historical_walkforward/campaign_258/research_attempt_ledger_v2.json",
+      "sha256": "0d69535de0f7dc09d7f16ac3597988350c68658d5daad8753a18e6e7562bd497"
+    },
+    "campaign258_terminal_result_v2": {
+      "path": "docs/a_share_three_day_walkforward_campaign_258_terminal_result_v2_20260816.json",
+      "sha256": "731541ac27f87daa22c255b24c6942c6e89f0dfbbb0fa089d7a12ac74d7697e0"
+    },
+    "numeric_policy_v396": {
+      "path": "docs/a_share_three_day_walkforward_future_numeric_comparison_eligibility_policy_v396_20260816.json",
+      "sha256": "c5dc949d72da2894f34551f4c6968fa855436448584420b07695dd3c4c1c920c"
+    },
+    "campaign258_terminal_test": {
+      "path": "tests/data_collector_tests/test_a_share_three_day_walkforward_campaign258_terminal.py",
+      "sha256": "d705e40a5f894e50a556d0977adc02b0f8da0c6e3d88dc182daed2434785b2ec"
+    }
+  },
+  "validation_results": {
+    "json_parse_and_latest_reference_graph": "passed; 5 current JSON files, zero reference errors",
+    "all_thirteen_ledger_entries_and_artifact_hashes": "passed",
+    "black": "passed; 1 file would be left unchanged",
+    "ruff": "passed",
+    "focused_pytest": "2 passed in 0.07s",
+    "campaign145_through_campaign258_test_file_count": 146,
+    "cumulative_pytest": "529 passed, 1 skipped, 73 deselected in 15.90s",
+    "candidate49_empty_ledger_semantics": "passed",
+    "unified_report_unique_heading_and_publication_hashes": "passed"
+  },
+  "mutable_report_snapshot": {
+    "current": {
+      "path": "data/experiments/short_horizon/current_research_report.md",
+      "sha256_at_validation": "833486402d1915989e6d7bd7b3dcd63f1d78325dfccaf87127ae8e1b247c5126",
+      "campaign258_heading_count": 1
+    },
+    "three_day": {
+      "path": "data/experiments/short_horizon/three_day_research_report.md",
+      "sha256_at_validation": "24d61527bfd51afc0584a6b793043e2ffe313dc1f5846f85ac2871cc539f9245",
+      "campaign258_heading_count": 1
+    }
+  },
+  "scientific_result": {
+    "terminal": true,
+    "terminal_stage": "prevalue_source_admission_and_overlap_gate",
+    "finite_route_count": 7,
+    "source_admission_deferral_count": 3,
+    "overlap_or_hypothesis_rejection_count": 4,
+    "selected_factor_count": 0,
+    "definition_or_comparator_append": false,
+    "development_trial_count": 0,
+    "stress_trial_count_2024_2025": 0
+  },
+  "effective_accounting": {
+    "campaign258_attempt_count": 13,
+    "campaign258_infrastructure_failure_count": 6,
+    "campaign258_scientific_attempt_count": 7,
+    "cumulative_historical_research_attempt_count": 2484,
+    "cumulative_return_reading_development_trial_count": 314,
+    "chain_tip_sha256": "72424b8e96b63d8c3638b487f2559729aa722714aaf48a1cb9bef3821603b755"
+  },
+  "candidate49": {
+    "sole_prospective_candidate": true,
+    "signal_entry_count": 0,
+    "execution_entry_count": 0,
+    "signal_ledger_sha256": "5193f00d7f36da003f53cec387900da4c3d002299f5dfcfc1a95eaa199ed3a79",
+    "execution_ledger_sha256": "d57a3e61eac969e42cafa418ccd8c0a5ee65dcf69da145bb2c096c2a02a2ea4f"
+  },
+  "research_boundary": {
+    "candidate_or_comparator_value_read": false,
+    "daily_price_or_forward_return_read": false,
+    "provider_or_web_request_issued": false,
+    "provider_credential_presence_value_or_digest_read": false,
+    "candidate49_plan_or_run_executed": false,
+    "candidate49_ledgers_changed": false,
+    "second_prospective_candidate_created": false,
+    "stress_2024_2025_opened": false,
+    "current_scoring_selection_sizing_positions_or_orders_performed": false,
+    "failed_or_truncated_output_used_as_scientific_or_validation_evidence": false,
+    "investment_advice": false
+  },
+  "next_action": "Keep the continuous goal active and begin only a genuinely different Campaign259 finite zero-network offline prevalue domain; do not wait for 16:30 or a new daily bar."
+}

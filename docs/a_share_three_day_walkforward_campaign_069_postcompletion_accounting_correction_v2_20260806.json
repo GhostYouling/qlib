@@ -1,0 +1,46 @@
+{
+  "version": 2,
+  "kind": "a_share_three_day_walkforward_campaign069_postcompletion_accounting_correction",
+  "status": "appenditive_command_level_attempt_accounting_current",
+  "recorded_at": "2026-08-06T04:07:23+08:00",
+  "supersedes_without_rewriting": {
+    "path": "docs/a_share_three_day_walkforward_campaign_069_postcompletion_accounting_correction_20260806.json",
+    "sha256": "0096f4595633eb8e1327f327a7d5b4e5f33621170f71f746571c19608e83f460",
+    "covered_failed_command_count": 1,
+    "covered_failed_node_count": 1
+  },
+  "additional_failure_record": {
+    "path": "docs/a_share_three_day_walkforward_campaign_069_terminal_validation_failure_2_20260806.json",
+    "sha256": "ccf663fe4786b5744a1aaa85e49ce5dd8551f217a4a229a8af3643f1a90f693f",
+    "failed_command_count": 1,
+    "failed_node_count": 4
+  },
+  "current_attempt_ledger": {
+    "path": "data/experiments/short_horizon/historical_walkforward/campaign_069/research_attempt_ledger_v4.json",
+    "sha256": "92756fc2a80777d4234368d2532b5476172810b446f3404bc4de825b664c651b"
+  },
+  "authoritative_counting_rule": "A historical infrastructure attempt is one executed failed command or one explicit synthetic attempt, not one failed assertion within a command.",
+  "corrected_accounting": {
+    "postcompletion_failed_command_count": 2,
+    "postcompletion_failed_node_count": 5,
+    "campaign069_infrastructure_failure_count": 5,
+    "campaign069_complete_factor_attempt_count": 1,
+    "campaign069_attempt_count": 6,
+    "campaign069_append_only_ledger_entry_count": 7,
+    "campaign069_return_reading_development_trial_count": 1,
+    "corrected_cumulative_historical_research_attempt_count": 414,
+    "cumulative_return_reading_development_trial_count": 275
+  },
+  "research_boundary": {
+    "candidate_or_comparison_values_read_by_failed_validation": false,
+    "new_historical_daily_price_or_forward_return_values_read_by_failed_validation": false,
+    "stress_2024_2025_opened": false,
+    "provider_request_issued": false,
+    "candidate49_ledgers_changed": false,
+    "campaign069_terminal_decision_changed": false
+  },
+  "unified_report": {
+    "path": "data/experiments/short_horizon/three_day_research_report.md",
+    "sha256": "464c58855dc0606d6f61d58146bae0ffe78c0373dfb2774bf1b9b4c77dccfe49"
+  }
+}

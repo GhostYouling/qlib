@@ -1,0 +1,23 @@
+{
+  "schema_version": 1,
+  "kind": "a_share_three_day_walkforward_campaign110_infrastructure_failure",
+  "status": "preserved_failed_recovery_before_any_comparator_value_or_output_publication",
+  "recorded_at": "2026-08-08T15:47:00Z",
+  "failure_ordinal": 10,
+  "stage": "comparator133_recovery_comparison_loader_entry",
+  "failed_exit_code": 1,
+  "exception": "AttributeError: Campaign109 no-return audit has no attribute _load_comparisons_after_coverage",
+  "cause": "The frozen Campaign109 132-comparator loader exists in its generated namespace but was not exported as a module attribute expected by Campaign110's already frozen append-one loader.",
+  "narrow_repair": "Alias the exact existing generated Campaign109 loader onto the Campaign109 module; do not reimplement or change it.",
+  "recovery_publication_state": {
+    "recovery_output_files": 0,
+    "candidate_snapshot_modified": false
+  },
+  "research_boundary": {
+    "coverage_values_recomputed": true,
+    "comparator_values_read_by_failed_recovery": false,
+    "historical_daily_price_or_forward_return_values_read": false,
+    "provider_request_issued": false,
+    "candidate49_ledgers_changed": false
+  }
+}

@@ -1,0 +1,211 @@
+{
+  "schema_version": 1,
+  "kind": "a_share_three_day_walkforward_campaign143_concept_scouting",
+  "status": "terminal_zero_selected_candidates_after_contract_scope_source_clock_and_complete_definition_review",
+  "recorded_at": "2026-08-14T15:20:35+0800",
+  "purpose": "Review one finite Campaign143 catalog against the complete 153-definition frontier, the 141 reserved numeric comparators, original data-collection scope, accepted point-in-time source metadata, and public availability clocks before any source row or research value is opened.",
+  "authoritative_inputs": {
+    "campaign142_state": {
+      "path": "docs/a_share_three_day_iteration_status_20260814_campaign142_prevalue_terminal_v4.json",
+      "sha256": "be40e07d370b30b04fd894f9f3ffbf61ff72478e57f5259e3f3c8a26de075e19"
+    },
+    "numeric_policy_v186": {
+      "path": "docs/a_share_three_day_walkforward_future_numeric_comparison_eligibility_policy_v186_20260814.json",
+      "sha256": "5f76c08501f580963e92f8d5c3f62ef6363166b54e947c7bebbdfb6f4bffe4fc",
+      "complete_definition_count": 153,
+      "complete_definition_order_sha256": "bf66faef96d7058c7028da52757c65d8e0bf7978cf72d3967cd236e4da30b875",
+      "eligible_numeric_comparator_count": 141,
+      "eligible_numeric_comparator_order_sha256": "ec1aebcb939ad516c58037a36a4aaadd4ad8b2abbd3c884705895c58da85a2ee"
+    },
+    "historical_walkforward_policy": {
+      "path": "docs/a_share_three_day_historical_walkforward_research_policy_20260727.json",
+      "sha256": "38426d6161b9bfed323c58caba18feca668b8c9d53e294951a8ba90c01a798bb"
+    }
+  },
+  "accepted_local_schema_and_contract_audit": {
+    "active_data_root": "/Volumes/DIsk/Disk-Coding/qlib/data",
+    "inspection_method": "immutable JSON contracts, manifests, prior terminal records and already-recorded Parquet schema names only; no row group or source column value opened",
+    "source_families": [
+      {
+        "name": "tushare_classified_moneyflow_daily",
+        "contract_path": "docs/a_share_tushare_moneyflow_data_contract.json",
+        "contract_sha256": "a38f8113d948a179e6cc38eb388f13fcd691fe793209703009762db6cfa81b12",
+        "manifest_path": "data/metadata/rich_data/runs/20260716T085610Z_tushare_moneyflow_daily_6c78e93d.json",
+        "manifest_sha256": "eee76f4b3b3d3001f9c73e84fda6336a9732d648424828d7a000e045480e2fcb",
+        "requested_amount_fields": [
+          "buy_sm_amount",
+          "sell_sm_amount",
+          "buy_md_amount",
+          "sell_md_amount",
+          "buy_lg_amount",
+          "sell_lg_amount",
+          "buy_elg_amount",
+          "sell_elg_amount"
+        ],
+        "original_contract_independent_factor_count": 1,
+        "original_contract_permits_campaign143_entropy": false
+      },
+      {
+        "name": "quarterly_quality",
+        "manifest_path": "data/metadata/quarterly_quality_manifest.json",
+        "manifest_sha256": "e3cf654babe37a82393c5530696bc1cc242b736cb88e1947b8444b638125ba8c",
+        "field_names": [
+          "instrument",
+          "report_date",
+          "announcement_date",
+          "roe",
+          "net_profit",
+          "revenue_yoy",
+          "profit_yoy"
+        ]
+      },
+      {
+        "name": "accepted_one_minute_ohlcva",
+        "field_names": [
+          "datetime",
+          "symbol",
+          "provider",
+          "open",
+          "high",
+          "low",
+          "close",
+          "volume",
+          "amount"
+        ],
+        "order_book_queue_aggressor_or_auction_fields_present": false
+      },
+      {
+        "name": "eastmoney_balance_sheet_resilience_full",
+        "manifest_path": "data/metadata/rich_data/runs/20260716T225547Z_eastmoney_balance_sheet_resilience_b960bfe6.json",
+        "manifest_sha256": "b69e71c57ecbef956709e853d5da6054fd28f6c44d53ead2b51273641ecba9fe",
+        "field_names": [
+          "instrument",
+          "report_date",
+          "announcement_date",
+          "total_assets",
+          "total_liabilities",
+          "eastmoney_balance_sheet_resilience",
+          "provider"
+        ]
+      },
+      {
+        "name": "sw2021_l1_membership_intervals",
+        "manifest_path": "data/metadata/rich_data/runs/20260716T114724Z_tushare_sw2021_l1_membership_92ef71fe.json",
+        "manifest_sha256": "8582eb25f91ddcbe01130057ecb118431168545fa0a182cdb428c3a8d2a0228e",
+        "membership_intervals_accepted_for_peer_assignment": true,
+        "historical_rebalance_publication_clock_present": false
+      }
+    ]
+  },
+  "finite_prevalue_concept_catalog": [
+    {
+      "catalog_id": "c143_01",
+      "name": "tushare_classified_order_size_participation_entropy_4b",
+      "hypothetical_formula": "For each provider size bucket k in sm, md, lg, elg, set s_k=buy_k_amount+sell_k_amount, p_k=s_k/sum(s), and score -sum(p_k*log(p_k))/log(4) with exact-zero buckets retained.",
+      "direction": "higher",
+      "parameters": "four provider-defined size buckets and same trade-date session only",
+      "filters": "all eight amounts finite and nonnegative with positive total",
+      "subsets": [],
+      "models": [],
+      "prevalue_decision": "rejected_original_collection_contract_authorized_one_factor_and_terminal_category_share_branch_only",
+      "reason": "The full history was collected under a contract whose purpose is one defined large-order net-inflow mechanism and whose independent_factor_count is exactly one. Its terminal record says the classified large-order category-share branch is exhausted and forbids changing transaction-size categories or denominator. A post-result entropy over the same contract-bound fields is not authorized reuse, even though the bytes are local."
+    },
+    {
+      "catalog_id": "c143_02",
+      "name": "quarterly_profit_revenue_growth_disagreement_magnitude_rank",
+      "hypothetical_formula": "same-effective-session average-tie percentile rank of abs(profit_yoy-revenue_yoy) when both states are finite",
+      "direction": "higher",
+      "parameters": "latest common effective report period",
+      "filters": "finite profit_yoy and revenue_yoy",
+      "subsets": [],
+      "models": [],
+      "prevalue_decision": "rejected_as_terminal_quarterly_growth_spread_balance_floor_and_rank_gap_absolute_transform_refresh",
+      "reason": "The signed percentage-point spread, three-field rank balance, joint floor, acceleration gaps and other quarterly growth combinations are complete terminal definitions. Taking the absolute value after those outcomes changes only the operator and direction of an exposed two-field relation; it is not a newly observed accounting state."
+    },
+    {
+      "catalog_id": "c143_03",
+      "name": "intraday_transaction_price_midrange_acceptance_share_240m",
+      "hypothetical_formula": "On each active minute compute transaction price amount/volume and geometric high-low midpoint sqrt(high*low), then divide active volume in bars whose transaction price exceeds the midpoint by total active volume.",
+      "direction": "higher",
+      "parameters": "exact 09:31-11:30 and 13:01-15:00 240-bar grid",
+      "filters": "finite ordered positive high-low, joint-positive volume and amount, positive active total volume",
+      "subsets": [],
+      "models": [],
+      "prevalue_decision": "rejected_as_terminal_transaction_price_envelope_close_location_and_containment_reference_refresh",
+      "reason": "Transaction-VWAP envelope asymmetry, transaction-price consensus and distribution resolution, intrabar close location, and the explicitly rejected bar-VWAP body-containment proposal already exhaust this observed price-within-bar acceptance family. Replacing the body or envelope reference by a geometric midrange and counting volume is an alternate reference and aggregation statistic."
+    },
+    {
+      "catalog_id": "c143_04",
+      "name": "intraday_return_sign_amount_state_mutual_information_238p",
+      "hypothetical_formula": "Within each half-session pair each nonzero signed adjacent close return with whether its endpoint amount is strictly above the all-240 ordinary median, pool 238 positions, and compute normalized mutual information of the two binary states.",
+      "direction": "higher",
+      "parameters": "fixed median split, within-half adjacent returns and exact-zero returns excluded",
+      "filters": "exact 240 positive closes and nonnegative finite amounts with all four joint states supported",
+      "subsets": [],
+      "models": [],
+      "prevalue_decision": "rejected_as_campaign116_amount_conditioned_directional_state_and_campaign122_mutual_information_functional_refresh",
+      "reason": "Campaign116 already froze amount-conditioned directional persistence on the same all-240 median split and terminalized at coverage; Campaign122 rejected a return-direction transition mutual-information variant before values. Switching from conditional persistence to a 2x2 information functional reopens both exposed categorical state families and cannot relax Campaign116 support indirectly."
+    },
+    {
+      "catalog_id": "c143_05",
+      "name": "eastmoney_balance_sheet_deleveraging_transition_2q",
+      "hypothetical_formula": "previous adjacent report-period liabilities/assets minus current liabilities/assets, activated strictly after the current announcement",
+      "direction": "higher",
+      "parameters": "one exact adjacent report period",
+      "filters": "positive finite assets and finite liabilities on both reports",
+      "subsets": [],
+      "models": [],
+      "prevalue_decision": "rejected_as_terminal_balance_sheet_resilience_lag_transition_and_formula_state_change",
+      "reason": "The accepted factor is exactly 1-total_liabilities/total_assets and its terminal decision forbids formula or state-rule changes. A one-report difference is only a lag operator on that terminal ratio, adds cold-start loss, and constitutes post-exposure rescue rather than new balance-sheet information."
+    },
+    {
+      "catalog_id": "c143_06",
+      "name": "sw_l1_quarterly_profit_growth_peer_dispersion_rank",
+      "hypothetical_formula": "For every effective quarterly snapshot compute the within-SW2021-L1 median absolute deviation of profit_yoy and assign its same-day cross-sectional industry-group percentile to each member.",
+      "direction": "higher",
+      "parameters": "latest effective quarterly state and point-in-time L1 membership assignment",
+      "filters": "finite profit_yoy and at least ten group members",
+      "subsets": [
+        "sw2021_l1"
+      ],
+      "models": [],
+      "prevalue_decision": "rejected_as_terminal_industry_peer_aggregation_and_quarterly_growth_cross_source_recombination",
+      "reason": "SW L1 membership is valid for peer assignment but its breadth mechanism is terminal, while quarterly growth levels, peer adjustments, dispersion-like rank gaps and complete-library combinations are exposed. Grouping terminal profit-growth states by a terminal peer taxonomy and changing the group statistic to MAD is a post-exposure cross-source aggregation, not a new issuer observation."
+    }
+  ],
+  "selection": {
+    "concepts_reviewed": 6,
+    "rejected_concept_count": 6,
+    "selected_candidate_count": 0,
+    "selected_candidate": null,
+    "finite_candidate_library": true,
+    "complete_153_definition_library_reviewed_before_values": true,
+    "all_141_numeric_comparators_reserved_but_not_loaded": true,
+    "genuinely_new_independent_mechanism_found": false,
+    "reason": "The only apparently new raw-field functional violates the original single-factor collection contract; every remaining proposal is an operator, reference, lag, categorical functional, peer aggregation or cross-source combination of terminal mechanisms."
+  },
+  "decision": {
+    "create_campaign143_formula_feature_snapshot_model_or_adapter": false,
+    "run_source_acceptance_coverage_uniqueness_or_return_trial": false,
+    "request_new_provider_history": false,
+    "append_complete_definition_or_numeric_comparator": false,
+    "terminalize_campaign143_prevalue": true,
+    "next_campaign_requirement": "Continue only from a genuinely new finite mechanism supported by an already accepted historically versioned point-in-time source whose original collection contract permits that use, or obtain explicit authorization for a separately frozen source-admission campaign."
+  },
+  "research_boundary": {
+    "schema_contract_manifest_and_terminal_history_metadata_read": true,
+    "parquet_rows_or_column_values_read": false,
+    "campaign143_candidate_values_computed_or_read": false,
+    "campaign143_comparator_values_read": false,
+    "historical_daily_price_or_forward_return_values_read": false,
+    "stress_2024_2025_opened": false,
+    "provider_request_issued": false,
+    "provider_credential_value_or_digest_read": false,
+    "candidate49_historical_backfill_performed": false,
+    "candidate49_ledgers_changed": false,
+    "second_prospective_candidate_created": false,
+    "current_scoring_selection_sizing_positions_or_orders_performed": false,
+    "investment_advice": false,
+    "inherited_current_listing_survivorship_limitation_remains": true
+  }
+}

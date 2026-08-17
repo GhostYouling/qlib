@@ -1,0 +1,96 @@
+{
+  "schema_version": 1,
+  "kind": "a_share_three_day_walkforward_campaign115_mechanism_source_frontier_audit",
+  "status": "independent_source_mechanism_admitted_only_to_contract_and_zero_row_adapter_stage",
+  "recorded_at": "2026-08-09T02:52:55+08:00",
+  "purpose": "Challenge the selected Campaign115 concept against the complete frozen mechanism library, terminal source histories, execution realism, and data availability before freezing a source contract or observing a provider row.",
+  "authoritative_inputs": {
+    "concept_scouting": {
+      "path": "docs/a_share_three_day_walkforward_campaign_115_concept_scouting_20260809.json",
+      "sha256": "4e6920863b5400e31787c3d0ccbf443e5d3d76c1403ed63f7c455c66e813e01a",
+      "binding_status": "exact_digest_bound_before_any_provider_call"
+    },
+    "numeric_policy_v84": {
+      "path": "docs/a_share_three_day_walkforward_future_numeric_comparison_eligibility_policy_v84_20260809.json",
+      "sha256": "83a9b83bc2a8056623b7248fc61a70cf86d8a994b7bd9a08c7d0e13f744f5d8f"
+    },
+    "complete_definition_count": 141,
+    "complete_definition_order_sha256": "ccab6e3d9d81b0a02d4ff178fdd442b26a1e68e3655e1c6f5b2fcb28cd4a4559",
+    "numeric_comparator_count": 134,
+    "numeric_comparator_order_sha256": "31d788db467f558a0ac538315343090f1b3ad4cb27a26136a49ebaa88b2fdbf2"
+  },
+  "selected_mechanism": {
+    "name": "tushare_official_limit_up_queue_persistence",
+    "information_channel": "official_post_close_limit_event_queue_state",
+    "economic_state": "durability of a closing upper-limit buy queue after accounting for the final sealing time and repeated board openings",
+    "prospective_direction": "higher",
+    "factor_formula_frozen_in_this_audit": false
+  },
+  "mandatory_overlap_challenges": [
+    {
+      "family": "daily_limit_like_strong_close_event",
+      "decision": "distinct_but_must_face_numeric_uniqueness_gate",
+      "reason": "The old event infers a strong close from price return and distance to the daily high. It cannot identify the official event category, last seal time, or number of board openings. Campaign115 may not use close, return, high, turnover, or the old event label in its formula."
+    },
+    {
+      "family": "minute_ohlcv_amount_path_and_clock_factors",
+      "decision": "distinct_source_state",
+      "reason": "Aggregate bars contain executed prices and activity, not unexecuted seal-order queues or official reopening counts. No minute field or old factor value may enter the candidate."
+    },
+    {
+      "family": "top_list_and_top_inst_abnormal_trading_events",
+      "decision": "distinct_source_state",
+      "reason": "龙虎榜 describes abnormal-trading disclosure and participant flows. A complete daily limit-event roster and queue history are not a rescue or recanonicalization of that terminal source."
+    },
+    {
+      "family": "classified_moneyflow",
+      "decision": "distinct_source_state",
+      "reason": "Executed order-size flow is terminal and cannot reveal closing queued demand, final sealing time, or board-opening count. No Tushare or JQData moneyflow field may be combined."
+    },
+    {
+      "family": "complete_numeric_library_models",
+      "decision": "not_a_model_retry",
+      "reason": "Campaign115 uses one external source state and no component values, fitted weights, subsets, interactions, or old-factor combinations."
+    }
+  ],
+  "support_and_execution_challenges": {
+    "current_entitlement_proven": false,
+    "documented_permission_points_from_local_frozen_records": 5000,
+    "current_account_points_assumed": false,
+    "2019_2023_historical_availability_proven": false,
+    "complete_daily_event_roster_semantics_proven": false,
+    "provider_row_ceiling_and_no_truncation_proven": false,
+    "point_in_time_after_close_availability_proven": false,
+    "next_open_buyability_proven": false,
+    "reason_next_open_buyability_is_a_gate_not_a_formula_change": "A durable upper-limit queue may remain unbuyable at the next open. The later frozen walk-forward runner must use the existing entry limit/zero-volume blocker and may not substitute names, invert the factor, or weaken the queue score after observing fills.",
+    "required_pre_return_sequence": [
+      "freeze exact source contract and one formula",
+      "freeze and test a pure zero-row/synthetic adapter",
+      "run at most one fixed-date entitlement/schema acceptance request",
+      "if accepted, freeze one atomic 2019-2023 source-sync protocol",
+      "run a no-return coverage, capacity, duplicate, variation, and all-134-comparator uniqueness audit",
+      "only if every no-return gate passes may the already-frozen three-fold development campaign read returns"
+    ]
+  },
+  "admission_decision": {
+    "genuinely_independent_prevalue_mechanism_found": true,
+    "admitted_stage": "source_contract_and_zero_row_adapter_only",
+    "complete_factor_definition_created": false,
+    "numeric_comparator_created": false,
+    "provider_request_allowed_now": false,
+    "candidate_or_comparator_value_read_allowed": false,
+    "daily_price_or_forward_return_read_allowed": false,
+    "reason": "Semantic independence is necessary but not sufficient. Exact source, formula, support, timing, credential, and fail-closed implementation bindings must exist before the single acceptance request."
+  },
+  "research_boundary": {
+    "provider_request_issued": false,
+    "provider_rows_or_values_read": false,
+    "candidate_or_comparator_values_read": false,
+    "daily_price_or_forward_return_values_read": false,
+    "stress_2024_2025_opened": false,
+    "candidate49_ledgers_changed": false,
+    "second_prospective_candidate_created": false,
+    "current_scoring_selection_sizing_or_orders_performed": false,
+    "investment_advice": false
+  }
+}

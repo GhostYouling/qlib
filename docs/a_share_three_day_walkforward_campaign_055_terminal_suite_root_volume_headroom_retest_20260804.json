@@ -1,0 +1,38 @@
+{
+  "schema_version": 1,
+  "kind": "a_share_three_day_walkforward_campaign055_post_terminal_infrastructure_retest",
+  "status": "passed_unchanged_daily_migration_tests_on_external_large_volume_basetemp",
+  "recorded_at": "2026-08-04T02:30:40+08:00",
+  "campaign": "Campaign055",
+  "attempt_class": "infrastructure_only",
+  "reason": "The earlier combined suite failed only because the system temporary volume did not have the test's required copy bytes plus one GiB headroom.",
+  "retest": {
+    "command_semantics": "python -m pytest -q tests/data_collector_tests/test_a_share_tushare_daily_migration.py --basetemp <fresh directory on /Volumes/DIsk>",
+    "exit_code": 0,
+    "passed": 21,
+    "failed": 0,
+    "duration_seconds": 0.79,
+    "provider_requests_issued": false,
+    "tests_use_fake_provider_clients": true
+  },
+  "bindings": {
+    "root_volume_headroom_failure_record": {
+      "path": "docs/a_share_three_day_walkforward_campaign_055_terminal_suite_root_volume_headroom_failure_20260804.json",
+      "sha256": "fd0cd3f2c062482dd673c162eab0ea05252b262a1d78c2f8a9ad9873b4d52ea2"
+    },
+    "tushare_daily_migration_tests": {
+      "path": "tests/data_collector_tests/test_a_share_tushare_daily_migration.py",
+      "sha256": "3214b978508d37745ea6241af4aed83af6e508b7b43bd5f61eeaad826ce62fa2"
+    },
+    "tushare_daily_migration_implementation": {
+      "path": "scripts/a_share_tushare_daily_migration.py",
+      "sha256": "54e9ea86eb9747b8f28fe6a8d57d7f5bb8d51f3bd85270b36d8df19195367116"
+    }
+  },
+  "campaign055_factor_formula_direction_snapshot_audit_comparisons_gates_or_terminal_decision_changed": false,
+  "historical_daily_price_fields_read": [],
+  "historical_forward_return_fields_read": false,
+  "candidate49_historical_return_read": false,
+  "candidate49_ledgers_changed": false,
+  "current_scoring_selection_sizing_or_orders_performed": false
+}

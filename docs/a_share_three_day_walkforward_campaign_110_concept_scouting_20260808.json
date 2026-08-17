@@ -1,0 +1,89 @@
+{
+  "schema_version": 1,
+  "kind": "a_share_three_day_walkforward_campaign110_concept_scouting",
+  "status": "finite_prevalue_catalog_one_genuinely_new_candidate_selected",
+  "recorded_at": "2026-08-07T22:48:05Z",
+  "authoritative_inputs": {
+    "iteration_state": {
+      "path": "docs/a_share_three_day_iteration_status_20260808_campaign109_terminal.json",
+      "sha256": "72ef0f008fa8ccef5f811a3815726f426a242b664de149e0d9f2ef6f51a5e3f7"
+    },
+    "numeric_policy_v70": {
+      "path": "docs/a_share_three_day_walkforward_future_numeric_comparison_eligibility_policy_v70_20260808.json",
+      "sha256": "e526abc1a3c6f8c0d0cbbf74538efe4ee184d5b0ac812e60ee177d83d2fb33c6",
+      "complete_definition_count": 139,
+      "complete_definition_order_sha256": "eb505226fcf171151c5a4ead04c08369136be1af88d64c1710f4ab34d83d83e0",
+      "numeric_comparator_count": 133,
+      "numeric_comparator_order_sha256": "b6fbcaffbc83699155d4291ebaa6a1b0066e4801b82b634cf27dfa6cee89eefc"
+    },
+    "campaign109_completion": {
+      "path": "docs/a_share_three_day_walkforward_campaign_109_terminal_completion_freeze_20260808.json",
+      "sha256": "5bbcb5effaa0cb8ce95db579406b95494f7ede4bcddeed6e6d6cc6a623268d1f"
+    }
+  },
+  "finite_concept_catalog": [
+    {
+      "ordinal": 1,
+      "concept": "continuous-session open-reference directional price occupancy",
+      "decision": "selected",
+      "candidate_name": "intraday_open_reference_directional_occupancy_240m",
+      "reason": "It measures how broadly the 240 continuous-auction closes remain above versus below the fixed 09:31 opening reference. The complete 139-definition library contains endpoint return, signed path efficiency, late return, close-range occupancy entropy, cumulative-VWAP crossing, path-shape and exact-level mechanisms, but no fixed-opening-reference directional occupation time."
+    },
+    {
+      "ordinal": 2,
+      "concept": "realized return excess kurtosis",
+      "decision": "rejected_before_values",
+      "reason": "It would restate tail concentration already represented by return-variance entropy, bipower jump-variation share and volatility-resolution mechanisms."
+    },
+    {
+      "ordinal": 3,
+      "concept": "full-range no-wick directional bar imbalance",
+      "decision": "rejected_before_values",
+      "reason": "Exact open/high/low/close equality would be a sparse binary reexpression of the terminal wick-balance, close-location, bar-direction and body-to-range geometry families."
+    },
+    {
+      "ordinal": 4,
+      "concept": "close-path turning-point density",
+      "decision": "rejected_before_values",
+      "reason": "It recombines return-sign continuity, reversal-energy, weak-order entropy and price-update topology without a new source or economic channel."
+    },
+    {
+      "ordinal": 5,
+      "concept": "intrabar body-magnitude clock center",
+      "decision": "rejected_before_values",
+      "reason": "It would substitute body magnitude into the already terminal amount/range clock-center family and would also attempt a prohibited Campaign109 body-magnitude family continuation."
+    }
+  ],
+  "selected_candidate": {
+    "name": "intraday_open_reference_directional_occupancy_240m",
+    "direction": "higher",
+    "formula": "mean(sign(log(close_i / open_09_31))) over exactly 240 closes from 09:31-11:30 and 13:01-15:00, with exact equality contributing zero",
+    "source_projection": [
+      "datetime",
+      "symbol",
+      "provider",
+      "open",
+      "close"
+    ],
+    "economic_hypothesis": "A stock that spends most of the continuous session above its opening reference exhibits broad intraday demand persistence rather than a terminal-only spike, which may carry into the next-open to third-close horizon.",
+    "valid_range": [
+      -1.0,
+      1.0
+    ],
+    "fixed_reference": "the raw open of the selected 09:31 bar",
+    "tie_semantics": "an exact close equal to the fixed opening reference contributes zero and remains in the 240-bar denominator",
+    "alternate_direction_anchor_window_log_transform_sign_tolerance_threshold_filter_subset_regime_weight_fit_model_or_combination_search": false
+  },
+  "research_boundary": {
+    "campaign110_source_rows_read": false,
+    "campaign110_candidate_or_comparator_values_read": false,
+    "historical_daily_price_or_forward_return_values_read": false,
+    "provider_request_issued": false,
+    "candidate49_historical_backfill_performed": false,
+    "candidate49_ledgers_changed": false,
+    "second_prospective_candidate_created": false,
+    "current_scoring_selection_sizing_or_orders_performed": false,
+    "investment_advice": false
+  },
+  "next_action": "Audit the selected mechanism against every frozen v70 definition and all known support failures before protocol or implementation freeze and before any source, candidate or comparator value."
+}

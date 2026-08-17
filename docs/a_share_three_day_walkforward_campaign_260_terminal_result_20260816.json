@@ -1,0 +1,82 @@
+{
+  "schema_version": 1,
+  "kind": "a_share_three_day_walkforward_campaign260_terminal_result",
+  "recorded_at": "2026-08-16T16:08:00+08:00",
+  "timestamp_semantics": "monotonic_logical_append_time_not_host_wall_clock_measurement",
+  "status": "terminal_numeric_uniqueness_failed_before_returns",
+  "authoritative_inputs": {
+    "campaign259_terminal_state": {"path": "docs/a_share_three_day_iteration_status_20260816_campaign259_prevalue_terminal.json", "sha256": "f61433ae54254e382803c8b27f0c002cd3f3ab11a3e4fc49e9fe29809b704ac8"},
+    "concept_scouting": {"path": "docs/a_share_three_day_walkforward_campaign_260_concept_scouting_20260816.json", "sha256": "5ce22987b427abb60d5bf84feea8c16c2e5dbda6449663be443924e2d67bb568"},
+    "mechanism_overlap_audit": {"path": "docs/a_share_three_day_walkforward_campaign_260_mechanism_overlap_audit_20260816.json", "sha256": "914f6346125e2e45c944b0d708bfe5db568464c64828d59a32792e1e0393c658"},
+    "coverage_audit": {"path": "data/experiments/short_horizon/historical_walkforward/campaign_260/coverage/campaign260_coverage_audit.json", "sha256": "ea32c4c63cb52c0db394b315b12ed54ee7c4f74355e063fbc7f38cf077f4b6c8"},
+    "ordered_uniqueness_audit": {"path": "data/experiments/short_horizon/historical_walkforward/campaign_260/uniqueness/campaign260_ordered_uniqueness_audit.json", "sha256": "06176f6f2af6348d1ddddba6385353268b31a9a5f61b22d02433663a25fd4a1a"},
+    "attempt_ledger": {"path": "data/experiments/short_horizon/historical_walkforward/campaign_260/research_attempt_ledger_v1.json", "sha256": "edcc5caf3cc6e24dd9bddcdc9a34f290c7836166329d48cf48812138a6e24ea4"}
+  },
+  "scientific_result": {
+    "factor": "intraday_amount_clock_third_central_moment_240m",
+    "direction": "higher",
+    "formula": "x_i=i/239; w_i=a_i/sum(a); mu=sum(w_i*x_i); score=0.5+3*sqrt(3)*sum(w_i*(x_i-mu)^3)",
+    "coverage_gate_passed": true,
+    "quality_listing_candidate_rows": 1330171,
+    "median_daily_coverage": 0.9994517542211769,
+    "p05_daily_coverage": 0.9956886515772271,
+    "p05_eligible_names": 138.0,
+    "nonconstant_cross_sectional_sessions": 1632,
+    "numeric_comparison_count": 142,
+    "numeric_comparison_order_complete": true,
+    "numeric_uniqueness_passed": false,
+    "failing_comparator_count": 1,
+    "failing_comparator": "intraday_amount_center_of_mass_240m",
+    "failing_median_daily_rank_correlation": -0.934495698830269,
+    "failing_absolute_median_daily_rank_correlation": 0.934495698830269,
+    "strict_maximum_allowed": 0.8,
+    "other_comparators_passed": 141,
+    "development_trial_count": 0,
+    "development_survivor_count": 0,
+    "stress_trial_count_2024_2025": 0,
+    "selected_factor_count": 0,
+    "retry_reverse_recenter_residualize_rewindow_split_filter_combine_or_rescue_allowed": false,
+    "interpretation": "The signed third central moment is semantically distinct but empirically rank-dominated by the existing amount clock center; it is not numerically independent enough to justify a return read."
+  },
+  "effective_accounting": {
+    "campaign260_attempt_count": 10,
+    "campaign260_infrastructure_failure_count": 4,
+    "campaign260_prevalue_scientific_attempt_count": 6,
+    "campaign260_complete_factor_attempt_count": 1,
+    "campaign260_return_reading_development_trial_count": 0,
+    "cumulative_historical_research_attempt_count": 2504,
+    "cumulative_return_reading_development_trial_count": 314
+  },
+  "library_state": {
+    "complete_factor_definition_count": 159,
+    "complete_factor_definition_order_sha256": "0a83a9c82f8ee0ebb9f57da3214e058e6772c8b7648da181b24a93d10e3de3f8",
+    "campaign260_definition_appended_once": true,
+    "eligible_numeric_comparator_count": 142,
+    "eligible_numeric_comparator_order_sha256": "5d1b35fb5a0d8ac9293008db9963c4a60a94dc940c237c3ed259e5ce44f14aaf",
+    "campaign260_numeric_comparator_appended": false
+  },
+  "candidate49": {
+    "only_active_prospective_candidate": true,
+    "signal_entry_count": 0,
+    "execution_entry_count": 0,
+    "signal_ledger_sha256": "5193f00d7f36da003f53cec387900da4c3d002299f5dfcfc1a95eaa199ed3a79",
+    "execution_ledger_sha256": "d57a3e61eac969e42cafa418ccd8c0a5ee65dcf69da145bb2c096c2a02a2ea4f",
+    "ledgers_changed": false
+  },
+  "research_boundary": {
+    "candidate_snapshot_values_read": true,
+    "numeric_comparator_values_read": true,
+    "historical_daily_price_or_forward_return_values_read": false,
+    "stress_2024_2025_opened": false,
+    "provider_or_web_request_issued": false,
+    "provider_credential_presence_value_or_digest_read": false,
+    "candidate49_plan_or_run_executed": false,
+    "candidate49_historical_backfill_performed": false,
+    "candidate49_ledgers_changed": false,
+    "second_prospective_candidate_created": false,
+    "current_scoring_selection_sizing_positions_or_orders_performed": false,
+    "failed_or_truncated_output_used_as_scientific_or_validation_evidence": false,
+    "investment_advice": false
+  },
+  "next_action": "Publish numeric policy v399, append Campaign260 to unified reports, validate the terminal chain, and authorize Campaign261 for a genuinely independent finite zero-network offline prevalue mechanism."
+}

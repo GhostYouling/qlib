@@ -1,0 +1,84 @@
+{
+  "version": 107,
+  "kind": "a_share_three_day_walkforward_future_numeric_comparison_eligibility_policy",
+  "status": "campaign118_terminal_library_and_accounting_finalized",
+  "recorded_at": "2026-08-13T22:45:00+08:00",
+  "authoritative_inputs": {
+    "policy_v106": {
+      "path": "docs/a_share_three_day_walkforward_future_numeric_comparison_eligibility_policy_v106_20260813.json",
+      "sha256": "b7ef1a9c855c24e48aa161f47c5b7334b0861db9a0aeda3275d457586e608159"
+    },
+    "campaign118_attempt_ledger_v2": {
+      "path": "data/experiments/short_horizon/historical_walkforward/campaign_118/research_attempt_ledger_v2.json",
+      "sha256": "1100be1131016f6514d793ebe05e62d747c01fb663ba8c11eaebeefffefbbe5a"
+    },
+    "campaign118_terminal_result": {
+      "path": "docs/a_share_three_day_walkforward_campaign_118_terminal_result_20260813.json",
+      "sha256": "4f9180715a68252317b9943e1997aef7d2f6836b52bf54f8e0d1aabbf446be30"
+    }
+  },
+  "supersedes_without_rewriting": {
+    "path": "docs/a_share_three_day_walkforward_future_numeric_comparison_eligibility_policy_v106_20260813.json",
+    "sha256": "b7ef1a9c855c24e48aa161f47c5b7334b0861db9a0aeda3275d457586e608159",
+    "preserved": true,
+    "complete_definition_append_count": 1,
+    "numeric_comparator_append_count": 1,
+    "scientific_result_changed": false,
+    "reason": "Campaign118 passed the frozen source, coverage, capacity, variation and all-135 uniqueness gates, so its terminal factor definition is appended exactly once for future semantic and numeric duplicate control; its zero-survivor development rejection is preserved."
+  },
+  "effective_accounting": {
+    "campaign118_attempt_count": 16,
+    "campaign118_ledger_entry_count": 16,
+    "campaign118_infrastructure_failure_count": 8,
+    "campaign118_prevalue_scientific_attempt_count": 1,
+    "campaign118_complete_factor_attempt_count": 1,
+    "campaign118_return_reading_development_trial_count": 1,
+    "campaign118_development_survivor_count": 0,
+    "campaign118_stress_trial_count": 0,
+    "cumulative_historical_research_attempt_count": 914,
+    "cumulative_return_reading_development_trial_count": 304
+  },
+  "complete_historical_feature_library": {
+    "prior_v106_factor_definition_count": 143,
+    "prior_v106_order_sha256": "f7612c7dd7d4a0c015146d60a86e244d91b21a8b6638e4f84e7a18d035581d21",
+    "factor_definition_count": 144,
+    "order_sha256": "077e6c79356fe70193df4d424a004de5734ea395ef06df52e11e3804915d56f7",
+    "campaign118_definition_appended_once": true
+  },
+  "numerical_comparator_eligibility": {
+    "prior_v106_eligible_numeric_comparator_count": 135,
+    "prior_v106_eligible_numeric_comparator_order_sha256": "50323aed7e13a7f0241677beefda6c847482844eea68cf51cb92c833cd316322",
+    "eligible_numeric_comparator_count": 136,
+    "eligible_numeric_comparator_order_sha256": "bb1b850f4277919eb1866e9bfb014577efca6d0f81b184a31b3c202f50eb0282",
+    "campaign118_numeric_comparator_appended_once": true,
+    "purpose": "Future duplicate control only; inclusion does not restore Campaign118 research eligibility."
+  },
+  "campaign118_terminal_classification": {
+    "terminal": true,
+    "development_survivor_count": 0,
+    "stress_2024_2025_opened": false,
+    "positive_mean_rank_ic_fold_count": 3,
+    "positive_normalized_return_fold_count": 2,
+    "positive_pilot_return_fold_count": 0,
+    "median_validation_pilot_return_10bp": -0.02006327685075482,
+    "development_aggregate_20bp_return": -0.158867992390459,
+    "worst_validation_normalized_drawdown": -0.25634789928169766,
+    "retry_or_rescue_allowed": false
+  },
+  "future_campaign_boundary": {
+    "next_campaign": 119,
+    "must_begin_from_genuinely_new_prevalue_frozen_mechanism": true,
+    "campaign118_rescue_or_return_reopen_allowed": false
+  },
+  "research_boundary": {
+    "stress_2024_2025_opened": false,
+    "provider_request_issued": false,
+    "candidate49_same_day_retry_performed": false,
+    "candidate49_failed_response_rerequested": false,
+    "candidate49_historical_backfill_performed": false,
+    "candidate49_ledgers_changed": false,
+    "second_prospective_candidate_created": false,
+    "current_scoring_selection_sizing_positions_or_orders_performed": false,
+    "investment_advice": false
+  }
+}

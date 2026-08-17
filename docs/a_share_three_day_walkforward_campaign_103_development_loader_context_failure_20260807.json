@@ -1,0 +1,35 @@
+{
+  "version": 1,
+  "kind": "a_share_three_day_walkforward_campaign103_infrastructure_failure",
+  "status": "development_data_load_failed_and_recorded_before_complete_trial_metrics",
+  "recorded_at": "2026-08-07T17:40:00+08:00",
+  "stage": "2019_2023_development_data_load",
+  "command_exit_code": 1,
+  "ledger_entry": {
+    "trial_id": "wf103_infrastructure__development_load_001",
+    "entry_sha256": "b8665ecdb95895ece8f22d9b914d16321d4e3d95c733a15cc859351a12f7942b"
+  },
+  "exception": "Campaign103 candidate snapshot semantics changed",
+  "root_cause": "The wrapper replaced its exported compact loader, but the inherited context manager resolves _load_compact_factor_panel from its own generated globals and still called the older manifest-schema loader.",
+  "allowed_repair": "Bind the already-tested Campaign103 loader into the inherited context manager's actual globals, add a regression test for object identity, and use additive preregistration/freeze/activation v2 artifacts. Candidate formula, values, trial, folds, execution, costs, and gates remain unchanged.",
+  "data_access": {
+    "2019_2023_execution_quote_instruments_loaded": 4661,
+    "daily_execution_quote_fields_read_before_failure": true,
+    "candidate_factor_panel_completed": false,
+    "complete_development_metrics_computed": false,
+    "complete_development_trial_count_increment": 0,
+    "2024_2025_stress_opened": false,
+    "2024_2025_return_fields_read": false
+  },
+  "research_boundary": {
+    "provider_request_issued": false,
+    "candidate49_historical_return_read": false,
+    "candidate49_ledgers_changed": false,
+    "current_scoring_selection_sizing_or_orders_performed": false
+  },
+  "attempt_accounting": {
+    "campaign103_infrastructure_failure_increment": 1,
+    "campaign103_complete_factor_attempt_increment": 0,
+    "return_reading_complete_development_trial_increment": 0
+  }
+}

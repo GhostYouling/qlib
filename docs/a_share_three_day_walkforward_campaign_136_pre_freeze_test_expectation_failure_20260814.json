@@ -1,0 +1,39 @@
+{
+  "schema_version": 1,
+  "kind": "a_share_three_day_walkforward_campaign136_pre_freeze_test_expectation_failure",
+  "status": "recorded_and_corrected_before_source_value_decode",
+  "recorded_at": "2026-08-14T11:18:45+0800",
+  "stage": "source_bound_builder_synthetic_test_pre_freeze",
+  "failures": [
+    {
+      "run": 1,
+      "result": "1 failed, 16 passed",
+      "failed_assertion": "invalid_factor_pairs expected 1 but observed 2",
+      "cause": "The synthetic expectation omitted that a nonpositive factor invalidates its current pair and the next row's predecessor pair.",
+      "resolution": "Correct the expectation to 2; do not change the frozen formula."
+    },
+    {
+      "run": 2,
+      "result": "1 failed, 16 passed",
+      "failed_assertion": "invalid_source_identity_pairs expected 2 but observed 1",
+      "cause": "The frozen mutually qualified quality taxonomy counts source-identity failures only after factor validity and adjacency; one potential identity failure was already classified as an invalid-factor pair.",
+      "resolution": "Restore the mutually qualified expectation to 1; do not change the frozen formula."
+    }
+  ],
+  "scientific_effect": {
+    "formula_changed": false,
+    "candidate_definition_changed": false,
+    "direction_changed": false,
+    "source_projection_changed": false,
+    "threshold_or_tolerance_added": false
+  },
+  "research_boundary": {
+    "campaign136_daily_source_values_decoded_or_read": false,
+    "campaign136_candidate_values_computed_or_read": false,
+    "campaign136_comparator_values_read": false,
+    "historical_daily_ohlcv_fields_read": [],
+    "historical_forward_returns_read": false,
+    "provider_request_issued": false,
+    "candidate49_ledgers_changed": false
+  }
+}

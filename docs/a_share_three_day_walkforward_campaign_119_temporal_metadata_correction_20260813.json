@@ -1,0 +1,72 @@
+{
+  "schema_version": 1,
+  "kind": "a_share_three_day_walkforward_campaign119_temporal_metadata_correction",
+  "status": "authoritative_append_only_correction_manual_clock_labels_only",
+  "recorded_at": "2026-08-13T23:49:00+08:00",
+  "reason": "Several Campaign119 JSON records were manually assigned future wall-clock labels instead of reading the local clock. Their bytes and scientific ordering remain unchanged, but those frozen_at/recorded_at strings are not authoritative evidence of execution order.",
+  "immutable_records_not_rewritten": [
+    {
+      "path": "docs/a_share_three_day_walkforward_campaign_119_preregistration.json",
+      "sha256": "ea8be7af38ef4d49c71b1afce7be1151c46fcdb2281cf3c875b90ed3b2fd8c05",
+      "incorrect_embedded_time": "2026-08-13T15:50:00Z",
+      "observed_filesystem_birth_time": "2026-08-13T23:40:24+08:00"
+    },
+    {
+      "path": "docs/a_share_three_day_walkforward_campaign_119_development_implementation_freeze_20260813.json",
+      "sha256": "4eb9d23f37ba27e1b2fe7c18c5e8a8c00ba7ec12f911d3ca27a6e63b83f1dec8",
+      "incorrect_embedded_time": "2026-08-13T23:52:00+08:00",
+      "observed_filesystem_birth_time": "2026-08-13T23:41:12+08:00"
+    },
+    {
+      "path": "docs/a_share_three_day_walkforward_campaign_119_development_activation_binding_20260813.json",
+      "sha256": "5207a25287580bb105a782278910ef061a012e042948f1ec9deefcec95e8491f",
+      "incorrect_embedded_time": "2026-08-13T23:53:00+08:00",
+      "observed_filesystem_birth_time": "2026-08-13T23:41:36+08:00"
+    },
+    {
+      "path": "data/experiments/short_horizon/historical_walkforward/campaign_119/research_attempt_ledger_v3.json",
+      "sha256": "aa43e68061c30df7a04139aa0d785f5beeb3fc8b28f14baa18b3d829159f16fd",
+      "incorrect_embedded_time": "2026-08-13T23:57:00+08:00",
+      "observed_filesystem_birth_time": "2026-08-13T23:44:27+08:00"
+    },
+    {
+      "path": "docs/a_share_three_day_walkforward_campaign_119_terminal_result_20260813.json",
+      "sha256": "f840d950ff9c41afc7ca99e9931c0cbe89af66956e709c9ee8d3d8e3ff7e7650",
+      "incorrect_embedded_time": "2026-08-13T23:58:00+08:00",
+      "observed_filesystem_birth_time": "2026-08-13T23:45:08+08:00"
+    },
+    {
+      "path": "docs/a_share_three_day_walkforward_future_numeric_comparison_eligibility_policy_v108_20260813.json",
+      "sha256": "0c976d5d93121c29a77be588678f150e46884da5896e401097239b62df39d980",
+      "incorrect_embedded_time": "2026-08-13T23:59:00+08:00",
+      "observed_filesystem_birth_time": "2026-08-13T23:46:05+08:00"
+    }
+  ],
+  "authoritative_order_evidence": {
+    "preregistration_observed_before_implementation_freeze": true,
+    "implementation_freeze_observed_before_activation": true,
+    "activation_observed_before_trial_output": true,
+    "activation_birth_time": "2026-08-13T23:41:36+08:00",
+    "trial_ledger": {
+      "path": "data/experiments/short_horizon/historical_walkforward/campaign_119/walkforward/trial_ledger.json",
+      "sha256": "c0c16b83ef1a3630d56e1e07276dcba0de7ec15ead0801f1b9663edde70d92ef",
+      "observed_filesystem_birth_time": "2026-08-13T23:43:17+08:00",
+      "embedded_created_at": "2026-08-13T15:43:11.889557+00:00"
+    },
+    "runner_activation_gate": "The frozen Campaign119 runner verifies the exact activation, preregistration, implementation-freeze, uniqueness and snapshot bindings before delegating to the return-loading implementation.",
+    "scientific_result_or_gate_changed": false
+  },
+  "accounting": {
+    "classification": "infrastructure_failure",
+    "research_attempt_count_increment": 1,
+    "infrastructure_failure_count_increment": 1,
+    "return_reading_trial_count_increment": 0
+  },
+  "research_boundary": {
+    "development_trial_rerun": false,
+    "stress_2024_2025_opened": false,
+    "provider_request_issued": false,
+    "candidate49_ledgers_changed": false,
+    "current_scoring_selection_sizing_positions_or_orders_performed": false
+  }
+}

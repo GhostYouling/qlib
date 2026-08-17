@@ -1,0 +1,58 @@
+{
+  "version": 2,
+  "kind": "a_share_three_day_walkforward_campaign085_no_return_audit_implementation_freeze_v2",
+  "status": "v2_frozen_after_repair_before_coverage_or_comparison_values",
+  "recorded_at": "2026-08-07T00:27:00+08:00",
+  "repair_protocol": {
+    "path": "docs/a_share_three_day_walkforward_campaign_085_no_return_audit_repair_protocol_v2_20260807.json",
+    "sha256": "57753b98cd069b9d554bf4de2e6cffd2f0664c8c997bd4a4477344ea92473a46"
+  },
+  "protocol": {
+    "path": "docs/a_share_three_day_walkforward_campaign_085_no_return_preregistration.json",
+    "sha256": "c08bf9ec921e97ceafa44b143ef6da0bee8223b65841f09093a01358f61936e6"
+  },
+  "snapshot_binding": {
+    "path": "docs/a_share_three_day_walkforward_campaign_085_feature_snapshot_binding_20260806.json",
+    "sha256": "ce70c107d654b1d6151fde87bd5f177ee458cb2db825080cf1c6206df249ba4f"
+  },
+  "audit_runner": {
+    "path": "scripts/a_share_three_day_walkforward_campaign085_no_return_audit.py",
+    "sha256": "9ac0097db35cfeb71c93c1171b2701cd0c7eadcd14c8b71835f41d7548131e9a"
+  },
+  "tests": {
+    "path": "tests/data_collector_tests/test_a_share_three_day_walkforward_campaign085_no_return_audit.py",
+    "sha256": "3af633824771a13a3c63fee190d44b0e4b508fca8d52118b5f698ec8beaba2d7",
+    "passed": 4,
+    "failed": 0,
+    "black_and_ruff_passed": true,
+    "epoch_day_session_ordinals_tested_with_explicit_calendar_years": true
+  },
+  "invalid_v1_audit_and_defect": {
+    "audit_sha256": "d0f874966bff8f170e10ccb74628eb956bf4e526869641f1d7a2fcfa55d55af9",
+    "defect_record_sha256": "d5861d445e42a710f7bbb4eb4512ee837b50a8d2cf422116a94dd6b9e669ec2d",
+    "preserved_and_not_reused": true
+  },
+  "prevalue_environment_failure": {
+    "path": "docs/a_share_three_day_walkforward_campaign_085_no_return_audit_v2_prevalue_python_alias_failure_20260807.json",
+    "sha256": "eb0ce470de91588e7a5116d7dabe7f6a09c5eee6c0428dd036635c84f762df28"
+  },
+  "research_attempt_ledger": {
+    "path": "data/experiments/short_horizon/historical_walkforward/campaign_085/research_attempt_ledger_v7.json",
+    "sha256": "a0a553b1cb703d10b817e936df8009d728287aa186aab5e0bf6d7564de2d2818"
+  },
+  "frozen_v2_semantics": {
+    "year_source": "immutable candidate snapshot manifest file record year repeated for each row in that file",
+    "one_explicit_year_per_session_required": true,
+    "observed_years_and_cohorts_use_explicit_year": true,
+    "candidate_values_reread_from_scratch": true,
+    "comparison_values_load_only_after_coverage_pass": true,
+    "formula_direction_source_snapshot_thresholds_comparison_order_and_development_gate_unchanged": true
+  },
+  "coverage_or_capacity_metrics_computed_before_freeze": false,
+  "comparison_values_read_before_freeze": false,
+  "historical_daily_price_fields_read_before_freeze": [],
+  "historical_forward_returns_read_before_freeze": false,
+  "provider_request_issued_before_freeze": false,
+  "candidate49_ledgers_changed_before_freeze": false,
+  "current_scoring_selection_sizing_or_orders_performed": false
+}

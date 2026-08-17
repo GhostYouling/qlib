@@ -1,0 +1,40 @@
+{
+  "schema_version": 1,
+  "kind": "a_share_three_day_walkforward_campaign087_v2_predecessor_identity_repair_protocol",
+  "status": "frozen_before_campaign087_v2_feature_build_retry_or_source_partition_open",
+  "frozen_at": "2026-08-07T02:05:00+08:00",
+  "failed_v1_runner": {
+    "path": "scripts/a_share_three_day_walkforward_campaign087_features.py",
+    "sha256": "1a30b769a4b42bf8607d74b83d537e9350a3090422538ed6f540753735e83d13"
+  },
+  "v1_implementation_freeze": {
+    "path": "docs/a_share_three_day_walkforward_campaign_087_feature_implementation_freeze_20260807.json",
+    "sha256": "6dc5636fdde912c61ba35afd88f91a05b455236838be6866b66178115bc547d6"
+  },
+  "failure_record": {
+    "path": "data/experiments/short_horizon/historical_walkforward/campaign_087/research_attempt_ledger_v5.json",
+    "sha256": "f28d0f9e2a97db0f3b5132523702c9edea61c12b8673db95d7b5c85ae4188219",
+    "ordinal": 5
+  },
+  "failure_stage": {
+    "candidate_source_partitions_opened": 0,
+    "candidate_source_rows_read": 0,
+    "candidate_values_computed": false,
+    "comparison_values_read": false,
+    "historical_daily_price_or_forward_return_values_read": false,
+    "provider_request_issued": false
+  },
+  "allowed_v2_change": {
+    "scope": "During the inherited builder's protocol validation only, temporarily expose the exact predecessor factor name intraday_intrabar_close_location_serial_persistence_238p so the bound Campaign086 snapshot identity is checked against its own name; restore the frozen Campaign087 factor identity before any source partition is opened.",
+    "campaign086_predecessor_factor_name": "intraday_intrabar_close_location_serial_persistence_238p",
+    "campaign087_factor_name": "intraday_range_amount_profile_alignment_js_240m",
+    "output_manifest_must_bind_v2_runner_and_v2_freeze": true
+  },
+  "forbidden_v2_changes": [
+    "candidate formula, direction, source projection, fixed grid, zero semantics, support rule, or endpoint tolerance",
+    "118-definition or 116-comparator order, coverage, uniqueness, development, cost, or stress gates",
+    "data root, raw or clean source fingerprint, eligible stock-day universe, or output partitioning",
+    "Candidate49 ledgers, historical backfill, a second prospective candidate, provider requests, daily prices, or forward returns"
+  ],
+  "retry_policy": "Exactly one additive v2 build implementation may be frozen and tried under this protocol. The v1 runner, v1 freeze, and failed attempt remain immutable."
+}

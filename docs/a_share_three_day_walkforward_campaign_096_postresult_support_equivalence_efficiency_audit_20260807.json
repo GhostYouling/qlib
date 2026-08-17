@@ -1,0 +1,52 @@
+{
+  "schema_version": 1,
+  "kind": "a_share_three_day_walkforward_campaign096_postresult_support_equivalence_efficiency_audit",
+  "status": "recorded_terminal_candidate_selection_efficiency_failure_without_formula_or_result_rescue",
+  "recorded_at": "2026-08-07T04:36:30Z",
+  "campaign096_no_return_audit": {
+    "path": "data/experiments/short_horizon/historical_walkforward/campaign_096/no_return/20260807T043442Z_campaign096_no_return_audit.json",
+    "sha256": "ce5715ae81d7252e7bc3d7549fd1c069c3d1e19156c1a5c25f4802790ce2fea1"
+  },
+  "campaign086_terminal_research_record": {
+    "path": "docs/a_share_three_day_walkforward_campaign_086_research_record.json",
+    "sha256": "f39f1b7fc6d7310b9749f519c1929d8e7f704a026370fceefd40b6bfed9a2897"
+  },
+  "campaign086_no_return_audit": {
+    "path": "data/experiments/short_horizon/historical_walkforward/campaign_086/no_return/20260806T171922Z_campaign086_no_return_audit.json",
+    "sha256": "9c9357fd69dec12b185baab5a5349911fdad3153e61c685ec9f55edfcf21d001"
+  },
+  "evidence": {
+    "campaign086_factor": "intraday_intrabar_close_location_serial_persistence_238p",
+    "campaign096_factor": "intraday_intrabar_close_location_total_variation_238p",
+    "shared_source_grid": "09:31-11:30 and 13:01-15:00 with no lunch pair",
+    "shared_state_availability_rule": "positive-range finite ordered HLC own-bar close-location states with at least 120 informative adjacent pairs",
+    "campaign086_candidate_eligible_rows": 1193690,
+    "campaign096_candidate_eligible_rows": 1193690,
+    "campaign086_median_coverage": 0.9231861259965655,
+    "campaign096_median_coverage": 0.9231861259965655,
+    "campaign086_p05_coverage": 0.8075504413619168,
+    "campaign096_p05_coverage": 0.8075504413619168,
+    "campaign086_eligible_names_p05": 127.55000000000001,
+    "campaign096_eligible_names_p05": 127.55000000000001,
+    "campaign086_potential_non_overlapping_three_session_cohorts": 538,
+    "campaign096_potential_non_overlapping_three_session_cohorts": 538,
+    "campaign096_sessions_with_at_least_50_finite_names": 1622
+  },
+  "finding": "Although the numerical operator is distinct from Campaign086, Campaign096 reused the same effective availability predicate. Its coverage failure was therefore predictable from the terminal Campaign086 evidence before materialization. Selecting it was an efficiency failure in prevalue scouting, not evidence about predictive returns.",
+  "mandatory_future_scouting_rule": "Before freezing Campaign097 or later, compare the candidate's exact availability predicate against every terminal coverage failure. Reject before values any predicate that is identical to, or provably no broader than, a known failed predicate under the same universe and thresholds unless an independently frozen source or support change proves the coverage gate can differ.",
+  "prohibited_rescues": [
+    "lower the 120-pair support",
+    "bridge or impute zero-range states",
+    "reuse Campaign096 with a different norm, direction, threshold, subset, or filter",
+    "reinterpret the known coverage failure as a return result",
+    "open Campaign096 comparator values or historical returns"
+  ],
+  "research_boundary": {
+    "campaign086_or_campaign096_numeric_factor_values_compared": false,
+    "comparison_values_read_for_campaign096": false,
+    "historical_daily_price_fields_read": [],
+    "historical_forward_returns_read": false,
+    "provider_request_issued": false,
+    "candidate49_ledgers_changed": false
+  }
+}

@@ -1,0 +1,53 @@
+{
+  "version": 1,
+  "kind": "a_share_three_day_walkforward_campaign055_infrastructure_failure",
+  "status": "post_v1_frozen_prestate_test_failure_preserved_additive_post_snapshot_tests_required",
+  "recorded_at": "2026-08-04T00:34:00+08:00",
+  "stage": "v2_snapshot_repair_pre_freeze_test_run",
+  "attempt_classification": "infrastructure_only_failure",
+  "test_result": {
+    "passed": 24,
+    "failed": 1,
+    "failed_test": "test_campaign055_repair_status_remains_no_value_and_no_audit",
+    "failed_assertion": "snapshot_exists is False",
+    "observed_value": true,
+    "cause": "The immutable implementation-repair test correctly described the pre-build state. The authorized v1 build has since published a snapshot, so the historical prestate assertion is no longer a current terminal assertion."
+  },
+  "authoritative_inputs": {
+    "immutable_prestate_test": {
+      "path": "tests/data_collector_tests/test_a_share_three_day_walkforward_campaign055_implementation_freeze_repair.py",
+      "sha256": "bca36486196036e5612a54185bbb2b15e9f8bbfa964a9480026f8a11228be23e"
+    },
+    "v1_snapshot_manifest": {
+      "path": "/Volumes/DIsk/qlib-a-share-tushare-1m/derived/a_share/rich/tushare/minute_walkforward_campaign055_feature_library/tushare_stk_mins_1m_2019_2025_ea0cbb8f_walkforward_campaign055_feature_library_v1/snapshot_manifest.json",
+      "sha256": "6cbdfafb216c3064271c8eba301ce85dfa2ed27d14afb4073e96aff62be445b6"
+    },
+    "v1_failure_and_v2_authorization": {
+      "path": "docs/a_share_three_day_walkforward_campaign_055_snapshot_v1_protocol_evidence_failure_repair_20260804.json",
+      "sha256": "d6c3172a082fb2bb607431fd82dbba30a513851b1bc04259269dff3b19131c49"
+    },
+    "v2_repair_entrypoint": {
+      "path": "scripts/a_share_three_day_walkforward_campaign055_features_v5.py",
+      "sha256": "32241f9ccadcd2f8867c0d9fe1b8bb0c21a9cc742c252eb6b81ff9c630627a79"
+    },
+    "v2_repair_tests": {
+      "path": "tests/data_collector_tests/test_a_share_three_day_walkforward_campaign055_snapshot_repair.py",
+      "sha256": "fa175e5aa1c6f47dc76bf49f05b40d6a27d86faabf18cea9a5f0ad642bb52172"
+    }
+  },
+  "data_boundary": {
+    "v1_partition_hash_verification_passed": true,
+    "candidate_values_read": true,
+    "comparison_values_read": false,
+    "historical_daily_price_fields_read": [],
+    "historical_forward_return_fields_read": false,
+    "provider_request_issued": false,
+    "candidate49_ledgers_changed": false
+  },
+  "required_test_transition": {
+    "immutable_prestate_test_may_change": false,
+    "additive_post_snapshot_test_required": true,
+    "current_suite_must_exclude_historical_snapshot_absent_assertion": true,
+    "new_test_must_assert_v1_preserved_rejected_and_v2_clean_or_absent_by_stage": true
+  }
+}

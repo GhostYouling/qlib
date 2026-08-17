@@ -1,0 +1,33 @@
+{
+  "version": 1,
+  "kind": "a_share_three_day_walkforward_campaign064_no_return_audit_turn_handoff_continuation",
+  "status": "exact_v3_audit_restart_authorized_after_external_session_disappearance_without_result",
+  "recorded_at": "2026-08-05T10:30:00+08:00",
+  "purpose": "Authorize a fresh execution session for the unchanged v3 complete audit after the prior process disappeared without an exit status or audit artifact during task handoff.",
+  "effective_audit_implementation_freeze": {
+    "path": "docs/a_share_three_day_walkforward_campaign_064_no_return_audit_implementation_freeze_v3_20260805.json",
+    "sha256": "af4d47b2d7f14fbb6ddbe55dcf8b53847ed00faf7120027ee8df72076fed03aa"
+  },
+  "interruption_ledger": {
+    "path": "data/experiments/short_horizon/historical_walkforward/campaign_064/research_attempt_ledger_v10.json",
+    "sha256": "f04ca7c0a7d077bc53aaf404a1a675a30a97f872ff11a7859a171dc246864637",
+    "attempt_count": 11,
+    "complete_factor_attempt_count": 0,
+    "return_reading_trial_count": 0
+  },
+  "observed_external_state": {
+    "audit_process_present": false,
+    "execution_session_present": false,
+    "terminal_output_or_exit_status_recoverable": false,
+    "audit_json_present": false,
+    "candidate49_ledgers_changed": false
+  },
+  "authorized_restart": {
+    "runner_or_test_change_allowed": false,
+    "freeze_protocol_comparison_order_gate_threshold_or_worker_change_allowed": false,
+    "exact_command_and_parameters_required": true,
+    "daily_price_or_return_access_allowed": false,
+    "reason": "An execution-session disappearance without a result is not a completed audit and cannot be treated as either admission or rejection."
+  },
+  "next_action": "Run the exact v3 complete audit under a fresh execution session and accept only a terminal exit plus atomically written audit JSON as completion evidence."
+}

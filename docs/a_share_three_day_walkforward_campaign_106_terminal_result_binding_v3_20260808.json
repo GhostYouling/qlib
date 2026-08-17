@@ -1,0 +1,58 @@
+{
+  "schema_version": 3,
+  "kind": "a_share_three_day_walkforward_campaign106_terminal_result_binding",
+  "status": "campaign106_terminal_infrastructure_inconclusive_final_accounting_791",
+  "recorded_at": "2026-08-07T19:59:35Z",
+  "supersedes_without_rewriting": {
+    "path": "docs/a_share_three_day_walkforward_campaign_106_terminal_result_binding_v2_20260808.json",
+    "sha256": "12aeef0018589bcf26815ff6f0a512a2a8fd307ad799cf5fe20dbcd737d80145",
+    "preserved": true,
+    "all_scientific_fields_and_790_count_intermediate_preserved_by_reference": true
+  },
+  "new_failure": {
+    "path": "docs/a_share_three_day_walkforward_campaign_106_accounting_correction_test_field_alias_failure_20260808.json",
+    "sha256": "ef000afbf992904a8fc051c278567f802f5eb8187ee7adbf8a4f2fb22ca91d39"
+  },
+  "current_research_attempt_ledger": {
+    "path": "data/experiments/short_horizon/historical_walkforward/campaign_106/research_attempt_ledger_v5.json",
+    "sha256": "9e6d04d6652bce2d248bf07ccc10deed7e36ddf9427e9d064ec2d1ce73dcc25b",
+    "entry_count": 5,
+    "chain_tip_sha256": "fb37e08aef4fc5778e70ba77dfbdd757c7c39fd2e27165f027dc1d194c978959"
+  },
+  "accounting": {
+    "campaign106_attempt_count": 5,
+    "campaign106_ledger_entry_count": 5,
+    "campaign106_infrastructure_failure_count": 4,
+    "campaign106_prevalue_scientific_attempt_count": 1,
+    "campaign106_complete_factor_attempt_count": 1,
+    "campaign106_scientifically_decided_factor_attempt_count": 0,
+    "campaign106_return_reading_complete_development_trial_count": 0,
+    "campaign106_development_survivor_count": 0,
+    "campaign106_stress_trial_count": 0,
+    "cumulative_historical_research_attempt_count": 791,
+    "cumulative_return_reading_development_trial_count": 300
+  },
+  "preserved_scientific_terminal_semantics": {
+    "factor": "intraday_nonzero_range_bar_share_240m",
+    "score_direction": "higher",
+    "complete_definition_eligible_for_future_inventory": true,
+    "numeric_comparator_eligible_for_future_uniqueness": false,
+    "scientific_admissibility": "inconclusive_due_to_infrastructure",
+    "coverage_gate_passed": true,
+    "numeric_comparisons_required": 132,
+    "numeric_comparison_decision_count_published": 0,
+    "development_trial_count": 0,
+    "development_survivor_count": 0,
+    "stress_2024_2025_opened": false,
+    "retry_reverse_redefine_filter_residualize_combine_or_rescue_allowed": false
+  },
+  "scientific_result_changed": false,
+  "formula_direction_gate_or_library_order_changed": false,
+  "historical_daily_prices_or_forward_returns_read_by_new_failure": false,
+  "provider_request_issued": false,
+  "candidate49_ledgers_changed": false,
+  "second_prospective_candidate_created": false,
+  "current_scoring_selection_sizing_or_orders_performed": false,
+  "investment_advice": false,
+  "next_action": "Freeze policy v66 and iteration state v3 with cumulative attempt count 791, validate them through a new alias-aware test, then resume Campaign107 before-value work."
+}

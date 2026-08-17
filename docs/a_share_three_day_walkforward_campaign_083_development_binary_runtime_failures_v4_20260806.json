@@ -1,0 +1,82 @@
+{
+  "schema_version": 1,
+  "version": 4,
+  "kind": "a_share_three_day_walkforward_campaign083_development_binary_runtime_failures",
+  "status": "four_failures_recorded_before_market_data_or_return_read",
+  "recorded_at": "2026-08-06T21:00:00+08:00",
+  "failures": [
+    {
+      "ordinal": 1,
+      "stage": "full_development_retry_qlib_data_extension_load",
+      "observed": "The second development command failed and appended wf083_infrastructure__development_load_002 because rolling.cpython-312-darwin.so could not locate @rpath/libc++.1.dylib; the embedded failed path was /opt/anaconda3/lib.",
+      "root_cause": "The existing compiled Qlib rolling extension was built for the local Conda runtime layout, while the isolated runtime has no libc++.1.dylib in its own lib directory.",
+      "correction": "Do not rewrite the extension or bypass the failure. Evaluate frozen interpreter-only compatibility alternatives before another retry."
+    },
+    {
+      "ordinal": 2,
+      "stage": "conda_interpreter_compatibility_diagnostic",
+      "observed": "The local Conda Python successfully imported qlib.data with numpy 1.26.4, pandas 2.2.2, pyarrow 16.1.0, and scipy 1.13.1, but its global pip check exited nonzero for unrelated streamlit/protobuf and python-jose/pyasn1 constraints.",
+      "root_cause": "The broad Conda environment has two dependency metadata conflicts outside the Campaign083 development import and calculation path.",
+      "correction": "If the Conda interpreter is later authorized, bind its executable and libc++ hashes, record the two unrelated pip-check conflicts explicitly, and require the exact Campaign083 imports/tests rather than claim a globally clean environment."
+    },
+    {
+      "ordinal": 3,
+      "stage": "isolated_runtime_dyld_library_path_diagnostic",
+      "observed": "DYLD_LIBRARY_PATH pointed at the Conda lib directory and caused isolated-runtime NumPy 2.3.5 to resolve an incompatible BLAS/Accelerate symbol before qlib.data import.",
+      "root_cause": "DYLD_LIBRARY_PATH globally overrides native dependency resolution and is too broad for a one-library repair.",
+      "correction": "Reject DYLD_LIBRARY_PATH for development; never use this diagnostic environment for a trial."
+    },
+    {
+      "ordinal": 4,
+      "stage": "isolated_runtime_dyld_fallback_library_path_diagnostic",
+      "observed": "DYLD_FALLBACK_LIBRARY_PATH located libc++, but the rolling extension then failed because it was compiled against NumPy 1.x and cannot run with isolated-runtime NumPy 2.3.5.",
+      "root_cause": "The compiled extension ABI requires a NumPy 1.x development interpreter, not only a dynamic-library path fallback.",
+      "correction": "Reject the isolated NumPy 2.x interpreter for Qlib development. Use only a separately frozen NumPy 1.x-compatible interpreter if all campaign bindings and repair-state tests pass."
+    }
+  ],
+  "preserved_base_trial_ledger": {
+    "path": "data/experiments/short_horizon/historical_walkforward/campaign_083/walkforward/trial_ledger.json",
+    "sha256": "a8db9dcecf49fe6ea93636324904993370165db224351bddb494e62a42332ae6",
+    "entry_count": 2,
+    "entry_phases": [
+      "infrastructure_failure",
+      "infrastructure_failure"
+    ],
+    "trial_ids": [
+      "wf083_infrastructure__development_load_001",
+      "wf083_infrastructure__development_load_002"
+    ],
+    "complete_development_trial_count": 0,
+    "candidate49_historical_return_read": false
+  },
+  "compatible_interpreter_evidence": {
+    "path": "/Volumes/DIsk/Coding/anaconda3/bin/python3.12",
+    "sha256": "b21ee43bcb627125a1b54b1fceb97bad564afbab38235cb9d72cf1f278d5751c",
+    "libcxx_path": "/Volumes/DIsk/Coding/anaconda3/lib/libc++.1.0.dylib",
+    "libcxx_sha256": "1b9318492353b7b7b3b48b9fa458d2b07b356a5eb8c0931952247fc17bf95c21",
+    "qlib_data_import_passed": true,
+    "qlib_version": "0.9.8.dev30",
+    "numpy": "1.26.4",
+    "pandas": "2.2.2",
+    "pyarrow": "16.1.0",
+    "scipy": "1.13.1",
+    "pytest": "9.0.3",
+    "global_pip_check_clean": false,
+    "known_unrelated_conflicts": [
+      "streamlit 1.37.1 requires protobuf<6 but protobuf 6.33.6 is installed",
+      "python-jose 3.5.0 requires pyasn1>=0.5.0 but pyasn1 0.4.8 is installed"
+    ]
+  },
+  "research_boundary": {
+    "complete_development_trial_count": 0,
+    "market_execution_data_loaded": false,
+    "historical_daily_price_fields_read": [],
+    "historical_forward_returns_read": false,
+    "partial_statistics_reused": false,
+    "stress_2024_2025_opened": false,
+    "provider_request_issued": false,
+    "candidate49_historical_backfill_performed": false,
+    "candidate49_ledgers_changed": false,
+    "current_scoring_selection_sizing_or_orders_performed": false
+  }
+}

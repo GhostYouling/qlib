@@ -1,0 +1,101 @@
+{
+  "schema_version": 2,
+  "kind": "a_share_three_day_iteration_status",
+  "status": "campaign098_effectively_verified_terminal_development_rejection_ready_for_campaign099_offline_iteration",
+  "recorded_at": "2026-08-07T09:04:00Z",
+  "supersedes_without_rewriting": {
+    "path": "docs/a_share_three_day_iteration_status_20260807_campaign098_verified.json",
+    "sha256": "bb27075168373edaf3be61fcf0971a82d3e1ae73cfbc474d5eea2312b6d8ae23",
+    "preserved": true,
+    "scientific_result_changed": false
+  },
+  "effective_terminal_completion_freeze": {
+    "path": "docs/a_share_three_day_walkforward_campaign_098_terminal_completion_freeze_v2_20260807.json",
+    "sha256": "6bccb2d3c1540fe1228696a45875d8a0382b2a04e15d3838922e47f31c9095da"
+  },
+  "effective_attempt_ledger": {
+    "path": "data/experiments/short_horizon/historical_walkforward/campaign_098/research_attempt_ledger_v6.json",
+    "sha256": "f9f1ed8da63290be37fac8b6c43a76b7e703a8b8bb934792ea3d57decab37d24"
+  },
+  "effective_future_numeric_policy": {
+    "path": "docs/a_share_three_day_walkforward_future_numeric_comparison_eligibility_policy_v47_20260807.json",
+    "sha256": "1f528805f5b6518acd96f2427544bf7448e109390d1ab37da39098bbb9661981",
+    "complete_definition_count": 130,
+    "complete_definition_order_sha256": "5146b99fc3c70723b0b62c541ba560b8456199d08546b81d2520fa69eb8a4b57",
+    "numeric_comparator_count": 127,
+    "numeric_comparator_order_sha256": "5777fbeab91e603c45d271dfe018388129bc7fab83cc9a77b7776529ba9d0990"
+  },
+  "research_mode": {
+    "historical_walkforward_is_primary_iteration_engine": true,
+    "historical_offline_work_may_run_at_any_time": true,
+    "wait_for_1630_or_new_daily_bar_required_for_historical_work": false,
+    "candidate49_future_observation_is_independent_confirmation_layer": true,
+    "historical_results_may_generate_current_scores_selection_sizing_or_orders": false
+  },
+  "campaign098_terminal_result": {
+    "factor": "intraday_range_clock_variance_240m",
+    "direction": "higher",
+    "feature_snapshot_rows": 1331759,
+    "feature_snapshot_finite_rows": 1328449,
+    "median_coverage": 0.9985369414262841,
+    "p05_coverage": 0.9935483870967742,
+    "numeric_comparison_count": 126,
+    "maximum_absolute_median_daily_rank_correlation": 0.4920234896112269,
+    "development_trial_count": 1,
+    "positive_validation_rank_ic_fold_count": 3,
+    "positive_validation_10bp_return_fold_count": 1,
+    "development_aggregate_10bp_return": -0.06293613783677854,
+    "development_aggregate_20bp_return": -0.13581323573324766,
+    "worst_validation_normalized_drawdown": -0.2612672016514638,
+    "development_survivor_count": 0,
+    "stress_2024_2025_opened": false,
+    "stress_2024_2025_return_fields_read": false,
+    "terminal": true,
+    "same_campaign_rescue_reweight_rerun_or_combination_allowed": false
+  },
+  "final_accounting": {
+    "campaign098_attempt_count": 13,
+    "campaign098_ledger_entry_count": 16,
+    "campaign098_infrastructure_implementation_or_recording_failure_count": 12,
+    "campaign098_complete_factor_attempt_count": 1,
+    "campaign098_return_reading_development_trial_count": 1,
+    "campaign098_development_survivor_count": 0,
+    "campaign098_stress_trial_count": 0,
+    "cumulative_historical_research_attempt_count": 692,
+    "cumulative_return_reading_development_trial_count": 293
+  },
+  "active_data_roots": {
+    "daily_qlib_root": "/Volumes/DIsk/Disk-Coding/qlib/data/qlib/cn_a_share",
+    "daily_calendar_last_session": "2026-07-13",
+    "accepted_minute_root": "/Volumes/DIsk/qlib-a-share-tushare-1m"
+  },
+  "candidate49": {
+    "registration_id": "candidate49_intraday_cumulative_vwap_crossing_rate_240m_v1",
+    "remains_only_active_prospective_candidate": true,
+    "signal_ledger": {
+      "path": "data/experiments/short_horizon/candidate49_future_signal_ledger.json",
+      "sha256": "5193f00d7f36da003f53cec387900da4c3d002299f5dfcfc1a95eaa199ed3a79",
+      "entry_count": 0
+    },
+    "execution_ledger": {
+      "path": "data/experiments/short_horizon/candidate49_future_execution_ledger.json",
+      "sha256": "d57a3e61eac969e42cafa418ccd8c0a5ee65dcf69da145bb2c096c2a02a2ea4f",
+      "entry_count": 0
+    },
+    "historical_backfill_performed": false,
+    "ledgers_changed_by_campaign098": false,
+    "second_prospective_candidate_created": false
+  },
+  "provider_credential": {
+    "source": ".env",
+    "regular_file_non_symlink": true,
+    "mode": "0600",
+    "git_ignored": true,
+    "recognized_nonempty_token_key_count": 1,
+    "secret_printed_hashed_or_logged": false
+  },
+  "provider_request_issued_by_campaign098": false,
+  "current_scoring_selection_sizing_or_orders_performed": false,
+  "investment_advice": false,
+  "next_safe_action": "Start Campaign099 only with a genuinely new prevalue-frozen mechanism and support predicate, bind policy v47, append every attempt, and keep Candidate49 isolated."
+}

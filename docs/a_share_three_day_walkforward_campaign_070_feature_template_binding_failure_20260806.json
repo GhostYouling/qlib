@@ -1,0 +1,17 @@
+{
+  "version": 1,
+  "kind": "a_share_three_day_walkforward_campaign070_infrastructure_failure",
+  "status": "recorded_before_campaign070_source_or_candidate_values",
+  "recorded_at": "2026-08-06T04:38:00+08:00",
+  "failure_stage": "feature_runner_import_template_binding",
+  "error": "RuntimeError: frozen Campaign069 feature runner changed",
+  "cause": "The new wrapper initially contained an incomplete remembered Campaign069 runner digest rather than the observed immutable file digest.",
+  "repair_scope": "Replace only the Campaign069 template SHA-256 constant with the observed file SHA-256 f72cbd4b88aca872d7255fee60151e5344ae72b25b41c0e808c1a2e1698e0b75.",
+  "formula_direction_lag_event_timing_comparator_order_gates_or_data_changed": false,
+  "source_rows_read": false,
+  "candidate_values_read": false,
+  "comparison_values_read": false,
+  "daily_price_or_forward_return_read": false,
+  "provider_request_issued": false,
+  "candidate49_ledgers_changed": false
+}

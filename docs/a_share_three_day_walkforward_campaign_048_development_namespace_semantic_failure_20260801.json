@@ -1,0 +1,50 @@
+{
+  "version": 1,
+  "kind": "a_share_three_day_walkforward_campaign048_development_namespace_semantic_failure",
+  "status": "failed_closed_before_historical_daily_price_or_return_read",
+  "recorded_at": "2026-08-01T05:15:00Z",
+  "purpose": "Preserve the first Campaign048 development-boundary implementation failure before a corrected version is created.",
+  "bindings": {
+    "development_preregistration_v1": {
+      "path": "docs/a_share_three_day_walkforward_campaign_048_preregistration.json",
+      "sha256": "3f8c3b27afb67d298a7b03d1bc0ef56fab6025b3049689a75bd91d51e744a7b1"
+    },
+    "development_runner_v1": {
+      "path": "scripts/a_share_three_day_walkforward_campaign048.py",
+      "sha256": "1c392b379f48d3220b9cdb7026ccc17f9a052dd89e787622d32b57116d5fb9e3"
+    },
+    "no_return_audit_freeze": {
+      "path": "docs/a_share_three_day_walkforward_campaign_048_no_return_audit_freeze_20260801.json",
+      "sha256": "2a7a67ece68a1ccb6925c87861a7090d74f034bba5fc5065b08ec22abaa199b6"
+    }
+  },
+  "observed_test_command": "PYTHONPATH=. pytest -q tests/data_collector_tests/test_a_share_three_day_walkforward_campaign048.py",
+  "observed_test_file_sha256": "d0994d884005e5f6b7892efebae69b762c07bc391b581021433c8079df212996",
+  "observed_test_result": {
+    "passed": 0,
+    "failed": 4
+  },
+  "failure": {
+    "class": "pre_return_development_namespace_binding_error",
+    "detail": "The exact trial-id override was installed in the outer generated namespace while the inherited execution functions resolve build_trial_catalog in the inner engine namespace. Boundary tests also referenced DEFAULT_CAMPAIGN from the wrong namespace and a factor constant not exported by v3.",
+    "development_preregistration_binding_count": 17,
+    "development_preregistration_bindings_passed": 17,
+    "runner_status_ledger_entry_count": 0,
+    "runner_status_stress_intent_exists": false,
+    "runner_status_stress_record_exists": false
+  },
+  "immutability_and_repair": {
+    "v1_preregistration_rewritten": false,
+    "v1_runner_rewritten": false,
+    "repair_requires_new_runner_and_preregistration_version": true
+  },
+  "research_boundary": {
+    "historical_daily_price_fields_read": [],
+    "historical_forward_returns_read": false,
+    "provider_request_issued": false,
+    "candidate49_historical_return_signal_execution_or_milestone_backfill_performed": false,
+    "candidate49_prospective_ledgers_changed": false,
+    "candidate50_activation_created": false,
+    "current_scoring_selection_sizing_or_orders_performed": false
+  }
+}

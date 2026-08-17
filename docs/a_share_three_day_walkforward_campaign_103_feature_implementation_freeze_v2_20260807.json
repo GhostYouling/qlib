@@ -1,0 +1,60 @@
+{
+  "version": 2,
+  "kind": "a_share_three_day_walkforward_campaign103_feature_implementation_freeze",
+  "status": "frozen_before_campaign103_values",
+  "recorded_at": "2026-08-07T16:42:00+08:00",
+  "purpose": "Additively activate the narrow implementation-binding repair after the v1 validator failed before source values.",
+  "supersedes_without_rewriting": {
+    "v1_freeze": {
+      "path": "docs/a_share_three_day_walkforward_campaign_103_feature_implementation_freeze_20260807.json",
+      "sha256": "785550c4cdfe41f684f5eb142a442e4214fafae22f7e92877654e7994bd2dc82"
+    },
+    "failure_record": {
+      "path": "docs/a_share_three_day_walkforward_campaign_103_feature_freeze_binding_failure_20260807.json",
+      "sha256": "55b4f0482c44799df6a25e1332a11ba31b7009d0bfed49079259b156a2f4762f"
+    }
+  },
+  "protocol": {
+    "path": "docs/a_share_three_day_walkforward_campaign_103_no_return_preregistration.json",
+    "sha256": "ea7aae7dcae02629cb00e39e6bff903b7ce2afe14aeb1e29b3b612d381297245"
+  },
+  "source_catalog": {
+    "path": "docs/a_share_three_day_walkforward_campaign_103_source_catalog.json",
+    "sha256": "6cfa9e7a1a050037fac15a6822a06fc2fab3ac4b6959a41433f81213b6532a76"
+  },
+  "source_manifest": {
+    "path": "/Volumes/DIsk/qlib-a-share-tushare-1m/derived/a_share/rich/tushare/minute_walkforward_campaign102_design_matrix/tushare_stk_mins_1m_2019_2025_ea0cbb8f_walkforward_campaign102_design_matrix_v1/snapshot_manifest.json",
+    "sha256": "fc9ab498462439731785a0eabbde370c1fd883c8d771eba312c85aa912d3cebe",
+    "dataset_sha256": "cceec2b790d134a89914e83e0697c1e6abff605a85fd85be74de68067faddb92"
+  },
+  "feature_builder": {
+    "path": "scripts/a_share_three_day_walkforward_campaign103_features.py",
+    "sha256": "5fc7edcf25a46d2a9ad0839920f7770815a1f3678dc0181bc8e93b489902e648"
+  },
+  "synthetic_tests": {
+    "path": "tests/data_collector_tests/test_a_share_three_day_walkforward_campaign103_features.py",
+    "sha256": "5e013e7391763d648c368f1c485ad2cc7a64aa94fd25148de29b513809cfc171",
+    "result": "8_passed_after_narrow_binding_repair"
+  },
+  "repair_scope": {
+    "changed": "The validator now reads unchanged boundary booleans from research_boundary and uses this v2 freeze path.",
+    "candidate_formula_changed": false,
+    "source_or_calendar_changed": false,
+    "support_or_pair_floor_changed": false,
+    "vote_or_tie_rule_changed": false,
+    "coverage_or_uniqueness_gate_changed": false,
+    "comparison_order_changed": false,
+    "development_catalog_changed": false
+  },
+  "research_boundary": {
+    "campaign103_candidate_or_paired_support_values_read_before_freeze": false,
+    "campaign103_comparison_values_read_before_freeze": false,
+    "historical_daily_price_or_forward_return_values_read_before_freeze": false,
+    "provider_request_issued_before_freeze": false,
+    "candidate49_historical_backfill_performed_before_freeze": false,
+    "candidate49_ledgers_changed_before_freeze": false,
+    "second_prospective_candidate_created_before_freeze": false,
+    "current_scoring_selection_sizing_or_orders_performed_before_freeze": false
+  },
+  "decision": "Restart the exact Campaign103 build from the beginning."
+}

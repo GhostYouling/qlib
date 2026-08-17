@@ -1,0 +1,79 @@
+{
+  "schema_version": 5,
+  "kind": "a_share_three_day_walkforward_campaign115_source_acceptance_runner_freeze",
+  "status": "runner_v5_read_only_attempt_journal_forensics_frozen",
+  "recorded_at": "2026-08-09T04:40:00+08:00",
+  "recorded_at_semantics": "monotonic_logical_append_time_after_v4_recorded_at_04_30_not_host_wall_clock_measurement",
+  "supersedes_without_rewriting": {
+    "path": "docs/a_share_three_day_walkforward_campaign_115_source_acceptance_runner_freeze_v4_20260809.json",
+    "sha256": "0771cf07f877317a339b54a5527338814e718fce59ddbf49a8c72b199e3b8856",
+    "preserved": true,
+    "reason": "V4 durably recorded request and publication phases but a later operator could only see that the one-shot marker existed. V5 adds a bounded, fail-closed, credential-free inspect-attempt path that validates the exact journal state machine and classifies terminal evidence without loading a Token, contacting the provider, or authorizing a retry."
+  },
+  "protocol": {
+    "path": "docs/a_share_three_day_walkforward_campaign_115_source_acceptance_protocol_20260809.json",
+    "sha256": "ad9b789fccada781e77662f95d7d3edaffc5371d605a85a9304a178e3ad4cc6c"
+  },
+  "implementation": {
+    "runner_path": "scripts/a_share_tushare_limit_up_queue_acceptance.py",
+    "runner_sha256": "920cd2183444c7a28c653f71846468aa8f0baf5031a039e7bdd17b59beac9b52",
+    "test_path": "tests/data_collector_tests/test_a_share_tushare_limit_up_queue_acceptance.py",
+    "test_sha256": "402e8f9232381a2ea6e4bad75466c87df828ab2b7e79e4ebf77f869d01db4892",
+    "adapter_path": "scripts/a_share_tushare_limit_up_queue_persistence.py",
+    "adapter_sha256": "807d06f7dec4ca0a94beb28912b686e8cb01fbf36c7f473e69564de16af5f5dd",
+    "runtime_reads_this_freeze_before_credential_access": true,
+    "runtime_recomputes_runner_test_protocol_and_adapter_sha256": true,
+    "missing_malformed_or_mismatched_freeze_makes_plan_ready_false": true,
+    "provider_call_only_exists_in_confirmed_run_path": true,
+    "maximum_provider_calls": 1,
+    "request_formula_source_direction_date_or_gate_changed_from_v4": false
+  },
+  "read_only_forensics": {
+    "command": "python scripts/a_share_tushare_limit_up_queue_acceptance.py inspect-attempt",
+    "maximum_journal_bytes": 65536,
+    "requires_regular_unique_inode_mode_0600_and_nofollow_open": true,
+    "requires_complete_utf8_json_lines": true,
+    "validates_exact_intent_keys_and_bound_protocol": true,
+    "validates_exact_event_keys_transition_order_provider_call_monotonicity_and_detail_whitelists": true,
+    "validates_private_terminal_json_identity_mode_schema_fixed_values_and_journal_binding": true,
+    "validates_success_factor_frame_path_row_count_and_sha256": true,
+    "distinguishes_no_attempt_possible_call_response_received_success_failure_and_interrupted_states": true,
+    "success_requires_success_manifest_and_factor_frame_without_failure_record": true,
+    "failure_requires_failure_record_without_success_manifest_or_final_root": true,
+    "malformed_or_inconsistent_evidence_exit_code": 2,
+    "credential_loaded": false,
+    "provider_request_issued": false,
+    "retry_authorized": false,
+    "journal_or_terminal_evidence_mutated": false
+  },
+  "preserved_v4_guarantees": {
+    "journal_created_and_fsynced_before_credential_loading": true,
+    "provider_call_authorized_event_fsynced_before_possible_request": true,
+    "journal_never_removed_by_runner": true,
+    "duplicate_provider_call_after_crash_allowed": false,
+    "factor_and_terminal_json_publication_is_crash_durable": true,
+    "raw_provider_response_plaintext_error_token_or_token_hash_persisted": false
+  },
+  "synthetic_verification_contract": {
+    "no_journal_inspection_is_zero_credential_and_zero_provider": true,
+    "symlink_journal_rejected": true,
+    "out_of_order_event_rejected": true,
+    "tampered_success_manifest_rejected": true,
+    "simulated_failure_committed_and_interrupted_states_classified": true,
+    "simulated_success_committed_state_classified": true,
+    "persistent_journal_still_rejects_second_provider_call": true,
+    "manual_5000_point_entitlement_confirmation_still_required": true,
+    "real_inspection_expected_state": "no_attempt_journal",
+    "real_plan_without_confirmation_expected_exit_code": 2,
+    "real_provider_calls_expected": 0
+  },
+  "research_boundary": {
+    "provider_request_issued": false,
+    "provider_rows_candidate_or_comparison_values_read": false,
+    "daily_price_or_forward_return_values_read": false,
+    "candidate49_ledgers_changed": false,
+    "second_prospective_candidate_created": false,
+    "current_scoring_selection_sizing_or_orders_performed": false,
+    "investment_advice": false
+  }
+}

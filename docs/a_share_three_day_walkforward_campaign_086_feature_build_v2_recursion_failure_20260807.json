@@ -1,0 +1,37 @@
+{
+  "schema_version": 1,
+  "kind": "a_share_three_day_walkforward_campaign086_feature_build_v2_recursion_failure",
+  "status": "failed_closed_no_candidate_snapshot_published",
+  "recorded_at": "2026-08-07T01:18:00+08:00",
+  "stage": "campaign086_v2_confirmed_feature_build_2019",
+  "exception": "RecursionError: maximum recursion depth exceeded",
+  "root_cause": "The v2 build temporarily replaced v1.attach_values with v2.attach_values. The nonempty branch then resolved v1.attach_values dynamically after replacement, recursively calling v2 instead of the original frozen v1 function.",
+  "output_state": {
+    "final_output_root_exists_after_cleanup": false,
+    "candidate_snapshot_manifest_published": false,
+    "candidate_partition_published": false,
+    "temporary_build_root_retained": false
+  },
+  "authorized_additive_repair": {
+    "scope": "Publish a v3 repair runner that captures the original byte-frozen v1 attach_values reference before any temporary replacement; the empty branch remains v2's exact schema and the nonempty branch calls only that captured reference.",
+    "v1_or_v2_runners_or_freezes_may_be_rewritten": false,
+    "factor_formula_or_gate_may_change": false,
+    "same_output_run_id_may_be_reused": true
+  },
+  "v2_evidence": {
+    "runner_sha256": "5d5047d8d13963ac5e2aa2b6629c3d6e34ac5c0cc6b4e268bc943d96d57ad57e",
+    "implementation_freeze_sha256": "083772ea9eec1d26cf02cbc915b7ca21296b1b141a9aa831a3274a997d8522ba"
+  },
+  "research_boundary": {
+    "real_minute_source_rows_read": true,
+    "candidate_values_computed_transiently_before_failure": true,
+    "candidate_snapshot_published": false,
+    "comparison_values_read": false,
+    "historical_daily_price_fields_read": [],
+    "historical_forward_returns_read": false,
+    "provider_request_issued": false,
+    "candidate49_historical_return_read": false,
+    "candidate49_ledgers_changed": false,
+    "current_scoring_selection_sizing_or_orders_performed": false
+  }
+}

@@ -1,0 +1,21 @@
+{
+  "schema_version": 1,
+  "kind": "a_share_three_day_walkforward_campaign128_infrastructure_failure",
+  "status": "failed_before_program_execution_due_to_malformed_shell_glob",
+  "recorded_at": "2026-08-14T05:19:16+0800",
+  "stage": "prevalue_complete_definition_library_discovery",
+  "failure": {
+    "command_role": "read-only search for complete-definition and comparator declarations",
+    "reason": "A brace/glob expression concatenated campaign numbers into a nonexistent campaign1219 pattern and zsh rejected the unmatched glob before launching rg.",
+    "program_body_started": false,
+    "file_written_by_failed_command": false
+  },
+  "scientific_effect": {
+    "provider_request_issued": false,
+    "credential_loaded": false,
+    "candidate_comparator_price_or_return_values_read": false,
+    "candidate49_ledgers_changed": false,
+    "campaign128_candidate_selected": false
+  },
+  "recovery": "Use rg --files followed by explicit regex filtering so the shell never expands campaign filename patterns; preserve this failure in the Campaign128 append-only ledger."
+}

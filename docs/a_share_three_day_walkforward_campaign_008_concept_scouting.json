@@ -1,0 +1,134 @@
+{
+  "version": 1,
+  "kind": "a_share_three_day_walkforward_campaign008_concept_scouting",
+  "status": "concept_only_one_new_mechanism_selected_no_formula_no_direction_no_values_no_returns",
+  "recorded_at": "2026-07-28T12:54:29Z",
+  "purpose": "Continue the three-session offline research program after Campaign007 ended with zero development survivors. This record considers only economic meaning and source-schema feasibility, rejects terminal or near-synonym mechanisms before values, and selects at most one concept for a separate exact no-value overlap audit.",
+  "authoritative_bindings": {
+    "iteration_state": {
+      "path": "docs/a_share_three_day_iteration_status_20260728_campaign007.json",
+      "sha256": "11ca8ddbc5b523db5075b2a08a204f4f9c8f12804770affa1b0ae1778cea4d1e",
+      "campaign008_concept_scouting_allowed": true,
+      "candidate50_prospective_activation_allowed": false
+    },
+    "campaign007_research_record": {
+      "path": "docs/a_share_three_day_walkforward_campaign_007_research_record.json",
+      "sha256": "796300c1eace69b207202c698ee96b91f1e75bb723291692902f892a5d53587b",
+      "terminal": true,
+      "development_survivors": 0,
+      "stress_2024_2025_opened": false
+    },
+    "historical_walkforward_policy": {
+      "path": "docs/a_share_three_day_historical_walkforward_research_policy_20260727.json",
+      "sha256": "38426d6161b9bfed323c58caba18feca668b8c9d53e294951a8ba90c01a798bb"
+    },
+    "campaign007_mechanism_overlap_audit": {
+      "path": "docs/a_share_three_day_walkforward_campaign_007_mechanism_overlap_audit.json",
+      "sha256": "7e7ebe2232f379b9659222c878b49730a3a2ab331f6542890906d5880970da57",
+      "comparison_mechanisms_before_campaign007": 30
+    }
+  },
+  "source_schema_boundary": {
+    "provider": "tushare",
+    "frequency": "1m",
+    "accepted_source_grid_rows": 241,
+    "joint_clean_manifest": {
+      "path_below_data_root": "derived/a_share/rich/tushare/minute_sentiment_clean/tushare_stk_mins_1m_2019_2025_ea0cbb8f_sentiment_clean_v1/snapshot_manifest.json",
+      "sha256": "453c6719cb3c7da42fed8807b28a2bfe988700283e9625a6db97912534f368de",
+      "dataset_sha256": "0e4fe7c05536cdfcecc2936bc880726902f5560061188ffff82ef7ee6f346983",
+      "partitions": 33015,
+      "rows": 7724498
+    },
+    "allowed_source_fields": [
+      "datetime",
+      "symbol",
+      "provider",
+      "close",
+      "volume"
+    ],
+    "source_open_high_low_amount_must_not_be_loaded": true,
+    "daily_price_or_return_substitution_allowed": false,
+    "provider_request_allowed": false
+  },
+  "concepts_rejected_before_formula_or_values": [
+    {
+      "concept": "campaign007_volume_transaction_price_coupling_repair",
+      "reason": "Campaign007 is terminal. Reversing, lagging, splitting, thresholding, weighting, or otherwise modifying its share-volume/transaction-price coupling would be prohibited rescue rather than a new mechanism."
+    },
+    {
+      "concept": "opening_price_or_gap_response",
+      "reason": "The 09:30 price may be a zero-activity reference placeholder and the opening-gap protocol is terminally invalid."
+    },
+    {
+      "concept": "same_bar_volume_volatility_coupling",
+      "reason": "Synchronous amount/absolute-return coupling is already terminal, and swapping amount level for share-volume level is not enough economic independence."
+    },
+    {
+      "concept": "activity_leads_future_return",
+      "reason": "Earlier amount predicting the next close return is already terminal; another activity-to-return lead construction would reopen the same causal direction."
+    },
+    {
+      "concept": "directional_absorption_or_price_impact",
+      "reason": "Negative-return absorption, up-move amount share, and directional price-impact asymmetry are terminal and may not be revived through volume substitution."
+    },
+    {
+      "concept": "volume_profile_shape_timing_or_market_synchronization",
+      "reason": "Activity entropy, persistence, center of mass, auction share, and cross-stock profile synchronization are already terminal profile mechanisms."
+    }
+  ],
+  "selected_concept": {
+    "concept_name": "intraday_post_shock_share_volume_replenishment",
+    "candidate_ordinal": null,
+    "prospective_active": false,
+    "concept_status": "mechanism_only_not_yet_exactly_preregistered",
+    "direction": null,
+    "formula": null,
+    "allowed_source_fields": [
+      "datetime",
+      "symbol",
+      "provider",
+      "close",
+      "volume"
+    ],
+    "mechanism": "Measure whether an absolute within-session price shock is followed one minute later by expanding rather than contracting executed share quantity. The causal ordering runs from observed price movement to subsequent liquidity participation, not from activity to return and not through transaction-price or amount paths.",
+    "economic_question": "Does rapid replenishment of traded share volume immediately after an intraday price shock indicate information confirmation or liquidity resilience that remains informative from the next open through the third close?",
+    "mandatory_overlap_challenges_before_any_value": [
+      "intraday_amount_volatility_coupling_238p",
+      "intraday_amount_lead_return_correlation_238p",
+      "intraday_negative_return_absorption_rate_236p",
+      "intraday_directional_price_impact_asymmetry_238m",
+      "intraday_share_volume_transaction_price_coupling_238p",
+      "intraday_up_move_amount_share_238m",
+      "intraday_amount_profile_serial_persistence_240m"
+    ],
+    "known_design_risks": [
+      "the response lag, shock transform, activity transform, direction, window, and missing-bar treatment can create an uncontrolled search if not frozen before values",
+      "zero share-volume bars make log growth undefined and require a fail-closed rule",
+      "a contemporaneous rather than subsequent response would overlap the terminal activity-volatility mechanism",
+      "the candidate may still be statistically redundant even if its economic causal ordering is distinct"
+    ]
+  },
+  "research_boundary": {
+    "external_minute_partitions_read": false,
+    "external_daily_partitions_read": false,
+    "candidate_values_computed_or_read": false,
+    "comparison_values_read": false,
+    "historical_daily_prices_read": false,
+    "historical_forward_returns_read": false,
+    "formula_or_direction_frozen": false,
+    "training_or_model_fitting_performed": false,
+    "prospective_candidate_created": false,
+    "candidate49_historical_return_read": false,
+    "candidate49_ledgers_changed": false,
+    "current_scoring_selection_sizing_or_order_performed": false,
+    "provider_request_issued": false,
+    "investment_advice": false
+  },
+  "decision": {
+    "selected_concept_count": 1,
+    "selected_concept_may_advance_directly_to_values": false,
+    "required_next_step": "Perform a separate no-value audit against all 31 previously frozen minute mechanisms. Only if the concept remains economically distinct may that audit freeze one exact formula, one direction, zero and missing semantics, no-return gates, and one finite trial before candidate or comparison values or returns are read.",
+    "candidate49_remains_only_prospective_candidate": true,
+    "candidate50_activation_allowed": false
+  }
+}

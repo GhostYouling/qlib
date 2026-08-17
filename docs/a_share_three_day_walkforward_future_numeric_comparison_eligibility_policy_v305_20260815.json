@@ -1,0 +1,152 @@
+{
+  "version": 305,
+  "kind": "a_share_three_day_walkforward_future_numeric_comparison_eligibility_policy",
+  "status": "campaign204_terminal_prevalue_utility_customer_connection_delivery_billing_and_restoration_lifecycle_campaign205_ready_after_validation",
+  "recorded_at": "2026-08-15T20:07:00+08:00",
+  "timestamp_semantics": "monotonic logical append time after Campaign204 terminal result v2 and both mutable report appends",
+  "supersedes_without_rewriting": {
+    "path": "docs/a_share_three_day_walkforward_future_numeric_comparison_eligibility_policy_v304_20260815.json",
+    "sha256": "4721525d498e00e05c45a739b281395af7c78e23be841aa3a68d0180b94a6536",
+    "preserved": true,
+    "library_order_changed": false,
+    "scientific_result_changed": true,
+    "accounting_changed": true,
+    "cumulative_regression_expectation_changed": true
+  },
+  "authoritative_inputs": {
+    "terminal_result_v2": {
+      "path": "docs/a_share_three_day_walkforward_campaign_204_terminal_result_v2_20260815.json",
+      "sha256": "07b5b1df4f38512bf3723595516fe3b13bcd66c21e18b9b97e012a8ed8e6161e"
+    },
+    "utility_customer_connection_delivery_billing_and_restoration_source_frontier": {
+      "path": "docs/a_share_three_day_walkforward_campaign_204_utility_customer_connection_metering_consumption_billing_arrears_disconnection_reconnection_outage_restoration_lifecycle_source_frontier_20260815.json",
+      "sha256": "4aa19120d9f18b0ac6303fb6350ae51216c6d7971d51fc41de339dfe5caf46e6"
+    },
+    "attempt_ledger_v2": {
+      "path": "data/experiments/short_horizon/historical_walkforward/campaign_204/research_attempt_ledger_v2.json",
+      "sha256": "031a399f91d90feaef40dce54ea52acf19e00480484a5a0e74b0628360eb57e7",
+      "campaign_effective_entry_count": 11,
+      "chain_tip_sha256": "43e654093a99298ab890d0aa1017268f4d1d839b52459379cfa8c41a63875c9b"
+    },
+    "skill_181_360_output_truncation_failure": {
+      "path": "docs/a_share_three_day_walkforward_campaign_204_skill_181_360_output_truncation_failure_20260815.json",
+      "sha256": "d23dd67484c95e18ffb241f743fe8122ba725b443904903a4997876d6074fbd3"
+    },
+    "skill_181_260_output_truncation_failure": {
+      "path": "docs/a_share_three_day_walkforward_campaign_204_skill_181_260_output_truncation_failure_20260815.json",
+      "sha256": "1380dfb781cd4e983d8c4b1f1c28aa7f37da871c726cf93241c702bfc1ec3fb2"
+    },
+    "combined_git_status_authority_output_truncation_failure": {
+      "path": "docs/a_share_three_day_walkforward_campaign_204_combined_git_status_authority_output_truncation_failure_20260815.json",
+      "sha256": "6e237a6a669eec4441e234c18883e81be5628ffca8495bc142448a7147a0ccfd"
+    },
+    "combined_report_tail_output_truncation_failure": {
+      "path": "docs/a_share_three_day_walkforward_campaign_204_combined_report_tail_output_truncation_failure_20260815.json",
+      "sha256": "59ba9e4df4bfffa1958603b0c1e30f6ba06102dd006a2161325441aeff6b6cc9"
+    }
+  },
+  "mutable_unified_reports": {
+    "current": {
+      "path": "data/experiments/short_horizon/current_research_report.md",
+      "sha256_at_publication": "6beff28465a6650985d3af6d74a4b175979e05f3e834e987aff39db5f71e2aaf",
+      "mutable_append_only_report_not_an_immutable_binding": true
+    },
+    "three_day": {
+      "path": "data/experiments/short_horizon/three_day_research_report.md",
+      "sha256_at_publication": "eeda7796809824f9ce20d131224db76abd513e91154166498b0fede7641682fb",
+      "mutable_append_only_report_not_an_immutable_binding": true
+    }
+  },
+  "campaign204_terminal_classification": {
+    "mechanism_domains_reviewed": 1,
+    "utility_customer_lifecycle_routes_reviewed": 7,
+    "genuinely_new_issuer_state_routes": 3,
+    "source_admission_deferrals_not_factor_failures": 3,
+    "relabeling_overlap_operator_or_combination_route_rejections": 4,
+    "selected_candidate_count": 0,
+    "infrastructure_failure_count": 4
+  },
+  "complete_historical_feature_library": {
+    "factor_definition_count": 158,
+    "order_sha256": "4819c7fd7c0795d7598a52f3c615e3f117d5f4ecd9332974bc8e3dfa57c96667",
+    "unchanged_from_v304": true
+  },
+  "numerical_comparator_eligibility": {
+    "eligible_numeric_comparator_count": 142,
+    "order_sha256": "5d1b35fb5a0d8ac9293008db9963c4a60a94dc940c237c3ed259e5ce44f14aaf",
+    "unchanged_from_v304": true
+  },
+  "effective_accounting": {
+    "campaign204_attempt_count": 11,
+    "campaign204_scientific_attempt_count": 7,
+    "campaign204_infrastructure_failure_count": 4,
+    "cumulative_historical_research_attempt_count": 1870,
+    "cumulative_return_reading_development_trial_count": 314
+  },
+  "deferred_source_boundary": {
+    "utility_customer_connection_delivery_billing_and_restoration_lifecycle_declared_ineffective": false,
+    "current_connection_meter_service_outage_bill_arrears_or_reconnection_state_may_be_historically_backfilled": false,
+    "directly_identifiable_customer_address_precise_consumption_or_critical_infrastructure_control_data_may_be_used": false,
+    "structurally_inapplicable_issuers_may_be_filled_with_zero_or_cross_sector_ranked": false,
+    "environment_asset_license_incident_kpi_customer_quality_support_pricing_payment_or_accounting_search_may_reopen_prior_campaigns": false,
+    "utility_type_region_customer_tariff_meter_usage_outage_arrears_cohort_direction_threshold_window_subset_combination_or_model_search_may_precede_source_admission": false
+  },
+  "future_campaign_boundary": {
+    "next_campaign": 205,
+    "may_begin_after_campaign204_independent_validation": true,
+    "historical_offline_prevalue_work_may_continue_at_any_local_time": true,
+    "2024_2025_source_or_returns_remain_closed": true,
+    "candidate49_remains_separate_confirmation_layer": true
+  },
+  "cumulative_regression_boundary": {
+    "campaign145_through_campaign204_test_file_count": 92,
+    "required_exact_historical_lifecycle_nodes": [
+      "data_collector_tests/test_a_share_three_day_walkforward_campaign145_terminal.py::test_campaign145_terminal_bindings_reports_and_candidate49_boundary",
+      "data_collector_tests/test_a_share_three_day_walkforward_campaign161_initial_verification.py::test_campaign161_reports_and_candidate49_hashes",
+      "data_collector_tests/test_a_share_three_day_walkforward_campaign164_terminal.py::test_campaign164_reports_are_appended_exactly_once",
+      "data_collector_tests/test_a_share_three_day_walkforward_campaign170_terminal.py::test_campaign170_bindings_and_finite_frontier",
+      "data_collector_tests/test_a_share_three_day_walkforward_campaign171_terminal.py::test_campaign171_bindings_and_finite_frontier"
+    ],
+    "prior_mutable_report_nodes": [
+      "data_collector_tests/test_a_share_three_day_walkforward_campaign190_terminal.py::test_campaign190_reports_candidate49_and_boundaries",
+      "data_collector_tests/test_a_share_three_day_walkforward_campaign191_terminal.py::test_campaign191_reports_candidate49_and_research_boundaries",
+      "data_collector_tests/test_a_share_three_day_walkforward_campaign192_terminal.py::test_campaign192_reports_candidate49_and_research_boundaries",
+      "data_collector_tests/test_a_share_three_day_walkforward_campaign193_terminal.py::test_campaign193_reports_candidate49_and_research_boundaries",
+      "data_collector_tests/test_a_share_three_day_walkforward_campaign194_terminal.py::test_campaign194_reports_candidate49_and_research_boundaries",
+      "data_collector_tests/test_a_share_three_day_walkforward_campaign195_terminal.py::test_campaign195_reports_candidate49_and_research_boundaries",
+      "data_collector_tests/test_a_share_three_day_walkforward_campaign196_terminal.py::test_campaign196_reports_candidate49_and_research_boundaries",
+      "data_collector_tests/test_a_share_three_day_walkforward_campaign197_terminal.py::test_campaign197_reports_candidate49_and_research_boundaries",
+      "data_collector_tests/test_a_share_three_day_walkforward_campaign198_terminal.py::test_campaign198_reports_candidate49_and_research_boundaries",
+      "data_collector_tests/test_a_share_three_day_walkforward_campaign199_terminal.py::test_campaign199_reports_candidate49_and_research_boundaries",
+      "data_collector_tests/test_a_share_three_day_walkforward_campaign200_terminal.py::test_campaign200_reports_candidate49_and_research_boundaries",
+      "data_collector_tests/test_a_share_three_day_walkforward_campaign201_terminal.py::test_campaign201_reports_candidate49_and_research_boundaries",
+      "data_collector_tests/test_a_share_three_day_walkforward_campaign202_terminal.py::test_campaign202_reports_candidate49_and_research_boundaries",
+      "data_collector_tests/test_a_share_three_day_walkforward_campaign203_terminal.py::test_campaign203_reports_candidate49_and_research_boundaries"
+    ],
+    "expected_tests_passed_after_validation": 475,
+    "expected_tests_skipped_after_validation": 1,
+    "expected_nodes_deselected_after_validation": 19,
+    "final_results_must_be_recorded_in_terminal_validation": true,
+    "failed_or_truncated_invocations_recorded_and_excluded_from_validation": 4
+  },
+  "research_boundary": {
+    "failed_or_truncated_output_used_as_validation_or_scientific_evidence": false,
+    "source_utility_customer_connection_meter_read_consumption_outage_restoration_bill_arrears_disconnection_reconnection_factor_comparator_security_price_or_return_value_read": false,
+    "directly_identifiable_customer_precise_consumption_or_critical_infrastructure_control_record_read": false,
+    "stress_2024_2025_opened": false,
+    "provider_or_web_request_issued": false,
+    "provider_credential_presence_value_or_digest_read": false,
+    "candidate49_plan_or_run_executed": false,
+    "candidate49_ledgers_changed": false,
+    "second_prospective_candidate_created": false
+  },
+  "candidate49": {
+    "only_active_prospective_candidate": true,
+    "signal_ledger_sha256": "5193f00d7f36da003f53cec387900da4c3d002299f5dfcfc1a95eaa199ed3a79",
+    "signal_entry_count": 0,
+    "execution_ledger_sha256": "d57a3e61eac969e42cafa418ccd8c0a5ee65dcf69da145bb2c096c2a02a2ea4f",
+    "execution_entry_count": 0,
+    "completed_future_workflow_record_count": 0
+  },
+  "next_action": "Run fresh focused Campaign204, Campaign145-204 cumulative and independent binding validation, then publish the active-goal state authorizing Campaign205."
+}

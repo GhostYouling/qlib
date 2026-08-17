@@ -1,0 +1,54 @@
+{
+  "schema_version": 1,
+  "kind": "a_share_three_day_walkforward_campaign187_domain_overlap_rejection",
+  "status": "terminal_scientific_overlap_rejection_no_value_read",
+  "recorded_at": "2026-08-15T13:35:10+08:00",
+  "proposed_domain": "hotel_portfolio_room_supply_occupancy_management_and_franchise_lifecycle",
+  "decision": "rejected_existing_campaign168_operating_scale_adoption_and_utilization_kpi_domain",
+  "selected_for_factor_definition": false,
+  "formula": null,
+  "direction": null,
+  "parameters_filters_subsets_combinations_models": [],
+  "authoritative_inputs": {
+    "campaign186_effective_state": {
+      "path": "docs/a_share_three_day_iteration_status_20260815_campaign186_prevalue_terminal.json",
+      "sha256": "fc0aac22b58488d717bbf5e8c5a8892ea6820f5f93d3d152ef3ae1d980e9bf5c"
+    },
+    "eligibility_policy_v275": {
+      "path": "docs/a_share_three_day_walkforward_future_numeric_comparison_eligibility_policy_v275_20260815.json",
+      "sha256": "2353a563301ad8e4547d523a9ac031b42f53e49d627d86c2778f058bf537ef02"
+    },
+    "campaign168_operating_kpi_frontier": {
+      "path": "docs/a_share_three_day_walkforward_campaign_168_operating_scale_adoption_kpi_source_frontier_20260815.json",
+      "sha256": "c5dc98f92266e2b7ef7349cb5260a8cde15ccd9c78442e661e4170b1ba47d18a"
+    }
+  },
+  "bounded_repository_search": {
+    "terms": [
+      "hotel portfolio",
+      "room supply",
+      "occupancy rate",
+      "franchise hotel",
+      "managed hotel",
+      "酒店组合",
+      "酒店客房",
+      "入住率",
+      "特许经营酒店",
+      "管理酒店"
+    ],
+    "matching_path_count": 5,
+    "matching_path_scope": "Campaign168 terminal reports and the two append-only unified reports",
+    "complete_output_observed": true
+  },
+  "reason": "Hotel count, available rooms, occupancy, managed or franchised estate coverage and operating adoption are sector-specific labels for the already frozen Campaign168 scale, service-asset coverage, adoption and utilization KPI domain. Reopening them as a new campaign would duplicate a prior finite frontier rather than add a distinct issuer state.",
+  "research_boundary": {
+    "source_row_document_title_body_hotel_kpi_factor_comparator_security_price_or_return_value_read": false,
+    "provider_or_web_request_issued": false,
+    "provider_credential_presence_value_or_digest_read": false,
+    "stress_2024_2025_opened": false,
+    "candidate49_ledgers_changed": false,
+    "second_prospective_candidate_created": false,
+    "current_scoring_selection_sizing_positions_or_orders_performed": false
+  },
+  "next_action": "Reject this duplicate domain, preserve Campaign168 unchanged, and inspect a genuinely different finite prevalue mechanism domain."
+}

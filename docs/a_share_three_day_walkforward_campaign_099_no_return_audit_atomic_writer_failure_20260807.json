@@ -1,0 +1,49 @@
+{
+  "schema_version": 1,
+  "kind": "a_share_three_day_walkforward_campaign099_no_return_audit_atomic_writer_failure",
+  "status": "recorded_before_postvalue_writer_repair_or_retry",
+  "recorded_at": "2026-08-07T10:33:33Z",
+  "frozen_execution": {
+    "audit_runner": {
+      "path": "scripts/a_share_three_day_walkforward_campaign099_no_return_audit.py",
+      "sha256": "f1cac1f5508cabb11040e25844eea604cbb2413d48025d17c64bbe65ba4cc7d5"
+    },
+    "activation_binding": {
+      "path": "docs/a_share_three_day_walkforward_campaign_099_no_return_audit_activation_binding_v2_20260807.json",
+      "sha256": "6069f657c9e52512fa4c1d63a902e6adb6608676a6c124f64b625ee207a351c7"
+    }
+  },
+  "completed_before_failure": {
+    "candidate_partitions_verified": 33015,
+    "candidate_values_read": true,
+    "candidate_to_quality_listing_alignment_completed": true,
+    "coverage_or_capacity_metrics_computed": true,
+    "payload_constructed_in_memory": true
+  },
+  "failure": {
+    "exception_type": "AttributeError",
+    "message": "module scripts.a_share_three_day_walkforward_campaign099_features has no attribute c90",
+    "stage": "final_atomic_json_write_after_payload_construction",
+    "exit_code": 1
+  },
+  "publication_state": {
+    "no_return_audit_output_count": 0,
+    "partial_audit_result_written": false,
+    "in_memory_payload_recoverable": false
+  },
+  "comparison_value_boundary": {
+    "exact_observed_state_unavailable_because_payload_was_not_written": true,
+    "conservative_accounting": "treat comparator values as read even though coverage may have stopped before comparison",
+    "comparison_factor_values_read_conservative": true,
+    "comparison_results_recorded": false
+  },
+  "scientific_boundary": {
+    "historical_daily_price_or_forward_return_values_read": false,
+    "training_or_model_fitting_performed": false,
+    "provider_request_issued": false,
+    "candidate49_historical_return_read": false,
+    "candidate49_ledgers_changed": false,
+    "current_scoring_selection_sizing_or_orders_performed": false
+  },
+  "next_allowed_action": "freeze an exact one-line atomic writer reference repair, preserve all gates and values, create additive v3 freeze and activation, then rerun once to persist the complete no-return payload"
+}

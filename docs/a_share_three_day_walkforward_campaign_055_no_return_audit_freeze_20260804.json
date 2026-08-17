@@ -1,0 +1,84 @@
+{
+  "version": 1,
+  "kind": "a_share_three_day_walkforward_campaign055_no_return_audit_freeze",
+  "status": "terminal_zero_admissible_factors_after_uniqueness_before_historical_returns",
+  "recorded_at": "2026-08-04T02:20:00+08:00",
+  "purpose": "Bind the sole completed Campaign055 no-return audit and forbid post-correlation rescue.",
+  "authoritative_inputs": {
+    "no_return_preregistration": {
+      "path": "docs/a_share_three_day_walkforward_campaign_055_no_return_preregistration.json",
+      "sha256": "f469879dd83a22a15d497d903bc81c772d5d96dae81d4ac7e32edfba1ef0732f"
+    },
+    "snapshot_publication_binding": {
+      "path": "docs/a_share_three_day_walkforward_campaign_055_snapshot_publication_binding_20260804.json",
+      "sha256": "40b360edadb1fd90f227e8743d4f80d4205f4bce9ad247a110ec197410967697"
+    },
+    "snapshot_manifest": {
+      "path": "/Volumes/DIsk/qlib-a-share-tushare-1m/derived/a_share/rich/tushare/minute_walkforward_campaign055_feature_library/tushare_stk_mins_1m_2019_2025_ea0cbb8f_walkforward_campaign055_feature_library_v2/snapshot_manifest.json",
+      "sha256": "f78d62adf2772d64e718e7fdc4138c40325f6c02d17073dd5db0d1271216009e",
+      "dataset_sha256": "cfcdcd23267207f1a2190086b034105c447d5570549864d5468949ea05543882"
+    },
+    "audit_implementation_freeze": {
+      "path": "docs/a_share_three_day_walkforward_campaign_055_no_return_audit_implementation_freeze_20260804.json",
+      "sha256": "9f7e30b6f29f4eddde4f70e9a1b26f2f652634dd69c39c4c946612533d58e634"
+    },
+    "no_return_audit": {
+      "path": "data/experiments/short_horizon/20260803T181825Z_campaign055_no_return_audit.json",
+      "sha256": "c931097cb92f6138c34bef7ad45e204cb17a25ae384d9fc1ad1b2622c0d66f7e"
+    },
+    "effective_successful_audit_runner": {
+      "path": "scripts/a_share_three_day_walkforward_campaign055_features_v8.py",
+      "sha256": "ce343b59b2966b16789775096ed4953e7875a27e27f2d4c3e0e17a52798fd6a4"
+    }
+  },
+  "result": {
+    "candidate": "intraday_price_update_clock_entropy_10b_238m",
+    "direction": "higher",
+    "candidate_eligible_rows_after_quality_and_listing": 1325182,
+    "quality_listing_eligible_rows": 1331759,
+    "calendar_sessions": 1632,
+    "median_coverage": 0.9963302258089495,
+    "minimum_median_coverage": 0.95,
+    "p05_coverage": 0.9885011697690977,
+    "minimum_p05_coverage": 0.9,
+    "eligible_names_median": 939.0,
+    "eligible_names_p05": 138.0,
+    "minimum_p05_eligible_names": 50,
+    "potential_non_overlapping_three_session_cohorts": 540,
+    "observed_calendar_year_count": 7,
+    "coverage_gate_passed": true,
+    "comparison_factor_count": 78,
+    "comparison_order_matches_preregistration": true,
+    "failed_comparison_count": 1,
+    "failed_comparison_factor": "intraday_price_update_share_238m",
+    "failed_comparison_median_daily_rank_correlation": 0.8780592267975353,
+    "maximum_absolute_median_daily_rank_correlation": 0.8780592267975353,
+    "uniqueness_gate_passed": false,
+    "admissible_factor_count": 0
+  },
+  "semantic_boundary": {
+    "all_candidate_and_comparison_snapshot_partition_hashes_verified": true,
+    "source_fields_read": [
+      "datetime",
+      "symbol",
+      "provider",
+      "close"
+    ],
+    "historical_daily_price_fields_read": [],
+    "historical_forward_return_fields_read": false,
+    "candidate49_historical_return_read": false,
+    "candidate49_prospective_ledgers_changed": false,
+    "training_or_model_fitting_performed": false,
+    "current_scoring_selection_sizing_or_orders_performed": false,
+    "predictive_value_established": false
+  },
+  "decision": {
+    "factor_terminal": true,
+    "terminal_stage": "uniqueness_after_coverage_before_historical_returns",
+    "terminal_reason": "absolute_median_daily_rank_correlation_0.8780592267975353_with_intraday_price_update_share_238m_exceeded_frozen_0.8_limit",
+    "historical_walkforward_allowed": false,
+    "2024_2025_stress_allowed": false,
+    "inversion_rebin_rewindow_rescale_threshold_filter_subset_model_combination_rerun_or_rescue_allowed": false,
+    "next_action": "Record the terminal attempt and start only an independently preregistered Campaign056 mechanism."
+  }
+}

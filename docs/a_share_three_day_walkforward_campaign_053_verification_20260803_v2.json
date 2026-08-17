@@ -1,0 +1,76 @@
+{
+  "version": 2,
+  "kind": "a_share_three_day_walkforward_campaign053_verification",
+  "status": "terminal_campaign053_current_tests_bindings_and_candidate49_isolation_verified",
+  "recorded_at": "2026-08-03T13:08:00Z",
+  "historical_verification": {
+    "path": "docs/a_share_three_day_walkforward_campaign_053_verification_20260803.json",
+    "sha256": "d25ad2abf73fae162b233cff7e7160add61d88f27864f285de2faccb680db94d"
+  },
+  "bindings": {
+    "research_record_v2": {
+      "path": "docs/a_share_three_day_walkforward_campaign_053_research_record_v2.json",
+      "sha256": "ff21cfac8b47ec66f0a797180d97a7f2e4590a3a4e10f7361a314a37bd9503e1"
+    },
+    "report_supersession_v2": {
+      "path": "docs/a_share_three_day_walkforward_campaign_053_unified_report_supersession_20260803_v2.json",
+      "sha256": "9f629786667277b89eee7f05955bd3b4c75c81f8e1d6cdcf103f1d3841a138a7"
+    },
+    "attempt_ledger_v2": {
+      "path": "data/experiments/short_horizon/historical_walkforward/campaign_053/research_attempt_ledger_v2.json",
+      "sha256": "06c1db2f12df25abd997b71c74be27b3b7e74a30565f0094f84f278364307a46"
+    },
+    "terminal_assertion_failure": {
+      "path": "docs/a_share_three_day_walkforward_campaign_053_terminal_report_assertion_failure_20260803.json",
+      "sha256": "c2ac59eb8ac4842ddaf75d11371ac96180633826a4b30513527fbf4633809ca5"
+    },
+    "current_terminal_tests": {
+      "path": "tests/data_collector_tests/test_a_share_three_day_walkforward_campaign053_terminal_v2.py",
+      "sha256": "272a4ee802a5b830baef1f7bc78ffd5823ce05b90c03fdd99447e9b004689b8c"
+    },
+    "current_finalizer": {
+      "path": "scripts/a_share_three_day_walkforward_campaign053_finalize_v2.py",
+      "sha256": "0bd92203198303294a92e863ca6e9b1fc8f3514ae441b46b0c63f28d6ed844e8"
+    },
+    "unified_research_report": {
+      "path": "data/experiments/short_horizon/three_day_research_report.md",
+      "sha256": "5397b76f0f50ce458a025298cfaff31122d82ed521598bbbb2571f92267029b6"
+    },
+    "data_pipeline_documentation": {
+      "path": "docs/a_share_data_pipeline.md",
+      "sha256": "6cfade88722364a71ccec064369394eeea3b36dd5ae3c05ee07a2d97ec4a44f3"
+    },
+    "manage_qlib_a_share_data_skill": {
+      "path": "/Users/niyufei/.codex/skills/manage-qlib-a-share-data/SKILL.md",
+      "sha256": "257946d783435462a41270adee70052fe63ac9770ed5a30934980ee20d28e426"
+    },
+    "candidate49_signal_ledger": {
+      "path": "data/experiments/short_horizon/candidate49_future_signal_ledger.json",
+      "sha256": "5193f00d7f36da003f53cec387900da4c3d002299f5dfcfc1a95eaa199ed3a79"
+    },
+    "candidate49_execution_ledger": {
+      "path": "data/experiments/short_horizon/candidate49_future_execution_ledger.json",
+      "sha256": "d57a3e61eac969e42cafa418ccd8c0a5ee65dcf69da145bb2c096c2a02a2ea4f"
+    }
+  },
+  "verification_summary": {
+    "historical_focused_run_passed": 15,
+    "historical_focused_run_failed": 1,
+    "current_focused_campaign053_tests_passed": 16,
+    "current_focused_campaign053_tests_failed": 0,
+    "all_current_bindings_passed": true,
+    "candidate49_ledgers_rehashed_unchanged": true
+  },
+  "terminal_decision": {
+    "campaign053_attempt_count": 3,
+    "cumulative_historical_research_attempt_count": 303,
+    "campaign053_historical_return_trial_count": 0,
+    "cumulative_return_reading_development_trial_count": 266,
+    "admissible_factor_count": 0,
+    "development_folds_opened": false,
+    "stress_2024_2025_opened": false,
+    "candidate49_ledgers_changed": false,
+    "second_prospective_candidate_created": false,
+    "current_scoring_selection_sizing_or_orders_performed": false
+  }
+}

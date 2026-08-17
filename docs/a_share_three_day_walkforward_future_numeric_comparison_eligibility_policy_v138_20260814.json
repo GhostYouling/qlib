@@ -1,0 +1,90 @@
+{
+  "version": 138,
+  "kind": "a_share_three_day_walkforward_future_numeric_comparison_eligibility_policy",
+  "status": "campaign128_source_bound_implementation_verified_metadata_plan_allowed_build_conditional",
+  "recorded_at": "2026-08-14T05:46:00+0800",
+  "authoritative_inputs": {
+    "policy_v137": {
+      "path": "docs/a_share_three_day_walkforward_future_numeric_comparison_eligibility_policy_v137_20260814.json",
+      "sha256": "8c9d3b47e2b10cc983a8097d95cd38f6621ccfb4e5ee93fd6441b1b093d38c2d"
+    },
+    "source_bound_implementation_freeze": {
+      "path": "docs/a_share_three_day_walkforward_campaign_128_source_bound_implementation_freeze_20260814.json",
+      "sha256": "edc8504c3199c6b1fc7104de14dcbfd28b39807bd61edb2c7dd830fd223023d4"
+    },
+    "source_bound_implementation_verification": {
+      "path": "docs/a_share_three_day_walkforward_campaign_128_source_bound_implementation_verification_20260814.json",
+      "sha256": "349575411b2bc44b1ba21b8082d7fcc8aac884e059b560ee4e5dad5da14cf233"
+    },
+    "campaign128_attempt_ledger_v3": {
+      "path": "data/experiments/short_horizon/historical_walkforward/campaign_128/research_attempt_ledger_v3.json",
+      "sha256": "dfb2209cf773171dfcb52c2c75aaba1a97f50516d26a2c40f28e7995cdd5d320"
+    }
+  },
+  "supersedes_without_rewriting": {
+    "path": "docs/a_share_three_day_walkforward_future_numeric_comparison_eligibility_policy_v137_20260814.json",
+    "sha256": "8c9d3b47e2b10cc983a8097d95cd38f6621ccfb4e5ee93fd6441b1b093d38c2d",
+    "preserved": true,
+    "reason": "Append the frozen source-bound builder and read-only recovery verifier after 15 synthetic tests; no historical value has been opened."
+  },
+  "effective_accounting": {
+    "campaign128_attempt_count": 6,
+    "campaign128_ledger_entry_count": 6,
+    "campaign128_infrastructure_failure_count": 3,
+    "campaign128_prevalue_scientific_attempt_count": 3,
+    "campaign128_complete_factor_attempt_count": 1,
+    "campaign128_source_acceptance_attempt_count": 0,
+    "campaign128_return_reading_development_trial_count": 0,
+    "campaign128_development_survivor_count": 0,
+    "campaign128_stress_trial_count": 0,
+    "cumulative_historical_research_attempt_count": 1039,
+    "cumulative_return_reading_development_trial_count": 306
+  },
+  "complete_historical_feature_library": {
+    "factor_definition_count": 151,
+    "order_sha256": "91c2da3018330edbaddbb60b86370dcd9732425590f0565c70790b990002e0b5",
+    "campaign128_definition_changed_from_v137": false
+  },
+  "numerical_comparator_eligibility": {
+    "eligible_numeric_comparator_count": 139,
+    "eligible_numeric_comparator_order_sha256": "9c4de054ca1b83eced67eece256b024ebec3a6e1925de17a4cedfa7d36265161",
+    "campaign128_definition_eligible_now": false,
+    "reason": "No published immutable Campaign128 candidate snapshot, coverage result or complete 139-comparator uniqueness result exists."
+  },
+  "campaign128_gate_state": {
+    "pure_formula_frozen": true,
+    "source_bound_builder_frozen": true,
+    "read_only_recovery_verifier_frozen": true,
+    "source_bound_synthetic_tests_passed": 15,
+    "metadata_only_plan_allowed": true,
+    "historical_snapshot_build_allowed_now": "only_if_the_exact_plan_exits_0_and_ready_is_true",
+    "coverage_gate_allowed": false,
+    "numeric_uniqueness_gate_allowed": false,
+    "development_trial_allowed": false,
+    "stress_2024_2025_allowed": false
+  },
+  "next_gate": {
+    "exact_plan": "PYTHONPATH=/Volumes/DIsk/Disk-Coding/qlib /Volumes/DIsk/Coding/anaconda3/bin/python3.12 scripts/a_share_three_day_walkforward_campaign128_features.py plan",
+    "conditional_run": "PYTHONPATH=/Volumes/DIsk/Disk-Coding/qlib /Volumes/DIsk/Coding/anaconda3/bin/python3.12 scripts/a_share_three_day_walkforward_campaign128_features.py build --data-root /Volumes/DIsk/qlib-a-share-tushare-1m --workers 4 --confirm-build",
+    "required_plan_result": {
+      "exit_code": 0,
+      "ready": true
+    },
+    "formula_source_projection_direction_support_output_or_threshold_change_allowed": false,
+    "provider_request_allowed": false
+  },
+  "research_boundary": {
+    "programmatic_provider_requests_issued": false,
+    "credential_loaded": false,
+    "historical_minute_source_rows_read": false,
+    "campaign128_candidate_values_computed_or_read": false,
+    "campaign128_comparator_values_read": false,
+    "historical_daily_price_or_forward_return_values_read": false,
+    "stress_2024_2025_candidate_or_return_values_opened": false,
+    "candidate49_historical_backfill_performed": false,
+    "candidate49_ledgers_changed": false,
+    "second_prospective_candidate_created": false,
+    "current_scoring_selection_sizing_positions_or_orders_performed": false,
+    "investment_advice": false
+  }
+}

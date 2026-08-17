@@ -1,0 +1,22 @@
+{
+  "schema_version": 1,
+  "kind": "a_share_three_day_walkforward_campaign092_infrastructure_failure",
+  "status": "recorded_before_development_daily_price_or_return_values",
+  "recorded_at": "2026-08-07T08:46:00+08:00",
+  "command_stage": "development_prevalue_status_probe",
+  "failed_preregistration": {
+    "path": "docs/a_share_three_day_walkforward_campaign_092_preregistration.json",
+    "sha256": "ad804402121d0884c82fd6df3cc8f6262f467ddbd04637ee26f85aa4c42cc25f"
+  },
+  "runner": {
+    "path": "scripts/a_share_three_day_walkforward_campaign092.py",
+    "sha256": "cc6f4b8fc8052c349b6e18638c737fd9bb7c30bbe436eb0cee546b43f75cd88d"
+  },
+  "failure": "Campaign092 implementation binding is incomplete because the inherited exact-schema loader rejects the additional base_runner member inside implementation",
+  "exit_code": 1,
+  "development_trial_artifact_created": false,
+  "historical_daily_price_or_forward_return_values_read": false,
+  "provider_request_issued": false,
+  "candidate49_ledgers_changed": false,
+  "authorized_repair": "Preserve the failed preregistration and runner bytes; create a v2 preregistration that removes only the unsupported redundant implementation.base_runner member and invoke the unchanged runner with the explicit v2 campaign path."
+}

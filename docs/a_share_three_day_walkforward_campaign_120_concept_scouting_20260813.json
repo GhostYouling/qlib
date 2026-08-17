@@ -1,0 +1,107 @@
+{
+  "schema_version": 1,
+  "kind": "a_share_three_day_walkforward_campaign120_concept_scouting",
+  "status": "one_candidate_selected_before_source_candidate_comparison_daily_price_or_return_values",
+  "recorded_at": "2026-08-13T23:57:28+08:00",
+  "purpose": "Review a finite Campaign120 catalog against all 145 frozen definitions and select at most one genuinely distinct fixed-support mechanism before reading any Campaign120 source row, candidate value, comparator value, daily price or forward return.",
+  "authoritative_inputs": {
+    "iteration_state": {
+      "path": "docs/a_share_three_day_iteration_status_20260813_campaign119_terminal.json",
+      "sha256": "1edbe7ce18abe2d2d1f8340f1fcaf3c684b1bc8f201703fe4248d5388efe6fb6"
+    },
+    "numeric_policy_v109": {
+      "path": "docs/a_share_three_day_walkforward_future_numeric_comparison_eligibility_policy_v109_20260813.json",
+      "sha256": "a3deaf480b084fc97f556c642db539b9672636a2a38c69664bc4cba94ee5d685",
+      "complete_definition_count": 145,
+      "complete_definition_order_sha256": "51c96c7cd0344f70433d2401bfd38ca9e6b5901f62e8ad2fd27714957431fc17",
+      "numeric_comparator_count": 137,
+      "numeric_comparator_order_sha256": "aaac5973c5f93e4cb6275f0b5ae92bc04ce1f7968b100785d8763565fa095621"
+    },
+    "historical_walkforward_policy": {
+      "path": "docs/a_share_three_day_historical_walkforward_research_policy_20260727.json",
+      "sha256": "38426d6161b9bfed323c58caba18feca668b8c9d53e294951a8ba90c01a798bb"
+    },
+    "accepted_minute_manifest_metadata_only": {
+      "path": "/Volumes/DIsk/qlib-a-share-tushare-1m/metadata/rich_data/runs/tushare_stk_mins_1m_2019_2025_ea0cbb8f.json",
+      "sha256": "9b3d959563c9d182f38981c6a36bdb3bc9b415de08487a9e1f9e850825c0839f"
+    }
+  },
+  "finite_prevalue_concept_catalog": [
+    {
+      "name": "intraday_return_direction_dictionary_phrase_count_238s",
+      "decision": "selected_for_mechanism_audit",
+      "direction": "higher",
+      "source_projection": [
+        "datetime",
+        "symbol",
+        "provider",
+        "close"
+      ],
+      "design": "Convert each half-session's 119 exact close-direction changes to the ternary alphabet -1,0,+1, reset a deterministic incremental dictionary at the start of each half, parse the complete sequence into shortest unseen phrases with one explicit terminal-reused-suffix rule, and sum the two phrase counts.",
+      "economic_hypothesis": "A larger repertoire of incrementally novel direction phrases indicates that completed-session price discovery was not dominated by stale quotes, one repeated tick-bounce motif, or a mechanically recurring local path; broader sequence novelty may represent more resilient information absorption from the next open through the third close.",
+      "prevalue_support_case": "Every exact 240-close session yields two fixed 119-symbol sequences and a finite integer score; no positive-return, variance, event-count, active-volume, range or lookback threshold is required."
+    },
+    {
+      "name": "intraday_range_boundary_state_transition_entropy",
+      "decision": "rejected_before_values",
+      "reason": "Campaign119 explicitly excluded transition and conditional entropy over its frozen nine boundary-direction states. Reopening that state alphabet with a new transition operator would be a terminal-family rescue."
+    },
+    {
+      "name": "intraday_return_direction_fourgram_coverage",
+      "decision": "rejected_before_values",
+      "reason": "A selected word length and distinct-word count is a tunable truncated version of the chosen full incremental dictionary parser; admitting both would create an unbounded n-gram search."
+    },
+    {
+      "name": "intraday_wick_shape_state_entropy",
+      "decision": "rejected_before_values",
+      "reason": "Campaign048 froze and terminated the upper/lower wick family and rejected wick entropy, serial and subwindow variants before values."
+    },
+    {
+      "name": "intraday_amount_direction_dictionary_phrase_count",
+      "decision": "rejected_before_values",
+      "reason": "Substituting amount weak-order or top-decile event states would reopen Campaign117 or Campaign118 after both terminal results; it is not an independent source mechanism."
+    },
+    {
+      "name": "full_numeric_library_new_model_or_pair_search_137f",
+      "decision": "rejected_before_component_or_return_values",
+      "reason": "Complete-library supervised fitting, consensus, lower-quartile and rank-improvement aggregators are terminal. A refreshed model or selective pair search after their results would be post-exposure model rescue rather than a new mechanism."
+    }
+  ],
+  "selected_candidate_boundary": {
+    "name": "intraday_return_direction_dictionary_phrase_count_238s",
+    "direction": "higher",
+    "candidate_count": 1,
+    "alternate_parser_normalization_alphabet_window_direction_threshold_filter_subset_model_or_combination_count": 0,
+    "candidate_values_opened": false,
+    "comparison_values_opened": false,
+    "historical_daily_price_or_forward_return_values_opened": false,
+    "mechanism_audit_required_before_formula_implementation": true
+  },
+  "complete_library_review": {
+    "all_145_definitions_reviewed_by_name_direction_and_terminal_family": true,
+    "closest_required_challenges": [
+      "intraday_return_weak_order_entropy_234t",
+      "intraday_return_spectral_entropy_59f",
+      "intraday_return_sign_run_imbalance_238p",
+      "intraday_bar_direction_continuity_238p",
+      "intraday_price_update_clock_entropy_10b_238m",
+      "intraday_exact_close_level_diversity_240m",
+      "intraday_active_trading_bar_share_240m"
+    ],
+    "old_terminal_definition_formula_direction_failure_history_or_gate_changed": false
+  },
+  "research_boundary": {
+    "campaign120_source_rows_read": false,
+    "campaign120_candidate_values_computed_or_read": false,
+    "campaign120_comparator_values_read": false,
+    "historical_daily_price_fields_read": [],
+    "historical_forward_returns_read": false,
+    "stress_2024_2025_opened": false,
+    "provider_request_issued": false,
+    "candidate49_historical_backfill_performed": false,
+    "candidate49_ledgers_changed": false,
+    "second_prospective_candidate_created": false,
+    "current_scoring_selection_sizing_positions_or_orders_performed": false,
+    "investment_advice": false
+  }
+}

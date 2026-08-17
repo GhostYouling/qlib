@@ -1,0 +1,76 @@
+{
+  "attempt_accounting": {
+    "campaign083_complete_factor_attempts": 1,
+    "campaign083_historical_attempts": 26,
+    "campaign083_infrastructure_failures": 25,
+    "campaign083_ledger_entries": 27,
+    "campaign083_return_reading_development_trials": 1,
+    "cumulative_historical_attempts": 532,
+    "cumulative_return_reading_development_trials": 284
+  },
+  "candidate49_ledgers_changed": false,
+  "current_research_attempt_ledger": {
+    "path": "data/experiments/short_horizon/historical_walkforward/campaign_083/research_attempt_ledger_v14.json",
+    "sha256": "efe4ef56ab299714ff7c1dd4ae607146365bbc38ffa21db6cddc7bf07e24a085"
+  },
+  "current_scoring_selection_sizing_or_orders_performed": false,
+  "frozen_at": "2026-08-06T21:37:00+08:00",
+  "future_duplicate_detection_library": {
+    "complete_definition_count": 115,
+    "complete_definition_order_sha256": "c42c662c17bbeec105ef85f0d9ba63edabae32601d0b9701209057961f72adec",
+    "numeric_comparator_count": 113,
+    "numeric_comparator_order_sha256": "04e8161152715277f4ebdfc63e5cd19db60a8dcd204d3f05dd38ab8313a03078"
+  },
+  "future_numeric_comparator_policy_v19": {
+    "path": "docs/a_share_three_day_walkforward_future_numeric_comparison_eligibility_policy_v19_20260806.json",
+    "sha256": "dacfbcd9bfdb2b764bd52c71e09e50154a7ab8b4e7b2e183afdf52ddd96e32fa"
+  },
+  "investment_advice": false,
+  "kind": "a_share_three_day_walkforward_campaign083_terminal_completion_freeze",
+  "manage_qlib_a_share_data_skill": {
+    "path": "/Users/niyufei/.codex/skills/manage-qlib-a-share-data/SKILL.md",
+    "sha256": "90a99c54dd00f0c737e85c4c6dd48d906edbd0f591c61278885728eaf7806431"
+  },
+  "provider_request_issued": false,
+  "research_record": {
+    "path": "docs/a_share_three_day_walkforward_campaign_083_research_record_v4.json",
+    "sha256": "2f74c3afb5dad07170ef4ff7521b46179c4b0888c260b7d20ec4d4872a05847c"
+  },
+  "schema_version": 1,
+  "status": "terminal_zero_survivors_stress_closed_all_known_invocations_accounted_after_regression_repairs",
+  "terminal_result": {
+    "aggregate_20bp_pilot_return": -0.1527499879151002,
+    "development_survivor_count": 0,
+    "development_trial_count": 1,
+    "direction": "higher",
+    "factor": "intraday_close_frontier_innovation_share_238p",
+    "numeric_comparisons_passed": 112,
+    "stress_2024_2025_opened": false,
+    "stress_return_fields_read": false
+  },
+  "terminal_test": {
+    "path": "tests/data_collector_tests/test_a_share_three_day_walkforward_campaign083_terminal_v3.py",
+    "sha256": "c8aa94a2875bb1501f0d51c8f5577a0b5114e63d7faf04fb01a562e70de60aba"
+  },
+  "terminal_verification": {
+    "campaign083_current_suite": "36 passed, 8 immutable lifecycle assertions deliberately deselected",
+    "failure_record": {
+      "path": "docs/a_share_three_day_walkforward_campaign_083_terminal_regression_failures_v7_20260806.json",
+      "sha256": "90acb427c82a497f0745f3c735d4c518fd6bc3cc56e7e10d0065eff5e873508f"
+    },
+    "legacy_campaign074_campaign082_suite": "25 passed, 2 stale shared-report assertions deliberately deselected",
+    "lint_and_compile_passed": true,
+    "terminal_v3_test_patch_repaired": true,
+    "unified_report_synchronized": true
+  },
+  "supersedes_without_rewriting": {
+    "path": "docs/a_share_three_day_walkforward_campaign_083_terminal_completion_freeze_v2_20260806.json",
+    "preserved": true,
+    "sha256": "d82e0e3a3709417ce36ad2ad25eed9f39259cb76e2c82ffc2b67fbe418e656f6"
+  },
+  "unified_report_supersession": {
+    "path": "docs/a_share_three_day_walkforward_campaign_083_unified_report_supersession_v2_20260806.json",
+    "sha256": "31f8bf28ba4d7129a3161173a6b82ad51fc13b2cae488aeedc7f8959b99e5fb8"
+  },
+  "version": 3
+}

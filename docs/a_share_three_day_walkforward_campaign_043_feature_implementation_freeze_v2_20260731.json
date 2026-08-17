@@ -1,0 +1,52 @@
+{
+  "version": 2,
+  "kind": "a_share_three_day_walkforward_campaign043_feature_implementation_freeze",
+  "status": "effective_after_single_pre_partition_publication_hook_repair_before_candidate_values",
+  "frozen_at": "2026-07-31T10:07:00Z",
+  "purpose": "Advance the Campaign043 implementation freeze only for the recorded publication-hook lookup repair while preserving every factor, source, gate, and search choice.",
+  "authoritative_inputs": {
+    "original_feature_implementation_freeze": {
+      "path": "docs/a_share_three_day_walkforward_campaign_043_feature_implementation_freeze_20260731.json",
+      "sha256": "b554cd4bcf5b8ad8aceb488d09aa7d6eea14c741de95d3a37e0ba4d7c24a5d87"
+    },
+    "publication_hook_repair": {
+      "path": "docs/a_share_three_day_walkforward_campaign_043_feature_publication_hook_infrastructure_repair_20260731.json",
+      "sha256": "a3147078bdb663301401a53e9ce5e561eeddd5fee6ecb7195aebc832c09750d6"
+    },
+    "no_return_preregistration": {
+      "path": "docs/a_share_three_day_walkforward_campaign_043_no_return_preregistration.json",
+      "sha256": "2fde47ae05bfef5f99d230c6835b559b72bbd0e20bfcfb994d36cd4487e831f9"
+    },
+    "effective_feature_runner": {
+      "path": "scripts/a_share_three_day_walkforward_campaign043_features.py",
+      "sha256": "f15fe9b0856a4848a3283e7220b7cb4e5bfcde866f7f670741b7ebb56924bb08"
+    },
+    "synthetic_tests": {
+      "path": "tests/data_collector_tests/test_a_share_three_day_walkforward_campaign043_features.py",
+      "sha256": "b1027553aea71aeee09c22c57497f7d2b04a2a2a3285f14ba8a7910d230f1bd9"
+    }
+  },
+  "effective_implementation": {
+    "factor_name": "intraday_transaction_vwap_consensus_240m",
+    "direction": "higher",
+    "source_projection": [
+      "datetime",
+      "symbol",
+      "provider",
+      "volume",
+      "amount"
+    ],
+    "formula_support_zero_direction_comparison_and_gate_semantics_unchanged": true,
+    "only_change_from_original_freeze": "publication foundation lookup follows the single observed inheritance wrapper"
+  },
+  "validation": {
+    "synthetic_test_count": 9,
+    "synthetic_test_failures": 0,
+    "output_root_exists_before_effective_freeze": false,
+    "hidden_partial_root_exists_before_effective_freeze": false,
+    "candidate_values_read_before_effective_freeze": false,
+    "comparison_values_read_before_effective_freeze": false,
+    "historical_daily_price_or_forward_return_read_before_effective_freeze": false
+  },
+  "next_action": "Validate the concept, mechanism, no-return, repair, and effective implementation bindings, then restart the unique Campaign043 feature build."
+}

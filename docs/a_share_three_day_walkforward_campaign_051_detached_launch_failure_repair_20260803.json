@@ -1,0 +1,50 @@
+{
+  "version": 1,
+  "kind": "a_share_three_day_walkforward_campaign051_detached_launch_failure_repair",
+  "status": "launcher_only_failure_persistent_session_exact_continuation_allowed",
+  "recorded_at": "2026-08-03T02:28:29Z",
+  "purpose": "Preserve the failed nohup launcher attempt and authorize one execution-substrate-only continuation of the unchanged frozen Campaign051 no-return audit in a persistent screen session.",
+  "source_interruption_record": {
+    "path": "docs/a_share_three_day_walkforward_campaign_051_no_return_audit_execution_interruption_20260803.json",
+    "sha256": "bbc26de53550f2823663f71e0c89dd4fb2af82e985f506d6b79f62ab26fdcaaf"
+  },
+  "frozen_audit_entrypoint": {
+    "path": "scripts/a_share_three_day_walkforward_campaign051_features_v3.py",
+    "sha256": "178479da821a780773550d66f97193403dc4238601fb034d7cab24e02f24c0a9"
+  },
+  "failed_launcher": {
+    "launched_at_local": "2026-08-03T10:28:00+08:00",
+    "mechanism": "nohup background child from a short-lived exec shell",
+    "reported_pid": 7851,
+    "process_present_on_immediate_recheck": false,
+    "stdout_stderr_log": "data/logs/campaign051_no_return_audit_retry_20260803.log",
+    "stdout_stderr_log_bytes": 0,
+    "audit_artifact_count": 0,
+    "exit_code_captured": false,
+    "traceback_captured": false,
+    "python_initialization_evidence": false,
+    "candidate_snapshot_or_comparison_value_read_evidence": false,
+    "classification": "execution_substrate_reclaimed_background_child_before_observable_research_work"
+  },
+  "authorized_continuation": {
+    "command_semantics": "Run the identical v3 no-return-audit command with the same data root and workers=4.",
+    "allowed_execution_delta": "Use macOS screen only to keep the foreground Python process alive after the launching shell exits and to persist stdout/stderr.",
+    "factor_formula_changed": false,
+    "factor_direction_changed": false,
+    "candidate_snapshot_changed": false,
+    "comparison_catalog_or_order_changed": false,
+    "coverage_or_uniqueness_gate_changed": false,
+    "historical_daily_price_or_return_access_allowed": false,
+    "research_trial_count_incremented_by_launcher_failure": false,
+    "persistent_session_continuation_limit": 1
+  },
+  "safety_boundary": {
+    "historical_daily_price_fields_read": [],
+    "historical_forward_returns_read": false,
+    "candidate49_historical_return_read": false,
+    "candidate49_ledgers_changed": false,
+    "second_prospective_candidate_created": false,
+    "current_scoring_selection_sizing_or_orders_performed": false
+  },
+  "next_action": "Start the one persistent-session continuation, monitor it to a terminal audit artifact or explicit failure, and preserve this launcher failure regardless of the outcome."
+}

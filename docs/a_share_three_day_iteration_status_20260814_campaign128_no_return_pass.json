@@ -1,0 +1,190 @@
+{
+  "schema_version": 1,
+  "kind": "a_share_three_day_iteration_status",
+  "status": "campaign128_no_return_gates_passed_v139_development_freeze_next",
+  "recorded_at": "2026-08-14T06:29:33+0800",
+  "active_goal": {
+    "objective": "请持续迭代因子。",
+    "status": "active",
+    "completion_requested_or_recorded": false
+  },
+  "authoritative_workspace": "/Volumes/DIsk/Disk-Coding/qlib",
+  "supersedes_without_rewriting": {
+    "path": "docs/a_share_three_day_iteration_status_20260814_campaign128_formula_frozen.json",
+    "sha256": "da968859b3d07d4f4702a76dfb2375d124a5d07ee530c1125e3d490ceb3025ef",
+    "preserved": true
+  },
+  "authoritative_boundaries": {
+    "historical_walkforward_policy": {
+      "path": "docs/a_share_three_day_historical_walkforward_research_policy_20260727.json",
+      "sha256": "38426d6161b9bfed323c58caba18feca668b8c9d53e294951a8ba90c01a798bb"
+    },
+    "candidate49_immutable_workflow_protocol": {
+      "path": "docs/a_share_tushare_candidate49_future_session_workflow_protocol.json",
+      "sha256": "6ff5636a3f7ef65e93452098186b3aecf9231d68873ab8a1070afb91d699ef7c"
+    },
+    "candidate49_latest_operational_evidence": {
+      "path": "docs/a_share_candidate49_20260727_daily_source_failure_record.json",
+      "sha256": "1ffeeb0b5041fe3bda463d51190cd5c912e498b6986ae2862ada1edeb317e2f8"
+    },
+    "numeric_policy": {
+      "path": "docs/a_share_three_day_walkforward_future_numeric_comparison_eligibility_policy_v139_20260814.json",
+      "sha256": "5520788a50b41c835af75b413be83e12f332cb0160ce942bca7ec447e57d8f2a"
+    }
+  },
+  "manage_qlib_a_share_data_skill": {
+    "path": "/Users/niyufei/.codex/skills/manage-qlib-a-share-data/SKILL.md",
+    "sha256": "565713a5f3aeb6a1acf23e397fcc21be28d0c3ea4ebf21c7f287a25bb94d78dc"
+  },
+  "active_data_roots": {
+    "minute": "/Volumes/DIsk/qlib-a-share-tushare-1m",
+    "daily_project_root": "/Volumes/DIsk/Disk-Coding/qlib/data",
+    "daily_qlib_provider_uri": "/Volumes/DIsk/Disk-Coding/qlib/data/qlib/cn_a_share",
+    "accepted_daily_calendar_end": "2026-07-13"
+  },
+  "provider_credential": {
+    "env_path": "/Volumes/DIsk/Disk-Coding/qlib/.env",
+    "regular_non_symlink": true,
+    "mode": "0600",
+    "tushare_token_present_nonempty": true,
+    "loaded_for_campaign128": false,
+    "secret_printed_hashed_or_persisted": false
+  },
+  "candidate49": {
+    "only_active_prospective_candidate": true,
+    "signal_ledger_sha256": "5193f00d7f36da003f53cec387900da4c3d002299f5dfcfc1a95eaa199ed3a79",
+    "signal_entry_count": 0,
+    "execution_ledger_sha256": "d57a3e61eac969e42cafa418ccd8c0a5ee65dcf69da145bb2c096c2a02a2ea4f",
+    "execution_entry_count": 0,
+    "historical_backfill_performed": false,
+    "prospective_registration_changed": false
+  },
+  "candidate49_daily_20260814": {
+    "local_day": "Friday",
+    "observed_local_time": "2026-08-14T06:29:33+0800",
+    "before_same_day_16_30_gate": true,
+    "candidate49_plan_executed": false,
+    "candidate49_run_executed": false,
+    "candidate49_staging_root_created_or_reused": false
+  },
+  "campaign128_authoritative_artifacts": {
+    "source_bound_implementation_freeze": {
+      "path": "docs/a_share_three_day_walkforward_campaign_128_source_bound_implementation_freeze_20260814.json",
+      "sha256": "edc8504c3199c6b1fc7104de14dcbfd28b39807bd61edb2c7dd830fd223023d4"
+    },
+    "source_bound_implementation_verification": {
+      "path": "docs/a_share_three_day_walkforward_campaign_128_source_bound_implementation_verification_20260814.json",
+      "sha256": "349575411b2bc44b1ba21b8082d7fcc8aac884e059b560ee4e5dad5da14cf233"
+    },
+    "source_snapshot_publication": {
+      "path": "docs/a_share_three_day_walkforward_campaign_128_source_snapshot_publication_20260814.json",
+      "sha256": "8b18503c0db2a9b8fb36f1b2c08ccd6d3cca791da9d209436042191950528c25"
+    },
+    "coverage_result": {
+      "path": "data/experiments/short_horizon/historical_walkforward/campaign_128/coverage/campaign128_coverage_audit.json",
+      "sha256": "8ccfbc0fb76b5c4187febbf8659fb29c864259efd4e3a8be3bc5d0db8a980605"
+    },
+    "ordered_uniqueness_protocol": {
+      "path": "docs/a_share_three_day_walkforward_campaign_128_ordered_numeric_uniqueness_protocol_20260814.json",
+      "sha256": "b6dab3dd821bad4b03888bfd97c357b6a2c20f6467cae6e33b0647bf44ac3acd"
+    },
+    "ordered_uniqueness_implementation_freeze_v2": {
+      "path": "docs/a_share_three_day_walkforward_campaign_128_ordered_uniqueness_implementation_freeze_v2_20260814.json",
+      "sha256": "65f81752834b1fd433597f506c3736e5e9eccd255216d4f28342c4317e77e27c"
+    },
+    "ordered_uniqueness_result": {
+      "path": "data/experiments/short_horizon/historical_walkforward/campaign_128/uniqueness/campaign128_ordered_uniqueness_audit.json",
+      "sha256": "7661112a503f8930cba5fd79c03815b8c830d39f98703746362b85b37fa14cef"
+    },
+    "no_return_development_admission": {
+      "path": "docs/a_share_three_day_walkforward_campaign_128_no_return_development_admission_20260814.json",
+      "sha256": "07d00d6e6b5107ceaaf0ae330165a8c848e96733805a80ef71485703897fbeb6"
+    },
+    "research_attempt_ledger": {
+      "path": "data/experiments/short_horizon/historical_walkforward/campaign_128/research_attempt_ledger_v6.json",
+      "sha256": "9a4f141a128a38e878e4b04c23535b4ec18f057e80d59b5cec51012b6b55d1dc"
+    }
+  },
+  "candidate_snapshot": {
+    "path": "/Volumes/DIsk/qlib-a-share-tushare-1m/derived/a_share/rich/tushare/minute_walkforward_campaign128_feature_library/tushare_stk_mins_1m_2019_2025_ea0cbb8f_walkforward_campaign128_feature_library_v1/snapshot_manifest.json",
+    "manifest_sha256": "6ddc6358bffbfd6ae412744e96479b7bc6bc179ee0ae20cff9b3cb3e85b86e2f",
+    "dataset_sha256": "4644fdbf8ddbd046def730c9eaf848fdc56874f617ea2aefb50dedcffbc9bb4f",
+    "partitions": 33015,
+    "rows": 7724498,
+    "eligible_rows": 7580753,
+    "read_only_recovery_verified": true
+  },
+  "no_return_results": {
+    "coverage": {
+      "median_daily_coverage": 0.993201130962011,
+      "p05_daily_coverage": 0.9813084112149533,
+      "eligible_names_p05": 138.0,
+      "potential_non_overlapping_three_signal_session_cohorts": 540,
+      "nonconstant_cross_sectional_sessions": 1632,
+      "gate_passed": true
+    },
+    "numeric_uniqueness": {
+      "comparison_count": 139,
+      "comparison_order_matches_preregistration": true,
+      "all_required_numeric_comparisons_passed": true,
+      "maximum_observed_absolute_median_daily_rank_correlation": 0.4061439818245511,
+      "highest_correlation_comparator": "intraday_amount_center_of_mass_240m",
+      "admissible_factor_count": 1
+    }
+  },
+  "effective_accounting": {
+    "campaign128_attempt_count": 11,
+    "campaign128_ledger_entry_count": 11,
+    "campaign128_infrastructure_failure_count": 5,
+    "campaign128_prevalue_scientific_attempt_count": 3,
+    "campaign128_source_acceptance_attempt_count": 1,
+    "campaign128_coverage_gate_attempt_count": 1,
+    "campaign128_ordered_uniqueness_gate_attempt_count": 1,
+    "campaign128_return_reading_development_trial_count": 0,
+    "campaign128_development_survivor_count": 0,
+    "campaign128_stress_trial_count": 0,
+    "cumulative_historical_research_attempt_count": 1044,
+    "cumulative_return_reading_development_trial_count": 306
+  },
+  "frozen_library": {
+    "complete_definition_count": 151,
+    "complete_definition_order_sha256": "91c2da3018330edbaddbb60b86370dcd9732425590f0565c70790b990002e0b5",
+    "eligible_numeric_comparator_count_while_campaign_active": 139,
+    "eligible_numeric_comparator_order_sha256": "9c4de054ca1b83eced67eece256b024ebec3a6e1925de17a4cedfa7d36265161"
+  },
+  "research_boundary": {
+    "campaign128_programmatic_provider_requests_issued": false,
+    "campaign128_credential_loaded": false,
+    "candidate_and_all_139_comparator_values_read": true,
+    "historical_daily_price_or_forward_return_values_read": false,
+    "development_trial_count": 0,
+    "stress_2024_2025_return_values_opened": false,
+    "candidate49_historical_backfill_performed": false,
+    "candidate49_ledgers_changed": false,
+    "second_prospective_candidate_created": false,
+    "current_scoring_selection_sizing_positions_or_orders_performed": false,
+    "investment_advice": false
+  },
+  "validation": {
+    "campaign128_no_return_admission_test": {
+      "path": "tests/data_collector_tests/test_a_share_three_day_walkforward_campaign128_no_return_admission.py",
+      "sha256": "6ae8fd669f97be8e0ec809e1f050a0230cdd3ce732fa2f272a7a5d39ef771a62"
+    },
+    "failed_exit_codes_recorded_and_not_overridden": true
+  },
+  "reports": {
+    "campaign128_report": {
+      "path": "docs/a_share_three_day_walkforward_campaign_128_prevalue_report.md",
+      "sha256": "a09b6fafd021fb215f5fcd183c67579c93f6d74117c4379880b2e075c1ffcbee"
+    },
+    "current_research_report": {
+      "path": "data/experiments/short_horizon/current_research_report.md",
+      "sha256": "9e94086bdcb12f2c42f76c03fdabc7548984ef75c640838b8aeb0b3f484e40bc"
+    },
+    "three_day_research_report": {
+      "path": "data/experiments/short_horizon/three_day_research_report.md",
+      "sha256": "a7845296b28d5c82abeb69568f02d68ec1193b8658d87076ce7f91a7d434be0c"
+    }
+  },
+  "next_action": "The active goal continues. Freeze and test exactly one Campaign128 2019-2023 development preregistration and runner with the inherited three expanding folds, three-signal-session purge, same-partition t+1/t+3 containment, frozen costs/execution policies and survivor rule. Publish a single-use activation before reading any daily price or forward return; keep 2024-2025 returns and Candidate49 unchanged."
+}

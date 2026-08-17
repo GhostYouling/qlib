@@ -1,0 +1,75 @@
+{
+  "schema_version": 1,
+  "kind": "a_share_three_day_walkforward_campaign151_formula_implementation_freeze",
+  "status": "pure_formula_and_synthetic_tests_frozen_before_historical_values",
+  "recorded_at": "2026-08-15T00:09:14+08:00",
+  "authoritative_inputs": {
+    "no_return_preregistration": {
+      "path": "docs/a_share_three_day_walkforward_campaign_151_no_return_preregistration_20260815.json",
+      "sha256": "99c2f95cad4058d004cc26aeecb5e710199ee930320beab97826a674cd6dff8c"
+    },
+    "mechanism_overlap_audit": {
+      "path": "docs/a_share_three_day_walkforward_campaign_151_mechanism_overlap_audit_20260815.json",
+      "sha256": "f8b32dd0d22cf01b35ec81c18011573b100bc449f91c77abf2a359d7f7e11455"
+    },
+    "formula_module": {
+      "path": "scripts/a_share_three_day_walkforward_campaign151_formula.py",
+      "sha256": "e739c773543bf245ad02b73bdb552a41d294777f79cba5a7f2cb84af52f574fe"
+    },
+    "formula_test": {
+      "path": "tests/data_collector_tests/test_a_share_three_day_walkforward_campaign151_formula.py",
+      "sha256": "b078f28ce2567c24b59e9656389c19acd667ff84d60856e6a759cdca0eb271b5"
+    }
+  },
+  "frozen_formula": {
+    "name": "intraday_relative_amount_share_clock_center_240m",
+    "direction": "higher",
+    "callable": "scripts.a_share_three_day_walkforward_campaign151_formula::compute_relative_amount_share_clock_center",
+    "input_shapes": "aligned float64 own_amount and leave-one-out peer_mean_amount arrays with shape (rows,240)",
+    "peer_identity_and_count_enforcement_location": "future separately fingerprinted source-bound builder",
+    "relative_activity": "z_i=a_i/b_i",
+    "normalization": "q_i=z_i/sum_j(z_j)",
+    "clock": "x_i=i/239",
+    "score": "sum_i(q_i*x_i)",
+    "valid_range_inclusive": [0.0, 1.0],
+    "endpoint_tolerance": 1e-12,
+    "minimum_leave_one_out_peers": 50
+  },
+  "synthetic_verification": {
+    "pytest_command": "/Volumes/DIsk/Coding/anaconda3/bin/python3.12 -m pytest -q tests/data_collector_tests/test_a_share_three_day_walkforward_campaign151_formula.py",
+    "passed": 7,
+    "failed": 0,
+    "black_after_mechanical_format": "passed",
+    "ruff": "passed",
+    "verified_behaviors": [
+      "protocol fingerprint and semantics",
+      "exact peer-shape midpoint score",
+      "early versus late direction",
+      "own and peer common-scale invariance",
+      "same-per-clock market-scale invariance",
+      "zero-total and invalid-input fail-closed semantics",
+      "exact shape enforcement"
+    ]
+  },
+  "recorded_pre_freeze_failure": {
+    "attempt_id": "campaign151_infrastructure_001",
+    "failure": "The first chained Black check exited 1 because the new formula module required mechanical formatting; Ruff and pytest did not run in that failed chain.",
+    "scientific_values_read": false,
+    "frozen_bytes_changed": false,
+    "repair": "Black formatted the not-yet-frozen formula module, after which Black check, Ruff and all seven synthetic tests passed.",
+    "failure_exit_code_bypassed_or_masked": false
+  },
+  "research_boundary": {
+    "historical_source_rows_read": false,
+    "peer_benchmark_values_read": false,
+    "candidate_or_comparator_values_read": false,
+    "historical_daily_price_or_forward_return_values_read": false,
+    "stress_2024_2025_opened": false,
+    "credential_loaded": false,
+    "provider_request_issued": false,
+    "candidate49_historical_backfill_performed": false,
+    "candidate49_ledgers_changed": false,
+    "current_scoring_selection_sizing_positions_or_orders_performed": false
+  },
+  "next_action": "Freeze and test a source-bound builder that proves exact stock exclusion, complete-profile peer membership, per-clock peer count and mean semantics before any historical minute value is read."
+}

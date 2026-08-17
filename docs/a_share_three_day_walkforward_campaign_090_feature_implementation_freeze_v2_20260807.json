@@ -1,0 +1,81 @@
+{
+  "schema_version": 1,
+  "version": 2,
+  "kind": "a_share_three_day_walkforward_campaign090_feature_implementation_freeze",
+  "status": "frozen_before_campaign090_minute_source_rows_or_candidate_values",
+  "recorded_at": "2026-08-07T06:03:00+08:00",
+  "supersedes_without_rewriting": {
+    "path": "docs/a_share_three_day_walkforward_campaign_090_feature_implementation_freeze_20260807.json",
+    "sha256": "38d9125b5fed38f88ff1a236cb10c759b338fdf03b40a4e108f62129a129884d",
+    "preserved": true,
+    "scientific_contract_changed": false
+  },
+  "repair_record": {
+    "path": "docs/a_share_three_day_walkforward_campaign_090_feature_freeze_boundary_layout_repair_20260807.json",
+    "sha256": "af144e7af3f13835bfabbe5812968b6d1cafa5e13ca2ed8fb57aa8aadefa4d75"
+  },
+  "protocol": {
+    "path": "docs/a_share_three_day_walkforward_campaign_090_no_return_preregistration.json",
+    "sha256": "4b08b70625483f8d43795d2173108b72fa09f418abbd74aa143354ef1c5487cc"
+  },
+  "mechanism_overlap_audit": {
+    "path": "docs/a_share_three_day_walkforward_campaign_090_mechanism_overlap_audit.json",
+    "sha256": "0a550ef4e0bba078b7c876190ad4ab21c64f23154fc63ef06fc435fdaab8ed87"
+  },
+  "feature_runner": {
+    "path": "scripts/a_share_three_day_walkforward_campaign090_features.py",
+    "sha256": "46d7dce8796654a2af2162a7e28bea07ecc3e6d4b320ed48e46b139f9776212d"
+  },
+  "tests": {
+    "path": "tests/data_collector_tests/test_a_share_three_day_walkforward_campaign090_features.py",
+    "sha256": "70181f3da3962f276bbfe96d536ccbca287396a24e341d76a23307402e62cc4d",
+    "synthetic_result_before_v1_freeze": "5 passed",
+    "historical_source_values_read": false
+  },
+  "base_runner": {
+    "path": "scripts/a_share_three_day_walkforward_campaign089_features.py",
+    "sha256": "64c0dc5a2331446e9acf57a00411b67bf3543d49104d89cdde07c91e8c2ee407"
+  },
+  "research_attempt_ledger": {
+    "path": "data/experiments/short_horizon/historical_walkforward/campaign_090/research_attempt_ledger_v3.json",
+    "sha256": "d4574f6d7fb73280daa53f6b8e532cfa29ed3d2c0c2c56afb847ec4db02cc962",
+    "campaign_attempt_count": 5,
+    "return_reading_development_trial_count": 0
+  },
+  "frozen_factor": {
+    "name": "intraday_range_clock_center_240m",
+    "direction": "higher",
+    "source_projection": [
+      "datetime",
+      "symbol",
+      "provider",
+      "high",
+      "low"
+    ],
+    "selected_bar_count": 240,
+    "clock_denominator": 239,
+    "formula": "r_i=ln(high_i/low_i), x_i=i/239, score=sum(x_i*r_i)/sum(r_i)",
+    "valid_range": [
+      0,
+      1
+    ],
+    "endpoint_tolerance": 1e-12
+  },
+  "candidate_source_rows_read_before_freeze": false,
+  "candidate_values_computed_before_freeze": false,
+  "comparison_values_read_before_freeze": false,
+  "historical_daily_price_or_forward_return_values_read_before_freeze": false,
+  "provider_request_issued_before_freeze": false,
+  "research_boundary": {
+    "candidate_source_rows_read_before_freeze": false,
+    "candidate_values_computed_before_freeze": false,
+    "comparison_values_read_before_freeze": false,
+    "historical_daily_price_or_forward_return_values_read_before_freeze": false,
+    "provider_request_issued_before_freeze": false,
+    "candidate49_historical_backfill_performed": false,
+    "candidate49_ledgers_changed": false,
+    "second_prospective_candidate_created": false,
+    "current_scoring_selection_sizing_or_orders_performed": false
+  },
+  "next_action": "Retry the exact immutable local snapshot build once with no formula, direction, source, clock, gate, or search change."
+}

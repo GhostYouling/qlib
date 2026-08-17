@@ -1,0 +1,84 @@
+{
+  "schema_version": 1,
+  "kind": "a_share_three_day_walkforward_campaign110_feature_snapshot_binding",
+  "status": "verified_immutable_snapshot_after_verify_only_manifest_expectation_correction_before_coverage_or_comparator_values",
+  "recorded_at": "2026-08-07T22:48:05Z",
+  "protocol": {
+    "path": "docs/a_share_three_day_walkforward_campaign_110_no_return_preregistration_20260808.json",
+    "sha256": "75999c8aad35d7197b233c578990bb95c0a8d87ca25821cdd2859ef56f210f56"
+  },
+  "implementation_freeze": {
+    "path": "docs/a_share_three_day_walkforward_campaign_110_no_return_implementation_freeze_v2_20260808.json",
+    "sha256": "3b46c2c1989a7f197fa04f4452ad460a70139a21a1d6e2e05f4566ab92afdc57"
+  },
+  "snapshot_verifier_protocol": {
+    "path": "docs/a_share_three_day_walkforward_campaign_110_snapshot_verifier_protocol_20260808.json",
+    "sha256": "23aa30bdc564c3dca42eb4ed7202dd790a5cba425d640527826df73337d738bc"
+  },
+  "snapshot_verifier_implementation_freeze": {
+    "path": "docs/a_share_three_day_walkforward_campaign_110_snapshot_verifier_implementation_freeze_20260808.json",
+    "sha256": "b9337ed49073e6af228790a0e2700218eef193673af15212c0796fd33ad11a3c"
+  },
+  "snapshot": {
+    "path": "/Volumes/DIsk/qlib-a-share-tushare-1m/derived/a_share/rich/tushare/minute_walkforward_campaign110_feature_library/tushare_stk_mins_1m_2019_2025_ea0cbb8f_walkforward_campaign110_feature_library_v1/snapshot_manifest.json",
+    "sha256": "e3ae3c01e0a6eadd8dfce0362520e13bc4c047ff8357cdc7be2d1f9b31e93b72",
+    "dataset_sha256": "9082b74891ea2e1c107309637941e42acdc9afeec0b44748e2242506c1a68c4b",
+    "partitions": 33015,
+    "rows": 7724498,
+    "eligible_rows": 7724498,
+    "missing_rows": 0
+  },
+  "source": {
+    "raw_rows_read": 1866461373,
+    "raw_sessions_read": 7744653,
+    "source_projection": [
+      "datetime",
+      "symbol",
+      "provider",
+      "open",
+      "close"
+    ],
+    "raw_manifest_sha256": "9b3d959563c9d182f38981c6a36bdb3bc9b415de08487a9e1f9e850825c0839f",
+    "joint_clean_manifest_sha256": "453c6719cb3c7da42fed8807b28a2bfe988700283e9625a6db97912534f368de",
+    "joint_clean_dataset_sha256": "0e4fe7c05536cdfcecc2936bc880726902f5560061188ffff82ef7ee6f346983"
+  },
+  "quality": {
+    "invalid_anchor_or_close_sessions": 0,
+    "invalid_fixed_denominator_sessions": 0,
+    "eligible_stock_days": 7724498,
+    "missing_stock_days": 0,
+    "nonzero_reference_state_bars": 1776677277,
+    "equal_reference_bars": 82039443
+  },
+  "verification": {
+    "all_partition_byte_hashes_passed": true,
+    "all_partition_frame_hashes_passed": true,
+    "all_partition_row_counts_passed": true,
+    "all_eligible_values_are_finite_within_minus_one_to_one_and_on_240_state_lattice": true,
+    "all_ineligible_values_are_missing": true,
+    "aggregate_dataset_digest_passed": true,
+    "aggregate_rows_partitions_and_eligible_rows_passed": true,
+    "comparison_values_read": false,
+    "historical_daily_price_or_forward_return_values_read": false,
+    "provider_request_issued": false
+  },
+  "postpublication_verifier_recovery": {
+    "snapshot_rebuilt_or_modified": false,
+    "corrected_inherited_manifest_expectation_count": 3,
+    "corrected_expectations": {
+      "fixed_denominator": 240,
+      "fixed_anchor_and_close_support_required": true,
+      "exact_reference_ties_retained": true
+    },
+    "all_other_manifest_partition_and_aggregate_checks_reused": true
+  },
+  "research_boundary": {
+    "coverage_or_capacity_metrics_computed": false,
+    "comparator_values_read": false,
+    "historical_daily_price_or_forward_return_values_read": false,
+    "candidate49_historical_backfill_performed": false,
+    "candidate49_ledgers_changed": false,
+    "current_scoring_selection_sizing_or_orders_performed": false
+  },
+  "next_action": "Freeze a single-use audit activation and verify-only audit entry adapter against this exact snapshot, then compute coverage before any comparator value."
+}

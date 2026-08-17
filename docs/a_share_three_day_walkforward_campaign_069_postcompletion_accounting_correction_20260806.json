@@ -1,0 +1,46 @@
+{
+  "version": 1,
+  "kind": "a_share_three_day_walkforward_campaign069_postcompletion_accounting_correction",
+  "status": "appenditive_command_level_attempt_accounting_current",
+  "recorded_at": "2026-08-06T04:04:31+08:00",
+  "terminal_freeze_before_postcompletion_validation": {
+    "path": "docs/a_share_three_day_walkforward_campaign_069_terminal_completion_freeze_20260806.json",
+    "sha256": "66a58159041ee462c1e6f4df25e78afa3b57e9dcfc3525a766230e80d49f7989"
+  },
+  "additional_failure_record": {
+    "path": "docs/a_share_three_day_walkforward_campaign_069_terminal_validation_failure_20260806.json",
+    "sha256": "3748ca36cfd2545259f39aa99e536a640323b7bb77892deb99efe5c32222c9e7",
+    "failed_command_count": 1,
+    "failed_node_count": 1
+  },
+  "current_attempt_ledger": {
+    "path": "data/experiments/short_horizon/historical_walkforward/campaign_069/research_attempt_ledger_v3.json",
+    "sha256": "adbf8d3100e4df24c5ea89f22533d5240f3f30cb107e0221c2f1e23c7a25494d"
+  },
+  "current_postcompletion_test": {
+    "path": "tests/data_collector_tests/test_a_share_three_day_walkforward_campaign069_postcompletion.py",
+    "sha256": "807186004c486ccfb09f9daad6cfd6f7a17b9df6fe3ad8474d706e7c7e2ba6a7"
+  },
+  "authoritative_counting_rule": "A historical infrastructure attempt is one executed failed command or one explicit synthetic attempt, not one failed assertion within a command.",
+  "corrected_accounting": {
+    "campaign069_infrastructure_failure_count": 4,
+    "campaign069_complete_factor_attempt_count": 1,
+    "campaign069_attempt_count": 5,
+    "campaign069_append_only_ledger_entry_count": 6,
+    "campaign069_return_reading_development_trial_count": 1,
+    "corrected_cumulative_historical_research_attempt_count": 413,
+    "cumulative_return_reading_development_trial_count": 275
+  },
+  "research_boundary": {
+    "candidate_or_comparison_values_read_by_failed_validation": false,
+    "new_historical_daily_price_or_forward_return_values_read_by_failed_validation": false,
+    "stress_2024_2025_opened": false,
+    "provider_request_issued": false,
+    "candidate49_ledgers_changed": false,
+    "campaign069_terminal_decision_changed": false
+  },
+  "unified_report": {
+    "path": "data/experiments/short_horizon/three_day_research_report.md",
+    "sha256": "a6d5b4e57c01c5ae4d8d6e7e03e05608cfbcbbbea1e219449ac9ef1393c2f552"
+  }
+}

@@ -1,0 +1,130 @@
+{
+  "schema_version": 1,
+  "kind": "a_share_three_day_walkforward_campaign086_concept_scouting",
+  "status": "selected_before_campaign086_minute_source_candidate_or_comparison_values",
+  "recorded_at": "2026-08-07T00:31:00+08:00",
+  "purpose": "Select exactly one economically distinct offline three-session factor after terminal Campaign085, before opening any Campaign086 minute source row, candidate value, comparison value, daily price, or forward return.",
+  "authoritative_bindings": {
+    "campaign085_verified_state": {
+      "path": "docs/a_share_three_day_iteration_status_20260807_campaign085_verified.json",
+      "sha256": "99487c88232df6e0fedbd6207c20a6f25bab8bb6e8f66842f2599bbeba2c3024"
+    },
+    "historical_walkforward_policy": {
+      "path": "docs/a_share_three_day_historical_walkforward_research_policy_20260727.json",
+      "sha256": "38426d6161b9bfed323c58caba18feca668b8c9d53e294951a8ba90c01a798bb"
+    },
+    "numeric_comparator_policy_v24": {
+      "path": "docs/a_share_three_day_walkforward_future_numeric_comparison_eligibility_policy_v24_20260807.json",
+      "sha256": "47d582150f3cca9c00f919e397600b388d65505e1f97d62017a693520d2828e1",
+      "complete_definition_count": 117,
+      "complete_definition_order_sha256": "462cd7b3aa1d7cd909e35b050025cf21094954b1f76925833f46f65c4d1317f8",
+      "eligible_numeric_comparator_count": 115,
+      "eligible_numeric_comparator_order_sha256": "f22759bf639c322193ff08cecaec59e9fce757866f7606dff0d88bc115db321d"
+    },
+    "manage_qlib_a_share_data_skill": {
+      "path": "/Users/niyufei/.codex/skills/manage-qlib-a-share-data/SKILL.md",
+      "sha256": "90a99c54dd00f0c737e85c4c6dd48d906edbd0f591c61278885728eaf7806431"
+    }
+  },
+  "definition_only_source_boundary": {
+    "source": "immutable accepted local Tushare 2019-2025 one-minute source and joint-clean stock-day identity",
+    "minute_source_projection_if_later_admitted": [
+      "datetime",
+      "symbol",
+      "provider",
+      "high",
+      "low",
+      "close"
+    ],
+    "stock_day_identity_projection_if_later_admitted": [
+      "trade_date",
+      "symbol",
+      "provider"
+    ],
+    "candidate_source_rows_read": false,
+    "candidate_or_comparison_values_read": false,
+    "daily_price_or_forward_return_values_read": false,
+    "provider_request_allowed": false
+  },
+  "candidate_design_catalog": [
+    {
+      "design": "intraday_intrabar_close_location_serial_persistence_238p",
+      "decision": "selected_for_separate_complete_mechanism_overlap_audit",
+      "reason": "It measures temporal persistence of the scale-free position at which each minute closes inside its own high-low interval. The statistic is not the mean close-location pressure, candle direction, adjacent high-low overlap, gap absorption, range magnitude, or a VWAP crossing mechanism."
+    },
+    {
+      "design": "intraday_intrabar_close_location_pressure_mean",
+      "decision": "rejected_before_values_as_terminal_family",
+      "reason": "The directional mean is already represented by terminal intraday_intrabar_close_location_pressure_240m; another mean or sign transform would be a rescue."
+    },
+    {
+      "design": "intraday_intrabar_close_location_entropy_or_concentration",
+      "decision": "rejected_before_values",
+      "reason": "Binning or entropy adds an arbitrary state alphabet and reopens terminal close-range occupancy, weak-order entropy, and range-participation concentration families."
+    },
+    {
+      "design": "intraday_intrabar_close_location_lead_return_or_amount_response",
+      "decision": "rejected_before_values",
+      "reason": "A lead response would combine the selected state with terminal return, amount, price-impact, or direction-search mechanisms instead of isolating state persistence."
+    },
+    {
+      "design": "morning_only_afternoon_only_cross_lunch_or_selected_subwindow_persistence",
+      "decision": "rejected_before_values",
+      "reason": "Subwindow, lunch, lag, threshold, filter, subset, regime, fitted, model, and combination searches are outside the one-factor finite catalog."
+    }
+  ],
+  "selected_candidate": {
+    "name": "intraday_intrabar_close_location_serial_persistence_238p",
+    "direction": "higher",
+    "economic_hypothesis": "Persistent placement of minute closes at similar locations inside their own high-low intervals can indicate repeated one-sided liquidity pressure or coordinated execution that is not explained by absolute price level or range magnitude, and may carry information over the next three sessions.",
+    "formula": "For each selected positive-range bar compute x=(log(close)-log(low))/log(high/low). Inside each 120-bar half form only adjacent pairs whose two states are finite, pool at most 238 pairs, require at least 120 informative pairs and strictly positive population variance in both lag and lead vectors, compute their population Pearson correlation rho, and return (1+rho)/2.",
+    "time_grid": "Exactly 09:31-11:30 and 13:01-15:00. The raw 09:30 row remains required by source identity but is excluded. The 11:30-to-13:01 transition, overnight, cross-day, and cross-stock transitions are excluded.",
+    "ohlc_rule": "Every selected high, low, and close must be finite and strictly positive with low<=close<=high. A zero-range bar has no close-location state and invalidates only its directly incident adjacent pairs; missing states are never bridged.",
+    "support_rule": "At least 120 of the fixed 238 within-half adjacent opportunities must have finite states at both endpoints. Both retained lag and lead state vectors must have strictly positive population variance.",
+    "floating_point_rule": "Use natural-log float64 distances, population Pearson correlation, and only a 1e-12 numerical endpoint canonicalization after correlation. Never clamp input close locations or substitute a value for a zero-range bar.",
+    "valid_range": {
+      "lower": 0.0,
+      "lower_inclusive": true,
+      "upper": 1.0,
+      "upper_inclusive": true
+    },
+    "availability": "Known at the signal-session close after the exact 240 selected bars; no later session, daily return, comparison value, or Candidate49 observation is used.",
+    "parameter_direction_window_transform_filter_subset_regime_fit_model_or_combination_search": false
+  },
+  "mandatory_pre_value_challenges": [
+    "all_117_frozen_historical_factor_definitions_in_exact_order",
+    "all_115_numeric_comparators_in_exact_order",
+    "intraday_intrabar_close_location_pressure_240m",
+    "intraday_bar_direction_continuity_238p",
+    "intraday_adjacent_range_overlap_continuity_238p",
+    "intraday_microgap_absorption_share_238p",
+    "intraday_intrabar_body_range_efficiency_240m",
+    "intraday_interbar_gap_body_confirmation_238p",
+    "intraday_prior_range_breakout_pressure_238p",
+    "intraday_range_boundary_translation_coherence_238p",
+    "intraday_intrabar_range_reversal_238p",
+    "intraday_range_weak_order_entropy_236t",
+    "intraday_range_weak_order_time_reversal_divergence_236t",
+    "quarterly_freshness_market_neutral_late_drift_confirmation_product_2r",
+    "candidate49_intraday_cumulative_vwap_crossing_rate_240m_v1"
+  ],
+  "research_boundary": {
+    "campaign086_minute_source_rows_read": false,
+    "campaign086_candidate_values_read": false,
+    "comparison_values_read": false,
+    "historical_daily_price_fields_read": [],
+    "historical_forward_returns_read": false,
+    "provider_request_issued": false,
+    "candidate49_historical_backfill_performed": false,
+    "candidate49_ledgers_changed": false,
+    "second_prospective_candidate_created": false,
+    "current_scoring_selection_sizing_or_orders_performed": false,
+    "investment_advice": false
+  },
+  "decision": {
+    "selected_concept_count": 1,
+    "may_advance_directly_to_values": false,
+    "required_next_step": "Complete and bind one exhaustive no-value mechanism-overlap audit; then freeze the no-return protocol, implementation, tests, and fingerprints before any candidate value.",
+    "candidate49_remains_only_active_prospective_candidate": true
+  }
+}

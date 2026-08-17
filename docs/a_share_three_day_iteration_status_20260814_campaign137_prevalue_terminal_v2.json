@@ -1,0 +1,103 @@
+{
+  "schema_version": 1,
+  "kind": "a_share_three_day_iteration_status",
+  "status": "campaign137_terminal_prevalue_zero_candidates_final_accounting_campaign138_ready",
+  "recorded_at": "2026-08-14T12:32:13+0800",
+  "goal": {
+    "objective": "请持续迭代因子。",
+    "status": "active",
+    "completion_or_blocked_requested": false
+  },
+  "supersedes_without_rewriting": {
+    "path": "docs/a_share_three_day_iteration_status_20260814_campaign137_prevalue_terminal.json",
+    "sha256": "7dfe8d297d5fb3b759ef62c909c5b6dce4927155c9bcc821f5e2e62213aa47c1",
+    "preserved": true,
+    "reason": "Advance Campaign137 infrastructure accounting and unified-report bindings after the recorded legacy lifecycle regression failure."
+  },
+  "authoritative_policy": {
+    "path": "docs/a_share_three_day_walkforward_future_numeric_comparison_eligibility_policy_v171_20260814.json",
+    "sha256": "5f5c3ca45f32d69a26455a0dac95a8751f50da083b69c974238ca60c3b8fc903",
+    "factor_definition_count": 152,
+    "factor_definition_order_sha256": "60c465a3e2043efae6b92b8c5f3e007cd397a1cd0ec3094b4fa005665bbe5736",
+    "numeric_comparator_count": 141,
+    "numeric_comparator_order_sha256": "ec1aebcb939ad516c58037a36a4aaadd4ad8b2abbd3c884705895c58da85a2ee"
+  },
+  "campaign137": {
+    "terminal": true,
+    "terminal_phase": "prevalue_semantic_independence_gate",
+    "concepts_reviewed": 6,
+    "selected_candidate_count": 0,
+    "formula_or_model_created": false,
+    "source_candidate_comparator_daily_price_or_return_values_read": false,
+    "stress_2024_2025_opened": false,
+    "retry_or_rescue_allowed": false,
+    "terminal_result": {
+      "path": "docs/a_share_three_day_walkforward_campaign_137_terminal_result_v2_20260814.json",
+      "sha256": "ddfb0bf4f158c9b555ebfe608e8e088f7a7baff75daec4e5eaecfd242886e48b"
+    },
+    "effective_attempt_ledger": {
+      "path": "data/experiments/short_horizon/historical_walkforward/campaign_137/research_attempt_ledger_v2.json",
+      "sha256": "7292a0fc3d5d09b5237873b56dbd424bca569835f6489cf441b934c727651c80",
+      "effective_entry_count": 8,
+      "chain_tip_sha256": "e09be2a6f692d5e99349f93852555105f588ebda7882f9a8ed9c716ec97f19d1"
+    }
+  },
+  "effective_accounting": {
+    "campaign137_attempt_count": 8,
+    "campaign137_prevalue_concept_attempt_count": 6,
+    "campaign137_infrastructure_failure_count": 2,
+    "campaign137_complete_factor_attempt_count": 0,
+    "campaign137_return_reading_development_trial_count": 0,
+    "campaign137_development_survivor_count": 0,
+    "campaign137_stress_trial_count": 0,
+    "cumulative_historical_research_attempt_count": 1146,
+    "cumulative_return_reading_development_trial_count": 313
+  },
+  "candidate49": {
+    "sole_prospective_candidate": true,
+    "signal_ledger_path": "data/experiments/short_horizon/candidate49_future_signal_ledger.json",
+    "signal_ledger_sha256": "5193f00d7f36da003f53cec387900da4c3d002299f5dfcfc1a95eaa199ed3a79",
+    "signal_entries": 0,
+    "execution_ledger_path": "data/experiments/short_horizon/candidate49_future_execution_ledger.json",
+    "execution_ledger_sha256": "d57a3e61eac969e42cafa418ccd8c0a5ee65dcf69da145bb2c096c2a02a2ea4f",
+    "execution_entries": 0,
+    "historical_backfill_performed": false,
+    "ledgers_changed": false
+  },
+  "local_daily_boundary": {
+    "local_time_observed": "2026-08-14T12:32:13+0800",
+    "accepted_local_trading_day": true,
+    "after_16_30_asia_singapore": false,
+    "provider_credential_present_without_value_or_digest_read": true,
+    "candidate49_plan_run_or_source_request_performed": false,
+    "historical_offline_research_allowed_and_performed": true
+  },
+  "reports": {
+    "campaign137_terminal_report": {
+      "path": "docs/a_share_three_day_walkforward_campaign_137_terminal_report.md",
+      "sha256": "862b8b663b9d8d6722fab6886d41daf4736a5a7795a80e1dc73e0c2fa6147ec0"
+    },
+    "current_research_report": {
+      "path": "data/experiments/short_horizon/current_research_report.md",
+      "sha256": "0e9662a4737a9052b118d8ca397fe8aeddd8405124f37ae524b3fd6c37b921c2"
+    },
+    "three_day_research_report": {
+      "path": "data/experiments/short_horizon/three_day_research_report.md",
+      "sha256": "5d019ffc92a45aa4847bb2fe5c7186227b5eae41f45413d2fd09ec9dba4ff159"
+    }
+  },
+  "research_boundary": {
+    "campaign137_source_rows_read": false,
+    "campaign137_candidate_or_comparator_values_read": false,
+    "historical_daily_price_or_forward_return_values_read": false,
+    "stress_2024_2025_opened": false,
+    "provider_request_issued": false,
+    "provider_credential_value_or_digest_read": false,
+    "candidate49_historical_backfill_performed": false,
+    "candidate49_ledgers_changed": false,
+    "second_prospective_candidate_created": false,
+    "current_scoring_selection_sizing_positions_or_orders_performed": false,
+    "investment_advice": false
+  },
+  "next_action": "The active goal continues. Begin Campaign138 offline only from a genuinely new prevalue mechanism or separately accepted historically versioned point-in-time source; preserve Campaign137 as terminal and keep Candidate49 as the sole prospective ledger."
+}

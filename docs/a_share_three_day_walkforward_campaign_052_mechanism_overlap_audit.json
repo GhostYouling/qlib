@@ -1,0 +1,116 @@
+{
+  "version": 1,
+  "kind": "a_share_three_day_walkforward_campaign052_mechanism_overlap_audit",
+  "status": "one_candidate_economically_independent_before_values",
+  "recorded_at": "2026-08-03T08:15:00Z",
+  "purpose": "Challenge Campaign052 against every frozen semantic family before candidate, comparison, daily-price, or return values are read.",
+  "authoritative_boundary": {
+    "campaign051_verified_state": {
+      "path": "docs/a_share_three_day_iteration_status_20260803_campaign051_verified.json",
+      "sha256": "71d63fa1f47a659e74c0b5a472762ca4be6ee07ea982626b80aad924b883612e"
+    },
+    "historical_walkforward_policy": {
+      "path": "docs/a_share_three_day_historical_walkforward_research_policy_20260727.json",
+      "sha256": "38426d6161b9bfed323c58caba18feca668b8c9d53e294951a8ba90c01a798bb"
+    },
+    "concept_scouting": {
+      "path": "docs/a_share_three_day_walkforward_campaign_052_concept_scouting.json",
+      "sha256": "81d75a9ed6ef22642553af4a92b4b6342acebea6e9db087c5ea4bb1c4725602b"
+    }
+  },
+  "selected_mechanism": {
+    "name": "quarterly_announcement_delay_consistency_4q",
+    "direction": "higher",
+    "economic_hypothesis": "Stable reporting delays across a complete four-quarter cycle indicate a repeatable disclosure process and lower near-term information-timing uncertainty, potentially leaving a more resilient close-known state for the next-open-to-third-close horizon.",
+    "formula": "For the latest four distinct effective reports whose report dates are four consecutive calendar quarter ends, let d_j be the nonnegative integer calendar days from report_date_j to announcement_date_j. Let sigma be the population standard deviation of the four d_j values. Return 1/(1+sigma).",
+    "stock_day_identity_projection": [
+      "datetime",
+      "symbol",
+      "provider"
+    ],
+    "quarterly_source_projection": [
+      "instrument",
+      "report_date",
+      "announcement_date"
+    ],
+    "lookback_reports": 4,
+    "consecutive_quarter_rule": "exact Q-DEC quarter-end sequence of length four",
+    "availability_rule": "announcement_date must be strictly before the accepted stock-day",
+    "delay_rule": "nonnegative integer calendar days",
+    "dispersion_estimator": "population standard deviation over exactly four values",
+    "normalization": "1/(1+sigma)",
+    "valid_range": {
+      "lower": 0.0,
+      "lower_inclusive": false,
+      "upper": 1.0,
+      "upper_inclusive": true
+    },
+    "transform_threshold_filter_combination_or_model": "none"
+  },
+  "overlap_challenges": [
+    {
+      "challenged_family": "quarterly_announcement_freshness_60s",
+      "decision": "independent",
+      "reason": "Freshness is a time-varying accepted-session age since only the latest effective announcement. Campaign052 is constant between disclosures and measures dispersion of four report-specific fiscal-period delays."
+    },
+    {
+      "challenged_family": "quarterly_announcement_timeliness_days",
+      "decision": "independent_but_mandatory_statistical_comparison",
+      "reason": "Timeliness is the negative delay of the latest report only. Campaign052 discards the four-delay location and retains only their population dispersion, so identical latest delays can have different consistency scores and vice versa."
+    },
+    {
+      "challenged_family": "fundamental_quality_and_growth_values",
+      "decision": "independent",
+      "reason": "Campaign052 reads no ROE, profit, revenue growth, profit growth, balance-sheet, valuation, ownership, or accounting amount."
+    },
+    {
+      "challenged_family": "minute_price_path_ohlc_activity_market_and_vwap_factors",
+      "decision": "independent",
+      "reason": "Only stock-day identity and quarterly report/announcement dates are read; no minute price, range, volume, amount, market benchmark, or transaction-price value enters the formula."
+    },
+    {
+      "challenged_family": "disclosure_freshness_timeliness_combinations",
+      "decision": "not_a_combination",
+      "reason": "The score is computed directly from four source disclosure dates. It does not load either terminal factor value or any fitted or fixed-weight combination of them."
+    },
+    {
+      "challenged_family": "lookback_estimator_direction_and_scale_variants",
+      "decision": "closed_before_values",
+      "reason": "Exactly four consecutive quarters, calendar-day delays, population standard deviation, 1/(1+sigma), and higher direction are fixed once. No alternative is evaluated."
+    }
+  ],
+  "design_choices_frozen_before_values": {
+    "candidate_count": 1,
+    "factor_name": "quarterly_announcement_delay_consistency_4q",
+    "direction": "higher",
+    "lookback_reports": 4,
+    "report_calendar": "Q-DEC",
+    "delay_unit": "calendar_day",
+    "dispersion_estimator": "population_standard_deviation",
+    "normalization": "reciprocal_one_plus_sigma",
+    "latest_report_selection": "latest_four_distinct_effective_report_dates_by_report_date",
+    "missing_if_not_four_consecutive_quarters": true,
+    "missing_if_any_negative_delay": true,
+    "parameter_filter_subset_model_or_combination_search": false
+  },
+  "decision": {
+    "economically_independent_before_values": true,
+    "mandatory_no_return_comparison_factor_count": 75,
+    "latest_required_comparison": "intraday_close_range_occupancy_entropy_10b",
+    "next_action": "freeze a fingerprint-bound ordered no-return protocol before candidate values"
+  },
+  "research_boundary": {
+    "candidate_values_read": false,
+    "comparison_values_read": false,
+    "quarterly_source_rows_read_for_campaign052": false,
+    "historical_daily_price_fields_read": [],
+    "historical_forward_return_fields_read": false,
+    "candidate49_historical_return_read": false,
+    "candidate49_signal_or_execution_backfill_performed": false,
+    "candidate49_ledgers_changed": false,
+    "second_prospective_candidate_created": false,
+    "provider_request_issued": false,
+    "current_scoring_selection_sizing_or_orders_performed": false,
+    "investment_advice": false
+  }
+}

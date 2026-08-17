@@ -1,0 +1,53 @@
+{
+  "schema_version": 1,
+  "kind": "a_share_three_day_walkforward_campaign101_development_candidate_loader_namespace_failure",
+  "status": "infrastructure_failed_after_daily_price_load_before_any_complete_development_trial_or_metric",
+  "recorded_at": "2026-08-07T14:14:19Z",
+  "failed_command": "PYTHONPATH=/Volumes/DIsk/Disk-Coding/qlib /Volumes/DIsk/Coding/anaconda3/bin/python3.12 -m scripts.a_share_three_day_walkforward_campaign101_development_recovery run-development",
+  "failure": {
+    "exception": "Campaign101Error: Campaign101 candidate snapshot semantics changed",
+    "root_cause": "The frozen Campaign101 wrapper exported EXPECTED_ELIGIBLE_ROWS=1327637, but the dynamically inherited _load_compact_factor_panel function namespace retained Campaign097's EXPECTED_ELIGIBLE_ROWS=1328449.",
+    "data_drift_detected": false,
+    "feature_manifest_observed_sha256": "7a2db929fff69f46edbc93d57cdca9cc4427c47dd542291b4f58d879dd91a3b6",
+    "feature_dataset_observed_sha256": "ed024ab2736b9766e1adb122b155189029f30a5d14e11d4d67a403ff9befef24",
+    "manifest_factor_eligible_rows": 1327637,
+    "outer_wrapper_expected_eligible_rows": 1327637,
+    "inherited_loader_namespace_expected_eligible_rows": 1328449
+  },
+  "failed_internal_ledger": {
+    "path": "data/experiments/short_horizon/historical_walkforward/campaign_101/walkforward/trial_ledger.json",
+    "sha256": "a4d13eae152f00b6cb956ecda73c0f0ed22729c20af647d574c03a4efe3b21af",
+    "entry_count": 2,
+    "infrastructure_failure_count": 2,
+    "complete_development_trial_count": 0
+  },
+  "frozen_scientific_runner": {
+    "path": "scripts/a_share_three_day_walkforward_campaign101.py",
+    "sha256": "8353c819b0c1a0edd98eb0999849a626d5a97c913655e2068ec18fb05b9c9b27"
+  },
+  "development_preregistration": {
+    "path": "docs/a_share_three_day_walkforward_campaign_101_preregistration_v2.json",
+    "sha256": "5cff18c65510eb01e4771e04f62b54bf038579a25f9ee14ec73863fe43947b36"
+  },
+  "first_recovery_activation": {
+    "path": "docs/a_share_three_day_walkforward_campaign_101_development_recovery_activation_binding_20260807.json",
+    "sha256": "1aa3be42215c04d6c6e3b132526382367052344d87d8e14b4545d88ba1d66959"
+  },
+  "read_boundary": {
+    "development_daily_execution_quote_values_read": true,
+    "candidate_factor_values_read": false,
+    "forward_return_or_fold_metric_computed": false,
+    "complete_development_trial_consumed": false,
+    "stress_2024_2025_read": false,
+    "provider_request_issued": false,
+    "candidate49_historical_return_read": false,
+    "candidate49_ledgers_changed": false,
+    "current_scoring_selection_sizing_or_orders_performed": false
+  },
+  "repair_boundary": {
+    "authorized_next_step": "Freeze a runtime-only namespace synchronization from 1328449 to the already frozen and manifest-bound value 1327637, then retry the same sole development trial.",
+    "formula_direction_factor_values_folds_cost_survival_or_stress_rule_change_allowed": false,
+    "new_scientific_trial_authorized": false,
+    "historical_result_dependent_change_allowed": false
+  }
+}

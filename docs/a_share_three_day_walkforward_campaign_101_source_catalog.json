@@ -1,0 +1,336 @@
+{
+  "schema_version": 1,
+  "kind": "a_share_three_day_walkforward_campaign101_complete_numeric_source_catalog",
+  "status": "frozen_before_campaign101_source_factor_values",
+  "recorded_at": "2026-08-07T13:08:00Z",
+  "numeric_policy": {
+    "path": "docs/a_share_three_day_walkforward_future_numeric_comparison_eligibility_policy_v54_20260807.json",
+    "sha256": "517193a12ad592015a4af7579041abf79c508dbbdaf3e2a7d5f1d752f391458f",
+    "numeric_source_factor_count": 129,
+    "numeric_source_factor_order_sha256": "a029c53fb237cc1d34aec0a9f7b67856ffa1a67ffe0fc9620fb230680353263b"
+  },
+  "order_reconstructor": {
+    "path": "scripts/a_share_three_day_walkforward_campaign100_features.py",
+    "sha256": "f8d5fe7e5795819bd446afe5d7fad7ac1c2239e70206d70594df0d8af51efdec",
+    "method": "reconstruct Campaign100's 128 comparators and append Campaign100/higher exactly once"
+  },
+  "first_98_numeric_sources": {
+    "ordinal_start": 1,
+    "ordinal_end": 98,
+    "logical_numeric_count": 98,
+    "logical_numeric_order_sha256": "bca0ba26252fcb74afa3a31ee1baf63c9cedfe3db5fc86ef71b3d7d93bf88f81",
+    "cache_manifest": {
+      "path": "/Volumes/DIsk/qlib-a-share-tushare-1m/derived/a_share/rich/tushare/compact_comparator_cache/campaign067_terminal_numeric98_v4/snapshot_manifest.json",
+      "sha256": "3d81068f07ac61fe4cd04bd1a893e58759c06d88213263135fec5244e309b57b",
+      "dataset_sha256": "4a56dac48c14b667b6ee431519266f27bb8ff7cc25c51d8dce3bbc7aebe0376f",
+      "rows": 1331759,
+      "partitions": 7
+    },
+    "cache_builder": {
+      "path": "scripts/a_share_three_day_compact_comparator_cache_v4.py",
+      "sha256": "1b0cb7b8673e64417fd701f7cfbe21b1c870c66cb854cd71a44c565cd3e2d3a2"
+    },
+    "dynamic_recipe_factors": ["quality_growth", "quality_score"],
+    "dynamic_recipe_rule": "Reconstruct on the complete frozen quality/listing base before per-factor directional ranking; never use globally materialized composite values."
+  },
+  "post_cache_numeric_sources": [
+    {
+      "ordinal": 99,
+      "source_campaign": 68,
+      "name": "quarterly_profit_revenue_acceleration_rank_gap_2r",
+      "score_direction": "higher",
+      "path": "/Volumes/DIsk/qlib-a-share-tushare-1m/derived/a_share/rich/tushare/minute_walkforward_campaign068_feature_library/tushare_stk_mins_1m_2019_2025_ea0cbb8f_walkforward_campaign068_feature_library_v2/snapshot_manifest.json",
+      "sha256": "9878e6c0249cb9e965dbfade2ce2b3a355bed5e6a46bf68667c82fc568672004",
+      "dataset_sha256": "bcd03a5e2122b64b072985b3a9a9ada880cad337dae4766a00cf52bf51f4f449"
+    },
+    {
+      "ordinal": 100,
+      "source_campaign": 69,
+      "name": "quarterly_profit_growth_roe_transition_gap_2r",
+      "score_direction": "higher",
+      "path": "/Volumes/DIsk/qlib-a-share-tushare-1m/derived/a_share/rich/tushare/minute_walkforward_campaign069_feature_library/tushare_stk_mins_1m_2019_2025_ea0cbb8f_walkforward_campaign069_feature_library_v1/snapshot_manifest.json",
+      "sha256": "6023becea579d0f6ed6ac27316421294f13fd6759d6d51790a31940526e363b7",
+      "dataset_sha256": "7c4b2e446bf4ebb64b4d3e992510610b1f0059fde868dff0bf02a06b7ce75960"
+    },
+    {
+      "ordinal": 101,
+      "source_campaign": 70,
+      "name": "quarterly_announcement_delay_improvement_yoy_rank_1y",
+      "score_direction": "higher",
+      "path": "/Volumes/DIsk/qlib-a-share-tushare-1m/derived/a_share/rich/tushare/minute_walkforward_campaign070_feature_library/tushare_stk_mins_1m_2019_2025_ea0cbb8f_walkforward_campaign070_feature_library_v1/snapshot_manifest.json",
+      "sha256": "f828ee06ac609580880eb0bfcd2d1fbcaba590e872f57fe5639a468c67edcbd7",
+      "dataset_sha256": "35ea87d9e183b77a382a88789cedf96d79f6a102c5006e156bbde2ff87fd6efe"
+    },
+    {
+      "ordinal": 102,
+      "source_campaign": 71,
+      "name": "quarterly_net_profit_scale_rank",
+      "score_direction": "higher",
+      "path": "/Volumes/DIsk/qlib-a-share-tushare-1m/derived/a_share/rich/tushare/minute_walkforward_campaign071_feature_library/tushare_stk_mins_1m_2019_2025_ea0cbb8f_walkforward_campaign071_feature_library_v1/snapshot_manifest.json",
+      "sha256": "438db2c72a0e5a166f87e680109024be7b28ed710edbd6b4d5ce6968e4a3f7fd",
+      "dataset_sha256": "8c6f1eff1b2238132f429eaeae13d9a7fbd9956e89f3499fa1cf68d54435528d"
+    },
+    {
+      "ordinal": 103,
+      "source_campaign": 72,
+      "name": "quarterly_joint_profit_revenue_growth_floor_rank",
+      "score_direction": "higher",
+      "path": "/Volumes/DIsk/qlib-a-share-tushare-1m/derived/a_share/rich/tushare/minute_walkforward_campaign072_feature_library/tushare_stk_mins_1m_2019_2025_ea0cbb8f_walkforward_campaign072_feature_library_v1/snapshot_manifest.json",
+      "sha256": "14ca00ed8b9a233475445a2cedc4a0bbd57c35030e6de2948c80177156c98c2c",
+      "dataset_sha256": "7baf6939336261bb307fd3dc13ccb8e9676eacbcc7e7d1139e019fb3b96f90b3"
+    },
+    {
+      "ordinal": 104,
+      "source_campaign": 73,
+      "name": "intraday_terminal_nominal_share_price_affordability_rank_240m",
+      "score_direction": "higher",
+      "path": "/Volumes/DIsk/qlib-a-share-tushare-1m/derived/a_share/rich/tushare/minute_walkforward_campaign073_feature_library/tushare_stk_mins_1m_2019_2025_ea0cbb8f_walkforward_campaign073_feature_library_v1/snapshot_manifest.json",
+      "sha256": "6b281be298be7df908300db6735e3ed3efc7d7c13b44c2ae679bf5a2073940e4",
+      "dataset_sha256": "2cea2e0502be1c5cc70f93260a96175abac5f36af50482847c35746a80252a5f"
+    },
+    {
+      "ordinal": 105,
+      "source_campaign": 74,
+      "name": "intraday_terminal_bar_amount_share_240m",
+      "score_direction": "higher",
+      "path": "/Volumes/DIsk/qlib-a-share-tushare-1m/derived/a_share/rich/tushare/minute_walkforward_campaign074_feature_library/tushare_stk_mins_1m_2019_2025_ea0cbb8f_walkforward_campaign074_feature_library_v1/snapshot_manifest.json",
+      "sha256": "5a993ce8b71c541a0b2d2402627d5f2b7f562cf1266bebcafe0606945086a3cd",
+      "dataset_sha256": "d4fbb9eb8135674df16a50c96b5817f63e6461e99ee48df96537cd8ed930a4b5"
+    },
+    {
+      "ordinal": 106,
+      "source_campaign": 75,
+      "name": "accepted_instrument_session_youth_20s",
+      "score_direction": "higher",
+      "path": "/Volumes/DIsk/qlib-a-share-tushare-1m/derived/a_share/rich/tushare/minute_walkforward_campaign075_feature_library/tushare_stk_mins_1m_2019_2025_ea0cbb8f_walkforward_campaign075_feature_library_v1/snapshot_manifest.json",
+      "sha256": "d621c73d8f32fa0187c0b8f834a170548eeb8deb04e1fade7a12da08f160aef4",
+      "dataset_sha256": "63b3bd548fa3f2d7f88e19542eb6be5e4ee7cc6f9d83f5dc874868efade98936"
+    },
+    {
+      "ordinal": 107,
+      "source_campaign": 76,
+      "name": "intraday_peak_amount_bar_recency_240m",
+      "score_direction": "higher",
+      "path": "/Volumes/DIsk/qlib-a-share-tushare-1m/derived/a_share/rich/tushare/minute_walkforward_campaign076_feature_library/tushare_stk_mins_1m_2019_2025_ea0cbb8f_walkforward_campaign076_feature_library_v1/snapshot_manifest.json",
+      "sha256": "dc23177c4125142fb2287fb3e19a4be8a3cd53b70abd3be91718979aaf200f32",
+      "dataset_sha256": "aef7cfb7cbc3ccaabe5552a4ed4f81ea8582d5f739153dd405b70e2a73b3a952"
+    },
+    {
+      "ordinal": 108,
+      "source_campaign": 77,
+      "name": "intraday_amount_clock_dispersion_240m",
+      "score_direction": "higher",
+      "path": "/Volumes/DIsk/qlib-a-share-tushare-1m/derived/a_share/rich/tushare/minute_walkforward_campaign077_feature_library/tushare_stk_mins_1m_2019_2025_ea0cbb8f_walkforward_campaign077_feature_library_v1/snapshot_manifest.json",
+      "sha256": "2449976e3bc95b66668496cee513277da21eff301677969f17053baf36fa18c8",
+      "dataset_sha256": "2b40ea3cb07a75b8dbddae124da86d32578120b74e616ff4ada5446d77010fc9"
+    },
+    {
+      "ordinal": 109,
+      "source_campaign": 78,
+      "name": "intraday_amount_local_peak_density_238p",
+      "score_direction": "higher",
+      "path": "/Volumes/DIsk/qlib-a-share-tushare-1m/derived/a_share/rich/tushare/minute_walkforward_campaign078_feature_library/tushare_stk_mins_1m_2019_2025_ea0cbb8f_walkforward_campaign078_feature_library_v1/snapshot_manifest.json",
+      "sha256": "a8d2f2a68dba3f7f3a3f34ac8d203f1381e429612ded6daf6c6447e0ed983071",
+      "dataset_sha256": "225c539824978df0cc3e4b34a9520aa919ffa77ba73246c21e1bdb6122a0227d"
+    },
+    {
+      "ordinal": 110,
+      "source_campaign": 80,
+      "name": "intraday_above_median_amount_longest_run_240m",
+      "score_direction": "higher",
+      "path": "/Volumes/DIsk/qlib-a-share-tushare-1m/derived/a_share/rich/tushare/minute_walkforward_campaign080_feature_library/tushare_stk_mins_1m_2019_2025_ea0cbb8f_walkforward_campaign080_feature_library_v1/snapshot_manifest.json",
+      "sha256": "64c883cc669425f9b8ab49ad2885de7c4239d7dc49f9944dab0ee3241f2c84b7",
+      "dataset_sha256": "53c89fa15b46e21269c8956284707fe6bde09e77ca308d3506a3336d40e6ef62"
+    },
+    {
+      "ordinal": 111,
+      "source_campaign": 81,
+      "name": "intraday_amount_path_efficiency_238p",
+      "score_direction": "higher",
+      "path": "/Volumes/DIsk/qlib-a-share-tushare-1m/derived/a_share/rich/tushare/minute_walkforward_campaign081_feature_library/tushare_stk_mins_1m_2019_2025_ea0cbb8f_walkforward_campaign081_feature_library_v1/snapshot_manifest.json",
+      "sha256": "fb8bed1defb00cffb4508e78b74ad79a00e4d9dad64c7a9b48c5de206051f1ab",
+      "dataset_sha256": "7fecf302d703fd040ae710a31f5fb78949d60a021751cf94414aec607d73eeac"
+    },
+    {
+      "ordinal": 112,
+      "source_campaign": 82,
+      "name": "intraday_range_amount_peak_timing_alignment_240m",
+      "score_direction": "higher",
+      "path": "/Volumes/DIsk/qlib-a-share-tushare-1m/derived/a_share/rich/tushare/minute_walkforward_campaign082_feature_library/tushare_stk_mins_1m_2019_2025_ea0cbb8f_walkforward_campaign082_feature_library_v1/snapshot_manifest.json",
+      "sha256": "928d1466963c55605ad446bfa44f75997b9a967fe510c454cc42684ae3db1b65",
+      "dataset_sha256": "e1a310820c6551d02eb1a09611c798fad78e14a66ddb4e7f85f4d6495497ad27"
+    },
+    {
+      "ordinal": 113,
+      "source_campaign": 83,
+      "name": "intraday_close_frontier_innovation_share_238p",
+      "score_direction": "higher",
+      "path": "/Volumes/DIsk/qlib-a-share-tushare-1m/derived/a_share/rich/tushare/minute_walkforward_campaign083_feature_library/tushare_stk_mins_1m_2019_2025_ea0cbb8f_walkforward_campaign083_feature_library_v1/snapshot_manifest.json",
+      "sha256": "e462a154f2da5374be671955b04d0e70b2bc02821a397e978e346dca75bf0618",
+      "dataset_sha256": "b9b9a54d1a1a040d22cae0dbabe1cdb556312a97f604efe1da38e437478cde52"
+    },
+    {
+      "ordinal": 114,
+      "source_campaign": 84,
+      "name": "quarterly_profit_growth_level_acceleration_floor_2r",
+      "score_direction": "higher",
+      "path": "/Volumes/DIsk/qlib-a-share-tushare-1m/derived/a_share/rich/tushare/minute_walkforward_campaign084_feature_library/tushare_stk_mins_1m_2019_2025_ea0cbb8f_walkforward_campaign084_feature_library_v1/snapshot_manifest.json",
+      "sha256": "68a547c9d85f6437382a16704f601074264c8206dd5fe4d23adaff20079f5994",
+      "dataset_sha256": "eaae6e206284f605e6d673a89166ab996e4f246d59955f4d8f427ff7d8aecc5a"
+    },
+    {
+      "ordinal": 115,
+      "source_campaign": 85,
+      "name": "quarterly_freshness_market_neutral_late_drift_confirmation_product_2r",
+      "score_direction": "higher",
+      "path": "/Volumes/DIsk/qlib-a-share-tushare-1m/derived/a_share/rich/tushare/minute_walkforward_campaign085_feature_library/tushare_stk_mins_1m_2019_2025_ea0cbb8f_walkforward_campaign085_feature_library_v1/snapshot_manifest.json",
+      "sha256": "fb8ea4bdb2b2f783a8c1d4e020f1dcdfca1697c779c732e50233fe7b040b4d28",
+      "dataset_sha256": "368f7cb96c15186cd511ccd4120e89b577141aa9687df8b39f9dd17320db8fb9"
+    },
+    {
+      "ordinal": 116,
+      "source_campaign": 86,
+      "name": "intraday_intrabar_close_location_serial_persistence_238p",
+      "score_direction": "higher",
+      "path": "/Volumes/DIsk/qlib-a-share-tushare-1m/derived/a_share/rich/tushare/minute_walkforward_campaign086_feature_library/tushare_stk_mins_1m_2019_2025_ea0cbb8f_walkforward_campaign086_feature_library_v1/snapshot_manifest.json",
+      "sha256": "848ce713344f1ce805e3180344107d1d4bee5f8350bbcf52f8089e391fae3803",
+      "dataset_sha256": "49cf11b5d69fa38a72f1a977975e290d4ed0bfd2205be6c50ba08dc64844b8e3"
+    },
+    {
+      "ordinal": 117,
+      "source_campaign": 87,
+      "name": "intraday_range_amount_profile_alignment_js_240m",
+      "score_direction": "higher",
+      "path": "/Volumes/DIsk/qlib-a-share-tushare-1m/derived/a_share/rich/tushare/minute_walkforward_campaign087_feature_library/tushare_stk_mins_1m_2019_2025_ea0cbb8f_walkforward_campaign087_feature_library_v1/snapshot_manifest.json",
+      "sha256": "6abe71a2402dc7b34124c1cc2abee8c54730ce978e6057b7b02beb4a4bcce5bd",
+      "dataset_sha256": "acc712042d582fbcbb87d23e7e7e47e71c6cbeb9b8a33678c75bb0ea58070777"
+    },
+    {
+      "ordinal": 118,
+      "source_campaign": 88,
+      "name": "intraday_bipower_jump_variation_share_238m",
+      "score_direction": "higher",
+      "path": "/Volumes/DIsk/qlib-a-share-tushare-1m/derived/a_share/rich/tushare/minute_walkforward_campaign088_feature_library/tushare_stk_mins_1m_2019_2025_ea0cbb8f_walkforward_campaign088_feature_library_v1/snapshot_manifest.json",
+      "sha256": "fd244df87c30d273f53e376561d03956c91f326237ae78cb16dc57906a136d41",
+      "dataset_sha256": "022e0bed5b6dc3ea50e069c44aa4e834aeaa6ec65444e87d75287cbeedf3d756"
+    },
+    {
+      "ordinal": 119,
+      "source_campaign": 89,
+      "name": "intraday_directional_amount_timing_spread_238m",
+      "score_direction": "higher",
+      "path": "/Volumes/DIsk/qlib-a-share-tushare-1m/derived/a_share/rich/tushare/minute_walkforward_campaign089_feature_library/tushare_stk_mins_1m_2019_2025_ea0cbb8f_walkforward_campaign089_feature_library_v1/snapshot_manifest.json",
+      "sha256": "3ab55cc6f61bebb6713aeacb9e54125c20183295b862717617be0b13c9d0a204",
+      "dataset_sha256": "c4f8794f42f1fffe2847ade875232827c8ca532a7fd75dd1123686c41456655a"
+    },
+    {
+      "ordinal": 120,
+      "source_campaign": 90,
+      "name": "intraday_range_clock_center_240m",
+      "score_direction": "higher",
+      "path": "/Volumes/DIsk/qlib-a-share-tushare-1m/derived/a_share/rich/tushare/minute_walkforward_campaign090_feature_library/tushare_stk_mins_1m_2019_2025_ea0cbb8f_walkforward_campaign090_feature_library_v1/snapshot_manifest.json",
+      "sha256": "c065e81f4eec91b214a3e1f69d8e15e567fac5bd879e173c5b985777ab4ba2ed",
+      "dataset_sha256": "d1da6b2c1d059038e473c55a15c76ba2efaf1a282d5a6bec1f302cd37a76ca31"
+    },
+    {
+      "ordinal": 121,
+      "source_campaign": 91,
+      "name": "intraday_directional_range_mass_imbalance_240m",
+      "score_direction": "higher",
+      "path": "/Volumes/DIsk/qlib-a-share-tushare-1m/derived/a_share/rich/tushare/minute_walkforward_campaign091_feature_library/tushare_stk_mins_1m_2019_2025_ea0cbb8f_walkforward_campaign091_feature_library_v1/snapshot_manifest.json",
+      "sha256": "1caf67c6b65947e4407f3064f732bf33a7595b9df977c8d62236c321c91e4541",
+      "dataset_sha256": "e179abf89f0ef956e22508c00ca198a6cf612b25700c5b8612f1d3d6d383e6fa"
+    },
+    {
+      "ordinal": 122,
+      "source_campaign": 92,
+      "name": "intraday_interbar_gap_discovery_share_238p",
+      "score_direction": "higher",
+      "path": "/Volumes/DIsk/qlib-a-share-tushare-1m/derived/a_share/rich/tushare/minute_walkforward_campaign092_feature_library/tushare_stk_mins_1m_2019_2025_ea0cbb8f_walkforward_campaign092_feature_library_v1/snapshot_manifest.json",
+      "sha256": "06fbfcae04af4ce2a917601876b5047e5ac09f75cf19d17bebc0bca8d9ff019e",
+      "dataset_sha256": "7df85a0b3a75b203661de4d1695d8f75890fdc649efbee7739b4f2241ab93321"
+    },
+    {
+      "ordinal": 123,
+      "source_campaign": 93,
+      "name": "intraday_close_transition_range_quadratic_efficiency_238p",
+      "score_direction": "higher",
+      "path": "/Volumes/DIsk/qlib-a-share-tushare-1m/derived/a_share/rich/tushare/minute_walkforward_campaign093_feature_library/tushare_stk_mins_1m_2019_2025_ea0cbb8f_walkforward_campaign093_feature_library_v1/snapshot_manifest.json",
+      "sha256": "69428173fd9a84f7272b56e253b589cb712355ce0b59a05e2a0b0b9576b82e92",
+      "dataset_sha256": "bba3e4e71626b0ff2fa3860649da5187ef5c5412879b009f6890e9599ba3cf0b"
+    },
+    {
+      "ordinal": 124,
+      "source_campaign": 94,
+      "name": "intraday_range_local_peak_clock_dispersion_236p",
+      "score_direction": "higher",
+      "path": "/Volumes/DIsk/qlib-a-share-tushare-1m/derived/a_share/rich/tushare/minute_walkforward_campaign094_feature_library/tushare_stk_mins_1m_2019_2025_ea0cbb8f_walkforward_campaign094_feature_library_v1/snapshot_manifest.json",
+      "sha256": "1f1441e59bcef1cb3d18b0030c640453e2ee762668d05157dec9ca1c0f01c340",
+      "dataset_sha256": "37865a7d4c5556ee9a79ba9550f0f05229e3c52bb511d8bd1ac3b1f2525a6b63"
+    },
+    {
+      "ordinal": 125,
+      "source_campaign": 96,
+      "name": "intraday_intrabar_close_location_total_variation_238p",
+      "score_direction": "higher",
+      "path": "/Volumes/DIsk/qlib-a-share-tushare-1m/derived/a_share/rich/tushare/minute_walkforward_campaign096_feature_library/tushare_stk_mins_1m_2019_2025_ea0cbb8f_walkforward_campaign096_feature_library_v1/snapshot_manifest.json",
+      "sha256": "1b205f1b6d3b28248b765860b8cf0e4aecee07f960fa535402e316ba13c39a3a",
+      "dataset_sha256": "67106bd4f5d4382b770cb79355c27ea4d8ca179296841b7bd9fa2963a46e09f3"
+    },
+    {
+      "ordinal": 126,
+      "source_campaign": 97,
+      "name": "intraday_market_range_profile_synchronization_240m",
+      "score_direction": "higher",
+      "path": "/Volumes/DIsk/qlib-a-share-tushare-1m/derived/a_share/rich/tushare/minute_walkforward_campaign097_compact_feature_library/tushare_stk_mins_1m_2019_2025_ea0cbb8f_walkforward_campaign097_compact_feature_library_v1/snapshot_manifest.json",
+      "sha256": "fac652d7097de579c8f3d6c5812ce9573762ec8885d6729706e2ef7e0cd81227",
+      "dataset_sha256": "dfdeda35efb8e443e4f33a6ab217032ec2ba6793270f8eb7fcf36d9494f7bf97"
+    },
+    {
+      "ordinal": 127,
+      "source_campaign": 98,
+      "name": "intraday_range_clock_variance_240m",
+      "score_direction": "higher",
+      "path": "/Volumes/DIsk/qlib-a-share-tushare-1m/derived/a_share/rich/tushare/minute_walkforward_campaign098_feature_library/tushare_stk_mins_1m_2019_2025_ea0cbb8f_walkforward_campaign098_feature_library_v1/snapshot_manifest.json",
+      "sha256": "371429a81292a91ef2bfa1292f467c81bf73e176fbfbc9888084f74eaaac1dc5",
+      "dataset_sha256": "921f06fad98aed942550d86b1475c888aea6d2025c37d53ec55917401bd34b33"
+    },
+    {
+      "ordinal": 128,
+      "source_campaign": 99,
+      "name": "intraday_market_close_location_profile_synchronization_240m",
+      "score_direction": "higher",
+      "path": "/Volumes/DIsk/qlib-a-share-tushare-1m/derived/a_share/rich/tushare/minute_walkforward_campaign099_compact_feature_library/tushare_stk_mins_1m_2019_2025_ea0cbb8f_walkforward_campaign099_compact_feature_library_v1/snapshot_manifest.json",
+      "sha256": "a973f7d71a871e56294f50a0c39267006f9b859f1b9490599c89c51cbab5fe90",
+      "dataset_sha256": "1ac5ddd9c59401a48876df69e409ba86b6fd71923c5be61936efb30a56c3de9b"
+    },
+    {
+      "ordinal": 129,
+      "source_campaign": 100,
+      "name": "intraday_unchanged_close_range_absorption_share_238p",
+      "score_direction": "higher",
+      "path": "/Volumes/DIsk/qlib-a-share-tushare-1m/derived/a_share/rich/tushare/minute_walkforward_campaign100_feature_library/tushare_stk_mins_1m_2019_2025_ea0cbb8f_walkforward_campaign100_feature_library_v1/snapshot_manifest.json",
+      "sha256": "31fa90e958d400aad250d369f4776f139664da869e9f152f8d4610e3351c20f4",
+      "dataset_sha256": "b6a2ea043502b1c7c97726befffa0fe872d693a0cfa1f477fc2da8eab81d106d"
+    }
+  ],
+  "catalog_checks": {
+    "post_cache_source_count": 31,
+    "post_cache_ordinal_start": 99,
+    "post_cache_ordinal_end": 129,
+    "post_cache_names_and_directions_must_equal_v54_suffix": true,
+    "all_manifest_paths_must_be_regular_non_symlink_files": true,
+    "all_manifest_byte_hashes_and_dataset_hashes_must_match_before_value_read": true,
+    "candidate49_or_semantic_only_source_present": false
+  },
+  "research_boundary": {
+    "manifest_and_schema_metadata_read": true,
+    "source_factor_values_read": false,
+    "candidate_values_read": false,
+    "comparison_values_read": false,
+    "historical_daily_price_or_forward_return_values_read": false,
+    "provider_request_issued": false,
+    "candidate49_ledgers_changed": false,
+    "current_scoring_selection_sizing_or_orders_performed": false
+  }
+}

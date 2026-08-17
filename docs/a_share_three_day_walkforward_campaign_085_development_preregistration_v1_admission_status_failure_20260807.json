@@ -1,0 +1,29 @@
+{
+  "version": 1,
+  "kind": "a_share_three_day_walkforward_campaign085_development_prevalue_preregistration_failure",
+  "status": "v1_preregistration_bindings_passed_but_inherited_admission_status_failed",
+  "recorded_at": "2026-08-07T01:54:00+08:00",
+  "preregistration": {
+    "path": "docs/a_share_three_day_walkforward_campaign_085_preregistration.json",
+    "sha256": "203e38cc36a58c0d129d53a98dd63a4a08b0cb6e4853c5f3c43505389087b5b7",
+    "preserved": true,
+    "accepted_for_development": false
+  },
+  "binding_validation": {
+    "binding_count": 18,
+    "all_bindings_passed": true
+  },
+  "failed_semantic_check": {
+    "wrapper_status": "completed_with_admissible_factors_pending_walkforward_preregistration",
+    "inherited_exact_expected_status": "completed_with_one_admissible_factor_pending_walkforward_preregistration"
+  },
+  "authorized_recovery": "preserve v1; create a v2 canonical admission wrapper and v2 preregistration with only the exact one-admissible status and corresponding bindings corrected",
+  "candidate_values_read": false,
+  "historical_daily_price_fields_read": [],
+  "historical_forward_returns_read": false,
+  "provider_request_issued": false,
+  "candidate49_ledgers_changed": false,
+  "research_attempt_count_increment": 1,
+  "factor_attempt_count_increment": 0,
+  "development_trial_count_increment": 0
+}

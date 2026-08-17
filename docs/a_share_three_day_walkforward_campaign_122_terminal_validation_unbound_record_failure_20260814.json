@@ -1,0 +1,32 @@
+{
+  "schema_version": 1,
+  "kind": "a_share_three_day_walkforward_campaign122_infrastructure_failure",
+  "status": "failed_terminal_validation_command_after_scientific_terminal_without_value_reread",
+  "recorded_at": "2026-08-14T03:11:19+08:00",
+  "attempt_id": "campaign122_infrastructure_005",
+  "phase": "terminal_json_and_binding_validation",
+  "failure": {
+    "failure_class": "validator_scope_error",
+    "observed_exception": "BindingValidationError: record has no recognized file fingerprint bindings",
+    "first_record_rejected": "docs/a_share_three_day_walkforward_campaign_122_boundary_probe_shell_quote_failure_20260814.json",
+    "exit_success": false,
+    "cause": "The combined command incorrectly required every standalone failure record to contain an external path/sha binding. Those records are intentionally leaf evidence and are bound by the attempt ledger instead."
+  },
+  "same_command_evidence": {
+    "campaign121_and_campaign122_terminal_tests": "11 passed",
+    "scientific_or_binding_test_failure": false,
+    "git_status_was_read_only": true
+  },
+  "effect": {
+    "frozen_scientific_artifact_rewritten": false,
+    "source_value_read": false,
+    "candidate_value_read_or_computed": false,
+    "comparator_value_read": false,
+    "daily_price_or_forward_return_read": false,
+    "development_or_stress_trial_rerun": false,
+    "provider_request_issued": false,
+    "candidate49_ledger_changed": false,
+    "scientific_result_changed": false
+  },
+  "recovery": "Parse every JSON record, but run the binding validator only on records that declare path/sha bindings; retain the already passing 11-test terminal suite."
+}

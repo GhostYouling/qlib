@@ -1,0 +1,34 @@
+{
+  "version": 1,
+  "kind": "a_share_three_day_walkforward_campaign060_infrastructure_failure",
+  "status": "recorded_pre_value_synthetic_test_failure_resolved_before_implementation_freeze",
+  "recorded_at": "2026-08-04T23:22:00+08:00",
+  "stage": "pre_value_synthetic_feature_test",
+  "attempt_ordinal_within_campaign060": 1,
+  "command": "PYTHONPATH=/Volumes/DIsk/Disk-Coding/qlib /opt/anaconda3/bin/python3 -m pytest -q tests/data_collector_tests/test_a_share_three_day_walkforward_campaign060_features.py",
+  "result": {
+    "passed": 7,
+    "failed": 1,
+    "failure": "The lunch-grid test compared a floating log-return to np.log(2.0) with exact equality; observed and expected differed only by floating representation at approximately 3e-16.",
+    "candidate_formula_failure": false,
+    "repair": "Use pytest.approx for the synthetic logarithm assertion."
+  },
+  "immutable_factor_implementation": {
+    "path": "scripts/a_share_three_day_walkforward_campaign060_features.py",
+    "sha256": "6e9d51fbe18329e13e3f865c66597af56864313069d3d558ac46487347923e47"
+  },
+  "boundary": {
+    "external_minute_partition_read": false,
+    "candidate_value_read": false,
+    "comparison_value_read": false,
+    "daily_price_or_forward_return_read": false,
+    "provider_request_issued": false,
+    "candidate49_ledgers_changed": false,
+    "current_scoring_selection_sizing_or_orders_performed": false
+  },
+  "accounting": {
+    "counts_as_infrastructure_attempt": true,
+    "counts_as_factor_attempt": false,
+    "counts_as_return_reading_development_trial": false
+  }
+}

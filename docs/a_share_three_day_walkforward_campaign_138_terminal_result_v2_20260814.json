@@ -1,0 +1,89 @@
+{
+  "schema_version": 1,
+  "kind": "a_share_three_day_walkforward_campaign138_terminal_result",
+  "status": "terminal_prevalue_zero_candidates_final_accounting",
+  "recorded_at": "2026-08-14T12:53:20+0800",
+  "supersedes_without_rewriting": {
+    "path": "docs/a_share_three_day_walkforward_campaign_138_terminal_result_20260814.json",
+    "sha256": "98bc2097328a2b2f0c5b4f1877d6f810404c173f51c55522584740b1093c2a78",
+    "preserved": true,
+    "reason": "Append the immutable Campaign137 unified-report binding regression failure to Campaign138 accounting; the schema-gate scientific result is unchanged."
+  },
+  "authoritative_inputs": {
+    "scientific_terminal_result": {
+      "path": "docs/a_share_three_day_walkforward_campaign_138_terminal_result_20260814.json",
+      "sha256": "98bc2097328a2b2f0c5b4f1877d6f810404c173f51c55522584740b1093c2a78"
+    },
+    "effective_attempt_ledger": {
+      "path": "data/experiments/short_horizon/historical_walkforward/campaign_138/research_attempt_ledger_v2.json",
+      "sha256": "39e941ec640c8f5d0997a9ba447117e6038d7ea47dec5725c583247d63b120fa",
+      "effective_entry_count": 8,
+      "chain_tip_sha256": "9008fdb174022a8d6e6528474d6720659870ac582685a4f75359fc64cb060aea"
+    },
+    "lifecycle_failure_record": {
+      "path": "docs/a_share_three_day_walkforward_campaign_138_campaign137_frozen_report_binding_regression_20260814.json",
+      "sha256": "cb2d1a13d8230b2dcf9a23e262d2231071e912ee61cb1a7466096e8150e9472c"
+    }
+  },
+  "scientific_result": {
+    "catalog_family": "valuation_and_capital_structure",
+    "concepts_reviewed": 6,
+    "selected_candidate_count": 0,
+    "complete_factor_definition_created": false,
+    "accepted_local_valuation_or_share_count_field_count": 0,
+    "schema_metadata_only": true,
+    "source_candidate_comparator_daily_price_or_return_values_read": false,
+    "development_or_stress_trial_run": false,
+    "historical_predictive_value_established": false,
+    "interpretation": "The terminal result concerns accepted source availability and semantic independence, not the predictive merit of valuation factors in a separately admitted point-in-time dataset."
+  },
+  "frozen_library": {
+    "complete_definition_count": 152,
+    "complete_definition_order_sha256": "60c465a3e2043efae6b92b8c5f3e007cd397a1cd0ec3094b4fa005665bbe5736",
+    "eligible_numeric_comparator_count": 141,
+    "eligible_numeric_comparator_order_sha256": "ec1aebcb939ad516c58037a36a4aaadd4ad8b2abbd3c884705895c58da85a2ee",
+    "unchanged": true
+  },
+  "effective_accounting": {
+    "campaign138_attempt_count": 8,
+    "campaign138_prevalue_concept_attempt_count": 6,
+    "campaign138_infrastructure_failure_count": 2,
+    "campaign138_complete_factor_attempt_count": 0,
+    "campaign138_return_reading_development_trial_count": 0,
+    "campaign138_development_survivor_count": 0,
+    "campaign138_stress_trial_count": 0,
+    "cumulative_historical_research_attempt_count": 1154,
+    "cumulative_return_reading_development_trial_count": 313
+  },
+  "candidate49": {
+    "only_active_prospective_candidate": true,
+    "signal_entry_count": 0,
+    "signal_ledger_sha256": "5193f00d7f36da003f53cec387900da4c3d002299f5dfcfc1a95eaa199ed3a79",
+    "execution_entry_count": 0,
+    "execution_ledger_sha256": "d57a3e61eac969e42cafa418ccd8c0a5ee65dcf69da145bb2c096c2a02a2ea4f",
+    "historical_backfill_performed": false,
+    "ledgers_changed": false
+  },
+  "terminal_decision": {
+    "terminal": true,
+    "terminal_phase": "prevalue_accepted_source_contract_and_semantic_independence_gate",
+    "rejected_concept_repair_relabel_reparameterization_combination_or_run_allowed": false,
+    "request_new_or_high_point_provider_history_within_campaign138": false,
+    "append_campaign138_definition_or_numeric_comparator": false,
+    "open_2024_2025_lockbox": false,
+    "next_campaign": 139
+  },
+  "research_boundary": {
+    "source_rows_or_column_values_read": false,
+    "candidate_or_comparator_values_read": false,
+    "historical_daily_price_or_forward_return_values_read": false,
+    "stress_2024_2025_opened": false,
+    "provider_request_issued": false,
+    "provider_credential_value_or_digest_read": false,
+    "candidate49_historical_backfill_performed": false,
+    "candidate49_ledgers_changed": false,
+    "second_prospective_candidate_created": false,
+    "current_scoring_selection_sizing_positions_or_orders_performed": false,
+    "investment_advice": false
+  }
+}

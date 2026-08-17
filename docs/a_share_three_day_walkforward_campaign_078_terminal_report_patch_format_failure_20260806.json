@@ -1,0 +1,20 @@
+{
+  "version": 1,
+  "kind": "a_share_three_day_walkforward_campaign078_terminal_report_patch_format_failure",
+  "status": "recorded_atomic_patch_rejected_before_any_target_write",
+  "recorded_at": "2026-08-06T14:54:01:z",
+  "stage": "terminal_campaign_markdown_report_creation",
+  "failed_action": "apply_patch Add File docs/a_share_three_day_walkforward_campaign_078_report.md",
+  "observed_error": "apply_patch verification failed: invalid patch: The last line of the patch must be '*** End Patch'",
+  "scope": {
+    "target_file_created_by_failed_action": false,
+    "other_target_file_changed_by_failed_action": false,
+    "candidate_or_comparator_values_recomputed": false,
+    "historical_daily_price_or_forward_return_fields_read": false,
+    "development_trial_recomputed": false,
+    "stress_2024_2025_opened": false,
+    "provider_request_issued": false,
+    "candidate49_ledgers_changed": false
+  },
+  "recovery": "Reissue a syntactically valid Add File patch with identical frozen research content, then append this command-level infrastructure failure to a versioned ledger without rewriting prior ledgers."
+}

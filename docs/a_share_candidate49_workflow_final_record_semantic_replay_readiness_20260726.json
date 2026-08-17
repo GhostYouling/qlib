@@ -1,0 +1,188 @@
+{
+  "version": 1,
+  "kind": "a_share_candidate49_workflow_final_record_semantic_replay_readiness",
+  "status": "offline_workflow_final_record_semantic_replay_passed_real_future_workflow_record_pending",
+  "recorded_at": "2026-07-25T19:39:20Z",
+  "purpose": "Advance Candidate49 by requiring every completed source-to-signal workflow record to be reconstructed from deterministic raw/factor artifacts, semantic ledgers, the accepted Tushare daily root, and its final child result instead of trusting summaries and evidence links named by the record itself.",
+  "advances": {
+    "path": "docs/a_share_candidate49_unified_report_semantic_replay_readiness_20260726.json",
+    "sha256": "19f898a84a15e0e3020b178096b4b09b159edddc89370f5923599b994b891f6b"
+  },
+  "authoritative_research_state": {
+    "path": "docs/a_share_three_day_iteration_status_20260725_future_only.json",
+    "sha256": "d44e1cb3707cce194eed37e99cc90f865396b1de8c35e02a393a2a243d973466",
+    "future_only_policy_path": "docs/a_share_three_day_future_only_minute_research_policy_20260725.json",
+    "future_only_policy_sha256": "52ca8bfa7201509fe891d0af3d1c87aeebd64e47e6ec6641e897849411df408c",
+    "active_future_only_candidate": "candidate49_intraday_cumulative_vwap_crossing_rate_240m_v1",
+    "aggregation_allowed": false,
+    "candidate50_activation_allowed": false
+  },
+  "candidate_contract": {
+    "future_observation_registration_path": "docs/a_share_tushare_intraday_cumulative_vwap_crossing_rate_future_observation_registration.json",
+    "future_observation_registration_sha256": "431cb0b3b078823f08b888bf4c499bcc5088309a2e58e9de5cb9a9aaa849ffa9",
+    "workflow_protocol_path": "docs/a_share_tushare_candidate49_future_session_workflow_protocol.json",
+    "workflow_protocol_sha256": "6ff5636a3f7ef65e93452098186b3aecf9231d68873ab8a1070afb91d699ef7c",
+    "factor_changed_by_this_work": false,
+    "factor_direction": "higher_intraday_cumulative_vwap_crossing_rate_240m",
+    "ranking_rule_changed_by_this_work": false,
+    "signal_timing_changed_by_this_work": false,
+    "execution_protocol_changed_by_this_work": false,
+    "cost_or_slippage_assumption_changed_by_this_work": false,
+    "milestone_gate_changed_by_this_work": false,
+    "three_session_holding_definition_changed_by_this_work": false,
+    "historical_return_backfill_allowed": false
+  },
+  "implementation_fingerprints": {
+    "session_workflow": {
+      "path": "scripts/a_share_tushare_candidate49_future_session_workflow.py",
+      "sha256": "8225f0c8e74cf0ed0a1910c49fb6b274adf445ca940263bfa600111c5befe043"
+    },
+    "source_to_signal_semantic_validator": {
+      "path": "scripts/a_share_tushare_candidate49_future_observation.py",
+      "sha256": "2e67ea31424c18cc2e9fd8cebb93b8d5da7197679b17d416405831e8952ee8a4"
+    },
+    "execution_and_reporting_semantic_validator": {
+      "path": "scripts/a_share_tushare_candidate49_future_execution.py",
+      "sha256": "046a70bbd860ebaf46744e161c690d1275ab0327c8a42213bf955ec66e39a98b"
+    },
+    "unified_research_report": {
+      "path": "scripts/a_share_short_horizon_factor_research.py",
+      "sha256": "27d3e8746c1e2098ee73e7070fd458bcfbaaa34a1c64a899a0fa8ec45e18a2de"
+    },
+    "session_workflow_tests": {
+      "path": "tests/data_collector_tests/test_a_share_tushare_candidate49_future_session_workflow.py",
+      "sha256": "459850ce1545db1dccfbac1dd3d90ca2800e9043529ec72c1d4f9fcb7b8cc2bd"
+    },
+    "source_to_signal_tests": {
+      "path": "tests/data_collector_tests/test_a_share_tushare_candidate49_future_observation.py",
+      "sha256": "7be3a8643a9805f3adaa812b52962311e1839d808452f5fdd39dc4f0d163d4fc"
+    },
+    "execution_tests": {
+      "path": "tests/data_collector_tests/test_a_share_tushare_candidate49_future_execution.py",
+      "sha256": "dfe838ddba0e03f2902bf5eb0cc3c792adeb0423c52ac335cad1e1075f365f34"
+    },
+    "runbook": {
+      "path": "docs/a_share_data_pipeline.md",
+      "sha256": "007cf24ffb7ecb3972f4f9f426ad487ee86c082b5714c59b614b4c6f9f4eae46"
+    }
+  },
+  "threat_model": {
+    "gap": "The former zero-request validator required the workflow header and rehashed evidence links named by the stored record, but it did not deterministically rebuild the Candidate49 summary or require the final collection-step summary to agree with the published raw/factor artifacts. A coordinated edit could therefore retain valid evidence files while changing the eligible-name count, signal-entry hash, and downstream interpretation.",
+    "red_test": "test_completed_record_rejects_rewritten_signal_summary",
+    "red_test_mutation": {
+      "candidate49_eligible_names_before": 50,
+      "candidate49_eligible_names_after": 1,
+      "candidate49_signal_entry_sha256_after": "ffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffff",
+      "edited_workflow_file_rewritten_atomically": true,
+      "external_workflow_file_hash_recomputed": true
+    },
+    "red_test_before_fix": "The former validator returned the completed zero-request workflow record without raising.",
+    "semantically_false_summary_accepted_after_fix": false
+  },
+  "semantic_reconstruction": {
+    "exact_top_level_schema_required": true,
+    "header_config_static_evidence_and_research_boundary_rebuilt": true,
+    "target_session_raw_and_factor_paths_derived_deterministically": true,
+    "complete_signal_ledger_semantically_replayed": true,
+    "active_data_root_rebuilt_from_frozen_raw_context": true,
+    "eligible_name_count_rebuilt_from_validated_factor_frame": true,
+    "signal_entry_hash_rebuilt_from_semantic_signal_ledger": true,
+    "tushare_activation_acceptance_and_source_manifests_revalidated_from_rebuilt_root": true,
+    "accepted_2019_2025_reference_reuse_and_zero_duplicate_requests_revalidated": true,
+    "future_quarterly_quality_paths_and_hashes_revalidated": true,
+    "final_collection_step_raw_factor_count_signal_and_call_fields_cross_checked": true,
+    "signal_and_execution_ledgers_semantically_replayed_before_acceptance": true,
+    "token_loaded_during_existing_record_validation": false,
+    "child_command_executed_during_existing_record_validation": false,
+    "provider_accessed_during_existing_record_validation": false
+  },
+  "append_only_ledger_prefix_binding": {
+    "whole_current_ledger_hash_frozen_permanently": false,
+    "workflow_time_entry_count_recorded": true,
+    "workflow_time_chain_tip_recorded": true,
+    "canonical_entry_prefix_sha256_recorded": true,
+    "atomic_prefix_file_sha256_recorded": true,
+    "later_ledger_prefix_reconstructed_using_original_header_and_atomic_json_serialization": true,
+    "old_workflow_record_remains_verifiable_after_later_signal_append": true,
+    "old_workflow_record_remains_verifiable_after_later_execution_append": true,
+    "growth_regression_test": "test_completed_record_revalidates_after_both_ledgers_grow"
+  },
+  "enforcement_points": {
+    "before_idempotent_completed_workflow_return": true,
+    "before_token_loading": true,
+    "before_workflow_lock": true,
+    "before_child_execution": true,
+    "before_provider_permission_check": true,
+    "before_provider_request": true
+  },
+  "offline_proofs": {
+    "session_workflow_tests": {
+      "passed": 17,
+      "failed": 0,
+      "elapsed_seconds": 0.85
+    },
+    "source_to_signal_tests": {
+      "passed": 34,
+      "failed": 0
+    },
+    "execution_tests": {
+      "passed": 23,
+      "failed": 0
+    },
+    "focused_candidate49_observation_execution_workflow_tests": {
+      "passed": 74,
+      "failed": 0,
+      "elapsed_seconds": 14.4
+    },
+    "new_red_cases": 1,
+    "new_growth_cases": 1,
+    "new_cases_pass_after_fix": true,
+    "full_data_collector_tests": {
+      "passed": 1114,
+      "failed": 0,
+      "warnings": 9,
+      "elapsed_seconds": 36.81
+    },
+    "ruff": "passed",
+    "python_compile": "passed"
+  },
+  "real_state_after_offline_tests": {
+    "signal": {
+      "path": "data/experiments/short_horizon/candidate49_future_signal_ledger.json",
+      "sha256": "5193f00d7f36da003f53cec387900da4c3d002299f5dfcfc1a95eaa199ed3a79",
+      "entries": 0,
+      "chain_tip_sha256": "ab47c70a18fc84b6d347fe906c404504faa126d3ec581bf077beffb215788bbb"
+    },
+    "execution": {
+      "path": "data/experiments/short_horizon/candidate49_future_execution_ledger.json",
+      "sha256": "d57a3e61eac969e42cafa418ccd8c0a5ee65dcf69da145bb2c096c2a02a2ea4f",
+      "entries": 0,
+      "chain_tip_sha256": "f302b4b93c9fcc1478e2f917279d589190b79069e6638efc41cb7aa6cf3691e0"
+    },
+    "evaluation_records": 0,
+    "target_session_workflow_record_present": false,
+    "target_session": "2026-07-27",
+    "first_allowed_source_to_signal_time": "2026-07-27T16:30:00+08:00",
+    "real_workflow_final_record_semantically_replayed": false
+  },
+  "side_effect_audit": {
+    "real_provider_check_performed": false,
+    "real_provider_request_issued": false,
+    "real_minute_rows_read": false,
+    "real_daily_rows_read_by_this_audit": false,
+    "real_signal_or_execution_entry_written": false,
+    "historical_candidate49_return_diagnostic_run": false,
+    "paper_execution_or_live_order_performed": false,
+    "active_data_root_mutated": false
+  },
+  "decision": {
+    "workflow_final_record_semantic_replay_ready": true,
+    "real_candidate49_signal_ready": false,
+    "current_real_signal_count": 0,
+    "current_real_execution_entry_count": 0,
+    "current_real_evaluation_milestone_count": 0,
+    "profitability_claim_allowed": false,
+    "selection_sizing_or_order_allowed": false,
+    "next_action": "On or after 2026-07-27 16:30 Asia/Shanghai, run the fail-closed Candidate49 source-to-signal workflow. If it completes, every later idempotent workflow invocation must first reconstruct and validate this final record from its immutable child artifacts and append-only ledger prefixes."
+  }
+}

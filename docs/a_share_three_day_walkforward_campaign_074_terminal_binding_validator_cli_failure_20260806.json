@@ -1,0 +1,25 @@
+{
+  "version": 1,
+  "kind": "a_share_three_day_walkforward_campaign074_terminal_binding_validator_cli_failure",
+  "status": "recorded_argument_parse_failure_before_binding_reads",
+  "recorded_at": "2026-08-06T08:46:00+08:00",
+  "stage": "terminal_binding_validation",
+  "exit_code": 2,
+  "failed_command_count": 1,
+  "failure": "The validator was invoked with unsupported --record syntax; records are positional arguments.",
+  "binding_targets_read": false,
+  "candidate_or_comparison_values_read": false,
+  "historical_daily_prices_or_forward_returns_read": false,
+  "stress_2024_2025_opened": false,
+  "provider_request_issued": false,
+  "candidate49_ledgers_changed": false,
+  "accounting": {
+    "campaign074_infrastructure_failure_increment": 1,
+    "campaign074_attempt_increment": 1,
+    "development_return_reading_trial_increment": 0,
+    "corrected_campaign074_infrastructure_failure_count": 9,
+    "corrected_campaign074_attempt_count": 10,
+    "corrected_cumulative_historical_research_attempt_count": 452,
+    "corrected_cumulative_return_reading_development_trial_count": 276
+  }
+}

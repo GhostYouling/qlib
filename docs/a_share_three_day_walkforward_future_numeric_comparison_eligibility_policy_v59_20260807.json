@@ -1,0 +1,99 @@
+{
+  "version": 59,
+  "kind": "a_share_three_day_walkforward_future_numeric_comparison_eligibility_policy",
+  "status": "frozen_after_campaign102_terminal_zero_survivors_before_campaign103_values",
+  "recorded_at": "2026-08-07T15:44:00Z",
+  "supersedes_without_rewriting": {
+    "path": "docs/a_share_three_day_walkforward_future_numeric_comparison_eligibility_policy_v58_20260807.json",
+    "sha256": "45571a0d525d3c7132f6392914dd80b51ec179b51d21e548102292ec70674edc",
+    "preserved": true,
+    "definition_and_numeric_orders_changed": false,
+    "reason": "Campaign102 produced three fold-specific terminal fitted models but no single immutable point-in-time score definition or survivor; record them as trials, not reusable numeric comparators."
+  },
+  "authoritative_inputs": {
+    "campaign102_terminal_result": {
+      "path": "docs/a_share_three_day_walkforward_campaign_102_terminal_result_binding_20260807.json",
+      "sha256": "d0938cd28d2dd130a8579671249cdeb20fd4bcdfdc9e5c013a527cc00e0ff3ec"
+    },
+    "campaign102_attempt_ledger": {
+      "path": "data/experiments/short_horizon/historical_walkforward/campaign_102/research_attempt_ledger_v1.json",
+      "sha256": "cfe78740aa989a89d748707af48df75ca0e8822c3ac2d9ade1d4085c27da5830"
+    },
+    "campaign102_report": {
+      "path": "docs/a_share_three_day_walkforward_campaign_102_report.md",
+      "sha256": "bf8d74c7d2e7b5983597fd0733868193df636353d6b756e2b65cc8aef935378a"
+    }
+  },
+  "complete_historical_feature_library": {
+    "factor_definition_count": 133,
+    "order_sha256": "25cd0159c803bf69b0fce61449843db96a34ae4c56628deda9500433c97b45a1",
+    "last_definition": {
+      "name": "full_numeric_library_directional_lower_quartile_consensus_129f",
+      "score_direction": "higher"
+    },
+    "exact_v58_order_preserved": true,
+    "campaign102_fitted_trials_added_as_factor_definitions": false,
+    "reason": "Their weights are fold-specific and all three failed before a 2019-2025 survivor score could be frozen."
+  },
+  "numerical_comparator_eligibility": {
+    "eligible_numeric_comparator_count": 130,
+    "eligible_numeric_comparator_order_sha256": "c80d9b929536dd509d6c1a904f790831050e68200393de381f92ad9293ef69e7",
+    "minimum_pairwise_names_per_session": 50,
+    "minimum_pairwise_sessions_per_comparison": 100,
+    "strict_maximum_absolute_median_daily_rank_correlation": 0.8,
+    "all_130_eligible_numeric_comparators_must_pass": true,
+    "candidate_specific_comparator_drop_allowed": false,
+    "insufficient_pairwise_overlap_fails_closed": true,
+    "campaign102_lambda_0_numeric_comparator_eligible": false,
+    "campaign102_lambda_0p1_numeric_comparator_eligible": false,
+    "campaign102_lambda_1_numeric_comparator_eligible": false
+  },
+  "semantic_only_definitions": [
+    "intraday_cross_sectional_standardized_return_state_stability_236p",
+    "signal_day_turnover_rate_pct",
+    "intraday_own_bar_close_location_entropy_10b_240m"
+  ],
+  "campaign102_terminal_model_trial_classification": {
+    "model_family": "full_numeric_library_bounded_simplex_ridge_130f",
+    "trial_count": 3,
+    "all_trials_terminal": true,
+    "development_survivor_count": 0,
+    "lockbox_2024_2025_opened": false,
+    "future_same_family_lambda_reweight_bounds_relaxation_target_change_subset_rescue_or_retry_allowed": false,
+    "old_trial_results_or_weights_may_be_reclassified_as_current_strategy": false
+  },
+  "mandatory_prevalue_support_predicate_gate_for_campaign103_and_later": {
+    "required": true,
+    "all_known_terminal_coverage_failures_must_be_reviewed": true,
+    "identical_or_provably_narrower_failed_support_is_rejected_before_values": true
+  },
+  "future_campaign_boundary": {
+    "old_terminated_static_definitions_may_be_used_only_as_part_of_the_complete_prevalue_frozen_133_definition_or_130_numeric_library": true,
+    "candidate_specific_subset_rescue_allowed": false,
+    "campaign101_retry_or_rescue_allowed": false,
+    "campaign102_model_retry_or_rescue_allowed": false,
+    "future_complete_library_mechanism_must_be_genuinely_new_and_prevalue_frozen": true,
+    "future_static_factor_may_be_added_only_after_an_independent_formula_support_and_uniqueness_protocol": true
+  },
+  "final_accounting": {
+    "campaign102_attempt_count": 7,
+    "campaign102_infrastructure_failure_count": 2,
+    "campaign102_complete_no_return_design_outcome_count": 1,
+    "campaign102_return_reading_complete_development_trial_count": 3,
+    "campaign102_development_survivor_count": 0,
+    "campaign102_lockbox_trial_count": 0,
+    "cumulative_historical_research_attempt_count": 753,
+    "cumulative_return_reading_development_trial_count": 298
+  },
+  "research_boundary": {
+    "campaign103_candidate_or_comparison_values_read_before_v59_freeze": false,
+    "campaign102_result_or_v58_library_orders_changed_by_v59": false,
+    "campaign102_lockbox_2024_2025_opened": false,
+    "candidate49_historical_backfill_performed": false,
+    "candidate49_ledgers_changed": false,
+    "provider_request_issued": false,
+    "second_prospective_candidate_created": false,
+    "current_scoring_selection_sizing_or_orders_performed": false,
+    "investment_advice": false
+  }
+}

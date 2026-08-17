@@ -1,0 +1,51 @@
+{
+  "version": 1,
+  "kind": "a_share_three_day_walkforward_campaign043_no_return_audit_execution_failure",
+  "status": "recorded_no_artifact_exact_frozen_retry_allowed",
+  "recorded_at": "2026-07-31T10:52:13Z",
+  "purpose": "Record the first Campaign043 no-return audit process disappearance without misclassifying it as a research-gate rejection or silently discarding a failed attempt.",
+  "authoritative_inputs": {
+    "feature_snapshot_freeze": {
+      "path": "docs/a_share_three_day_walkforward_campaign_043_feature_snapshot_freeze_20260731.json",
+      "sha256": "16fce29f4b79da9e6d2cebc07008ab4f6b7ad837e960002399180aa77bb2980d"
+    },
+    "feature_runner_at_failure": {
+      "path": "scripts/a_share_three_day_walkforward_campaign043_features.py",
+      "sha256": "8d737be7e3829e89953ede0b5955336d69ec4b5eafe3d7450ab454589ba6f7d3"
+    },
+    "snapshot_manifest": {
+      "path": "/Volumes/DIsk/qlib-a-share-tushare-1m/derived/a_share/rich/tushare/minute_walkforward_campaign043_feature_library/tushare_stk_mins_1m_2019_2025_ea0cbb8f_walkforward_campaign043_feature_library_v1/snapshot_manifest.json",
+      "sha256": "7652e88cbaf7f3f21751b3c944dc21c2746580f6a4d48aebffeea410b9c89590"
+    }
+  },
+  "observed_execution": {
+    "command": "python scripts/a_share_three_day_walkforward_campaign043_features.py audit --workers 8",
+    "first_progress_message": "building Campaign043 no-price quality/listing eligibility",
+    "coverage_gate_inferred_passed_from_subsequent_complete-library_partition_reads": true,
+    "complete_library_partition_reads_started": true,
+    "correlation_aggregation_started": true,
+    "last_observed_process_state": "running_high_cpu_before_process_disappeared",
+    "exit_code_captured": false,
+    "python_traceback_captured": false,
+    "operating_system_kill_evidence_found": false,
+    "audit_artifact_count_after_disappearance": 0,
+    "audit_artifact_published": false
+  },
+  "fail_closed_interpretation": {
+    "research_gate_result_exists": false,
+    "uniqueness_gate_pass_or_fail_claimed": false,
+    "historical_daily_price_fields_read": false,
+    "historical_forward_returns_read": false,
+    "candidate49_historical_return_read": false,
+    "trial_ledger_changed": false,
+    "candidate50_activation_created": false,
+    "current_scoring_selection_sizing_or_orders_performed": false
+  },
+  "retry_policy": {
+    "allowed": true,
+    "reason": "The failed attempt was read-only, produced no audit artifact, opened no return data, and left every frozen protocol, snapshot, comparison order, threshold, and runner fingerprint unchanged.",
+    "required_parameters": "the same audit command, data roots, protocol, snapshot, complete 64-factor library, thresholds, and workers=8",
+    "execution_change_allowed": "detach the process from the interactive tool session only; no research or implementation semantic change"
+  },
+  "next_action": "Revalidate bindings and launch exactly one detached retry of the unchanged no-return audit so its terminal exit and output can be observed without an interactive-session lifetime limit."
+}

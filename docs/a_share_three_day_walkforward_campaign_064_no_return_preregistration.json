@@ -1,0 +1,261 @@
+{
+  "version": 1,
+  "kind": "a_share_three_day_walkforward_campaign064_no_return_preregistration",
+  "status": "frozen_before_campaign064_source_candidate_comparison_daily_price_or_return_values",
+  "recorded_at": "2026-08-05T07:20:00+08:00",
+  "purpose": "Freeze one finite coverage-first offline Campaign064 for a high/low range weak-order entropy mechanism before any Campaign064 source row, candidate value, comparison value, daily price, or forward return is opened.",
+  "source_chain": {
+    "concept_scouting": {
+      "path": "docs/a_share_three_day_walkforward_campaign_064_concept_scouting.json",
+      "sha256": "1f84e3ee16b6e4ca0b2e6d7d8054fb0cb5822b5dd9c639c0e527f4e333a9f893"
+    },
+    "mechanism_overlap_audit": {
+      "path": "docs/a_share_three_day_walkforward_campaign_064_mechanism_overlap_audit.json",
+      "sha256": "422dd1a23708c069ff55b14105032e5fbf1ac2ed77cbd6d2439be896ef11cbae"
+    },
+    "authoritative_iteration_state": {
+      "path": "docs/a_share_three_day_iteration_status_20260805_campaign063_verified.json",
+      "sha256": "38be5bb594016391a1faaa4c2340720070fa830c9adac0c64355fb608ee12755"
+    },
+    "historical_walkforward_policy": {
+      "path": "docs/a_share_three_day_historical_walkforward_research_policy_20260727.json",
+      "sha256": "38426d6161b9bfed323c58caba18feca668b8c9d53e294951a8ba90c01a798bb"
+    },
+    "raw_minute_manifest": {
+      "path_below_data_root": "raw/a_share/rich/tushare/minutes/1m/snapshots/tushare_stk_mins_1m_2019_2025_ea0cbb8f/snapshot_manifest.json",
+      "sha256": "9b3d959563c9d182f38981c6a36bdb3bc9b415de08487a9e1f9e850825c0839f",
+      "projected_columns": [
+        "datetime",
+        "symbol",
+        "provider",
+        "high",
+        "low"
+      ],
+      "forbidden_columns": [
+        "open",
+        "close",
+        "volume",
+        "amount"
+      ]
+    },
+    "joint_clean_manifest": {
+      "path_below_data_root": "derived/a_share/rich/tushare/minute_sentiment_clean/tushare_stk_mins_1m_2019_2025_ea0cbb8f_sentiment_clean_v1/snapshot_manifest.json",
+      "sha256": "453c6719cb3c7da42fed8807b28a2bfe988700283e9625a6db97912534f368de",
+      "dataset_sha256": "0e4fe7c05536cdfcecc2936bc880726902f5560061188ffff82ef7ee6f346983",
+      "partitions": 33015,
+      "rows": 7724498,
+      "use": "accepted stock-day identity keys only; no inherited factor value is a Campaign064 input"
+    },
+    "prior_comparison_catalog": {
+      "path": "docs/a_share_three_day_walkforward_campaign_063_no_return_preregistration.json",
+      "sha256": "2effcee4ccbbba8d55f450c7add3eb6064968a60c9d856ac769aebd20e542dfb",
+      "reconstructed_factor_count": 94
+    },
+    "campaign063_terminal_record": {
+      "path": "docs/a_share_three_day_walkforward_campaign_063_research_record_v4.json",
+      "sha256": "1ae2c0aad4316331feccdccca57eb5e136908ab17a6df620a3fa0e8d1bfffc4f"
+    },
+    "campaign063_no_return_audit": {
+      "path": "data/experiments/short_horizon/historical_walkforward/campaign_063/no_return/20260804T224823Z_campaign063_no_return_audit.json",
+      "sha256": "06a8b4aace41d9567c8afb26755b6c5f932845a31dc842459ac3d148ab73c7c0"
+    },
+    "campaign063_statistical_snapshot": {
+      "path": "/Volumes/DIsk/qlib-a-share-tushare-1m/derived/a_share/rich/tushare/minute_walkforward_campaign063_feature_library/tushare_stk_mins_1m_2019_2025_ea0cbb8f_walkforward_campaign063_feature_library_v1/snapshot_manifest.json",
+      "sha256": "12fc8d8bf7df432608f4cb63b7c5337f2cd46d2a029c34d8b3e60c0f8906a098",
+      "dataset_sha256": "fd040477f3af2948976fda9a71f6d04a0bd9b9713a1b9b5a6dedf2f06f0c76df",
+      "factor": "intraday_cross_sectional_standardized_return_state_stability_236p",
+      "score_direction": "higher",
+      "statistical_values_usable": false,
+      "comparison_role": "semantic terminal definition appended exactly once; its structural all-missing values do not waive the complete catalog requirement"
+    },
+    "accepted_local_calendar": {
+      "path": "data/qlib/cn_a_share/calendars/day.txt",
+      "sha256": "fda506597d26bcec953cdc0882042a5046ec1587db60490e16a01627fd43f53a"
+    },
+    "factor_universe": {
+      "path": "data/qlib/cn_a_share/instruments/factor_main_chinext_star.txt",
+      "sha256": "cdded13c831b78045f4cfe80ba5d9a49f82152c615fef4267d00f992e7f53762"
+    },
+    "holding_universe": {
+      "path": "data/qlib/cn_a_share/instruments/buyable_main_chinext.txt",
+      "sha256": "77ccf8de2ed1e447e73b5d5ff1703fc2a8656d6adab34ef44017481730249db1"
+    },
+    "candidate49_future_observation_registration": {
+      "path": "docs/a_share_tushare_intraday_cumulative_vwap_crossing_rate_future_observation_registration.json",
+      "sha256": "431cb0b3b078823f08b888bf4c499bcc5088309a2e58e9de5cb9a9aaa849ffa9",
+      "historical_return_comparison_allowed": false
+    },
+    "candidate49_signal_ledger": {
+      "path": "data/experiments/short_horizon/candidate49_future_signal_ledger.json",
+      "sha256": "5193f00d7f36da003f53cec387900da4c3d002299f5dfcfc1a95eaa199ed3a79",
+      "entry_count": 0
+    },
+    "candidate49_execution_ledger": {
+      "path": "data/experiments/short_horizon/candidate49_future_execution_ledger.json",
+      "sha256": "d57a3e61eac969e42cafa418ccd8c0a5ee65dcf69da145bb2c096c2a02a2ea4f",
+      "entry_count": 0
+    }
+  },
+  "candidate": {
+    "name": "intraday_range_weak_order_entropy_236t",
+    "direction": "higher",
+    "formula": "For the exact 236 overlapping within-half triples of x_i=ln(high_i/low_i), classify each exact zero-tolerance comparison key (cmp(x0,x1),cmp(x0,x2),cmp(x1,x2)) into one of the 13 transitive weak-order states and return -sum(p_k*ln(p_k))/ln(13).",
+    "source_projection": [
+      "datetime",
+      "symbol",
+      "provider",
+      "high",
+      "low"
+    ],
+    "forbidden_source_columns": [
+      "open",
+      "close",
+      "volume",
+      "amount"
+    ],
+    "accepted_minute_grid": "09:31--11:30 and 13:01--15:00 exactly 240 high/low bars; standalone 09:30 and the lunch transition are excluded",
+    "selected_bar_count": 240,
+    "range_rule": "Require finite low>0 and finite high>=low at every selected bar; x=ln(high/low), and exact high=low gives retained x=0.",
+    "triple_rule": "118 overlapping consecutive triples per 120-bar half, pooled into exactly 236 equal-weight triples with no lunch-spanning triple.",
+    "weak_order_key": "(cmp(x0,x1),cmp(x0,x2),cmp(x1,x2)) with cmp in {-1,0,+1} and zero tolerance",
+    "weak_order_state_count": 13,
+    "exact_ties_retained": true,
+    "entropy_rule": "natural-log Shannon entropy of the 13-state empirical distribution divided by ln(13)",
+    "zero_semantics": "Retain zero ranges, pairwise ties, unused states with zero mass, and an all-one-state score of zero.",
+    "valid_range": {
+      "lower": 0.0,
+      "lower_inclusive": true,
+      "upper": 1.0,
+      "upper_inclusive": true
+    },
+    "missing_rule": "Missing unless the exact 240-bar grid and exactly 236 recognized transitive state keys exist and all high, low, ranges, counts, entropy components, and final score are finite and valid. Never fill, jitter, tolerance-match, drop, clip, winsorize, threshold, filter, or substitute.",
+    "alternate_field_tuple_length_alphabet_tie_window_pooling_entropy_direction_threshold_filter_subset_board_year_cost_regime_fit_combination_or_model_search": false
+  },
+  "ordered_no_return_gates": {
+    "coverage_and_capacity_before_comparison_values": {
+      "coverage_basis": "candidate finite rows divided by quality-and-listing eligible buyable rows within 2019-2025",
+      "minimum_median_coverage": 0.95,
+      "minimum_p05_coverage": 0.9,
+      "minimum_p05_eligible_names": 50,
+      "minimum_non_overlapping_three_session_cohorts": 200,
+      "minimum_observed_calendar_years": 5,
+      "holding_period_sessions": 3,
+      "comparison_values_read_before_coverage_pass": false,
+      "failed_gate_policy": "Record the exact Campaign064 factor as terminal and stop before comparison values, daily prices, or forward returns."
+    },
+    "uniqueness_after_coverage_only": {
+      "screen_start": "2019-01-01",
+      "screen_end": "2025-12-31",
+      "method": "Within each identical quality-listing-candidate-and-comparison-eligible stock-day cross-section, compute pairwise-complete Spearman correlation between directional percentile scores, then take each comparison factor's median daily correlation.",
+      "maximum_allowed_absolute_median_daily_rank_correlation": 0.8,
+      "minimum_pairwise_names_per_session": 50,
+      "minimum_pairwise_sessions_per_comparison": 100,
+      "candidate49_is_no_return_comparison_only": true,
+      "comparison_factor_count": 95,
+      "comparison_factor_order_sha256": "d471615fc35bc482efcfe0fea1e8f7b79dce8826b649d3a3e43c3ba784c2ed6b",
+      "comparison_order_definition": "Take all 94 reconstructed comparison factors from the bound Campaign063 protocol in exact order, then append terminal Campaign063 exactly once.",
+      "appended_comparison_factors": [
+        {
+          "name": "intraday_cross_sectional_standardized_return_state_stability_236p",
+          "score_direction": "higher",
+          "source": "campaign063_statistical_snapshot"
+        }
+      ],
+      "mandatory_named_confound_challenges": [
+        "intraday_return_weak_order_entropy_234t",
+        "intraday_intrabar_range_participation_entropy_240m",
+        "intraday_adjacent_range_overlap_continuity_238p",
+        "intraday_midrange_width_change_coupling_238p",
+        "intraday_morning_afternoon_range_profile_similarity_120b",
+        "intraday_return_spectral_entropy_59f",
+        "intraday_absolute_return_serial_persistence_236p",
+        "intraday_cross_sectional_standardized_return_state_stability_236p"
+      ],
+      "confound_challenges_use_the_same_0_8_fail_closed_threshold": true,
+      "comparison_values_read_before_coverage_pass": false,
+      "failed_gate_policy": "Stop before daily price or forward return; do not invert, alter tie semantics, remove a failed comparison, or rescue the factor.",
+      "all_95_must_pass": true
+    }
+  },
+  "finite_development_catalog_if_admitted": {
+    "trial_id": "wf064_intraday_range_weak_order_entropy_236t_single_higher",
+    "trial_type": "single_factor",
+    "feature_set": [
+      "intraday_range_weak_order_entropy_236t"
+    ],
+    "weights": [
+      1.0
+    ],
+    "complexity": 1,
+    "direction": "higher",
+    "expected_trial_count": 1,
+    "alternate_weight_threshold_filter_window_tie_rule_year_cost_regime_model_or_combination_search": false
+  },
+  "point_in_time_and_execution_semantics": {
+    "development_interval": "2019-01-01 through 2023-12-31 only",
+    "folds": [
+      {
+        "fold": 1,
+        "train": "2019-01-01 through 2020-12-31",
+        "validation": "2021-01-01 through 2021-12-31"
+      },
+      {
+        "fold": 2,
+        "train": "2019-01-01 through 2021-12-31",
+        "validation": "2022-01-01 through 2022-12-31"
+      },
+      {
+        "fold": 3,
+        "train": "2019-01-01 through 2022-12-31",
+        "validation": "2023-01-01 through 2023-12-31"
+      }
+    ],
+    "purge_signal_sessions_at_every_split": 3,
+    "signal_at": "session_t_close",
+    "entry_at": "session_t_plus_1_raw_open",
+    "exit_at": "session_t_plus_3_raw_close",
+    "entry_and_exit_must_remain_inside_same_partition": true,
+    "top_k": 3,
+    "pilot_capital_cny": 200000,
+    "pilot_slot_weight": 0.05,
+    "pilot_maximum_new_exposure": 0.15,
+    "pilot_lot_size_shares": 100,
+    "pilot_adverse_slippage_each_side_bps": [
+      0,
+      5,
+      10,
+      20
+    ],
+    "primary_pilot_slippage_each_side_bps": 10,
+    "aggregate_robustness_slippage_each_side_bps": 20,
+    "daily_amount_participation_limit": 0.01,
+    "development_survivor_requires_all_frozen_association_spread_normalized_return_pilot_return_affordability_participation_drawdown_and_20bp_aggregate_gates": true,
+    "stress_2024_2025_open_rule": "once for the complete frozen campaign only if the sole development trial passes every frozen survivor gate",
+    "stress_label": "historically_exposed_quasi_out_of_sample_not_pure_holdout"
+  },
+  "research_boundary": {
+    "minute_datetime_symbol_provider_high_low_fields_read_before_admissibility": true,
+    "minute_open_close_volume_amount_fields_read_before_admissibility": false,
+    "comparison_values_read_before_coverage_pass": false,
+    "daily_price_fields_read_before_admissibility": false,
+    "forward_return_fields_read_before_admissibility": false,
+    "candidate49_historical_return_read": false,
+    "candidate49_signal_or_execution_backfill_allowed": false,
+    "candidate49_ledgers_may_change": false,
+    "second_prospective_candidate_created": false,
+    "provider_request_issued": false,
+    "current_scoring_selection_sizing_or_orders_allowed": false,
+    "investment_advice": false,
+    "current_listing_snapshot_survivorship_limitation": true
+  },
+  "decision": {
+    "factor_count": 1,
+    "comparison_count": 95,
+    "development_trial_count_if_admitted": 1,
+    "source_values_may_open_only_after_binding_validation_and_implementation_freeze": true,
+    "comparison_values_may_open_only_after_coverage_pass": true,
+    "daily_prices_and_returns_may_open_only_after_all_95_uniqueness_comparisons_pass": true,
+    "candidate49_remains_only_active_prospective_candidate": true,
+    "historical_result_cannot_authorize_current_scoring_selection_sizing_orders_or_investment_advice": true
+  }
+}

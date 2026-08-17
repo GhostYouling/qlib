@@ -1,0 +1,50 @@
+{
+  "version": 1,
+  "kind": "a_share_three_day_walkforward_campaign074_feature_implementation_freeze",
+  "status": "frozen_before_campaign074_minute_source_values",
+  "recorded_at": "2026-08-06T07:54:00+08:00",
+  "protocol": {
+    "path": "docs/a_share_three_day_walkforward_campaign_074_no_return_preregistration_v3.json",
+    "sha256": "d327fef56cc6561c76f0620e2bcba25e1e07d1e70c681e7ff858eeb396d4c055"
+  },
+  "mechanism_overlap_audit": {
+    "path": "docs/a_share_three_day_walkforward_campaign_074_mechanism_overlap_audit.json",
+    "sha256": "ad656846ffecad1e59adf50a08c8ee85a2cd8547b8cc7205dd32423c6c21d291"
+  },
+  "numeric_comparator_policy": {
+    "path": "docs/a_share_three_day_walkforward_future_numeric_comparison_eligibility_policy_v9_20260806.json",
+    "sha256": "1af4a2432e0186a47a8a69ddefdda25756810cf47b11ff0688d0cbd832438c03",
+    "complete_definition_count": 105,
+    "numeric_comparator_count": 104
+  },
+  "feature_runner": {
+    "path": "scripts/a_share_three_day_walkforward_campaign074_features.py",
+    "sha256": "b8c9478f3fa641056eb678c77d64f2ce7bb54bea1e72f3525b85e9ac772f3bc9"
+  },
+  "tests": {
+    "path": "tests/data_collector_tests/test_a_share_three_day_walkforward_campaign074_features.py",
+    "sha256": "8e59a202c9dd7fbe57f6eff9081f99bb031002c54653ef122cf5697a51eb79d7",
+    "result": "8 passed",
+    "synthetic_only": true
+  },
+  "factor": {
+    "name": "intraday_terminal_bar_amount_share_240m",
+    "direction": "higher",
+    "formula": "amount at exact 15:00 divided by the positive sum of nonnegative finite amount over exact 09:31-11:30 and 13:01-15:00 bars",
+    "source_projection": ["datetime", "symbol", "provider", "amount"],
+    "selected_bar_count": 240,
+    "standalone_09_30_excluded": true,
+    "dedicated_closing_auction_feed_claimed": false,
+    "valid_range": [0.0, 1.0]
+  },
+  "prevalue_failure_count_preserved": 4,
+  "research_boundary": {
+    "candidate_source_rows_read_before_freeze": false,
+    "candidate_values_read_before_freeze": false,
+    "comparison_values_read_before_freeze": false,
+    "historical_daily_price_fields_read_before_freeze": [],
+    "historical_forward_returns_read_before_freeze": false,
+    "provider_request_issued_before_freeze": false,
+    "candidate49_ledgers_changed_before_freeze": false
+  }
+}

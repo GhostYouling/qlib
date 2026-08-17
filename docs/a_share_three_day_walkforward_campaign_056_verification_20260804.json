@@ -1,0 +1,123 @@
+{
+  "version": 1,
+  "kind": "a_share_three_day_walkforward_campaign056_verification",
+  "status": "verified_terminal_zero_development_survivors_stress_interval_not_opened",
+  "recorded_at": "2026-08-04T11:41:00+08:00",
+  "bindings": {
+    "research_record_v2": {
+      "path": "docs/a_share_three_day_walkforward_campaign_056_research_record_v2.json",
+      "sha256": "fe4befadfca85d5d59a8441ad8c027a6a5c133883ba60b624dbeb1ac8f706401"
+    },
+    "attempt_ledger_v5": {
+      "path": "data/experiments/short_horizon/historical_walkforward/campaign_056/research_attempt_ledger_v5.json",
+      "sha256": "cd2fa6db7443bae6e9318424c4e062501ad34432f78665853bd3707d913f5a9f"
+    },
+    "terminal_completion_freeze_v2": {
+      "path": "docs/a_share_three_day_walkforward_campaign_056_terminal_completion_freeze_v2_20260804.json",
+      "sha256": "626397ed0a14e702c5fc89607b9b940f55f7d9a4a8a64723af5c7e32dd1be0a0"
+    },
+    "report_supersession_v2": {
+      "path": "docs/a_share_three_day_walkforward_campaign_056_unified_report_supersession_v2_20260804.json",
+      "sha256": "923f6cf58b3ed1873e5f4f35457a1443b636e35c5d7842b2a7cc10251c2f5b57"
+    },
+    "feature_snapshot_binding": {
+      "path": "docs/a_share_three_day_walkforward_campaign_056_feature_snapshot_binding_20260804.json",
+      "sha256": "c9e8e1edeeb1ded3bb1d913d078f7cf26c06f5b2c9e88124aa774355a57e92f2"
+    },
+    "no_return_audit_freeze": {
+      "path": "docs/a_share_three_day_walkforward_campaign_056_no_return_audit_implementation_freeze_20260804.json",
+      "sha256": "c68d0a1dc805bf40b0f6f7e158659702cf99565a64c41ec41250c678493b4209"
+    },
+    "no_return_audit": {
+      "path": "data/experiments/short_horizon/historical_walkforward/campaign_056/20260803T211608Z_campaign056_no_return_audit.json",
+      "sha256": "2a0c05800af7343e22d20c84c7380407df48616cfe86585b8cc52fb6513fcf8a"
+    },
+    "development_preregistration": {
+      "path": "docs/a_share_three_day_walkforward_campaign_056_preregistration.json",
+      "sha256": "d4a11a41e44e4c8e45c9a0874cc95622452d505e8c49d92880d09b1ebeaee298"
+    },
+    "development_implementation_freeze": {
+      "path": "docs/a_share_three_day_walkforward_campaign_056_development_implementation_freeze_20260804.json",
+      "sha256": "0bc1a0ab884c87e02671c4cd81b11df60b8a477ba2268cbcf90518b4c44463cc"
+    },
+    "trial_ledger": {
+      "path": "data/experiments/short_horizon/historical_walkforward/campaign_056/walkforward/trial_ledger.json",
+      "sha256": "823967446ff945a04b03ff6b5819fc748328c894d0c07a1c77ea8eff9ba426dd"
+    },
+    "development_survivors": {
+      "path": "data/experiments/short_horizon/historical_walkforward/campaign_056/walkforward/development_survivors.json",
+      "sha256": "5b72dc0097234349e0d22e7212bff171881082f8762a543b951cfc36a303ada5"
+    },
+    "unopened_stress_record": {
+      "path": "data/experiments/short_horizon/historical_walkforward/campaign_056/walkforward/exposed_stress_consumption_record.json",
+      "sha256": "72523e8ac9ad47ec49ebf35d9e8b4cafd944bc4b22054be831e46a90239f6d1f"
+    },
+    "terminal_test_selection_failure": {
+      "path": "docs/a_share_three_day_walkforward_campaign_056_terminal_historical_assertion_selection_failure_20260804.json",
+      "sha256": "188b1d9d6873f878adf0a0534b7dceec7bc305cbf55a56dac9cae228f80d48c4"
+    },
+    "terminal_v2_tests": {
+      "path": "tests/data_collector_tests/test_a_share_three_day_walkforward_campaign056_terminal_v2.py",
+      "sha256": "c16fe891402cadf0f127375ab40cdf069e67228c18b8b89ee4885c8ffd68a01d"
+    },
+    "unified_report": {
+      "path": "data/experiments/short_horizon/three_day_research_report.md",
+      "sha256": "2994d997098babf6d351db66c1f7e487d3ebffcd3e721cc487627c03ffb13db0"
+    },
+    "data_pipeline_documentation": {
+      "path": "docs/a_share_data_pipeline.md",
+      "sha256": "a614a3513e5bfc106b8559451fa518ddedbcfd66e0991cea3f0613049c7e5bf2"
+    },
+    "manage_qlib_a_share_data_skill": {
+      "path": "/Users/niyufei/.codex/skills/manage-qlib-a-share-data/SKILL.md",
+      "sha256": "047a6eb857e9261efc40c5b87f5afff6c3a06d68bad709e78726219d51ef7358"
+    },
+    "candidate49_signal_ledger": {
+      "path": "data/experiments/short_horizon/candidate49_future_signal_ledger.json",
+      "sha256": "5193f00d7f36da003f53cec387900da4c3d002299f5dfcfc1a95eaa199ed3a79"
+    },
+    "candidate49_execution_ledger": {
+      "path": "data/experiments/short_horizon/candidate49_future_execution_ledger.json",
+      "sha256": "d57a3e61eac969e42cafa418ccd8c0a5ee65dcf69da145bb2c096c2a02a2ea4f"
+    }
+  },
+  "verified_semantics": {
+    "no_return_coverage_gate_passed": true,
+    "no_return_79_comparison_uniqueness_gate_passed": true,
+    "maximum_absolute_median_daily_rank_correlation": 0.7471649347166686,
+    "development_trial_count": 1,
+    "development_survivor_count": 0,
+    "stress_intent_exists": false,
+    "stress_record_exists": true,
+    "stress_2024_2025_opened": false,
+    "stress_2024_2025_returns_read": false,
+    "campaign056_infrastructure_only_failure_count": 3,
+    "campaign056_complete_factor_attempt_count": 1,
+    "campaign056_distinct_attempt_count": 4,
+    "campaign056_ledger_entry_count": 5,
+    "cumulative_historical_research_attempt_count": 325,
+    "cumulative_return_reading_development_trial_count": 268,
+    "candidate49_signal_entry_count": 0,
+    "candidate49_execution_entry_count": 0,
+    "candidate49_historical_backfill_performed": false,
+    "provider_request_issued_by_campaign056": false,
+    "current_scoring_selection_sizing_or_orders_performed": false
+  },
+  "tests": {
+    "first_combined_terminal_suite": {
+      "passed": 23,
+      "failed": 1,
+      "failure_recorded_as_infrastructure_only": true
+    },
+    "terminal_v2_focused": {
+      "passed": 5,
+      "failed": 0
+    },
+    "combined_current_campaign056_suite": {
+      "passed": 23,
+      "failed": 0,
+      "excluded_exact_historical_state_nodes": 1
+    }
+  },
+  "next_boundary": "Campaign057 may begin offline immediately only from an economically independent pre-value-frozen mechanism. Candidate49 remains the sole prospective candidate and follows its separate same-day workflow."
+}

@@ -1,0 +1,53 @@
+{
+  "schema_version": 1,
+  "kind": "a_share_three_day_walkforward_campaign164_prevalue_infrastructure_failure_record",
+  "status": "two_failures_recorded_and_recovered_without_masking",
+  "recorded_at": "2026-08-15T06:57:00+08:00",
+  "supersedes_without_rewriting": {
+    "path": "docs/a_share_three_day_walkforward_campaign_164_prevalue_infrastructure_failure_20260815.json",
+    "sha256": "115fd95ae1d022675d833d1a6c29adef2203c64920f062e20d2b482c7e6a269c",
+    "preserved": true
+  },
+  "failures": [
+    {
+      "attempt_id": "campaign164_infrastructure_001",
+      "phase": "prior_repository_evidence_hash_verification",
+      "exit_code": 1,
+      "status": "failed_two_presumed_evidence_paths_did_not_exist",
+      "nonexistent_paths": [
+        "docs/a_share_three_day_walkforward_campaign_158_intraday_opening_auction_source_admission_matrix_20260815.json",
+        "docs/a_share_three_day_walkforward_campaign_159_etf_source_admission_inventory_20260815.json"
+      ],
+      "write_occurred": false,
+      "candidate_comparator_price_or_return_value_read": false,
+      "failed_exit_code_bypassed_or_masked": false,
+      "recovery": "Resolved and verified the exact Campaign158 field-matrix/residual-audit and Campaign159 source-inventory/residual-audit paths with rg --files and explicit hashes."
+    },
+    {
+      "attempt_id": "campaign164_infrastructure_002",
+      "phase": "attempt_ledger_hash_generation",
+      "exit_code": 1,
+      "status": "failed_zsh_read_only_status_variable_before_hash_generation",
+      "reason": "The first bounded hash-loop used zsh's read-only special variable named status and exited before computing the first entry hash.",
+      "write_occurred": false,
+      "chain_hash_generated_before_failure": false,
+      "candidate_comparator_price_or_return_value_read": false,
+      "failed_exit_code_bypassed_or_masked": false,
+      "recovery": "Renamed shell variables to phase_name and outcome, reran the same frozen ordered entries, and generated all eight hashes from the Campaign163 chain tip."
+    }
+  ],
+  "recovery_evidence": {
+    "campaign158_field_matrix_sha256": "3331d14a063490601507be363a75b22e3590b03494e33e87a131f09a1106a5ab",
+    "campaign158_residual_audit_sha256": "0fbe75c7031e9787f9ce7787ce7cdcc06eafc4d9257bdd875fb678488b088f68",
+    "campaign159_source_inventory_sha256": "d561a9707b6004cbec0685108ea3fa4453b21f587a7632a739b46b69e818e578",
+    "campaign159_residual_audit_sha256": "6d4430f1eef33da89fe5eb7018d326c603a051446d16e066ac72c74d9d7a25ae",
+    "recovered_chain_tip_sha256": "d02d284be2ba0f79789683814d29423cf7f17afa63641db562e2ea72ddbc8c16"
+  },
+  "research_boundary": {
+    "source_row_candidate_comparator_price_or_return_value_read": false,
+    "provider_or_web_request_issued": false,
+    "provider_credential_presence_value_or_digest_read": false,
+    "stress_2024_2025_opened": false,
+    "candidate49_ledgers_changed": false
+  }
+}

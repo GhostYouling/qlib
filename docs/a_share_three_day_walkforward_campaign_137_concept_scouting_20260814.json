@@ -1,0 +1,107 @@
+{
+  "schema_version": 1,
+  "kind": "a_share_three_day_walkforward_campaign137_concept_scouting",
+  "status": "terminal_zero_selected_candidates_before_formula_source_candidate_comparator_price_or_return_values",
+  "recorded_at": "2026-08-14T12:25:10+0800",
+  "purpose": "Review one finite Campaign137 catalog against all 152 complete definitions and frozen terminal histories, rejecting rescue, source-proxy and post-exposure operator refreshes before any Campaign137 value is read.",
+  "authoritative_inputs": {
+    "campaign136_terminal_state": {
+      "path": "docs/a_share_three_day_iteration_status_20260814_campaign136_terminal_v6.json",
+      "sha256": "cbba2554044e71e441118bf0ebd391d05c1552be0a3608f4833143c7b8a6d1b0"
+    },
+    "numeric_policy_v169": {
+      "path": "docs/a_share_three_day_walkforward_future_numeric_comparison_eligibility_policy_v169_20260814.json",
+      "sha256": "3084146c9a26e6ddff7e859e17fe65f6556a7ba8031ee457f95d8b4ee12a9088",
+      "complete_definition_count_reviewed": 152,
+      "complete_definition_order_sha256": "60c465a3e2043efae6b92b8c5f3e007cd397a1cd0ec3094b4fa005665bbe5736",
+      "eligible_numeric_comparator_count_reserved_but_not_loaded": 141,
+      "eligible_numeric_comparator_order_sha256": "ec1aebcb939ad516c58037a36a4aaadd4ad8b2abbd3c884705895c58da85a2ee"
+    },
+    "historical_walkforward_policy": {
+      "path": "docs/a_share_three_day_historical_walkforward_research_policy_20260727.json",
+      "sha256": "38426d6161b9bfed323c58caba18feca668b8c9d53e294951a8ba90c01a798bb"
+    }
+  },
+  "finite_prevalue_concept_catalog": [
+    {
+      "catalog_id": "c137_01",
+      "name": "daily_signed_or_directional_price_basis_adjustment_1d",
+      "source": "accepted Campaign136 daily price-basis snapshot",
+      "proposed_definition": "Use the sign or separate up/down legs of log(factor_t/factor_p).",
+      "prevalue_decision": "rejected_as_explicit_campaign136_signed_direction_search_and_terminal_factor_rescue",
+      "reason": "Campaign136 rejected signed direction before values, froze magnitude/higher as its only formula, and then failed the exact development trial. Reversing or splitting the sign now would be outcome-conditioned rescue."
+    },
+    {
+      "catalog_id": "c137_02",
+      "name": "daily_price_basis_adjustment_streak_recency_decay_or_threshold_event",
+      "source": "accepted Campaign136 daily price-basis snapshot",
+      "proposed_definition": "Aggregate nonzero adjustments over a recent window, use time since last adjustment, or threshold the magnitude into an event.",
+      "prevalue_decision": "rejected_as_explicit_campaign136_window_decay_threshold_search_before_values",
+      "reason": "Campaign136 explicitly rejected every streak, age, decay, tolerance and threshold variant before reading its source. Its terminal no-rescue rule forbids reopening those choices."
+    },
+    {
+      "catalog_id": "c137_03",
+      "name": "inferred_corporate_action_type_from_factor_ratio_and_daily_close_return",
+      "source": "Campaign136 factor ratio plus accepted daily price fields",
+      "proposed_definition": "Infer dividend, split or other corporate-action classes from the adjustment ratio and raw price response.",
+      "prevalue_decision": "rejected_as_unidentified_event_source_proxy_and_forbidden_price_field_reconstruction",
+      "reason": "The accepted basis source does not identify an official action type. Campaign136 rejected raw-close reconciliation and event classification; inferring labels from price fields would create an unverified source proxy and leak the terminal factor into a rescue branch."
+    },
+    {
+      "catalog_id": "c137_04",
+      "name": "intraday_transaction_price_tail_spread_overlap_or_mad_resolution",
+      "source": "accepted one-minute amount and volume snapshot",
+      "proposed_definition": "Replace Campaign128's Q25/Q75 morning-afternoon IQR resolution with Q10/Q90, MAD, Wasserstein, overlap or another distribution distance.",
+      "prevalue_decision": "rejected_as_campaign128_129_distribution_statistic_refresh_before_values",
+      "reason": "Campaign128 froze and terminalized the executed-price distribution-resolution mechanism, while Campaign129 explicitly rejected overlap and alternate distances. Changing quantiles, estimator or support is a post-result statistic sweep."
+    },
+    {
+      "catalog_id": "c137_05",
+      "name": "price_basis_adjustment_confirmed_by_minute_attention_old_factor_or_complete_library_model",
+      "source": "Campaign136 series plus the frozen historical feature library",
+      "proposed_definition": "Interact, gate, weight or fit the terminal adjustment magnitude with minute attention, volume, old factors or a learned complete-library model.",
+      "prevalue_decision": "rejected_as_terminal_factor_combination_and_post_exposure_model_rescue",
+      "reason": "Campaign136 prohibited confirmation combinations before values, and Campaign132-134 terminalized nonlinear fits, calibrated consensus and correlation-component constructions. Conditioning a failed factor on exposed features is not a new information mechanism."
+    },
+    {
+      "catalog_id": "c137_06",
+      "name": "daily_gap_zero_volume_resumption_or_basis_adjustment_liquidity_proxy",
+      "source": "accepted daily OHLCV and price-basis rows",
+      "proposed_definition": "Use opening gaps, zero-volume streaks or adjustment-day liquidity to proxy resumption, tradability shock or hidden corporate-action state.",
+      "prevalue_decision": "rejected_as_terminal_gap_resumption_proxy_and_source_semantic_downgrade",
+      "reason": "Campaign113 capacity-terminalized suspension/resumption, and Campaign129/135 rejected daily zero-volume and opening-gap proxies. Adding the terminal basis series does not repair the missing official event semantics."
+    }
+  ],
+  "selection": {
+    "concepts_reviewed": 6,
+    "rejected_concept_count": 6,
+    "selected_candidate_count": 0,
+    "selected_candidate": null,
+    "genuinely_new_independent_mechanism_found": false,
+    "reason": "Every finite proposal is an explicit Campaign136 rejected branch, a terminal distribution/gap/source-proxy family, or a post-exposure combination/model rescue."
+  },
+  "research_boundary": {
+    "repository_metadata_and_terminal_history_read": true,
+    "programmatic_provider_request_issued": false,
+    "provider_credential_loaded": false,
+    "campaign137_source_rows_read": false,
+    "campaign137_candidate_values_computed_or_read": false,
+    "campaign137_comparator_values_read": false,
+    "historical_daily_price_fields_read": [],
+    "historical_forward_returns_read": false,
+    "stress_2024_2025_opened": false,
+    "candidate49_historical_backfill_performed": false,
+    "candidate49_ledgers_changed": false,
+    "second_prospective_candidate_created": false,
+    "current_scoring_selection_sizing_positions_or_orders_performed": false,
+    "investment_advice": false,
+    "inherited_current_listing_survivorship_limitation_remains": true
+  },
+  "decision": {
+    "create_campaign137_formula_feature_or_model_implementation": false,
+    "run_source_acceptance_coverage_uniqueness_or_return_trial": false,
+    "append_complete_definition_or_numeric_comparator": false,
+    "terminalize_campaign137_prevalue": true,
+    "next_campaign_requirement": "Begin Campaign138 only from a genuinely new prevalue mechanism or separately accepted historically versioned point-in-time source; preserve all Campaign137 rejections, the exact 152-definition/141-comparator orders, and Candidate49 as the sole prospective ledger."
+  }
+}

@@ -1,0 +1,166 @@
+{
+  "schema_version": 1,
+  "kind": "a_share_three_day_walkforward_campaign187_bank_loan_asset_quality_migration_source_frontier",
+  "status": "terminal_prevalue_four_source_admission_deferrals_three_relabeling_operator_or_combination_rejections_zero_selected",
+  "recorded_at": "2026-08-15T13:35:50+08:00",
+  "purpose": "Review a finite bank loan-classification migration, non-performing exposure, provisioning, write-off, transfer, recovery and forbearance lifecycle domain before source rows, values, factor values, comparators, security prices or returns.",
+  "authoritative_inputs": {
+    "campaign186_effective_state": {
+      "path": "docs/a_share_three_day_iteration_status_20260815_campaign186_prevalue_terminal.json",
+      "sha256": "fc0aac22b58488d717bbf5e8c5a8892ea6820f5f93d3d152ef3ae1d980e9bf5c"
+    },
+    "eligibility_policy_v275": {
+      "path": "docs/a_share_three_day_walkforward_future_numeric_comparison_eligibility_policy_v275_20260815.json",
+      "sha256": "2353a563301ad8e4547d523a9ac031b42f53e49d627d86c2778f058bf537ef02"
+    },
+    "campaign181_regulated_financial_capital_frontier": {
+      "path": "docs/a_share_three_day_walkforward_campaign_181_regulated_financial_capital_solvency_source_frontier_20260815.json",
+      "sha256": "526ae0a7cdefd64f9c0b4890924f74a6130e553de0d7642672511ccbe3c5f448"
+    },
+    "campaign182_credit_facility_covenant_frontier": {
+      "path": "docs/a_share_three_day_walkforward_campaign_182_credit_facility_covenant_liquidity_backstop_source_frontier_20260815.json",
+      "sha256": "27d9e5af02f2ff4f626841e8c9720601c5b1691d3a91f0894be7028bd554df52"
+    }
+  },
+  "repository_evidence": {
+    "complete_definition_count_reviewed": 158,
+    "eligible_numeric_comparator_count_reviewed": 142,
+    "exact_nonperforming_loan_special_mention_loan_provision_coverage_writeoff_recovery_or_chinese_equivalent_match_found": false,
+    "matching_existing_campaign_or_complete_source_contract_records_from_exact_bounded_search": 0,
+    "existing_bank_loan_asset_quality_lifecycle_mechanism_in_complete_definitions": false,
+    "existing_bank_loan_asset_quality_lifecycle_mechanism_in_numeric_comparators": false,
+    "complete_bank_loan_asset_quality_lifecycle_source_contract_present": false,
+    "regulated_capital_boundary": "Campaign181 freezes prudential capital, liquidity and solvency requirements and restoration. It does not identify loan books, classification migration, credit loss allowance, write-off, disposal or recovery flows.",
+    "credit_facility_boundary": "Campaign182 freezes the listed issuer as borrower, its facilities, covenants and liquidity backstops. The proposed domain observes a bank as lender and requires borrower-pool loan classification and resolution semantics.",
+    "sector_boundary": "Point-in-time bank and regulated-lender scope must be frozen; non-lenders and non-loan-bearing entities remain structurally not applicable and cannot be filled with zero.",
+    "point_in_time_boundary": "A latest non-performing-loan ratio or current loan book cannot be projected backward without classification-regime, formation, cure, restructuring, write-off, sale, recovery, correction and first-public histories."
+  },
+  "finite_prevalue_catalog": [
+    {
+      "catalog_id": "c187_01",
+      "name": "loan_classification_migration_nonperforming_formation_cure_and_overdue_state",
+      "economic_state": "A close-known bank loan-book state linking performing, special-mention, overdue, non-performing and impaired categories to migration, formation, cure, upgrade, downgrade and stock-flow reconciliation.",
+      "formula": null,
+      "direction": null,
+      "parameters_filters_subsets_combinations_models": [],
+      "new_issuer_state": true,
+      "complete_local_source_contract": false,
+      "decision": "deferred_source_admission_not_factor_failure",
+      "reason": "No admitted point-in-time history freezes regulated entity, consolidation scope, loan population, classification regime, grade or stage migration, overdue days, formation, cure, correction and first-public timing across 2019-2023."
+    },
+    {
+      "catalog_id": "c187_02",
+      "name": "loan_loss_allowance_provision_charge_release_and_coverage_state",
+      "economic_state": "A close-known credit-loss allowance state connecting opening and closing allowance, provision charge or release, expected or incurred loss stage, collateral and guarantee treatment, coverage denominator and regulatory overlays.",
+      "formula": null,
+      "direction": null,
+      "parameters_filters_subsets_combinations_models": [],
+      "new_issuer_state": true,
+      "complete_local_source_contract": false,
+      "decision": "deferred_source_admission_not_factor_failure",
+      "reason": "The repository lacks a complete bank-specific allowance roll-forward with accounting and regulatory basis, gross exposure and accrued-interest denominator, stage transfer, collateral, overlay, write-back, restatement and trading-session availability."
+    },
+    {
+      "catalog_id": "c187_03",
+      "name": "nonperforming_loan_writeoff_bulk_transfer_securitization_and_recovery_state",
+      "economic_state": "A close-known distressed-loan resolution state covering write-off, bulk sale, transfer, securitization, debt-to-equity conversion, collateral realization, cash recovery and residual servicing or recourse.",
+      "formula": null,
+      "direction": null,
+      "parameters_filters_subsets_combinations_models": [],
+      "new_issuer_state": true,
+      "complete_local_source_contract": false,
+      "decision": "deferred_source_admission_not_factor_failure",
+      "reason": "No complete point-in-time source connects disposed exposure to resolution method, buyer or vehicle, gross and net carrying value, proceeds, retained risk, recourse, later recovery, reversal, correction and failed transactions."
+    },
+    {
+      "catalog_id": "c187_04",
+      "name": "loan_restructuring_forbearance_collateral_concentration_and_resolution_state",
+      "economic_state": "A close-known loan-risk state covering restructuring and forbearance, maturity extension, interest concession, collateral and guarantee coverage, borrower concentration, default, enforcement and restoration to performing status.",
+      "formula": null,
+      "direction": null,
+      "parameters_filters_subsets_combinations_models": [],
+      "new_issuer_state": true,
+      "complete_local_source_contract": false,
+      "decision": "deferred_source_admission_not_factor_failure",
+      "reason": "No admitted history preserves bank and borrower-pool identity, restructuring terms, regulatory forbearance, collateral and guarantee valuation, concentration, enforcement, cure criteria, repeated restructuring, correction and first-public availability."
+    },
+    {
+      "catalog_id": "c187_05",
+      "name": "generic_impairment_capital_liquidity_covenant_interest_pricing_or_security_price_relabeling",
+      "economic_state": "An existing generic impairment, prudential capital or liquidity, borrower covenant, interest-price, accounting-profit or security-price state relabeled as bank loan asset quality.",
+      "formula": null,
+      "direction": null,
+      "parameters_filters_subsets_combinations_models": [],
+      "new_issuer_state": false,
+      "complete_local_source_contract": false,
+      "decision": "rejected_terminal_impairment_prudential_capital_borrower_covenant_pricing_accounting_and_security_price_source_relabeling",
+      "reason": "Those aggregate states do not identify the lender loan population, classification and migration regime, formation, cure, allowance denominator, write-off, transfer, recovery or forbearance lifecycle."
+    },
+    {
+      "catalog_id": "c187_06",
+      "name": "asset_quality_direction_threshold_classification_denominator_segment_window_or_subset_variant",
+      "economic_state": "A direction, transform or subset of non-performing or special-mention ratio, formation, migration, provision coverage, write-off, recovery, restructuring, borrower segment, product, region or event window.",
+      "formula": null,
+      "direction": null,
+      "parameters_filters_subsets_combinations_models": [],
+      "new_issuer_state": false,
+      "complete_local_source_contract": false,
+      "decision": "rejected_operator_direction_threshold_classification_denominator_segment_window_and_subset_search_before_base_source_admission",
+      "reason": "Choosing higher or lower ratios, gross or net denominators, five-grade or three-stage mappings, successful recoveries only, industry or region subsets, lags or windows before source admission would multiply hypotheses and introduce survivorship."
+    },
+    {
+      "catalog_id": "c187_07",
+      "name": "combined_loan_migration_provision_resolution_and_forbearance_score_or_model",
+      "economic_state": "A joint bank asset-quality score across loan classification migration, allowance coverage, distressed-loan resolution and restructuring or collateral states.",
+      "formula": null,
+      "direction": null,
+      "parameters_filters_subsets_combinations_models": [],
+      "new_issuer_state": false,
+      "complete_local_source_contract": false,
+      "decision": "rejected_unadmitted_component_normalization_weight_interaction_and_model_search",
+      "reason": "Combining four unadmitted source families or choosing normalization, weights, interactions, filters, subsets or models would expand the search before bank scope and every base source contract are complete."
+    }
+  ],
+  "mandatory_source_admission_gate": {
+    "must_freeze_before_any_formula_or_direction": [
+      "exact regulatory return, exchange filing, annual or interim report loan table, asset-management transaction record or licensed structured source with immutable bytes and stable issuer, regulated-entity, document, table, observation and transaction identifiers",
+      "classification date, reporting period, restructuring, default, cure, write-off, transfer, recovery, correction, first-public, supersession and trading-session availability timestamps",
+      "listed security, bank parent, regulated bank, branch, subsidiary, consolidated group, unconsolidated vehicle, asset-management company, buyer, servicer, borrower pool and counterparty mapping without current-state leakage",
+      "point-in-time bank and regulated-lender taxonomy with structural not-applicability for non-lenders and entities without an applicable loan book",
+      "performing, special-mention, overdue, non-performing five-grade, impaired and expected-credit-loss stage taxonomies with regime version and auditable crosswalks",
+      "gross loan, advances, accrued interest, off-balance-sheet commitment, purchased credit-impaired asset, net carrying amount and risk-exposure denominator semantics",
+      "opening stock, additions, formation, upgrade, downgrade, cure, restructuring, write-off, sale, transfer, securitization, recovery and closing stock reconciliation",
+      "specific, general, expected-credit-loss and regulatory allowance, provision charge, release, overlay and coverage-ratio numerator and denominator semantics",
+      "borrower industry, product, region, size, related-party, single-name and group concentration plus collateral, guarantee, seniority and valuation semantics without privacy-driven selection",
+      "forbearance, regulatory relief, repayment extension, interest concession, repeated restructuring, default, enforcement, collateral realization and return-to-performing criteria",
+      "consolidated and solo scope, gross and net presentation, unit, currency, translation, intra-group elimination, double counting, missing, undisclosed, not-applicable and true-zero semantics",
+      "complete bounded 2019-2023 partition manifest, full eligible-bank denominator, entity and security identifier history, delisting and merger coverage, identity, timing, regime, classification, roll-forward, resolution and source-acceptance tests using no factor, comparator, security-price or return values"
+    ],
+    "formula_direction_parameter_filter_subset_combination_or_model_choice_allowed_before_gate": false
+  },
+  "gate_summary": {
+    "routes_reviewed": 7,
+    "genuinely_new_issuer_state_routes": 4,
+    "source_admission_deferrals_not_factor_failures": 4,
+    "relabeling_operator_or_combination_route_rejections": 3,
+    "selected_candidate_count": 0,
+    "complete_factor_definition_created": false,
+    "numeric_comparator_created": false
+  },
+  "scientific_interpretation": {
+    "bank_loan_asset_quality_migration_state_declared_ineffective": false,
+    "absence_of_an_admitted_historical_source_is_evidence_of_no_predictive_power": false,
+    "safe_conclusion": "Four loan classification, provisioning, resolution and forbearance lifecycle states remain deferred at source admission; adjacent-domain relabeling, premature operator search and unadmitted combinations are closed before values."
+  },
+  "research_boundary": {
+    "finite_catalog_frozen_before_source_or_value_read": true,
+    "source_row_loan_classification_npl_provision_writeoff_transfer_recovery_forbearance_factor_comparator_security_price_or_return_value_read": false,
+    "repository_policy_and_prior_records_only": true,
+    "provider_or_web_request_issued": false,
+    "provider_credential_presence_value_or_digest_read": false,
+    "stress_2024_2025_opened": false,
+    "candidate49_ledgers_changed": false,
+    "second_prospective_candidate_created": false
+  },
+  "next_action": "Record both overlap rejections, both infrastructure failures and all seven bank asset-quality decisions in the Campaign187 hash chain, then publish terminal accounting without numeric comparison."
+}

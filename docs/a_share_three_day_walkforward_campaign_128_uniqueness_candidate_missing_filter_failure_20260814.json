@@ -1,0 +1,38 @@
+{
+  "schema_version": 1,
+  "kind": "a_share_three_day_walkforward_campaign128_infrastructure_failure",
+  "status": "failed_uniqueness_candidate_panel_legal_missing_filter",
+  "recorded_at": "2026-08-14T06:19:00+0800",
+  "attempt_id": "campaign128_infrastructure_005",
+  "stage": "ordered_uniqueness_candidate_panel_before_first_comparator_loader",
+  "failure": {
+    "exit_code": 1,
+    "exception": "Campaign128OrderedUniquenessError: candidate quality panel changed",
+    "reason": "The loader inner-joined the full quality-listing panel and then incorrectly required every joined candidate value to be nonmissing, although the frozen formula permits legal missing support. The frozen coverage result already establishes 1,331,759 quality-listing rows and 1,319,946 eligible candidate rows.",
+    "uniqueness_output_created": false
+  },
+  "exposure": {
+    "candidate_snapshot_recovery_verified": true,
+    "candidate_values_reopened": true,
+    "comparator_loader_started": false,
+    "comparator_values_read": false,
+    "historical_daily_price_or_forward_return_values_read": false
+  },
+  "recovery": {
+    "change": "Before sorting candidate arrays, retain only rows declared eligible with a nonmissing candidate value, then inner-join to quality-listing keys and require the frozen 1,319,946-row count.",
+    "formula_direction_coverage_gate_comparator_order_pairwise_gate_or_value_changed": false,
+    "synthetic_legal_missing_regression_added": true
+  },
+  "research_boundary": {
+    "provider_request_issued": false,
+    "provider_credential_loaded": false,
+    "comparator_values_read": false,
+    "historical_daily_price_or_forward_return_values_read": false,
+    "stress_2024_2025_return_values_opened": false,
+    "candidate49_historical_backfill_performed": false,
+    "candidate49_ledgers_changed": false,
+    "second_prospective_candidate_created": false,
+    "current_scoring_selection_sizing_positions_or_orders_performed": false,
+    "investment_advice": false
+  }
+}

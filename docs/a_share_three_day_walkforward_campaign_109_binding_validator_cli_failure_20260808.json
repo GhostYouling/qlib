@@ -1,0 +1,18 @@
+{
+  "schema_version": 1,
+  "kind": "a_share_three_day_walkforward_campaign109_infrastructure_failure",
+  "status": "preserved_failed_command_before_source_candidate_or_comparator_values",
+  "recorded_at": "2026-08-07T21:51:00Z",
+  "failure_ordinal": 1,
+  "stage": "prevalue_preregistration_binding_validation",
+  "cause": "The first validator command used unsupported legacy subcommand and --record syntax; argparse exited before validation.",
+  "failed_exit_code": 2,
+  "repair": "Rerun the same three immutable records with the validator's current positional-record CLI; all 13 bindings passed.",
+  "scientific_boundary": {
+    "formula_direction_fields_support_gates_or_catalog_changed": false,
+    "source_candidate_or_comparator_values_read": false,
+    "historical_daily_price_or_forward_return_values_read": false,
+    "provider_request_issued": false,
+    "candidate49_ledgers_changed": false
+  }
+}

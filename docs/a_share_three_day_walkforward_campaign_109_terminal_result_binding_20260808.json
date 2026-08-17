@@ -1,0 +1,117 @@
+{
+  "schema_version": 1,
+  "kind": "a_share_three_day_walkforward_campaign109_terminal_result_binding",
+  "status": "campaign109_terminal_development_rejection_zero_survivors_stress_closed",
+  "recorded_at": "2026-08-07T22:38:50Z",
+  "no_return_result": {
+    "path": "data/experiments/short_horizon/historical_walkforward/campaign_109/no_return/20260807T222738Z_campaign109_no_return_audit.json",
+    "sha256": "50f7586d006464c055eab4e58c95a30711fb0680c3fcb611e9e3db7ed0cd183d"
+  },
+  "development_trial_ledger": {
+    "path": "data/experiments/short_horizon/historical_walkforward/campaign_109/walkforward/trial_ledger.json",
+    "sha256": "c4c530c7659c5172c60dd406d7c8a10c888cac5e2bf4ae12a2a68680ca5d9033",
+    "entry_count": 1,
+    "chain_tip_sha256": "1407a40dc85bd5a900ccf2e6aa64e582f1056f872698f0fcf3e39d12c0640385"
+  },
+  "development_survivors": {
+    "path": "data/experiments/short_horizon/historical_walkforward/campaign_109/walkforward/development_survivors.json",
+    "sha256": "ffef4ed9d959d25d168524add0625e98f9724b912d21031560bf381bec9813a2",
+    "selected_survivor_count": 0
+  },
+  "exposed_stress_record": {
+    "path": "data/experiments/short_horizon/historical_walkforward/campaign_109/walkforward/exposed_stress_consumption_record.json",
+    "sha256": "e1e3eab56fb7d1727d567beabb6f075105157c6c870bb339813eabd0676dd466",
+    "status": "not_opened_zero_development_survivors",
+    "stress_interval_opened": false,
+    "stress_return_fields_read": false
+  },
+  "campaign_report": {
+    "path": "data/experiments/short_horizon/historical_walkforward/campaign_109/walkforward/campaign_report.json",
+    "sha256": "366b38d4aac1e3e5dac1bc896ecf533d49b9fa576c1abf43c55dc2c00ec02f36"
+  },
+  "research_attempt_ledger": {
+    "path": "data/experiments/short_horizon/historical_walkforward/campaign_109/research_attempt_ledger_v5.json",
+    "sha256": "e8da24eba1d31ff8852e69042dc02726c26cc6475e87e22c695344f02e323664",
+    "attempt_count": 8,
+    "ledger_entry_count": 8,
+    "chain_tip_sha256": "d34540dec9055fb249bc006e5003853eafbac14e1ee1f3933b0e7af75a446ab5"
+  },
+  "preserved_failures": [
+    {
+      "path": "docs/a_share_three_day_walkforward_campaign_109_binding_validator_cli_failure_20260808.json",
+      "sha256": "13b00fc4066cd180d318337fe1e092a2afe1a4aed9398ed9aa78b82ab739b7c7"
+    },
+    {
+      "path": "docs/a_share_three_day_walkforward_campaign_109_synthetic_expectation_failure_20260808.json",
+      "sha256": "fa67d5eefc1ae6d9461d1725abcee4a3397b4539ee80a12560ddbe02d29ee94f"
+    },
+    {
+      "path": "docs/a_share_three_day_walkforward_campaign_109_snapshot_build_symbol_binding_failure_20260808.json",
+      "sha256": "f001229cb831bc829b591abdbd1bd6916673c438a971e15bfd09ed4554f3c6e6"
+    },
+    {
+      "path": "docs/a_share_three_day_walkforward_campaign_109_postpublication_manifest_validator_failure_20260808.json",
+      "sha256": "c01c18359c5d1ec90a0715203df635eb3861dfbdda7051de23f173560b1ab7b8"
+    },
+    {
+      "path": "docs/a_share_three_day_walkforward_campaign_109_manifest_diagnostic_export_failure_20260808.json",
+      "sha256": "4014f9232591dbf29a2803027f241f325f186cfcbb291e6fd06334239a1c84c7"
+    },
+    {
+      "path": "docs/a_share_three_day_walkforward_campaign_109_development_preregistration_interface_failure_20260808.json",
+      "sha256": "c6e49c5bb82a760c49b101364d6fc7f105dcda1e0e9772b0829af88d7fc425c2"
+    },
+    {
+      "path": "docs/a_share_three_day_walkforward_campaign_109_development_test_purge_key_failure_20260808.json",
+      "sha256": "5e710a64792e7259ad282c786a07058e79257f9df7e0afbdccd18dcfc806c7d6"
+    }
+  ],
+  "scientific_terminal_semantics": {
+    "factor": "intraday_intrabar_body_magnitude_serial_persistence_238p",
+    "direction": "higher",
+    "coverage_gate_passed": true,
+    "numeric_comparisons_completed": 132,
+    "numeric_comparisons_passed": 132,
+    "maximum_absolute_median_daily_rank_correlation": 0.7554105598815716,
+    "no_return_admissible_factor_count": 1,
+    "development_trial_count": 1,
+    "development_survivor_count": 0,
+    "positive_mean_rank_ic_fold_count": 0,
+    "positive_normalized_return_fold_count": 1,
+    "positive_pilot_return_fold_count": 1,
+    "median_validation_mean_rank_ic": -0.03756579859633194,
+    "median_validation_normalized_return": -0.0887987076957868,
+    "median_validation_pilot_return": -0.027398460849624384,
+    "worst_validation_normalized_drawdown": -0.5077719899508767,
+    "development_aggregate_20bp_return": -0.12524724385260444,
+    "scientific_result": "rejected_by_frozen_2019_2023_development_survivor_gates",
+    "numeric_comparator_eligible_for_future_uniqueness_checks": true,
+    "stress_2024_2025_opened": false,
+    "retry_reverse_redefine_transform_filter_residualize_combine_or_rescue_allowed": false
+  },
+  "accounting": {
+    "campaign109_attempt_count": 8,
+    "campaign109_ledger_entry_count": 8,
+    "campaign109_infrastructure_failure_count": 7,
+    "campaign109_prevalue_scientific_attempt_count": 1,
+    "campaign109_complete_factor_attempt_count": 1,
+    "campaign109_scientifically_decided_factor_attempt_count": 1,
+    "campaign109_return_reading_complete_development_trial_count": 1,
+    "campaign109_development_survivor_count": 0,
+    "campaign109_stress_trial_count": 0,
+    "cumulative_historical_research_attempt_count": 809,
+    "cumulative_return_reading_development_trial_count": 301
+  },
+  "boundaries": {
+    "historical_daily_price_or_forward_return_values_read_for_development_2019_2023": true,
+    "stress_2024_2025_opened": false,
+    "stress_2024_2025_return_values_read": false,
+    "provider_request_issued": false,
+    "candidate49_historical_backfill_performed": false,
+    "candidate49_ledgers_changed": false,
+    "second_prospective_candidate_created": false,
+    "current_scoring_selection_sizing_or_orders_performed": false,
+    "investment_advice": false
+  },
+  "next_action": "Publish future numeric policy v70 with 139 complete definitions and 133 numeric comparators, then begin only a genuinely new Campaign110 prevalue mechanism."
+}

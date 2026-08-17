@@ -1,0 +1,89 @@
+{
+  "version": 208,
+  "kind": "a_share_three_day_walkforward_future_numeric_comparison_eligibility_policy",
+  "status": "campaign151_terminal_zero_coverage_lifecycle_bindings_corrected",
+  "recorded_at": "2026-08-15T01:37:56+08:00",
+  "supersedes_without_rewriting": {
+    "path": "docs/a_share_three_day_walkforward_future_numeric_comparison_eligibility_policy_v207_20260815.json",
+    "sha256": "bd967079188f53c17fec9d21721cba014a2de34629f76923893db704398e684f",
+    "preserved": true,
+    "library_definition_order_changed": false,
+    "numeric_comparator_order_changed": false,
+    "scientific_result_changed": false,
+    "reason": "Append one exact historical appendable-report binding compatibility failure; current authority no longer binds mutable report or lifecycle-test bytes."
+  },
+  "authoritative_inputs": {
+    "policy_v207": {
+      "path": "docs/a_share_three_day_walkforward_future_numeric_comparison_eligibility_policy_v207_20260815.json",
+      "sha256": "bd967079188f53c17fec9d21721cba014a2de34629f76923893db704398e684f"
+    },
+    "effective_attempt_ledger_v5": {
+      "path": "data/experiments/short_horizon/historical_walkforward/campaign_151/research_attempt_ledger_v5.json",
+      "sha256": "ff2c470ba310f7e4a1705334abef51a7de8cc637d8a31688e9ad52a2b8b5a575",
+      "effective_entry_count": 15,
+      "chain_tip_sha256": "e6d46cb7f483188862dbcb6b8ac44e53dbf63544d87bb9171a2996fff0ee2328"
+    },
+    "appendable_report_binding_test_failure": {
+      "path": "docs/a_share_three_day_walkforward_campaign_151_appendable_report_binding_test_failure_20260815.json",
+      "sha256": "caa5e0db86d76616ec9e77750ad09fe077ad4be216a0144697af87e71fb2275f"
+    },
+    "snapshot_full_verification": {
+      "path": "docs/a_share_three_day_walkforward_campaign_151_snapshot_full_verification_20260815.json",
+      "sha256": "af28a3a86e35ebc8fa617db19054cf5afb34f31d428dd50077e5c42f80604610"
+    }
+  },
+  "effective_accounting": {
+    "campaign151_attempt_count": 15,
+    "campaign151_prevalue_concept_attempt_count": 6,
+    "campaign151_infrastructure_failure_count": 9,
+    "campaign151_complete_factor_attempt_count": 1,
+    "campaign151_terminal_complete_factor_count": 1,
+    "campaign151_return_reading_development_trial_count": 0,
+    "campaign151_development_survivor_count": 0,
+    "campaign151_stress_trial_count": 0,
+    "cumulative_historical_research_attempt_count": 1318,
+    "cumulative_return_reading_development_trial_count": 314
+  },
+  "complete_historical_feature_library": {
+    "factor_definition_count": 156,
+    "order_sha256": "928e7eff198f44fa3112d7e8ff94571c1ad18b85a1ee50a38f3896baf555847c",
+    "unchanged_from_v207": true,
+    "campaign151_definition_preserved_as_terminal_history": true
+  },
+  "numerical_comparator_eligibility": {
+    "eligible_numeric_comparator_count": 142,
+    "eligible_numeric_comparator_order_sha256": "5d1b35fb5a0d8ac9293008db9963c4a60a94dc940c237c3ed259e5ce44f14aaf",
+    "unchanged_from_v207": true,
+    "campaign151_numeric_series_appended": false
+  },
+  "campaign151_terminal_classification": {
+    "unchanged_from_v207": true,
+    "terminal": true,
+    "terminal_phase": "coverage_before_returns",
+    "snapshot_rows": 7724498,
+    "eligible_rows": 0,
+    "return_reading_trial_count": 0,
+    "development_survivor": false,
+    "stress_2024_2025_opened": false,
+    "formula_or_gate_rescue_allowed": false,
+    "promotion_allowed": false
+  },
+  "validation": {
+    "black": "passed",
+    "ruff": "passed",
+    "focused_tests": "44 passed in 6.32s",
+    "mutable_report_or_lifecycle_test_bytes_bound_by_current_authority": false,
+    "failed_exit_code_bypassed_or_masked": false
+  },
+  "research_boundary": {
+    "campaign151_candidate_values_read": true,
+    "comparator_values_read": false,
+    "historical_daily_price_or_forward_return_values_read": false,
+    "stress_2024_2025_opened": false,
+    "provider_request_issued": false,
+    "candidate49_historical_backfill_performed": false,
+    "candidate49_ledgers_changed": false,
+    "current_scoring_selection_sizing_positions_or_orders_performed": false
+  },
+  "next_action": "Campaign151 remains terminal and may not be rescued. Campaign152 historical prevalue mechanism scouting remains authorized but not started; Candidate49 remains the only prospective candidate."
+}

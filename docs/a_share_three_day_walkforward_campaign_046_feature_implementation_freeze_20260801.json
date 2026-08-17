@@ -1,0 +1,97 @@
+{
+  "version": 1,
+  "kind": "a_share_three_day_walkforward_campaign046_feature_implementation_freeze",
+  "status": "frozen_and_tested_before_external_minute_candidate_or_comparison_values",
+  "recorded_at": "2026-07-31T22:18:00Z",
+  "purpose": "Bind the exact close-only Campaign046 implementation and its synthetic tests before opening the external 33,015-partition minute source.",
+  "source_chain": {
+    "authoritative_state": {
+      "path": "docs/a_share_three_day_iteration_status_20260801_campaign045_verified.json",
+      "sha256": "3c5ea3ce7bf2b67683c201cca2b36c1683e430a66902c0b75ff573913625a8b6"
+    },
+    "concept_scouting": {
+      "path": "docs/a_share_three_day_walkforward_campaign_046_concept_scouting.json",
+      "sha256": "9d96c723ee27f3a9069f1e4e7c7b3bddcc1ec9a5b7d2d748f76069785c2ef7b1"
+    },
+    "mechanism_overlap_audit": {
+      "path": "docs/a_share_three_day_walkforward_campaign_046_mechanism_overlap_audit.json",
+      "sha256": "ea7c58afc40367f3df2a504c079e751cbe948d14dc38055fd9a6a36462630298"
+    },
+    "no_return_preregistration": {
+      "path": "docs/a_share_three_day_walkforward_campaign_046_no_return_preregistration.json",
+      "sha256": "7ca20bdf7d32b78489e3ac5cc4d25c6b6773ee09e9260732778f30e86faa7c52"
+    },
+    "feature_implementation": {
+      "path": "scripts/a_share_three_day_walkforward_campaign046_features.py",
+      "sha256": "4346ae4af4ab181bbcf4f6384f079eecd5578286ae46a5283cc93256aa2d05be"
+    },
+    "synthetic_tests": {
+      "path": "tests/data_collector_tests/test_a_share_three_day_walkforward_campaign046_features.py",
+      "sha256": "af47778b610ade29c19bd2c0f97a55a6e716cc4106146c1d01c390adb875af01"
+    },
+    "frozen_orchestration_parent": {
+      "path": "scripts/a_share_three_day_walkforward_campaign045_features.py",
+      "sha256": "02d6f27d8cc4763bddb42997d2027aef306acc2b9f1856928ab5b0e412b0dcd0",
+      "use": "checkpoint publication, file verification, coverage, and comparison machinery only"
+    }
+  },
+  "implementation_semantics": {
+    "factor": "intraday_return_reversal_energy_share_236p",
+    "direction": "higher",
+    "source_projection": [
+      "datetime",
+      "symbol",
+      "provider",
+      "close"
+    ],
+    "forbidden_source_columns": [
+      "open",
+      "high",
+      "low",
+      "volume",
+      "amount"
+    ],
+    "selected_bar_count": 240,
+    "within_half_return_count": 238,
+    "adjacent_pair_count": 236,
+    "numerator": "sum(abs(a*b)) only for strict opposite-sign adjacent within-half returns",
+    "denominator": "sum(abs(a*b)) over every fixed adjacent within-half return pair",
+    "exact_zero_return_or_product_retained": true,
+    "zero_product_bridging_allowed": false,
+    "positive_denominator_required": true,
+    "valid_range": [
+      0.0,
+      1.0
+    ],
+    "endpoint_canonicalization_tolerance": 1e-12,
+    "parameter_filter_subset_model_or_combination_search": false
+  },
+  "test_evidence": {
+    "command": "PYTHONPATH=. pytest -q tests/data_collector_tests/test_a_share_three_day_walkforward_campaign046_features.py",
+    "passed": 7,
+    "failed": 0,
+    "formula_manual_identity_tested": true,
+    "pure_reversal_endpoint_one_tested": true,
+    "pure_continuation_endpoint_zero_tested": true,
+    "exact_zero_fixed_support_tested": true,
+    "invalid_and_zero_denominator_missing_tested": true,
+    "0930_exclusion_and_close_only_projection_tested": true,
+    "binding_validator_exit_code": 0
+  },
+  "research_boundary": {
+    "external_minute_partitions_read": false,
+    "candidate_values_read": false,
+    "comparison_values_read": false,
+    "historical_daily_price_fields_read": false,
+    "historical_forward_returns_read": false,
+    "provider_request_issued": false,
+    "candidate49_ledgers_changed": false,
+    "candidate49_historical_backfill_performed": false,
+    "candidate50_activation_created": false,
+    "current_scoring_selection_sizing_or_orders_performed": false
+  },
+  "decision": {
+    "implementation_frozen": true,
+    "next_action": "Run one immutable external feature snapshot build, bind its manifest and dataset fingerprints, and only then permit the ordered no-return audit."
+  }
+}

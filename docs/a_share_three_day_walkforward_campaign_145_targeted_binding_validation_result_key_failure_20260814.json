@@ -1,0 +1,22 @@
+{
+  "schema_version": 1,
+  "kind": "a_share_three_day_walkforward_campaign145_infrastructure_failure",
+  "status": "recorded_append_only_during_strict_targeted_binding_validation",
+  "recorded_at": "2026-08-14T20:54:44+08:00",
+  "failure_id": "campaign145_infrastructure_010",
+  "stage": "postpublication_targeted_binding_validation",
+  "exit_code": 1,
+  "observed_failure": "The first explicit binding record validated successfully, but the aggregation code requested a nonexistent binding_checks result key and raised KeyError before completing the finite list.",
+  "binding_mismatch_observed": false,
+  "validation_completed": false,
+  "failed_exit_code_bypassed_or_masked": false,
+  "repair": "Read one validator result's keys without aggregation, then rerun the same finite record list using the actual count key as a standalone command.",
+  "scientific_result_changed": false,
+  "binding_validator_changed_or_weakened": false,
+  "candidate_formula_snapshot_or_coverage_changed": false,
+  "comparator_values_read": false,
+  "historical_daily_price_or_forward_return_values_read": false,
+  "stress_2024_2025_returns_opened": false,
+  "provider_request_issued": false,
+  "candidate49_ledgers_changed": false
+}

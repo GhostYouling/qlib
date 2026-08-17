@@ -1,0 +1,20 @@
+{
+  "schema_version": 1,
+  "kind": "a_share_three_day_walkforward_campaign110_infrastructure_failure",
+  "status": "preserved_failed_static_binding_check_before_coverage_or_comparator_values",
+  "recorded_at": "2026-08-07T22:48:05Z",
+  "failure_ordinal": 5,
+  "stage": "no_return_static_binding_verification",
+  "failed_exit_code": 1,
+  "exception": "KeyError: _require",
+  "cause": "The Campaign110 audit wrapper pointed at the first nested generated namespace while the unchanged frozen hash-require helper remained in its child generated namespace.",
+  "narrow_repair": "Add only an in-process alias for the existing frozen _require helper and import the already frozen Campaign109 verify-only adapter before comparator 133 can be loaded.",
+  "research_boundary": {
+    "candidate_snapshot_rebuilt_or_modified": false,
+    "coverage_or_capacity_metrics_computed": false,
+    "comparator_values_read": false,
+    "historical_daily_price_or_forward_return_values_read": false,
+    "provider_request_issued": false,
+    "candidate49_ledgers_changed": false
+  }
+}

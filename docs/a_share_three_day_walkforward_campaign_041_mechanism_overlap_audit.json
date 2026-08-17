@@ -1,0 +1,133 @@
+{
+  "version": 1,
+  "kind": "a_share_three_day_walkforward_campaign041_mechanism_overlap_audit",
+  "status": "completed_before_campaign041_candidate_comparison_daily_price_or_return_values",
+  "recorded_at": "2026-07-31T05:42:00Z",
+  "purpose": "Determine conceptual independence of the exact Campaign041 microgap-absorption mechanism before implementing it or reading any protected value.",
+  "authoritative_inputs": {
+    "iteration_state": {
+      "path": "docs/a_share_three_day_iteration_status_20260731_campaign040_verified.json",
+      "sha256": "dd561aac051eed7ecb1c574c61ac258c5e62954d7390c503a5444cf8a0fe2bba"
+    },
+    "concept_scouting": {
+      "path": "docs/a_share_three_day_walkforward_campaign_041_concept_scouting.json",
+      "sha256": "a14de52467575a53848d3140a6698de4575c1c8d805f688c3966e947df86fed0"
+    },
+    "campaign040_terminal_record": {
+      "path": "docs/a_share_three_day_walkforward_campaign_040_research_record.json",
+      "sha256": "d5e366ccc98bf957ac8d495ae2c3f59dcfc01a08c63c2b37abc68dffd44b68a5"
+    },
+    "complete_prior_factor_library": {
+      "path": "docs/a_share_three_day_walkforward_campaign_040_no_return_preregistration.json",
+      "sha256": "7d4a8d3b63e26c1717660dad8e12d65adfa008fb2272cebae8914367c05142d5",
+      "prior_comparison_count": 61,
+      "prior_comparison_order_sha256": "1a4adb3be52af565306ddbb08dade8643c6c63e926772ada6ab8c6c3f9817a9e",
+      "campaign040_candidate_appended_for_campaign041": {
+        "name": "intraday_morning_afternoon_range_profile_similarity_120b",
+        "score_direction": "higher"
+      },
+      "campaign041_comparison_count": 62,
+      "campaign041_comparison_order_sha256": "16ea65e40e50d1ef04f967da6f98aa077791bcd1680fab78d2cf28d0509713d8"
+    }
+  },
+  "candidate": {
+    "name": "intraday_microgap_absorption_share_238p",
+    "direction": "higher",
+    "formula": "Across the 119 adjacent transitions inside each 120-bar half session, let g_t=log(open_t/close_(t-1)). A transition is informative only when g_t is exactly nonzero. An informative transition is absorbed when low_t <= close_(t-1) <= high_t. Return absorbed_informative_transition_count / informative_transition_count.",
+    "source_projection": [
+      "datetime",
+      "symbol",
+      "provider",
+      "open",
+      "high",
+      "low",
+      "close"
+    ]
+  },
+  "mechanism_family_review": [
+    {
+      "family": "interbar_gap_body_confirmation",
+      "result": "distinct_pending_statistical_uniqueness_gate",
+      "nearest_prior_factor": "intraday_interbar_gap_body_confirmation_238p",
+      "reason": "The prior factor correlates signed gap size with the current signed candle body. Campaign041 ignores body direction and magnitude and instead counts whether the prior close lies inside the current closed high-low interval, conditional on a nonzero opening gap."
+    },
+    {
+      "family": "adjacent_range_overlap_and_global_revisit",
+      "result": "distinct_pending_statistical_uniqueness_gate",
+      "nearest_prior_factors": [
+        "intraday_adjacent_range_overlap_continuity_238p",
+        "intraday_global_price_range_revisit_240m"
+      ],
+      "reason": "Those factors measure overlap length between adjacent intervals or total intraday interval reuse. Campaign041 tests containment of one economically anchored point, the previous close, only after a nonzero current opening discontinuity."
+    },
+    {
+      "family": "breakout_close_location_boundary_translation_and_range_response",
+      "result": "distinct_pending_statistical_uniqueness_gate",
+      "reason": "Campaign041 uses neither current-close breakout distance, own-bar close location, adjacent boundary-change correlation, nor next-range response. The current close is used only as the previous transition anchor."
+    },
+    {
+      "family": "price_update_zero_return_and_run_structure",
+      "result": "distinct_pending_statistical_uniqueness_gate",
+      "reason": "Exact-zero gaps are excluded rather than counted as continuity, and no close-to-close equality, zero-return activity, sign run, weak order, or return entropy is computed."
+    },
+    {
+      "family": "range_mass_entropy_profile_similarity",
+      "result": "distinct",
+      "reason": "Campaign041 never normalizes range mass, computes entropy or Jensen-Shannon similarity, or compares morning and afternoon distributions. This respects the Campaign040 terminal prohibition."
+    },
+    {
+      "family": "activity_vwap_market_quarterly_or_event",
+      "result": "distinct",
+      "reason": "Campaign041 reads no volume, amount, VWAP, market benchmark, quarterly field, or event data."
+    },
+    {
+      "family": "candidate49_cumulative_vwap_crossing_rate",
+      "result": "distinct",
+      "reason": "Candidate49 uses causal cumulative VWAP crossing counts and remains future-only. Campaign041 uses historical OHLC microgap containment without volume or amount and cannot enter Candidate49's ledger."
+    },
+    {
+      "family": "terminal_factor_combination_or_rescue",
+      "result": "not_used",
+      "reason": "Campaign041 contains one raw OHLC statistic and no prior factor value, learned weight, filter, transform, model, or combination."
+    }
+  ],
+  "design_choices_frozen_before_values": {
+    "formula_family": "nonzero_interbar_opening_microgap_same_minute_closed_interval_absorption_share",
+    "direction": "higher",
+    "selected_bar_count": 240,
+    "fixed_transition_count": 238,
+    "include_0930": false,
+    "include_lunch_transition": false,
+    "exact_zero_gap_excluded_from_numerator_and_denominator": true,
+    "minimum_informative_nonzero_gaps": 30,
+    "absorption_interval_is_closed": true,
+    "all_240_bars_must_pass_exact_positive_finite_ohlc_ordering": true,
+    "endpoint_canonicalization_tolerance": 1e-12,
+    "valid_lower_bound": 0.0,
+    "valid_upper_bound": 1.0,
+    "gap_size_weight_sign_split_entropy_zero_gap_credit_lunch_overnight_or_inverse_search_allowed": false,
+    "threshold_filter_year_cost_board_or_model_search_allowed": false,
+    "activity_market_quarterly_event_or_terminal_factor_input_allowed": false
+  },
+  "research_boundary": {
+    "comparison_factor_names_and_directions_read_from_frozen_protocol": true,
+    "external_minute_partitions_read": false,
+    "candidate_values_read": false,
+    "comparison_values_read": false,
+    "historical_daily_price_fields_read": false,
+    "historical_forward_returns_read": false,
+    "training_or_model_fitting_performed": false,
+    "provider_request_issued": false,
+    "candidate49_historical_return_signal_or_execution_backfill_performed": false,
+    "candidate49_ledgers_changed": false,
+    "candidate50_activation_created": false,
+    "current_scoring_selection_sizing_or_orders_performed": false,
+    "investment_advice": false
+  },
+  "decision": {
+    "conceptual_independence_passed": true,
+    "statistical_independence_pending_all_62_comparisons": true,
+    "predictive_value_established": false,
+    "next_action": "Validate all bindings, then freeze a fingerprint-bound no-return protocol with this exact candidate and the complete ordered 62-factor comparison library before implementation."
+  }
+}

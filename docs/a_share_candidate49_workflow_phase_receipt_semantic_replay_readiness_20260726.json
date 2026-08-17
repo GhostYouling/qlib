@@ -1,0 +1,160 @@
+{
+  "version": 1,
+  "kind": "a_share_candidate49_workflow_phase_receipt_semantic_replay_readiness",
+  "status": "offline_workflow_phase_receipt_semantic_replay_passed_real_future_workflow_record_pending",
+  "recorded_at": "2026-07-25T19:59:45Z",
+  "purpose": "Advance Candidate49 by removing non-reconstructible runtime step traces and append-versus-idempotent process claims from the permanent workflow record, replacing them with four exact phase receipts and one stable source-to-signal outcome rebuilt from immutable child artifacts.",
+  "advances": {
+    "path": "docs/a_share_candidate49_workflow_provider_call_semantic_replay_readiness_20260726.json",
+    "sha256": "e37ab8664b5b70b61b9207735c4d3a55313d9b8555e1525af64437614bb945f4"
+  },
+  "authoritative_research_state": {
+    "path": "docs/a_share_three_day_iteration_status_20260725_future_only.json",
+    "sha256": "d44e1cb3707cce194eed37e99cc90f865396b1de8c35e02a393a2a243d973466",
+    "future_only_policy_path": "docs/a_share_three_day_future_only_minute_research_policy_20260725.json",
+    "future_only_policy_sha256": "52ca8bfa7201509fe891d0af3d1c87aeebd64e47e6ec6641e897849411df408c",
+    "active_future_only_candidate": "candidate49_intraday_cumulative_vwap_crossing_rate_240m_v1",
+    "aggregation_allowed": false,
+    "candidate50_activation_allowed": false
+  },
+  "candidate_contract": {
+    "factor_changed_by_this_work": false,
+    "factor_direction": "higher_intraday_cumulative_vwap_crossing_rate_240m",
+    "ranking_rule_changed_by_this_work": false,
+    "signal_timing_changed_by_this_work": false,
+    "execution_protocol_changed_by_this_work": false,
+    "cost_or_slippage_assumption_changed_by_this_work": false,
+    "milestone_gate_changed_by_this_work": false,
+    "three_session_holding_definition_changed_by_this_work": false,
+    "historical_return_backfill_allowed": false
+  },
+  "implementation_fingerprints": {
+    "session_workflow": {
+      "path": "scripts/a_share_tushare_candidate49_future_session_workflow.py",
+      "sha256": "096751eb3692409d6a7f7f2e0eb21828832d2bb27dbb25bfb4b67473d779cacb"
+    },
+    "source_to_signal": {
+      "path": "scripts/a_share_tushare_candidate49_future_observation.py",
+      "sha256": "8514e5aca9a06f374c8c9677e41681c4432a93a3bd9546dbb60480605c016a45"
+    },
+    "paper_execution_and_reporting_validator": {
+      "path": "scripts/a_share_tushare_candidate49_future_execution.py",
+      "sha256": "046a70bbd860ebaf46744e161c690d1275ab0327c8a42213bf955ec66e39a98b"
+    },
+    "session_workflow_tests": {
+      "path": "tests/data_collector_tests/test_a_share_tushare_candidate49_future_session_workflow.py",
+      "sha256": "08d8106fa49dc54c7d71e68561c6eebd653f92788e6856a5001eaefd29b4e7fa"
+    },
+    "source_to_signal_tests": {
+      "path": "tests/data_collector_tests/test_a_share_tushare_candidate49_future_observation.py",
+      "sha256": "b44eaf245d71e65a8b1cdb8d325561d3303446673cf4be1b0c8485eb20084ad1"
+    },
+    "execution_tests": {
+      "path": "tests/data_collector_tests/test_a_share_tushare_candidate49_future_execution.py",
+      "sha256": "dfe838ddba0e03f2902bf5eb0cc3c792adeb0423c52ac335cad1e1075f365f34"
+    },
+    "runbook": {
+      "path": "docs/a_share_data_pipeline.md",
+      "sha256": "a1f137a7f391a6a69758f4a50bc68bc5da66794a6cee4181da885d56a494f448"
+    }
+  },
+  "threat_model": {
+    "runtime_step_gap": "The former completed-record validator required only a list of typed step objects with fixed first and last names. It did not reconstruct or constrain intermediate names and statuses, so the permanent record could claim a synthetic provider-bypass step while every immutable child artifact remained unchanged.",
+    "runtime_step_red_test": "test_completed_record_rejects_rewritten_intermediate_step",
+    "runtime_step_red_test_mutation": "Replaced the second stored runtime step with synthetic-provider-bypass, return code zero, and completed status.",
+    "runtime_step_red_test_before_fix": "The former zero-request validator returned the completed workflow record without raising.",
+    "append_reuse_gap": "The former permanent candidate49_status accepted both future_signal_appended and future_signal_already_present_idempotent whenever a valid signal existed. Those process histories cannot be distinguished later from the same final raw, factor, and signal artifacts.",
+    "append_reuse_red_test": "test_completed_record_rejects_rewritten_append_vs_reuse_claim",
+    "append_reuse_red_test_mutation": "Changed both the top-level and final-step statuses from future_signal_appended to future_signal_already_present_idempotent.",
+    "append_reuse_red_test_before_fix": "The former zero-request validator returned the coherently changed workflow record without raising.",
+    "non_reconstructible_process_history_persisted_after_fix": false
+  },
+  "stable_record_semantics": {
+    "runtime_steps_persisted": false,
+    "immediate_command_may_report_appended_or_idempotently_reused": true,
+    "permanent_signal_present_outcome": "future_signal_present",
+    "permanent_no_signal_outcome": "future_session_frozen_without_signal_fewer_than_50_names",
+    "phase_receipts": [
+      "static_research_boundary",
+      "tushare_daily_root",
+      "future_quarterly_quality",
+      "candidate49_source_to_signal"
+    ],
+    "static_receipt_rebuilt_from_frozen_protocol_and_authoritative_state": true,
+    "daily_receipt_rebuilt_from_active_root_activation_acceptance_source_manifest_and_reference_reuse": true,
+    "quality_receipt_rebuilt_from_same-session_data_and_manifest_hashes": true,
+    "source_to_signal_receipt_rebuilt_from_raw_factor_signal_eligible_count_and_provider_call_total": true,
+    "whole_phase_receipt_list_requires_exact_equality": true,
+    "token_loaded_during_existing_record_validation": false,
+    "child_command_executed_during_existing_record_validation": false,
+    "provider_accessed_during_existing_record_validation": false
+  },
+  "offline_proofs": {
+    "session_workflow_tests": {
+      "passed": 21,
+      "failed": 0,
+      "elapsed_seconds": 0.85
+    },
+    "source_to_signal_tests": {
+      "passed": 35,
+      "failed": 0
+    },
+    "execution_tests": {
+      "passed": 23,
+      "failed": 0
+    },
+    "focused_candidate49_observation_execution_workflow_tests": {
+      "passed": 79,
+      "failed": 0,
+      "elapsed_seconds": 14.8
+    },
+    "new_red_cases": 2,
+    "new_cases_pass_after_fix": true,
+    "full_data_collector_tests": {
+      "passed": 1119,
+      "failed": 0,
+      "warnings": 9,
+      "elapsed_seconds": 37.01
+    },
+    "ruff": "passed",
+    "python_compile": "passed"
+  },
+  "real_state_after_offline_tests": {
+    "signal": {
+      "path": "data/experiments/short_horizon/candidate49_future_signal_ledger.json",
+      "sha256": "5193f00d7f36da003f53cec387900da4c3d002299f5dfcfc1a95eaa199ed3a79",
+      "entries": 0,
+      "chain_tip_sha256": "ab47c70a18fc84b6d347fe906c404504faa126d3ec581bf077beffb215788bbb"
+    },
+    "execution": {
+      "path": "data/experiments/short_horizon/candidate49_future_execution_ledger.json",
+      "sha256": "d57a3e61eac969e42cafa418ccd8c0a5ee65dcf69da145bb2c096c2a02a2ea4f",
+      "entries": 0,
+      "chain_tip_sha256": "f302b4b93c9fcc1478e2f917279d589190b79069e6638efc41cb7aa6cf3691e0"
+    },
+    "evaluation_records": 0,
+    "target_session_workflow_record_present": false,
+    "target_session": "2026-07-27",
+    "first_allowed_source_to_signal_time": "2026-07-27T16:30:00+08:00"
+  },
+  "side_effect_audit": {
+    "real_provider_check_performed": false,
+    "real_provider_request_issued": false,
+    "real_minute_rows_read": false,
+    "real_daily_rows_read_by_this_audit": false,
+    "real_signal_or_execution_entry_written": false,
+    "historical_candidate49_return_diagnostic_run": false,
+    "paper_execution_or_live_order_performed": false,
+    "active_data_root_mutated": false
+  },
+  "decision": {
+    "workflow_phase_receipt_semantic_replay_ready": true,
+    "real_candidate49_signal_ready": false,
+    "current_real_signal_count": 0,
+    "current_real_execution_entry_count": 0,
+    "current_real_evaluation_milestone_count": 0,
+    "profitability_claim_allowed": false,
+    "selection_sizing_or_order_allowed": false,
+    "next_action": "On or after 2026-07-27 16:30 Asia/Shanghai, run the fail-closed Candidate49 source-to-signal workflow. Any permanent completed record must contain only the four exact artifact-reconstructed phase receipts and the stable signal-present or fewer-than-50 no-signal outcome."
+  }
+}

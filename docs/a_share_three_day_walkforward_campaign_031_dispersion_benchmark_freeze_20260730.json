@@ -1,0 +1,83 @@
+{
+  "version": 1,
+  "kind": "a_share_three_day_walkforward_campaign031_dispersion_benchmark_freeze",
+  "status": "deterministic_no_return_dispersion_benchmark_fingerprint_frozen_before_candidate_values",
+  "recorded_at": "2026-07-30T12:07:00Z",
+  "purpose": "Freeze the independently replayed Campaign031 cross-sectional return sum, squared-sum, and count benchmark before any Campaign031 candidate or comparison value is opened.",
+  "source_chain": {
+    "no_return_preregistration": {
+      "path": "docs/a_share_three_day_walkforward_campaign_031_no_return_preregistration.json",
+      "sha256": "95951a357ffef3eee46f8d220d150fd00223b32f27f6cf93a92c4f6c17452f6d"
+    },
+    "mechanism_overlap_audit": {
+      "path": "docs/a_share_three_day_walkforward_campaign_031_mechanism_overlap_audit.json",
+      "sha256": "5af9f4a6ebde5e2ab77c2ffb9cb8abc1fef0ab710c0c933ee64272cd74cb3a00"
+    },
+    "benchmark_builder": {
+      "path": "scripts/a_share_three_day_walkforward_campaign031_dispersion_benchmark.py",
+      "sha256": "0cc07733493a4fbc7cb51e1e6cf74ab3155131a914ff85cb2f444a37d40e1c02"
+    },
+    "benchmark_manifest": {
+      "path": "/Volumes/DIsk/qlib-a-share-tushare-1m/derived/a_share/rich/tushare/minute_walkforward_campaign031_dispersion_benchmark/tushare_stk_mins_1m_2019_2025_ea0cbb8f_walkforward_campaign031_dispersion_benchmark_v1/snapshot_manifest.json",
+      "sha256": "bbb82784b4daa21080045a17239868b1063d233607f125d03acab2aefb4fee50"
+    },
+    "benchmark_frame": {
+      "path": "/Volumes/DIsk/qlib-a-share-tushare-1m/derived/a_share/rich/tushare/minute_walkforward_campaign031_dispersion_benchmark/tushare_stk_mins_1m_2019_2025_ea0cbb8f_walkforward_campaign031_dispersion_benchmark_v1/market_dispersion_benchmark_238m.parquet",
+      "sha256": "317aa3cb1793498bbce03018b692e6252939e689f0b9982e7c991a0da82d8827",
+      "frame_sha256": "c4933078610a4a14597a35d54ac98f9089a90522b73d8d428cde9e5eec79201f"
+    },
+    "authoritative_iteration_state": {
+      "path": "docs/a_share_three_day_iteration_status_20260730_campaign030_verified.json",
+      "sha256": "a34c7b3cf37480268a84a055788ab19a20dfa9b14a6a2aa8a1ec1c5b01ecc4c6"
+    },
+    "historical_walkforward_policy": {
+      "path": "docs/a_share_three_day_historical_walkforward_research_policy_20260727.json",
+      "sha256": "38426d6161b9bfed323c58caba18feca668b8c9d53e294951a8ba90c01a798bb"
+    }
+  },
+  "independent_replay": {
+    "rows": 404362,
+    "trade_dates": 1699,
+    "return_positions_per_date": 238,
+    "columns": [
+      "trade_date",
+      "return_position",
+      "return_sum",
+      "return_sum_squares",
+      "valid_stock_count"
+    ],
+    "duplicate_trade_date_return_position_keys": 0,
+    "nonfinite_return_sum_rows": 0,
+    "nonfinite_return_sum_squares_rows": 0,
+    "negative_return_sum_squares_rows": 0,
+    "valid_stock_count_minimum": 3549,
+    "valid_stock_count_maximum": 5170,
+    "valid_stock_count_constant_across_positions_within_date": true,
+    "processed_symbols": 5396,
+    "invalid_complete_return_stock_days": 0,
+    "manifest_embedded_byte_and_frame_fingerprints_reproduced": true
+  },
+  "decision": {
+    "benchmark_fingerprint_frozen": true,
+    "candidate_feature_build_allowed_after_binding_validation_exit_zero": true,
+    "benchmark_formula_or_population_change_allowed": false,
+    "candidate49_remains_only_active_prospective_candidate": true,
+    "candidate50_activation_allowed": false
+  },
+  "research_boundary": {
+    "source_fields_read": [
+      "datetime",
+      "symbol",
+      "provider",
+      "close"
+    ],
+    "source_open_high_low_volume_amount_read": false,
+    "candidate_values_computed": false,
+    "comparison_values_read": false,
+    "daily_price_fields_read": false,
+    "forward_returns_read": false,
+    "candidate49_signal_or_execution_ledger_changed": false,
+    "current_scoring_selection_sizing_or_orders_performed": false,
+    "provider_request_issued": false
+  }
+}

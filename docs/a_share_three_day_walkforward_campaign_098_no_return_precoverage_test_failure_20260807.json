@@ -1,0 +1,21 @@
+{
+  "schema_version": 1,
+  "kind": "a_share_three_day_walkforward_campaign098_no_return_precoverage_test_failure",
+  "status": "preserved_before_coverage_capacity_or_comparator_values",
+  "recorded_at": "2026-08-07T08:36:00Z",
+  "stage": "synthetic_no_return_audit_tests_and_format_check",
+  "observed_result": {
+    "tests_passed": 7,
+    "tests_failed": 1,
+    "failed_assumption": "The test expected FACTOR_RANGES to contain all 126 comparators, but the engine registers only non-default or compact-path ranges and correctly contained 29 entries.",
+    "black_check_passed": false,
+    "ruff_passed": true
+  },
+  "authorized_repair": "Change only the synthetic assertion to prove a preexisting range is preserved and the frozen Campaign097/Campaign098 ranges are present; run Black on the two Campaign098 no-return files.",
+  "coverage_or_capacity_metrics_computed": false,
+  "candidate_or_comparator_values_read_by_failed_test": false,
+  "historical_daily_price_or_forward_return_values_read": false,
+  "formula_direction_support_window_universe_cost_gate_or_search_space_changed": false,
+  "candidate49_ledgers_changed": false,
+  "provider_request_issued": false
+}

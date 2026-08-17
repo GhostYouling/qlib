@@ -1,0 +1,45 @@
+{
+  "version": 1,
+  "kind": "a_share_three_day_walkforward_campaign071_feature_snapshot_binding",
+  "status": "immutable_snapshot_verified_before_coverage_or_comparison_values",
+  "recorded_at": "2026-08-06T05:21:00+08:00",
+  "protocol": {
+    "path": "docs/a_share_three_day_walkforward_campaign_071_no_return_preregistration.json",
+    "sha256": "1d61fc0f0943f512304a722bcf3017e6867fd00ec9a41e1ed310022a526c161f"
+  },
+  "implementation_freeze": {
+    "path": "docs/a_share_three_day_walkforward_campaign_071_feature_implementation_freeze_20260806.json",
+    "sha256": "36b51d8e658ae72333383fe4bd3ac0fe63e557f9368b3826575923f67535b9d0"
+  },
+  "feature_runner": {
+    "path": "scripts/a_share_three_day_walkforward_campaign071_features.py",
+    "sha256": "bc67ea1ebe7bc66faf18d2b5d443ec4b739a83d097646c600b13c30ed0996fec"
+  },
+  "snapshot": {
+    "path": "/Volumes/DIsk/qlib-a-share-tushare-1m/derived/a_share/rich/tushare/minute_walkforward_campaign071_feature_library/tushare_stk_mins_1m_2019_2025_ea0cbb8f_walkforward_campaign071_feature_library_v1/snapshot_manifest.json",
+    "sha256": "438db2c72a0e5a166f87e680109024be7b28ed710edbd6b4d5ce6968e4a3f7fd",
+    "dataset_sha256": "8c6f1eff1b2238132f429eaeae13d9a7fbd9956e89f3499fa1cf68d54435528d",
+    "partitions": 33015,
+    "rows": 7724498,
+    "eligible_rows": 7081458,
+    "factor": "quarterly_net_profit_scale_rank",
+    "direction": "higher"
+  },
+  "verification": {
+    "all_partition_byte_and_frame_hashes_passed": true,
+    "aggregate_dataset_hash_reproduced": true,
+    "factor_value_range": "(0,1]",
+    "quarterly_fields_read": [
+      "instrument",
+      "report_date",
+      "announcement_date",
+      "net_profit"
+    ],
+    "minute_price_or_activity_fields_read": [],
+    "comparison_values_read": false,
+    "historical_daily_price_fields_read": [],
+    "historical_forward_returns_read": false,
+    "provider_request_issued": false
+  },
+  "next_gate": "Freeze and activate the audit implementation before computing coverage; load comparator values only after coverage passes."
+}

@@ -1,0 +1,51 @@
+{
+  "schema_version": 1,
+  "kind": "a_share_three_day_walkforward_campaign098_no_return_audit",
+  "status": "completed_with_one_admissible_factor_pending_walkforward_preregistration",
+  "recorded_at": "2026-08-07T08:29:00Z",
+  "canonical_development_admission_wrapper": true,
+  "authoritative_audit": {
+    "path": "data/experiments/short_horizon/historical_walkforward/campaign_098/no_return/20260807T082532Z_campaign098_no_return_audit.json",
+    "sha256": "370c3beba688e28b391c4f0f5b2b6f0d1de7536fe2e9978110812191a0f004a3"
+  },
+  "no_return_protocol": {
+    "path": "docs/a_share_three_day_walkforward_campaign_098_no_return_preregistration.json",
+    "sha256": "31dcecebeea81adab163acd76e21616e6b35726a2798bb4ca72cee4252ca78bd"
+  },
+  "feature_snapshot_binding": {
+    "path": "docs/a_share_three_day_walkforward_campaign_098_feature_snapshot_binding_20260807.json",
+    "sha256": "c5ab80fcae4f247005314d4c08ba28940472a332776483ec242a14eea9376275"
+  },
+  "audit_implementation_freeze": {
+    "path": "docs/a_share_three_day_walkforward_campaign_098_no_return_audit_implementation_freeze_v2_20260807.json",
+    "sha256": "4364169cf913b58e8fa9d65bce8667eba2f75122b0202834d9d772e16018f1cf"
+  },
+  "audit_activation_binding": {
+    "path": "docs/a_share_three_day_walkforward_campaign_098_no_return_audit_activation_binding_v2_20260807.json",
+    "sha256": "9894d32ef2846f46fa847a4ce991794d6b3a2253f9bf76cacd23dc4c3460c067"
+  },
+  "admissible_factor_names": [
+    "intraday_range_clock_variance_240m"
+  ],
+  "admissible_factor_count": 1,
+  "failed_factor_names": [],
+  "coverage_gate_passed": true,
+  "quality_listing_eligible_rows": 1331759,
+  "candidate_eligible_rows": 1328449,
+  "median_coverage": 0.9985369414262841,
+  "p05_coverage": 0.9935483870967742,
+  "p05_eligible_names": 138,
+  "potential_nonoverlapping_three_session_cohorts": 539,
+  "comparison_factor_count": 126,
+  "comparison_order_matches_preregistration": true,
+  "all_required_numeric_comparisons_passed": true,
+  "maximum_observed_absolute_median_daily_rank_correlation": 0.4920234896112269,
+  "closest_numeric_comparator": "intraday_amount_clock_dispersion_240m",
+  "closest_numeric_comparator_median_daily_rank_correlation": 0.4920234896112269,
+  "historical_daily_price_fields_read": [],
+  "historical_forward_return_fields_read": false,
+  "candidate49_historical_return_read": false,
+  "candidate49_prospective_ledgers_changed": false,
+  "provider_request_issued": false,
+  "current_scoring_selection_sizing_or_orders_performed": false
+}

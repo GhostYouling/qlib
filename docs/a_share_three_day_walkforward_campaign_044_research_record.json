@@ -1,0 +1,170 @@
+{
+  "version": 1,
+  "kind": "a_share_three_day_walkforward_campaign044_research_record",
+  "status": "completed_zero_admissible_factors_stop_before_historical_returns",
+  "recorded_at": "2026-07-31T19:20:00Z",
+  "purpose": "Record all Campaign044 design, infrastructure, feature-publication, and no-return attempts; preserve the coverage rejection and keep development folds, 2024-2025, Candidate49 history, and current trading outputs closed.",
+  "authoritative_inputs": {
+    "prior_iteration_state": {
+      "path": "docs/a_share_three_day_iteration_status_20260731_campaign043_verified.json",
+      "sha256": "24d677feded294b1690791a55280795d8210c9cc91b54886bcdcf93743142fc1"
+    },
+    "historical_walkforward_policy": {
+      "path": "docs/a_share_three_day_historical_walkforward_research_policy_20260727.json",
+      "sha256": "38426d6161b9bfed323c58caba18feca668b8c9d53e294951a8ba90c01a798bb"
+    },
+    "prior_campaign_terminal_record": {
+      "path": "docs/a_share_three_day_walkforward_campaign_043_research_record.json",
+      "sha256": "44bd70909c20106ed920f5a77b5f9d54b28d3317b19c7392314a235cdd8939ba"
+    }
+  },
+  "pre_value_evidence": {
+    "concept_scouting": {
+      "path": "docs/a_share_three_day_walkforward_campaign_044_concept_scouting.json",
+      "sha256": "d9fc4cf06d53e584b40f847706f281db80ac034bfe1288ccccd0dd69516910cb"
+    },
+    "mechanism_overlap_audit": {
+      "path": "docs/a_share_three_day_walkforward_campaign_044_mechanism_overlap_audit.json",
+      "sha256": "b48265b6daf85706e2915c32d0cbfc6ead5eba7ee27dc5796d6d880b07b2e3da"
+    },
+    "no_return_preregistration": {
+      "path": "docs/a_share_three_day_walkforward_campaign_044_no_return_preregistration.json",
+      "sha256": "1037d27b173f4fb63c75672c4da50c6616f1f1eb3ae1917ecf291fc2d2644f69"
+    },
+    "original_feature_implementation_freeze": {
+      "path": "docs/a_share_three_day_walkforward_campaign_044_feature_implementation_freeze_20260801.json",
+      "sha256": "c510fae3a3714344fb140733bc6e4120b51e7d8d5d7c2d4e04bbab2dca286921"
+    },
+    "effective_feature_implementation_freeze": {
+      "path": "docs/a_share_three_day_walkforward_campaign_044_feature_implementation_freeze_v2_20260801.json",
+      "sha256": "8f854d3ab5ae97cc146554306c246ac1e643e273b8bd8bf09ce1d9d041d5eedd"
+    },
+    "snapshot_build_infrastructure_failure": {
+      "path": "docs/a_share_three_day_walkforward_campaign_044_snapshot_build_infrastructure_failure_20260801.json",
+      "sha256": "0bd6bdec08fec54fc19fc254d258e0376f8c30309c4a64d22b60ce9c01a0213f"
+    },
+    "feature_snapshot_publication_binding": {
+      "path": "docs/a_share_three_day_walkforward_campaign_044_feature_snapshot_publication_binding_20260801.json",
+      "sha256": "fb0381c95609477ec4d29e4c69d4608d344aa4f9eb8ec56c8315f5a7a849279d"
+    },
+    "no_return_audit_freeze": {
+      "path": "docs/a_share_three_day_walkforward_campaign_044_no_return_audit_freeze_20260801.json",
+      "sha256": "06be474c9c2ecba8aa7c1e9391e78ca0e473d58f16d78e509fa8ecaa9fc6d0d3"
+    }
+  },
+  "factor_definition": {
+    "name": "full_terminal_library_directional_percentile_consensus_66f",
+    "direction": "higher",
+    "source_terminal_factor_count": 66,
+    "source_terminal_factor_order_sha256": "71a34e7decf7ba4a456cff4e08b0ea034a3919ee62edf5eb3bec603eb50a5bed",
+    "formula": "On each signal session require common finite eligible support across all 66 terminal factors; convert each component to its frozen-direction average-tie empirical percentile and take the arithmetic mean with weight 1/66.",
+    "minimum_common_support_names": 50,
+    "all_components_required": true,
+    "candidate49_excluded": "intraday_cumulative_vwap_crossing_rate_240m",
+    "imputation_partial_average_subset_filter_threshold_fitted_weight_or_model": "none",
+    "valid_range": [
+      0.0,
+      1.0
+    ],
+    "historical_only_reuse_of_terminal_definitions": true,
+    "prior_terminal_records_rewritten_or_reclassified": false
+  },
+  "feature_snapshot": {
+    "path": "/Volumes/DIsk/qlib-a-share-tushare-1m/derived/a_share/rich/tushare/minute_walkforward_campaign044_feature_library/tushare_stk_mins_1m_2019_2025_ea0cbb8f_walkforward_campaign044_feature_library_v1/snapshot_manifest.json",
+    "sha256": "ab5d08bf5c9ca8737c32b13e8a6fcc68d9cfb26fc8cdb43377d34bde5d724964",
+    "dataset_sha256": "295c023b3f6a76605ab0413f6ab9410e2dabcb4cb2d262de7a62618818a55487",
+    "partitions": 33015,
+    "rows": 7724498,
+    "quality_listing_and_minute_identity_master_rows": 1330171,
+    "all_component_common_rows_before_minimum_session_support": 646683,
+    "eligible_rows": 646568,
+    "eligible_sessions": 1622,
+    "eligible_names_min": 67,
+    "eligible_names_median": 423.0,
+    "score_cache_sha256": "7ea8dc1475de2b6b804c6ea384cf1957685ef9258fa721772f7d3093707baa66",
+    "score_cache_frame_sha256": "5d8f39a93d16acf897ac87ffef3579c80c7228821d0c5cd4f286ecd68548fdb2",
+    "all_partition_byte_and_frame_hashes_valid": true,
+    "candidate49_factor_values_read": false,
+    "historical_daily_price_fields_read": [],
+    "historical_forward_return_fields_read": false
+  },
+  "no_return_result": {
+    "path": "data/experiments/short_horizon/historical_walkforward/campaign_044/no_return/20260731T191808Z_campaign044_no_return_audit.json",
+    "sha256": "5bf91fae0ab73f04680e840d8a5280250e0e3091f80fe47684d1656fbde10776",
+    "status": "completed_zero_admissible_factors_stop_before_historical_returns",
+    "calendar_sessions": 1632,
+    "quality_listing_eligible_rows": 1331759,
+    "candidate_eligible_rows": 646568,
+    "median_coverage": 0.5171763636653539,
+    "minimum_median_coverage": 0.95,
+    "p05_coverage": 0.3499289453372031,
+    "minimum_p05_coverage": 0.9,
+    "p05_eligible_names": 78.0,
+    "minimum_p05_eligible_names": 50,
+    "potential_three_session_cohorts": 539,
+    "observed_calendar_years": [
+      2019,
+      2020,
+      2021,
+      2022,
+      2023,
+      2024,
+      2025
+    ],
+    "coverage_gate_passed": false,
+    "source_component_values_reloaded_after_coverage_pass": false,
+    "source_component_correlation_count": 0,
+    "admissible_factor_count": 0,
+    "historical_daily_price_fields_read": [],
+    "historical_forward_return_fields_read": false
+  },
+  "append_only_attempt_accounting": {
+    "ledger": {
+      "path": "data/experiments/short_horizon/historical_walkforward/campaign_044/research_attempt_ledger.json",
+      "sha256": "891a0dbc359a50c8e6d29edaa63863b255d9d2a7f84b65bb28f9b80e1ac5fb02"
+    },
+    "prior_historical_research_attempt_count": 261,
+    "campaign044_pre_value_design_rejection_count": 2,
+    "campaign044_infrastructure_failure_count": 1,
+    "campaign044_no_return_candidate_attempt_count": 1,
+    "campaign044_total_attempt_count": 4,
+    "cumulative_historical_research_attempt_count": 265,
+    "campaign044_historical_return_trial_count": 0
+  },
+  "implementation": {
+    "runner": {
+      "path": "scripts/a_share_three_day_walkforward_campaign044_features.py",
+      "sha256": "7afa540e15d7f711c45df4c55100f47f552a5eeb68b80363c741237b9025a8f6"
+    },
+    "feature_tests": {
+      "path": "tests/data_collector_tests/test_a_share_three_day_walkforward_campaign044_features.py",
+      "sha256": "71bb21661561d9d789493197f13427159130fb9ec6cb3cda14fc1af99c79f639"
+    }
+  },
+  "prospective_boundary": {
+    "candidate49_signal_ledger": {
+      "path": "data/experiments/short_horizon/candidate49_future_signal_ledger.json",
+      "sha256": "5193f00d7f36da003f53cec387900da4c3d002299f5dfcfc1a95eaa199ed3a79",
+      "entry_count": 0
+    },
+    "candidate49_execution_ledger": {
+      "path": "data/experiments/short_horizon/candidate49_future_execution_ledger.json",
+      "sha256": "d57a3e61eac969e42cafa418ccd8c0a5ee65dcf69da145bb2c096c2a02a2ea4f",
+      "entry_count": 0
+    },
+    "candidate49_historical_return_signal_execution_or_milestone_backfill_performed": false,
+    "candidate50_activation_created": false,
+    "current_scoring_selection_sizing_or_orders_performed": false
+  },
+  "decision": {
+    "factor_terminal": true,
+    "terminal_stage": "no_return_coverage_gate",
+    "terminal_reason": "all_66_component_common_support_failed_frozen_median_and_p05_coverage_thresholds",
+    "development_folds_opened": false,
+    "development_return_fields_read": false,
+    "2024_2025_returns_read": false,
+    "rescue_threshold_relaxation_partial_component_average_imputation_subset_weight_model_rerun_or_combination_allowed": false,
+    "next_campaign_must_be_independently_preregistered": true,
+    "new_daily_bar_or_16_30_wait_required_for_next_offline_campaign": false
+  }
+}

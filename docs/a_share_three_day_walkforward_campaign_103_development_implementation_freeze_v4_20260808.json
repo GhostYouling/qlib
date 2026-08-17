@@ -1,0 +1,78 @@
+{
+  "append_only_internal_ledger": {
+    "chain_tip_sha256": "08bdba87183c8934360e4c157c8af700596a695436395a03b1d5de95a1e373e6",
+    "complete_development_trials": 0,
+    "entries": 2,
+    "header_preregistration_path": "/Volumes/DIsk/Disk-Coding/qlib/docs/a_share_three_day_walkforward_campaign_103_preregistration_v8.json",
+    "header_preregistration_sha256": "9485fd9e7773c6d489ead653ae66536445079425c7135dc7f4849d5733f66bbe",
+    "path": "data/experiments/short_horizon/historical_walkforward/campaign_103/walkforward/trial_ledger.json",
+    "sha256": "9eeb8b40ded51398513a2b0066e40422f5dd2ca282e1e650279c69d41b278a3d"
+  },
+  "candidate49_ledgers_changed_before_freeze": false,
+  "candidate_snapshot": {
+    "dataset_sha256": "57afdd9f8a246fb9f513f85b3b631f70cf734655bd226ff211201bf7e084ea13",
+    "eligible_rows": 1315573,
+    "path": "/Volumes/DIsk/qlib-a-share-tushare-1m/derived/a_share/rich/tushare/minute_walkforward_campaign103_feature_library/tushare_stk_mins_1m_2019_2025_ea0cbb8f_walkforward_campaign103_feature_library_v1/snapshot_manifest.json",
+    "sha256": "8a939feb53edfb31be8f133c2683920ed13424e716a4f4b5ed0d1a300588603b"
+  },
+  "complete_development_trial_count_before_freeze": 0,
+  "current_scoring_selection_sizing_or_orders_performed": false,
+  "development_daily_price_fields_read_before_freeze": [
+    "2019_2023_execution_quotes_during_recorded_failed_load_001",
+    "2019_2023_execution_quotes_during_recorded_failed_load_002"
+  ],
+  "development_forward_returns_read_before_freeze": false,
+  "development_preregistration": {
+    "path": "docs/a_share_three_day_walkforward_campaign_103_preregistration_v11.json",
+    "sha256": "85772b764a8451b33b8b0ca43a749a3c82c5cd792ad95bff6f8bd21d2a14ab0d"
+  },
+  "kind": "a_share_three_day_walkforward_campaign103_development_implementation_freeze",
+  "provider_request_issued_before_freeze": false,
+  "recorded_at": "2026-08-08T00:40:00+08:00",
+  "repair_scope": {
+    "2024_2025_authorization_changed": false,
+    "changed": "Bind the frozen Campaign103 compact loader in _temporary_compact_factor_loader.__wrapped__.__globals__, where the generator body resolves the loader installed into shared base.load_factor_panel.",
+    "existing_ledger_header_or_entries_rewritten": false,
+    "factor_formula_or_values_changed": false,
+    "fold_purge_execution_cost_or_gate_changed": false,
+    "trial_catalog_or_direction_changed": false
+  },
+  "runner": {
+    "path": "scripts/a_share_three_day_walkforward_campaign103.py",
+    "sha256": "ba6abbce102eaf3a416bc6b6c26e5178801d7d43456d1851c4db808f85cb7aee"
+  },
+  "schema_version": 4,
+  "status": "frozen_before_campaign103_development_daily_price_or_forward_return_read",
+  "stress_2024_2025_read_before_freeze": false,
+  "supersedes_without_rewriting": {
+    "recorded_contextmanager_wrapped_globals_failure": {
+      "path": "docs/a_share_three_day_walkforward_campaign_103_development_contextmanager_wrapped_globals_failure_20260808.json",
+      "sha256": "378f634563230293c615b6e752a8de89f0e0d3308bc0072d33f53979a22f818b"
+    },
+    "recorded_ledger_header_failure": {
+      "path": "docs/a_share_three_day_walkforward_campaign_103_development_ledger_header_continuity_failure_20260808.json",
+      "sha256": "b25b1fadd159cedd412286967a17eb9e0bbf0988832de768509fe781ba4faba5"
+    },
+    "v2_activation": {
+      "path": "docs/a_share_three_day_walkforward_campaign_103_development_activation_binding_v2_20260807.json",
+      "sha256": "939dfabd32b025a333dfab0cdc70a0b7cf292f35647eaa261ecc0ac305259d27"
+    },
+    "v2_freeze": {
+      "path": "docs/a_share_three_day_walkforward_campaign_103_development_implementation_freeze_v2_20260807.json",
+      "sha256": "5618ea9dfd48034c37b23a344a4475fec1cbfa24cae3a0fb19e15cea5348d487"
+    },
+    "v3_activation": {
+      "path": "docs/a_share_three_day_walkforward_campaign_103_development_activation_binding_v3_20260808.json",
+      "sha256": "37ca80ab47613320e385a11896722351bee929ad8c10f886c1502af70469099a"
+    },
+    "v3_freeze": {
+      "path": "docs/a_share_three_day_walkforward_campaign_103_development_implementation_freeze_v3_20260808.json",
+      "sha256": "3e3038220b66007012cc65aed1fa97b665b48fa9d820547f9561b8e27bbb1a29"
+    }
+  },
+  "tests": {
+    "path": "tests/data_collector_tests/test_a_share_three_day_walkforward_campaign103_development.py",
+    "result": "9_development_tests_passed;_17_combined_campaign103_tests_passed_before_activation_v4",
+    "sha256": "3916776ca2873e5f29818a1c193bea5cba7d0071206e4dd31ae7b6f97097ec48"
+  }
+}

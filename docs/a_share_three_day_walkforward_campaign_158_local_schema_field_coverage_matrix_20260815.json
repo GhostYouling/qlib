@@ -1,0 +1,317 @@
+{
+  "schema_version": 1,
+  "kind": "a_share_three_day_walkforward_campaign158_local_schema_field_coverage_matrix",
+  "status": "complete_schema_only_field_inventory_frozen_before_row_or_research_value_read",
+  "recorded_at": "2026-08-15T04:12:20+08:00",
+  "purpose": "Close the residual field space of every accepted local event and fundamental Parquet used by the three-session research program, without reading a row value to choose a factor.",
+  "authoritative_inputs": {
+    "campaign157_state": {
+      "path": "docs/a_share_three_day_iteration_status_20260815_campaign157_prevalue_terminal.json",
+      "sha256": "ae5697be30a1e173b4a6ccc29c3700c414c8a63b460b94ff5dbc269e81877e5b"
+    },
+    "numeric_policy_v220": {
+      "path": "docs/a_share_three_day_walkforward_future_numeric_comparison_eligibility_policy_v220_20260815.json",
+      "sha256": "5733ac1d5896de3303a137ff7ce9da1092d2af046c04d7b7dceb79a9fa9d3551"
+    },
+    "historical_walkforward_policy": {
+      "path": "docs/a_share_three_day_historical_walkforward_research_policy_20260727.json",
+      "sha256": "38426d6161b9bfed323c58caba18feca668b8c9d53e294951a8ba90c01a798bb"
+    },
+    "historical_43_factor_frontier_audit": {
+      "path": "docs/a_share_three_day_research_frontier_audit.json",
+      "sha256": "0ab41e940afff20cdd5ce46849820ffd56a3072aa859c30d4caa6dd71c10d846"
+    },
+    "campaign140_terminal_recombination_audit": {
+      "path": "docs/a_share_three_day_walkforward_campaign_140_mechanism_source_frontier_audit_20260814.json",
+      "sha256": "43d8b1ae0a14e64be8319cfba0465d26316420d2e9d63936961e3969fb39e9cf"
+    },
+    "campaign141_terminal_recombination_audit": {
+      "path": "docs/a_share_three_day_walkforward_campaign_141_mechanism_source_frontier_audit_20260814.json",
+      "sha256": "f7d89993ae11b7370acd5fdfe3a64ec80979300a9b26346ec40e55809b107813"
+    },
+    "campaign142_schema_and_clock_scouting": {
+      "path": "docs/a_share_three_day_walkforward_campaign_142_concept_scouting_20260814.json",
+      "sha256": "11c2cb226150ccf5292e1c6ed45f7fd7898335b7a316157ccb3d7737c8153a70"
+    },
+    "schema_runtime_failure": {
+      "path": "docs/a_share_three_day_walkforward_campaign_158_schema_runtime_import_failure_20260815.json",
+      "sha256": "ce80bd586f3446531aa98b2871d6da0f5563d4ced3464de9fd494f77a0a62915"
+    }
+  },
+  "inspection_contract": {
+    "authoritative_worktree": "/Volumes/DIsk/Disk-Coding/qlib",
+    "active_data_root": "/Volumes/DIsk/Disk-Coding/qlib/data",
+    "method": "/Volumes/DIsk/Coding/anaconda3/bin/python3.12 with pyarrow.parquet.read_schema",
+    "files_inspected": 17,
+    "ordered_field_occurrences": 89,
+    "unique_field_names": 49,
+    "ordered_schema_digest_rule": "sha256(join_newline(repo_relative_path + '|' + join_comma(ordered_field_names)))",
+    "ordered_schema_sha256": "7947ce33985f30e1268db5db0e5489c0f56dcbf936804932c50d3ffee53d2fa7",
+    "parquet_row_group_or_column_value_read": false,
+    "manifest_or_contract_json_metadata_read": true,
+    "source_file_bytes_hashed_during_campaign158": false,
+    "candidate_comparator_price_or_return_value_read": false
+  },
+  "field_role_vocabulary": {
+    "identity_key": "Issuer mapping only; a code or identifier is not an alpha value.",
+    "availability_clock_already_consumed": "The field determines point-in-time eligibility or a previously tested freshness/timeliness state; raw calendar ordinals are forbidden.",
+    "report_period_key_already_consumed": "The field joins accounting periods and is already represented by terminal announcement timing, level, change or acceleration mechanisms.",
+    "terminal_numeric_factor": "The exact raw state or its preregistered direction/freshness transform already completed or terminalized its branch.",
+    "terminal_context_count": "The contract stored this only for context or quality; promoting it after the branch result is a post-exposure operator change.",
+    "terminal_unscaled_magnitude": "The raw denomination or share count lacks a frozen scale denominator; adding one now would combine or rescue terminal branches.",
+    "terminal_categorical_state": "The type/indicator family has already been exposed or terminalized; recoding levels after results is forbidden.",
+    "synthetic_clock_not_measured_delay": "The field is a conservative constructed availability clock, not an observed historical disclosure timestamp.",
+    "non_authoritative_duplicate": "A smoke/test copy is not a second accepted information source and cannot create another factor."
+  },
+  "source_field_matrix": [
+    {
+      "source": "analyst_rating_changes",
+      "path": "data/raw/a_share/events/analyst_rating_changes.parquet",
+      "data_sha256_from_manifest": "30d51a93c98912d27b2f9d4236843766fab2b2c298c0e7acb1382d89d12a87ea",
+      "manifest": {"path": "data/metadata/analyst_rating_changes_manifest.json", "sha256": "483d7ec7fa5c44b3b0639bd5516d2b6fd34c75c749cdf12b1f71e71202759f54"},
+      "fields": {
+        "instrument": "identity_key",
+        "announcement_date": "availability_clock_already_consumed",
+        "analyst_rating_upgrade_share": "terminal_numeric_factor",
+        "analyst_valid_rating_report_count": "terminal_context_count"
+      }
+    },
+    {
+      "source": "block_trades",
+      "path": "data/raw/a_share/events/block_trades.parquet",
+      "data_sha256_from_manifest": "03676688aff699686ec8729d8fe439d3cbdf610e9e9ccd2845ac29f790768ce8",
+      "manifest": {"path": "data/metadata/block_trades_manifest.json", "sha256": "63a5814ce096c123843d17277d02e10632473416ee108ae67ca8db55a9d06d77"},
+      "fields": {
+        "instrument": "identity_key",
+        "trade_date": "availability_clock_already_consumed",
+        "block_trade_premium_ratio": "terminal_numeric_factor",
+        "block_trade_turnover_rate": "terminal_numeric_factor",
+        "block_trade_event_count": "terminal_numeric_factor"
+      }
+    },
+    {
+      "source": "daily_billboard",
+      "path": "data/raw/a_share/events/daily_billboard.parquet",
+      "data_sha256_from_manifest": "0fee2fff3de2a8422203b9cf0dfbbe2a190129f0f746d9982542d53937b0cbe7",
+      "manifest": {"path": "data/metadata/daily_billboard_manifest.json", "sha256": "aacefb639390fce6f5303812ec6f016aa34023edd84c6062a6cf83fe09ba2ce4"},
+      "fields": {
+        "instrument": "identity_key",
+        "trade_date": "availability_clock_already_consumed",
+        "billboard_net_flow_to_float": "terminal_numeric_factor",
+        "billboard_net_flow_to_deal": "terminal_numeric_factor",
+        "billboard_deal_to_float": "terminal_numeric_factor",
+        "billboard_reason_count": "terminal_numeric_factor"
+      }
+    },
+    {
+      "source": "dividend_plans",
+      "path": "data/raw/a_share/events/dividend_plans.parquet",
+      "data_sha256_from_manifest": "9483726c509afef2eba88ed32abc341cda564dba1d4f1210816151f414088866",
+      "manifest": {"path": "data/metadata/dividend_plans_manifest.json", "sha256": "e79981a15f00739f3319f03a1fd45de8292050f1f8301d169d2356a727faf5cc"},
+      "fields": {
+        "instrument": "identity_key",
+        "announcement_date": "availability_clock_already_consumed",
+        "dividend_cash_per_ten": "terminal_numeric_factor",
+        "dividend_share_ratio": "terminal_numeric_factor",
+        "dividend_plan_event_count": "terminal_numeric_factor"
+      }
+    },
+    {
+      "source": "holder_count_changes",
+      "path": "data/raw/a_share/events/holder_count_changes.parquet",
+      "data_sha256_from_manifest": "e14a0beb393bc713f6b6e5820da395430308eb117460541b3769116c8a265414",
+      "manifest": {"path": "data/metadata/holder_count_changes_manifest.json", "sha256": "1d38b782968786f274ab57429f19bc967054a0e9f0a97459f21e9ac07ee2a988"},
+      "fields": {
+        "instrument": "identity_key",
+        "announcement_date": "availability_clock_already_consumed",
+        "holder_count_change_ratio": "terminal_numeric_factor",
+        "holder_count_change_absolute": "terminal_numeric_factor"
+      }
+    },
+    {
+      "source": "insider_open_market_transactions",
+      "path": "data/raw/a_share/events/insider_open_market_transactions.parquet",
+      "data_sha256_from_manifest": "077dce86290c7a19dba65b76b3bae5cebe3c39ca36cbd5805dcaacf618c0afbf",
+      "manifest": {"path": "data/metadata/insider_open_market_transactions_manifest.json", "sha256": "f81738fe52588e36bcfbabe35c57a5e815e08f14f70b98144d394b5eec340103"},
+      "fields": {
+        "instrument": "identity_key",
+        "event_date": "synthetic_clock_not_measured_delay",
+        "insider_open_market_latest_transaction_date": "availability_clock_already_consumed",
+        "insider_open_market_buy_share": "terminal_numeric_factor",
+        "insider_open_market_event_count": "terminal_context_count"
+      }
+    },
+    {
+      "source": "institutional_survey_timing",
+      "path": "data/raw/a_share/events/institutional_survey_timing.parquet",
+      "data_sha256_from_manifest": "0b1544ac400f021ed632fbf5810967c5a1d6acd9d7fbb6334a743c19f824f5eb",
+      "manifest": {"path": "data/metadata/institutional_survey_timing_manifest.json", "sha256": "07b6e405e9b73177921ce06ba5020e4f6c48c05a553948619309b18d2b03fe97"},
+      "fields": {
+        "instrument": "identity_key",
+        "announcement_date": "availability_clock_already_consumed",
+        "institutional_survey_latest_receive_end_date": "availability_clock_already_consumed",
+        "institutional_survey_disclosure_lag_days": "terminal_numeric_factor"
+      }
+    },
+    {
+      "source": "institutional_surveys",
+      "path": "data/raw/a_share/events/institutional_surveys.parquet",
+      "data_sha256_from_manifest": "d55491709c9b6c89a759e0048593885d96b55848c5a3ea74617b4c84e61c3299",
+      "manifest": {"path": "data/metadata/institutional_surveys_manifest.json", "sha256": "1210c6ee9bd838033ef0fc8ccd58a943a2f2e655f40b504dd46419b6399362a2"},
+      "fields": {
+        "instrument": "identity_key",
+        "announcement_date": "availability_clock_already_consumed",
+        "institutional_survey_org_count": "terminal_numeric_factor",
+        "institutional_survey_event_count": "terminal_numeric_factor"
+      }
+    },
+    {
+      "source": "major_holder_changes",
+      "path": "data/raw/a_share/events/major_holder_changes.parquet",
+      "data_sha256_from_manifest": "f04b5a756a2a4c57fece9235224c3878a3778ad1261a525a9617683c7345116f",
+      "manifest": {"path": "data/metadata/major_holder_changes_manifest.json", "sha256": "b3909ffeb9bda0170b300eea8475bb0fd1b76e5b2142986284616bf65be68bd5"},
+      "fields": {
+        "instrument": "identity_key",
+        "announcement_date": "availability_clock_already_consumed",
+        "major_holder_net_change_free_ratio": "terminal_numeric_factor",
+        "major_holder_increase_free_ratio": "terminal_numeric_factor",
+        "major_holder_decrease_free_ratio": "terminal_numeric_factor",
+        "major_holder_event_count": "terminal_numeric_factor"
+      }
+    },
+    {
+      "source": "margin_financing_top_flows",
+      "path": "data/raw/a_share/events/margin_financing_top_flows.parquet",
+      "data_sha256_from_manifest": "dd7e02f94456bba6a1ea6e20ccf3cc0bf133f57c36b83fbe20f1fcfd347ee1a9",
+      "manifest": {"path": "data/metadata/margin_financing_top_flows_manifest.json", "sha256": "8710f7faefbb04ef2f8f318955d922ac5c8e5fdaf1d7aa3dc25824a64eb9b377"},
+      "fields": {
+        "instrument": "identity_key",
+        "trade_date": "availability_clock_already_consumed",
+        "margin_net_buy_to_market_cap": "terminal_numeric_factor",
+        "margin_buy_to_market_cap": "terminal_numeric_factor",
+        "margin_balance_to_market_cap": "terminal_numeric_factor",
+        "margin_financing_balance_growth": "terminal_numeric_factor"
+      }
+    },
+    {
+      "source": "margin_financing_top_flows_smoke",
+      "path": "data/raw/a_share/events/margin_financing_top_flows_smoke.parquet",
+      "data_sha256_from_manifest": null,
+      "manifest": null,
+      "fields": {
+        "instrument": "non_authoritative_duplicate",
+        "trade_date": "non_authoritative_duplicate",
+        "margin_net_buy_to_market_cap": "non_authoritative_duplicate",
+        "margin_buy_to_market_cap": "non_authoritative_duplicate",
+        "margin_balance_to_market_cap": "non_authoritative_duplicate",
+        "margin_financing_balance_growth": "non_authoritative_duplicate"
+      }
+    },
+    {
+      "source": "repurchase_plans",
+      "path": "data/raw/a_share/events/repurchase_plans.parquet",
+      "data_sha256_from_manifest": "2a1a3dcb186e6355b956b68e889bde13bdd95241d1a9a387b35595aa28258915",
+      "manifest": {"path": "data/metadata/repurchase_plans_manifest.json", "sha256": "833a0c78edb1e98fa478b94938db507f3759305b7587ee422b2990b3b090b4e1"},
+      "fields": {
+        "instrument": "identity_key",
+        "announcement_date": "availability_clock_already_consumed",
+        "repurchase_planned_share_ratio": "terminal_numeric_factor",
+        "repurchase_planned_amount": "terminal_numeric_factor"
+      }
+    },
+    {
+      "source": "restricted_share_unlocks",
+      "path": "data/raw/a_share/events/restricted_share_unlocks.parquet",
+      "data_sha256_from_manifest": "da4e8ac847927dd13f79067e195025ba0933345e2352c24cddf3821e68d37a52",
+      "manifest": {"path": "data/metadata/restricted_share_unlocks_manifest.json", "sha256": "acbaf0e946e35856cb16d498d5303125b70140e105f89ca18d863d36e8bfdda1"},
+      "fields": {
+        "instrument": "identity_key",
+        "event_date": "availability_clock_already_consumed",
+        "restricted_unlock_total_share_ratio": "terminal_numeric_factor",
+        "restricted_unlock_actual_shares": "terminal_unscaled_magnitude"
+      }
+    },
+    {
+      "source": "share_pledges",
+      "path": "data/raw/a_share/events/share_pledges.parquet",
+      "data_sha256_from_manifest": "b498ee3bdf9e01bc4a42536145712d853ff554c83c8388e7ebdeb54696b476de",
+      "manifest": {"path": "data/metadata/share_pledges_manifest.json", "sha256": "3b278f54e30aa397993bfb7fc6b836e36bd2e93c508629ac1fad2da2846d395d"},
+      "fields": {
+        "instrument": "identity_key",
+        "announcement_date": "availability_clock_already_consumed",
+        "pledge_share_count": "terminal_numeric_factor",
+        "pledge_total_share_ratio": "terminal_numeric_factor",
+        "pledge_event_count": "terminal_numeric_factor"
+      }
+    },
+    {
+      "source": "annual_quality",
+      "path": "data/raw/a_share/fundamentals/annual_quality.parquet",
+      "data_sha256_from_manifest": "aa053ee050788ec8a3250c7fe7b4e11bf4e4ceacc8bb4002e6043c6405158714",
+      "manifest": {"path": "data/metadata/annual_quality_manifest.json", "sha256": "6447720d7199fe8e979bb667c13e5f5ba40f7669025acc9af5cc75696e622731"},
+      "fields": {
+        "instrument": "identity_key",
+        "report_date": "report_period_key_already_consumed",
+        "announcement_date": "availability_clock_already_consumed",
+        "roe": "terminal_numeric_factor",
+        "net_profit": "terminal_numeric_factor",
+        "revenue_yoy": "terminal_numeric_factor",
+        "profit_yoy": "terminal_numeric_factor"
+      },
+      "source_relation": "Annual quality is the annual subset of the same seven-field quarterly history, not an independent source."
+    },
+    {
+      "source": "performance_forecasts",
+      "path": "data/raw/a_share/fundamentals/performance_forecasts.parquet",
+      "data_sha256_from_manifest": "48bc11ea6749a590fcc260f6a5728e853f59f228f6cef7c5b0183f206895d734",
+      "manifest": {"path": "data/metadata/performance_forecasts_manifest.json", "sha256": "d824bf8194b871fc21ce66cab80f1f9158814fff0e9a5d77a2cfbaec967e562c"},
+      "fields": {
+        "instrument": "identity_key",
+        "report_date": "report_period_key_already_consumed",
+        "announcement_date": "availability_clock_already_consumed",
+        "forecast_type": "terminal_categorical_state",
+        "forecast_turnaround": "terminal_categorical_state",
+        "forecast_profit_yoy": "terminal_numeric_factor",
+        "forecast_profit_yoy_width": "terminal_numeric_factor"
+      }
+    },
+    {
+      "source": "quarterly_quality",
+      "path": "data/raw/a_share/fundamentals/quarterly_quality.parquet",
+      "data_sha256_from_manifest": "3ac901a97928d2ed81ac72e3eaac9bdc148d36cf67b6abe70223699235ef059f",
+      "manifest": {"path": "data/metadata/quarterly_quality_manifest.json", "sha256": "e3cf654babe37a82393c5530696bc1cc242b736cb88e1947b8444b638125ba8c"},
+      "fields": {
+        "instrument": "identity_key",
+        "report_date": "report_period_key_already_consumed",
+        "announcement_date": "availability_clock_already_consumed",
+        "roe": "terminal_numeric_factor",
+        "net_profit": "terminal_numeric_factor",
+        "revenue_yoy": "terminal_numeric_factor",
+        "profit_yoy": "terminal_numeric_factor"
+      }
+    }
+  ],
+  "coverage_summary": {
+    "accepted_canonical_source_files": 16,
+    "non_authoritative_smoke_duplicates": 1,
+    "schema_fields_without_a_disposition": 0,
+    "genuinely_unconsumed_rankable_point_in_time_numeric_primitives": 0,
+    "new_formula_direction_parameter_filter_subset_combination_or_model_frozen": false,
+    "selected_candidate_count": 0
+  },
+  "research_boundary": {
+    "parquet_schema_only_inspection_performed": true,
+    "parquet_rows_or_column_values_read": false,
+    "source_response_values_read": false,
+    "candidate_or_comparator_values_read": false,
+    "historical_daily_price_or_forward_return_values_read": false,
+    "stress_2024_2025_opened": false,
+    "provider_or_web_request_issued": false,
+    "provider_credential_presence_value_or_digest_read": false,
+    "candidate49_historical_backfill_performed": false,
+    "candidate49_ledgers_changed": false,
+    "second_prospective_candidate_created": false,
+    "current_scoring_selection_sizing_positions_or_orders_performed": false,
+    "investment_advice": false
+  }
+}

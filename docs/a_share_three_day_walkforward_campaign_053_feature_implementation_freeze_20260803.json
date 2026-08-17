@@ -1,0 +1,41 @@
+{
+  "version": 1,
+  "kind": "a_share_three_day_walkforward_campaign053_feature_implementation_freeze",
+  "status": "frozen_before_campaign053_candidate_values",
+  "frozen_at": "2026-08-03T09:15:00Z",
+  "purpose": "Bind the exact Campaign053 formula implementation and pre-value tests before reading any minute candidate value.",
+  "no_return_protocol": {
+    "path": "docs/a_share_three_day_walkforward_campaign_053_no_return_preregistration.json",
+    "sha256": "829f9781ed6d7bbf2d6c5d318abf03838c5916bdf944fc46f28da13cf2a8b02c"
+  },
+  "mechanism_overlap_audit": {
+    "path": "docs/a_share_three_day_walkforward_campaign_053_mechanism_overlap_audit.json",
+    "sha256": "7cf02ae931c97427bc93339ef1fdf8c7a9547ebccb666a4a649e0b13f9467dd4"
+  },
+  "feature_runner": {
+    "path": "scripts/a_share_three_day_walkforward_campaign053_features.py",
+    "sha256": "4007eae34134d11bc057b3cd251050a18b36f0d79dac0ab5ecf5f5fcfb2407e3"
+  },
+  "feature_tests": {
+    "path": "tests/data_collector_tests/test_a_share_three_day_walkforward_campaign053_features.py",
+    "sha256": "89b388d90bc7b70c6dcf9b7dc98121970f8d85dc8893a42e0fac754cbafc85c1",
+    "passed": 6,
+    "failed": 0
+  },
+  "frozen_semantics": {
+    "candidate": "intraday_amount_price_discovery_alignment_js_238p",
+    "direction": "higher",
+    "source_projection": ["datetime", "symbol", "provider", "close", "amount"],
+    "within_half_pair_count": 238,
+    "divergence": "equal-weight Jensen-Shannon with natural logarithm",
+    "normalization": "1-JSD/ln(2)",
+    "valid_range": [0.0, 1.0],
+    "alternate_window_pairing_field_direction_transform_threshold_filter_model_or_combination": "none"
+  },
+  "candidate_values_read_before_freeze": false,
+  "comparison_values_read_before_freeze": false,
+  "historical_daily_price_fields_read_before_freeze": [],
+  "historical_forward_returns_read_before_freeze": false,
+  "candidate49_historical_return_read": false,
+  "provider_request_issued": false
+}

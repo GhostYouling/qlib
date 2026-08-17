@@ -1,0 +1,43 @@
+{
+  "version": 1,
+  "kind": "a_share_three_day_walkforward_campaign077_predevelopment_interface_probe_failures",
+  "status": "recorded_before_development_return_read",
+  "recorded_at": "2026-08-06T13:24:00+08:00",
+  "failures": [
+    {
+      "ordinal": 1,
+      "stage": "read_only_development_runner_probe",
+      "outcome": "load_campaign_called_without_required_path_argument",
+      "exception": "TypeError",
+      "binding_validation_completed_before_failure": true,
+      "market_values_read": false,
+      "historical_daily_price_fields_read": [],
+      "historical_forward_returns_read": false
+    },
+    {
+      "ordinal": 2,
+      "stage": "read_only_development_runner_probe",
+      "outcome": "load_campaign_tuple_was_passed_directly_to_build_trial_catalog",
+      "exception": "AttributeError",
+      "diagnosis": "load_campaign returns (effective_campaign_dict, campaign_sha256); build_trial_catalog requires the first tuple element.",
+      "market_values_read": false,
+      "historical_daily_price_fields_read": [],
+      "historical_forward_returns_read": false
+    }
+  ],
+  "successful_followup": {
+    "runner_status_exit_code": 0,
+    "campaign_id": "a_share_three_day_walkforward_campaign_077",
+    "campaign_sha256": "7390d04bf46e57b637873ac754a7dedb3523baa6f1b4c99f198b291c643f2d94",
+    "expected_trial_count": 1,
+    "ledger_entry_count": 0,
+    "stress_intent_exists": false,
+    "stress_record_exists": false,
+    "historical_daily_price_or_forward_return_values_read": false
+  },
+  "failure_count": 2,
+  "research_attempt_count_increment": 2,
+  "development_trial_count_increment": 0,
+  "provider_request_issued": false,
+  "candidate49_ledgers_changed": false
+}

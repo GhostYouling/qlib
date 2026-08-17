@@ -1,0 +1,50 @@
+{
+  "version": 3,
+  "kind": "a_share_three_day_walkforward_campaign161_implementation_infrastructure_failures",
+  "status": "three_effective_publication_update_failures_recorded_and_recovered_without_scientific_change",
+  "recorded_at": "2026-08-15T05:57:10+08:00",
+  "campaign": 161,
+  "authoritative_predecessor": {
+    "path": "docs/a_share_three_day_walkforward_campaign_161_implementation_infrastructure_failures_v2_20260815.json",
+    "sha256": "d41e0bd078ba0776dee2d58346e2678a16042bec323e909b6f933985a70a9cb7",
+    "effective_failure_count": 7
+  },
+  "delta_failures": [
+    {
+      "attempt_id": "campaign161_infrastructure_008",
+      "phase": "terminal_test_effective_publication_update",
+      "exit_code": 1,
+      "failure": "A broad apply_patch expected pre-Black line layout and failed context verification without writing any hunk.",
+      "recovery": "Inspected the bounded test file and switched to smaller exact-context patches.",
+      "scientific_result_changed": false,
+      "provider_request_issued": false
+    },
+    {
+      "attempt_id": "campaign161_infrastructure_009",
+      "phase": "terminal_test_effective_publication_update",
+      "exit_code": 1,
+      "failure": "A second combined apply_patch still included a duplicated assertion context that did not exist and failed without partial write.",
+      "recovery": "Applied header, binding and ledger assertions as three independent exact-context patches.",
+      "scientific_result_changed": false,
+      "provider_request_issued": false
+    },
+    {
+      "attempt_id": "campaign161_infrastructure_010",
+      "phase": "effective_terminal_focused_validation",
+      "exit_code": 1,
+      "failure": "Thirteen tests passed and one binding test failed because terminal result v2 froze the pre-lifecycle-update terminal-test digest.",
+      "recovery": "Retain v2 unchanged, publish an additive effective result without a circular terminal-test binding, and bind the final test only in the later validation receipt.",
+      "scientific_result_changed": false,
+      "provider_request_issued": false
+    }
+  ],
+  "effective_infrastructure_failure_count": 10,
+  "research_boundary": {
+    "candidate_or_comparator_value_read": false,
+    "historical_daily_price_or_forward_return_value_read": false,
+    "provider_request_issued_by_delta_failures": false,
+    "provider_credential_presence_value_or_digest_read": false,
+    "stress_2024_2025_opened": false,
+    "candidate49_ledgers_changed": false
+  }
+}

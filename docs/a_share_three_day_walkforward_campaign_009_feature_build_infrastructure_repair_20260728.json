@@ -1,0 +1,57 @@
+{
+  "version": 1,
+  "kind": "a_share_three_day_walkforward_campaign009_feature_build_infrastructure_repair",
+  "status": "one_pre_value_infrastructure_repair_frozen_before_retry",
+  "recorded_at": "2026-07-28T14:05:20Z",
+  "purpose": "Record one fail-closed adapter repair after all Campaign009 partitions were computed but before a final snapshot, comparison value, daily price, or forward return existed.",
+  "authoritative_bindings": {
+    "mechanism_overlap_audit": {
+      "path": "docs/a_share_three_day_walkforward_campaign_009_mechanism_overlap_audit.json",
+      "sha256": "abfbc1d94b6a6272eaedb65a8c9ea8673398da3cb220b30c34997c2fcd45df21"
+    },
+    "no_return_preregistration": {
+      "path": "docs/a_share_three_day_walkforward_campaign_009_no_return_preregistration.json",
+      "sha256": "7080dae932fa3b35869ea39de1b4e3759ff968629ee20f422e368eb2e0799e19"
+    },
+    "failed_wrapper": {
+      "path": "scripts/a_share_three_day_walkforward_campaign009_features.py",
+      "sha256": "28a926670a8d797a062438dad272035db38973a069a7c2c4c86459c2ac1b7389"
+    },
+    "frozen_parent": {
+      "path": "scripts/a_share_three_day_walkforward_campaign008_features.py",
+      "sha256": "a8921a6a6fc0cedd26095515d52a7d794b7845f6e5a90666aad2ef76a987f466"
+    }
+  },
+  "failure": {
+    "command": "PYTHONPATH=/opt/anaconda3/lib/python3.12/site-packages /opt/anaconda3/bin/python3 -S scripts/a_share_three_day_walkforward_campaign009_features.py build --data-root /Volumes/DIsk/qlib-a-share-tushare-1m --workers 4",
+    "exit_code": 1,
+    "exception": "Campaign009FeatureError: Campaign009 snapshot semantics changed",
+    "completed_hash_checkpoint_partitions": 33015,
+    "final_snapshot_manifest_created": false,
+    "comparison_factor_values_read": false,
+    "daily_price_fields_read": [],
+    "forward_return_fields_read": false,
+    "candidate49_historical_return_read": false
+  },
+  "root_cause": {
+    "description": "The inherited Campaign006 executor constructs an in-memory pre-publication manifest with its native source_open_high_low_read=false and source_volume_read=true flags. The Campaign009 publication adapter changes those two flags to true/false only inside the atomic writer. The Campaign009 validator incorrectly required the post-publication flags even during the earlier pre-publication validation, so it rejected the valid in-memory manifest before the adapter could write it.",
+    "formula_or_candidate_value_defect": false,
+    "source_partition_or_ohlc_defect": false,
+    "research_choice_or_gate_defect": false
+  },
+  "single_permitted_repair": {
+    "description": "Make the validator phase-aware: require the inherited false/true open-high-low/volume flags when require_fingerprint_constants=false, and require the Campaign009 true/false flags when require_fingerprint_constants=true. Keep the atomic publication conversion and every factor, field whitelist, OHLC ordering rule, 120-bar threshold, range, gate, comparison, and trial unchanged.",
+    "reuse_only_hash_validated_checkpoint_partitions": true,
+    "formula_changed": false,
+    "direction_changed": false,
+    "source_fields_changed": false,
+    "timestamp_or_missing_semantics_changed": false,
+    "coverage_or_uniqueness_gate_changed": false,
+    "finite_trial_catalog_changed": false
+  },
+  "retry_boundary": {
+    "one_retry_allowed_after_synthetic_and_phase_validation_tests_pass": true,
+    "another_semantic_or_research_repair_allowed": false,
+    "returns_may_be_read_during_retry": false
+  }
+}

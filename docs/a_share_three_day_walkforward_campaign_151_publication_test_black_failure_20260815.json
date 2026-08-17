@@ -1,0 +1,23 @@
+{
+  "schema_version": 1,
+  "kind": "a_share_three_day_walkforward_campaign151_infrastructure_failure",
+  "status": "recorded_nonzero_exit_before_additive_pointer_correction",
+  "recorded_at": "2026-08-15T00:15:16+08:00",
+  "attempt_id": "campaign151_infrastructure_002",
+  "phase": "publication_validation",
+  "failed_command_scope": "Black check of the frozen formula module, pure formula test and newly added publication test, followed conditionally by Ruff and focused pytest",
+  "observed_exit_code": 1,
+  "failure": "Black reported that the newly added, not-yet-fingerprint-bound Campaign151 publication test would be reformatted; the chained Ruff and pytest stages did not run.",
+  "repair": "Mechanically format only the new publication test and rerun the exact three-file Black/Ruff scope and both focused test files.",
+  "repair_result": {
+    "black": "passed; 3 files left unchanged",
+    "ruff": "passed",
+    "pytest": "14 passed in 3.46s"
+  },
+  "frozen_scientific_bytes_changed": false,
+  "formula_or_protocol_changed": false,
+  "historical_source_peer_benchmark_candidate_comparator_price_or_return_values_read": false,
+  "provider_request_issued": false,
+  "candidate49_ledgers_changed": false,
+  "failed_exit_code_bypassed_or_masked": false
+}

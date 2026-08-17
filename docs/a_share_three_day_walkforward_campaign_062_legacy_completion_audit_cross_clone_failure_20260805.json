@@ -1,0 +1,27 @@
+{
+  "version": 1,
+  "kind": "a_share_three_day_walkforward_campaign062_legacy_completion_audit_cross_clone_failure",
+  "status": "recorded_post_result_infrastructure_failure_no_campaign062_recomputation",
+  "recorded_at": "2026-08-05T05:24:00+08:00",
+  "stage": "post_terminal_generic_walkforward_regression",
+  "command_scope": [
+    "tests/data_collector_tests/test_a_share_three_day_walkforward_policy.py",
+    "tests/data_collector_tests/test_a_share_three_day_walkforward_reporting.py",
+    "tests/data_collector_tests/test_a_share_three_day_walkforward_completion_audit.py"
+  ],
+  "result": {
+    "passed": 15,
+    "failed": 1,
+    "failed_node": "tests/data_collector_tests/test_a_share_three_day_walkforward_completion_audit.py::test_completion_audit_proves_every_declared_requirement"
+  },
+  "failure": "The legacy Campaign001 completion audit loaded an immutable ledger whose campaign path is /Users/niyufei/Coding/qlib while the current clone resolves the preregistration under /Volumes/DIsk/Disk-Coding/qlib, so the historical ledger binding correctly failed closed.",
+  "classification": "known cross-clone legacy-path incompatibility outside Campaign062 research semantics",
+  "repair_boundary": "Do not rewrite the Campaign001 ledger or preregistration. Preserve the failed generic node as historical and verify Campaign062 only through its current versioned bindings and focused terminal suite.",
+  "research_attempt_count_increment": 1,
+  "development_trial_count_increment": 0,
+  "campaign062_candidate_or_comparison_values_read": false,
+  "campaign062_historical_daily_prices_or_forward_returns_recomputed": false,
+  "provider_request_issued": false,
+  "candidate49_ledgers_changed": false,
+  "current_scoring_selection_sizing_or_orders_performed": false
+}

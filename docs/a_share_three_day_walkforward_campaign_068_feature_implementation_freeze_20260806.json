@@ -1,0 +1,73 @@
+{
+  "version": 1,
+  "kind": "a_share_three_day_walkforward_campaign068_feature_implementation_freeze",
+  "status": "frozen_before_campaign068_quarterly_source_rows_candidate_values_or_comparison_values",
+  "recorded_at": "2026-08-06T02:41:02+08:00",
+  "purpose": "Bind the exact Campaign068 acceleration construction, rank-gap implementation, and inherited atomic publication engine before reading real quarterly rows or constructing candidate values.",
+  "protocol": {
+    "path": "docs/a_share_three_day_walkforward_campaign_068_no_return_preregistration.json",
+    "sha256": "64aeee6a3534f00f878259b3406a09bc4f3b5d0ea3157bde86d0050f56b82061"
+  },
+  "feature_runner": {
+    "path": "scripts/a_share_three_day_walkforward_campaign068_features.py",
+    "sha256": "1ebfbfd5709132d49f5d34276176df26a5ca53cfa492700a69c7ba64422d0b22"
+  },
+  "inherited_atomic_publication_engine": {
+    "path": "scripts/a_share_three_day_walkforward_campaign066_features.py",
+    "sha256": "ff8bd4aef61f7eec00299d1b38e21c30e15a4e7b010d157b0ea60d0576adf614"
+  },
+  "tests": {
+    "path": "tests/data_collector_tests/test_a_share_three_day_walkforward_campaign068_features.py",
+    "sha256": "780f960a2bc2419641be9bd5ad0cc96216312a97b9ed39565e4f11376b7680da",
+    "pre_freeze_passed": 5,
+    "pre_freeze_failed": 0
+  },
+  "frozen_semantics": {
+    "factor": "quarterly_profit_revenue_acceleration_rank_gap_2r",
+    "direction": "higher",
+    "formula": "r_profit_yoy_acceleration-r_revenue_yoy_acceleration",
+    "event_fields": [
+      "instrument",
+      "report_date",
+      "announcement_date",
+      "revenue_yoy",
+      "profit_yoy"
+    ],
+    "state_fields": [
+      "profit_yoy_acceleration",
+      "revenue_yoy_acceleration"
+    ],
+    "acceleration_rule": "same_instrument_same_report_month_first_difference_after_stable_report_order",
+    "rank_method": "average_tie_percentile_per_stock_day_per_field",
+    "availability": "strict_next_accepted_session_of_newer_report",
+    "state_propagation": "independent_per_acceleration_field_forward_fill_after_effective_ordering",
+    "valid_range": [
+      -1.0,
+      1.0
+    ],
+    "expected_partitions": 33015,
+    "expected_rows": 7724498,
+    "numeric_comparator_count": 98,
+    "numeric_comparator_order_sha256": "bca0ba26252fcb74afa3a31ee1baf63c9cedfe3db5fc86ef71b3d7d93bf88f81",
+    "campaign067_is_final_numeric_comparator": true
+  },
+  "pre_value_checks": {
+    "binding_validator_exit_code": 0,
+    "binding_count": 14,
+    "synthetic_same_fiscal_quarter_acceleration_check_passed": true,
+    "synthetic_formula_and_average_tie_rank_check_passed": true,
+    "comparison_order_reconstruction_passed": true,
+    "campaign068_output_root_existed_before_freeze": false,
+    "candidate_source_rows_read": false,
+    "candidate_values_read": false,
+    "comparison_values_read": false,
+    "historical_daily_price_fields_read": [],
+    "historical_forward_return_fields_read": false,
+    "provider_request_issued": false,
+    "candidate49_ledgers_changed": false
+  },
+  "decision": {
+    "implementation_frozen_before_values": true,
+    "next_action": "Build one immutable Campaign068 feature snapshot, verify every partition byte/frame hash, and bind that publication before computing coverage or loading compact-cache comparison values."
+  }
+}

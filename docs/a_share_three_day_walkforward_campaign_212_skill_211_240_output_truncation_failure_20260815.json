@@ -1,0 +1,19 @@
+{
+  "schema_version": 1,
+  "kind": "a_share_three_day_walkforward_campaign212_infrastructure_failure",
+  "recorded_at": "2026-08-15T22:50:00+08:00",
+  "timestamp_semantics": "monotonic_logical_append_time_not_host_wall_clock_measurement",
+  "attempt_id": "campaign212_infrastructure_001",
+  "phase": "mandatory_skill_read",
+  "status": "failed_output_truncated_before_context_compaction",
+  "requested_skill_line_range": "211-240",
+  "failure_semantics": "The mandatory skill read was truncated before context compaction. The complete invocation was discarded and the range was later reread from the authoritative skill in bounded output.",
+  "result_consumed": false,
+  "scientific_evidence_changed": false,
+  "candidate_or_comparator_value_read": false,
+  "daily_price_or_forward_return_read": false,
+  "provider_or_web_request_issued": false,
+  "provider_credential_presence_value_or_digest_read": false,
+  "candidate49_plan_or_run_executed": false,
+  "candidate49_ledgers_changed": false
+}

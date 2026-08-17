@@ -1,0 +1,129 @@
+{
+  "version": 1,
+  "kind": "a_share_three_day_walkforward_campaign035_mechanism_overlap_audit",
+  "status": "passed_conceptual_independence_before_minute_candidate_comparison_or_return_values",
+  "recorded_at": "2026-07-30T19:41:45Z",
+  "purpose": "Resolve the selected ordinal-state-diversity concept into one exact finite no-value mechanism and challenge it against terminal and prospective families before any Campaign035 source partition, candidate value, comparison value, daily price, or forward return is opened.",
+  "concept_scouting": {
+    "path": "docs/a_share_three_day_walkforward_campaign_035_concept_scouting.json",
+    "sha256": "7ecc7668458f9211082688a6e93de44261b1dfd509cea75c1d98c4d29366ee9c"
+  },
+  "authoritative_boundary": {
+    "path": "docs/a_share_three_day_iteration_status_20260731_campaign034_verified.json",
+    "sha256": "c304581a049ed921e1f6f112ea781ac2d3c35bac9951a1053a4e90640d947ea7"
+  },
+  "historical_walkforward_policy": {
+    "path": "docs/a_share_three_day_historical_walkforward_research_policy_20260727.json",
+    "sha256": "38426d6161b9bfed323c58caba18feca668b8c9d53e294951a8ba90c01a798bb"
+  },
+  "selected_mechanism": {
+    "name": "intraday_return_weak_order_entropy_234t",
+    "direction": "higher",
+    "information_domain": "within_half_three_return_weak_ordinal_pattern_distribution",
+    "formula": "For each half form 119 adjacent log-close returns and its 117 overlapping length-three return tuples. Classify all 234 tuples into the 13 exact weak orderings of three values; with p_k=count_k/234, return -sum_{p_k>0}(p_k*ln(p_k))/ln(13).",
+    "economic_hypothesis": "A higher value means the completed session visits a broader mix of local rising, falling, turning, and tie states, representing less mechanically concentrated short-horizon price formation and potentially more resilient two-sided liquidity from the next open through the third close.",
+    "source_fields": [
+      "datetime",
+      "symbol",
+      "provider",
+      "close"
+    ],
+    "selected_bar_grid": "exactly 240 raw unadjusted one-minute closes at 09:31-11:30 and 13:01-15:00 after frozen timestamp normalization; standalone 09:30 is excluded",
+    "return_rule": "Within each 120-close half form exactly 119 signed log returns log(close_j/close_{j-1}). Never form the 11:30-to-13:01 lunch return and never use an overnight return.",
+    "tuple_rule": "Within each half form every overlapping tuple (r_j,r_{j+1},r_{j+2}), j=0..116. Pool the 117 morning and 117 afternoon tuples into one fixed support of 234. Do not skip, subsample, de-overlap, or join across lunch.",
+    "weak_order_rule": "For tuple (a,b,c), encode the exact comparison triple (cmp(a,b),cmp(a,c),cmp(b,c)), with cmp in {-1,0,+1}. IEEE equality after deterministic log-return calculation is exact; no epsilon, rounding, tick canonicalization, jitter, chronological tie break, or random tie break is allowed. Exactly the 13 transitive weak-order states are admissible: six strict orders, six one-pair-tie orders, and the all-equal order.",
+    "entropy_rule": "Count every tuple once, divide each of the 13 state counts by fixed denominator 234, use natural logarithms, omit only zero-probability terms from the sum, and normalize by ln(13). All 13 states remain in the fixed alphabet even when unobserved.",
+    "bar_rule": "All 240 selected closes must be finite and strictly positive. Every derived return must be finite, every tuple must map to exactly one admissible state, and the state counts must sum to 234.",
+    "missing_rule": "Any invalid, nonpositive, or nonfinite selected close; nonfinite derived return or entropy; inadmissible comparison state; count sum other than 234; or score outside [0,1] makes the stock-day missing.",
+    "valid_range": [
+      0.0,
+      1.0
+    ]
+  },
+  "overlap_challenges": [
+    {
+      "family": "intraday_return_spectral_entropy_59f",
+      "result": "distinct_pending_statistical_uniqueness_gate",
+      "reason": "Spectral entropy uses demeaned return magnitudes and pooled Fourier power by frequency. Campaign035 discards magnitudes after exact comparisons and measures the frequency of 13 local ordinal states, retaining ties explicitly and using no DFT, phase, band, or power."
+    },
+    {
+      "family": "intraday_return_sign_run_imbalance_238p_and_bar_direction_continuity",
+      "result": "distinct_pending_statistical_uniqueness_gate",
+      "reason": "Sign-run and bar-direction factors count persistence of positive/negative directions. Campaign035 compares the relative ordering of three consecutive signed return magnitudes, so positive-positive-positive triples can occupy all strict or tied weak orders and are not collapsed to one run state."
+    },
+    {
+      "family": "intraday_return_skewness_upside_semivariance_and_variance_entropy",
+      "result": "distinct_pending_statistical_uniqueness_gate",
+      "reason": "Moment and semivariance mechanisms depend on return magnitudes, powers, or sign-separated variance. Campaign035 is invariant to every strictly increasing transformation applied to all returns in a tuple and has no moment, squared return, or variance bucket."
+    },
+    {
+      "family": "intraday_absolute_return_serial_persistence_and_diffusive_variation_ratio",
+      "result": "distinct_pending_statistical_uniqueness_gate",
+      "reason": "Persistence and variation-ratio factors use products or correlations of adjacent absolute return magnitudes. Campaign035 uses a categorical distribution of overlapping signed-return weak orderings and no product, covariance, or Pearson estimator."
+    },
+    {
+      "family": "intraday_morning_afternoon_return_profile_persistence",
+      "result": "distinct_pending_statistical_uniqueness_gate",
+      "reason": "Morning-afternoon persistence correlates matching ordinal clock positions across halves. Campaign035 pools within-half tuple states, never aligns morning and afternoon positions, and is invariant to permuting complete tuple occurrences while preserving state counts."
+    },
+    {
+      "family": "intraday_price_update_share_238m_and_round_tenth_close_avoidance",
+      "result": "distinct_pending_statistical_uniqueness_gate",
+      "reason": "Price-update share tests adjacent close equality, while Campaign034 tests absolute CNY grid residues. Campaign035 forms log returns, uses equality only between derived returns inside a tuple, and is invariant to the absolute CNY price digit grid."
+    },
+    {
+      "family": "candidate49_cumulative_vwap_crossing_rate",
+      "result": "distinct",
+      "reason": "Candidate49 counts ordered close crossings around a causal cumulative amount/volume anchor and is future-only. Campaign035 reads no amount or volume, forms no VWAP or crossing, and remains historical-research-only."
+    },
+    {
+      "family": "amount_volume_market_quarterly_or_event_mechanisms",
+      "result": "distinct",
+      "reason": "Campaign035 reads only own-stock minute closes and contains no activity profile, market benchmark, peer state, quarterly field, or event timing."
+    },
+    {
+      "family": "terminal_factor_combination_or_rescue",
+      "result": "not_used",
+      "reason": "Campaign035 contains one exact own-close ordinal-state entropy statistic and no terminal factor value, transform, filter, model, or combination."
+    }
+  ],
+  "design_choices_frozen_before_values": {
+    "formula_family": "fixed_alphabet_weak_ordinal_pattern_entropy",
+    "direction": "higher",
+    "selected_bar_count": 240,
+    "within_half_return_count": 238,
+    "tuple_length": 3,
+    "within_half_tuple_count": 234,
+    "weak_order_state_count": 13,
+    "include_0930": false,
+    "include_lunch_return_or_tuple": false,
+    "overlapping_tuples_required": true,
+    "tie_semantics": "exact derived-return equality retained as one of seven tied weak-order states",
+    "comparison_tolerance": 0.0,
+    "support_denominator": 234,
+    "entropy_log_base": "natural",
+    "entropy_normalizer": "ln(13)",
+    "tuple_order_used": true,
+    "return_magnitudes_used_after_state_classification": false,
+    "strict_only_tie_drop_jitter_rounding_alternate_tuple_length_or_deoverlap_search_allowed": false,
+    "subwindow_year_filter_threshold_or_board_selection_allowed": false,
+    "market_quarterly_activity_or_terminal_factor_input_allowed": false
+  },
+  "decision": {
+    "conceptually_independent": true,
+    "advance_to_exact_no_return_preregistration": true,
+    "candidate_or_comparison_values_may_be_read_now": false,
+    "binding_validator_exit_zero_required_before_next_stage": true,
+    "candidate49_remains_only_active_prospective_candidate": true,
+    "candidate50_activation_allowed": false,
+    "current_aggregation_scoring_selection_sizing_or_orders_allowed": false
+  },
+  "research_boundary": {
+    "external_campaign035_minute_partitions_read": false,
+    "candidate_values_read": false,
+    "comparison_values_read": false,
+    "daily_price_fields_read": false,
+    "forward_returns_read": false,
+    "provider_request_issued": false
+  }
+}

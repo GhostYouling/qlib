@@ -1,0 +1,110 @@
+{
+  "version": 1,
+  "kind": "a_share_three_day_walkforward_campaign_completion_audit_record",
+  "status": "passed_all_goal_requirements",
+  "recorded_at": "2026-07-27T12:09:00Z",
+  "campaign_id": "a_share_three_day_walkforward_campaign_001",
+  "revision": "r1",
+  "audit_runner": {
+    "path": "scripts/a_share_three_day_walkforward_completion_audit.py",
+    "sha256": "edceebb527d748166fe16a2cd65f818dd16c1f0dbc4a57f6cd9bf3d4ef44628b",
+    "mode": "read_only"
+  },
+  "authoritative_evidence": {
+    "campaign_preregistration": {
+      "path": "docs/a_share_three_day_walkforward_campaign_001r1_preregistration.json",
+      "sha256": "63966d420288a1e4c6595f60df105dc373fd3240ffd6694a24dd6cdd86193d4a"
+    },
+    "research_record": {
+      "path": "docs/a_share_three_day_walkforward_campaign_001r1_research_record.json",
+      "sha256": "7cc2096a42157b6df3c37acde2647e10c7b9daa28c33967a533ce10f3324f3a3"
+    },
+    "trial_ledger": {
+      "path": "data/experiments/short_horizon/historical_walkforward/campaign_001r1/trial_ledger.json",
+      "sha256": "3a573c6533d4747d97eb39112fd040c3b6b3c105ac273b45575b6f9f2bb88e6f",
+      "chain_tip_sha256": "0bc08db37e50976e2364537841b0502a5f7084500f78189950e60d5917ca858d"
+    },
+    "fresh_price_basis_audit": {
+      "path": "data/metadata/price_basis_audit_20260727T120622Z.json",
+      "sha256": "80dd60adbba4e729360b031cc533870497e6e56d486df0d900c0be665d5b5cdd",
+      "status": "passed",
+      "rows": 11425582,
+      "forward_return_fields_read": false
+    }
+  },
+  "requirement_check_count": 15,
+  "failed_requirement_checks": [],
+  "requirement_results": [
+    {
+      "requirement": "建立历史 walk-forward runner 和追加式试验账本",
+      "passed": true,
+      "evidence": "The frozen runner validates an append-only SHA-256 chain; the completed ledger has 100 valid entries and the first failed infrastructure attempt remains in its separate original ledger."
+    },
+    {
+      "requirement": "冻结第一批有限因子库、组合方式及参数搜索范围",
+      "passed": true,
+      "evidence": "Eight factors, eight single trials, and 84 pair-rank blends were fingerprint-bound before the successful development run; the repaired preregistration was frozen at 2026-07-27T11:51:00Z and the first development entry was created at 2026-07-27T11:52:37.851805+00:00."
+    },
+    {
+      "requirement": "在 2019–2023 扩展训练/验证折中迭代",
+      "passed": true,
+      "evidence": "Every one of the 92 catalog trials contains all three exact expanding folds, non-empty association cohorts, normalized execution, and CNY 200,000/10bp pilot execution views."
+    },
+    {
+      "requirement": "固定存活规则后一次性打开 2024–2025",
+      "passed": true,
+      "evidence": "The survivor rule replay exactly reproduces eight frozen survivors. Their record predates the immutable lockbox intent; all eight lockbox entries use that one opening timestamp and the consumption record permanently closes the lockbox."
+    },
+    {
+      "requirement": "全部成功和失败组合留档",
+      "passed": true,
+      "evidence": "All 92 development catalog IDs occur exactly once, all eight selected lockbox parents occur exactly once, the original infrastructure failure remains retained, and no trial ID is missing or extra."
+    },
+    {
+      "requirement": "旧终止因子仅作为事前冻结研究特征且旧结论不改写",
+      "passed": true,
+      "evidence": "All eight factor registrations assert prior_terminal_conclusion_unchanged=true and their source research records still match the preregistered SHA-256 bindings."
+    },
+    {
+      "requirement": "Candidate49 独立盲测、禁止历史回填且不启动 Candidate50",
+      "passed": true,
+      "evidence": "Candidate49 is absent from the historical library; every campaign entry says historical_return_read=false; both prospective ledgers retain their recorded hashes and contain zero entries; no Candidate50 artifact exists below the experiment root."
+    },
+    {
+      "requirement": "历史组合暂不生成当前选股或订单",
+      "passed": true,
+      "evidence": "Every ledger entry and final record keeps scoring, selection, sizing, and order flags false. The campaign directory contains only the ledger, survivor record, lockbox intent, consumption record, and research report."
+    }
+  ],
+  "chronology_note": {
+    "base_preregistration_declared_frozen_at": "2026-07-27T12:08:00Z",
+    "base_file_observed_birth_and_modification_time": "2026-07-27T19:44:46+0800",
+    "first_failure_entry_created_at": "2026-07-27T11:46:28Z",
+    "first_failure_forward_return_fields_read": false,
+    "repaired_preregistration_frozen_at": "2026-07-27T11:51:00Z",
+    "first_successful_development_entry_created_at": "2026-07-27T11:52:37.851805+00:00",
+    "interpretation": "The base JSON's declared frozen_at is a preserved clerical timestamp inconsistency and is not used to prove chronology. The base file hash was already bound by the no-return infrastructure-failure record. The successful r1 campaign has an internally consistent preregistration-before-development and survivor-before-lockbox sequence."
+  },
+  "outcome": {
+    "development_trial_count": 92,
+    "selected_lockbox_survivor_count": 8,
+    "completed_lockbox_trial_count": 8,
+    "final_gate_passer_count": 0,
+    "research_only_champion_trial_id": null,
+    "current_scoring_selection_sizing_or_orders_allowed": false
+  },
+  "verification": {
+    "completion_audit_command": "python scripts/a_share_three_day_walkforward_completion_audit.py --compact",
+    "completion_audit_exit_code": 0,
+    "focused_test_command": "python -m pytest -q tests/data_collector_tests/test_a_share_three_day_walkforward_completion_audit.py tests/data_collector_tests/test_a_share_three_day_walkforward_campaign.py tests/data_collector_tests/test_a_share_three_day_walkforward_policy.py tests/data_collector_tests/test_a_share_tushare_candidate49_future_session_workflow.py tests/data_collector_tests/test_a_share_tushare_candidate49_future_observation.py",
+    "focused_test_result": "79 passed",
+    "full_collector_test_command": "python -m pytest -q tests/data_collector_tests",
+    "full_collector_test_result": "1145 passed, 9 warnings",
+    "warning_classification": "Existing pandas PerformanceWarning and FutureWarning only; no test failure."
+  },
+  "limitations": [
+    "The evidence is historically exposed quasi-out-of-sample rather than pristine.",
+    "The holding universe derives from a current listing snapshot and may contain survivorship bias.",
+    "Repository evidence proves that this campaign created no score, selection, sizing, or order artifact; it cannot prove the absence of actions outside the declared workspace."
+  ]
+}

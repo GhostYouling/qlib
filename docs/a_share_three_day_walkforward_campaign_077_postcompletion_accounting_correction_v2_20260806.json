@@ -1,0 +1,45 @@
+{
+  "schema_version": 1,
+  "kind": "a_share_three_day_walkforward_campaign077_postcompletion_accounting_correction",
+  "status": "additive_current_accounting_preserves_all_prior_records",
+  "recorded_at": "2026-08-06T13:41:00+08:00",
+  "campaign_id": "a_share_three_day_walkforward_campaign_077",
+  "supersedes_without_rewriting": {
+    "path": "docs/a_share_three_day_walkforward_campaign_077_postcompletion_accounting_correction_20260806.json",
+    "sha256": "bdc73ea76a7a09edfaf185f9a9b2d5d7170f27f7485429ffd89b17317817871e",
+    "preserved": true
+  },
+  "preserved_research_record": {
+    "path": "docs/a_share_three_day_walkforward_campaign_077_research_record.json",
+    "sha256": "befe34e7ed424f709628e934b734c76e0c67c2b132e534480a06b926c2f66ca5"
+  },
+  "new_failure_record": {
+    "path": "docs/a_share_three_day_walkforward_campaign_077_terminal_test_reporting_representation_failure_20260806.json",
+    "sha256": "7092c86870a98ee23e463588b37a55d5b05d6cc1e0ecabfe6f3a3f5226d584b3"
+  },
+  "current_attempt_ledger": {
+    "path": "data/experiments/short_horizon/historical_walkforward/campaign_077/research_attempt_ledger_v8.json",
+    "sha256": "d2e61cf91f5e3ec45ed45ce880492ed93d143efb78cfe1fa0234d5073efb8ad7"
+  },
+  "current_campaign_report": {
+    "path": "docs/a_share_three_day_walkforward_campaign_077_report.md",
+    "sha256": "a88161c997aaabfc674eea3f55f4de72c1348fee89853d36b75272e616363184"
+  },
+  "corrected_attempt_accounting": {
+    "campaign077_infrastructure_failures": 9,
+    "campaign077_complete_factor_attempts": 1,
+    "campaign077_attempts": 10,
+    "campaign077_ledger_entries": 11,
+    "campaign077_return_reading_development_trials": 1,
+    "cumulative_historical_attempts": 478,
+    "cumulative_return_reading_development_trials": 279
+  },
+  "research_values_changed": false,
+  "underlying_daily_prices_or_forward_returns_read_by_new_failure": false,
+  "existing_frozen_development_artifacts_read_by_tests": true,
+  "development_recomputed": false,
+  "stress_2024_2025_opened": false,
+  "provider_request_issued": false,
+  "candidate49_ledgers_changed": false,
+  "current_scoring_selection_sizing_or_orders_performed": false
+}

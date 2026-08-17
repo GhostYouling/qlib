@@ -1,0 +1,91 @@
+{
+  "version": 1,
+  "kind": "a_share_three_day_walkforward_campaign060_feature_implementation_freeze",
+  "status": "frozen_before_campaign060_source_values",
+  "recorded_at": "2026-08-04T23:27:00+08:00",
+  "purpose": "Bind the sole Campaign060 feature implementation and final synthetic tests before any raw minute partition value, candidate value, comparison value, daily price, or forward return is read.",
+  "authoritative_boundary": {
+    "path": "docs/a_share_three_day_iteration_status_20260804_campaign059_verified_v2.json",
+    "sha256": "4ba4d5fce6f6771f8e82e4c04deb8b8fc5f85a0443efd51e041b86514c95825a"
+  },
+  "mechanism_overlap_audit": {
+    "path": "docs/a_share_three_day_walkforward_campaign_060_mechanism_overlap_audit.json",
+    "sha256": "508d079eb00a59039538dcc686ee3bfeb383fbe6395870f2322fe30c82e26606"
+  },
+  "no_return_protocol": {
+    "path": "docs/a_share_three_day_walkforward_campaign_060_no_return_preregistration.json",
+    "sha256": "1d8d41bcfde2cd0ae81e69eae0abb4fd7ef92fed9ec63dd8187e510cd02b92a3",
+    "binding_validator_passed": true,
+    "binding_count_passed": 14,
+    "binding_count_failed": 0
+  },
+  "base_feature_engine": {
+    "path": "scripts/a_share_three_day_walkforward_campaign057_features.py",
+    "sha256": "3706ac11c551dd02c8d6d8cf30c95a6f076d6a6e6c5dbba4beb07dde10aca66a",
+    "use": "immutable cross-session publication and checkpoint engine only; Campaign060 overrides protocol reconstruction, signed-return extraction, sign-agreement formula, support semantics, and names"
+  },
+  "feature_runner": {
+    "path": "scripts/a_share_three_day_walkforward_campaign060_features.py",
+    "sha256": "6e9d51fbe18329e13e3f865c66597af56864313069d3d558ac46487347923e47",
+    "factor": "intraday_day_over_day_directional_return_agreement_238b",
+    "direction": "higher",
+    "source_projection": [
+      "datetime",
+      "symbol",
+      "provider",
+      "close"
+    ],
+    "current_and_prior_close_count": 240,
+    "current_and_prior_signed_return_position_count": 238,
+    "prior_session_rule": "immediately_preceding_accepted_local_market_session_without_suspension_bridge",
+    "minimum_informative_positions": 60,
+    "zero_rule": "either exact-zero return makes the aligned position noninformative",
+    "output_run_id": "tushare_stk_mins_1m_2019_2025_ea0cbb8f_walkforward_campaign060_feature_library_v1"
+  },
+  "pre_freeze_infrastructure_failures": [
+    {
+      "path": "docs/a_share_three_day_walkforward_campaign_060_feature_test_float_assertion_failure_20260804.json",
+      "sha256": "dafdfc229be475ae5672a5cbaa9242d0a5599033fc2083d3bbe4c3937fd79328"
+    },
+    {
+      "path": "docs/a_share_three_day_walkforward_campaign_060_feature_test_lunch_expectation_failure_20260804.json",
+      "sha256": "3e9291884b679f43350f21c71ce2de0e6c6fc46e124610a1b5086e86dc8ef56d"
+    }
+  ],
+  "synthetic_tests": {
+    "path": "tests/data_collector_tests/test_a_share_three_day_walkforward_campaign060_features.py",
+    "sha256": "a5dea294488b5706edc11b7651a1fe3526e9947dd6fdd557902690f6dad0f598",
+    "command": "PYTHONPATH=/Volumes/DIsk/Disk-Coding/qlib /opt/anaconda3/bin/python3 -m pytest -q tests/data_collector_tests/test_a_share_three_day_walkforward_campaign060_features.py",
+    "passed": 8,
+    "failed": 0,
+    "formula_identity_magnitude_invariance_zero_support_invalid_grid_lunch_exclusion_prior_session_and_no_bridge_semantics_tested": true
+  },
+  "implementation_semantics": {
+    "process_each_symbol_in_year_order": true,
+    "carry_only_observed_raw_profiles_across_year_boundaries": true,
+    "look_up_only_the_exact_calendar_predecessor": true,
+    "missing_or_suspended_previous_stock_session_is_missing": true,
+    "construct_returns_separately_inside_each_half": true,
+    "lunch_transition_excluded": true,
+    "nonzero_return_magnitudes_discarded_after_sign": true,
+    "exact_zero_return_pairs_excluded_from_numerator_and_denominator": true,
+    "minimum_jointly_nonzero_positions": 60,
+    "nonfinite_or_nonpositive_close_is_missing": true,
+    "atomic_partial_root_publication": true,
+    "per_partition_byte_and_frame_hashes": true,
+    "source_raw_and_joint_clean_partition_byte_hashes_verified": true,
+    "provider_calls": 0
+  },
+  "source_partition_values_read_before_freeze": false,
+  "candidate_values_read_before_freeze": false,
+  "comparison_values_read_before_freeze": false,
+  "historical_daily_price_fields_read_before_freeze": [],
+  "historical_forward_return_fields_read_before_freeze": false,
+  "training_or_model_fitting_performed_before_freeze": false,
+  "candidate49_historical_return_signal_execution_or_milestone_backfill_performed": false,
+  "candidate49_ledgers_changed": false,
+  "second_prospective_candidate_created": false,
+  "current_scoring_selection_sizing_or_orders_performed": false,
+  "provider_request_issued_before_freeze": false,
+  "next_action": "Run only the bound Campaign060 build against /Volumes/DIsk/qlib-a-share-tushare-1m, verify every output partition, then publish a separate snapshot binding before the ordered no-return audit."
+}

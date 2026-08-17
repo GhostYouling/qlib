@@ -1,0 +1,76 @@
+{
+  "version": 1,
+  "kind": "a_share_three_day_walkforward_campaign073_verification",
+  "status": "verified_terminal_before_historical_daily_prices_or_returns",
+  "verified_at": "2026-08-06T07:27:26+08:00",
+  "terminal_completion_freeze": {
+    "path": "docs/a_share_three_day_walkforward_campaign_073_terminal_completion_freeze_20260806.json",
+    "sha256": "e5ddbd5b816f7fb3a3a3e54488257afb9a3d41d76d81b93690cfbfc3841fdc43"
+  },
+  "current_research_record": {
+    "path": "docs/a_share_three_day_walkforward_campaign_073_research_record_v2.json",
+    "sha256": "dc97df498f35cecbd8b5bb276e949849def5047dff12043f6e2ea6b76770b490",
+    "binding_validator_passed": true,
+    "binding_count": 14
+  },
+  "current_attempt_ledger": {
+    "path": "data/experiments/short_horizon/historical_walkforward/campaign_073/research_attempt_ledger_v2.json",
+    "sha256": "e0b4d38fb14775e124d3ba9381c79af8614955c6904dca5f3725bc153f66965b",
+    "append_only_predecessor_preserved": true
+  },
+  "current_test_suite": {
+    "receipt_path": "docs/a_share_three_day_walkforward_campaign_073_current_test_suite_receipt_20260806.json",
+    "receipt_sha256": "203c6142f293405a8506f36bb26aed2803755fc993818b84db8154a4b4651cb3",
+    "exit_code": 0,
+    "passed": 20,
+    "failed": 0
+  },
+  "verification_checks": {
+    "campaign073_json_documents_parse": true,
+    "terminal_evidence_hash_bindings_passed": 12,
+    "research_record_bindings_passed": 14,
+    "snapshot_manifest_byte_hash_passed": true,
+    "snapshot_dataset_hash_passed": true,
+    "snapshot_partition_count": 33015,
+    "snapshot_row_count": 7724498,
+    "snapshot_factor_eligible_rows": 7724498,
+    "coverage_gate_passed": true,
+    "numeric_comparison_count": 103,
+    "numeric_comparison_order_passed": true,
+    "failed_comparison_exact": "intraday_price_update_share_238m",
+    "failed_absolute_median_daily_rank_correlation": 0.8607906131941189,
+    "admissible_factor_count": 0,
+    "historical_daily_price_or_forward_return_read": false,
+    "development_or_stress_run_created": false,
+    "provider_request_issued": false,
+    "current_scoring_selection_sizing_or_orders_performed": false
+  },
+  "attempt_accounting": {
+    "campaign073_infrastructure_failures": 4,
+    "campaign073_complete_factor_attempts": 1,
+    "campaign073_attempts": 5,
+    "campaign073_return_reading_trials": 0,
+    "cumulative_historical_attempts": 442,
+    "cumulative_return_reading_development_trials": 275
+  },
+  "candidate49": {
+    "sole_active_prospective_candidate": true,
+    "signal_ledger_sha256": "5193f00d7f36da003f53cec387900da4c3d002299f5dfcfc1a95eaa199ed3a79",
+    "signal_entries": 0,
+    "execution_ledger_sha256": "d57a3e61eac969e42cafa418ccd8c0a5ee65dcf69da145bb2c096c2a02a2ea4f",
+    "execution_entries": 0,
+    "historical_backfill_performed": false,
+    "same_day_plan_or_run_performed": false
+  },
+  "credential_safety": {
+    "repository_env_regular_file": true,
+    "repository_env_mode": "0600",
+    "tushare_token_nonempty": true,
+    "secret_printed_hashed_logged_or_persisted": false
+  },
+  "limitations": {
+    "current_listing_snapshot_survivorship_bias": true,
+    "result_is_redundancy_rejection_not_predictive_return_evidence": true,
+    "investment_advice": false
+  }
+}

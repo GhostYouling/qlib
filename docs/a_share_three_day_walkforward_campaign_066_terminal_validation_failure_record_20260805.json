@@ -1,0 +1,47 @@
+{
+  "version": 1,
+  "kind": "a_share_three_day_walkforward_campaign066_terminal_validation_failure_record",
+  "status": "recorded_two_pre_state_assertions_after_legitimate_terminal_transition",
+  "recorded_at": "2026-08-05T17:49:00+08:00",
+  "failed_suite_exit_code": 1,
+  "suite_result": {
+    "passed": 55,
+    "failed": 2,
+    "terminal_freeze_bindings_passed": 8,
+    "terminal_freeze_bindings_failed": 0
+  },
+  "failed_nodes": [
+    {
+      "node": "tests/data_collector_tests/test_a_share_three_day_walkforward_campaign066_no_return_audit.py::test_status_is_coverage_comparison_and_return_closed_before_audit",
+      "pre_state_assertion": "audit_count == 0",
+      "observed_terminal_state": "audit_count == 1",
+      "reason": "The immutable pre-audit status test was rerun after the one allowed audit completed."
+    },
+    {
+      "node": "tests/data_collector_tests/test_a_share_three_day_walkforward_campaign066.py::test_campaign066_stress_is_closed_before_development_survivor_freeze",
+      "pre_state_assertion": "ledger_entry_count == 0",
+      "observed_terminal_state": "ledger_entry_count == 1",
+      "reason": "The immutable pre-development status test was rerun after the one allowed development trial completed."
+    }
+  ],
+  "resolution": {
+    "bound_pre_state_tests_modified": false,
+    "research_values_or_returns_recomputed": false,
+    "first_deselect_attempt_exit_code": 1,
+    "first_deselect_attempt_reason": "The supplied node IDs incorrectly retained the tests/ prefix while Pytest rootdir normalized collected IDs under data_collector_tests/.",
+    "collected_node_ids_read_before_corrected_rerun": true,
+    "terminal_rerun_policy": "Deselect only the two named pre-state nodes and retain all other tests; completed-state semantics are covered by test_a_share_three_day_walkforward_campaign066_terminal.py.",
+    "corrected_terminal_suite_exit_code": 0,
+    "corrected_terminal_suite_passed": 55,
+    "corrected_terminal_suite_deselected": 2,
+    "research_attempt_count_increment": 0,
+    "development_trial_count_increment": 0
+  },
+  "research_boundary": {
+    "stress_2024_2025_opened": false,
+    "candidate49_historical_return_read": false,
+    "candidate49_ledgers_changed": false,
+    "provider_request_issued": false,
+    "current_scoring_selection_sizing_or_orders_performed": false
+  }
+}

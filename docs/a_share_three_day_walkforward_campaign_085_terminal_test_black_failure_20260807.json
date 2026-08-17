@@ -1,0 +1,21 @@
+{
+  "schema_version": 1,
+  "kind": "a_share_three_day_walkforward_campaign085_terminal_test_black_failure",
+  "status": "recorded_after_four_semantic_tests_passed_without_additional_market_or_return_read",
+  "recorded_at": "2026-08-07T00:12:00+08:00",
+  "failed_check": {
+    "tool": "black --check",
+    "target": "tests/data_collector_tests/test_a_share_three_day_walkforward_campaign085_terminal.py",
+    "pre_format_sha256": "5011462b00f889c93af45f34b1389cfc9d8abdcc16700b8497ff029bdcf533ba",
+    "preceding_semantic_test_result": "4 passed",
+    "result": "one file would be reformatted",
+    "correction": "Apply Black's deterministic formatting only and rerun the same semantic tests plus Ruff."
+  },
+  "research_boundary": {
+    "additional_candidate_comparator_market_or_return_values_read": false,
+    "stress_2024_2025_opened": false,
+    "provider_request_issued": false,
+    "candidate49_ledgers_changed": false,
+    "current_scoring_selection_sizing_or_orders_performed": false
+  }
+}

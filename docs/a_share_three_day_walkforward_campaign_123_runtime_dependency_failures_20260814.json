@@ -1,0 +1,55 @@
+{
+  "schema_version": 1,
+  "kind": "a_share_three_day_walkforward_campaign123_runtime_dependency_failures",
+  "status": "three_failed_module_resolution_commands_recorded_before_test_collection",
+  "recorded_at": "2026-08-14T03:25:04+08:00",
+  "failures": [
+    {
+      "failure_id": "campaign123_runtime_dependency_black_001",
+      "command_role": "black_check",
+      "interpreter": "/Users/niyufei/.cache/codex-runtimes/codex-primary-runtime/dependencies/python/bin/python3",
+      "exit_code": 1,
+      "failure": "No module named black",
+      "tests_collected": false
+    },
+    {
+      "failure_id": "campaign123_runtime_dependency_ruff_002",
+      "command_role": "ruff_check",
+      "interpreter": "/Users/niyufei/.cache/codex-runtimes/codex-primary-runtime/dependencies/python/bin/python3",
+      "exit_code": 1,
+      "failure": "No module named ruff",
+      "tests_collected": false
+    },
+    {
+      "failure_id": "campaign123_runtime_dependency_pytest_003",
+      "command_role": "directed_synthetic_test",
+      "interpreter": "/Users/niyufei/.cache/codex-runtimes/codex-primary-runtime/dependencies/python/bin/python3",
+      "exit_code": 1,
+      "failure": "No module named pytest",
+      "tests_collected": false
+    }
+  ],
+  "recovery": {
+    "resolved_executables": {
+      "black": "/Volumes/DIsk/Coding/anaconda3/bin/black",
+      "ruff": "/Volumes/DIsk/Coding/anaconda3/bin/ruff",
+      "pytest": "/Volumes/DIsk/Coding/anaconda3/bin/pytest"
+    },
+    "separate_recovery_checks_required": true,
+    "failed_exit_codes_overridden_or_ignored": false
+  },
+  "scientific_result_changed": false,
+  "research_boundary": {
+    "provider_request_issued": false,
+    "credential_loaded": false,
+    "provider_rows_read_persisted_or_counted": false,
+    "candidate_or_comparison_values_read": false,
+    "historical_daily_price_fields_read": [],
+    "historical_forward_returns_read": false,
+    "stress_2024_2025_opened": false,
+    "candidate49_ledgers_changed": false,
+    "second_prospective_candidate_created": false,
+    "current_scoring_selection_sizing_positions_or_orders_performed": false,
+    "investment_advice": false
+  }
+}

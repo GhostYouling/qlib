@@ -1,0 +1,121 @@
+{
+  "version": 1,
+  "kind": "a_share_three_day_walkforward_campaign025_mechanism_overlap_audit",
+  "status": "passed_conceptual_independence_before_formula_values_comparisons_or_returns",
+  "recorded_at": "2026-07-29T11:21:00Z",
+  "purpose": "Resolve the selected extreme-arrival-order concept into one exact no-value mechanism and challenge it against terminal and prospective families before any Campaign025 source partition, candidate value, comparison value, daily price, or forward return is opened.",
+  "concept_scouting": {
+    "path": "docs/a_share_three_day_walkforward_campaign_025_concept_scouting.json",
+    "sha256": "c02e75348e2f5734325da5b8b4985f18174197a6eaed46380629bfef3be783e3"
+  },
+  "authoritative_boundary": {
+    "path": "docs/a_share_three_day_iteration_status_20260729_campaign024_binding_validator_ready.json",
+    "sha256": "626e1a9264d1b544143c1d5361ed68f103b524cb7f1f48706cbb6f06a870fd34"
+  },
+  "historical_walkforward_policy": {
+    "path": "docs/a_share_three_day_historical_walkforward_research_policy_20260727.json",
+    "sha256": "38426d6161b9bfed323c58caba18feca668b8c9d53e294951a8ba90c01a798bb"
+  },
+  "selected_mechanism": {
+    "name": "intraday_extreme_arrival_order_240m",
+    "direction": "higher",
+    "information_domain": "one_minute_global_high_low_first_arrival_order",
+    "formula": "(first_index(global_max(high)) - first_index(global_min(low))) / 239 over the ordered 240-bar continuous-session grid",
+    "economic_hypothesis": "A positive value means the global low was first established before the global high, representing an upward sequence of intraday price discovery that may carry from the next open through the third close. A negative value represents the reverse sequence.",
+    "source_fields": [
+      "datetime",
+      "symbol",
+      "provider",
+      "high",
+      "low"
+    ],
+    "selected_bar_grid": "exactly 240 one-minute bars at 09:31-11:30 and 13:01-15:00 after frozen timestamp normalization; standalone 09:30 is excluded and lunch is collapsed to adjacent observation positions",
+    "extreme_rule": "Find the global maximum of the 240 highs and the global minimum of the 240 lows. For each extreme, use its earliest exact occurrence in chronological position order 0 through 239.",
+    "order_rule": "Subtract the earliest global-low position from the earliest global-high position and divide by 239. Positive means low before high; negative means high before low; zero means both earliest extremes occur in the same bar.",
+    "tie_rule": "Use the first exact occurrence for both extrema. No tolerance, rounding, averaging of tied positions, or last-occurrence alternative is allowed.",
+    "flat_rule": "If global maximum high equals global minimum low exactly, the stock-day is missing because the price range is zero and temporal direction is unidentified.",
+    "bar_rule": "Every selected high and low must be finite and positive with exact low<=high. All 240 bars must pass.",
+    "missing_rule": "Any invalid, nonpositive, or misordered selected high/low value; zero global range; nonfinite score; or score outside [-1,1] makes the stock-day missing.",
+    "valid_range": [
+      -1.0,
+      1.0
+    ]
+  },
+  "overlap_challenges": [
+    {
+      "family": "intraday_terminal_close_location_240m",
+      "result": "distinct",
+      "reason": "Terminal close location ranks the final close inside the close-path range and ignores when extrema arrive. Campaign025 reads no close and measures only the temporal order of the global high and low."
+    },
+    {
+      "family": "intraday_signed_path_efficiency_239m",
+      "result": "distinct",
+      "reason": "Signed path efficiency compares net close displacement with total close variation. Campaign025 uses neither close returns nor path length and remains sensitive only to two extreme arrival positions."
+    },
+    {
+      "family": "intraday_global_price_range_revisit_240m",
+      "result": "distinct",
+      "reason": "Campaign014 measures merged high-low interval overlap and is invariant to bar order. Campaign025 discards interval overlap magnitudes and is defined by chronological extreme order."
+    },
+    {
+      "family": "intraday_prior_range_breakout_pressure_238p",
+      "result": "distinct",
+      "reason": "Campaign015 aggregates each close's one-step breakout beyond the prior bar. Campaign025 reads no close, has no adjacent breakout pair, and uses only the first session-wide high and low positions."
+    },
+    {
+      "family": "range_entropy_reversal_and_width_change",
+      "result": "distinct",
+      "reason": "Campaign011, Campaign012, and Campaign017 measure range-size allocation, adjacent range reversal, or midpoint-width coupling. Campaign025 ignores range-size distribution and local changes after validating high/low ordering."
+    },
+    {
+      "family": "boundary_translation_and_close_location_pressure",
+      "result": "distinct",
+      "reason": "Campaign023 measures correlation of adjacent high and low changes and Campaign022 aggregates the close within each own-bar range. Campaign025 reads no close and no local changes."
+    },
+    {
+      "family": "directional_range_response",
+      "result": "distinct",
+      "reason": "Campaign024 correlates current signed open-close bodies with following one-minute ranges. Campaign025 reads no open or close, uses no lead-response pairs, and measures a session-wide order statistic."
+    },
+    {
+      "family": "candidate49_cumulative_vwap_crossing_rate",
+      "result": "distinct",
+      "reason": "Candidate49 measures repeated close crossings of causal cumulative VWAP using close, volume, and amount. Campaign025 uses only high, low, and their temporal positions."
+    },
+    {
+      "family": "terminal_factor_combination_or_rescue",
+      "result": "not_used",
+      "reason": "Campaign025 contains one new raw high/low ordering statistic and no terminal factor value, transform, filter, model, or combination."
+    }
+  ],
+  "design_choices_frozen_before_values": {
+    "formula_family": "normalized first-arrival position difference",
+    "direction": "higher",
+    "first_occurrence_tie_rule": true,
+    "last_occurrence_or_average_tie_rule_allowed": false,
+    "flat_session_missing": true,
+    "selected_bar_count": 240,
+    "include_0930": false,
+    "lunch_clock_gap_collapsed": true,
+    "subwindow_or_year_selection_allowed": false,
+    "magnitude_weighting_allowed": false,
+    "terminal_factor_input_allowed": false
+  },
+  "decision": {
+    "conceptually_independent": true,
+    "advance_to_exact_no_return_preregistration": true,
+    "candidate_or_comparison_values_may_be_read_now": false,
+    "binding_validator_exit_zero_required_before_next_stage": true,
+    "candidate49_remains_only_active_prospective_candidate": true,
+    "candidate50_activation_allowed": false,
+    "current_aggregation_scoring_selection_sizing_or_orders_allowed": false
+  },
+  "research_boundary": {
+    "external_campaign025_minute_partitions_read": false,
+    "candidate_values_read": false,
+    "comparison_values_read": false,
+    "daily_price_fields_read": false,
+    "forward_returns_read": false,
+    "provider_request_issued": false
+  }
+}

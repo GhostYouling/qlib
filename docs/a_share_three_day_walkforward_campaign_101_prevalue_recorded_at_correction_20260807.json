@@ -1,0 +1,39 @@
+{
+  "schema_version": 1,
+  "kind": "a_share_three_day_walkforward_campaign101_append_only_timestamp_correction",
+  "status": "authoritative_correction_without_rewriting_prior_records",
+  "recorded_at": "2026-08-07T13:18:06Z",
+  "failure": "Two newly appended Campaign101 infrastructure records used manually estimated UTC times later than the host clock.",
+  "affected_records": [
+    {
+      "path": "docs/a_share_three_day_walkforward_campaign_101_feature_prevalue_protocol_status_assertion_failure_20260807.json",
+      "sha256": "b5a7d0f499f37991f8143cb75b603f12b9e940e17c6f6e2f76b0e15b3f44e0f7",
+      "recorded_at_value_is_not_authoritative": true
+    },
+    {
+      "path": "docs/a_share_three_day_walkforward_campaign_101_feature_prevalue_static_quality_failure_20260807.json",
+      "sha256": "69058954a07178532e37b323a62c86ff40032523b14519f339aa0d46ec0c9e6d",
+      "recorded_at_value_is_not_authoritative": true
+    },
+    {
+      "path": "data/experiments/short_horizon/historical_walkforward/campaign_101/research_attempt_ledger_v1.json",
+      "sha256": "81e6844d3357570c91428111dbfe54d7ade892a6c20c5cd557e82bc2dd6ba374",
+      "recorded_at_value_is_not_authoritative": true
+    },
+    {
+      "path": "data/experiments/short_horizon/historical_walkforward/campaign_101/research_attempt_ledger_v2.json",
+      "sha256": "d6544bc15fdef211cedb709833e102ac3472aa9c68053276d926447d4b28c860",
+      "recorded_at_value_is_not_authoritative": true
+    }
+  ],
+  "correction": "The immutable hash chain and ordinal sequence define event order. This record's host-derived UTC timestamp is the first authoritative Campaign101 implementation timestamp after those four records; no prior file is rewritten.",
+  "scientific_result_changed": false,
+  "research_boundary": {
+    "source_factor_values_read": false,
+    "candidate_values_read": false,
+    "comparison_values_read": false,
+    "historical_daily_price_or_forward_return_values_read": false,
+    "provider_request_issued": false,
+    "candidate49_ledgers_changed": false
+  }
+}

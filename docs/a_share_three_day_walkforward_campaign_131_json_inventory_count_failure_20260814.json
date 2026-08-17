@@ -1,0 +1,35 @@
+{
+  "schema_version": 1,
+  "kind": "a_share_three_day_walkforward_campaign131_json_inventory_count_failure",
+  "status": "recorded_wrong_inventory_count_and_masked_validator_exit",
+  "recorded_at": "2026-08-14T08:30:02+08:00",
+  "phase": "corrected_state_binding_verification",
+  "invalid_state": {
+    "path": "docs/a_share_three_day_iteration_status_20260814_campaign131_prevalue_terminal_v2.json",
+    "sha256": "a1298ae1423a4824f6f31072cceede6a180f0c4c944e00a7f19f788186088579",
+    "preserved_but_not_authoritative": true
+  },
+  "failure": {
+    "claimed_campaign131_json_count": 20,
+    "actual_versioned_artifact_count_excluding_iteration_states": 18,
+    "path_hash_bindings_and_candidate49_empty_ledger_assertions_passed_before_count_assertion": true,
+    "python_validator_exit_code": 1,
+    "later_sha256sum_exit_code": 0,
+    "overall_shell_exit_masked_failure": true,
+    "failed_validation_treated_as_success": false
+  },
+  "recovery": {
+    "action": "Define the inventory scope explicitly, append this failure and later artifacts, publish a new corrected state, and run the Python validator as a standalone command with no trailing shell command.",
+    "scientific_result_changed": false,
+    "candidate49_ledgers_changed": false,
+    "library_order_changed": false
+  },
+  "research_boundary": {
+    "source_rows_candidate_values_comparator_values_prices_or_returns_read": false,
+    "stress_2024_2025_opened": false,
+    "provider_request_issued": false,
+    "credential_loaded": false,
+    "candidate49_historical_backfill_performed": false,
+    "current_scoring_selection_sizing_positions_or_orders_performed": false
+  }
+}

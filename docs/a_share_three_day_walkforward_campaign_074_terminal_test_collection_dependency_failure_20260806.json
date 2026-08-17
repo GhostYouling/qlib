@@ -1,0 +1,29 @@
+{
+  "version": 1,
+  "kind": "a_share_three_day_walkforward_campaign074_terminal_test_collection_dependency_failure",
+  "status": "recorded_single_failed_command_during_collection",
+  "recorded_at": "2026-08-06T08:41:00+08:00",
+  "stage": "terminal_current_test_suite_collection",
+  "exit_code": 2,
+  "failed_command_count": 1,
+  "collection_error_count": 4,
+  "accounting_rule": "count the failed pytest command once, not once per collected-file error",
+  "failure": "The isolated test runtime lacked requests; four selected test modules reached collection and failed through the same repository import chain.",
+  "tests_executed": 0,
+  "research_values_recomputed": false,
+  "historical_daily_prices_or_forward_returns_read": false,
+  "stress_2024_2025_opened": false,
+  "provider_request_issued": false,
+  "candidate49_ledgers_changed": false,
+  "remediation": "Install requests into the same isolated temporary dependency target before rerunning the unchanged selected suite.",
+  "repository_dependency_files_changed": false,
+  "accounting": {
+    "campaign074_infrastructure_failure_increment": 1,
+    "campaign074_attempt_increment": 1,
+    "development_return_reading_trial_increment": 0,
+    "corrected_campaign074_infrastructure_failure_count": 8,
+    "corrected_campaign074_attempt_count": 9,
+    "corrected_cumulative_historical_research_attempt_count": 451,
+    "corrected_cumulative_return_reading_development_trial_count": 276
+  }
+}

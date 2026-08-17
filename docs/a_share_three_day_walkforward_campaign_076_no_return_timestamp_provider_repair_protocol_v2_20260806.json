@@ -1,0 +1,37 @@
+{
+  "version": 2,
+  "kind": "a_share_three_day_walkforward_campaign076_no_return_timestamp_provider_repair_protocol",
+  "status": "frozen_after_v1_failure_before_full_retry",
+  "frozen_at": "2026-08-06T11:38:00+08:00",
+  "base_v1_runner": {
+    "path": "scripts/a_share_three_day_walkforward_campaign076_no_return_audit.py",
+    "sha256": "a9371fbfeaf48163a41768c8300fec6f944e8a4e14ef04f20eb58853ad2a2d9d",
+    "preserved": true
+  },
+  "failure_record": {
+    "path": "docs/a_share_three_day_walkforward_campaign_076_no_return_v1_timestamp_provider_failure_20260806.json",
+    "sha256": "38e30c627a9c7bc4ebe352f4f4121797009f90579397b5150d2a4579894de3fd"
+  },
+  "sole_repair": {
+    "incorrect_target": "cache_v4...campaign044.research is absent",
+    "temporary_binding": "Set the Campaign044 feature module's research attribute to the research module already reachable from the frozen context's prior object for the duration of v1.run_no_return_audit, then restore exact prior attribute presence/value.",
+    "candidate_formula_changed": false,
+    "coverage_gate_changed": false,
+    "comparison_library_or_order_changed": false,
+    "uniqueness_threshold_changed": false,
+    "snapshot_or_manifest_rewritten": false,
+    "research_value_or_return_field_changed": false
+  },
+  "retry": {
+    "partial_statistics_reused": false,
+    "restart_from_candidate_snapshot_verification_and_coverage": true,
+    "same_frozen_runtime": "pandas 2.2.3 / pyarrow 25.0.0 compatibility environment",
+    "expected_audit_count_before_retry": 0
+  },
+  "research_boundary": {
+    "historical_daily_price_fields_read_before_retry": [],
+    "historical_forward_returns_read_before_retry": false,
+    "provider_request_issued": false,
+    "candidate49_ledgers_changed": false
+  }
+}

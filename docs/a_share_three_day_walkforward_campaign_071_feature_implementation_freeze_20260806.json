@@ -1,0 +1,63 @@
+{
+  "version": 1,
+  "kind": "a_share_three_day_walkforward_campaign071_feature_implementation_freeze",
+  "status": "frozen_after_synthetic_tests_before_candidate_source_or_comparison_values",
+  "recorded_at": "2026-08-06T05:16:00+08:00",
+  "protocol": {
+    "path": "docs/a_share_three_day_walkforward_campaign_071_no_return_preregistration.json",
+    "sha256": "1d61fc0f0943f512304a722bcf3017e6867fd00ec9a41e1ed310022a526c161f"
+  },
+  "mechanism_audit": {
+    "path": "docs/a_share_three_day_walkforward_campaign_071_mechanism_overlap_audit.json",
+    "sha256": "e32457e148b3a4c774fdd5d1f7b6445a47ae8b5767c00f067c952a61a4f530a4"
+  },
+  "numeric_comparison_policy": {
+    "path": "docs/a_share_three_day_walkforward_future_numeric_comparison_eligibility_policy_v5_20260806.json",
+    "sha256": "afe9f33f1b8accdcbb1481604313fcc55e9e84ecbc02098730f0b41adf60c68f"
+  },
+  "feature_runner": {
+    "path": "scripts/a_share_three_day_walkforward_campaign071_features.py",
+    "sha256": "bc67ea1ebe7bc66faf18d2b5d443ec4b739a83d097646c600b13c30ed0996fec"
+  },
+  "tests": {
+    "path": "tests/data_collector_tests/test_a_share_three_day_walkforward_campaign071_features.py",
+    "sha256": "a8297c8f00e92df27f280fd487ba3ee649d23b746a48404eca7c681c16728e2b",
+    "result": "4 passed",
+    "synthetic_only": true
+  },
+  "implementation": {
+    "factor": "quarterly_net_profit_scale_rank",
+    "direction": "higher",
+    "quarterly_projection": [
+      "instrument",
+      "report_date",
+      "announcement_date",
+      "net_profit"
+    ],
+    "strict_next_session_activation": true,
+    "finite_strictly_positive_state_only": true,
+    "independent_per_field_forward_fill": true,
+    "same_day_rank": "average_tie_percentile",
+    "valid_range": "(0,1]",
+    "complete_definition_count": 102,
+    "complete_definition_order_sha256": "5509c7801521a81c259892ad8637bdcdf5440eb11a1e99872091de251d282f08",
+    "numeric_comparator_count": 101,
+    "numeric_comparator_order_sha256": "8ab835ebc9a5cc4f1b0e8e80a7db027dc7b64837859b43975d544dcf9294eca3"
+  },
+  "pre_value_failures_preserved": [
+    "invalid binding-validator CLI shape for policy v4",
+    "policy v4 mistyped Campaign070 audit SHA exposed by correct validator invocation",
+    "feature status import missing compact-cache constants",
+    "feature status import missing Campaign068/069 factor constants"
+  ],
+  "research_boundary": {
+    "real_quarterly_or_stock_day_source_rows_read_before_freeze": false,
+    "real_candidate_values_read_before_freeze": false,
+    "real_comparison_values_read_before_freeze": false,
+    "historical_daily_price_fields_read_before_freeze": [],
+    "historical_forward_returns_read_before_freeze": false,
+    "provider_request_issued_before_freeze": false,
+    "candidate49_ledgers_changed": false,
+    "current_scoring_selection_sizing_or_orders_performed": false
+  }
+}

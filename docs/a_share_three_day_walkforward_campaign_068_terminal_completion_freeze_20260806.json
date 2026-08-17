@@ -1,0 +1,43 @@
+{
+  "version": 1,
+  "kind": "a_share_three_day_walkforward_campaign068_terminal_completion_freeze",
+  "status": "terminal_coverage_rejection_before_comparison_values_daily_prices_or_returns",
+  "recorded_at": "2026-08-06T03:05:00+08:00",
+  "bindings": {
+    "research_record": {
+      "path": "docs/a_share_three_day_walkforward_campaign_068_research_record.json",
+      "sha256": "e8711163c8bce0136dc44b7fe42daa07655b43a37fb325798b75a8c351cafbfc"
+    },
+    "no_return_audit": {
+      "path": "data/experiments/short_horizon/historical_walkforward/campaign_068/no_return/20260805T185838Z_campaign068_no_return_audit.json",
+      "sha256": "897e308897f5adf83361914bc9543b437ed125d1c34839babe86cdd7f8676c16"
+    },
+    "snapshot_binding": {
+      "path": "docs/a_share_three_day_walkforward_campaign_068_feature_snapshot_binding_v2_20260806.json",
+      "sha256": "4d2104915dafc025c6b64f8a76685a611418c019f39a31f181ebca42cf5bd956"
+    },
+    "research_attempt_ledger": {
+      "path": "data/experiments/short_horizon/historical_walkforward/campaign_068/research_attempt_ledger_v1.json",
+      "sha256": "d9847606167aa57d4bb9c92615d47fb830f759c85131e5cafe4db68bd997c913"
+    },
+    "campaign_report": {
+      "path": "docs/a_share_three_day_walkforward_campaign_068_report.md",
+      "sha256": "461c69b1e9e8e24ffbaaa992d82a2968ceff07db39d7d3c3e25d7659496f3dc2"
+    },
+    "candidate49_daily_failure_record": {
+      "path": "docs/a_share_candidate49_20260805_daily_source_failure_record.json",
+      "sha256": "b2b6b07e1f0fca128ba9935dac6331319b2a7147e3d73e52b624853a2259bbbf"
+    }
+  },
+  "terminal_decision": {
+    "factor": "quarterly_profit_revenue_acceleration_rank_gap_2r",
+    "coverage_gate_passed": false,
+    "comparison_values_read": false,
+    "development_2019_2023_opened": false,
+    "development_survivor_count": 0,
+    "stress_2024_2025_opened": false,
+    "same_campaign_rescue_allowed": false,
+    "candidate49_ledgers_changed": false,
+    "current_scoring_selection_sizing_or_orders_performed": false
+  }
+}

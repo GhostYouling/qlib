@@ -1,0 +1,141 @@
+{
+  "version": 2,
+  "kind": "a_share_three_day_walkforward_campaign073_research_record",
+  "status": "completed_zero_no_return_admissible_factors_stop_before_historical_returns_postcompletion_accounting_corrected",
+  "recorded_at": "2026-08-06T07:25:20+08:00",
+  "supersedes_without_rewriting": {
+    "path": "docs/a_share_three_day_walkforward_campaign_073_research_record.json",
+    "sha256": "8febbfe52547c8fdeabfe694c9836264f3ab43803eb5f29353cd93c6d24bafbf",
+    "preserved": true
+  },
+  "factor": {
+    "name": "intraday_terminal_nominal_share_price_affordability_rank_240m",
+    "direction": "higher",
+    "formula": "Validate the exact 240 continuous-session positive finite closes, take the raw unadjusted 15:00 nominal CNY close, and return one minus its same-day average-tie percentile rank.",
+    "economic_mechanism": "minimum ordinary 100-share board-lot affordability from nominal share price rather than a return path, price-update count, range normalization, accounting value, market capitalization, or old-factor combination",
+    "same_campaign_rescue_allowed": false
+  },
+  "evidence": {
+    "numeric_comparison_policy": {
+      "path": "docs/a_share_three_day_walkforward_future_numeric_comparison_eligibility_policy_v8_20260806.json",
+      "sha256": "c936e9df4bd8ac8cdb23ee27d16796a612341c84577ee60f727e8a3cf72cb1db"
+    },
+    "concept_scouting": {
+      "path": "docs/a_share_three_day_walkforward_campaign_073_concept_scouting.json",
+      "sha256": "73ce8192b6c22ddcc06a0d9d85c23af9784cde30f09ffb3f6375d4cfba540bf0"
+    },
+    "mechanism_audit": {
+      "path": "docs/a_share_three_day_walkforward_campaign_073_mechanism_overlap_audit.json",
+      "sha256": "3f50568eacf9610583c91e531ea2d066b790ac57742d750e92d44308b9988885"
+    },
+    "no_return_preregistration": {
+      "path": "docs/a_share_three_day_walkforward_campaign_073_no_return_preregistration.json",
+      "sha256": "473373e71a97b9daf25f97062682ec4ad1f8b05a778efad161c887aa586d5280"
+    },
+    "feature_implementation_freeze": {
+      "path": "docs/a_share_three_day_walkforward_campaign_073_feature_implementation_freeze_20260806.json",
+      "sha256": "b7c40f917d3c96f127376f1737ce6836ff75203938ed6850184afe93e824ce06"
+    },
+    "snapshot_binding": {
+      "path": "docs/a_share_three_day_walkforward_campaign_073_feature_snapshot_binding_20260806.json",
+      "sha256": "0bf34d781cff79f9f8e8262173a78699232cfa5271bd12b2fb897a9173698ae7"
+    },
+    "audit_implementation_freeze": {
+      "path": "docs/a_share_three_day_walkforward_campaign_073_no_return_audit_implementation_freeze_20260806.json",
+      "sha256": "35289ac5b1913b4d6676978f57b4e704f8ed18507a60b4901b3d677b74ec1f9f"
+    },
+    "audit_activation": {
+      "path": "docs/a_share_three_day_walkforward_campaign_073_no_return_audit_activation_binding_20260806.json",
+      "sha256": "12c0dc744e66ece038a1016d8475f08d986f578fbbe12173e57bf32989376840"
+    },
+    "no_return_audit": {
+      "path": "data/experiments/short_horizon/historical_walkforward/campaign_073/no_return/20260805T231452Z_campaign073_no_return_audit.json",
+      "sha256": "82fd04603093b80048e0e874b01ca961a4bb10ab0991052b66e7f42e26cac557"
+    },
+    "no_return_audit_freeze": {
+      "path": "docs/a_share_three_day_walkforward_campaign_073_no_return_audit_freeze_20260806.json",
+      "sha256": "61cbb3e80dedf7be24142079bd0854f92d847371c9a9eaf57a597f4bcca38dd3"
+    },
+    "postcompletion_accounting_correction": {
+      "path": "docs/a_share_three_day_walkforward_campaign_073_postcompletion_failure_accounting_correction_20260806.json",
+      "sha256": "0418ee1fe15e4d49af56af119167a97b9874682acdd61860da82b4f0439e4bcd"
+    },
+    "attempt_ledger": {
+      "path": "data/experiments/short_horizon/historical_walkforward/campaign_073/research_attempt_ledger_v2.json",
+      "sha256": "e0b4d38fb14775e124d3ba9381c79af8614955c6904dca5f3725bc153f66965b"
+    }
+  },
+  "snapshot": {
+    "manifest_path": "/Volumes/DIsk/qlib-a-share-tushare-1m/derived/a_share/rich/tushare/minute_walkforward_campaign073_feature_library/tushare_stk_mins_1m_2019_2025_ea0cbb8f_walkforward_campaign073_feature_library_v1/snapshot_manifest.json",
+    "manifest_sha256": "6b281be298be7df908300db6735e3ed3efc7d7c13b44c2ae679bf5a2073940e4",
+    "dataset_sha256": "2cea2e0502be1c5cc70f93260a96175abac5f36af50482847c35746a80252a5f",
+    "partitions": 33015,
+    "rows": 7724498,
+    "factor_eligible_rows": 7724498,
+    "raw_source_rows_read": 1866461373,
+    "invalid_close_grid_sessions": 0
+  },
+  "ordered_no_return_result": {
+    "quality_listing_eligible_rows": 1331759,
+    "candidate_eligible_rows": 1330171,
+    "median_coverage": 0.9994517542211769,
+    "p05_coverage": 0.9956886515772271,
+    "p05_eligible_names": 138.0,
+    "potential_three_session_cohorts": 540,
+    "observed_years": 7,
+    "coverage_gate_passed": true,
+    "numeric_comparator_count": 103,
+    "numeric_comparisons_completed": 103,
+    "numeric_comparisons_passed": 102,
+    "failed_comparisons": [
+      {
+        "name": "intraday_price_update_share_238m",
+        "median_daily_rank_correlation": -0.8607906131941189,
+        "absolute_median_daily_rank_correlation": 0.8607906131941189,
+        "daily_rank_correlation_p05": -0.9095197560503101,
+        "daily_rank_correlation_p95": -0.7877230226632117,
+        "minimum_pairwise_names_observed": 52,
+        "pairwise_sessions": 1623
+      }
+    ],
+    "strict_maximum_allowed": 0.8,
+    "admissible_factor_count": 0
+  },
+  "historical_return_boundary": {
+    "daily_price_fields_read": [],
+    "forward_returns_read": false,
+    "development_preregistration_created": false,
+    "development_trial_count": 0,
+    "development_survivor_count": 0,
+    "stress_2024_2025_opened": false,
+    "stress_returns_read": false
+  },
+  "attempt_accounting": {
+    "campaign073_infrastructure_failures": 4,
+    "campaign073_complete_factor_attempts": 1,
+    "campaign073_attempts": 5,
+    "campaign073_return_reading_trials": 0,
+    "cumulative_historical_attempts": 442,
+    "cumulative_return_reading_development_trials": 275
+  },
+  "candidate49": {
+    "remains_only_active_prospective_candidate": true,
+    "signal_ledger_entries": 0,
+    "execution_ledger_entries": 0,
+    "historical_backfill_performed": false,
+    "provider_request_issued_by_campaign073": false
+  },
+  "decision": {
+    "Campaign073_terminal": true,
+    "reason": "the mandatory intraday_price_update_share_238m comparison exceeded the frozen strict absolute 0.8 limit",
+    "do_not_invert_rescale_residualize_neutralize_filter_rerun_rescue_or_combine": true,
+    "next_campaign_may_begin_offline_without_waiting_for_16_30": true,
+    "historical_result_may_generate_current_score_selection_size_order_or_advice": false
+  },
+  "limitations": [
+    "The historical universe uses a current listing snapshot and can contain survivorship bias.",
+    "The raw nominal price is intentionally unadjusted and can jump across corporate actions; no cross-date price comparison is made by the factor.",
+    "The observed near-duplicate relation is strongly negative: lower nominal prices tend to have lower minute price-update shares on the frozen universe.",
+    "The result is a redundancy rejection, not evidence about predictive returns and not investment advice."
+  ]
+}

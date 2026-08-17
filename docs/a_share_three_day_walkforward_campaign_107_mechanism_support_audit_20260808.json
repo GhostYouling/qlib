@@ -1,0 +1,130 @@
+{
+  "schema_version": 1,
+  "kind": "a_share_three_day_walkforward_campaign107_mechanism_support_audit",
+  "status": "passed_semantic_independence_and_support_review_before_campaign107_values",
+  "recorded_at": "2026-08-07T19:48:59Z",
+  "authoritative_inputs": {
+    "concept_scouting": {
+      "path": "docs/a_share_three_day_walkforward_campaign_107_concept_scouting_20260808.json",
+      "sha256": "debb470592868857358ff26a78f8278c158f6224fce593e83c62b5fffa379c2c"
+    },
+    "numeric_policy_v64": {
+      "path": "docs/a_share_three_day_walkforward_future_numeric_comparison_eligibility_policy_v64_20260808.json",
+      "sha256": "7453bf020364e8b27035e94b7e527d874a271b9aaa51008445610c464803805e"
+    },
+    "campaign106_completion_freeze": {
+      "path": "docs/a_share_three_day_walkforward_campaign_106_terminal_completion_freeze_20260808.json",
+      "sha256": "0daf1ad598d38c1e66885316e74caf33a53fb95d330a48cdcb20d470b110d62a"
+    },
+    "raw_comparator_adapter_freeze": {
+      "path": "docs/a_share_three_day_walkforward_campaign_107_raw_comparator_adapter_implementation_freeze_20260808.json",
+      "sha256": "07de45590082fcf98350a4b4f0b615ffd994a97fe3cec431ae476c058a95cc2b"
+    }
+  },
+  "candidate": {
+    "name": "intraday_exact_close_level_diversity_240m",
+    "direction": "higher",
+    "formula_family": "fixed_grid_exact_close_identity_simpson_diversity",
+    "source_projection": [
+      "datetime",
+      "symbol",
+      "provider",
+      "close"
+    ],
+    "formula": "1 - sum_j n_j*(n_j-1)/(240*239)",
+    "equality_semantics": "Exact numeric equality of accepted minute close values; no decimal rounding, tick inference, tolerance, binning, normalization or price-level transform.",
+    "time_semantics": "Validate the exact 241-row source grid, select only 09:31-11:30 and 13:01-15:00, then discard clock order and evaluate all distinct-clock pairs within the stock-day.",
+    "support_predicate": "All 240 selected close values must be finite and strictly positive. Constant and partially repeated close paths remain valid; no positive return, range, variance, distinct-level count or price-change count is required.",
+    "valid_range": [
+      0.0,
+      1.0
+    ]
+  },
+  "complete_library_review": {
+    "complete_definition_count": 136,
+    "complete_definition_order_sha256": "2099f016f5979a820b480a83aa28877504ea5238362feed551bb7cf583cbf7d0",
+    "all_definitions_reviewed_before_values": true,
+    "numeric_comparator_count": 132,
+    "numeric_comparator_order_sha256": "7ed69afd1408e84dcc856583344166ffc9bcbb0add1aed63163b1d12a1be9a25",
+    "candidate49_excluded": true,
+    "old_terminal_records_reclassified": false
+  },
+  "nearest_terminal_family_challenges": [
+    {
+      "family": "intraday_price_update_share_238m",
+      "decision": "distinct_pending_all_132_numeric_uniqueness",
+      "reason": "Price-update share uses only 238 adjacent equality edges and is order dependent. Campaign107 uses every unordered pair of the 240 clocks and is order invariant; adjacency never enters the score."
+    },
+    {
+      "family": "intraday_close_range_occupancy_entropy_10b",
+      "decision": "distinct_pending_all_132_numeric_uniqueness",
+      "reason": "Occupancy entropy normalizes by the completed-day close range and bins into ten intervals. Campaign107 uses exact close identities, no range denominator, no bins and Simpson pair diversity rather than Shannon entropy."
+    },
+    {
+      "family": "intraday_round_tenth_close_avoidance_240m",
+      "decision": "distinct_pending_all_132_numeric_uniqueness",
+      "reason": "Round-tenth avoidance references a fixed decimal lattice. Campaign107 is invariant to any injective relabeling of exact close levels and has no decimal or nominal-price anchor."
+    },
+    {
+      "family": "intraday_terminal_nominal_share_price_affordability_rank_240m",
+      "decision": "distinct_pending_all_132_numeric_uniqueness",
+      "reason": "Affordability is a cross-sectional absolute terminal price-level rank. Campaign107 depends only on repeated identities within one stock-day and not the magnitude of the level."
+    },
+    {
+      "family": "intraday_close_frontier_innovation_share_238p",
+      "decision": "distinct_pending_all_132_numeric_uniqueness",
+      "reason": "Frontier innovation is an ordered running-record event. Campaign107 ignores record order and treats every distinct clock pair symmetrically."
+    },
+    {
+      "family": "intraday_return_weak_order_entropy_234t_and_sign_topology",
+      "decision": "distinct_pending_all_132_numeric_uniqueness",
+      "reason": "Return-order families use adjacent returns, sign states or ordinal motifs. Campaign107 forms no return and is unchanged by clock permutation."
+    },
+    {
+      "family": "intraday_global_price_range_revisit_240m_and_range_overlap",
+      "decision": "distinct_pending_all_132_numeric_uniqueness",
+      "reason": "Range-revisit families merge or compare high-low intervals. Campaign107 reads close only and exact identity, with no interval geometry."
+    },
+    {
+      "family": "intraday_nonzero_range_bar_share_240m",
+      "decision": "distinct_pending_all_132_numeric_uniqueness",
+      "reason": "Campaign106 counts within-bar high-low variation. Campaign107 uses cross-clock recurrence of close identities and does not read high or low."
+    },
+    {
+      "family": "amount_volume_vwap_market_quarterly_and_candidate49_families",
+      "decision": "distinct",
+      "reason": "Campaign107 reads no amount, volume, VWAP, peer state, quarterly value, Candidate49 value, old factor value, fit, model or combination."
+    }
+  ],
+  "support_predicate_gate": {
+    "known_terminal_coverage_failures_reviewed": true,
+    "identical_to_known_failed_support": false,
+    "provably_narrower_than_known_failed_support": false,
+    "explanation": "The candidate requires only the accepted fixed close grid with finite positive values. It does not require positive range, positive return mass, four-quarter history, active-volume count, informative gaps, pair variance, market peer coverage or any previously failed minimum-support predicate.",
+    "coverage_still_must_be_computed_before_comparator_values": true
+  },
+  "semantic_invariance_checks": {
+    "clock_permutation_after_exact_grid_validation": "score unchanged",
+    "injective_relabeling_of_close_levels": "score unchanged",
+    "constant_close_path": "valid score 0",
+    "all_240_close_levels_distinct": "valid score 1",
+    "single_repeated_pair_and_238_other_unique_levels": "score 1-2/(240*239)",
+    "price_scale_or_translation_used_by_formula": false,
+    "rounding_tolerance_or_bin_boundary_used": false
+  },
+  "prevalue_decision": {
+    "candidate_may_enter_exact_no_return_preregistration": true,
+    "statistical_uniqueness_claimed": false,
+    "predictive_value_claimed": false,
+    "alternate_or_rescue_search_allowed": false
+  },
+  "research_boundary": {
+    "campaign107_source_rows_read": false,
+    "campaign107_candidate_or_comparator_values_read": false,
+    "historical_daily_price_or_forward_return_values_read": false,
+    "provider_request_issued": false,
+    "candidate49_ledgers_changed": false,
+    "current_scoring_selection_sizing_or_orders_performed": false
+  },
+  "next_action": "Freeze one exact Campaign107 no-return protocol and one single-factor development trial before source values."
+}

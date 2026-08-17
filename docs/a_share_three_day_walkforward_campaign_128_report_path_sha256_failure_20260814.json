@@ -1,0 +1,33 @@
+{
+  "schema_version": 1,
+  "kind": "a_share_three_day_walkforward_campaign128_infrastructure_failure",
+  "status": "failed_report_path_sha256_command",
+  "recorded_at": "2026-08-14T05:32:22+0800",
+  "attempt_id": "campaign128_infrastructure_002",
+  "stage": "prevalue_artifact_hash_collection",
+  "command_intent": "Collect SHA-256 digests for the frozen formula-stage artifacts and unified reports before publishing the active Campaign128 status.",
+  "failure": {
+    "exit_code": 1,
+    "reason": "The command used the nonexistent repository-root path three_day_research_report.md instead of data/experiments/short_horizon/three_day_research_report.md.",
+    "failed_before_status_publication": true,
+    "scientific_input_or_output_affected": false
+  },
+  "recovery": {
+    "correct_path": "data/experiments/short_horizon/three_day_research_report.md",
+    "correct_path_sha256": "edf6b81e7703f74e424da3c32cd48986a0935802accd274660b6dd5157b14cb2",
+    "retry_changed_formula_source_or_research_values": false
+  },
+  "research_boundary": {
+    "provider_request_issued": false,
+    "provider_credential_loaded": false,
+    "historical_minute_source_rows_read": false,
+    "candidate_or_comparison_values_read": false,
+    "historical_daily_price_or_forward_return_values_read": false,
+    "stress_2024_2025_candidate_or_return_values_opened": false,
+    "candidate49_historical_backfill_performed": false,
+    "candidate49_ledgers_changed": false,
+    "second_prospective_candidate_created": false,
+    "current_scoring_selection_sizing_positions_or_orders_performed": false,
+    "investment_advice": false
+  }
+}

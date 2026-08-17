@@ -1,0 +1,52 @@
+{
+  "schema_version": 1,
+  "kind": "a_share_three_day_walkforward_campaign117_snapshot_verifier_recovery_freeze",
+  "status": "dedicated_verifier_frozen_before_candidate_partition_values_are_reopened",
+  "recorded_at": "2026-08-13T21:01:24+08:00",
+  "purpose": "Repair only the inherited manifest-verifier expectation mismatch while preserving the already-frozen formula, builder, snapshot bytes, coverage gate, comparator order and return boundary.",
+  "authoritative_inputs": {
+    "infrastructure_failure": {
+      "path": "docs/a_share_three_day_walkforward_campaign_117_snapshot_verifier_failure_20260813.json",
+      "sha256": "960fbaa11247103fe36bd2a004d71ba4c1f55a6fb668d1a309e1013db74716ad"
+    },
+    "original_implementation_freeze": {
+      "path": "docs/a_share_three_day_walkforward_campaign_117_no_return_implementation_freeze_20260813.json",
+      "sha256": "aed04a80f21f5e1a6ed2e5a3f51446943a0f924f95d788f2e03a5014f1c3129e",
+      "preserved": true
+    }
+  },
+  "frozen_recovery": {
+    "recovery_verifier_path": "scripts/a_share_three_day_walkforward_campaign117_snapshot_verify_recovery.py",
+    "recovery_verifier_sha256": "0dafa52aa8e39f6b42f93c4142198bfde16ffe2f94ff69ee2a18140be3a21ef4",
+    "test_path": "tests/data_collector_tests/test_a_share_three_day_walkforward_campaign117_snapshot_verify_recovery.py",
+    "test_sha256": "b02f6ab964335abd35f438468197a3365ddc57ade807843d2492f96b0124d892",
+    "manifest_path": "/Volumes/DIsk/qlib-a-share-tushare-1m/derived/a_share/rich/tushare/minute_walkforward_campaign117_feature_library/tushare_stk_mins_1m_2019_2025_ea0cbb8f_walkforward_campaign117_feature_library_v1/snapshot_manifest.json",
+    "manifest_sha256": "114bb5dd2ac28d8e51e6a35c234cfe06f7d3810b4d7c46303e38af33d4566879",
+    "dataset_sha256": "4f5bf6ee2c26f6956178d6954aae92821530c90a6334375e8cf0e9938fa71c18",
+    "expected_partitions": 33015,
+    "expected_rows": 7724498,
+    "expected_eligible_rows": 7724498,
+    "truthful_weak_order_state_count": 13,
+    "truthful_positive_total_amount_required": true,
+    "builder_formula_or_snapshot_rewrite": false
+  },
+  "synthetic_verification": {
+    "command": "/Volumes/DIsk/Coding/anaconda3/bin/python3.12 -m pytest -q tests/data_collector_tests/test_a_share_three_day_walkforward_campaign117_snapshot_verify_recovery.py",
+    "passed": 4,
+    "exit_code": 0,
+    "black_formatted": true,
+    "py_compile_passed": true
+  },
+  "research_boundary": {
+    "candidate_partition_values_reopened_before_freeze": false,
+    "comparator_values_read": false,
+    "numeric_comparator_count_read": 0,
+    "historical_daily_price_or_forward_return_values_read": false,
+    "stress_2024_2025_opened_for_returns": false,
+    "provider_request_issued": false,
+    "candidate49_historical_backfill_performed": false,
+    "candidate49_ledgers_changed": false,
+    "current_scoring_selection_sizing_positions_or_orders_performed": false,
+    "investment_advice": false
+  }
+}

@@ -1,0 +1,44 @@
+{
+  "schema_version": 4,
+  "kind": "a_share_three_day_walkforward_campaign263_implementation_freeze",
+  "status": "partition_index_passthrough_repair_frozen_before_same_formula_recovery",
+  "recorded_at": "2026-08-16T11:45:00Z",
+  "timestamp_semantics": "monotonic logical append time before the same-formula recovery build",
+  "supersedes_without_rewriting": {
+    "path": "docs/a_share_three_day_walkforward_campaign_263_implementation_freeze_v3_20260816.json",
+    "sha256": "b057759eb4660b441fb576a34f1f70b78939a620f43fa761b29103e545c57f8a"
+  },
+  "failure_record": {
+    "path": "docs/a_share_three_day_walkforward_campaign_263_snapshot_build_partition_index_failure_20260816.json",
+    "sha256": "2c7c3605e1fb2a9a9ecc30daa228f80fe5ad772d660da6a0a9e5670b6749b050"
+  },
+  "protocol_sha256": "07c5875034f3e26e6a98f01e3329b3cf1d3d287d119c9358e32e5a2e76b5b924",
+  "code": {
+    "formula_sha256": "29b952bb36e9dbb123b740977b4e778bec3ed547e3c8701e97f6fa92e3123401",
+    "feature_builder_sha256": "f4882d4c29877b05a2b7ccffe540a1e97f0917e252941d2484b03720b1426124"
+  },
+  "repair_scope": {
+    "quality_alias_preserved": true,
+    "internal_partition_index_passthrough_restored": true,
+    "immutable_partition_projection_remains_exact_output_columns": true,
+    "formula_direction_support_values_gates_or_output_path_changed": false
+  },
+  "tests": {
+    "formula_test_sha256": "e401101b145151619ed96e780632b89a0ddab3327e9c009b17df4435efb3de71",
+    "feature_test_sha256": "8b16b9f453fc9bde54261baae68961500a3e72c289b195b352c37326f2273cfb",
+    "exit_code": 0,
+    "passed": 20,
+    "failed": 0
+  },
+  "complete_definition_count": 162,
+  "complete_definition_order_sha256": "974f2c1f16a85eb43a0bd1e8db768dbe120cd8826c1754d5f220bf9f1d4a3ea0",
+  "numeric_comparator_count": 142,
+  "numeric_comparator_order_sha256": "5d1b35fb5a0d8ac9293008db9963c4a60a94dc940c237c3ed259e5ce44f14aaf",
+  "research_boundary": {
+    "historical_source_rows_read": true,
+    "candidate_or_comparator_values_read": false,
+    "historical_daily_price_or_forward_return_values_read": false,
+    "provider_request_issued": false,
+    "candidate49_ledgers_changed": false
+  }
+}

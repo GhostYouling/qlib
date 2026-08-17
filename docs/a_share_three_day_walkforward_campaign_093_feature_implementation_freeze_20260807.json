@@ -1,0 +1,39 @@
+{
+  "schema_version": 1,
+  "kind": "a_share_three_day_walkforward_campaign093_feature_implementation_freeze",
+  "status": "frozen_before_campaign093_minute_source_rows_or_candidate_values",
+  "frozen_at": "2026-08-07T01:31:30Z",
+  "protocol": {
+    "path": "docs/a_share_three_day_walkforward_campaign_093_no_return_preregistration.json",
+    "sha256": "ce1752e170f6690e2b501f14964736792b6e13e6619e4be53fd9f640bda621b2"
+  },
+  "feature_runner": {
+    "path": "scripts/a_share_three_day_walkforward_campaign093_features.py",
+    "sha256": "9e96f59ac747e725e186f4d749ae9b3d8f7108d0409ce26aee6100cf1bb1bef0"
+  },
+  "tests": {
+    "path": "tests/data_collector_tests/test_a_share_three_day_walkforward_campaign093_features.py",
+    "sha256": "4918edd8f8881015c87d65f550f24d4a44c69e97ba718cce9ce9ab6fd31dc87d",
+    "synthetic_result": "4 passed"
+  },
+  "factor": "intraday_close_transition_range_quadratic_efficiency_238p",
+  "direction": "higher",
+  "raw_projection": [
+    "datetime",
+    "symbol",
+    "provider",
+    "high",
+    "low",
+    "close"
+  ],
+  "selected_bar_count": 240,
+  "close_transition_count": 238,
+  "destination_range_count": 238,
+  "lunch_reset": true,
+  "candidate_source_rows_read_before_freeze": false,
+  "candidate_values_computed_before_freeze": false,
+  "comparison_values_read_before_freeze": false,
+  "historical_daily_price_or_forward_return_values_read_before_freeze": false,
+  "provider_request_issued_before_freeze": false,
+  "candidate49_ledgers_changed_before_freeze": false
+}

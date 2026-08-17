@@ -1,0 +1,54 @@
+{
+  "version": 1,
+  "kind": "a_share_three_day_walkforward_campaign049_feature_implementation_freeze",
+  "status": "frozen_before_campaign049_candidate_values",
+  "recorded_at": "2026-08-01T06:00:00Z",
+  "purpose": "Bind the exact Campaign049 amount-profile implementation and focused tests before any external minute partition or candidate value is read.",
+  "no_return_protocol": {
+    "path": "docs/a_share_three_day_walkforward_campaign_049_no_return_preregistration.json",
+    "sha256": "b1cddf5168229877d57b58f556c52cb2f9799f4e387c4ec8184fb230e30f6588"
+  },
+  "feature_runner": {
+    "path": "scripts/a_share_three_day_walkforward_campaign049_features.py",
+    "sha256": "981378510744bb53bb5353d1bf99ca9850b4f10c49bd8500d38d29994bdeff83"
+  },
+  "focused_tests": {
+    "path": "tests/data_collector_tests/test_a_share_three_day_walkforward_campaign049_features.py",
+    "sha256": "2ad03830c886a6f9cbfad06310d309e7288fefa9a0c3f4892c797eae640b821e",
+    "passed": 9,
+    "failed": 0
+  },
+  "implementation_semantics": {
+    "factor": "intraday_morning_afternoon_amount_profile_similarity_120b",
+    "direction": "higher",
+    "source_fields_read": [
+      "datetime",
+      "symbol",
+      "provider",
+      "amount"
+    ],
+    "selected_bar_count": 240,
+    "bins_per_half": 120,
+    "minimum_positive_amount_bars_per_half": 60,
+    "exact_zero_amounts_retained": true,
+    "distance": "equal-mixture Jensen-Shannon divergence converted to similarity",
+    "valid_range": [
+      0.0,
+      1.0
+    ],
+    "formula_direction_window_support_distance_threshold_filter_or_model_changed_after_preregistration": false
+  },
+  "candidate_values_read_before_freeze": false,
+  "comparison_values_read_before_freeze": false,
+  "historical_daily_price_fields_read_before_freeze": false,
+  "historical_forward_returns_read_before_freeze": false,
+  "provider_request_issued": false,
+  "candidate49_historical_backfill_performed": false,
+  "candidate49_ledgers_changed": false,
+  "candidate50_activation_created": false,
+  "current_scoring_selection_sizing_or_orders_performed": false,
+  "decision": {
+    "implementation_frozen": true,
+    "next_action": "Use an additive immutable wrapper to bind this freeze, rerun focused tests, then and only then build the Campaign049 feature snapshot."
+  }
+}

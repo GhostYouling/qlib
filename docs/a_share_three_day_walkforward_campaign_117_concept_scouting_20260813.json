@@ -1,0 +1,89 @@
+{
+  "schema_version": 1,
+  "kind": "a_share_three_day_walkforward_campaign117_concept_scouting",
+  "status": "one_existing_local_data_mechanism_selected_before_campaign117_source_candidate_comparator_or_return_values",
+  "recorded_at": "2026-08-13T20:42:00+08:00",
+  "purpose": "Select exactly one economically interpretable Campaign117 mechanism from a finite catalog using only frozen definition metadata and accepted local source schema, before reading any Campaign117 source partition value, candidate value, comparator value, daily price, or forward return.",
+  "authoritative_inputs": {
+    "campaign116_terminal_state": {
+      "path": "docs/a_share_three_day_iteration_status_20260812_campaign116_terminal_v3.json",
+      "sha256": "35f6ffe0faf838dab24a8cc9dde487f779c99be65973e14c8867059fac346eba"
+    },
+    "historical_walkforward_policy": {
+      "path": "docs/a_share_three_day_historical_walkforward_research_policy_20260727.json",
+      "sha256": "38426d6161b9bfed323c58caba18feca668b8c9d53e294951a8ba90c01a798bb"
+    },
+    "numeric_policy_v104": {
+      "path": "docs/a_share_three_day_walkforward_future_numeric_comparison_eligibility_policy_v104_20260812.json",
+      "sha256": "a9d44ce8b383a9ecb29f96b8df19ac1bc28e7cceaac8397c609be6130e4ef03b"
+    },
+    "accepted_minute_source_manifest": {
+      "path": "/Volumes/DIsk/qlib-a-share-tushare-1m/metadata/rich_data/runs/tushare_stk_mins_1m_2019_2025_ea0cbb8f.json",
+      "sha256": "9b3d959563c9d182f38981c6a36bdb3bc9b415de08487a9e1f9e850825c0839f",
+      "values_read_during_scouting": false
+    },
+    "complete_definition_count": 142,
+    "complete_definition_order_sha256": "ed61b10f3acb939c10ae5759f33aafde377cc921dd99c642300603b50a4851c5",
+    "numeric_comparator_count": 134,
+    "numeric_comparator_order_sha256": "31d788db467f558a0ac538315343090f1b3ad4cb27a26136a49ebaa88b2fdbf2"
+  },
+  "finite_prevalue_concept_catalog": [
+    {
+      "name": "intraday_amount_weak_order_entropy_236t",
+      "information_channel": "within_half_local_ordinal_activity_sequence_complexity",
+      "prospective_direction": "higher",
+      "decision": "selected_for_mechanism_audit_and_exact_no_return_preregistration",
+      "reason": "The complete library contains amount-mass entropy, magnitude serial persistence, clock moments, peaks, threshold runs and return-conditioned activity, but no full weak-order distribution of local amount triples. The statistic can be built from the accepted local amount field without a provider request and without reading a price or return."
+    },
+    {
+      "name": "intraday_amount_weak_order_time_reversal_divergence_236t",
+      "decision": "rejected_before_values",
+      "reason": "Choosing between marginal weak-order complexity and time-arrow divergence would be an operator sweep. Campaign117 freezes normalized Shannon entropy only."
+    },
+    {
+      "name": "intraday_amount_transition_conditional_entropy",
+      "decision": "rejected_before_values",
+      "reason": "State-transition, Markov, lag and conditional-entropy choices introduce an open transition alphabet and lag search."
+    },
+    {
+      "name": "intraday_volume_weak_order_entropy_236t",
+      "decision": "rejected_before_values",
+      "reason": "Selecting between amount and share volume after values would be a field sweep; CNY amount is frozen as the activity state before values."
+    },
+    {
+      "name": "intraday_transaction_price_weak_order_entropy_236t",
+      "decision": "rejected_before_values",
+      "reason": "Transaction-price ordinal complexity belongs to the already dense price-path family and would require joint amount/volume active-bar semantics rather than the selected activity-only channel."
+    },
+    {
+      "name": "terminal_factor_combination_or_model_retry",
+      "decision": "rejected_before_values",
+      "reason": "Refitting, subsetting, rescuing or recombining exposed terminal results is not a genuinely new information mechanism."
+    }
+  ],
+  "selection": {
+    "concepts_reviewed": 6,
+    "selected_candidate_count": 1,
+    "selected_candidate": "intraday_amount_weak_order_entropy_236t",
+    "selected_direction": "higher",
+    "candidate_formula_frozen_here": false,
+    "candidate_or_comparator_values_may_be_read_now": false,
+    "next_stage": "Complete a semantic overlap audit and freeze one exact formula, support rule, source projection, ordered no-return gates, one-trial development protocol, costs and prohibitions before values."
+  },
+  "research_boundary": {
+    "prior_definition_names_directions_protocols_and_terminal_results_read": true,
+    "accepted_source_schema_metadata_read": true,
+    "campaign117_source_partition_values_read": false,
+    "campaign117_candidate_values_computed_or_read": false,
+    "campaign117_comparator_values_read": false,
+    "historical_daily_price_or_forward_return_values_read": false,
+    "stress_2024_2025_opened": false,
+    "provider_request_issued": false,
+    "credential_loaded": false,
+    "candidate49_historical_backfill_performed": false,
+    "candidate49_ledgers_changed": false,
+    "second_prospective_candidate_created": false,
+    "current_scoring_selection_sizing_positions_or_orders_performed": false,
+    "investment_advice": false
+  }
+}

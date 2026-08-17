@@ -1,0 +1,48 @@
+{
+  "schema_version": 1,
+  "kind": "a_share_three_day_walkforward_campaign146_snapshot_recovery_verification",
+  "status": "verified_immutable_snapshot_with_corrected_support_header_predicates",
+  "recorded_at": "2026-08-14T21:41:12+08:00",
+  "snapshot_manifest": {
+    "path": "/Volumes/DIsk/qlib-a-share-tushare-1m/derived/a_share/rich/tushare/minute_walkforward_campaign146_feature_library/tushare_stk_mins_1m_2019_2025_ea0cbb8f_walkforward_campaign146_feature_library_v1/snapshot_manifest.json",
+    "sha256": "951872dbdcfa2b00e9603d3be44b059c7d24204fba5757551afbcd46ee8a3f74",
+    "dataset_sha256": "7278ae76407215eab75e9ff0119d8c6a073e4d7ac9df5b7d349bc09e6cf889c4",
+    "partitions": 33015,
+    "rows": 7724498,
+    "eligible_rows": 7630332
+  },
+  "known_verifier_predicate_correction": {
+    "positive_frequency_count_per_half": 59,
+    "positive_half_spectral_denominators_required": true,
+    "signed_return_and_amount_magnitudes_used": true,
+    "snapshot_manifest_or_partition_rewritten": false
+  },
+  "observed_eligible_value_range": {
+    "minimum": -0.5657120076366282,
+    "maximum": 0.6278125643947259
+  },
+  "verification": {
+    "all_partition_paths_contained": true,
+    "all_partition_byte_sha256_verified": true,
+    "all_partition_frame_sha256_verified": true,
+    "all_partition_rows_and_output_schema_verified": true,
+    "all_effective_value_semantics_verified": true,
+    "ordered_dataset_digest_recomputed": true,
+    "snapshot_manifest_sha256_rechecked_after_partitions": true,
+    "exit_code": 0
+  },
+  "recovery_protocol_sha256": "737f2191a147125aa8f159133618b86248f4d0713f6b7659b6969524448e1d39",
+  "recovery_implementation_freeze_sha256": "9b2af298a58ad3c8fa5d378c5905b83578db3c40590421a91a3edbfd75d02c0d",
+  "research_boundary": {
+    "partition_values_read_only_for_integrity_and_semantic_verification": true,
+    "coverage_statistics_read": false,
+    "comparator_values_read": false,
+    "historical_daily_price_or_forward_return_values_read": false,
+    "stress_2024_2025_returns_opened": false,
+    "provider_request_issued": false,
+    "credential_loaded": false,
+    "candidate49_ledgers_changed": false,
+    "snapshot_or_partition_rewritten": false
+  },
+  "next_action": "Freeze a single-use coverage activation record against this receipt and immutable snapshot before reading coverage statistics."
+}

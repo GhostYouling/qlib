@@ -1,0 +1,34 @@
+{
+  "version": 1,
+  "kind": "a_share_three_day_compact_comparator_cache_prebuild_test_failure",
+  "status": "recorded_before_unfrozen_test_assertion_repair",
+  "recorded_at": "2026-08-05T20:25:00+08:00",
+  "failed_command": "PYTHONPATH=/Volumes/DIsk/Disk-Coding/qlib /Volumes/DIsk/Coding/anaconda3/bin/python -m pytest -q tests/data_collector_tests/test_a_share_three_day_compact_comparator_cache.py",
+  "exit_code": 1,
+  "observed": {
+    "passed": 6,
+    "failed": 1,
+    "failed_node": "test_protocol_declares_no_rank_cache_and_future_only_use",
+    "failed_assertion": "The frozen actual_97_factor_gate prose must contain the literal substring pairwise-complete."
+  },
+  "root_cause": "The protocol freezes pairwise-complete semantics in its purpose, raw-value rationale, source contract, and exact result-object equality gate, but the one sentence selected by the test uses the wording exact equality rather than the literal pairwise-complete substring.",
+  "bindings_before_repair": {
+    "protocol": {"path": "docs/a_share_three_day_compact_comparator_cache_protocol_v1_20260805.json", "sha256": "bf5247378056851ea004c08aad071c7a1ccf552cb1feaf6937251a26234c3273"},
+    "builder": {"path": "scripts/a_share_three_day_compact_comparator_cache.py", "sha256": "9d78ac449c74cf0709bcd5a479eabc39eed487dc6c09fed1dd71c8127911f6a5"},
+    "test": {"path": "tests/data_collector_tests/test_a_share_three_day_compact_comparator_cache.py", "sha256": "a7dba97ff6cb2e4a57ae95a06de61a7cec0b017f35bd7f22e2fbfce95ed24335"}
+  },
+  "repair": {
+    "protocol_edit_allowed": false,
+    "builder_edit_required": false,
+    "test_not_yet_implementation_frozen": true,
+    "allowed_test_edit": "Assert the actual frozen exact-equality wording instead of requiring an absent literal substring."
+  },
+  "research_effect": {
+    "comparison_factor_values_read": false,
+    "candidate_values_read": false,
+    "historical_daily_price_or_forward_return_values_read": false,
+    "provider_request_issued": false,
+    "research_attempt_count_increment": 0,
+    "cache_infrastructure_failure_count_increment": 1
+  }
+}

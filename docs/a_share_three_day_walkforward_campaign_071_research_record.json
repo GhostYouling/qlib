@@ -1,0 +1,122 @@
+{
+  "version": 1,
+  "kind": "a_share_three_day_walkforward_campaign071_research_record",
+  "status": "completed_zero_no_return_admissible_factors_stop_before_historical_returns",
+  "recorded_at": "2026-08-06T05:38:00+08:00",
+  "factor": {
+    "name": "quarterly_net_profit_scale_rank",
+    "direction": "higher",
+    "formula": "Strict-next-session point-in-time finite positive net-profit state, forward-filled only after availability, then same-stock-day average-tie percentile rank.",
+    "economic_mechanism": "absolute public profitability scale rather than growth, ROE efficiency, disclosure timing, or minute path shape",
+    "same_campaign_rescue_allowed": false
+  },
+  "evidence": {
+    "numeric_comparison_policy": {
+      "path": "docs/a_share_three_day_walkforward_future_numeric_comparison_eligibility_policy_v5_20260806.json",
+      "sha256": "afe9f33f1b8accdcbb1481604313fcc55e9e84ecbc02098730f0b41adf60c68f"
+    },
+    "concept_scouting": {
+      "path": "docs/a_share_three_day_walkforward_campaign_071_concept_scouting.json",
+      "sha256": "87e220d1991d8df0db529fa618c6dd0d69da9c5e460e2c79f20c8d8396e784f2"
+    },
+    "mechanism_audit": {
+      "path": "docs/a_share_three_day_walkforward_campaign_071_mechanism_overlap_audit.json",
+      "sha256": "e32457e148b3a4c774fdd5d1f7b6445a47ae8b5767c00f067c952a61a4f530a4"
+    },
+    "no_return_preregistration": {
+      "path": "docs/a_share_three_day_walkforward_campaign_071_no_return_preregistration.json",
+      "sha256": "1d61fc0f0943f512304a722bcf3017e6867fd00ec9a41e1ed310022a526c161f"
+    },
+    "feature_implementation_freeze": {
+      "path": "docs/a_share_three_day_walkforward_campaign_071_feature_implementation_freeze_20260806.json",
+      "sha256": "36b51d8e658ae72333383fe4bd3ac0fe63e557f9368b3826575923f67535b9d0"
+    },
+    "snapshot_binding": {
+      "path": "docs/a_share_three_day_walkforward_campaign_071_feature_snapshot_binding_20260806.json",
+      "sha256": "8b6cb0bbab838bc72977ce0b8c59e4b1894633cfe78c903de01a2fcc65749a71"
+    },
+    "audit_implementation_freeze": {
+      "path": "docs/a_share_three_day_walkforward_campaign_071_no_return_audit_implementation_freeze_20260806.json",
+      "sha256": "390744367c3760bc233ae0336b335e8c348b3990b23efc5d9919febf33a1270e"
+    },
+    "audit_activation": {
+      "path": "docs/a_share_three_day_walkforward_campaign_071_no_return_audit_activation_binding_20260806.json",
+      "sha256": "3d0977d87d05eff3903d995a4c2dec0d78b38606a19b2d1c879c3f9959cd043a"
+    },
+    "no_return_audit": {
+      "path": "data/experiments/short_horizon/historical_walkforward/campaign_071/no_return/20260805T211659Z_campaign071_no_return_audit.json",
+      "sha256": "5f54b96477a7d0003c42545b49c0bae46257f15f908f6b9475bfa1e5ded5e5fc"
+    },
+    "no_return_audit_freeze": {
+      "path": "docs/a_share_three_day_walkforward_campaign_071_no_return_audit_freeze_20260806.json",
+      "sha256": "b44294b7dcbd561973fe8e5aec03fa5e71ff94982597dc97a1131ea951fb361e"
+    },
+    "attempt_ledger": {
+      "path": "data/experiments/short_horizon/historical_walkforward/campaign_071/research_attempt_ledger.json",
+      "sha256": "4ff438242c8630a5547a53d4b1188d234ff87020bdb00b178c5ad399f3a6b371"
+    }
+  },
+  "snapshot": {
+    "manifest_path": "/Volumes/DIsk/qlib-a-share-tushare-1m/derived/a_share/rich/tushare/minute_walkforward_campaign071_feature_library/tushare_stk_mins_1m_2019_2025_ea0cbb8f_walkforward_campaign071_feature_library_v1/snapshot_manifest.json",
+    "manifest_sha256": "438db2c72a0e5a166f87e680109024be7b28ed710edbd6b4d5ce6968e4a3f7fd",
+    "dataset_sha256": "8c6f1eff1b2238132f429eaeae13d9a7fbd9956e89f3499fa1cf68d54435528d",
+    "partitions": 33015,
+    "rows": 7724498,
+    "factor_eligible_rows": 7081458
+  },
+  "ordered_no_return_result": {
+    "quality_listing_eligible_rows": 1331759,
+    "candidate_eligible_rows": 1330171,
+    "median_coverage": 0.9994517542211769,
+    "p05_coverage": 0.9956886515772271,
+    "p05_eligible_names": 138.0,
+    "potential_three_session_cohorts": 540,
+    "observed_years": 7,
+    "coverage_gate_passed": true,
+    "numeric_comparator_count": 101,
+    "numeric_comparisons_completed": 101,
+    "numeric_comparisons_passed": 100,
+    "failed_comparison": "quarterly_roe_profit_scale_efficiency_gap_2r",
+    "failed_median_daily_rank_correlation": -0.8058886587328898,
+    "failed_absolute_median_daily_rank_correlation": 0.8058886587328898,
+    "strict_maximum_allowed": 0.8,
+    "pairwise_sessions": 1623,
+    "admissible_factor_count": 0
+  },
+  "historical_return_boundary": {
+    "daily_price_fields_read": [],
+    "forward_returns_read": false,
+    "development_preregistration_created": false,
+    "development_trial_count": 0,
+    "development_survivor_count": 0,
+    "stress_2024_2025_opened": false,
+    "stress_returns_read": false
+  },
+  "attempt_accounting": {
+    "campaign071_infrastructure_failures": 4,
+    "campaign071_complete_factor_attempts": 1,
+    "campaign071_attempts": 5,
+    "campaign071_return_reading_trials": 0,
+    "cumulative_historical_attempts": 424,
+    "cumulative_return_reading_development_trials": 275
+  },
+  "candidate49": {
+    "remains_only_active_prospective_candidate": true,
+    "signal_ledger_entries": 0,
+    "execution_ledger_entries": 0,
+    "historical_backfill_performed": false,
+    "provider_request_issued_by_campaign071": false
+  },
+  "decision": {
+    "Campaign071_terminal": true,
+    "reason": "one mandatory numeric uniqueness comparison exceeded the frozen strict absolute 0.8 limit",
+    "do_not_invert_rescale_residualize_filter_rerun_rescue_or_combine": true,
+    "next_campaign_may_begin_offline_without_waiting_for_16_30": true,
+    "historical_result_may_generate_current_score_selection_size_order_or_advice": false
+  },
+  "limitations": [
+    "The historical universe uses a current listing snapshot and can contain survivorship bias.",
+    "Quarterly data may contain later revisions.",
+    "The result is a redundancy rejection, not evidence about predictive returns and not investment advice."
+  ]
+}

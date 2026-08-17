@@ -1,0 +1,51 @@
+{
+  "schema_version": 1,
+  "kind": "a_share_three_day_walkforward_campaign099_no_return_audit_implementation_freeze",
+  "status": "frozen_before_campaign099_coverage_or_comparison_values",
+  "frozen_at": "2026-08-07T10:10:29Z",
+  "audit_runner": {
+    "path": "scripts/a_share_three_day_walkforward_campaign099_no_return_audit.py",
+    "sha256": "2a2ebb57a360d57b13bd69f2b0cddf40c2ae9bb115f0419233873a21acf605bf"
+  },
+  "tests": {
+    "path": "tests/data_collector_tests/test_a_share_three_day_walkforward_campaign099_no_return_audit.py",
+    "sha256": "46d4a7d85e2dea0274680681d411f4297a069cfd1849885c61d6338c68dfbd01",
+    "result": "4 passed before any candidate, coverage, comparator, daily-price, or return value read"
+  },
+  "snapshot_binding": {
+    "path": "docs/a_share_three_day_walkforward_campaign_099_feature_snapshot_binding_20260807.json",
+    "sha256": "e90f88f2fd3f102ecfc20610978e125320d2f51e8d155cb9b82e2759824c59f8"
+  },
+  "attempt_ledger_before_freeze": {
+    "path": "data/experiments/short_horizon/historical_walkforward/campaign_099/research_attempt_ledger_v7.json",
+    "sha256": "033ca6fb2af218c285a54cf69beaa79066fa37afc3108c9a2cf0b1113d5a30e0"
+  },
+  "eligibility_identity_source": {
+    "path": "/Volumes/DIsk/qlib-a-share-tushare-1m/derived/a_share/rich/tushare/compact_comparator_cache/campaign067_terminal_numeric98_v4/snapshot_manifest.json",
+    "sha256": "3d81068f07ac61fe4cd04bd1a893e58759c06d88213263135fec5244e309b57b"
+  },
+  "final_comparator_source": {
+    "path": "/Volumes/DIsk/qlib-a-share-tushare-1m/derived/a_share/rich/tushare/minute_walkforward_campaign098_feature_library/tushare_stk_mins_1m_2019_2025_ea0cbb8f_walkforward_campaign098_feature_library_v1/snapshot_manifest.json",
+    "sha256": "371429a81292a91ef2bfa1292f467c81bf73e176fbfbc9888084f74eaaac1dc5",
+    "dataset_sha256": "921f06fad98aed942550d86b1475c888aea6d2025c37d53ec55917401bd34b33"
+  },
+  "ordered_gate_contract": {
+    "complete_definition_count": 130,
+    "complete_definition_order_sha256": "5146b99fc3c70723b0b62c541ba560b8456199d08546b81d2520fa69eb8a4b57",
+    "numeric_comparator_count": 127,
+    "numeric_comparator_order_sha256": "5777fbeab91e603c45d271dfe018388129bc7fab83cc9a77b7776529ba9d0990",
+    "coverage_before_any_comparator_values": true,
+    "all_127_numeric_comparators_must_pass": true,
+    "maximum_absolute_median_daily_rank_correlation_exclusive": 0.8,
+    "minimum_names_per_comparison_session": 50,
+    "minimum_comparison_sessions": 100
+  },
+  "eligibility_source_columns_allowed_before_coverage": ["stock_day_key"],
+  "coverage_or_capacity_metrics_computed_before_freeze": false,
+  "comparison_values_read_before_freeze": false,
+  "historical_daily_price_or_forward_return_values_read_before_freeze": false,
+  "provider_request_issued_before_freeze": false,
+  "candidate49_historical_return_read": false,
+  "candidate49_ledgers_changed": false,
+  "current_scoring_selection_sizing_or_orders_performed": false
+}

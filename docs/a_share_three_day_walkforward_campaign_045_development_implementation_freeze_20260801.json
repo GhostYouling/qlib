@@ -1,0 +1,100 @@
+{
+  "version": 1,
+  "kind": "a_share_three_day_walkforward_campaign045_development_implementation_freeze",
+  "status": "single_trial_runner_and_all_bindings_frozen_before_2019_2023_return_read",
+  "frozen_at": "2026-07-31T21:25:50Z",
+  "purpose": "Bind the only admitted Campaign045 factor, exact development runner, inherited three-fold protocol, closed search space, and conditional stress rule before the first historical daily-price or forward-return read.",
+  "bindings": {
+    "development_preregistration": {
+      "path": "docs/a_share_three_day_walkforward_campaign_045_preregistration.json",
+      "sha256": "cae090291152fd58d218346af759cfa2db840be93c58550639a617d1bfe6efe0"
+    },
+    "development_runner": {
+      "path": "scripts/a_share_three_day_walkforward_campaign045.py",
+      "sha256": "e6775605206bd34f78f8bf223677bf7ecd43d333eb245c4bef6f1593d3a4f227"
+    },
+    "byte_bound_parent_runner": {
+      "path": "scripts/a_share_three_day_walkforward_campaign043.py",
+      "sha256": "55aa5ea4df9a266695bda7474839310ce18568950995fde349dc3a0db9e021a0"
+    },
+    "no_return_audit_freeze": {
+      "path": "docs/a_share_three_day_walkforward_campaign_045_no_return_audit_freeze_20260801.json",
+      "sha256": "e3ce845f5fe25f514004105e6450702019231b23a7e23700aa4a412553b13a12"
+    },
+    "feature_runner": {
+      "path": "scripts/a_share_three_day_walkforward_campaign045_features.py",
+      "sha256": "02d6f27d8cc4763bddb42997d2027aef306acc2b9f1856928ab5b0e412b0dcd0"
+    }
+  },
+  "frozen_trial_catalog": [
+    {
+      "trial_id": "wf045_single__intraday_volatility_activity_lead_lag_asymmetry_236p",
+      "parent_trial_id": null,
+      "kind": "single_factor",
+      "feature_set": [
+        "intraday_volatility_activity_lead_lag_asymmetry_236p"
+      ],
+      "weights": [
+        1.0
+      ],
+      "complexity": 1,
+      "direction": "higher"
+    }
+  ],
+  "walkforward_protocol": {
+    "fold_count": 3,
+    "folds": [
+      {
+        "fold": 1,
+        "training": "2019-01-01..2020-12-31",
+        "validation": "2021-01-01..2021-12-31"
+      },
+      {
+        "fold": 2,
+        "training": "2019-01-01..2021-12-31",
+        "validation": "2022-01-01..2022-12-31"
+      },
+      {
+        "fold": 3,
+        "training": "2019-01-01..2022-12-31",
+        "validation": "2023-01-01..2023-12-31"
+      }
+    ],
+    "purge_signal_sessions_each_boundary": 3,
+    "label_containment_required": true,
+    "entry": "next accepted local session open t+1",
+    "exit": "third accepted local session close t+3",
+    "topk": 3
+  },
+  "search_and_stress_boundary": {
+    "expected_development_trial_count": 1,
+    "alternate_direction_horizon_weight_filter_threshold_model_combination_or_year_subset_search": false,
+    "every_trial_and_infrastructure_failure_must_be_retained": true,
+    "stress_2024_2025_open_before_frozen_nonzero_development_survivor": false,
+    "stress_pass_can_activate_candidate50_or_current_output": false
+  },
+  "validation": {
+    "preregistration_binding_count": 17,
+    "preregistration_bindings_passed": 17,
+    "preregistration_bindings_failed": 0,
+    "trial_catalog_assertion_passed": true,
+    "fold_and_purge_assertions_passed": true,
+    "closed_search_and_candidate49_boundary_assertions_passed": true,
+    "runner_status_before_execution": {
+      "ledger_entry_count": 0,
+      "stress_intent_exists": false,
+      "stress_record_exists": false
+    }
+  },
+  "research_boundary_at_freeze": {
+    "historical_daily_price_fields_read": false,
+    "historical_forward_returns_read": false,
+    "training_or_model_fitting_performed": false,
+    "provider_request_issued": false,
+    "candidate49_historical_return_signal_execution_or_milestone_backfill_performed": false,
+    "candidate49_prospective_ledgers_changed": false,
+    "candidate50_activation_created": false,
+    "current_scoring_selection_sizing_or_orders_performed": false
+  },
+  "next_action": "Execute python scripts/a_share_three_day_walkforward_campaign045.py run-development exactly once; append every result and stop before 2024-2025 unless a frozen survivor exists."
+}

@@ -1,0 +1,14 @@
+{
+  "schema_version": 1,
+  "kind": "a_share_three_day_walkforward_campaign260_infrastructure_failure",
+  "status": "combined_git_status_and_campaign_file_search_output_truncated_discarded",
+  "recorded_at": "2026-08-16T16:21:00+08:00",
+  "timestamp_semantics": "monotonic_logical_append_time_not_host_wall_clock_measurement",
+  "phase": "terminal_reference_context_read",
+  "failed_command_summary": "A combined git status and broad campaign-file search produced explicit output-truncation warnings.",
+  "result_consumed": false,
+  "recovery": "Discarded the broad output and replaced it with narrowly scoped per-artifact reads and bounded path queries.",
+  "scientific_result_changed": false,
+  "provider_or_web_request_issued": false,
+  "candidate49_ledgers_changed": false
+}

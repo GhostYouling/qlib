@@ -1,0 +1,44 @@
+{
+  "schema_version": 1,
+  "kind": "a_share_three_day_walkforward_campaign115_infrastructure_failure",
+  "status": "recorded_zero_value_workspace_authority_path_probe_failure",
+  "recorded_at": "2026-08-09T08:05:00+08:00",
+  "recorded_at_semantics": "monotonic_logical_append_time_after_campaign115_state_v8_not_host_wall_clock_measurement",
+  "attempt_id": "campaign115_infrastructure_020",
+  "stage": "campaign115_v8_v93_authority_probe",
+  "failure": {
+    "command_intent": "Read the Campaign115 v8/v93 state, ordered-no-return protocol, runner, and v11 ledger from the application-provided workspace before continuing offline implementation.",
+    "application_workspace": "/Users/niyufei/Coding/qlib",
+    "observed_application_workspace_is_git_repository": false,
+    "observed_required_paths_present": false,
+    "failed_required_paths": [
+      "docs/a_share_three_day_iteration_status_20260809_campaign115_ordered_no_return_ready_v8.json",
+      "docs/a_share_three_day_walkforward_future_numeric_comparison_eligibility_policy_v93_20260809.json",
+      "docs/a_share_three_day_walkforward_campaign_115_ordered_no_return_audit_protocol_20260809.json",
+      "scripts/a_share_tushare_limit_up_queue_no_return_audit.py",
+      "data/experiments/short_horizon/historical_walkforward/campaign_115/research_attempt_ledger_v11.json"
+    ],
+    "exit_code": 1,
+    "classification": "workspace_path_infrastructure_failure_before_any_research_value"
+  },
+  "read_only_recovery": {
+    "authoritative_git_worktree": "/Volumes/DIsk/Disk-Coding/qlib",
+    "git_toplevel_verified": true,
+    "v8_sha256_verified": "93f92337aa4026c69f63e0c57355ecd24fc4666d599b3a78461a370df9be5036",
+    "v93_sha256_verified": "7700825a730072b35fb8ca85dba27e2d3a544e74772741e015981cddb14b31f2",
+    "ordered_no_return_runner_sha256_verified": "7584cc04d9d93f23eaa38a38c9b5f2164e7a5f5834aa88cdf770f39da4c0bede",
+    "attempt_ledger_v11_sha256_verified": "72d1977ea6b9631acbf5c97e1b5d38ac61d6841e6ee59ccb60892a921ead777b",
+    "research_semantics_changed": false
+  },
+  "research_boundary": {
+    "candidate_source_or_comparator_values_read": false,
+    "historical_daily_price_or_forward_return_values_read": false,
+    "partition_year_2024_or_2025_values_read": false,
+    "credential_loaded": false,
+    "provider_request_issued": false,
+    "candidate49_ledgers_changed": false,
+    "second_prospective_candidate_created": false,
+    "current_scoring_selection_sizing_or_orders_performed": false,
+    "investment_advice": false
+  }
+}

@@ -1,0 +1,112 @@
+{
+  "version": 1,
+  "kind": "a_share_three_day_compact_comparator_cache_publication_binding",
+  "status": "v4_atomically_published_and_independently_full_equivalence_verified",
+  "recorded_at": "2026-08-06T02:26:28+08:00",
+  "frozen_artifacts": {
+    "protocol": {
+      "path": "docs/a_share_three_day_compact_comparator_cache_protocol_v4_20260806.json",
+      "sha256": "19f2086ec4e19b25f69800ee750cef0dc51cc3150e29808f2d9e2585b055d533"
+    },
+    "implementation_freeze": {
+      "path": "docs/a_share_three_day_compact_comparator_cache_implementation_freeze_v4_20260806.json",
+      "sha256": "ecef50baf3fc6da3ac244b029c5150ab64c6609d1f5505acdd6af1082c026064"
+    },
+    "builder": {
+      "path": "scripts/a_share_three_day_compact_comparator_cache_v4.py",
+      "sha256": "1b0cb7b8673e64417fd701f7cfbe21b1c870c66cb854cd71a44c565cd3e2d3a2"
+    },
+    "tests": {
+      "path": "tests/data_collector_tests/test_a_share_three_day_compact_comparator_cache_v4.py",
+      "sha256": "b00eddb205047ba57177171440400d08cfff32f7a53c84e82c856b93b181c427"
+    },
+    "root_cause_diagnosis": {
+      "path": "docs/a_share_three_day_compact_comparator_cache_v3_equivalence_diagnosis_20260806.json",
+      "sha256": "7f90fe174da2bf7f5fb6b347d6c296a8bc399d2723039617e2dde9062e2a99da"
+    }
+  },
+  "published_cache": {
+    "root": "/Volumes/DIsk/qlib-a-share-tushare-1m/derived/a_share/rich/tushare/compact_comparator_cache/campaign067_terminal_numeric98_v4",
+    "manifest": {
+      "path": "/Volumes/DIsk/qlib-a-share-tushare-1m/derived/a_share/rich/tushare/compact_comparator_cache/campaign067_terminal_numeric98_v4/snapshot_manifest.json",
+      "sha256": "3d81068f07ac61fe4cd04bd1a893e58759c06d88213263135fec5244e309b57b"
+    },
+    "dataset_sha256": "4a56dac48c14b667b6ee431519266f27bb8ff7cc25c51d8dce3bbc7aebe0376f",
+    "eligibility_rows": 1331759,
+    "eligibility_sessions": 1632,
+    "year_partition_count": 7,
+    "logical_numeric_comparator_count": 98,
+    "fixed_materialized_comparator_count": 96,
+    "dynamic_recipe_comparator_count": 2,
+    "physical_float64_column_count": 99,
+    "source_key_alignment_receipt_count": 83,
+    "global_materialized_dynamic_quality_values_stored": false,
+    "failed_v1_v2_or_v3_temporary_values_reused": false,
+    "atomic_publication_completed": true
+  },
+  "dynamic_quality_semantics": {
+    "comparators": [
+      "quality_growth",
+      "quality_score"
+    ],
+    "raw_auxiliaries": [
+      "quality_raw_roe",
+      "quality_raw_profit_yoy",
+      "quality_raw_revenue_yoy"
+    ],
+    "candidate_key_intersection_precedes_session_ranking": true,
+    "rank_method": "average",
+    "rank_pct": true,
+    "composite_mean_skipna": false,
+    "campaign067_dynamic_candidate_value_sha256": {
+      "quality_growth": "23af6d22b880c6c1a7ebef58392fc8bdafccc617e0e4d3a64a5747b2557dd202",
+      "quality_score": "18e93a67597402fdbf2fe076f924d496795b267916fee9aee0872f3e98095ded"
+    }
+  },
+  "independent_verification": {
+    "command": "PYTHONPATH=/Volumes/DIsk/Disk-Coding/qlib /Volumes/DIsk/Coding/anaconda3/bin/python -m scripts.a_share_three_day_compact_comparator_cache_v4 verify --manifest /Volumes/DIsk/qlib-a-share-tushare-1m/derived/a_share/rich/tushare/compact_comparator_cache/campaign067_terminal_numeric98_v4/snapshot_manifest.json --full-equivalence",
+    "exit_code": 0,
+    "status": "verified",
+    "full_equivalence_recomputed": true,
+    "campaign067_comparison_count": 97,
+    "campaign067_all_comparison_result_objects_exactly_equal": true,
+    "campaign067_comparison_results_sha256": "09dbb2ecd8949ab6383a3a849fb5e46a4d9c229a7b4fdfd490ede5da908e283c",
+    "campaign067_bound_completed_audit_sha256": "daeac2c2364d00c09247d0e721435b81f587c0f215a5a93cba30b7661f205d54"
+  },
+  "test_receipts": {
+    "pre_freeze_v4_only": {
+      "passed": 8,
+      "failed": 0
+    },
+    "post_freeze_v2_v3_v4_combined": {
+      "passed": 20,
+      "failed": 0
+    }
+  },
+  "unified_report": {
+    "path": "data/experiments/short_horizon/three_day_research_report.md",
+    "sha256": "7023760adb54fbcb5a58a73c504f6f6eb0d969983bac6d54d2405875f63e73dc"
+  },
+  "candidate49_integrity": {
+    "signal_ledger_sha256": "5193f00d7f36da003f53cec387900da4c3d002299f5dfcfc1a95eaa199ed3a79",
+    "execution_ledger_sha256": "d57a3e61eac969e42cafa418ccd8c0a5ee65dcf69da145bb2c096c2a02a2ea4f",
+    "historical_signal_return_or_execution_backfill": false,
+    "candidate50_activated": false
+  },
+  "research_accounting": {
+    "cumulative_historical_research_attempt_count": 402,
+    "cumulative_return_reading_development_trial_count": 274,
+    "cache_infrastructure_failure_count": 6,
+    "v4_success_research_attempt_increment": 0,
+    "v4_success_return_reading_trial_increment": 0,
+    "v4_success_cache_infrastructure_failure_increment": 0
+  },
+  "research_boundary": {
+    "historical_daily_price_fields_read": [],
+    "historical_forward_returns_read": false,
+    "provider_request_issued": false,
+    "current_scoring_selection_sizing_or_orders_performed": false,
+    "retroactive_campaign067_evidence_substitution_allowed": false,
+    "future_use": "Campaign068 and later historical no-return audits only after each campaign's candidate definition, complete logical comparator order, directions, gates, and cache manifest binding are frozen."
+  }
+}

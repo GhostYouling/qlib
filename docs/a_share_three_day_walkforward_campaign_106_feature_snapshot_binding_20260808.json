@@ -1,0 +1,63 @@
+{
+  "schema_version": 1,
+  "kind": "a_share_three_day_walkforward_campaign106_feature_snapshot_binding",
+  "status": "verified_immutable_candidate_snapshot_before_coverage_or_comparator_values",
+  "recorded_at": "2026-08-07T19:20:45Z",
+  "protocol": {
+    "path": "docs/a_share_three_day_walkforward_campaign_106_no_return_preregistration.json",
+    "sha256": "933b1f0bea9d092e67ba688d6270983e75e9002f2948f5e01f363d50cc4f2670"
+  },
+  "implementation_freeze": {
+    "path": "docs/a_share_three_day_walkforward_campaign_106_no_return_implementation_freeze_v2_20260808.json",
+    "sha256": "a832b5c3500d7fb7e4aeaa97204689b84ad9f15664424d270d79626824da224f"
+  },
+  "snapshot": {
+    "path": "/Volumes/DIsk/qlib-a-share-tushare-1m/derived/a_share/rich/tushare/minute_walkforward_campaign106_feature_library/tushare_stk_mins_1m_2019_2025_ea0cbb8f_walkforward_campaign106_feature_library_v1/snapshot_manifest.json",
+    "sha256": "0fa2bb014e0c51e7ad2254c479f21c2d5a1d32bec57be956a111f2ca5da3c572",
+    "dataset_sha256": "f52544dbce026cf9fca9489c85d80bb6fb69e5e880f5b7bf14fb82f09ae8de0c",
+    "partitions": 33015,
+    "rows": 7724498,
+    "eligible_rows": 7724498
+  },
+  "source": {
+    "raw_rows_read": 1866461373,
+    "raw_sessions_read": 7744653,
+    "source_projection": [
+      "datetime",
+      "symbol",
+      "provider",
+      "high",
+      "low"
+    ],
+    "raw_manifest_sha256": "9b3d959563c9d182f38981c6a36bdb3bc9b415de08487a9e1f9e850825c0839f",
+    "joint_clean_manifest_sha256": "453c6719cb3c7da42fed8807b28a2bfe988700283e9625a6db97912534f368de",
+    "joint_clean_dataset_sha256": "0e4fe7c05536cdfcecc2936bc880726902f5560061188ffff82ef7ee6f346983"
+  },
+  "quality": {
+    "invalid_numeric_sessions": 0,
+    "invalid_ordered_range_sessions": 0,
+    "eligible_stock_days": 7724498,
+    "missing_stock_days": 0,
+    "nonzero_range_bars_in_valid_source_sessions": 1490819410,
+    "zero_range_bars_in_valid_source_sessions": 367897310
+  },
+  "verification": {
+    "all_partition_byte_hashes_passed": true,
+    "all_partition_frame_hashes_passed": true,
+    "all_values_are_finite_integer_multiples_of_1_over_240": true,
+    "all_ineligible_values_are_missing": true,
+    "aggregate_dataset_digest_passed": true,
+    "comparison_values_read": false,
+    "historical_daily_price_or_forward_return_values_read": false,
+    "provider_request_issued": false
+  },
+  "research_boundary": {
+    "coverage_or_capacity_metrics_computed": false,
+    "comparator_values_read": false,
+    "historical_daily_price_or_forward_return_values_read": false,
+    "candidate49_historical_backfill_performed": false,
+    "candidate49_ledgers_changed": false,
+    "current_scoring_selection_sizing_or_orders_performed": false
+  },
+  "next_action": "Freeze one single-use audit activation against this exact snapshot, then compute structural coverage before any comparator value."
+}

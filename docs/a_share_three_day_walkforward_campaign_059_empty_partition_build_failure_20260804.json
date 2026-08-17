@@ -1,0 +1,73 @@
+{
+  "version": 1,
+  "kind": "a_share_three_day_walkforward_campaign059_feature_build_infrastructure_failure",
+  "status": "failed_closed_before_snapshot_publication_comparison_values_or_returns",
+  "recorded_at": "2026-08-04T19:42:39+08:00",
+  "attempt_id": "campaign059_infrastructure_001_empty_raw_partition",
+  "command": "PYTHONPATH=/Volumes/DIsk/Disk-Coding/qlib python scripts/a_share_three_day_walkforward_campaign059_features.py build --data-root /Volumes/DIsk/qlib-a-share-tushare-1m --workers 4",
+  "exit_code": 1,
+  "failure_stage": "source_partition_identity_validation",
+  "exception": "Campaign059 symbol build failed: SH600485: raw identity changed for SH600485",
+  "triggering_partition": {
+    "symbol": "SH600485",
+    "year": 2021,
+    "manifest_rows": 0,
+    "source_byte_sha256": "01321693d59afe3b633ec4736a32acb27474a4e0635101f9d762eac01332e2e3",
+    "exact_projected_columns": [
+      "datetime",
+      "symbol",
+      "provider",
+      "close"
+    ]
+  },
+  "manifest_declared_empty_source_partitions": [
+    "SH600485/2021",
+    "SH600677/2021",
+    "SH600680/2019",
+    "SZ000670/2021",
+    "SZ002260/2020",
+    "SZ002260/2021"
+  ],
+  "preserved_partial_snapshot": {
+    "root": "/Volumes/DIsk/qlib-a-share-tushare-1m/derived/a_share/rich/tushare/minute_walkforward_campaign059_feature_library/.tushare_stk_mins_1m_2019_2025_ea0cbb8f_walkforward_campaign059_feature_library_v1.partial",
+    "complete_checkpoint_partitions": 33004,
+    "expected_total_partitions": 33015,
+    "missing_checkpoint_partitions": 11,
+    "deleted_or_rewritten": false
+  },
+  "frozen_inputs": {
+    "no_return_protocol": {
+      "path": "docs/a_share_three_day_walkforward_campaign_059_no_return_preregistration.json",
+      "sha256": "50cf7b067b1dfd5dc31d6c6ef85090788abdf6a2bbc054eda6e7c3824d5c60d6"
+    },
+    "original_feature_runner": {
+      "path": "scripts/a_share_three_day_walkforward_campaign059_features.py",
+      "sha256": "d96954a319caf6b7dd45eafd46fae7db2a6176abc292529d00480b4a9ad10cc0"
+    },
+    "original_implementation_freeze": {
+      "path": "docs/a_share_three_day_walkforward_campaign_059_feature_implementation_freeze_20260804.json",
+      "sha256": "e4902e4487396fc58ffd8aa74a49c831ac83f732a79d61a63606276262f06d9d"
+    },
+    "raw_manifest_sha256": "9b3d959563c9d182f38981c6a36bdb3bc9b415de08487a9e1f9e850825c0839f"
+  },
+  "value_boundary": {
+    "minute_close_and_market_benchmark_values_read_by_failed_build": true,
+    "candidate_values_computed_and_checkpointed": true,
+    "candidate_values_manually_inspected_or_used_to_change_formula_direction_threshold_or_gate": false,
+    "comparison_values_read": false,
+    "historical_daily_price_fields_read": [],
+    "historical_forward_return_fields_read": false,
+    "development_folds_opened": false,
+    "stress_2024_2025_opened": false,
+    "candidate49_historical_backfill_performed": false,
+    "candidate49_ledgers_changed": false,
+    "provider_request_issued": false
+  },
+  "repair_boundary": {
+    "authorized": true,
+    "only_change_allowed": "An exact-column zero-row raw frame may return an empty signed-return profile dictionary and zero source-quality counters.",
+    "every_nonempty_frame_must_delegate_to_original_extractor": true,
+    "formula_direction_grid_peer_gate_informative_count_coverage_uniqueness_or_development_protocol_may_change": false,
+    "partial_snapshot_must_resume_without_deleting_or_recomputing_valid_checkpoints": true
+  }
+}

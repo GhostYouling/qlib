@@ -1,0 +1,49 @@
+{
+  "schema_version": 1,
+  "kind": "a_share_three_day_walkforward_campaign101_feature_build_failure",
+  "status": "failed_closed_and_diagnosed_without_candidate_publication",
+  "recorded_at": "2026-08-07T13:24:01Z",
+  "implementation_freeze": {
+    "path": "docs/a_share_three_day_walkforward_campaign_101_feature_implementation_freeze_v2_20260807.json",
+    "sha256": "d622d888677b9f4905eaf3d45a552ef06c36247c2d406029fea3c95e0b15bee8"
+  },
+  "failed_stage": "2019 source ordinal 99 alignment after all 31 post-cache source partition byte sets passed rehash verification",
+  "source": {
+    "ordinal": 99,
+    "name": "quarterly_profit_revenue_acceleration_rank_gap_2r",
+    "source_rows_2019": 884338,
+    "source_unique_stock_day_keys_2019": 884338,
+    "quality_listing_base_rows_2019": 105761,
+    "matched_quality_listing_base_rows_2019": 105476,
+    "missing_quality_listing_base_rows_2019": 285,
+    "duplicate_source_keys_2019": 0
+  },
+  "failure": "The builder incorrectly required every component source to cover every quality/listing base row. Campaign101's frozen formula explicitly permits a missing component, maps it to zero only inside the aggregator, and admits a stock-day when at least 97 of 129 components are finite.",
+  "diagnosis": "The 285 absent source rows are a legitimate sparse component state, not an identity corruption. The loader must align each unique matched source key into a full-base NaN vector; the frozen ranking and aggregator then apply the pre-registered missingness semantics.",
+  "repair_boundary": {
+    "formula_direction_rank_tie_missing_score_support_threshold_quantile_or_gate_change": false,
+    "allow_unmatched_source_keys_outside_base": false,
+    "allow_duplicate_source_keys": false,
+    "align_matched_unique_source_keys_and_preserve_absent_base_keys_as_nan": true,
+    "new_synthetic_missing_component_alignment_test_required": true,
+    "new_implementation_freeze_required_before_rerun": true
+  },
+  "output_state": {
+    "temporary_output_removed_by_fail_closed_handler": true,
+    "candidate_snapshot_published": false,
+    "candidate_values_materialized": false,
+    "coverage_or_capacity_metrics_computed": false
+  },
+  "research_boundary": {
+    "all_post_cache_source_partition_bytes_rehashed": true,
+    "source_factor_values_read": true,
+    "source_factor_value_scope": "2019 first-98 compact cache values and 2019 ordinal-99 source values before the alignment assertion",
+    "comparison_values_read_for_uniqueness": false,
+    "historical_daily_price_fields_read": [],
+    "historical_forward_returns_read": false,
+    "training_or_model_fitting_performed": false,
+    "provider_request_issued": false,
+    "candidate49_ledgers_changed": false,
+    "current_scoring_selection_sizing_or_orders_performed": false
+  }
+}

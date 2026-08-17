@@ -1,0 +1,35 @@
+{
+  "schema_version": 1,
+  "kind": "a_share_three_day_walkforward_campaign097_no_return_audit_activation_binding_v2",
+  "status": "worker_binding_repair_frozen_before_campaign097_coverage_or_comparison_values",
+  "activated_at": "2026-08-07T06:08:15Z",
+  "purpose": "Authorize the remaining single Campaign097 no-return audit through the immutable worker-binding repair after the preserved prevalue v1 infrastructure failure.",
+  "implementation_freeze_v2": {
+    "path": "docs/a_share_three_day_walkforward_campaign_097_no_return_audit_implementation_freeze_v2_20260807.json",
+    "sha256": "3773142cca7e86f135caadfcb448588eb613031eaa56a1b9ccc39b2e94e6faf4"
+  },
+  "v1_failure_record": {
+    "path": "docs/a_share_three_day_walkforward_campaign_097_no_return_audit_worker_binding_failure_20260807.json",
+    "sha256": "631ea106365dca67c42ae2828ce02edf6536e46ad4c5074e8cc3cd2860d96b60"
+  },
+  "v1_activation_binding": {
+    "path": "docs/a_share_three_day_walkforward_campaign_097_no_return_audit_activation_binding_20260807.json",
+    "sha256": "21fa50bae72afbd822ec95a3a61c35b0e4ce7cca9ae0b209fab1c1940980060a"
+  },
+  "candidate_snapshot": {
+    "path": "/Volumes/DIsk/qlib-a-share-tushare-1m/derived/a_share/rich/tushare/minute_walkforward_campaign097_feature_library/tushare_stk_mins_1m_2019_2025_ea0cbb8f_walkforward_campaign097_feature_library_v1/snapshot_manifest.json",
+    "sha256": "12e43008b4595a338bdd67ac21dcd543772e0517993623837770bec3bd31e0df",
+    "dataset_sha256": "ab5b0f747600a4040c38e1d6453a0ec4242342803bc7acff257cc88f95ccfdb5"
+  },
+  "repair_scope": "snapshot verifier mandatory workers keyword only",
+  "single_remaining_run_authorized": true,
+  "factor_alignment_coverage_gate_comparator_order_or_threshold_changed": false,
+  "candidate_partition_values_read_before_activation": false,
+  "eligibility_stock_day_keys_read_before_activation": false,
+  "coverage_or_capacity_metrics_computed_before_activation": false,
+  "comparison_values_read_before_activation": false,
+  "historical_daily_price_or_forward_return_values_read_before_activation": false,
+  "provider_request_issued_before_activation": false,
+  "candidate49_ledgers_changed_before_activation": false,
+  "current_scoring_selection_sizing_or_orders_performed_before_activation": false
+}

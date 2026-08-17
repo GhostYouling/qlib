@@ -1,0 +1,148 @@
+{
+  "version": 1,
+  "kind": "a_share_three_day_walkforward_campaign063_concept_scouting",
+  "status": "concept_only_one_new_mechanism_selected_no_campaign063_source_benchmark_candidate_comparison_daily_price_or_return_values",
+  "recorded_at": "2026-08-05T05:45:00+08:00",
+  "purpose": "Continue the offline three-session walk-forward program after terminal Campaign062 by selecting at most one economically distinct mechanism from frozen definitions and source schemas before any Campaign063 value is opened.",
+  "authoritative_bindings": {
+    "campaign062_verified_state": {
+      "path": "docs/a_share_three_day_iteration_status_20260805_campaign062_verified_v2.json",
+      "sha256": "ba313597d16965f78383956967c619ba9b41b08e175c324d637b2833f79a1fe7"
+    },
+    "campaign062_terminal_record": {
+      "path": "docs/a_share_three_day_walkforward_campaign_062_research_record_v3.json",
+      "sha256": "0e7e828833ee5f37aa1daac67c2bb70383e2f2f29d4a131c34a469ef818a4b7d",
+      "complete_factor_attempts": 1,
+      "development_survivors": 0,
+      "stress_interval_opened": false
+    },
+    "campaign062_verification": {
+      "path": "docs/a_share_three_day_walkforward_campaign_062_verification_v2_20260805.json",
+      "sha256": "1c15751da0788a16eac3dace1183088f90e693295480733a2f7019a3c3b7a519"
+    },
+    "historical_walkforward_policy": {
+      "path": "docs/a_share_three_day_historical_walkforward_research_policy_20260727.json",
+      "sha256": "38426d6161b9bfed323c58caba18feca668b8c9d53e294951a8ba90c01a798bb"
+    }
+  },
+  "schema_only_source_boundary": {
+    "provider": "tushare",
+    "frequency": "1m",
+    "raw_source_projection_if_selected": [
+      "datetime",
+      "symbol",
+      "provider",
+      "close"
+    ],
+    "forbidden_raw_fields": [
+      "open",
+      "high",
+      "low",
+      "volume",
+      "amount"
+    ],
+    "fixed_close_grid": "09:31--11:30 and 13:01--15:00 exactly 240 closes; exclude standalone 09:30 and the lunch transition",
+    "fixed_within_half_signed_log_return_positions": 238,
+    "frozen_cross_sectional_aggregate_schema": [
+      "trade_date",
+      "return_position",
+      "return_sum",
+      "return_sum_squares",
+      "valid_stock_count"
+    ],
+    "aggregate_population": "all accepted joint-clean stock-days with a complete finite 238-position return vector",
+    "daily_price_or_forward_return_fields_are_not_source_substitutes": true,
+    "provider_request_allowed": false
+  },
+  "candidate_design_catalog": [
+    {
+      "design": "intraday_cross_sectional_standardized_return_state_stability_236p",
+      "decision": "selected_for_separate_exact_no_value_overlap_audit",
+      "reason": "It asks whether a stock remains in a similar signed and scale-normalized market-relative return state from one minute to the next. No prior definition measures the temporal mobility of a stock's leave-one-out standardized cross-sectional state."
+    },
+    {
+      "design": "cross_sectional_percentile_rank_displacement",
+      "decision": "rejected_before_values",
+      "reason": "It would require a new per-position sorting population and introduce tie-estimator and peer-universe choices. The already frozen sum/squared-sum/count benchmark provides a deterministic leave-one-out location and scale without reopening peer construction."
+    },
+    {
+      "design": "squared_displacement_exponential_kernel_or_serial_correlation",
+      "decision": "rejected_before_values",
+      "reason": "Squared loss, exponential decay, Pearson/Spearman correlation, autocovariance, regression slope, and higher lags answer adjacent questions and would create an estimator search. One mean absolute displacement and one reciprocal transform are selected."
+    },
+    {
+      "design": "extreme_quantile_or_same_bucket_persistence",
+      "decision": "rejected_before_values",
+      "reason": "Quintile, decile, sign, threshold, and tail persistence require arbitrary cut points and discard continuous standardized-state distance."
+    },
+    {
+      "design": "raw_or_absolute_return_serial_persistence",
+      "decision": "rejected_terminal_family",
+      "reason": "Single-stock signed daily serial dependence, intraday absolute-return serial persistence, sign runs, reversal energy, and time-reversal asymmetry are already terminal. The selected concept must depend on contemporaneous leave-one-out peer location and scale."
+    },
+    {
+      "design": "market_sign_agreement_correlation_or_dispersion_coupling",
+      "decision": "rejected_terminal_family",
+      "reason": "Market sign agreement, market correlation resolution, market shock decoupling, and dispersion decoupling are already terminal. The selected concept measures adjacent motion of standardized relative states rather than agreement or synchronous correlation with a market series."
+    },
+    {
+      "design": "day_over_day_state_profile_similarity",
+      "decision": "rejected_terminal_family",
+      "reason": "Campaign060 and Campaign061 already consume adjacent-session directional agreement and volatility-scale stability; the selected concept uses one signal session only."
+    },
+    {
+      "design": "alternate_half_window_direction_filter_or_combination",
+      "decision": "rejected_before_values",
+      "reason": "Both complete trading halves, all 236 internal adjacent pairs, the higher direction, no filter, and no combination are fixed once."
+    }
+  ],
+  "selected_concept": {
+    "concept_name": "intraday_cross_sectional_standardized_return_state_stability",
+    "candidate_ordinal": null,
+    "prospective_active": false,
+    "concept_status": "mechanism_only_not_yet_allowed_to_open_values",
+    "mechanism": "For each fixed one-minute signed return, express the stock's return relative to the exact same-position leave-one-out peer mean and population standard deviation, then measure how little that standardized relative state moves across adjacent return positions within each continuous trading half.",
+    "economic_question": "Does persistent minute-by-minute market-relative leadership or laggard state indicate slow execution or information diffusion that can remain informative from the next open through the third close?",
+    "mandatory_overlap_challenges": [
+      "directional_serial_dependence_20",
+      "intraday_absolute_return_serial_persistence_236p",
+      "intraday_bar_direction_continuity_238p",
+      "intraday_market_dispersion_decoupling_238m",
+      "intraday_market_directional_sign_agreement_238m",
+      "intraday_market_correlation_resolution_119p",
+      "intraday_market_shock_magnitude_decoupling_238m",
+      "intraday_day_over_day_directional_return_agreement_238b",
+      "intraday_day_over_day_realized_variance_stability_238b"
+    ],
+    "known_design_risks": [
+      "A low-volatility stock can remain near the cross-sectional center, so statistical redundancy with realized volatility or price-update frequency must be tested after coverage and before returns.",
+      "Leave-one-out variance must be reconstructed fail-closed with a fixed tolerance for floating-point cancellation and no variance floor.",
+      "The absolute-displacement loss, reciprocal transform, lag, direction, lunch treatment, peer minimum, and missing rules create researcher degrees of freedom unless frozen before values.",
+      "The current-listing-derived source and holding universes retain the documented survivorship limitation."
+    ]
+  },
+  "research_boundary": {
+    "campaign063_external_minute_rows_read": false,
+    "campaign063_cross_sectional_benchmark_values_read": false,
+    "campaign063_candidate_values_computed_or_read": false,
+    "campaign063_comparison_values_read": false,
+    "historical_daily_price_fields_read": false,
+    "historical_forward_return_fields_read": false,
+    "formula_or_direction_frozen": false,
+    "training_or_model_fitting_performed": false,
+    "provider_request_issued": false,
+    "candidate49_historical_return_signal_execution_or_milestone_backfill_performed": false,
+    "candidate49_ledgers_changed": false,
+    "second_prospective_candidate_created": false,
+    "current_scoring_selection_sizing_or_orders_performed": false,
+    "investment_advice": false,
+    "current_listing_snapshot_survivorship_limitation": true
+  },
+  "decision": {
+    "selected_concept_count": 1,
+    "selected_concept_may_advance_directly_to_values": false,
+    "required_next_step": "Perform and bind one exact no-value mechanism-overlap audit. Only if it passes may Campaign063 freeze source fingerprints, all 94 ordered comparisons, coverage and novelty gates, one finite development trial, code, and synthetic tests before values.",
+    "candidate49_remains_only_active_prospective_candidate": true,
+    "candidate50_activation_allowed": false
+  }
+}

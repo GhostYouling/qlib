@@ -1,0 +1,59 @@
+{
+  "schema_version": 1,
+  "kind": "a_share_three_day_walkforward_campaign098_feature_snapshot_binding",
+  "status": "immutable_candidate_snapshot_verified_before_coverage_or_comparator_values",
+  "recorded_at": "2026-08-07T08:27:00Z",
+  "protocol": {
+    "path": "docs/a_share_three_day_walkforward_campaign_098_no_return_preregistration.json",
+    "sha256": "31dcecebeea81adab163acd76e21616e6b35726a2798bb4ca72cee4252ca78bd"
+  },
+  "current_verifier_freeze": {
+    "path": "docs/a_share_three_day_walkforward_campaign_098_feature_implementation_freeze_v3_20260807.json",
+    "sha256": "25421851a49bfe186ca95662685d7653d19395b11fe295e38614c572fa4e194c"
+  },
+  "current_verifier": {
+    "path": "scripts/a_share_three_day_walkforward_campaign098_features.py",
+    "sha256": "51940abaad3510024778016f1487d8fd7f73e8f3bbd39b4d7444cbfa15dcbc98"
+  },
+  "snapshot": {
+    "path": "/Volumes/DIsk/qlib-a-share-tushare-1m/derived/a_share/rich/tushare/minute_walkforward_campaign098_feature_library/tushare_stk_mins_1m_2019_2025_ea0cbb8f_walkforward_campaign098_feature_library_v1/snapshot_manifest.json",
+    "sha256": "371429a81292a91ef2bfa1292f467c81bf73e176fbfbc9888084f74eaaac1dc5",
+    "dataset_sha256": "921f06fad98aed942550d86b1475c888aea6d2025c37d53ec55917401bd34b33",
+    "partitions": 7,
+    "rows": 1331759,
+    "eligible_rows": 1328449,
+    "calendar_sessions": 1632
+  },
+  "publication_provenance": {
+    "original_builder_sha256": "c37124971238368ca233b38e9b3532fb52cf8e613e70d490afc15478e5107355",
+    "original_implementation_freeze_sha256": "b232128e4c30e011e68ee47cd29c46f19a685cb2f51815f28427dfaf3996143e"
+  },
+  "factor": {
+    "name": "intraday_range_clock_variance_240m",
+    "direction": "higher",
+    "range": [
+      0,
+      1
+    ],
+    "finite_rows": 1328449
+  },
+  "quality_totals": {
+    "source_sessions_inspected": 7744653,
+    "valid_source_formula_sessions": 7700005,
+    "nonpositive_total_range_sessions": 44648,
+    "invalid_selected_source_sessions": 0,
+    "invalid_ordered_range_sessions": 0,
+    "zero_range_bars": 367897310,
+    "endpoint_canonicalized_sessions": 4465
+  },
+  "independent_verify_status": "verified",
+  "snapshot_rebuilt_rewritten_or_recalculated_during_verifier_repairs": false,
+  "coverage_or_capacity_metrics_computed_before_binding": false,
+  "comparator_values_read_before_binding": false,
+  "historical_daily_price_or_forward_return_values_read": false,
+  "candidate49_historical_backfill_performed": false,
+  "candidate49_ledgers_changed": false,
+  "provider_request_issued": false,
+  "current_scoring_selection_sizing_or_orders_performed": false,
+  "next_action": "Freeze the no-return audit implementation and activation against this exact snapshot before computing coverage; load comparator values only if coverage passes."
+}

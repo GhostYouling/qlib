@@ -1,0 +1,64 @@
+{
+  "schema_version": 1,
+  "kind": "a_share_three_day_walkforward_campaign084_prevalue_infrastructure_failure_record",
+  "status": "two_prevalue_infrastructure_failures_recorded_without_source_candidate_comparison_daily_price_or_return_values",
+  "recorded_at": "2026-08-06T22:05:00+08:00",
+  "authoritative_inputs": {
+    "campaign083_verified_iteration_state": {
+      "path": "docs/a_share_three_day_iteration_status_20260806_campaign083_verified_v5.json",
+      "sha256": "3702683aeab45a7917fdedd918fe0ccc3076e36dc98c613e09fe383b6932405d"
+    },
+    "numeric_comparator_policy_v19": {
+      "path": "docs/a_share_three_day_walkforward_future_numeric_comparison_eligibility_policy_v19_20260806.json",
+      "sha256": "dacfbcd9bfdb2b764bd52c71e09e50154a7ab8b4e7b2e183afdf52ddd96e32fa"
+    },
+    "campaign084_no_return_preregistration": {
+      "path": "docs/a_share_three_day_walkforward_campaign_084_no_return_preregistration.json",
+      "sha256": "c396f141c811978004c04b62f09caceef343a9860e43f48de1fe44419c9bcf70"
+    }
+  },
+  "failures": [
+    {
+      "ordinal": 1,
+      "stage": "workspace_and_definition_inventory_read",
+      "failure": "One combined read-only status and recursive file inventory produced output beyond the terminal capture limit, so the useful definition section was truncated.",
+      "resolution": "No state was changed. Subsequent reads were split into targeted status, policy, definition-order, and mechanism queries with bounded output.",
+      "research_conclusion_changed": false,
+      "candidate_or_comparison_values_read": false,
+      "source_rows_read": false,
+      "provider_request_issued": false
+    },
+    {
+      "ordinal": 2,
+      "stage": "nested_json_policy_projection",
+      "failure": "A jq comma-pipeline projection changed the current context to an array and then attempted to index it by an object key, returning a nonzero indexing error.",
+      "resolution": "The policy and protocol were reread using separate key projections and bounded text ranges; the frozen counts and order digests were unchanged.",
+      "research_conclusion_changed": false,
+      "candidate_or_comparison_values_read": false,
+      "source_rows_read": false,
+      "provider_request_issued": false
+    }
+  ],
+  "prevalue_design_rejections_recorded_in_concept_catalog": [
+    "intraday_close_local_extremum_sparsity_236p",
+    "intraday_amount_volume_clock_center_shift_240m",
+    "signal_day_open_to_close_return_1d",
+    "standalone_old_profit_growth_level_or_acceleration",
+    "alternate_level_acceleration_operators_or_scales",
+    "third_component_filter_or_regime_interactions"
+  ],
+  "research_boundary": {
+    "campaign084_quarterly_or_minute_source_rows_read": false,
+    "campaign084_candidate_values_read": false,
+    "comparison_values_read": false,
+    "historical_daily_price_fields_read": [],
+    "historical_forward_returns_read": false,
+    "provider_request_issued": false,
+    "candidate49_historical_backfill_performed": false,
+    "candidate49_ledgers_changed": false,
+    "second_prospective_candidate_created": false,
+    "current_scoring_selection_sizing_or_orders_performed": false,
+    "investment_advice": false
+  },
+  "continuation": "The failures are tooling-only and do not authorize a formula, direction, gate, comparator, or source change. Continue from the immutable Campaign084 protocol."
+}

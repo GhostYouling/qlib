@@ -1,0 +1,136 @@
+{
+  "version": 1,
+  "kind": "a_share_three_day_walkforward_campaign030_mechanism_overlap_audit",
+  "status": "passed_conceptual_independence_before_formula_values_benchmark_values_comparisons_or_returns",
+  "recorded_at": "2026-07-30T09:37:00Z",
+  "purpose": "Resolve the selected morning-to-afternoon market-coupling concept into one exact no-value mechanism and challenge it against terminal and prospective families before any Campaign030 source partition, frozen benchmark value, candidate value, comparison value, daily price, or forward return is opened.",
+  "concept_scouting": {
+    "path": "docs/a_share_three_day_walkforward_campaign_030_concept_scouting.json",
+    "sha256": "041bde8e66800f8e76fac6578ae1f2dddfda5d084c1c5216d31bf3ac3868e424"
+  },
+  "authoritative_boundary": {
+    "path": "docs/a_share_three_day_iteration_status_20260730_campaign029_verified.json",
+    "sha256": "ba1d7e7e9f96274ed2e735123af6c6ac71b0278e03faadcd4ef65d5bdaa4d1ef"
+  },
+  "historical_walkforward_policy": {
+    "path": "docs/a_share_three_day_historical_walkforward_research_policy_20260727.json",
+    "sha256": "38426d6161b9bfed323c58caba18feca668b8c9d53e294951a8ba90c01a798bb"
+  },
+  "selected_mechanism": {
+    "name": "intraday_market_correlation_resolution_119p",
+    "direction": "higher",
+    "information_domain": "morning_to_afternoon_change_in_same_minute_stock_leave_one_out_market_signed_return_correlation",
+    "formula": "population PearsonCorr(stock_return, leave_one_out_market_return) over the 119 morning within-half return positions minus the same population Pearson correlation over the 119 afternoon within-half return positions",
+    "economic_hypothesis": "A higher value means common-market signed-return coupling weakened from morning to afternoon, representing resolution of morning common-liquidity pressure and renewed stock-specific price formation that may carry from the next open through the third close.",
+    "source_fields": [
+      "datetime",
+      "symbol",
+      "provider",
+      "close"
+    ],
+    "frozen_benchmark_fields": [
+      "trade_date",
+      "return_position",
+      "return_sum",
+      "valid_stock_count"
+    ],
+    "return_grid": "Form 119 adjacent natural-log close returns inside each 120-close half at 09:31-11:30 and 13:01-15:00. Morning positions are 0-118 and afternoon positions are 119-237. Exclude standalone 09:30 and the lunch transition.",
+    "leave_one_out_rule": "At each return position subtract the stock's own finite return and count from the frozen equal-weight market return sum and valid-stock count, then divide the remaining sum by the remaining count.",
+    "peer_rule": "Require at least 50 other finite stock returns at every one of the 238 positions.",
+    "correlation_rule": "Compute two separate equal-position-weight population Pearson correlations: one on the complete 119-element morning stock and leave-one-out market signed-return vectors, and one on the complete 119-element afternoon vectors. Require strictly positive population variance in both stock and both leave-one-out market half vectors.",
+    "resolution_rule": "Subtract the afternoon correlation from the morning correlation exactly once. Do not take an absolute value, use one-minus-correlation, pool the halves, fit beta or residuals, condition on signs or magnitudes, use leads or lags, or add weights, thresholds, quantiles, filters, or subwindows.",
+    "zero_rule": "Retain exact-zero stock and leave-one-out market returns at their fixed positions without removal, bridging, replacement, tolerance reclassification, or sign conditioning.",
+    "endpoint_rule": "Canonicalize each half-correlation only when it lies within 1e-12 beyond -1 or +1; otherwise a nonfinite or out-of-range component makes the stock-day missing. The final exact difference must lie within [-2,2].",
+    "missing_rule": "Any invalid close-return grid, insufficient leave-one-out peer position, nonfinite stock or market return, nonpositive population variance in any required half vector, invalid component correlation, nonfinite final score, or final score outside [-2,2] makes the stock-day missing; never fill, statistically clip, repair, or substitute.",
+    "valid_range": [
+      -2.0,
+      2.0
+    ]
+  },
+  "overlap_challenges": [
+    {
+      "family": "intraday_market_idiosyncratic_share_238m",
+      "result": "distinct_pending_statistical_uniqueness_gate",
+      "reason": "Market-idiosyncratic share fits one pooled signed market exposure and summarizes pooled residual-to-total variance. Campaign030 fits no beta or residual variance and retains only the difference between two separately standardized half-session correlations."
+    },
+    {
+      "family": "intraday_market_neutral_late_residual_drift_238m",
+      "result": "distinct",
+      "reason": "The residual-drift factor fits a pooled signed market relation and ranks a directional late residual window. Campaign030 has no residual return or selected late window and compares two complete half-session correlation states."
+    },
+    {
+      "family": "intraday_market_response_delay_asymmetry_236p",
+      "result": "distinct",
+      "reason": "Campaign021 subtracts stock-lag and stock-lead cross correlations over pooled within-half positions. Campaign030 is strictly synchronous and subtracts afternoon state from morning state, with no lead or lag."
+    },
+    {
+      "family": "intraday_market_up_down_correlation_asymmetry_238m",
+      "result": "distinct_pending_statistical_uniqueness_gate",
+      "reason": "Campaign026 partitions all positions by strictly positive versus strictly negative market returns. Campaign030 never conditions on return sign and instead uses complete morning versus complete afternoon time blocks."
+    },
+    {
+      "family": "intraday_market_shock_magnitude_decoupling_238m",
+      "result": "distinct_pending_statistical_uniqueness_gate",
+      "reason": "Campaign029 removes signs and computes one pooled magnitude correlation. Campaign030 retains signed returns, computes two half-session correlations, and measures their ordered decline. It does not rescue or modify Campaign029."
+    },
+    {
+      "family": "intraday_morning_afternoon_return_profile_persistence_119p",
+      "result": "distinct_pending_statistical_uniqueness_gate",
+      "reason": "Campaign027 correlates the stock's own morning return sequence with its own corresponding afternoon sequence and reads no market state. Campaign030 never correlates morning observations with afternoon observations; each half is separately related only to its synchronous leave-one-out market."
+    },
+    {
+      "family": "intraday_volatility_resolution_238m",
+      "result": "distinct_pending_statistical_uniqueness_gate",
+      "reason": "Volatility resolution compares the stock's marginal return-variance allocation through time without a market benchmark. Campaign030 uses signed standardized dependence against an external market path and is invariant to each half's positive scale."
+    },
+    {
+      "family": "candidate49_cumulative_vwap_crossing_rate",
+      "result": "distinct",
+      "reason": "Candidate49 measures causal cumulative-VWAP crossings from close, volume, and amount. Campaign030 reads no volume or amount and has no cumulative VWAP or crossing count."
+    },
+    {
+      "family": "terminal_factor_combination_or_rescue",
+      "result": "not_used",
+      "reason": "Campaign030 contains one new close-plus-frozen-market statistic and no terminal factor value, fitted transform, filter, model, combination, or Campaign029 cost relaxation."
+    }
+  ],
+  "design_choices_frozen_before_values": {
+    "formula_family": "morning synchronous signed-return population Pearson correlation minus afternoon synchronous signed-return population Pearson correlation",
+    "direction": "higher",
+    "signed_stock_return": true,
+    "signed_leave_one_out_market_return": true,
+    "same_minute_only": true,
+    "morning_minus_afternoon": true,
+    "absolute_difference_allowed": false,
+    "lead_or_lag_allowed": false,
+    "return_sign_or_magnitude_conditioning_allowed": false,
+    "exact_zero_returns_retained": true,
+    "minimum_leave_one_out_peers_per_position": 50,
+    "correlation_estimator": "population_pearson_equal_position_weight_separately_by_half",
+    "positions_per_half": 119,
+    "include_0930": false,
+    "include_lunch_transition": false,
+    "endpoint_canonicalization_tolerance": 1e-12,
+    "subwindow_or_year_selection_allowed": false,
+    "magnitude_or_activity_weighting_allowed": false,
+    "terminal_factor_input_allowed": false
+  },
+  "decision": {
+    "conceptually_independent": true,
+    "advance_to_exact_no_return_preregistration": true,
+    "candidate_benchmark_or_comparison_values_may_be_read_now": false,
+    "binding_validator_exit_zero_required_before_next_stage": true,
+    "candidate49_remains_only_active_prospective_candidate": true,
+    "candidate50_activation_allowed": false,
+    "current_aggregation_scoring_selection_sizing_or_orders_allowed": false
+  },
+  "research_boundary": {
+    "external_campaign030_minute_partitions_read": false,
+    "frozen_market_benchmark_values_read": false,
+    "candidate_values_read": false,
+    "comparison_values_read": false,
+    "daily_price_fields_read": false,
+    "forward_returns_read": false,
+    "provider_request_issued": false
+  }
+}

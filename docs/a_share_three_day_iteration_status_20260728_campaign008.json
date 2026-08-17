@@ -1,0 +1,176 @@
+{
+  "version": 7,
+  "kind": "a_share_three_day_iteration_status",
+  "status": "candidate49_future_only_preserved_eight_historical_walkforward_campaigns_completed_zero_current_candidates",
+  "recorded_at": "2026-07-28T13:31:00Z",
+  "purpose": "Advance the authoritative three-session research state through terminal Campaign008 while preserving Candidate49, every prior terminal conclusion, and the historical/prospective separation.",
+  "previous_authoritative_state": {
+    "path": "docs/a_share_three_day_iteration_status_20260728_campaign007.json",
+    "sha256": "11ca8ddbc5b523db5075b2a08a204f4f9c8f12804770affa1b0ae1778cea4d1e"
+  },
+  "latest_campaign_research_record": {
+    "path": "docs/a_share_three_day_walkforward_campaign_008_research_record.json",
+    "sha256": "7057ed2031a16c4e6bc5bdc643aae11b321883e548c553bb82c499225e2f2a67"
+  },
+  "governance_policy": {
+    "path": "docs/a_share_three_day_historical_walkforward_research_policy_20260727.json",
+    "sha256": "38426d6161b9bfed323c58caba18feca668b8c9d53e294951a8ba90c01a798bb",
+    "historical_research_is_primary_iteration_engine": true,
+    "prospective_observation_is_confirmation_layer": true
+  },
+  "preserved_future_only_policy": {
+    "path": "docs/a_share_three_day_future_only_minute_research_policy_20260725.json",
+    "sha256": "52ca8bfa7201509fe891d0af3d1c87aeebd64e47e6ec6641e897849411df408c",
+    "scope_after_this_state": "Candidate49 remains the only active prospective candidate; its factor, direction, registration, signal ledger, execution ledger, and evaluation milestones are unchanged."
+  },
+  "fixed_strategy": {
+    "price_basis": "close_known_raw_pct_chg_chain_v1",
+    "holding_period_local_sessions": 3,
+    "topk": 3,
+    "signal_time": "local close",
+    "entry": "next local session open",
+    "exit": "third local session close",
+    "pilot_initial_capital_cny": 200000,
+    "pilot_target_exposure_per_slot": 0.05,
+    "pilot_maximum_new_exposure_per_signal": 0.15,
+    "pilot_buy_lot_size_shares": 100,
+    "commission_rate_each_side": 0.0001,
+    "transfer_fee_rate_each_side": 0.00002,
+    "sell_stamp_duty_rate": 0.0005,
+    "pilot_primary_slippage_rate_each_side": 0.001,
+    "pilot_maximum_daily_amount_participation": 0.01
+  },
+  "active_prospective_candidate": {
+    "ordinal": 49,
+    "registration_id": "candidate49_intraday_cumulative_vwap_crossing_rate_240m_v1",
+    "factor_name": "intraday_cumulative_vwap_crossing_rate_240m",
+    "direction": "higher",
+    "historical_return_diagnostic_allowed": false,
+    "historical_signal_or_execution_backfill_allowed": false,
+    "signal_ledger": {
+      "path": "data/experiments/short_horizon/candidate49_future_signal_ledger.json",
+      "sha256": "5193f00d7f36da003f53cec387900da4c3d002299f5dfcfc1a95eaa199ed3a79",
+      "entry_count": 0
+    },
+    "execution_ledger": {
+      "path": "data/experiments/short_horizon/candidate49_future_execution_ledger.json",
+      "sha256": "d57a3e61eac969e42cafa418ccd8c0a5ee65dcf69da145bb2c096c2a02a2ea4f",
+      "entry_count": 0
+    },
+    "terminal": false
+  },
+  "completed_historical_walkforward_campaigns": {
+    "inherited_campaign_count": 7,
+    "inherited_state": {
+      "path": "docs/a_share_three_day_iteration_status_20260728_campaign007.json",
+      "sha256": "11ca8ddbc5b523db5075b2a08a204f4f9c8f12804770affa1b0ae1778cea4d1e",
+      "recorded_development_trial_count": 233
+    },
+    "appended_campaign": {
+      "campaign_id": "a_share_three_day_walkforward_campaign_008",
+      "research_record": {
+        "path": "docs/a_share_three_day_walkforward_campaign_008_research_record.json",
+        "sha256": "7057ed2031a16c4e6bc5bdc643aae11b321883e548c553bb82c499225e2f2a67"
+      },
+      "no_return_candidate_factor_count": 1,
+      "no_return_admissible_factor_count": 0,
+      "development_trial_count": 0,
+      "development_survivor_count": 0,
+      "stress_interval_opened": false,
+      "stress_return_fields_read": false,
+      "candidate49_historical_return_read": false
+    },
+    "total_completed_campaign_count": 8
+  },
+  "historical_walkforward_track": {
+    "status": "eight_finite_campaigns_completed_no_current_or_prospective_promotion",
+    "candidate49_terminal_record_required_before_research": false,
+    "new_daily_session_required_before_research": false,
+    "same_day_1630_wait_required_before_research": false,
+    "development_interval": {
+      "start": "2019-01-01",
+      "end": "2023-12-31",
+      "method": "three expanding train-to-next-year validation folds"
+    },
+    "locked_campaign_backtest_interval": {
+      "start": "2024-01-01",
+      "end": "2025-12-31",
+      "classification": "one_shot_historically_exposed_quasi_out_of_sample",
+      "pristine_holdout": false
+    },
+    "campaign008_stress_interval_opened": false,
+    "split_purge_local_signal_sessions": 3,
+    "require_t_plus_1_and_t_plus_3_inside_partition": true,
+    "append_only_trial_ledger_required": true,
+    "record_all_failed_and_successful_trials": true,
+    "old_terminal_records_rewritten": false
+  },
+  "campaign008_result_summary": {
+    "factor": "intraday_post_shock_share_volume_replenishment_236p",
+    "direction": "higher",
+    "minute_close_read_by_factor": true,
+    "minute_amount_read_by_factor": false,
+    "finite_factor_rows": 0,
+    "one_sided_zero_response_rows": 7724498,
+    "no_return_median_coverage": 0.0,
+    "no_return_p05_coverage": 0.0,
+    "no_return_p05_eligible_names": 0.0,
+    "comparison_factor_values_read": false,
+    "historical_daily_price_fields_read": [],
+    "historical_forward_return_fields_read": false,
+    "development_trial_count": 0,
+    "development_survivor_count": 0,
+    "stress_2024_2025_opened": false,
+    "terminal": true,
+    "terminal_reason": "frozen_coverage_gate_failed_before_comparison_or_return_read"
+  },
+  "research_counts": {
+    "terminal_primary_mechanism_count_before_walkforward_campaigns": 48,
+    "terminal_historical_walkforward_campaign_mechanism_count": 8,
+    "active_prospective_candidate_count": 1,
+    "completed_historical_walkforward_campaign_count": 8,
+    "recorded_historical_development_trial_count": 233,
+    "campaign008_no_return_candidate_factor_count": 1,
+    "campaign008_no_return_admissible_factor_count": 0,
+    "campaign008_development_trial_count": 0,
+    "campaign008_development_survivor_count": 0,
+    "dual_gate_qualified_prospective_factor_count": 0,
+    "current_aggregation_candidate_count": 0
+  },
+  "decision": {
+    "offline_historical_research_allowed_while_candidate49_active": true,
+    "campaign009_concept_scouting_and_separate_no_return_research_allowed": true,
+    "candidate49_historical_return_diagnostic_allowed": false,
+    "candidate49_future_observation_continues": true,
+    "candidate50_prospective_activation_allowed_while_candidate49_active": false,
+    "repair_or_combine_campaign008_or_other_terminal_factors_allowed": false,
+    "current_aggregation_allowed": false,
+    "current_scoring_allowed": false,
+    "selection_allowed": false,
+    "sizing_allowed": false,
+    "orders_allowed": false,
+    "level2_intake_justified": false
+  },
+  "next_research_action": {
+    "objective": "Scout a genuinely different Campaign009 mechanism family, then freeze a separate no-return admission protocol before reading any Campaign009 value or return.",
+    "concept_family": [],
+    "concept_status": "not_yet_selected_no_formula_no_direction_no_value",
+    "required_order": [
+      "preserve Candidate49 future-only ledgers unchanged",
+      "exclude every exact terminal Campaign001-Campaign008 mechanism and any rescue combination",
+      "perform a no-value economic and formula-overlap review",
+      "freeze exact formulas, directions, timestamp grids, missing and denominator rules, source fields, coverage and uniqueness gates, and a finite search catalog",
+      "implement synthetic formula tests",
+      "run coverage, capacity, and statistical uniqueness against every prior factor with usable frozen values before any daily price or forward-return read",
+      "freeze 2019-2023 development trials only for admitted factors",
+      "open 2024-2025 once only if the frozen development survivor count is positive"
+    ],
+    "forbidden_actions": [
+      "backfill Candidate49 historical prices, returns, signals, executions, or milestones",
+      "reinterpret one-sided zero volume or otherwise repair Campaign008 after its coverage result",
+      "open any Campaign008 historical return or 2024-2025 stress return",
+      "start Candidate50 prospectively while Candidate49 remains active",
+      "use any historical result for a current score, selection, size, or order"
+    ]
+  }
+}

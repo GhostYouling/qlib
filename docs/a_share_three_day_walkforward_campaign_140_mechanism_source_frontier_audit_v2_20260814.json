@@ -1,0 +1,39 @@
+{
+  "schema_version": 1,
+  "kind": "a_share_three_day_walkforward_campaign140_mechanism_source_frontier_audit_additive_correction",
+  "status": "terminal_prevalue_zero_candidates_with_independently_replayable_evidence_binding",
+  "recorded_at": "2026-08-14T13:59:40+0800",
+  "supersedes_without_rewriting": {
+    "path": "docs/a_share_three_day_walkforward_campaign_140_mechanism_source_frontier_audit_20260814.json",
+    "sha256": "43d8b1ae0a14e64be8319cfba0465d26316420d2e9d63936961e3969fb39e9cf",
+    "preserved": true,
+    "reason": "Replace only the mutable unified-report predecessor evidence with the immutable Campaign139 terminal report."
+  },
+  "failure_evidence": {
+    "path": "docs/a_share_three_day_walkforward_campaign_140_initial_validation_failure_20260814.json",
+    "sha256": "19b1aebd52229128cd51c3bd834bd3eab0fc21e467dc2b6e08487a6dc9f6007f"
+  },
+  "effective_evidence_binding": {
+    "path": "docs/a_share_three_day_walkforward_campaign_139_terminal_report_v2.md",
+    "sha256": "b0189f4bc75ce17b26c8461e3e5d6a0dfc6f2bda871adb4d72e0c9df5b33d03f",
+    "immutable": true,
+    "replaces_json_pointer": "/evidence_bindings/predecessor_unified_report"
+  },
+  "unchanged_scientific_contract": {
+    "concept_scouting_path": "docs/a_share_three_day_walkforward_campaign_140_concept_scouting_20260814.json",
+    "concept_scouting_sha256": "ac57ef5cef1958c2e0e7e9d60ebcb4ee4dd323e9643440b417c5076cdc29804c",
+    "complete_definition_count_reviewed": 153,
+    "complete_definition_order_sha256": "bf66faef96d7058c7028da52757c65d8e0bf7978cf72d3967cd236e4da30b875",
+    "numeric_comparator_count_reserved_but_not_loaded": 141,
+    "numeric_comparator_order_sha256": "ec1aebcb939ad516c58037a36a4aaadd4ad8b2abbd3c884705895c58da85a2ee",
+    "finite_concepts_reviewed": 6,
+    "selected_candidate_count": 0,
+    "source_rows_or_column_values_read": false,
+    "candidate_or_comparator_values_read": false,
+    "historical_daily_price_or_forward_return_values_read": false,
+    "stress_2024_2025_opened": false,
+    "provider_request_issued": false,
+    "candidate49_ledgers_changed": false
+  },
+  "next_action": "Use this additive correction as the effective Campaign140 mechanism audit, append the validation failure to the ledger, and keep the zero-candidate scientific result unchanged."
+}

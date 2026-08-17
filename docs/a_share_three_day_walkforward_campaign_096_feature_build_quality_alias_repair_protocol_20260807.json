@@ -1,0 +1,40 @@
+{
+  "schema_version": 1,
+  "kind": "a_share_three_day_walkforward_campaign096_feature_build_quality_alias_repair_protocol",
+  "status": "frozen_after_v1_build_failure_before_v2_source_reread_or_candidate_recomputation",
+  "frozen_at": "2026-08-07T04:31:00Z",
+  "protocol": {
+    "path": "docs/a_share_three_day_walkforward_campaign_096_no_return_preregistration.json",
+    "sha256": "97d8cdd6cc3731de8e8d4db101db1b4b0ee62353c9c39ac71a8753fea4501924"
+  },
+  "failure_record": {
+    "path": "docs/a_share_three_day_walkforward_campaign_096_feature_build_quality_alias_failure_20260807.json",
+    "sha256": "65b620588d0eb844de50cd610c1c1e7c9c95fce56ab59b0a45fdb0077ad3c6d1"
+  },
+  "preserved_implementation_freeze_v1": {
+    "path": "docs/a_share_three_day_walkforward_campaign_096_feature_implementation_freeze_20260807.json",
+    "sha256": "ef2cfd3ed8ea4c421efe0c559b0726c886acd91a53f4eaa0eb8558a2bdc2204d"
+  },
+  "preserved_feature_runner_v1": {
+    "path": "scripts/a_share_three_day_walkforward_campaign096_features.py",
+    "sha256": "0322a843592cb8f3054bc6a1d7b340a0fb3aecd399149307a70842dac2193971"
+  },
+  "repair_scope": {
+    "allowed": [
+      "wrap the frozen extractor and add quality['zero_destination_range_pairs']=quality['zero_range_bars']",
+      "bind the v2 runner, v2 tests, and v2 implementation freeze before source reread",
+      "retain the exact v1 output root and snapshot schema"
+    ],
+    "forbidden": [
+      "change factor values, states, transitions, source columns, direction, support, endpoint semantics, or output identity",
+      "inspect partial candidate coverage or distributions before the repaired snapshot is immutable",
+      "load any comparator, daily price, forward return, or Candidate49 historical value"
+    ]
+  },
+  "source_rows_read_after_this_repair_freeze": false,
+  "candidate_values_recomputed_after_this_repair_freeze": false,
+  "comparison_values_read": false,
+  "historical_daily_price_or_forward_return_values_read": false,
+  "provider_request_issued": false,
+  "candidate49_ledgers_changed": false
+}

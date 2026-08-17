@@ -1,0 +1,136 @@
+{
+  "schema_version": 1,
+  "kind": "a_share_three_day_walkforward_campaign222_port_terminal_vessel_berth_cargo_yard_gate_customs_billing_lifecycle_source_frontier",
+  "recorded_at": "2026-08-16T01:54:00+08:00",
+  "timestamp_semantics": "monotonic_logical_append_time_not_host_wall_clock_measurement",
+  "status": "checkpoint_prevalue_three_source_admission_deferrals_four_relabeling_overlap_or_hypothesis_rejections_zero_selected",
+  "purpose": "Freeze a finite seven-route prevalue review of issuer-as-port-or-terminal-operator vessel call, berth, pilotage, towage, loading and discharge, cargo-unit custody, yard, inspection, customs hold and release, gate, service order, equipment, exception, damage claim, tariff, invoice, demurrage and settlement states before any source row, formula, direction, candidate value, comparator, security price or return is read.",
+  "authoritative_inputs": {
+    "campaign221_state": {
+      "path": "docs/a_share_three_day_iteration_status_20260816_campaign221_prevalue_terminal.json",
+      "sha256": "f69ca4a678ab240d087204daadd2a865de92c8b506b44a562e636cdb74e0d52e"
+    },
+    "numeric_policy_v335": {
+      "path": "docs/a_share_three_day_walkforward_future_numeric_comparison_eligibility_policy_v335_20260816.json",
+      "sha256": "39f426e5c318a2208678e970af8392db614ef7cb0ef0700a9fc3adf3d80a9980"
+    },
+    "historical_walkforward_policy": {
+      "path": "docs/a_share_three_day_historical_walkforward_research_policy_20260727.json",
+      "sha256": "38426d6161b9bfed323c58caba18feca668b8c9d53e294951a8ba90c01a798bb"
+    },
+    "campaign168_operating_kpi_frontier": {
+      "path": "docs/a_share_three_day_walkforward_campaign_168_operating_scale_adoption_kpi_source_frontier_20260815.json",
+      "sha256": "c5dc98f92266e2b7ef7349cb5260a8cde15ccd9c78442e661e4170b1ba47d18a"
+    },
+    "campaign180_trade_restriction_frontier": {
+      "path": "docs/a_share_three_day_walkforward_campaign_180_international_trade_restriction_remedy_source_frontier_20260815.json",
+      "sha256": "a8a86db33d50230223ed136a4b939c0b9ea75f02a48ac52733bbd0ad6de23cc1"
+    },
+    "campaign186_shipping_fleet_frontier": {
+      "path": "docs/a_share_three_day_walkforward_campaign_186_shipping_fleet_charter_offhire_disposal_source_frontier_20260815.json",
+      "sha256": "6e1c616cdaf85336c33a1c03221a9b91ddabb8074203db96dc1a240bf734c1e1"
+    },
+    "campaign204_utility_operations_frontier": {
+      "path": "docs/a_share_three_day_walkforward_campaign_204_utility_customer_connection_metering_consumption_billing_arrears_disconnection_reconnection_outage_restoration_lifecycle_source_frontier_20260815.json",
+      "sha256": "4aa19120d9f18b0ac6303fb6350ae51216c6d7971d51fc41de339dfe5caf46e6"
+    },
+    "campaign209_freight_logistics_frontier": {
+      "path": "docs/a_share_three_day_walkforward_campaign_209_freight_parcel_logistics_shipment_booking_waybill_pickup_sortation_linehaul_last_mile_delivery_return_claim_billing_settlement_lifecycle_source_frontier_20260815.json",
+      "sha256": "9e34af1f33afdb650bb818c014ede3b9d04bc7c20bb2323e947789b9dbe7f2b8"
+    }
+  },
+  "repository_evidence": {
+    "complete_definition_count": 158,
+    "complete_definition_order_sha256": "4819c7fd7c0795d7598a52f3c615e3f117d5f4ecd9332974bc8e3dfa57c96667",
+    "eligible_numeric_comparator_count": 142,
+    "eligible_numeric_comparator_order_sha256": "5d1b35fb5a0d8ac9293008db9963c4a60a94dc940c237c3ed259e5ce44f14aaf",
+    "source_frontier_files_reviewed_campaign163_through_campaign221": 59,
+    "dedicated_port_terminal_vessel_call_berth_cargo_yard_gate_customs_release_and_billing_lifecycle_definition_present": false,
+    "adjacent_mentions_only": [
+      "generic throughput, utilization, price and revenue KPIs without vessel-call, berth, cargo-unit, yard, gate and settlement conservation",
+      "shipping fleet ownership, charter, off-hire and disposal rather than issuer-as-port-or-terminal handling execution",
+      "freight and parcel shipment execution rather than terminal vessel-call and cargo-custody state",
+      "trade restriction and customs-policy state rather than a complete terminal inspection, hold and release population"
+    ]
+  },
+  "mandatory_source_admission_gate": {
+    "required": true,
+    "requirements": [
+      "lawful public or licensed point-in-time source with first-available, correction and supersession timestamps for vessel-call nomination, ETA revisions, arrival, anchorage, berth assignment, pilotage, towage, mooring, loading or discharge, departure, cargo receipt, yard and gate movement, inspection, customs hold or release, service order, invoice and settlement mapped to accepted trading sessions",
+      "stable listed-parent, port, terminal, berth, privacy-safe carrier or service-client token, vessel-call token, cargo-unit or bulk-lot token, voyage, manifest revision, equipment, service-order, invoice, claim and settlement identities without current-state projection",
+      "complete 2019-2023 applicable denominators including nominated, accepted, cancelled, delayed, arrived, berthed, shifted and departed calls; planned, received, discharged, loaded, short, over, damaged, held, released, gated, returned and unclaimed cargo units or lots; ordered, started, completed, failed, disputed, credited and settled services",
+      "explicit missing, unavailable, cancelled, rolled, diverted, delayed, short, over, damaged, hazardous, reefer-alarm, customs-held, inspection-pending, abandoned, unclaimed, failed-equipment, corrected, superseded, disputed and genuine-zero semantics plus vessel-call, cargo-unit, crane-move, yard-position, gate and invoice conservation without zero-filling uncovered entities or periods",
+      "no crew, driver, customs officer, passenger, employee or natural-person identity; no live precise vessel or cargo tracking, dangerous-goods manifest detail, customs inspection target, client-confidential cargo description or rate, port-security plan, access credential, CCTV, OT or SCADA topology, equipment-control setting, critical-facility vulnerability or trade secret"
+    ],
+    "admitted_source_present": false
+  },
+  "finite_prevalue_catalog": [
+    {
+      "route_id": "c222_01",
+      "name": "port_vessel_call_nomination_eta_revision_arrival_anchorage_pilotage_towage_berth_assignment_mooring_shift_loading_discharge_departure_cancellation_state",
+      "decision": "defer_source_not_admitted",
+      "reason": "No admitted lawful point-in-time source links a listed port or terminal operator to stable port, terminal, berth and vessel-call tokens across nomination, revised ETA, arrival, anchorage, pilotage, towage, assignment, mooring, shift, cargo operation, departure, diversion and cancellation with complete call denominators and revision clocks."
+    },
+    {
+      "route_id": "c222_02",
+      "name": "port_cargo_manifest_container_bulk_lot_receipt_discharge_load_yard_move_storage_dwell_inspection_customs_hold_release_gate_in_gate_out_return_abandonment_state",
+      "decision": "defer_source_not_admitted",
+      "reason": "The repository lacks a lawful point-in-time cargo-custody history joining privacy-safe manifest revision and cargo-unit or bulk-lot identities through receipt, discharge or load, yard moves, storage, dwell, inspection, customs hold or release, gate-in or gate-out, return and abandonment while conserving every short, over, damaged, held and pending state."
+    },
+    {
+      "route_id": "c222_03",
+      "name": "port_service_order_crane_gang_equipment_availability_execution_exception_damage_claim_tariff_invoice_storage_demurrage_credit_dispute_settlement_state",
+      "decision": "defer_source_not_admitted",
+      "reason": "No admitted source preserves equipment, labor-gang and service-order identities through authorization, start, interruption, failure, completion, exception, damage claim, tariff version, storage or demurrage accrual, invoice, credit, dispute and settlement with complete applicable service and billing populations."
+    },
+    {
+      "route_id": "c222_04",
+      "name": "vessel_call_teu_tonnage_crane_move_berth_occupancy_dwell_gate_turn_productivity_equipment_utilization_price_tariff_revenue_or_customer_count_kpi_relabeling",
+      "decision": "reject_terminal_overlap",
+      "reason": "Campaign168 already governs generic operating-scale, adoption and utilization disclosures; aggregate call, TEU, tonnage, crane-move, occupancy, dwell, gate-time, productivity, price, tariff, revenue or customer KPIs do not preserve vessel-call-to-berth-to-cargo-custody-to-invoice transitions or complete failed and pending denominators."
+    },
+    {
+      "route_id": "c222_05",
+      "name": "shipping_fleet_freight_logistics_trade_restriction_customs_policy_utility_outage_or_professional_service_relabeling",
+      "decision": "reject_terminal_overlap",
+      "reason": "Campaign180, 186, 204 and 209 govern trade restrictions, shipping fleet, utility operations and freight shipment execution. Their issuer roles, identities and clocks cannot be relabelled as a complete issuer-as-port terminal vessel-call, berth, cargo-custody, customs-release and billing lifecycle."
+    },
+    {
+      "route_id": "c222_06",
+      "name": "current_port_directory_berth_map_ais_snapshot_latest_vessel_or_cargo_register_current_tariff_accounting_ppe_or_concession_snapshot_relabeling",
+      "decision": "reject_terminal_overlap",
+      "reason": "Current port directories, berth maps, AIS snapshots, latest vessel or cargo registers, tariffs and accounting asset or concession snapshots cannot reconstruct historical call nominations, ETA revisions, berth assignments, cargo custody, inspection, holds, releases, gate events, service orders, invoices and complete applicable populations at first availability."
+    },
+    {
+      "route_id": "c222_07",
+      "name": "issuer_port_terminal_berth_vessel_flag_route_carrier_cargo_client_customs_status_equipment_service_tariff_claim_cohort_direction_threshold_age_subset_weight_interaction_combination_or_model_variant",
+      "decision": "reject_hypothesis_multiplication_before_source_admission",
+      "reason": "Selecting an issuer, port, terminal, berth, vessel, flag, route, carrier, cargo, client, customs status, equipment, service, tariff or claim cohort, direction, threshold, age, subset, weight, interaction, combination or model before complete lawful base histories are admitted would multiply hypotheses and exploit coverage, correction, custody, security and survivorship differences."
+    }
+  ],
+  "gate_summary": {
+    "finite_route_count": 7,
+    "source_admission_deferral_count": 3,
+    "overlap_or_hypothesis_rejection_count": 4,
+    "selected_factor_count": 0,
+    "formula_or_direction_frozen": false,
+    "candidate_or_comparator_value_read": false,
+    "daily_price_or_forward_return_read": false
+  },
+  "scientific_interpretation": "A linked issuer-as-port terminal vessel-call, berth, cargo-custody, yard, inspection, customs-release, gate, service-order and billing lifecycle is economically distinct from shipping-fleet ownership and freight-shipment execution. Distinction alone does not admit a factor; the absent complete lawful point-in-time privacy-safe and critical-infrastructure-safe terminal operating source is the binding gate.",
+  "research_boundary": {
+    "finite_catalog_frozen_before_source_or_value_read": true,
+    "failed_or_truncated_output_used_as_scientific_or_validation_evidence": false,
+    "source_or_port_terminal_vessel_berth_cargo_yard_gate_customs_billing_lifecycle_factor_value_read": false,
+    "personal_client_confidential_cargo_customs_port_security_ot_scada_or_trade_secret_artifact_read": false,
+    "provider_or_web_request_issued": false,
+    "provider_credential_presence_value_or_digest_read": false,
+    "stress_2024_2025_opened": false,
+    "candidate49_plan_or_run_executed": false,
+    "candidate49_ledgers_changed": false,
+    "second_prospective_candidate_created": false,
+    "current_scoring_selection_sizing_positions_or_orders_performed": false,
+    "investment_advice": false
+  },
+  "next_action": "Bind all seven infrastructure failures and seven scientific routes into one append-only ledger, publish terminal prevalue evidence, and authorize a genuinely different Campaign223 domain after validation."
+}

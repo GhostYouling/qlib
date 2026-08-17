@@ -1,0 +1,176 @@
+{
+  "schema_version": 1,
+  "kind": "a_share_three_day_walkforward_campaign169_commercial_pricing_terms_source_frontier",
+  "status": "terminal_prevalue_four_source_admission_deferrals_three_relabeling_or_operator_rejections_zero_selected",
+  "recorded_at": "2026-08-15T08:24:20+08:00",
+  "purpose": "Review a finite issuer commercial-pricing, regulated-rate and selling-terms disclosure domain before opening source rows, document text, business-price values, candidate values, comparators, security prices or returns.",
+  "authoritative_inputs": {
+    "campaign168_effective_state": {
+      "path": "docs/a_share_three_day_iteration_status_20260815_campaign168_prevalue_terminal.json",
+      "sha256": "f7b98936ef68b60e05bf0b92fa33d8d9784b6c1345808da6df50327a5f06d950"
+    },
+    "campaign168_validation": {
+      "path": "docs/a_share_three_day_walkforward_campaign_168_terminal_validation_20260815.json",
+      "sha256": "231ed3a317816c8d2b8b41fcf29154e670a57e60fb2a807e338f7af307a78e14"
+    },
+    "eligibility_policy_v246": {
+      "path": "docs/a_share_three_day_walkforward_future_numeric_comparison_eligibility_policy_v246_20260815.json",
+      "sha256": "a8a64a4478c74739aefcb2bb69c102eccccca33311d05e2b2e2d0d8156b4f5fb"
+    },
+    "campaign125_point_in_time_frontier": {
+      "path": "docs/a_share_three_day_walkforward_campaign_125_mechanism_source_frontier_audit_20260814.json",
+      "sha256": "9157c0f703792596f71d46a61b8064dca694778a1bbe8bf87d4612b690a4b058"
+    },
+    "campaign157_cross_asset_scouting": {
+      "path": "docs/a_share_three_day_walkforward_campaign_157_cross_asset_source_scouting_20260815.json",
+      "sha256": "b14d28d45144c3fde60379161df4ff618bf71222f52dfc8b8e44dd3dc113af2e"
+    },
+    "campaign159_remaining_source_inventory": {
+      "path": "docs/a_share_three_day_walkforward_campaign_159_remaining_local_source_schema_inventory_20260815.json",
+      "sha256": "d561a9707b6004cbec0685108ea3fa4453b21f587a7632a739b46b69e818e578"
+    },
+    "campaign159_remaining_source_audit": {
+      "path": "docs/a_share_three_day_walkforward_campaign_159_remaining_local_source_residual_audit_20260815.json",
+      "sha256": "6d4430f1eef33da89fe5eb7018d326c603a051446d16e066ac72c74d9d7a25ae"
+    },
+    "campaign168_operating_kpi_frontier": {
+      "path": "docs/a_share_three_day_walkforward_campaign_168_operating_scale_adoption_kpi_source_frontier_20260815.json",
+      "sha256": "c5dc98f92266e2b7ef7349cb5260a8cde15ccd9c78442e661e4170b1ba47d18a"
+    }
+  },
+  "research_boundary": {
+    "finite_catalog_frozen_before_source_or_value_read": true,
+    "source_row_document_title_body_business_price_candidate_comparator_security_price_or_return_value_read": false,
+    "local_schema_names_and_prior_records_only": true,
+    "provider_or_web_request_issued": false,
+    "provider_credential_presence_value_or_digest_read": false,
+    "stress_2024_2025_opened": false,
+    "candidate49_ledgers_changed": false,
+    "second_prospective_candidate_created": false
+  },
+  "repository_evidence": {
+    "accepted_historical_business_pricing_primitive_present": false,
+    "complete_commercial_pricing_source_contract_present": false,
+    "security_price_boundary": "Daily/minute security prices, IPO valuation, block-trade discounts, convertible terms and cross-asset prices are terminal or separately governed sources; none may be relabeled as issuer pricing power.",
+    "point_in_time_boundary": "A current price list, tariff table, product catalog or commercial policy cannot be projected backward without effective dates, first-public timestamps and revision history.",
+    "domain_distinction": "Business prices and regulated rates are issuer operating states rather than exchange-traded security prices, but the repository has no complete point-in-time local contract for them."
+  },
+  "mandatory_source_admission_gate": {
+    "must_freeze_before_any_formula_or_direction": [
+      "exact official exchange filing, issuer announcement, regulator order or tariff publication source with immutable bytes and document identifier",
+      "first public timestamp, trading-session availability, effective date, correction, withdrawal, supersession and revision chain",
+      "issuer, listed security, subsidiary, brand, geography, customer class, product, service and regulated franchise mapping without current-state leakage",
+      "price taxonomy separating list, invoice, transaction, average selling, reimbursement, tariff, fee, surcharge, rebate, discount, promotion and bundled price",
+      "currency, tax, unit, grade, specification, package, delivery term, contract term and inflation-indexation semantics",
+      "old price, new price, percentage change, absolute change, effective-period and partial-scope semantics without inferring undisclosed baselines",
+      "regulated proposal, consultation, approval, implementation, suspension, appeal and retroactive-adjustment event identity",
+      "gross versus net price, volume mix, product mix, geographic mix, consolidation scope and internal-transfer exclusions",
+      "missing, undisclosed, unknown, not-applicable, true zero, temporary promotion and unchanged-price semantics without favorable absence coding",
+      "industry comparability and deterministic exclusion rules for nonfungible products or incompatible tariff bases",
+      "complete bounded 2019-2023 partition manifest, full-market denominator, delisting coverage, pagination and one-shot acceptance gates",
+      "parser, identity, timing, unit and source-acceptance tests using no candidate, comparator, security-price or return values"
+    ],
+    "formula_direction_parameter_filter_subset_combination_or_model_choice_allowed_before_gate": false
+  },
+  "finite_prevalue_catalog": [
+    {
+      "catalog_id": "c169_01",
+      "name": "issuer_product_or_service_price_adjustment_disclosure",
+      "economic_state": "A historically published change in the issuer's commercial price for a defined product or service.",
+      "formula": null,
+      "direction": null,
+      "parameters_filters_subsets_combinations_models": [],
+      "new_issuer_state": true,
+      "complete_local_source_contract": false,
+      "decision": "deferred_source_admission_not_factor_failure",
+      "reason": "No admitted history freezes exact product scope, old/new price, currency and unit, effective date, first-public time, revisions, transaction-versus-list semantics and full 2019-2023 coverage."
+    },
+    {
+      "catalog_id": "c169_02",
+      "name": "regulated_tariff_fee_or_reimbursement_rate_adjustment",
+      "economic_state": "A regulator-authorized change in the rate paid to or charged by the issuer for a regulated service or product.",
+      "formula": null,
+      "direction": null,
+      "parameters_filters_subsets_combinations_models": [],
+      "new_issuer_state": true,
+      "complete_local_source_contract": false,
+      "decision": "deferred_source_admission_not_factor_failure",
+      "reason": "Proposal, approval and implementation stages, jurisdiction, customer class, rate base, retroactivity, appeals, issuer exposure, first availability and complete denominator are not frozen."
+    },
+    {
+      "catalog_id": "c169_03",
+      "name": "average_selling_price_or_unit_revenue_disclosure",
+      "economic_state": "A recurring disclosed realization of net price per physical unit or service unit.",
+      "formula": null,
+      "direction": null,
+      "parameters_filters_subsets_combinations_models": [],
+      "new_issuer_state": true,
+      "complete_local_source_contract": false,
+      "decision": "deferred_source_admission_not_factor_failure",
+      "reason": "Gross/net price, volume and product mix, unit identity, period scope, restatements, first-public time and comparable full-market history lack an accepted contract."
+    },
+    {
+      "catalog_id": "c169_04",
+      "name": "discount_rebate_promotion_surcharge_or_commercial_term_change",
+      "economic_state": "A historically published change in net commercial terms that can alter realized pricing or demand.",
+      "formula": null,
+      "direction": null,
+      "parameters_filters_subsets_combinations_models": [],
+      "new_issuer_state": true,
+      "complete_local_source_contract": false,
+      "decision": "deferred_source_admission_not_factor_failure",
+      "reason": "Temporary versus structural terms, customer eligibility, bundling, duration, net-price effect, contract scope, first availability and revisions are not available under a complete accepted source contract."
+    },
+    {
+      "catalog_id": "c169_05",
+      "name": "security_market_price_discount_or_cross_asset_price_relabeling",
+      "economic_state": "An exchange-traded or issuance price statistic relabeled as product pricing power.",
+      "formula": null,
+      "direction": null,
+      "parameters_filters_subsets_combinations_models": [],
+      "new_issuer_state": false,
+      "complete_local_source_contract": false,
+      "decision": "rejected_terminal_security_price_and_cross_asset_source_relabeling",
+      "reason": "Daily/minute prices, IPO price/valuation, block-trade discounts and convertible/cross-asset terms are already terminal or separately governed. They do not become a new business-price state through naming."
+    },
+    {
+      "catalog_id": "c169_06",
+      "name": "price_change_magnitude_direction_pass_through_benchmark_or_window_variant",
+      "economic_state": "A transform of a business-price observation against costs, peers, inflation, volume or time.",
+      "formula": null,
+      "direction": null,
+      "parameters_filters_subsets_combinations_models": [],
+      "new_issuer_state": false,
+      "complete_local_source_contract": false,
+      "decision": "rejected_operator_direction_and_target_search_before_base_source_admission",
+      "reason": "Choosing higher/lower direction, magnitude threshold, duration, lag, cost pass-through, peer benchmark, inflation residual or demand interaction before base-source admission would multiply hypotheses and is especially unsafe because price increases can signal either power or cost pressure."
+    },
+    {
+      "catalog_id": "c169_07",
+      "name": "combined_pricing_power_breadth_persistence_or_model",
+      "economic_state": "Joint issuer exposure across commercial prices, regulated rates, realized unit prices and selling terms.",
+      "formula": null,
+      "direction": null,
+      "parameters_filters_subsets_combinations_models": [],
+      "new_issuer_state": false,
+      "complete_local_source_contract": false,
+      "decision": "rejected_unadmitted_component_combination_weight_and_model_search",
+      "reason": "Combining four unadmitted and heterogeneous price families or selecting weights, ranks, persistence filters and models would expand the search before any component has a complete source contract."
+    }
+  ],
+  "gate_summary": {
+    "routes_reviewed": 7,
+    "genuinely_new_issuer_state_routes": 4,
+    "source_admission_deferrals_not_factor_failures": 4,
+    "relabeling_or_operator_route_rejections": 3,
+    "selected_candidate_count": 0,
+    "complete_factor_definition_created": false,
+    "numeric_comparator_created": false
+  },
+  "scientific_interpretation": {
+    "commercial_pricing_or_pricing_power_declared_ineffective": false,
+    "absence_of_an_admitted_historical_source_is_evidence_of_no_predictive_power": false,
+    "safe_conclusion": "Four distinct business-pricing states remain deferred at source admission; security-price relabeling, premature direction/operator search and unadmitted combinations are closed before values."
+  },
+  "next_action": "Record all seven decisions in the Campaign169 hash chain, publish terminal accounting, and continue a different finite offline prevalue domain."
+}

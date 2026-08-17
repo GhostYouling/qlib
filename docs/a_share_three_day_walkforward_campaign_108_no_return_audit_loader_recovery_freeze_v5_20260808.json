@@ -1,0 +1,55 @@
+{
+  "schema_version": 5,
+  "kind": "a_share_three_day_walkforward_campaign108_no_return_audit_loader_recovery_freeze",
+  "status": "generation_depth_range_only_recovery_frozen_before_coverage_or_comparator_values",
+  "recorded_at": "2026-08-07T21:21:34Z",
+  "failed_recovery": {
+    "path": "docs/a_share_three_day_walkforward_campaign_108_audit_loader_recovery_generation_hook_failure_20260808.json",
+    "sha256": "2030f02b469fe239bc8671e39d36082dc6fb6874726cc42d4740819f874dda67",
+    "preserved": true
+  },
+  "preserved_v3_entry_point": {
+    "path": "scripts/a_share_three_day_walkforward_campaign108_no_return_audit_v3.py",
+    "sha256": "d96ddee9bbd89eed12a18d6763b17706b3a72f07b0a456633c0eb5e05dd3adc2"
+  },
+  "recovered_audit": {
+    "path": "scripts/a_share_three_day_walkforward_campaign108_no_return_audit_v4.py",
+    "sha256": "e739b5f5e5effb56011da77551b8a993e079dbd124608673546923cda9f2e43e"
+  },
+  "synthetic_tests": [
+    {
+      "path": "tests/data_collector_tests/test_a_share_three_day_walkforward_campaign108_no_return_audit_v4.py",
+      "sha256": "02aa4c544c9a139768202938962ee38131478ada852a5339bee4515abb4161cf"
+    }
+  ],
+  "attempt_ledger": {
+    "path": "data/experiments/short_horizon/historical_walkforward/campaign_108/research_attempt_ledger_v6.json",
+    "sha256": "7597840b969dc60c54e9d48ede765fa410a437f3160d702b9ba59e8a918b7320",
+    "attempt_count": 6,
+    "infrastructure_failure_count": 5,
+    "cumulative_historical_research_attempt_count": 800
+  },
+  "candidate_snapshot_binding": {
+    "path": "docs/a_share_three_day_walkforward_campaign_108_feature_snapshot_binding_20260808.json",
+    "sha256": "9bc56a9e8cac745b9f405e173c28b1d6b5a9faff5f74220c1bff9bf566581591",
+    "dataset_sha256": "da56afa190e7721f2e94fa124c747d54ec3d54eeeb717954e5ae6dcb56c0a3b2"
+  },
+  "invalid_recovery_activation": {
+    "path": "docs/a_share_three_day_walkforward_campaign_108_no_return_audit_activation_binding_v2_20260808.json",
+    "sha256": "574a1ab55b3d8fa7142ec68121502e026a4cb96b3240659f996b435c35c0efdc",
+    "audit_started": false,
+    "preserved": true
+  },
+  "scientific_boundary": {
+    "only_change": "inject candidate loader validation range (0,1) to (-1,1) into the dynamically read Campaign105 audit source",
+    "formula_direction_endpoints_transform_snapshot_coverage_uniqueness_comparator_order_cost_fold_or_stress_gate_changed": false,
+    "coverage_or_capacity_metrics_computed_before_freeze": false,
+    "comparator_values_read_before_freeze": false,
+    "historical_daily_price_or_forward_return_values_read_before_freeze": false,
+    "provider_request_issued_before_freeze": false,
+    "candidate49_ledgers_changed": false,
+    "current_scoring_selection_sizing_or_orders_performed": false
+  },
+  "single_recovery_run": true,
+  "next_action": "Freeze a replacement activation against the same snapshot and comparators, pass recovery tests, then execute the corrected ordered audit once."
+}

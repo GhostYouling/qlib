@@ -1,0 +1,39 @@
+{
+  "schema_version": 1,
+  "kind": "a_share_three_day_walkforward_campaign146_ordered_uniqueness_recovery_protocol",
+  "status": "frozen_before_comparator_values",
+  "recorded_at": "2026-08-14T21:55:00+08:00",
+  "purpose": "Recover the frozen all-141 plan by correcting only the Campaign136 static receipt partition-count key from files to partitions.",
+  "authoritative_inputs": {
+    "ordered_uniqueness_protocol": {
+      "path": "docs/a_share_three_day_walkforward_campaign_146_ordered_numeric_uniqueness_protocol_20260814.json",
+      "sha256": "ec070598c943232adb33643980710120c83030517c186a72bd1d7a0f3ec9fd81"
+    },
+    "ordered_uniqueness_implementation_freeze": {
+      "path": "docs/a_share_three_day_walkforward_campaign_146_ordered_uniqueness_implementation_freeze_20260814.json",
+      "sha256": "b0070093183dee8dc7d36fc3fd6983a1f3f62c8873daeda834d4da3705374876"
+    },
+    "frozen_runner": {
+      "path": "scripts/a_share_three_day_walkforward_campaign146_ordered_uniqueness.py",
+      "sha256": "fe9101c169b00be739b39d9ea4c983a8b0a7ee5f1910158a5ca908fdb2f5afe1"
+    },
+    "plan_failure": {
+      "path": "docs/a_share_three_day_walkforward_campaign_146_ordered_uniqueness_plan_failure_20260814.json",
+      "sha256": "bc5f190f9c6b24621ab19a32369e0a980cb2c4a5d2905fbb13a6c14a7665b9e0"
+    }
+  },
+  "allowed_correction": {
+    "function": "validate_static_bindings return payload only",
+    "defective_expression": "len(c136_manifest['files'])",
+    "correct_expression": "len(c136_manifest['partitions'])",
+    "formula_direction_sources_order_alignment_gate_output_or_decision_change_allowed": false,
+    "frozen_runner_or_data_rewrite_allowed": false
+  },
+  "research_boundary": {
+    "comparator_values_read_before_recovery_freeze": false,
+    "historical_daily_price_or_forward_return_values_read": false,
+    "provider_request_issued": false,
+    "candidate49_ledgers_changed": false
+  },
+  "next_action": "Implement and synthetically test a minimal recovery wrapper, freeze its exact bytes, then rerun plan; only ready=true with exit code zero may run the all-141 audit."
+}

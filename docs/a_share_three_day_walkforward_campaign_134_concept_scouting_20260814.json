@@ -1,0 +1,99 @@
+{
+  "schema_version": 1,
+  "kind": "a_share_three_day_walkforward_campaign134_concept_scouting",
+  "status": "finite_complete_library_redundancy_balanced_consensus_selected_before_campaign134_values_or_returns",
+  "recorded_at": "2026-08-14T10:25:00+08:00",
+  "purpose": "Continue the offline historical engine with one complete-library unsupervised redundancy-balancing mechanism that is distinct from deterministic feature-equal consensus, fitted return weights, marginal PAVA calibration and tree interactions.",
+  "authoritative_inputs": {
+    "campaign133_terminal_state": {
+      "path": "docs/a_share_three_day_iteration_status_20260814_campaign133_terminal.json",
+      "sha256": "b7c70cabe970f7497c665cf13f7846cae3bd6af98546112d925febe2236c0d5b"
+    },
+    "numeric_policy_v160": {
+      "path": "docs/a_share_three_day_walkforward_future_numeric_comparison_eligibility_policy_v160_20260814.json",
+      "sha256": "814ef553e6e72d36c721f974387a64a8e499f5ae27060a80a0ec0fbbb785ed4b"
+    },
+    "historical_walkforward_policy": {
+      "path": "docs/a_share_three_day_historical_walkforward_research_policy_20260727.json",
+      "sha256": "38426d6161b9bfed323c58caba18feca668b8c9d53e294951a8ba90c01a798bb"
+    },
+    "transition_infrastructure_failure": {
+      "path": "docs/a_share_three_day_walkforward_campaign_134_post_campaign133_missing_test_path_failure_20260814.json",
+      "sha256": "5443c236d5c23bbaf2c78531052f8c2f7c46ad184cd29cf51378586a98a4abd9"
+    }
+  },
+  "finite_prevalue_concept_catalog": [
+    {
+      "catalog_id": "c134_01",
+      "name": "complete_140_numeric_library_positive_correlation_component_balanced_consensus",
+      "decision": "selected_as_exactly_one_frozen_unsupervised_configuration",
+      "reason": "Training-only daily cross-sectional rank correlations define positive-redundancy connected components at the already established 0.8 near-duplicate boundary. Every factor remains present; factors are averaged within components and components are then averaged equally. This asks whether preventing large families of similar factors from dominating improves portability without using a return target."
+    },
+    {
+      "catalog_id": "c134_02",
+      "name": "complete_library_minimum_variance_or_risk_parity_weights",
+      "decision": "rejected_before_values",
+      "reason": "Covariance estimator, shrinkage, objective, constraints and solver tolerance create a broad optimization family rather than one auditable redundancy rule."
+    },
+    {
+      "catalog_id": "c134_03",
+      "name": "complete_library_pca_or_latent_component_consensus",
+      "decision": "rejected_before_values",
+      "reason": "Component count and sign orientation introduce multiplicity, while later components can assign negative directions and silently discard most of the frozen library."
+    },
+    {
+      "catalog_id": "c134_04",
+      "name": "complete_library_return_weighted_cluster_or_supervised_ensemble",
+      "decision": "rejected_before_values",
+      "reason": "Using IC, returns or survivor outcomes to choose clusters or cluster weights would refresh the Campaign102 fitted-weight family after exposure."
+    },
+    {
+      "catalog_id": "c134_05",
+      "name": "campaign133_pava_or_campaign132_tree_stack",
+      "decision": "rejected_before_values",
+      "reason": "Policies v159 and v160 make both model families terminal and forbid retry, reparameterization, stacking or rescue."
+    },
+    {
+      "catalog_id": "c134_06",
+      "name": "complete_library_trimmed_quantile_product_or_rank_vote_refresh",
+      "decision": "rejected_before_values",
+      "reason": "Arithmetic rank consensus, lower-quartile consensus, geometric/harmonic/minimum aggregators and directional breadth have already been consumed; changing their threshold or order statistic after results is an operator refresh."
+    }
+  ],
+  "selected_family": {
+    "trial_id": "wf134_complete140_corr80_component_balanced_consensus",
+    "feature_library": "all_current_140_numeric_comparators_in_frozen_order",
+    "feature_order_sha256": "c71bfe27486c9567afd3aca21e4b04053658c23ac651e7f4df7fd014b0c31efd",
+    "training_only_pair_statistic": "For each feature pair and each contained training signal session with at least 50 jointly finite names, compute average-tie Spearman correlation; retain the median across sessions only when at least 100 sessions are available.",
+    "graph_edge": "Create an undirected edge exactly when the finite median daily Spearman correlation is greater than or equal to +0.8. Negative correlation never creates a redundancy edge.",
+    "component_rule": "Use deterministic undirected connected components; order components by their smallest frozen feature index and order members by frozen feature index.",
+    "row_support": "Require at least 105 finite raw components, then fill each missing component with 0.5.",
+    "within_component_score": "Arithmetic mean of every filled favorable percentile in that component.",
+    "final_score": "Arithmetic mean of all component scores, so every component has equal total weight and every source factor remains present with positive weight 1/(component_count*component_size).",
+    "return_target_used_for_component_fit": false,
+    "configuration_count": 1,
+    "feature_subset_count": 1,
+    "correlation_threshold_count": 1,
+    "linkage_or_graph_rule_count": 1
+  },
+  "prevalue_decision": {
+    "concepts_reviewed": 6,
+    "selected_model_configuration_count": 1,
+    "complete_current_library_required": true,
+    "old_terminal_records_rewritten_or_reclassified": false,
+    "campaign134_component_values_read_before_selection": false,
+    "campaign134_model_scores_computed_or_read_before_selection": false,
+    "historical_daily_price_or_forward_return_values_read_before_selection": false,
+    "stress_2024_2025_opened": false
+  },
+  "research_boundary": {
+    "provider_request_issued": false,
+    "credential_value_or_digest_read": false,
+    "candidate49_historical_backfill_performed": false,
+    "candidate49_ledgers_changed": false,
+    "second_prospective_candidate_created": false,
+    "current_scoring_selection_sizing_positions_or_orders_performed": false,
+    "investment_advice": false,
+    "current_listing_survivorship_limitation_remains": true
+  }
+}

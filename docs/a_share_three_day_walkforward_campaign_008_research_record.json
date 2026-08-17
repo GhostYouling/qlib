@@ -1,0 +1,127 @@
+{
+  "version": 1,
+  "kind": "a_share_three_day_walkforward_campaign008_research_record",
+  "status": "completed_zero_no_return_admissible_factors_stop_before_historical_returns",
+  "recorded_at": "2026-07-28T13:30:37Z",
+  "purpose": "Record Campaign008 from concept-only scouting through its immutable feature snapshot and terminal no-return coverage rejection. No comparison factor value, daily price, forward return, training, development trial, or 2024-2025 stress return was opened.",
+  "prior_state": {
+    "path": "docs/a_share_three_day_iteration_status_20260728_campaign007.json",
+    "sha256": "11ca8ddbc5b523db5075b2a08a204f4f9c8f12804770affa1b0ae1778cea4d1e"
+  },
+  "campaign": {
+    "concept_scouting": {
+      "path": "docs/a_share_three_day_walkforward_campaign_008_concept_scouting.json",
+      "sha256": "0268be76964f272ba32618c2823b530e860dd507fae656ae389d89f637b79667"
+    },
+    "mechanism_overlap_audit": {
+      "path": "docs/a_share_three_day_walkforward_campaign_008_mechanism_overlap_audit.json",
+      "sha256": "259d3055898961287bea478946fa1653deade16b9b9927da9fc8b7a5d3d87246"
+    },
+    "no_return_preregistration": {
+      "path": "docs/a_share_three_day_walkforward_campaign_008_no_return_preregistration.json",
+      "sha256": "1c209a1611d822531efe178793c80e5a8f68f5752ae5a0dfa890585e62dfcf56"
+    },
+    "feature_and_no_return_runner": {
+      "path": "scripts/a_share_three_day_walkforward_campaign008_features.py",
+      "post_audit_fingerprint_bound_sha256": "a8921a6a6fc0cedd26095515d52a7d794b7845f6e5a90666aad2ef76a987f466"
+    }
+  },
+  "frozen_candidate": {
+    "name": "intraday_post_shock_share_volume_replenishment_236p",
+    "direction": "higher",
+    "formula": "PearsonCorr(abs(log(close_t/close_t-1)), log(volume_t+1/volume_t)) over retained within-half one-minute post-shock response pairs",
+    "minimum_retained_pairs": 120,
+    "one_sided_zero_rule": "Exactly one zero endpoint in any proposed volume response pair invalidates the stock-day.",
+    "post_result_formula_direction_or_missing_rule_changed": false
+  },
+  "no_return_admission": {
+    "feature_snapshot": {
+      "path": "/Volumes/DIsk/qlib-a-share-tushare-1m/derived/a_share/rich/tushare/minute_walkforward_campaign008_feature_library/tushare_stk_mins_1m_2019_2025_ea0cbb8f_walkforward_campaign008_feature_library_v1/snapshot_manifest.json",
+      "sha256": "09d4f82ec350ff8c16106c7ebc007d791f626589d33cd3e09cd4d0725893aaab",
+      "dataset_sha256": "825b9a68890a6975b0866a99ce5b798968b82d80f226c8fdadbffba3472b40dc",
+      "partition_count": 33015,
+      "row_count": 7724498,
+      "finite_factor_rows": 0,
+      "source_fields_read": [
+        "datetime",
+        "symbol",
+        "provider",
+        "close",
+        "volume"
+      ],
+      "minute_close_read": true,
+      "minute_amount_read": false,
+      "daily_price_fields_read": [],
+      "forward_return_fields_read": false
+    },
+    "audit": {
+      "path": "data/experiments/short_horizon/historical_walkforward/campaign_008/no_return/20260728T132806Z_campaign008_no_return_audit.json",
+      "sha256": "af4013e0d439174ab6bb0c08d26bdf4bed71b6bd668eea25c834ec5ff0f5e937",
+      "status": "completed_zero_admissible_factors_stop_before_historical_returns",
+      "admissible_factor_count": 0,
+      "comparison_values_loaded_after_coverage_pass": false,
+      "historical_daily_price_fields_read": [],
+      "historical_forward_return_fields_read": false
+    },
+    "coverage_result": {
+      "quality_listing_eligible_rows": 1331759,
+      "candidate_eligible_rows": 0,
+      "median_coverage": 0.0,
+      "p05_coverage": 0.0,
+      "p05_eligible_names": 0.0,
+      "potential_non_overlapping_three_session_cohorts": 0,
+      "coverage_gate_passed": false,
+      "uniqueness_not_evaluated_reason": "coverage_gate_failed_before_comparison_values"
+    }
+  },
+  "trial_accounting": {
+    "frozen_trial_count_if_admitted": 1,
+    "development_preregistration_created": false,
+    "development_trial_count": 0,
+    "cumulative_historical_development_trial_count_after_campaign": 233,
+    "training_or_model_fitting_performed": false,
+    "development_return_fields_read": false,
+    "stress_2024_2025_opened": false,
+    "stress_return_fields_read": false
+  },
+  "interpretation": {
+    "association_tested": false,
+    "coverage_supported": false,
+    "operational_feasibility_supported": false,
+    "portfolio_translation_supported": false,
+    "conclusion": "The exact factor is unusable on the accepted minute grid. Every one of 7,724,498 source stock-days contained at least one one-sided zero share-volume response pair, so the frozen fail-closed rule produced zero finite values. This is a pre-return data-compatibility rejection, not evidence about predictive direction or return.",
+    "permitted_post_result_action": "record the rejection and advance only to a genuinely different Campaign009 concept and separate no-value audit",
+    "forbidden_post_result_actions": [
+      "reinterpret a one-sided zero as an inactive pair after observing coverage",
+      "lower the 120-pair minimum, fill zero volume, change the lag, transform, window, formula, or direction",
+      "combine the factor with Campaign001-Campaign007 or any other terminal factor",
+      "read Campaign008 historical or 2024-2025 returns",
+      "create current scores, selections, sizes, orders, or Candidate50 activation"
+    ]
+  },
+  "candidate49_state_after_campaign": {
+    "signal_ledger": {
+      "path": "data/experiments/short_horizon/candidate49_future_signal_ledger.json",
+      "sha256": "5193f00d7f36da003f53cec387900da4c3d002299f5dfcfc1a95eaa199ed3a79",
+      "entry_count": 0
+    },
+    "execution_ledger": {
+      "path": "data/experiments/short_horizon/candidate49_future_execution_ledger.json",
+      "sha256": "d57a3e61eac969e42cafa418ccd8c0a5ee65dcf69da145bb2c096c2a02a2ea4f",
+      "entry_count": 0
+    },
+    "historical_return_backfill_performed": false,
+    "prospective_registration_changed": false
+  },
+  "next_iteration": {
+    "campaign_id": "a_share_three_day_walkforward_campaign_009",
+    "status": "requires_new_concept_scouting_then_separate_no_value_mechanism_audit",
+    "constraints": [
+      "must use a mechanism economically distinct from all terminal Campaign001-Campaign008 factors",
+      "must not repair the terminal post-shock share-volume replenishment construction or its zero semantics",
+      "must freeze formula, direction, source fields, timestamp, missing and denominator rules, gates, and finite search before values",
+      "must retain the 2019-2023 expanding walk-forward and conditional one-shot 2024-2025 stress split",
+      "must not include Candidate49, any terminal factor, or current scoring and order actions"
+    ]
+  }
+}

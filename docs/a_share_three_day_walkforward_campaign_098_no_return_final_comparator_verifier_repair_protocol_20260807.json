@@ -1,0 +1,34 @@
+{
+  "schema_version": 1,
+  "kind": "a_share_three_day_walkforward_campaign098_no_return_final_comparator_verifier_repair_protocol",
+  "status": "frozen_after_atomic_audit_failure_before_v2_code_change_or_retry",
+  "recorded_at": "2026-08-07T09:02:00Z",
+  "failure_record": {
+    "path": "docs/a_share_three_day_walkforward_campaign_098_no_return_final_comparator_verifier_signature_failure_20260807.json",
+    "sha256": "34b199db4963bad325f93cff419dd1d95099357339794fb314824fc111158c74"
+  },
+  "protocol": {
+    "path": "docs/a_share_three_day_walkforward_campaign_098_no_return_preregistration.json",
+    "sha256": "31dcecebeea81adab163acd76e21616e6b35726a2798bb4ca72cee4252ca78bd"
+  },
+  "exact_code_changes_authorized": [
+    "Point AUDIT_IMPLEMENTATION_FREEZE and AUDIT_ACTIVATION_BINDING to additive v2 records.",
+    "Update their validators to require truthful postfailure status and true pre-v2 coverage/comparator-read flags.",
+    "Add a zero-argument _verify_campaign097_compact_snapshot helper that calls c97_compact.verify_snapshot(C97_COMPACT_MANIFEST_PATH).",
+    "Pass only that helper to the frozen compact comparator loader.",
+    "Add one no-value regression test for the helper signature and frozen return contract."
+  ],
+  "all_other_code_changes_authorized": false,
+  "retry_policy": {
+    "maximum_retries_under_this_repair": 1,
+    "same_candidate_snapshot_required": true,
+    "same_126_comparator_order_required": true,
+    "same_coverage_and_uniqueness_thresholds_required": true,
+    "first_125_comparator_values_may_be_reread_because_no_atomic_audit_record_exists": true,
+    "historical_daily_price_or_forward_return_values_may_be_read": false
+  },
+  "candidate_snapshot_rebuild_rewrite_or_value_recalculation_allowed": false,
+  "formula_direction_support_window_universe_cost_gate_or_search_space_changed": false,
+  "candidate49_ledgers_changed": false,
+  "provider_request_issued": false
+}

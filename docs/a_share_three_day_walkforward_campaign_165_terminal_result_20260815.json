@@ -1,0 +1,78 @@
+{
+  "schema_version": 1,
+  "kind": "a_share_three_day_walkforward_campaign165_terminal_result",
+  "status": "terminal_prevalue_goal_active",
+  "recorded_at": "2026-08-15T07:14:53+08:00",
+  "authoritative_inputs": {
+    "campaign164_effective_state": {
+      "path": "docs/a_share_three_day_iteration_status_20260815_campaign164_prevalue_terminal_v3.json",
+      "sha256": "c9556c5ef4a47966a2d2953598f902c66304fe64a01b07bf632ef86d50def58c"
+    },
+    "eligibility_policy_v235": {
+      "path": "docs/a_share_three_day_walkforward_future_numeric_comparison_eligibility_policy_v235_20260815.json",
+      "sha256": "65e29fc81792eb17377e26a166f8fd3ccadcd9abd9a25875f32f8ac7e40c8c28"
+    },
+    "environmental_operating_source_frontier": {
+      "path": "docs/a_share_three_day_walkforward_campaign_165_environmental_operating_externality_source_frontier_20260815.json",
+      "sha256": "45d28dfd51a71f45c684dd418286275c34b1d076cc495856270bd0cb9cb962b4"
+    },
+    "attempt_ledger": {
+      "path": "data/experiments/short_horizon/historical_walkforward/campaign_165/research_attempt_ledger.json",
+      "sha256": "2ee1d9f677c521436abc0329646ed2307ebb7b422c89a10a85ab1eb176657c93",
+      "effective_entry_count": 6,
+      "chain_tip_sha256": "af1fbe0907ef6a5a815ba91bfa814f17a1160fc44ff06bf44fc1a32bb8f9ba04"
+    }
+  },
+  "scientific_result": {
+    "terminal": true,
+    "terminal_phase": "finite_prevalue_environmental_operating_source_admission",
+    "routes_reviewed": 6,
+    "genuinely_new_issuer_state_routes": 3,
+    "source_admission_deferrals_not_factor_failures": 3,
+    "terminal_or_related_route_rejections": 3,
+    "selected_candidate_count": 0,
+    "complete_factor_definition_created": false,
+    "numeric_comparator_created": false,
+    "environmental_operating_externality_declared_ineffective": false,
+    "annual_esg_sustainability_document_pdf_table_source_row_candidate_comparator_price_or_return_value_read": false,
+    "stress_2024_2025_opened": false
+  },
+  "effective_accounting": {
+    "campaign165_attempt_count": 6,
+    "campaign165_prevalue_scientific_attempt_count": 6,
+    "campaign165_infrastructure_failure_count": 0,
+    "campaign165_complete_factor_attempt_count": 0,
+    "campaign165_return_reading_development_trial_count": 0,
+    "campaign165_development_survivor_count": 0,
+    "campaign165_stress_trial_count": 0,
+    "cumulative_historical_research_attempt_count": 1449,
+    "cumulative_return_reading_development_trial_count": 314
+  },
+  "library_state": {
+    "complete_factor_definition_count": 158,
+    "complete_factor_definition_order_sha256": "4819c7fd7c0795d7598a52f3c615e3f117d5f4ecd9332974bc8e3dfa57c96667",
+    "eligible_numeric_comparator_count": 142,
+    "eligible_numeric_comparator_order_sha256": "5d1b35fb5a0d8ac9293008db9963c4a60a94dc940c237c3ed259e5ce44f14aaf",
+    "changed_by_campaign165": false
+  },
+  "candidate49": {
+    "only_active_prospective_candidate": true,
+    "signal_ledger_sha256": "5193f00d7f36da003f53cec387900da4c3d002299f5dfcfc1a95eaa199ed3a79",
+    "signal_entry_count": 0,
+    "execution_ledger_sha256": "d57a3e61eac969e42cafa418ccd8c0a5ee65dcf69da145bb2c096c2a02a2ea4f",
+    "execution_entry_count": 0,
+    "ledgers_changed": false
+  },
+  "research_boundary": {
+    "failed_exit_codes_bypassed_or_masked": false,
+    "annual_esg_sustainability_document_pdf_table_source_row_candidate_comparator_price_or_return_value_read": false,
+    "stress_2024_2025_opened": false,
+    "provider_or_web_request_issued": false,
+    "provider_credential_presence_value_or_digest_read": false,
+    "candidate49_ledgers_changed": false,
+    "second_prospective_candidate_created": false,
+    "current_scoring_selection_sizing_positions_or_orders_performed": false,
+    "investment_advice": false
+  },
+  "next_action": "Publish policy v236 and an active iteration state, validate all Campaign165 bindings and continue Campaign166 in a different finite offline prevalue domain."
+}

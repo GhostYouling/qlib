@@ -1,0 +1,35 @@
+{
+  "schema_version": 1,
+  "kind": "a_share_three_day_walkforward_campaign228_infrastructure_failure",
+  "recorded_at": "2026-08-16T03:49:00+08:00",
+  "timestamp_semantics": "monotonic_logical_append_time_not_host_wall_clock_measurement",
+  "phase": "campaign145_228_exact_cumulative_regression_v1",
+  "status": "failed_wrong_inner_pytest_working_directory_and_output_truncated_discarded",
+  "failed_invocation": {
+    "outer_working_directory": "repository_root",
+    "inner_pytest_working_directory": "tests",
+    "required_working_directory": "repository_root",
+    "numbered_test_file_preflight_count": 116,
+    "explicit_deselection_preflight_count": 43,
+    "pytest_result_counts_consumed": false,
+    "combined_output_reported_as_truncated": true
+  },
+  "root_cause": "The nested subprocess explicitly changed cwd from the repository root to tests, contrary to the frozen policy, so repository-root scripts imports were not available during collection. The truncated invocation cannot validate any test count.",
+  "recovery": {
+    "failed_output_used_as_scientific_or_validation_evidence": false,
+    "failed_output_used_to_change_the_frozen_test_or_deselection_set": false,
+    "method": "rerun the same 116 numbered files and 43 exact deselections with both outer and inner pytest working directories fixed to repository_root"
+  },
+  "research_boundary": {
+    "candidate_or_comparator_value_read": false,
+    "daily_price_or_forward_return_read": false,
+    "provider_or_web_request_issued": false,
+    "provider_credential_presence_value_or_digest_read": false,
+    "candidate49_plan_or_run_executed": false,
+    "candidate49_ledgers_changed": false,
+    "second_prospective_candidate_created": false,
+    "stress_2024_2025_opened": false,
+    "current_scoring_selection_sizing_positions_or_orders_performed": false,
+    "investment_advice": false
+  }
+}

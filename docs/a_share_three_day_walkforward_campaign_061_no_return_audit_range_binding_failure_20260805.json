@@ -1,0 +1,46 @@
+{
+  "version": 1,
+  "kind": "a_share_three_day_walkforward_campaign061_infrastructure_failure",
+  "status": "formal_audit_failed_closed_before_comparison_values_preserved_for_range_attribute_adapter",
+  "recorded_at": "2026-08-05T01:12:35+08:00",
+  "stage": "formal_no_return_audit_candidate_frame_validation",
+  "attempt_ordinal_within_campaign061": 3,
+  "command": "PYTHONPATH=/Volumes/DIsk/Disk-Coding/qlib /opt/anaconda3/bin/python3 scripts/a_share_three_day_walkforward_campaign061_no_return_audit.py no-return-audit --data-root /Volumes/DIsk/qlib-a-share-tushare-1m --experiment-root /Volumes/DIsk/Disk-Coding/qlib/data/experiments/short_horizon/historical_walkforward/campaign_061 --workers 8",
+  "exit_code": 1,
+  "exception": "AttributeError: module scripts.a_share_three_day_walkforward_campaign061_features has no attribute LOWER_BOUND",
+  "root_cause": "The inherited candidate-frame validator references public scalar LOWER_BOUND/UPPER_BOUND attributes. The frozen Campaign061 feature module stores the identical (0,1) range in FACTOR_RANGES but does not export those two compatibility names.",
+  "frozen_audit": {
+    "path": "scripts/a_share_three_day_walkforward_campaign061_no_return_audit.py",
+    "sha256": "afea274393bef9fd2fe59747f0437fad2fbfef604cfe2a4f689822d83d6d6d43",
+    "implementation_freeze": {
+      "path": "docs/a_share_three_day_walkforward_campaign_061_no_return_audit_implementation_freeze_20260805.json",
+      "sha256": "5a12d622509f6a681d17b8da1987b1b894a00cd278d2452c77370f49bc6cde2a"
+    }
+  },
+  "frozen_candidate_range": {
+    "factor": "intraday_day_over_day_realized_variance_stability_238b",
+    "direction": "higher",
+    "lower": 0.0,
+    "upper": 1.0,
+    "lower_endpoint_eligible_by_formula": false,
+    "source": "feature_runner.FACTOR_RANGES and no-return preregistration valid_range"
+  },
+  "boundary": {
+    "candidate_snapshot_values_read": true,
+    "candidate_values_used_to_change_formula_or_gate": false,
+    "comparison_values_read": false,
+    "coverage_result_artifact_written": false,
+    "daily_price_or_forward_return_read": false,
+    "development_or_stress_fold_opened": false,
+    "provider_request_issued": false,
+    "candidate49_ledgers_changed": false
+  },
+  "authorized_narrow_repair": "A new byte-bound launcher may export candidate.LOWER_BOUND=0.0 and candidate.UPPER_BOUND=1.0 only after proving they equal the frozen FACTOR_RANGES entry. It may change no loader, value, formula, threshold, comparison order, or gate.",
+  "accounting": {
+    "counts_as_infrastructure_attempt": true,
+    "counts_as_factor_attempt": false,
+    "counts_as_return_reading_development_trial": false,
+    "cumulative_historical_research_attempt_count_after_record": 354,
+    "cumulative_return_reading_development_trial_count_after_record": 269
+  }
+}

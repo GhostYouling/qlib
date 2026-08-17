@@ -1,0 +1,135 @@
+{
+  "schema_version": 1,
+  "kind": "a_share_three_day_walkforward_campaign105_concept_scouting",
+  "status": "one_independent_candidate_selected_before_campaign105_minute_source_candidate_comparison_daily_price_or_return_values",
+  "recorded_at": "2026-08-07T17:32:00Z",
+  "purpose": "Review a finite Campaign105 concept library against the complete v62 mechanism history and select at most one economically identified candidate before reading any Campaign105 minute source row, candidate value, comparator value, daily price, or forward return.",
+  "authoritative_inputs": {
+    "iteration_state": {
+      "path": "docs/a_share_three_day_iteration_status_20260808_campaign104_prevalue_terminal.json",
+      "sha256": "3ebb8fdc3df361b78488a446adc664ebfec85481cadca82ba88c19d647d6f450"
+    },
+    "numeric_policy_v62": {
+      "path": "docs/a_share_three_day_walkforward_future_numeric_comparison_eligibility_policy_v62_20260808.json",
+      "sha256": "3259f771039a2c3eb64c33b548fd9b198e6cd36f154cb8ab33a06ca91d495dfa",
+      "complete_definition_count": 134,
+      "complete_definition_order_sha256": "db734b25fed4046ff80a276448daf20918d410125ebae941373c5617816cf8dc",
+      "numeric_comparator_count": 131,
+      "numeric_comparator_order_sha256": "ab56a1791ae9a74b75d0a32cfb2346aa4bb6bfe266589be65825f8f51422f646"
+    },
+    "historical_walkforward_policy": {
+      "path": "docs/a_share_three_day_historical_walkforward_research_policy_20260727.json",
+      "sha256": "38426d6161b9bfed323c58caba18feca668b8c9d53e294951a8ba90c01a798bb"
+    },
+    "accepted_minute_alignment": {
+      "path": "data/metadata/rich_data/alignments/20260721T140521Z_tushare_1m_alignment_89ec2deb.json",
+      "sha256": "2c8c85ba1155289d03c3ebc1175a4a2504bf8022b849087840777ee41586e2a0",
+      "accepted_volume_unit": "shares",
+      "accepted_amount_unit": "CNY"
+    },
+    "manage_qlib_a_share_data_skill": {
+      "path": "/Users/niyufei/.codex/skills/manage-qlib-a-share-data/SKILL.md",
+      "sha256": "8e541bf7c5d77f27a0b0562bd1235878b46c1074c53d79f64a21c417a68ad470"
+    }
+  },
+  "source_schema_boundary": {
+    "provider": "tushare",
+    "frequency": "1m",
+    "accepted_source_grid_rows": 241,
+    "selected_continuous_auction_rows": 240,
+    "selected_clock_grid": "09:31-11:30 and 13:01-15:00",
+    "standalone_09_30_row_preserved_but_excluded": true,
+    "allowed_source_fields_if_later_frozen": [
+      "datetime",
+      "symbol",
+      "provider",
+      "volume",
+      "amount"
+    ],
+    "open_high_low_close_daily_price_forward_return_or_old_factor_value_allowed": false,
+    "provider_request_allowed": false
+  },
+  "finite_prevalue_concept_catalog": [
+    {
+      "name": "intraday_active_trading_bar_share_240m",
+      "design": "Count a selected continuous-auction minute as active only when volume>0 and amount>0, retain joint-zero volume/amount as an inactive minute, reject any one-sided zero stock-day, and divide the active count by 240.",
+      "decision": "selected_for_separate_complete_mechanism_and_support_audit",
+      "reason": "The statistic identifies clock occupancy by actual aggregate trading activity. It is not a price-update count: shares may trade without changing the minute close, while a price field is never loaded. It is also invariant to the amount or volume distribution across already-active minutes, so it is not an entropy, center, persistence, peak, profile-similarity, transaction-price, or turnover-rate variant."
+    },
+    {
+      "name": "intraday_zero_activity_longest_run_240m",
+      "design": "Use the longest consecutive joint-zero volume/amount run.",
+      "decision": "rejected_before_source_rows_or_values",
+      "reason": "Run length introduces clock ordering, lunch-boundary, endpoint, and first/last tie choices after selecting the occupancy state. It is a path/profile refinement, not the minimal independent liquidity-continuity question."
+    },
+    {
+      "name": "intraday_morning_afternoon_active_share_balance_120m",
+      "design": "Compare active-minute shares between the morning and afternoon halves.",
+      "decision": "rejected_before_source_rows_or_values",
+      "reason": "The half-session split and signed balance add a timing/window search to the same activity-occupancy state and overlap terminal morning/afternoon profile-resolution families."
+    },
+    {
+      "name": "intraday_active_bar_price_update_confirmation_238p",
+      "design": "Condition close-update incidence on active trading bars.",
+      "decision": "rejected_before_source_rows_or_values",
+      "reason": "This explicitly combines the selected activity state with the terminal price-update family after both mechanisms are known; it is not an independent raw mechanism."
+    },
+    {
+      "name": "intraday_one_sided_zero_incidence_240m",
+      "design": "Treat volume/amount one-sided-zero rows as an economic signal.",
+      "decision": "rejected_before_source_rows_or_values",
+      "reason": "A one-sided zero contradicts the accepted aggregate transaction identity and is a source-quality failure, not a tradable economic state. It must remain fail-closed rather than become a factor."
+    }
+  ],
+  "selected_candidate": {
+    "name": "intraday_active_trading_bar_share_240m",
+    "direction": "higher",
+    "information_domain": "continuous_auction_trade_activity_clock_occupancy",
+    "economic_hypothesis": "Trading that remains present across more one-minute clock intervals reflects broader intraday participation and liquidity continuity that may persist from the next accepted-session open through the third accepted-session close.",
+    "formula": "On exactly 240 selected bars, let active_i=1 only when volume_i>0 and amount_i>0; require every volume and amount finite and nonnegative, require volume_i=0 iff amount_i=0 for every bar, and return sum(active_i)/240.",
+    "direction_rationale": "Higher clock occupancy is frozen as better before values because it represents more continuous participation; inversion to inactivity is forbidden even if later Rank IC is negative.",
+    "valid_range": [0.0, 1.0],
+    "joint_zero_rule": "volume=0 and amount=0 is a valid inactive bar with active_i=0",
+    "one_sided_zero_rule": "exactly one of volume or amount is zero makes the whole stock-day missing",
+    "minimum_active_bar_count": 0,
+    "positive_total_activity_required": false,
+    "clock_order_used_after_grid_validation": false,
+    "activity_magnitude_sign_price_or_old_factor_value_used": false,
+    "alternate_window_direction_transform_threshold_filter_subset_regime_weight_fit_model_or_combination_search": false
+  },
+  "mandatory_prevalue_challenges": [
+    "all_134_frozen_logical_definitions_in_exact_v62_order",
+    "all_known_terminal_coverage_support_failures_through_campaign104",
+    "intraday_price_update_share_238m",
+    "intraday_price_update_clock_entropy_10b_238m",
+    "intraday_zero_return_amount_intensity_238m",
+    "intraday_amount_participation_entropy_240m",
+    "intraday_amount_profile_serial_persistence_240m",
+    "intraday_morning_afternoon_amount_profile_similarity_120b",
+    "intraday_day_over_day_amount_profile_similarity_240b",
+    "intraday_transaction_vwap_consensus_240m",
+    "intraday_volume_weighted_transaction_price_bowley_skew_240m",
+    "signal_day_turnover_rate_pct",
+    "candidate49_intraday_cumulative_vwap_crossing_rate_240m_v1"
+  ],
+  "prevalue_decision": {
+    "concepts_reviewed": 5,
+    "selected_candidate_count": 1,
+    "candidate_may_advance_directly_to_values": false,
+    "required_next_step": "Complete a separate all-definition semantic overlap audit and mandatory known-failed-support-predicate audit; only after both pass may one exact fingerprint-bound no-return protocol be frozen before source rows or values."
+  },
+  "research_boundary": {
+    "prior_definition_names_directions_protocols_schema_and_terminal_metadata_read": true,
+    "campaign105_source_rows_read": false,
+    "campaign105_candidate_values_computed_or_read": false,
+    "campaign105_comparator_values_read": false,
+    "historical_daily_price_fields_read": [],
+    "historical_forward_returns_read": false,
+    "provider_request_issued": false,
+    "candidate49_historical_backfill_performed": false,
+    "candidate49_ledgers_changed": false,
+    "second_prospective_candidate_created": false,
+    "current_scoring_selection_sizing_or_orders_performed": false,
+    "investment_advice": false
+  }
+}

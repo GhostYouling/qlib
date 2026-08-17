@@ -1,0 +1,153 @@
+{
+  "schema_version": 1,
+  "kind": "a_share_three_day_walkforward_campaign147_finite_prevalue_concept_scouting",
+  "status": "terminal_prevalue_zero_candidates_after_complete_library_and_consumed_family_review",
+  "recorded_at": "2026-08-14T22:44:00+08:00",
+  "purpose": "Review a finite catalog of six nonlinear return-amount mechanisms against the frozen 155-definition library, 142 numerical comparators, original minute-source contract and terminal Campaign145/Campaign146 exclusions before reading any protected value.",
+  "authoritative_inputs": {
+    "iteration_state": {
+      "path": "docs/a_share_three_day_iteration_status_20260814_campaign146_terminal_v3.json",
+      "sha256": "0a8c80424c988c2afe82e80ac87c5b15e1c466dd8845ffffcd349ebd7442e0ef"
+    },
+    "numeric_policy_v197": {
+      "path": "docs/a_share_three_day_walkforward_future_numeric_comparison_eligibility_policy_v197_20260814.json",
+      "sha256": "d33fb43344d5b311a293fb06acc15417f0acbf8a30004823a1177854a69ef97a",
+      "complete_definition_count": 155,
+      "complete_definition_order_sha256": "2e4114edb26fa3aaebd145ef07fe4e2ac9c5d9dc4586cf70ff61c20e39b954ba",
+      "numeric_comparator_count": 142,
+      "numeric_comparator_order_sha256": "5d1b35fb5a0d8ac9293008db9963c4a60a94dc940c237c3ed259e5ce44f14aaf"
+    },
+    "historical_walkforward_policy": {
+      "path": "docs/a_share_three_day_historical_walkforward_research_policy_20260727.json",
+      "sha256": "38426d6161b9bfed323c58caba18feca668b8c9d53e294951a8ba90c01a798bb"
+    },
+    "campaign145_scouting": {
+      "path": "docs/a_share_three_day_walkforward_campaign_145_concept_scouting_20260814.json",
+      "sha256": "bc1d0f6d4f4e57dad395a498dee83375f0a11e35b99e01cbc11cf0b68c46f1bf"
+    },
+    "campaign145_overlap_audit": {
+      "path": "docs/a_share_three_day_walkforward_campaign_145_mechanism_overlap_audit_20260814.json",
+      "sha256": "bc45603ced25c8717dd8d3289e16b7be177859295501096e70c2d4dc57e74680"
+    },
+    "campaign146_scouting": {
+      "path": "docs/a_share_three_day_walkforward_campaign_146_concept_scouting_20260814.json",
+      "sha256": "5a0a969d8812b5d64171998dbbc9a1365604d08f4f293567b8fddf4a4cb2b491"
+    },
+    "campaign146_overlap_audit": {
+      "path": "docs/a_share_three_day_walkforward_campaign_146_mechanism_overlap_audit_20260814.json",
+      "sha256": "0e9c9db630b3efa4b7a08a59e992d26c9502b61fe8c2ebdc95ad232572883d5c"
+    }
+  },
+  "finite_prevalue_concept_catalog": [
+    {
+      "catalog_id": "c147_01",
+      "name": "intraday_return_amount_ordinal_transfer_entropy_238s",
+      "hypothetical_formula": "Estimate one-session directed conditional information from lagged amount-innovation ordinal states to the next return-direction state after conditioning on lagged return direction.",
+      "direction": "higher",
+      "parameters": "one proposed lag, ordinal-state construction and conditional-information estimator",
+      "filters": ["accepted_240_bar_session_only"],
+      "subsets": [],
+      "combinations": [],
+      "models": ["discrete_conditional_mutual_information"],
+      "prevalue_decision": "rejected_as_terminal_direction_dictionary_amount_weak_order_and_lag_dependence_recombination",
+      "reason": "The return-direction dictionary, amount weak-order entropy and amount-conditioned directional persistence families already consume these two symbolic state streams, while Campaign146 closes alternate lagged return-amount dependence operators. Choosing bins, ordinal depth, lag or estimator now creates a post-result recombination rather than a new observed information state."
+    },
+    {
+      "catalog_id": "c147_02",
+      "name": "intraday_return_amount_joint_recurrence_determinism_238p",
+      "hypothetical_formula": "Construct the demeaned cumulative return-amount trajectory and score repeated diagonal structures in a two-dimensional recurrence matrix.",
+      "direction": "higher",
+      "parameters": "one proposed distance normalization, recurrence radius and diagonal-length rule",
+      "filters": ["accepted_240_bar_session_only"],
+      "subsets": [],
+      "combinations": [],
+      "models": ["recurrence_quantification"],
+      "prevalue_decision": "rejected_as_terminal_path_geometry_loop_crossing_and_threshold_refresh",
+      "reason": "Campaign145 selected the signed cumulative return-amount path area and explicitly terminated loop, crossing and path-signature rescues. Recurrence determinism is another thresholded description of the same joint path geometry and necessarily introduces radius and minimum-length multiplicity."
+    },
+    {
+      "catalog_id": "c147_03",
+      "name": "intraday_amount_clock_return_path_roughness_gap_240m",
+      "hypothetical_formula": "Reparameterize the intraday return path by cumulative amount time and compare its fixed-scale roughness with chronological-time roughness.",
+      "direction": "higher",
+      "parameters": "one proposed amount-clock interpolation and one fixed roughness scale",
+      "filters": ["positive_session_amount", "accepted_240_bar_session_only"],
+      "subsets": [],
+      "combinations": [],
+      "models": [],
+      "prevalue_decision": "rejected_as_terminal_amount_timing_diffusive_variation_and_path_reparameterization_recombination",
+      "reason": "Amount timing, return-path diffusive variation, variance concentration and return-amount path geometry are terminal. Replacing clock time with amount time changes only the parameterization and scale of those exposed paths and does not add a contract-distinct input."
+    },
+    {
+      "catalog_id": "c147_04",
+      "name": "intraday_return_amount_tail_copula_rotational_asymmetry_240m",
+      "hypothetical_formula": "Measure the difference between concordant upper-tail and concordant lower-tail empirical return-amount innovation copula mass.",
+      "direction": "higher",
+      "parameters": "one proposed empirical tail probability boundary",
+      "filters": ["accepted_240_bar_session_only"],
+      "subsets": [],
+      "combinations": [],
+      "models": ["empirical_tail_copula"],
+      "prevalue_decision": "rejected_as_terminal_amount_conditioning_price_impact_asymmetry_and_threshold_refresh",
+      "reason": "Amount-conditioned return persistence, price-impact asymmetry and return-amount dependence are already terminal. Selecting upper and lower probability cutoffs after those results reopens the same conditional-asymmetry family through a tail threshold."
+    },
+    {
+      "catalog_id": "c147_05",
+      "name": "intraday_return_amount_joint_visibility_graph_motif_imbalance_238n",
+      "hypothetical_formula": "Build one bivariate ordinal visibility graph from return direction and amount innovation and score a proposed directed motif imbalance.",
+      "direction": "higher",
+      "parameters": "one proposed graph construction and motif inventory",
+      "filters": ["accepted_240_bar_session_only"],
+      "subsets": [],
+      "combinations": [],
+      "models": ["ordinal_visibility_graph"],
+      "prevalue_decision": "rejected_as_terminal_weak_order_direction_phrase_and_graph_operator_refresh",
+      "reason": "Weak-order entropy and direction-phrase complexity already encode the same ordering and symbolic-transition information. Visibility edges and motif selection are a graph-operator refresh of those exposed sequences, not an independent economic mechanism."
+    },
+    {
+      "catalog_id": "c147_06",
+      "name": "intraday_return_amount_cross_bispectral_phase_coupling_59f",
+      "hypothetical_formula": "Use a third-order cross-spectrum of demeaned return and log-amount innovations to score signed quadratic phase coupling.",
+      "direction": "higher",
+      "parameters": "one proposed frequency triad domain, normalization and phase aggregation",
+      "filters": ["accepted_240_bar_session_only"],
+      "subsets": [],
+      "combinations": [],
+      "models": ["cross_bispectrum"],
+      "prevalue_decision": "rejected_as_terminal_campaign146_spectral_order_band_and_normalization_sibling",
+      "reason": "Campaign146 terminalized the return-amount spectral phase family and froze out alternate frequency bands, weights, normalizations, transforms and fitted combinations. Raising the spectral order adds triad and normalization search but no new source state or economic direction."
+    }
+  ],
+  "selection": {
+    "concepts_reviewed": 6,
+    "selected_candidate_count": 0,
+    "selected_candidate": null,
+    "genuinely_new_contract_permitted_mechanism_found": false,
+    "reason": "All six proposals are alternate nonlinear encodings, thresholds, path parameterizations or higher-order transforms of terminal return-amount, symbolic-sequence, amount-timing, price-impact, path-geometry or spectral families."
+  },
+  "decision": {
+    "create_campaign147_formula_feature_snapshot_model_or_adapter": false,
+    "run_source_acceptance_coverage_uniqueness_or_return_trial": false,
+    "append_all_six_concepts": true,
+    "keep_complete_definition_count": 155,
+    "keep_numeric_comparator_count": 142,
+    "keep_2024_2025_lockbox_closed": true,
+    "next_campaign_requirement": "Continue only from a genuinely new finite prevalue mechanism or a separately accepted historically versioned point-in-time source whose original collection contract permits the proposed use."
+  },
+  "research_boundary": {
+    "source_contract_schema_formula_manifest_and_terminal_metadata_read": true,
+    "source_rows_or_column_values_read": false,
+    "campaign147_candidate_values_computed_or_read": false,
+    "campaign147_comparator_values_read": false,
+    "historical_daily_price_or_forward_return_values_read": false,
+    "stress_2024_2025_opened": false,
+    "provider_request_issued": false,
+    "provider_credential_value_or_digest_read": false,
+    "candidate49_historical_backfill_performed": false,
+    "candidate49_ledgers_changed": false,
+    "second_prospective_candidate_created": false,
+    "current_scoring_selection_sizing_positions_or_orders_performed": false,
+    "investment_advice": false,
+    "inherited_current_listing_survivorship_limitation_remains": true
+  }
+}

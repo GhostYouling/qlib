@@ -1,0 +1,79 @@
+{
+  "schema_version": 1,
+  "kind": "a_share_three_day_walkforward_campaign100_no_return_audit_result_binding",
+  "status": "terminal_numeric_uniqueness_rejection_bound_before_any_historical_return_read",
+  "recorded_at": "2026-08-07T12:34:55Z",
+  "factor": {
+    "name": "intraday_unchanged_close_range_absorption_share_238p",
+    "direction": "higher",
+    "range": [
+      0,
+      1
+    ]
+  },
+  "authoritative_audit": {
+    "path": "data/experiments/short_horizon/historical_walkforward/campaign_100/no_return/20260807T123335Z_campaign100_no_return_audit.json",
+    "sha256": "d9b23ba418a5bfbcc7671ab1162c5ff15cf5aab4817d321f19790a75c6fcf813"
+  },
+  "candidate_snapshot": {
+    "path": "/Volumes/DIsk/qlib-a-share-tushare-1m/derived/a_share/rich/tushare/minute_walkforward_campaign100_feature_library/tushare_stk_mins_1m_2019_2025_ea0cbb8f_walkforward_campaign100_feature_library_v1/snapshot_manifest.json",
+    "sha256": "31fa90e958d400aad250d369f4776f139664da869e9f152f8d4610e3351c20f4",
+    "dataset_sha256": "b6a2ea043502b1c7c97726befffa0fe872d693a0cfa1f477fc2da8eab81d106d",
+    "rows": 1331759,
+    "finite_rows": 1328142,
+    "calendar_sessions": 1632
+  },
+  "coverage_result": {
+    "gate_passed_before_comparison_values": true,
+    "median_coverage": 0.9983557108069769,
+    "p05_coverage": 0.9933708902303229,
+    "eligible_names_median": 941.0,
+    "eligible_names_p05": 138.0,
+    "potential_non_overlapping_three_session_cohorts": 539,
+    "observed_year_count": 7
+  },
+  "uniqueness_result": {
+    "comparison_factor_count": 128,
+    "comparison_order_matches_preregistration": true,
+    "all_required_numeric_comparisons_passed": false,
+    "failed_comparison_count": 3,
+    "maximum_observed_absolute_median_daily_rank_correlation": 0.9123522089342854,
+    "failed_comparisons": [
+      {
+        "comparison_factor": "intraday_price_update_share_238m",
+        "median_daily_rank_correlation": -0.9123522089342854,
+        "absolute_median_daily_rank_correlation": 0.9123522089342854,
+        "pairwise_sessions": 1623,
+        "minimum_pairwise_names_observed": 52
+      },
+      {
+        "comparison_factor": "intraday_return_weak_order_entropy_234t",
+        "median_daily_rank_correlation": 0.8857119447213537,
+        "absolute_median_daily_rank_correlation": 0.8857119447213537,
+        "pairwise_sessions": 1623,
+        "minimum_pairwise_names_observed": 52
+      },
+      {
+        "comparison_factor": "intraday_terminal_nominal_share_price_affordability_rank_240m",
+        "median_daily_rank_correlation": 0.8947994447045681,
+        "absolute_median_daily_rank_correlation": 0.8947994447045681,
+        "pairwise_sessions": 1623,
+        "minimum_pairwise_names_observed": 52
+      }
+    ],
+    "strict_absolute_median_daily_rank_correlation_limit": 0.8,
+    "insufficient_overlap_fails_closed": true
+  },
+  "admissible_factor_count": 0,
+  "development_trial_authorized": false,
+  "development_trial_count": 0,
+  "stress_2024_2025_opened": false,
+  "historical_daily_price_or_forward_return_values_read": false,
+  "candidate49_historical_return_read": false,
+  "candidate49_ledgers_changed": false,
+  "provider_request_issued": false,
+  "current_scoring_selection_sizing_or_orders_performed": false,
+  "terminal": true,
+  "same_campaign_inverse_residual_filter_reweight_retry_rescue_or_combination_allowed": false,
+  "next_action": "preserve this numeric snapshot as a future comparator and begin only a genuinely new prevalue-frozen Campaign101 mechanism"
+}

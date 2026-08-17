@@ -1,0 +1,85 @@
+{
+  "schema_version": 1,
+  "kind": "a_share_three_day_walkforward_campaign113_adapter_formula_result",
+  "status": "adapter_and_one_complete_definition_frozen_before_metadata_probe_source_or_numeric_values",
+  "recorded_at": "2026-08-09T01:26:32+08:00",
+  "authoritative_predecessor": {
+    "path": "docs/a_share_three_day_iteration_status_20260809_campaign113_source_contract.json",
+    "sha256": "e866550274fbf87ab1530558c689198d4738398c11aa9826211f7b0dbc63a4c9"
+  },
+  "source_contract": {
+    "path": "docs/a_share_official_exchange_enforcement_source_contract_20260809.json",
+    "sha256": "d4eda5eb2fefd7e2795251bd4926fc7e7157ea264fcabc430904c40d5dfd91e4"
+  },
+  "adapter_and_formula_freeze": {
+    "path": "docs/a_share_official_exchange_enforcement_adapter_formula_freeze_20260809.json",
+    "sha256": "830e9a3d86d2877bbdbf22bd5eeb57ef6e26fbb6a23c25bed740fc31e06ea859"
+  },
+  "attempt_ledger": {
+    "path": "data/experiments/short_horizon/historical_walkforward/campaign_113/research_attempt_ledger_v2.json",
+    "sha256": "a4bc15990edc15e2f374b7f23981cbcec923daecb3ddc656d12aeb4daff06a2c",
+    "entry_count": 9,
+    "infrastructure_failure_count": 7,
+    "prevalue_scientific_attempt_count": 2,
+    "complete_factor_attempt_count": 1,
+    "chain_tip_sha256": "2a7ee2b0e7a8c3fae6471bd42d632bd1e3e891a45a195931f8274ef7e625bbe7"
+  },
+  "implementation_result": {
+    "pure_zero_network_adapter_implemented": true,
+    "synthetic_schema_and_canonicalization_tests_passed": true,
+    "adapter_sha256": "600a1a7f5a25e16e89adacdcd41dfa4af0339038ab7fd612253b973ee094a9e7",
+    "synthetic_test_sha256": "69637350adf21ef2e20648cc21acb54212e67dddc60fea4fc187bc33c70e1789",
+    "listing_page_role_mapping_frozen": true,
+    "transport_endpoint_or_pagination_guessed": false,
+    "programmatic_exchange_request_issued": false
+  },
+  "scientific_result": {
+    "factor_name": "official_exchange_enforcement_recovery_session_age_60sessions",
+    "score_direction": "higher",
+    "active_event_window_sessions": 60,
+    "raw_value_minimum_inclusive": 0,
+    "raw_value_maximum_inclusive": 59,
+    "no_active_event_is_missing": true,
+    "complete_factor_definition_count_appended": 1,
+    "complete_historical_feature_library_count": 141,
+    "complete_historical_feature_library_order_sha256": "ccab6e3d9d81b0a02d4ff178fdd442b26a1e68e3655e1c6f5b2fcb28cd4a4559",
+    "numeric_snapshot_created": false,
+    "numeric_comparator_appended": false,
+    "numeric_comparator_count_preserved": 134,
+    "numeric_comparator_order_sha256_preserved": "31d788db467f558a0ac538315343090f1b3ad4cb27a26136a49ebaa88b2fdbf2",
+    "candidate_or_comparator_values_loaded": false,
+    "historical_predictive_value_established": false,
+    "campaign113_terminal": false,
+    "campaign113_stage": "adapter_and_formula_frozen_pending_official_static_metadata_mapping_and_one_shot_acceptance_freeze"
+  },
+  "accounting": {
+    "campaign113_attempt_count": 9,
+    "campaign113_infrastructure_failure_count": 7,
+    "campaign113_prevalue_scientific_attempt_count": 2,
+    "campaign113_complete_factor_attempt_count": 1,
+    "campaign113_return_reading_development_trial_count": 0,
+    "cumulative_historical_research_attempt_count": 836,
+    "cumulative_return_reading_development_trial_count": 302
+  },
+  "mandatory_next_stage": {
+    "official_static_metadata_only_mapping_before_list_rows": true,
+    "freeze_exact_transport_endpoint_schema_and_pagination_without_rows": true,
+    "freeze_atomic_one_shot_source_acceptance_workflow": true,
+    "revalidate_all_local_fingerprints_before_any_request": true,
+    "programmatic_exchange_list_or_api_request_allowed_now": false,
+    "factor_formula_change_allowed": false
+  },
+  "research_boundary": {
+    "programmatic_source_requests_issued": false,
+    "programmatic_source_rows_read_persisted_or_counted": false,
+    "candidate_or_comparison_values_read": false,
+    "historical_daily_price_fields_read": [],
+    "historical_forward_returns_read": false,
+    "stress_2024_2025_opened": false,
+    "candidate49_historical_backfill_performed": false,
+    "candidate49_ledgers_changed": false,
+    "second_prospective_candidate_created": false,
+    "current_scoring_selection_sizing_or_orders_performed": false,
+    "investment_advice": false
+  }
+}

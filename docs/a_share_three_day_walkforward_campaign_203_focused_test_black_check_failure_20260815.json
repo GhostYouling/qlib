@@ -1,0 +1,23 @@
+{
+  "schema_version": 1,
+  "kind": "a_share_three_day_walkforward_campaign203_infrastructure_failure",
+  "status": "failed_campaign203_focused_test_black_check_output_discarded",
+  "recorded_at": "2026-08-15T19:13:12+08:00",
+  "timestamp_semantics": "monotonic logical append time after policy v301 publication and before Campaign203 validation",
+  "phase": "campaign203_focused_test_format_validation",
+  "failure": {
+    "observed_condition": "The first Black check exited 1 because the newly added Campaign203 focused test required mechanical formatting.",
+    "process_exit_code": 1,
+    "failed_invocation_output_used_as_validation_evidence": false,
+    "recovery": "Run Black only on the new unbound Campaign203 focused test, then rerun Black check and all validation commands from fresh processes."
+  },
+  "research_boundary": {
+    "source_row_candidate_comparator_security_price_or_return_value_read": false,
+    "failed_or_truncated_output_used_as_scientific_or_validation_evidence": false,
+    "provider_or_web_request_issued": false,
+    "provider_credential_presence_value_or_digest_read": false,
+    "stress_2024_2025_opened": false,
+    "candidate49_plan_or_run_executed": false,
+    "candidate49_ledgers_changed": false
+  }
+}

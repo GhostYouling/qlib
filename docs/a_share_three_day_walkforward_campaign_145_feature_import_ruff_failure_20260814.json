@@ -1,0 +1,20 @@
+{
+  "schema_version": 1,
+  "kind": "a_share_three_day_walkforward_campaign145_infrastructure_failure",
+  "status": "recorded_append_only_before_implementation_freeze_and_before_historical_values",
+  "recorded_at": "2026-08-14T20:09:52+08:00",
+  "failure_id": "campaign145_infrastructure_004",
+  "stage": "prevalue_snapshot_builder_synthetic_validation",
+  "command_scope": "Black formatting and check followed by Ruff and focused formula/feature pytest",
+  "exit_code": 1,
+  "observed": "Black passed after formatting; Ruff reported E402 on three intentional post-generated-runtime imports; pytest did not run in this failed command.",
+  "cause": "The noqa markers were attached to the closing parenthesis rather than the physical import statement lines.",
+  "repair_boundary": "Move only each E402 marker to its import statement line, then rerun static and synthetic checks; no formula or research boundary may change.",
+  "research_values_read": false,
+  "candidate_or_comparator_values_read": false,
+  "daily_price_or_forward_return_values_read": false,
+  "provider_request_issued": false,
+  "credential_loaded": false,
+  "candidate49_ledgers_changed": false,
+  "scientific_definition_changed": false
+}

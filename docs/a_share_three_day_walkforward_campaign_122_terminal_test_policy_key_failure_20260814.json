@@ -1,0 +1,26 @@
+{
+  "schema_version": 1,
+  "kind": "a_share_three_day_walkforward_campaign122_infrastructure_failure",
+  "status": "failed_terminal_test_after_v119_accounting_without_value_reread",
+  "recorded_at": "2026-08-14T03:13:48+08:00",
+  "attempt_id": "campaign122_infrastructure_006",
+  "phase": "v119_terminal_regression",
+  "failure": {
+    "failure_class": "test_lifecycle_key_error",
+    "observed_result": "10 passed, 1 failed",
+    "observed_exception": "KeyError: 'complete_definition_or_comparator_append_allowed'",
+    "cause": "The test pointer advanced from v118 to v119 but retained an assertion on a v118-only classification key. The stable 147/139 counts and order hashes passed before the stale assertion."
+  },
+  "effect": {
+    "frozen_scientific_artifact_rewritten": false,
+    "source_value_read": false,
+    "candidate_value_read_or_computed": false,
+    "comparator_value_read": false,
+    "daily_price_or_forward_return_read": false,
+    "development_or_stress_trial_rerun": false,
+    "provider_request_issued": false,
+    "candidate49_ledger_changed": false,
+    "scientific_result_changed": false
+  },
+  "recovery": "Assert the stable v119 terminal selected-candidate count and unchanged library hashes instead of a superseded policy-version-specific key."
+}

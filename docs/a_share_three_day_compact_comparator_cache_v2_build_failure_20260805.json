@@ -1,0 +1,47 @@
+{
+  "version": 1,
+  "kind": "a_share_three_day_compact_comparator_cache_build_failure",
+  "status": "recorded_before_additive_v3_repair",
+  "recorded_at": "2026-08-05T22:48:19+08:00",
+  "failed_command": "PYTHONPATH=/Volumes/DIsk/Disk-Coding/qlib /Volumes/DIsk/Coding/anaconda3/bin/python -m scripts.a_share_three_day_compact_comparator_cache_v2 build --data-root /Volumes/DIsk/qlib-a-share-tushare-1m --output-root /Volumes/DIsk/qlib-a-share-tushare-1m/derived/a_share/rich/tushare/compact_comparator_cache/campaign067_terminal_numeric98_v2 --workers 4 --confirm-build",
+  "exit_code": 1,
+  "observed": {
+    "error_class": "AttributeError",
+    "error_message": "_CaptureComparisonEngine object has no attribute _compact_stock_day_keys",
+    "failing_source_path": "scripts/a_share_three_day_walkforward_campaign058_no_return_audit.py::_quality_comparison_values",
+    "formal_output_root_existed_after_failure": false,
+    "preserved_temporary_root": "/Volumes/DIsk/qlib-a-share-tushare-1m/derived/a_share/rich/tushare/compact_comparator_cache/.campaign067_terminal_numeric98_v2.tnlivqys",
+    "preserved_working_matrix_bytes": 1044099184
+  },
+  "root_cause": "The frozen v2 global-key loader successfully passed the v1 absent-key failure and continued into the Campaign058 quarterly-quality branch. That branch uses the supplied comparison_engine both to compute aligned comparison results and to encode stock-day keys. The inherited v1 capture substitute implements only _aligned_comparison_result, so the later branch failed before completing the 98-column capture.",
+  "repair_requirement": {
+    "v2_protocol_builder_tests_or_freeze_edit_allowed": false,
+    "v2_failed_temporary_values_reusable": false,
+    "new_v3_output_root_required": true,
+    "capture_engine_must_preserve_the_frozen_sink_semantics": true,
+    "capture_engine_non_sink_helpers_must_delegate_to_the_real_frozen_comparison_engine": true,
+    "all_post_campaign057_comparison_engine_method_calls_must_be_audited_before_v3_freeze": true,
+    "campaign067_97_result_objects_must_remain_exactly_equal": true
+  },
+  "frozen_v2_bindings": {
+    "protocol_sha256": "98fa0318754c145ce645d647e591d32b89bc1b432db36028899c48220029dec9",
+    "implementation_freeze_sha256": "95dee2e8d468003a9545959d881c77a19ad484f66dbc8a5e9490fe37b0db26ca",
+    "builder_sha256": "eb4a2873bc6120c33860b93288dc19185b2e7afe796a4389c94a5ec6f207ae20"
+  },
+  "candidate49_integrity_after_failure": {
+    "signal_ledger_sha256": "5193f00d7f36da003f53cec387900da4c3d002299f5dfcfc1a95eaa199ed3a79",
+    "execution_ledger_sha256": "d57a3e61eac969e42cafa418ccd8c0a5ee65dcf69da145bb2c096c2a02a2ea4f"
+  },
+  "research_effect": {
+    "comparison_factor_values_partially_read": true,
+    "candidate_factor_values_read": false,
+    "historical_daily_price_or_forward_return_values_read": false,
+    "provider_request_issued": false,
+    "current_scoring_selection_sizing_or_orders_performed": false,
+    "research_attempt_count_increment": 0,
+    "return_reading_development_trial_count_increment": 0,
+    "cache_infrastructure_failure_count_increment": 1,
+    "cumulative_cache_infrastructure_failure_count": 5
+  },
+  "next_action": "Audit every comparison_engine member used by the remaining frozen no-return chain, create a v3 delegating capture proxy and tests, freeze them before any v3 real values, and run once at a new absolute v3 output root."
+}

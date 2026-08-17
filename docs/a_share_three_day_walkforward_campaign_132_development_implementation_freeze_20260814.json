@@ -1,0 +1,75 @@
+{
+  "schema_version": 1,
+  "kind": "a_share_three_day_walkforward_campaign132_development_implementation_freeze",
+  "status": "frozen_before_first_campaign132_training_return_read",
+  "recorded_at": "2026-08-14T09:33:23+08:00",
+  "campaign": 132,
+  "protocol": {
+    "path": "docs/a_share_three_day_walkforward_campaign_132_preregistration_20260814.json",
+    "sha256": "b4c3f6b3a69506c8a8f5ee71ffe05e487af0f71ae2b104adb3a79b2efc4ac0be"
+  },
+  "design_manifest": {
+    "path": "/Volumes/DIsk/qlib-a-share-tushare-1m/derived/a_share/rich/tushare/minute_walkforward_campaign132_design_matrix/tushare_stk_mins_1m_2019_2025_ea0cbb8f_walkforward_campaign132_numeric140_design_v1/snapshot_manifest.json",
+    "sha256": "043c17fea89f3b0956d643a7c6e3f4d73a11403b967213d2d57539a6a8316a49",
+    "dataset_sha256": "12ce3a64b5e13581392ded9890e2064db4ccca3945da3eb8ad7752c95366a9fc",
+    "rows": 1331759,
+    "feature_count": 140,
+    "feature_order_sha256": "c71bfe27486c9567afd3aca21e4b04053658c23ac651e7f4df7fd014b0c31efd"
+  },
+  "design_audit": {
+    "path": "data/experiments/short_horizon/historical_walkforward/campaign_132/no_return/design_structural_audit.json",
+    "sha256": "86bb53552caf6f6d8f1fad688d2f3a7e39c75827f968bb1ee1510fff2394deec",
+    "status": "passed_ready_for_frozen_model_implementation"
+  },
+  "runner": {
+    "path": "scripts/a_share_three_day_walkforward_campaign132.py",
+    "sha256": "ba181f6c154cfde2066e501e7a67bc68f327ecc6ecc146dd8747cbcfa78e1a93"
+  },
+  "tests": {
+    "path": "tests/data_collector_tests/test_a_share_three_day_walkforward_campaign132.py",
+    "sha256": "d98c7fd8ef9e196b48d1c3b4cdea31ef92f19c85da43540a9acfb9f8e40df7fb",
+    "result": "5 passed in 4.16s"
+  },
+  "runtime": {
+    "python": "3.12",
+    "scikit_learn": "1.5.1",
+    "estimator": "sklearn.ensemble.HistGradientBoostingRegressor"
+  },
+  "trial_catalog": [
+    {
+      "trial_id": "wf132_monotone_hgb_no_interactions_140f",
+      "interaction_cst": "no_interactions"
+    },
+    {
+      "trial_id": "wf132_monotone_hgb_pairwise_interactions_140f",
+      "interaction_cst": "pairwise"
+    },
+    {
+      "trial_id": "wf132_monotone_hgb_unrestricted_interactions_140f",
+      "interaction_cst": null
+    }
+  ],
+  "chronology": {
+    "training_returns_before_fit": true,
+    "validation_scores_and_all_140_uniqueness_comparisons_before_validation_returns": true,
+    "purge_signal_sessions": 3,
+    "entry_and_exit_must_remain_in_partition": true,
+    "lockbox_2024_2025_initially_closed": true
+  },
+  "recordkeeping": {
+    "prevalue_concept_attempts": 6,
+    "pre_return_infrastructure_failures": 8,
+    "model_trials": 3,
+    "selected_only_reporting_forbidden": true,
+    "hash_chained_append_only_ledger_required": true
+  },
+  "model_fit_before_freeze": false,
+  "training_or_validation_return_read_before_freeze": false,
+  "lockbox_2024_2025_return_read_before_freeze": false,
+  "provider_request_issued_before_freeze": false,
+  "credential_loaded_before_freeze": false,
+  "candidate49_historical_backfill_performed_before_freeze": false,
+  "candidate49_ledgers_changed_before_freeze": false,
+  "current_scoring_selection_sizing_or_orders_performed_before_freeze": false,
+  "investment_advice": false
+}

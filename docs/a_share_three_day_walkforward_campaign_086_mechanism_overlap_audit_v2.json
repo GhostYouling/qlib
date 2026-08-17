@@ -1,0 +1,187 @@
+{
+  "schema_version": 2,
+  "kind": "a_share_three_day_walkforward_campaign086_mechanism_overlap_audit_v2",
+  "status": "passed_corrected_semantic_mechanism_review_before_campaign086_minute_source_or_comparison_values",
+  "recorded_at": "2026-08-07T00:40:00+08:00",
+  "concept_scouting": {
+    "path": "docs/a_share_three_day_walkforward_campaign_086_concept_scouting_v2.json",
+    "sha256": "76cf7fca133f557482d7379634b66e806b4e07ecd7ca5dbd2559d2c44060845d"
+  },
+  "authoritative_state": {
+    "path": "docs/a_share_three_day_iteration_status_20260807_campaign085_verified.json",
+    "sha256": "99487c88232df6e0fedbd6207c20a6f25bab8bb6e8f66842f2599bbeba2c3024"
+  },
+  "historical_walkforward_policy": {
+    "path": "docs/a_share_three_day_historical_walkforward_research_policy_20260727.json",
+    "sha256": "38426d6161b9bfed323c58caba18feca668b8c9d53e294951a8ba90c01a798bb"
+  },
+  "numeric_comparator_policy": {
+    "path": "docs/a_share_three_day_walkforward_future_numeric_comparison_eligibility_policy_v24_20260807.json",
+    "sha256": "47d582150f3cca9c00f919e397600b388d65505e1f97d62017a693520d2828e1",
+    "complete_definition_count": 117,
+    "numeric_comparator_count": 115,
+    "complete_definition_order_sha256": "462cd7b3aa1d7cd909e35b050025cf21094954b1f76925833f46f65c4d1317f8",
+    "numeric_comparator_order_sha256": "f22759b26333f8e1fdb5a8ca942afa96aca88b544311e608fd9ffbd5105c80ab"
+  },
+  "candidate": {
+    "name": "intraday_intrabar_close_location_serial_persistence_238p",
+    "direction": "higher",
+    "mechanism": "population serial persistence of scale-free within-bar close-location states over informative adjacent pairs",
+    "formula": "For each positive-range selected bar set x=(log(close)-log(low))/log(high/low). Pool informative adjacent (x_t-1,x_t) pairs separately inside the two halves, require at least 120 and positive variance in both vectors, compute population Pearson rho, and return (1+rho)/2.",
+    "zero_range_rule": "A zero-range bar has no state and removes only its directly incident pairs; never bridge across it or impute a state.",
+    "half_session_reset": true,
+    "no_open_volume_amount_market_benchmark_daily_financial_event_peer_or_future_input": true,
+    "no_old_factor_value_input": true,
+    "candidate49_used_or_modified": false
+  },
+  "complete_library_review": {
+    "all_117_definitions_reviewed_in_frozen_order": true,
+    "all_pre_walkforward_terminal_price_volume_event_structural_and_composite_families_reviewed": true,
+    "candidate_is_exact_formula_duplicate": false,
+    "candidate_is_direction_only_duplicate": false,
+    "candidate_is_parameter_only_duplicate": false,
+    "candidate_is_an_inversion_of_a_terminal_factor": false,
+    "candidate_combines_terminal_factor_values": false,
+    "candidate_changes_any_quality_listing_or_buyability_gate": false,
+    "close_location_body_direction_range_overlap_gap_absorption_and_range_state_families_explicitly_challenged": true,
+    "campaign085_terminal_product_not_reused_or_combined": true,
+    "candidate49_remains_semantic_isolation_only": true
+  },
+  "semantic_invariance_checks": [
+    {
+      "intervention": "Multiply every selected OHLC value by one common strictly positive constant.",
+      "campaign086_result": "unchanged because each close-location state uses only log ratios within its own bar",
+      "distinguishes_from": "nominal-price affordability and every absolute price-level factor"
+    },
+    {
+      "intervention": "Multiply every positive intrabar log range and both close-to-boundary log distances by the same positive bar-specific scale while preserving the close-location fraction.",
+      "campaign086_result": "unchanged",
+      "distinguishes_from": "range magnitude, body-range efficiency, range participation, and breakout-magnitude factors"
+    },
+    {
+      "intervention": "Permute the same finite close-location states inside either half while preserving their marginal distribution.",
+      "campaign086_result": "generally changes because adjacent ordering changes",
+      "distinguishes_from": "mean close-location pressure, occupancy entropy, and other order-invariant distribution summaries"
+    },
+    {
+      "intervention": "Shift both high and low log boundaries together in a bar while holding its normalized close location fixed.",
+      "campaign086_result": "unchanged",
+      "distinguishes_from": "range-boundary translation coherence, interbar gap, prior-range breakout, and global range-revisit mechanisms"
+    },
+    {
+      "intervention": "Reflect every close-location state x to 1-x without changing missing endpoints.",
+      "campaign086_result": "unchanged because population correlation is invariant to applying the same affine reflection to lag and lead vectors",
+      "distinguishes_from": "directional close-location pressure, candle-body direction, signed path, and up/down asymmetry"
+    },
+    {
+      "intervention": "Change open, volume, amount, market, quarterly, daily, or Candidate49 fields while high, low, close, and the exact grid stay fixed.",
+      "campaign086_result": "unchanged",
+      "distinguishes_from": "body/gap, participation, transaction-price, market-peer, quarterly, daily, and prospective mechanisms"
+    },
+    {
+      "intervention": "Move an otherwise identical adjacent pair across lunch.",
+      "campaign086_result": "the pair is excluded because the two halves are independent",
+      "distinguishes_from": "full-day statistics that treat 11:30 and 13:01 as adjacent"
+    }
+  ],
+  "nearest_semantic_challenges": [
+    {
+      "name": "intraday_intrabar_close_location_pressure_240m",
+      "relationship": "both use close position inside the contemporaneous bar range",
+      "distinction": "The prior factor aggregates signed boundary distances into a directional mean. Campaign086 discards the marginal direction and measures only temporal correlation of scale-free states; reflection changes the former sign but leaves Campaign086 unchanged.",
+      "mandatory_numeric_challenge": true
+    },
+    {
+      "name": "intraday_bar_direction_continuity_238p",
+      "relationship": "both can respond to persistent one-sided minute pressure",
+      "distinction": "Body continuity uses open-to-close signs and exact-zero body support. Campaign086 reads no open, is reflection invariant, and uses relative close location inside high-low intervals with a Pearson state transition.",
+      "mandatory_numeric_challenge": true
+    },
+    {
+      "name": "intraday_adjacent_range_overlap_continuity_238p",
+      "relationship": "both form adjacent within-half pairs from high-low information",
+      "distinction": "Range overlap compares two price intervals in log-price space and ignores close. Campaign086 is invariant to interval translation and uses only normalized close states; intervals may have identical overlap but arbitrary Campaign086 persistence.",
+      "mandatory_numeric_challenge": true
+    },
+    {
+      "name": "intraday_microgap_absorption_share_238p",
+      "relationship": "both ask whether local pressure persists or is absorbed across adjacent bars",
+      "distinction": "Gap absorption reads current open and whether the prior close lies inside the current range, with a gap-count threshold. Campaign086 reads no open or prior absolute close and correlates contemporaneous within-bar normalized states.",
+      "mandatory_numeric_challenge": true
+    },
+    {
+      "name": "intraday_interbar_gap_body_confirmation_238p",
+      "relationship": "both are adjacent-bar state persistence ideas",
+      "distinction": "Gap-body confirmation correlates signed open gaps with signed candle bodies. Campaign086 reads no open, discards signed direction through reflection invariance, and normalizes close by its own high-low interval.",
+      "mandatory_numeric_challenge": true
+    },
+    {
+      "name": "intraday_intrabar_range_reversal_238p and intraday_range_boundary_translation_coherence_238p",
+      "relationship": "all use adjacent within-half Pearson correlations",
+      "distinction": "Those factors correlate range magnitudes or high/low boundary changes. Campaign086 is unchanged by bar-specific range scaling or interval translation when close location is preserved.",
+      "mandatory_numeric_challenge": true
+    },
+    {
+      "name": "intraday_range_weak_order_entropy_236t and intraday_range_weak_order_time_reversal_divergence_236t",
+      "relationship": "all retain temporal high-low geometry",
+      "distinction": "Weak-order factors classify range-boundary order states over triples. Campaign086 uses close, no ordinal alphabet, and an adjacent Pearson correlation of normalized continuous states.",
+      "mandatory_numeric_challenge": true
+    },
+    {
+      "name": "quarterly_freshness_market_neutral_late_drift_confirmation_product_2r",
+      "relationship": "the latest terminal numeric comparator must be challenged",
+      "distinction": "Campaign085 is a cross-sectional product of quarterly disclosure freshness and late market-neutral close drift. Campaign086 reads neither quarterly fields nor a market benchmark and contains no old factor value.",
+      "mandatory_numeric_challenge": true
+    },
+    {
+      "name": "intraday_cross_sectional_standardized_return_state_stability_236p",
+      "relationship": "the structurally nonnumeric definition remains in the complete semantic library",
+      "distinction": "Peer-standardized signed return-state mobility versus single-stock within-bar close-location persistence",
+      "mandatory_semantic_challenge": true,
+      "numeric_status": "undefined_not_pass_not_fail"
+    },
+    {
+      "name": "signal_day_turnover_rate_pct",
+      "relationship": "the pre-value terminal definition remains a semantic challenge",
+      "distinction": "A raw daily turnover level is unrelated to Campaign086's minute OHLC state transition and supplies no candidate input.",
+      "numeric_status": "ineligible_terminal_definition_semantic_challenge_only"
+    },
+    {
+      "name": "candidate49_intraday_cumulative_vwap_crossing_rate_240m_v1",
+      "relationship": "the sole prospective candidate remains an isolation challenge",
+      "distinction": "Candidate49 counts genuinely future causal cumulative-VWAP sign crossings and cannot be historically backfilled. Campaign086 is historical-only, uses high/low/close state persistence, and never enters Candidate49 ledgers.",
+      "candidate49_remains_isolated": true
+    }
+  ],
+  "pre_value_decision": {
+    "economically_independent_enough_to_preregister": true,
+    "numeric_uniqueness_still_required_against_all_115_eligible_comparators": true,
+    "strict_maximum_absolute_median_daily_rank_correlation": 0.8,
+    "minimum_pairwise_names_per_session": 50,
+    "minimum_pairwise_sessions_per_comparison": 100,
+    "drop_residualize_invert_clip_bucket_rank_neutralize_filter_or_rescue_after_failed_gate_allowed": false
+  },
+  "research_boundary": {
+    "campaign086_minute_source_rows_read": false,
+    "campaign086_candidate_values_read": false,
+    "comparison_values_read": false,
+    "historical_daily_price_fields_read": [],
+    "historical_forward_returns_read": false,
+    "provider_request_issued": false,
+    "candidate49_historical_backfill_performed": false,
+    "candidate49_ledgers_changed": false,
+    "second_prospective_candidate_created": false,
+    "current_scoring_selection_sizing_or_orders_performed": false,
+    "investment_advice": false
+  },
+  "supersedes_without_rewriting": {
+    "path": "docs/a_share_three_day_walkforward_campaign_086_mechanism_overlap_audit.json",
+    "sha256": "edbae9c30889b7a08fca56d5a84bdf9c87454095466774982cda8a19fd8e32a3",
+    "reason": "prevalue numeric-comparator order fingerprint transcription failure"
+  },
+  "prevalue_binding_failure": {
+    "path": "docs/a_share_three_day_walkforward_campaign_086_prevalue_numeric_order_binding_failure_20260807.json",
+    "sha256": "1aa8419a10ce987ef3744cf09ab97cc6c3f8fe6a8316be7ba6a7f4106ce4b255"
+  }
+}
+

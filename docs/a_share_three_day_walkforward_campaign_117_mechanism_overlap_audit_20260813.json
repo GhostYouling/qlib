@@ -1,0 +1,186 @@
+{
+  "schema_version": 1,
+  "kind": "a_share_three_day_walkforward_campaign117_mechanism_overlap_audit",
+  "status": "one_genuinely_distinct_activity_ordinal_mechanism_and_exact_formula_frozen_before_values",
+  "recorded_at": "2026-08-13T20:43:00+08:00",
+  "purpose": "Challenge the selected Campaign117 activity-sequence mechanism against the complete 142-definition frontier and freeze exactly one formula, direction, source projection, support rule and missing semantics before any Campaign117 source or candidate value is read.",
+  "authoritative_inputs": {
+    "concept_scouting": {
+      "path": "docs/a_share_three_day_walkforward_campaign_117_concept_scouting_20260813.json",
+      "sha256": "dab8c373cd151bafcc32dd4f940017b40b1a71794b1ea8c183c31ccddfd08553"
+    },
+    "numeric_policy_v104": {
+      "path": "docs/a_share_three_day_walkforward_future_numeric_comparison_eligibility_policy_v104_20260812.json",
+      "sha256": "a9d44ce8b383a9ecb29f96b8df19ac1bc28e7cceaac8397c609be6130e4ef03b"
+    },
+    "range_weak_order_precedent": {
+      "path": "docs/a_share_three_day_walkforward_campaign_064_mechanism_overlap_audit.json",
+      "sha256": "422dd1a23708c069ff55b14105032e5fbf1ac2ed77cbd6d2439be896ef11cbae"
+    },
+    "activity_support_frontier": {
+      "path": "docs/a_share_three_day_walkforward_campaign_105_mechanism_support_audit.json",
+      "sha256": "8e1069159f2f807a1f783aba2ad173e0a167b5c67441d76e5604116c88415d45"
+    },
+    "complete_definition_count": 142,
+    "complete_definition_order_sha256": "ed61b10f3acb939c10ae5759f33aafde377cc921dd99c642300603b50a4851c5"
+  },
+  "frozen_candidate": {
+    "name": "intraday_amount_weak_order_entropy_236t",
+    "direction": "higher",
+    "information_domain": "within_half_local_ordinal_cny_activity_sequence_complexity",
+    "economic_hypothesis": "A broader and less repetitive local ordering of one-minute CNY activity reflects distributed participation rather than a few mechanically repeated liquidity states, and may carry more orderly demand resilience from the next open through the third close.",
+    "source_projection": [
+      "datetime",
+      "symbol",
+      "provider",
+      "amount"
+    ],
+    "forbidden_source_fields": [
+      "open",
+      "high",
+      "low",
+      "close",
+      "volume",
+      "daily_price",
+      "forward_return"
+    ],
+    "grid": {
+      "selected_rows": 240,
+      "selected_minutes": "09:31-11:30 and 13:01-15:00",
+      "half_count": 2,
+      "rows_per_half": 120,
+      "overlapping_triples_per_half": 118,
+      "pooled_triple_count": 236,
+      "standalone_09_30_loaded_for_formula": false,
+      "lunch_spanning_triples": 0,
+      "cross_day_or_cross_stock_triples": 0
+    },
+    "exact_formula": {
+      "state_input": "Use each selected bar's raw finite nonnegative CNY amount. Because weak order is invariant to a common strictly increasing transform, no log, rank, winsorization, normalization or rescaling is applied.",
+      "weak_order_key": "For every overlapping triple (a0,a1,a2), form (cmp(a0,a1),cmp(a0,a2),cmp(a1,a2)) with exact zero tolerance and cmp in {-1,0,+1}; retain exact ties and require one of the 13 transitive weak-order states.",
+      "pooling": "Pool the 118 morning and 118 afternoon state labels with equal triple weight; do not form a lunch transition.",
+      "probabilities": "For each of the 13 frozen states, p_k=count_k/236, including zero-count states.",
+      "score": "-sum over p_k>0 of p_k*ln(p_k), divided by ln(13).",
+      "valid_range_inclusive": [
+        0.0,
+        1.0
+      ],
+      "support": "Require exactly 240 finite nonnegative amount values, strictly positive total amount, exactly 236 recognized transitive triples, a finite score and an in-range score; otherwise missing. Zero-amount bars and exact ties remain informative states."
+    },
+    "search_space": {
+      "candidate_count": 1,
+      "direction_count": 1,
+      "fields": [
+        "amount"
+      ],
+      "tuple_lengths": [
+        3
+      ],
+      "lags": [
+        1
+      ],
+      "state_alphabets": [
+        "13_transitive_weak_orders_with_exact_ties"
+      ],
+      "operators": [
+        "normalized_Shannon_entropy"
+      ],
+      "windows": [
+        "two_fixed_120_bar_halves"
+      ],
+      "filters": [],
+      "subsets": [],
+      "models": [],
+      "alternate_field_direction_tuple_lag_alphabet_tie_rule_operator_window_threshold_filter_subset_fit_model_or_combination_search": false
+    }
+  },
+  "overlap_challenges": [
+    {
+      "family": "amount_mass_distribution_and_linear_path",
+      "definitions": [
+        "intraday_amount_participation_entropy_240m",
+        "intraday_amount_profile_serial_persistence_240m",
+        "intraday_amount_path_efficiency_238p",
+        "intraday_amount_clock_dispersion_240m",
+        "intraday_amount_center_of_mass_240m"
+      ],
+      "distinction": "Mass entropy is invariant to clock permutation and uses normalized magnitudes; serial persistence and path efficiency use cardinal differences or correlation. Campaign117 discards amount magnitudes after exact comparisons, changes with local ordering, and is invariant to a common strictly increasing amount transform."
+    },
+    {
+      "family": "amount_peaks_threshold_runs_and_clock_events",
+      "definitions": [
+        "intraday_amount_local_peak_density_238p",
+        "intraday_above_median_amount_longest_run_240m",
+        "intraday_peak_amount_bar_recency_240m",
+        "intraday_terminal_bar_amount_share_240m"
+      ],
+      "distinction": "Those factors retain one event category, one threshold run, one global peak or a terminal mass. Campaign117 uses all 13 local weak-order states with no amount threshold and no absolute clock label. Equal peak counts can have different full state distributions and entropy."
+    },
+    {
+      "family": "return_conditioned_or_price_activity_coupling",
+      "definitions": [
+        "intraday_amount_volatility_coupling_238p",
+        "intraday_amount_lead_return_correlation_238p",
+        "intraday_up_move_amount_share_238m",
+        "intraday_zero_return_amount_intensity_238m",
+        "intraday_volatility_activity_lead_lag_asymmetry_236p",
+        "intraday_amount_conditioned_directional_persistence_spread_236p"
+      ],
+      "distinction": "Campaign117 never reads a close, return, sign or volatility state. Arbitrarily changing the price path while preserving amount leaves Campaign117 unchanged but can change every listed price-activity factor."
+    },
+    {
+      "family": "return_and_range_weak_order_complexity",
+      "definitions": [
+        "intraday_return_weak_order_entropy_234t",
+        "intraday_range_weak_order_entropy_236t",
+        "intraday_range_weak_order_time_reversal_divergence_236t"
+      ],
+      "distinction": "The finite alphabet is a documented operator precedent, but the information state is CNY activity rather than return or high-low range. Changing amount order while holding all OHLC paths fixed changes Campaign117 and leaves these price definitions unchanged. Campaign117 also uses marginal entropy, not reversal divergence."
+    },
+    {
+      "family": "cross_half_cross_day_and_market_activity_profiles",
+      "definitions": [
+        "intraday_morning_afternoon_amount_profile_similarity_120b",
+        "intraday_day_over_day_amount_profile_similarity_240b",
+        "intraday_market_amount_profile_synchronization_240m"
+      ],
+      "distinction": "Campaign117 pools within-half local triples and has no aligned half, prior-day or market profile. Permuting local neighborhoods while preserving aligned profile similarity can change Campaign117."
+    },
+    {
+      "family": "full_library_models_and_exposed_terminal_combinations",
+      "definitions": [
+        "full_numeric_library_bounded_simplex_ridge_130f",
+        "full_numeric_library_directional_rank_improvement_breadth_130f",
+        "full_numeric_library_directional_lower_quartile_consensus_129f"
+      ],
+      "distinction": "Campaign117 is a single raw-source state definition frozen without component values or return-fitted weights; it is not a refit, rescue, subset or ensemble of terminal scores."
+    }
+  ],
+  "independence_interventions": [
+    "Apply a common strictly increasing transform to all 240 amount values: Campaign117 is unchanged while amount mass, path-difference and cardinal-correlation factors generally change.",
+    "Permute amount positions inside a half while preserving the unordered amount multiset: amount participation entropy is unchanged while Campaign117 can change.",
+    "Change every OHLC and return value while preserving amount: Campaign117 is unchanged while all price, return, range and price-activity factors may change.",
+    "Construct two sequences with the same strict local-peak count but redistribute nonpeak weak-order states: peak density is unchanged while Campaign117 can change."
+  ],
+  "decision": {
+    "genuinely_new_mechanism": true,
+    "semantic_duplicate_of_any_complete_definition": false,
+    "terminal_factor_rescue_or_recombination": false,
+    "exact_formula_and_direction_frozen": true,
+    "candidate_values_may_be_read_now": false,
+    "next_stage": "Freeze the full ordered coverage-capacity-uniqueness-development protocol and bind the implementation before opening source values."
+  },
+  "research_boundary": {
+    "campaign117_source_partition_values_read": false,
+    "campaign117_candidate_values_computed_or_read": false,
+    "campaign117_comparator_values_read": false,
+    "historical_daily_price_or_forward_return_values_read": false,
+    "stress_2024_2025_opened": false,
+    "provider_request_issued": false,
+    "candidate49_historical_backfill_performed": false,
+    "candidate49_ledgers_changed": false,
+    "second_prospective_candidate_created": false,
+    "current_scoring_selection_sizing_positions_or_orders_performed": false,
+    "investment_advice": false
+  }
+}

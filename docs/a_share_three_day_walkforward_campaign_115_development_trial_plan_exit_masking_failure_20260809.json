@@ -1,0 +1,42 @@
+{
+  "schema_version": 1,
+  "kind": "a_share_three_day_walkforward_campaign115_infrastructure_failure",
+  "status": "recorded_plan_exit_code_masked_by_following_read_only_command",
+  "recorded_at": "2026-08-09T08:28:00+08:00",
+  "recorded_at_semantics": "monotonic_logical_append_time_after_development_trial_implementation_freeze_not_host_wall_clock_measurement",
+  "attempt_id": "campaign115_infrastructure_022",
+  "stage": "development_trial_real_plan_and_inspection",
+  "failure": {
+    "command_shape": "plan followed by inspect-trial in one shell invocation",
+    "plan_json_ready": false,
+    "plan_json_exit_code_if_executed": 2,
+    "plan_blockers": [
+      "ordered_no_return_audit_admitted_one_factor"
+    ],
+    "inspect_status": "no_campaign115_development_trial",
+    "observed_combined_shell_exit_code": 0,
+    "classification": "command_orchestration_exit_masking_only"
+  },
+  "implementation_freeze": {
+    "path": "docs/a_share_three_day_walkforward_campaign_115_development_trial_implementation_freeze_v1_20260809.json",
+    "sha256": "d7de827bcd637fbe2f3e7b378829e97e5bb1ec55dd8a431b44d7351234e7b67d"
+  },
+  "authorized_repair": {
+    "rerun_plan_as_a_standalone_command_and_require_process_exit_code_2": true,
+    "rerun_inspection_separately": true,
+    "runner_protocol_formula_direction_folds_purge_costs_or_gates_changed": false,
+    "bypass_plan_failure_or_run_development_allowed": false
+  },
+  "research_boundary": {
+    "candidate_source_or_comparator_values_read": false,
+    "historical_daily_price_or_forward_return_values_read": false,
+    "partition_year_2024_or_2025_values_read": false,
+    "development_trial_run": false,
+    "credential_loaded": false,
+    "provider_request_issued": false,
+    "candidate49_ledgers_changed": false,
+    "second_prospective_candidate_created": false,
+    "current_scoring_selection_sizing_or_orders_performed": false,
+    "investment_advice": false
+  }
+}

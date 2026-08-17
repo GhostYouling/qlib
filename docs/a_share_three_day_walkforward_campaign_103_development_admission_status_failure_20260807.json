@@ -1,0 +1,25 @@
+{
+  "version": 1,
+  "kind": "a_share_three_day_walkforward_campaign103_infrastructure_failure",
+  "status": "failed_in_synthetic_tests_before_development_return_read",
+  "recorded_at": "2026-08-07T17:25:00+08:00",
+  "stage": "development_no_return_admission_exact_status_validation",
+  "test_command_result": "2 passed, 3 failed",
+  "common_exception": "Campaign103 no-return audit is not admissible",
+  "root_cause": "The v1 admission bridge used the older plural-factor status. The inherited one-trial chain expects completed_with_one_admissible_factor_pending_walkforward_preregistration.",
+  "allowed_repair": "Create additive admission bridge v2 changing only the compatibility status string, bind it from preregistration v8, and preserve the same authoritative audit hash and one admitted factor.",
+  "research_boundary": {
+    "candidate_panel_values_read_by_failed_tests": false,
+    "historical_daily_price_fields_read": [],
+    "historical_forward_return_fields_read": false,
+    "development_trial_started": false,
+    "2024_2025_stress_opened": false,
+    "provider_request_issued": false,
+    "candidate49_ledgers_changed": false
+  },
+  "attempt_accounting": {
+    "campaign103_infrastructure_failure_increment": 1,
+    "campaign103_complete_factor_attempt_increment": 0,
+    "return_reading_development_trial_increment": 0
+  }
+}

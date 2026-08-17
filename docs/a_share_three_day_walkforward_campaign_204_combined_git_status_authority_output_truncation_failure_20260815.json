@@ -1,0 +1,27 @@
+{
+  "schema_version": 1,
+  "kind": "a_share_three_day_walkforward_campaign204_infrastructure_failure",
+  "status": "failed_combined_git_status_authority_output_truncated_discarded",
+  "recorded_at": "2026-08-15T19:48:00+08:00",
+  "timestamp_semantics": "monotonic logical append time after Campaign204 infrastructure attempt 002",
+  "phase": "campaign204_authority_and_worktree_status_verification",
+  "attempt_id": "campaign204_infrastructure_003",
+  "failure": {
+    "operation": "combine the very large dirty-worktree status with authority hashes and semantic probes",
+    "observed": "the process exited zero but the combined tool output was truncated because thousands of pre-existing untracked artifacts exceeded the output limit",
+    "disposition": "discarded as a complete worktree-status inventory; the visible authoritative hashes and ledger semantics were rechecked with bounded commands"
+  },
+  "preservation": {
+    "pre_existing_dirty_worktree_reset_or_cleaned": false,
+    "unrelated_user_changes_modified_by_this_attempt": false
+  },
+  "research_boundary": {
+    "factor_comparator_security_price_or_return_value_read": false,
+    "failed_or_truncated_output_used_as_scientific_evidence": false,
+    "provider_or_web_request_issued": false,
+    "provider_credential_presence_value_or_digest_read": false,
+    "stress_2024_2025_opened": false,
+    "candidate49_plan_or_run_executed": false,
+    "candidate49_ledgers_changed": false
+  }
+}

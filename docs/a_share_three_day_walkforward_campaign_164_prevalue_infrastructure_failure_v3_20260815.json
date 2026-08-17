@@ -1,0 +1,64 @@
+{
+  "schema_version": 1,
+  "kind": "a_share_three_day_walkforward_campaign164_prevalue_infrastructure_failure_record",
+  "status": "five_failures_recorded_recovery_in_progress",
+  "recorded_at": "2026-08-15T07:01:50+08:00",
+  "authoritative_predecessor": {
+    "path": "docs/a_share_three_day_walkforward_campaign_164_prevalue_infrastructure_failure_v2_20260815.json",
+    "sha256": "992a037bdf1b568675c5d5df985fa6f7e6e02ea6a4ab580a6d1bf9d2af97459a",
+    "effective_failure_count": 2,
+    "preserved": true
+  },
+  "delta_failures": [
+    {
+      "attempt_id": "campaign164_infrastructure_003",
+      "phase": "focused_terminal_test_collection",
+      "exit_code": 2,
+      "status": "failed_pytest_collection_repo_root_missing_from_module_path",
+      "observed": "ModuleNotFoundError: No module named 'scripts'",
+      "black_passed_before_failure": true,
+      "ruff_passed_before_failure": true,
+      "target_file_written_by_failure": false,
+      "candidate_comparator_price_or_return_value_read": false,
+      "failed_exit_code_bypassed_or_masked": false,
+      "recovery": "Reran the identical focused test file with explicit PYTHONPATH=. from the repository root."
+    },
+    {
+      "attempt_id": "campaign164_infrastructure_004",
+      "phase": "focused_terminal_test_recovery",
+      "exit_code": 1,
+      "status": "failed_recorded_at_exceeded_file_mtime",
+      "observed": "8 passed and 1 timestamp assertion failed because manually prefilled recorded_at values followed their file mtimes.",
+      "target_file_written_by_failure": false,
+      "candidate_comparator_price_or_return_value_read": false,
+      "failed_exit_code_bypassed_or_masked": false,
+      "recovery": {
+        "path": "docs/a_share_three_day_walkforward_campaign_164_recorded_at_correction_v2_20260815.json",
+        "sha256": "a7764f1ae121aaf5c46363447d7f7f0aeee0a39c1144ff96af4803fbe7d9d8b9"
+      }
+    },
+    {
+      "attempt_id": "campaign164_infrastructure_005",
+      "phase": "recorded_at_correction_publication",
+      "exit_code": 0,
+      "status": "invalid_state_sha256_transcribed_into_timestamp_correction_v1",
+      "observed": "The v1 correction carried an uncomputed incorrect state digest; explicit shasum revealed the mismatch before the correction was admitted.",
+      "target_file_written_by_failure": true,
+      "candidate_comparator_price_or_return_value_read": false,
+      "failed_exit_code_bypassed_or_masked": false,
+      "recovery": {
+        "path": "docs/a_share_three_day_walkforward_campaign_164_recorded_at_correction_v2_20260815.json",
+        "sha256": "a7764f1ae121aaf5c46363447d7f7f0aeee0a39c1144ff96af4803fbe7d9d8b9",
+        "old_v1_preserved": true
+      }
+    }
+  ],
+  "effective_failure_count": 5,
+  "research_boundary": {
+    "source_row_candidate_comparator_price_or_return_value_read": false,
+    "provider_or_web_request_issued": false,
+    "provider_credential_presence_value_or_digest_read": false,
+    "stress_2024_2025_opened": false,
+    "candidate49_ledgers_changed": false
+  }
+}

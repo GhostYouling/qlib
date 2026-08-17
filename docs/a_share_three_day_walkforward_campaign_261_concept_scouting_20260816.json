@@ -1,0 +1,105 @@
+{
+  "schema_version": 1,
+  "kind": "a_share_three_day_walkforward_campaign261_concept_scouting",
+  "status": "one_local_zero_network_candidate_selected_before_source_candidate_comparator_price_or_return_values",
+  "recorded_at": "2026-08-16T16:31:00+08:00",
+  "timestamp_semantics": "monotonic_logical_append_time_not_host_wall_clock_measurement",
+  "purpose": "Review one finite six-route local-data catalog after Campaign260 and select at most one genuinely independent three-session mechanism before reading any Campaign261 source row or scientific value.",
+  "authoritative_inputs": {
+    "campaign260_terminal_state": {
+      "path": "docs/a_share_three_day_iteration_status_20260816_campaign260_terminal.json",
+      "sha256": "4eda8b0d23a9dc7be30dc889b194241773af67508d5ad78fc10c561c8a67531d"
+    },
+    "numeric_policy_v401": {
+      "path": "docs/a_share_three_day_walkforward_future_numeric_comparison_eligibility_policy_v401_20260816.json",
+      "sha256": "cb800d63dbb577b8bc2c5ca28bff8b0b923f490ded3e9e88d5a47bab53183542",
+      "complete_definition_count": 159,
+      "complete_definition_order_sha256": "0a83a9c82f8ee0ebb9f57da3214e058e6772c8b7648da181b24a93d10e3de3f8",
+      "eligible_numeric_comparator_count": 142,
+      "eligible_numeric_comparator_order_sha256": "5d1b35fb5a0d8ac9293008db9963c4a60a94dc940c237c3ed259e5ce44f14aaf"
+    },
+    "historical_walkforward_policy": {
+      "path": "docs/a_share_three_day_historical_walkforward_research_policy_20260727.json",
+      "sha256": "38426d6161b9bfed323c58caba18feca668b8c9d53e294951a8ba90c01a798bb"
+    }
+  },
+  "finite_prevalue_concept_catalog": [
+    {
+      "catalog_id": "c261_01",
+      "name": "intraday_amount_lorenz_gini_240m",
+      "proposed_definition": "Sort the exact 240 continuous-session amount masses and compute the finite-sample-normalized Lorenz-Gini inequality score.",
+      "prevalue_decision": "selected_for_complete_mechanism_overlap_audit",
+      "reason": "It is a parameter-free global inequality functional that deliberately discards the clock order. It is not determined by timing center, dispersion, temporal skew, weak-order states, local peaks or fixed-window shares, while numerical redundancy with participation entropy remains testable by the frozen all-comparator gate."
+    },
+    {
+      "catalog_id": "c261_02",
+      "name": "intraday_amount_herfindahl_concentration_240m",
+      "proposed_definition": "Sum squared amount shares.",
+      "prevalue_decision": "rejected_before_values_as_second_power_concentration_sibling",
+      "reason": "Choosing a power exponent would begin a concentration-index family sweep; the normalized Lorenz-Gini route is selected once without an exponent."
+    },
+    {
+      "catalog_id": "c261_03",
+      "name": "intraday_amount_theil_inequality_240m",
+      "proposed_definition": "Average amount-share log deviations from equality.",
+      "prevalue_decision": "rejected_before_values_as_entropy_family_reexpression",
+      "reason": "Theil is an entropy-family transform and is too close semantically to the existing participation entropy definition."
+    },
+    {
+      "catalog_id": "c261_04",
+      "name": "intraday_amount_coefficient_of_variation_240m",
+      "proposed_definition": "Divide the cross-minute amount standard deviation by its mean.",
+      "prevalue_decision": "rejected_before_values_as_second_moment_dispersion_refresh",
+      "reason": "It is a magnitude-distribution second-moment sibling and adds an avoidable denominator policy after the completed amount-clock dispersion route."
+    },
+    {
+      "catalog_id": "c261_05",
+      "name": "intraday_amount_lorenz_tail_or_half_session_variants",
+      "proposed_definition": "Apply the selected inequality functional to a half-session, tail, or amount quantile subset.",
+      "prevalue_decision": "rejected_before_values_as_window_threshold_and_subset_multiplicity",
+      "reason": "Subwindow and tail variants would be rescue routes rather than independent mechanisms."
+    },
+    {
+      "catalog_id": "c261_06",
+      "name": "amount_inequality_factor_combination_or_model",
+      "proposed_definition": "Combine Gini with entropy, timing moments, peak, return or terminal factors.",
+      "prevalue_decision": "rejected_before_component_or_return_values_as_terminal_factor_recombination",
+      "reason": "Campaign261 is one complete definition with no fit or combination; old terminal definitions remain unchanged."
+    }
+  ],
+  "selected_candidate": {
+    "name": "intraday_amount_lorenz_gini_240m",
+    "direction": "higher",
+    "source_projection_if_admitted": [
+      "datetime",
+      "symbol",
+      "provider",
+      "amount"
+    ],
+    "economic_hypothesis": "A session whose trading amount is concentrated in a small number of minutes reflects discrete unresolved attention or information arrival that may persist over the next three accepted sessions.",
+    "formula_summary": "For ascending amounts b_(i), n=240 and S=sum b_i, score=sum_i((2i-n-1)b_(i))/((n-1)S).",
+    "exact_range": [
+      0.0,
+      1.0
+    ],
+    "candidate_count": 1,
+    "direction_count": 1,
+    "window_count": 1,
+    "threshold_filter_subset_model_or_combination_count": 0
+  },
+  "research_boundary": {
+    "repository_metadata_and_terminal_history_read": true,
+    "campaign261_source_rows_read": false,
+    "campaign261_candidate_or_comparator_values_read": false,
+    "historical_daily_price_or_forward_return_values_read": false,
+    "stress_2024_2025_opened": false,
+    "provider_or_web_request_issued": false,
+    "provider_credential_presence_value_or_digest_read": false,
+    "candidate49_plan_or_run_executed": false,
+    "candidate49_historical_backfill_performed": false,
+    "candidate49_ledgers_changed": false,
+    "second_prospective_candidate_created": false,
+    "current_scoring_selection_sizing_positions_or_orders_performed": false,
+    "investment_advice": false
+  }
+}

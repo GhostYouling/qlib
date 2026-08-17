@@ -1,0 +1,20 @@
+{
+  "schema_version": 1,
+  "kind": "a_share_three_day_walkforward_campaign101_no_return_audit_precoverage_infrastructure_failure",
+  "status": "recorded_pending_test_only_repair_before_audit_freeze",
+  "recorded_at": "2026-08-07T13:40:42Z",
+  "stage": "no_return_audit_synthetic_and_source_boundary_tests",
+  "result": "Six tests passed and one test failed.",
+  "failure": "The source-inspection test prohibited the substring forward_return everywhere in load_candidate_arrays, so it matched the explicit false-valued receipt key historical_daily_price_or_forward_return_values_read even though no price or return column was loaded.",
+  "repair": "Keep the receipt assertion and narrow the source-inspection test to prohibited actual price and label column literals while requiring stock_day_key.",
+  "audit_runner_scientific_or_gate_logic_changed": false,
+  "research_boundary": {
+    "candidate_snapshot_already_exists": true,
+    "coverage_or_capacity_metrics_computed": false,
+    "uniqueness_comparator_values_read": false,
+    "historical_daily_price_fields_read": [],
+    "historical_forward_returns_read": false,
+    "provider_request_issued": false,
+    "candidate49_ledgers_changed": false
+  }
+}

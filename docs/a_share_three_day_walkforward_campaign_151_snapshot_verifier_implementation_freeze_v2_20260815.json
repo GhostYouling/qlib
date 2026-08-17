@@ -1,0 +1,70 @@
+{
+  "schema_version": 2,
+  "kind": "a_share_three_day_walkforward_campaign151_snapshot_verifier_implementation_freeze",
+  "status": "verifier_and_synthetic_tests_frozen_before_candidate_partition_payload_reads",
+  "recorded_at": "2026-08-15T01:23:47+08:00",
+  "supersedes_without_rewriting": {
+    "path": "docs/a_share_three_day_walkforward_campaign_151_snapshot_verifier_implementation_freeze_20260815.json",
+    "sha256": "20701674c890fc3180bb5d37bf78fd900ae693439fda72b81842cbbf97134028",
+    "reason": "the first confirmed verifier attempt exposed vectorized Series.eq behavior before any candidate partition payload was opened"
+  },
+  "authoritative_inputs": {
+    "verification_protocol": {
+      "path": "docs/a_share_three_day_walkforward_campaign_151_snapshot_full_verification_protocol_20260815.json",
+      "sha256": "1d6658362584642416f46b2b2eea64d869813d2768db699d011d55c18a0f7836"
+    },
+    "verifier_failure": {
+      "path": "docs/a_share_three_day_walkforward_campaign_151_snapshot_verifier_benchmark_tuple_failure_20260815.json",
+      "sha256": "ec5e2f97188157fb2750e36f5b814e8220f55fa22f7bb18c12f24eb4b06becd8"
+    },
+    "snapshot_manifest": {
+      "path": "/Volumes/DIsk/qlib-a-share-tushare-1m/derived/a_share/rich/tushare/minute_walkforward_campaign151_feature_library/tushare_stk_mins_1m_2019_2025_ea0cbb8f_walkforward_campaign151_feature_library_v1/snapshot_manifest.json",
+      "sha256": "fdc23323e2ddc9e070f3c2a48fb5d05ebf9673b8c0c613ac88ecd0ea15054f83"
+    }
+  },
+  "correction": {
+    "scope": "benchmark date-to-position grid equality only",
+    "object_level_tuple_equality": true,
+    "candidate_partition_semantics_changed": false,
+    "benchmark_acceptance_semantics_changed": false,
+    "terminal_decision_changed": false
+  },
+  "frozen_implementation": {
+    "verifier_path": "scripts/a_share_three_day_walkforward_campaign151_snapshot_verify.py",
+    "verifier_sha256": "6690ef6c432fbd969ce633e7b7213e48e9ae4880a41d35d1189f47cc0d0592a0",
+    "verifier_test_path": "tests/data_collector_tests/test_a_share_three_day_walkforward_campaign151_snapshot_verify.py",
+    "verifier_test_sha256": "594f375e3c0ab916698ef0eb8789b898d14a580afe99dbcd280817b922b3f76b",
+    "metadata_only_plan": true,
+    "confirmed_full_verification_required": true,
+    "worker_range_inclusive": [
+      1,
+      8
+    ],
+    "every_partition_payload_read_only_after_ready_plan": true,
+    "receipt_written_by_verifier": false,
+    "receipt_publication_is_separate_append_only_step": true
+  },
+  "verification": {
+    "pytest_command": "/Volumes/DIsk/Coding/anaconda3/bin/python3.12 -m pytest -q tests/data_collector_tests/test_a_share_three_day_walkforward_campaign151_snapshot_verify.py",
+    "pytest_passed": 11,
+    "pytest_failed": 0,
+    "pytest_runtime": "1.32s",
+    "black": "passed; 2 files left unchanged",
+    "ruff": "passed",
+    "exact_position_tuple_object_regression_added": true,
+    "failed_exit_code_bypassed_or_masked": false
+  },
+  "research_boundary": {
+    "peer_benchmark_payload_read_before_freeze": true,
+    "candidate_partition_payloads_read_before_freeze": false,
+    "synthetic_temporary_partition_payloads_read": true,
+    "comparator_values_read": false,
+    "historical_daily_price_or_forward_return_values_read": false,
+    "stress_2024_2025_opened_for_return_evaluation": false,
+    "credential_loaded": false,
+    "provider_request_issued": false,
+    "candidate49_ledgers_changed": false,
+    "current_scoring_selection_sizing_positions_or_orders_performed": false
+  },
+  "next_action": "Rerun metadata-only verifier plan. Only ready=true with exit zero authorizes one corrected confirmed full verification."
+}

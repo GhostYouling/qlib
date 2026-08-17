@@ -1,0 +1,70 @@
+{
+  "schema_version": 1,
+  "kind": "a_share_three_day_walkforward_campaign161_terminal_result_additive_accounting",
+  "status": "effective_v2_terminal_scientific_result_unchanged_publication_failure_accounting_complete",
+  "recorded_at": "2026-08-15T05:51:00+08:00",
+  "campaign": 161,
+  "supersedes_without_rewriting": {
+    "path": "docs/a_share_three_day_walkforward_campaign_161_terminal_result_20260815.json",
+    "sha256": "7d0ece85c5abc213a9ecb65c3b281c545ed13450c61aeac7fbd08e2a4b24d8e0",
+    "preserved": true,
+    "scientific_result_changed": false,
+    "reason": "Append the terminal-test Black check failure after mechanical formatting and successful Ruff plus 14 focused tests."
+  },
+  "authoritative_inputs": {
+    "terminal_result_v1": {
+      "path": "docs/a_share_three_day_walkforward_campaign_161_terminal_result_20260815.json",
+      "sha256": "7d0ece85c5abc213a9ecb65c3b281c545ed13450c61aeac7fbd08e2a4b24d8e0"
+    },
+    "implementation_failures_v2": {
+      "path": "docs/a_share_three_day_walkforward_campaign_161_implementation_infrastructure_failures_v2_20260815.json",
+      "sha256": "d41e0bd078ba0776dee2d58346e2678a16042bec323e909b6f933985a70a9cb7"
+    },
+    "attempt_ledger_v3": {
+      "path": "data/experiments/short_horizon/historical_walkforward/campaign_161/research_attempt_ledger_v3.json",
+      "sha256": "dc1e629770a2f4baca38ef984bc807c3761b469ab752b1e7186f2b78c4fca995",
+      "effective_entry_count": 13,
+      "chain_tip_sha256": "e87332261f77eef9aa96aad7a5097f1ac20d8d68a2a56d16a54d1a4018998ecc"
+    },
+    "terminal_test": {
+      "path": "tests/data_collector_tests/test_a_share_three_day_walkforward_campaign161_terminal.py",
+      "sha256": "50667f24632533032e78921986958e2960ba22708749b3a7f65d2e5b661ec4f5"
+    }
+  },
+  "scientific_result": {
+    "changed_from_v1": false,
+    "terminal": true,
+    "terminal_phase": "one_shot_2023q4_source_transport_schema",
+    "terminal_error_code": "response_result_object_missing",
+    "provider_response_rows_read": 0,
+    "factor_values_computed_or_read": 0,
+    "return_reading_development_trial_count": 0,
+    "development_survivor_count": 0,
+    "stress_2024_2025_opened": false,
+    "acceptance_retry_allowed": false,
+    "complete_factor_definition_count": 158,
+    "complete_factor_definition_order_sha256": "4819c7fd7c0795d7598a52f3c615e3f117d5f4ecd9332974bc8e3dfa57c96667",
+    "eligible_numeric_comparator_count": 142,
+    "eligible_numeric_comparator_order_sha256": "5d1b35fb5a0d8ac9293008db9963c4a60a94dc940c237c3ed259e5ce44f14aaf"
+  },
+  "effective_accounting": {
+    "campaign161_attempt_count": 13,
+    "campaign161_prevalue_scientific_attempt_count": 6,
+    "campaign161_infrastructure_failure_count": 7,
+    "campaign161_complete_factor_attempt_count": 0,
+    "campaign161_return_reading_development_trial_count": 0,
+    "campaign161_development_survivor_count": 0,
+    "campaign161_stress_trial_count": 0,
+    "cumulative_historical_research_attempt_count": 1409,
+    "cumulative_return_reading_development_trial_count": 314
+  },
+  "research_boundary": {
+    "source_response_result_object_present": false,
+    "source_row_candidate_comparator_price_or_return_value_read": false,
+    "stress_2024_2025_opened": false,
+    "provider_credential_presence_value_or_digest_read": false,
+    "candidate49_ledgers_changed": false,
+    "current_scoring_selection_sizing_positions_or_orders_performed": false
+  },
+  "decision": "Campaign161 remains terminal without scientific change. The active goal may continue only with Campaign162 finite offline prevalue scouting."
+}

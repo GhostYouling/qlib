@@ -1,0 +1,18 @@
+{
+  "schema_version": 1,
+  "kind": "a_share_three_day_walkforward_campaign099_terminal_test_infrastructure_failure",
+  "status": "recorded_before_formatting",
+  "recorded_at": "2026-08-07T11:31:00Z",
+  "stage": "terminal_semantic_test_format_check",
+  "outcome": "all_six_terminal_semantic_tests_passed_then_black_check_required_formatting",
+  "pytest_result": "6 passed",
+  "black_exit_code": 1,
+  "ruff_and_binding_validation_not_run_due_to_fail_fast_chain": true,
+  "affected_file": "tests/data_collector_tests/test_a_share_three_day_walkforward_campaign099_terminal.py",
+  "scientific_result_changed": false,
+  "new_historical_daily_price_or_forward_return_values_read": false,
+  "stress_2024_2025_return_fields_read": false,
+  "candidate49_historical_return_read": false,
+  "provider_request_issued": false,
+  "current_scoring_selection_sizing_or_orders_performed": false
+}

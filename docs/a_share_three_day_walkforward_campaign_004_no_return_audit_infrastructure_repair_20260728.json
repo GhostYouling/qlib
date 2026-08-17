@@ -1,0 +1,50 @@
+{
+  "authorized_repair": {
+    "candidate_factor_values_changed": false,
+    "comparison_factor_values_changed": false,
+    "coverage_or_uniqueness_gate_changed": false,
+    "daily_price_or_forward_return_access_added": false,
+    "description": "Replace recursive PyArrow directory discovery with the exact 33,015 explicit regular-file paths already listed and byte-hash bound by each immutable snapshot manifest. Preserve the existing full partition-byte verification and full row-count/key-alignment checks.",
+    "direction_formula_window_or_missing_value_semantics_changed": false,
+    "explicit_manifest_file_count_required": 33015,
+    "pairwise_comparison_method_changed": false,
+    "provider_or_network_access_added": false,
+    "search_space_changed": false
+  },
+  "failed_attempt": {
+    "audit_artifact_created": false,
+    "candidate49_historical_return_read": false,
+    "candidate49_prospective_ledgers_changed": false,
+    "command": "python scripts/a_share_three_day_walkforward_campaign004_features.py audit --data-root /Volumes/DIsk/qlib-a-share-tushare-1m --workers 8",
+    "completed_before_failure": {
+      "all_three_coverage_gates_completed": true,
+      "first_factor_all_twenty_five_uniqueness_comparisons_completed": true,
+      "new_snapshot_all_33015_partition_hashes_verified": true,
+      "terminal_and_candidate49_snapshot_hash_verification_completed_once": true
+    },
+    "daily_price_fields_read": [],
+    "error": "InterruptedError(4, \"Cannot list directory '/Volumes/DIsk/qlib-a-share-tushare-1m/derived/a_share/rich/tushare/minute_intraday_amount_volatility_coupling/tushare_stk_mins_1m_2019_2025_ea0cbb8f_intraday_amount_volatility_coupling_v1/partitions/sz301067'. Detail: [errno 4] Interrupted system call\")",
+    "failed_stage": "second_candidate_recursive_comparison_dataset_discovery",
+    "forward_return_fields_read": false,
+    "partial_audit_published": false,
+    "provider_request_issued": false
+  },
+  "frozen_at": "2026-07-28T04:55:39Z",
+  "kind": "a_share_three_day_walkforward_campaign004_no_return_audit_infrastructure_repair",
+  "post_repair_binding": {
+    "path": "scripts/a_share_three_day_walkforward_campaign004_features.py",
+    "sha256": "b82c15355c0798897ebfc33e5b87ea4ebfd93f9692197e9b6c8b1d0719b1377b"
+  },
+  "pre_retry_tests": {
+    "command": "PYTHONPATH=/opt/anaconda3/lib/python3.12/site-packages /opt/anaconda3/bin/python3 -S -m pytest -q tests/data_collector_tests/test_a_share_three_day_walkforward_campaign004_features.py",
+    "passed": 6
+  },
+  "protocol": {
+    "path": "docs/a_share_three_day_walkforward_campaign_004_no_return_preregistration.json",
+    "sha256": "39e2147b75bcc3a0fd3cb39dee3932f794331142654f0bfe63679b2c8ecc2a4e"
+  },
+  "reason_python_no_site_mode_is_used_for_retry": "The active Anaconda installation contains a system .pth entry on /Volumes/DIsk; after the interrupted APFS directory enumeration, ordinary Python startup also blocked while site.py called os.listdir on that external path. Starting with -S and explicitly adding only the installed site-packages directory avoids executing that unrelated .pth file; it does not alter repository code, data, formulas, gates, or values.",
+  "retry_command": "PYTHONPATH=/opt/anaconda3/lib/python3.12/site-packages /opt/anaconda3/bin/python3 -S scripts/a_share_three_day_walkforward_campaign004_features.py audit --data-root /Volumes/DIsk/qlib-a-share-tushare-1m --workers 8",
+  "status": "frozen_before_infrastructure_only_no_return_audit_retry",
+  "version": 1
+}

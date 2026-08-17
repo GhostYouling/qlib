@@ -1,0 +1,38 @@
+{
+  "schema_version": 1,
+  "kind": "a_share_three_day_walkforward_campaign082_infrastructure_failures",
+  "status": "append_only_one_additional_predevelopment_failure_five_total_failures_all_corrected_without_search_change",
+  "recorded_at": "2026-08-06T19:13:00+08:00",
+  "supersedes_without_rewriting": {
+    "path": "docs/a_share_three_day_walkforward_campaign_082_infrastructure_failures_v2_20260806.json",
+    "sha256": "c62c52e108ec1e7261af7c4105ca1ae973f03b665bbe37fdb6972e6baf35aa06",
+    "preserved": true,
+    "failure_count": 4
+  },
+  "appended_failures": [
+    {
+      "ordinal": 5,
+      "stage": "development_runner_format_validation",
+      "observed": "The first black --check invocation reported that the newly added Campaign082 development wrapper required mechanical formatting and exited before the chained ruff and hash checks.",
+      "root_cause": "new pre-return wrapper had not yet been mechanically formatted",
+      "correction": "Run black before freezing, rerun ruff, validate all 23 development preregistration bindings, reconstruct the exact one-trial catalog, and pass the three pre-freeze development tests."
+    }
+  ],
+  "corrected_result": {
+    "development_preregistration_bindings_passed": 23,
+    "development_trial_catalog_count": 1,
+    "pre_freeze_development_tests_passed": 3,
+    "pre_freeze_development_tests_failed": 0,
+    "development_runner_ruff_passed": true,
+    "trial_search_space_changed": false,
+    "historical_daily_price_fields_read": [],
+    "historical_forward_returns_read": false
+  },
+  "research_boundary": {
+    "stress_2024_2025_opened": false,
+    "provider_request_issued": false,
+    "candidate49_historical_backfill_performed": false,
+    "candidate49_ledgers_changed": false,
+    "current_scoring_selection_sizing_or_orders_performed": false
+  }
+}

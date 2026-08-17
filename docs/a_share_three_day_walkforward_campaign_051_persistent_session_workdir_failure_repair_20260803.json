@@ -1,0 +1,51 @@
+{
+  "version": 1,
+  "kind": "a_share_three_day_walkforward_campaign051_persistent_session_workdir_failure_repair",
+  "status": "failed_closed_before_candidate_values_repo_root_continuation_allowed",
+  "recorded_at": "2026-08-03T02:30:25Z",
+  "purpose": "Preserve the first persistent-session failure and authorize only a working-directory correction for the unchanged frozen Campaign051 no-return audit.",
+  "source_launcher_repair": {
+    "path": "docs/a_share_three_day_walkforward_campaign_051_detached_launch_failure_repair_20260803.json",
+    "sha256": "51112634baa6d08f66d1f2eae8ba3f2006261eb3c2dcdb3d931e256f9da4087a"
+  },
+  "failed_execution": {
+    "session_name": "c51audit_20260803",
+    "entrypoint": "scripts/a_share_three_day_walkforward_campaign051_features_v3.py",
+    "entrypoint_sha256": "178479da821a780773550d66f97193403dc4238601fb034d7cab24e02f24c0a9",
+    "data_root": "/Volumes/DIsk/qlib-a-share-tushare-1m",
+    "workers": 4,
+    "process_working_directory": "/Volumes/DIsk/Disk-Coding/qlib/data/logs",
+    "stdout_stderr_log": "data/logs/screenlog.0",
+    "stdout_stderr_log_sha256": "07107f428f1f4232c85d048631bcd5ae1374dafd0604884d0d1f2179ae09bf2e",
+    "stdout_stderr_log_bytes": 921,
+    "exit_was_nonzero": true,
+    "exception_type": "Campaign051FeatureError",
+    "exception_message": "Campaign051 implementation freeze semantics changed",
+    "failure_stage": "repo-relative feature-implementation-freeze path validation",
+    "audit_artifact_count": 0
+  },
+  "root_cause": {
+    "description": "The frozen implementation record stores the runner path relative to the repository root. Starting Python with data/logs as its current working directory resolved that unchanged relative path below data/logs and correctly failed closed.",
+    "repository_or_frozen_file_changed": false,
+    "data_dependent_research_choice_involved": false,
+    "factor_or_gate_evidence_created": false
+  },
+  "authorized_repair": {
+    "allowed_delta": "Start the exact same v3 command in the persistent screen session with /Volumes/DIsk/Disk-Coding/qlib as the process working directory and persist stdout/stderr below data/logs.",
+    "entrypoint_or_protocol_change_allowed": false,
+    "formula_direction_snapshot_comparison_order_or_gate_change_allowed": false,
+    "workers_or_data_root_change_allowed": false,
+    "repo_root_working_directory_continuation_limit": 1
+  },
+  "research_boundary": {
+    "candidate_values_read_by_failed_execution": false,
+    "comparison_values_read_by_failed_execution": false,
+    "historical_daily_price_fields_read": [],
+    "historical_forward_returns_read": false,
+    "candidate49_historical_return_read": false,
+    "candidate49_ledgers_changed": false,
+    "second_prospective_candidate_created": false,
+    "current_scoring_selection_sizing_or_orders_performed": false
+  },
+  "next_action": "Run the one repo-root persistent-session continuation and observe it to a completed audit artifact or an explicit terminal failure."
+}

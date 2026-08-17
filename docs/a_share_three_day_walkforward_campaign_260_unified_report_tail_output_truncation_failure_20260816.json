@@ -1,0 +1,13 @@
+{
+  "schema_version": 1,
+  "kind": "a_share_three_day_walkforward_campaign260_infrastructure_failure",
+  "status": "combined_unified_report_tail_output_truncated_discarded",
+  "recorded_at": "2026-08-16T16:10:00+08:00",
+  "phase": "unified_report_append_context_read",
+  "failed_command_summary": "Combined tail reads of current_research_report.md and three_day_research_report.md returned an explicit truncated-output warning.",
+  "result_consumed": false,
+  "recovery": "Read each report's final 28 lines independently with bounded output before applying the append-only patch.",
+  "scientific_result_changed": false,
+  "provider_or_web_request_issued": false,
+  "candidate49_ledgers_changed": false
+}

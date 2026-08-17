@@ -1,0 +1,38 @@
+{
+  "schema_version": 1,
+  "kind": "a_share_three_day_walkforward_campaign142_infrastructure_failure",
+  "status": "pytest_collection_failed_missing_requested_compatibility_test_path",
+  "recorded_at": "2026-08-14T14:53:42+0800",
+  "attempt_id": "campaign142_infrastructure_002",
+  "phase": "strict_terminal_validation",
+  "failure": {
+    "command_class": "json_black_ruff_and_focused_pytest_bundle_with_shell_errexit",
+    "process_exit_code": 4,
+    "stderr_summary": "pytest collection stopped because tests/data_collector_tests/test_a_share_three_day_walkforward_campaign141_terminal_v3.py does not exist",
+    "requested_missing_path": "tests/data_collector_tests/test_a_share_three_day_walkforward_campaign141_terminal_v3.py",
+    "actual_compatibility_test_path": "tests/data_collector_tests/test_a_share_three_day_walkforward_campaign141_terminal.py",
+    "failed_exit_code_bypassed": false,
+    "later_success_used_to_mask_this_exit": false
+  },
+  "completed_checks_before_failure": {
+    "json_documents_parsed": 7,
+    "black_check_passed_for_campaign142_test": true,
+    "ruff_check_passed_for_campaign142_test": true,
+    "pytest_tests_collected_or_run": 0
+  },
+  "safe_retry": {
+    "allowed_after_append_only_failure_recording": true,
+    "scope": "Use the discovered Campaign141 compatibility test path and retain set -euo pipefail.",
+    "scientific_configuration_may_change": false
+  },
+  "research_boundary": {
+    "source_rows_or_column_values_read": false,
+    "candidate_or_comparator_values_read": false,
+    "historical_daily_price_or_forward_return_values_read": false,
+    "stress_2024_2025_opened": false,
+    "provider_request_issued": false,
+    "provider_credential_value_or_digest_read": false,
+    "candidate49_ledgers_changed": false,
+    "scientific_result_changed": false
+  }
+}

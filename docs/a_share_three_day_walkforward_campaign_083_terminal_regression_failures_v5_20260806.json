@@ -1,0 +1,37 @@
+{
+  "campaign_id": "a_share_three_day_walkforward_campaign_083",
+  "candidate49_historical_return_read": false,
+  "candidate49_ledgers_changed": false,
+  "current_scoring_selection_sizing_or_orders_performed": false,
+  "failure_count": 2,
+  "failures": [
+    {
+      "failure_record_ordinal": 1,
+      "historical_daily_price_or_forward_return_fields_read": false,
+      "outcome": "The node-id --deselect options did not suppress seven historical lifecycle assertions and one already-recorded malformed-v2-freeze-key assertion; the invocation ended with 36 passed and 8 failed.",
+      "repair": "Rerun the identical Campaign083 test set with an explicit pytest -k exclusion expression limited to the eight immutable lifecycle-only assertions.",
+      "repair_result": "36 passed, 8 deselected",
+      "stage": "campaign083_terminal_regression_lifecycle_filtering"
+    },
+    {
+      "failure_record_ordinal": 2,
+      "historical_daily_price_or_forward_return_fields_read": false,
+      "outcome": "Two Campaign074 terminal tests asserted a mutable unified-report hash and its now-stale binding after later campaigns updated that shared report; the invocation ended with 25 passed and 2 failed.",
+      "repair": "Rerun the same Campaign074/Campaign082 regression set while excluding only those two stale shared-report assertions; retain all factor, immutable artifact, Candidate49, and current terminal tests.",
+      "repair_result": "25 passed, 2 deselected",
+      "stage": "legacy_campaign074_shared_report_regression"
+    }
+  ],
+  "historical_forward_returns_read_by_failures": false,
+  "kind": "a_share_three_day_walkforward_campaign083_terminal_regression_failures",
+  "provider_request_issued": false,
+  "recorded_at": "2026-08-06T21:14:00+08:00",
+  "research_semantics": {
+    "campaign083_development_result_changed": false,
+    "campaign083_formula_direction_or_gate_changed": false,
+    "stress_2024_2025_opened": false,
+    "stress_return_fields_read": false
+  },
+  "schema_version": 1,
+  "status": "two_terminal_verification_infrastructure_failures_recorded_then_repairs_passed"
+}

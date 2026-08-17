@@ -1,0 +1,45 @@
+{
+  "schema_version": 1,
+  "kind": "a_share_three_day_walkforward_campaign109_infrastructure_failure",
+  "status": "preserved_failed_postpublication_verification_before_partition_verification_coverage_or_comparator_values",
+  "recorded_at": "2026-08-07T22:16:22Z",
+  "failure_ordinal": 4,
+  "stage": "published_candidate_snapshot_manifest_verification",
+  "failed_exit_code": 1,
+  "exception": "Campaign109FeatureError: Campaign109 manifest semantics changed",
+  "cause": "The inherited validator expected fixed_pair_count equal to 0, positive_body_variance_required false, and absolute_body_magnitude_used false. The published manifest correctly records the preregistered Campaign109 semantics 238, true, and true. Every other manifest condition passed.",
+  "failed_inherited_conditions": [
+    "fixed_pair_count == 0",
+    "positive_body_variance_required is false",
+    "absolute_body_magnitude_used is false"
+  ],
+  "published_frozen_values": {
+    "fixed_pair_count": 238,
+    "positive_body_variance_required": true,
+    "absolute_body_magnitude_used": true
+  },
+  "publication_state": {
+    "snapshot_manifest_published": true,
+    "partitions": 33015,
+    "rows": 7724498,
+    "eligible_rows": 7694849,
+    "dataset_sha256": "f222c80e80acb9872cc7e29a0fc89ab37e51bc1ee02f40f19f683c3757fcdb90",
+    "snapshot_modified_after_failure": false,
+    "snapshot_rebuild_allowed": false
+  },
+  "narrow_verifier_contract": {
+    "allowed_change": "Create a verify-only entry point that changes exactly the three inherited expectations to the preregistered manifest values, cannot build or rewrite the snapshot, and otherwise reuses the frozen partition/hash/range verifier.",
+    "second_snapshot_build_or_recovery_allowed": false,
+    "formula_direction_source_projection_grid_endpoint_support_gate_comparator_order_or_finite_catalog_change_allowed": false
+  },
+  "scientific_boundary": {
+    "manifest_metadata_read": true,
+    "partition_values_read_by_failed_verification": false,
+    "coverage_values_read": false,
+    "comparator_values_read": false,
+    "historical_daily_price_or_forward_return_values_read": false,
+    "provider_request_issued": false,
+    "candidate49_ledgers_changed": false
+  },
+  "next_action": "Freeze and test a verify-only three-field expectation correction, then verify the immutable published snapshot once without rebuilding it."
+}

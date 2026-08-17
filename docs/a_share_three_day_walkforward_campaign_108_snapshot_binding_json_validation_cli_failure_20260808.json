@@ -1,0 +1,29 @@
+{
+  "schema_version": 1,
+  "kind": "a_share_three_day_walkforward_campaign108_infrastructure_failure",
+  "status": "recorded_non_scientific_cli_interpreter_alias_failure",
+  "recorded_at": "2026-08-07T21:11:19Z",
+  "phase": "feature_snapshot_binding_json_validation",
+  "failed_command_intent": "Parse the newly written snapshot binding as JSON before hashing it.",
+  "failure": {
+    "exit_code": 127,
+    "reason": "The shell had no executable named python.",
+    "json_parser_started": false,
+    "file_changed_by_failed_command": false,
+    "research_values_read_by_failed_command": false
+  },
+  "recovery": {
+    "replacement_interpreter": "/Volumes/DIsk/Coding/anaconda3/bin/python3.12",
+    "same_json_parsed_successfully": true,
+    "snapshot_binding_sha256": "9bc56a9e8cac745b9f405e173c28b1d6b5a9faff5f74220c1bff9bf566581591",
+    "formula_direction_transform_snapshot_or_gate_changed": false
+  },
+  "research_boundary": {
+    "coverage_or_comparator_values_read": false,
+    "historical_daily_price_or_forward_return_values_read": false,
+    "provider_request_issued": false,
+    "candidate49_ledgers_changed": false,
+    "current_scoring_selection_sizing_or_orders_performed": false
+  },
+  "next_action": "Append this infrastructure failure to the attempt ledger, then freeze the audit activation with the verified snapshot binding."
+}

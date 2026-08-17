@@ -1,0 +1,19 @@
+{
+  "schema_version": 1,
+  "kind": "a_share_three_day_walkforward_campaign198_infrastructure_failure",
+  "status": "failed_cumulative_file_discovery_workdir_path_nonzero_discarded",
+  "recorded_at": "2026-08-15T17:36:00+08:00",
+  "phase": "campaign198_cumulative_regression_validation",
+  "failure_class": "repository_relative_test_path_used_from_tests_workdir",
+  "process_exit_code": 2,
+  "tool_output_truncated": false,
+  "failed_output_used_as_validation_or_scientific_evidence": false,
+  "failure_summary": "The first Campaign145-198 cumulative command ran from the tests directory while its discovery stage still searched tests/data_collector_tests. Ripgrep exited before pytest received any files, so no test executed.",
+  "recovery": "Discard the invocation, append it to the Campaign198 ledger, and rerun the identical frozen file range and 13 exact deselections from the authoritative repository root.",
+  "research_boundary": {
+    "candidate_source_comparator_security_price_or_return_value_read": false,
+    "provider_or_web_request_issued": false,
+    "provider_credential_presence_value_or_digest_read": false,
+    "candidate49_ledgers_changed": false
+  }
+}

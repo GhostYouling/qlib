@@ -1,0 +1,160 @@
+{
+  "schema_version": 1,
+  "kind": "a_share_three_day_walkforward_campaign157_cross_asset_source_scouting",
+  "status": "finite_cross_asset_source_frontier_frozen_before_source_rows_or_values",
+  "recorded_at": "2026-08-15T03:57:15+08:00",
+  "purpose": "Determine whether a finite set of bond, convertible-bond, ETF, option and financing cross-asset concepts has a locally accepted historical point-in-time source contract and an issuer-level cross-sectional mapping before any factor is defined.",
+  "authoritative_inputs": {
+    "campaign156_state_v2": {
+      "path": "docs/a_share_three_day_iteration_status_20260815_campaign156_prevalue_terminal_v2.json",
+      "sha256": "4f3c843bbcfe7ac4fc4c70110d16c6b3ccd99c6cedc35797fed45d25a6fc5b1a"
+    },
+    "numeric_policy_v219": {
+      "path": "docs/a_share_three_day_walkforward_future_numeric_comparison_eligibility_policy_v219_20260815.json",
+      "sha256": "dfb5afc8ad530b874b0e8ae6a852c1d7cd8fede2f20ad3f0013ccc85d701e9a1"
+    },
+    "campaign156_validation": {
+      "path": "docs/a_share_three_day_walkforward_campaign_156_terminal_validation_20260815.json",
+      "sha256": "c2d5ee33e8f6a9807635071cbe6f96f7714c051243b07ab16e4be07a895d10d0"
+    },
+    "historical_walkforward_policy": {
+      "path": "docs/a_share_three_day_historical_walkforward_research_policy_20260727.json",
+      "sha256": "38426d6161b9bfed323c58caba18feca668b8c9d53e294951a8ba90c01a798bb"
+    },
+    "convertible_issue_source_terminal": {
+      "path": "docs/a_share_three_day_walkforward_campaign_127_convertible_issue_source_acceptance_terminal_20260814.json",
+      "sha256": "a0ca6e118480fdf765b1834222aa89c602bf4e0b67949e3649e6267862e685f1"
+    },
+    "official_securities_lending_source_terminal": {
+      "path": "docs/a_share_official_securities_lending_source_acceptance_audit.json",
+      "sha256": "e118cb1330722b7d40f5e7de683f81a94d405d605907a1728dd930a634f56ec4"
+    },
+    "campaign140_cross_source_frontier_terminal": {
+      "path": "docs/a_share_three_day_walkforward_campaign_140_mechanism_source_frontier_audit_20260814.json",
+      "sha256": "43d8b1ae0a14e64be8319cfba0465d26316420d2e9d63936961e3969fb39e9cf"
+    },
+    "campaign150_model_frontier_terminal": {
+      "path": "docs/a_share_three_day_walkforward_campaign_150_mechanism_frontier_audit_20260814.json",
+      "sha256": "778847d1417b23a4e5456ae470b49e65550fa31d706612debbc8535cff8ca469"
+    }
+  },
+  "library_and_local_source_inventory": {
+    "complete_factor_definition_count": 157,
+    "complete_factor_definition_order_sha256": "c39bb6ca969b5f469a9377a5b5ca743405cec9d8511297ed6a1c44188ef40b82",
+    "eligible_numeric_comparator_count": 142,
+    "eligible_numeric_comparator_order_sha256": "5d1b35fb5a0d8ac9293008db9963c4a60a94dc940c237c3ed259e5ce44f14aaf",
+    "inventory_scope": "repository definition names, already published contracts and local file paths only",
+    "local_cross_asset_source_rows_read": false,
+    "provider_or_web_request_issued": false,
+    "provider_credential_presence_value_or_digest_read": false,
+    "interpretation": "A concept without an accepted source contract is deferred rather than declared predictively ineffective; filenames or package method guesses are not source contracts."
+  },
+  "finite_prevalue_source_catalog": [
+    {
+      "catalog_id": "c157_01",
+      "name": "outstanding_convertible_bond_equity_parity_premium_compression",
+      "economic_hypothesis": "A close-known contraction in an issuer's outstanding convertible-bond premium to equity parity may reveal cross-market confirmation of near-term equity demand or credit risk.",
+      "proposed_direction": "premium_compression_or_expansion_not_opened",
+      "formula": null,
+      "filter": null,
+      "subset_or_combination": null,
+      "model": null,
+      "prevalue_decision": "deferred_missing_point_in_time_bond_terms_prices_corporate_action_and_issuer_equity_mapping_contract",
+      "reason": "The repository contains no accepted historical contract jointly proving outstanding bond terms, clean bond prices, conversion-price adjustments, suspension/default states, publication timestamps and issuer-equity mapping. Campaign127's failed issuance source cannot be sampled or repurposed to choose this factor."
+    },
+    {
+      "catalog_id": "c157_02",
+      "name": "issuer_bond_credit_spread_equity_divergence",
+      "economic_hypothesis": "A close-known widening in an issuer bond's credit spread while equity remains firm may identify an unresolved cross-market risk divergence over the next three sessions.",
+      "proposed_direction": "signed_divergence_not_opened",
+      "formula": null,
+      "filter": null,
+      "subset_or_combination": null,
+      "model": null,
+      "prevalue_decision": "deferred_missing_clean_yield_curve_bond_price_issuer_mapping_and_survivorship_safe_coverage_contract",
+      "reason": "No accepted local source defines executable clean yields, benchmark-curve matching, stale-price handling, defaults, multiple-bond aggregation, issuer-to-equity mapping and the denominator of issuers without bonds. Reading sparse observed bonds first would select the source on realized coverage."
+    },
+    {
+      "catalog_id": "c157_03",
+      "name": "etf_primary_market_creation_redemption_constituent_pressure",
+      "economic_hypothesis": "Close-known ETF net creation pressure allocated through point-in-time constituent weights may transmit mechanical demand to constituent equities.",
+      "proposed_direction": "higher_allocated_net_creation_not_opened",
+      "formula": null,
+      "filter": null,
+      "subset_or_combination": null,
+      "model": null,
+      "prevalue_decision": "deferred_missing_primary_market_flow_point_in_time_constituent_weight_and_double_count_contract",
+      "reason": "The local source inventory has no accepted creation/redemption series, historical basket weights, effective-time rules or overlap policy for stocks held by multiple ETFs. Exchange volume is not primary-market net creation and cannot be substituted."
+    },
+    {
+      "catalog_id": "c157_04",
+      "name": "equity_option_implied_skew_or_term_structure_mapped_to_issuer",
+      "economic_hypothesis": "A close-known option-implied downside skew or term slope could supply forward-looking risk information distinct from realized minute volatility.",
+      "proposed_direction": "lower_or_higher_not_opened",
+      "formula": null,
+      "filter": null,
+      "subset_or_combination": null,
+      "model": null,
+      "prevalue_decision": "deferred_missing_full_market_single_equity_option_surface_and_issuer_mapping_contract",
+      "reason": "The repository has no accepted issuer-level option surface, quotes, open-interest quality, contract-adjustment history or mapping that covers the eligible A-share cross-section. Index/ETF option states are common or basket-level and cannot be attributed to constituents after observing outcomes."
+    },
+    {
+      "catalog_id": "c157_05",
+      "name": "margin_financing_minus_securities_lending_pressure_imbalance",
+      "economic_hypothesis": "A high close-known financing-flow versus securities-lending pressure balance might represent net leveraged demand.",
+      "proposed_direction": "higher_not_opened",
+      "formula": null,
+      "filter": null,
+      "subset_or_combination": null,
+      "model": null,
+      "prevalue_decision": "rejected_terminal_margin_and_securities_lending_source_combination",
+      "reason": "Margin-financing mechanisms are terminal and the official securities-lending source failed before a full accepted snapshot. Subtracting, ratioing or ranking the two after those outcomes is a cross-source rescue, while missing lending observations cannot be imputed as zero."
+    },
+    {
+      "catalog_id": "c157_06",
+      "name": "index_futures_basis_times_stock_intraday_beta",
+      "economic_hypothesis": "A stock's fitted exposure to a close-known index-futures basis shock might differentiate cross-sectional sensitivity to market funding pressure.",
+      "proposed_direction": "signed_interaction_not_opened",
+      "formula": null,
+      "filter": null,
+      "subset_or_combination": null,
+      "model": null,
+      "prevalue_decision": "rejected_common_market_state_fitted_exposure_and_terminal_market_relative_recombination",
+      "reason": "Futures basis is common within a signal session and becomes cross-sectionally rankable only after fitting or multiplying a stock exposure. Market beta, residual, sign, response-delay and model-combination families are terminal; this is a cross-asset relabeling of that exposed interaction."
+    }
+  ],
+  "selection": {
+    "selected_candidate_count": 0,
+    "selected_candidate": null,
+    "complete_source_admission_contract_to_freeze": false,
+    "complete_formula_or_model_to_freeze": false,
+    "source_admission_deferrals_not_factor_failures": 4,
+    "terminal_or_structural_recombination_rejections": 2,
+    "reason": "None of the six concepts simultaneously has an accepted point-in-time cross-asset source, stable issuer mapping, full-universe denominator, cross-sectional rankability and terminal-family independence."
+  },
+  "future_revisit_rule": {
+    "allowed_only_for_deferred_catalog_ids": [
+      "c157_01",
+      "c157_02",
+      "c157_03",
+      "c157_04"
+    ],
+    "requirements": "A later campaign must freeze exact official source identity, instrument and issuer mapping, timestamp semantics, corporate-action handling, stale quote rules, universe denominator, pagination, costs and acceptance gates before any source row or response value is observed.",
+    "campaign157_rows_may_be_read_to_choose_a_source": false,
+    "campaign157_terminal_recombinations_may_be_retried": false
+  },
+  "research_boundary": {
+    "source_row_or_response_values_read": false,
+    "candidate_values_computed_or_read": false,
+    "comparator_values_read": false,
+    "historical_daily_price_or_forward_return_values_read": false,
+    "stress_2024_2025_opened": false,
+    "provider_or_web_request_issued": false,
+    "provider_credential_presence_value_or_digest_read": false,
+    "candidate49_historical_backfill_performed": false,
+    "candidate49_ledgers_changed": false,
+    "second_prospective_candidate_created": false,
+    "current_scoring_selection_sizing_positions_or_orders_performed": false,
+    "investment_advice": false
+  }
+}

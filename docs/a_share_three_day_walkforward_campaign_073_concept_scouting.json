@@ -1,0 +1,104 @@
+{
+  "version": 1,
+  "kind": "a_share_three_day_walkforward_campaign073_concept_scouting",
+  "status": "selected_before_candidate_source_or_comparison_values",
+  "recorded_at": "2026-08-06T06:42:00+08:00",
+  "authoritative_state": {
+    "path": "docs/a_share_three_day_iteration_status_20260806_campaign072_verified.json",
+    "sha256": "3ee8b37e9ddb7b863912ce463df21bcbde1d7b5109d20eb5ce560d7c79a8152e"
+  },
+  "numeric_comparator_policy": {
+    "path": "docs/a_share_three_day_walkforward_future_numeric_comparison_eligibility_policy_v8_20260806.json",
+    "sha256": "c936e9df4bd8ac8cdb23ee27d16796a612341c84577ee60f727e8a3cf72cb1db",
+    "complete_definition_count": 104,
+    "eligible_numeric_comparator_count": 103,
+    "eligible_numeric_comparator_order_sha256": "28dd90482da7c263873f829e0268fbf4d4fffa53561a9e628797ced4c54991cc"
+  },
+  "selection_rationale": {
+    "objective": "Prefer one dense no-lookback point-in-time mechanism on an economic axis not already represented by return paths, volatility, activity timing, accounting quality, disclosure timing, or old-factor combinations.",
+    "selected_family": "nominal_share_price_lot_affordability",
+    "economic_anchor": "For ordinary A-share buy orders the 100-share board lot makes nominal CNY share price a direct determinant of minimum order notional; lower nominal price therefore represents greater retail lot affordability without requiring market capitalization or shares-outstanding data.",
+    "rejected_before_values": [
+      {
+        "concept": "another quarterly_profit_revenue_or_roe_operator",
+        "reason": "Campaign066-Campaign072 already exposed balance, scale, acceleration, transition, spread, and joint-growth operators; another field/operator permutation would be same-family search."
+      },
+      {
+        "concept": "squared_return_hhi_kurtosis_or_effective_support",
+        "reason": "The frozen return-variance-entropy family already rejected these as same-mechanism transforms of squared-return concentration."
+      },
+      {
+        "concept": "opening_gap_digestion_or_gap_reversal",
+        "reason": "Historical one-minute opening-price semantics are not uniform and the prior opening-gap protocol is terminally excluded."
+      },
+      {
+        "concept": "adjusted_price_market_cap_or_liquidity_proxy",
+        "reason": "Backward adjustment can import future corporate-action information, while market capitalization and shares outstanding are not frozen source fields; no proxy or imputation is allowed."
+      },
+      {
+        "concept": "open_mean_median_vwap_or_subwindow_price_anchor",
+        "reason": "Choosing among price anchors or clock windows would create a parameter search. Only the exact 15:00 terminal continuous-session close is selected."
+      },
+      {
+        "concept": "penny_stock_threshold_board_filter_quality_filter_or_old_factor_combination",
+        "reason": "Thresholds, subsets, regimes, terminal-factor inputs, fitted weights, and models are outside Campaign073."
+      }
+    ]
+  },
+  "selected_candidate": {
+    "name": "intraday_terminal_nominal_share_price_affordability_rank_240m",
+    "direction": "higher",
+    "economic_hypothesis": "A lower completed-session nominal share price reduces the cash required for one 100-share board lot and may broaden short-horizon retail participation; the resulting affordability state may persist from the next open through the third close.",
+    "formula": "For every accepted stock day, require the exact 240 continuous-auction closes at 09:31-11:30 and 13:01-15:00, take the positive finite 15:00 close p, compute its same-day average-tie cross-sectional percentile rank r_price on the exact finite candidate identity universe, and return 1-r_price.",
+    "stock_day_identity_projection": [
+      "trade_date",
+      "symbol",
+      "provider"
+    ],
+    "minute_source_projection": [
+      "datetime",
+      "symbol",
+      "provider",
+      "close"
+    ],
+    "accepted_grid": "Exactly 120 closes at 09:31-11:30 and 120 closes at 13:01-15:00; standalone 09:30 is excluded and no lunch return is formed.",
+    "price_anchor": "The raw point-in-time positive finite 15:00 CNY close from the completed signal session.",
+    "corporate_action_rule": "Use the contemporaneously observed nominal CNY close exactly as captured; do not back-adjust, forward-adjust, splice, rescale, or compare across dates.",
+    "cross_section_rule": "On each accepted stock day compute pandas-compatible average-tie percentile rank over exactly the finite terminal closes on the candidate stock-day identity cross-section, then subtract from one.",
+    "valid_range": {
+      "lower": 0.0,
+      "lower_inclusive": true,
+      "upper": 1.0,
+      "upper_inclusive": false
+    },
+    "missing_rule": "Missing unless the exact 240-bar continuous-session grid is present, every selected close is positive and finite, the terminal close is finite, and the same-day affordability rank is finite. Never impute, adjust, clip, winsorize, substitute, backfill, or choose another price anchor.",
+    "multi_session_lookback_required": false,
+    "parameter_window_transform_threshold_filter_subset_regime_fit_or_model_search": false
+  },
+  "mandatory_pre_value_challenges": [
+    "intraday_round_tenth_close_avoidance_240m",
+    "intraday_price_update_share_238m",
+    "intraday_price_update_clock_entropy_10b_238m",
+    "intraday_close_range_occupancy_entropy_10b",
+    "intraday_terminal_close_location_240m",
+    "intraday_transaction_vwap_consensus_240m",
+    "intraday_volume_weighted_transaction_price_bowley_skew_240m",
+    "quarterly_net_profit_scale_rank",
+    "quarterly_joint_profit_revenue_growth_floor_rank",
+    "intraday_cross_sectional_standardized_return_state_stability_236p",
+    "candidate49_intraday_cumulative_vwap_crossing_rate_240m_v1"
+  ],
+  "research_boundary": {
+    "candidate_source_rows_read": false,
+    "candidate_values_read": false,
+    "comparison_values_read": false,
+    "historical_daily_price_fields_read": [],
+    "historical_forward_returns_read": false,
+    "provider_request_issued": false,
+    "candidate49_historical_backfill_performed": false,
+    "candidate49_ledgers_changed": false,
+    "second_prospective_candidate_created": false,
+    "current_scoring_selection_sizing_or_orders_performed": false,
+    "investment_advice": false
+  }
+}

@@ -1,0 +1,128 @@
+{
+  "version": 1,
+  "kind": "a_share_three_day_walkforward_campaign070_concept_scouting",
+  "status": "selected_one_historical_candidate_before_campaign070_source_candidate_comparison_daily_price_or_return_values",
+  "recorded_at": "2026-08-06T04:29:00+08:00",
+  "purpose": "Select one finite Campaign070 historical-only disclosure-process improvement mechanism after Campaign069, before reading any Campaign070 quarterly row, stock-day source row, candidate value, comparison value, daily price, or forward return.",
+  "authoritative_inputs": {
+    "latest_verified_state": {
+      "path": "docs/a_share_three_day_iteration_status_20260806_campaign069_verified.json",
+      "sha256": "48a02bd6a0e16901c30f14e2d0465d31d2bb19a319b07850c25c59fd86993e85"
+    },
+    "historical_walkforward_policy": {
+      "path": "docs/a_share_three_day_historical_walkforward_research_policy_20260727.json",
+      "sha256": "38426d6161b9bfed323c58caba18feca668b8c9d53e294951a8ba90c01a798bb"
+    },
+    "campaign070_numeric_comparison_policy": {
+      "path": "docs/a_share_three_day_walkforward_future_numeric_comparison_eligibility_policy_v3_20260806.json",
+      "sha256": "afdb235a9aac5d6cde01b5e4edf57cdd3da15fd3adac035c69f284408bead913"
+    },
+    "quarterly_quality_source_schema": {
+      "path": "data/raw/a_share/fundamentals/quarterly_quality.parquet",
+      "sha256": "3ac901a97928d2ed81ac72e3eaac9bdc148d36cf67b6abe70223699235ef059f",
+      "manifest_path": "data/metadata/quarterly_quality_manifest.json",
+      "manifest_sha256": "e3cf654babe37a82393c5530696bc1cc242b736cb88e1947b8444b638125ba8c",
+      "schema_only_read": true,
+      "rows_read": false
+    }
+  },
+  "definition_only_inventory": {
+    "complete_historical_definition_count": 101,
+    "complete_historical_definition_order_sha256": "0bc65c0bcae2dd089ceb8c67ea606be483673caac5cbce4ce9dc9e89b04fd124",
+    "eligible_numeric_comparator_count": 100,
+    "eligible_numeric_comparator_order_sha256": "d1c58576dcdef7980c279426f135440d05f8484d2f42d4b4866539b963a0b7ee",
+    "numeric_order_rule": "Use compact-cache v4's exact 98-factor order, append Campaign068/higher, then Campaign069/higher exactly once; retain Campaign063 as the explicit structurally nonnumeric challenge.",
+    "old_factor_or_cache_values_read_for_selection": false,
+    "quarterly_source_rows_read": false,
+    "candidate_values_read": false,
+    "comparison_values_read": false,
+    "daily_price_or_forward_return_read": false
+  },
+  "finite_candidate_design_catalog": [
+    {
+      "design": "quarterly_announcement_delay_improvement_yoy_rank_1y",
+      "decision": "selected",
+      "reason": "It measures whether the issuer shortened the filing delay for the same fiscal quarter versus one year earlier. This is a disclosure-process transition, not announcement freshness, current delay level, four-quarter consistency, peer crowding, or a financial-value rank gap."
+    },
+    {
+      "design": "current_announcement_delay_level_or_freshness",
+      "decision": "rejected_before_values",
+      "reason": "Current delay and freshness are already terminal definitions and are not reopened."
+    },
+    {
+      "design": "four_quarter_delay_consistency_or_peer_crowding",
+      "decision": "rejected_before_values",
+      "reason": "Campaign052 and Campaign062 already freeze those mechanisms; Campaign070 changes only the same-fiscal-quarter year-over-year delay transition."
+    },
+    {
+      "design": "raw_delay_difference_tanh_bucket_threshold_or_sign",
+      "decision": "rejected_before_values",
+      "reason": "Choosing among scales, bins, thresholds, signs, or nonlinear transforms would create an unregistered transform search. Only one same-day average-tie percentile rank is allowed."
+    },
+    {
+      "design": "prior_quarter_or_multi_year_delay_change",
+      "decision": "rejected_before_values",
+      "reason": "Only the exact prior-year same fiscal quarter is economically comparable and frozen; no alternate lag or lookback is searched."
+    },
+    {
+      "design": "financial_value_minute_board_year_size_regime_or_model_interaction",
+      "decision": "rejected_before_values",
+      "reason": "No financial value, minute field, board, year, size, threshold, filter, regime, fitted weight, interaction, or model is permitted."
+    }
+  ],
+  "selected_candidate": {
+    "name": "quarterly_announcement_delay_improvement_yoy_rank_1y",
+    "direction": "higher",
+    "economic_hypothesis": "An issuer that files the same fiscal quarter faster than one year earlier may have improved reporting processes or lower information friction that remains under-reflected over the next three sessions.",
+    "event_formula": "For each unique instrument/report_date event on the Q-DEC quarter-end grid, set current_delay=(announcement_date-report_date).days and match the exact same instrument/report_date minus one calendar year. Set improvement_days=prior_delay-current_delay.",
+    "stock_day_formula": "Make the current event effective on the first accepted session strictly after its announcement_date; on each stock day select the latest effective finite improvement state and compute its average-tie cross-sectional percentile rank.",
+    "stock_day_identity_projection": [
+      "trade_date",
+      "symbol",
+      "provider"
+    ],
+    "quarterly_source_projection": [
+      "instrument",
+      "report_date",
+      "announcement_date"
+    ],
+    "event_identity": [
+      "instrument",
+      "report_date"
+    ],
+    "fiscal_quarter_calendar": "Q-DEC",
+    "prior_event_rule": "Exact same instrument and exact report_date shifted back one calendar year; no nearest event, prior quarter, or bridge is allowed.",
+    "delay_rule": "Both current and prior announcement delays must be finite nonnegative integer calendar days, and the prior announcement must be strictly earlier than the current announcement.",
+    "availability_rule": "The improvement becomes usable only on the first accepted local session strictly after the current announcement_date.",
+    "same_effective_date_rule": "Sort instrument/effective_session/report_date/announcement_date and retain the latest report per instrument/effective session.",
+    "state_rule": "Forward-fill only already-effective finite improvement_days inside each instrument; never backfill or bridge an unmatched fiscal quarter.",
+    "cross_section_rule": "On each stock day compute pandas-compatible average-tie percentile rank over exactly the finite improvement states on that stock-day identity cross-section.",
+    "valid_range": {
+      "lower": 0.0,
+      "lower_inclusive": false,
+      "upper": 1.0,
+      "upper_inclusive": true
+    },
+    "missing_rule": "Missing without an exact prior-year same-quarter event, valid nonnegative integer delays, a strictly earlier prior announcement, a current strict-next-session effective date, or a finite cross-sectional rank. Never impute, clip, winsorize, substitute, or choose a favorable event.",
+    "parameter_window_transform_threshold_filter_subset_regime_fit_or_model_search": false
+  },
+  "research_boundary": {
+    "campaign070_quarterly_or_stock_day_rows_read": false,
+    "campaign070_candidate_or_comparison_values_read": false,
+    "historical_daily_price_fields_read": [],
+    "historical_forward_return_fields_read": false,
+    "provider_request_issued": false,
+    "candidate49_historical_backfill_performed": false,
+    "candidate49_ledgers_changed": false,
+    "second_prospective_candidate_created": false,
+    "current_scoring_selection_sizing_or_orders_performed": false,
+    "investment_advice": false
+  },
+  "decision": {
+    "selected_candidate_count": 1,
+    "finite_candidate_library": true,
+    "complete_old_factor_library_bound_before_selection": true,
+    "predictive_value_established": false,
+    "next_action": "Complete the 101-definition mechanism-overlap audit and freeze the exact 100-comparator coverage-first protocol before reading any Campaign070 source or candidate value."
+  }
+}

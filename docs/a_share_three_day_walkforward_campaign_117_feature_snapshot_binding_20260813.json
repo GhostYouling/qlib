@@ -1,0 +1,68 @@
+{
+  "schema_version": 1,
+  "kind": "a_share_three_day_walkforward_campaign117_feature_snapshot_binding",
+  "status": "verified_immutable_amount_only_snapshot_before_historical_daily_prices_or_returns",
+  "recorded_at": "2026-08-13T13:25:52Z",
+  "protocol": {
+    "path": "docs/a_share_three_day_walkforward_campaign_117_no_return_preregistration_20260813.json",
+    "sha256": "01cda2c9ec8646ca3d8db86f20e2720514c26c0a6a6044faeac01e6420f9fcb7"
+  },
+  "implementation_freeze": {
+    "path": "docs/a_share_three_day_walkforward_campaign_117_no_return_implementation_freeze_20260813.json",
+    "sha256": "aed04a80f21f5e1a6ed2e5a3f51446943a0f924f95d788f2e03a5014f1c3129e"
+  },
+  "snapshot_verification_result": {
+    "path": "docs/a_share_three_day_walkforward_campaign_117_feature_snapshot_verification_result_20260813.json",
+    "sha256": "1851e46448986a41d280b6102d5cfa1845e4effb6bd8bcabdd4c500df5636fc1"
+  },
+  "coverage_result": {
+    "path": "data/experiments/short_horizon/historical_walkforward/campaign_117/coverage/campaign117_coverage_audit.json",
+    "sha256": "b794f59f8bbdfb308c91223043b9211fe8514e8755d98637b8c114a9ff1c93a1",
+    "median_daily_coverage": 0.9994517542211769,
+    "p05_daily_coverage": 0.9956886515772271,
+    "nonconstant_cross_sectional_sessions": 1632,
+    "potential_non_overlapping_three_signal_session_cohorts": 540
+  },
+  "ordered_uniqueness_result": {
+    "path": "data/experiments/short_horizon/historical_walkforward/campaign_117/uniqueness/campaign117_ordered_uniqueness_audit.json",
+    "sha256": "cb5d77b8fe81fce0464b1c3fe7d93ab345d9b7b1a78f045447e0bf2b6197f084",
+    "numeric_comparisons_passed": 134,
+    "maximum_observed_absolute_median_daily_rank_correlation": 0.7551091302367997
+  },
+  "snapshot": {
+    "path": "/Volumes/DIsk/qlib-a-share-tushare-1m/derived/a_share/rich/tushare/minute_walkforward_campaign117_feature_library/tushare_stk_mins_1m_2019_2025_ea0cbb8f_walkforward_campaign117_feature_library_v1/snapshot_manifest.json",
+    "sha256": "114bb5dd2ac28d8e51e6a35c234cfe06f7d3810b4d7c46303e38af33d4566879",
+    "dataset_sha256": "4f5bf6ee2c26f6956178d6954aae92821530c90a6334375e8cf0e9938fa71c18",
+    "partitions": 33015,
+    "rows": 7724498,
+    "eligible_rows": 7724498,
+    "missing_rows": 0
+  },
+  "source": {
+    "source_projection": [
+      "datetime",
+      "symbol",
+      "provider",
+      "amount"
+    ],
+    "raw_rows_read": 1866461373,
+    "raw_sessions_read": 7744653
+  },
+  "verification": {
+    "all_partition_byte_hashes_passed": true,
+    "all_partition_frame_hashes_passed": true,
+    "all_partition_row_counts_passed": true,
+    "all_eligible_values_finite_within_zero_and_one": true,
+    "aggregate_dataset_digest_passed": true,
+    "historical_daily_price_or_forward_return_values_read": false,
+    "provider_request_issued": false
+  },
+  "research_boundary": {
+    "candidate_and_comparator_values_read": true,
+    "historical_daily_price_or_forward_return_values_read": false,
+    "candidate49_historical_backfill_performed": false,
+    "candidate49_ledgers_changed": false,
+    "current_scoring_selection_sizing_positions_or_orders_performed": false,
+    "investment_advice": false
+  }
+}

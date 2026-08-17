@@ -1,0 +1,48 @@
+{
+  "version": 1,
+  "kind": "a_share_three_day_walkforward_campaign103_source_catalog",
+  "status": "frozen_before_campaign103_candidate_paired_support_or_comparison_values",
+  "recorded_at": "2026-08-07T16:27:00+08:00",
+  "source": {
+    "name": "campaign102_directional_rank_design_matrix_130f",
+    "manifest": {
+      "path": "/Volumes/DIsk/qlib-a-share-tushare-1m/derived/a_share/rich/tushare/minute_walkforward_campaign102_design_matrix/tushare_stk_mins_1m_2019_2025_ea0cbb8f_walkforward_campaign102_design_matrix_v1/snapshot_manifest.json",
+      "sha256": "fc9ab498462439731785a0eabbde370c1fd883c8d771eba312c85aa912d3cebe",
+      "dataset_sha256": "cceec2b790d134a89914e83e0697c1e6abff605a85fd85be74de68067faddb92"
+    },
+    "builder": {
+      "path": "scripts/a_share_three_day_walkforward_campaign102_design.py",
+      "sha256": "6c86ba3b198902389355c22ff79b40cac1a7ffa0218d19b59c8397e54b1a5216"
+    },
+    "rows": 1331759,
+    "eligible_rows": 1327637,
+    "calendar_sessions": 1632,
+    "partitions": 7,
+    "component_count": 130,
+    "component_order_sha256": "c80d9b929536dd509d6c1a904f790831050e68200393de381f92ad9293ef69e7",
+    "allowed_columns": ["stock_day_key", "the exact 130 manifest-ordered component columns", "finite_component_count", "model_support_eligible"],
+    "forbidden_fields": ["open", "high", "low", "close", "volume", "amount", "forward_return", "label", "Candidate49 signal", "Candidate49 execution"]
+  },
+  "calendar_and_identity": {
+    "session_code": "stock_day_key // 4000000",
+    "instrument_code": "stock_day_key % 4000000",
+    "accepted_session_order": "strictly increasing sorted unique session_code across all seven bound partitions",
+    "prior_session_rule": "the immediately previous code in that complete order, including across year boundaries",
+    "previous_observed_instrument_row_substitution_allowed": false
+  },
+  "partition_receipts": [
+    {"year": 2019, "rows": 105761, "sha256": "38af2829b45b4a2e11bc0d793f48f7287815619386c26efec4b069c1d3ed63e3"},
+    {"year": 2020, "rows": 184069, "sha256": "ef67bb4e61e2ecd6045d16f0c9fd53223885c4dad8093d5474b20447d9a27fee"},
+    {"year": 2021, "rows": 260062, "sha256": "1d9a28753ad768b1408f498bb233da7a11b829a1abfcc2ea8d2289c90e722d14"},
+    {"year": 2022, "rows": 258274, "sha256": "0a51643bcd966f70c400286bf17c22e723a7bfed9dc475965b402813c68f7d02"},
+    {"year": 2023, "rows": 193615, "sha256": "97473defb72974e55b7ce156aefad79321e8a09e86144e07f2a6560601fbc526"},
+    {"year": 2024, "rows": 168612, "sha256": "ffd92b646e4749369e0248149694c97fcbd3f84aa8378ddec65aed73d2f806cc"},
+    {"year": 2025, "rows": 161366, "sha256": "6ebb1f5aafbc29b05ccb7f51e64fada44bf3c422e82b5b4d006a2bd51c0ef40b"}
+  ],
+  "research_boundary": {
+    "campaign103_values_read_before_catalog_freeze": false,
+    "daily_price_or_forward_return_values_read": false,
+    "provider_request_issued": false,
+    "candidate49_ledgers_changed": false
+  }
+}

@@ -1,0 +1,212 @@
+{
+  "schema_version": 1,
+  "version": 1,
+  "kind": "a_share_three_day_walkforward_campaign133_preregistration",
+  "status": "frozen_before_any_campaign133_component_value_model_score_or_historical_return_read",
+  "recorded_at": "2026-08-14T10:02:39+08:00",
+  "purpose": "Freeze the single Campaign133 complete-library anchored marginal PAVA calibration trial, all training and validation semantics, uniqueness comparison, execution costs, survivor rule and lockbox boundary before the campaign reads component values or any historical return.",
+  "authoritative_inputs": {
+    "latest_terminal_state": {
+      "path": "docs/a_share_three_day_iteration_status_20260814_campaign132_terminal.json",
+      "sha256": "02ec46710b18e4a66530cc5820444a5dd9a5c29aa03381a62c69a5cf83c31303"
+    },
+    "historical_walkforward_policy": {
+      "path": "docs/a_share_three_day_historical_walkforward_research_policy_20260727.json",
+      "sha256": "38426d6161b9bfed323c58caba18feca668b8c9d53e294951a8ba90c01a798bb"
+    },
+    "numeric_policy_v159": {
+      "path": "docs/a_share_three_day_walkforward_future_numeric_comparison_eligibility_policy_v159_20260814.json",
+      "sha256": "e7665a5699cbb41b1f1a2ace542ce0dca2e43a53a99f66b51960c201991bce01"
+    },
+    "campaign132_preregistration_reused_only_for_the_frozen_design_and_common_evaluation_semantics": {
+      "path": "docs/a_share_three_day_walkforward_campaign_132_preregistration_20260814.json",
+      "sha256": "b4c3f69850f7c0c8031ca39ad676c3dc9c87920413d9cbf7a8ea80770afac0be"
+    },
+    "campaign132_terminal_result": {
+      "path": "docs/a_share_three_day_walkforward_campaign_132_terminal_result_20260814.json",
+      "sha256": "36cfbcdc5734f25f6ef56520cf0d13a92f76ddd3e645aa40343203c9076b554c"
+    },
+    "concept_scouting": {
+      "path": "docs/a_share_three_day_walkforward_campaign_133_concept_scouting_20260814.json",
+      "sha256": "3cd3e99ccc3fecca997b0d618e46591395376a0b35742ed540ea704312518e12"
+    },
+    "model_overlap_audit": {
+      "path": "docs/a_share_three_day_walkforward_campaign_133_model_overlap_audit_20260814.json",
+      "sha256": "28890b1f0abd00c3936fc4817769ae0fa75abc90ab05217efe844466d9ef63b9"
+    },
+    "bare_python_runtime_failure": {
+      "path": "docs/a_share_three_day_walkforward_campaign_133_bare_python_runtime_failure_20260814.json",
+      "sha256": "12a36dad6df94ef8957c163e02b113d61f0b0b848a3b3cbf72b3889512953693"
+    }
+  },
+  "complete_feature_library": {
+    "semantic_definition_count": 151,
+    "semantic_definition_order_sha256": "91c2da3018330edbaddbb60b86370dcd9732425590f0565c70790b990002e0b5",
+    "numeric_feature_count": 140,
+    "numeric_feature_order_sha256": "c71bfe27486c9567afd3aca21e4b04053658c23ac651e7f4df7fd014b0c31efd",
+    "feature_subset_search_allowed": false,
+    "feature_reorder_or_drop_allowed": false,
+    "prior_terminal_records_remain_terminal": true,
+    "design_manifest": {
+      "path": "/Volumes/DIsk/qlib-a-share-tushare-1m/derived/a_share/rich/tushare/minute_walkforward_campaign132_design_matrix/tushare_stk_mins_1m_2019_2025_ea0cbb8f_walkforward_campaign132_numeric140_design_v1/snapshot_manifest.json",
+      "sha256": "043c17fea89f3b0956d643a7c6e3f4d73a11403b967213d2d57539a6a8316a49",
+      "dataset_sha256": "12ce3a64b5e13581392ded9890e2064db4ccca3945da3eb8ad7752c95366a9fc",
+      "rows": 1331759,
+      "eligible_rows": 1327644,
+      "partitions": 7
+    },
+    "design_structural_audit": {
+      "path": "data/experiments/short_horizon/historical_walkforward/campaign_132/no_return/design_structural_audit.json",
+      "sha256": "86bb53552caf6f6d8f1fad688d2f3a7e39c75827f968bb1ee1510fff2394deec"
+    },
+    "design_support": {
+      "minimum_finite_components": 105,
+      "minimum_fraction_interpretation": "exactly_75_percent_of_140",
+      "model_input_missing_fill": 0.5,
+      "missing_indicator_allowed": false,
+      "years_available_but_not_automatically_opened": [2019, 2020, 2021, 2022, 2023, 2024, 2025]
+    }
+  },
+  "trial_catalog": [
+    {
+      "trial_id": "wf133_complete140_anchor50_decile_pava_additive",
+      "family": "complete_140_numeric_library_anchor50_decile_pava_additive_calibration",
+      "configuration_order": 1
+    }
+  ],
+  "search_multiplicity": {
+    "trial_count": 1,
+    "bin_count": 10,
+    "anchor_weight_on_fitted_pava_level": 0.5,
+    "anchor_weight_on_original_favorable_percentile": 0.5,
+    "alternative_bin_counts_or_anchor_weights_allowed": false,
+    "component_subset_or_weight_search_allowed": false,
+    "validation_driven_refit_or_rescue_allowed": false
+  },
+  "training_target_and_weights": {
+    "target": "Within each contained training signal session, ascending average-tie percentile rank of finite gross forward return t+3 close / t+1 open - 1.",
+    "row_weight": "Each training session has equal total weight and each finite stock target within that session receives 1/n_session.",
+    "feature_missing_fill": 0.5,
+    "fit_only_on_contained_training_partition": true
+  },
+  "frozen_model_algorithm": {
+    "input": "All 140 favorable ascending percentile features from the frozen Campaign132 design in their exact frozen order. A row is score-eligible only with at least 105 finite raw components; every nonfinite component is then filled with exactly 0.5.",
+    "per_component_bins": "For x in [0,1], bin=min(9,floor(10*x)); x=1 is in bin 9.",
+    "observed_bin_statistic": "For each feature independently, calculate the frozen session-equal weighted mean training target in every observed bin.",
+    "isotonic_fit": "Apply exact weighted pool-adjacent-violators regression in ascending bin order, merging adjacent blocks while the left fitted mean is greater than the right fitted mean. Equality is not merged.",
+    "empty_bin_rule": "Linearly interpolate fitted values for empty interior bins and carry the nearest fitted edge value into empty leading or trailing bins.",
+    "component_contribution": "0.5 * fitted PAVA level for the component bin + 0.5 * original filled favorable percentile.",
+    "final_score": "Equal arithmetic mean of the 140 component contributions.",
+    "cross_component_fitted_weights": false,
+    "interactions_or_trees": false,
+    "normalization_after_combination": false,
+    "fold_specific_fit": true,
+    "validation_returns_visible_to_fit": false
+  },
+  "walkforward_folds": [
+    {
+      "fold": 1,
+      "training": ["2019-01-01", "2020-12-31"],
+      "validation": ["2021-01-01", "2021-12-31"]
+    },
+    {
+      "fold": 2,
+      "training": ["2019-01-01", "2021-12-31"],
+      "validation": ["2022-01-01", "2022-12-31"]
+    },
+    {
+      "fold": 3,
+      "training": ["2019-01-01", "2022-12-31"],
+      "validation": ["2023-01-01", "2023-12-31"]
+    }
+  ],
+  "leakage_controls": {
+    "signal": "local close t",
+    "entry": "next accepted local session open t+1",
+    "exit": "third accepted local session close t+3",
+    "purge_signal_sessions_before_each_boundary": 3,
+    "entry_and_exit_must_both_be_in_partition": true,
+    "non_overlapping_three_signal_session_grid": true,
+    "point_in_time_features_and_universe": true
+  },
+  "fold_prefit_uniqueness_gate": {
+    "run_after_training_fit_before_validation_returns": true,
+    "comparison_count": 140,
+    "comparison_order_sha256": "c71bfe27486c9567afd3aca21e4b04053658c23ac651e7f4df7fd014b0c31efd",
+    "minimum_pairwise_names_per_session": 50,
+    "minimum_pairwise_sessions_per_component": 100,
+    "maximum_absolute_median_daily_average_tie_spearman": 0.8,
+    "strict_inequality": true,
+    "every_component_must_pass": true,
+    "failure_stops_the_only_trial_for_that_and_later_folds_before_validation_returns": true
+  },
+  "fixed_execution_assumptions": {
+    "holding_period_local_sessions": 3,
+    "topk": 3,
+    "initial_capital_cny": 200000,
+    "target_entry_exposure_fraction_per_slot": 0.05,
+    "maximum_entry_exposure_fraction_per_signal": 0.15,
+    "buy_lot_size_shares": 100,
+    "commission_rate_each_side": 0.0001,
+    "transfer_fee_rate_each_side": 0.00002,
+    "sell_stamp_duty_rate": 0.0005,
+    "primary_adverse_slippage_rate_each_side": 0.001,
+    "maximum_daily_amount_participation": 0.01,
+    "blocked_entry": "keep_cash_without_replacement",
+    "blocked_exit": "retain_and_retry_under_frozen_policy"
+  },
+  "development_survivor_rule": {
+    "complete_validation_fold_count": 3,
+    "minimum_association_cohorts_per_fold": 60,
+    "minimum_positive_mean_rank_ic_folds": 2,
+    "median_validation_mean_rank_ic_strictly_positive": true,
+    "median_validation_top3_minus_bottom3_spread_strictly_positive": true,
+    "minimum_positive_normalized_return_folds": 2,
+    "minimum_positive_primary_10bp_pilot_return_folds": 2,
+    "median_validation_primary_10bp_pilot_return_strictly_positive": true,
+    "worst_validation_normalized_drawdown_minimum": -0.25,
+    "compounded_validation_20bp_pilot_return_strictly_positive": true,
+    "minimum_board_lot_affordability_each_fold": 0.9,
+    "maximum_amount_participation_each_fold": 0.01,
+    "terminal_unresolved_positions_each_fold": 0,
+    "all_conditions_required": true
+  },
+  "survivor_selection_rule": {
+    "maximum_selected_for_lockbox": 1,
+    "order": [
+      "descending_positive_primary_10bp_fold_count",
+      "descending_median_validation_primary_10bp_return",
+      "descending_median_validation_mean_rank_ic",
+      "configuration_order"
+    ],
+    "select_only_from_complete_gate_passers": true
+  },
+  "locked_2024_2025_campaign_backtest": {
+    "initially_closed": true,
+    "classification": "historically_exposed_quasi_out_of_sample_not_pristine",
+    "open_once_for_the_whole_frozen_campaign_only_if_the_single_development_trial_survives": true,
+    "full_model_refit": "Refit only this unchanged configuration on contained 2019-2023 training observations.",
+    "separate_pre_open_freeze_required": true,
+    "no_post_lockbox_tuning": true
+  },
+  "recordkeeping": {
+    "append_only_trial_ledger_required": true,
+    "record_all_scouted_concepts_including_rejections": true,
+    "record_the_runtime_failure_as_an_infrastructure_attempt": true,
+    "record_the_single_model_trial_and_every_gate_failure": true,
+    "selected_only_reporting_forbidden": true
+  },
+  "research_boundary": {
+    "campaign133_component_factor_values_read_before_preregistration": false,
+    "campaign133_model_score_computed_before_preregistration": false,
+    "historical_daily_price_or_forward_return_values_read_before_preregistration": false,
+    "stress_2024_2025_opened": false,
+    "provider_request_issued": false,
+    "credential_value_or_digest_read": false,
+    "candidate49_historical_backfill_performed": false,
+    "candidate49_ledgers_changed": false,
+    "second_prospective_candidate_created": false,
+    "current_scoring_selection_sizing_positions_or_orders_performed": false,
+    "investment_advice": false
+  }
+}

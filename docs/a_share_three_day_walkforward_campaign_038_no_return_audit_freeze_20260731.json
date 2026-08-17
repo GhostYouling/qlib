@@ -1,0 +1,93 @@
+{
+  "version": 1,
+  "kind": "a_share_three_day_walkforward_campaign038_no_return_audit_freeze",
+  "status": "one_factor_admitted_for_exactly_one_frozen_2019_2023_development_trial",
+  "recorded_at": "2026-07-31T01:46:38Z",
+  "purpose": "Bind the complete ordered Campaign038 no-return result before any historical daily price or forward return is opened.",
+  "authoritative_inputs": {
+    "no_return_preregistration": {
+      "path": "docs/a_share_three_day_walkforward_campaign_038_no_return_preregistration.json",
+      "sha256": "824ede814080bc7d9de8b50569571292d257a3b7bff338c3cbf6939a27535651"
+    },
+    "feature_snapshot_freeze": {
+      "path": "docs/a_share_three_day_walkforward_campaign_038_feature_snapshot_freeze_20260731.json",
+      "sha256": "c5922bc2aebf27db7a0344c264cb167beb6a950aac2a0c498c0cdc114457b6cd"
+    },
+    "feature_snapshot": {
+      "path": "/Volumes/DIsk/qlib-a-share-tushare-1m/derived/a_share/rich/tushare/minute_walkforward_campaign038_feature_library/tushare_stk_mins_1m_2019_2025_ea0cbb8f_walkforward_campaign038_feature_library_v1/snapshot_manifest.json",
+      "sha256": "d8042490037077c68c42bbf24f5b354b2a808894ac0bad79ad0c63c43404519a",
+      "dataset_sha256": "0791779f97992d3c9cd9ee6501a2eacb6df45d534f5c6b0359088221de951904"
+    },
+    "no_return_audit": {
+      "path": "data/experiments/short_horizon/historical_walkforward/campaign_038/no_return/20260731T014516Z_campaign038_no_return_audit.json",
+      "sha256": "efc9b96c4754f86f32bcb54d3ae31228bb930972aefcf11560c3b9c781bdc0de"
+    }
+  },
+  "result": {
+    "factor": "intraday_half_session_chord_adherence_240m",
+    "direction": "higher",
+    "quality_listing_eligible_rows": 1331759,
+    "candidate_eligible_rows": 1328065,
+    "median_coverage": 0.9983183851218558,
+    "p05_coverage": 0.9933708902303229,
+    "p05_eligible_names": 138.0,
+    "potential_non_overlapping_three_session_cohorts": 540,
+    "observed_years": [
+      2019,
+      2020,
+      2021,
+      2022,
+      2023,
+      2024,
+      2025
+    ],
+    "coverage_and_capacity_gate_passed": true,
+    "comparison_values_loaded_only_after_coverage_pass": true,
+    "comparison_factor_count": 59,
+    "comparison_order_matches_preregistration": true,
+    "all_59_uniqueness_comparisons_passed": true,
+    "maximum_absolute_median_daily_rank_correlation": 0.5063206607447502,
+    "nearest_comparison": {
+      "name": "intraday_global_price_range_revisit_240m",
+      "median_daily_rank_correlation": 0.5063206607447502
+    },
+    "campaign037_comparison": {
+      "name": "intraday_five_minute_variance_ratio_230w",
+      "median_daily_rank_correlation": -0.4799307520367765
+    },
+    "admissible_factor_count": 1
+  },
+  "post_audit_validation": {
+    "feature_and_audit_runner": {
+      "path": "scripts/a_share_three_day_walkforward_campaign038_features.py",
+      "sha256": "7980db02fb6aba2766689cbd94d7b93a41268397dc116976e47b76cbeabb4664"
+    },
+    "feature_tests": {
+      "path": "tests/data_collector_tests/test_a_share_three_day_walkforward_campaign038_features.py",
+      "sha256": "5c6d5082466dde30dc079708331fff1dc87a1237bf227cf729eb4826b84f3ca4"
+    },
+    "command": "PYTHONPATH=. pytest -q tests/data_collector_tests/test_a_share_three_day_walkforward_campaign038_features.py",
+    "passed": 7,
+    "failed": 0,
+    "only_test_transition": "The bound-snapshot status test now also requires exactly one bound audit. Formula, protocol, source, and safety assertions are unchanged.",
+    "formula_direction_source_or_gate_changed": false
+  },
+  "research_boundary": {
+    "candidate_values_read": true,
+    "comparison_values_read": true,
+    "historical_daily_price_fields_read": false,
+    "historical_forward_returns_read": false,
+    "training_or_model_fitting_performed": false,
+    "provider_request_issued": false,
+    "candidate49_historical_return_signal_or_execution_backfill_performed": false,
+    "candidate49_prospective_ledgers_changed": false,
+    "candidate50_activation_created": false,
+    "current_scoring_selection_sizing_or_orders_performed": false
+  },
+  "authorization": {
+    "next_action": "Freeze the exact one-trial 2019-2023 walk-forward catalog and implementation fingerprints, validate all bindings, then execute the single higher-direction trial.",
+    "development_trial_count_allowed": 1,
+    "alternate_direction_horizon_weight_filter_threshold_model_or_combination_allowed": false,
+    "stress_2024_2025_opening_allowed_before_development_survivor": false
+  }
+}

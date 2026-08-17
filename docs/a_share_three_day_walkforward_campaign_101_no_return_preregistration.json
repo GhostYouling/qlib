@@ -1,0 +1,168 @@
+{
+  "schema_version": 1,
+  "protocol_revision": 1,
+  "kind": "a_share_three_day_walkforward_campaign101_no_return_preregistration",
+  "status": "frozen_before_campaign101_source_factor_candidate_comparator_daily_price_or_return_values",
+  "recorded_at": "2026-08-07T13:10:00Z",
+  "purpose": "Evaluate one deterministic complete-129-factor lower-quartile breadth combination under coverage-first no-return admission, then authorize exactly one purged 2019-2023 development trial only if all admission gates pass.",
+  "source_chain": {
+    "authoritative_iteration_state": {
+      "path": "docs/a_share_three_day_iteration_status_20260807_campaign100_verified_v2.json",
+      "sha256": "5a5465269ceab1e957e75226a21a8071a3b58a574fa9054501337010d61c4e41"
+    },
+    "historical_walkforward_policy": {
+      "path": "docs/a_share_three_day_historical_walkforward_research_policy_20260727.json",
+      "sha256": "38426d6161b9bfed323c58caba18feca668b8c9d53e294951a8ba90c01a798bb"
+    },
+    "numeric_policy_v54": {
+      "path": "docs/a_share_three_day_walkforward_future_numeric_comparison_eligibility_policy_v54_20260807.json",
+      "sha256": "517193a12ad592015a4af7579041abf79c508dbbdaf3e2a7d5f1d752f391458f"
+    },
+    "concept_scouting": {
+      "path": "docs/a_share_three_day_walkforward_campaign_101_concept_scouting.json",
+      "sha256": "f1f0a43c8965084a33026bda055a4a963a71ef1c2b7a02f3988626552f9d28b5"
+    },
+    "mechanism_and_support_predicate_audit": {
+      "path": "docs/a_share_three_day_walkforward_campaign_101_mechanism_overlap_audit.json",
+      "sha256": "28e117ac069b9682b17de58c785f8636a7d10d9b6eb69f930fbf0b6970a43e9b"
+    },
+    "complete_numeric_source_catalog": {
+      "path": "docs/a_share_three_day_walkforward_campaign_101_source_catalog.json",
+      "sha256": "e47ce3727bb4fcc68832d1d5f686000734b80d72752c7661d747d5a5ef2b8323"
+    },
+    "order_reconstructor": {
+      "path": "scripts/a_share_three_day_walkforward_campaign100_features.py",
+      "sha256": "f8d5fe7e5795819bd446afe5d7fad7ac1c2239e70206d70594df0d8af51efdec"
+    }
+  },
+  "candidate": {
+    "name": "full_numeric_library_directional_lower_quartile_consensus_129f",
+    "direction": "higher",
+    "source_factor_count": 129,
+    "source_factor_order_sha256": "a029c53fb237cc1d34aec0a9f7b67856ffa1a67ffe0fc9620fb230680353263b",
+    "complete_definition_count": 132,
+    "complete_definition_order_sha256": "2d0c342fe9644092e562832fe928473c230cbf982c1fb32f9d5c41c0a3594a42",
+    "quality_listing_base_rows": 1331759,
+    "quality_listing_base_sessions": 1632,
+    "component_rank": {
+      "cross_section": "each source factor's finite values on the complete frozen quality/current-listing base for the same signal session",
+      "method": "average",
+      "percentile": true,
+      "higher_direction_ascending": true,
+      "lower_direction_ascending": false,
+      "finite_result_range": "(0,1]",
+      "candidate_support_may_change_a_component_rank_denominator": false
+    },
+    "missing_component_score": 0.0,
+    "minimum_finite_components": 97,
+    "maximum_missing_components": 32,
+    "aggregation": {
+      "method": "nearest_rank_empirical_25th_percentile",
+      "all_component_vector_length": 129,
+      "one_indexed_order_statistic": 33,
+      "zero_indexed_partition_index": 32,
+      "formula": "replace unavailable component ranks with exact zero, require at least 97 originally finite component ranks, sort all 129 directional ranks ascending, and return the 33rd value"
+    },
+    "valid_range": {
+      "lower": 0.0,
+      "lower_inclusive": false,
+      "upper": 1.0,
+      "upper_inclusive": true
+    },
+    "support_reason": "With no more than 32 exact-zero missing states and all finite percentiles strictly positive, the 33rd order statistic must be an observed finite directional percentile.",
+    "alternate_quantile_component_threshold_rank_tie_missing_score_subset_weight_filter_model_regime_or_direction_search": false
+  },
+  "ordered_no_return_gates": {
+    "support_predicate_before_source_factor_values": {
+      "required": true,
+      "known_terminal_coverage_failure_inventory_reviewed": true,
+      "candidate_identical_to_or_provably_narrower_than_known_failure": false,
+      "support_threshold_selected_from_candidate_values": false,
+      "audit_binding": {
+        "path": "docs/a_share_three_day_walkforward_campaign_101_mechanism_overlap_audit.json",
+        "sha256": "28e117ac069b9682b17de58c785f8636a7d10d9b6eb69f930fbf0b6970a43e9b"
+      }
+    },
+    "coverage_and_capacity_before_comparison_values": {
+      "coverage_basis": "finite candidate rows divided by the identical frozen quality/current-listing denominator over 2019-2025",
+      "minimum_median_coverage": 0.95,
+      "minimum_p05_coverage": 0.9,
+      "minimum_p05_eligible_names": 50,
+      "minimum_non_overlapping_three_session_cohorts": 200,
+      "minimum_observed_calendar_years": 5,
+      "holding_period_sessions": 3,
+      "comparison_values_read_before_coverage_pass": false,
+      "failed_gate_policy": "Record the exact Campaign101 combination as terminal and stop before all 129 comparison values, daily prices, or forward returns."
+    },
+    "uniqueness_after_coverage_only": {
+      "screen_start": "2019-01-01",
+      "screen_end": "2025-12-31",
+      "method": "Within each identical quality-listing-candidate-and-comparator-eligible stock-day cross-section, compute pairwise-complete Spearman correlation between directional percentile scores, then take each comparator's median daily correlation.",
+      "complete_definition_count": 132,
+      "complete_definition_order_sha256": "2d0c342fe9644092e562832fe928473c230cbf982c1fb32f9d5c41c0a3594a42",
+      "numeric_comparator_count": 129,
+      "numeric_comparator_order_sha256": "a029c53fb237cc1d34aec0a9f7b67856ffa1a67ffe0fc9620fb230680353263b",
+      "maximum_allowed_absolute_median_daily_rank_correlation": 0.8,
+      "minimum_pairwise_names_per_session": 50,
+      "minimum_pairwise_sessions_per_comparison": 100,
+      "all_129_numeric_comparators_must_pass": true,
+      "candidate_specific_comparator_drop_allowed": false,
+      "insufficient_pairwise_overlap_fails_closed": true,
+      "candidate49_is_semantic_isolation_only": true,
+      "comparison_factor_values_may_be_loaded_only_after_coverage_pass": true
+    }
+  },
+  "finite_development_catalog_if_admitted": {
+    "trial_id": "wf101_full_numeric_library_directional_lower_quartile_consensus_129f_single_higher",
+    "parent_trial_id": null,
+    "kind": "single_prefrozen_combination_score",
+    "feature_set": ["full_numeric_library_directional_lower_quartile_consensus_129f"],
+    "source_feature_count": 129,
+    "direction": "higher",
+    "weights": [1.0],
+    "window_norm_weight_transform_threshold_filter_and_weight_configuration": "exact frozen candidate combination score; no alternate configuration",
+    "expected_trial_count": 1,
+    "development_interval": ["2019-01-01", "2023-12-31"],
+    "expanding_folds": [
+      {
+        "fold": 1,
+        "training": ["2019-01-01", "2020-12-31"],
+        "validation": ["2021-01-01", "2021-12-31"]
+      },
+      {
+        "fold": 2,
+        "training": ["2019-01-01", "2021-12-31"],
+        "validation": ["2022-01-01", "2022-12-31"]
+      },
+      {
+        "fold": 3,
+        "training": ["2019-01-01", "2022-12-31"],
+        "validation": ["2023-01-01", "2023-12-31"]
+      }
+    ],
+    "purge_local_signal_sessions_before_each_partition_boundary": 3,
+    "t_plus_1_and_t_plus_3_must_remain_inside_partition": true,
+    "execution_policy": "exact fixed assumptions in the bound historical walk-forward policy",
+    "development_survival_rule": "use the repository's frozen single-score consistency and execution gates without formula, direction, support, subset, filter, cost, threshold, or aggregation rescue",
+    "locked_2024_2025_rule": "May be opened once only after both no-return gates pass and the sole development trial survives; mark historically exposed quasi-out-of-sample, never pristine."
+  },
+  "append_only_trial_ledger_policy": {
+    "record_every_concept_formula_direction_parameter_support_filter_subset_combination_model_implementation_attempt_and_failure": true,
+    "record_only_best_result_allowed": false,
+    "failed_attempts_may_be_deleted_or_rewritten": false,
+    "return_reading_trial_count_must_be_separate_from_infrastructure_attempt_count": true
+  },
+  "research_boundary": {
+    "source_factor_values_read_before_freeze": false,
+    "candidate_values_read_before_freeze": false,
+    "comparison_values_read_before_coverage_pass": false,
+    "daily_price_fields_read_before_admissibility": false,
+    "forward_return_fields_read_before_admissibility": false,
+    "candidate49_historical_backfill_allowed": false,
+    "candidate49_ledgers_may_change": false,
+    "second_prospective_candidate_allowed": false,
+    "provider_request_issued": false,
+    "current_scoring_selection_sizing_or_orders_allowed": false,
+    "investment_advice": false
+  }
+}

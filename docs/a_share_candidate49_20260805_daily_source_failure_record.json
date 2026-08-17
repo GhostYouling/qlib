@@ -1,0 +1,112 @@
+{
+  "version": 1,
+  "kind": "a_share_candidate49_daily_source_failure_and_retry_guard_record",
+  "status": "signal_session_source_failure_frozen_without_signal_or_provider_retry",
+  "recorded_at": "2026-08-05T08:52:03Z",
+  "session_date": "2026-08-05",
+  "purpose": "Record the bounded Candidate49 future-session workflow attempt, its fail-closed Tushare stock_basic invalid-ts_code boundary, and the same-session retry prohibition without changing the factor, future-only policy, or research gates.",
+  "repository_commit_at_record": "16deeb0f81245bc58c4b321b577c6aa7c930ed23",
+  "authoritative_research_state": {
+    "path": "docs/a_share_three_day_iteration_status_20260725_future_only.json",
+    "sha256": "d44e1cb3707cce194eed37e99cc90f865396b1de8c35e02a393a2a243d973466",
+    "active_candidate": "candidate49_intraday_cumulative_vwap_crossing_rate_240m_v1",
+    "candidate49_remains_active": true,
+    "candidate50_activation_allowed": false
+  },
+  "workflow_protocol": {
+    "path": "docs/a_share_tushare_candidate49_future_session_workflow_protocol.json",
+    "sha256": "6ff5636a3f7ef65e93452098186b3aecf9231d68873ab8a1070afb91d699ef7c"
+  },
+  "pre_request_checks": {
+    "local_time": "2026-08-05T16:49:55+08:00",
+    "after_same_session_not_before_time": true,
+    "workflow_token_present": true,
+    "credential_value_printed_or_persisted": false,
+    "active_data_root": "/Volumes/DIsk/Disk-Coding/qlib/data",
+    "candidate49_signal_ledger_entries": 0,
+    "candidate49_execution_ledger_entries": 0,
+    "completed_workflow_record_exists": false,
+    "staging_root": "/Volumes/DIsk/qlib-a-share-tushare-daily-2026-08-05",
+    "staging_root_reused_from_prior_session": false
+  },
+  "pre_request_plan": {
+    "cli_exit_code": 0,
+    "status": "ready_for_explicit_run",
+    "ready": true,
+    "recommended_cli_exit_code": 0,
+    "failures": [],
+    "next_phase": "initial_tushare_daily_migration_from_baostock",
+    "active_daily_source": "baostock",
+    "active_calendar_end": "2026-07-13",
+    "provider_request_issued": false,
+    "filesystem_write_performed": false
+  },
+  "real_workflow_attempt": {
+    "cli_exit_code": 1,
+    "status": "failed_closed",
+    "failed_phase": "daily-source-sync",
+    "failure_stage": "stock_basic",
+    "error": "TushareDailyMigrationError: Tushare stock_basic contains an invalid ts_code",
+    "provider_calls_this_invocation": 4,
+    "provider_continuation_allowed_for_same_session": false,
+    "failure_record": {
+      "path": "/Volumes/DIsk/qlib-a-share-tushare-daily-2026-08-05/raw/a_share/rich/tushare/daily_provider_migration_v1/latest_failure.json",
+      "sha256": "0e4e03fc7ff75d2136c09fc6ea5c6df30204e919bfaf9dc7b14a4d221429ea33"
+    },
+    "preserved_trade_calendar": {
+      "json_path": "/Volumes/DIsk/qlib-a-share-tushare-daily-2026-08-05/raw/a_share/rich/tushare/daily_provider_migration_v1/trade_calendar.json",
+      "json_sha256": "f88dc299b79dced89b3ab880f5a90e9b520d647e3b3e8f3080f336f51e179eee",
+      "parquet_path": "/Volumes/DIsk/qlib-a-share-tushare-daily-2026-08-05/raw/a_share/rich/tushare/daily_provider_migration_v1/trade_calendar.parquet",
+      "parquet_sha256": "54c3bd8788c6c6444ca82b7e7ffb229bcd3b26b8c4737a99c14b0741734b7637"
+    },
+    "active_root_mutated": false,
+    "completed_session_checkpoints_preserved": true,
+    "credential_value_persisted": false,
+    "forward_return_fields_read": false
+  },
+  "verification": {
+    "candidate49_signal_ledger": {
+      "path": "data/experiments/short_horizon/candidate49_future_signal_ledger.json",
+      "sha256": "5193f00d7f36da003f53cec387900da4c3d002299f5dfcfc1a95eaa199ed3a79",
+      "entries": 0,
+      "chain_tip_sha256": "ab47c70a18fc84b6d347fe906c404504faa126d3ec581bf077beffb215788bbb"
+    },
+    "candidate49_execution_ledger": {
+      "path": "data/experiments/short_horizon/candidate49_future_execution_ledger.json",
+      "sha256": "d57a3e61eac969e42cafa418ccd8c0a5ee65dcf69da145bb2c096c2a02a2ea4f",
+      "entries": 0,
+      "chain_tip_sha256": "f302b4b93c9fcc1478e2f917279d589190b79069e6638efc41cb7aa6cf3691e0"
+    },
+    "completed_workflow_record_exists": false,
+    "workflow_implementation": {
+      "path": "scripts/a_share_tushare_candidate49_future_session_workflow.py",
+      "sha256": "0ee21715af9ee276cb4e50c4234ef15ad3d3b730b014712ae4ad19829908b69e"
+    },
+    "workflow_tests": {
+      "path": "tests/data_collector_tests/test_a_share_tushare_candidate49_future_session_workflow.py",
+      "sha256": "41e16ec52813160b141a3dcee53a22ea3ba0fe843e8772ad5304cfeaf2748f80"
+    },
+    "focused_workflow_tests_passed": 32,
+    "focused_workflow_tests_failed": 0,
+    "signal_execution_ledger_semantic_validation": {
+      "first_module_launch_exit_code": 1,
+      "first_module_launch_failure": "ModuleNotFoundError because the repository-root module launch did not include scripts on sys.path",
+      "first_module_launch_provider_request_issued": false,
+      "corrected_read_only_launch": "PYTHONPATH=scripts",
+      "corrected_launch_exit_code": 0,
+      "semantics_valid": true,
+      "ledger_write_performed": false
+    }
+  },
+  "research_boundaries": {
+    "historical_candidate49_return_diagnostic_run": false,
+    "historical_or_forward_candidate49_return_read": false,
+    "factor_formula_or_direction_changed": false,
+    "future_only_policy_changed": false,
+    "aggregation_scoring_selection_or_sizing_performed": false,
+    "paper_execution_or_live_order_performed": false,
+    "candidate50_activated": false,
+    "historical_walkforward_research_remains_independently_authorized": true
+  },
+  "next_action": "Do not retry 2026-08-05 and do not re-request the failed stock_basic response. On the next accepted local trading session, use a new absolute date-versioned staging root, run plan after 16:30 Asia/Singapore, and run only if plan exits 0 with ready=true. Continue zero-network historical walk-forward research independently."
+}

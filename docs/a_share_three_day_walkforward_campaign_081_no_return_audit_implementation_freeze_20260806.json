@@ -1,0 +1,75 @@
+{
+  "schema_version": 1,
+  "kind": "a_share_three_day_walkforward_campaign081_no_return_audit_implementation_freeze",
+  "status": "frozen_after_verified_snapshot_before_coverage_or_comparison_values",
+  "frozen_at": "2026-08-06T17:36:00+08:00",
+  "protocol": {
+    "path": "docs/a_share_three_day_walkforward_campaign_081_no_return_preregistration.json",
+    "sha256": "84400ac6f7dca933333dcfbd314753328e9e00f905d94c68632528c8767a6853"
+  },
+  "snapshot_binding": {
+    "path": "docs/a_share_three_day_walkforward_campaign_081_feature_snapshot_binding_20260806.json",
+    "sha256": "d7de059bb486189b3a29ebda76c42362120cabaac9b23460df444cf781393fad"
+  },
+  "audit_runner": {
+    "path": "scripts/a_share_three_day_walkforward_campaign081_no_return_audit.py",
+    "sha256": "b66a409df34856d3627d989cb6f4c494a4c2d7fd871534a7c995943f404ab3d3"
+  },
+  "tests": {
+    "path": "tests/data_collector_tests/test_a_share_three_day_walkforward_campaign081_no_return_audit.py",
+    "sha256": "d8932617b42f8ad071e8550aa6ca380b1915187805d7b51f908a8b961969c069",
+    "preactivation_tests_passed": 3,
+    "preactivation_tests_failed": 0
+  },
+  "legacy_comparator_runtime": {
+    "campaign080_no_return_audit_runner": {
+      "path": "scripts/a_share_three_day_walkforward_campaign080_no_return_audit.py",
+      "sha256": "245d87eb7b11a46fb039a5dce2a4b2b43d86661066dcdafdec3020193f5eba2f"
+    },
+    "campaign080_no_return_audit_implementation_freeze": {
+      "path": "docs/a_share_three_day_walkforward_campaign_080_no_return_audit_implementation_freeze_20260806.json",
+      "sha256": "86a0d2ccfeacc76ff83c85992df72602f69a57558c8db3e5b2278c1e1a9fe21c"
+    },
+    "campaign078_v1_runner": {
+      "path": "scripts/a_share_three_day_walkforward_campaign078_no_return_audit.py",
+      "sha256": "5f194ab765b7d5e42cd6b2a34abb482c69196a3cf0f3d29b065afcb8e588c7a3"
+    },
+    "campaign078_helper_path_repair_runner": {
+      "path": "scripts/a_share_three_day_walkforward_campaign078_no_return_audit_v2.py",
+      "sha256": "4ab0c306d37d9d6da6fedc368dcc9510028c860bd9e6e6ec84548b1ed5b4d5cb"
+    },
+    "campaign078_helper_path_repair_protocol": {
+      "path": "docs/a_share_three_day_walkforward_campaign_078_no_return_helper_path_repair_protocol_v2_20260806.json",
+      "sha256": "3d12ad46d953f8bfd00fe0ce3ff616c2486c17baf17e4043f25ccb41bc4fe9f0"
+    },
+    "campaign077_runtime_binding_runner": {
+      "path": "scripts/a_share_three_day_walkforward_campaign077_no_return_audit_v2.py",
+      "sha256": "0effc90c4bac5a9eec633b8bfbfd8f8965b709e212153fe5dc8af49e3e91f133"
+    },
+    "campaign077_runtime_binding_protocol": {
+      "path": "docs/a_share_three_day_walkforward_campaign_077_no_return_runtime_compatibility_repair_protocol_v2_20260806.json",
+      "sha256": "e1a0567bd83f4ae75288fa2c7c50de504ff613a873bd967802ef546cca788841"
+    }
+  },
+  "frozen_gate_semantics": {
+    "coverage_first": true,
+    "numeric_comparator_count": 110,
+    "numeric_comparator_order_sha256": "dc6319ac2f7c9d5811a8bee3f8fd9dbd174d2451739ef201aad31c36a9f25ce3",
+    "complete_definition_count": 112,
+    "complete_definition_order_sha256": "a31457db36af9a8ddac4e08890c87f50ef6554bb46918f022749bd9cccbc1c55",
+    "maximum_allowed_absolute_median_daily_rank_correlation": 0.8,
+    "minimum_pairwise_names_per_session": 50,
+    "minimum_pairwise_sessions_per_comparison": 100,
+    "all_110_numeric_comparators_must_pass": true,
+    "campaign063_and_campaign079_remain_semantic_only": true
+  },
+  "coverage_or_capacity_metrics_computed_before_freeze": false,
+  "comparison_values_read_before_freeze": false,
+  "historical_daily_price_fields_read_before_freeze": [],
+  "historical_forward_returns_read_before_freeze": false,
+  "provider_request_issued_before_freeze": false,
+  "candidate49_historical_backfill_performed": false,
+  "candidate49_ledgers_changed": false,
+  "current_scoring_selection_sizing_or_orders_performed": false,
+  "next_action": "Create a separate activation binding to this exact runner, test, snapshot, protocol and legacy runtime; then run the sole no-return audit once."
+}

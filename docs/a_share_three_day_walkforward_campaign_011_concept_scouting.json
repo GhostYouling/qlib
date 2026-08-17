@@ -1,0 +1,132 @@
+{
+  "version": 1,
+  "kind": "a_share_three_day_walkforward_campaign011_concept_scouting",
+  "status": "concept_only_one_new_mechanism_selected_no_formula_no_direction_no_values_no_returns",
+  "recorded_at": "2026-07-28T15:52:08Z",
+  "purpose": "Continue the three-session offline research program after Campaign010 failed its frozen no-return uniqueness gate. This record considers only economic meaning and accepted source-schema feasibility, rejects terminal or near-synonym mechanisms before values, and selects at most one concept for a separate exact no-value overlap audit.",
+  "authoritative_bindings": {
+    "iteration_state": {
+      "path": "docs/a_share_three_day_iteration_status_20260728_campaign010.json",
+      "sha256": "fa03536f5fdaf8a7732057ea9bd798be966321337fc9628ff190ad0cfe26ce98",
+      "campaign011_concept_scouting_allowed": true,
+      "candidate50_prospective_activation_allowed": false
+    },
+    "campaign010_research_record": {
+      "path": "docs/a_share_three_day_walkforward_campaign_010_research_record.json",
+      "sha256": "f8beb653f3f0215b4483e773360637c0713cf43b62d57e488a6006b326ab927d",
+      "completed": true,
+      "development_survivor_count": 0,
+      "development_return_read": false,
+      "stress_interval_opened": false
+    },
+    "historical_walkforward_policy": {
+      "path": "docs/a_share_three_day_historical_walkforward_research_policy_20260727.json",
+      "sha256": "38426d6161b9bfed323c58caba18feca668b8c9d53e294951a8ba90c01a798bb"
+    }
+  },
+  "source_schema_boundary": {
+    "provider": "tushare",
+    "frequency": "1m",
+    "accepted_source_grid_rows": 241,
+    "joint_clean_manifest": {
+      "path_below_data_root": "derived/a_share/rich/tushare/minute_sentiment_clean/tushare_stk_mins_1m_2019_2025_ea0cbb8f_sentiment_clean_v1/snapshot_manifest.json",
+      "sha256": "453c6719cb3c7da42fed8807b28a2bfe988700283e9625a6db97912534f368de",
+      "dataset_sha256": "0e4fe7c05536cdfcecc2936bc880726902f5560061188ffff82ef7ee6f346983",
+      "partitions": 33015,
+      "rows": 7724498
+    },
+    "allowed_source_fields": [
+      "datetime",
+      "symbol",
+      "provider",
+      "high",
+      "low"
+    ],
+    "source_open_close_volume_and_amount_must_not_be_loaded": true,
+    "daily_price_or_return_substitution_allowed": false,
+    "provider_request_allowed": false
+  },
+  "concepts_rejected_before_formula_or_values": [
+    {
+      "concept": "campaign010_range_overlap_rescue",
+      "reason": "Campaign010 is terminal. Containment, pairwise Jaccard, mean pair overlap, arithmetic-price spans, another denominator, inversion, thresholding, or combining its rejected values would be prohibited rescue."
+    },
+    {
+      "concept": "campaign009_body_range_or_wick_variant",
+      "reason": "Campaign009 is terminal. Body/range aggregation, candle-sign conditioning, wick decomposition, mean bar ratios, or another body-efficiency transform would be prohibited rescue."
+    },
+    {
+      "concept": "between_close_return_moment_or_path",
+      "reason": "Return variance entropy, skewness, semivariance, diffusive variation, realized volatility, sign runs, terminal location, and close-path mechanisms are terminal. The selected concept may not use close-to-close returns."
+    },
+    {
+      "concept": "amount_or_volume_distribution_entropy",
+      "reason": "Amount participation entropy, amount-profile persistence, amount timing, volume activity, and price-impact mechanisms are terminal. The selected concept may not load amount or volume."
+    },
+    {
+      "concept": "opening_lunch_or_terminal_range_allocation",
+      "reason": "The 09:30 row can be a reference placeholder, lunch is not an adjacent trading minute, and terminal/time-of-day range allocation would reopen gap, terminal-position, or volatility-timing families."
+    },
+    {
+      "concept": "market_or_industry_range_benchmark",
+      "reason": "Market-relative and cross-stock synchronization mechanisms are terminal. A peer range benchmark would introduce a different and unnecessary measurement layer."
+    }
+  ],
+  "selected_concept": {
+    "concept_name": "intraday_intrabar_range_participation_dispersion",
+    "candidate_ordinal": null,
+    "prospective_active": false,
+    "concept_status": "mechanism_only_not_yet_exactly_preregistered",
+    "direction": null,
+    "formula": null,
+    "allowed_source_fields": [
+      "datetime",
+      "symbol",
+      "provider",
+      "high",
+      "low"
+    ],
+    "mechanism": "Measure whether direction-neutral one-minute high-low price exploration is distributed broadly across the continuous session or concentrated in a small number of episodic bars. This is a distribution of intrabar log ranges across time, not adjacent-range overlap, candle body/range efficiency, between-close return variance entropy, activity entropy, price-update frequency, or a terminal-path statistic.",
+    "economic_question": "Do stock-days whose intrabar price exploration is broadly participated across the session, rather than dominated by a few transient range shocks, carry more stable price discovery from the next open through the third close?",
+    "mandatory_overlap_challenges_before_any_value": [
+      "intraday_return_variance_entropy_238m",
+      "intraday_amount_participation_entropy_240m",
+      "intraday_intrabar_body_range_efficiency_240m",
+      "intraday_adjacent_range_overlap_continuity_238p",
+      "intraday_diffusive_variation_ratio_238m",
+      "intraday_realized_volatility",
+      "intraday_volatility_resolution_238m",
+      "intraday_price_update_share_238m"
+    ],
+    "known_design_risks": [
+      "entropy support, normalization, zero-range treatment, minimum informative-bar count, direction, and timestamp scope create researcher degrees of freedom unless frozen before values",
+      "raw high-low ordering must be validated fail-closed rather than repaired",
+      "using close-to-close squared returns would duplicate the terminal return-variance-entropy mechanism",
+      "using amount or volume weights would duplicate terminal activity-distribution mechanisms",
+      "the candidate may still be statistically redundant with Campaign009, Campaign010, return variance entropy, realized volatility, or price-update values even if its economic measurement is distinct"
+    ]
+  },
+  "research_boundary": {
+    "external_minute_partitions_read": false,
+    "external_daily_partitions_read": false,
+    "candidate_values_computed_or_read": false,
+    "comparison_values_read": false,
+    "historical_daily_prices_read": false,
+    "historical_forward_returns_read": false,
+    "formula_or_direction_frozen": false,
+    "training_or_model_fitting_performed": false,
+    "prospective_candidate_created": false,
+    "candidate49_historical_return_read": false,
+    "candidate49_ledgers_changed": false,
+    "current_scoring_selection_sizing_or_order_performed": false,
+    "provider_request_issued": false,
+    "investment_advice": false
+  },
+  "decision": {
+    "selected_concept_count": 1,
+    "selected_concept_may_advance_directly_to_values": false,
+    "required_next_step": "Perform a separate no-value audit against all 34 prior terminal mechanisms. Only if the concept remains economically distinct may that audit freeze one exact formula, one direction, high-low ordering and zero-range semantics, no-return gates, and one finite trial before candidate or comparison values or returns are read.",
+    "candidate49_remains_only_prospective_candidate": true,
+    "candidate50_activation_allowed": false
+  }
+}

@@ -1,0 +1,60 @@
+{
+  "version": 1,
+  "kind": "a_share_three_day_walkforward_campaign050_development_preregistration_semantic_failure",
+  "status": "failed_closed_before_historical_daily_price_or_return_read",
+  "recorded_at": "2026-08-01T10:51:17Z",
+  "purpose": "Preserve the first Campaign050 development-boundary status failure before creating additive runner and preregistration versions with the exact inherited top-level schema.",
+  "bindings": {
+    "development_preregistration_v1": {
+      "path": "docs/a_share_three_day_walkforward_campaign_050_preregistration.json",
+      "sha256": "d46e5f816dc4234062ec24a899ec6bbf83ba541e111a3e553c6d564dcf5f8b6a"
+    },
+    "development_runner_v1": {
+      "path": "scripts/a_share_three_day_walkforward_campaign050.py",
+      "sha256": "1840d5723e215522e9f92c3e08642a4b0f52e23112f429d772821ca054271a49"
+    },
+    "no_return_audit_freeze": {
+      "path": "docs/a_share_three_day_walkforward_campaign_050_no_return_audit_freeze_20260801.json",
+      "sha256": "b0eb9b4c0bfdc001a485c5140f390309fe35fe0cf6f4535a0ab6dd5f4de5ff35"
+    }
+  },
+  "observed_status_command": "PYTHONPATH=. python scripts/a_share_three_day_walkforward_campaign050.py status",
+  "observed_exit_code": 1,
+  "observed_preregistration_binding_validation": {
+    "binding_count": 20,
+    "passed": 20,
+    "failed": 0
+  },
+  "failure": {
+    "class": "pre_return_exact_top_level_schema_error",
+    "missing_fields": [],
+    "unexpected_fields": [
+      "survivor_and_stress_boundary",
+      "walkforward_protocol"
+    ],
+    "detail": "The inherited development loader requires the exact preregistration top-level field set. The two additive explanatory objects duplicate fixed runner semantics and were rejected before campaign values, daily prices, returns, ledger access, or output creation.",
+    "output_root_file_count_after_failure": 0,
+    "development_ledger_entry_count": 0,
+    "stress_intent_exists": false,
+    "stress_record_exists": false
+  },
+  "authorized_additive_repair": {
+    "v1_preregistration_rewritten": false,
+    "v1_runner_rewritten": false,
+    "new_preregistration_version_required": true,
+    "new_runner_version_required": true,
+    "remove_only_rejected_explanatory_top_level_objects": true,
+    "factor_trial_direction_folds_purge_costs_gates_or_stress_rule_changed": false,
+    "fixed_fold_and_stress_semantics_must_remain_in_implementation_freeze": true
+  },
+  "research_boundary": {
+    "historical_daily_price_fields_read": [],
+    "historical_forward_returns_read": false,
+    "training_or_model_fitting_performed": false,
+    "provider_request_issued": false,
+    "candidate49_historical_return_signal_execution_or_milestone_backfill_performed": false,
+    "candidate49_prospective_ledgers_changed": false,
+    "candidate50_activation_created": false,
+    "current_scoring_selection_sizing_or_orders_performed": false
+  }
+}

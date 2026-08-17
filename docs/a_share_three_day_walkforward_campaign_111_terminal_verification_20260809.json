@@ -1,0 +1,89 @@
+{
+  "schema_version": 1,
+  "kind": "a_share_three_day_walkforward_campaign111_terminal_verification",
+  "status": "verified_terminal_prevalue_zero_candidates",
+  "recorded_at": "2026-08-09T00:41:19+08:00",
+  "authoritative_state": {
+    "path": "docs/a_share_three_day_iteration_status_20260809_campaign111_prevalue_terminal.json",
+    "sha256": "90a9831c7100553dbd34e0e7724e683c5d073c9ec839c294ce3bdc5685803a9c"
+  },
+  "future_numeric_policy": {
+    "path": "docs/a_share_three_day_walkforward_future_numeric_comparison_eligibility_policy_v73_20260809.json",
+    "sha256": "4e6080a952e5bd4227dc5de60421cafbea325ddfbe022a87db3452739dd7b7b2",
+    "complete_definition_count": 140,
+    "numeric_comparator_count": 134,
+    "orders_unchanged_from_v72": true
+  },
+  "campaign_artifacts": {
+    "concept_scouting": {
+      "path": "docs/a_share_three_day_walkforward_campaign_111_concept_scouting_20260809.json",
+      "sha256": "2f366400dfbf408e92528a434c02f0156731a6503adeb943c0764825d514d7dd"
+    },
+    "mechanism_frontier_audit": {
+      "path": "docs/a_share_three_day_walkforward_campaign_111_mechanism_frontier_audit_20260809.json",
+      "sha256": "8e4dd9f7451e3e5deb05bc9bb0d5f122b8c838027e275022fd92fae762a467d5"
+    },
+    "prevalue_infrastructure_failures": {
+      "path": "docs/a_share_three_day_walkforward_campaign_111_prevalue_infrastructure_failures_20260809.json",
+      "sha256": "ab85676339d72294eebb8c3100188f0eacc2635ce9714b181bb343ba35f2c66e"
+    },
+    "attempt_ledger": {
+      "path": "data/experiments/short_horizon/historical_walkforward/campaign_111/research_attempt_ledger_v1.json",
+      "sha256": "6a87c3a191485fcba6996df84fbc713750345ed4ec40d23ca14bf4b418f0cd4b",
+      "entry_count": 3,
+      "chain_tip_sha256": "430bf574f3f939fcfecef7b0b6f69c17d5892d2f8e71e2324269f50068234bf7"
+    },
+    "terminal_result": {
+      "path": "docs/a_share_three_day_walkforward_campaign_111_prevalue_terminal_result_20260809.json",
+      "sha256": "999e4ee504a4cde06defea586c21b23a60311870e94b024453889e5c9d6dc8cf"
+    }
+  },
+  "reports": {
+    "campaign111_report": {
+      "path": "docs/a_share_three_day_walkforward_campaign_111_report.md",
+      "sha256": "eac5e946aa2dfff7a63437eea925101cdb2098471a52ca04eb3a94a31263920c"
+    },
+    "current_research_report": {
+      "path": "data/experiments/short_horizon/current_research_report.md",
+      "sha256": "74ac1fa4766afda808f72231febd4ed0692dd6c2574b95bf1dadedf3e268179a"
+    },
+    "three_day_research_report": {
+      "path": "data/experiments/short_horizon/three_day_research_report.md",
+      "sha256": "53e69d23986cc94c3acec072c235e772206f573c66371cbbb1a55e2e78c28ee6"
+    }
+  },
+  "test_module": {
+    "path": "tests/data_collector_tests/test_a_share_three_day_walkforward_campaign111_prevalue_terminal.py",
+    "sha256": "c748c41d1f13027862b6a76b61277357ce6a17eb6a2e036c93f14154f2eac3b3"
+  },
+  "test_receipts": [
+    {
+      "scope": "Campaign111 terminal semantics, artifact hashes, append-only attempt chain, v73 policy reconstruction, Candidate49 boundary, timestamps, and reports",
+      "result": "8 passed in 2.13s",
+      "exit_code": 0
+    }
+  ],
+  "verified_assertions": {
+    "finite_prevalue_concepts_recorded": 6,
+    "selected_candidate_count": 0,
+    "campaign111_source_candidate_or_comparison_values_read": false,
+    "historical_daily_price_or_forward_return_values_read": false,
+    "development_or_stress_trial_run": false,
+    "stress_2024_2025_opened": false,
+    "attempt_entry_count": 3,
+    "attempt_chain_valid": true,
+    "infrastructure_failure_count": 2,
+    "scientific_attempt_count": 1,
+    "cumulative_historical_research_attempt_count": 825,
+    "cumulative_return_reading_development_trial_count": 302,
+    "candidate49_signal_entry_count": 0,
+    "candidate49_execution_entry_count": 0,
+    "candidate49_signal_ledger_sha256": "5193f00d7f36da003f53cec387900da4c3d002299f5dfcfc1a95eaa199ed3a79",
+    "candidate49_execution_ledger_sha256": "d57a3e61eac969e42cafa418ccd8c0a5ee65dcf69da145bb2c096c2a02a2ea4f",
+    "candidate49_ledgers_unchanged": true,
+    "provider_request_issued": false,
+    "new_logical_timestamps_do_not_postdate_file_writes": true,
+    "current_scoring_selection_sizing_or_orders_performed": false,
+    "investment_advice": false
+  }
+}

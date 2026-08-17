@@ -1,0 +1,127 @@
+{
+  "schema_version": 1,
+  "kind": "a_share_three_day_iteration_status",
+  "status": "campaign139_terminal_capacity_failure_campaign140_ready_offline_goal_active",
+  "recorded_at": "2026-08-14T13:36:15+0800",
+  "goal": {
+    "objective": "请持续迭代因子。",
+    "status": "active",
+    "completion_or_blocked_requested": false,
+    "historical_walkforward_is_primary_iteration_engine": true,
+    "candidate49_is_separate_future_confirmation_layer": true
+  },
+  "supersedes_without_rewriting": {
+    "path": "docs/a_share_three_day_iteration_status_20260814_campaign138_prevalue_terminal_v2.json",
+    "sha256": "17989d6c5297cfd33a1379ad15caf68a2d8088f06a33ce8deaf44cbfcd85ded3",
+    "preserved": true,
+    "reason": "Append Campaign139's frozen definition, immutable local source evidence, capacity failure, accounting, policy, and reports without rewriting any earlier state."
+  },
+  "authoritative_policy": {
+    "path": "docs/a_share_three_day_walkforward_future_numeric_comparison_eligibility_policy_v175_20260814.json",
+    "sha256": "da233af9d7869eee5eeeee4f3353af6c6a8cd7329128f613538ba04a49743dff",
+    "factor_definition_count": 153,
+    "factor_definition_order_sha256": "bf66faef96d7058c7028da52757c65d8e0bf7978cf72d3967cd236e4da30b875",
+    "numeric_comparator_count": 141,
+    "numeric_comparator_order_sha256": "ec1aebcb939ad516c58037a36a4aaadd4ad8b2abbd3c884705895c58da85a2ee"
+  },
+  "campaign139": {
+    "terminal": true,
+    "terminal_phase": "quality_listing_event_capacity_gate",
+    "factor": "quarterly_realized_profit_growth_forecast_surprise_rank",
+    "direction": "higher",
+    "concepts_reviewed": 6,
+    "selected_candidate_count": 1,
+    "complete_factor_attempt_count": 1,
+    "source_event_rows": 37185,
+    "candidate_signal_rows": 18340,
+    "sessions_with_candidate": 479,
+    "nonoverlapping_grid_dates": 404,
+    "required_complete_cohorts": 200,
+    "observed_complete_cohorts": 123,
+    "observed_years": [
+      2019,
+      2020,
+      2021,
+      2022,
+      2023
+    ],
+    "capacity_gate_passed": false,
+    "numeric_comparator_count_read": 0,
+    "historical_daily_price_or_forward_return_values_read": false,
+    "stress_2024_2025_opened": false,
+    "terminal_result": {
+      "path": "docs/a_share_three_day_walkforward_campaign_139_terminal_result_20260814.json",
+      "sha256": "f6c018c859191e34e87409cf97b0792867ba79130cd7d1869d795e68c71e8ab6"
+    },
+    "effective_attempt_ledger": {
+      "path": "data/experiments/short_horizon/historical_walkforward/campaign_139/research_attempt_ledger_v3.json",
+      "sha256": "4fe3557c7fb3fb20ac7516331f4817ad8ff53cc145679eaa75e98bfc22b2d72c",
+      "effective_attempt_count": 10,
+      "effective_entry_count": 12,
+      "chain_tip_sha256": "90e8bce4ad10f2c111c72b21033e32d9e5ce0885f262d6aa89d140f4634a3f70"
+    }
+  },
+  "effective_accounting": {
+    "campaign139_attempt_count": 10,
+    "campaign139_ledger_entry_count": 12,
+    "campaign139_prevalue_concept_attempt_count": 6,
+    "campaign139_infrastructure_failure_count": 4,
+    "campaign139_complete_factor_attempt_count": 1,
+    "campaign139_scientifically_decided_factor_attempt_count": 1,
+    "campaign139_return_reading_development_trial_count": 0,
+    "campaign139_development_survivor_count": 0,
+    "campaign139_stress_trial_count": 0,
+    "cumulative_historical_research_attempt_count": 1165,
+    "cumulative_return_reading_development_trial_count": 313
+  },
+  "candidate49": {
+    "sole_prospective_candidate": true,
+    "signal_ledger_path": "data/experiments/short_horizon/candidate49_future_signal_ledger.json",
+    "signal_ledger_sha256": "5193f00d7f36da003f53cec387900da4c3d002299f5dfcfc1a95eaa199ed3a79",
+    "signal_entries": 0,
+    "execution_ledger_path": "data/experiments/short_horizon/candidate49_future_execution_ledger.json",
+    "execution_ledger_sha256": "d57a3e61eac969e42cafa418ccd8c0a5ee65dcf69da145bb2c096c2a02a2ea4f",
+    "execution_entries": 0,
+    "historical_backfill_performed": false,
+    "ledgers_changed": false
+  },
+  "local_daily_boundary": {
+    "local_time_observed": "2026-08-14T13:36:15+0800",
+    "accepted_local_trading_day": true,
+    "after_16_30_asia_singapore": false,
+    "active_data_root": "/Volumes/DIsk/Disk-Coding/qlib/data",
+    "qlib_calendar_end": "2026-07-13",
+    "provider_credential_present_without_value_or_digest_read": true,
+    "credential_file_mode_0600_and_git_ignored": true,
+    "candidate49_plan_run_or_source_request_performed": false,
+    "historical_offline_research_allowed_and_performed": true
+  },
+  "reports": {
+    "campaign139_terminal_report": {
+      "path": "docs/a_share_three_day_walkforward_campaign_139_terminal_report.md",
+      "sha256": "f80077b3ea027f00ad6853faa2e386527b83b0bc5c6d7a2dea1c4ad3ca7de8a1"
+    },
+    "current_research_report": {
+      "path": "data/experiments/short_horizon/current_research_report.md",
+      "sha256": "48b0529241cec57b87412001c6f69019d5405ef260de9958ec7ac090cc517b7d"
+    },
+    "three_day_research_report": {
+      "path": "data/experiments/short_horizon/three_day_research_report.md",
+      "sha256": "b15b52fc317be32ac4a239c1c14f601f7c7a4e91a2a2c16bf53b4fbdf95d2496"
+    }
+  },
+  "research_boundary": {
+    "campaign139_accepted_source_and_candidate_values_read": true,
+    "campaign139_comparator_values_read": false,
+    "historical_daily_price_or_forward_return_values_read": false,
+    "stress_2024_2025_opened": false,
+    "provider_request_issued": false,
+    "provider_credential_value_or_digest_read": false,
+    "candidate49_historical_backfill_performed": false,
+    "candidate49_ledgers_changed": false,
+    "second_prospective_candidate_created": false,
+    "current_scoring_selection_sizing_positions_or_orders_performed": false,
+    "investment_advice": false
+  },
+  "next_action": "The active goal continues. Begin Campaign140 offline at any local time from a genuinely new finite prevalue mechanism supported by accepted historically versioned point-in-time data; preserve Campaign139 as terminal and Candidate49 as the sole prospective ledger."
+}

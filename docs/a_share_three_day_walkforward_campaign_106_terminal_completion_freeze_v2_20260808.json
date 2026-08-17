@@ -1,0 +1,81 @@
+{
+  "schema_version": 2,
+  "kind": "a_share_three_day_walkforward_campaign106_terminal_completion_freeze",
+  "status": "frozen_with_final_accounting_791_and_alias_aware_verification",
+  "frozen_at": "2026-08-07T19:59:35Z",
+  "supersedes_without_rewriting": {
+    "path": "docs/a_share_three_day_walkforward_campaign_106_terminal_completion_freeze_20260808.json",
+    "sha256": "0daf1ad598d38c1e66885316e74caf33a53fb95d330a48cdcb20d470b110d62a",
+    "preserved": true
+  },
+  "terminal_result": {
+    "path": "docs/a_share_three_day_walkforward_campaign_106_terminal_result_binding_v3_20260808.json",
+    "sha256": "9b0509b83e9d415f7670f0e53267fdf2de5a0e0041e58746ff5469d6b0ce31af"
+  },
+  "iteration_state": {
+    "path": "docs/a_share_three_day_iteration_status_20260808_campaign106_terminal_v3.json",
+    "sha256": "4dd06bbe5165541467fbb9a29215e83f6bd6254003e0919e3d2741efd51ffcf5"
+  },
+  "effective_future_numeric_policy": {
+    "path": "docs/a_share_three_day_walkforward_future_numeric_comparison_eligibility_policy_v66_20260808.json",
+    "sha256": "76033dc9623bdb85993232ee12518ebb80331d662a3fa5861bfedcc0cf8dc086"
+  },
+  "research_attempt_ledger": {
+    "path": "data/experiments/short_horizon/historical_walkforward/campaign_106/research_attempt_ledger_v5.json",
+    "sha256": "9e6d04d6652bce2d248bf07ccc10deed7e36ddf9427e9d064ec2d1ce73dcc25b"
+  },
+  "accounting_failure_artifacts": [
+    {
+      "path": "docs/a_share_three_day_walkforward_campaign_106_postterminal_attempt_accounting_failure_20260808.json",
+      "sha256": "7d33b5c9c518372dbfcd57c12eb2ef7851a422b8ccb7ac955ab2ac80aa090f80"
+    },
+    {
+      "path": "docs/a_share_three_day_walkforward_campaign_106_accounting_correction_test_field_alias_failure_20260808.json",
+      "sha256": "ef000afbf992904a8fc051c278567f802f5eb8187ee7adbf8a4f2fb22ca91d39"
+    }
+  ],
+  "reports": [
+    {
+      "path": "docs/a_share_three_day_walkforward_campaign_106_report.md",
+      "sha256": "4fb696c7699d6c8c3c7b28f9d5f0a13917748a2ceff7ca1f0a194e38afbe466a"
+    },
+    {
+      "path": "data/experiments/short_horizon/current_research_report.md",
+      "sha256": "1602f2e0161e8e385ab785e43e3389759086085ede28f77aef728819d4c15af0"
+    },
+    {
+      "path": "data/experiments/short_horizon/three_day_research_report.md",
+      "sha256": "31efd97bf6e5b870855515daba57062737aa79a5f7e7ca8bb5dd4a853de855e5"
+    }
+  ],
+  "verification": {
+    "alias_aware_test": {
+      "path": "tests/data_collector_tests/test_a_share_three_day_walkforward_campaign106_accounting_correction_v2.py",
+      "sha256": "c606a666cfe7570fa999c731a0d595801a148cfabb4c2fc72e7caab205492aaa"
+    },
+    "campaign106_terminal_test": {
+      "path": "tests/data_collector_tests/test_a_share_three_day_walkforward_campaign106_terminal.py",
+      "sha256": "6fb3341963bb95c4452fc22e8b33f13969efe40393cd9e4cda0525e3508825f9"
+    },
+    "result": "9 passed",
+    "all_current_bindings_passed": true
+  },
+  "terminal_semantics": {
+    "scientific_result": "inconclusive_due_to_infrastructure",
+    "campaign106_attempt_count": 5,
+    "campaign106_infrastructure_failure_count": 4,
+    "campaign106_complete_factor_attempt_count": 1,
+    "campaign106_return_reading_development_trial_count": 0,
+    "cumulative_historical_research_attempt_count": 791,
+    "cumulative_return_reading_development_trial_count": 300,
+    "complete_definition_count": 136,
+    "complete_definition_order_sha256": "2099f016f5979a820b480a83aa28877504ea5238362feed551bb7cf583cbf7d0",
+    "numeric_comparator_count": 132,
+    "numeric_comparator_order_sha256": "7ed69afd1408e84dcc856583344166ffc9bcbb0add1aed63163b1d12a1be9a25",
+    "historical_daily_price_or_forward_return_values_read_by_corrections": false,
+    "stress_2024_2025_opened": false,
+    "candidate49_ledgers_changed": false,
+    "provider_request_issued": false
+  },
+  "next_action": "Use state v3 and policy v66 as immutable Campaign107 authorities; correct the preserved preregistration binding failure additively before any candidate or comparator values."
+}

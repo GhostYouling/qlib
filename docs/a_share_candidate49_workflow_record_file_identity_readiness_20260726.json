@@ -1,0 +1,171 @@
+{
+  "version": 1,
+  "kind": "a_share_candidate49_workflow_record_file_identity_readiness",
+  "status": "offline_workflow_record_file_identity_and_durable_publication_passed_real_future_session_pending",
+  "recorded_at": "2026-07-25T20:18:24Z",
+  "purpose": "Advance Candidate49 by proving that a semantically valid completed workflow JSON cannot be accepted through a symbolic link, a shared hard-link inode, or a symbolic-link parent, and that publication durably synchronizes both the file and its parent directory before the record is treated as immutable.",
+  "advances": {
+    "path": "docs/a_share_candidate49_workflow_no_signal_semantic_readiness_20260726.json",
+    "sha256": "c46fadb6dd2d9a720ed90343a77694c94ae573024bce91b17af9ecf0378d3d91"
+  },
+  "authoritative_research_state": {
+    "path": "docs/a_share_three_day_iteration_status_20260725_future_only.json",
+    "sha256": "d44e1cb3707cce194eed37e99cc90f865396b1de8c35e02a393a2a243d973466",
+    "future_only_policy_path": "docs/a_share_three_day_future_only_minute_research_policy_20260725.json",
+    "future_only_policy_sha256": "52ca8bfa7201509fe891d0af3d1c87aeebd64e47e6ec6641e897849411df408c",
+    "active_future_only_candidate": "candidate49_intraday_cumulative_vwap_crossing_rate_240m_v1",
+    "aggregation_allowed": false,
+    "candidate50_activation_allowed": false
+  },
+  "candidate_contract": {
+    "factor_changed_by_this_work": false,
+    "factor_direction": "higher_intraday_cumulative_vwap_crossing_rate_240m",
+    "ranking_rule_changed_by_this_work": false,
+    "minimum_signal_names_changed_by_this_work": false,
+    "signal_timing_changed_by_this_work": false,
+    "execution_protocol_changed_by_this_work": false,
+    "three_session_holding_definition_changed_by_this_work": false,
+    "historical_return_backfill_allowed": false
+  },
+  "red_test_evidence": {
+    "symbolic_link_record": {
+      "setup": "Move a valid completed session JSON to another path and replace the deterministic session path with a symbolic link to that valid JSON.",
+      "former_behavior": "The zero-request validator followed the link, accepted the semantic payload, and returned completed_workflow_record_validated_no_provider_request.",
+      "red_result": "failed_did_not_raise_before_fix"
+    },
+    "shared_hardlink_record": {
+      "setup": "Create a second hard-link path to a valid completed session JSON so the workflow record inode has link count two.",
+      "former_behavior": "The zero-request validator accepted the shared inode even though another path could mutate the same record.",
+      "red_result": "failed_did_not_raise_before_fix"
+    }
+  },
+  "implemented_file_identity_contract": {
+    "existing_parent_chain": "The nearest existing parent and every implicit ancestor must resolve to the exact requested absolute path and must be a real directory, never a symbolic link or another file type.",
+    "existing_record": "The deterministic session path must be a regular non-symbolic-link file whose link count is exactly one and whose strict resolved path equals the requested path.",
+    "pre_side_effect_order": "Existing record and parent identity are checked before Token loading, workflow lock acquisition, child execution, provider checks, or provider requests.",
+    "new_parent_creation": "Missing record directories are created one component at a time only after the nearest existing ancestor passes the real-directory identity gate; every new component is immediately revalidated.",
+    "concurrent_target_gate": "The writer records the initial device and inode when replacing an existing file, then rejects a newly appeared target or an inode change before atomic replacement.",
+    "durability_order": [
+      "write hidden unique temporary file",
+      "flush and fsync temporary file",
+      "revalidate parent and target identity",
+      "atomically replace deterministic target",
+      "fsync parent directory",
+      "revalidate target as a unique regular file"
+    ],
+    "temporary_cleanup": "The hidden temporary file is removed on an exception and is absent after success."
+  },
+  "implementation_fingerprints": {
+    "session_workflow": {
+      "path": "scripts/a_share_tushare_candidate49_future_session_workflow.py",
+      "sha256": "76076d0ecad67415d88a12cb41a209d873814d2c63678ef280d8a4867842697e"
+    },
+    "source_to_signal": {
+      "path": "scripts/a_share_tushare_candidate49_future_observation.py",
+      "sha256": "8514e5aca9a06f374c8c9677e41681c4432a93a3bd9546dbb60480605c016a45"
+    },
+    "paper_execution_and_reporting_validator": {
+      "path": "scripts/a_share_tushare_candidate49_future_execution.py",
+      "sha256": "046a70bbd860ebaf46744e161c690d1275ab0327c8a42213bf955ec66e39a98b"
+    },
+    "session_workflow_tests": {
+      "path": "tests/data_collector_tests/test_a_share_tushare_candidate49_future_session_workflow.py",
+      "sha256": "463ede57c3d5e7ebbceb04c246cfa861c5216f09acf6bf48b8419277fab2b000"
+    },
+    "source_to_signal_tests": {
+      "path": "tests/data_collector_tests/test_a_share_tushare_candidate49_future_observation.py",
+      "sha256": "d5aaea60110d824af8e0fe7f280b15dad5ecbb6b7f8af9b78c7a6569616d5d2b"
+    },
+    "execution_tests": {
+      "path": "tests/data_collector_tests/test_a_share_tushare_candidate49_future_execution.py",
+      "sha256": "dfe838ddba0e03f2902bf5eb0cc3c792adeb0423c52ac335cad1e1075f365f34"
+    },
+    "runbook": {
+      "path": "docs/a_share_data_pipeline.md",
+      "sha256": "27065557cf6d6d1c0a518978aa45c09330403cf5f09a6bce22ae7c4d05cd3c58"
+    }
+  },
+  "offline_proofs": {
+    "session_workflow_tests": {
+      "passed": 26,
+      "failed": 0,
+      "elapsed_seconds": 0.61
+    },
+    "new_identity_cases": {
+      "record_symbolic_link_rejected": true,
+      "record_shared_hardlink_rejected": true,
+      "missing_record_symbolic_link_parent_rejected_before_token_or_child": true,
+      "file_and_parent_directory_fsync_observed_in_order": true,
+      "temporary_file_absent_after_success": true
+    },
+    "focused_candidate49_observation_execution_workflow_tests": {
+      "passed": 84,
+      "failed": 0,
+      "elapsed_seconds": 13.42
+    },
+    "full_data_collector_tests": {
+      "passed": 1124,
+      "failed": 0,
+      "warnings": 9,
+      "elapsed_seconds": 35.79
+    },
+    "ruff": "passed",
+    "python_compile": "passed"
+  },
+  "real_state_after_offline_tests": {
+    "active_daily": {
+      "data_root": "/Users/niyufei/Coding/qlib/data",
+      "daily_source": "baostock",
+      "calendar_end": "2026-07-13",
+      "price_basis_status": "passed"
+    },
+    "historical_tushare_minute_source": {
+      "final_manifest_sha256": "9b3d959563c9d182f38981c6a36bdb3bc9b415de08487a9e1f9e850825c0839f",
+      "final_manifest_fingerprint_valid": true,
+      "advisory_lock_currently_held": false,
+      "partial_root_exists": false
+    },
+    "credential_presence_only": {
+      "current_process_tushare_token_present": false,
+      "launchctl_tushare_token_present": false,
+      "credential_value_read_printed_or_persisted": false
+    },
+    "signal": {
+      "path": "data/experiments/short_horizon/candidate49_future_signal_ledger.json",
+      "sha256": "5193f00d7f36da003f53cec387900da4c3d002299f5dfcfc1a95eaa199ed3a79",
+      "entries": 0,
+      "chain_tip_sha256": "ab47c70a18fc84b6d347fe906c404504faa126d3ec581bf077beffb215788bbb"
+    },
+    "execution": {
+      "path": "data/experiments/short_horizon/candidate49_future_execution_ledger.json",
+      "sha256": "d57a3e61eac969e42cafa418ccd8c0a5ee65dcf69da145bb2c096c2a02a2ea4f",
+      "entries": 0,
+      "chain_tip_sha256": "f302b4b93c9fcc1478e2f917279d589190b79069e6638efc41cb7aa6cf3691e0"
+    },
+    "evaluation_records": 0,
+    "target_session_workflow_record_present": false,
+    "target_session": "2026-07-27",
+    "first_allowed_source_to_signal_time": "2026-07-27T16:30:00+08:00"
+  },
+  "side_effect_audit": {
+    "real_provider_check_performed": false,
+    "real_provider_request_issued": false,
+    "real_minute_rows_read": false,
+    "real_daily_rows_read_by_this_audit": false,
+    "real_signal_or_execution_entry_written": false,
+    "historical_candidate49_return_diagnostic_run": false,
+    "paper_execution_or_live_order_performed": false,
+    "active_data_root_mutated": false
+  },
+  "decision": {
+    "workflow_record_file_identity_ready": true,
+    "workflow_record_durable_publication_ready": true,
+    "real_candidate49_signal_ready": false,
+    "current_real_signal_count": 0,
+    "current_real_execution_entry_count": 0,
+    "current_real_evaluation_milestone_count": 0,
+    "profitability_claim_allowed": false,
+    "selection_sizing_or_order_allowed": false,
+    "next_action": "On or after 2026-07-27 16:30 Asia/Shanghai, run the fail-closed Candidate49 source-to-signal workflow. Accept or revalidate a completed workflow record only at its deterministic unique-regular-file path; then wait for lawful t+1 and t+3 daily evidence before paper settlement."
+  }
+}

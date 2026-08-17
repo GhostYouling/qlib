@@ -1,0 +1,46 @@
+{
+  "version": 1,
+  "kind": "a_share_three_day_walkforward_campaign072_feature_snapshot_binding",
+  "status": "immutable_snapshot_verified_before_coverage_or_comparison_values",
+  "recorded_at": "2026-08-06T06:08:00+08:00",
+  "protocol": {
+    "path": "docs/a_share_three_day_walkforward_campaign_072_no_return_preregistration.json",
+    "sha256": "32f16b1e8e07b0d60aa6646f66c52740e330fa02ef631803fb68b55a7e79cc98"
+  },
+  "implementation_freeze": {
+    "path": "docs/a_share_three_day_walkforward_campaign_072_feature_implementation_freeze_20260806.json",
+    "sha256": "5be2e0c4b286aee80c67267818b45f2176d339415f986f31c1625613f796f214"
+  },
+  "feature_runner": {
+    "path": "scripts/a_share_three_day_walkforward_campaign072_features.py",
+    "sha256": "0bb7261d08fc03b6e907e51ba092b98f62fe7d049ea61a27394f0b6329187631"
+  },
+  "snapshot": {
+    "path": "/Volumes/DIsk/qlib-a-share-tushare-1m/derived/a_share/rich/tushare/minute_walkforward_campaign072_feature_library/tushare_stk_mins_1m_2019_2025_ea0cbb8f_walkforward_campaign072_feature_library_v1/snapshot_manifest.json",
+    "sha256": "14ca00ed8b9a233475445a2cedc4a0bbd57c35030e6de2948c80177156c98c2c",
+    "dataset_sha256": "7baf6939336261bb307fd3dc13ccb8e9676eacbcc7e7d1139e019fb3b96f90b3",
+    "partitions": 33015,
+    "rows": 7724498,
+    "eligible_rows": 7231483,
+    "factor": "quarterly_joint_profit_revenue_growth_floor_rank",
+    "direction": "higher"
+  },
+  "verification": {
+    "all_partition_byte_and_frame_hashes_passed": true,
+    "aggregate_dataset_hash_reproduced": true,
+    "factor_value_range": "(0,1]",
+    "quarterly_fields_read": [
+      "instrument",
+      "report_date",
+      "announcement_date",
+      "profit_yoy",
+      "revenue_yoy"
+    ],
+    "minute_price_or_activity_fields_read": [],
+    "comparison_values_read": false,
+    "historical_daily_price_fields_read": [],
+    "historical_forward_returns_read": false,
+    "provider_request_issued": false
+  },
+  "next_gate": "Freeze and activate the audit implementation before computing coverage; load comparator values only after coverage passes."
+}

@@ -1,0 +1,56 @@
+{
+  "version": 1,
+  "kind": "a_share_three_day_walkforward_campaign055_infrastructure_failure",
+  "status": "pre_candidate_value_repair_test_shared_module_mutation_failure_preserved_test_isolation_authorized",
+  "recorded_at": "2026-08-04T00:16:00+08:00",
+  "stage": "implementation_freeze_repair_combined_pytest",
+  "attempt_classification": "infrastructure_only_failure",
+  "test_result": {
+    "passed": 21,
+    "failed": 1,
+    "failed_test": "test_campaign055_build_is_blocked_until_implementation_freeze_is_bound",
+    "observed_exception_type": "FileNotFoundError",
+    "observed_path": "/private/tmp/not-used-campaign055",
+    "cause": "pytest imported the additive v3 repair test module during collection, which mutated the shared base module loader before the immutable pre-freeze test executed. The old test then passed the loader gate and reached only disk-usage inspection of an intentionally nonexistent /tmp path."
+  },
+  "authoritative_inputs": {
+    "frozen_base_runner": {
+      "path": "scripts/a_share_three_day_walkforward_campaign055_features.py",
+      "sha256": "d695e5acd9645f4706e238c95db2ea69df397004416ea4dd9f895385be603714"
+    },
+    "immutable_pre_value_tests": {
+      "path": "tests/data_collector_tests/test_a_share_three_day_walkforward_campaign055_features.py",
+      "sha256": "017fd0fd0d909da41d6f78536afeab98200fc44b39249973d4cb961ab51c01e2"
+    },
+    "repair_wrapper_v3": {
+      "path": "scripts/a_share_three_day_walkforward_campaign055_features_v3.py",
+      "sha256": "fa9cc6449404da91dd39dd6ed340f83eb70be768a7808df5cd9bc4da1b0040fa"
+    },
+    "failed_additive_repair_tests": {
+      "path": "tests/data_collector_tests/test_a_share_three_day_walkforward_campaign055_implementation_freeze_repair.py",
+      "sha256": "e357de58fc55ce8c141ea8bb70daa578ef5ed430264f496e203965b9f9389b7c"
+    },
+    "prior_semantic_path_failure": {
+      "path": "docs/a_share_three_day_walkforward_campaign_055_implementation_freeze_semantic_path_failure_20260804.json",
+      "sha256": "820497ae38b2d9404b3c52c546aab9e98a06bc59ce508e0661aa57629e7974b2"
+    }
+  },
+  "data_boundary": {
+    "external_campaign055_snapshot_manifest_present": false,
+    "campaign055_experiment_artifact_count": 0,
+    "external_minute_partition_read": false,
+    "candidate_values_read": false,
+    "comparison_values_read": false,
+    "historical_daily_price_fields_read": [],
+    "historical_forward_return_fields_read": false,
+    "provider_request_issued": false,
+    "candidate49_ledgers_changed": false
+  },
+  "authorized_repair": {
+    "scope": "Change only the unfrozen additive repair-test module so every v3 import and semantic check runs in a fresh child process; keep the frozen base runner and immutable pre-value tests byte-identical.",
+    "frozen_base_runner_or_pre_value_test_may_change": false,
+    "v3_repair_logic_may_change": false,
+    "protocol_formula_direction_bins_minimum_event_gates_comparison_order_or_trial_may_change": false,
+    "candidate_value_comparison_value_price_or_return_read_during_test_repair": false
+  }
+}

@@ -1,0 +1,79 @@
+{
+  "version": 2,
+  "kind": "a_share_three_day_walkforward_campaign032_no_return_preregistration",
+  "status": "corrected_additive_freeze_before_campaign032_stock_day_quarterly_candidate_comparison_or_return_values",
+  "frozen_at": "2026-07-30T14:49:00Z",
+  "purpose": "Preserve the complete Campaign032 v1 preregistration unchanged and correct its sole failed Campaign031 no-return-audit SHA-256 binding before any protected value.",
+  "complete_spec_base": {
+    "path": "docs/a_share_three_day_walkforward_campaign_032_no_return_preregistration.json",
+    "sha256": "4b788fa9f5119f24ed6875c977eb80ecb303a12a3db3fcac38ec0c2df50348ac",
+    "candidate_factor_count": 1,
+    "comparison_factor_count": 53,
+    "development_trial_count": 1
+  },
+  "failed_v1_binding_validation": {
+    "failed_binding_count": 1,
+    "failed_json_pointer": "/source_chain/campaign031_no_return_audit",
+    "incorrect_expected_sha256": "b994169eeecbb3d47cdca32cbbfbb873be5299493209321da5e3895631211334",
+    "observed_sha256": "659c3282bd02d85f5b3da99e555ba25ec227bf6c8546e50f12bc5e8ad97e30d9",
+    "validator_exit_code": 2,
+    "protected_values_read_before_failure": false
+  },
+  "sole_correction": {
+    "json_pointer": "/source_chain/campaign031_no_return_audit/sha256",
+    "path": "data/experiments/short_horizon/historical_walkforward/campaign_031/no_return/20260730T140740Z_campaign031_no_return_audit.json",
+    "sha256": "659c3282bd02d85f5b3da99e555ba25ec227bf6c8546e50f12bc5e8ad97e30d9"
+  },
+  "effective_complete_spec": {
+    "candidate": {
+      "name": "quarterly_announcement_timeliness_days",
+      "direction": "higher",
+      "formula": "-1 * integer calendar days between report_date and announcement_date for the latest quarterly report effective at signal session t",
+      "transform_scale_clip_threshold_filter": "none"
+    },
+    "comparison_factor_count": 53,
+    "comparison_factor_order_sha256": "8ea05e33f57dfb24b0e8453109d74570ba2f3522b381095b5c5a21840c948339",
+    "coverage_gate": {
+      "minimum_median_coverage": 0.95,
+      "minimum_p05_coverage": 0.9,
+      "minimum_p05_eligible_names": 50,
+      "minimum_non_overlapping_three_session_cohorts": 200,
+      "minimum_observed_calendar_years": 5
+    },
+    "uniqueness_gate": {
+      "maximum_allowed_absolute_median_daily_rank_correlation": 0.8,
+      "minimum_pairwise_names_per_session": 50,
+      "minimum_pairwise_sessions_per_comparison": 100
+    },
+    "development_trial": {
+      "trial_id": "wf032_quarterly_announcement_timeliness_days_single_higher",
+      "development_interval": [
+        "2019-01-01",
+        "2023-12-31"
+      ],
+      "fold_count": 3,
+      "purge_local_signal_sessions": 3
+    },
+    "stress_opening_rule": "2024-2025 may open exactly once only for the frozen development survivor"
+  },
+  "immutability": {
+    "v1_rewritten": false,
+    "formula_direction_source_projection_missing_rules_comparison_order_gates_folds_costs_or_search_changed": false,
+    "only_failed_sha256_binding_corrected": true
+  },
+  "research_boundary": {
+    "campaign032_stock_day_partitions_read": false,
+    "quarterly_event_rows_read": false,
+    "candidate_values_read": false,
+    "comparison_values_read": false,
+    "daily_price_fields_read": false,
+    "forward_returns_read": false,
+    "provider_request_issued_for_campaign032": false,
+    "candidate49_historical_return_signal_or_execution_backfill_performed": false,
+    "current_scoring_selection_sizing_or_orders_performed": false
+  },
+  "decision": {
+    "v2_binding_validation_required_before_any_protected_value": true,
+    "use_v2_as_campaign032_no_return_freeze": true
+  }
+}

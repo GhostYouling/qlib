@@ -1,0 +1,102 @@
+{
+  "schema_version": 1,
+  "kind": "a_share_three_day_walkforward_campaign185_terminal_validation",
+  "status": "strict_validation_passed_zero_infrastructure_failures",
+  "recorded_at": "2026-08-15T13:18:13+08:00",
+  "authoritative_inputs": {
+    "real_estate_presale_sales_delivery_land_bank_source_frontier": {
+      "path": "docs/a_share_three_day_walkforward_campaign_185_real_estate_presale_sales_delivery_land_bank_source_frontier_20260815.json",
+      "sha256": "8317fdeb741832ec5ff4cd4abf0c558419506b6597c68e9fe05540b92f3cbd31"
+    },
+    "attempt_ledger": {
+      "path": "data/experiments/short_horizon/historical_walkforward/campaign_185/research_attempt_ledger_v1.json",
+      "sha256": "699ba941b2e151f08ed12842c147d5884fadd4fe6eb28592a8c507f669b28190"
+    },
+    "terminal_result": {
+      "path": "docs/a_share_three_day_walkforward_campaign_185_terminal_result_20260815.json",
+      "sha256": "3e8f4d8397337813b8f0f6af97d2204d669d861114a8cdce40d69219278d69f1"
+    },
+    "terminal_report": {
+      "path": "docs/a_share_three_day_walkforward_campaign_185_terminal_report_20260815.md",
+      "sha256": "4b45e97906f6f4327078a250bf6f5dee0b5a354138fd6880e0ee23df335f3ae4"
+    },
+    "eligibility_policy_v274": {
+      "path": "docs/a_share_three_day_walkforward_future_numeric_comparison_eligibility_policy_v274_20260815.json",
+      "sha256": "8c0616602ee9d546a2d2e1d574b72f2fe3562ae4cf74614d238c389db7c0acf8"
+    },
+    "enterprise_tax_domain_overlap_rejection": {
+      "path": "docs/a_share_three_day_walkforward_campaign_185_enterprise_tax_domain_overlap_rejection_20260815.json",
+      "sha256": "cc35c0120310414b5dcc6843ae4b533dbab44f65790f727439531e4b81eff04e"
+    },
+    "equity_incentive_terminal_source_family_rejection": {
+      "path": "docs/a_share_three_day_walkforward_campaign_185_equity_incentive_terminated_source_family_rejection_20260815.json",
+      "sha256": "1bb8b954b4a3b23a033ef038185e32902e32b0fc8cc4ab6f0232fb68132b2c77"
+    },
+    "terminal_tests": {
+      "path": "tests/data_collector_tests/test_a_share_three_day_walkforward_campaign185_terminal.py",
+      "sha256": "1d999a926a8aa4de27b84304c47b5bf466b8bd0f80fe626bc26d2d83807ce21d"
+    },
+    "manage_qlib_a_share_data_skill": {
+      "path": "/Users/niyufei/.codex/skills/manage-qlib-a-share-data/SKILL.md",
+      "sha256": "565713a5f3aeb6a1acf23e397fcc21be28d0c3ea4ebf21c7f287a25bb94d78dc"
+    }
+  },
+  "mutable_unified_reports": {
+    "current_research_report": {
+      "path": "data/experiments/short_horizon/current_research_report.md",
+      "sha256_at_validation": "446f6e598f63c5b6ba526ce509473c0629e33539b4e9e523c4306010dc3e2621",
+      "mutable_append_only_report_not_an_immutable_binding": true
+    },
+    "three_day_research_report": {
+      "path": "data/experiments/short_horizon/three_day_research_report.md",
+      "sha256_at_validation": "c537511a46524f9e266602bd8c0b3c63b029312f44964d64aea6ff0a9dfc309c",
+      "mutable_append_only_report_not_an_immutable_binding": true
+    }
+  },
+  "validation_results": {
+    "positive_json_records_parsed": 6,
+    "direct_bindings_verified": 35,
+    "authoritative_bindings_failed": 0,
+    "timestamp_records_checked": 6,
+    "timestamp_failures": 0,
+    "campaign185_attempt_entries_verified": 9,
+    "campaign185_attempt_hash_chain_passed": true,
+    "candidate_domains_reviewed": 3,
+    "prefrontier_exact_existing_domain_overlap_rejections": 1,
+    "prefrontier_terminal_source_family_rejections": 1,
+    "finite_catalog_concept_count": 7,
+    "source_admission_deferrals_not_factor_failures": 4,
+    "relabeling_operator_or_combination_route_rejections": 3,
+    "selected_candidate_count": 0,
+    "anti_survivorship_boundary_verified": true,
+    "complete_definition_count": 158,
+    "complete_definition_order_sha256": "4819c7fd7c0795d7598a52f3c615e3f117d5f4ecd9332974bc8e3dfa57c96667",
+    "numeric_comparator_count": 142,
+    "numeric_comparator_order_sha256": "5d1b35fb5a0d8ac9293008db9963c4a60a94dc940c237c3ed259e5ce44f14aaf",
+    "unified_reports_checked": 2,
+    "black_passed": true,
+    "ruff_passed": true,
+    "focused_campaign185_tests_passed": 5,
+    "focused_campaign185_duration_seconds": 1.37,
+    "campaign145_through_campaign185_test_file_count": 73,
+    "campaign145_through_campaign185_tests_passed": 439,
+    "campaign145_through_campaign185_tests_skipped": 1,
+    "campaign145_through_campaign185_exact_historical_lifecycle_nodes_deselected": 5,
+    "campaign145_through_campaign185_duration_seconds": 11.93,
+    "candidate49_signal_entries": 0,
+    "candidate49_execution_entries": 0,
+    "unrecovered_or_unrecorded_failed_exit_codes_bypassed_or_masked": false,
+    "recorded_infrastructure_failure_count": 0
+  },
+  "research_boundary": {
+    "source_row_real_estate_project_land_parcel_presale_contracted_sales_collection_delivery_factor_comparator_security_price_or_return_value_read": false,
+    "stress_2024_2025_opened": false,
+    "provider_or_web_request_issued": false,
+    "provider_credential_presence_value_or_digest_read": false,
+    "candidate49_ledgers_changed": false,
+    "second_prospective_candidate_created": false,
+    "current_scoring_selection_sizing_positions_or_orders_performed": false,
+    "investment_advice": false
+  },
+  "next_action": "Publish a final Campaign185 state binding this validation, then begin Campaign186 finite offline prevalue research without waiting for 16:30."
+}

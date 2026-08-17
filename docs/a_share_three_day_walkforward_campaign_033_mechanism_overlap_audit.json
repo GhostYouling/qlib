@@ -1,0 +1,128 @@
+{
+  "version": 1,
+  "kind": "a_share_three_day_walkforward_campaign033_mechanism_overlap_audit",
+  "status": "passed_conceptual_independence_before_minute_candidate_comparison_or_return_values",
+  "recorded_at": "2026-07-30T15:57:00Z",
+  "purpose": "Resolve the selected return-frequency concept into one exact finite no-value mechanism and challenge it against terminal and prospective families before any Campaign033 source partition, candidate value, comparison value, daily price, or forward return is opened.",
+  "concept_scouting": {
+    "path": "docs/a_share_three_day_walkforward_campaign_033_concept_scouting.json",
+    "sha256": "3b6314768a34828b57bc0bd71459b259a85b32d5061ceb851625a9b8e5c21eea"
+  },
+  "authoritative_boundary": {
+    "path": "docs/a_share_three_day_iteration_status_20260730_campaign032_verified.json",
+    "sha256": "fdad546c4318772b3138dce47404694504714dea8485ecb949f6ffe97f4f62b7"
+  },
+  "historical_walkforward_policy": {
+    "path": "docs/a_share_three_day_historical_walkforward_research_policy_20260727.json",
+    "sha256": "38426d6161b9bfed323c58caba18feca668b8c9d53e294951a8ba90c01a798bb"
+  },
+  "selected_mechanism": {
+    "name": "intraday_return_spectral_entropy_59f",
+    "direction": "higher",
+    "information_domain": "complete_within_half_signed_close_return_frequency_energy_dispersion",
+    "formula": "-sum(p_k * log(p_k)) / log(59) for k=1..59, where p_k is pooled morning-plus-afternoon demeaned signed-return DFT power at positive frequency k divided by total pooled positive-frequency power",
+    "economic_hypothesis": "A higher value means return energy is distributed broadly across intraday frequencies instead of being dominated by a small periodic or slowly varying structure, representing less mechanically concentrated price formation that may carry resilience from the next open through the third close.",
+    "source_fields": [
+      "datetime",
+      "symbol",
+      "provider",
+      "close"
+    ],
+    "selected_bar_grid": "exactly 240 one-minute closes at 09:31-11:30 and 13:01-15:00 after frozen timestamp normalization; standalone 09:30 is excluded and no return crosses lunch",
+    "return_rule": "Form 119 natural-log close returns separately inside each 120-close half. Retain signed and exact-zero returns and subtract each half's arithmetic mean from its own 119-vector.",
+    "dft_rule": "For each demeaned 119-vector compute the unnormalized length-119 discrete Fourier transform with exponent -2*pi*i*j*k/119. Retain exactly positive-frequency bins k=1 through 59; do not use k=0 or duplicate negative-frequency bins.",
+    "power_pooling_rule": "For each k, add squared complex magnitudes from the morning and afternoon coefficients. Pool power before entropy; do not average two half-session entropies and do not join returns across lunch.",
+    "entropy_rule": "Divide each of the 59 pooled powers by their strictly positive total. Terms with exact p_k=0 contribute zero. Use natural logarithms and divide Shannon entropy by log(59).",
+    "bar_rule": "All 240 selected closes must be finite and strictly positive before log returns are formed.",
+    "endpoint_rule": "Only values within 1e-12 of 0 or 1 may be canonicalized to the exact endpoint; no statistical clipping is allowed.",
+    "missing_rule": "Any invalid or nonpositive close, nonfinite return, nonfinite DFT power, nonpositive total positive-frequency power, nonfinite score, or score outside [0,1] after endpoint canonicalization makes the stock-day missing.",
+    "valid_range": [
+      0.0,
+      1.0
+    ]
+  },
+  "overlap_challenges": [
+    {
+      "family": "intraday_return_variance_entropy_238m",
+      "result": "distinct_pending_statistical_uniqueness_gate",
+      "reason": "Return-variance entropy is a time-domain allocation statistic over individual squared returns and is invariant to permutation. Campaign033 is a frequency-domain allocation statistic; reordering the same signed returns can change every nonzero-frequency power while leaving time-domain variance entropy unchanged."
+    },
+    {
+      "family": "intraday_diffusive_variation_ratio_and_absolute_return_serial_persistence",
+      "result": "distinct_pending_statistical_uniqueness_gate",
+      "reason": "Those factors use adjacent products or lag-one absolute-return dependence. Campaign033 uses signed returns and the complete 59-bin power distribution, contains no selected lag or adjacent-product ratio, and discards phase only after the full-half DFT."
+    },
+    {
+      "family": "intraday_return_sign_run_imbalance_and_bar_direction_continuity",
+      "result": "distinct",
+      "reason": "Sign-run mechanisms count selected discrete sign transitions and may discard magnitude. Campaign033 retains every signed magnitude, applies no sign threshold, and measures continuous frequency power rather than run counts."
+    },
+    {
+      "family": "intraday_morning_afternoon_return_profile_persistence",
+      "result": "distinct",
+      "reason": "Campaign027 correlates morning and afternoon signed return vectors at matching ordinal positions and depends on cross-half phase alignment. Campaign033 sums their powers at matching frequencies and is invariant to each half's cyclic phase; it never pairs morning return j with afternoon return j."
+    },
+    {
+      "family": "intraday_volatility_resolution_and_time_allocation",
+      "result": "distinct",
+      "reason": "Volatility resolution compares morning and afternoon total squared-return mass, while time-allocation factors emphasize when activity occurs. Campaign033 pools the halves equally at each frequency and depends on normalized frequency shape, not morning-versus-afternoon level or clock-time mass."
+    },
+    {
+      "family": "intraday_signed_path_efficiency_late_return_and_terminal_location",
+      "result": "distinct",
+      "reason": "Demeaning and excluding k=0 removes the half-session mean-return component. Net displacement, late return, and terminal location can change without uniquely determining the 59-bin normalized spectrum."
+    },
+    {
+      "family": "candidate49_cumulative_vwap_crossing_rate",
+      "result": "distinct",
+      "reason": "Candidate49 measures repeated crossings around causal cumulative VWAP using close, volume, and amount. Campaign033 reads close only, contains no transaction anchor or crossing count, and remains historical-research-only."
+    },
+    {
+      "family": "quarterly_announcement_freshness_or_timeliness",
+      "result": "distinct",
+      "reason": "Campaign020 and Campaign032 use corporate disclosure dates and no price path. Campaign033 uses only the completed signal-session intraday close path and no quarterly field."
+    },
+    {
+      "family": "terminal_factor_combination_or_rescue",
+      "result": "not_used",
+      "reason": "Campaign033 contains one raw close-path frequency statistic and no terminal factor value, transform, filter, model, or combination."
+    }
+  ],
+  "design_choices_frozen_before_values": {
+    "formula_family": "pooled_two_half_length119_positive_frequency_power_shannon_entropy",
+    "direction": "higher",
+    "selected_bar_count": 240,
+    "return_count_per_half": 119,
+    "positive_frequency_bin_count": 59,
+    "include_0930": false,
+    "include_lunch_return": false,
+    "demean_each_half": true,
+    "dft_normalization": "unnormalized_coefficients_then_power_share",
+    "power_pooling": "sum_morning_and_afternoon_power_per_frequency_before_entropy",
+    "entropy_logarithm": "natural",
+    "entropy_normalization": "divide_by_log_59",
+    "retain_exact_zero_returns": true,
+    "require_positive_total_positive_frequency_power": true,
+    "endpoint_canonicalization_tolerance": 1E-12,
+    "taper_window_padding_selected_band_phase_wavelet_or_spectral_slope_allowed": false,
+    "subwindow_lag_year_filter_or_threshold_selection_allowed": false,
+    "market_quarterly_activity_or_terminal_factor_input_allowed": false
+  },
+  "decision": {
+    "conceptually_independent": true,
+    "advance_to_exact_no_return_preregistration": true,
+    "candidate_or_comparison_values_may_be_read_now": false,
+    "binding_validator_exit_zero_required_before_next_stage": true,
+    "candidate49_remains_only_active_prospective_candidate": true,
+    "candidate50_activation_allowed": false,
+    "current_aggregation_scoring_selection_sizing_or_orders_allowed": false
+  },
+  "research_boundary": {
+    "external_campaign033_minute_partitions_read": false,
+    "candidate_values_read": false,
+    "comparison_values_read": false,
+    "daily_price_fields_read": false,
+    "forward_returns_read": false,
+    "provider_request_issued": false
+  }
+}

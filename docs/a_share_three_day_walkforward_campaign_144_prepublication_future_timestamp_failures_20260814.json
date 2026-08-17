@@ -1,0 +1,45 @@
+{
+  "schema_version": 1,
+  "kind": "a_share_three_day_walkforward_campaign144_infrastructure_failures",
+  "status": "append_only_timestamp_corrections_recorded_before_terminal_validation",
+  "recorded_at": "2026-08-14T19:29:25+08:00",
+  "attempts": [
+    {
+      "attempt_id": "campaign144_infrastructure_010",
+      "phase": "prepublication_attempt_ledger_timestamp_validation",
+      "invalid_record": "data/experiments/short_horizon/historical_walkforward/campaign_144/research_attempt_ledger_v1.json",
+      "invalid_recorded_at": "2026-08-14T19:30:00+08:00",
+      "cause": "The manually assigned timestamp was later than the independently read local clock after publication.",
+      "invalid_record_preserved": true,
+      "allowed_recovery": "Publish an additive ledger delta after the local clock reading and treat its timestamp as effective."
+    },
+    {
+      "attempt_id": "campaign144_infrastructure_011",
+      "phase": "prepublication_terminal_result_timestamp_validation",
+      "invalid_record": "docs/a_share_three_day_walkforward_campaign_144_terminal_result_20260814.json",
+      "invalid_recorded_at": "2026-08-14T19:33:00+08:00",
+      "cause": "The manually assigned timestamp was later than the independently read local clock after publication.",
+      "invalid_record_preserved": true,
+      "allowed_recovery": "Publish a superseding v2 terminal result with the actual later local timestamp and corrected accounting."
+    }
+  ],
+  "common_semantics": {
+    "target_record_rewritten": false,
+    "failed_exit_code_bypassed": false,
+    "later_success_used_to_mask_failure": false,
+    "scientific_result_changed": false
+  },
+  "research_boundary": {
+    "source_rows_or_column_values_read": false,
+    "candidate_or_comparator_values_read": false,
+    "historical_daily_price_or_forward_return_values_read": false,
+    "stress_2024_2025_opened": false,
+    "provider_request_issued": false,
+    "provider_credential_value_or_digest_read": false,
+    "candidate49_historical_backfill_performed": false,
+    "candidate49_ledgers_changed": false,
+    "second_prospective_candidate_created": false,
+    "current_scoring_selection_sizing_positions_or_orders_performed": false,
+    "investment_advice": false
+  }
+}

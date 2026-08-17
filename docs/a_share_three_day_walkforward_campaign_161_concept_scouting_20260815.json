@@ -1,0 +1,112 @@
+{
+  "schema_version": 1,
+  "kind": "a_share_three_day_walkforward_campaign161_concept_scouting",
+  "status": "one_changed_source_debt_maturity_candidate_selected_before_provider_data_or_research_values",
+  "recorded_at": "2026-08-15T05:19:20+08:00",
+  "authoritative_inputs": {
+    "historical_walkforward_policy": {
+      "path": "docs/a_share_three_day_historical_walkforward_research_policy_20260727.json",
+      "sha256": "38426d6161b9bfed323c58caba18feca168b8c9d53e294951a8ba90c01a798bb"
+    },
+    "campaign161_initial_state": {
+      "path": "docs/a_share_three_day_iteration_status_20260815_campaign161_initial_verification.json",
+      "sha256": "f132cd1a499f8f04f279cc9b022456af964d5309ba63b728f6098b34c7ba8fcb"
+    },
+    "changed_source_evidence": {
+      "path": "docs/a_share_three_day_walkforward_campaign_161_debt_maturity_source_evidence_20260815.json",
+      "sha256": "4ae1a1af546265c842e7ef13c107211c2ed75ab4907f3b37f8eb85753a00da65"
+    }
+  },
+  "frozen_complete_library_state": {
+    "complete_definition_count": 157,
+    "complete_definition_order_sha256": "c39bb6ca969b5f469a9377a5b5ca743405cec9d8511297ed6a1c44188ef40b82",
+    "numeric_comparator_count": 142,
+    "numeric_comparator_order_sha256": "5d1b35fb5a0d8ac9293008db9963c4a60a94dc940c237c3ed259e5ce44f14aaf"
+  },
+  "finite_catalog": [
+    {
+      "catalog_id": "c161_01",
+      "name": "complete_142_numeric_library_corr80_component_balanced_consensus_refresh",
+      "economic_hypothesis": "Prevent large correlated factor families from dominating a complete-library rank consensus.",
+      "formula_direction_parameters_filters_subsets_combinations_models": "Recompute Campaign134's 0.8 positive-correlation connected components after replacing 140 with 142 comparators.",
+      "decision": "rejected_before_values_exact_campaign134_family_component_count_refresh",
+      "reason": "Campaign134 terminalized this graph, threshold and component-balancing family and expressly forbids rethresholding, reclustering, reweighting or rescue. Appending two comparators does not create a new mechanism."
+    },
+    {
+      "catalog_id": "c161_02",
+      "name": "complete_142_numeric_library_semantic_family_balanced_consensus",
+      "economic_hypothesis": "Give each economic feature family equal total rank weight.",
+      "formula_direction_parameters_filters_subsets_combinations_models": "Assign the complete library to semantic groups and average group means equally.",
+      "decision": "rejected_before_values_campaign144_semantic_group_weight_refresh",
+      "reason": "Campaign144 already rejected semantic grouping as a result-exposed regrouping and weight refresh; taxonomy choice creates additional multiplicity."
+    },
+    {
+      "catalog_id": "c161_03",
+      "name": "complete_142_numeric_library_continuous_inverse_correlation_degree_weights",
+      "economic_hypothesis": "Continuously downweight redundant factors without selecting a subset or reading returns.",
+      "formula_direction_parameters_filters_subsets_combinations_models": "Positive normalized weight inversely related to each factor's training-only absolute cross-factor correlation degree.",
+      "decision": "rejected_before_values_campaign134_redundancy_weight_reparameterization",
+      "reason": "This replaces Campaign134's discrete component-size weights with continuous weights after its uniqueness failure. It is the same redundancy-weight family and therefore a forbidden reparameterization/rescue."
+    },
+    {
+      "catalog_id": "c161_04",
+      "name": "complete_142_numeric_library_fixed_monotone_spline_gam",
+      "economic_hypothesis": "Learn smooth monotone marginal responses for every direction-normalized feature and combine all contributions.",
+      "formula_direction_parameters_filters_subsets_combinations_models": "Fixed-knot positive monotone spline per component followed by an equal additive mean.",
+      "decision": "rejected_before_values_campaign133_monotone_marginal_calibration_family_refresh",
+      "reason": "Campaign133 terminalized complete-library monotone marginal calibration and prohibited knot/penalty reparameterization or stacking; substituting splines for its PAVA map is a model-family refresh."
+    },
+    {
+      "catalog_id": "c161_05",
+      "name": "complete_142_numeric_library_pca_or_autoencoder_latent_consensus",
+      "economic_hypothesis": "Compress the complete feature library into a lower-dimensional common state.",
+      "formula_direction_parameters_filters_subsets_combinations_models": "PCA, autoencoder or another latent representation with a chosen component count and orientation.",
+      "decision": "rejected_before_values_sign_orientation_hidden_selection_and_campaign134_latent_rejection",
+      "reason": "Campaign134 already rejected latent consensus; component count and sign orientation can invert frozen directions and silently discard most of the complete library."
+    },
+    {
+      "catalog_id": "c161_06",
+      "name": "eastmoney_debt_maturity_resilience",
+      "economic_hypothesis": "Among issuers with observed interest-bearing borrowing lines, a lower share due in the near term may reduce refinancing pressure over the next three sessions independently of total leverage.",
+      "formula_direction_parameters_filters_subsets_combinations_models": "near=SHORT_LOAN+SHORT_BOND_PAYABLE+NONCURRENT_LIAB_1YEAR; long=LONG_LOAN+BOND_PAYABLE; score=long/(near+long), higher; require all five lines finite and nonnegative and total borrowing strictly positive; no filter, subset, combination or model.",
+      "decision": "selected_for_separately_frozen_no_return_source_contract",
+      "reason": "Campaign160 classified debt maturity as genuinely new but deferred it for missing exact fields. Official AKShare transport and Eastmoney templates now provide changed, pinned evidence for all five raw keys before data rows."
+    }
+  ],
+  "selection": {
+    "selected_catalog_id": "c161_06",
+    "selected_candidate_count": 1,
+    "factor_name": "eastmoney_debt_maturity_resilience",
+    "direction": "higher",
+    "raw_formula": "(LONG_LOAN + BOND_PAYABLE) / (SHORT_LOAN + SHORT_BOND_PAYABLE + NONCURRENT_LIAB_1YEAR + LONG_LOAN + BOND_PAYABLE)",
+    "valid_row": "All five raw line items are present, finite and nonnegative; their sum is strictly positive; identity, report date and notice date are complete; duplicate instrument/report-period rows are fatal.",
+    "availability": "First accepted local trading session strictly after NOTICE_DATE.",
+    "maximum_age_calendar_days": 550,
+    "holding_period_local_sessions": 3,
+    "parameter_search": [],
+    "filters": [],
+    "subsets": [],
+    "combinations": [],
+    "models": []
+  },
+  "mechanism_independence": {
+    "versus_balance_sheet_resilience": "The terminal balance-sheet-resilience factor measures total liabilities relative to total assets. Campaign161 conditions only on five borrowing-maturity lines and ranks the near-versus-long maturity mix; total assets, total liabilities, equity and their ratios never enter.",
+    "versus_quarterly_quality": "ROE, profit, revenue growth and profit growth remain eligibility gates only and never enter the score.",
+    "versus_valuation_free_float_and_price_volume": "No price, market capitalization, share count, valuation, turnover, OHLCV, minute bar, flow or event-count field enters the score.",
+    "old_terminal_results_changed": false
+  },
+  "next_gate": "Freeze the exact full-market request, 2019-2023 partitions, atomicity, revision limitation, acceptance, capacity, ordered 142-comparator uniqueness, three expanding folds, costs and survivor rule before the first Eastmoney financial data API request.",
+  "research_boundary": {
+    "public_source_code_documentation_or_html_template_requested": true,
+    "eastmoney_financial_data_api_request_issued": false,
+    "provider_response_row_or_column_value_read": false,
+    "candidate_or_comparator_value_read": false,
+    "historical_daily_price_or_forward_return_value_read": false,
+    "stress_2024_2025_opened": false,
+    "provider_credential_presence_value_or_digest_read": false,
+    "candidate49_historical_backfill_performed": false,
+    "candidate49_ledgers_changed": false,
+    "second_prospective_candidate_created": false,
+    "current_scoring_selection_sizing_positions_or_orders_performed": false
+  }
+}

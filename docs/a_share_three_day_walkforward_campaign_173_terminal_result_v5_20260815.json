@@ -1,0 +1,95 @@
+{
+  "schema_version": 1,
+  "kind": "a_share_three_day_walkforward_campaign173_terminal_result",
+  "status": "terminal_prevalue_effective_timestamp_subset_failure_recovered_accounting_goal_active",
+  "recorded_at": "2026-08-15T10:04:13+08:00",
+  "supersedes_without_rewriting": {
+    "path": "docs/a_share_three_day_walkforward_campaign_173_terminal_result_v4_20260815.json",
+    "sha256": "acdc66320d3f6b929aaa3b06695c1c33f67e59509c16c25716a1390cbf9442e0",
+    "preserved": true,
+    "scientific_result_changed": false,
+    "reason": "Append the independent validator's effective-timestamp subset failure without changing the scientific result."
+  },
+  "authoritative_inputs": {
+    "campaign173_source_frontier": {
+      "path": "docs/a_share_three_day_walkforward_campaign_173_enterprise_tax_position_compliance_source_frontier_20260815.json",
+      "sha256": "e4eaabeaca181e58e004a7a8968af5946136a602c106fe3241ff06ca41b1a40e"
+    },
+    "campaign173_effective_attempt_ledger": {
+      "path": "data/experiments/short_horizon/historical_walkforward/campaign_173/research_attempt_ledger_v5.json",
+      "sha256": "8bd324644df819296f1644e3f3d3568f517e513baac014e32dd461bb552f34f0",
+      "campaign_effective_entry_count": 12,
+      "chain_tip_sha256": "b929e130bea5281906c0f6978be64bbc1248f144c6f81e75eefa634c80a2f87a"
+    },
+    "effective_timestamp_correction": {
+      "path": "docs/a_share_three_day_walkforward_campaign_173_recorded_at_correction_v2_20260815.json",
+      "sha256": "00e270ee90b51fb1289dd731a02869beb19ab4089ea4b0e7b88d21fc218dd95e"
+    },
+    "effective_timestamp_subset_failure": {
+      "path": "docs/a_share_three_day_walkforward_campaign_173_effective_timestamp_subset_failure_20260815.json",
+      "sha256": "f2118cca8f79e3e9ee6af00dd979adf5d53bfdfe3c5ba745cb20de659284ab45"
+    }
+  },
+  "scientific_result": {
+    "unchanged_from_original_terminal_result": true,
+    "terminal": true,
+    "terminal_phase": "finite_prevalue_enterprise_tax_position_compliance_source_admission",
+    "routes_reviewed": 7,
+    "genuinely_new_issuer_state_routes": 4,
+    "source_admission_deferrals_not_factor_failures": 4,
+    "relabeling_or_operator_route_rejections": 3,
+    "selected_candidate_count": 0,
+    "complete_factor_definition_created": false,
+    "numeric_comparator_created": false,
+    "enterprise_tax_position_or_compliance_declared_ineffective": false
+  },
+  "effective_accounting": {
+    "campaign173_attempt_count": 12,
+    "campaign173_prevalue_scientific_attempt_count": 7,
+    "campaign173_infrastructure_failure_count": 5,
+    "campaign173_complete_factor_attempt_count": 0,
+    "campaign173_return_reading_development_trial_count": 0,
+    "campaign173_development_survivor_count": 0,
+    "campaign173_stress_trial_count": 0,
+    "cumulative_historical_research_attempt_count": 1530,
+    "cumulative_return_reading_development_trial_count": 314
+  },
+  "validation_so_far": {
+    "latest_focused_campaign173_tests_passed": 5,
+    "latest_focused_campaign173_duration_seconds": 1.09,
+    "latest_campaign145_through_campaign173_tests_passed": 379,
+    "latest_campaign145_through_campaign173_tests_skipped": 1,
+    "latest_campaign145_through_campaign173_exact_nodes_deselected": 5,
+    "latest_campaign145_through_campaign173_duration_seconds": 9.70,
+    "positive_hash_binding_set_passed_before_latest_scope_failure": true,
+    "invalid_v1_negative_control_passed_before_latest_scope_failure": true,
+    "effective_timestamp_subset_requires_separation": true
+  },
+  "library_state": {
+    "complete_factor_definition_count": 158,
+    "complete_factor_definition_order_sha256": "4819c7fd7c0795d7598a52f3c615e3f117d5f4ecd9332974bc8e3dfa57c96667",
+    "eligible_numeric_comparator_count": 142,
+    "eligible_numeric_comparator_order_sha256": "5d1b35fb5a0d8ac9293008db9963c4a60a94dc940c237c3ed259e5ce44f14aaf",
+    "changed_by_campaign173": false
+  },
+  "candidate49": {
+    "only_active_prospective_candidate": true,
+    "signal_ledger_sha256": "5193f00d7f36da003f53cec387900da4c3d002299f5dfcfc1a95eaa199ed3a79",
+    "signal_entry_count": 0,
+    "execution_ledger_sha256": "d57a3e61eac969e42cafa418ccd8c0a5ee65dcf69da145bb2c096c2a02a2ea4f",
+    "execution_entry_count": 0,
+    "ledgers_changed": false
+  },
+  "research_boundary": {
+    "unrecovered_or_unrecorded_failed_exit_codes_bypassed_or_masked": false,
+    "source_row_filing_document_tax_value_candidate_comparator_security_price_or_return_value_read": false,
+    "stress_2024_2025_opened": false,
+    "provider_or_web_request_issued": false,
+    "provider_credential_presence_value_or_digest_read": false,
+    "candidate49_ledgers_changed": false,
+    "second_prospective_candidate_created": false,
+    "current_scoring_selection_sizing_positions_or_orders_performed": false,
+    "investment_advice": false
+  },
+  "next_action": "Publish policy v259, bind the effective v5 records in tests, rerun the gates, and validate hash bindings, negative control and effective timestamp ordering with three explicit disjoint sets."
+}

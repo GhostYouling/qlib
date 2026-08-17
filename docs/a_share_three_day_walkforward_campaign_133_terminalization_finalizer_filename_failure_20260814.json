@@ -1,0 +1,18 @@
+{
+  "schema_version": 1,
+  "kind": "a_share_three_day_walkforward_campaign133_postrun_infrastructure_failure",
+  "attempt_id": "campaign133_infrastructure_006",
+  "status": "recorded_postrun_read_only_finalizer_filename_failure",
+  "recorded_at": "2026-08-14T10:19:00+08:00",
+  "stage": "terminal_finalizer_reference_inspection",
+  "error_type": "SedNoSuchFile",
+  "error_summary": "The reference listing correctly found campaign132_finalize.py, but the subsequent read-only command requested the nonexistent campaign132_finalizer.py spelling and exited nonzero.",
+  "repair_boundary": "Read the already listed campaign132_finalize.py path. Preserve all completed Campaign133 artifacts and do not rerun development.",
+  "scientific_result_changed": false,
+  "campaign133_development_rerun_allowed": false,
+  "historical_return_values_newly_read_by_failed_command": false,
+  "lockbox_2024_2025_opened": false,
+  "provider_request_issued": false,
+  "candidate49_ledgers_changed": false,
+  "current_scoring_selection_sizing_positions_or_orders_performed": false
+}

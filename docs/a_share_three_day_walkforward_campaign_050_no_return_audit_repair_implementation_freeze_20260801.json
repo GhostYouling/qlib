@@ -1,0 +1,71 @@
+{
+  "version": 1,
+  "kind": "a_share_three_day_walkforward_campaign050_no_return_audit_repair_implementation_freeze",
+  "status": "frozen_before_exact_campaign050_no_return_audit_continuation",
+  "recorded_at": "2026-08-01T09:35:58Z",
+  "purpose": "Bind the isolated frozen Campaign049 verifier repair and its successful full-file regression before the sole exact continuation of the incomplete Campaign050 audit.",
+  "repair_authorization": {
+    "path": "docs/a_share_three_day_walkforward_campaign_050_no_return_audit_infrastructure_failure_repair_20260801.json",
+    "sha256": "97b21132e090aacaf5821833d35a50a4813dc0e67b5061359a978a936b94ea9f"
+  },
+  "repair_entrypoint": {
+    "path": "scripts/a_share_three_day_walkforward_campaign050_features_v7.py",
+    "sha256": "7665c101e803e7bc28855b1d9c72702405ecc142cd2e92dd3df09e20fac528c7"
+  },
+  "repair_tests": {
+    "path": "tests/data_collector_tests/test_a_share_three_day_walkforward_campaign050_no_return_audit_repair.py",
+    "sha256": "c99fe4c679bfa158d513e7c50be4f57b409b81367b4da58769c4851fc658f27c",
+    "passed": 2,
+    "failed": 0
+  },
+  "test_attempt_history": [
+    {
+      "attempt": 1,
+      "passed": 1,
+      "failed": 1,
+      "failure": "The implementation-identity test asserted the wrapper module label, while the valid isolated verifier is a dynamically generated function whose __module__ correctly names its internal generated engine. The separate all-file verifier regression passed."
+    },
+    {
+      "attempt": 2,
+      "passed": 2,
+      "failed": 0,
+      "change": "Assert direct verifier function-object identity instead of a nonsemantic __module__ display label."
+    }
+  ],
+  "combined_campaign050_focused_tests": {
+    "passed": 16,
+    "failed": 0
+  },
+  "campaign049_full_file_verification": {
+    "verified_partitions": 33015,
+    "verified_rows": 7724498,
+    "all_partition_byte_and_frame_hashes_valid": true,
+    "factor_column": "intraday_morning_afternoon_amount_profile_similarity_120b"
+  },
+  "repair_semantics": {
+    "only_replaces_final_campaign049_snapshot_verifier_callable": true,
+    "isolated_runner_sha256": "981378510744bb53bb5353d1bf99ca9850b4f10c49bd8500d38d29994bdeff83",
+    "campaign050_candidate_loading_changed": false,
+    "comparison_value_loading_changed": false,
+    "formula_direction_order_threshold_or_catalog_changed": false,
+    "snapshot_or_dataset_changed": false,
+    "result_schema_changed": false
+  },
+  "continuation_boundary": {
+    "same_no_return_audit_parameters_required": true,
+    "exact_continuation_remaining": 1,
+    "completed_audit_record_count": 0,
+    "historical_daily_price_fields_read": [],
+    "historical_forward_return_fields_read": false,
+    "training_or_model_fitting_performed": false,
+    "provider_request_issued": false,
+    "candidate49_historical_return_read": false,
+    "candidate49_ledgers_changed": false,
+    "candidate50_prospective_activation_created": false,
+    "current_scoring_selection_sizing_or_orders_performed": false
+  },
+  "decision": {
+    "repair_implementation_frozen": true,
+    "next_action": "Use one final additive fingerprint-bound wrapper to continue the exact Campaign050 no-return audit once."
+  }
+}

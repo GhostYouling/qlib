@@ -1,0 +1,188 @@
+{
+  "version": 1,
+  "kind": "a_share_three_day_walkforward_campaign019_mechanism_overlap_audit",
+  "status": "one_exact_mechanism_frozen_before_campaign019_candidate_or_comparison_values_or_returns",
+  "recorded_at": "2026-07-29T01:10:00Z",
+  "purpose": "Freeze one exact Campaign019 mechanism, direction, source projection, support, missing semantics, overlap challenges, and finite one-trial search before any Campaign019 value, comparison value, daily price, or forward return is read.",
+  "authoritative_bindings": {
+    "concept_scouting": {
+      "path": "docs/a_share_three_day_walkforward_campaign_019_concept_scouting.json",
+      "sha256": "749f63c0acb05622ac8e547933d06d3311a37d9a237f166d9b9b4d2f3e0dd010"
+    },
+    "prior_iteration_state": {
+      "path": "docs/a_share_three_day_iteration_status_20260729_campaign018.json",
+      "sha256": "7d054e627d925267f7ee731251154df8a73afeba6d490e3f68aa42494f91e74b"
+    },
+    "historical_walkforward_policy": {
+      "path": "docs/a_share_three_day_historical_walkforward_research_policy_20260727.json",
+      "sha256": "38426d6161b9bfed323c58caba18feca668b8c9d53e294951a8ba90c01a798bb"
+    }
+  },
+  "candidate": {
+    "name": "intraday_bar_direction_continuity_238p",
+    "direction": "higher",
+    "economic_hypothesis": "A high continuation rate of successive nonzero open-to-close minute-bar directions indicates sustained auction-side pressure rather than isolated price updates, which may persist over the next three sessions.",
+    "formula": "count(s_i*s_(i+1)>0) / count(s_i!=0 and s_(i+1)!=0) across exactly 238 within-half adjacent pairs, where s_i=sign(log(close_i/open_i))",
+    "formula_steps": [
+      "Require the exact accepted 241-row source grid, preserve but exclude standalone 09:30, and select exactly the 240 bars at 09:31-11:30 and 13:01-15:00.",
+      "Require every selected open and close to be finite and strictly positive. Do not round, clamp, repair, impute, or load high, low, volume, or amount.",
+      "For each selected bar compute b_i=log(close_i/open_i) and s_i=sign(b_i), preserving exact zero bodies as sign zero.",
+      "Form exactly 119 adjacent sign pairs inside the morning half and exactly 119 inside the afternoon half. Do not form the 11:30-to-13:01 pair and do not remove a zero sign and bridge its neighbors.",
+      "A fixed adjacent pair is informative only when both endpoint signs are nonzero. Count every informative same-sign pair in the numerator and every informative same-sign or opposite-sign pair in the denominator. Require at least 120 informative pairs.",
+      "Return the numerator divided by the denominator. Require the result finite and in [0,1]; do not smooth counts, weight by body magnitude or activity, rank, winsorize, clip, or apply another normalization."
+    ],
+    "source_fields_used_by_formula": [
+      "datetime",
+      "symbol",
+      "provider",
+      "open",
+      "close"
+    ],
+    "source_fields_used_only_for_validation": [],
+    "timestamp_semantics": "Use exactly 238 fixed adjacent bar-body pairs wholly inside the two 120-bar trading halves. Exclude standalone 09:30 and the lunch transition; no overnight, cross-day, cross-stock, or selected-subwindow transition is formed.",
+    "zero_missing_denominator_semantics": "An exact zero open-to-close body remains in the 240-bar support and makes only its directly incident fixed pairs uninformative. A stock-day is missing only for invalid/nonfinite or nonpositive open/close, nonfinite log body, fewer than 120 informative nonzero-sign pairs, a zero denominator, or a result outside [0,1].",
+    "valid_range": {
+      "lower": 0.0,
+      "lower_inclusive": true,
+      "upper": 1.0,
+      "upper_inclusive": true
+    },
+    "selected_bar_count": 240,
+    "within_half_pair_count": 238,
+    "minimum_nonzero_pair_count": 120,
+    "endpoint_canonicalization_tolerance": null,
+    "order_sensitivity": true,
+    "mechanism_distinction_before_values": [
+      "Campaign019 measures unsigned continuation versus alternation of within-bar open-to-close direction; the terminal sign-run factor measures the directional imbalance between positive-positive and negative-negative close-to-close return runs.",
+      "Campaign019 does not compute an interbar gap and does not relate a gap to its destination-bar body, unlike Campaign016 gap-body confirmation.",
+      "Campaign019 ignores body magnitude and every high-low range, unlike Campaign009 body-range efficiency, and ignores close-to-close return magnitude, path efficiency, volatility, and price updates.",
+      "Holding every bar open and close direction fixed while changing body magnitudes, gaps, high-low ranges, volume, amount, or implied transaction prices leaves Campaign019 unchanged but can change the challenged terminal mechanisms."
+    ],
+    "rejected_variants_before_values": [
+      "close-to-close return signs, positive-positive minus negative-negative directional imbalance, body-sign net direction, gap signs, gap-body agreement or correlation, body magnitude, high-low range, wick, breakout, transaction price, volume, amount, or market peers",
+      "removing zero signs and bridging their neighbors, treating zero as positive or negative, smoothing the numerator or denominator, magnitude/activity weights, morning/afternoon splits, 09:30 inclusion, the lunch pair, selected subwindows, other lags, run-length statistics, rank correlation, regression, entropy, or mutual information",
+      "minimum informative-pair thresholds other than 120, body-size/tick/activity/liquidity thresholds, clipping, rounding, tolerance-based zero bodies, or fill/imputation",
+      "lower-is-better direction, year subsets, filters, thresholds, or combinations with terminal mechanisms"
+    ]
+  },
+  "comparison_catalog": {
+    "semantic_registered_mechanism_count": 42,
+    "statistical_comparison_factor_count": 40,
+    "base_statistical_comparison_catalog_binding": {
+      "path": "docs/a_share_three_day_walkforward_campaign_018_no_return_preregistration.json",
+      "sha256": "5cc74329648ce47787291d2f4b5c960084ca1a0fc148284170e1a23d429c1fe6",
+      "json_pointer": "/ordered_no_return_gates/uniqueness_after_coverage_only/comparison_factors",
+      "bound_factor_count": 39
+    },
+    "appended_statistical_comparison": {
+      "name": "intraday_range_share_volume_confirmation_240m",
+      "direction": "higher",
+      "snapshot_manifest_sha256": "9fe343dc34d57e59c3a5d12fb3d159b10e9d98cdd02cf1ce8c82b77fbbdb37a0",
+      "snapshot_dataset_sha256": "7762728e0a7d94dcddb1bcfb21531d4b66f98620a0282ffe501767c7e4f607be"
+    },
+    "semantic_only_terminal_mechanisms": [
+      {
+        "name": "intraday_post_shock_share_volume_replenishment_236p",
+        "campaign": 8,
+        "reason_not_statistically_compared": "Its immutable snapshot contains zero finite factor values."
+      },
+      {
+        "name": "intraday_transaction_vwap_envelope_asymmetry_240m",
+        "campaign": 13,
+        "reason_not_statistically_compared": "Its immutable snapshot stopped at low coverage and cannot satisfy statistical comparison support."
+      }
+    ],
+    "mandatory_mechanism_challenges": [
+      {
+        "name": "intraday_return_sign_run_imbalance_238p",
+        "distinction": "It uses close-to-close return signs and distinguishes positive from negative same-sign runs. Campaign019 uses within-bar open-to-close signs and measures unsigned continuation regardless of direction."
+      },
+      {
+        "name": "intraday_interbar_gap_body_confirmation_238p",
+        "distinction": "It correlates each interbar open gap with the destination-bar body magnitude and sign. Campaign019 computes no gap and only compares the signs of successive bodies."
+      },
+      {
+        "name": "intraday_intrabar_body_range_efficiency_240m",
+        "distinction": "It aggregates absolute body magnitude relative to high-low range. Campaign019 reads no high or low and discards every body magnitude."
+      },
+      {
+        "name": "intraday_signed_path_efficiency_239m",
+        "distinction": "It measures signed close-path displacement relative to path length. Campaign019 uses neither close-to-close displacement nor return magnitude."
+      },
+      {
+        "name": "intraday_price_update_share_238m",
+        "distinction": "It counts exact changes between adjacent closes. Campaign019 compares nonzero within-bar directions and treats zero bodies as breaks."
+      },
+      {
+        "name": "intraday_range_share_volume_confirmation_240m",
+        "distinction": "Campaign018 correlates high-low range levels with share-volume levels. Campaign019 reads only open and close and has no range, activity, or cross-variable correlation."
+      },
+      {
+        "name": "intraday_cumulative_vwap_crossing_rate_240m",
+        "distinction": "Candidate49 counts close crossings of causal cumulative VWAP. Campaign019 has no amount, volume, cumulative state, VWAP, crossing count, or historical Candidate49 return."
+      }
+    ],
+    "maximum_allowed_absolute_median_daily_rank_correlation": 0.8,
+    "minimum_pairwise_names_per_session": 50,
+    "minimum_pairwise_sessions_per_comparison": 100,
+    "score_direction_normalization": "Multiply lower-is-better comparison values by minus one before each daily rank correlation; retain the candidate's frozen higher direction."
+  },
+  "finite_research_search": {
+    "candidate_count": 1,
+    "exact_trial_catalog_if_admitted": [
+      {
+        "trial_id": "campaign019_single_bar_direction_continuity",
+        "components": [
+          "intraday_bar_direction_continuity_238p"
+        ],
+        "weights": [
+          1.0
+        ]
+      }
+    ],
+    "expected_trial_count_if_admitted": 1,
+    "pair_or_higher_order_combinations": false,
+    "weight_fitting": false,
+    "threshold_search": false,
+    "year_subset_search": false,
+    "filter_search": false,
+    "old_terminal_factor_rescue_combinations": false,
+    "candidate49_inclusion": false
+  },
+  "source_schema_boundary": {
+    "allowed_columns": [
+      "datetime",
+      "symbol",
+      "provider",
+      "open",
+      "close"
+    ],
+    "forbidden_columns": [
+      "high",
+      "low",
+      "volume",
+      "amount",
+      "daily_price",
+      "forward_return"
+    ],
+    "provider_request_allowed": false
+  },
+  "research_boundary": {
+    "campaign019_candidate_values_read": false,
+    "comparison_values_read": false,
+    "daily_price_fields_read": false,
+    "forward_return_fields_read": false,
+    "candidate49_historical_return_read": false,
+    "candidate49_prospective_ledgers_changed": false,
+    "candidate50_prospective_activation_allowed": false,
+    "aggregation_or_prospective_promotion_allowed": false,
+    "current_scoring_selection_sizing_or_orders_allowed": false
+  },
+  "decision": {
+    "economic_independence_before_values": true,
+    "exact_factor_count": 1,
+    "statistical_uniqueness_still_required": true,
+    "may_advance_directly_to_returns": false,
+    "required_next_step": "Freeze the fingerprint-bound no-return protocol and implementation, pass formula tests, then build one immutable candidate snapshot and run coverage/capacity before loading the 40 frozen comparison values."
+  }
+}

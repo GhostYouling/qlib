@@ -1,0 +1,98 @@
+{
+  "version": 1,
+  "kind": "a_share_three_day_walkforward_campaign035_feature_implementation_freeze",
+  "status": "feature_implementation_frozen_before_candidate_snapshot_values",
+  "recorded_at": "2026-07-30T19:51:29Z",
+  "purpose": "Fingerprint-bind the Campaign035 exact weak-order entropy implementation, its isolated destination, and synthetic regression evidence before any Campaign035 candidate snapshot value is built.",
+  "authoritative_inputs": {
+    "iteration_status": {
+      "path": "docs/a_share_three_day_iteration_status_20260731_campaign034_verified.json",
+      "sha256": "c304581a049ed921e1f6f112ea781ac2d3c35bac9951a1053a4e90640d947ea7"
+    },
+    "no_return_preregistration": {
+      "path": "docs/a_share_three_day_walkforward_campaign_035_no_return_preregistration.json",
+      "sha256": "22ffd5a21b4104a8c1e0d110cc335a1a758649560ab2d10e9a9c16258f70d7c9"
+    },
+    "feature_runner": {
+      "path": "scripts/a_share_three_day_walkforward_campaign035_features.py",
+      "sha256": "09924228c6d8feaf19865078a6514dff7aa8d55edadd17072d3909708f7123e1"
+    },
+    "feature_tests": {
+      "path": "tests/data_collector_tests/test_a_share_three_day_walkforward_campaign035_features.py",
+      "sha256": "4563d3eba96237690901c09d2607d399308c056295b633e4b5347e45ce128bd2"
+    },
+    "candidate49_signal_ledger": {
+      "path": "data/experiments/short_horizon/candidate49_future_signal_ledger.json",
+      "sha256": "5193f00d7f36da003f53cec387900da4c3d002299f5dfcfc1a95eaa199ed3a79",
+      "entry_count": 0
+    },
+    "candidate49_execution_ledger": {
+      "path": "data/experiments/short_horizon/candidate49_future_execution_ledger.json",
+      "sha256": "d57a3e61eac969e42cafa418ccd8c0a5ee65dcf69da145bb2c096c2a02a2ea4f",
+      "entry_count": 0
+    }
+  },
+  "implementation": {
+    "factor": "intraday_return_weak_order_entropy_234t",
+    "direction": "higher",
+    "source_projection": [
+      "datetime",
+      "symbol",
+      "provider",
+      "close"
+    ],
+    "selected_close_count": 240,
+    "return_count_per_half": 119,
+    "overlapping_tuple_count_per_half": 117,
+    "pooled_fixed_support": 234,
+    "weak_order_state_count": 13,
+    "weak_order_encoding": "base-3 encoding of exact comparison triple (cmp(a,b),cmp(a,c),cmp(b,c))",
+    "weak_order_codes": [
+      0,
+      1,
+      2,
+      5,
+      8,
+      9,
+      13,
+      17,
+      18,
+      21,
+      24,
+      25,
+      26
+    ],
+    "exact_ties_retained": true,
+    "comparison_tolerance": 0.0,
+    "lunch_return_or_tuple_included": false,
+    "entropy_normalizer": "ln(13)",
+    "transform_scale_clip_threshold_filter": "none",
+    "partition_compute_injection_verified": true,
+    "output_root": "/Volumes/DIsk/qlib-a-share-tushare-1m/derived/a_share/rich/tushare/minute_walkforward_campaign035_feature_library/tushare_stk_mins_1m_2019_2025_ea0cbb8f_walkforward_campaign035_feature_library_v1",
+    "output_root_existed_at_freeze": false
+  },
+  "verification": {
+    "preregistration_binding_validator_exit_code": 0,
+    "preregistration_bindings_passed": 10,
+    "preregistration_bindings_failed": 0,
+    "python_compile_exit_code": 0,
+    "focused_test_count": 15,
+    "focused_tests_passed": 15,
+    "focused_tests_failed": 0,
+    "campaign034_regression_included": true,
+    "constant_close_entropy": 0.0,
+    "constant_close_exact_tie_tuple_observations": 234,
+    "separate_half_scale_invariance_verified": true,
+    "prebuild_status_snapshot_exists": false,
+    "prebuild_status_audit_count": 0
+  },
+  "authorization": {
+    "candidate_snapshot_build_allowed_after_this_record_binding_validation_exit_zero": true,
+    "comparison_values_may_be_read_before_coverage_gate_passes": false,
+    "historical_daily_prices_or_returns_may_be_read_before_no_return_admission": false,
+    "provider_request_allowed": false,
+    "candidate49_historical_backfill_allowed": false,
+    "candidate50_activation_allowed": false,
+    "current_scoring_selection_sizing_or_orders_allowed": false
+  }
+}

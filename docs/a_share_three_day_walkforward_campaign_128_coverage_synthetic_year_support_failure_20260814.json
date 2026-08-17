@@ -1,0 +1,32 @@
+{
+  "schema_version": 1,
+  "kind": "a_share_three_day_walkforward_campaign128_infrastructure_failure",
+  "status": "failed_coverage_synthetic_fixture_observed_year_support",
+  "recorded_at": "2026-08-14T06:09:00+0800",
+  "attempt_id": "campaign128_infrastructure_004",
+  "stage": "coverage_only_runner_prevalue_synthetic_verification",
+  "failure": {
+    "exit_code": 1,
+    "pytest_result": "4 passed, 1 failed",
+    "reason": "The intended passing synthetic fixture used 750 business days, which spans only about three observed years and correctly failed the frozen minimum-five-year gate.",
+    "real_candidate_values_read": false,
+    "scientific_input_or_output_affected": false
+  },
+  "recovery": {
+    "change": "Expanded only the synthetic passing fixture to 1,500 business days and updated its exact nonconstant-session assertion.",
+    "coverage_threshold_formula_source_direction_or_real_value_changed": false
+  },
+  "research_boundary": {
+    "provider_request_issued": false,
+    "provider_credential_loaded": false,
+    "historical_candidate_snapshot_values_read_by_failed_test": false,
+    "comparator_values_read": false,
+    "historical_daily_price_or_forward_return_values_read": false,
+    "stress_2024_2025_return_values_opened": false,
+    "candidate49_historical_backfill_performed": false,
+    "candidate49_ledgers_changed": false,
+    "second_prospective_candidate_created": false,
+    "current_scoring_selection_sizing_positions_or_orders_performed": false,
+    "investment_advice": false
+  }
+}

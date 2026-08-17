@@ -1,0 +1,124 @@
+{
+  "version": 1,
+  "kind": "a_share_candidate49_first_future_session_operational_readiness",
+  "status": "pending_2026_07_27_same_day_inputs_no_provider_request",
+  "recorded_at": "2026-07-25T16:36:16Z",
+  "purpose": "Bind the last local-only readiness audit before candidate49's first eligible future session and correct the active-data-root runbook without changing the registered factor, direction, timing, gates, or future-only boundary.",
+  "authoritative_research_state": {
+    "path": "docs/a_share_three_day_iteration_status_20260725_future_only.json",
+    "sha256": "d44e1cb3707cce194eed37e99cc90f865396b1de8c35e02a393a2a243d973466",
+    "terminal_mechanism_count": 48,
+    "active_future_only_candidate_count": 1,
+    "aggregation_allowed": false,
+    "candidate50_activation_allowed": false
+  },
+  "candidate49_registration": {
+    "path": "docs/a_share_tushare_intraday_cumulative_vwap_crossing_rate_future_observation_registration.json",
+    "sha256": "431cb0b3b078823f08b888bf4c499bcc5088309a2e58e9de5cb9a9aaa849ffa9",
+    "registration_id": "candidate49_intraday_cumulative_vwap_crossing_rate_240m_v1",
+    "earliest_eligible_signal_session": "2026-07-27",
+    "historical_return_diagnostic_allowed": false
+  },
+  "execution_protocol": {
+    "path": "docs/a_share_tushare_candidate49_future_execution_protocol.json",
+    "sha256": "b9b4ea8906924c8303cb7a434db5f21ed6383ce7d794e50936b675acfa869486"
+  },
+  "implementation_fingerprints": {
+    "daily_pipeline": {
+      "path": "scripts/a_share_data_pipeline.py",
+      "sha256": "9a6500c52aa507add06fb1c2bdaace608a296974490355f71bc0e5ba29ea2802"
+    },
+    "tushare_daily_migration": {
+      "path": "scripts/a_share_tushare_daily_migration.py",
+      "sha256": "2ac316c2d5563a116bcf2f422bfc1e69472c94d28e36214ecc3acff9efea9dbb",
+      "protocol_sha256": "8a8a403860753d19134d3921fa68a08bab6bc68d00a74968eafc9a421eeb60b3"
+    },
+    "source_to_signal": {
+      "path": "scripts/a_share_tushare_candidate49_future_observation.py",
+      "sha256": "18686e7f73d51ee036a1edd4cc3e35a50cbf97c3004017a1428dca53b9be6d2c"
+    },
+    "paper_execution": {
+      "path": "scripts/a_share_tushare_candidate49_future_execution.py",
+      "sha256": "b269c6ffd492b656ccab0a97de5067fff27ec43f5a2a8b5f74bccce658052ce8"
+    }
+  },
+  "active_daily_state_before_target_session": {
+    "resolved_data_root": "/Users/niyufei/Coding/qlib/data",
+    "provider": "baostock",
+    "calendar_end": "2026-07-13",
+    "latest_run_sha256": "1d141c6133e3a1fec2b645c0d67bc0c083655fa912f8a015ea80668f433c127b",
+    "price_basis_status": "passed",
+    "price_basis_sha256": "68e9dbb83749779b34d5cf3b116195074c154ff74cb6de95ba67695bedc1f14f",
+    "active_root_pointer_present": false,
+    "tushare_daily_staging_present": false,
+    "active_root_mutated_by_readiness_audit": false
+  },
+  "historical_minute_source_state": {
+    "data_root": "/Volumes/DIsk/qlib-a-share-tushare-1m",
+    "full_manifest_sha256": "9b3d959563c9d182f38981c6a36bdb3bc9b415de08487a9e1f9e850825c0839f",
+    "historical_snapshot_immutable": true,
+    "candidate49_historical_returns_read": false,
+    "process_lock_advisory_held": false
+  },
+  "append_only_ledgers": {
+    "signal": {
+      "path": "data/experiments/short_horizon/candidate49_future_signal_ledger.json",
+      "sha256": "5193f00d7f36da003f53cec387900da4c3d002299f5dfcfc1a95eaa199ed3a79",
+      "entries": 0
+    },
+    "execution": {
+      "path": "data/experiments/short_horizon/candidate49_future_execution_ledger.json",
+      "sha256": "d57a3e61eac969e42cafa418ccd8c0a5ee65dcf69da145bb2c096c2a02a2ea4f",
+      "entries": 0
+    }
+  },
+  "credential_presence_only": {
+    "current_process_tushare_token_present": false,
+    "launchctl_tushare_token_present": false,
+    "credential_value_read_or_persisted": false
+  },
+  "real_local_only_preflight": {
+    "session": "2026-07-27",
+    "observed_local_time": "2026-07-26T00:31:30+08:00",
+    "low_level_status": "not_ready_no_provider_request",
+    "combined_status": "not_ready_no_provider_request",
+    "recommended_cli_exit_code": 2,
+    "failures": [
+      "session_not_yet_complete_after_close_buffer",
+      "session_not_in_accepted_local_calendar",
+      "fewer_than_50_active_buyable_symbols",
+      "tushare_token_missing_from_current_process",
+      "future_quarterly_quality_not_accepted"
+    ],
+    "provider_request_issued": false,
+    "minute_rows_read": false,
+    "filesystem_write_performed": false,
+    "signal_or_execution_entry_written": false
+  },
+  "runbook_correction": {
+    "problem": "After atomic Tushare activation, hard-coded data/raw and data/metadata future-quality paths still point to the old BaoStock root and make the final preflight fail.",
+    "resolution": "Use the local-only data-root command after activation and place the isolated future quarterly-quality data and manifest below that resolved active root.",
+    "command": "python scripts/a_share_data_pipeline.py data-root",
+    "command_network_request_issued": false,
+    "command_scans_daily_files": false,
+    "command_writes_files": false,
+    "factor_or_gate_changed": false
+  },
+  "required_same_day_order_for_first_signal": [
+    "After the 2026-07-27 close, complete a new immutable Tushare daily staging through 2026-07-27; do not reuse or append a completed 2026-07-24 source snapshot.",
+    "Build, accept, activation-preflight, and atomically activate the Tushare daily root; require a fresh status with calendar end 2026-07-27 and one Tushare price basis.",
+    "Resolve the activated root with python scripts/a_share_data_pipeline.py data-root.",
+    "After 16:00 local time, refresh quarterly_quality_future.parquet and its manifest below the resolved active root through report date 2026-06-30.",
+    "Inject the locally held Token only into the combined candidate49 preflight and require ready=true, status ready_for_explicit_future_source_to_signal_collection, and exit code 0.",
+    "Run the exact same-session --allow-large collection once; preserve and hash-verify any same-date interruption, and never resume it after local midnight.",
+    "Do not run paper execution until the accepted calendar and daily source contain the protocol-required completed later sessions."
+  ],
+  "decision": {
+    "ready_to_request_before_2026_07_27_close": false,
+    "provider_request_authorized_by_this_record": false,
+    "historical_backfill_allowed": false,
+    "current_signal_exists": false,
+    "selection_or_order_allowed": false,
+    "next_action": "Wait for the completed 2026-07-27 session and make the Token visible to a newly launched Codex process; then execute the fixed same-day sequence without changing candidate49."
+  }
+}

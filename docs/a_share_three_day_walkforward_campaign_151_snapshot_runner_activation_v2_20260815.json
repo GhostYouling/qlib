@@ -1,0 +1,91 @@
+{
+  "schema_version": 2,
+  "kind": "a_share_three_day_walkforward_campaign151_snapshot_runner_activation",
+  "status": "runner_and_tests_frozen_before_campaign151_historical_values",
+  "recorded_at": "2026-08-15T00:39:01+08:00",
+  "supersedes_without_rewriting": {
+    "path": "docs/a_share_three_day_walkforward_campaign_151_snapshot_runner_activation_20260815.json",
+    "sha256": "bbbe1cacc6041fe73e703e90bb1d5b4efc6bd077968b489246ea16ad13fed605",
+    "reason": "the v1 runner could not resolve the repository scripts package under direct path invocation"
+  },
+  "authoritative_inputs": {
+    "plan_runner": {
+      "path": "scripts/a_share_three_day_walkforward_campaign151_snapshot.py",
+      "sha256": "5966aeaf5876985b3f3bd031849bb51b70e0613e55cc502f8178ad8fd473e2d6"
+    },
+    "plan_runner_test": {
+      "path": "tests/data_collector_tests/test_a_share_three_day_walkforward_campaign151_snapshot.py",
+      "sha256": "db63cd5c06a5ef59a6ba09d1a57145d39179b2f0288a848a62ec9226892c4f3e"
+    },
+    "plan_launch_failure": {
+      "path": "docs/a_share_three_day_walkforward_campaign_151_snapshot_plan_launch_failure_20260815.json",
+      "sha256": "3e1b1958d6584311f1c3e45571cf8d183448a8a406e274e7f36a68dd420076ef"
+    },
+    "builder_implementation_freeze": {
+      "path": "docs/a_share_three_day_walkforward_campaign_151_source_bound_builder_implementation_freeze_20260815.json",
+      "sha256": "40359d8c77c0afa20e1eedb3c793881b7a910bb2bfe3e25150e401d9bc8f5c24"
+    },
+    "source_bound_builder": {
+      "path": "scripts/a_share_three_day_walkforward_campaign151_features.py",
+      "sha256": "7d0585cafcde822a37a4fe8fd45d7629b53b96fa5c69d8f6f28d8b3bd532ac09"
+    },
+    "source_bound_builder_test": {
+      "path": "tests/data_collector_tests/test_a_share_three_day_walkforward_campaign151_features.py",
+      "sha256": "a7073ffc24a08abaaa81d92179959dca2414b0322fb7f0cf312acf3d96392ed2"
+    },
+    "campaign151_state_v2": {
+      "path": "docs/a_share_three_day_iteration_status_20260815_campaign151_formula_frozen_v2.json",
+      "sha256": "b11c239e9559283b6c44912bbc6afb0e64eb9bde02d3d913b25325e47eb44cc9"
+    },
+    "numeric_policy_v205": {
+      "path": "docs/a_share_three_day_walkforward_future_numeric_comparison_eligibility_policy_v205_20260815.json",
+      "sha256": "e8a45201021392d36cd5af61409719619fbfec8f2c31609490ca231a54974b59"
+    },
+    "formula_frozen_validation": {
+      "path": "docs/a_share_three_day_walkforward_campaign_151_formula_frozen_validation_20260815.json",
+      "sha256": "52ab888a7dfbedd68b7b80ea4c031b931709fcd3b15d96a3f049a527b02a19f6"
+    }
+  },
+  "plan_contract": {
+    "metadata_only": true,
+    "parquet_or_npz_opened": false,
+    "source_manifest_json_and_calendar_text_metadata_may_be_read": true,
+    "provider_or_credential_access_allowed": false,
+    "ready_true_and_exit_zero_required": true,
+    "failed_plan_exit_may_not_be_bypassed": true,
+    "final_partial_lock_and_minimum_free_space_checked": true,
+    "candidate49_immutable_empty_ledgers_checked": true
+  },
+  "build_contract": {
+    "confirmed_build_required": true,
+    "rerun_same_plan_in_process": true,
+    "workers_range_inclusive": [
+      1,
+      8
+    ],
+    "final_root_never_overwritten": true,
+    "recognized_partial_checkpoint_layout_may_resume": true,
+    "builder_revalidates_every_checkpoint_payload_before_reuse": true,
+    "at_most_one_successful_publication": true
+  },
+  "verification": {
+    "black": "passed; 2 files left unchanged",
+    "ruff": "passed",
+    "pytest": "6 passed in 5.79s",
+    "direct_path_import_recovery_covered": true,
+    "failed_exit_code_bypassed_or_masked": false
+  },
+  "research_boundary": {
+    "historical_minute_source_rows_or_values_read": false,
+    "peer_benchmark_values_read": false,
+    "candidate_or_comparator_values_read": false,
+    "historical_daily_price_or_forward_return_values_read": false,
+    "stress_2024_2025_opened": false,
+    "credential_loaded": false,
+    "provider_request_issued": false,
+    "candidate49_historical_backfill_performed": false,
+    "candidate49_ledgers_changed": false,
+    "current_scoring_selection_sizing_positions_or_orders_performed": false
+  },
+  "next_action": "Rerun the exact metadata-only plan with workers=4. Only ready=true with exit code zero authorizes a separate confirmed build using workers=4."
+}

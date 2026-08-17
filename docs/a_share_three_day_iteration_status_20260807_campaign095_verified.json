@@ -1,0 +1,103 @@
+{
+  "schema_version": 1,
+  "kind": "a_share_three_day_iteration_status",
+  "status": "campaign095_verified_terminal_prevalue_semantic_inconsistency_ready_for_campaign096_offline_iteration",
+  "recorded_at": "2026-08-07T03:57:52Z",
+  "observed_local_time": "2026-08-07T11:57:52+08:00",
+  "timezone": "Asia/Singapore",
+  "authoritative_predecessor": {
+    "path": "docs/a_share_three_day_iteration_status_20260807_campaign094_verified.json",
+    "sha256": "b51f2a4b365652c760838f93ffb3e4cfea69546edfaf39acab972e231bab0939",
+    "preserved": true
+  },
+  "terminal_completion_freeze": {
+    "path": "docs/a_share_three_day_walkforward_campaign_095_terminal_completion_freeze_20260807.json",
+    "sha256": "b1f9d3b298efc5633b2fcbebf2d915871557756ea23fb49d1211c6cf3d1dde2e"
+  },
+  "effective_research_record": {
+    "path": "docs/a_share_three_day_walkforward_campaign_095_research_record.json",
+    "sha256": "cde94630c0143c5ae1b0b9dcaa7e98b0c0be63e75b74596dbe4a6a4390973f4f"
+  },
+  "effective_attempt_ledger": {
+    "path": "data/experiments/short_horizon/historical_walkforward/campaign_095/research_attempt_ledger_v1.json",
+    "sha256": "e9794d62abf3a752aa3142e7316456487ad4d688d101f6b54c713da481320797"
+  },
+  "effective_future_numeric_policy": {
+    "path": "docs/a_share_three_day_walkforward_future_numeric_comparison_eligibility_policy_v39_20260807.json",
+    "sha256": "26af71f841cf9d1880821b61853a347dfff9bc42652b2af09220aebf72de9bb6"
+  },
+  "campaign095_result": {
+    "factor": "intraday_own_bar_close_location_entropy_10b_240m",
+    "direction": "higher",
+    "terminal_gate": "prevalue_formula_to_semantic_invariance_consistency",
+    "candidate_minute_source_rows_read": false,
+    "candidate_values_computed": false,
+    "numeric_comparison_count": 0,
+    "development_trial_count": 0,
+    "development_survivor_count": null,
+    "stress_2024_2025_opened": false,
+    "stress_2024_2025_return_fields_read": false,
+    "terminal": true,
+    "same_campaign_rescue_allowed": false
+  },
+  "final_accounting": {
+    "campaign095_attempt_count": 1,
+    "campaign095_ledger_entry_count": 1,
+    "campaign095_infrastructure_or_implementation_failure_count": 0,
+    "campaign095_complete_factor_attempt_count": 1,
+    "campaign095_return_reading_development_trial_count": 0,
+    "cumulative_historical_research_attempt_count": 659,
+    "cumulative_return_reading_development_trial_count": 291
+  },
+  "candidate49": {
+    "status": "only_active_prospective_candidate_empty_ledgers_unchanged",
+    "signal_ledger_entry_count": 0,
+    "signal_ledger_sha256": "5193f00d7f36da003f53cec387900da4c3d002299f5dfcfc1a95eaa199ed3a79",
+    "execution_ledger_entry_count": 0,
+    "execution_ledger_sha256": "d57a3e61eac969e42cafa418ccd8c0a5ee65dcf69da145bb2c096c2a02a2ea4f",
+    "provider_credential": {
+      "source": ".env",
+      "recognized_nonempty_token_key_count": 1,
+      "regular_file": true,
+      "mode": "0600",
+      "secret_printed_hashed_or_logged": false
+    },
+    "same_day_workflow": {
+      "eligible_only_after_local_16_30": true,
+      "plan_run_during_this_iteration": false,
+      "reason_not_run": "observed local time before 16:30 Asia/Singapore",
+      "provider_request_issued": false,
+      "historical_backfill_performed": false
+    }
+  },
+  "local_daily_data": {
+    "root": "/Volumes/DIsk/Disk-Coding/qlib/data",
+    "calendar_last_session": "2026-07-13"
+  },
+  "next_campaign_boundary": {
+    "campaign": 96,
+    "historical_offline_work_may_run_at_any_time": true,
+    "must_bind_policy": {
+      "path": "docs/a_share_three_day_walkforward_future_numeric_comparison_eligibility_policy_v39_20260807.json",
+      "sha256": "26af71f841cf9d1880821b61853a347dfff9bc42652b2af09220aebf72de9bb6"
+    },
+    "complete_definition_count": 127,
+    "complete_definition_order_sha256": "17ad9beb53d236171155211ea4cc4b9ec05b8edea7ebc51ca7705f84adc9e030",
+    "numeric_comparator_count": 124,
+    "numeric_comparator_order_sha256": "d05f1cb7b68e950d508f2b0d13b7ef1847904edc6eb10453405917e04ed0e698",
+    "requirements": [
+      "genuinely independent mechanism and exact formula frozen before candidate values",
+      "do not repair the Campaign095 bin or reflection semantics",
+      "append every attempt failure formula direction parameter filter subset combination and model",
+      "2019-2023 only for development with three frozen purged folds",
+      "do not open 2024-2025 unless a survivor exists and the entire finite campaign is frozen"
+    ]
+  },
+  "strict_prohibitions": [
+    "do not backfill Candidate49 historical returns signals executions or milestones",
+    "do not start a second prospective candidate",
+    "do not redefine rebin invert repair rerun rescue or combine Campaign095",
+    "do not open Campaign095 2019-2023 returns or 2024-2025 stress",
+    "do not generate current scores selections position sizes orders or investment advice"
+  ]
+}

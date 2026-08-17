@@ -1,0 +1,33 @@
+{
+  "schema_version": 1,
+  "kind": "a_share_three_day_walkforward_campaign101_terminal_superseded_v2_report_hash_test_scope_failure",
+  "status": "terminal_validation_scope_failed_without_research_value_change",
+  "recorded_at": "2026-08-07T14:38:51Z",
+  "failed_combined_result": {
+    "passed": 37,
+    "failed": 1,
+    "failed_file": "tests/data_collector_tests/test_a_share_three_day_walkforward_campaign101_terminal_v2.py",
+    "failed_assertion": "Campaign101 report SHA equals the pre-test-scope-accounting report SHA"
+  },
+  "root_cause": "The terminal-v2 test is immutable evidence for the v2 correction node and intentionally binds report bytes before the later consumed-recovery test-scope failure was appended. Including it after that append compares a superseded report hash to the current append-only report.",
+  "correction": {
+    "terminal_v2_or_v3_test_modified": false,
+    "historical_report_versions_rewritten": false,
+    "current_state_suite_excludes_consumed_recovery_tests_and_superseded_terminal_v2_v3_hash_tests": true,
+    "stable_current_state_suite": [
+      "tests/data_collector_tests/test_a_share_three_day_walkforward_campaign101_features.py",
+      "tests/data_collector_tests/test_a_share_three_day_walkforward_campaign101_no_return_audit.py",
+      "tests/data_collector_tests/test_a_share_three_day_walkforward_campaign101_development.py",
+      "tests/data_collector_tests/test_a_share_three_day_walkforward_campaign101_terminal.py",
+      "tests/data_collector_tests/test_a_share_three_day_walkforward_campaign101_terminal_v4.py"
+    ],
+    "expected_test_count": 33
+  },
+  "read_boundary": {
+    "additional_candidate_factor_daily_price_or_forward_return_values_read": false,
+    "stress_2024_2025_read": false,
+    "provider_request_issued": false,
+    "candidate49_ledgers_changed": false,
+    "current_scoring_selection_sizing_or_orders_performed": false
+  }
+}

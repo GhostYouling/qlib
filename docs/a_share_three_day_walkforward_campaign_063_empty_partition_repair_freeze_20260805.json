@@ -1,0 +1,80 @@
+{
+  "version": 1,
+  "kind": "a_share_three_day_walkforward_campaign063_additive_empty_partition_repair_freeze",
+  "status": "frozen_after_failed_build_and_before_repaired_resume",
+  "recorded_at": "2026-08-05T06:30:00+08:00",
+  "purpose": "Bind the only additive Campaign063 empty-partition compatibility launcher before resuming the preserved partial snapshot. The original feature implementation remains immutable.",
+  "authoritative_boundary": {
+    "path": "docs/a_share_three_day_iteration_status_20260805_campaign062_verified_v2.json",
+    "sha256": "ba313597d16965f78383956967c619ba9b41b08e175c324d637b2833f79a1fe7"
+  },
+  "no_return_protocol": {
+    "path": "docs/a_share_three_day_walkforward_campaign_063_no_return_preregistration.json",
+    "sha256": "2effcee4ccbbba8d55f450c7add3eb6064968a60c9d856ac769aebd20e542dfb"
+  },
+  "original_implementation_freeze": {
+    "path": "docs/a_share_three_day_walkforward_campaign_063_feature_implementation_freeze_20260805.json",
+    "sha256": "1cc8ce929ec540eb23fac617fe8fe426824fb82ec144b863a972b78a6af5918a"
+  },
+  "original_feature_runner": {
+    "path": "scripts/a_share_three_day_walkforward_campaign063_features.py",
+    "sha256": "c6987c8cb59d1a6091eeceed923406fcee4c00d943da5665d0abef674b17ab1b"
+  },
+  "first_build_failure": {
+    "path": "docs/a_share_three_day_walkforward_campaign_063_empty_partition_build_failure_20260805.json",
+    "sha256": "d431746a5bb1b5b314b893973b8bacc9fb4d8e957360163795f7ce054bcb5fd4"
+  },
+  "repair_launcher": {
+    "path": "scripts/a_share_three_day_walkforward_campaign063_empty_partition_repair.py",
+    "sha256": "a158a4b1f7dd4531a7da17b16cf1f9ea77e10f973a5a94155c9ea8fd4ddf81f7",
+    "delegates_every_nonempty_frame_to_frozen_original_extractor": true,
+    "only_changed_boundary": "An exact-column zero-row raw frame returns an empty signed-return profile dictionary and zero source-quality counters.",
+    "verifies_bound_raw_manifest_exactly_six_empty_symbol_year_partitions": true,
+    "formula_direction_grid_moment_benchmark_peer_gate_variance_rule_loss_transform_or_no_return_gate_changed": false
+  },
+  "repair_synthetic_tests": {
+    "path": "tests/data_collector_tests/test_a_share_three_day_walkforward_campaign063_empty_partition_repair.py",
+    "sha256": "7be9e9d804c8d03ee81ca6159160d11671ae541ccf6f4e588fe2b39c545e0a39",
+    "combined_command": "PYTHONPATH=<repository-root>:<third-party-site-packages> python -S -m pytest -q tests/data_collector_tests/test_a_share_three_day_walkforward_campaign063_features.py tests/data_collector_tests/test_a_share_three_day_walkforward_campaign063_empty_partition_repair.py",
+    "passed": 13,
+    "failed": 0,
+    "empty_exact_columns_wrong_columns_nonempty_delegation_original_formula_and_moment_boundary_semantics_tested": true
+  },
+  "preserved_partial_snapshot": {
+    "root": "/Volumes/DIsk/qlib-a-share-tushare-1m/derived/a_share/rich/tushare/minute_walkforward_campaign063_feature_library/.tushare_stk_mins_1m_2019_2025_ea0cbb8f_walkforward_campaign063_feature_library_v1.partial",
+    "complete_checkpoint_partitions": 33004,
+    "missing_partitions": 11,
+    "checkpoint_runner_and_original_implementation_hashes_must_still_validate": true,
+    "all_source_raw_clean_and_cross_sectional_moment_bytes_are_reverified_by_original_resume_path": true,
+    "formal_snapshot_published_before_repair": false
+  },
+  "value_exposure_before_repair_freeze": {
+    "minute_close_and_cross_sectional_moment_values_read_by_failed_build": true,
+    "campaign063_candidate_values_computed_and_checkpointed": true,
+    "campaign063_candidate_values_manually_inspected_or_used_to_change_repair": false,
+    "comparison_factor_values_read": false,
+    "historical_daily_price_fields_read": [],
+    "historical_forward_return_fields_read": false,
+    "development_folds_opened": false,
+    "stress_2024_2025_opened": false
+  },
+  "immutable_research_semantics": {
+    "factor": "intraday_cross_sectional_standardized_return_state_stability_236p",
+    "formula": "For each of the exact 238 within-half signed log-close return positions, compute the stock's leave-one-out cross-sectional population z state from the frozen return sum, squared sum, and count; return 1/(1+mean absolute adjacent z-state displacement) across the exact 236 within-half adjacent pairs.",
+    "direction": "higher",
+    "minimum_other_peers_each_position": 50,
+    "population_variance_denominator": "n",
+    "tiny_negative_variance_tolerance": 1e-18,
+    "strictly_positive_variance_each_position": true,
+    "adjacent_pair_count": 236,
+    "comparison_library_count": 94,
+    "ordered_coverage_then_94_factor_uniqueness_gate_unchanged": true,
+    "alternate_formula_parameter_filter_subset_model_or_combination_added": false,
+    "candidate49_historical_backfill_performed": false,
+    "candidate49_ledgers_changed_by_campaign063": false,
+    "second_prospective_candidate_created": false,
+    "current_scoring_selection_sizing_or_orders_performed": false,
+    "provider_request_issued_by_campaign063": false
+  },
+  "next_action": "Run only the bound repair launcher, require exit code zero and all 33015 partitions, then independently verify every published partition before any comparison factor is opened."
+}

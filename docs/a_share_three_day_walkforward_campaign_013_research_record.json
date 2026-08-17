@@ -1,0 +1,147 @@
+{
+  "version": 1,
+  "kind": "a_share_three_day_walkforward_campaign013_research_record",
+  "status": "completed_zero_no_return_admissible_factors_stop_before_historical_returns",
+  "recorded_at": "2026-07-28T18:31:00Z",
+  "purpose": "Record Campaign013 from concept-only scouting through its immutable feature snapshot and terminal no-return coverage rejection. No comparison factor value, daily price, forward return, training, development trial, or 2024-2025 stress return was opened.",
+  "prior_state": {
+    "path": "docs/a_share_three_day_iteration_status_20260728_campaign012.json",
+    "sha256": "e883ebde9d9b2c50368181d4a8aec15dde1c10625460abda060c1f601c284ffd"
+  },
+  "campaign": {
+    "concept_scouting": {
+      "path": "docs/a_share_three_day_walkforward_campaign_013_concept_scouting.json",
+      "sha256": "e4ed47f439cf3dd024ef2dde8669c72f422259c95c8c3df0728d6421db741e6f"
+    },
+    "mechanism_overlap_audit": {
+      "path": "docs/a_share_three_day_walkforward_campaign_013_mechanism_overlap_audit.json",
+      "sha256": "78262a1e90af0de4561329a21217ab5304925d7694877b9f84d61771fe77a715"
+    },
+    "no_return_preregistration": {
+      "path": "docs/a_share_three_day_walkforward_campaign_013_no_return_preregistration.json",
+      "sha256": "0a5c0225cba49ab11056e232b6ba9875f65c2734d318ef7644031472a9d76764"
+    },
+    "feature_build_infrastructure_repair": {
+      "path": "docs/a_share_three_day_walkforward_campaign_013_feature_build_infrastructure_repair_20260729.json",
+      "sha256": "c12fd002ce93ca472c6f8e68555f56fb96424bc3845f52036856e123325ea842",
+      "scope": "prepublication_manifest_phase_adapter_only"
+    },
+    "feature_and_no_return_runner": {
+      "path": "scripts/a_share_three_day_walkforward_campaign013_features.py",
+      "post_audit_fingerprint_bound_sha256": "9b7020b61a03fae5a648cce4a48bf7828d8fd1dfe27ab22f69c771c3432a4054"
+    }
+  },
+  "frozen_candidate": {
+    "name": "intraday_transaction_vwap_envelope_asymmetry_240m",
+    "direction": "higher",
+    "formula": "(sum(u_i) - sum(d_i)) / (sum(u_i) + sum(d_i)) over active 09:31-11:30 and 13:01-15:00 bars, where vwap_i=amount_i/volume_i, u_i=log(high_i/vwap_i), and d_i=log(vwap_i/low_i)",
+    "minimum_informative_active_bars": 120,
+    "activity_rule": "Joint-zero volume and amount is inactive; one-sided zero invalidates the stock-day.",
+    "vwap_containment_rule": "Every active same-bar amount/volume must be exactly inside the raw low-high envelope; no unit adjustment, tolerance, clamp, or repair is allowed.",
+    "post_result_formula_direction_unit_or_missing_rule_changed": false
+  },
+  "no_return_admission": {
+    "feature_snapshot": {
+      "path": "/Volumes/DIsk/qlib-a-share-tushare-1m/derived/a_share/rich/tushare/minute_walkforward_campaign013_feature_library/tushare_stk_mins_1m_2019_2025_ea0cbb8f_walkforward_campaign013_feature_library_v1/snapshot_manifest.json",
+      "sha256": "706e71aacb802a2b34cf7b52236823bb3e63cd30d3f0e8340456344c7ef184d7",
+      "dataset_sha256": "45ee0352936be01714efba01fef80118bb9fe97ee3cdfcdba65f429bf01b528b",
+      "partition_count": 33015,
+      "row_count": 7724498,
+      "finite_factor_rows": 78351,
+      "active_vwap_outside_high_low_rows": 7616444,
+      "fewer_than_120_informative_active_bar_rows": 29656,
+      "one_sided_zero_activity_rows": 47,
+      "invalid_high_low_or_activity_rows": 0,
+      "source_fields_read": [
+        "datetime",
+        "symbol",
+        "provider",
+        "high",
+        "low",
+        "volume",
+        "amount"
+      ],
+      "minute_open_read": false,
+      "minute_close_read": false,
+      "daily_price_fields_read": [],
+      "forward_return_fields_read": false
+    },
+    "audit": {
+      "path": "data/experiments/short_horizon/historical_walkforward/campaign_013/no_return/20260728T182958Z_campaign013_no_return_audit.json",
+      "sha256": "105ac63bc01828cf512be282377f835c87359a2356f29b7ff998734dcf4467b6",
+      "status": "completed_zero_admissible_factors_stop_before_historical_returns",
+      "admissible_factor_count": 0,
+      "comparison_values_loaded_after_coverage_pass": false,
+      "historical_daily_price_fields_read": [],
+      "historical_forward_return_fields_read": false
+    },
+    "coverage_result": {
+      "quality_listing_eligible_rows": 1331759,
+      "candidate_eligible_rows": 31433,
+      "median_coverage": 0.023809523809523808,
+      "p05_coverage": 0.008530852994555357,
+      "p05_eligible_names": 3.0,
+      "potential_non_overlapping_three_session_cohorts": 11,
+      "observed_cohort_years": [
+        2020,
+        2021,
+        2022,
+        2024,
+        2025
+      ],
+      "coverage_gate_passed": false,
+      "uniqueness_not_evaluated_reason": "coverage_gate_failed_before_all_35_comparison_values"
+    }
+  },
+  "trial_accounting": {
+    "frozen_trial_count_if_admitted": 1,
+    "development_preregistration_created": false,
+    "development_trial_count": 0,
+    "cumulative_historical_development_trial_count_after_campaign": 236,
+    "training_or_model_fitting_performed": false,
+    "development_return_fields_read": false,
+    "stress_2024_2025_opened": false,
+    "stress_return_fields_read": false
+  },
+  "interpretation": {
+    "association_tested": false,
+    "coverage_supported": false,
+    "operational_feasibility_supported": false,
+    "portfolio_translation_supported": false,
+    "conclusion": "The exact factor is unusable on the accepted minute grid under its frozen unit and containment contract. Same-bar amount/volume fell outside the raw high-low envelope on 7,616,444 of 7,724,498 source stock-days, leaving only 2.38% median coverage after quality and listing gates. This is a pre-return joint-field compatibility rejection, not evidence about predictive direction or return.",
+    "permitted_post_result_action": "record the rejection and advance only to a genuinely different Campaign014 concept and separate no-value audit",
+    "forbidden_post_result_actions": [
+      "change amount or volume units, apply a lot multiplier, round or clamp transaction VWAP after observing coverage",
+      "drop the exact containment rule, lower the 120-informative-active-bar minimum, change aggregation, weighting, formula, or direction",
+      "reinterpret the terminal bar-VWAP close-pressure factor or Candidate49 as evidence supporting a repair",
+      "read any Campaign013 comparison value, historical return, development fold, or 2024-2025 stress return",
+      "combine the factor with Campaign001-Campaign012 or any other terminal factor",
+      "create current scores, selections, sizes, orders, or Candidate50 activation"
+    ]
+  },
+  "candidate49_state_after_campaign": {
+    "signal_ledger": {
+      "path": "data/experiments/short_horizon/candidate49_future_signal_ledger.json",
+      "sha256": "5193f00d7f36da003f53cec387900da4c3d002299f5dfcfc1a95eaa199ed3a79",
+      "entry_count": 0
+    },
+    "execution_ledger": {
+      "path": "data/experiments/short_horizon/candidate49_future_execution_ledger.json",
+      "sha256": "d57a3e61eac969e42cafa418ccd8c0a5ee65dcf69da145bb2c096c2a02a2ea4f",
+      "entry_count": 0
+    },
+    "historical_return_backfill_performed": false,
+    "prospective_registration_changed": false
+  },
+  "next_iteration": {
+    "campaign_id": "a_share_three_day_walkforward_campaign_014",
+    "status": "requires_new_concept_scouting_then_separate_no_value_mechanism_audit",
+    "constraints": [
+      "must use a mechanism economically distinct from all terminal Campaign001-Campaign013 factors",
+      "must not repair the terminal transaction-VWAP envelope construction or its unit and containment semantics",
+      "must freeze formula, direction, source fields, timestamp, missing and denominator rules, gates, and finite search before values",
+      "must retain the 2019-2023 expanding walk-forward and conditional one-shot 2024-2025 stress split",
+      "must not include Candidate49, any terminal factor, or current scoring and order actions"
+    ]
+  }
+}

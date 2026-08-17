@@ -1,0 +1,136 @@
+{
+  "version": 1,
+  "kind": "a_share_three_day_walkforward_campaign039_mechanism_overlap_audit",
+  "status": "passed_conceptual_independence_before_minute_candidate_comparison_or_return_values",
+  "recorded_at": "2026-07-31T02:09:56Z",
+  "purpose": "Challenge the selected Campaign039 mechanism against the complete terminal and prospective frontier before freezing a candidate formula or reading any candidate, comparison, daily-price, or return value.",
+  "authoritative_boundary": {
+    "path": "docs/a_share_three_day_iteration_status_20260731_campaign038_verified.json",
+    "sha256": "4bc921c541f6044b9756d6843e576c3282e2011f9952de1800dd335c2d9a16e5"
+  },
+  "historical_walkforward_policy": {
+    "path": "docs/a_share_three_day_historical_walkforward_research_policy_20260727.json",
+    "sha256": "38426d6161b9bfed323c58caba18feca668b8c9d53e294951a8ba90c01a798bb"
+  },
+  "concept_scouting": {
+    "path": "docs/a_share_three_day_walkforward_campaign_039_concept_scouting.json",
+    "sha256": "eef9a90cc4b5473a967a70f8f72d515efa8a40c7e39580995f2caee6036eac90"
+  },
+  "selected_mechanism": {
+    "name": "intraday_return_time_reversal_asymmetry_236p",
+    "direction": "higher",
+    "information_domain": "within_half_adjacent_return_cubic_time_irreversibility",
+    "formula": "For each 120-close half independently, form 119 adjacent log returns. For each of the 118 ordered adjacent-return pairs (a,b) in that half, accumulate the antisymmetric cubic contrast a^2*b-a*b^2. Pool both halves into T=sum(a^2*b-a*b^2) and Q=sum(abs(a*b)*(abs(a)+abs(b))) across exactly 236 pairs. Return abs(T)/Q.",
+    "economic_hypothesis": "A larger normalized magnitude of the antisymmetric adjacent-return third moment indicates stronger intraday time irreversibility and a more ordered shock-and-relaxation or information-assimilation process, which may remain relevant from the next open through the third close.",
+    "source_fields": [
+      "datetime",
+      "symbol",
+      "provider",
+      "close"
+    ],
+    "selected_bar_grid": "exactly 240 raw unadjusted one-minute closes at 09:31-11:30 and 13:01-15:00 after frozen timestamp normalization; standalone 09:30 is excluded",
+    "half_session_rule": "Treat the morning and afternoon as two independent fixed 120-position close paths. Form exactly 119 returns and 118 ordered adjacent-return pairs per half. Never create a lunch, overnight, cross-day, or cross-stock transition.",
+    "return_rule": "Use signed natural-log adjacent close returns. Retain every exact-zero return in its fixed position and do not bridge, drop, rank, demean, standardize, clip, winsorize, or volatility-scale the return vectors.",
+    "antisymmetric_contrast_rule": "For every ordered pair (a,b), use exactly a^2*b-a*b^2=a*b*(a-b). Reversing the pair changes the sign of this local contrast. Sum signed contrasts across both halves before taking one absolute value.",
+    "normalization_rule": "Use Q=sum(abs(a*b)*(abs(a)+abs(b))) over the same 236 pairs. This equals the sum of the absolute magnitudes of the two cubic terms and guarantees abs(T)/Q in [0,1] for valid nonzero Q.",
+    "absolute_value_rule": "Take one absolute value only after pooling every signed contrast across both halves. Never take pairwise absolute contrasts, separate-half absolute values, a signed final statistic, or a selected-half statistic.",
+    "bar_rule": "All 240 selected closes must be finite and strictly positive.",
+    "missing_rule": "Any invalid, nonpositive, or nonfinite selected close; any nonfinite log return, cubic contrast, normalization component, T, or Q; Q equal to zero; nonfinite asymmetry; or asymmetry outside [0,1] before a 1e-12 endpoint canonicalization makes the stock-day missing.",
+    "valid_range": {
+      "lower": 0.0,
+      "lower_inclusive": true,
+      "upper": 1.0,
+      "upper_inclusive": true
+    }
+  },
+  "overlap_challenges": [
+    {
+      "family": "intraday_return_skewness_238m_and_intraday_upside_semivariance_share_239m",
+      "result": "distinct_pending_statistical_uniqueness_gate",
+      "reason": "Those terminal factors summarize the unordered marginal sign or third-moment composition of returns. Campaign039 depends on ordered adjacent pairs and an antisymmetric cubic contrast that changes sign under pair reversal; it is not a marginal skewness, semivariance, or tail statistic."
+    },
+    {
+      "family": "intraday_absolute_return_serial_persistence_236p_intraday_diffusive_variation_ratio_238m_and_intraday_five_minute_variance_ratio_230w",
+      "result": "distinct_pending_statistical_uniqueness_gate",
+      "reason": "Those factors use magnitude correlation, bipower-to-realized variation, or multi-minute variance aggregation. Campaign039 uses neither covariance nor variance ratios and retains the ordered signed cubic interaction of consecutive returns."
+    },
+    {
+      "family": "intraday_return_sign_run_imbalance_238p_and_intraday_return_weak_order_entropy_234t",
+      "result": "distinct_pending_statistical_uniqueness_gate",
+      "reason": "Sign-run and weak-order factors discard or discretize return magnitude into counts or states. Campaign039 uses the exact signed return magnitudes on fixed adjacent-pair support and contains no sign or ordinal classification."
+    },
+    {
+      "family": "intraday_return_spectral_entropy_59f",
+      "result": "distinct_pending_statistical_uniqueness_gate",
+      "reason": "Spectral entropy describes normalized power across frequencies after within-half demeaning. Campaign039 has no DFT, demeaning, frequency bin, entropy, taper, or phase statistic and measures a local third-order time-domain asymmetry."
+    },
+    {
+      "family": "intraday_half_session_chord_adherence_240m_intraday_signed_path_efficiency_239m_and_extreme_or_range_geometry",
+      "result": "distinct_pending_statistical_uniqueness_gate",
+      "reason": "Those factors summarize price-level geometry, endpoint displacement, extrema, or OHLC ranges. Campaign039 uses no price-level chord, endpoint displacement, high, low, extremum, range, or frontier; only adjacent signed close returns enter."
+    },
+    {
+      "family": "intraday_morning_afternoon_return_profile_persistence_119p",
+      "result": "distinct_pending_statistical_uniqueness_gate",
+      "reason": "Campaign027 correlates ordinal-matched return positions across halves. Campaign039 never aligns morning with afternoon positions; it forms local pairs inside each half and pools their signed cubic contrasts before one absolute value."
+    },
+    {
+      "family": "candidate49_cumulative_vwap_crossing_rate",
+      "result": "distinct",
+      "reason": "Candidate49 counts close crossings around a causal cumulative amount/volume VWAP and is future-only. Campaign039 reads no amount or volume, constructs no anchor crossing, and remains historical-research-only."
+    },
+    {
+      "family": "amount_volume_transaction_price_market_quarterly_or_event_mechanisms",
+      "result": "distinct",
+      "reason": "Campaign039 contains no activity field, transaction price, peer benchmark, disclosure field, or event timing."
+    },
+    {
+      "family": "terminal_factor_combination_or_rescue",
+      "result": "not_used",
+      "reason": "Campaign039 contains one exact raw-close statistic and no terminal factor value, transform, filter, fitted model, or combination."
+    }
+  ],
+  "design_choices_frozen_before_values": {
+    "formula_family": "within_half_adjacent_signed_return_antisymmetric_cubic_time_reversal_asymmetry",
+    "direction": "higher",
+    "selected_bar_count": 240,
+    "half_session_bar_count": 120,
+    "within_half_return_count": 238,
+    "within_half_adjacent_return_pair_count": 236,
+    "include_0930": false,
+    "include_lunch_transition": false,
+    "separate_half_session_pair_construction": true,
+    "signed_return_demeaning_or_standardization": false,
+    "cubic_contrast": "a^2*b-a*b^2",
+    "normalization": "sum(abs(a*b)*(abs(a)+abs(b)))",
+    "absolute_value_after_pooling_both_halves": true,
+    "pairwise_or_separate_half_absolute_value": false,
+    "zero_normalization_is_missing": true,
+    "endpoint_canonicalization_tolerance": 1e-12,
+    "valid_lower_bound": 0.0,
+    "valid_upper_bound": 1.0,
+    "alternate_power_signed_pairwise_absolute_separate_half_clipped_winsorized_scaled_subwindow_or_inverse_search_allowed": false,
+    "threshold_filter_year_cost_board_direction_or_model_search_allowed": false,
+    "open_high_low_activity_market_quarterly_or_terminal_factor_input_allowed": false
+  },
+  "research_boundary": {
+    "external_minute_partitions_read": false,
+    "external_daily_partitions_read": false,
+    "candidate_values_read": false,
+    "comparison_values_read": false,
+    "historical_daily_price_fields_read": false,
+    "historical_forward_returns_read": false,
+    "training_or_model_fitting_performed": false,
+    "provider_request_issued": false,
+    "candidate49_historical_return_signal_or_execution_backfill_performed": false,
+    "candidate49_ledgers_changed": false,
+    "candidate50_activation_created": false,
+    "current_scoring_selection_sizing_or_orders_performed": false,
+    "investment_advice": false
+  },
+  "decision": {
+    "conceptual_independence_passed": true,
+    "predictive_value_established": false,
+    "next_action": "Validate the overlap-audit bindings, then freeze a fingerprint-bound no-return protocol with exactly this formula and the complete ordered 60-factor comparison library before implementing or opening any candidate value."
+  }
+}

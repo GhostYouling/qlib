@@ -1,0 +1,38 @@
+{
+  "version": 2,
+  "kind": "a_share_three_day_walkforward_campaign066_feature_implementation_freeze",
+  "status": "frozen_zero_row_partition_repair_before_snapshot_build_retry",
+  "recorded_at": "2026-08-05T15:35:00+08:00",
+  "supersedes_without_rewriting": {"path": "docs/a_share_three_day_walkforward_campaign_066_feature_implementation_freeze_20260805.json", "sha256": "c889820c85989da97fecdf79644d9256d0f9d8b22ac66ed41d886ac066496d55"},
+  "failed_build_evidence": {"path": "data/experiments/short_horizon/historical_walkforward/campaign_066/research_attempt_ledger_v3.json", "sha256": "56fce61a8d848a9fe3d30027ad80caefa94a3bec1bf0f2cb5aeda71b9e7a06fa", "failed_partition": "SH600145/2019", "bound_partition_rows": 0, "published_output_files": 0},
+  "feature_runner": {"path": "scripts/a_share_three_day_walkforward_campaign066_features.py", "sha256": "ff8bd4aef61f7eec00299d1b38e21c30e15a4e7b010d157b0ea60d0576adf614"},
+  "feature_tests": {"path": "tests/data_collector_tests/test_a_share_three_day_walkforward_campaign066_features.py", "sha256": "f20cc04b89ae789418c945a99fc0ea99bbe2aeab817df6ce13c32b826697747c", "passed": 8, "failed": 0},
+  "no_return_preregistration": {"path": "docs/a_share_three_day_walkforward_campaign_066_no_return_preregistration.json", "sha256": "ab850ef8ff194c1172070e2ffd388eff2d7924354abf06a8b32c5bd43584a278"},
+  "current_attempt_ledger": {"path": "data/experiments/short_horizon/historical_walkforward/campaign_066/research_attempt_ledger_v4.json", "sha256": "494cb0009c18c396cb344bdbcaea26c4261047b982b9a1885dc9786ecfc2b7c4"},
+  "repair_boundary": {
+    "legitimate_bound_zero_row_partitions_are_schema_valid_empty_outputs": true,
+    "zero_row_partitions_remain_in_exact_partition_count_and_dataset_digest": true,
+    "nonempty_identity_validation_changed": false,
+    "point_in_time_state_semantics_changed": false,
+    "average_tie_rank_semantics_changed": false,
+    "factor_formula_or_direction_changed": false,
+    "coverage_or_comparison_gate_changed": false,
+    "historical_return_semantics_changed": false,
+    "candidate49_boundary_changed": false
+  },
+  "frozen_implementation_semantics": {
+    "factor": "quarterly_quality_rank_balance_3f",
+    "direction": "higher",
+    "formula": "1-(max(r_roe,r_profit,r_revenue)-min(r_roe,r_profit,r_revenue))",
+    "strict_next_session_availability": true,
+    "independent_per_field_forward_fill": true,
+    "average_tie_cross_sectional_percentile_ranks": true,
+    "complete_definition_count": 97,
+    "numeric_comparator_count": 96,
+    "daily_price_fields_read": [],
+    "historical_forward_returns_read": false,
+    "provider_request_issued": false,
+    "candidate49_ledgers_changed": false
+  },
+  "next_action": "Retry the same snapshot build once under this repaired freeze, then independently verify all 33,015 partitions before coverage or comparison values."
+}

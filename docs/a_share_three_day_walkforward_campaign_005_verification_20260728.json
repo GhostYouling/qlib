@@ -1,0 +1,85 @@
+{
+  "version": 1,
+  "kind": "a_share_three_day_walkforward_campaign005_verification",
+  "status": "verified_terminal_zero_survivors_and_idempotent_closed_stress",
+  "recorded_at": "2026-07-28T10:00:00Z",
+  "authoritative_bindings": {
+    "iteration_state": {
+      "path": "docs/a_share_three_day_iteration_status_20260728_campaign005.json",
+      "sha256": "196873713efc1ab323b8511427a3e3613988b6013a5dcc2544a32901ca45ffc0"
+    },
+    "research_record": {
+      "path": "docs/a_share_three_day_walkforward_campaign_005_research_record.json",
+      "sha256": "add4984c7bcfc9cd2aa9bd0b7ed31d324577b24378ec9f931ac16effbd69a604"
+    },
+    "preregistration": {
+      "path": "docs/a_share_three_day_walkforward_campaign_005_preregistration.json",
+      "sha256": "ff0afcde4dab5c6783a0c31190b3c1daf6857957016fe7554bab9d69c5e7ea96"
+    },
+    "runner": {
+      "path": "scripts/a_share_three_day_walkforward_campaign005.py",
+      "sha256": "00815ecb8ccf2b68ab3297a2f4d4ddd96c9fdf64b7416bb46c41d3f3376ae4f6"
+    }
+  },
+  "focused_and_cross_campaign_tests": {
+    "command": "PYTHONPATH=/opt/anaconda3/lib/python3.12/site-packages /opt/anaconda3/bin/python3 -S -m pytest -q tests/data_collector_tests/test_a_share_three_day_walkforward_campaign.py tests/data_collector_tests/test_a_share_three_day_walkforward_campaign002.py tests/data_collector_tests/test_a_share_three_day_walkforward_campaign002_completion_audit.py tests/data_collector_tests/test_a_share_three_day_walkforward_campaign003.py tests/data_collector_tests/test_a_share_three_day_walkforward_campaign003_completion_audit.py tests/data_collector_tests/test_a_share_three_day_walkforward_campaign004.py tests/data_collector_tests/test_a_share_three_day_walkforward_campaign004_features.py tests/data_collector_tests/test_a_share_three_day_walkforward_campaign005.py tests/data_collector_tests/test_a_share_three_day_walkforward_campaign005_features.py tests/data_collector_tests/test_a_share_three_day_walkforward_completion_audit.py tests/data_collector_tests/test_a_share_three_day_walkforward_policy.py tests/data_collector_tests/test_a_share_tushare_candidate49_future_session_workflow.py",
+    "passed": 86,
+    "failed": 0,
+    "duration_seconds": 4.46,
+    "campaign005_test_bindings": [
+      {
+        "path": "tests/data_collector_tests/test_a_share_three_day_walkforward_campaign005.py",
+        "sha256": "9931f9d65eca3063345180a68703b5465b047bafc9a7c36ff674ba121750eb0b"
+      },
+      {
+        "path": "tests/data_collector_tests/test_a_share_three_day_walkforward_campaign005_features.py",
+        "sha256": "8a40967ef41edf9344490dfebd19c5840d34d82a97f679a6300fe1f47aef7a80"
+      }
+    ]
+  },
+  "idempotence": {
+    "development_command": "PYTHONPATH=/opt/anaconda3/lib/python3.12/site-packages /opt/anaconda3/bin/python3 -S scripts/a_share_three_day_walkforward_campaign005.py run-development",
+    "development_status": "development_already_complete_idempotent",
+    "development_trial_count": 1,
+    "development_survivor_count": 0,
+    "exposed_stress_return_fields_read": false,
+    "stress_command": "PYTHONPATH=/opt/anaconda3/lib/python3.12/site-packages /opt/anaconda3/bin/python3 -S scripts/a_share_three_day_walkforward_campaign005.py run-exposed-stress --confirm-exposed-stress",
+    "stress_status": "not_opened_zero_development_survivors",
+    "stress_interval_opened": false,
+    "stress_return_fields_read": false
+  },
+  "artifact_verification": {
+    "trial_ledger": {
+      "path": "data/experiments/short_horizon/historical_walkforward/campaign_005/walkforward/trial_ledger.json",
+      "sha256": "ff15bbaf7a1a8ae00fbf5aae426bf0d1d43cdefbae784786c8886ce0dd10c28e",
+      "entry_count": 1,
+      "append_only_chain_valid": true
+    },
+    "development_survivors": {
+      "path": "data/experiments/short_horizon/historical_walkforward/campaign_005/walkforward/development_survivors.json",
+      "sha256": "1b1220b7551d46e4ee2b3a684acf48b4ef6589b403e0bc30b57c780c71353d90",
+      "selected_survivor_count": 0
+    },
+    "exposed_stress_record": {
+      "path": "data/experiments/short_horizon/historical_walkforward/campaign_005/walkforward/exposed_stress_consumption_record.json",
+      "sha256": "f9208022b1e1f3f4e87a899222ef3795e8f8200c779a95984d49ff0bd84f2835",
+      "stress_interval_opened": false,
+      "stress_return_fields_read": false
+    },
+    "campaign_report": {
+      "path": "data/experiments/short_horizon/historical_walkforward/campaign_005/walkforward/campaign_report.json",
+      "sha256": "9e43c53809c79fc78529bad59143b1794d8729fa693e8fa4f3efd073b0c3fc3b"
+    }
+  },
+  "semantic_verification": {
+    "frozen_catalog_trial_count": 1,
+    "ledger_development_entry_count": 1,
+    "infrastructure_failure_count": 0,
+    "candidate49_historical_return_read": false,
+    "candidate49_signal_or_execution_ledger_changed": false,
+    "candidate50_prospective_activation_created": false,
+    "current_scoring_selection_sizing_or_orders_performed": false,
+    "survivor_complexity_display_anomaly_acknowledged": true,
+    "survivor_complexity_display_anomaly_affects_any_gate_or_ranking": false
+  }
+}

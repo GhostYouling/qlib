@@ -1,0 +1,38 @@
+{
+  "schema_version": 1,
+  "kind": "a_share_three_day_walkforward_campaign143_infrastructure_failure",
+  "status": "recorded_not_bypassed_no_values_read",
+  "recorded_at": "2026-08-14T15:59:00+0800",
+  "attempt_id": "campaign143_infrastructure_013",
+  "phase": "strict_publication_validation",
+  "failure": {
+    "operation": "run focused Campaign142 and Campaign143 lifecycle-aware terminal tests",
+    "process_exit_code": 1,
+    "pytest_passed": 11,
+    "pytest_failed": 1,
+    "failed_test": "tests/data_collector_tests/test_a_share_three_day_walkforward_campaign142_terminal.py::test_campaign142_bindings_policy_status_and_candidate49_isolation",
+    "campaign142_test_sha256": "b7386af89671f1b72898c29830eb7ee74085dfb5a0e23935106caf3a5661e780",
+    "campaign143_test_sha256": "925b5cd55ec13fcab407f92d08bb7850ebb9a89c5c62902c808288c2c150d374",
+    "cause": "The Campaign142 compatibility test still required every frozen status binding to match current bytes even though two unified append-only report files are intentionally extended by later campaigns.",
+    "failed_exit_code_bypassed": false,
+    "later_success_used_to_mask_failure": false
+  },
+  "safe_recovery": {
+    "preserve_this_failure_record": true,
+    "append_a_new_ledger_delta_before_retry": true,
+    "allowed_change": "Make the Campaign142 test lifecycle-aware only for the exact current_research_report and three_day_research_report JSON pointers; all other frozen bindings must still pass.",
+    "binding_validator_weakened_or_modified": false,
+    "scientific_assertion_or_gate_change_allowed": false
+  },
+  "research_boundary": {
+    "source_rows_or_column_values_read": false,
+    "candidate_or_comparator_values_read": false,
+    "historical_daily_price_or_forward_return_values_read": false,
+    "stress_2024_2025_opened": false,
+    "provider_request_issued": false,
+    "provider_credential_value_or_digest_read": false,
+    "candidate49_historical_backfill_performed": false,
+    "candidate49_ledgers_changed": false,
+    "current_scoring_selection_sizing_positions_or_orders_performed": false
+  }
+}

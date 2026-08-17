@@ -1,0 +1,180 @@
+{
+  "version": 1,
+  "kind": "a_share_three_day_walkforward_campaign039_no_return_preregistration",
+  "status": "frozen_before_campaign039_minute_candidate_comparison_daily_price_or_return_values",
+  "frozen_at": "2026-07-31T02:09:56Z",
+  "purpose": "Freeze exactly one Campaign039 factor, the complete ordered no-return admission process, and the finite post-admission development catalog before candidate, comparison, daily-price, or return values are opened.",
+  "source_chain": {
+    "authoritative_state": {
+      "path": "docs/a_share_three_day_iteration_status_20260731_campaign038_verified.json",
+      "sha256": "4bc921c541f6044b9756d6843e576c3282e2011f9952de1800dd335c2d9a16e5"
+    },
+    "historical_walkforward_policy": {
+      "path": "docs/a_share_three_day_historical_walkforward_research_policy_20260727.json",
+      "sha256": "38426d6161b9bfed323c58caba18feca668b8c9d53e294951a8ba90c01a798bb"
+    },
+    "concept_scouting": {
+      "path": "docs/a_share_three_day_walkforward_campaign_039_concept_scouting.json",
+      "sha256": "eef9a90cc4b5473a967a70f8f72d515efa8a40c7e39580995f2caee6036eac90"
+    },
+    "mechanism_overlap_audit": {
+      "path": "docs/a_share_three_day_walkforward_campaign_039_mechanism_overlap_audit.json",
+      "sha256": "a2a01837c74fa1ede9e7e3b143b3dbe8fdb11708552358aba5fa804113c4a5c6"
+    },
+    "effective_campaign038_protocol_base": {
+      "path": "docs/a_share_three_day_walkforward_campaign_038_no_return_preregistration.json",
+      "sha256": "824ede814080bc7d9de8b50569571292d257a3b7bff338c3cbf6939a27535651",
+      "inherited_semantics": "All source-root identity, 2019-2025 session range, quality/listing eligibility, coverage gates, uniqueness estimator and thresholds, the complete ordered 59-factor comparison library, walk-forward folds, purge, execution costs, survivor gates, append-only accounting, stress opening rule, Candidate49 isolation, and current-output prohibitions remain unchanged unless an exact Campaign039 delta is stated below."
+    },
+    "campaign038_terminal_snapshot": {
+      "path": "/Volumes/DIsk/qlib-a-share-tushare-1m/derived/a_share/rich/tushare/minute_walkforward_campaign038_feature_library/tushare_stk_mins_1m_2019_2025_ea0cbb8f_walkforward_campaign038_feature_library_v1/snapshot_manifest.json",
+      "sha256": "d8042490037077c68c42bbf24f5b354b2a808894ac0bad79ad0c63c43404519a",
+      "dataset_sha256": "0791779f97992d3c9cd9ee6501a2eacb6df45d534f5c6b0359088221de951904"
+    },
+    "campaign038_no_return_audit": {
+      "path": "data/experiments/short_horizon/historical_walkforward/campaign_038/no_return/20260731T014516Z_campaign038_no_return_audit.json",
+      "sha256": "efc9b96c4754f86f32bcb54d3ae31228bb930972aefcf11560c3b9c781bdc0de"
+    },
+    "campaign038_research_record": {
+      "path": "docs/a_share_three_day_walkforward_campaign_038_research_record.json",
+      "sha256": "8ce34322f63ff24eb3d439d85045bae01eac3a22883e62df6c96f1949f6ae902"
+    },
+    "candidate49_signal_ledger": {
+      "path": "data/experiments/short_horizon/candidate49_future_signal_ledger.json",
+      "sha256": "5193f00d7f36da003f53cec387900da4c3d002299f5dfcfc1a95eaa199ed3a79",
+      "entry_count": 0
+    },
+    "candidate49_execution_ledger": {
+      "path": "data/experiments/short_horizon/candidate49_future_execution_ledger.json",
+      "sha256": "d57a3e61eac969e42cafa418ccd8c0a5ee65dcf69da145bb2c096c2a02a2ea4f",
+      "entry_count": 0
+    }
+  },
+  "campaign039_delta_from_effective_campaign038_protocol": {
+    "campaign_id": "a_share_three_day_walkforward_campaign_039",
+    "candidate_factor_count": 1,
+    "comparison_factor_count": 60,
+    "development_trial_count_if_admitted": 1,
+    "candidate_replaces_campaign038_candidate": true,
+    "campaign038_candidate_appended_as_final_terminal_comparison": true,
+    "complete_comparison_library_construction": "Take the exact ordered 59 comparison factors materialized by effective_campaign038_protocol_base, then append exactly {name: intraday_half_session_chord_adherence_240m, score_direction: higher}. No deletion, reorder, substitution, sparse omission, or extra comparison is allowed.",
+    "inherited_comparison_count": 59,
+    "inherited_comparison_order_sha256": "31b91c750ee06df0a862fc44b3871b159782fceea746784693c5255006df8fd3",
+    "appended_comparison": {
+      "name": "intraday_half_session_chord_adherence_240m",
+      "score_direction": "higher"
+    },
+    "comparison_order_sha256": "bfd0905b6fa58e30fc30d5618120e37b9a7edc341b947e111bb6edaab6824049",
+    "other_inherited_semantics_changed": false
+  },
+  "candidate": {
+    "name": "intraday_return_time_reversal_asymmetry_236p",
+    "direction": "higher",
+    "formula": "For each 120-close half independently, form 119 adjacent log returns. For each of the 118 ordered adjacent-return pairs (a,b) in that half, accumulate the antisymmetric cubic contrast a^2*b-a*b^2. Pool both halves into T=sum(a^2*b-a*b^2) and Q=sum(abs(a*b)*(abs(a)+abs(b))) across exactly 236 pairs. Return abs(T)/Q.",
+    "source_projection": [
+      "datetime",
+      "symbol",
+      "provider",
+      "close"
+    ],
+    "forbidden_source_columns": [
+      "open",
+      "high",
+      "low",
+      "volume",
+      "amount"
+    ],
+    "selected_bar_count": 240,
+    "selected_grid": [
+      "09:31-11:30",
+      "13:01-15:00"
+    ],
+    "half_session_bar_count": 120,
+    "within_half_return_count": 238,
+    "within_half_adjacent_return_pair_count": 236,
+    "include_lunch_transition": false,
+    "separate_half_session_pair_construction": true,
+    "signed_return_demeaning_or_standardization": false,
+    "cubic_contrast": "a^2*b-a*b^2",
+    "normalization": "sum(abs(a*b)*(abs(a)+abs(b)))",
+    "absolute_value_after_pooling_both_halves": true,
+    "pairwise_or_separate_half_absolute_value": false,
+    "zero_normalization_is_missing": true,
+    "endpoint_canonicalization_tolerance": 1e-12,
+    "valid_range": {
+      "lower": 0.0,
+      "lower_inclusive": true,
+      "upper": 1.0,
+      "upper_inclusive": true
+    },
+    "missing_rule": "Any invalid, nonpositive, or nonfinite selected close; nonfinite log return, cubic contrast, normalization component, T, or Q; zero Q; nonfinite asymmetry; or asymmetry outside [0,1] before a 1e-12 endpoint canonicalization makes the stock-day missing.",
+    "transform_scale_clip_threshold_filter": "none",
+    "alternate_power_signed_pairwise_absolute_separate_half_clipped_winsorized_scaled_subwindow_inverse_board_or_year_search": false
+  },
+  "ordered_no_return_gates": {
+    "coverage_and_capacity_before_comparison_values": {
+      "minimum_median_coverage": 0.95,
+      "minimum_p05_coverage": 0.9,
+      "minimum_p05_eligible_names": 50,
+      "minimum_non_overlapping_three_session_cohorts": 200,
+      "minimum_observed_calendar_years": 5,
+      "comparison_values_read_before_coverage_pass": false
+    },
+    "uniqueness_after_coverage_only": {
+      "maximum_allowed_absolute_median_daily_rank_correlation": 0.8,
+      "minimum_pairwise_names_per_session": 50,
+      "minimum_pairwise_sessions_per_comparison": 100,
+      "complete_library_inherited_from_path": "docs/a_share_three_day_walkforward_campaign_038_no_return_preregistration.json",
+      "inherited_comparison_count": 59,
+      "inherited_comparison_order_sha256": "31b91c750ee06df0a862fc44b3871b159782fceea746784693c5255006df8fd3",
+      "appended_comparison": {
+        "name": "intraday_half_session_chord_adherence_240m",
+        "score_direction": "higher"
+      },
+      "comparison_factor_count": 60,
+      "comparison_factor_order_sha256": "bfd0905b6fa58e30fc30d5618120e37b9a7edc341b947e111bb6edaab6824049",
+      "all_60_must_pass": true
+    }
+  },
+  "finite_development_catalog_if_admitted": {
+    "trial_id": "wf039_intraday_return_time_reversal_asymmetry_236p_single_higher",
+    "kind": "single_factor",
+    "feature_set": [
+      "intraday_return_time_reversal_asymmetry_236p"
+    ],
+    "weights": [
+      1.0
+    ],
+    "complexity": 1,
+    "expected_trial_count": 1,
+    "weight_threshold_filter_window_year_or_model_search": false,
+    "development_interval": [
+      "2019-01-01",
+      "2023-12-31"
+    ],
+    "fold_count": 3,
+    "purge_local_signal_sessions": 3,
+    "t_plus_1_and_t_plus_3_must_remain_inside_partition": true,
+    "stress_opening_rule": "2024-2025 may open exactly once only for the frozen development survivor"
+  },
+  "research_boundary": {
+    "external_campaign039_minute_partitions_read": false,
+    "candidate_values_read": false,
+    "comparison_values_read": false,
+    "historical_daily_price_fields_read": false,
+    "historical_forward_returns_read": false,
+    "training_or_model_fitting_performed": false,
+    "provider_request_issued": false,
+    "candidate49_historical_return_signal_or_execution_backfill_performed": false,
+    "candidate49_ledgers_changed": false,
+    "candidate50_activation_created": false,
+    "current_scoring_selection_sizing_or_orders_performed": false,
+    "investment_advice": false
+  },
+  "decision": {
+    "candidate_count": 1,
+    "comparison_count": 60,
+    "development_trial_count_if_admitted": 1,
+    "next_action": "Validate every binding, implement and synthetically test the exact factor, freeze implementation fingerprints, then build the immutable candidate snapshot before the ordered no-return audit."
+  }
+}

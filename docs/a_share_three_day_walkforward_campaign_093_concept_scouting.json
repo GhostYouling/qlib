@@ -1,0 +1,94 @@
+{
+  "schema_version": 1,
+  "kind": "a_share_three_day_walkforward_campaign093_concept_scouting",
+  "status": "selected_before_campaign093_minute_source_candidate_comparison_daily_price_or_return_values",
+  "recorded_at": "2026-08-07T01:17:30Z",
+  "purpose": "Select exactly one economically independent offline three-session factor after terminal Campaign092, before opening any Campaign093 minute source row, candidate value, comparator value, daily price, or forward return.",
+  "authoritative_boundary": {
+    "campaign092_verified_state": {
+      "path": "docs/a_share_three_day_iteration_status_20260807_campaign092_verified.json",
+      "sha256": "0a6a79e05eb12c0303ba1c186d31adeca0d45abdea48b9de50101cde2523a57b"
+    },
+    "numeric_comparison_policy_v36": {
+      "path": "docs/a_share_three_day_walkforward_future_numeric_comparison_eligibility_policy_v36_20260807.json",
+      "sha256": "8e2d23139dbe5f423a5b96fb1230a2f5f0f3c04e3bced33753aa38ac5d7554f8",
+      "complete_definition_count": 124,
+      "complete_definition_order_sha256": "a77f964349dd9c5d924bb8d6e2000682791cd765ff4b9c5c50576309cf815758",
+      "numeric_comparator_count": 122,
+      "numeric_comparator_order_sha256": "8e5afb41c25060c7071e713ecc9589a6db8a706da5c441349dc298fca26da390"
+    },
+    "historical_walkforward_policy": {
+      "path": "docs/a_share_three_day_historical_walkforward_research_policy_20260727.json",
+      "sha256": "38426d6161b9bfed323c58caba18feca668b8c9d53e294951a8ba90c01a798bb"
+    }
+  },
+  "finite_candidate_design_catalog": [
+    {
+      "design": "intraday_close_transition_range_quadratic_efficiency_238p",
+      "decision": "selected_for_complete_prevalue_mechanism_audit",
+      "reason": "It compares quadratic variation in adjacent continuous-session closes with contemporaneous destination-bar high-low quadratic variation on exactly the same 238 within-half opportunities. This targets close-to-close price discovery relative to intrabar excursion noise, not an open gap, candle body, five-minute aggregation, bipower jump estimator, raw volatility level, or range-clock statistic."
+    },
+    {
+      "design": "linear_absolute_close_transition_range_share",
+      "decision": "rejected_before_values",
+      "reason": "Using absolute first powers would be too close to Campaign092's linear gap-versus-range allocation and would introduce a transform choice. Campaign093 freezes the conventional quadratic-variation scale only."
+    },
+    {
+      "design": "signed_close_transition_efficiency",
+      "decision": "rejected_before_values",
+      "reason": "A signed numerator would reopen terminal signed-path, direction, and body-pressure families. Campaign093 freezes a nonnegative variation-allocation mechanism."
+    },
+    {
+      "design": "open_gap_body_wick_amount_volume_or_market_weighted_variants",
+      "decision": "rejected_before_values",
+      "reason": "Open gaps, bodies, wicks, activity weights, and market residuals are already represented by terminal mechanisms and would create a field or weighting search."
+    },
+    {
+      "design": "morning_afternoon_subwindow_threshold_filter_rank_neutralization_or_model_variants",
+      "decision": "rejected_before_values",
+      "reason": "Subwindows, thresholds, filters, regimes, fitting, ranks, neutralization, and models are outside the one-factor finite catalog."
+    }
+  ],
+  "selected_candidate": {
+    "name": "intraday_close_transition_range_quadratic_efficiency_238p",
+    "direction": "higher",
+    "economic_hypothesis": "A larger share of completed-session quadratic price variation appearing in successive closing levels rather than temporary intrabar high-low excursions indicates more durable information incorporation that may continue from the next open through the third close.",
+    "formula": "Within each 120-bar half, for j=1..119 set c_j=ln(close_j/close_j-1) and h_j=ln(high_j/low_j) on the same destination bar. Pool 238 pairs, let Q=sum(c_j^2), H=sum(h_j^2), and return Q/(Q+H).",
+    "source_projection": [
+      "datetime",
+      "symbol",
+      "provider",
+      "high",
+      "low",
+      "close"
+    ],
+    "source_grid": "Require the raw 09:30 row for immutable source identity; use exactly 09:31-11:30 and 13:01-15:00, exclude 09:30, and reset both return vectors at lunch.",
+    "support": "Require every selected high, low, and close to be finite and strictly positive with low<=close<=high, retain exact-zero transitions and ranges, and require finite strictly positive Q+H over all 238 pairs.",
+    "valid_range": "[0,1] with only 1e-12 endpoint canonicalization",
+    "parameter_window_transform_threshold_filter_subset_regime_fit_combination_or_model_search": false
+  },
+  "definition_only_review": {
+    "all_124_complete_definitions_reconstructed_in_frozen_order": true,
+    "all_122_numeric_comparators_reserved_in_frozen_order": true,
+    "candidate_or_comparator_values_read": false,
+    "old_factor_or_cache_values_read_for_selection": false
+  },
+  "research_boundary": {
+    "campaign093_minute_source_rows_read": false,
+    "campaign093_candidate_values_read": false,
+    "comparison_values_read": false,
+    "historical_daily_price_fields_read": [],
+    "historical_forward_return_fields_read": false,
+    "provider_request_issued": false,
+    "candidate49_historical_backfill_performed": false,
+    "candidate49_ledgers_changed": false,
+    "second_prospective_candidate_created": false,
+    "current_scoring_selection_sizing_or_orders_performed": false,
+    "investment_advice": false
+  },
+  "decision": {
+    "selected_candidate_count": 1,
+    "predictive_value_established": false,
+    "next_action": "Challenge the exact candidate against all 124 complete definitions, then freeze the v36-bound coverage-first no-return protocol before any Campaign093 source row or value."
+  }
+}

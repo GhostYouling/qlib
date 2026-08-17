@@ -1,0 +1,28 @@
+{
+  "version": 1,
+  "kind": "a_share_three_day_walkforward_campaign103_infrastructure_failure",
+  "status": "failed_in_synthetic_tests_before_development_return_read",
+  "recorded_at": "2026-08-07T17:20:00+08:00",
+  "stage": "development_no_return_admission_schema_validation",
+  "test_command_result": "2 passed, 3 failed",
+  "common_exception": "Campaign103 no-return audit is not admissible",
+  "root_cause": "The inherited runner requires its legacy one-factor admission schema, while the authoritative Campaign103 audit intentionally uses the newer coverage-first audit kind and status. A fingerprint-bound compatibility admission bridge is required, as in Campaign101.",
+  "failed_preregistration": {
+    "path": "docs/a_share_three_day_walkforward_campaign_103_preregistration_v6.json"
+  },
+  "allowed_repair": "Create a no-return-only admission bridge that binds the authoritative audit hash and copies only its one admitted factor and false return/Candidate49 flags; point additive preregistration v7 audit to the bridge and retain the authoritative audit separately.",
+  "research_boundary": {
+    "candidate_panel_values_read_by_failed_tests": false,
+    "historical_daily_price_fields_read": [],
+    "historical_forward_return_fields_read": false,
+    "development_trial_started": false,
+    "2024_2025_stress_opened": false,
+    "provider_request_issued": false,
+    "candidate49_ledgers_changed": false
+  },
+  "attempt_accounting": {
+    "campaign103_infrastructure_failure_increment": 1,
+    "campaign103_complete_factor_attempt_increment": 0,
+    "return_reading_development_trial_increment": 0
+  }
+}

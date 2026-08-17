@@ -1,0 +1,50 @@
+{
+  "version": 1,
+  "kind": "a_share_three_day_walkforward_campaign059_terminal_binding_mutation_failure",
+  "status": "failed_current_suite_on_invalidated_failure_record_test_binding",
+  "recorded_at": "2026-08-04T22:55:00+08:00",
+  "purpose": "Preserve the second Campaign059 current terminal-suite failure caused by updating a test module that the prior immutable failure record had byte-bound.",
+  "bindings": {
+    "prior_terminal_test_selection_failure": {
+      "path": "docs/a_share_three_day_walkforward_campaign_059_terminal_deselect_prefix_failure_20260804.json",
+      "sha256": "104071cc6325594ad355acb71e9566e93aa971bd1dc726ff00073f58d579c3ee"
+    },
+    "restored_historical_terminal_test_module": {
+      "path": "tests/data_collector_tests/test_a_share_three_day_walkforward_campaign059_terminal.py",
+      "sha256": "9c23b58f33e6d6084e0a74c439cbc40e40fc7745b73111ac21521e96d026956e"
+    },
+    "current_research_record_at_failure": {
+      "path": "docs/a_share_three_day_walkforward_campaign_059_research_record_v2.json",
+      "sha256": "4f5a475e75e081609ed08ed11e5a1e9c013fd8723db602ad6d50a2f7a090d2e3"
+    },
+    "current_attempt_ledger_at_failure": {
+      "path": "data/experiments/short_horizon/historical_walkforward/campaign_059/research_attempt_ledger_v3.json",
+      "sha256": "0e95b8479fad8baf96cc6764d192d7f8df84d71c3b0a8c4d9f4a8ab4e28e291d"
+    }
+  },
+  "observed_command_semantics": {
+    "exact_historical_node_deselect_succeeded": true,
+    "passed": 32,
+    "failed": 1,
+    "deselected": 1,
+    "failed_node": "data_collector_tests/test_a_share_three_day_walkforward_campaign059_terminal.py::test_campaign059_current_records_have_live_bindings",
+    "failure_detail": "The first terminal failure record expected SHA-256 9c23b58f... for its terminal test binding, but that path had been edited in place for current-state assertions.",
+    "error_classification": "terminal_immutable_binding_lifecycle_failure"
+  },
+  "authorized_correction": {
+    "historical_terminal_test_restored_to_bound_bytes": true,
+    "historical_terminal_test_may_be_rewritten_again": false,
+    "current_terminal_test_requires_new_versioned_path": "tests/data_collector_tests/test_a_share_three_day_walkforward_campaign059_terminal_v2.py",
+    "research_artifacts_or_gates_may_be_changed": false,
+    "rerun_scope": "Same current Campaign059 modules, using the versioned terminal_v2 module and the same exact historical pre-return node exclusion."
+  },
+  "research_boundary": {
+    "candidate_feature_partitions_read": false,
+    "historical_daily_prices_or_forward_returns_recomputed": false,
+    "additional_return_reading_trial_created": false,
+    "stress_2024_2025_opened": false,
+    "candidate49_ledgers_changed": false,
+    "provider_request_issued": false,
+    "current_scoring_selection_sizing_or_orders_performed": false
+  }
+}

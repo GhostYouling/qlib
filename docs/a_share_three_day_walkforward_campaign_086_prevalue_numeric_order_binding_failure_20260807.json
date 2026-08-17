@@ -1,0 +1,39 @@
+{
+  "schema_version": 1,
+  "kind": "a_share_three_day_walkforward_campaign086_prevalue_numeric_order_binding_failure",
+  "status": "failed_closed_before_candidate_source_or_comparison_values",
+  "recorded_at": "2026-08-07T00:38:00+08:00",
+  "failure": {
+    "stage": "prevalue_concept_and_mechanism_binding_validation",
+    "declared_numeric_comparator_order_sha256": "f22759bf639c322193ff08cecaec59e9fce757866f7606dff0d88bc115db321d",
+    "authoritative_numeric_comparator_order_sha256": "f22759b26333f8e1fdb5a8ca942afa96aca88b544311e608fd9ffbd5105c80ab",
+    "authoritative_count": 115,
+    "root_cause": "manual transcription error in the middle of the v24 numeric-comparator order SHA-256"
+  },
+  "affected_immutable_records": [
+    {
+      "path": "docs/a_share_three_day_walkforward_campaign_086_concept_scouting.json",
+      "sha256": "a01e5354ba8cebc99c7e9ae1f578aea664d8f84090a7c3d593e0bae61c886aea"
+    },
+    {
+      "path": "docs/a_share_three_day_walkforward_campaign_086_mechanism_overlap_audit.json",
+      "sha256": "edbae9c30889b7a08fca56d5a84bdf9c87454095466774982cda8a19fd8e32a3"
+    }
+  ],
+  "repair_authorization": {
+    "allowed": true,
+    "scope": "Publish additive v2 concept and mechanism records with the exact authoritative v24 numeric order fingerprint; change no candidate formula, direction, source field, support rule, gate, catalog, or research boundary.",
+    "original_records_may_be_rewritten": false,
+    "candidate_values_may_be_read_before_v2_validation": false
+  },
+  "research_boundary": {
+    "candidate_source_rows_read": false,
+    "candidate_values_read": false,
+    "comparison_values_read": false,
+    "historical_daily_price_fields_read": [],
+    "historical_forward_returns_read": false,
+    "provider_request_issued": false,
+    "candidate49_ledgers_changed": false,
+    "current_scoring_selection_sizing_or_orders_performed": false
+  }
+}

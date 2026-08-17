@@ -1,0 +1,27 @@
+{
+  "schema_version": 1,
+  "kind": "a_share_three_day_walkforward_campaign086_prevalue_cli_import_failure",
+  "status": "failed_closed_at_import_before_any_data_read",
+  "recorded_at": "2026-08-07T00:58:00+08:00",
+  "stage": "post_freeze_prevalue_cli_status",
+  "failure": {
+    "exception": "ModuleNotFoundError: No module named 'scripts'",
+    "root_cause": "The direct file invocation omitted the repository root from PYTHONPATH; this repository's campaign runners import the scripts namespace as a package.",
+    "repair": "Reinvoke the unchanged frozen runner with PYTHONPATH set to the exact repository root."
+  },
+  "implementation_freeze": {
+    "path": "docs/a_share_three_day_walkforward_campaign_086_feature_implementation_freeze_20260807.json",
+    "sha256": "9ea63a23935619537137376e464297bbc302bed26feff0ae719ad00656c47ebd"
+  },
+  "research_boundary": {
+    "runner_import_completed": false,
+    "real_minute_source_rows_read": false,
+    "candidate_values_computed": false,
+    "comparison_values_read": false,
+    "historical_daily_price_fields_read": [],
+    "historical_forward_returns_read": false,
+    "provider_request_issued": false,
+    "candidate49_ledgers_changed": false,
+    "current_scoring_selection_sizing_or_orders_performed": false
+  }
+}

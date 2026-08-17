@@ -1,0 +1,176 @@
+{
+  "schema_version": 1,
+  "kind": "a_share_three_day_walkforward_campaign176_post_employment_benefit_source_frontier",
+  "status": "terminal_prevalue_four_source_admission_deferrals_three_relabeling_or_operator_rejections_zero_selected",
+  "recorded_at": "2026-08-15T11:04:10+08:00",
+  "purpose": "Review a finite issuer pension, post-employment-benefit, actuarial-funding and termination-benefit disclosure domain before opening source rows, filing text, obligation or plan-asset values, candidate values, comparators, security prices or returns.",
+  "authoritative_inputs": {
+    "campaign175_effective_state": {
+      "path": "docs/a_share_three_day_iteration_status_20260815_campaign175_prevalue_terminal.json",
+      "sha256": "1aad58e49fd501cc2477a2e8dcf591316a62cb80d1a007446f6cc12a0d657adb"
+    },
+    "eligibility_policy_v263": {
+      "path": "docs/a_share_three_day_walkforward_future_numeric_comparison_eligibility_policy_v263_20260815.json",
+      "sha256": "463c1e63cc52754f0ec24acdf4b6cf598003596e78e2965e002e8e1f7cc05a85"
+    },
+    "campaign164_human_capital_frontier": {
+      "path": "docs/a_share_three_day_walkforward_campaign_164_human_capital_source_frontier_20260815.json",
+      "sha256": "c31878523b4391ef46305c724cd59f8c12b1d3fd1f0eefaaadb181d8bc47698f"
+    },
+    "campaign172_insurance_frontier": {
+      "path": "docs/a_share_three_day_walkforward_campaign_172_enterprise_insurance_risk_transfer_source_frontier_20260815.json",
+      "sha256": "bf451b52aa778a6fe2a0d9e2a2fd9f99bc9c724bf9275a74574d2e68051ba2a5"
+    },
+    "campaign173_tax_frontier": {
+      "path": "docs/a_share_three_day_walkforward_campaign_173_enterprise_tax_position_compliance_source_frontier_20260815.json",
+      "sha256": "e4eaabeaca181e58e004a7a8968af5946136a602c106fe3241ff06ca41b1a40e"
+    },
+    "campaign175_lease_frontier": {
+      "path": "docs/a_share_three_day_walkforward_campaign_175_enterprise_lease_commitment_source_frontier_20260815.json",
+      "sha256": "a5adac06bd4dd8a86289a93cdc63ffd63f0a5a825579ca280aebff5f600d542c"
+    }
+  },
+  "research_boundary": {
+    "finite_catalog_frozen_before_source_or_value_read": true,
+    "source_row_filing_document_pension_obligation_plan_asset_contribution_candidate_comparator_security_price_or_return_value_read": false,
+    "repository_policy_and_prior_records_only": true,
+    "provider_or_web_request_issued": false,
+    "provider_credential_presence_value_or_digest_read": false,
+    "stress_2024_2025_opened": false,
+    "candidate49_ledgers_changed": false,
+    "second_prospective_candidate_created": false
+  },
+  "repository_evidence": {
+    "complete_definition_count_reviewed": 158,
+    "eligible_numeric_comparator_count_reviewed": 142,
+    "exact_pension_post_employment_defined_benefit_retirement_obligation_or_severance_domain_match_found": false,
+    "existing_post_employment_benefit_mechanism_in_complete_definitions": false,
+    "existing_post_employment_benefit_mechanism_in_numeric_comparators": false,
+    "accepted_historical_issuer_pension_or_post_employment_primitive_present": false,
+    "complete_post_employment_benefit_source_contract_present": false,
+    "human_capital_boundary": "Campaign164 freezes headcount, employee mix, compensation and productivity disclosures. Workforce scale or payroll does not establish a defined-benefit obligation, plan asset, actuarial assumption, funding deficit, contribution schedule, benefit payment or settlement.",
+    "debt_and_lease_boundary": "Borrowing maturities and lease liabilities concern creditor or use-right contracts. Pension and post-employment obligations require beneficiary, plan, trustee, service, vesting, actuarial and plan-asset identities that cannot be inferred from debt or lease balances.",
+    "insurance_boundary": "Campaign172 freezes enterprise policy coverage and claim-risk transfer. Insured employee benefits or annuity contracts may be plan assets, but an insurance mention does not establish employer benefit obligation, funded status, entitlement or actuarial remeasurement.",
+    "tax_boundary": "Campaign173 freezes enterprise tax-position and compliance states. Deductibility, payroll tax or social contribution treatment does not establish the amount, timing or funding status of an employee benefit obligation.",
+    "market_risk_boundary": "A discount rate or asset return assumption is an actuarial input, not a security-market hedge signal; neither market-price paths nor interest-rate exposure can substitute for plan-specific obligation and asset histories.",
+    "point_in_time_boundary": "A current annual-report employee-benefit note cannot be projected backward without plan identity, beneficiary and service history, amendment, curtailment, settlement, contribution, payment, remeasurement, correction and first-public histories."
+  },
+  "mandatory_source_admission_gate": {
+    "must_freeze_before_any_formula_or_direction": [
+      "exact issuer filing, exchange announcement, statutory social-insurance registry, trustee, fund or licensed structured source with immutable bytes and stable observation identity",
+      "first-public timestamp, trading-session availability, reporting measurement date, plan inception, amendment, freeze, curtailment, settlement, termination, correction and supersession chain",
+      "issuer, listed security, parent, subsidiary, branch, employee group, beneficiary class, trustee, custodian, insurer and plan mapping without current-state leakage",
+      "benefit taxonomy separating defined benefit, defined contribution, mandatory social insurance, housing fund, enterprise annuity, post-employment medical, long-service, termination, severance and early-retirement arrangements",
+      "plan rules covering service attribution, vesting, retirement age, benefit formula, salary base, indexation, employee contribution, employer contribution and portability",
+      "defined-benefit obligation, fair value of plan assets, funded status, asset ceiling, unrecognized state, service cost, net interest, actuarial gain or loss and other-comprehensive-income identity",
+      "plan-asset class, valuation date, fair value hierarchy, related-party asset, expected or actual return, liquidity and asset-liability matching semantics",
+      "discount rate, salary growth, mortality, turnover, medical-cost trend, retirement-age and sensitivity assumptions with unit, horizon, scenario and revision semantics",
+      "employer contribution, arrears, funding schedule, benefit payment, reimbursement right, settlement, curtailment, plan amendment and cash-timing identity",
+      "currency, unit, consolidation scope, gross-versus-net presentation, restatement and accounting-standard transition semantics",
+      "missing, undisclosed, not-applicable, state-funded, insured, settled, terminated, true zero obligation, zero plan asset, zero contribution and zero payment semantics without favorable absence coding",
+      "complete bounded 2019-2023 partition manifest, full-market denominator, issuer and plan identifier history, delisting coverage, pagination and parser, identity, timing, unit, actuarial-rollforward and source-acceptance tests using no candidate, comparator, security-price or return values"
+    ],
+    "formula_direction_parameter_filter_subset_combination_or_model_choice_allowed_before_gate": false
+  },
+  "finite_prevalue_catalog": [
+    {
+      "catalog_id": "c176_01",
+      "name": "defined_benefit_obligation_plan_asset_and_funded_status_state",
+      "economic_state": "A close-known issuer funded or unfunded defined-benefit position linking the present value of obligations, fair-value plan assets, asset ceiling and reimbursement rights.",
+      "formula": null,
+      "direction": null,
+      "parameters_filters_subsets_combinations_models": [],
+      "new_issuer_state": true,
+      "complete_local_source_contract": false,
+      "decision": "deferred_source_admission_not_factor_failure",
+      "reason": "No accepted point-in-time history freezes plan and beneficiary identity, obligation and asset rollforwards, valuation date, consolidation scope, currency, asset ceiling, reimbursement right, corrections and first availability across the full 2019-2023 issuer universe."
+    },
+    {
+      "catalog_id": "c176_02",
+      "name": "actuarial_assumption_remeasurement_service_cost_and_settlement_state",
+      "economic_state": "A close-known issuer transition in actuarial assumptions, service cost, net interest, remeasurement, curtailment or settlement of post-employment obligations.",
+      "formula": null,
+      "direction": null,
+      "parameters_filters_subsets_combinations_models": [],
+      "new_issuer_state": true,
+      "complete_local_source_contract": false,
+      "decision": "deferred_source_admission_not_factor_failure",
+      "reason": "The repository lacks a complete history linking discount, salary, mortality, turnover and medical assumptions to plan-specific service periods, amendments, experience adjustments, settlements, OCI or profit-and-loss presentation and public timing."
+    },
+    {
+      "catalog_id": "c176_03",
+      "name": "defined_contribution_social_insurance_annuity_funding_and_arrears_state",
+      "economic_state": "A close-known issuer employer-contribution, statutory social-insurance, housing-fund or enterprise-annuity funding state including scheduled cash, arrears and remediation.",
+      "formula": null,
+      "direction": null,
+      "parameters_filters_subsets_combinations_models": [],
+      "new_issuer_state": true,
+      "complete_local_source_contract": false,
+      "decision": "deferred_source_admission_not_factor_failure",
+      "reason": "Expense lines do not identify covered employees, jurisdictional rate, contribution base, due date, arrears, waiver, remediation, plan transfer, cash payment, subsidiary scope or first-public history in one complete cross-issuer contract."
+    },
+    {
+      "catalog_id": "c176_04",
+      "name": "termination_severance_early_retirement_and_post_employment_medical_state",
+      "economic_state": "A close-known issuer obligation and settlement state for involuntary termination, voluntary severance, early retirement, long-service or post-employment medical benefits.",
+      "formula": null,
+      "direction": null,
+      "parameters_filters_subsets_combinations_models": [],
+      "new_issuer_state": true,
+      "complete_local_source_contract": false,
+      "decision": "deferred_source_admission_not_factor_failure",
+      "reason": "No admitted source links employee group, offer and acceptance dates, service and vesting conditions, restructuring identity, benefit formula, medical trend, payment schedule, reversal, settlement, correction and trading-session availability."
+    },
+    {
+      "catalog_id": "c176_05",
+      "name": "headcount_payroll_employee_expense_debt_lease_or_security_price_relabeling",
+      "economic_state": "An existing workforce, payroll, accounting expense, leverage, lease, interest-rate or security-price state relabeled as a pension or post-employment-benefit state.",
+      "formula": null,
+      "direction": null,
+      "parameters_filters_subsets_combinations_models": [],
+      "new_issuer_state": false,
+      "complete_local_source_contract": false,
+      "decision": "rejected_terminal_human_capital_accounting_debt_lease_market_and_security_price_source_relabeling",
+      "reason": "Headcount, payroll, employee-benefit expense, debt, lease liability, interest-rate exposure or price path does not identify a plan, beneficiary, obligation, plan asset, contribution, actuarial assumption, curtailment or settlement; renaming it would not create a new primitive."
+    },
+    {
+      "catalog_id": "c176_06",
+      "name": "pension_burden_funded_status_assumption_contribution_direction_scale_or_window_variant",
+      "economic_state": "A transform of obligation, funded status, plan asset, contribution, expense, actuarial change or benefit payment against assets, revenue, payroll, cash flow, debt, employees or time.",
+      "formula": null,
+      "direction": null,
+      "parameters_filters_subsets_combinations_models": [],
+      "new_issuer_state": false,
+      "complete_local_source_contract": false,
+      "decision": "rejected_operator_direction_denominator_assumption_and_window_search_before_base_source_admission",
+      "reason": "Choosing higher or lower funded status, discount-rate sensitivity, contribution adequacy, denominator, peer residual, employee subset, plan type or event window before source admission would multiply hypotheses; larger obligations can reflect mature benefits, legacy burden or retention investment."
+    },
+    {
+      "catalog_id": "c176_07",
+      "name": "combined_funded_status_actuarial_funding_and_termination_score_or_model",
+      "economic_state": "Joint issuer post-employment-benefit state across obligations, plan assets, actuarial changes, contributions and termination or medical benefits.",
+      "formula": null,
+      "direction": null,
+      "parameters_filters_subsets_combinations_models": [],
+      "new_issuer_state": false,
+      "complete_local_source_contract": false,
+      "decision": "rejected_unadmitted_component_combination_weight_and_model_search",
+      "reason": "Combining four unadmitted heterogeneous source families or selecting weights, ranks, interactions, filters or models would expand the search before any component has a complete point-in-time source contract."
+    }
+  ],
+  "gate_summary": {
+    "routes_reviewed": 7,
+    "genuinely_new_issuer_state_routes": 4,
+    "source_admission_deferrals_not_factor_failures": 4,
+    "relabeling_or_operator_route_rejections": 3,
+    "selected_candidate_count": 0,
+    "complete_factor_definition_created": false,
+    "numeric_comparator_created": false
+  },
+  "scientific_interpretation": {
+    "post_employment_benefit_or_pension_funding_declared_ineffective": false,
+    "absence_of_an_admitted_historical_source_is_evidence_of_no_predictive_power": false,
+    "safe_conclusion": "Four distinct pension and post-employment-benefit states remain deferred at source admission; workforce, accounting, debt, lease, market or security-price relabeling, premature operator search and unadmitted combinations are closed before values."
+  },
+  "next_action": "Record all seven scientific decisions and the three preserved infrastructure failures in the Campaign176 hash chain, publish terminal accounting, and continue a different finite offline prevalue domain."
+}

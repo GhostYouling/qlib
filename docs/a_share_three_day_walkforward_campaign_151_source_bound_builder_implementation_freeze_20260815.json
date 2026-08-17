@@ -1,0 +1,73 @@
+{
+  "schema_version": 1,
+  "kind": "a_share_three_day_walkforward_campaign151_source_bound_builder_implementation_freeze",
+  "status": "builder_and_synthetic_recovery_tests_frozen_before_historical_values",
+  "recorded_at": "2026-08-15T00:29:32+08:00",
+  "authoritative_inputs": {
+    "source_bound_builder_preregistration": {
+      "path": "docs/a_share_three_day_walkforward_campaign_151_source_bound_builder_preregistration_20260815.json",
+      "sha256": "a7cd811fda8d925621a4d9e713f32723d01a1023d407943a309a78d8fb3530d7"
+    },
+    "formula_implementation_freeze": {
+      "path": "docs/a_share_three_day_walkforward_campaign_151_formula_implementation_freeze_20260815.json",
+      "sha256": "6ae178b8ef6cb0ec5c72998b9360df42e99392911342442c54b12586264ce080"
+    },
+    "source_bound_builder": {
+      "path": "scripts/a_share_three_day_walkforward_campaign151_features.py",
+      "sha256": "7d0585cafcde822a37a4fe8fd45d7629b53b96fa5c69d8f6f28d8b3bd532ac09"
+    },
+    "source_bound_builder_test": {
+      "path": "tests/data_collector_tests/test_a_share_three_day_walkforward_campaign151_features.py",
+      "sha256": "a7073ffc24a08abaaa81d92179959dca2414b0322fb7f0cf312acf3d96392ed2"
+    }
+  },
+  "implementation": {
+    "module": "scripts.a_share_three_day_walkforward_campaign151_features",
+    "build_callable": "build_snapshot",
+    "direct_command_line_build_interface_exposed": false,
+    "separate_plan_runner_still_required": true,
+    "confirmed_build_boolean_required_by_callable": true,
+    "worker_range_inclusive": [1, 8],
+    "source_projection": ["datetime", "symbol", "provider", "amount"],
+    "joint_projection": ["trade_date", "symbol"],
+    "first_pass": "raw float64 amount sums and scalar complete-profile counts on the frozen 2019-2025 calendar",
+    "second_pass": "subtract exact valid own vector and one count, require at least 50 peers and positive finite peer means, then call the frozen pure formula",
+    "all_zero_complete_profile_peer_membership": true,
+    "invalid_profile_peer_membership": false,
+    "benchmark_checkpoint": "private protocol/source/calendar-bound compressed NPZ",
+    "partition_checkpoint": "private source/benchmark/output-byte-bound Parquet plus JSON sidecar",
+    "final_publication": "atomic partial-root rename to a never-overwritten final root"
+  },
+  "synthetic_verification": {
+    "pytest_command": "/Volumes/DIsk/Coding/anaconda3/bin/python3.12 -m pytest -q tests/data_collector_tests/test_a_share_three_day_walkforward_campaign151_features.py",
+    "passed": 8,
+    "failed": 0,
+    "black": "passed; 2 files left unchanged",
+    "ruff": "passed",
+    "verified_behaviors": [
+      "builder protocol and output identity",
+      "strict raw amount and joint-key projections",
+      "exact 241-row source and 240-position selected grid",
+      "all-zero complete profile retained as zero peer contribution",
+      "invalid amount and malformed grid fail closed",
+      "accumulator includes only complete profiles",
+      "exact leave-one-out peer subtraction and mean",
+      "minimum-peer, zero-peer-clock and zero-own-total support failures",
+      "private accumulator checkpoint round trip and corruption rejection",
+      "confirmed-build requirement before source validation"
+    ]
+  },
+  "research_boundary": {
+    "historical_minute_source_rows_or_values_read": false,
+    "peer_benchmark_values_read": false,
+    "candidate_or_comparator_values_read": false,
+    "historical_daily_price_or_forward_return_values_read": false,
+    "stress_2024_2025_opened": false,
+    "credential_loaded": false,
+    "provider_request_issued": false,
+    "candidate49_historical_backfill_performed": false,
+    "candidate49_ledgers_changed": false,
+    "current_scoring_selection_sizing_positions_or_orders_performed": false
+  },
+  "next_action": "Implement a separate metadata-only plan runner that binds this freeze, source protocol, builder, tests, current state/policy and mutually exclusive output roots. Only ready=true with exit zero may authorize one confirmed build."
+}

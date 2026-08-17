@@ -1,0 +1,29 @@
+{
+  "artifact_type": "campaign_infrastructure_failure_record",
+  "campaign_id": 207,
+  "recorded_at": "2026-08-15T21:15:00+08:00",
+  "phase": "campaign145_207_cumulative_regression",
+  "requested_scope": "95_frozen_campaign_test_files_with_tests_prefixed_policy_node_ids",
+  "status": "failed_cumulative_prefixed_node_ids_unmatched_and_output_truncated_discarded",
+  "failure_class": "pytest_rootdir_node_id_mismatch_and_tool_output_truncation",
+  "scientific_trial": false,
+  "result_consumed": false,
+  "discarded_observation": {
+    "tests_passed": 478,
+    "tests_skipped": 1,
+    "tests_failed_only_at_intended_deselection_nodes": 22,
+    "intended_nodes_deselected": 0,
+    "output_complete": false
+  },
+  "recovery": {
+    "action": "read_the_actual_pytest_node_id_with_single_file_collect_only_then_use_that_exact_root_relative_form"
+  },
+  "safety": {
+    "credentials_read": false,
+    "network_accessed": false,
+    "candidate49_plan_or_run_executed": false,
+    "candidate_or_comparator_values_read": false,
+    "historical_returns_read": false,
+    "research_thresholds_modified": false
+  }
+}

@@ -1,0 +1,121 @@
+{
+  "version": 1,
+  "kind": "a_share_candidate49_tushare_daily_execution_handoff_readiness",
+  "status": "offline_tushare_daily_handoff_passed_real_future_signal_pending",
+  "recorded_at": "2026-07-25T18:00:29Z",
+  "purpose": "Bind the offline proof that an accepted single-source Tushare daily root can provide candidate49 daily context and t+1/t+3 paper settlement while the registered signal itself remains minute-derived and future-only.",
+  "authoritative_research_state": {
+    "path": "docs/a_share_three_day_iteration_status_20260725_future_only.json",
+    "sha256": "d44e1cb3707cce194eed37e99cc90f865396b1de8c35e02a393a2a243d973466",
+    "terminal_mechanism_count": 48,
+    "active_future_only_candidate_count": 1,
+    "aggregation_allowed": false,
+    "candidate50_activation_allowed": false
+  },
+  "execution_protocol": {
+    "path": "docs/a_share_tushare_candidate49_future_execution_protocol.json",
+    "sha256": "b9b4ea8906924c8303cb7a434db5f21ed6383ce7d794e50936b675acfa869486",
+    "changed_by_this_work": false
+  },
+  "implementation_fingerprints": {
+    "paper_execution": {
+      "path": "scripts/a_share_tushare_candidate49_future_execution.py",
+      "sha256": "5e681c40a2e9493b3d42c7b47d07d156e7c093bf72ec4fa3734cd62ebfe4ebae"
+    },
+    "paper_execution_tests": {
+      "path": "tests/data_collector_tests/test_a_share_tushare_candidate49_future_execution.py",
+      "sha256": "e909724f67f2ad7f3ddc1807345c990a613adc68e4e2c0d40b9a7e9d99202420"
+    },
+    "runbook": {
+      "path": "docs/a_share_data_pipeline.md",
+      "sha256": "858493f4e6f1d14362a67b7fe7b9fb3beaf9d009c3c2b6bf023606a910522762"
+    }
+  },
+  "daily_source_responsibility": {
+    "accepted_single_sources": [
+      "eastmoney",
+      "baostock",
+      "tushare"
+    ],
+    "tushare_daily_allowed_for": [
+      "accepted calendar and buyable-universe context",
+      "raw daily tradeability and marks",
+      "t+1 raw open paper entry",
+      "t+3 raw close paper exit",
+      "full eligible cross-section future Rank IC outcome"
+    ],
+    "tushare_daily_not_allowed_to_replace": [
+      "candidate49 exact 241-row signal-session minute source",
+      "intraday cumulative VWAP crossing-rate construction",
+      "same-day future-only source-to-signal registration",
+      "historical candidate49 return backfill"
+    ],
+    "raw_daily_fields_projected": [
+      "date",
+      "raw_open",
+      "raw_high",
+      "raw_low",
+      "raw_close",
+      "raw_volume",
+      "amount",
+      "price_basis"
+    ],
+    "daily_source_column_loaded": false
+  },
+  "integrity_hardening": {
+    "gap_proved_before_fix": "A previously published daily execution snapshot validated the stored context metadata shape but did not re-open and hash the bound calendar, buyable-universe, and price-basis files.",
+    "new_rule": "Every existing daily execution snapshot must revalidate each stored source-context path and byte hash before an idempotent return or a new ledger append.",
+    "changed_old_context_stops_before_append": true,
+    "versioned_root_rollover_allowed": true,
+    "old_snapshot_keeps_original_root_binding": true,
+    "old_root_in_place_mutation_allowed": false,
+    "old_root_deletion_while_referenced_allowed": false
+  },
+  "offline_proofs": {
+    "focused_execution_tests": {
+      "passed": 19,
+      "failed": 0
+    },
+    "new_tushare_daily_handoff_tests": [
+      "single-source Tushare daily completes t+1 entry through t+3 exit and one Rank IC outcome",
+      "a later processed session may bind a new versioned Tushare root while the prior snapshot still validates its original root",
+      "changing a previously bound buyable-universe file stops before the next execution-ledger append"
+    ],
+    "full_data_collector_tests": {
+      "passed": 1095,
+      "failed": 0,
+      "warnings": 9,
+      "elapsed_seconds": 29.69
+    },
+    "ruff": "passed",
+    "python_compile": "passed"
+  },
+  "append_only_ledgers_after_offline_tests": {
+    "signal": {
+      "path": "data/experiments/short_horizon/candidate49_future_signal_ledger.json",
+      "sha256": "5193f00d7f36da003f53cec387900da4c3d002299f5dfcfc1a95eaa199ed3a79",
+      "entries": 0
+    },
+    "execution": {
+      "path": "data/experiments/short_horizon/candidate49_future_execution_ledger.json",
+      "sha256": "d57a3e61eac969e42cafa418ccd8c0a5ee65dcf69da145bb2c096c2a02a2ea4f",
+      "entries": 0
+    }
+  },
+  "side_effect_audit": {
+    "provider_request_issued": false,
+    "real_minute_rows_read": false,
+    "real_daily_execution_snapshot_written": false,
+    "signal_or_execution_entry_written": false,
+    "live_order_performed": false,
+    "active_data_root_mutated": false
+  },
+  "decision": {
+    "use_existing_accepted_tushare_daily_data": true,
+    "keep_candidate49_minute_input": true,
+    "historical_backfill_allowed": false,
+    "current_signal_exists": false,
+    "selection_sizing_or_order_allowed": false,
+    "next_action": "After the first eligible session closes, activate its accepted versioned Tushare daily root and collect the registered same-session minute signal; only later completed daily sessions may settle t+1 and t+3."
+  }
+}

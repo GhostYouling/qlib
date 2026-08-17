@@ -1,0 +1,120 @@
+{
+  "version": 1,
+  "kind": "a_share_three_day_walkforward_campaign027_mechanism_overlap_audit",
+  "status": "passed_conceptual_independence_before_formula_values_comparisons_or_returns",
+  "recorded_at": "2026-07-30T04:47:00Z",
+  "purpose": "Resolve the selected morning-afternoon return-profile concept into one exact no-value mechanism and challenge it against terminal and prospective families before any Campaign027 source partition, candidate value, comparison value, daily price, or forward return is opened.",
+  "concept_scouting": {
+    "path": "docs/a_share_three_day_walkforward_campaign_027_concept_scouting.json",
+    "sha256": "6a533bd4c89e1b8b93ee4664bf1298672f1fcdcd238924c79b12d9d714ae58a7"
+  },
+  "authoritative_boundary": {
+    "path": "docs/a_share_three_day_iteration_status_20260730_campaign026_verified.json",
+    "sha256": "9f738be125aee403b9da34e101d23aee957f24c809fc5e8bbc766998444ba3d8"
+  },
+  "historical_walkforward_policy": {
+    "path": "docs/a_share_three_day_historical_walkforward_research_policy_20260727.json",
+    "sha256": "38426d6161b9bfed323c58caba18feca668b8c9d53e294951a8ba90c01a798bb"
+  },
+  "selected_mechanism": {
+    "name": "intraday_morning_afternoon_return_profile_persistence_119p",
+    "direction": "higher",
+    "information_domain": "paired_morning_afternoon_within_half_close_return_shape",
+    "formula": "population PearsonCorr(r_am,k, r_pm,k) for k=1..119, where each vector contains adjacent log-close returns inside its own 120-bar trading half",
+    "economic_hypothesis": "A higher value means the afternoon minute-return profile repeats the morning profile at matched within-half positions, consistent with persistent same-day information assimilation or recurring execution flow that may carry from the next open through the third close.",
+    "source_fields": [
+      "datetime",
+      "symbol",
+      "provider",
+      "close"
+    ],
+    "selected_bar_grid": "exactly 240 one-minute closes at 09:31-11:30 and 13:01-15:00 after frozen timestamp normalization; standalone 09:30 is excluded and no return crosses lunch",
+    "return_rule": "Form 119 adjacent natural-log close returns separately inside each 120-close half. The morning vector ends at 09:32 through 11:30 and the afternoon vector ends at 13:02 through 15:00.",
+    "pairing_rule": "Pair morning and afternoon returns only by equal ordinal positions 1 through 119 within their respective halves. Use no shift, lag, lead, clock-duration weight, sign filter, magnitude filter, or market adjustment.",
+    "correlation_rule": "Use equal-position-weight population Pearson correlation across all 119 paired returns.",
+    "zero_rule": "Retain every exact-zero morning or afternoon return in its fixed paired position; never remove, bridge, replace, or tolerance-reclassify zero returns.",
+    "variance_rule": "Require strictly positive population variance in both complete 119-return vectors.",
+    "bar_rule": "All 240 selected closes must be finite and strictly positive before log returns are formed.",
+    "endpoint_rule": "Only values within 1e-12 of -1 or +1 may be canonicalized to the exact endpoint; no statistical clipping is allowed.",
+    "missing_rule": "Any invalid or nonpositive selected close, nonfinite return, nonpositive variance in either vector, nonfinite score, or score outside [-1,1] after endpoint canonicalization makes the stock-day missing.",
+    "valid_range": [
+      -1.0,
+      1.0
+    ]
+  },
+  "overlap_challenges": [
+    {
+      "family": "intraday_amount_profile_serial_persistence_240m",
+      "result": "distinct",
+      "reason": "The terminal amount-profile factor correlates adjacent log1p(amount) values inside one 240-position sequence. Campaign027 reads no amount, uses close returns, and correlates two separate half-session vectors at matched ordinal positions."
+    },
+    {
+      "family": "intraday_return_sign_run_imbalance_238p",
+      "result": "distinct",
+      "reason": "The sign-run factor counts adjacent equal-sign return pairs and discards magnitude. Campaign027 retains signed magnitudes and has no adjacent sign-run count."
+    },
+    {
+      "family": "volatility_resolution_diffusive_ratio_entropy_and_skewness",
+      "result": "distinct",
+      "reason": "Those terminal mechanisms summarize variance allocation, bipower variation, return-magnitude concentration, or marginal third moments. Campaign027 measures cross-half positional covariance after separately centering both return vectors."
+    },
+    {
+      "family": "intraday_market_response_delay_asymmetry_236p",
+      "result": "distinct",
+      "reason": "Campaign021 compares a stock with a leave-one-out market benchmark at opposite one-minute leads and lags. Campaign027 uses no market benchmark and compares only the same stock's morning and afternoon returns at matched positions."
+    },
+    {
+      "family": "intraday_market_up_down_correlation_asymmetry_238m",
+      "result": "distinct",
+      "reason": "Campaign026 conditions synchronous stock-market correlations on the sign of the market return. Campaign027 uses neither cross-stock information nor market-sign subsets and instead measures own-path repetition across the lunch-separated halves."
+    },
+    {
+      "family": "intraday_signed_path_efficiency_and_terminal_close_location",
+      "result": "distinct",
+      "reason": "Those mechanisms measure net displacement relative to path length or the final close's range location. Campaign027 is invariant to adding a constant to either return vector after centering and does not use a terminal level statistic."
+    },
+    {
+      "family": "candidate49_cumulative_vwap_crossing_rate",
+      "result": "distinct",
+      "reason": "Candidate49 measures repeated close crossings of causal cumulative VWAP using close, volume, and amount. Campaign027 reads close only, contains no VWAP or crossing count, and remains historical-research-only."
+    },
+    {
+      "family": "terminal_factor_combination_or_rescue",
+      "result": "not_used",
+      "reason": "Campaign027 contains one raw close-path statistic and no terminal factor value, transform, filter, model, or combination."
+    }
+  ],
+  "design_choices_frozen_before_values": {
+    "formula_family": "paired_half_session_population_pearson_correlation",
+    "direction": "higher",
+    "paired_return_count": 119,
+    "selected_bar_count": 240,
+    "include_0930": false,
+    "include_lunch_return": false,
+    "pair_same_ordinal_position_only": true,
+    "retain_exact_zero_returns": true,
+    "require_positive_variance_in_both_vectors": true,
+    "endpoint_canonicalization_tolerance": 1e-12,
+    "subwindow_or_year_selection_allowed": false,
+    "sign_or_magnitude_filter_allowed": false,
+    "market_amount_or_volume_input_allowed": false,
+    "terminal_factor_input_allowed": false
+  },
+  "decision": {
+    "conceptually_independent": true,
+    "advance_to_exact_no_return_preregistration": true,
+    "candidate_or_comparison_values_may_be_read_now": false,
+    "binding_validator_exit_zero_required_before_next_stage": true,
+    "candidate49_remains_only_active_prospective_candidate": true,
+    "candidate50_activation_allowed": false,
+    "current_aggregation_scoring_selection_sizing_or_orders_allowed": false
+  },
+  "research_boundary": {
+    "external_campaign027_minute_partitions_read": false,
+    "candidate_values_read": false,
+    "comparison_values_read": false,
+    "daily_price_fields_read": false,
+    "forward_returns_read": false,
+    "provider_request_issued": false
+  }
+}

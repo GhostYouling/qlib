@@ -1,0 +1,130 @@
+{
+  "schema_version": 1,
+  "kind": "a_share_three_day_walkforward_campaign106_concept_scouting",
+  "status": "one_independent_candidate_selected_before_campaign106_minute_source_candidate_comparison_daily_price_or_return_values",
+  "recorded_at": "2026-08-07T18:54:51Z",
+  "purpose": "Review a finite Campaign106 concept library against the complete v63 mechanism history and select at most one economically identified candidate before reading any Campaign106 minute source row, candidate value, comparator value, daily price, or forward return.",
+  "authoritative_inputs": {
+    "iteration_state": {
+      "path": "docs/a_share_three_day_iteration_status_20260808_campaign105_terminal.json",
+      "sha256": "b84143a49e14f40ef2151ec03e7c774e42ab01389f68acacef4297de1b81e8ae"
+    },
+    "numeric_policy_v63": {
+      "path": "docs/a_share_three_day_walkforward_future_numeric_comparison_eligibility_policy_v63_20260808.json",
+      "sha256": "2ec29422ce2938c22307095879acfd60397f03c0c70355d68466fd4179ec4ce8",
+      "complete_definition_count": 135,
+      "complete_definition_order_sha256": "f77f069f07f05bca7b3d478d0e411945a27f6ecf9e8437c02f73900975eb89b3",
+      "numeric_comparator_count": 132,
+      "numeric_comparator_order_sha256": "7ed69afd1408e84dcc856583344166ffc9bcbb0add1aed63163b1d12a1be9a25"
+    },
+    "historical_walkforward_policy": {
+      "path": "docs/a_share_three_day_historical_walkforward_research_policy_20260727.json",
+      "sha256": "38426d6161b9bfed323c58caba18feca668b8c9d53e294951a8ba90c01a798bb"
+    },
+    "accepted_minute_alignment": {
+      "path": "data/metadata/rich_data/alignments/20260721T140521Z_tushare_1m_alignment_89ec2deb.json",
+      "sha256": "2c8c85ba1155289d03c3ebc1175a4a2504bf8022b849087840777ee41586e2a0"
+    },
+    "manage_qlib_a_share_data_skill": {
+      "path": "/Users/niyufei/.codex/skills/manage-qlib-a-share-data/SKILL.md",
+      "sha256": "8e541bf7c5d77f27a0b0562bd1235878b46c1074c53d79f64a21c417a68ad470"
+    }
+  },
+  "source_schema_boundary": {
+    "provider": "tushare",
+    "frequency": "1m",
+    "accepted_source_grid_rows": 241,
+    "selected_continuous_auction_rows": 240,
+    "selected_clock_grid": "09:31-11:30 and 13:01-15:00",
+    "standalone_09_30_row_preserved_but_excluded": true,
+    "allowed_source_fields_if_later_frozen": [
+      "datetime",
+      "symbol",
+      "provider",
+      "high",
+      "low"
+    ],
+    "open_close_volume_amount_daily_price_forward_return_or_old_factor_value_allowed": false,
+    "provider_request_allowed": false
+  },
+  "finite_prevalue_concept_catalog": [
+    {
+      "name": "intraday_nonzero_range_bar_share_240m",
+      "design": "Count a selected continuous-auction minute as price-varying only when high is strictly greater than low, retain high equal to low as a valid zero-range minute, and divide the price-varying count by 240.",
+      "decision": "selected_for_separate_complete_mechanism_and_support_audit",
+      "reason": "This is fixed-clock occupancy by within-minute transaction-price variation. It does not use range magnitude, adjacent closes, candle bodies, clock order, volume, amount, transaction price, market peers, or prior sessions."
+    },
+    {
+      "name": "intraday_zero_range_longest_run_240m",
+      "design": "Use the longest consecutive high-equals-low run, split at lunch.",
+      "decision": "rejected_before_source_rows_or_values",
+      "reason": "Run length adds ordering, lunch, endpoint, and tie choices to the same binary range state and reopens terminal run/profile families."
+    },
+    {
+      "name": "intraday_morning_afternoon_nonzero_range_share_balance_120m",
+      "design": "Compare nonzero-range shares between the two half sessions.",
+      "decision": "rejected_before_source_rows_or_values",
+      "reason": "The signed half-session balance is a timing/window refinement of the same state and overlaps the frozen morning/afternoon range-profile family."
+    },
+    {
+      "name": "intraday_active_nonzero_range_confirmation_share_240m",
+      "design": "Count minutes that are both volume/amount-active and high-low-varying.",
+      "decision": "rejected_before_source_rows_or_values",
+      "reason": "This explicitly combines Campaign105's terminal activity mask with the new price-variation mask after both definitions are known."
+    },
+    {
+      "name": "intraday_nonzero_body_bar_share_240m",
+      "design": "Count minutes whose open differs from close.",
+      "decision": "rejected_before_source_rows_or_values",
+      "reason": "Body incidence is a candle-state and close-update variant adjacent to terminal body efficiency, bar direction, unchanged-close, and price-update families."
+    }
+  ],
+  "selected_candidate": {
+    "name": "intraday_nonzero_range_bar_share_240m",
+    "direction": "higher",
+    "information_domain": "continuous_auction_intrabar_transaction_price_variation_clock_occupancy",
+    "economic_hypothesis": "Transaction prices varying inside more one-minute intervals may indicate broader continuous price discovery and liquidity that persist from the next accepted-session open through the third accepted-session close.",
+    "formula": "On exactly 240 selected bars, require each high and low finite and strictly positive with low<=high; let varying_i=1 only when high_i>low_i and return sum(varying_i)/240.",
+    "direction_rationale": "Higher fixed-clock price-variation occupancy is frozen as better before values because it represents more continuous within-minute price discovery; inversion is forbidden even if later Rank IC is negative.",
+    "valid_range": [0.0, 1.0],
+    "zero_range_rule": "high=low is a valid non-varying bar with varying_i=0",
+    "minimum_nonzero_range_bar_count": 0,
+    "positive_total_range_required": false,
+    "clock_order_used_after_grid_validation": false,
+    "range_magnitude_open_close_volume_amount_market_peer_prior_session_or_old_factor_value_used": false,
+    "alternate_window_direction_transform_threshold_filter_subset_regime_weight_fit_model_or_combination_search": false
+  },
+  "mandatory_prevalue_challenges": [
+    "all_135_frozen_logical_definitions_in_exact_v63_order",
+    "all_known_terminal_coverage_support_failures_through_campaign105",
+    "intraday_price_update_share_238m",
+    "intraday_intrabar_range_participation_entropy_240m",
+    "intraday_range_clock_center_240m",
+    "intraday_range_clock_variance_240m",
+    "intraday_morning_afternoon_range_profile_similarity_120b",
+    "intraday_active_trading_bar_share_240m",
+    "intraday_intrabar_body_range_efficiency_240m",
+    "intraday_unchanged_close_range_absorption_share_238p",
+    "candidate49_intraday_cumulative_vwap_crossing_rate_240m_v1"
+  ],
+  "prevalue_decision": {
+    "concepts_reviewed": 5,
+    "selected_candidate_count": 1,
+    "candidate_may_advance_directly_to_values": false,
+    "required_next_step": "Complete a separate all-definition semantic overlap audit and mandatory known-failed-support-predicate audit; only after both pass may one exact fingerprint-bound no-return protocol be frozen before source rows or values."
+  },
+  "research_boundary": {
+    "prior_definition_names_directions_protocols_schema_and_terminal_metadata_read": true,
+    "campaign106_source_rows_read": false,
+    "campaign106_candidate_values_computed_or_read": false,
+    "campaign106_comparator_values_read": false,
+    "historical_daily_price_fields_read": [],
+    "historical_forward_returns_read": false,
+    "provider_request_issued": false,
+    "candidate49_historical_backfill_performed": false,
+    "candidate49_ledgers_changed": false,
+    "second_prospective_candidate_created": false,
+    "current_scoring_selection_sizing_or_orders_performed": false,
+    "investment_advice": false
+  }
+}

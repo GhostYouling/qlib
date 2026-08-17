@@ -1,0 +1,205 @@
+{
+  "schema_version": 1,
+  "kind": "a_share_three_day_walkforward_campaign138_concept_scouting",
+  "status": "terminal_zero_selected_candidates_after_schema_only_valuation_and_capital_structure_review",
+  "recorded_at": "2026-08-14T12:47:00+0800",
+  "purpose": "Review one finite Campaign138 valuation and capital-structure catalog using only accepted local schema metadata and frozen terminal histories, without requiring high-point provider data or opening any source row, candidate value, comparator value, daily price value or forward return.",
+  "authoritative_inputs": {
+    "campaign137_terminal_state": {
+      "path": "docs/a_share_three_day_iteration_status_20260814_campaign137_prevalue_terminal_v2.json",
+      "sha256": "87e15191aa5843a1c214c64631a91b3f756d41359b6d10b487fffcfb041bcb9b",
+      "cumulative_historical_research_attempt_count": 1146,
+      "cumulative_return_reading_development_trial_count": 313
+    },
+    "numeric_policy_v171": {
+      "path": "docs/a_share_three_day_walkforward_future_numeric_comparison_eligibility_policy_v171_20260814.json",
+      "sha256": "5f5c3ca45f32d69a26455a0dac95a8751f50da083b69c974238ca60c3b8fc903",
+      "complete_definition_count_reviewed": 152,
+      "complete_definition_order_sha256": "60c465a3e2043efae6b92b8c5f3e007cd397a1cd0ec3094b4fa005665bbe5736",
+      "eligible_numeric_comparator_count_reserved_but_not_loaded": 141,
+      "eligible_numeric_comparator_order_sha256": "ec1aebcb939ad516c58037a36a4aaadd4ad8b2abbd3c884705895c58da85a2ee"
+    },
+    "historical_walkforward_policy": {
+      "path": "docs/a_share_three_day_historical_walkforward_research_policy_20260727.json",
+      "sha256": "38426d6161b9bfed323c58caba18feca668b8c9d53e294951a8ba90c01a798bb"
+    }
+  },
+  "accepted_local_schema_audit": {
+    "active_data_root": "/Volumes/DIsk/Disk-Coding/qlib/data",
+    "active_daily_source": "baostock",
+    "qlib_calendar_end": "2026-07-13",
+    "accepted_daily_schema_sample": {
+      "path": "data/raw/a_share/daily/sh600000.parquet",
+      "inspection_method": "pyarrow.parquet.read_schema only; no row group or column value opened",
+      "field_names": [
+        "date",
+        "symbol",
+        "open",
+        "high",
+        "low",
+        "close",
+        "volume",
+        "amount",
+        "vwap",
+        "change",
+        "pct_chg",
+        "turnover",
+        "raw_open",
+        "raw_high",
+        "raw_low",
+        "raw_close",
+        "raw_volume",
+        "raw_vwap",
+        "price_basis",
+        "daily_source",
+        "factor"
+      ],
+      "field_name_order_sha256": "92b9272161e47d564d9af697657c02d1d6ce9bc7313607de7389b2fefb42a554",
+      "valuation_or_share_count_fields_present": []
+    },
+    "accepted_fundamental_schema_families": [
+      {
+        "representative_path": "data/raw/a_share/fundamentals/quarterly_2019_2020.parquet",
+        "field_names": [
+          "instrument",
+          "report_date",
+          "announcement_date",
+          "roe",
+          "net_profit",
+          "revenue_yoy",
+          "profit_yoy"
+        ],
+        "field_name_order_sha256": "163968446ac6dc81cdfeca3eebceeba69468b07df072be854aaddce62f3a707a"
+      },
+      {
+        "representative_path": "data/raw/a_share/fundamentals/performance_forecasts.parquet",
+        "field_names": [
+          "instrument",
+          "report_date",
+          "announcement_date",
+          "forecast_type",
+          "forecast_turnaround",
+          "forecast_profit_yoy",
+          "forecast_profit_yoy_width"
+        ],
+        "field_name_order_sha256": "259f013152c52e73cf529055b26c8183185a9f2036a28fdb831bcc96a60d3abd"
+      }
+    ],
+    "conclusion": "The accepted local point-in-time contract contains OHLCV, amount, turnover and price-basis fields plus already exposed quality/forecast fields; it contains no PE, PB, PS, PCF, market-cap, total-share, free-share or circulating-share field."
+  },
+  "finite_prevalue_concept_catalog": [
+    {
+      "catalog_id": "c138_01",
+      "name": "daily_pe_ttm_earnings_yield",
+      "hypothetical_source_field": "BaoStock peTTM",
+      "frozen_hypothetical_formula": "1 / peTTM when peTTM is positive and finite",
+      "direction": "higher",
+      "parameters": null,
+      "filters": "positive finite peTTM only; no winsorization, clipping, neutralization, lag substitution or imputation",
+      "subset_or_combination": null,
+      "model": null,
+      "prevalue_decision": "rejected_source_field_not_in_accepted_point_in_time_daily_contract",
+      "reason": "peTTM is not present in the accepted daily schema. Reading a discarded provider field or fetching a new history would be a new source-admission campaign, not research on the currently accepted data."
+    },
+    {
+      "catalog_id": "c138_02",
+      "name": "daily_pb_mrq_book_to_market",
+      "hypothetical_source_field": "BaoStock pbMRQ or Tushare daily_basic.pb",
+      "frozen_hypothetical_formula": "1 / pbMRQ or 1 / pb when the selected field is positive and finite",
+      "direction": "higher",
+      "parameters": null,
+      "filters": "positive finite PB only; one provider field only; no transform or universe change",
+      "subset_or_combination": null,
+      "model": null,
+      "prevalue_decision": "rejected_absent_accepted_field_and_terminal_pb_mechanism",
+      "reason": "No PB field is present in the accepted local daily contract, and the separately admitted Tushare daily PB branch is terminal after capacity, uniqueness, association and execution gates. Its record forbids rerunning, inversion, transform change, subset change or combination."
+    },
+    {
+      "catalog_id": "c138_03",
+      "name": "daily_ps_ttm_sales_yield",
+      "hypothetical_source_field": "BaoStock psTTM",
+      "frozen_hypothetical_formula": "1 / psTTM when psTTM is positive and finite",
+      "direction": "higher",
+      "parameters": null,
+      "filters": "positive finite psTTM only; no winsorization, neutralization or imputation",
+      "subset_or_combination": null,
+      "model": null,
+      "prevalue_decision": "rejected_source_field_not_in_accepted_point_in_time_daily_contract",
+      "reason": "psTTM is absent from every accepted local daily and fundamental schema reviewed. Issuing a provider request merely to rescue the exhausted frontier is outside the frozen current-data campaign."
+    },
+    {
+      "catalog_id": "c138_04",
+      "name": "daily_pcf_ncf_ttm_cash_flow_yield",
+      "hypothetical_source_field": "BaoStock pcfNcfTTM",
+      "frozen_hypothetical_formula": "1 / pcfNcfTTM when pcfNcfTTM is positive and finite",
+      "direction": "higher",
+      "parameters": null,
+      "filters": "positive finite pcfNcfTTM only; no winsorization, neutralization or imputation",
+      "subset_or_combination": null,
+      "model": null,
+      "prevalue_decision": "rejected_source_field_not_in_accepted_point_in_time_daily_contract",
+      "reason": "pcfNcfTTM is absent from the accepted local schemas. No point-in-time cash-flow valuation series can be reconstructed from the accepted quality aggregates without changing semantics."
+    },
+    {
+      "catalog_id": "c138_05",
+      "name": "point_in_time_market_cap_or_free_float_scarcity",
+      "hypothetical_source_field": "Tushare daily_basic.total_mv, circ_mv, total_share or free_share",
+      "frozen_hypothetical_formula": "one minus same-day percentile rank of one preselected positive finite total_mv, circ_mv, total_share or free_share field",
+      "direction": "higher means smaller capitalization or scarcer freely tradable share base",
+      "parameters": null,
+      "filters": "one exact point-in-time field; no present-day listing snapshot, imputation, field switching, board subset or regime split",
+      "subset_or_combination": null,
+      "model": null,
+      "prevalue_decision": "rejected_no_accepted_point_in_time_field_and_terminal_free_float_branch",
+      "reason": "The accepted contract has no market-cap or share-count field. A latest listing snapshot would leak present state into 2019-2023, while the separately frozen free-float scarcity branch is terminal at its no-return uniqueness gate and cannot be rerequested or reformulated."
+    },
+    {
+      "catalog_id": "c138_06",
+      "name": "reconstructed_float_shares_or_market_cap_from_volume_turnover_and_price",
+      "hypothetical_source_field": "accepted raw_volume, turnover and raw_close",
+      "frozen_hypothetical_formula": "float_share_proxy = raw_volume / turnover; market_cap_proxy = raw_close * float_share_proxy",
+      "direction": "one minus same-day percentile rank of the positive finite proxy",
+      "parameters": null,
+      "filters": "positive finite inputs only; no handling of unit, zero-turnover or provider-denominator mismatch",
+      "subset_or_combination": "raw turnover plus nominal price and volume",
+      "model": null,
+      "prevalue_decision": "rejected_semantic_proxy_downgrade_and_terminal_domain_recombination",
+      "reason": "Provider turnover denominator semantics, units and corporate-action timing are not sufficient to identify historical free shares. The reconstruction would combine terminal raw-turnover, nominal-price, activity and free-float domains and manufacture false precision rather than introduce a new source."
+    }
+  ],
+  "selection": {
+    "concepts_reviewed": 6,
+    "rejected_concept_count": 6,
+    "selected_candidate_count": 0,
+    "selected_candidate": null,
+    "genuinely_new_independent_mechanism_found": false,
+    "reason": "Four valuation fields and the required capitalization/share fields are outside the accepted local point-in-time contract; the PB and free-float branches are already terminal; the only raw-field reconstruction is a semantic proxy downgrade and terminal-domain recombination."
+  },
+  "research_boundary": {
+    "schema_and_terminal_history_metadata_read": true,
+    "parquet_schema_only_inspection_performed": true,
+    "parquet_rows_or_column_values_read": false,
+    "programmatic_provider_request_issued": false,
+    "provider_credential_present_without_value_or_digest_read": true,
+    "provider_credential_loaded": false,
+    "campaign138_candidate_values_computed_or_read": false,
+    "campaign138_comparator_values_read": false,
+    "historical_daily_price_fields_read": [],
+    "historical_forward_returns_read": false,
+    "stress_2024_2025_opened": false,
+    "candidate49_historical_backfill_performed": false,
+    "candidate49_ledgers_changed": false,
+    "second_prospective_candidate_created": false,
+    "current_scoring_selection_sizing_positions_or_orders_performed": false,
+    "investment_advice": false,
+    "inherited_current_listing_survivorship_limitation_remains": true
+  },
+  "decision": {
+    "create_campaign138_formula_feature_or_model_implementation": false,
+    "run_source_acceptance_coverage_uniqueness_or_return_trial": false,
+    "request_high_point_or_new_provider_history": false,
+    "append_complete_definition_or_numeric_comparator": false,
+    "terminalize_campaign138_prevalue": true,
+    "next_campaign_requirement": "Begin Campaign139 only from a genuinely new prevalue mechanism already supported by an accepted historically versioned point-in-time source, or first run a separately authorized source-admission campaign; preserve all Campaign138 rejections and Candidate49 as the sole prospective ledger."
+  }
+}

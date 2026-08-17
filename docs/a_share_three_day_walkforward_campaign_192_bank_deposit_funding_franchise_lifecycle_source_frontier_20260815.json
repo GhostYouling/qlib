@@ -1,0 +1,158 @@
+{
+  "schema_version": 1,
+  "kind": "a_share_three_day_walkforward_campaign192_bank_deposit_funding_franchise_lifecycle_source_frontier",
+  "status": "checkpoint_prevalue_three_source_admission_deferrals_four_relabeling_overlap_operator_or_combination_rejections_zero_selected",
+  "recorded_at": "2026-08-15T15:09:00+08:00",
+  "purpose": "Freeze a finite bank deposit funding-franchise lifecycle before source rows, balances, flows, formulas, directions, comparators, security prices or returns.",
+  "authoritative_inputs": {
+    "campaign191_state": {"path": "docs/a_share_three_day_iteration_status_20260815_campaign191_prevalue_terminal.json", "sha256": "78497248a0e1b62ae32b178e787460ded0ae4dea28ce33ccfc286d23a9e7dee7"},
+    "policy_v280": {"path": "docs/a_share_three_day_walkforward_future_numeric_comparison_eligibility_policy_v280_20260815.json", "sha256": "1680d51dfba80937798b53e9ae85295afa9130e59b97c836addcfecd78ef72b5"},
+    "campaign168_operating_scale_frontier": {"path": "docs/a_share_three_day_walkforward_campaign_168_operating_scale_adoption_kpi_source_frontier_20260815.json", "sha256": "c5dc98f92266e2b7ef7349cb5260a8cde15ccd9c78442e661e4170b1ba47d18a"},
+    "campaign170_customer_quality_frontier": {"path": "docs/a_share_three_day_walkforward_campaign_170_customer_experience_quality_kpi_source_frontier_20260815.json", "sha256": "b3ec42d8c8872ae9be913ffd64b24ba449e4c4f0e1f91af31b98f0e0e7158379"},
+    "campaign174_market_risk_frontier": {"path": "docs/a_share_three_day_walkforward_campaign_174_enterprise_market_risk_hedging_source_frontier_20260815.json", "sha256": "91d05a83734f5a08c82fbea9719a2b14abea399cc7edae37a909e29d7dbd0846"},
+    "campaign181_regulated_capital_liquidity_frontier": {"path": "docs/a_share_three_day_walkforward_campaign_181_regulated_financial_capital_solvency_source_frontier_20260815.json", "sha256": "526ae0a7cdefd64f9c0b4890924f74a6130e553de0d7642672511ccbe3c5f448"},
+    "campaign182_credit_facility_frontier": {"path": "docs/a_share_three_day_walkforward_campaign_182_credit_facility_covenant_liquidity_backstop_source_frontier_20260815.json", "sha256": "27d9e5af02f2ff4f626841e8c9720601c5b1691d3a91f0894be7028bd554df52"},
+    "campaign187_bank_loan_asset_quality_frontier": {"path": "docs/a_share_three_day_walkforward_campaign_187_bank_loan_asset_quality_migration_source_frontier_20260815.json", "sha256": "4c1c7207b40ab356cf9002f9f7e4ba5a8bb382db5de74fc5444725b6640dd83c"}
+  },
+  "repository_evidence": {
+    "bounded_search_scope": "Existing Campaign145-191 source-frontier JSON files only",
+    "bounded_search_terms": ["deposit", "depositor", "funding mix", "liability repricing", "deposit beta", "wholesale funding", "存款", "负债重定价", "资金来源"],
+    "dedicated_bank_deposit_funding_franchise_frontier_found": false,
+    "complete_bank_deposit_funding_franchise_source_contract_present": false,
+    "market_risk_boundary": "Campaign174 already freezes issuer interest-rate repricing, duration and hedge state, including generic deposit exposure. Deposit-rate beta, duration and hedge variants are therefore closed here; Campaign192 is limited to bank funding-franchise balances, cohort flows and depositor dependence.",
+    "regulated_liquidity_boundary": "Campaign181 freezes prudential liquidity coverage, NSFR, buffers, breaches and remediation. A regulatory liquidity ratio does not reconstruct deposit type, holder, cohort, renewal, withdrawal or concentration histories.",
+    "credit_facility_boundary": "Campaign182 observes the listed issuer as borrower and freezes lender commitments, covenants and backstops. Campaign192 observes a bank as funding recipient and requires depositor-side liability identity and flow semantics.",
+    "loan_asset_quality_boundary": "Campaign187 freezes a bank's loan assets, classification, provisions and resolution. Loan-book quality does not identify deposit funding composition, depositor cohorts, renewal or withdrawal.",
+    "operating_scale_and_customer_boundary": "Campaign168 customer counts and Campaign170 retention or churn cannot be relabelled as deposit stability. Account and customer counts do not reconstruct monetary balances, legal holder classes, restricted status, maturity, early withdrawal or stock-flow reconciliation.",
+    "sector_scope_boundary": "Point-in-time bank and deposit-taking institution scope must be frozen. Non-deposit-taking issuers are structurally not applicable and may not be filled with zero or ranked against banks.",
+    "point_in_time_boundary": "A latest deposit balance or current funding mix cannot be projected backward without opening stock, inflow, withdrawal, transfer, maturity, renewal, closure, correction and first-public histories."
+  },
+  "finite_prevalue_catalog": [
+    {
+      "catalog_id": "c192_01",
+      "name": "deposit_type_holder_class_core_noncore_stock_flow_and_reconciliation_state",
+      "economic_state": "A close-known deposit funding composition and stock-flow state by demand, time, notice, negotiable, retail, corporate, public-sector and other legally defined holder or product classes.",
+      "formula": null,
+      "direction": null,
+      "parameters_filters_subsets_combinations_models": [],
+      "new_issuer_state": true,
+      "complete_local_source_contract": false,
+      "decision": "deferred_source_admission_not_factor_failure",
+      "reason": "No admitted point-in-time history freezes deposit-taking entity, consolidation scope, product and holder taxonomy, opening balance, acquisition, transfer, withdrawal, maturity, closure, correction and closing reconciliation across 2019-2023."
+    },
+    {
+      "catalog_id": "c192_02",
+      "name": "term_notice_and_callable_deposit_maturity_renewal_early_withdrawal_and_runoff_state",
+      "economic_state": "A close-known deposit-cohort state linking original and remaining term, notice or call feature, scheduled maturity, renewal, early withdrawal, breakage, runoff and replacement funding.",
+      "formula": null,
+      "direction": null,
+      "parameters_filters_subsets_combinations_models": [],
+      "new_issuer_state": true,
+      "complete_local_source_contract": false,
+      "decision": "deferred_source_admission_not_factor_failure",
+      "reason": "No complete cohort history preserves contract identity, amount, term, callable or notice condition, scheduled versus actual maturity, renewal, early withdrawal, transfer, failed rollover, replacement and first-public timing."
+    },
+    {
+      "catalog_id": "c192_03",
+      "name": "depositor_and_account_concentration_operational_restricted_and_withdrawal_dependency_state",
+      "economic_state": "A close-known bank funding-dependence state covering large depositor or connected-group concentration, operational versus nonoperational balances, pledged or restricted balances, withdrawal events and concentration resolution.",
+      "formula": null,
+      "direction": null,
+      "parameters_filters_subsets_combinations_models": [],
+      "new_issuer_state": true,
+      "complete_local_source_contract": false,
+      "decision": "deferred_source_admission_not_factor_failure",
+      "reason": "The repository lacks a privacy-safe complete source linking stable depositor or connected-group identifiers, legal holder class, account and restriction status, concentration denominator, inflow and withdrawal, transfer, resolution, correction and trading-session availability."
+    },
+    {
+      "catalog_id": "c192_04",
+      "name": "regulatory_liquidity_interest_rate_hedging_debt_maturity_loan_quality_customer_kpi_or_security_price_relabeling",
+      "economic_state": "An existing LCR or NSFR, rate sensitivity or hedge, aggregate debt maturity, loan asset quality, customer count or retention KPI, accounting liability or security-price state relabelled as deposit funding-franchise quality.",
+      "formula": null,
+      "direction": null,
+      "parameters_filters_subsets_combinations_models": [],
+      "new_issuer_state": false,
+      "complete_local_source_contract": false,
+      "decision": "rejected_terminal_regulatory_liquidity_market_risk_debt_loan_customer_accounting_and_security_price_source_relabeling",
+      "reason": "Adjacent aggregate states do not identify a bank's depositor, product, cohort, holder class, maturity, renewal, early withdrawal, restriction, concentration or deposit stock-flow reconciliation."
+    },
+    {
+      "catalog_id": "c192_05",
+      "name": "deposit_rate_beta_transfer_pricing_spread_duration_or_rate_sensitivity_variant",
+      "economic_state": "A pricing, duration or sensitivity transform of deposit balances against policy rates, market rates, asset yields, net-interest margin or hedges.",
+      "formula": null,
+      "direction": null,
+      "parameters_filters_subsets_combinations_models": [],
+      "new_issuer_state": false,
+      "complete_local_source_contract": false,
+      "decision": "rejected_campaign174_interest_rate_repricing_overlap_and_operator_search_before_base_source_admission",
+      "reason": "Campaign174 already freezes interest-rate repricing, duration and hedge state. Choosing a deposit beta, spread, transfer price, lag, bucket or direction here would both overlap that frontier and multiply operators before a deposit cohort source is admitted."
+    },
+    {
+      "catalog_id": "c192_06",
+      "name": "retail_corporate_government_region_channel_product_term_direction_threshold_window_or_subset_variant",
+      "economic_state": "A selected bank, depositor, geography, channel, product, term, concentration, inflow, withdrawal, renewal or event-window subset of an unadmitted deposit base.",
+      "formula": null,
+      "direction": null,
+      "parameters_filters_subsets_combinations_models": [],
+      "new_issuer_state": false,
+      "complete_local_source_contract": false,
+      "decision": "rejected_operator_sector_product_holder_region_channel_direction_threshold_window_and_subset_search_before_base_source_admission",
+      "reason": "Selecting favorable bank classes, holder segments, regions, channels, products, terms, directions, thresholds or windows before source admission would multiply hypotheses and create reporting-survivorship bias."
+    },
+    {
+      "catalog_id": "c192_07",
+      "name": "combined_deposit_mix_runoff_renewal_concentration_and_funding_franchise_score_or_model",
+      "economic_state": "A joint bank deposit-franchise score across composition, stock-flow, cohort maturity and renewal, withdrawal and depositor concentration states.",
+      "formula": null,
+      "direction": null,
+      "parameters_filters_subsets_combinations_models": [],
+      "new_issuer_state": false,
+      "complete_local_source_contract": false,
+      "decision": "rejected_unadmitted_component_normalization_weight_interaction_and_model_search",
+      "reason": "Combining three unadmitted source families or selecting normalization, ranks, weights, interactions, filters, subsets or models is closed before every base history passes the same source gate."
+    }
+  ],
+  "mandatory_source_admission_gate": {
+    "must_freeze_before_any_formula_or_direction": [
+      "exact official prudential return, deposit insurance record, exchange filing, audited bank note or licensed structured source with immutable bytes and stable institution, report, table, product, cohort and observation identifiers",
+      "reference date, reporting period, transaction or flow date, submission, first-public and exchange-publication timestamps, trading-session availability, correction, restatement and supersession history",
+      "listed security, bank parent, licensed deposit-taking entity, branch, subsidiary, consolidated group, account owner and connected depositor-group mapping without current-state leakage",
+      "point-in-time deposit-taking institution and regulatory-perimeter taxonomy with structural not-applicability for nonbanks and non-deposit-taking entities",
+      "demand, time, notice, callable, negotiable, savings, settlement, operational, restricted, pledged and other product taxonomy with regime-version crosswalks",
+      "retail, corporate, public-sector, financial-institution, related-party, connected-group, insured or otherwise legally defined holder taxonomy and privacy-safe stable identity",
+      "currency, unit, gross or net presentation, accrued-interest treatment, interbank versus customer, onshore versus offshore and consolidated versus solo scope semantics",
+      "opening, acquisition, transfer, withdrawal, early termination, maturity, renewal, dormant or closed, reclassification and closing stock-flow reconciliation",
+      "original and remaining term, notice and call conditions, breakage, rollover, renewal, replacement funding and failed-renewal semantics",
+      "large-account and connected-group concentration numerator and denominator, operational or restricted balance, outflow event and restoration semantics",
+      "missing, confidential, suppressed, undisclosed, not-applicable, true zero, correction, merger, branch transfer and scope-change semantics without favorable absence coding",
+      "complete bounded 2019-2023 partition manifest, full eligible-bank denominator, institution and security history, delisting and merger coverage, identity, chronology, taxonomy, unit, reconciliation and source-acceptance tests using no factor, comparator, security-price or return values"
+    ],
+    "formula_direction_parameter_filter_subset_combination_or_model_choice_allowed_before_gate": false
+  },
+  "gate_summary": {
+    "routes_reviewed": 7,
+    "genuinely_new_issuer_state_routes": 3,
+    "source_admission_deferrals_not_factor_failures": 3,
+    "relabeling_overlap_operator_or_combination_route_rejections": 4,
+    "selected_candidate_count": 0,
+    "complete_factor_definition_created": false,
+    "numeric_comparator_created": false
+  },
+  "scientific_interpretation": {
+    "bank_deposit_funding_franchise_state_declared_ineffective": false,
+    "absence_of_an_admitted_historical_source_is_evidence_of_no_predictive_power": false,
+    "safe_conclusion": "Three distinct deposit composition, cohort renewal or runoff and depositor-dependence states remain deferred at source admission; adjacent-domain relabeling, Campaign174 rate overlap, premature operator search and unadmitted combinations are closed before values."
+  },
+  "research_boundary": {
+    "finite_catalog_frozen_before_source_or_value_read": true,
+    "source_row_deposit_balance_flow_holder_cohort_rate_factor_comparator_security_price_or_return_value_read": false,
+    "repository_policy_and_prior_records_only": true,
+    "provider_or_web_request_issued": false,
+    "provider_credential_presence_value_or_digest_read": false,
+    "stress_2024_2025_opened": false,
+    "candidate49_ledgers_changed": false,
+    "second_prospective_candidate_created": false
+  },
+  "next_action": "Create the Campaign192 append-only attempt ledger including all seven scientific routes and every observed infrastructure failure, then publish prevalue terminal authority."
+}

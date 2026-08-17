@@ -1,0 +1,25 @@
+{
+  "schema_version": 1,
+  "kind": "a_share_three_day_walkforward_campaign100_terminal_black_scope_failure",
+  "status": "recorded_before_corrected_current_node_static_scope",
+  "recorded_at": "2026-08-07T12:40:35Z",
+  "stage": "post_terminal_combined_test_static_format_scope",
+  "outcome": "twenty_tests_passed_but_overbroad_black_scope_included_the_immutable_prevalue_feature_runner",
+  "command_result": {
+    "pytest": "20 passed",
+    "black": "would reformat scripts/a_share_three_day_walkforward_campaign100_features.py",
+    "ruff": "not_reached_after_black_nonzero_exit"
+  },
+  "frozen_feature_runner": {
+    "path": "scripts/a_share_three_day_walkforward_campaign100_features.py",
+    "sha256": "f8d5fe7e5795819bd446afe5d7fad7ac1c2239e70206d70594df0d8af51efdec",
+    "content_rewritten": false,
+    "reason_not_reformatted": "Its exact bytes are bound by the prevalue implementation freeze and the published candidate snapshot."
+  },
+  "scientific_result_changed": false,
+  "candidate_or_comparator_values_read_by_failed_static_command": false,
+  "historical_daily_price_or_forward_return_values_read": false,
+  "provider_request_issued": false,
+  "candidate49_ledgers_changed": false,
+  "retry_rule": "preserve frozen feature bytes; run Black and Ruff only on the current no-return and terminal files while retaining the passing feature tests"
+}

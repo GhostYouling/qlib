@@ -1,0 +1,16 @@
+{
+  "schema_version": 1,
+  "kind": "a_share_three_day_walkforward_campaign129_infrastructure_failure",
+  "status": "recorded_read_only_definition_listing_python_quote_parse_failure",
+  "recorded_at": "2026-08-14T07:12:00+08:00",
+  "stage": "campaign129_complete_definition_semantic_frontier_reconstruction",
+  "failed_command_summary": "A read-only Python one-liner for listing reconstructed complete definitions failed with a SyntaxError caused by shell-embedded newline escaping.",
+  "recovery_summary": "A corrected read-only invocation reconstructed the 151 logical definition names and order metadata without loading candidate values, comparator values, daily prices or returns.",
+  "failure_handling": {
+    "failed_exit_treated_as_success": false,
+    "programmatic_provider_request_issued": false,
+    "source_candidate_comparator_price_or_return_value_read": false,
+    "complete_definition_or_policy_file_modified_by_failure": false,
+    "scientific_result_changed": false
+  }
+}

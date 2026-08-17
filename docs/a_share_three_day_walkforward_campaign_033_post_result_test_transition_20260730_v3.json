@@ -1,0 +1,53 @@
+{
+  "version": 3,
+  "kind": "a_share_three_day_walkforward_campaign033_post_result_test_transition",
+  "status": "effective_with_unified_report_regression_assertion",
+  "recorded_at": "2026-07-30T17:37:17Z",
+  "purpose": "Add the unified-report regression assertion after the effective status semantic repair without changing the frozen runner, results, or terminal decision.",
+  "bindings": {
+    "effective_v2_transition": {
+      "path": "docs/a_share_three_day_walkforward_campaign_033_post_result_test_transition_20260730_v2.json",
+      "sha256": "37cdf24508d011c001b443c5972cadbde6b931fcbfee3853ff159ef10dc6aaf2"
+    },
+    "effective_terminal_research_record": {
+      "path": "docs/a_share_three_day_walkforward_campaign_033_research_record.json",
+      "sha256": "cf4f7d3ea7ef074cf13288001047675e60a237eeae66cb628f79a6c48e849a28"
+    },
+    "unchanged_frozen_runner": {
+      "path": "scripts/a_share_three_day_walkforward_campaign033.py",
+      "sha256": "2e27892205b626b5d7a5e804cb17f4385d29d6a544c5c3670e6f1ed0d42d957d"
+    },
+    "post_result_test_file": {
+      "path": "tests/data_collector_tests/test_a_share_three_day_walkforward_campaign033.py",
+      "sha256": "906f00845dc8013d8d4a27c701cc3696097a445b8b4bc3e6a5a7053b7ee97c90"
+    },
+    "unified_research_report": {
+      "path": "data/experiments/short_horizon/three_day_research_report.md",
+      "sha256": "cbaf6f25a4a659762d18ef835cacc00dabba07cb8bb296f8efbb10fecb5fe6fe"
+    },
+    "append_only_trial_ledger": {
+      "path": "data/experiments/short_horizon/historical_walkforward/campaign_033/walkforward/trial_ledger.json",
+      "sha256": "2fec760b7b966861cd3f66ba6eacdc479e8d27ccdf1cd3334cf7d21e83cfe319"
+    },
+    "development_survivors": {
+      "path": "data/experiments/short_horizon/historical_walkforward/campaign_033/walkforward/development_survivors.json",
+      "sha256": "c79bedd67743b4474e465ff86e54600a09804d6f2f341ca5de10a4cb8d3689f6"
+    },
+    "closed_stress_record": {
+      "path": "data/experiments/short_horizon/historical_walkforward/campaign_033/walkforward/exposed_stress_consumption_record.json",
+      "sha256": "f6b91792d4fd6a0235adfcd3ad30499cf54090e617e49daea02424686414fe61"
+    }
+  },
+  "effective_transition": {
+    "focused_tests_passed": 19,
+    "focused_tests_failed": 0,
+    "unified_report_assertions": [
+      "Campaign033 authoritative section exists",
+      "maximum absolute uniqueness correlation is 0.245542",
+      "0/5/10/20bp aggregate returns are preserved",
+      "historical development trial count is 254"
+    ],
+    "runner_or_result_changed": false,
+    "full_suite_rerun_required": true
+  }
+}

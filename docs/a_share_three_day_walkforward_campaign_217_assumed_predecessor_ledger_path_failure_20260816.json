@@ -1,0 +1,29 @@
+{
+  "schema_version": 1,
+  "kind": "a_share_three_day_walkforward_campaign217_infrastructure_failure",
+  "recorded_at": "2026-08-16T00:18:00+08:00",
+  "timestamp_semantics": "monotonic_logical_append_time_not_host_wall_clock_measurement",
+  "attempt_id": "campaign217_infrastructure_003",
+  "phase": "campaign216_attempt_ledger_resolution",
+  "status": "failed_assumed_docs_ledger_path_not_found",
+  "failure": {
+    "operation": "read an inferred Campaign216 research-attempt ledger path below docs",
+    "cause": "the immutable ledger is stored below data/experiments/short_horizon/historical_walkforward/campaign_216 rather than docs",
+    "recovery": "resolve the authoritative ledger path from Campaign216 terminal-result metadata and read that exact path"
+  },
+  "recovery_verification": {
+    "resolved_path": "data/experiments/short_horizon/historical_walkforward/campaign_216/research_attempt_ledger_v2.json",
+    "resolved_sha256": "8ca2254640aa3ecf46f265445cbd11f474125950ab6921e23fa78469171175b8",
+    "resolved_chain_tip_sha256": "916f3df41c71cdce4506c0358c9b7642a10e80342d662053e001e6e59981075f",
+    "failed_path_result_used_as_scientific_evidence": false
+  },
+  "research_boundary": {
+    "candidate_or_comparator_security_price_or_return_value_read": false,
+    "stress_2024_2025_opened": false,
+    "provider_or_web_request_issued": false,
+    "provider_credential_presence_value_or_digest_read": false,
+    "candidate49_plan_or_run_executed": false,
+    "candidate49_ledgers_changed": false,
+    "current_use_or_investment_advice": false
+  }
+}

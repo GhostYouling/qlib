@@ -1,0 +1,215 @@
+{
+  "version": 1,
+  "kind": "a_share_three_day_walkforward_campaign033_no_return_preregistration",
+  "status": "frozen_before_campaign033_minute_candidate_comparison_daily_price_or_return_values",
+  "frozen_at": "2026-07-30T16:00:00Z",
+  "purpose": "Freeze the sole Campaign033 spectral-entropy candidate, exact source projection and computation, complete 54-factor comparison library and order, no-return gates, one-trial development catalog, walk-forward split, and research boundaries before any Campaign033 minute partition or protected value is opened.",
+  "source_chain": {
+    "authoritative_state": {
+      "path": "docs/a_share_three_day_iteration_status_20260730_campaign032_verified.json",
+      "sha256": "fdad546c4318772b3138dce47404694504714dea8485ecb949f6ffe97f4f62b7"
+    },
+    "historical_walkforward_policy": {
+      "path": "docs/a_share_three_day_historical_walkforward_research_policy_20260727.json",
+      "sha256": "38426d6161b9bfed323c58caba18feca668b8c9d53e294951a8ba90c01a798bb"
+    },
+    "concept_scouting": {
+      "path": "docs/a_share_three_day_walkforward_campaign_033_concept_scouting.json",
+      "sha256": "3b6314768a34828b57bc0bd71459b259a85b32d5061ceb851625a9b8e5c21eea"
+    },
+    "mechanism_overlap_audit": {
+      "path": "docs/a_share_three_day_walkforward_campaign_033_mechanism_overlap_audit.json",
+      "sha256": "fc932c2f9172d81bccb503f94d03e6407e2b807044eaab13d167f4a817289c1c"
+    },
+    "effective_campaign032_protocol_base": {
+      "path": "docs/a_share_three_day_walkforward_campaign_032_no_return_preregistration_v2.json",
+      "sha256": "d03dc148d2169622cc2fdbe2248dbe336ccbd5c316f8a4faa708b16a69e44f8a",
+      "inherited_semantics": "All source-root identity, 2019-2025 session range, quality/listing eligibility, coverage gates, uniqueness estimator and thresholds, walk-forward folds, purge, execution costs, survivor gates, append-only accounting, stress opening rule, Candidate49 isolation, and current-output prohibitions remain unchanged unless an exact Campaign033 delta is stated below."
+    },
+    "campaign032_terminal_snapshot": {
+      "path": "/Volumes/DIsk/qlib-a-share-tushare-1m/derived/a_share/rich/tushare/minute_walkforward_campaign032_feature_library/tushare_stk_mins_1m_2019_2025_ea0cbb8f_walkforward_campaign032_feature_library_v1/snapshot_manifest.json",
+      "sha256": "8e64ad897fe725ab4ed800b0203ddd88a6c1431e2386744e1d2b13867d848c65",
+      "dataset_sha256": "c72008162f6655e7ce34da114641f451aa04d32df61ac4c77222f7f8ad1d787f"
+    },
+    "campaign032_no_return_audit": {
+      "path": "data/experiments/short_horizon/historical_walkforward/campaign_032/no_return/20260730T154237Z_campaign032_no_return_audit.json",
+      "sha256": "6096b9d725f5fc1e7f98467bb334a211350bcc86edda28132439fc98f28f8af9"
+    },
+    "candidate49_signal_ledger": {
+      "path": "data/experiments/short_horizon/candidate49_future_signal_ledger.json",
+      "sha256": "5193f00d7f36da003f53cec387900da4c3d002299f5dfcfc1a95eaa199ed3a79",
+      "entry_count": 0
+    },
+    "candidate49_execution_ledger": {
+      "path": "data/experiments/short_horizon/candidate49_future_execution_ledger.json",
+      "sha256": "d57a3e61eac969e42cafa418ccd8c0a5ee65dcf69da145bb2c096c2a02a2ea4f",
+      "entry_count": 0
+    }
+  },
+  "campaign033_delta_from_effective_campaign032_protocol": {
+    "campaign_id": "a_share_three_day_walkforward_campaign_033",
+    "candidate_factor_count": 1,
+    "comparison_factor_count": 54,
+    "development_trial_count_if_admitted": 1,
+    "candidate_replaces_campaign032_candidate": true,
+    "campaign032_candidate_appended_as_final_terminal_comparison": true,
+    "comparison_order_sha256": "6176a8b4a0b190b31ae106591226625f140c970d3cc64ba8e3a889bee870f898",
+    "other_inherited_semantics_changed": false
+  },
+  "candidate": {
+    "name": "intraday_return_spectral_entropy_59f",
+    "direction": "higher",
+    "formula": "-sum(p_k * log(p_k)) / log(59) for k=1..59, where p_k is pooled morning-plus-afternoon demeaned signed-return DFT power at positive frequency k divided by total pooled positive-frequency power",
+    "source_projection": [
+      "datetime",
+      "symbol",
+      "provider",
+      "close"
+    ],
+    "forbidden_source_columns": [
+      "open",
+      "high",
+      "low",
+      "volume",
+      "amount"
+    ],
+    "selected_bar_count": 240,
+    "selected_grid": [
+      "09:31-11:30",
+      "13:01-15:00"
+    ],
+    "return_count_per_half": 119,
+    "positive_frequency_bins": [
+      1,
+      59
+    ],
+    "half_session_demeaning": true,
+    "dft_definition": "unnormalized length-119 DFT with exponent -2*pi*i*j*k/119",
+    "power_definition": "squared complex magnitude",
+    "power_pooling": "sum morning and afternoon power within each matching positive-frequency bin before normalization",
+    "entropy_logarithm": "natural",
+    "entropy_normalization": "divide by log(59)",
+    "zero_probability_term": "exact p_k=0 contributes zero",
+    "valid_range": [
+      0.0,
+      1.0
+    ],
+    "endpoint_canonicalization_tolerance": 1E-12,
+    "missing_rule": "Any invalid or nonpositive selected close, nonfinite return or power, nonpositive total positive-frequency power, nonfinite score, or score outside [0,1] after endpoint canonicalization is missing.",
+    "transform_scale_clip_threshold_filter": "none",
+    "taper_padding_band_selection_phase_wavelet_slope_lag_subwindow_or_year_search": false
+  },
+  "ordered_no_return_gates": {
+    "coverage_and_capacity_before_comparison_values": {
+      "minimum_median_coverage": 0.95,
+      "minimum_p05_coverage": 0.9,
+      "minimum_p05_eligible_names": 50,
+      "minimum_non_overlapping_three_session_cohorts": 200,
+      "minimum_observed_calendar_years": 5,
+      "comparison_values_read_before_coverage_pass": false
+    },
+    "uniqueness_after_coverage_only": {
+      "maximum_allowed_absolute_median_daily_rank_correlation": 0.8,
+      "minimum_pairwise_names_per_session": 50,
+      "minimum_pairwise_sessions_per_comparison": 100,
+      "comparison_factor_order_sha256": "6176a8b4a0b190b31ae106591226625f140c970d3cc64ba8e3a889bee870f898",
+      "comparison_factors": [
+        {"name": "late_return_30m", "score_direction": "higher"},
+        {"name": "late_amount_share_30m", "score_direction": "higher"},
+        {"name": "late_vwap_to_day_vwap_30m", "score_direction": "higher"},
+        {"name": "intraday_realized_volatility", "score_direction": "lower"},
+        {"name": "afternoon_signed_amount_efficiency_120m", "score_direction": "higher"},
+        {"name": "afternoon_drawdown_recovery_resilience_120m", "score_direction": "higher"},
+        {"name": "intraday_amount_participation_entropy_240m", "score_direction": "higher"},
+        {"name": "intraday_amount_profile_serial_persistence_240m", "score_direction": "higher"},
+        {"name": "intraday_upside_semivariance_share_239m", "score_direction": "higher"},
+        {"name": "intraday_terminal_close_location_240m", "score_direction": "higher"},
+        {"name": "intraday_return_sign_run_imbalance_238p", "score_direction": "higher"},
+        {"name": "intraday_volatility_resolution_238m", "score_direction": "higher"},
+        {"name": "intraday_amount_lead_return_correlation_238p", "score_direction": "higher"},
+        {"name": "intraday_amount_center_of_mass_240m", "score_direction": "higher"},
+        {"name": "intraday_up_move_amount_share_238m", "score_direction": "higher"},
+        {"name": "intraday_diffusive_variation_ratio_238m", "score_direction": "higher"},
+        {"name": "intraday_amount_volatility_coupling_238p", "score_direction": "higher"},
+        {"name": "intraday_return_variance_entropy_238m", "score_direction": "higher"},
+        {"name": "intraday_return_skewness_238m", "score_direction": "higher"},
+        {"name": "intraday_bar_vwap_close_pressure_240m", "score_direction": "higher"},
+        {"name": "intraday_price_update_share_238m", "score_direction": "higher"},
+        {"name": "intraday_market_idiosyncratic_share_238m", "score_direction": "higher"},
+        {"name": "intraday_opening_auction_amount_share_241m", "score_direction": "higher"},
+        {"name": "intraday_market_amount_profile_synchronization_240m", "score_direction": "higher"},
+        {"name": "intraday_cumulative_vwap_crossing_rate_240m", "score_direction": "higher"},
+        {"name": "intraday_market_neutral_late_residual_drift_238m", "score_direction": "higher"},
+        {"name": "intraday_negative_return_absorption_rate_236p", "score_direction": "higher"},
+        {"name": "intraday_signed_path_efficiency_239m", "score_direction": "higher"},
+        {"name": "intraday_zero_return_amount_intensity_238m", "score_direction": "higher"},
+        {"name": "intraday_transaction_price_path_confirmation_238p", "score_direction": "higher"},
+        {"name": "intraday_share_volume_transaction_price_coupling_238p", "score_direction": "higher"},
+        {"name": "intraday_intrabar_body_range_efficiency_240m", "score_direction": "higher"},
+        {"name": "intraday_adjacent_range_overlap_continuity_238p", "score_direction": "higher"},
+        {"name": "intraday_intrabar_range_participation_entropy_240m", "score_direction": "higher"},
+        {"name": "intraday_intrabar_range_reversal_238p", "score_direction": "higher"},
+        {"name": "intraday_global_price_range_revisit_240m", "score_direction": "higher"},
+        {"name": "intraday_prior_range_breakout_pressure_238p", "score_direction": "higher"},
+        {"name": "intraday_interbar_gap_body_confirmation_238p", "score_direction": "higher"},
+        {"name": "intraday_midrange_width_change_coupling_238p", "score_direction": "higher"},
+        {"name": "intraday_range_share_volume_confirmation_240m", "score_direction": "higher"},
+        {"name": "intraday_bar_direction_continuity_238p", "score_direction": "higher"},
+        {"name": "quarterly_announcement_freshness_60s", "score_direction": "higher"},
+        {"name": "intraday_market_response_delay_asymmetry_236p", "score_direction": "higher"},
+        {"name": "intraday_intrabar_close_location_pressure_240m", "score_direction": "higher"},
+        {"name": "intraday_range_boundary_translation_coherence_238p", "score_direction": "higher"},
+        {"name": "intraday_directional_range_response_coupling_238p", "score_direction": "higher"},
+        {"name": "intraday_extreme_arrival_order_240m", "score_direction": "higher"},
+        {"name": "intraday_market_up_down_correlation_asymmetry_238m", "score_direction": "higher"},
+        {"name": "intraday_morning_afternoon_return_profile_persistence_119p", "score_direction": "higher"},
+        {"name": "intraday_absolute_return_serial_persistence_236p", "score_direction": "higher"},
+        {"name": "intraday_market_shock_magnitude_decoupling_238m", "score_direction": "higher"},
+        {"name": "intraday_market_correlation_resolution_119p", "score_direction": "higher"},
+        {"name": "intraday_market_dispersion_decoupling_238m", "score_direction": "higher"},
+        {"name": "quarterly_announcement_timeliness_days", "score_direction": "higher"}
+      ],
+      "all_54_must_pass": true
+    }
+  },
+  "finite_development_catalog_if_admitted": {
+    "trial_id": "wf033_intraday_return_spectral_entropy_59f_single_higher",
+    "kind": "single_factor",
+    "feature_set": [
+      "intraday_return_spectral_entropy_59f"
+    ],
+    "weights": [
+      1.0
+    ],
+    "complexity": 1,
+    "expected_trial_count": 1,
+    "weight_threshold_filter_window_year_or_model_search": false,
+    "development_interval": [
+      "2019-01-01",
+      "2023-12-31"
+    ],
+    "fold_count": 3,
+    "purge_local_signal_sessions": 3,
+    "t_plus_1_and_t_plus_3_must_remain_inside_partition": true,
+    "stress_opening_rule": "2024-2025 may open exactly once only for the frozen development survivor"
+  },
+  "research_boundary": {
+    "external_campaign033_minute_partitions_read": false,
+    "candidate_values_read": false,
+    "comparison_values_read": false,
+    "historical_daily_price_fields_read": false,
+    "historical_forward_returns_read": false,
+    "training_or_model_fitting_performed": false,
+    "provider_request_issued": false,
+    "candidate49_historical_return_signal_or_execution_backfill_performed": false,
+    "candidate50_activation_created": false,
+    "current_scoring_selection_sizing_or_orders_performed": false
+  },
+  "decision": {
+    "binding_validator_exit_zero_required_before_any_campaign033_minute_or_value": true,
+    "exact_candidate_count": 1,
+    "exact_comparison_count": 54,
+    "exact_development_trial_count_if_admitted": 1,
+    "post_value_formula_direction_window_filter_threshold_band_or_library_change_allowed": false
+  }
+}

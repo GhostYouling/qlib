@@ -1,0 +1,17 @@
+{
+  "version": 1,
+  "kind": "a_share_three_day_walkforward_campaign074_infrastructure_failure",
+  "status": "append_only_recorded_prevalue_failure",
+  "recorded_at": "2026-08-06T07:32:30+08:00",
+  "stage": "prevalue_authoritative_pipeline_document_read",
+  "result": "initial_environment_cwd_did_not_contain_docs_a_share_data_pipeline_md",
+  "failed_command_semantics": "wc -l docs/a_share_data_pipeline.md from /Users/niyufei/Coding/qlib",
+  "recovery": "Resolved the authoritative repository clone as /Volumes/DIsk/Disk-Coding/qlib and read the complete 3405-line document there.",
+  "candidate_source_rows_read": false,
+  "candidate_values_read": false,
+  "comparison_values_read": false,
+  "historical_daily_price_fields_read": [],
+  "historical_forward_returns_read": false,
+  "provider_request_issued": false,
+  "candidate49_ledgers_changed": false
+}

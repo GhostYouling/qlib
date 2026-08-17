@@ -1,0 +1,62 @@
+{
+  "schema_version": 2,
+  "kind": "a_share_three_day_walkforward_campaign103_development_implementation_freeze",
+  "status": "frozen_before_campaign103_development_daily_price_or_forward_return_read",
+  "recorded_at": "2026-08-07T17:46:00+08:00",
+  "supersedes_without_rewriting": {
+    "v1_freeze": {
+      "path": "docs/a_share_three_day_walkforward_campaign_103_development_implementation_freeze_20260807.json",
+      "sha256": "7dc0830a9aedb843ae6a9beae1d1ed399b96167c4ceb1d1f33871b8baa6f66f6"
+    },
+    "v1_activation": {
+      "path": "docs/a_share_three_day_walkforward_campaign_103_development_activation_binding_20260807.json",
+      "sha256": "d5c55668b36a231e437d33ba2327257bbd097cc7e97a1991c3f32d83897d59eb"
+    },
+    "recorded_loader_failure": {
+      "path": "docs/a_share_three_day_walkforward_campaign_103_development_loader_context_failure_20260807.json",
+      "sha256": "336b2dad765b12e82dc0d19a839dc1e7282b1b7ce18231c7c60d1713ec4c8e98"
+    }
+  },
+  "runner": {
+    "path": "scripts/a_share_three_day_walkforward_campaign103.py",
+    "sha256": "aebacc506aadc4f5d123ea9ecbcb91437437ccef0281b93db42ee34ae3c1c56f"
+  },
+  "tests": {
+    "path": "tests/data_collector_tests/test_a_share_three_day_walkforward_campaign103_development.py",
+    "sha256": "62765e179d352ce2a0fb8f4eda9693333595095381cd9e331c0a1d606f27d041",
+    "result": "6_development_tests_passed;_14_combined_campaign103_tests_passed"
+  },
+  "development_preregistration": {
+    "path": "docs/a_share_three_day_walkforward_campaign_103_preregistration_v9.json",
+    "sha256": "4347265b5da9b8678d78c2169c6cfd4591deeba0b90abdf9026bca40020d989f"
+  },
+  "candidate_snapshot": {
+    "path": "/Volumes/DIsk/qlib-a-share-tushare-1m/derived/a_share/rich/tushare/minute_walkforward_campaign103_feature_library/tushare_stk_mins_1m_2019_2025_ea0cbb8f_walkforward_campaign103_feature_library_v1/snapshot_manifest.json",
+    "sha256": "8a939feb53edfb31be8f133c2683920ed13424e716a4f4b5ed0d1a300588603b",
+    "dataset_sha256": "57afdd9f8a246fb9f513f85b3b631f70cf734655bd226ff211201bf7e084ea13",
+    "eligible_rows": 1315573
+  },
+  "repair_scope": {
+    "changed": "Bind the already-frozen Campaign103 compact loader in the inherited context manager's actual globals.",
+    "factor_formula_or_values_changed": false,
+    "trial_catalog_or_direction_changed": false,
+    "fold_purge_execution_cost_or_gate_changed": false,
+    "2024_2025_authorization_changed": false
+  },
+  "append_only_internal_ledger": {
+    "path": "data/experiments/short_horizon/historical_walkforward/campaign_103/walkforward/trial_ledger.json",
+    "sha256": "68234e44b7ed20ca6f228d75886288596df2fce9ad5de262f7b3279b70019d44",
+    "entries": 1,
+    "chain_tip_sha256": "b8665ecdb95895ece8f22d9b914d16321d4e3d95c733a15cc859351a12f7942b",
+    "complete_development_trials": 0
+  },
+  "complete_development_trial_count_before_freeze": 0,
+  "development_daily_price_fields_read_before_freeze": [
+    "2019_2023_execution_quotes_during_recorded_failed_load"
+  ],
+  "development_forward_returns_read_before_freeze": false,
+  "stress_2024_2025_read_before_freeze": false,
+  "provider_request_issued_before_freeze": false,
+  "candidate49_ledgers_changed_before_freeze": false,
+  "current_scoring_selection_sizing_or_orders_performed": false
+}

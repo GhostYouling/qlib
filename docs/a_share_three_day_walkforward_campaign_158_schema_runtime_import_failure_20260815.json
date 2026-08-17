@@ -1,0 +1,33 @@
+{
+  "schema_version": 1,
+  "kind": "a_share_three_day_walkforward_campaign158_schema_runtime_import_failure",
+  "status": "recorded_runtime_dependency_miss_before_schema_or_research_value_read",
+  "recorded_at": "2026-08-15T04:11:40+08:00",
+  "operation": "Enumerate the already local event and fundamental Parquet schemas with pyarrow.read_schema only.",
+  "failure": {
+    "interpreter": "/usr/bin/python3",
+    "interpreter_version": "3.9.6",
+    "exit_code": 1,
+    "exception_type": "ModuleNotFoundError",
+    "missing_module": "pyarrow",
+    "schema_opened_before_failure": false,
+    "parquet_row_group_or_column_value_read": false,
+    "partial_output_or_target_write": false
+  },
+  "safe_recovery": {
+    "interpreter": "/Volumes/DIsk/Coding/anaconda3/bin/python3.12",
+    "interpreter_version": "3.12.7",
+    "dependency_preinstalled": true,
+    "same_schema_only_scope_preserved": true,
+    "failed_exit_code_bypassed_or_masked": false
+  },
+  "research_boundary": {
+    "candidate_or_comparator_value_read": false,
+    "historical_daily_price_or_forward_return_value_read": false,
+    "stress_2024_2025_opened": false,
+    "provider_or_web_request_issued": false,
+    "provider_credential_presence_value_or_digest_read": false,
+    "candidate49_ledgers_changed": false,
+    "current_scoring_selection_sizing_positions_or_orders_performed": false
+  }
+}

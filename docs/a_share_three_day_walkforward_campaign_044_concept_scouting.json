@@ -1,0 +1,143 @@
+{
+  "version": 1,
+  "kind": "a_share_three_day_walkforward_campaign044_concept_scouting",
+  "status": "completed_before_campaign044_source_factor_or_return_values",
+  "recorded_at": "2026-07-31T16:36:00Z",
+  "purpose": "Select one finite, policy-permitted Campaign044 full-library aggregation mechanism without reading any source-factor value, candidate value, daily price, or historical return.",
+  "authoritative_inputs": {
+    "iteration_state": {
+      "path": "docs/a_share_three_day_iteration_status_20260731_campaign043_verified.json",
+      "sha256": "24d677feded294b1690791a55280795d8210c9cc91b54886bcdcf93743142fc1"
+    },
+    "historical_walkforward_policy": {
+      "path": "docs/a_share_three_day_historical_walkforward_research_policy_20260727.json",
+      "sha256": "38426d6161b9bfed323c58caba18feca668b8c9d53e294951a8ba90c01a798bb",
+      "complete_terminal_library_combination_allowed": true,
+      "subsets_weights_models_and_failures_must_be_recorded": true
+    },
+    "campaign043_terminal_record": {
+      "path": "docs/a_share_three_day_walkforward_campaign_043_research_record.json",
+      "sha256": "44bd70909c20106ed920f5a77b5f9d54b28d3317b19c7392314a235cdd8939ba"
+    },
+    "complete_prior_factor_library": {
+      "path": "docs/a_share_three_day_walkforward_campaign_043_no_return_preregistration.json",
+      "sha256": "2fde47ae05bfef5f99d230c6835b559b72bbd0e20bfcfb994d36cd4487e831f9",
+      "comparison_count_before_appending_campaign043": 64,
+      "comparison_order_sha256_before_appending_campaign043": "c2a81a12274ab6b485c5f42577edc30320ef1292c4af1e33ed6b53127d1ba350",
+      "campaign043_factor_to_append": {
+        "name": "intraday_transaction_vwap_consensus_240m",
+        "score_direction": "higher"
+      },
+      "campaign044_complete_comparison_library_count_before_candidate49_exclusion": 65,
+      "campaign044_complete_comparison_library_order_sha256": "69dd2a8d892a011f5350380f654e2f42ed2b47aea164a23f64bf6603dcf58f22",
+      "active_candidate49_factor_excluded": "intraday_cumulative_vwap_crossing_rate_240m",
+      "comparison_derived_terminal_factor_count": 64,
+      "comparison_derived_terminal_factor_order_sha256": "7eb59052027d676f6b2b7841c6c8911abcf029aee7c0f76832f5636c9042f3a8"
+    },
+    "supplemental_legacy_terminal_definitions": {
+      "path": "docs/a_share_three_day_walkforward_campaign_005_no_return_preregistration.json",
+      "sha256": "01b0c48e2a3e1b0741dee62d4e9d4858e202410ea266a00faa1b5d5ccc21ffa3",
+      "definitions_present_in_frozen_snapshots_but_not_retained_by_later_comparison_order": [
+        {"name": "intraday_lunch_repricing_persistence_119m", "score_direction": "higher"},
+        {"name": "intraday_directional_price_impact_asymmetry_238m", "score_direction": "higher"}
+      ],
+      "campaign044_complete_terminal_source_factor_count": 66,
+      "campaign044_complete_terminal_source_factor_order_sha256": "71a34e7decf7ba4a456cff4e08b0ea034a3919ee62edf5eb3bec603eb50a5bed"
+    }
+  },
+  "candidate_queue_review": [
+    {
+      "concept": "complete_65_comparison_factor_equal_weight_directional_percentile_consensus",
+      "decision": "rejected_before_values",
+      "reason": "The 65-factor comparison library contains active prospective Candidate49. Using its historical values inside a return-tested combination would violate the frozen prohibition on Candidate49 historical return or signal backfill. No source-factor value was read before this rejection."
+    },
+    {
+      "concept": "complete_64_terminal_factor_equal_weight_directional_percentile_consensus",
+      "decision": "rejected_before_values",
+      "reason": "The later 64-factor comparison-derived terminal list omits intraday_lunch_repricing_persistence_119m and intraday_directional_price_impact_asymmetry_238m, even though both remain frozen terminal definitions in the immutable source snapshot chain. Reusing only 64 would therefore violate the complete-library rule. No source-factor value was read before this rejection."
+    },
+    {
+      "concept": "complete_66_terminal_factor_equal_weight_directional_percentile_consensus",
+      "decision": "selected",
+      "reason": "After excluding active Candidate49 and restoring the two legacy terminal definitions omitted from the later comparison order, the historical policy permits all 66 terminal definitions as one complete pre-frozen research library. Equal-weight directional percentile consensus tests broad cross-mechanism confirmation without selecting a favorable terminal subset, learning weights, fitting returns, or altering any terminal definition."
+    },
+    {
+      "concept": "selected_subset_or_best_k_factor_consensus",
+      "decision": "rejected_before_values",
+      "reason": "Selecting factors from prior historical outcomes would omit failed definitions, create unrecorded multiplicity, and turn the campaign into post-result rescue."
+    },
+    {
+      "concept": "ic_weighted_return_weighted_or_fitted_linear_model",
+      "decision": "rejected_before_values",
+      "reason": "Learned weights would add a model and hyperparameter family before the simple complete-library baseline has been evaluated."
+    },
+    {
+      "concept": "median_trimmed_mean_geometric_mean_or_vote_aggregator",
+      "decision": "rejected_before_values",
+      "reason": "Alternative aggregators would create immediate formula search. Campaign044 freezes one arithmetic mean and no rescue alternative."
+    },
+    {
+      "concept": "pairwise_interaction_product_or_permutation_catalog",
+      "decision": "rejected_before_values",
+      "reason": "Enumerating interactions across 66 terminal inputs would create an excessive search space and obscure whether any result comes from broad consensus or multiplicity."
+    },
+    {
+      "concept": "missing_factor_imputation_partial_component_average_or_dynamic_weighting",
+      "decision": "rejected_before_values",
+      "reason": "Every score must use all 66 terminal components on one frozen common support. No imputation, partial average, renormalization, or dynamic weight is allowed."
+    },
+    {
+      "concept": "terminal_factor_inversion_redefinition_or_same_mechanism_repair",
+      "decision": "rejected_before_values",
+      "reason": "Every source factor retains its frozen historical definition and direction; prior terminal records remain terminal and cannot be rewritten by a combination result."
+    },
+    {
+      "concept": "current_score_selection_sizing_order_or_candidate49_backfill",
+      "decision": "rejected_before_values",
+      "reason": "Historical aggregation evidence is research-only and cannot enter current scoring, Candidate49 ledgers, positions, or orders."
+    }
+  ],
+  "selected_candidate": {
+    "name": "full_terminal_library_directional_percentile_consensus_66f",
+    "direction": "higher",
+    "information_domain": "cross_mechanism_confirmation_over_complete_frozen_historical_library",
+    "economic_hypothesis": "A stock ranked favorably at the same completed session across many distinct frozen microstructure, path, range, market-relative, activity, and disclosure mechanisms may have broader confirmation and less single-mechanism noise, potentially improving next-open-to-third-close robustness after fixed costs.",
+    "source_factor_count": 66,
+    "source_factor_order_sha256": "71a34e7decf7ba4a456cff4e08b0ea034a3919ee62edf5eb3bec603eb50a5bed",
+    "source_factor_library_rule": "Enumerate every factor in the immutable terminal source snapshots in source order, exclude active prospective intraday_cumulative_vwap_crossing_rate_240m, retain the two legacy terminal definitions omitted from the later comparison-only order, and append terminal Campaign043. No terminal definition may be omitted.",
+    "candidate49_exclusion_is_not_a_selected_terminal_subset": "Candidate49 is excluded because historical return or signal backfill is forbidden, not because of its observed performance. Every one of the 66 terminal definitions is retained.",
+    "common_support": "For each accepted signal session t, C_t contains only quality/listing-eligible names with finite eligible values for all 66 frozen terminal source factors.",
+    "minimum_common_support_names": 50,
+    "component_score": "For each factor k on C_t, use average-tie empirical percentile rank. A frozen higher direction ranks ascending so larger raw values receive larger percentiles; a frozen lower direction ranks descending so smaller raw values receive larger percentiles. No jitter is allowed.",
+    "formula": "score(i,t)=(1/66)*sum_{k=1}^{66} percentile_rank_{C_t}(factor_k(i,t), frozen_direction_k), defined only when i is in C_t and |C_t|>=50.",
+    "weight_per_component": "1/66",
+    "all_components_required": true,
+    "valid_range": [
+      0.0,
+      1.0
+    ],
+    "tie_method": "average",
+    "percentile_denominator": "common_support_name_count",
+    "zero_missing_semantics": "Finite source zeros are retained. Any source-factor ineligibility or nonfinite value makes that stock-day ineligible for the composite; never fill, clip, or repair.",
+    "subset_transform_filter_threshold_weight_fit_model_or_regime_search": "none"
+  },
+  "research_boundary": {
+    "source_factor_names_definitions_directions_and_manifest_metadata_read": true,
+    "source_factor_values_read": false,
+    "candidate_values_read": false,
+    "historical_daily_price_fields_read": false,
+    "historical_forward_returns_read": false,
+    "training_or_model_fitting_performed": false,
+    "provider_request_issued": false,
+    "candidate49_historical_return_signal_or_execution_backfill_performed": false,
+    "candidate49_ledgers_changed": false,
+    "candidate50_activation_created": false,
+    "current_scoring_selection_sizing_or_orders_performed": false
+  },
+  "decision": {
+    "selected_candidate_count": 1,
+    "finite_trial_count": 1,
+    "predictive_value_established": false,
+    "next_action": "Complete a separate pre-value aggregation-overlap audit and bind the exact complete-library order, common support, percentile, tie, direction, equal-weight, missing, and forbidden-variant semantics before any source-factor value is read."
+  }
+}

@@ -1,0 +1,39 @@
+{
+  "version": 1,
+  "kind": "a_share_three_day_walkforward_campaign047_development_preregistration_semantic_failure",
+  "status": "recorded_before_daily_price_or_return_read",
+  "recorded_at": "2026-08-01T02:59:00Z",
+  "failed_command_stage": "load_campaign_closed_output_boundary_validation",
+  "failure": "Campaign047 output boundary is not closed",
+  "cause": "The preregistration used an aggregate campaign004-through-campaign046 prohibition key but omitted the inherited engine's required literal campaign004_rescue_or_reweight_allowed=false key.",
+  "failed_artifact": {
+    "path_repaired_additively_after_this_failure": "docs/a_share_three_day_walkforward_campaign_047_preregistration.json",
+    "sha256_before_repair": "903a2ffc423bb44620d854e309eca509dd22025983ae0eec03c841bd971c76f8",
+    "preserved_as_separate_file": false,
+    "reason": "The exact failed hash, error, and one-key recovery are preserved here; no protected daily-price or return value had been opened."
+  },
+  "bindings": {
+    "development_runner": {
+      "path": "scripts/a_share_three_day_walkforward_campaign047.py",
+      "sha256": "f22728ffe96aae25f039f7179be0b981defb42fd734786236306e9b93389e784"
+    },
+    "no_return_audit_freeze": {
+      "path": "docs/a_share_three_day_walkforward_campaign_047_no_return_audit_freeze_20260801.json",
+      "sha256": "48e3bfba01ecc1964fdf8bb8c4930d13204d6fe6a39cba566a676470159e2923"
+    }
+  },
+  "failed_preregistration_binding_validator": {
+    "all_17_file_bindings_passed": true,
+    "semantic_validation_passed": false
+  },
+  "research_boundary": {
+    "candidate_or_comparison_values_newly_read_by_failed_stage": false,
+    "historical_daily_price_fields_read": [],
+    "historical_forward_return_fields_read": false,
+    "provider_request_issued": false,
+    "candidate49_historical_return_signal_execution_or_milestone_backfill_performed": false,
+    "candidate49_ledgers_changed": false,
+    "current_scoring_selection_sizing_or_orders_performed": false
+  },
+  "authorized_recovery": "Add only the required literal campaign004_rescue_or_reweight_allowed=false key; keep every factor, direction, trial, fold, purge, cost, gate, stress rule, data fingerprint, and code fingerprint unchanged, then revalidate before any return read."
+}

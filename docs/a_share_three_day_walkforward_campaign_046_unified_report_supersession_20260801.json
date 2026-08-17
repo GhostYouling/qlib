@@ -1,0 +1,41 @@
+{
+  "version": 1,
+  "kind": "a_share_three_day_walkforward_campaign046_unified_report_supersession",
+  "status": "campaign045_report_binding_preserved_historically_campaign046_report_current",
+  "recorded_at": "2026-08-01T00:49:00Z",
+  "purpose": "Preserve Campaign045's immutable unified-report fingerprint and supersession chain while binding the append-only Campaign046 report update.",
+  "bindings": {
+    "campaign045_terminal_record": {
+      "path": "docs/a_share_three_day_walkforward_campaign_045_research_record.json",
+      "sha256": "1fea52800552ed3823c5b3803af37b2e373a194dc1915beec4334270ec374e81"
+    },
+    "campaign046_terminal_record": {
+      "path": "docs/a_share_three_day_walkforward_campaign_046_research_record.json",
+      "sha256": "7def6e0fae47ebc8c834aeb85f54fcbacdd2f35b4c7dbf8fb994903d65888e42"
+    },
+    "previous_campaign045_supersession": {
+      "path": "docs/a_share_three_day_walkforward_campaign_045_unified_report_supersession_20260801.json",
+      "sha256": "87104865eef2f60a4628b372ca69f7b09f2906b86e232861a7991a96c86832ba"
+    },
+    "current_unified_research_report": {
+      "path": "data/experiments/short_horizon/three_day_research_report.md",
+      "sha256": "24b0f8e4dfe73923bb55047c68a8f08af9f6a777699a6bd7ac4d07950ee60569"
+    }
+  },
+  "historical_binding": {
+    "record": "docs/a_share_three_day_walkforward_campaign_045_unified_report_supersession_20260801.json",
+    "json_pointer": "/bindings/current_unified_research_report",
+    "expected_sha256": "d57811a8cdaaad14a36e4db4d442e2be30563db0dae6b3f252ca85a5565e9cc3",
+    "current_sha256": "24b0f8e4dfe73923bb55047c68a8f08af9f6a777699a6bd7ac4d07950ee60569",
+    "historical_record_rewritten": false,
+    "previous_supersession_rewritten": false
+  },
+  "semantic_boundary": {
+    "campaign045_result_or_gate_changed": false,
+    "campaign046_result_or_gate_changed_after_values": false,
+    "report_update_is_append_only": true,
+    "additional_historical_daily_price_or_forward_return_read": false,
+    "2024_2025_stress_return_read": false,
+    "candidate49_ledgers_changed": false
+  }
+}

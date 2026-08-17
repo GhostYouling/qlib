@@ -1,0 +1,96 @@
+{
+  "schema_version": 1,
+  "kind": "a_share_three_day_iteration_status_campaign223_prevalue_terminal",
+  "recorded_at": "2026-08-16T02:17:00+08:00",
+  "timestamp_semantics": "monotonic_logical_append_time_not_host_wall_clock_measurement",
+  "status": "campaign223_validation_passed_goal_active_campaign224_offline_prevalue_authorized",
+  "supersedes_without_rewriting": {
+    "path": "docs/a_share_three_day_iteration_status_20260816_campaign222_prevalue_terminal.json",
+    "sha256": "bb0b1698a36acb5f1790f49d237c2eb2860b846bd5159e2f75ebc9004ffbf5e8"
+  },
+  "authoritative_inputs": {
+    "cloud_data_center_resource_availability_metering_billing_lifecycle_source_frontier": {
+      "path": "docs/a_share_three_day_walkforward_campaign_223_cloud_data_center_resource_availability_metering_billing_lifecycle_source_frontier_20260816.json",
+      "sha256": "7b6c16c50130a09754dabe6f00e7c4efb07949c6144f40ddcda982a578c8ccbe"
+    },
+    "attempt_ledger_v3": {
+      "path": "data/experiments/short_horizon/historical_walkforward/campaign_223/research_attempt_ledger_v3.json",
+      "sha256": "13980caa92d9e8ac95b74b6e0732d0a1967bb5ec3e52434dcd8664229f0bbbd6"
+    },
+    "terminal_result_v2": {
+      "path": "docs/a_share_three_day_walkforward_campaign_223_terminal_result_v2_20260816.json",
+      "sha256": "1be57c3fae84d478781ef03c8dc13136f99863c8b918ed9f87064633f7760d80"
+    },
+    "policy_v338": {
+      "path": "docs/a_share_three_day_walkforward_future_numeric_comparison_eligibility_policy_v338_20260816.json",
+      "sha256": "3736d66aff62d4c0a77c8df725b193b49da725658b73a4d593531f0da0426581"
+    },
+    "terminal_validation": {
+      "path": "docs/a_share_three_day_walkforward_campaign_223_terminal_validation_20260816.json",
+      "sha256": "4f325af06b76a76ed82d8fd3f195d80d33fc574f51ed3e27f62e0745686d987e"
+    }
+  },
+  "campaign223": {
+    "terminal": true,
+    "terminal_stage": "prevalue_source_admission_and_overlap_gate",
+    "finite_route_count": 7,
+    "source_admission_deferral_count": 3,
+    "overlap_or_hypothesis_rejection_count": 4,
+    "selected_factor_count": 0,
+    "definition_or_comparator_append": false,
+    "development_trial_count": 0,
+    "stress_trial_count_2024_2025": 0
+  },
+  "effective_accounting": {
+    "campaign223_attempt_count": 11,
+    "campaign223_scientific_attempt_count": 7,
+    "campaign223_infrastructure_failure_count": 4,
+    "cumulative_historical_research_attempt_count": 2088,
+    "cumulative_return_reading_development_trial_count": 314,
+    "chain_tip_sha256": "92467d50053dd69919a5d1fb0727e5e33c67752a7ec74ca5680de0e686623650"
+  },
+  "library_state": {
+    "complete_factor_definition_count": 158,
+    "complete_factor_definition_order_sha256": "4819c7fd7c0795d7598a52f3c615e3f117d5f4ecd9332974bc8e3dfa57c96667",
+    "eligible_numeric_comparator_count": 142,
+    "eligible_numeric_comparator_order_sha256": "5d1b35fb5a0d8ac9293008db9963c4a60a94dc940c237c3ed259e5ce44f14aaf",
+    "changed_by_campaign223": false
+  },
+  "candidate49": {
+    "sole_prospective_candidate": true,
+    "signal_ledger_sha256": "5193f00d7f36da003f53cec387900da4c3d002299f5dfcfc1a95eaa199ed3a79",
+    "signal_entry_count": 0,
+    "execution_ledger_sha256": "d57a3e61eac969e42cafa418ccd8c0a5ee65dcf69da145bb2c096c2a02a2ea4f",
+    "execution_entry_count": 0,
+    "ledgers_changed": false
+  },
+  "goal": {
+    "continuous_factor_iteration": "active",
+    "completed_by_campaign223": false,
+    "next_historical_campaign": 224,
+    "offline_iteration_may_continue_without_waiting_for_1630_or_new_daily_data": true
+  },
+  "validation_results": {
+    "focused": "2 passed",
+    "cumulative": "494 passed, 1 skipped, 38 deselected",
+    "independent": "passed",
+    "black": "passed",
+    "ruff": "passed",
+    "unmasked_whitespace": "passed"
+  },
+  "research_boundary": {
+    "historical_offline_prevalue_work_may_continue_at_any_local_time": true,
+    "failed_or_truncated_output_used_as_scientific_or_validation_evidence": false,
+    "source_or_cloud_data_center_resource_availability_metering_billing_lifecycle_factor_comparator_security_price_or_return_value_read": false,
+    "customer_identity_credential_network_topology_workload_content_security_vulnerability_critical_facility_or_trade_secret_artifact_read": false,
+    "stress_2024_2025_opened": false,
+    "provider_or_web_request_issued": false,
+    "provider_credential_presence_value_or_digest_read": false,
+    "candidate49_plan_or_run_executed": false,
+    "candidate49_ledgers_changed": false,
+    "second_prospective_candidate_created": false,
+    "current_scoring_selection_sizing_positions_or_orders_performed": false,
+    "investment_advice": false
+  },
+  "next_action": "Begin Campaign224 finite offline prevalue research in a genuinely different mechanism domain; keep Candidate49 as the sole prospective confirmation layer and keep 2024-2025 closed."
+}

@@ -1,0 +1,76 @@
+{
+  "schema_version": 1,
+  "kind": "a_share_three_day_walkforward_campaign221_terminal_validation",
+  "recorded_at": "2026-08-16T01:38:00+08:00",
+  "timestamp_semantics": "monotonic_logical_append_time_not_host_wall_clock_measurement",
+  "status": "passed",
+  "authoritative_inputs": {
+    "terminal_result": {
+      "path": "docs/a_share_three_day_walkforward_campaign_221_terminal_result_20260816.json",
+      "sha256": "557516e4e827d3bab0ec5b1a2281f0d8e33fab05adbe9d4bceb2a17adfef29bd"
+    },
+    "attempt_ledger_v2": {
+      "path": "data/experiments/short_horizon/historical_walkforward/campaign_221/research_attempt_ledger_v2.json",
+      "sha256": "3b939b78fd38fea542885dc0f58b5603bd7875f11a0616efbed354f0a684a987"
+    },
+    "policy_v335": {
+      "path": "docs/a_share_three_day_walkforward_future_numeric_comparison_eligibility_policy_v335_20260816.json",
+      "sha256": "39f426e5c318a2208678e970af8392db614ef7cb0ef0700a9fc3adf3d80a9980"
+    },
+    "terminal_test": {
+      "path": "tests/data_collector_tests/test_a_share_three_day_walkforward_campaign221_terminal.py",
+      "sha256": "028e1b48c52ef3cd2b217f66b90259ed29c2aedf1ae3aa120d32954cee9d4db0"
+    }
+  },
+  "focused_validation": {
+    "command": "PYTHONPATH=. /Volumes/DIsk/Coding/anaconda3/bin/python3.12 -m pytest -q tests/data_collector_tests/test_a_share_three_day_walkforward_campaign221_terminal.py",
+    "passed": 2,
+    "failed": 0,
+    "elapsed_seconds_observed": 0.08
+  },
+  "cumulative_validation": {
+    "selection_method": "Python pathlib glob over every test_a_share_three_day_walkforward_campaign*.py plus regex decimal campaign extraction, bounded to Campaign145 through Campaign221",
+    "selected_test_file_count": 109,
+    "deselection_catalog_policy": "docs/a_share_three_day_walkforward_future_numeric_comparison_eligibility_policy_v311_20260815.json",
+    "deselected_node_count": 36,
+    "passed": 492,
+    "skipped": 1,
+    "failed": 0,
+    "elapsed_seconds_observed": 14.16,
+    "exit_code": 0
+  },
+  "independent_validation": {
+    "passed": true,
+    "checks": [
+      "all immutable path and SHA-256 references across the Campaign221 frontier, ledger v1-v2, terminal result and policy v335 resolve",
+      "seven-route frontier has three source deferrals, four overlap or hypothesis rejections and zero selected factors",
+      "append-only attempt chain recomputes from the Campaign220 v2 tip through ten Campaign221 entries across ledger v1-v2",
+      "effective accounting is ten Campaign221 attempts, 2062 cumulative attempts and 314 return-reading trials",
+      "all three infrastructure failures are recorded and their discarded outputs are not used as scientific or validation evidence",
+      "both mutable reports each contain one Campaign221 heading and match policy v335 publication hashes",
+      "Candidate49 signal and execution ledgers independently parse to zero entries and retain their frozen hashes",
+      "policy keeps 2024-2025, provider, credentials, Candidate49 execution and current-use boundaries closed",
+      "109 Campaign145-221 test files and 36 exact deselection nodes match effective policy",
+      "all current Campaign221 JSON, test and report changes end with a newline and contain no trailing whitespace"
+    ]
+  },
+  "format_and_lint_validation": {
+    "black_format_applied_before_test_binding": true,
+    "effective_black_check_passed": true,
+    "ruff_check_passed": true,
+    "unmasked_whitespace_check_passed": true
+  },
+  "research_boundary": {
+    "validation_read_any_tic_sample_test_calibration_certificate_source_factor_comparator_security_price_or_return_value": false,
+    "failed_or_truncated_output_used_as_validation_or_scientific_evidence": false,
+    "stress_2024_2025_opened": false,
+    "provider_or_web_request_issued": false,
+    "provider_credential_presence_value_or_digest_read": false,
+    "candidate49_plan_or_run_executed": false,
+    "candidate49_ledgers_changed": false,
+    "second_prospective_candidate_created": false,
+    "current_scoring_selection_sizing_positions_or_orders_performed": false,
+    "investment_advice": false
+  },
+  "next_action": "Publish the Campaign221 verified status without rewriting prior evidence and authorize Campaign222 offline prevalue work while the continuous goal remains active."
+}

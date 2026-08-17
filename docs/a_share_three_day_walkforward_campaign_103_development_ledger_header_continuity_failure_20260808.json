@@ -1,0 +1,44 @@
+{
+  "version": 1,
+  "kind": "a_share_three_day_walkforward_campaign103_infrastructure_failure",
+  "status": "readonly_status_failed_before_new_return_read_or_ledger_mutation",
+  "recorded_at": "2026-08-08T00:27:45+08:00",
+  "stage": "campaign103_v9_append_only_ledger_status_validation",
+  "command_exit_code": 1,
+  "exception": "Campaign103 trial ledger header changed",
+  "root_cause": "The append-only ledger was truthfully initialized against preregistration v8 by the recorded development-load failure. The additive loader repair advanced the active preregistration to v9, but the inherited ledger validator required the existing immutable header to equal the new v9 path and fingerprint.",
+  "existing_ledger": {
+    "path": "data/experiments/short_horizon/historical_walkforward/campaign_103/walkforward/trial_ledger.json",
+    "sha256": "68234e44b7ed20ca6f228d75886288596df2fce9ad5de262f7b3279b70019d44",
+    "header_preregistration_path": "/Volumes/DIsk/Disk-Coding/qlib/docs/a_share_three_day_walkforward_campaign_103_preregistration_v8.json",
+    "header_preregistration_sha256": "9485fd9e7773c6d489ead653ae66536445079425c7135dc7f4849d5733f66bbe",
+    "entries": 1,
+    "chain_tip_sha256": "b8665ecdb95895ece8f22d9b914d16321d4e3d95c733a15cc859351a12f7942b"
+  },
+  "active_preregistration": {
+    "path": "docs/a_share_three_day_walkforward_campaign_103_preregistration_v9.json",
+    "sha256": "4347265b5da9b8678d78c2169c6cfd4591deeba0b90abdf9026bca40020d989f"
+  },
+  "allowed_repair": "Preserve the v8 ledger header and chain byte-for-byte, add a Campaign103-only validator that accepts the exact frozen v8 predecessor header only when the caller supplies the exact active v9 preregistration, add regression tests, and bind the repaired runner through additive implementation-freeze and activation successors. Do not rewrite the ledger header or any prior evidence.",
+  "data_access": {
+    "candidate_or_comparison_values_read": false,
+    "daily_price_fields_read": false,
+    "forward_return_fields_read": false,
+    "complete_development_metrics_computed": false,
+    "complete_development_trial_count_increment": 0,
+    "ledger_changed": false,
+    "2024_2025_stress_opened": false,
+    "2024_2025_return_fields_read": false
+  },
+  "research_boundary": {
+    "provider_request_issued": false,
+    "candidate49_historical_return_read": false,
+    "candidate49_ledgers_changed": false,
+    "current_scoring_selection_sizing_or_orders_performed": false
+  },
+  "attempt_accounting": {
+    "campaign103_infrastructure_failure_increment": 1,
+    "campaign103_complete_factor_attempt_increment": 0,
+    "return_reading_complete_development_trial_increment": 0
+  }
+}

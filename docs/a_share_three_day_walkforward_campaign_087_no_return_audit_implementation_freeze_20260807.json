@@ -1,0 +1,51 @@
+{
+  "schema_version": 1,
+  "kind": "a_share_three_day_walkforward_campaign087_no_return_audit_implementation_freeze",
+  "status": "frozen_before_campaign087_coverage_or_comparison_values",
+  "frozen_at": "2026-08-07T03:15:00+08:00",
+  "protocol": {
+    "path": "docs/a_share_three_day_walkforward_campaign_087_no_return_preregistration.json",
+    "sha256": "9adc09b52ec1b9844f3dd99b2cf815046c4143d9ae584fcf135552b32c17114c"
+  },
+  "snapshot_binding": {
+    "path": "docs/a_share_three_day_walkforward_campaign_087_feature_snapshot_binding_20260807.json",
+    "sha256": "acaf2df7105b594e22f0daf697cb3e34db8d9233f32e585e26952c4678c188b0"
+  },
+  "audit_runner": {
+    "path": "scripts/a_share_three_day_walkforward_campaign087_no_return_audit.py",
+    "sha256": "7512b21d30ad301faaa8f89d0d828e409a61ab357fee0400632ec5d55e210fef"
+  },
+  "tests": {
+    "path": "tests/data_collector_tests/test_a_share_three_day_walkforward_campaign087_no_return_audit.py",
+    "sha256": "937248c01f33b93325407e9ea57b7bc4372753e5d05ba74dbdb51f95af1ff5b9",
+    "result_before_freeze": "5 passed and ruff passed",
+    "candidate_parquet_value_columns_read_by_tests": false
+  },
+  "append_only_attempt_ledger_at_freeze": {
+    "path": "data/experiments/short_horizon/historical_walkforward/campaign_087/research_attempt_ledger_v11.json",
+    "sha256": "7e5cb1126ad3dbfb8f6d9c76810fff1ccb7cca703cecfdd4a114e0c447828bff",
+    "recorded_failures": 11,
+    "complete_factor_attempts": 0
+  },
+  "ordered_gates": {
+    "candidate_snapshot_sha256": "3a44a828a5c95712471e2757fc24225607759860f236f10de674fc93927b7bfe",
+    "candidate_dataset_sha256": "9f92cede97522203ace1dc3879a862cc55e58e4877f91fc407f275d418ba6428",
+    "coverage_first": true,
+    "comparison_values_may_open_only_after_coverage_pass": true,
+    "numeric_comparator_count": 116,
+    "numeric_comparator_order_sha256": "e84ad824a5b3044c45a541a6650b3e18af801b09a34871c3e6ab8c73c36891b2",
+    "complete_definition_count": 118,
+    "complete_definition_order_sha256": "261b5bac3512a91492d91e69fdbe8f6b571738e55a19553b5344f044697115f9",
+    "all_116_comparators_must_pass": true,
+    "maximum_allowed_absolute_median_daily_rank_correlation": 0.8,
+    "minimum_pairwise_names_per_session": 50,
+    "minimum_pairwise_sessions_per_comparison": 100
+  },
+  "coverage_or_capacity_metrics_computed_before_freeze": false,
+  "comparison_values_read_before_freeze": false,
+  "historical_daily_price_fields_read_before_freeze": [],
+  "historical_forward_returns_read_before_freeze": false,
+  "provider_request_issued_before_freeze": false,
+  "candidate49_historical_backfill_or_ledger_change_before_freeze": false,
+  "current_scoring_selection_sizing_or_orders_performed_before_freeze": false
+}

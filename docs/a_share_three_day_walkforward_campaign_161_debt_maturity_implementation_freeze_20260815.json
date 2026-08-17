@@ -1,0 +1,91 @@
+{
+  "version": 1,
+  "kind": "a_share_three_day_walkforward_campaign161_debt_maturity_implementation_freeze",
+  "status": "acceptance_runner_frozen_before_eastmoney_financial_data_api_request",
+  "recorded_at": "2026-08-15T05:31:40+08:00",
+  "campaign": 161,
+  "purpose": "Bind the independent local-plan and one-shot public-source acceptance implementation before any Eastmoney financial API row or factor value is requested.",
+  "contract_path": "docs/a_share_eastmoney_debt_maturity_resilience_data_contract_20260815.json",
+  "contract_sha256": "c901436aecec2927c722e6f5d59d8d4e82fe73ec611dafe6f4be7403c1a42831",
+  "frozen_implementation": {
+    "workflow_path": "scripts/a_share_three_day_walkforward_campaign161_debt_maturity.py",
+    "workflow_sha256": "dca97f573e7654f71a013393bf268aac64b57ee46d4295468bff2592dddee34f",
+    "test_path": "tests/data_collector_tests/test_a_share_three_day_walkforward_campaign161_debt_maturity.py",
+    "test_sha256": "4516fc8e220562dd8348648c2c8128bfae67e6c3bd6171ea79c478bf355e73dc",
+    "plan_command": "/Volumes/DIsk/Coding/anaconda3/bin/python3.12 scripts/a_share_three_day_walkforward_campaign161_debt_maturity.py plan-acceptance",
+    "run_command": "/Volumes/DIsk/Coding/anaconda3/bin/python3.12 scripts/a_share_three_day_walkforward_campaign161_debt_maturity.py acceptance --confirm-run",
+    "plan_is_local_only": true,
+    "run_requires_ready_true_and_plan_exit_zero": true,
+    "contract_sha256_is_hard_bound_in_workflow": true,
+    "freeze_sha256_is_not_hardcoded_in_workflow": true,
+    "freeze_semantics_and_bound_implementation_hashes_are_checked": true,
+    "shared_fingerprint_frozen_rich_data_module_modified": false
+  },
+  "frozen_local_bindings": {
+    "numeric_eligibility_policy_v224": {
+      "path": "docs/a_share_three_day_walkforward_future_numeric_comparison_eligibility_policy_v224_20260815.json",
+      "sha256": "1308e5a3ce1a155d867f9f20678b658fb93a4b52885450988b2825ab92544499"
+    },
+    "manage_qlib_a_share_data_skill": {
+      "path": "/Users/niyufei/.codex/skills/manage-qlib-a-share-data/SKILL.md",
+      "sha256": "565713a5f3aeb6a1acf23e397fcc21be28d0c3ea4ebf21c7f287a25bb94d78dc"
+    },
+    "holding_universe": {
+      "path": "data/qlib/cn_a_share/instruments/buyable_main_chinext.txt",
+      "sha256": "77ccf8de2ed1e447e73b5d5ff1703fc2a8656d6adab34ef44017481730249db1"
+    },
+    "candidate49_signal_ledger": {
+      "path": "data/experiments/short_horizon/candidate49_future_signal_ledger.json",
+      "sha256": "5193f00d7f36da003f53cec387900da4c3d002299f5dfcfc1a95eaa199ed3a79"
+    },
+    "candidate49_execution_ledger": {
+      "path": "data/experiments/short_horizon/candidate49_future_execution_ledger.json",
+      "sha256": "d57a3e61eac969e42cafa418ccd8c0a5ee65dcf69da145bb2c096c2a02a2ea4f"
+    }
+  },
+  "one_shot_outputs": {
+    "accepted_root": "data/experiments/short_horizon/historical_walkforward/campaign_161/source/acceptance_2023q4_v1",
+    "data_path": "data/experiments/short_horizon/historical_walkforward/campaign_161/source/acceptance_2023q4_v1/eastmoney_debt_maturity_resilience_2023q4.parquet",
+    "manifest_path": "data/experiments/short_horizon/historical_walkforward/campaign_161/source/acceptance_2023q4_v1/snapshot_manifest.json",
+    "intent_path": "data/experiments/short_horizon/historical_walkforward/campaign_161/source/acceptance_2023q4_intent_v1.json",
+    "acceptance_record_path": "data/experiments/short_horizon/historical_walkforward/campaign_161/source/acceptance_2023q4_record_v1.json",
+    "failure_record_path": "data/experiments/short_horizon/historical_walkforward/campaign_161/source/acceptance_2023q4_failure_v1.json",
+    "lock_path": "data/experiments/short_horizon/historical_walkforward/campaign_161/source/.acceptance_2023q4.lock",
+    "one_shot": true,
+    "intent_success_or_failure_blocks_every_future_acceptance_run": true,
+    "lock_is_advisory_and_never_deleted": true
+  },
+  "frozen_source_and_formula": {
+    "provider": "Eastmoney public datacenter",
+    "report_name": "RPT_DMSK_FN_BALANCE",
+    "report_date": "2023-12-31",
+    "page_size": 500,
+    "maximum_pages": 20,
+    "maximum_attempts_per_page": 4,
+    "minimum_seconds_between_requests": 0.25,
+    "formula": "(LONG_LOAN + BOND_PAYABLE) / (SHORT_LOAN + SHORT_BOND_PAYABLE + NONCURRENT_LIAB_1YEAR + LONG_LOAN + BOND_PAYABLE)",
+    "direction": "higher_is_better",
+    "missing_component_is_zero": false,
+    "component_substitution_allowed": false,
+    "parameters_filters_subsets_combinations_models": []
+  },
+  "acceptance_gates": {
+    "minimum_provider_advertised_rows": 1000,
+    "minimum_valid_main_chinext_holding_names": 50,
+    "minimum_distinct_factor_values": 20,
+    "duplicate_instrument_report_period_allowed": false,
+    "raw_response_persistence_allowed": false,
+    "unused_field_persistence_allowed": false,
+    "retry_after_terminal_acceptance_failure_allowed": false
+  },
+  "research_boundary_at_freeze": {
+    "eastmoney_financial_data_api_request_issued": false,
+    "provider_response_row_or_column_value_read": false,
+    "candidate_or_comparator_value_read": false,
+    "historical_daily_price_or_forward_return_value_read": false,
+    "stress_2024_2025_opened": false,
+    "provider_credential_presence_value_or_digest_read": false,
+    "candidate49_ledgers_changed": false,
+    "current_scoring_selection_sizing_positions_or_orders_performed": false
+  }
+}

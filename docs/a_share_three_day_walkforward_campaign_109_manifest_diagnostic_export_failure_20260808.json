@@ -1,0 +1,21 @@
+{
+  "schema_version": 1,
+  "kind": "a_share_three_day_walkforward_campaign109_infrastructure_failure",
+  "status": "preserved_failed_readonly_manifest_diagnostic_before_partition_comparator_or_return_values",
+  "recorded_at": "2026-08-07T22:17:29Z",
+  "failure_ordinal": 5,
+  "stage": "postpublication_manifest_condition_diagnosis",
+  "failed_exit_code": 1,
+  "exception": "AttributeError: Campaign109 v2 wrapper has no exported IDENTITY_COLUMNS attribute",
+  "cause": "The first read-only diagnostic referenced a constant that remains available only through the wrapped frozen module.",
+  "repair": "Read the same immutable constant through feature.base.IDENTITY_COLUMNS; the corrected diagnostic showed exactly three inherited validator conditions false and every frozen-protocol condition true.",
+  "scientific_boundary": {
+    "manifest_metadata_read": true,
+    "partition_values_read": false,
+    "coverage_or_comparator_values_read": false,
+    "historical_daily_price_or_forward_return_values_read": false,
+    "formula_direction_source_projection_grid_endpoint_support_gate_comparator_order_or_finite_catalog_changed": false,
+    "provider_request_issued": false,
+    "candidate49_ledgers_changed": false
+  }
+}

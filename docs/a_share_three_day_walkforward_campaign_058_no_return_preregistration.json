@@ -1,0 +1,247 @@
+{
+  "version": 1,
+  "kind": "a_share_three_day_walkforward_campaign058_no_return_preregistration",
+  "status": "frozen_before_campaign058_source_candidate_comparison_daily_price_or_return_values",
+  "frozen_at": "2026-08-04T07:59:49Z",
+  "purpose": "Freeze one point-in-time operating-leverage factor, a complete 89-definition no-return screen, and one conditional development trial before reading any Campaign058 source row or value.",
+  "source_chain": {
+    "concept_scouting": {
+      "path": "docs/a_share_three_day_walkforward_campaign_058_concept_scouting.json",
+      "sha256": "95b7369402afe3385c0c12d1deea469c1f096a6d92daeaa037c65fda88f6eb90"
+    },
+    "mechanism_overlap_audit": {
+      "path": "docs/a_share_three_day_walkforward_campaign_058_mechanism_overlap_audit.json",
+      "sha256": "226d7535047b0321cf2fece05e63455254b381ae75bac42f3a2d0e184bd5a97f"
+    },
+    "authoritative_iteration_state": {
+      "path": "docs/a_share_three_day_iteration_status_20260804_campaign057_verified.json",
+      "sha256": "a83247eaa08b1276c2f538f5286e1b6e622fe8e93453145453c3eae6e1816ba4"
+    },
+    "historical_walkforward_policy": {
+      "path": "docs/a_share_three_day_historical_walkforward_research_policy_20260727.json",
+      "sha256": "38426d6161b9bfed323c58caba18feca668b8c9d53e294951a8ba90c01a798bb"
+    },
+    "future_only_policy": {
+      "path": "docs/a_share_three_day_future_only_minute_research_policy_20260725.json",
+      "sha256": "52ca8bfa7201509fe891d0af3d1c87aeebd64e47e6ec6641e897849411df408c"
+    },
+    "accepted_local_calendar": {
+      "path": "data/qlib/cn_a_share/calendars/day.txt",
+      "sha256": "fda506597d26bcec953cdc0882042a5046ec1587db60490e16a01627fd43f53a"
+    },
+    "raw_minute_manifest": {
+      "path_below_data_root": "raw/a_share/rich/tushare/minutes/1m/snapshots/tushare_stk_mins_1m_2019_2025_ea0cbb8f/snapshot_manifest.json",
+      "sha256": "9b3d959563c9d182f38981c6a36bdb3bc9b415de08487a9e1f9e850825c0839f",
+      "use": "datetime_symbol_provider_stock_day_identity_only",
+      "minute_price_or_activity_fields_read": false
+    },
+    "joint_clean_manifest": {
+      "path_below_data_root": "derived/a_share/rich/tushare/minute_sentiment_clean/tushare_stk_mins_1m_2019_2025_ea0cbb8f_sentiment_clean_v1/snapshot_manifest.json",
+      "sha256": "453c6719cb3c7da42fed8807b28a2bfe988700283e9625a6db97912534f368de",
+      "dataset_sha256": "0e4fe7c05536cdfcecc2936bc880726902f5560061188ffff82ef7ee6f346983",
+      "partitions": 33015,
+      "rows": 7724498,
+      "use": "accepted_stock_day_key_grid_only"
+    },
+    "quarterly_quality_source": {
+      "path": "data/raw/a_share/fundamentals/quarterly_quality.parquet",
+      "sha256": "3ac901a97928d2ed81ac72e3eaac9bdc148d36cf67b6abe70223699235ef059f",
+      "manifest_path": "data/metadata/quarterly_quality_manifest.json",
+      "manifest_sha256": "e3cf654babe37a82393c5530696bc1cc242b736cb88e1947b8444b638125ba8c",
+      "rows": 143776,
+      "candidate_projected_columns": [
+        "instrument",
+        "report_date",
+        "announcement_date",
+        "revenue_yoy",
+        "profit_yoy"
+      ],
+      "candidate_forbidden_columns": [
+        "roe",
+        "net_profit"
+      ]
+    },
+    "prior_comparison_catalog": {
+      "path": "docs/a_share_three_day_walkforward_campaign_057_no_return_preregistration.json",
+      "sha256": "9eb8607e91e952b9e22e436374d68de0a90df251065720bed8a6285f2e3b7ff1",
+      "json_pointer": "/ordered_no_return_gates/uniqueness_after_coverage_only/comparison_factors",
+      "factor_count": 80
+    },
+    "campaign057_terminal_record": {
+      "path": "docs/a_share_three_day_walkforward_campaign_057_research_record.json",
+      "sha256": "f1c9683172483509a78b7fd5d10cfc4c9739ef80d3b6023f2ec1ee0e2c3a004a"
+    },
+    "campaign057_statistical_snapshot": {
+      "path": "/Volumes/DIsk/qlib-a-share-tushare-1m/derived/a_share/rich/tushare/minute_walkforward_campaign057_feature_library/tushare_stk_mins_1m_2019_2025_ea0cbb8f_walkforward_campaign057_feature_library_v1/snapshot_manifest.json",
+      "sha256": "7aba63621b2c6bd2b9d511d11ab56fc5331ae1dcf7a3c6055dbe6455d437d0ed",
+      "dataset_sha256": "b24d183b15feb98015d7353160740273ffb5acc14dcf0031a984d9eb3003f19d",
+      "factor": "intraday_day_over_day_absolute_return_profile_similarity_238b",
+      "score_direction": "higher"
+    },
+    "older_quality_semantic_contract": {
+      "path": "docs/a_share_tushare_audit_opinion_no_return_preregistration.json",
+      "sha256": "5fb77e7060cbd1a03824d015cc33b75ffcf23b3afb5817e60b783e8bcaea3d69"
+    },
+    "candidate49_future_observation_registration": {
+      "path": "docs/a_share_tushare_intraday_cumulative_vwap_crossing_rate_future_observation_registration.json",
+      "sha256": "431cb0b3b078823f08b888bf4c499bcc5088309a2e58e9de5cb9a9aaa849ffa9",
+      "historical_return_comparison_allowed": false
+    },
+    "candidate49_signal_ledger": {
+      "path": "data/experiments/short_horizon/candidate49_future_signal_ledger.json",
+      "sha256": "5193f00d7f36da003f53cec387900da4c3d002299f5dfcfc1a95eaa199ed3a79",
+      "entry_count": 0
+    },
+    "candidate49_execution_ledger": {
+      "path": "data/experiments/short_horizon/candidate49_future_execution_ledger.json",
+      "sha256": "d57a3e61eac969e42cafa418ccd8c0a5ee65dcf69da145bb2c096c2a02a2ea4f",
+      "entry_count": 0
+    }
+  },
+  "candidate": {
+    "name": "quarterly_profit_revenue_growth_spread_pp",
+    "direction": "higher",
+    "formula": "profit_yoy_state_t - revenue_yoy_state_t",
+    "economic_hypothesis": "Profit growth outrunning revenue growth is a point-in-time operating-leverage or margin-expansion proxy that may remain relevant through a three-session holding horizon.",
+    "stock_day_identity_fields": [
+      "datetime",
+      "symbol",
+      "provider"
+    ],
+    "quarterly_event_fields": [
+      "instrument",
+      "report_date",
+      "announcement_date",
+      "revenue_yoy",
+      "profit_yoy"
+    ],
+    "availability_semantics": "Map announcement_date to the first accepted local session strictly after it. Sort by instrument, effective session, report_date, and announcement_date; keep the last row per instrument and effective session. Forward-fill revenue_yoy and profit_yoy independently inside each instrument, never backward or across instruments.",
+    "value_semantics": "Subtract the finite already-effective revenue_yoy state from the finite already-effective profit_yoy state without rank, ratio, log, clipping, winsorization, standardization, scaling, threshold, or imputation.",
+    "unit": "percentage_points",
+    "valid_range": "finite_float64",
+    "missing_semantics": "A stock-day with no finite already-effective state for either field remains missing. Later reports never backfill earlier stock-days and another issuer never supplies a value.",
+    "alternate_field_window_transform_direction_threshold_filter_subset_board_year_cost_regime_fit_combination_or_model_search": false
+  },
+  "ordered_no_return_gates": {
+    "coverage_and_capacity_before_comparison_values": {
+      "coverage_basis": "candidate finite rows divided by quality-and-listing eligible buyable rows within 2019-2025",
+      "minimum_median_coverage": 0.95,
+      "minimum_p05_coverage": 0.9,
+      "minimum_p05_eligible_names": 50,
+      "minimum_non_overlapping_three_session_cohorts": 200,
+      "minimum_observed_calendar_years": 5,
+      "holding_period_sessions": 3,
+      "comparison_values_read_before_coverage_pass": false,
+      "failed_gate_policy": "Record the exact Campaign058 factor as terminal and stop before comparison values, daily prices, or forward returns."
+    },
+    "uniqueness_after_coverage_only": {
+      "screen_start": "2019-01-01",
+      "screen_end": "2025-12-31",
+      "method": "Within each identical quality-listing-candidate-and-comparison-eligible stock-day cross-section, compute pairwise-complete Spearman correlation between directional percentile scores, then take each comparison factor's median daily correlation.",
+      "maximum_allowed_absolute_median_daily_rank_correlation": 0.8,
+      "minimum_pairwise_names_per_session": 50,
+      "minimum_pairwise_sessions_per_comparison": 100,
+      "candidate49_is_no_return_comparison_only": true,
+      "comparison_factor_count": 89,
+      "comparison_factor_order_sha256": "c4100bc923fad2ea5fb8898ccb102afe44307c8ab03ee2df8b0972d9b71bbbc1",
+      "comparison_order_definition": "Take all 80 comparison factors from the bound Campaign057 protocol in exact order, append terminal Campaign057, then append the eight older quality semantic definitions in the exact listed order.",
+      "appended_comparison_factors": [
+        {
+          "name": "intraday_day_over_day_absolute_return_profile_similarity_238b",
+          "score_direction": "higher",
+          "source": "campaign057_statistical_snapshot"
+        },
+        {
+          "name": "quality_roe",
+          "score_direction": "higher",
+          "formula": "average-tie same-session percentile rank of already-effective roe"
+        },
+        {
+          "name": "quality_profit",
+          "score_direction": "higher",
+          "formula": "average-tie same-session percentile rank of already-effective profit_yoy"
+        },
+        {
+          "name": "quality_revenue",
+          "score_direction": "higher",
+          "formula": "average-tie same-session percentile rank of already-effective revenue_yoy"
+        },
+        {
+          "name": "quality_growth",
+          "score_direction": "higher",
+          "formula": "equal-weight mean of quality_profit and quality_revenue"
+        },
+        {
+          "name": "quality_score",
+          "score_direction": "higher",
+          "formula": "equal-weight mean of quality_roe, quality_profit, and quality_revenue"
+        },
+        {
+          "name": "roe_change",
+          "score_direction": "higher",
+          "formula": "average-tie same-session percentile rank of the already-effective same-fiscal-quarter year-over-year roe change"
+        },
+        {
+          "name": "revenue_yoy_acceleration",
+          "score_direction": "higher",
+          "formula": "average-tie same-session percentile rank of the already-effective same-fiscal-quarter year-over-year change in revenue_yoy"
+        },
+        {
+          "name": "profit_yoy_acceleration",
+          "score_direction": "higher",
+          "formula": "average-tie same-session percentile rank of the already-effective same-fiscal-quarter year-over-year change in profit_yoy"
+        }
+      ],
+      "quality_comparison_semantics": {
+        "availability": "strictly next accepted session after announcement_date",
+        "same_fiscal_quarter_acceleration": "compare identical report-date month inside instrument using only the newly effective report and its earlier same-quarter report",
+        "quality_and_listing_mask": "identical frozen eligibility mask used for candidate coverage and every pairwise comparison",
+        "comparison_values_read_before_coverage_pass": false,
+        "failed_gate_policy": "Stop before daily price or forward return; do not invert, remove a failed comparison, alter the formula, or rescue the factor."
+      }
+    }
+  },
+  "finite_development_catalog_if_admitted": {
+    "trial_id": "wf058_quarterly_profit_revenue_growth_spread_pp_single_higher",
+    "feature_set": [
+      "quarterly_profit_revenue_growth_spread_pp"
+    ],
+    "weights": [
+      1.0
+    ],
+    "direction": "higher",
+    "expected_trial_count": 1,
+    "alternate_field_window_transform_direction_threshold_filter_subset_year_cost_regime_model_or_combination_search": false
+  },
+  "point_in_time_and_execution_semantics": {
+    "factor_known": "after signal-session close from disclosures effective no later than that session",
+    "entry": "next accepted session open t+1",
+    "exit": "third accepted session close t+3",
+    "holding_period_sessions": 3,
+    "split_purge_signal_sessions": 3,
+    "t_t_plus_1_t_plus_3_must_share_partition": true
+  },
+  "research_boundary": {
+    "stock_day_datetime_symbol_provider_identity_may_read_after_protocol_freeze": true,
+    "quarterly_projected_fields_may_read_after_protocol_freeze": true,
+    "minute_open_high_low_close_volume_amount_read_by_candidate_before_admissibility": false,
+    "comparison_values_read_before_coverage_pass": false,
+    "daily_price_fields_read_before_admissibility": false,
+    "forward_return_fields_read_before_admissibility": false,
+    "candidate49_historical_return_read": false,
+    "candidate49_signal_execution_or_milestone_backfill_allowed": false,
+    "candidate49_ledgers_may_change": false,
+    "second_prospective_candidate_created": false,
+    "provider_request_issued": false,
+    "current_scoring_selection_sizing_or_orders_allowed": false,
+    "investment_advice": false
+  },
+  "decision": {
+    "candidate_library_size": 1,
+    "comparison_library_size": 89,
+    "development_trial_count_if_admitted": 1,
+    "comparison_values_may_open_only_after_coverage_capacity_pass": true,
+    "daily_price_and_returns_may_open_only_after_all_89_uniqueness_comparisons_pass": true,
+    "next_action": "Validate every path and SHA-256 binding, then implement and synthetically test the Campaign058 feature runner before reading Campaign058 source rows or candidate values."
+  }
+}

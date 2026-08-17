@@ -1,0 +1,84 @@
+{
+  "version": 1,
+  "kind": "a_share_three_day_walkforward_campaign036_feature_snapshot_freeze",
+  "status": "snapshot_bound_before_comparison_values_daily_prices_or_returns",
+  "recorded_at": "2026-07-30T21:40:15Z",
+  "purpose": "Bind the Campaign036 exact two-sided range-frontier-balance snapshot and every partition fingerprint before any comparison factor value, daily price, or historical forward return is opened.",
+  "source_chain": {
+    "no_return_preregistration": {
+      "path": "docs/a_share_three_day_walkforward_campaign_036_no_return_preregistration.json",
+      "sha256": "112fd9ad88a25622a77591e46393c340dddbdc2ff0478b9af60979702e0d88e7"
+    },
+    "feature_implementation_freeze": {
+      "path": "docs/a_share_three_day_walkforward_campaign_036_feature_implementation_freeze_20260731.json",
+      "sha256": "a0c8382e2f51c00034409e45e8c061e7756fc5457ce8858679156fb09a142e19"
+    },
+    "feature_runner_pre_snapshot_binding_sha256": "dd200c415faf3312b36efaad28100f4570e1d7cc3fe6a0c0edc782d1b7cda2ab",
+    "feature_tests_pre_snapshot_assertion_sha256": "473c1a67af48493681c3a29febb02717e939ac0befe5425cbb64582715adf813",
+    "candidate49_signal_ledger": {
+      "path": "data/experiments/short_horizon/candidate49_future_signal_ledger.json",
+      "sha256": "5193f00d7f36da003f53cec387900da4c3d002299f5dfcfc1a95eaa199ed3a79",
+      "entry_count": 0
+    },
+    "candidate49_execution_ledger": {
+      "path": "data/experiments/short_horizon/candidate49_future_execution_ledger.json",
+      "sha256": "d57a3e61eac969e42cafa418ccd8c0a5ee65dcf69da145bb2c096c2a02a2ea4f",
+      "entry_count": 0
+    }
+  },
+  "feature_snapshot": {
+    "path": "/Volumes/DIsk/qlib-a-share-tushare-1m/derived/a_share/rich/tushare/minute_walkforward_campaign036_feature_library/tushare_stk_mins_1m_2019_2025_ea0cbb8f_walkforward_campaign036_feature_library_v1/snapshot_manifest.json",
+    "sha256": "5c3b1d3fa07036537acc3d8f99073cbecee03c4d58575950af09f1f80250f4d3",
+    "dataset_sha256": "4658449f8db54334c810faeefc63a318316c5d68462b0e4d782318172910bbdb",
+    "kind": "a_share_three_day_walkforward_campaign036_feature_snapshot",
+    "partitions": 33015,
+    "rows": 7724498,
+    "factor": "intraday_two_sided_range_frontier_balance_238m",
+    "direction": "higher",
+    "eligible_rows": 7690919,
+    "upward_expansion_observations": 58904546,
+    "downward_expansion_observations": 74650432,
+    "zero_total_expansion_rows": 33579,
+    "invalid_required_high_low_rows": 0,
+    "nonpositive_high_low_rows": 0,
+    "misordered_high_low_rows": 0,
+    "nonfinite_expansion_rows": 0,
+    "identity_mismatch_rows": 0,
+    "range_or_nonfinite_rows": 0,
+    "resumed_partitions": 0,
+    "all_partition_byte_and_frame_hashes_valid": true,
+    "verified_partitions": 33015,
+    "verified_rows": 7724498
+  },
+  "source_and_output_boundary": {
+    "source_fields_read": [
+      "datetime",
+      "symbol",
+      "provider",
+      "high",
+      "low"
+    ],
+    "source_open_high_low_read": true,
+    "source_close_read": false,
+    "source_volume_read": false,
+    "source_amount_read": false,
+    "comparison_factor_values_read": false,
+    "daily_price_fields_read": [],
+    "forward_return_fields_read": false,
+    "candidate49_historical_return_read": false,
+    "training_or_model_fitting_performed": false,
+    "current_scoring_selection_sizing_or_orders_performed": false
+  },
+  "display_only_semantics": {
+    "build_progress_label_observed": "Campaign006",
+    "reason": "The frozen lower-level publication machinery retains its original console progress prefix.",
+    "campaign036_output_namespace_formula_or_fingerprint_affected": false
+  },
+  "decision": {
+    "snapshot_manifest_validation_passed": true,
+    "snapshot_partition_verification_passed": true,
+    "snapshot_binding_validation_required_before_no_return_audit": true,
+    "no_return_audit_allowed_after_binding_validation": true,
+    "historical_return_read_allowed_before_no_return_admission": false
+  }
+}

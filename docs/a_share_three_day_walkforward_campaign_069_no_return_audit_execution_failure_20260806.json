@@ -1,0 +1,53 @@
+{
+  "version": 1,
+  "kind": "a_share_three_day_walkforward_campaign069_no_return_audit_execution_failure",
+  "status": "infrastructure_failure_after_coverage_pass_and_comparator_value_open_before_audit_publication_or_return_read",
+  "recorded_at": "2026-08-06T03:41:00+08:00",
+  "command": "PYTHONPATH=/Volumes/DIsk/Disk-Coding/qlib /Volumes/DIsk/Coding/anaconda3/bin/python scripts/a_share_three_day_walkforward_campaign069_no_return_audit.py run --data-root /Volumes/DIsk/qlib-a-share-tushare-1m --experiment-root data/experiments/short_horizon/historical_walkforward/campaign_069/no_return --workers 8",
+  "exit_code": 1,
+  "frozen_inputs": {
+    "audit_runner": {
+      "path": "scripts/a_share_three_day_walkforward_campaign069_no_return_audit.py",
+      "sha256": "6b02c861740bb46e47097a6f688be0cf1783d3d7a02e508c906d1e18ca87a478"
+    },
+    "activation_binding": {
+      "path": "docs/a_share_three_day_walkforward_campaign_069_no_return_audit_activation_binding_20260806.json",
+      "sha256": "d04a9de926c1cd78c107b88d21486214ec87cde14c67da9be07022747bf9ed5a"
+    },
+    "candidate_snapshot_manifest_sha256": "6023becea579d0f6ed6ac27316421294f13fd6759d6d51790a31940526e363b7",
+    "candidate_snapshot_dataset_sha256": "7c4b2e446bf4ebb64b4d3e992510610b1f0059fde868dff0bf02a06b7ce75960"
+  },
+  "failure": {
+    "exception_type": "KeyError",
+    "missing_factor_range": "quarterly_profit_revenue_acceleration_rank_gap_2r",
+    "failing_stage": "load_campaign068_numeric_comparator_99_after_candidate_coverage_pass",
+    "root_cause": "The frozen runner installed the signed [-1,1] range for the Campaign069 candidate but not for the separately loaded signed Campaign068 comparator before calling the generic factor-frame verifier.",
+    "candidate_coverage_gate_passed": true,
+    "coverage_metrics_persisted": false,
+    "compact_cache_comparison_values_opened": true,
+    "campaign068_snapshot_files_reverified_before_failure": true,
+    "campaign068_comparator_correlation_completed": false,
+    "audit_artifact_written": false
+  },
+  "research_boundary": {
+    "historical_daily_price_fields_read": [],
+    "historical_forward_return_fields_read": false,
+    "candidate49_historical_return_read": false,
+    "provider_request_issued": false,
+    "candidate49_prospective_ledgers_changed": false,
+    "second_prospective_candidate_created": false,
+    "current_scoring_selection_sizing_or_orders_performed": false
+  },
+  "attempt_accounting": {
+    "Campaign069_infrastructure_failure_increment": 1,
+    "Campaign069_complete_factor_attempt_increment": 0,
+    "historical_return_reading_trial_increment": 0,
+    "cumulative_historical_research_attempt_count_after_record": 409,
+    "cumulative_return_reading_development_trial_count": 274
+  },
+  "decision": {
+    "original_runner_and_failure_record_remain_immutable": true,
+    "same_parameter_retry_allowed_only_after_frozen_range_registration_repair": true,
+    "formula_direction_comparator_order_coverage_gate_uniqueness_gate_or_data_may_change": false
+  }
+}

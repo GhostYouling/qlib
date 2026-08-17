@@ -1,0 +1,78 @@
+{
+  "schema_version": 1,
+  "kind": "a_share_three_day_walkforward_campaign179_terminal_result",
+  "status": "terminal_prevalue_zero_infrastructure_failures_goal_active",
+  "recorded_at": "2026-08-15T11:53:54+08:00",
+  "authoritative_inputs": {
+    "campaign178_effective_state": {
+      "path": "docs/a_share_three_day_iteration_status_20260815_campaign178_prevalue_terminal.json",
+      "sha256": "7d54393cba9e5d5e7722a026416aa20594f4fd77d460571cf3a30398670c81f9"
+    },
+    "eligibility_policy_v266": {
+      "path": "docs/a_share_three_day_walkforward_future_numeric_comparison_eligibility_policy_v266_20260815.json",
+      "sha256": "d569ce4cf16b41ed9b50f1d62914ca1acbe8b75827140478459ce2e03c7a0f84"
+    },
+    "operating_license_concession_right_source_frontier": {
+      "path": "docs/a_share_three_day_walkforward_campaign_179_operating_license_concession_right_source_frontier_20260815.json",
+      "sha256": "54d6580c2db8b8897c6e2e4145b54259f9fd7fa2b7149aa99593a1bd7628de0e"
+    },
+    "attempt_ledger": {
+      "path": "data/experiments/short_horizon/historical_walkforward/campaign_179/research_attempt_ledger_v1.json",
+      "sha256": "5cd52b8bc2e6094452b070f48177e5a5aaed2afcf97afea43d410894f8406698",
+      "effective_entry_count": 7,
+      "chain_tip_sha256": "3bbab672018007a2d460638c42c5b6b59750930e9d4a007350e5de22759474e7"
+    }
+  },
+  "scientific_result": {
+    "terminal": true,
+    "terminal_phase": "finite_prevalue_operating_license_concession_right_source_admission",
+    "routes_reviewed": 7,
+    "genuinely_new_issuer_state_routes": 4,
+    "source_admission_deferrals_not_factor_failures": 4,
+    "relabeling_operator_or_combination_route_rejections": 3,
+    "selected_candidate_count": 0,
+    "complete_factor_definition_created": false,
+    "numeric_comparator_created": false,
+    "operating_license_concession_or_regulated_right_declared_ineffective": false,
+    "source_row_registry_filing_license_concession_tenure_quota_candidate_comparator_security_price_or_return_value_read": false,
+    "stress_2024_2025_opened": false
+  },
+  "effective_accounting": {
+    "campaign179_attempt_count": 7,
+    "campaign179_prevalue_scientific_attempt_count": 7,
+    "campaign179_infrastructure_failure_count": 0,
+    "campaign179_complete_factor_attempt_count": 0,
+    "campaign179_return_reading_development_trial_count": 0,
+    "campaign179_development_survivor_count": 0,
+    "campaign179_stress_trial_count": 0,
+    "cumulative_historical_research_attempt_count": 1584,
+    "cumulative_return_reading_development_trial_count": 314
+  },
+  "library_state": {
+    "complete_factor_definition_count": 158,
+    "complete_factor_definition_order_sha256": "4819c7fd7c0795d7598a52f3c615e3f117d5f4ecd9332974bc8e3dfa57c96667",
+    "eligible_numeric_comparator_count": 142,
+    "eligible_numeric_comparator_order_sha256": "5d1b35fb5a0d8ac9293008db9963c4a60a94dc940c237c3ed259e5ce44f14aaf",
+    "changed_by_campaign179": false
+  },
+  "candidate49": {
+    "only_active_prospective_candidate": true,
+    "signal_ledger_sha256": "5193f00d7f36da003f53cec387900da4c3d002299f5dfcfc1a95eaa199ed3a79",
+    "signal_entry_count": 0,
+    "execution_ledger_sha256": "d57a3e61eac969e42cafa418ccd8c0a5ee65dcf69da145bb2c096c2a02a2ea4f",
+    "execution_entry_count": 0,
+    "ledgers_changed": false
+  },
+  "research_boundary": {
+    "unrecovered_or_unrecorded_failed_exit_codes_bypassed_or_masked": false,
+    "source_row_registry_filing_license_concession_tenure_quota_candidate_comparator_security_price_or_return_value_read": false,
+    "stress_2024_2025_opened": false,
+    "provider_or_web_request_issued": false,
+    "provider_credential_presence_value_or_digest_read": false,
+    "candidate49_ledgers_changed": false,
+    "second_prospective_candidate_created": false,
+    "current_scoring_selection_sizing_positions_or_orders_performed": false,
+    "investment_advice": false
+  },
+  "next_action": "Publish the Campaign179 report and policy v267, append both unified reports once, bind focused tests, then run focused, corrected cumulative and independent validation before authorizing Campaign180."
+}

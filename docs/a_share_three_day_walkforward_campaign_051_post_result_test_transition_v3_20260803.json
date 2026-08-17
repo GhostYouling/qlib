@@ -1,0 +1,35 @@
+{
+  "version": 3,
+  "kind": "a_share_three_day_walkforward_campaign051_post_result_test_transition",
+  "status": "full_suite_infrastructure_failure_and_current_focused_assertions_bound",
+  "recorded_at": "2026-08-03T08:16:00Z",
+  "supersedes": {
+    "path": "docs/a_share_three_day_walkforward_campaign_051_post_result_test_transition_v2_20260803.json",
+    "sha256": "b4518e409781606aea5fb03ce446568c784d7bd18b5dbc4fe01d94cd82899276"
+  },
+  "bindings": {
+    "full_suite_cross_clone_failure": {
+      "path": "docs/a_share_three_day_walkforward_campaign_051_full_suite_cross_clone_failure_20260803.json",
+      "sha256": "9da32b189c7c4062c0c30ad4550d97711cfc4a6c83e9df52e8424614ddec2950"
+    },
+    "current_campaign_tests": {
+      "path": "tests/data_collector_tests/test_a_share_three_day_walkforward_campaign051.py",
+      "sha256": "122e4aed14dac776895ccaa525b3b3bd6b1bb19b5612571fa0ae355971c148f7"
+    },
+    "current_terminal_tests": {
+      "path": "tests/data_collector_tests/test_a_share_three_day_walkforward_campaign051_terminal.py",
+      "sha256": "1f6f4640ae31dc2db0f2b14bf5b47c7f6118b7a486a6630ae784ab5d618548db"
+    },
+    "publisher": {
+      "path": "scripts/a_share_three_day_walkforward_campaign051_finalize_v3.py",
+      "sha256": "e94ba50d1d15c9e63026edf48dd5a3f2281e9bb090606e4680e34445375b0177"
+    }
+  },
+  "semantic_boundary": {
+    "campaign051_focused_tests_passed": 27,
+    "formula_direction_cost_fold_purge_or_gate_changed": false,
+    "additional_historical_daily_price_or_forward_return_read": false,
+    "2024_2025_stress_return_read": false,
+    "candidate49_ledgers_changed": false
+  }
+}

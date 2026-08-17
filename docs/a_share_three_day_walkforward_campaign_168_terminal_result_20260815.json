@@ -1,0 +1,83 @@
+{
+  "schema_version": 1,
+  "kind": "a_share_three_day_walkforward_campaign168_terminal_result",
+  "status": "terminal_prevalue_goal_active",
+  "recorded_at": "2026-08-15T07:48:20+08:00",
+  "authoritative_inputs": {
+    "campaign167_effective_state": {
+      "path": "docs/a_share_three_day_iteration_status_20260815_campaign167_prevalue_terminal.json",
+      "sha256": "f9edf332b01fe6e2c4e1b2c741b0cd54aea8eb126ec0059e9db737cec9a9ad2f"
+    },
+    "eligibility_policy_v239": {
+      "path": "docs/a_share_three_day_walkforward_future_numeric_comparison_eligibility_policy_v239_20260815.json",
+      "sha256": "527d09d2a7c76b2705ea6821c5fd68ce32c89414bb1266f33a7d2842a70d9cd3"
+    },
+    "operating_scale_adoption_kpi_source_frontier": {
+      "path": "docs/a_share_three_day_walkforward_campaign_168_operating_scale_adoption_kpi_source_frontier_20260815.json",
+      "sha256": "c5dc98f92266e2b7ef7349cb5260a8cde15ccd9c78442e661e4170b1ba47d18a"
+    },
+    "infrastructure_failure_record": {
+      "path": "docs/a_share_three_day_walkforward_campaign_168_prevalue_infrastructure_failures_20260815.json",
+      "sha256": "e9d216b930a16c6d09fd70a4ef6f2dad01c56de996ed44ec4f9bd857f38c42bd",
+      "effective_failure_count": 2
+    },
+    "attempt_ledger": {
+      "path": "data/experiments/short_horizon/historical_walkforward/campaign_168/research_attempt_ledger.json",
+      "sha256": "f22e791d2d3fba3439bbb7430062a413a4c0b677ae71e64246c9a275d24c3695",
+      "effective_entry_count": 9,
+      "chain_tip_sha256": "ff3f330a1b1da8e103003d6ca9a39cd76c27aa113f6c4418719deaf22fe43063"
+    }
+  },
+  "scientific_result": {
+    "terminal": true,
+    "terminal_phase": "finite_prevalue_operating_scale_adoption_kpi_source_admission",
+    "routes_reviewed": 7,
+    "genuinely_new_issuer_state_routes": 4,
+    "source_admission_deferrals_not_factor_failures": 4,
+    "leakage_or_operator_route_rejections": 3,
+    "selected_candidate_count": 0,
+    "complete_factor_definition_created": false,
+    "numeric_comparator_created": false,
+    "operating_scale_adoption_or_utilization_declared_ineffective": false,
+    "source_row_document_title_body_kpi_candidate_comparator_price_or_return_value_read": false,
+    "stress_2024_2025_opened": false
+  },
+  "effective_accounting": {
+    "campaign168_attempt_count": 9,
+    "campaign168_prevalue_scientific_attempt_count": 7,
+    "campaign168_infrastructure_failure_count": 2,
+    "campaign168_complete_factor_attempt_count": 0,
+    "campaign168_return_reading_development_trial_count": 0,
+    "campaign168_development_survivor_count": 0,
+    "campaign168_stress_trial_count": 0,
+    "cumulative_historical_research_attempt_count": 1472,
+    "cumulative_return_reading_development_trial_count": 314
+  },
+  "library_state": {
+    "complete_factor_definition_count": 158,
+    "complete_factor_definition_order_sha256": "4819c7fd7c0795d7598a52f3c615e3f117d5f4ecd9332974bc8e3dfa57c96667",
+    "eligible_numeric_comparator_count": 142,
+    "eligible_numeric_comparator_order_sha256": "5d1b35fb5a0d8ac9293008db9963c4a60a94dc940c237c3ed259e5ce44f14aaf",
+    "changed_by_campaign168": false
+  },
+  "candidate49": {
+    "only_active_prospective_candidate": true,
+    "signal_ledger_sha256": "5193f00d7f36da003f53cec387900da4c3d002299f5dfcfc1a95eaa199ed3a79",
+    "signal_entry_count": 0,
+    "execution_ledger_sha256": "d57a3e61eac969e42cafa418ccd8c0a5ee65dcf69da145bb2c096c2a02a2ea4f",
+    "execution_entry_count": 0,
+    "ledgers_changed": false
+  },
+  "research_boundary": {
+    "unrecovered_or_unrecorded_failed_exit_codes_bypassed_or_masked": false,
+    "source_row_document_title_body_kpi_candidate_comparator_price_or_return_value_read": false,
+    "stress_2024_2025_opened": false,
+    "provider_or_web_request_issued": false,
+    "provider_credential_presence_value_or_digest_read": false,
+    "candidate49_ledgers_changed": false,
+    "second_prospective_candidate_created": false,
+    "current_scoring_selection_sizing_positions_or_orders_performed": false,
+    "investment_advice": false
+  },
+  "next_action": "Publish policy v240 and a final active iteration state, validate all Campaign168 bindings, then continue Campaign169 in a different finite offline prevalue domain."
+}

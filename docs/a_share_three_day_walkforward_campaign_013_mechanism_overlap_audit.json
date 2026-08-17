@@ -1,0 +1,230 @@
+{
+  "version": 1,
+  "kind": "a_share_three_day_walkforward_campaign013_mechanism_overlap_audit",
+  "status": "one_exact_mechanism_frozen_before_campaign013_candidate_or_comparison_values_or_returns",
+  "recorded_at": "2026-07-28T18:00:22Z",
+  "purpose": "Resolve the one Campaign013 concept into one exact and finite no-value mechanism. This audit freezes formula, direction, timestamp support, source units, high-low and VWAP containment, activity, minimum-support, denominator, and endpoint semantics, rejects alternatives, and challenges the mechanism against all prior registered minute mechanisms before any external minute partition, candidate value, comparison value, daily price, or forward return is opened.",
+  "authoritative_bindings": {
+    "concept_scouting": {
+      "path": "docs/a_share_three_day_walkforward_campaign_013_concept_scouting.json",
+      "sha256": "e4ed47f439cf3dd024ef2dde8669c72f422259c95c8c3df0728d6421db741e6f"
+    },
+    "iteration_state": {
+      "path": "docs/a_share_three_day_iteration_status_20260728_campaign012.json",
+      "sha256": "e883ebde9d9b2c50368181d4a8aec15dde1c10625460abda060c1f601c284ffd"
+    },
+    "historical_walkforward_policy": {
+      "path": "docs/a_share_three_day_historical_walkforward_research_policy_20260727.json",
+      "sha256": "38426d6161b9bfed323c58caba18feca668b8c9d53e294951a8ba90c01a798bb"
+    },
+    "campaign012_research_record": {
+      "path": "docs/a_share_three_day_walkforward_campaign_012_research_record.json",
+      "sha256": "340acecacf12ef5755dacbc57e792124ff0cb25113f82bc078e06db1585af986",
+      "completed": true,
+      "usable_factor_values": true,
+      "development_trial_count": 1,
+      "development_survivor_count": 0
+    },
+    "accepted_minute_source_record": {
+      "path": "docs/a_share_tushare_one_minute_source_acceptance_record.json",
+      "sha256": "643f2177c80bfb77ba7bdbc84bd8cda3ad5feb222f1fc7309256f66436f75411",
+      "normalized_volume_unit": "shares",
+      "normalized_amount_unit": "CNY",
+      "bar_transaction_price_definition": "amount / volume"
+    }
+  },
+  "source_schema_boundary": {
+    "provider": "tushare",
+    "frequency": "1m",
+    "accepted_source_grid_rows": 241,
+    "standalone_0930_row_preserved_but_excluded_from_formula": true,
+    "continuous_session_rows": "09:31-11:30 and 13:01-15:00",
+    "joint_clean_manifest": {
+      "path_below_data_root": "derived/a_share/rich/tushare/minute_sentiment_clean/tushare_stk_mins_1m_2019_2025_ea0cbb8f_sentiment_clean_v1/snapshot_manifest.json",
+      "sha256": "453c6719cb3c7da42fed8807b28a2bfe988700283e9625a6db97912534f368de",
+      "dataset_sha256": "0e4fe7c05536cdfcecc2936bc880726902f5560061188ffff82ef7ee6f346983",
+      "partitions": 33015,
+      "rows": 7724498
+    },
+    "allowed_transport_fields": [
+      "datetime",
+      "symbol",
+      "provider",
+      "high",
+      "low",
+      "volume",
+      "amount"
+    ],
+    "forbidden_source_fields": [
+      "open",
+      "close"
+    ],
+    "daily_price_or_return_substitution_allowed": false,
+    "provider_request_allowed": false
+  },
+  "comparison_catalog": {
+    "semantic_registered_mechanism_count": 36,
+    "statistical_comparison_factor_count": 35,
+    "base_statistical_comparison_catalog_binding": {
+      "path": "docs/a_share_three_day_walkforward_campaign_012_no_return_preregistration.json",
+      "sha256": "23ffe9f165cf03bdbe3a0fc1ab0119e687c8388040674f5256ccbd1c1a5ffe86",
+      "json_pointer": "/ordered_no_return_gates/uniqueness_after_coverage_only/comparison_factors",
+      "bound_factor_count": 34
+    },
+    "campaign012_statistical_comparison": {
+      "name": "intraday_intrabar_range_reversal_238p",
+      "score_direction": "higher",
+      "snapshot_manifest": {
+        "path": "/Volumes/DIsk/qlib-a-share-tushare-1m/derived/a_share/rich/tushare/minute_walkforward_campaign012_feature_library/tushare_stk_mins_1m_2019_2025_ea0cbb8f_walkforward_campaign012_feature_library_v1/snapshot_manifest.json",
+        "sha256": "58fca32b58be53523daa0fe7a971a1394a35d4f1251c484214d06f5deff6677a",
+        "dataset_sha256": "aaa33541d55f68699e99a4a9d5abc697feafe215dd70ab1ba1c807b7cab3c18f"
+      }
+    },
+    "semantic_only_terminal_mechanism": {
+      "name": "intraday_post_shock_share_volume_replenishment_236p",
+      "campaign": 8,
+      "reason_not_statistically_compared": "Its immutable snapshot contains zero finite factor values because the frozen coverage gate failed."
+    },
+    "mandatory_transaction_reference_and_range_challenges": [
+      {
+        "name": "intraday_bar_vwap_close_pressure_240m",
+        "distinction": "The terminal factor measures an amount-weighted signed close-to-same-bar-VWAP gap. Campaign013 forbids close, uses high and low only as the exploration envelope around the same-bar transaction center, and aggregates active bars without activity weights."
+      },
+      {
+        "name": "intraday_transaction_price_path_confirmation_238p",
+        "distinction": "Campaign006 correlates adjacent changes in closes with adjacent changes in amount/volume. Campaign013 forms no adjacent pair and is invariant to within-half bar order."
+      },
+      {
+        "name": "intraday_share_volume_transaction_price_coupling_238p",
+        "distinction": "Campaign007 correlates share-volume changes with transaction-price changes. Campaign013 uses volume and amount only through their quotient as a bar center and does not use either change series."
+      },
+      {
+        "name": "intraday_amount_volatility_coupling_238p",
+        "distinction": "The terminal coupling factor correlates amount with absolute close return. Campaign013 forbids close and does not weight or regress its range envelope on activity."
+      },
+      {
+        "name": "intraday_intrabar_body_range_efficiency_240m",
+        "distinction": "Campaign009 measures absolute open-close body length relative to high-low range. Campaign013 forbids open and close and instead decomposes that range around the executed transaction center."
+      },
+      {
+        "name": "intraday_adjacent_range_overlap_continuity_238p",
+        "distinction": "Campaign010 compares adjacent interval intersections and unions in price-level space. Campaign013 has no adjacency and uses each bar independently before a session-level ratio of sums."
+      },
+      {
+        "name": "intraday_intrabar_range_participation_entropy_240m",
+        "distinction": "Campaign011 measures only the unordered concentration of total high-low ranges. Campaign013 retains the signed location of transaction VWAP within each range; two days with identical range magnitudes can have opposite Campaign013 values."
+      },
+      {
+        "name": "intraday_intrabar_range_reversal_238p",
+        "distinction": "Campaign012 measures lag-one ordering of direction-neutral range magnitudes. Campaign013 is invariant to bar permutations and measures neither persistence nor reversal."
+      },
+      {
+        "name": "intraday_cumulative_vwap_crossing_rate_240m",
+        "distinction": "Prospective Candidate49 counts close-path sign crossings around causal cumulative VWAP. Campaign013 forbids close, never forms a cumulative reference, and reads no Candidate49 return."
+      }
+    ],
+    "maximum_allowed_absolute_median_daily_rank_correlation": 0.8,
+    "minimum_pairwise_names_per_session": 50,
+    "minimum_pairwise_sessions_per_comparison": 100,
+    "score_direction_normalization": "Multiply lower-is-better comparison values by minus one before each daily rank correlation; retain the candidate's frozen higher direction."
+  },
+  "candidate": {
+    "name": "intraday_transaction_vwap_envelope_asymmetry_240m",
+    "direction": "higher",
+    "economic_hypothesis": "If active one-minute price exploration repeatedly extends farther above the executed average transaction price than below it, latent buying interest may persist from the next open through the third close.",
+    "formula": "(sum(u_i) - sum(d_i)) / (sum(u_i) + sum(d_i)) over active 09:31-11:30 and 13:01-15:00 bars, where vwap_i=amount_i/volume_i, u_i=log(high_i/vwap_i), and d_i=log(vwap_i/low_i)",
+    "formula_steps": [
+      "Require the exact accepted 241-row source grid, preserve but exclude the standalone 09:30 row, and select exactly the 240 bars at 09:31-11:30 and 13:01-15:00.",
+      "Require every selected high and low to be finite and strictly positive with exact raw ordering low_i <= high_i. Do not round, clamp, sort, repair, or apply a price-grid tolerance.",
+      "Require every selected normalized share volume and CNY amount to be finite and nonnegative. A bar is active only when volume_i > 0 and amount_i > 0. A joint zero is inactive and contributes zero; any one-sided zero makes the stock-day missing.",
+      "For every active bar compute vwap_i=amount_i/volume_i and require it finite, strictly positive, and exactly contained by low_i <= vwap_i <= high_i. Do not clamp an out-of-envelope value or substitute open, close, midpoint, daily VWAP, or a daily price.",
+      "For every active bar compute u_i=log(high_i/vwap_i) and d_i=log(vwap_i/low_i). Require both finite and nonnegative. Inactive bars contribute zero to both sums.",
+      "Define an informative active bar as one with high_i > low_i. Require at least 120 informative active bars. Active zero-range bars are retained with u_i=d_i=0 and do not count toward the minimum.",
+      "Let U=sum(u_i) and D=sum(d_i) over all 240 fixed support positions, with inactive bars contributing zero. Require finite U and D, finite strictly positive U+D, and abs((U+D)-sum(log(high_i/low_i) over active bars)) <= 1e-12 * max(1, abs(sum(log(high_i/low_i) over active bars))). This tolerance validates only the algebraic identity and never changes an input or factor value.",
+      "Set the factor to (U-D)/(U+D), so higher is frozen as upside-dominant transaction-VWAP-centered exploration. Canonicalize only endpoints within 1e-12 of -1 or +1; do not otherwise clip, rank, transform, weight, or winsorize."
+    ],
+    "source_fields_used_by_formula": [
+      "datetime",
+      "symbol",
+      "provider",
+      "high",
+      "low",
+      "volume",
+      "amount"
+    ],
+    "timestamp_semantics": "Use the unordered aggregate of exactly the 240 continuous-session support positions. Exclude 09:30; form no adjacent, lunch, overnight, cross-day, or cross-stock pair.",
+    "unit_semantics": "The accepted normalized source stores volume in shares and amount in CNY, so amount/volume is CNY per share. No lot multiplier, amount rescaling, or unit inference is allowed during Campaign013.",
+    "zero_missing_denominator_semantics": "Joint-zero volume and amount makes a bar inactive with zero contribution. A one-sided zero, negative/nonfinite activity value, invalid/nonpositive/nonfinite high or low, low-above-high ordering, active VWAP outside the exact high-low envelope, nonfinite log component, fewer than 120 positive-range active bars, or zero/nonfinite total active log range makes the stock-day missing.",
+    "valid_range": {
+      "lower": -1.0,
+      "lower_inclusive": true,
+      "upper": 1.0,
+      "upper_inclusive": true
+    },
+    "selected_bar_count": 240,
+    "minimum_informative_active_bars": 120,
+    "activity_weighting": "none; amount and volume are used only through same-bar vwap_i",
+    "order_sensitivity": false,
+    "mechanism_distinction_before_values": [
+      "Conditional on high, low, and transaction VWAP for every bar, Campaign013 is invariant to open, close, bar ordering, and activity scale. The terminal close-pressure, candle-body, adjacent-path, and amount-profile mechanisms are not.",
+      "Conditional on the same 240 high-low range magnitudes, changing transaction VWAP from the lower to the upper side of each envelope can move Campaign013 from positive to negative while leaving Campaign010, Campaign011, and Campaign012 unchanged.",
+      "Conditional on the same transaction-price path and volume-change path, changing high-low excursions around each transaction price can change Campaign013 while leaving Campaign006 and Campaign007 unchanged.",
+      "Campaign013 contains no close, cumulative VWAP, crossing count, or return and therefore cannot reproduce Candidate49's causal crossing mechanism."
+    ],
+    "rejected_variants_before_values": [
+      "close-to-VWAP, open-to-VWAP, close-location, candle-wick, midpoint, typical-price, median-price, daily-VWAP, cumulative-VWAP, or adjacent transaction-price variants",
+      "amount-, volume-, range-, inverse-range-, time-, half-, market-, volatility-, or liquidity-weighted aggregation; mean bar ratios; median; quantiles; sign counts; ranks; regression; correlation; or classification",
+      "absolute asymmetry, squared components, logit or power transforms, using U/D or D/U, adding epsilon, clipping an out-of-envelope VWAP, or replacing a zero denominator with zero",
+      "including 09:30, selecting morning/afternoon/late/opening windows, forming adjacent or lunch pairs, or using another support",
+      "changing the 120 informative-active-bar minimum, allowing one-sided zero activity, rounding the VWAP containment check, using favorable stocks or years, thresholding, filtering, residualizing, or combining with terminal factors",
+      "lower-is-better downside asymmetry or any post-value direction choice"
+    ]
+  },
+  "frozen_no_return_and_search_bounds": {
+    "coverage_basis": "finite candidate rows divided by quality-and-listing eligible buyable rows within 2019-2025",
+    "minimum_median_coverage": 0.95,
+    "minimum_p05_coverage": 0.9,
+    "minimum_p05_eligible_names": 50,
+    "minimum_non_overlapping_three_session_cohorts": 200,
+    "minimum_observed_calendar_years": 5,
+    "uniqueness_maximum_absolute_median_daily_rank_correlation": 0.8,
+    "uniqueness_minimum_pairwise_names_per_session": 50,
+    "uniqueness_minimum_pairwise_sessions_per_comparison": 100,
+    "finite_trial_catalog_if_admitted": [
+      {
+        "trial_id": "campaign013_single_transaction_vwap_envelope_asymmetry",
+        "components": [
+          "intraday_transaction_vwap_envelope_asymmetry_240m"
+        ],
+        "weights": [
+          1.0
+        ]
+      }
+    ],
+    "expected_trial_count_if_admitted": 1,
+    "pair_or_higher_order_trials": false,
+    "weight_threshold_filter_or_year_subset_search": false,
+    "old_terminal_factor_rescue_combinations": false
+  },
+  "research_boundary": {
+    "external_minute_partitions_read": false,
+    "external_daily_partitions_read": false,
+    "candidate_values_computed_or_read": false,
+    "comparison_values_read": false,
+    "historical_daily_prices_read": false,
+    "historical_forward_returns_read": false,
+    "prospective_candidate_created": false,
+    "candidate49_historical_return_read": false,
+    "candidate49_ledgers_changed": false,
+    "current_scoring_selection_sizing_or_order_performed": false,
+    "provider_request_issued": false,
+    "investment_advice": false
+  },
+  "decision": {
+    "mechanism_distinct_enough_for_no_return_materialization": true,
+    "candidate_may_advance_directly_to_return_read": false,
+    "required_next_step": "Bind this audit to the frozen concept hash, implement and synthetically test only this exact formula, then freeze a hash-bound no-return protocol before external candidate or comparison values. Apply coverage and capacity first; read the 35 usable comparison snapshots only if those gates pass; read no daily price or forward return until the exact one-trial walk-forward preregistration is frozen.",
+    "candidate49_remains_only_prospective_candidate": true,
+    "candidate50_activation_allowed": false
+  }
+}

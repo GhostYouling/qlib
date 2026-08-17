@@ -1,0 +1,206 @@
+{
+  "schema_version": 1,
+  "kind": "a_share_three_day_walkforward_campaign196_inventory_production_conversion_aging_obsolescence_consignment_channel_sellthrough_custody_lifecycle_source_frontier",
+  "status": "checkpoint_prevalue_three_source_admission_deferrals_four_relabeling_overlap_operator_or_combination_rejections_zero_selected",
+  "recorded_at": "2026-08-15T16:30:00+08:00",
+  "timestamp_semantics": "monotonic logical append time after the Campaign195 terminal authority and the Campaign196 semiconductor-domain overlap rejection",
+  "purpose": "Freeze a finite physical-inventory aging, obsolescence, custody, consignment, channel sell-through and disposition lifecycle before source rows, inventory values, formulas, directions, comparators, security prices or returns.",
+  "authoritative_inputs": {
+    "campaign195_state": {
+      "path": "docs/a_share_three_day_iteration_status_20260815_campaign195_prevalue_terminal.json",
+      "sha256": "01cc98eb21dc70de3dc31aa1b5b29712b878763730a365090f95e64c92c45127"
+    },
+    "policy_v285": {
+      "path": "docs/a_share_three_day_walkforward_future_numeric_comparison_eligibility_policy_v285_20260815.json",
+      "sha256": "b15473abe73918cf588e10c63e8e3fac5a1f27abcfd73a6830a6b66679285bfe"
+    },
+    "campaign160_no_credential_source_delta_inventory": {
+      "path": "docs/a_share_three_day_walkforward_campaign_160_no_credential_source_contract_delta_inventory_20260815.json",
+      "sha256": "25dc95b6e4ef87068e0f94a8cb257b226b9fe22c0fa390716d1db9d164b60418"
+    },
+    "campaign163_supply_chain_frontier": {
+      "path": "docs/a_share_three_day_walkforward_campaign_163_supply_chain_disclosure_source_frontier_20260815.json",
+      "sha256": "3002f25ffc4ff1938933f0b4f3b998cacdb775ca0e27702c65cdc7afec0e80a3"
+    },
+    "campaign167_operating_milestone_frontier": {
+      "path": "docs/a_share_three_day_walkforward_campaign_167_positive_operating_milestone_source_frontier_20260815.json",
+      "sha256": "dad4642e6902f7e94dadca4285408b078cc6c0915c8b96cfe1eb40895fe96199"
+    },
+    "campaign168_operating_kpi_frontier": {
+      "path": "docs/a_share_three_day_walkforward_campaign_168_operating_scale_adoption_kpi_source_frontier_20260815.json",
+      "sha256": "c5dc98f92266e2b7ef7349cb5260a8cde15ccd9c78442e661e4170b1ba47d18a"
+    },
+    "campaign170_customer_quality_frontier": {
+      "path": "docs/a_share_three_day_walkforward_campaign_170_customer_experience_quality_kpi_source_frontier_20260815.json",
+      "sha256": "b3ec42d8c8872ae9be913ffd64b24ba449e4c4f0e1f91af31b98f0e0e7158379"
+    },
+    "campaign185_real_estate_frontier": {
+      "path": "docs/a_share_three_day_walkforward_campaign_185_real_estate_presale_sales_delivery_land_bank_source_frontier_20260815.json",
+      "sha256": "8317fdeb741832ec5ff4cd4abf0c558419506b6597c68e9fe05540b92f3cbd31"
+    },
+    "campaign196_semiconductor_overlap_rejection": {
+      "path": "docs/a_share_three_day_walkforward_campaign_196_semiconductor_fabrication_domain_overlap_rejection_20260815.json",
+      "sha256": "e45cfacbe0d114a4080f27a714bba25d4620127f64de8ecab97e513b83f181cc"
+    }
+  },
+  "repository_evidence": {
+    "bounded_search_scope": "Existing Campaign145-195 source-frontier, source-scouting and terminal metadata plus the Campaign160 local source-delta inventory only",
+    "bounded_search_terms": [
+      "inventory aging",
+      "slow-moving inventory",
+      "obsolete inventory",
+      "shelf life",
+      "goods in transit",
+      "consignment inventory",
+      "vendor-managed inventory",
+      "channel inventory",
+      "sell-through",
+      "存货",
+      "库龄",
+      "滞销",
+      "在途物资",
+      "寄售",
+      "渠道库存"
+    ],
+    "dedicated_physical_inventory_lifecycle_frontier_found": false,
+    "complete_physical_inventory_lifecycle_source_contract_present": false,
+    "campaign160_boundary": "Campaign160 explicitly closes another receivables, inventory or working-capital statement-field sweep. A balance, days-turnover, impairment ratio or adjacent accounting transform cannot be reopened here.",
+    "campaign163_boundary": "Campaign163 freezes customer, supplier and segment concentration. Partner dependence does not identify ownership, custody, location, lot age, shelf life, quarantine, consignment, sell-through or disposition of physical goods.",
+    "campaign167_boundary": "Factory commissioning, launch, certification and first-production events are operating milestones. They cannot be relabelled as inventory conversion or channel custody states.",
+    "campaign168_boundary": "Production, shipment, utilization, unit output, yield, scrap and generic sell-through KPIs are operating-scale or quality states. Campaign196 is limited to item-state, ownership, custody, aging and stock-flow reconciliation that cannot be reconstructed from those KPIs.",
+    "campaign170_boundary": "Customer product returns, refunds, complaints, warranty and recalls are customer-quality outcomes. A returned unit may enter an inventory state only when an admitted source separately preserves the physical custody and disposition lifecycle.",
+    "campaign185_boundary": "Real-estate contracted sales, cancellations, delivery and land-bank sell-through are property-project states. They may not be reused as manufactured-goods channel inventory or SKU custody evidence.",
+    "semiconductor_boundary": "Campaign196 separately preserved the exact prior rejection of wafer yield, utilization, process-node qualification and production ramp as Campaign167/168 relabeling.",
+    "accounting_boundary": "Aggregate inventory, cost of sales, receivables, payables, working capital, provisions or impairment balances cannot be renamed as a physical inventory lifecycle without item, lot, location, ownership, custody, age and stock-flow identities.",
+    "sector_scope_boundary": "Point-in-time manufacturer, distributor, retailer, consignment principal or agent and listed-parent applicability must be frozen. Structurally non-inventory issuers may not be filled with zero or cross-sector ranked.",
+    "point_in_time_boundary": "A current warehouse report, channel dashboard, SKU roster, shelf-life table or closing inventory note cannot be projected backward without receipt, production, transfer, sale, return, impairment, reversal, disposal, correction and first-public histories."
+  },
+  "finite_prevalue_catalog": [
+    {
+      "catalog_id": "c196_01",
+      "name": "inventory_lot_age_shelf_life_slow_moving_obsolescence_impairment_reversal_and_disposal_state",
+      "economic_state": "A close-known physical inventory state linking item or lot age, remaining shelf life, slow-moving or obsolete classification, quarantine, impairment, reversal, scrap, donation, destruction and final disposition.",
+      "formula": null,
+      "direction": null,
+      "parameters_filters_subsets_combinations_models": [],
+      "new_issuer_state": true,
+      "complete_local_source_contract": false,
+      "decision": "deferred_source_admission_not_factor_failure",
+      "reason": "No admitted point-in-time source freezes product and lot identities, receipt and manufacture dates, shelf life, age buckets, slow-moving and obsolete classifications, quarantine reason, quantity and valuation basis, write-down and reversal links, disposition evidence, correction history and the complete 2019-2023 eligible denominator."
+    },
+    {
+      "catalog_id": "c196_02",
+      "name": "raw_material_work_in_process_finished_goods_in_transit_consignment_and_warehouse_custody_state",
+      "economic_state": "A close-known stock-flow and custody state linking raw material, work in process, finished goods, goods in transit, third-party warehouse, consignment, vendor-managed and customer-controlled inventory across legal ownership and physical possession.",
+      "formula": null,
+      "direction": null,
+      "parameters_filters_subsets_combinations_models": [],
+      "new_issuer_state": true,
+      "complete_local_source_contract": false,
+      "decision": "deferred_source_admission_not_factor_failure",
+      "reason": "The repository lacks a complete item-level history of conversion, transfer, warehouse and channel location, principal-versus-agent ownership, custody acceptance, in-transit cutoffs, consignment recognition, returns, duplicate transfers, corrections and first-public availability."
+    },
+    {
+      "catalog_id": "c196_03",
+      "name": "manufacturer_distributor_channel_inventory_sell_in_sell_through_return_buyback_replenishment_and_stockout_state",
+      "economic_state": "A close-known channel state reconciling manufacturer sell-in, distributor or retailer inventory, end-customer sell-through, replenishment, stockout, return, buyback, rotation and rebate-related custody changes.",
+      "formula": null,
+      "direction": null,
+      "parameters_filters_subsets_combinations_models": [],
+      "new_issuer_state": true,
+      "complete_local_source_contract": false,
+      "decision": "deferred_source_admission_not_factor_failure",
+      "reason": "No complete source preserves manufacturer, distributor, retailer and SKU identities, gross and net unit denominators, ownership and risk transfer, sell-in versus sell-through timing, channel stock, returns and buybacks, stockouts, replenishment, rebate effects, confidential omissions, revisions and point-in-time 2019-2023 coverage."
+    },
+    {
+      "catalog_id": "c196_04",
+      "name": "inventory_balance_days_turnover_receivable_working_capital_or_impairment_ratio_statement_field_sweep",
+      "economic_state": "An inventory balance, days-in-inventory, turnover, receivable, payable, working-capital, cost-of-sales, write-down allowance or impairment ratio taken from ordinary financial statements.",
+      "formula": null,
+      "direction": null,
+      "parameters_filters_subsets_combinations_models": [],
+      "new_issuer_state": false,
+      "complete_local_source_contract": false,
+      "decision": "rejected_campaign160_terminal_financial_field_sweep_and_accounting_quality_overlap",
+      "reason": "Campaign160 explicitly closes additional inventory, receivables and working-capital field sweeps. A balance, turnover, days, allowance, delta or ratio cannot establish the item-state, ownership and custody lifecycle and would reopen a terminal source family."
+    },
+    {
+      "catalog_id": "c196_05",
+      "name": "production_output_capacity_utilization_yield_scrap_rework_throughput_or_milestone_relabeling",
+      "economic_state": "A factory, line, product or process commissioning event or a production, shipment, utilization, cycle-time, yield, scrap, rework or throughput KPI relabelled as inventory health.",
+      "formula": null,
+      "direction": null,
+      "parameters_filters_subsets_combinations_models": [],
+      "new_issuer_state": false,
+      "complete_local_source_contract": false,
+      "decision": "rejected_campaign167_operating_milestone_and_campaign168_operating_kpi_overlap",
+      "reason": "Campaign167 and Campaign168 already govern operating milestones and generic scale, utilization and quality KPIs; Campaign187 and the Campaign196 semiconductor rejection confirm that sector-specific production and yield variants do not create a new source domain."
+    },
+    {
+      "catalog_id": "c196_06",
+      "name": "customer_return_refund_warranty_recall_or_real_estate_sell_through_relabeling",
+      "economic_state": "A customer return, refund, complaint, warranty, product recall or property-project contracted-sales and delivery state relabelled as channel inventory quality.",
+      "formula": null,
+      "direction": null,
+      "parameters_filters_subsets_combinations_models": [],
+      "new_issuer_state": false,
+      "complete_local_source_contract": false,
+      "decision": "rejected_campaign170_customer_quality_and_campaign185_real_estate_lifecycle_overlap",
+      "reason": "Customer outcomes and real-estate project sell-through are already frozen. Only a separately admitted physical-goods source preserving custody, ownership, lot or SKU state and disposition could distinguish an inventory lifecycle."
+    },
+    {
+      "catalog_id": "c196_07",
+      "name": "product_sku_lot_age_bucket_location_channel_direction_threshold_window_subset_combination_or_model_search",
+      "economic_state": "A selected product, SKU, lot, age bucket, shelf-life class, warehouse, region, channel, consignment class, direction, threshold, event window, subset, combined score or fitted model from an unadmitted inventory base.",
+      "formula": null,
+      "direction": null,
+      "parameters_filters_subsets_combinations_models": [],
+      "new_issuer_state": false,
+      "complete_local_source_contract": false,
+      "decision": "rejected_operator_category_location_channel_direction_threshold_window_subset_combination_and_model_search_before_base_source_admission",
+      "reason": "Selecting favorable categories, SKUs, lots, age buckets, locations, channels, custody classes, directions, thresholds, windows, normalizations, weights, interactions, subsets or models before source admission would multiply hypotheses and create disclosure and survivorship bias."
+    }
+  ],
+  "mandatory_source_admission_gate": {
+    "must_freeze_before_any_formula_or_direction": [
+      "exact issuer filing, audit note, warehouse or distributor record, licensed structured source or immutable document archive with stable issuer, listed-parent, item, SKU, lot, warehouse, channel, counterparty and observation identifiers",
+      "manufacture, receipt, production-stage entry and exit, transfer, shipment, custody acceptance, sale, sell-through, return, buyback, quarantine, impairment, reversal, disposal, first-public, correction and supersession timestamps with trading-session availability",
+      "listed security, listed parent, manufacturer, contract manufacturer, distributor, retailer, warehouse, logistics custodian, consignment principal or agent and vendor-managed inventory mapping without current-state leakage",
+      "item, product, SKU, batch and lot taxonomy with unit-of-measure, packaging, grade, shelf-life, process-stage and category-version crosswalks",
+      "inventory state machine covering raw material, work in process, finished goods, goods in transit, warehouse, consignment, channel stock, sold, returned, quarantined, impaired, reversed, scrapped and disposed states",
+      "quantity, unit, currency, gross-versus-net amount, cost layer, valuation method, write-down basis and conversion rules without double counting transfers or returns",
+      "inventory age, manufacture and receipt clock, remaining shelf life, slow-moving, obsolete, expiry, quarantine, impairment, reversal and final-disposition definitions with complete eligible denominators",
+      "manufacturer sell-in, distributor or retailer inventory, end-customer sell-through, replenishment, stockout, rotation, return, buyback and rebate semantics with ownership and risk-transfer reconciliation",
+      "raw-material to work-in-process to finished-goods conversion and location-transfer identities, acquisition and disposal scope, duplicate movement, correction and stock-flow reconciliation",
+      "missing, confidential, suppressed, pending, not-applicable, structural non-inventory issuer, true zero stock, zero sale, zero return and zero impairment semantics without favorable absence coding",
+      "point-in-time issuer applicability, current-listing survivorship limitation, delisting, corporate action, business disposal and consolidation-scope history",
+      "complete bounded 2019-2023 partition manifest and full eligible physical-inventory issuer denominator with pagination, parser, identity, chronology, state-machine, quantity, valuation, ownership, custody, stock-flow and source-acceptance tests using no factor, comparator, security-price or return values"
+    ],
+    "formula_direction_parameter_filter_subset_combination_or_model_choice_allowed_before_gate": false
+  },
+  "gate_summary": {
+    "routes_reviewed": 7,
+    "genuinely_new_issuer_state_routes": 3,
+    "source_admission_deferrals_not_factor_failures": 3,
+    "relabeling_overlap_operator_or_combination_route_rejections": 4,
+    "selected_candidate_count": 0,
+    "complete_factor_definition_created": false,
+    "numeric_comparator_created": false
+  },
+  "scientific_interpretation": {
+    "physical_inventory_lifecycle_state_declared_ineffective": false,
+    "absence_of_an_admitted_historical_source_is_evidence_of_no_predictive_power": false,
+    "safe_conclusion": "Three distinct inventory-aging and disposition, ownership and custody, and manufacturer-to-channel sell-through states remain deferred at source admission; financial-statement field sweeps, operating milestones and KPIs, customer-quality and real-estate relabeling, and premature category or model search are closed before values."
+  },
+  "research_boundary": {
+    "finite_catalog_frozen_before_source_or_value_read": true,
+    "source_row_inventory_factor_comparator_security_price_or_return_value_read": false,
+    "repository_policy_and_prior_records_only": true,
+    "provider_or_web_request_issued": false,
+    "provider_credential_presence_value_or_digest_read": false,
+    "stress_2024_2025_opened": false,
+    "candidate49_ledgers_changed": false,
+    "second_prospective_candidate_created": false
+  },
+  "next_action": "Create the Campaign196 append-only attempt ledger including the semiconductor-domain scientific rejection, all seven inventory-lifecycle routes and every observed infrastructure failure, then publish prevalue terminal authority."
+}

@@ -1,0 +1,121 @@
+{
+  "version": 1,
+  "kind": "a_share_three_day_candidate_independent_compact_comparator_cache_protocol",
+  "status": "frozen_before_compact_comparator_values_or_cache_files_are_materialized",
+  "frozen_at": "2026-08-05T12:20:25Z",
+  "purpose": "Materialize the complete terminal numeric comparator library once on the frozen quality-and-current-listing eligible stock-day keys so future campaigns can preserve exact pairwise-complete daily Spearman semantics without re-reading and re-verifying every historical feature snapshot.",
+  "authoritative_bindings": {
+    "campaign067_verified_state": {
+      "path": "docs/a_share_three_day_iteration_status_20260805_campaign067_verified.json",
+      "sha256": "c3816f67eee7b045c7812842cc20dc30224f90cd41209b6ea39827635acfd8f5"
+    },
+    "campaign067_terminal_verification": {
+      "path": "docs/a_share_three_day_walkforward_campaign_067_verification_20260805.json",
+      "sha256": "e03787ef88867d2ca62b55b55bccdac314ffda1eb14e2c2fb47b3ec3bf32376b"
+    },
+    "numeric_comparator_eligibility_policy": {
+      "path": "docs/a_share_three_day_walkforward_future_numeric_comparison_eligibility_policy_v2_20260805.json",
+      "sha256": "bad778474b4119f3a8f617283e2b4719f076fe060f11275aed7e7c469d6d4bf2"
+    },
+    "campaign067_no_return_protocol": {
+      "path": "docs/a_share_three_day_walkforward_campaign_067_no_return_preregistration.json",
+      "sha256": "94073ae194468b2aa95d40dd63b29c80332d8e1e5fa47c61ca94c640060d1d07"
+    },
+    "campaign067_no_return_audit_runner": {
+      "path": "scripts/a_share_three_day_walkforward_campaign067_no_return_audit.py",
+      "sha256": "35ccaa3233b5eb25967a8ad24d8ce5d731f3225fd43231668df4aeb8c1ac9697"
+    },
+    "campaign067_completed_no_return_audit": {
+      "path": "data/experiments/short_horizon/historical_walkforward/campaign_067/no_return/20260805T115907Z_campaign067_no_return_audit.json",
+      "sha256": "daeac2c2364d00c09247d0e721435b81f587c0f215a5a93cba30b7661f205d54"
+    },
+    "campaign067_feature_snapshot_binding": {
+      "path": "docs/a_share_three_day_walkforward_campaign_067_feature_snapshot_binding_20260805.json",
+      "sha256": "d622be3d6c2c3b0c6fdbaf910dee589188c84d232a17121109d6244401daccf9"
+    },
+    "campaign067_feature_snapshot": {
+      "path": "/Volumes/DIsk/qlib-a-share-tushare-1m/derived/a_share/rich/tushare/minute_walkforward_campaign067_feature_library/tushare_stk_mins_1m_2019_2025_ea0cbb8f_walkforward_campaign067_feature_library_v1/snapshot_manifest.json",
+      "sha256": "1cdcf5daebcdef0c499e53d036362aa337111e122f5605c2d707f938f929eae1",
+      "dataset_sha256": "b078722e7f3055cbc1b6a863791dcf341b497971218200c2b92a4d213b1703ae"
+    }
+  },
+  "eligibility_key_contract": {
+    "derivation": "Use the unchanged Campaign004 quality_listing_eligible_keys result under the Campaign067 no-return protocol, compact each exact trade_date/symbol identity with the frozen exchange-and-code encoder, sort stable ascending, and require uniqueness.",
+    "source_fields": [
+      "trade_date",
+      "symbol",
+      "current-listing eligibility",
+      "frozen quality availability"
+    ],
+    "comparison_factor_values_read_for_key_fingerprint": false,
+    "historical_daily_price_or_forward_return_values_read_for_key_fingerprint": false,
+    "row_count": 1331759,
+    "calendar_session_count": 1632,
+    "minimum_trade_date": "2019-04-15",
+    "maximum_trade_date": "2025-12-31",
+    "sorted_little_endian_int64_sha256": "afa157a76aec8ef9cc3bdc191c792189d2a512ecf7fd7ebb09d2fe8f2d75841f"
+  },
+  "numeric_library_contract": {
+    "inherited_numeric_prefix": {
+      "source": "The exact ordered 97 numeric comparisons reconstructed by the bound Campaign067 no-return protocol and completed audit.",
+      "count": 97,
+      "order_sha256": "e860581f2b2022a189259db7bf32e105960ca655fe2793d114e38315a251fbca"
+    },
+    "appended_terminal_factor": {
+      "name": "quarterly_roe_profit_scale_efficiency_gap_2r",
+      "score_direction": "higher",
+      "snapshot_manifest_sha256": "1cdcf5daebcdef0c499e53d036362aa337111e122f5605c2d707f938f929eae1"
+    },
+    "resulting_numeric_comparator_count": 98,
+    "resulting_numeric_comparator_order_sha256": "bca0ba26252fcb74afa3a31ee1baf63c9cedfe3db5fc86ef71b3d7d93bf88f81",
+    "complete_definition_count_including_structural_nonnumeric_factor": 99,
+    "complete_definition_order_sha256": "74564d4d2d01a52371ddd6906db38b5d913acb743656a04bbe5c4f229c84ad53",
+    "structurally_nonnumeric_factor_excluded_from_numeric_cache": "intraday_cross_sectional_standardized_return_state_stability_236p",
+    "direction_application_during_materialization": false,
+    "cross_sectional_rank_materialization_allowed": false,
+    "reason_raw_values_are_required": "Future candidate missingness changes the pairwise-complete daily intersection. Precomputed full-cross-section ranks can change tie-average spacing after rows are removed and are therefore not semantically safe."
+  },
+  "storage_contract": {
+    "output_root": "/Volumes/DIsk/qlib-a-share-tushare-1m/derived/a_share/rich/tushare/compact_comparator_cache/campaign067_terminal_numeric98_v1",
+    "publication": "Build below a hidden sibling temporary directory and atomically rename only after every source verification, schema check, row/key check, column digest, partition digest, and semantic-equivalence gate passes.",
+    "partitioning": "One Parquet file for each calendar year 2019 through 2025, ordered by compact stock_day_key.",
+    "columns": "stock_day_key as unique int64 followed by the exact 98 factor names in frozen numeric order, each stored as float64.",
+    "finite_value_rule": "Preserve every finite IEEE-754 float64 value exactly; preserve missingness; do not fill, clip, rescale, rank, invert, round, cast to float32, or replace infinities.",
+    "column_digest_rule": "SHA-256 over the uint8 finite mask followed by little-endian float64 bytes with every nonfinite position canonically replaced by +0.0. This binds missingness and every finite bit while ignoring irrelevant NaN payloads.",
+    "manifest_requirements": [
+      "protocol path and SHA-256",
+      "builder path and SHA-256",
+      "eligibility key count and SHA-256",
+      "numeric and complete-definition counts/order SHA-256 values",
+      "source verification receipt equality against the completed Campaign067 audit",
+      "per-column finite counts and canonical value SHA-256 values",
+      "per-partition path, row count, byte SHA-256, and frame-content SHA-256",
+      "aggregate dataset SHA-256",
+      "explicit no-return and no-provider-request boundary flags"
+    ]
+  },
+  "source_verification_contract": {
+    "inherited_97_factors": "Invoke the same frozen Campaign067 append chain with the same exact source snapshot verifiers and loaders, but replace only the correlation consumer with a capture sink. Require captured order to equal the numeric prefix and require the returned source_snapshot_verifications object to equal the completed Campaign067 audit object exactly.",
+    "campaign067_factor": "Run the frozen Campaign067 snapshot byte/frame verifier and require its receipt to equal snapshot_file_verification in the completed Campaign067 audit before loading the aligned raw float64 values.",
+    "old_completed_audit_receipt_used_as_value_substitute": false,
+    "source_snapshot_verification_skipped": false
+  },
+  "semantic_equivalence_contract": {
+    "engine": "Use the unchanged _aligned_comparison_result implementation from the frozen Campaign067 comparison engine.",
+    "synthetic_gate": "Before build, test ties, pairwise NaNs, both score directions, minimum-name exclusion, and Parquet round trip against the direct array result with exact result-object equality.",
+    "actual_97_factor_gate": "After publication candidate is assembled but before atomic rename, load the frozen Campaign067 candidate arrays and recompute all 97 cache comparisons. Require exact equality with every stored Campaign067 audit comparison, including session count, minimum names, median/P05/P95, daily_correlation_frame_sha256, and gate result.",
+    "appended_campaign067_raw_value_gate": "Require the cache column canonical value digest to equal the digest computed directly from the frozen Campaign067 snapshot loader on the exact eligibility keys.",
+    "future_audit_use_gate": "No Campaign068-or-later audit may consume the cache until an immutable build manifest, implementation freeze, semantic-equivalence receipt, and independent verifier all pass and are fingerprint-bound by that campaign before candidate values are read.",
+    "retroactive_campaign067_substitution_allowed": false
+  },
+  "research_boundary": {
+    "new_candidate_definition_or_value_read_before_protocol_freeze": false,
+    "historical_daily_price_fields_read": [],
+    "historical_forward_returns_read": false,
+    "candidate49_historical_return_read": false,
+    "candidate49_ledgers_changed": false,
+    "provider_request_issued": false,
+    "current_scoring_selection_sizing_or_orders_performed": false,
+    "stress_2024_2025_opened": false
+  }
+}

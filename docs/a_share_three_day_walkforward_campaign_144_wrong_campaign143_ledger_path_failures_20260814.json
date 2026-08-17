@@ -1,0 +1,44 @@
+{
+  "schema_version": 1,
+  "kind": "a_share_three_day_walkforward_campaign144_infrastructure_failures",
+  "status": "recorded_before_campaign144_values_or_returns",
+  "recorded_at": "2026-08-14T19:22:12+08:00",
+  "attempts": [
+    {
+      "attempt_id": "campaign144_infrastructure_007",
+      "phase": "campaign143_template_key_inventory",
+      "process_exit_code": 2,
+      "cause": "jq was given a nonexistent docs-side Campaign143 ledger path; the effective ledger is under data/experiments/short_horizon/historical_walkforward/campaign_143/."
+    },
+    {
+      "attempt_id": "campaign144_infrastructure_008",
+      "phase": "campaign143_authority_hash_inventory",
+      "process_exit_code": 1,
+      "cause": "shasum was given the same nonexistent docs-side Campaign143 ledger path and stopped after hashing preceding literal files."
+    }
+  ],
+  "common_semantics": {
+    "target_file_written": false,
+    "failed_exit_code_bypassed": false,
+    "later_success_used_to_mask_failure": false
+  },
+  "safe_recovery": {
+    "preserve_this_record": true,
+    "allowed_action": "Use the effective Campaign143 ledger path bound by the final Campaign143 result and status.",
+    "scientific_catalog_or_search_space_change_allowed": false
+  },
+  "research_boundary": {
+    "source_rows_or_column_values_read": false,
+    "component_factor_values_read": false,
+    "candidate_or_model_scores_computed_or_read": false,
+    "historical_daily_price_or_forward_return_values_read": false,
+    "stress_2024_2025_opened": false,
+    "provider_request_issued": false,
+    "provider_credential_value_or_digest_read": false,
+    "candidate49_historical_backfill_performed": false,
+    "candidate49_ledgers_changed": false,
+    "second_prospective_candidate_created": false,
+    "current_scoring_selection_sizing_positions_or_orders_performed": false,
+    "investment_advice": false
+  }
+}

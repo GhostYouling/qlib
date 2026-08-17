@@ -1,0 +1,48 @@
+{
+  "schema_version": 2,
+  "kind": "a_share_three_day_walkforward_campaign262_prevalue_infrastructure_failures",
+  "status": "five_failures_recorded_before_campaign262_historical_values",
+  "recorded_at": "2026-08-16T18:00:00+08:00",
+  "timestamp_semantics": "monotonic_logical_append_time_not_host_wall_clock_measurement",
+  "supersedes_without_rewriting": {
+    "prevalue_failure_record_v1": {
+      "path": "docs/a_share_three_day_walkforward_campaign_262_prevalue_infrastructure_failures_20260816.json",
+      "sha256": "f54bbb99d3e47228682f1e0f6dc0ab0f7c85ceec2058bdbb468944bbd1811c75",
+      "attempt_count": 4
+    }
+  },
+  "additional_failure": {
+    "attempt_id": "campaign262_infrastructure_005",
+    "operation": "Run Black --check, Ruff and the two-file synthetic pytest scope in one shell invocation.",
+    "failure": "Black correctly reported four files would be reformatted, but the later successful pytest command made the combined shell process exit zero. The files were formatted before freeze, and Black, Ruff and pytest were then rerun as three independent commands with exit code zero.",
+    "observed_subcommand_results": {
+      "black_check": "nonzero_would_reformat_four_files",
+      "ruff": "passed",
+      "pytest": "15 passed",
+      "combined_process_exit": 0
+    },
+    "recovery_results": {
+      "black_check_exit": 0,
+      "ruff_exit": 0,
+      "pytest_exit": 0,
+      "pytest_passed": 15
+    }
+  },
+  "effective_accounting": {
+    "infrastructure_failure_count": 5,
+    "prevalue_scientific_attempt_count": 7,
+    "complete_factor_attempt_count": 0,
+    "return_reading_development_trial_count": 0
+  },
+  "research_boundary": {
+    "campaign262_source_rows_read": false,
+    "campaign262_candidate_or_comparator_values_read": false,
+    "historical_daily_price_or_forward_return_values_read": false,
+    "stress_2024_2025_opened": false,
+    "provider_or_web_request_issued": false,
+    "credential_value_presence_or_digest_read": false,
+    "candidate49_ledgers_changed": false,
+    "current_scoring_selection_sizing_positions_or_orders_performed": false,
+    "investment_advice": false
+  }
+}

@@ -1,0 +1,22 @@
+{
+  "schema_version": 1,
+  "kind": "a_share_three_day_walkforward_campaign145_infrastructure_failure",
+  "status": "recorded_append_only_after_terminal_tests_before_strict_targeted_binding_validation",
+  "recorded_at": "2026-08-14T20:50:33+08:00",
+  "failure_id": "campaign145_infrastructure_009",
+  "stage": "postpublication_binding_validation",
+  "observed_failure": "An overbroad inventory sent a pure infrastructure-failure record with no path/SHA pair to the fingerprint binding validator, which correctly raised BindingValidationError. A following shasum command then made the combined shell exit code zero because shell errexit was not enabled.",
+  "python_validation_passed": false,
+  "combined_shell_exit_code": 0,
+  "failed_exit_masked_by_later_success": true,
+  "masked_exit_treated_as_validation_success": false,
+  "repair": "Use a finite explicit list of records that contain recognized file bindings and run the validator as a standalone failure-propagating command; validate pure failure records only for JSON parseability and ledger evidence hash.",
+  "scientific_result_changed": false,
+  "binding_validator_changed_or_weakened": false,
+  "candidate_formula_snapshot_or_coverage_changed": false,
+  "comparator_values_read": false,
+  "historical_daily_price_or_forward_return_values_read": false,
+  "stress_2024_2025_returns_opened": false,
+  "provider_request_issued": false,
+  "candidate49_ledgers_changed": false
+}

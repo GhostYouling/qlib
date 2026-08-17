@@ -1,0 +1,143 @@
+{
+  "version": 1,
+  "kind": "a_share_three_day_walkforward_campaign065_concept_scouting",
+  "status": "concept_only_one_new_mechanism_selected_no_campaign065_source_candidate_comparison_daily_price_or_return_values",
+  "recorded_at": "2026-08-05T12:31:25+08:00",
+  "purpose": "Continue the offline three-session walk-forward program after terminal Campaign064 by selecting at most one genuinely independent mechanism from frozen definitions and source schemas before any Campaign065 value is opened.",
+  "authoritative_bindings": {
+    "campaign064_verified_iteration_state": {
+      "path": "docs/a_share_three_day_iteration_status_20260805_campaign064_verified.json",
+      "sha256": "05c1a5d1202774a84f8e8f0a25196e4d7d55064551a0b08509d0bffe92d8750f"
+    },
+    "campaign065_plus_numeric_comparator_eligibility_policy": {
+      "path": "docs/a_share_three_day_walkforward_future_numeric_comparison_eligibility_policy_20260805.json",
+      "sha256": "ab28928886b1f617a7be094e0afad241e24bacad9646360c35a05acd80e853b8"
+    },
+    "campaign064_terminal_research_record": {
+      "path": "docs/a_share_three_day_walkforward_campaign_064_research_record.json",
+      "sha256": "a93e0fde62975825b8cdda053b51bd869507fddbacd637f7b8e614e2600b010b"
+    },
+    "campaign064_completed_no_return_audit": {
+      "path": "data/experiments/short_horizon/historical_walkforward/campaign_064/no_return/20260805T041624Z_campaign064_no_return_audit.json",
+      "sha256": "55f3deef0cf8d58bf29a34e0af60cb290188dfe1f0e1d424e12e11ce18279c66"
+    }
+  },
+  "research_boundary": {
+    "offline_zero_network": true,
+    "candidate_definition_created_before_full_library_verification": false,
+    "campaign065_source_values_read": false,
+    "campaign065_candidate_values_read": false,
+    "prior_comparison_values_read_for_candidate_selection": false,
+    "historical_daily_price_fields_read": [],
+    "historical_forward_return_fields_read": false,
+    "provider_request_issued": false,
+    "candidate49_signal_or_execution_ledger_changed": false,
+    "second_prospective_candidate_created": false,
+    "current_scores_selections_sizes_or_orders_generated": false
+  },
+  "complete_library_boundary_verified_before_candidate_definition": {
+    "complete_historical_definition_count": 96,
+    "complete_historical_definition_order_sha256": "974e3acd06536dcfbcc13524932f771f3636ac32023b2712f5d2d76f4d1f2d92",
+    "mechanism_overlap_catalog_must_use_all_96": true,
+    "eligible_numeric_comparator_count": 95,
+    "eligible_numeric_comparator_order_sha256": "2418a9e28bdc6b3484ede7b4e0ae6293131af2f4644930ca2c21bff9060c331d",
+    "structurally_nonnumeric_challenge_retained": "intraday_cross_sectional_standardized_return_state_stability_236p",
+    "campaign064_is_last_numeric_comparator": "intraday_range_weak_order_entropy_236t",
+    "candidate_specific_comparator_drop_allowed": false
+  },
+  "schema_only_source_boundary": {
+    "raw_minute_source": "Tushare licensed one-minute snapshot already present under the frozen historical minute root",
+    "available_schema_fields_considered": [
+      "datetime",
+      "symbol",
+      "provider",
+      "open",
+      "high",
+      "low",
+      "close",
+      "volume",
+      "amount"
+    ],
+    "selected_concept_fields": [
+      "datetime",
+      "symbol",
+      "provider",
+      "high",
+      "low"
+    ],
+    "source_rows_or_values_opened_for_campaign065_scouting": false
+  },
+  "candidate_design_catalog": [
+    {
+      "design": "intraday_range_weak_order_time_reversal_divergence_236t",
+      "decision": "selected_for_exhaustive_no_value_mechanism_overlap_audit",
+      "reason": "It measures the arrow of local volatility-state evolution by contrasting the forward 13-state weak-order distribution with its exact time-reversed distribution. Entropy, state frequencies without reversal, return cubic moments, price direction, and magnitude are not the target mechanism."
+    },
+    {
+      "design": "intraday_range_weak_order_entropy_or_state_diversity",
+      "decision": "rejected_terminal_family",
+      "reason": "Campaign064 already measures normalized entropy of the same 13-state range-triple alphabet. Campaign065 must be invariant to changes in entropy that preserve reversal-pair balance and must react to reversal-pair imbalance even at comparable entropy."
+    },
+    {
+      "design": "intraday_return_time_reversal_cubic_asymmetry",
+      "decision": "rejected_terminal_family",
+      "reason": "Campaign039 already uses an antisymmetric cubic contrast of adjacent signed close returns. The selected concept uses no close, signed return, magnitude-weighted moment, or cubic normalization."
+    },
+    {
+      "design": "range_markov_transition_matrix_conditional_entropy_or_transfer_entropy",
+      "decision": "rejected_before_values",
+      "reason": "Those choices introduce state-boundary, lag, conditioning, smoothing, and estimator searches. One exact marginal forward-versus-reverse weak-order distribution is selected."
+    },
+    {
+      "design": "adjacent_price_interval_relation_time_arrow",
+      "decision": "rejected_terminal_overlap_risk",
+      "reason": "Interval overlap, frontier, boundary translation, and revisit geometry are already represented in the complete terminal library; the selected concept discards price levels and retains only the ordering of log high-low widths."
+    },
+    {
+      "design": "amount_or_volume_conditioned_range_time_arrow",
+      "decision": "rejected_before_values",
+      "reason": "Activity conditioning would overlap existing amount-volatility, range-volume, price-discovery, and lead-lag mechanisms and would add weighting and threshold degrees of freedom."
+    },
+    {
+      "design": "total_variation_hellinger_wasserstein_kl_or_unscaled_js_variants",
+      "decision": "rejected_before_values",
+      "reason": "A single symmetric Jensen-Shannon divergence divided by ln(2) is selected for finite support, symmetry, zero-safe semantics, and an exact [0,1] range."
+    },
+    {
+      "design": "morning_only_afternoon_only_cross_lunch_alternate_tuple_length_direction_filter_or_combination",
+      "decision": "rejected_before_values",
+      "reason": "Both complete halves, 118 triples per half, tuple length three, higher direction, no cross-lunch transition, no filter, and no combination are fixed once."
+    }
+  ],
+  "selected_concept": {
+    "concept_name": "intraday_range_weak_order_time_reversal_divergence",
+    "candidate_ordinal": null,
+    "prospective_active": false,
+    "concept_status": "mechanism_only_not_yet_allowed_to_open_values",
+    "mechanism": "Transform every fixed one-minute bar to log high-low range, classify all within-half overlapping triples into the exact 13 transitive weak-order states, construct the state distribution induced by reversing every triple, and measure their normalized Jensen-Shannon divergence.",
+    "economic_question": "Does a pronounced time arrow in the evolution of intraday volatility states identify unresolved information assimilation that can persist from the next open through the third close?",
+    "mandatory_overlap_challenges": [
+      "all_96_frozen_historical_factor_definitions_in_exact_order",
+      "intraday_range_weak_order_entropy_236t",
+      "intraday_return_time_reversal_asymmetry_236p",
+      "intraday_return_weak_order_entropy_234t",
+      "intraday_absolute_return_serial_persistence_236p",
+      "intraday_adjacent_range_overlap_continuity_238p",
+      "intraday_midrange_width_change_coupling_238p",
+      "intraday_intrabar_range_participation_entropy_240m",
+      "intraday_cross_sectional_standardized_return_state_stability_236p"
+    ],
+    "known_design_risks": [
+      "The new score shares the high-low range transform and 13-state alphabet with Campaign064 and therefore must pass the frozen strict-below-0.8 numerical comparison against Campaign064 after coverage passes.",
+      "Exact ties can concentrate mass in self-reversing states; ties must be retained and zero divergence is valid rather than missing.",
+      "Divergence family, normalization, tuple length, pooling, direction, time grid, and missing rules create researcher degrees of freedom unless frozen before values.",
+      "The current-listing-derived source and holding universes retain the documented survivorship limitation."
+    ]
+  },
+  "decision": {
+    "selected_concept_count": 1,
+    "conceptual_novelty_not_yet_passed": true,
+    "predictive_value_established": false,
+    "next_action": "Perform one exhaustive all-96 definition mechanism-overlap audit, including the Campaign063 nonnumeric challenge and Campaign064 as the final numeric comparator, then freeze one exact formula before opening source values."
+  }
+}

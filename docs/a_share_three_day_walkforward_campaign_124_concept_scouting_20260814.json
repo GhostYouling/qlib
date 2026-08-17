@@ -1,0 +1,112 @@
+{
+  "schema_version": 1,
+  "kind": "a_share_three_day_walkforward_campaign124_concept_scouting",
+  "status": "one_genuinely_new_low_entitlement_prelisting_demand_state_selected_before_provider_rows_or_values",
+  "recorded_at": "2026-08-14T03:55:05+08:00",
+  "purpose": "Continue the active offline three-session research goal after Campaign123 terminal by reviewing a finite low-entitlement point-in-time source catalog before any Campaign124 provider row, factor value, comparator value, price, or return is opened.",
+  "authoritative_inputs": {
+    "campaign123_terminal_state": {
+      "path": "docs/a_share_three_day_iteration_status_20260814_campaign123_namechange_terminal.json",
+      "sha256": "e83299f2af7ace98a8f15c9f6d21d5ef2f7d7b0b79e464e35ef41bfe9bc13cca"
+    },
+    "numeric_policy_v124": {
+      "path": "docs/a_share_three_day_walkforward_future_numeric_comparison_eligibility_policy_v124_20260814.json",
+      "sha256": "8f1a972f98ed98cbde520515a6e341c0a27f6821d7cecf484ab54ef459773d18",
+      "complete_definition_count": 148,
+      "complete_definition_order_sha256": "fa9f0254b17d1a2b568e056b2696f24087f3f0668d7842a1bcbfdde1a87192e8",
+      "eligible_numeric_comparator_count": 139,
+      "eligible_numeric_comparator_order_sha256": "9c4de054ca1b83eced67eece256b024ebec3a6e1925de17a4cedfa7d36265161"
+    }
+  },
+  "public_documentation_observed": {
+    "provider": "Tushare Pro",
+    "official_url": "https://tushare.pro/document/2?doc_id=123",
+    "api_name": "new_share",
+    "documented_description": "获取新股上市列表数据",
+    "documented_minimum_points": 120,
+    "documented_maximum_rows_per_call": 2000,
+    "documented_inputs": [
+      "start_date",
+      "end_date"
+    ],
+    "documented_outputs": [
+      "ts_code",
+      "sub_code",
+      "name",
+      "ipo_date",
+      "issue_date",
+      "amount",
+      "market_amount",
+      "price",
+      "pe",
+      "limit_amount",
+      "funds",
+      "ballot"
+    ],
+    "provider_rows_requested_or_read": false
+  },
+  "finite_prevalue_concept_catalog": [
+    {
+      "catalog_id": "c124_01",
+      "name": "ipo_retail_ballot_scarcity_20to79s",
+      "source_state": "prelisting_online_subscription_success_rate",
+      "decision": "selected_for_mechanism_overlap_audit_and_zero_row_contract",
+      "reason": "The documented ballot field is a prelisting retail allocation-success rate. Lower ballot identifies stronger subscription scarcity before secondary-market trading and is neither a price path nor a high-entitlement order-flow source."
+    },
+    {
+      "catalog_id": "c124_02",
+      "name": "raw_listing_or_ipo_age",
+      "decision": "rejected_before_values",
+      "reason": "Listing age, IPO cohort and age buckets were already consumed and terminalized by Campaign075. The new factor may use a frozen eligibility/support window but may not rank age."
+    },
+    {
+      "catalog_id": "c124_03",
+      "name": "ipo_price_pe_or_valuation_discount",
+      "decision": "rejected_before_values",
+      "reason": "Issue price and PE reopen price/valuation and affordability families and require a benchmark choice. They are not needed to identify subscription scarcity."
+    },
+    {
+      "catalog_id": "c124_04",
+      "name": "ipo_amount_market_amount_funds_or_float_scarcity",
+      "decision": "rejected_before_values",
+      "reason": "Issue size, online amount and funds are size/free-float/capital-raising states already adjacent to terminal size, free-float and financing mechanisms."
+    },
+    {
+      "catalog_id": "c124_05",
+      "name": "stock_hsgt_membership_change",
+      "decision": "rejected_at_documentation_coverage_gate",
+      "reason": "The current official stock_hsgt page states that data begins on 2025-08-12, so it cannot support the frozen 2019-2023 expanding development folds."
+    },
+    {
+      "catalog_id": "c124_06",
+      "name": "legacy_hs_const_inclusion_history",
+      "decision": "rejected_at_current_official_source_gate",
+      "reason": "Third-party SDK indexes describe historical in/out dates, but the current official directory has replaced that interface and does not provide a current complete 2019-2023 contract. Third-party schema memory is insufficient authorization for provider rows."
+    }
+  ],
+  "selected_candidate": {
+    "name": "ipo_retail_ballot_scarcity_20to79s",
+    "selected_candidate_count": 1,
+    "score_direction": "higher",
+    "raw_measure": "negative ballot percentage",
+    "economic_hypothesis": "Among stocks that have passed the frozen 20-session listing eligibility gate but remain within their first 79 listed sessions, a lower IPO online-subscription success rate represents stronger prelisting retail demand scarcity that may persist into near-term price discovery.",
+    "listing_age_support_minimum_inclusive": 20,
+    "listing_age_support_maximum_inclusive": 79,
+    "ranking_uses_listing_age": false,
+    "historical_candidate_created": false,
+    "prospective_candidate_created": false
+  },
+  "research_boundary": {
+    "programmatic_provider_request_issued": false,
+    "credential_loaded": false,
+    "provider_rows_read_persisted_or_counted": false,
+    "candidate_or_comparison_values_read": false,
+    "historical_daily_price_or_forward_return_values_read": false,
+    "stress_2024_2025_opened": false,
+    "candidate49_historical_backfill_performed": false,
+    "candidate49_ledgers_changed": false,
+    "second_prospective_candidate_created": false,
+    "current_scoring_selection_sizing_positions_or_orders_performed": false,
+    "investment_advice": false
+  }
+}

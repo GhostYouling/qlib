@@ -1,0 +1,31 @@
+{
+  "schema_version": 1,
+  "kind": "a_share_three_day_walkforward_campaign175_infrastructure_failure",
+  "status": "recorded_non_destructive_infrastructure_failure",
+  "recorded_at": "2026-08-15T10:45:25+08:00",
+  "attempt_id": "campaign175_infrastructure_001",
+  "phase": "campaign174_authority_and_policy_fingerprint_verification",
+  "failure": {
+    "classification": "nonexistent_policy_path_guess_masked_by_later_compound_command_exit",
+    "command_summary": "A compound read-only verification command asked shasum for docs/a_share_three_day_historical_walkforward_numeric_comparison_policy_20260815_v262.json, then continued to jq and git status.",
+    "observed_error": "shasum reported that the guessed policy path did not exist.",
+    "exit_semantics": "The compound shell returned the later git-status exit instead of the failing shasum component; the component failure was detected from stderr and was not treated as a successful fingerprint check.",
+    "root_cause": "The policy path was guessed instead of being parsed from the authoritative Campaign174 state.",
+    "remediation": "Parse authoritative_inputs.eligibility_policy_v262.path from the Campaign174 state and verify that exact path independently."
+  },
+  "scientific_effect": {
+    "source_row_or_filing_document_read": false,
+    "candidate_or_comparator_value_read": false,
+    "security_price_or_forward_return_read": false,
+    "stress_2024_2025_opened": false,
+    "provider_or_web_request_issued": false,
+    "credential_presence_value_or_digest_read": false,
+    "candidate49_ledger_changed": false,
+    "research_result_changed": false
+  },
+  "accounting": {
+    "campaign175_infrastructure_failure_delta": 1,
+    "campaign175_scientific_attempt_delta": 0,
+    "return_reading_development_trial_delta": 0
+  }
+}

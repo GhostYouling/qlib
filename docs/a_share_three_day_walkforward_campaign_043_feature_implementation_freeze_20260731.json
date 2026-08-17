@@ -1,0 +1,86 @@
+{
+  "version": 1,
+  "kind": "a_share_three_day_walkforward_campaign043_feature_implementation_freeze",
+  "status": "frozen_after_synthetic_tests_before_campaign043_candidate_or_comparison_values",
+  "frozen_at": "2026-07-31T09:58:00Z",
+  "purpose": "Bind the exact Campaign043 implementation and its synthetic fail-closed evidence before any external minute partition or protected factor value is read.",
+  "authoritative_inputs": {
+    "iteration_state": {
+      "path": "docs/a_share_three_day_iteration_status_20260731_campaign042_verified.json",
+      "sha256": "07048d0f0d16a6847f9be0bada8b257d46a06156bec8058a3fbced855548f334"
+    },
+    "concept_scouting": {
+      "path": "docs/a_share_three_day_walkforward_campaign_043_concept_scouting.json",
+      "sha256": "de9fefd2b5ddb5ee4931b376830327d9c8e8cb78966ab14408f9c7457f044288"
+    },
+    "mechanism_overlap_audit": {
+      "path": "docs/a_share_three_day_walkforward_campaign_043_mechanism_overlap_audit.json",
+      "sha256": "25bd69bc799ac98aeb8a521f675027fdbffafd23133811ffe6ded8c2928b4eee"
+    },
+    "no_return_preregistration": {
+      "path": "docs/a_share_three_day_walkforward_campaign_043_no_return_preregistration.json",
+      "sha256": "2fde47ae05bfef5f99d230c6835b559b72bbd0e20bfcfb994d36cd4487e831f9"
+    },
+    "feature_runner": {
+      "path": "scripts/a_share_three_day_walkforward_campaign043_features.py",
+      "sha256": "b8f036b9a78348726df276921475c3132fa1433fd4bbeae778184f40a5e0afa7"
+    },
+    "synthetic_tests": {
+      "path": "tests/data_collector_tests/test_a_share_three_day_walkforward_campaign043_features.py",
+      "sha256": "b1027553aea71aeee09c22c57497f7d2b04a2a2a3285f14ba8a7910d230f1bd9"
+    }
+  },
+  "implementation_contract": {
+    "factor_name": "intraday_transaction_vwap_consensus_240m",
+    "direction": "higher",
+    "raw_projection": [
+      "datetime",
+      "symbol",
+      "provider",
+      "volume",
+      "amount"
+    ],
+    "selected_bar_count": 240,
+    "minimum_active_bars": 120,
+    "active_bar_rule": "volume>0 and amount>0",
+    "joint_zero_rule": "inactive",
+    "one_sided_zero_rule": "stock-day missing",
+    "transaction_price": "amount/volume",
+    "weight": "share volume / active share-volume total",
+    "weighted_geometric_mean": "exp(sum(weight*log(transaction_price)))",
+    "weighted_arithmetic_mean": "sum(weight*transaction_price)",
+    "score": "weighted geometric mean / weighted arithmetic mean",
+    "constant_price_score": 1.0,
+    "valid_range": [
+      0.0,
+      1.0
+    ],
+    "comparison_count": 64,
+    "comparison_order_sha256": "c2a81a12274ab6b485c5f42577edc30320ef1292c4af1e33ed6b53127d1ba350"
+  },
+  "validation": {
+    "binding_validator_exit_code": 0,
+    "binding_validator_all_passed": true,
+    "synthetic_test_count": 9,
+    "synthetic_test_failures": 0,
+    "constant_price_and_dispersion_tested": true,
+    "price_scale_invariance_tested": true,
+    "joint_and_one_sided_zero_semantics_tested": true,
+    "minimum_active_support_tested": true,
+    "negative_nonfinite_and_shape_fail_closed_tested": true,
+    "exact_comparison_order_tested": true,
+    "status_no_return_boundary_tested": true
+  },
+  "research_boundary": {
+    "external_minute_partitions_read_before_freeze": false,
+    "candidate_values_read_before_freeze": false,
+    "comparison_values_read_before_freeze": false,
+    "historical_daily_price_fields_read_before_freeze": false,
+    "historical_forward_returns_read_before_freeze": false,
+    "provider_request_issued": false,
+    "candidate49_ledgers_changed": false,
+    "candidate50_activation_created": false,
+    "current_scoring_selection_sizing_or_orders_performed": false
+  },
+  "next_action": "Validate all four freeze-boundary records, then build exactly one immutable Campaign043 feature snapshot from the accepted local Tushare minute source."
+}

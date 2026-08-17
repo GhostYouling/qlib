@@ -1,0 +1,23 @@
+{
+  "schema_version": 1,
+  "kind": "a_share_three_day_walkforward_campaign121_infrastructure_failure",
+  "status": "recorded_after_four_metadata_tests_before_partition_reopen",
+  "recorded_at": "2026-08-14T02:16:00+08:00",
+  "attempt_id": "campaign121_infrastructure_012",
+  "phase": "snapshot_recovery_verifier_static_format_validation",
+  "passed_before_failure": "4 metadata-only tests",
+  "failure": {
+    "exit_code": 1,
+    "class": "black_format_check_failure",
+    "affected_path": "scripts/a_share_three_day_walkforward_campaign121_snapshot_verify_recovery.py"
+  },
+  "safe_recovery": "Apply deterministic formatting only, rerun the same metadata-only tests and static checks, then freeze the verifier before reopening partitions.",
+  "research_boundary": {
+    "candidate_partition_values_reopened": false,
+    "comparator_values_read": false,
+    "historical_daily_price_or_forward_return_values_read": false,
+    "provider_request_issued": false,
+    "candidate49_ledgers_changed": false,
+    "scientific_result_changed": false
+  }
+}

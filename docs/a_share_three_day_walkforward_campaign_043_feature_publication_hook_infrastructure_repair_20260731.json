@@ -1,0 +1,58 @@
+{
+  "version": 1,
+  "kind": "a_share_three_day_walkforward_campaign043_feature_publication_hook_infrastructure_repair",
+  "status": "single_pre_partition_infrastructure_repair_authorized",
+  "recorded_at": "2026-07-31T10:04:00Z",
+  "purpose": "Preserve the first Campaign043 build failure and authorize only the inherited publication-hook lookup repair before any external minute partition or candidate value was read.",
+  "authoritative_inputs": {
+    "feature_implementation_freeze": {
+      "path": "docs/a_share_three_day_walkforward_campaign_043_feature_implementation_freeze_20260731.json",
+      "sha256": "b554cd4bcf5b8ad8aceb488d09aa7d6eea14c741de95d3a37e0ba4d7c24a5d87"
+    },
+    "pre_repair_feature_runner": {
+      "path_at_failure": "scripts/a_share_three_day_walkforward_campaign043_features.py",
+      "observed_sha256": "b8f036b9a78348726df276921475c3132fa1433fd4bbeae778184f40a5e0afa7"
+    },
+    "no_return_preregistration": {
+      "path": "docs/a_share_three_day_walkforward_campaign_043_no_return_preregistration.json",
+      "sha256": "2fde47ae05bfef5f99d230c6835b559b72bbd0e20bfcfb994d36cd4487e831f9"
+    }
+  },
+  "observed_failure": {
+    "command": "python scripts/a_share_three_day_walkforward_campaign043_features.py build --workers 8",
+    "exit_code": 1,
+    "failure_stage": "before_output_root_creation_or_partition_enumeration",
+    "error": "KeyError: foundation while locating the inherited atomic JSON writer",
+    "cause": "Campaign043 adds one wrapper layer above the Campaign042 build function, so foundation is in the immediate inherited function rather than the outer wrapper globals.",
+    "output_root_exists": false,
+    "hidden_partial_root_exists": false,
+    "completed_partition_checkpoints": 0,
+    "candidate_values_computed": false,
+    "comparison_values_read": false,
+    "historical_daily_price_fields_read": false,
+    "historical_forward_returns_read": false
+  },
+  "authorized_repair": {
+    "exact_change": "Resolve publication_foundation from the immediate nested _inherited_build_snapshot function globals, which already exposes foundation, instead of from the outer wrapper globals.",
+    "formula_change_allowed": false,
+    "direction_change_allowed": false,
+    "source_projection_change_allowed": false,
+    "zero_or_support_semantics_change_allowed": false,
+    "comparison_library_or_order_change_allowed": false,
+    "gate_or_search_change_allowed": false,
+    "output_path_change_allowed": false,
+    "daily_price_or_return_access_allowed": false
+  },
+  "research_boundary": {
+    "external_minute_partitions_read": false,
+    "candidate_values_read": false,
+    "comparison_values_read": false,
+    "historical_daily_price_fields_read": false,
+    "historical_forward_returns_read": false,
+    "provider_request_issued": false,
+    "candidate49_ledgers_changed": false,
+    "candidate50_activation_created": false,
+    "current_scoring_selection_sizing_or_orders_performed": false
+  },
+  "next_action": "Apply only the publication-foundation lookup repair, rerun all synthetic tests and the binding validator, then restart the unique snapshot build."
+}

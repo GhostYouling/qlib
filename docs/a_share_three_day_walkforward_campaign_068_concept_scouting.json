@@ -1,0 +1,129 @@
+{
+  "version": 1,
+  "kind": "a_share_three_day_walkforward_campaign068_concept_scouting",
+  "status": "selected_one_historical_candidate_before_campaign068_source_candidate_comparison_daily_price_or_return_values",
+  "recorded_at": "2026-08-06T02:34:00+08:00",
+  "purpose": "Select one exact Campaign068 historical-only second-order operating-leverage candidate from the fully frozen terminal library, before reading any Campaign068 source row, candidate value, comparison value, daily price, or forward return.",
+  "authoritative_inputs": {
+    "compact_cache_v4_verified_state": {
+      "path": "docs/a_share_three_day_iteration_status_20260806_compact_cache_v4_verified_v2.json",
+      "sha256": "fa3e2955bb697696a9a7a5d5ce1eade88324c752fb490cd2f98ea8ca3d117b79"
+    },
+    "historical_walkforward_policy": {
+      "path": "docs/a_share_three_day_historical_walkforward_research_policy_20260727.json",
+      "sha256": "38426d6161b9bfed323c58caba18feca668b8c9d53e294951a8ba90c01a798bb"
+    },
+    "compact_comparator_cache": {
+      "publication_binding_path": "docs/a_share_three_day_compact_comparator_cache_v4_publication_binding_20260806.json",
+      "publication_binding_sha256": "244f70b88be0396f7473c6664835cbb3cdad9135b6692b77c74018b1d53c925b",
+      "manifest_path": "/Volumes/DIsk/qlib-a-share-tushare-1m/derived/a_share/rich/tushare/compact_comparator_cache/campaign067_terminal_numeric98_v4/snapshot_manifest.json",
+      "manifest_sha256": "3d81068f07ac61fe4cd04bd1a893e58759c06d88213263135fec5244e309b57b",
+      "dataset_sha256": "4a56dac48c14b667b6ee431519266f27bb8ff7cc25c51d8dce3bbc7aebe0376f"
+    },
+    "quarterly_quality_source": {
+      "path": "data/raw/a_share/fundamentals/quarterly_quality.parquet",
+      "sha256": "3ac901a97928d2ed81ac72e3eaac9bdc148d36cf67b6abe70223699235ef059f",
+      "manifest_path": "data/metadata/quarterly_quality_manifest.json",
+      "manifest_sha256": "e3cf654babe37a82393c5530696bc1cc242b736cb88e1947b8444b638125ba8c"
+    }
+  },
+  "definition_only_inventory": {
+    "complete_historical_definition_count": 99,
+    "complete_historical_definition_order_sha256": "74564d4d2d01a52371ddd6906db38b5d913acb743656a04bbe5c4f229c84ad53",
+    "eligible_numeric_comparator_count": 98,
+    "eligible_numeric_comparator_order_sha256": "bca0ba26252fcb74afa3a31ee1baf63c9cedfe3db5fc86ef71b3d7d93bf88f81",
+    "numeric_order_rule": "Use the exact 98-factor logical order published by compact-cache v4, including Campaign067 exactly once and retaining Campaign063 only as the frozen structurally nonnumeric definition outside the numeric order.",
+    "frozen_old_definition_inputs": [
+      "revenue_yoy_acceleration",
+      "profit_yoy_acceleration"
+    ],
+    "old_factor_or_cache_values_read_for_selection": false,
+    "quarterly_source_rows_read": false,
+    "candidate_values_read": false,
+    "comparison_values_read": false,
+    "daily_price_or_forward_return_read": false
+  },
+  "finite_candidate_design_catalog": [
+    {
+      "design": "quarterly_profit_revenue_acceleration_rank_gap_2r",
+      "decision": "selected",
+      "reason": "The fixed cross-sectional rank gap measures whether profit growth is accelerating faster than revenue growth, a second-order operating-leverage state that is distinct from Campaign058's current-level raw spread. It combines exactly two already-frozen definitions with coefficients +1/-1 and introduces no window, fit, threshold, or subset."
+    },
+    {
+      "design": "profit_yoy_acceleration_or_revenue_yoy_acceleration_standalone",
+      "decision": "rejected_before_values",
+      "reason": "Both direct acceleration definitions are already exposed in the complete historical comparison library."
+    },
+    {
+      "design": "raw_profit_minus_revenue_acceleration_spread",
+      "decision": "rejected_before_values",
+      "reason": "Choosing both raw and rank scales would create a transform search. The sole selected scale is the existing average-tie percentile semantics of the two frozen inputs."
+    },
+    {
+      "design": "acceleration_mean_minimum_product_or_balance",
+      "decision": "rejected_before_values",
+      "reason": "Those reward common acceleration or agreement, while the selected mechanism is the signed profit-versus-revenue acceleration contrast; testing several aggregation operators would add multiplicity."
+    },
+    {
+      "design": "roe_change_interaction_or_three_change_composite",
+      "decision": "rejected_before_values",
+      "reason": "Adding ROE change would open another component and multiple economically plausible operators. Campaign068 freezes exactly the two same-unit growth-acceleration dimensions."
+    },
+    {
+      "design": "announcement_age_filter_board_year_size_regime_or_minute_interaction",
+      "decision": "rejected_before_values",
+      "reason": "No announcement window, threshold, board, year, size bucket, market regime, minute factor, favorable subset, fitted weight, or model is searched."
+    }
+  ],
+  "selected_candidate": {
+    "name": "quarterly_profit_revenue_acceleration_rank_gap_2r",
+    "direction": "higher",
+    "economic_hypothesis": "When already-public profit YoY growth has accelerated more strongly than revenue YoY growth, the implied improvement in operating leverage or margins may continue to be repriced from the next open through the third close.",
+    "formula": "At each stock day, compute same-fiscal-quarter year-over-year differences profit_yoy_acceleration and revenue_yoy_acceleration from reports available strictly before the signal; on the exact common finite two-field stock-day cross-section compute separate average-tie percentile ranks r_profit_acceleration and r_revenue_acceleration, then return r_profit_acceleration-r_revenue_acceleration.",
+    "stock_day_identity_projection": [
+      "trade_date",
+      "symbol",
+      "provider"
+    ],
+    "quarterly_source_projection": [
+      "instrument",
+      "report_date",
+      "announcement_date",
+      "revenue_yoy",
+      "profit_yoy"
+    ],
+    "same_fiscal_quarter_rule": "For each instrument and report month separately, subtract the immediately prior report-year value; Q1 compares with prior Q1, Q2 with prior Q2, Q3 with prior Q3, and annual Q4 with prior Q4.",
+    "availability_rule": "The newer report's acceleration becomes usable only on the first accepted local session strictly after its announcement_date.",
+    "same_effective_date_rule": "Sort by instrument, effective session, report_date, and announcement_date, then keep the last row per instrument and effective session.",
+    "state_rule": "Forward-fill the two acceleration fields independently inside each instrument only after strict effective-session ordering; never backfill from a later disclosure.",
+    "cross_section_rule": "On each stock day use pandas-compatible average-tie percentile ranks on the common finite two-acceleration identity cross-section.",
+    "combination_rule": "Exactly r_profit_acceleration minus r_revenue_acceleration; coefficients are fixed at +1 and -1 and are not fitted.",
+    "valid_range": {
+      "lower": -1.0,
+      "lower_inclusive": true,
+      "upper": 1.0,
+      "upper_inclusive": true
+    },
+    "missing_rule": "Missing unless both already-effective acceleration states and both ranks are finite. Never impute, clip, winsorize, substitute, backfill, or select a favorable report.",
+    "parameter_window_transform_threshold_filter_subset_regime_fit_or_model_search": false
+  },
+  "research_boundary": {
+    "campaign068_quarterly_or_minute_rows_read": false,
+    "campaign068_candidate_or_comparison_values_read": false,
+    "historical_daily_price_fields_read": [],
+    "historical_forward_return_fields_read": false,
+    "provider_request_issued": false,
+    "candidate49_historical_backfill_performed": false,
+    "candidate49_ledgers_changed": false,
+    "second_prospective_candidate_created": false,
+    "current_scoring_selection_sizing_or_orders_performed": false,
+    "investment_advice": false
+  },
+  "decision": {
+    "selected_candidate_count": 1,
+    "finite_candidate_library": true,
+    "complete_old_factor_library_bound_before_combination": true,
+    "predictive_value_established": false,
+    "next_action": "Perform a complete 99-definition mechanism-overlap audit, then freeze the 98-comparator coverage-first protocol and cache binding before reading source or candidate values."
+  }
+}

@@ -1,0 +1,36 @@
+{
+  "schema_version": 3,
+  "kind": "a_share_three_day_walkforward_campaign262_infrastructure_failures",
+  "status": "six_failures_recorded_before_successful_snapshot_publication",
+  "recorded_at": "2026-08-16T18:03:00+08:00",
+  "timestamp_semantics": "monotonic_logical_append_time_not_host_wall_clock_measurement",
+  "supersedes_without_rewriting": {
+    "prevalue_failure_record_v2": {
+      "path": "docs/a_share_three_day_walkforward_campaign_262_prevalue_infrastructure_failures_v2_20260816.json",
+      "sha256": "b1188f9732db489b9d3e94520dfc25516a0249e1f589d26119e55045f2dab618",
+      "attempt_count": 5
+    },
+    "snapshot_build_failure": {
+      "path": "docs/a_share_three_day_walkforward_campaign_262_snapshot_build_quality_key_failure_20260816.json",
+      "sha256": "3105cc30c6686047661fea006cd6d3955b7aeae7ec9fe908b2cdc77af2e2d654"
+    }
+  },
+  "effective_accounting": {
+    "infrastructure_failure_count": 6,
+    "prevalue_scientific_attempt_count": 7,
+    "complete_factor_attempt_count": 0,
+    "return_reading_development_trial_count": 0
+  },
+  "research_boundary": {
+    "campaign262_minute_source_rows_read": true,
+    "campaign262_candidate_values_published_or_inspected": false,
+    "campaign262_comparator_values_read": false,
+    "historical_daily_price_or_forward_return_values_read": false,
+    "stress_2024_2025_opened": false,
+    "provider_or_web_request_issued": false,
+    "credential_value_presence_or_digest_read": false,
+    "candidate49_ledgers_changed": false,
+    "current_scoring_selection_sizing_positions_or_orders_performed": false,
+    "investment_advice": false
+  }
+}

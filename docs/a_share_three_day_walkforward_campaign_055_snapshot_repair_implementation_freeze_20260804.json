@@ -1,0 +1,67 @@
+{
+  "version": 1,
+  "kind": "a_share_three_day_walkforward_campaign055_snapshot_repair_implementation_freeze",
+  "status": "metadata_only_v2_rebuild_frozen_before_v2_candidate_values",
+  "recorded_at": "2026-08-04T00:37:00+08:00",
+  "purpose": "Bind the exact v2 output root and stale-numbered-campaign evidence cleaner before recomputing any v2 factor partition.",
+  "authoritative_inputs": {
+    "v1_failure_and_repair_authorization": {
+      "path": "docs/a_share_three_day_walkforward_campaign_055_snapshot_v1_protocol_evidence_failure_repair_20260804.json",
+      "sha256": "d6c3172a082fb2bb607431fd82dbba30a513851b1bc04259269dff3b19131c49"
+    },
+    "post_v1_frozen_prestate_test_failure": {
+      "path": "docs/a_share_three_day_walkforward_campaign_055_post_v1_frozen_prestate_test_failure_20260804.json",
+      "sha256": "5aeecbc89ebdba1a81f273a67673551060ddfce27785649b90a695f129d708f0"
+    },
+    "original_implementation_freeze": {
+      "path": "docs/a_share_three_day_walkforward_campaign_055_feature_implementation_freeze_20260804.json",
+      "sha256": "ef050cb578ff06775ee43e3119488ad5fbfc39a86d3931abfec642b3d4d01f4a"
+    },
+    "original_implementation_repair_freeze": {
+      "path": "docs/a_share_three_day_walkforward_campaign_055_implementation_freeze_repair_freeze_20260804.json",
+      "sha256": "648aaf8a2734089fa0225ac4f5fe6f1967abf98ac6284e15c40dc06cc6904485"
+    }
+  },
+  "repair_entrypoint": {
+    "path": "scripts/a_share_three_day_walkforward_campaign055_features_v5.py",
+    "sha256": "32241f9ccadcd2f8867c0d9fe1b8bb0c21a9cc742c252eb6b81ff9c630627a79"
+  },
+  "repair_tests": {
+    "snapshot_repair": {
+      "path": "tests/data_collector_tests/test_a_share_three_day_walkforward_campaign055_snapshot_repair.py",
+      "sha256": "fa175e5aa1c6f47dc76bf49f05b40d6a27d86faabf18cea9a5f0ad642bb52172"
+    },
+    "snapshot_transition": {
+      "path": "tests/data_collector_tests/test_a_share_three_day_walkforward_campaign055_snapshot_transition.py",
+      "sha256": "bab3f0b2619c5b3f599c47eb0cd19f595e20ea438b4d46843d6a741ef4411129"
+    },
+    "combined_current_command": "python -m pytest -q tests/data_collector_tests/test_a_share_three_day_walkforward_campaign055_features.py tests/data_collector_tests/test_a_share_three_day_walkforward_campaign055_snapshot_repair.py tests/data_collector_tests/test_a_share_three_day_walkforward_campaign055_snapshot_transition.py tests/data_collector_tests/test_a_share_three_day_walkforward_policy.py tests/data_collector_tests/test_a_share_three_day_walkforward_campaign054_terminal_state.py",
+    "passed": 25,
+    "failed": 0
+  },
+  "frozen_repair": {
+    "v2_output_run_id": "tushare_stk_mins_1m_2019_2025_ea0cbb8f_walkforward_campaign055_feature_library_v2",
+    "v1_preserved_unchanged": true,
+    "numbered_campaign_evidence_allowed": [
+      "campaign055_"
+    ],
+    "candidate49_evidence_preserved": true,
+    "factor_formula_or_numerics_changed": false,
+    "source_projection_direction_bins_minimum_event_missing_rule_changed": false,
+    "coverage_uniqueness_comparison_order_or_development_trial_changed": false,
+    "comparison_values_read_before_freeze": false,
+    "historical_daily_price_fields_read_before_freeze": [],
+    "historical_forward_return_fields_read_before_freeze": false
+  },
+  "prospective_isolation": {
+    "candidate49_signal_ledger": {
+      "path": "data/experiments/short_horizon/candidate49_future_signal_ledger.json",
+      "sha256": "5193f00d7f36da003f53cec387900da4c3d002299f5dfcfc1a95eaa199ed3a79"
+    },
+    "candidate49_execution_ledger": {
+      "path": "data/experiments/short_horizon/candidate49_future_execution_ledger.json",
+      "sha256": "d57a3e61eac969e42cafa418ccd8c0a5ee65dcf69da145bb2c096c2a02a2ea4f"
+    }
+  },
+  "next_action": "Use a final wrapper bound to this repair freeze to rebuild v2; publish it only if protocol evidence is clean and all value/hash gates pass."
+}

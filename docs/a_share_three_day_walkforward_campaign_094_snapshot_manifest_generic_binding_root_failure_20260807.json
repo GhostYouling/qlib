@@ -1,0 +1,23 @@
+{
+  "schema_version": 1,
+  "kind": "a_share_three_day_walkforward_campaign094_terminal_verification_infrastructure_failure",
+  "status": "preserved_before_snapshot_specific_binding_verification",
+  "recorded_at": "2026-08-07T03:30:09Z",
+  "stage": "effective_chain_generic_binding_scan_with_snapshot_manifest",
+  "exit_code": 2,
+  "failure": "The repository-generic binding validator resolved the snapshot manifest's seven relative partition paths against the repository root, so all seven partition bindings failed even though the immutable snapshot is valid under its snapshot-relative path semantics.",
+  "diagnosis": "The snapshot manifest uses relative path+sha256 entries under files[]. The generic validator resolves path bindings against the repository root and has no record-directory-relative mode; the Campaign094 snapshot validator and feature tests are the authoritative validators for these seven entries.",
+  "repair": "Exclude the snapshot manifest from the repository-generic binding list, validate it with the frozen Campaign094 snapshot-specific validator, and keep the remaining effective current JSON chain on the generic validator. Do not change the immutable manifest or its partition bytes.",
+  "research_boundary": {
+    "research_values_or_returns_recomputed": false,
+    "additional_historical_daily_price_or_forward_return_values_read": false,
+    "stress_2024_2025_return_fields_read": false,
+    "provider_request_issued": false,
+    "candidate49_ledgers_changed": false
+  },
+  "attempt_accounting": {
+    "campaign094_attempt_ordinal": 8,
+    "kind": "postresult_snapshot_manifest_generic_binding_root_failure",
+    "counts_as_return_reading_development_trial": false
+  }
+}

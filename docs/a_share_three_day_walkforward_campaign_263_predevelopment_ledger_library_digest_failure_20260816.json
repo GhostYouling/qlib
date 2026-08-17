@@ -1,0 +1,24 @@
+{
+  "schema_version": 1,
+  "kind": "a_share_three_day_walkforward_campaign263_predevelopment_ledger_library_digest_failure",
+  "status": "failed_lifecycle_ledger_preserved_and_excluded_before_return_read",
+  "recorded_at": "2026-08-16T13:48:00Z",
+  "phase": "predevelopment_attempt_ledger_generation",
+  "failure": "research_attempt_ledger_v1 transcribed an incorrect shortened complete-definition order digest instead of the authoritative policy-v408 digest",
+  "failed_ledger": {
+    "path": "data/experiments/short_horizon/historical_walkforward/campaign_263/research_attempt_ledger_v1.json",
+    "sha256": "861983e029c5bcd4e3b830c088222f1c1ea3080551c333c0bf33974091de673d"
+  },
+  "authoritative_digest": "974f2c1f16a85eb43a0bd1e8db768dbe120cd8826c1754d5f220bf9f1d4a3ea0",
+  "failed_ledger_digest": "974f2c1f78c2f2fff53906e2582d71d73e95fdf49cbe2ec1419927c635648953",
+  "recovery": "Reconstruct the Campaign263 chain directly from the frozen Campaign262 chain tip, include this failure as infrastructure attempt 014, and bind the exact policy-v408 digest.",
+  "research_boundary": {
+    "failed_ledger_used_as_scientific_or_validation_evidence": false,
+    "historical_daily_price_or_forward_return_values_read": false,
+    "stress_2024_2025_opened": false,
+    "provider_or_web_request_issued": false,
+    "candidate49_ledgers_changed": false,
+    "current_scoring_selection_sizing_positions_or_orders_performed": false,
+    "investment_advice": false
+  }
+}

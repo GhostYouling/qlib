@@ -1,0 +1,76 @@
+{
+  "version": 1,
+  "kind": "a_share_three_day_walkforward_campaign051_no_return_audit_execution_interruption",
+  "status": "recorded_no_artifact_exact_frozen_detached_retry_allowed",
+  "recorded_at": "2026-08-03T02:26:27Z",
+  "purpose": "Preserve the first Campaign051 no-return audit process disappearance without treating it as a uniqueness result, bypassing an exit code, or silently discarding an infrastructure attempt.",
+  "authoritative_inputs": {
+    "no_return_preregistration_v2": {
+      "path": "docs/a_share_three_day_walkforward_campaign_051_no_return_preregistration_v2.json",
+      "sha256": "16636bb5196a362ca55b21696d88bc78b92d7ce10fbf70d252575f47b31c9e40"
+    },
+    "feature_implementation_freeze": {
+      "path": "docs/a_share_three_day_walkforward_campaign_051_feature_implementation_freeze_20260801.json",
+      "sha256": "7721ec1aa33367adbc2a34d86ad8aec3fb84762b4fc77c2cc73da0332f5406a4"
+    },
+    "snapshot_publication_binding": {
+      "path": "docs/a_share_three_day_walkforward_campaign_051_snapshot_publication_binding_20260801.json",
+      "sha256": "f24916ca77a05ba7c988777b5d85656afae004d0034f1c44c060ad4bfbf81526"
+    },
+    "failed_audit_entrypoint": {
+      "path": "scripts/a_share_three_day_walkforward_campaign051_features_v3.py",
+      "sha256": "178479da821a780773550d66f97193403dc4238601fb034d7cab24e02f24c0a9"
+    },
+    "candidate_snapshot": {
+      "path": "/Volumes/DIsk/qlib-a-share-tushare-1m/derived/a_share/rich/tushare/minute_walkforward_campaign051_feature_library/tushare_stk_mins_1m_2019_2025_ea0cbb8f_walkforward_campaign051_feature_library_v1/snapshot_manifest.json",
+      "sha256": "13a2b7862cb2118dd8e42bcd94653973de603d840bd09f0762be219b840f032e",
+      "dataset_sha256": "2930b47c228f3e033f8130d9960e55668e688e02ba020a02d02ffa60987cabbd"
+    }
+  },
+  "observed_execution": {
+    "command": "python scripts/a_share_three_day_walkforward_campaign051_features_v3.py no-return-audit --data-root /Volumes/DIsk/qlib-a-share-tushare-1m --workers 4",
+    "original_repository_root": "/Users/niyufei/Coding/qlib",
+    "relocated_repository_root_observed_after_interruption": "/Volumes/DIsk/Disk-Coding/qlib",
+    "candidate_snapshot_verification_completed_inferred_from_reached_code_path": true,
+    "coverage_gate_passed_inferred_from_reached_code_path": true,
+    "last_observed_stage": "ordered terminal-library snapshot file verification inside the pre-comparison source catalog",
+    "last_observed_source": "intraday_terminal_close_location_240m snapshot",
+    "comparison_values_loaded": false,
+    "comparison_metric_values_printed_or_persisted": false,
+    "last_observed_process_state": "running during snapshot verification before the interactive execution context ended",
+    "exit_code_captured": false,
+    "python_traceback_captured": false,
+    "operating_system_kill_evidence_found": false,
+    "audit_artifact_count_after_disappearance": 0,
+    "audit_artifact_published": false,
+    "process_present_at_2026_08_03_readonly_recheck": false
+  },
+  "fail_closed_interpretation": {
+    "research_gate_result_exists": false,
+    "uniqueness_gate_pass_or_fail_claimed": false,
+    "candidate_factor_values_had_already_been_frozen_and_read": true,
+    "historical_daily_price_fields_read": [],
+    "historical_forward_returns_read": false,
+    "candidate49_historical_return_read": false,
+    "trial_ledger_changed": false,
+    "second_prospective_candidate_created": false,
+    "current_scoring_selection_sizing_or_orders_performed": false,
+    "failed_exit_code_overridden": false
+  },
+  "candidate49_boundary": {
+    "signal_ledger_sha256": "5193f00d7f36da003f53cec387900da4c3d002299f5dfcfc1a95eaa199ed3a79",
+    "execution_ledger_sha256": "d57a3e61eac969e42cafa418ccd8c0a5ee65dcf69da145bb2c096c2a02a2ea4f",
+    "signal_entries": 0,
+    "execution_entries": 0
+  },
+  "retry_policy": {
+    "allowed": true,
+    "reason": "The interrupted attempt was read-only after publication, produced no audit artifact, loaded no comparison values, opened no daily-price or return data, and left every frozen protocol, snapshot, comparison order, threshold, and runner fingerprint unchanged.",
+    "required_parameters": "the same v3 entrypoint, data root, protocol, snapshot, complete ordered 74-factor comparison library, thresholds, and workers=4",
+    "repository_relocation_semantics": "The repo-relative experiment root follows the intact Git worktree to /Volumes/DIsk/Disk-Coding/qlib; this changes only the output location of a not-yet-created artifact.",
+    "execution_change_allowed": "detach the unchanged process from the interactive tool-session lifetime and persist stdout/stderr to a Git-ignored runtime log only",
+    "research_or_statistical_change_allowed": false,
+    "exact_detached_retry_limit": 1
+  },
+  "next_action": "Revalidate all frozen bindings and launch one detached exact-parameter retry; do not read historical daily prices or returns until a complete no-return audit is atomically published and fingerprint-bound."
+}

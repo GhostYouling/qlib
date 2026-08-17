@@ -1,0 +1,23 @@
+{
+  "schema_version": 1,
+  "kind": "a_share_three_day_walkforward_campaign091_no_return_infrastructure_failure",
+  "status": "recorded_before_coverage_comparison_price_or_return_values",
+  "recorded_at": "2026-08-07T07:35:00+08:00",
+  "failed_audit_runner": {
+    "path": "scripts/a_share_three_day_walkforward_campaign091_no_return_audit.py",
+    "sha256": "d4b445a13e6d2084cd5778a3129858acffce866c108efd369ba12b3cad273f22"
+  },
+  "feature_runner": {
+    "path": "scripts/a_share_three_day_walkforward_campaign091_features.py",
+    "sha256": "32a917420c3efd5579a8f0ed955b887d3952f016aada89b1bf11920833b04f00"
+  },
+  "failure": "AttributeError: Campaign091 feature wrapper did not expose the inherited preregistration binding-validator module required by verify_static_bindings",
+  "exit_code": 1,
+  "audit_artifact_created": false,
+  "coverage_or_capacity_metrics_computed": false,
+  "comparison_values_read": false,
+  "historical_daily_price_or_forward_return_values_read": false,
+  "provider_request_issued": false,
+  "candidate49_ledgers_changed": false,
+  "authorized_repair": "Preserve v1 bytes; add a v2 feature compatibility wrapper that exposes only the already-loaded binding validator, and a v2 audit wrapper that binds that interface without changing factor, snapshot, gates, order, or comparison logic."
+}

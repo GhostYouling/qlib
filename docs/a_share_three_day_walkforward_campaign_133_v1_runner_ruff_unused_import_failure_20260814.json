@@ -1,0 +1,26 @@
+{
+  "schema_version": 1,
+  "kind": "a_share_three_day_walkforward_campaign133_infrastructure_failure",
+  "attempt_id": "campaign133_infrastructure_002",
+  "status": "recorded_post_v1_freeze_prevalue_static_lint_failure",
+  "recorded_at": "2026-08-14T10:10:00+08:00",
+  "stage": "frozen_v1_runner_static_quality_check",
+  "error_type": "RuffF401",
+  "error_summary": "The frozen v1 runner imported typing.Iterable but did not use it.",
+  "frozen_v1_implementation": {
+    "path": "docs/a_share_three_day_walkforward_campaign_133_development_implementation_freeze_20260814.json",
+    "sha256": "4374fb98af6a50318c6b3faa7aa5cb47925ca0b32a5420aa6ba3c08c4536e4b9"
+  },
+  "repair_boundary": "Preserve the v1 freeze, remove only the unused import, include this failure in the append-only ledger and bind the repaired bytes in an explicit v2 implementation freeze. Do not change the scientific protocol, formula, fold, gate or execution assumption.",
+  "research_boundary": {
+    "campaign133_component_or_candidate_values_read": false,
+    "campaign133_model_scores_computed": false,
+    "campaign133_model_fit_performed": false,
+    "historical_daily_price_or_forward_return_values_read": false,
+    "stress_2024_2025_opened": false,
+    "provider_credential_loaded": false,
+    "provider_request_issued": false,
+    "candidate49_ledgers_changed": false,
+    "current_scoring_selection_sizing_positions_or_orders_performed": false
+  }
+}

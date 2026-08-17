@@ -1,0 +1,91 @@
+{
+  "schema_version": 1,
+  "kind": "a_share_three_day_walkforward_campaign182_terminal_validation",
+  "status": "strict_validation_passed_zero_infrastructure_failures",
+  "recorded_at": "2026-08-15T12:34:53+08:00",
+  "authoritative_inputs": {
+    "credit_facility_covenant_liquidity_backstop_source_frontier": {
+      "path": "docs/a_share_three_day_walkforward_campaign_182_credit_facility_covenant_liquidity_backstop_source_frontier_20260815.json",
+      "sha256": "27d9e5af02f2ff4f626841e8c9720601c5b1691d3a91f0894be7028bd554df52"
+    },
+    "attempt_ledger": {
+      "path": "data/experiments/short_horizon/historical_walkforward/campaign_182/research_attempt_ledger_v1.json",
+      "sha256": "eba4943f3d2dcb271c321dcd9db85b9df383d905ae350976ae7dda5be1d452d9"
+    },
+    "terminal_result": {
+      "path": "docs/a_share_three_day_walkforward_campaign_182_terminal_result_20260815.json",
+      "sha256": "6a8ff16b9758a526bc7f3a71308582210b52a982bf00d15d78248ef2779a5cc9"
+    },
+    "terminal_report": {
+      "path": "docs/a_share_three_day_walkforward_campaign_182_terminal_report_20260815.md",
+      "sha256": "d58f0ca0df560a61c2ac3c511a4941f91a2bb2f8163942674ee2b36f2bf8f8a5"
+    },
+    "eligibility_policy_v270": {
+      "path": "docs/a_share_three_day_walkforward_future_numeric_comparison_eligibility_policy_v270_20260815.json",
+      "sha256": "aa8eff42129a43bd2aeacae874eb81836edf20b107409898fbd98e9cb1de98dd"
+    },
+    "terminal_tests": {
+      "path": "tests/data_collector_tests/test_a_share_three_day_walkforward_campaign182_terminal.py",
+      "sha256": "9885c1609ef7979758ae8ac6096b4e750cff651ba008cf33a773c1441d3b5fc2"
+    },
+    "manage_qlib_a_share_data_skill": {
+      "path": "/Users/niyufei/.codex/skills/manage-qlib-a-share-data/SKILL.md",
+      "sha256": "565713a5f3aeb6a1acf23e397fcc21be28d0c3ea4ebf21c7f287a25bb94d78dc"
+    }
+  },
+  "mutable_unified_reports": {
+    "current_research_report": {
+      "path": "data/experiments/short_horizon/current_research_report.md",
+      "sha256_at_validation": "3e00c960f0c2d30e557f27cdb7e1e6aaa4e798719876fcf9cb0f31fb61fa0e24",
+      "mutable_append_only_report_not_an_immutable_binding": true
+    },
+    "three_day_research_report": {
+      "path": "data/experiments/short_horizon/three_day_research_report.md",
+      "sha256_at_validation": "de636ceeaa9c0481d020c4e00b5e8e04cee7f2a3140c13d88b88f1b0c3d3c4ee",
+      "mutable_append_only_report_not_an_immutable_binding": true
+    }
+  },
+  "validation_results": {
+    "positive_json_records_parsed": 4,
+    "direct_bindings_verified": 25,
+    "authoritative_bindings_failed": 0,
+    "timestamp_records_checked": 4,
+    "timestamp_failures": 0,
+    "campaign182_attempt_entries_verified": 7,
+    "campaign182_attempt_hash_chain_passed": true,
+    "finite_catalog_concept_count": 7,
+    "source_admission_deferrals_not_factor_failures": 4,
+    "relabeling_operator_or_combination_route_rejections": 3,
+    "selected_candidate_count": 0,
+    "anti_survivorship_boundary_verified": true,
+    "complete_definition_count": 158,
+    "complete_definition_order_sha256": "4819c7fd7c0795d7598a52f3c615e3f117d5f4ecd9332974bc8e3dfa57c96667",
+    "numeric_comparator_count": 142,
+    "numeric_comparator_order_sha256": "5d1b35fb5a0d8ac9293008db9963c4a60a94dc940c237c3ed259e5ce44f14aaf",
+    "unified_reports_checked": 2,
+    "black_passed": true,
+    "ruff_passed": true,
+    "focused_campaign182_tests_passed": 5,
+    "focused_campaign182_duration_seconds": 1.62,
+    "campaign145_through_campaign182_test_file_count": 70,
+    "campaign145_through_campaign182_tests_passed": 424,
+    "campaign145_through_campaign182_tests_skipped": 1,
+    "campaign145_through_campaign182_exact_historical_lifecycle_nodes_deselected": 5,
+    "campaign145_through_campaign182_duration_seconds": 16.18,
+    "candidate49_signal_entries": 0,
+    "candidate49_execution_entries": 0,
+    "unrecovered_or_unrecorded_failed_exit_codes_bypassed_or_masked": false,
+    "recorded_infrastructure_failure_count": 0
+  },
+  "research_boundary": {
+    "source_row_credit_agreement_filing_facility_covenant_collateral_factor_comparator_security_price_or_return_value_read": false,
+    "stress_2024_2025_opened": false,
+    "provider_or_web_request_issued": false,
+    "provider_credential_presence_value_or_digest_read": false,
+    "candidate49_ledgers_changed": false,
+    "second_prospective_candidate_created": false,
+    "current_scoring_selection_sizing_positions_or_orders_performed": false,
+    "investment_advice": false
+  },
+  "next_action": "Publish a final Campaign182 state binding this validation, then begin Campaign183 finite offline prevalue research without waiting for 16:30."
+}

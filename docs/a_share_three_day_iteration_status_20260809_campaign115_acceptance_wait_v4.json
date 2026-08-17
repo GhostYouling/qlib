@@ -1,0 +1,102 @@
+{
+  "schema_version": 1,
+  "kind": "a_share_three_day_iteration_status",
+  "status": "campaign115_durable_attempt_journal_verified_manual_entitlement_confirmation_missing",
+  "recorded_at": "2026-08-09T04:30:00+08:00",
+  "recorded_at_semantics": "monotonic_logical_append_time_after_v3_recorded_at_04_00_not_host_wall_clock_measurement",
+  "supersedes_without_rewriting": {
+    "path": "docs/a_share_three_day_iteration_status_20260809_campaign115_acceptance_wait_v3.json",
+    "sha256": "4ee703971983bfc20c4c3806d8684dd8d87e7436aba3e2e715a1127258b6e38d",
+    "preserved": true
+  },
+  "authoritative_artifacts": {
+    "numeric_policy_v89": {
+      "path": "docs/a_share_three_day_walkforward_future_numeric_comparison_eligibility_policy_v89_20260809.json",
+      "sha256": "985db3d866345595b9900baeec6efeec95df71bb49217c0c72ac7a2fa3bf92a5"
+    },
+    "acceptance_protocol": {
+      "path": "docs/a_share_three_day_walkforward_campaign_115_source_acceptance_protocol_20260809.json",
+      "sha256": "ad9b789fccada781e77662f95d7d3edaffc5371d605a85a9304a178e3ad4cc6c"
+    },
+    "acceptance_runner_freeze_v4": {
+      "path": "docs/a_share_three_day_walkforward_campaign_115_source_acceptance_runner_freeze_v4_20260809.json",
+      "sha256": "0771cf07f877317a339b54a5527338814e718fce59ddbf49a8c72b199e3b8856"
+    },
+    "acceptance_runner_verification_v4": {
+      "path": "docs/a_share_three_day_walkforward_campaign_115_source_acceptance_runner_verification_v4_20260809.json",
+      "sha256": "434196336291c1b310f2ad2b7da06a6819972e17c529b3a9d3bc9dd0f91e8c30"
+    },
+    "attempt_ledger_v6": {
+      "path": "data/experiments/short_horizon/historical_walkforward/campaign_115/research_attempt_ledger_v6.json",
+      "sha256": "25469e05e5a98dd1b7877dc962204c491c15d08f91349796fedd4a83d33db1ae"
+    },
+    "report_v5": {
+      "path": "docs/a_share_three_day_walkforward_campaign_115_prevalue_report_v5.md",
+      "sha256": "214f14043306748cecf67b819f7107f5ddd5163db2fb68a12a26a565f5e0da3b"
+    }
+  },
+  "campaign115": {
+    "active_historical_campaign": true,
+    "selected_source_mechanism": "tushare_official_limit_up_queue_persistence",
+    "current_stage": "durable_attempt_journal_runner_waiting_for_manual_entitlement_confirmation",
+    "runner_v4_runtime_binding": true,
+    "durable_attempt_journal_verified": true,
+    "durable_terminal_json_publication_verified": true,
+    "real_attempt_journal_created": false,
+    "real_plan_ready": false,
+    "real_plan_exit_code": 2,
+    "real_plan_only_blocker": "manual_5000_point_entitlement_confirmation",
+    "provider_request_issued": false,
+    "provider_rows_or_candidate_values_read": false,
+    "success_or_failure_output_created": false,
+    "complete_factor_definition_count": 0,
+    "numeric_comparator_appended": false,
+    "development_return_trial_count": 0,
+    "stress_2024_2025_opened": false,
+    "next_allowed_action": "Only after the user explicitly confirms that the currently configured account already has at least 5000 points, rerun the frozen plan with the manual assertion; run the one request only if ready=true and exit code is zero. The run will durably journal request authorization before entering the provider function."
+  },
+  "frozen_library": {
+    "complete_definition_count": 141,
+    "complete_definition_order_sha256": "ccab6e3d9d81b0a02d4ff178fdd442b26a1e68e3655e1c6f5b2fcb28cd4a4559",
+    "eligible_numeric_comparator_count": 134,
+    "eligible_numeric_comparator_order_sha256": "31d788db467f558a0ac538315343090f1b3ad4cb27a26136a49ebaa88b2fdbf2"
+  },
+  "candidate49": {
+    "only_active_prospective_candidate": true,
+    "signal_ledger_sha256": "5193f00d7f36da003f53cec387900da4c3d002299f5dfcfc1a95eaa199ed3a79",
+    "execution_ledger_sha256": "d57a3e61eac969e42cafa418ccd8c0a5ee65dcf69da145bb2c096c2a02a2ea4f",
+    "historical_backfill_performed": false
+  },
+  "accounting": {
+    "campaign115_attempt_count": 6,
+    "campaign115_infrastructure_failure_count": 4,
+    "campaign115_prevalue_scientific_attempt_count": 2,
+    "campaign115_complete_factor_attempt_count": 0,
+    "campaign115_return_reading_development_trial_count": 0,
+    "cumulative_historical_research_attempt_count": 859,
+    "cumulative_return_reading_development_trial_count": 302,
+    "latest_additive_entry": "campaign115_infrastructure_006",
+    "latest_additive_entry_read_research_values_or_issued_provider_request": false
+  },
+  "verification": {
+    "focused_runner_and_adapter_tests": "28 passed in 0.65s",
+    "campaign113_to_campaign115_joint_regression": "63 passed in 0.75s",
+    "black_check": "4 files unchanged",
+    "ruff_required_rules": "E4,E7,E9,F,I passed",
+    "simulated_duplicate_provider_call_after_crash": 0,
+    "real_plan_runner_v4_runtime_binding": true,
+    "real_plan_attempt_journal_available": true,
+    "real_plan_exit_code": 2,
+    "real_plan_provider_request_issued": false,
+    "real_attempt_journal_count": 0,
+    "provider_output_count": 0
+  },
+  "research_boundary": {
+    "candidate_or_comparator_values_read": false,
+    "historical_daily_price_or_forward_return_values_read": false,
+    "stress_2024_2025_opened": false,
+    "second_prospective_candidate_created": false,
+    "current_scoring_selection_sizing_or_orders_performed": false,
+    "investment_advice": false
+  }
+}

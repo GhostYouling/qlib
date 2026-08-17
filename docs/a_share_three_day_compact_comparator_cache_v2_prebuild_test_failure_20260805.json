@@ -1,0 +1,49 @@
+{
+  "version": 1,
+  "kind": "a_share_three_day_compact_comparator_cache_v2_prebuild_test_failure",
+  "status": "recorded_before_unfrozen_v2_implementation_repair",
+  "recorded_at": "2026-08-05T21:15:36+08:00",
+  "failed_command": "PYTHONPATH=/Volumes/DIsk/Disk-Coding/qlib /Volumes/DIsk/Coding/anaconda3/bin/python -m py_compile scripts/a_share_three_day_compact_comparator_cache_v2.py tests/data_collector_tests/test_a_share_three_day_compact_comparator_cache_v2.py && PYTHONPATH=/Volumes/DIsk/Disk-Coding/qlib /Volumes/DIsk/Coding/anaconda3/bin/python -m pytest -q tests/data_collector_tests/test_a_share_three_day_compact_comparator_cache_v2.py",
+  "exit_code": 1,
+  "observed": {
+    "passed": 4,
+    "failed": 2,
+    "failed_nodes": [
+      "test_explicit_alignment_preserves_values_and_marks_absent_keys_nan",
+      "test_explicit_alignment_fails_closed_on_duplicate_requested_key"
+    ],
+    "error_class": "AttributeError",
+    "error_message": "module scripts.a_share_three_day_walkforward_campaign044_features has no attribute comparison_engine"
+  },
+  "root_cause": "The unfrozen v2 implementation and its synthetic-test helper addressed comparison_engine as a Campaign044 module attribute. The frozen context exposes that engine as _context()[5], not as campaign044.comparison_engine.",
+  "bindings_before_repair": {
+    "protocol": {
+      "path": "docs/a_share_three_day_compact_comparator_cache_protocol_v2_20260805.json",
+      "sha256": "98fa0318754c145ce645d647e591d32b89bc1b432db36028899c48220029dec9"
+    },
+    "unfrozen_builder": {
+      "path": "scripts/a_share_three_day_compact_comparator_cache_v2.py",
+      "sha256": "a195ff6211d56f80f16f787b48d867f0fd70306bcb87d7e1d1f6941afbd6a12c"
+    },
+    "unfrozen_test": {
+      "path": "tests/data_collector_tests/test_a_share_three_day_compact_comparator_cache_v2.py",
+      "sha256": "1ee01d9afa9321fa4b2cb22a86ec70cd59dd04983845098b41628fd57f4a8abb"
+    }
+  },
+  "repair": {
+    "v2_protocol_edit_allowed": false,
+    "v2_implementation_freeze_already_created": false,
+    "allowed_unfrozen_edit": "Resolve the comparison engine through the already-bound frozen _context()[5] return value in both the loader and synthetic helper, then rerun the complete v2 prebuild suite."
+  },
+  "research_effect": {
+    "synthetic_temporary_parquet_only": true,
+    "real_comparison_factor_values_read": false,
+    "candidate_factor_values_read": false,
+    "historical_daily_price_or_forward_return_values_read": false,
+    "provider_request_issued": false,
+    "research_attempt_count_increment": 0,
+    "return_reading_development_trial_count_increment": 0,
+    "cache_infrastructure_failure_count_increment": 1,
+    "cumulative_cache_infrastructure_failure_count": 3
+  }
+}

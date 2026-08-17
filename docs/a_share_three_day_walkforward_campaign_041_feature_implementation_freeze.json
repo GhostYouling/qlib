@@ -1,0 +1,78 @@
+{
+  "version": 1,
+  "kind": "a_share_three_day_walkforward_campaign041_feature_implementation_freeze",
+  "status": "frozen_after_synthetic_tests_before_campaign041_candidate_or_comparison_values",
+  "frozen_at": "2026-07-31T05:50:00Z",
+  "purpose": "Bind the exact Campaign041 implementation and its synthetic fail-closed evidence before any external minute partition or protected factor value is read.",
+  "authoritative_inputs": {
+    "iteration_state": {
+      "path": "docs/a_share_three_day_iteration_status_20260731_campaign040_verified.json",
+      "sha256": "dd561aac051eed7ecb1c574c61ac258c5e62954d7390c503a5444cf8a0fe2bba"
+    },
+    "concept_scouting": {
+      "path": "docs/a_share_three_day_walkforward_campaign_041_concept_scouting.json",
+      "sha256": "a14de52467575a53848d3140a6698de4575c1c8d805f688c3966e947df86fed0"
+    },
+    "mechanism_overlap_audit": {
+      "path": "docs/a_share_three_day_walkforward_campaign_041_mechanism_overlap_audit.json",
+      "sha256": "2eee8a371218fe931274c577365c0ad3c1d9d0374665321791477ac9e422a3ba"
+    },
+    "no_return_preregistration": {
+      "path": "docs/a_share_three_day_walkforward_campaign_041_no_return_preregistration.json",
+      "sha256": "6691fb6a382d6f2f481473f25a0060606edf59290bc822b635b23de25105ae7c"
+    },
+    "feature_runner": {
+      "path": "scripts/a_share_three_day_walkforward_campaign041_features.py",
+      "sha256": "60c2ef5b7156985277d69c713312712e020c6b29993a22fc986ddcc5fe800e98"
+    },
+    "synthetic_tests": {
+      "path": "tests/data_collector_tests/test_a_share_three_day_walkforward_campaign041_features.py",
+      "sha256": "4221f4918762c844ae5de7b167215a59f15d4066ab85d7d48207bf3d2642990c"
+    }
+  },
+  "implementation_contract": {
+    "factor_name": "intraday_microgap_absorption_share_238p",
+    "direction": "higher",
+    "raw_projection": [
+      "datetime",
+      "symbol",
+      "provider",
+      "open",
+      "high",
+      "low",
+      "close"
+    ],
+    "fixed_transition_count": 238,
+    "minimum_informative_nonzero_gaps": 30,
+    "zero_gap_excluded": true,
+    "closed_interval_absorption": true,
+    "lunch_transition_excluded": true,
+    "all_240_bars_exact_ohlc_validity_required": true,
+    "comparison_count": 62,
+    "comparison_order_sha256": "16ea65e40e50d1ef04f967da6f98aa077791bcd1680fab78d2cf28d0509713d8"
+  },
+  "validation": {
+    "binding_validator_exit_code": 0,
+    "binding_validator_all_passed": true,
+    "synthetic_test_count": 8,
+    "synthetic_test_failures": 0,
+    "shape_and_ohlc_fail_closed_tested": true,
+    "zero_gap_exclusion_tested": true,
+    "minimum_support_boundary_tested": true,
+    "lunch_exclusion_tested": true,
+    "exact_comparison_order_tested": true,
+    "status_no_return_boundary_tested": true
+  },
+  "research_boundary": {
+    "external_minute_partitions_read_before_freeze": false,
+    "candidate_values_read_before_freeze": false,
+    "comparison_values_read_before_freeze": false,
+    "historical_daily_price_fields_read_before_freeze": false,
+    "historical_forward_returns_read_before_freeze": false,
+    "provider_request_issued": false,
+    "candidate49_ledgers_changed": false,
+    "candidate50_activation_created": false,
+    "current_scoring_selection_sizing_or_orders_performed": false
+  },
+  "next_action": "Validate all five freeze-boundary records, then build exactly one immutable Campaign041 feature snapshot from the accepted local Tushare minute source."
+}

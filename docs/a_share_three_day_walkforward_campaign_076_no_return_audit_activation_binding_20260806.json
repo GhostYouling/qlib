@@ -1,0 +1,35 @@
+{
+  "version": 1,
+  "kind": "a_share_three_day_walkforward_campaign076_no_return_audit_activation_binding",
+  "status": "frozen_before_coverage_or_comparison_values",
+  "frozen_at": "2026-08-06T11:25:00+08:00",
+  "implementation_freeze": {
+    "path": "docs/a_share_three_day_walkforward_campaign_076_no_return_audit_implementation_freeze_20260806.json",
+    "sha256": "23d625f8dde94e84a2d1d88aa51ef51532b2466acf44d84d1b7825a90aab51bc"
+  },
+  "snapshot_binding": {
+    "path": "docs/a_share_three_day_walkforward_campaign_076_feature_snapshot_binding_20260806.json",
+    "sha256": "ab89095b907d597bd1291baad8aa6443e5e14e9e20952df8e98d2ed65cfe4b09"
+  },
+  "candidate_snapshot": {
+    "path": "/Volumes/DIsk/qlib-a-share-tushare-1m/derived/a_share/rich/tushare/minute_walkforward_campaign076_feature_library/tushare_stk_mins_1m_2019_2025_ea0cbb8f_walkforward_campaign076_feature_library_v1/snapshot_manifest.json",
+    "sha256": "dc23177c4125142fb2287fb3e19a4be8a3cd53b70abd3be91718979aaf200f32",
+    "dataset_sha256": "aef7cfb7cbc3ccaabe5552a4ed4f81ea8582d5f739153dd405b70e2a73b3a952",
+    "partitions": 33015,
+    "rows": 7724498,
+    "eligible_rows": 7724498
+  },
+  "comparison_chain": {
+    "prior_105_comparators": "Campaign075 v5 corrected frozen compatibility chain",
+    "appended_106th_comparator": "accepted_instrument_session_youth_20s/higher from the immutable Campaign075 snapshot",
+    "numeric_comparator_count": 106,
+    "numeric_comparator_order_sha256": "8a68220072bda50e86448d3f355760ab14f90b6d391b1389e174262f7ca215e1"
+  },
+  "coverage_or_capacity_metrics_computed_before_activation": false,
+  "comparison_values_read_before_activation": false,
+  "historical_daily_price_fields_read_before_activation": [],
+  "historical_forward_returns_read_before_activation": false,
+  "provider_request_issued_before_activation": false,
+  "candidate49_ledgers_changed_before_activation": false,
+  "next_action": "Run Campaign076 no-return audit once under the frozen pandas 2.2.3 / pyarrow 25.0.0 compatibility runtime."
+}

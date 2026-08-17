@@ -1,0 +1,67 @@
+{
+  "schema_version": 1,
+  "kind": "a_share_three_day_walkforward_campaign090_feature_implementation_freeze",
+  "status": "frozen_before_campaign090_minute_source_rows_or_candidate_values",
+  "recorded_at": "2026-08-07T05:58:00+08:00",
+  "purpose": "Bind the exact Campaign090 formula implementation, synthetic tests, protocol, predecessor runner, and attempt history before the first historical minute source row or candidate value is read.",
+  "protocol": {
+    "path": "docs/a_share_three_day_walkforward_campaign_090_no_return_preregistration.json",
+    "sha256": "4b08b70625483f8d43795d2173108b72fa09f418abbd74aa143354ef1c5487cc"
+  },
+  "mechanism_overlap_audit": {
+    "path": "docs/a_share_three_day_walkforward_campaign_090_mechanism_overlap_audit.json",
+    "sha256": "0a550ef4e0bba078b7c876190ad4ab21c64f23154fc63ef06fc435fdaab8ed87"
+  },
+  "feature_runner": {
+    "path": "scripts/a_share_three_day_walkforward_campaign090_features.py",
+    "sha256": "51a7c4a8a43c6a2829c72d99800d9d46355138f0d6a1b0ddae200119c965c794"
+  },
+  "tests": {
+    "path": "tests/data_collector_tests/test_a_share_three_day_walkforward_campaign090_features.py",
+    "sha256": "70181f3da3962f276bbfe96d536ccbca287396a24e341d76a23307402e62cc4d",
+    "synthetic_result": "5 passed",
+    "historical_source_values_read": false
+  },
+  "base_runner": {
+    "path": "scripts/a_share_three_day_walkforward_campaign089_features.py",
+    "sha256": "64c0dc5a2331446e9acf57a00411b67bf3543d49104d89cdde07c91e8c2ee407",
+    "reuse_boundary": "Only frozen publication, stock-day identity, and file-verification scaffolding are reused; Campaign090 replaces the formula, source projection, range semantics, prior comparator chain, and protocol bindings."
+  },
+  "research_attempt_ledger": {
+    "path": "data/experiments/short_horizon/historical_walkforward/campaign_090/research_attempt_ledger_v2.json",
+    "sha256": "3ec31856917f25a6ab374686211fb7aef63e73b8b0c36aabaec0f07ae33e82ad",
+    "campaign_attempt_count": 4,
+    "return_reading_development_trial_count": 0
+  },
+  "frozen_factor": {
+    "name": "intraday_range_clock_center_240m",
+    "direction": "higher",
+    "source_projection": [
+      "datetime",
+      "symbol",
+      "provider",
+      "high",
+      "low"
+    ],
+    "selected_bar_count": 240,
+    "clock_denominator": 239,
+    "formula": "r_i=ln(high_i/low_i), x_i=i/239, score=sum(x_i*r_i)/sum(r_i)",
+    "valid_range": [
+      0,
+      1
+    ],
+    "endpoint_tolerance": 1e-12
+  },
+  "research_boundary": {
+    "candidate_source_rows_read_before_freeze": false,
+    "candidate_values_computed_before_freeze": false,
+    "comparison_values_read_before_freeze": false,
+    "historical_daily_price_or_forward_return_values_read_before_freeze": false,
+    "provider_request_issued_before_freeze": false,
+    "candidate49_historical_backfill_performed": false,
+    "candidate49_ledgers_changed": false,
+    "second_prospective_candidate_created": false,
+    "current_scoring_selection_sizing_or_orders_performed": false
+  },
+  "next_action": "Run the exact immutable local snapshot build once; no alternate formula, direction, source field, clock, threshold, filter, subset, model, or combination is authorized."
+}

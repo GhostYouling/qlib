@@ -1,0 +1,33 @@
+{
+  "schema_version": 1,
+  "kind": "a_share_three_day_walkforward_campaign099_compact_feature_identity_helper_failure",
+  "status": "recorded_before_repair_or_partial_archive",
+  "recorded_at": "2026-08-07T10:55:49Z",
+  "frozen_runner": {
+    "path": "scripts/a_share_three_day_walkforward_campaign099_compact_features.py",
+    "sha256": "1928f00a607a90f8e692919c23d79830d5732c6ed8dad92e18ac72e7f292e646"
+  },
+  "implementation_freeze": {
+    "path": "docs/a_share_three_day_walkforward_campaign_099_compact_feature_implementation_freeze_20260807.json",
+    "sha256": "296aeb8d3e1ad2b00632727e217d59c8295ff3f40bef498dc5811067490a0842"
+  },
+  "failure": {
+    "exception_type": "AttributeError",
+    "message": "Campaign099 no-return audit module has no attribute compact_stock_day_keys",
+    "stage": "after_full_source_factor_panel_read_before_identity_compaction_or_partition_write",
+    "exit_code": 1
+  },
+  "partial_state": {
+    "published": false,
+    "partial_root_exists": true,
+    "partial_partition_files": 0
+  },
+  "scientific_boundary": {
+    "candidate_factor_values_read": true,
+    "compact_values_published": false,
+    "historical_daily_price_or_forward_return_values_read": false,
+    "provider_request_issued": false,
+    "candidate49_ledgers_changed": false
+  },
+  "only_allowed_repair": "replace the generated audit_v1.compact_stock_day_keys reference with audit_v1.c97_audit.compact_stock_day_keys, archive the empty partial root, rerun tests and freeze additively before rebuild"
+}

@@ -1,0 +1,24 @@
+{
+  "schema_version": 1,
+  "kind": "a_share_three_day_walkforward_campaign121_infrastructure_failure",
+  "status": "recorded_during_test_collection_before_any_source_or_research_value",
+  "recorded_at": "2026-08-14T01:43:00+08:00",
+  "attempt_id": "campaign121_infrastructure_005",
+  "phase": "coverage_audit_template_import",
+  "failure": {
+    "exit_code": 2,
+    "class": "absent_template_date_token",
+    "message": "The frozen Campaign119 wrapper contains no literal 20260813.json token at the outer transformation level.",
+    "affected_path": "scripts/a_share_three_day_walkforward_campaign121_no_return_audit.py"
+  },
+  "safe_recovery": "Remove only the impossible outer date replacement. Preserve the inherited activation filename suffix and document that its contents and recorded_at remain the authority.",
+  "research_boundary": {
+    "source_rows_read": false,
+    "candidate_values_computed_or_read": false,
+    "comparator_values_read": false,
+    "historical_daily_price_or_forward_return_values_read": false,
+    "provider_request_issued": false,
+    "candidate49_ledgers_changed": false,
+    "scientific_result_changed": false
+  }
+}

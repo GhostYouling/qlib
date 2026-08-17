@@ -1,0 +1,73 @@
+{
+  "schema_version": 1,
+  "kind": "a_share_three_day_walkforward_campaign216_terminal_validation",
+  "recorded_at": "2026-08-16T00:11:00+08:00",
+  "timestamp_semantics": "monotonic_logical_append_time_not_host_wall_clock_measurement",
+  "status": "passed",
+  "authoritative_inputs": {
+    "terminal_result_v2": {
+      "path": "docs/a_share_three_day_walkforward_campaign_216_terminal_result_v2_20260816.json",
+      "sha256": "669425f290bdc0fadbcd0964fadd1f72f0632a375b08843b1138441921666b64"
+    },
+    "attempt_ledger_v2": {
+      "path": "data/experiments/short_horizon/historical_walkforward/campaign_216/research_attempt_ledger_v2.json",
+      "sha256": "8ca2254640aa3ecf46f265445cbd11f474125950ab6921e23fa78469171175b8"
+    },
+    "policy_v327": {
+      "path": "docs/a_share_three_day_walkforward_future_numeric_comparison_eligibility_policy_v327_20260816.json",
+      "sha256": "68f574b31af81806f93a10514be6ad4f1827f5303f3dc64cd1f3abe0ffa87795"
+    },
+    "terminal_test": {
+      "path": "tests/data_collector_tests/test_a_share_three_day_walkforward_campaign216_terminal.py",
+      "sha256": "7a76ff9aab4f99ce5b150e444187685bca3cda1e29232fe3ec7a69aee6ff7410"
+    }
+  },
+  "focused_validation": {
+    "command": "PYTHONPATH=. /Volumes/DIsk/Coding/anaconda3/bin/python3.12 -m pytest -q tests/data_collector_tests/test_a_share_three_day_walkforward_campaign216_terminal.py",
+    "passed": 2,
+    "failed": 0,
+    "elapsed_seconds_observed": 0.08
+  },
+  "cumulative_validation": {
+    "selection_method": "Python pathlib glob plus regex decimal campaign extraction, bounded to Campaign145 through Campaign216",
+    "selected_test_file_count": 104,
+    "deselection_catalog_policy": "docs/a_share_three_day_walkforward_future_numeric_comparison_eligibility_policy_v311_20260815.json",
+    "deselected_node_count": 31,
+    "passed": 487,
+    "skipped": 1,
+    "failed": 0,
+    "elapsed_seconds_observed": 15.40,
+    "exit_code": 0
+  },
+  "independent_validation": {
+    "passed": true,
+    "checks": [
+      "all immutable path and SHA-256 references resolve",
+      "seven-route frontier has three source deferrals, four rejections and zero selected factors",
+      "append-only attempt chains recompute from the Campaign215 tip through ten Campaign216 v1 entries and one additive v2 entry",
+      "effective accounting is eleven Campaign216 attempts, 2010 cumulative attempts and 314 return-reading trials",
+      "both mutable reports each contain one Campaign216 heading and match policy publication hashes",
+      "Candidate49 signal and execution ledgers independently parse to zero entries and retain their frozen hashes",
+      "policy keeps 2024-2025, provider, credentials, Candidate49 execution and current-use boundaries closed",
+      "104 Campaign145-216 test files and 31 exact deselection nodes match effective policy"
+    ]
+  },
+  "format_and_lint_validation": {
+    "black_format_applied_before_validation": true,
+    "effective_black_check_passed": true,
+    "ruff_check_passed": true
+  },
+  "research_boundary": {
+    "validation_read_any_automotive_source_factor_comparator_security_price_or_return_value": false,
+    "failed_or_truncated_output_used_as_validation_or_scientific_evidence": false,
+    "stress_2024_2025_opened": false,
+    "provider_or_web_request_issued": false,
+    "provider_credential_presence_value_or_digest_read": false,
+    "candidate49_plan_or_run_executed": false,
+    "candidate49_ledgers_changed": false,
+    "second_prospective_candidate_created": false,
+    "current_scoring_selection_sizing_positions_or_orders_performed": false,
+    "investment_advice": false
+  },
+  "next_action": "Publish the Campaign216 verified status without rewriting prior evidence and authorize Campaign217 offline prevalue work while the continuous goal remains active."
+}

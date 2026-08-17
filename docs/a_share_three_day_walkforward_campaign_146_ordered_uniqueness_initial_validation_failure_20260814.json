@@ -1,0 +1,35 @@
+{
+  "schema_version": 1,
+  "kind": "a_share_three_day_walkforward_campaign146_infrastructure_failure",
+  "status": "recorded_ordered_uniqueness_initial_validation_failures_before_comparator_values",
+  "recorded_at": "2026-08-14T21:51:00+08:00",
+  "attempt_id": "campaign146_infrastructure_006",
+  "stage": "all_141_ordered_uniqueness_runner_synthetic_validation",
+  "failures": [
+    {
+      "check": "pytest",
+      "exit_code": 1,
+      "result": "5 passed, 1 failed",
+      "failure": "The read-only Campaign136 manifest predicate used guessed kind/status/factor header semantics and rejected the real immutable metadata."
+    },
+    {
+      "check": "black_check",
+      "exit_code": 1,
+      "failure": "Both new uniqueness files would be reformatted."
+    },
+    {
+      "check": "ruff",
+      "exit_code": 1,
+      "failure": "The runner had two unused imports: math and pyarrow.parquet."
+    }
+  ],
+  "resolution": "Inspect only the already-bound Campaign136 manifest metadata, correct the exact header predicate, remove the two unused imports, mechanically format both files, then rerun the unchanged six-test, Black-check, and Ruff scopes.",
+  "scientific_effect": {
+    "formula_direction_source_order_gate_or_catalog_changed": false,
+    "candidate_values_read_beyond_prior_coverage": false,
+    "comparator_partition_values_read": false,
+    "daily_price_or_forward_return_read": false,
+    "provider_request_issued": false,
+    "candidate49_ledgers_changed": false
+  }
+}

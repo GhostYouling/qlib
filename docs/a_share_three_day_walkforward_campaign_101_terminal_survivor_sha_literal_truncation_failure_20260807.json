@@ -1,0 +1,47 @@
+{
+  "schema_version": 1,
+  "kind": "a_share_three_day_walkforward_campaign101_terminal_survivor_sha_literal_truncation_failure",
+  "status": "terminal_binding_validation_failed_without_artifact_or_scientific_change",
+  "recorded_at": "2026-08-07T14:29:47Z",
+  "failed_command": "a_share_three_day_preregistration_binding_validator over Campaign101 terminal result, v55 policy, terminal freeze, and iteration status",
+  "failure": {
+    "affected_json_pointers": [
+      "/development/survivors",
+      "/development_artifacts/survivors"
+    ],
+    "expected_sha256_literal": "a9a704c37e6975f4cf54f7e245d0d7ad689fda3f224539b81979c1cf56303e1",
+    "observed_and_correct_sha256": "a9a704c37e6975f4cf54f7e245d0d7ad689fda3f224539b81979c1cf56303e1c",
+    "root_cause": "The final hexadecimal character was omitted while manually transcribing the already observed 64-character survivor file SHA-256 into two new terminal records."
+  },
+  "preserved_failed_records": [
+    {
+      "path": "docs/a_share_three_day_walkforward_campaign_101_terminal_result_binding_20260807.json",
+      "sha256": "0ff78e9319d04fb687a92dbe5b1ee43ff8bf707609f8fceca603d7c40aef6862"
+    },
+    {
+      "path": "docs/a_share_three_day_walkforward_campaign_101_terminal_completion_freeze_20260807.json",
+      "sha256": "77a462de5b9548ccb51accecef9bcfa25ca0137676cda2e082c38ce1b1cc9201"
+    },
+    {
+      "path": "docs/a_share_three_day_iteration_status_20260807_campaign101_terminal.json",
+      "sha256": "06654d9cbeae2ce9d45c8f24bdc9ac37b69c7eaa69e7219f48b04b64555141ab"
+    }
+  ],
+  "validation_summary": {
+    "binding_count": 32,
+    "passed_binding_count": 30,
+    "failed_binding_count": 2,
+    "distinct_root_cause_count": 1,
+    "tests_reached_after_fail_fast_validator": false
+  },
+  "correction_boundary": {
+    "failed_records_may_be_rewritten": false,
+    "append_corrected_v2_binding_freeze_and_status": true,
+    "formula_factor_values_folds_cost_gates_metrics_survivors_or_stress_state_may_change": false,
+    "additional_research_values_read": false,
+    "stress_2024_2025_read": false,
+    "provider_request_issued": false,
+    "candidate49_ledgers_changed": false,
+    "current_scoring_selection_sizing_or_orders_performed": false
+  }
+}

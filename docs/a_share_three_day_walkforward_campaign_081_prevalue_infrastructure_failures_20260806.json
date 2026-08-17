@@ -1,0 +1,93 @@
+{
+  "schema_version": 1,
+  "kind": "a_share_three_day_walkforward_campaign081_prevalue_infrastructure_failures",
+  "status": "seven_failures_recorded_and_corrected_before_implementation_freeze_or_source_values",
+  "recorded_at": "2026-08-06T17:09:00+08:00",
+  "failures": [
+    {
+      "ordinal": 1,
+      "stage": "authoritative_status_environment_probe",
+      "observed": "The shell had no python alias, so the read-only status command exited with command not found before its Python body ran.",
+      "root_cause": "non-frozen interpreter alias assumption",
+      "correction": "Use the repository's explicit /Volumes/DIsk/Coding/anaconda3/bin/python3.12 interpreter for every Campaign081 command."
+    },
+    {
+      "ordinal": 2,
+      "stage": "credential_presence_safety_probe",
+      "observed": "The credential loader was accidentally passed the repository directory rather than the repository .env path and rejected it as not a regular file.",
+      "root_cause": "caller argument path error; the fail-closed regular-file check worked",
+      "correction": "Call the unchanged loader with root / '.env' and inspect only a nonempty boolean; no secret was printed, hashed, or logged."
+    },
+    {
+      "ordinal": 3,
+      "stage": "concept_binding_validation_invocation",
+      "observed": "A nonexistent generic scripts/a_share_three_day_binding_validator.py path was invoked and exited before validation.",
+      "root_cause": "validator filename assumption",
+      "correction": "Use scripts/a_share_three_day_preregistration_binding_validator.py for JSON record binding validation and direct hash assertions for the concept record."
+    },
+    {
+      "ordinal": 4,
+      "stage": "feature_test_template_inspection",
+      "observed": "The first wc/sed inspection used tests/test_a_share_three_day_walkforward_campaign080_features.py, which does not exist.",
+      "root_cause": "omitted tests/data_collector_tests directory",
+      "correction": "Resolve the existing test through rg --files and use tests/data_collector_tests/test_a_share_three_day_walkforward_campaign080_features.py."
+    },
+    {
+      "ordinal": 5,
+      "stage": "nearest_mechanism_formula_lookup",
+      "observed": "A zsh unmatched wildcard for docs/*signed_path* caused the inspection command to exit after the useful file output.",
+      "root_cause": "unquoted glob with no filesystem match",
+      "correction": "Use rg file discovery and explicit paths; the frozen nearest-mechanism formulas were then inspected without candidate or return values."
+    },
+    {
+      "ordinal": 6,
+      "stage": "feature_runner_patch_application",
+      "observed": "The first large apply_patch hunk did not match because a prior mechanical campaign-number rewrite had already changed one expected line; no hunk was applied.",
+      "root_cause": "stale patch context",
+      "correction": "Re-read the affected region and apply smaller exact-context patches."
+    },
+    {
+      "ordinal": 7,
+      "stage": "feature_extraction_patch_application",
+      "observed": "The first extraction-function patch did not match the exact placement of an empty-frame branch; no hunk was applied.",
+      "root_cause": "overly broad context hunk",
+      "correction": "Replace the exact contiguous extraction block and then patch remaining call sites separately."
+    }
+  ],
+  "corrected_prevalue_result": {
+    "protocol_binding_count": 11,
+    "protocol_bindings_passed": 11,
+    "synthetic_nonfreeze_tests_passed": 5,
+    "synthetic_nonfreeze_tests_failed": 0,
+    "feature_runner_py_compile_passed": true,
+    "factor_formula_changed_after_values": false,
+    "protocol_changed_after_values": false,
+    "gate_or_threshold_changed": false
+  },
+  "bindings_after_correction": {
+    "protocol": {
+      "path": "docs/a_share_three_day_walkforward_campaign_081_no_return_preregistration.json",
+      "sha256": "84400ac6f7dca933333dcfbd314753328e9e00f905d94c68632528c8767a6853"
+    },
+    "feature_runner": {
+      "path": "scripts/a_share_three_day_walkforward_campaign081_features.py",
+      "sha256": "1148538bbe6b4d933eb544fbe1e1aff4aa39acd27c39a8bd859efa13a1603b6d"
+    },
+    "tests": {
+      "path": "tests/data_collector_tests/test_a_share_three_day_walkforward_campaign081_features.py",
+      "sha256": "7bb6abd56264228265da1ec6449c7f3732f6514163a5320fcd8d09ef22217b93"
+    }
+  },
+  "research_boundary": {
+    "candidate_source_rows_read": false,
+    "candidate_historical_values_computed": false,
+    "comparison_values_read": false,
+    "historical_daily_price_fields_read": [],
+    "historical_forward_returns_read": false,
+    "provider_request_issued": false,
+    "credential_secret_printed_hashed_or_logged": false,
+    "candidate49_historical_backfill_performed": false,
+    "candidate49_ledgers_changed": false,
+    "current_scoring_selection_sizing_or_orders_performed": false
+  }
+}

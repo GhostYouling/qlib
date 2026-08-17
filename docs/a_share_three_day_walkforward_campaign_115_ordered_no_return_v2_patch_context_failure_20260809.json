@@ -1,0 +1,46 @@
+{
+  "schema_version": 1,
+  "kind": "a_share_three_day_walkforward_campaign115_ordered_no_return_v2_patch_context_failure",
+  "status": "recorded_before_smaller_exact_context_repair_and_before_candidate_or_comparator_values",
+  "recorded_at": "2026-08-09T06:34:00+08:00",
+  "recorded_at_semantics": "monotonic_logical_append_time_after_static_partition_digest_field_failure_not_host_wall_clock_measurement",
+  "frozen_inputs": {
+    "implementation_freeze_v1": {
+      "path": "docs/a_share_three_day_walkforward_campaign_115_ordered_no_return_audit_implementation_freeze_v1_20260809.json",
+      "sha256": "2e6f5987456ff0449abca1eaff9dea4690a48d458da6b9832564118bb6d870e4"
+    },
+    "static_partition_digest_field_failure": {
+      "path": "docs/a_share_three_day_walkforward_campaign_115_ordered_no_return_static_partition_digest_field_failure_20260809.json",
+      "sha256": "2387f27314390a265a3e6fb285ac6b3762b9f0dd2f103f0f0374ae169b72b0b2"
+    },
+    "runner_v1": {
+      "path": "scripts/a_share_tushare_limit_up_queue_no_return_audit.py",
+      "sha256": "802716fcd3f9c04025489a6ef6d7a51f9344402b6884f2c61d60603bb980f8d3"
+    }
+  },
+  "failed_command": {
+    "kind": "apply_patch_context_verification",
+    "exit_semantics": "verification_failed_before_write",
+    "cause": "the_combined_patch_used_pre_black_context_that_no_longer_matched_the_formatted_runner",
+    "target_file_written": false,
+    "candidate_or_comparator_value_read": false
+  },
+  "authorized_additive_repair": {
+    "use_smaller_exact_context_apply_patch_hunks": true,
+    "partition_digest_adapter_scope_only": true,
+    "formula_direction_order_years_gates_paths_and_value_load_boundaries_may_change": false,
+    "new_implementation_freeze_required": true
+  },
+  "research_boundary": {
+    "candidate_values_read": false,
+    "comparator_values_read": false,
+    "daily_price_or_forward_return_values_read": false,
+    "partition_year_2024_or_2025_values_read": false,
+    "provider_request_issued": false,
+    "credential_loaded": false,
+    "candidate49_ledgers_changed": false,
+    "second_prospective_candidate_created": false,
+    "current_scoring_selection_sizing_or_orders_performed": false,
+    "investment_advice": false
+  }
+}

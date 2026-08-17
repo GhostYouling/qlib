@@ -1,0 +1,44 @@
+{
+  "version": 2,
+  "kind": "a_share_three_day_walkforward_campaign085_no_return_audit_activation_binding_v2",
+  "status": "v2_frozen_before_repaired_coverage_or_comparison_values",
+  "recorded_at": "2026-08-07T00:28:00+08:00",
+  "implementation_freeze": {
+    "path": "docs/a_share_three_day_walkforward_campaign_085_no_return_audit_implementation_freeze_v2_20260807.json",
+    "sha256": "1c2d6d25373d7afd577d7eabdf51a70aa1a5c4517ec67a2722d37318abc8d1a3"
+  },
+  "repair_protocol": {
+    "path": "docs/a_share_three_day_walkforward_campaign_085_no_return_audit_repair_protocol_v2_20260807.json",
+    "sha256": "57753b98cd069b9d554bf4de2e6cffd2f0664c8c997bd4a4477344ea92473a46"
+  },
+  "snapshot_binding": {
+    "path": "docs/a_share_three_day_walkforward_campaign_085_feature_snapshot_binding_20260806.json",
+    "sha256": "ce70c107d654b1d6151fde87bd5f177ee458cb2db825080cf1c6206df249ba4f"
+  },
+  "candidate_snapshot": {
+    "path": "/Volumes/DIsk/qlib-a-share-tushare-1m/derived/a_share/rich/tushare/minute_walkforward_campaign085_feature_library/tushare_stk_mins_1m_2019_2025_ea0cbb8f_walkforward_campaign085_feature_library_v1/snapshot_manifest.json",
+    "sha256": "fb8ea4bdb2b2f783a8c1d4e020f1dcdfca1697c779c732e50233fe7b040b4d28",
+    "dataset_sha256": "368f7cb96c15186cd511ccd4120e89b577141aa9687df8b39f9dd17320db8fb9",
+    "rows": 1331759,
+    "eligible_rows": 1328065,
+    "file_record_years": [
+      2019,
+      2020,
+      2021,
+      2022,
+      2023,
+      2024,
+      2025
+    ]
+  },
+  "invalid_v1_audit_preserved_and_not_reused": true,
+  "v2_experiment_root_is_new_and_empty": "data/experiments/short_horizon/historical_walkforward/campaign_085/no_return_v2",
+  "coverage_or_capacity_metrics_computed_before_activation": false,
+  "comparison_values_read_before_activation": false,
+  "historical_daily_price_fields_read_before_activation": [],
+  "historical_forward_returns_read_before_activation": false,
+  "provider_request_issued_before_activation": false,
+  "candidate49_ledgers_changed_before_activation": false,
+  "second_prospective_candidate_created": false,
+  "current_scoring_selection_sizing_or_orders_performed": false
+}

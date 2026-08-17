@@ -1,0 +1,25 @@
+{
+  "schema_version": 1,
+  "kind": "a_share_three_day_walkforward_campaign173_test_binding_patch_context_failure",
+  "status": "recorded_zero_write_apply_patch_context_failure",
+  "recorded_at": "2026-08-15T09:58:43+08:00",
+  "attempt": {
+    "phase": "update_terminal_test_to_effective_v3_records",
+    "result": "apply_patch_context_not_found_zero_write",
+    "failure_reason": "The patch expected compact constant assignments, while Black had expanded TERMINAL, REPORT and POLICY into multiline assignments.",
+    "target_file_changed_by_failed_patch": false,
+    "failure_exit_bypassed_or_masked": false,
+    "candidate_comparator_security_price_or_return_value_read": false
+  },
+  "recovery": {
+    "exact_current_test_text_read_after_failure": true,
+    "next_patch_uses_exact_black_formatted_context": true,
+    "historical_test_or_policy_bytes_modified": false
+  },
+  "scientific_effect": {
+    "formula_direction_catalog_or_decision_changed": false,
+    "candidate_or_comparator_value_read": false,
+    "security_price_or_return_read": false,
+    "candidate49_ledgers_changed": false
+  }
+}

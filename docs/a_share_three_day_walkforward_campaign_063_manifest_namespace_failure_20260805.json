@@ -1,0 +1,67 @@
+{
+  "version": 1,
+  "kind": "a_share_three_day_walkforward_campaign063_feature_build_infrastructure_failure",
+  "status": "failed_closed_after_all_partitions_before_manifest_publication_comparison_values_daily_prices_or_returns",
+  "recorded_at": "2026-08-05T06:45:00+08:00",
+  "attempt_id": "campaign063_infrastructure_003_manifest_namespace_binding",
+  "command": "PYTHONPATH=<repository-root>:<third-party-site-packages> python -S scripts/a_share_three_day_walkforward_campaign063_empty_partition_repair.py build --data-root /Volumes/DIsk/qlib-a-share-tushare-1m --workers 8",
+  "exit_code": 1,
+  "failure_stage": "aggregate_manifest_construction_before_validation_or_publication",
+  "exception": "NameError: name 'MARKET_BENCHMARK_MANIFEST_SHA256' is not defined",
+  "root_cause": "The frozen inner atomic-publication engine references five preregistered Campaign063 benchmark/gate constants and the moment-helper module after the outer adapter, but those exact names were not injected into the inner generated function namespace.",
+  "preserved_partial_snapshot": {
+    "root": "/Volumes/DIsk/qlib-a-share-tushare-1m/derived/a_share/rich/tushare/minute_walkforward_campaign063_feature_library/.tushare_stk_mins_1m_2019_2025_ea0cbb8f_walkforward_campaign063_feature_library_v1.partial",
+    "complete_checkpoint_partitions": 33015,
+    "complete_output_partitions": 33015,
+    "expected_total_partitions": 33015,
+    "top_level_manifest_written": false,
+    "formal_snapshot_published": false,
+    "deleted_rewritten_or_recomputed": false
+  },
+  "immutable_inputs": {
+    "original_feature_runner": {
+      "path": "scripts/a_share_three_day_walkforward_campaign063_features.py",
+      "sha256": "c6987c8cb59d1a6091eeceed923406fcee4c00d943da5665d0abef674b17ab1b"
+    },
+    "empty_partition_repair_launcher": {
+      "path": "scripts/a_share_three_day_walkforward_campaign063_empty_partition_repair.py",
+      "sha256": "a158a4b1f7dd4531a7da17b16cf1f9ea77e10f973a5a94155c9ea8fd4ddf81f7"
+    },
+    "empty_partition_repair_freeze": {
+      "path": "docs/a_share_three_day_walkforward_campaign_063_empty_partition_repair_freeze_20260805.json",
+      "sha256": "030397749f6a4fd44bd814430fd4f7afb3304762103bd0893b4b0e78f6444e51"
+    }
+  },
+  "value_boundary": {
+    "all_candidate_partitions_computed_and_checkpointed": true,
+    "candidate_values_manually_inspected_or_used_to_change_formula_direction_peer_rule_loss_transform_threshold_or_gate": false,
+    "comparison_values_read": false,
+    "historical_daily_price_fields_read": [],
+    "historical_forward_return_fields_read": false,
+    "development_folds_opened": false,
+    "stress_2024_2025_opened": false,
+    "candidate49_historical_backfill_performed": false,
+    "candidate49_ledgers_changed": false,
+    "provider_request_issued": false
+  },
+  "repair_boundary": {
+    "authorized": true,
+    "only_names_allowed_in_generated_namespace": [
+      "campaign004",
+      "MARKET_BENCHMARK_MANIFEST_SHA256",
+      "MARKET_BENCHMARK_BYTE_SHA256",
+      "MARKET_BENCHMARK_FRAME_SHA256",
+      "MINIMUM_LEAVE_ONE_OUT_PEERS",
+      "MINIMUM_INFORMATIVE_POSITIONS"
+    ],
+    "all_injected_values_must_be object_identical_or_equal_to_frozen_campaign063_module_values": true,
+    "partition_extractor_compute_output_manifest_validator_formula_direction_gates_or_bytes_may_change": false,
+    "resume_must_revalidate_and_reuse_all_33015_checkpoints": true
+  },
+  "counting": {
+    "campaign063_research_attempt_increment": 1,
+    "campaign063_infrastructure_only_failure_increment": 1,
+    "campaign063_complete_factor_attempt_increment": 0,
+    "return_reading_development_trial_increment": 0
+  }
+}

@@ -1,0 +1,25 @@
+{
+  "schema_version": 1,
+  "kind": "a_share_three_day_walkforward_campaign190_infrastructure_failure",
+  "status": "recorded_recovered_no_scientific_evidence_consumed",
+  "recorded_at": "2026-08-15T14:26:37+08:00",
+  "failure_id": "campaign190_infrastructure_007",
+  "operation": "Run Black, Ruff, and the Campaign190 focused test with a presumed repository-local virtual environment.",
+  "observed_failure": "The command exited at the first stage because .venv/bin/black does not exist; Ruff and pytest did not run.",
+  "failure_class": "missing_presumed_repository_local_venv_black_exit_127",
+  "repair": {
+    "scope": "Resolve the installed Black, Ruff, and pytest binaries before retrying the unchanged validation command.",
+    "scientific_semantics_changed": false
+  },
+  "recovery": {
+    "installed_tool_prefix_resolved": true,
+    "tool_prefix": "/Volumes/DIsk/Coding/anaconda3/bin",
+    "focused_validation_completed": false
+  },
+  "research_boundary": {
+    "scientific_attempt": false,
+    "source_factor_comparator_security_price_or_return_value_read": false,
+    "stress_2024_2025_opened": false,
+    "candidate49_ledgers_changed": false
+  }
+}

@@ -1,0 +1,150 @@
+{
+  "schema_version": 1,
+  "kind": "a_share_three_day_iteration_status",
+  "status": "campaign097_verified_terminal_development_rejection_ready_for_campaign098_offline_iteration",
+  "recorded_at": "2026-08-07T07:15:00Z",
+  "observed_local_time": "2026-08-07T15:15:00+08:00",
+  "timezone": "Asia/Singapore",
+  "authoritative_predecessor": {
+    "path": "docs/a_share_three_day_iteration_status_20260807_campaign096_verified.json",
+    "sha256": "4e7f7bb5678b5f81c133c8e5bf256c2a369a2734ac3fa2d2995f5629b83c1a56",
+    "preserved": true
+  },
+  "terminal_verification": {
+    "path": "docs/a_share_three_day_walkforward_campaign_097_terminal_verification_20260807.json",
+    "sha256": "e2bdfaf91a58d58de27a37aaeb578ac9c6452cda7a2c9774b89a675f36e10996"
+  },
+  "terminal_completion_freeze": {
+    "path": "docs/a_share_three_day_walkforward_campaign_097_terminal_completion_freeze_20260807.json",
+    "sha256": "692c542bb298cc7c2debe8cfd2a246177e88537c44a5793222277fd6f78af299"
+  },
+  "final_verification": {
+    "path": "docs/a_share_three_day_walkforward_campaign_097_final_verification_20260807.json",
+    "sha256": "b0949439c5ccf0fffd639094f894504984b251a291d7e86c06181adb662f0eec"
+  },
+  "effective_attempt_ledger": {
+    "path": "data/experiments/short_horizon/historical_walkforward/campaign_097/research_attempt_ledger_v4.json",
+    "sha256": "7937de2084a2218a00a5f2fbe40395d706bf1f3865f56da969fc5a8dc35deddd"
+  },
+  "effective_future_numeric_policy": {
+    "path": "docs/a_share_three_day_walkforward_future_numeric_comparison_eligibility_policy_v43_20260807.json",
+    "sha256": "5f13ed6f376cd428195b9e5783f30651bad761dbec7feb77b86eb7274dcf034a"
+  },
+  "campaign097_result": {
+    "factor": "intraday_market_range_profile_synchronization_240m",
+    "direction": "higher",
+    "snapshot_rows": 1331759,
+    "candidate_eligible_rows": 1328449,
+    "median_coverage": 0.9985369414262841,
+    "p05_coverage": 0.9935483870967742,
+    "coverage_gate_passed": true,
+    "numeric_comparison_count_executed": 125,
+    "all_numeric_comparisons_passed": true,
+    "maximum_absolute_median_daily_rank_correlation": 0.6841082841394884,
+    "historical_daily_price_or_forward_return_values_read_before_admission": false,
+    "development_trial_count": 1,
+    "validation_rank_ic_by_year": {
+      "2021": -0.011442805633971903,
+      "2022": -0.016383618700888527,
+      "2023": -0.016474405032354214
+    },
+    "development_aggregate_normalized_return": 0.8771658219657235,
+    "development_aggregate_10bp_return": 0.031100502198090796,
+    "development_aggregate_20bp_return": -0.085855546438384,
+    "worst_validation_normalized_drawdown": -0.3281455318186135,
+    "development_survivor_count": 0,
+    "stress_2024_2025_opened": false,
+    "stress_2024_2025_return_fields_read": false,
+    "terminal": true,
+    "same_campaign_rescue_allowed": false
+  },
+  "final_accounting": {
+    "campaign097_attempt_count": 13,
+    "campaign097_ledger_entry_count": 16,
+    "campaign097_infrastructure_or_implementation_failure_count": 12,
+    "campaign097_complete_factor_attempt_count": 1,
+    "campaign097_return_reading_development_trial_count": 1,
+    "campaign097_development_survivor_count": 0,
+    "campaign097_stress_trial_count": 0,
+    "cumulative_historical_research_attempt_count": 679,
+    "cumulative_return_reading_development_trial_count": 292
+  },
+  "candidate49": {
+    "status": "only_active_prospective_candidate_empty_ledgers_unchanged",
+    "signal_ledger": {
+      "path": "data/experiments/short_horizon/candidate49_future_signal_ledger.json",
+      "sha256": "5193f00d7f36da003f53cec387900da4c3d002299f5dfcfc1a95eaa199ed3a79",
+      "entry_count": 0
+    },
+    "execution_ledger": {
+      "path": "data/experiments/short_horizon/candidate49_future_execution_ledger.json",
+      "sha256": "d57a3e61eac969e42cafa418ccd8c0a5ee65dcf69da145bb2c096c2a02a2ea4f",
+      "entry_count": 0
+    },
+    "latest_frozen_daily_source_failure": {
+      "path": "docs/a_share_candidate49_20260806_daily_source_failure_record.json",
+      "sha256": "b866b406fa9b0e7c3b8af0827ec84daa8cdd8bc46906556e275712bc769817f9",
+      "same_session_retry_allowed": false
+    },
+    "provider_credential": {
+      "source_available_to_workflow": true,
+      "source": ".env",
+      "recognized_nonempty_token_key_count": 1,
+      "regular_file_non_symlink": true,
+      "mode": "0600",
+      "git_ignored": true,
+      "secret_printed_hashed_or_logged": false
+    },
+    "same_day_workflow": {
+      "eligible_only_after_local_16_30": true,
+      "plan_run_during_this_iteration": false,
+      "reason_not_run": "observed local time before 16:30 Asia/Singapore",
+      "provider_request_issued": false,
+      "historical_backfill_performed": false
+    }
+  },
+  "local_data": {
+    "active_daily_data_root": "/Volumes/DIsk/Disk-Coding/qlib/data",
+    "qlib_daily_root": "/Volumes/DIsk/Disk-Coding/qlib/data/qlib/cn_a_share",
+    "daily_calendar_last_session": "2026-07-13",
+    "fixed_minute_data_root": "/Volumes/DIsk/qlib-a-share-tushare-1m"
+  },
+  "verification_summary": {
+    "current_node_pytest_passed": 26,
+    "current_node_pytest_failed": 0,
+    "black_passed": true,
+    "ruff_passed": true,
+    "terminal_completion_binding_count": 10,
+    "terminal_completion_binding_failures": 0,
+    "final_verification_binding_count": 6,
+    "final_verification_binding_failures": 0
+  },
+  "next_campaign_boundary": {
+    "campaign": 98,
+    "historical_offline_work_may_run_at_any_time": true,
+    "must_bind_policy": {
+      "path": "docs/a_share_three_day_walkforward_future_numeric_comparison_eligibility_policy_v43_20260807.json",
+      "sha256": "5f13ed6f376cd428195b9e5783f30651bad761dbec7feb77b86eb7274dcf034a"
+    },
+    "complete_definition_count": 129,
+    "complete_definition_order_sha256": "2eaf839992ebfd09aed3e64cc8998c0d7e808e5678c10665442c1bc09ff0a875",
+    "numeric_comparator_count": 126,
+    "numeric_comparator_order_sha256": "1fdad7b688f9d66255aae59b30137e2e539adb24ed0bafddf8ccda1dded0a36c",
+    "requirements": [
+      "freeze one genuinely independent mechanism and exact formula before candidate values",
+      "compare the exact support predicate against every known terminal coverage failure before source rows or candidate values",
+      "reject a support predicate identical to or provably narrower than a known failure unless a separately frozen source or support change proves coverage can differ",
+      "append every attempt failure formula direction parameter filter subset combination and model",
+      "use 2019-2023 only for development with the three frozen purged folds",
+      "do not open 2024-2025 unless a survivor exists and the entire finite campaign is frozen"
+    ]
+  },
+  "strict_prohibitions": [
+    "do not backfill Candidate49 historical returns signals executions or milestones",
+    "do not start a second prospective candidate",
+    "do not redefine invert filter rerun rescue reweight or combine Campaign097",
+    "do not reopen Campaign097 development or 2024-2025 stress",
+    "do not bypass failed exit codes or rewrite preserved failures",
+    "do not generate current scores selections position sizes orders or investment advice"
+  ]
+}

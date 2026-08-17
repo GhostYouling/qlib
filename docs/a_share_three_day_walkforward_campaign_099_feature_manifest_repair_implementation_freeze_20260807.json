@@ -1,0 +1,57 @@
+{
+  "schema_version": 1,
+  "kind": "a_share_three_day_walkforward_campaign099_feature_manifest_repair_implementation_freeze",
+  "status": "repair_frozen_after_candidate_values_before_resume_or_publication",
+  "frozen_at": "2026-08-07T09:59:12Z",
+  "repair_preregistration": {
+    "path": "docs/a_share_three_day_walkforward_campaign_099_feature_manifest_repair_preregistration_20260807.json",
+    "sha256": "bd4677a046e361c67728000aa5f4c7a8d252ce0cacb51ce5201b6c640cf64718"
+  },
+  "original_implementation_freeze_preserved": {
+    "path": "docs/a_share_three_day_walkforward_campaign_099_feature_implementation_freeze_20260807.json",
+    "sha256": "36d150280edc23f8e6542cd17c9a234a75309de285177d3b024df0a577dda6e0",
+    "superseded_scope": "feature runner and feature-test file hashes only",
+    "formula_direction_source_support_and_gate_bindings_changed": false
+  },
+  "repair_implementation": {
+    "feature_runner": {
+      "path": "scripts/a_share_three_day_walkforward_campaign099_features.py",
+      "sha256": "ad08cece9d0c939703cc049e2033bc891d3d1ce379d343f8f981c9c29051d880"
+    },
+    "tests": {
+      "path": "tests/data_collector_tests/test_a_share_three_day_walkforward_campaign099_features.py",
+      "sha256": "0bdf1bf61d4068f8d77a6eeea319b6f7d9a00e5884100af83a59e741a93f20bf"
+    }
+  },
+  "repair_semantics": {
+    "change": "accept exactly one generic pre-finalization engine envelope or exactly one finalized Campaign099 envelope under the same unchanged common semantic predicate",
+    "transient_envelope_can_be_published_as_final": false,
+    "mixed_envelope_accepted": false,
+    "factor_formula_changed": false,
+    "factor_direction_changed": false,
+    "source_fields_changed": false,
+    "support_predicate_changed": false,
+    "candidate_partition_bytes_changed": false,
+    "coverage_or_capacity_gates_changed": false,
+    "uniqueness_gate_or_comparison_order_changed": false
+  },
+  "verification_before_freeze": {
+    "pytest": "9 passed",
+    "black_check": "passed for exact feature runner and test file",
+    "ruff": "passed for exact feature runner and test file",
+    "candidate_feature_values_read_or_recomputed_by_verification": false,
+    "comparison_factor_values_read": false,
+    "historical_daily_price_or_forward_return_values_read": false,
+    "provider_request_issued": false
+  },
+  "resume_requirements": {
+    "benchmark_symbol_checkpoints_resumed": 5396,
+    "candidate_partition_checkpoints_resumed": 33015,
+    "candidate_partition_values_recomputed": false,
+    "final_manifest_must_pass_finalized_envelope_validation": true,
+    "independent_snapshot_file_verification_required_after_publication": true
+  },
+  "candidate49_historical_return_read": false,
+  "candidate49_ledgers_changed": false,
+  "current_scoring_selection_sizing_or_orders_performed": false
+}

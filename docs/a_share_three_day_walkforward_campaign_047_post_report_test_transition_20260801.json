@@ -1,0 +1,36 @@
+{
+  "version": 1,
+  "kind": "a_share_three_day_walkforward_campaign047_post_report_test_transition",
+  "status": "latest_report_supersession_assertion_advanced_and_full_regression_passed",
+  "recorded_at": "2026-08-01T03:17:00Z",
+  "purpose": "Record the expected unified-report test transition from the Campaign046 supersession to Campaign047 after an append-only report update.",
+  "bindings": {
+    "campaign047_unified_report_supersession": {
+      "path": "docs/a_share_three_day_walkforward_campaign_047_unified_report_supersession_20260801.json",
+      "sha256": "4944890bfc1eab28a68103a288bfa4e519f2ba068c027a6b71b64230c896b766"
+    },
+    "updated_campaign043_terminal_test": {
+      "path": "tests/data_collector_tests/test_a_share_three_day_walkforward_campaign043_terminal.py",
+      "sha256": "40522f236dc12e5f10e8425830532d99935f28685c44dafd6ebb6379427c24fa"
+    },
+    "current_unified_research_report": {
+      "path": "data/experiments/short_horizon/three_day_research_report.md",
+      "sha256": "a2374abc2645eebc7941034156b38b199c3425ff8ac0411796bf948dd867c0d6"
+    }
+  },
+  "test_transition": {
+    "test_file_sha256_before_transition": "ed83b26b59aadbabf3de1b76b0de17ac49ee46324f894cf92696b8101dfa6456",
+    "test_file_sha256_after_transition": "40522f236dc12e5f10e8425830532d99935f28685c44dafd6ebb6379427c24fa",
+    "only_change": "REPORT_SUPERSESSION path advanced from Campaign046 to Campaign047",
+    "first_full_suite": {"passed": 1692, "failed": 1, "warnings": 13, "failure": "historical report test still compared the current report hash with the Campaign046 supersession"},
+    "targeted_transition_test": {"passed": 1, "failed": 0},
+    "final_full_suite": {"passed": 1693, "failed": 0, "warnings": 13}
+  },
+  "semantic_boundary": {
+    "factor_formula_direction_cost_fold_purge_or_gate_changed": false,
+    "development_or_no_return_artifact_changed": false,
+    "additional_historical_daily_price_or_forward_return_read": false,
+    "2024_2025_stress_return_read": false,
+    "candidate49_ledgers_changed": false
+  }
+}

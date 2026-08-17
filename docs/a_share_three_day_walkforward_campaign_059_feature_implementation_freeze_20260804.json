@@ -1,0 +1,100 @@
+{
+  "version": 1,
+  "kind": "a_share_three_day_walkforward_campaign059_feature_implementation_freeze",
+  "status": "frozen_before_campaign059_source_values",
+  "recorded_at": "2026-08-04T19:24:10+08:00",
+  "purpose": "Bind the sole Campaign059 feature implementation and synthetic tests before any minute partition, market-benchmark value, candidate value, comparison value, daily price, or forward return is read.",
+  "authoritative_boundary": {
+    "path": "docs/a_share_three_day_iteration_status_20260804_campaign058_verified.json",
+    "sha256": "51e449985216b6c752f937ecd712237ffd45c87339f8f19ad11fcbd504f1452b"
+  },
+  "mechanism_overlap_audit": {
+    "path": "docs/a_share_three_day_walkforward_campaign_059_mechanism_overlap_audit.json",
+    "sha256": "46d7c44bb35993a36ff1b53f126049d2e1f50d40768857d138a3e2f32b91c45e"
+  },
+  "no_return_protocol": {
+    "path": "docs/a_share_three_day_walkforward_campaign_059_no_return_preregistration.json",
+    "sha256": "50cf7b067b1dfd5dc31d6c6ef85090788abdf6a2bbc054eda6e7c3824d5c60d6",
+    "binding_validator_passed": true,
+    "binding_count_passed": 16,
+    "binding_count_failed": 0
+  },
+  "base_feature_engine": {
+    "path": "scripts/a_share_three_day_walkforward_campaign057_features.py",
+    "sha256": "3706ac11c551dd02c8d6d8cf30c95a6f076d6a6e6c5dbba4beb07dde10aca66a",
+    "use": "immutable checkpoint, partition-hash, and atomic-publication engine only; Campaign059 overrides the protocol, signed-return extraction, leave-one-out market alignment, formula, output semantics, and manifest validator"
+  },
+  "market_benchmark_helper": {
+    "path": "scripts/a_share_three_day_walkforward_campaign004_features.py",
+    "sha256": "46b4c8b36698e64612b4b2c98e8cb4e81041100327d93e862722a3c5fb84b33c",
+    "use": "read and align only the already frozen 238-position market return_sum and valid_stock_count benchmark"
+  },
+  "feature_runner": {
+    "path": "scripts/a_share_three_day_walkforward_campaign059_features.py",
+    "sha256": "d96954a319caf6b7dd45eafd46fae7db2a6176abc292529d00480b4a9ad10cc0",
+    "factor": "intraday_market_directional_sign_agreement_238m",
+    "direction": "higher",
+    "source_projection": [
+      "datetime",
+      "symbol",
+      "provider",
+      "close"
+    ],
+    "market_benchmark_projection": [
+      "trade_date",
+      "return_position",
+      "return_sum",
+      "valid_stock_count"
+    ],
+    "formula": "equal-sign informative position count divided by jointly nonzero informative position count across exactly 238 synchronous within-half stock and frozen leave-one-out market signed log-close returns",
+    "minimum_leave_one_out_peers_per_position": 50,
+    "minimum_informative_positions": 60,
+    "output_run_id": "tushare_stk_mins_1m_2019_2025_ea0cbb8f_walkforward_campaign059_feature_library_v1"
+  },
+  "synthetic_tests": {
+    "path": "tests/data_collector_tests/test_a_share_three_day_walkforward_campaign059_features.py",
+    "sha256": "e2d1edf60d5219749cd2bda562dd0727ace5ed026afd9b57a66dddd11aedad5f",
+    "command": "PYTHONPATH=/Volumes/DIsk/Disk-Coding/qlib python -m pytest -q tests/data_collector_tests/test_a_share_three_day_walkforward_campaign059_features.py",
+    "passed": 8,
+    "failed": 0,
+    "semantics_tested": [
+      "compact protocol reconstructs the exact 90-factor order without source-value reads",
+      "equal-position sign votes ignore magnitude",
+      "zero returns are excluded rather than counted as agreements",
+      "minimum informative count and leave-one-out peer gates fail closed",
+      "nonfinite and shape failures remain missing or raise",
+      "exact 241-row source grid yields only the two within-half return grids",
+      "empty output schema is exact",
+      "manifest requires all market benchmark fingerprints and no return reads"
+    ]
+  },
+  "implementation_semantics": {
+    "standalone_0930_excluded": true,
+    "lunch_transition_excluded": true,
+    "within_half_signed_return_positions": 238,
+    "leave_one_out_market_sum_and_count_only": true,
+    "minimum_other_peers_each_position": 50,
+    "exact_zero_stock_or_market_return_is_noninformative": true,
+    "minimum_jointly_nonzero_positions": 60,
+    "position_weights_equal": true,
+    "return_magnitudes_discarded_after_sign": true,
+    "daily_price_or_forward_return_read": false,
+    "atomic_partial_root_publication": true,
+    "per_partition_byte_and_frame_hashes": true,
+    "source_raw_and_joint_clean_partition_byte_hashes_verified": true,
+    "provider_calls": 0
+  },
+  "source_partition_values_read_before_freeze": false,
+  "market_benchmark_values_read_before_freeze": false,
+  "candidate_values_read_before_freeze": false,
+  "comparison_values_read_before_freeze": false,
+  "historical_daily_price_fields_read_before_freeze": [],
+  "historical_forward_return_fields_read_before_freeze": false,
+  "training_or_model_fitting_performed_before_freeze": false,
+  "candidate49_historical_return_signal_execution_or_milestone_backfill_performed": false,
+  "candidate49_ledgers_changed": false,
+  "second_prospective_candidate_created": false,
+  "current_scoring_selection_sizing_or_orders_performed": false,
+  "provider_request_issued_before_freeze": false,
+  "next_action": "Run only the bound Campaign059 build against /Volumes/DIsk/qlib-a-share-tushare-1m, verify every output partition, then publish a separate snapshot binding before any comparison value or return read."
+}

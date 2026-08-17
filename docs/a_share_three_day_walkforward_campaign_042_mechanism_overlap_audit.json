@@ -1,0 +1,160 @@
+{
+  "version": 1,
+  "kind": "a_share_three_day_walkforward_campaign042_mechanism_overlap_audit",
+  "status": "completed_before_campaign042_candidate_comparison_daily_price_or_return_values",
+  "recorded_at": "2026-07-31T07:47:00Z",
+  "purpose": "Determine conceptual independence of the exact Campaign042 lunch-repricing-persistence mechanism before implementing it or reading any protected value.",
+  "authoritative_inputs": {
+    "iteration_state": {
+      "path": "docs/a_share_three_day_iteration_status_20260731_campaign041_verified.json",
+      "sha256": "4d16ebaa02f2029ba4913b9f5c65ae44e291c27036abce0497bca4abd3f515ba"
+    },
+    "concept_scouting": {
+      "path": "docs/a_share_three_day_walkforward_campaign_042_concept_scouting.json",
+      "sha256": "b70336b85c0f5636f9a3af5f469e28aee6f12b70e3bb84d5479f7a15b62f05ee"
+    },
+    "campaign041_terminal_record": {
+      "path": "docs/a_share_three_day_walkforward_campaign_041_research_record.json",
+      "sha256": "0a21f4d189509aa0c0efbf4cb05ab688374104adfe3d52114467da83e0606844"
+    },
+    "complete_prior_factor_library": {
+      "path": "docs/a_share_three_day_walkforward_campaign_041_no_return_preregistration.json",
+      "sha256": "6691fb6a382d6f2f481473f25a0060606edf59290bc822b635b23de25105ae7c",
+      "prior_comparison_count": 62,
+      "prior_comparison_order_sha256": "16ea65e40e50d1ef04f967da6f98aa077791bcd1680fab78d2cf28d0509713d8",
+      "campaign041_candidate_appended_for_campaign042": {
+        "name": "intraday_microgap_absorption_share_238p",
+        "score_direction": "higher"
+      },
+      "campaign042_comparison_count": 63,
+      "campaign042_comparison_order_sha256": "2318bc5774032e9a41519936dde4943a9d5f577b5c05999d2fe0f8bef617fa77"
+    }
+  },
+  "candidate": {
+    "name": "intraday_lunch_repricing_persistence_2r",
+    "direction": "higher",
+    "formula": "Let g=log(close_13:01/close_11:30) and a=log(close_15:00/close_13:01). Return 2*g*a/(g^2+a^2). If g=a=0, return missing.",
+    "source_projection": [
+      "datetime",
+      "symbol",
+      "provider",
+      "close"
+    ]
+  },
+  "mechanism_family_review": [
+    {
+      "family": "late_return_afternoon_drift_and_recovery",
+      "result": "distinct_pending_statistical_uniqueness_gate",
+      "nearest_prior_factors": [
+        "late_return_30m",
+        "afternoon_signed_amount_efficiency_120m",
+        "afternoon_drawdown_recovery_resilience_120m",
+        "intraday_market_neutral_late_residual_drift_238m"
+      ],
+      "reason": "Those factors measure a late or afternoon path level, recovery, activity efficiency, or market residual. Campaign042 does not use the afternoon return alone: it uses a bounded symmetric interaction between the lunch-boundary repricing and the entire subsequent afternoon endpoint path."
+    },
+    {
+      "family": "morning_afternoon_return_profile_and_half_session_path",
+      "result": "distinct_pending_statistical_uniqueness_gate",
+      "nearest_prior_factors": [
+        "intraday_morning_afternoon_return_profile_persistence_119p",
+        "intraday_signed_path_efficiency_239m",
+        "intraday_half_session_chord_adherence_240m"
+      ],
+      "reason": "Campaign027 aligns two complete 119-return profiles, while the path factors aggregate all within-half increments. Campaign042 uses only three fixed close anchors and the economically distinct lunch boundary; it computes no profile correlation, travel ratio, chord, or within-half path statistic."
+    },
+    {
+      "family": "interbar_gap_body_and_microgap_absorption",
+      "result": "distinct_pending_statistical_uniqueness_gate",
+      "nearest_prior_factors": [
+        "intraday_interbar_gap_body_confirmation_238p",
+        "intraday_microgap_absorption_share_238p"
+      ],
+      "reason": "Those mechanisms use open-versus-prior-close one-minute gaps, candle bodies, or same-minute high-low containment over 238 transitions. Campaign042 reads no open/high/low, forms one close-to-close lunch repricing, and pairs it with the completed afternoon endpoint return."
+    },
+    {
+      "family": "adjacent_range_overlap_containment_absorption_participation_and_range_mass",
+      "result": "distinct",
+      "nearest_prior_factors": [
+        "intraday_adjacent_range_overlap_continuity_238p",
+        "intraday_intrabar_range_participation_entropy_240m",
+        "intraday_global_price_range_revisit_240m",
+        "intraday_morning_afternoon_range_profile_similarity_120b",
+        "intraday_microgap_absorption_share_238p"
+      ],
+      "reason": "Campaign042 reads no high or low and contains no interval overlap, containment, range length, range distribution, entropy, similarity, or absorption event. This directly respects the Campaign041 terminal boundary."
+    },
+    {
+      "family": "return_serial_order_entropy_variance_and_time_reversal",
+      "result": "distinct_pending_statistical_uniqueness_gate",
+      "nearest_prior_factors": [
+        "intraday_return_sign_run_imbalance_238p",
+        "intraday_absolute_return_serial_persistence_236p",
+        "intraday_return_weak_order_entropy_234t",
+        "intraday_five_minute_variance_ratio_230w",
+        "intraday_return_time_reversal_asymmetry_236p"
+      ],
+      "reason": "Campaign042 computes no rolling adjacent-return sequence, run, autocorrelation, entropy, variance ratio, spectral statistic, or cubic time-arrow contrast. Its fixed two-return interaction is tied to the lunch information boundary and afternoon endpoint."
+    },
+    {
+      "family": "activity_vwap_market_quarterly_or_event",
+      "result": "distinct",
+      "reason": "Campaign042 reads no volume, amount, VWAP, market or industry benchmark, quarterly disclosure, event, daily-price, or forward-return field."
+    },
+    {
+      "family": "candidate49_cumulative_vwap_crossing_rate",
+      "result": "distinct",
+      "reason": "Candidate49 counts causal cumulative-VWAP sign crossings on prospective sessions. Campaign042 is a historical close-only session-boundary interaction, never reads Candidate49 values or returns, and cannot enter Candidate49's signal or execution ledgers."
+    },
+    {
+      "family": "terminal_factor_combination_or_rescue",
+      "result": "not_used",
+      "reason": "Campaign042 contains one raw three-anchor close statistic and no prior factor value, learned weight, filter, transform search, fitted model, regime split, or combination."
+    }
+  ],
+  "design_choices_frozen_before_values": {
+    "formula_family": "lunch_boundary_return_and_afternoon_endpoint_return_normalized_concordance",
+    "direction": "higher",
+    "selected_bar_count": 240,
+    "formula_anchor_times": [
+      "11:30",
+      "13:01",
+      "15:00"
+    ],
+    "include_0930": false,
+    "include_lunch_transition": true,
+    "lunch_return_definition": "g=log(close_13:01/close_11:30)",
+    "afternoon_follow_through_definition": "a=log(close_15:00/close_13:01)",
+    "normalized_interaction": "2*g*a/(g^2+a^2)",
+    "exact_zero_component_retained": true,
+    "both_components_zero_is_missing": true,
+    "all_240_closes_must_be_finite_and_positive": true,
+    "valid_lower_bound": -1.0,
+    "valid_upper_bound": 1.0,
+    "endpoint_canonicalization_tolerance": 1e-12,
+    "sign_split_inversion_raw_product_gap_weight_alternate_anchor_or_subwindow_search_allowed": false,
+    "threshold_filter_year_cost_board_or_model_search_allowed": false,
+    "ohlc_range_activity_market_quarterly_event_or_terminal_factor_input_allowed": false
+  },
+  "research_boundary": {
+    "comparison_factor_names_and_directions_read_from_frozen_protocol": true,
+    "external_minute_partitions_read": false,
+    "candidate_values_read": false,
+    "comparison_values_read": false,
+    "historical_daily_price_fields_read": false,
+    "historical_forward_returns_read": false,
+    "training_or_model_fitting_performed": false,
+    "provider_request_issued": false,
+    "candidate49_historical_return_signal_or_execution_backfill_performed": false,
+    "candidate49_ledgers_changed": false,
+    "candidate50_activation_created": false,
+    "current_scoring_selection_sizing_or_orders_performed": false,
+    "investment_advice": false
+  },
+  "decision": {
+    "conceptual_independence_passed": true,
+    "statistical_independence_pending_all_63_comparisons": true,
+    "predictive_value_established": false,
+    "next_action": "Validate all bindings, then freeze a fingerprint-bound no-return protocol with this exact candidate and the complete ordered 63-factor comparison library before implementation."
+  }
+}

@@ -1,0 +1,89 @@
+{
+  "version": 1,
+  "kind": "a_share_three_day_walkforward_campaign056_no_return_audit_implementation_freeze",
+  "status": "frozen_before_campaign056_coverage_and_comparison_values",
+  "recorded_at": "2026-08-03T19:57:45Z",
+  "purpose": "Bind the only Campaign056 ordered no-return audit implementation before opening coverage keys or any of the 79 comparison factor values.",
+  "no_return_protocol": {
+    "path": "docs/a_share_three_day_walkforward_campaign_056_no_return_preregistration.json",
+    "sha256": "7e7c9502e1018431f33a072dd12f8aa8f55a83b4afca30528245d1ea04ad1682"
+  },
+  "candidate_snapshot_binding": {
+    "path": "docs/a_share_three_day_walkforward_campaign_056_feature_snapshot_binding_20260804.json",
+    "sha256": "c9e8e1edeeb1ded3bb1d913d078f7cf26c06f5b2c9e88124aa774355a57e92f2",
+    "binding_validation_passed": true,
+    "binding_count_passed": 4,
+    "binding_count_failed": 0
+  },
+  "candidate_snapshot_manifest": {
+    "path": "/Volumes/DIsk/qlib-a-share-tushare-1m/derived/a_share/rich/tushare/minute_walkforward_campaign056_feature_library/tushare_stk_mins_1m_2019_2025_ea0cbb8f_walkforward_campaign056_feature_library_v1/snapshot_manifest.json",
+    "sha256": "cec4ce7db7a5a0a1715a8a117a09b74afe75bd94e3042df52493678ca6d6031b",
+    "dataset_sha256": "b29accb9698fd6d62238540f49b85a32c6a3e7fd882bc64cb7fabd7ef1ec1d02"
+  },
+  "audit_runner": {
+    "path": "scripts/a_share_three_day_walkforward_campaign056_no_return_audit.py",
+    "sha256": "95332e841b643b66818983549613149a2e6ba445fcbfa19138088dd1288786c1",
+    "coverage_gate_runs_before_comparison_snapshot_loading": true,
+    "comparison_order_count": 79,
+    "comparison_order_sha256": "669a996cc0b8d2582f8a1c0cd2f7d9a8503fdcfe7fb5f1b79033ac7832bb4e67",
+    "daily_or_forward_return_loader_present": false,
+    "walkforward_training_or_model_fitting_present": false
+  },
+  "prior_comparison_engine": {
+    "path": "scripts/a_share_three_day_walkforward_campaign055_features_v7.py",
+    "sha256": "75dd159bd7f88be5521506bbcad95ae1516a620fb7d84247563b0898cbbf5540",
+    "purpose": "Reconstruct the previously frozen 78-factor prefix; Campaign055 is appended as the 79th comparison.",
+    "comparison_formula_or_gate_changed": false
+  },
+  "pre_value_tests": {
+    "path": "tests/data_collector_tests/test_a_share_three_day_walkforward_campaign056_no_return_audit.py",
+    "sha256": "9f53961e90d7310855cbfc2186c2993c7992737178fa8c8057a4ed795c1da1c7",
+    "command": "PYTHONPATH=/Volumes/DIsk/Disk-Coding/qlib /opt/anaconda3/bin/python3 -m pytest -q tests/data_collector_tests/test_a_share_three_day_walkforward_campaign056_no_return_audit.py",
+    "passed": 5,
+    "failed": 0,
+    "tests_read_partition_values": false,
+    "tests_read_comparison_values": false,
+    "tests_read_daily_price_or_forward_returns": false
+  },
+  "research_attempt_ledger_before_audit": {
+    "path": "data/experiments/short_horizon/historical_walkforward/campaign_056/research_attempt_ledger_v2.json",
+    "sha256": "7a8c2234914893f08564cfafbe486f9d60c178e3e0f02565bdcf8bf418ee7169",
+    "campaign056_attempt_count": 2,
+    "cumulative_historical_research_attempt_count": 323,
+    "cumulative_return_reading_development_trial_count": 267
+  },
+  "ordered_gate_semantics": {
+    "coverage_thresholds": {
+      "minimum_median_coverage": 0.95,
+      "minimum_p05_coverage": 0.9,
+      "minimum_p05_eligible_names": 50,
+      "minimum_non_overlapping_three_session_cohorts": 200,
+      "minimum_observed_calendar_years": 5
+    },
+    "uniqueness_threshold": {
+      "maximum_absolute_median_daily_rank_correlation": 0.8,
+      "all_79_comparisons_must_pass": true
+    },
+    "comparison_values_may_load_only_after_coverage_pass": true,
+    "development_returns_may_load_only_after_coverage_and_uniqueness_pass": true
+  },
+  "value_exposure_before_audit_freeze": {
+    "candidate_snapshot_manifest_metadata_read": true,
+    "candidate_partition_values_read_by_audit_or_tests": false,
+    "quality_listing_eligible_keys_read_by_audit_or_tests": false,
+    "comparison_factor_values_read_by_audit_or_tests": false,
+    "historical_daily_price_fields_read": [],
+    "historical_forward_return_fields_read": false,
+    "development_folds_opened": false,
+    "stress_2024_2025_opened": false
+  },
+  "research_boundary": {
+    "alternate_formula_direction_parameter_filter_subset_model_or_combination_added": false,
+    "candidate49_historical_backfill_performed": false,
+    "candidate49_ledgers_changed": false,
+    "second_prospective_candidate_created": false,
+    "current_scoring_selection_sizing_or_orders_performed": false,
+    "provider_request_issued": false
+  },
+  "next_action": "Execute this exact audit once. Stop before returns if either ordered gate fails; otherwise freeze the one-trial 2019-2023 walk-forward catalog before any return read."
+}

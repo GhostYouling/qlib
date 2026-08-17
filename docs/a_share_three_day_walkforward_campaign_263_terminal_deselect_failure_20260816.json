@@ -1,0 +1,24 @@
+{
+  "schema_version": 1,
+  "kind": "a_share_three_day_walkforward_campaign263_terminal_deselect_failure",
+  "status": "failed_focused_regression_preserved_and_excluded_from_pass_evidence",
+  "recorded_at": "2026-08-16T14:22:00Z",
+  "phase": "focused_terminal_regression",
+  "failure": "The first terminal run passed 45 tests and failed the pre-activation-only absence test because the supplied --deselect did not suppress that collected node after activation.",
+  "recovery": "Record this nonzero run, rerun the same six-file scope with an exact -k exclusion for the historical pre-activation-only test, and use only the independent rerun as pass evidence.",
+  "failed_run": {
+    "passed": 45,
+    "failed": 1,
+    "exit_code": 1,
+    "failed_test": "test_development_activation_fails_before_return_loader_when_absent"
+  },
+  "research_boundary": {
+    "failed_run_used_as_pass_evidence": false,
+    "scientific_result_changed": false,
+    "stress_2024_2025_opened": false,
+    "provider_or_web_request_issued": false,
+    "candidate49_ledgers_changed": false,
+    "current_scoring_selection_sizing_positions_or_orders_performed": false,
+    "investment_advice": false
+  }
+}

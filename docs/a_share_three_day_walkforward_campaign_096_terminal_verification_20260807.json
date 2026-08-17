@@ -1,0 +1,128 @@
+{
+  "schema_version": 1,
+  "kind": "a_share_three_day_walkforward_campaign096_terminal_verification",
+  "status": "effective_v2_chain_and_campaign096_targeted_tests_verified",
+  "recorded_at": "2026-08-07T04:52:25Z",
+  "terminal_completion_freeze_v2": {
+    "path": "docs/a_share_three_day_walkforward_campaign_096_terminal_completion_freeze_v2_20260807.json",
+    "sha256": "ea2830a5b9d56c9390802d91169610a5997f9120aa4b3732482c10941d748521"
+  },
+  "effective_research_record": {
+    "path": "docs/a_share_three_day_walkforward_campaign_096_research_record_v2.json",
+    "sha256": "fd6d20175b591cdc5a0b5762fff40b048163d6a2c855374e07e3a6887a2b9e2c"
+  },
+  "effective_attempt_ledger": {
+    "path": "data/experiments/short_horizon/historical_walkforward/campaign_096/research_attempt_ledger_v2.json",
+    "sha256": "8ec7e18246a3a6328a9280afd17134c4aecceed5c6e256161bdf79943375301d"
+  },
+  "future_numeric_policy_v41": {
+    "path": "docs/a_share_three_day_walkforward_future_numeric_comparison_eligibility_policy_v41_20260807.json",
+    "sha256": "00ff7f93fcbdf09f8c75f81f1c1bc9e247d32a3088f50967316cc9f9a3bae9c5"
+  },
+  "effective_terminal_test": {
+    "path": "tests/data_collector_tests/test_a_share_three_day_walkforward_campaign096_terminal_v2.py",
+    "sha256": "4726ec00a74bfb925728217a83a98be4d9b68d87822edfd64a0fde5364c48139"
+  },
+  "verification_results": {
+    "generic_binding_validation": {
+      "records_checked": 5,
+      "binding_counts": [
+        2,
+        3,
+        8,
+        4,
+        13
+      ],
+      "failed_bindings": 0,
+      "exit_code": 0
+    },
+    "initial_repaired_terminal_test": {
+      "passed": 5,
+      "failed": 0,
+      "exit_code": 0
+    },
+    "effective_v2_terminal_test": {
+      "passed": 4,
+      "failed": 0,
+      "exit_code": 0
+    },
+    "feature_v1_tests": {
+      "passed": 7,
+      "failed": 0,
+      "exit_code": 0
+    },
+    "feature_v2_tests": {
+      "passed": 4,
+      "failed": 0,
+      "exit_code": 0
+    },
+    "no_return_audit_tests": {
+      "passed": 3,
+      "failed": 0,
+      "exit_code": 0
+    },
+    "effective_terminal_black_check": {
+      "passed": true,
+      "exit_code": 0
+    },
+    "effective_terminal_ruff_check": {
+      "passed": true,
+      "exit_code": 0
+    }
+  },
+  "effective_accounting": {
+    "campaign096_attempt_count": 7,
+    "campaign096_ledger_entry_count": 7,
+    "campaign096_infrastructure_or_implementation_failure_count": 6,
+    "campaign096_complete_factor_attempt_count": 1,
+    "campaign096_return_reading_development_trial_count": 0,
+    "cumulative_historical_research_attempt_count": 666,
+    "cumulative_return_reading_development_trial_count": 291
+  },
+  "scientific_result": {
+    "coverage_gate_passed": false,
+    "comparison_values_read": false,
+    "historical_forward_returns_read": false,
+    "development_trial_count": 0,
+    "stress_2024_2025_opened": false,
+    "scientific_result_changed_by_terminal_test_repair": false
+  },
+  "credential_and_data_preflight": {
+    "checked_at_local": "2026-08-07T12:52:25+08:00",
+    "active_daily_data_root": "/Volumes/DIsk/Disk-Coding/qlib/data",
+    "fixed_minute_data_root": "/Volumes/DIsk/qlib-a-share-tushare-1m",
+    "repository_dotenv_exists": true,
+    "repository_dotenv_regular_non_symlink": true,
+    "repository_dotenv_mode": "0600",
+    "repository_dotenv_git_ignored": true,
+    "workflow_token_present": true,
+    "credential_value_printed_hashed_or_persisted": false
+  },
+  "candidate49_future_only_layer": {
+    "signal_ledger": {
+      "path": "data/experiments/short_horizon/candidate49_future_signal_ledger.json",
+      "sha256": "5193f00d7f36da003f53cec387900da4c3d002299f5dfcfc1a95eaa199ed3a79",
+      "entries": 0
+    },
+    "execution_ledger": {
+      "path": "data/experiments/short_horizon/candidate49_future_execution_ledger.json",
+      "sha256": "d57a3e61eac969e42cafa418ccd8c0a5ee65dcf69da145bb2c096c2a02a2ea4f",
+      "entries": 0
+    },
+    "same_day_workflow_plan_run": false,
+    "reason": "The local verification time was before the frozen 16:30 same-session boundary.",
+    "provider_request_issued": false,
+    "historical_backfill_performed": false,
+    "second_prospective_candidate_created": false
+  },
+  "next_campaign_boundary": {
+    "campaign": 97,
+    "must_bind_policy_v41": true,
+    "historical_offline_work_may_run_at_any_time": true,
+    "must_reject_support_predicates_identical_to_or_narrower_than_known_coverage_failures_before_values": true,
+    "complete_definition_count": 128,
+    "numeric_comparator_count": 125
+  },
+  "current_scoring_selection_sizing_or_orders_performed": false,
+  "investment_advice": false
+}

@@ -1,0 +1,29 @@
+{
+  "version": 1,
+  "kind": "a_share_three_day_walkforward_campaign103_infrastructure_failure",
+  "status": "failed_during_test_collection_before_development_return_read",
+  "recorded_at": "2026-08-07T17:00:00+08:00",
+  "stage": "development_runner_synthetic_test_collection",
+  "test_command": "pytest test_a_share_three_day_walkforward_campaign103_development.py",
+  "exit_code": 2,
+  "exception": "KeyError: engine_namespace",
+  "root_cause": "The Campaign103 wrapper assumed the inherited engine_namespace lived at the same nested generated-dictionary depth as the Campaign101 wrapper, but using Campaign101 itself as the base added one level.",
+  "failed_preregistration": {
+    "path": "docs/a_share_three_day_walkforward_campaign_103_preregistration_v2.json"
+  },
+  "allowed_repair": "Traverse the immutable generated-dictionary chain, require exactly one engine_namespace binding, and use an additive v3 preregistration whose only semantic change is the repaired runner binding.",
+  "research_boundary": {
+    "candidate_values_read_by_failed_test": false,
+    "historical_daily_price_fields_read": [],
+    "historical_forward_return_fields_read": false,
+    "development_trial_started": false,
+    "2024_2025_stress_opened": false,
+    "provider_request_issued": false,
+    "candidate49_ledgers_changed": false
+  },
+  "attempt_accounting": {
+    "campaign103_infrastructure_failure_increment": 1,
+    "campaign103_complete_factor_attempt_increment": 0,
+    "return_reading_development_trial_increment": 0
+  }
+}

@@ -1,0 +1,102 @@
+{
+  "version": 1,
+  "kind": "a_share_three_day_walkforward_campaign065_feature_implementation_freeze",
+  "status": "frozen_before_campaign065_source_values",
+  "recorded_at": "2026-08-05T12:50:57+08:00",
+  "purpose": "Bind the exact Campaign065 source-only feature implementation, exhaustive comparison reconstruction, synthetic tests, and append-only pre-value failures before any real minute source or candidate value is opened.",
+  "feature_runner": {
+    "path": "/Volumes/DIsk/Disk-Coding/qlib/scripts/a_share_three_day_walkforward_campaign065_features.py",
+    "sha256": "afa1b5fc37e55a311fdcf12409fbe5358580afb3227eec9486d2dcfe6d24a964"
+  },
+  "feature_tests": {
+    "path": "tests/data_collector_tests/test_a_share_three_day_walkforward_campaign065_features.py",
+    "sha256": "b5f636bacd17f1f54342a741f39b088e1282411a375ea4a150e2ca426b6ce364",
+    "focused_tests_passed": 13,
+    "focused_tests_failed": 0
+  },
+  "no_return_protocol": {
+    "path": "docs/a_share_three_day_walkforward_campaign_065_no_return_preregistration.json",
+    "sha256": "332c233850e1a2ebf6fa87fa725d1933635708d31a447395ab2f83be1538863b",
+    "binding_count": 13,
+    "bindings_passed": 13
+  },
+  "concept_scouting": {
+    "path": "docs/a_share_three_day_walkforward_campaign_065_concept_scouting.json",
+    "sha256": "737b4761212b9cf9ccab05e88f23a2bb4256972c56c89eb4c5cf35fa2c8020c8"
+  },
+  "mechanism_overlap_audit": {
+    "path": "docs/a_share_three_day_walkforward_campaign_065_mechanism_overlap_audit.json",
+    "sha256": "2038915c6b42a02990195604214f70c55f52478e0becf249ba710330c3da3a6a"
+  },
+  "numeric_comparator_eligibility_policy": {
+    "path": "docs/a_share_three_day_walkforward_future_numeric_comparison_eligibility_policy_20260805.json",
+    "sha256": "ab28928886b1f617a7be094e0afad241e24bacad9646360c35a05acd80e853b8"
+  },
+  "research_attempt_ledger": {
+    "path": "data/experiments/short_horizon/historical_walkforward/campaign_065/research_attempt_ledger_v1.json",
+    "sha256": "81433a2b6b350f5f4abc042f5827555459f0310e6a4c0d99c173b07eb3ba6781",
+    "attempt_count": 5,
+    "complete_factor_attempt_count": 0,
+    "return_reading_trial_count": 0
+  },
+  "base_partition_engine": {
+    "path": "scripts/a_share_three_day_walkforward_campaign064_features.py",
+    "sha256": "8087660639444aec35ea256446257de3a242cca9e0a9f7875107e4cf5196e486"
+  },
+  "frozen_implementation": {
+    "factor": "intraday_range_weak_order_time_reversal_divergence_236t",
+    "direction": "higher",
+    "candidate_count": 1,
+    "development_trial_count_if_admitted": 1,
+    "complete_historical_definition_count": 96,
+    "complete_historical_definition_order_sha256": "974e3acd06536dcfbcc13524932f771f3636ac32023b2712f5d2d76f4d1f2d92",
+    "numeric_comparator_count": 95,
+    "numeric_comparator_order_sha256": "2418a9e28bdc6b3484ede7b4e0ae6293131af2f4644930ca2c21bff9060c331d",
+    "structurally_nonnumeric_mechanism_challenge": "intraday_cross_sectional_standardized_return_state_stability_236p",
+    "last_numeric_comparator": "intraday_range_weak_order_entropy_236t",
+    "source_projection": [
+      "datetime",
+      "symbol",
+      "provider",
+      "high",
+      "low"
+    ],
+    "forbidden_source_fields": [
+      "open",
+      "close",
+      "volume",
+      "amount"
+    ],
+    "selected_bars": 240,
+    "range_transform": "ln(high/low)",
+    "within_half_overlapping_triples": 236,
+    "weak_order_state_count": 13,
+    "comparison_tolerance": 0.0,
+    "exact_ties_retained": true,
+    "reversal_map": "exact fixed involution induced by (x0,x1,x2) -> (x2,x1,x0)",
+    "divergence": "symmetric_Jensen_Shannon_between_p_and_reversal_permutation_divided_by_ln2",
+    "zero_divergence_valid": true,
+    "endpoint_canonicalization_tolerance": 1e-12,
+    "valid_range": "[0,1]",
+    "no_lunch_cross_session_or_prior_session_input": true,
+    "no_fill_jitter_tolerance_drop_smoothing_pseudocount_clip_winsorize_threshold_filter_fit_or_combination": true
+  },
+  "source_partition_values_read_before_freeze": false,
+  "candidate_values_read_before_freeze": false,
+  "comparison_values_read_before_freeze": false,
+  "historical_daily_price_fields_read_before_freeze": [],
+  "historical_forward_return_fields_read_before_freeze": false,
+  "provider_request_issued_before_freeze": false,
+  "candidate49_historical_return_signal_execution_or_milestone_backfill_performed": false,
+  "candidate49_ledgers_changed": false,
+  "second_prospective_candidate_created": false,
+  "current_scoring_selection_sizing_or_orders_performed": false,
+  "decision": {
+    "source_only_snapshot_build_allowed_after_binding_validation_exit_zero": true,
+    "coverage_must_pass_before_any_comparison_value": true,
+    "all_95_numeric_comparators_must_pass_before_any_daily_price_or_return": true,
+    "formula_direction_grid_tuple_alphabet_tie_reversal_divergence_missing_rule_source_projection_or_partition_change_allowed": false,
+    "candidate49_remains_only_active_prospective_candidate": true,
+    "second_prospective_candidate_activation_allowed": false
+  }
+}

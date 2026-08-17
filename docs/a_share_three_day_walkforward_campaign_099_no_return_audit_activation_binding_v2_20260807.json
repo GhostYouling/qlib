@@ -1,0 +1,52 @@
+{
+  "schema_version": 2,
+  "kind": "a_share_three_day_walkforward_campaign099_no_return_audit_activation_binding",
+  "status": "frozen_before_campaign099_coverage_or_comparison_values",
+  "activated_at": "2026-08-07T10:17:15Z",
+  "implementation_freeze": {
+    "path": "docs/a_share_three_day_walkforward_campaign_099_no_return_audit_implementation_freeze_v2_20260807.json",
+    "sha256": "d0b90fd26b9bf71c5cec2ca014dd0282987bad29852ba9ef54d74bbb7cd97e8b"
+  },
+  "v1_activation_binding_preserved": {
+    "path": "docs/a_share_three_day_walkforward_campaign_099_no_return_audit_activation_binding_20260807.json",
+    "sha256": "419dae01c48d3f59de39723dde3a13d1e54bcebb4815883b09650b21e1d0d3e3"
+  },
+  "snapshot_binding": {
+    "path": "docs/a_share_three_day_walkforward_campaign_099_feature_snapshot_binding_20260807.json",
+    "sha256": "e90f88f2fd3f102ecfc20610978e125320d2f51e8d155cb9b82e2759824c59f8"
+  },
+  "candidate_snapshot": {
+    "path": "/Volumes/DIsk/qlib-a-share-tushare-1m/derived/a_share/rich/tushare/minute_walkforward_campaign099_feature_library/tushare_stk_mins_1m_2019_2025_ea0cbb8f_walkforward_campaign099_feature_library_v1/snapshot_manifest.json",
+    "sha256": "90c495594de88e183ec920a09be7a1ef66c89d9967f59d2aa27fdd49650b4651",
+    "dataset_sha256": "52f904b975a7b79f383d39ef94ce04c724a234a9a53a2e924402d17a3f7c4972"
+  },
+  "eligibility_identity_source": {
+    "path": "/Volumes/DIsk/qlib-a-share-tushare-1m/derived/a_share/rich/tushare/compact_comparator_cache/campaign067_terminal_numeric98_v4/snapshot_manifest.json",
+    "sha256": "3d81068f07ac61fe4cd04bd1a893e58759c06d88213263135fec5244e309b57b"
+  },
+  "final_comparator_source": {
+    "path": "/Volumes/DIsk/qlib-a-share-tushare-1m/derived/a_share/rich/tushare/minute_walkforward_campaign098_feature_library/tushare_stk_mins_1m_2019_2025_ea0cbb8f_walkforward_campaign098_feature_library_v1/snapshot_manifest.json",
+    "sha256": "371429a81292a91ef2bfa1292f467c81bf73e176fbfbc9888084f74eaaac1dc5",
+    "dataset_sha256": "921f06fad98aed942550d86b1475c888aea6d2025c37d53ec55917401bd34b33"
+  },
+  "candidate_loader_contract": {
+    "candidate_columns": [
+      "trade_date",
+      "symbol",
+      "intraday_market_close_location_profile_synchronization_240m"
+    ],
+    "eligibility_columns": ["stock_day_key"],
+    "aligned_quality_listing_rows": 1331759,
+    "aligned_sessions": 1632,
+    "missing_candidate_identities_retained_as_nan": 1588
+  },
+  "coverage_or_capacity_metrics_computed_before_activation": false,
+  "comparison_values_read_before_activation": false,
+  "historical_daily_price_or_forward_return_values_read_before_activation": false,
+  "provider_request_issued_before_activation": false,
+  "candidate_values_were_read_by_failed_v1_audit": true,
+  "candidate49_historical_return_read": false,
+  "candidate49_ledgers_changed": false,
+  "current_scoring_selection_sizing_or_orders_performed": false,
+  "single_use": true
+}

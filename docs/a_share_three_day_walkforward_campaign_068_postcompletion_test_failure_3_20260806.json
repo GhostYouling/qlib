@@ -1,0 +1,37 @@
+{
+  "version": 1,
+  "kind": "a_share_three_day_walkforward_campaign068_postcompletion_test_failure",
+  "status": "recorded_before_explicit_passing_node_whitelist_transition",
+  "recorded_at": "2026-08-06T03:15:00+08:00",
+  "command_semantics": "Exact equals-form --deselect relative nodeids were supplied, but this local pytest run still collected and executed both frozen lifecycle nodes.",
+  "exit_code": 1,
+  "summary": {
+    "passed": 14,
+    "failed": 2,
+    "intended_deselected": 2,
+    "effective_deselected": 0,
+    "elapsed_seconds": 1.93
+  },
+  "failed_nodes": [
+    "tests/data_collector_tests/test_a_share_three_day_walkforward_campaign068_features_v2.py::test_campaign068_v2_status_does_not_accept_v1_snapshot",
+    "tests/data_collector_tests/test_a_share_three_day_walkforward_campaign068_no_return_audit.py::test_campaign068_status_does_not_load_comparison_values"
+  ],
+  "repair_policy": {
+    "edit_frozen_tests": false,
+    "try_additional_deselect_syntax": false,
+    "run_an_explicit_whitelist_of_all_14_current_valid_nodes": true,
+    "change_research_values_or_decisions": false
+  },
+  "research_effect": {
+    "infrastructure_failure_count_increment": 2,
+    "historical_research_attempt_count_increment": 2,
+    "cumulative_historical_research_attempt_count": 411,
+    "return_reading_development_trial_count_increment": 0,
+    "cumulative_return_reading_development_trial_count": 274,
+    "candidate_or_comparison_values_read": false,
+    "historical_daily_price_fields_read": [],
+    "historical_forward_returns_read": false,
+    "provider_request_issued": false,
+    "candidate49_ledgers_changed": false
+  }
+}

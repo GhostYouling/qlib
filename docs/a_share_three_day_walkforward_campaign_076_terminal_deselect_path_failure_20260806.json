@@ -1,0 +1,23 @@
+{
+  "version": 1,
+  "kind": "a_share_three_day_walkforward_campaign076_terminal_deselect_path_failure",
+  "status": "one_failed_command_deselect_prefix_missed_collection_root",
+  "recorded_at": "2026-08-06T11:47:00+08:00",
+  "test_result": {
+    "passed": 22,
+    "failed": 2,
+    "failed_nodes": [
+      "data_collector_tests/test_a_share_three_day_walkforward_campaign076_no_return_audit.py::test_status_does_not_compute_gates_or_read_values",
+      "data_collector_tests/test_a_share_three_day_walkforward_campaign076_no_return_audit_v2.py::test_v1_frozen_runner_and_empty_audit_state_preserved"
+    ]
+  },
+  "cause": "The deselect arguments used tests/data_collector_tests prefixes, while this repository's pytest collection root emitted data_collector_tests node ids; therefore neither historical lifecycle node was deselected.",
+  "collection_probe_exit_code": 0,
+  "collection_probe_research_values_or_returns_read": false,
+  "research_values_or_returns_recomputed": false,
+  "stress_2024_2025_opened": false,
+  "provider_request_issued": false,
+  "candidate49_ledgers_changed": false,
+  "attempt_accounting_increment": 1,
+  "next_action": "Run the current terminal suite with the exact data_collector_tests-prefixed node ids returned by pytest collection."
+}

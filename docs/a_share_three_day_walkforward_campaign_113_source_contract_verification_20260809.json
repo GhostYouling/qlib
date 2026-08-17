@@ -1,0 +1,74 @@
+{
+  "schema_version": 1,
+  "kind": "a_share_three_day_walkforward_campaign113_source_contract_verification",
+  "status": "passed",
+  "recorded_at": "2026-08-09T01:07:09+08:00",
+  "authoritative_status": {
+    "path": "docs/a_share_three_day_iteration_status_20260809_campaign113_source_contract.json",
+    "sha256": "e866550274fbf87ab1530558c689198d4738398c11aa9826211f7b0dbc63a4c9"
+  },
+  "bound_artifacts": {
+    "source_contract": {
+      "path": "docs/a_share_official_exchange_enforcement_source_contract_20260809.json",
+      "sha256": "d4eda5eb2fefd7e2795251bd4926fc7e7157ea264fcabc430904c40d5dfd91e4"
+    },
+    "source_contract_freeze_result": {
+      "path": "docs/a_share_three_day_walkforward_campaign_113_source_contract_freeze_result_20260809.json",
+      "sha256": "a95bf2f1393ddda3c61316ebff400d8b532327d72b355b0a6342d5824a28acc4"
+    },
+    "attempt_ledger": {
+      "path": "data/experiments/short_horizon/historical_walkforward/campaign_113/research_attempt_ledger_v1.json",
+      "sha256": "cbd03219dd11a6dd260d57af28202e95a017d5da729fa5c437613d53aa2f912f",
+      "entry_count": 6,
+      "chain_tip_sha256": "733aeb776e737a23a0b22474fc9ac01ded969d9cc26e7e6358d420cb47f45380"
+    },
+    "numeric_policy_v75": {
+      "path": "docs/a_share_three_day_walkforward_future_numeric_comparison_eligibility_policy_v75_20260809.json",
+      "sha256": "cdcb577806c6555528fa189fcda5e8da5c4135192eb121c6acbc2d6781cf5407"
+    },
+    "campaign_report": {
+      "path": "docs/a_share_three_day_walkforward_campaign_113_report.md",
+      "sha256": "8c41680443fa847d1989251361208c5987f6bea60da1aa1ede20ce59a3960e62"
+    },
+    "current_research_report": {
+      "path": "data/experiments/short_horizon/current_research_report.md",
+      "sha256": "943cd58cfd104f7afc0ccf34bf317ca82757367ce329cb59a82eb03f6d0be03b"
+    },
+    "three_day_research_report": {
+      "path": "data/experiments/short_horizon/three_day_research_report.md",
+      "sha256": "0d59add1f32800de7aa8ad20e8779f73aa95b067fbf2e240834a586875221f62"
+    },
+    "data_pipeline": {
+      "path": "docs/a_share_data_pipeline.md",
+      "sha256": "2634c3a8622538e04cb2a7b4e9a88767513a44ee0b479dfad98f21ffdf8e01ce"
+    },
+    "campaign113_test": {
+      "path": "tests/data_collector_tests/test_a_share_three_day_walkforward_campaign113_source_contract.py",
+      "sha256": "bb3d84b6482e078c072dfb078c9dc6a1db2385eb61be4861859a89e6ab469c5c"
+    }
+  },
+  "test_execution": {
+    "command": "/Users/niyufei/.cache/codex-runtimes/codex-primary-runtime/dependencies/python/bin/python3 -m pytest -q tests/data_collector_tests/test_a_share_three_day_walkforward_campaign113_source_contract.py tests/data_collector_tests/test_a_share_three_day_walkforward_campaign112_prevalue_terminal.py",
+    "result": "13 passed in 1.69s",
+    "exit_code": 0
+  },
+  "semantic_checks": {
+    "campaign113_is_source_contract_stage_not_factor_validation": true,
+    "programmatic_source_request_issued": false,
+    "programmatic_source_row_read_persisted_or_counted": false,
+    "factor_formula_direction_or_numeric_snapshot_created": false,
+    "historical_daily_price_or_forward_return_read": false,
+    "stress_2024_2025_opened": false,
+    "complete_definition_count": 140,
+    "numeric_comparator_count": 134,
+    "candidate49_signal_entry_count": 0,
+    "candidate49_execution_entry_count": 0,
+    "candidate49_signal_ledger_sha256": "5193f00d7f36da003f53cec387900da4c3d002299f5dfcfc1a95eaa199ed3a79",
+    "candidate49_execution_ledger_sha256": "d57a3e61eac969e42cafa418ccd8c0a5ee65dcf69da145bb2c096c2a02a2ea4f",
+    "candidate49_historical_backfill_performed": false,
+    "second_prospective_candidate_created": false,
+    "current_scoring_selection_sizing_or_orders_performed": false,
+    "investment_advice": false
+  },
+  "next_safe_action_verified": "Implement and freeze only the pure synthetic-fixture adapter and one pre-row formula definition before any official exchange source request; historical work does not wait for 16:30 and Candidate49 remains separate."
+}

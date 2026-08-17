@@ -1,0 +1,16 @@
+{
+  "schema_version": 1,
+  "kind": "a_share_three_day_walkforward_campaign129_infrastructure_failure",
+  "status": "recorded_unified_report_append_patch_context_failure",
+  "recorded_at": "2026-08-14T07:21:00+08:00",
+  "stage": "campaign129_terminal_report_publication",
+  "failed_command_summary": "An apply_patch transaction tried to append the Campaign129 section after a Campaign128 sentence whose exact whitespace/context did not match both unified reports; verification failed and the transaction made no changes.",
+  "recovery_summary": "The exact report tails were read and a narrower append patch was prepared; the already frozen scientific result was not changed.",
+  "failure_handling": {
+    "failed_exit_treated_as_success": false,
+    "partial_file_change_observed": false,
+    "source_candidate_comparator_price_or_return_value_read": false,
+    "candidate49_ledger_changed": false,
+    "scientific_result_changed": false
+  }
+}

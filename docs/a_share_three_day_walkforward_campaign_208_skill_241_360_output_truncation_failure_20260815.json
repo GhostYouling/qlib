@@ -1,0 +1,22 @@
+{
+  "artifact_type": "campaign_infrastructure_failure_record",
+  "campaign_id": 208,
+  "recorded_at": "2026-08-15T21:23:00+08:00",
+  "phase": "manage_qlib_a_share_data_skill_read",
+  "requested_scope": "skill_lines_241_360",
+  "status": "failed_skill_lines_241_360_output_truncated_discarded",
+  "failure_class": "tool_output_truncation",
+  "scientific_trial": false,
+  "result_consumed": false,
+  "recovery": {
+    "action": "reread_lines_241_360_in_smaller_complete_ranges"
+  },
+  "safety": {
+    "credentials_read": false,
+    "network_accessed": false,
+    "candidate49_plan_or_run_executed": false,
+    "candidate_or_comparator_values_read": false,
+    "historical_returns_read": false,
+    "research_thresholds_modified": false
+  }
+}

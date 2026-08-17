@@ -1,0 +1,201 @@
+{
+  "version": 14,
+  "kind": "a_share_three_day_iteration_status",
+  "status": "candidate49_future_only_preserved_fifteen_historical_walkforward_campaigns_completed_zero_current_candidates",
+  "recorded_at": "2026-07-28T20:45:00Z",
+  "purpose": "Advance the authoritative three-session research state through terminal Campaign015 while preserving Candidate49, every prior terminal conclusion, and the historical/prospective separation.",
+  "previous_authoritative_state": {
+    "path": "docs/a_share_three_day_iteration_status_20260729_campaign014.json",
+    "sha256": "c4d1ecf43024588ccd159e6f67141a381d058458d3d97db9d362d819dfea2975"
+  },
+  "latest_campaign_research_record": {
+    "path": "docs/a_share_three_day_walkforward_campaign_015_research_record.json",
+    "sha256": "ddaf96c66cb86abb2f7d07950adade7f2a4e5a788004f7b4c6525f0d4ac8449c"
+  },
+  "fixed_strategy": {
+    "price_basis": "close_known_raw_pct_chg_chain_v1",
+    "holding_period_local_sessions": 3,
+    "topk": 3,
+    "signal_time": "local close",
+    "entry": "next local session open",
+    "exit": "third local session close",
+    "pilot_initial_capital_cny": 200000,
+    "pilot_target_exposure_per_slot": 0.05,
+    "pilot_maximum_new_exposure_per_signal": 0.15,
+    "pilot_buy_lot_size_shares": 100,
+    "commission_rate_each_side": 0.0001,
+    "transfer_fee_rate_each_side": 0.00002,
+    "sell_stamp_duty_rate": 0.0005,
+    "pilot_primary_slippage_rate_each_side": 0.001,
+    "pilot_maximum_daily_amount_participation": 0.01
+  },
+  "governance_policy": {
+    "path": "docs/a_share_three_day_historical_walkforward_research_policy_20260727.json",
+    "sha256": "38426d6161b9bfed323c58caba18feca668b8c9d53e294951a8ba90c01a798bb",
+    "historical_research_is_primary_iteration_engine": true,
+    "prospective_observation_is_confirmation_layer": true
+  },
+  "active_prospective_candidate": {
+    "ordinal": 49,
+    "registration_id": "candidate49_intraday_cumulative_vwap_crossing_rate_240m_v1",
+    "factor_name": "intraday_cumulative_vwap_crossing_rate_240m",
+    "direction": "higher",
+    "historical_return_diagnostic_allowed": false,
+    "historical_signal_or_execution_backfill_allowed": false,
+    "signal_ledger": {
+      "path": "data/experiments/short_horizon/candidate49_future_signal_ledger.json",
+      "sha256": "5193f00d7f36da003f53cec387900da4c3d002299f5dfcfc1a95eaa199ed3a79",
+      "entry_count": 0
+    },
+    "execution_ledger": {
+      "path": "data/experiments/short_horizon/candidate49_future_execution_ledger.json",
+      "sha256": "d57a3e61eac969e42cafa418ccd8c0a5ee65dcf69da145bb2c096c2a02a2ea4f",
+      "entry_count": 0
+    },
+    "terminal": false
+  },
+  "historical_walkforward_track": {
+    "status": "fifteen_finite_campaigns_completed_no_current_or_prospective_promotion",
+    "candidate49_terminal_record_required_before_research": false,
+    "new_daily_session_required_before_research": false,
+    "same_day_1630_wait_required_before_research": false,
+    "development_interval": {
+      "start": "2019-01-01",
+      "end": "2023-12-31",
+      "method": "three expanding train-to-next-year validation folds"
+    },
+    "locked_campaign_backtest_interval": {
+      "start": "2024-01-01",
+      "end": "2025-12-31",
+      "classification": "one_shot_historically_exposed_quasi_out_of_sample",
+      "pristine_holdout": false
+    },
+    "campaign015_development_interval_opened": true,
+    "campaign015_stress_interval_opened": false,
+    "split_purge_local_signal_sessions": 3,
+    "require_t_plus_1_and_t_plus_3_inside_partition": true,
+    "append_only_trial_ledger_required": true,
+    "record_all_failed_and_successful_trials": true,
+    "old_terminal_records_rewritten": false
+  },
+  "completed_historical_walkforward_campaigns": {
+    "inherited_campaign_count": 14,
+    "inherited_state": {
+      "path": "docs/a_share_three_day_iteration_status_20260729_campaign014.json",
+      "sha256": "c4d1ecf43024588ccd159e6f67141a381d058458d3d97db9d362d819dfea2975",
+      "recorded_development_trial_count": 237
+    },
+    "appended_campaign": {
+      "campaign_id": "a_share_three_day_walkforward_campaign_015",
+      "research_record": {
+        "path": "docs/a_share_three_day_walkforward_campaign_015_research_record.json",
+        "sha256": "ddaf96c66cb86abb2f7d07950adade7f2a4e5a788004f7b4c6525f0d4ac8449c"
+      },
+      "no_return_candidate_factor_count": 1,
+      "no_return_admissible_factor_count": 1,
+      "development_trial_count": 1,
+      "operationally_admissible_development_trial_count": 1,
+      "development_survivor_count": 0,
+      "stress_interval_opened": false,
+      "stress_return_fields_read": false,
+      "candidate49_historical_return_read": false
+    },
+    "total_completed_campaign_count": 15
+  },
+  "campaign015_result_summary": {
+    "factor": "intraday_prior_range_breakout_pressure_238p",
+    "direction": "higher",
+    "minute_high_low_close_read_by_factor": true,
+    "minute_open_volume_or_amount_read_by_factor": false,
+    "snapshot_rows": 7724498,
+    "snapshot_eligible_rows": 7693412,
+    "no_return_median_coverage": 0.998247150274987,
+    "no_return_p05_coverage": 0.9930153688759267,
+    "no_return_p05_eligible_names": 138.0,
+    "potential_non_overlapping_three_session_cohorts": 540,
+    "coverage_and_capacity_gate_passed": true,
+    "statistical_comparison_count": 36,
+    "statistical_comparison_pass_count": 36,
+    "uniqueness_gate_passed": true,
+    "closest_comparison_factor": "intraday_signed_path_efficiency_239m",
+    "closest_comparison_median_daily_rank_correlation": 0.7697037619772088,
+    "development_trial_count": 1,
+    "positive_validation_mean_rank_ic_fold_count": 0,
+    "positive_validation_normalized_return_fold_count": 1,
+    "positive_validation_pilot_10bp_return_fold_count": 1,
+    "median_validation_mean_rank_ic": -0.006538388310217116,
+    "median_validation_spread": 0.0006289154878013754,
+    "median_validation_pilot_10bp_return": -0.06913168214621668,
+    "development_aggregate_normalized_return": -0.6874803279986712,
+    "development_aggregate_pilot_0bp_return": -0.11340367950933594,
+    "development_aggregate_pilot_5bp_return": -0.156215769107664,
+    "development_aggregate_pilot_10bp_return": -0.20933935367281764,
+    "development_aggregate_pilot_20bp_return": -0.26840825728221696,
+    "association_supported": false,
+    "portfolio_translation_supported": false,
+    "development_survivor_count": 0,
+    "stress_2024_2025_opened": false,
+    "stress_2024_2025_return_read": false,
+    "terminal": true
+  },
+  "research_counts": {
+    "terminal_primary_mechanism_count_before_walkforward_campaigns": 48,
+    "terminal_historical_walkforward_campaign_mechanism_count": 15,
+    "active_prospective_candidate_count": 1,
+    "completed_historical_walkforward_campaign_count": 15,
+    "recorded_historical_development_trial_count": 238,
+    "campaign015_no_return_candidate_factor_count": 1,
+    "campaign015_no_return_admissible_factor_count": 1,
+    "campaign015_development_trial_count": 1,
+    "campaign015_development_survivor_count": 0,
+    "dual_gate_qualified_prospective_factor_count": 0,
+    "current_aggregation_candidate_count": 0
+  },
+  "preserved_future_only_policy": {
+    "path": "docs/a_share_three_day_future_only_minute_research_policy_20260725.json",
+    "sha256": "52ca8bfa7201509fe891d0af3d1c87aeebd64e47e6ec6641e897849411df408c",
+    "scope_after_this_state": "Candidate49 remains the only active prospective candidate; its factor, direction, registration, signal ledger, execution ledger, and evaluation milestones are unchanged."
+  },
+  "limitations": {
+    "survivorship_bias": "The holding universe is derived from a current listing snapshot and may omit historical delisted names. Campaign015 is research-only and cannot support strategy promotion or current selection.",
+    "historically_exposed_development": "The 2019-2023 folds are disciplined development evidence but not pristine unseen data.",
+    "near_synonym_risk": "The candidate passed the fixed uniqueness gate but was close to signed path efficiency at 0.7697 versus the 0.8 limit.",
+    "failed_direction_and_cost_translation": "All three validation mean Rank IC values were negative; aggregate 10bp and 20bp board-lot results were -20.93% and -26.84%."
+  },
+  "decision": {
+    "offline_historical_research_allowed_while_candidate49_active": true,
+    "campaign016_concept_scouting_and_separate_no_return_research_allowed": true,
+    "candidate49_historical_return_diagnostic_allowed": false,
+    "candidate49_future_observation_continues": true,
+    "candidate50_prospective_activation_allowed_while_candidate49_active": false,
+    "repair_invert_or_combine_campaign015_or_other_terminal_factors_allowed": false,
+    "current_aggregation_allowed": false,
+    "current_scoring_allowed": false,
+    "selection_allowed": false,
+    "sizing_allowed": false,
+    "orders_allowed": false,
+    "level2_intake_justified": false
+  },
+  "next_research_action": {
+    "objective": "Scout a genuinely different Campaign016 mechanism family, then freeze a separate no-return admission protocol before reading any Campaign016 value or return.",
+    "concept_family": [],
+    "concept_status": "not_yet_selected_no_formula_no_direction_no_value",
+    "required_order": [
+      "preserve Candidate49 future-only ledgers unchanged",
+      "exclude every exact terminal Campaign001-Campaign015 mechanism and any rescue combination",
+      "perform a no-value economic and formula-overlap review",
+      "freeze exact formulas, directions, timestamp grids, missing and denominator rules, source fields, coverage and uniqueness gates, and a finite search catalog",
+      "implement synthetic formula tests",
+      "run coverage, capacity, and statistical uniqueness against every prior factor with usable frozen values before any daily price or forward-return read",
+      "freeze 2019-2023 development trials only for admitted factors",
+      "open 2024-2025 once only if the frozen development survivor count is positive"
+    ],
+    "forbidden_actions": [
+      "backfill Candidate49 historical prices, returns, signals, executions, or milestones",
+      "invert, repair, threshold, rewindow, filter, or combine Campaign015 after its result",
+      "open Campaign015 2024-2025 stress returns after its zero-survivor result",
+      "start Candidate50 prospectively while Candidate49 remains active",
+      "use any historical result for a current score, selection, size, or order"
+    ]
+  }
+}

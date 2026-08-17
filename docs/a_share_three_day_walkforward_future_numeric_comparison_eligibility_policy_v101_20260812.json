@@ -1,0 +1,78 @@
+{
+  "version": 101,
+  "kind": "a_share_three_day_walkforward_future_numeric_comparison_eligibility_policy",
+  "status": "campaign116_verified_snapshot_accounting_corrected_pending_coverage",
+  "recorded_at": "2026-08-12T16:33:41+08:00",
+  "supersedes_without_rewriting": {
+    "path": "docs/a_share_three_day_walkforward_future_numeric_comparison_eligibility_policy_v100_20260812.json",
+    "sha256": "de014cdffe6da1e366c81d87958be40052fab2d659b9734e6b0592f21a347a01",
+    "preserved": true,
+    "complete_definition_order_changed": false,
+    "numeric_comparator_order_changed": false,
+    "scientific_stage_changed": false,
+    "reason": "A post-verification Black check reported formatting differences in six fingerprint-frozen files. The files remain byte-identical; regression 19/19, JSON 21/21 and Ruff passed. Only failure accounting advances."
+  },
+  "authoritative_inputs": {
+    "numeric_policy_v100": {
+      "path": "docs/a_share_three_day_walkforward_future_numeric_comparison_eligibility_policy_v100_20260812.json",
+      "sha256": "de014cdffe6da1e366c81d87958be40052fab2d659b9734e6b0592f21a347a01"
+    },
+    "campaign116_attempt_ledger_v5": {
+      "path": "data/experiments/short_horizon/historical_walkforward/campaign_116/research_attempt_ledger_v5.json",
+      "sha256": "8600a8754701f4a0bb9c37e32daba07dd1ad8b92c659f6641f2439f510fbb251"
+    },
+    "campaign116_snapshot_verification_result": {
+      "path": "docs/a_share_three_day_walkforward_campaign_116_feature_snapshot_verification_result_20260812.json",
+      "sha256": "27bf2126460e0f89dea5d50030d06ffe4ae9372e2d6f7bb75d5f901d0a2fb85a"
+    }
+  },
+  "campaign116_stage_classification": {
+    "active_historical_campaign": true,
+    "terminal": false,
+    "candidate_snapshot_verified": true,
+    "coverage_gate_computed": false,
+    "numeric_comparator_values_read": false,
+    "development_trial_count": 0,
+    "stress_2024_2025_opened": false,
+    "next_stage": "coverage_only_gate_before_any_numeric_comparator_value"
+  },
+  "complete_historical_feature_library": {
+    "exact_v100_order_preserved": true,
+    "factor_definition_count": 142,
+    "order_sha256": "ed61b10f3acb939c10ae5759f33aafde377cc921dd99c642300603b50a4851c5",
+    "last_definition": {
+      "name": "intraday_amount_conditioned_directional_persistence_spread_236p",
+      "score_direction": "higher"
+    }
+  },
+  "numerical_comparator_eligibility": {
+    "exact_v100_order_preserved": true,
+    "eligible_numeric_comparator_count": 134,
+    "eligible_numeric_comparator_order_sha256": "31d788db467f558a0ac538315343090f1b3ad4cb27a26136a49ebaa88b2fdbf2",
+    "campaign116_numeric_comparator_appended": false,
+    "all_134_eligible_numeric_comparators_must_pass_after_coverage": true
+  },
+  "accounting": {
+    "campaign116_attempt_count": 5,
+    "campaign116_infrastructure_failure_count": 4,
+    "campaign116_prevalue_scientific_attempt_count": 1,
+    "campaign116_complete_factor_attempt_count": 1,
+    "campaign116_return_reading_development_trial_count": 0,
+    "cumulative_historical_research_attempt_count": 883,
+    "cumulative_return_reading_development_trial_count": 302
+  },
+  "research_boundary": {
+    "frozen_code_or_test_files_reformatted": false,
+    "provider_request_issued": false,
+    "credential_loaded": false,
+    "campaign116_candidate_snapshot_created_and_verified": true,
+    "campaign116_comparator_values_read": false,
+    "historical_daily_price_or_forward_return_values_read": false,
+    "stress_2024_2025_opened": false,
+    "candidate49_historical_backfill_performed": false,
+    "candidate49_ledgers_changed": false,
+    "second_prospective_candidate_created": false,
+    "current_scoring_selection_sizing_positions_or_orders_performed": false,
+    "investment_advice": false
+  }
+}

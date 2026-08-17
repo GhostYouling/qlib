@@ -1,0 +1,141 @@
+{
+  "schema_version": 1,
+  "kind": "a_share_three_day_walkforward_campaign188_mineral_resource_reserve_conversion_source_frontier",
+  "status": "terminal_prevalue_four_source_admission_deferrals_three_relabeling_operator_or_combination_rejections_zero_selected",
+  "recorded_at": "2026-08-15T13:51:38+08:00",
+  "purpose": "Review a finite issuer mineral-resource estimation, reserve conversion, mine-plan economics, grade and recovery, depletion reconciliation and closure lifecycle domain before source rows, values, factor values, comparators, security prices or returns.",
+  "authoritative_inputs": {
+    "campaign187_effective_state": {"path": "docs/a_share_three_day_iteration_status_20260815_campaign187_prevalue_terminal.json", "sha256": "4c62fdd7cbebe6550276f038b555a911165f2511d4cfed0be40ccc09ec3a92c9"},
+    "eligibility_policy_v276": {"path": "docs/a_share_three_day_walkforward_future_numeric_comparison_eligibility_policy_v276_20260815.json", "sha256": "c7ec31d8131520135bd8006da3798faa887eab4b0515ee78b8a396467637ba6c"},
+    "campaign163_supply_chain_frontier": {"path": "docs/a_share_three_day_walkforward_campaign_163_supply_chain_disclosure_source_frontier_20260815.json", "sha256": "3002f25ffc4ff1938933f0b4f3b998cacdb775ca0e27702c65cdc7afec0e80a3"},
+    "campaign165_environmental_externality_frontier": {"path": "docs/a_share_three_day_walkforward_campaign_165_environmental_operating_externality_source_frontier_20260815.json", "sha256": "45d28dfd51a71f45c684dd418286275c34b1d076cc495856270bd0cb9cb962b4"},
+    "campaign168_operating_kpi_frontier": {"path": "docs/a_share_three_day_walkforward_campaign_168_operating_scale_adoption_kpi_source_frontier_20260815.json", "sha256": "c5dc98f92266e2b7ef7349cb5260a8cde15ccd9c78442e661e4170b1ba47d18a"},
+    "campaign169_pricing_frontier": {"path": "docs/a_share_three_day_walkforward_campaign_169_commercial_pricing_terms_source_frontier_20260815.json", "sha256": "a571bcc5bcbfc158da551e59d2984a907fd44b419d115619043a9b28ee3ab288"},
+    "campaign178_owned_asset_frontier": {"path": "docs/a_share_three_day_walkforward_campaign_178_owned_productive_asset_capex_source_frontier_20260815.json", "sha256": "1d5aeedc08ab1f45fda17e9f939f387408d53e9e2934211aec5ad494c60a41a2"},
+    "campaign179_operating_right_frontier": {"path": "docs/a_share_three_day_walkforward_campaign_179_operating_license_concession_right_source_frontier_20260815.json", "sha256": "54d6580c2db8b8897c6e2e4145b54259f9fd7fa2b7149aa99593a1bd7628de0e"},
+    "campaign185_land_bank_frontier": {"path": "docs/a_share_three_day_walkforward_campaign_185_real_estate_presale_sales_delivery_land_bank_source_frontier_20260815.json", "sha256": "8317fdeb741832ec5ff4cd4abf0c558419506b6597c68e9fe05540b92f3cbd31"}
+  },
+  "repository_evidence": {
+    "complete_definition_count_reviewed": 158,
+    "eligible_numeric_comparator_count_reviewed": 142,
+    "exact_mineral_resource_reserve_ore_grade_stripping_ratio_drilling_depletion_closure_or_chinese_equivalent_match_found": false,
+    "matching_existing_campaign_or_complete_source_contract_records_from_exact_bounded_search": 0,
+    "existing_mineral_resource_reserve_conversion_mechanism_in_complete_definitions": false,
+    "existing_mineral_resource_reserve_conversion_mechanism_in_numeric_comparators": false,
+    "complete_mineral_resource_reserve_source_contract_present": false,
+    "owned_asset_boundary": "Campaign178 freezes mine property, plant, equipment, construction and capital expenditure as productive assets. Those balances do not identify geological confidence, ore body, grade, cutoff, contained metal, reserve conversion or depletion reconciliation.",
+    "operating_right_boundary": "Campaign179 freezes mining or operating rights, concessions, tenure and quota. A legal right does not establish that an economically mineable resource exists or its reporting-code classification, grade, recovery and reserve inventory.",
+    "operating_kpi_boundary": "Campaign168 freezes production, throughput, capacity and utilization KPIs. Output does not reconstruct opening reserves, discoveries, category conversions, model revisions, dilution, losses and closing reserves.",
+    "environmental_boundary": "Campaign165 freezes emissions, water, waste, remediation and environmental externalities. Closure and rehabilitation obligations remain adjacent context and cannot substitute for deposit-level resource and reserve estimates.",
+    "pricing_boundary": "Campaign169 freezes commercial and commodity pricing states. Spot or forecast prices are economic assumptions in a reserve test, not a mineral inventory or confidence classification.",
+    "sector_boundary": "Point-in-time mining, exploration and attributable-project scope must be frozen; non-mining issuers and projects without an applicable mineral estimate remain structurally not applicable and cannot be filled with zero.",
+    "point_in_time_boundary": "A current technical report or latest reserve table cannot be projected backward without historical reporting-code, competent-person, drilling, model, cutoff, conversion, production, revision, acquisition, disposal and first-public histories."
+  },
+  "finite_prevalue_catalog": [
+    {
+      "catalog_id": "c188_01",
+      "name": "exploration_drilling_assay_geological_model_and_resource_classification_state",
+      "economic_state": "A close-known deposit state linking drilling, sampling, assay, geological model and estimation to inferred, indicated and measured mineral-resource categories under a named reporting code and competent person.",
+      "formula": null,
+      "direction": null,
+      "parameters_filters_subsets_combinations_models": [],
+      "new_issuer_state": true,
+      "complete_local_source_contract": false,
+      "decision": "deferred_source_admission_not_factor_failure",
+      "reason": "No admitted point-in-time history freezes issuer, project, tenement, deposit, drill program, sample and assay quality, geological model, estimation method, reporting code, competent person, effective date, correction and first-public timing across 2019-2023."
+    },
+    {
+      "catalog_id": "c188_02",
+      "name": "resource_to_reserve_conversion_feasibility_cutoff_and_mine_plan_state",
+      "economic_state": "A close-known conversion state connecting measured or indicated resources to probable or proven reserves through feasibility, mine design, cutoff, recovery, dilution, commodity-price, cost, permitting and economic assumptions.",
+      "formula": null,
+      "direction": null,
+      "parameters_filters_subsets_combinations_models": [],
+      "new_issuer_state": true,
+      "complete_local_source_contract": false,
+      "decision": "deferred_source_admission_not_factor_failure",
+      "reason": "The repository lacks a complete technical-report history connecting resource and reserve basis, modifying factors, feasibility stage, mine plan, cutoff, recovery, dilution, price and cost assumptions, permits, revisions, supersession and trading-session availability."
+    },
+    {
+      "catalog_id": "c188_03",
+      "name": "reserve_inventory_discovery_conversion_acquisition_depletion_and_revision_reconciliation_state",
+      "economic_state": "A close-known reserve roll-forward linking opening inventory to discovery, category upgrade or downgrade, acquisition or disposal, production depletion, processing loss, sterilization, economic revision and closing inventory.",
+      "formula": null,
+      "direction": null,
+      "parameters_filters_subsets_combinations_models": [],
+      "new_issuer_state": true,
+      "complete_local_source_contract": false,
+      "decision": "deferred_source_admission_not_factor_failure",
+      "reason": "No admitted source preserves deposit-level opening and closing resources or reserves, category transfers, ownership changes, mined and processed material, recovery loss, model and economic revisions, failed projects, correction and complete stock-flow reconciliation."
+    },
+    {
+      "catalog_id": "c188_04",
+      "name": "ore_grade_dilution_recovery_stripping_stockpile_tailings_and_closure_state",
+      "economic_state": "A close-known ore-quality and recoverability state covering head and reserve grade, dilution, metallurgical recovery, stripping ratio, ore and waste movement, stockpiles, tailings reprocessing, reserve exhaustion, closure and rehabilitation transition.",
+      "formula": null,
+      "direction": null,
+      "parameters_filters_subsets_combinations_models": [],
+      "new_issuer_state": true,
+      "complete_local_source_contract": false,
+      "decision": "deferred_source_admission_not_factor_failure",
+      "reason": "No complete point-in-time history connects comparable ore and contained-metal units to grade, dilution, recovery, strip ratio, stockpile additions and drawdown, tailings recoverability, exhaustion, suspension, closure, rehabilitation, revision and structural not-applicability."
+    },
+    {
+      "catalog_id": "c188_05",
+      "name": "fixed_asset_capex_license_environmental_kpi_commodity_price_land_or_security_price_relabeling",
+      "economic_state": "An existing asset, capital-expenditure, license, environmental, production-KPI, commodity-price, land-right or security-price state relabeled as mineral-resource quality or reserve resilience.",
+      "formula": null,
+      "direction": null,
+      "parameters_filters_subsets_combinations_models": [],
+      "new_issuer_state": false,
+      "complete_local_source_contract": false,
+      "decision": "rejected_terminal_asset_capex_license_environmental_kpi_pricing_land_and_security_price_source_relabeling",
+      "reason": "Adjacent aggregate states do not identify deposit geology, reporting code, confidence class, grade, cutoff, contained commodity, modifying factors, reserve conversion or an auditable inventory roll-forward."
+    },
+    {
+      "catalog_id": "c188_06",
+      "name": "reserve_direction_cutoff_grade_equivalent_unit_commodity_region_project_window_or_subset_variant",
+      "economic_state": "A direction, transform or subset of resource or reserve tonnage, contained commodity, grade, cutoff, recovery, dilution, strip ratio, mine life, project, commodity, geography or event window.",
+      "formula": null,
+      "direction": null,
+      "parameters_filters_subsets_combinations_models": [],
+      "new_issuer_state": false,
+      "complete_local_source_contract": false,
+      "decision": "rejected_operator_direction_cutoff_grade_equivalent_unit_commodity_region_project_window_and_subset_search_before_base_source_admission",
+      "reason": "Choosing more or fewer reserves, high or low grade, a metal-equivalent formula, cutoff, commodity, geography, project stage, successful discoveries only, lag or window before source admission would multiply hypotheses and introduce project survivorship."
+    },
+    {
+      "catalog_id": "c188_07",
+      "name": "combined_resource_conversion_reserve_reconciliation_and_ore_quality_score_or_model",
+      "economic_state": "A joint issuer mineral-resource score across exploration classification, resource-to-reserve conversion, reserve roll-forward and ore-quality or recovery states.",
+      "formula": null,
+      "direction": null,
+      "parameters_filters_subsets_combinations_models": [],
+      "new_issuer_state": false,
+      "complete_local_source_contract": false,
+      "decision": "rejected_unadmitted_component_normalization_weight_interaction_and_model_search",
+      "reason": "Combining four unadmitted source families or choosing unit normalization, attributable ownership, weights, interactions, filters, subsets or models would expand the search before mining scope and every base source contract are complete."
+    }
+  ],
+  "mandatory_source_admission_gate": {
+    "must_freeze_before_any_formula_or_direction": [
+      "exact exchange filing, technical report, qualified or competent-person report, geological survey, mine registry or licensed structured source with immutable bytes and stable issuer, project, tenement, deposit, document, table and observation identifiers",
+      "sampling, drilling, assay, estimate-effective, feasibility, reserve-declaration, production, revision, correction, first-public, supersession and trading-session availability timestamps",
+      "listed security, parent, subsidiary, joint operation, project owner, operator, tenement holder, royalty or stream holder, competent person, deposit and processing-facility mapping without current-state leakage",
+      "point-in-time mining and exploration taxonomy with structural not-applicability for non-mining issuers and projects lacking an applicable mineral estimate",
+      "reporting-code version, competent-person qualification, inferred, indicated, measured, probable and proven classification semantics plus reserve-inside-or-outside-resource presentation",
+      "commodity, ore type, tonnage, contained metal or mineral, grade, unit, moisture basis, density, cutoff and metal-equivalent formula and price assumptions",
+      "geological model, drilling density, assay and laboratory quality, estimation method, confidence boundary, modifying factor, feasibility stage and material uncertainty semantics",
+      "mine design, dilution, metallurgical recovery, strip ratio, throughput, production schedule, stockpile, tailings, loss, closure and rehabilitation semantics",
+      "opening, discovery, extension, upgrade, downgrade, conversion, acquisition, disposal, depletion, sterilization, model revision, economic revision and closing resource or reserve reconciliation",
+      "commodity-price deck, exchange rate, operating and capital cost, tax, royalty, recovery, permit, social and environmental assumption scope without importing current assumptions into older estimates",
+      "gross and attributable ownership, consolidated and project presentation, inclusive and exclusive resource basis, double counting, unit conversion, currency, missing, undisclosed, not-applicable and true-zero semantics",
+      "complete bounded 2019-2023 partition manifest, full eligible-mining denominator, issuer, project, tenement and deposit identifier history, delisting, merger and project-failure coverage, identity, timing, code, classification, unit, reconciliation and source-acceptance tests using no factor, comparator, security-price or return values"
+    ],
+    "formula_direction_parameter_filter_subset_combination_or_model_choice_allowed_before_gate": false
+  },
+  "gate_summary": {"routes_reviewed": 7, "genuinely_new_issuer_state_routes": 4, "source_admission_deferrals_not_factor_failures": 4, "relabeling_operator_or_combination_route_rejections": 3, "selected_candidate_count": 0, "complete_factor_definition_created": false, "numeric_comparator_created": false},
+  "scientific_interpretation": {"mineral_resource_reserve_conversion_state_declared_ineffective": false, "absence_of_an_admitted_historical_source_is_evidence_of_no_predictive_power": false, "safe_conclusion": "Four exploration, reserve-conversion, inventory-reconciliation and ore-quality lifecycle states remain deferred at source admission; adjacent-domain relabeling, premature operator search and unadmitted combinations are closed before values."},
+  "research_boundary": {"finite_catalog_frozen_before_source_or_value_read": true, "source_row_mineral_resource_reserve_drilling_grade_cutoff_recovery_depletion_closure_factor_comparator_security_price_or_return_value_read": false, "repository_policy_and_prior_records_only": true, "provider_or_web_request_issued": false, "provider_credential_presence_value_or_digest_read": false, "stress_2024_2025_opened": false, "candidate49_ledgers_changed": false, "second_prospective_candidate_created": false},
+  "next_action": "Record both infrastructure failures and all seven scientific decisions in the Campaign188 hash chain, then publish terminal accounting without numeric comparison."
+}

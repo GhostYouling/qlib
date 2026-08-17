@@ -1,0 +1,61 @@
+{
+  "schema_version": 1,
+  "kind": "a_share_three_day_walkforward_campaign120_terminal_accounting_correction",
+  "status": "append_only_terminal_validation_failure_accounted_without_scientific_result_change",
+  "recorded_at": "2026-08-14T01:11:58+08:00",
+  "supersedes_without_rewriting": {
+    "path": "docs/a_share_three_day_walkforward_campaign_120_terminal_accounting_correction_20260814.json",
+    "sha256": "bad3277c5bb602a995c9d4e09672b1ddf2c822a0637ad457074db0b6232a4c85",
+    "preserved": true
+  },
+  "scientific_terminal_result": {
+    "path": "docs/a_share_three_day_walkforward_campaign_120_terminal_result_20260814.json",
+    "sha256": "d18cfd7ef17c09a6a259179c1e4528b5bea030cf385156363ce3c991882a87d5",
+    "preserved": true
+  },
+  "final_attempt_ledger": {
+    "path": "data/experiments/short_horizon/historical_walkforward/campaign_120/research_attempt_ledger_v4.json",
+    "sha256": "1f597311f2359d3a6ffb972cfa2dc0a1b6b37771e2cb7e1ab65185f9552c1bc5"
+  },
+  "correction": {
+    "added_attempt_id": "campaign120_infrastructure_017",
+    "campaign120_attempt_count_before": 18,
+    "campaign120_attempt_count_after": 19,
+    "campaign120_infrastructure_failure_count_before": 12,
+    "campaign120_infrastructure_failure_count_after": 13,
+    "cumulative_historical_research_attempt_count_before": 953,
+    "cumulative_historical_research_attempt_count_after": 954,
+    "cumulative_return_reading_development_trial_count_before_and_after": 305,
+    "scientific_result_changed": false,
+    "library_order_changed": false,
+    "research_value_read_after_terminal": false
+  },
+  "validation": {
+    "focused_campaign119_and_campaign120_tests": "36 passed",
+    "black_campaign120_scope": "passed",
+    "ruff_campaign120_scope": "passed"
+  },
+  "reports": {
+    "campaign120_terminal_report": {
+      "path": "docs/a_share_three_day_walkforward_campaign_120_terminal_report.md",
+      "sha256": "cc0a544cb26b9419e0ea890c701475a0387c2eb05c8e1bb501f8b0f3296bebac"
+    },
+    "current_research_report": {
+      "path": "data/experiments/short_horizon/current_research_report.md",
+      "sha256": "882a854c683ef857b9da3042552d722ad70a8351c913cbe94da4d1bc51298f1f"
+    },
+    "three_day_research_report": {
+      "path": "data/experiments/short_horizon/three_day_research_report.md",
+      "sha256": "99343cb485cd5dc68b06b699b8bae81b2329b788566299a127b4e6cf52ff5079"
+    }
+  },
+  "research_boundary": {
+    "historical_daily_price_or_forward_return_values_read_after_terminal": false,
+    "development_trial_started": false,
+    "stress_2024_2025_opened": false,
+    "provider_request_issued": false,
+    "candidate49_ledgers_changed": false,
+    "current_scoring_selection_sizing_or_orders_performed": false,
+    "investment_advice": false
+  }
+}

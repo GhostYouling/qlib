@@ -1,0 +1,39 @@
+{
+  "version": 1,
+  "kind": "a_share_three_day_walkforward_campaign072_precoverage_audit_candidate_compatibility_failure",
+  "status": "recorded_failed_exit_before_coverage_or_comparison_values",
+  "recorded_at": "2026-08-06T06:29:00+08:00",
+  "failed_command_stage": "second_activated_no_return_audit_static_binding_validation",
+  "exit_code": 1,
+  "frozen_inputs": {
+    "audit_runner_v2": {
+      "path_at_failure": "scripts/a_share_three_day_walkforward_campaign072_no_return_audit.py",
+      "sha256_at_failure": "f6d8da090dd97f05dc9eca435666f8029798adce11bbb46909011cae31707d1a"
+    },
+    "implementation_freeze_v2": {
+      "path": "docs/a_share_three_day_walkforward_campaign_072_no_return_audit_implementation_freeze_v2_20260806.json",
+      "sha256": "e373e9e030b3ffa91840c24425c706888e08e491984c7740d34210b0a47e40d3"
+    },
+    "activation_binding_v2": {
+      "path": "docs/a_share_three_day_walkforward_campaign_072_no_return_audit_activation_binding_v2_20260806.json",
+      "sha256": "7d3f29711fa6f775194e2bbe4cbf4f802e1f674169ee69fda5f95763721c5bea"
+    }
+  },
+  "observed_failure": {
+    "exception": "AttributeError",
+    "message": "Campaign072 feature module has no attribute C70_SNAPSHOT_BINDING_SHA256",
+    "stack_stage": "inherited Campaign071 static comparator verification",
+    "root_cause": "The repaired inner runtime correctly reached Campaign072, but the inherited Campaign071 verifier required the frozen Campaign070 dataset and snapshot-binding constants to be exported by the candidate module."
+  },
+  "evidence_boundary": {
+    "candidate_snapshot_value_frame_loaded": false,
+    "coverage_or_capacity_metrics_computed": false,
+    "comparison_values_read": false,
+    "historical_daily_price_fields_read": [],
+    "historical_forward_returns_read": false,
+    "provider_request_issued": false,
+    "candidate49_ledgers_changed": false,
+    "audit_artifact_published": false
+  },
+  "repair_rule": "Preserve v2 records unchanged; install the two exact already-frozen Campaign070 compatibility fingerprints in the audit process, add regression assertions, and publish versioned v3 implementation and activation bindings before retrying."
+}

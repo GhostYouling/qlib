@@ -1,0 +1,62 @@
+{
+  "version": 1,
+  "kind": "a_share_three_day_compact_comparator_cache_postpublication_test_failure",
+  "status": "recorded_before_additive_postpublication_test_transition",
+  "recorded_at": "2026-08-06T02:28:24+08:00",
+  "failed_command": "PYTHONPATH=/Volumes/DIsk/Disk-Coding/qlib /Volumes/DIsk/Coding/anaconda3/bin/python -m pytest -q tests/data_collector_tests/test_a_share_three_day_compact_comparator_cache_v2.py tests/data_collector_tests/test_a_share_three_day_compact_comparator_cache_v3.py tests/data_collector_tests/test_a_share_three_day_compact_comparator_cache_v4.py tests/data_collector_tests/test_a_share_three_day_walkforward_campaign067_terminal.py",
+  "exit_code": 1,
+  "test_result": {
+    "passed": 24,
+    "failed": 2,
+    "failed_nodes": [
+      "tests/data_collector_tests/test_a_share_three_day_compact_comparator_cache_v4.py::test_status_and_unconfirmed_v4_build_read_no_values",
+      "tests/data_collector_tests/test_a_share_three_day_walkforward_campaign067_terminal.py::test_unified_report_has_one_campaign067_and_one_candidate49_daily_section"
+    ]
+  },
+  "failure_semantics": [
+    {
+      "node": "tests/data_collector_tests/test_a_share_three_day_compact_comparator_cache_v4.py::test_status_and_unconfirmed_v4_build_read_no_values",
+      "frozen_test_sha256": "b00eddb205047ba57177171440400d08cfff32f7a53c84e82c856b93b181c427",
+      "assertion": "v4_output_exists is False",
+      "observed": true,
+      "classification": "expected_prepublication_state_assertion_after_successful_atomic_publication",
+      "cache_data_error": false
+    },
+    {
+      "node": "tests/data_collector_tests/test_a_share_three_day_walkforward_campaign067_terminal.py::test_unified_report_has_one_campaign067_and_one_candidate49_daily_section",
+      "frozen_test_sha256": "48ac764e7737eea45715f11816abb30b581cc4081e73165b4ed484eed0d839df",
+      "expected_report_sha256": "46f34d458d964d9ac9a05a4a9359c32610e5fad1507526c9dd682a051cc13d64",
+      "observed_report_sha256": "7023760adb54fbcb5a58a73c504f6f6eb0d969983bac6d54d2405875f63e73dc",
+      "classification": "expected_frozen_campaign067_report_binding_after_additive_v4_unified_report_section",
+      "campaign067_result_error": false
+    }
+  ],
+  "published_cache_integrity": {
+    "publication_binding_path": "docs/a_share_three_day_compact_comparator_cache_v4_publication_binding_20260806.json",
+    "publication_binding_sha256": "244f70b88be0396f7473c6664835cbb3cdad9135b6692b77c74018b1d53c925b",
+    "manifest_sha256": "3d81068f07ac61fe4cd04bd1a893e58759c06d88213263135fec5244e309b57b",
+    "independent_full_equivalence_exit_code": 0,
+    "campaign067_all_97_comparison_result_objects_exactly_equal": true
+  },
+  "repair_requirement": {
+    "edit_frozen_v4_test_or_campaign067_terminal_test_in_place": false,
+    "edit_published_manifest_builder_protocol_or_freeze_in_place": false,
+    "additive_postpublication_test_required": true,
+    "the_two_state_specific_nodes_must_be_explicitly_deselected_after_publication": true,
+    "all_other_v2_v3_v4_and_campaign067_terminal_tests_must_pass": true,
+    "new_authoritative_status_required": true
+  },
+  "candidate49_integrity": {
+    "signal_ledger_sha256": "5193f00d7f36da003f53cec387900da4c3d002299f5dfcfc1a95eaa199ed3a79",
+    "execution_ledger_sha256": "d57a3e61eac969e42cafa418ccd8c0a5ee65dcf69da145bb2c096c2a02a2ea4f"
+  },
+  "research_effect": {
+    "historical_daily_price_or_forward_return_values_read": false,
+    "provider_request_issued": false,
+    "research_attempt_count_increment": 0,
+    "return_reading_development_trial_count_increment": 0,
+    "cache_infrastructure_failure_count_increment": 1,
+    "cumulative_cache_infrastructure_failure_count": 7,
+    "current_scoring_selection_sizing_or_orders_performed": false
+  }
+}

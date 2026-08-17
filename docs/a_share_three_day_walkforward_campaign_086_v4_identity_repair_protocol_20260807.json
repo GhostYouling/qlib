@@ -1,0 +1,23 @@
+{
+  "schema_version": 1,
+  "kind": "a_share_three_day_walkforward_campaign086_v4_identity_repair_protocol",
+  "status": "frozen_before_v4_runner_creation_or_build_retry",
+  "frozen_at": "2026-08-07T01:33:00+08:00",
+  "failure_record": {
+    "path": "docs/a_share_three_day_walkforward_campaign_086_feature_build_v3_symbol_encoding_failure_20260807.json",
+    "sha256": "3c5f3eb419f67443582abbaa0a9cc8f07f23dc7a0db7d48dc10a115930787141"
+  },
+  "v3_runner_sha256": "17c92d5d0512f0e02bc5997ade732730ba91addb98732af2518563a336ebe6b2",
+  "v3_freeze_sha256": "44cb4001eab3b54650a04d3b0f69726ffa2c44ae5cf4f7c8a1c147ee84cf0400",
+  "allowed_v4_delta": [
+    "Parse exact uppercase ^(SH|SZ|BJ)[0-9]{6}$ accepted identity strings.",
+    "Map SH/SZ/BJ to frozen exchange ids 1/2/3 and retain security_number=exchange_id*1,000,000+code.",
+    "Retain day_number*4,000,000+security_number and v3 attachment dispatch without modification.",
+    "Bind the final snapshot manifest to v4 runner, v4 freeze, this protocol, and the prior immutable repair chain."
+  ],
+  "forbidden_delta": "Any factor value, formula, direction, support, grid, eligible-universe membership, comparator, gate, development, stress, daily price, return, Candidate49, or provider-network change.",
+  "candidate_snapshot_published_before_protocol": false,
+  "comparison_values_read_before_protocol": false,
+  "historical_daily_price_or_forward_return_values_read_before_protocol": false,
+  "provider_request_issued_before_protocol": false
+}

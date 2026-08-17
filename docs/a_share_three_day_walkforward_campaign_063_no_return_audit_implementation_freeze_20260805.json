@@ -1,0 +1,53 @@
+{
+  "version": 1,
+  "kind": "a_share_three_day_walkforward_campaign063_no_return_audit_implementation_freeze",
+  "status": "frozen_before_campaign063_quality_listing_coverage_comparison_daily_price_or_return_values",
+  "recorded_at": "2026-08-05T07:15:00+08:00",
+  "purpose": "Bind the sole coverage-first Campaign063 no-return audit before quality/listing eligibility keys, any comparison value, daily price, or forward return is opened.",
+  "no_return_protocol": {
+    "path": "docs/a_share_three_day_walkforward_campaign_063_no_return_preregistration.json",
+    "sha256": "2effcee4ccbbba8d55f450c7add3eb6064968a60c9d856ac769aebd20e542dfb"
+  },
+  "snapshot_binding": {
+    "path": "docs/a_share_three_day_walkforward_campaign_063_feature_snapshot_binding_20260805.json",
+    "sha256": "96b6ba12cd59db5bfce6afc58704fb283e209f135a3bc38be55698938899db91"
+  },
+  "structural_variance_diagnosis": {
+    "path": "docs/a_share_three_day_walkforward_campaign_063_structural_peer_variance_diagnosis_20260805.json",
+    "sha256": "4795d140af58aecfb638eaf5abdd97fe513f18bffead731ec93fe16c72fd0171"
+  },
+  "audit_runner": {
+    "path": "scripts/a_share_three_day_walkforward_campaign063_no_return_audit.py",
+    "sha256": "86e1b87fe72ff4ffc54da36a40cb573a3c0ee51b143799bdd063020a749f7f4c",
+    "candidate_factor": "intraday_cross_sectional_standardized_return_state_stability_236p",
+    "coverage_first": true,
+    "expected_candidate_eligible_rows": 0,
+    "comparison_count_frozen_but_values_never_opened_after_expected_coverage_failure": 94,
+    "comparison_order_sha256": "58f3137a7d8282097a9fd9859209889f7b2a959e043163d013b21ab8f38b853a"
+  },
+  "tests": {
+    "path": "tests/data_collector_tests/test_a_share_three_day_walkforward_campaign063_no_return_audit.py",
+    "sha256": "4484dd0b97373d45e417b39eb39c2a19482ae0d7d52b68789ef99fe967fbbb5a",
+    "combined_command": "PYTHONPATH=<repository-root>:<third-party-site-packages> python -S -m pytest -q tests/data_collector_tests/test_a_share_three_day_walkforward_campaign063_features.py tests/data_collector_tests/test_a_share_three_day_walkforward_campaign063_empty_partition_repair.py tests/data_collector_tests/test_a_share_three_day_walkforward_campaign063_manifest_namespace_repair.py tests/data_collector_tests/test_a_share_three_day_walkforward_campaign063_no_return_audit.py",
+    "combined_passed": 20,
+    "combined_failed": 0
+  },
+  "ordered_semantics": {
+    "verify_all_33015_candidate_partitions_before_coverage": true,
+    "load_quality_and_current_listing_keys_before_coverage": true,
+    "assert_coverage_fails_with_zero_eligible_rows": true,
+    "comparison_values_read_only_if_all_coverage_capacity_gates_pass": true,
+    "audit_implementation_contains_no_comparison_value_loading_path": true,
+    "daily_price_or_forward_return_read": false,
+    "same_campaign_formula_or_grid_rescue": false
+  },
+  "quality_listing_keys_read_before_freeze": false,
+  "comparison_values_read_before_freeze": false,
+  "historical_daily_price_fields_read_before_freeze": [],
+  "historical_forward_returns_read_before_freeze": false,
+  "candidate49_historical_return_read_before_freeze": false,
+  "candidate49_ledgers_changed_before_freeze": false,
+  "provider_request_issued_before_freeze": false,
+  "current_scoring_selection_sizing_or_orders_performed_before_freeze": false,
+  "next_action": "Run the sole Campaign063 no-return coverage audit exactly once and require zero admissible factors without comparison or return access."
+}

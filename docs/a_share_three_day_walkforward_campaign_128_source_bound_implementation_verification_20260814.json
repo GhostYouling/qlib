@@ -1,0 +1,55 @@
+{
+  "schema_version": 1,
+  "kind": "a_share_three_day_walkforward_campaign128_source_bound_implementation_verification",
+  "status": "source_bound_builder_and_recovery_verifier_verified_before_historical_source_values",
+  "recorded_at": "2026-08-14T05:45:07+0800",
+  "implementation_freeze": {
+    "path": "docs/a_share_three_day_walkforward_campaign_128_source_bound_implementation_freeze_20260814.json",
+    "sha256": "edc8504c3199c6b1fc7104de14dcbfd28b39807bd61edb2c7dd830fd223023d4"
+  },
+  "verification": {
+    "pytest": "15 passed in 1.84s",
+    "feature_builder_test_count": 7,
+    "recovery_verifier_test_count": 8,
+    "black": "passed; 4 files left unchanged",
+    "ruff": "passed",
+    "python_compile": "passed before freeze",
+    "tested_source_rows": "synthetic_only",
+    "real_historical_minute_rows_read": false
+  },
+  "verified_contract": {
+    "exact_241_row_source_grid": true,
+    "standalone_0930_excluded_from_formula": true,
+    "source_projection_exact": [
+      "datetime",
+      "symbol",
+      "provider",
+      "volume",
+      "amount"
+    ],
+    "joint_zero_inactive_and_one_sided_zero_fatal": true,
+    "minimum_60_active_bars_per_half": true,
+    "frozen_formula_delegation": true,
+    "missing_support_not_rescued": true,
+    "output_range_and_eligibility_fail_closed": true,
+    "manifest_formula_source_and_no_return_boundaries_fail_closed": true,
+    "exact_output_path_absent_before_build": true
+  },
+  "next_gate": {
+    "allowed": "Run the exact metadata-only Campaign128 plan. Only exit code 0 and ready=true authorize build --confirm-build with the same frozen data root and worker bounds.",
+    "not_allowed": "No formula change, alternate direction, source field expansion, comparator/daily-price/return read, checkpoint reuse, provider request or Candidate49 change."
+  },
+  "research_boundary": {
+    "historical_minute_source_rows_read": false,
+    "candidate_or_comparator_values_read": false,
+    "historical_daily_price_or_forward_return_values_read": false,
+    "stress_2024_2025_opened": false,
+    "provider_request_issued": false,
+    "credential_loaded": false,
+    "candidate49_historical_backfill_performed": false,
+    "candidate49_ledgers_changed": false,
+    "second_prospective_candidate_created": false,
+    "current_scoring_selection_sizing_positions_or_orders_performed": false,
+    "investment_advice": false
+  }
+}

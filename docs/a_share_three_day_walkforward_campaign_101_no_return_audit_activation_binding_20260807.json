@@ -1,0 +1,45 @@
+{
+  "schema_version": 1,
+  "kind": "a_share_three_day_walkforward_campaign101_no_return_audit_activation_binding",
+  "status": "single_use_frozen_before_coverage_or_uniqueness_comparator_values",
+  "recorded_at": "2026-08-07T13:42:22Z",
+  "single_use": true,
+  "implementation_freeze": {
+    "path": "docs/a_share_three_day_walkforward_campaign_101_no_return_audit_implementation_freeze_20260807.json",
+    "sha256": "1d17adcdf639e523a4e9c4c2f1dc0c0e7e4adc5b25723216e0edbbd1f57af8ce"
+  },
+  "snapshot_binding": {
+    "path": "docs/a_share_three_day_walkforward_campaign_101_feature_snapshot_binding_20260807.json",
+    "sha256": "f82e4288a6626eb71d3c040a65f4a88c4d306706c1c4812283008af43d6d817e"
+  },
+  "candidate_snapshot": {
+    "path": "/Volumes/DIsk/qlib-a-share-tushare-1m/derived/a_share/rich/tushare/minute_walkforward_campaign101_feature_library/tushare_stk_mins_1m_2019_2025_ea0cbb8f_walkforward_campaign101_feature_library_v1/snapshot_manifest.json",
+    "sha256": "7a2db929fff69f46edbc93d57cdca9cc4427c47dd542291b4f58d879dd91a3b6",
+    "dataset_sha256": "ed024ab2736b9766e1adb122b155189029f30a5d14e11d4d67a403ff9befef24",
+    "eligible_rows": 1327637
+  },
+  "eligibility_identity_source": {
+    "path": "/Volumes/DIsk/qlib-a-share-tushare-1m/derived/a_share/rich/tushare/compact_comparator_cache/campaign067_terminal_numeric98_v4/snapshot_manifest.json",
+    "sha256": "3d81068f07ac61fe4cd04bd1a893e58759c06d88213263135fec5244e309b57b"
+  },
+  "final_comparator_source": {
+    "path": "/Volumes/DIsk/qlib-a-share-tushare-1m/derived/a_share/rich/tushare/minute_walkforward_campaign100_feature_library/tushare_stk_mins_1m_2019_2025_ea0cbb8f_walkforward_campaign100_feature_library_v1/snapshot_manifest.json",
+    "sha256": "31fa90e958d400aad250d369f4776f139664da869e9f152f8d4610e3351c20f4"
+  },
+  "activation_scope": {
+    "candidate_count": 1,
+    "coverage_gate_count": 1,
+    "conditional_comparator_count": 129,
+    "comparison_order_sha256": "a029c53fb237cc1d34aec0a9f7b67856ffa1a67ffe0fc9620fb230680353263b",
+    "historical_return_trial_count": 0,
+    "retry_or_rescue_allowed": false
+  },
+  "coverage_or_capacity_metrics_computed_before_activation": false,
+  "uniqueness_comparator_values_read_before_activation": false,
+  "historical_daily_price_or_forward_return_values_read_before_activation": false,
+  "provider_request_issued_before_activation": false,
+  "candidate49_signal_ledger_sha256": "5193f00d7f36da003f53cec387900da4c3d002299f5dfcfc1a95eaa199ed3a79",
+  "candidate49_execution_ledger_sha256": "d57a3e61eac969e42cafa418ccd8c0a5ee65dcf69da145bb2c096c2a02a2ea4f",
+  "candidate49_ledgers_changed_before_activation": false,
+  "current_scoring_selection_sizing_or_orders_performed": false
+}

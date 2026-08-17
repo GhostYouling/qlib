@@ -1,0 +1,58 @@
+{
+  "schema_version": 1,
+  "kind": "a_share_three_day_walkforward_campaign120_snapshot_manifest_semantic_failure",
+  "status": "postbuild_manifest_metadata_mismatch_before_partition_verification_coverage_comparator_or_return_values",
+  "recorded_at": "2026-08-14T00:41:14+08:00",
+  "attempt_id": "campaign120_infrastructure_009",
+  "stage": "post_build_manifest_semantic_inspection",
+  "failure": {
+    "classification": "publication_metadata_template_mismatch_not_candidate_formula_or_value_failure",
+    "observed_manifest_dictionary_parser_count": 0,
+    "truthful_frozen_dictionary_parser_count": 1,
+    "observed_manifest_exact_symbol_support_required": false,
+    "truthful_frozen_exact_symbol_support_required": true,
+    "root_cause": "The outer Campaign120 wrapper changed an inner source string only after Campaign117 had already executed that inner substitution while generating the Campaign105 publication template. As a result, the candidate extractor and integer outputs used the frozen parser, but the aggregate manifest retained the inherited zero/false descriptive defaults.",
+    "all_other_inspected_top_level_manifest_semantics_matched": true,
+    "formula_direction_parser_or_candidate_partition_value_failure_observed": false
+  },
+  "candidate_snapshot": {
+    "path": "/Volumes/DIsk/qlib-a-share-tushare-1m/derived/a_share/rich/tushare/minute_walkforward_campaign120_feature_library/tushare_stk_mins_1m_2019_2025_ea0cbb8f_walkforward_campaign120_feature_library_v1/snapshot_manifest.json",
+    "manifest_sha256": "d5b08574c1b0aff1d8a359bf0409b92ddde2ce5caeb7d99b243c434130e94412",
+    "dataset_sha256": "25958413d6238c70bc0b5b9f3ac8b65dca352f3479f04a1867bc23603032af12",
+    "partitions": 33015,
+    "rows": 7724498,
+    "eligible_rows_claimed_by_manifest": 7724498,
+    "published": true,
+    "preserve_without_overwrite_or_rebuild": true
+  },
+  "frozen_implementation": {
+    "path": "docs/a_share_three_day_walkforward_campaign_120_no_return_implementation_freeze_20260814.json",
+    "sha256": "b9a46d0a97d251bb1cacd5f8f2e9fd35292ba10ea16c73c50e0178bb38168712",
+    "preserved": true,
+    "builder_or_formula_modification_allowed": false
+  },
+  "recovery_boundary": {
+    "allowed": "Append and pre-freeze a dedicated read-only verifier that binds the exact existing manifest and dataset hashes, validates all truthful scientific semantics from the protocol and implementation freeze rather than trusting the two stale descriptive fields, verifies every partition byte/frame hash and independently enforces integer candidate values in [2,238].",
+    "manifest_snapshot_partition_or_builder_rewrite_allowed": false,
+    "formula_direction_parser_alphabet_range_or_gate_change_allowed": false,
+    "coverage_or_uniqueness_gate_change_allowed": false,
+    "comparator_or_return_values_may_be_read_before_recovery_pass": false
+  },
+  "research_boundary": {
+    "campaign120_candidate_snapshot_built": true,
+    "candidate_manifest_metadata_read_for_failure_diagnosis": true,
+    "candidate_partition_values_opened_after_build": false,
+    "candidate_partition_verification_completed": false,
+    "coverage_or_capacity_metrics_computed": false,
+    "comparator_values_read": false,
+    "numeric_comparator_count_read": 0,
+    "historical_daily_price_or_forward_return_values_read": false,
+    "stress_2024_2025_opened_for_returns": false,
+    "provider_request_issued": false,
+    "credential_loaded": false,
+    "candidate49_historical_backfill_performed": false,
+    "candidate49_ledgers_changed": false,
+    "current_scoring_selection_sizing_positions_or_orders_performed": false,
+    "investment_advice": false
+  }
+}

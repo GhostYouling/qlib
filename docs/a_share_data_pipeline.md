@@ -12,7 +12,7 @@ data/
 
 ## 覆盖范围
 
-默认清单和日线来自东财公开接口；当东财历史接口限流或断连时，可用免费、匿名登录的 BaoStock 日线作为独立恢复源。两者都不需要用户账号、令牌或 Cookie。
+空数据根首次运行时，默认清单和日线来自东财公开接口；已有日线数据时，`sync` 会先只读检查全部 Parquet 的 `daily_source`，并自动继续唯一已验收来源。当前本地数据因此会继续 BaoStock，而不会静默切回东财。当东财历史接口限流或断连时，可用免费、匿名登录的 BaoStock 日线作为独立恢复源。两者都不需要用户账号、令牌或 Cookie。
 接口说明可见 [AKShare 的 A 股历史数据文档](https://akshare.akfamily.xyz/data/stock/stock.html)。数据源可能限流或更改，管线会重试并在 `data/metadata/runs/` 中记录失败股票；不要把公共数据源视作交易所级数据。
 
 | Qlib 股票池 | 代码前缀 | 用途 |
@@ -76,6 +76,101 @@ market: &market buyable_main_chinext
 python scripts/a_share_data_pipeline.py sync
 python scripts/a_share_data_pipeline.py status
 ```
+
+普通增量刷新不再把 `--source eastmoney` 当作固定默认值：空目录才默认东财；已有且全为 BaoStock 的目录会自动继续 BaoStock。若目录含混合来源、旧文件缺少 `daily_source`，或显式请求的来源与现有唯一来源不同，命令会在创建客户端和网络请求前硬停止。`--force-full` 只表示用**同一供应商**重下所选股票，不能授权在非空目录内换源；因为当前股票池无法证明历史遗留或已退市文件也被覆盖。确需换源时必须在独立干净的暂存根完成全量下载、审计和原子切换，不能原地混写。
+
+### BaoStock 被拒绝时迁移到 Tushare 日线
+
+仓库已有一份独立、不可变的 Tushare 2019–2025 未复权日线镜像，约 799 万行。它与 BaoStock 的 772 万条共同股票日记录中只有 68 条超过冻结阈值的实质差异，跨源分类为 `small`；证据保存在 [`a_share_tushare_baostock_daily_concordance_result.json`](a_share_tushare_baostock_daily_concordance_result.json)。这证明 Tushare 可以作为候选日线主源，但历史镜像本身不能直接覆盖当前 `data/`。
+
+迁移协议 [`a_share_tushare_daily_provider_migration_protocol.json`](a_share_tushare_daily_provider_migration_protocol.json) 固定以下边界：
+
+- 复用并逐文件验证已有 2019–2025 Tushare `daily` 快照，不重复请求这些日线；
+- 从 Tushare 补齐 2015–2018、2026 至显式截止日的未复权 `daily`；
+- 对所有 2015 至截止日交易日请求 Tushare `daily_basic.turnover_rate`。现有 BaoStock 换手率不得填入 Tushare 价格，否则仍然是混合供应商；
+- 通过 `trade_cal` 固定完整交易日历，通过 `stock_basic` 的 L/D/P 三种状态构建现存及历史股票身份；
+- 原始日线金额从千元乘 1000 转为元，成交量保持“手”，VWAP 用成交额除以成交股数；随后只用同日已知 `pct_chg` 构建 `close_known_raw_pct_chg_chain_v1`；
+- 全过程只写显式外置 staging，不能改写当前 BaoStock 日线、Qlib 或 `latest_run.json`；
+- 只有尚未发布 `source_manifest.json` 的同合同中断同步可以按已验证分区续传；源清单一旦完成就绑定截止日、交易日历、股票清单和全部分区哈希，成为不可变快照。要更新到新的截止日必须使用新的 staging 版本，不能向旧快照追加；
+- `daily_source=["tushare"]`、价格基准、换手率覆盖、股票池规模和 Qlib 物化全部验收后，也只得到“待显式激活”的 staging；`build` 永远不会自动切换活动数据；
+- 激活是单独的本地命令：先复制并逐文件验证冻结白名单内的非日线研究资料，再用仓库根目录的 `.qlib_a_share_data_root` 原子指针切换。它不复制旧日线、旧 Qlib、旧股票池或旧价格基准；新根的全新 `status` 不通过时会精确恢复原指针状态。
+
+Tushare 官方当前说明：未复权 `daily` 每次最多 6000 行、基础积分每分钟可请求 500 次；`daily_basic` 至少需要 2000 积分、每次最多 6000 行；`trade_cal` 与 `stock_basic` 也从 2000 积分起。迁移器仍使用更保守的聚合 0.22 秒调用间隔，并把 6000 行视作可能截断而拒绝。接口文档分别见 [日线](https://tushare.pro/document/1?doc_id=27)、[每日指标](https://tushare.pro/document/2?doc_id=32)、[交易日历](https://tushare.pro/document/2?doc_id=26) 和 [股票列表](https://tushare.pro/document/1?doc_id=25)。
+
+先执行零网络、零写入预检：
+
+```zsh
+python scripts/a_share_tushare_daily_migration.py preflight \
+  --staging-root /Volumes/DIsk/qlib-a-share-tushare-daily-staging \
+  --through-date <latest-completed-session>
+```
+
+预检只有在以下条件同时成立时才返回 0：参考快照及跨源证据指纹正确、当前活动日线仍是唯一来源、截止日不晚于安全收盘边界、外置磁盘至少有 5 GiB 空间，并且当前进程能读取 `TUSHARE_TOKEN`。未就绪仍输出诊断 JSON，但退出 2，不创建 staging 根、不请求供应商。
+
+Token 可见后，显式批准源请求，再构建：
+
+```zsh
+python scripts/a_share_tushare_daily_migration.py sync-source \
+  --staging-root /Volumes/DIsk/qlib-a-share-tushare-daily-staging \
+  --through-date <latest-completed-session> \
+  --allow-network
+
+python scripts/a_share_tushare_daily_migration.py build \
+  --staging-root /Volumes/DIsk/qlib-a-share-tushare-daily-staging
+
+python scripts/a_share_tushare_daily_migration.py status \
+  --staging-root /Volumes/DIsk/qlib-a-share-tushare-daily-staging
+```
+
+每个 `daily` / `daily_basic` 股票日分区都有独立字节和内容哈希；在源清单尚未完成时，同一协议、同一截止日的中断可从已验证分区继续，任何已完成分区变化都硬停止。`source_manifest.json` 发布后，再用同一截止日运行是只做本地深度复核的幂等操作，不请求供应商；换截止日则在任何供应商请求前拒绝，必须换一个全新的 staging 根。源同步失败会原子写入 staging 内的 `latest_failure.json`，保留已完成分区并明确 `active_root_mutated=false`。
+
+`build` 按年份流式重分区、按股票重建完整收益链，再在 staging 内调用日线管线做价格基准审计和 Qlib 物化。若使用 `build --skip-materialize`，之后可以在同一 staging 继续普通 `build`，但迁移器会先重新核对源清单、构建清单、股票池哈希、至少 5,000 个 Tushare 单源文件和价格基准，任一变化都拒绝续跑。最终清单状态必须是 `accepted_staging_pending_explicit_crash_safe_activation`；未通过下面的独立激活预检和显式原子激活前，不得手工复制文件、删除当前 `data/`、改符号链接或把 staging 交给 Candidate49。
+
+只有看到上述验收状态后，才运行零复制、零指针写入的激活预检。`QLIB_A_SHARE_DATA_ROOT` 环境覆盖必须为空，否则本地指针无法成为唯一活动根：
+
+```zsh
+env -u QLIB_A_SHARE_DATA_ROOT \
+  python scripts/a_share_tushare_daily_migration.py activation-preflight \
+  --staging-root /Volumes/DIsk/qlib-a-share-tushare-daily-staging
+```
+
+预检输出 `ready=true` 后，显式确认原子激活，再用一个全新进程读取活动状态：
+
+```zsh
+env -u QLIB_A_SHARE_DATA_ROOT \
+  python scripts/a_share_tushare_daily_migration.py activate \
+  --staging-root /Volumes/DIsk/qlib-a-share-tushare-daily-staging \
+  --confirm-activation
+
+env -u QLIB_A_SHARE_DATA_ROOT \
+  python scripts/a_share_data_pipeline.py status
+```
+
+激活前会把 `derived`、`experiments`、`exports`、`handoffs`、事件、基本面、rich data 和 `metadata/rich_data` 中尚未存在的文件复制到 staging；同路径不同哈希会硬停止。激活意图在指针更新前落盘，切换后的新进程必须看到 Tushare 单一日线、通过的价格基准及正确日历截止日；否则自动恢复原先“存在或不存在”的指针状态，并留下失败记录。旧 BaoStock 根始终保留，不在同步、构建、验收或激活中改写。Candidate49 的活动日线、Qlib 和未来基本面默认路径会跟随该指针，但仍必须先通过对应目标会话的激活后预检，不能因为换源成功而回填历史候选收益、直接评分或下单。
+
+一旦活动根已经正式切换为 Tushare，普通 `a_share_data_pipeline.py sync` 会在任何客户端或网络请求前拒绝原地更新。后续日更仍须构建一个新的隔离 Tushare staging 版本、验收后再执行可回滚切换；不能重新用 BaoStock 或 Eastmoney 填一部分股票/字段。
+
+从第二个 Tushare 版本开始，不需要再向供应商请求从 2015 年开始的全部 `daily_basic`。先解析当前活动根，再把它已经验收的源会话检查点播种到一个带日期的新 staging：
+
+```zsh
+ACTIVE_ROOT="$(env -u QLIB_A_SHARE_DATA_ROOT \
+  python scripts/a_share_data_pipeline.py data-root)"
+NEW_ROOT="/Volumes/DIsk/qlib-a-share-tushare-daily-<YYYY-MM-DD>"
+
+env -u QLIB_A_SHARE_DATA_ROOT \
+  python scripts/a_share_tushare_daily_migration.py seed-refresh \
+  --parent-root "$ACTIVE_ROOT" \
+  --staging-root "$NEW_ROOT" \
+  --through-date <latest-completed-session>
+
+python scripts/a_share_tushare_daily_migration.py preflight \
+  --staging-root "$NEW_ROOT" \
+  --through-date <latest-completed-session>
+```
+
+`seed-refresh` 不读取 Token、不访问网络，也不复制父根的日线成品、Qlib 或股票池。它先完整验证活动父根的 Tushare 验收清单和源清单，再用独立文件复制父根已有的 `daily` / `daily_basic` 会话分区；硬链接被禁止，复制后逐文件核对字节哈希和表内容哈希。开始复制前会写入带父根、父截止日和目标截止日的 intent；中断后只能在这些绑定完全相同时继续，已完成副本变化会硬停止。完整 seed 清单发布后，`sync-source --allow-network` 仍会重新请求交易日历和 L/D/P 股票列表，但只请求父截止日之后缺少的 `daily` 与 `daily_basic`。父根和其源清单始终只读。
+
+播种只减少重复的供应商请求，不放宽构建门禁。后续仍按上文运行 `sync-source → build → status → activation-preflight → activate`；`build` 会从完整源会话重新生成每只股票的价格链，并完整重建、审计 Qlib。第一份 Tushare 活动根无法从 BaoStock 播种，仍必须走前面的初始迁移流程。若 seed 尚未完成、父根已不再是活动根、目标截止日不晚于父截止日、父清单被改动或 staging 已存在构建/验收状态，命令都会在任何供应商请求前拒绝。
 
 默认使用 `point_in_time`：下载未复权 OHLCV，以每个收盘时已经公开的 `pct_chg` 串成连续价格指数；同日 `factor = adjusted_price / raw_price`，并用同一个 factor 调整 VWAP、反向调整成交量。它不会用后来发生的分红送转去重写更早的价格，且可以从 Qlib 复权价还原实际成交价。`qfq`/`hfq` 仅保留给源数据排错，不能通过研究物化门槛。
 
@@ -173,7 +268,7 @@ python scripts/a_share_short_horizon_factor_research.py quarterly-profit-acceler
 
 ```bash
 python scripts/a_share_short_horizon_factor_research.py sync-quarterly-fundamentals \
-  --start-year 2019 --end-year 2026 --through-report-date 2026-03-31
+  --start-year 2019 --end-year 2026 --through-report-date 2026-06-30
 python scripts/a_share_short_horizon_factor_research.py factor-diagnostic \
   --fundamentals data/raw/a_share/fundamentals/quarterly_quality.parquet \
   --start 2019-01-01 --end 2025-12-31 --development-end 2025-12-31 \
@@ -508,7 +603,7 @@ python scripts/a_share_short_horizon_factor_research.py factor-diagnostic \
 
 旧价格诊断中，四项预案因子仅形成 4–124 个非重叠 cohort，提示其很可能达不到 200 个最低样本门槛；其中收益与回撤因行情口径无效而不可引用。修复后必须先用不读取开盘、收盘或未来收益的统一容量审计确认上限；若仍不足 200，直接停止，不得通过延长窗口、反向或合并其他因子绕过样本不足。
 
-季度财报的 `--through-report-date` 必须设为已经公开的最新报告期；例如 2026 年 7 月不能请求尚未披露的 2026‑06‑30 或之后报告。业绩预告使用同名参数时，可使用已出现预告公告的报告期，但不能把尚未公告的缺失值解释成负面信号。季度全历史请求较长时，可以按不重叠年份范围分别下载到临时 Parquet，再显式合并；合并前的分片不能单独作为研究数据。最终合并会按股票与报告期保留最早公告，并重新写入完整清单：
+季度财报的 `--through-report-date` 必须设为最新已经结束的自然季度；例如 2026 年 7 月可截止到 2026‑06‑30，但不能请求 2026‑09‑30。同步器会在创建供应商会话前计算最新已结束季度：显式截止日晚于该季度会硬停止；年份范围跨入未结束季度但省略 `--through-report-date` 也会硬停止。完成清单同时记录 `through_report_date` 和 `latest_completed_quarter_end_at_sync`。业绩预告使用同名参数时，可使用已出现预告公告的报告期，但不能把尚未公告的缺失值解释成负面信号。季度全历史请求较长时，可以按不重叠年份范围分别下载到临时 Parquet，再显式合并；合并前的分片不能单独作为研究数据。最终合并会按股票与报告期保留最早公告，并重新写入完整清单：
 
 ```bash
 python scripts/a_share_short_horizon_factor_research.py sync-quarterly-fundamentals \
@@ -518,13 +613,13 @@ python scripts/a_share_short_horizon_factor_research.py sync-quarterly-fundament
 python scripts/a_share_short_horizon_factor_research.py sync-quarterly-fundamentals \
   --start-year 2023 --end-year 2024 --output data/raw/a_share/fundamentals/quarterly_2023_2024.parquet
 python scripts/a_share_short_horizon_factor_research.py sync-quarterly-fundamentals \
-  --start-year 2025 --end-year 2026 --through-report-date 2026-03-31 \
-  --output data/raw/a_share/fundamentals/quarterly_2025_2026q1.parquet
+  --start-year 2025 --end-year 2026 --through-report-date 2026-06-30 \
+  --output data/raw/a_share/fundamentals/quarterly_2025_2026q2.parquet
 python scripts/a_share_short_horizon_factor_research.py merge-quarterly-fundamentals \
   --input data/raw/a_share/fundamentals/quarterly_2019_2020.parquet \
   --input data/raw/a_share/fundamentals/quarterly_2021_2022.parquet \
   --input data/raw/a_share/fundamentals/quarterly_2023_2024.parquet \
-  --input data/raw/a_share/fundamentals/quarterly_2025_2026q1.parquet
+  --input data/raw/a_share/fundamentals/quarterly_2025_2026q2.parquet
 ```
 
 每个候选组合会在 `data/experiments/short_horizon/` 写入一个独立 JSON；同一批运行另有一个 `*_study.json` 汇总文件。记录包含因子权重、年报文件哈希、股票池、成本、发展期/测试期切分以及净收益、波动、回撤和胜率；汇总文件另提供全部 100 个策略按开发期风险调整分数排序的 `ranking_by_development`。候选组合只按 `2025-12-31` 以前的发展期结果选择，之后的测试期不会参与选优。
@@ -1357,6 +1452,12 @@ python scripts/install_a_share_launchd.py uninstall
 定时任务不在休眠的电脑上补跑；若错过一次，手动执行 `sync` 即可恢复。若将来换成需要登录的专业数据服务，不要把令牌写进 YAML 或 Git；由系统钥匙串、环境变量或本地 `.env`（已忽略）提供即可。
 ## 分钟与事件数据
 
+### Campaign113：正式交易所监管行动零行来源合同
+
+2026-08-09 的 Campaign113 在任何程序化来源行、因子公式、比较值、价格或收益之前，冻结了沪深交易所正式监管措施/纪律处分的双交易所来源合同 `docs/a_share_official_exchange_enforcement_source_contract_20260809.json`。它只允许证券代码、监管类型/家族、处理日期和官方文档 href 身份；名称、涉及对象、事由、标题与正文不得进入标准化或因子逻辑。无日内发布时间时，事件只能在处理日期之后的首个本地交易日收盘可用，随后下一交易日开盘进入三日持有协议。
+
+该合同不是因子注册，也不授权联网验收。下一阶段必须先用纯合成 fixture 实现有限标签 schema 角色解析、严格代码/日期/官方链接规范化、精确重复折叠与冲突硬失败，并冻结实现/测试哈希；然后在来源行之前另行冻结唯一公式、方向、事件窗口、缺失和值域。`top_list`、`suspend_d`、增减持/回购与 CNInfo 诉讼分支的旧终止记录保持不变，不能作为这一来源的字段或救援路线。
+
 日线管线继续是当前策略的唯一正式行情底座。三日持有期策略需要的尾盘、日内成交和资金流因子，使用独立且可审计的接入器；它不会覆盖日线数据或直接改动 Qlib 二进制。BaoStock 五分钟线可以匿名读取；其余专业分钟/资金流源仍要求合法本地授权。
 
 | 来源 | 当前接入范围 | 适用阶段 |
@@ -1626,7 +1727,181 @@ python scripts/a_share_short_horizon_factor_research.py \
 
 Tushare Token 配置完成后，购买前零行情权限复核 [`a_share_three_day_tushare_minute_permission_frontier_audit_20260721.json`](a_share_three_day_tushare_minute_permission_frontier_audit_20260721.json)（SHA‑256 `61e2325c0199b35d7e10ec97f4d71f973786b925b6e0f187a0e4de8bb4068959`）确认：3,000 积分本身只覆盖积分接口，不能授权 A 股历史分钟。该记录当时没有消耗试用调用、没有读取任何 Tushare 分钟行，并基于尚未购买的事实保留 QMT 优先。它现在只作为购买前审计保留；不能再用其中“未授权”的结论覆盖用户后来单独购买并通过真实验收的新证据。
 
-当前迭代状态统一写入 [`a_share_three_day_iteration_status_20260721.json`](a_share_three_day_iteration_status_20260721.json)（SHA‑256 `14e8edaf98c7f94a10f0c63e64d8af1d6e3bb1b45dac3c3bb9aabdf2cb83e2b1`）。这份机器可读记录绑定 43 因子历史前沿、之后 46 条主终止机制、购买前 QMT/Tushare 审计、购买后的 Tushare 验收和全量无收益协议、原协议覆盖失败、两层非破坏性清洗证据、已经消费的一次四因子探索诊断、十六个独立分钟机制的单次诊断，以及两个在近同义门停止且未读取收益的分钟机制。当前仍是 TopK 0、双门禁 0、聚合候选 0，因此聚合、评分、选股、定仓和下单全部为 `false`。原五因子协议没有被改判；清洗后的四因子、午后资金加权方向效率、午后最大回撤恢复韧性、全日成交额参与熵、全日成交额序列持续性、全日上行半方差占比、全日终点收盘位置、全日收益符号连跑不平衡、全日波动率早晚分配、分钟成交额领先下一分钟收益相关性、全日成交额重心、全日上涨分钟成交额占比、全日扩散变差比、全日成交额—绝对收益同步耦合、日内收益方差熵、日内收益偏度、同分钟 VWAP 收盘压力、午别相邻分钟价格更新占比和分钟收益留一法市场特异份额的精确预登记高值路线均已按固定门禁终止，不能在同一段历史上反向、改公式、改基准、改窗口、加过滤、挑子集或调权。
+候选 49 登记时的前序权威迭代状态写入 [`a_share_three_day_iteration_status_20260725_future_only.json`](a_share_three_day_iteration_status_20260725_future_only.json)（SHA‑256 `d44e1cb3707cce194eed37e99cc90f865396b1de8c35e02a393a2a243d973466`）。它不改写、只以前序指纹连接候选 48 状态 [`a_share_three_day_iteration_status_20260725.json`](a_share_three_day_iteration_status_20260725.json)（SHA‑256 `355b992452b73607034a182699d4fff337905e484229441e7ae138db1ffdefef`），后者再连接候选 47 状态和完整旧账本。48 条主机制均已终止，TopK 通过数、双门禁通过数和聚合候选数仍全部为 0；另有且仅有一个**非终止、纯前瞻**候选 49。聚合、评分、当前选股、定仓、下单和 Level‑2 采购仍全部为 `false`。
+
+为控制已经反复查看 2019–2025 三日收益造成的选择偏差，后续分钟因子执行 [`a_share_three_day_future_only_minute_research_policy_20260725.json`](a_share_three_day_future_only_minute_research_policy_20260725.json)（SHA‑256 `52ca8bfa7201509fe891d0af3d1c87aeebd64e47e6ec6641e897849411df408c`）：历史区间只允许验证公式、覆盖/容量和机制唯一性，不得再读取历史日线价格或三日未来收益。候选 49 的最早有效信号日是注册之后首个已验收的本地交易日，且不得早于 **2026‑07‑27**；满 200 个已完成信号日才执行完整门禁，60 个已完成信号日仅允许按预登记条件提前否决，绝不允许提前晋级。在候选 49 形成终局记录前不得启动候选 50。
+
+等待候选 49 前瞻样本时只允许维护未激活的机制储备。原队列 [`a_share_three_day_inactive_mechanism_scouting_queue_20260726.json`](a_share_three_day_inactive_mechanism_scouting_queue_20260726.json)（SHA‑256 `00565a87b5eb4241de3dfdd24f96ef78756fb286655969351ec966bbe32afad3`）保留前三个概念及顺序；追加记录 [`a_share_three_day_inactive_mechanism_scouting_queue_delta_20260726.json`](a_share_three_day_inactive_mechanism_scouting_queue_delta_20260726.json)（SHA‑256 `60f280cfecbd390a4fb6388eb3c5a63a507506b542aeba937f60d583cc717835`）只增加零收益成交吸收、午间重定价持续性、方向性价格冲击不对称三个经济问题。追加项的候选编号、公式和方向全部为空，没有读取外置分钟/日线分区、候选值、比较值、价格或收益；可用字段严格来自清洗协议的 `datetime,symbol,provider,close,volume,amount`，开高低继续禁止。Candidate49 终止或完成 200 个信号前，任何队列项都不得实现、计算或越过原队列顺序；满足条件后也只能先对最早仍独立的一项做新的无数值机制核重，再在任何数值前冻结一个公式和方向。
+
+### 三日策略历史滚动研究主线（2026‑07‑27 方法更新）
+
+2026‑07‑27 的用户研究指令明确纠正了“把逐日新增样本作为唯一迭代引擎”的做法。新的正式政策为 [`a_share_three_day_historical_walkforward_research_policy_20260727.json`](a_share_three_day_historical_walkforward_research_policy_20260727.json)（SHA‑256 `38426d6161b9bfed323c58caba18feca668b8c9d53e294951a8ba90c01a798bb`），新的权威状态为 [`a_share_three_day_iteration_status_20260727_walkforward.json`](a_share_three_day_iteration_status_20260727_walkforward.json)（SHA‑256 `75e639c4b8579983bfcda8da19c221d018b7b62cd68fac9e94822f6c3ed73267`）。新状态只以前序路径和 SHA‑256 推进 2026‑07‑25 的未来专用状态，不改写候选 49 的登记、账本或历史证据。
+
+研究自此采用双轨制：
+
+- **历史滚动研究是主要迭代引擎。** 2019‑01‑01 至 2023‑12‑31 是开发与内部走步区间，固定三组扩展折：2019–2020 训练/2021 验证、2019–2021 训练/2022 验证、2019–2022 训练/2023 验证。允许在这些开发折内研究经济上有动机的因子、方向、窗口、变换、阈值、过滤、特征子集、组合、模型与权重。
+- **2024‑01‑01 至 2025‑12‑31 是一次性历史 campaign 回测区间。** 打开之前必须冻结有限候选库、父子版本、完整搜索空间、存活规则、组合/拟合方法、成本、门禁以及数据和代码指纹；整个 campaign 只打开一次，并记录所有候选结果。看到结果后产生的任何新公式、参数、子集、过滤或权重都是新探索版本，不得再把同一 2024–2025 区间称为未见或纯净测试。
+- **2026 年以后只承担真正前瞻确认与衰减监测。** 逐日数据不再负责主要因子发现，也不再阻塞离线历史研究。离线研究不需要等待目标交易日 16:30；只有 Candidate49 当日来源到信号流程仍必须等待同日收盘缓冲并通过原有预检。
+
+三日标签在每个训练、验证和回测边界都必须做泄漏清除：边界前清除最后三个本地信号会话，且只有 `t+1` 开盘和 `t+3` 收盘均完整落在同一分区的信号才能进入该分区。关联比较继续使用冻结的非重叠三日网格；可执行收益必须用同一共享、现金受限、允许持仓重叠的组合重放，不得把独立交易收益简单相加。
+
+所有历史尝试必须进入追加式试验账本。每个公式、方向、参数、窗口、过滤、子集、组合、模型和基础设施失败都要记录唯一 ID、父版本、campaign、数据/代码/执行协议指纹以及训练、验证和锁定回测结果；不能只保留最佳版本。2019–2025 已被此前 48 条机制和大量变体反复观察，因此新切分只能称为“历史已暴露的准样本外证据”，不能追溯性包装成纯净留出。历史结果可以用于排序、否决和估计稳健性，但不能直接授权当前评分、选股、仓位或订单。
+
+旧的 48 条终止记录保持终止且不得改写；其公式定义只有在一个新 campaign 事前冻结完整复用库和搜索空间时，才可作为历史研究特征参与组合。旧结果不会因此被重新标记为通过。Candidate49 仍是唯一活动的前瞻候选，禁止回填它的历史收益、信号、执行或里程碑；但 Candidate49 不再阻塞新的历史因子和组合研究。历史试验不等于 Candidate50 前瞻激活，也不会创建第二条未来账本；Candidate49 活跃期间仍不启动第二个前瞻候选。
+
+首轮有限搜索已经按上述流程完成，结果记录为 [`a_share_three_day_walkforward_campaign_001r1_research_record.json`](a_share_three_day_walkforward_campaign_001r1_research_record.json)。原始预注册在任何试验或收益框架形成前暴露了一个字段级清洗覆盖层合并错误；失败被保留在原台账，且只允许把覆盖层有效补充键做确定性外并。修复版重新绑定执行器指纹和新输出根后，完整运行了 8 个冻结因子、8 个单因子加 84 个两因子权重组合，共 92 项 2019–2023 扩展走步试验；所有试验均入追加式哈希链，按冻结规则选出 8 个锁箱幸存者。
+
+2024–2025 锁箱随后只打开一次，8 个幸存者全部记录，但最终门禁通过数为 0。日内收益方差熵单因子是最接近完整门禁的版本：2024–2025 合并 Rank IC 为正，20 万元、双边 10bp 试算收益为正且 2024/2025 分年均为正，但标准化最大回撤为 `-20.0363%`，低于冻结的 `-20%` 下限，不能事后放宽。低已实现波动与收益方差熵的等权组合在同一成本设定下合并收益 `+4.0030%`、两年分别为正，但标准化最大回撤 `-20.4841%`，同样拒绝。其余版本主要失败于 10bp 成本后的分年稳定性、回撤或关联门禁。该负结果不启动当前评分、选股、定仓或订单；2024–2025 自此已暴露，后续新探索必须建立新 campaign，且不能再把该区间称为未见锁箱。
+
+只读完成审计器 `python scripts/a_share_three_day_walkforward_completion_audit.py` 会重新验证冻结输入指纹、92 项完整目录、三组扩展折、幸存者确定性重放、100 条哈希链、一次性锁箱顺序、全部结果留档、Candidate49 两本零条目账本、Candidate50 未启动以及无当前评分/订单产物。完成审计记录为 [`a_share_three_day_walkforward_campaign_001r1_completion_audit.json`](a_share_three_day_walkforward_campaign_001r1_completion_audit.json)，15 项要求全部通过；79 项聚焦回归和完整 `tests/data_collector_tests` 的 1,145 项测试均通过。原始预注册中的 `frozen_at` 存在一个保留的书写时间不一致；审计不使用该字段证明先后，而使用已被无收益基础设施失败记录绑定的原文件哈希，以及修复版 `11:51Z` 预注册早于 `11:52:37Z` 首条开发结果、幸存者记录早于锁箱意图的完整链路。
+
+第二轮有限搜索已由 [`a_share_three_day_walkforward_campaign_002_preregistration.json`](a_share_three_day_walkforward_campaign_002_preregistration.json)（SHA‑256 `2f9977f020d4b8bd06b7968e0cfb29287d13e87cf1510881f3acbbe83050d511`）在任何该轮结果读取前冻结。它没有针对 Campaign001 的近失版本局部调参，而是完整复用全部 8 个旧研究特征，并对 28 个无序因子对统一应用几何均值、调和均值和较小分位数三种非线性一致性算子，共 84 项；旧终止结论保持不变，Candidate49 明确排除。2019–2023 仍使用原三组扩展折、每个边界清除 3 个信号会话、`t+1` 开盘/`t+3` 收盘完整落区以及相同共享组合和成本。验证质量由报告项升级为硬门槛：三折方向一致性、10bp 试跑、最差回撤不低于 `-25%`、整手/成交额/未决持仓可执行性，以及 2019–2023 合并 20bp 压力收益为正都必须同时通过。
+
+该轮 84/84 项均完整写入追加式哈希链，基础设施失败为 0；43 项通过可执行性检查，但质量门槛通过数和最终幸存者均为 0。所有 84 项的五年 20bp 压力试跑都不为正，80 项还触发最差验证期回撤门槛；三种算子的平均 20bp 收益约为 `-20.42%/-20.39%/-20.06%`，平均最差验证期回撤约为 `-41.08%/-41.00%/-39.97%`。最接近的收益方差熵与尾盘 VWAP 比组合在调和/几何算子下都有 3/3 个验证年平均 IC 与标准化收益为正，但最差回撤约为 `-30.49%/-30.04%`，五年 20bp 试跑仍为 `-10.63%/-11.14%`，因此不能放宽门槛救援。
+
+因为开发幸存者为 0，2024–2025 的“已暴露压力复验”没有打开、没有读取该区间收益，也没有生成压力试验条目。统一结果记录为 [`a_share_three_day_walkforward_campaign_002_research_record.json`](a_share_three_day_walkforward_campaign_002_research_record.json)（SHA‑256 `9abd467e8c110e3c30ffd78ed76e921d5119d4442ac9b09aa22de6ea4ee5521d`）。只读审计命令 `python scripts/a_share_three_day_walkforward_campaign002_completion_audit.py --compact` 会重放完整目录、84 条台账、幸存者规则、零压力读取、Campaign001 与 Candidate49 独立状态以及无评分/选股/仓位/订单边界；12 项要求全部通过。25 项聚焦回归与完整数据采集测试 1,155 项也全部通过，9 条提示仅为既有 pandas 性能/未来行为警告。
+
+下一轮不能修改 Campaign002。其新假设必须作为 Campaign003 在数值前另行冻结：用原低已实现波动方向分位作为风险资格门，对其余 7 个完整信号库统一尝试保留 75%/60%/45% 名称的三个固定门槛，并在“门内主信号排名”与“75% 主信号 + 25% 低波动”两种固定评分方式下形成 42 项完整搜索。这个方向针对本轮普遍的回撤和成本失败，而不是只修改一个近失组合；Campaign003 仍必须记录所有尝试、保持 2019–2023 开发折，并把 2024–2025 明示为已暴露且在幸存者冻结前不得读取。
+
+Campaign003 已按独立预注册 [`a_share_three_day_walkforward_campaign_003_preregistration.json`](a_share_three_day_walkforward_campaign_003_preregistration.json)（SHA‑256 `7c2f9339aabe093bd40acde3f352ac147f30f119aa5a341252df992788be05c0`）完成。精确定义不是先筛选再沿用原全截面分位：每个交易日先要求主信号与低波动方向分位均有限且为正，再按 `>=0.25/0.40/0.55` 保留约 75%/60%/45% 名称；随后在门内分别对主信号和低波动分位重新做平均百分位排名，最后使用纯主信号门内排名或 `75%` 主信号加 `25%` 低波动两种固定评分。7 个主信号、3 个门槛、2 个评分模式共 42 项，任何数值出现前已同时冻结。
+
+2019–2023 的 42/42 项均完成并进入追加式哈希链，基础设施失败为 0；21 项通过可执行性检查，但验证质量门槛与最终幸存者仍均为 0。全部 42 项的五年 20bp 压力试跑都为负，37 项触发最差验证期回撤门槛。纯主信号门内排名与 75/25 混合的平均 20bp 收益分别为 `-18.66%/-21.31%`，平均最差验证回撤分别为 `-35.87%/-34.35%`：把低波动再加入评分略微改善平均回撤，却进一步削弱成本后收益。60% 保留门槛的平均 20bp 结果最不负（`-19.28%`）；45% 门槛平均回撤最好（`-34.23%`）但成本结果最差（`-21.08%`）。这些只是完整网格的描述，不能在看到结果后挑门槛或修改权重。
+
+最接近的版本是收益方差熵主信号配 60% 低波动资格门、门内只按主信号排序。它在三个验证年均取得正平均 IC 与正标准化收益，最差验证回撤改善到 `-20.03%`，2019–2023 标准化累计收益为 `+83.23%`；但 20 万元试跑在零/5bp/10bp/20bp 滑点下依次为 `+9.92%/+4.27%/-1.04%/-10.51%`，因此仅失败的冻结质量项仍是“20bp 合并收益必须为正”。45% 门槛的同类版本最差验证回撤 `-22.76%`，20bp 收益 `-13.67%`，同样拒绝。不得把零或 5bp 的正敏感性用于事后降低 10/20bp 门槛、宣称通过或生成当前选股。
+
+因为开发幸存者为 0，2024–2025 的已暴露压力区间再次没有打开或读取。统一记录为 [`a_share_three_day_walkforward_campaign_003_research_record.json`](a_share_three_day_walkforward_campaign_003_research_record.json)；只读命令 `python scripts/a_share_three_day_walkforward_campaign003_completion_audit.py --compact` 重放 42 项目录、台账、门内公式、硬门槛、零压力读取和 Candidate49 零条目账本，12 项要求全部通过。Campaign003 与前两轮聚焦回归 33 项、完整 `tests/data_collector_tests` 1,163 项均通过；9 条提示仍只是既有 pandas 性能/未来行为警告。
+
+Campaign003 的结论不是“低波动毫无作用”，而是“它能降低部分回撤，却不能从这组复用因子中产生足以覆盖冻结成本的边际”。下一轮不能只救援收益方差熵近失版本，也不能放宽回撤或成本门槛。Campaign004 的待冻结方向改为扩展经济信息：把未激活队列前三项——市场中性尾盘残差漂移、负收益后的成交额加权吸收率、日内有符号路径效率——作为一个完整的新分钟机制库；先在任何值和收益前同时冻结三个精确公式、方向、缺失/分母/市场同伴语义、覆盖与全终止因子唯一性门槛，再对通过无收益门禁的分支执行有限单因子和配对滚动网格。它仍是历史研究 campaign，不是 Candidate50 前瞻激活；Candidate49 继续保持唯一前瞻候选。
+
+Campaign004 已按 [`a_share_three_day_walkforward_campaign_004_no_return_preregistration.json`](a_share_three_day_walkforward_campaign_004_no_return_preregistration.json)（SHA‑256 `39e2147b75bcc3a0fd3cb39dee3932f794331142654f0bfe63679b2c8ecc2a4e`）先完成无收益门禁。不可变分钟特征快照含 33,015 个分区和 7,724,498 行，manifest/data SHA‑256 为 `8eefc381d006997f1dcd95edcd9be4db8485e0c4954d6166d94f1981ae3b57fe` / `1359e755e669c7b949b26b2086d1c1328ec0cdf53b45ce7e67d117a274c7fc8a`。三个 higher 方向都通过覆盖、容量和全终止因子唯一性：中位覆盖为 `99.7926%–99.8318%`，P05 覆盖为 `99.2631%–99.3371%`，P05 合格名称均为 138，潜在非重叠三日 cohort 均为 540；观察到的最大绝对中位日秩相关为 `0.781471`，低于冻结的 `0.8`。无收益审计 SHA‑256 为 `d7cdce80d0ac2923695b866a7cf034f5049ec4da1a5a8dd5fc36d4f41f1cb755`，历史日线字段为空、forward return 读取为 false。
+
+随后且仍在第一次 Campaign004 收益读取之前，精确开发目录冻结为 [`a_share_three_day_walkforward_campaign_004_preregistration.json`](a_share_three_day_walkforward_campaign_004_preregistration.json)（SHA‑256 `e67811f265b2b744073391fa65698951b132065109f95fa47991b8254a5756e6`）：3 个单因子加 3 个无序因子对各自的 `25/75、50/50、75/25` 三个方向秩权重，共 12 项；没有三阶组合、阈值、过滤器、年份子集或权重拟合。2019–2023 的 12/12 项全部写入追加式哈希链，基础设施失败为 0；仅 3 项通过可执行性检查，但冻结开发 survivor 为 0。全部 12 项都失败“20bp 合并收益为正”、最差验证回撤、验证期试跑中位收益、正标准化收益折数和正试跑折数门槛。
+
+中位验证 Rank IC 最高的是单独的市场中性尾盘残差漂移：`+0.005288`，3 折中 2 折为正；但中位 Top3-minus-Bottom3 spread 为 `-0.8562%`，验证期标准化和 10bp 试跑正收益折数都是 0，最差回撤 `-58.58%`，2019–2023 合并 10bp/20bp 收益为 `-23.56%/-30.74%`。相对最不负的版本是 `75%` 市场中性尾盘残差漂移加 `25%` 负收益吸收率：中位 IC `+0.001107`、中位 spread `+0.3500%`，但 10bp/20bp 仍为 `-10.89%/-17.81%`，最差验证回撤 `-35.89%`，并在两个验证折失败整手可负担率。不得据此事后救援权重、放宽回撤/成本门槛或开启 2024–2025。
+
+因为 survivor 为 0，2024–2025 已暴露压力区间没有打开、没有读取该区间收益，也没有压力试验条目。统一记录为 [`a_share_three_day_walkforward_campaign_004_research_record.json`](a_share_three_day_walkforward_campaign_004_research_record.json)（SHA‑256 `6e0dd1295a75c1f3eebe70a5cf327d98490bd76a43b307cf5fb416013d60c88e`），并由追加式权威状态 [`a_share_three_day_iteration_status_20260728_campaign004.json`](a_share_three_day_iteration_status_20260728_campaign004.json)（SHA‑256 `2037007da4fe750b70715b9f0cf7e8d361cb9d6d18128fdb6c18b05486954749`）推进而不改写 20260727 状态；四轮 campaign 共保留 230 个开发试验。无收益与开发命令均已幂等复验，Campaign004 与政策聚焦测试 17/17、Campaign001–004 交叉回归 46/46、完整 `tests/data_collector_tests` 1,176/1,176 通过；第一次全量尝试中的 `OSError 28` 仅来自本机 Data 卷无可用空间，迁移 pytest 临时目录到外接盘后无失败复现，验证证据单独冻结在 [`a_share_three_day_walkforward_campaign_004_verification_20260728.json`](a_share_three_day_walkforward_campaign_004_verification_20260728.json)，不改变既有研究记录哈希。Candidate49 信号/执行台账仍为 0 条且哈希不变，Candidate50、当前评分、选股、仓位和订单均未创建。下一轮只能作为独立 Campaign005，在任何值前先对未激活队列中的“零收益活动吸收、午间重定价持续性、方向性价格冲击不对称”做机制重叠审计并冻结完整公式/方向/有限搜索，不能继续改 Campaign004。
+
+Campaign005 已完整执行。机制重叠审计 [`a_share_three_day_walkforward_campaign_005_mechanism_overlap_audit.json`](a_share_three_day_walkforward_campaign_005_mechanism_overlap_audit.json)（SHA‑256 `c378541156f8e68a2d73bafe44f99f7d1b3fc7ca06c1cf72c093d07a93f7907e`）先于任何候选值、比较值、日线或收益，把三项队列概念分别冻结为零收益成交额强度、午间重定价持续性和方向性价格冲击不对称，连同 higher 方向、241 行来源网格中的精确窗口、零值/缺失/分母语义、合法范围、28 项比较目录以及最多 12 项的有限单因子/配对搜索一起固定。随后无收益协议 [`a_share_three_day_walkforward_campaign_005_no_return_preregistration.json`](a_share_three_day_walkforward_campaign_005_no_return_preregistration.json)（SHA‑256 `01b0c48e2a3e1b0741dee62d4e9d4858e202410ea266a00faa1b5d5ccc21ffa3`）绑定不可变分钟来源和实现。
+
+外接盘特征快照仍为 33,015 个分区、7,724,498 行，manifest/data SHA‑256 为 `7f48bd252d381f85deb416ed282b6f62aacee0ca492c37c99fdb901d2e241675` / `5c7f9e7e534cc4e4678c7ea746c69f5809dcc6415d9a652b93ff63899413fd75`；公式只读取 `datetime,symbol,provider,close,amount`。首次无收益审计在加载第一个候选的覆盖帧时因复用加载器缺少已冻结合法范围映射而以 `KeyError` 失败关闭：没有审计文件、比较值、日线或收益。修复仅注入原先已冻结的三项范围并新增范围断言，公式、方向、门槛、比较顺序和有限目录均未改变；记录为 [`a_share_three_day_walkforward_campaign_005_no_return_audit_infrastructure_repair_20260728.json`](a_share_three_day_walkforward_campaign_005_no_return_audit_infrastructure_repair_20260728.json)（SHA‑256 `3ed6cec7aa5fecfcf97b7ffa08d1f3e8aee912db7d8fdc69e558820e843cbc7e`）。
+
+成功且幂等的无收益审计 `20260728T094320Z_campaign005_no_return_audit.json` SHA‑256 为 `7a6ae6e1667aeb7a7060550c722431f0e8b88ff6e18bc00c2f3478dc2646b2b1`。午间持续性中位/P05 覆盖仅 `82.2666%/74.9629%`，在比较值前停止；方向性冲击不对称虽通过覆盖，却与已终止 `intraday_up_move_amount_share_238m` 的绝对中位日秩相关为 `0.916883`，超过冻结的 `0.8`，在唯一性门停止。只有 `intraday_zero_return_amount_intensity_238m` 通过：中位/P05 覆盖 `99.9193%/99.4935%`，P05 合格名称 138，最大绝对中位日秩相关 `0.640094`，最近比较为 `intraday_amount_volatility_coupling_238p`。审计的历史日线字段仍为空，forward return 为 false。
+
+在第一次 2019–2023 收益读取前，开发预注册 [`a_share_three_day_walkforward_campaign_005_preregistration.json`](a_share_three_day_walkforward_campaign_005_preregistration.json)（SHA‑256 `ff0afcde4dab5c6783a0c31190b3c1daf6857957016fe7554bab9d69c5e7ea96`）把搜索压缩为恰好一个 higher 单因子试验，禁止配对、终止因子救援、阈值、过滤、年份子集和权重拟合；三组扩展折、边界 purge 3 个信号日、`t+1` 开盘/`t+3` 收盘、Top3、CNY 200,000 整手试跑、成本、回撤和幸存门槛均哈希继承 Campaign004。独立入口 [`a_share_three_day_walkforward_campaign005.py`](../scripts/a_share_three_day_walkforward_campaign005.py) 哈希绑定 Campaign004 执行内核但不修改其文件。
+
+唯一试验三个验证年的平均 Rank IC 都为正，依次为 `0.002685/0.024016/0.022619`；但 spread 三折都为负，中位数 `-0.001881`。归一化收益为 `-55.27%/-28.09%/-24.97%`，10bp 的 CNY 200,000 试跑收益为 `-6.61%/-3.09%/-2.40%`，整手可负担率为 `69.55%/67.58%/82.88%`，全部低于冻结的 90% 门槛。全开发期 10bp/20bp 试跑分别为 `-13.64%/-20.75%`，最差验证归一化回撤 `-55.95%`；因此正 IC 没有转化为正 spread 或可执行收益，开发 survivor 为 0。继承的 `survivor_decision` 辅助器把决定记录中的展示字段 `complexity` 固定写成 2，但试验目录和台账明确是一个因子、权重 1.0；该字段在全部指标和门槛之后生成，不参与冻结排序或选择，原冻结产物不为修正文案而改写。
+
+零幸存者关闭记录明确 `stress_interval_opened=false`、`stress_return_fields_read=false`，2024–2025 没有加载。统一研究记录为 [`a_share_three_day_walkforward_campaign_005_research_record.json`](a_share_three_day_walkforward_campaign_005_research_record.json)（SHA‑256 `add4984c7bcfc9cd2aa9bd0b7ed31d324577b24378ec9f931ac16effbd69a604`），新的追加式权威状态为 [`a_share_three_day_iteration_status_20260728_campaign005.json`](a_share_three_day_iteration_status_20260728_campaign005.json)（SHA‑256 `196873713efc1ab323b8511427a3e3613988b6013a5dcc2544a32901ca45ffc0`）：五轮 campaign 共保留 231 个开发试验，Candidate49 两本真实台账仍为 0 条且哈希不变，Candidate50、当前聚合、评分、选股、仓位和订单均未创建。Campaign001–005、无收益特征、完成审计、政策和 Candidate49 工作流的交叉回归 86/86 通过；开发与零幸存者关闭命令再次运行均幂等，四个核心结果哈希不变。验证记录为 [`a_share_three_day_walkforward_campaign_005_verification_20260728.json`](a_share_three_day_walkforward_campaign_005_verification_20260728.json)（SHA‑256 `55a452ae93d44ffa30f51d8f750fd5f6f9593de4e9519c9552bdaada604c2b65`）。Campaign005 的精确定义已终止，不得反向、改公式/窗口/零值规则、阈值、过滤、年份、成本或与任何终止因子组合后重测；下一轮只能从新的经济机制做 Campaign006 概念筛查和独立无收益冻结。
+
+Campaign006 已按该顺序完整执行。概念记录 [`a_share_three_day_walkforward_campaign_006_concept_scouting.json`](a_share_three_day_walkforward_campaign_006_concept_scouting.json)（SHA‑256 `745bfd2e50b87b2a67f099ad31794b500dcd8e8ee204f9b697d278c2b0a4b767`）先在不读分钟分区、比较值、日线或收益的条件下排除了收益自相关、波动时点、市场响应滞后、零收益变体和成交量轮廓等终止机制近义项，只保留“成交均价路径是否确认分钟收盘路径”。随后机制审计 [`a_share_three_day_walkforward_campaign_006_mechanism_overlap_audit.json`](a_share_three_day_walkforward_campaign_006_mechanism_overlap_audit.json)（SHA‑256 `6178638773f4ababdcbd91e93c925a6c2c768fe692e02ed029f5f8174a0d9e7d`）冻结 `intraday_transaction_price_path_confirmation_238p`：在上午/下午各自的相邻活跃分钟对上计算收盘对数收益与 `amount/volume` 成交均价对数收益的 Pearson 相关，排除 09:30 和午间跨段，双零成交只移除相邻对、单边零成交判整日缺失，至少需要 120 个有效对，方向为 higher。水平差、符号命中、领先滞后、加权、改窗口、改阈值、反向和组合均在值前排除；有限目录只有一个权重 1.0 的单因子试验。
+
+无收益协议 [`a_share_three_day_walkforward_campaign_006_no_return_preregistration.json`](a_share_three_day_walkforward_campaign_006_no_return_preregistration.json)（SHA‑256 `fbe683e54705b458f7d13f56f3ccbd87235ff62a1cd67e1b5ced8b5538bda579`）绑定实现与来源后，生成 33,015 分区、7,724,498 行的不可变快照；清单 SHA‑256 为 `1f32cbe4c9d93ef2fbecf27b74cc4d15caddb5f62ca77e9818395c1c1743e0ab`，数据集 SHA‑256 为 `170381f7624e9b3d2e45170c9e363eea877ecec0f1f3945d03945ac2238f3c04`，有效因子行 7,541,702。唯一审计 `20260728T112534Z_campaign006_no_return_audit.json`（SHA‑256 `dbc6f63904e7a064f26f9fee12f979cb1702ecc2e61eec5422d341fe62b0db8a`）的覆盖中位/P05 为 `99.5430%/98.1986%`，P05 合格名称 138，540 个潜在非重叠三日 cohort；与 29 个冻结机制的最大绝对中位日秩相关仅 `0.390068`，最近项为 `intraday_amount_volatility_coupling_238p`，所以获得一次开发资格。该阶段的日线字段仍为空、forward return 为 false。
+
+开发预注册 [`a_share_three_day_walkforward_campaign_006_preregistration.json`](a_share_three_day_walkforward_campaign_006_preregistration.json)（SHA‑256 `7da7117147ef2d1b929beefc033550b1336185550875086788fc2074b60c3f98`）在第一次 2019–2023 收益读取前固定唯一试验，并哈希继承三组扩展折、边界 purge 3 个信号会话、`t+1` 开盘/`t+3` 收盘、Top‑3、CNY 200,000 整手试跑、成本和幸存门槛。三个验证年 2021/2022/2023 的平均 Rank IC 分别为 `-0.021195/-0.029380/-0.047427`，归一化收益分别为 `-17.34%/-63.70%/-27.71%`，10bp 试点收益分别为 `-2.76%/-13.24%/-5.47%`；中位验证 spread 为 `-0.003741`，最差验证归一化回撤 `-64.20%`，2019–2023 汇总 20bp 试点收益 `-27.74%`。整手可负担率和成交额参与上限均通过，但关联与收益门全部失败，开发幸存者为 0。
+
+因此 2024–2025 压力区间没有打开、没有读取压力收益。统一研究记录 [`a_share_three_day_walkforward_campaign_006_research_record.json`](a_share_three_day_walkforward_campaign_006_research_record.json)（SHA‑256 `c8124405072a6bbc61a135444765ec05bfdaade813fa325357dabef8e081812e`）和追加式权威状态 [`a_share_three_day_iteration_status_20260728_campaign006.json`](a_share_three_day_iteration_status_20260728_campaign006.json)（SHA‑256 `bb2aa86c67cf6d5ef50c7c898d1a4c8ad6ffc15e19dff59a707de6a76dde8657`）把累计开发试验数推进为 232；Candidate49 信号/执行台账仍为 0 条且哈希不变。快照、无收益审计、开发和零幸存者关闭均已幂等复验，Campaign001–006 与 Candidate49 工作流交叉测试 99/99 通过；统一报告的 Candidate49 语义重放也在临时输出上通过且未改权威报告。验证记录为 [`a_share_three_day_walkforward_campaign_006_verification_20260728.json`](a_share_three_day_walkforward_campaign_006_verification_20260728.json)（SHA‑256 `cfe790674b75e234eb60b5b1880fc8b5df08c6e2263a0ee1ac3413681ccb6bd6`）。该 higher 成交均价路径确认定义已经终止，不得反向、改 120 对门槛、活动语义、相关估计、窗口、过滤或与终止因子组合后重测；Campaign007 只能重新从概念级无值筛查开始。
+
+Campaign007 已继续使用完整历史样本做独立研究，不等待当日 16:30 数据。概念筛查 [`a_share_three_day_walkforward_campaign_007_concept_scouting.json`](a_share_three_day_walkforward_campaign_007_concept_scouting.json)（SHA‑256 `324f03c09b4f28ebaeda2055772de35a1a89bd186919864f60db0ef9b1cc021d`）先拒绝把 09:30 到 09:31 的价格位移作为新机制，因为 09:30 可能是零活动参考占位且开盘缺口协议已经终止；机制审计 [`a_share_three_day_walkforward_campaign_007_mechanism_overlap_audit.json`](a_share_three_day_walkforward_campaign_007_mechanism_overlap_audit.json)（SHA‑256 `7e7ebe2232f379b9659222c878b49730a3a2ab331f6542890906d5880970da57`）随后冻结唯一 higher 因子 `intraday_share_volume_transaction_price_coupling_238p`。它只读取 `datetime,symbol,provider,volume,amount`，在上午和下午各自的相邻活跃分钟对上计算 `log(volume_t/volume_t-1)` 与 `log((amount_t/volume_t)/(amount_t-1/volume_t-1))` 的 Pearson 相关，排除 09:30 和午间跨段；双零活动对被移除、单边零值判整日缺失，至少需要 120 对。公式、方向、活动语义、阈值、窗口、反向、领先滞后、过滤、组合和年份子集均在任何值或收益前固定，有限目录只有一个权重 1.0 的单因子试验。
+
+无收益协议 [`a_share_three_day_walkforward_campaign_007_no_return_preregistration.json`](a_share_three_day_walkforward_campaign_007_no_return_preregistration.json)（SHA‑256 `308d5898c4a6d04b127c21876039ef7886d28b317951240fc29ba9ab2568a8ef`）绑定实现和来源。首次特征构建在第 801 个已完成分区后遇到一个合法空基集，却在空集返回前误执行单例 symbol 校验而退出；当时没有最终快照、比较值、日线或收益。修复只把空集返回移到校验前，不改公式、字段、门槛或任何研究选择，并记录在 [`a_share_three_day_walkforward_campaign_007_feature_build_infrastructure_repair_20260728.json`](a_share_three_day_walkforward_campaign_007_feature_build_infrastructure_repair_20260728.json)（SHA‑256 `c708e0114ee0c272965086102e1b0c4e9399f3d952a6618890f786b07ef30c98`）。恢复时复用 801 个逐分区哈希检查点，最终不可变快照含 33,015 分区、7,724,498 行和 7,551,741 个合格因子行，manifest/data SHA‑256 为 `d76fee2c03a38673eb4ce3a20ad0dba35f509c67a86201e50a410cadbdde6033` / `3eeee40583146024e7b9b8e867daa2e17043c6dc5a72ce3d3e8d525602bb8931`。
+
+唯一无收益审计 `20260728T123537Z_campaign007_no_return_audit.json` SHA‑256 为 `69de8e7cf7cfd16c2563d259f4cdc786d20c2b73e153e73ed7a16f3c73544bf8`。覆盖中位/P05 为 `99.6243%/98.3153%`，P05 合格名称 138，2019–2025 共 540 个潜在非重叠三日 cohort；30 个冻结比较全部通过，最大绝对中位日秩相关为 `0.547339`，最近项是已终止的 `intraday_signed_path_efficiency_239m`，低于 `0.8` 唯一性上限。无收益阶段没有读取分钟收盘、日线价格或 forward return。
+
+第一次 2019–2023 收益读取前，开发预注册 [`a_share_three_day_walkforward_campaign_007_preregistration.json`](a_share_three_day_walkforward_campaign_007_preregistration.json)（SHA‑256 `38e70809366f44455c05020079e0b069fff056b8a134417f163501d404a902e9`）冻结原有三组扩展式训练/验证折、折边界 purge 3 个信号日、`t+1` 开盘/`t+3` 收盘、Top‑3、CNY 200,000 整手试跑、成本与幸存门槛。2021/2022/2023 验证期平均 Rank IC 为 `-0.028128/-0.019124/-0.018013`，spread 为 `+0.004541/+0.001741/-0.001566`，归一化收益为 `+74.04%/-15.84%/-31.29%`，10bp 试跑为 `+6.45%/-3.65%/-5.28%`；第三折整手可负担率 `89.64%`，也低于冻结的 90% 门槛。2019–2023 合并归一化、10bp 和 20bp 收益分别为 `-43.35%/-10.02%/-17.20%`，开发幸存者为 0。
+
+因此 2024–2025 最终压力集没有打开且没有读取收益；这正是“利用历史样本持续研究，同时把最终压力集保留给预先冻结且通过开发门槛的幸存者”的工作方式，不需要等待每天新增一根日线。研究记录 [`a_share_three_day_walkforward_campaign_007_research_record.json`](a_share_three_day_walkforward_campaign_007_research_record.json)（SHA‑256 `796300c1eace69b207202c698ee96b91f1e75bb723291692902f892a5d53587b`）和追加式状态 [`a_share_three_day_iteration_status_20260728_campaign007.json`](a_share_three_day_iteration_status_20260728_campaign007.json)（SHA‑256 `11ca8ddbc5b523db5075b2a08a204f4f9c8f12804770affa1b0ae1778cea4d1e`）把累计开发试验数推进为 233。快照、无收益审计、开发和关闭压力集均已幂等复验，Campaign001–007 与 Candidate49 工作流交叉测试 111/111 通过；统一报告语义重放通过且未改权威报告。验证记录为 [`a_share_three_day_walkforward_campaign_007_verification_20260728.json`](a_share_three_day_walkforward_campaign_007_verification_20260728.json)（SHA‑256 `ece65c2429fbd4a2af39e52d04ce182fcc17a5ebd89dc3b6ef580425dfac7b99`）。Candidate49 信号/执行台账仍为 0 条且哈希不变；Candidate50、当前聚合、评分、选股、仓位、订单和 Level‑2 工作均未创建。Campaign007 定义已经终止，不得反向、改公式/窗口/120 对门槛/活动语义、筛选、年份或与任何终止因子组合重测；下一轮只能作为独立 Campaign008 从新的经济机制与无值重叠审计开始。
+
+Campaign008 继续按“先机制、后值、再收益”的历史分段流程执行，不等待当日 16:30 数据。概念筛查 [`a_share_three_day_walkforward_campaign_008_concept_scouting.json`](a_share_three_day_walkforward_campaign_008_concept_scouting.json)（SHA‑256 `0268be76964f272ba32618c2823b530e860dd507fae656ae389d89f637b79667`）和无值机制审计 [`a_share_three_day_walkforward_campaign_008_mechanism_overlap_audit.json`](a_share_three_day_walkforward_campaign_008_mechanism_overlap_audit.json)（SHA‑256 `259d3055898961287bea478946fa1653deade16b9b9927da9fc8b7a5d3d87246`）冻结唯一 higher 因子 `intraday_post_shock_share_volume_replenishment_236p`。它把每个半日内截至 `t` 的绝对一分钟收盘冲击与 `t` 到 `t+1` 的股数成交量对数增长相关，最多 236 对；09:30、午间跨段和末端越界响应均排除，双零响应端点只移除该对，任一单边零端点判整个股票日缺失，至少需要 120 对。公式、方向、滞后、零值语义、门槛、窗口、反向、过滤和组合在任何分钟值或收益前固定。
+
+无收益协议 [`a_share_three_day_walkforward_campaign_008_no_return_preregistration.json`](a_share_three_day_walkforward_campaign_008_no_return_preregistration.json)（SHA‑256 `1c209a1611d822531efe178793c80e5a8f68f5752ae5a0dfa890585e62dfcf56`）绑定后，全量快照仍覆盖 33,015 分区和 7,724,498 个源股票日，manifest/data SHA‑256 为 `09d4f82ec350ff8c16106c7ebc007d791f626589d33cd3e09cd4d0725893aaab` / `825b9a68890a6975b0866a99ce5b798968b82d80f226c8fdadbffba3472b40dc`。结果不是收益失败，而是可用性失败：每个源股票日都至少有一组单边零成交量响应端点，严格冻结规则使有效因子行数为 0。无收益审计 `20260728T132806Z_campaign008_no_return_audit.json`（SHA‑256 `af4013e0d439174ab6bb0c08d26bdf4bed71b6bd668eea25c834ec5ff0f5e937`）因此记录覆盖中位/P05、P05 名称和潜在三日 cohort 全为 0，并在加载任何比较因子值、日线价格或 forward return 前终止。
+
+Campaign008 没有创建开发预注册、训练或回测试验，累计开发试验数保持 233，2024–2025 也没有打开。研究记录 [`a_share_three_day_walkforward_campaign_008_research_record.json`](a_share_three_day_walkforward_campaign_008_research_record.json)（SHA‑256 `7057ed2031a16c4e6bc5bdc643aae11b321883e548c553bb82c499225e2f2a67`）、追加式状态 [`a_share_three_day_iteration_status_20260728_campaign008.json`](a_share_three_day_iteration_status_20260728_campaign008.json)（SHA‑256 `8d2c00e25e847166bbdb8454bdf3f2c79d0b7a6668bf73923bdc2d9d175f7bbb`）和验证记录 [`a_share_three_day_walkforward_campaign_008_verification_20260728.json`](a_share_three_day_walkforward_campaign_008_verification_20260728.json)（SHA‑256 `20336c17a7182f5fec645668af546299a6d32bf44274e11fa1dc39d7c0d5a979`）冻结该结论。快照和审计幂等复验通过，Campaign001–008 与 Candidate49 交叉测试 120/120 通过，统一报告语义重放通过且未改权威报告；Candidate49 两本真实台账仍为 0 条且哈希不变。
+
+不得把 Campaign008 的单边零端点改成“仅移除该对”，也不得改 120 对门槛、滞后、冲击/成交量变换、窗口、方向、年份、过滤或与任何终止因子组合后重测。不得读取它的历史或压力收益、回填 Candidate49、启动 Candidate50、生成当前评分/选股/仓位/订单或购买 Level‑2。下一轮 Campaign009 只能从新的经济机制和独立无值审计开始；统计唯一性应覆盖所有拥有可用冻结值的既有因子，并把 Campaign008 作为不可数值比较但必须通过语义核重的终止机制。
+
+Campaign009 选择了与成交量响应和跨分钟收盘路径不同的 OHLC 微观价格发现机制。概念筛查 [`a_share_three_day_walkforward_campaign_009_concept_scouting.json`](a_share_three_day_walkforward_campaign_009_concept_scouting.json)（SHA‑256 `718a81b78fb156fb5162a794d5f70de72af8683ed9dfaca5963570f23ad9e905`）及无值机制审计 [`a_share_three_day_walkforward_campaign_009_mechanism_overlap_audit.json`](a_share_three_day_walkforward_campaign_009_mechanism_overlap_audit.json)（SHA‑256 `abfbc1d94b6a6272eaedb65a8c9ea8673398da3cb220b30c34997c2fcd45df21`）在任何分钟值或收益前冻结 higher 因子 `intraday_intrabar_body_range_efficiency_240m = sum(abs(log(close/open))) / sum(log(high/low))`。它只使用 09:31–11:30 与 13:01–15:00 的 240 个 contemporaneous OHLC bar，排除 09:30，不用相邻 bar、成交量或成交额；所有 OHLC 必须正数、有限并精确满足排序，零区间 bar 合法贡献 0，至少需要 120 个正区间 bar。
+
+无收益协议 [`a_share_three_day_walkforward_campaign_009_no_return_preregistration.json`](a_share_three_day_walkforward_campaign_009_no_return_preregistration.json)（SHA‑256 `7080dae932fa3b35869ea39de1b4e3759ff968629ee20f422e368eb2e0799e19`）绑定实现后，首次 33,015 分区计算在最终发布前因复用执行器的阶段标志适配错误而 fail closed：内存中的 Campaign006 原生 `source_open_high_low_read=false/source_volume_read=true` 标志被发布后 Campaign009 标志校验提前拒绝，当时没有最终快照、比较值、日线或收益。修复记录 [`a_share_three_day_walkforward_campaign_009_feature_build_infrastructure_repair_20260728.json`](a_share_three_day_walkforward_campaign_009_feature_build_infrastructure_repair_20260728.json)（SHA‑256 `a5263a15e4d4b1af5c2cf9d755627302ea94d8cf05989ba67f33c638f5b6a28b`）只让校验区分发布前/发布后阶段，未改公式、字段、OHLC 规则、120-bar 门槛或任何研究选择；唯一重试复用全部 33,015 个逐分区哈希检查点。日志沿用的 “Campaign006” 进度标签也只是显示文本。
+
+最终不可变快照仍有 7,724,498 行，其中 6,924,627 行有效；799,871 行因正区间 bar 少于 120 个而缺失，OHLC 非法值、排序违例、非有限聚合和越界值均为 0。manifest/data SHA‑256 为 `1857176ced53c5515688b4c4b8e0e6e1b5b8332212841e529608169f77496aa7` / `14fac16f960b84be9ec89c01eea286267bed079c1c17600e94ae2156deac357d`。无收益审计 `20260728T142948Z_campaign009_no_return_audit.json`（SHA‑256 `b170574e70cabe2700d90716e852c4c6c0a85714619261cecb5d2d1ef4f70c5e`）的覆盖中位/P05 为 `97.494964%/90.957541%`，P05 合格名称 136，潜在非重叠三日 cohort 540；31 个有可用冻结值的统计比较全部通过，最大绝对中位日秩相关 `0.472734`，最近项为 `intraday_zero_return_amount_intensity_238m`。Campaign008 另以语义而非数值方式完成核重。此时仍未读取日线或 forward return。
+
+开发预注册 [`a_share_three_day_walkforward_campaign_009_preregistration.json`](a_share_three_day_walkforward_campaign_009_preregistration.json)（SHA‑256 `04fc26d329fe16d00e939adaf77d3a5c80659205775aa610d01d87bb6da41ae2`）随后冻结唯一一次 2019–2023 higher 单因子试验。2021/2022/2023 验证平均 Rank IC 为 `-0.021132/-0.047906/-0.040967`，spread 为 `-0.004317/-0.006383/-0.000731`，归一化收益为 `-19.62%/-43.22%/-24.53%`，10bp 整手试跑为 `-4.03%/-7.89%/-3.45%`；第二折整手可负担率 `87.21%` 低于冻结的 90% 门槛。2019–2023 汇总归一化、10bp 和 20bp 收益分别为 `-84.96%/-17.95%/-22.51%`，开发幸存者为 0，因此 2024–2025 没有打开或读取。
+
+研究记录 [`a_share_three_day_walkforward_campaign_009_research_record.json`](a_share_three_day_walkforward_campaign_009_research_record.json)（SHA‑256 `4590efb674e78a82eca080cf042db76e6f73ded22ec56cad8714da4cc8c08769`）和追加式状态 [`a_share_three_day_iteration_status_20260728_campaign009.json`](a_share_three_day_iteration_status_20260728_campaign009.json)（SHA‑256 `ab9072891b5b903cd02cf05830213f8909287dccdb833a182843f7cb030ecf76`）把累计开发试验数推进到 234。快照、无收益审计、开发与零幸存者关闭均已幂等复验，Campaign001–009 和 Candidate49 交叉测试 134/134 通过，统一报告语义重放通过且未改权威报告；验证记录为 [`a_share_three_day_walkforward_campaign_009_verification_20260728.json`](a_share_three_day_walkforward_campaign_009_verification_20260728.json)（SHA‑256 `fa31ffe17d7a44d0a2d210e76b5f99d26f6ad3b4defc5a2f53685188d0746885`）。Candidate49 两本真实台账仍为 0 条且哈希不变。不得反向、改 log body/range、改成逐 bar 比率均值、拆分 K 线方向/影线、改 120-bar 门槛、窗口、过滤、年份或组合后重测；Campaign010 只能重新从独立概念和无值审计开始。
+
+Campaign010 从概念级无值筛查重新开始，选择相邻一分钟高低价区间的价格接受连续性，而不是 Campaign009 的单根 K 线实体/振幅效率。概念记录 [`a_share_three_day_walkforward_campaign_010_concept_scouting.json`](a_share_three_day_walkforward_campaign_010_concept_scouting.json)（SHA‑256 `c21f5487bbbfcf608557a004d76d8f7032f7488dff76e23c44c9756593b504e3`）、机制审计 [`a_share_three_day_walkforward_campaign_010_mechanism_overlap_audit.json`](a_share_three_day_walkforward_campaign_010_mechanism_overlap_audit.json)（SHA‑256 `41f4d88ff785ef594c1aec9337a4498de53f08edac532c4237340810f2f57680`）和无收益协议 [`a_share_three_day_walkforward_campaign_010_no_return_preregistration.json`](a_share_three_day_walkforward_campaign_010_no_return_preregistration.json)（SHA‑256 `0981e5915f0ba5eff8f779b7ad594324bccfd75b0fb76f22916ed734d6443a53`）均在候选值前冻结。唯一 higher 因子 `intraday_adjacent_range_overlap_continuity_238p` 只读取 `datetime,symbol,provider,high,low`，在上午和下午各形成 119 个相邻区间对，以 log 价格空间的总交集长度除以总并集跨度；排除 09:30 和午间跨段，精确要求正数有限且 `low<=high`，零并集对贡献 0 且不计入门槛，至少需要 120 个正并集对。
+
+不可变 Campaign010 快照 manifest/data SHA‑256 为 `e700c23b8c86e412153dd7ebd3bcb4a322f12b8a506cbbf5e4659490da50d69b` / `55303f4934044fa2543d459aa378e28ff440b03b8a0a69d6866e14736d6bdcc0`。33,015 个分区、7,724,498 行中 7,509,368 行有效；215,130 行因正并集对不足 120 个缺失，high/low 非法值、排序违例、非有限聚合和越界均为 0。首次无收益调用在候选或比较值前被继承校验器错误要求 `source_close_read=true` 挡住；[`a_share_three_day_walkforward_campaign_010_no_return_infrastructure_repair_20260728.json`](a_share_three_day_walkforward_campaign_010_no_return_infrastructure_repair_20260728.json)（SHA‑256 `f2cb1b0cfe222bab987abd329048a56418e3a6450bdc92ca2c1b0a8486d736d2`）只把已发布 Campaign010 manifest 改为必须 `source_close_read=false`，未改公式、方向、120 对门槛、快照或比较目录。
+
+唯一成功的无收益审计 `20260728T153818Z_campaign010_no_return_audit.json`（SHA‑256 `e86bd79edc830d68bcf72ab5148e42e030dae5df28087d6b68f0147a581fb262`）先通过覆盖/容量：中位/P05 覆盖 `99.024390%/97.236239%`，P05 合格名称 `137.55`，潜在非重叠三日 cohort 540。随后 32 个统计比较中 31 个通过，但与 terminal Campaign009 `intraday_intrabar_body_range_efficiency_240m` 的中位日秩相关为 `-0.877524`，绝对值超过冻结的 0.8 门槛，所以唯一性失败。负号不授权反向；按预注册绝对相关判重。Campaign010 因而在任何日线、forward return、2019–2023 开发折或 2024–2025 压力收益前终止，开发试验为 0、累计仍为 234。保存研究记录 [`a_share_three_day_walkforward_campaign_010_research_record.json`](a_share_three_day_walkforward_campaign_010_research_record.json)（SHA‑256 `f8beb653f3f0215b4483e773360637c0713cf43b62d57e488a6006b326ab927d`）和追加状态 [`a_share_three_day_iteration_status_20260728_campaign010.json`](a_share_three_day_iteration_status_20260728_campaign010.json)（SHA‑256 `fa03536f5fdaf8a7732057ea9bd798be966321337fc9628ff190ad0cfe26ce98`）。不得反向、改 containment/Jaccard/逐对均值或并集分母、改 120 对门槛、时间窗、零宽规则、年份、过滤或组合后重测；Campaign011 只能再次从全新概念和独立无值审计开始。
+
+Campaign010 的快照与无收益审计均已幂等复验，Campaign001–010 与 Candidate49 交叉测试 146/146 通过。统一报告首次因走前研究记录误用会被旧 48 机制扫描捕获的 `terminal_*` 状态前缀而在写文件前拒绝；按 Campaign008/009 既有 `completed_*` 语义修正记录状态后，报告只读重放恢复，输出哈希仍为 `eee6a662721fe9c511dfa57830ded2d84ae071f26b2beda890cea82d8f51cead`、622 行、0 信号/0 结算，权威报告未重写。该兼容修正未改任何因子、指标、门槛、快照、审计、台账或结论。验证记录为 [`a_share_three_day_walkforward_campaign_010_verification_20260728.json`](a_share_three_day_walkforward_campaign_010_verification_20260728.json)（SHA‑256 `7a982880898a3400c06b32298a3c1803f6f81fde47ed32b20c36d04dd20e0cec`）。
+
+Campaign011 继续使用“概念先行、值前冻结、2019–2023 扩展走前开发、仅对冻结开发幸存者一次性打开 2024–2025”的研究流程，不需要等待当天日线。概念记录 [`a_share_three_day_walkforward_campaign_011_concept_scouting.json`](a_share_three_day_walkforward_campaign_011_concept_scouting.json)（SHA‑256 `f3bb2a4f2641f4617de8fddbbb4fb933ae17531c17c4b88b5366ad5b4d31a6e5`）、机制核重 [`a_share_three_day_walkforward_campaign_011_mechanism_overlap_audit.json`](a_share_three_day_walkforward_campaign_011_mechanism_overlap_audit.json)（SHA‑256 `fe50e938523f49fe8038e72036b2d3d7c8a08ef3c5870747d5f967b910679eed`）和无收益协议 [`a_share_three_day_walkforward_campaign_011_no_return_preregistration.json`](a_share_three_day_walkforward_campaign_011_no_return_preregistration.json)（SHA‑256 `3e530c7a2f76e6a1eecdb18c6058a1d20fb1e3e54aaffb5ae4b3a857d5112e56`）都在候选或比较值前冻结。唯一 higher 因子 `intraday_intrabar_range_participation_entropy_240m` 只读取连续交易时段 240 根一分钟 K 线的 high/low，以每根 `log(high/low)` 在全天总区间中的份额计算固定 240 支撑的归一化 Shannon entropy；09:30 排除，零区间 bar 保留在固定支撑并贡献 0，至少要求 120 根正区间 bar，且不得修复非正、非有限或 `low>high`。
+
+不可变快照 manifest/data SHA‑256 为 `36efe15038681d3a2fc154dfd3ce6d918c54ab56d1a5e803ee7aa86c295f4084` / `078dcb053e641813978ed96542fb9c69fbf3108ac490d3463e870b640feeee11`。33,015 个分区、7,724,498 行中 6,924,627 行有效；无收益审计 `20260728T164310Z_campaign011_no_return_audit.json`（SHA‑256 `1c07ddba4d3447016aa9460e6a9018b33eb380246cd672fbbb533d397066e995`）的覆盖中位/P05 为 `97.494964%/90.957541%`，P05 合格名称 136，潜在非重叠三日 cohort 540。33/33 个可用统计比较全部通过，最大绝对中位日秩相关为 `0.764617`，最近项是已终止的 Campaign010 相邻区间连续性。Campaign008 另以语义方式核重。首次审计调用因生成命名空间遗漏已冻结的 Campaign009 快照常量，在加载比较值、日线或收益前失败；只补齐该常量的无语义修复记录为 [`a_share_three_day_walkforward_campaign_011_no_return_infrastructure_repair_20260728.json`](a_share_three_day_walkforward_campaign_011_no_return_infrastructure_repair_20260728.json)（SHA‑256 `f4471448ccf786c7ffe2b167f4b877e279b8ffee4cddc92ca2c1b0a8486d736d2`）。
+
+开发协议 [`a_share_three_day_walkforward_campaign_011_preregistration.json`](a_share_three_day_walkforward_campaign_011_preregistration.json)（SHA‑256 `3baa4343f1fb37d29a4aa9bfb568d1525a6d54155febfa5740c47590f97bc158`）冻结唯一一次 higher 单因子试验。2021/2022/2023 验证平均 Rank IC 为 `-0.007021/+0.022980/+0.003065`，spread 为 `-0.000903/+0.006522/-0.002570`，归一化收益为 `+11.38%/+6.06%/-6.08%`，10bp 整手收益为 `-0.42%/-1.07%/-2.95%`。整手可负担率三折均为 100%，但成本后收益三折全负、中位 spread 为负，2019–2023 汇总 20bp 整手收益为 `-15.19%`，因此开发幸存者为 0，2024–2025 没有打开或读取。不得以未扣成本的汇总归一化收益 `+37.99%` 推翻冻结的成本后门槛。
+
+研究记录 [`a_share_three_day_walkforward_campaign_011_research_record.json`](a_share_three_day_walkforward_campaign_011_research_record.json)（SHA‑256 `e2b06cd44de18a179beddecac5f869a09c0cdbb6417595671a1e9510ff5a88c3`）和追加式状态 [`a_share_three_day_iteration_status_20260728_campaign011.json`](a_share_three_day_iteration_status_20260728_campaign011.json)（SHA‑256 `b474f33b9700713c03f4271a5da8335bf550f75df79eafa39d5e12e073798bd6`）把累计开发试验数推进到 235。继承的幸存者文件显示字段 `complexity=2`，但冻结目录和台账都证明本试验实际只有一个因子、语义复杂度为 1；这是无门槛影响的展示字段，不得重写冻结文件。当前上市快照导致的幸存者偏差仍是明确限制。不得反向、改 entropy 支撑/归一化/120 根门槛、删除零区间 bar、增加时间或活跃度权重、挑年份、改方向或与任何终止因子组合后重测；Campaign012 只能从真正不同的概念和独立无值审计开始。
+
+Campaign012 继续在不等待新日线的情况下按同一历史样本分层流程推进。概念记录 [`a_share_three_day_walkforward_campaign_012_concept_scouting.json`](a_share_three_day_walkforward_campaign_012_concept_scouting.json)（SHA‑256 `8174841542272fb8d6f563032dda98d739f153999e6dbc9cbbdbf4589d100db0`）、机制核重 [`a_share_three_day_walkforward_campaign_012_mechanism_overlap_audit.json`](a_share_three_day_walkforward_campaign_012_mechanism_overlap_audit.json)（SHA‑256 `2311e40efb3d97a913c91fced47eff041490112b72285c60f0e3ff3a9bc25918`）和无收益协议 [`a_share_three_day_walkforward_campaign_012_no_return_preregistration.json`](a_share_three_day_walkforward_campaign_012_no_return_preregistration.json)（SHA‑256 `23ffe9f165cf03bdbe3a0fc1ab0119e687c8388040674f5256ccbd1c1a5ffe86`）均在候选或比较值前冻结。唯一 higher 因子 `intraday_intrabar_range_reversal_238p` 只读取 high/low，在上午和下午各形成 119 个相邻 `log(high/low)` 区间幅度对，以固定 238 对的负 Pearson 相关刻画区间冲击的即时消退；09:30、午间跨段、隔夜和跨股票对均排除，零—零对保留，至少要求 120 个任一端为正区间的相邻对，退化方差不得填 0。
+
+不可变快照 manifest/data SHA‑256 为 `58fca32b58be53523daa0fe7a971a1394a35d4f1251c484214d06f5deff6677a` / `aaa33541d55f68699e99a4a9d5abc697feafe215dd70ab1ba1c807b7cab3c18f`。33,015 个分区、7,724,498 行中 7,375,921 行有效，348,577 行因有效相邻对不足 120 个而缺失；非法 high/low、排序错、退化方差、非有限和越界均为 0。唯一无收益审计 `20260728T174604Z_campaign012_no_return_audit.json`（SHA‑256 `ddce865c259d712fefac213c2db923a292f49aa78f5e8cac8ad16dba3fc570fe`）的覆盖中位/P05 为 `98.777933%/96.213656%`，P05 合格名称 137，潜在 cohort 540。34/34 个统计比较全部通过，最大绝对中位日秩相关 `0.521641`，最近项为 `intraday_volatility_resolution_238m`；与 Campaign011 区间熵和 Campaign010 区间重叠的相关仅 `+0.275484/+0.216760`。审计没有读取日线或 forward return。
+
+开发协议 [`a_share_three_day_walkforward_campaign_012_preregistration.json`](a_share_three_day_walkforward_campaign_012_preregistration.json)（SHA‑256 `8c7aac81dd2d3ffeb053d26c19ec140576bc6add00a1bb970f818d99f9e4f4aa`）冻结唯一一次 higher 单因子试验。2021/2022/2023 验证平均 Rank IC 为 `+0.034737/+0.036308/+0.049930`，spread 为 `-0.000315/+0.001137/+0.008665`，归一化收益为 `+25.71%/-6.75%/+4.77%`，10bp 整手收益为 `+0.79%/-3.37%/-1.15%`。三折关联均为正、操作门均通过，但成本后只有一折为正，中位 10bp 为 `-1.15%`，2019–2023 汇总 10bp/20bp 为 `-4.51%/-13.91%`，所以开发幸存者为 0，2024–2025 没有打开或读取。零滑点汇总 `+6.55%` 和 5bp `+0.77%` 不能推翻冻结的 10bp/20bp 稳健性门槛。
+
+研究记录 [`a_share_three_day_walkforward_campaign_012_research_record.json`](a_share_three_day_walkforward_campaign_012_research_record.json)（SHA‑256 `340acecacf12ef5755dacbc57e792124ff0cb25113f82bc078e06db1585af986`）和追加式状态 [`a_share_three_day_iteration_status_20260728_campaign012.json`](a_share_three_day_iteration_status_20260728_campaign012.json)（SHA‑256 `e883ebde9d9b2c50368181d4a8aec15dde1c10625460abda060c1f601c284ffd`）把累计开发试验数推进到 236。继承的幸存者文件仍有无门槛影响的展示字段 `complexity=2`，实际是单因子、语义复杂度 1，不得重写冻结文件。不得反向、改 lag/相关估计器/午间语义/120 对门槛、去掉零—零对、使用 favorable 年份或成本、与终止因子组合后重测；Campaign013 只能从新的独立概念和无值审计开始。
+
+Campaign013 同样直接使用既有历史分钟样本，不等待当天日线。概念记录 [`a_share_three_day_walkforward_campaign_013_concept_scouting.json`](a_share_three_day_walkforward_campaign_013_concept_scouting.json)（SHA‑256 `e4ed47f439cf3dd024ef2dde8669c72f422259c95c8c3df0728d6421db741e6f`）、机制核重 [`a_share_three_day_walkforward_campaign_013_mechanism_overlap_audit.json`](a_share_three_day_walkforward_campaign_013_mechanism_overlap_audit.json)（SHA‑256 `78262a1e90af0de4561329a21217ab5304925d7694877b9f84d61771fe77a715`）和无收益协议 [`a_share_three_day_walkforward_campaign_013_no_return_preregistration.json`](a_share_three_day_walkforward_campaign_013_no_return_preregistration.json)（SHA‑256 `0a5c0225cba49ab11056e232b6ba9875f65c2734d318ef7644031472a9d76764`）均在候选值、比较值和收益前冻结。唯一 higher 因子 `intraday_transaction_vwap_envelope_asymmetry_240m` 在 09:31–11:30、13:01–15:00 的 active bar 上计算 `vwap=amount/volume`，以 `sum(log(high/vwap))-sum(log(vwap/low))` 除以上下两侧之和；零成交量且零成交额的 bar 不活跃，单边零使 stock-day 缺失，每根 active bar 必须精确满足 `low<=vwap<=high`，至少 120 根正区间 active bar，禁止换单位、取整、夹断或容差修复。
+
+不可变快照 manifest/data SHA‑256 为 `706e71aacb802a2b34cf7b52236823bb3e63cd30d3f0e8340456344c7ef184d7` / `45ee0352936be01714efba01fef80118bb9fe97ee3cdfcdba65f429bf01b528b`。33,015 个分区、7,724,498 行中只有 78,351 行生成有限特征；7,616,444 行未通过 active bar 的 VWAP 包含关系，29,656 行正区间 active bar 不足 120 根，另有 47 行单边零活动。首次完整构建已算完所有分区，但继承的发布前校验错误要求尚未写入的 `source_amount_read`；[`a_share_three_day_walkforward_campaign_013_feature_build_infrastructure_repair_20260729.json`](a_share_three_day_walkforward_campaign_013_feature_build_infrastructure_repair_20260729.json)（SHA‑256 `c12fd002ce93ca472c6f8e68555f56fb96424bc3845f52036856e123325ea842`）仅把该字段改为发布前允许缺失、发布后必须为 true，公式、门槛和已计算分区均未改变。
+
+无收益审计 `20260728T182958Z_campaign013_no_return_audit.json`（SHA‑256 `105ac63bc01828cf512be282377f835c87359a2356f29b7ff998734dcf4467b6`）在第一道覆盖/容量门终止：中位/P05 覆盖仅 `2.380952%/0.853085%`，P05 合格名称 3，潜在非重叠三日 cohort 11。审计没有加载任何比较因子值、日线、forward return、开发折或压力收益；唯一性没有求值，开发试验新增 0，累计仍为 236。这证明冻结字段组合在当前已接受分钟源中的联合兼容覆盖不足，不是方向或预测能力证据，也不得靠改单位、夹断、放宽 VWAP 包含关系、降低 120 根门槛、选年份或组合终止因子来救援。
+
+研究记录 [`a_share_three_day_walkforward_campaign_013_research_record.json`](a_share_three_day_walkforward_campaign_013_research_record.json)（SHA‑256 `26f92825d28930500977cc4c78c661494841df18449759d13d8a601c31bf6d0f`）和追加式状态 [`a_share_three_day_iteration_status_20260729_campaign013.json`](a_share_three_day_iteration_status_20260729_campaign013.json)（SHA‑256 `7032456e2b73303d13d3502fc0e577c58b6e7ba27bcdf93453895fe24e798b03`）将 Campaign013 终止在收益读取前，当前候选仍为 0，Candidate49 仍仅保留其既有前瞻台账。Campaign014 可以立即从新的独立概念、值前机制核重和有限精确预注册开始；继续使用 2019–2023 扩展走前开发，只有冻结开发幸存者才可一次性打开 2024–2025。
+
+Campaign014 继续直接使用既有历史样本。概念记录 [`a_share_three_day_walkforward_campaign_014_concept_scouting.json`](a_share_three_day_walkforward_campaign_014_concept_scouting.json)（SHA‑256 `0ccf17baa24347e2ad8fb83298bf7fd37a30c7fc916d407dc78c492e1c700f55`）、机制核重 [`a_share_three_day_walkforward_campaign_014_mechanism_overlap_audit.json`](a_share_three_day_walkforward_campaign_014_mechanism_overlap_audit.json)（SHA‑256 `2c5db4acd886d57649e7ac7cc0ce2232ae8efe957412d1fdc4804fcb7bb96890`）和无收益协议 [`a_share_three_day_walkforward_campaign_014_no_return_preregistration.json`](a_share_three_day_walkforward_campaign_014_no_return_preregistration.json)（SHA‑256 `82e5cf3e26b6f2edc34e37651bf49026bb90d0409b97fd19bc853d71778cd16c`）均在任何候选值、比较值或收益前冻结。唯一 higher 因子 `intraday_global_price_range_revisit_240m` 只读取 09:31–11:30、13:01–15:00 的 high/low，把 240 个 `[log(low),log(high)]` 闭区间排序合并；若总区间长度为 `S`、精确并集长度为 `U`，因子为 `(S-U)/S`。它衡量全天任意时点对既有价格区域的全局重访，时间顺序置换不改变结果，区别于 Campaign010 的相邻区间重叠。零宽区间保留但不计入至少 120 根正区间 bar 的门槛。
+
+不可变快照 manifest/data SHA‑256 为 `62469bb340ea9be6ee93321f4f81707c6753c30f4395ebcdd1db967efb360a67` / `7bea5c1047c4c5fdde5043d5b102a337a0f28deb26bb17c94eff82b65cb317bf`。33,015 个分区、7,724,498 行中 6,924,627 行有效，799,871 行仅因正区间 bar 少于 120 根而缺失，其余 high/low、并集、数值和边界错误均为 0。首次错误使用仓库日线根在分区读取前被 10 GiB 空间门拒绝；改用权威外接分钟根后全部分区完成，但发布前继承的 `source_volume_read` 阶段校验与原子发布后证据不一致。修复记录 [`a_share_three_day_walkforward_campaign_014_feature_build_infrastructure_repair_20260729.json`](a_share_three_day_walkforward_campaign_014_feature_build_infrastructure_repair_20260729.json)（SHA‑256 `74300718a6fe820f0264fe1e6551b758736f61bb5a919b2e186bce05df1b3412`）只令该标记在发布前接受继承 true、发布后必须为实际 false；重试时 33,015 个检查点全部按哈希恢复，公式和值未改。
+
+无收益审计 `20260728T193433Z_campaign014_no_return_audit.json`（SHA‑256 `827fa9d5079ad86e9c25545fcbe680b2e26bc17edc1506dd1d3a7c883f44819f`）的中位/P05 覆盖为 `97.494964%/90.957541%`，P05 合格名称 136，潜在 cohort 540；35/35 个可用统计比较全部通过，最高绝对中位日秩相关 `0.667243`，最近项为 Campaign010 相邻区间重叠。Campaign008 和低覆盖的 Campaign013 仅做语义核重。开发协议 [`a_share_three_day_walkforward_campaign_014_preregistration.json`](a_share_three_day_walkforward_campaign_014_preregistration.json)（SHA‑256 `4a9e6deaf18889f0a500b908e45ca9f98fea39db5e119829de240bc35e7da190`）冻结唯一一次 higher 单因子试验。
+
+2021/2022/2023 验证平均 Rank IC 为 `+0.020960/+0.028949/+0.029063`，spread 为 `+0.003757/+0.008447/-0.000336`，归一化收益为 `+6.70%/+14.80%/+0.57%`，10bp 整手收益为 `-1.12%/+0.05%/-1.98%`。三折 IC 和归一化收益均为正，整手可负担率均为 100%，但成本后只有一折为正、中位 10bp 为 `-1.12%`，2019–2023 汇总 10bp/20bp 为 `-2.77%/-12.86%`；零滑点 `+8.83%` 和 5bp `+2.95%` 不得推翻冻结的 10bp/20bp 稳健性门槛。因此开发幸存者为 0，2024–2025 没有打开或读取。
+
+研究记录 [`a_share_three_day_walkforward_campaign_014_research_record.json`](a_share_three_day_walkforward_campaign_014_research_record.json)（SHA‑256 `33ba947dcb2abbdfebe896eccd365eb54f51afb1b073c9a61b3de2fec68fb260`）和追加式状态 [`a_share_three_day_iteration_status_20260729_campaign014.json`](a_share_three_day_iteration_status_20260729_campaign014.json)（SHA‑256 `c4d1ecf43024588ccd159e6f67141a381d058458d3d97db9d362d819dfea2975`）把累计开发试验推进到 237，当前候选仍为 0。继承的展示字段 `complexity=2` 对实际单因子、语义复杂度 1 无门槛影响，不得重写冻结文件。不得反向、用日高低凸包替代精确并集、改分母/120 根门槛/区间合并/时间窗、挑 2022 或低成本、与终止因子组合后重测；Campaign015 只能再次从真正不同的概念、值前核重和精确有限预注册开始。
+
+Campaign015 继续直接使用 2019–2023 历史样本，不等待当天日线或 16:30。概念记录 [`a_share_three_day_walkforward_campaign_015_concept_scouting.json`](a_share_three_day_walkforward_campaign_015_concept_scouting.json)（SHA‑256 `6993ef826ba01f5abd80632d20fc0c521229e938f18c0ab12686e9ff337e85c7`）、机制核重 [`a_share_three_day_walkforward_campaign_015_mechanism_overlap_audit.json`](a_share_three_day_walkforward_campaign_015_mechanism_overlap_audit.json)（SHA‑256 `64af6fd2b9381f11495737fabd568b9c1685e0ca7793a79dc9b73d2f1dc7160e`）和无收益协议 [`a_share_three_day_walkforward_campaign_015_no_return_preregistration.json`](a_share_three_day_walkforward_campaign_015_no_return_preregistration.json)（SHA‑256 `ef8cfbf9d7cb1dcc50f65c2d050d9e1931c97d86f74770d4270a5b94da21609e`）均在任何 Campaign015 值或收益前冻结。唯一 higher 因子 `intraday_prior_range_breakout_pressure_238p` 只读取 09:31–11:30、13:01–15:00 的 high/low/close；在各半场内形成 238 个“前一 bar 区间—当前 close”对，令 `U=sum(max(log(close_t/high_(t-1)),0))`、`D=sum(max(log(low_(t-1)/close_t),0))`，因子为 `(U-D)/(U+D)`。当前 close 位于或接触前一区间时贡献 0；每根输入必须正、有限且满足自身 `low<=close<=high`，并且至少有一个非零突破。
+
+不可变快照 manifest/data SHA‑256 为 `450cefd5b268658997841038fd45156f436b7f3645a8ba5980681370abf42811` / `681c048babc594bf0b215fada4ff868d70d0a6bf450cf59cb610e22c6002747f`。33,015 个分区、7,724,498 行中 7,693,412 行有效；无收益审计 `20260728T203847Z_campaign015_no_return_audit.json`（SHA‑256 `1f09cca7bc62445558b1e8e2cee1d42f87e7bd784fdb1e8212c897d6fb503608`）的中位/P05 覆盖为 `99.824715%/99.301537%`，P05 合格名称 138，潜在 cohort 540，36/36 个统计比较通过。最近项是 `intraday_signed_path_efficiency_239m`，中位日秩相关 `+0.769704`，低于冻结的绝对值 0.8 门槛但较接近；与 Campaign014 的相关只有约 `-0.04082`。审计未读取日线、forward return 或 Candidate49 收益。
+
+开发协议 [`a_share_three_day_walkforward_campaign_015_preregistration.json`](a_share_three_day_walkforward_campaign_015_preregistration.json)（SHA‑256 `26dc73a5d67c888d2d87fc24114d2163966b5ad4c3f3f3edee86383d79304636`）只允许一个 higher 单因子试验。2021/2022/2023 验证平均 Rank IC 为 `-0.009037/-0.003982/-0.006538`，归一化收益为 `+20.28%/-54.52%/-31.80%`，10bp 整手收益为 `+2.50%/-11.45%/-6.91%`；三个 IC 折全部为负，成本后只有一折为正。2019–2023 汇总归一化收益 `-68.75%`，0/5/10/20bp 整手收益为 `-11.34%/-15.62%/-20.93%/-26.84%`。开发幸存者为 0，因此 2024–2025 没有打开或读取。
+
+研究记录 [`a_share_three_day_walkforward_campaign_015_research_record.json`](a_share_three_day_walkforward_campaign_015_research_record.json)（SHA‑256 `ddaf96c66cb86abb2f7d07950adade7f2a4e5a788004f7b4c6525f0d4ac8449c`）和追加式状态 [`a_share_three_day_iteration_status_20260729_campaign015.json`](a_share_three_day_iteration_status_20260729_campaign015.json)（SHA‑256 `c6092e60fa3934388e5fded6e1669ba173185dacf5fb5ecd39753d50cd27397f`）把累计开发试验推进到 238，当前聚合候选仍为 0。不得反向、修补、改成突破次数或阈值、改窗口/方向/年份/过滤器、与终止因子组合后重测，也不得打开 Campaign015 压力期、回填 Candidate49、启动 Candidate50 或形成当前评分、选股、仓位、订单。Campaign016 可以立即从全新的独立机制、值前核重和有限精确预注册开始，继续使用既有历史训练/验证划分；只有冻结开发幸存者才可一次性打开 2024–2025。
+
+Campaign016 同样直接使用既有历史样本，不需要等待新日线或 16:30。概念记录 [`a_share_three_day_walkforward_campaign_016_concept_scouting.json`](a_share_three_day_walkforward_campaign_016_concept_scouting.json)（SHA‑256 `9cf788aaaa7f69ee020c9bf8716166a26c5553e780722a38bd58fe4c72921083`）、机制核重 [`a_share_three_day_walkforward_campaign_016_mechanism_overlap_audit.json`](a_share_three_day_walkforward_campaign_016_mechanism_overlap_audit.json)（SHA‑256 `ef932893c2e6afb5f5601846cdd7ac3e84c0eee375cec5930b817776bb6429d1`）和无收益协议 [`a_share_three_day_walkforward_campaign_016_no_return_preregistration.json`](a_share_three_day_walkforward_campaign_016_no_return_preregistration.json)（SHA‑256 `8cb26965a4a4802e8e5c68730e7aae57b8fb3883aacd8f2d38c8b9d6daec5f89`）均在候选值和收益前冻结。唯一 higher 因子 `intraday_interbar_gap_body_confirmation_238p` 在上午、下午各自内部形成 119 个边界：`g_t=log(open_t/close_(t-1))`、`b_t=log(close_t/open_t)`，因子为 238 对的总体 Pearson 相关。09:30、午休边界、隔夜和跨日全部排除；零值、异号值全部保留。240 根 open/high/low/close 必须正、有限且满足 `low<=open<=high`、`low<=close<=high`，两个向量方差都必须为正。high/low 只做自身 bar 校验，公式不读取成交量或金额。
+
+不可变快照 manifest/data SHA‑256 为 `052ff2096a18951f884825453a730fbf0175b693ec497a2faca23c5150e8830c` / `3279806f522c347bdcd0beeef8249a89656de4204fcc22276ac53afb136c8242`。33,015 个分区、7,724,498 行中 7,693,417 行有效；无收益审计 `20260728T220647Z_campaign016_no_return_audit.json`（SHA‑256 `36e19377f5406e8beb992627b1b456fcd4d5cbe0bcb54b0e814055ef80643224`）的中位/P05 覆盖为 `99.826990%/99.313892%`，P05 合格名称 138，潜在 cohort 540，37/37 个统计比较通过。最近项是 `intraday_adjacent_range_overlap_continuity_238p`，中位日秩相关 `-0.561793`；与 Campaign015 只有 `+0.058295`。审计未读取日线、forward return 或 Candidate49 收益。
+
+开发预注册 [`a_share_three_day_walkforward_campaign_016_preregistration.json`](a_share_three_day_walkforward_campaign_016_preregistration.json)（SHA‑256 `b9eefe47df24afdc92cf433d80cf7d18f014fc0414c25baa33fcf74b6f02b4f9`）只允许一个权重 1.0 的单因子试验。2021/2022/2023 三折验证 mean Rank IC 为 `-0.038608/-0.050233/-0.057482`，normalized return 为 `+0.038583/-0.334710/-0.208937`，10bp、20 万元整手收益为 `+0.001176/-0.064173/-0.024332`；三折整手可负担率 `0.824324/0.894009/0.876147`，全部低于冻结的 0.90 门槛。2019–2023 聚合 normalized 与 0/5/10/20bp 收益为 `-0.696315` 和 `-0.112884/-0.142054/-0.179858/-0.241630`。开发幸存者为 0，所以 2024–2025 压力期未打开或读取。
+
+研究记录 [`a_share_three_day_walkforward_campaign_016_research_record.json`](a_share_three_day_walkforward_campaign_016_research_record.json)（SHA‑256 `c483597cfca52a0fa6285d92bff1835992c23b2f6799ee32ddb67a5fc1a80948`）和追加式状态 [`a_share_three_day_iteration_status_20260729_campaign016.json`](a_share_three_day_iteration_status_20260729_campaign016.json)（SHA‑256 `8f1ae9b5934f8006cb016a8211d253a7c897d62182149ed797a7ab0e062b1ae2`）把累计开发试验推进到 239，当前聚合候选仍为 0。不得反向、改成符号一致/计数/beta/余弦/其他相关估计、删除零值或异号对、加入幅度或活跃阈值、纳入开盘/午休/隔夜、挑年份/成本、过滤或与终止因子组合后重测；也不得打开 Campaign016 压力期、回填 Candidate49、启动 Candidate50 或形成当前评分、选股、仓位、订单。Campaign017 可以立即从真正不同的独立机制和值前精确预注册开始。
+
+Campaign017 继续直接使用冻结的 2019–2025 历史分钟样本，不等待当天日线或 16:30。概念记录 [`a_share_three_day_walkforward_campaign_017_concept_scouting.json`](a_share_three_day_walkforward_campaign_017_concept_scouting.json)（SHA‑256 `881f2e7bd0f30906a2c0a5cef7e32208dc7d6c87e3ac7e917dbd3f63cb4f7083`）、机制核重 [`a_share_three_day_walkforward_campaign_017_mechanism_overlap_audit.json`](a_share_three_day_walkforward_campaign_017_mechanism_overlap_audit.json)（SHA‑256 `bd0c6487d55baad23e41713b07e94206cafb9681f54e88cf609d161ebda68f48`）和无收益协议 [`a_share_three_day_walkforward_campaign_017_no_return_preregistration.json`](a_share_three_day_walkforward_campaign_017_no_return_preregistration.json)（SHA‑256 `4676afee54b66b558dfd96dc238cbc4d8545aa728fbcf27ec09a8681001929ba`）均在候选值和收益前冻结。唯一 higher 因子 `intraday_midrange_width_change_coupling_238p` 对 240 根 high/low 计算对数几何区间中心 `m_i=(log(high_i)+log(low_i))/2` 与对数宽度 `w_i=log(high_i/low_i)`，再对上午、下午内部合计 238 个 `delta_m`、`delta_w` 求总体 Pearson 相关。09:30、午休边界、隔夜和跨日全部排除；零宽度、零变化和所有符号组合均保留；全部 high/low 必须正、有限且满足 `low<=high`，两个变化向量方差都必须为正。构建不读取 open、close、volume、amount、日线或 forward return。
+
+不可变快照 manifest/data SHA‑256 为 `04b588681f64a61525407f7de5501e38244256e100d9895dbbee8635127e358a` / `e91a17f29edbd59f82801469187ac16c8bc460e08a1c2d6110cc4b2e99e17276`。33,015 个分区、7,724,498 行中 7,699,914 行有效。首次构建后的顶层清单继承了错误的 `source_close_read=true`，但实际 `source_fields_read` 始终只有 `datetime,symbol,provider,high,low`，分区与数据集均未包含 close；审计前仅将该顶层布尔值纠正为 false，并修复执行器的发布校验。语义修复记录 [`a_share_three_day_walkforward_campaign_017_feature_manifest_semantic_repair_20260729.json`](a_share_three_day_walkforward_campaign_017_feature_manifest_semantic_repair_20260729.json)（SHA‑256 `fbe8f7b9f19182c4fd214196db7376b2d0e498e6c9bf17d9d2448173961f0b0f`）证明旧/新清单哈希分别为 `cf98767e...` / `04b58868...`，数据集哈希、所有分区、因子值和 eligibility 均未改变。无收益审计 `20260728T232431Z_campaign017_no_return_audit.json`（SHA‑256 `be1c69e7184209f74d7d86ca9be0dff4281da7984461c1d35b7de0dbc7d5da92`）的中位/P05 覆盖为 `99.853694%/99.354839%`，P05 合格名称 138，潜在 cohort 540，38/38 个统计比较通过；最近项为 `intraday_share_volume_transaction_price_coupling_238p`，中位日秩相关 `+0.320704`，与 Campaign016 只有 `+0.073270`。
+
+开发预注册 [`a_share_three_day_walkforward_campaign_017_preregistration.json`](a_share_three_day_walkforward_campaign_017_preregistration.json)（SHA‑256 `f4fa96727e42f7eafdd959a3f26979096b4c1dbc18dae2915f3abd77615796be`）只允许一个权重 1.0 的单因子试验。2021/2022/2023 三折验证 mean Rank IC 为 `-0.010556/-0.004556/-0.019069`，spread 为 `+0.007950/+0.000684/+0.007074`，normalized return 为 `+0.564543/-0.265114/-0.143264`，10bp、20 万元整手收益为 `+0.045355/-0.054377/-0.029811`。三折整手可负担率和成交额参与率均通过操作门，但三折 IC 全负，归一化和 10bp 仅一折为正；2019–2023 聚合 normalized 与 0/5/10/20bp 收益为 `-0.180526` 和 `+0.002589/-0.040263/-0.084667/-0.173094`。开发幸存者为 0，所以 2024–2025 压力期未打开或读取。
+
+研究记录 [`a_share_three_day_walkforward_campaign_017_research_record.json`](a_share_three_day_walkforward_campaign_017_research_record.json)（SHA‑256 `c8c0241b6d49ab52af11feee80f630223f7c1dbb33c6ddad5f5ea4a6cd9c47e0`）和追加式状态 [`a_share_three_day_iteration_status_20260729_campaign017.json`](a_share_three_day_iteration_status_20260729_campaign017.json)（SHA‑256 `a6d4e30219178ee70b34fbb8441e52313da53a3cbaaca4f543d11ccaa14dd857`）把累计开发试验推进到 240，当前聚合候选仍为 0。不得反向、改为算术中点/宽度水平或比值/符号一致/beta/秩相关/其他估计，删除零宽或零变化，加入幅度/波动/活跃阈值，纳入 09:30/午休/隔夜，挑年份/成本、过滤或与波动率、区间、Campaign016 或其他终止因子组合后重测；也不得打开 Campaign017 压力期、回填 Candidate49、启动 Candidate50 或形成当前评分、选股、仓位、订单。Campaign018 可以立即从真正不同的独立机制和值前精确预注册开始。
+
+Campaign018 同样直接使用冻结的 2019–2025 历史分钟样本，不等待当天日线或 16:30。概念记录 [`a_share_three_day_walkforward_campaign_018_concept_scouting.json`](a_share_three_day_walkforward_campaign_018_concept_scouting.json)（SHA‑256 `7c56399081205965859efbfe8c52ff4296984f68ddb2d3219354530994253890`）、机制核重 [`a_share_three_day_walkforward_campaign_018_mechanism_overlap_audit.json`](a_share_three_day_walkforward_campaign_018_mechanism_overlap_audit.json)（SHA‑256 `20cab7f44607e53c9af0a3bf95eee96a13711c3e72b051038d1b0bcccbf044e5`）和无收益协议 [`a_share_three_day_walkforward_campaign_018_no_return_preregistration.json`](a_share_three_day_walkforward_campaign_018_no_return_preregistration.json)（SHA‑256 `5cc74329648ce47787291d2f4b5c960084ca1a0fc148284170e1a23d429c1fe6`）均在候选值和收益前冻结。唯一 higher 因子 `intraday_range_share_volume_confirmation_240m` 对 09:31–11:30、13:01–15:00 的 240 根连续分钟计算 `Corr(log(high/low), log1p(volume))`。09:30 排除；零振幅和零成交量保留在固定支持中；全部 high/low/volume 必须有限，high/low 为正、`low<=high`、volume 非负，两个转换向量方差均须为正。构建只读 `datetime,symbol,provider,high,low,volume`，不读 open、close、amount、日线或 forward return。
+
+不可变快照 manifest/data SHA‑256 为 `9fe343dc34d57e59c3a5d12fb3d159b10e9d98cdd02cf1ce8c82b77fbbdb37a0` / `7762728e0a7d94dcddb1bcfb21531d4b66f98620a0282ffe501767c7e4f607be`。33,015 个分区、7,724,498 行中 7,699,914 行有效；24,584 行因 240 根分钟振幅方差为 0 而缺失，没有负成交量、字段排序或非有限转换错误。无收益审计 `20260729T004232Z_campaign018_no_return_audit.json`（SHA‑256 `16e8c23e8a4cac9d7e0e70649cf9f1b01e809b61459c7dbbc71b55870a4f58ff`）中位/P05 覆盖为 `99.853694%/99.354839%`，P05 合格名称 138，潜在 cohort 540，39/39 个统计比较通过。最近项为 `intraday_amount_volatility_coupling_238p`，中位日秩相关 `+0.672082`，仍低于冻结的 0.8；与 Campaign017 为 `-0.012856`。
+
+通过无收益门后，[`a_share_three_day_walkforward_campaign_018_preregistration.json`](a_share_three_day_walkforward_campaign_018_preregistration.json)（SHA‑256 `3b59e6ad5d359a4b12a12280518ec978cf74ed08a4b79c2df3699a4a3a749812`）只冻结一个权重 1.0 的 higher 方向试验。2021/2022/2023 验证 mean Rank IC 为 `-0.004568/-0.024506/-0.016779`，normalized return 为 `-47.71%/-30.16%/+0.14%`，10bp 板手试点为 `-7.54%/-5.69%/-0.49%`；三折 IC 与 10bp 收益均没有正值，2022 可买率 `89.9543%` 低于冻结的 90%。2019–2023 aggregate normalized return 为 `-51.45%`，0/5/10/20bp 板手结果为 `-2.49%/-6.06%/-10.71%/-19.92%`。开发幸存者为 0，2024–2025 压力期没有打开或读取。
+
+研究记录 [`a_share_three_day_walkforward_campaign_018_research_record.json`](a_share_three_day_walkforward_campaign_018_research_record.json)（SHA‑256 `b1d1af08a157adb1057dc12299bcb8e47bcb84369c7d45fe1d6c60b8b9ed6551`）和追加式状态 [`a_share_three_day_iteration_status_20260729_campaign018.json`](a_share_three_day_iteration_status_20260729_campaign018.json)（SHA‑256 `7d054e627d925267f7ee731251154df8a73afeba6d490e3f68aa42494f91e74b`）把累计开发试验推进到 241，当前聚合候选仍为 0。不得反向、替换 share volume 为 amount、替换振幅为 close return 或 true range、改成相邻变化/lead-lag/子窗口/市场归一化、删除零振幅或零成交量、加入活跃或幅度阈值、挑年份/成本、过滤或与终止因子组合后重测；也不得打开 Campaign018 压力期、回填 Candidate49、启动 Candidate50 或形成当前评分、选股、仓位、订单。Campaign019 只能从真正独立的概念、值前机制核重和精确有限预注册开始。
 
 `python scripts/a_share_rich_data.py status` 现在还会输出 `qmt_xtquant_one_minute_acceptance`。该只读段落核对合同指纹、Windows 导出器与交接打包器是否存在、已消费验收/拒绝记录数、真实包是否出现、自动导入与显式对齐是否通过、QMT 验收锁是否正被占用，并给出唯一下一动作；它不会扫描仓库外目录、读取 K 线、访问网络或创建锁文件。没有真实包时，`next_action` 必须为 `run_frozen_windows_qmt_four_symbol_export_and_transfer_untouched_bundle`；拒绝记录出现后会要求停止并复核，成功导入后才会转为边界检查和显式对齐。
 
@@ -1949,6 +2224,207 @@ python scripts/a_share_tushare_cleaned_minute_factor_research.py diagnose \
 20 万元、每槽 5%、总入场 15%、100 股整手、用户 0.01% 佣金、双边 0.002% 过户费、卖出 0.05% 印花税和双边 10bp 不利滑点下，累计收益 **−18.38%**、最大回撤 **−22.39%**、整手机会可负担率 **93.11%**，最大成交额参与率 **1.0161%**，超过冻结的 1% 上限；即使零滑点仍累计 **−6.20%**。稳定性审计 SHA‑256 `748f5f14e5b4f0c4ca8c1b5d0de263c6bbc0c7ce043106ad8f52d5cc1adcecff` 与 TopK 审计 SHA‑256 `7e3726a2a6890327dca3fc1bab68f6f2c4552492d266c2a81ed4ce3fc6cdc701` 均通过 0/1，双门禁仍为空。
 
 单次消费标记 SHA‑256 为 `5ea43c65a6200608413a33792d7a54fd1f20d9b61018ba73225d8d3fa285bafd`；终止记录为 [`a_share_tushare_intraday_market_idiosyncratic_share_research_record.json`](a_share_tushare_intraday_market_idiosyncratic_share_research_record.json)（SHA‑256 `cb6829903b5cc4254bb1965e9308fdff5902ce420467a3a552a5484091a22b61`）。该精确高值市场特异份额永久退出 2019–2025：不得因为方向相反而反向成市场同步度或 R²，替换为指数/行业/板块/市值加权基准，改 beta/有符号相关、窗口、阈值、子集、年份或权重，或与旧因子组合重测；不加入聚合池，不训练模型，不生成当前评分、选股、仓位或订单，也不采购 Level‑2 挽救。
+
+### 09:30 集合竞价成交额占比（稳定性与可执行 Top‑3 双门终止）
+
+第 47 个候选在读取候选值、二十二项比较值或未来收益前，以机制核重记录 [`a_share_tushare_intraday_opening_auction_amount_share_mechanism_overlap_reaudit_20260723.json`](a_share_tushare_intraday_opening_auction_amount_share_mechanism_overlap_reaudit_20260723.json)（SHA‑256 `f3ada152a88df413e45826ea4a72ced7cd63f043f45fbcd90c0e431b8aa636a7`）和无收益协议 [`a_share_tushare_intraday_opening_auction_amount_share_no_return_preregistration.json`](a_share_tushare_intraday_opening_auction_amount_share_no_return_preregistration.json)（SHA‑256 `3aca85681061bedf7dc049f21e6bfcfaa520f9478938bd007b3d6666814db84b`）冻结。`intraday_opening_auction_amount_share_241m` 固定为高值更好，公式为 `09:30 成交额 / 241 根完整来源分钟的成交额总和`。构建器 [`a_share_tushare_intraday_opening_auction_amount_share.py`](../scripts/a_share_tushare_intraday_opening_auction_amount_share.py) 只读取 `datetime,symbol,provider,amount`；09:30 成交额为零是有效零，不读取存在口径争议的 09:30 价格，也不读取开高低收、成交量、日线价格或未来收益。
+
+外置不可变快照清单 SHA‑256 为 `cb6acb3dcbad2ca459ac2f11ea80364593543adc852bf82ea3f177ae58154580`，数据集内容 SHA‑256 为 `9e7cd5b724347bc5193970ed2f23fa8ff1ce1e58f0c460ba46891a86538f8e65`；33,015 个股票年度分区共 7,724,498 行，全部有效，必需成交额异常、全天总额非正、端点规范化和范围越界均为 0。有序无收益审计 `20260723T115821Z_intraday_opening_auction_amount_share_no_return_audit.json`（SHA‑256 `fb904d0cac194491eff119ad409a63b30603bd8225206284dad391136e34c979`）先通过覆盖：1,331,759 个质量/上市资格行中有 1,330,171 个候选值，中位/P05 覆盖 **99.9452%/99.5689%**，P05 有效名称 138，可形成 540 个三日非重叠 cohort。随后二十二项唯一性比较全部通过；最大绝对中位日秩相关为 **0.303467**，对应成交额重心，低于 0.8 上限。高覆盖和独立性只允许进入一次收益诊断，不代表因子有效。
+
+收益读取前另行冻结唯一诊断协议 [`a_share_tushare_intraday_opening_auction_amount_share_diagnostic_preregistration.json`](a_share_tushare_intraday_opening_auction_amount_share_diagnostic_preregistration.json)（SHA‑256 `69c18050be829c73c09c988a5d4f37795a310b678b691113a989a94b78b2c1c9`）。唯一诊断 `20260723T120824Z`（SHA‑256 `3c801cf4e67d4e6c523d3ea63cc19852243a6183e4a4cc733a2b2584b20a559e`）含 539 个 cohort：平均/中位 Rank IC 为 **−0.003394/−0.003633**，正 IC 比例 **48.98%**，Top‑3 减 Bottom‑3 平均毛收益差 **−0.1337%**；除 2020 外六个年份的平均 IC 均不为正。标准化执行感知 Top‑3 的 533 个完整信号累计 **−95.38%**，最大回撤 **−98.06%**。
+
+20 万元、每槽 5%、总入场 15%、100 股整手、既定 A 股费用和双边 10bp 不利滑点下，累计 **−35.45%**、最大回撤 **−39.32%**、整手机会可负担率 **94.07%**，最大成交额参与率 **0.3587%**，容量本身没有触发 1% 上限；即使零滑点仍累计 **−28.63%**。稳定性审计 `20260723T120854Z`（SHA‑256 `cebcc7bb447c14690d951e659fb0a2857b5c2d263a95fe13eee3613e4a9bf855`）和 Top‑3 可行性审计 `20260723T120855Z`（SHA‑256 `4c64faab230221687e8a93a31c5559f8fa4df432b63275d47e5b0cf274ce85f3`）均为 0/1。单次消费标记 SHA‑256 为 `c99e094132adf754c4066414ce782e2e56d52d2f4d4fb70c003fde6d5399c09e`；终止记录为 [`a_share_tushare_intraday_opening_auction_amount_share_research_record.json`](a_share_tushare_intraday_opening_auction_amount_share_research_record.json)（SHA‑256 `b70a8ec547bdc36db408adc86b809456caac9a774d074de913369b3349899abd`）。
+
+该精确高值集合竞价成交额占比永久退出 2019–2025：不得反向为低集合竞价占比、排除 09:30 零成交记录、改全天分母、改窗、阈值、子集、年份或权重，或与旧因子组合重测；不加入聚合池，不训练模型，不生成当前评分、选股、仓位或订单，也不采购 Level‑2 挽救。
+
+### 全市场成交额轮廓同步性（稳定性与可执行 Top‑3 双门终止）
+
+第 48 个候选在读取候选值、二十三项比较值或未来收益前，以机制核重记录 [`a_share_tushare_intraday_market_amount_profile_synchronization_mechanism_overlap_reaudit_20260725.json`](a_share_tushare_intraday_market_amount_profile_synchronization_mechanism_overlap_reaudit_20260725.json)（SHA‑256 `24127b8326f29175a88a74ecb5c21cb508b3fc9bb5a68ee5f7e003f29b84d17f`）和无收益协议 [`a_share_tushare_intraday_market_amount_profile_synchronization_no_return_preregistration.json`](a_share_tushare_intraday_market_amount_profile_synchronization_no_return_preregistration.json)（SHA‑256 `f560442de1a344ddcfee4ec42e14bfaa8e1abf9f1015506f011fee27121e6845`）冻结。`intraday_market_amount_profile_synchronization_240m` 固定为高值更好：先把每只股票 09:31–11:30、13:01–15:00 的 240 根成交额除以当日连续交易总额，再与同日全部其他有效股票的等权留一平均轮廓计算普通 Pearson 相关。每个位置至少需要 50 个留一同业；09:30 明确排除。构建器 [`a_share_tushare_intraday_market_amount_profile_synchronization.py`](../scripts/a_share_tushare_intraday_market_amount_profile_synchronization.py) 只读取 `datetime,symbol,provider,amount`，不读取价格、收益、成交量、日线、行业或市值。
+
+外置不可变快照清单 SHA‑256 为 `40f9700a919cc22f30bd928133fb20bc6af3476a7952020d180f712d97f063f5`，数据集内容 SHA‑256 为 `26d82a495393cee45293d0ca00c444f88b2e25900d2ccc92fc0be5329fdf63a8`；33,015 个股票年度分区共 7,724,498 行，全部有效。必需成交额异常、连续交易总额非正、同业不足、个股/市场常量轮廓、非有限相关和范围越界均为 0。两遍流式构建没有保存约 18 亿个展开轮廓中间值；最终市场基准只有 1,699 日 × 240 位置。每日有效股票数最少 3,549、中位数 4,713、最大 5,170，远高于最低同业要求。
+
+有序无收益审计 `20260725T010933Z_intraday_market_amount_profile_synchronization_no_return_audit.json`（SHA‑256 `516dd4e88b31790a30c5477a7a6a4a05591a2fdb48f4a43fa4f31044245c3ca3`）先通过覆盖：1,331,759 个质量/上市资格行中有 1,330,171 个候选值，中位/P05 覆盖 **99.9452%/99.5689%**，P05 有效名称 138，可形成 540 个三日非重叠 cohort。随后二十三项唯一性比较全部通过；最大绝对中位日秩相关为 **0.566705**，对应成交额重心；与集合竞价成交额占比为 **0.482061**，均低于 0.8 上限。高覆盖和独立性只允许进入一次收益诊断，不代表因子有效。
+
+收益读取前另行冻结唯一诊断协议 [`a_share_tushare_intraday_market_amount_profile_synchronization_diagnostic_preregistration.json`](a_share_tushare_intraday_market_amount_profile_synchronization_diagnostic_preregistration.json)（SHA‑256 `279c6c248aaa517d36db00ac39a5336742bf2404b99888c311f398bca8ebefb5`）。唯一诊断 `20260725T051451Z`（SHA‑256 `154fae15db6775fc1f9ae6cc853eee11fb54559e032f4c29a5e89f7057d439a1`）含 539 个 cohort：平均/中位 Rank IC 为 **−0.011745/−0.015435**，正 IC 比例 **45.08%**，Top‑3 减 Bottom‑3 平均毛收益差 **−0.2946%**；2019–2023 年平均 IC 均非正。标准化执行感知 Top‑3 的 533 个完整信号累计 **−53.64%**，最大回撤 **−80.01%**；只有 2024 年年度执行收益为正。
+
+20 万元、每槽 5%、总入场 15%、100 股整手、既定 A 股费用和双边 10bp 不利滑点下，累计 **−13.18%**、最大回撤 **−18.85%**、整手机会可负担率 **87.99%**，最大成交额参与率仅 **0.0407%**，容量不是失败原因；即使零滑点仍累计 **−2.90%**。稳定性审计 `20260725T051520Z`（SHA‑256 `a58ac6bcd186d65dbb810ad892bf4ce0048dda719356834e2fe8f25725f8abfe`）和 Top‑3 可行性审计 `20260725T051521Z`（SHA‑256 `f3a46baf5302fb6cb4c1d03e45f3a609f5a6e8290893779e26941f376e4a5d71`）均为 0/1。单次消费标记 SHA‑256 为 `a67862b618171518c5d835e6e9fde38af3a3393becc094c32cd094d0cf3adfad`；终止记录为 [`a_share_tushare_intraday_market_amount_profile_synchronization_research_record.json`](a_share_tushare_intraday_market_amount_profile_synchronization_research_record.json)（SHA‑256 `75a41875b5133258d483c470d44f1fdd1cdd030573e03ce66c33c22d926874ed`）。
+
+该精确高值市场成交额轮廓同步性永久退出 2019–2025：不得因为总体结果为负而反向为特异轮廓、改成平方/绝对值/余弦/秩相关/回归残差，替换指数、行业、板块、加权或非留一基准，加入 09:30，改窗口、阈值、子集、年份或权重，或与旧因子组合重测；不加入聚合池，不训练模型，不生成当前评分、选股、仓位或订单，也不采购 Level‑2 挽救。
+
+### 累计 VWAP 穿越率（候选 49，纯前瞻观察已登记）
+
+在 2026‑07‑25 候选 49 登记时，48 条历史机制全部终止且双门禁交集仍为空，因此当时的未来专用政策不再允许从 2019–2025 三日收益中为候选 49 挑选公式。候选 49 先由机制核重记录 [`a_share_tushare_intraday_cumulative_vwap_crossing_rate_mechanism_overlap_reaudit_20260725.json`](a_share_tushare_intraday_cumulative_vwap_crossing_rate_mechanism_overlap_reaudit_20260725.json)（SHA‑256 `f86ba3cdfd7ead04963519e1c86e0d022467896a68ac3422fb5d742f716dcdcd`）和无收益协议 [`a_share_tushare_intraday_cumulative_vwap_crossing_rate_no_return_preregistration.json`](a_share_tushare_intraday_cumulative_vwap_crossing_rate_no_return_preregistration.json)（SHA‑256 `cefa5f23b5214e123d0bdea1511a398cb4a70c0ee4cc8da7d1f69f52bdbe4aeb`）冻结为高值更好 `intraday_cumulative_vwap_crossing_rate_240m`。2026‑07‑27 新增的历史滚动研究政策不回溯改变这一候选的身份：Candidate49 仍不得历史收益回填，但它不再阻塞单独的历史训练/验证/回测主线。
+
+公式只使用 09:31–11:30、13:01–15:00 的 240 个连续交易位置。每个位置按截至当时的累计成交额除以累计成交量得到因果累计 VWAP，再取 `log(close / cumulative_vwap)` 的符号；删除精确为零的符号后，以相邻非零符号发生改变的次数除以相邻非零符号对数。至少需要两个非零符号；共同为零的成交量/成交额作为无活动位置保留，单边为零使整个股票日缺失，只有 `1e-12` 的端点归一化。构建器 [`a_share_tushare_intraday_cumulative_vwap_crossing_rate.py`](../scripts/a_share_tushare_intraday_cumulative_vwap_crossing_rate.py) 只读取 `datetime,symbol,provider,close,volume,amount`，明确禁止 09:30、原始开高低、日线价格和未来收益。
+
+外置不可变快照清单 SHA‑256 为 `f3dd3417bd6adcaa06d8927865ea3f464ebc02df302b8f488e43450f7c620196`，数据集内容 SHA‑256 为 `67bda6df74747a0f39fe6eb252aada84ea7850fff2c05bdae4951aa41fcc7037`。33,015 个股票年度分区共有 7,724,498 行，其中 7,714,026 行可计算；单边零成交量/额 47 行，非零偏离符号不足两项 10,425 行，范围越界和端点修正均为 0。中断后的构建从 2,025 个指纹绑定检查点安全恢复，完整重跑保持字节级幂等。
+
+有序无收益审计 `20260725T062547Z_intraday_cumulative_vwap_crossing_rate_no_return_audit.json`（SHA‑256 `51bb248b1071983cf9a05fca94c6cc08770a2d10fbef1d6d087f2d5a875fdf7d`）在 1,331,759 个质量/上市资格行中保留 1,329,458 个候选值，中位/P05 覆盖率为 **99.9161%/99.4461%**，P05 有效名称 138，历史区间可形成 540 个三日非重叠 cohort。二十四项唯一性比较全部低于 0.8；最大绝对中位日秩相关为 **0.197644**，对应成交额轮廓序列持续性。审计的 `historical_daily_price_fields_loaded=[]` 且 `forward_return_fields_read=false`；这些结果只证明可构建、覆盖充分且不是已登记近重复，完全不证明预测收益。
+
+未来观察登记 [`a_share_tushare_intraday_cumulative_vwap_crossing_rate_future_observation_registration.json`](a_share_tushare_intraday_cumulative_vwap_crossing_rate_future_observation_registration.json)（SHA‑256 `431cb0b3b078823f08b888bf4c499bcc5088309a2e58e9de5cb9a9aaa849ffa9`）已在 2026‑07‑25 完成，登记 ID 为 `candidate49_intraday_cumulative_vwap_crossing_rate_240m_v1`。首个信号只能来自 **2026‑07‑27 或之后**首个完成并验收的本地交易日。当前没有信号、评分、选股、仓位或订单。
+
+构建器还提供两个只读/本地准备命令。第一条幂等创建两个空的哈希链账本；已有任一账本缺失、表头改变、旧条目改变、链断裂、重复 ID 或早于 2026‑07‑27 的条目都会硬停止，绝不重置。第二条只做本地预检，不访问 Tushare、不读取分钟行、不写信号或执行条目：
+
+```bash
+python scripts/a_share_tushare_intraday_cumulative_vwap_crossing_rate.py \
+  initialize-future-ledgers
+
+python scripts/a_share_tushare_intraday_cumulative_vwap_crossing_rate.py \
+  future-preflight \
+  --data-root /Volumes/DIsk/qlib-a-share-tushare-1m \
+  --session 2026-07-27
+```
+
+2026‑07‑25 的真实预检按预期返回 `not_ready_no_provider_request`：目标会话尚未收盘，本地已验收日线日历仍止于 2026‑07‑13，当前 Codex 进程也没有继承 `TUSHARE_TOKEN`；两个空账本已初始化且条目数都是 0。低层 `future-preflight` 和最终 `--preflight-only` 在未就绪时都会先打印完整 JSON，再以退出码 `2` 结束；就绪时退出码为 `0`，JSON 同时给出 `recommended_cli_exit_code`。因此 shell 串联必须使用成功退出码和 `ready=true` 双重确认，不能用 `;`、`|| true` 或忽略退出码继续 `--allow-large`。不得因为预检尚未就绪而提前请求、回填或使用历史收益。新原始会话只能在目标交易日的**同一当地日期**、收盘缓冲结束后开始；到了下一日期再请求旧会话会以 `past_session_delayed_source_to_signal_backfill_forbidden` 在任何供应商检查、分钟请求或新文件写入前停止。
+
+2026‑07‑26 的最后一次周末只读复核绑定在 [`a_share_candidate49_first_future_session_operational_readiness_20260726.json`](a_share_candidate49_first_future_session_operational_readiness_20260726.json)（SHA‑256 `4287168ef3b9f60d1fa6487ca2be05ae3dbef643c39cde0a20fde73fdb70ffa6`）。它再次确认两个账本为 0、外置历史分钟根完整且未持锁、预检零网络零写入，并记录了迁移后未来质量文件必须跟随活动数据根的修正；它不授权提前请求、历史回填、选股或订单。
+
+随后对 2026‑07‑27 统一工作流执行的真实 `plan` 记录在 [`a_share_candidate49_20260727_readonly_plan_20260726.json`](a_share_candidate49_20260727_readonly_plan_20260726.json)（SHA‑256 `cef6c64e1182ed27084fab6fcf49cacd49bcc1f62d6b5976c9596be931478d6f`）。它以退出码 2 和 `not_ready_no_write` 正常结束，失败项只有 `signal_session_has_not_arrived` 与 `TUSHARE_TOKEN_not_available_to_workflow`；历史 Tushare 日线参考仍为 7 个分区、1,699 个会话、7,989,350 行且不会重下，目标 staging、两把锁和 2026‑07‑27 完整/partial 分钟目录都不存在，外置盘空闲约 1,656.9 GiB。当前进程与 `launchctl` 都看不到 Token；这不会由仓库自动修复，也不能把凭据发到聊天。请重新执行凭据指南中的 `read -s "token?…"` 三行，并只检查“已配置/未配置”。`launchctl` 值可能在注销或重启后消失；若曾把 `read -s "xxxxxx"` 当提示使用，后续 `$token` 实际可能为空。
+
+未来单会话采集器 [`a_share_tushare_candidate49_future_observation.py`](../scripts/a_share_tushare_candidate49_future_observation.py) 已实现并完成离线全链路演练。它只在本地预检全部通过且显式给出 `--allow-large` 后，按 400 次/分钟、4 个 worker、最多 3 次瞬时错误尝试请求当日完整可买股票池。每只股票的供应商响应单独原子落盘并附带帧/文件双指纹；隐藏的 `.YYYY-MM-DD.partial` 目录只允许在目标信号日当天中断续传，并只跳过指纹仍一致的已完成股票。若运行跨过当地午夜仍未完成，partial 必须原样保留为中断证据，下一日期不得继续请求或发布为信号；若只完成 raw 而尚未发布 factor，跨日也不得补完。交易日历、可买区间、价格基准和当日季度质量文件及清单必须在第一个分钟请求前一起冻结；上下文、全部股票分区和清单完成后才把目录原子改名为公开日期目录。只有 raw 和 factor 都已经在信号日完整原子发布的会话，才允许以后跨日零请求幂等复核及确定性账本核对。
+
+未来数据不复用历史 OHLC 严格对账的错误口径。每个供应商返回行都原样保留为规范列；只有精确的 241 时间戳网格以及 `close`、以股计的 `volume`、`amount` 与同日未复权日线对账通过，才允许进入 candidate49 公式。`open/high/low` 只保留取证，既不参与这个因子的对账，也不影响可用性。缺行、停牌、重复时间戳、网格外行或对账失败都保持缺失，绝不补行、前向填充或用日线替换分钟值。价格基准清单还必须声明且仅声明一个受支持的 `daily_source`，并随交易日历、可买区间和质量文件一起冻结、按哈希复核。日线同步阶段负责扫描完整原始日线根并拒绝混源；candidate49 的 Parquet 读取直接投影 `date,raw_close,raw_volume,amount,price_basis` 并下推 `date == 信号日`，不把未注册的 `daily_source` 或其他日期行载入内存。
+
+未来观察的季度质量必须单独写入 `data/raw/a_share/fundamentals/quarterly_quality_future.parquet` 和 `data/metadata/quarterly_quality_future_manifest.json`。严禁覆盖或传入历史研究已按指纹冻结的 `quarterly_quality.parquet` 或 `quarterly_quality_manifest.json`。未来文件必须在目标信号日当地时间 16:00 后重新下载；清单状态、季度频率、数据路径、行数、逐报告期计数、最新已结束季度、时区化抓取时间和数据 SHA‑256 全部通过后才能发出任何分钟请求。校验调用本身只投影 `instrument,report_date,announcement_date,roe,net_profit,revenue_yoy,profit_yoy` 七列。原始会话上下文冻结后，因子阶段只从该上下文复制质量文件，不再读取后来变化的外部版本；因子读取仍只投影这七列，并在 Parquet 调用层下推 `announcement_date < 信号日`，因此同日公告、之后公告和其他源列都不会载入信号构建内存。
+
+质量信息严格在公告后的下一本地交易日生效，逐字段前向填充，最长 550 日，并要求上市满 20 个会话、ROE 不低于 5%、净利润/营收同比/利润同比均为正。分钟因子阶段的 Parquet 调用只投影 `datetime,symbol,provider,close,volume,amount`，并下推 09:31—11:30 与 13:01—15:00 两段；原始 09:30 以及 `open/high/low` 仍保留在不可变取证分区，但不会载入因子构建。只有至少 50 只股票同时通过来源、公式、质量和上市门槛，才按因子降序、股票代码升序打破并列并把 Top‑3 追加到信号哈希链；因子快照不足 50 只仍永久留证，但不产生信号。该命令不读取未来收益、不结算持仓、不生成真实订单。
+
+离线演练覆盖了 50 只 × 241 行的确定性 Top‑3、已发布会话同日及跨日重复执行均零请求且零重复条目、单只缺一根时原样保留 240 行并因 49 只有效名停止出信号、信号日内进程中断后的分区级续传、跨日新采集与跨日 partial 续传在零请求和零新写入下停止、分区字节改变后硬停止，以及历史质量路径或非信号日 16:00 后快照在任何供应商检查/请求前硬停止。这些只是实现验收，不是一个真实未来信号或收益结果。
+
+等待 Candidate49 的 60/200 个未来样本不等于停止机制研究，但同时活动的新机制上限仍是 1。零数值侦察队列已记录在 [`a_share_three_day_inactive_mechanism_scouting_queue_20260726.json`](a_share_three_day_inactive_mechanism_scouting_queue_20260726.json)（SHA‑256 `00565a87b5eb4241de3dfdd24f96ef78756fb286655969351ec966bbe32afad3`）：优先考察市场中性尾盘残差漂移、负收益后的成交额加权吸收率和有符号路径效率。它只比较既有机制的文字定义，没有读取历史因子值、日线价格或收益，也没有分配 Candidate50 序号、冻结第二套公式、生成代码或派生快照。Candidate49 终止或完成 200 个样本前只能维护概念；满足条件后也只能从队首取一个，先做新的机制重叠审计，再在任何数值出现前单独预注册。Tushare 日线在当前阶段继续承担口径、对账、股票池和未来结算，不因此自动变成第二条日线因子赛道。
+
+首个允许会话收盘后，必须先更新日线并让价格基准、日历和 `buyable_main_chinext` 覆盖该日，再执行只读预检。当前 BaoStock 根已经被匿名黑名单拒绝，因此 2026‑07‑27 的首次运行不能再照抄普通 `sync`：应先按前文“Tushare 日线迁移”章节，用带日期的新 staging 根完成 `preflight → sync-source → build → activation-preflight → activate`，并在新进程中确认活动日历覆盖 2026‑07‑27。源清单发布后不能把截止日从 7 月 24 日改到 7 月 27 日，所以周末不应提前完成一个较早的源快照。
+
+推荐使用单一的失败即停入口 [`a_share_tushare_candidate49_future_session_workflow.py`](../scripts/a_share_tushare_candidate49_future_session_workflow.py)，其冻结协议是 [`a_share_tushare_candidate49_future_session_workflow_protocol.json`](a_share_tushare_candidate49_future_session_workflow_protocol.json)（SHA‑256 `6ff5636a3f7ef65e93452098186b3aecf9231d68873ab8a1070afb91d699ef7c`）。先运行只读计划：
+
+```zsh
+python scripts/a_share_tushare_candidate49_future_session_workflow.py plan \
+  --session 2026-07-27 \
+  --staging-root /Volumes/DIsk/qlib-a-share-tushare-daily-2026-07-27 \
+  --minute-data-root /Volumes/DIsk/qlib-a-share-tushare-1m
+```
+
+`plan` 只核对冻结指纹、活动日线状态、staging 状态、目标日期、Token 是否存在，以及现有 Tushare 历史日线参考；它不创建 staging、不写锁、不请求供应商，也不读取分钟行或收益。当前参考已按哈希验证为 2019‑01‑01 至 2025‑12‑31、7 个年度分区、1,699 个交易日和 7,989,350 行。计划输出会明确标记这些覆盖日不会再次请求 `daily`；这不代表 `daily_basic` 已存在，也不免除 2015–2018 与 2026 目标日前缺失日线的补齐。目标日尚未到、16:30 收盘缓冲尚未结束或 Token 对当前进程与 `launchctl` 都不可见时，它输出诊断 JSON 并退出 2。这个退出码不能被当成成功串联到运行命令。
+
+目标会话当地日期 16:30 以后，只有 `plan` 的阻塞项已经解决才运行：
+
+```zsh
+python scripts/a_share_tushare_candidate49_future_session_workflow.py run \
+  --session 2026-07-27 \
+  --staging-root /Volumes/DIsk/qlib-a-share-tushare-daily-2026-07-27 \
+  --minute-data-root /Volumes/DIsk/qlib-a-share-tushare-1m \
+  --confirm-run
+```
+
+该命令按“当前进程环境 → 仓库根目录 `.env` → `launchctl getenv TUSHARE_TOKEN`”读取 Token；`.env` 只解析唯一的 `TUSHARE_TOKEN=...`，不执行 shell、不展开变量，且必须被 Git 忽略。Token 从不进入参数、输出、清单或日志。它先识别活动日线来源：BaoStock 首次迁移直接复用已验收的 2019–2025 Tushare 日线参考，不使用 seed；已验收 Tushare 父根的后续日期则先运行无 Token、无网络的 `seed-refresh`。随后严格按 `日线预检 → 源同步 → 完整构建/验收 → 激活预检 → 原子激活 → 新进程价格基准复核 → 活动根解析 → 当日未来季度质量 → Candidate49 组合预检 → --allow-large` 执行。Token 只注入日线 Tushare 预检/同步以及 Candidate49 预检/采集子进程；本地构建、激活、状态、价格基准和公开季度质量子进程会显式移除 Token 与 `QLIB_A_SHARE_DATA_ROOT` 覆盖。
+
+每一步必须同时满足退出码和冻结 JSON 状态；任一步非零、输出不可解析、指纹/截止日/活动根不一致或 Candidate49 存在质量以外的阻塞项，都会停止所有后续步骤。日线源清单必须额外证明：参考快照路径/哈希/行数不变，参考覆盖交易日的本次重复请求数为 0，并记录复用交易日数、本次新请求的 `daily`/`daily_basic` 会话数及日线供应商调用总数；任何一项缺失或变为非零重复请求都会在季度质量与分钟采集前停止。若同一信号日已有通过组合预检的未来季度质量快照，它会直接复用；否则只有 `future_quarterly_quality_not_accepted` 是唯一失败时才刷新，避免因重跑改变已经接受的同日质量上下文。完成后在外置分钟根的 `metadata/rich_data/candidate49_future_workflows/<session>.json` 写入一次不可变的哈希证据链，包含上述历史复用统计；以后可在零 Token、零子命令、零供应商请求下复核该记录。该工作流只完成当日 source-to-signal，不读取历史/未来收益、不结算 `t+1/t+3`、不下单，也不启动 Candidate 50。
+
+最终工作流记录本身也必须可从子产物重建，不能只遍历记录自己给出的 `evidence` 路径和 SHA。零请求复核会要求顶层字段集合、冻结协议/状态、请求的 staging/minute 根以及全部研究边界精确不变；从目标会话的确定性 raw/factor 目录和信号语义账本重建活动根、合格股票数及信号条目 SHA，再从该活动根重新验证 Tushare 激活、验收、源清单、历史参考复用统计和季度质量路径。永久记录不再保存只能说明某次进程经过、却无法事后从产物证明的 `steps`；它固定重建四项 `phase_receipts`：静态研究边界、精确截止日的 Tushare 活动日线根、同日未来季度质量、Candidate49 source-to-signal。类似地，当次命令仍可返回 `future_signal_appended` 或 `future_signal_already_present_idempotent`，但永久记录只保存事后可证明的稳定结果 `future_signal_present`；低于 50 名时则保存精确的无信号结果。最终记录也不保存无法在事后区分“首次采集”和“零调用续跑”的某次 observation 进程调用数，而只保存可重建的 `candidate49_raw_provider_calls_total`；每个原始分区必须仍证明一个逻辑供应商调用，原始清单的行数、精确时间网格、日线对账、源资格与调用数聚合也会重新计算。信号与执行账本不再绑定会随以后追加而失效的“当前整文件 SHA”，而是记录完成当时的条目数、链尖、前缀内容 SHA 和按原子 JSON 规则重建的前缀文件 SHA；因此后续会话追加信号或纸面执行后，旧会话记录仍能验证其原始前缀。改写阶段收据、稳定结果、合格数、信号 SHA、活动根、日线复用数、分钟采集总调用数或安全标志，即使重新计算工作流 JSON 的外部哈希也会硬停止，且不会加载 Token 或运行子命令。
+
+少于 50 名是合法但终止当日信号的结果，不是可以补录或降低门槛的基础设施失败。必须保留每只不完整股票的原始行及不合格原因，仍原子发布 raw/factor 快照，保持信号账本零新增，并在永久记录和 source-to-signal 阶段收据中同时写入 `future_session_frozen_without_signal_fewer_than_50_names`、实际合格数和空信号 SHA。以后的任何日期只能零请求重放这个结果；不得补分钟、换股票、降至 49 名、重排 Top‑3 或把无信号日从前瞻样本计数中伪装为一个信号。
+
+永久工作流记录的 JSON 语义正确还不够，文件身份也必须不可变。记录目录的既有父级链必须是解析后路径不变的真实目录，不能包含符号链接；已经存在的 `<session>.json` 必须是链接数恰好为 1 的普通文件，不能是符号链接、硬链接别名或其他文件类型。验证器会在读取 Token、获取工作流锁或启动子进程之前检查这些条件；因此即使链接指向一份语义完全正确的 JSON，也不能通过“零请求已验证”。首次写入和测试中的受控原子改写会先验证或创建真实目录链，记录目标初始设备号和 inode，在替换前复核目标没有并发出现或换 inode，先 `fsync` 临时文件，再原子替换、`fsync` 父目录，最后复核新目标仍为唯一普通文件；异常留下的临时文件会清理，已发布记录不会通过共享 inode 被另一条路径静默改写。
+
+身份检查和内容读取之间也不能重新信任路径。最终记录现在先取得唯一普通文件的设备号/inode，再用 `O_NOFOLLOW` 打开一个文件描述符；JSON 字节和返回给调用方的 SHA‑256 必须从该同一描述符一次读取。打开后及读取完成后都用 `fstat` 复核普通文件、链接数、设备号、inode、大小、修改时间与状态变更时间，解析完成后再把确定性路径的当前身份与已打开描述符比较。即使攻击或并发进程在最初身份检查后换入一份字节完全相同但 inode 不同的 JSON，也必须报 `workflow record file identity changed during read`，不能返回“零请求已验证”；新发布记录的持久化内容和摘要也走同一绑定读取，不再另按路径计算摘要。
+
+同一信号日的中断按已经验收的最近边界继续，而不是从头重跑：完整日线 source 直接进入本地 build，完整 acceptance 直接进入激活，已经活动且截止日准确的 Tushare 根完全跳过迁移，已经通过组合预检的同日季度质量不会重刷；若日线、质量都完成后分钟采集失败，同日重跑只重新校验活动根和质量，再恢复分钟采集。增量日线 source 只有在其 `seed-refresh` 证据仍完整时才能这样复用。15 项专项离线测试和完整 1,092 项采集测试已经覆盖这些路径；跨越当地午夜的分钟 partial 仍然禁止恢复或补录。
+
+下面的分步命令保留为协议级排错参考。不要与上述单一入口并行运行，也不要绕过其中任何一个退出码或 JSON 门禁。
+
+活动根可能已经从仓库 `data/` 切到外置 Tushare staging。必须在激活之后用轻量、零网络的 `data-root` 命令解析它；未来季度质量文件和清单必须写到这个活动根，不能写死为旧 BaoStock `data/`。季度质量刷新和 Candidate49 采集仍都要在目标信号日完成，其中质量刷新必须等到当地 16:00 后。预检通过后，Token 仅注入 Candidate49 子进程：
+
+```zsh
+active_data_root="$(python scripts/a_share_data_pipeline.py data-root)"
+python scripts/a_share_data_pipeline.py price-basis-audit
+python scripts/a_share_data_pipeline.py status
+
+python scripts/a_share_short_horizon_factor_research.py \
+  sync-quarterly-fundamentals \
+  --start-year 2019 \
+  --end-year 2026 \
+  --through-report-date 2026-06-30 \
+  --output "$active_data_root/raw/a_share/fundamentals/quarterly_quality_future.parquet" \
+  --manifest "$active_data_root/metadata/quarterly_quality_future_manifest.json"
+
+run_candidate49_session() {
+  local token result
+  token="$(launchctl getenv TUSHARE_TOKEN)"
+  if [[ -z "$token" ]]; then
+    print -u2 "TUSHARE_TOKEN is not available through launchctl"
+    unset token
+    return 1
+  fi
+
+  TUSHARE_TOKEN="$token" python \
+    scripts/a_share_tushare_candidate49_future_observation.py \
+    --data-root /Volumes/DIsk/qlib-a-share-tushare-1m \
+    --session 2026-07-27 \
+    --preflight-only || {
+      result=$?
+      unset token
+      return "$result"
+    }
+
+  TUSHARE_TOKEN="$token" python \
+    scripts/a_share_tushare_candidate49_future_observation.py \
+    --data-root /Volumes/DIsk/qlib-a-share-tushare-1m \
+    --session 2026-07-27 \
+    --allow-large
+  result=$?
+  unset token
+  return "$result"
+}
+run_candidate49_session
+unfunction run_candidate49_session
+unset active_data_root
+```
+
+上面的日线迁移/激活、季度质量刷新、组合预检和首次 `--allow-large` 采集必须都在目标会话的同一当地日期完成；季度质量仍须等到信号日 16:00 后执行。`data-root` 只打印当前解析结果，不扫描 5,000 多个日线文件、不写文件也不访问网络。若活动根仍为 BaoStock且同源刷新可用，普通 `sync` 可以继续它；本机 BaoStock 已被匿名黑名单拒绝，不得重试或原地切源。Candidate49 接受价格基准清单中唯一的 `eastmoney`、`baostock` 或 `tushare`，但 Tushare 名称本身不能替代迁移验收。`--through-report-date` 随已结束的最新季度推进，不能提前请求未结束报告期。若刷新/迁移失败、质量文件落在非活动根、清单时间不是该信号日 16:00 后、误用了历史质量路径，或已经跨到下一当地日期，采集器会在 Tushare 分钟供应商检查和请求之前停止。
+
+`--preflight-only` 是最终的组合式零网络门禁：除原有收盘时间、日线价格基准、恰好一个受支持的日线来源、日历、可买池、账本、Token 是否注入和目标目录检查外，还验证隔离季度质量的报告频率、行数、信号日 16:00 后抓取时间以及数据/清单指纹。它还要求 `provider_uri=<活动根>/qlib/cn_a_share` 与 `daily_raw_root=<同一活动根>/raw/a_share/daily`，防止把 Tushare 名义下的 Qlib 价格基准与 BaoStock、旧版本或任意外部日线目录拼接。失败时返回 `daily_raw_root_not_bound_to_accepted_provider_root`。它不创建外置数据根、不读取分钟行、不访问供应商，也不写信号、执行或评估记录。未通过时仍会输出可诊断 JSON，但退出码固定为 `2`；只有状态为 `ready_for_explicit_future_source_to_signal_collection`、`ready=true` 且退出码为 `0` 后，才运行紧随其后的 `--allow-large` 命令。后者在账本初始化、外置会话目录创建、供应商权限检查和首个请求之前重复验证这一根绑定，并把活动根、Qlib 根、日线根及确定性小写股票代码文件布局冻结进 raw context；每个股票分区仍另外记录实际日线源文件的路径和 SHA。完整发布后的幂等复核继续验证当时冻结的根，不要求它等于后来新激活的版本化根，也不扩大冻结注册允许的日线字段集合。
+
+同根路径还不等于同根文件。组合预检会只读扫描信号日活动可买池对应的日线文件身份，拒绝日线根本身的符号链接、任何股票 Parquet 符号链接、非普通文件或链接数不为 1 的硬链接；返回值会记录活动股票数、普通私有文件数和缺失文件数。正式采集在账本初始化前执行同一检查，并在每只股票实际读取前后复核解析路径、设备、inode、链接数、大小和修改时间，再连同完整文件 SHA 写入其不可变分区。这样即使根目录名称正确，也不能借由根外文件或共享 inode 冒充已验收的 Tushare 日线。
+
+raw 发布完成后，factor 清单必须同时绑定 raw 清单的绝对路径、文件 SHA 和 `dataset_sha256`，不能只验证其中一个指纹。每次原子发布后或幂等复核时，验证器都会重新计算因子 Parquet 的文件/帧哈希，并从帧本身复算公式合格数、质量/上市合格数、最终合格数和应有状态；公式文字、方向、最少 50 只门槛、未来策略指纹及禁止读取/执行字段也必须与冻结合同完全一致。factor 中的季度质量文件和清单必须恰好各一份，既绑定 raw 冻结上下文中的来源路径与 SHA，也互相验证数据 SHA。删除质量上下文、伪造 raw dataset 指纹、改写公式或只改合格计数都会在信号排序前硬停止。
+
+信号账本的哈希链只能证明“条目彼此一致”，不能单独证明 Top‑3 正确。组合预检、正式采集和纸面执行现在都会按会话顺序重放账本语义：重新验证条目引用的 raw 清单路径/文件 SHA/dataset SHA，按上述完整合同验证 factor 清单与因子帧，再用冻结的降序因子、股票代码升序并列规则重新生成整个 signal payload。除 `ordinal`、前项哈希和本项哈希外，重算 payload 必须与账本逐字段完全相同。即使篡改 Top‑3 后重新计算全部账本哈希，也会在外置新会话目录、供应商检查和分钟请求之前被 `candidate49_signal_ledger_semantics_not_accepted` 拒绝；纸面执行也使用同一重放门禁，不会在错误排名上结算。
+
+全市场约需一次“活跃股票数”规模的 `stk_mins` 调用；4,800 只股票在 400 次/分钟上限下仅请求阶段约 12 分钟，网络重试和落盘会使实际时间更长。不要同时运行日线刷新或第二个 candidate49 采集进程。运行中断且仍在同一当地日期时才可原命令重跑；一旦跨日就保留 partial 并停止，不得删除、改写分区、绕过指纹或补采旧会话。
+
+纸面执行细则已在任何真实未来信号、入场开盘价或结果出现前冻结为 [`a_share_tushare_candidate49_future_execution_protocol.json`](a_share_tushare_candidate49_future_execution_protocol.json)（SHA‑256 `b9b4ea8906924c8303cb7a434db5f21ed6383ce7d794e50936b675acfa869486`），实现为 [`a_share_tushare_candidate49_future_execution.py`](../scripts/a_share_tushare_candidate49_future_execution.py)。这里的三日仍沿用历史研究口径：信号日为 `t`，`t+1` 未复权开盘买入，`t+3` 未复权收盘卖出；也就是把入场日算作第一个持有会话。
+
+执行器只做纸面账本，不访问 Tushare、不发订单。它使用一个共享的 20 万元现金账户；每个排名槽以此前一已处理收盘权益的 5% 为目标，三个槽总目标不超过 15%，按注册排名顺序以 100 股整手向下取整，并把买入费用纳入现金约束。费用固定为双边万分之一佣金、双边万分之零点二过户费、卖出万分之五印花税和双边 10bp 不利滑点，没有最低佣金。卖出所得发生在收盘，不能反过来资助同日更早的开盘买入。
+
+只有日线原始开高低收、成交量、成交额、前收和价格基准齐全且有正成交时才可纸面成交。一字上涨日不买、空槽不替补；一字下跌、停牌或缺报价阻塞退出，随后逐个已验收收盘重试，含计划退出日在内最多 20 次，仍未成交就保留为 `terminal_unresolved` 并使完整门禁失败。同日成交额参与率只做事后容量审计，不被当成成交保证，也不反过来决定是否填单。
+
+每个处理日都会先把可买股票、未平仓持仓、当日入场选择和到期 Rank IC 全截面的未复权日线行原子冻结到外置数据根目录；缺行显式写成缺失，不填充。这里可以复用已经通过迁移验收的 Tushare 日线：它承担日线质量/股票池基础、`t+1` 入场开盘、`t+3` 退出收盘和未来 Rank IC 结算，不需要继续绑定 BaoStock；但日线不能替代 Candidate49 在信号日所需的 241 根 Tushare 分钟线，也不能把 2019–2025 历史数据回填成事前未来信号。
+
+执行器要求价格基准仍只绑定一个受支持的日线来源，而且 `provider_uri=<活动根>/qlib/cn_a_share` 与 `daily_raw_root=<同一活动根>/raw/a_share/daily` 必须解析到同一个活动数据根；不能把声明为 Tushare 的 Qlib 价格基准与另一个目录中的 BaoStock、旧版或任意日线文件拼接。门禁在初始化账本和发布每日快照前检查这条路径关系。
+
+每个不可变快照会写入日历、可买股票池、价格基准三个上下文文件的路径/哈希，同时写入原始日线根的绝对路径、确定性的 `小写股票代码.parquet` 布局，以及每只股票源 Parquet 的完整文件 SHA。每次幂等复核或继续追加前都会重新验证旧快照实际绑定的三个上下文文件；逐股票源 SHA 与根路径则让抽取报价可以回溯到唯一原文件。活动 Tushare 根可以按交易日滚动到新的版本化目录，新处理日绑定新根，旧处理日仍绑定并验证原根；不得原地改写或删除旧根。实际 Parquet 读取严格投影冻结执行协议 `tradeability.required_daily_fields` 的 8 个字段，并下推 `date <= 当前处理会话`。因此处理 `t+1` 时不会把 `daily_source`、其他未注册列或 `t+2/t+3` 行载入内存；当日抽取后的 Parquet 与内容哈希就是具体报价证据。执行账本每个交易日追加一个哈希条目，记录入场机会、成交、退出/重试、现金、逐笔持仓、权益、费用、滑点、回撤和容量。固定未来 Rank IC 使用信号快照中全部合格股票的 `raw_close(t+3) / raw_open(t+1) - 1`，不套交易性过滤，至少 50 个有效结果才计为一个完成信号。
+
+执行账本的哈希链也只能证明条目内部自洽，不能证明成交和状态是从冻结行情正确算出的。每次幂等返回或继续追加前，执行器会从 20 万元空状态开始逐日语义重放：要求账本引用的每日快照路径恰好位于该外置数据根的冻结会话目录，重新验证清单、帧与来源上下文，再用已验证信号、上一日重算状态和冻结执行协议重建入场/退出事件、费用与滑点、持仓与现金、权益与回撤、未来 Rank IC、容量及评估标志。除账本序号、前项哈希、本项哈希和非确定性的 `settled_at` 外，重算载荷必须逐字段等于原条目；`settled_at` 仍单独要求可解析、带时区且不早于处理会话。语义重放后还会把全部当前信号与已处理身份、入场链接和到期结果逐项对照，从而拒绝迟到插入或被删除的信号。即使修改成交价以及所有相关状态后重新计算整条哈希链，也不能通过这一门禁。
+
+评估不能使用“运行命令时最新的累计值”代替预登记观察时点。执行器会在完成未来 Rank IC 数首次精确达到 60 和 200 时，把对应执行条目、结束状态和协议指纹写入 `data/experiments/short_horizon/candidate49_future_evaluations/` 下的不可变里程碑记录。第 60 个样本只有平均未来 Rank IC 与共享 20 万元组合净收益同时不为正时才提前终止；否则只记录“继续到 200、不得提前晋级”。第 200 个样本一次性检查平均 Rank IC、正 IC 比例、组合净收益、最大回撤、整手可负担率、成交额参与率和终局未解决持仓七项门禁。通过也只允许继续纸面观察，不允许聚合、当前评分或下单；失败则终止。终止里程碑后的执行条目、被改写的记录或跳过精确样本数都会硬停止，后续更好的累计结果不能事后挽救第 60/200 个样本的既定结论。
+
+里程碑 JSON 也不能只核对 `decision`。同步器会先要求调用者提供的执行条目与磁盘上的完整通用哈希账本逐项一致，然后从里程碑条目所在位置截取当时的账本前缀；使用未变的账本头、该前缀和当时链尖，按原子 JSON 序列化规则重建“评估时账本文件 SHA”，同时重算前缀内容 SHA、条目数和链尖。记录的 `created_at` 固定复用里程碑执行条目的 `settled_at`，其余注册、协议、决策摘要、无历史回填、无网络、无下单及非投资建议字段全部确定性重建，已有记录必须与重建对象完整相等。这样账本从 60 个已完成信号继续增长到 200 个后，仍能复核第 60 个样本的原始字节状态；篡改记录中的链尖、文件 SHA、路径、计数、结论或安全标志，即使重新计算该 JSON 的外部文件哈希也会被拒绝。
+
+source→signal 预检也以只读方式验证同一里程碑状态。第 60 个样本早停或第 200 个样本终止后，新的分钟采集会在创建外置会话目录、供应商权限检查和任何分钟请求之前拒绝，因此不会出现“执行器已终止、信号采集仍继续”的分叉；已完整发布的旧会话仍只允许零请求幂等复核。
+
+统一研究报告以只读方式验证这些里程碑，绝不补写缺失记录。账本已经达到 60 或 200 而对应记录缺失时，报告会硬停止，必须先幂等重跑执行器恢复原时点记录。验证通过后，报告分别给出“继续到 200”“60 样本早停”“200 样本终止”或“200 样本通过但只继续纸面观察”的下一动作，不会在候选 49 已终止后仍提示继续采集。
+
+统一报告不能用比执行器更弱的“通用哈希链有效”来展示真实信号数、累计收益或下一动作。`overlay_candidate49_live_ledger_state` 现在调用执行模块的只读报告验证器：先从 raw/factor 不可变证据重建每条信号；存在执行条目时，再读取当前已验收本地日历，从最新执行快照的固定目录后缀反推出唯一外置数据根，并从空 20 万元状态重放所有每日快照、成交、费用、持仓、Rank IC 与评估状态；随后核对完整信号—执行链接，并以只读模式验证 60/200 记录。信号日还没有足够后续日历来确定 `t+1` 或 `t+3` 时，该信号明确保留为待处理，不会被误判为缺失执行，也不会预构造未来会话。整个报告验证不写文件、不补里程碑、不访问供应商；一个只有合法哈希链但没有 raw/factor 证据的伪信号会在计数和渲染前被拒绝。
+
+为了在写入入场 lot 时就确定其 `t+3`，被处理会话之后必须已经有两个**已验收且已经越过收盘缓冲**的本地会话；执行账本因此故意滞后两个会话，并不会从未来价格取值。门禁同时检查日历位置和第二个后续会话的实际收盘时间，不能把日历文件中预先列出的未来日期当成已完成会话。例如 2026‑07‑27 信号的 2026‑07‑28 入场，最早在日历和日线已验收到 2026‑07‑30 收盘后才能物化；要把 2026‑07‑30 的退出也写入，则需再等 2026‑07‑31、2026‑08‑03 成为已验收会话。命令不需要 Token：
+
+```zsh
+python scripts/a_share_tushare_candidate49_future_execution.py \
+  --data-root /Volumes/DIsk/qlib-a-share-tushare-1m \
+  --through-session 2026-07-28
+```
+
+离线测试已覆盖：共享现金与三项费用/滑点、同日收盘卖出款不能资助更早的开盘买入、整手 Top‑3、`t+3` 退出、50 名全截面 Rank IC、幂等重跑、一字涨停空仓不替补、20 次阻塞退出转终端未解决、收盘前零写入、日历不足两个后续会话零写入、日历虽预列未来会话但尚未收盘时零写入、幂等返回前拒绝后来插入的迟到信号、终止里程碑在供应商检查前阻止新信号、日线错源在快照/账本前停止、已发布日线快照改变后在新条目前硬停止、旧快照绑定的来源上下文被改写后在新条目前硬停止、Tushare 单一日线源完整走通 `t+1` 至 `t+3`、版本化 Tushare 根滚动时保留旧根取证、不同活动根的 Qlib provider 与原始日线目录在任何快照或账本写入前拒绝、精确 60 样本联合早停、60 样本禁止提前晋级、精确 200 样本通过/失败以及里程碑篡改或终止后续写拒绝。这些结果仍只是实现验收；当前真实信号数、成交数、未来 Rank IC 数和组合收益全部是 0，不能据此下单。
 
 ### CNInfo 补充更正披露负担（全历史分页稳定性终止）
 
@@ -2454,3 +2930,744 @@ cninfo_equity_incentive_plan_disclosure_intensity
 程序没有去除标签、转义、删除记录、重解释标题或重请求失败月；2019‑05 及以后月份均未请求。失败清单为 `data/metadata/rich_data/runs/20260721T082754Z_cninfo_equity_incentive_plan_disclosure_intensity_full_29dcdd5e.json`（SHA‑256 `4ed7a714fd1b890293331402caf0fe95d310498416ae5873ca2aaaffc8244233`）；跨克隆终止记录为 [`a_share_cninfo_equity_incentive_plan_disclosure_intensity_full_source_record.json`](a_share_cninfo_equity_incentive_plan_disclosure_intensity_full_source_record.json)（SHA‑256 `6ec4d753c4646a7f0fc7aa4a888645df429adb20fc07c14016ee2575f9bbe375`）。`files=[]`、年度分区为 0、隐藏临时快照已删除；标题/ID 明文或哈希、响应体、正文、人员身份、计划经济字段、比较字段、价格和收益均未持久化或读取。剩余全量锁文件是非活动 PID 标记，必须保留。
 
 `sync-cninfo-equity-incentive-plan-disclosure-intensity --allow-large` 已永久消费；跟踪记录守卫必须在本地清单扫描、协议、合同、本地上下文或供应商访问前拒绝重跑。不得去标签后再试、重请求 2019‑04 或具体记录、跳过/删除/修复该行、改变标题/身份/字段/日期/公式/方向/三日年龄、续传剩余 74 个月、创建同机制 v2 或更换供应商。全历史未通过，所以容量和唯一性不得运行；也不得访问收益、聚合、当前评分、选股、仓位、订单或 Level‑2。该结果只证明冻结标题结构合同与当前公共历史快照不兼容，不说明因子收益好坏；后续回到新的无收益经济独立机制。
+
+## Campaign019：分钟实体方向连续性（覆盖门终止）
+
+Campaign019 继续直接使用冻结的 2019–2025 历史分钟样本，不等待当天日线或 16:30。概念记录 [`a_share_three_day_walkforward_campaign_019_concept_scouting.json`](a_share_three_day_walkforward_campaign_019_concept_scouting.json)（SHA‑256 `749f63c0acb05622ac8e547933d06d3311a37d9a237f166d9b9b4d2f3e0dd010`）、机制核重 [`a_share_three_day_walkforward_campaign_019_mechanism_overlap_audit.json`](a_share_three_day_walkforward_campaign_019_mechanism_overlap_audit.json)（SHA‑256 `29e7dc24776e458cd471414a076029dfb232fb5299f10fd333b6f9c4e7522606`）和无收益协议 [`a_share_three_day_walkforward_campaign_019_no_return_preregistration.json`](a_share_three_day_walkforward_campaign_019_no_return_preregistration.json)（SHA‑256 `de68ec246a0b0944ef75edc2594e8909c89b9118de3cd01bdad7cc1b902f011f`）均在候选值、比较值和收益前冻结。
+
+唯一 higher 因子 `intraday_bar_direction_continuity_238p` 先对 09:31–11:30、13:01–15:00 的 240 根分钟计算 `s_i=sign(log(close_i/open_i))`，再取两个半日内固定 238 个相邻对中同号非零对占全部非零对的比例。09:30 和午间连接排除；精确零实体保留在固定支持中，只令直接相邻对失去信息，禁止删除后跨越；全部 open/close 必须有限且为正，并预先要求至少 120 个信息对。构建只读 `datetime,symbol,provider,open,close`，不读 high、low、volume、amount、日线或 forward return。
+
+不可变快照 manifest/data SHA‑256 为 `7c4f7268f33af3274a9057241b9bd45df3c2565729a684a07f48105cdf9474cb` / `66efe683268dbcc681591ee9918ba2948f3c4420232c4e1f4c57371d0ac24ecc`。33,015 个分区、7,724,498 行中 2,623,556 行有效；每一行都至少有一个零实体，零实体观测共 746,337,349 个，5,100,942 行不足 120 个信息对，34,816 行分母为零。无收益审计 `20260729T014807Z_campaign019_no_return_audit.json`（SHA‑256 `ccb7c4582a4944fe6c26423d07d25cefc488f3200fb70e45ec738ea8c716f10e`）在质量/上市联合基座上的中位/P05 覆盖仅 `56.290492%/39.160894%`，低于冻结的 `95%/90%`；P05 合格名称 85，潜在三日 cohort 539。
+
+覆盖门失败后按冻结顺序停止：40 项统计比较值未读取，2019–2023 日线和未来收益未读取，开发试验为 0，2024–2025 未打开。研究记录 [`a_share_three_day_walkforward_campaign_019_research_record.json`](a_share_three_day_walkforward_campaign_019_research_record.json)（SHA‑256 `92d99a2a9d11165050686a8ec054e8e42e1e7b49ed5ef27ecab83bdbbe562d93`）和追加式状态 [`a_share_three_day_iteration_status_20260729_campaign019.json`](a_share_three_day_iteration_status_20260729_campaign019.json)（SHA‑256 `77c11172bd6952b7a0b9b2be4e6ee4bd3782152c73516816567a26ed0297d47f`）保持累计开发试验 241、当前聚合候选 0，Candidate49 两本台账不变且为空。不得降低 120 对门槛、删除零实体、桥接零值、改方向/窗口、过滤或与终止因子组合后重试；也不得为 Campaign019 读取比较值或收益。Campaign020 可以立即从新的独立概念和值前精确有限预注册开始，不需要等待新日线。
+
+## Campaign020：季度公告新鲜度（开发门终止）
+
+Campaign020 继续把历史样本作为主要迭代引擎，不等待当天新日线或 16:30。概念记录 [`a_share_three_day_walkforward_campaign_020_concept_scouting.json`](a_share_three_day_walkforward_campaign_020_concept_scouting.json)（SHA‑256 `e1f6db2ef25d05bd4a2503091004ee812f1783d7c2618940b2f640ce95a1b94f`）、机制核重 [`a_share_three_day_walkforward_campaign_020_mechanism_overlap_audit.json`](a_share_three_day_walkforward_campaign_020_mechanism_overlap_audit.json)（SHA‑256 `e61185b024e9d2a1a0f7d34769819c1c7a274d30f8f8ce235727daa626e606ad`）和无收益协议 [`a_share_three_day_walkforward_campaign_020_no_return_preregistration.json`](a_share_three_day_walkforward_campaign_020_no_return_preregistration.json)（SHA‑256 `cbd04a23d73c1535886a063cdf26bacc4d86b2ebec16bc0e8724efc82b4bc1e6`）在因子值、比较值和收益前冻结。唯一 higher 因子 `quarterly_announcement_freshness_60s = 2 ** (-age_sessions / 60)`；`age_sessions` 是最新季度公告严格在公告日之后第一个已接受交易会话生效后，到信号会话的非负交易会话距离。60 会话衰减尺度没有搜索。
+
+特征构建只从股票日网格读取 `datetime,symbol,provider`，从季度源读取 `instrument,report_date,announcement_date`；季度数值、分钟 OHLCV/amount、日线价格和 forward return 均未用于构建。不可变快照 manifest/data SHA‑256 为 `a776c1bcfb3d573ea7583be843ee42b1b6a368ccc8d80dbd382bf56fa2115fdd` / `39cda0c04c87c94886ac9f0f99453a2db627fa5cd64096ba33ef92df91223faa`。33,015 个分区、7,724,498 行中 7,233,196 行有效；491,302 行在当时没有更早的有效公告，负年龄和范围/非有限错误均为 0。
+
+无收益审计 `20260729T032544Z_campaign020_no_return_audit.json`（SHA‑256 `08752d1a28411d52fe59d574951065ba14b0eb729620c6c8a75b63efceb72794`）先通过覆盖/容量：中位/P05 覆盖 `99.945175%/99.568865%`，P05 合格名称 138，可形成 540 个非重叠三日 cohort。随后 41 项统计比较全部通过；最大绝对中位日秩相关仅 `0.084882`，对象为已终止的 `intraday_adjacent_range_overlap_continuity_238p`，与 Campaign019 的相关为 `-0.001047`。因此精确冻结单因子、权重 1.0 的唯一一个开发试验，并只打开 2019–2023 三个扩展走前验证折；2024–2025 保持关闭。
+
+开发中三折平均 Rank IC 有 2 折为正，但归一化执行收益只有 1 折为正，10bp 纸面试点收益 0 折为正。2019–2023 聚合平均 Rank IC 为 `-0.000836`，10bp/20bp 纸面试点累计收益分别为 `-9.143608%/-19.074213%`；三折 10bp 收益分别为 `-1.689219%/-2.076404%/-2.963635%`。该试验操作门通过，但未通过冻结的跨折质量、试点收益、回撤和 20bp 总体收益门，survivor 为 0；`2024–2025` 压力收益未读取。
+
+研究记录 [`a_share_three_day_walkforward_campaign_020_research_record.json`](a_share_three_day_walkforward_campaign_020_research_record.json)（SHA‑256 `08fed585bff19fe7850ba24cd953a8fe61720d45d2980b68695a1c8a2ced30d9`）和追加式状态 [`a_share_three_day_iteration_status_20260729_campaign020.json`](a_share_three_day_iteration_status_20260729_campaign020.json)（SHA‑256 `0efac48bd62d5cc54ae1c88164224ceb2099bb4754e8073415df44e2593c9c2a`）把累计开发试验推进到 242，当前聚合候选仍为 0。Candidate49 仍是唯一前瞻候选，两本真实台账保持为空；不得回填 Candidate49 或启动 Candidate50。不得反向、改变 60 会话尺度、重定时、挑年份/成本、增加阈值或过滤、使用季度数值、与终止因子组合或以其他方式修补 Campaign020。Campaign021 可以立即从真正独立的新机制和值前精确有限预注册开始，仍只用 2019–2023 开发；只有冻结开发 survivor 才能一次性打开 2024–2025。
+
+## Campaign021：分钟市场响应延迟非对称（开发门终止）
+
+Campaign021 继续直接使用冻结历史样本，不等待当天新日线或 16:30。概念记录 [`a_share_three_day_walkforward_campaign_021_concept_scouting.json`](a_share_three_day_walkforward_campaign_021_concept_scouting.json)（SHA‑256 `d5f7ea17f6f9ff6e0a4ce7e682d9e048dcb32c7ae7c9e25df3bf0dc2eeb82f54`）、机制核重 [`a_share_three_day_walkforward_campaign_021_mechanism_overlap_audit.json`](a_share_three_day_walkforward_campaign_021_mechanism_overlap_audit.json)（SHA‑256 `056988a36deb220a221fe46bde5e9554628cd078f258684869ca9dc30c262ad7`）和无收益协议 [`a_share_three_day_walkforward_campaign_021_no_return_preregistration.json`](a_share_three_day_walkforward_campaign_021_no_return_preregistration.json)（SHA‑256 `6daee3570af9fa29ca29bb0e3b642b525d9822c8f94b99e3b1e36e20e37e43b7`）均在分钟分区、市场基准值、候选值、比较值和收益前冻结。
+
+唯一 higher 因子 `intraday_market_response_delay_asymmetry_236p` 等于 `Corr(r_i,t, m_-i,t-1) - Corr(r_i,t-1, m_-i,t)`。股票和剔除自身后的等权市场序列都使用 09:31–11:30、13:01–15:00 的 238 个半日内相邻分钟对数收益；每半日形成 118 个相邻收益对，合计固定 236 对，午间连接严格排除。两项都用等权 population Pearson correlation；任一 close 无效、任一收益非有限、任一位置不足 50 个 leave-one-out peers、任一相关向量方差为零或结果越出 `[-2,2]` 都令该 stock-day 缺失。禁止改 lag、选择子窗口、加入市场净收益、beta/residual、多个 lag 或其他终止因子。
+
+特征快照 manifest/data SHA‑256 为 `05b1d511d9c53c1167ee97015c762b0882ab21469258fd9562eab7b28e8a24f2` / `1557eb872713ee5456fdfd0caef1d6aae6b2e9d43951afd5ca7f7b93766429a2`。33,015 个分区、7,724,498 行中 7,692,709 行有效；31,789 行因相关向量退化而缺失，peer 不足、无效 stock/market return、范围或非有限错误均为 0。构建只读分钟 `datetime,symbol,provider,close` 和已经冻结的市场 `trade_date,return_position,return_sum,valid_stock_count`，不读 open/high/low/volume/amount、日线或 forward return。
+
+无收益审计 `20260729T050900Z_campaign021_no_return_audit.json`（SHA‑256 `b198a2deec6d31634adb4ac00b10f8c22a18cd70739f8ce10c2dd2cd70068623`）先通过覆盖/容量：中位/P05 覆盖 `99.819413%/99.287391%`，P05 合格名称 138，可形成 540 个非重叠三日 cohort。随后 42 项统计比较全部通过；最大绝对中位日秩相关 `0.198815`，对象为 Campaign019 的 `intraday_bar_direction_continuity_238p`；与 contemporaneous market-idiosyncratic-share、late market-neutral residual drift、Campaign020 公告新鲜度的中位日秩相关分别为 `0.129121/-0.002673/0.002958`。因此只冻结权重 1.0 的唯一开发试验，并打开 2019–2023 三个 expanding validation 折；2024–2025 保持关闭。
+
+三折 validation Rank IC 为 `+0.008200/-0.001245/-0.006203`，只有 1/3 为正；归一化执行收益为 `-2.109579%/-4.990826%/-17.245224%`，10bp 纸面试点收益为 `-1.291059%/-2.185715%/-3.443258%`，两类均为 0/3 正。2019–2023 聚合平均 Rank IC 为 `-0.008946`；虽然零滑点试点为 `+7.467336%`，5bp 降到 `+3.561997%`，但冻结的 10bp/20bp 分别为 `-1.494883%/-9.743846%`，最差 validation normalized drawdown 为 `-32.969502%`。操作门通过，但跨折 IC、一致收益、回撤和 20bp 总体门均失败，survivor 为 0；2024–2025 压力收益未读取。
+
+研究记录 [`a_share_three_day_walkforward_campaign_021_research_record.json`](a_share_three_day_walkforward_campaign_021_research_record.json)（SHA‑256 `09f1ae1a331e346196a6cfb4ad91f2ee9627d8c4fc00f979106d45ed13c2f937`）和追加式状态 [`a_share_three_day_iteration_status_20260729_campaign021.json`](a_share_three_day_iteration_status_20260729_campaign021.json)（SHA‑256 `794688a8081252665ce8be06948a380cf477052c1721259525b0b1e10b8ce2a3`）把累计开发试验推进到 243，当前聚合候选仍为 0。Candidate49 仍是唯一前瞻候选，两本真实台账保持为空。不得反向、改变 lag/peer 门槛/相关估计器、重定时、挑年份/成本、增加阈值或过滤、与终止因子组合或以其他方式修补 Campaign021。Campaign022 可以立即从真正独立的新机制和值前精确有限预注册开始；仍只用 2019–2023 开发，只有冻结开发 survivor 才能一次性打开 2024–2025。
+
+## Campaign022：分钟线内收盘位置压力（开发门终止）
+
+Campaign022 继续把已有历史样本和冻结的训练/验证划分作为主要迭代引擎，不需要等待当天新日线或 16:30。概念记录 [`a_share_three_day_walkforward_campaign_022_concept_scouting.json`](a_share_three_day_walkforward_campaign_022_concept_scouting.json)（SHA‑256 `e8708e06040c97691e93b9ad795229abb7a43f0d818932a650ac9b1f80dd2061`）、机制核重 [`a_share_three_day_walkforward_campaign_022_mechanism_overlap_audit.json`](a_share_three_day_walkforward_campaign_022_mechanism_overlap_audit.json)（SHA‑256 `6db5024304c4142cdbb3f04529af5c21719fd16684d9c99c7befa0e5152dadd5`）和无收益协议 [`a_share_three_day_walkforward_campaign_022_no_return_preregistration.json`](a_share_three_day_walkforward_campaign_022_no_return_preregistration.json)（SHA‑256 `82a8a7038155c0ac40dcad5275b0a987ca7f938cf51cbbc28c050a737d468d8b`）均在 Campaign022 分区、候选值、比较值和收益前冻结。
+
+唯一 higher 因子 `intraday_intrabar_close_location_pressure_240m` 在 09:31–11:30、13:01–15:00 的 240 根完整分钟线上计算：
+
+```text
+(sum(log(close/low)) - sum(log(high/close))) / sum(log(high/low))
+```
+
+它只读 `datetime,symbol,provider,high,low,close`；open、volume、amount、市场基准、日线和 forward return 在构建时均禁止。每根 high/low/close 必须有限、为正且满足 `low<=close<=high`。零振幅分钟保留在固定支持中并贡献零；预先冻结至少 120 根正振幅分钟和正的全日总对数振幅，聚合是全日距离之和的比率而不是逐分钟比率的平均。不得修改正振幅门槛、删除零振幅分钟、改成 open/VWAP/成交量权重或选择子窗口。
+
+特征快照 manifest/data SHA‑256 为 `987fae851b1b003ba5c171746a964f99d969bf660e99b6038feebb7deda3883c` / `d3dd2cba290b662116c466d67543393c7cec4ef398bc0a6f010acbef05934e61`。33,015 个分区、7,724,498 行中 6,924,627 行有效；799,871 行不足 120 根正振幅分钟，24,584 行全日总振幅非正，非正价格、high/low/close 错序、非有限分量和范围越界均为 0。无收益审计 `20260729T065914Z_campaign022_no_return_audit.json`（SHA‑256 `cc84e8e22bae5393889853503f61f61ba5d2735ccb4c752613601490629e097b`）先通过覆盖/容量：中位/P05 覆盖 `97.494964%/90.957541%`，P05 合格名称 136，可形成 540 个非重叠三日 cohort；P05 仅略高于冻结的 90% 门，异常市场日的缺失风险必须保留为限制。
+
+覆盖通过后才加载 43 项统计比较，全部通过。最大绝对中位日秩相关为 `0.617621`，对象是 Campaign015 的 `intraday_prior_range_breakout_pressure_238p`；与交易 VWAP 收盘压力为 `0.569143`，与 Candidate49 为 `-0.000872`，与 Campaign021 为 `-0.004040`，均低于冻结的 `0.8`。随后 [`a_share_three_day_walkforward_campaign_022_preregistration.json`](a_share_three_day_walkforward_campaign_022_preregistration.json)（SHA‑256 `a9782c89573d655cfd5872cec88cc2a28ff5706750e82f84ccca2d44ea2daf5f`）在日线和三日收益前只冻结单因子、权重 1.0 的唯一一个开发试验；2019–2023 使用三组 expanding train/next-year validation 和 3 会话 purge，2024–2025 保持关闭。
+
+三折 validation Rank IC 为 `-0.003803/-0.008713/+0.011015`，只有 1/3 为正；归一化执行收益为 `+11.519698%/-8.574983%/-5.183193%`，同样只有 1/3 为正；10bp 纸面试点收益为 `-1.359323%/-1.722055%/-2.290215%`，0/3 为正。2019–2023 聚合平均 Rank IC 为 `-0.001601`；零成本/5bp 纸面试点为 `+6.371071%/+0.292537%`，但冻结的 10bp/20bp 降到 `-4.063015%/-12.833459%`。操作门通过，但跨折 IC、一致收益、10bp 和 20bp 成本门失败，survivor 为 0；2024–2025 压力收益没有读取。
+
+研究记录 [`a_share_three_day_walkforward_campaign_022_research_record.json`](a_share_three_day_walkforward_campaign_022_research_record.json)（SHA‑256 `8f5cc7f0cde494a824d100debd55504222fa70d882c01ecc411df89053a4ff78`）和追加式状态 [`a_share_three_day_iteration_status_20260729_campaign022.json`](a_share_three_day_iteration_status_20260729_campaign022.json)（SHA‑256 `fb41c096c16a4c6f50a81fc4daa2b0a73bc3ecf18b80fbddd2ed1f21ffa366f8`）把累计开发试验推进到 244，当前聚合候选仍为 0。Candidate49 仍是唯一前瞻候选，两本真实台账保持为空。不得反向、降低正振幅门槛、重定时、挑年份/成本、增加阈值或过滤、与终止因子组合或以其他方式修补 Campaign022。Campaign023 可以立即从新的独立机制和值前精确有限预注册开始；仍只用 2019–2023 开发，只有冻结开发 survivor 才能一次性打开 2024–2025。
+
+## Campaign023：分钟高低价边界平移一致性（开发门终止）
+
+Campaign023 同样直接使用冻结历史样本和固定训练/验证划分，不等待当天新日线或 16:30。概念记录 [`a_share_three_day_walkforward_campaign_023_concept_scouting.json`](a_share_three_day_walkforward_campaign_023_concept_scouting.json)（SHA‑256 `4b56205deddacf2121a4a5591c9ff0369d40422d097f491cab43a1b520e268c5`）、机制核重 [`a_share_three_day_walkforward_campaign_023_mechanism_overlap_audit.json`](a_share_three_day_walkforward_campaign_023_mechanism_overlap_audit.json)（SHA‑256 `0a686cacdcce6e281e1b3c7100a5230f61308f09a9acb692859c44d24fad30c7`）和无收益协议 [`a_share_three_day_walkforward_campaign_023_no_return_preregistration.json`](a_share_three_day_walkforward_campaign_023_no_return_preregistration.json)（SHA‑256 `bf796a2b251fcd8ff717180c59d74da4e664dca85fbdb96d9d565fc801bcf61b`）均在 Campaign023 分区、候选值、比较值和收益前冻结。
+
+唯一 higher 因子 `intraday_range_boundary_translation_coherence_238p` 是 238 个半日内相邻转换上的 population Pearson correlation：
+
+```text
+Corr(delta(log(high)), delta(log(low)))
+```
+
+它只读 09:31–11:30、13:01–15:00 的 `datetime,symbol,provider,high,low`。09:30、午间连接、overnight、open、close、volume、amount、市场基准、日线和 forward return 均不进入构建。全部 240 根 high/low 必须有限、为正且 `low<=high`；零振幅、零边界变化、同向和反向变化均保留在固定支持中。两个 238 元变化向量都必须有正的总体方差；禁止改成回归、秩相关、符号一致率、阈值、额外 lag 或子窗口。
+
+特征快照 manifest/data SHA‑256 为 `64732b36c84cf95024e615569bd5626f5951282e24a2ea534ea3f09c03fc41c8` / `443aa07644a31721eda4a3791ea24f3726049319aaabd917cb0ad00e5551d0b7`。33,015 个分区、7,724,498 行中 7,692,348 行有效；高价/低价变化方差非正分别为 30,608/25,889 行，价格错序、非正、变化非有限和范围越界均为 0。无收益审计 `20260729T084202Z_campaign023_no_return_audit.json`（SHA‑256 `d44a4a1d0147515655e11cc5456d87ff5067d2f6e15b0a78b7b4313d0a87ac08`）先通过覆盖/容量：中位/P05 覆盖 `99.823399%/99.275362%`，P05 合格名称 138，可形成 540 个非重叠三日 cohort。2020‑02‑03 单日覆盖只有 46.44%，但没有改变冻结门槛或挑掉该日。
+
+覆盖通过后才加载 44 项统计比较，全部通过。最大绝对中位日秩相关为 `0.613569`，对象是 `intraday_intrabar_range_reversal_238p`；与 Campaign017 的 midpoint-width coupling 为 `+0.033633`，与 Campaign022 为 `+0.011763`，与 Candidate49 为 `-0.225561`，均低于冻结的 `0.8`。随后 [`a_share_three_day_walkforward_campaign_023_preregistration.json`](a_share_three_day_walkforward_campaign_023_preregistration.json)（SHA‑256 `0f78cea5e2e0814bf0e3214dbcb85078e149f2a30177bcb2e824e268635d0c6d`）只冻结单因子、权重 1.0 的唯一开发试验；2019–2023 使用三组 expanding train/next-year validation 和 3 会话 purge，2024–2025 保持关闭。
+
+三折 validation Rank IC 为 `-0.045793/-0.035589/-0.056474`，0/3 为正；归一化执行收益为 `+46.083666%/-62.612418%/-23.512490%`，只有 1/3 为正；10bp 纸面试点收益为 `+4.707688%/-13.794912%/-5.741194%`，也只有 1/3 为正。前两折的 100 股整手可负担率为 `88.18%/87.21%`，低于冻结的 90%。2019–2023 聚合平均 Rank IC 为 `-0.031782`，归一化执行收益/最大回撤为 `-54.440454%/-77.160969%`；零成本、5bp、10bp、20bp 纸面试点分别为 `-6.138312%/-10.496352%/-15.711001%/-23.070014%`。操作门、IC、一致收益、回撤和成本门均失败，survivor 为 0；2024–2025 压力收益没有读取。
+
+研究记录 [`a_share_three_day_walkforward_campaign_023_research_record.json`](a_share_three_day_walkforward_campaign_023_research_record.json)（SHA‑256 `37bff754329fe93f17b0458093029404fc26afcb851030b1776b832faf805b6f`）和追加式状态 [`a_share_three_day_iteration_status_20260729_campaign023.json`](a_share_three_day_iteration_status_20260729_campaign023.json)（SHA‑256 `e48028360965e0cd22e9dab736bae7beb4d1a9d94a9c8f9ba7870ff9b92830cc`）把累计开发试验推进到 245，当前聚合候选仍为 0。Candidate49 仍是唯一前瞻候选，两本真实台账保持为空。不得反向、改变边界变化/相关估计器/午间规则、挑年份或成本、增加阈值或过滤、与终止因子组合或以其他方式修补 Campaign023。Campaign024 可以立即从新的独立机制和值前精确有限预注册开始；仍只用 2019–2023 开发，只有冻结开发 survivor 才能一次性打开 2024–2025。
+
+## Campaign024：有符号分钟实体到下一分钟振幅响应（开发门终止）
+
+Campaign024 继续以冻结历史数据和固定训练/验证切分为主要迭代引擎，不等待新增日线或 16:30。概念记录 [`a_share_three_day_walkforward_campaign_024_concept_scouting.json`](a_share_three_day_walkforward_campaign_024_concept_scouting.json)（SHA‑256 `1cbc8436aa6036d12af9f785f4ca76177d50929c3744f250d14c3c25f50129c4`）、机制核重 [`a_share_three_day_walkforward_campaign_024_mechanism_overlap_audit.json`](a_share_three_day_walkforward_campaign_024_mechanism_overlap_audit.json)（SHA‑256 `ffe4485ebfe0387076f33e2a631d7a14e93ae6d8559e13a67b0b74f3b32d72b6`）和无收益协议 [`a_share_three_day_walkforward_campaign_024_no_return_preregistration.json`](a_share_three_day_walkforward_campaign_024_no_return_preregistration.json)（SHA‑256 `70d8e8f1fc6b0b74f3f19e41bc6a148e999eb57239ed5a156d75a3315edecb02`）均在 Campaign024 分区、候选值、比较值和收益前冻结。
+
+唯一 higher 因子 `intraday_directional_range_response_coupling_238p` 是：
+
+```text
+Corr(log(close_t/open_t), log(high_{t+1}/low_{t+1}))
+```
+
+它在 09:31–11:30 和 13:01–15:00 两个半日内分别形成 119 个一步 lead-response 对，再拼成固定 238 对并计算 population Pearson correlation。09:30、午间、overnight 和跨股票连接都排除；精确零实体与零后继振幅保留。全部 240 根 open/high/low/close 必须有限、为正且满足 `low<=open<=high`、`low<=close<=high`；两个 238 元向量都必须有正的总体方差。构建只读分钟 `datetime,symbol,provider,open,high,low,close`，不读 volume、amount、日线、forward return 或 Level‑2。
+
+特征快照 manifest/data SHA‑256 为 `855d4f64b6c06d294ba971472e0a6a0b13a82b5cfd708be0535a04255151282b` / `b204fd6048454308fda9fc9724dfe7d0379847230c29822b71d18948a3ce2f20`。33,015 个分区、7,724,498 行中 7,695,318 行有效；实体方差和后继振幅方差非正分别为 26,088/28,375 行，无效、非正、错序、非有限和范围越界均为 0。无收益审计 `20260729T104150Z_campaign024_no_return_audit.json`（SHA‑256 `90587a0029069e1e6a339b9d406cbbd25bb689e748cb6a0d48c4cacffe043d7e`）先通过覆盖/容量：中位/P05 覆盖 `99.834231%/99.332435%`，P05 合格名称 138，可形成 540 个非重叠三日 cohort。最差的 2020‑02‑03 覆盖为 50%，2019‑04‑15 的点时合格横截面只有 4 个名称；这些尾部事实均被保留。
+
+覆盖通过后才加载 45 项统计比较，全部通过。最大绝对中位日秩相关为 `0.450104`，对象是 `intraday_upside_semivariance_share_239m`；与 Campaign009/012/019/022/023 分别为 `+0.113630/-0.154721/+0.048638/+0.277189/+0.145544`，与 Candidate49 为 `-0.064611`，均低于冻结的 `0.8`。随后 [`a_share_three_day_walkforward_campaign_024_preregistration.json`](a_share_three_day_walkforward_campaign_024_preregistration.json)（SHA‑256 `07494e3490166325bd2cf48291eff557a4034c6ba0b32a0d27732d7d3fee13e1`）只冻结单因子、权重 1.0 的唯一开发试验；2019–2023 使用三组 expanding train/next-year validation 和 3 会话 purge，2024–2025 保持关闭。
+
+三折 validation Rank IC 为 `-0.023223/-0.008864/-0.005427`，0/3 为正；归一化执行收益为 `+18.364593%/-28.312644%/+21.135686%`，2/3 为正；10bp 纸面试点收益为 `-0.498771%/-5.581699%/+0.746600%`，只有 1/3 为正。2019–2023 聚合平均 Rank IC 为 `-0.015261`，归一化执行收益/最大回撤为 `-10.786457%/-48.719072%`；零成本、5bp、10bp、20bp 试点分别为 `+2.577638%/-2.380478%/-6.431197%/-14.932448%`。操作门通过，但跨折 IC、spread、10bp、回撤和 20bp 总体门失败，survivor 为 0；2024–2025 压力收益没有读取。
+
+研究记录 [`a_share_three_day_walkforward_campaign_024_research_record.json`](a_share_three_day_walkforward_campaign_024_research_record.json)（SHA‑256 `9ad0e7e37414162bce30273b145dae3956e62c7e31a971791239d3fd8c67b05f`）和追加式状态 [`a_share_three_day_iteration_status_20260729_campaign024.json`](a_share_three_day_iteration_status_20260729_campaign024.json)（SHA‑256 `c3d6a40a99f84d9de299b844b5425701ba8f00e0a16b37617fe9003d76bc2725`）把累计开发试验推进到 246，当前聚合候选仍为 0。Candidate49 仍是唯一前瞻候选，两本真实台账保持为空。不得反向、反转 lead、改成 contemporaneous body-range、协方差/回归/秩相关/符号计数、改变午间或零值规则、挑年份/成本、增加阈值或过滤、与终止因子组合或以其他方式修补 Campaign024。Campaign025 可以立即从新的独立机制和值前精确有限预注册开始；仍只用 2019–2023 开发，只有冻结开发 survivor 才能一次性打开 2024–2025。
+
+完成后终检发现无收益协议 `/source_chain/campaign023_statistical_snapshot/sha256` 存在一处转录错误：协议声明 `64732b281052df83606604db50ce8e6c69bd07a26e2b6501cad1326b6997694f`，实际 Campaign023 manifest 为 `64732b36c84cf95024e615569bd5626f5951282e24a2ea534ea3f09c03fc41c8`。冻结协议不得事后改写；差异记录 [`a_share_three_day_walkforward_campaign_024_preregistration_binding_discrepancy_20260729.json`](a_share_three_day_walkforward_campaign_024_preregistration_binding_discrepancy_20260729.json)（SHA‑256 `e7058df6c8eb17c173284f12be1a429a594db79314a773d1750999f6a851ff28`）证明实际运行器和无收益审计使用正确 manifest/data 哈希，并逐字节/逐 frame 验证 33,015 分区、7,724,498 行，没有替换比较值或改公式；但协议自洽性仍判失败。最新追加状态 [`a_share_three_day_iteration_status_20260729_campaign024_binding_discrepancy.json`](a_share_three_day_iteration_status_20260729_campaign024_binding_discrepancy.json)（SHA‑256 `748cee197bf7bb199ab8d253c44414258ac6a320aeb7c7acce9bb65bf06708c6`）因此把 Campaign024 保守降为“含披露绑定缺陷的终止诊断”，不得用于策略晋级，也不得重跑或修补。Campaign025 仍不需新日线或 16:30，但选概念前必须先安装并通过所有已存在 path/SHA‑256 的完整验证器；任何失败都应在读候选值前停止并新开版本，绝不修改冻结协议。
+
+该防复发门已实现为 [`a_share_three_day_preregistration_binding_validator.py`](../scripts/a_share_three_day_preregistration_binding_validator.py)（SHA‑256 `a6ab81a645fb25be2594937356e873c62737167dc88569d9b4b46bba6b7dcc4f`），递归覆盖 `path+sha256`、`path_below_data_root+sha256` 和 `manifest_path+manifest_sha256`。激活记录 [`a_share_three_day_preregistration_binding_validator_activation_20260729.json`](a_share_three_day_preregistration_binding_validator_activation_20260729.json)（SHA‑256 `ca07f930cb6e617e9f917b2afba3ebd43a0e12e86eddda7ad05006205be50913`）以 Campaign024 无收益协议作负控，稳定得到 14 项中 13 通过、1 失败和退出码 2；以其开发预注册作正控，15/15 通过。最新权威状态 [`a_share_three_day_iteration_status_20260729_campaign024_binding_validator_ready.json`](a_share_three_day_iteration_status_20260729_campaign024_binding_validator_ready.json)（SHA‑256 `626e1a9264d1b544143c1d5361ed68f103b524cb7f1f48706cbb6f06a870fd34`）允许 Campaign025 只从概念侦察开始；每个冻结边界的验证器退出码必须为 0，才能继续读取受保护值。
+
+## Campaign025：日内极值到达顺序（开发门终止）
+
+Campaign025 在离线历史滚动主线上完成，不等待新增日线或 16:30。冻结因子 `intraday_extreme_arrival_order_240m = (first_index(global_max(high)) - first_index(global_min(low))) / 239`，方向为高值更好；只使用 09:31–11:30 与 13:01–15:00 的 240 根有序分钟 high/low，精确并列取首次出现，全日极差为零时记缺失。概念、机制核重、无收益协议、快照/审计和开发预注册的所有 1/3/19/18 项 path/SHA‑256 绑定均先经完整验证器以退出码 0 通过，才读取下一阶段受保护值。
+
+快照 manifest/data SHA‑256 为 `4f7b9b335f6df9c8a69ebc7d137abb92e88d5be579fd98231b80c5403bb69def` / `57871e9955670b3e8610fa249a14accf53830a41b88d0d66e05b80dc212c1056`。33,015 个分区、7,724,498 行中 7,700,153 行有效；24,345 行全日极差为零。无收益审计 `20260729T122303Z_campaign025_no_return_audit.json`（SHA‑256 `e67df10a429b902246450823ea7cb9645e88a8b027ab97965afca6029989b238`）先通过覆盖/容量：中位/P05 覆盖 `99.853694%/99.354839%`，P05 合格名称 138，可形成 540 个非重叠三日 cohort；随后 46 项唯一性比较全部通过，最大绝对中位日秩相关为 `0.760219`（对 `intraday_signed_path_efficiency_239m`），对 Campaign024/Candidate49 分别为 `0.244080/0.021373`。
+
+开发预注册 SHA‑256 为 `5920146afef4a726fcd5e843e41e577bbd9cb0533d4386dbe8f0464d15f3b8cb`，只冻结一条高方向单因子试验。2021/2022/2023 三个验证折的平均 Rank IC 为 `-0.012502/-0.001164/+0.004046`，归一化收益为 `-0.003322/-0.457685/-0.158553`，10bp 纸面收益为 `-0.017008/-0.104219/-0.034491`。中位验证 Rank IC、spread、归一化收益和 10bp 收益分别为 `-0.001164/-0.003331/-0.158553/-0.034491`；开发期 20bp 累计收益为 `-0.279762`，最差验证归一化回撤为 `-0.463315`。前两折整手可负担率亦低于冻结 90% 门槛，因此无开发 survivor，2024–2025 压力区间没有打开或读取。
+
+Campaign025 已终止，不得反向、改并列规则或分钟窗口、挑年份/成本、增加阈值/过滤、修补或与终止因子组合。累计历史开发试验为 247，当前聚合候选仍为 0。Candidate49 仍是唯一前瞻候选，禁止历史收益/信号/执行回填，两本前瞻台账保持为空；2026‑07‑29 同日计划使用新 staging root `/Volumes/DIsk/qlib-a-share-tushare-daily-2026-07-29`，因 workflow credential 不存在而 `ready=false`、退出码 2，未执行 run、未发 provider 请求、未写入 staging。Campaign026 只可从新的独立概念和完整值前冻结开始，不需要等待新日线或 16:30。
+
+## Campaign028：分钟绝对收益强度相邻持续性（开发门终止）
+
+Campaign028 继续以历史滚动研究作为主要引擎，不等待新增日线或 16:30。唯一 higher 因子 `intraday_absolute_return_serial_persistence_236p` 对上午和下午各 119 个半日内相邻 log-close return 取绝对值，再将每个半日内部的 118 组 lag-one 对合并为 236 对，计算 equal-pair-weight population Pearson correlation。它只读 09:31–11:30、13:01–15:00 的 `datetime,symbol,provider,close`；精确零收益留在固定位置，09:30、午间、overnight、跨日、open/high/low/volume/amount、市场基准和 daily forward return 均排除。
+
+概念、机制核重、无收益协议和开发预注册分别为 [`a_share_three_day_walkforward_campaign_028_concept_scouting.json`](a_share_three_day_walkforward_campaign_028_concept_scouting.json)、[`a_share_three_day_walkforward_campaign_028_mechanism_overlap_audit.json`](a_share_three_day_walkforward_campaign_028_mechanism_overlap_audit.json)、[`a_share_three_day_walkforward_campaign_028_no_return_preregistration.json`](a_share_three_day_walkforward_campaign_028_no_return_preregistration.json) 和 [`a_share_three_day_walkforward_campaign_028_preregistration.json`](a_share_three_day_walkforward_campaign_028_preregistration.json)。各冻结阶段在保护值前经绑定验证器通过。特征快照 manifest/data SHA‑256 为 `b08065c1cb7dbdbf06e4285a0c686338e121d27546fce97bb92dc9251f8366d0` / `8d3a3368ed85c0215751bf86b7d491bf9ad049762a810cce2e50b1a3b4badadf`，33,015 个分区、7,724,498 行中 7,692,709 行有效。
+
+无收益审计 `20260730T072927Z_campaign028_no_return_audit.json`（SHA‑256 `9f077d989d0456cbfaf23fbcce4d3737ac3da25380c50435cfddbc7f31fe0963`）的中位/P05 覆盖为 `99.819413%/99.287391%`，P05 合格名称 138，可形成 540 个非重叠三日 cohort。49 项唯一性比较全部通过；最大绝对中位日秩相关为 `0.684913`，对象是 `intraday_diffusive_variation_ratio_238m`，仍低于冻结的 0.8 门。
+
+唯一 2019–2023 试验的 2021/2022/2023 validation Rank IC 为 `-0.026870/-0.038192/-0.047461`，0/3 为正；normalized return 为 `+126.247478%/-27.549380%/-51.693671%`，10bp、20 万元整手收益为 `+9.917843%/-3.410372%/-9.643662%`。2021 年表面收益不能绕过负 Rank IC 和 `89.0909%` 的整手可负担率。开发聚合平均 Rank IC 为 `-0.025077`，normalized return/maximum drawdown 为 `-43.680967%/-72.368017%`；零成本、5bp、10bp、20bp 整手收益为 `+2.362376%/-1.517330%/-5.819079%/-14.007480%`。开发 survivor 为 0，2024–2025 未打开或读取。
+
+研究记录 [`a_share_three_day_walkforward_campaign_028_research_record.json`](a_share_three_day_walkforward_campaign_028_research_record.json)（SHA‑256 `55788cf6acd10ac1c4ee9772438d14faf8c30b1e3e28a7fc4c744730a6c75423`）将该 exact higher construction 终止。不得反向、改 absolute transform、改 lag、跨午间、换相关估计器、改方向/窗口/年份/成本、加阈值或过滤、与终止因子组合、打开其压力期、回填 Candidate49、启动 Candidate50 或形成当前评分、选股、仓位、订单。累计历史开发试验推进到 250；Candidate49 仍是唯一前瞻候选，两本台账保持为空。Campaign029 只能从新的独立概念和值前冻结开始。
+
+## Campaign029：个股分钟波动与市场冲击幅度脱钩（20bp 成本门终止）
+
+Campaign029 继续使用冻结历史滚动主线，不等待新增日线或 16:30。唯一 higher 因子 `intraday_market_shock_magnitude_decoupling_238m` 为 238 个同步半日内位置上的：
+
+```text
+-Corr(abs(stock_return), abs(leave_one_out_market_return))
+```
+
+个股与市场收益都只由 09:31–11:30、13:01–15:00 的 close 在各自半日内形成；每个位置从冻结市场 `return_sum/valid_stock_count` 中减去个股自身，要求至少 50 个其余有限收益。精确零幅度保留，两个完整 238 元幅度向量都必须有正的总体方差。09:30、午间、overnight、lead/lag、市场涨跌符号、open/high/low/volume/amount、日线和 forward return 均不进入构建。
+
+概念、机制核重和无收益协议分别为 [`a_share_three_day_walkforward_campaign_029_concept_scouting.json`](a_share_three_day_walkforward_campaign_029_concept_scouting.json)、[`a_share_three_day_walkforward_campaign_029_mechanism_overlap_audit.json`](a_share_three_day_walkforward_campaign_029_mechanism_overlap_audit.json) 和 [`a_share_three_day_walkforward_campaign_029_no_return_preregistration.json`](a_share_three_day_walkforward_campaign_029_no_return_preregistration.json)，SHA‑256 依次为 `92a16be11087c243f8ce613c52cf0a9d1a2cd759e035eb2e94f84b03231d66c5`、`a1085b91b0d0fb697d36befbc913cd2066900b7e94434e86c63548e329573dfa`、`6bf84e6a6b9b40338447e3ff08784a09df2a76f780cbdfb09980e93f0268baf3`。各边界均在保护值前以绑定验证器退出码 0 通过。快照 manifest/data SHA‑256 为 `6dbf652eab4b787773d235cdcb4342ee82bbfb34c42d1a161c5d071c1c9df6a9` / `e37d17aa9f915425d2cd49e869d899045a0b385ffd04d74bb1bec543772de201`；33,015 个分区、7,724,498 行中 7,695,088 行有效。
+
+无收益审计 `20260730T091416Z_campaign029_no_return_audit.json`（SHA‑256 `6188912d099f969c1b8c6a2e5436161a9e51496b4634fa2b80ebe0e7c97260f0`）的中位/P05 覆盖为 `99.831839%/99.337089%`，P05 合格名称 138，可形成 540 个非重叠三日 cohort。50 项唯一性比较全部通过；最大绝对中位日秩相关为 `0.607057`，对象是 `intraday_market_idiosyncratic_share_238m`，低于冻结的 0.8 门。比较前仍没有读取日线或未来收益。
+
+开发预注册 [`a_share_three_day_walkforward_campaign_029_preregistration.json`](a_share_three_day_walkforward_campaign_029_preregistration.json)（SHA‑256 `b2e3d5312d2c77fa91e004751a11cc6b4934ac4ae2d34adf0ec25fc60f7c9101`）只允许 higher、权重 1.0 的单因子试验。2021/2022/2023 validation Rank IC 为 `+0.018695/+0.007229/+0.015981`，normalized return 为 `+26.988029%/+43.481007%/+39.496349%`，10bp、20 万元整手收益为 `+1.827652%/+5.164042%/+1.789554%`；三折的 IC、归一化收益、10bp 收益、整手可负担率和回撤门都通过。
+
+2019–2023 聚合平均 Rank IC 为 `+0.004846`，normalized return/maximum drawdown 为 `+194.456802%/-23.133637%`；零成本、5bp、10bp、20bp 整手收益为 `+21.018953%/+14.095075%/+8.675010%/-2.443479%`。冻结的 20bp 聚合收益必须严格为正，因此该唯一门失败，survivor 为 0；2024–2025 没有打开或读取。
+
+研究记录 [`a_share_three_day_walkforward_campaign_029_research_record.json`](a_share_three_day_walkforward_campaign_029_research_record.json)（SHA‑256 `71b17b0c67cff407a36f4fb1294de9a2f0ded2b55bc10448853a97acb07a2ee2`）终止该 exact construction。不得把成本门槛事后降为 10bp，不得反转方向、改成正相关或 `1-corr`、改变市场基准/同业阈值、使用 signed return/市场符号/lead/lag/子窗口、挑年份或成本、增加过滤或阈值、修补或与终止因子组合。累计历史开发试验推进到 251；Candidate49 仍是唯一前瞻候选，禁止历史收益/信号/执行回填，两本台账保持为空。Campaign030 只能从新的独立概念和值前冻结开始。
+
+## Campaign030：早晚市场相关性消退差（开发门终止）
+
+Campaign030 继续使用冻结历史滚动主线，不等待新增日线或 16:30。唯一 higher 因子 `intraday_market_correlation_resolution_119p` 为：
+
+```text
+Corr(stock_return, leave_one_out_market_return)[morning 119 positions]
+- Corr(stock_return, leave_one_out_market_return)[afternoon 119 positions]
+```
+
+个股收益只由 09:31–11:30、13:01–15:00 的 close 在各自半日内形成；冻结市场基准只提供 `trade_date,return_position,return_sum,valid_stock_count`，每个位置减去个股自身后要求至少 50 个其他有限收益。精确零收益留在固定支持内，个股与市场的上午/下午四个完整向量均要求正的总体方差。09:30、午间、overnight、lead/lag、open/high/low/volume/amount、日线和 forward return 均不进入特征构建。
+
+概念、机制核重和无收益协议分别为 [`a_share_three_day_walkforward_campaign_030_concept_scouting.json`](a_share_three_day_walkforward_campaign_030_concept_scouting.json)、[`a_share_three_day_walkforward_campaign_030_mechanism_overlap_audit.json`](a_share_three_day_walkforward_campaign_030_mechanism_overlap_audit.json) 和 [`a_share_three_day_walkforward_campaign_030_no_return_preregistration.json`](a_share_three_day_walkforward_campaign_030_no_return_preregistration.json)，SHA‑256 依次为 `041bde8e66800f8e76fac6578ae1f2dddfda5d084c1c5216d31bf3ac3868e424`、`e32bd7824c8bf752d632d852b617ba5fca1b8be4059beccf79d82ebf7f33d6fb`、`15a7a9c3d255d1cae56d5b8ee3e3b0b69bb78a1a85a741a3c0b364ac0ee340f0`。各边界均在保护值前以绑定验证器退出码 0 通过。快照 manifest/data SHA‑256 为 `bc34e382f427d02380b6bf7858ad364064540cf1ec9be3b91e878bfefc84ab42` / `10953d752e924d0be3692c5bd0a392cb27d7009c3e7c3358c8602215d70dc549`；33,015 个分区、7,724,498 行中 7,630,332 行有效。
+
+无收益审计 `20260730T112347Z_campaign030_no_return_audit.json`（SHA‑256 `3cec65d23b1d7952813e67db2e9b1d7486be797925e470703c3a9b4a5cf97a3b`）的中位/P05 覆盖为 `99.358885%/98.156168%`，P05 合格名称 138，可形成 540 个非重叠三日 cohort。51 项唯一性比较全部通过；最大绝对中位日秩相关为 `0.340229`，对象是 `intraday_market_idiosyncratic_share_238m`，低于冻结的 0.8 门。比较前没有读取日线或未来收益。
+
+开发预注册 [`a_share_three_day_walkforward_campaign_030_preregistration.json`](a_share_three_day_walkforward_campaign_030_preregistration.json)（SHA‑256 `b3e73ab138e21bed849479f10babe4de4ab5e3795cb8b2b2a6ee1af7de23bb48`）只允许 higher、权重 1.0 的单因子试验。2021/2022/2023 validation Rank IC 为 `+0.010202/-0.008997/+0.013925`，gross spread 为 `-0.156049%/-0.434394%/-0.061372%`，normalized return 为 `-12.369431%/-30.604469%/-7.894037%`，10bp、20 万元整手收益为 `-4.155055%/-6.335204%/-2.172210%`。三折的 spread、归一化收益和 10bp 收益全部为负。
+
+2019–2023 聚合平均 Rank IC 为 `+0.004805`，normalized return/maximum drawdown 为 `-50.993208%/-68.482799%`；零成本、5bp、10bp、20bp 整手收益为 `-8.851180%/-12.617061%/-17.787345%/-24.528441%`。操作门通过，但中位 spread、正收益折数、正 10bp 折数、中位 10bp 收益、最差回撤和 20bp 聚合收益门失败，survivor 为 0；2024–2025 没有打开或读取。
+
+研究记录 [`a_share_three_day_walkforward_campaign_030_research_record.json`](a_share_three_day_walkforward_campaign_030_research_record.json)（SHA‑256 `6bb3142809c2034445ad4f5a11cdd8326dbc890dcec4f61321c6560af6af8e0b`）终止该 exact construction。不得反转方向、交换早晚差值、改变相关估计器、市场基准、同业门槛、窗口/年份/成本，增加 signed/magnitude 条件、lead/lag、过滤或阈值，重跑、修补、救援或与终止因子组合。累计历史开发试验推进到 252；Candidate49 仍是唯一前瞻候选，禁止历史收益/信号/执行回填，两本台账保持为空。Campaign031 只能从新的独立概念和值前冻结开始，但不需要等待新日线或 16:30。
+
+## Campaign031：个股波动与横截面离散度脱钩（成本与回撤门终止）
+
+Campaign031 继续使用冻结历史滚动主线，不等待新增日线或 16:30。唯一 higher 因子 `intraday_market_dispersion_decoupling_238m` 为：
+
+```text
+-Corr(abs(stock_return), leave_one_out_cross_sectional_population_std)
+```
+
+个股收益只由 09:31–11:30、13:01–15:00 的 close 在各自半日内形成。横截面基准按 `trade_date,return_position` 冻结 `return_sum,return_sum_squares,valid_stock_count`；每个位置减去个股自身后用总体分母 `n` 计算方差，并要求至少 50 个其他有限收益。精确零个股收益和零横截面离散度留在固定支持内，两个完整 238 元向量都要求正总体方差。09:30、午间、overnight、open/high/low/volume/amount、lead/lag、日线和 forward return 均不进入特征构建。
+
+概念、机制核重、无收益协议和开发预注册分别为 [`a_share_three_day_walkforward_campaign_031_concept_scouting.json`](a_share_three_day_walkforward_campaign_031_concept_scouting.json)、[`a_share_three_day_walkforward_campaign_031_mechanism_overlap_audit.json`](a_share_three_day_walkforward_campaign_031_mechanism_overlap_audit.json)、[`a_share_three_day_walkforward_campaign_031_no_return_preregistration.json`](a_share_three_day_walkforward_campaign_031_no_return_preregistration.json) 和 [`a_share_three_day_walkforward_campaign_031_preregistration.json`](a_share_three_day_walkforward_campaign_031_preregistration.json)。各保护值边界均在绑定验证器退出码 0 后打开。横截面基准有 404,362 行；特征快照 manifest/data SHA‑256 为 `4df07ce452454d742521e835f2b7954fe53c597ba47ec31438cb47fd2abbd086` / `9858378a035142b36f19bf00b0b8c7847802e428f6798dc1900b2ae003bcd6b1`，33,015 个分区、7,724,498 行中 7,695,088 行有效。
+
+无收益审计 `20260730T140740Z_campaign031_no_return_audit.json`（SHA‑256 `659c3282bd02d85f5b3da99e555ba25ec227bf6c8546e50f12bc5e8ad97e30d9`）的中位/P05 覆盖为 `99.831839%/99.337089%`，P05 合格名称 138，可形成 540 个非重叠三日 cohort。52 项唯一性比较全部通过；最大绝对中位日秩相关为 `0.690903`，对象是 `intraday_volatility_resolution_238m`，低于冻结的 0.8 门。比较前没有读取日线或未来收益。
+
+唯一 2019–2023 试验的 2021/2022/2023 validation Rank IC 为 `+0.024805/+0.033512/+0.044496`，gross spread 为 `-1.020905%/+1.123479%/+0.917309%`，normalized return 为 `-15.461557%/+35.038548%/+13.108708%`，10bp、20 万元整手收益为 `-3.141680%/+3.027903%/-0.673251%`。三折 IC 均为正，但只有 1/3 折的 10bp 收益为正。
+
+2019–2023 聚合平均 Rank IC 为 `+0.020420`，normalized return/maximum drawdown 为 `+36.257407%/-37.428723%`；零成本、5bp、10bp、20bp 整手收益为 `+6.513813%/-0.223049%/-4.284055%/-12.827843%`。正 10bp 折数、中位 10bp 收益、最差验证回撤和 20bp 聚合收益门失败，survivor 为 0；2024–2025 没有打开或读取。
+
+研究记录 [`a_share_three_day_walkforward_campaign_031_research_record.json`](a_share_three_day_walkforward_campaign_031_research_record.json)（SHA‑256 `e0db3cdad2508672189d5f2599fef26b8a9fff385d13bd8ba669645f640a0aa5`）终止该 exact construction。不得反向、改总体/样本方差、改变横截面离散度、leave-one-out、同业门槛、窗口/年份/成本、增加符号条件、lead/lag、过滤或阈值、重跑、修补、救援或与终止因子组合。survivor 文件的 `complexity=2` 是继承的非决策报告字段错误；冻结 catalog 与 ledger 证明单因子实际复杂度为 1，门禁和结论不受影响，原文件不改写。累计历史开发试验推进到 253；Candidate49 仍是唯一前瞻候选，两本台账保持为空。Campaign032 只能从新的独立概念和值前冻结开始，且必须在任何保护值前修正未来 campaign 的 complexity 报告字段。
+
+## Campaign032：季度公告及时性（无收益唯一性门终止）
+
+Campaign032 继续使用冻结历史滚动主线，不等待新增日线或 16:30。先新增独立的报告语义帮助器：试验 `complexity` 必须由去重后的非空 `feature_set` 个数推导，`single_factor` 必须恰有一个特征。该修复在任何 Campaign032 候选值、比较值或收益前冻结；Campaign031 的不可变结果没有改写。
+
+唯一 higher 因子 `quarterly_announcement_timeliness_days` 是信号时点最新已生效季度报告的 `-(announcement_date - report_date)` 整数自然日。公告只在公告日之后第一个已接受交易会话生效；同一股票按有效会话、报告期、公告日稳定排序保留最后一项。没有更早有效披露，或延迟为正、非整数、非有限时缺失；禁止缩放、裁剪、阈值、过滤或填充。构建只读股票日身份列与季度源的 `instrument,report_date,announcement_date`，不读季度数值、分钟价格/成交、日线或 forward return。
+
+快照 manifest/data SHA‑256 为 `8e64ad897fe725ab4ed800b0203ddd88a6c1431e2386744e1d2b13867d848c65` / `c72008162f6655e7ce34da114641f451aa04d32df61ac4c77222f7f8ad1d787f`；33,015 个分区、7,724,498 行中 7,233,196 行有效，491,302 行没有更早的有效披露，正值/非整数延迟为 0。无收益审计 `20260730T154237Z_campaign032_no_return_audit.json`（SHA‑256 `6096b9d725f5fc1e7f98467bb334a211350bcc86edda28132439fc98f28f8af9`）先通过覆盖/容量门：中位/P05 覆盖 `99.945175%/99.568865%`，P05 合格名称 138，可形成 540 个非重叠三日 cohort。
+
+固定的 53 项唯一性比较有 52 项通过；与既有 `quarterly_announcement_freshness_60s` 的中位日秩相关为 `-0.979325`，绝对值超过冻结上限 0.8，因此唯一性门失败，admissible factor 为 0。负相关符号不允许事后反转方向。Campaign032 没有创建开发预注册，没有读取 2019–2023 日线/收益，没有增加开发试验，也没有打开 2024–2025。
+
+研究记录 [`a_share_three_day_walkforward_campaign_032_research_record.json`](a_share_three_day_walkforward_campaign_032_research_record.json)（SHA‑256 `eaf9691aee28ccbc5130989835a224b5071780d4b931578948e01d7a5ba385d7`）终止该 exact construction。不得把自然日改成交易会话、反向、缩放、分桶、裁剪、挑报告/年份/股票/板块/状态、增加阈值或缺失修复，也不得与 Campaign020 或其他终止因子组合。累计历史开发试验保持 253；Candidate49 仍是唯一前瞻候选，两本台账不变且为空。Campaign033 可以立即从真正独立的新机制和值前冻结开始，不需要新日线或 16:30。
+
+## Campaign033：半日内收益频谱熵（开发质量门终止）
+
+Campaign033 继续使用冻结历史滚动主线，不等待新增日线或 16:30。唯一 higher 因子 `intraday_return_spectral_entropy_59f` 在上午与下午各取 120 个 close、各形成 119 个半日内有符号对数收益、各自去均值并做长度 119 的非归一化 DFT。对正频率 `k=1..59`，上午和下午同频平方复模功率相加后归一化为 `p_k`，因子为 `-sum(p_k*log(p_k))/log(59)`。固定范围是 `[0,1]`；非正/非有限 close、非有限收益或功率、非正总功率均缺失。禁止 09:30、午间、隔夜、open/high/low/volume/amount、taper、padding、选频、phase、wavelet、lead/lag、子窗口、年份、阈值或过滤搜索。
+
+特征快照 manifest/data SHA‑256 为 `bbd2b064885e90576712610a5b11426c3f3048fd10ff1d0590ea02861e423bd6` / `ef76f920ab1b88dcbec40b640de240db308e60fc9711f42bb9cffbfe002e27cf`；33,015 个分区、7,724,498 行中 7,695,088 行有效。无收益审计 `20260730T171610Z_campaign033_no_return_audit.json`（SHA‑256 `f92d564c0a8f8bd32ae0a29f3879cb7c4bee85e61f9030f6ee8b635f4f5c1b35`）先通过覆盖/容量门：中位/P05 覆盖 `99.831839%/99.337089%`，P05 合格名称 138，可形成 540 个非重叠三日 cohort。54 项唯一性比较全部通过；最大绝对中位日秩相关为 `0.245542`，对象是 `intraday_global_price_range_revisit_240m`。
+
+开发预注册 [`a_share_three_day_walkforward_campaign_033_preregistration.json`](a_share_three_day_walkforward_campaign_033_preregistration.json)（SHA‑256 `1c15aec7e148e4d9e039654fe090e85629c85d57e8e8ca9d5844a9e067eb49b3`）只允许 higher、权重 1.0 的单因子试验，使用三组冻结扩展折、边界清除三个信号会话、t/t+1/t+3 分区内完整包含、固定 Top-3、20 万元和整手成本模拟。2021/2022/2023 validation Rank IC 为 `-0.012842/-0.010158/-0.029073`，gross spread 为 `-0.280969%/+0.157654%/-0.656946%`，normalized return 为 `-16.856120%/-27.484849%/-40.688676%`，10bp 整手收益为 `-1.291245%/-5.256160%/-7.376166%`。
+
+2019–2023 聚合平均 Rank IC 为 `-0.010941`，normalized return/maximum drawdown 为 `-30.154727%/-73.363250%`；零成本、5bp、10bp、20bp 整手收益为 `-2.950138%/-7.269095%/-9.331777%/-17.806730%`。操作门通过，但八项冻结质量门失败，survivor 为 0；2024–2025 没有打开或读取。
+
+研究记录 [`a_share_three_day_walkforward_campaign_033_research_record.json`](a_share_three_day_walkforward_campaign_033_research_record.json)（SHA‑256 `cf4f7d3ea7ef074cf13288001047675e60a237eeae66cb628f79a6c48e849a28`）终止该 exact construction。完整测试发现初版非决策状态前缀会被旧 48 条机制扫描器误收，追加语义修复只把它对齐为既有 campaign 的 `completed_zero_development_survivors_stress_interval_not_opened`；结果、账本和终止结论未改。不得因负 IC 反向、改变去均值/DFT/功率池化/熵归一化、窗口/年份/成本、增加频带/phase/taper/padding/lead/lag/过滤/阈值，重跑、修补、救援或与终止因子组合。预收益调度、覆盖上下文、复杂度注入、单试验压力语义和 CLI 导入修复均保留为追加记录，未改变研究参数或结果。累计历史开发试验推进到 254；Candidate49 仍是唯一前瞻候选，两本台账不变且为空。Campaign034 只能从新的独立机制和值前冻结开始，但不需要新日线或 16:30。
+
+## Campaign035：三收益弱序熵（无收益唯一性门终止）
+
+Campaign035 继续使用离线历史滚动主线，不等待新增日线或 16:30。唯一 higher 因子 `intraday_return_weak_order_entropy_234t` 在上午和下午各用 120 个 close 形成 119 个半日内对数收益，再各取 117 个重叠三收益元组。全部 234 个元组按精确比较三元组 `(cmp(a,b),cmp(a,c),cmp(b,c))` 分入 13 种传递弱序，因子为 `-sum(p_k*ln(p_k))/ln(13)`。精确并列保留、比较容差为 0；禁止抖动、舍弃并列、跨午间收益、去重、改元组长度、子窗口、阈值和过滤。
+
+概念、机制核重、无收益协议和终止记录分别为 [`a_share_three_day_walkforward_campaign_035_concept_scouting.json`](a_share_three_day_walkforward_campaign_035_concept_scouting.json)、[`a_share_three_day_walkforward_campaign_035_mechanism_overlap_audit.json`](a_share_three_day_walkforward_campaign_035_mechanism_overlap_audit.json)、[`a_share_three_day_walkforward_campaign_035_no_return_preregistration.json`](a_share_three_day_walkforward_campaign_035_no_return_preregistration.json) 和 [`a_share_three_day_walkforward_campaign_035_research_record.json`](a_share_three_day_walkforward_campaign_035_research_record.json)。所有保护值边界均先通过指纹绑定验证器。快照 manifest/data SHA‑256 为 `33de221a37e0a19d3c1fffba3c8f0e64c20571581a7c72296b1a593c0acc91f4` / `b557148b91a16dad9f028190723b2485f9eadd231c0aaded6b499d9dc1c68606`；33,015 个分区、7,724,498 行全部有效，精确并列三元组共 630,100,770 个。
+
+无收益审计 `20260730T205353Z_campaign035_no_return_audit.json`（SHA‑256 `ca40ca05991c8ea3c56fe3b3d85dc782c4e2d22f69b51bd12f192c3b9f289b0a`）先通过覆盖/容量门：中位/P05 覆盖为 `99.945175%/99.568865%`，P05 合格名称 138，可形成 540 个三日 cohort。固定 56 项唯一性比较有 55 项通过；与 `intraday_price_update_share_238m` 的中位日秩相关为 `-0.883137`，绝对值超过 0.8，因此收益前终止。
+
+Campaign035 未创建开发预注册、未读取日线或 forward return、未增加开发试验，2024–2025 未打开。不得因负相关而反向、删除比较、改状态字母表/并列规则/窗口/方向/归一化、增加阈值或过滤、修补、重跑或组合。累计历史开发试验仍为 255；Candidate49 仍是唯一前瞻候选，禁止历史回填、Candidate50 和当前交易输出。Campaign036 必须从不再重表达价格更新频率的独立机制和值前冻结开始。
+
+## Campaign038：半日端点弦贴合度（开发质量门终止）
+
+Campaign038 使用离线历史滚动主线，不等待新增日线或 16:30。唯一 higher 因子 `intraday_half_session_chord_adherence_240m` 在上午和下午各用 120 个 close 的首尾端点确定一条对数价格弦；分数为 `1-D/(120*V)`，其中 `D` 是两段共 240 个位置到各自弦的绝对偏离和，`V` 是两段共 238 个半日内相邻绝对对数收益和。午间跳变排除，总行程为零时缺失；禁止全日弦、拟合趋势、平方或有符号偏离、平滑、回归、子窗口、阈值、过滤和组合。
+
+特征快照 manifest/data SHA‑256 为 `d8042490037077c68c42bbf24f5b354b2a808894ac0bad79ad0c63c43404519a` / `0791779f97992d3c9cd9ee6501a2eacb6df45d534f5c6b0359088221de951904`；33,015 个分区、7,724,498 行中 7,695,088 行有效。无收益审计 `20260731T014516Z_campaign038_no_return_audit.json`（SHA‑256 `efc9b96c4754f86f32bcb54d3ae31228bb930972aefcf11560c3b9c781bdc0de`）先通过覆盖/容量门：中位/P05 覆盖为 `99.831839%/99.337089%`，P05 合格名称 138，可形成 540 个三日 cohort。固定 59 项唯一性比较全部通过；最大绝对中位日秩相关为 `0.506321`，对象是 `intraday_global_price_range_revisit_240m`。
+
+开发预注册只允许 higher、权重 1.0 的一个试验，三组验证折 Rank IC 为 `+0.013989/+0.029755/+0.020184`，但归一化收益为 `-6.254077%/-33.266306%/-25.046695%`，10bp 整手收益为 `-2.639380%/-6.622402%/-5.809039%`。2019–2023 聚合 0/5/10/20bp 整手收益为 `-9.462748%/-13.966825%/-17.888889%/-25.726446%`；最差验证归一化回撤为 `-35.132852%`。操作门通过，收益一致性、回撤和 20bp 压力成本质量门失败，survivor 为 0；2024–2025 未打开或读取。
+
+Campaign038 exact construction 终止。不得降低收益/回撤门、反向、改弦或归一化、跨午间、重跑、修补、救援、组合或生成当前评分/选股/仓位/订单。累计历史开发试验为 258；Candidate49 仍是唯一前瞻候选且禁止历史回填。Campaign039 只能从独立机制和值前冻结开始，不需要新日线或 16:30。
+
+## Campaign039：日内收益时间反演非对称（开发质量门终止）
+
+Campaign039 继续使用离线历史滚动主线，不等待新增日线或 16:30。唯一 higher 因子 `intraday_return_time_reversal_asymmetry_236p` 在上午和下午各由 120 个 close 形成 119 个相邻对数收益和 118 个有序相邻收益对；两段共 236 对先汇总 `T=sum(a^2*b-a*b^2)` 与 `Q=sum(abs(a*b)*(abs(a)+abs(b)))`，再返回 `abs(T)/Q`。精确零收益保留，`Q=0` 时缺失，绝对值只在两段合并后取一次；禁止跨午间配对、去均值、标准化、逐对或分半日取绝对值、裁剪、缩放、阈值、过滤和组合。
+
+特征快照 manifest/data SHA‑256 为 `cda070af6d700a32f5dba1c003a3a38c9921b1c75b29ac9b8a9aa4d39d169d17` / `4d61fc2b98d2a1fc3f884668b23fcc763857926ba34abb08fab4f8ae6a3a4948`；33,015 个分区、7,724,498 行中 7,692,009 行有效。无收益审计 `20260731T033003Z_campaign039_no_return_audit.json`（SHA‑256 `9afe7310fbcf3bd8f062ddbeb5dac7f65708d60a3e376b96ffa3b1d265226db2`）先通过覆盖/容量门：中位/P05 覆盖为 `99.818840%/99.287391%`，P05 合格名称 138，可形成 540 个三日 cohort。固定 60 项唯一性比较全部通过；最大绝对中位日秩相关为 `0.308938`，对象是 `intraday_return_variance_entropy_238m`，与 Campaign038 为 `-0.015115`。
+
+开发预注册只允许 higher、权重 1.0 的一个试验。三组验证折 Rank IC 为 `+0.011945/-0.007920/-0.011286`，归一化收益为 `-1.800701%/-5.462095%/-34.421761%`，10bp 整手收益为 `-1.817215%/-1.648212%/-6.071025%`。2019–2023 聚合 0/5/10/20bp 整手收益为 `+1.311107%/-3.852654%/-7.934397%/-16.734396%`；最差验证归一化回撤为 `-44.021941%`。操作门通过，IC、spread、收益一致性、回撤和 20bp 压力成本质量门失败，survivor 为 0；2024–2025 未打开或读取。
+
+Campaign039 exact construction 终止。不得用零成本正收益绕过成本门、反向、改三次项/归一量/绝对值位置、跨午间、改窗口/方向/成本、重跑、修补、救援、组合或生成当前评分/选股/仓位/订单。累计历史开发试验为 259；Candidate49 仍是唯一前瞻候选且禁止历史回填。Campaign040 只能从独立机制和值前冻结开始，不需要新日线或 16:30。
+
+## Campaign040：早晚盘分钟振幅分布相似度（无收益唯一性门终止）
+
+Campaign040 继续使用离线历史滚动主线，不等待新增日线或 16:30。唯一 higher 因子 `intraday_morning_afternoon_range_profile_similarity_120b` 在上午和下午各读取 120 个 high/low，以每分钟 `log(high/low)` 构造两条钟点振幅轮廓。两段分别归一化为概率分布 `p/q`，再返回等权 Jensen–Shannon 相似度 `1-JSD(p,q)/log(2)`。精确零振幅分钟留在固定支持中，任一半日总振幅为零时缺失；禁止 09:30、午间、open/close/volume/amount、范围熵、Pearson、总振幅比、子窗口、反向、阈值、过滤和组合。
+
+概念筛选、机制核重、无收益协议、快照冻结和终止记录分别为 [`a_share_three_day_walkforward_campaign_040_concept_scouting.json`](a_share_three_day_walkforward_campaign_040_concept_scouting.json)、[`a_share_three_day_walkforward_campaign_040_mechanism_overlap_audit.json`](a_share_three_day_walkforward_campaign_040_mechanism_overlap_audit.json)、[`a_share_three_day_walkforward_campaign_040_no_return_preregistration.json`](a_share_three_day_walkforward_campaign_040_no_return_preregistration.json)、[`a_share_three_day_walkforward_campaign_040_feature_snapshot_freeze_20260731.json`](a_share_three_day_walkforward_campaign_040_feature_snapshot_freeze_20260731.json) 和 [`a_share_three_day_walkforward_campaign_040_research_record.json`](a_share_three_day_walkforward_campaign_040_research_record.json)。所有保护值边界均先通过指纹绑定验证器。
+
+快照 manifest/data SHA‑256 为 `9830dc3dc4f5ceb86f6983c1353bd52c3b6c87eeb206f433b10c19adc7d82f40` / `9b7443611ce0da082aa31fb88d4b001c0d7231639112e15fd9645d7ede46dee8`；33,015 个分区、7,724,498 行中 7,633,953 行有效。快照冻结前只纠正两个继承兼容布尔标签为 `high/low=true, close=false`；显式投影本来就是 high/low，分区文件、候选值和 dataset SHA‑256 均未改变，随后重新通过 33,015 个分区的字节/frame 哈希及幂等验证。
+
+无收益审计 `20260731T051832Z_campaign040_no_return_audit.json`（SHA‑256 `4a17a68aec878c216e70aaabef3500534fcf4f9924cc92f19b61a33849311f5c`）先通过覆盖/容量门：中位/P05 覆盖为 `99.377358%/98.227732%`，P05 合格名称 138，可形成 540 个三日 cohort。覆盖通过后才加载固定的 61 项唯一性比较；顺序匹配，60 项通过。与 `intraday_intrabar_range_participation_entropy_240m` 的中位日秩相关为 `+0.884338`，绝对值超过 0.8，因此收益前终止。
+
+Campaign040 未创建开发预注册、未读取日线或 forward return、未增加开发试验，2024–2025 未打开。不得把 similarity 改成 divergence、反向、删除失败比较、改距离/归一化/半日切分/零值语义/方向、增加阈值或过滤、修补、重跑或组合。累计历史开发试验仍为 259；Candidate49 仍是唯一前瞻候选，禁止历史回填、Candidate50 和当前交易输出。Campaign041 必须从不再重表达分钟 high-low 振幅质量分布或参与熵的独立机制和值前冻结开始。
+
+## Campaign041：日内微 gap 吸收占比（无收益唯一性门终止）
+
+Campaign041 继续使用离线历史滚动主线，不等待新增日线或 16:30。唯一 higher 因子 `intraday_microgap_absorption_share_238p` 在上午和下午各读取 120 个 OHLC，各形成 119 个半日内转换。`g_t=log(open_t/close_(t-1))` 精确非零时才是 informative gap；若 `low_t <= close_(t-1) <= high_t` 则计为已吸收，因子为已吸收 informative gap 数除以 informative gap 总数。至少需要 30 个 informative gap；禁止 09:30、午间转换、volume/amount、gap 权重、符号分组、阈值、过滤、反向和组合。
+
+概念筛选、机制核重、无收益协议、最终快照冻结、无收益审计冻结和终止记录分别为 [`a_share_three_day_walkforward_campaign_041_concept_scouting.json`](a_share_three_day_walkforward_campaign_041_concept_scouting.json)、[`a_share_three_day_walkforward_campaign_041_mechanism_overlap_audit.json`](a_share_three_day_walkforward_campaign_041_mechanism_overlap_audit.json)、[`a_share_three_day_walkforward_campaign_041_no_return_preregistration.json`](a_share_three_day_walkforward_campaign_041_no_return_preregistration.json)、[`a_share_three_day_walkforward_campaign_041_feature_snapshot_freeze.json`](a_share_three_day_walkforward_campaign_041_feature_snapshot_freeze.json)、[`a_share_three_day_walkforward_campaign_041_no_return_audit_freeze_20260731.json`](a_share_three_day_walkforward_campaign_041_no_return_audit_freeze_20260731.json) 和 [`a_share_three_day_walkforward_campaign_041_research_record.json`](a_share_three_day_walkforward_campaign_041_research_record.json)。所有保护值边界均先通过指纹绑定验证器。
+
+快照 manifest/data SHA‑256 为 `838f71169e90d33e9ebbfd34d62dd2c4969432454eeaa69ae6601bb6fdc95391` / `d330e806262d5e3187649273aea14bb20e53d13cc18edfbc8d8dd0616aa0ac0b`；33,015 个分区、7,724,498 行中 7,461,292 行有效。共检查 1,838,430,524 个固定转换，其中 783,613,890 个是 informative gap，495,091,836 个满足吸收条件；263,206 行因不足 30 个 informative gap 而缺失。非正、非有限或错序 OHLC 行均为 0。三次发布失败均作为追加式基础设施证据保留；修复只纠正继承发布器的 OHLC/volume 元数据，没有改变公式、分区字节或 dataset SHA‑256，最终 33,015 个分区的字节/frame 哈希和幂等验证全部通过。
+
+无收益审计 `20260731T072630Z_campaign041_no_return_audit.json`（SHA‑256 `fe00c12d6cb1ebfbb0c7eb31e7f43e188f845ae41a4efff5ebbc9d7230fcf52b`）先通过覆盖/容量门：中位/P05 覆盖为 `99.403996%/92.885907%`，合格名称中位/P05 为 937/138，可形成 540 个三日 cohort。覆盖通过后才加载固定的 62 项唯一性比较；顺序匹配，60 项通过。与 `intraday_adjacent_range_overlap_continuity_238p` 和 `intraday_intrabar_range_participation_entropy_240m` 的中位日秩相关分别为 `+0.836224` 和 `+0.801723`，两项绝对值均超过 0.8，因此收益前终止。
+
+Campaign041 未创建开发预注册、未读取日线或 forward return、未增加开发试验，2024–2025 未打开。不得把吸收改成未吸收、反向、修改 gap/最小计数/闭区间/半日重置/窗口/方向、删除失败比较、增加阈值或过滤、修补、重跑或组合。累计历史开发试验仍为 259；Candidate49 仍是唯一前瞻候选，禁止历史回填、Candidate50 和当前交易输出。Campaign042 必须从不再重表达相邻区间重叠、区间包含、吸收或范围质量集中度的独立机制和值前冻结开始。
+
+## Campaign042：午间重定价—下午延续一致性（开发质量门终止）
+
+Campaign042 继续使用无需等待新增日线或 16:30 的离线历史滚动主线。唯一 higher 因子 `intraday_lunch_repricing_persistence_2r` 定义 `g=log(close_13:01/close_11:30)`、`a=log(close_15:00/close_13:01)`，返回 `2*g*a/(g^2+a^2)`；单个零分量保留，二者同时为零时缺失。只读完整 240 根 close 网格；禁止改锚点、绝对值、open/high/low/volume/amount、阈值、过滤、反向和组合。
+
+快照 manifest/data SHA‑256 为 `c56a81a461aae4ea9d1f44c238dd381541e18425837872a17f3d34f8dc796acd` / `9fe1a6095a70702ef3ce7ba6cbca8e1386749513b00e8494b37813a1639826c8`；33,015 个分区、7,724,498 行中 7,449,531 行有效。初次发布因继承 manifest 缺少 `source_amount_read=false` 在发布前失败；追加修复只补源字段元数据，恢复全部 checkpoint 且零重算，候选值和 dataset SHA‑256 未变。无收益审计通过覆盖门和全部 63 项比较；中位/P05 覆盖为 `98.039216%/96.197134%`，最大绝对中位日秩相关为 `0.041753`。
+
+唯一冻结开发试验的 2021/2022/2023 验证 Rank IC 为 `-0.008747/-0.001419/-0.002932`，归一化收益为 `-4.183944%/-29.863464%/-13.939693%`，10bp 整手收益为 `-2.488201%/-5.341144%/-3.712165%`。2019–2023 聚合 0/5/10/20bp 整手收益为 `-2.146893%/-7.421575%/-11.867364%/-18.965983%`，最差验证归一化回撤为 `-32.235952%`。操作门通过，但八项冻结质量门全部失败，survivor 为 0；2024–2025 未打开或读取。
+
+研究记录 [`a_share_three_day_walkforward_campaign_042_research_record.json`](a_share_three_day_walkforward_campaign_042_research_record.json)（SHA‑256 `95ed818100ce2529e6eea442702a09d0bf0ae2ffd35a0604927826f3431328fd`）终止该 exact construction。不得反向、改锚点/归一化/零值规则/窗口/成本、重跑、修补、救援或组合。累计历史开发试验推进到 260；Candidate49 仍是唯一前瞻候选，禁止历史回填和当前交易输出。下一轮必须作为独立 Campaign043 从新的经济机制和值前冻结开始。
+
+2026‑07‑31 的 Candidate49 同日前瞻流程在 16:30 Asia/Singapore 后先以零请求 `plan` 得到 `ready=true`，随后确认运行在 `stock_basic` 源门因无效 `ts_code` 失败关闭。失败记录为 [`a_share_candidate49_20260731_daily_source_failure_record.json`](a_share_candidate49_20260731_daily_source_failure_record.json)（SHA‑256 `67effbc1bc364c8a312d5cb2003303b3cd7a48b7f805dac5a9b57b0f1185fd7f`）。不得同日重试或重请求失败响应；Candidate49 信号/执行台账均未改变。
+
+## Campaign043：成交价 VWAP 一致度（开发质量门终止）
+
+Campaign043 继续采用离线历史滚动主线，不等待新增日线或 16:30。唯一 higher 因子 `intraday_transaction_vwap_consensus_240m` 只读 09:31–11:30、13:01–15:00 的 `datetime,symbol,provider,volume,amount`。对 `volume>0 && amount>0` 的 active bar 定义 `p_i=amount_i/volume_i`、`w_i=volume_i/sum(volume)`，返回 `exp(sum(w_i*log(p_i)))/sum(w_i*p_i)`；联合零量零额 bar 排除，单边零使股票日缺失，至少要求 120 个 active bar，常成交价日为有效分数 1。禁止 open/high/low/close、09:30、子窗口、替代中心/权重/离散度、反向、缩放、阈值、过滤或组合。
+
+快照 manifest/data SHA‑256 为 `7652e88cbaf7f3f21751b3c944dc21c2746580f6a4d48aebffeea410b9c89590` / `59410bf94f8c013f0be2bea166c6fa128ff2b173c0ba85e688683675270d3885`；33,015 个分区、7,724,498 行中 7,682,604 行有效。首次构建因继承发布 hook 查找失败，第二次在全部 checkpoint 完成后因继承 manifest 的 kind、协议键前缀和两个源字段布尔值不兼容而在原子发布前失败；两项追加修复只处理发布基础设施/元数据。最终恢复 33,015 个 checkpoint、零分区重算，候选值和 dataset SHA‑256 未变。
+
+无收益审计的首次交互执行在聚合阶段因会话生命周期消失且未产生文件；失败被单独记录，完全相同冻结参数的持久重试生成唯一审计 `20260731T115937Z_campaign043_no_return_audit.json`（SHA‑256 `d7cfb302d31e8ae740497d58e460b92cef9460fb4260d7cb4cba641db31d9b06`）。覆盖中位/P05 为 `99.876847%/99.339742%`，P05 合格名称 138，可形成 540 个三日 cohort。覆盖通过后才读取固定 64 项比较；全部通过，最大绝对中位日秩相关为 `0.667503`（`intraday_realized_volatility`），低于 0.8；与 Candidate49 为 `+0.542991`，与 Campaign042 为 `-0.051883`。
+
+唯一冻结开发试验的 2021/2022/2023 验证 Rank IC 为 `+0.038580/+0.037693/+0.048980`，归一化收益为 `-16.789567%/-52.500067%/-16.758099%`，10bp 整手收益为 `-4.104895%/-10.579855%/-3.380239%`。2019–2023 聚合 0/5/10/20bp 整手收益为 `-14.495900%/-18.027923%/-21.034206%/-29.142929%`，最差验证归一化回撤为 `-55.074679%`。操作门通过，但 spread、收益一致性、pilot、回撤和 20bp 质量门失败，survivor 为 0；2024–2025 未打开或读取。
+
+研究记录 [`a_share_three_day_walkforward_campaign_043_research_record.json`](a_share_three_day_walkforward_campaign_043_research_record.json)（SHA‑256 `44bd70909c20106ed920f5a77b5f9d54b28d3317b19c7392314a235cdd8939ba`）终止该 exact construction。正 Rank IC 不得绕过执行收益/成本/回撤门；不得反向、改 active-bar/零值/最小支持/权重/均值定义、重跑、修补、救援或组合。累计历史开发试验推进到 261；当前聚合候选仍为 0。Candidate49 仍是唯一前瞻候选，两本台账为空，禁止历史回填、Candidate50 和当前交易输出。Campaign044 只能从真正独立的新机制和值前冻结开始，但无需等待新日线或 16:30。
+
+## Campaign044：完整终止特征库方向百分位共识（无收益覆盖门终止）
+
+Campaign044 继续以离线历史样本作为主要迭代引擎，不等待新增日线或 16:30。它先后记录三个组合设计：包含 Candidate49 的 65 项版本因违反历史回填边界而在值前拒绝；从后期比较列表删除 Candidate49 得到的 64 项版本因遗漏两个冻结旧定义而在值前拒绝；最终版本才冻结为 `full_terminal_library_directional_percentile_consensus_66f`。最终版本复用全部 66 个终止定义，明确不读取 Candidate49；每个信号会话要求所有成分均为有限且合格值，按各自冻结方向计算平均并列经验百分位后以 `1/66` 等权平均，至少要求 50 个共同支持名称。不得使用部分平均、插补、删减、筛选、阈值、拟合权重或模型。
+
+首次快照构建在第一个对齐来源值返回前发现质量/上市主键超出绑定的分钟身份键，按基础设施失败记录终止。唯一修复只把主键与 Campaign043 分钟身份键求交，未改变公式、成分库、方向或门槛。最终不可变快照 manifest/data SHA‑256 为 `ab5d08bf5c9ca8737c32b13e8a6fcc68d9cfb26fc8cdb43377d34bde5d724964` / `295c023b3f6a76605ab0413f6ab9410e2dabcb4cb2d262de7a62618818a55487`；33,015 个分区、7,724,498 行均通过字节与帧哈希验证。66 项共同支持在会话最小名称门之前为 646,683 行，最终有效 646,568 行；Candidate49 因子值、日线和 forward return 均未读取。
+
+唯一无收益审计 `20260731T191808Z_campaign044_no_return_audit.json`（SHA‑256 `5bf91fae0ab73f04680e840d8a5280250e0e3091f80fe47684d1656fbde10776`）严格先运行覆盖门。中位/P05 覆盖为 `51.717636%/34.992895%`，低于冻结的 `95%/90%`；P05 合格名称 78、潜在三日 cohort 539、覆盖 2019–2025 七年虽分别通过对应门槛，仍不能抵消横截面覆盖失败。审计因此没有重载 66 项成分相关性，没有读取 2019–2023 日线或未来收益，也没有打开 2024–2025。
+
+终止记录为 [`a_share_three_day_walkforward_campaign_044_research_record.json`](a_share_three_day_walkforward_campaign_044_research_record.json)（SHA‑256 `3e343e8387fd16db75f7e8a5c87025e712082ea50aa9e360083af7f0d3f2b615`）。追加式台账计入两个值前设计拒绝、一次基础设施失败和一次无收益候选，共 4 次；累计历史研究尝试从 261 推进到 265，而实际读取开发收益的累计试验仍为 261。不得放宽覆盖、改成部分支持、插补、删除稀疏成分、调权、拟合、反向、重跑或组合救援。旧终止记录保持不改写；Candidate49 仍是唯一活动前瞻候选且两本台账为空。下一轮 Campaign045 可以随时从独立值前概念开始，但历史结果不得直接生成当前评分、选股、仓位、订单或投资建议。
+
+## Campaign045：波动—活动领先滞后非对称（开发质量门终止）
+
+Campaign045 的冻结 higher 因子 `intraday_volatility_activity_lead_lag_asymmetry_236p` 只使用两个独立 120 分钟半场的 close/amount，比较“波动先发生、活动后到达”和“活动先到达、波动后发生”的总体 Pearson 相关。无收益覆盖中位/P05 为 `99.819413%/99.287391%`，68 项比较全部通过，最大绝对中位日秩相关为 `0.111220`，因此只运行一个冻结开发试验。三个验证折 mean Rank IC 全负，只有一折 normalized return 和一折 10bp 收益为正，三折整手可负担率均低于 90%，开发期 20bp 收益为 `-11.557080%`；survivor 为 0，2024–2025 未打开。累计历史研究尝试为 267，读取开发收益的试验为 262。该 exact construction 禁止反向、修改字段/半场/滞后、过滤、调参、组合或救援。
+
+## Campaign046：相邻收益反转能量占比（无收益唯一性门终止）
+
+Campaign046 继续使用随时可运行的离线历史滚动主线，不等待新日线或 16:30。唯一 higher 因子 `intraday_return_reversal_energy_share_236p` 在上午和下午各用 120 个 close 形成 119 个相邻对数收益和 118 个相邻收益对；两段共 236 对，返回反向对 `abs(a*b)` 能量占全部对 `abs(a*b)` 能量的比例。精确零收益保留并贡献零权重，分母必须有限且为正；禁止 09:30、跨午间、OHLC/volume/amount、替代 lag/window/sign tolerance、反向、阈值、过滤、模型或组合。
+
+快照 manifest/data SHA‑256 为 `4103aeee6e45cd54ffcb304283808abb67e6ea6107605f67441df70653e31ccd` / `ee089ffd7dc7111ec6a7b620830595805ce998db6ef076f9d3cd516a7784d06f`；33,015 个分区、7,724,498 行中 7,692,009 行有效并全部通过字节/frame 哈希。两次基础设施失败均追加保留：首次构建在读取外部分区前因继承查找失败；首次无收益审计在覆盖通过并完成前 68 项比较后因 Campaign045 快照误用 Campaign044 列模式而失败。两次修复仅处理继承映射和校验器分派，没有改变公式、候选值、比较顺序或门槛。
+
+最终无收益审计 `20260801T003958Z_campaign046_no_return_audit.json`（SHA‑256 `4d7db211439f4e2c019acf8fbc0e6029450f4a31b0dc78e2c20e4edae8673425`）先通过覆盖/容量门：中位/P05 覆盖为 `99.818840%/99.287391%`，P05 合格名称 138，可形成 540 个三日 cohort。覆盖通过后固定 69 项比较顺序完全匹配；与 `intraday_five_minute_variance_ratio_230w` 的中位日秩相关为 `-0.817758`，绝对值超过冻结上限 0.8，故零准入并在日线/forward return 前终止。
+
+终止记录为 [`a_share_three_day_walkforward_campaign_046_research_record.json`](a_share_three_day_walkforward_campaign_046_research_record.json)。Campaign046 共记录两次基础设施失败和一次无收益候选，累计历史研究尝试从 267 增至 270，累计读取开发收益的试验仍为 262。不得反向、删除失败比较、改能量权重/符号/窗口/方向、重跑、救援或组合；2024–2025 未打开，Candidate49 历史未回填且前瞻台账未改变。下一轮只能作为独立 Campaign047 从值前冻结开始，历史结果仍不得生成当前评分、选股、仓位、订单或投资建议。
+
+## Campaign049：早晚盘成交额轮廓相似度（无收益唯一性门终止）
+
+历史 Campaign049 与前瞻 Candidate49 严格分离。冻结 higher 因子 `intraday_morning_afternoon_amount_profile_similarity_120b` 在两个连续半场各使用 120 个 amount，独立归一化后计算等权 Jensen–Shannon 相似度；每半场至少 60 个正成交额分钟，精确零值保留，禁止价格、volume、替代距离、方向、阈值、过滤、模型和组合。
+
+快照 manifest/data SHA‑256 为 `6c27933f232926f33d750f624fc6ad32c394c2e97922043502e997275c1ace1d` / `c60c1f245e2bbfdd12acdcfdd8417799684fcda09caf4472270d870ba911164c`，33,015 个分区和 7,724,498 行均通过字节/frame 哈希。无收益覆盖中位/P05 为 `99.811143%/99.065421%`；覆盖通过后才加载 72 项冻结比较。与 `intraday_amount_participation_entropy_240m` 的绝对中位日秩相关为 `0.871597`，超过 0.8，故不创建开发预注册、不读取日线或 forward return、不打开 2024–2025。
+
+本轮累计历史研究尝试增至 280，累计读取开发收益的试验保持 264。Candidate49 的历史收益、信号、执行和里程碑均未回填，两本前瞻台账不变；周六没有运行供应商工作流。后续离线 Campaign050 可随时独立预注册，不必等待新日线或 16:30，但不得救援、重跑、组合 Campaign049 或生成当前评分、选股、仓位、订单和投资建议。
+
+## Campaign050：半场极端冲击反转完成度（开发质量门终止）
+
+Campaign050 延续离线历史滚动主线，不依赖当天日线或 16:30。唯一 higher 因子 `intraday_half_session_extreme_shock_reversal_completion_2h` 在上午、下午两个独立 120-close 半场内分别选择绝对值最大的最早一分钟冲击 `s`，以冲击结束后到同半场末的收益 `R` 计算 `-2*s*R/(s²+R²)`，再等权平均。固定禁止跨午间、替代 tie rule、字段、窗口、方向、阈值、过滤、拟合、模型和组合。
+
+快照 manifest/data SHA‑256 为 `8e95728fd9e1ba3d3ab820dbf5d92812bd18f9076ee901ee80cd76cf989300ef` / `d758c059ff6fb602106c240c369d5d3db60eb245ec7cccf23d5a32b9f69dec8a`；33,015 个分区、7,724,498 行中 7,630,332 行有效并全部通过字节/frame 哈希。无收益覆盖中位/P05 为 `99.358885%/98.156168%`，固定 73 项比较全部通过，最大绝对中位日秩相关为 `0.149511`。
+
+唯一冻结开发试验的 2021/2022/2023 验证 mean Rank IC 为 `+0.009970/+0.000564/-0.003655`，归一化收益为 `+23.210460%/-16.237229%/-23.423742%`，10bp 整手收益为 `+0.774438%/-4.699991%/-5.836597%`。2019–2023 聚合 0/5/10/20bp 整手收益为 `-1.577495%/-5.908229%/-10.111490%/-18.403172%`。操作门通过，但收益折一致性、spread、pilot、回撤和 20bp 质量门失败，survivor 为 0；2024–2025 未打开或读取。
+
+追加式台账保留一次快照空联合分区失败、一次无收益校验器命名空间污染、两次开发预注册语义失败、一个完整因子尝试，以及收口阶段一次绑定校验器 CLI 参数误用，最终共 6 次独立尝试、7 条阶段记录。后者未读取价格或收益，位置参数重试后 38/38 项绑定通过。累计历史研究尝试由 280 推进到 286，累计读取开发收益的试验由 264 推进到 265。Candidate49 仍是唯一前瞻候选，两本台账为空；周六未运行供应商流程。历史研究可继续从独立 Campaign051 值前机制开始，无需等待新增日线或 16:30，但不得救援 Campaign050、打开其 2024–2025、生成当前评分/选股/仓位/订单或构成投资建议。
+
+## Campaign051：收盘价区间占用熵（开发质量门终止）
+
+Campaign051 继续以离线历史滚动为主要迭代引擎，不等待新增日线或 16:30。唯一 higher 因子 `intraday_close_range_occupancy_entropy_10b` 读取固定 240 根 close，将 `log(close)` 按当日完整对数价格区间归一到 `[0,1]`，落入 10 个固定等宽 bin，再用 `-sum(p*log(p))/log(10)` 计算区间占用熵。精确最大值进入第 10 桶，重复 close 保留；完整区间必须严格为正。该量是顺序不变的价格区间占用广度，禁止 open/high/low/volume/amount、改 bin、替代边界、窗口、方向、阈值、过滤、拟合、模型或组合。
+
+不可变快照 manifest/data SHA‑256 为 `13a2b7862cb2118dd8e42bcd94653973de603d840bd09f0762be219b840f032e` / `2930b47c228f3e033f8130d9960e55668e688e02ba020a02d02ffa60987cabbd`；33,015 个分区、7,724,498 行中 7,695,092 行有效，全部通过字节/frame 哈希验证。完整无收益审计为 `20260803T073502Z_campaign051_no_return_audit.json`（SHA‑256 `e5effeea374db0e18256be69caac92e68a5a42e8b3b095db90c42fa4e65240cf`）：1,632 个会话的覆盖中位/P05 为 `99.831839%/99.337089%`，P05 合格名称为 138，可形成 540 个不重叠三会话 cohort；覆盖通过后固定 74 项比较按预注册顺序全部通过。最大绝对中位日秩相关为 `0.282850`，最近因子是 `intraday_amount_center_of_mass_240m`；与最后加入的 Campaign050 因子绝对相关仅 `0.005963`。
+
+唯一冻结开发试验的 2021/2022/2023 验证 mean Rank IC 为 `+0.010069/+0.003607/-0.021171`，归一化收益为 `-1.748712%/-8.586244%/-12.948299%`，10bp 整手收益为 `+0.011174%/-3.683443%/-3.096231%`。2019–2023 聚合 0/5/10/20bp 整手收益为 `+2.587285%/-1.295268%/-5.713620%/-14.030842%`，最差验证归一化回撤为 `-30.626166%`。fold 1 整手可负担率仅 `88.288288%`，低于冻结 90% 门槛；三折 normalized return 全负、仅一折 10bp 收益为正，median pilot、回撤和聚合 20bp 门也失败。survivor 为 0，2024–2025 未打开或读取。
+
+当前终止记录为 [`a_share_three_day_walkforward_campaign_051_research_record_v3.json`](a_share_three_day_walkforward_campaign_051_research_record_v3.json)（SHA‑256 `3c772a960ffb005f4227391c79a37223187c1bd51bbfec6be43e6a7ed28426d0`），权威状态为 [`a_share_three_day_iteration_status_20260803_campaign051_verified.json`](a_share_three_day_iteration_status_20260803_campaign051_verified.json)（SHA‑256 `71d63fa1f47a659e74c0b5a472762ca4be6ee07ea982626b80aad924b883612e`）；v1/v2 均保留为历史证据。追加式台账保留 7 次审计前后的基础设施失败、收口阶段 1 次 stress-intent 语义断言失败、完整测试集 1 次跨克隆绝对路径/旧模块状态失败、1 个完整因子尝试及其 1 条开发延续记录，共 10 次独立尝试、11 条记录。当前仅存 `/Volumes/DIsk/Disk-Coding/qlib` 工作树，旧台账和预注册中保存的 `/Users/niyufei/Coding/qlib` 绝对路径无法相等；完整测试集因此为 1,709 通过、69 个旧 Campaign 失败、13 warnings，而 Campaign051 专项 27/27 与当前指纹绑定全部通过。两次收口失败均未读取价格或收益。累计历史研究尝试由 286 推进到 296，累计读取开发收益的试验由 265 推进到 266。Candidate49 仍是唯一前瞻候选，历史收益、信号、执行和里程碑均未回填，两本台账不变。不得反向、改 bin/边界/窗口/方向、调参、过滤、重跑、救援、组合或打开该因子的 2024–2025；下一轮 Campaign052 只能从新的经济独立机制和值前冻结开始，但离线工作可随时运行。
+
+## Campaign052：四季度公告延迟一致性（覆盖门终止）
+
+Campaign052 继续执行“历史滚动为主、Candidate49 前瞻观察为独立确认层”的双轨制，不等待新增日线或 16:30。唯一 higher 因子 `quarterly_announcement_delay_consistency_4q` 只读取股票日身份字段和季度 `instrument/report_date/announcement_date`；每个股票日仅使用公告日严格早于该日的最新四个连续 Q-DEC 季末报告，令四个非负整数公告延迟的总体标准差为 `sigma`，返回 `1/(1+sigma)`。季度财务数值、分钟 OHLCV/amount、日线价格和 forward return 均禁止。
+
+不可变快照 manifest/data SHA-256 为 `04547981bed8a78438d7988296f1b3887a7d67b6604df555b207fac0b85a26c4` / `f9a6f08060c60c2183c587d6008ffa20f76735bdef46a989f02dff6ecba1a30e`；33,015 个分区、7,724,498 行中 6,259,298 行有效，全部通过字节/frame 哈希。无收益审计 `20260803T084328Z_campaign052_no_return_audit.json`（SHA-256 `47559113a6ea3e9cf52525d5d1440f242d41d764c478ced9d7d51feedc48114c`）的中位覆盖为 `96.039422%`，但 P05 覆盖与 P05 合格名称均为 0；尽管有 469 个三会话 cohort、覆盖 2020–2025 六年，仍未达到冻结的 P05 `90%/50` 门槛。
+
+门禁按预注册顺序在加载 75 项比较值之前停止；没有读取日线或 forward return、没有开发试验、没有打开 2024–2025。追加台账记录缺失兼容工作树、绑定验证器 CLI 误用、pytest 导入路径三次基础设施失败，以及一个完整因子尝试；累计历史尝试从 296 增至 300，累计收益试验保持 266。禁止缩短为三季度、推迟研究起点、删除早期折、放宽覆盖、插补、过滤、改方向、重跑、救援、组合或生成交易动作。Candidate49 仍是唯一前瞻候选且两本台账不变；Campaign053 可随时从独立值前机制开始。
+
+## Candidate49：2026-08-03 日源失败关闭
+
+2026-08-03 16:30 Asia/Singapore 后，使用全新 staging root `/Volumes/DIsk/qlib-a-share-tushare-daily-2026-08-03` 运行零请求 `plan`；结果为 `ready=true`、退出码 0、未写文件且未发供应商请求。随后完全相同参数的 `run --confirm-run` 在 `stock_basic` source gate 退出 1，供应商响应包含非法 `ts_code`，`provider_continuation_allowed=false`。
+
+本次调用共 4 次供应商请求；活跃数据根未变，完成的会话 checkpoint 保留，凭据值未落盘，Candidate49 信号/执行台账 SHA-256 仍为 `5193f00d7f36da003f53cec387900da4c3d002299f5dfcfc1a95eaa199ed3a79` / `d57a3e61eac969e42cafa418ccd8c0a5ee65dcf69da145bb2c096c2a02a2ea4f`。不得在 2026-08-03 同日重试、重请求失败响应补细节或推进后续信号阶段；离线 Campaign053 不受影响，可继续运行。
+
+## Campaign053：金额/价格发现分布对齐（无收益唯一性门终止）
+
+Campaign053 唯一 higher 因子为 `intraday_amount_price_discovery_alignment_js_238p`。在固定 09:31–11:30、13:01–15:00 网格内，分别形成两个半场各 119 个相邻 log-close return，排除 09:30 和午休跃迁；用 238 个 return 终点的非负 `amount` 归一化为 `p`，绝对收益归一化为 `q`，返回 `1-JSD(p,q)/log(2)`。只允许 `datetime,symbol,provider,close,amount`；禁止 open/high/low/volume、替代端点、跨午休、改窗、改方向、缩放、阈值、过滤、拟合或组合。
+
+快照 manifest/data SHA-256 为 `e0f0e9176580e9e6216049d026ab360aea0904e5d1db57d61311fe6da7d3c402` / `d56d8628608faf32c97fb374cb05d06bfa0182d87f2d0467f5a08bca8c3f0f87`；33,015 个分区、7,724,498 行、7,695,088 个有效值全部通过字节/frame 哈希。唯一完成审计 SHA-256 为 `8228e32422686d020bdf7c6b00e54469d025884c23c234b48088428280bfd3ba`。覆盖中位/P05 为 `0.998318/0.993371`，P05 合格名称 138，可形成 540 个 cohort；覆盖门通过。
+
+76 项冻结比较按预注册顺序全部读取后，唯一失败项为 `intraday_price_update_share_238m`，中位日度秩相关 `+0.852858` 超过绝对值 0.8 上限，因此在历史收益前终止。第一次审计因共享模块的 `OUTPUT_COLUMNS` 污染 Campaign051 verifier 而退出；隔离的精确五列 verifier 复核 33,015/33,015 分区后，唯一授权同参数续跑以退出码 0 完成。修复只影响验证器，不改变公式、方向、快照、比较、阈值或研究选择。
+
+追加台账记录审计 verifier 失败、收口报告字面量断言失败两次基础设施尝试和 1 个完整因子尝试；累计历史尝试为 303，累计收益开发试验保持 266。首次收口测试 15/16 通过，唯一失败是测试漏写报告相关系数的正号；保留该失败后，当前 16/16 聚焦测试通过。该测试失败未读取因子值、比较值、价格或收益，也未改变任何结果或门禁。
+
+没有读取日线或 forward return，没有开发或压力试验。不得反向、改窗、缩放、加阈值/过滤/模型、重跑、救援、组合或产生交易输出。Candidate49 仍是唯一前瞻候选且两本账本未变；2026-08-03 的失败闭锁仍禁止同日重试。Campaign054 离线研究无需等待新日线或 16:30，但必须从独立值前机制开始。
+
+### Campaign054 历史滚动研究终止记录
+
+Campaign054 的唯一值前冻结因子为高方向 `intraday_volume_weighted_transaction_price_bowley_skew_240m`：固定 240 个连续竞价分钟，活跃分钟 `x=log(amount/volume)`、权重为 `volume`，用成交量加权左连续经验 Q25/Q50/Q75 计算 Bowley 偏度；联合零量额不活跃，单边零量额无效，至少 120 个活跃分钟且 Q75>Q25。不得修改窗口、分位数、方向、变换、过滤、模型或组合。
+
+权威 v2 快照 manifest/data SHA-256 为 `e61ec157d2119575bc53444d0c8e3c808a4c1113ace8ffa7ed2866bb5e431904` / `dbabb7ae1321f172b0ce3c3c4e6713f606245b8e2cc07387e5bacc77d58cfd7e`，含 33,015 个分区、7,724,498 行、7,675,743 个有效因子值。唯一无收益审计 SHA-256 为 `866006cbe319afeca3b055bef2a1754b954e4511b953a3e8a2337d3aa575ee87`；覆盖中位/P05 为 `0.998386/0.992613`，77/77 比较通过，最大绝对中位日度秩相关 `0.267355`。
+
+唯一开发试验的 2021/2022/2023 Rank IC 为 `-0.000951/-0.010531/+0.003419`，10bp pilot 为 `-0.008040/-0.006610/-0.058345`；汇总 20bp pilot 为 `-0.229408`，最差归一化回撤 `-0.384016`。零开发幸存者，2024–2025 压力区间未打开、未读收益。累计历史尝试为 312，累计收益开发试验为 267。保留全部 8 次基础设施失败和 1 次完整因子尝试，不得以反向、改分位、重权重、改窗、过滤、重跑、救援或组合复活该因子。
+
+Candidate49 仍是唯一前瞻候选，空信号/执行账本未变，且禁止历史回填。2026-08-03 已在 `stock_basic` 源门禁失败，虽然仓库 `.env` 中 `TUSHARE_TOKEN` 已确认存在且非空，仍不得同日重试；该凭据只供后续合格交易日的子进程读取，任何状态、报告、日志或清单不得写入其值或哈希。历史研究无需等待 16:30，但不得生成当前评分、选股、仓位、订单或投资建议，并须持续标注当前上市快照的幸存者偏差。
+
+## Campaign055：价格更新时钟熵（无收益唯一性门终止）
+
+Campaign055 继续以离线历史滚动为主要迭代引擎，不等待新增日线或 16:30。唯一 higher 因子 `intraday_price_update_clock_entropy_10b_238m` 只读取固定 09:31–11:30、13:01–15:00 的 240 个正有限 close；分别在两个半场形成 119 个相邻转移，排除 09:30 与午休转移，并以精确 `close_t != close_t-1` 定义更新事件，丢弃符号和幅度。每个半场的转移 `k=0..118` 映射到 `floor(5*k/119)`，合并为固定 10 桶；至少需要 20 次更新，因子为十桶更新占比的 Shannon 熵除以 `ln(10)`。不得改桶、阈值、方向、窗口、变换、过滤、模型或组合。
+
+权威 v2 快照 manifest/data SHA-256 为 `f78d62adf2772d64e718e7fdc4138c40325f6c02d17073dd5db0d1271216009e` / `cfcdcd23267207f1a2190086b034105c447d5570549864d5468949ea05543882`；33,015 个分区、7,724,498 行、7,664,125 个有效因子值全部通过字节/frame 哈希。v1 快照保持不变但因保留陈旧的 Campaign006 协议证据而禁止进入下游；v2 重新完整计算，数值数据集哈希相同，协议证据仅保留 Candidate49 与 Campaign055。
+
+唯一完成的无收益审计 SHA-256 为 `c931097cb92f6138c34bef7ad45e204cb17a25ae384d9fc1ad1b2622c0d66f7e`。质量与上市门后候选有效行 1,325,182；1,632 个会话的覆盖中位/P05 为 `99.633023%/98.850117%`，P05 合格名称 138，可形成 540 个不重叠三会话 cohort，覆盖门通过。随后 78 项冻结比较按预注册顺序读取；唯一失败项是 `intraday_price_update_share_238m`，中位日秩相关 `+0.878059` 超过绝对 0.8 上限，故 admissible factor 为 0。
+
+Campaign055 在日线价格、forward return、2019–2023 开发折和 2024–2025 压力区间之前终止，不建立预测收益证据。追加台账记录 8 次基础设施失败与 1 个完整因子尝试，累计历史研究尝试由 312 推进到 321，累计读取开发收益的试验保持 267。第 6 次基础设施失败发生在终局后的组合测试：系统临时盘不足“复制字节 + 1 GiB”余量，5 个日线迁移测试在供应商请求前失败；完全相同的迁移测试移至 `/Volumes/DIsk` 独立 `basetemp` 后 21/21 通过。第 7 次基础设施失败来自把 3 条已被后续状态取代的不可变历史断言纳入当前专项集；第 8 次是 `--deselect` 使用了 `tests/data_collector_tests/...`，没有匹配 pytest 实际收集的 `data_collector_tests/...` 节点前缀。旧测试保持不变，当前套件使用 pytest 输出的精确节点 ID 排除历史断言，并使用独立版本的当前状态测试。这些收口失败均未改变因子或门禁。禁止反向、改桶、改阈值、重采样、缩放、过滤、重跑、救援或与终止因子组合；Campaign056 只能从经济上独立、值前冻结的新机制开始。
+
+Candidate49 仍是唯一前瞻候选，信号/执行账本 SHA-256 仍为 `5193f00d7f36da003f53cec387900da4c3d002299f5dfcfc1a95eaa199ed3a79` / `d57a3e61eac969e42cafa418ccd8c0a5ee65dcf69da145bb2c096c2a02a2ea4f` 且条目为 0；不得历史回填或启动第二个前瞻候选。本轮没有供应商请求；`.env` 中的 Token 只验证存在性，不输出、哈希或落盘。历史结果不生成当前评分、选股、仓位、订单或投资建议，并继续标注当前上市快照的幸存者偏差。
+
+## Campaign056：跨日金额轮廓相似度（开发质量门终止）
+
+Campaign056 继续执行双轨制，离线历史研究不等待新增日线或 16:30。唯一 higher 因子 `intraday_day_over_day_amount_profile_similarity_240b` 对信号日 t 与紧邻的已接受交易日 t-1 分别将固定 240 个同钟点非负 `amount` 归一化为分布 p/q，并计算 `1-JSD(p,q)/ln(2)`。只允许 `datetime,symbol,provider,amount`；股票缺失前一交易日时不跨停牌桥接，两个会话都必须有完整 240 格且金额和严格为正。不得改滞后、距离、方向、窗口、归一化、缩放、阈值、过滤、拟合、模型或组合。
+
+不可变快照 manifest/data SHA-256 为 `cec4ce7db7a5a0a1715a8a117a09b74afe75bd94e3042df52493678ca6d6031b` / `b29accb9698fd6d62238540f49b85a32c6a3e7fd882bc64cb7fabd7ef1ec1d02`；33,015 个分区、7,724,498 行中 7,715,898 行有效，所有分区字节/frame 哈希与分数范围均通过。首次构建因 manifest 声明的空原始分区被拒绝；授权修复只接受精确列的零行 frame，所有非空 frame 原样委托，未改变非空候选值。
+
+唯一无收益审计 SHA-256 为 `2a0c05800af7343e22d20c84c7380407df48616cfe86585b8cc52fb6513fcf8a`。覆盖中位/P05 为 `99.917184%/99.451102%`，P05 合格名称 138，可形成 540 个不重叠三会话 cohort；79 项比较按冻结顺序全部通过，最大绝对中位日秩相关 `0.747165`，最近因子为 `intraday_amount_participation_entropy_240m`。该阶段未读取日线价格或 forward return。
+
+随后只运行预注册的一条 2019–2023 扩展滚动开发试验。2021/2022/2023 验证 Rank IC 为 `-0.046879/-0.028355/-0.050668`，normalized return 为 `-25.281001%/-41.429928%/-60.285918%`，10bp 整手收益为 `-3.054932%/-6.020877%/-9.581920%`，整手可负担率为 `68.918919%/79.452055%/66.216216%`。聚合 0/5/10/20bp 整手收益为 `-6.025908%/-9.967347%/-12.124552%/-19.371125%`，最差验证 normalized drawdown 为 `-60.287986%`。三折 IC、normalized return、10bp 收益全负且三折整手可负担率均低于 90%，故 survivor 为 0；2024–2025 压力区间未打开、未读取。
+
+追加台账保留两次研究执行基础设施失败、一个完整因子尝试及同一尝试的一条开发延续记录。首次组合收口测试又误选了不可变的审计前断言：旧断言要求 `audit_count=0`，而当前已完成的审计数量正确为 1；该轮 23/24 通过，失败未读取分区值、价格或收益，旧测试保持不变，当前套件只排除这一精确历史节点。最终共 4 次独立尝试、5 条记录，累计历史研究尝试由 321 推进到 325，累计读取开发收益的试验由 267 推进到 268。Candidate49 仍是唯一前瞻候选，信号/执行台账不变且禁止历史回填；本 Campaign 未发供应商请求。不得反向、修补、改锚、重归一、重采样、缩放、过滤、调参、重跑、救援或与终止因子组合。历史结果不生成当前评分、选股、仓位、订单或投资建议，并继续标注当前上市快照的幸存者偏差；下一轮只能从新的经济独立、值前冻结机制开始。
+
+## Campaign057：跨日绝对收益轮廓相似度（无收益唯一性门终止）
+
+Campaign057 继续以离线历史滚动为主要迭代引擎，不等待新增日线或 16:30。唯一 higher 因子 `intraday_day_over_day_absolute_return_profile_similarity_238b` 对信号日 t 与紧邻的已接受交易日 t-1，分别在 09:31–11:30 和 13:01–15:00 两个半场内形成 119 个相邻 log-close return，取绝对值后合并为固定 238 格，独立归一化为 p/q，再计算 `1-JSD(p,q)/ln(2)`。精确零收益保留，09:30 与午休转移排除，股票缺失前一交易日时不得跨停牌桥接；只允许 `datetime,symbol,provider,close`，不得改滞后、格点、距离、方向、归一化、阈值、过滤、拟合、模型或组合。
+
+不可变快照 manifest/data SHA-256 为 `7aba63621b2c6bd2b9d511d11ab56fc5331ae1dcf7a3c6055dbe6455d437d0ed` / `b24d183b15feb98015d7353160740273ffb5acc14dcf0031a984d9eb3003f19d`；33,015 个分区、7,724,498 行中 7,671,540 行有效，全部通过字节/frame 哈希。首次构建因 manifest 声明的六个零行源分区被拒绝；冻结修复只接受精确列的零行 frame，所有非空 frame 原样委托。
+
+唯一完成的无收益审计为 `20260804T073457Z_campaign057_no_return_audit.json`（SHA-256 `1a0452a5ca821589d10131ec095f36a08046289f796770070bf750bfc1aa5a8b`）。第一次 16-worker 审计在系统交换空间耗尽后消失且未发布产物；冻结的同语义 4-worker 重试未复用任何部分状态，以退出码 0 完成。质量与上市门后有 1,326,131 个候选有效行；1,632 个会话的覆盖中位/P05 为 `99.728752%/99.056604%`，P05 合格名称 138，可形成 540 个不重叠三会话 cohort，覆盖门通过。
+
+随后 80 项冻结比较按预注册顺序读取。`intraday_price_update_share_238m` 与 `intraday_amount_price_discovery_alignment_js_238p` 的中位日秩相关分别为 `+0.872247/+0.832056`，均超过绝对 0.8 上限，admissible factor 为 0。Campaign057 在日线价格、forward return、2019–2023 开发折和 2024–2025 压力区间之前终止，不建立预测收益证据。追加台账记录两次基础设施失败和一个完整因子尝试，累计历史研究尝试由 325 推进到 328，累计读取开发收益的试验保持 268。
+
+Candidate49 仍是唯一前瞻候选，信号/执行台账为空且禁止历史回填；本 Campaign 未发供应商请求。禁止反向、修补、改锚、重归一、重采样、缩放、过滤、调参、重跑、救援、建模或与终止因子组合。历史结果不生成当前评分、选股、仓位、订单或投资建议，并继续标注当前上市快照的幸存者偏差；Campaign058 只能从新的经济独立、值前冻结机制开始。
+
+## Campaign058：季度利润—营收同比增速差（无收益唯一性门终止）
+
+Campaign058 继续以离线历史滚动为主要迭代引擎，不等待新增日线或 16:30。唯一 higher 因子 `quarterly_profit_revenue_growth_spread_pp` 固定为 `profit_yoy_state_t - revenue_yoy_state_t`。季度公告只在公告日之后的第一个已接受交易日可用；两个字段独立按股票前向填充，不回填、不跨股票填充。分钟网格只读取 `datetime,symbol,provider` 以确定股票—交易日身份，不读取分钟价格、成交量、成交额或活跃度。不得改方向、公告时点、填充、缩放、过滤、阈值、拟合、模型或组合。
+
+不可变快照 manifest/data SHA-256 为 `c5bf57a70a2af71f30be87eec254710db65550f5dd7e041f219e862b4d97c00f` / `59fb5ed46c76a4737bbc60de9707f7f3b10223b692de4f4a88fec4143891cd4c`；33,015 个分区、7,724,498 行中 7,231,483 行有效，全部通过字节/frame 哈希。首次构建因 manifest 声明的零行源分区被拒绝；冻结修复只接受精确列的零行 frame，所有非空 frame 原样委托。
+
+唯一完成的无收益审计为 `20260804T105439Z_campaign058_no_return_audit.json`（SHA-256 `df9c2ec09d6162ffa2ba4190f5c1141258a9769203cd7b4e297f8977f779b5b8`）。首次审计在读取候选快照后因兼容包装器未导出旧模块范围常量而失败，未产出覆盖或比较结果；冻结修复只补充候选值的有限浮点范围语义，不改公式、方向、门禁或比较顺序。质量与上市门后有 1,330,171 个候选有效行；覆盖中位/P05 为 `99.945175%/99.568865%`，P05 合格名称 138，可形成 540 个不重叠三会话 cohort，覆盖门通过。
+
+随后 89 项冻结比较按预注册顺序读取；唯一失败项是 `quality_profit`，中位日秩相关 `+0.817009` 超过绝对 0.8 上限，admissible factor 为 0。Campaign058 在日线价格、forward return、2019–2023 开发折和 2024–2025 压力区间之前终止，不建立预测收益证据。追加台账记录四次基础设施失败和一个完整因子尝试，累计历史研究尝试由 328 推进到 333，累计读取开发收益的试验保持 268。后两次失败发生在终局验证：一次误用了绑定验证器不支持的 `--record` 参数，另一次测试进程未设置仓库 `PYTHONPATH` 而在五个模块的导入阶段失败；两者均未读取候选值、比较值、价格或收益，随后只用正确的 positional records 和 `PYTHONPATH=.` 重放相同验证。
+
+Candidate49 仍是唯一前瞻候选，信号/执行台账为空且禁止历史回填。2026-08-04 的独立前瞻工作流在 16:30 后先通过只读 plan，随后 run 因 `stock_basic` 返回无效 `ts_code` 在源门禁失败；凭据存在且不是失败原因，同日未重试，活跃数据根和两本 Candidate49 台账未改变。该供应商失败不属于 Campaign058。禁止反向、修补、改锚、重归一、重采样、缩放、过滤、调参、重跑、救援、建模或与终止因子组合。历史结果不生成当前评分、选股、仓位、订单或投资建议，并继续标注当前上市快照的幸存者偏差；Campaign059 只能从新的经济独立、值前冻结机制开始。
+
+## Campaign059：市场方向符号一致率（开发质量门终止）
+
+Campaign059 继续执行双轨制，离线历史研究不等待新增日线或 16:30。唯一 higher 因子 `intraday_market_directional_sign_agreement_238m` 只读取固定 09:31–11:30、13:01–15:00 的 240 个 close，并分别在两个半场形成 119 个相邻 log-close return；09:30 与午休转移排除。每个位置使用冻结的全市场 return sum/count 扣除本股票后形成 leave-one-out 市场收益，要求至少 50 个其他股票；股票和市场收益均精确非零的同位置才有信息，至少需要 60 个信息位置，分数为其中符号相同的比例。不得加入 open/high/low/volume/amount，不得改市场定义、零值语义、方向、窗口、阈值、过滤、拟合、模型或组合。
+
+不可变快照 manifest/data SHA-256 为 `478597c0b06fe6d777dac906b6b70dc95f9b6e0a498c5f0e5eabf271dc2de9e6` / `53f0c782633885f150ff1625e2b75ebb3b27e9f6e53e58c2e133718ebebf5293`；33,015 个分区、7,724,498 行中 7,583,771 行有效，全部通过字节/frame 哈希。保留三次基础设施失败及其窄修复：六个 manifest 声明的零行原始分区、分区全部完成后的 manifest 动态命名空间错误，以及无收益审计候选模块缺少旧范围别名；修复均未改变公式、方向、门禁、比较顺序或数值范围。
+
+唯一完成的无收益审计为 `20260804T141411Z_campaign059_no_return_audit.json`（SHA-256 `633a85a1fe808947bb2a1ef3837f53ecfb85716fcc6ef91a4a06cff9e059ae0e`）。质量与上市门后有 1,319,978 个候选有效行；覆盖中位/P05 为 `99.300205%/98.067939%`，P05 合格名称 137，可形成 540 个不重叠三会话 cohort。覆盖门通过后才按冻结顺序读取 90 项比较，全部通过；最大绝对中位日秩相关为 `0.714890`，对应 `intraday_market_idiosyncratic_share_238m`，低于绝对 0.8 上限。该阶段未读取日线或 forward return。
+
+随后只运行预注册的一条 2019–2023 扩展滚动开发试验。2021/2022/2023 验证 Rank IC 为 `-0.010331/+0.013326/+0.010566`，normalized return 为 `+21.973682%/-37.502954%/+1.263147%`，10bp 整手收益为 `+2.098032%/-7.662734%/-1.170692%`。聚合 normalized return 为 `+6.951373%`，但 0/5/10/20bp 整手收益为 `+4.107619%/-0.924121%/-4.556525%/-13.017742%`；最差验证 normalized drawdown 为 `-43.623938%`，仅一折 10bp 收益为正。它因此同时失败于中位 spread、中位 10bp 收益、正 10bp 折数、最差回撤和聚合 20bp 收益门，survivor 为 0；2024–2025 压力区未打开、未读取。
+
+追加台账记录 7 次基础设施失败、1 个完整因子尝试及同一尝试的 1 条收益读取开发延续；Campaign059 有 8 次独立尝试、9 条记录，累计历史研究尝试由 333 推进到 341，累计读取开发收益的试验由 268 推进到 269。第 4 次基础设施失败发生在终端当前套件：`--deselect` 错带 `tests/` 前缀，未匹配 pytest 实际的 `data_collector_tests/` 节点，因此开发前零台账断言仍被执行，33/34 通过。第 5 次来自原地更新了第 4 次失败记录已字节绑定的终端测试文件，导致活绑定检查失败，32 通过、1 失败、1 排除；旧测试已恢复原字节，当前断言改用新版本路径。第 6 次是从 `tests/` 工作目录启动且没有显式仓库模块路径，7 个模块以 `ModuleNotFoundError: scripts` 收集失败；第 7 次虽从仓库根启动，但测试子进程仍未获得仓库模块路径，32 通过、1 失败、1 排除。固定绝对 `PYTHONPATH=/Volumes/DIsk/Disk-Coding/qlib` 后，同一当前套件为 33 通过、0 失败、1 排除。四次终端失败均未重算价格/收益或改变研究结论。Candidate49 仍是唯一前瞻候选，信号/执行台账为空且禁止历史回填；本 Campaign 未发供应商请求。2026-08-04 的独立 Candidate49 `stock_basic` 失败保持同日关闭。禁止反向、修补、改锚、重归一、重采样、缩放、过滤、调参、重跑、救援、建模或与终止因子组合。历史结果不生成当前评分、选股、仓位、订单或投资建议，并继续标注当前上市快照的幸存者偏差；Campaign060 只能从新的经济独立、值前冻结机制开始。
+
+## Campaign060：跨日方向收益一致率（无收益覆盖门终止）
+
+Campaign060 继续执行双轨制，离线历史研究不等待新增日线或 16:30。唯一 higher 因子 `intraday_day_over_day_directional_return_agreement_238b` 对信号日 `t` 与接受日历中紧邻的 `t-1`，分别在 09:31–11:30 和 13:01–15:00 两个半场形成 119 个相邻 log-close return，并按固定 238 个同钟点位置配对；任一日收益精确为零的配对无信息，至少需要 60 个共同非零位置，因子值为其中同方向配对的比例。股票缺失前一接受交易日时不得跨停牌桥接；只允许 `datetime,symbol,provider,close`，不得改滞后、窗口、零值语义、方向、阈值、过滤、拟合、模型或组合。
+
+不可变快照 manifest/data SHA-256 为 `3f328039fb7806c66a260a7fd723a3297e2e0ce5ba23e9bb11f39d963e7250cd` / `052e5c8e5090c173c1e9486b545eafaa3b1301e038c1acc72434222e683d5735`；33,015 个分区、7,724,498 行中有 5,878,602 个因子有效行，所有分区字节/frame 哈希与分数范围均通过。首次构建因 manifest 声明的六个零行源分区被拒绝；冻结修复只接受精确列的零行 frame，所有非空 frame 原样委托。另保留快照验证命令误用 `--data-root`、审计兼容命名空间、manifest 适配器和候选范围别名等基础设施失败及其窄修复；它们没有改变公式、方向、数值、门禁或比较顺序。
+
+唯一完成的无收益审计为 `20260804T160410Z_campaign060_no_return_audit.json`（SHA-256 `880dfc060005f49aa9df6d3c3f479d6408dc3c1667cc45c1b274a5ebf9fdd748`）。质量与上市门后候选有效 1,171,969 行，基准可用 1,331,759 行；覆盖中位/P05 为 `90.332413%/79.901731%`，分别低于冻结的 `95%/90%` 门槛。P05 合格名称数 128.55、540 个三会话 cohort 和 7 个观察年份通过容量项，但不能抵消覆盖失败。
+
+覆盖门失败后，冻结的 91 项比较值均未读取，日线价格、forward return、2019–2023 开发折与 2024–2025 压力区间也均未打开。追加台账记录 9 次基础设施失败和 1 个完整因子尝试；累计历史研究尝试由 341 推进到 351，累计读取开发收益的试验保持 269。第 9 次基础设施失败来自终态组合测试误选了两条不可变的审计前断言：它们要求审计计数为 0，而唯一审计完成后的当前正确值为 1；该轮 24 项通过、2 项失败，未读取候选/比较分区值、价格或收益，历史测试保持不变，当前套件只排除这两个精确节点。不得降低覆盖阈值、减少共同非零支持数、把零收益计作一致、桥接停牌、筛选年份/股票/板块、反向、改窗、重跑、救援或与终止因子组合。
+
+Candidate49 仍是唯一前瞻候选，信号/执行台账 SHA-256 仍为 `5193f00d7f36da003f53cec387900da4c3d002299f5dfcfc1a95eaa199ed3a79` / `d57a3e61eac969e42cafa418ccd8c0a5ee65dcf69da145bb2c096c2a02a2ea4f`，条目均为 0；Campaign060 未发供应商请求、未历史回填、未生成当前评分、选股、仓位、订单或投资建议。继续标注当前上市快照的幸存者偏差；Campaign061 只能从新的经济独立、值前冻结机制开始，且离线研究不等待新日线或 16:30。
+
+## Campaign061：跨日实现方差稳定度（开发质量门终止）
+
+Campaign061 继续执行双轨制，离线历史研究不等待新增日线或 16:30。唯一 higher 因子 `intraday_day_over_day_realized_variance_stability_238b` 对信号日 `t` 与接受日历中紧邻的 `t-1`，分别在固定 09:31–11:30 和 13:01–15:00 的两个半场形成 119 个相邻 log-close return；每个会话的实现方差是 238 个收益平方和，分数固定为 `2*min(RV_t,RV_t-1)/(RV_t+RV_t-1)`。两日 RV 都必须严格为正且有限，不加 epsilon，不跨越缺失股票交易日，只允许 `datetime,symbol,provider,close`。
+
+不可变快照 manifest/data SHA-256 为 `15ed4b46192402f301218e20b1fe37233dd7547256fb9786692ce544fae20b3c` / `a8a6261eaa92cd8eca7c25513236abf73f84f500da368a7b325634808fbb576a`；33,015 个分区、7,724,498 行中 7,671,540 行有效，全部通过字节/frame 哈希。保留三次基础设施失败：状态探针缺少数据根参数、六个 manifest 声明的零行原始分区，以及候选模块缺少旧审计器公开范围别名；冻结修复只处理精确零行 frame 或补充已经冻结的 `[0,1]` 范围属性，没有改变非空候选值、公式、方向、门禁或比较顺序。
+
+唯一完成的无收益审计为 `20260804T183906Z_campaign061_no_return_audit.json`（SHA-256 `0d095077d10dd75668d4ce43f88f3b358aea0f815cbe9b7742a104eb913d16cb`）。质量与当前上市过滤后候选/基准有效行是 1,326,131/1,331,759；覆盖中位/P05 为 `99.728752%/99.056604%`，P05 合格名称 138，可形成 540 个不重叠三会话 cohort。覆盖通过后 92 项冻结比较全部通过；最大绝对中位日秩相关为 `0.212609`，对应 `intraday_return_variance_entropy_238m`。该阶段未读取日线价格或 forward return。
+
+随后只运行预注册的一条 2019–2023 扩展滚动开发试验。2021/2022/2023 验证 Rank IC 为 `+0.009063/+0.009686/+0.023551`，normalized return 为 `-17.240067%/-2.293530%/-24.769728%`，10bp 整手收益为 `-2.780860%/-2.120424%/-4.798731%`，normalized 最大回撤为 `-38.990106%/-25.467597%/-32.254386%`。聚合 20bp 整手收益为 `-17.788650%`。虽然三折 IC 均为正，但两折价差为负、三折 normalized/10bp 收益全负且回撤门失败，因此 survivor 为 0；2024–2025 压力区间未打开、未读取。
+
+追加台账记录 3 次基础设施失败、1 个完整因子尝试及同一尝试的 1 条收益读取开发延续；累计历史研究尝试由 351 推进到 355，累计读取开发收益的试验由 269 推进到 270。Candidate49 仍是唯一前瞻候选，信号/执行台账为空且禁止历史回填；本 Campaign 未发供应商请求。Campaign061 永久终止，不得反向、改 RV 定义、加入 epsilon、改滞后/网格/方向/成本/TopK/过滤/年份/门槛、重跑、救援、建模或与终止因子组合。历史结果不生成当前评分、选股、仓位、订单或投资建议，并继续标注当前上市快照的幸存者偏差；Campaign062 只能从新的经济独立、值前冻结机制开始，且离线研究不等待新日线或 16:30。
+
+## Campaign062：季度公告同行拥挤稀疏度（开发质量门终止）
+
+Campaign062 继续执行双轨制，离线历史研究不等待新增日线或 16:30。唯一 higher 因子 `quarterly_announcement_peer_crowding_sparsity` 对每个股票—交易日使用已经严格跨过公告日、在接受日历下一交易日生效的最新季度事件；按精确 `(report_date, announcement_date)` 统计不同发行人数量 `peer_count`，分数固定为 `1/peer_count`。同日同时生效时先取更晚 `report_date`，再取更晚 `announcement_date`。只读取 `datetime,symbol,provider` 和 `instrument,report_date,announcement_date`，不读取季度财务值或分钟价格、成交量、成交额。
+
+不可变快照 manifest/data SHA-256 为 `518131c1ecac2820a426d2d7de46552daf9009b476ed7efbf3d69ba555f1ac45` / `5012eebb056fff75b6931390acaa5272629e70267ee5a32f46377c60994571a0`；33,015 个分区、7,724,498 行中 7,233,196 行有效，491,302 行位于首个有效披露之前，全部通过字节/frame 哈希。保留前三次值前基础设施失败：两个合成测试 fixture 错误，以及首份实现冻结中错误的 Campaign052 基础 runner SHA；它们都没有读取来源值、候选值、比较值、价格或收益。
+
+唯一完成的无收益审计为 `20260804T210409Z_campaign062_no_return_audit.json`（SHA-256 `c783f58c5432068b1c5ca724be01d83bb234f17df21fcda64f9e7818b12bd4ea`）。质量与当前上市过滤后候选/基准有效行是 1,330,171/1,331,759；覆盖中位/P05 为 `99.945175%/99.568865%`，P05 合格名称 138，可形成 540 个不重叠三会话 cohort。覆盖通过后 93 项冻结比较全部通过；最大绝对中位日秩相关为 `0.769144`，对应 `quarterly_announcement_freshness_60s`，有符号相关为 `-0.769144`。该阶段未读取日线价格或 forward return。
+
+随后只运行预注册的一条 2019–2023 扩展滚动开发试验。2021/2022/2023 验证 Rank IC 为 `-0.004674/-0.015270/-0.006314`，spread 为 `-0.350360%/-0.055596%/-0.644386%`，normalized return 为 `-18.683720%/+12.604669%/-30.421294%`，10bp 整手收益为 `-5.016157%/+0.985748%/-6.362546%`，normalized 最大回撤为 `-28.562210%/-22.784061%/-35.586048%`。全开发期 normalized/10bp/20bp 收益为 `-6.139055%/-10.407666%/-17.680546%`。操作门通过，但三折 IC 和价差全负，normalized 和 10bp 仅一折为正，回撤与聚合 20bp 门也失败，因此 survivor 为 0；2024–2025 压力区间未打开、未读取。
+
+追加台账记录 5 次基础设施失败、1 个完整因子尝试及同一尝试的 1 条收益读取开发延续。第 4 次失败是终局文档补丁上下文不匹配，补丁在写入前被拒绝；第 5 次失败是通用完成审计遇到 Campaign001 不可变 `/Users/...` 路径与当前 `/Volumes/...` 克隆不一致，15 项通过、1 项失败。两者都未重算 Campaign062 研究值或收益。累计历史研究尝试由 355 推进到 361，累计读取开发收益的试验由 270 推进到 271。Candidate49 仍是唯一前瞻候选，信号/执行台账为空且禁止历史回填；本 Campaign 未发供应商请求。Campaign062 永久终止，不得反向为披露拥挤度、改变同行键/生效时点/冲突处理、加入财务值、改方向/成本/TopK/过滤/年份/门槛、重跑、救援、建模或与终止因子组合。历史结果不生成当前评分、选股、仓位、订单或投资建议，并继续标注当前上市快照的幸存者偏差；下一轮历史研究只能从新的经济独立、值前冻结机制开始，且离线工作不等待新日线或 16:30。
+
+## Campaign063：横截面标准化收益状态稳定度（结构性零覆盖终止）
+
+Campaign063 继续执行双轨制，离线历史研究不等待新增日线或 16:30。唯一 higher 因子 `intraday_cross_sectional_standardized_return_state_stability_236p` 在固定两个半场内形成 238 个相邻有符号 log-close return；每个位置使用冻结横截面 `sum/sum_squares/count` 计算 leave-one-out 同行总体 z 状态，要求至少 50 个其他同行且每个位置总体方差严格为正，再对精确 236 个半场内相邻 z 状态位移取平均绝对值并返回 `1/(1+mean_abs_displacement)`。禁止跨午间、删除位置、方差地板、零方差替代、改网格/同行下限/方向/变换/过滤、拟合、模型或组合。
+
+不可变快照 manifest/data SHA-256 为 `12fc8d8bf7df432608f4cb63b7c5337f2cd46d2a029c34d8b3e60c0f8906a098` / `fd040477f3af2948976fda9a71f6d04a0bd9b9713a1b9b5a6dedf2f06f0c76df`；33,015 个分区、7,724,498 行均通过字节/frame 哈希。全部行都有完整股票收益且同行数量充足，但全部因至少一个位置的同行方差非正而无效。冻结矩基准的独立重放证明第 236 个位置在全部 1,699 个日期上横截面总体方差精确为零，第 29/30 位各另有 1 个零方差日期；这是收盘集合竞价网格的结构性同值，不是快照损坏或实现偏差。
+
+唯一完成无收益审计为 `20260804T224823Z_campaign063_no_return_audit.json`（SHA-256 `06a8b4aace41d9567c8afb26755b6c5f932845a31dc842459ac3d148ab73c7c0`）。质量和当前上市过滤后基准可用 1,331,759 行，候选有效 0 行；1,632 个会话的覆盖中位/P05、P05 可用名称和三会话 cohort 都为 0。覆盖门失败，因此 94 项冻结比较值、日线价格、forward return、2019–2023 开发折及 2024–2025 压力区间均未打开。
+
+追加台账保留状态导入路径、六个 manifest 零行分区、manifest 常量命名空间、通用审计因子范围、终局文档补丁上下文、终态组合测试历史断言和 deselect 节点前缀七次基础设施失败，以及一个完整因子尝试；累计历史研究尝试由 361 推进到 369，累计读取开发收益的试验保持 271。前四个窄修复未改变公式、候选值、严格正方差语义、方向、门槛、比较顺序或收益边界；第五个补丁在写入前原子拒绝；第六轮测试为 27 通过、2 失败；第七轮因 `tests/data_collector_tests` 未匹配实际 `data_collector_tests` 节点而为 33 通过、2 失败，新版当前测试本身全部通过。两轮都未读取研究值或收益。Candidate49 仍是唯一前瞻候选，空信号/执行账本未变；未发供应商请求、未历史回填、未产生当前评分、选股、仓位、订单或投资建议。Campaign063 永久终止，不得删除第 236 位、加入 epsilon、改网格/方差语义、重跑、救援、反向、建模或组合。继续标注当前上市快照的幸存者偏差；后续离线 Campaign 必须从新的经济独立、值前冻结机制开始。
+
+## Campaign074：尾盘标准分钟成交额集中度（开发质量门终止）
+
+Campaign074 继续执行双轨制；历史研究不等待新日线或 16:30，Candidate49 前瞻层保持独立。唯一 higher 因子 `intraday_terminal_bar_amount_share_240m` 要求原始 09:30 行存在，并验证精确 09:31–11:30、13:01–15:00 的 240 根标准一分钟 bar；分子是 15:00 的非负有限 `amount`，分母是 240 根标准 bar 的非负有限 `amount` 正和。09:30 不进入分母。该定义只衡量标准终端分钟成交额集中度，不声称使用专用收盘集合竞价委托、逐笔或不平衡数据。
+
+不可变特征快照 manifest/data SHA-256 为 `5a993ce8b71c541a0b2d2402627d5f2b7f562cf1266bebcafe0606945086a3cd` / `d4fbb9eb8135674df16a50c96b5817f63e6461e99ee48df96537cd8ed930a4b5`；33,015 个分区、7,724,498 个接受行均通过独立字节、帧及聚合校验并具有有限值。冻结质量/上市资格口径下，候选/基准有效行是 1,330,171/1,331,759；覆盖中位/P05 为 `99.945175%/99.568865%`，P05 合格名称 138，可形成 540 个不重叠三会话 cohort。104 项冻结数值比较全部通过；最大绝对中位日秩相关为 `0.425556`，对应 `late_amount_share_30m`。
+
+唯一预注册的 2019–2023 开发试验在 2021/2022/2023 得到 Rank IC `-0.015200/-0.011330/-0.010665`、normalized return `-5.338159%/-9.266436%/-7.552818%`、10bp 整手收益 `-0.314571%/-4.716421%/-2.208770%`。三个验证折的 IC、归一化收益与 10bp 收益全部为负；聚合 20bp 整手收益为 `-22.994450%`。运营门禁单独通过但质量门禁失败，survivor 为 0；2024–2025 压力区间未打开、未读取。
+
+最终追加口径为 9 次基础设施失败、1 个完整因子尝试和该尝试的 1 条收益读取延续；累计历史研究尝试为 452，累计读取开发收益的试验为 276。第 5 次失败是终局多文件补丁引用陈旧上下文后被原子拒绝；第 6、7 次是两个 `pytest` 运行时探针在收集前失败；第 8 次是一条套件命令因隔离运行时缺少 `requests` 而产生 4 个收集错误，按命令只计一次；第 9 次是绑定校验器命令行参数解析失败。它们都未读取研究值或收益。Candidate49 仍为唯一前瞻候选，信号/执行台账各 0 条且禁止历史回填；Campaign074 未发 provider 请求。Campaign074 永久终止，不得反向、调权、重标、残差化、过滤、重跑、救援或组合；历史结果不得生成当前评分、选股、仓位、订单或投资建议。Campaign075 只能在 Campaign074 追加至完整定义顺序并事前冻结其数值比较资格后，从新的经济独立机制开始。
+
+## Campaign075：接受覆盖会话年轻度（开发质量门终止）
+
+Campaign075 继续执行双轨制；历史研究不等待新日线或 16:30，Candidate49 前瞻层保持独立。唯一 higher 因子 `accepted_instrument_session_youth_20s` 使用接受的本地交易日历，包含首尾地计算接受 instrument 覆盖起点至信号日的会话数，至少 20 个会话才有效，并返回负会话数。接受起点不是核验后的法定 IPO 日期；早于本地历史边界的股票被左截断并并列。不得改变符号、会话时钟、年龄规则、缺失语义、阈值、过滤、子集、模型、反向、重标、残差化、救援或组合。
+
+不可变快照 manifest/data SHA-256 为 `d621c73d8f32fa0187c0b8f834a170548eeb8deb04e1fade7a12da08f160aef4` / `63b3bd548fa3f2d7f88e19542eb6be5e4ee7cc6f9d83f5dc874868efade98936`；33,015 个分区、7,724,498 行中有 7,689,881 个有效值。冻结质量/上市资格口径下，候选/基准有效行是 1,330,171/1,331,759；覆盖中位/P05 为 `99.945175%/99.568865%`。105 项数值比较全部通过，最大绝对中位日秩相关为 `0.543980`，对应 `intraday_microgap_absorption_share_238p`，有符号值为 `-0.543980`。
+
+唯一预注册的 2019–2023 开发试验在 2021/2022/2023 得到 Rank IC `-0.002682/-0.023929/-0.013780`、normalized return `+38.128374%/+20.854240%/-44.381191%`、10bp 整手收益 `+3.587779%/+0.863344%/-5.960894%`。聚合 20bp 收益为 `-7.074176%`，最差验证归一化回撤为 `-46.658540%`。三折 IC 全负，质量门失败，survivor 为 0；2024–2025 压力区间未打开、未读取。
+
+最终追加口径为 8 次基础设施失败、1 个完整因子尝试和该尝试的 1 条收益读取延续；累计历史研究尝试为 456，累计读取开发收益的试验为 277。开发时缺少 `setuptools_scm` 的失败发生在市场值读取前，保留于 trial ledger；解释器修复没有改变研究参数。随后一条终态套件命令因两个不可变事前状态断言失效而失败，首次 deselect 又使用了与 collection root 不匹配的节点前缀；两条命令各计一次，没有重算研究值或收益。Candidate49 仍为唯一前瞻候选，信号/执行台账各 0 条；本 Campaign 未发 provider 请求。v11 已冻结 107 个完整定义与 106 个数值比较器供下一轮离线研究使用；不得历史回填、创建 Candidate50、生成当前评分、选股、仓位、订单或投资建议。
+
+## Campaign076：最大成交额分钟出现时点（开发门终止）
+
+Campaign076 的唯一 higher 因子 `intraday_peak_amount_bar_recency_240m` 在精确 09:31–11:30、13:01–15:00 的 240 根标准一分钟 `amount` 中，固定取最大值最后一次出现的零基位置并除以 239。不可变快照 manifest/data SHA-256 为 `dc23177c4125142fb2287fb3e19a4be8a3cd53b70abd3be91718979aaf200f32` / `aef7cfb7cbc3ccaabe5552a4ed4f81ea8582d5f739153dd405b70e2a73b3a952`；33,015 个分区、7,724,498 行全部有限。
+
+冻结质量/上市资格口径的中位/P05 覆盖为 `99.945175%/99.568865%`；106 项数值比较全部通过，最大绝对中位日秩相关为 `0.617854`。唯一 2019–2023 开发试验在三个验证折的 normalized return 与 10bp 整手收益均为负，聚合 20bp 收益为 `-24.195927%`，最差验证回撤为 `-36.458720%`，2023 折整手可负担率还低于 90%。因此 survivor 为 0，2024–2025 压力区间未打开。
+
+本轮保留 11 次基础设施失败、1 个完整因子尝试及 1 条收益读取延续；累计历史尝试为 468，累计开发收益试验为 278。第 9 次失败来自终态套件中两条不可变事前状态断言在唯一审计完成后失效；第 10 次是首次 deselect 使用了与 pytest collection root 不匹配的节点前缀；第 11 次发生在 52/52 绑定已通过后，附加摘要读取了错误的 v12 计数字段。三条命令均没有重算研究值或收益。不得修改并列规则、反向、重标、过滤、调参、重跑、救援或组合。Candidate49 仍是唯一前瞻候选，账本为空且禁止历史回填；Campaign076 未发 provider 请求，历史结果不得生成当前评分、选股、仓位、订单或投资建议。
+
+## Campaign077：成交额时钟离散度（开发质量门终止）
+
+Campaign077 继续双轨制；离线历史研究不等待新日线或 16:30，Candidate49 前瞻层保持独立。唯一 higher 因子 `intraday_amount_clock_dispersion_240m` 要求精确 09:31–11:30、13:01–15:00 的 240 根标准分钟 `amount`，定义 `x_i=i/239`、`w_i=amount_i/sum(amount)`、`mu=sum(w_i*x_i)`，返回 `4*sum(w_i*(x_i-mu)^2)`。所有金额必须非负有限且总和严格为正；禁止改变公式、方向、网格、矩、变换、阈值、过滤、子集、年份、制度、拟合、模型或组合。
+
+不可变快照 manifest/data SHA-256 为 `2449976e3bc95b66668496cee513277da21eff301677969f17053baf36fa18c8` / `2b40ea3cb07a75b8dbddae124da86d32578120b74e616ff4ada5446d77010fc9`；33,015 个分区、7,724,498 行全部有限并通过完整校验。冻结质量/当前上市资格口径下，候选/基准有效行是 1,330,171/1,331,759；覆盖中位/P05 为 `0.999452/0.995689`，P05 可用名称 138，可形成 540 个三会话 cohort。107 项数值比较全部通过，最大绝对中位日秩相关为 `0.661230`，对应 `late_amount_share_30m`。比较之前未读取日线价格或 forward return。
+
+唯一 2019–2023 开发试验的 2021/2022/2023 Rank IC 为 `-0.003649/-0.008056/-0.002974`，normalized return 为 `+0.095682/-0.394839/-0.365443`，10bp 整手收益为 `+0.004794/-0.075211/-0.066501`。聚合 20bp 收益为 `-0.364508`，最差验证归一化回撤为 `-0.491742`。运营门禁通过、质量门禁失败，survivor 为 0；2024–2025 暴露压力区间保持关闭且未读取。
+
+最终保留 9 次基础设施失败、1 个完整因子尝试和同一尝试的 1 条收益读取延续，trial ledger 共 11 条；累计历史尝试为 478，累计开发收益试验为 279。第 8 次失败是一次终局三文件原子补丁因陈旧上下文在任何写入前拒绝；第 9 次是终态测试错误地要求三份报告用同一百分比字符串表达同一个冻结收益，得到 20 通过、1 失败、3 条历史生命周期断言按计划跳过。两次失败均未重算因子、比较或收益。v13 已冻结 109 个完整逻辑定义与 108 个数值比较器，供 Campaign078 事前使用。Campaign077 不得反向、改窗、重标、过滤、调参、重跑、救援或与终止因子组合。Candidate49 仍是唯一前瞻候选，账本为空且禁止历史回填；本轮无 provider 请求，也未生成当前评分、选股、仓位、订单或投资建议。继续明确当前上市快照的幸存者偏差。
+
+## Campaign078：成交额局部峰密度（开发质量门终止）
+
+Campaign078 继续双轨制；离线历史研究不等待新增日线或 16:30，Candidate49 前瞻层保持独立。唯一 higher 因子 `intraday_amount_local_peak_density_238p` 要求精确 09:31–11:30、13:01–15:00 的 240 根标准分钟 `amount`。只检查内部索引 1–238；若 `amount_i` 严格大于左右相邻值则计峰，最后除以精确组合上限 119。与任一邻居相等都不计峰；禁止 epsilon、首末 tie-break、prominence、转折点、阈值、子窗口、变换、过滤、模型、组合或同轮救援。
+
+不可变快照 manifest/data SHA-256 为 `a8d2f2a68dba3f7f3a3f34ac8d203f1381e429612ded6daf6c6447e0ed983071` / `225c539824978df0cc3e4b34a9520aa919ffa77ba73246c21e1bdb6122a0227d`；33,015 个分区、7,724,498 行全部有限并通过字节、frame 与聚合校验。冻结质量/当前上市口径下，候选/基准有效行是 1,330,171/1,331,759；覆盖中位/P05 为 `0.999452/0.995689`，P05 可用名称 138，可形成 540 个三会话 cohort。108 项冻结数值比较全部通过；最大绝对中位日秩相关为 `0.189505`，对应 `intraday_amount_profile_serial_persistence_240m`，有符号值为 `-0.189505`。
+
+唯一 2019–2023 开发试验的 2021/2022/2023 Rank IC 为 `+0.012717/+0.004521/+0.017942`，normalized return 为 `+0.126334/-0.061971/+0.124821`，10bp 整手收益为 `-0.015190/-0.015291/-0.005095`。聚合 normalized/10bp/20bp 收益为 `+0.579110/-0.024496/-0.114468`，最差验证归一化回撤为 `-0.271268`。运营门通过、三个 IC 均为正且两个 normalized 折为正，但三个 10bp 折全负，中位 spread、成本收益、回撤及聚合 20bp 门失败；survivor 为 0，2024–2025 暴露压力区间保持关闭且未读取。
+
+最终追加口径为 4 次基础设施失败、1 个完整因子尝试和同一尝试的 1 条收益读取延续，共 6 条；累计历史尝试为 483，累计开发收益试验为 280。第一次失败是 no-return v1 在覆盖及 107 个旧比较值已读后找不到追加 Campaign077 比较器的 helper 属性路径，发生在审计发布和价格/收益读取前；v2 只修复 helper 路径并从头重跑。第二次是终局 Markdown 报告补丁缺少合法结尾，在任何目标写入前原子拒绝。第三次是终态套件 deselect 前缀未匹配 collection root，得到 21 通过、3 条不可变前态断言失败并按命令计一次。第四次是 BSD `date` 不支持 `%:z` 造成无效记录时间后缀；旧文件保留，控制策略与台账用合法 UTC 版本追加修正，按共同根因计一次。后三次均未重算研究值或收益。时间戳修正版 v14 已冻结 110 个完整逻辑定义与 109 个数值比较器。Candidate49 仍是唯一前瞻候选，账本为空且禁止历史回填；本轮无 provider 请求，也未生成当前评分、选股、仓位、订单或投资建议。继续明确当前上市快照的幸存者偏差；后续离线 Campaign 只能从新的经济独立、值前冻结机制开始。
+
+## Campaign079：信号日换手率（值前机制重叠终止）
+
+Campaign079 最初选择接受供应商原始信号日换手率 `signal_day_turnover_rate_pct`、方向 higher。后续只读元数据核查发现，权威历史库存已经多次覆盖单字段换手水平、换手变化、`turnover_surge` 系列与 `return_turnover_correlation_10`；因此原机制独立性审查无效，测试原始水平会成为删除旧窗口或归一化后的救援。
+
+本轮在任何日线数据行、候选值、比较值、价格或 forward return 之前终止；未创建特征快照、开发预注册或 stress。1 个完整因子尝试使累计历史尝试为 484，累计开发收益试验保持 280。v15 保留该失败定义，完整语义库为 111 个；因没有候选数值，数值比较器保持 109 个。Candidate49 仍是唯一前瞻候选，空账本未变；无 provider 请求、历史回填、当前评分、选股、仓位、订单或投资建议。
+
+## Campaign080–083：历史滚动续跑与 2026-08-06 前瞻来源状态
+
+Campaign080–083 继续执行双轨制：2019–2023 三组冻结扩展训练/验证折是主要迭代引擎，三个信号会话边界清除且 t+1/t+3 必须留在同一分区；2024–2025 只有在完整有限候选库、搜索空间、门禁、成本、代码与数据指纹全部冻结且开发 survivor 非零后才可整体打开一次。四轮均只有一个事前冻结的 higher 因子、一个方向和一个试验，不允许反向、改窗、过滤、同轮救援、模型搜索或组合旧终止因子。
+
+- Campaign080 `intraday_above_median_amount_longest_run_240m`：109 项无收益比较全部通过，最大绝对中位日秩相关 `0.512057`；三折 Rank IC 全负，聚合 20bp 整手收益 `-17.584418%`，三折可负担率均低于 90%，survivor 为 0。
+- Campaign081 `intraday_amount_path_efficiency_238p`：110 项比较全部通过，最大绝对中位日秩相关 `0.484395`；三折 Rank IC 全负，聚合 20bp 收益 `-23.074433%`，后两折可负担率低于 90%，survivor 为 0。
+- Campaign082 `intraday_range_amount_peak_timing_alignment_240m`：111 项比较全部通过，最大绝对中位日秩相关 `0.750677`；只有一折 Rank IC 与一折 10bp 收益为正，聚合 20bp 收益 `-11.395294%`，survivor 为 0。
+- Campaign083 `intraday_close_frontier_innovation_share_238p`：33,015 个分区、7,724,498 行全部技术有效；112 项比较全部通过，最大绝对中位日秩相关 `0.691932`。2021/2022/2023 Rank IC 为 `-0.038984/-0.029657/-0.048226`，10bp 整手收益为 `-2.562653%/-5.616098%/-0.519265%`，三折可负担率为 `61.711712%/62.100457%/67.117117%`；聚合 20bp 收益 `-15.274999%`，运营门与质量门均失败，survivor 为 0。
+
+四轮的 2024–2025 压力区间均未打开、未读取。Campaign083 收口后的累计历史研究尝试为 533，累计收益读取开发试验为 284；v19 固定保留 115 个完整定义和 113 个数值比较器。Campaign084 可以在任何时间从新的值前冻结独立机制开始，但历史结果仍不得生成当前评分、选股、仓位、订单或投资建议，并继续受当前上市快照幸存者偏差限制。
+
+Candidate49 统一工作流现已验证可从仓库根目录 `.env` 安全读取唯一非空 `TUSHARE_TOKEN`：文件必须是被 Git 忽略的 0600 普通非符号链接，解析器不执行 shell、不展开变量、不加载其他键，Token 不进入参数、输出、清单或研究记录。2026-08-06 同日 16:30 后的零请求 `plan` 以退出码 0、`ready=true` 通过；唯一确认运行在 `stock_basic` 非法 `ts_code` 源门禁以退出码 1 失败，四次 provider 调用后禁止同日重试和重请求失败响应。新 staging root 为 `/Volumes/DIsk/qlib-a-share-tushare-daily-2026-08-06`，只保留交易日历检查点和失败记录；活动日线根未改变，Candidate49 信号/执行台账仍各 0 条，未读 forward return、未历史回填、未启动 Candidate50，也未产生纸面或实盘订单。下一接受交易日必须使用新的绝对日期 staging root 并重新从 16:30 后的只读 plan 开始。
+
+## Campaign084：利润增长水平与加速度下限（覆盖门终止）
+
+Campaign084 继续以历史滚动为主要迭代引擎，不等待 16:30 或新增日线。唯一 higher 因子 `quarterly_profit_growth_level_acceleration_floor_2r` 在严格点时可用且共同有限的股票日横截面上，分别对 `profit_yoy` 水平和同股票同财报季度的 `profit_yoy` 同比一阶变化计算 average-tie 百分位排名，再固定取两项排名的较小值。完整 115 定义、113 数值比较器、方向、公式与所有门禁均在候选源值前冻结；禁止变更方向、算子、阈值、过滤、子集、年份、模型或组合。
+
+不可变快照 manifest/data SHA-256 为 `68a547c9d85f6437382a16704f601074264c8206dd5fe4d23adaff20079f5994` / `eaae6e206284f605e6d673a89166ab996e4f246d59955f4d8f427ff7d8aecc5a`，包含 33,015 个分区、7,724,498 行和 6,321,289 个技术有限值。冻结质量/当前上市资格口径下，候选/基准有效行为 1,112,914/1,331,759；中位覆盖 `0.994594`，但 P05 覆盖与 P05 可用股票数均为 0。加速度定义因缺少上一年同财报季度基准而在 2019 形成结构性冷启动，违反冻结的 P05 `0.90` 与 50 名门槛。
+
+因此无收益审计在读取任何 113 个比较器值、日线价格或 forward return 前终止；2019–2023 开发折和 2024–2025 压力区间均未打开。不得删除 2019、放宽门槛、改成单独同比水平、改变加速度定义、反向、重标、过滤、残差化或同轮救援。只读复核确认 2020-04-29 至 2025-12-31 有 1,378 个交易日至少 50 只候选股票，超过后续重复检测的 100 日资格线，所以本定义仍会进入下一轮数值比较库；覆盖门失败结论保持不变。
+
+最终台账保留 11 次基础设施失败和 1 个完整因子尝试，累计历史研究尝试为 545，累计开发收益试验仍为 284。终态失败命令包括 Black、Ruff、两个冻结生命周期前态断言，以及测试绑定路径更新后的一次 Black 换行要求；未修改冻结特征脚本或旧测试。精确排除前态断言后的组合套件为 `13 passed, 2 deselected`，最终终态测试为 `4 passed` 且 Black/Ruff 通过。所有验证失败均未重算研究值或读取收益。Candidate49 仍是唯一前瞻候选，信号/执行台账各 0 条；Campaign084 未发 provider 请求、未历史回填，也未生成当前评分、选股、仓位、订单或投资建议。当前上市快照幸存者偏差和季度快照修订偏差继续作为硬限制披露。
+
+## Campaign085 离线历史状态
+
+Campaign085 继续使用双轨制：离线历史滚动无需等待 16:30，Candidate49 前瞻确认层保持独立。唯一事前冻结的 higher 因子是季报公告新鲜度排名与市场中性尾盘残差漂移排名的乘积；候选快照 manifest / dataset SHA256 为 `fb8ea4bdb2b2f783a8c1d4e020f1dcdfca1697c779c732e50233fe7b040b4d28` / `368f7cb96c15186cd511ccd4120e89b577141aa9687df8b39f9dd17320db8fb9`。
+
+无收益覆盖门和 114 项比较门全部通过后，只运行一次冻结的 2019–2023 三折开发试验。三个 10bp 整手收益全负，聚合 20bp 收益 `-26.190957%`，survivor 为 0，所以 2024–2025 压力区间没有打开。开发首次二进制导入失败保留于追加台账；唯一修复是使用 Campaign083 已冻结、哈希绑定且不设置 DYLD 覆盖的 Conda 兼容解释器。
+
+当前完整库为 117 个定义、115 个数值比较器；最终追加口径为 26 次基础设施失败、累计历史尝试 572、累计开发收益试验 285。三条不可变前态断言未被首次 deselect 排除的组合套件按一次失败保留，明确当前节点白名单为 19 passed，Black/Ruff 通过。Campaign085 的公式、方向和失败历史不可改写，也不得同轮反向、改窗、过滤、重跑、救援或组合；它只可作为以后事前冻结的重复检测比较器。历史输出不得生成当前评分、选股、仓位、订单或投资建议，Candidate49 仍禁止历史回填并保持唯一活动前瞻账本。
+
+## Campaign086 离线历史状态
+
+Campaign086 不等待 16:30 或新增日线。唯一 higher 因子 `intraday_intrabar_close_location_serial_persistence_238p` 对 240 根固定分钟 K 线计算 bar 内对数收盘位置，并只在两个半场内部汇总相邻位置的总体 Pearson 持续性；零振幅 bar 不桥接，至少要求 120 个信息对。快照 manifest / dataset SHA-256 为 `848ce713344f1ce805e3180344107d1d4bee5f8350bbcf52f8089e391fae3803` / `49cf11b5d69fa38a72f1a977975e290d4ed0bfd2205be6c50ba08dc64844b8e3`，1,331,759 行中 1,193,690 行有效。
+
+冻结质量/当前上市口径的覆盖中位/P05 为 `92.318613%/80.755044%`，未达到 `95%/90%`；名称容量、538 个三会话 cohort 和 7 个年份虽通过，审计仍在读取 115 个比较器值之前终止。日线价格、forward return、开发折和 2024–2025 压力收益均未读取。
+
+追加台账保留 9 次基础设施失败和 1 个完整因子尝试，累计历史尝试为 582，累计开发收益试验保持 285。当前完整库更新为 118 个定义、116 个数值比较器。不得降低覆盖门、删低覆盖年份/会话、放宽 120 对支持、桥接零振幅或午休、反向、过滤、重跑、救援或组合。Candidate49 仍是唯一前瞻候选，禁止历史回填；本 Campaign 未生成当前评分、选股、仓位、订单或投资建议。
+
+## Campaign087 离线历史状态
+
+Campaign087 继续以离线历史 walk-forward 为主要引擎，不等待 16:30 或新增日线。唯一 higher 因子 `intraday_range_amount_profile_alignment_js_240m` 在精确 240 根标准分钟上把对数振幅与成交额分别归一化为时钟概率轮廓，返回 `1-JS(p,q)/ln(2)`；零质量保留为零，不使用伪计数、平滑、阈值、过滤、模型或组合。
+
+v5 紧凑快照共 1,331,759 行、1,328,449 个有效值；中位/P05 覆盖为 `99.853694%/99.354839%`。116 项冻结数值比较全部通过，最大绝对中位日秩相关为 `0.787143`，严格低于 `0.8` 但接近拒绝线。
+
+唯一 2019–2023 三折开发试验的 Rank IC 为 `-0.035740/-0.025508/-0.052188`；normalized return 为 `+16.660467%/+47.546682%/-5.195431%`，10bp 整手收益为 `+0.961899%/+4.541692%/-2.178972%`。全开发期 20bp 收益为 `+2.528237%`，但三折 IC 全负、中位 spread 为负，最差验证回撤 `-25.217549%` 未通过 `-25%` 门。survivor 为 0，2024–2025 压力区间保持关闭且未读取。
+
+最终保留 19 个历史研究尝试和 1 条收益读取延续，累计历史尝试为 601，累计开发收益试验为 286。终态组合套件的 5 条不可变前态断言、首次错误 deselect 前缀和手填声明时间超前均追加记录；文件系统出生时间确认值前冻结顺序成立，正确当前套件为 `36 passed, 5 deselected`。下一轮库为 119 个完整定义、117 个数值比较器。Campaign087 结果不可反向、改窗、平滑、过滤、重跑、救援或组合；Candidate49 仍是唯一前瞻候选，禁止历史回填，本轮没有 provider 请求、当前评分、选股、仓位、订单或投资建议。
+
+
+## Campaign088 离线历史状态
+
+Campaign088 继续以离线历史 walk-forward 为主要引擎，不等待 16:30 或新增日线。唯一 higher 因子 `intraday_bipower_jump_variation_share_238m` 在上午、下午两个 120-close 半场内分别形成 119 个相邻自然对数收益，共 238 个收益和 236 个半场内相邻对；定义 `RV=sum(r²)`、`BV=(pi/2)*(238/236)*sum(|r_i||r_{i+1}|)`，返回 `max(RV-BV,0)/RV`。午休不成对，零收益保留，不允许 epsilon、阈值、平滑、改窗、过滤、模型或组合。
+
+不可变快照 1,331,759 行中 1,328,065 行有限；覆盖中位/P05 为 `99.831839%/99.337089%`，P05 可用名称 138，可形成 539 个不重叠三会话 cohort，覆盖门通过。随后按冻结顺序读取 117 个比较器；116 项通过，但与 `intraday_diffusive_variation_ratio_238m` 的绝对中位日秩相关为 `0.998285`，超过严格 `0.8` 上限，数值去重门失败。
+
+审计在日线价格和 forward return 之前终止；未打开 2019–2023 开发试验或 2024–2025 压力区间，开发 survivor 为 0。最终记录 11 次历史研究尝试、12 条台账和 1 个完整因子尝试；累计历史尝试 612、累计开发收益试验保持 286。v27 库为 120 个完整定义、118 个数值比较器；C88 快照只用于以后阻止重复机制，不改变其终止结论。不得反向、重标、改正部、改窗、过滤、残差化、重跑、救援或组合。Candidate49 仍是唯一前瞻候选且空账本未变；本轮无 provider 请求、历史回填、当前评分、选股、仓位、订单或投资建议。
+
+## Campaign089 离线历史状态
+
+Campaign089 继续执行双轨制：历史 walk-forward 是主要迭代引擎，可在任意时间离线推进，不等待 16:30 或新增日线；Candidate49 前瞻确认层保持独立。唯一 higher 因子 `intraday_directional_amount_timing_spread_238m` 在上午和下午内部形成 238 个相邻一分钟收益，按连续交易顺序对严格正收益、严格负收益各自的目的分钟成交额计算标准化时间重心，返回 `T_up-T_down`。零收益不进入任一方向质量，零成交额保留；禁止 epsilon、阈值、改窗、过滤、模型和组合。
+
+不可变特征快照 manifest/data SHA-256 为 `3ab55cc6f61bebb6713aeacb9e54125c20183295b862717617be0b13c9d0a204` / `c4f8794f42f1fffe2847ade875232827c8ca532a7fd75dd1123686c41456655a`；1,331,759 行中 1,327,577 行有效。覆盖中位/P05 为 `99.789916%/99.214860%`，P05 可用名称 138，可形成 539 个三会话 cohort。118 项数值比较全部通过，最大绝对中位日秩相关为 `0.409231`，对应 `afternoon_signed_amount_efficiency_120m`。
+
+唯一冻结的 2019–2023 开发试验在 2021/2022/2023 的 mean Rank IC 为 `-0.013709/+0.010598/+0.013964`，normalized return 为 `-6.456899%/-17.768407%/+1.929896%`，10bp 整手收益为 `-1.876524%/-2.777596%/-1.138621%`。聚合 0/5/10/20bp 整手收益为 `+1.197600%/-4.231820%/-8.655588%/-16.711836%`，最差验证 normalized 回撤为 `-34.876863%`。运营门通过但冻结质量门失败，survivor 为 0；2024–2025 压力区间未打开、未读取。
+
+最终保留 10 次历史研究尝试、12 条台账、1 个完整因子尝试和 1 条收益读取延续；累计历史研究尝试为 622，累计开发收益试验为 287。报告同步的一次组合补丁因上下文不匹配在任何写入前被拒绝，逐文件锚定更新随后成功且没有重算研究值。未来政策 v30 固定 121 个完整定义和 119 个数值比较器。Campaign089 结论不得反向、改窗、阈值化、过滤、重跑、救援或组合，历史结果不得生成当前评分、选股、仓位、订单或投资建议。Candidate49 仍是唯一活动前瞻候选，`.env` token 读取已安全验证但本轮未发 provider 请求、未运行同日 plan/run、未历史回填，两本前瞻台账仍各 0 条。
+
+## Campaign090 离线历史状态
+
+Campaign090 在任意本地时间使用离线历史主引擎，不等待 16:30 或新增日线。唯一 higher 因子 `intraday_range_clock_center_240m` 对完整 240 根标准一分钟 bar 的 `ln(high/low)` 振幅质量计算固定交易时钟第一矩；要求全部 high/low 有效有序、总质量严格为正，精确零振幅保留。该因子不读 close、amount 或 volume，不允许 epsilon、改窗、阈值、过滤、模型和组合。
+
+不可变 7 分区快照 manifest/data SHA-256 为 `c065e81f4eec91b214a3e1f69d8e15e567fac5bd879e173c5b985777ab4ba2ed` / `d1da6b2c1d059038e473c55a15c76ba2efaf1a282d5a6bec1f302cd37a76ca31`；1,331,759 行中 1,328,449 行有效。覆盖中位/P05 `99.853694%/99.354839%`，119 项数值比较全部通过，最高绝对中位日秩相关 `0.789773`，对象为 `intraday_volatility_resolution_238m`。
+
+唯一冻结开发试验的三折 Rank IC 均为正，但 normalized return 和 10bp 整手收益三折全负；聚合 20bp 收益 `-17.691709%`，最差验证 normalized 回撤 `-41.038853%`。因此 survivor 为 0，2024–2025 压力区间未打开、未读取。最终记录 10 次历史研究尝试、12 条记录和 1 条收益读取延续；累计历史尝试 632、累计开发收益试验 288。终态验证的两条冻结值前断言、首次错误 deselect 前缀和过宽 Black 范围按三次失败追加，正确当前节点套件为 `16 passed, 2 deselected`，Ruff 通过且冻结字节未改写。未来库为 122 个完整定义和 120 个数值比较器。Candidate49 仍是唯一活动前瞻候选；`.env` 凭据存在性已用兼容运行时安全验证，但当前早于 16:30，本轮未运行同日 plan/run、未发 provider 请求、未历史回填，两本前瞻台账仍各 0 条。历史结果不得生成当前评分、选股、仓位、订单或投资建议。
+
+## Campaign091 离线历史状态
+
+Campaign091 继续以离线历史 walk-forward 为主要引擎，不等待 16:30 或新增日线。唯一 higher 因子 `intraday_directional_range_mass_imbalance_240m` 在完整 240 根标准一分钟 bar 上，将 `ln(high/low)` 振幅质量按 `ln(close/open)` 的严格正负实体方向分组，返回 `(U-D)/(U+D)`；零实体不分组，零振幅保留，OHLC 必须有限、严格为正且有序。禁止 epsilon、改窗、阈值、过滤、模型、组合或同轮救援。
+
+不可变 7 分区快照 manifest/data SHA-256 为 `1caf67c6b65947e4407f3064f732bf33a7595b9df977c8d62236c321c91e4541` / `e179abf89f0ef956e22508c00ca198a6cf612b25700c5b8612f1d3d6d383e6fa`；1,331,759 行中 1,328,350 行有效。覆盖中位/P05 `99.847561%/99.354839%`，120 项数值比较全部通过，最高绝对中位日秩相关 `0.623136`，对象为 `intraday_intrabar_close_location_pressure_240m`。
+
+唯一冻结开发试验只有一折 Rank IC、normalized return 和 10bp 整手收益为正；聚合 20bp 收益 `-29.240505%`，最差验证 normalized 回撤 `-57.508261%`。因此 survivor 为 0，2024–2025 压力区间未打开、未读取。最终记录 4 次历史研究尝试、7 条记录和 1 条收益读取延续；累计历史尝试 636、累计开发收益试验 289。未来库为 123 个完整定义和 121 个数值比较器。Candidate49 仍是唯一活动前瞻候选；`.env` 凭据仅做存在性与权限验证，本轮早于 16:30，未运行同日 plan/run、未发 provider 请求、未历史回填，两本前瞻台账仍各 0 条。历史结果不得生成当前评分、选股、仓位、订单或投资建议。
+
+终态验证把两条冻结值前生命周期断言误纳入授权产物已存在的当前节点套件，得到 `13 passed, 2 failed`；新终态测试首次 Black 检查也失败。两次命令均按基础设施失败追加，未修改旧断言或重算数据。显式当前节点白名单最终 `14 passed`，Black/Ruff 通过；最终口径为 6 次历史尝试、9 条记录、5 次基础设施失败，累计历史尝试 638、累计开发收益试验 289。科学结果、压力关闭状态及 Candidate49 空账本不变。
+
+第一次当前节点白名单实际得到 `13 passed, 1 failed`，因为追加报告说明后研究记录 v1 的报告哈希绑定已过期。该失败追加后发布 v2 绑定链，不改写旧文件或科学值。最终 Campaign091 口径为 7 次历史尝试、10 条记录、6 次基础设施失败，累计历史尝试 639、累计开发收益试验 289。
+
+逻辑时间审计再发现 4 个终态文件手填了比当时系统时钟稍晚的计划完成时间；通过追加 UTC 修正记录处理，原文件与研究值不改写，按一次共同根因失败计数。最终 Campaign091 口径为 8 次历史尝试、11 条记录、7 次基础设施失败，累计历史尝试 640、累计开发收益试验 289。
+
+## Campaign092 离线历史状态
+
+Campaign092 继续按双轨制在任意本地时间运行离线历史主引擎，不等待 16:30 或新增日线。唯一 higher 因子 `intraday_interbar_gap_discovery_share_238p` 在上午、下午两个 120-bar 半场内部各形成 119 个相邻分钟对，计算目的分钟开盘相对上一分钟收盘的绝对对数跳空质量 `G` 与目的分钟对数振幅质量 `R`，返回 `G/(G+R)`。午休、隔夜和跨日不桥接，完整 240 根 OHLC 必须有限、严格为正且有序，精确零跳空和零振幅有效，分母必须严格为正。禁止 epsilon、改窗、阈值、过滤、模型、组合或同轮救援。
+
+不可变 7 分区快照 manifest/data SHA-256 为 `06fbfcae04af4ce2a917601876b5047e5ac09f75cf19d17bebc0bca8d9ff019e` / `7df85a0b3a75b203661de4d1695d8f75890fdc649efbee7739b4f2241ab93321`；1,331,759 行中 1,328,155 行有效。覆盖中位/P05 为 `99.835841%/99.337748%`，121 项数值比较全部通过，最高绝对中位日秩相关 `0.765191`，对象为 `intraday_amount_price_discovery_alignment_js_238p`。
+
+唯一冻结开发试验的三折 Rank IC 全为正，但 normalized return 只有两折为正、10bp 整手收益只有一折为正；聚合 20bp 收益 `-13.979600%`，最差验证 normalized 回撤 `-24.668093%`。因此 survivor 为 0，2024–2025 压力区间未打开、未读取。最终记录 6 次历史研究尝试、9 条记录和 1 条收益读取延续；其中 5 次基础设施失败均在额外收益读取前发生。累计历史尝试 646、累计开发收益试验 290；未来库为 124 个完整定义和 122 个数值比较器。Candidate49 仍是唯一活动前瞻候选；`.env` 凭据读取、权限和 Git 忽略均安全通过，但本轮早于 16:30，未运行同日 plan/run、未发 provider 请求、未历史回填，两本前瞻台账仍各 0 条。历史结果不得生成当前评分、选股、仓位、订单或投资建议。
+
+## Campaign093 离线历史状态
+
+Campaign093 继续执行双轨制：离线历史研究可在任意时间推进，不等待 16:30 或新增日线，Candidate49 前瞻确认层保持独立。唯一 higher 因子 `intraday_close_transition_range_quadratic_efficiency_238p` 在上午、下午各 120 根标准分钟内部形成 238 个相邻收盘对，令 `Q=sum(ln(close_j/close_{j-1})²)`，并对各目的分钟令 `H=sum(ln(high_j/low_j)²)`，返回 `Q/(Q+H)`。午休不桥接，要求完整、有限、严格为正且有序的 HLC；零迁移和零振幅保留，分母必须严格为正。禁止 epsilon、改窗、阈值、过滤、模型、组合或同轮救援。
+
+不可变 7 分区快照 manifest/data SHA-256 为 `69428173fd9a84f7272b56e253b589cb712355ce0b59a05e2a0b0b9576b82e92` / `bba3e4e71626b0ff2fa3860649da5187ef5c5412879b009f6890e9599ba3cf0b`；1,331,759 行中 1,328,155 行有效。覆盖中位/P05 为 `99.835841%/99.337748%`，122 项数值比较中 121 项通过；最高绝对中位日秩相关 `0.846190`，对象为 `intraday_intrabar_body_range_efficiency_240m`，超过严格 `0.8` 上限。
+
+因此审计在日线价格和 forward return 之前终止，未打开开发折或 2024–2025 压力收益。最终记录 4 次历史研究尝试、6 条记录、3 次基础设施/实现失败和 1 个完整因子尝试；累计历史尝试 650、累计开发收益试验保持 290。未来库更新为 125 个完整定义和 123 个数值比较器。Campaign093 不得反向、改窗、重定义二次质量、过滤、残差化、重跑、救援或组合；Candidate49 仍是唯一活动前瞻候选。`.env` 为 0600 普通文件且凭据存在，当前早于 16:30，未运行同日 plan/run、未发 provider 请求、未历史回填，两本前瞻台账仍各 0 条。历史结果不得生成当前评分、选股、仓位、订单或投资建议。
+
+## Campaign094 离线历史状态
+
+Campaign094 继续执行双轨制：离线历史研究可在任意时间推进，不等待 16:30 或新增日线，Candidate49 前瞻确认层保持独立。唯一 higher 因子 `intraday_range_local_peak_clock_dispersion_236p` 在上午、下午各 120 根标准分钟内，对 `ln(high/low)` 的严格内部局部峰位置分别计算归一化交易时钟总体方差并取均值；每半场至少两个峰，午休不桥接，平峰和零振幅保留为有效非峰。禁止 epsilon、改峰定义、改窗、阈值、过滤、模型、组合或同轮救援。
+
+不可变 7 分区快照 manifest/data SHA-256 为 `1f1441e59bcef1cb3d18b0030c640453e2ee762668d05157dec9ca1c0f01c340` / `37865a7d4c5556ee9a79ba9550f0f05229e3c52bb511d8bd1ac3b1f2525a6b63`；1,331,759 行中 1,314,834 行有效。覆盖中位/P05 为 `98.956975%/97.625760%`，123 项数值比较全部通过，最高绝对中位日秩相关 `0.077440`，对象为 `intraday_price_update_clock_entropy_10b_238m`。
+
+唯一冻结开发试验只有一折 Rank IC 和一折 10bp 整手收益为正；三折 normalized return 为 `+14.596746%/+14.585687%/-3.875689%`，聚合 20bp 收益 `-16.037181%`，最差验证 normalized 回撤 `-18.552905%`。因此 survivor 为 0，2024–2025 压力区间未打开、未读取。最终记录 5 次历史研究尝试、8 条记录和 1 条收益读取延续；累计历史尝试 655、累计开发收益试验 291。未来库更新为 126 个完整定义和 124 个数值比较器。Campaign094 不得反向、改峰值定义、改窗、阈值化、过滤、重跑、救援或组合；Candidate49 仍是唯一活动前瞻候选，当前早于 16:30，本轮未运行同日 plan/run、未发 provider 请求、未历史回填，两本前瞻台账仍各 0 条。历史结果不得生成当前评分、选股、仓位、订单或投资建议。
+
+终态验证首次 Black 检查仅要求格式化新建的终态测试，按一次不读额外收益的基础设施失败追加；格式化后 Ruff 通过、终态 `5 passed`。最终口径为 6 次历史研究尝试、9 条记录和 5 次基础设施/实现失败，累计历史尝试 656、累计开发收益试验 291；Campaign094 科学结果、126/124 库顺序、压力关闭状态和 Candidate49 空账本不变。
+
+首次全量 JSON 扫描误把无文件指纹的纯叙事记录交给绑定验证器，按一次不读额外收益的终态工具范围失败追加。最终有效链扫描区分当前绑定与被授权激活/追加所取代的阶段记录；最终 Campaign094 口径为 7 次尝试、10 条记录、6 次基础设施/实现失败，累计历史尝试 657、累计开发收益试验 291，科学结论和边界不变。
+
+第二次有效链扫描把快照 manifest 中按 manifest 所在目录解释的 7 个相对分区路径交给按仓库根解释相对路径的通用绑定验证器，造成 7 条根目录误判。该命令按一次不读额外收益的基础设施失败追加；manifest 和分区字节不改写，转由冻结的 Campaign094 快照专用校验器验证。最终口径为 8 次尝试、11 条记录、7 次基础设施/实现失败，累计历史尝试 658、累计开发收益试验 291，科学结果、126/124 库、压力关闭状态和 Candidate49 空账本不变。
+
+## Campaign095–096 离线历史追加
+
+Campaign095 的十桶自身收盘位置熵在值前合成测试中因半开桶边界不满足冻结的无条件反射不变性声明而终止，没有读取源数据或创建数值快照。Campaign096 的 `intraday_intrabar_close_location_total_variation_238p` 使用同一 HLC 状态但改为半场内相邻绝对迁移；不可变快照 manifest / dataset SHA-256 为 `1b205f1b6d3b28248b765860b8cf0e4aecee07f960fa535402e316ba13c39a3a` / `67106bd4f5d4382b770cb79355c27ea4d8ca179296841b7bd9fa2963a46e09f3`，1,331,759 行中 1,193,690 行有限。
+
+Campaign096 覆盖中位/P05 为 `92.318613%/80.755044%`，未达到 `95%/90%`；124 个比较器、日线价格和 forward return 均未读取，开发与 2024–2025 压力区间保持关闭。其支持谓词与 Campaign086 的旧覆盖失败相同，后续历史 campaign 必须在值前做支持谓词去重：同一研究口径下，相同或更窄于已知失败支持的候选不得重复物化。Candidate49 前瞻账本与历史层继续严格隔离。
+
+Campaign096 终态测试初版同时需要 Black 格式化，并把终态冻结 SHA-256 的最后一个字符漏写；该单一未冻结测试修订按一次不读研究值或收益的实现失败追加。修复后 Black、Ruff 与终态 `5 passed`。最终有效口径为 7 次历史尝试、7 条台账、6 次实现/基础设施失败，累计历史尝试 666、累计收益读取开发试验 291；科学结果、128/125 库顺序、2024–2025 关闭状态和 Candidate49 空账本不变。
+
+## Campaign097 离线历史状态
+
+Campaign097 按双轨制在任意时间运行离线历史主引擎，不等待新增日线。唯一 higher 因子 `intraday_market_range_profile_synchronization_240m` 把每只股票日的 240 个对数振幅归一化为时钟轮廓，再与同日 leave-one-out 市场轮廓做等时钟总体 Pearson 相关；每个时钟至少 50 个同行，零振幅分钟保留。紧凑快照 1,331,759 行中 1,328,449 行有限，覆盖中位/P05 为 `99.853694%/99.354839%`；125 项冻结数值比较全部通过，最大绝对中位日秩相关为 `0.684108`。
+
+唯一 2019–2023 开发试验三折 Rank IC 全负，10bp 整手收益只有一折为正；聚合 10bp 收益 `+3.110050%`，但 20bp 收益 `-8.585555%`、最差验证 normalized 回撤 `-32.814553%`。质量门失败，survivor 为 0，2024–2025 未打开、未读取。最终保留 13 次历史尝试、16 条记录、12 次实现/基础设施失败和 1 条收益读取开发试验；累计历史尝试 679、累计开发收益试验 292。v43 固定下一轮 129 个完整定义和 126 个数值比较器；本因子只作为重复检测证据，不得反向、改定义、过滤、重跑、救援或组合。
+
+Candidate49 仍是唯一活动前瞻候选，两本台账各 0 条且历史层不得回填。仓库 `.env` 已安全确认为 0600 普通文件、token 非空且不打印秘密；本轮在 16:30 前没有运行同日 plan/run 或请求供应商，也没有生成当前评分、选股、仓位、订单或投资建议。
+
+## Campaign098 离线历史状态
+
+Campaign098 在任意本地时间运行离线历史主引擎，不依赖新增日线。`intraday_range_clock_variance_240m` 的 7 分区不可变快照 manifest/data SHA-256 为 `371429a81292a91ef2bfa1292f467c81bf73e176fbfbc9888084f74eaaac1dc5` / `921f06fad98aed942550d86b1475c888aea6d2025c37d53ec55917401bd34b33`；1,331,759 行中 1,328,449 行有限。覆盖中位/P05 为 `99.853694%/99.354839%`，126 项数值比较全部通过，最高绝对中位日秩相关 `0.492023`。
+
+唯一冻结开发试验的三折 Rank IC 全正，但 10bp 整手收益只有一折为正；聚合 20bp 收益 `-13.581324%`，最差验证 normalized 回撤 `-26.126720%`。因此 survivor 为 0，2024–2025 压力收益没有打开或读取。终态同步与验证共保留四次上下文/结果字段失败；最终记录 13 次历史研究尝试、16 条记录和 1 条收益读取延续，累计历史尝试 692、累计开发收益试验 293。未来库为 130 个完整定义和 127 个数值比较器。Candidate49 空账本不变，本轮未发 provider 请求、未历史回填，也未生成当前评分、选股、仓位、订单或投资建议。
+
+### Campaign099 历史滚动终局（2026-08-07）
+
+离线主引擎完成 `intraday_market_close_location_profile_synchronization_240m` 的事前冻结、紧凑快照、无收益覆盖/127 比较器去重和唯一一次 2019–2023 三折开发试验。紧凑快照为 1,331,759 行、1,328,449 个有限值；覆盖中位/P05 为 99.853694%/99.354839%，最大绝对中位日秩相关 0.712051。
+
+开发三折 Rank IC、normalized return 和 10bp 整手收益均无正折；聚合 20bp 收益 -11.034078%，最差验证 normalized 回撤 -43.623594%。运营门和质量门均失败，survivor 为 0；2024–2025 压力区间保持关闭且未读取。首次执行的嵌套紧凑路径绑定失败已保留，修复仅绑定正确 manifest/数据哈希，没有改变因子、数据、折、成本或门槛。
+
+当前有效台账为 18 次 Campaign099 历史尝试、23 条记录、15 次实现/基础设施失败和 1 条收益读取开发试验；累计历史尝试 710、累计开发收益试验 294。后续数值资格政策保持 131 个完整定义和 128 个数值比较器。Candidate49 两本前瞻账本仍各 0 条；没有 provider 请求、历史回填、当前评分、选股、仓位、订单或投资建议。
+
+## Campaign105 离线历史终局（2026-08-08）
+
+历史研究不依赖新增日线，也不等待 16:30。Campaign105 的唯一 higher 因子 `intraday_active_trading_bar_share_240m` 对 09:31–11:30、13:01–15:00 的精确 240 根 bar 统计量额同时严格为正的分钟占比；量额共同为零是有效不活跃，单边为零使股票日缺失。禁止改窗、阈值、方向、过滤、子集、模型、组合或同轮救援。
+
+不可变快照 7,724,498 行中 7,724,451 行有效；质量上市口径覆盖中位/P05 为 `99.945175%/99.568865%`。131 项数值比较全部通过，最大绝对中位日秩相关 `0.635426`。唯一 2019–2023 三折开发试验在 2021/2022/2023 的 mean Rank IC 为 `-0.030565/-0.016617/-0.043634`，10bp 整手收益为 `-4.864958%/-0.951569%/-2.659420%`；聚合 20bp 收益 `-17.951247%`，最差验证 normalized 回撤 `-32.349363%`。
+
+运营门通过但质量门失败，survivor 为 0，2024–2025 未打开、未读取。最终口径为 11 次历史尝试、12 条追加记录、10 次实现/基础设施失败、1 个完整因子尝试与 1 条收益读取延续；累计历史尝试 786、累计开发收益试验 300。未来政策 v63 为 135 个完整定义和 132 个数值比较器。Candidate49 仍是唯一前瞻候选且空账本未回填；`.env` 已按普通文件、`0600`、Git 忽略、唯一非空 token 安全验证，但周六没有 provider 请求或 Candidate49 workflow，也没有 Candidate50、当前评分、选股、仓位、订单或投资建议。
+
+### Campaign113：监管行动适配器与公式冻结追加
+
+纯离线阶段冻结了 `scripts/a_share_official_exchange_enforcement.py` 及合成测试。适配器不实现 transport，不含来源请求 CLI，只接受有限精确标签、严格 `YYYY-MM-DD`、沪主板/深主板与创业板代码以及同一官方域名 href；完整可分类的非持仓板块代码只排除计数，跨交易所代码、未知/歧义标签、非官方 href、日期或文档状态冲突均硬失败。归一化结果只保留处理日期、instrument、exchange、action family/type token、href SHA-256 和 provider。
+
+同一值前记录冻结唯一 higher 因子 `official_exchange_enforcement_recovery_session_age_60sessions`。事件在处理日期之后第一个接受会话收盘生效；信号会话只看年龄 0–59 的活跃事件，并返回距离最新生效事件的会话数。没有活跃事件保持缺失，不允许零填充、措施家族权重、事件数量权重、剪裁或中性化。完整定义库更新为 141；在数值快照、容量与去重证据出现前，数值比较器保持 134。
+
+旧 `research_attempt_ledger_v1.json` 保持六条记录阶段快照不变，后续完整记录进入 `research_attempt_ledger_v2.json`，最新增量进入 `research_attempt_ledger_v3.json`。在任何交易所列表/API 请求前，仍必须从官方静态元数据单独冻结精确 endpoint、schema 与分页映射，并冻结一次性原子 source-acceptance workflow；禁止猜测参数或提前检查、统计、持久化来源行。
+
+### Campaign113 元数据终止
+
+官方静态元数据已确认上交所 `commonSoaQuery.do`/JSONP 与深交所 `ShowReport/data`/JSON 的固定 catalog 和分页结构。上交所四个必需角色精确匹配；深交所监管措施目录的日期/文档标签、纪律处分目录的措施/日期/文档标签不在冻结白名单。由于双交易所是强制验收范围，Campaign113 在来源行前 fail-closed；不得曝光后扩充标签、模糊或位置映射、删除深交所、改来源或修补公式。深交所两次 catalog 请求只解析 `metadata`，响应 `data` 成员未访问、持久化、哈希或计数。
+
+v77 保留 141 个完整定义和 134 个数值比较器；`official_exchange_enforcement_recovery_session_age_60sessions` 仅作为未来语义重复控制，不生成快照或比较器。最终台账为 15 次尝试、12 次基础设施失败、3 次值前科学尝试、1 个完整定义；累计历史尝试 842、累计收益读取开发试验 302。日线、forward return、2019–2023 开发和 2024–2025 压力均未打开。Candidate49 仍是唯一前瞻候选且两本账为空；周日没有 plan/run、历史回填、当前评分、选股、仓位、订单或投资建议。
+
+首次终态 Black 命令把两个已有冻结测试纳入新版格式范围，命令在 pytest 前停止且没有改写文件或读取研究值。该范围失败由 v5 台账追加，v78 只更新有效会计为 16 次尝试、13 次基础设施失败和累计历史尝试 843；完整定义/数值比较器仍为 141/134，累计收益读取开发试验仍为 302。
+
+终态测试绑定补丁随后因引用格式化前上下文而未命中，没有修改文件或读取研究值。v6 台账与 v79 最终更新会计为 17 次尝试、14 次基础设施失败、累计历史尝试 844；141/134 顺序和累计收益读取开发试验 302 保持不变。
+
+组合完整性命令因包含临时目录删除而被安全策略在执行前整体拒绝；仓库与研究值无变化，临时目录保留。v7 台账与 v80 的最终会计为 18 次尝试、15 次基础设施失败、累计历史尝试 845；141/134 顺序和累计收益读取开发试验 302 不变。
+
+### Campaign114 值前来源发现
+
+有限概念审查从 6 个构想中只选择 `official_exchange_information_disclosure_evaluation_grade` 进入来源元数据发现。该状态拟使用沪深交易所年度发行人信息披露工作评价，但当前只通过相对 141 个完整定义的语义独立性预检；双交易所 2019–2025 档案、共同有限等级词表、发布日期和稳定文档身份尚未证明，因而没有完整因子定义。
+
+冻结协议只允许三个精确检索词和官方公开静态搜索/导航/索引元数据；不得打开或下载评价附件，不得读取、统计或推断发行人等级行，也不得使用第三方镜像、OCR、手工名称匹配、单交易所路径或曝光后扩词。元数据若成功，仍须先冻结等级映射、纯合成适配器、公式、点时规则和原子 source contract；任一交易所、年份或角色失败即终止。
+
+两次预协议搜索未取得结构化官方档案链接，一次本地 `python` 别名失败，均追加记账。Campaign114 当前 4 次尝试中有 3 次基础设施失败、1 次值前科学尝试，没有完整因子或收益试验；累计历史尝试 849、累计收益读取开发试验 302。v81 保持 141/134；无来源行、候选/比较值、日线、forward return 或压力读取。Candidate49 仍是唯一前瞻候选且两本账为空；周日没有 plan/run、历史回填、当前评分、选股、仓位、订单或投资建议。
+
+首次定向测试的链式等式把预期哈希比较成布尔值，得到 `23 passed, 1 failed`；政策字节与库顺序没有不一致。修复只改未冻结测试断言，并把失败追加进 v2 台账。v82 最终口径为 Campaign114 5 次尝试、4 次基础设施失败、累计历史尝试 850；141/134、收益读取开发试验 302、来源边界和 Candidate49 空账本均不变。
+
+#### Campaign114 官方元数据终止
+
+协议绑定的三个固定检索词确认沪深两所规则均发布 A/B/C/D 评价词表，并定位若干年度结果页、发布日期和附件标签。完整双交易所 2019–2025 档案与全部点时角色尚未证明时，深交所静态文档域的检索响应直接嵌入了评价附件的公司代码、简称和等级行。未点击、打开、下载、截图或哈希附件字节，也未持久化或计数具体公司等级；但搜索响应已违反“映射、公式、纯适配器和 source contract 先于来源行”的冻结边界。
+
+Campaign114 因此在完整定义前 fail-closed，禁止切换搜索工具、补标签、单交易所救援、改来源或事后冻结映射。最终 7 次尝试中有 5 次基础设施失败、2 次值前科学尝试，完整定义、数值快照和收益试验均为 0；累计历史尝试 852、累计收益读取开发试验 302。v83 保持 141/134。Candidate49 仍是唯一前瞻候选且两本账为空；周日没有 plan/run、历史回填、当前评分、选股、仓位、订单或投资建议。
+
+首次跨 Campaign112–114 终态套件得到 `31 passed, 1 failed`；唯一失败是 Campaign114 专属报告标题缺少统一编号前缀。补全标题并追加失败会计后，v84 的最终口径为 Campaign114 8 次尝试、6 次基础设施失败、2 次值前科学尝试、累计历史尝试 853；141/134 和收益读取开发试验 302 不变，未新增任何读值或 Candidate49 行为。
+
+## Campaign116 本地覆盖率终止（2026-08-12）
+
+Campaign115 已按用户范围选择在供应商值前结束；Campaign116 改用既有本地 2019–2025 分钟快照，不依赖 `limit_list_d`、5,000 积分、新增日线或 16:30 等待。唯一 higher 因子 `intraday_amount_conditioned_directional_persistence_spread_236p` 的 33,015 分区、7,724,498 行快照已通过全部字节/帧哈希和聚合摘要验证，其中 5,177,430 行满足公式支持。
+
+单独冻结的覆盖率 runner 必须先执行 metadata-only `plan`；本次 plan 为 `ready=true` 且退出码 0 后才执行一次确认审计。PIT 质量/当前上市资格基准为 1,331,759 个股票日与 1,632 个会话。中位/P05 覆盖率为 `85.013381%/71.417946%`，未达到 `95%/90%`；P05 名称数 `121`、`539` 个非重叠三会话 cohort、七年和 `1,632` 个非恒定横截面会话则通过。由于覆盖门是合取门，Campaign116 在所有比较因子前终止。
+
+审计读取 0 个数值比较器，没有读取日线、forward return、开发折或 2024–2025 压力收益，也没有加载凭据或请求 provider。不得降低 30+30 信息对支持、改变严格金额中位规则、反向、过滤、拟合、组合或救援。v102 保持完整定义/数值比较器 `142/134`；Campaign116 有效会计仍为 5 次尝试、4 次基础设施失败、累计历史尝试 883、累计收益读取开发试验 302。Candidate49 仍为唯一前瞻候选且两本账各 0 条；无历史回填、第二前瞻候选、当前评分、选股、仓位、订单或投资建议。Campaign117 可以在任意时间从真正不同、值前冻结的机制开始。
+
+终态后的技能文档追加首次因补丁上下文不匹配在写入前失败，未改变代码、快照、研究值或科学结果。v103 只追加该基础设施失败：Campaign116 有效会计为 6 次尝试、5 次基础设施失败，累计历史尝试 884；完整定义/数值比较器 `142/134`、累计收益读取开发试验 302、Candidate49 空账本和全部禁止边界不变。
+
+终态测试指针补丁随后因 Black 格式化后的实际上下文不同而在写入前失败，也未改动文件。v104 再追加一次基础设施失败：Campaign116 有效会计为 7 次尝试、6 次基础设施失败，累计历史尝试 885；覆盖终止科学结果、`142/134`、收益读取试验 302 和 Candidate49 空账本不变。

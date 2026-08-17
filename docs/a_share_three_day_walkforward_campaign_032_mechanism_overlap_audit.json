@@ -1,0 +1,104 @@
+{
+  "version": 1,
+  "kind": "a_share_three_day_walkforward_campaign032_mechanism_overlap_audit",
+  "status": "passed_conceptual_independence_before_formula_candidate_comparison_or_return_values",
+  "recorded_at": "2026-07-30T14:42:00Z",
+  "purpose": "Challenge issuer-specific quarterly reporting timeliness against the complete relevant terminal mechanism families before freezing an exact formula or reading any protected value.",
+  "concept_scouting": {
+    "path": "docs/a_share_three_day_walkforward_campaign_032_concept_scouting.json",
+    "sha256": "92a2911e6f0839fe7fd1570e6126d68622c0742192f6227336212ff00a29a10e"
+  },
+  "selected_mechanism": {
+    "name": "quarterly_announcement_timeliness_days",
+    "direction": "higher",
+    "information_domain": "issuer_quarterly_reporting_process_timing",
+    "economic_hypothesis": "A shorter delay from report-period end to the latest point-in-time announcement can indicate faster uncertainty resolution and stronger reporting processes.",
+    "source_identity": "accepted stock-day datetime/symbol/provider identity plus frozen quarterly instrument/report_date/announcement_date only"
+  },
+  "overlap_challenges": [
+    {
+      "family": "Campaign020 quarterly_announcement_freshness_60s",
+      "result": "distinct_with_mandatory_statistical_challenge",
+      "reason": "Freshness is the accepted-session age from announcement availability to signal t and changes every session. Timeliness is the fixed calendar-day delay from report_date to announcement_date for the latest effective report and remains constant until another report becomes effective."
+    },
+    {
+      "family": "quality_and_listing_eligibility_state",
+      "result": "not_a_synonym",
+      "reason": "Eligibility uses independently forward-filled point-in-time quality values, maximum age, and listing seasoning only as a gate. Campaign032 reads none of those values and ranks eligible names by reporting delay."
+    },
+    {
+      "family": "fundamental_value_growth_profitability_and_cash_conversion",
+      "result": "distinct",
+      "reason": "The candidate forbids ROE, profit, growth, valuation, balance-sheet, cash-flow, surprise, sign, and magnitude fields; changing every report value while preserving its dates leaves the factor unchanged."
+    },
+    {
+      "family": "sparse_corporate_events_counts_or_announcement_intensity",
+      "result": "distinct",
+      "reason": "The candidate is neither an event count nor a surprise/content score. It selects exactly the latest effective quarterly report and measures one deterministic report-to-announcement delay."
+    },
+    {
+      "family": "intraday_and_daily_price_path_range_activity_and_market_state",
+      "result": "distinct",
+      "reason": "The candidate loads no minute or daily price, return, range, volume, amount, transaction-price, peer, breadth, dispersion, or volatility field."
+    },
+    {
+      "family": "Candidate49 cumulative_vwap_crossing_rate",
+      "result": "distinct",
+      "reason": "Candidate49 uses future same-session minute close/volume/amount geometry. Campaign032 is offline historical disclosure-timing research and cannot write or backfill Candidate49."
+    },
+    {
+      "family": "Campaign031 market_dispersion_decoupling",
+      "result": "distinct",
+      "reason": "Campaign031 relates one-minute stock magnitudes to a leave-one-out market dispersion benchmark. Campaign032 has no price or market benchmark and cannot rescue Campaign031."
+    }
+  ],
+  "counterfactual_independence_tests": [
+    "Holding the latest effective report_date and announcement_date fixed while changing signal session t changes Campaign020 freshness but leaves Campaign032 timeliness unchanged.",
+    "Holding announcement_date and signal t fixed while changing report_date changes Campaign032 timeliness but leaves Campaign020 freshness unchanged.",
+    "Holding all report dates fixed while changing every price, return, range, amount, volume, peer state, and report value leaves Campaign032 unchanged."
+  ],
+  "exact_formula_boundary_to_freeze": {
+    "formula": "negative integer calendar-day difference announcement_date minus report_date for the latest effective quarterly report at signal session t",
+    "availability": "announcement_date becomes usable only on the first accepted local session strictly after it; select the latest effective report with effective_session <= t",
+    "same_effective_session_tie_break": "stable sort by instrument, effective_session, report_date, announcement_date and keep the last report",
+    "negative_delay_policy": "missing",
+    "clipping_threshold_or_scale": "none",
+    "transform": "multiply nonnegative calendar-day delay by exact negative one",
+    "direction": "higher",
+    "valid_upper_bound": 0,
+    "valid_lower_bound": null
+  },
+  "prohibited_variants": [
+    "accepted-session reporting delay",
+    "freshness decay, rescale, threshold, or interaction",
+    "absolute, reciprocal, logarithmic, exponential, clipped, winsorized, ranked-within-report-type, or fitted delay transform",
+    "selected quarter, report type, year, board, industry, or delay threshold",
+    "fundamental value, surprise, sign, magnitude, or quality interaction",
+    "calendar or source correction after values",
+    "direction inversion after returns",
+    "terminal-factor combination, filtering, or rescue",
+    "Candidate49 historical return, signal, execution, or milestone backfill"
+  ],
+  "required_no_return_challenges": {
+    "coverage_and_capacity_before_comparison_values": true,
+    "statistical_uniqueness_against_all_53_prior_statistical_factors_including_campaign020_and_campaign031": true,
+    "semantic_only_challenges_for_campaign008_and_campaign013": true,
+    "maximum_allowed_absolute_median_daily_rank_correlation": 0.8
+  },
+  "research_boundary": {
+    "campaign032_stock_day_partitions_read": false,
+    "quarterly_event_rows_read": false,
+    "candidate_values_read": false,
+    "comparison_values_read": false,
+    "daily_price_fields_read": false,
+    "forward_returns_read": false,
+    "provider_request_issued_for_campaign032": false,
+    "candidate49_historical_return_signal_or_execution_backfill_performed": false,
+    "current_scoring_selection_sizing_or_orders_performed": false
+  },
+  "decision": {
+    "conceptually_independent": true,
+    "advance_to_exact_finite_no_return_preregistration": true,
+    "predictive_value_established": false
+  }
+}

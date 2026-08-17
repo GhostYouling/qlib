@@ -1,0 +1,149 @@
+{
+  "schema_version": 1,
+  "kind": "a_share_tushare_limit_up_queue_persistence_data_contract",
+  "status": "frozen_before_zero_row_adapter_provider_rows_candidate_values_or_returns",
+  "preregistered_at": "2026-08-09T02:52:55+08:00",
+  "purpose": "Accept, normalize, and no-return screen exactly one official post-close upper-limit queue-persistence factor for the fixed three-session A-share research horizon without sweeping event categories, fields, formulas, directions, windows, dates, subsets, or models.",
+  "authoritative_inputs": {
+    "campaign115_concept_scouting": {
+      "path": "docs/a_share_three_day_walkforward_campaign_115_concept_scouting_20260809.json",
+      "sha256": "4e6920863b5400e31787c3d0ccbf443e5d3d76c1403ed63f7c455c66e813e01a",
+      "binding_status": "exact_digest_bound_before_any_provider_call"
+    },
+    "campaign115_mechanism_source_frontier_audit": {
+      "path": "docs/a_share_three_day_walkforward_campaign_115_mechanism_source_frontier_audit_20260809.json",
+      "sha256": "19dd066dd5aab35d411302e4fa513c4dbac92c3fc6eef9143c33fd25f153fb28",
+      "binding_status": "exact_digest_bound_before_any_provider_call"
+    },
+    "historical_walkforward_policy": {
+      "path": "docs/a_share_three_day_historical_walkforward_research_policy_20260727.json",
+      "sha256": "38426d6161b9bfed323c58caba18feca668b8c9d53e294951a8ba90c01a798bb"
+    }
+  },
+  "freeze_evidence": {
+    "local_repository_api_name_and_permission_metadata_reviewed": true,
+    "campaign115_provider_request_issued": false,
+    "campaign115_provider_rows_or_values_observed": false,
+    "candidate_values_observed": false,
+    "comparison_values_observed": false,
+    "daily_price_or_forward_return_values_observed": false,
+    "stress_2024_2025_opened": false
+  },
+  "source": {
+    "provider": "tushare",
+    "sdk_package": "tushare",
+    "api": "limit_list_d",
+    "frequency": "one complete post_close_event_roster_per_local_trading_session",
+    "minimum_permission_points_from_existing_local_contracts": 5000,
+    "credential_environment_variable": "TUSHARE_TOKEN",
+    "credential_resolution": "current process environment, then the repository .env parser already frozen for Candidate49, then launchctl",
+    "credential_value_may_be_printed_hashed_logged_stored_or_committed": false,
+    "requested_fields_in_exact_order": [
+      "ts_code",
+      "trade_date",
+      "limit",
+      "last_time",
+      "open_times"
+    ],
+    "explicitly_forbidden_fields": [
+      "name",
+      "industry",
+      "close",
+      "pct_chg",
+      "amount",
+      "limit_amount",
+      "float_mv",
+      "total_mv",
+      "turnover_ratio",
+      "fd_amount",
+      "first_time",
+      "up_stat",
+      "limit_times",
+      "open",
+      "high",
+      "low",
+      "volume",
+      "forward_return"
+    ],
+    "provider_row_ceiling": 5000,
+    "row_count_at_or_above_ceiling": "fail_closed_as_possible_truncation"
+  },
+  "factor": {
+    "name": "tushare_official_limit_up_queue_persistence",
+    "direction": "higher_is_better",
+    "signal_timing": "after the source session is complete and the provider roster is available; earliest entry is the next accepted local session open",
+    "eligible_event_category": "limit equals the exact uppercase string U",
+    "non_upper_limit_event_policy": "a valid roster row whose limit is D or Z receives zero and is not reinterpreted as a negative signal",
+    "valid_no_event_policy": "an active point-in-time buyable-universe stock absent from a complete non-truncated roster receives zero",
+    "final_seal_time_domain": "HHMMSS on the discrete A-share event clock from 09:25:00 through 11:30:00 or 13:00:00 through 15:00:00",
+    "remaining_session_minutes_definition": "For a valid U row, count whole trading minutes strictly after last_time through 15:00, excluding 11:30-13:00; 09:25 maps to 245, 11:30 and 13:00 map to 120, and 15:00 maps to 0.",
+    "open_times_domain": "a finite integer greater than or equal to zero",
+    "formula": "For a valid U row, remaining_session_minutes_after_last_time / (245 * (1 + open_times)); for a valid D or Z row or a valid no-event stock, 0.",
+    "valid_range": [0.0, 1.0],
+    "missing_or_invalid_u_row_policy": "fail the entire requested session; do not coerce, drop, fill, or convert it to a non-event zero",
+    "duplicate_stock_date_policy": "fail the entire requested session",
+    "alternate_event_category_field_time_anchor_denominator_transform_direction_threshold_window_filter_subset_weight_fit_model_or_combination_search": false
+  },
+  "acceptance_protocol": {
+    "fixed_completed_session": "2026-07-13",
+    "maximum_provider_attempts": 1,
+    "request_exact_fields_only": true,
+    "minimum_source_rows": 1,
+    "minimum_valid_upper_limit_rows": 1,
+    "exact_response_field_set_required": true,
+    "no_duplicate_stock_date_keys": true,
+    "all_source_dates_equal_requested_session": true,
+    "all_u_rows_pass_time_and_open_count_domain": true,
+    "synthetic_adapter_and_contract_fingerprint_tests_must_pass_before_request": true,
+    "accepted_status": "accepted_entitlement_schema_formula_and_single_session_pending_2019_2023_atomic_source",
+    "any_failure_status": "terminal_source_acceptance_failure_no_retry_no_alternate_date_or_field_set"
+  },
+  "development_source_protocol": {
+    "allowed_only_after_acceptance": true,
+    "development_start": "2019-01-01",
+    "development_end": "2023-12-31",
+    "one_completed_session_per_call": true,
+    "atomic_hidden_temporary_root_then_publish": true,
+    "partial_snapshot_on_failure": "delete_temporary_data_but_persist_credential_safe_failure_record",
+    "all_local_trading_sessions_required": true,
+    "minimum_sessions_with_at_least_one_valid_u_row": 200,
+    "2024_2025_requested_or_opened_in_this_stage": false
+  },
+  "no_return_gate": {
+    "freeze_before_source_sync": [
+      "exact 2019-2023 session calendar and point-in-time buyable universe fingerprints",
+      "complete 134-comparator ordered library and fingerprints",
+      "coverage, capacity, variation, duplicate, uniqueness, and stop thresholds",
+      "candidate snapshot builder and tests"
+    ],
+    "minimum_nonoverlapping_three_session_cohorts": 200,
+    "minimum_cross_section_names": 50,
+    "strict_maximum_absolute_median_daily_rank_correlation": 0.8,
+    "all_134_eligible_numeric_comparators_must_pass": true,
+    "candidate_specific_comparator_drop_allowed": false,
+    "insufficient_pairwise_overlap_fails_closed": true,
+    "daily_prices_or_forward_returns_read": false
+  },
+  "later_walkforward_only_if_all_no_return_gates_pass": {
+    "development_period": "2019-2023",
+    "fold_count": 3,
+    "expanding_train_validation": true,
+    "purge_signal_sessions_at_each_boundary": 3,
+    "t_plus_1_and_t_plus_3_must_remain_in_same_partition": true,
+    "entry": "next accepted-session open",
+    "exit": "third accepted-session close",
+    "existing_costs_universe_listing_age_quality_and_execution_blockers_unchanged": true,
+    "blocked_limit_or_zero_volume_entry_substitution_allowed": false,
+    "2024_2025_open_policy": "one campaign-wide opening only after the complete finite candidate library, survival rules, costs, gates, data and code fingerprints are frozen; label historically exposed quasi_out_of_sample"
+  },
+  "terminal_stop_rules": [
+    "do not retry a failed entitlement or schema acceptance on another date, symbol, field set, or token",
+    "do not replace last_time with first_time or add seal amount, turnover, market value, price, return, or an old factor",
+    "do not invert direction, remap D or Z, change the 245-minute clock, open-times penalty, event/non-event zero policy, or source timing",
+    "do not request partial years, subset regimes, choose event-rich dates, or relax the 2019-2023 support gate",
+    "do not read daily prices or forward returns before every no-return gate passes",
+    "do not create a Candidate50 or any second prospective ledger",
+    "do not create current scores, selections, positions, orders, or investment advice"
+  ],
+  "selection_or_promotion_allowed": false
+}

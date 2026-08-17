@@ -1,0 +1,57 @@
+{
+  "version": 1,
+  "kind": "a_share_three_day_compact_comparator_cache_postpublication_test_transition",
+  "status": "verified_with_exact_lifecycle_specific_deselections",
+  "recorded_at": "2026-08-06T02:30:30+08:00",
+  "recorded_failures": [
+    {
+      "path": "docs/a_share_three_day_compact_comparator_cache_v4_postpublication_test_failure_20260806.json",
+      "sha256": "bae41cadc59f96f1eca6036913a2880e9b5fd6400deb9301887fe40c2bd42225"
+    },
+    {
+      "path": "docs/a_share_three_day_compact_comparator_cache_v4_postpublication_test_failure_2_20260806.json",
+      "sha256": "a8d6fe3c53562805cb84c85222c2fbc0cf207b3e876d34990a1f06093b3a6ca2"
+    }
+  ],
+  "additive_postpublication_test": {
+    "path": "tests/data_collector_tests/test_a_share_three_day_compact_comparator_cache_v4_publication.py",
+    "sha256": "b46a07705a397afb515b77b1a1af21b4bcd103b4c6508c890d5780a5a7bf7034",
+    "frozen_prepublication_v4_test_edited": false,
+    "frozen_campaign067_terminal_test_edited": false
+  },
+  "successful_command": "PYTHONPATH=/Volumes/DIsk/Disk-Coding/qlib /Volumes/DIsk/Coding/anaconda3/bin/python -m pytest -q tests/data_collector_tests/test_a_share_three_day_compact_comparator_cache_v2.py tests/data_collector_tests/test_a_share_three_day_compact_comparator_cache_v3.py tests/data_collector_tests/test_a_share_three_day_compact_comparator_cache_v4.py tests/data_collector_tests/test_a_share_three_day_compact_comparator_cache_v4_publication.py tests/data_collector_tests/test_a_share_three_day_walkforward_campaign067_terminal.py -k 'not test_status_and_unconfirmed_v4_build_read_no_values and not test_unified_report_has_one_campaign067_and_one_candidate49_daily_section'",
+  "successful_result": {
+    "exit_code": 0,
+    "passed": 28,
+    "deselected": 2,
+    "failed": 0
+  },
+  "deselected_nodes": [
+    {
+      "node": "tests/data_collector_tests/test_a_share_three_day_compact_comparator_cache_v4.py::test_status_and_unconfirmed_v4_build_read_no_values",
+      "reason": "This is an implementation-freeze assertion that the v4 output is absent before first materialization; successful atomic publication makes that state false by design.",
+      "replacement": "test_v4_postpublication_status_is_present_without_reading_values"
+    },
+    {
+      "node": "tests/data_collector_tests/test_a_share_three_day_walkforward_campaign067_terminal.py::test_unified_report_has_one_campaign067_and_one_candidate49_daily_section",
+      "reason": "This immutable Campaign067 terminal test binds the unified report before the additive v4 cache section.",
+      "replacement": "test_v4_unified_report_addition_is_bound_without_duplicate_prior_sections"
+    }
+  ],
+  "cache_and_research_integrity": {
+    "publication_binding_sha256": "244f70b88be0396f7473c6664835cbb3cdad9135b6692b77c74018b1d53c925b",
+    "manifest_sha256": "3d81068f07ac61fe4cd04bd1a893e58759c06d88213263135fec5244e309b57b",
+    "dataset_sha256": "4a56dac48c14b667b6ee431519266f27bb8ff7cc25c51d8dce3bbc7aebe0376f",
+    "campaign067_all_97_comparison_result_objects_exactly_equal": true,
+    "unified_report_sha256": "7023760adb54fbcb5a58a73c504f6f6eb0d969983bac6d54d2405875f63e73dc",
+    "historical_daily_price_or_forward_return_values_read": false,
+    "provider_request_issued": false,
+    "candidate49_ledgers_changed": false,
+    "current_scoring_selection_sizing_or_orders_performed": false
+  },
+  "accounting_after_transition": {
+    "cumulative_historical_research_attempt_count": 402,
+    "cumulative_return_reading_development_trial_count": 274,
+    "cumulative_cache_infrastructure_failure_count": 8
+  }
+}

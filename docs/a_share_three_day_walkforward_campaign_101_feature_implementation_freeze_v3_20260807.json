@@ -1,0 +1,74 @@
+{
+  "schema_version": 3,
+  "kind": "a_share_three_day_walkforward_campaign101_feature_implementation_freeze",
+  "status": "frozen_after_failed_build_source_values_before_repaired_candidate_snapshot_rerun",
+  "recorded_at": "2026-08-07T13:26:01Z",
+  "supersedes_v2_without_rewriting": {
+    "path": "docs/a_share_three_day_walkforward_campaign_101_feature_implementation_freeze_v2_20260807.json",
+    "sha256": "d622d888677b9f4905eaf3d45a552ef06c36247c2d406029fea3c95e0b15bee8",
+    "failed_build_record": {
+      "path": "docs/a_share_three_day_walkforward_campaign_101_feature_build_missing_component_alignment_failure_20260807.json",
+      "sha256": "d29fa87a0420957f06cf8d2952bb1e7157e474a01a5c9d57b5f7e56b58952424"
+    }
+  },
+  "protocol": {
+    "path": "docs/a_share_three_day_walkforward_campaign_101_no_return_preregistration.json",
+    "sha256": "2d1919a7dd53e340158e6e59d48af65132625dd36725a417cef6119241f925c3"
+  },
+  "source_catalog": {
+    "path": "docs/a_share_three_day_walkforward_campaign_101_source_catalog.json",
+    "sha256": "e47ce3727bb4fcc68832d1d5f686000734b80d72752c7661d747d5a5ef2b8323"
+  },
+  "feature_builder": {
+    "path": "scripts/a_share_three_day_walkforward_campaign101_features.py",
+    "sha256": "61bbb490c862f53548eedffa01265a3b814c29ef9bb489142aed07896d3168f4"
+  },
+  "synthetic_tests": {
+    "path": "tests/data_collector_tests/test_a_share_three_day_walkforward_campaign101_features.py",
+    "sha256": "e49295360a922ba12b2eef1ffe2e39fa1296ed876a7b52d2860bd34add22c0ee",
+    "result": "8 passed",
+    "new_repair_test": "A compact source absent on one frozen-base stock-day aligns that component to NaN while preserving its two matched values."
+  },
+  "repair_contract": {
+    "formula_direction_rank_tie_missing_score_support_threshold_quantile_or_gate_changed": false,
+    "source_keys_must_be_unique": true,
+    "matched_source_keys_must_be_inside_the_frozen_base": true,
+    "absent_component_rows_align_to_nan": true,
+    "nan_is_ranked_as_missing_and_maps_to_zero_only_inside_the_frozen_aggregator": true,
+    "minimum_finite_components": 97,
+    "zero_indexed_partition_index": 32
+  },
+  "pre_rerun_static_verification": {
+    "eight_synthetic_tests_passed": true,
+    "black_fast_py312_check_passed": true,
+    "ruff_check_passed": true,
+    "bytecode_compilation_passed": true,
+    "output_root_existed": false,
+    "candidate_snapshot_existed": false
+  },
+  "effective_attempt_ledger_before_rerun": {
+    "path": "data/experiments/short_horizon/historical_walkforward/campaign_101/research_attempt_ledger_v5.json",
+    "sha256": "923a850d75f5ed6ee3b719a22ab53d4bbfdf0a989e576af487a4a68abe9f11e6",
+    "campaign101_attempt_count": 10,
+    "campaign101_ledger_entry_count": 10,
+    "cumulative_historical_research_attempt_count": 734,
+    "cumulative_return_reading_development_trial_count": 294
+  },
+  "source_factor_values_read_before_freeze": true,
+  "historical_daily_price_or_forward_return_values_read_before_freeze": false,
+  "provider_request_issued_before_freeze": false,
+  "candidate49_ledgers_changed_before_freeze": false,
+  "research_boundary": {
+    "source_factor_value_scope_before_v3_freeze": "The failed v2 build read the 2019 first-98 compact-cache values and 2019 ordinal-99 source values; no other source value scope is claimed.",
+    "candidate_values_materialized_before_v3_freeze": false,
+    "comparison_values_read_for_uniqueness_before_v3_freeze": false,
+    "coverage_or_capacity_metrics_computed_before_v3_freeze": false,
+    "historical_daily_price_fields_read_before_v3_freeze": [],
+    "historical_forward_returns_read_before_v3_freeze": false,
+    "training_or_model_fitting_performed_before_v3_freeze": false,
+    "provider_request_issued_before_v3_freeze": false,
+    "candidate49_ledgers_changed_before_v3_freeze": false,
+    "second_prospective_candidate_created_before_v3_freeze": false,
+    "current_scoring_selection_sizing_or_orders_performed_before_v3_freeze": false
+  }
+}

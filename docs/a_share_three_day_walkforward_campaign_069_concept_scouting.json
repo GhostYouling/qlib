@@ -1,0 +1,137 @@
+{
+  "version": 1,
+  "kind": "a_share_three_day_walkforward_campaign069_concept_scouting",
+  "status": "selected_one_historical_candidate_before_campaign069_source_candidate_comparison_daily_price_or_return_values",
+  "recorded_at": "2026-08-06T03:34:00+08:00",
+  "purpose": "Select one exact Campaign069 historical-only profit-growth-versus-ROE transition candidate after the Campaign068 cold-start rejection and before reading any Campaign069 source row, candidate value, comparison value, daily price, or forward return.",
+  "authoritative_inputs": {
+    "campaign068_terminal_verified_state": {
+      "path": "docs/a_share_three_day_iteration_status_20260806_campaign068_terminal_v3.json",
+      "sha256": "40831def40e4ee1d07719676a8b05e75df2bff26356e9f78db653e80c8ea58d3"
+    },
+    "campaign068_terminal_research_record": {
+      "path": "docs/a_share_three_day_walkforward_campaign_068_research_record.json",
+      "sha256": "e8711163c8bce0136dc44b7fe42daa07655b43a37fb325798b75a8c351cafbfc"
+    },
+    "historical_walkforward_policy": {
+      "path": "docs/a_share_three_day_historical_walkforward_research_policy_20260727.json",
+      "sha256": "38426d6161b9bfed323c58caba18feca668b8c9d53e294951a8ba90c01a798bb"
+    },
+    "compact_cache_v4_publication": {
+      "path": "docs/a_share_three_day_compact_comparator_cache_v4_publication_binding_20260806.json",
+      "sha256": "244f70b88be0396f7473c6664835cbb3cdad9135b6692b77c74018b1d53c925b"
+    },
+    "campaign068_snapshot_binding_for_future_numeric_comparison": {
+      "path": "docs/a_share_three_day_walkforward_campaign_068_feature_snapshot_binding_v2_20260806.json",
+      "sha256": "4d2104915dafc025c6b64f8a76685a611418c019f39a31f181ebca42cf5bd956"
+    },
+    "quarterly_quality_source_schema": {
+      "path": "data/raw/a_share/fundamentals/quarterly_quality.parquet",
+      "sha256": "3ac901a97928d2ed81ac72e3eaac9bdc148d36cf67b6abe70223699235ef059f",
+      "manifest_path": "data/metadata/quarterly_quality_manifest.json",
+      "manifest_sha256": "e3cf654babe37a82393c5530696bc1cc242b736cb88e1947b8444b638125ba8c",
+      "schema_only_read": true,
+      "rows_read": false
+    }
+  },
+  "definition_only_inventory": {
+    "complete_historical_definition_count": 100,
+    "complete_historical_definition_order_sha256": "ba1d04cb281f0ed64ae792cc68be6257e2e53716d2c294138d0336ca01d59e7d",
+    "eligible_numeric_comparator_count": 99,
+    "eligible_numeric_comparator_order_sha256": "7f1ed85abfeb4688c0b07f892b497942a202f09ac8806ea095b6c9050f670538",
+    "numeric_order_rule": "Use compact-cache v4's exact 98-factor logical order and append terminal Campaign068/higher exactly once; retain Campaign063 only as the frozen structurally nonnumeric definition in the complete order.",
+    "old_factor_or_cache_values_read_for_selection": false,
+    "quarterly_source_rows_read": false,
+    "candidate_values_read": false,
+    "comparison_values_read": false,
+    "daily_price_or_forward_return_read": false
+  },
+  "finite_candidate_design_catalog": [
+    {
+      "design": "quarterly_profit_growth_roe_transition_gap_2r",
+      "decision": "selected",
+      "reason": "The fixed rank gap asks whether already-public profit growth is high relative to current ROE, representing a growth-to-profitability transition rather than a current quality level, three-field balance, profit scale, or growth acceleration. It uses only same-report levels and therefore avoids Campaign068's multi-year differencing cold start."
+    },
+    {
+      "design": "roe_minus_profit_yoy_rank_gap",
+      "decision": "rejected_before_values",
+      "reason": "Testing both signs would be an inversion search. Campaign069 freezes profit_yoy rank minus ROE rank and direction higher from the economic hypothesis."
+    },
+    {
+      "design": "profit_yoy_or_roe_standalone",
+      "decision": "rejected_before_values",
+      "reason": "Both direct level definitions are already exposed as quality_profit and quality_roe in the terminal library."
+    },
+    {
+      "design": "profit_growth_to_roe_ratio_raw_difference_product_or_residual",
+      "decision": "rejected_before_values",
+      "reason": "The fields have unlike units and denominator/sign instability. Selecting among multiple transforms would create an unregistered transform search; only separate cross-sectional ranks and one fixed difference are allowed."
+    },
+    {
+      "design": "add_revenue_growth_net_profit_scale_or_acceleration",
+      "decision": "rejected_before_values",
+      "reason": "Adding a third component would reopen component and operator selection already explored by Campaign066-Campaign068."
+    },
+    {
+      "design": "announcement_age_board_year_size_regime_or_minute_interaction",
+      "decision": "rejected_before_values",
+      "reason": "No threshold, filter, subset, board, year, size, regime, minute interaction, fitted weight, or model is searched."
+    }
+  ],
+  "selected_candidate": {
+    "name": "quarterly_profit_growth_roe_transition_gap_2r",
+    "direction": "higher",
+    "economic_hypothesis": "A firm whose already-public profit YoY growth ranks above its current ROE rank may be in an improving profitability transition not yet fully reflected over the next three sessions.",
+    "formula": "At each stock day, attach the latest separately available roe and profit_yoy states from disclosures effective strictly before the signal; on the exact common finite two-field stock-day cross-section compute average-tie percentile ranks r_profit_yoy and r_roe, then return r_profit_yoy-r_roe.",
+    "stock_day_identity_projection": [
+      "trade_date",
+      "symbol",
+      "provider"
+    ],
+    "quarterly_source_projection": [
+      "instrument",
+      "report_date",
+      "announcement_date",
+      "roe",
+      "profit_yoy"
+    ],
+    "availability_rule": "Each report becomes usable only on the first accepted local session strictly after announcement_date.",
+    "same_effective_date_rule": "Sort by instrument, effective session, report_date, and announcement_date, then keep the last row per instrument and effective session.",
+    "state_rule": "Forward-fill roe and profit_yoy independently inside each instrument after strict effective-session ordering; never backfill from a later disclosure.",
+    "cross_section_rule": "On each stock day require both fields finite and use pandas-compatible average-tie percentile ranks on the exact common two-field identity cross-section.",
+    "combination_rule": "Exactly r_profit_yoy minus r_roe; coefficients are fixed at +1 and -1 and are not fitted.",
+    "valid_range": {
+      "lower": -1.0,
+      "lower_inclusive": true,
+      "upper": 1.0,
+      "upper_inclusive": true
+    },
+    "missing_rule": "Missing unless both already-effective states and both ranks are finite. Never impute, clip, winsorize, substitute, backfill, or choose a favorable report.",
+    "multi_year_difference_or_lookback_required": false,
+    "parameter_window_transform_threshold_filter_subset_regime_fit_or_model_search": false
+  },
+  "campaign068_failure_informed_design_constraint": {
+    "lesson": "A high steady-state median coverage does not rescue a structurally empty early-history tail under a frozen P05 gate.",
+    "applied_constraint": "Campaign069 uses same-report states already present in the source and does not require a prior-year or prior-quarter observation.",
+    "Campaign068_definition_reused_or_rescued": false
+  },
+  "research_boundary": {
+    "campaign069_quarterly_or_minute_rows_read": false,
+    "campaign069_candidate_or_comparison_values_read": false,
+    "historical_daily_price_fields_read": [],
+    "historical_forward_return_fields_read": false,
+    "provider_request_issued": false,
+    "candidate49_historical_backfill_performed": false,
+    "candidate49_ledgers_changed": false,
+    "second_prospective_candidate_created": false,
+    "current_scoring_selection_sizing_or_orders_performed": false,
+    "investment_advice": false
+  },
+  "decision": {
+    "selected_candidate_count": 1,
+    "finite_candidate_library": true,
+    "complete_old_factor_library_bound_before_combination": true,
+    "predictive_value_established": false,
+    "next_action": "Perform a complete 100-definition mechanism-overlap audit, then freeze the 99-comparator coverage-first protocol and exact comparator-source split before reading source or candidate values."
+  }
+}

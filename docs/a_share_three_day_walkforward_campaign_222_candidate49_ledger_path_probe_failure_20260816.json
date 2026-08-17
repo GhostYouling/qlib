@@ -1,0 +1,14 @@
+{
+  "schema_version": 1,
+  "kind": "a_share_three_day_walkforward_campaign222_infrastructure_failure",
+  "recorded_at": "2026-08-16T01:53:00+08:00",
+  "timestamp_semantics": "monotonic_logical_append_time_not_host_wall_clock_measurement",
+  "attempt_id": "campaign222_infrastructure_007",
+  "phase": "candidate49_ledger_path_verification",
+  "status": "failed_guessed_candidate_049_paths_missing_output_discarded",
+  "failure": "The first bounded hash probe guessed underscore-form Candidate49 ledger paths that do not exist, so it did not verify either ledger.",
+  "writes_before_failure": false,
+  "scientific_value_read": false,
+  "result_consumed": false,
+  "recovery": "Repository filename discovery resolved candidate49_future_signal_ledger.json and candidate49_future_execution_ledger.json; both exact hashes and zero entry counts were then verified."
+}

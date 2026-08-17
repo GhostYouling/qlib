@@ -1,0 +1,70 @@
+{
+  "schema_version": 1,
+  "kind": "a_share_three_day_walkforward_campaign102_development_implementation_freeze",
+  "status": "frozen_before_first_campaign102_training_return_read",
+  "recorded_at": "2026-08-07T15:26:56Z",
+  "purpose": "Bind the exact chronological fit, validation-score snapshot, all-130 uniqueness, execution evaluation, ledger, and survivor implementation before reading the first Campaign102 training return.",
+  "protocol": {
+    "path": "docs/a_share_three_day_walkforward_campaign_102_no_return_preregistration.json",
+    "sha256": "5def1f153c4cca94f2d646598f09b810108688488b8aab0b2be345366364b8f9"
+  },
+  "sequential_interpretation": {
+    "path": "docs/a_share_three_day_walkforward_campaign_102_sequential_execution_interpretation_freeze_20260807.json",
+    "sha256": "07dce156a77e65167f55a04105db9d5d0a167e61db5028bca833f1d8fbfa6bd2"
+  },
+  "design_manifest": {
+    "path": "/Volumes/DIsk/qlib-a-share-tushare-1m/derived/a_share/rich/tushare/minute_walkforward_campaign102_design_matrix/tushare_stk_mins_1m_2019_2025_ea0cbb8f_walkforward_campaign102_design_matrix_v1/snapshot_manifest.json",
+    "sha256": "fc9ab498462439731785a0eabbde370c1fd883c8d771eba312c85aa912d3cebe",
+    "dataset_sha256": "cceec2b790d134a89914e83e0697c1e6abff605a85fd85be74de68067faddb92"
+  },
+  "design_audit": {
+    "path": "data/experiments/short_horizon/historical_walkforward/campaign_102/no_return/design_structural_audit.json",
+    "sha256": "87001a379815e027787bf51763451f5235ae619b9d2ade12a5790cc753f77b90",
+    "status": "passed_ready_for_sequential_training_fit"
+  },
+  "runner": {
+    "path": "scripts/a_share_three_day_walkforward_campaign102.py",
+    "sha256": "ba298ed23d0675f6fea5de85bbf085dcb7b88ef72e730031b90e1e6b350ca6db"
+  },
+  "tests": {
+    "path": "tests/data_collector_tests/test_a_share_three_day_walkforward_campaign102.py",
+    "sha256": "fcd2afd8b6a6fb06ac1ada405a5ddd9e298317b232dc1e68a8dc7cefe81a704d",
+    "test_count": 7,
+    "result": "7_passed"
+  },
+  "frozen_command": "python -m scripts.a_share_three_day_walkforward_campaign102 run-development --batch-size 100",
+  "output_root": "/Volumes/DIsk/Disk-Coding/qlib/data/experiments/short_horizon/historical_walkforward/campaign_102/walkforward",
+  "implementation_invariants": {
+    "trial_count": 3,
+    "regularization_grid": [0.0, 0.1, 1.0],
+    "component_count": 130,
+    "component_order_sha256": "c80d9b929536dd509d6c1a904f790831050e68200393de381f92ad9293ef69e7",
+    "minimum_weight": "0.25/130",
+    "maximum_weight": "4/130",
+    "training_target": "support-eligible finite forward-return average-tie percentile with at least 50 names per signal session",
+    "fold_order": [1, 2, 3],
+    "prefit_uniqueness_artifact_written_before_each_validation_return_read": true,
+    "all_130_comparators_required": true,
+    "strict_absolute_median_daily_rank_correlation_lt": 0.8,
+    "minimum_pairwise_sessions": 100,
+    "maximum_survivors": 1,
+    "later_fit_backcast_for_aggregate_gate": false,
+    "aggregate_20bp_is_compounded_chronological_validation_fold_return": true
+  },
+  "pre_freeze_checks": {
+    "python_compile_passed": true,
+    "ruff_passed": true,
+    "synthetic_tests_passed": true,
+    "status_confirmed_output_absent": true,
+    "status_confirmed_return_read_false": true
+  },
+  "campaign102_design_values_read_before_freeze": true,
+  "campaign102_model_fit_before_freeze": false,
+  "campaign102_training_or_validation_return_read_before_freeze": false,
+  "provider_request_issued_before_freeze": false,
+  "candidate49_historical_backfill_performed_before_freeze": false,
+  "candidate49_ledgers_changed_before_freeze": false,
+  "second_prospective_candidate_created_before_freeze": false,
+  "current_scoring_selection_sizing_or_orders_performed_before_freeze": false,
+  "investment_advice": false
+}

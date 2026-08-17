@@ -1,0 +1,115 @@
+{
+  "version": 1,
+  "kind": "a_share_three_day_walkforward_campaign072_mechanism_overlap_audit",
+  "status": "passed_semantic_mechanism_review_before_candidate_source_or_comparison_values",
+  "recorded_at": "2026-08-06T05:48:00+08:00",
+  "concept_scouting": {
+    "path": "docs/a_share_three_day_walkforward_campaign_072_concept_scouting.json",
+    "sha256": "7be36bc1aa1959db86a64309b8f78c3900ea9d55fa813c68a1e29267777ae7fb"
+  },
+  "numeric_comparator_policy": {
+    "path": "docs/a_share_three_day_walkforward_future_numeric_comparison_eligibility_policy_v6_20260806.json",
+    "sha256": "b24c643d086a73e66844a0e988d65a46aff2f82986c544515422119dd19d7242",
+    "complete_definition_count": 103,
+    "numeric_comparator_count": 102,
+    "numeric_comparator_order_sha256": "b473b8e32852dbbd1ca6beeb567805af55b77ec2e91222ec3e75e4bd64a64226"
+  },
+  "candidate": {
+    "name": "quarterly_joint_profit_revenue_growth_floor_rank",
+    "direction": "higher",
+    "mechanism": "conservative joint-growth floor from the raw minimum of two independently available point-in-time growth states, followed by a same-day cross-sectional percentile rank",
+    "formula": "rank_pct(min(profit_yoy,revenue_yoy)) on the exact common finite two-field stock-day universe after strict-next-session activation",
+    "no_multi_year_cold_start": true
+  },
+  "complete_library_review": {
+    "all_103_definitions_reviewed_in_frozen_order": true,
+    "candidate_is_exact_formula_duplicate": false,
+    "candidate_is_direction_only_duplicate": false,
+    "candidate_is_parameter_only_duplicate": false,
+    "candidate_is_an_inversion_of_a_terminal_factor": false,
+    "candidate_combines_terminal_factor_values": false,
+    "candidate_uses_raw_point_in_time_fields_only": true,
+    "candidate49_used_or_modified": false
+  },
+  "nearest_semantic_challenges": [
+    {
+      "name": "quality_growth",
+      "relationship": "uses the same two quarterly growth fields",
+      "distinction": "quality_growth averages separate cross-sectional percentile ranks; Campaign072 takes the raw lesser growth rate first and ranks that conservative floor afterward",
+      "mandatory_numeric_challenge": true
+    },
+    {
+      "name": "quality_profit",
+      "relationship": "uses profit_yoy as a single-field growth rank",
+      "distinction": "Campaign072 cannot be high when revenue_yoy is the weaker state even if profit growth alone is high",
+      "mandatory_numeric_challenge": true
+    },
+    {
+      "name": "quality_revenue",
+      "relationship": "uses revenue_yoy as a single-field growth rank",
+      "distinction": "Campaign072 cannot be high when profit_yoy is the weaker state even if revenue growth alone is high",
+      "mandatory_numeric_challenge": true
+    },
+    {
+      "name": "quality_score",
+      "relationship": "multi-field accounting-quality average",
+      "distinction": "quality_score includes ROE and averages three directional ranks; Campaign072 excludes ROE and uses a raw two-field minimum before ranking",
+      "mandatory_numeric_challenge": true
+    },
+    {
+      "name": "quarterly_profit_revenue_growth_spread_pp",
+      "relationship": "uses the same two raw growth fields",
+      "distinction": "the spread measures divergence by subtraction; Campaign072 measures the common lower bound by a minimum",
+      "mandatory_numeric_challenge": true
+    },
+    {
+      "name": "quarterly_quality_rank_balance_3f",
+      "relationship": "rewards cross-field rank agreement",
+      "distinction": "the balance factor measures three-rank dispersion and can be high when all components are weak; Campaign072 requires the raw weaker growth component itself to rank high",
+      "mandatory_numeric_challenge": true
+    },
+    {
+      "name": "quarterly_profit_revenue_acceleration_rank_gap_2r",
+      "relationship": "two-field profit/revenue transition comparator",
+      "distinction": "the prior factor subtracts acceleration ranks and measures relative transition; Campaign072 uses current raw growth levels and a minimum",
+      "mandatory_numeric_challenge": true
+    },
+    {
+      "name": "quarterly_profit_growth_roe_transition_gap_2r",
+      "relationship": "profit-growth transition comparator",
+      "distinction": "the prior factor subtracts ROE rank from profit-growth rank; Campaign072 uses no ROE and no signed gap",
+      "mandatory_numeric_challenge": true
+    },
+    {
+      "name": "quarterly_net_profit_scale_rank",
+      "relationship": "latest terminal quarterly accounting comparator",
+      "distinction": "absolute profit scale versus a conservative floor of profit and revenue year-over-year growth",
+      "mandatory_numeric_challenge": true
+    },
+    {
+      "name": "intraday_cross_sectional_standardized_return_state_stability_236p",
+      "relationship": "structurally nonnumeric prior definition",
+      "distinction": "minute cross-sectional return-state dynamics versus quarterly joint fundamental growth",
+      "mandatory_semantic_challenge": true,
+      "numeric_status": "undefined_not_pass_not_fail"
+    }
+  ],
+  "pre_value_decision": {
+    "economically_independent_enough_to_materialize": true,
+    "numeric_uniqueness_still_required_against_all_102_eligible_comparators": true,
+    "strict_maximum_absolute_median_daily_rank_correlation": 0.8,
+    "minimum_pairwise_names_per_session": 50,
+    "minimum_pairwise_sessions_per_comparison": 100,
+    "drop_residualize_invert_clip_or_rescue_after_failed_comparator_allowed": false
+  },
+  "research_boundary": {
+    "candidate_source_rows_read": false,
+    "candidate_values_read": false,
+    "comparison_values_read": false,
+    "historical_daily_price_fields_read": [],
+    "historical_forward_returns_read": false,
+    "provider_request_issued": false,
+    "candidate49_ledgers_changed": false,
+    "current_scoring_selection_sizing_or_orders_performed": false
+  }
+}

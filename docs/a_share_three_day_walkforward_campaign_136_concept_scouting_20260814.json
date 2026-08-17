@@ -1,0 +1,148 @@
+{
+  "schema_version": 1,
+  "kind": "a_share_three_day_walkforward_campaign136_concept_scouting",
+  "status": "one_candidate_selected_before_campaign136_daily_source_candidate_comparator_price_or_return_values",
+  "recorded_at": "2026-08-14T11:02:00+08:00",
+  "purpose": "Review one finite family derived from the accepted point-in-time daily price-basis chain and select at most one genuinely new fixed formula before reading any Campaign136 source value, candidate value, comparator value, daily OHLC value or forward return.",
+  "authoritative_inputs": {
+    "campaign135_terminal_state": {
+      "path": "docs/a_share_three_day_iteration_status_20260814_campaign135_prevalue_terminal.json",
+      "sha256": "2246925f9c89ff67ef52a6b1b5374aa2040d968765722a5577d33773227e97a5"
+    },
+    "numeric_policy_v162": {
+      "path": "docs/a_share_three_day_walkforward_future_numeric_comparison_eligibility_policy_v162_20260814.json",
+      "sha256": "06b06c2f36450dd38d8a3528a0b87f4677ec44ab76b38936689f984e8ba9a901",
+      "complete_definition_count_reviewed": 151,
+      "complete_definition_order_sha256": "91c2da3018330edbaddbb60b86370dcd9732425590f0565c70790b990002e0b5",
+      "eligible_numeric_comparator_count_reserved_but_not_loaded": 140,
+      "eligible_numeric_comparator_order_sha256": "c71bfe27486c9567afd3aca21e4b04053658c23ac651e7f4df7fd014b0c31efd"
+    },
+    "accepted_price_basis_manifest_metadata_only": {
+      "path": "data/qlib/cn_a_share/price_basis.json",
+      "sha256": "68e9dbb83749779b34d5cf3b116195074c154ff74cb6de95ba67695bedc1f14f",
+      "status": "passed",
+      "price_basis": "close_known_raw_pct_chg_chain_v1",
+      "daily_sources": [
+        "baostock"
+      ],
+      "non_positive_or_missing_factor_rows": 0,
+      "pct_chg_chain_error_rows": 0,
+      "raw_close_reconstruction_error_rows": 0
+    },
+    "point_in_time_builder_code": {
+      "path": "scripts/a_share_data_pipeline.py",
+      "sha256": "9a6500c52aa507add06fb1c2bdaace608a296974490355f71bc0e5ba29ea2802"
+    },
+    "historical_walkforward_policy": {
+      "path": "docs/a_share_three_day_historical_walkforward_research_policy_20260727.json",
+      "sha256": "38426d6161b9bfed323c58caba18feca668b8c9d53e294951a8ba90c01a798bb"
+    }
+  },
+  "schema_only_source_boundary": {
+    "accepted_daily_root": "data/raw/a_share/daily",
+    "parquet_schema_columns_observed_without_rows": [
+      "date",
+      "symbol",
+      "factor",
+      "price_basis",
+      "daily_source"
+    ],
+    "selected_projection_if_later_admitted": [
+      "date",
+      "symbol",
+      "factor",
+      "price_basis",
+      "daily_source"
+    ],
+    "forbidden_feature_projection": [
+      "open",
+      "high",
+      "low",
+      "close",
+      "volume",
+      "amount",
+      "vwap",
+      "change",
+      "pct_chg",
+      "turnover",
+      "raw_open",
+      "raw_high",
+      "raw_low",
+      "raw_close",
+      "raw_volume",
+      "raw_vwap"
+    ],
+    "source_rows_read": false,
+    "provider_request_allowed": false
+  },
+  "finite_prevalue_concept_catalog": [
+    {
+      "catalog_id": "c136_01",
+      "name": "daily_realized_price_basis_adjustment_magnitude_1d",
+      "decision": "selected_for_complete_mechanism_overlap_audit",
+      "direction": "higher",
+      "definition": "For date t and the immediately preceding accepted local trading session p, require the same symbol to have valid rows on both dates, exact accepted price_basis and daily_source, and finite strictly positive factor_t and factor_p. Score abs(log(factor_t/factor_p)); exact equality is valid zero.",
+      "economic_hypothesis": "A larger close-known reference-price continuity adjustment can mark a realized capital-distribution or share-basis transition that causes short-lived attention and portfolio rebalancing from the next open through the third close. The source does not identify the official corporate-action type, so the factor is only a price-basis adjustment magnitude.",
+      "prevalue_independence_case": "The day-over-day ratio cancels the arbitrary per-symbol chain initialization, contains no raw or adjusted return magnitude, and uses a source state not present in the frozen 151-definition library."
+    },
+    {
+      "catalog_id": "c136_02",
+      "name": "daily_signed_price_basis_adjustment_direction_1d",
+      "decision": "rejected_before_values",
+      "reason": "Choosing the ratio sign would search dividend, split, rights and source-rounding directions; magnitude is the single source-invariant question and direction is not opened."
+    },
+    {
+      "catalog_id": "c136_03",
+      "name": "daily_price_basis_adjustment_recency_or_decay_window",
+      "decision": "rejected_before_values",
+      "reason": "Any 3/5/20/60-session carry, elapsed-age score or decay kernel introduces an arbitrary event window and mixes occurrence with persistence. Campaign136 fixes the same-day realized adjustment only."
+    },
+    {
+      "catalog_id": "c136_04",
+      "name": "daily_price_basis_adjustment_event_indicator_with_tolerance",
+      "decision": "rejected_before_values",
+      "reason": "A basis-point, tick, percentile or learned threshold would convert a continuous accepted reconciliation magnitude into an arbitrary event classifier. Exact zero and source rounding remain in the selected fixed support."
+    },
+    {
+      "catalog_id": "c136_05",
+      "name": "raw_close_return_minus_provider_pct_chg_reconciliation_gap",
+      "decision": "rejected_as_algebraic_duplicate_before_values",
+      "reason": "On the accepted chain it is an algebraic re-expression of the selected factor ratio while loading forbidden raw price and pct_chg fields; it adds no independent information."
+    },
+    {
+      "catalog_id": "c136_06",
+      "name": "price_basis_adjustment_times_dividend_plan_or_old_factor_confirmation",
+      "decision": "rejected_before_values",
+      "reason": "Combining this source state with the capacity-terminal dividend-plan family or any exposed factor would be a post-exposure confirmation rescue rather than a new single-source mechanism."
+    }
+  ],
+  "selected_candidate_boundary": {
+    "name": "daily_realized_price_basis_adjustment_magnitude_1d",
+    "direction": "higher",
+    "candidate_count": 1,
+    "factor_ratio_operator_count": 1,
+    "lag_count": 1,
+    "window_threshold_sign_decay_filter_subset_model_or_combination_count": 0,
+    "candidate_source_values_opened": false,
+    "comparison_values_opened": false,
+    "historical_daily_ohlcv_or_forward_return_values_opened": false,
+    "mechanism_overlap_audit_required_before_formula_implementation": true
+  },
+  "research_boundary": {
+    "campaign136_source_rows_read": false,
+    "campaign136_factor_values_read": false,
+    "campaign136_candidate_values_computed_or_read": false,
+    "campaign136_comparator_values_read": false,
+    "historical_daily_ohlcv_fields_read": [],
+    "historical_forward_returns_read": false,
+    "stress_2024_2025_opened": false,
+    "provider_request_issued": false,
+    "credential_loaded": false,
+    "candidate49_historical_backfill_performed": false,
+    "candidate49_ledgers_changed": false,
+    "second_prospective_candidate_created": false,
+    "current_scoring_selection_sizing_positions_or_orders_performed": false,
+    "investment_advice": false,
+    "inherited_current_listing_survivorship_limitation_remains": true
+  }
+}

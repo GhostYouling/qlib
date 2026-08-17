@@ -1,0 +1,92 @@
+{
+  "schema_version": 1,
+  "kind": "a_share_three_day_walkforward_campaign128_mechanism_overlap_audit",
+  "status": "selected_mechanism_distinct_before_source_or_factor_values",
+  "recorded_at": "2026-08-14T05:25:22+0800",
+  "authoritative_inputs": {
+    "concept_scouting": {
+      "path": "docs/a_share_three_day_walkforward_campaign_128_concept_scouting_20260814.json",
+      "sha256": "0db296964519781145c98699ede30bbf88a35bd5f2da69ada903b5ced0bf6480"
+    },
+    "numeric_policy_v135": {
+      "path": "docs/a_share_three_day_walkforward_future_numeric_comparison_eligibility_policy_v135_20260814.json",
+      "sha256": "35dead2d6bcf8402acdcebfade4a1eecb94921051663f1bbd3c9db104604c7f8"
+    }
+  },
+  "candidate": {
+    "name": "intraday_transaction_price_dispersion_resolution_2h",
+    "direction": "higher",
+    "mechanism": "volume_weighted_transaction_price_distribution_convergence_from_morning_to_afternoon",
+    "source_projection": [
+      "datetime",
+      "symbol",
+      "provider",
+      "volume",
+      "amount"
+    ]
+  },
+  "nearest_complete_definition_review": [
+    {
+      "name": "intraday_volatility_resolution_238m",
+      "overlap": "Both compare dispersion across the session.",
+      "distinction": "The terminal factor compares close-return variance by time; Campaign128 compares volume-weighted cross-bar transaction-price interquartile dispersion and reads neither close nor return."
+    },
+    {
+      "name": "intraday_transaction_vwap_consensus_240m",
+      "overlap": "Both use bar transaction price amount/volume with volume weights.",
+      "distinction": "The terminal factor is a whole-day geometric-to-arithmetic mean ratio. Campaign128 separately estimates morning and afternoon weighted IQRs and measures their temporal contraction; it does not reuse the mean-ratio statistic."
+    },
+    {
+      "name": "intraday_volume_weighted_transaction_price_bowley_skew_240m",
+      "overlap": "Both use left-continuous volume-weighted transaction-price quantiles.",
+      "distinction": "The terminal factor measures full-day distribution asymmetry using Q25/Q50/Q75. Campaign128 excludes the median, measures the IQR scale in each fixed half, and compares morning against afternoon. No skew-change alternative is admitted."
+    },
+    {
+      "name": "intraday_morning_afternoon_amount_profile_similarity_120b",
+      "overlap": "Both have a fixed morning/afternoon split and use amount-related data.",
+      "distinction": "The terminal factor compares normalized amount-clock profiles. Campaign128 uses amount only with volume to obtain per-bar transaction prices and uses volume as distribution mass; it does not compare clock profiles."
+    },
+    {
+      "name": "intraday_half_session_chord_adherence_240m",
+      "overlap": "Both describe intraday price convergence.",
+      "distinction": "Chord adherence measures ordered close-path deviation from two endpoint chords. Campaign128 is order-invariant within each half and reads no close or path endpoints."
+    },
+    {
+      "name": "intraday_transaction_price_path_confirmation_238p",
+      "overlap": "Both derive a transaction price from amount and volume.",
+      "distinction": "The terminal factor uses ordered adjacent transaction-price path confirmation. Campaign128 discards within-half order after exact half assignment and measures weighted distribution dispersion."
+    }
+  ],
+  "semantic_decision": {
+    "complete_definition_count_reviewed": 150,
+    "complete_definition_order_sha256": "c3713559f968c7f79b070398742ef625733e9c178d4e0c0010805fa12c5d5142",
+    "selected_candidate_count": 1,
+    "mechanism_independent_enough_for_single_prevalue_formula_freeze": true,
+    "same_mechanism_alternate_statistics_allowed": false,
+    "old_terminal_factor_combination_or_reclassification_performed": false,
+    "numeric_distinctness_established": false,
+    "predictive_value_established": false
+  },
+  "frozen_exclusions": {
+    "morning_afternoon_skew_change": true,
+    "whole_day_or_subwindow_sweep": true,
+    "market_residualization_or_peer_benchmark": true,
+    "active_bar_score_filter_or_weight": true,
+    "amount_inequality_alternative": true,
+    "quarterly_or_terminal_factor_product": true,
+    "alternate_quantiles_quantile_estimator_direction_threshold_filter_subset_fit_model_or_combination": true
+  },
+  "research_boundary": {
+    "minute_source_rows_read": false,
+    "candidate_or_comparator_values_read": false,
+    "historical_daily_price_or_forward_return_values_read": false,
+    "stress_2024_2025_opened": false,
+    "credential_loaded": false,
+    "provider_request_issued": false,
+    "candidate49_historical_backfill_performed": false,
+    "candidate49_ledgers_changed": false,
+    "second_prospective_candidate_created": false,
+    "current_scoring_selection_sizing_positions_or_orders_performed": false,
+    "investment_advice": false
+  }
+}

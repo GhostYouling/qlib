@@ -1,0 +1,78 @@
+{
+  "schema_version": 1,
+  "kind": "a_share_three_day_walkforward_campaign182_terminal_result",
+  "status": "terminal_prevalue_zero_infrastructure_failures_goal_active",
+  "recorded_at": "2026-08-15T12:30:42+08:00",
+  "authoritative_inputs": {
+    "campaign181_effective_state": {
+      "path": "docs/a_share_three_day_iteration_status_20260815_campaign181_prevalue_terminal.json",
+      "sha256": "eb79c73859cd983403458c9a3b8358a8cc7e5436402377c9bf2c728392251c82"
+    },
+    "eligibility_policy_v269": {
+      "path": "docs/a_share_three_day_walkforward_future_numeric_comparison_eligibility_policy_v269_20260815.json",
+      "sha256": "65fc06f6667c634666002c7677970a04a87cf5e05bc5aabd5cbd19ab4af8a3dc"
+    },
+    "credit_facility_covenant_liquidity_backstop_source_frontier": {
+      "path": "docs/a_share_three_day_walkforward_campaign_182_credit_facility_covenant_liquidity_backstop_source_frontier_20260815.json",
+      "sha256": "27d9e5af02f2ff4f626841e8c9720601c5b1691d3a91f0894be7028bd554df52"
+    },
+    "attempt_ledger": {
+      "path": "data/experiments/short_horizon/historical_walkforward/campaign_182/research_attempt_ledger_v1.json",
+      "sha256": "eba4943f3d2dcb271c321dcd9db85b9df383d905ae350976ae7dda5be1d452d9",
+      "effective_entry_count": 7,
+      "chain_tip_sha256": "f494208f58a2ebefe03bd0382076dc61b1ba840d14eca0f3d10f8f8d8c9554bc"
+    }
+  },
+  "scientific_result": {
+    "terminal": true,
+    "terminal_phase": "finite_prevalue_credit_facility_covenant_liquidity_backstop_source_admission",
+    "routes_reviewed": 7,
+    "genuinely_new_issuer_state_routes": 4,
+    "source_admission_deferrals_not_factor_failures": 4,
+    "relabeling_operator_or_combination_route_rejections": 3,
+    "selected_candidate_count": 0,
+    "complete_factor_definition_created": false,
+    "numeric_comparator_created": false,
+    "credit_facility_covenant_or_liquidity_backstop_state_declared_ineffective": false,
+    "source_row_credit_agreement_filing_facility_covenant_collateral_factor_comparator_security_price_or_return_value_read": false,
+    "stress_2024_2025_opened": false
+  },
+  "effective_accounting": {
+    "campaign182_attempt_count": 7,
+    "campaign182_prevalue_scientific_attempt_count": 7,
+    "campaign182_infrastructure_failure_count": 0,
+    "campaign182_complete_factor_attempt_count": 0,
+    "campaign182_return_reading_development_trial_count": 0,
+    "campaign182_development_survivor_count": 0,
+    "campaign182_stress_trial_count": 0,
+    "cumulative_historical_research_attempt_count": 1608,
+    "cumulative_return_reading_development_trial_count": 314
+  },
+  "library_state": {
+    "complete_factor_definition_count": 158,
+    "complete_factor_definition_order_sha256": "4819c7fd7c0795d7598a52f3c615e3f117d5f4ecd9332974bc8e3dfa57c96667",
+    "eligible_numeric_comparator_count": 142,
+    "eligible_numeric_comparator_order_sha256": "5d1b35fb5a0d8ac9293008db9963c4a60a94dc940c237c3ed259e5ce44f14aaf",
+    "changed_by_campaign182": false
+  },
+  "candidate49": {
+    "only_active_prospective_candidate": true,
+    "signal_ledger_sha256": "5193f00d7f36da003f53cec387900da4c3d002299f5dfcfc1a95eaa199ed3a79",
+    "signal_entry_count": 0,
+    "execution_ledger_sha256": "d57a3e61eac969e42cafa418ccd8c0a5ee65dcf69da145bb2c096c2a02a2ea4f",
+    "execution_entry_count": 0,
+    "ledgers_changed": false
+  },
+  "research_boundary": {
+    "unrecovered_or_unrecorded_failed_exit_codes_bypassed_or_masked": false,
+    "source_row_credit_agreement_filing_facility_covenant_collateral_factor_comparator_security_price_or_return_value_read": false,
+    "stress_2024_2025_opened": false,
+    "provider_or_web_request_issued": false,
+    "provider_credential_presence_value_or_digest_read": false,
+    "candidate49_ledgers_changed": false,
+    "second_prospective_candidate_created": false,
+    "current_scoring_selection_sizing_positions_or_orders_performed": false,
+    "investment_advice": false
+  },
+  "next_action": "Publish the Campaign182 report and policy v270, append both unified reports once, bind focused tests, then run focused, corrected cumulative and independent validation before authorizing Campaign183."
+}

@@ -1,0 +1,32 @@
+{
+  "schema_version": 1,
+  "kind": "a_share_three_day_walkforward_campaign163_prevalue_infrastructure_failures",
+  "status": "two_failures_recorded_second_is_publication_binding_truncation",
+  "recorded_at": "2026-08-15T06:32:25+08:00",
+  "authoritative_predecessor": {
+    "path": "docs/a_share_three_day_walkforward_campaign_163_prevalue_infrastructure_failure_20260815.json",
+    "sha256": "c0fd67a790200a8a375a72b28c87a4e815982e14b317c3fdd3192351fdf600a1",
+    "effective_failure_count": 1
+  },
+  "delta_failure": {
+    "attempt_id": "campaign163_infrastructure_002",
+    "phase": "focused_publication_binding_validation",
+    "status": "failed_truncated_campaign163_ledger_sha256_binding_one_failed_eight_passed",
+    "exit_code": 1,
+    "failure": "The terminal, policy and state transcribed the Campaign163 v1 ledger SHA-256 without its final hexadecimal character. The focused suite failed the first binding assertion while eight other tests passed.",
+    "recovery": "Preserve all v1 records, append a v2 ledger and publish corrected v2 terminal/report plus a new policy/state. No scientific field, source decision or research value changes.",
+    "correct_ledger_v1_sha256": "c42d17f15893fd0eac483f0b4b9ae1da6175965392a70fb8c2aaf8d4fda9ce5c",
+    "failed_exit_code_bypassed_or_masked": false,
+    "source_row_candidate_comparator_price_or_return_value_read": false
+  },
+  "effective_failure_count": 2,
+  "research_boundary": {
+    "annual_report_pdf_table_or_response_value_read": false,
+    "candidate_or_comparator_value_read": false,
+    "historical_daily_price_or_forward_return_value_read": false,
+    "provider_or_web_request_issued": false,
+    "provider_credential_presence_value_or_digest_read": false,
+    "stress_2024_2025_opened": false,
+    "candidate49_ledgers_changed": false
+  }
+}

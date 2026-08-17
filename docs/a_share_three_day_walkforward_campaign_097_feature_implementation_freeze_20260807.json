@@ -1,0 +1,92 @@
+{
+  "schema_version": 1,
+  "kind": "a_share_three_day_walkforward_campaign097_feature_implementation_freeze",
+  "status": "frozen_after_synthetic_tests_before_campaign097_minute_source_or_benchmark_values",
+  "recorded_at": "2026-08-07T05:23:00Z",
+  "protocol": {
+    "path": "docs/a_share_three_day_walkforward_campaign_097_no_return_preregistration.json",
+    "sha256": "a36a7b4e6153c66c5fa5825ebf20a2a30d6764e040be6e84e4202e66413b1d56"
+  },
+  "feature_runner": {
+    "path": "scripts/a_share_three_day_walkforward_campaign097_features.py",
+    "sha256": "c11b3485b91d6f7ad64ba9d9eac89187714663860d6879477e5191e5c9d007d1"
+  },
+  "synthetic_tests": {
+    "path": "tests/data_collector_tests/test_a_share_three_day_walkforward_campaign097_features.py",
+    "sha256": "2b104430e1b5b1694cecbb8b97501f5b5d2afc8b11546ae7224431b44b5d53ac",
+    "passed": 7,
+    "failed": 0
+  },
+  "reused_two_pass_infrastructure": [
+    {
+      "path": "scripts/a_share_tushare_intraday_market_amount_profile_synchronization.py",
+      "sha256": "98e08e2f6d5f017696da866ae04744d869d2481a3d7ebbb8bc7156899445df6a",
+      "use": "deterministic sorted-symbol profile accumulator, leave-one-out benchmark publication, partition checkpoints, and aggregate manifest engine only"
+    },
+    {
+      "path": "scripts/a_share_tushare_intraday_market_idiosyncratic_share.py",
+      "sha256": "53fc7e38df7427db19e1f2dcc7f1e8c3b00a5ba8d36f1c72bd24de06595e6a11",
+      "use": "raw/joint fingerprint traversal, process lock, parallel partition publication, and byte verification only"
+    }
+  ],
+  "preserved_prevalue_failures": [
+    {
+      "path": "docs/a_share_three_day_walkforward_campaign_097_preregistration_binding_failure_20260807.json",
+      "sha256": "655bf2c4e12fa16e875997d4ace27106f11da5e79ac47a21a466c27ea4e3d242"
+    },
+    {
+      "path": "docs/a_share_three_day_walkforward_campaign_097_prevalue_black_format_failure_20260807.json",
+      "sha256": "b3837ea742f916bde7365c0ae38c4538122137d04cc1c8e3ba56c2965433857e"
+    }
+  ],
+  "frozen_implementation_semantics": {
+    "factor": "intraday_market_range_profile_synchronization_240m",
+    "direction": "higher",
+    "source_projection": [
+      "datetime",
+      "symbol",
+      "provider",
+      "high",
+      "low"
+    ],
+    "selected_bar_count": 240,
+    "zero_range_retained_at_fixed_clock": true,
+    "positive_total_log_range_required": true,
+    "positive_range_or_adjacent_pair_minimum": null,
+    "benchmark_accumulation_order": "lexicographically sorted symbol then ascending year/date using float64 profile sums and integer complete-profile counts",
+    "leave_one_out_subtraction_exact": true,
+    "minimum_leave_one_out_peers_per_position": 50,
+    "estimator": "equal-clock-weight population Pearson correlation",
+    "constant_stock_or_peer_profile": "missing",
+    "endpoint_tolerance": 1e-12,
+    "valid_range": [
+      -1,
+      1
+    ],
+    "complete_definition_count": 128,
+    "complete_definition_order_sha256": "9380287d8339113cb01fa99670c77078f9be82b7463c06c1e7debb92b1add48b",
+    "numeric_comparator_count": 125,
+    "numeric_comparator_order_sha256": "50a737e640cac8e063aab8be0b483a6d9be87d0e5ddd1e1395e625ab371a4cae"
+  },
+  "validation_receipt": {
+    "protocol_bindings_passed": 18,
+    "protocol_bindings_failed": 0,
+    "synthetic_pytest_passed": 7,
+    "synthetic_pytest_failed": 0,
+    "black_check_passed": true,
+    "ruff_check_passed": true
+  },
+  "next_protected_stage": "Build the same-date range-profile benchmark and candidate partitions with this exact runner. No comparison, daily price, or return value may be opened until the immutable snapshot is bound and coverage passes.",
+  "research_boundary": {
+    "minute_source_rows_read_before_freeze": false,
+    "market_benchmark_values_computed_before_freeze": false,
+    "candidate_values_computed_before_freeze": false,
+    "comparison_values_read": false,
+    "daily_price_fields_read": [],
+    "forward_returns_read": false,
+    "training_or_model_fitting_performed": false,
+    "provider_request_issued": false,
+    "candidate49_ledgers_changed": false,
+    "current_scoring_selection_sizing_or_orders_performed": false
+  }
+}

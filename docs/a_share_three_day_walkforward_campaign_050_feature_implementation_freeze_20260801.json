@@ -1,0 +1,56 @@
+{
+  "version": 1,
+  "kind": "a_share_three_day_walkforward_campaign050_feature_implementation_freeze",
+  "status": "frozen_before_campaign050_candidate_values",
+  "recorded_at": "2026-08-01T07:50:00Z",
+  "purpose": "Bind the exact Campaign050 close-only extreme-shock reversal implementation and focused tests before any external minute partition or candidate value is read.",
+  "no_return_protocol": {
+    "path": "docs/a_share_three_day_walkforward_campaign_050_no_return_preregistration.json",
+    "sha256": "32c3e889e736e050fb0326f2bceb6ddd820ae7a0b9c5f6bac09c90a5afebb10e"
+  },
+  "feature_runner": {
+    "path": "scripts/a_share_three_day_walkforward_campaign050_features.py",
+    "sha256": "4364a92123432a867fa172d30b6cf5a6a27123d735d1b6150422dd94311f7294"
+  },
+  "focused_tests": {
+    "path": "tests/data_collector_tests/test_a_share_three_day_walkforward_campaign050_features.py",
+    "sha256": "0db03391ffb469b10d576d7b936f17d0983754d8f8c4d2eff64437ccb39e970d",
+    "passed": 11,
+    "failed": 0
+  },
+  "implementation_semantics": {
+    "factor": "intraday_half_session_extreme_shock_reversal_completion_2h",
+    "direction": "higher",
+    "source_fields_read": [
+      "datetime",
+      "symbol",
+      "provider",
+      "close"
+    ],
+    "selected_bar_count": 240,
+    "closes_per_half": 120,
+    "returns_per_half": 119,
+    "selected_extreme_count": 2,
+    "tie_rule": "earliest absolute-return maximum separately within each half",
+    "half_score": "-2*s*R/(s^2+R^2)",
+    "final_score": "equal-weight arithmetic mean of the two half scores",
+    "valid_range": [
+      -1.0,
+      1.0
+    ],
+    "formula_direction_window_tie_normalization_threshold_filter_or_model_changed_after_preregistration": false
+  },
+  "candidate_values_read_before_freeze": false,
+  "comparison_values_read_before_freeze": false,
+  "historical_daily_price_fields_read_before_freeze": false,
+  "historical_forward_returns_read_before_freeze": false,
+  "provider_request_issued": false,
+  "candidate49_historical_backfill_performed": false,
+  "candidate49_ledgers_changed": false,
+  "candidate50_prospective_activation_created": false,
+  "current_scoring_selection_sizing_or_orders_performed": false,
+  "decision": {
+    "implementation_frozen": true,
+    "next_action": "Use an additive immutable wrapper to bind this freeze, rerun focused tests, then and only then build the Campaign050 feature snapshot."
+  }
+}

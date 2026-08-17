@@ -1,0 +1,362 @@
+{
+  "version": 1,
+  "kind": "a_share_three_day_walkforward_campaign005_no_return_preregistration",
+  "status": "frozen_before_campaign005_candidate_or_comparison_values_or_returns",
+  "frozen_at": "2026-07-28T08:35:40Z",
+  "purpose": "Materialize the three exact Campaign005 minute mechanisms frozen by the pre-value overlap audit, reject incomplete or near-duplicate factors before returns, and permit only the finite single/pair 2019-2023 walk-forward catalog for no-return-admissible factors.",
+  "source_chain": {
+    "mechanism_overlap_audit": {
+      "path": "docs/a_share_three_day_walkforward_campaign_005_mechanism_overlap_audit.json",
+      "sha256": "c378541156f8e68a2d73bafe44f99f7d1b3fc7ca06c1cf72c093d07a93f7907e"
+    },
+    "authoritative_iteration_state": {
+      "path": "docs/a_share_three_day_iteration_status_20260728_campaign004.json",
+      "sha256": "2037007da4fe750b70715b9f0cf7e8d361cb9d6d18128fdb6c18b05486954749"
+    },
+    "historical_walkforward_policy": {
+      "path": "docs/a_share_three_day_historical_walkforward_research_policy_20260727.json",
+      "sha256": "38426d6161b9bfed323c58caba18feca668b8c9d53e294951a8ba90c01a798bb"
+    },
+    "inactive_queue_delta": {
+      "path": "docs/a_share_three_day_inactive_mechanism_scouting_queue_delta_20260726.json",
+      "sha256": "60f280cfecbd390a4fb6388eb3c5a63a507506b542aeba937f60d583cc717835",
+      "selected_priorities": [
+        4,
+        5,
+        6
+      ]
+    },
+    "raw_minute_manifest": {
+      "path_below_data_root": "raw/a_share/rich/tushare/minutes/1m/snapshots/tushare_stk_mins_1m_2019_2025_ea0cbb8f/snapshot_manifest.json",
+      "sha256": "9b3d959563c9d182f38981c6a36bdb3bc9b415de08487a9e1f9e850825c0839f",
+      "provider": "tushare",
+      "frequency": "1m",
+      "partitions": 33015,
+      "rows": 1866461373
+    },
+    "joint_clean_manifest": {
+      "path_below_data_root": "derived/a_share/rich/tushare/minute_sentiment_clean/tushare_stk_mins_1m_2019_2025_ea0cbb8f_sentiment_clean_v1/snapshot_manifest.json",
+      "sha256": "453c6719cb3c7da42fed8807b28a2bfe988700283e9625a6db97912534f368de",
+      "dataset_sha256": "0e4fe7c05536cdfcecc2936bc880726902f5560061188ffff82ef7ee6f346983",
+      "partitions": 33015,
+      "rows": 7724498
+    },
+    "campaign004_feature_snapshot": {
+      "path": "/Volumes/DIsk/qlib-a-share-tushare-1m/derived/a_share/rich/tushare/minute_walkforward_campaign004_feature_library/tushare_stk_mins_1m_2019_2025_ea0cbb8f_walkforward_campaign004_feature_library_v1/snapshot_manifest.json",
+      "sha256": "8eefc381d006997f1dcd95edcd9be4db8485e0c4954d6166d94f1981ae3b57fe",
+      "dataset_sha256": "1359e755e669c7b949b26b2086d1c1328ec0cdf53b45ce7e67d117a274c7fc8a",
+      "factor_count": 3,
+      "terminal": true
+    },
+    "candidate49_no_return_protocol": {
+      "path": "docs/a_share_tushare_intraday_cumulative_vwap_crossing_rate_no_return_preregistration.json",
+      "sha256": "cefa5f23b5214e123d0bdea1511a398cb4a70c0ee4cc8da7d1f69f52bdbe4aeb"
+    },
+    "candidate49_future_observation_registration": {
+      "path": "docs/a_share_tushare_intraday_cumulative_vwap_crossing_rate_future_observation_registration.json",
+      "sha256": "431cb0b3b078823f08b888bf4c499bcc5088309a2e58e9de5cb9a9aaa849ffa9",
+      "historical_return_comparison_allowed": false
+    }
+  },
+  "implementation_reference": {
+    "path": "scripts/a_share_three_day_walkforward_campaign005_features.py",
+    "script_sha256_before_protocol_hash_binding": "bcdcdb916fe94045ff8ae724f6f694daeac90fbe93033f870d83fe92827fe04f",
+    "pre_value_formula_tests": {
+      "command": "PYTHONPATH=/opt/anaconda3/lib/python3.12/site-packages /opt/anaconda3/bin/python3 -S -m pytest -q tests/data_collector_tests/test_a_share_three_day_walkforward_campaign005_features.py",
+      "passed": 7
+    }
+  },
+  "candidates": [
+    {
+      "queue_priority": 4,
+      "name": "intraday_zero_return_amount_intensity_238m",
+      "direction": "higher",
+      "formula": "log((sum(A_t for r_t=0)/N_zero) / (sum(A_t for all 238 within-half transitions)/238))",
+      "economic_hypothesis": "High activity per exact unchanged-close transition relative to the ordinary transition may represent active-flow absorption rather than mere price staleness.",
+      "source_fields_allowed": [
+        "datetime",
+        "symbol",
+        "provider",
+        "close",
+        "amount"
+      ],
+      "source_fields_used_by_formula": [
+        "datetime",
+        "symbol",
+        "provider",
+        "close",
+        "amount"
+      ],
+      "timestamp_semantics": "Use 119 adjacent returns inside each half-session, exclude standalone 09:30 and the 11:30-to-13:01 transition, and pair each transition with destination-bar amount.",
+      "zero_missing_denominator_semantics": "Exact source-close equality only. Require at least one zero-return transition, positive zero-return destination amount, and positive total destination amount; otherwise missing.",
+      "valid_range": "finite values no greater than log(238)"
+    },
+    {
+      "queue_priority": 5,
+      "name": "intraday_lunch_repricing_persistence_119m",
+      "direction": "higher",
+      "formula": "sign(log(close_13:01/close_11:30)) * log(close_15:00/close_13:01) / sum(abs(adjacent log-close returns from 13:01 through 15:00))",
+      "economic_hypothesis": "A nonzero lunch repricing followed by a directionally efficient same-sign afternoon path may represent confirmed information incorporation.",
+      "source_fields_allowed": [
+        "datetime",
+        "symbol",
+        "provider",
+        "close",
+        "amount"
+      ],
+      "source_fields_used_by_formula": [
+        "datetime",
+        "symbol",
+        "provider",
+        "close"
+      ],
+      "timestamp_semantics": "Use exact 11:30 and 13:01 closes for the lunch sign and exactly 119 adjacent returns from 13:01 through 15:00 for afternoon path variation; exclude 09:30.",
+      "zero_missing_denominator_semantics": "A zero lunch repricing or zero afternoon path variation is missing; do not threshold or impute.",
+      "valid_range": [
+        -1.0,
+        1.0
+      ]
+    },
+    {
+      "queue_priority": 6,
+      "name": "intraday_directional_price_impact_asymmetry_238m",
+      "direction": "higher",
+      "formula": "(I_up-I_down)/(I_up+I_down), where I_up=sum(r_t for r_t>0)/sum(A_t for r_t>0) and I_down=sum(-r_t for r_t<0)/sum(A_t for r_t<0) over 238 within-half destination-amount pairs",
+      "economic_hypothesis": "Higher upside movement per CNY relative to downside movement per CNY may identify asymmetric liquidity in which sell-side flow is absorbed more deeply than buy-side information.",
+      "source_fields_allowed": [
+        "datetime",
+        "symbol",
+        "provider",
+        "close",
+        "amount"
+      ],
+      "source_fields_used_by_formula": [
+        "datetime",
+        "symbol",
+        "provider",
+        "close",
+        "amount"
+      ],
+      "timestamp_semantics": "Use 119 adjacent returns inside each half-session, exclude standalone 09:30 and the lunch transition, and pair each return with destination-bar amount.",
+      "zero_missing_denominator_semantics": "Zero returns enter neither side. Require positive amount and positive cumulative return magnitude on both positive and negative sides; otherwise missing.",
+      "valid_range": [
+        -1.0,
+        1.0
+      ]
+    }
+  ],
+  "point_in_time_context": {
+    "calendar": {
+      "path": "data/qlib/cn_a_share/calendars/day.txt",
+      "sha256": "fda506597d26bcec953cdc0882042a5046ec1587db60490e16a01627fd43f53a",
+      "development_sessions": 1699
+    },
+    "source_universe": {
+      "path": "data/qlib/cn_a_share/instruments/factor_main_chinext_star.txt",
+      "sha256": "cdded13c831b78045f4cfe80ba5d9a49f82152c615fef4267d00f992e7f53762"
+    },
+    "holding_universe": {
+      "path": "data/qlib/cn_a_share/instruments/buyable_main_chinext.txt",
+      "sha256": "77ccf8de2ed1e447e73b5d5ff1703fc2a8656d6adab34ef44017481730249db1"
+    },
+    "quarterly_quality": {
+      "path": "data/raw/a_share/fundamentals/quarterly_quality.parquet",
+      "sha256": "3ac901a97928d2ed81ac72e3eaac9bdc148d36cf67b6abe70223699235ef059f",
+      "manifest_path": "data/metadata/quarterly_quality_manifest.json",
+      "manifest_sha256": "e3cf654babe37a82393c5530696bc1cc242b736cb88e1947b8444b638125ba8c",
+      "availability": "strictly_next_local_session_after_announcement_date",
+      "maximum_age_days": 550,
+      "quality_state_semantics": "after effective-date sort and dedup, forward-fill roe, net_profit, revenue_yoy, and profit_yoy independently"
+    },
+    "minimum_listing_sessions": 20,
+    "survivorship_limitation": "The current-listing-derived holding universe may introduce survivorship bias; Campaign005 remains research-only and cannot be promoted without point-in-time listing and delisting evidence."
+  },
+  "ordered_no_return_gates": {
+    "coverage_and_capacity_before_comparison_values": {
+      "coverage_basis": "candidate finite rows divided by quality-and-listing eligible buyable rows within 2019-2025",
+      "minimum_median_coverage": 0.95,
+      "minimum_p05_coverage": 0.9,
+      "minimum_p05_eligible_names": 50,
+      "minimum_non_overlapping_three_session_cohorts": 200,
+      "minimum_observed_calendar_years": 5,
+      "holding_period_sessions": 3,
+      "pilot_capital_cny": 200000,
+      "pilot_buy_lot_size_shares": 100,
+      "failed_gate_policy": "Record this exact factor as inadmissible and stop it before comparison values, daily prices, or forward returns."
+    },
+    "uniqueness_after_coverage_only": {
+      "screen_start": "2019-01-01",
+      "screen_end": "2025-12-31",
+      "method": "Within each identical quality-listing-candidate-and-comparison-eligible stock-day cross-section, compute pairwise-complete Spearman correlation between directional percentile scores, then take each comparison factor's median daily correlation.",
+      "maximum_allowed_absolute_median_daily_rank_correlation": 0.8,
+      "minimum_pairwise_names_per_session": 50,
+      "minimum_pairwise_sessions_per_comparison": 100,
+      "candidate49_is_a_no_return_comparison_only": true,
+      "comparison_factors": [
+        {
+          "name": "late_return_30m",
+          "score_direction": "higher"
+        },
+        {
+          "name": "late_amount_share_30m",
+          "score_direction": "higher"
+        },
+        {
+          "name": "late_vwap_to_day_vwap_30m",
+          "score_direction": "higher"
+        },
+        {
+          "name": "intraday_realized_volatility",
+          "score_direction": "lower"
+        },
+        {
+          "name": "afternoon_signed_amount_efficiency_120m",
+          "score_direction": "higher"
+        },
+        {
+          "name": "afternoon_drawdown_recovery_resilience_120m",
+          "score_direction": "higher"
+        },
+        {
+          "name": "intraday_amount_participation_entropy_240m",
+          "score_direction": "higher"
+        },
+        {
+          "name": "intraday_amount_profile_serial_persistence_240m",
+          "score_direction": "higher"
+        },
+        {
+          "name": "intraday_upside_semivariance_share_239m",
+          "score_direction": "higher"
+        },
+        {
+          "name": "intraday_terminal_close_location_240m",
+          "score_direction": "higher"
+        },
+        {
+          "name": "intraday_return_sign_run_imbalance_238p",
+          "score_direction": "higher"
+        },
+        {
+          "name": "intraday_volatility_resolution_238m",
+          "score_direction": "higher"
+        },
+        {
+          "name": "intraday_amount_lead_return_correlation_238p",
+          "score_direction": "higher"
+        },
+        {
+          "name": "intraday_amount_center_of_mass_240m",
+          "score_direction": "higher"
+        },
+        {
+          "name": "intraday_up_move_amount_share_238m",
+          "score_direction": "higher"
+        },
+        {
+          "name": "intraday_diffusive_variation_ratio_238m",
+          "score_direction": "higher"
+        },
+        {
+          "name": "intraday_amount_volatility_coupling_238p",
+          "score_direction": "higher"
+        },
+        {
+          "name": "intraday_return_variance_entropy_238m",
+          "score_direction": "higher"
+        },
+        {
+          "name": "intraday_return_skewness_238m",
+          "score_direction": "higher"
+        },
+        {
+          "name": "intraday_bar_vwap_close_pressure_240m",
+          "score_direction": "higher"
+        },
+        {
+          "name": "intraday_price_update_share_238m",
+          "score_direction": "higher"
+        },
+        {
+          "name": "intraday_market_idiosyncratic_share_238m",
+          "score_direction": "higher"
+        },
+        {
+          "name": "intraday_opening_auction_amount_share_241m",
+          "score_direction": "higher"
+        },
+        {
+          "name": "intraday_market_amount_profile_synchronization_240m",
+          "score_direction": "higher"
+        },
+        {
+          "name": "intraday_cumulative_vwap_crossing_rate_240m",
+          "score_direction": "higher"
+        },
+        {
+          "name": "intraday_market_neutral_late_residual_drift_238m",
+          "score_direction": "higher"
+        },
+        {
+          "name": "intraday_negative_return_absorption_rate_236p",
+          "score_direction": "higher"
+        },
+        {
+          "name": "intraday_signed_path_efficiency_239m",
+          "score_direction": "higher"
+        }
+      ],
+      "new_campaign_factor_order": [
+        "intraday_zero_return_amount_intensity_238m",
+        "intraday_lunch_repricing_persistence_119m",
+        "intraday_directional_price_impact_asymmetry_238m"
+      ],
+      "new_factor_pairwise_rule": "Each coverage-passing factor must also pass against every earlier coverage-and-uniqueness-passing Campaign005 factor in the frozen order.",
+      "failed_gate_policy": "Record this exact factor as inadmissible without inversion, formula repair, or historical return access."
+    }
+  },
+  "finite_post_admissibility_search": {
+    "candidate_count_variable": "n equals the number of factors passing both ordered no-return gates",
+    "search_formula": "n single-factor trials plus 3 times n-choose-2 unordered pair trials",
+    "single_factor_trials": true,
+    "pair_directional_rank_weight_grid_in_canonical_factor_order": [
+      [
+        0.25,
+        0.75
+      ],
+      [
+        0.5,
+        0.5
+      ],
+      [
+        0.75,
+        0.25
+      ]
+    ],
+    "all_components_required": true,
+    "maximum_trial_count_if_all_three_admissible": 12,
+    "minimum_names": 50,
+    "weight_fitting": false,
+    "threshold_search": false,
+    "year_subset_search": false,
+    "filter_search": false,
+    "triple_or_higher_order_combinations": false,
+    "old_terminal_factor_rescue_combinations": false,
+    "candidate49_inclusion": false,
+    "exact_trial_catalog_freeze_required_before_first_2019_2023_return_read": true,
+    "post_result_catalog_change_requires_new_campaign_version": true
+  },
+  "research_boundary": {
+    "provider_credential_required": false,
+    "provider_request_allowed": false,
+    "daily_price_fields_read_before_admissibility": false,
+    "forward_return_fields_read_before_admissibility": false,
+    "historical_return_read_allowed_only_after_exact_walkforward_preregistration": true,
+    "stress_2024_2025_return_read_allowed_before_survivors_are_frozen": false,
+    "candidate49_historical_return_read": false,
+    "candidate49_prospective_ledgers_changed": false,
+    "candidate50_prospective_activation_allowed": false,
+    "aggregation_or_prospective_promotion_allowed": false,
+    "current_scoring_selection_sizing_or_orders_allowed": false
+  }
+}

@@ -1,0 +1,17 @@
+{
+  "schema_version": 1,
+  "kind": "a_share_three_day_walkforward_campaign098_terminal_test_update_patch_context_failure",
+  "status": "recorded_append_only_before_exact_formatted_context_retry",
+  "recorded_at": "2026-08-07T08:59:00Z",
+  "stage": "terminal_test_effective_accounting_update",
+  "failure": "The terminal test update patch expected an unformatted single-line failure-count assertion. Black had already wrapped that assertion, so apply_patch rejected the whole update before writing.",
+  "target": "tests/data_collector_tests/test_a_share_three_day_walkforward_campaign098_terminal.py",
+  "target_changed_by_failed_patch": false,
+  "research_values_recomputed": false,
+  "new_historical_daily_price_or_forward_return_values_read": false,
+  "stress_2024_2025_return_fields_read": false,
+  "candidate49_historical_return_read": false,
+  "candidate49_ledgers_changed": false,
+  "provider_request_issued": false,
+  "authorized_repair": "Update only the exact formatted constants and assertions to the additive effective ledger/policy/accounting, then rerun the current-node suite."
+}

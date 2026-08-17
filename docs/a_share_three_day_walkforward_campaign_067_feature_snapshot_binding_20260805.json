@@ -1,0 +1,55 @@
+{
+  "version": 1,
+  "kind": "a_share_three_day_walkforward_campaign067_feature_snapshot_binding",
+  "status": "immutable_snapshot_fully_verified_before_no_return_coverage_or_comparison_values",
+  "recorded_at": "2026-08-05T18:30:00+08:00",
+  "protocol": {
+    "path": "docs/a_share_three_day_walkforward_campaign_067_no_return_preregistration.json",
+    "sha256": "94073ae194468b2aa95d40dd63b29c80332d8e1e5fa47c61ca94c640060d1d07"
+  },
+  "feature_runner": {
+    "path": "scripts/a_share_three_day_walkforward_campaign067_features.py",
+    "sha256": "f197a97ec223153689da902cc894e64193b7675174ca64494898c96c338a36f7"
+  },
+  "implementation_freeze": {
+    "path": "docs/a_share_three_day_walkforward_campaign_067_feature_implementation_freeze_v2_20260805.json",
+    "sha256": "bd25f0aa8dcca6a37a79680f5b12aadee993a584df1c880ce309b2bd1a1df5af"
+  },
+  "snapshot": {
+    "path_below_data_root": "derived/a_share/rich/tushare/minute_walkforward_campaign067_feature_library/tushare_stk_mins_1m_2019_2025_ea0cbb8f_walkforward_campaign067_feature_library_v1/snapshot_manifest.json",
+    "sha256": "1cdcf5daebcdef0c499e53d036362aa337111e122f5605c2d707f938f929eae1",
+    "dataset_sha256": "b078722e7f3055cbc1b6a863791dcf341b497971218200c2b92a4d213b1703ae",
+    "partitions": 33015,
+    "rows": 7724498,
+    "eligible_rows": 7230298,
+    "factor": "quarterly_roe_profit_scale_efficiency_gap_2r",
+    "direction": "higher",
+    "valid_range": [-1.0, 1.0]
+  },
+  "independent_verification": {
+    "all_partition_byte_hashes_passed": true,
+    "all_partition_frame_hashes_passed": true,
+    "all_value_eligibility_and_range_checks_passed": true,
+    "verified_partitions": 33015,
+    "verified_rows": 7724498,
+    "verified_eligible_rows": 7230298,
+    "aggregate_dataset_sha256_reproduced": true
+  },
+  "research_boundary": {
+    "quarterly_fields_read": ["instrument", "report_date", "announcement_date", "roe", "net_profit"],
+    "stock_day_identity_fields_read": ["trade_date", "symbol", "provider"],
+    "comparison_values_read": false,
+    "historical_daily_price_fields_read": [],
+    "historical_forward_return_fields_read": false,
+    "provider_request_issued": false,
+    "candidate49_historical_return_read": false,
+    "candidate49_ledgers_changed": false,
+    "second_prospective_candidate_created": false,
+    "current_scoring_selection_sizing_or_orders_performed": false
+  },
+  "decision": {
+    "snapshot_accepted_for_ordered_no_return_audit": true,
+    "predictive_value_established": false,
+    "next_action": "Freeze the no-return audit runner against this exact snapshot, then compute coverage before loading any of the 97 comparison values."
+  }
+}

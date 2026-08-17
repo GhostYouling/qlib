@@ -1,0 +1,64 @@
+{
+  "schema_version": 1,
+  "kind": "a_share_three_day_walkforward_campaign146_coverage_activation_binding_v2",
+  "status": "frozen_after_recovery_verified_snapshot_before_candidate_coverage_statistics",
+  "recorded_at": "2026-08-14T21:44:00+08:00",
+  "purpose": "Single-use activation of the frozen Campaign146 coverage gate after immutable recovery verification and before reading any coverage statistic.",
+  "implementation_freezes": {
+    "original_campaign146": {
+      "path": "docs/a_share_three_day_walkforward_campaign_146_no_return_implementation_freeze_20260814.json",
+      "sha256": "673eff0bf3190a7af6c02dc9439c2688ed4e514e28888ef929f7c7c3c5da887d"
+    },
+    "recovery_verifier": {
+      "path": "docs/a_share_three_day_walkforward_campaign_146_snapshot_recovery_verifier_implementation_freeze_20260814.json",
+      "sha256": "9b2af298a58ad3c8fa5d378c5905b83578db3c40590421a91a3edbfd75d02c0d"
+    },
+    "coverage_recovery_runner": {
+      "path": "docs/a_share_three_day_walkforward_campaign_146_coverage_recovery_runner_implementation_freeze_20260814.json",
+      "sha256": "46184c9a3829edd371455981b07923f2555948f87464198f4f8e3da23224ce97"
+    }
+  },
+  "candidate_snapshot": {
+    "path": "/Volumes/DIsk/qlib-a-share-tushare-1m/derived/a_share/rich/tushare/minute_walkforward_campaign146_feature_library/tushare_stk_mins_1m_2019_2025_ea0cbb8f_walkforward_campaign146_feature_library_v1/snapshot_manifest.json",
+    "sha256": "951872dbdcfa2b00e9603d3be44b059c7d24204fba5757551afbcd46ee8a3f74",
+    "dataset_sha256": "7278ae76407215eab75e9ff0119d8c6a073e4d7ac9df5b7d349bc09e6cf889c4",
+    "partitions": 33015,
+    "rows": 7724498,
+    "eligible_rows": 7630332,
+    "factor_range": {
+      "intraday_return_amount_cross_spectral_phase_lead_59f": [
+        -1.0,
+        1.0
+      ]
+    }
+  },
+  "recovery_verification_receipt": {
+    "path": "docs/a_share_three_day_walkforward_campaign_146_snapshot_recovery_verification_20260814.json",
+    "sha256": "0098f33fb5759aafcfd39a97be086e849caa179e5d825f5d06d90bc0481dc44b"
+  },
+  "coverage_gate": {
+    "holding_period_sessions": 3,
+    "minimum_median_daily_coverage": 0.95,
+    "minimum_p05_daily_coverage": 0.9,
+    "minimum_p05_eligible_names": 50,
+    "minimum_non_overlapping_three_signal_session_cohorts": 200,
+    "minimum_observed_cohort_years": 5,
+    "minimum_nonconstant_cross_sectional_sessions": 200,
+    "cross_sectional_distinctness": "exact finite float values without rounding tolerance or binning"
+  },
+  "numeric_comparator_count": 141,
+  "numeric_comparator_order_sha256": "ec1aebcb939ad516c58037a36a4aaadd4ad8b2abbd3c884705895c58da85a2ee",
+  "output_path": "data/experiments/short_horizon/historical_walkforward/campaign_146/coverage/campaign146_coverage_audit.json",
+  "single_use": true,
+  "research_boundary": {
+    "candidate_partition_values_read_only_for_integrity_verification_before_activation": true,
+    "candidate_coverage_statistics_read_before_activation": false,
+    "comparator_values_read_before_activation": false,
+    "historical_daily_price_or_forward_return_values_read": false,
+    "provider_request_issued": false,
+    "credential_loaded": false,
+    "candidate49_ledgers_changed": false,
+    "snapshot_or_partition_rewritten": false
+  },
+  "next_action": "Run the frozen recovery coverage plan; only when ready=true and exit code is zero run with --confirm-coverage-audit."
+}

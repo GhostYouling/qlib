@@ -1,0 +1,85 @@
+{
+  "version": 1,
+  "kind": "a_share_three_day_walkforward_campaign033_feature_snapshot_freeze",
+  "status": "immutable_snapshot_bound_before_comparison_values_daily_prices_or_returns",
+  "recorded_at": "2026-07-30T16:25:00Z",
+  "purpose": "Bind the completed Campaign033 spectral-entropy snapshot, dataset, post-snapshot runner, and lifecycle assertion transition before any of the 54 comparison values, daily prices, or historical returns is opened.",
+  "source_chain": {
+    "no_return_preregistration": {
+      "path": "docs/a_share_three_day_walkforward_campaign_033_no_return_preregistration.json",
+      "sha256": "3e5546941b5954f96fc5a2d7dc7fbcf03b48d063ea1414133c2c17ae191fad4f"
+    },
+    "feature_implementation_freeze": {
+      "path": "docs/a_share_three_day_walkforward_campaign_033_feature_implementation_freeze_20260730.json",
+      "sha256": "c26f257af8ebb0c82bf0c9f43957689a993d5c9f781be7c98493499e4cd5e986"
+    },
+    "feature_runner_pre_snapshot_binding_sha256": "5779a88c07992f1c969ec2409baec31387a152b9b84f7db109cf4b838db53c54",
+    "feature_runner_after_snapshot_binding": {
+      "path": "scripts/a_share_three_day_walkforward_campaign033_features.py",
+      "sha256": "901dede7308ad5e1b6397c58e6212e048404eaed731f4b3e2e2f2fcd722fcaab"
+    },
+    "feature_tests_pre_snapshot_assertion_sha256": "b7cd1532c39fee0e3e444236ded695800a2301162f928746d67e3bc9770aa4ba",
+    "feature_tests_after_snapshot_assertion_transition": {
+      "path": "tests/data_collector_tests/test_a_share_three_day_walkforward_campaign033_features.py",
+      "sha256": "e9c5d858933ada45f18986faed4b22985905e16a3c9e9e76921ab10664f35086",
+      "focused_with_reporting_tests_passed": 13,
+      "failed": 0
+    },
+    "candidate49_signal_ledger": {
+      "path": "data/experiments/short_horizon/candidate49_future_signal_ledger.json",
+      "sha256": "5193f00d7f36da003f53cec387900da4c3d002299f5dfcfc1a95eaa199ed3a79",
+      "entry_count": 0
+    },
+    "candidate49_execution_ledger": {
+      "path": "data/experiments/short_horizon/candidate49_future_execution_ledger.json",
+      "sha256": "d57a3e61eac969e42cafa418ccd8c0a5ee65dcf69da145bb2c096c2a02a2ea4f",
+      "entry_count": 0
+    }
+  },
+  "feature_snapshot": {
+    "path": "/Volumes/DIsk/qlib-a-share-tushare-1m/derived/a_share/rich/tushare/minute_walkforward_campaign033_feature_library/tushare_stk_mins_1m_2019_2025_ea0cbb8f_walkforward_campaign033_feature_library_v1/snapshot_manifest.json",
+    "sha256": "bbd2b064885e90576712610a5b11426c3f3048fd10ff1d0590ea02861e423bd6",
+    "dataset_sha256": "ef76f920ab1b88dcbec40b640de240db308e60fc9711f42bb9cffbfe002e27cf",
+    "kind": "a_share_three_day_walkforward_campaign033_feature_snapshot",
+    "partitions": 33015,
+    "rows": 7724498,
+    "factor": "intraday_return_spectral_entropy_59f",
+    "eligible_rows": 7695088,
+    "nonpositive_total_power_rows": 29410,
+    "endpoint_canonicalized_rows": 33,
+    "invalid_required_close_rows": 0,
+    "nonpositive_close_rows": 0,
+    "nonfinite_return_rows": 0,
+    "nonfinite_power_rows": 0,
+    "range_or_nonfinite_rows": 0,
+    "resumed_partitions": 0
+  },
+  "source_and_output_boundary": {
+    "source_fields_read": [
+      "datetime",
+      "symbol",
+      "provider",
+      "close"
+    ],
+    "source_open_high_low_read": false,
+    "source_volume_read": false,
+    "source_amount_read": false,
+    "comparison_factor_values_read": false,
+    "daily_price_fields_read": [],
+    "forward_return_fields_read": false,
+    "candidate49_historical_return_read": false,
+    "training_or_model_fitting_performed": false,
+    "current_scoring_selection_sizing_or_orders_performed": false
+  },
+  "lifecycle_assertion_transition": {
+    "reason": "The pre-build test correctly required snapshot_sha256_bound=false. After immutable publication and runner binding, the same status contract must require snapshot_exists=true and snapshot_sha256_bound=true while audit_count remains zero and returns remain unread.",
+    "formula_direction_source_projection_missing_rule_snapshot_or_gate_changed": false,
+    "pre_build_record_rewritten": false
+  },
+  "decision": {
+    "snapshot_manifest_validation_passed": true,
+    "snapshot_binding_validation_required_before_no_return_audit": true,
+    "no_return_audit_allowed_after_validation": true,
+    "historical_return_read_allowed_before_no_return_admission": false
+  }
+}

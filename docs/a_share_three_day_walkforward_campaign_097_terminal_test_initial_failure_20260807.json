@@ -1,0 +1,45 @@
+{
+  "schema_version": 1,
+  "kind": "a_share_three_day_walkforward_campaign097_terminal_test_initial_failure",
+  "status": "preserved_pre_repair_terminal_test_failure_no_new_research_values_or_returns",
+  "recorded_at": "2026-08-07T07:03:25Z",
+  "campaign": 97,
+  "terminal_verification": {
+    "path": "docs/a_share_three_day_walkforward_campaign_097_terminal_verification_20260807.json",
+    "sha256": "e2bdfaf91a58d58de27a37aaeb578ac9c6452cda7a2c9774b89a675f36e10996"
+  },
+  "effective_attempt_ledger_before_failure": {
+    "path": "data/experiments/short_horizon/historical_walkforward/campaign_097/research_attempt_ledger_v2.json",
+    "sha256": "c415c8c9d6a073c08ab9c909fa8b6ddcf05b1ace12115b4a714fa2e2aa9cfb61"
+  },
+  "failed_test_revision": {
+    "relative_path": "tests/data_collector_tests/test_a_share_three_day_walkforward_campaign097_terminal.py",
+    "sha256_at_failure": "28a60a3502500d341e1ea5a05f8373766e1b34ba449119c7b11aa015b47afc9f"
+  },
+  "commands_and_observed_results": {
+    "black_check": "failed: one file would be reformatted",
+    "ruff_check": "passed",
+    "pytest": "5 passed, 1 failed",
+    "failing_test": "test_append_only_development_ledger_and_metrics_are_exact",
+    "observed_phase": "development_walkforward_2019_2023",
+    "incorrect_test_expectation": "development"
+  },
+  "repair_scope": [
+    "replace only the incorrect phase literal with the exact frozen ledger value",
+    "apply Black mechanical formatting to the new terminal test"
+  ],
+  "scientific_or_workflow_effect": {
+    "factor_or_snapshot_values_recomputed": false,
+    "new_historical_daily_price_values_read": false,
+    "new_historical_forward_return_values_read": false,
+    "development_or_stress_trial_rerun": false,
+    "candidate49_ledger_changed": false,
+    "provider_request_issued": false,
+    "campaign097_scientific_result_changed": false
+  },
+  "attempt_accounting": {
+    "research_attempt_count_increment": 1,
+    "development_trial_count_increment": 0,
+    "must_be_appended_to_next_effective_campaign097_ledger": true
+  }
+}

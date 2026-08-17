@@ -1,0 +1,54 @@
+{
+  "schema_version": 1,
+  "kind": "a_share_three_day_walkforward_campaign099_no_return_audit_result_binding",
+  "status": "one_factor_admissible_for_exactly_one_preregistered_historical_development_trial",
+  "recorded_at": "2026-08-07T10:51:12Z",
+  "audit_result": {
+    "path": "data/experiments/short_horizon/historical_walkforward/campaign_099/no_return/20260807T105112Z_campaign099_no_return_audit.json",
+    "sha256": "6df7bfca75a59d00b34a431e2fe5c57d9872587a43b270fa23c5f17ba6411f72"
+  },
+  "effective_audit_runner": {
+    "path": "scripts/a_share_three_day_walkforward_campaign099_no_return_audit.py",
+    "sha256": "44d76f54aa8fb474344ba9d24f0d4a20570f466442d542202300caa9237c4ddb"
+  },
+  "effective_activation_binding": {
+    "path": "docs/a_share_three_day_walkforward_campaign_099_no_return_audit_activation_binding_v3_20260807.json",
+    "sha256": "883f74fd3fb0f167f7107c862913ad44f7ad914f9f64f814bf611880d2eee768"
+  },
+  "candidate": {
+    "name": "intraday_market_close_location_profile_synchronization_240m",
+    "direction": "higher",
+    "admissible_factor_count": 1
+  },
+  "coverage": {
+    "quality_listing_eligible_rows": 1331759,
+    "candidate_eligible_rows": 1328449,
+    "median": 0.9985369414262841,
+    "p05": 0.9935483870967742,
+    "p05_eligible_names": 138.0,
+    "non_overlapping_three_session_cohorts": 539,
+    "observed_years": 7,
+    "gate_passed_before_comparator_values": true
+  },
+  "uniqueness": {
+    "comparison_count": 127,
+    "comparison_order_matches_preregistration": true,
+    "all_comparisons_passed": true,
+    "maximum_absolute_median_daily_rank_correlation": 0.7120505014243156,
+    "exclusive_limit": 0.8,
+    "nearest_comparator": "intraday_market_idiosyncratic_share_238m"
+  },
+  "alignment": {
+    "quality_listing_identities": 1331759,
+    "matched_candidate_identities": 1330171,
+    "missing_candidate_identities_retained_as_nan": 1588,
+    "finite_candidate_rows": 1328449
+  },
+  "historical_daily_price_or_forward_return_values_read": false,
+  "training_or_model_fitting_performed": false,
+  "provider_request_issued": false,
+  "candidate49_historical_return_read": false,
+  "candidate49_ledgers_changed": false,
+  "current_scoring_selection_sizing_or_orders_performed": false,
+  "next_action": "freeze and run exactly trial wf099_intraday_market_close_location_profile_synchronization_240m_single_higher with the preregistered folds, purge, label boundary, costs, and gates"
+}

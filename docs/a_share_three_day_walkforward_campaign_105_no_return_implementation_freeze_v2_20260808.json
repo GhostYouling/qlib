@@ -1,0 +1,73 @@
+{
+  "schema_version": 1,
+  "kind": "a_share_three_day_walkforward_campaign105_no_return_implementation_freeze",
+  "status": "frozen_before_campaign105_minute_source_candidate_coverage_or_comparator_values",
+  "recorded_at": "2026-08-07T18:09:04Z",
+  "supersedes_without_rewriting": {
+    "path": "docs/a_share_three_day_walkforward_campaign_105_no_return_implementation_freeze_20260808.json",
+    "sha256": "838a05ba021735285f11c9574431c80432f9d91bdd971bca15e04e279907c902"
+  },
+  "repair_scope": {
+    "root_cause": "Direct file execution did not put the repository root on sys.path before importing the scripts package.",
+    "change": "Add the standard __package__ guard and repository-root sys.path insertion to both Campaign105 entry points.",
+    "formula_changed": false,
+    "source_projection_changed": false,
+    "output_schema_changed": false,
+    "coverage_or_uniqueness_gate_changed": false,
+    "comparison_order_changed": false,
+    "candidate_source_or_comparator_values_read_before_repair": false
+  },
+  "protocol": {
+    "path": "docs/a_share_three_day_walkforward_campaign_105_no_return_preregistration.json",
+    "sha256": "73d7c65b2e531ec613d4baed38bab0b4b507294c2a889db318fc9eec9bb5f126"
+  },
+  "feature_builder": {
+    "path": "scripts/a_share_three_day_walkforward_campaign105_features.py",
+    "sha256": "cf151f6f8af55bc219f9ed06512eb138d833352316a958b4a9b1dac05079e4ba"
+  },
+  "ordered_audit_runner": {
+    "path": "scripts/a_share_three_day_walkforward_campaign105_no_return_audit.py",
+    "sha256": "8adbd44b0bcf1054fc21dd75d0ee07c000928f7602b625cacfee748b02405a01"
+  },
+  "synthetic_tests": [
+    {
+      "path": "tests/data_collector_tests/test_a_share_three_day_walkforward_campaign105_features.py",
+      "sha256": "7f26499267f613003fafb052abd86d0260a7654a2387db96d87732b3adee3737"
+    },
+    {
+      "path": "tests/data_collector_tests/test_a_share_three_day_walkforward_campaign105_no_return_audit.py",
+      "sha256": "d4a9e71d01283e11e1915a6bdd3a051c66c206aa82324099ced194c8667eedc4"
+    }
+  ],
+  "verification_before_v2_freeze": {
+    "black": "2 implementation files left unchanged",
+    "ruff": "all checks passed",
+    "py_compile": "both entry points compiled",
+    "synthetic_tests": "12 passed, 2 live-freeze checks intentionally deselected"
+  },
+  "numeric_comparator_count": 131,
+  "numeric_comparator_order_sha256": "ab56a1791ae9a74b75d0a32cfb2346aa4bb6bfe266589be65825f8f51422f646",
+  "complete_definition_count": 134,
+  "complete_definition_order_sha256": "db734b25fed4046ff80a276448daf20918d410125ebae941373c5617816cf8dc",
+  "preserved_v1_contract": {
+    "candidate": "intraday_active_trading_bar_share_240m",
+    "direction": "higher",
+    "source_projection": ["datetime", "symbol", "provider", "volume", "amount"],
+    "source_rows_required_per_stock_day": 241,
+    "selected_rows": 240,
+    "joint_zero": "valid inactive bar",
+    "one_sided_zero": "whole stock-day missing",
+    "formula": "active_count/240",
+    "coverage_before_all_131_comparators": true
+  },
+  "research_boundary": {
+    "candidate_source_rows_read_before_freeze": false,
+    "candidate_or_comparator_values_read_before_freeze": false,
+    "historical_daily_price_or_forward_return_values_read_before_freeze": false,
+    "provider_request_issued_before_freeze": false,
+    "candidate49_historical_backfill_performed": false,
+    "candidate49_ledgers_changed": false,
+    "current_scoring_selection_sizing_or_orders_performed": false
+  },
+  "next_action": "Run the live v2 freeze suite and direct status entry points, then build exactly one immutable Campaign105 no-return snapshot."
+}

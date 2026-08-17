@@ -1,0 +1,35 @@
+{
+  "schema_version": 1,
+  "kind": "a_share_three_day_walkforward_campaign097_preregistration_binding_failure",
+  "status": "recorded_before_campaign097_source_benchmark_candidate_or_comparison_values",
+  "recorded_at": "2026-08-07T05:12:00Z",
+  "failed_protocol_path": "docs/a_share_three_day_walkforward_campaign_097_no_return_preregistration.json",
+  "failed_protocol_sha256": "99c4a5cb583b0e19615da445b8d9c8b678d96a3f0c0c8de1a1d7de66ca7a1be3",
+  "validator": {
+    "path": "scripts/a_share_three_day_preregistration_binding_validator.py",
+    "sha256": "a6ab81a645fb25be2594937356e873c62737167dc88569d9b4b46bba6b7dcc4f",
+    "exit_code": 2,
+    "binding_count": 17,
+    "failed_binding_count": 1
+  },
+  "failure": {
+    "json_pointer": "/source_chain/binding_validator_activation",
+    "path": "docs/a_share_three_day_preregistration_binding_validator_activation_20260729.json",
+    "mistyped_expected_sha256": "ca07f930cb6e617e9f917b2a02a2ea4f",
+    "observed_sha256": "ca07f930cb6e617e9f917b2afba3ebd43a0e12e86eddda7ad05006205be50913",
+    "root_cause": "manual transcription truncated the middle of the frozen activation-record SHA-256"
+  },
+  "authorized_additive_repair": "Publish an effective v2 preregistration that changes only this SHA-256 binding, adds this failure record to its source chain, and preserves the exact candidate formula, direction, source projection, support predicate, gates, comparator order, folds, costs, and prohibitions.",
+  "research_boundary": {
+    "minute_source_rows_read": false,
+    "market_benchmark_values_computed": false,
+    "candidate_values_computed": false,
+    "comparison_values_read": false,
+    "daily_price_fields_read": [],
+    "forward_returns_read": false,
+    "provider_request_issued": false,
+    "candidate49_ledgers_changed": false
+  },
+  "research_attempt_count_increment": 1,
+  "attempt_class": "infrastructure_prevalue_binding_failure"
+}

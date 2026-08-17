@@ -1,0 +1,76 @@
+{
+  "schema_version": 1,
+  "version": 4,
+  "kind": "a_share_three_day_walkforward_campaign083_development_binary_runtime_repair_protocol",
+  "status": "frozen_after_two_preload_failures_before_conda_compatible_full_retry",
+  "frozen_at": "2026-08-06T13:01:00Z",
+  "binary_runtime_failure_record": {
+    "path": "docs/a_share_three_day_walkforward_campaign_083_development_binary_runtime_failures_v4_20260806.json",
+    "sha256": "7e0b0ac27fcb2321e99766a61442f3fd36248d51bce591656f72a164cfab709a"
+  },
+  "previous_development_implementation_freeze": {
+    "path": "docs/a_share_three_day_walkforward_campaign_083_development_implementation_freeze_v3_20260806.json",
+    "sha256": "f308232e1d8c5bb88d0c60738bfd273eee2c1a2d62a903c091496762b1e7cfe3"
+  },
+  "research_attempt_ledger_after_failures": {
+    "path": "data/experiments/short_horizon/historical_walkforward/campaign_083/research_attempt_ledger_v10.json",
+    "sha256": "c51a1bf0378c713f516cd2f3a8dae55fbfb0aab14409ad38730b324cb38d95a5"
+  },
+  "preserved_base_trial_ledger": {
+    "path": "data/experiments/short_horizon/historical_walkforward/campaign_083/walkforward/trial_ledger.json",
+    "sha256": "a8db9dcecf49fe6ea93636324904993370165db224351bddb494e62a42332ae6",
+    "entry_count": 2,
+    "complete_development_trial_count": 0
+  },
+  "unchanged_preregistration": {
+    "path": "docs/a_share_three_day_walkforward_campaign_083_preregistration.json",
+    "sha256": "13da1fb31d3849bb792b140847018fe44b8760e8c8d02ae1ba6e082ff467f087"
+  },
+  "unchanged_runner": {
+    "path": "scripts/a_share_three_day_walkforward_campaign083.py",
+    "sha256": "0a527a67fb4674eefec816f13442f07fa740f90c08a91a33d97db79fd5727640"
+  },
+  "authorized_compatible_interpreter": {
+    "path": "/Volumes/DIsk/Coding/anaconda3/bin/python3.12",
+    "sha256": "b21ee43bcb627125a1b54b1fceb97bad564afbab38235cb9d72cf1f278d5751c",
+    "libcxx_path": "/Volumes/DIsk/Coding/anaconda3/lib/libc++.1.0.dylib",
+    "libcxx_sha256": "1b9318492353b7b7b3b48b9fa458d2b07b356a5eb8c0931952247fc17bf95c21",
+    "qlib_data_import_required": true,
+    "qlib_version": "0.9.8.dev30",
+    "numpy": "1.26.4",
+    "pandas": "2.2.2",
+    "pyarrow": "16.1.0",
+    "scipy": "1.13.1",
+    "pytest": "9.0.3",
+    "dynamic_library_environment_override_allowed": false,
+    "global_pip_check_claimed_clean": false,
+    "known_unrelated_global_conflicts_must_remain_disclosed": true
+  },
+  "sole_repair": {
+    "operation": "Run the unchanged module command under the exact hash-bound Conda Python that natively loads the existing NumPy-1.x Qlib extension; do not set DYLD_LIBRARY_PATH or DYLD_FALLBACK_LIBRARY_PATH.",
+    "partial_market_data_or_statistics_reused": false,
+    "two_existing_infrastructure_failure_entries_preserved": true,
+    "expected_complete_development_trial_count_before_retry": 0,
+    "campaign_preregistration_runner_feature_trial_folds_costs_or_survivor_gates_changed": false,
+    "historical_daily_price_or_return_fields_changed": false,
+    "stress_2024_2025_rule_changed": false,
+    "provider_or_candidate49_workflow_changed": false
+  },
+  "retry": {
+    "maximum_authorized_conda_compatible_full_retries": 1,
+    "restart_from_market_context_load": true,
+    "append_complete_trial_after_two_existing_failure_entries": true,
+    "stress_may_open_only_after_nonzero_development_survivor_record": true
+  },
+  "research_boundary": {
+    "complete_development_trial_count": 0,
+    "market_execution_data_loaded_before_protocol": false,
+    "historical_daily_price_fields_read": [],
+    "historical_forward_returns_read": false,
+    "stress_2024_2025_opened": false,
+    "provider_request_issued": false,
+    "candidate49_historical_backfill_performed": false,
+    "candidate49_ledgers_changed": false,
+    "current_scoring_selection_sizing_or_orders_performed": false
+  }
+}

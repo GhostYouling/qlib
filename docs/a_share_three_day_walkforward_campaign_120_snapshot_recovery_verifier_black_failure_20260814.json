@@ -1,0 +1,20 @@
+{
+  "schema_version": 1,
+  "kind": "a_share_three_day_walkforward_campaign120_snapshot_recovery_verifier_black_failure",
+  "status": "recorded_before_candidate_partition_values_are_reopened",
+  "recorded_at": "2026-08-14T00:43:47+08:00",
+  "attempt_id": "campaign120_infrastructure_010",
+  "failed_stage": "read_only_recovery_verifier_static_format_validation",
+  "failure": "Black --check required mechanical formatting in the unfrozen recovery verifier and stopped before Ruff and the four metadata tests.",
+  "repair": "Format only the unfrozen recovery verifier, then rerun Black, Ruff and the same four metadata tests before freezing or opening any candidate partition.",
+  "scientific_formula_direction_parser_support_range_or_gate_changed": false,
+  "research_boundary": {
+    "candidate_manifest_metadata_read": true,
+    "candidate_partition_values_reopened": false,
+    "coverage_or_capacity_metrics_computed": false,
+    "comparator_values_read": false,
+    "historical_daily_price_or_forward_return_values_read": false,
+    "provider_request_issued": false,
+    "candidate49_ledgers_changed": false
+  }
+}

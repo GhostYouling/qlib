@@ -1,0 +1,33 @@
+{
+  "schema_version": 1,
+  "kind": "a_share_three_day_walkforward_campaign094_no_return_audit",
+  "status": "completed_with_one_admissible_factor_pending_walkforward_preregistration",
+  "recorded_at": "2026-08-07T03:06:17Z",
+  "canonical_development_admission_wrapper": true,
+  "authoritative_audit": {
+    "path": "data/experiments/short_horizon/historical_walkforward/campaign_094/no_return/20260807T030442Z_campaign094_no_return_audit.json",
+    "sha256": "fe4599fc99d11286727ea23c9b44f1b2bd8d59b7c96f074e7552ade72f79590c"
+  },
+  "admissible_factor_names": [
+    "intraday_range_local_peak_clock_dispersion_236p"
+  ],
+  "admissible_factor_count": 1,
+  "failed_factor_names": [],
+  "coverage_gate_passed": true,
+  "median_coverage": 0.9895697503116383,
+  "p05_coverage": 0.976257604346907,
+  "p05_eligible_names": 137,
+  "potential_nonoverlapping_three_session_cohorts": 539,
+  "comparison_factor_count": 123,
+  "comparison_order_matches_preregistration": true,
+  "all_required_numeric_comparisons_passed": true,
+  "maximum_observed_absolute_median_daily_rank_correlation": 0.07743984328512803,
+  "closest_numeric_comparator": "intraday_price_update_clock_entropy_10b_238m",
+  "closest_numeric_comparator_median_daily_rank_correlation": 0.07743984328512803,
+  "historical_daily_price_fields_read": [],
+  "historical_forward_return_fields_read": false,
+  "candidate49_historical_return_read": false,
+  "candidate49_prospective_ledgers_changed": false,
+  "provider_request_issued": false,
+  "current_scoring_selection_sizing_or_orders_performed": false
+}

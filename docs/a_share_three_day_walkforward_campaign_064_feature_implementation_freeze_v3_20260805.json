@@ -1,0 +1,126 @@
+{
+  "version": 1,
+  "kind": "a_share_three_day_walkforward_campaign064_feature_implementation_freeze",
+  "status": "frozen_before_campaign064_source_values",
+  "repair_status": "metadata_template_and_exact_checkpoint_identity_lineage_repairs_frozen_after_unpublished_checkpoint_generation_before_snapshot_publication",
+  "recorded_at": "2026-08-05T08:07:00+08:00",
+  "purpose": "Bind the unchanged original pre-value factor implementation, truthful aggregate-manifest template, and exact two-pair checkpoint lineage validator before the next atomic publication retry.",
+  "feature_runner": {
+    "path": "/Volumes/DIsk/Disk-Coding/qlib/scripts/a_share_three_day_walkforward_campaign064_features.py",
+    "sha256": "8087660639444aec35ea256446257de3a242cca9e0a9f7875107e4cf5196e486"
+  },
+  "feature_tests": {
+    "path": "tests/data_collector_tests/test_a_share_three_day_walkforward_campaign064_features.py",
+    "sha256": "7538f0078a014d4a1d3377d1c1e0dea69208501fee541267d0468fc3a08e269c",
+    "focused_tests_passed": 10,
+    "focused_tests_failed": 0
+  },
+  "no_return_protocol": {
+    "path": "docs/a_share_three_day_walkforward_campaign_064_no_return_preregistration.json",
+    "sha256": "441cbeef589593c2ef0ae3e58325f5ab0acb506cc54eaa040c79f26c8ca6a887",
+    "binding_count": 16,
+    "bindings_passed": 16
+  },
+  "original_pre_value_implementation_freeze": {
+    "path": "docs/a_share_three_day_walkforward_campaign_064_feature_implementation_freeze_20260805.json",
+    "sha256": "05b65cb001dfeec100c3ed3bcb105c9d59d26d0c4cdae8415d75ce589f5593b8"
+  },
+  "v2_metadata_repair_implementation_freeze": {
+    "path": "docs/a_share_three_day_walkforward_campaign_064_feature_implementation_freeze_v2_20260805.json",
+    "sha256": "75b04a65396b01803884b659f1ae639f089002b1941575170e8d585d18cf249b"
+  },
+  "manifest_metadata_repair_authorization": {
+    "path": "docs/a_share_three_day_walkforward_campaign_064_manifest_metadata_repair_20260805.json",
+    "sha256": "73bb93c63eb52daeaabdc9dafec84cada009a67e0da68ec95799d069ba96fdce"
+  },
+  "checkpoint_identity_lineage_repair_authorization": {
+    "path": "docs/a_share_three_day_walkforward_campaign_064_checkpoint_identity_lineage_repair_20260805.json",
+    "sha256": "809eb07249aeddafd75c38b5efa80994ba19a2f723270eff6c12214327e5655f"
+  },
+  "research_attempt_ledger": {
+    "path": "data/experiments/short_horizon/historical_walkforward/campaign_064/research_attempt_ledger_v6.json",
+    "sha256": "dbe1bdda3608d6c50c6aa2a2eeada474ee25ec2a0b134c92b49a24a748f9829d",
+    "attempt_count": 7,
+    "complete_factor_attempt_count": 0,
+    "return_reading_trial_count": 0
+  },
+  "mechanism_overlap_audit": {
+    "path": "docs/a_share_three_day_walkforward_campaign_064_mechanism_overlap_audit.json",
+    "sha256": "422dd1a23708c069ff55b14105032e5fbf1ac2ed77cbd6d2439be896ef11cbae"
+  },
+  "base_partition_engine": {
+    "path": "scripts/a_share_three_day_walkforward_campaign057_features.py",
+    "sha256": "3706ac11c551dd02c8d6d8cf30c95a6f076d6a6e6c5dbba4beb07dde10aca66a"
+  },
+  "frozen_implementation": {
+    "factor": "intraday_range_weak_order_entropy_236t",
+    "direction": "higher",
+    "candidate_count": 1,
+    "development_trial_count_if_admitted": 1,
+    "comparison_factor_count": 95,
+    "source_projection": [
+      "datetime",
+      "symbol",
+      "provider",
+      "high",
+      "low"
+    ],
+    "forbidden_source_fields": [
+      "open",
+      "close",
+      "volume",
+      "amount"
+    ],
+    "selected_bars": 240,
+    "range_transform": "ln(high/low)",
+    "within_half_overlapping_triples": 236,
+    "weak_order_state_count": 13,
+    "comparison_tolerance": 0.0,
+    "exact_ties_retained": true,
+    "entropy": "natural_log_Shannon_divided_by_ln13",
+    "valid_range": "[0,1]",
+    "no_lunch_cross_session_or_prior_session_input": true,
+    "no_fill_jitter_tolerance_drop_clip_winsorize_threshold_filter_fit_or_combination": true
+  },
+  "frozen_repairs": {
+    "truthful_manifest_fields": {
+      "source_open_high_low_close_volume_read": true,
+      "source_high_low_read": true,
+      "source_close_read": false,
+      "source_amount_read": false,
+      "cross_session_lookback": 0
+    },
+    "accepted_old_checkpoint_pair": {
+      "feature_runner_sha256": "774f47073de3520a1b7fd818e5b8e16ac145f406c86d999368d35ec90b8aa21d",
+      "implementation_freeze_sha256": "05b65cb001dfeec100c3ed3bcb105c9d59d26d0c4cdae8415d75ce589f5593b8"
+    },
+    "current_exact_pair_also_accepted": true,
+    "mixed_or_other_identity_pair_accepted": false,
+    "kind_symbol_year_protocol_byte_frame_and_row_checks_retained": true,
+    "checkpoint_metadata_rewrite_allowed": false,
+    "partition_byte_frame_or_value_change_allowed": false
+  },
+  "source_partition_values_read_before_freeze": false,
+  "candidate_values_read_before_freeze": false,
+  "comparison_values_read_before_freeze": false,
+  "historical_daily_price_fields_read_before_freeze": [],
+  "historical_forward_return_fields_read_before_freeze": false,
+  "provider_request_issued_before_freeze": false,
+  "original_factor_freeze_preceded_all_source_or_candidate_values": true,
+  "repair_freezes_followed_unpublished_checkpoint_generation": true,
+  "snapshot_published_before_v3_freeze": false,
+  "comparison_values_read_before_v3_freeze": false,
+  "historical_daily_price_fields_read_before_v3_freeze": [],
+  "historical_forward_return_fields_read_before_v3_freeze": false,
+  "provider_request_issued_before_v3_freeze": false,
+  "candidate49_historical_return_signal_execution_or_milestone_backfill_performed": false,
+  "candidate49_ledgers_changed": false,
+  "second_prospective_candidate_created": false,
+  "current_scoring_selection_sizing_or_orders_performed": false,
+  "decision": {
+    "snapshot_retry_allowed_after_binding_validation_exit_zero": true,
+    "formula_direction_grid_tuple_alphabet_tie_entropy_missing_rule_source_projection_or_partition_change_allowed": false,
+    "candidate49_remains_only_active_prospective_candidate": true,
+    "candidate50_activation_allowed": false
+  }
+}

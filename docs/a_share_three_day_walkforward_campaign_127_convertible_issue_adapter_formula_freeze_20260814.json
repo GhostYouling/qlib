@@ -1,0 +1,116 @@
+{
+  "schema_version": 1,
+  "kind": "a_share_three_day_walkforward_campaign127_convertible_issue_adapter_and_formula_freeze",
+  "status": "frozen_after_synthetic_tests_before_provider_request_source_candidate_comparator_price_or_return_values",
+  "recorded_at": "2026-08-14T04:54:41+0800",
+  "authoritative_inputs": {
+    "source_contract": {
+      "path": "docs/a_share_three_day_walkforward_campaign_127_convertible_issue_source_contract_20260814.json",
+      "sha256": "66e8ed362c0f5d9efb67de659ab39e83899b0fc8f0e92a0eb5e3399cd8c064a5"
+    },
+    "numeric_policy_v131": {
+      "path": "docs/a_share_three_day_walkforward_future_numeric_comparison_eligibility_policy_v131_20260814.json",
+      "sha256": "5d27732656ceeb7053c289548211cb6941c4c0effa7ca805b269ecc45c19bf49"
+    },
+    "historical_walkforward_policy": {
+      "path": "docs/a_share_three_day_historical_walkforward_research_policy_20260727.json",
+      "sha256": "38426d6161b9bfed323c58caba18feca668b8c9d53e294951a8ba90c01a798bb"
+    }
+  },
+  "pure_adapter_freeze": {
+    "implementation": {
+      "path": "scripts/a_share_three_day_walkforward_campaign127_convertible_issue.py",
+      "sha256": "1edcd09dcb9b6ede6a574f8a55218b2cba993b992a94eabce1ab90d207d27c2b"
+    },
+    "synthetic_tests": {
+      "path": "tests/data_collector_tests/test_a_share_three_day_walkforward_campaign127_convertible_issue.py",
+      "sha256": "58d25ac17b386e499e794e7dd6b44faed062af284633879f71abcb849dc23bb9"
+    },
+    "source_contract_sha256_embedded_in_adapter": true,
+    "transport_or_cli_implementation_present": false,
+    "credential_or_environment_access_present": false,
+    "source_projection": {
+      "cb_basic": [
+        "ts_code",
+        "stk_code",
+        "cb_type"
+      ],
+      "cb_issue": [
+        "ts_code",
+        "ann_date",
+        "res_ann_date",
+        "onl_pch_excess"
+      ]
+    },
+    "forbidden_provider_fields_mechanically_rejected": true,
+    "strict_date_formats": {
+      "provider_dates": "YYYYMMDD",
+      "accepted_sessions": "YYYY-MM-DD"
+    },
+    "canonicalization": {
+      "bond_mapping_role": "referential_only",
+      "non_cb_or_unsupported_stock_policy": "exclude_and_count_after_complete_validation",
+      "missing_bond_mapping_policy": "fatal",
+      "exact_repeat_policy": "collapse_and_count",
+      "conflicting_relation_or_issue_policy": "fatal",
+      "same_stock_same_latest_result_date_multi_bond_policy": "fatal",
+      "rounding_tolerance_field_substitution_or_text_mapping": false
+    }
+  },
+  "single_factor_definition": {
+    "name": "convertible_issue_online_demand_180d",
+    "formula": "For the unique latest supported result-announced event with 1 through 180 calendar days of age, return log1p(onl_pch_excess); otherwise return missing.",
+    "score_direction": "higher",
+    "raw_range": {
+      "minimum_exclusive": 0.0,
+      "maximum_exclusive": "positive_infinity"
+    },
+    "same_day_result_use": false,
+    "event_age_rank_weight_or_tiebreaker": false,
+    "missing_rule": "No accepted event in support is missing, never zero, control, imputation or clipped value.",
+    "complete_definition_appended_now": true,
+    "numeric_comparator_appended_now": false,
+    "historical_candidate_values_materialized": false,
+    "prospective_candidate_registered": false
+  },
+  "complete_library_semantic_review": {
+    "prior_complete_definition_count_reviewed_without_values": 149,
+    "prior_complete_definition_order_sha256": "be9c6085af2202e8fa5b4c6d89608b712b27740b16b5e78d7d88ca0c4d9bc5e3",
+    "complete_definition_count_after_append": 150,
+    "complete_definition_order_sha256_after_append": "c3713559f968c7f79b070398742ef625733e9c178d4e0c0010805fa12c5d5142",
+    "order_digest_rule": "SHA-256 of compact sorted-key JSON encoding of the ordered [name, score_direction] pairs, preserving Unicode code points.",
+    "eligible_numeric_comparator_count_reserved_without_values": 139,
+    "eligible_numeric_comparator_order_sha256": "9c4de054ca1b83eced67eece256b024ebec3a6e1925de17a4cedfa7d36265161",
+    "mechanism_overlap_audit": {
+      "path": "docs/a_share_three_day_walkforward_campaign_127_mechanism_overlap_audit_20260814.json",
+      "sha256": "9cfc9580f8b0bb60353a708f09db71522bdd2070c752637e63b24ac449dc178e"
+    },
+    "old_terminal_definition_or_result_rewritten": false,
+    "old_terminal_factor_combined": false
+  },
+  "verification": {
+    "black_check": "passed; 2 files left unchanged after formatting",
+    "ruff_check": "passed",
+    "synthetic_pytest": "17 passed in 0.07s",
+    "provider_rows_used_by_tests": false,
+    "historical_factor_or_return_values_used_by_tests": false
+  },
+  "next_gate": {
+    "allowed": "Freeze a one-shot entitlement-safe source acceptance planner bound to the exact two projections, adapter, tests, contract, calendar, universe and failure semantics.",
+    "not_allowed": "Do not issue a provider request until that workflow and its tests are frozen and a later policy explicitly authorizes one attempt. Do not inspect or count provider rows, compute historical candidate/comparator values, read prices/returns, open 2024-2025 candidate or return values, or register a second prospective candidate."
+  },
+  "research_boundary": {
+    "programmatic_provider_request_issued": false,
+    "provider_credential_loaded": false,
+    "provider_rows_read_persisted_or_counted": false,
+    "candidate_or_comparison_values_read": false,
+    "historical_daily_price_fields_read": [],
+    "historical_forward_returns_read": false,
+    "stress_2024_2025_opened": false,
+    "candidate49_historical_backfill_performed": false,
+    "candidate49_ledgers_changed": false,
+    "second_prospective_candidate_created": false,
+    "current_scoring_selection_sizing_positions_or_orders_performed": false,
+    "investment_advice": false
+  }
+}

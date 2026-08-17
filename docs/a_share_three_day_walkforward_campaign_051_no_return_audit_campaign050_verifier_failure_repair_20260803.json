@@ -1,0 +1,96 @@
+{
+  "version": 1,
+  "kind": "a_share_three_day_walkforward_campaign051_no_return_audit_campaign050_verifier_failure_repair",
+  "status": "infrastructure_only_isolated_campaign050_verifier_repair_authorizes_exact_audit_continuation",
+  "recorded_at": "2026-08-03T04:36:48Z",
+  "purpose": "Preserve the explicit Campaign051 no-return-audit failure at the final Campaign050 comparison snapshot and authorize only an isolated exact-column Campaign050 file verifier before one continuation of the unchanged ordered audit.",
+  "frozen_inputs": {
+    "no_return_preregistration_v2": {
+      "path": "docs/a_share_three_day_walkforward_campaign_051_no_return_preregistration_v2.json",
+      "sha256": "16636bb5196a362ca55b21696d88bc78b92d7ce10fbf70d252575f47b31c9e40"
+    },
+    "snapshot_publication_binding": {
+      "path": "docs/a_share_three_day_walkforward_campaign_051_snapshot_publication_binding_20260801.json",
+      "sha256": "f24916ca77a05ba7c988777b5d85656afae004d0034f1c44c060ad4bfbf81526"
+    },
+    "failed_audit_entrypoint": {
+      "path": "scripts/a_share_three_day_walkforward_campaign051_features_v3.py",
+      "sha256": "178479da821a780773550d66f97193403dc4238601fb034d7cab24e02f24c0a9"
+    },
+    "campaign050_snapshot": {
+      "path": "/Volumes/DIsk/qlib-a-share-tushare-1m/derived/a_share/rich/tushare/minute_walkforward_campaign050_feature_library/tushare_stk_mins_1m_2019_2025_ea0cbb8f_walkforward_campaign050_feature_library_v1/snapshot_manifest.json",
+      "sha256": "8e95728fd9e1ba3d3ab820dbf5d92812bd18f9076ee901ee80cd76cf989300ef",
+      "dataset_sha256": "d758c059ff6fb602106c240c369d5d3db60eb245ec7cccf23d5a32b9f69dec8a",
+      "factor": "intraday_half_session_extreme_shock_reversal_completion_2h"
+    },
+    "campaign050_frozen_entrypoint": {
+      "path": "scripts/a_share_three_day_walkforward_campaign050_features_v8.py",
+      "sha256": "79bba06d0d621d2a415271b8096548706ecd871cc380f233c8ea2f3f1596a5d9"
+    }
+  },
+  "failed_invocation": {
+    "command": "python scripts/a_share_three_day_walkforward_campaign051_features_v3.py no-return-audit --data-root /Volumes/DIsk/qlib-a-share-tushare-1m --workers 4",
+    "persistent_session_name": "c51audit_root_20260803",
+    "runtime_log": {
+      "path": "data/logs/campaign051_no_return_audit_screen_root_20260803.log",
+      "sha256": "b29496e4c914e9bf60060979d725b67a7232d7b4bdbc8e80223c1319ebe1f93e",
+      "bytes": 4216
+    },
+    "exit_was_nonzero": true,
+    "result_artifact_written": false,
+    "failure_stage": "verify the final frozen Campaign050 comparison snapshot before loading comparison 74 of 74",
+    "failure_type": "pyarrow.lib.ArrowInvalid caused by inherited module-global OUTPUT_COLUMNS contamination",
+    "observed_requested_column": "intraday_close_range_occupancy_entropy_10b",
+    "actual_frozen_campaign050_column": "intraday_half_session_extreme_shock_reversal_completion_2h",
+    "failure_is_snapshot_corruption": false,
+    "failure_is_factor_or_gate_evidence": false,
+    "candidate_snapshot_partitions_verified": 33015,
+    "candidate_snapshot_rows_verified": 7724498,
+    "coverage_gate_passed_inferred_from_reached_code_path": true,
+    "comparison_results_computed_before_failure_count": 73,
+    "comparison_74_value_loaded": false,
+    "comparison_metric_values_printed_or_persisted": false,
+    "completed_audit_record_count_after_failure": 0
+  },
+  "root_cause": {
+    "description": "Campaign051 intentionally reuses the Campaign050 generated engine. Campaign051 installs its own OUTPUT_COLUMNS into that shared engine. The final extra-verification loop then called the inherited Campaign050 verifier through the contaminated engine, so it requested the Campaign051 factor column from a valid Campaign050 Parquet file.",
+    "data_dependent_research_choice_involved": false,
+    "snapshot_or_protocol_change_required": false
+  },
+  "authorized_repair": {
+    "description": "Replace only the final Campaign050 snapshot-verifier callable with an isolated verifier bound to the exact Campaign050 five-column schema, manifest, dataset, partition byte hashes, frame hashes, partition count, and row count. Keep the Campaign051 candidate, all 74 comparison values, formulas, directions, ordering, thresholds, source manifests, and result construction unchanged.",
+    "implementation_form": "additive wrapper; do not modify any frozen runner or prior wrapper",
+    "formula_changed": false,
+    "direction_changed": false,
+    "coverage_or_capacity_gate_changed": false,
+    "comparison_catalog_or_order_changed": false,
+    "uniqueness_threshold_changed": false,
+    "candidate_or_comparison_snapshot_changed": false,
+    "comparison_values_observed_for_repair_choice": false,
+    "same_command_parameters_required": true,
+    "exact_continuation_limit": 1,
+    "failed_infrastructure_invocation_is_not_a_completed_audit": true
+  },
+  "post_repair_requirements": {
+    "repair_wrapper_path": "scripts/a_share_three_day_walkforward_campaign051_features_v4.py",
+    "focused_test_path": "tests/data_collector_tests/test_a_share_three_day_walkforward_campaign051_no_return_audit_repair.py",
+    "must_verify_all_campaign050_partitions_and_rows_before_continuation": true,
+    "must_be_fingerprint_bound_by_a_separate_implementation_freeze": true,
+    "final_bound_entrypoint_must_be_additive": true
+  },
+  "research_boundary": {
+    "comparison_values_read": true,
+    "comparison_metric_values_retained": false,
+    "historical_daily_price_fields_read": [],
+    "historical_forward_return_fields_read": false,
+    "training_or_model_fitting_performed": false,
+    "provider_request_issued": false,
+    "candidate49_historical_return_read": false,
+    "candidate49_signal_ledger_sha256": "5193f00d7f36da003f53cec387900da4c3d002299f5dfcfc1a95eaa199ed3a79",
+    "candidate49_execution_ledger_sha256": "d57a3e61eac969e42cafa418ccd8c0a5ee65dcf69da145bb2c096c2a02a2ea4f",
+    "candidate49_ledgers_changed": false,
+    "second_prospective_candidate_created": false,
+    "current_scoring_selection_sizing_or_orders_performed": false
+  },
+  "next_action": "Implement and test the isolated exact-schema Campaign050 verifier, freeze its bytes, and run one persistent exact-parameter continuation of the ordered Campaign051 no-return audit."
+}

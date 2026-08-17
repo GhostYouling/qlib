@@ -1,0 +1,98 @@
+{
+  "schema_version": 1,
+  "kind": "a_share_three_day_iteration_status_campaign228_prevalue_terminal",
+  "recorded_at": "2026-08-16T03:54:00+08:00",
+  "timestamp_semantics": "monotonic_logical_append_time_not_host_wall_clock_measurement",
+  "status": "campaign228_validation_passed_goal_active_campaign229_offline_prevalue_authorized",
+  "supersedes_without_rewriting": {
+    "path": "docs/a_share_three_day_iteration_status_20260816_campaign227_prevalue_terminal.json",
+    "sha256": "8d1ac58885febfc84401eb7a23df3ca1239d58fc008655c69f76976e07d1016f"
+  },
+  "authoritative_inputs": {
+    "industrial_textile_rental_laundry_hygiene_service_lifecycle_source_frontier": {
+      "path": "docs/a_share_three_day_walkforward_campaign_228_industrial_textile_rental_laundry_hygiene_service_lifecycle_source_frontier_20260816.json",
+      "sha256": "2d26643acb9d892afc3fef0e3eb31fafe5a30c71cafef2a1d18b9fa75a3e4493"
+    },
+    "attempt_ledger_v3": {
+      "path": "data/experiments/short_horizon/historical_walkforward/campaign_228/research_attempt_ledger_v3.json",
+      "sha256": "1b3e9b61a419f005767545e0f37eae33b12b1fe2d6f2acd704a67631ab248122"
+    },
+    "terminal_result_v3": {
+      "path": "docs/a_share_three_day_walkforward_campaign_228_terminal_result_v3_20260816.json",
+      "sha256": "dc8f506bde17c9329ca3133a80dc0c036a2d07b56daf7ca763e4412b5c22bec7"
+    },
+    "policy_v347": {
+      "path": "docs/a_share_three_day_walkforward_future_numeric_comparison_eligibility_policy_v347_20260816.json",
+      "sha256": "bbc15c95114767609f6bdc328ff64073ea3bc117f7972769c70fd03aac559ab5"
+    },
+    "terminal_validation": {
+      "path": "docs/a_share_three_day_walkforward_campaign_228_terminal_validation_20260816.json",
+      "sha256": "9a9b1c3f173d3aefae48ec9726649c284068bdd23ec8c520dca05e3002da61d5"
+    }
+  },
+  "campaign228": {
+    "terminal": true,
+    "terminal_stage": "prevalue_source_admission_and_overlap_gate",
+    "finite_route_count": 7,
+    "source_admission_deferral_count": 3,
+    "overlap_or_hypothesis_rejection_count": 4,
+    "selected_factor_count": 0,
+    "definition_or_comparator_append": false,
+    "development_trial_count": 0,
+    "stress_trial_count_2024_2025": 0,
+    "scientific_routes_or_decisions_changed_by_accounting_corrections": false
+  },
+  "effective_accounting": {
+    "campaign228_attempt_count": 11,
+    "campaign228_scientific_attempt_count": 7,
+    "campaign228_infrastructure_failure_count": 4,
+    "cumulative_historical_research_attempt_count": 2145,
+    "cumulative_return_reading_development_trial_count": 314,
+    "chain_tip_sha256": "70ae5844ba4c55384968f78cd5694063f7bfae786e109db05845dea87342ceb8"
+  },
+  "library_state": {
+    "complete_factor_definition_count": 158,
+    "complete_factor_definition_order_sha256": "4819c7fd7c0795d7598a52f3c615e3f117d5f4ecd9332974bc8e3dfa57c96667",
+    "eligible_numeric_comparator_count": 142,
+    "eligible_numeric_comparator_order_sha256": "5d1b35fb5a0d8ac9293008db9963c4a60a94dc940c237c3ed259e5ce44f14aaf",
+    "changed_by_campaign228": false
+  },
+  "candidate49": {
+    "sole_prospective_candidate": true,
+    "signal_ledger_sha256": "5193f00d7f36da003f53cec387900da4c3d002299f5dfcfc1a95eaa199ed3a79",
+    "signal_entry_count": 0,
+    "execution_ledger_sha256": "d57a3e61eac969e42cafa418ccd8c0a5ee65dcf69da145bb2c096c2a02a2ea4f",
+    "execution_entry_count": 0,
+    "ledgers_changed": false
+  },
+  "goal": {
+    "continuous_factor_iteration": "active",
+    "completed_by_campaign228": false,
+    "next_historical_campaign": 229,
+    "offline_iteration_may_continue_without_waiting_for_1630_or_new_daily_data": true
+  },
+  "validation_results": {
+    "focused": "2 passed",
+    "cumulative": "499 passed, 1 skipped, 43 deselected",
+    "independent": "passed",
+    "black": "passed",
+    "ruff": "passed",
+    "unmasked_whitespace": "passed"
+  },
+  "research_boundary": {
+    "historical_offline_prevalue_work_may_continue_at_any_local_time": true,
+    "failed_or_truncated_output_used_as_scientific_or_validation_evidence": false,
+    "frozen_source_frontier_rewritten": false,
+    "source_or_industrial_textile_rental_laundry_hygiene_service_contract_issue_exchange_collection_processing_quality_repair_loss_replacement_retirement_replenishment_billing_lifecycle_factor_comparator_security_price_or_return_value_read": false,
+    "customer_or_natural_person_identity_exact_customer_address_facility_topology_wearer_identity_rfid_barcode_identity_garment_assignment_health_disease_indicator_access_credential_route_security_log_confidential_price_contract_term_process_recipe_or_trade_secret_artifact_read": false,
+    "stress_2024_2025_opened": false,
+    "provider_or_web_request_issued": false,
+    "provider_credential_presence_value_or_digest_read": false,
+    "candidate49_plan_or_run_executed": false,
+    "candidate49_ledgers_changed": false,
+    "second_prospective_candidate_created": false,
+    "current_scoring_selection_sizing_positions_or_orders_performed": false,
+    "investment_advice": false
+  },
+  "next_action": "Begin Campaign229 finite offline prevalue research in a genuinely different mechanism domain; keep Candidate49 as the sole prospective confirmation layer and keep 2024-2025 closed."
+}

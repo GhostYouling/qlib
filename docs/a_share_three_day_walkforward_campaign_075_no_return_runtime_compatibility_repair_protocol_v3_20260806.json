@@ -1,0 +1,122 @@
+{
+  "version": 3,
+  "kind": "a_share_three_day_walkforward_campaign075_no_return_runtime_compatibility_repair_protocol",
+  "status": "frozen_after_bounded_campaign068_to_campaign074_compatibility_scout_before_full_retry",
+  "recorded_at": "2026-08-06T09:48:00+08:00",
+  "supersedes_without_rewriting": {
+    "path": "docs/a_share_three_day_walkforward_campaign_075_no_return_runtime_compatibility_repair_protocol_v2_20260806.json",
+    "sha256": "f23b997e6cccfc8a45b84afba82a9e5ce75c0242e34808c24206fd434ed50286",
+    "reason": "The v2 full retry proved the same runtime-sensitive frame replay failure also affects Campaign069; a bounded first-partition scout then established the complete finite affected set Campaign068-Campaign074."
+  },
+  "failure_records": [
+    {
+      "path": "docs/a_share_three_day_walkforward_campaign_075_no_return_campaign068_frame_replay_failure_20260806.json",
+      "sha256": "8faab72c855df13c9472bf173936b6f03e910607335dc54b161ecde4f7ccec04"
+    },
+    {
+      "path": "docs/a_share_three_day_walkforward_campaign_075_no_return_campaign069_frame_replay_failure_20260806.json",
+      "sha256": "43a738dc732b0b3625047aa1a3a2b642a87938b21d4fb2aa0a6b36d3dc2105c6"
+    }
+  ],
+  "runtime": {
+    "pandas": "2.2.3",
+    "pyarrow": "25.0.0"
+  },
+  "finite_compatibility_snapshot_list": [
+    {
+      "campaign": 68,
+      "factor": "quarterly_profit_revenue_acceleration_rank_gap_2r",
+      "manifest_sha256": "9878e6c0249cb9e965dbfade2ce2b3a355bed5e6a46bf68667c82fc568672004",
+      "dataset_sha256": "bcd03a5e2122b64b072985b3a9a9ada880cad337dae4766a00cf52bf51f4f449",
+      "eligible_rows": 6317276,
+      "feature_runner_path": "scripts/a_share_three_day_walkforward_campaign068_features_v2.py",
+      "feature_runner_sha256": "c4facbb4c76f99de64f5322ed106736c10f95acd2177cbfc294b82c2710f477d"
+    },
+    {
+      "campaign": 69,
+      "factor": "quarterly_profit_growth_roe_transition_gap_2r",
+      "manifest_sha256": "6023becea579d0f6ed6ac27316421294f13fd6759d6d51790a31940526e363b7",
+      "dataset_sha256": "7c4b2e446bf4ebb64b4d3e992510610b1f0059fde868dff0bf02a06b7ce75960",
+      "eligible_rows": 7229697,
+      "feature_runner_path": "scripts/a_share_three_day_walkforward_campaign069_features.py",
+      "feature_runner_sha256": "f72cbd4b88aca872d7255fee60151e5344ae72b25b41c0e808c1a2e1698e0b75"
+    },
+    {
+      "campaign": 70,
+      "factor": "quarterly_announcement_delay_improvement_yoy_rank_1y",
+      "manifest_sha256": "f828ee06ac609580880eb0bfcd2d1fbcaba590e872f57fe5639a468ec67edcbd7",
+      "dataset_sha256": "35ea87d9e183b77a382a88789cedf96d79f6a102c5006e156bbde2ff87fd6efe",
+      "eligible_rows": 6353795,
+      "feature_runner_path": "scripts/a_share_three_day_walkforward_campaign070_features.py",
+      "feature_runner_sha256": "c05335e002b8766c4591bf8be3a987888d807923ff6846ee1312ce50c5de168e"
+    },
+    {
+      "campaign": 71,
+      "factor": "quarterly_net_profit_scale_rank",
+      "manifest_sha256": "438db2c72a0e5a166f87e680109024be7b28ed710edbd6b4d5ce6968e4a3f7fd",
+      "dataset_sha256": "8c6f1eff1b2238132f429eaeae13d9a7fbd9956e89f3499fa1cf68d54435528d",
+      "eligible_rows": 7081458,
+      "feature_runner_path": "scripts/a_share_three_day_walkforward_campaign071_features.py",
+      "feature_runner_sha256": "bc67ea1ebe7bc66faf18d2b5d443ec4b739a83d097646c600b13c30ed0996fec"
+    },
+    {
+      "campaign": 72,
+      "factor": "quarterly_joint_profit_revenue_growth_floor_rank",
+      "manifest_sha256": "14ca00ed8b9a233475445a2cedc4a0bbd57c35030e6de2948c80177156c98c2c",
+      "dataset_sha256": "7baf6939336261bb307fd3dc13ccb8e9676eacbcc7e7d1139e019fb3b96f90b3",
+      "eligible_rows": 7231483,
+      "feature_runner_path": "scripts/a_share_three_day_walkforward_campaign072_features.py",
+      "feature_runner_sha256": "0bb7261d08fc03b6e907e51ba092b98f62fe7d049ea61a27394f0b6329187631"
+    },
+    {
+      "campaign": 73,
+      "factor": "intraday_terminal_nominal_share_price_affordability_rank_240m",
+      "manifest_sha256": "6b281be298be7df908300db6735e3ed3efc7d7c13b44c2ae679bf5a2073940e4",
+      "dataset_sha256": "2cea2e0502be1c5cc70f93260a96175abac5f36af50482847c35746a80252a5f",
+      "eligible_rows": 7724498,
+      "feature_runner_path": "scripts/a_share_three_day_walkforward_campaign073_features.py",
+      "feature_runner_sha256": "a487f940331c1de255ea2fd0ce0ab94195a5e88444d416938db96e801d83c989"
+    },
+    {
+      "campaign": 74,
+      "factor": "intraday_terminal_bar_amount_share_240m",
+      "manifest_sha256": "5a993ce8b71c541a0b2d2402627d5f2b7f562cf1266bebcafe0606945086a3cd",
+      "dataset_sha256": "d4fbb9eb8135674df16a50c96b5817f63e6461e99ee48df96537cd8ed930a4b5",
+      "eligible_rows": 7724498,
+      "feature_runner_path": "scripts/a_share_three_day_walkforward_campaign074_features.py",
+      "feature_runner_sha256": "b8c9478f3fa641056eb678c77d64f2ce7bb54bea1e72f3525b85e9ac772f3bc9"
+    }
+  ],
+  "compatibility_verification_for_every_listed_snapshot": {
+    "required": [
+      "exact frozen manifest path and byte SHA-256",
+      "exact manifest dataset SHA-256, factor identity, partitions, rows, and eligible-row total",
+      "exact feature runner byte SHA-256 and its source protocol/freeze validation",
+      "every partition remains inside its frozen root",
+      "every partition stored Parquet byte SHA-256 and row count match",
+      "every deserialized frame has the exact frozen output columns",
+      "every eligible and ineligible value passes the original factor value semantics",
+      "the stored manifest dataset digest reconstructed from all immutable entries matches"
+    ],
+    "only_omitted_check": "current-runtime recomputation of stored Arrow IPC output_frame_sha256",
+    "stored_output_frame_sha256_values_removed_or_rewritten": false,
+    "snapshot_or_manifest_files_may_be_rewritten": false
+  },
+  "retry_semantics": {
+    "partial_statistics_reused": false,
+    "full_audit_restarts_from_candidate_snapshot_and_coverage": true,
+    "factor_formula_direction_age_clock_missing_rule_changed": false,
+    "coverage_gate_changed": false,
+    "numeric_comparator_count_or_order_changed": false,
+    "pairwise_or_correlation_threshold_changed": false,
+    "development_trial_if_admitted_changed": false
+  },
+  "research_boundary": {
+    "failed_attempt_audit_artifact_published": false,
+    "historical_daily_price_fields_read": [],
+    "historical_forward_returns_read": false,
+    "provider_request_issued": false,
+    "candidate49_ledgers_changed": false,
+    "current_scoring_selection_sizing_or_orders_performed": false
+  }
+}

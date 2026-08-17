@@ -1,0 +1,117 @@
+{
+  "schema_version": 1,
+  "kind": "a_share_three_day_walkforward_campaign098_concept_scouting",
+  "status": "selected_before_campaign098_minute_source_candidate_comparator_daily_price_or_return_values",
+  "recorded_at": "2026-08-07T07:28:00Z",
+  "purpose": "Select exactly one genuinely independent historical-only three-session factor after terminal Campaign097, before reading any Campaign098 source row, candidate value, comparator value, daily price, or forward return.",
+  "authoritative_boundary": {
+    "iteration_state": {
+      "path": "docs/a_share_three_day_iteration_status_20260807_campaign097_verified.json",
+      "sha256": "86db8a03d3ea0cb93edfd81bcaed96bd05016146cb7b84e38787db8068a24ef2"
+    },
+    "numeric_policy_v43": {
+      "path": "docs/a_share_three_day_walkforward_future_numeric_comparison_eligibility_policy_v43_20260807.json",
+      "sha256": "5f13ed6f376cd428195b9e5783f30651bad761dbec7feb77b86eb7274dcf034a"
+    },
+    "historical_walkforward_policy": {
+      "path": "docs/a_share_three_day_historical_walkforward_research_policy_20260727.json",
+      "sha256": "38426d6161b9bfed323c58caba18feca668b8c9d53e294951a8ba90c01a798bb"
+    },
+    "complete_definition_count": 129,
+    "complete_definition_order_sha256": "2eaf839992ebfd09aed3e64cc8998c0d7e808e5678c10665442c1bc09ff0a875",
+    "numeric_comparator_count": 126,
+    "numeric_comparator_order_sha256": "1fdad7b688f9d66255aae59b30137e2e539adb24ed0bafddf8ccda1dded0a36c"
+  },
+  "prevalue_evidence": {
+    "materials_read": [
+      "factor names, directions, frozen formulas, terminal histories, support predicates, coverage summaries, and mechanism audits through Campaign097",
+      "the exact known terminal coverage-failure inventory through Campaign096",
+      "Campaign097 terminal accounting and v43 comparator eligibility metadata"
+    ],
+    "campaign098_minute_source_rows_read": false,
+    "campaign098_candidate_values_computed_or_read": false,
+    "comparator_values_read": false,
+    "historical_daily_price_fields_read": [],
+    "historical_forward_returns_read": false,
+    "provider_request_issued": false
+  },
+  "finite_candidate_design_catalog": [
+    {
+      "name": "intraday_range_clock_variance_240m",
+      "decision": "selected_for_complete_prevalue_mechanism_and_support_audit",
+      "reason": "It measures the second central clock moment of scale-free intrabar range mass. It is not a window, cutoff, first moment, entropy, strict-peak topology, half-profile match, amount weighting, peer synchronization, return statistic, or terminal-factor combination."
+    },
+    {
+      "name": "unnormalized_range_clock_second_moment",
+      "decision": "rejected_before_formula_freeze",
+      "reason": "An origin-dependent raw second moment mixes timing center and dispersion; the centered moment is the unique selected statistic."
+    },
+    {
+      "name": "range_clock_mean_absolute_deviation",
+      "decision": "rejected_before_formula_freeze",
+      "reason": "Choosing among L1, L2, quantile, or robust dispersion families would create an avoidable estimator search; population variance is frozen once."
+    },
+    {
+      "name": "morning_afternoon_range_concentration",
+      "decision": "rejected_before_formula_freeze",
+      "reason": "A half-session threshold reopens terminal morning/afternoon range-profile and volatility-allocation mechanisms."
+    },
+    {
+      "name": "market_relative_range_clock_dispersion",
+      "decision": "rejected_before_formula_freeze",
+      "reason": "Peer residualization or synchronization would reopen Campaign097 and introduce a benchmark choice."
+    },
+    {
+      "name": "range_clock_variance_with_activity_or_return_weights",
+      "decision": "rejected_before_formula_freeze",
+      "reason": "Amount, volume, return, direction, quality, or old-factor weights would be a terminal-mechanism combination rather than the selected raw range-distribution property."
+    }
+  ],
+  "selected_candidate": {
+    "name": "intraday_range_clock_variance_240m",
+    "direction": "higher",
+    "economic_hypothesis": "A stock whose completed-session intrabar uncertainty is distributed across widely separated clock positions rather than concentrated in one narrow episode may reflect sustained information assimilation, and that persistent broad discovery state may carry from the next open through the third close.",
+    "minute_source_projection": [
+      "datetime",
+      "symbol",
+      "provider",
+      "high",
+      "low"
+    ],
+    "source_grid": "Require the immutable raw 241-row stock-day identity, select exactly 09:31-11:30 and 13:01-15:00, exclude standalone 09:30, and preserve all 240 fixed clock positions.",
+    "formula": "For i=0,...,239 set q_i=log(high_i/low_i), Q=sum(q_i), p_i=q_i/Q, and u_i=i/239. Set mu=sum(p_i*u_i) and return 4*sum(p_i*(u_i-mu)^2).",
+    "normalization_reason": "For a probability distribution supported on [0,1], population variance is at most 1/4; multiplying by four maps the exact statistic to [0,1] without fitting, clipping, or changing ranks.",
+    "support_rule": "Require all 240 selected high and low values finite and strictly positive with low<=high, finite nonnegative q_i, and finite Q>0. Exact high=low contributes q_i=0 at its unchanged clock. No minimum positive-range count, adjacent-pair count, peer count, imputation, epsilon, smoothing, threshold, dropped bar, or replacement is allowed.",
+    "valid_range": {
+      "lower": 0,
+      "lower_inclusive": true,
+      "upper": 1,
+      "upper_inclusive": true
+    },
+    "endpoint_canonicalization_tolerance": 1e-12,
+    "availability": "Known only after the signal-session 15:00 bar; no later session, peer benchmark, daily return, quarterly state, Candidate49 observation, or provider request enters the factor.",
+    "parameter_window_norm_weight_transform_direction_threshold_filter_subset_regime_fit_model_or_combination_search": false
+  },
+  "finite_campaign_catalog": {
+    "selected_factor_count": 1,
+    "formula_count": 1,
+    "direction_count": 1,
+    "parameter_configuration_count": 1,
+    "filter_or_subset_count": 0,
+    "combination_or_model_count": 0,
+    "conditional_development_trial_count_if_both_no_return_gates_pass": 1,
+    "stress_2024_2025_trial_count_if_development_survives": 1
+  },
+  "research_boundary": {
+    "historical_offline_work_may_run_at_any_time": true,
+    "campaign098_candidate_values_may_be_read_before_mechanism_and_support_audit": false,
+    "comparator_values_may_be_read_before_coverage_pass": false,
+    "daily_price_or_forward_return_values_may_be_read_before_both_no_return_gates_pass": false,
+    "candidate49_historical_backfill_allowed": false,
+    "candidate49_ledgers_may_change": false,
+    "second_prospective_candidate_allowed": false,
+    "current_scoring_selection_sizing_or_orders_allowed": false,
+    "investment_advice": false
+  },
+  "next_action": "Complete and bind an exhaustive all-129-definition mechanism challenge and the mandatory known-failure support-predicate gate, then freeze the exact v43-bound no-return protocol before any Campaign098 source row or value."
+}

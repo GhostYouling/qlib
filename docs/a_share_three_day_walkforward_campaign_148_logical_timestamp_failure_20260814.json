@@ -1,0 +1,74 @@
+{
+  "schema_version": 1,
+  "kind": "a_share_three_day_walkforward_campaign148_postpublication_timestamp_failure",
+  "status": "recorded_future_logical_timestamps_preserved_and_excluded_from_effective_authority",
+  "recorded_at": "2026-08-14T23:20:00+08:00",
+  "root_cause": "Eight additive artifacts used planned minute labels later than their observed file publication times instead of wall-clock times already reached at publication.",
+  "affected_artifacts": [
+    {
+      "artifact": "data/experiments/short_horizon/historical_walkforward/campaign_148/research_attempt_ledger_v4.json",
+      "sha256": "94e37d1ca9d12665f5740957b5d93be2bf67e2be2b1608bcac97df0d8eaa0294",
+      "recorded_at": "2026-08-14T23:14:00+08:00",
+      "observed_mtime": "2026-08-14T23:13:37.750649+08:00",
+      "positive_skew_seconds": 22.249351
+    },
+    {
+      "artifact": "data/experiments/short_horizon/historical_walkforward/campaign_148/research_attempt_ledger_v5.json",
+      "sha256": "ce62f1eba37035f0f89244f807f2149283e6eab9202c36072b88e3ddd298ab71",
+      "recorded_at": "2026-08-14T23:17:00+08:00",
+      "observed_mtime": "2026-08-14T23:15:23.939045+08:00",
+      "positive_skew_seconds": 96.060955
+    },
+    {
+      "artifact": "docs/a_share_three_day_walkforward_campaign_148_terminal_result_v4_20260814.json",
+      "sha256": "286477ec984cce8491b11f5a209f9c63e98f3ef7507728c1a3f66a98e1db39fb",
+      "recorded_at": "2026-08-14T23:15:00+08:00",
+      "observed_mtime": "2026-08-14T23:14:34.883028+08:00",
+      "positive_skew_seconds": 25.116972
+    },
+    {
+      "artifact": "docs/a_share_three_day_walkforward_campaign_148_terminal_result_v5_20260814.json",
+      "sha256": "c026a24faf65fe23341d4ec1a0f0e2809f579d912cffb23f4ed7276db9ab62de",
+      "recorded_at": "2026-08-14T23:18:00+08:00",
+      "observed_mtime": "2026-08-14T23:16:11.844273+08:00",
+      "positive_skew_seconds": 108.155727
+    },
+    {
+      "artifact": "docs/a_share_three_day_walkforward_campaign_148_terminal_v4_predecessor_binding_failure_20260814.json",
+      "sha256": "765c073ffc31cbb601a77af3902b21fb10faf43c27a88a9b05862fe8a6a8e461",
+      "recorded_at": "2026-08-14T23:16:00+08:00",
+      "observed_mtime": "2026-08-14T23:14:56.345298+08:00",
+      "positive_skew_seconds": 63.654702
+    },
+    {
+      "artifact": "docs/a_share_three_day_walkforward_campaign_148_terminal_validation_v2_20260814.json",
+      "sha256": "fda09ac0555cf4ecb1aaffd7da5841301b26f22c5d821a61ba87f5d8322d74ab",
+      "recorded_at": "2026-08-14T23:19:00+08:00",
+      "observed_mtime": "2026-08-14T23:17:12.590132+08:00",
+      "positive_skew_seconds": 107.409868
+    },
+    {
+      "artifact": "docs/a_share_three_day_walkforward_future_numeric_comparison_eligibility_policy_v200_20260814.json",
+      "sha256": "5c3c3cc7cbeab136dfcb4ae4e50784543faf186a7ffb933c3559a38a1f54e313",
+      "recorded_at": "2026-08-14T23:20:00+08:00",
+      "observed_mtime": "2026-08-14T23:17:55.494645+08:00",
+      "positive_skew_seconds": 124.505355
+    },
+    {
+      "artifact": "docs/a_share_three_day_iteration_status_20260814_campaign148_prevalue_terminal_v2.json",
+      "sha256": "497af74d833395054b3d06a5d743361399cd934334286311c5efd6f8471e7d97",
+      "recorded_at": "2026-08-14T23:21:00+08:00",
+      "observed_mtime": "2026-08-14T23:18:47+08:00",
+      "positive_skew_seconds": 133.0
+    }
+  ],
+  "handling": {
+    "affected_artifacts_rewritten_or_deleted": false,
+    "common_root_cause_counted_once": true,
+    "corrected_successors_use_wall_clock_times_already_reached": true,
+    "scientific_result_changed": false,
+    "candidate_comparator_price_or_return_value_read": false,
+    "provider_request_issued": false,
+    "candidate49_ledgers_changed": false
+  }
+}

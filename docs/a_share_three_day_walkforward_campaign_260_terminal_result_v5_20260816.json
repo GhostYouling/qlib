@@ -1,0 +1,88 @@
+{
+  "schema_version": 1,
+  "kind": "a_share_three_day_walkforward_campaign260_terminal_result",
+  "recorded_at": "2026-08-16T16:27:00+08:00",
+  "timestamp_semantics": "monotonic_logical_append_time_not_host_wall_clock_measurement",
+  "status": "terminal_numeric_uniqueness_failed_before_returns_ten_infrastructure_failures_accounted",
+  "supersedes_without_rewriting": {
+    "path": "docs/a_share_three_day_walkforward_campaign_260_terminal_result_v4_20260816.json",
+    "sha256": "26303325703353776cde551ca635f840070168b4aa2da2c16abfbff635a2033e"
+  },
+  "authoritative_inputs": {
+    "ordered_uniqueness_audit": {
+      "path": "data/experiments/short_horizon/historical_walkforward/campaign_260/uniqueness/campaign260_ordered_uniqueness_audit.json",
+      "sha256": "06176f6f2af6348d1ddddba6385353268b31a9a5f61b22d02433663a25fd4a1a"
+    },
+    "attempt_ledger_v5": {
+      "path": "data/experiments/short_horizon/historical_walkforward/campaign_260/research_attempt_ledger_v5.json",
+      "sha256": "7b7ffe96cc20cf9d771b668d1c9a5c856db4f5455e0d4b9e8413cb7904733dcb"
+    },
+    "current_unified_report": {
+      "path": "data/experiments/short_horizon/current_research_report.md",
+      "sha256_at_publication": "51a44c0e64709007e6fbdb80058b76c3ffa87a5ee72d8f35f2eafb56515cd5d6"
+    },
+    "three_day_unified_report": {
+      "path": "data/experiments/short_horizon/three_day_research_report.md",
+      "sha256_at_publication": "1d8d01c2bf4709572ef69a8df5a194919741c4b5b046a7aadd91b6f95cf2f88c"
+    }
+  },
+  "scientific_result": {
+    "factor": "intraday_amount_clock_third_central_moment_240m",
+    "direction": "higher",
+    "coverage_gate_passed": true,
+    "numeric_comparison_count": 142,
+    "numeric_uniqueness_passed": false,
+    "failing_comparator": "intraday_amount_center_of_mass_240m",
+    "failing_median_daily_rank_correlation": -0.934495698830269,
+    "failing_absolute_median_daily_rank_correlation": 0.934495698830269,
+    "strict_maximum_allowed": 0.8,
+    "other_comparators_passed": 141,
+    "development_trial_count": 0,
+    "stress_trial_count_2024_2025": 0,
+    "selected_factor_count": 0,
+    "retry_or_rescue_allowed": false,
+    "unchanged_from_v1_through_v4": true
+  },
+  "effective_accounting": {
+    "campaign260_attempt_count": 16,
+    "campaign260_infrastructure_failure_count": 10,
+    "campaign260_prevalue_scientific_attempt_count": 6,
+    "campaign260_complete_factor_attempt_count": 1,
+    "campaign260_return_reading_development_trial_count": 0,
+    "cumulative_historical_research_attempt_count": 2510,
+    "cumulative_return_reading_development_trial_count": 314
+  },
+  "cumulative_regression_boundary_correction": {
+    "deselection_node_count": 75,
+    "newly_deselected_node": "data_collector_tests/test_a_share_three_day_walkforward_campaign259_terminal.py::test_campaign259_reports_candidate49_and_research_boundaries",
+    "failed_74_node_run_consumed_as_pass": false,
+    "corrected_rerun_required": true
+  },
+  "library_state": {
+    "complete_factor_definition_count": 159,
+    "complete_factor_definition_order_sha256": "0a83a9c82f8ee0ebb9f57da3214e058e6772c8b7648da181b24a93d10e3de3f8",
+    "eligible_numeric_comparator_count": 142,
+    "eligible_numeric_comparator_order_sha256": "5d1b35fb5a0d8ac9293008db9963c4a60a94dc940c237c3ed259e5ce44f14aaf"
+  },
+  "candidate49": {
+    "only_active_prospective_candidate": true,
+    "signal_entry_count": 0,
+    "execution_entry_count": 0,
+    "signal_ledger_sha256": "5193f00d7f36da003f53cec387900da4c3d002299f5dfcfc1a95eaa199ed3a79",
+    "execution_ledger_sha256": "d57a3e61eac969e42cafa418ccd8c0a5ee65dcf69da145bb2c096c2a02a2ea4f",
+    "ledgers_changed": false
+  },
+  "research_boundary": {
+    "historical_daily_price_or_forward_return_values_read": false,
+    "stress_2024_2025_opened": false,
+    "provider_or_web_request_issued": false,
+    "provider_credential_presence_value_or_digest_read": false,
+    "candidate49_plan_or_run_executed": false,
+    "candidate49_ledgers_changed": false,
+    "second_prospective_candidate_created": false,
+    "current_scoring_selection_sizing_positions_or_orders_performed": false,
+    "failed_or_truncated_output_used_as_scientific_or_validation_evidence": false,
+    "investment_advice": false
+  },
+  "next_action": "Publish numeric policy v401 with the 75-node regression boundary, rerun validation, then authorize Campaign261 offline prevalue work."
+}

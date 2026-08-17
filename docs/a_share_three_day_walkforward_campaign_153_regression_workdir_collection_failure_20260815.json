@@ -1,0 +1,24 @@
+{
+  "schema_version": 1,
+  "kind": "a_share_three_day_walkforward_campaign153_infrastructure_failure",
+  "status": "recorded_nonzero_exit_without_masking_or_scientific_change",
+  "recorded_at": "2026-08-15T02:49:30+08:00",
+  "stage": "campaign145_through_campaign153_regression",
+  "observed_result": {
+    "exit_code": 2,
+    "collection_errors": 7,
+    "normalized_failure": "ModuleNotFoundError scripts"
+  },
+  "root_cause": "The regression was launched with workdir set to the tests directory, so the repository root was absent from the Python module search path for terminal tests importing scripts.",
+  "repair": {
+    "rerun_from_repository_root": true,
+    "source_test_scientific_artifact_or_binding_validator_changed": false,
+    "source_candidate_comparator_price_or_forward_return_value_read": false
+  },
+  "research_boundary": {
+    "provider_request_issued": false,
+    "provider_credential_value_or_digest_read": false,
+    "candidate49_ledgers_changed": false,
+    "stress_2024_2025_opened": false
+  }
+}

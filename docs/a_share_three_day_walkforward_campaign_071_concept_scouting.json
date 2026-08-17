@@ -1,0 +1,91 @@
+{
+  "version": 1,
+  "kind": "a_share_three_day_walkforward_campaign071_concept_scouting",
+  "status": "selected_before_candidate_source_or_comparison_values",
+  "recorded_at": "2026-08-06T05:06:00+08:00",
+  "authoritative_state": {
+    "path": "docs/a_share_three_day_iteration_status_20260806_campaign070_verified.json",
+    "sha256": "5920e1b85858317880b0d3217539af83d289e7ec0eb4fa292d31c3b35cfc852a"
+  },
+  "numeric_comparator_policy": {
+    "path": "docs/a_share_three_day_walkforward_future_numeric_comparison_eligibility_policy_v5_20260806.json",
+    "sha256": "afe9f33f1b8accdcbb1481604313fcc55e9e84ecbc02098730f0b41adf60c68f",
+    "complete_definition_count": 102,
+    "eligible_numeric_comparator_count": 101,
+    "eligible_numeric_comparator_order_sha256": "8ab835ebc9a5cc4f1b0e8e80a7db027dc7b64837859b43975d544dcf9294eca3"
+  },
+  "selection_rationale": {
+    "objective": "Prefer a dense point-in-time mechanism with no multi-year cold start and a different economic axis from announcement timing, growth transitions, minute path shape, and cross-sectional market-state factors.",
+    "selected_family": "absolute_public_profitability_scale",
+    "rejected_before_values": [
+      {
+        "concept": "another year-over-year announcement-delay transform",
+        "reason": "same mechanism family as terminal Campaign070 and repeats its cold-start defect"
+      },
+      {
+        "concept": "revenue-growth-minus-ROE rank gap",
+        "reason": "mechanically mirrors the terminal Campaign069 transition-gap family"
+      },
+      {
+        "concept": "another price-update entropy or day-over-day profile similarity",
+        "reason": "recent terminal comparisons show repeated near-synonym failures"
+      }
+    ]
+  },
+  "selected_candidate": {
+    "name": "quarterly_net_profit_scale_rank",
+    "direction": "higher",
+    "economic_hypothesis": "Among already profitable firms, a higher point-in-time absolute net-profit rank may proxy established earnings capacity, disclosure credibility, liquidity, and resilience that can be repriced over the next three sessions; this is a scale mechanism rather than growth, ROE efficiency, announcement timing, or minute-path behavior.",
+    "formula": "Attach the latest separately available finite net_profit state from disclosures effective strictly before the stock day, require net_profit>0, and compute its same-stock-day average-tie percentile rank on the exact finite identity cross-section.",
+    "stock_day_identity_projection": [
+      "trade_date",
+      "symbol",
+      "provider"
+    ],
+    "quarterly_source_projection": [
+      "instrument",
+      "report_date",
+      "announcement_date",
+      "net_profit"
+    ],
+    "availability_rule": "Each report becomes usable only on the first accepted local session strictly after announcement_date.",
+    "same_effective_date_rule": "Sort instrument, effective session, report_date, and announcement_date, then keep the last row per instrument and effective session.",
+    "state_rule": "Forward-fill only finite strictly positive net_profit inside each instrument after strict effective-session ordering; never backfill from a later disclosure.",
+    "cross_section_rule": "On each stock day compute pandas-compatible average-tie percentile rank on the exact finite positive net-profit identity cross-section.",
+    "valid_range": {
+      "lower": 0.0,
+      "lower_inclusive": false,
+      "upper": 1.0,
+      "upper_inclusive": true
+    },
+    "missing_rule": "Missing without an already-effective finite strictly positive net-profit state and a finite cross-sectional rank. Never impute, clip, winsorize, rescale, substitute, backfill, or choose a favorable report.",
+    "multi_year_difference_or_lookback_required": false,
+    "parameter_window_transform_threshold_filter_subset_regime_fit_or_model_search": false
+  },
+  "mandatory_pre_value_challenges": [
+    "quarterly_roe_profit_scale_efficiency_gap_2r",
+    "quality_roe",
+    "quality_profit",
+    "quality_revenue",
+    "quality_growth",
+    "quality_score",
+    "quarterly_quality_rank_balance_3f",
+    "quarterly_profit_growth_roe_transition_gap_2r",
+    "quarterly_profit_revenue_acceleration_rank_gap_2r",
+    "quarterly_announcement_delay_improvement_yoy_rank_1y",
+    "intraday_cross_sectional_standardized_return_state_stability_236p"
+  ],
+  "research_boundary": {
+    "candidate_source_rows_read": false,
+    "candidate_values_read": false,
+    "comparison_values_read": false,
+    "historical_daily_price_fields_read": [],
+    "historical_forward_returns_read": false,
+    "provider_request_issued": false,
+    "candidate49_historical_backfill_performed": false,
+    "candidate49_ledgers_changed": false,
+    "second_prospective_candidate_created": false,
+    "current_scoring_selection_sizing_or_orders_performed": false,
+    "investment_advice": false
+  }
+}

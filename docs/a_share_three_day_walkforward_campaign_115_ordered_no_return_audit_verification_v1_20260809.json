@@ -1,0 +1,77 @@
+{
+  "schema_version": 1,
+  "kind": "a_share_three_day_walkforward_campaign115_ordered_no_return_audit_verification",
+  "status": "runner_verified_ready_only_after_future_semantic_source_receipt",
+  "recorded_at": "2026-08-09T07:20:00+08:00",
+  "recorded_at_semantics": "monotonic_logical_append_time_after_v4_runtime_tests_and_real_zero_value_plan_not_host_wall_clock_measurement",
+  "frozen_inputs": {
+    "protocol": {
+      "path": "docs/a_share_three_day_walkforward_campaign_115_ordered_no_return_audit_protocol_20260809.json",
+      "sha256": "6d94e7fb638aed9f0423179a60ee3ad1a768b12c0de14a64c6dcc81168e6d12d"
+    },
+    "implementation_freeze_v4": {
+      "path": "docs/a_share_three_day_walkforward_campaign_115_ordered_no_return_audit_implementation_freeze_v4_20260809.json",
+      "sha256": "3b79bdea2ca29133e3b03a4bc7b60fa07549a240372cf07b2b4a6e7330538b57"
+    },
+    "runner": {
+      "path": "scripts/a_share_tushare_limit_up_queue_no_return_audit.py",
+      "sha256": "7584cc04d9d93f23eaa38a38c9b5f2164e7a5f5834aa88cdf770f39da4c0bede"
+    },
+    "tests": {
+      "path": "tests/data_collector_tests/test_a_share_tushare_limit_up_queue_no_return_audit.py",
+      "sha256": "279d439e43aad2f2d370d2b741d1d605d0d521223c462eae6fd3d5a4dd803094"
+    }
+  },
+  "verification": {
+    "implementation_binding_valid": true,
+    "runtime_bindings_valid": true,
+    "all_134_comparator_metadata_bindings_valid": true,
+    "selected_campaign110_and_campaign115_regression": "68 passed in 9.82s",
+    "focused_campaign115_tests_in_selected_regression": 10,
+    "black_check": "2 files would be left unchanged",
+    "ruff_required_rules": "E4,E7,E9,F,I passed",
+    "legacy_campaign110_terminal_test_failure_preserved_separately": {
+      "path": "docs/a_share_three_day_walkforward_campaign_115_ordered_no_return_legacy_campaign110_report_binding_regression_failure_20260809.json",
+      "sha256": "5a7797bf03d475448697048f96f8732cde01bcb38a2cf8782aaf7d8a695af928"
+    }
+  },
+  "real_plan": {
+    "exit_code": 2,
+    "ready": false,
+    "blockers": [
+      "semantic_verification_receipt_valid",
+      "source_final_root_present"
+    ],
+    "protocol_fingerprint": true,
+    "audit_runtime_binding": true,
+    "state_v7_fingerprint": true,
+    "numeric_policy_v92_fingerprint": true,
+    "all_134_comparator_metadata_bindings_valid": true,
+    "audit_artifact_absent": true,
+    "parquet_candidate_values_read": false,
+    "parquet_comparator_values_read": false,
+    "daily_price_or_forward_return_values_read": false,
+    "partition_year_2024_or_2025_values_read": false,
+    "credential_loaded": false,
+    "provider_request_issued": false
+  },
+  "real_inspection": {
+    "exit_code": 0,
+    "valid": true,
+    "status": "no_ordered_no_return_audit",
+    "credential_loaded": false,
+    "provider_request_issued": false
+  },
+  "research_boundary": {
+    "candidate_values_read": false,
+    "comparator_values_read": false,
+    "daily_price_or_forward_return_values_read": false,
+    "partition_year_2024_or_2025_values_read": false,
+    "provider_request_issued": false,
+    "credential_loaded": false,
+    "candidate49_ledgers_changed": false,
+    "second_prospective_candidate_created": false,
+    "current_scoring_selection_sizing_or_orders_performed": false,
+    "investment_advice": false
+  }
+}

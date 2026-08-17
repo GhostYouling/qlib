@@ -1,0 +1,66 @@
+{
+  "schema_version": 1,
+  "kind": "a_share_three_day_walkforward_campaign106_no_return_audit_recovery_v2_failure",
+  "status": "failed_closed_after_single_frozen_recovery_before_comparator_132_correlation",
+  "recorded_at": "2026-08-07T19:30:47Z",
+  "first_failure": {
+    "path": "docs/a_share_three_day_walkforward_campaign_106_no_return_audit_failure_20260808.json",
+    "sha256": "e07e26303427f6f9eaa90b8fb77553685f99aee8ec5b9f1f9dfc9db00a9f03ee"
+  },
+  "recovery_activation": {
+    "path": "docs/a_share_three_day_walkforward_campaign_106_no_return_audit_recovery_v2_activation_20260808.json",
+    "sha256": "3049bc66746118d2624c203edebc124ac817cb512bff8ed9d56f0085c7d01dd8"
+  },
+  "recovery_runner": {
+    "path": "scripts/a_share_three_day_walkforward_campaign106_no_return_audit_recovery_v2.py",
+    "sha256": "8f89bb08bcbe3a5b85534bf9e2a51a5349a5a818eb9cbf95c435b15c569eb105"
+  },
+  "execution": {
+    "exit_code": 1,
+    "failure_type": "Campaign004FeatureError",
+    "failure_value": "intraday_active_trading_bar_share_240m candidate keys changed",
+    "failing_operation": "candidate-only finite-value sorter was applied to frozen comparator 132",
+    "result_record_published": false,
+    "partial_result_record_published": false
+  },
+  "root_cause": {
+    "classification": "implementation_adapter_mismatch",
+    "detail": "Campaign105 comparator 132 contains 47 legitimately ineligible stock-days. The generic _sorted_candidate_arrays helper is explicitly candidate-only and rejects any nonfinite factor value, while a comparator must preserve missing values so the frozen >=50 paired-name and >=100 session overlap gate can handle them.",
+    "observed_frozen_comparator_missing_rows": 47,
+    "correct_semantic_operation_if_designed_before_values": "compact and sort all unique stock-day keys while preserving NaN comparator values, then align them to candidate keys",
+    "candidate_formula_or_values_invalid": false,
+    "coverage_gate_failed": false,
+    "uniqueness_gate_failed": false,
+    "source_or_provider_failed": false
+  },
+  "observed_ordered_stage_semantics": {
+    "candidate_snapshot_verified_again": true,
+    "coverage_and_capacity_computed_again": true,
+    "coverage_gate_passed_before_comparator_values": true,
+    "first_130_directional_matrix_comparisons_computed_again": true,
+    "comparator_131_computed_again": true,
+    "comparator_132_range_registered_as_frozen_0_1": true,
+    "comparator_132_snapshot_verified_and_factor_frame_loaded": true,
+    "comparator_132_aligned_correlation_computed": false,
+    "all_132_gate_decision_computed": false
+  },
+  "research_boundary": {
+    "historical_daily_price_fields_read": [],
+    "historical_forward_returns_read": false,
+    "development_trial_started": false,
+    "stress_2024_2025_opened": false,
+    "provider_request_issued": false,
+    "candidate49_historical_backfill_performed": false,
+    "candidate49_ledgers_changed": false,
+    "current_scoring_selection_sizing_or_orders_performed": false
+  },
+  "terminal_recovery_decision": {
+    "single_recovery_attempt_consumed": true,
+    "third_attempt_allowed_in_campaign106": false,
+    "post_value_patch_or_rescue_allowed": false,
+    "campaign106_scientific_gate_result": "inconclusive_due_to_infrastructure",
+    "candidate_may_be_called_admissible_or_rejected": false,
+    "2024_2025_stress_may_open": false
+  },
+  "next_action": "Close Campaign106 as infrastructure-inconclusive, preserve both failures and start only a new pre-value campaign with its comparator-missingness adapter tested before values."
+}

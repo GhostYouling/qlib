@@ -1,0 +1,44 @@
+{
+  "version": 1,
+  "kind": "a_share_three_day_walkforward_campaign069_no_return_audit_comparator_alignment_repair_protocol",
+  "status": "frozen_before_v3_retry_or_additional_comparator_value_read",
+  "recorded_at": "2026-08-06T03:53:00+08:00",
+  "recorded_failure": {
+    "path": "docs/a_share_three_day_walkforward_campaign_069_no_return_audit_execution_failure_2_20260806.json",
+    "sha256": "b58b273f79d9ed931af2ef2d36089e5d7f0c09accf988683389cdf9422624794"
+  },
+  "v2_runner": {
+    "path": "scripts/a_share_three_day_walkforward_campaign069_no_return_audit_v2.py",
+    "sha256": "bc42919451913cded07c35d2a58d0ee9093d3353305b24afe7e72ff63d10d4f4",
+    "must_remain_unchanged": true
+  },
+  "sole_repair": {
+    "candidate_sorter_semantics_unchanged": "Campaign069 candidate quality rows still require unique keys and all finite values.",
+    "campaign068_comparator_sorter_semantics": "Build and stable-sort compact stock-day keys, require keys unique, retain finite and NaN comparator values unchanged, then align with Campaign069 keys by exact searchsorted equality.",
+    "pairwise_missing_semantics": "NaN Campaign068 values remain missing and are handled only by the frozen pairwise-complete correlation calculation.",
+    "delegate_all_other_behavior_to_immutable_v1_and_v2_runners": true
+  },
+  "unchanged_semantics": {
+    "candidate": "quarterly_profit_growth_roe_transition_gap_2r",
+    "candidate_formula": "r_profit_yoy-r_roe",
+    "candidate_direction": "higher",
+    "candidate_snapshot_manifest_sha256": "6023becea579d0f6ed6ac27316421294f13fd6759d6d51790a31940526e363b7",
+    "candidate_snapshot_dataset_sha256": "7c4b2e446bf4ebb64b4d3e992510610b1f0059fde868dff0bf02a06b7ce75960",
+    "numeric_comparator_count": 99,
+    "numeric_comparator_order_sha256": "7f1ed85abfeb4688c0b07f892b497942a202f09ac8806ea095b6c9050f670538",
+    "coverage_gates_changed": false,
+    "uniqueness_gates_changed": false,
+    "historical_daily_price_or_return_access_authorized": false
+  },
+  "research_boundary": {
+    "additional_comparator_values_read_after_failure_before_this_freeze": false,
+    "historical_daily_price_fields_read": [],
+    "historical_forward_return_fields_read": false,
+    "provider_request_issued": false,
+    "candidate49_ledgers_changed": false
+  },
+  "decision": {
+    "one_exact_parameter_v3_retry_allowed_after_v3_runner_tests_and_implementation_freeze": true,
+    "alternate_research_choice_allowed": false
+  }
+}

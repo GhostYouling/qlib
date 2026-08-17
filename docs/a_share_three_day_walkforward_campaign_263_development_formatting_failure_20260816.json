@@ -1,0 +1,31 @@
+{
+  "schema_version": 1,
+  "kind": "a_share_three_day_walkforward_campaign263_development_formatting_failure",
+  "status": "failed_format_check_preserved_and_recovered_before_return_read",
+  "recorded_at": "2026-08-16T13:53:00Z",
+  "phase": "development_runner_pre_activation_validation",
+  "failure": "The focused 8-test development suite passed, then Black --check exited nonzero because the development runner and ledger generator required deterministic formatting; Ruff was not reached because the command used fail-fast chaining.",
+  "pre_format_runner": {
+    "path": "scripts/a_share_three_day_walkforward_campaign263.py",
+    "sha256": "0b047c27ddc2577a894b45ee4d79d3dfb5da22058818eac1bcd0892c3ecfdabb"
+  },
+  "superseded_preregistration": {
+    "path": "docs/a_share_three_day_walkforward_campaign_263_preregistration.json",
+    "sha256": "2ef440957da7ba956d16361744b2f1bb373a1ff0d9d28f9946546d556f43a1d3",
+    "reason": "It binds the pre-format runner bytes and therefore must not authorize the formatted runner."
+  },
+  "pre_failure_ledger_checkpoint": {
+    "path": "data/experiments/short_horizon/historical_walkforward/campaign_263/research_attempt_ledger_v2.json",
+    "sha256": "6c9121726d8c9437a4a4e9a2044909b7565b34b904d973ce113491fc139fc480"
+  },
+  "recovery": "Black formatted both scripts. A recovery ledger adds this as infrastructure failure 015, a new preregistration binds the formatted runner, and all tests plus Ruff must pass before activation.",
+  "research_boundary": {
+    "failed_output_used_as_scientific_or_validation_evidence": false,
+    "historical_daily_price_or_forward_return_values_read": false,
+    "stress_2024_2025_opened": false,
+    "provider_or_web_request_issued": false,
+    "candidate49_ledgers_changed": false,
+    "current_scoring_selection_sizing_positions_or_orders_performed": false,
+    "investment_advice": false
+  }
+}

@@ -1,0 +1,52 @@
+{
+  "version": 3,
+  "kind": "a_share_three_day_walkforward_campaign085_feature_implementation_freeze",
+  "status": "frozen_v3_parent_and_handshake_repair_before_compact_cache_rows_candidate_or_comparison_values",
+  "recorded_at": "2026-08-06T23:55:00+08:00",
+  "protocol": {
+    "path": "docs/a_share_three_day_walkforward_campaign_085_no_return_preregistration.json",
+    "sha256": "c08bf9ec921e97ceafa44b143ef6da0bee8223b65841f09093a01358f61936e6"
+  },
+  "superseded_v2_implementation_freeze": {
+    "path": "docs/a_share_three_day_walkforward_campaign_085_feature_implementation_freeze_v2_20260806.json",
+    "sha256": "194e0f9298b3939be5febc250755e85870f1a2f5ea718ec3de22f92271de124c",
+    "preserved": true
+  },
+  "repair_protocol": {
+    "path": "docs/a_share_three_day_walkforward_campaign_085_feature_implementation_repair_protocol_v3_20260806.json",
+    "sha256": "79e121df9e56a83d271368d5685f1b1803333cd14f8d857bff0a563a3d0525a7"
+  },
+  "handshake_defect": {
+    "path": "docs/a_share_three_day_walkforward_campaign_085_feature_implementation_v2_handshake_defect_20260806.json",
+    "sha256": "bc27b6d5589af5f62a605022cf8849f53b3743df83ab47e7df286eecf267cec3"
+  },
+  "feature_runner": {
+    "path": "scripts/a_share_three_day_walkforward_campaign085_features.py",
+    "sha256": "90001c1e140f3c6f9d9484be719fd66608379bbe8b93df1005a3c312b95aa546"
+  },
+  "tests": {
+    "path": "tests/data_collector_tests/test_a_share_three_day_walkforward_campaign085_features.py",
+    "sha256": "e8325db91dc6f7e80130dee46036d4a8c086d302e9a363f44586df37317a071c",
+    "passed": 7,
+    "failed": 0,
+    "black_and_ruff_passed": true
+  },
+  "research_attempt_ledger": {
+    "path": "data/experiments/short_horizon/historical_walkforward/campaign_085/research_attempt_ledger_v4.json",
+    "sha256": "4bdcaa37f5096f04182e508c12b1029febfa21a2f3fc376b3877f8669165b2fb"
+  },
+  "authorized_repairs_verified": {
+    "exact_output_parent_created_before_temporary_sibling": true,
+    "runner_points_to_this_v3_freeze": true,
+    "runner_expects_this_exact_v3_status": true,
+    "formula_direction_inputs_rank_universe_missing_semantics_source_projection_and_output_root_unchanged": true
+  },
+  "compact_cache_rows_read_before_freeze": false,
+  "candidate_values_computed_before_freeze": false,
+  "comparison_values_read_before_freeze": false,
+  "historical_daily_price_or_forward_return_values_read_before_freeze": false,
+  "provider_request_issued_before_freeze": false,
+  "candidate49_ledgers_changed_before_freeze": false,
+  "second_prospective_candidate_created": false,
+  "current_scoring_selection_sizing_or_orders_performed": false
+}

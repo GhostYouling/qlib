@@ -1,0 +1,97 @@
+{
+  "version": 1,
+  "kind": "a_share_three_day_walkforward_campaign033_concept_scouting",
+  "status": "one_independent_intraday_return_frequency_structure_concept_selected_before_candidate_comparison_or_return_values",
+  "recorded_at": "2026-07-30T15:55:00Z",
+  "purpose": "Select one economically interpretable Campaign033 mechanism after Campaign032's terminal uniqueness rejection, without opening a Campaign033 minute partition, candidate value, comparison value, daily price, or forward return.",
+  "authoritative_boundary": {
+    "path": "docs/a_share_three_day_iteration_status_20260730_campaign032_verified.json",
+    "sha256": "fdad546c4318772b3138dce47404694504714dea8485ecb949f6ffe97f4f62b7",
+    "campaign033_concept_scouting_allowed": true,
+    "binding_validation_required_at_each_freeze_boundary": true,
+    "candidate49_remains_only_prospective_candidate": true,
+    "candidate50_activation_allowed": false
+  },
+  "selected_concept": {
+    "concept_name": "intraday_return_spectral_entropy",
+    "mechanism_family": "within_half_signed_close_return_frequency_energy_dispersion",
+    "economic_question": "Is the completed signal session's signed one-minute return energy broadly distributed across intraday frequencies rather than concentrated in a periodic, slowly varying, or mechanically repeating path?",
+    "economic_hypothesis": "Higher frequency-domain entropy represents broadband, less periodic price discovery rather than a return path dominated by a small set of intraday frequencies. More diffuse frequency structure may indicate a more resilient information and liquidity process from the next open through the third close.",
+    "provisional_direction": "higher",
+    "allowed_source_fields": [
+      "datetime",
+      "symbol",
+      "provider",
+      "close"
+    ],
+    "forbidden_source_fields": [
+      "open",
+      "high",
+      "low",
+      "volume",
+      "amount",
+      "market or industry benchmark",
+      "quarterly or event field",
+      "daily price",
+      "forward return",
+      "Level-2"
+    ],
+    "fixed_temporal_question": "Use 120 closes at 09:31-11:30 and 120 closes at 13:01-15:00. Form 119 signed log-close returns inside each half, never across lunch, and describe their pooled positive-frequency power allocation without joining the halves in time.",
+    "mandatory_overlap_challenges_before_any_value": [
+      "intraday_return_variance_entropy_238m",
+      "intraday_diffusive_variation_ratio_238m",
+      "intraday_return_sign_run_imbalance_238p",
+      "intraday_bar_direction_continuity_238p",
+      "intraday_morning_afternoon_return_profile_persistence_119p",
+      "intraday_absolute_return_serial_persistence_236p",
+      "intraday_volatility_resolution_238m",
+      "intraday_signed_path_efficiency_239m",
+      "candidate49_intraday_cumulative_vwap_crossing_rate_240m_v1",
+      "quarterly_announcement_timeliness_days"
+    ],
+    "known_design_risks": [
+      "FFT length, half-session handling, demeaning, positive-frequency selection, power pooling, entropy normalization, tapering, padding, direction, and zero-power handling are researcher degrees of freedom unless frozen before values",
+      "spectral entropy can be statistically related to serial persistence or diffusive variation even though it summarizes the complete frequency-energy distribution",
+      "higher broadband entropy may represent efficient price discovery or noisy trading, so the higher direction must be frozen before returns",
+      "using phase, selected bands, a spectral slope, wavelets, a period cutoff, subwindows, ranks, market residuals, activity weights, or terminal factor values would change the mechanism"
+    ]
+  },
+  "rejected_concepts": [
+    {
+      "concept": "signed_return_autocorrelation_or_time_irreversibility",
+      "reason": "Campaign024 and Campaign028 scouting explicitly reject signed lag and time-irreversibility variants as too close to terminal sign-run, serial-dependence, skewness, and bipower families."
+    },
+    {
+      "concept": "range_wick_volume_price_impact_or_vwap_variant",
+      "reason": "OHLC range, wick, amount, volume, impact, transaction-price, and VWAP families are terminal or reserved for Candidate49 and cannot be rescued."
+    },
+    {
+      "concept": "market_dispersion_beta_residual_or_lead_lag_variant",
+      "reason": "Campaign021 and Campaign026-Campaign031 exhausted the allowed market response, sign-conditioned dependence, magnitude coupling, resolution, and dispersion branches."
+    },
+    {
+      "concept": "quarterly_announcement_timing_rescale_or_value_sweep",
+      "reason": "Campaign020 and Campaign032 are terminal; changing the clock or sweeping report values after the duplicate result would not be an independent Campaign033 concept."
+    },
+    {
+      "concept": "terminal_factor_combination_or_rescue",
+      "reason": "Campaign033 must be one raw close-path frequency statistic and may not combine, invert, filter, rewindow, or repair a terminal factor."
+    }
+  ],
+  "decision": {
+    "advance_to_separate_no_value_mechanism_overlap_audit": true,
+    "exact_formula_or_direction_fixed_here": false,
+    "new_daily_bar_required": false,
+    "same_day_1630_wait_required": false,
+    "candidate49_ledgers_changed": false
+  },
+  "research_boundary": {
+    "external_campaign033_minute_partitions_read": false,
+    "candidate_values_read": false,
+    "comparison_values_read": false,
+    "daily_price_fields_read": false,
+    "forward_returns_read": false,
+    "provider_request_issued": false,
+    "current_scoring_selection_sizing_or_orders_performed": false
+  }
+}

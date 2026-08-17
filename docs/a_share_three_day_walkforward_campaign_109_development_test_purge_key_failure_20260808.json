@@ -1,0 +1,21 @@
+{
+  "schema_version": 1,
+  "kind": "a_share_three_day_walkforward_campaign109_infrastructure_failure",
+  "status": "preserved_failed_development_test_before_daily_price_or_return_values",
+  "recorded_at": "2026-08-07T22:33:48Z",
+  "failure_ordinal": 7,
+  "stage": "pre_return_development_synthetic_tests",
+  "failed_test_count": 1,
+  "passed_test_count": 6,
+  "cause": "The test referenced purge_signal_sessions_at_each_boundary and entry_and_exit_must_remain_in_partition, while the inherited frozen schema names the same controls purge_signal_sessions_each_boundary and label_containment_required.",
+  "repair": "Change only the two test field names; expected values remain three purged signal sessions and true label containment.",
+  "scientific_boundary": {
+    "runner_preregistration_fold_purge_survivor_or_execution_policy_changed": false,
+    "test_expectation_only_changed": true,
+    "historical_daily_price_or_forward_return_values_read": false,
+    "development_trial_started": false,
+    "stress_2024_2025_opened": false,
+    "provider_request_issued": false,
+    "candidate49_ledgers_changed": false
+  }
+}

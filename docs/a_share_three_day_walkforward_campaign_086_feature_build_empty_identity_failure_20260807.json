@@ -1,0 +1,46 @@
+{
+  "schema_version": 1,
+  "kind": "a_share_three_day_walkforward_campaign086_feature_build_empty_identity_failure",
+  "status": "failed_closed_no_candidate_snapshot_published",
+  "recorded_at": "2026-08-07T01:05:00+08:00",
+  "stage": "campaign086_confirmed_feature_build_2019",
+  "exception": "Campaign086FeatureError: joint-clean/value identity changed for SH600145",
+  "root_cause": {
+    "classification": "implementation_rejected_valid_empty_joint_clean_partition",
+    "evidence": {
+      "symbol": "SH600145",
+      "2019_joint_clean_rows": 0,
+      "other_partition_rows": [
+        126,
+        243,
+        52
+      ],
+      "accepted_joint_clean_partition_count": 33015
+    },
+    "explanation": "The accepted joint-clean manifest legitimately contains empty symbol-year identity partitions. Campaign083's established attachment semantics return an empty attached frame for these partitions, but the frozen Campaign086 v1 attachment guard rejected base.empty."
+  },
+  "output_state": {
+    "final_output_root_exists_after_cleanup": false,
+    "candidate_snapshot_manifest_published": false,
+    "candidate_partition_published": false,
+    "temporary_build_root_retained": false
+  },
+  "authorized_additive_repair": {
+    "scope": "Publish a v2 runner/freeze that returns an empty attached frame when and only when the accepted joint-clean identity partition is empty; change no raw extraction, factor formula, support rule, direction, eligible universe, gate, comparator catalog, or development semantics.",
+    "v1_runner_or_freeze_may_be_rewritten": false,
+    "same_output_run_id_may_be_reused": true,
+    "reason": "No final output root, candidate manifest, or candidate partition was published."
+  },
+  "research_boundary": {
+    "real_minute_source_rows_read": true,
+    "candidate_values_computed_transiently_before_failure": true,
+    "candidate_snapshot_published": false,
+    "comparison_values_read": false,
+    "historical_daily_price_fields_read": [],
+    "historical_forward_returns_read": false,
+    "provider_request_issued": false,
+    "candidate49_historical_return_read": false,
+    "candidate49_ledgers_changed": false,
+    "current_scoring_selection_sizing_or_orders_performed": false
+  }
+}

@@ -1,0 +1,184 @@
+{
+  "version": 1,
+  "kind": "a_share_three_day_iteration_status",
+  "status": "campaign052_terminal_verified_historical_walkforward_ready_for_independent_campaign053",
+  "recorded_at": "2026-08-03T09:02:00Z",
+  "authoritative_predecessor": {
+    "path": "docs/a_share_three_day_iteration_status_20260803_campaign051_verified.json",
+    "sha256": "71d63fa1f47a659e74c0b5a472762ca4be6ee07ea982626b80aad924b883612e"
+  },
+  "research_policy": {
+    "historical_walkforward_policy": {
+      "path": "docs/a_share_three_day_historical_walkforward_research_policy_20260727.json",
+      "sha256": "38426d6161b9bfed323c58caba18feca668b8c9d53e294951a8ba90c01a798bb"
+    },
+    "historical_research_may_run_without_new_daily_bar_or_16_30_wait": true,
+    "historical_results_may_generate_current_scores_selections_sizes_or_orders": false,
+    "historical_results_may_backfill_candidate49": false
+  },
+  "campaign052": {
+    "factor": "quarterly_announcement_delay_consistency_4q",
+    "direction": "higher",
+    "formula": "For the latest four distinct effective reports whose report dates are four consecutive calendar quarter ends, let d_j be the nonnegative integer calendar days from report_date_j to announcement_date_j. Let sigma be the population standard deviation of the four d_j values. Return 1/(1+sigma).",
+    "snapshot": {
+      "path": "/Volumes/DIsk/qlib-a-share-tushare-1m/derived/a_share/rich/tushare/minute_walkforward_campaign052_feature_library/tushare_stk_mins_1m_2019_2025_ea0cbb8f_walkforward_campaign052_feature_library_v1/snapshot_manifest.json",
+      "sha256": "04547981bed8a78438d7988296f1b3887a7d67b6604df555b207fac0b85a26c4",
+      "dataset_sha256": "f9a6f08060c60c2183c587d6008ffa20f76735bdef46a989f02dff6ecba1a30e",
+      "partitions": 33015,
+      "rows": 7724498,
+      "eligible_rows": 6259298,
+      "all_partition_byte_and_frame_hashes_valid": true,
+      "source_fields_read": [
+        "datetime",
+        "symbol",
+        "provider"
+      ],
+      "quarterly_disclosure_fields_read": [
+        "instrument",
+        "report_date",
+        "announcement_date"
+      ],
+      "quarterly_value_fields_read": [],
+      "daily_price_fields_read": [],
+      "forward_return_fields_read": false
+    },
+    "no_return": {
+      "path": "data/experiments/short_horizon/historical_walkforward/campaign_052/no_return/20260803T084328Z_campaign052_no_return_audit.json",
+      "sha256": "47559113a6ea3e9cf52525d5d1440f242d41d764c478ced9d7d51feedc48114c",
+      "status": "completed_zero_admissible_factors_stop_before_historical_returns",
+      "calendar_sessions": 1632,
+      "quality_listing_eligible_rows": 1331759,
+      "candidate_eligible_rows": 1101638,
+      "median_coverage": 0.9603942174559903,
+      "minimum_median_coverage": 0.95,
+      "p05_coverage": 0.0,
+      "minimum_p05_coverage": 0.9,
+      "median_eligible_names": 664.0,
+      "p05_eligible_names": 0.0,
+      "minimum_p05_eligible_names": 50,
+      "potential_three_session_cohorts": 469,
+      "observed_calendar_years": [
+        2020,
+        2021,
+        2022,
+        2023,
+        2024,
+        2025
+      ],
+      "coverage_gate_passed": false,
+      "comparison_factor_count_frozen": 75,
+      "comparison_values_loaded": false,
+      "comparison_correlations_computed": 0,
+      "admissible_factor_count": 0,
+      "historical_daily_price_fields_read": [],
+      "historical_forward_return_fields_read": false
+    },
+    "attempt_accounting": {
+      "ledger": {
+        "path": "data/experiments/short_horizon/historical_walkforward/campaign_052/research_attempt_ledger.json",
+        "sha256": "8f9fb4f16ce2f5df47105a9da7282f7cf5a3b79c28c7d8744844387b1137ac9c"
+      },
+      "prior_historical_research_attempt_count": 296,
+      "campaign052_infrastructure_failure_count": 3,
+      "campaign052_complete_factor_attempt_count": 1,
+      "campaign052_total_attempt_count": 4,
+      "cumulative_historical_research_attempt_count": 300,
+      "campaign052_historical_return_trial_count": 0,
+      "cumulative_return_reading_development_trial_count": 266
+    },
+    "development": {
+      "folds_opened": false,
+      "return_fields_read": false,
+      "trial_count": 0,
+      "selected_survivor_count": 0
+    },
+    "stress_2024_2025": {
+      "status": "not_opened_no_no_return_admissible_factor",
+      "opened": false,
+      "return_fields_read": false
+    },
+    "terminal": {
+      "factor_terminal": true,
+      "terminal_stage": "no_return_coverage_gate_before_comparison_values",
+      "terminal_reason": "p05_coverage_and_p05_eligible_names_failed_due_to_insufficient_four-quarter_history_in_early_sessions",
+      "development_folds_opened": false,
+      "development_return_fields_read": false,
+      "2024_2025_stress_opened": false,
+      "2024_2025_returns_read": false,
+      "shorter_window_later_start_threshold_relaxation_imputation_filter_subset_model_combination_rerun_or_rescue_allowed": false,
+      "next_campaign_must_be_independently_preregistered": true,
+      "new_daily_bar_or_16_30_wait_required_for_next_offline_campaign": false
+    },
+    "authoritative_records": {
+      "research_record": {
+        "path": "docs/a_share_three_day_walkforward_campaign_052_research_record.json",
+        "sha256": "235acc1a982657c1c5858ade52c1fadca6e7a352ea60f95a2721ccd8cb3294f7"
+      },
+      "verification": {
+        "path": "docs/a_share_three_day_walkforward_campaign_052_verification_20260803.json",
+        "sha256": "1d43ad954b0396dc00309d33944dd66a5049c7ac799c6ad66bbd379a2d558ed9"
+      },
+      "unified_report_supersession": {
+        "path": "docs/a_share_three_day_walkforward_campaign_052_unified_report_supersession_20260803.json",
+        "sha256": "13b9b23684de2e026e9b8dca2b0384d8ef059d4f0e855a1eb485ec31aaadf1a3"
+      }
+    }
+  },
+  "cumulative_state": {
+    "cumulative_historical_research_attempt_count_after_campaign052": 300,
+    "cumulative_return_reading_development_trial_count_after_campaign052": 266,
+    "current_historical_aggregation_candidate_count": 0
+  },
+  "local_data_context": {
+    "active_repository_root": "/Volumes/DIsk/Disk-Coding/qlib",
+    "configured_compatibility_root": "/Users/niyufei/Coding/qlib",
+    "configured_compatibility_root_exists": false,
+    "active_daily_data_root": "/Volumes/DIsk/Disk-Coding/qlib/data",
+    "historical_minute_data_root": "/Volumes/DIsk/qlib-a-share-tushare-1m",
+    "local_date": "2026-08-03",
+    "local_weekday": "Monday",
+    "dotenv_path": "/Volumes/DIsk/Disk-Coding/qlib/.env",
+    "dotenv_is_regular_non_symlink_file": true,
+    "dotenv_is_git_ignored": true,
+    "dotenv_mode": "0600",
+    "tushare_token_present": true,
+    "credential_value_printed_hashed_or_persisted_in_records": false,
+    "provider_request_issued_by_campaign052_or_credential_verification": false
+  },
+  "prospective_boundary": {
+    "active_candidate_count": 1,
+    "active_candidate": "Candidate49 intraday_cumulative_vwap_crossing_rate_240m",
+    "candidate49_signal_ledger": {
+      "path": "data/experiments/short_horizon/candidate49_future_signal_ledger.json",
+      "sha256": "5193f00d7f36da003f53cec387900da4c3d002299f5dfcfc1a95eaa199ed3a79",
+      "entry_count": 0
+    },
+    "candidate49_execution_ledger": {
+      "path": "data/experiments/short_horizon/candidate49_future_execution_ledger.json",
+      "sha256": "d57a3e61eac969e42cafa418ccd8c0a5ee65dcf69da145bb2c096c2a02a2ea4f",
+      "entry_count": 0
+    },
+    "candidate49_historical_return_signal_execution_or_milestone_backfill_performed": false,
+    "second_prospective_candidate_activation_allowed": false
+  },
+  "verification_summary": {
+    "binding_records_checked": 3,
+    "all_current_campaign052_bindings_passed": true,
+    "focused_campaign052_tests_passed": 12,
+    "focused_campaign052_tests_failed": 0,
+    "snapshot_partitions_reverified": 33015,
+    "snapshot_rows_reverified": 7724498,
+    "candidate49_ledgers_rehashed_unchanged": true
+  },
+  "next_action": {
+    "historical": "Begin Campaign053 only from a genuinely independent, pre-value-frozen mechanism; offline work may run at any time.",
+    "prospective": "Candidate49 remains the sole prospective candidate and uses only its same-day post-16:30 ready=true workflow.",
+    "strict_prohibitions": [
+      "do not backfill Candidate49 historical returns signals executions or milestones",
+      "do not start a second prospective candidate",
+      "do not shorten the four-quarter window drop early sessions relax coverage impute filter rerun rescue or combine Campaign052",
+      "do not open Campaign052 development folds or 2024-2025 stress",
+      "do not generate current scores selections position sizes orders or investment advice"
+    ]
+  }
+}

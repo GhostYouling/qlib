@@ -1,0 +1,46 @@
+{
+  "schema_version": 1,
+  "kind": "a_share_three_day_walkforward_campaign115_infrastructure_failure",
+  "status": "recorded_failed_closed_before_real_development_source_values",
+  "recorded_at": "2026-08-09T05:53:00+08:00",
+  "recorded_at_semantics": "monotonic_logical_append_time_after_effective_verifier_freeze_v3_not_host_wall_clock_measurement",
+  "stage": "semantic_verifier_focused_synthetic_test",
+  "command": "/Users/niyufei/.cache/codex-runtimes/codex-primary-runtime/dependencies/python/bin/python3 -m pytest -q tests/data_collector_tests/test_a_share_tushare_limit_up_queue_development_verify.py",
+  "result": {
+    "exit_code": 1,
+    "passed": 6,
+    "failed": 1,
+    "failed_test": "test_tiny_source_is_deeply_verified_and_published_once",
+    "root_cause": "The receipt builder required the synthetic temporary source run manifest to be relative to the real repository root, so Path.relative_to raised ValueError after the two-session synthetic source had been semantically verified.",
+    "receipt_published": false
+  },
+  "frozen_inputs": {
+    "protocol_sha256": "4422a3d054746ad9b1f47f18f67e8bb40dfd5c62ecb0223262dd96ba8c7792f6",
+    "effective_freeze_v3_sha256": "7b85daa72ec189b2b60a5f5c09c31de65657ad50d9ffdf5dcb6d44609f57b5e1",
+    "verifier_sha256": "8a245a4326c87e3bf3b566191085aebba18e6d6b407ab5a96b1236560b38738e",
+    "test_sha256": "f2ff76e307edb188b3e654da22da8be05dfe85a0d3996f6fdbaee31424996984"
+  },
+  "authorized_narrow_repair": {
+    "allow_repository_relative_path_for_real_bound_source_and_absolute_path_only_for_explicitly_monkeypatched_synthetic_source": true,
+    "factor_formula_direction_source_session_order_semantic_checks_and_output_authority_change": false,
+    "same_synthetic_parameters_may_be_retried_after_additive_freeze": true
+  },
+  "accounting": {
+    "campaign115_research_attempt_count_increment": 1,
+    "campaign115_infrastructure_failure_count_increment": 1,
+    "campaign115_complete_factor_attempt_count_increment": 0,
+    "return_reading_development_trial_count_increment": 0
+  },
+  "research_boundary": {
+    "real_development_source_candidate_values_read": false,
+    "synthetic_two_session_factor_values_read": true,
+    "comparison_values_read": false,
+    "historical_daily_price_or_forward_return_values_read": false,
+    "stress_2024_2025_opened": false,
+    "provider_request_issued": false,
+    "credential_loaded": false,
+    "candidate49_ledgers_changed": false,
+    "current_scoring_selection_sizing_or_orders_performed": false,
+    "investment_advice": false
+  }
+}

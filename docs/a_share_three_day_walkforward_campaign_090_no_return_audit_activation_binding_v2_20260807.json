@@ -1,0 +1,46 @@
+{
+  "schema_version": 1,
+  "kind": "a_share_three_day_walkforward_campaign090_no_return_audit_activation_binding",
+  "status": "frozen_after_campaign090_coverage_and_first_118_comparison_values_before_final_comparator_or_audit_publication",
+  "recorded_at": "2026-08-07T06:20:00+08:00",
+  "purpose": "Activate the one authorized exact Campaign090 audit retry after binding the final-comparator path repair and the truthful prior exposure state.",
+  "implementation_freeze": {
+    "path": "docs/a_share_three_day_walkforward_campaign_090_no_return_audit_implementation_freeze_v2_20260807.json",
+    "sha256": "3671fd5468cff79b8b311ff4a2d2a85722c07cbd3f1199fb5cc47bb00ef78d73"
+  },
+  "failure_record": {
+    "path": "docs/a_share_three_day_walkforward_campaign_090_no_return_final_comparator_path_failure_20260807.json",
+    "sha256": "d56da92ae0f94ae74b741e661c67cb94b46fb5299d85ca8f4c77a8dae79af019"
+  },
+  "snapshot_binding": {
+    "path": "docs/a_share_three_day_walkforward_campaign_090_feature_snapshot_binding_20260807.json",
+    "sha256": "c2d34eed453c3bcce072088b05e9f5703f33e544641f39707e4cbdd75a54c455"
+  },
+  "candidate_snapshot": {
+    "path": "/Volumes/DIsk/qlib-a-share-tushare-1m/derived/a_share/rich/tushare/minute_walkforward_campaign090_feature_library/tushare_stk_mins_1m_2019_2025_ea0cbb8f_walkforward_campaign090_feature_library_v1/snapshot_manifest.json",
+    "sha256": "c065e81f4eec91b214a3e1f69d8e15e567fac5bd879e173c5b985777ab4ba2ed",
+    "dataset_sha256": "d1da6b2c1d059038e473c55a15c76ba2efaf1a282d5a6bec1f302cd37a76ca31",
+    "rows": 1331759,
+    "eligible_rows": 1328449,
+    "partitions": 7
+  },
+  "research_attempt_ledger": {
+    "path": "data/experiments/short_horizon/historical_walkforward/campaign_090/research_attempt_ledger_v4.json",
+    "sha256": "b3d3174960c197ac05b5ae1e4de43dfc20dca0e3f8f1eb75bf9a762e3fda5c60"
+  },
+  "coverage_or_capacity_metrics_computed_before_activation": true,
+  "comparison_values_read_before_activation": true,
+  "historical_daily_price_or_forward_return_values_read_before_activation": [],
+  "historical_forward_returns_read_before_activation": false,
+  "provider_request_issued_before_activation": false,
+  "research_boundary": {
+    "prior_failed_run_count": 1,
+    "authorized_retry_count": 1,
+    "partial_results_reused": false,
+    "candidate49_historical_backfill_performed": false,
+    "candidate49_ledgers_changed": false,
+    "second_prospective_candidate_created": false,
+    "current_scoring_selection_sizing_or_orders_performed": false
+  },
+  "next_action": "Recompute the entire same frozen audit from immutable inputs. Do not change formula, direction, comparator order, gates, or parameters."
+}

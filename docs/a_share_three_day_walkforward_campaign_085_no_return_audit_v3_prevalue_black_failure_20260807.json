@@ -1,0 +1,25 @@
+{
+  "version": 1,
+  "kind": "a_share_three_day_walkforward_campaign085_no_return_audit_v3_prevalue_validation_failure",
+  "status": "black_check_requires_mechanical_formatting_before_v3_freeze",
+  "recorded_at": "2026-08-07T00:45:00+08:00",
+  "v3_repair_protocol": {
+    "path": "docs/a_share_three_day_walkforward_campaign_085_no_return_audit_repair_protocol_v3_20260807.json",
+    "sha256": "b56abe4bf8af489d0fffbe4c9dedd5adf2243b32417adcb6732e3b095ec6bbe9"
+  },
+  "black_exit_code": 1,
+  "black_result": "runner_would_be_reformatted_tests_unchanged",
+  "ruff_executed": false,
+  "tests_executed": false,
+  "authorized_recovery": "run Black on the two frozen-scope source files, then rerun Black check, Ruff, and all targeted tests before v3 implementation freeze",
+  "candidate_snapshot_values_read": false,
+  "coverage_or_capacity_metrics_computed": false,
+  "comparison_values_read": false,
+  "historical_daily_price_fields_read": [],
+  "historical_forward_returns_read": false,
+  "provider_request_issued": false,
+  "candidate49_ledgers_changed": false,
+  "research_attempt_count_increment": 1,
+  "factor_attempt_count_increment": 0,
+  "development_trial_count_increment": 0
+}

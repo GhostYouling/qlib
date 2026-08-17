@@ -1,0 +1,80 @@
+{
+  "schema_version": 1,
+  "kind": "a_share_three_day_walkforward_campaign106_no_return_implementation_freeze",
+  "status": "frozen_before_campaign106_minute_source_candidate_coverage_or_comparator_values",
+  "recorded_at": "2026-08-07T19:07:31Z",
+  "implementation_version": 2,
+  "version_rationale": "The implementation is a hash-pinned specialization of the already terminal Campaign105 snapshot and audit machinery; version 2 identifies the inherited fail-closed interface without implying an earlier Campaign106 value-bearing implementation.",
+  "protocol": {
+    "path": "docs/a_share_three_day_walkforward_campaign_106_no_return_preregistration.json",
+    "sha256": "933b1f0bea9d092e67ba688d6270983e75e9002f2948f5e01f363d50cc4f2670"
+  },
+  "feature_builder": {
+    "path": "scripts/a_share_three_day_walkforward_campaign106_features.py",
+    "sha256": "a36c5f75e11e0e7b7038379bef5e60637802d7a46ba9064346f2745166b71a58",
+    "frozen_base": {
+      "path": "scripts/a_share_three_day_walkforward_campaign105_features.py",
+      "sha256": "cf151f6f8af55bc219f9ed06512eb138d833352316a958b4a9b1dac05079e4ba"
+    }
+  },
+  "ordered_audit_runner": {
+    "path": "scripts/a_share_three_day_walkforward_campaign106_no_return_audit.py",
+    "sha256": "4326a206cf1f67e7d4bf8375ea190404918d744650d794df6b48acf09a2f801a",
+    "frozen_base": {
+      "path": "scripts/a_share_three_day_walkforward_campaign105_no_return_audit.py",
+      "sha256": "8adbd44b0bcf1054fc21dd75d0ee07c000928f7602b625cacfee748b02405a01"
+    }
+  },
+  "synthetic_tests": [
+    {
+      "path": "tests/data_collector_tests/test_a_share_three_day_walkforward_campaign106_features.py",
+      "sha256": "6106f7b450b88756e35adf29bba5c5d916d11747b3abdc1f04f08ca180568fa6"
+    },
+    {
+      "path": "tests/data_collector_tests/test_a_share_three_day_walkforward_campaign106_no_return_audit.py",
+      "sha256": "41cbea2ad44baa505f470c55c3b6197d875eb484954f546eef90dbe65a2e6505"
+    }
+  ],
+  "verification_before_freeze": {
+    "py_compile": "both entry points compiled",
+    "synthetic_tests": "12 passed, 2 live-freeze checks intentionally deselected",
+    "source_or_candidate_values_read": false,
+    "comparison_values_read": false,
+    "daily_prices_or_forward_returns_read": false
+  },
+  "numeric_comparator_count": 132,
+  "numeric_comparator_order_sha256": "7ed69afd1408e84dcc856583344166ffc9bcbb0add1aed63163b1d12a1be9a25",
+  "complete_definition_count": 135,
+  "complete_definition_order_sha256": "f77f069f07f05bca7b3d478d0e411945a27f6ecf9e8437c02f73900975eb89b3",
+  "frozen_contract": {
+    "candidate": "intraday_nonzero_range_bar_share_240m",
+    "direction": "higher",
+    "source_projection": [
+      "datetime",
+      "symbol",
+      "provider",
+      "high",
+      "low"
+    ],
+    "source_rows_required_per_stock_day": 241,
+    "selected_rows": 240,
+    "zero_range": "valid non-varying bar",
+    "positive_range": "varying bar",
+    "formula": "count(high>low)/240",
+    "minimum_nonzero_range_bar_count": 0,
+    "positive_total_range_required": false,
+    "range_magnitude_used": false,
+    "coverage_before_all_132_comparators": true,
+    "alternate_or_rescue_search_allowed": false
+  },
+  "research_boundary": {
+    "candidate_source_rows_read_before_freeze": false,
+    "candidate_or_comparator_values_read_before_freeze": false,
+    "historical_daily_price_or_forward_return_values_read_before_freeze": false,
+    "provider_request_issued_before_freeze": false,
+    "candidate49_historical_backfill_performed": false,
+    "candidate49_ledgers_changed": false,
+    "current_scoring_selection_sizing_or_orders_performed": false
+  },
+  "next_action": "Run the complete live-freeze test suite and direct status entry points, then build exactly one immutable Campaign106 feature snapshot."
+}

@@ -1,0 +1,176 @@
+{
+  "schema_version": 1,
+  "kind": "a_share_three_day_walkforward_campaign085_mechanism_overlap_audit",
+  "status": "passed_semantic_mechanism_review_before_campaign085_cache_source_or_comparison_values",
+  "recorded_at": "2026-08-06T23:20:00+08:00",
+  "concept_scouting": {
+    "path": "docs/a_share_three_day_walkforward_campaign_085_concept_scouting.json",
+    "sha256": "e8152877ce5434000696d85be127a1b8b306228e3aad3b0efcd54ef324c3f07b"
+  },
+  "authoritative_state": {
+    "path": "docs/a_share_three_day_iteration_status_20260806_campaign084_verified_v3.json",
+    "sha256": "48b59866a0cf777ad05ee8a5f7b7652b460e30db097b1eb3525f2a55b8ac317e"
+  },
+  "historical_walkforward_policy": {
+    "path": "docs/a_share_three_day_historical_walkforward_research_policy_20260727.json",
+    "sha256": "38426d6161b9bfed323c58caba18feca668b8c9d53e294951a8ba90c01a798bb"
+  },
+  "numeric_comparator_policy": {
+    "path": "docs/a_share_three_day_walkforward_future_numeric_comparison_eligibility_policy_v20_20260806.json",
+    "sha256": "4dda0043a129dd6d986dfec75bb032b4df81c3648e01e7109c10cd97cf5d294d",
+    "complete_definition_count": 116,
+    "numeric_comparator_count": 114,
+    "complete_definition_order_sha256": "d30cad0f1e422e3e4ba80392f42316a968511f53593e1826c1c1bb7171d04253",
+    "numeric_comparator_order_sha256": "03a0c534f3bc321d5bc452415e6207026030978c4ac5d433305b04a21db6cea9"
+  },
+  "candidate": {
+    "name": "quarterly_freshness_market_neutral_late_drift_confirmation_product_2r",
+    "direction": "higher",
+    "mechanism": "continuous joint confirmation between the cross-sectional rank of quarterly announcement freshness and the rank of same-day market-neutral late-session residual drift",
+    "formula": "r_freshness * r_late_residual on the exact common finite stock-day cross-section",
+    "old_definition_inputs": [
+      "quarterly_announcement_freshness_60s",
+      "intraday_market_neutral_late_residual_drift_238m"
+    ],
+    "campaign084_factor_used_or_combined": false,
+    "candidate49_used_or_modified": false
+  },
+  "complete_library_review": {
+    "all_116_definitions_reviewed_in_frozen_order": true,
+    "all_terminal_failed_rejected_surviving_and_structurally_nonnumeric_definitions_retained": true,
+    "minute_close_return_ohlc_range_activity_transaction_price_market_peer_daily_event_quarterly_structural_and_composite_families_reviewed": true,
+    "candidate_is_exact_formula_duplicate": false,
+    "candidate_is_direction_only_duplicate": false,
+    "candidate_is_parameter_or_window_only_duplicate": false,
+    "candidate_is_an_inversion_of_a_terminal_factor": false,
+    "candidate_combines_old_terminal_definition_semantics": true,
+    "complete_reused_feature_library_and_single_candidate_search_space_frozen_before_values": true,
+    "old_terminal_records_reclassified_or_rewritten": false,
+    "campaign084_redefined_transformed_lagged_inverted_residualized_filtered_rerun_rescued_or_combined": false,
+    "candidate_changes_any_quality_listing_or_buyability_gate": false,
+    "campaign079_invalid_turnover_mechanism_not_reused": true
+  },
+  "semantic_invariance_checks": [
+    {
+      "intervention": "Hold r_freshness fixed and increase only r_late_residual while identities and all other values remain fixed.",
+      "campaign085_result": "increases proportionally with r_late_residual",
+      "distinguishes_from": "announcement-freshness standalone and all accounting-only event factors"
+    },
+    {
+      "intervention": "Hold r_late_residual fixed and increase only r_freshness while identities and all other values remain fixed.",
+      "campaign085_result": "increases proportionally with r_freshness",
+      "distinguishes_from": "market-neutral late residual drift standalone and all intraday-only factors"
+    },
+    {
+      "intervention": "Make either component rank approach zero while holding the other high.",
+      "campaign085_result": "approaches zero because both recent disclosure and idiosyncratic late confirmation are required",
+      "distinguishes_from": "maximum, sum, arithmetic mean, and either-component substitution rules"
+    },
+    {
+      "intervention": "Apply separate strictly increasing transforms to both finite old-definition inputs before average-tie ranking without changing ties.",
+      "campaign085_result": "unchanged because both frozen components enter only through common-universe ordinal ranks",
+      "distinguishes_from": "raw age-by-return scale products and fitted normalization"
+    },
+    {
+      "intervention": "Hold announcement dates and market-neutral late residuals fixed while changing profit growth, profit acceleration, revenue, ROE, net-profit scale, turnover, and Campaign084 values.",
+      "campaign085_result": "unchanged",
+      "distinguishes_from": "Campaign084 and all accounting quality, transition, turnover, and scale mechanisms"
+    },
+    {
+      "intervention": "Add the same late-session market component to every stock while preserving the frozen market-neutral residual ordering.",
+      "campaign085_result": "unchanged",
+      "distinguishes_from": "raw late return and broad-market late momentum"
+    }
+  ],
+  "nearest_semantic_challenges": [
+    {
+      "name": "quarterly_announcement_freshness_60s",
+      "relationship": "the candidate reuses the exact already-public announcement-age decay meaning",
+      "distinction": "freshness alone can be high without idiosyncratic late price confirmation; Campaign085 is multiplicatively reduced by a weak residual-drift rank",
+      "mandatory_numeric_challenge": true
+    },
+    {
+      "name": "intraday_market_neutral_late_residual_drift_238m",
+      "relationship": "the candidate reuses the exact market-neutral late residual meaning",
+      "distinction": "late residual drift alone can be high far from any recent quarterly disclosure; Campaign085 is multiplicatively reduced by stale announcement rank",
+      "mandatory_numeric_challenge": true
+    },
+    {
+      "name": "late_return_30m and intraday_market_neutral_late_residual_drift_238m",
+      "relationship": "late-session signed price movement family",
+      "distinction": "Campaign085 does not use raw late return and preserves the old market-neutral residual before combining it with an independent disclosure-age rank",
+      "mandatory_numeric_challenge": true
+    },
+    {
+      "name": "quarterly_announcement_timeliness_days, quarterly_announcement_delay_consistency_4q, quarterly_announcement_peer_crowding_sparsity, and quarterly_announcement_delay_improvement_yoy_rank_1y",
+      "relationship": "other quarterly disclosure-timing mechanisms",
+      "distinction": "Campaign085 uses only age since the latest effective disclosure, not reporting delay, delay stability, peer crowding, or year-over-year delay improvement",
+      "mandatory_numeric_challenge": true
+    },
+    {
+      "name": "intraday_market_response_delay_asymmetry_236p, intraday_market_up_down_correlation_asymmetry_238m, intraday_market_shock_magnitude_decoupling_238m, intraday_market_correlation_resolution_119p, intraday_market_dispersion_decoupling_238m, and intraday_market_directional_sign_agreement_238m",
+      "relationship": "market-relative intraday response family",
+      "distinction": "Campaign085 uses one already frozen late-session residual level and an independent event-age rank, not response lag, state asymmetry, resolution, dispersion, or sign agreement",
+      "mandatory_numeric_challenge": true
+    },
+    {
+      "name": "full_terminal_library_directional_percentile_consensus_66f",
+      "relationship": "an existing multi-factor percentile composite",
+      "distinction": "the terminal consensus aggregates 66 broad directional definitions; Campaign085 is a two-input event-confirmation product with a completely frozen and much smaller economic mechanism",
+      "mandatory_numeric_challenge": true
+    },
+    {
+      "name": "quarterly_profit_growth_level_acceleration_floor_2r",
+      "relationship": "the most recent two-rank historical combination",
+      "distinction": "Campaign084 uses a minimum of two profit-growth states and failed due same-quarter acceleration cold start. Campaign085 uses neither profit field nor acceleration, uses a product, and does not alter the 2019 partition or any Campaign084 gate",
+      "mandatory_numeric_challenge": true,
+      "campaign084_anti_rescue_preserved": true
+    },
+    {
+      "name": "all OHLC geometry, activity, transaction-price, daily structural, and accounting definitions",
+      "relationship": "they remain mandatory complete-library comparisons",
+      "distinction": "Campaign085 changes only with the two frozen event-age and market-neutral late-residual inputs and is invariant to their unrelated fields",
+      "mandatory_numeric_challenge": true
+    },
+    {
+      "name": "signal_day_turnover_rate_pct",
+      "relationship": "the prevalue terminal numeric-ineligible definition remains a semantic challenge",
+      "distinction": "raw daily turnover versus a continuous disclosure-age and market-neutral price-confirmation product",
+      "numeric_status": "ineligible_no_values_exist"
+    },
+    {
+      "name": "intraday_cross_sectional_standardized_return_state_stability_236p",
+      "relationship": "the structurally nonnumeric definition remains in the complete semantic library",
+      "distinction": "peer-standardized minute return-state mobility versus a frozen late residual multiplied by disclosure freshness",
+      "mandatory_semantic_challenge": true,
+      "numeric_status": "undefined_not_pass_not_fail"
+    },
+    {
+      "name": "candidate49_intraday_cumulative_vwap_crossing_rate_240m_v1",
+      "relationship": "the sole active prospective candidate remains an isolation challenge",
+      "distinction": "Candidate49 observes future-session cumulative-VWAP crossings. Campaign085 is an offline historical combination and never writes or backfills Candidate49",
+      "candidate49_remains_isolated": true
+    }
+  ],
+  "pre_value_decision": {
+    "economically_independent_enough_to_preregister": true,
+    "numeric_uniqueness_still_required_against_all_114_eligible_comparators": true,
+    "strict_maximum_absolute_median_daily_rank_correlation": 0.8,
+    "minimum_pairwise_names_per_session": 50,
+    "minimum_pairwise_sessions_per_comparison": 100,
+    "drop_residualize_invert_clip_bucket_rank_neutralize_filter_reweight_refit_or_rescue_after_failed_gate_allowed": false
+  },
+  "research_boundary": {
+    "campaign085_cache_or_source_rows_read": false,
+    "campaign085_candidate_values_read": false,
+    "comparison_values_read": false,
+    "historical_daily_price_fields_read": [],
+    "historical_forward_returns_read": false,
+    "provider_request_issued": false,
+    "candidate49_historical_backfill_performed": false,
+    "candidate49_ledgers_changed": false,
+    "second_prospective_candidate_created": false,
+    "current_scoring_selection_sizing_or_orders_performed": false,
+    "investment_advice": false
+  }
+}

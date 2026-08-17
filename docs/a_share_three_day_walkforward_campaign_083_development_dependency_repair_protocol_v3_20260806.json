@@ -1,0 +1,72 @@
+{
+  "schema_version": 1,
+  "version": 3,
+  "kind": "a_share_three_day_walkforward_campaign083_development_dependency_repair_protocol",
+  "status": "frozen_after_second_preload_dependency_and_postfailure_test_failures_before_full_retry",
+  "frozen_at": "2026-08-06T12:50:00Z",
+  "v2_repair_protocol": {
+    "path": "docs/a_share_three_day_walkforward_campaign_083_development_dependency_repair_protocol_v2_20260806.json",
+    "sha256": "9c508e66454dead95a5d94f11933d3477fa644b905afe7ec12e587e62df3b60d"
+  },
+  "new_failure_record": {
+    "path": "docs/a_share_three_day_walkforward_campaign_083_development_dependency_and_postfailure_test_failures_v3_20260806.json",
+    "sha256": "5af62c6e586d977d4f96634898ed5d4e16196cd243ee800c1ff069d5d90b0fdf"
+  },
+  "research_attempt_ledger_after_failures": {
+    "path": "data/experiments/short_horizon/historical_walkforward/campaign_083/research_attempt_ledger_v8.json",
+    "sha256": "aadba1037beec68dc00acad5a6429d49afc9870138477b3634081f0dfd07ca62"
+  },
+  "unchanged_development_runner": {
+    "path": "scripts/a_share_three_day_walkforward_campaign083.py",
+    "sha256": "0a527a67fb4674eefec816f13442f07fa740f90c08a91a33d97db79fd5727640"
+  },
+  "unchanged_preregistration": {
+    "path": "docs/a_share_three_day_walkforward_campaign_083_preregistration.json",
+    "sha256": "13da1fb31d3849bb792b140847018fe44b8760e8c8d02ae1ba6e082ff467f087"
+  },
+  "declared_dependency_only_repair": {
+    "already_installed_and_retained": [
+      "setuptools-scm"
+    ],
+    "install_before_retry": [
+      "ruamel.yaml",
+      "pydantic-settings",
+      "python-redis-lock",
+      "redis",
+      "joblib"
+    ],
+    "all_install_items_declared_by_pyproject": true,
+    "pandas_must_remain": "2.2.2",
+    "pyarrow_must_remain": "16.1.0",
+    "numpy_must_remain": "2.3.5",
+    "scipy_must_remain": "1.15.3",
+    "pip_check_must_pass": true,
+    "qlib_import_must_pass_before_retry": true
+  },
+  "postfailure_test_repair": {
+    "original_test_file_and_freeze_must_be_preserved": true,
+    "new_test_must_require_exact_infrastructure_entry_count": 1,
+    "new_test_must_require_complete_development_trial_count": 0,
+    "new_test_must_require_exact_failure_trial_id": "wf083_infrastructure__development_load_001",
+    "new_test_must_require_closed_stress": true,
+    "test_may_change_campaign_trial_or_gate_semantics": false
+  },
+  "retry": {
+    "partial_market_data_or_statistics_reused": false,
+    "existing_infrastructure_failure_entry_preserved": true,
+    "maximum_authorized_full_development_retries": 1,
+    "restart_from_market_context_load": true,
+    "stress_may_open_only_after_nonzero_development_survivor_record": true
+  },
+  "research_boundary": {
+    "complete_development_trial_count": 0,
+    "market_execution_data_loaded": false,
+    "historical_daily_price_fields_read": [],
+    "historical_forward_returns_read": false,
+    "stress_2024_2025_opened": false,
+    "provider_request_issued": false,
+    "candidate49_historical_backfill_performed": false,
+    "candidate49_ledgers_changed": false,
+    "current_scoring_selection_sizing_or_orders_performed": false
+  }
+}

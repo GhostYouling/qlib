@@ -1,0 +1,58 @@
+{
+  "version": 1,
+  "kind": "a_share_three_day_walkforward_campaign050_feature_build_repair_implementation_freeze",
+  "status": "frozen_before_exact_campaign050_feature_build_resume",
+  "recorded_at": "2026-08-01T08:01:40Z",
+  "purpose": "Bind the additive empty-joint-base repair implementation and regression tests before resuming the exact Campaign050 feature build.",
+  "repair_authorization": {
+    "path": "docs/a_share_three_day_walkforward_campaign_050_feature_build_infrastructure_repair_20260801.json",
+    "sha256": "4e514d9283ffd2e3878aa0b9d7bf0625ca45f3b13b8f08ab006f934667ea5443"
+  },
+  "original_implementation_freeze": {
+    "path": "docs/a_share_three_day_walkforward_campaign_050_feature_implementation_freeze_20260801.json",
+    "sha256": "264c207abe3149d1b4083609a275da26e74d97fcc0bdc8dccde076a1fa847205"
+  },
+  "repair_wrapper": {
+    "path": "scripts/a_share_three_day_walkforward_campaign050_features_v3.py",
+    "sha256": "21f08c6d4e11e7209e17bd4a642fcad400a6f876c1b022656f0ab617a400d41e"
+  },
+  "repair_tests": {
+    "path": "tests/data_collector_tests/test_a_share_three_day_walkforward_campaign050_feature_build_repair.py",
+    "sha256": "faa3d06d9978f5b3c2ac21ca3653e5838999ce2b656cfa786132e588698fb1bd",
+    "passed": 2,
+    "failed": 0
+  },
+  "combined_focused_tests": {
+    "passed": 13,
+    "failed": 0
+  },
+  "repair_semantics": {
+    "only_applies_when_joint_base_schema_is_exact_and_joint_base_rows_equal_zero": true,
+    "canonical_output_rows": 0,
+    "canonical_quality": {
+      "base_rows": 0
+    },
+    "all_nonempty_partitions_delegate_to_frozen_implementation": true,
+    "formula_changed": false,
+    "direction_changed": false,
+    "source_fields_changed": false,
+    "timestamp_half_tie_or_missing_semantics_changed": false,
+    "gate_or_trial_catalog_changed": false
+  },
+  "resume_boundary": {
+    "same_build_parameters_required": true,
+    "hash_validated_partial_checkpoint_reuse_required": true,
+    "provider_request_issued": false,
+    "comparison_values_read": false,
+    "daily_price_fields_read": [],
+    "historical_forward_return_fields_read": false,
+    "candidate49_historical_return_read": false,
+    "candidate49_ledgers_changed": false,
+    "candidate50_prospective_activation_created": false,
+    "current_scoring_selection_sizing_or_orders_performed": false
+  },
+  "decision": {
+    "repair_implementation_frozen": true,
+    "next_action": "Use a final additive fingerprint-bound wrapper and resume the same Campaign050 build command once."
+  }
+}

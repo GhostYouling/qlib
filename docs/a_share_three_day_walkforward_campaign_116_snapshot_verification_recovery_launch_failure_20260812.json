@@ -1,0 +1,24 @@
+{
+  "schema_version": 1,
+  "kind": "a_share_three_day_walkforward_campaign116_snapshot_verification_recovery_launch_failure",
+  "status": "module_search_path_failure_before_partition_values",
+  "recorded_at": "2026-08-12T16:26:35+08:00",
+  "frozen_verifier": {
+    "path": "scripts/a_share_three_day_walkforward_campaign116_snapshot_verify_recovery.py",
+    "sha256": "6ceb3f0dd9ed134bd57545e5d4384ae63da5e5d90ccd330b832ebb477c56208b"
+  },
+  "frozen_implementation_record": {
+    "path": "docs/a_share_three_day_walkforward_campaign_116_snapshot_verification_recovery_implementation_freeze_20260812.json",
+    "sha256": "af2c52130bd5ae79edb932f00ee7d11a9e6067069f43493267e41d2cb794ae66"
+  },
+  "failed_invocation": "/Volumes/DIsk/Coding/anaconda3/bin/python3.12 scripts/a_share_three_day_walkforward_campaign116_snapshot_verify_recovery.py --workers 4 --confirm-verify",
+  "exit_code": 1,
+  "exception": "ModuleNotFoundError: No module named 'scripts'",
+  "classification": "launcher_module_search_path_failure",
+  "partition_values_read": false,
+  "comparator_values_read": false,
+  "historical_daily_price_or_forward_return_values_read": false,
+  "provider_request_issued": false,
+  "allowed_retry": "Run the byte-identical frozen verifier as a repository module with /Volumes/DIsk/Coding/anaconda3/bin/python3.12 -m scripts.a_share_three_day_walkforward_campaign116_snapshot_verify_recovery --workers 4 --confirm-verify.",
+  "code_or_snapshot_change_allowed": false
+}

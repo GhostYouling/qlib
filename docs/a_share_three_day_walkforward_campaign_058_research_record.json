@@ -1,0 +1,154 @@
+{
+  "version": 1,
+  "kind": "a_share_three_day_walkforward_campaign058_research_record",
+  "status": "completed_zero_admissible_factors_stop_before_historical_returns",
+  "recorded_at": "2026-08-04T19:00:00+08:00",
+  "purpose": "Record the sole frozen Campaign058 factor attempt, four infrastructure failures including two terminal-verification failures, the repaired no-return audit, and mandatory termination before all historical daily prices and returns.",
+  "bindings": {
+    "concept_scouting": {
+      "path": "docs/a_share_three_day_walkforward_campaign_058_concept_scouting.json",
+      "sha256": "95b7369402afe3385c0c12d1deea469c1f096a6d92daeaa037c65fda88f6eb90"
+    },
+    "mechanism_overlap_audit": {
+      "path": "docs/a_share_three_day_walkforward_campaign_058_mechanism_overlap_audit.json",
+      "sha256": "226d7535047b0321cf2fece05e63455254b381ae75bac42f3a2d0e184bd5a97f"
+    },
+    "no_return_preregistration": {
+      "path": "docs/a_share_three_day_walkforward_campaign_058_no_return_preregistration.json",
+      "sha256": "e3c04b8f736604dca4adb21de367550bb281d4a156b8f990fa942c8757f8011a"
+    },
+    "feature_implementation_freeze": {
+      "path": "docs/a_share_three_day_walkforward_campaign_058_feature_implementation_freeze_20260804.json",
+      "sha256": "9539219b2a83beb58a3f701b6cae334051d18a2a37cb74778fa3e94c4110c38c"
+    },
+    "empty_partition_build_failure": {
+      "path": "docs/a_share_three_day_walkforward_campaign_058_empty_partition_build_failure_20260804.json",
+      "sha256": "8d7555d79fa0b56762bf2ba8ed0176b8dfbb0eabf4a731e3f009c1398601fda2"
+    },
+    "empty_partition_repair_freeze": {
+      "path": "docs/a_share_three_day_walkforward_campaign_058_empty_partition_repair_freeze_20260804.json",
+      "sha256": "bfa176f5c05a0815268d9f727445e35c6d078adff7020d6053acc5d941e59716"
+    },
+    "feature_snapshot_binding": {
+      "path": "docs/a_share_three_day_walkforward_campaign_058_feature_snapshot_binding_20260804.json",
+      "sha256": "0cf92fd4c788a2250eb6b9359062e92908b7c17663b47732445d28c56cb9cf65"
+    },
+    "no_return_audit_implementation_freeze": {
+      "path": "docs/a_share_three_day_walkforward_campaign_058_no_return_audit_implementation_freeze_20260804.json",
+      "sha256": "ad4510111185aa37c43a12256f2b9801f4044a7c0e608369fb6ced87846fcccf"
+    },
+    "candidate_range_binding_failure": {
+      "path": "docs/a_share_three_day_walkforward_campaign_058_no_return_audit_candidate_range_binding_failure_20260804.json",
+      "sha256": "4076ae740e68ef30b2256d96bd0acf59f1d1656f0f136b88a5cf3b34291d99fa"
+    },
+    "candidate_range_repair_freeze": {
+      "path": "docs/a_share_three_day_walkforward_campaign_058_no_return_audit_range_repair_freeze_20260804.json",
+      "sha256": "f3713a2bec1dd89c8430171f88dc5b6a5a17c299e6f61c83602b263c79f0d9c3"
+    },
+    "completed_no_return_audit": {
+      "path": "data/experiments/short_horizon/historical_walkforward/campaign_058/20260804T105439Z_campaign058_no_return_audit.json",
+      "sha256": "df9c2ec09d6162ffa2ba4190f5c1141258a9769203cd7b4e297f8977f779b5b8"
+    },
+    "research_attempt_ledger": {
+      "path": "data/experiments/short_horizon/historical_walkforward/campaign_058/research_attempt_ledger.json",
+      "sha256": "6208a9061c2453c42b3983a58ed2498c89f6824c1db09a15f175fee14fd55a51"
+    }
+  },
+  "factor_definition": {
+    "factor": "quarterly_profit_revenue_growth_spread_pp",
+    "direction": "higher",
+    "formula": "profit_yoy_state_t - revenue_yoy_state_t",
+    "quarterly_source_fields": [
+      "instrument",
+      "report_date",
+      "announcement_date",
+      "revenue_yoy",
+      "profit_yoy"
+    ],
+    "minute_grid_identity_fields": [
+      "datetime",
+      "symbol",
+      "provider"
+    ],
+    "minute_price_volume_amount_or_activity_fields_read": [],
+    "point_in_time_semantics": "An announcement becomes usable on the first accepted session strictly after announcement_date; rows are sorted and deduplicated, revenue_yoy and profit_yoy are independently forward-filled per instrument, and no backfill or cross-instrument fill is allowed.",
+    "parameter_search_performed": false,
+    "filter_subset_combination_or_model_search_performed": false
+  },
+  "snapshot_result": {
+    "manifest_path": "/Volumes/DIsk/qlib-a-share-tushare-1m/derived/a_share/rich/tushare/minute_walkforward_campaign058_feature_library/tushare_stk_mins_1m_2019_2025_ea0cbb8f_walkforward_campaign058_feature_library_v1/snapshot_manifest.json",
+    "manifest_sha256": "c5bf57a70a2af71f30be87eec254710db65550f5dd7e041f219e862b4d97c00f",
+    "dataset_sha256": "59fb5ed46c76a4737bbc60de9707f7f3b10223b692de4f4a88fec4143891cd4c",
+    "partitions": 33015,
+    "rows": 7724498,
+    "eligible_rows": 7231483,
+    "missing_or_nonfinite_rows": 493015,
+    "all_partition_byte_and_frame_hashes_valid": true
+  },
+  "no_return_result": {
+    "audit_exit_code": 0,
+    "audit_workers": 4,
+    "candidate_eligible_rows_after_quality_and_listing_gates": 1330171,
+    "quality_and_listing_eligible_rows": 1331759,
+    "median_coverage": 0.9994517542211769,
+    "p05_coverage": 0.9956886515772271,
+    "p05_eligible_names": 138.0,
+    "potential_non_overlapping_three_session_cohorts": 540,
+    "observed_calendar_years": [2019, 2020, 2021, 2022, 2023, 2024, 2025],
+    "coverage_gate_passed": true,
+    "comparison_factor_count": 89,
+    "comparison_order_sha256": "c4100bc923fad2ea5fb8898ccb102afe44307c8ab03ee2df8b0972d9b71bbbc1",
+    "comparison_order_matches_preregistration": true,
+    "failed_comparisons": [
+      {
+        "factor": "quality_profit",
+        "median_daily_rank_correlation": 0.8170091742276029,
+        "absolute_median_daily_rank_correlation": 0.8170091742276029,
+        "pairwise_sessions": 1623,
+        "minimum_pairwise_names_observed": 52,
+        "daily_rank_correlation_p05": 0.7511156217799742,
+        "daily_rank_correlation_p95": 0.8946954817902469
+      }
+    ],
+    "maximum_absolute_median_daily_rank_correlation": 0.8170091742276029,
+    "absolute_uniqueness_limit": 0.8,
+    "uniqueness_gate_passed": false,
+    "admissible_factor_count": 0
+  },
+  "decision": {
+    "development_folds_opened": false,
+    "development_return_fields_read": false,
+    "development_trial_count": 0,
+    "development_survivor_count": 0,
+    "2024_2025_stress_opened": false,
+    "2024_2025_returns_read": false,
+    "factor_terminal": true,
+    "factor_may_be_inverted_repaired_reanchored_renormalized_rewindowed_rescaled_filtered_thresholded_rerun_rescued_modeled_or_combined": false
+  },
+  "append_only_attempt_accounting": {
+    "historical_research_attempt_count_before_campaign058": 328,
+    "campaign058_infrastructure_only_failure_count": 4,
+    "campaign058_complete_factor_attempt_count": 1,
+    "campaign058_total_attempt_count": 5,
+    "cumulative_historical_research_attempt_count": 333,
+    "campaign058_historical_return_trial_count": 0,
+    "cumulative_return_reading_development_trial_count": 268
+  },
+  "prospective_boundary": {
+    "candidate49_signal_ledger_sha256": "5193f00d7f36da003f53cec387900da4c3d002299f5dfcfc1a95eaa199ed3a79",
+    "candidate49_execution_ledger_sha256": "d57a3e61eac969e42cafa418ccd8c0a5ee65dcf69da145bb2c096c2a02a2ea4f",
+    "candidate49_signal_entry_count": 0,
+    "candidate49_execution_entry_count": 0,
+    "candidate49_historical_backfill_performed": false,
+    "second_prospective_candidate_created": false,
+    "provider_request_issued_by_campaign058": false,
+    "candidate49_20260804_source_failure_record": {
+      "path": "docs/a_share_candidate49_20260804_daily_source_failure_record.json",
+      "sha256": "aab0191d4fb8c82d485cf0753ecf2ab2c19472cac9a01159dfd7376c6e012682"
+    },
+    "candidate49_20260804_provider_failure_was_independent_of_campaign058": true,
+    "current_scoring_selection_sizing_or_orders_performed": false
+  },
+  "data_limitation": "The eligible universe derives from a current listing snapshot and can contain survivorship bias. Campaign058 read no historical daily price or forward return and establishes no predictive return claim.",
+  "next_boundary": "Campaign059 may begin offline only from a genuinely independent pre-value-frozen mechanism. Candidate49 remains the sole prospective candidate under its separate same-day workflow."
+}

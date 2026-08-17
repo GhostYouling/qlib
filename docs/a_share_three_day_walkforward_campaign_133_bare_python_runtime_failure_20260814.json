@@ -1,0 +1,22 @@
+{
+  "schema_version": 1,
+  "kind": "a_share_three_day_walkforward_campaign133_infrastructure_failure",
+  "attempt_id": "campaign133_infrastructure_001",
+  "status": "recorded_prevalue_runtime_selection_failure",
+  "recorded_at": "2026-08-14T01:58:30.893594+00:00",
+  "stage": "read_only_campaign132_design_constant_inspection",
+  "command_boundary": "A bare python3 import of the Campaign132 design helper used the system Python 3.9 runtime and failed because datetime.UTC is unavailable there.",
+  "error_type": "ImportError",
+  "error_summary": "The wrong interpreter was selected before the read-only helper body could report its constants.",
+  "repair_boundary": "Use the repository's frozen /Volumes/DIsk/Coding/anaconda3/bin/python3.12 runtime for subsequent local inspection and tests; do not change any scientific formula, gate or frozen Campaign132 byte.",
+  "research_boundary": {
+    "campaign133_component_or_candidate_values_read": false,
+    "campaign133_comparator_values_read": false,
+    "historical_daily_price_or_forward_return_values_read": false,
+    "stress_2024_2025_opened": false,
+    "provider_credential_loaded": false,
+    "provider_request_issued": false,
+    "candidate49_ledgers_changed": false,
+    "current_scoring_selection_sizing_positions_or_orders_performed": false
+  }
+}

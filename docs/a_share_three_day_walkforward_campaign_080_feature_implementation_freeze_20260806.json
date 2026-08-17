@@ -1,0 +1,63 @@
+{
+  "schema_version": 1,
+  "kind": "a_share_three_day_walkforward_campaign080_feature_implementation_freeze",
+  "status": "frozen_before_campaign080_minute_source_values",
+  "frozen_at": "2026-08-06T15:35:00+08:00",
+  "protocol": {
+    "path": "docs/a_share_three_day_walkforward_campaign_080_no_return_preregistration.json",
+    "sha256": "4f1061d0daaec767d926cda79762c3c70806b84e55c28c4d198918547df3c0f5"
+  },
+  "mechanism_overlap_audit": {
+    "path": "docs/a_share_three_day_walkforward_campaign_080_mechanism_overlap_audit.json",
+    "sha256": "d9dcaa373994f72258dcea37a550258bd2aeac856250bb1693be44effb110b65"
+  },
+  "prevalue_test_failure_record": {
+    "path": "docs/a_share_three_day_walkforward_campaign_080_prevalue_test_failure_20260806.json",
+    "sha256": "284c92f601e62cbfae61175fdb7bc856e1cfbcca9144a80788e26c4100b5f3bd"
+  },
+  "feature_runner": {
+    "path": "scripts/a_share_three_day_walkforward_campaign080_features.py",
+    "sha256": "84e3e41111b3a20d12fa07d5643881d8f527c5ace9b0872089affb9a0d6d86c7"
+  },
+  "tests": {
+    "path": "tests/data_collector_tests/test_a_share_three_day_walkforward_campaign080_features.py",
+    "sha256": "bdb18d80471f9d02b5a1247f12d58eda07aa5cccf00224ec93d075fe60f1e776",
+    "synthetic_nonfreeze_tests_passed_before_freeze": 5,
+    "synthetic_nonfreeze_tests_failed_after_fixture_correction": 0
+  },
+  "frozen_semantics": {
+    "factor": "intraday_above_median_amount_longest_run_240m",
+    "direction": "higher",
+    "selected_bar_count": 240,
+    "half_session_bar_count": 120,
+    "median_order_statistics_one_indexed": [
+      120,
+      121
+    ],
+    "strict_state_rule": "amount greater than ordinary full-session median",
+    "lunch_boundary_is_hard_break": true,
+    "maximum_run_length": 120,
+    "score_denominator": 120,
+    "valid_range": [
+      0.0,
+      1.0
+    ],
+    "numeric_comparator_count": 109,
+    "numeric_comparator_order_sha256": "0893e0ff54c0094e48e67def84f0038a453fd11230629631e3e54120480a3529",
+    "complete_definition_count": 111,
+    "complete_definition_order_sha256": "14479cf55ceab31f6705fc12b1e103d9da41f8b07f27ffdf4b87e63cac36ffdb"
+  },
+  "research_boundary": {
+    "candidate_source_rows_read_before_freeze": false,
+    "candidate_historical_values_computed_before_freeze": false,
+    "comparison_values_read_before_freeze": false,
+    "historical_daily_price_fields_read_before_freeze": [],
+    "historical_forward_returns_read_before_freeze": false,
+    "provider_request_issued_before_freeze": false,
+    "candidate49_historical_backfill_performed": false,
+    "candidate49_ledgers_changed": false,
+    "second_prospective_candidate_created": false,
+    "current_scoring_selection_sizing_or_orders_performed": false
+  },
+  "next_action": "Run the full feature test suite; only if it passes may the immutable local minute and stock-day identity projections be opened exactly once to build the Campaign080 snapshot."
+}

@@ -1,0 +1,68 @@
+{
+  "version": 1,
+  "kind": "a_share_three_day_walkforward_campaign072_feature_implementation_freeze",
+  "status": "frozen_after_synthetic_tests_before_candidate_snapshot_values",
+  "recorded_at": "2026-08-06T06:02:00+08:00",
+  "protocol": {
+    "path": "docs/a_share_three_day_walkforward_campaign_072_no_return_preregistration.json",
+    "sha256": "32f16b1e8e07b0d60aa6646f66c52740e330fa02ef631803fb68b55a7e79cc98"
+  },
+  "mechanism_overlap_audit": {
+    "path": "docs/a_share_three_day_walkforward_campaign_072_mechanism_overlap_audit.json",
+    "sha256": "b02f240a66ed271fdd05cf75eb325c8c69a6f996749db8e708edc65aba1280ae"
+  },
+  "numeric_comparison_policy": {
+    "path": "docs/a_share_three_day_walkforward_future_numeric_comparison_eligibility_policy_v6_20260806.json",
+    "sha256": "b24c643d086a73e66844a0e988d65a46aff2f82986c544515422119dd19d7242"
+  },
+  "feature_runner": {
+    "path": "scripts/a_share_three_day_walkforward_campaign072_features.py",
+    "sha256": "0bb7261d08fc03b6e907e51ba092b98f62fe7d049ea61a27394f0b6329187631"
+  },
+  "frozen_semantics": {
+    "factor": "quarterly_joint_profit_revenue_growth_floor_rank",
+    "direction": "higher",
+    "formula": "rank_pct(min(profit_yoy,revenue_yoy)) on the exact common finite two-field stock-day universe",
+    "quarterly_source_fields": [
+      "instrument",
+      "report_date",
+      "announcement_date",
+      "profit_yoy",
+      "revenue_yoy"
+    ],
+    "availability": "first accepted session strictly after announcement_date",
+    "state": "independent per-field finite forward fill after availability; never backfill",
+    "combination_before_rank": "raw minimum with no fitted coefficient or alternative operator",
+    "cross_section": "same-day average-tie percentile rank",
+    "valid_range": "(0,1]",
+    "full_definition_count": 103,
+    "full_definition_order_sha256": "eaef28a5c755176045dfe09ef73e1030bc35b16cf92738f691c450c3af02db0f",
+    "numeric_comparator_count": 102,
+    "numeric_comparator_order_sha256": "b473b8e32852dbbd1ca6beeb567805af55b77ec2e91222ec3e75e4bd64a64226"
+  },
+  "synthetic_test_receipt": {
+    "path": "tests/data_collector_tests/test_a_share_three_day_walkforward_campaign072_features.py",
+    "sha256": "24c18410a214aa6ae38ec2efe8f659a151a1f7ce821a5ecd7c469ecf233b4138",
+    "exit_code": 0,
+    "passed": 4,
+    "failed": 0,
+    "verified": [
+      "complete 102-comparator order and Campaign071 final position",
+      "strict-next-session activation",
+      "independent per-field forward fill",
+      "raw minimum before cross-sectional rank",
+      "missing and value-range semantics",
+      "closed daily-price forward-return provider and Candidate49 boundaries"
+    ]
+  },
+  "research_boundary": {
+    "candidate_snapshot_values_read_before_this_freeze": false,
+    "comparison_values_read": false,
+    "historical_daily_price_fields_read": [],
+    "historical_forward_returns_read": false,
+    "provider_request_issued": false,
+    "candidate49_ledgers_changed": false,
+    "current_scoring_selection_sizing_or_orders_performed": false
+  },
+  "next_action": "Run status, then build the one hash-bound Candidate072 snapshot exactly once; no-return coverage remains the next ordered evidence gate."
+}

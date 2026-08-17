@@ -1,0 +1,67 @@
+{
+  "schema_version": 1,
+  "revision": 3,
+  "kind": "a_share_three_day_walkforward_campaign132_development_implementation_freeze_v3",
+  "status": "frozen_before_first_campaign132_v3_model_fit_and_return_open",
+  "recorded_at": "2026-08-14T09:41:00+08:00",
+  "campaign": 132,
+  "recovery_scope": "Bind untouched v1 and v2 runners, audit every frozen v1 design-module attribute reference, retain feature_names compatibility, and reproduce the design builder's exact finite-count support state; no scientific definition changes.",
+  "protocol": {
+    "path": "docs/a_share_three_day_walkforward_campaign_132_preregistration_20260814.json",
+    "sha256": "b4c3f6b3a69506c8a8f5ee71ffe05e487af0f71ae2b104adb3a79b2efc4ac0be"
+  },
+  "design_manifest": {
+    "path": "/Volumes/DIsk/qlib-a-share-tushare-1m/derived/a_share/rich/tushare/minute_walkforward_campaign132_design_matrix/tushare_stk_mins_1m_2019_2025_ea0cbb8f_walkforward_campaign132_numeric140_design_v1/snapshot_manifest.json",
+    "sha256": "043c17fea89f3b0956d643a7c6e3f4d73a11403b967213d2d57539a6a8316a49",
+    "dataset_sha256": "12ce3a64b5e13581392ded9890e2064db4ccca3945da3eb8ad7752c95366a9fc"
+  },
+  "design_audit": {
+    "path": "data/experiments/short_horizon/historical_walkforward/campaign_132/no_return/design_structural_audit.json",
+    "sha256": "86bb53552caf6f6d8f1fad688d2f3a7e39c75827f968bb1ee1510fff2394deec"
+  },
+  "frozen_v1_runner": {
+    "path": "scripts/a_share_three_day_walkforward_campaign132.py",
+    "sha256": "ba181f6c154cfde2066e501e7a67bc68f327ecc6ecc146dd8747cbcfa78e1a93",
+    "changed_by_v3": false
+  },
+  "frozen_v2_runner": {
+    "path": "scripts/a_share_three_day_walkforward_campaign132_v2.py",
+    "sha256": "58743be5f89226939c7fa79fe7fa30cf953d01b4c5ed924e2dd35e805002559f",
+    "changed_by_v3": false
+  },
+  "runner": {
+    "path": "scripts/a_share_three_day_walkforward_campaign132_v3.py",
+    "sha256": "d2c22b1a9ca49768023c58f2bdf3118a8de53fa5f385476c8dcb8ee035e51ba2"
+  },
+  "tests": {
+    "path": "tests/data_collector_tests/test_a_share_three_day_walkforward_campaign132_v3.py",
+    "sha256": "48beacafe5972c7ac942513c791191803a774c220e56e17739e43aadde6f8661",
+    "combined_v1_v2_v3_result": "12 passed in 3.94s",
+    "all_frozen_v1_design_attribute_references_resolved": true,
+    "support_boundary_105_passes_104_fails": true
+  },
+  "v2_failure": {
+    "path": "docs/a_share_three_day_walkforward_campaign_132_v2_development_support_state_failure_20260814.json",
+    "sha256": "1ac48281f2bcafb44799349b5cef45f807b695532bb85ffcbd3ee886c1186e93",
+    "failed_output_root": "data/experiments/short_horizon/historical_walkforward/campaign_132/walkforward_v2",
+    "failed_output_root_reused": false
+  },
+  "v3_output_root": "data/experiments/short_horizon/historical_walkforward/campaign_132/walkforward_v3",
+  "trial_catalog_unchanged": true,
+  "model_configuration_unchanged": true,
+  "feature_library_order_and_support_unchanged": true,
+  "folds_costs_gates_and_lockbox_boundary_unchanged": true,
+  "prevalue_concept_attempts": 6,
+  "cumulative_infrastructure_failures_before_v3_run": 10,
+  "v1_and_v2_training_or_validation_returns_may_have_been_read": true,
+  "v1_and_v2_model_fit_performed": false,
+  "v3_model_fit_before_freeze": false,
+  "v3_training_or_validation_return_read_before_freeze": false,
+  "lockbox_2024_2025_return_read_before_freeze": false,
+  "provider_request_issued_before_freeze": false,
+  "credential_loaded_before_freeze": false,
+  "candidate49_historical_backfill_performed_before_freeze": false,
+  "candidate49_ledgers_changed_before_freeze": false,
+  "current_scoring_selection_sizing_or_orders_performed_before_freeze": false,
+  "investment_advice": false
+}

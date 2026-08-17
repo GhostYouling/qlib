@@ -1,0 +1,29 @@
+{
+  "version": 1,
+  "kind": "a_share_three_day_walkforward_campaign085_no_return_audit_prevalue_failure",
+  "status": "lint_failed_before_tests_then_equivalent_repair_and_four_tests_passed",
+  "recorded_at": "2026-08-07T00:02:00+08:00",
+  "failure": {
+    "stage": "no_return_audit_prevalue_format_lint_and_test",
+    "outcome": "ruff_stopped_before_tests_on_two_redundant_len_integer_casts",
+    "research_attempt_count_increment": 1,
+    "coverage_or_capacity_metrics_computed": false,
+    "candidate_snapshot_values_read": false,
+    "comparison_values_read": false,
+    "historical_daily_price_or_return_values_read": false,
+    "provider_request_issued": false
+  },
+  "successful_continuation": {
+    "equivalent_redundant_casts_removed": true,
+    "audit_runner_sha256": "617eb8fffe1c657cc0cdbbb32d733897ad7a6bc37a1e0846f4ac2884df84a3dd",
+    "tests_sha256": "4738a9d6051761b099356560a4f0bb6218356e1aa767135ff9b48db0997c9c1e",
+    "black_and_ruff_passed": true,
+    "tests_passed": 4,
+    "tests_failed": 0,
+    "coverage_or_capacity_metrics_computed": false,
+    "candidate_snapshot_values_read": false,
+    "comparison_values_read": false,
+    "historical_daily_price_or_return_values_read": false,
+    "provider_request_issued": false
+  }
+}

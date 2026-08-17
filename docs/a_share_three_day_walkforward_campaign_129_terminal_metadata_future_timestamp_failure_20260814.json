@@ -1,0 +1,28 @@
+{
+  "schema_version": 1,
+  "kind": "a_share_three_day_walkforward_campaign129_infrastructure_failure",
+  "status": "recorded_terminal_metadata_timestamp_ahead_of_observed_wall_time",
+  "recorded_at": "2026-08-14T07:29:00+08:00",
+  "stage": "campaign129_terminal_artifact_binding_audit",
+  "observed_wall_time_during_hash_collection": "2026-08-14T07:28:57+08:00",
+  "affected_preserved_artifacts": [
+    {
+      "path": "docs/a_share_three_day_walkforward_campaign_129_terminal_result_v3_20260814.json",
+      "recorded_at": "2026-08-14T07:29:00+08:00",
+      "sha256": "649bb92b3051199f264252799458c685bdecf6906c76e2816a9d019aa2d30522"
+    },
+    {
+      "path": "docs/a_share_three_day_walkforward_future_numeric_comparison_eligibility_policy_v146_20260814.json",
+      "recorded_at": "2026-08-14T07:30:00+08:00",
+      "sha256": "c25f50cced3a831184e61fb70710b4d0387202f285503f796c57381051883517"
+    }
+  ],
+  "correction_rule": "Do not rewrite either artifact. Append this failure, retain content hashes and ordering evidence, and issue superseding accounting records with a non-future recorded_at label.",
+  "failure_handling": {
+    "future_timestamp_treated_as_valid_publication_evidence": false,
+    "affected_artifact_rewritten": false,
+    "scientific_result_changed": false,
+    "source_candidate_comparator_price_or_return_value_read": false,
+    "candidate49_ledger_changed": false
+  }
+}

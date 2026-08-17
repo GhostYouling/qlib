@@ -1,0 +1,72 @@
+{
+  "schema_version": 1,
+  "kind": "a_share_three_day_walkforward_campaign104_prevalue_terminal_result",
+  "status": "terminal_zero_independent_candidates_before_source_candidate_comparison_or_return_values",
+  "recorded_at": "2026-08-07T17:18:02Z",
+  "authoritative_predecessor": {
+    "path": "docs/a_share_three_day_iteration_status_20260808_campaign103_terminal_v2.json",
+    "sha256": "7d1aa661066c7445bb9e2e2b984e8b2b9042f1b044f3b9defc30d69e7e52a4e2"
+  },
+  "campaign104_records": {
+    "concept_scouting": {
+      "path": "docs/a_share_three_day_walkforward_campaign_104_concept_scouting.json",
+      "sha256": "7494d65bc23b0d6b9f2d158695479c832b6bc7df3ffeea6d2fc095babcd4329a"
+    },
+    "mechanism_frontier_audit": {
+      "path": "docs/a_share_three_day_walkforward_campaign_104_mechanism_frontier_audit.json",
+      "sha256": "16a61ec45f48202f031272c94b106a2d5c5db68275ce3bdfe2b263c096e2e3be"
+    },
+    "infrastructure_failures": {
+      "path": "docs/a_share_three_day_walkforward_campaign_104_prevalue_infrastructure_failures_20260808.json",
+      "sha256": "5a29bdbe1249b2d1cc98b1ba6e37befd0b574bbc6e9306213122af37f2a60f44"
+    },
+    "research_attempt_ledger": {
+      "path": "data/experiments/short_horizon/historical_walkforward/campaign_104/research_attempt_ledger_v1.json",
+      "sha256": "85cedd5276919071227e996182190662af11a6b9a97ef99eb804b18966518d62",
+      "entry_count": 7,
+      "chain_tip_sha256": "9d8f3610da3bd044cf41abf7f16c12498f7f210caf620fa31aed694148fad9a6"
+    }
+  },
+  "scientific_result": {
+    "finite_concepts_reviewed": 5,
+    "genuinely_independent_candidate_count": 0,
+    "frozen_numeric_factor_definition_count": 0,
+    "candidate_source_rows_read": false,
+    "candidate_values_computed_or_read": false,
+    "comparison_values_read": false,
+    "coverage_or_uniqueness_audit_count": 0,
+    "development_trial_count": 0,
+    "stress_trial_count": 0,
+    "development_survivor_count": 0,
+    "historical_predictive_value_established": false,
+    "terminal": true
+  },
+  "accounting": {
+    "campaign104_attempt_count": 7,
+    "campaign104_infrastructure_failure_count": 6,
+    "campaign104_prevalue_scientific_attempt_count": 1,
+    "campaign104_complete_factor_attempt_count": 0,
+    "campaign104_return_reading_development_trial_count": 0,
+    "cumulative_historical_research_attempt_count": 775,
+    "cumulative_return_reading_development_trial_count": 299
+  },
+  "unchanged_library": {
+    "complete_definition_count": 134,
+    "complete_definition_order_sha256": "db734b25fed4046ff80a276448daf20918d410125ebae941373c5617816cf8dc",
+    "numeric_comparator_count": 131,
+    "numeric_comparator_order_sha256": "ab56a1791ae9a74b75d0a32cfb2346aa4bb6bfe266589be65825f8f51422f646",
+    "reason": "Campaign104 created no complete formula or numeric snapshot; rejected scouting concepts are recorded as failed proposals, not appended factor definitions."
+  },
+  "research_boundary": {
+    "historical_daily_price_fields_read": [],
+    "historical_forward_returns_read": false,
+    "stress_2024_2025_opened": false,
+    "provider_request_issued": false,
+    "candidate49_historical_backfill_performed": false,
+    "candidate49_ledgers_changed": false,
+    "second_prospective_candidate_created": false,
+    "current_scoring_selection_sizing_or_orders_performed": false,
+    "investment_advice": false
+  },
+  "next_action": "Freeze an unchanged-order v62 policy, then begin Campaign105 only from a genuinely independent mechanism or a separately accepted source whose schema identifies a new economic state before any values."
+}

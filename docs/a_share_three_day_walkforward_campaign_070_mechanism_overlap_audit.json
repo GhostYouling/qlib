@@ -1,0 +1,170 @@
+{
+  "version": 1,
+  "kind": "a_share_three_day_walkforward_campaign070_mechanism_overlap_audit",
+  "status": "passed_conceptual_independence_before_campaign070_source_candidate_comparison_daily_price_or_return_values",
+  "recorded_at": "2026-08-06T04:31:00+08:00",
+  "purpose": "Challenge the selected same-fiscal-quarter announcement-delay improvement rank against the complete 101-definition terminal library before any Campaign070 source row or value is read.",
+  "authoritative_boundary": {
+    "latest_verified_state": {
+      "path": "docs/a_share_three_day_iteration_status_20260806_campaign069_verified.json",
+      "sha256": "48a02bd6a0e16901c30f14e2d0465d31d2bb19a319b07850c25c59fd86993e85"
+    },
+    "numeric_comparison_policy": {
+      "path": "docs/a_share_three_day_walkforward_future_numeric_comparison_eligibility_policy_v3_20260806.json",
+      "sha256": "afdb235a9aac5d6cde01b5e4edf57cdd3da15fd3adac035c69f284408bead913"
+    },
+    "concept_scouting": {
+      "path": "docs/a_share_three_day_walkforward_campaign_070_concept_scouting.json",
+      "sha256": "2d81306044649c5a77ad5ca3a21d96e0b2a59c223fccad5c42e1546bb202f08b"
+    }
+  },
+  "complete_definition_inventory": {
+    "complete_definition_count": 101,
+    "complete_definition_order_sha256": "0bc65c0bcae2dd089ceb8c67ea606be483673caac5cbce4ce9dc9e89b04fd124",
+    "numeric_comparator_count": 100,
+    "numeric_comparator_order_sha256": "d1c58576dcdef7980c279426f135440d05f8484d2f42d4b4866539b963a0b7ee",
+    "structurally_nonnumeric_definition": "intraday_cross_sectional_standardized_return_state_stability_236p",
+    "campaign069_appended_exactly_once": true,
+    "all_old_definitions_frozen_before_candidate_values": true,
+    "old_factor_or_cache_values_read": false
+  },
+  "selected_mechanism": {
+    "name": "quarterly_announcement_delay_improvement_yoy_rank_1y",
+    "direction": "higher",
+    "economic_hypothesis": "A positive same-quarter year-over-year filing-delay improvement represents lower issuer-specific reporting friction that may remain under-reflected over three sessions.",
+    "formula": "Average-tie percentile rank of prior-year same-quarter announcement delay minus current announcement delay, after exact event matching and strict-next-session activation.",
+    "source_fields": [
+      "instrument",
+      "report_date",
+      "announcement_date"
+    ],
+    "financial_value_fields_read": [],
+    "fit_threshold_filter_subset_or_model": "none"
+  },
+  "overlap_challenges": [
+    {
+      "family": "announcement_freshness_and_delay_level",
+      "definitions": [
+        "quarterly_announcement_freshness_60s",
+        "quarterly_announcement_timeliness_days"
+      ],
+      "result": "distinct_transition_pending_mandatory_statistical_uniqueness",
+      "reason": "Freshness is stock-day age since the latest disclosure and timeliness is current raw delay. Campaign070 removes issuer-specific same-quarter prior-year delay and ranks only the improvement transition. Equal current delay can have different improvements and vice versa."
+    },
+    {
+      "family": "announcement_delay_consistency",
+      "definitions": [
+        "quarterly_announcement_delay_consistency_4q"
+      ],
+      "result": "distinct_pending_mandatory_statistical_uniqueness",
+      "reason": "Campaign052 measures dispersion across four consecutive report delays and is invariant to their order. Campaign070 uses exactly one current/prior-year same-quarter signed difference and preserves whether delay shortened."
+    },
+    {
+      "family": "announcement_peer_crowding",
+      "definitions": [
+        "quarterly_announcement_peer_crowding_sparsity"
+      ],
+      "result": "distinct_pending_mandatory_statistical_uniqueness",
+      "reason": "Peer crowding depends on how many issuers share the exact announcement date. Campaign070 ignores peer counts and compares only the issuer's own matched fiscal-quarter delay transition."
+    },
+    {
+      "family": "quality_levels_changes_accelerations_and_rank_combinations",
+      "definitions": [
+        "quality_roe",
+        "quality_profit",
+        "quality_revenue",
+        "quality_growth",
+        "quality_score",
+        "roe_change",
+        "revenue_yoy_acceleration",
+        "profit_yoy_acceleration",
+        "quarterly_profit_revenue_growth_spread_pp",
+        "quarterly_quality_rank_balance_3f",
+        "quarterly_roe_profit_scale_efficiency_gap_2r",
+        "quarterly_profit_revenue_acceleration_rank_gap_2r",
+        "quarterly_profit_growth_roe_transition_gap_2r"
+      ],
+      "result": "distinct",
+      "reason": "Campaign070 projects no ROE, profit, revenue, net-profit, growth, change, or acceleration field; disclosure dates determine both availability and the score itself."
+    },
+    {
+      "family": "all_minute_price_return_range_volume_amount_vwap_market_profile_entropy_reversal_and_execution_factors",
+      "result": "distinct",
+      "reason": "Campaign070 reads only stock-day identity and three quarterly identity/date fields. It cannot reproduce a minute path, market, activity, price, volume, amount, or VWAP mechanism."
+    },
+    {
+      "family": "candidate49_cumulative_vwap_crossing_rate_240m",
+      "result": "distinct",
+      "reason": "Candidate49 remains the only prospective candidate and uses future minute close/volume/amount. Campaign070 is historical-only disclosure-timing research with no Candidate49 backfill."
+    },
+    {
+      "family": "structurally_nonnumeric_campaign063_state_stability",
+      "definitions": [
+        "intraday_cross_sectional_standardized_return_state_stability_236p"
+      ],
+      "result": "explicitly_challenged_nonnumerically",
+      "reason": "Campaign063 remains in the complete library despite zero eligible values. Its cross-sectional minute-return state mechanism is definitionally disjoint from issuer disclosure-delay improvement."
+    },
+    {
+      "family": "transform_lag_filter_threshold_regime_or_model_search",
+      "result": "distinct_frozen_single_definition",
+      "reason": "Only exact prior-year same-quarter delay improvement, one strict-next-session activation, and one average-tie cross-sectional rank are allowed. No inverse, alternate lag, raw scale, bucket, sign, threshold, subset, year, regime, weight, or model is selected."
+    }
+  ],
+  "counterfactual_checks": [
+    {
+      "test": "fixed_current_delay_change_prior_year_same_quarter_delay",
+      "result": "candidate_changes_freshness_and_current_timeliness_do_not",
+      "meaning": "The score is a transition, not a current delay level."
+    },
+    {
+      "test": "shift_current_and_prior_delay_by_same_number_of_days",
+      "result": "raw_improvement_and_candidate_rank_unchanged_current_timeliness_changes",
+      "meaning": "Issuer-specific level effects are differenced out before ranking."
+    },
+    {
+      "test": "fixed_delay_pair_change_peer_announcement_date_counts",
+      "result": "candidate_unchanged_peer_crowding_can_change",
+      "meaning": "The factor is not a peer-count re-expression."
+    },
+    {
+      "test": "fixed_disclosure_dates_change_any_financial_or_minute_field",
+      "result": "candidate_unchanged_financial_and_intraday_factors_can_change",
+      "meaning": "The score reads no financial value or minute field."
+    }
+  ],
+  "design_choices_frozen_before_values": {
+    "candidate_count": 1,
+    "factor_name": "quarterly_announcement_delay_improvement_yoy_rank_1y",
+    "direction": "higher",
+    "event_identity": [
+      "instrument",
+      "report_date"
+    ],
+    "event_match": "exact_prior_calendar_year_same_Q_DEC_quarter_end",
+    "raw_operator": "prior_delay_days_minus_current_delay_days",
+    "availability": "first accepted session strictly after current announcement_date",
+    "state_propagation": "forward_fill_only_finite_already_effective_improvement_inside_instrument",
+    "rank_method": "average",
+    "rank_pct": true,
+    "parameter_filter_subset_model_or_alternate_transform_search": false
+  },
+  "research_boundary": {
+    "campaign070_source_candidate_or_comparison_values_read": false,
+    "historical_daily_price_fields_read": [],
+    "historical_forward_return_fields_read": false,
+    "provider_request_issued": false,
+    "candidate49_historical_return_signal_or_execution_backfill": false,
+    "candidate49_ledgers_changed": false,
+    "second_prospective_candidate_created": false,
+    "current_scoring_selection_sizing_or_orders_performed": false,
+    "investment_advice": false
+  },
+  "decision": {
+    "conceptual_independence_passed": true,
+    "statistical_independence_pending_all_100_numeric_comparisons": true,
+    "complete_library_coverage_required": true,
+    "predictive_value_established": false,
+    "next_action": "Freeze the exact coverage-first no-return protocol, comparator source split, one-trial catalog, implementation, and tests before reading any Campaign070 source row or value."
+  }
+}

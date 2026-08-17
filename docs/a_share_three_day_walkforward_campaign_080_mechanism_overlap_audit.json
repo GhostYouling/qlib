@@ -1,0 +1,157 @@
+{
+  "schema_version": 1,
+  "kind": "a_share_three_day_walkforward_campaign080_mechanism_overlap_audit",
+  "status": "passed_semantic_mechanism_review_before_campaign080_minute_source_or_comparison_values",
+  "recorded_at": "2026-08-06T15:28:00+08:00",
+  "concept_scouting": {
+    "path": "docs/a_share_three_day_walkforward_campaign_080_concept_scouting.json",
+    "sha256": "95919d8ef8992adf72f5b127f5188ec230bd1792bfa83c467b1b5d7f9f940860"
+  },
+  "authoritative_state": {
+    "path": "docs/a_share_three_day_iteration_status_20260806_campaign079_verified.json",
+    "sha256": "a9898fcded0457b491a82f3678f62c23a27c7c35193c55122156fa322a5d3161"
+  },
+  "numeric_comparator_policy": {
+    "path": "docs/a_share_three_day_walkforward_future_numeric_comparison_eligibility_policy_v15_20260806.json",
+    "sha256": "e4df7ab965b003d8f77cbdffa742127e8f118417e6165b52afa6ae30cc5cfb63",
+    "complete_definition_count": 111,
+    "numeric_comparator_count": 109,
+    "complete_definition_order_sha256": "14479cf55ceab31f6705fc12b1e103d9da41f8b07f27ffdf4b87e63cac36ffdb",
+    "numeric_comparator_order_sha256": "0893e0ff54c0094e48e67def84f0038a453fd11230629631e3e54120480a3529"
+  },
+  "candidate": {
+    "name": "intraday_above_median_amount_longest_run_240m",
+    "direction": "higher",
+    "mechanism": "normalized longest within-half-session duration of a strict above-full-session-median amount state",
+    "formula": "ordinary median m of exact a_0..a_239; b_i=1[a_i>m]; L=max(longest one-run on b_0..b_119, longest one-run on b_120..b_239); score=L/120",
+    "no_price_return_daily_financial_event_or_future_input": true,
+    "no_old_factor_value_input": true,
+    "candidate49_used_or_modified": false
+  },
+  "complete_library_review": {
+    "all_111_definitions_reviewed_in_frozen_order": true,
+    "all_pre_walkforward_terminal_price_volume_event_structural_and_composite_families_reviewed": true,
+    "candidate_is_exact_formula_duplicate": false,
+    "candidate_is_direction_only_duplicate": false,
+    "candidate_is_parameter_only_duplicate": false,
+    "candidate_is_an_inversion_of_a_terminal_factor": false,
+    "candidate_combines_terminal_factor_values": false,
+    "candidate_changes_any_quality_listing_or_buyability_gate": false,
+    "campaign079_invalid_turnover_mechanism_not_reused": true
+  },
+  "semantic_invariance_checks": [
+    {
+      "intervention": "Multiply every one of the 240 amount values by the same finite positive constant.",
+      "campaign080_result": "unchanged",
+      "distinguishes_from": "amount-level, liquidity-size, and nominal-activity statistics"
+    },
+    {
+      "intervention": "Apply the same strictly increasing finite transform to all 240 amounts.",
+      "campaign080_result": "unchanged because strict membership above the ordinary even-sample median is determined by order and median ties, both preserved",
+      "distinguishes_from": "amount entropy, concentration, dispersion, center-of-mass, and magnitude-correlation statistics"
+    },
+    {
+      "intervention": "Reverse minute order separately inside both 120-bar halves while retaining the same half membership.",
+      "campaign080_result": "unchanged",
+      "distinguishes_from": "peak recency, center of mass, late-window share, and terminal-bar share"
+    },
+    {
+      "intervention": "Permute a fixed amount multiset within a half so the above-median bars form one contiguous block instead of isolated minutes.",
+      "campaign080_result": "generally increases while the amount multiset and amount entropy remain unchanged",
+      "distinguishes_from": "permutation-invariant amount entropy and concentration"
+    },
+    {
+      "intervention": "Split one fixed above-median block into separated high bars without changing the high-bar count or values.",
+      "campaign080_result": "decreases or stays unchanged",
+      "distinguishes_from": "threshold exceedance count, amount mass, and concentration"
+    },
+    {
+      "intervention": "Place an above-median suffix at 11:30 and prefix at 13:01 while holding each half's other binary states fixed.",
+      "campaign080_result": "does not join the two runs",
+      "distinguishes_from": "an artificial cross-lunch adjacency statistic"
+    },
+    {
+      "intervention": "Hold the complete amount path fixed while changing every minute and daily OHLC, return, range, transaction price, financial statement value, issuer event, turnover field, and market-peer path.",
+      "campaign080_result": "unchanged",
+      "distinguishes_from": "all price-path, turnover, volatility, return-state, event, quarterly, market-coupling, and Candidate49 mechanisms"
+    }
+  ],
+  "nearest_semantic_challenges": [
+    {
+      "name": "intraday_amount_local_peak_density_238p",
+      "relationship": "both use ordinal topology of the exact one-session amount path",
+      "distinction": "Campaign078 counts strict adjacent local maxima across the concatenated continuous grid; Campaign080 thresholds against the full-session median and retains only the longest persistent high-state duration without crossing lunch. A fixed local-peak count can have different longest high-state runs, and a fixed longest run can contain different local-peak counts.",
+      "mandatory_numeric_challenge": true
+    },
+    {
+      "name": "intraday_amount_profile_serial_persistence_240m",
+      "relationship": "both depend on the ordering of intraday amount bars",
+      "distinction": "serial persistence uses adjacent amount magnitudes and their linear association; Campaign080 is an ordinal binary duration statistic invariant to every common strictly increasing transform and ignores below/above-median magnitudes",
+      "mandatory_numeric_challenge": true
+    },
+    {
+      "name": "intraday_amount_participation_entropy_240m",
+      "relationship": "both summarize the full-session amount path",
+      "distinction": "entropy changes with normalized amount probabilities and ignores order; Campaign080 ignores magnitude changes preserving order but changes when the same amount multiset is temporally fragmented",
+      "mandatory_numeric_challenge": true
+    },
+    {
+      "name": "intraday_amount_clock_dispersion_240m and intraday_amount_center_of_mass_240m",
+      "relationship": "all use the exact amount grid",
+      "distinction": "the prior factors are amount-weighted absolute-clock moments; Campaign080 uses no amount weights or absolute clock coordinates beyond the frozen lunch discontinuity",
+      "mandatory_numeric_challenge": true
+    },
+    {
+      "name": "intraday_peak_amount_bar_recency_240m, late_amount_share_30m, and intraday_terminal_bar_amount_share_240m",
+      "relationship": "all can respond to a late high-activity episode",
+      "distinction": "the prior factors retain absolute timing or mass; Campaign080 is unchanged by reversal within each half and retains only the longest high-state duration",
+      "mandatory_numeric_challenge": true
+    },
+    {
+      "name": "intraday_morning_afternoon_amount_profile_similarity_120b, intraday_day_over_day_amount_profile_similarity_240b, and intraday_market_amount_profile_synchronization_240m",
+      "relationship": "all inspect an amount profile",
+      "distinction": "the prior factors correlate magnitudes with another half, day, or market profile; Campaign080 uses one session, one order threshold, and no reference profile",
+      "mandatory_numeric_challenge": true
+    },
+    {
+      "name": "signal_day_turnover_rate_pct",
+      "relationship": "both concern trading activity",
+      "distinction": "Campaign079's rejected definition is a daily aggregate turnover level from daily_basic; Campaign080 is an intraday ordinal state-duration topology computed from minute amounts and is invariant to nominal activity scaling",
+      "numeric_status": "ineligible_terminal_definition_semantic_challenge_only"
+    },
+    {
+      "name": "intraday_cross_sectional_standardized_return_state_stability_236p",
+      "relationship": "the structurally nonnumeric definition remains in the complete semantic library",
+      "distinction": "peer-standardized return-state mobility versus single-stock amount-path high-state duration",
+      "mandatory_semantic_challenge": true,
+      "numeric_status": "undefined_not_pass_not_fail"
+    },
+    {
+      "name": "candidate49_intraday_cumulative_vwap_crossing_rate_240m_v1",
+      "relationship": "the sole active prospective candidate remains an isolation challenge",
+      "distinction": "Candidate49 measures future-session price crossings of cumulative VWAP; Campaign080 is historical amount-state duration and never enters Candidate49 ledgers",
+      "candidate49_remains_isolated": true
+    }
+  ],
+  "pre_value_decision": {
+    "economically_independent_enough_to_preregister": true,
+    "numeric_uniqueness_still_required_against_all_109_eligible_comparators": true,
+    "strict_maximum_absolute_median_daily_rank_correlation": 0.8,
+    "minimum_pairwise_names_per_session": 50,
+    "minimum_pairwise_sessions_per_comparison": 100,
+    "drop_residualize_invert_clip_bucket_rank_neutralize_filter_or_rescue_after_failed_gate_allowed": false
+  },
+  "research_boundary": {
+    "campaign080_minute_source_rows_read": false,
+    "campaign080_candidate_values_read": false,
+    "comparison_values_read": false,
+    "historical_daily_price_fields_read": [],
+    "historical_forward_returns_read": false,
+    "provider_request_issued": false,
+    "candidate49_historical_backfill_performed": false,
+    "candidate49_ledgers_changed": false,
+    "second_prospective_candidate_created": false,
+    "current_scoring_selection_sizing_or_orders_performed": false,
+    "investment_advice": false
+  }
+}

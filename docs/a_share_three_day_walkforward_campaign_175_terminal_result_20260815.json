@@ -1,0 +1,86 @@
+{
+  "schema_version": 1,
+  "kind": "a_share_three_day_walkforward_campaign175_terminal_result",
+  "status": "terminal_prevalue_two_infrastructure_failures_accounted_goal_active",
+  "recorded_at": "2026-08-15T10:48:52+08:00",
+  "authoritative_inputs": {
+    "campaign174_effective_state": {
+      "path": "docs/a_share_three_day_iteration_status_20260815_campaign174_prevalue_terminal_v2.json",
+      "sha256": "d1dc040b525cee0c0cfef0f98e2685567366860b1184a370eee06eb349d9585c"
+    },
+    "eligibility_policy_v262": {
+      "path": "docs/a_share_three_day_walkforward_future_numeric_comparison_eligibility_policy_v262_20260815.json",
+      "sha256": "b3233c5811dbe92da8345fb1346279293dc91b5cd97af2d8a4a292bac4a821f4"
+    },
+    "enterprise_lease_commitment_source_frontier": {
+      "path": "docs/a_share_three_day_walkforward_campaign_175_enterprise_lease_commitment_source_frontier_20260815.json",
+      "sha256": "a5adac06bd4dd8a86289a93cdc63ffd63f0a5a825579ca280aebff5f600d542c"
+    },
+    "attempt_ledger": {
+      "path": "data/experiments/short_horizon/historical_walkforward/campaign_175/research_attempt_ledger_v1.json",
+      "sha256": "41e01f217d0126ff37fc4d6fde9a6b1d0a877cc70725ba7a04aef5a229dbab3c",
+      "effective_entry_count": 9,
+      "chain_tip_sha256": "52ff30d148c345612a8197eb33128d5d539dbb2da79a2ffa0aa5c6e3bd03546e"
+    },
+    "authority_policy_path_guess_failure": {
+      "path": "docs/a_share_three_day_walkforward_campaign_175_authority_policy_path_guess_failure_20260815.json",
+      "sha256": "2f663e020a0e66d245ae37315a9b1e5e43fb73d93babc6bb2e0b5b7a789b26a3"
+    },
+    "policy_filename_pattern_failure": {
+      "path": "docs/a_share_three_day_walkforward_campaign_175_policy_filename_pattern_failure_20260815.json",
+      "sha256": "7c6b14dccda2be4d7e141211ef5ae2c0a7d15f24cdfd17b0f6850f7b4f18c87a"
+    }
+  },
+  "scientific_result": {
+    "terminal": true,
+    "terminal_phase": "finite_prevalue_enterprise_lease_commitment_source_admission",
+    "routes_reviewed": 7,
+    "genuinely_new_issuer_state_routes": 4,
+    "source_admission_deferrals_not_factor_failures": 4,
+    "relabeling_or_operator_route_rejections": 3,
+    "selected_candidate_count": 0,
+    "complete_factor_definition_created": false,
+    "numeric_comparator_created": false,
+    "enterprise_lease_commitment_or_operating_flexibility_declared_ineffective": false,
+    "source_row_filing_document_lease_liability_right_of_use_asset_facility_candidate_comparator_security_price_or_return_value_read": false,
+    "stress_2024_2025_opened": false
+  },
+  "effective_accounting": {
+    "campaign175_attempt_count": 9,
+    "campaign175_prevalue_scientific_attempt_count": 7,
+    "campaign175_infrastructure_failure_count": 2,
+    "campaign175_complete_factor_attempt_count": 0,
+    "campaign175_return_reading_development_trial_count": 0,
+    "campaign175_development_survivor_count": 0,
+    "campaign175_stress_trial_count": 0,
+    "cumulative_historical_research_attempt_count": 1550,
+    "cumulative_return_reading_development_trial_count": 314
+  },
+  "library_state": {
+    "complete_factor_definition_count": 158,
+    "complete_factor_definition_order_sha256": "4819c7fd7c0795d7598a52f3c615e3f117d5f4ecd9332974bc8e3dfa57c96667",
+    "eligible_numeric_comparator_count": 142,
+    "eligible_numeric_comparator_order_sha256": "5d1b35fb5a0d8ac9293008db9963c4a60a94dc940c237c3ed259e5ce44f14aaf",
+    "changed_by_campaign175": false
+  },
+  "candidate49": {
+    "only_active_prospective_candidate": true,
+    "signal_ledger_sha256": "5193f00d7f36da003f53cec387900da4c3d002299f5dfcfc1a95eaa199ed3a79",
+    "signal_entry_count": 0,
+    "execution_ledger_sha256": "d57a3e61eac969e42cafa418ccd8c0a5ee65dcf69da145bb2c096c2a02a2ea4f",
+    "execution_entry_count": 0,
+    "ledgers_changed": false
+  },
+  "research_boundary": {
+    "unrecovered_or_unrecorded_failed_exit_codes_bypassed_or_masked": false,
+    "source_row_filing_document_lease_liability_right_of_use_asset_facility_candidate_comparator_security_price_or_return_value_read": false,
+    "stress_2024_2025_opened": false,
+    "provider_or_web_request_issued": false,
+    "provider_credential_presence_value_or_digest_read": false,
+    "candidate49_ledgers_changed": false,
+    "second_prospective_candidate_created": false,
+    "current_scoring_selection_sizing_positions_or_orders_performed": false,
+    "investment_advice": false
+  },
+  "next_action": "Publish the Campaign175 report and policy v263, append both unified reports once, bind focused tests, then run focused, corrected cumulative and independent validation before authorizing Campaign176."
+}

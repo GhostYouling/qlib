@@ -1,0 +1,138 @@
+{
+  "schema_version": 2,
+  "kind": "a_share_three_day_iteration_status",
+  "status": "campaign106_terminal_accounting_corrected_future_policy_v65_active",
+  "recorded_at": "2026-08-07T19:54:35Z",
+  "supersedes_without_rewriting": {
+    "path": "docs/a_share_three_day_iteration_status_20260808_campaign106_terminal.json",
+    "sha256": "3d8abfac748b7ae9d90646be602457259674fc1c3eeeaa81c4b82ec43a40e601",
+    "preserved": true
+  },
+  "authoritative_workspace": "/Volumes/DIsk/Disk-Coding/qlib",
+  "active_minute_data_root": "/Volumes/DIsk/qlib-a-share-tushare-1m",
+  "research_mode": {
+    "historical_walkforward_is_primary_iteration_engine": true,
+    "historical_offline_work_allowed_at_any_local_time": true,
+    "new_daily_bar_or_1630_wait_required_for_historical_iteration": false,
+    "candidate49_future_observation_is_independent_confirmation_layer": true
+  },
+  "campaign106_terminal": {
+    "terminal_result": {
+      "path": "docs/a_share_three_day_walkforward_campaign_106_terminal_result_binding_v2_20260808.json",
+      "sha256": "12aeef0018589bcf26815ff6f0a512a2a8fd307ad799cf5fe20dbcd737d80145"
+    },
+    "research_attempt_ledger": {
+      "path": "data/experiments/short_horizon/historical_walkforward/campaign_106/research_attempt_ledger_v4.json",
+      "sha256": "f44a6117896b7e674519b552937d4ddfbef841260c924a5dcf0ccacf66837581",
+      "chain_tip_sha256": "303af780636820596075167add1a30ad9460a09e8852c627cc416aea04fc738c"
+    },
+    "accounting_failure_record": {
+      "path": "docs/a_share_three_day_walkforward_campaign_106_postterminal_attempt_accounting_failure_20260808.json",
+      "sha256": "7d33b5c9c518372dbfcd57c12eb2ef7851a422b8ccb7ac955ab2ac80aa090f80"
+    },
+    "factor": "intraday_nonzero_range_bar_share_240m",
+    "direction": "higher",
+    "snapshot_rows": 7724498,
+    "snapshot_eligible_rows": 7724498,
+    "coverage_gate_passed": true,
+    "numeric_comparisons_required": 132,
+    "all_numeric_comparison_decision_completed": false,
+    "scientific_result": "inconclusive_due_to_infrastructure",
+    "development_trial_count": 0,
+    "development_survivor_count": 0,
+    "stress_2024_2025_opened": false,
+    "stress_return_fields_read": false,
+    "retry_reverse_redefine_filter_residualize_combine_or_rescue_allowed": false,
+    "attempt_count": 4,
+    "ledger_entry_count": 4,
+    "infrastructure_failure_count": 3,
+    "prevalue_scientific_attempt_count": 1,
+    "complete_factor_attempt_count": 1,
+    "scientifically_decided_factor_attempt_count": 0,
+    "return_reading_development_trial_count": 0,
+    "cumulative_historical_research_attempt_count": 790,
+    "cumulative_return_reading_development_trial_count": 300
+  },
+  "effective_future_numeric_policy": {
+    "path": "docs/a_share_three_day_walkforward_future_numeric_comparison_eligibility_policy_v65_20260808.json",
+    "sha256": "25aabbe43c6be59e1cc3e36ce8ce6eac712ace1e8cece94c7527400896ceb830",
+    "complete_definition_count": 136,
+    "complete_definition_order_sha256": "2099f016f5979a820b480a83aa28877504ea5238362feed551bb7cf583cbf7d0",
+    "numeric_comparator_count": 132,
+    "numeric_comparator_order_sha256": "7ed69afd1408e84dcc856583344166ffc9bcbb0add1aed63163b1d12a1be9a25",
+    "raw_comparator_missingness_fixture_required_before_future_values": true
+  },
+  "campaign107_prevalue_progress": {
+    "source_rows_or_candidate_comparison_values_read": false,
+    "comparator_adapter_implementation_freeze": {
+      "path": "docs/a_share_three_day_walkforward_campaign_107_raw_comparator_adapter_implementation_freeze_20260808.json",
+      "sha256": "07de45590082fcf98350a4b4f0b615ffd994a97fe3cec431ae476c058a95cc2b"
+    },
+    "selected_candidate": "intraday_exact_close_level_diversity_240m",
+    "first_preregistration_binding_valid": false,
+    "next_required_action": "Preserve the invalid first preregistration, record its binding failure, and publish an additive exact-SHA correction bound to this v2 state and policy v65 before values."
+  },
+  "candidate49": {
+    "registration_id": "candidate49_intraday_cumulative_vwap_crossing_rate_240m_v1",
+    "sole_active_prospective_candidate": true,
+    "signal_ledger": {
+      "path": "data/experiments/short_horizon/candidate49_future_signal_ledger.json",
+      "sha256": "5193f00d7f36da003f53cec387900da4c3d002299f5dfcfc1a95eaa199ed3a79",
+      "entry_count": 0
+    },
+    "execution_ledger": {
+      "path": "data/experiments/short_horizon/candidate49_future_execution_ledger.json",
+      "sha256": "d57a3e61eac969e42cafa418ccd8c0a5ee65dcf69da145bb2c096c2a02a2ea4f",
+      "entry_count": 0
+    },
+    "latest_preserved_source_failure": {
+      "path": "docs/a_share_candidate49_20260807_daily_source_failure_record.json",
+      "sha256": "8b8eec87a1f20c424703cf70ea9eae87f09c7b1e5c9a5754c0bde9cc2f9c839f",
+      "same_day_retry_allowed": false
+    },
+    "historical_return_signal_execution_or_milestone_backfill_performed": false,
+    "prospective_ledgers_changed_by_campaign106_accounting_correction": false
+  },
+  "provider_credential": {
+    "repository_dotenv_exists": true,
+    "repository_dotenv_is_regular_file": true,
+    "repository_dotenv_is_symlink": false,
+    "repository_dotenv_mode": "0600",
+    "repository_dotenv_git_ignored": true,
+    "tushare_token_entry_count": 1,
+    "tushare_token_nonempty": true,
+    "tushare_token_placeholder_detected": false,
+    "secret_printed_hashed_logged_or_persisted": false,
+    "provider_request_issued": false
+  },
+  "weekend_boundary": {
+    "local_date": "2026-08-08",
+    "accepted_local_trading_day": false,
+    "candidate49_plan_or_run_executed": false,
+    "new_daily_staging_root_created": false
+  },
+  "reports": {
+    "campaign106_report": {
+      "path": "docs/a_share_three_day_walkforward_campaign_106_report.md",
+      "sha256": "17cb50314b8610f54d8158fc8e7fd7a26f7e9895914c6ac2b4f8da990b22dba8"
+    },
+    "current_research_report": {
+      "path": "data/experiments/short_horizon/current_research_report.md",
+      "sha256": "a3b54a38da09d14ddfeec5b93ae4d5b1f62ab3fbde1e51687509dd37bbe63746"
+    },
+    "three_day_research_report": {
+      "path": "data/experiments/short_horizon/three_day_research_report.md",
+      "sha256": "91df34331c54df8d6a9a1841e43ae74ead31125b2f51336fe5edcb43fb90ea4b"
+    }
+  },
+  "research_boundary": {
+    "candidate50_or_second_prospective_candidate_created": false,
+    "provider_request_issued": false,
+    "candidate49_historical_backfill_performed": false,
+    "historical_daily_price_or_forward_return_values_read_by_accounting_correction": false,
+    "campaign107_values_read_before_effective_protocol": false,
+    "current_scoring_selection_sizing_or_orders_performed": false,
+    "investment_advice": false
+  },
+  "next_action": "Record and correct the Campaign107 preregistration binding failure additively, validate the effective protocol, then implement the single frozen factor before any source or comparison values."
+}

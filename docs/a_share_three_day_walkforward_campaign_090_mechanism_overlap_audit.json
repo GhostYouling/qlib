@@ -1,0 +1,183 @@
+{
+  "schema_version": 1,
+  "kind": "a_share_three_day_walkforward_campaign090_mechanism_overlap_audit",
+  "status": "passed_semantic_mechanism_review_before_campaign090_minute_source_or_comparison_values",
+  "recorded_at": "2026-08-07T05:45:00+08:00",
+  "concept_scouting": {
+    "path": "docs/a_share_three_day_walkforward_campaign_090_concept_scouting.json",
+    "sha256": "a3b0c49fbc5514c8cdc88b453f41743497df43cccbff0bb0d9bba1e2603e2e92"
+  },
+  "authoritative_state": {
+    "path": "docs/a_share_three_day_iteration_status_20260807_campaign089_verified_v2.json",
+    "sha256": "9ee27e671a56307be59ac70dd4e127ee9369b27c24c54ab9ec45512345d0d478"
+  },
+  "historical_walkforward_policy": {
+    "path": "docs/a_share_three_day_historical_walkforward_research_policy_20260727.json",
+    "sha256": "38426d6161b9bfed323c58caba18feca668b8c9d53e294951a8ba90c01a798bb"
+  },
+  "numeric_comparator_policy": {
+    "path": "docs/a_share_three_day_walkforward_future_numeric_comparison_eligibility_policy_v30_20260807.json",
+    "sha256": "dad79c5ed34158aa3b044875782ab6e96e622d4df737a5361aa0966081eb183c",
+    "complete_definition_count": 121,
+    "numeric_comparator_count": 119,
+    "complete_definition_order_sha256": "2f3dcd13f68a38d9386f803cc6514c78d4902bcd94e41f6b4aae6a4d567fade0",
+    "numeric_comparator_order_sha256": "3b5fc3bb4c82a29cd3768f7457a75095dc6fc50c410dd74e2720569be6c57b4b"
+  },
+  "candidate": {
+    "name": "intraday_range_clock_center_240m",
+    "direction": "higher",
+    "mechanism": "First chronological moment of scale-free intrabar high-low range mass across the complete standard one-minute session",
+    "formula": "For r_i=log(high_i/low_i) and x_i=i/239 over i=0,...,239, compute score=sum(x_i*r_i)/sum(r_i).",
+    "zero_rule": "Exact zero-range bars remain zero masses. Require finite positive ordered high/low values on all 240 bars and finite strictly positive total range mass; use no epsilon, dropped bar, pseudocount, threshold, or substituted observation.",
+    "fixed_grid": "Require the raw 09:30 row for source identity, use exactly 09:31-11:30 and 13:01-15:00 in a fixed 240-position chronological grid, and exclude 09:30. No return, gap, or lunch price change is formed.",
+    "no_open_close_volume_amount_market_benchmark_daily_financial_event_peer_or_future_input": true,
+    "no_old_factor_value_input": true,
+    "candidate49_used_or_modified": false
+  },
+  "complete_library_review": {
+    "all_121_definitions_reviewed_in_frozen_order": true,
+    "all_119_numeric_comparators_reviewed_in_frozen_order": true,
+    "all_return_volatility_path_sign_frequency_range_amount_market_peer_event_quality_structural_composite_and_semantic_only_families_reviewed": true,
+    "candidate_is_exact_formula_duplicate": false,
+    "candidate_is_direction_only_duplicate": false,
+    "candidate_is_parameter_only_duplicate": false,
+    "candidate_is_an_inversion_of_a_terminal_factor": false,
+    "candidate_combines_terminal_factor_values": false,
+    "candidate_changes_any_quality_listing_or_buyability_gate": false,
+    "range_timing_distribution_peak_frontier_amount_alignment_and_half_session_variance_families_explicitly_challenged": true,
+    "campaign089_terminal_factor_not_reused_or_rescued": true,
+    "candidate49_remains_semantic_isolation_only": true
+  },
+  "semantic_invariance_checks": [
+    {
+      "intervention": "Multiply every selected high and low by one common strictly positive constant.",
+      "campaign090_result": "unchanged because every log(high/low) range mass is scale free",
+      "distinguishes_from": "nominal-price affordability and price-level factors"
+    },
+    {
+      "intervention": "Multiply every range mass by the same positive constant while preserving its clock allocation.",
+      "campaign090_result": "unchanged because the range profile is normalized by total mass",
+      "distinguishes_from": "realized volatility and total range-level mechanisms"
+    },
+    {
+      "intervention": "Move a fixed range mass from an earlier clock position to a later position while holding total range constant.",
+      "campaign090_result": "strictly increases",
+      "distinguishes_from": "range participation entropy and other order-invariant range-distribution summaries"
+    },
+    {
+      "intervention": "Reverse the 240-position range path without changing the multiset of ranges.",
+      "campaign090_result": "maps to one minus the original score",
+      "distinguishes_from": "range entropy, maximum range size, and order-invariant profile statistics"
+    },
+    {
+      "intervention": "Change every amount and volume while keeping high and low fixed.",
+      "campaign090_result": "unchanged",
+      "distinguishes_from": "amount center, range-amount alignment, terminal amount share, range-volume confirmation, and liquidity families"
+    },
+    {
+      "intervention": "Change open and close paths within unchanged high-low envelopes.",
+      "campaign090_result": "unchanged",
+      "distinguishes_from": "close-return variance resolution, signed paths, close frontier, close location, and return-timing mechanisms"
+    },
+    {
+      "intervention": "Preserve morning and afternoon total range mass while redistributing range from the start to the end within either half.",
+      "campaign090_result": "changes",
+      "distinguishes_from": "binary morning-versus-afternoon volatility resolution"
+    },
+    {
+      "intervention": "Move one maximum-range bar while compensating other range masses so their first clock moment remains fixed.",
+      "campaign090_result": "unchanged",
+      "distinguishes_from": "single-peak timing and range-amount peak alignment"
+    }
+  ],
+  "nearest_semantic_challenges": [
+    {
+      "name": "intraday_volatility_resolution_238m",
+      "relationship": "both locate price uncertainty in session time",
+      "distinction": "The terminal factor compares only total squared close-return mass in the morning versus afternoon and reads no high/low. Campaign090 uses all 240 high-low range masses on a continuous fixed clock, reads no close, and remains sensitive to within-half timing after half totals are fixed.",
+      "mandatory_numeric_challenge": true
+    },
+    {
+      "name": "intraday_intrabar_range_participation_entropy_240m and intraday_morning_afternoon_range_profile_similarity_120b",
+      "relationship": "all normalize intrabar range distributions",
+      "distinction": "Entropy is invariant to every clock permutation and profile similarity compares ordinal morning/afternoon shapes. Campaign090 is a signed chronological first moment and has no entropy or distribution-distance operator.",
+      "mandatory_numeric_challenge": true
+    },
+    {
+      "name": "intraday_range_amount_peak_timing_alignment_240m and intraday_range_amount_profile_alignment_js_240m",
+      "relationship": "all use the range profile on the standard grid",
+      "distinction": "The terminal factors require amount and measure either one peak-time distance or two-distribution alignment. Campaign090 is amount invariant and uses the full marginal range profile's first clock moment.",
+      "mandatory_numeric_challenge": true
+    },
+    {
+      "name": "intraday_amount_center_of_mass_240m and intraday_amount_clock_dispersion_240m",
+      "relationship": "all apply fixed clock moments to a nonnegative intraday mass profile",
+      "distinction": "Those factors measure when transaction activity occurs or how dispersed it is. Campaign090 measures when scale-free price uncertainty is expressed, changes under high-low envelope interventions that leave amount fixed, and is invariant to arbitrary amount-path changes.",
+      "mandatory_numeric_challenge": true
+    },
+    {
+      "name": "late_return_30m, late_amount_share_30m, and intraday_terminal_bar_amount_share_240m",
+      "relationship": "all may respond to late-session activity or price discovery",
+      "distinction": "The terminal factors use a fixed late cutoff or one terminal amount bar. Campaign090 uses no cutoff, return, or amount and assigns every range bar its preregistered continuous clock coordinate.",
+      "mandatory_numeric_challenge": true
+    },
+    {
+      "name": "intraday_extreme_arrival_order_240m, intraday_global_price_range_revisit_240m, intraday_two_sided_range_frontier_balance_238m, and intraday_close_frontier_innovation_share_238p",
+      "relationship": "all react to price-range or frontier timing",
+      "distinction": "Those mechanisms use global extrema, revisits, frontier expansions, or close innovations. Campaign090 ignores extrema identity and frontier state, using only the complete vector of same-bar high-low masses.",
+      "mandatory_numeric_challenge": true
+    },
+    {
+      "name": "intraday_range_share_volume_confirmation_240m",
+      "relationship": "both read intrabar range",
+      "distinction": "The terminal confirmation factor relates range to share volume and discards clock center. Campaign090 reads no volume and changes under pure clock relocation with range/volume pairing otherwise irrelevant.",
+      "mandatory_numeric_challenge": true
+    },
+    {
+      "name": "intraday_directional_amount_timing_spread_238m",
+      "relationship": "both are fixed-session timing summaries",
+      "distinction": "Campaign089 conditions destination amount on positive versus negative close-return signs and takes a difference of two conditional centers. Campaign090 reads neither amount nor close, has no direction labels, and takes one marginal high-low range center.",
+      "mandatory_numeric_challenge": true
+    },
+    {
+      "name": "candidate49_intraday_cumulative_vwap_crossing_rate_240m_v1",
+      "relationship": "both use a completed intraday grid",
+      "distinction": "Candidate49 counts causal close-versus-cumulative-VWAP sign crossings and uses close/volume/amount. Campaign090 uses only high/low range masses, does not construct a price reference, and does not touch the prospective ledger.",
+      "mandatory_numeric_challenge": false
+    }
+  ],
+  "prevalue_semantic_decision": {
+    "passed": true,
+    "selected_factor_count": 1,
+    "complete_frozen_definition_count_reviewed": 121,
+    "numeric_comparator_count_reserved_for_postcoverage_test": 119,
+    "candidate_or_comparison_values_read": false,
+    "daily_price_or_forward_return_values_read": false,
+    "provider_request_issued": false,
+    "required_next_step": "Freeze the exact coverage-first no-return protocol and one-factor catalog against this audit and policy v30 before source rows or candidate values."
+  },
+  "prohibited_rescues": [
+    "invert_to_early_range_center_after_results",
+    "replace_high_low_range_with_close_return_or_true_range",
+    "change_clock_grid_or_lunch_handling",
+    "select_subwindows_or_clock_cutoffs",
+    "switch_to_range_clock_dispersion_or_higher_moments",
+    "weight_by_amount_volume_return_or_market_state",
+    "add_thresholds_filters_regimes_subsets_neutralization_fitting_models_or_combinations",
+    "remove_failed_numeric_comparators",
+    "select_favorable_years_costs_or_gates"
+  ],
+  "research_boundary": {
+    "campaign090_source_rows_read": false,
+    "campaign090_candidate_values_read": false,
+    "comparison_values_read": false,
+    "historical_daily_price_fields_read": [],
+    "historical_forward_returns_read": false,
+    "candidate49_historical_return_or_signal_backfill": false,
+    "candidate49_ledgers_changed": false,
+    "second_prospective_candidate_created": false,
+    "provider_request_issued": false,
+    "current_scoring_selection_sizing_or_orders_performed": false,
+    "investment_advice": false
+  }
+}

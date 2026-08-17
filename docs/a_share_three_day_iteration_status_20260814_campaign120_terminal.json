@@ -1,0 +1,139 @@
+{
+  "schema_version": 1,
+  "kind": "a_share_three_day_iteration_status",
+  "status": "campaign120_terminal_uniqueness_failure_v111_finalized_campaign121_prevalue_allowed",
+  "recorded_at": "2026-08-14T01:08:24+08:00",
+  "authoritative_workspace": "/Volumes/DIsk/Disk-Coding/qlib",
+  "supersedes_without_rewriting": {
+    "path": "docs/a_share_three_day_iteration_status_20260813_campaign119_terminal.json",
+    "sha256": "1edbe7ce18abe2d2d1f8340f1fcaf3c684b1bc8f201703fe4248d5388efe6fb6",
+    "preserved": true
+  },
+  "active_minute_data_root": {
+    "path": "/Volumes/DIsk/qlib-a-share-tushare-1m",
+    "source_run": "tushare_stk_mins_1m_2019_2025_ea0cbb8f",
+    "source_manifest_sha256": "9b3d959563c9d182f38981c6a36bdb3bc9b415de08487a9e1f9e850825c0839f"
+  },
+  "active_daily_data_root": {
+    "path": "/Volumes/DIsk/Disk-Coding/qlib/data",
+    "provider": "Baostock",
+    "accepted_calendar_end": "2026-07-13"
+  },
+  "manage_qlib_a_share_data_skill": {
+    "path": "/Users/niyufei/.codex/skills/manage-qlib-a-share-data/SKILL.md",
+    "sha256": "565713a5f3aeb6a1acf23e397fcc21be28d0c3ea4ebf21c7f287a25bb94d78dc"
+  },
+  "provider_credential": {
+    "env_path": "/Volumes/DIsk/Disk-Coding/qlib/.env",
+    "env_readable": true,
+    "tushare_token_present_nonempty": true,
+    "secret_printed_or_hashed": false
+  },
+  "authoritative_artifacts": {
+    "scientific_terminal_result": {
+      "path": "docs/a_share_three_day_walkforward_campaign_120_terminal_result_20260814.json",
+      "sha256": "d18cfd7ef17c09a6a259179c1e4528b5bea030cf385156363ce3c991882a87d5"
+    },
+    "final_accounting_correction": {
+      "path": "docs/a_share_three_day_walkforward_campaign_120_terminal_accounting_correction_20260814.json",
+      "sha256": "bad3277c5bb602a995c9d4e09672b1ddf2c822a0637ad457074db0b6232a4c85"
+    },
+    "numeric_policy_v111": {
+      "path": "docs/a_share_three_day_walkforward_future_numeric_comparison_eligibility_policy_v111_20260814.json",
+      "sha256": "d67921887219effff7cffa7c589afe620a876f22d80eb39e3c3153e28d20dac4"
+    },
+    "attempt_ledger_v3": {
+      "path": "data/experiments/short_horizon/historical_walkforward/campaign_120/research_attempt_ledger_v3.json",
+      "sha256": "8bf7d387807bd4288cb29e5345f66c94c87dafb3874bfc1145111a9e15307609"
+    },
+    "candidate_snapshot_verification": {
+      "path": "docs/a_share_three_day_walkforward_campaign_120_feature_snapshot_verification_result_20260814.json",
+      "sha256": "7afda9a6312467262fcf67b71d37b5de15f268a1a83adb4a682d077ccae0fae5"
+    },
+    "coverage_result": {
+      "path": "data/experiments/short_horizon/historical_walkforward/campaign_120/coverage/campaign120_coverage_audit.json",
+      "sha256": "24e72a08db0c70a98ca7aa6094bbf34a1e37dc94f2575e8aed510afb16e9a539"
+    },
+    "uniqueness_result": {
+      "path": "data/experiments/short_horizon/historical_walkforward/campaign_120/uniqueness/campaign120_ordered_uniqueness_audit.json",
+      "sha256": "6e710293c28fe3d79602ccc97e44d54980018ca8242b9368a6ddc94435715993"
+    }
+  },
+  "campaign120_terminal": {
+    "factor": "intraday_return_direction_dictionary_phrase_count_238s",
+    "direction": "higher",
+    "source_snapshot_partitions": 33015,
+    "source_snapshot_rows": 7724498,
+    "source_snapshot_eligible_integer_rows": 7724498,
+    "median_daily_coverage": 0.9994517542211769,
+    "p05_daily_coverage": 0.9956886515772271,
+    "coverage_gate_passed": true,
+    "numeric_comparisons_total": 137,
+    "numeric_comparisons_passed": 136,
+    "numeric_uniqueness_gate_passed": false,
+    "failed_comparator": "intraday_range_weak_order_entropy_236t",
+    "maximum_observed_absolute_median_daily_rank_correlation": 0.8036786444597779,
+    "development_trial_count": 0,
+    "development_survivor_count": 0,
+    "stress_2024_2025_opened": false,
+    "stress_2024_2025_return_values_read": false,
+    "terminal": true,
+    "retry_or_rescue_allowed": false
+  },
+  "frozen_library": {
+    "complete_definition_count": 146,
+    "complete_definition_order_sha256": "a5d850195b0aab697dc60b1331816ca7e557e4389d17290eafee5a036fb8950f",
+    "eligible_numeric_comparator_count": 138,
+    "eligible_numeric_comparator_order_sha256": "e917d9f832bda02f87c0a7e02a26127629146318de826684e8dfd6432fc20a3b",
+    "campaign120_appended_once_for_future_duplicate_control": true
+  },
+  "effective_accounting": {
+    "campaign120_attempt_count": 18,
+    "campaign120_ledger_entry_count": 18,
+    "campaign120_infrastructure_failure_count": 12,
+    "campaign120_prevalue_scientific_attempt_count": 1,
+    "campaign120_complete_factor_attempt_count": 1,
+    "campaign120_return_reading_development_trial_count": 0,
+    "campaign120_development_survivor_count": 0,
+    "campaign120_stress_trial_count": 0,
+    "cumulative_historical_research_attempt_count": 953,
+    "cumulative_return_reading_development_trial_count": 305
+  },
+  "candidate49": {
+    "only_active_prospective_candidate": true,
+    "signal_ledger_sha256": "5193f00d7f36da003f53cec387900da4c3d002299f5dfcfc1a95eaa199ed3a79",
+    "signal_entry_count": 0,
+    "execution_ledger_sha256": "d57a3e61eac969e42cafa418ccd8c0a5ee65dcf69da145bb2c096c2a02a2ea4f",
+    "execution_entry_count": 0,
+    "historical_backfill_performed": false,
+    "prospective_registration_changed": false
+  },
+  "reports": {
+    "terminal_report": {
+      "path": "docs/a_share_three_day_walkforward_campaign_120_terminal_report.md",
+      "sha256": "d18a0d36b07895c7de665da0d1f4f681be64bb3ee96437c6840f564020e3b164"
+    },
+    "current_research_report": {
+      "path": "data/experiments/short_horizon/current_research_report.md",
+      "sha256": "9d729efa76209794d00da6f8013a4bbc738573134eb5290d1bf135fc3a7b0ec3"
+    },
+    "three_day_research_report": {
+      "path": "data/experiments/short_horizon/three_day_research_report.md",
+      "sha256": "621769636e220b1118c7e98d3e2f886534f565df205adaf075e87441c4dc7d38"
+    }
+  },
+  "research_boundary": {
+    "campaign120_terminal_outputs_may_be_used_for_current_trading": false,
+    "campaign120_retry_or_rescue_allowed": false,
+    "historical_daily_price_or_forward_return_values_read": false,
+    "stress_2024_2025_opened": false,
+    "provider_request_issued_during_campaign120": false,
+    "credential_loaded_during_campaign120": false,
+    "candidate49_historical_backfill_performed": false,
+    "candidate49_ledgers_changed": false,
+    "second_prospective_candidate_created": false,
+    "current_scoring_selection_sizing_positions_or_orders_performed": false,
+    "investment_advice": false
+  },
+  "next_action": "Campaign121 may begin offline at any local time only from a genuinely new prevalue-frozen mechanism that avoids return/range weak-order diversity and direction-parser families. Preserve Campaign120 as terminal and keep all return layers closed."
+}

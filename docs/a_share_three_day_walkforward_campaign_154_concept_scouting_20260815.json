@@ -1,0 +1,192 @@
+{
+  "schema_version": 1,
+  "kind": "a_share_three_day_walkforward_campaign154_concept_scouting",
+  "status": "terminal_zero_selected_candidates_after_sw_membership_original_contract_review",
+  "recorded_at": "2026-08-15T02:58:00+08:00",
+  "purpose": "Review a finite catalog of SW2021 L1 industry-relative mechanisms against the source's original one-hypothesis collection contract, its terminal breadth history, and the complete 157-definition library before any membership row, candidate value, comparator value, price or forward return is read for Campaign154.",
+  "authoritative_inputs": {
+    "campaign153_terminal_state_v3": {
+      "path": "docs/a_share_three_day_iteration_status_20260815_campaign153_prevalue_terminal_v3.json",
+      "sha256": "6e40ae9ee98937d5dc09e96a0b945ec35449329a8a9125269672ae745444c4e4"
+    },
+    "numeric_policy_v213": {
+      "path": "docs/a_share_three_day_walkforward_future_numeric_comparison_eligibility_policy_v213_20260815.json",
+      "sha256": "79b2d089f80536d234723c3893e5ff3d0b38e70302f312d07d3f19ea45b7dbf0",
+      "complete_definition_count": 157,
+      "complete_definition_order_sha256": "c39bb6ca969b5f469a9377a5b5ca743405cec9d8511297ed6a1c44188ef40b82",
+      "eligible_numeric_comparator_count": 142,
+      "eligible_numeric_comparator_order_sha256": "5d1b35fb5a0d8ac9293008db9963c4a60a94dc940c237c3ed259e5ce44f14aaf"
+    },
+    "sw_industry_breadth_data_contract": {
+      "path": "docs/a_share_tushare_sw_industry_breadth_data_contract.json",
+      "sha256": "e8dc45f6302bb6a4f1173da3698064bf7133930616b2fcd3338061f2fc508e66"
+    },
+    "sw_full_membership_snapshot_manifest": {
+      "path": "data/metadata/rich_data/runs/20260716T114724Z_tushare_sw2021_l1_membership_92ef71fe.json",
+      "sha256": "8582eb25f91ddcbe01130057ecb118431168545fa0a182cdb428c3a8d2a0228e"
+    },
+    "sw_industry_breadth_terminal_record": {
+      "path": "docs/a_share_tushare_sw_industry_breadth_research_record.json",
+      "sha256": "14089c6854060f69d69eafb712ed4f29f1861ec993b5cff9a48b53fae325bfa3"
+    }
+  },
+  "source_contract_audit": {
+    "dataset": "tushare_sw2021_l1_membership",
+    "historically_versioned_membership_intervals_exist": true,
+    "parquet_metadata_only_row_count": 7803,
+    "parquet_metadata_only_fields": [
+      "l1_code",
+      "l1_name",
+      "l2_code",
+      "l2_name",
+      "l3_code",
+      "l3_name",
+      "instrument",
+      "in_date",
+      "out_date",
+      "is_new",
+      "provider"
+    ],
+    "original_contract_independent_factor_count": 1,
+    "original_contract_factor": "sw1_three_session_leave_one_out_breadth",
+    "original_contract_allows_post_terminal_industry_price_momentum": false,
+    "original_contract_allows_window_level_peer_threshold_or_self_inclusion_change": false,
+    "terminal_record_allows_same_history_rerun_inversion_or_combination": false,
+    "membership_rows_or_column_values_read_by_campaign154": false,
+    "price_or_return_values_read_by_campaign154": false
+  },
+  "finite_prevalue_concept_catalog": [
+    {
+      "catalog_id": "c154_01",
+      "name": "intraday_sw1_leave_one_out_residual_variance_share_238m",
+      "hypothetical_formula": "For each within-half minute return, subtract the synchronous equal-weight leave-one-out mean of point-in-time SW2021 L1 peers and divide residual quadratic variation by own quadratic variation.",
+      "direction": "higher",
+      "parameters": "exact 238 within-half returns, SW2021 L1 interval assignment and at least 10 other peers at every position",
+      "filters": [
+        "point_in_time_l1_membership",
+        "complete_240_bar_session"
+      ],
+      "subsets": [],
+      "combinations": [],
+      "models": [],
+      "prevalue_decision": "rejected_as_unpermitted_industry_price_factor_and_market_idiosyncratic_operator_migration",
+      "reason": "The original membership contract authorizes one daily peer-breadth factor and explicitly closes industry price momentum after failure. The residual-variance operator also migrates terminal intraday_market_idiosyncratic_share from the whole market to an exposed group label."
+    },
+    {
+      "catalog_id": "c154_02",
+      "name": "intraday_sw1_neutral_late_residual_drift_30m",
+      "hypothetical_formula": "Subtract the point-in-time industry's leave-one-out late return from the stock's final-30-minute return.",
+      "direction": "higher",
+      "parameters": "fixed final 30 minutes, SW2021 L1 interval assignment and at least 10 other complete peers",
+      "filters": [
+        "point_in_time_l1_membership",
+        "complete_late_window"
+      ],
+      "subsets": [
+        "final_30_minutes"
+      ],
+      "combinations": [],
+      "models": [],
+      "prevalue_decision": "rejected_as_unpermitted_industry_price_momentum_and_terminal_late_residual_operator_migration",
+      "reason": "It is an industry-group substitution inside terminal late return and market-neutral late residual drift, while the original SW contract forbids an industry price-momentum replacement."
+    },
+    {
+      "catalog_id": "c154_03",
+      "name": "intraday_sw1_amount_profile_synchronization_240m",
+      "hypothetical_formula": "Correlate the stock's normalized 240-minute amount profile with the synchronous leave-one-out normalized amount profile of its point-in-time SW2021 L1 peers.",
+      "direction": "higher",
+      "parameters": "exact 240-minute profiles, SW2021 L1 intervals and at least 10 other complete peers",
+      "filters": [
+        "point_in_time_l1_membership",
+        "positive_session_amount"
+      ],
+      "subsets": [],
+      "combinations": [],
+      "models": [],
+      "prevalue_decision": "rejected_as_original_contract_field_expansion_and_terminal_market_amount_profile_group_substitution",
+      "reason": "The collection contract requested membership only for the one breadth hypothesis and forbids amount fields in that source branch. Grouping the terminal market amount-profile synchronization operator by industry is not a new observation."
+    },
+    {
+      "catalog_id": "c154_04",
+      "name": "intraday_sw1_range_profile_synchronization_240m",
+      "hypothetical_formula": "Correlate the stock's normalized high-low range profile with the leave-one-out point-in-time SW2021 L1 peer range profile.",
+      "direction": "higher",
+      "parameters": "exact 240-minute range profiles, SW2021 L1 intervals and at least 10 other complete peers",
+      "filters": [
+        "point_in_time_l1_membership",
+        "positive_session_range_mass"
+      ],
+      "subsets": [],
+      "combinations": [],
+      "models": [],
+      "prevalue_decision": "rejected_as_original_contract_field_expansion_and_terminal_market_range_profile_group_substitution",
+      "reason": "It reuses the terminal market range-profile synchronization formula with a post-result industry grouping and adds price/range fields excluded by the original membership source contract."
+    },
+    {
+      "catalog_id": "c154_05",
+      "name": "intraday_sw1_relative_session_amount_rank_240m",
+      "hypothetical_formula": "Rank log1p exact-session total CNY amount only among the stock's point-in-time SW2021 L1 peers.",
+      "direction": "higher",
+      "parameters": "exact 240 bars, point-in-time L1 peers and deterministic average ranks",
+      "filters": [
+        "point_in_time_l1_membership",
+        "positive_session_amount"
+      ],
+      "subsets": [],
+      "combinations": [
+        "campaign152_session_total_amount_magnitude",
+        "sw2021_l1_membership"
+      ],
+      "models": [],
+      "prevalue_decision": "rejected_as_campaign152_terminal_magnitude_recombination_and_unpermitted_industry_normalization",
+      "reason": "Campaign152's absolute amount magnitude is terminal and cannot be rescued through industry normalization. The membership contract also did not authorize this factor."
+    },
+    {
+      "catalog_id": "c154_06",
+      "name": "sw1_current_membership_tenure_sessions",
+      "hypothetical_formula": "Count accepted local sessions from the active membership interval's in_date through the signal session.",
+      "direction": "higher",
+      "parameters": "SW2021 L1 active interval, inclusive in_date and accepted local trading calendar",
+      "filters": [
+        "exactly_one_active_point_in_time_l1_membership"
+      ],
+      "subsets": [],
+      "combinations": [],
+      "models": [],
+      "prevalue_decision": "rejected_as_post_exposure_membership_interval_field_expansion_outside_original_one_factor_contract",
+      "reason": "Membership tenure would be a different raw state, but in_date/out_date were collected solely to assign the preregistered breadth factor. Turning interval age into a new score after observing the breadth result violates the original one-factor collection contract."
+    }
+  ],
+  "selection": {
+    "concepts_reviewed": 6,
+    "rejected_concept_count": 6,
+    "selected_candidate_count": 0,
+    "selected_candidate": null,
+    "genuinely_new_original_contract_permitted_mechanism_found": false,
+    "reason": "Five proposals are post-result industry group substitutions or combinations inside terminal price, range, amount and residual operators; the only distinct interval-tenure state is outside the source's preregistered one-factor use."
+  },
+  "decision": {
+    "create_campaign154_formula_feature_snapshot_model_or_adapter": false,
+    "run_source_acceptance_coverage_uniqueness_or_return_trial": false,
+    "append_all_six_concepts": true,
+    "keep_complete_definition_count": 157,
+    "keep_numeric_comparator_count": 142,
+    "keep_2024_2025_lockbox_closed": true,
+    "next_campaign_requirement": "Use a genuinely new finite prevalue mechanism whose already accepted source was originally collected for that use, or conduct a separately authorized pre-data source-admission campaign."
+  },
+  "research_boundary": {
+    "source_contract_manifest_schema_and_terminal_metadata_read": true,
+    "membership_rows_or_column_values_read": false,
+    "campaign154_candidate_values_computed_or_read": false,
+    "campaign154_comparator_values_read": false,
+    "historical_daily_price_or_forward_return_values_read": false,
+    "stress_2024_2025_opened": false,
+    "provider_request_issued": false,
+    "provider_credential_value_or_digest_read": false,
+    "candidate49_historical_backfill_performed": false,
+    "candidate49_ledgers_changed": false,
+    "second_prospective_candidate_created": false,
+    "current_scoring_selection_sizing_positions_or_orders_performed": false,
+    "investment_advice": false
+  }
+}

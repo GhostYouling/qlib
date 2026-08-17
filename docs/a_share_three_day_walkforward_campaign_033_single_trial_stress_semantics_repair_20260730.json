@@ -1,0 +1,52 @@
+{
+  "version": 1,
+  "kind": "a_share_three_day_walkforward_campaign033_single_trial_stress_semantics_repair",
+  "status": "pre_return_inherited_text_context_repaired",
+  "recorded_at": "2026-07-30T17:23:58Z",
+  "purpose": "Freeze the pre-return correction of an inherited Campaign004 stress-opening sentence from 42 trials to the exact single Campaign033 trial without changing the executable survivor gate or opening 2024-2025.",
+  "stable_bindings": {
+    "no_return_audit_freeze": {
+      "path": "docs/a_share_three_day_walkforward_campaign_033_no_return_audit_freeze_20260730.json",
+      "sha256": "c49f5630a3692aacfae96285f277504c07f3fb15a267a9a5c57f5fcfd2b15351"
+    },
+    "campaign004_template": {
+      "path": "docs/a_share_three_day_walkforward_campaign_004_preregistration.json",
+      "sha256": "e67811f265b2b744073391fa65698951b132065109f95fa47991b8254a5756e6"
+    },
+    "repaired_runner": {
+      "path": "scripts/a_share_three_day_walkforward_campaign033.py",
+      "sha256": "24e04434b2468490be09f482a3c129ce3b5130bfa3d4817d30691b33fd95d7ec"
+    }
+  },
+  "pre_repair_observation": {
+    "preregistration_observed_sha256": "130a759edceda91cee99070336989ce3ad693e66ba3f1c1f872ad89796fb8e93",
+    "runner_observed_sha256": "5ca4efcf24e33bace410c97c2e7a62e32de0d392d173ed32d6d75f3a2dfdbd38",
+    "trial_catalog_count": 1,
+    "inherited_opening_rule": "Open only after all 42 development trials are retained and the survivor record is frozen.",
+    "operational_engine_used_literal_42_as_a_gate": false,
+    "historical_daily_price_or_return_fields_read": false
+  },
+  "repair": {
+    "runtime_opening_rule": "Open only after the single frozen Campaign033 development trial is retained and the survivor record is frozen.",
+    "requires_exact_single_trial_catalog": true,
+    "requires_exact_inherited_42_trial_sentence_before_replacement": true,
+    "campaign004_template_mutated": false,
+    "trial_catalog_changed": false,
+    "factor_formula_direction_weight_or_values_changed": false,
+    "fold_boundaries_or_three_signal_session_purge_changed": false,
+    "cost_execution_or_survivor_thresholds_changed": false,
+    "stress_2024_2025_opened": false
+  },
+  "research_boundary": {
+    "historical_daily_price_fields_read": [],
+    "historical_forward_return_fields_read": false,
+    "candidate49_historical_return_signal_or_execution_backfill_performed": false,
+    "current_scoring_selection_sizing_or_orders_performed": false,
+    "provider_request_issued": false
+  },
+  "authorization": {
+    "preregistration_may_rebind_repaired_runner_and_this_record": true,
+    "development_returns_may_be_read_before_rebinding_and_validation": false,
+    "stress_2024_2025_may_be_opened": false
+  }
+}

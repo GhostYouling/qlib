@@ -1,0 +1,103 @@
+{
+  "schema_version": 1,
+  "kind": "a_share_three_day_iteration_status",
+  "status": "campaign261_validation_passed_goal_active_campaign262_offline_prevalue_authorized",
+  "recorded_at": "2026-08-16T17:01:00+08:00",
+  "timestamp_semantics": "monotonic_logical_append_time_not_host_wall_clock_measurement",
+  "goal": {
+    "objective": "请持续迭代因子。",
+    "status": "active",
+    "terminal_condition_reached": false,
+    "next_campaign": 262
+  },
+  "supersedes_without_rewriting": {
+    "prior_iteration_status": {
+      "path": "docs/a_share_three_day_iteration_status_20260727_walkforward.json",
+      "sha256": "75e639c4b8579983bfcda8da19c221d018b7b62cd68fac9e94822f6c3ed73267"
+    },
+    "campaign260_terminal_status": {
+      "path": "docs/a_share_three_day_iteration_status_20260816_campaign260_terminal.json",
+      "sha256": "4eda8b0d23a9dc7be30dc889b194241773af67508d5ad78fc10c561c8a67531d"
+    }
+  },
+  "authoritative_policy": {
+    "historical_walkforward_research_policy": {
+      "path": "docs/a_share_three_day_historical_walkforward_research_policy_20260727.json",
+      "sha256": "38426d6161b9bfed323c58caba18feca668b8c9d53e294951a8ba90c01a798bb"
+    },
+    "numeric_eligibility_policy_v404": {
+      "path": "docs/a_share_three_day_walkforward_future_numeric_comparison_eligibility_policy_v404_20260816.json",
+      "sha256": "fb2a95214db33763c6b14fe132c0c29eafad9a15ee4ea8fdafb58de3e2eb9fed"
+    },
+    "candidate49_daily_source_failure_record": {
+      "path": "docs/a_share_candidate49_20260727_daily_source_failure_record.json",
+      "sha256": "1ffeeb0b5041fe3bda463d51190cd5c912e498b6986ae2862ada1edeb317e2f8"
+    }
+  },
+  "campaign261": {
+    "terminal_result": {
+      "path": "docs/a_share_three_day_walkforward_campaign_261_terminal_result_v3_20260816.json",
+      "sha256": "0612b8fee0e71864460ba7977253276853096355d08d5ef417edadd8087c0112"
+    },
+    "terminal_validation": {
+      "path": "docs/a_share_three_day_walkforward_campaign_261_terminal_validation_20260816.json",
+      "sha256": "956d92c3eb5e1fbe8c656a2ad8174e9909968cb6c44f15488ba7d0cf3e17203d"
+    },
+    "attempt_ledger": {
+      "path": "data/experiments/short_horizon/historical_walkforward/campaign_261/research_attempt_ledger_v3.json",
+      "sha256": "70bc0284711ba8aa659bf55b35ed22a18f2d8fcc95ff2900345f73a5da719d69",
+      "effective_attempt_count": 28,
+      "infrastructure_failure_count": 22,
+      "prevalue_scientific_attempt_count": 6,
+      "return_reading_development_trial_count": 0
+    },
+    "factor": "intraday_amount_lorenz_gini_240m",
+    "terminal_reason": "strict_numeric_uniqueness_failed_against_two_existing_comparators_before_returns",
+    "selected_factor_count": 0,
+    "complete_definition_count": 160,
+    "eligible_numeric_comparator_count": 142,
+    "cumulative_historical_research_attempt_count": 2538,
+    "cumulative_return_reading_development_trial_count": 314
+  },
+  "dual_track": {
+    "historical_walkforward_primary_engine": {
+      "status": "active",
+      "may_run_at_any_local_time": true,
+      "wait_for_1630_required": false,
+      "next_action": "Campaign262 independent finite zero-network prevalue scouting"
+    },
+    "candidate49_future_confirmation_layer": {
+      "status": "sole_prospective_candidate_unchanged",
+      "signal_ledger": {
+        "path": "data/experiments/short_horizon/candidate49_future_signal_ledger.json",
+        "sha256": "5193f00d7f36da003f53cec387900da4c3d002299f5dfcfc1a95eaa199ed3a79",
+        "entry_count": 0
+      },
+      "execution_ledger": {
+        "path": "data/experiments/short_horizon/candidate49_future_execution_ledger.json",
+        "sha256": "d57a3e61eac969e42cafa418ccd8c0a5ee65dcf69da145bb2c096c2a02a2ea4f",
+        "entry_count": 0
+      },
+      "historical_backfill_allowed": false,
+      "second_prospective_candidate_allowed": false
+    }
+  },
+  "session_boundary": {
+    "local_date": "2026-08-16",
+    "timezone": "Asia/Singapore",
+    "accepted_local_trading_day": false,
+    "reason": "Sunday",
+    "provider_or_web_request_issued": false,
+    "provider_credential_presence_value_or_digest_read": false,
+    "candidate49_plan_or_run_executed": false
+  },
+  "research_boundary": {
+    "historical_daily_price_or_forward_return_values_read": false,
+    "stress_2024_2025_opened": false,
+    "candidate49_historical_backfill_performed": false,
+    "candidate49_ledgers_changed": false,
+    "current_scoring_selection_sizing_positions_or_orders_performed": false,
+    "investment_advice": false
+  },
+  "next_action": "Continue the active goal with Campaign262 offline prevalue research; freeze a complete finite mechanism before reading candidate/comparator values and preserve all attempts."
+}

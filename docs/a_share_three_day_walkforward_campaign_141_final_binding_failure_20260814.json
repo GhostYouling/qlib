@@ -1,0 +1,32 @@
+{
+  "schema_version": 1,
+  "kind": "a_share_three_day_walkforward_campaign141_infrastructure_failure",
+  "status": "recorded_for_additive_policy_correction_without_scientific_result_change",
+  "recorded_at": "2026-08-14T14:26:10+0800",
+  "attempt_id": "campaign141_infrastructure_002",
+  "validation_command_used_errexit": true,
+  "observed_results": {
+    "json_parse_passed": true,
+    "black_check_passed": true,
+    "ruff_check_passed": true,
+    "focused_pytest_passed_count": 4,
+    "focused_pytest_failed_count": 1,
+    "shell_exit_code": 1,
+    "failed_test": "test_campaign141_terminal_policy_status_and_candidate49_isolation"
+  },
+  "failed_binding": {
+    "record_path": "docs/a_share_three_day_walkforward_future_numeric_comparison_eligibility_policy_v180_20260814.json",
+    "record_sha256": "9deba34828d9a95d0e05bfa01e271c69c1ed3bac54946eddd4a5500ea01d91e8",
+    "json_pointer": "/supersedes_without_rewriting",
+    "expected_sha256_length": 62,
+    "observed_sha256_length": 64,
+    "cause": "The supersession copy of the policy-v179 hash omitted two hexadecimal characters; the authoritative-input copy was correct."
+  },
+  "response": {
+    "failed_exit_code_bypassed": false,
+    "old_policy_rewritten": false,
+    "additive_corrected_policy_required": true,
+    "scientific_result_changed": false,
+    "source_candidate_comparator_price_or_return_value_read": false
+  }
+}

@@ -1,0 +1,102 @@
+{
+  "version": 220,
+  "kind": "a_share_three_day_walkforward_future_numeric_comparison_eligibility_policy",
+  "status": "campaign157_terminal_prevalue_zero_admitted_cross_asset_sources",
+  "recorded_at": "2026-08-15T04:00:50+08:00",
+  "supersedes_without_rewriting": {
+    "path": "docs/a_share_three_day_walkforward_future_numeric_comparison_eligibility_policy_v219_20260815.json",
+    "sha256": "dfb5afc8ad530b874b0e8ae6a852c1d7cd8fede2f20ad3f0013ccc85d701e9a1",
+    "preserved": true,
+    "library_order_changed": false,
+    "scientific_result_changed": true,
+    "reason": "Campaign157 adds six independently recorded cross-asset source-admission decisions but no source rows, complete definition or numeric series."
+  },
+  "authoritative_inputs": {
+    "campaign157_source_scouting": {
+      "path": "docs/a_share_three_day_walkforward_campaign_157_cross_asset_source_scouting_20260815.json",
+      "sha256": "b14d28d45144c3fde60379161df4ff618bf71222f52dfc8b8e44dd3dc113af2e"
+    },
+    "campaign157_source_admission_audit": {
+      "path": "docs/a_share_three_day_walkforward_campaign_157_cross_asset_source_admission_audit_20260815.json",
+      "sha256": "8ffbb4f0f6f1a1e3720089af0993e462ccda1a3015695b88e6bcf2e81143589a"
+    },
+    "campaign157_attempt_ledger": {
+      "path": "data/experiments/short_horizon/historical_walkforward/campaign_157/research_attempt_ledger_v1.json",
+      "sha256": "4459c7f44297aa6b7713af20fc9bdbfa2f7ebda69464922e6962537f2d2ca400",
+      "effective_entry_count": 6,
+      "chain_tip_sha256": "9d3b1b9daa44a3c595acdaf182ffba95abcbf74a4c3bfae5158447838f0c3b2f"
+    },
+    "campaign157_terminal_result": {
+      "path": "docs/a_share_three_day_walkforward_campaign_157_terminal_result_20260815.json",
+      "sha256": "031ec12d6a8f4fc73bfe8d0d783a7bf55223a21048323e58ff17966c41bd0e06"
+    }
+  },
+  "effective_accounting": {
+    "campaign157_attempt_count": 6,
+    "campaign157_prevalue_source_admission_attempt_count": 6,
+    "campaign157_source_admission_deferral_count": 4,
+    "campaign157_terminal_or_structural_recombination_rejection_count": 2,
+    "campaign157_infrastructure_failure_count": 0,
+    "campaign157_complete_factor_attempt_count": 0,
+    "campaign157_return_reading_development_trial_count": 0,
+    "campaign157_development_survivor_count": 0,
+    "campaign157_stress_trial_count": 0,
+    "cumulative_historical_research_attempt_count": 1373,
+    "cumulative_return_reading_development_trial_count": 314
+  },
+  "complete_historical_feature_library": {
+    "factor_definition_count": 157,
+    "order_sha256": "c39bb6ca969b5f469a9377a5b5ca743405cec9d8511297ed6a1c44188ef40b82",
+    "unchanged_from_v219": true,
+    "campaign157_definition_appended": false
+  },
+  "numerical_comparator_eligibility": {
+    "eligible_numeric_comparator_count": 142,
+    "eligible_numeric_comparator_order_sha256": "5d1b35fb5a0d8ac9293008db9963c4a60a94dc940c237c3ed259e5ce44f14aaf",
+    "unchanged_from_v219": true,
+    "campaign157_numeric_series_appended": false
+  },
+  "campaign157_terminal_classification": {
+    "terminal": true,
+    "terminal_phase": "prevalue_cross_asset_source_admission_gate",
+    "concepts_reviewed": 6,
+    "selected_candidate_count": 0,
+    "source_admission_deferrals_not_factor_failures": 4,
+    "terminal_or_structural_recombination_rejections": 2,
+    "source_row_endpoint_response_candidate_comparator_daily_price_or_forward_return_values_read": false,
+    "stress_2024_2025_opened": false,
+    "unverified_endpoint_field_mapping_or_schema_assumed": false
+  },
+  "future_campaign_boundary": {
+    "next_campaign": 158,
+    "may_begin_after_this_policy": true,
+    "must_begin_from_genuinely_new_raw_state_or_exact_source_contract_frozen_before_rows": true,
+    "campaign157_deferred_concept_revisit_requires_separate_preregistered_source_admission": true,
+    "campaign157_terminal_recombination_retry_refit_or_mapping_rescue_allowed": false,
+    "historical_offline_work_may_continue_at_any_local_time": true,
+    "candidate49_remains_separate_confirmation_layer": true
+  },
+  "candidate49": {
+    "only_active_prospective_candidate": true,
+    "signal_ledger_sha256": "5193f00d7f36da003f53cec387900da4c3d002299f5dfcfc1a95eaa199ed3a79",
+    "signal_entry_count": 0,
+    "execution_ledger_sha256": "d57a3e61eac969e42cafa418ccd8c0a5ee65dcf69da145bb2c096c2a02a2ea4f",
+    "execution_entry_count": 0,
+    "historical_backfill_performed": false,
+    "ledgers_changed": false
+  },
+  "research_boundary": {
+    "campaign157_source_row_or_response_values_read": false,
+    "campaign157_candidate_or_comparator_values_read": false,
+    "historical_daily_price_or_forward_return_values_read": false,
+    "stress_2024_2025_opened": false,
+    "provider_or_web_request_issued": false,
+    "provider_credential_presence_value_or_digest_read": false,
+    "candidate49_historical_backfill_performed": false,
+    "candidate49_ledgers_changed": false,
+    "second_prospective_candidate_created": false,
+    "current_scoring_selection_sizing_positions_or_orders_performed": false,
+    "investment_advice": false
+  },
+  "next_action": "Publish Campaign157 terminal state and continue Campaign158 zero-network prevalue scouting without reading unaccepted cross-asset rows or converting source deferrals into factor failures."
+}

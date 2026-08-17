@@ -1,0 +1,55 @@
+{
+  "schema_version": 1,
+  "kind": "a_share_three_day_walkforward_campaign102_development_recovery_v2_implementation_freeze",
+  "status": "frozen_after_session_key_failure_before_model_fit_or_validation",
+  "recorded_at": "2026-08-07T15:34:04Z",
+  "purpose": "Bind the sole representation-safe inverse-index correction to session-equal weights before retrying the unchanged campaign in a second fresh root.",
+  "recovery_runner": {
+    "path": "scripts/a_share_three_day_walkforward_campaign102_development_recovery_v2.py",
+    "sha256": "801da1009ea728ecb42a981497db50ec4f5281aa5b3e6799a3ba0bf290bda04a"
+  },
+  "tests": {
+    "path": "tests/data_collector_tests/test_a_share_three_day_walkforward_campaign102_development_recovery_v2.py",
+    "sha256": "90414daf22a2aa98eb470a5459f87f76a0b00960fbffd47268ac9ac2c85daad7",
+    "pre_activation_result": "4_passed_1_activation_dependent_skipped"
+  },
+  "unchanged_scientific_runner": {
+    "path": "scripts/a_share_three_day_walkforward_campaign102.py",
+    "sha256": "ba298ed23d0675f6fea5de85bbf085dcb7b88ef72e730031b90e1e6b350ca6db"
+  },
+  "session_key_failure": {
+    "path": "docs/a_share_three_day_walkforward_campaign_102_development_session_key_failure_20260807.json",
+    "sha256": "cbf69726689ec5dd1dffa692a642f4972bfbcbc7eded41f60fc4a6aaf57e860c"
+  },
+  "v1_failed_artifact": {
+    "path": "data/experiments/short_horizon/historical_walkforward/campaign_102/walkforward_recovery_v1/development_failure.json",
+    "sha256": "c1352638402b4e47fe416d7a0d4696c30e3602b9d316a2d160a0b3e6c2f471f4"
+  },
+  "authorized_correction": {
+    "function": "sufficient_statistics",
+    "old_semantics": "session count lookup by scalar key",
+    "new_semantics": "the same count selected by np.unique return_inverse",
+    "session_equal_weight_formula_changed": false,
+    "a_or_b_formula_changed": false,
+    "target_or_observation_filter_changed": false,
+    "objective_constraint_optimizer_trial_or_gate_changed": false,
+    "synthetic_datetime64_equivalence_test_passed": true,
+    "any_other_monkeypatch_allowed": false
+  },
+  "fresh_recovery_output_root": "/Volumes/DIsk/Disk-Coding/qlib/data/experiments/short_horizon/historical_walkforward/campaign_102/walkforward_recovery_v2",
+  "exact_runtime": {
+    "path": "/Volumes/DIsk/Coding/anaconda3/bin/python3.12",
+    "sha256": "b21ee43bcb627125a1b54b1fceb97bad564afbab38235cb9d72cf1f278d5751c",
+    "alternate_runtime_allowed": false
+  },
+  "fold1_training_return_read_count_before_v2": 1,
+  "model_fit_count_before_v2": 0,
+  "validation_score_or_uniqueness_count_before_v2": 0,
+  "validation_return_read_count_before_v2": 0,
+  "complete_development_trial_count_before_v2": 0,
+  "lockbox_2024_2025_read_before_v2": false,
+  "provider_request_issued_before_v2": false,
+  "candidate49_historical_backfill_performed_before_v2": false,
+  "candidate49_ledgers_changed_before_v2": false,
+  "current_scoring_selection_sizing_or_orders_performed_before_v2": false
+}

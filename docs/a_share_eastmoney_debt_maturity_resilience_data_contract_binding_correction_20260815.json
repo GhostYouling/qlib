@@ -1,0 +1,54 @@
+{
+  "version": 1,
+  "kind": "a_share_eastmoney_debt_maturity_resilience_data_contract_binding_correction",
+  "status": "effective_additive_binding_correction_frozen_before_eastmoney_financial_data_api_request",
+  "recorded_at": "2026-08-15T05:33:20+08:00",
+  "campaign": 161,
+  "supersedes_without_rewriting": {
+    "path": "docs/a_share_eastmoney_debt_maturity_resilience_data_contract_20260815.json",
+    "sha256": "c901436aecec2927c722e6f5d59d8d4e82fe73ec611dafe6f4be7403c1a42831"
+  },
+  "corrected_binding": {
+    "label": "historical_walkforward_policy",
+    "path": "docs/a_share_three_day_historical_walkforward_research_policy_20260727.json",
+    "recorded_sha256_in_v1": "38426d6161b9bfed323c58caba18feca168b8c9d53e294951a8ba90c01a798bb",
+    "effective_sha256": "38426d6161b9bfed323c58caba18feca668b8c9d53e294951a8ba90c01a798bb",
+    "difference": "one hexadecimal character in the manually transcribed digest; the bound file itself was not changed"
+  },
+  "semantic_change": false,
+  "unchanged": {
+    "source": "Eastmoney public datacenter RPT_DMSK_FN_BALANCE",
+    "acceptance_report_date": "2023-12-31",
+    "requested_columns": [
+      "SECUCODE",
+      "SECURITY_CODE",
+      "REPORT_DATE",
+      "NOTICE_DATE",
+      "SHORT_LOAN",
+      "SHORT_BOND_PAYABLE",
+      "NONCURRENT_LIAB_1YEAR",
+      "LONG_LOAN",
+      "BOND_PAYABLE"
+    ],
+    "formula": "(LONG_LOAN + BOND_PAYABLE) / (SHORT_LOAN + SHORT_BOND_PAYABLE + NONCURRENT_LIAB_1YEAR + LONG_LOAN + BOND_PAYABLE)",
+    "direction": "higher_is_better",
+    "acceptance_gates": "unchanged",
+    "development_folds_costs_and_survivor_gates": "unchanged",
+    "stress_2024_2025": "closed"
+  },
+  "evidence": {
+    "corrected_file_exists": true,
+    "corrected_file_sha256_computed_read_only": true,
+    "incorrect_digest_matches_no_authoritative_input": true
+  },
+  "research_boundary_at_correction": {
+    "eastmoney_financial_data_api_request_issued": false,
+    "provider_response_row_or_column_value_read": false,
+    "candidate_or_comparator_value_read": false,
+    "historical_daily_price_or_forward_return_value_read": false,
+    "stress_2024_2025_opened": false,
+    "provider_credential_presence_value_or_digest_read": false,
+    "candidate49_ledgers_changed": false,
+    "current_scoring_selection_sizing_positions_or_orders_performed": false
+  }
+}

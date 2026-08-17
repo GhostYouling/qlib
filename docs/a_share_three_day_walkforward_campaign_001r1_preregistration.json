@@ -1,0 +1,25 @@
+{
+  "version": 1,
+  "kind": "a_share_three_day_historical_walkforward_campaign_preregistration",
+  "campaign_id": "a_share_three_day_walkforward_campaign_001",
+  "status": "frozen_before_campaign_development_or_lockbox_return_read",
+  "frozen_at": "2026-07-27T11:51:00Z",
+  "revision": "r1",
+  "base_campaign": {
+    "path": "docs/a_share_three_day_walkforward_campaign_001_preregistration.json",
+    "sha256": "b4dafbbf5372bb124dc391edb381043a985f49d7663d310bb79ed6b50a22dab2"
+  },
+  "infrastructure_repair": {
+    "path": "docs/a_share_three_day_walkforward_campaign_001_infrastructure_repair_20260727.json",
+    "sha256": "f9c42e05c295ddc03e889942cab05da51c5c99f9f42784b8bf3e511b11b51443"
+  },
+  "implementation": {
+    "script": {
+      "path": "scripts/a_share_three_day_walkforward_campaign.py",
+      "sha256": "301f5fe665422b94c9fa110e67995ff0999584a5f323ecdd5f56151a3529f5a7"
+    },
+    "development_command": "python scripts/a_share_three_day_walkforward_campaign.py run-development",
+    "lockbox_command": "python scripts/a_share_three_day_walkforward_campaign.py run-lockbox --confirm-open-lockbox",
+    "output_root": "data/experiments/short_horizon/historical_walkforward/campaign_001r1"
+  }
+}

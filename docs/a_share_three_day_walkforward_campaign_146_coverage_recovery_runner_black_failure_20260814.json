@@ -1,0 +1,24 @@
+{
+  "schema_version": 1,
+  "kind": "a_share_three_day_walkforward_campaign146_infrastructure_failure",
+  "status": "recorded_black_check_failure_before_coverage_statistics",
+  "recorded_at": "2026-08-14T21:43:00+08:00",
+  "attempt_id": "campaign146_infrastructure_005",
+  "stage": "coverage_recovery_runner_synthetic_validation",
+  "command": "python -m black --check scripts/a_share_three_day_walkforward_campaign146_no_return_audit_recovery.py tests/data_collector_tests/test_a_share_three_day_walkforward_campaign146_no_return_audit_recovery.py",
+  "exit_code": 1,
+  "failure": "Black reported that the coverage recovery runner would be reformatted; its test was already formatted.",
+  "successful_checks_before_failure": {
+    "pytest_exit_code": 0,
+    "pytest_passed": 5,
+    "ruff_exit_code": 0
+  },
+  "resolution": "Mechanically format exactly the runner and test, then rerun the unchanged five-test, Black-check, and Ruff scopes before freezing the runner.",
+  "scientific_effect": {
+    "coverage_statistics_read": false,
+    "comparator_value_read": false,
+    "daily_price_or_forward_return_read": false,
+    "provider_request_issued": false,
+    "snapshot_or_partition_rewritten": false
+  }
+}

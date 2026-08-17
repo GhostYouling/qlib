@@ -1,0 +1,68 @@
+{
+  "version": 2,
+  "kind": "a_share_three_day_walkforward_campaign076_research_record",
+  "status": "terminal_zero_development_survivors_current_after_postcompletion_lifecycle_failure_accounting",
+  "recorded_at": "2026-08-06T11:48:00+08:00",
+  "supersedes_without_rewriting": {
+    "path": "docs/a_share_three_day_walkforward_campaign_076_research_record.json",
+    "sha256": "bd7aaef3d8b05e2d9c47214b42aa95ad4e09ef0835cb0d2849fab0d7cbdb8f39",
+    "preserved": true
+  },
+  "current_accounting_bindings": {
+    "postcompletion_correction": {
+      "path": "docs/a_share_three_day_walkforward_campaign_076_postcompletion_failure_accounting_correction_20260806.json",
+      "sha256": "b7527237e62853609bf896094a3ac9413c0d432bef3e6749bcc99b5efa0da1ab"
+    },
+    "attempt_ledger_v4": {
+      "path": "data/experiments/short_horizon/historical_walkforward/campaign_076/research_attempt_ledger_v4.json",
+      "sha256": "16f100cded5754eb469d60ad9874e1d747f6736c5e0d5b00f69290a353c758fe"
+    }
+  },
+  "unchanged_factor_and_result": {
+    "factor": "intraday_peak_amount_bar_recency_240m",
+    "direction": "higher",
+    "formula": "latest zero-based exact maximum amount-bar position among exact 09:31-11:30 and 13:01-15:00 bars divided by 239",
+    "coverage_gate_passed": true,
+    "numeric_comparisons_completed": 106,
+    "numeric_comparisons_passed": 106,
+    "maximum_absolute_median_daily_rank_correlation": 0.6178537281567388,
+    "nearest_comparison": "intraday_market_amount_profile_synchronization_240m",
+    "validation_mean_rank_ic": [0.005629233327526384, 0.0073894057811776, -0.000536771772775575],
+    "validation_spread": [-0.008002235025570199, -0.005281893644890148, 0.006500864067945529],
+    "validation_normalized_return": [-0.17319146508015892, -0.2828449682467743, -0.0884099155474316],
+    "validation_pilot_10bp_return": [-0.041566869830629294, -0.06564741845970556, -0.025505404622401362],
+    "development_aggregate_20bp_return": -0.24195927076775625,
+    "worst_validation_normalized_drawdown": -0.36458719748993473,
+    "development_survivor_count": 0,
+    "stress_2024_2025_opened": false,
+    "stress_returns_read": false,
+    "factor_terminal": true,
+    "same_campaign_rescue_allowed": false
+  },
+  "current_attempt_accounting": {
+    "campaign076_infrastructure_failures": 9,
+    "campaign076_complete_factor_attempts": 1,
+    "campaign076_attempts": 10,
+    "campaign076_ledger_entries": 11,
+    "campaign076_return_reading_development_trials": 1,
+    "cumulative_historical_attempts": 466,
+    "cumulative_return_reading_development_trials": 278
+  },
+  "candidate49_boundary": {
+    "signal_ledger_sha256": "5193f00d7f36da003f53cec387900da4c3d002299f5dfcfc1a95eaa199ed3a79",
+    "signal_ledger_entries": 0,
+    "execution_ledger_sha256": "d57a3e61eac969e42cafa418ccd8c0a5ee65dcf69da145bb2c096c2a02a2ea4f",
+    "execution_ledger_entries": 0,
+    "historical_backfill_performed": false,
+    "provider_request_issued": false,
+    "live_order_performed": false
+  },
+  "next_offline_research": {
+    "campaign077_scouting_authorized": true,
+    "wait_for_new_daily_bar_or_16_30_required": false,
+    "future_numeric_comparison_policy_v12_sha256": "8bf3f6a261816bcf0e71c86cada1224b91c8a75042040ae50dbc371076447484",
+    "complete_definition_count": 108,
+    "numeric_comparator_count": 107,
+    "historical_output_may_generate_current_trading": false
+  }
+}

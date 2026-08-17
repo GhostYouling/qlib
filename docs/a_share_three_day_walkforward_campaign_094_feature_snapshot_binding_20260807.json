@@ -1,0 +1,51 @@
+{
+  "schema_version": 3,
+  "kind": "a_share_three_day_walkforward_campaign094_feature_snapshot_binding",
+  "status": "immutable_no_return_feature_snapshot_v3_verified_before_comparison_values",
+  "recorded_at": "2026-08-07T02:49:13Z",
+  "protocol": {
+    "path": "docs/a_share_three_day_walkforward_campaign_094_no_return_preregistration.json",
+    "sha256": "c79c7ee277401f140bd075756658bfc5533ddcf191a20c4dc5e63808a50cbe27"
+  },
+  "effective_implementation_freeze": {
+    "path": "docs/a_share_three_day_walkforward_campaign_094_feature_implementation_freeze_v3_20260807.json",
+    "sha256": "af5bfb1d5e93fa89a196bd60cae06747acf2cc126d61d90cc3d355b56caf9fdf"
+  },
+  "effective_feature_runner": {
+    "path": "scripts/a_share_three_day_walkforward_campaign094_features_v3.py",
+    "sha256": "58e2dc4bc07c327e399a7c5cfaff50ea65c092c664f1a0d7065fe61207376b5a"
+  },
+  "preserved_feature_lifecycle": {
+    "v1_implementation_freeze_sha256": "d4b5bb63e412c091a4c32c45fcfcc4f431446d6f101e674a062425e6f534c743",
+    "v1_build_quality_schema_failure_sha256": "2cb67be4ea48ccc1df029113a21329b1a0c0f93656bb6356fcf299649589fd79",
+    "v2_implementation_freeze_sha256": "0e24abb954edee47c1653af038d7c2158bb0fd9a0771343a621d530110c87ded",
+    "v2_postpublication_activation_failure_sha256": "6420faf861cc4cf515519e3942aa12ed7b84e34e59c149ad086babc80bfde785",
+    "v3_metadata_activation_repair_protocol_sha256": "75074f18e4c361c3a74b5824239d3935df2656408097e841873bd477b4351885",
+    "partition_files_rebuilt_after_successful_v2_publication": false
+  },
+  "snapshot": {
+    "path": "/Volumes/DIsk/qlib-a-share-tushare-1m/derived/a_share/rich/tushare/minute_walkforward_campaign094_feature_library/tushare_stk_mins_1m_2019_2025_ea0cbb8f_walkforward_campaign094_feature_library_v1/snapshot_manifest.json",
+    "sha256": "1f1441e59bcef1cb3d18b0030c640453e2ee762668d05157dec9ca1c0f01c340",
+    "dataset_sha256": "37865a7d4c5556ee9a79ba9550f0f05229e3c52bb511d8bd1ac3b1f2525a6b63",
+    "partitions": 7,
+    "rows": 1331759,
+    "eligible_rows": 1314834,
+    "missing_rows": 16925,
+    "calendar_sessions": 1632,
+    "factor_range": [
+      0.0,
+      0.25
+    ]
+  },
+  "factor": "intraday_range_local_peak_clock_dispersion_236p",
+  "direction": "higher",
+  "source_rows_read": true,
+  "candidate_values_computed": true,
+  "coverage_counts_read": true,
+  "comparison_values_read": false,
+  "historical_daily_price_or_forward_return_values_read": false,
+  "provider_request_issued": false,
+  "candidate49_ledgers_changed": false,
+  "independent_v1_pre_activation_verify_status": "verified",
+  "independent_v3_post_activation_verify_status": "verified"
+}

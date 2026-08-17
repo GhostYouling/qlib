@@ -1,0 +1,276 @@
+{
+  "version": 1,
+  "kind": "a_share_three_day_walkforward_campaign_preregistration",
+  "campaign_id": "a_share_three_day_walkforward_campaign_003",
+  "status": "frozen_before_campaign003_development_or_exposed_stress_return_read",
+  "frozen_at": "2026-07-28T02:56:25Z",
+  "purpose": "Test one complete finite low-realized-volatility risk-control construction across all seven non-volatility primary signals in the complete Campaign001 feature library. The original lower-realized-volatility direction is used as an eligibility gate before within-gate re-ranking. This is a cross-library risk-control campaign rather than a targeted rescue, and all prior terminal conclusions remain unchanged.",
+  "evidence_classification": {
+    "development_2019_2023": "historically_exposed_expanding_walkforward_exploration",
+    "stress_replay_2024_2025": "historically_exposed_stress_replay_not_unseen_or_pristine",
+    "reason": "All seven market years, the eight reused factors, and the low-volatility mechanism were examined before Campaign003. This preregistration controls the finite gate construction prospectively but cannot restore unseen status.",
+    "survivorship_bias_warning": "The local holding universe derives from a current listing snapshot and may contain survivorship bias."
+  },
+  "governance_bindings": {
+    "authoritative_iteration_state": {
+      "path": "docs/a_share_three_day_iteration_status_20260727_walkforward.json",
+      "sha256": "75e639c4b8579983bfcda8da19c221d018b7b62cd68fac9e94822f6c3ed73267"
+    },
+    "historical_walkforward_policy": {
+      "path": "docs/a_share_three_day_historical_walkforward_research_policy_20260727.json",
+      "sha256": "38426d6161b9bfed323c58caba18feca668b8c9d53e294951a8ba90c01a798bb"
+    }
+  },
+  "campaign001_bindings": {
+    "repaired_preregistration": {
+      "path": "docs/a_share_three_day_walkforward_campaign_001r1_preregistration.json",
+      "sha256": "63966d420288a1e4c6595f60df105dc373fd3240ffd6694a24dd6cdd86193d4a"
+    },
+    "completion_audit": {
+      "path": "docs/a_share_three_day_walkforward_campaign_001r1_completion_audit.json",
+      "sha256": "bbf54c4135db833b048626578374f24b17377799d61a8595a0da1bef058b09d8"
+    },
+    "research_record": {
+      "path": "docs/a_share_three_day_walkforward_campaign_001r1_research_record.json",
+      "sha256": "7cc2096a42157b6df3c37acde2647e10c7b9daa28c33967a533ce10f3324f3a3"
+    }
+  },
+  "campaign002_bindings": {
+    "preregistration": {
+      "path": "docs/a_share_three_day_walkforward_campaign_002_preregistration.json",
+      "sha256": "2f9977f020d4b8bd06b7968e0cfb29287d13e87cf1510881f3acbbe83050d511"
+    },
+    "research_record": {
+      "path": "docs/a_share_three_day_walkforward_campaign_002_research_record.json",
+      "sha256": "9abd467e8c110e3c30ffd78ed76e921d5119d4442ac9b09aa22de6ea4ee5521d"
+    },
+    "trial_ledger": {
+      "path": "data/experiments/short_horizon/historical_walkforward/campaign_002/trial_ledger.json",
+      "sha256": "4ad41d59ee0ea2695091e33dd758a93ccb195c5194f488c4a903ffb41f513e99"
+    },
+    "development_survivors": {
+      "path": "data/experiments/short_horizon/historical_walkforward/campaign_002/development_survivors.json",
+      "sha256": "e9af90ee17e5121e826dd08f9d41fc6e57a3d023acecd8387eb6ff8a906f4c54"
+    },
+    "exposed_stress_record": {
+      "path": "data/experiments/short_horizon/historical_walkforward/campaign_002/exposed_stress_consumption_record.json",
+      "sha256": "23379775eecfe6da5f36f59e20c31db7943f4bb248caeae3c5c849cb733cd7a3"
+    },
+    "completion_audit_implementation": {
+      "path": "scripts/a_share_three_day_walkforward_campaign002_completion_audit.py",
+      "sha256": "ec8eb6796fb2b4b7a82de9895179acd6c73af0ae2002716fb24ab8d393ffdb6d"
+    }
+  },
+  "implementation": {
+    "script": {
+      "path": "scripts/a_share_three_day_walkforward_campaign003.py",
+      "sha256": "22ea63ae47b3146a9d9f988bb98e15b3a169cb70b55007edc317d6b6e2a97c57"
+    },
+    "development_command": "python scripts/a_share_three_day_walkforward_campaign003.py run-development",
+    "exposed_stress_command": "python scripts/a_share_three_day_walkforward_campaign003.py run-exposed-stress --confirm-exposed-stress",
+    "output_root": "data/experiments/short_horizon/historical_walkforward/campaign_003"
+  },
+  "reused_complete_feature_library": {
+    "source": "the complete eight-factor Campaign001 library without additions, omissions, direction changes, formula changes, or result reclassification",
+    "factor_count": 8,
+    "factor_names": [
+      "intraday_amount_participation_entropy_240m",
+      "intraday_bar_vwap_close_pressure_240m",
+      "intraday_market_idiosyncratic_share_238m",
+      "intraday_realized_volatility",
+      "intraday_return_variance_entropy_238m",
+      "late_amount_share_30m",
+      "late_return_30m",
+      "late_vwap_to_day_vwap_30m"
+    ],
+    "primary_signal_factor_names": [
+      "intraday_amount_participation_entropy_240m",
+      "intraday_bar_vwap_close_pressure_240m",
+      "intraday_market_idiosyncratic_share_238m",
+      "intraday_return_variance_entropy_238m",
+      "late_amount_share_30m",
+      "late_return_30m",
+      "late_vwap_to_day_vwap_30m"
+    ],
+    "risk_gate_factor_name": "intraday_realized_volatility",
+    "risk_gate_uses_original_direction": "lower raw intraday realized volatility has the higher directional percentile rank",
+    "all_prior_terminal_conclusions_unchanged": true,
+    "historical_feature_reuse_is_not_rescue_or_promotion": true
+  },
+  "search_space": {
+    "primary_signal_factor_names": [
+      "intraday_amount_participation_entropy_240m",
+      "intraday_bar_vwap_close_pressure_240m",
+      "intraday_market_idiosyncratic_share_238m",
+      "intraday_return_variance_entropy_238m",
+      "late_amount_share_30m",
+      "late_return_30m",
+      "late_vwap_to_day_vwap_30m"
+    ],
+    "risk_gate_factor": "intraday_realized_volatility",
+    "risk_gate_eligibility_rule": "both primary and risk-gate directional ranks must be finite and positive, then retain a name exactly when its low-volatility directional rank is greater than or equal to the frozen threshold",
+    "low_vol_directional_rank_gate_thresholds": [
+      {
+        "id": "retain_75pct",
+        "minimum_rank": 0.25
+      },
+      {
+        "id": "retain_60pct",
+        "minimum_rank": 0.4
+      },
+      {
+        "id": "retain_45pct",
+        "minimum_rank": 0.55
+      }
+    ],
+    "threshold_interpretation": "With approximately continuous same-day directional ranks, the thresholds retain about 75%, 60%, and 45% of names. Ties at the threshold are retained.",
+    "within_gate_rerank": "After eligibility is fixed, separately rerank the original primary directional rank and original low-volatility directional rank within the eligible same-day cross-section using average percentile rank.",
+    "within_gate_score_modes": [
+      {
+        "id": "primary_within_gate_rank",
+        "weights": [
+          1.0,
+          0.0
+        ],
+        "formula": "within_gate_average_percentile_rank(primary_directional_rank)"
+      },
+      {
+        "id": "primary_75_low_vol_25_within_gate_rank",
+        "weights": [
+          0.75,
+          0.25
+        ],
+        "formula": "0.75 * within_gate_average_percentile_rank(primary_directional_rank) + 0.25 * within_gate_average_percentile_rank(low_volatility_directional_rank)"
+      }
+    ],
+    "all_components_required": true,
+    "directional_rank_method_before_gate": "same-day average percentile with the original frozen direction of each factor",
+    "weight_fitting": false,
+    "threshold_fitting": false,
+    "year_subset_search": false,
+    "primary_signal_subset_search": false,
+    "negative_or_medium_volatility_gate_search": false,
+    "expected_primary_signal_count": 7,
+    "expected_threshold_count": 3,
+    "expected_score_mode_count": 2,
+    "expected_trial_count": 42,
+    "record_every_trial_and_infrastructure_failure": true,
+    "post_result_change_requires_new_campaign_version": true
+  },
+  "walkforward_folds": [
+    {
+      "fold": 1,
+      "training": {
+        "start": "2019-01-01",
+        "end": "2020-12-31"
+      },
+      "validation": {
+        "start": "2021-01-01",
+        "end": "2021-12-31"
+      }
+    },
+    {
+      "fold": 2,
+      "training": {
+        "start": "2019-01-01",
+        "end": "2021-12-31"
+      },
+      "validation": {
+        "start": "2022-01-01",
+        "end": "2022-12-31"
+      }
+    },
+    {
+      "fold": 3,
+      "training": {
+        "start": "2019-01-01",
+        "end": "2022-12-31"
+      },
+      "validation": {
+        "start": "2023-01-01",
+        "end": "2023-12-31"
+      }
+    }
+  ],
+  "split_protocol": {
+    "global_signal_grid": "start at the first accepted local 2019 session and take every third local session",
+    "signal": "close t",
+    "entry": "next accepted local session open t+1",
+    "exit": "third accepted local session close t+3",
+    "purge_signal_sessions_each_boundary": 3,
+    "label_containment_required": true,
+    "quality_maximum_age_days": 550,
+    "minimum_listing_sessions": 20,
+    "minimum_signal_names": 50,
+    "topk": 3
+  },
+  "survivor_rule": {
+    "purpose": "Admit only operationally valid gate constructions that pass fold-consistency, drawdown, pilot-cost, and aggregate 20bp robustness gates before the exposed stress interval is read.",
+    "minimum_validation_association_cohorts_per_fold": 60,
+    "minimum_board_lot_affordability_rate_each_fold": 0.9,
+    "maximum_daily_amount_participation_each_fold": 0.01,
+    "terminal_unresolved_positions_each_fold": 0,
+    "positive_ic_fold_count_gte": 2,
+    "median_validation_mean_rank_ic_gt": 0.0,
+    "median_validation_spread_gt": 0.0,
+    "positive_normalized_return_fold_count_gte": 2,
+    "positive_pilot_return_fold_count_gte": 2,
+    "median_validation_pilot_return_gt": 0.0,
+    "worst_normalized_drawdown_gte": -0.25,
+    "development_aggregate_20bp_return_gt": 0.0,
+    "operational_and_validation_quality_gates_are_both_required": true,
+    "ranking_order": [
+      "positive validation mean-Rank-IC fold count descending",
+      "positive validation 10bp pilot-return fold count descending",
+      "positive validation normalized-return fold count descending",
+      "median validation mean Rank IC descending",
+      "median validation 10bp pilot return descending",
+      "2019-2023 aggregate 20bp pilot return descending",
+      "worst validation normalized drawdown descending",
+      "trial_id ascending"
+    ],
+    "maximum_exposed_stress_survivors": 8,
+    "post_result_rule_change_allowed": false
+  },
+  "exposed_stress_replay": {
+    "start": "2024-01-01",
+    "end": "2025-12-31",
+    "classification": "historically_exposed_stress_replay_not_unseen_or_pristine",
+    "opening_rule": "Open only after all 42 development trials are retained and the survivor record is frozen.",
+    "consumption_rule": "Evaluate every frozen survivor exactly once, retain every outcome, and mark the replay consumed.",
+    "frozen_comparison_gates": {
+      "mean_rank_ic_gt": 0.0,
+      "positive_rank_ic_rate_gt": 0.5,
+      "mean_top3_minus_bottom3_spread_gt": 0.0,
+      "each_year_mean_rank_ic_gt": 0.0,
+      "normalized_return_gt": 0.0,
+      "normalized_drawdown_gte": -0.2,
+      "each_year_normalized_return_gt": 0.0,
+      "normalized_terminal_unresolved_positions": 0,
+      "pilot_10bp_return_gt": 0.0,
+      "pilot_20bp_return_gt": 0.0,
+      "each_year_pilot_10bp_return_gt": 0.0,
+      "board_lot_affordability_gte": 0.9,
+      "maximum_daily_amount_participation_lte": 0.01,
+      "pilot_terminal_unresolved_positions": 0
+    },
+    "pass_is_research_only": true,
+    "pass_can_activate_candidate50": false,
+    "pass_can_generate_current_score_selection_size_or_order": false
+  },
+  "candidate49_boundary": {
+    "registration_id": "candidate49_intraday_cumulative_vwap_crossing_rate_240m_v1",
+    "included_in_feature_library": false,
+    "historical_return_read_allowed": false,
+    "historical_signal_execution_or_milestone_backfill_allowed": false,
+    "prospective_ledgers_changed_by_campaign": false
+  },
+  "research_output_boundary": {
+    "current_scoring_allowed": false,
+    "selection_allowed": false,
+    "sizing_allowed": false,
+    "orders_allowed": false,
+    "prospective_candidate_activation_allowed": false,
+    "investment_advice": false
+  }
+}

@@ -1,0 +1,102 @@
+{
+  "version": 1,
+  "kind": "a_share_three_day_walkforward_campaign040_concept_scouting",
+  "status": "completed_before_campaign040_candidate_or_comparison_values",
+  "recorded_at": "2026-07-31T03:50:31Z",
+  "purpose": "Select one genuinely independent Campaign040 mechanism without reading minute candidate values, comparison values, daily prices, or historical returns.",
+  "authoritative_inputs": {
+    "iteration_state": {
+      "path": "docs/a_share_three_day_iteration_status_20260731_campaign039_verified.json",
+      "sha256": "8571491a46cefde2b95dfd6a4650a3f96fc9251c751e558d6d96e2278c1ce600"
+    },
+    "historical_walkforward_policy": {
+      "path": "docs/a_share_three_day_historical_walkforward_research_policy_20260727.json",
+      "sha256": "38426d6161b9bfed323c58caba18feca668b8c9d53e294951a8ba90c01a798bb"
+    },
+    "campaign039_terminal_record": {
+      "path": "docs/a_share_three_day_walkforward_campaign_039_research_record.json",
+      "sha256": "d45fcbd75e918e72d3b84ae41c40578ac993cc3c334feeb566c1914f8aa2db8d"
+    }
+  },
+  "candidate_queue_review": [
+    {
+      "concept": "morning_afternoon_intrabar_range_profile_distribution_similarity",
+      "decision": "selected",
+      "reason": "It measures whether uncertainty is distributed across clock time similarly in the two half sessions using high/low-only probability profiles. It does not use close returns, activity, a fitted trend, a market benchmark, disclosure timing, or any terminal factor value."
+    },
+    {
+      "concept": "single_day_intrabar_range_profile_entropy",
+      "decision": "rejected_before_values",
+      "reason": "A single pooled entropy would be a direct distributional analogue of terminal amount entropy and return-variance entropy and could also re-express sparse zero-range bars."
+    },
+    {
+      "concept": "morning_afternoon_range_profile_pearson_correlation",
+      "decision": "rejected_before_values",
+      "reason": "Pearson correlation would be too close in estimator and ordinal alignment to Campaign027 return-profile persistence and in range dynamics to Campaign023 boundary translation coherence."
+    },
+    {
+      "concept": "morning_afternoon_total_range_ratio_or_difference",
+      "decision": "rejected_before_values",
+      "reason": "A two-bin magnitude split would invite subwindow timing interpretation and discard the preregistered 120-position distributional mechanism."
+    },
+    {
+      "concept": "signed_return_autocorrelation_jump_share_or_bipower_complement",
+      "decision": "rejected_before_values",
+      "reason": "Signed serial dependence and time irreversibility are already terminally covered, and jump share is a monotone complement of the terminal bipower-to-realized-variance factor."
+    }
+  ],
+  "selected_candidate": {
+    "name": "intraday_morning_afternoon_range_profile_similarity_120b",
+    "direction": "higher",
+    "economic_hypothesis": "A more repeatable morning-versus-afternoon clock-time distribution of intrabar uncertainty may indicate stable liquidity provision and orderly information assimilation rather than a one-off afternoon shock, which may remain relevant from the next open through the third close.",
+    "formula": "For j=0..119, let x_j=log(morning_high_j/morning_low_j) and y_j=log(afternoon_high_j/afternoon_low_j). Let X=sum(x), Y=sum(y), p_j=x_j/X, q_j=y_j/Y, and m_j=(p_j+q_j)/2. Let JSD=0.5*sum_{p_j>0}(p_j*log(p_j/m_j))+0.5*sum_{q_j>0}(q_j*log(q_j/m_j)), using 0*log(0)=0. Return 1-JSD/log(2).",
+    "selected_grid": [
+      "09:31-11:30",
+      "13:01-15:00"
+    ],
+    "selected_bar_count": 240,
+    "half_session_bin_count": 120,
+    "source_projection": [
+      "datetime",
+      "symbol",
+      "provider",
+      "high",
+      "low"
+    ],
+    "forbidden_source_columns": [
+      "open",
+      "close",
+      "volume",
+      "amount"
+    ],
+    "exact_zero_intrabar_ranges_retained": true,
+    "zero_morning_or_afternoon_total_range_is_missing": true,
+    "separate_half_session_normalization": true,
+    "jensen_shannon_log_base": "natural_log_normalized_by_log_2",
+    "zero_probability_term_convention": "0_log_0_is_zero",
+    "endpoint_canonicalization_tolerance": 1e-12,
+    "valid_range": [
+      0.0,
+      1.0
+    ],
+    "transform_filter_threshold_combination_or_model": "none"
+  },
+  "research_boundary": {
+    "external_minute_partitions_read": false,
+    "candidate_values_read": false,
+    "comparison_values_read": false,
+    "historical_daily_price_fields_read": false,
+    "historical_forward_returns_read": false,
+    "training_or_model_fitting_performed": false,
+    "provider_request_issued": false,
+    "candidate49_historical_return_signal_or_execution_backfill_performed": false,
+    "candidate49_ledgers_changed": false,
+    "candidate50_activation_created": false,
+    "current_scoring_selection_sizing_or_orders_performed": false
+  },
+  "decision": {
+    "selected_candidate_count": 1,
+    "predictive_value_established": false,
+    "next_action": "Complete a separate pre-value mechanism-overlap audit and bind its exact formula, direction, source projection, zero semantics, and forbidden variants before any candidate value is computed."
+  }
+}

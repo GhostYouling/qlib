@@ -1,0 +1,28 @@
+{
+  "version": 1,
+  "kind": "a_share_three_day_walkforward_campaign070_audit_prefreeze_test_selection_failure",
+  "status": "preserved_before_audit_implementation_freeze",
+  "recorded_at": "2026-08-06T04:42:00+08:00",
+  "failed_scope": "Campaign070 no-return audit pre-freeze test command",
+  "exit_code": 1,
+  "observed_result": {
+    "logical_tests_passed": 5,
+    "freeze_binding_test_failed": 1,
+    "cause": "The --deselect node path did not match pytest's collected path under the workspace alias, so the intentionally unavailable freeze-binding test executed before the freeze existed."
+  },
+  "repair": "Use an explicit -k expression to exclude only the freeze-binding test, then require all five remaining tests to pass before hashing the runner and tests.",
+  "research_boundary": {
+    "coverage_or_capacity_metrics_computed": false,
+    "comparison_values_read": false,
+    "historical_daily_price_fields_read": [],
+    "historical_forward_returns_read": false,
+    "provider_request_issued": false,
+    "candidate49_ledgers_changed": false,
+    "predictive_evidence": false
+  },
+  "attempt_accounting": {
+    "infrastructure_attempt_increment": 1,
+    "complete_factor_attempt_increment": 0,
+    "return_reading_trial_increment": 0
+  }
+}

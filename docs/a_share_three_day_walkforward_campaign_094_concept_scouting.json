@@ -1,0 +1,98 @@
+{
+  "schema_version": 1,
+  "kind": "a_share_three_day_walkforward_campaign094_concept_scouting",
+  "status": "selected_before_campaign094_minute_source_candidate_comparison_daily_price_or_return_values",
+  "recorded_at": "2026-08-07T02:13:08Z",
+  "purpose": "Select exactly one economically independent offline three-session factor after terminal Campaign093, before opening any Campaign094 minute source row, candidate value, comparator value, daily price, or forward return.",
+  "authoritative_boundary": {
+    "campaign093_verified_state": {
+      "path": "docs/a_share_three_day_iteration_status_20260807_campaign093_verified.json",
+      "sha256": "e9efe53051038628c9e7a1822be374a9052ce6d5b7c6a012d4c2212e286a03aa"
+    },
+    "numeric_comparison_policy_v37": {
+      "path": "docs/a_share_three_day_walkforward_future_numeric_comparison_eligibility_policy_v37_20260807.json",
+      "sha256": "0e0527d3f4fb5616f3eb7b24554eaa5fa71d354d89131193420cd1634de90fe0",
+      "complete_definition_count": 125,
+      "complete_definition_order_sha256": "3742401d8d87cbeb3a104545c25c1eb279832915f42dc46f1367dcbdc28f740c",
+      "numeric_comparator_count": 123,
+      "numeric_comparator_order_sha256": "b92614c1366ec480913854adace1cad0d926a0e89c8bbebca70c81bf486cac3a"
+    },
+    "historical_walkforward_policy": {
+      "path": "docs/a_share_three_day_historical_walkforward_research_policy_20260727.json",
+      "sha256": "38426d6161b9bfed323c58caba18feca668b8c9d53e294951a8ba90c01a798bb"
+    }
+  },
+  "finite_candidate_design_catalog": [
+    {
+      "design": "intraday_range_local_peak_clock_dispersion_236p",
+      "decision": "selected_for_complete_prevalue_mechanism_audit",
+      "reason": "It discards range magnitudes after identifying strict local range maxima and measures only how broadly those volatility bursts are distributed over the fixed clock inside each half. This is a local-topology clock-dispersion mechanism, not range mass, range entropy, price direction, amount confirmation, a global extreme, or a return-variation ratio."
+    },
+    {
+      "design": "range_local_peak_density",
+      "decision": "rejected_before_values",
+      "reason": "A count share would reopen the terminal amount local-peak-density statistic on another field and would not measure clock dispersion."
+    },
+    {
+      "design": "range_mass_weighted_peak_timing",
+      "decision": "rejected_before_values",
+      "reason": "Magnitude weighting would overlap the frozen range clock center, participation entropy, profile similarity, and amount-alignment families."
+    },
+    {
+      "design": "combined_half_or_cross_lunch_peak_dispersion",
+      "decision": "rejected_before_values",
+      "reason": "Pooling clocks across lunch or forming a cross-lunch interval would change the fixed session topology and introduce another support choice."
+    },
+    {
+      "design": "peak_height_threshold_direction_amount_volume_market_or_return_confirmed_variants",
+      "decision": "rejected_before_values",
+      "reason": "Thresholds and confirmations would reopen terminal range, body, amount, volume, market, and path mechanisms and create a search catalog."
+    },
+    {
+      "design": "subwindow_filter_rank_neutralization_residualization_fit_combination_or_model_variants",
+      "decision": "rejected_before_values",
+      "reason": "Subwindows, filters, ranks, regimes, neutralization, residualization, fitting, combinations, and models are outside the one-factor finite catalog."
+    }
+  ],
+  "selected_candidate": {
+    "name": "intraday_range_local_peak_clock_dispersion_236p",
+    "direction": "higher",
+    "economic_hypothesis": "Volatility bursts distributed across both continuous half-sessions indicate sustained, repeated information arrival rather than one isolated shock, and that distributed attention may continue from the next open through the third close.",
+    "formula": "For each 120-bar half set q_i=ln(high_i/low_i). For interior i=1..118 mark a strict local peak when q_i>q_i-1 and q_i>q_i+1, map its clock to x_i=i/119, require at least two peaks in each half, compute the population variance of peak clocks separately in each half, and return their arithmetic mean.",
+    "source_projection": [
+      "datetime",
+      "symbol",
+      "provider",
+      "high",
+      "low"
+    ],
+    "source_grid": "Require the raw 09:30 row for immutable source identity; use exactly 09:31-11:30 and 13:01-15:00, exclude 09:30, and detect local peaks separately inside each half.",
+    "support": "Require every selected high and low to be finite and strictly positive with high>=low, retain exact-zero ranges and exact ties as nonpeaks, and require at least two strict local peaks in each half without dropping or replacing any interior opportunity.",
+    "valid_range": "(0,0.25] under float64 population variance with no clipping or endpoint canonicalization",
+    "parameter_window_transform_threshold_filter_subset_regime_fit_combination_or_model_search": false
+  },
+  "definition_only_review": {
+    "all_125_complete_definitions_reconstructed_in_frozen_order": true,
+    "all_123_numeric_comparators_reserved_in_frozen_order": true,
+    "candidate_or_comparator_values_read": false,
+    "old_factor_or_cache_values_read_for_selection": false
+  },
+  "research_boundary": {
+    "campaign094_minute_source_rows_read": false,
+    "campaign094_candidate_values_read": false,
+    "comparison_values_read": false,
+    "historical_daily_price_fields_read": [],
+    "historical_forward_return_fields_read": false,
+    "provider_request_issued": false,
+    "candidate49_historical_backfill_performed": false,
+    "candidate49_ledgers_changed": false,
+    "second_prospective_candidate_created": false,
+    "current_scoring_selection_sizing_or_orders_performed": false,
+    "investment_advice": false
+  },
+  "decision": {
+    "selected_candidate_count": 1,
+    "predictive_value_established": false,
+    "next_action": "Challenge the exact candidate against all 125 complete definitions, then freeze the v37-bound coverage-first no-return protocol before any Campaign094 source row or value."
+  }
+}

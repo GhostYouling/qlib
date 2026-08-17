@@ -1,0 +1,14 @@
+{
+  "version": 1,
+  "kind": "a_share_three_day_walkforward_campaign076_terminal_document_patch_failure",
+  "status": "atomic_patch_rejected_before_any_target_write",
+  "recorded_at": "2026-08-06T12:12:00+08:00",
+  "error": "The multi-file apply_patch expected a unified-report anchor string that did not exactly match the current file tail.",
+  "targets_written_by_failed_patch": [],
+  "research_values_recomputed": false,
+  "historical_daily_price_or_forward_return_values_read": false,
+  "provider_request_issued": false,
+  "candidate49_ledgers_changed": false,
+  "attempt_accounting_increment": 1,
+  "next_action": "Add new terminal artifacts separately and append reports using exact current EOF context; do not rewrite research results."
+}

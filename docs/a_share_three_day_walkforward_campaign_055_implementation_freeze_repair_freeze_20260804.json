@@ -1,0 +1,54 @@
+{
+  "version": 1,
+  "kind": "a_share_three_day_walkforward_campaign055_implementation_freeze_repair_freeze",
+  "status": "additive_semantic_path_repair_frozen_before_candidate_values",
+  "recorded_at": "2026-08-04T00:19:00+08:00",
+  "purpose": "Fingerprint-bind the additive nested-evidence loader and subprocess-isolated tests before the first Campaign055 snapshot build.",
+  "authoritative_inputs": {
+    "original_implementation_freeze": {
+      "path": "docs/a_share_three_day_walkforward_campaign_055_feature_implementation_freeze_20260804.json",
+      "sha256": "ef050cb578ff06775ee43e3119488ad5fbfc39a86d3931abfec642b3d4d01f4a"
+    },
+    "semantic_path_failure_and_authorization": {
+      "path": "docs/a_share_three_day_walkforward_campaign_055_implementation_freeze_semantic_path_failure_20260804.json",
+      "sha256": "820497ae38b2d9404b3c52c546aab9e98a06bc59ce508e0661aa57629e7974b2"
+    },
+    "shared_module_test_failure_and_authorization": {
+      "path": "docs/a_share_three_day_walkforward_campaign_055_repair_test_shared_module_mutation_failure_20260804.json",
+      "sha256": "b4142dbdd6be797b5ed7bd456cb36cdf81f4557ef419f89ac7b50e42545d806c"
+    },
+    "frozen_base_runner": {
+      "path": "scripts/a_share_three_day_walkforward_campaign055_features.py",
+      "sha256": "d695e5acd9645f4706e238c95db2ea69df397004416ea4dd9f895385be603714"
+    },
+    "immutable_pre_value_tests": {
+      "path": "tests/data_collector_tests/test_a_share_three_day_walkforward_campaign055_features.py",
+      "sha256": "017fd0fd0d909da41d6f78536afeab98200fc44b39249973d4cb961ab51c01e2"
+    }
+  },
+  "repaired_entrypoint": {
+    "path": "scripts/a_share_three_day_walkforward_campaign055_features_v3.py",
+    "sha256": "fa9cc6449404da91dd39dd6ed340f83eb70be768a7808df5cd9bc4da1b0040fa"
+  },
+  "isolated_repair_tests": {
+    "path": "tests/data_collector_tests/test_a_share_three_day_walkforward_campaign055_implementation_freeze_repair.py",
+    "sha256": "bca36486196036e5612a54185bbb2b15e9f8bbfa964a9480026f8a11228be23e",
+    "combined_command": "python -m pytest -q tests/data_collector_tests/test_a_share_three_day_walkforward_campaign055_features.py tests/data_collector_tests/test_a_share_three_day_walkforward_campaign055_implementation_freeze_repair.py tests/data_collector_tests/test_a_share_three_day_walkforward_policy.py tests/data_collector_tests/test_a_share_three_day_walkforward_campaign054_terminal_state.py",
+    "passed": 22,
+    "failed": 0,
+    "v3_imports_run_in_child_processes": true
+  },
+  "repair_semantics": {
+    "only_metadata_path_changed": "three pre-value booleans are validated under pre_freeze_execution_evidence",
+    "base_runner_changed": false,
+    "original_freeze_changed": false,
+    "factor_formula_direction_bins_minimum_event_source_projection_or_missing_rule_changed": false,
+    "coverage_uniqueness_comparison_order_or_development_trial_changed": false,
+    "candidate_values_read": false,
+    "comparison_values_read": false,
+    "historical_daily_price_fields_read": [],
+    "historical_forward_return_fields_read": false,
+    "provider_request_issued": false
+  },
+  "next_action": "Use a final additive wrapper bound to this repair freeze for the sole immutable Campaign055 snapshot build."
+}

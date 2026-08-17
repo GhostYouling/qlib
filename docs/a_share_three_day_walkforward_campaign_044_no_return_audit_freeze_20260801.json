@@ -1,0 +1,68 @@
+{
+  "version": 1,
+  "kind": "a_share_three_day_walkforward_campaign044_no_return_audit_freeze",
+  "status": "terminal_zero_admissible_factors_before_component_reload_or_historical_returns",
+  "recorded_at": "2026-07-31T19:19:23Z",
+  "purpose": "Bind the sole Campaign044 no-return audit, its coverage-first stopping decision, and the post-audit fingerprint-only implementation constant before any terminal reporting.",
+  "authoritative_inputs": {
+    "no_return_preregistration": {
+      "path": "docs/a_share_three_day_walkforward_campaign_044_no_return_preregistration.json",
+      "sha256": "1037d27b173f4fb63c75672c4da50c6616f1f1eb3ae1917ecf291fc2d2644f69"
+    },
+    "snapshot_publication_binding": {
+      "path": "docs/a_share_three_day_walkforward_campaign_044_feature_snapshot_publication_binding_20260801.json",
+      "sha256": "fb0381c95609477ec4d29e4c69d4608d344aa4f9eb8ec56c8315f5a7a849279d"
+    },
+    "no_return_audit": {
+      "path": "data/experiments/short_horizon/historical_walkforward/campaign_044/no_return/20260731T191808Z_campaign044_no_return_audit.json",
+      "sha256": "5bf91fae0ab73f04680e840d8a5280250e0e3091f80fe47684d1656fbde10776"
+    },
+    "post_audit_implementation": {
+      "path": "scripts/a_share_three_day_walkforward_campaign044_features.py",
+      "sha256": "7afa540e15d7f711c45df4c55100f47f552a5eeb68b80363c741237b9025a8f6"
+    }
+  },
+  "result": {
+    "candidate": "full_terminal_library_directional_percentile_consensus_66f",
+    "direction": "higher",
+    "candidate_eligible_rows": 646568,
+    "quality_listing_eligible_rows": 1331759,
+    "calendar_sessions": 1632,
+    "median_coverage": 0.5171763636653539,
+    "minimum_median_coverage": 0.95,
+    "p05_coverage": 0.3499289453372031,
+    "minimum_p05_coverage": 0.9,
+    "eligible_names_p05": 78.0,
+    "minimum_p05_eligible_names": 50,
+    "potential_non_overlapping_three_session_cohorts": 539,
+    "minimum_non_overlapping_three_session_cohorts": 200,
+    "observed_calendar_year_count": 7,
+    "minimum_observed_calendar_years": 5,
+    "coverage_gate_passed": false,
+    "admissible_factor_count": 0,
+    "source_component_values_reloaded_after_coverage_pass": false,
+    "source_component_correlation_count": 0
+  },
+  "semantic_boundary": {
+    "all_snapshot_partition_byte_and_frame_hashes_verified": true,
+    "source_terminal_factor_values_read_during_snapshot_build": true,
+    "candidate49_factor_values_read": false,
+    "historical_daily_price_fields_read": [],
+    "historical_forward_return_fields_read": false,
+    "candidate49_historical_return_signal_execution_or_milestone_backfill_performed": false,
+    "candidate49_prospective_ledgers_changed": false,
+    "training_or_model_fitting_performed": false,
+    "current_scoring_selection_sizing_or_orders_performed": false,
+    "predictive_value_established": false
+  },
+  "decision": {
+    "factor_terminal": true,
+    "terminal_stage": "coverage_and_capacity_before_component_correlation_calculation",
+    "terminal_reason": "all_66_component_common_support_failed_the_frozen_median_and_p05_cross_sectional_coverage_thresholds",
+    "component_correlation_allowed": false,
+    "historical_walkforward_allowed": false,
+    "2024_2025_stress_allowed": false,
+    "threshold_relaxation_partial_component_average_imputation_subset_weight_model_or_rescue_rerun_allowed": false,
+    "next_action": "Append every Campaign044 design and infrastructure attempt, preserve the terminal result, and begin a genuinely new independently preregistered offline campaign."
+  }
+}

@@ -1,0 +1,56 @@
+{
+  "version": 3,
+  "kind": "a_share_three_day_walkforward_campaign074_no_return_preregistration_repair_overlay",
+  "status": "frozen_effective_protocol_before_campaign074_minute_source_candidate_comparison_daily_price_or_return_values",
+  "recorded_at": "2026-08-06T07:52:00+08:00",
+  "effective_protocol_base": {
+    "path": "docs/a_share_three_day_walkforward_campaign_074_no_return_preregistration.json",
+    "sha256": "c2b1bafd0ddca2cf86ed2715a2403324b6c37493f9be7accc6d4a48ff7adfe4c",
+    "use": "All candidate, source, gate, finite-catalog, Candidate49, and research-boundary fields except the two explicitly patched Campaign072 paths."
+  },
+  "supersedes_without_rewriting": {
+    "path": "docs/a_share_three_day_walkforward_campaign_074_no_return_preregistration_v2.json",
+    "sha256": "c8efaa25408e26fc6ebd8f48d0d8244cf86b5fa19430af4dad8dad53cf0b2fe4",
+    "invalid_protocol_may_be_used": false,
+    "reason": "v2 contains an unresolved SHA placeholder and is preserved only as failed infrastructure evidence."
+  },
+  "failure_records": [
+    {
+      "path": "docs/a_share_three_day_walkforward_campaign_074_prevalue_protocol_v1_comparator_binding_failure_20260806.json",
+      "sha256": "a2745ebfcc5b0e408d67782705a598a9b79096ccbe34106fd28f07b5ac435c85"
+    },
+    {
+      "path": "docs/a_share_three_day_walkforward_campaign_074_prevalue_protocol_v2_placeholder_binding_failure_20260806.json",
+      "sha256": "b32d15afefc89406d7087b63aa87bb44ac209a46de7dcc2e997bf7396092566f"
+    }
+  ],
+  "campaign072_comparator_source_patch": {
+    "research_record_path": "docs/a_share_three_day_walkforward_campaign_072_research_record.json",
+    "research_record_sha256": "ca554c1db619c640821037a1ee47401b205644b284cff15390f605e94c202209",
+    "snapshot_binding_path": "docs/a_share_three_day_walkforward_campaign_072_feature_snapshot_binding_20260806.json",
+    "snapshot_binding_sha256": "eb36b61ecc800b13e40f8947da5b0fd049542df784baafc8f86a3c38c82b2d1d"
+  },
+  "frozen_invariants": {
+    "candidate": "intraday_terminal_bar_amount_share_240m",
+    "direction": "higher",
+    "formula_changed_from_v1": false,
+    "complete_definition_count": 105,
+    "complete_definition_order_sha256": "bdc79e8c91fd43cd088437a47bdd805e0e4181fca2f4a6ff6714e0a033d34b61",
+    "numeric_comparator_count": 104,
+    "numeric_comparator_order_sha256": "0d36cb313d4ded22343120b3f93c1f066aa3818415cb6ea186f354217eeacd6b",
+    "coverage_thresholds_changed_from_v1": false,
+    "uniqueness_thresholds_changed_from_v1": false,
+    "development_catalog_changed_from_v1": false,
+    "candidate49_boundary_changed_from_v1": false
+  },
+  "research_boundary": {
+    "candidate_source_rows_read_before_this_overlay": false,
+    "candidate_values_read_before_this_overlay": false,
+    "comparison_values_read_before_this_overlay": false,
+    "historical_daily_price_fields_read": [],
+    "historical_forward_returns_read": false,
+    "provider_request_issued": false,
+    "candidate49_ledgers_changed": false,
+    "current_scoring_selection_sizing_or_orders_performed": false
+  }
+}

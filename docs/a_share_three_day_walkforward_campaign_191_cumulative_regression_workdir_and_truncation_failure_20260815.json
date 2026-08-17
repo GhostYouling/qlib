@@ -1,0 +1,35 @@
+{
+  "schema_version": 1,
+  "kind": "a_share_three_day_walkforward_campaign191_infrastructure_failure",
+  "status": "wrong_workdir_import_failures_and_output_truncation_recorded_recovered",
+  "recorded_at": "2026-08-15T15:10:00+08:00",
+  "attempt_id": "campaign191_infrastructure_005",
+  "phase": "campaign145_through_campaign191_cumulative_regression_recovery",
+  "operation": "Run the bounded 79-file suite from the tests directory after replacing mapfile.",
+  "observed_failure": {
+    "failure_classes": ["wrong_working_directory_module_import_failure", "tool_output_truncation"],
+    "bounded_test_file_count_observed": 79,
+    "pytest_exit_code": 2,
+    "collection_error_count": 71,
+    "primary_error": "ModuleNotFoundError: No module named 'scripts'",
+    "reported_truncated_output_original_token_counts": [12029, 15599],
+    "failed_or_truncated_output_used_as_validation_or_scientific_evidence": false
+  },
+  "recovery": {
+    "method": "Run from the repository root so local scripts are importable, keep the same 79 files, and translate the five frozen deselection node paths only as required by the observed pytest rootdir.",
+    "final_bounded_test_file_count": 79,
+    "final_tests_passed": 462,
+    "final_tests_skipped": 1,
+    "final_nodes_deselected": 6,
+    "recovered": true
+  },
+  "research_boundary": {
+    "source_factor_comparator_security_price_or_return_value_read": false,
+    "provider_or_web_request_issued": false,
+    "provider_credential_presence_value_or_digest_read": false,
+    "stress_2024_2025_opened": false,
+    "candidate49_ledgers_changed": false,
+    "second_prospective_candidate_created": false
+  },
+  "next_action": "Bind this recovered failure into the Campaign191 append-only attempt ledger and final accounting."
+}

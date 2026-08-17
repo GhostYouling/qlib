@@ -1,0 +1,76 @@
+{
+  "schema_version": 1,
+  "kind": "a_share_three_day_walkforward_campaign116_coverage_audit_implementation_freeze",
+  "status": "frozen_after_synthetic_tests_before_candidate_snapshot_values",
+  "recorded_at": "2026-08-12T17:13:31+08:00",
+  "purpose": "Freeze a local-only Campaign116 coverage/capacity/cross-sectional-variation audit before its first candidate snapshot value read and keep all 134 comparator values, daily prices, and forward returns closed.",
+  "authoritative_inputs": {
+    "iteration_state": {
+      "path": "docs/a_share_three_day_iteration_status_20260812_campaign116_snapshot_verified_v2.json",
+      "sha256": "3ed3fb0f02d1d4f009743598a6d18ded9cf1a0df4b776f79e4638cab2d9f69f3"
+    },
+    "numeric_policy_v101": {
+      "path": "docs/a_share_three_day_walkforward_future_numeric_comparison_eligibility_policy_v101_20260812.json",
+      "sha256": "27a52a24fd9db6b945fee49a0e55d73dd48a54a62d2a01652ea01d194d05cd46"
+    },
+    "no_return_preregistration": {
+      "path": "docs/a_share_three_day_walkforward_campaign_116_no_return_preregistration_20260812.json",
+      "sha256": "d47d4f1b8d6d7742c17eb82712a85a1dbe8dbb6e8f44e0ff9190e36ef7115c2c"
+    },
+    "snapshot_verification_result": {
+      "path": "docs/a_share_three_day_walkforward_campaign_116_feature_snapshot_verification_result_20260812.json",
+      "sha256": "27bf2126460e0f89dea5d50030d06ffe4ae9372e2d6f7bb75d5f901d0a2fb85a"
+    },
+    "snapshot_recovery_verifier": {
+      "path": "scripts/a_share_three_day_walkforward_campaign116_snapshot_verify_recovery.py",
+      "sha256": "6ceb3f0dd9ed134bd57545e5d4384ae63da5e5d90ccd330b832ebb477c56208b"
+    },
+    "pit_quality_listing_coverage_reference": {
+      "path": "scripts/a_share_three_day_walkforward_campaign105_no_return_audit.py",
+      "sha256": "8adbd44b0bcf1054fc21dd75d0ee07c000928f7602b625cacfee748b02405a01",
+      "semantics": "Reuse the established repository point-in-time per-field quality forward-fill, current-listing interval, and minimum-listing-session eligible-key base for 2019-2025."
+    }
+  },
+  "coverage_runner": {
+    "path": "scripts/a_share_three_day_walkforward_campaign116_coverage_audit.py",
+    "sha256": "e898a3f915cec2fecc79b4ac11e304259c64e3cede20bb02d1c09f6f86f9f7b0",
+    "plan_is_metadata_only": true,
+    "run_requires": "--confirm-coverage-audit",
+    "provider_or_credential_interface": false,
+    "comparison_loader_interface": false,
+    "daily_price_or_forward_return_interface": false,
+    "single_exclusive_output": true
+  },
+  "synthetic_test": {
+    "path": "tests/data_collector_tests/test_a_share_three_day_walkforward_campaign116_coverage_audit.py",
+    "sha256": "7ffec98acf705dcc562c28500b9d37348f88915fec008a926af67347d364ee05",
+    "command": "/Volumes/DIsk/Coding/anaconda3/bin/python3.12 -m pytest -q tests/data_collector_tests/test_a_share_three_day_walkforward_campaign116_coverage_audit.py",
+    "passed": 4,
+    "failed": 0,
+    "exit_code": 0
+  },
+  "coverage_gate": {
+    "holding_period_sessions": 3,
+    "minimum_median_daily_coverage": 0.95,
+    "minimum_p05_daily_coverage": 0.9,
+    "minimum_p05_eligible_names": 50,
+    "minimum_non_overlapping_three_signal_session_cohorts": 200,
+    "minimum_observed_cohort_years": 5,
+    "minimum_nonconstant_cross_sectional_sessions": 100,
+    "cross_sectional_distinctness": "exact finite float values without rounding tolerance or binning"
+  },
+  "variation_interpretation_frozen_before_values": "A session is nonconstant only when the quality/listing-eligible finite candidate cross-section contains at least two exactly distinct float values. At least 100 such sessions are required because every later comparator would require at least 100 qualifying pairwise sessions; no rounding, tolerance, binning, rescue, or post-value reinterpretation is allowed.",
+  "research_boundary": {
+    "candidate_snapshot_values_read_before_freeze": false,
+    "coverage_or_variation_metrics_computed_before_freeze": false,
+    "comparator_values_read_before_freeze": false,
+    "historical_daily_price_or_forward_return_values_read": false,
+    "stress_2024_2025_opened": false,
+    "provider_request_issued": false,
+    "credential_loaded": false,
+    "candidate49_historical_backfill_performed": false,
+    "candidate49_ledgers_changed": false,
+    "current_scoring_selection_sizing_positions_or_orders_performed": false
+  },
+  "next_action": "Create one activation binding to this exact runner/test and verified snapshot, then run metadata-only plan. Only ready=true with exit code zero may authorize one run --confirm-coverage-audit."
+}

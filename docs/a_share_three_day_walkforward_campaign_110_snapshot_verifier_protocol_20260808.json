@@ -1,0 +1,67 @@
+{
+  "schema_version": 1,
+  "kind": "a_share_three_day_walkforward_campaign110_snapshot_verifier_protocol",
+  "status": "frozen_after_manifest_metadata_diagnosis_before_partition_values_coverage_or_comparator_values",
+  "recorded_at": "2026-08-07T22:48:05Z",
+  "candidate_snapshot": {
+    "path": "/Volumes/DIsk/qlib-a-share-tushare-1m/derived/a_share/rich/tushare/minute_walkforward_campaign110_feature_library/tushare_stk_mins_1m_2019_2025_ea0cbb8f_walkforward_campaign110_feature_library_v1/snapshot_manifest.json",
+    "sha256": "e3ae3c01e0a6eadd8dfce0362520e13bc4c047ff8357cdc7be2d1f9b31e93b72",
+    "dataset_sha256": "9082b74891ea2e1c107309637941e42acdc9afeec0b44748e2242506c1a68c4b",
+    "partitions": 33015,
+    "rows": 7724498,
+    "eligible_rows": 7724498
+  },
+  "implementation_authority": {
+    "path": "docs/a_share_three_day_walkforward_campaign_110_no_return_implementation_freeze_v2_20260808.json",
+    "sha256": "3b46c2c1989a7f197fa04f4452ad460a70139a21a1d6e2e05f4566ab92afdc57"
+  },
+  "failure_authority": {
+    "path": "docs/a_share_three_day_walkforward_campaign_110_postpublication_manifest_validator_failure_20260808.json",
+    "sha256": "21b84f5d41562ce342ef6d4fcb78ca1ade1864672bdfdf8cca32bf64b4c9fa83"
+  },
+  "exact_manifest_expectation_corrections": {
+    "fixed_denominator": {
+      "inherited_expectation": 0,
+      "frozen_expectation": 240
+    },
+    "fixed_anchor_and_close_support_required": {
+      "inherited_expectation": false,
+      "frozen_expectation": true
+    },
+    "exact_reference_ties_retained": {
+      "inherited_expectation": false,
+      "frozen_expectation": true
+    }
+  },
+  "unchanged_verification_contract": {
+    "all_other_manifest_conditions_reused": true,
+    "every_partition_byte_sha256_verified": true,
+    "every_partition_frame_sha256_verified": true,
+    "every_partition_row_count_verified": true,
+    "eligible_values_finite_within_closed_range_and_on_240_state_lattice": [
+      -1.0,
+      1.0
+    ],
+    "ineligible_values_missing": true,
+    "aggregate_dataset_sha256_verified": true,
+    "aggregate_rows_partitions_and_eligible_rows_verified": true
+  },
+  "prohibitions": {
+    "snapshot_build_or_rebuild": true,
+    "snapshot_manifest_or_partition_write": true,
+    "coverage_computation": true,
+    "comparator_value_read": true,
+    "historical_daily_price_or_forward_return_read": true,
+    "provider_request": true,
+    "candidate49_ledger_write": true,
+    "current_scoring_selection_sizing_or_orders": true
+  },
+  "research_boundary": {
+    "partition_values_read_before_protocol_freeze": false,
+    "coverage_or_comparator_values_read_before_protocol_freeze": false,
+    "historical_daily_price_or_forward_return_values_read_before_protocol_freeze": false,
+    "snapshot_modified_after_publication": false,
+    "provider_request_issued": false
+  },
+  "next_action": "Implement and test the exact verify-only adapter, fingerprint-freeze it, then execute one immutable snapshot verification."
+}

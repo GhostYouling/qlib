@@ -1,0 +1,54 @@
+{
+  "version": 1,
+  "kind": "a_share_three_day_walkforward_campaign057_terminal_completion_freeze",
+  "status": "frozen_zero_admissible_factors_stop_before_historical_returns",
+  "recorded_at": "2026-08-04T15:36:53+08:00",
+  "bindings": {
+    "research_record": {
+      "path": "docs/a_share_three_day_walkforward_campaign_057_research_record.json",
+      "sha256": "f1c9683172483509a78b7fd5d10cfc4c9739ef80d3b6023f2ec1ee0e2c3a004a"
+    },
+    "research_attempt_ledger_v3": {
+      "path": "data/experiments/short_horizon/historical_walkforward/campaign_057/research_attempt_ledger_v3.json",
+      "sha256": "c1ec04698e678d8618f551cb99f98dec9e719d96a92a190db2b3f02b98a50564"
+    },
+    "completed_no_return_audit": {
+      "path": "data/experiments/short_horizon/historical_walkforward/campaign_057/20260804T073457Z_campaign057_no_return_audit.json",
+      "sha256": "1a0452a5ca821589d10131ec095f36a08046289f796770070bf750bfc1aa5a8b"
+    },
+    "low_memory_retry_freeze": {
+      "path": "docs/a_share_three_day_walkforward_campaign_057_no_return_audit_low_memory_retry_freeze_20260804.json",
+      "sha256": "e6ebdc2bf7f6e3044a35da794c9149db9115d4a5ed0d96eb55b8e3608f8f834d"
+    }
+  },
+  "frozen_semantics": {
+    "factor": "intraday_day_over_day_absolute_return_profile_similarity_238b",
+    "direction": "higher",
+    "coverage_gate_passed": true,
+    "comparison_factor_count": 80,
+    "uniqueness_gate_passed": false,
+    "maximum_absolute_median_daily_rank_correlation": 0.872246911088057,
+    "absolute_uniqueness_limit": 0.8,
+    "admissible_factor_count": 0,
+    "development_trial_count": 0,
+    "development_survivor_count": 0,
+    "development_returns_read": false,
+    "stress_2024_2025_opened": false,
+    "stress_2024_2025_returns_read": false,
+    "campaign057_infrastructure_only_failure_count": 2,
+    "campaign057_complete_factor_attempt_count": 1,
+    "campaign057_total_attempt_count": 3,
+    "cumulative_historical_research_attempt_count": 328,
+    "cumulative_return_reading_development_trial_count": 268,
+    "candidate49_historical_return_read": false,
+    "current_scoring_selection_sizing_or_orders_allowed": false,
+    "factor_terminal": true
+  },
+  "strict_prohibitions": [
+    "do not read Campaign057 historical daily prices or forward returns",
+    "do not invert repair reanchor renormalize rewindow rescale filter threshold rerun rescue model or combine Campaign057",
+    "do not open Campaign057 2024-2025 stress",
+    "do not backfill Candidate49",
+    "do not create current scores selections sizing orders or investment advice"
+  ]
+}

@@ -1,0 +1,101 @@
+{
+  "schema_version": 1,
+  "kind": "a_share_three_day_walkforward_campaign127_convertible_issue_acceptance_workflow_freeze",
+  "status": "workflow_frozen_zero_network_before_authorization_or_provider_request",
+  "recorded_at": "2026-08-14T05:01:44+0800",
+  "authoritative_inputs": {
+    "numeric_policy_v132": {
+      "path": "docs/a_share_three_day_walkforward_future_numeric_comparison_eligibility_policy_v132_20260814.json",
+      "sha256": "5885b81d98adda0a7c64a20203e826a5b9638bef4eae558036e170910b54114b"
+    },
+    "source_contract": {
+      "path": "docs/a_share_three_day_walkforward_campaign_127_convertible_issue_source_contract_20260814.json",
+      "sha256": "66e8ed362c0f5d9efb67de659ab39e83899b0fc8f0e92a0eb5e3399cd8c064a5"
+    },
+    "adapter_formula_freeze": {
+      "path": "docs/a_share_three_day_walkforward_campaign_127_convertible_issue_adapter_formula_freeze_20260814.json",
+      "sha256": "d2826be2485a6fe75022ab526f5abf78630072257c2b6d63ade1822d7ef8a0de"
+    },
+    "attempt_ledger_v1": {
+      "path": "data/experiments/short_horizon/historical_walkforward/campaign_127/research_attempt_ledger_v1.json",
+      "sha256": "f39a8cc53d42cca2c3fa907060572a75db6170635a6c2ebcbd97343b6ce2b931"
+    }
+  },
+  "workflow": {
+    "path": "scripts/a_share_three_day_walkforward_campaign127_convertible_issue_acceptance.py",
+    "sha256": "3b3536dd13920c72f28c8dba08f5abf4dccf016003b68ab80702e612ac8d9d44"
+  },
+  "workflow_tests": {
+    "path": "tests/data_collector_tests/test_a_share_three_day_walkforward_campaign127_convertible_issue_acceptance.py",
+    "sha256": "2acb138ecb1fea8169e8eb1ab49b81f3f68cb4a013350de8638501b03250d890"
+  },
+  "frozen_request_schedule": {
+    "cb_basic_calls": 1,
+    "cb_issue_years": [
+      2018,
+      2019,
+      2020,
+      2021,
+      2022,
+      2023,
+      2024,
+      2025
+    ],
+    "cb_issue_calls_per_year": 1,
+    "maximum_provider_calls": 9,
+    "retry_allowed": false,
+    "cb_basic_request_fields": [
+      "ts_code",
+      "stk_code",
+      "cb_type"
+    ],
+    "cb_issue_request_fields": [
+      "ts_code",
+      "ann_date",
+      "res_ann_date",
+      "onl_pch_excess"
+    ],
+    "response_rows_at_or_above_2000": "fatal_possible_truncation"
+  },
+  "workflow_semantics": {
+    "plan_is_zero_network": true,
+    "run_requires_confirm_run": true,
+    "run_requires_confirm_provider_request": true,
+    "run_rebuilds_and_requires_ready_plan": true,
+    "authorization_policy_v133_required": true,
+    "dotenv_regular_non_symlink_mode_0600_and_single_nonempty_token_required": true,
+    "credential_value_printed_hashed_or_persisted": false,
+    "intent_written_exclusively_before_first_provider_call": true,
+    "any_provider_or_source_gate_failure_writes_one_sanitized_terminal_record": true,
+    "raw_provider_rows_counts_exceptions_or_token_persisted_on_failure": false,
+    "accepted_snapshot_contains_only_canonical_whitelisted_events": true,
+    "factor_panel_comparator_price_or_return_values_read": false,
+    "rerun_after_intent_failure_snapshot_or_manifest_exists": false
+  },
+  "verification": {
+    "adapter_and_acceptance_pytest": "26 passed in 0.93s",
+    "acceptance_test_count": 9,
+    "black": "passed",
+    "ruff": "passed",
+    "provider_request_issued_by_tests": false,
+    "real_credential_loaded_by_tests": false
+  },
+  "authorization_boundary": {
+    "provider_request_authorized_by_this_freeze": false,
+    "required_next_action": "Publish a new policy that binds this exact workflow and test hash, authorizes one no-retry nine-call maximum attempt, then run plan. Only ready true with exit code zero may be followed by the identical run confirmations.",
+    "workflow_formula_projection_window_direction_mapping_or_failure_semantics_change_allowed": false
+  },
+  "research_boundary": {
+    "programmatic_provider_request_issued": false,
+    "provider_credential_loaded": false,
+    "provider_rows_read_persisted_or_counted": false,
+    "candidate_or_comparison_values_read": false,
+    "historical_daily_price_or_forward_return_values_read": false,
+    "stress_2024_2025_opened": false,
+    "candidate49_historical_backfill_performed": false,
+    "candidate49_ledgers_changed": false,
+    "second_prospective_candidate_created": false,
+    "current_scoring_selection_sizing_positions_or_orders_performed": false,
+    "investment_advice": false
+  }
+}

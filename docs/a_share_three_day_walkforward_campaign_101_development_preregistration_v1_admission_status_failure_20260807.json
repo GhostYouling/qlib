@@ -1,0 +1,26 @@
+{
+  "schema_version": 1,
+  "kind": "a_share_three_day_walkforward_campaign101_predevelopment_infrastructure_failure",
+  "status": "v1_preregistration_and_admission_preserved_but_ineffective",
+  "recorded_at": "2026-08-07T13:59:31Z",
+  "stage": "development_preregistration_semantic_loader_test_before_daily_price_or_return_read",
+  "ineffective_admission": {
+    "path": "docs/a_share_three_day_walkforward_campaign_101_no_return_development_admission_20260807.json",
+    "sha256": "e5ee9969528bfbf49a3d2168c5a5900eb43da2efcae50c1bb745fb0992dd8b07"
+  },
+  "ineffective_preregistration": {
+    "path": "docs/a_share_three_day_walkforward_campaign_101_preregistration.json",
+    "sha256": "46d3aa0bc4549acc928b65af94f0c76f4c6ab6b2c028f2a64470300b4c9e6b7b"
+  },
+  "failure": "All 18 file bindings passed, but the inherited single-factor loader expected the evolved status completed_with_one_admissible_factor_pending_walkforward_preregistration while the v1 bridge used the older plural status completed_with_admissible_factors_pending_walkforward_preregistration.",
+  "repair": "Preserve both v1 records, create a v2 admission with the exact inherited status, create a v2 preregistration bound to it and the updated runner, and rerun the same semantic and binding tests before any development price or return read.",
+  "scientific_trial_formula_direction_folds_cost_or_survival_gate_changed": false,
+  "research_boundary": {
+    "development_daily_price_fields_read": [],
+    "development_forward_returns_read": false,
+    "complete_development_trial_count": 0,
+    "stress_2024_2025_read": false,
+    "provider_request_issued": false,
+    "candidate49_ledgers_changed": false
+  }
+}

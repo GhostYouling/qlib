@@ -1,0 +1,116 @@
+{
+  "authoritative_research_state": {
+    "active_candidate": "candidate49_intraday_cumulative_vwap_crossing_rate_240m_v1",
+    "candidate49_remains_active": true,
+    "candidate50_activation_allowed": false,
+    "path": "docs/a_share_three_day_iteration_status_20260806_campaign083_verified_v4.json",
+    "sha256": "a8762c6c3b91c266fa5ecf04c0e9a798bb41a60358c85935a728d38ccc1c46ed"
+  },
+  "kind": "a_share_candidate49_daily_source_failure_and_retry_guard_record",
+  "next_action": "Do not retry 2026-08-06 and do not re-request the failed stock_basic response. On the next accepted local trading session, use a new absolute date-versioned staging root, run plan after 16:30 Asia/Singapore, and run only if plan exits 0 with ready=true. Continue zero-network historical walk-forward research independently.",
+  "pre_request_checks": {
+    "active_data_root": "/Volumes/DIsk/Disk-Coding/qlib/data",
+    "after_same_session_not_before_time": true,
+    "candidate49_execution_ledger_entries": 0,
+    "candidate49_signal_ledger_entries": 0,
+    "completed_workflow_record_exists": false,
+    "credential_value_printed_or_persisted": false,
+    "local_time": "2026-08-06T21:29:30+08:00",
+    "repository_dotenv_git_ignored": true,
+    "repository_dotenv_mode": "0600",
+    "repository_dotenv_regular_non_symlink": true,
+    "staging_root": "/Volumes/DIsk/qlib-a-share-tushare-daily-2026-08-06",
+    "staging_root_reused_from_prior_session": false,
+    "workflow_token_present": true
+  },
+  "pre_request_plan": {
+    "active_calendar_end": "2026-07-13",
+    "active_daily_source": "baostock",
+    "cli_exit_code": 0,
+    "failures": [],
+    "filesystem_write_performed": false,
+    "next_phase": "initial_tushare_daily_migration_from_baostock",
+    "provider_request_issued": false,
+    "ready": true,
+    "recommended_cli_exit_code": 0,
+    "status": "ready_for_explicit_run"
+  },
+  "purpose": "Record the bounded Candidate49 future-session workflow attempt, its fail-closed Tushare stock_basic invalid-ts_code boundary, and the same-session retry prohibition without changing the factor, future-only policy, or historical research gates.",
+  "real_workflow_attempt": {
+    "active_root_mutated": false,
+    "cli_exit_code": 1,
+    "completed_session_checkpoints_preserved": true,
+    "credential_value_persisted": false,
+    "error": "TushareDailyMigrationError: Tushare stock_basic contains an invalid ts_code",
+    "failed_phase": "daily-source-sync",
+    "failure_record": {
+      "path": "/Volumes/DIsk/qlib-a-share-tushare-daily-2026-08-06/raw/a_share/rich/tushare/daily_provider_migration_v1/latest_failure.json",
+      "sha256": "63f801f1ad1b75f68c33574e657b4ac437f1c66d6514eb11addffd945db4baf4"
+    },
+    "failure_stage": "stock_basic",
+    "forward_return_fields_read": false,
+    "preserved_trade_calendar": {
+      "json_path": "/Volumes/DIsk/qlib-a-share-tushare-daily-2026-08-06/raw/a_share/rich/tushare/daily_provider_migration_v1/trade_calendar.json",
+      "json_sha256": "80bd68e4a225423843fd1610ba60076527b03619de04717fc01cb2c1c5419b2d",
+      "parquet_path": "/Volumes/DIsk/qlib-a-share-tushare-daily-2026-08-06/raw/a_share/rich/tushare/daily_provider_migration_v1/trade_calendar.parquet",
+      "parquet_sha256": "82f0cb169a8ce70a8ef52d2b89871d36b3e69d665e4e46c89d07701998e310cf"
+    },
+    "provider_calls_this_invocation": 4,
+    "provider_continuation_allowed_for_same_session": false,
+    "provider_request_issued": true,
+    "status": "failed_closed"
+  },
+  "recorded_at": "2026-08-06T13:49:00Z",
+  "repository_commit_at_record": "16deeb0f81245bc58c4b321b577c6aa7c930ed23",
+  "research_boundaries": {
+    "aggregation_scoring_selection_or_sizing_performed": false,
+    "candidate50_activated": false,
+    "factor_formula_or_direction_changed": false,
+    "future_only_policy_changed": false,
+    "historical_candidate49_return_diagnostic_run": false,
+    "historical_or_forward_candidate49_return_read": false,
+    "historical_walkforward_research_remains_independently_authorized": true,
+    "paper_execution_or_live_order_performed": false
+  },
+  "session_date": "2026-08-06",
+  "status": "signal_session_source_failure_frozen_without_signal_or_provider_retry",
+  "verification": {
+    "candidate49_execution_ledger": {
+      "chain_tip_sha256": "f302b4b93c9fcc1478e2f917279d589190b79069e6638efc41cb7aa6cf3691e0",
+      "entries": 0,
+      "path": "data/experiments/short_horizon/candidate49_future_execution_ledger.json",
+      "sha256": "d57a3e61eac969e42cafa418ccd8c0a5ee65dcf69da145bb2c096c2a02a2ea4f"
+    },
+    "candidate49_signal_ledger": {
+      "chain_tip_sha256": "ab47c70a18fc84b6d347fe906c404504faa126d3ec581bf077beffb215788bbb",
+      "entries": 0,
+      "path": "data/experiments/short_horizon/candidate49_future_signal_ledger.json",
+      "sha256": "5193f00d7f36da003f53cec387900da4c3d002299f5dfcfc1a95eaa199ed3a79"
+    },
+    "completed_workflow_record_exists": false,
+    "focused_workflow_tests_failed": 0,
+    "focused_workflow_tests_passed": 32,
+    "signal_execution_ledger_semantic_validation": {
+      "corrected_launch_exit_code": 0,
+      "corrected_read_only_launch": "PYTHONPATH=<repository-root>:<repository-root>/scripts",
+      "first_module_launch_exit_code": 1,
+      "first_module_launch_failure": "ModuleNotFoundError because the repository-root module launch did not include scripts on sys.path",
+      "first_module_launch_provider_request_issued": false,
+      "ledger_write_performed": false,
+      "semantics_valid": true
+    },
+    "workflow_implementation": {
+      "path": "scripts/a_share_tushare_candidate49_future_session_workflow.py",
+      "sha256": "0ee21715af9ee276cb4e50c4234ef15ad3d3b730b014712ae4ad19829908b69e"
+    },
+    "workflow_tests": {
+      "path": "tests/data_collector_tests/test_a_share_tushare_candidate49_future_session_workflow.py",
+      "sha256": "41e16ec52813160b141a3dcee53a22ea3ba0fe843e8772ad5304cfeaf2748f80"
+    }
+  },
+  "version": 1,
+  "workflow_protocol": {
+    "path": "docs/a_share_tushare_candidate49_future_session_workflow_protocol.json",
+    "sha256": "6ff5636a3f7ef65e93452098186b3aecf9231d68873ab8a1070afb91d699ef7c"
+  }
+}

@@ -1,0 +1,160 @@
+{
+  "version": 1,
+  "kind": "a_share_three_day_iteration_status",
+  "status": "campaign048_terminal_verified_historical_walkforward_ready_for_independent_campaign049",
+  "recorded_at": "2026-08-01T05:35:00Z",
+  "authoritative_predecessor": {
+    "path": "docs/a_share_three_day_iteration_status_20260801_campaign047_verified.json",
+    "sha256": "74fceafcd407fa8972e68231be51c73757278ea770bf0f543ee9faa0e8c254ca"
+  },
+  "research_policy": {
+    "historical_walkforward_policy": {
+      "path": "docs/a_share_three_day_historical_walkforward_research_policy_20260727.json",
+      "sha256": "38426d6161b9bfed323c58caba18feca668b8c9d53e294951a8ba90c01a798bb"
+    },
+    "historical_research_may_run_without_new_daily_bar_or_16_30_wait": true,
+    "every_formula_direction_parameter_subset_filter_model_combination_and_infrastructure_failure_counted": true,
+    "historical_results_may_generate_current_scores_selections_sizes_or_orders": false,
+    "historical_results_may_backfill_candidate49": false
+  },
+  "fixed_strategy": {
+    "holding_period_local_sessions": 3,
+    "signal": "accepted local session close t",
+    "entry": "next accepted local session open t+1",
+    "exit": "third accepted local session close t+3",
+    "topk": 3,
+    "development_folds": 3,
+    "purge_signal_sessions_each_partition_boundary": 3,
+    "t_t_plus_1_t_plus_3_must_remain_in_same_partition": true,
+    "pilot_capital_cny": 200000,
+    "primary_pilot_cost_bps": 10,
+    "aggregate_survivor_cost_bps": 20
+  },
+  "campaign048": {
+    "factor": "intraday_two_sided_wick_absorption_balance_240m",
+    "direction": "higher",
+    "formula": "Across exactly 240 bars at 09:31-11:30 and 13:01-15:00, define lower wick l_i=log(min(open_i,close_i)/low_i) and upper wick u_i=log(high_i/max(open_i,close_i)). Pool L=sum(l_i) and U=sum(u_i) and return 2*min(L,U)/(L+U).",
+    "no_return": {
+      "median_coverage": 0.9749496443589075,
+      "p05_coverage": 0.9095754101416853,
+      "comparison_factor_count": 71,
+      "maximum_observed_absolute_median_daily_rank_correlation": 0.17385701012364255,
+      "admissible_factor_count": 1
+    },
+    "development": {
+      "trial_id": "wf048_intraday_two_sided_wick_absorption_balance_240m_single_higher",
+      "trial_count": 1,
+      "validation_mean_rank_ic": [
+        -0.008993671581631607,
+        -0.008413525274202416,
+        -0.010989997621895037
+      ],
+      "validation_normalized_return": [
+        -0.2042145276190357,
+        -0.2359012879701936,
+        -0.19479783350706759
+      ],
+      "validation_pilot_10bp_return": [
+        -0.034126687653379895,
+        -0.030843851002281486,
+        -0.03965059399262649
+      ],
+      "development_pilot_10bp_return": -0.08699284818629438,
+      "development_pilot_20bp_return": -0.16744958272895138,
+      "development_survivor_count": 0,
+      "2024_2025_stress_opened": false,
+      "2024_2025_returns_read": false
+    },
+    "attempt_accounting": {
+      "infrastructure_only_failures": 4,
+      "complete_factor_attempts": 1,
+      "campaign048_distinct_attempts": 5,
+      "campaign048_ledger_entries": 6,
+      "campaign048_return_reading_development_trials": 1,
+      "cumulative_historical_research_attempts": 279,
+      "cumulative_return_reading_development_trials": 264
+    },
+    "terminal": {
+      "factor_terminal": true,
+      "reason": "All three frozen validation folds had negative association, spread, normalized return, and 10bp pilot return.",
+      "invert_repair_rewindow_rescale_filter_threshold_rerun_rescue_or_combine_allowed": false
+    },
+    "authoritative_records": {
+      "research_record": {
+        "path": "docs/a_share_three_day_walkforward_campaign_048_research_record.json",
+        "sha256": "353e7b106fe1d1bf534ee2640eb9cac38cfe2a9fd1abe63b41f87de2dfe79114"
+      },
+      "verification": {
+        "path": "docs/a_share_three_day_walkforward_campaign_048_verification_20260801.json",
+        "sha256": "0b6276e71b78edbb776b30ad41fadc2e3f9463970dbefce937aec5d8ad209d8f"
+      },
+      "unified_report_supersession": {
+        "path": "docs/a_share_three_day_walkforward_campaign_048_unified_report_supersession_v2_20260801.json",
+        "sha256": "9c6354a191176e3ed40786461a6197df5cc189676022e4f1405110af1dd3b2a2"
+      }
+    }
+  },
+  "cumulative_state": {
+    "cumulative_historical_research_attempt_count_after_campaign048": 279,
+    "cumulative_return_reading_development_trial_count_after_campaign048": 264,
+    "current_historical_aggregation_candidate_count": 0
+  },
+  "local_data_context": {
+    "active_daily_data_root": "/Users/niyufei/Coding/qlib/data",
+    "local_date": "2026-08-01",
+    "local_weekday": "Saturday",
+    "candidate49_same_day_workflow_applicable": false,
+    "dotenv_path": "/Users/niyufei/Coding/qlib/.env",
+    "dotenv_is_regular_non_symlink_file": true,
+    "dotenv_is_git_ignored": true,
+    "dotenv_mode": "0600",
+    "tushare_token_present": true,
+    "credential_value_printed_hashed_or_persisted_in_records": false,
+    "provider_request_issued_by_campaign048_or_credential_verification": false
+  },
+  "prospective_boundary": {
+    "active_candidate_count": 1,
+    "active_candidate": "Candidate49 intraday_cumulative_vwap_crossing_rate_240m",
+    "candidate49_signal_ledger": {
+      "path": "data/experiments/short_horizon/candidate49_future_signal_ledger.json",
+      "sha256": "5193f00d7f36da003f53cec387900da4c3d002299f5dfcfc1a95eaa199ed3a79",
+      "entry_count": 0
+    },
+    "candidate49_execution_ledger": {
+      "path": "data/experiments/short_horizon/candidate49_future_execution_ledger.json",
+      "sha256": "d57a3e61eac969e42cafa418ccd8c0a5ee65dcf69da145bb2c096c2a02a2ea4f",
+      "entry_count": 0
+    },
+    "candidate49_historical_return_signal_execution_or_milestone_backfill_performed": false,
+    "candidate50_activation_allowed": false
+  },
+  "verification_summary": {
+    "development_preregistration_binding_count": 18,
+    "development_preregistration_bindings_passed": 18,
+    "research_record_binding_count": 30,
+    "research_record_bindings_passed": 30,
+    "post_result_transition_binding_count": 5,
+    "report_supersession_binding_count": 5,
+    "focused_campaign048_tests_passed": 26,
+    "full_data_collector_tests_passed": 1710,
+    "full_data_collector_tests_failed": 0,
+    "full_data_collector_test_warnings": 13,
+    "first_full_suite_expected_historical_report_pointer_failure": {
+      "passed": 1709,
+      "failed": 1,
+      "warnings": 13
+    },
+    "candidate49_ledgers_rehashed_unchanged": true
+  },
+  "next_action": {
+    "historical": "Begin historical Campaign049 from an independent mechanism with separate pre-value scouting, overlap audit, finite fingerprint-bound protocol, and binding-validator exit code 0. Offline work may run at any time.",
+    "prospective": "Today is Saturday, so do not run Candidate49 provider workflow. On the next accepted local trading date use a new absolute-date staging root and retain the post-16:30 ready=true gate.",
+    "strict_prohibitions": [
+      "do not backfill Candidate49 historical returns signals executions or milestones",
+      "do not start Candidate50",
+      "do not invert repair rewindow rescale filter threshold rerun rescue or combine Campaign048",
+      "do not open Campaign048 2024-2025 stress",
+      "do not generate current scores selections position sizes orders or investment advice"
+    ]
+  }
+}

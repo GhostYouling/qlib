@@ -1,0 +1,30 @@
+{
+  "schema_version": 1,
+  "kind": "a_share_three_day_walkforward_infrastructure_failure_record",
+  "recorded_at": "2026-08-14T09:01:46+08:00",
+  "campaign": 132,
+  "attempt_id": "campaign132_infrastructure_004",
+  "phase": "infrastructure_failure",
+  "stage": "prevalue_compact_key_contract_inventory",
+  "status": "failed_nonexistent_campaign044_search_path",
+  "failed_command_exit_code": 2,
+  "failure": {
+    "tool": "rg",
+    "missing_path": "scripts/a_share_three_day_walkforward_campaign044.py",
+    "cause": "A mixed read-only command included an assumed legacy source path that does not exist as a standalone file.",
+    "partial_prior_command_output_treated_as_success": false,
+    "source_candidate_comparator_price_or_return_values_read": false,
+    "scientific_result_changed": false
+  },
+  "predecessor_failure": {
+    "path": "docs/a_share_three_day_walkforward_campaign_132_runtime_probe_session_id_visibility_failure_20260814.json",
+    "sha256": "d7992ad256a4cd1f7e7dd796137caefef8f071f0b889e9a537984a23c1ca94a0"
+  },
+  "recovery_boundary": {
+    "append_failure_to_campaign132_ledger": true,
+    "use_only_confirmed_campaign101_features_key_helper": true,
+    "override_or_mask_failed_exit_code": false,
+    "provider_request_or_credential_load_allowed": false,
+    "candidate49_change_allowed": false
+  }
+}

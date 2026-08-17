@@ -1,0 +1,192 @@
+{
+  "schema_version": 1,
+  "kind": "a_share_three_day_walkforward_campaign142_concept_scouting",
+  "status": "terminal_zero_selected_candidates_after_complete_definition_and_accepted_schema_review",
+  "recorded_at": "2026-08-14T14:45:00+0800",
+  "purpose": "Review a finite Campaign142 catalog against the complete 153-definition frontier and accepted local point-in-time source schemas before reading any source row, candidate value, comparator value, daily price, forward return, or 2024-2025 stress value.",
+  "authoritative_inputs": {
+    "campaign141_state": {
+      "path": "docs/a_share_three_day_iteration_status_20260814_campaign141_prevalue_terminal_v3.json",
+      "sha256": "15dbf327c4b5567d87349663ef05b99b499c0ea53beb2cdcf9ff4a6faaec6dc6"
+    },
+    "numeric_policy_v181": {
+      "path": "docs/a_share_three_day_walkforward_future_numeric_comparison_eligibility_policy_v181_20260814.json",
+      "sha256": "fb972041f619d170e2df5c0c598d09f45b5e61811c59d5707eeabb8c04a76db9",
+      "complete_definition_count": 153,
+      "complete_definition_order_sha256": "bf66faef96d7058c7028da52757c65d8e0bf7978cf72d3967cd236e4da30b875",
+      "eligible_numeric_comparator_count": 141,
+      "eligible_numeric_comparator_order_sha256": "ec1aebcb939ad516c58037a36a4aaadd4ad8b2abbd3c884705895c58da85a2ee"
+    },
+    "historical_walkforward_policy": {
+      "path": "docs/a_share_three_day_historical_walkforward_research_policy_20260727.json",
+      "sha256": "38426d6161b9bfed323c58caba18feca668b8c9d53e294951a8ba90c01a798bb"
+    }
+  },
+  "accepted_local_schema_audit": {
+    "active_data_root": "/Volumes/DIsk/Disk-Coding/qlib/data",
+    "inspection_method": "filesystem inventory, immutable JSON metadata, and pyarrow Parquet schema only; no row group or column value opened",
+    "source_families": [
+      {
+        "name": "quarterly_quality",
+        "manifest_path": "data/metadata/quarterly_quality_manifest.json",
+        "manifest_sha256": "e3cf654babe37a82393c5530696bc1cc242b736cb88e1947b8444b638125ba8c",
+        "field_names": [
+          "instrument",
+          "report_date",
+          "announcement_date",
+          "roe",
+          "net_profit",
+          "revenue_yoy",
+          "profit_yoy"
+        ]
+      },
+      {
+        "name": "tushare_cash_conversion_acceptance_only",
+        "acceptance_manifest_path": "data/metadata/rich_data/runs/20260716T135952Z_tushare_cash_conversion_acceptance_c829bf52.json",
+        "acceptance_manifest_sha256": "8307b86d53a41a3fb2d5c827c9a2c1f356022ae8dd16d2f781b63ba2875af5b1",
+        "full_source_failure_path": "data/metadata/rich_data/runs/20260716T153816Z_tushare_cash_conversion_full_6174dd3a_source_failure.json",
+        "full_source_failure_sha256": "0f4d6d40081eda418a7a94c999ec83f1a5be33a29f6af5af0470390de10c7344",
+        "full_historical_source_accepted": false
+      },
+      {
+        "name": "sw2021_l1_membership_intervals",
+        "manifest_path": "data/metadata/rich_data/runs/20260716T114724Z_tushare_sw2021_l1_membership_92ef71fe.json",
+        "manifest_sha256": "8582eb25f91ddcbe01130057ecb118431168545fa0a182cdb428c3a8d2a0228e",
+        "membership_interval_fields_present": true,
+        "historical_public_announcement_clock_present": false
+      },
+      {
+        "name": "insider_open_market_transactions",
+        "manifest_path": "data/metadata/insider_open_market_transactions_manifest.json",
+        "manifest_sha256": "f81738fe52588e36bcfbabe35c57a5e815e08f14f70b98144d394b5eec340103",
+        "actual_historical_disclosure_timestamp_present": false,
+        "synthetic_conservative_availability_clock_only": true
+      },
+      {
+        "name": "accepted_one_minute_ohlcva",
+        "schema_fields": [
+          "datetime",
+          "symbol",
+          "provider",
+          "open",
+          "high",
+          "low",
+          "close",
+          "volume",
+          "amount"
+        ],
+        "new_order_book_queue_trade_direction_or_auction_imbalance_field_present": false
+      }
+    ]
+  },
+  "finite_prevalue_concept_catalog": [
+    {
+      "catalog_id": "c142_01",
+      "name": "quarterly_realized_net_profit_sign_transition_2q",
+      "hypothetical_formula": "classify a latest effective net_profit transition from nonpositive to positive across adjacent report periods",
+      "direction": "higher",
+      "parameters": "one exact prior report period and zero sign threshold",
+      "filters": "both point-in-time net_profit states finite",
+      "subsets": [],
+      "models": [],
+      "prevalue_decision": "rejected_as_thresholded_net_profit_scale_and_transition_operator_refresh",
+      "reason": "Net-profit scale, quality-profit state, growth, acceleration, rank gaps and transition operators are terminal. Adding a zero threshold and adjacent-quarter state does not reveal a new source state; it is a post-exposure discretization of an exposed accounting field and introduces a cold-start predecessor requirement."
+    },
+    {
+      "catalog_id": "c142_02",
+      "name": "income_cashflow_statement_disclosure_gap_days",
+      "hypothetical_formula": "negative absolute calendar-day gap between income_actual_announcement_date and cashflow_actual_announcement_date for one report period",
+      "direction": "higher",
+      "parameters": "same instrument and report period",
+      "filters": "both statement announcement dates finite",
+      "subsets": [],
+      "models": [],
+      "prevalue_decision": "rejected_no_accepted_full_historical_point_in_time_source",
+      "reason": "The accepted cash-conversion sample exposes both dates, but both full-history acquisition attempts are terminal source failures. A small acceptance sample is not an accepted 2019-2023 point-in-time research source and cannot be promoted by silently reading or extrapolating it."
+    },
+    {
+      "catalog_id": "c142_03",
+      "name": "sw_l1_membership_entry_or_exit_recency",
+      "hypothetical_formula": "accepted-session age since an SW2021 L1 interval in_date or until out_date",
+      "direction": "higher",
+      "parameters": "single membership transition clock",
+      "filters": "one active interval per stock-session",
+      "subsets": [],
+      "models": [],
+      "prevalue_decision": "rejected_missing_historical_public_announcement_clock_and_prior_c127_gate",
+      "reason": "The membership snapshot supports point-in-time peer assignment, not proof of when a historical rebalance announcement became public. Campaign127 already rejected index membership change at this exact clock gate; effective dates alone cannot support a three-day announcement signal."
+    },
+    {
+      "catalog_id": "c142_04",
+      "name": "insider_transaction_actual_reporting_delay",
+      "hypothetical_formula": "negative sessions from the latest direct-market transaction to its actual public filing",
+      "direction": "higher",
+      "parameters": "one exact transaction-to-disclosure interval",
+      "filters": "direct open-market transaction only",
+      "subsets": [],
+      "models": [],
+      "prevalue_decision": "rejected_actual_disclosure_timestamp_absent_and_terminal_clock_change",
+      "reason": "The accepted source has transaction dates and a conservative synthetic third-session availability date, not the actual historical filing timestamp. Treating that synthetic clock as measured reporting delay would invent source semantics, while changing it would reopen a terminal insider branch."
+    },
+    {
+      "catalog_id": "c142_05",
+      "name": "sparse_corporate_event_peer_crowding_sparsity",
+      "hypothetical_formula": "one divided by the number of issuers disclosing the same event family on the same date",
+      "direction": "higher",
+      "parameters": "repurchase, unlock, pledge, survey or analyst family selected after prior results",
+      "filters": "event disclosed and point-in-time eligible",
+      "subsets": [
+        "event_family"
+      ],
+      "models": [],
+      "prevalue_decision": "rejected_as_terminal_event_family_operator_reuse_and_capacity_rescue",
+      "reason": "Quarterly peer-crowding sparsity is already terminal, and each proposed event family has terminal value, freshness, capacity or return evidence. Moving the same crowding operator across those exposed sparse families requires post-result family selection and cannot create missing event cohorts."
+    },
+    {
+      "catalog_id": "c142_06",
+      "name": "intraday_range_width_serial_persistence_238p",
+      "hypothetical_formula": "population correlation of adjacent log(high/low) widths within the two fixed half sessions",
+      "direction": "higher",
+      "parameters": "one-minute lag, 238 within-half pairs",
+      "filters": "exact 240 finite ordered high-low bars and positive variance",
+      "subsets": [],
+      "models": [],
+      "prevalue_decision": "rejected_as_terminal_volatility_clustering_and_range_serial_statistic_refresh",
+      "reason": "Absolute-return serial persistence, body-magnitude serial persistence, range weak-order states, range local peaks, range clock moments and multiple volatility-resolution mechanisms already cover the same latent volatility-clustering state. Swapping the width proxy and correlation functional is an alternate statistic, not a new information mechanism."
+    }
+  ],
+  "selection": {
+    "concepts_reviewed": 6,
+    "rejected_concept_count": 6,
+    "selected_candidate_count": 0,
+    "selected_candidate": null,
+    "finite_candidate_library": true,
+    "genuinely_new_independent_mechanism_found": false,
+    "reason": "No concept simultaneously has an accepted full historical point-in-time source, an identifiable public availability clock, and semantic independence from the 153 terminal definitions."
+  },
+  "decision": {
+    "create_campaign142_formula_feature_snapshot_model_or_adapter": false,
+    "run_source_acceptance_coverage_uniqueness_or_return_trial": false,
+    "request_new_provider_history": false,
+    "append_complete_definition_or_numeric_comparator": false,
+    "terminalize_campaign142_prevalue": true,
+    "next_campaign_requirement": "Continue only from a genuinely new finite mechanism supported by an already accepted historically versioned point-in-time source, or obtain explicit authorization for a separately frozen source-admission campaign."
+  },
+  "research_boundary": {
+    "schema_and_terminal_history_metadata_read": true,
+    "parquet_schema_only_inspection_performed": true,
+    "parquet_rows_or_column_values_read": false,
+    "campaign142_candidate_values_computed_or_read": false,
+    "campaign142_comparator_values_read": false,
+    "historical_daily_price_or_forward_return_values_read": false,
+    "stress_2024_2025_opened": false,
+    "provider_request_issued": false,
+    "provider_credential_value_or_digest_read": false,
+    "candidate49_historical_backfill_performed": false,
+    "candidate49_ledgers_changed": false,
+    "second_prospective_candidate_created": false,
+    "current_scoring_selection_sizing_positions_or_orders_performed": false,
+    "investment_advice": false,
+    "inherited_current_listing_survivorship_limitation_remains": true
+  }
+}

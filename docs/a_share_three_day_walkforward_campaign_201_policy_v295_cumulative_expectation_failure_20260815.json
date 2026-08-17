@@ -1,0 +1,28 @@
+{
+  "schema_version": 1,
+  "kind": "a_share_three_day_walkforward_campaign201_infrastructure_failure",
+  "status": "failed_policy_v295_cumulative_expected_pass_and_deselection_counts_preserved_invalid",
+  "recorded_at": "2026-08-15T18:22:27+08:00",
+  "phase": "campaign201_cumulative_regression_preregistration_review",
+  "failure_class": "omitted_campaign200_mutable_report_node_from_expected_cumulative_transition",
+  "process_exit_code": null,
+  "tool_output_truncated": false,
+  "failed_output_used_as_validation_or_scientific_evidence": false,
+  "invalid_policy": {
+    "path": "docs/a_share_three_day_walkforward_future_numeric_comparison_eligibility_policy_v295_20260815.json",
+    "sha256": "1c154c7f7eedff0d1e90d7eac12142ee082ed767773d0561d6ba6821309431a3",
+    "preserved_without_rewriting": true,
+    "invalid_expected_tests_passed": 473,
+    "invalid_expected_nodes_deselected": 15
+  },
+  "failure_summary": "Policy v295 added the Campaign201 test file but failed to move Campaign200's mutable-report hash assertion into the historical deselection set after both reports were appended. The correct transition is 472 passed, one skipped and 16 deselected, not 473/1/15.",
+  "recovery": "Preserve v295, append this failure to Campaign201 ledger v2, publish additive accounting and report corrections, and issue policy v296 with the exact 16-node set before running the cumulative suite.",
+  "research_boundary": {
+    "cumulative_regression_command_executed_from_invalid_policy": false,
+    "candidate_source_comparator_security_price_or_return_value_read": false,
+    "provider_or_web_request_issued": false,
+    "provider_credential_presence_value_or_digest_read": false,
+    "candidate49_plan_or_run_executed": false,
+    "candidate49_ledgers_changed": false
+  }
+}

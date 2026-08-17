@@ -1,0 +1,77 @@
+{
+  "schema_version": 1,
+  "kind": "a_share_three_day_walkforward_campaign102_sequential_execution_interpretation_freeze",
+  "status": "frozen_after_structural_design_admission_before_first_model_fit_or_return_read",
+  "recorded_at": "2026-08-07T15:20:00Z",
+  "purpose": "Resolve implementation-level sequencing and aggregate-metric semantics left implicit by the prevalue protocol without changing its model, trials, folds, support, costs, gates, or information boundaries.",
+  "protocol": {
+    "path": "docs/a_share_three_day_walkforward_campaign_102_no_return_preregistration.json",
+    "sha256": "5def1f153c4cca94f2d646598f09b810108688488b8aab0b2be345366364b8f9",
+    "preserved": true
+  },
+  "design_snapshot_binding": {
+    "path": "docs/a_share_three_day_walkforward_campaign_102_design_snapshot_binding_20260807.json",
+    "sha256": "706eccfb3104e50a627e92ff0e740bfaea8cd71c99c079595a193c1c7bdade34",
+    "scientific_design_values_used_to_choose_interpretation": false
+  },
+  "chronological_fold_execution": {
+    "fold_order": [1, 2, 3],
+    "training_market_read_end": ["2020-12-31", "2021-12-31", "2022-12-31"],
+    "validation_year_return_read_only_after_all_live_trial_score_and_uniqueness_records_are_atomically_written": true,
+    "previous_validation_returns_may_enter_the_next_expanding_training_partition_only_after_previous_validation_completion": true,
+    "failed_uniqueness_trial_is_permanently_dead_for_later_folds": true,
+    "all_trials_share_identical_training_observations_within_a_fold": true
+  },
+  "target_and_fit_details": {
+    "target_rank_base": "All rows on a contained/purged training signal session with model_support_eligible=true and finite forward_gross_return; rank ascending with average ties and percentile=true.",
+    "component_missingness": "After support eligibility, replace missing directional component ranks with exact zero only in X.",
+    "sufficient_statistics": "Accumulate A=sum_t(X_t'X_t/n_t)/T and b=sum_t(X_t'y_t/n_t)/T in float64.",
+    "objective_without_constant": "w'Aw - 2b'w + lambda*||w-u||_2^2",
+    "gradient": "2(Aw-b)+2lambda(w-u)",
+    "constraint_tolerance": 1e-08,
+    "optimizer_success_required": true,
+    "randomness_allowed": false
+  },
+  "score_semantics": {
+    "raw_model_score": "sum_j(w_j*x_j) after eligible-row zero imputation",
+    "direction": "higher",
+    "validation_metric_score": "raw model score; downstream association uses Spearman and basket sorting exactly as the frozen engine",
+    "uniqueness_score": "raw model score compared pairwise by daily Spearman with each stored directional component",
+    "ineligible_score": null
+  },
+  "development_aggregate_interpretation": {
+    "reason": "A fitted expanding model has no single honest pre-2019 weight vector, so the frozen aggregate robustness gate must use only chronological out-of-sample fold portfolios rather than backcasting a later fit into its own training years.",
+    "aggregate_interval_label": "2019-2023 development campaign aggregate from the three frozen 2021, 2022, and 2023 validation folds",
+    "aggregate_20bp_return": "product over folds of (1 + that fold's 20bp pilot validation net cumulative return) minus 1",
+    "aggregate_normalized_return": "product over folds of (1 + that fold's normalized validation net cumulative return) minus 1",
+    "aggregate_10bp_return": "product over folds of (1 + that fold's 10bp pilot validation net cumulative return) minus 1",
+    "training_metrics_used_for_survivor_decision": false,
+    "validation_metrics_used_for_survivor_decision": true,
+    "later_fit_backcast_into_earlier_dates_allowed": false
+  },
+  "survivor_selection": {
+    "all_frozen_operational_quality_and_aggregate_gates_required": true,
+    "maximum_survivors": 1,
+    "ranking_order": "exact protocol order",
+    "lambda_or_weight_change_after_results": false
+  },
+  "lockbox_refit": {
+    "performed_only_for_the_selected_survivor": true,
+    "training_partition": ["2019-01-01", "2023-12-31"],
+    "same_target_objective_bounds_optimizer_and_selected_lambda": true,
+    "2024_2025_daily_score_uniqueness_written_before_2024_2025_return_read": true,
+    "lockbox_return_read_if_uniqueness_fails": false,
+    "lockbox_open_count_maximum": 1
+  },
+  "research_boundary": {
+    "campaign102_design_values_already_read_under_frozen_builder": true,
+    "design_values_used_to_change_model_or_trials": false,
+    "campaign102_model_fit_performed_before_this_freeze": false,
+    "historical_daily_price_or_return_values_read_before_this_freeze": false,
+    "provider_request_issued": false,
+    "candidate49_historical_backfill_performed": false,
+    "candidate49_ledgers_changed": false,
+    "current_scoring_selection_sizing_or_orders_performed": false,
+    "investment_advice": false
+  }
+}

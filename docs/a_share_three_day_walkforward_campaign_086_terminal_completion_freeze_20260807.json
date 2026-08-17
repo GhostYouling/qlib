@@ -1,0 +1,84 @@
+{
+  "schema_version": 1,
+  "version": 1,
+  "kind": "a_share_three_day_walkforward_campaign086_terminal_completion_freeze",
+  "status": "terminal_coverage_rejection_comparisons_returns_and_stress_closed_all_known_invocations_accounted",
+  "frozen_at": "2026-08-07T02:33:00+08:00",
+  "terminal_result": {
+    "factor": "intraday_intrabar_close_location_serial_persistence_238p",
+    "direction": "higher",
+    "coverage_gate_passed": false,
+    "median_coverage": 0.9231861259965655,
+    "p05_coverage": 0.8075504413619168,
+    "numeric_comparisons_executed": 0,
+    "development_trial_count": 0,
+    "development_survivor_count": 0,
+    "stress_2024_2025_opened": false,
+    "stress_return_fields_read": false
+  },
+  "attempt_accounting": {
+    "campaign086_historical_attempts": 10,
+    "campaign086_complete_factor_attempts": 1,
+    "campaign086_infrastructure_failures": 9,
+    "campaign086_ledger_entries": 10,
+    "campaign086_return_reading_development_trials": 0,
+    "cumulative_historical_attempts": 582,
+    "cumulative_return_reading_development_trials": 285
+  },
+  "current_research_record": {
+    "path": "docs/a_share_three_day_walkforward_campaign_086_research_record.json",
+    "sha256": "f39f1b7fc6d7310b9749f519c1929d8e7f704a026370fceefd40b6bfed9a2897"
+  },
+  "current_research_attempt_ledger": {
+    "path": "data/experiments/short_horizon/historical_walkforward/campaign_086/research_attempt_ledger_v10.json",
+    "sha256": "1a303a904138f05179144a564faa631ba8f0cf3e37b52487d05e53b4a6b5ca9e"
+  },
+  "future_numeric_comparator_policy_v25": {
+    "path": "docs/a_share_three_day_walkforward_future_numeric_comparison_eligibility_policy_v25_20260807.json",
+    "sha256": "945b74a66688c1534a351fe8d8bc0eb2570070ae6379f12838386fabb450283b"
+  },
+  "future_duplicate_detection_library": {
+    "complete_definition_count": 118,
+    "complete_definition_order_sha256": "261b5bac3512a91492d91e69fdbe8f6b571738e55a19553b5344f044697115f9",
+    "numeric_comparator_count": 116,
+    "numeric_comparator_order_sha256": "e84ad824a5b3044c45a541a6650b3e18af801b09a34871c3e6ab8c73c36891b2"
+  },
+  "scientific_artifacts": {
+    "snapshot_binding_sha256": "61c29d28967f7ea37532f5e9f6eb440171237224261f60dad0db9be5bde7b563",
+    "snapshot_manifest_sha256": "848ce713344f1ce805e3180344107d1d4bee5f8350bbcf52f8089e391fae3803",
+    "snapshot_dataset_sha256": "49cf11b5d69fa38a72f1a977975e290d4ed0bfd2205be6c50ba08dc64844b8e3",
+    "no_return_audit_sha256": "9c9357fd69dec12b185baab5a5349911fdad3153e61c685ec9f55edfcf21d001",
+    "no_return_activation_binding_sha256": "34d02852633ba246e056f09eb20d237f13514ba564a5694cd9055fdb398122e9"
+  },
+  "reporting_bindings": {
+    "campaign_markdown_report_sha256": "d7bdc04a7c343532c4c72d4dc451c5ef7752f6c270601bcaa23c4de5f79c50cd",
+    "unified_report_sha256": "2d7d0fb4de9cdcecbaa33d43fd9fbbbd619a785ccacce05cb9eecda9873decfd",
+    "current_report_sha256": "2dd6af4054ddf93947d449ddc68586e48f0fdad4150dbd2004e14ab4e91dcce2",
+    "data_pipeline_documentation_sha256": "0d61e724f4cf6ae6701519ced086b18593e97b1b8362fb64f9f82a7ef243d5c8"
+  },
+  "terminal_verification": {
+    "feature_unit_tests": "23 passed",
+    "no_return_audit_unit_tests": "3 passed",
+    "ruff_passed": true,
+    "snapshot_file_verification": "7 partitions and 1331759 rows verified",
+    "all_binding_validators_passed": true,
+    "candidate_or_comparator_values_recomputed_by_terminal_binding_validation": false,
+    "historical_daily_price_or_return_values_read_by_terminal_binding_validation": false
+  },
+  "manage_qlib_a_share_data_skill": {
+    "path": "/Users/niyufei/.codex/skills/manage-qlib-a-share-data/SKILL.md",
+    "sha256": "90a99c54dd00f0c737e85c4c6dd48d906edbd0f591c61278885728eaf7806431"
+  },
+  "candidate49_boundary": {
+    "remains_only_active_prospective_candidate": true,
+    "historical_backfill_performed": false,
+    "signal_ledger_entries": 0,
+    "signal_ledger_sha256": "5193f00d7f36da003f53cec387900da4c3d002299f5dfcfc1a95eaa199ed3a79",
+    "execution_ledger_entries": 0,
+    "execution_ledger_sha256": "d57a3e61eac969e42cafa418ccd8c0a5ee65dcf69da145bb2c096c2a02a2ea4f",
+    "second_prospective_candidate_created": false
+  },
+  "provider_request_issued_by_campaign086": false,
+  "current_scoring_selection_sizing_or_orders_performed": false,
+  "investment_advice": false
+}

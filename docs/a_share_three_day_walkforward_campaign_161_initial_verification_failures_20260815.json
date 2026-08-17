@@ -1,0 +1,62 @@
+{
+  "schema_version": 1,
+  "kind": "a_share_three_day_walkforward_campaign161_initial_verification_failures",
+  "status": "two_read_only_verification_command_failures_recorded_and_recovered_without_research_value_access",
+  "recorded_at": "2026-08-15T05:05:20+08:00",
+  "authoritative_predecessors": {
+    "campaign160_state": {
+      "path": "docs/a_share_three_day_iteration_status_20260815_campaign160_prevalue_terminal.json",
+      "sha256": "82b96a4e4cce67a7ce5979b84911ee42e736fd352f2acfa144c47da2e5e70ef0"
+    },
+    "campaign160_terminal_validation": {
+      "path": "docs/a_share_three_day_walkforward_campaign_160_terminal_validation_20260815.json",
+      "sha256": "bbb1bc1bffd5a5af30adcbf933ea33b014e0e6b1ba631352111f8ca2e238ab59"
+    }
+  },
+  "failures": [
+    {
+      "attempt_id": "campaign161_infrastructure_001",
+      "phase": "post_campaign160_terminal_receipt_verification",
+      "command_scope": "Parse the receipt inputs, verify bound hashes, compare the receipt timestamp with its mtime, and confirm unified-report and Candidate49 ledger hashes.",
+      "exit_code": 127,
+      "failure": "The zsh special array parameter named path was reused as a loop variable, replacing the command-search path; the next jq invocation was therefore not found.",
+      "repeated_or_masked": false,
+      "partial_output_or_target_write": false,
+      "source_candidate_comparator_price_or_return_value_read": false
+    },
+    {
+      "attempt_id": "campaign161_infrastructure_002",
+      "phase": "post_campaign160_terminal_receipt_verification",
+      "command_scope": "Retry the same read-only verification after renaming the loop variable.",
+      "exit_code": 4,
+      "failure": "jq -e empty returns exit code 4 because the empty filter emits no result even when the JSON parses successfully; this was an invalid success predicate.",
+      "repeated_or_masked": false,
+      "partial_output_or_target_write": false,
+      "source_candidate_comparator_price_or_return_value_read": false
+    }
+  ],
+  "safe_recovery": {
+    "method": "Use a non-reserved loop variable, use jq empty without -e for syntax validation, split the checks, and retain fail-closed hash comparisons.",
+    "recovery_exit_code": 0,
+    "json_parse_passed": 10,
+    "receipt_authoritative_input_bindings_passed": 13,
+    "binding_validator_bindings_passed": 13,
+    "receipt_sha256": "bbb1bc1bffd5a5af30adcbf933ea33b014e0e6b1ba631352111f8ca2e238ab59",
+    "receipt_timestamp_not_future_relative_to_mtime": true,
+    "current_research_report_sha256": "3ac93e2fbf31dc60ed72e8bcda9caf8672e3d290f77490ab65e80594c9d0f567",
+    "three_day_research_report_sha256": "49618f12bc6bfa29cf0c9d0a58ed9509e2b947561da4a7c03174be19b5b8ff31",
+    "candidate49_signal_ledger_sha256": "5193f00d7f36da003f53cec387900da4c3d002299f5dfcfc1a95eaa199ed3a79",
+    "candidate49_execution_ledger_sha256": "d57a3e61eac969e42cafa418ccd8c0a5ee65dcf69da145bb2c096c2a02a2ea4f",
+    "failed_exit_codes_bypassed_or_masked": false
+  },
+  "research_boundary": {
+    "source_row_response_or_column_value_read": false,
+    "candidate_or_comparator_value_read": false,
+    "daily_price_or_forward_return_value_read": false,
+    "stress_2024_2025_opened": false,
+    "provider_or_web_request_issued": false,
+    "provider_credential_presence_value_or_digest_read": false,
+    "candidate49_ledgers_changed": false,
+    "filesystem_target_written_before_this_failure_record": false
+  }
+}

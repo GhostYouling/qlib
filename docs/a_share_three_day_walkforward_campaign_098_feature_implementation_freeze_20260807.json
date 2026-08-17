@@ -1,0 +1,81 @@
+{
+  "schema_version": 1,
+  "kind": "a_share_three_day_walkforward_campaign098_feature_implementation_freeze",
+  "status": "frozen_before_campaign098_minute_source_rows_or_candidate_values",
+  "recorded_at": "2026-08-07T07:49:00Z",
+  "protocol": {
+    "path": "docs/a_share_three_day_walkforward_campaign_098_no_return_preregistration.json",
+    "sha256": "31dcecebeea81adab163acd76e21616e6b35726a2798bb4ca72cee4252ca78bd"
+  },
+  "feature_runner": {
+    "path": "scripts/a_share_three_day_walkforward_campaign098_features.py",
+    "sha256": "c37124971238368ca233b38e9b3532fb52cf8e613e70d490afc15478e5107355"
+  },
+  "tests": {
+    "path": "tests/data_collector_tests/test_a_share_three_day_walkforward_campaign098_features.py",
+    "sha256": "81dacc62d6dc2023b262f7712d82b4ffb2f386a6a55330537eee2d7d3bf7732a",
+    "passed": 8,
+    "failed": 0
+  },
+  "inherited_compact_builder": {
+    "path": "scripts/a_share_three_day_walkforward_campaign090_features.py",
+    "sha256": "46d7dce8796654a2af2162a7e28bea07ecc3e6d4b320ed48e46b139f9776212d",
+    "reuse_scope": "immutable source, joint-clean identity, compact stock-day key, annual publication, and byte/frame verification machinery only"
+  },
+  "definition_reconstruction_source": {
+    "path": "scripts/a_share_three_day_walkforward_campaign097_features.py",
+    "sha256": "81473f082130cb490dd9572b9baa8613daaee3ba778cb46d6e3aeea1b417d16f",
+    "complete_definition_count_after_append": 129,
+    "numeric_comparator_count_after_append": 126
+  },
+  "preserved_prevalue_failures": [
+    {
+      "path": "docs/a_share_three_day_walkforward_campaign_098_prevalue_test_minute_code_alias_failure_20260807.json",
+      "sha256": "91c2a4aa92d1281231f2a40c5fb08a5de0c4239bae26924c9722e66437ff4888"
+    },
+    {
+      "path": "docs/a_share_three_day_walkforward_campaign_098_prevalue_black_format_failure_20260807.json",
+      "sha256": "a38c20d5fa38a13f309ecd04d6dbe0b7276dc140c4531aa34d60fff8aafcc3ce"
+    }
+  ],
+  "candidate": {
+    "name": "intraday_range_clock_variance_240m",
+    "direction": "higher",
+    "formula": "q_i=log(high_i/low_i), p_i=q_i/sum(q), u_i=i/239, mu=sum(p_i*u_i), factor=4*sum(p_i*(u_i-mu)^2)",
+    "source_projection": [
+      "datetime",
+      "symbol",
+      "provider",
+      "high",
+      "low"
+    ],
+    "selected_bar_count": 240,
+    "factor_range": [
+      0,
+      1
+    ],
+    "endpoint_tolerance": 1e-12
+  },
+  "synthetic_semantics_verified": {
+    "single_clock_mass_returns_zero": true,
+    "equal_endpoint_mass_returns_one": true,
+    "positive_mass_scale_invariant": true,
+    "feasible_common_clock_translation_invariant": true,
+    "clock_permutation_sensitive": true,
+    "zero_total_invalid_or_unordered_source_missing": true,
+    "standalone_09_30_excluded": true,
+    "exact_241_row_source_grid_required": true
+  },
+  "quality_checks": {
+    "black_passed": true,
+    "ruff_passed": true
+  },
+  "candidate_source_rows_read_before_freeze": false,
+  "candidate_values_computed_before_freeze": false,
+  "comparator_values_read_before_freeze": false,
+  "historical_daily_price_or_forward_return_values_read_before_freeze": false,
+  "candidate49_ledgers_changed_before_freeze": false,
+  "provider_request_issued_before_freeze": false,
+  "current_scoring_selection_sizing_or_orders_performed": false,
+  "next_action": "Build exactly one immutable Campaign098 candidate snapshot from the frozen source projection, then verify it before any coverage metric or comparator value."
+}

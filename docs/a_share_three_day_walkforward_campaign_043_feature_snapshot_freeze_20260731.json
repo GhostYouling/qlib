@@ -1,0 +1,85 @@
+{
+  "version": 1,
+  "kind": "a_share_three_day_walkforward_campaign043_feature_snapshot_freeze",
+  "status": "immutable_snapshot_bound_before_comparison_values_or_returns",
+  "frozen_at": "2026-07-31T10:21:54Z",
+  "purpose": "Bind the atomically published Campaign043 volume-and-amount feature snapshot, both additive infrastructure repair records, the effective implementation freeze, and the post-binding runner before any comparison value or historical return is opened.",
+  "authoritative_inputs": {
+    "no_return_preregistration": {
+      "path": "docs/a_share_three_day_walkforward_campaign_043_no_return_preregistration.json",
+      "sha256": "2fde47ae05bfef5f99d230c6835b559b72bbd0e20bfcfb994d36cd4487e831f9"
+    },
+    "publication_hook_infrastructure_repair": {
+      "path": "docs/a_share_three_day_walkforward_campaign_043_feature_publication_hook_infrastructure_repair_20260731.json",
+      "sha256": "a3147078bdb663301401a53e9ce5e561eeddd5fee6ecb7195aebc832c09750d6"
+    },
+    "prepublication_manifest_metadata_repair": {
+      "path": "docs/a_share_three_day_walkforward_campaign_043_prepublication_manifest_metadata_repair_20260731.json",
+      "sha256": "4001d6f9031c9a6305fdb55238e55dc2d669fdb17cb3334517dc143c1ffd4c5f"
+    },
+    "effective_feature_implementation_freeze": {
+      "path": "docs/a_share_three_day_walkforward_campaign_043_feature_implementation_freeze_v3_20260731.json",
+      "sha256": "833cff6dd914edd02cf7a1b99e9ee95c0fd785da72a38dde2c0bf8890b802e13"
+    },
+    "feature_runner": {
+      "path": "scripts/a_share_three_day_walkforward_campaign043_features.py",
+      "sha256": "8d737be7e3829e89953ede0b5955336d69ec4b5eafe3d7450ab454589ba6f7d3"
+    },
+    "synthetic_tests": {
+      "path": "tests/data_collector_tests/test_a_share_three_day_walkforward_campaign043_features.py",
+      "sha256": "b1027553aea71aeee09c22c57497f7d2b04a2a2a3285f14ba8a7910d230f1bd9"
+    },
+    "snapshot_manifest": {
+      "path": "/Volumes/DIsk/qlib-a-share-tushare-1m/derived/a_share/rich/tushare/minute_walkforward_campaign043_feature_library/tushare_stk_mins_1m_2019_2025_ea0cbb8f_walkforward_campaign043_feature_library_v1/snapshot_manifest.json",
+      "sha256": "7652e88cbaf7f3f21751b3c944dc21c2746580f6a4d48aebffeea410b9c89590",
+      "dataset_sha256": "59410bf94f8c013f0be2bea166c6fa128ff2b173c0ba85e688683675270d3885"
+    }
+  },
+  "snapshot_summary": {
+    "partitions": 33015,
+    "rows": 7724498,
+    "eligible_rows": 7682604,
+    "insufficient_active_bar_rows": 41847,
+    "one_sided_zero_rows": 47,
+    "joint_zero_bar_observations": 77334747,
+    "rows_with_joint_zero_bars": 7724498,
+    "endpoint_canonicalized_rows": 3831,
+    "negative_volume_or_amount_rows": 0,
+    "nonfinite_or_nonpositive_transaction_price_rows": 0,
+    "range_or_nonfinite_rows": 0,
+    "resumed_partitions_after_metadata_repair": 33015,
+    "recomputed_partitions_after_metadata_repair": 0,
+    "source_fields_read": [
+      "datetime",
+      "symbol",
+      "provider",
+      "volume",
+      "amount"
+    ],
+    "source_open_high_low_read": false,
+    "source_close_read": false,
+    "source_volume_read": true,
+    "source_amount_read": true
+  },
+  "validation": {
+    "synthetic_test_count": 9,
+    "synthetic_test_failures": 0,
+    "manifest_semantics_passed": true,
+    "manifest_fingerprint_bound_in_runner": true,
+    "dataset_fingerprint_bound_in_runner": true,
+    "comparison_values_read_before_freeze": false,
+    "historical_daily_price_fields_read_before_freeze": false,
+    "historical_forward_returns_read_before_freeze": false
+  },
+  "research_boundary": {
+    "candidate_values_published": true,
+    "comparison_values_read": false,
+    "historical_daily_price_fields_read": false,
+    "historical_forward_returns_read": false,
+    "provider_request_issued": false,
+    "candidate49_ledgers_changed": false,
+    "candidate50_activation_created": false,
+    "current_scoring_selection_sizing_or_orders_performed": false
+  },
+  "next_action": "Validate this snapshot freeze and all current bindings, then run the ordered no-return audit: coverage and capacity first, and only after a pass load the complete 64-factor comparison library."
+}

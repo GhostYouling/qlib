@@ -1,0 +1,194 @@
+{
+  "version": 2,
+  "kind": "a_share_tushare_daily_provider_migration_protocol",
+  "status": "frozen_before_new_migration_provider_request",
+  "recorded_at": "2026-07-25T10:15:00Z",
+  "incremental_refresh_amended_at": "2026-07-25T16:51:10Z",
+  "purpose": "Build a complete Tushare daily provider in an isolated external staging root, reuse the already accepted 2019-2025 raw daily snapshot, validate the repository point-in-time price contract, permit a separate explicit activation only after every gate passes, and refresh an already accepted Tushare provider by seeding only verified immutable source-session checkpoints into a new staging version.",
+  "source": {
+    "provider": "tushare",
+    "credential_source": "TUSHARE_TOKEN_environment_variable_only",
+    "credential_value_logged_hashed_or_persisted": false,
+    "history_start": "2015-01-01",
+    "through_date_policy": "explicit_completed_session_not_later_than_the_local_safe_daily_cutoff",
+    "interfaces": {
+      "trade_cal": {
+        "fields": [
+          "cal_date",
+          "is_open",
+          "pretrade_date"
+        ],
+        "exchange": "SSE",
+        "purpose": "authoritative_open_session_grid"
+      },
+      "daily": {
+        "fields": [
+          "ts_code",
+          "trade_date",
+          "open",
+          "high",
+          "low",
+          "close",
+          "pre_close",
+          "change",
+          "pct_chg",
+          "vol",
+          "amount"
+        ],
+        "prices": "raw_unadjusted",
+        "documented_volume_unit": "lots_of_100_shares",
+        "documented_amount_unit": "thousand_CNY",
+        "request_partition": "one_open_session_per_call"
+      },
+      "daily_basic": {
+        "fields": [
+          "ts_code",
+          "trade_date",
+          "turnover_rate"
+        ],
+        "request_partition": "one_open_session_per_call",
+        "purpose": "preserve_the_existing_Qlib_turnover_field_without_cross_provider_fill"
+      },
+      "stock_basic": {
+        "fields": [
+          "ts_code",
+          "symbol",
+          "name",
+          "market",
+          "list_date",
+          "delist_date",
+          "list_status"
+        ],
+        "list_status_requests": [
+          "L",
+          "D",
+          "P"
+        ],
+        "purpose": "current_and_historical_instrument_identity_and_listing_spans"
+      }
+    },
+    "minimum_seconds_between_aggregate_provider_calls": 0.22,
+    "transient_attempts_per_request": 3,
+    "possible_daily_row_ceiling": 6000,
+    "ceiling_policy": "reject_as_possible_truncation"
+  },
+  "accepted_reference": {
+    "snapshot_manifest_path": "/Volumes/DIsk/qlib-a-share-tushare-1m/raw/a_share/rich/tushare/daily/snapshots/tushare_daily_2019_2025_acf72e28/snapshot_manifest.json",
+    "snapshot_manifest_sha256": "87feded06b6726d282abf52c8fd1c30340728ae37c2de201a3a8f30e1a556e2d",
+    "provider_concordance_result_path": "docs/a_share_tushare_baostock_daily_concordance_result.json",
+    "provider_concordance_result_sha256": "92e54a7195e0a7b992d60cc22f5084ee429a59a6c1c8653b4b5315e154aaaa8f",
+    "reference_range": [
+      "2019-01-01",
+      "2025-12-31"
+    ],
+    "reuse_policy": "verify_every_manifest_and_partition_fingerprint_then_issue_zero_daily_requests_for_covered_sessions",
+    "daily_basic_reuse_available": false
+  },
+  "canonicalization": {
+    "symbol": "SH_or_SZ_prefix_from_ts_code_suffix_plus_six_digit_code",
+    "amount": "Tushare_thousand_CNY_multiplied_by_1000",
+    "raw_volume": "Tushare_vol_kept_in_lots",
+    "raw_vwap": "amount_CNY_divided_by_vol_times_100_shares_when_volume_is_positive",
+    "pct_chg": "provider_pct_chg_with_only_missing_values_derived_from_close_over_positive_pre_close;_first_symbol_row_may_anchor_at_zero",
+    "turnover": "same_session_Tushare_daily_basic_turnover_rate_only",
+    "price_basis": "close_known_raw_pct_chg_chain_v1",
+    "daily_source": "tushare",
+    "future_corporate_actions_used": false,
+    "cross_provider_field_fill_allowed": false,
+    "suspension_fill_allowed": false
+  },
+  "storage": {
+    "staging_root_must_be_explicit": true,
+    "staging_root_must_differ_from_active_data_root": true,
+    "external_staging_allowed": true,
+    "active_baostock_root_mutable_during_sync_build_or_audit": false,
+    "one_immutable_parquet_per_provider_session_and_interface": true,
+    "session_sidecar_hash_required": true,
+    "same_contract_resume_allowed": true,
+    "completed_source_snapshot_immutable": true,
+    "completed_source_snapshot_through_date_change_allowed": false,
+    "changed_completed_partition_policy": "hard_stop",
+    "source_manifest_must_bind_current_calendar_stock_basic_and_session_checkpoints": true,
+    "canonical_output": "raw/a_share/daily_one_Parquet_per_symbol_plus_metadata_and_Qlib_binaries",
+    "canonical_raw_build_may_resume_Qlib_materialization_only_after_its_build_manifest_and_raw_provider_gate_revalidate": true,
+    "accepted_or_canonical_build_staging_mutable_by_sync_source": false,
+    "process_lock_required": true,
+    "incremental_refresh": {
+      "eligible_parent": "the_current_active_root_with_a_valid_Tushare_migration_acceptance",
+      "target_staging": "a_new_explicit_isolated_root_with_a_later_completed_session_cutoff",
+      "parent_acceptance_and_source_manifest_must_validate_before_copy": true,
+      "parent_source_or_canonical_file_mutation_allowed": false,
+      "copy_scope": [
+        "daily_session_checkpoints_outside_the_accepted_2019_2025_reference",
+        "all_daily_basic_session_checkpoints"
+      ],
+      "trade_calendar_reused": false,
+      "stock_basic_reused": false,
+      "accepted_2019_2025_daily_reference_reused_by_existing_manifest_hash": true,
+      "copy_method": "independent_file_copy_with_post_copy_byte_and_frame_hash_validation",
+      "hardlinks_allowed": false,
+      "seed_intent_written_before_first_copy": true,
+      "interrupted_seed_policy": "resume_only_after_exact_parent_target_and_completed_checkpoint_revalidation",
+      "completed_seed_manifest_immutable": true,
+      "provider_request_scope_after_seed": "fresh_trade_cal_and_three_stock_basic_calls_plus_only_sessions_after_the_parent_cutoff",
+      "canonical_raw_and_Qlib_build_policy": "full_local_rebuild_and_all_existing_acceptance_gates_remain_required",
+      "automatic_activation_allowed": false
+    }
+  },
+  "acceptance": {
+    "exact_open_calendar_coverage_required": true,
+    "daily_and_daily_basic_unique_stock_date_keys_required": true,
+    "daily_positive_OHLC_and_valid_envelope_required": true,
+    "daily_nonnegative_volume_and_amount_required": true,
+    "daily_basic_turnover_nonnegative_when_present": true,
+    "minimum_daily_basic_common_key_share": 0.995,
+    "single_daily_source_required": "tushare",
+    "price_basis_audit_status_required": "passed",
+    "missing_contract_columns_allowed": 0,
+    "adjusted_VWAP_outside_OHLC_rows_allowed": 0,
+    "source_VWAP_unquarantined_rows_allowed": 0,
+    "raw_close_reconstruction_error_rows_allowed": 0,
+    "pct_chg_chain_error_rows_allowed": 0,
+    "minimum_current_buyable_names": 4500,
+    "minimum_current_factor_names": 5000,
+    "active_root_byte_mutation_before_activation_allowed": false
+  },
+  "activation": {
+    "automatic_after_build": false,
+    "explicit_separate_command_required": true,
+    "local_pointer_path": ".qlib_a_share_data_root",
+    "environment_override_must_be_absent": "QLIB_A_SHARE_DATA_ROOT",
+    "pointer_update": "temporary_file_in_repository_root_then_atomic_replace",
+    "same_filesystem_atomic_pointer_or_crash_safe_rollback_required": true,
+    "preserve_prior_provider_as_read_only_rollback_root": true,
+    "seed_before_pointer_switch": {
+      "purpose": "preserve_non_daily_research_and_rich_data_needed_by_existing_repository_workflows_without_copying_or_mixing_the_old_daily_or_Qlib_provider",
+      "copy_and_verify_relative_roots": [
+        "derived",
+        "experiments",
+        "exports",
+        "handoffs",
+        "raw/a_share/events",
+        "raw/a_share/fundamentals",
+        "raw/a_share/rich",
+        "metadata/rich_data"
+      ],
+      "same_relative_path_with_different_bytes_policy": "hard_stop",
+      "active_daily_root_copied": false,
+      "active_Qlib_root_copied": false,
+      "active_universe_or_price_basis_manifest_copied": false
+    },
+    "activation_intent_written_before_pointer": true,
+    "fresh_status_must_resolve_to_staging_after_pointer": true,
+    "failed_post_pointer_validation_policy": "atomically_restore_previous_pointer_and_record_failure",
+    "mixed_provider_activation_allowed": false,
+    "candidate49_allowed_before_activation_and_post_activation_preflight": false
+  },
+  "research_boundary": {
+    "forward_return_fields_read": false,
+    "factor_values_read": false,
+    "historical_candidate49_return_diagnostic_allowed": false,
+    "aggregation_scoring_selection_sizing_or_orders_allowed": false,
+    "candidate50_allowed": false
+  }
+}

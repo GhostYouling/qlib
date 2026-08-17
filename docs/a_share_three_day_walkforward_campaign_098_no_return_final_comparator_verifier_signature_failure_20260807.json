@@ -1,0 +1,38 @@
+{
+  "schema_version": 1,
+  "kind": "a_share_three_day_walkforward_campaign098_no_return_final_comparator_verifier_failure",
+  "status": "preserved_after_coverage_and_first_125_comparator_values_before_final_comparator_or_audit_publication",
+  "recorded_at": "2026-08-07T08:59:00Z",
+  "audit_runner": {
+    "path": "scripts/a_share_three_day_walkforward_campaign098_no_return_audit.py",
+    "sha256": "f4c636935ba67e0738fb7eb980c110e3f53ccdfe7eb21e4fab4e647e21b32838"
+  },
+  "implementation_freeze_v1": {
+    "path": "docs/a_share_three_day_walkforward_campaign_098_no_return_audit_implementation_freeze_20260807.json",
+    "sha256": "5d6fdb0cdd459a93a2d5c945e4c9dd18c68cf087a76517af536a33de5a378a87"
+  },
+  "activation_binding_v1": {
+    "path": "docs/a_share_three_day_walkforward_campaign_098_no_return_audit_activation_binding_20260807.json",
+    "sha256": "e9939ba5fc6d0718b7ca65bb4fe52f2253a2b35f5a87c4b562a793fb9ae03f59"
+  },
+  "candidate_snapshot": {
+    "path": "/Volumes/DIsk/qlib-a-share-tushare-1m/derived/a_share/rich/tushare/minute_walkforward_campaign098_feature_library/tushare_stk_mins_1m_2019_2025_ea0cbb8f_walkforward_campaign098_feature_library_v1/snapshot_manifest.json",
+    "sha256": "371429a81292a91ef2bfa1292f467c81bf73e176fbfbc9888084f74eaaac1dc5"
+  },
+  "failure": {
+    "exception": "TypeError",
+    "message": "verify_snapshot() missing 1 required positional argument: 'manifest_path'",
+    "stage": "append Campaign097 as the 126th fixed numeric comparator",
+    "coverage_and_capacity_metrics_computed": true,
+    "first_125_comparator_values_read_in_frozen_order": true,
+    "campaign097_comparator_values_read": false,
+    "audit_record_published": false
+  },
+  "authorized_repair_boundary": "Bind a zero-argument helper that calls c97_compact.verify_snapshot(C97_COMPACT_MANIFEST_PATH), update only additive v2 implementation/activation paths and truthful pre-v2 read-state validation, and rerun the same single audit once.",
+  "first_125_comparator_reread_on_single_retry_allowed": true,
+  "candidate_values_or_snapshot_recomputed": false,
+  "historical_daily_price_or_forward_return_values_read": false,
+  "candidate49_ledgers_changed": false,
+  "provider_request_issued": false,
+  "formula_direction_support_window_universe_cost_gate_or_search_space_changed": false
+}

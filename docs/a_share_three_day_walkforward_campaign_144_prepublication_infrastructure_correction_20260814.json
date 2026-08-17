@@ -1,0 +1,49 @@
+{
+  "schema_version": 1,
+  "kind": "a_share_three_day_walkforward_campaign144_prepublication_infrastructure_correction",
+  "status": "append_only_correction_and_failure_recorded_before_campaign144_values_or_returns",
+  "recorded_at": "2026-08-14T19:14:36+08:00",
+  "attempt_ids": [
+    "campaign144_infrastructure_002",
+    "campaign144_infrastructure_003"
+  ],
+  "superseded_record": {
+    "path": "docs/a_share_three_day_walkforward_campaign_144_zsh_nomatch_model_inventory_failure_20260814.json",
+    "sha256": "b1060c4bd1853e4f6a0724c1e857c1fdfc53ea2583e23aecd12afd1cd4bad0ef",
+    "preserved_unchanged": true,
+    "semantic_content_remains_valid": true,
+    "invalid_field": "recorded_at",
+    "invalid_value": "2026-08-14T19:20:00+0800",
+    "reason": "The timestamp was later than the independently read local clock at correction time. It is not accepted as evidence ordering.",
+    "effective_recorded_at": "2026-08-14T19:14:36+08:00"
+  },
+  "interrupted_inventory": {
+    "attempt_id": "campaign144_infrastructure_003",
+    "phase": "accepted_snapshot_manifest_inventory",
+    "process_exit_code": 130,
+    "cause": "A read-only find over the external derived-data tree did not complete within a bounded interactive interval and was interrupted.",
+    "target_file_written": false,
+    "failed_exit_code_bypassed": false,
+    "later_success_used_to_mask_failure": false,
+    "safe_recovery": "Use explicit known manifest roots and bounded rg metadata inventories; do not repeat the broad tree scan."
+  },
+  "accounting": {
+    "infrastructure_failure_count_added": 2,
+    "scientific_concept_attempt_count_added": 0,
+    "model_trial_count_added": 0
+  },
+  "research_boundary": {
+    "source_rows_or_column_values_read": false,
+    "component_factor_values_read": false,
+    "candidate_or_model_scores_computed_or_read": false,
+    "historical_daily_price_or_forward_return_values_read": false,
+    "stress_2024_2025_opened": false,
+    "provider_request_issued": false,
+    "provider_credential_value_or_digest_read": false,
+    "candidate49_historical_backfill_performed": false,
+    "candidate49_ledgers_changed": false,
+    "second_prospective_candidate_created": false,
+    "current_scoring_selection_sizing_positions_or_orders_performed": false,
+    "investment_advice": false
+  }
+}

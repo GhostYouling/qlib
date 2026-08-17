@@ -1,0 +1,50 @@
+{
+  "version": 1,
+  "kind": "a_share_three_day_walkforward_campaign084_terminal_infrastructure_failures",
+  "status": "two_read_only_runtime_entry_failures_preserved_before_successful_bundled_runtime_verification",
+  "recorded_at": "2026-08-06T22:35:00+08:00",
+  "campaign_id": "084",
+  "failures": [
+    {
+      "ordinal": 5,
+      "stage": "future_numeric_comparator_supported_session_verification",
+      "outcome": "shell_python_entrypoint_not_found",
+      "exit_code": 127,
+      "filesystem_write_performed": false,
+      "candidate_or_comparator_values_changed": false,
+      "historical_daily_price_or_return_values_read": false,
+      "provider_request_issued": false
+    },
+    {
+      "ordinal": 6,
+      "stage": "future_numeric_comparator_supported_session_verification",
+      "outcome": "system_python3_3_9_could_not_import_datetime_UTC",
+      "exit_code": 1,
+      "filesystem_write_performed": false,
+      "candidate_or_comparator_values_changed": false,
+      "historical_daily_price_or_return_values_read": false,
+      "provider_request_issued": false
+    }
+  ],
+  "successful_continuation": {
+    "runtime": "workspace_bundled_python3",
+    "mode": "read_only_recompute_from_frozen_candidate_snapshot_and_frozen_quality_listing_universe",
+    "sessions_with_at_least_50_candidate_names": 1378,
+    "first_session_with_at_least_50_candidate_names": "2020-04-29",
+    "last_session_with_at_least_50_candidate_names": "2025-12-31",
+    "candidate_supported_sessions_observed": 1391,
+    "daily_coverage_frame_sha256": "3f483eed8f6951cdb0c78c1d1579b0cf7e7dd27ed7686ca0f03d359a8192c816",
+    "minimum_supported_sessions_for_future_numeric_comparator_eligibility": 100,
+    "future_numeric_comparator_capacity_passed": true,
+    "comparison_values_read": false,
+    "historical_daily_price_or_return_values_read": false,
+    "provider_request_issued": false
+  },
+  "anti_gaming_boundary": {
+    "campaign084_coverage_failure_reclassified_or_removed": false,
+    "coverage_threshold_or_2019_partition_changed": false,
+    "campaign084_rerun_rescue_or_variant_opened": false,
+    "candidate49_ledgers_changed": false,
+    "current_scoring_selection_sizing_orders_or_advice_performed": false
+  }
+}

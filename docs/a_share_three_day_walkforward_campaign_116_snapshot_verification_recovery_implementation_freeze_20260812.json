@@ -1,0 +1,38 @@
+{
+  "schema_version": 1,
+  "kind": "a_share_three_day_walkforward_campaign116_snapshot_verification_recovery_implementation_freeze",
+  "status": "separate_verifier_frozen_before_partition_verification_or_comparator_values",
+  "recorded_at": "2026-08-12T16:25:57+08:00",
+  "protocol": {
+    "path": "docs/a_share_three_day_walkforward_campaign_116_snapshot_verification_recovery_protocol_20260812.json",
+    "sha256": "eb126acf714d86e84595de87c2bb1d9fdb4dfd7967935e8742ef06101953e021"
+  },
+  "recovery_verifier": {
+    "path": "scripts/a_share_three_day_walkforward_campaign116_snapshot_verify_recovery.py",
+    "sha256": "6ceb3f0dd9ed134bd57545e5d4384ae63da5e5d90ccd330b832ebb477c56208b",
+    "original_builder_modified": false,
+    "published_snapshot_modified": false,
+    "corrected_expectation_count": 3
+  },
+  "synthetic_test": {
+    "path": "tests/data_collector_tests/test_a_share_three_day_walkforward_campaign116_snapshot_verify_recovery.py",
+    "sha256": "7f2965bcf09cb935e8f26aecd2fb637be984da1bead086839da900d9d9760332",
+    "command": "/Volumes/DIsk/Coding/anaconda3/bin/python3.12 -m pytest -q tests/data_collector_tests/test_a_share_three_day_walkforward_campaign116_snapshot_verify_recovery.py",
+    "exit_code": 0,
+    "passed": 3,
+    "failed": 0,
+    "partition_values_read": false
+  },
+  "research_boundary": {
+    "partition_values_read_before_freeze": false,
+    "comparator_values_read_before_freeze": false,
+    "historical_daily_price_or_forward_return_values_read": false,
+    "stress_2024_2025_opened": false,
+    "provider_request_issued": false,
+    "candidate49_historical_backfill_performed": false,
+    "candidate49_ledgers_changed": false,
+    "current_scoring_selection_sizing_positions_or_orders_performed": false,
+    "investment_advice": false
+  },
+  "next_action": "Run the frozen separate verifier exactly once with --confirm-verify, recording success or failure without changing the snapshot."
+}

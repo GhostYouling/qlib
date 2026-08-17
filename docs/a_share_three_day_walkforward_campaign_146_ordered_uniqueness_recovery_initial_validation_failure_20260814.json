@@ -1,0 +1,31 @@
+{
+  "schema_version": 1,
+  "kind": "a_share_three_day_walkforward_campaign146_infrastructure_failure",
+  "status": "recorded_uniqueness_recovery_initial_validation_failure_before_comparator_values",
+  "recorded_at": "2026-08-14T21:58:00+08:00",
+  "attempt_id": "campaign146_infrastructure_008",
+  "stage": "ordered_uniqueness_receipt_key_recovery_synthetic_validation",
+  "failures": [
+    {
+      "check": "pytest",
+      "exit_code": 1,
+      "result": "4 passed, 1 failed",
+      "failure": "The prefreeze static receipt test attempted to hash the not-yet-created recovery implementation freeze."
+    },
+    {
+      "check": "black_check",
+      "exit_code": 1,
+      "failure": "Both recovery files would be reformatted."
+    }
+  ],
+  "successful_checks": {
+    "ruff_exit_code": 0
+  },
+  "resolution": "Move recovery-freeze hash injection from the prefreeze static function to build_plan after freeze validation, mechanically format both files, then rerun the unchanged five-test, Black-check, and Ruff scopes.",
+  "scientific_effect": {
+    "formula_direction_sources_order_alignment_gate_or_decision_changed": false,
+    "comparator_values_read": false,
+    "daily_price_or_forward_return_read": false,
+    "provider_request_issued": false
+  }
+}

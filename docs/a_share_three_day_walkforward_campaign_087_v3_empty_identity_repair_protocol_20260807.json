@@ -1,0 +1,37 @@
+{
+  "schema_version": 1,
+  "kind": "a_share_three_day_walkforward_campaign087_v3_empty_identity_repair_protocol",
+  "status": "frozen_after_v2_failure_before_campaign087_v3_feature_build_retry",
+  "frozen_at": "2026-08-07T02:17:00+08:00",
+  "failed_v2_runner": {
+    "path": "scripts/a_share_three_day_walkforward_campaign087_features_v2.py",
+    "sha256": "8ae28bcf6f8b4eb45388df9a2588e22531481a59c0b5f5776d7a907d1460bc2f"
+  },
+  "v2_implementation_freeze": {
+    "path": "docs/a_share_three_day_walkforward_campaign_087_feature_implementation_freeze_v2_20260807.json",
+    "sha256": "e60ff2b1a2f8d5a2c6e79bc5edc81984f9746d29a9b59e369bb95e856e480163"
+  },
+  "failure_record": {
+    "path": "data/experiments/short_horizon/historical_walkforward/campaign_087/research_attempt_ledger_v6.json",
+    "sha256": "c2fd04329459ebcd62dc6d8e3bcc143e1b2a471296d03706e8886f55a14c9c05",
+    "ordinal": 6
+  },
+  "known_good_empty_identity_semantics": {
+    "campaign086_v3_runner_path": "scripts/a_share_three_day_walkforward_campaign086_features_v3.py",
+    "campaign086_v3_runner_sha256": "17c92d5d0512f0e02bc5997ade732730ba91addb98732af2518563a336ebe6b2",
+    "rule": "When the frozen joint-clean identity projection for a symbol-year is empty, return an exact empty frame with trade_date, symbol, provider, and the currently installed candidate-factor float64 column. For nonempty identity, dispatch unchanged to the original frozen attachment implementation.",
+    "formula_or_candidate_value_for_empty_identity": "none because the empty identity contributes zero accepted stock-day rows"
+  },
+  "allowed_v3_change": {
+    "scope": "Compose the frozen Campaign087 v2 predecessor-name repair with the already frozen Campaign086 v3 empty-identity attachment dispatch. Do not alter nonempty attachment or candidate calculation.",
+    "output_manifest_must_bind_v3_runner_and_v3_freeze": true
+  },
+  "forbidden_v3_changes": [
+    "candidate formula, direction, source projection, fixed grid, zero semantics, support rule, endpoint tolerance, or nonempty attachment",
+    "118-definition or 116-comparator order, coverage, uniqueness, development, cost, or stress gates",
+    "data root, raw or clean source fingerprint, eligible stock-day universe, or output partitioning",
+    "reuse of partially computed v2 in-memory values or temporary output",
+    "Candidate49 ledgers, historical backfill, a second prospective candidate, provider requests, daily prices, or forward returns"
+  ],
+  "retry_policy": "Exactly one additive v3 build implementation may be frozen and tried under this protocol. The v1/v2 runners, freezes, and failed attempts remain immutable."
+}

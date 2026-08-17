@@ -1,0 +1,184 @@
+{
+  "version": 1,
+  "kind": "a_share_three_day_walkforward_campaign042_no_return_preregistration",
+  "status": "frozen_before_campaign042_minute_candidate_comparison_daily_price_or_return_values",
+  "frozen_at": "2026-07-31T07:50:00Z",
+  "purpose": "Freeze exactly one Campaign042 factor, the complete ordered no-return admission process, and the finite post-admission development catalog before candidate, comparison, daily-price, or return values are opened.",
+  "source_chain": {
+    "authoritative_state": {
+      "path": "docs/a_share_three_day_iteration_status_20260731_campaign041_verified.json",
+      "sha256": "4d16ebaa02f2029ba4913b9f5c65ae44e291c27036abce0497bca4abd3f515ba"
+    },
+    "historical_walkforward_policy": {
+      "path": "docs/a_share_three_day_historical_walkforward_research_policy_20260727.json",
+      "sha256": "38426d6161b9bfed323c58caba18feca668b8c9d53e294951a8ba90c01a798bb"
+    },
+    "concept_scouting": {
+      "path": "docs/a_share_three_day_walkforward_campaign_042_concept_scouting.json",
+      "sha256": "b70336b85c0f5636f9a3af5f469e28aee6f12b70e3bb84d5479f7a15b62f05ee"
+    },
+    "mechanism_overlap_audit": {
+      "path": "docs/a_share_three_day_walkforward_campaign_042_mechanism_overlap_audit.json",
+      "sha256": "8f4fae4cf996a90ce82cb6266ce82991a04cd4307103c97bb2b316d8f2a9e3aa"
+    },
+    "effective_campaign041_protocol_base": {
+      "path": "docs/a_share_three_day_walkforward_campaign_041_no_return_preregistration.json",
+      "sha256": "6691fb6a382d6f2f481473f25a0060606edf59290bc822b635b23de25105ae7c",
+      "inherited_semantics": "All source-root identity, 2019-2025 session range, quality/listing eligibility, coverage gates, uniqueness estimator and thresholds, the complete ordered 62-factor comparison library, walk-forward folds, purge, execution costs, survivor gates, append-only accounting, stress opening rule, Candidate49 isolation, and current-output prohibitions remain unchanged unless an exact Campaign042 delta is stated below."
+    },
+    "campaign041_terminal_snapshot": {
+      "path": "/Volumes/DIsk/qlib-a-share-tushare-1m/derived/a_share/rich/tushare/minute_walkforward_campaign041_feature_library/tushare_stk_mins_1m_2019_2025_ea0cbb8f_walkforward_campaign041_feature_library_v1/snapshot_manifest.json",
+      "sha256": "838f71169e90d33e9ebbfd34d62dd2c4969432454eeaa69ae6601bb6fdc95391",
+      "dataset_sha256": "d330e806262d5e3187649273aea14bb20e53d13cc18edfbc8d8dd0616aa0ac0b"
+    },
+    "campaign041_no_return_audit": {
+      "path": "data/experiments/short_horizon/historical_walkforward/campaign_041/no_return/20260731T072630Z_campaign041_no_return_audit.json",
+      "sha256": "fe00c12d6cb1ebfbb0c7eb31e7f43e188f845ae41a4efff5ebbc9d7230fcf52b"
+    },
+    "campaign041_research_record": {
+      "path": "docs/a_share_three_day_walkforward_campaign_041_research_record.json",
+      "sha256": "0a21f4d189509aa0c0efbf4cb05ab688374104adfe3d52114467da83e0606844"
+    },
+    "candidate49_signal_ledger": {
+      "path": "data/experiments/short_horizon/candidate49_future_signal_ledger.json",
+      "sha256": "5193f00d7f36da003f53cec387900da4c3d002299f5dfcfc1a95eaa199ed3a79",
+      "entry_count": 0
+    },
+    "candidate49_execution_ledger": {
+      "path": "data/experiments/short_horizon/candidate49_future_execution_ledger.json",
+      "sha256": "d57a3e61eac969e42cafa418ccd8c0a5ee65dcf69da145bb2c096c2a02a2ea4f",
+      "entry_count": 0
+    }
+  },
+  "campaign042_delta_from_effective_campaign041_protocol": {
+    "campaign_id": "a_share_three_day_walkforward_campaign_042",
+    "candidate_factor_count": 1,
+    "comparison_factor_count": 63,
+    "development_trial_count_if_admitted": 1,
+    "candidate_replaces_campaign041_candidate": true,
+    "campaign041_candidate_appended_as_final_terminal_comparison": true,
+    "complete_comparison_library_construction": "Take the exact ordered 62 comparison factors materialized by effective_campaign041_protocol_base, then append exactly {name: intraday_microgap_absorption_share_238p, score_direction: higher}. No deletion, reorder, substitution, sparse omission, or extra comparison is allowed.",
+    "inherited_comparison_count": 62,
+    "inherited_comparison_order_sha256": "16ea65e40e50d1ef04f967da6f98aa077791bcd1680fab78d2cf28d0509713d8",
+    "appended_comparison": {
+      "name": "intraday_microgap_absorption_share_238p",
+      "score_direction": "higher"
+    },
+    "comparison_order_sha256": "2318bc5774032e9a41519936dde4943a9d5f577b5c05999d2fe0f8bef617fa77",
+    "other_inherited_semantics_changed": false
+  },
+  "candidate": {
+    "name": "intraday_lunch_repricing_persistence_2r",
+    "direction": "higher",
+    "formula": "Let g=log(close_13:01/close_11:30) and a=log(close_15:00/close_13:01). Return 2*g*a/(g^2+a^2). If g=a=0, return missing.",
+    "source_projection": [
+      "datetime",
+      "symbol",
+      "provider",
+      "close"
+    ],
+    "forbidden_source_columns": [
+      "open",
+      "high",
+      "low",
+      "volume",
+      "amount"
+    ],
+    "selected_bar_count": 240,
+    "formula_anchor_times": [
+      "11:30",
+      "13:01",
+      "15:00"
+    ],
+    "selected_grid": [
+      "09:31-11:30",
+      "13:01-15:00"
+    ],
+    "include_0930": false,
+    "include_lunch_transition": true,
+    "lunch_return_definition": "g=log(close_13:01/close_11:30)",
+    "afternoon_follow_through_definition": "a=log(close_15:00/close_13:01)",
+    "normalized_interaction": "2*g*a/(g^2+a^2)",
+    "exact_zero_component_retained": true,
+    "both_components_zero_is_missing": true,
+    "all_240_closes_must_be_finite_and_positive": true,
+    "endpoint_canonicalization_tolerance": 1e-12,
+    "valid_range": {
+      "lower": -1.0,
+      "lower_inclusive": true,
+      "upper": 1.0,
+      "upper_inclusive": true
+    },
+    "missing_rule": "Any invalid, nonpositive, nonfinite, duplicated, missing, or off-grid selected close; both g and a exactly zero; nonfinite score; or score outside [-1,1] before a 1e-12 endpoint canonicalization makes the stock-day missing.",
+    "transform_scale_clip_threshold_filter": "none",
+    "sign_split_inverse_raw_product_gap_weight_alternate_anchor_subwindow_board_year_cost_or_model_search": false
+  },
+  "ordered_no_return_gates": {
+    "coverage_and_capacity_before_comparison_values": {
+      "minimum_median_coverage": 0.95,
+      "minimum_p05_coverage": 0.9,
+      "minimum_p05_eligible_names": 50,
+      "minimum_non_overlapping_three_session_cohorts": 200,
+      "minimum_observed_calendar_years": 5,
+      "comparison_values_read_before_coverage_pass": false
+    },
+    "uniqueness_after_coverage_only": {
+      "maximum_allowed_absolute_median_daily_rank_correlation": 0.8,
+      "minimum_pairwise_names_per_session": 50,
+      "minimum_pairwise_sessions_per_comparison": 100,
+      "complete_library_inherited_from_path": "docs/a_share_three_day_walkforward_campaign_041_no_return_preregistration.json",
+      "inherited_comparison_count": 62,
+      "inherited_comparison_order_sha256": "16ea65e40e50d1ef04f967da6f98aa077791bcd1680fab78d2cf28d0509713d8",
+      "appended_comparison": {
+        "name": "intraday_microgap_absorption_share_238p",
+        "score_direction": "higher"
+      },
+      "comparison_factor_count": 63,
+      "comparison_factor_order_sha256": "2318bc5774032e9a41519936dde4943a9d5f577b5c05999d2fe0f8bef617fa77",
+      "all_63_must_pass": true
+    }
+  },
+  "finite_development_catalog_if_admitted": {
+    "trial_id": "wf042_intraday_lunch_repricing_persistence_2r_single_higher",
+    "kind": "single_factor",
+    "feature_set": [
+      "intraday_lunch_repricing_persistence_2r"
+    ],
+    "weights": [
+      1.0
+    ],
+    "complexity": 1,
+    "expected_trial_count": 1,
+    "weight_threshold_filter_window_year_or_model_search": false,
+    "development_interval": [
+      "2019-01-01",
+      "2023-12-31"
+    ],
+    "fold_count": 3,
+    "purge_local_signal_sessions": 3,
+    "t_plus_1_and_t_plus_3_must_remain_inside_partition": true,
+    "stress_opening_rule": "2024-2025 may open exactly once only for the frozen development survivor"
+  },
+  "research_boundary": {
+    "external_campaign042_minute_partitions_read": false,
+    "candidate_values_read": false,
+    "comparison_values_read": false,
+    "historical_daily_price_fields_read": false,
+    "historical_forward_returns_read": false,
+    "training_or_model_fitting_performed": false,
+    "provider_request_issued": false,
+    "candidate49_historical_return_signal_or_execution_backfill_performed": false,
+    "candidate49_ledgers_changed": false,
+    "candidate50_activation_created": false,
+    "current_scoring_selection_sizing_or_orders_performed": false,
+    "investment_advice": false
+  },
+  "decision": {
+    "frozen_candidate_count": 1,
+    "frozen_comparison_count": 63,
+    "frozen_development_trial_count_if_admitted": 1,
+    "candidate_or_comparison_value_read_before_freeze": false,
+    "binding_validator_must_pass_before_protected_values": true,
+    "next_action": "Implement and synthetically test the exact frozen factor, freeze the implementation fingerprint, then build one immutable no-return snapshot."
+  }
+}

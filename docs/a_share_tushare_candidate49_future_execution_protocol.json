@@ -1,0 +1,173 @@
+{
+  "version": 1,
+  "kind": "a_share_tushare_candidate49_future_execution_protocol",
+  "status": "frozen_before_first_eligible_future_signal_entry_open_or_outcome",
+  "frozen_at": "2026-07-25T07:00:22Z",
+  "registration_id": "candidate49_intraday_cumulative_vwap_crossing_rate_240m_v1",
+  "purpose": "Remove all remaining ambiguity from candidate49 paper execution and future Rank IC settlement before the first registered signal, entry open, or outcome exists.",
+  "source_chain": {
+    "future_only_policy": {
+      "path": "docs/a_share_three_day_future_only_minute_research_policy_20260725.json",
+      "sha256": "52ca8bfa7201509fe891d0af3d1c87aeebd64e47e6ec6641e897849411df408c"
+    },
+    "future_observation_registration": {
+      "path": "docs/a_share_tushare_intraday_cumulative_vwap_crossing_rate_future_observation_registration.json",
+      "sha256": "431cb0b3b078823f08b888bf4c499bcc5088309a2e58e9de5cb9a9aaa849ffa9"
+    },
+    "future_only_iteration_state": {
+      "path": "docs/a_share_three_day_iteration_status_20260725_future_only.json",
+      "sha256": "d44e1cb3707cce194eed37e99cc90f865396b1de8c35e02a393a2a243d973466"
+    }
+  },
+  "session_timing": {
+    "signal_session": "t, after the accepted close and atomic factor publication",
+    "entry_session": "the next accepted local session, t+1",
+    "scheduled_exit_session": "t+3, which is the third holding session when the t+1 entry session is counted as holding session one",
+    "entry_quote": "unadjusted raw_open on t+1",
+    "scheduled_exit_quote": "unadjusted raw_close on t+3",
+    "settlement_time": "after the processed accepted session close and the daily source and price-basis gates pass",
+    "processing_lag": "an execution session is appended only after two later accepted local sessions exist in the local calendar, so every t+1 entry has an immutable t+3 scheduled exit before its lot is written; this calendar lag does not authorize reading a later session price before that later session is processed",
+    "execution_before_session_close_allowed": false,
+    "calendar_backfill_without_a_preexisting_signal_allowed": false
+  },
+  "portfolio": {
+    "paper_only": true,
+    "initial_cash_cny": 200000,
+    "shared_cash_across_overlapping_signals": true,
+    "target_slot_notional": "5% of the shared portfolio equity frozen at the prior accepted close; the first entry uses CNY 200000",
+    "maximum_gross_entry_notional_per_signal": "15% of the same prior-close equity before lot rounding",
+    "selection_processing_order": "registered rank ascending, then stock code ascending",
+    "lot_size_shares": 100,
+    "share_count": "floor target slot notional to complete 100-share lots at the adverse-slippage entry price, then reduce by complete lots only if shared cash including fees is insufficient",
+    "zero_affordable_lots": "leave that registered slot in cash without replacement",
+    "same_stock_from_different_signal_sessions": "keep separate auditable lots; do not net their holding clocks",
+    "sale_proceeds_at_a_close_available_for_same_session_open_entries": false,
+    "live_order_allowed": false
+  },
+  "costs": {
+    "commission_rate_each_side": 0.0001,
+    "commission_minimum_cny": 0,
+    "transfer_fee_rate_each_side": 0.00002,
+    "sell_stamp_duty_rate": 0.0005,
+    "primary_adverse_slippage_rate_each_side": 0.001,
+    "buy_execution_price": "raw_open * 1.001",
+    "sell_execution_price": "raw_close * 0.999",
+    "buy_cash_debit": "shares * buy_execution_price * (1 + 0.0001 + 0.00002)",
+    "sell_cash_credit": "shares * sell_execution_price * (1 - 0.0001 - 0.00002 - 0.0005)",
+    "fees_rounding": "retain full floating-point precision in the ledger; presentation rounding cannot change state"
+  },
+  "tradeability": {
+    "required_daily_fields": [
+      "date",
+      "raw_open",
+      "raw_high",
+      "raw_low",
+      "raw_close",
+      "raw_volume",
+      "amount",
+      "price_basis"
+    ],
+    "accepted_price_basis": "close_known_raw_pct_chg_chain_v1",
+    "positive_activity_required": "finite raw_volume > 0 and finite amount > 0",
+    "prior_raw_close_required": true,
+    "entry_blocked": "missing or nonpositive raw_open, missing required row or prior close, nonpositive activity, or a one-price day with raw_open=raw_high=raw_low above the prior raw_close",
+    "exit_blocked": "missing or nonpositive raw_close, missing required row or prior close, nonpositive activity, or a one-price day with raw_close=raw_high=raw_low below the prior raw_close",
+    "one_price_equality_tolerance": 1e-12,
+    "scheduled_exit_retry": "retry at each later accepted close, for at most 20 total exit attempts including the scheduled t+3 close",
+    "after_twenty_blocked_attempts": "retain a marked terminal-unresolved paper position, stop further assumed fills, and fail the terminal-unresolved-position gate",
+    "missing_mark": "carry the last accepted mark only for portfolio accounting and record the stale mark; never treat it as an execution quote"
+  },
+  "capacity_and_affordability": {
+    "daily_amount_participation": "executed raw-price notional divided by that stock's same-session amount",
+    "maximum_allowed_daily_amount_participation": 0.01,
+    "same_session_amount_is_after_outcome_audit_only": true,
+    "participation_above_limit_blocks_a_fill": false,
+    "entry_opportunity_denominator": "every one of the three registered selections for every signal whose t+1 session is processed",
+    "board_lot_affordable_numerator": "opportunities with at least one complete 100-share lot affordable under target, quote, tradeability, costs, and shared cash",
+    "minimum_full_gate_board_lot_affordability": 0.9
+  },
+  "future_rank_ic": {
+    "factor_source": "the immutable factor snapshot already bound by the signal ledger entry",
+    "outcome": "raw_close on t+3 divided by raw_open on t+1 minus one",
+    "universe": "all names marked eligible in that signal's immutable factor snapshot, not only Top3",
+    "tradeability_filter_applied": false,
+    "valid_name": "finite positive t+1 raw_open and t+3 raw_close on the accepted daily price basis",
+    "minimum_valid_names": 50,
+    "statistic": "cross-sectional Spearman rank correlation with average ranks for ties",
+    "positive_rank_ic": "strictly greater than zero",
+    "a_signal_counts_as_completed_for_rank_ic": "only when at least 50 valid names exist at the fixed t+3 horizon",
+    "missing_outcome_repair_after_later_prices_are_seen_allowed": false
+  },
+  "execution_ledger": {
+    "append_granularity": "one hash-linked entry per processed accepted local session",
+    "entry_id": "candidate49_intraday_cumulative_vwap_crossing_rate_240m_v1:execution:YYYY-MM-DD",
+    "chronological_append_required": true,
+    "state_reconstruction": "cash and every open or terminal-unresolved lot must be reproducible from the complete prior hash chain",
+    "entry_fields": [
+      "starting cash and prior-close equity",
+      "entry opportunities and fills",
+      "scheduled or retry exits",
+      "completed future Rank IC outcomes",
+      "ending cash, marked positions, equity, drawdown, affordability, costs, and amount participation"
+    ],
+    "idempotent_rerun": "an identical already-settled session performs no write; any differing source fingerprint or state is a hard stop",
+    "overwrite_or_reset_allowed": false,
+    "credential_or_token_storage_allowed": false
+  },
+  "storage": {
+    "future_execution_daily_root_below_data_root": "prospective/a_share/rich/tushare/execution_daily/candidate49",
+    "one_immutable_directory_per_processed_session": true,
+    "daily_snapshot_columns": [
+      "trade_date",
+      "symbol",
+      "raw_open",
+      "raw_high",
+      "raw_low",
+      "raw_close",
+      "raw_volume",
+      "amount",
+      "prior_raw_close",
+      "price_basis",
+      "source_file_sha256",
+      "source_row_status"
+    ],
+    "symbol_scope": "union of the session-active buyable universe, open paper positions, entering selections, and fixed-horizon Rank IC universes due on that session",
+    "missing_symbol_row": "write one explicit row with missing values and missing status; never omit, fill, or replace it",
+    "atomic_publication": "write Parquet and a fingerprint-bound manifest below a hidden partial directory, then rename the complete session directory once",
+    "overwrite_or_outcome_repair_allowed": false
+  },
+  "evaluation": {
+    "early_rejection_after_completed_rank_ic_signals": 60,
+    "early_reject_only_if": "mean future Rank IC <= 0 and primary-cost shared-portfolio net cumulative return <= 0",
+    "full_gate_after_completed_rank_ic_signals": 200,
+    "full_gate": {
+      "mean_future_rank_ic_greater_than": 0,
+      "positive_rank_ic_rate_at_least": 0.5,
+      "shared_portfolio_net_cumulative_return_greater_than": 0,
+      "maximum_drawdown_at_least": -0.2,
+      "board_lot_affordability_at_least": 0.9,
+      "maximum_daily_amount_participation_at_most": 0.01,
+      "terminal_unresolved_positions": 0
+    },
+    "passing_action": "continue paper observation only; do not aggregate or place live orders"
+  },
+  "forbidden_actions": [
+    "settle an execution session before its accepted close",
+    "use adjusted Qlib execution prices instead of frozen raw daily prices",
+    "spend same-close exit proceeds at the earlier same-session open",
+    "replace an unfilled Top3 name",
+    "fractional-share or non-board-lot fills",
+    "use same-session amount as a fill guarantee",
+    "change costs, slippage, holding horizon, tradeability, ranking, TopK, or sizing after an outcome",
+    "read any 2019-2025 candidate49 return",
+    "place or imply a live order"
+  ],
+  "current_state": {
+    "real_future_signal_count": 0,
+    "real_entry_count": 0,
+    "real_exit_count": 0,
+    "completed_future_rank_ic_count": 0,
+    "portfolio_return_exists": false,
+    "investment_advice": false
+  }
+}

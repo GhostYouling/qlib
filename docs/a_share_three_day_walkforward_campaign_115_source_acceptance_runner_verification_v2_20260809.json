@@ -1,0 +1,30 @@
+{
+  "schema_version": 1,
+  "kind": "a_share_three_day_walkforward_campaign115_source_acceptance_runner_verification",
+  "status": "runtime_self_binding_verified_plan_fail_closed_before_provider_request",
+  "recorded_at": "2026-08-09T03:42:00+08:00",
+  "runner_freeze_v2": {
+    "path": "docs/a_share_three_day_walkforward_campaign_115_source_acceptance_runner_freeze_v2_20260809.json",
+    "sha256": "76cd00fe9501469e3677f59e5635d217838585724a8acc624ad93d9ffa500ff1"
+  },
+  "verification": {
+    "focused_tests": "20 passed in 1.13s",
+    "tampered_freeze_test_passed": true,
+    "real_plan_ready": false,
+    "real_plan_exit_code": 2,
+    "runtime_binding_check_passed": true,
+    "real_plan_only_blocker": "manual_5000_point_entitlement_confirmation",
+    "provider_request_issued": false,
+    "success_manifest_exists": false,
+    "failure_record_exists": false,
+    "credential_value_printed_hashed_or_persisted": false
+  },
+  "scientific_or_accounting_change": {
+    "formula_source_direction_date_or_gate_changed": false,
+    "complete_definition_count_changed": false,
+    "numeric_comparator_count_changed": false,
+    "research_attempt_count_changed": false,
+    "return_reading_trial_count_changed": false
+  },
+  "next_action": "Wait for explicit confirmation that the current account already has 5000 points; do not supply the assertion flag or probe the provider by inference."
+}

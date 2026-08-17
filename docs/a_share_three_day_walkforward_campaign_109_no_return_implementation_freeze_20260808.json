@@ -1,0 +1,79 @@
+{
+  "schema_version": 1,
+  "kind": "a_share_three_day_walkforward_campaign109_no_return_implementation_freeze",
+  "status": "frozen_before_campaign109_minute_source_candidate_coverage_or_comparator_values",
+  "recorded_at": "2026-08-07T21:55:16Z",
+  "protocol": {
+    "path": "docs/a_share_three_day_walkforward_campaign_109_no_return_preregistration_20260808.json",
+    "sha256": "e05004a5f6b93f2e5275d39f4e7855d73070038bbe5d25254cebb09d1a236015"
+  },
+  "concept_scouting": {
+    "path": "docs/a_share_three_day_walkforward_campaign_109_concept_scouting_20260808.json",
+    "sha256": "bd6c2ae38b0670fc3bad93fdfdb3b20b9ab3263a0064909585b9c24660a34ca3"
+  },
+  "mechanism_support_audit": {
+    "path": "docs/a_share_three_day_walkforward_campaign_109_mechanism_support_audit_20260808.json",
+    "sha256": "cce214f9cc67bc4245c14adc981ec077ed14e7f406db594fdf9c8428d92479cf"
+  },
+  "feature_builder": {
+    "path": "scripts/a_share_three_day_walkforward_campaign109_features.py",
+    "sha256": "c95ef89be6d0b0ab238ac8c1e570af6f759df7a5a44fbc2a4607cf25cddd75fa"
+  },
+  "ordered_audit_runner": {
+    "path": "scripts/a_share_three_day_walkforward_campaign109_no_return_audit.py",
+    "sha256": "7c487fde1b4b7e789d0f6f8602c7384be5d2c58d7278121c7a8a6770dcd4ba9f"
+  },
+  "synthetic_tests": [
+    {
+      "path": "tests/data_collector_tests/test_a_share_three_day_walkforward_campaign109_features.py",
+      "sha256": "f578160767ceb058fbb5676dfd46ae868d30835e9285f96283d20e57f9683429"
+    },
+    {
+      "path": "tests/data_collector_tests/test_a_share_three_day_walkforward_campaign109_no_return_audit.py",
+      "sha256": "b2077af6d17c66df1d1d57c139aa944b58fc209386979645bd94d88789cefec9"
+    }
+  ],
+  "preserved_prevalue_failures": [
+    {
+      "path": "docs/a_share_three_day_walkforward_campaign_109_binding_validator_cli_failure_20260808.json",
+      "sha256": "13b00fc4066cd180d318337fe1e092a2afe1a4aed9398ed9aa78b82ab739b7c7"
+    },
+    {
+      "path": "docs/a_share_three_day_walkforward_campaign_109_synthetic_expectation_failure_20260808.json",
+      "sha256": "fa67d5eefc1ae6d9461d1725abcee4a3397b4539ee80a12560ddbe02d29ee94f"
+    }
+  ],
+  "pre_freeze_test_result": "6 passed",
+  "candidate": {
+    "name": "intraday_intrabar_body_magnitude_serial_persistence_238p",
+    "direction": "higher",
+    "source_projection": [
+      "datetime",
+      "symbol",
+      "provider",
+      "open",
+      "close"
+    ],
+    "valid_range": [
+      -1.0,
+      1.0
+    ],
+    "selected_bar_count": 240,
+    "fixed_adjacent_pair_count": 238
+  },
+  "complete_definition_count": 138,
+  "complete_definition_order_sha256": "6b0deb2e6d3f610e9fb18cc31636b92ac8a6f644a08b3e461c3f301966738b68",
+  "numeric_comparator_count": 132,
+  "numeric_comparator_order_sha256": "7ed69afd1408e84dcc856583344166ffc9bcbb0add1aed63163b1d12a1be9a25",
+  "research_boundary": {
+    "candidate_source_rows_read_before_freeze": false,
+    "candidate_or_comparator_values_read_before_freeze": false,
+    "historical_daily_price_or_forward_return_values_read_before_freeze": false,
+    "provider_request_issued_before_freeze": false,
+    "candidate49_ledgers_changed": false,
+    "second_prospective_candidate_created": false,
+    "current_scoring_selection_sizing_or_orders_performed": false,
+    "investment_advice": false
+  },
+  "next_action": "Validate every frozen binding, confirm the final output root is absent, then build the one preregistered candidate snapshot without reading comparison values or returns."
+}

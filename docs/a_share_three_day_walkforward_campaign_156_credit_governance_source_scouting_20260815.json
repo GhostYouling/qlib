@@ -1,0 +1,153 @@
+{
+  "schema_version": 1,
+  "kind": "a_share_three_day_walkforward_campaign156_credit_governance_source_scouting",
+  "status": "finite_credit_and_governance_event_source_frontier_frozen_before_source_rows_or_values",
+  "recorded_at": "2026-08-15T03:37:10+08:00",
+  "purpose": "Determine whether a finite set of economically distinct credit and governance event concepts has a locally accepted, historically point-in-time structured source contract that can lawfully precede a three-session factor definition.",
+  "authoritative_inputs": {
+    "campaign155_state": {
+      "path": "docs/a_share_three_day_iteration_status_20260815_campaign155_prevalue_terminal.json",
+      "sha256": "bafe89e29d8c25a0417fe3fc84fc911c76f26a7d59ae579b2f4b6b41c44ee857"
+    },
+    "numeric_policy_v217": {
+      "path": "docs/a_share_three_day_walkforward_future_numeric_comparison_eligibility_policy_v217_20260815.json",
+      "sha256": "3278b03a727ad9e0b5c2e113eee995bf6eb1762a1c1065dd58c19a9ae3d9df62"
+    },
+    "historical_walkforward_policy": {
+      "path": "docs/a_share_three_day_historical_walkforward_research_policy_20260727.json",
+      "sha256": "38426d6161b9bfed323c58caba18feca668b8c9d53e294951a8ba90c01a798bb"
+    },
+    "convertible_issue_source_terminal": {
+      "path": "docs/a_share_three_day_walkforward_campaign_127_convertible_issue_source_acceptance_terminal_20260814.json",
+      "sha256": "a0ca6e118480fdf765b1834222aa89c602bf4e0b67949e3649e6267862e685f1"
+    },
+    "official_enforcement_metadata_terminal": {
+      "path": "docs/a_share_three_day_iteration_status_20260809_campaign113_metadata_terminal_v3.json",
+      "sha256": "80d16dc7ada427376fd8eeb65b60acc55629fb44f934c0229f44757667532e77"
+    },
+    "equity_incentive_full_source_terminal": {
+      "path": "docs/a_share_cninfo_equity_incentive_plan_disclosure_intensity_full_source_record.json",
+      "sha256": "6ec4d753c4646a7f0fc7aa4a888645df429adb20fc07c14016ee2575f9bbe375"
+    },
+    "mechanism_source_frontier_v2": {
+      "path": "docs/a_share_three_day_walkforward_campaign_143_mechanism_contract_source_frontier_audit_v2_20260814.json",
+      "sha256": "ed9892cf137d03f2e5043c6ef3ebe063ed9e32960b1399d957e8cd6dff174f52"
+    }
+  },
+  "local_source_inventory_method": {
+    "scope": "repository filenames and already published source contracts or terminal records only",
+    "provider_or_web_request_issued": false,
+    "provider_credential_presence_or_value_read": false,
+    "source_row_or_response_value_read": false,
+    "exact_unverified_endpoint_or_field_names_assumed": false,
+    "interpretation": "Absence of a locally accepted source contract is a source-admission deferral, not evidence that the economic concept has no predictive value."
+  },
+  "finite_prevalue_source_catalog": [
+    {
+      "catalog_id": "c156_01",
+      "name": "issuer_or_convertible_bond_credit_rating_downgrade_recency",
+      "economic_hypothesis": "A close-known issuer or linked convertible-bond credit-rating downgrade may mark a discrete deterioration in near-term financing confidence.",
+      "proposed_direction": "lower_recency_or_more_severe_downgrade_not_opened",
+      "formula": null,
+      "filter": null,
+      "subset_or_combination": null,
+      "model": null,
+      "prevalue_decision": "deferred_missing_verified_historical_point_in_time_source_schema_and_issuer_equity_mapping",
+      "reason": "The mechanism is economically distinct, but the repository has no accepted contract proving historical publication timestamps, rating-state fields, revision semantics, issuer-to-equity mapping and two-market coverage. Campaign127's convertible-issuance source failure cannot be repurposed, and no endpoint or field may be invented from memory."
+    },
+    {
+      "catalog_id": "c156_02",
+      "name": "shareholder_meeting_dissent_vote_ratio",
+      "economic_hypothesis": "An unusually high close-known dissent ratio may reveal shareholder-governance conflict before it is reflected in three-session prices.",
+      "proposed_direction": "higher_dissent_not_opened",
+      "formula": null,
+      "filter": null,
+      "subset_or_combination": null,
+      "model": null,
+      "prevalue_decision": "deferred_missing_structured_full_market_vote_numerator_denominator_and_publication_time_contract",
+      "reason": "No accepted local source contract supplies stable issuer identity, meeting publication time, proposal-level affirmative/negative/abstention denominators and revision semantics. Announcement-body parsing or proposal identity classification would be a new text-source campaign, not a permissible post-result rescue."
+    },
+    {
+      "catalog_id": "c156_03",
+      "name": "environmental_administrative_penalty_recency_or_severity",
+      "economic_hypothesis": "A newly disclosed environmental penalty may capture operational and regulatory risk with short-horizon repricing potential.",
+      "proposed_direction": "higher_recency_or_severity_not_opened",
+      "formula": null,
+      "filter": null,
+      "subset_or_combination": null,
+      "model": null,
+      "prevalue_decision": "rejected_unaccepted_two_market_point_in_time_source_and_terminal_enforcement_family_overlap",
+      "reason": "No accepted local contract establishes exchange-complete historical publication time, issuer mapping and comparable severity primitives. Reclassifying official enforcement records by environmental keywords would reopen the terminal Campaign113 enforcement-source family and require text classification."
+    },
+    {
+      "catalog_id": "c156_04",
+      "name": "court_insolvency_or_restructuring_acceptance_recency",
+      "economic_hypothesis": "A court's close-known acceptance of insolvency or restructuring proceedings may identify a discrete deterioration or resolution state.",
+      "proposed_direction": "higher_recency_with_state_sign_not_opened",
+      "formula": null,
+      "filter": null,
+      "subset_or_combination": null,
+      "model": null,
+      "prevalue_decision": "deferred_missing_structured_legal_state_publication_time_and_issuer_identity_contract",
+      "reason": "The repository has no accepted structured contract separating application, acceptance, rejection, creditor, subsidiary and issuer states at close-known timestamps. Title or body classification plus current ST status would introduce text and current-state leakage."
+    },
+    {
+      "catalog_id": "c156_05",
+      "name": "bond_default_or_interest_payment_delay_event",
+      "economic_hypothesis": "A close-known missed principal or interest payment linked to the listed issuer may transmit acute credit stress to the equity over the next three sessions.",
+      "proposed_direction": "higher_recency_or_amount_not_opened",
+      "formula": null,
+      "filter": null,
+      "subset_or_combination": null,
+      "model": null,
+      "prevalue_decision": "deferred_missing_historical_event_state_issuer_equity_mapping_and_coverage_contract",
+      "reason": "No accepted local contract proves event-state transitions, first-publication time, cure/revision semantics, issuer-to-listed-equity mapping or a non-selected full-market denominator. Sparse anecdotes cannot be read to decide whether to rescue the source."
+    },
+    {
+      "catalog_id": "c156_06",
+      "name": "employee_stock_ownership_plan_disclosure_intensity",
+      "economic_hypothesis": "A close-known employee stock-ownership plan disclosure may proxy for internal alignment or financing demand.",
+      "proposed_direction": "higher_or_lower_not_opened",
+      "formula": null,
+      "filter": null,
+      "subset_or_combination": null,
+      "model": null,
+      "prevalue_decision": "rejected_adjacent_terminal_equity_incentive_title_classification_source_family",
+      "reason": "This is a title-classified corporate-incentive disclosure adjacent to the terminal CNInfo equity-incentive full-source family. Changing keywords from equity incentive to employee ownership after that source failure is a forbidden source-schema migration, not a new admitted primitive."
+    }
+  ],
+  "selection": {
+    "selected_candidate_count": 0,
+    "selected_candidate": null,
+    "complete_source_admission_contract_to_freeze": false,
+    "complete_formula_or_model_to_freeze": false,
+    "deferred_for_future_separately_preregistered_source_verification_count": 4,
+    "terminal_family_rejection_count": 2,
+    "reason": "None of the six concepts has all of a verified historical point-in-time structured source, stable issuer mapping, admissible primitives and terminal-family independence."
+  },
+  "future_revisit_rule": {
+    "allowed_only_for_deferred_catalog_ids": [
+      "c156_01",
+      "c156_02",
+      "c156_04",
+      "c156_05"
+    ],
+    "requirements": "A later campaign must independently freeze exact official source identity, version, fields, publication-time semantics, issuer mapping, two-market coverage, pagination, revision handling, costs and acceptance gates before any source row or response value is observed.",
+    "campaign156_rows_may_be_read_to_choose_a_source": false,
+    "campaign156_terminal_rejections_may_be_retried": false
+  },
+  "research_boundary": {
+    "source_row_or_response_values_read": false,
+    "candidate_values_computed_or_read": false,
+    "comparator_values_read": false,
+    "historical_daily_price_or_forward_return_values_read": false,
+    "stress_2024_2025_opened": false,
+    "provider_or_web_request_issued": false,
+    "provider_credential_presence_value_or_digest_read": false,
+    "candidate49_historical_backfill_performed": false,
+    "candidate49_ledgers_changed": false,
+    "second_prospective_candidate_created": false,
+    "current_scoring_selection_sizing_positions_or_orders_performed": false,
+    "investment_advice": false
+  }
+}

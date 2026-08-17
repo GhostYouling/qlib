@@ -1,0 +1,65 @@
+{
+  "schema_version": 1,
+  "kind": "a_share_three_day_walkforward_campaign107_terminal_result_binding",
+  "status": "campaign107_terminal_uniqueness_rejection_no_development_or_stress",
+  "recorded_at": "2026-08-07T20:34:00Z",
+  "no_return_result": {
+    "path": "docs/a_share_three_day_walkforward_campaign_107_no_return_result_binding_20260808.json",
+    "sha256": "6ed095494e6f58b0794cd6148cbeb8c7eb097242b131c48e9641fd1027816597"
+  },
+  "research_attempt_ledger": {
+    "path": "data/experiments/short_horizon/historical_walkforward/campaign_107/research_attempt_ledger_v3.json",
+    "sha256": "b2d15e4ddcd1ec1c910f5669446b3f7e66e2d3751494fc36a1ace2d5cdb54ff3",
+    "attempt_count": 3,
+    "ledger_entry_count": 4,
+    "chain_tip_sha256": "85e60005f7fd6a491b13ad9c540a20895af2b7452dc8792a5764c213cfc4dcbb"
+  },
+  "preserved_failures": [
+    {
+      "path": "docs/a_share_three_day_walkforward_campaign_107_preregistration_binding_failure_20260808.json",
+      "sha256": "f76bbda7fd175f8b2360610b42e76d4040446f921ea7a528693d501acfa7f7bd"
+    },
+    {
+      "path": "docs/a_share_three_day_walkforward_campaign_107_snapshot_verify_cli_argument_failure_20260808.json",
+      "sha256": "e1df0c6ba229952a80a575b8fe5afc02d0c738a79bc142d6d7d1c4aa405f1f4a"
+    }
+  ],
+  "scientific_terminal_semantics": {
+    "factor": "intraday_exact_close_level_diversity_240m",
+    "direction": "higher",
+    "coverage_gate_passed": true,
+    "numeric_comparisons_completed": 132,
+    "failed_numeric_comparisons": 5,
+    "maximum_absolute_median_daily_rank_correlation": 0.9315530906961503,
+    "maximum_comparison_factor": "intraday_price_update_share_238m",
+    "scientific_result": "rejected_as_numerically_redundant",
+    "development_trial_count": 0,
+    "development_survivor_count": 0,
+    "stress_2024_2025_opened": false,
+    "retry_reverse_redefine_round_tolerate_bin_filter_residualize_combine_or_rescue_allowed": false
+  },
+  "accounting": {
+    "campaign107_attempt_count": 3,
+    "campaign107_ledger_entry_count": 4,
+    "campaign107_infrastructure_failure_count": 2,
+    "campaign107_prevalue_scientific_attempt_count": 1,
+    "campaign107_complete_factor_attempt_count": 1,
+    "campaign107_scientifically_decided_factor_attempt_count": 1,
+    "campaign107_return_reading_complete_development_trial_count": 0,
+    "campaign107_development_survivor_count": 0,
+    "campaign107_stress_trial_count": 0,
+    "cumulative_historical_research_attempt_count": 794,
+    "cumulative_return_reading_development_trial_count": 300
+  },
+  "boundaries": {
+    "historical_daily_price_fields_read": [],
+    "historical_forward_returns_read": false,
+    "provider_request_issued": false,
+    "candidate49_historical_backfill_performed": false,
+    "candidate49_ledgers_changed": false,
+    "second_prospective_candidate_created": false,
+    "current_scoring_selection_sizing_or_orders_performed": false,
+    "investment_advice": false
+  },
+  "next_action": "Publish v67 with the rejected formula appended only to complete semantic duplicate control; numeric comparators remain 132."
+}

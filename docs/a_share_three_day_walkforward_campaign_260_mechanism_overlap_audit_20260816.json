@@ -1,0 +1,100 @@
+{
+  "schema_version": 1,
+  "kind": "a_share_three_day_walkforward_campaign260_mechanism_overlap_audit",
+  "status": "passed_before_campaign260_source_candidate_comparator_price_or_return_values",
+  "recorded_at": "2026-08-16T15:04:00+08:00",
+  "authoritative_inputs": {
+    "concept_scouting": {
+      "path": "docs/a_share_three_day_walkforward_campaign_260_concept_scouting_20260816.json",
+      "sha256": "5ce22987b427abb60d5bf84feea8c16c2e5dbda6449663be443924e2d67bb568"
+    },
+    "numeric_policy_v398": {
+      "path": "docs/a_share_three_day_walkforward_future_numeric_comparison_eligibility_policy_v398_20260816.json",
+      "sha256": "9425ab1384d882a74c62994027d221ef9b67d2378676582b35c40636d313971b",
+      "complete_definition_count_reviewed": 158,
+      "complete_definition_order_sha256": "4819c7fd7c0795d7598a52f3c615e3f117d5f4ecd9332974bc8e3dfa57c96667",
+      "eligible_numeric_comparator_count_reserved_but_not_loaded": 142,
+      "eligible_numeric_comparator_order_sha256": "5d1b35fb5a0d8ac9293008db9963c4a60a94dc940c237c3ed259e5ce44f14aaf"
+    }
+  },
+  "candidate": {
+    "name": "intraday_amount_clock_third_central_moment_240m",
+    "direction": "higher",
+    "mechanism": "signed asymmetry of the amount-weighted full-session trading clock",
+    "formula": "x_i=i/239; w_i=a_i/S; mu=sum_i(w_i*x_i); m3=sum_i(w_i*(x_i-mu)^3); score=0.5+3*sqrt(3)*m3",
+    "sharp_support_bound": "For a probability distribution supported on [0,1], -sqrt(3)/18 <= m3 <= sqrt(3)/18, hence the score lies in [0,1].",
+    "positive_total_amount_required": true,
+    "amount_scale_invariant": true,
+    "time_reversal_rule": "Reversing all 240 clock positions maps score to 1-score.",
+    "no_price_return_peer_daily_financial_event_or_future_input": true,
+    "no_old_factor_value_input": true,
+    "candidate49_used_or_modified": false
+  },
+  "closest_mechanism_challenges": [
+    {
+      "name": "intraday_amount_center_of_mass_240m",
+      "distinction": "Center of mass is the first raw clock moment. Two amount distributions can share the same mean but have opposite or unequal third central moments. Translating mass while preserving centered shape changes the center but can preserve this candidate."
+    },
+    {
+      "name": "intraday_amount_clock_dispersion_240m",
+      "distinction": "Dispersion is the unsigned second central moment and is invariant to time reversal. This candidate is signed and complements to one under reversal. Equal mean and variance do not determine the third central moment."
+    },
+    {
+      "name": "intraday_amount_participation_entropy_240m and intraday_amount_weak_order_entropy_236t",
+      "distinction": "Participation entropy ignores clock distances and weak-order entropy uses ordinal triples. Permuting the same amount masses can preserve participation entropy while changing temporal skew; positive scaling can change neither candidate but arbitrary monotone transforms can change this candidate while preserving weak orders."
+    },
+    {
+      "name": "intraday_peak_amount_bar_recency_240m and intraday_amount_local_peak_density_238p",
+      "distinction": "Peak mechanisms retain one exact maximum position or local comparison events. Temporal skew uses every finite nonnegative amount magnitude and may change without moving or creating a peak."
+    },
+    {
+      "name": "late_amount_share_30m, intraday_terminal_bar_amount_share_240m and intraday_opening_auction_amount_share_241m",
+      "distinction": "Fixed-window shares depend on selected cutoffs or the standalone 09:30 row. Campaign260 uses exactly 240 continuous-session bars and no subwindow threshold; redistributing mass within a fixed tail can preserve the share but change the third central moment."
+    },
+    {
+      "name": "intraday_relative_amount_share_clock_center_240m and intraday_market_amount_profile_synchronization_240m",
+      "distinction": "Peer-relative mechanisms require same-clock cross-sectional benchmarks. Campaign260 is own-stock-only and is invariant to every other stock's amount path."
+    },
+    {
+      "name": "intraday_directional_amount_timing_spread_238m and intraday_amount_conditioned_directional_persistence_spread_236p",
+      "distinction": "Directional mechanisms require close-return signs. Holding the amount clock fixed while changing every price path leaves Campaign260 unchanged but can change both directional factors."
+    },
+    {
+      "name": "intraday_amount_clock_variants rejected by Campaign260",
+      "distinction": "No fourth moment, standardized denominator, quantile, half-session, subwindow, alternate direction, threshold, filter, subset, fit, model or combination is admitted."
+    },
+    {
+      "name": "eastmoney_debt_maturity_resilience",
+      "distinction": "The terminal source-only definition has no numeric series and concerns issuer debt maturity. Campaign260 uses only immutable local minute amount and does not retry or combine that definition."
+    },
+    {
+      "name": "candidate49_intraday_cumulative_vwap_crossing_rate_240m_v1",
+      "distinction": "Candidate49 is a future-only causal price/volume/amount crossing ledger. Campaign260 reads no volume or price, counts no crossing, performs no historical Candidate49 read and writes no prospective ledger."
+    }
+  ],
+  "independence_witnesses": [
+    "For symmetric clock masses around their common center, the candidate is exactly 0.5 even when dispersion, entropy and peak structure vary.",
+    "Moving a small amount mass from an early-tail position to the mirrored late-tail position while compensating center and variance with interior masses can change the third central moment without determining the first two moments.",
+    "Reversing the clock proves signed asymmetry: the candidate complements to one, while participation entropy and clock dispersion remain unchanged."
+  ],
+  "decision": {
+    "mechanism_overlap_audit_passed": true,
+    "complete_definition_semantics_reviewed": 158,
+    "may_advance_directly_to_values": false,
+    "required_next_step": "Freeze one exact no-return protocol, pure formula, feature builder and synthetic tests before any Campaign260 local source value is read.",
+    "numeric_uniqueness_still_required_against_all_142_eligible_comparators": true
+  },
+  "research_boundary": {
+    "campaign260_source_rows_read": false,
+    "campaign260_candidate_or_comparator_values_read": false,
+    "historical_daily_price_or_forward_return_values_read": false,
+    "stress_2024_2025_opened": false,
+    "provider_or_web_request_issued": false,
+    "provider_credential_presence_value_or_digest_read": false,
+    "candidate49_historical_backfill_performed": false,
+    "candidate49_ledgers_changed": false,
+    "second_prospective_candidate_created": false,
+    "current_scoring_selection_sizing_positions_or_orders_performed": false,
+    "investment_advice": false
+  }
+}

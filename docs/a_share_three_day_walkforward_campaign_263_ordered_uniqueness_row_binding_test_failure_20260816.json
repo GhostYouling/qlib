@@ -1,0 +1,13 @@
+{
+  "schema_version": 1,
+  "kind": "a_share_three_day_walkforward_campaign263_infrastructure_failure",
+  "status": "pre_comparator_synthetic_suite_failed_on_nested_candidate_row_binding",
+  "recorded_at": "2026-08-16T12:15:00Z",
+  "attempt_id": "campaign263_infrastructure_010",
+  "test_result": {"passed": 6, "failed": 1, "exit_code": 1},
+  "root_cause": "The outer wrapper set 1,330,170 rows, but the inherited runtime function retained the Campaign262 global 1,330,171 inside its nested execution namespace.",
+  "repair": "Set the same frozen row count in the exact runtime globals before exporting any function.",
+  "candidate_or_comparator_values_read": false,
+  "historical_daily_price_or_forward_return_values_read": false,
+  "provider_request_issued": false
+}

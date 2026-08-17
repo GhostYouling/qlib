@@ -1,0 +1,89 @@
+{
+  "version": 3,
+  "kind": "a_share_three_day_candidate_independent_compact_comparator_cache_protocol",
+  "status": "frozen_capture_proxy_repair_before_v3_values",
+  "frozen_at": "2026-08-05T22:51:00+08:00",
+  "purpose": "Add the single audited stock-day key helper required by the post-Campaign057 no-return chain while preserving the v2 absent-key alignment repair and every v1 library/gate semantic.",
+  "authoritative_protocol_chain": [
+    {
+      "path": "docs/a_share_three_day_compact_comparator_cache_protocol_v1_20260805.json",
+      "sha256": "bf5247378056851ea004c08aad071c7a1ccf552cb1feaf6937251a26234c3273"
+    },
+    {
+      "path": "docs/a_share_three_day_compact_comparator_cache_protocol_v2_20260805.json",
+      "sha256": "98fa0318754c145ce645d647e591d32b89bc1b432db36028899c48220029dec9"
+    }
+  ],
+  "recorded_v2_failure": {
+    "path": "docs/a_share_three_day_compact_comparator_cache_v2_build_failure_20260805.json",
+    "sha256": "89810370270b9718d5e5161462f45483dde58e89f0670a5124ec6aa26560f24c",
+    "v2_formal_output_published": false,
+    "v2_temporary_values_reusable": false
+  },
+  "frozen_output": {
+    "data_root": "/Volumes/DIsk/qlib-a-share-tushare-1m",
+    "output_root": "/Volumes/DIsk/qlib-a-share-tushare-1m/derived/a_share/rich/tushare/compact_comparator_cache/campaign067_terminal_numeric98_v3",
+    "v1_or_v2_failed_output_may_be_published_or_reused": false,
+    "atomic_publication_after_all_checks": true
+  },
+  "post_campaign057_engine_member_audit": {
+    "glob": "scripts/a_share_three_day_walkforward_campaign0{58,59,60,61,62,63,64,65,66,67}*.py",
+    "members_observed": [
+      "_aligned_comparison_result",
+      "_compact_stock_day_keys"
+    ],
+    "sink_member": "_aligned_comparison_result",
+    "delegated_read_only_helper_members": [
+      "_compact_stock_day_keys"
+    ],
+    "other_members_allowed": false
+  },
+  "capture_proxy_contract": {
+    "aligned_comparison_result_behavior": "Use the v1 ordered sink implementation unchanged: exact definition order/direction/key assertions, raw float64 column copy, and seen-order receipt.",
+    "compact_stock_day_keys_behavior": "Delegate arguments and result unchanged to the frozen real comparison engine from Campaign044 _context()[5].",
+    "attribute_fallback_allowed": false,
+    "factor_values_may_be_transformed_by_proxy": false
+  },
+  "inherited_v2_absent_key_contract": {
+    "source_key_present_copied_without_transform": true,
+    "source_key_absent_stored_as_nan": true,
+    "duplicate_requested_source_key_fails_closed": true,
+    "imputation_ranking_scaling_forward_or_backward_fill": false,
+    "alignment_receipt_required_per_explicit_load": true
+  },
+  "frozen_library_and_keys": {
+    "eligibility_rows": 1331759,
+    "eligibility_sessions": 1632,
+    "eligibility_keys_sha256": "afa157a76aec8ef9cc3bdc191c792189d2a512ecf7fd7ebb09d2fe8f2d75841f",
+    "numeric_comparator_count": 98,
+    "numeric_order_sha256": "bca0ba26252fcb74afa3a31ee1baf63c9cedfe3db5fc86ef71b3d7d93bf88f81",
+    "complete_definition_count": 99,
+    "complete_definition_order_sha256": "74564d4d2d01a52371ddd6906db38b5d913acb743656a04bbe5c4f229c84ad53",
+    "changed_from_v1_or_v2": false
+  },
+  "semantic_equivalence_contract": {
+    "campaign067_comparison_count": 97,
+    "campaign067_coverage_object_exact_equality_required": true,
+    "campaign067_comparison_result_objects_exact_equality_required": true,
+    "pairwise_complete_daily_spearman_changed": false,
+    "minimum_names_sessions_or_correlation_gate_changed": false,
+    "retroactive_campaign067_substitution_allowed": false
+  },
+  "research_boundary": {
+    "v3_comparison_values_read_before_protocol_freeze": false,
+    "historical_daily_price_fields_read": [],
+    "historical_forward_returns_read": false,
+    "candidate49_historical_return_read": false,
+    "candidate49_ledgers_may_change": false,
+    "provider_request_issued": false,
+    "current_scoring_selection_sizing_or_orders_performed": false,
+    "future_campaign_use_only_after_v3_publication_binding": true
+  },
+  "failure_policy": {
+    "edit_v1_or_v2_artifacts_in_place": false,
+    "reuse_failed_v1_or_v2_temporary_roots": false,
+    "publish_partial_v3_output": false,
+    "ignore_nonzero_exit": false,
+    "record_failure_before_any_additive_v4_repair": true
+  }
+}

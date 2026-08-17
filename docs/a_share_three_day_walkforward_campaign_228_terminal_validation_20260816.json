@@ -1,0 +1,78 @@
+{
+  "schema_version": 1,
+  "kind": "a_share_three_day_walkforward_campaign228_terminal_validation",
+  "recorded_at": "2026-08-16T03:53:00+08:00",
+  "timestamp_semantics": "monotonic_logical_append_time_not_host_wall_clock_measurement",
+  "status": "passed_campaign228_corrected_terminal_evidence_and_cumulative_regression",
+  "authoritative_inputs": {
+    "terminal_result_v3": {
+      "path": "docs/a_share_three_day_walkforward_campaign_228_terminal_result_v3_20260816.json",
+      "sha256": "dc8f506bde17c9329ca3133a80dc0c036a2d07b56daf7ca763e4412b5c22bec7"
+    },
+    "frozen_source_frontier": {
+      "path": "docs/a_share_three_day_walkforward_campaign_228_industrial_textile_rental_laundry_hygiene_service_lifecycle_source_frontier_20260816.json",
+      "sha256": "2d26643acb9d892afc3fef0e3eb31fafe5a30c71cafef2a1d18b9fa75a3e4493"
+    },
+    "attempt_ledger_v3": {
+      "path": "data/experiments/short_horizon/historical_walkforward/campaign_228/research_attempt_ledger_v3.json",
+      "sha256": "1b3e9b61a419f005767545e0f37eae33b12b1fe2d6f2acd704a67631ab248122"
+    },
+    "numeric_policy_v347": {
+      "path": "docs/a_share_three_day_walkforward_future_numeric_comparison_eligibility_policy_v347_20260816.json",
+      "sha256": "bbc15c95114767609f6bdc328ff64073ea3bc117f7972769c70fd03aac559ab5"
+    },
+    "failed_cumulative_regression_v1": {
+      "path": "docs/a_share_three_day_walkforward_campaign_228_cumulative_regression_wrong_inner_workdir_truncated_output_failure_20260816.json",
+      "sha256": "74b28f012758910b7cbb9af3e6fb0a995a9c903c783113b1a7c2fa2398c7d0b2",
+      "result_counts_consumed": false
+    },
+    "terminal_test": {
+      "path": "tests/data_collector_tests/test_a_share_three_day_walkforward_campaign228_terminal.py",
+      "sha256": "5f1566ea2a1d7ca15a1877cb3454bccd7967377dfd47b966b7dfcc230909db10"
+    }
+  },
+  "validation_results": {
+    "focused_pytest": "2 passed",
+    "cumulative_pytest": "499 passed, 1 skipped, 43 deselected",
+    "campaign145_through_campaign228_test_file_count": 116,
+    "deselection_node_count": 43,
+    "black": "passed",
+    "ruff": "passed",
+    "json_parse": "passed",
+    "independent_reference_binding_and_chain_validation": "passed",
+    "candidate49_empty_ledger_semantics": "passed",
+    "unmasked_whitespace": "passed"
+  },
+  "publication_state": {
+    "current_report_sha256": "27df6a190b0a99049e17429eb25b7a1f380753a0c34e7b0026f2616d95795f81",
+    "three_day_report_sha256": "00df23181b0f614b82a21bd55bf47de2e777296e8c2062bdc2ba3a8dddb87a30",
+    "attempt_chain_tip_sha256": "70ae5844ba4c55384968f78cd5694063f7bfae786e109db05845dea87342ceb8",
+    "cumulative_historical_research_attempt_count": 2145,
+    "cumulative_return_reading_development_trial_count": 314,
+    "complete_factor_definition_count": 158,
+    "eligible_numeric_comparator_count": 142
+  },
+  "candidate49": {
+    "only_active_prospective_candidate": true,
+    "signal_ledger_sha256": "5193f00d7f36da003f53cec387900da4c3d002299f5dfcfc1a95eaa199ed3a79",
+    "signal_entry_count": 0,
+    "execution_ledger_sha256": "d57a3e61eac969e42cafa418ccd8c0a5ee65dcf69da145bb2c096c2a02a2ea4f",
+    "execution_entry_count": 0
+  },
+  "research_boundary": {
+    "failed_or_truncated_output_used_as_validation_or_scientific_evidence": false,
+    "frozen_source_frontier_rewritten": false,
+    "accounting_correction_changed_scientific_routes_or_decisions": false,
+    "candidate_or_comparator_value_read": false,
+    "daily_price_or_forward_return_read": false,
+    "stress_2024_2025_opened": false,
+    "provider_or_web_request_issued": false,
+    "provider_credential_presence_value_or_digest_read": false,
+    "candidate49_plan_or_run_executed": false,
+    "candidate49_ledgers_changed": false,
+    "second_prospective_candidate_created": false,
+    "current_scoring_selection_sizing_positions_or_orders_performed": false,
+    "investment_advice": false
+  },
+  "next_action": "Publish the advancing Campaign228 state and keep the active goal authorized for Campaign229 zero-network offline prevalue research."
+}

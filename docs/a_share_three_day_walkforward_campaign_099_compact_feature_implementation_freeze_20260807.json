@@ -1,0 +1,39 @@
+{
+  "schema_version": 1,
+  "kind": "a_share_three_day_walkforward_campaign099_compact_feature_implementation_freeze",
+  "status": "frozen_after_no_return_admission_before_compact_publication_or_development_return_read",
+  "recorded_at": "2026-08-07T10:54:59Z",
+  "base_runner": {
+    "path": "scripts/a_share_three_day_walkforward_campaign097_compact_features.py",
+    "sha256": "b4af5e78ba31585469c67619da6943f91182fcd0494ceca5d89ed756c92f105a"
+  },
+  "compact_runner": {
+    "path": "scripts/a_share_three_day_walkforward_campaign099_compact_features.py",
+    "sha256": "1928f00a607a90f8e692919c23d79830d5732c6ed8dad92e18ac72e7f292e646"
+  },
+  "tests": {
+    "path": "tests/data_collector_tests/test_a_share_three_day_walkforward_campaign099_compact_features.py",
+    "sha256": "73922fd1dbfd6ac42b7f99469ff813e6bf41849b3763301a30c052da5d82d188",
+    "result": "2 passed; Black and Ruff passed"
+  },
+  "authoritative_no_return_audit": {
+    "path": "data/experiments/short_horizon/historical_walkforward/campaign_099/no_return/20260807T105112Z_campaign099_no_return_audit.json",
+    "sha256": "6df7bfca75a59d00b34a431e2fe5c57d9872587a43b270fa23c5f17ba6411f72"
+  },
+  "no_return_result_binding": {
+    "path": "docs/a_share_three_day_walkforward_campaign_099_no_return_audit_result_binding_20260807.json",
+    "sha256": "04945ffd4c1ccf7863ecf7b9e44fd9b33e8ab1b1dc15b4b1c9df7694c1ffc520"
+  },
+  "attempt_ledger_before_freeze": {
+    "path": "data/experiments/short_horizon/historical_walkforward/campaign_099/research_attempt_ledger_v13.json",
+    "sha256": "ec1e6e555d87b00f71739d38ee26ab797d09c6521fe003e023096dcf948dc7ea"
+  },
+  "expected_rows": 1331759,
+  "expected_eligible_rows": 1328449,
+  "missing_identities_retained_as_nan": 1588,
+  "historical_daily_price_or_forward_return_values_read_before_freeze": false,
+  "provider_request_issued_before_freeze": false,
+  "candidate49_historical_return_read_before_freeze": false,
+  "candidate49_ledgers_changed_before_freeze": false,
+  "current_scoring_selection_sizing_or_orders_performed_before_freeze": false
+}

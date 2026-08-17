@@ -1,0 +1,84 @@
+{
+  "schema_version": 1,
+  "kind": "a_share_three_day_walkforward_campaign101_development_recovery_v2_implementation_freeze",
+  "status": "frozen_after_loader_namespace_failure_before_any_complete_development_trial",
+  "recorded_at": "2026-08-07T14:18:30Z",
+  "recovery_runner": {
+    "path": "scripts/a_share_three_day_walkforward_campaign101_development_recovery_v2.py",
+    "sha256": "f932d2fdd1b773b21c8dbae19a6fc7b29f7a0179b62daeb2030d7b7f8dc370b7"
+  },
+  "tests": {
+    "path": "tests/data_collector_tests/test_a_share_three_day_walkforward_campaign101_development_recovery_v2.py",
+    "sha256": "446e97ed31a678a0d72669dd3e15976cf5269f290f87e4762af653b8a1e53bf3",
+    "current_recovery_and_scientific_development_result": "12 passed"
+  },
+  "scientific_runner": {
+    "path": "scripts/a_share_three_day_walkforward_campaign101.py",
+    "sha256": "8353c819b0c1a0edd98eb0999849a626d5a97c913655e2068ec18fb05b9c9b27"
+  },
+  "development_preregistration": {
+    "path": "docs/a_share_three_day_walkforward_campaign_101_preregistration_v2.json",
+    "sha256": "5cff18c65510eb01e4771e04f62b54bf038579a25f9ee14ec73863fe43947b36"
+  },
+  "first_recovery_runner": {
+    "path": "scripts/a_share_three_day_walkforward_campaign101_development_recovery.py",
+    "sha256": "8979c9fe8a7c47dd041a006d40a766afe8b295835327a0c03b72442ce6cbe518"
+  },
+  "first_recovery_freeze": {
+    "path": "docs/a_share_three_day_walkforward_campaign_101_development_recovery_implementation_freeze_20260807.json",
+    "sha256": "0f29d351af17df51857ece3af48292de9ee19e29fe3834962bbd824130445a95"
+  },
+  "first_recovery_activation": {
+    "path": "docs/a_share_three_day_walkforward_campaign_101_development_recovery_activation_binding_20260807.json",
+    "sha256": "1aa3be42215c04d6c6e3b132526382367052344d87d8e14b4545d88ba1d66959"
+  },
+  "namespace_failure": {
+    "path": "docs/a_share_three_day_walkforward_campaign_101_development_candidate_loader_namespace_failure_20260807.json",
+    "sha256": "66ddb89300b583bc33b0528113e2616f543aee77a30a4c9a3ae61adce467d1e6"
+  },
+  "failed_internal_ledger": {
+    "path": "data/experiments/short_horizon/historical_walkforward/campaign_101/walkforward/trial_ledger.json",
+    "sha256": "a4d13eae152f00b6cb956ecda73c0f0ed22729c20af647d574c03a4efe3b21af",
+    "entry_count": 2,
+    "infrastructure_failure_count": 2,
+    "complete_development_trial_count": 0
+  },
+  "research_attempt_ledger": {
+    "path": "data/experiments/short_horizon/historical_walkforward/campaign_101/research_attempt_ledger_v11.json",
+    "sha256": "b88ff7688c0f513a093744c01be8da29c7a2e7ad80349dea6066ec0ecb9531f0"
+  },
+  "candidate_snapshot": {
+    "path": "/Volumes/DIsk/qlib-a-share-tushare-1m/derived/a_share/rich/tushare/minute_walkforward_campaign101_feature_library/tushare_stk_mins_1m_2019_2025_ea0cbb8f_walkforward_campaign101_feature_library_v1/snapshot_manifest.json",
+    "sha256": "7a2db929fff69f46edbc93d57cdca9cc4427c47dd542291b4f58d879dd91a3b6",
+    "dataset_sha256": "ed024ab2736b9766e1adb122b155189029f30a5d14e11d4d67a403ff9befef24",
+    "rows": 1331759,
+    "factor_eligible_rows": 1327637
+  },
+  "namespace_repair": {
+    "target": "a_share_three_day_walkforward_campaign101._load_compact_factor_panel.__globals__['EXPECTED_ELIGIBLE_ROWS']",
+    "from_eligible_rows": 1328449,
+    "to_eligible_rows": 1327637,
+    "to_value_was_frozen_before_first_development_price_read": true,
+    "manifest_hash_or_values_changed": false,
+    "formula_direction_factor_values_folds_cost_survival_or_stress_rule_changed": false,
+    "historical_result_dependent_change": false
+  },
+  "exact_runtime": {
+    "path": "/Volumes/DIsk/Coding/anaconda3/bin/python3.12",
+    "version": "3.12.7",
+    "qlib_data_import_verified": true,
+    "alternate_runtime_allowed": false
+  },
+  "same_scientific_trial": {
+    "trial_id": "wf101_full_numeric_library_directional_lower_quartile_consensus_129f_single_higher",
+    "remaining_complete_trial_count": 1,
+    "new_scientific_trial_count": 0
+  },
+  "complete_development_trial_count_before_freeze": 0,
+  "development_daily_price_values_previously_read": true,
+  "forward_return_or_fold_metric_previously_computed": false,
+  "stress_2024_2025_read_before_freeze": false,
+  "provider_request_issued_before_freeze": false,
+  "candidate49_ledgers_changed_before_freeze": false,
+  "current_scoring_selection_sizing_or_orders_performed_before_freeze": false
+}

@@ -1,0 +1,42 @@
+{
+  "version": 1,
+  "kind": "a_share_three_day_walkforward_campaign048_post_result_test_transition",
+  "status": "pre_return_test_fingerprint_preserved_terminal_assertions_current",
+  "recorded_at": "2026-08-01T05:20:00Z",
+  "purpose": "Preserve the exact pre-return boundary-test fingerprint while binding the post-result terminal status and rejection assertions.",
+  "supersedes": {
+    "path": "docs/a_share_three_day_walkforward_campaign_048_post_result_test_transition_20260801.json",
+    "sha256": "cc6a337bce8e7bc35758d1a4dea734e34d8372a035ec3d0751e1f6a2d3884762"
+  },
+  "bindings": {
+    "development_implementation_freeze": {
+      "path": "docs/a_share_three_day_walkforward_campaign_048_development_implementation_freeze_20260801.json",
+      "sha256": "cf8bed010253b8d0e34b7cf310ed31746c03f44e209c4f9fc74daf8715489359"
+    },
+    "pre_return_namespace_semantic_failure": {
+      "path": "docs/a_share_three_day_walkforward_campaign_048_development_namespace_semantic_failure_20260801.json",
+      "sha256": "600f22c272874906126952bfb0911c56e63058d44bfdf131982f1ba0e6eb4e67"
+    },
+    "current_campaign_tests": {
+      "path": "tests/data_collector_tests/test_a_share_three_day_walkforward_campaign048.py",
+      "sha256": "229e4673ce2dafbe614f33b204598ce6f57e09060d20499c8b1c021de80d0bdc"
+    },
+    "terminal_tests": {
+      "path": "tests/data_collector_tests/test_a_share_three_day_walkforward_campaign048_terminal.py",
+      "sha256": "41065fb27f6de16ead04b78d9472c7f5097de6e0c405aa19668ff3a052929f47"
+    }
+  },
+  "historical_test_binding": {
+    "path": "tests/data_collector_tests/test_a_share_three_day_walkforward_campaign048.py",
+    "expected_pre_return_sha256": "4940ece1c399ed7bda688855a2c69211ae16e5a37b1889525fefac00788570e5",
+    "current_post_result_sha256": "229e4673ce2dafbe614f33b204598ce6f57e09060d20499c8b1c021de80d0bdc",
+    "development_freeze_rewritten": false
+  },
+  "semantic_boundary": {
+    "test_change": "replace empty-ledger expectation with one exact terminal trial and add immutable terminal evidence assertions",
+    "formula_direction_cost_fold_purge_or_gate_changed": false,
+    "additional_historical_daily_price_or_forward_return_read": false,
+    "2024_2025_stress_return_read": false,
+    "candidate49_ledgers_changed": false
+  }
+}

@@ -1,0 +1,55 @@
+{
+  "version": 4,
+  "kind": "a_share_three_day_walkforward_campaign046_feature_implementation_freeze",
+  "status": "effective_audit_validator_dispatch_repaired_ready_for_one_exact_retry",
+  "recorded_at": "2026-07-31T23:40:00Z",
+  "purpose": "Freeze the infrastructure-only Campaign045 snapshot-validator dispatch repair after the first ordered no-return audit failed closed.",
+  "source_chain": {
+    "pre_failure_effective_freeze": {
+      "path": "docs/a_share_three_day_walkforward_campaign_046_feature_implementation_freeze_v3_20260801.json",
+      "sha256": "291c8e176d52f98d88a32b85112a052933a409ceef4003bf11cba6f24183085a"
+    },
+    "infrastructure_failure_record": {
+      "path": "docs/a_share_three_day_walkforward_campaign_046_no_return_audit_infrastructure_failure_20260801.json",
+      "sha256": "aa8cdfa848639c55653ae4944370824ea18c82f3895a76344064e7e9c956ce7c"
+    },
+    "effective_feature_runner": {
+      "path": "scripts/a_share_three_day_walkforward_campaign046_features.py",
+      "sha256": "ce21964b97f10c12196821d5688c180afcb9142680e9ef1eb2906a98de3fdd72"
+    },
+    "snapshot_manifest": {
+      "path": "/Volumes/DIsk/qlib-a-share-tushare-1m/derived/a_share/rich/tushare/minute_walkforward_campaign046_feature_library/tushare_stk_mins_1m_2019_2025_ea0cbb8f_walkforward_campaign046_feature_library_v1/snapshot_manifest.json",
+      "sha256": "4103aeee6e45cd54ffcb304283808abb67e6ea6107605f67441df70653e31ccd",
+      "dataset_sha256": "ee089ffd7dc7111ec6a7b620830595805ce998db6ef076f9d3cd516a7784d06f"
+    },
+    "campaign045_snapshot_manifest": {
+      "path": "/Volumes/DIsk/qlib-a-share-tushare-1m/derived/a_share/rich/tushare/minute_walkforward_campaign045_feature_library/tushare_stk_mins_1m_2019_2025_ea0cbb8f_walkforward_campaign045_feature_library_v1/snapshot_manifest.json",
+      "sha256": "896ecf82cf6d9b8b0609bcb6b28345de57a91980ddd3d8d196e69a51ffbf72d8",
+      "dataset_sha256": "96d875a6e9699c771ba8f217400cc15c5d4c36ade2b86422c6ee8f8b2f179fae"
+    },
+    "synthetic_tests": {
+      "path": "tests/data_collector_tests/test_a_share_three_day_walkforward_campaign046_features.py",
+      "sha256": "af47778b610ade29c19bd2c0f97a55a6e716cc4106146c1d01c390adb875af01"
+    }
+  },
+  "repair_validation": {
+    "synthetic_tests_passed": 7,
+    "campaign045_verified_partitions": 33015,
+    "campaign045_verified_rows": 7724498,
+    "campaign045_all_partition_byte_and_frame_hashes_valid": true,
+    "historical_daily_price_fields_read": [],
+    "historical_forward_returns_read": false
+  },
+  "code_delta_from_v3": {
+    "campaign045_module_import_added": true,
+    "campaign045_snapshot_validator_dispatch_before": "campaign044.verify_snapshot_files",
+    "campaign045_snapshot_validator_dispatch_after": "campaign045.verify_snapshot_files",
+    "formula_direction_source_projection_alignment_gate_comparison_order_or_threshold_changed": false,
+    "other_code_changed": false
+  },
+  "decision": {
+    "one_exact_parameter_ordered_no_return_audit_retry_allowed": true,
+    "daily_price_or_return_read_allowed": false,
+    "next_action": "Validate all six bindings, then retry the identical no-return-audit command once; honor its exit code and preserve both attempts."
+  }
+}

@@ -1,0 +1,145 @@
+{
+  "schema_version": 1,
+  "kind": "a_share_three_day_walkforward_campaign124_new_share_source_contract",
+  "status": "frozen_zero_provider_rows_before_adapter_acceptance_factor_or_return_values",
+  "recorded_at": "2026-08-14T03:55:05+08:00",
+  "purpose": "Freeze the exact low-entitlement new_share projection, IPO ballot state, point-in-time timing, formula, capacity and failure rules before any provider request or value.",
+  "authoritative_inputs": {
+    "campaign123_terminal_state": {
+      "path": "docs/a_share_three_day_iteration_status_20260814_campaign123_namechange_terminal.json",
+      "sha256": "e83299f2af7ace98a8f15c9f6d21d5ef2f7d7b0b79e464e35ef41bfe9bc13cca"
+    },
+    "numeric_policy_v124": {
+      "path": "docs/a_share_three_day_walkforward_future_numeric_comparison_eligibility_policy_v124_20260814.json",
+      "sha256": "8f1a972f98ed98cbde520515a6e341c0a27f6821d7cecf484ab54ef459773d18",
+      "complete_definition_count_preserved": 148,
+      "eligible_numeric_comparator_count_reserved": 139
+    },
+    "concept_scouting": {
+      "path": "docs/a_share_three_day_walkforward_campaign_124_concept_scouting_20260814.json",
+      "sha256": "4c46a5c490cd81459f8482445afbf84dc11dac9bde081476aa76430b40af7f10",
+      "binding_state": "bound"
+    },
+    "mechanism_overlap_audit": {
+      "path": "docs/a_share_three_day_walkforward_campaign_124_mechanism_overlap_audit_20260814.json",
+      "sha256": "dabea9eb5619f7ab910ebb03fba8cefc0025bce3b6e18e7ea182758716366244",
+      "binding_state": "bound"
+    }
+  },
+  "public_documentation_contract": {
+    "provider": "tushare",
+    "official_url": "https://tushare.pro/document/2?doc_id=123",
+    "api_name": "new_share",
+    "documented_minimum_points": 120,
+    "documented_maximum_rows_per_call": 2000,
+    "documented_input_date_role": "上网发行开始/结束日期",
+    "required_request_projection": [
+      "ts_code",
+      "ipo_date",
+      "issue_date",
+      "ballot"
+    ],
+    "forbidden_fields": [
+      "sub_code",
+      "name",
+      "amount",
+      "market_amount",
+      "price",
+      "pe",
+      "limit_amount",
+      "funds"
+    ],
+    "provider_request_authorized_by_this_contract": false
+  },
+  "canonicalization_contract": {
+    "row_shape": "Exactly ts_code, ipo_date, issue_date and ballot; missing or extra fields are fatal.",
+    "supported_instruments": "SSE main board and SZSE main board/ChiNext only; malformed or cross-exchange codes are fatal and complete classifiable unsupported codes are excluded and counted.",
+    "ipo_date": "Required complete valid strict YYYYMMDD date.",
+    "issue_date": "Required complete valid strict YYYYMMDD date, not earlier than ipo_date, and must map to an accepted local trading session before any factor panel.",
+    "ballot": "Required finite numeric percentage with 0 < ballot <= 100. Boolean, string, NaN, infinity, zero and negative values are fatal.",
+    "normalized_columns": [
+      "instrument",
+      "ipo_date",
+      "issue_date",
+      "ballot",
+      "provider"
+    ],
+    "provider_value": "tushare_new_share",
+    "normalized_event_key": [
+      "instrument",
+      "ipo_date",
+      "issue_date"
+    ],
+    "exact_repeat_policy": "Collapse identical normalized events and count repeats.",
+    "conflict_policy": "Exactly one IPO event is allowed per supported instrument. A second row with different ipo_date, issue_date or ballot is fatal; identical repeats collapse. No latest row, tolerance, rounding, majority vote or field substitution is allowed."
+  },
+  "point_in_time_contract": {
+    "timezone": "Asia/Shanghai",
+    "conservative_information_date": "issue_date",
+    "same_day_availability_allowed": false,
+    "effective_session": "first accepted local trading session strictly after issue_date",
+    "listing_age_definition": "Issue_date must itself be an accepted local session; listing_age_sessions is inclusive accepted-session count from issue_date through signal session.",
+    "signal_support": "20 <= listing_age_sessions <= 79",
+    "signal_availability": "supported signal-session close",
+    "earliest_entry": "next accepted local trading-session open",
+    "exit": "third accepted local trading-session close after entry",
+    "holding_period_trading_sessions": 3
+  },
+  "single_factor_definition": {
+    "name": "ipo_retail_ballot_scarcity_20to79s",
+    "formula": "For a supported stock-day with inclusive listing age from 20 through 79, return -ballot. Otherwise return missing.",
+    "score_direction": "higher",
+    "economic_interpretation": "A lower online-subscription success percentage is stronger prelisting retail demand scarcity; negation makes lower ballot rank higher.",
+    "raw_value_type": "finite float",
+    "raw_value_range": {
+      "minimum_inclusive": -100.0,
+      "maximum_exclusive": 0.0
+    },
+    "listing_age_rank_weight_or_tiebreaker": false,
+    "missing_semantics": "Missing outside listing ages 20 through 79 or when no accepted canonical IPO event exists. Missing is never zero, imputed, clipped or ranked.",
+    "historical_candidate_values_materialized": false,
+    "numeric_comparator_appended_now": false,
+    "prospective_candidate_registered": false
+  },
+  "source_acceptance_and_capacity_contract": {
+    "request_years": [
+      2019,
+      2020,
+      2021,
+      2022,
+      2023,
+      2024,
+      2025
+    ],
+    "one_annual_call_maximum": true,
+    "response_rows_at_or_above_2000": "fatal_possible_truncation",
+    "retry_allowed": false,
+    "minimum_supported_events_in_each_2019_2023_year": 20,
+    "minimum_supported_events_total_2019_2023": 150,
+    "factor_level_capacity_rule": {
+      "non_overlapping_three_session_cohorts": true,
+      "minimum_names_per_cohort": 6,
+      "minimum_distinct_finite_values_per_cohort": 2,
+      "minimum_complete_cohorts": 200,
+      "minimum_observed_calendar_years": 5,
+      "minimum_listing_age_sessions": 20,
+      "capacity_must_pass_before_139_comparison_values": true,
+      "capacity_must_pass_before_daily_price_or_forward_return_values": true
+    },
+    "failure_policy": "Any entitlement, schema, projection, date, ballot, duplicate, coverage, variation, capacity or fingerprint failure terminates the exact mechanism before prices or returns. No field addition, age/window/direction/threshold change, source substitution, retry, rescue or combination is allowed."
+  },
+  "research_boundary": {
+    "provider_request_issued": false,
+    "credential_loaded": false,
+    "provider_rows_read_persisted_or_counted": false,
+    "candidate_or_comparison_values_read": false,
+    "historical_daily_price_fields_read": [],
+    "historical_forward_returns_read": false,
+    "stress_2024_2025_opened": false,
+    "candidate49_historical_backfill_performed": false,
+    "candidate49_ledgers_changed": false,
+    "second_prospective_candidate_created": false,
+    "current_scoring_selection_sizing_positions_or_orders_performed": false,
+    "investment_advice": false
+  }
+}

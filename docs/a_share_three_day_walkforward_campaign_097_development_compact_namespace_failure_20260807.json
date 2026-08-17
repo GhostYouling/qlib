@@ -1,0 +1,43 @@
+{
+  "schema_version": 1,
+  "kind": "a_share_three_day_walkforward_campaign097_development_compact_namespace_failure",
+  "status": "preserved_append_only_development_load_infrastructure_failure_after_daily_data_load_before_complete_trial_metrics",
+  "recorded_at": "2026-08-07T06:46:00Z",
+  "campaign": 97,
+  "attempt_class": "infrastructure_failure",
+  "attempt_count_increment": 1,
+  "development_trial_count_increment": 0,
+  "command_scope": "exact single frozen Campaign097 development trial",
+  "exit_code": 1,
+  "failure": {
+    "exception": "Campaign097Error",
+    "message": "development data load failed and was recorded: Campaign097 compact factor request changed",
+    "location": "inherited compact factor loader static request assertion",
+    "root_cause": "The nested generated Campaign097 runner retained the Campaign089 compact dataset_group literal and the noncompact Campaign097 manifest path in the loader function's generated global namespace, while all frozen factor bytes, identities, and the preregistered campaign correctly point to the Campaign097 compact snapshot."
+  },
+  "failed_runner": {
+    "path": "scripts/a_share_three_day_walkforward_campaign097.py",
+    "sha256": "e48bc07f5c004558a98cae9e3f12a18b3c79bc62ffb0bae654109bbc78d45e40"
+  },
+  "development_preregistration": {
+    "path": "docs/a_share_three_day_walkforward_campaign_097_preregistration.json",
+    "sha256": "1184e05bcfaaecb3767fa0df77afc20e3e8425ab88fb0e374adf26164a6d65fd"
+  },
+  "append_only_internal_trial_ledger": {
+    "path": "data/experiments/short_horizon/historical_walkforward/campaign_097/walkforward/trial_ledger.json",
+    "sha256": "1c93bf410fd1f384313552d804275325aef9579bc8c5b8cf5edb49deab0cf7f6",
+    "entry_count": 1,
+    "chain_tip_sha256": "7818333c6d68a2f1679861b0923221502d2b9235c775fb7845bf8933b3cc2e83",
+    "failure_trial_id": "wf097_infrastructure__development_load_001"
+  },
+  "repair_boundary": "An additive v2 runner may replace only the inherited compact loader's frozen dataset_group and manifest namespace with campaign097_new_factors and the already bound Campaign097 compact snapshot. Trial, direction, folds, costs, survivor gates, daily data, return construction, and stress boundary remain unchanged.",
+  "historical_daily_price_values_read": true,
+  "historical_forward_return_values_may_have_been_read_during_bundle_load": true,
+  "complete_trial_metrics_computed": false,
+  "development_survivor_decision_computed": false,
+  "stress_2024_2025_read": false,
+  "provider_request_issued": false,
+  "candidate49_historical_return_read": false,
+  "candidate49_ledgers_changed": false,
+  "current_scoring_selection_sizing_or_orders_performed": false
+}

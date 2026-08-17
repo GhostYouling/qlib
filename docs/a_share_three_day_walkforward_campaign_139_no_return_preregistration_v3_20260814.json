@@ -1,0 +1,43 @@
+{
+  "schema_version": 1,
+  "kind": "a_share_three_day_walkforward_campaign139_no_return_preregistration_binding_correction",
+  "status": "effective_v3_failure_binding_completed_before_source_values_without_semantic_change",
+  "recorded_at": "2026-08-14T13:15:59+0800",
+  "supersedes_without_rewriting": {
+    "path": "docs/a_share_three_day_walkforward_campaign_139_no_return_preregistration_v2_20260814.json",
+    "sha256": "eaeffa8e446ee8aa683b2eadee8b20a6c9430978d6d31bdd5696c9a6d4e373b3"
+  },
+  "corrected_binding": {
+    "field": "failure_evidence.sha256_pending_at_preregistration_creation",
+    "effective_evidence": {
+      "path": "docs/a_share_three_day_walkforward_campaign_139_single_rowgroup_source_range_failure_20260814.json",
+      "sha256": "a4f54925a33c6b6c04c28e272750437302326a4f18d4458f821da0318169a7a0"
+    }
+  },
+  "semantic_change": false,
+  "effective_protocol_chain": [
+    {
+      "path": "docs/a_share_three_day_walkforward_campaign_139_no_return_preregistration_20260814.json",
+      "sha256": "def4153f0fdc112ddb5b6349b83449874be040546ef4a9e2a6527dc07e713a1c",
+      "role": "formula_join_gates_development_costs_and_stress_freeze"
+    },
+    {
+      "path": "docs/a_share_three_day_walkforward_campaign_139_no_return_preregistration_v2_20260814.json",
+      "sha256": "eaeffa8e446ee8aa683b2eadee8b20a6c9430978d6d31bdd5696c9a6d4e373b3",
+      "role": "single-rowgroup source decode and date-filter correction"
+    },
+    {
+      "path": "docs/a_share_three_day_walkforward_campaign_139_no_return_preregistration_v3_20260814.json",
+      "sha256": "self_after_publication",
+      "role": "exact failure-evidence binding"
+    }
+  ],
+  "research_boundary": {
+    "parquet_source_column_values_read": false,
+    "candidate_or_comparator_values_read": false,
+    "historical_price_or_return_values_read": false,
+    "stress_2024_2025_opened": false,
+    "provider_request_issued": false,
+    "candidate49_ledgers_changed": false
+  }
+}

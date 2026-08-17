@@ -1,0 +1,64 @@
+{
+  "version": 2,
+  "kind": "a_share_three_day_walkforward_campaign044_feature_implementation_freeze",
+  "status": "frozen_after_identity_intersection_repair_and_synthetic_tests_before_snapshot_retry_daily_price_or_return_values",
+  "recorded_at": "2026-07-31T17:38:00Z",
+  "purpose": "Bind the sole pre-value identity-intersection correction after the first snapshot-build infrastructure failure, without changing the Campaign044 formula, library, gates, or research boundary.",
+  "authoritative_inputs": {
+    "no_return_preregistration": {
+      "path": "docs/a_share_three_day_walkforward_campaign_044_no_return_preregistration.json",
+      "sha256": "1037d27b173f4fb63c75672c4da50c6616f1f1eb3ae1917ecf291fc2d2644f69"
+    },
+    "feature_implementation_freeze_v1": {
+      "path": "docs/a_share_three_day_walkforward_campaign_044_feature_implementation_freeze_20260801.json",
+      "sha256": "c510fae3a3714344fb140733bc6e4120b51e7d8d5d7c2d4e04bbab2dca286921"
+    },
+    "snapshot_build_infrastructure_failure_001": {
+      "path": "docs/a_share_three_day_walkforward_campaign_044_snapshot_build_infrastructure_failure_20260801.json",
+      "sha256": "0bd6bdec08fec54fc19fc254d258e0376f8c30309c4a64d22b60ce9c01a0213f"
+    }
+  },
+  "implementation": {
+    "path": "scripts/a_share_three_day_walkforward_campaign044_features.py",
+    "sha256": "4a95a02139d501e3a5c8b92e959bd4e038ae5eebffb0760e96bb69bc819dd41a",
+    "candidate_factor": "full_terminal_library_directional_percentile_consensus_66f",
+    "candidate_direction": "higher",
+    "source_terminal_factor_count": 66,
+    "source_terminal_factor_order_sha256": "71a34e7decf7ba4a456cff4e08b0ea034a3919ee62edf5eb3bec603eb50a5bed",
+    "candidate49_factor_excluded": "intraday_cumulative_vwap_crossing_rate_240m",
+    "formula_changed_from_v1": false,
+    "source_library_or_direction_changed_from_v1": false,
+    "common_support_rank_tie_weight_or_minimum_changed_from_v1": false,
+    "coverage_uniqueness_fold_cost_survivor_or_stress_rule_changed_from_v1": false,
+    "correction": "Read only trade_date and symbol from the byte-bound Campaign043 anchor snapshot, intersect those minute-source identities with quality/listing eligible keys, and pass only the sorted intersection to the unchanged strict aligned source-factor loader.",
+    "strict_source_key_coverage_check_removed_or_relaxed": false,
+    "missing_source_row_imputation_added": false,
+    "candidate49_snapshot_or_factor_value_loader_added": false,
+    "daily_price_or_forward_return_loader_added": false
+  },
+  "tests": {
+    "path": "tests/data_collector_tests/test_a_share_three_day_walkforward_campaign044_features.py",
+    "sha256": "71bb21661561d9d789493197f13427159130fb9ec6cb3cda14fc1af99c79f639",
+    "command": "PYTHONPATH=. pytest -q tests/data_collector_tests/test_a_share_three_day_walkforward_campaign044_features.py",
+    "result": "9 passed in 35.81s",
+    "new_test": "quality/listing keys are strictly intersected with sorted minute identity keys; no-overlap and invalid-order cases fail closed"
+  },
+  "evidence_boundary": {
+    "source_factor_values_were_partially_scanned_by_failed_v1_attempt": true,
+    "source_factor_values_inspected_or_reported_to_researcher": false,
+    "candidate_values_computed": false,
+    "historical_daily_price_fields_read": false,
+    "historical_forward_returns_read": false,
+    "training_or_model_fitting_performed": false,
+    "candidate49_factor_values_read": false,
+    "candidate49_historical_return_signal_or_execution_backfill_performed": false,
+    "candidate49_ledgers_changed": false,
+    "current_scoring_selection_sizing_or_orders_performed": false
+  },
+  "decision": {
+    "implementation_v2_frozen": true,
+    "binding_validator_must_pass_before_snapshot_retry": true,
+    "retry_command_unchanged": "PYTHONPATH=. python scripts/a_share_three_day_walkforward_campaign044_features.py build-snapshot --workers 8",
+    "next_action": "Validate all v2 bindings, then retry the same immutable snapshot build. Any new failure must be preserved as another infrastructure attempt before further code changes."
+  }
+}

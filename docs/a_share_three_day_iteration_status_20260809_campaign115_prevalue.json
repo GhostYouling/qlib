@@ -1,0 +1,88 @@
+{
+  "schema_version": 1,
+  "kind": "a_share_three_day_iteration_status",
+  "status": "campaign115_prevalue_source_contract_and_zero_row_adapter_frozen",
+  "recorded_at": "2026-08-09T02:52:55+08:00",
+  "supersedes_without_rewriting": {
+    "path": "docs/a_share_three_day_iteration_status_20260809_campaign114_terminal.json",
+    "sha256": "3923410e670f93ee345a5fecef0116737e548e960e51f73182f73f4684cb9f41",
+    "preserved": true
+  },
+  "authoritative_artifacts": {
+    "numeric_policy_v85": {
+      "path": "docs/a_share_three_day_walkforward_future_numeric_comparison_eligibility_policy_v85_20260809.json",
+      "sha256": "16eb9674782cd929a3d9ad9c2465629c49ab144dcf0116b7c280bef378a1b123"
+    },
+    "source_contract": {
+      "path": "docs/a_share_tushare_limit_up_queue_persistence_data_contract_20260809.json",
+      "sha256": "41627b182e3d5f6d5de663f589abc06b204bd425971afe1de4a7c20d237caa42"
+    },
+    "zero_row_adapter_freeze": {
+      "path": "docs/a_share_three_day_walkforward_campaign_115_zero_row_adapter_implementation_freeze_20260809.json",
+      "sha256": "29a93bbf2a2863fce51c7010226271cf2e7f28cf6afac3aca6b32fbd024c9a20"
+    },
+    "attempt_ledger_v4": {
+      "path": "data/experiments/short_horizon/historical_walkforward/campaign_115/research_attempt_ledger_v4.json",
+      "sha256": "6383b4f07e8931e3ca9bf5d027afcdcea237549a4608a145073e97952831bb06"
+    },
+    "campaign_report": {
+      "path": "docs/a_share_three_day_walkforward_campaign_115_report.md",
+      "sha256": "1cc56d8d52e5d23d7e3c3d3b6f8ec01440eb37e439d2c6a328dff047ea4bb15a"
+    }
+  },
+  "campaign115": {
+    "active_historical_campaign": true,
+    "selected_source_mechanism": "tushare_official_limit_up_queue_persistence",
+    "current_stage": "prevalue_source_contract_and_zero_row_adapter_frozen",
+    "provider_request_issued": false,
+    "provider_rows_or_candidate_values_read": false,
+    "complete_factor_definition_count": 0,
+    "numeric_comparator_appended": false,
+    "development_return_trial_count": 0,
+    "stress_2024_2025_opened": false,
+    "next_allowed_action": "freeze and verify exactly one fingerprint-bound fixed-date acceptance runner; do not issue a provider request before that gate"
+  },
+  "frozen_library": {
+    "complete_definition_count": 141,
+    "complete_definition_order_sha256": "ccab6e3d9d81b0a02d4ff178fdd442b26a1e68e3655e1c6f5b2fcb28cd4a4559",
+    "eligible_numeric_comparator_count": 134,
+    "eligible_numeric_comparator_order_sha256": "31d788db467f558a0ac538315343090f1b3ad4cb27a26136a49ebaa88b2fdbf2"
+  },
+  "candidate49": {
+    "only_active_prospective_candidate": true,
+    "signal_ledger_path": "data/experiments/short_horizon/candidate49_future_signal_ledger.json",
+    "signal_ledger_sha256": "5193f00d7f36da003f53cec387900da4c3d002299f5dfcfc1a95eaa199ed3a79",
+    "execution_ledger_path": "data/experiments/short_horizon/candidate49_future_execution_ledger.json",
+    "execution_ledger_sha256": "d57a3e61eac969e42cafa418ccd8c0a5ee65dcf69da145bb2c096c2a02a2ea4f",
+    "weekend_plan_or_run_executed": false,
+    "historical_backfill_performed": false
+  },
+  "local_context": {
+    "local_date": "2026-08-09",
+    "local_weekday": "Sunday",
+    "candidate49_same_day_workflow_applicable": false,
+    "active_daily_data_root": "/Volumes/DIsk/Disk-Coding/qlib/data",
+    "active_daily_source": "baostock",
+    "active_daily_end": "2026-07-13",
+    "repository_dotenv_regular_non_symlink_mode_0600_git_ignored": true,
+    "tushare_token_present": true,
+    "credential_value_printed_hashed_logged_or_persisted": false
+  },
+  "accounting": {
+    "campaign115_attempt_count": 4,
+    "campaign115_infrastructure_failure_count": 3,
+    "campaign115_prevalue_scientific_attempt_count": 1,
+    "campaign115_complete_factor_attempt_count": 0,
+    "campaign115_return_reading_development_trial_count": 0,
+    "cumulative_historical_research_attempt_count": 857,
+    "cumulative_return_reading_development_trial_count": 302
+  },
+  "research_boundary": {
+    "candidate_or_comparator_values_read": false,
+    "historical_daily_price_or_forward_return_values_read": false,
+    "stress_2024_2025_opened": false,
+    "second_prospective_candidate_created": false,
+    "current_scoring_selection_sizing_or_orders_performed": false,
+    "investment_advice": false
+  }
+}

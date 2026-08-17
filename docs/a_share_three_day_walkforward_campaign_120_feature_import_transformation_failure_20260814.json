@@ -1,0 +1,18 @@
+{
+  "schema_version": 1,
+  "kind": "a_share_three_day_walkforward_campaign120_feature_import_transformation_failure",
+  "status": "recorded_before_historical_source_or_candidate_values",
+  "recorded_at": "2026-08-14T00:08:21+08:00",
+  "failed_stage": "unfrozen_feature_builder_import_validation",
+  "failure": "The Campaign120 feature-builder transformation required a literal factor_ranges token that exists only in the Campaign105 base template, not in the frozen Campaign117 wrapper source, so module import failed closed before any build or value access.",
+  "repair": "Inject the candidate range substitutions into Campaign117's inner base-template transformation, retain the template SHA guard, and rerun import plus synthetic formula, feature and audit checks before creating an implementation freeze.",
+  "scientific_formula_parser_direction_support_or_gate_changed": false,
+  "research_boundary": {
+    "historical_source_rows_read": false,
+    "candidate_values_computed_or_read": false,
+    "comparator_values_read": false,
+    "daily_price_or_forward_return_values_read": false,
+    "provider_request_issued": false,
+    "candidate49_ledgers_changed": false
+  }
+}

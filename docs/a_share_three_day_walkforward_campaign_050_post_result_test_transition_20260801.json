@@ -1,0 +1,42 @@
+{
+  "version": 1,
+  "kind": "a_share_three_day_walkforward_campaign050_post_result_test_transition",
+  "status": "pre_return_test_fingerprint_preserved_terminal_assertions_current",
+  "recorded_at": "2026-08-01T11:17:00Z",
+  "purpose": "Preserve the exact pre-return test fingerprint while binding the one-trial, zero-survivor, unopened-stress terminal assertions.",
+  "bindings": {
+    "development_implementation_freeze": {
+      "path": "docs/a_share_three_day_walkforward_campaign_050_development_implementation_freeze_20260801.json",
+      "sha256": "00df844f3837189dae4abc5b59b6d9ac143f8f3bccbf44bd164a3ca293db460e"
+    },
+    "current_campaign_tests": {
+      "path": "tests/data_collector_tests/test_a_share_three_day_walkforward_campaign050.py",
+      "sha256": "53404a715b2f21e08d92b8f4c51c89b2faf448a8feade7a0fb1e2a0d3b6e65ce"
+    },
+    "terminal_tests": {
+      "path": "tests/data_collector_tests/test_a_share_three_day_walkforward_campaign050_terminal.py",
+      "sha256": "4d049c5c81c437fa315aa78ee77220c3f97b5bf18bedefa5ecb94ea37072dee7"
+    },
+    "terminal_publisher": {
+      "path": "scripts/a_share_three_day_walkforward_campaign050_finalize.py",
+      "sha256": "253e39cecf04e3f48d6bcc990286c5c17b2022bd445651eb156f65afe8be7e4c"
+    }
+  },
+  "historical_test_binding": {
+    "path": "tests/data_collector_tests/test_a_share_three_day_walkforward_campaign050.py",
+    "expected_pre_return_sha256": "298c18f59808b8b8078afd7be3b2cca9a2ba11965013b59e13c7747336210d74",
+    "current_post_result_sha256": "53404a715b2f21e08d92b8f4c51c89b2faf448a8feade7a0fb1e2a0d3b6e65ce",
+    "development_freeze_rewritten": false
+  },
+  "observed_transition": {
+    "pre_result_test_passed": 3,
+    "pre_result_test_failed": 1,
+    "only_failure": "empty-ledger assertion observed one immutable trial"
+  },
+  "semantic_boundary": {
+    "formula_direction_cost_fold_purge_or_gate_changed": false,
+    "additional_historical_daily_price_or_forward_return_read": false,
+    "2024_2025_stress_return_read": false,
+    "candidate49_ledgers_changed": false
+  }
+}

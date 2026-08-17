@@ -1,0 +1,67 @@
+{
+  "version": 1,
+  "kind": "a_share_three_day_walkforward_campaign058_no_return_audit_range_repair_freeze",
+  "status": "frozen_before_single_repaired_audit_retry",
+  "frozen_at": "2026-08-04T17:02:56+08:00",
+  "campaign_id": "058",
+  "factor": "quarterly_profit_revenue_growth_spread_pp",
+  "direction": "higher",
+  "original_audit": {
+    "path": "scripts/a_share_three_day_walkforward_campaign058_no_return_audit.py",
+    "sha256": "84bf18ce4ccda2292235bd86cbc7be707560e04622ede15d0dfd2747ef79f8a0",
+    "implementation_freeze_path": "docs/a_share_three_day_walkforward_campaign_058_no_return_audit_implementation_freeze_20260804.json",
+    "implementation_freeze_sha256": "ad4510111185aa37c43a12256f2b9801f4044a7c0e608369fb6ced87846fcccf"
+  },
+  "failed_attempt": {
+    "path": "docs/a_share_three_day_walkforward_campaign_058_no_return_audit_candidate_range_binding_failure_20260804.json",
+    "sha256": "4076ae740e68ef30b2256d96bd0acf59f1d1656f0f136b88a5cf3b34291d99fa",
+    "comparison_values_read": false,
+    "coverage_result_produced": false,
+    "daily_price_or_forward_return_read": false
+  },
+  "repair_launcher": {
+    "path": "scripts/a_share_three_day_walkforward_campaign058_no_return_audit_range_repair.py",
+    "sha256": "66656b55e2e1e8b6dfb8f1af5cfdaf01a9088aa8d3876f1ac93c3532a897e0e0",
+    "only_replaced_function": "generated_audit_engine.load_candidate_frame",
+    "valid_range": "all_and_only_finite_float64_values",
+    "clipping_winsorization_scaling_transform_or_imputation_added": false,
+    "manifest_partition_row_key_eligibility_and_missing_checks_preserved": true,
+    "coverage_uniqueness_comparison_order_and_return_boundaries_changed": false
+  },
+  "repair_tests": {
+    "path": "tests/data_collector_tests/test_a_share_three_day_walkforward_campaign058_no_return_audit_range_repair.py",
+    "sha256": "b489819ebe1034af31d73fb0e6a4ffa250f855068e5062a96f2bd631ec374091",
+    "final_combined_tests_passed": 23,
+    "final_combined_tests_failed": 0,
+    "pre_freeze_test_failure": {
+      "passed": 22,
+      "failed": 1,
+      "cause": "The isolation test asserted a nonexistent module-level coverage function even though coverage is a bound engine object used by the inherited runner.",
+      "repair": "Test the actual unchanged audit globals: append-comparisons, static verification, and run wrapper. No implementation semantics changed."
+    },
+    "candidate_comparison_daily_price_or_return_values_read_by_tests": false
+  },
+  "retry_contract": {
+    "workers": 4,
+    "expected_partitions": 33015,
+    "expected_rows": 7724498,
+    "expected_eligible_rows": 7231483,
+    "comparison_count": 89,
+    "comparison_order_sha256": "c4100bc923fad2ea5fb8898ccb102afe44307c8ab03ee2df8b0972d9b71bbbc1",
+    "maximum_repaired_retries": 1,
+    "stop_before_comparisons_if_coverage_fails": true,
+    "stop_before_daily_price_and_returns_if_any_uniqueness_comparison_fails": true
+  },
+  "research_boundary": {
+    "formula_direction_or_point_in_time_rule_changed": false,
+    "comparison_values_read_before_repair_freeze": false,
+    "historical_daily_price_fields_read": [],
+    "historical_forward_return_fields_read": false,
+    "candidate49_historical_return_read": false,
+    "candidate49_ledgers_changed_by_campaign058": false,
+    "training_or_model_fitting_performed": false,
+    "stress_2024_2025_opened": false,
+    "current_scoring_selection_sizing_or_orders_performed": false
+  },
+  "next_action": "Run the repair launcher exactly once with the frozen data root, experiment root and workers=4."
+}

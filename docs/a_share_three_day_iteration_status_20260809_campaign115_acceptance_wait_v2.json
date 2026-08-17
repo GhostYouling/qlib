@@ -1,0 +1,95 @@
+{
+  "schema_version": 1,
+  "kind": "a_share_three_day_iteration_status",
+  "status": "campaign115_acceptance_runner_v2_runtime_binding_verified_manual_entitlement_confirmation_missing",
+  "recorded_at": "2026-08-09T03:42:00+08:00",
+  "supersedes_without_rewriting": {
+    "path": "docs/a_share_three_day_iteration_status_20260809_campaign115_acceptance_wait.json",
+    "sha256": "0888c37a95c2ddcec35abe79186b98d318111217d3a105aa8aa849844fdc989e",
+    "preserved": true
+  },
+  "authoritative_artifacts": {
+    "numeric_policy_v87": {
+      "path": "docs/a_share_three_day_walkforward_future_numeric_comparison_eligibility_policy_v87_20260809.json",
+      "sha256": "e1ec933169ca463898d1c64109ebc9202347983adfe049f9497093919b418c25"
+    },
+    "acceptance_protocol": {
+      "path": "docs/a_share_three_day_walkforward_campaign_115_source_acceptance_protocol_20260809.json",
+      "sha256": "ad9b789fccada781e77662f95d7d3edaffc5371d605a85a9304a178e3ad4cc6c"
+    },
+    "acceptance_runner_freeze_v2": {
+      "path": "docs/a_share_three_day_walkforward_campaign_115_source_acceptance_runner_freeze_v2_20260809.json",
+      "sha256": "76cd00fe9501469e3677f59e5635d217838585724a8acc624ad93d9ffa500ff1"
+    },
+    "acceptance_runner_verification_v2": {
+      "path": "docs/a_share_three_day_walkforward_campaign_115_source_acceptance_runner_verification_v2_20260809.json",
+      "sha256": "2b331cc74a1e67df3f5aa9a4d3a2e47091c71f8726f79054a71b4f617a4c78b3"
+    },
+    "attempt_ledger_v5": {
+      "path": "data/experiments/short_horizon/historical_walkforward/campaign_115/research_attempt_ledger_v5.json",
+      "sha256": "42074d4edbfa7068345d89b1c38d0532385a6317c9b65ee001fef782ce5422a8"
+    },
+    "report_v3": {
+      "path": "docs/a_share_three_day_walkforward_campaign_115_prevalue_report_v3.md",
+      "sha256": "aa8f055bec26238b1b9510bf08dc18d622cd0f343bdcd3764c8b1ff2614442b3"
+    }
+  },
+  "campaign115": {
+    "active_historical_campaign": true,
+    "selected_source_mechanism": "tushare_official_limit_up_queue_persistence",
+    "current_stage": "runtime_self_binding_verified_waiting_for_manual_entitlement_confirmation",
+    "runner_v2_runtime_binding": true,
+    "real_plan_ready": false,
+    "real_plan_exit_code": 2,
+    "real_plan_only_blocker": "manual_5000_point_entitlement_confirmation",
+    "provider_request_issued": false,
+    "provider_rows_or_candidate_values_read": false,
+    "success_or_failure_output_created": false,
+    "complete_factor_definition_count": 0,
+    "numeric_comparator_appended": false,
+    "development_return_trial_count": 0,
+    "stress_2024_2025_opened": false,
+    "next_allowed_action": "Only after the user explicitly confirms that the currently configured account already has at least 5000 points, rerun the frozen plan with the manual assertion; run the one request only if ready=true and exit code is zero."
+  },
+  "frozen_library": {
+    "complete_definition_count": 141,
+    "complete_definition_order_sha256": "ccab6e3d9d81b0a02d4ff178fdd442b26a1e68e3655e1c6f5b2fcb28cd4a4559",
+    "eligible_numeric_comparator_count": 134,
+    "eligible_numeric_comparator_order_sha256": "31d788db467f558a0ac538315343090f1b3ad4cb27a26136a49ebaa88b2fdbf2"
+  },
+  "candidate49": {
+    "only_active_prospective_candidate": true,
+    "signal_ledger_sha256": "5193f00d7f36da003f53cec387900da4c3d002299f5dfcfc1a95eaa199ed3a79",
+    "execution_ledger_sha256": "d57a3e61eac969e42cafa418ccd8c0a5ee65dcf69da145bb2c096c2a02a2ea4f",
+    "historical_backfill_performed": false
+  },
+  "accounting": {
+    "campaign115_attempt_count": 5,
+    "campaign115_infrastructure_failure_count": 3,
+    "campaign115_prevalue_scientific_attempt_count": 2,
+    "campaign115_complete_factor_attempt_count": 0,
+    "campaign115_return_reading_development_trial_count": 0,
+    "cumulative_historical_research_attempt_count": 858,
+    "cumulative_return_reading_development_trial_count": 302
+  },
+  "verification": {
+    "focused_runner_and_adapter_tests": "20 passed",
+    "campaign113_to_campaign115_joint_regression": "55 passed in 0.83s",
+    "black_check": "4 files unchanged",
+    "ruff_required_rules": "E4,E7,E9,F,I passed",
+    "json_documents_validated": 4,
+    "status_references_verified": 7,
+    "real_plan_runner_v2_runtime_binding": true,
+    "real_plan_exit_code": 2,
+    "real_plan_provider_request_issued": false,
+    "provider_output_count": 0
+  },
+  "research_boundary": {
+    "candidate_or_comparator_values_read": false,
+    "historical_daily_price_or_forward_return_values_read": false,
+    "stress_2024_2025_opened": false,
+    "second_prospective_candidate_created": false,
+    "current_scoring_selection_sizing_or_orders_performed": false,
+    "investment_advice": false
+  }
+}

@@ -1,0 +1,46 @@
+{
+  "schema_version": 10,
+  "kind": "a_share_three_day_walkforward_campaign262_infrastructure_failures",
+  "status": "fourteen_failures_recorded_campaign262_terminal_before_returns",
+  "recorded_at": "2026-08-16T18:22:00+08:00",
+  "timestamp_semantics": "monotonic_logical_append_time_not_host_wall_clock_measurement",
+  "supersedes_without_rewriting": {
+    "infrastructure_failures_v9": {
+      "path": "docs/a_share_three_day_walkforward_campaign_262_infrastructure_failures_v9_20260816.json",
+      "sha256": "a27a3e90ad8bf5a981bb9a0298795752afbf3aee4b62e238e1f1030c84388435",
+      "attempt_count": 13
+    },
+    "terminal_result_v1_with_invalid_predecessor_hash": {
+      "path": "docs/a_share_three_day_walkforward_campaign_262_terminal_result_20260816.json",
+      "sha256": "a1f5d048bc1e239ec887a90d0b926fdb087000cdf99ccd826350c6598cfc8c22"
+    }
+  },
+  "additional_failure": {
+    "attempt_id": "campaign262_infrastructure_014",
+    "phase": "terminal_result_authority_binding",
+    "status": "terminal_result_v1_transcribed_truncated_incorrect_campaign261_state_sha256",
+    "expected_sha256": "dc957645f508f8d28d33f3deb2f5d7adf18f36ecec5deee91e6d0e6e34650e5a",
+    "recorded_in_failed_v1_sha256": "dc957645595da3c30a055ed28eb3d06862895842e48abb76da340f906dbbdb5d",
+    "scientific_attempt": false,
+    "result_consumed": false,
+    "new_scientific_values_read": false,
+    "recovery": "Preserve v1 as failed lifecycle evidence and bind the measured predecessor hash in terminal result v2."
+  },
+  "effective_accounting": {
+    "infrastructure_failure_count": 14,
+    "prevalue_scientific_attempt_count": 7,
+    "complete_factor_attempt_count": 1,
+    "return_reading_development_trial_count": 0
+  },
+  "research_boundary": {
+    "campaign262_candidate_snapshot_values_read": true,
+    "campaign262_comparator_values_read": true,
+    "historical_daily_price_or_forward_return_values_read": false,
+    "stress_2024_2025_opened": false,
+    "provider_or_web_request_issued": false,
+    "credential_value_presence_or_digest_read": false,
+    "candidate49_ledgers_changed": false,
+    "current_scoring_selection_sizing_positions_or_orders_performed": false,
+    "investment_advice": false
+  }
+}

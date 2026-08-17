@@ -1,0 +1,42 @@
+{
+  "version": 1,
+  "kind": "a_share_three_day_walkforward_campaign067_terminal_validation_failure_record",
+  "status": "recorded_before_corrected_terminal_suite",
+  "recorded_at": "2026-08-05T20:12:00+08:00",
+  "failed_command": "PYTHONPATH=/Volumes/DIsk/Disk-Coding/qlib /Volumes/DIsk/Coding/anaconda3/bin/python -m pytest -q tests/data_collector_tests/test_a_share_three_day_walkforward_campaign067_features.py tests/data_collector_tests/test_a_share_three_day_walkforward_campaign067_no_return_audit.py tests/data_collector_tests/test_a_share_three_day_walkforward_campaign067.py tests/data_collector_tests/test_a_share_three_day_walkforward_campaign067_terminal.py --deselect tests/data_collector_tests/test_a_share_three_day_walkforward_campaign067_no_return_audit.py::test_campaign067_status_does_not_load_comparison_values",
+  "exit_code": 1,
+  "observed": {
+    "passed": 18,
+    "failed": 2,
+    "deselected": 0,
+    "failed_nodes": [
+      "data_collector_tests/test_a_share_three_day_walkforward_campaign067_no_return_audit.py::test_campaign067_status_does_not_load_comparison_values",
+      "data_collector_tests/test_a_share_three_day_walkforward_campaign067.py::test_campaign067_stress_is_closed_before_development_survivor_freeze"
+    ]
+  },
+  "root_cause": "The deselect argument used the filesystem invocation prefix tests/data_collector_tests while pytest collected the module under data_collector_tests. The second immutable pre-development status node was not selected for deselection at all.",
+  "historical_nodes": {
+    "no_return_audit_count_precondition": "audit_count == 0 before the sole no-return audit existed",
+    "development_ledger_count_precondition": "ledger_entry_count == 0 before the sole development trial existed",
+    "still_valid_as_pre_state_evidence": true,
+    "modified": false
+  },
+  "test_bindings": [
+    {"path": "tests/data_collector_tests/test_a_share_three_day_walkforward_campaign067_features.py", "sha256": "66dc55c0212abed723c0afc82cae8da5d6a34f21ea92246a3acbb08b08c118c4"},
+    {"path": "tests/data_collector_tests/test_a_share_three_day_walkforward_campaign067_no_return_audit.py", "sha256": "ecc3f0fc130a2de7c1317c90dc602cbf419f272fe653081ec623ebacf3240d18"},
+    {"path": "tests/data_collector_tests/test_a_share_three_day_walkforward_campaign067.py", "sha256": "0575d06b49e8d54cf974be3d2e18a5779ddcbfc916b6a8fa330ccf60fc3befd1"},
+    {"path": "tests/data_collector_tests/test_a_share_three_day_walkforward_campaign067_terminal.py", "sha256": "48ac764e7737eea45715f11816abb30b581cc4081e73165b4ed484eed0d839df"}
+  ],
+  "research_effect": {
+    "candidate_or_comparison_values_recomputed": false,
+    "historical_daily_prices_or_forward_returns_recomputed": false,
+    "research_result_changed": false,
+    "research_attempt_count_increment": 0,
+    "return_reading_development_trial_count_increment": 0,
+    "terminal_validation_failure_count_increment": 1
+  },
+  "repair": {
+    "code_or_test_edit_allowed": false,
+    "corrected_command_rule": "Use the actual collected data_collector_tests node prefix and deselect exactly both immutable pre-state nodes; run all other Campaign067 tests unchanged."
+  }
+}

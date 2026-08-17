@@ -1,0 +1,27 @@
+{
+  "schema_version": 1,
+  "kind": "a_share_three_day_walkforward_campaign221_infrastructure_failure_record",
+  "recorded_at": "2026-08-16T01:34:00+08:00",
+  "timestamp_semantics": "monotonic_logical_append_time_not_host_wall_clock_measurement",
+  "status": "failed_combined_read_only_display_output_truncated_and_discarded",
+  "phase": "campaign220_predecessor_campaign221_frontier_deselection_catalog_and_dual_report_tail_inspection",
+  "command_scope": "One read-only command combined a Campaign220 result display, the Campaign221 source-frontier display, the policy-v311 deselection structure and both mutable-report tails. The execution exited zero but the interface truncated its combined output.",
+  "failure": {
+    "class": "combined_tool_output_truncation",
+    "writes_before_failure": false,
+    "source_candidate_comparator_security_price_or_return_values_read": false,
+    "partial_or_truncated_output_consumed_as_scientific_or_validation_evidence": false,
+    "recovery": "Discard the combined display and use independent bounded JSON parsing, hash checks and exact-key extraction for every subsequent binding."
+  },
+  "research_boundary": {
+    "scientific_conclusion_changed": false,
+    "candidate_or_comparator_value_read": false,
+    "daily_price_or_forward_return_read": false,
+    "stress_2024_2025_opened": false,
+    "provider_or_web_request_issued": false,
+    "provider_credential_presence_value_or_digest_read": false,
+    "candidate49_plan_or_run_executed": false,
+    "candidate49_ledgers_changed": false,
+    "current_use_or_investment_advice": false
+  }
+}

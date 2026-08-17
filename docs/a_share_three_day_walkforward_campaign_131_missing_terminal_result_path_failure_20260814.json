@@ -1,0 +1,37 @@
+{
+  "schema_version": 1,
+  "kind": "a_share_three_day_walkforward_campaign131_missing_terminal_result_path_readonly_failure",
+  "status": "recorded_failed_exit_code_2_not_overridden",
+  "recorded_at": "2026-08-14T08:12:18+08:00",
+  "phase": "prevalue_repository_metadata_review",
+  "command_intent": "Read the existing Campaign122, Campaign125 and Campaign126 terminal summaries before choosing a Campaign131 concept catalog.",
+  "failure": {
+    "exit_code": 2,
+    "failed_paths": [
+      "docs/a_share_three_day_walkforward_campaign_125_terminal_result_20260814.json",
+      "docs/a_share_three_day_walkforward_campaign_126_terminal_result_20260814.json"
+    ],
+    "reason": "The read-only command assumed terminal-result filenames that do not exist for the two concept-only campaigns; their authoritative concept, frontier, policy and state artifacts use different versioned names.",
+    "failed_exit_code_treated_as_success": false,
+    "target_file_written_or_changed": false
+  },
+  "recovery": {
+    "action": "Use rg --files to resolve the existing Campaign125/126 concept and frontier artifacts, then read those exact immutable paths.",
+    "scientific_result_changed": false,
+    "formula_direction_parameter_gate_or_library_changed": false
+  },
+  "research_boundary": {
+    "provider_request_issued": false,
+    "provider_credential_loaded": false,
+    "source_rows_read": false,
+    "candidate_values_computed_or_read": false,
+    "comparator_values_read": false,
+    "historical_daily_price_or_forward_return_values_read": false,
+    "stress_2024_2025_opened": false,
+    "candidate49_historical_backfill_performed": false,
+    "candidate49_ledgers_changed": false,
+    "second_prospective_candidate_created": false,
+    "current_scoring_selection_sizing_positions_or_orders_performed": false,
+    "investment_advice": false
+  }
+}

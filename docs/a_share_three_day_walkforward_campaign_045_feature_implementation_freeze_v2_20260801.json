@@ -1,0 +1,67 @@
+{
+  "version": 2,
+  "kind": "a_share_three_day_walkforward_campaign045_feature_implementation_freeze",
+  "status": "effective_additive_infrastructure_repair_frozen_before_external_candidate_values",
+  "recorded_at": "2026-07-31T20:12:00Z",
+  "purpose": "Advance the Campaign045 implementation freeze after one pre-value wrapper failure, binding the sole nested-builder lookup repair and otherwise preserving every v1 formula and gate.",
+  "source_chain": {
+    "original_implementation_freeze": {
+      "path": "docs/a_share_three_day_walkforward_campaign_045_feature_implementation_freeze_20260801.json",
+      "sha256": "4a6cdf31015342a9bcf5b33a3a8ad788a8667cc151ab031714f996ddb2344646"
+    },
+    "infrastructure_failure": {
+      "path": "docs/a_share_three_day_walkforward_campaign_045_snapshot_build_infrastructure_failure_20260801.json",
+      "sha256": "ab2c3f75c00adbc77b7dadf9975d17b79197978d2eb96d357deafb0632849c6f"
+    },
+    "no_return_preregistration": {
+      "path": "docs/a_share_three_day_walkforward_campaign_045_no_return_preregistration.json",
+      "sha256": "886fab70da8584fdf43cec921064b2891e5477b7118be979313e1950260b145e"
+    },
+    "effective_feature_implementation": {
+      "path": "scripts/a_share_three_day_walkforward_campaign045_features.py",
+      "sha256": "f1ad590487d6bd28b0b42160eaab31f9a540c8f589b6e79a1511a251a524d116"
+    },
+    "unchanged_synthetic_tests": {
+      "path": "tests/data_collector_tests/test_a_share_three_day_walkforward_campaign045_features.py",
+      "sha256": "9e0c8cb66dd119384ade8119df388f398b138e3c0295478c569f1cd06376e539"
+    }
+  },
+  "repair_delta": {
+    "changed_lines": "build_snapshot now resolves inherited.__globals__['_inherited_build_snapshot'] before reading that writer's foundation global",
+    "formula_changed": false,
+    "direction_changed": false,
+    "source_projection_changed": false,
+    "grid_or_pair_alignment_changed": false,
+    "zero_variance_range_or_missing_semantics_changed": false,
+    "comparison_library_or_gate_changed": false,
+    "partition_path_or_output_schema_changed": false,
+    "candidate_value_computed_before_repair": false
+  },
+  "post_repair_pre_value_validation": {
+    "synthetic_tests_passed": 6,
+    "synthetic_tests_failed": 0,
+    "status_command_passed": true,
+    "snapshot_exists": false,
+    "audit_count": 0,
+    "historical_daily_price_or_forward_return_read": false
+  },
+  "attempt_accounting": {
+    "campaign045_attempts_before_retry": 1,
+    "infrastructure_only_failures": 1,
+    "return_reading_development_trials": 0
+  },
+  "research_boundary": {
+    "external_campaign045_minute_partition_read": false,
+    "candidate_value_computed_or_returned": false,
+    "comparison_value_read": false,
+    "historical_daily_price_fields_read": false,
+    "historical_forward_returns_read": false,
+    "provider_request_issued": false,
+    "candidate49_ledgers_changed": false,
+    "current_scoring_selection_sizing_or_orders_performed": false
+  },
+  "decision": {
+    "effective_implementation_ready_for_snapshot_retry": true,
+    "next_action": "Revalidate all bindings and retry the exact snapshot build once."
+  }
+}

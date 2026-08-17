@@ -1,0 +1,111 @@
+{
+  "schema_version": 1,
+  "kind": "a_share_three_day_walkforward_campaign134_terminal_result",
+  "status": "terminal_prefit_uniqueness_rejected_no_validation_survivor_lockbox_closed",
+  "recorded_at": "2026-08-14T02:36:32.763717+00:00",
+  "campaign": 134,
+  "authoritative_inputs": {
+    "protocol": {
+      "path": "docs/a_share_three_day_walkforward_campaign_134_preregistration_20260814.json",
+      "sha256": "9193053035f1961d22db0c214cb5d55c29570a0f93dac12a084bde50bcecd435"
+    },
+    "implementation_freeze": {
+      "path": "docs/a_share_three_day_walkforward_campaign_134_development_implementation_freeze_20260814.json",
+      "sha256": "63d0d3e8481fe28f2036e900e94ec61b88856e17bb23be5aa25a9406032c4243"
+    },
+    "development_report": {
+      "path": "data/experiments/short_horizon/historical_walkforward/campaign_134/walkforward_v1/development_report.json",
+      "sha256": "94c868a8e44c82e505ca1a514f176b607fc2868e62e01787c49a58f38af3ca5a"
+    },
+    "append_only_trial_ledger": {
+      "path": "data/experiments/short_horizon/historical_walkforward/campaign_134/walkforward_v1/trial_ledger.json",
+      "sha256": "2a2f463c2ef3a495b8260ea266dfcb4e0a5576f8e3debc0acdc59d627db3ada7",
+      "entry_count": 9
+    },
+    "fold1_prefit_uniqueness": {
+      "path": "data/experiments/short_horizon/historical_walkforward/campaign_134/walkforward_v1/fold_1_prefit_uniqueness.json",
+      "sha256": "d32bafed0d7d81a49f39349059b79a11757e5e779b77ad72503056ae3f658530"
+    },
+    "fold1_validation_score_snapshot": {
+      "path": "data/experiments/short_horizon/historical_walkforward/campaign_134/walkforward_v1/fold_1_validation_scores.parquet",
+      "sha256": "7d09fc827134dcb172f75cdcc1764648d7ce7ba283b8f40f976ee8947a7b7aed"
+    },
+    "fold1_training_graph": {
+      "path": "data/experiments/short_horizon/historical_walkforward/campaign_134/walkforward_v1/fold_1_models/wf134_complete140_corr80_component_balanced_consensus_graph.json",
+      "sha256": "181cb8a6d6f8c21b1019429d18be864cb8aad227f17a51166859928cc2f3b3b9"
+    }
+  },
+  "design": {
+    "manifest_sha256": "043c17fea89f3b0956d643a7c6e3f4d73a11403b967213d2d57539a6a8316a49",
+    "dataset_sha256": "12ce3a64b5e13581392ded9890e2064db4ccca3945da3eb8ad7752c95366a9fc",
+    "rows": 1331759,
+    "eligible_rows": 1327644,
+    "feature_count": 140
+  },
+  "accounting": {
+    "attempt_count": 9,
+    "prevalue_concept_attempt_count": 6,
+    "infrastructure_failure_count": 2,
+    "model_trial_count": 1,
+    "training_return_reading_model_trial_count": 1,
+    "validation_return_reading_model_trial_count": 0,
+    "total_validation_return_fold_reads": 0
+  },
+  "training_graph": {
+    "training_partition": ["2019-01-01", "2020-12-31"],
+    "training_sessions": 139,
+    "feature_count": 140,
+    "edge_count": 19,
+    "component_count": 124,
+    "singleton_component_count": 116,
+    "minimum_component_size": 1,
+    "maximum_component_size": 6,
+    "positive_correlation_edge_threshold": 0.8,
+    "minimum_joint_names_per_daily_pair": 50,
+    "minimum_daily_pair_correlations": 100,
+    "return_or_target_fields_used_for_graph_fit": false,
+    "median_correlations_sha256": "86385c9f323ddeba5b89aea1b52945463405941f3d428bfc189512eae7bdde0a",
+    "pair_session_counts_sha256": "3e3de010ed195cd1519a9d0767b45d28cd3bc436fd878a4403837391fd6feb79"
+  },
+  "fold1_prefit_uniqueness": {
+    "comparison_count": 140,
+    "all_required_comparisons_passed": false,
+    "failed_comparison_count": 1,
+    "failed_comparison": {
+      "comparison_factor": "full_terminal_library_directional_percentile_consensus_66f",
+      "pairwise_sessions": 243,
+      "median_daily_rank_correlation": 0.8180313718344464,
+      "absolute_median_daily_rank_correlation": 0.8180313718344464,
+      "required_strict_maximum": 0.8
+    },
+    "validation_score_written_before_validation_return_read": true,
+    "validation_forward_return_fields_read": false
+  },
+  "terminal_decision": {
+    "trial_id": "wf134_complete140_corr80_component_balanced_consensus",
+    "status": "development_rejected",
+    "terminal_reason": "fold_1_uniqueness_failed",
+    "development_survivor_count": 0,
+    "selected_survivor_trial_ids": [],
+    "2021_validation_returns_read": false,
+    "2022_validation_returns_read": false,
+    "2023_validation_returns_read": false,
+    "2024_2025_lockbox_opened": false,
+    "campaign134_retry_repair_reparameterization_threshold_change_or_rescue_allowed": false
+  },
+  "candidate49": {
+    "only_active_prospective_candidate": true,
+    "signal_ledger_sha256": "5193f00d7f36da003f53cec387900da4c3d002299f5dfcfc1a95eaa199ed3a79",
+    "signal_entry_count": 0,
+    "execution_ledger_sha256": "d57a3e61eac969e42cafa418ccd8c0a5ee65dcf69da145bb2c096c2a02a2ea4f",
+    "execution_entry_count": 0,
+    "historical_backfill_performed": false,
+    "ledgers_changed": false
+  },
+  "research_boundary": {
+    "provider_request_issued": false,
+    "credential_value_or_digest_read": false,
+    "current_scoring_selection_sizing_positions_or_orders_performed": false,
+    "investment_advice": false
+  }
+}

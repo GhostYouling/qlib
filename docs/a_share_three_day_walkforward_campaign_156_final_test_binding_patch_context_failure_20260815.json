@@ -1,0 +1,29 @@
+{
+  "schema_version": 1,
+  "kind": "a_share_three_day_walkforward_campaign156_final_test_binding_patch_context_failure",
+  "status": "recorded_apply_patch_context_failure_no_partial_edit",
+  "recorded_at": "2026-08-15T03:47:00+08:00",
+  "operation": "Update the formatted Campaign156 terminal test from initial publication paths to the effective v2 ledger and final publication paths.",
+  "failure": {
+    "exit_code_nonzero": true,
+    "exact_exit_code_not_captured": true,
+    "partial_edit_applied": false,
+    "root_cause": "The patch expected the test's pre-Black line wrapping, while Black had already split the terminal path across lines."
+  },
+  "safe_recovery": {
+    "method": "Read the current formatted file, use exact minimal contexts, and preserve the intended assertion semantics.",
+    "test_assertion_semantics_changed": false,
+    "scientific_definition_or_source_admission_decision_changed": false,
+    "failed_exit_code_bypassed_or_masked": false
+  },
+  "research_boundary": {
+    "source_row_or_response_values_read": false,
+    "candidate_or_comparator_values_read": false,
+    "historical_daily_price_or_forward_return_values_read": false,
+    "stress_2024_2025_opened": false,
+    "provider_or_web_request_issued": false,
+    "provider_credential_presence_value_or_digest_read": false,
+    "candidate49_ledgers_changed": false,
+    "current_scoring_selection_sizing_positions_or_orders_performed": false
+  }
+}

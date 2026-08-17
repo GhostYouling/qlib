@@ -1,0 +1,60 @@
+{
+  "version": 1,
+  "kind": "a_share_three_day_walkforward_campaign068_no_return_audit_implementation_freeze",
+  "status": "frozen_before_campaign068_coverage_metrics_or_comparison_values",
+  "recorded_at": "2026-08-06T02:57:13+08:00",
+  "protocol": {
+    "path": "docs/a_share_three_day_walkforward_campaign_068_no_return_preregistration.json",
+    "sha256": "64aeee6a3534f00f878259b3406a09bc4f3b5d0ea3157bde86d0050f56b82061"
+  },
+  "snapshot_binding": {
+    "path": "docs/a_share_three_day_walkforward_campaign_068_feature_snapshot_binding_v2_20260806.json",
+    "sha256": "4d2104915dafc025c6b64f8a76685a611418c019f39a31f181ebca42cf5bd956"
+  },
+  "candidate_snapshot": {
+    "path": "/Volumes/DIsk/qlib-a-share-tushare-1m/derived/a_share/rich/tushare/minute_walkforward_campaign068_feature_library/tushare_stk_mins_1m_2019_2025_ea0cbb8f_walkforward_campaign068_feature_library_v2/snapshot_manifest.json",
+    "sha256": "9878e6c0249cb9e965dbfade2ce2b3a355bed5e6a46bf68667c82fc568672004",
+    "dataset_sha256": "bcd03a5e2122b64b072985b3a9a9ada880cad337dae4766a00cf52bf51f4f449"
+  },
+  "compact_cache": {
+    "publication_binding_path": "docs/a_share_three_day_compact_comparator_cache_v4_publication_binding_20260806.json",
+    "publication_binding_sha256": "244f70b88be0396f7473c6664835cbb3cdad9135b6692b77c74018b1d53c925b",
+    "manifest_path": "/Volumes/DIsk/qlib-a-share-tushare-1m/derived/a_share/rich/tushare/compact_comparator_cache/campaign067_terminal_numeric98_v4/snapshot_manifest.json",
+    "manifest_sha256": "3d81068f07ac61fe4cd04bd1a893e58759c06d88213263135fec5244e309b57b",
+    "dataset_sha256": "4a56dac48c14b667b6ee431519266f27bb8ff7cc25c51d8dce3bbc7aebe0376f"
+  },
+  "audit_runner": {
+    "path": "scripts/a_share_three_day_walkforward_campaign068_no_return_audit.py",
+    "sha256": "e9b055a1d801660842d7f0e7233a8aa61573bf3d89f00b1d18820f4583b48878"
+  },
+  "tests": {
+    "path": "tests/data_collector_tests/test_a_share_three_day_walkforward_campaign068_no_return_audit.py",
+    "sha256": "62fb23a73f9de22e7b9414ad583ad955ccd0b405b171f22f9985b0811c895591",
+    "pre_freeze_selected_passed": 4,
+    "pre_freeze_selected_failed": 0,
+    "pre_freeze_deselected_freeze_binding_test": 1
+  },
+  "candidate_snapshot_fully_verified_before_freeze": true,
+  "candidate_snapshot_verified_partitions": 33015,
+  "candidate_snapshot_verified_rows": 7724498,
+  "candidate_snapshot_verified_eligible_rows": 6317276,
+  "coverage_or_capacity_metrics_computed_before_freeze": false,
+  "comparison_values_read_before_freeze": false,
+  "historical_daily_price_fields_read_before_freeze": [],
+  "historical_forward_returns_read_before_freeze": false,
+  "provider_request_issued_before_freeze": false,
+  "candidate49_ledgers_changed_before_freeze": false,
+  "io_semantics": {
+    "candidate_snapshot_full_verification_precedes_coverage": true,
+    "compact_cache_manifest_hash_checked_without_loading_values_before_coverage": true,
+    "compact_cache_loader_is_coverage_guarded": true,
+    "compact_cache_values_load_only_after_all_coverage_gates_pass": true,
+    "dynamic_quality_values_rebuilt_after_candidate_key_intersection": true,
+    "all_98_comparators_run_in_frozen_order_if_coverage_passes": true,
+    "historical_daily_prices_or_returns_read_during_no_return_audit": false
+  },
+  "decision": {
+    "implementation_frozen_before_metrics": true,
+    "next_action": "Run the exact audit once. A failed coverage gate must terminate Campaign068 without loading compact-cache values or historical daily prices and returns."
+  }
+}

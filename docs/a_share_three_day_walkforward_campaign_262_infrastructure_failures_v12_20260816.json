@@ -1,0 +1,71 @@
+{
+  "schema_version": 12,
+  "kind": "a_share_three_day_walkforward_campaign262_infrastructure_failures",
+  "status": "eighteen_failures_recorded_campaign262_terminal_before_returns_cumulative_regression_passed",
+  "recorded_at": "2026-08-16T18:30:00+08:00",
+  "timestamp_semantics": "monotonic_logical_append_time_not_host_wall_clock_measurement",
+  "supersedes_without_rewriting": {
+    "infrastructure_failures_v11": {
+      "path": "docs/a_share_three_day_walkforward_campaign_262_infrastructure_failures_v11_20260816.json",
+      "sha256": "383cf10c3d15fbc120b27b2414d2ca6ced7e1f32ec6a426610e22fe87ca737e7",
+      "attempt_count": 15
+    }
+  },
+  "additional_failures": [
+    {
+      "attempt_id": "campaign262_infrastructure_016",
+      "phase": "cumulative_regression_base_catalog_inspection",
+      "status": "jq_failed_guessed_v311_20260816_path_instead_of_authoritative_20260815_path",
+      "scientific_attempt": false,
+      "result_consumed": false,
+      "new_scientific_values_read": false
+    },
+    {
+      "attempt_id": "campaign262_infrastructure_017",
+      "phase": "cumulative_regression_base_catalog_node_search",
+      "status": "rg_failed_same_guessed_v311_20260816_path_and_partial_output_was_discarded",
+      "scientific_attempt": false,
+      "result_consumed": false,
+      "new_scientific_values_read": false
+    },
+    {
+      "attempt_id": "campaign262_infrastructure_018",
+      "phase": "cumulative_regression_execution",
+      "status": "first_exact_run_completed_after_outer_yield_but_nested_session_id_and_output_were_not_preserved",
+      "scientific_attempt": false,
+      "result_consumed": false,
+      "new_scientific_values_read": false
+    }
+  ],
+  "recovery_validation": {
+    "exact_authoritative_catalog_reconstructed": true,
+    "campaign_range": "145-262",
+    "test_file_count": 164,
+    "base_deselection_node_count": 22,
+    "additional_deselection_node_count": 53,
+    "total_exact_deselection_node_count": 75,
+    "passed": 628,
+    "failed": 0,
+    "skipped": 1,
+    "deselected": 75,
+    "pytest_exit_code": 0,
+    "elapsed_seconds": 26.73
+  },
+  "effective_accounting": {
+    "infrastructure_failure_count": 18,
+    "prevalue_scientific_attempt_count": 7,
+    "complete_factor_attempt_count": 1,
+    "return_reading_development_trial_count": 0
+  },
+  "research_boundary": {
+    "campaign262_candidate_snapshot_values_read": true,
+    "campaign262_comparator_values_read": true,
+    "historical_daily_price_or_forward_return_values_read": false,
+    "stress_2024_2025_opened": false,
+    "provider_or_web_request_issued": false,
+    "credential_value_presence_or_digest_read": false,
+    "candidate49_ledgers_changed": false,
+    "current_scoring_selection_sizing_positions_or_orders_performed": false,
+    "investment_advice": false
+  }
+}

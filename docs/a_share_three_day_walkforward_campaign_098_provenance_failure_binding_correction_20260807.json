@@ -1,0 +1,22 @@
+{
+  "schema_version": 1,
+  "kind": "a_share_three_day_walkforward_campaign098_provenance_failure_binding_correction",
+  "status": "append_only_correction_before_v3_repair_protocol",
+  "recorded_at": "2026-08-07T08:16:00Z",
+  "record_with_mistyped_embedded_binding": {
+    "path": "docs/a_share_three_day_walkforward_campaign_098_postpublication_provenance_verifier_failure_20260807.json",
+    "sha256": "77335161da857ee6ca8a440d864a8dbe317c6dceeaebd0ab39f8452b593de68b"
+  },
+  "field": "v2_boundary_semantics_correction.sha256",
+  "mistyped_value_preserved": "ef2f0e9ef2b5777976293a59c713136fc440a9f62a60f4471e8174c5679eef3e",
+  "correct_binding": {
+    "path": "docs/a_share_three_day_walkforward_campaign_098_feature_v2_boundary_field_semantics_correction_20260807.json",
+    "sha256": "075e93b673f5b7c570704c5daa2aadfb3f3bc4ff3944e1ceb895d65fdc7b5d4d"
+  },
+  "original_failure_record_may_be_rewritten": false,
+  "scientific_candidate_snapshot_or_result_changed": false,
+  "campaign098_candidate_or_comparator_values_read_by_correction": false,
+  "historical_daily_price_or_forward_return_values_read": false,
+  "candidate49_ledgers_changed": false,
+  "provider_request_issued": false
+}

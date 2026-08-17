@@ -1,0 +1,19 @@
+{
+  "schema_version": 1,
+  "kind": "a_share_three_day_walkforward_campaign197_infrastructure_failure",
+  "status": "failed_frontier_combined_read_output_truncated_discarded",
+  "recorded_at": "2026-08-15T17:04:30+08:00",
+  "phase": "campaign197_prior_frontier_template_read",
+  "failure_class": "combined_dense_frontier_output_truncation",
+  "process_exit_code": 0,
+  "tool_output_truncated": true,
+  "failed_output_used_as_validation_or_scientific_evidence": false,
+  "failure_summary": "A combined read of policy and two long source-frontier templates exceeded the wrapper output budget and returned an incomplete Campaign196 frontier.",
+  "recovery": "Discard the entire combined output and use fresh bounded standalone queries for exact paths, hashes and the few required semantic fields.",
+  "research_boundary": {
+    "candidate_source_comparator_security_price_or_return_value_read": false,
+    "provider_or_web_request_issued": false,
+    "provider_credential_presence_value_or_digest_read": false,
+    "candidate49_ledgers_changed": false
+  }
+}

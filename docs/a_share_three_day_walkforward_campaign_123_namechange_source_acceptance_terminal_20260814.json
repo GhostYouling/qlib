@@ -1,0 +1,106 @@
+{
+  "schema_version": 1,
+  "kind": "a_share_three_day_walkforward_campaign123_namechange_source_acceptance_terminal",
+  "status": "terminal_source_schema_or_canonicalization_contract_failure_after_seven_calls_no_retry",
+  "recorded_at": "2026-08-14T03:48:28+08:00",
+  "authoritative_inputs": {
+    "numeric_policy_v123": {
+      "path": "docs/a_share_three_day_walkforward_future_numeric_comparison_eligibility_policy_v123_20260814.json",
+      "sha256": "98d696abe86efe2c4f40b0d6ecf626e27360af37d46547f31c96e245df38b4de"
+    },
+    "workflow_freeze": {
+      "path": "docs/a_share_three_day_walkforward_campaign_123_namechange_acceptance_workflow_freeze_20260814.json",
+      "sha256": "2efc1112012c014cf0e1391b11d4929cee6ec6b1b3037b7ada488e143f922cd4"
+    },
+    "intent": {
+      "path": "data/metadata/rich_data/runs/campaign123_namechange_acceptance_intent_v1.json",
+      "sha256": "3cb7e1463c018d164ce3aafb9e69c01b7a8943c6ef54a378cbde58f6a3e01bb9",
+      "mode": "0600"
+    },
+    "failure_record": {
+      "path": "data/metadata/rich_data/runs/campaign123_namechange_acceptance_failure_v1.json",
+      "sha256": "f5289a91a9fe526386e39c7ab394da84cf3d50b5e6a08a23bf46cdf51c22895c",
+      "mode": "0600"
+    }
+  },
+  "plan_evidence": {
+    "command": "/Volumes/DIsk/Coding/anaconda3/bin/python scripts/a_share_three_day_walkforward_campaign123_namechange_acceptance.py plan",
+    "exit_code": 0,
+    "ready": true,
+    "all_28_checks_passed": true,
+    "blockers": [],
+    "provider_request_issued": false,
+    "credential_value_printed_hashed_or_persisted": false
+  },
+  "run_evidence": {
+    "command_role": "exact frozen workflow run with both confirmation flags",
+    "exit_code": 2,
+    "failure_code": "source_schema_or_canonicalization_contract_failure",
+    "provider_calls_issued": 7,
+    "request_years": [
+      2019,
+      2020,
+      2021,
+      2022,
+      2023,
+      2024,
+      2025
+    ],
+    "request_fields": [
+      "ts_code",
+      "start_date",
+      "end_date",
+      "ann_date",
+      "change_reason"
+    ],
+    "retry_performed": false,
+    "provider_response_re_requested_for_detail": false,
+    "exception_message_persisted": false,
+    "credential_loaded_in_memory_for_run": true,
+    "credential_value_printed_hashed_or_persisted": false,
+    "provider_responses_read_in_memory": true,
+    "provider_row_counts_or_values_persisted": false,
+    "raw_provider_rows_persisted": false
+  },
+  "publication_evidence": {
+    "accepted_snapshot_exists": false,
+    "accepted_manifest_exists": false,
+    "normalized_event_published_count": 0,
+    "historical_factor_snapshot_exists": false
+  },
+  "scientific_decision": {
+    "candidate": "official_pure_security_rename_recency_60s",
+    "source_accepted": false,
+    "historical_predictive_value_established": false,
+    "numeric_comparator_eligible": false,
+    "development_trial_allowed": false,
+    "terminal": true,
+    "terminal_phase": "source_schema_or_canonicalization_acceptance",
+    "retry_relabel_field_reason_window_direction_threshold_source_substitution_or_rescue_allowed": false,
+    "reason": "The exact frozen provider projection could not pass the exact schema/canonicalization contract after all seven one-shot annual calls. The workflow intentionally did not retain raw rows or provider exception detail, so the failure cannot be repaired by inspecting or re-requesting the response."
+  },
+  "library_treatment": {
+    "complete_logical_definition_remains_for_future_duplicate_detection": true,
+    "complete_definition_count": 148,
+    "complete_definition_order_sha256": "fa9f0254b17d1a2b568e056b2696f24087f3f0668d7842a1bcbfdde1a87192e8",
+    "eligible_numeric_comparator_count": 139,
+    "eligible_numeric_comparator_order_sha256": "9c4de054ca1b83eced67eece256b024ebec3a6e1925de17a4cedfa7d36265161"
+  },
+  "research_boundary": {
+    "programmatic_provider_requests_issued": true,
+    "provider_calls_issued": 7,
+    "credential_loaded_for_source_acceptance": true,
+    "secret_printed_hashed_or_persisted": false,
+    "provider_responses_read_in_memory": true,
+    "provider_rows_persisted_or_retrieved_again": false,
+    "campaign123_candidate_or_comparison_values_read": false,
+    "historical_daily_price_or_forward_return_values_read": false,
+    "stress_2024_2025_candidate_or_return_values_opened": false,
+    "candidate49_historical_backfill_performed": false,
+    "candidate49_ledgers_changed": false,
+    "second_prospective_candidate_created": false,
+    "current_scoring_selection_sizing_positions_or_orders_performed": false,
+    "investment_advice": false
+  },
+  "next_action": "Preserve Campaign123 terminal and continue Campaign124 offline only from a genuinely new prevalue mechanism or a separately pre-accepted point-in-time source. Do not retry namechange or inspect/re-request failed responses."
+}

@@ -1,0 +1,47 @@
+{
+  "schema_version": 1,
+  "kind": "a_share_three_day_walkforward_campaign121_coverage_activation_binding",
+  "status": "frozen_after_verified_snapshot_before_candidate_coverage_values",
+  "recorded_at": "2026-08-14T02:24:00+08:00",
+  "filename_note": "The 20260813 suffix is inherited by the frozen Campaign119 coverage-audit template; recorded_at and bound content are the authoritative Campaign121 activation on 2026-08-14.",
+  "implementation_freeze": {
+    "path": "docs/a_share_three_day_walkforward_campaign_121_no_return_implementation_freeze_v2_20260814.json",
+    "sha256": "394a56dddea4cf6648ac9a3b53edd6b02891fcec328d0af038ae07e9cf50a007"
+  },
+  "candidate_snapshot": {
+    "path": "/Volumes/DIsk/qlib-a-share-tushare-1m/derived/a_share/rich/tushare/minute_walkforward_campaign121_feature_library/tushare_stk_mins_1m_2019_2025_ea0cbb8f_walkforward_campaign121_feature_library_v1/snapshot_manifest.json",
+    "sha256": "e5789da9896535d8d67e0f0f3a7b2704f41292e4694b127a27999224abfad724",
+    "dataset_sha256": "cb476bcc93e7c88df6e2666af9d60d470c90f8a7670ea4553d2e9b877ab8a5b2",
+    "partitions": 33015,
+    "rows": 7724498,
+    "eligible_rows": 7724498,
+    "verification_result": {
+      "path": "docs/a_share_three_day_walkforward_campaign_121_feature_snapshot_verification_result_20260814.json",
+      "sha256": "8f2e306dece976f619f66b8e41231a5e23ecf61e5449888cf44d6f790b7048dc"
+    }
+  },
+  "coverage_gate": {
+    "holding_period_sessions": 3,
+    "minimum_median_daily_coverage": 0.95,
+    "minimum_p05_daily_coverage": 0.9,
+    "minimum_p05_eligible_names": 50,
+    "minimum_non_overlapping_three_signal_session_cohorts": 200,
+    "minimum_observed_cohort_years": 5,
+    "minimum_nonconstant_cross_sectional_sessions": 200,
+    "cross_sectional_distinctness": "exact finite float values without rounding tolerance or binning"
+  },
+  "numeric_comparator_count": 138,
+  "numeric_comparator_order_sha256": "e917d9f832bda02f87c0a7e02a26127629146318de826684e8dfd6432fc20a3b",
+  "output_path": "data/experiments/short_horizon/historical_walkforward/campaign_121/coverage/campaign121_coverage_audit.json",
+  "single_use": true,
+  "research_boundary": {
+    "candidate_snapshot_values_read_before_activation": false,
+    "comparator_values_read_before_activation": false,
+    "historical_daily_price_or_forward_return_values_read": false,
+    "provider_request_issued": false,
+    "credential_loaded": false,
+    "candidate49_ledgers_changed": false,
+    "current_scoring_selection_sizing_or_orders_performed": false,
+    "investment_advice": false
+  }
+}

@@ -1,0 +1,60 @@
+{
+  "schema_version": 1,
+  "kind": "a_share_three_day_walkforward_campaign136_source_build_nullable_identity_failure",
+  "status": "failed_closed_and_temporary_output_removed",
+  "recorded_at": "2026-08-14T11:22:06+0800",
+  "attempt_id": "campaign136_source_build_001",
+  "authoritative_inputs": {
+    "source_bound_implementation_freeze_v1": {
+      "path": "docs/a_share_three_day_walkforward_campaign_136_source_bound_implementation_freeze_20260814.json",
+      "sha256": "13798b1494d34c03582fabfb27457cd47515e54485b662d464516ceb7e49fc98"
+    },
+    "source_bound_implementation_verification_v1": {
+      "path": "docs/a_share_three_day_walkforward_campaign_136_source_bound_implementation_verification_20260814.json",
+      "sha256": "fffa8e9d97f27b05c54680a728f449fb71979baec822fff86e4085ab5f02f07f"
+    }
+  },
+  "plan": {
+    "command": "PYTHONPATH=/Volumes/DIsk/Disk-Coding/qlib /Volumes/DIsk/Coding/anaconda3/bin/python3.12 scripts/a_share_three_day_walkforward_campaign136_features.py plan",
+    "exit_code": 0,
+    "ready": true,
+    "source_value_rows_decoded": false,
+    "source_file_count": 5451,
+    "source_total_bytes": 1502484498,
+    "source_file_identity_order_sha256": "d7dca618dbef6620e1c4782cb970178afa5777e3f1101a916df5eb6b8bf37cab"
+  },
+  "failed_run": {
+    "command": "PYTHONPATH=/Volumes/DIsk/Disk-Coding/qlib /Volumes/DIsk/Coding/anaconda3/bin/python3.12 scripts/a_share_three_day_walkforward_campaign136_features.py run --confirm-run --workers 8",
+    "exit_code": 1,
+    "error_type": "ValueError",
+    "error": "cannot convert to 'bool'-dtype NumPy array with missing values",
+    "failing_operation": "Convert the nullable source_identity_valid mask to a NumPy bool vector.",
+    "cause": "For a symbol whose first source row has no predecessor, string equality after shift produces pd.NA. The v1 builder did not replace that missing identity result with false before conversion.",
+    "scientific_interpretation": "The preregistered rule already declares a missing predecessor ineligible. Mapping this implementation-only pd.NA to false is the unique semantics-preserving recovery; it does not impute a factor value or bridge a gap."
+  },
+  "cleanup_verification": {
+    "final_output_absent": true,
+    "temporary_output_absent": true,
+    "partial_snapshot_published": false
+  },
+  "allowed_recovery": {
+    "change": "Apply fillna(false) to the source identity pair mask before its frozen bool-vector conversion and add a synthetic first-row-without-predecessor test.",
+    "requires_new_versioned_implementation_freeze_and_verification_before_retry": true,
+    "formula_direction_source_projection_date_range_or_threshold_change_allowed": false
+  },
+  "research_boundary": {
+    "campaign136_daily_source_values_decoded_or_read": true,
+    "campaign136_candidate_computation_started": true,
+    "campaign136_candidate_snapshot_published": false,
+    "campaign136_comparator_values_read": false,
+    "historical_daily_ohlcv_fields_read": [],
+    "historical_forward_returns_read": false,
+    "stress_2024_2025_opened": false,
+    "provider_request_issued": false,
+    "credential_loaded": false,
+    "candidate49_historical_backfill_performed": false,
+    "candidate49_ledgers_changed": false,
+    "current_scoring_selection_sizing_positions_or_orders_performed": false,
+    "investment_advice": false
+  }
+}

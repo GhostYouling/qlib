@@ -1,0 +1,62 @@
+{
+  "bindings": {
+    "candidate49_execution_ledger": {
+      "path": "data/experiments/short_horizon/candidate49_future_execution_ledger.json",
+      "sha256": "d57a3e61eac969e42cafa418ccd8c0a5ee65dcf69da145bb2c096c2a02a2ea4f"
+    },
+    "candidate49_signal_ledger": {
+      "path": "data/experiments/short_horizon/candidate49_future_signal_ledger.json",
+      "sha256": "5193f00d7f36da003f53cec387900da4c3d002299f5dfcfc1a95eaa199ed3a79"
+    },
+    "current_attempt_ledger": {
+      "path": "data/experiments/short_horizon/historical_walkforward/campaign_083/research_attempt_ledger_v15.json",
+      "sha256": "4f4610431017f93200a635039d23d68647f10e50f996c3b511e2d9e54703e49c"
+    },
+    "current_research_record": {
+      "path": "docs/a_share_three_day_walkforward_campaign_083_research_record_v5.json",
+      "sha256": "5bd0b8534c09637d5b2affbf8ecc903f810011763c54de4f612768d7f6b54401"
+    },
+    "future_numeric_comparator_policy_v19": {
+      "path": "docs/a_share_three_day_walkforward_future_numeric_comparison_eligibility_policy_v19_20260806.json",
+      "sha256": "dacfbcd9bfdb2b764bd52c71e09e50154a7ab8b4e7b2e183afdf52ddd96e32fa"
+    },
+    "manage_qlib_a_share_data_skill": {
+      "path": "/Users/niyufei/.codex/skills/manage-qlib-a-share-data/SKILL.md",
+      "sha256": "90a99c54dd00f0c737e85c4c6dd48d906edbd0f591c61278885728eaf7806431"
+    },
+    "prior_report_supersession": {
+      "path": "docs/a_share_three_day_walkforward_campaign_083_unified_report_supersession_v2_20260806.json",
+      "sha256": "31f8bf28ba4d7129a3161173a6b82ad51fc13b2cae488aeedc7f8959b99e5fb8"
+    },
+    "unified_research_report": {
+      "path": "data/experiments/short_horizon/three_day_research_report.md",
+      "sha256": "d11badddead81953acd7cac17eefe5ac85ea8f05fe4249ce09c42b937bfe4983"
+    }
+  },
+  "kind": "a_share_three_day_walkforward_campaign083_unified_report_supersession",
+  "prior_unified_report_sha256": "44aca187e4feb740e6761be3555bdeb60f214bfaf61f951836e13abe907a748c",
+  "recorded_at": "2026-08-06T21:45:00+08:00",
+  "status": "campaign080_through_campaign083_terminal_results_synchronized",
+  "synchronized_semantics": {
+    "campaign083_complete_factor_attempt_count": 1,
+    "campaign083_development_aggregate_pilot_20bp_return": -0.1527499879151002,
+    "campaign083_development_survivor_count": 0,
+    "campaign083_distinct_attempt_count": 27,
+    "campaign083_infrastructure_only_failure_count": 26,
+    "campaign083_ledger_entry_count": 28,
+    "candidate49_execution_entry_count": 0,
+    "candidate49_historical_backfill_performed": false,
+    "candidate49_signal_entry_count": 0,
+    "cumulative_historical_research_attempt_count": 533,
+    "cumulative_return_reading_development_trial_count": 284,
+    "current_scoring_selection_sizing_or_orders_performed": false,
+    "development_survivor_count": 0,
+    "future_complete_definition_count": 115,
+    "future_numeric_comparator_count": 113,
+    "maximum_absolute_median_daily_rank_correlation": 0.6919323884148136,
+    "provider_request_issued_by_campaign083": false,
+    "stress_2024_2025_opened": false,
+    "stress_2024_2025_returns_read": false
+  },
+  "version": 3
+}

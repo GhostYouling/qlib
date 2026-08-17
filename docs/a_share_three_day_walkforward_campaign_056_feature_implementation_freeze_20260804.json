@@ -1,0 +1,71 @@
+{
+  "version": 1,
+  "kind": "a_share_three_day_walkforward_campaign056_feature_implementation_freeze",
+  "status": "frozen_before_campaign056_source_values",
+  "recorded_at": "2026-08-03T19:18:00Z",
+  "purpose": "Bind the only Campaign056 feature implementation and its synthetic tests before any raw minute partition value, candidate value, comparison value, daily price, or forward return is read.",
+  "authoritative_boundary": {
+    "path": "docs/a_share_three_day_iteration_status_20260804_campaign055_verified.json",
+    "sha256": "47b6a36a95a82047bb499725d068b3545377789c31685fc86040cb8912e5b1db"
+  },
+  "mechanism_overlap_audit": {
+    "path": "docs/a_share_three_day_walkforward_campaign_056_mechanism_overlap_audit.json",
+    "sha256": "c8df81ec46a42756fd81a58d33ca43587e7614736eaf996b1dee98ee95abc7d5"
+  },
+  "no_return_protocol": {
+    "path": "docs/a_share_three_day_walkforward_campaign_056_no_return_preregistration.json",
+    "sha256": "7e7c9502e1018431f33a072dd12f8aa8f55a83b4afca30528245d1ea04ad1682",
+    "binding_validator_passed": true,
+    "binding_count_passed": 15,
+    "binding_count_failed": 0
+  },
+  "feature_runner": {
+    "path": "scripts/a_share_three_day_walkforward_campaign056_features.py",
+    "sha256": "3667567ea96260b314f2832f175913314c31bd091abfb6023a5e0c2d1f172169",
+    "factor": "intraday_day_over_day_amount_profile_similarity_240b",
+    "direction": "higher",
+    "source_projection": [
+      "datetime",
+      "symbol",
+      "provider",
+      "amount"
+    ],
+    "current_and_prior_bar_count": 240,
+    "prior_session_rule": "immediately_preceding_accepted_local_market_session_without_suspension_bridge",
+    "distance": "equal_mixture_natural_log_jensen_shannon_similarity",
+    "output_run_id": "tushare_stk_mins_1m_2019_2025_ea0cbb8f_walkforward_campaign056_feature_library_v1"
+  },
+  "synthetic_tests": {
+    "path": "tests/data_collector_tests/test_a_share_three_day_walkforward_campaign056_features.py",
+    "sha256": "b7fab20f6b19eb0509968f3c5d80738e7b0dd1846555ab16439cbdf41dff02f7",
+    "command": "PYTHONPATH=/Volumes/DIsk/Disk-Coding/qlib /opt/anaconda3/bin/python3 -m pytest -q tests/data_collector_tests/test_a_share_three_day_walkforward_campaign056_features.py",
+    "passed": 7,
+    "failed": 0,
+    "formula_identity_scale_invariance_disjoint_support_zero_invalid_grid_prior_session_and_no_bridge_semantics_tested": true
+  },
+  "implementation_semantics": {
+    "process_each_symbol_in_year_order": true,
+    "carry_only_observed_raw_profiles_across_year_boundaries": true,
+    "look_up_only_the_exact_calendar_predecessor": true,
+    "missing_or_suspended_previous_stock_session_is_missing": true,
+    "normalize_each_session_independently": true,
+    "exact_zero_amount_bins_retained": true,
+    "negative_nonfinite_or_nonpositive_total_amount_is_missing": true,
+    "atomic_partial_root_publication": true,
+    "per_partition_byte_and_frame_hashes": true,
+    "source_raw_and_joint_clean_partition_byte_hashes_verified": true,
+    "provider_calls": 0
+  },
+  "source_partition_values_read_before_freeze": false,
+  "candidate_values_read_before_freeze": false,
+  "comparison_values_read_before_freeze": false,
+  "historical_daily_price_fields_read_before_freeze": [],
+  "historical_forward_return_fields_read_before_freeze": false,
+  "training_or_model_fitting_performed_before_freeze": false,
+  "candidate49_historical_return_signal_execution_or_milestone_backfill_performed": false,
+  "candidate49_ledgers_changed": false,
+  "second_prospective_candidate_created": false,
+  "current_scoring_selection_sizing_or_orders_performed": false,
+  "provider_request_issued_before_freeze": false,
+  "next_action": "Run only the bound Campaign056 build against /Volumes/DIsk/qlib-a-share-tushare-1m, verify every output partition, then publish a separate snapshot binding before the ordered no-return audit."
+}

@@ -1,0 +1,71 @@
+{
+  "schema_version": 1,
+  "kind": "a_share_three_day_walkforward_campaign195_terminal_result_additive_v2",
+  "status": "terminal_prevalue_nine_infrastructure_failures_recorded_recovered_goal_active",
+  "recorded_at": "2026-08-15T16:15:00+08:00",
+  "timestamp_semantics": "monotonic logical append time after the Campaign195 v1 result and failed first focused validation",
+  "supersedes_without_rewriting": {
+    "path": "docs/a_share_three_day_walkforward_campaign_195_terminal_result_20260815.json",
+    "sha256": "a646b1b6db3964fc9b5c76675f215981e974961e9cc094a9674e5fb6af934bb6",
+    "preserved": true,
+    "scientific_result_changed": false
+  },
+  "authoritative_inputs": {
+    "campaign194_state": {"path": "docs/a_share_three_day_iteration_status_20260815_campaign194_prevalue_terminal.json", "sha256": "29abd6d92d74fa598d4bee88ae1ae505a011cba0bbca9baf4093ef4f9b8584fd"},
+    "source_frontier": {"path": "docs/a_share_three_day_walkforward_campaign_195_payment_processing_merchant_acquiring_authorization_clearing_settlement_dispute_reserve_lifecycle_source_frontier_20260815.json", "sha256": "8ba6a15deefa0cf492cec5373e12f56db64fc14e5a97672313f228aa8a984d7e"},
+    "attempt_ledger_v2": {
+      "path": "data/experiments/short_horizon/historical_walkforward/campaign_195/research_attempt_ledger_v2.json",
+      "sha256": "f25eb184d25a289c45c1f8dea02c9f9c9c7197cbd89ea7f21766f3939d0e6b1d",
+      "effective_entry_count": 16,
+      "chain_tip_sha256": "456f24e2c6b6c220c7fb25ab811542ab4d42dad45994a919cb948e351f7820b3"
+    },
+    "focused_test_failure": {"path": "docs/a_share_three_day_walkforward_campaign_195_focused_test_case_assertion_failure_20260815.json", "sha256": "9eae9a6b476d367e38da8e7259432ac6d758395270b13b949f0bd3e96f98c7c2"}
+  },
+  "scientific_result": {
+    "terminal": true,
+    "terminal_phase": "finite_prevalue_payment_processing_merchant_acquiring_source_admission",
+    "routes_reviewed": 7,
+    "genuinely_new_issuer_state_routes": 3,
+    "source_admission_deferrals_not_factor_failures": 3,
+    "relabeling_overlap_operator_or_combination_route_rejections": 4,
+    "selected_candidate_count": 0,
+    "complete_factor_definition_created": false,
+    "numeric_comparator_created": false,
+    "payment_processing_merchant_acquiring_lifecycle_state_declared_ineffective": false
+  },
+  "effective_accounting": {
+    "campaign195_attempt_count": 16,
+    "campaign195_prevalue_scientific_attempt_count": 7,
+    "campaign195_infrastructure_failure_count": 9,
+    "campaign195_return_reading_development_trial_count": 0,
+    "cumulative_historical_research_attempt_count": 1748,
+    "cumulative_return_reading_development_trial_count": 314
+  },
+  "library_state": {
+    "complete_factor_definition_count": 158,
+    "complete_factor_definition_order_sha256": "4819c7fd7c0795d7598a52f3c615e3f117d5f4ecd9332974bc8e3dfa57c96667",
+    "eligible_numeric_comparator_count": 142,
+    "eligible_numeric_comparator_order_sha256": "5d1b35fb5a0d8ac9293008db9963c4a60a94dc940c237c3ed259e5ce44f14aaf",
+    "changed_by_campaign195": false
+  },
+  "candidate49": {
+    "only_active_prospective_candidate": true,
+    "signal_ledger_sha256": "5193f00d7f36da003f53cec387900da4c3d002299f5dfcfc1a95eaa199ed3a79",
+    "signal_entry_count": 0,
+    "execution_ledger_sha256": "d57a3e61eac969e42cafa418ccd8c0a5ee65dcf69da145bb2c096c2a02a2ea4f",
+    "execution_entry_count": 0,
+    "ledgers_changed": false
+  },
+  "research_boundary": {
+    "failed_or_truncated_output_used_as_scientific_or_validation_evidence": false,
+    "source_factor_comparator_security_price_or_return_value_read": false,
+    "stress_2024_2025_opened": false,
+    "provider_or_web_request_issued": false,
+    "provider_credential_presence_value_or_digest_read": false,
+    "candidate49_ledgers_changed": false,
+    "second_prospective_candidate_created": false,
+    "current_scoring_selection_sizing_positions_or_orders_performed": false,
+    "investment_advice": false
+  },
+  "next_action": "Publish policy v285 and rerun corrected focused, cumulative and independent validation before authorizing Campaign196."
+}

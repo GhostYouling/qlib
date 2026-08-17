@@ -1,0 +1,43 @@
+{
+  "version": 2,
+  "kind": "a_share_three_day_walkforward_campaign161_implementation_infrastructure_failures",
+  "status": "terminal_publication_format_failure_recorded_and_recovered_without_scientific_change",
+  "recorded_at": "2026-08-15T05:49:30+08:00",
+  "campaign": 161,
+  "authoritative_predecessor": {
+    "path": "docs/a_share_three_day_walkforward_campaign_161_implementation_infrastructure_failures_20260815.json",
+    "sha256": "770eaf2e074e11dba464ba10fea93a41de9af77914bf578d8d143b478b3bba45",
+    "failure_count": 4
+  },
+  "delta_failures": [
+    {
+      "attempt_id": "campaign161_infrastructure_007",
+      "phase": "terminal_publication_validation",
+      "command_scope": "Black check followed by Ruff and 14 focused tests",
+      "exit_code": 1,
+      "failure": "Black reported that the newly added terminal test would be reformatted; chained Ruff and pytest did not run.",
+      "recovery": "Mechanically formatted only the new terminal test, then Ruff passed and all 14 focused tests passed.",
+      "scientific_formula_source_gate_or_result_changed": false,
+      "provider_request_issued": false
+    }
+  ],
+  "effective_infrastructure_failure_count": 7,
+  "recovery_verification": {
+    "black_formatted_file_count": 1,
+    "ruff_passed": true,
+    "focused_tests_passed": 14,
+    "focused_tests_failed": 0,
+    "terminal_test": {
+      "path": "tests/data_collector_tests/test_a_share_three_day_walkforward_campaign161_terminal.py",
+      "sha256": "50667f24632533032e78921986958e2960ba22708749b3a7f65d2e5b661ec4f5"
+    }
+  },
+  "research_boundary": {
+    "candidate_or_comparator_value_read": false,
+    "historical_daily_price_or_forward_return_value_read": false,
+    "provider_request_issued_by_delta_failure": false,
+    "provider_credential_presence_value_or_digest_read": false,
+    "stress_2024_2025_opened": false,
+    "candidate49_ledgers_changed": false
+  }
+}

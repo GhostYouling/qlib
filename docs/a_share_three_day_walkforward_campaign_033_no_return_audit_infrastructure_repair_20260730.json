@@ -1,0 +1,98 @@
+{
+  "version": 1,
+  "kind": "a_share_three_day_walkforward_campaign033_no_return_audit_infrastructure_repair",
+  "status": "scheduling_only_repair_frozen_before_comparison_values",
+  "recorded_at": "2026-07-30T16:31:25Z",
+  "purpose": "Freeze an additive, pre-result repair that bounds peak memory during the Campaign033 no-return audit by verifying and comparing prior campaign snapshots sequentially instead of nesting an eight-way outer executor around eight-way partition verification.",
+  "authoritative_inputs": {
+    "iteration_status": {
+      "path": "docs/a_share_three_day_iteration_status_20260730_campaign032_verified.json",
+      "sha256": "fdad546c4318772b3138dce47404694504714dea8485ecb949f6ffe97f4f62b7"
+    },
+    "historical_walkforward_policy": {
+      "path": "docs/a_share_three_day_historical_walkforward_research_policy_20260727.json",
+      "sha256": "38426d6161b9bfed323c58caba18feca668b8c9d53e294951a8ba90c01a798bb"
+    },
+    "no_return_preregistration": {
+      "path": "docs/a_share_three_day_walkforward_campaign_033_no_return_preregistration.json",
+      "sha256": "3e5546941b5954f96fc5a2d7dc7fbcf03b48d063ea1414133c2c17ae191fad4f"
+    },
+    "feature_implementation_freeze": {
+      "path": "docs/a_share_three_day_walkforward_campaign_033_feature_implementation_freeze_20260730.json",
+      "sha256": "c26f257af8ebb0c82bf0c9f43957689a993d5c9f781be7c98493499e4cd5e986"
+    },
+    "feature_snapshot_freeze": {
+      "path": "docs/a_share_three_day_walkforward_campaign_033_feature_snapshot_freeze_20260730.json",
+      "sha256": "a5dfcd5efda7bd0d924994052caa3270387bc2c76b4043b1723fb1c232f2dd69"
+    },
+    "feature_snapshot": {
+      "path": "/Volumes/DIsk/qlib-a-share-tushare-1m/derived/a_share/rich/tushare/minute_walkforward_campaign033_feature_library/tushare_stk_mins_1m_2019_2025_ea0cbb8f_walkforward_campaign033_feature_library_v1/snapshot_manifest.json",
+      "sha256": "bbd2b064885e90576712610a5b11426c3f3048fd10ff1d0590ea02861e423bd6",
+      "dataset_sha256": "ef76f920ab1b88dcbec40b640de240db308e60fc9711f42bb9cffbfe002e27cf",
+      "partitions": 33015,
+      "rows": 7724498,
+      "eligible_rows": 7695088
+    }
+  },
+  "repair": {
+    "runner_path": "scripts/a_share_three_day_walkforward_campaign033_features.py",
+    "pre_repair_sha256": "901dede7308ad5e1b6397c58e6212e048404eaed731f4b3e2e2f2fcd722fcaab",
+    "post_repair_sha256": "71dda8df5a594e01b916b4073246c59d1e2fe89fe8cd2569ad8a47d41b25e09b",
+    "change": "Remove the outer ThreadPoolExecutor over prior campaign snapshot specifications. For each specification in the already frozen order, retain the existing bounded inner partition verifier, immediately compute the already frozen comparison, then release that manifest before moving to the next specification.",
+    "reason": "The nested executor could retain every 33015-partition manifest concurrently and multiply worker pools, creating avoidable memory pressure without changing research semantics.",
+    "formula_changed": false,
+    "score_direction_changed": false,
+    "candidate_count_changed": false,
+    "comparison_library_changed": false,
+    "comparison_order_changed": false,
+    "coverage_gate_changed": false,
+    "uniqueness_threshold_changed": false,
+    "minimum_pairwise_sessions_changed": false,
+    "source_fields_changed": false,
+    "snapshot_bytes_changed": false,
+    "frozen_candidate_or_comparison_values_changed": false
+  },
+  "pre_result_boundary": {
+    "candidate_feature_values_opened": false,
+    "comparison_factor_values_opened": false,
+    "daily_price_fields_read": [],
+    "historical_forward_return_fields_read": false,
+    "development_fold_values_read": false,
+    "stress_2024_2025_values_read": false,
+    "candidate49_historical_values_read": false,
+    "provider_request_issued": false,
+    "current_scoring_selection_sizing_or_orders_performed": false
+  },
+  "verification": {
+    "test_path": "tests/data_collector_tests/test_a_share_three_day_walkforward_campaign033_features.py",
+    "test_sha256": "e9c5d858933ada45f18986faed4b22985905e16a3c9e9e76921ab10664f35086",
+    "focused_tests_passed": 13,
+    "focused_tests_failed": 0,
+    "python_compile_exit_code": 0,
+    "feature_snapshot_manifest_validation_exit_code": 0
+  },
+  "prospective_boundary": {
+    "candidate49_session_workflow_protocol": {
+      "path": "docs/a_share_tushare_candidate49_future_session_workflow_protocol.json",
+      "sha256": "6ff5636a3f7ef65e93452098186b3aecf9231d68873ab8a1070afb91d699ef7c"
+    },
+    "candidate49_signal_ledger": {
+      "path": "data/experiments/short_horizon/candidate49_future_signal_ledger.json",
+      "sha256": "5193f00d7f36da003f53cec387900da4c3d002299f5dfcfc1a95eaa199ed3a79",
+      "entry_count": 0
+    },
+    "candidate49_execution_ledger": {
+      "path": "data/experiments/short_horizon/candidate49_future_execution_ledger.json",
+      "sha256": "d57a3e61eac969e42cafa418ccd8c0a5ee65dcf69da145bb2c096c2a02a2ea4f",
+      "entry_count": 0
+    },
+    "candidate49_remains_only_active_prospective_candidate": true,
+    "candidate50_activation_allowed": false
+  },
+  "authorization": {
+    "no_return_audit_may_resume": true,
+    "historical_return_research_may_begin": false,
+    "development_preregistration_may_be_created_before_audit_admission": false,
+    "failed_exit_code_may_be_bypassed": false
+  }
+}

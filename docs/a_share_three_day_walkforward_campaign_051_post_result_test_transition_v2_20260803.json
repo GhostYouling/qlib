@@ -1,0 +1,36 @@
+{
+  "version": 2,
+  "kind": "a_share_three_day_walkforward_campaign051_post_result_test_transition",
+  "status": "terminal_test_accounting_correction_and_current_assertions_bound",
+  "recorded_at": "2026-08-03T07:58:00Z",
+  "supersedes": {
+    "path": "docs/a_share_three_day_walkforward_campaign_051_post_result_test_transition_20260803.json",
+    "sha256": "34cac6696f61a0fd578ab4c852a7d06d814723cdf7b6d5ee4632a3601663649a"
+  },
+  "bindings": {
+    "terminal_status_test_failure": {
+      "path": "docs/a_share_three_day_walkforward_campaign_051_terminal_status_test_failure_20260803.json",
+      "sha256": "7189fcf9165e28d65247deb166cf1fc51374f18234e3789fa289b538e5ee385b"
+    },
+    "current_campaign_tests": {
+      "path": "tests/data_collector_tests/test_a_share_three_day_walkforward_campaign051.py",
+      "sha256": "122e4aed14dac776895ccaa525b3b3bd6b1bb19b5612571fa0ae355971c148f7"
+    },
+    "current_terminal_tests": {
+      "path": "tests/data_collector_tests/test_a_share_three_day_walkforward_campaign051_terminal.py",
+      "sha256": "0edab36b1bfdd36f410970e7c84bb979bfc1df602ff2c58b800529235c865bb4"
+    },
+    "correction_publisher": {
+      "path": "scripts/a_share_three_day_walkforward_campaign051_finalize_v2.py",
+      "sha256": "0ae465fe1d81c099584430858cd4a67f51dd57825d4fad07e238e1daf21ece29"
+    }
+  },
+  "semantic_boundary": {
+    "stress_intent_exists": false,
+    "stress_record_exists": true,
+    "formula_direction_cost_fold_purge_or_gate_changed": false,
+    "additional_historical_daily_price_or_forward_return_read": false,
+    "2024_2025_stress_return_read": false,
+    "candidate49_ledgers_changed": false
+  }
+}

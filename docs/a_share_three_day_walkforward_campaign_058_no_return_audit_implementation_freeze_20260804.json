@@ -1,0 +1,104 @@
+{
+  "version": 1,
+  "kind": "a_share_three_day_walkforward_campaign058_no_return_audit_implementation_freeze",
+  "status": "frozen_before_campaign058_comparison_values",
+  "frozen_at": "2026-08-04T16:58:43+08:00",
+  "campaign_id": "058",
+  "factor": "quarterly_profit_revenue_growth_spread_pp",
+  "direction": "higher",
+  "authoritative_boundary": {
+    "path": "docs/a_share_three_day_iteration_status_20260804_campaign057_verified.json",
+    "sha256": "a83247eaa08b1276c2f538f5286e1b6e622fe8e93453145453c3eae6e1816ba4"
+  },
+  "protocol": {
+    "path": "docs/a_share_three_day_walkforward_campaign_058_no_return_preregistration.json",
+    "sha256": "e3c04b8f736604dca4adb21de367550bb281d4a156b8f990fa942c8757f8011a",
+    "comparison_count": 89,
+    "comparison_order_sha256": "c4100bc923fad2ea5fb8898ccb102afe44307c8ab03ee2df8b0972d9b71bbbc1"
+  },
+  "snapshot_binding": {
+    "path": "docs/a_share_three_day_walkforward_campaign_058_feature_snapshot_binding_20260804.json",
+    "sha256": "0cf92fd4c788a2250eb6b9359062e92908b7c17663b47732445d28c56cb9cf65",
+    "manifest_sha256": "c5bf57a70a2af71f30be87eec254710db65550f5dd7e041f219e862b4d97c00f",
+    "dataset_sha256": "59fb5ed46c76a4737bbc60de9707f7f3b10223b692de4f4a88fec4143891cd4c",
+    "expected_eligible_rows": 7231483
+  },
+  "implementation": {
+    "path": "scripts/a_share_three_day_walkforward_campaign058_no_return_audit.py",
+    "sha256": "84bf18ce4ccda2292235bd86cbc7be707560e04622ede15d0dfd2747ef79f8a0",
+    "base_campaign057_audit_path": "scripts/a_share_three_day_walkforward_campaign057_no_return_audit.py",
+    "base_campaign057_audit_sha256": "d60f8bb19e953a75e6dcc47745399a08cab71deb61134783fc3a043613e6ed59",
+    "coverage_loaded_before_any_comparison_values": true,
+    "first_80_comparisons_reuse_frozen_campaign057_chain": true,
+    "comparison_81_is_terminal_campaign057_snapshot": true,
+    "comparisons_82_through_89_are_frozen_quality_semantics": true,
+    "workers_frozen_for_real_run": 4
+  },
+  "quality_comparison_contract": {
+    "source_path": "data/raw/a_share/fundamentals/quarterly_quality.parquet",
+    "source_sha256": "3ac901a97928d2ed81ac72e3eaac9bdc148d36cf67b6abe70223699235ef059f",
+    "manifest_sha256": "e3cf654babe37a82393c5530696bc1cc242b736cb88e1947b8444b638125ba8c",
+    "source_fields": [
+      "instrument",
+      "report_date",
+      "announcement_date",
+      "roe",
+      "net_profit",
+      "revenue_yoy",
+      "profit_yoy"
+    ],
+    "factor_order": [
+      "quality_roe",
+      "quality_profit",
+      "quality_revenue",
+      "quality_growth",
+      "quality_score",
+      "roe_change",
+      "revenue_yoy_acceleration",
+      "profit_yoy_acceleration"
+    ],
+    "availability": "first accepted session strictly after announcement_date",
+    "acceleration": "same instrument and same fiscal-quarter month using only the newly effective report and its earlier same-quarter report",
+    "ranking": "average-tie same-session percentile rank on the identical quality-listing-candidate-comparison complete mask",
+    "composites": {
+      "quality_growth": "equal-weight mean of quality_profit and quality_revenue",
+      "quality_score": "equal-weight mean of quality_roe, quality_profit, and quality_revenue"
+    }
+  },
+  "synthetic_tests": {
+    "path": "tests/data_collector_tests/test_a_share_three_day_walkforward_campaign058_no_return_audit.py",
+    "sha256": "adc4dc103f75d6ff923991540dbc1c6fb854ce9cc13d5ac22ae8695483e9784e",
+    "final_audit_tests_passed": 5,
+    "combined_campaign058_tests_passed": 18,
+    "combined_command": "PYTHONPATH=/Volumes/DIsk/Disk-Coding/qlib python -m pytest -q tests/data_collector_tests/test_a_share_three_day_walkforward_campaign058_features.py tests/data_collector_tests/test_a_share_three_day_walkforward_campaign058_empty_partition_repair.py tests/data_collector_tests/test_a_share_three_day_walkforward_campaign058_no_return_audit.py",
+    "candidate_comparison_daily_price_or_return_values_read_by_tests": false
+  },
+  "pre_freeze_test_failures_retained": [
+    {
+      "run": 1,
+      "passed": 2,
+      "failed": 3,
+      "cause": "The dynamic adapter initially installed overrides in the outer wrapper namespace and inherited a private feature-runner hash call absent from Campaign058.",
+      "repair": "Inject the explicit hash verifier and all overrides into the actual generated audit engine without mutating the frozen feature runner."
+    },
+    {
+      "run": 2,
+      "passed": 3,
+      "failed": 2,
+      "cause": "The compact frozen Campaign058 protocol stores 80 inherited plus nine appended factors rather than a materialized comparison_factors array.",
+      "repair": "Reconstruct the exact 89-factor list in memory and require its frozen order digest before use."
+    }
+  ],
+  "research_boundary": {
+    "comparison_values_read_before_this_freeze": false,
+    "historical_daily_price_fields_read": [],
+    "historical_forward_return_fields_read": false,
+    "candidate49_historical_return_read": false,
+    "candidate49_ledgers_changed_by_campaign058": false,
+    "second_prospective_candidate_created": false,
+    "training_or_model_fitting_performed": false,
+    "current_scoring_selection_sizing_or_orders_performed": false,
+    "provider_request_issued_by_campaign058_audit": false
+  },
+  "next_action": "Run the bound no-return audit once with workers=4. If coverage fails, stop before all comparison values. If any of the exact 89 uniqueness comparisons fails, stop before daily price and forward return fields."
+}

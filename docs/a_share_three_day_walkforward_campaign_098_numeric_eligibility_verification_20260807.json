@@ -1,0 +1,36 @@
+{
+  "schema_version": 1,
+  "kind": "a_share_three_day_walkforward_campaign098_numeric_eligibility_verification",
+  "status": "verified_terminal_factor_has_frozen_numeric_session_capacity_for_future_duplicate_detection",
+  "recorded_at": "2026-08-07T08:40:00Z",
+  "terminal_verification": {
+    "path": "docs/a_share_three_day_walkforward_campaign_098_terminal_verification_20260807.json",
+    "sha256": "9de53bf11f3c6974971fe3b33170d61dbac38eb4263e3fd3a2264f12f984ac01"
+  },
+  "snapshot_manifest": {
+    "path": "/Volumes/DIsk/qlib-a-share-tushare-1m/derived/a_share/rich/tushare/minute_walkforward_campaign098_feature_library/tushare_stk_mins_1m_2019_2025_ea0cbb8f_walkforward_campaign098_feature_library_v1/snapshot_manifest.json",
+    "sha256": "371429a81292a91ef2bfa1292f467c81bf73e176fbfbc9888084f74eaaac1dc5",
+    "dataset_sha256": "921f06fad98aed942550d86b1475c888aea6d2025c37d53ec55917401bd34b33"
+  },
+  "factor": {
+    "name": "intraday_range_clock_variance_240m",
+    "score_direction": "higher",
+    "source_campaign": 98,
+    "rows": 1331759,
+    "finite_rows": 1328449,
+    "calendar_sessions": 1632,
+    "sessions_with_at_least_50_finite_names": 1623,
+    "minimum_finite_names": 3,
+    "median_finite_names": 941.5,
+    "minimum_pairwise_names_per_session": 50,
+    "minimum_pairwise_sessions_required": 100,
+    "session_capacity_passed": true,
+    "stock_day_key_decoder_frozen": true,
+    "eligible_as_numeric_comparator_for_campaign099": true
+  },
+  "historical_daily_price_or_forward_return_values_read_for_this_verification": false,
+  "provider_request_issued": false,
+  "candidate49_historical_return_read": false,
+  "candidate49_ledgers_changed": false,
+  "current_scoring_selection_sizing_or_orders_performed": false
+}

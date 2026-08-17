@@ -1,0 +1,21 @@
+{
+  "schema_version": 1,
+  "kind": "a_share_three_day_walkforward_campaign085_terminal_file_discovery_failure",
+  "status": "recorded_without_additional_market_or_return_read",
+  "recorded_at": "2026-08-07T00:06:00+08:00",
+  "failure": {
+    "stage": "terminal_research_record_discovery",
+    "tool": "zsh glob",
+    "observed": "No matches found for docs/a_share_three_day_walkforward_campaign_085_research_record*.json because no Campaign085 research record had yet been created.",
+    "root_cause": "The shell was asked to expand a pattern under nomatch semantics instead of using a deterministic file index.",
+    "correction": "Use rg --files with an explicit pattern and preserve the failed invocation."
+  },
+  "research_boundary": {
+    "development_trial_already_completed": true,
+    "additional_historical_daily_price_or_forward_return_values_read": false,
+    "stress_2024_2025_opened": false,
+    "provider_request_issued": false,
+    "candidate49_ledgers_changed": false,
+    "current_scoring_selection_sizing_or_orders_performed": false
+  }
+}

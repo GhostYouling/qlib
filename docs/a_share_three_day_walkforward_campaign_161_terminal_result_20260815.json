@@ -1,0 +1,144 @@
+{
+  "schema_version": 1,
+  "kind": "a_share_three_day_walkforward_campaign161_terminal_result",
+  "status": "terminal_one_shot_public_source_transport_schema_rejected_before_factor_values_comparators_prices_or_returns",
+  "recorded_at": "2026-08-15T05:43:10+08:00",
+  "campaign": 161,
+  "authoritative_inputs": {
+    "initial_state": {
+      "path": "docs/a_share_three_day_iteration_status_20260815_campaign161_initial_verification.json",
+      "sha256": "f132cd1a499f8f04f279cc9b022456af964d5309ba63b728f6098b34c7ba8fcb"
+    },
+    "source_evidence": {
+      "path": "docs/a_share_three_day_walkforward_campaign_161_debt_maturity_source_evidence_20260815.json",
+      "sha256": "4ae1a1af546265c842e7ef13c107211c2ed75ab4907f3b37f8eb85753a00da65"
+    },
+    "concept_scouting": {
+      "path": "docs/a_share_three_day_walkforward_campaign_161_concept_scouting_20260815.json",
+      "sha256": "e9c750f8393354fddf98b92e6b5b0d428475e5dea046393f3e92c7ee248ca605"
+    },
+    "concept_scouting_binding_correction": {
+      "path": "docs/a_share_three_day_walkforward_campaign_161_concept_scouting_binding_correction_20260815.json",
+      "sha256": "df3aee15375a343ddee3cb780b5282bf9f1fbeeb9b02240e4b4a05fd14ea0862"
+    },
+    "source_contract": {
+      "path": "docs/a_share_eastmoney_debt_maturity_resilience_data_contract_20260815.json",
+      "sha256": "c901436aecec2927c722e6f5d59d8d4e82fe73ec611dafe6f4be7403c1a42831"
+    },
+    "source_contract_binding_correction": {
+      "path": "docs/a_share_eastmoney_debt_maturity_resilience_data_contract_binding_correction_20260815.json",
+      "sha256": "a53aedd8a87eeaa0e47cba75e3d9d78de10eaddc89de324c1c329abd811993e9"
+    },
+    "implementation_freeze_v3": {
+      "path": "docs/a_share_three_day_walkforward_campaign_161_debt_maturity_implementation_freeze_v3_20260815.json",
+      "sha256": "a7d9ecd274beccba092de951eb9239a715572af91d0775493a3633aebcd5d3d7"
+    },
+    "acceptance_intent": {
+      "path": "data/experiments/short_horizon/historical_walkforward/campaign_161/source/acceptance_2023q4_intent_v1.json",
+      "sha256": "0429f08746030525479f1cc0253b2124ccc729f0e1b5fbcb664f7b75a64cfb65"
+    },
+    "acceptance_failure": {
+      "path": "data/experiments/short_horizon/historical_walkforward/campaign_161/source/acceptance_2023q4_failure_v1.json",
+      "sha256": "b7a66ea493b4df247882d90f130f819e9528c59cc60786ca4bc165aee94049a3"
+    },
+    "attempt_ledger_v2": {
+      "path": "data/experiments/short_horizon/historical_walkforward/campaign_161/research_attempt_ledger_v2.json",
+      "sha256": "b3fb40bf4e4f7203b874cec1de26c40f00e6bf27deda890a270668e04d215704"
+    }
+  },
+  "finite_catalog_result": {
+    "concept_count": 6,
+    "prevalue_family_refresh_rejections": 5,
+    "selected_for_source_acceptance_count": 1,
+    "selected_name": "eastmoney_debt_maturity_resilience",
+    "formula": "(LONG_LOAN + BOND_PAYABLE) / (SHORT_LOAN + SHORT_BOND_PAYABLE + NONCURRENT_LIAB_1YEAR + LONG_LOAN + BOND_PAYABLE)",
+    "direction": "higher_is_better",
+    "parameters": [],
+    "filters": [],
+    "subsets": [],
+    "combinations": [],
+    "models": []
+  },
+  "source_acceptance_result": {
+    "terminal": true,
+    "terminal_phase": "fixed_2023q4_first_page_transport_schema",
+    "provider": "Eastmoney public datacenter",
+    "report_name": "RPT_DMSK_FN_BALANCE",
+    "fixed_report_date": "2023-12-31",
+    "plan_ready_before_run": true,
+    "plan_exit_code_before_run": 0,
+    "run_exit_code": 3,
+    "error_type": "Campaign161SchemaError",
+    "error_code": "response_result_object_missing",
+    "provider_request_attempted": true,
+    "successful_result_object_count": 0,
+    "provider_response_rows_read": 0,
+    "factor_values_computed_or_read": 0,
+    "raw_response_persisted_or_printed": false,
+    "accepted_snapshot_published": false,
+    "published_files": [],
+    "retry_allowed": false,
+    "postfailure_plan_ready": false,
+    "postfailure_plan_exit_code": 2,
+    "postfailure_blockers": [
+      "intent_absent",
+      "failure_record_absent"
+    ]
+  },
+  "gate_lifecycle": {
+    "2019_2023_development_source_snapshot_run": false,
+    "capacity_gate_run": false,
+    "ordered_142_comparator_uniqueness_gate_run": false,
+    "2019_2023_walkforward_return_trial_run": false,
+    "development_survivor_count": 0,
+    "2024_2025_source_values_opened": false,
+    "2024_2025_returns_opened": false,
+    "reason": "The frozen one-shot source gate rejected before any provider row was available; every downstream gate is therefore unauthorized."
+  },
+  "library_result": {
+    "complete_factor_definition_count": 158,
+    "complete_factor_definition_order_sha256": "4819c7fd7c0795d7598a52f3c615e3f117d5f4ecd9332974bc8e3dfa57c96667",
+    "campaign161_definition_appended": true,
+    "eligible_numeric_comparator_count": 142,
+    "eligible_numeric_comparator_order_sha256": "5d1b35fb5a0d8ac9293008db9963c4a60a94dc940c237c3ed259e5ce44f14aaf",
+    "campaign161_numeric_series_appended": false,
+    "terminal_definition_may_only_be_reused_as_part_of_a_future_complete_prefrozen_historical_library": true,
+    "campaign161_terminal_result_may_be_rewritten_or_rescued": false
+  },
+  "effective_accounting": {
+    "campaign161_attempt_count": 12,
+    "campaign161_prevalue_scientific_attempt_count": 6,
+    "campaign161_infrastructure_failure_count": 6,
+    "campaign161_complete_factor_attempt_count": 0,
+    "campaign161_return_reading_development_trial_count": 0,
+    "campaign161_development_survivor_count": 0,
+    "campaign161_stress_trial_count": 0,
+    "cumulative_historical_research_attempt_count": 1408,
+    "cumulative_return_reading_development_trial_count": 314
+  },
+  "candidate49": {
+    "only_active_prospective_candidate": true,
+    "signal_ledger_sha256": "5193f00d7f36da003f53cec387900da4c3d002299f5dfcfc1a95eaa199ed3a79",
+    "signal_entry_count": 0,
+    "execution_ledger_sha256": "d57a3e61eac969e42cafa418ccd8c0a5ee65dcf69da145bb2c096c2a02a2ea4f",
+    "execution_entry_count": 0,
+    "historical_backfill_performed": false,
+    "ledgers_changed": false
+  },
+  "research_boundary": {
+    "public_source_code_documentation_or_html_template_requested": true,
+    "eastmoney_financial_data_api_request_attempted": true,
+    "source_response_result_object_present": false,
+    "source_row_or_column_value_read": false,
+    "candidate_or_comparator_value_read": false,
+    "historical_daily_price_or_forward_return_value_read": false,
+    "stress_2024_2025_opened": false,
+    "provider_credential_presence_value_or_digest_read": false,
+    "candidate49_historical_backfill_performed": false,
+    "candidate49_ledgers_changed": false,
+    "second_prospective_candidate_created": false,
+    "current_scoring_selection_sizing_positions_or_orders_performed": false,
+    "investment_advice": false
+  },
+  "terminal_decision": "Campaign161 is terminal at the one-shot source transport-schema gate. Do not retry, inspect alternate response fields, change the endpoint/columns/report date/formula/gates, or run any downstream source, comparator, price or return stage. Continue the active goal with Campaign162 finite offline prevalue scouting."
+}

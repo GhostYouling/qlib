@@ -1,0 +1,136 @@
+{
+  "schema_version": 1,
+  "kind": "a_share_three_day_walkforward_campaign156_credit_governance_source_admission_audit",
+  "status": "terminal_prevalue_zero_admitted_sources_with_deferred_concepts_distinguished_from_factor_failures",
+  "recorded_at": "2026-08-15T03:37:15+08:00",
+  "authoritative_inputs": {
+    "source_scouting": {
+      "path": "docs/a_share_three_day_walkforward_campaign_156_credit_governance_source_scouting_20260815.json",
+      "sha256": "2cdd8c13cdd722b290bfcff16042a23877260240f78cb0b6bc7765ffa1df4c6e"
+    },
+    "official_enforcement_metadata_terminal": {
+      "path": "docs/a_share_three_day_iteration_status_20260809_campaign113_metadata_terminal_v3.json",
+      "sha256": "80d16dc7ada427376fd8eeb65b60acc55629fb44f934c0229f44757667532e77"
+    },
+    "convertible_issue_source_terminal": {
+      "path": "docs/a_share_three_day_walkforward_campaign_127_convertible_issue_source_acceptance_terminal_20260814.json",
+      "sha256": "a0ca6e118480fdf765b1834222aa89c602bf4e0b67949e3649e6267862e685f1"
+    },
+    "equity_incentive_full_source_terminal": {
+      "path": "docs/a_share_cninfo_equity_incentive_plan_disclosure_intensity_full_source_record.json",
+      "sha256": "6ec4d753c4646a7f0fc7aa4a888645df429adb20fc07c14016ee2575f9bbe375"
+    }
+  },
+  "admission_gate": {
+    "gate_1_mechanism_independence": "The proposal must represent an economic information state rather than a renamed formula, keyword, threshold or subgroup of a terminal factor family.",
+    "gate_2_verified_historical_point_in_time_source": "A local accepted contract must identify the official source and prove first-publication timing, corrections and history for the 2019-2023 development span.",
+    "gate_3_stable_primitive_schema": "Issuer identity, event state and numeric primitives must be structured and frozen without title/body classification or guessed endpoint fields.",
+    "gate_4_equity_mapping_and_universe_coverage": "The contract must map events to eligible listed equities and define full-market inclusion, exclusions, duplicates, pagination and missingness without selecting on observed rows.",
+    "gate_5_terminal_family_independence": "The source and mechanism must not reopen a terminal enforcement, convertible-issuance, incentive-disclosure, ST or other exposed family.",
+    "pass_rule": "All five gates must pass before source rows, endpoint response values, formula, direction, parameters, feature values, comparators or returns may be read."
+  },
+  "proposal_gate_results": [
+    {
+      "catalog_id": "c156_01",
+      "mechanism_independence": true,
+      "verified_historical_point_in_time_source": false,
+      "stable_primitive_schema": false,
+      "equity_mapping_and_universe_coverage": false,
+      "terminal_family_independence": true,
+      "passed": false,
+      "classification": "source_admission_deferred_not_factor_failure"
+    },
+    {
+      "catalog_id": "c156_02",
+      "mechanism_independence": true,
+      "verified_historical_point_in_time_source": false,
+      "stable_primitive_schema": false,
+      "equity_mapping_and_universe_coverage": false,
+      "terminal_family_independence": true,
+      "passed": false,
+      "classification": "source_admission_deferred_not_factor_failure"
+    },
+    {
+      "catalog_id": "c156_03",
+      "mechanism_independence": false,
+      "verified_historical_point_in_time_source": false,
+      "stable_primitive_schema": false,
+      "equity_mapping_and_universe_coverage": false,
+      "terminal_family_independence": false,
+      "passed": false,
+      "classification": "terminal_source_family_overlap_rejection"
+    },
+    {
+      "catalog_id": "c156_04",
+      "mechanism_independence": true,
+      "verified_historical_point_in_time_source": false,
+      "stable_primitive_schema": false,
+      "equity_mapping_and_universe_coverage": false,
+      "terminal_family_independence": true,
+      "passed": false,
+      "classification": "source_admission_deferred_not_factor_failure"
+    },
+    {
+      "catalog_id": "c156_05",
+      "mechanism_independence": true,
+      "verified_historical_point_in_time_source": false,
+      "stable_primitive_schema": false,
+      "equity_mapping_and_universe_coverage": false,
+      "terminal_family_independence": true,
+      "passed": false,
+      "classification": "source_admission_deferred_not_factor_failure"
+    },
+    {
+      "catalog_id": "c156_06",
+      "mechanism_independence": false,
+      "verified_historical_point_in_time_source": false,
+      "stable_primitive_schema": false,
+      "equity_mapping_and_universe_coverage": false,
+      "terminal_family_independence": false,
+      "passed": false,
+      "classification": "terminal_source_family_overlap_rejection"
+    }
+  ],
+  "gate_summary": {
+    "concepts_reviewed": 6,
+    "mechanism_independence_passers": 4,
+    "verified_source_passers": 0,
+    "stable_schema_passers": 0,
+    "mapping_and_coverage_passers": 0,
+    "terminal_family_independence_passers": 4,
+    "all_gate_passers": 0,
+    "source_admission_deferrals": 4,
+    "terminal_source_family_overlap_rejections": 2,
+    "selected_candidate_count": 0
+  },
+  "scientific_interpretation": {
+    "deferred_concepts_tested_for_predictive_value": false,
+    "deferred_concepts_declared_ineffective": false,
+    "terminal_overlap_concepts_may_be_retried_or_keyword_migrated": false,
+    "reason": "Source admissibility was decided before rows. Four independent hypotheses remain untested until a separately preregistered source can pass all gates; two source-family migrations are closed."
+  },
+  "terminal_decision": {
+    "terminal": true,
+    "terminal_phase": "prevalue_credit_governance_source_admission_gate",
+    "formula_feature_adapter_or_model_created": false,
+    "source_row_or_endpoint_response_value_read": false,
+    "comparison_or_return_value_read": false,
+    "campaign156_source_acceptance_coverage_uniqueness_or_return_audit_run": false,
+    "unverified_endpoint_or_field_names_frozen": false,
+    "source_rows_may_be_sampled_to_choose_or_rescue_a_concept": false
+  },
+  "research_boundary": {
+    "source_row_or_response_values_read": false,
+    "candidate_or_comparator_values_read": false,
+    "historical_daily_price_or_forward_return_values_read": false,
+    "stress_2024_2025_opened": false,
+    "provider_or_web_request_issued": false,
+    "provider_credential_presence_value_or_digest_read": false,
+    "candidate49_historical_backfill_performed": false,
+    "candidate49_ledgers_changed": false,
+    "second_prospective_candidate_created": false,
+    "current_scoring_selection_sizing_positions_or_orders_performed": false,
+    "investment_advice": false
+  },
+  "next_action": "Record all six source-admission decisions, preserve the 157/142 library, and allow Campaign157 offline only from a new mechanism or a source whose exact point-in-time contract can be frozen before rows."
+}

@@ -1,0 +1,48 @@
+{
+  "schema_version": 1,
+  "kind": "a_share_three_day_walkforward_campaign101_no_return_result_binding",
+  "status": "one_factor_admitted_for_exact_single_development_trial",
+  "recorded_at": "2026-08-07T13:55:15Z",
+  "protocol": {
+    "path": "docs/a_share_three_day_walkforward_campaign_101_no_return_preregistration.json",
+    "sha256": "2d1919a7dd53e340158e6e59d48af65132625dd36725a417cef6119241f925c3"
+  },
+  "candidate_snapshot": {
+    "path": "/Volumes/DIsk/qlib-a-share-tushare-1m/derived/a_share/rich/tushare/minute_walkforward_campaign101_feature_library/tushare_stk_mins_1m_2019_2025_ea0cbb8f_walkforward_campaign101_feature_library_v1/snapshot_manifest.json",
+    "sha256": "7a2db929fff69f46edbc93d57cdca9cc4427c47dd542291b4f58d879dd91a3b6",
+    "dataset_sha256": "ed024ab2736b9766e1adb122b155189029f30a5d14e11d4d67a403ff9befef24"
+  },
+  "authoritative_audit": {
+    "path": "data/experiments/short_horizon/historical_walkforward/campaign_101/no_return/20260807T135252Z_campaign101_no_return_audit.json",
+    "sha256": "a8e0fb244c61442b5d02a82b4a6300356bb134f9dfabe224deb91cbf0c7f8fea"
+  },
+  "factor": {
+    "name": "full_numeric_library_directional_lower_quartile_consensus_129f",
+    "direction": "higher",
+    "admissible": true
+  },
+  "coverage": {
+    "candidate_eligible_rows": 1327637,
+    "median_coverage": 0.9981238257410756,
+    "p05_coverage": 0.992066409032738,
+    "eligible_names_p05": 138.0,
+    "potential_non_overlapping_three_session_cohorts": 539,
+    "observed_cohort_years": [2019, 2020, 2021, 2022, 2023, 2024, 2025],
+    "gate_passed": true
+  },
+  "uniqueness": {
+    "comparison_count": 129,
+    "comparison_order_sha256": "a029c53fb237cc1d34aec0a9f7b67856ffa1a67ffe0fc9620fb230680353263b",
+    "all_required_comparisons_passed": true,
+    "maximum_observed_absolute_median_daily_rank_correlation": 0.5578969529303937,
+    "maximum_allowed": 0.8
+  },
+  "historical_daily_price_fields_read": [],
+  "historical_forward_return_fields_read": false,
+  "training_or_model_fitting_performed": false,
+  "provider_request_issued": false,
+  "candidate49_historical_return_read": false,
+  "candidate49_ledgers_changed": false,
+  "current_scoring_selection_sizing_or_orders_performed": false,
+  "next_action": "Freeze and run exactly one 2019-2023 development trial; do not open 2024-2025 unless that trial survives."
+}

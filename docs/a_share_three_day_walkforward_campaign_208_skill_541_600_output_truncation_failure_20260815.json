@@ -1,0 +1,25 @@
+{
+  "schema_version": "a_share_three_day_walkforward_infrastructure_failure.v1",
+  "campaign_id": 208,
+  "logical_recorded_at": "2026-08-15T21:25:00+08:00",
+  "status": "failed_skill_lines_541_600_output_truncated_discarded",
+  "attempt_class": "infrastructure_failure",
+  "scientific_attempt": false,
+  "result_consumed": false,
+  "safety_breach": false,
+  "scope": {
+    "skill_path": "/Users/niyufei/.codex/skills/manage-qlib-a-share-data/SKILL.md",
+    "requested_lines": "541-600"
+  },
+  "failure": {
+    "kind": "tool_output_truncation",
+    "message": "The requested skill excerpt exceeded the available model context and was truncated. The partial output was discarded and was not used as an instruction source."
+  },
+  "recovery": {
+    "action": "reread_the_same_range_in_non_overlapping_30_line_chunks",
+    "planned_chunks": [
+      "541-570",
+      "571-600"
+    ]
+  }
+}

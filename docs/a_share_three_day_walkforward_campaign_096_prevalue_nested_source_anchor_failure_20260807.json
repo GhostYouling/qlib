@@ -1,0 +1,42 @@
+{
+  "schema_version": 1,
+  "kind": "a_share_three_day_walkforward_campaign096_prevalue_nested_source_anchor_failure",
+  "status": "recorded_before_second_narrow_implementation_repair_and_before_any_campaign096_source_or_value",
+  "recorded_at": "2026-08-07T04:19:00Z",
+  "protocol": {
+    "path": "docs/a_share_three_day_walkforward_campaign_096_no_return_preregistration.json",
+    "sha256": "97d8cdd6cc3731de8e8d4db101db1b4b0ee62353c9c39ac71a8753fea4501924"
+  },
+  "prior_failure": {
+    "path": "docs/a_share_three_day_walkforward_campaign_096_prevalue_definition_order_materialization_failure_20260807.json",
+    "sha256": "8f740ddf861847554db9bf8433f93197b2fdc6d9408bb7c0aa3f592bbddb0494"
+  },
+  "attempted_implementation": {
+    "path": "scripts/a_share_three_day_walkforward_campaign096_features.py",
+    "observed_sha256_before_repair": "1faa18ba98e3d76bf0a6e6a53aad4374b04e8bd078ce77041cd1f6b730e07c40"
+  },
+  "attempted_tests": {
+    "path": "tests/data_collector_tests/test_a_share_three_day_walkforward_campaign096_features.py",
+    "observed_sha256": "24b3a45f33c9accfd610641eab7c8e90c151f30f88b1a4ce65098ac4b8d7b289"
+  },
+  "command": "python3.12 -m pytest -q tests/data_collector_tests/test_a_share_three_day_walkforward_campaign096_features.py",
+  "exit_code": 2,
+  "failure_stage": "pytest_collection_pre_exec_definition_insertion",
+  "observed_error": "Campaign096 complete-definition insertion anchor changed",
+  "root_cause": "The desired complete-definition list is in Campaign089's nested generated source, not as a direct literal in the Campaign093 wrapper text, so a direct outer string anchor cannot match.",
+  "classification": "prevalue_implementation_failure_not_factor_result",
+  "narrow_repair_boundary": "Temporarily expose a local in-memory Campaign094 complete-definition adapter that appends the already-frozen Campaign095 semantic definition while the nested generated source materializes its immutable order, then restore the imported module function. Do not change factor or gate semantics.",
+  "research_boundary": {
+    "campaign096_minute_source_rows_read": false,
+    "campaign096_candidate_values_computed_or_read": false,
+    "comparison_values_read": false,
+    "historical_daily_price_fields_read": [],
+    "historical_forward_returns_read": false,
+    "provider_request_issued": false,
+    "candidate49_ledgers_changed": false,
+    "development_trial_count_increment": 0,
+    "research_attempt_count_increment": 0,
+    "infrastructure_or_implementation_failure_count_increment": 1
+  },
+  "same_campaign_formula_or_result_rescue": false
+}

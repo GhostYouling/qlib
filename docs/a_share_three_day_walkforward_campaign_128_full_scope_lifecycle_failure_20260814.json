@@ -1,0 +1,41 @@
+{
+  "schema_version": 1,
+  "kind": "a_share_three_day_walkforward_campaign128_infrastructure_failure",
+  "status": "failed_full_scope_obsolete_prepublication_lifecycle_assertions",
+  "recorded_at": "2026-08-14T06:35:00+0800",
+  "attempt_id": "campaign128_infrastructure_006",
+  "stage": "no_return_pass_full_scope_regression",
+  "failure": {
+    "exit_code": 1,
+    "pytest_result": "42 passed, 6 failed in 3.27s",
+    "black": "passed; 12 files unchanged",
+    "ruff": "passed",
+    "json_parse_validation": "passed before pytest",
+    "reason": "Six immutable prepublication tests assert that the candidate snapshot, coverage output or uniqueness output is absent, or that the prevalue-stage report hash is still current. All six assertions became false only because the frozen workflow legally published later-stage evidence.",
+    "scientific_or_runtime_failure": false
+  },
+  "immutable_tests_not_rewritten": [
+    "tests/data_collector_tests/test_a_share_three_day_walkforward_campaign128_prevalue.py",
+    "tests/data_collector_tests/test_a_share_three_day_walkforward_campaign128_features.py",
+    "tests/data_collector_tests/test_a_share_three_day_walkforward_campaign128_snapshot_verify_recovery.py",
+    "tests/data_collector_tests/test_a_share_three_day_walkforward_campaign128_coverage_audit.py",
+    "tests/data_collector_tests/test_a_share_three_day_walkforward_campaign128_ordered_uniqueness.py"
+  ],
+  "recovery": {
+    "action": "Preserve every frozen test byte and add a new no-return-admission lifecycle test bound to the current snapshot, coverage, uniqueness, ledger, policy and Candidate49 state.",
+    "old_failure_hidden_or_overridden": false,
+    "research_value_formula_gate_or_result_changed": false
+  },
+  "research_boundary": {
+    "provider_request_issued": false,
+    "provider_credential_loaded": false,
+    "new_candidate_or_comparator_values_read_by_failed_regression": false,
+    "historical_daily_price_or_forward_return_values_read": false,
+    "stress_2024_2025_return_values_opened": false,
+    "candidate49_historical_backfill_performed": false,
+    "candidate49_ledgers_changed": false,
+    "second_prospective_candidate_created": false,
+    "current_scoring_selection_sizing_positions_or_orders_performed": false,
+    "investment_advice": false
+  }
+}

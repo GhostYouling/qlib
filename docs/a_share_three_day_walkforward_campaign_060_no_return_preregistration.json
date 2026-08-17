@@ -1,0 +1,202 @@
+{
+  "version": 1,
+  "kind": "a_share_three_day_walkforward_campaign060_no_return_preregistration",
+  "status": "frozen_before_campaign060_source_candidate_comparison_daily_price_or_return_values",
+  "frozen_at": "2026-08-04T23:16:00+08:00",
+  "purpose": "Freeze the sole Campaign060 consecutive-session directional recurrence factor, exact accepted-calendar lag and missing semantics, ordered no-return gates, complete 91-factor comparison order, and finite post-admissibility trial before any Campaign060 protected value is read.",
+  "candidate": {
+    "name": "intraday_day_over_day_directional_return_agreement_238b",
+    "direction": "higher",
+    "formula": "For signal session t and accepted market session t-1, form the exact 238 fixed within-half signed log-close returns for each session; among same-position pairs where both returns are exactly nonzero, return the equal-sign count divided by the jointly nonzero count.",
+    "economic_hypothesis": "Repeated same-clock directional repricing across consecutive accepted sessions may represent persistent scheduled order flow or information assimilation and may remain informative through the third close.",
+    "source_projection": [
+      "datetime",
+      "symbol",
+      "provider",
+      "close"
+    ],
+    "forbidden_source_columns": [
+      "open",
+      "high",
+      "low",
+      "volume",
+      "amount"
+    ],
+    "accepted_minute_grid": "09:31--11:30 and 13:01--15:00 exactly 240 closes on each of two sessions; source 09:30 rows and the lunch transition are excluded",
+    "current_session": "signal session t",
+    "prior_session": "exactly the immediately preceding accepted local market-calendar session t-1",
+    "bridge_missing_or_suspended_prior_stock_session": false,
+    "selected_close_count_per_session": 240,
+    "signed_return_position_count_per_session": 238,
+    "return_rule": "119 adjacent natural-log close returns inside each 120-close half; retain mathematical sign and exact zero at every fixed position",
+    "informative_position_rule": "current return is exactly nonzero and prior return is exactly nonzero",
+    "agreement_rule": "mathematical signs are equal",
+    "minimum_informative_positions": 60,
+    "score_rule": "equal-sign informative count divided by informative count",
+    "zero_return_rule": "a same-position pair with either exact-zero return is noninformative and contributes to neither numerator nor denominator",
+    "missing_rule": "Missing unless both calendar-adjacent exact 240-close grids exist inside the bound source interval, all selected closes and derived returns are finite, at least 60 same-position pairs are jointly nonzero, and the score is finite in [0,1]. Never bridge, fill, repair, clip, winsorize, or substitute.",
+    "valid_range": {
+      "lower": 0.0,
+      "lower_inclusive": true,
+      "upper": 1.0,
+      "upper_inclusive": true
+    },
+    "alternate_field_lag_window_direction_zero_rule_support_threshold_filter_subset_board_year_cost_regime_fit_combination_or_model_search": false
+  },
+  "ordered_no_return_gates": {
+    "coverage_and_capacity_before_comparison_values": {
+      "coverage_basis": "candidate finite rows divided by quality-and-listing eligible buyable rows within 2019-2025",
+      "minimum_median_coverage": 0.95,
+      "minimum_p05_coverage": 0.9,
+      "minimum_p05_eligible_names": 50,
+      "minimum_non_overlapping_three_session_cohorts": 200,
+      "minimum_observed_calendar_years": 5,
+      "holding_period_sessions": 3,
+      "comparison_values_read_before_coverage_pass": false,
+      "failed_gate_policy": "Record the exact Campaign060 factor as terminal and stop before comparison values, daily prices, or forward returns."
+    },
+    "uniqueness_after_coverage_only": {
+      "screen_start": "2019-01-01",
+      "screen_end": "2025-12-31",
+      "method": "Within each identical quality-listing-candidate-and-comparison-eligible stock-day cross-section, compute pairwise-complete Spearman correlation between directional percentile scores, then take each comparison factor's median daily correlation.",
+      "maximum_allowed_absolute_median_daily_rank_correlation": 0.8,
+      "minimum_pairwise_names_per_session": 50,
+      "minimum_pairwise_sessions_per_comparison": 100,
+      "candidate49_is_no_return_comparison_only": true,
+      "comparison_factor_count": 91,
+      "comparison_factor_order_sha256": "abbf08eef9022adec5dfa0be4d15ae79a2007f4d424b7aa1d29522d8319e9312",
+      "comparison_order_definition": "Take all 90 reconstructed comparison factors from the bound Campaign059 protocol in exact order, then append terminal Campaign059 exactly once.",
+      "appended_comparison_factors": [
+        {
+          "name": "intraday_market_directional_sign_agreement_238m",
+          "score_direction": "higher",
+          "source": "campaign059_statistical_snapshot"
+        }
+      ],
+      "comparison_values_read_before_coverage_pass": false,
+      "failed_gate_policy": "Stop before daily price or forward return; do not invert, remove a failed comparison, alter lag/sign/zero/support semantics, or rescue the factor.",
+      "all_91_must_pass": true
+    }
+  },
+  "finite_development_catalog_if_admitted": {
+    "trial_id": "wf060_intraday_day_over_day_directional_return_agreement_238b_single_higher",
+    "feature_set": [
+      "intraday_day_over_day_directional_return_agreement_238b"
+    ],
+    "weights": [
+      1.0
+    ],
+    "direction": "higher",
+    "expected_trial_count": 1,
+    "alternate_field_lag_window_direction_zero_rule_support_threshold_filter_subset_year_cost_regime_model_or_combination_search": false
+  },
+  "point_in_time_and_execution_semantics": {
+    "signal_time": "accepted local session close t",
+    "entry_time": "next accepted session open t+1",
+    "exit_time": "third accepted session close t+3",
+    "holding_period_sessions": 3,
+    "development_interval": "2019-2023 only through three frozen expanding folds with a three-signal-session purge and t+1/t+3 in the same partition",
+    "stress_interval": "2024-2025 may open exactly once only if the complete frozen Campaign060 development trial survives every frozen gate",
+    "historical_output_may_generate_current_scores_selections_sizes_or_orders": false
+  },
+  "source_chain": {
+    "concept_scouting": {
+      "path": "docs/a_share_three_day_walkforward_campaign_060_concept_scouting.json",
+      "sha256": "fbc769e09178ef908a7e0ebcb571dc792a93c21034f9ed88ecf3f089cc6588a2"
+    },
+    "mechanism_overlap_audit": {
+      "path": "docs/a_share_three_day_walkforward_campaign_060_mechanism_overlap_audit.json",
+      "sha256": "508d079eb00a59039538dcc686ee3bfeb383fbe6395870f2322fe30c82e26606"
+    },
+    "authoritative_iteration_state": {
+      "path": "docs/a_share_three_day_iteration_status_20260804_campaign059_verified_v2.json",
+      "sha256": "4ba4d5fce6f6771f8e82e4c04deb8b8fc5f85a0443efd51e041b86514c95825a"
+    },
+    "historical_walkforward_policy": {
+      "path": "docs/a_share_three_day_historical_walkforward_research_policy_20260727.json",
+      "sha256": "38426d6161b9bfed323c58caba18feca668b8c9d53e294951a8ba90c01a798bb"
+    },
+    "future_only_policy": {
+      "path": "docs/a_share_three_day_future_only_minute_research_policy_20260725.json",
+      "sha256": "52ca8bfa7201509fe891d0af3d1c87aeebd64e47e6ec6641e897849411df408c"
+    },
+    "accepted_local_calendar": {
+      "path": "data/qlib/cn_a_share/calendars/day.txt",
+      "sha256": "fda506597d26bcec953cdc0882042a5046ec1587db60490e16a01627fd43f53a",
+      "use": "identify exact accepted-calendar t-1; never bridge a missing stock session"
+    },
+    "raw_minute_manifest": {
+      "path_below_data_root": "raw/a_share/rich/tushare/minutes/1m/snapshots/tushare_stk_mins_1m_2019_2025_ea0cbb8f/snapshot_manifest.json",
+      "sha256": "9b3d959563c9d182f38981c6a36bdb3bc9b415de08487a9e1f9e850825c0839f",
+      "projected_columns": [
+        "datetime",
+        "symbol",
+        "provider",
+        "close"
+      ]
+    },
+    "joint_clean_manifest": {
+      "path_below_data_root": "derived/a_share/rich/tushare/minute_sentiment_clean/tushare_stk_mins_1m_2019_2025_ea0cbb8f_sentiment_clean_v1/snapshot_manifest.json",
+      "sha256": "453c6719cb3c7da42fed8807b28a2bfe988700283e9625a6db97912534f368de",
+      "dataset_sha256": "0e4fe7c05536cdfcecc2936bc880726902f5560061188ffff82ef7ee6f346983",
+      "partitions": 33015,
+      "rows": 7724498,
+      "use": "accepted stock-day key grid only"
+    },
+    "prior_comparison_catalog": {
+      "path": "docs/a_share_three_day_walkforward_campaign_059_no_return_preregistration.json",
+      "sha256": "50cf7b067b1dfd5dc31d6c6ef85090788abdf6a2bbc054eda6e7c3824d5c60d6",
+      "reconstructed_factor_count": 90
+    },
+    "campaign059_terminal_record": {
+      "path": "docs/a_share_three_day_walkforward_campaign_059_research_record_v4.json",
+      "sha256": "e74ca3ec35d2d7d69c5048b667cf177783ec8cf5d58df3c36b123d214b0f0154"
+    },
+    "campaign059_statistical_snapshot": {
+      "path": "/Volumes/DIsk/qlib-a-share-tushare-1m/derived/a_share/rich/tushare/minute_walkforward_campaign059_feature_library/tushare_stk_mins_1m_2019_2025_ea0cbb8f_walkforward_campaign059_feature_library_v1/snapshot_manifest.json",
+      "sha256": "478597c0b06fe6d777dac906b6b70dc95f9b6e0a498c5f0e5eabf271dc2de9e6",
+      "dataset_sha256": "53f0c782633885f150ff1625e2b75ebb3b27e9f6e53e58c2e133718ebebf5293",
+      "factor": "intraday_market_directional_sign_agreement_238m",
+      "score_direction": "higher"
+    },
+    "candidate49_future_observation_registration": {
+      "path": "docs/a_share_tushare_intraday_cumulative_vwap_crossing_rate_future_observation_registration.json",
+      "sha256": "431cb0b3b078823f08b888bf4c499bcc5088309a2e58e9de5cb9a9aaa849ffa9",
+      "historical_return_comparison_allowed": false
+    },
+    "candidate49_signal_ledger": {
+      "path": "data/experiments/short_horizon/candidate49_future_signal_ledger.json",
+      "sha256": "5193f00d7f36da003f53cec387900da4c3d002299f5dfcfc1a95eaa199ed3a79",
+      "entry_count": 0
+    },
+    "candidate49_execution_ledger": {
+      "path": "data/experiments/short_horizon/candidate49_future_execution_ledger.json",
+      "sha256": "d57a3e61eac969e42cafa418ccd8c0a5ee65dcf69da145bb2c096c2a02a2ea4f",
+      "entry_count": 0
+    }
+  },
+  "research_boundary": {
+    "binding_validation_required_before_candidate_values": true,
+    "minute_datetime_symbol_provider_close_fields_read_before_admissibility": true,
+    "minute_open_high_low_volume_amount_fields_read_before_admissibility": false,
+    "accepted_calendar_t_minus_1_mapping_read_before_admissibility": true,
+    "comparison_values_read_before_coverage_pass": false,
+    "daily_price_fields_read_before_admissibility": false,
+    "forward_return_fields_read_before_admissibility": false,
+    "candidate49_historical_return_read": false,
+    "candidate49_ledgers_may_change": false,
+    "provider_request_issued": false,
+    "second_prospective_candidate_may_activate": false,
+    "current_scoring_selection_sizing_or_orders_allowed": false,
+    "investment_advice": false,
+    "current_listing_snapshot_survivorship_limitation": true
+  },
+  "decision": {
+    "frozen_candidate_count": 1,
+    "frozen_comparison_count": 91,
+    "finite_development_trial_count_if_admitted": 1,
+    "predictive_value_established": false,
+    "next_action": "Freeze the Campaign060 feature implementation fingerprint, validate every binding with exit code 0, then build one immutable no-return feature snapshot."
+  }
+}
+

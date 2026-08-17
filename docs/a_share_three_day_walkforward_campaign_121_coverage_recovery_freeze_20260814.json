@@ -1,0 +1,51 @@
+{
+  "schema_version": 1,
+  "kind": "a_share_three_day_walkforward_campaign121_coverage_recovery_freeze",
+  "status": "coverage_only_recovery_frozen_before_candidate_coverage_values",
+  "recorded_at": "2026-08-14T02:34:00+08:00",
+  "frozen_recovery": {
+    "runner_path": "scripts/a_share_three_day_walkforward_campaign121_coverage_recovery.py",
+    "runner_sha256": "3b682981cd9f69835b57ae7eba3638205a7892eb5999f33858bb48c7f37ab30c",
+    "test_path": "tests/data_collector_tests/test_a_share_three_day_walkforward_campaign121_coverage_recovery.py",
+    "test_sha256": "02847f235b9c5679916614c3180b5be3b292990079c13dba266788a20d8cab3a",
+    "base_audit_path": "scripts/a_share_three_day_walkforward_campaign121_no_return_audit.py",
+    "base_audit_sha256": "970c7a17de1bdc6e9bffb04fbb104334b088423a85121f603e0a3baca5bd204a",
+    "snapshot_verification_sha256": "8f2e306dece976f619f66b8e41231a5e23ecf61e5449888cf44d6f790b7048dc",
+    "failure_record_sha256": "2d816b06a3dce5163be42ea4da41fcf2c02c35a013415706ffff3bfed3b4194c",
+    "output_path": "data/experiments/short_horizon/historical_walkforward/campaign_121/coverage/campaign121_coverage_audit.json",
+    "numeric_comparator_count": 138,
+    "numeric_comparator_order_sha256": "e917d9f832bda02f87c0a7e02a26127629146318de826684e8dfd6432fc20a3b"
+  },
+  "recovery_scope": {
+    "bypassed_component": "Only the inherited Campaign105 manifest-semantic validator that conflicts with the immutable stale descriptive fields.",
+    "preserved_components": [
+      "Campaign121 activation and static bindings",
+      "full read-only snapshot byte/frame/lattice verification result",
+      "unchanged candidate loader and eligible-row checks",
+      "unchanged quality/current-listing eligibility base",
+      "unchanged coverage, cohort, year and variation thresholds",
+      "exclusive output creation",
+      "zero comparator, daily-price or forward-return reads"
+    ]
+  },
+  "bound_attempt_ledger": {
+    "path": "data/experiments/short_horizon/historical_walkforward/campaign_121/research_attempt_ledger_v14.json",
+    "sha256": "964000654292cf956d4f94543a6eda7e51f0f64302268ef21b2ee2476d3ca4de"
+  },
+  "synthetic_verification": {
+    "passed": 4,
+    "failed": 0,
+    "exit_code": 0,
+    "black": "passed",
+    "ruff": "passed"
+  },
+  "research_boundary": {
+    "candidate_coverage_values_read_before_freeze": false,
+    "comparator_values_read": false,
+    "historical_daily_price_or_forward_return_values_read": false,
+    "provider_request_issued": false,
+    "candidate49_ledgers_changed": false,
+    "gate_or_threshold_changed": false,
+    "snapshot_or_manifest_rewritten": false
+  }
+}

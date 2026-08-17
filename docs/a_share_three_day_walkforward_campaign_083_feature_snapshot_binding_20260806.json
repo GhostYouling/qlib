@@ -1,0 +1,77 @@
+{
+  "schema_version": 1,
+  "kind": "a_share_three_day_walkforward_campaign083_feature_snapshot_binding",
+  "status": "verified_snapshot_frozen_before_coverage_or_comparison_values",
+  "recorded_at": "2026-08-06T20:16:00+08:00",
+  "protocol": {
+    "path": "docs/a_share_three_day_walkforward_campaign_083_no_return_preregistration.json",
+    "sha256": "31271774531c1bd761d3963740be959fe329974b2bb1c8d6b6038fd62ede35af"
+  },
+  "feature_implementation_freeze": {
+    "path": "docs/a_share_three_day_walkforward_campaign_083_feature_implementation_freeze_20260806.json",
+    "sha256": "7c50df590a8d7bd9eaed51a1147592bf73254269f9366e696ea7f30aa515c9e8"
+  },
+  "feature_runner": {
+    "path": "scripts/a_share_three_day_walkforward_campaign083_features.py",
+    "sha256": "6d5d1c15bc146ccb6f86bb63e7183ca3b99ead49a1f748dcd8d954c760dca697"
+  },
+  "candidate_snapshot": {
+    "path": "/Volumes/DIsk/qlib-a-share-tushare-1m/derived/a_share/rich/tushare/minute_walkforward_campaign083_feature_library/tushare_stk_mins_1m_2019_2025_ea0cbb8f_walkforward_campaign083_feature_library_v1/snapshot_manifest.json",
+    "sha256": "e462a154f2da5374be671955b04d0e70b2bc02821a397e978e346dca75bf0618",
+    "dataset_sha256": "b9b9a54d1a1a040d22cae0dbabe1cdb556312a97f604efe1da38e437478cde52",
+    "factor": "intraday_close_frontier_innovation_share_238p",
+    "direction": "higher",
+    "partitions": 33015,
+    "rows": 7724498,
+    "eligible_rows": 7724498,
+    "missing_rows": 0
+  },
+  "independent_file_verification": {
+    "status": "verified",
+    "verified_partitions": 33015,
+    "verified_rows": 7724498,
+    "verified_eligible_rows": 7724498,
+    "dataset_sha256": "b9b9a54d1a1a040d22cae0dbabe1cdb556312a97f604efe1da38e437478cde52",
+    "continuous_score_range_validated": true,
+    "comparison_values_read": false,
+    "historical_daily_price_or_forward_return_values_read": false,
+    "provider_request_issued": false
+  },
+  "quality": {
+    "joint_clean_base_rows": 7724498,
+    "candidate_eligible_rows": 7724498,
+    "candidate_missing_rows": 0,
+    "raw_source_rows_examined": 1866461373,
+    "raw_source_sessions_examined": 7744653,
+    "raw_source_valid_close_frontier_innovation_sessions": 7744653,
+    "raw_source_invalid_close_grid_sessions": 0,
+    "raw_source_invalid_innovation_score_sessions": 0,
+    "raw_source_strict_new_high_events": 70083607,
+    "raw_source_strict_new_low_events": 87263078,
+    "interpretation": "Raw-source counts include sessions outside the accepted joint-clean identity projection. Every one of the 7,724,498 accepted joint-clean stock-days has 240 finite strictly positive selected closes and a valid frozen score; no imputation, clipping, filtering, or rescue was applied. This is technical coverage only and is not predictive evidence."
+  },
+  "research_boundary": {
+    "source_fields_read": [
+      "datetime",
+      "symbol",
+      "provider",
+      "close"
+    ],
+    "stock_day_identity_fields_read": [
+      "trade_date",
+      "symbol",
+      "provider"
+    ],
+    "comparison_values_read": false,
+    "coverage_or_capacity_metrics_computed": false,
+    "historical_daily_price_fields_read": [],
+    "historical_forward_returns_read": false,
+    "candidate49_historical_backfill_performed": false,
+    "candidate49_ledgers_changed": false,
+    "second_prospective_candidate_created": false,
+    "provider_request_issued": false,
+    "current_scoring_selection_sizing_or_orders_performed": false
+  },
+  "survivorship_limitation": "The accepted buyable universe is filtered by a current listing snapshot, so historical coverage and any later research result retain survivorship bias and are not deployment evidence.",
+  "next_action": "Freeze the no-return audit runner and tests against this exact manifest, then run coverage before loading any of the 112 numeric comparator value streams."
+}

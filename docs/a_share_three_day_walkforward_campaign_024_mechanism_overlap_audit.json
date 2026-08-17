@@ -1,0 +1,121 @@
+{
+  "version": 1,
+  "kind": "a_share_three_day_walkforward_campaign024_mechanism_overlap_audit",
+  "status": "passed_conceptual_independence_before_formula_values_comparisons_or_returns",
+  "recorded_at": "2026-07-29T09:22:11Z",
+  "purpose": "Resolve the selected directional-range-response concept into one exact no-value mechanism and challenge it against terminal and prospective families before any Campaign024 source partition, candidate value, comparison value, daily price, or forward return is opened.",
+  "concept_scouting": {
+    "path": "docs/a_share_three_day_walkforward_campaign_024_concept_scouting.json",
+    "sha256": "1cbc8436aa6036d12af9f785f4ca76177d50929c3744f250d14c3c25f50129c4"
+  },
+  "selected_mechanism": {
+    "name": "intraday_directional_range_response_coupling_238p",
+    "direction": "higher",
+    "information_domain": "one_minute_signed_body_to_next_minute_log_range_correlation",
+    "formula": "population PearsonCorr(log(close_t/open_t), log(high_{t+1}/low_{t+1})) over exactly 238 one-step transitions wholly inside the two trading halves",
+    "economic_hypothesis": "A positive signed-body-to-next-range relation means upward within-minute repricing is followed more consistently by wider next-minute price discovery than downward repricing. That directional response may indicate sustained information acceptance that carries from the next open through the third close.",
+    "source_fields": [
+      "datetime",
+      "symbol",
+      "provider",
+      "open",
+      "high",
+      "low",
+      "close"
+    ],
+    "selected_bar_grid": "exactly 240 one-minute bars at 09:31-11:30 and 13:01-15:00 after frozen timestamp normalization; standalone 09:30 is excluded",
+    "transition_rule": "For each 120-bar half, pair each current bar t from positions 1 through 119 with its immediately following bar t+1 from positions 2 through 120. Concatenate the 119 morning and 119 afternoon pairs in chronological order and compute one population Pearson correlation across the fixed 238-pair support.",
+    "body_rule": "The current-bar signed body is log(close_t/open_t), with positive values for up bodies, negative values for down bodies, and exact zero retained.",
+    "next_range_rule": "The response is the immediately following bar's nonnegative log traded range log(high_{t+1}/low_{t+1}); exact zero ranges remain.",
+    "variance_rule": "Both complete 238-element vectors must have strictly positive population variance; otherwise the stock-day is missing.",
+    "bar_rule": "Every selected open, high, low, and close must be finite and positive, with exact low<=open<=high and low<=close<=high. All 240 selected bars must pass even though the first range and last body of each half are not paired.",
+    "missing_rule": "Any invalid, nonpositive, or misordered selected OHLC value; nonfinite body or next-range value; nonpositive variance in either vector; nonfinite correlation; or correlation outside [-1,1] makes the stock-day missing.",
+    "endpoint_canonicalization_tolerance": 1E-12,
+    "valid_range": [
+      -1.0,
+      1.0
+    ]
+  },
+  "overlap_challenges": [
+    {
+      "family": "intraday_intrabar_body_range_efficiency_240m",
+      "result": "distinct",
+      "reason": "Campaign009 aggregates unsigned simultaneous-body efficiency within each bar and is invariant to bar ordering. Campaign024 retains body direction, pairs it only with the next bar's range, and measures a cross-lag Pearson relation. Holding all own-bar body and range magnitudes fixed while permuting their temporal alignment can change Campaign024 without changing Campaign009."
+    },
+    {
+      "family": "intraday_intrabar_range_reversal_238p",
+      "result": "distinct",
+      "reason": "Campaign012 relates current and next range widths and is unchanged when valid opens and closes move inside fixed high-low intervals. Campaign024 instead relates current signed body to next range and therefore changes when body orientation changes while every range remains fixed."
+    },
+    {
+      "family": "intraday_gap_body_continuation_240m",
+      "result": "distinct",
+      "reason": "Campaign016 couples the current opening gap with the current bar body. Campaign024 uses no prior close or gap and pairs the current body with the following bar's high-low range."
+    },
+    {
+      "family": "intraday_midrange_width_change_coupling_and_range_boundary_translation",
+      "result": "distinct",
+      "reason": "Campaign017 and Campaign023 depend only on high/low boundary changes. Holding every high and low fixed while moving valid opens and closes inside those intervals can change Campaign024 but leaves both boundary-only mechanisms unchanged."
+    },
+    {
+      "family": "intraday_range_volume_coupling_240m",
+      "result": "distinct",
+      "reason": "Campaign018 synchronously couples each range with volume. Campaign024 forbids volume and instead uses a signed OHLC body leading the next range by one bar."
+    },
+    {
+      "family": "intraday_body_direction_continuity_238p",
+      "result": "distinct",
+      "reason": "Campaign019 relates consecutive body directions and discards range response magnitude. Holding the entire body sequence fixed while changing valid next-bar high/low widths changes Campaign024 but leaves body-direction continuity unchanged."
+    },
+    {
+      "family": "intraday_intrabar_close_location_pressure_and_prior_range_breakout",
+      "result": "distinct",
+      "reason": "Campaign022 measures simultaneous close location inside its own range and Campaign015 measures a current close outside the prior range. Campaign024 uses neither statistic: it converts open-to-close direction in the current bar into a lead relation with the following range."
+    },
+    {
+      "family": "close_path_return_sign_activity_market_and_disclosure_mechanisms",
+      "result": "distinct",
+      "reason": "Campaign024 uses no close-to-close return, run count, cumulative close path, volume, amount, transaction VWAP, market peer, beta, residual, quarterly value, disclosure timing, or event field."
+    },
+    {
+      "family": "Candidate49 cumulative_vwap_crossing_rate",
+      "result": "distinct",
+      "reason": "Candidate49 measures close crossings of causal cumulative transaction VWAP using close, volume, and amount. Campaign024 uses no cumulative path or crossing count, forbids volume and amount, and may not evaluate Candidate49 historical returns."
+    }
+  ],
+  "counterfactual_independence_tests": [
+    "Holding every signed body fixed while changing valid next-bar high/low widths changes Campaign024 but leaves Campaign019 body-direction continuity unchanged.",
+    "Holding every high/low boundary and width sequence fixed while reversing valid open-to-close body orientations changes Campaign024 but leaves Campaign010, Campaign012, Campaign014, Campaign017, and Campaign023 high/low-only mechanisms unchanged.",
+    "Holding each bar's unsigned body and range magnitudes fixed while changing their chronological lead alignment generally changes Campaign024 but leaves Campaign009's aggregate simultaneous body-range efficiency unchanged.",
+    "Holding all selected OHLC values fixed while changing volume, amount, market peers, transaction VWAP, or announcement history leaves Campaign024 unchanged."
+  ],
+  "prohibited_variants": [
+    "replace population Pearson correlation with covariance, regression beta, rank correlation, sign agreement, counts, thresholds, bins, or another normalization",
+    "pair body and range contemporaneously, reverse the lead, use a lag other than exactly one bar, or substitute close-to-close returns, gap, wick, midpoint, width change, volume, amount, or activity",
+    "drop zero bodies or zero ranges, include standalone 09:30, bridge lunch, use overnight or cross-stock pairs, or add subwindows",
+    "change direction, invert, filter, rewindow, year-select, board-select, industry-select, magnitude-select, or combine the factor after returns",
+    "rescue or combine any terminal factor, backfill Candidate49, or compare Candidate49 historical returns"
+  ],
+  "required_no_return_challenges": {
+    "coverage_and_capacity_before_comparison_values": true,
+    "statistical_uniqueness_against_45_frozen_prior_statistical_factors": true,
+    "semantic_only_challenges_for_campaign008_and_campaign013": true,
+    "maximum_allowed_absolute_median_daily_rank_correlation": 0.8
+  },
+  "research_boundary": {
+    "external_campaign024_minute_partitions_read": false,
+    "candidate_values_read": false,
+    "comparison_values_read": false,
+    "historical_daily_price_fields_read": [],
+    "historical_forward_return_fields_read": false,
+    "candidate49_historical_return_read": false,
+    "candidate49_signal_or_execution_ledger_changed": false,
+    "candidate50_prospective_activation_created": false,
+    "provider_request_issued": false
+  },
+  "decision": {
+    "conceptually_independent": true,
+    "advance_to_exact_finite_no_return_preregistration": true,
+    "predictive_value_established": false
+  }
+}

@@ -1,0 +1,36 @@
+{
+  "schema_version": 3,
+  "kind": "a_share_three_day_walkforward_campaign110_no_return_comparator133_recovery_implementation_freeze",
+  "status": "candidate_verifier_module_alias_recovery_frozen_before_comparator133_or_recovery_values",
+  "recorded_at": "2026-08-08T15:43:48Z",
+  "entry_point": {
+    "path": "scripts/a_share_three_day_walkforward_campaign110_no_return_audit_v7.py",
+    "sha256": "e67e17dc38710646ae3f92b1b3ad5745d93b661b14846d015fa428d4156ad08f"
+  },
+  "synthetic_test": {
+    "path": "tests/data_collector_tests/test_a_share_three_day_walkforward_campaign110_no_return_audit_v7.py",
+    "sha256": "dd21e3b593b42464436c3559913a128cb7c21a81eb1940d7ab7a51e6ceac16ad",
+    "pre_freeze_result": "2 passed"
+  },
+  "prior_recovery_freeze": {
+    "path": "docs/a_share_three_day_walkforward_campaign_110_no_return_comparator_133_recovery_implementation_freeze_v2_20260808.json",
+    "sha256": "495ee506e7e7cd7e316cab1a427c34dd36bcfbe2b56c553e0d87c4e8e5df3fac"
+  },
+  "failure_record": {
+    "path": "docs/a_share_three_day_walkforward_campaign_110_recovery_candidate_verifier_module_alias_failure_20260808.json",
+    "sha256": "d4e67d6e0c717b55cd122c448bcd5fe2348d4c3b71fd0e9e62f7e5e66a9e7fdd"
+  },
+  "scope": {
+    "only_existing_frozen_candidate_verifier_module_aliased": true,
+    "prior_c109_verifier_alias_and_133_loader_binding_preserved": true,
+    "data_read_or_write_exposed_by_alias": false,
+    "protocol_gates_or_output_root_changed": false
+  },
+  "research_boundary": {
+    "comparator_133_values_read_before_freeze": false,
+    "historical_daily_price_or_forward_return_values_read_before_freeze": false,
+    "provider_request_issued_before_freeze": false,
+    "candidate49_ledgers_changed": false
+  },
+  "next_action": "Run the read-only recovery status; if ready, execute exactly one confirmed recovery audit."
+}

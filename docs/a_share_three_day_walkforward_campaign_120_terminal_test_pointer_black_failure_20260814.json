@@ -1,0 +1,18 @@
+{
+  "schema_version": 1,
+  "kind": "a_share_three_day_walkforward_campaign120_terminal_test_pointer_black_failure",
+  "status": "recorded_after_scientific_terminal_without_research_value_change",
+  "recorded_at": "2026-08-14T01:14:41+08:00",
+  "attempt_id": "campaign120_infrastructure_019",
+  "failed_stage": "final_terminal_test_pointer_static_format_validation",
+  "failure": "The corrected final-authority pointer made one test line exceed Black's layout, so Black stopped before Ruff and pytest.",
+  "repair": "Mechanically format the test, rerun it, and only then append the final accounting authority without further changing the test file.",
+  "scientific_result_library_order_or_research_values_changed": false,
+  "research_boundary": {
+    "historical_daily_price_or_forward_return_values_read_after_terminal": false,
+    "development_trial_started": false,
+    "stress_2024_2025_opened": false,
+    "provider_request_issued": false,
+    "candidate49_ledgers_changed": false
+  }
+}

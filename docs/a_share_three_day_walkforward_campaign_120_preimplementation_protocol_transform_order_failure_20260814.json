@@ -1,0 +1,18 @@
+{
+  "schema_version": 1,
+  "kind": "a_share_three_day_walkforward_campaign120_preimplementation_protocol_transform_order_failure",
+  "status": "recorded_before_historical_source_or_candidate_values",
+  "recorded_at": "2026-08-14T00:13:43+08:00",
+  "failed_stage": "unfrozen_synthetic_test_collection",
+  "failure": "The fail-closed feature transformation searched for a Campaign120-dated token before the later Campaign117-to-Campaign120 name transformation had run, so two test modules stopped during collection and no tests executed.",
+  "repair": "Map the actual Campaign117 20260813 path literals directly to Campaign120 20260814 path literals, preserving the required-token guard, then rerun the unchanged 16-test scope.",
+  "scientific_formula_parser_direction_support_or_gate_changed": false,
+  "research_boundary": {
+    "historical_source_rows_read": false,
+    "candidate_values_computed_or_read": false,
+    "comparator_values_read": false,
+    "daily_price_or_forward_return_values_read": false,
+    "provider_request_issued": false,
+    "candidate49_ledgers_changed": false
+  }
+}

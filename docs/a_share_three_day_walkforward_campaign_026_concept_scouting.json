@@ -1,0 +1,100 @@
+{
+  "version": 1,
+  "kind": "a_share_three_day_walkforward_campaign026_concept_scouting",
+  "status": "one_independent_intraday_market_directional_dependence_concept_selected_before_candidate_values_comparison_values_or_returns",
+  "recorded_at": "2026-07-30T02:55:00Z",
+  "purpose": "Select one economically interpretable Campaign026 mechanism without opening a Campaign026 minute partition, market-benchmark value, candidate value, comparison value, daily price, or forward return.",
+  "authoritative_boundary": {
+    "path": "docs/a_share_three_day_iteration_status_20260729_campaign025_verified.json",
+    "sha256": "42adda7cdde41d6ac1ea81fde4b3fb1c20091ca1a22ceaf7678e559763246809",
+    "campaign026_concept_scouting_allowed": true,
+    "binding_validation_required_at_each_freeze_boundary": true,
+    "candidate49_remains_only_prospective_candidate": true,
+    "candidate50_activation_allowed": false
+  },
+  "selected_concept": {
+    "concept_name": "intraday_market_up_down_dependence_asymmetry",
+    "mechanism_family": "leave_one_out_market_direction_conditional_same_minute_dependence",
+    "economic_question": "Does a stock co-move more consistently with broad-market rises than with broad-market declines during the same session, indicating upside participation with relative downside resilience that may persist from the next open through the third close?",
+    "economic_hypothesis": "A stock whose synchronous market dependence is stronger during positive broad-market minutes than during negative broad-market minutes may participate in common upside information while resisting common selling pressure. That asymmetric resilience may carry over the next three sessions.",
+    "provisional_direction": "higher",
+    "allowed_source_fields": [
+      "datetime",
+      "symbol",
+      "provider",
+      "close"
+    ],
+    "allowed_frozen_benchmark_fields": [
+      "trade_date",
+      "return_position",
+      "return_sum",
+      "valid_stock_count"
+    ],
+    "forbidden_source_fields": [
+      "open",
+      "high",
+      "low",
+      "volume",
+      "amount",
+      "daily open",
+      "daily high",
+      "daily low",
+      "daily close",
+      "daily volume",
+      "daily amount",
+      "forward return",
+      "Level-2"
+    ],
+    "fixed_temporal_question": "Use all 238 within-half one-minute close returns at 09:31-11:30 and 13:01-15:00, partitioned only by the sign of the synchronous equal-weight leave-one-out market return; exclude standalone 09:30, lunch, overnight, cross-day, and cross-stock transitions.",
+    "mandatory_overlap_challenges_before_any_value": [
+      "intraday_market_idiosyncratic_share_238m",
+      "intraday_market_neutral_late_residual_drift_238m",
+      "intraday_market_response_delay_asymmetry_236p",
+      "intraday_return_skewness_238m",
+      "intraday_upside_semivariance_share_239m",
+      "intraday_return_sign_run_imbalance_238p",
+      "intraday_market_amount_profile_synchronization_240m",
+      "candidate49_intraday_cumulative_vwap_crossing_rate_240m_v1"
+    ],
+    "known_design_risks": [
+      "correlation versus beta, market-sign partitioning, exact-zero market returns, minimum observations per sign, estimator, direction, and subwindows are researcher degrees of freedom unless frozen before values",
+      "the concept may be statistically associated with market-idiosyncratic share or own-return skewness even though neither measures conditional synchronous dependence",
+      "stronger upside dependence than downside dependence may indicate resilience or merely transient positive convexity, so direction must be frozen before returns",
+      "using market-return magnitudes, thresholds, quantiles, leads, lags, late-session subsets, regressions, activity weights, or terminal factor values would change the mechanism"
+    ]
+  },
+  "rejected_concepts": [
+    {
+      "concept": "market_beta_or_market_residual_level",
+      "reason": "Overall market dependence and idiosyncratic share are already terminal mechanisms; Campaign026 must condition on market direction instead of reopening their unconditional definitions."
+    },
+    {
+      "concept": "market_lead_lag_or_delayed_response",
+      "reason": "Campaign021 already measured one-minute stock-versus-market response-delay asymmetry. Campaign026 must remain synchronous and use no lead or lag."
+    },
+    {
+      "concept": "return_skewness_or_upside_semivariance",
+      "reason": "Own-return distribution asymmetry is terminal and does not require a leave-one-out market state. Campaign026 must condition dependence on the external market sign."
+    },
+    {
+      "concept": "terminal_factor_combination",
+      "reason": "Combining, aggregating, transforming, or rescuing Campaign001-Campaign025 terminal definitions is prohibited."
+    }
+  ],
+  "decision": {
+    "advance_to_separate_no_value_mechanism_overlap_audit": true,
+    "exact_formula_or_direction_fixed_here": false,
+    "new_daily_bar_required": false,
+    "same_day_1630_wait_required": false,
+    "candidate49_ledgers_changed": false
+  },
+  "research_boundary": {
+    "external_campaign026_minute_partitions_read": false,
+    "frozen_market_benchmark_values_read": false,
+    "candidate_values_read": false,
+    "comparison_values_read": false,
+    "daily_price_fields_read": false,
+    "forward_returns_read": false,
+    "provider_request_issued": false
+  }
+}

@@ -1,0 +1,155 @@
+{
+  "version": 1,
+  "kind": "a_share_three_day_walkforward_campaign045_concept_scouting",
+  "status": "completed_before_campaign045_candidate_comparison_daily_price_or_return_values",
+  "recorded_at": "2026-07-31T19:42:00Z",
+  "purpose": "Select one genuinely new Campaign045 mechanism after establishing that every concept in the 2026-07-26 inactive queue was already consumed by an immutable terminal campaign, without opening minute candidate values, comparison values, daily prices, or returns.",
+  "authoritative_inputs": {
+    "iteration_state": {
+      "path": "docs/a_share_three_day_iteration_status_20260801_campaign044_verified.json",
+      "sha256": "7859c2edc55f147fd49cc95baf133c7a0bb0a724fa4b630f3d5196dc93691998"
+    },
+    "historical_walkforward_policy": {
+      "path": "docs/a_share_three_day_historical_walkforward_research_policy_20260727.json",
+      "sha256": "38426d6161b9bfed323c58caba18feca668b8c9d53e294951a8ba90c01a798bb"
+    },
+    "campaign044_terminal_record": {
+      "path": "docs/a_share_three_day_walkforward_campaign_044_research_record.json",
+      "sha256": "3e343e8387fd16db75f7e8a5c87025e712082ea50aa9e360083af7f0d3f2b615"
+    },
+    "complete_terminal_library": {
+      "path": "docs/a_share_three_day_walkforward_campaign_044_no_return_preregistration.json",
+      "sha256": "1037d27b173f4fb63c75672c4da50c6616f1f1eb3ae1917ecf291fc2d2644f69",
+      "terminal_factor_count_excluding_candidate49_and_campaign044": 66,
+      "terminal_factor_order_sha256": "71a34e7decf7ba4a456cff4e08b0ea034a3919ee62edf5eb3bec603eb50a5bed"
+    },
+    "inactive_queue": {
+      "path": "docs/a_share_three_day_inactive_mechanism_scouting_queue_20260726.json",
+      "sha256": "00565a87b5eb4241de3dfdd24f96ef78756fb286655969351ec966bbe32afad3"
+    },
+    "inactive_queue_delta": {
+      "path": "docs/a_share_three_day_inactive_mechanism_scouting_queue_delta_20260726.json",
+      "sha256": "60f280cfecbd390a4fb6388eb3c5a63a507506b542aeba937f60d583cc717835"
+    }
+  },
+  "queue_resolution_without_values": [
+    {
+      "queue_concept": "intraday_market_neutral_late_residual_drift",
+      "resolution": "already_terminal_campaign004_definition"
+    },
+    {
+      "queue_concept": "intraday_negative_return_absorption_rate",
+      "resolution": "already_terminal_campaign004_definition"
+    },
+    {
+      "queue_concept": "intraday_signed_path_efficiency",
+      "resolution": "already_terminal_pre_campaign004_definition"
+    },
+    {
+      "queue_concept": "intraday_zero_return_activity_absorption",
+      "resolution": "already_terminal_as_intraday_zero_return_amount_intensity_238m"
+    },
+    {
+      "queue_concept": "intraday_lunch_repricing_persistence",
+      "resolution": "already_terminal_campaign005_and_campaign042_definitions"
+    },
+    {
+      "queue_concept": "intraday_directional_price_impact_asymmetry",
+      "resolution": "already_terminal_campaign005_definition"
+    }
+  ],
+  "candidate_design_catalog": [
+    {
+      "design": "volatility_activity_lead_lag_asymmetry",
+      "decision": "selected",
+      "reason": "It measures whether CNY activity reacts to an observed one-minute price shock more strongly than activity predicts the next shock. No frozen terminal factor compares those two opposite absolute-return/activity lag directions in one antisymmetric statistic."
+    },
+    {
+      "design": "activity_leads_next_signed_return_only",
+      "decision": "rejected_before_values",
+      "reason": "This is the already terminal intraday_amount_lead_return_correlation_238p mechanism."
+    },
+    {
+      "design": "same_minute_activity_absolute_return_correlation_only",
+      "decision": "rejected_before_values",
+      "reason": "This is the already terminal intraday_amount_volatility_coupling_238p mechanism."
+    },
+    {
+      "design": "reactive_correlation_only_or_anticipatory_correlation_only",
+      "decision": "rejected_before_values",
+      "reason": "Selecting one side would create two correlated variants and a direction search; the exact antisymmetric difference is the single mechanism-level quantity."
+    },
+    {
+      "design": "signed_return_volume_or_amount_direction_splits",
+      "decision": "rejected_before_values",
+      "reason": "Signed and direction-split variants reopen terminal lead-return, up-move-amount-share, directional-price-impact, and transaction-path families."
+    },
+    {
+      "design": "alternate_lags_windows_amount_transforms_or_volume_substitution",
+      "decision": "rejected_before_values",
+      "reason": "Lag one, both complete half sessions, destination-bar CNY amount, and log1p(amount) are fixed once; no lag, subwindow, transformation, or source-field family is searched."
+    },
+    {
+      "design": "terminal_factor_combination_or_fitted_model",
+      "decision": "rejected_before_values",
+      "reason": "Campaign045 contains one raw within-session mechanism and no terminal value, weight fitting, filter, threshold, regime, or model."
+    }
+  ],
+  "selected_candidate": {
+    "name": "intraday_volatility_activity_lead_lag_asymmetry_236p",
+    "direction": "higher",
+    "economic_hypothesis": "When CNY activity follows an observed price shock more strongly than it precedes the next shock, trading is more reactive and liquidity-absorbing than anticipatory. A higher completed-session asymmetry may indicate more complete price discovery and stronger next-open-to-third-close performance.",
+    "formula": "Within each 120-close half, form 119 adjacent log returns r_j and destination-bar activity a_j=log1p(amount_{j+1}). Across the 118 adjacent return/activity pairs per half, pooled to 236, return Corr(abs(r_j),a_{j+1}) - Corr(a_j,abs(r_{j+1})) using equal-position population Pearson correlations.",
+    "source_projection": [
+      "datetime",
+      "symbol",
+      "provider",
+      "close",
+      "amount"
+    ],
+    "selected_grid": [
+      "09:31-11:30",
+      "13:01-15:00"
+    ],
+    "selected_bar_count": 240,
+    "within_half_return_count": 238,
+    "adjacent_pair_count": 236,
+    "include_0930": false,
+    "include_lunch_transition": false,
+    "activity_field": "destination_bar_amount_cny",
+    "activity_transform": "log1p_nonnegative_amount",
+    "return_transform": "absolute_within_half_log_close_return",
+    "correlation_estimator": "population_pearson_equal_pair_weight",
+    "reactive_component": "Corr(abs(r_j),a_{j+1})",
+    "anticipatory_component": "Corr(a_j,abs(r_{j+1}))",
+    "score": "reactive_component_minus_anticipatory_component",
+    "zero_semantics": "retain exact-zero returns and exact-zero amounts at fixed positions",
+    "variance_semantics": "both Pearson denominators must be strictly positive",
+    "valid_range": [
+      -2.0,
+      2.0
+    ],
+    "endpoint_canonicalization_tolerance": 1e-12,
+    "transform_threshold_filter_combination_or_model": "none"
+  },
+  "research_boundary": {
+    "comparison_factor_names_and_directions_read_from_frozen_protocol": true,
+    "external_minute_partitions_read": false,
+    "candidate_values_read": false,
+    "comparison_values_read": false,
+    "historical_daily_price_fields_read": false,
+    "historical_forward_returns_read": false,
+    "training_or_model_fitting_performed": false,
+    "provider_request_issued": false,
+    "candidate49_historical_return_signal_or_execution_backfill_performed": false,
+    "candidate49_ledgers_changed": false,
+    "candidate50_activation_created": false,
+    "current_scoring_selection_sizing_or_orders_performed": false,
+    "investment_advice": false
+  },
+  "decision": {
+    "selected_candidate_count": 1,
+    "predictive_value_established": false,
+    "next_action": "Complete a separate pre-value overlap audit against all 66 terminal definitions, Candidate49, and terminal Campaign044 before freezing the exact 68-comparison no-return protocol."
+  }
+}

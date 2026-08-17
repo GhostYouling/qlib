@@ -1,0 +1,57 @@
+{
+  "version": 1,
+  "kind": "a_share_three_day_walkforward_campaign054_no_return_audit_implementation_freeze",
+  "status": "frozen_before_campaign054_comparison_values",
+  "frozen_at": "2026-08-03T13:59:00Z",
+  "purpose": "Bind the repaired snapshot, exact 77-comparison audit implementation, and all pre-comparison test attempts before opening any comparison value.",
+  "snapshot_publication_binding": {
+    "path": "docs/a_share_three_day_walkforward_campaign_054_snapshot_publication_binding_20260803.json",
+    "sha256": "bdce301c66e2426e3acfa51f1e46c2330d9c4dc65703fb41b491c592386edd13"
+  },
+  "audit_entrypoint": {
+    "path": "scripts/a_share_three_day_walkforward_campaign054_features_v5.py",
+    "sha256": "4f7b37d64666bea5a8c4d517bd6262a1f0b2ead03b20bb44bb08e963aa1188cc"
+  },
+  "audit_tests": {
+    "path": "tests/data_collector_tests/test_a_share_three_day_walkforward_campaign054_no_return_audit.py",
+    "sha256": "75ddfcdaca65862e409dcceac804874717a3a779df18162ccc0cd34e098ce0b4",
+    "audit_cases_passed": 4,
+    "combined_cases_passed": 23,
+    "failed": 0
+  },
+  "pre_freeze_attempts": [
+    {
+      "attempt": 1,
+      "result": "failed_closed_before_status_or_values",
+      "failure": "The expected full Campaign053 v6 entrypoint SHA was mistyped even though the prefix was correct.",
+      "classification": "audit_wiring_fingerprint_infrastructure_only",
+      "resolution": "Replace the expected value with the directly observed complete SHA256 605625b8cfc9dcc8f73601840154e57e4d72212992c42d36cf7e6bb79ac59dad.",
+      "campaign054_candidate_values_read_by_attempt": false,
+      "comparison_values_read_by_attempt": false,
+      "historical_daily_price_or_forward_return_values_read_by_attempt": false
+    },
+    {
+      "attempt": 2,
+      "result": "status_and_23_precomparison_tests_passed",
+      "comparison_values_read_by_attempt": false,
+      "historical_daily_price_or_forward_return_values_read_by_attempt": false
+    }
+  ],
+  "frozen_audit_semantics": {
+    "candidate_snapshot": "Campaign054 repaired feature_library_v2 only",
+    "coverage_gate_runs_before_any_comparison_value": true,
+    "comparison_count_if_coverage_passes": 77,
+    "comparison_order_sha256": "f6ec66bf87ae76240e1ad890699cb2a82856f32a327a2f9be52d3d1f0b753de2",
+    "final_comparison": "intraday_amount_price_discovery_alignment_js_238p",
+    "maximum_absolute_median_daily_rank_correlation": 0.8,
+    "all_77_must_pass": true,
+    "daily_price_or_forward_returns_may_open_during_audit": false,
+    "failed_v1_snapshot_may_enter_audit": false
+  },
+  "comparison_values_read_before_freeze": false,
+  "historical_daily_price_or_forward_return_values_read_before_freeze": false,
+  "candidate49_historical_return_read": false,
+  "candidate49_ledgers_changed": false,
+  "provider_request_issued": false,
+  "current_scoring_selection_sizing_or_orders_performed": false
+}

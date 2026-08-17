@@ -1,0 +1,30 @@
+{
+  "schema_version": 1,
+  "kind": "a_share_three_day_walkforward_campaign213_infrastructure_failure",
+  "recorded_at": "2026-08-15T23:09:00+08:00",
+  "timestamp_semantics": "monotonic_logical_append_time_not_host_wall_clock_measurement",
+  "status": "failed_combined_mandatory_skill_read_output_truncated_discarded_and_recovered",
+  "phase": "mandatory_manage_qlib_a_share_data_skill_read",
+  "attempt": {
+    "requested_line_range": "191-380",
+    "observed_failure": "command output reported truncation and omitted content",
+    "failed_output_used_as_instruction_or_research_evidence": false
+  },
+  "recovery": {
+    "method": "reread_fixed_nonoverlapping_smaller_line_ranges_through_eof",
+    "skill_total_line_count": 1336,
+    "complete_read_recovered": true
+  },
+  "research_boundary": {
+    "candidate_or_comparator_value_read": false,
+    "daily_price_or_forward_return_read": false,
+    "privacy_sensitive_record_read": false,
+    "provider_or_web_request_issued": false,
+    "provider_credential_presence_value_or_digest_read": false,
+    "candidate49_plan_or_run_executed": false,
+    "candidate49_ledgers_changed": false,
+    "stress_2024_2025_opened": false,
+    "current_scoring_selection_sizing_positions_or_orders_performed": false,
+    "investment_advice": false
+  }
+}

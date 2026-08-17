@@ -1,0 +1,39 @@
+{
+  "schema_version": 1,
+  "kind": "a_share_three_day_walkforward_campaign105_development_activation_binding",
+  "status": "single_use_frozen_before_campaign105_2019_2023_daily_price_or_return_values",
+  "recorded_at": "2026-08-07T18:35:38Z",
+  "purpose": "Authorize exactly one frozen Campaign105 2019-2023 development trial only after the live preregistration, runner, implementation freeze, no-return admission, candidate snapshot, and research boundaries validate.",
+  "development_preregistration": {
+    "path": "docs/a_share_three_day_walkforward_campaign_105_preregistration_v3.json",
+    "sha256": "05d98404e46d00ff92c8d2b0c2ca024375ae575e6a49c603e30deafc739e78d3"
+  },
+  "runner": {
+    "path": "scripts/a_share_three_day_walkforward_campaign105.py",
+    "sha256": "69a468e47133b384fb195d431f130047c9c186c0736d5cd6d01da1e9ab1747d7"
+  },
+  "implementation_freeze": {
+    "path": "docs/a_share_three_day_walkforward_campaign_105_development_implementation_freeze_20260808.json",
+    "sha256": "05c85ce298feb721c276f4b5b60d5f64289ccec29506b517acfb917b6ad6e6b8"
+  },
+  "no_return_admission": {
+    "path": "data/experiments/short_horizon/historical_walkforward/campaign_105/no_return/20260807T182638Z_campaign105_no_return_audit.json",
+    "sha256": "b310912ecd43e2012907bd33b465e584aee9201c1560224ef44d9966917bcc54",
+    "admissible_factor_count": 1
+  },
+  "candidate_snapshot": {
+    "path": "/Volumes/DIsk/qlib-a-share-tushare-1m/derived/a_share/rich/tushare/minute_walkforward_campaign105_feature_library/tushare_stk_mins_1m_2019_2025_ea0cbb8f_walkforward_campaign105_feature_library_v1/snapshot_manifest.json",
+    "sha256": "56e2d016087ff09643ef98dd00cad0ac9c771e815d19ec9941cea9f5904824a5",
+    "dataset_sha256": "912625c3763fe3868adb4c4f410b6a6ab72c9272f78b8b57db620daaf970018c"
+  },
+  "trial_count": 1,
+  "trial_id": "wf105_intraday_active_trading_bar_share_240m_single_higher",
+  "historical_daily_price_or_forward_return_values_read_before_activation": false,
+  "stress_2024_2025_opened_before_activation": false,
+  "candidate49_ledgers_changed_before_activation": false,
+  "provider_request_issued_before_activation": false,
+  "single_use": true,
+  "alternate_trial_variant_direction_weight_threshold_filter_subset_model_or_combination_authorized": false,
+  "current_scoring_selection_sizing_or_orders_authorized": false,
+  "investment_advice": false
+}

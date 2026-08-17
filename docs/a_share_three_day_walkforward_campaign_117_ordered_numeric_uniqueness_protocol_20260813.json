@@ -1,0 +1,120 @@
+{
+  "schema_version": 1,
+  "kind": "a_share_three_day_walkforward_campaign117_ordered_numeric_uniqueness_protocol",
+  "status": "all_134_ordered_comparators_frozen_after_coverage_pass_before_any_comparator_value",
+  "recorded_at": "2026-08-13T21:08:09+08:00",
+  "purpose": "Freeze the exact all-134 numeric uniqueness audit after Campaign117 passes coverage and before any comparator value is read.",
+  "authoritative_inputs": {
+    "no_return_preregistration": {
+      "path": "docs/a_share_three_day_walkforward_campaign_117_no_return_preregistration_20260813.json",
+      "sha256": "01cda2c9ec8646ca3d8db86f20e2720514c26c0a6a6044faeac01e6420f9fcb7"
+    },
+    "coverage_result": {
+      "path": "data/experiments/short_horizon/historical_walkforward/campaign_117/coverage/campaign117_coverage_audit.json",
+      "sha256": "b794f59f8bbdfb308c91223043b9211fe8514e8755d98637b8c114a9ff1c93a1",
+      "gate_passed_before_comparator_values": true,
+      "comparator_values_read": false,
+      "numeric_comparator_count_read": 0
+    },
+    "candidate_snapshot": {
+      "path": "/Volumes/DIsk/qlib-a-share-tushare-1m/derived/a_share/rich/tushare/minute_walkforward_campaign117_feature_library/tushare_stk_mins_1m_2019_2025_ea0cbb8f_walkforward_campaign117_feature_library_v1/snapshot_manifest.json",
+      "sha256": "114bb5dd2ac28d8e51e6a35c234cfe06f7d3810b4d7c46303e38af33d4566879",
+      "dataset_sha256": "4f5bf6ee2c26f6956178d6954aae92821530c90a6334375e8cf0e9938fa71c18",
+      "rows": 7724498,
+      "eligible_rows": 7724498
+    }
+  },
+  "candidate": {
+    "name": "intraday_amount_weak_order_entropy_236t",
+    "direction": "higher",
+    "value_range": [
+      0.0,
+      1.0
+    ]
+  },
+  "comparison_order": {
+    "count": 134,
+    "order_sha256": "31d788db467f558a0ac538315343090f1b3ad4cb27a26136a49ebaa88b2fdbf2",
+    "definition": "Use Campaign116's exact reconstructed 134-entry numeric comparator order without deletion, fill, reordering, residualization or candidate-specific substitution.",
+    "first_133_loader_stack": [
+      {
+        "path": "scripts/a_share_three_day_walkforward_campaign110_no_return_audit.py",
+        "sha256": "4db69716c489ad0c2404a42fa083f6e4cf3514af1c13f055b9e40ec377ffc220"
+      },
+      {
+        "path": "scripts/a_share_three_day_walkforward_campaign110_no_return_audit_v2.py",
+        "sha256": "2c2dcf18e9b4a694ab006314d07345d73bfea2a2e4420335c946a0dea404c96c"
+      },
+      {
+        "path": "scripts/a_share_three_day_walkforward_campaign110_no_return_audit_v3.py",
+        "sha256": "10f20decfbb241f17f9eadf06041ffe79f0491d7bbfd474dcc8280b061b91962"
+      },
+      {
+        "path": "scripts/a_share_three_day_walkforward_campaign110_no_return_audit_v4.py",
+        "sha256": "7d40f052c6855a4ed30fab810c03c91595f60603e8894f0c293f5dae26465f77"
+      },
+      {
+        "path": "scripts/a_share_three_day_walkforward_campaign110_no_return_audit_v5.py",
+        "sha256": "0ac1026cb1db7d6fbf083a08d7ce806a49d855de90e8bd3e9307d714cb1a22ba"
+      },
+      {
+        "path": "scripts/a_share_three_day_walkforward_campaign110_no_return_audit_v6.py",
+        "sha256": "3cd88d8c8429aa06111411567cdcc352512aa0203086875d5d3153d06d583a38"
+      },
+      {
+        "path": "scripts/a_share_three_day_walkforward_campaign110_no_return_audit_v7.py",
+        "sha256": "e67e17dc38710646ae3f92b1b3ad5745d93b661b14846d015fa428d4156ad08f"
+      },
+      {
+        "path": "scripts/a_share_three_day_walkforward_campaign110_no_return_audit_v8.py",
+        "sha256": "6765a103ecafa9727d69cac037ead8e43a0afd10ee2a8bb87c81e74278d9d598"
+      }
+    ],
+    "final_comparator": {
+      "ordinal": 134,
+      "name": "intraday_open_reference_directional_occupancy_240m",
+      "direction": "higher",
+      "value_range": [
+        -1.0,
+        1.0
+      ],
+      "snapshot_path": "/Volumes/DIsk/qlib-a-share-tushare-1m/derived/a_share/rich/tushare/minute_walkforward_campaign110_feature_library/tushare_stk_mins_1m_2019_2025_ea0cbb8f_walkforward_campaign110_feature_library_v1/snapshot_manifest.json",
+      "snapshot_sha256": "e3ae3c01e0a6eadd8dfce0362520e13bc4c047ff8357cdc7be2d1f9b31e93b72",
+      "dataset_sha256": "9082b74891ea2e1c107309637941e42acdc9afeec0b44748e2242506c1a68c4b",
+      "binding_path": "docs/a_share_three_day_walkforward_campaign_110_feature_snapshot_binding_20260808.json",
+      "binding_sha256": "35315e56abe2f48abd51177d6ff29b3f5dd6854202675af95fb26d71f493aefe",
+      "verifier_path": "scripts/a_share_three_day_walkforward_campaign110_snapshot_verifier.py",
+      "verifier_sha256": "b0de5d38d42a7d8298850b54046e8def450faba1458ef52829b8acab39ff70d0"
+    }
+  },
+  "exact_gate": {
+    "identity": "Pair the candidate and each comparator on the identical quality/listing eligible stock-day key.",
+    "rank_method": "Within each qualifying session compute average-tie Spearman correlation between directionally normalized candidate and comparator values, then take the median daily correlation.",
+    "minimum_pairwise_names_per_session": 50,
+    "minimum_pairwise_sessions_per_comparison": 100,
+    "maximum_allowed_absolute_median_daily_rank_correlation": 0.8,
+    "strict_inequality": true,
+    "all_134_must_pass": true,
+    "insufficient_overlap_fails_closed": true,
+    "raw_comparator_nan_preserved_until_pairwise_overlap": true
+  },
+  "terminal_rule": {
+    "on_any_failure": "Record every ordered comparison and terminalize Campaign117 before daily price or forward-return values; no rescue, drop, alternate direction, transform, threshold, subset, fit, model or combination.",
+    "on_all_pass": "Freeze one exact 2019-2023 single-factor development activation before reading any daily price or forward-return value."
+  },
+  "output": {
+    "path": "data/experiments/short_horizon/historical_walkforward/campaign_117/uniqueness/campaign117_ordered_uniqueness_audit.json",
+    "single_use": true
+  },
+  "research_boundary": {
+    "comparator_values_read_before_protocol": false,
+    "numeric_comparator_count_read_before_protocol": 0,
+    "historical_daily_price_or_forward_return_values_read": false,
+    "stress_2024_2025_opened_for_returns": false,
+    "provider_request_issued": false,
+    "candidate49_historical_backfill_performed": false,
+    "candidate49_ledgers_changed": false,
+    "current_scoring_selection_sizing_positions_or_orders_performed": false,
+    "investment_advice": false
+  }
+}

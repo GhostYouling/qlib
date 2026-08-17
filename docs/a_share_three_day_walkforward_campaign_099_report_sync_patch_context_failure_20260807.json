@@ -1,0 +1,22 @@
+{
+  "schema_version": 1,
+  "kind": "a_share_three_day_walkforward_campaign099_report_sync_infrastructure_failure",
+  "status": "recorded_after_atomic_patch_rejection_before_report_writes",
+  "recorded_at": "2026-08-07T11:37:00Z",
+  "stage": "terminal_report_synchronization",
+  "outcome": "combined_four_file_patch_used_campaign098_text_from_a_different_report_variant_and_was_rejected_atomically",
+  "targets": [
+    "docs/a_share_three_day_walkforward_campaign_099_report.md",
+    "data/experiments/short_horizon/three_day_research_report.md",
+    "data/experiments/short_horizon/current_research_report.md",
+    "docs/a_share_data_pipeline.md"
+  ],
+  "target_write_occurred": false,
+  "scientific_result_changed": false,
+  "new_historical_daily_price_or_forward_return_values_read": false,
+  "stress_2024_2025_return_fields_read": false,
+  "candidate49_historical_return_read": false,
+  "provider_request_issued": false,
+  "current_scoring_selection_sizing_or_orders_performed": false,
+  "next_action": "Append the failure and update each report with its exact tail anchor."
+}

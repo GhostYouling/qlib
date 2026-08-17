@@ -1,0 +1,34 @@
+{
+  "schema_version": 1,
+  "kind": "a_share_three_day_walkforward_campaign131_state_candidate49_evidence_hash_failure",
+  "status": "recorded_invalid_initial_state_binding_preserved",
+  "recorded_at": "2026-08-14T08:25:16+08:00",
+  "phase": "authoritative_state_binding_verification",
+  "invalid_state": {
+    "path": "docs/a_share_three_day_iteration_status_20260814_campaign131_prevalue_terminal.json",
+    "sha256": "e0138c46896d451f9acbc7ac18d8fd40388bc5ccc5dedabfc2c1ceecdbc0440e",
+    "preserved": true
+  },
+  "binding_failure": {
+    "path": "docs/a_share_candidate49_20260813_daily_source_failure_record.json",
+    "embedded_sha256": "794952365218a2c8023c139c6d5b15a29e897cd64a98ddc9d1030d36532183d7",
+    "actual_sha256": "76bb2d36dc10ef1ebdaa254212308001a00cd37720ce5896f0ad593afbfc04c8",
+    "all_authoritative_bindings_passed_claim_in_invalid_state": true,
+    "invalid_state_may_be_used_as_authority": false
+  },
+  "recovery": {
+    "action": "Publish an additive corrected state with the actual immutable evidence hash and final Campaign131 accounting.",
+    "candidate49_signal_or_execution_ledger_changed": false,
+    "scientific_result_changed": false,
+    "library_order_changed": false,
+    "failed_validation_treated_as_success": false
+  },
+  "research_boundary": {
+    "source_rows_candidate_values_comparator_values_prices_or_returns_read": false,
+    "stress_2024_2025_opened": false,
+    "provider_request_issued": false,
+    "credential_loaded": false,
+    "candidate49_historical_backfill_performed": false,
+    "current_scoring_selection_sizing_positions_or_orders_performed": false
+  }
+}

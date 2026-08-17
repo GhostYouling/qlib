@@ -1,0 +1,37 @@
+{
+  "schema_version": 1,
+  "kind": "a_share_three_day_walkforward_campaign099_development_infrastructure_failure",
+  "status": "recorded_before_any_repair_or_retry",
+  "recorded_at": "2026-08-07T11:10:00Z",
+  "stage": "frozen_2019_2023_development_data_load",
+  "authorized_command_exit_code": 1,
+  "error": "Campaign099Error: Campaign099 compact factor request changed",
+  "root_cause": "The Campaign099 wrapper updated constants in its outer generated namespace, while the inherited compact loader function retained a distinct inner globals dictionary whose CANDIDATE_MANIFEST still named the non-compact feature root. The exact partition-root guard therefore failed closed before candidate partition reads.",
+  "evidence": {
+    "development_activation": {
+      "path": "docs/a_share_three_day_walkforward_campaign_099_development_activation_binding_20260807.json",
+      "sha256": "8c47582aea6ded23d4d768624a12c8c0f19b634738bd9938351ea49d5e7e9dc6"
+    },
+    "trial_ledger": {
+      "path": "data/experiments/short_horizon/historical_walkforward/campaign_099/walkforward/trial_ledger.json",
+      "sha256": "7ec96814c82df780deff5e801ca1465ea46faa45ead3f3108a995bb53b4d911c",
+      "entry_count": 1,
+      "infrastructure_failure_entry_count": 1,
+      "complete_development_trial_count": 0
+    },
+    "observed_inner_manifest_path": "/Volumes/DIsk/qlib-a-share-tushare-1m/derived/a_share/rich/tushare/minute_walkforward_campaign099_feature_library/tushare_stk_mins_1m_2019_2025_ea0cbb8f_walkforward_campaign099_feature_library_v1/snapshot_manifest.json",
+    "required_compact_manifest_path": "/Volumes/DIsk/qlib-a-share-tushare-1m/derived/a_share/rich/tushare/minute_walkforward_campaign099_compact_feature_library/tushare_stk_mins_1m_2019_2025_ea0cbb8f_walkforward_campaign099_compact_feature_library_v1/snapshot_manifest.json"
+  },
+  "data_boundary": {
+    "historical_daily_execution_quote_fields_read": true,
+    "candidate_compact_partition_values_read": false,
+    "development_forward_return_metrics_computed": false,
+    "complete_development_trial_count": 0,
+    "stress_2024_2025_return_fields_read": false,
+    "candidate49_historical_return_read": false,
+    "candidate49_ledgers_changed": false,
+    "provider_request_issued": false,
+    "current_scoring_selection_sizing_or_orders_performed": false
+  },
+  "repair_boundary": "Only repair the nested loader namespace binding. Do not change the factor, direction, formula, compact bytes, trial catalog, folds, costs, execution assumptions, survivor gates, or stress authorization. Record and freeze an additive repair wrapper before retry."
+}

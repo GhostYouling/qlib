@@ -1,0 +1,50 @@
+{
+  "schema_version": 1,
+  "kind": "a_share_three_day_walkforward_campaign099_no_return_audit_identity_alignment_failure",
+  "status": "recorded_before_identity_only_diagnosis_or_repair",
+  "recorded_at": "2026-08-07T10:13:39Z",
+  "frozen_execution": {
+    "audit_runner": {
+      "path": "scripts/a_share_three_day_walkforward_campaign099_no_return_audit.py",
+      "sha256": "2a2ebb57a360d57b13bd69f2b0cddf40c2ae9bb115f0419233873a21acf605bf"
+    },
+    "activation_binding": {
+      "path": "docs/a_share_three_day_walkforward_campaign_099_no_return_audit_activation_binding_20260807.json",
+      "sha256": "419dae01c48d3f59de39723dde3a13d1e54bcebb4815883b09650b21e1d0d3e3"
+    }
+  },
+  "completed_before_failure": {
+    "candidate_partitions_verified": 33015,
+    "candidate_rows_verified": 7724498,
+    "candidate_eligible_rows_verified": 7699914,
+    "candidate_and_eligibility_columns_read_for_2019_alignment": [
+      "trade_date",
+      "symbol",
+      "intraday_market_close_location_profile_synchronization_240m",
+      "stock_day_key"
+    ]
+  },
+  "failure": {
+    "exception_type": "Campaign097NoReturnAuditError",
+    "message": "Campaign097 candidate misses frozen eligible keys in 2019",
+    "stage": "candidate_to_frozen_quality_listing_identity_alignment_before_coverage",
+    "exit_code": 1
+  },
+  "publication_state": {
+    "no_return_audit_output_count": 0,
+    "partial_audit_result_written": false
+  },
+  "scientific_boundary": {
+    "candidate_values_read": true,
+    "eligibility_identity_values_read": true,
+    "coverage_or_capacity_metrics_computed": false,
+    "comparison_factor_values_read": false,
+    "historical_daily_price_or_forward_return_values_read": false,
+    "training_or_model_fitting_performed": false,
+    "provider_request_issued": false,
+    "candidate49_historical_return_read": false,
+    "candidate49_ledgers_changed": false,
+    "current_scoring_selection_sizing_or_orders_performed": false
+  },
+  "next_allowed_action": "quantify missing and extra stock_day_key identities without comparator, price, or return columns; freeze any exact alignment repair before retry"
+}

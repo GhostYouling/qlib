@@ -1,0 +1,112 @@
+{
+  "schema_version": 1,
+  "kind": "a_share_three_day_walkforward_campaign262_concept_scouting",
+  "status": "one_local_zero_network_candidate_selected_before_source_candidate_comparator_price_or_return_values",
+  "recorded_at": "2026-08-16T17:55:00+08:00",
+  "timestamp_semantics": "monotonic_logical_append_time_not_host_wall_clock_measurement",
+  "purpose": "Review one finite seven-route local-data catalog after Campaign261 and select at most one genuinely independent three-session mechanism before reading any Campaign262 source row or scientific value.",
+  "authoritative_inputs": {
+    "campaign261_terminal_state": {
+      "path": "docs/a_share_three_day_iteration_status_20260816_campaign261_terminal.json",
+      "sha256": "dc957645f508f8d28d33f3deb2f5d7adf18f36ecec5deee91e6d0e6e34650e5a"
+    },
+    "numeric_policy_v404": {
+      "path": "docs/a_share_three_day_walkforward_future_numeric_comparison_eligibility_policy_v404_20260816.json",
+      "sha256": "fb2a95214db33763c6b14fe132c0c29eafad9a15ee4ea8fdafb58de3e2eb9fed",
+      "complete_definition_count": 160,
+      "complete_definition_order_sha256": "2c431b3c9f9e772f7fdccab2625d671f8a836809710e78af8cb43d6d4e66cc0c",
+      "eligible_numeric_comparator_count": 142,
+      "eligible_numeric_comparator_order_sha256": "5d1b35fb5a0d8ac9293008db9963c4a60a94dc940c237c3ed259e5ce44f14aaf"
+    },
+    "historical_walkforward_policy": {
+      "path": "docs/a_share_three_day_historical_walkforward_research_policy_20260727.json",
+      "sha256": "38426d6161b9bfed323c58caba18feca668b8c9d53e294951a8ba90c01a798bb"
+    }
+  },
+  "finite_prevalue_concept_catalog": [
+    {
+      "catalog_id": "c262_01",
+      "name": "intraday_amount_change_reversal_rate_236p",
+      "proposed_definition": "Count sign reversals between adjacent within-half changes in log1p amount.",
+      "prevalue_decision": "rejected_before_values_as_terminal_local_turning_point_sibling",
+      "reason": "It is another turning-point count over the same amount path as terminal intraday_amount_local_peak_density_238p; changing peak-only counting to symmetric sign reversals would reopen that exposed family."
+    },
+    {
+      "catalog_id": "c262_02",
+      "name": "intraday_amount_schedule_uniformity_240m",
+      "proposed_definition": "Measure one minus the normalized L1 area between the cumulative amount-share curve and the fixed uniform 240-bar schedule.",
+      "prevalue_decision": "selected_for_complete_mechanism_overlap_audit",
+      "reason": "It is a parameter-free full-clock distribution distance to a fixed non-data-dependent execution schedule. It is not determined by amount magnitude inequality, the first three clock moments, local order, peaks, fixed windows or a second profile; practical redundancy remains subject to all 142 frozen comparisons."
+    },
+    {
+      "catalog_id": "c262_03",
+      "name": "intraday_amount_schedule_l2_distance_240m",
+      "proposed_definition": "Square and sum cumulative-share deviations from the uniform schedule.",
+      "prevalue_decision": "rejected_before_values_as_distance_operator_sibling",
+      "reason": "Choosing L1 versus L2, Cramer-von Mises or a maximum deviation would create an estimator sweep; Campaign262 freezes L1 once."
+    },
+    {
+      "catalog_id": "c262_04",
+      "name": "intraday_half_session_amount_schedule_uniformity_2h",
+      "proposed_definition": "Compute separate morning and afternoon schedule distances and average or subtract them.",
+      "prevalue_decision": "rejected_before_values_as_window_and_aggregation_sweep",
+      "reason": "Resetting at lunch and choosing an average, minimum, maximum or difference adds window and direction degrees of freedom."
+    },
+    {
+      "catalog_id": "c262_05",
+      "name": "intraday_amount_schedule_market_or_u_shape_adherence_240m",
+      "proposed_definition": "Compare cumulative own-stock amount with a fitted market or empirical U-shaped benchmark.",
+      "prevalue_decision": "rejected_before_values_as_learned_peer_benchmark_and_existing_synchronization_family",
+      "reason": "A learned benchmark would add sample dependence and overlap market amount-profile synchronization; the selected benchmark is exactly uniform and frozen without values."
+    },
+    {
+      "catalog_id": "c262_06",
+      "name": "intraday_amount_clock_quantile_deviation_240m",
+      "proposed_definition": "Summarize amount-arrival quartiles or median clock displacement.",
+      "prevalue_decision": "rejected_before_values_as_clock_quantile_and_moment_sibling",
+      "reason": "Quantile choice would extend the exposed center, dispersion and third-moment clock family; Campaign262 instead integrates the complete cumulative curve against one fixed schedule."
+    },
+    {
+      "catalog_id": "c262_07",
+      "name": "amount_schedule_terminal_factor_combination_or_model",
+      "proposed_definition": "Combine schedule adherence with Gini, entropy, timing moments, price, return or prior terminal scores.",
+      "prevalue_decision": "rejected_before_component_or_return_values_as_post_exposure_recombination",
+      "reason": "Campaign262 is one raw-source definition with no fit, subset, old score or combination."
+    }
+  ],
+  "selected_candidate": {
+    "name": "intraday_amount_schedule_uniformity_240m",
+    "direction": "higher",
+    "source_projection_if_admitted": [
+      "datetime",
+      "symbol",
+      "provider",
+      "amount"
+    ],
+    "economic_hypothesis": "A session whose CNY trading amount is replenished broadly across the complete trading clock, rather than arriving in a few temporally displaced blocks, reflects more orderly inventory transfer that may persist over the next three accepted sessions.",
+    "formula_summary": "For p_i=a_i/S, F_k=sum_{i=0}^k p_i and U_k=(k+1)/240 for k=0..238, score=1-sum_k|F_k-U_k|/119.5.",
+    "exact_range": [
+      0.0,
+      1.0
+    ],
+    "candidate_count": 1,
+    "direction_count": 1,
+    "window_count": 1,
+    "threshold_filter_subset_model_or_combination_count": 0
+  },
+  "research_boundary": {
+    "repository_metadata_and_terminal_history_read": true,
+    "campaign262_source_rows_read": false,
+    "campaign262_candidate_or_comparator_values_read": false,
+    "historical_daily_price_or_forward_return_values_read": false,
+    "stress_2024_2025_opened": false,
+    "provider_or_web_request_issued": false,
+    "provider_credential_presence_value_or_digest_read": false,
+    "candidate49_plan_or_run_executed": false,
+    "candidate49_historical_backfill_performed": false,
+    "candidate49_ledgers_changed": false,
+    "second_prospective_candidate_created": false,
+    "current_scoring_selection_sizing_positions_or_orders_performed": false,
+    "investment_advice": false
+  }
+}

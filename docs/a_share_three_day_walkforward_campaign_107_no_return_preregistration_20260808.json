@@ -1,0 +1,196 @@
+{
+  "schema_version": 1,
+  "kind": "a_share_three_day_walkforward_campaign107_no_return_preregistration",
+  "status": "frozen_before_campaign107_minute_source_candidate_comparator_daily_price_or_return_values",
+  "recorded_at": "2026-08-07T19:50:18Z",
+  "purpose": "Evaluate one exact close-level diversity factor through coverage-first all-132 duplicate control and, only if admitted, one frozen 2019-2023 development trial.",
+  "authoritative_inputs": {
+    "iteration_state": {
+      "path": "docs/a_share_three_day_iteration_status_20260808_campaign106_terminal.json",
+      "sha256": "3d8abfac748b7ae9d90646be602457259674fc1c3eeeaa81c4b82ec43a40e601"
+    },
+    "numeric_policy_v64": {
+      "path": "docs/a_share_three_day_walkforward_future_numeric_comparison_eligibility_policy_v64_20260808.json",
+      "sha256": "7453bf020364e8b27035e94b7e527d874a271b9aaa51008445610c464803805e",
+      "complete_definition_count": 136,
+      "complete_definition_order_sha256": "2099f016f5979a820b480a83aa28877504ea5238362feed551bb7cf583cbf7d0",
+      "numeric_comparator_count": 132,
+      "numeric_comparator_order_sha256": "7ed69afd1408e84dcc856583344166ffc9bcbb0add1aed63163b1d12a1be9a25"
+    },
+    "historical_walkforward_policy": {
+      "path": "docs/a_share_three_day_historical_walkforward_research_policy_20260727.json",
+      "sha256": "38426d6161b9bfed323c58caba18feca668b8c9d53e294951a8ba90c01a798bb"
+    },
+    "concept_scouting": {
+      "path": "docs/a_share_three_day_walkforward_campaign_107_concept_scouting_20260808.json",
+      "sha256": "debb470592868857358ff26a78f8278c158f6224fce593e83c62b5fffa379c2c"
+    },
+    "mechanism_support_audit": {
+      "path": "docs/a_share_three_day_walkforward_campaign_107_mechanism_support_audit_20260808.json",
+      "sha256": "f6a043e7819fc47e259b14e37cee5db9690aaf4e55bc56ebec07c1e4ce0d6206"
+    },
+    "raw_comparator_adapter_contract": {
+      "path": "docs/a_share_three_day_walkforward_campaign_107_raw_comparator_adapter_contract_20260808.json",
+      "sha256": "6b8ac9484b3e46ebd7bd0857eb99e24bba4ede3c8781891d0b150de0cae19962"
+    },
+    "raw_comparator_adapter_freeze": {
+      "path": "docs/a_share_three_day_walkforward_campaign_107_raw_comparator_adapter_implementation_freeze_20260808.json",
+      "sha256": "07de45590082fcf98350a4b4f0b615ffd994a97fe3cec431ae476c058a95cc2b"
+    },
+    "accepted_minute_alignment": {
+      "path": "data/metadata/rich_data/alignments/20260721T140521Z_tushare_1m_alignment_89ec2deb.json",
+      "sha256": "2c8c85ba1155289d03c58caba18feca668b8c9d53e294951a8ba90c01a798bb"
+    }
+  },
+  "candidate": {
+    "name": "intraday_exact_close_level_diversity_240m",
+    "direction": "higher",
+    "economic_hypothesis": "A broader set of exact intraday close levels reflects sustained price discovery and usable liquidity rather than repeated anchoring at a small set of ticks, which may persist over the next-open to third-close horizon.",
+    "formula": "For exact close-level counts n_j on the 240 selected bars, return 1 - sum_j n_j*(n_j-1)/57360.",
+    "source_projection": [
+      "datetime",
+      "symbol",
+      "provider",
+      "close"
+    ],
+    "source_fields_forbidden": [
+      "open",
+      "high",
+      "low",
+      "volume",
+      "amount",
+      "daily price",
+      "forward return",
+      "old factor value",
+      "Candidate49 historical value"
+    ],
+    "source_grid": {
+      "accepted_rows_required": 241,
+      "selected_rows": 240,
+      "standalone_09_30_preserved_but_not_loaded_for_formula": true,
+      "selected_clock": "09:31-11:30 and 13:01-15:00",
+      "lunch_transition_or_cross_day_pair_created": false
+    },
+    "exact_level_semantics": {
+      "finite_strictly_positive_close_required": true,
+      "exact_numeric_equality_only": true,
+      "rounding_tick_inference_tolerance_or_binning_used": false,
+      "clock_order_used_after_exact_grid_validation": false,
+      "unordered_distinct_clock_pair_count": 28680,
+      "ordered_distinct_clock_pair_count": 57360,
+      "minimum_distinct_close_level_count": 1,
+      "positive_return_range_variance_or_update_count_required": false,
+      "constant_close_path": "valid score 0",
+      "all_distinct_close_path": "valid score 1"
+    },
+    "valid_range": [
+      0.0,
+      1.0
+    ],
+    "discrete_value_rule": "Every eligible value multiplied by 28680 must be an integer within absolute tolerance 1e-9.",
+    "alternate_direction_formula_equality_tolerance_rounding_binning_window_threshold_filter_subset_regime_weight_fit_model_or_combination_search": false
+  },
+  "source_snapshot_contract": {
+    "data_root": "/Volumes/DIsk/qlib-a-share-tushare-1m",
+    "immutable_source_run": "tushare_stk_mins_1m_2019_2025_ea0cbb8f",
+    "raw_manifest_sha256": "9b3d959563c9d182f38981c6a36bdb3bc9b415de08487a9e1f9e850825c0839f",
+    "joint_clean_manifest_path_below_data_root": "derived/a_share/rich/tushare/minute_sentiment_clean/tushare_stk_mins_1m_2019_2025_ea0cbb8f_sentiment_clean_v1/snapshot_manifest.json",
+    "joint_clean_manifest_sha256": "453c6719cb3c7da42fed8807b28a2bfe988700283e9625a6db97912534f368de",
+    "joint_clean_dataset_sha256": "0e4fe7c05536cdfcecc2936bc880726902f5560061188ffff82ef7ee6f346983",
+    "expected_partitions": 33015,
+    "expected_rows": 7724498,
+    "output_run_id": "tushare_stk_mins_1m_2019_2025_ea0cbb8f_walkforward_campaign107_feature_library_v1",
+    "output_manifest_path_below_data_root": "derived/a_share/rich/tushare/minute_walkforward_campaign107_feature_library/tushare_stk_mins_1m_2019_2025_ea0cbb8f_walkforward_campaign107_feature_library_v1/snapshot_manifest.json",
+    "provider_request_allowed": false
+  },
+  "comparison_contract": {
+    "complete_v64_semantic_definition_count_reviewed_before_values": 136,
+    "numeric_comparator_count": 132,
+    "numeric_comparator_order_sha256": "7ed69afd1408e84dcc856583344166ffc9bcbb0add1aed63163b1d12a1be9a25",
+    "campaign106_definition_is_semantic_only_not_numeric_comparator": true,
+    "direction_normalization": "Use every comparator's frozen higher-is-better direction before same-session average-tie Spearman correlation.",
+    "raw_comparator_range_and_nan_adapter_required": true,
+    "candidate_specific_drop_residualization_neutralization_or_subset_allowed": false,
+    "Candidate49_historical_return_signal_execution_or_milestone_read_allowed": false
+  },
+  "ordered_no_return_gates": [
+    {
+      "gate": 1,
+      "name": "binding_source_snapshot_and_adapter_verification",
+      "rule": "Before source rows, revalidate protocol, implementation, source and raw-comparator adapter fingerprints. After publication verify every partition byte/frame hash, projection, formula, counts and dataset digest."
+    },
+    {
+      "gate": 2,
+      "name": "structural_coverage_and_capacity_before_comparison_values",
+      "rule": "On the immutable quality/current-listing base require median daily coverage >=0.95, P05 daily coverage >=0.90, P05 eligible names >=50, at least 200 non-overlapping three-signal-session cohorts, and at least five observed years. Failure stops before comparator value, daily price or forward return."
+    },
+    {
+      "gate": 3,
+      "name": "all_132_numeric_uniqueness_after_coverage_only",
+      "rule": "Compare in exact v64 numeric order with all 132 eligible numeric comparators. Each comparison requires at least 50 paired names per session and at least 100 qualifying sessions. Every absolute median daily Spearman rank correlation must be strictly below 0.8; insufficient overlap fails closed and no comparator may be removed. Raw comparator NaN values remain missing until pairwise overlap."
+    }
+  ],
+  "finite_development_catalog_if_admitted": {
+    "trial_count": 1,
+    "trial_id": "wf107_intraday_exact_close_level_diversity_240m_single_higher",
+    "factor": "intraday_exact_close_level_diversity_240m",
+    "direction": "higher",
+    "training_or_fit": "none",
+    "folds": [
+      {
+        "fold": 1,
+        "train": [
+          2019,
+          2020
+        ],
+        "validation": 2021
+      },
+      {
+        "fold": 2,
+        "train": [
+          2019,
+          2020,
+          2021
+        ],
+        "validation": 2022
+      },
+      {
+        "fold": 3,
+        "train": [
+          2019,
+          2020,
+          2021,
+          2022
+        ],
+        "validation": 2023
+      }
+    ],
+    "purge": "Purge three signal sessions at every train/validation boundary; t+1 entry and t+3 exit must remain in the same partition.",
+    "execution": "Reuse the frozen one-factor next-open to third-close Top-3 execution engine, quality/listing gates, board-lot checks, amount-participation checks, cost grid and survivor gates without override.",
+    "stress_2024_2025": "Open once for the whole campaign only if this sole trial survives every 2019-2023 development gate; label it historically exposed quasi-out-of-sample. Otherwise leave it closed and unread."
+  },
+  "research_boundary": {
+    "campaign107_source_rows_read_before_freeze": false,
+    "campaign107_candidate_values_computed_or_read_before_freeze": false,
+    "campaign107_comparison_values_read_before_freeze": false,
+    "historical_daily_price_fields_read_before_freeze": [],
+    "historical_forward_returns_read_before_freeze": false,
+    "provider_request_issued": false,
+    "candidate49_historical_backfill_performed": false,
+    "candidate49_ledgers_changed": false,
+    "second_prospective_candidate_created": false,
+    "current_scoring_selection_sizing_or_orders_performed": false,
+    "investment_advice": false
+  },
+  "prohibitions": {
+    "candidate_inversion_rewindow_round_relabel_rebin_threshold_filter_subset_regime_fit_model_combination_or_rescue": true,
+    "Campaign106_retry_or_rescue": true,
+    "terminal_factor_repair_or_combination": true,
+    "raw_comparator_nan_fill_or_drop": true,
+    "Candidate49_historical_return_signal_execution_or_milestone_backfill": true,
+    "second_prospective_candidate": true,
+    "provider_request": true,
+    "current_score_selection_sizing_order_or_investment_advice": true
+  },
+  "next_action": "Freeze feature and ordered-audit implementation hashes with synthetic exact-level and raw-comparator-NaN tests before any Campaign107 source value."
+}

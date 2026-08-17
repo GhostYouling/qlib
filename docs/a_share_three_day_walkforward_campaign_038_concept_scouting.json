@@ -1,0 +1,102 @@
+{
+  "version": 1,
+  "kind": "a_share_three_day_walkforward_campaign038_concept_scouting",
+  "status": "one_independent_half_session_chord_adherence_concept_selected_before_candidate_comparison_or_return_values",
+  "recorded_at": "2026-07-31T00:31:30Z",
+  "purpose": "Select exactly one economically interpretable Campaign038 mechanism after Campaign037's terminal development rejection without reading a Campaign038 minute partition, candidate value, comparison value, daily price, or forward return.",
+  "authoritative_boundary": {
+    "path": "docs/a_share_three_day_iteration_status_20260731_campaign037_verified.json",
+    "sha256": "18c869dfe193e77c2a782648918817b7a263a34d0aa40a232a015a5439b21f28"
+  },
+  "historical_walkforward_policy": {
+    "path": "docs/a_share_three_day_historical_walkforward_research_policy_20260727.json",
+    "sha256": "38426d6161b9bfed323c58caba18feca668b8c9d53e294951a8ba90c01a798bb"
+  },
+  "selected_concept": {
+    "concept_name": "intraday_half_session_chord_adherence",
+    "mechanism_family": "within_half_log_close_path_chord_geometry",
+    "economic_question": "Within each completed half session, did the log-price path incorporate information steadily along the straight chord connecting its first and last close, or did it wander materially away and later correct?",
+    "economic_hypothesis": "Higher adherence to each half-session endpoint chord represents steadier, less circuitous price incorporation and less within-half overshoot or delayed correction. This orderly path geometry may remain relevant from the next open through the third close.",
+    "provisional_direction": "higher",
+    "allowed_source_fields": [
+      "datetime",
+      "symbol",
+      "provider",
+      "close"
+    ],
+    "forbidden_source_fields": [
+      "open",
+      "high",
+      "low",
+      "volume",
+      "amount",
+      "market or industry benchmark",
+      "quarterly or event field",
+      "daily price",
+      "forward return",
+      "Level-2"
+    ],
+    "fixed_temporal_question": "Use exactly 120 raw unadjusted one-minute closes at 09:31-11:30 and exactly 120 at 13:01-15:00. Construct each half's straight log-price chord from its own first and last close, measure every fixed-support log-price deviation from that chord, normalize by that half's total absolute adjacent log-return travel, and pool the halves without crossing lunch.",
+    "mandatory_overlap_challenges_before_any_value": [
+      "intraday_signed_path_efficiency_239m",
+      "intraday_five_minute_variance_ratio_230w",
+      "intraday_return_spectral_entropy_59f",
+      "intraday_absolute_return_serial_persistence_236p",
+      "intraday_return_sign_run_imbalance_238p",
+      "intraday_morning_afternoon_return_profile_persistence_119p",
+      "intraday_extreme_arrival_order_240m",
+      "intraday_global_price_range_revisit_240m",
+      "intraday_price_update_share_238m",
+      "candidate49_intraday_cumulative_vwap_crossing_rate_240m_v1"
+    ],
+    "known_design_risks": [
+      "Endpoint-chord adherence can correlate with signed path efficiency, variance ratios, spectral concentration, or sparse price updating even though it uses the complete intermediate price-level geometry.",
+      "Using one full-day chord, crossing lunch, changing to squared deviations, fitting a regression line, choosing a subwindow, or selecting another normalization would create researcher degrees of freedom unless one exact construction is frozen before values.",
+      "A nearly flat low-variation path can appear orderly; the exact zero-total-travel missing rule and total-travel normalization must be frozen before values.",
+      "Higher adherence may represent orderly information incorporation or mechanically constrained trading. The higher direction must remain fixed and the ordinary no-return and walk-forward gates must decide the hypothesis without inversion."
+    ]
+  },
+  "rejected_concepts": [
+    {
+      "concept": "alternate_return_lag_variance_ratio_or_autocorrelation",
+      "reason": "Campaign037 and earlier return-serial mechanisms are terminal. Campaign038 uses price-level deviation from a predeclared endpoint chord rather than another return lag, aggregation horizon, or variance ratio."
+    },
+    {
+      "concept": "signed_path_efficiency_squared_absolute_or_half_session_variant",
+      "reason": "The terminal signed-path factor divides endpoint displacement by total travel. Campaign038 does not transform or rewindow that statistic; it measures every intermediate log-price level against a deterministic within-half chord."
+    },
+    {
+      "concept": "spectral_entropy_weak_order_sign_run_price_update_or_round_grid_variant",
+      "reason": "Frequency, ordinal, sign-run, sparse-update, and currency-grid mechanisms are terminal. Campaign038 uses no frequency transform, state count, sign count, equality count, or price-grid class."
+    },
+    {
+      "concept": "range_wick_extreme_frontier_amount_volume_transaction_price_or_vwap_variant",
+      "reason": "OHLC range/frontier, activity, transaction-price, price-impact, and cumulative-VWAP mechanisms are terminal or reserved for Candidate49. Campaign038 reads only own-stock continuous-session closes."
+    },
+    {
+      "concept": "market_quarterly_event_terminal_factor_combination_or_model",
+      "reason": "Campaign038 is one raw close-path geometric statistic and contains no peer benchmark, disclosure field, terminal factor value, filter, fitted model, or combination."
+    }
+  ],
+  "research_boundary": {
+    "external_minute_partitions_read": false,
+    "external_daily_partitions_read": false,
+    "candidate_values_read": false,
+    "comparison_values_read": false,
+    "historical_daily_price_fields_read": false,
+    "historical_forward_returns_read": false,
+    "training_or_model_fitting_performed": false,
+    "provider_request_issued": false,
+    "candidate49_historical_return_signal_or_execution_backfill_performed": false,
+    "candidate49_ledgers_changed": false,
+    "candidate50_activation_created": false,
+    "current_scoring_selection_sizing_or_orders_performed": false,
+    "investment_advice": false
+  },
+  "decision": {
+    "selected_concept_count": 1,
+    "selected_concept": "intraday_half_session_chord_adherence",
+    "predictive_value_established": false,
+    "next_action": "Validate the concept bindings, then perform a separate no-value mechanism-overlap audit and freeze one exact formula, direction, support, missing semantics, and complete 59-factor comparison library before opening candidate or comparison values."
+  }
+}

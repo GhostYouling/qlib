@@ -1,0 +1,76 @@
+{
+  "version": 1,
+  "kind": "a_share_three_day_walkforward_campaign041_postvalidation_publication_metadata_repair",
+  "status": "frozen_after_invalid_metadata_publication_before_repair_or_comparison_values",
+  "recorded_at": "2026-07-31T06:18:00Z",
+  "purpose": "Authorize a final metadata-only publication repair after the inherited atomic-write wrapper changed the already-validated Campaign041 high/low access flag back to its legacy value.",
+  "authoritative_inputs": {
+    "iteration_state": {
+      "path": "docs/a_share_three_day_iteration_status_20260731_campaign040_verified.json",
+      "sha256": "dd561aac051eed7ecb1c574c61ac258c5e62954d7390c503a5444cf8a0fe2bba"
+    },
+    "no_return_preregistration": {
+      "path": "docs/a_share_three_day_walkforward_campaign_041_no_return_preregistration.json",
+      "sha256": "6691fb6a382d6f2f481473f25a0060606edf59290bc822b635b23de25105ae7c"
+    },
+    "first_metadata_repair": {
+      "path": "docs/a_share_three_day_walkforward_campaign_041_feature_manifest_metadata_infrastructure_repair_20260731.json",
+      "sha256": "8c0dcc35159b456623465513477f9107a583bfef8b058553997cacf6022ea82d"
+    },
+    "inherited_validator_repair": {
+      "path": "docs/a_share_three_day_walkforward_campaign_041_inherited_manifest_compatibility_repair_20260731.json",
+      "sha256": "2469cf6f63176bfaca561efa8db008eb2a6547e3d7884f8db44be23ff878d5cc"
+    },
+    "pre_repair_feature_runner": {
+      "path": "scripts/a_share_three_day_walkforward_campaign041_features.py",
+      "sha256": "bcb923b8b69340a89f95db6284c35d8789c73d103e750bc710de4f59a4853b4b"
+    }
+  },
+  "invalid_publication_evidence": {
+    "manifest_sha256": "672992e0e8b3830330bdc7d4413bc688c23cfc36ab8cbfe11aebbf6f3b8acd6b",
+    "dataset_sha256": "d330e806262d5e3187649273aea14bb20e53d13cc18edfbc8d8dd0616aa0ac0b",
+    "rows": 7724498,
+    "partitions": 33015,
+    "eligible_rows": 7461292,
+    "resumed_partitions": 33015,
+    "source_fields_read": [
+      "datetime",
+      "symbol",
+      "provider",
+      "open",
+      "high",
+      "low",
+      "close"
+    ],
+    "incorrect_postvalidation_source_open_high_low_read": false,
+    "required_truthful_source_open_high_low_read": true,
+    "source_close_read": true,
+    "source_volume_read": false,
+    "source_amount_read": false,
+    "candidate_partition_or_value_changed": false,
+    "comparison_values_read": false,
+    "historical_daily_price_fields_read": false,
+    "historical_forward_returns_read": false
+  },
+  "authorized_repair": {
+    "scope": "Wrap the inherited publisher so that only the copied Campaign041 aggregate manifest passed to the final atomic write retains source_open_high_low_read=true, source_close_read=true, source_volume_read=false, and source_amount_read=false.",
+    "move_invalid_final_directory_back_to_exact_partial_path": true,
+    "candidate_partition_files_may_change": false,
+    "candidate_values_may_change": false,
+    "dataset_sha256_may_change": false,
+    "formula_direction_source_projection_support_or_missing_semantics_may_change": false,
+    "comparison_library_order_or_gate_may_change": false,
+    "resume_all_hash_validated_checkpoints": true,
+    "allowed_additional_retry_count": 1
+  },
+  "research_boundary": {
+    "provider_request_issued": false,
+    "comparison_values_read": false,
+    "historical_daily_price_fields_read": false,
+    "historical_forward_returns_read": false,
+    "candidate49_ledgers_changed": false,
+    "candidate50_activation_created": false,
+    "current_scoring_selection_sizing_or_orders_performed": false
+  },
+  "next_action": "Apply only the outer publication metadata wrapper, return the invalid final directory to its exact partial path, resume all 33,015 hash-validated checkpoints once, and require the corrected manifest to preserve the same dataset_sha256."
+}

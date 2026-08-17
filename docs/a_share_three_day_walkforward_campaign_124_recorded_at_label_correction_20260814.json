@@ -1,0 +1,63 @@
+{
+  "schema_version": 1,
+  "kind": "a_share_three_day_walkforward_campaign124_recorded_at_label_correction",
+  "status": "append_only_correction_no_byte_rewrite_no_scientific_change",
+  "recorded_at": "2026-08-14T04:13:20+0800",
+  "failure_id": "campaign124_manual_recorded_at_future_labels_001",
+  "failure_code": "manual_recorded_at_labels_postdate_filesystem_creation",
+  "scope": "Several Campaign124 JSON records used manually estimated recorded_at labels that were seconds or minutes later than their actual filesystem modification times and the observed local clock.",
+  "authoritative_terminal_bindings": {
+    "terminal_source_record": {
+      "path": "docs/a_share_three_day_walkforward_campaign_124_new_share_source_acceptance_terminal_20260814.json",
+      "sha256": "a2b845f331fd6b423408997acbaac78233ddfed52499c6232325be2eddd51cb5",
+      "recorded_at_label": "2026-08-14T04:19:00+08:00",
+      "filesystem_modified_at": "2026-08-14T04:11:19+08:00"
+    },
+    "attempt_ledger_v3": {
+      "path": "data/experiments/short_horizon/historical_walkforward/campaign_124/research_attempt_ledger_v3.json",
+      "sha256": "4394cff0e2e73eae88f3cf70f09567437b06134e3306c6dd928241cebddba522",
+      "recorded_at_label": "2026-08-14T04:20:00+08:00",
+      "filesystem_modified_at": "2026-08-14T04:11:54+08:00"
+    },
+    "numeric_policy_v127": {
+      "path": "docs/a_share_three_day_walkforward_future_numeric_comparison_eligibility_policy_v127_20260814.json",
+      "sha256": "001109588aed7696bc8c6590ff1318c0e64bae96d4a95ae736e0d1750ab363e5",
+      "recorded_at_label": "2026-08-14T04:21:00+08:00",
+      "filesystem_modified_at": "2026-08-14T04:12:28+08:00"
+    }
+  },
+  "other_affected_preserved_records": [
+    "docs/a_share_three_day_walkforward_campaign_124_new_share_adapter_formula_freeze_20260814.json",
+    "data/experiments/short_horizon/historical_walkforward/campaign_124/research_attempt_ledger_v1.json",
+    "docs/a_share_three_day_walkforward_future_numeric_comparison_eligibility_policy_v125_20260814.json",
+    "docs/a_share_three_day_walkforward_campaign_124_new_share_acceptance_workflow_freeze_20260814.json",
+    "data/experiments/short_horizon/historical_walkforward/campaign_124/research_attempt_ledger_v2.json",
+    "docs/a_share_three_day_walkforward_future_numeric_comparison_eligibility_policy_v126_20260814.json",
+    "docs/a_share_three_day_walkforward_campaign_124_post_failure_report_search_failure_20260814.json"
+  ],
+  "ordering_evidence": {
+    "filesystem_modification_times_used_for_physical_order_only": true,
+    "content_hash_bindings_form_a_strict_predecessor_chain": true,
+    "source_contract_preceded_adapter_and_formula": true,
+    "workflow_and_tests_preceded_authorization_policy": true,
+    "plan_ready_exit_zero_preceded_the_only_run": true,
+    "intent_preceded_provider_client_and_requests": true,
+    "failure_record_preceded_terminal_classification": true
+  },
+  "correction_semantics": {
+    "affected_files_rewritten": false,
+    "recorded_at_labels_are_non_authoritative_for_scientific_order": true,
+    "hash_and_filesystem_order_are_authoritative_for_scientific_order": true,
+    "provider_request_retried": false,
+    "candidate_comparator_price_or_return_values_re_read": false,
+    "scientific_result_changed": false,
+    "effective_accounting_change": "Append one infrastructure failure only."
+  },
+  "research_boundary": {
+    "campaign124_source_failure_remains_terminal": true,
+    "candidate49_ledgers_changed": false,
+    "second_prospective_candidate_created": false,
+    "current_scoring_selection_sizing_positions_or_orders_performed": false,
+    "investment_advice": false
+  }
+}

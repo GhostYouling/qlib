@@ -1,0 +1,81 @@
+{
+  "version": 1,
+  "kind": "a_share_three_day_walkforward_campaign039_feature_snapshot_freeze",
+  "status": "immutable_candidate_snapshot_frozen_before_comparison_or_return_values",
+  "recorded_at": "2026-07-31T02:36:01Z",
+  "purpose": "Bind the complete Campaign039 candidate snapshot and its post-publication read-only validator before coverage, comparison, daily-price, or return gates are opened.",
+  "authoritative_inputs": {
+    "no_return_preregistration": {
+      "path": "docs/a_share_three_day_walkforward_campaign_039_no_return_preregistration.json",
+      "sha256": "0cc9067d86ea2b1312d9b66bb884f9ffaee6d3b9b0b5a72d086d7962728ac105"
+    },
+    "mechanism_overlap_audit": {
+      "path": "docs/a_share_three_day_walkforward_campaign_039_mechanism_overlap_audit.json",
+      "sha256": "a2a01837c74fa1ede9e7e3b143b3dbe8fdb11708552358aba5fa804113c4a5c6"
+    },
+    "pre_value_feature_implementation_freeze": {
+      "path": "docs/a_share_three_day_walkforward_campaign_039_feature_implementation_freeze_20260731.json",
+      "sha256": "3e57902824c6a484584944e3dfef509cdd17ce544a80ea7d8a38269d16a48ffe"
+    }
+  },
+  "snapshot": {
+    "path": "/Volumes/DIsk/qlib-a-share-tushare-1m/derived/a_share/rich/tushare/minute_walkforward_campaign039_feature_library/tushare_stk_mins_1m_2019_2025_ea0cbb8f_walkforward_campaign039_feature_library_v1/snapshot_manifest.json",
+    "sha256": "cda070af6d700a32f5dba1c003a3a38c9921b1c75b29ac9b8a9aa4d39d169d17",
+    "dataset_sha256": "4d61fc2b98d2a1fc3f884668b23fcc763857926ba34abb08fab4f8ae6a3a4948",
+    "partitions": 33015,
+    "rows": 7724498,
+    "eligible_rows": 7692009,
+    "zero_normalization_rows": 32489,
+    "endpoint_canonicalized_rows": 0,
+    "invalid_nonpositive_nonfinite_component_or_range_rows": 0,
+    "resumed_partitions": 0,
+    "factor_name": "intraday_return_time_reversal_asymmetry_236p",
+    "direction": "higher",
+    "source_fields_read": [
+      "datetime",
+      "symbol",
+      "provider",
+      "close"
+    ],
+    "source_open_high_low_volume_amount_read": [],
+    "daily_price_fields_read": [],
+    "comparison_factor_values_read": false,
+    "forward_return_fields_read": false
+  },
+  "post_publication_validation": {
+    "feature_runner": {
+      "path": "scripts/a_share_three_day_walkforward_campaign039_features.py",
+      "sha256": "1ae688af8854b45e46267fda93ef0b80e2e4af9ee113ee6d8fa1c5ac86b5b898"
+    },
+    "feature_tests": {
+      "path": "tests/data_collector_tests/test_a_share_three_day_walkforward_campaign039_features.py",
+      "sha256": "90e052780cbea3dd9894f53b491d211dadda57325706c166e2fa671d7727cdc0"
+    },
+    "command": "PYTHONPATH=. pytest -q tests/data_collector_tests/test_a_share_three_day_walkforward_campaign039_features.py",
+    "passed": 7,
+    "failed": 0,
+    "all_partition_byte_and_frame_hashes_valid": true,
+    "verified_partitions": 33015,
+    "verified_rows": 7724498,
+    "idempotent_build_revalidation_passed": true,
+    "formula_or_gate_changed_after_values": false,
+    "only_runner_transition_after_snapshot": "Bind the immutable snapshot manifest and dataset SHA-256 constants for read-only validation; formula, direction, source projection, output values, and gates are unchanged."
+  },
+  "research_boundary": {
+    "candidate_values_read": true,
+    "comparison_values_read": false,
+    "historical_daily_price_fields_read": false,
+    "historical_forward_returns_read": false,
+    "training_or_model_fitting_performed": false,
+    "provider_request_issued": false,
+    "candidate49_historical_return_signal_or_execution_backfill_performed": false,
+    "candidate49_prospective_ledgers_changed": false,
+    "candidate50_activation_created": false,
+    "current_scoring_selection_sizing_or_orders_performed": false
+  },
+  "authorization": {
+    "next_action": "Validate this snapshot freeze, then run coverage and capacity first; load the exact ordered 60 comparison factors only if coverage passes.",
+    "snapshot_rebuild_repair_formula_direction_cubic_normalization_or_gate_change_allowed": false,
+    "historical_return_read_allowed_before_no_return_admission": false
+  }
+}

@@ -1,0 +1,238 @@
+{
+  "schema_version": 1,
+  "kind": "a_share_three_day_walkforward_campaign097_mechanism_overlap_audit",
+  "status": "passed_semantic_and_support_predicate_review_before_campaign097_source_or_candidate_values",
+  "recorded_at": "2026-08-07T05:07:00Z",
+  "concept_scouting": {
+    "path": "docs/a_share_three_day_walkforward_campaign_097_concept_scouting.json",
+    "sha256": "7c044655d2b236353b0ad02d693c7a79335f65d046d71869621a17522db9a325"
+  },
+  "authoritative_state": {
+    "path": "docs/a_share_three_day_iteration_status_20260807_campaign096_verified.json",
+    "sha256": "4e7f7bb5678b5f81c133c8e5bf256c2a369a2734ac3fa2d2995f5629b83c1a56"
+  },
+  "historical_walkforward_policy": {
+    "path": "docs/a_share_three_day_historical_walkforward_research_policy_20260727.json",
+    "sha256": "38426d6161b9bfed323c58caba18feca668b8c9d53e294951a8ba90c01a798bb"
+  },
+  "numeric_comparator_policy": {
+    "path": "docs/a_share_three_day_walkforward_future_numeric_comparison_eligibility_policy_v41_20260807.json",
+    "sha256": "00ff7f93fcbdf09f8c75f81f1c1bc9e247d32a3088f50967316cc9f9a3bae9c5",
+    "complete_definition_count": 128,
+    "complete_definition_order_sha256": "9380287d8339113cb01fa99670c77078f9be82b7463c06c1e7debb92b1add48b",
+    "numeric_comparator_count": 125,
+    "numeric_comparator_order_sha256": "50a737e640cac8e063aab8be0b483a6d9be87d0e5ddd1e1395e625ab371a4cae"
+  },
+  "candidate": {
+    "name": "intraday_market_range_profile_synchronization_240m",
+    "direction": "higher",
+    "mechanism": "Same-date leave-one-out market synchronization of the fixed-clock distribution of intrabar log high-low ranges.",
+    "formula": "Normalize each complete 240-vector q_i=log(high_i/low_i) by its positive sum. For each date and clock position, subtract the candidate stock's profile from the frozen complete-profile sum and divide by the leave-one-out count. Return the equal-clock-weight population Pearson correlation of the stock and peer-mean vectors.",
+    "source_projection": [
+      "datetime",
+      "symbol",
+      "provider",
+      "high",
+      "low"
+    ],
+    "exact_support_predicate": "The raw stock-day has the exact immutable 241-row identity; all 240 selected high/low pairs are finite, strictly positive, and ordered low<=high; sum(log(high/low)) is finite and strictly positive; the stock normalized profile is finite and nonconstant; at every clock position the leave-one-out benchmark count is at least 50; and the leave-one-out mean profile is finite and nonconstant.",
+    "zero_semantics": "A zero-range bar contributes exact zero at its fixed clock. There is no minimum positive-range count, no minimum adjacent-pair count, and no bridge, imputation, epsilon, dropped bar, threshold, or support repair.",
+    "valid_range": "[-1,1] with only 1e-12 endpoint canonicalization",
+    "candidate49_used_or_modified": false
+  },
+  "mandatory_prevalue_support_predicate_gate": {
+    "required_by_policy_v41": true,
+    "all_known_terminal_coverage_failures_through_campaign096_reviewed": true,
+    "inventory": [
+      {
+        "campaign": 5,
+        "factor": "intraday_lunch_repricing_persistence_119m",
+        "failed_support_class": "requires a sparse lunch repricing state and a large retained post-lunch confirmation support",
+        "relationship_to_campaign097": "incomparable and not inherited; Campaign097 uses no lunch return, close, or retained-return threshold"
+      },
+      {
+        "campaign": 8,
+        "factor": "intraday_post_shock_share_volume_replenishment_236p",
+        "failed_support_class": "every stock-day failed the frozen one-sided-zero share-volume response rule",
+        "relationship_to_campaign097": "strictly different source and missing rule; Campaign097 reads no volume and retains exact zero ranges"
+      },
+      {
+        "campaign": 13,
+        "factor": "intraday_transaction_vwap_envelope_asymmetry_240m",
+        "failed_support_class": "active amount/volume transaction prices had to satisfy the frozen high-low envelope contract",
+        "relationship_to_campaign097": "not inherited; Campaign097 reads neither amount nor volume and never requires transaction-price containment"
+      },
+      {
+        "campaign": 19,
+        "factor": "intraday_bar_direction_continuity_238p",
+        "failed_support_class": "required a large support of informative nonzero open-close direction transitions",
+        "relationship_to_campaign097": "not inherited; Campaign097 reads no open or close, retains zero ranges, and has no transition minimum"
+      },
+      {
+        "campaign": 44,
+        "factor": "full_terminal_library_directional_percentile_consensus_66f",
+        "failed_support_class": "required the exact common finite intersection of all 66 terminal components",
+        "relationship_to_campaign097": "not inherited; Campaign097 is one raw-source mechanism and requires no terminal component value"
+      },
+      {
+        "campaign": 52,
+        "factor": "quarterly_announcement_delay_consistency_4q",
+        "failed_support_class": "four consecutive point-in-time quarterly events caused early-calendar cold start",
+        "relationship_to_campaign097": "not inherited; Campaign097 is same-session minute-only and has no historical event lookback"
+      },
+      {
+        "campaign": 60,
+        "factor": "intraday_day_over_day_directional_return_agreement_238b",
+        "failed_support_class": "required an immediately preceding accepted stock session and at least 60 jointly nonzero aligned returns",
+        "relationship_to_campaign097": "not inherited; Campaign097 has no prior-day dependency or nonzero-return minimum"
+      },
+      {
+        "campaign": 63,
+        "factor": "intraday_cross_sectional_standardized_return_state_stability_236p",
+        "failed_support_class": "required strictly positive leave-one-out return variance at every position; closing position 236 had exact zero variance on every benchmark date",
+        "relationship_to_campaign097": "strictly different peer statistic; Campaign097 uses a peer mean profile, permits zero peer range at any individual clock, and requires nonconstancy only across the full 240-clock vector"
+      },
+      {
+        "campaigns": [
+          68,
+          70,
+          84
+        ],
+        "factors": [
+          "quarterly_profit_revenue_acceleration_rank_gap_2r",
+          "quarterly_announcement_delay_improvement_yoy_rank_1y",
+          "quarterly_profit_growth_level_acceleration_floor_2r"
+        ],
+        "failed_support_class": "exact prior-year or prior-quarter point-in-time state caused structural 2019 cold start and zero P05 coverage",
+        "relationship_to_campaign097": "not inherited; Campaign097 is same-session minute-only with no fiscal or prior-year state"
+      },
+      {
+        "campaigns": [
+          86,
+          96
+        ],
+        "factors": [
+          "intraday_intrabar_close_location_serial_persistence_238p",
+          "intraday_intrabar_close_location_total_variation_238p"
+        ],
+        "failed_support_class": "all HLC valid plus at least 120 adjacent positive-range close-location pairs; both predicates were exactly equivalent and failed median/P05 coverage at 0.923186/0.807550",
+        "relationship_to_campaign097": "Campaign097 is demonstrably broader on own-bar range availability: close is absent, every zero range is a retained zero, a single positive range is sufficient for total range support, and no adjacent pair count exists. The leave-one-out peer-count condition is a separate cross-sectional availability check and does not reinstate the failed positive-range predicate."
+      }
+    ],
+    "candidate_support_identical_to_known_failed_predicate": false,
+    "candidate_support_provably_no_broader_than_known_failed_predicate": false,
+    "source_or_support_change_frozen_before_values": true,
+    "decision": "pass_support_predicate_gate_before_source_rows_or_candidate_values"
+  },
+  "complete_library_review": {
+    "all_128_definitions_reviewed_in_frozen_order": true,
+    "all_125_numeric_comparators_reviewed_in_frozen_order": true,
+    "candidate_is_exact_formula_duplicate": false,
+    "candidate_is_direction_only_duplicate": false,
+    "candidate_is_parameter_only_duplicate": false,
+    "candidate_is_an_inversion_of_a_terminal_factor": false,
+    "candidate_combines_terminal_factor_values": false,
+    "candidate_repairs_a_terminal_support_rule": false,
+    "candidate_changes_quality_listing_buyability_cost_or_walkforward_gates": false
+  },
+  "nearest_semantic_challenges": [
+    {
+      "name": "intraday_market_amount_profile_synchronization_240m",
+      "relationship": "Both correlate one normalized 240-clock profile with a same-date leave-one-out peer mean.",
+      "distinction": "The terminal factor measures market-wide participation timing from CNY amount. Campaign097 measures market-wide volatility timing from log high-low range. Redistributing ranges with amount fixed changes Campaign097 only; redistributing amount with ranges fixed changes the terminal factor only. Range and amount are separate accepted source mechanisms, not a unit substitution.",
+      "mandatory_numeric_challenge": true
+    },
+    {
+      "name": "intraday_range_amount_profile_alignment_js_240m",
+      "relationship": "Both use a normalized range profile.",
+      "distinction": "Campaign087 compares one stock's range and amount distributions with Jensen-Shannon similarity. Campaign097 contains no amount and cannot be computed from one stock; changing peer ranges changes Campaign097 while Campaign087 is fixed.",
+      "mandatory_numeric_challenge": true
+    },
+    {
+      "name": "intraday_morning_afternoon_range_profile_similarity_120b",
+      "relationship": "Both retain the clock shape of high-low ranges.",
+      "distinction": "The terminal factor compares two halves of one stock and is peer invariant. Campaign097 compares the full fixed 240-clock profile with contemporaneous other stocks and is not a half-session symmetry statistic.",
+      "mandatory_numeric_challenge": true
+    },
+    {
+      "name": "intraday_intrabar_range_participation_entropy_240m, intraday_range_clock_center_240m, and intraday_range_local_peak_clock_dispersion_236p",
+      "relationship": "All summarize the intraday allocation or topology of range mass.",
+      "distinction": "Those are own-stock marginal entropy, first clock moment, or strict-peak clock variance. Campaign097 is a peer-dependent aligned-profile correlation; equal own entropy, center, and peak dispersion can coexist with different market synchronization.",
+      "mandatory_numeric_challenge": true
+    },
+    {
+      "name": "intraday_market_idiosyncratic_share_238m, intraday_market_dispersion_decoupling_238m, and intraday_market_directional_sign_agreement_238m",
+      "relationship": "All depend on a contemporaneous market peer population.",
+      "distinction": "Those factors use signed or absolute close returns, covariance, dispersion, or sign agreement. Campaign097 reads no close or return and measures aligned high-low range allocation after per-stock normalization.",
+      "mandatory_numeric_challenge": true
+    },
+    {
+      "name": "intraday_cross_sectional_standardized_return_state_stability_236p",
+      "relationship": "Both use a leave-one-out cross-sectional benchmark.",
+      "distinction": "Campaign063 standardizes every close return by same-position peer variance and then measures adjacent z-state mobility. Campaign097 never estimates peer variance, never standardizes a stock by peer scale, never forms adjacent pairs, and remains defined when an individual clock has zero peer range.",
+      "mandatory_numeric_challenge": false,
+      "numeric_status": "semantic_only_zero_finite_snapshot"
+    },
+    {
+      "name": "candidate49_intraday_cumulative_vwap_crossing_rate_240m_v1",
+      "relationship": "Both are known only after the completed signal session.",
+      "distinction": "Candidate49 counts causal close-versus-cumulative-VWAP crossings and requires amount/volume. Campaign097 is historical-only, reads only high/low plus peers, and does not touch the prospective ledgers.",
+      "mandatory_numeric_challenge": false
+    }
+  ],
+  "semantic_invariance_checks": [
+    {
+      "intervention": "Multiply every high and low of every stock by any stock-specific positive constant.",
+      "result": "unchanged because each log(high/low) is unchanged"
+    },
+    {
+      "intervention": "Multiply all 240 log-range masses of one stock-day by one positive constant while preserving their clock proportions.",
+      "result": "unchanged after per-stock profile normalization"
+    },
+    {
+      "intervention": "Permute one stock's range profile across clock positions while leaving every peer unchanged.",
+      "result": "generally changes, because aligned clock synchronization is the signal"
+    },
+    {
+      "intervention": "Redistribute peer range mass across clocks while holding the candidate stock and every amount, volume, open, close, daily, and quarterly value fixed.",
+      "result": "generally changes, proving peer-range dependence"
+    },
+    {
+      "intervention": "Change every amount and volume while holding all high-low paths fixed.",
+      "result": "unchanged, distinguishing market range timing from market amount timing"
+    },
+    {
+      "intervention": "Change open, close, daily price, forward return, quarterly fields, or Candidate49 observations while preserving high-low profiles and peer identities.",
+      "result": "unchanged"
+    }
+  ],
+  "prevalue_decision": {
+    "passed": true,
+    "selected_factor_count": 1,
+    "complete_definition_count_reviewed": 128,
+    "numeric_comparator_count_reserved_after_coverage": 125,
+    "candidate_or_comparison_values_read": false,
+    "historical_daily_price_or_forward_return_values_read": false,
+    "provider_request_issued": false,
+    "required_next_step": "Freeze the v41-bound coverage-first protocol and the sole conditional development trial, validate every binding, then freeze implementation and synthetic tests before any minute source row."
+  },
+  "prohibited_rescues": [
+    "change Pearson correlation to cosine, Jensen-Shannon, beta, distance, entropy, center, peak, rank correlation, or another profile operator",
+    "replace high-low range with amount, volume, close return, true range, open-close body, or transaction price",
+    "change per-stock normalization, peer population, leave-one-out rule, peer minimum, grid, direction, endpoint tolerance, years, costs, folds, or gates",
+    "drop zero-range clocks, require a favorable subset, smooth, threshold, winsorize, neutralize, residualize, fit, model, combine, rerun, rescue, or invert",
+    "remove a failed comparator, backfill Candidate49, start Candidate50, or create current scores, selections, sizes, or orders"
+  ],
+  "research_boundary": {
+    "campaign097_source_rows_read": false,
+    "campaign097_candidate_values_read": false,
+    "comparison_values_read": false,
+    "historical_daily_price_fields_read": [],
+    "historical_forward_returns_read": false,
+    "candidate49_historical_backfill_performed": false,
+    "candidate49_ledgers_changed": false,
+    "provider_request_issued": false,
+    "current_scoring_selection_sizing_or_orders_performed": false,
+    "investment_advice": false
+  }
+}

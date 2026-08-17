@@ -1,0 +1,31 @@
+{
+  "schema_version": 1,
+  "kind": "a_share_three_day_walkforward_campaign092_no_return_audit_implementation_freeze",
+  "status": "frozen_before_campaign092_coverage_or_comparison_values",
+  "frozen_at": "2026-08-07T00:27:44Z",
+  "protocol": {
+    "path": "docs/a_share_three_day_walkforward_campaign_092_no_return_preregistration.json",
+    "sha256": "fdab87de6012a2dd5e6f2538905f5ebc5464f3887242ac4a657a8545724500c5"
+  },
+  "snapshot_binding": {
+    "path": "docs/a_share_three_day_walkforward_campaign_092_feature_snapshot_binding_20260807.json",
+    "sha256": "2c6f6c152802e3f2f51843ed4054a1377eb8c1bd366583221bfbc7c45a0ae931"
+  },
+  "audit_runner": {
+    "path": "scripts/a_share_three_day_walkforward_campaign092_no_return_audit.py",
+    "sha256": "f17659b918e3b4d4605a55f6f9f025f1bc00cd91e6e19bf6483712cdf2598d2d"
+  },
+  "tests": {
+    "path": "tests/data_collector_tests/test_a_share_three_day_walkforward_campaign092_no_return_audit.py",
+    "sha256": "3d8107c56e264f0319dc50c6efcc4d5cc27294f7a9da7ddbaddcd99d5cb47e83",
+    "preactivation_result": "3 passed"
+  },
+  "complete_definition_count": 123,
+  "numeric_comparator_count": 121,
+  "coverage_or_capacity_metrics_computed_before_freeze": false,
+  "comparison_values_read_before_freeze": false,
+  "historical_daily_price_fields_read_before_freeze": [],
+  "historical_forward_returns_read_before_freeze": false,
+  "provider_request_issued_before_freeze": false,
+  "candidate49_ledgers_changed_before_freeze": false
+}

@@ -1,0 +1,45 @@
+{
+  "schema_version": 3,
+  "kind": "a_share_three_day_walkforward_campaign263_ordered_uniqueness_implementation_freeze",
+  "status": "all_142_source_loaders_alignment_and_gate_runner_frozen_before_comparator_values",
+  "recorded_at": "2026-08-16T12:25:00Z",
+  "timestamp_semantics": "monotonic logical append time after loader-export failure and before the exact comparison retry",
+  "supersedes_without_rewriting": {
+    "path": "docs/a_share_three_day_walkforward_campaign_263_ordered_uniqueness_implementation_freeze_v2_20260816.json",
+    "sha256": "b09918ee07d6649b060493866fdd7a1b74729de487c3f3c211b820bc19c594c0"
+  },
+  "failure_record": {
+    "path": "docs/a_share_three_day_walkforward_campaign_263_ordered_uniqueness_candidate_loader_failure_20260816.json",
+    "sha256": "9b2305be4106aa3a357c9b2d88de8f596bc4086bd43dd5ac43b7afcce137d87c"
+  },
+  "frozen_implementation": {
+    "runner_path": "scripts/a_share_three_day_walkforward_campaign263_ordered_uniqueness.py",
+    "runner_sha256": "c0615dfa5e505afb1a1f80e1a0f2c4c8d1723280e588207318f31596be42f5e0",
+    "test_path": "tests/data_collector_tests/test_a_share_three_day_walkforward_campaign263_ordered_uniqueness.py",
+    "test_sha256": "9aece598635e43ee7e9bc795dcae266dedba390837a514397216f7ecf71abc15",
+    "protocol_sha256": "e4cd3e6ca0254809050a1779fc433fdbfbbe2afe81f67cb767f464be91dfb20f",
+    "coverage_sha256": "4fb82c67252efefdce8466c09e99a9dc526c394b234f2996d8172178e620f0fe",
+    "design_manifest_sha256": "043c17fea89f3b0956d643a7c6e3f4d73a11403b967213d2d57539a6a8316a49",
+    "design_dataset_sha256": "12ce3a64b5e13581392ded9890e2064db4ccca3945da3eb8ad7752c95366a9fc",
+    "campaign136_manifest_sha256": "9a5c9ff824de22af6595d312b76230a3e4cf283c6e1d42e882aae96d11367b93",
+    "campaign136_dataset_sha256": "c84b1f85eec3731736a4da411691c144a70a81e38b5013e5aeea5370f3c417ec",
+    "campaign146_manifest_sha256": "951872dbdcfa2b00e9603d3be44b059c7d24204fba5757551afbcd46ee8a3f74",
+    "campaign146_dataset_sha256": "7278ae76407215eab75e9ff0119d8c6a073e4d7ac9df5b7d349bc09e6cf889c4",
+    "comparison_count": 142,
+    "comparison_order_sha256": "5d1b35fb5a0d8ac9293008db9963c4a60a94dc940c237c3ed259e5ce44f14aaf",
+    "candidate_quality_listing_rows": 1330170,
+    "output_path": "data/experiments/short_horizon/historical_walkforward/campaign_263/uniqueness/campaign263_ordered_uniqueness_audit.json"
+  },
+  "loader_repair": {
+    "body_changed": false,
+    "inner_frozen_loader_reexported": true,
+    "candidate_comparator_order_or_gate_changed": false
+  },
+  "synthetic_verification": {"exit_code": 0, "passed": 7, "failed": 0},
+  "research_boundary": {
+    "comparator_values_read_before_freeze": false,
+    "historical_daily_price_or_forward_return_values_read": false,
+    "provider_request_issued": false,
+    "candidate49_ledgers_changed": false
+  }
+}

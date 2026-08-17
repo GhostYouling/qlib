@@ -1,0 +1,50 @@
+{
+  "schema_version": 1,
+  "kind": "a_share_three_day_walkforward_campaign097_no_return_audit_implementation_freeze_v2",
+  "status": "worker_binding_repair_frozen_before_campaign097_coverage_or_comparison_values",
+  "frozen_at": "2026-08-07T06:07:57Z",
+  "purpose": "Bind the mandatory workers keyword into candidate snapshot verification while preserving every activated Campaign097 v1 factor, alignment, gate, comparator, threshold, and output semantic.",
+  "v1_audit_runner": {
+    "path": "scripts/a_share_three_day_walkforward_campaign097_no_return_audit.py",
+    "sha256": "c0d79005996420f2b6c84b645f75c427771549def134b01bca5adc710df786f2"
+  },
+  "v1_implementation_freeze": {
+    "path": "docs/a_share_three_day_walkforward_campaign_097_no_return_audit_implementation_freeze_20260807.json",
+    "sha256": "589ab6f801f47e04ec0910a3a79ad8349f994c972808955e963fc8ca22f77912"
+  },
+  "v1_activation_binding": {
+    "path": "docs/a_share_three_day_walkforward_campaign_097_no_return_audit_activation_binding_20260807.json",
+    "sha256": "21fa50bae72afbd822ec95a3a61c35b0e4ce7cca9ae0b209fab1c1940980060a"
+  },
+  "v1_failure_record": {
+    "path": "docs/a_share_three_day_walkforward_campaign_097_no_return_audit_worker_binding_failure_20260807.json",
+    "sha256": "631ea106365dca67c42ae2828ce02edf6536e46ad4c5074e8cc3cd2860d96b60"
+  },
+  "v2_audit_runner": {
+    "path": "scripts/a_share_three_day_walkforward_campaign097_no_return_audit_v2.py",
+    "sha256": "4e89b3e002f6a42b84fe41f0e4c09cb411e19307c4224867782ed1df141e20d2"
+  },
+  "v2_tests": {
+    "path": "tests/data_collector_tests/test_a_share_three_day_walkforward_campaign097_no_return_audit_v2.py",
+    "sha256": "3b9ed3fec65ee87d42d50c5c37473392472823d2f9c276be6891b88aee7c913f",
+    "result_with_v1_tests": "11 passed"
+  },
+  "repair_scope": "pass the frozen run workers value to Campaign097 candidate snapshot verification only",
+  "unchanged_semantics": [
+    "factor formula and direction",
+    "candidate snapshot bytes and expected aggregates",
+    "quality-listing stock_day_key identity alignment",
+    "coverage and capacity thresholds",
+    "125-comparator order and uniqueness thresholds",
+    "historical daily price and return embargo",
+    "Candidate49 isolation"
+  ],
+  "candidate_partition_values_read_before_v2_freeze": false,
+  "eligibility_stock_day_keys_read_before_v2_freeze": false,
+  "coverage_or_capacity_metrics_computed_before_v2_freeze": false,
+  "comparison_values_read_before_v2_freeze": false,
+  "historical_daily_price_or_forward_return_values_read_before_v2_freeze": false,
+  "provider_request_issued_before_v2_freeze": false,
+  "candidate49_ledgers_changed_before_v2_freeze": false,
+  "current_scoring_selection_sizing_or_orders_performed_before_v2_freeze": false
+}

@@ -1,0 +1,69 @@
+{
+  "schema_version": 1,
+  "kind": "a_share_three_day_walkforward_campaign115_development_trial_implementation_freeze",
+  "status": "implementation_frozen_before_campaign115_daily_price_or_forward_return_values",
+  "recorded_at": "2026-08-09T08:24:00+08:00",
+  "recorded_at_semantics": "monotonic_logical_append_time_after_development_trial_protocol_and_recorded_ruff_repair_not_host_wall_clock_measurement",
+  "protocol": {
+    "path": "docs/a_share_three_day_walkforward_campaign_115_development_trial_protocol_20260809.json",
+    "sha256": "7a6a537c53c5dbc090105cc750559ba4e163eb5878b8b619104407a0172b94ef"
+  },
+  "runner": {
+    "path": "scripts/a_share_tushare_limit_up_queue_walkforward.py",
+    "sha256": "a34c278cc1c3c97a0de8934452d94980b19f642a55f317502e2b89b707045d85",
+    "base_runner_path": "scripts/a_share_three_day_walkforward_campaign080.py",
+    "base_runner_sha256": "b4c4b781392c87f01b9542c2317611a936d431b0328cea9d21ea90b8f68a324b"
+  },
+  "tests": {
+    "path": "tests/data_collector_tests/test_a_share_tushare_limit_up_queue_walkforward.py",
+    "sha256": "ec9d99bd8c2f1d8c78f316dc8b9489084d3b377e378da58c958c1e26fe580f8d",
+    "pre_freeze_result": "10 passed in 0.31s",
+    "black_check": "2 files would be left unchanged",
+    "ruff_required_rules": "E4,E7,E9,F,I passed"
+  },
+  "recorded_pre_freeze_failure": {
+    "path": "docs/a_share_three_day_walkforward_campaign_115_development_trial_v1_ruff_unused_import_failure_20260809.json",
+    "sha256": "076d45929880d70e89655d392489952933448b86167f5de835159a917b517786",
+    "repair": "removed only the unused os import before this freeze"
+  },
+  "interface": {
+    "plan": "python scripts/a_share_tushare_limit_up_queue_walkforward.py plan",
+    "run_development": "python scripts/a_share_tushare_limit_up_queue_walkforward.py run-development --confirm-development-trial",
+    "inspect_trial": "python scripts/a_share_tushare_limit_up_queue_walkforward.py inspect-trial",
+    "plan_must_be_ready_true_and_exit_zero_before_run": true,
+    "run_requires_explicit_confirmation": true,
+    "plan_reads_candidate_or_comparator_values": false,
+    "plan_reads_daily_price_or_forward_return_values": false,
+    "plan_reads_2024_2025_values": false,
+    "provider_or_credential_interface_present": false,
+    "exposed_stress_command_present": false
+  },
+  "frozen_trial": {
+    "trial_id": "wf115_tushare_official_limit_up_queue_persistence_single_higher",
+    "feature_set": [
+      "tushare_official_limit_up_queue_persistence"
+    ],
+    "weights": [1.0],
+    "direction": "higher",
+    "complexity": 1,
+    "expected_trial_count": 1,
+    "validation_years": [2021, 2022, 2023],
+    "purge_signal_sessions": 3,
+    "t_plus_1_and_t_plus_3_must_share_partition": true,
+    "alternate_trial_variant_filter_fit_model_or_combination_authorized": false
+  },
+  "research_boundary": {
+    "candidate_or_comparator_values_read_before_freeze": false,
+    "historical_daily_price_or_forward_return_values_read_before_freeze": false,
+    "partition_year_2024_or_2025_values_read_before_freeze": false,
+    "stress_2024_2025_opened_before_freeze": false,
+    "credential_loaded_before_freeze": false,
+    "provider_request_issued_before_freeze": false,
+    "candidate49_historical_backfill_performed": false,
+    "candidate49_ledgers_changed": false,
+    "second_prospective_candidate_created": false,
+    "current_scoring_selection_sizing_or_orders_performed": false,
+    "investment_advice": false
+  },
+  "next_action": "Run the metadata-only plan. It must remain closed until the immutable ordered no-return audit admits exactly this one factor. Only a later ready=true exit-zero plan may authorize the single confirmed 2019-2023 development return trial."
+}

@@ -1,0 +1,35 @@
+{
+  "schema_version": 1,
+  "kind": "a_share_three_day_walkforward_campaign115_infrastructure_failure",
+  "status": "recorded_pre_freeze_ruff_unused_import_failure",
+  "recorded_at": "2026-08-09T08:18:00+08:00",
+  "recorded_at_semantics": "monotonic_logical_append_time_after_development_trial_protocol_freeze_not_host_wall_clock_measurement",
+  "attempt_id": "campaign115_infrastructure_021",
+  "stage": "development_trial_runner_pre_freeze_lint",
+  "failure": {
+    "command": "python -m ruff check --select E4,E7,E9,F,I scripts/a_share_tushare_limit_up_queue_walkforward.py tests/data_collector_tests/test_a_share_tushare_limit_up_queue_walkforward.py",
+    "exit_code": 1,
+    "rule": "F401",
+    "finding": "scripts/a_share_tushare_limit_up_queue_walkforward.py imported os but did not use it",
+    "runner_sha256_at_failure": "9771a02f41cedbd4edba7cb6ec460b92b588f460e01a9bbac932b6f803cd0a16",
+    "tests_sha256_at_failure": "ec9d99bd8c2f1d8c78f316dc8b9489084d3b377e378da58c958c1e26fe580f8d"
+  },
+  "preceding_test_result": "10 passed in 0.42s",
+  "authorized_repair": {
+    "remove_only_unused_os_import": true,
+    "formula_direction_trial_folds_purge_costs_gates_or_paths_changed": false,
+    "candidate_or_comparator_values_may_be_read": false,
+    "daily_price_forward_return_or_2024_2025_values_may_be_read": false
+  },
+  "research_boundary": {
+    "candidate_source_or_comparator_values_read": false,
+    "historical_daily_price_or_forward_return_values_read": false,
+    "partition_year_2024_or_2025_values_read": false,
+    "credential_loaded": false,
+    "provider_request_issued": false,
+    "candidate49_ledgers_changed": false,
+    "second_prospective_candidate_created": false,
+    "current_scoring_selection_sizing_or_orders_performed": false,
+    "investment_advice": false
+  }
+}

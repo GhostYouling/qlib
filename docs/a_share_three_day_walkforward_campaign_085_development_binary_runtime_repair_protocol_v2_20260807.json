@@ -1,0 +1,86 @@
+{
+  "schema_version": 1,
+  "version": 2,
+  "kind": "a_share_three_day_walkforward_campaign085_development_binary_runtime_repair_protocol",
+  "status": "frozen_after_one_preload_failure_before_one_conda_compatible_full_retry",
+  "frozen_at": "2026-08-06T15:52:00Z",
+  "binary_runtime_failure_record": {
+    "path": "docs/a_share_three_day_walkforward_campaign_085_development_binary_runtime_failure_20260806.json",
+    "sha256": "84ad4790e1f3a716626dae8a7be9c97f99b482a3e3b7c2d1b91e0eb2af95e132"
+  },
+  "research_attempt_ledger_after_failure": {
+    "path": "data/experiments/short_horizon/historical_walkforward/campaign_085/research_attempt_ledger_v20.json",
+    "sha256": "e69f4765196b86a529e21031dbc28a29169a4d710aff759c4e72a01412cc130b",
+    "campaign_attempt_count": 20,
+    "campaign_infrastructure_failure_count": 19,
+    "campaign_complete_factor_attempt_count": 1,
+    "campaign_return_reading_development_trial_count": 0
+  },
+  "preserved_internal_trial_ledger": {
+    "path": "data/experiments/short_horizon/historical_walkforward/campaign_085/walkforward/trial_ledger.json",
+    "sha256": "d1aa8d4d570a30eab29bddb62f625149c9bb6e3759153f8329020ee9738882b9",
+    "entry_count": 1,
+    "entry_phases": [
+      "infrastructure_failure"
+    ],
+    "complete_development_trial_count": 0,
+    "chain_tip_sha256": "852a4625c5735f91cc3b3f22b408dc602dc0327615ea28f7a38723ee3d55fb93"
+  },
+  "unchanged_preregistration": {
+    "path": "docs/a_share_three_day_walkforward_campaign_085_preregistration_v2.json",
+    "sha256": "fd2bf11241f1051c5c676271393d1df6b1a61359d626f4bc5d1e02853c99c908"
+  },
+  "unchanged_runner": {
+    "path": "scripts/a_share_three_day_walkforward_campaign085.py",
+    "sha256": "21ec216fd30b25723778898a4dd4fe844f128e578d11f736e57bd9def91f5d5d"
+  },
+  "reused_campaign083_runtime_protocol": {
+    "path": "docs/a_share_three_day_walkforward_campaign_083_development_binary_runtime_repair_protocol_v4_20260806.json",
+    "sha256": "e066f12328a63390bbb92d4a8b402061fc37c3a7d08092fdba018d63c14a4ba2",
+    "reuse_scope": "interpreter_and_native_dependency_compatibility_only"
+  },
+  "authorized_compatible_interpreter": {
+    "path": "/Volumes/DIsk/Coding/anaconda3/bin/python3.12",
+    "sha256": "b21ee43bcb627125a1b54b1fceb97bad564afbab38235cb9d72cf1f278d5751c",
+    "libcxx_path": "/Volumes/DIsk/Coding/anaconda3/lib/libc++.1.0.dylib",
+    "libcxx_sha256": "1b9318492353b7b7b3b48b9fa458d2b07b356a5eb8c0931952247fc17bf95c21",
+    "python": "3.12.7",
+    "qlib_data_import_required": true,
+    "qlib_version": "0.9.8.dev30",
+    "numpy": "1.26.4",
+    "pandas": "2.2.2",
+    "pyarrow": "16.1.0",
+    "scipy": "1.13.1",
+    "pytest": "9.0.3",
+    "dynamic_library_environment_override_allowed": false,
+    "global_pip_check_claimed_clean": false,
+    "known_unrelated_global_conflicts_inherited_from_campaign083": true
+  },
+  "sole_repair": {
+    "operation": "Run the unchanged Campaign085 module command under the exact hash-bound Conda Python that natively loads the existing NumPy-1.x Qlib extension; do not set DYLD_LIBRARY_PATH or DYLD_FALLBACK_LIBRARY_PATH.",
+    "partial_market_data_or_statistics_reused": false,
+    "existing_infrastructure_failure_entry_preserved": true,
+    "expected_complete_development_trial_count_before_retry": 0,
+    "campaign_preregistration_runner_feature_trial_folds_costs_or_survivor_gates_changed": false,
+    "historical_daily_price_or_return_fields_changed": false,
+    "stress_2024_2025_rule_changed": false,
+    "provider_or_candidate49_workflow_changed": false
+  },
+  "retry": {
+    "maximum_authorized_conda_compatible_full_retries": 1,
+    "restart_from_market_context_load": true,
+    "append_complete_trial_after_existing_failure_entry": true,
+    "stress_may_open_only_after_nonzero_development_survivor_record": true
+  },
+  "research_boundary": {
+    "complete_development_trial_count": 0,
+    "market_execution_data_loaded_before_protocol": false,
+    "historical_daily_price_fields_read": [],
+    "historical_forward_returns_read": false,
+    "stress_2024_2025_opened": false,
+    "provider_request_issued": false,
+    "candidate49_historical_backfill_performed": false,
+    "candidate49_ledgers_changed": false,
+    "current_scoring_selection_sizing_or_orders_performed": false
+  }
+}

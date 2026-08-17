@@ -1,0 +1,90 @@
+{
+  "schema_version": 1,
+  "kind": "a_share_three_day_walkforward_campaign116_coverage_activation_binding",
+  "status": "frozen_after_verified_snapshot_before_candidate_coverage_values",
+  "recorded_at": "2026-08-12T17:14:05+08:00",
+  "purpose": "Authorize exactly one local aggregate-only Campaign116 coverage/capacity/variation audit while every numeric comparator, daily price, and forward return remains closed.",
+  "implementation_freeze": {
+    "path": "docs/a_share_three_day_walkforward_campaign_116_coverage_audit_implementation_freeze_20260812.json",
+    "sha256": "8fd52afa097ba2ec70ed9daae6883cc0233618a5e8daaf0a5f8471457a9ef257"
+  },
+  "authoritative_state": {
+    "path": "docs/a_share_three_day_iteration_status_20260812_campaign116_snapshot_verified_v2.json",
+    "sha256": "3ed3fb0f02d1d4f009743598a6d18ded9cf1a0df4b776f79e4638cab2d9f69f3"
+  },
+  "numeric_policy": {
+    "path": "docs/a_share_three_day_walkforward_future_numeric_comparison_eligibility_policy_v101_20260812.json",
+    "sha256": "27a52a24fd9db6b945fee49a0e55d73dd48a54a62d2a01652ea01d194d05cd46"
+  },
+  "preregistration": {
+    "path": "docs/a_share_three_day_walkforward_campaign_116_no_return_preregistration_20260812.json",
+    "sha256": "d47d4f1b8d6d7742c17eb82712a85a1dbe8dbb6e8f44e0ff9190e36ef7115c2c"
+  },
+  "snapshot_verification_result": {
+    "path": "docs/a_share_three_day_walkforward_campaign_116_feature_snapshot_verification_result_20260812.json",
+    "sha256": "27bf2126460e0f89dea5d50030d06ffe4ae9372e2d6f7bb75d5f901d0a2fb85a"
+  },
+  "candidate_snapshot": {
+    "path": "/Volumes/DIsk/qlib-a-share-tushare-1m/derived/a_share/rich/tushare/minute_walkforward_campaign116_feature_library/tushare_stk_mins_1m_2019_2025_ea0cbb8f_walkforward_campaign116_feature_library_v1/snapshot_manifest.json",
+    "sha256": "d1036a44495206b2329910d71915a7cd861fdc3baf8344a466d66f1cb1787163",
+    "dataset_sha256": "28e9b79514fe905749a3a182d0b3651331c4afb5330e03276c117d58f3b1082a",
+    "partitions": 33015,
+    "rows": 7724498,
+    "eligible_rows": 5177430,
+    "factor": "intraday_amount_conditioned_directional_persistence_spread_236p",
+    "direction": "higher",
+    "value_range": [
+      -1.0,
+      1.0
+    ]
+  },
+  "candidate49_unchanged_empty_ledgers": {
+    "signal": {
+      "path": "data/experiments/short_horizon/candidate49_future_signal_ledger.json",
+      "sha256": "5193f00d7f36da003f53cec387900da4c3d002299f5dfcfc1a95eaa199ed3a79",
+      "entry_count": 0
+    },
+    "execution": {
+      "path": "data/experiments/short_horizon/candidate49_future_execution_ledger.json",
+      "sha256": "d57a3e61eac969e42cafa418ccd8c0a5ee65dcf69da145bb2c096c2a02a2ea4f",
+      "entry_count": 0
+    }
+  },
+  "coverage_gate": {
+    "holding_period_sessions": 3,
+    "minimum_median_daily_coverage": 0.95,
+    "minimum_p05_daily_coverage": 0.9,
+    "minimum_p05_eligible_names": 50,
+    "minimum_non_overlapping_three_signal_session_cohorts": 200,
+    "minimum_observed_cohort_years": 5,
+    "minimum_nonconstant_cross_sectional_sessions": 100,
+    "cross_sectional_distinctness": "exact finite float values without rounding tolerance or binning"
+  },
+  "ordered_numeric_comparator_contract_if_and_only_if_coverage_passes": {
+    "comparator_count": 134,
+    "order_sha256": "31d788db467f558a0ac538315343090f1b3ad4cb27a26136a49ebaa88b2fdbf2",
+    "minimum_pairwise_names_per_session": 50,
+    "minimum_pairwise_sessions_per_comparison": 100,
+    "maximum_absolute_median_daily_average_tie_spearman_exclusive": 0.8,
+    "all_must_pass": true,
+    "comparator_values_may_be_read_by_this_coverage_activation": false
+  },
+  "output_path": "data/experiments/short_horizon/historical_walkforward/campaign_116/coverage/campaign116_coverage_audit.json",
+  "single_use": true,
+  "research_boundary": {
+    "candidate_snapshot_values_read_before_activation": false,
+    "coverage_or_variation_metrics_computed_before_activation": false,
+    "comparator_values_read_before_activation": false,
+    "historical_daily_price_or_forward_return_values_read": false,
+    "stress_2024_2025_opened": false,
+    "provider_request_issued": false,
+    "credential_loaded": false,
+    "candidate49_historical_backfill_performed": false,
+    "candidate49_ledgers_changed": false,
+    "second_prospective_candidate_created": false,
+    "current_scoring_selection_sizing_positions_or_orders_performed": false,
+    "investment_advice": false
+  },
+  "failure_semantics": "Any coverage, capacity, observed-year, or exact cross-sectional-variation failure terminalizes Campaign116 before all 134 numeric comparator values, daily prices, and forward returns.",
+  "next_action": "Run plan. Only ready=true with process exit code zero authorizes one run --confirm-coverage-audit using the same frozen output and worker range."
+}

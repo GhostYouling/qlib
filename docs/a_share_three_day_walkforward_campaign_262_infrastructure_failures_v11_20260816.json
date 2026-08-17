@@ -1,0 +1,57 @@
+{
+  "schema_version": 11,
+  "kind": "a_share_three_day_walkforward_campaign262_infrastructure_failures",
+  "status": "fifteen_failures_recorded_campaign262_terminal_before_returns",
+  "recorded_at": "2026-08-16T18:26:00+08:00",
+  "timestamp_semantics": "monotonic_logical_append_time_not_host_wall_clock_measurement",
+  "supersedes_without_rewriting": {
+    "infrastructure_failures_v10": {
+      "path": "docs/a_share_three_day_walkforward_campaign_262_infrastructure_failures_v10_20260816.json",
+      "sha256": "3d6f4b643920497910ac5a1f48259272ffe00c7c323ef1b571e0782733ac3258",
+      "attempt_count": 14
+    },
+    "invalid_attempt_ledger_v1": {
+      "path": "data/experiments/short_horizon/historical_walkforward/campaign_262/research_attempt_ledger_v1.json",
+      "sha256": "b3cdba62cfd6ef51df86843521c80673a5aa2310f029f211c107265036ab8b99",
+      "declared_entry_count": 20,
+      "actual_entry_array_length": 0
+    },
+    "dependent_attempt_ledger_v2": {
+      "path": "data/experiments/short_horizon/historical_walkforward/campaign_262/research_attempt_ledger_v2.json",
+      "sha256": "499a4825a7cacf525640e5978d1ed7e90f2d6f221c56b334d3c9dcd5d9095675"
+    }
+  },
+  "additional_failure": {
+    "attempt_id": "campaign262_infrastructure_015",
+    "phase": "focused_terminal_chain_validation",
+    "status": "focused_pytest_failed_because_ledger_v1_entries_array_was_empty_despite_declared_count_and_chain_tip",
+    "observed_result": {
+      "pytest_exit_code": 1,
+      "passed": 33,
+      "failed": 1,
+      "failing_test": "test_append_only_ledger_v1_and_delta_v2_chain"
+    },
+    "cause": "The read-only generator computed every entry hash and the final chain tip but omitted entries.append(entry), so the published v1 array was empty.",
+    "scientific_attempt": false,
+    "result_consumed": false,
+    "new_scientific_values_read": false,
+    "recovery": "Publish a complete recovery ledger v3 chained directly from Campaign261 and include both post-v1 infrastructure failures as final entries; do not rewrite v1 or v2."
+  },
+  "effective_accounting": {
+    "infrastructure_failure_count": 15,
+    "prevalue_scientific_attempt_count": 7,
+    "complete_factor_attempt_count": 1,
+    "return_reading_development_trial_count": 0
+  },
+  "research_boundary": {
+    "campaign262_candidate_snapshot_values_read": true,
+    "campaign262_comparator_values_read": true,
+    "historical_daily_price_or_forward_return_values_read": false,
+    "stress_2024_2025_opened": false,
+    "provider_or_web_request_issued": false,
+    "credential_value_presence_or_digest_read": false,
+    "candidate49_ledgers_changed": false,
+    "current_scoring_selection_sizing_positions_or_orders_performed": false,
+    "investment_advice": false
+  }
+}

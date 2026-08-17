@@ -1,0 +1,122 @@
+{
+  "version": 1,
+  "kind": "a_share_three_day_walkforward_campaign049_mechanism_overlap_audit",
+  "status": "passed_conceptual_independence_before_campaign049_candidate_comparison_daily_price_or_return_values",
+  "recorded_at": "2026-08-01T05:51:00Z",
+  "purpose": "Challenge the selected within-stock half-session amount-clock repeatability mechanism against every nearby frozen family before any Campaign049 value is computed.",
+  "numbering_disambiguation": "Historical Campaign049 is separate from prospective Candidate49 and does not activate or backfill that ledger.",
+  "authoritative_boundary": {
+    "path": "docs/a_share_three_day_iteration_status_20260801_campaign048_verified.json",
+    "sha256": "8bcb5d4749bf77d6f9e0f47a93da2283d67654820a7890de9f01d2c4cd74386f"
+  },
+  "historical_walkforward_policy": {
+    "path": "docs/a_share_three_day_historical_walkforward_research_policy_20260727.json",
+    "sha256": "38426d6161b9bfed323c58caba18feca668b8c9d53e294951a8ba90c01a798bb"
+  },
+  "concept_scouting": {
+    "path": "docs/a_share_three_day_walkforward_campaign_049_concept_scouting.json",
+    "sha256": "e398f91e2f2f17c5fe65982530a4e6cd8c0beffce49f54f0091d6d1a6dab49c0"
+  },
+  "selected_mechanism": {
+    "name": "intraday_morning_afternoon_amount_profile_similarity_120b",
+    "direction": "higher",
+    "economic_hypothesis": "A repeatable within-stock liquidity clock across the two continuous half sessions is consistent with stable participation and execution capacity rather than one-off activity bursts, potentially leaving a more resilient completed-session state for the next-open-to-third-close horizon.",
+    "formula": "Use exactly 120 morning amounts and 120 afternoon amounts. Normalize each half independently to p_i=a_morning_i/sum(a_morning) and q_i=a_afternoon_i/sum(a_afternoon). With m_i=(p_i+q_i)/2, return 1-[0.5*sum(p_i*log(p_i/m_i))+0.5*sum(q_i*log(q_i/m_i))]/log(2), using 0*log(0/m)=0.",
+    "source_projection": [
+      "datetime",
+      "symbol",
+      "provider",
+      "amount"
+    ],
+    "selected_grid": [
+      "09:31-11:30",
+      "13:01-15:00"
+    ],
+    "selected_bar_count": 240,
+    "bins_per_half": 120,
+    "minimum_positive_amount_bars_per_half": 60,
+    "exact_zero_amounts_retained": true,
+    "valid_range": [
+      0.0,
+      1.0
+    ],
+    "transform_threshold_filter_combination_or_model": "none"
+  },
+  "design_choices_frozen_before_values": {
+    "formula_family": "within_stock_equal_clock_morning_afternoon_amount_distribution_similarity",
+    "direction": "higher",
+    "distance": "equal-mixture Jensen-Shannon divergence converted to similarity",
+    "selected_bar_count": 240,
+    "bins_per_half": 120,
+    "minimum_positive_amount_bars_per_half": 60,
+    "include_0930": false,
+    "include_lunch_transition": false,
+    "source_amount_read": true,
+    "source_ohlc_volume_read": false,
+    "exact_zero_amounts_retained": true,
+    "parameter_filter_subset_model_or_combination_count": 0
+  },
+  "overlap_challenges": [
+    {
+      "family": "intraday_amount_participation_entropy_240m",
+      "result": "distinct_pending_statistical_uniqueness_gate",
+      "reason": "Participation entropy asks whether full-day amount is concentrated or diffuse. Campaign049 normalizes each half separately and asks whether the two 120-bin clock shapes match; two halves can have identical entropy but different clock locations and low similarity."
+    },
+    {
+      "family": "intraday_amount_profile_serial_persistence_240m",
+      "result": "distinct_pending_statistical_uniqueness_gate",
+      "reason": "Serial persistence compares adjacent amount positions. Campaign049 compares equal clock positions 120 bars apart and contains no lag-one pair or autocorrelation."
+    },
+    {
+      "family": "intraday_amount_center_of_mass_and_late_amount_share",
+      "result": "distinct_pending_statistical_uniqueness_gate",
+      "reason": "Those factors measure directional timing or late-session mass. Campaign049 removes each half's total scale and rewards repeatability regardless of whether the common profile is early-, middle-, or late-peaked."
+    },
+    {
+      "family": "intraday_market_amount_profile_synchronization_240m",
+      "result": "distinct_pending_statistical_uniqueness_gate",
+      "reason": "Market synchronization compares a stock with a leave-in or leave-one-out market activity profile. Campaign049 is entirely within-stock and does not load a market benchmark."
+    },
+    {
+      "family": "intraday_morning_afternoon_range_profile_similarity_120b",
+      "result": "distinct_pending_statistical_uniqueness_gate",
+      "reason": "The estimator geometry is deliberately the same fixed equal-mixture JSD, but the economic object is different: terminal Campaign040 compares high-low volatility allocation, while Campaign049 reads amount only and compares liquidity-participation scheduling. Reusing a frozen estimator does not substitute the source mechanism; the all-factor statistical gate remains mandatory."
+    },
+    {
+      "family": "intraday_volatility_activity_lead_lag_asymmetry_236p_and_other_activity_price_couplings",
+      "result": "distinct_pending_statistical_uniqueness_gate",
+      "reason": "Those factors pair activity with returns, volatility, direction, range, transaction price, or leads/lags. Campaign049 reads no price field and computes no contemporaneous or lagged cross-field relation."
+    },
+    {
+      "family": "intraday_transaction_vwap_consensus_and_candidate49_cumulative_vwap_crossing",
+      "result": "distinct",
+      "reason": "Campaign049 never divides amount by volume, constructs VWAP, reads Candidate49 values during construction, or interprets transaction prices."
+    },
+    {
+      "family": "campaign048_two_sided_wick_absorption_and_other_OHLC_range_families",
+      "result": "distinct",
+      "reason": "Campaign049 reads no open, high, low, or close and has no wick, range, body, gap, frontier, return, or path statistic."
+    },
+    {
+      "family": "terminal_factor_combination_filter_threshold_or_model",
+      "result": "distinct",
+      "reason": "Campaign049 contains one raw amount statistic and no terminal factor value, fitted weight, filter, threshold, regime, subset, combination, or model."
+    }
+  ],
+  "research_boundary": {
+    "external_campaign049_minute_partitions_read": false,
+    "candidate_or_comparison_values_read": false,
+    "historical_daily_price_or_forward_return_read": false,
+    "provider_request_issued": false,
+    "candidate49_historical_return_signal_execution_or_milestone_backfill_performed": false,
+    "candidate49_ledgers_changed": false,
+    "candidate50_activation_created": false,
+    "current_scoring_selection_sizing_or_orders_performed": false
+  },
+  "decision": {
+    "conceptual_independence_passed": true,
+    "statistical_independence_pending_all_72_comparisons": true,
+    "predictive_value_established": false,
+    "next_action": "Bind this record, inherit the exact 71-factor Campaign048 comparison order, append terminal Campaign048 as comparison 72, freeze one exact conditional development trial, and run the binding validator before implementation."
+  }
+}

@@ -1,0 +1,72 @@
+{
+  "schema_version": 2,
+  "kind": "a_share_three_day_walkforward_campaign107_no_return_implementation_freeze",
+  "status": "frozen_before_campaign107_minute_source_candidate_coverage_or_comparator_values",
+  "recorded_at": "2026-08-07T20:14:00Z",
+  "protocol": {
+    "path": "docs/a_share_three_day_walkforward_campaign_107_no_return_preregistration_binding_correction_v2_20260808.json",
+    "sha256": "7d03d2c983cabdb6d63b22ff61b96a2b90ca76ec6518ea45a5d5465431570794",
+    "base_preregistration_sha256": "9c5665f0c10b73706b67e66a8acd503e2a1c191ef9e7f4f41f1b68ca29dc9a3e"
+  },
+  "feature_builder": {
+    "path": "scripts/a_share_three_day_walkforward_campaign107_features.py",
+    "sha256": "9ee33b5001b83d5dd23299651513917995dbdce453f45cfedf5d0f02ce69014a"
+  },
+  "ordered_audit_runner": {
+    "path": "scripts/a_share_three_day_walkforward_campaign107_no_return_audit.py",
+    "sha256": "f7dc3a36479fa99c682536553e9d5812c873bd582938c7ab3d071a6286389657"
+  },
+  "raw_comparator_adapter_freeze": {
+    "path": "docs/a_share_three_day_walkforward_campaign_107_raw_comparator_adapter_implementation_freeze_20260808.json",
+    "sha256": "07de45590082fcf98350a4b4f0b615ffd994a97fe3cec431ae476c058a95cc2b"
+  },
+  "synthetic_tests": [
+    {
+      "path": "tests/data_collector_tests/test_a_share_three_day_walkforward_campaign107_features.py",
+      "sha256": "50dad2ab3764c2d69faed388474fe456d874da5b6c35b9fab017186d20e8f62d"
+    },
+    {
+      "path": "tests/data_collector_tests/test_a_share_three_day_walkforward_campaign107_no_return_audit.py",
+      "sha256": "1c02cc9b1ad898894ade5a63eddf9dc09d4e5f196eb170eaba168e3971b03cf0"
+    }
+  ],
+  "pre_freeze_test_result": "24 passed, 1 implementation-freeze test intentionally deselected",
+  "candidate": {
+    "name": "intraday_exact_close_level_diversity_240m",
+    "direction": "higher",
+    "source_projection": [
+      "datetime",
+      "symbol",
+      "provider",
+      "close"
+    ],
+    "unordered_pair_denominator": 28680,
+    "ordered_pair_denominator": 57360,
+    "exact_equality_without_rounding_tolerance_tick_inference_or_binning": true,
+    "valid_range": [
+      0.0,
+      1.0
+    ]
+  },
+  "complete_definition_count": 136,
+  "complete_definition_order_sha256": "2099f016f5979a820b480a83aa28877504ea5238362feed551bb7cf583cbf7d0",
+  "numeric_comparator_count": 132,
+  "numeric_comparator_order_sha256": "7ed69afd1408e84dcc856583344166ffc9bcbb0add1aed63163b1d12a1be9a25",
+  "ordered_gates": {
+    "coverage_before_comparator_values": true,
+    "all_132_in_exact_order": true,
+    "raw_comparator_ranges_registered_before_load": true,
+    "legal_nan_preserved_until_pairwise_overlap": true,
+    "daily_price_or_forward_return_access": false
+  },
+  "research_boundary": {
+    "candidate_source_rows_read_before_freeze": false,
+    "candidate_or_comparator_values_read_before_freeze": false,
+    "historical_daily_price_or_forward_return_values_read_before_freeze": false,
+    "provider_request_issued_before_freeze": false,
+    "candidate49_ledgers_changed": false,
+    "second_prospective_candidate_created": false,
+    "current_scoring_selection_sizing_or_orders_performed": false
+  },
+  "next_action": "Run the full frozen synthetic suite; only if it passes, build the immutable Campaign107 candidate snapshot with explicit --confirm-build."
+}

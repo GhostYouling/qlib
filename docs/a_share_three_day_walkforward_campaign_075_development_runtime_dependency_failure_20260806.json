@@ -1,0 +1,41 @@
+{
+  "schema_version": 1,
+  "kind": "a_share_three_day_walkforward_campaign075_infrastructure_failure",
+  "campaign": 75,
+  "campaign_attempt_ordinal": 7,
+  "stage": "development_walkforward_runtime_import_before_market_data_load",
+  "status": "failed_closed_before_historical_daily_price_or_forward_return_values",
+  "recorded_at": "2026-08-06T10:17:00+08:00",
+  "command": "/Users/niyufei/.cache/codex-runtimes/codex-primary-runtime/dependencies/python/bin/python3 -m scripts.a_share_three_day_walkforward_campaign075 run-development",
+  "exit_code": 1,
+  "error_type": "ModuleNotFoundError",
+  "error_summary": "The bundled Python runtime did not provide setuptools_scm, which qlib imports before market data loading.",
+  "frozen_inputs": {
+    "development_preregistration_sha256": "945c4b3a062cd85342955f72e1fc6f22f5b5d9928177504fab17832a548e5015",
+    "development_runner_sha256": "c56c0dcfb82363626dcbdd67c1551688daefc4b1d3c2323dc134e9e9202ac99b",
+    "development_implementation_freeze_sha256": "74f08a84bee2e2e5abb694d79274356e034279f993f69c01587e8ccf9d470e58"
+  },
+  "append_only_trial_ledger_after_failure": {
+    "path": "data/experiments/short_horizon/historical_walkforward/campaign_075/walkforward/trial_ledger.json",
+    "sha256": "d3929319800b27608c88b4d603d274ae0bb3ec0e497506e9f1e88a7d4329d91b",
+    "entry_count": 1,
+    "chain_tip_sha256": "d13acf07ff17da915c6713768087fdd05723b678d0514e945c7853568f1a3c97"
+  },
+  "evidence_boundary": {
+    "qlib_import_completed": false,
+    "market_data_loader_entered": true,
+    "market_data_file_or_value_opened": false,
+    "historical_daily_price_fields_read": [],
+    "historical_forward_returns_read": false,
+    "completed_development_trials": 0,
+    "stress_2024_2025_opened": false,
+    "provider_request_issued": false,
+    "candidate49_ledgers_changed": false
+  },
+  "immutability": {
+    "preregistration_runner_and_development_freeze_must_not_be_rewritten": true,
+    "failed_trial_ledger_entry_must_remain": true,
+    "factor_direction_weights_folds_costs_gates_or_data_bindings_changed": false
+  },
+  "next_action": "Freeze an interpreter-only runtime repair using the already provisioned repository Anaconda Python, verify bindings and status without market values, then retry the identical run-development subcommand."
+}

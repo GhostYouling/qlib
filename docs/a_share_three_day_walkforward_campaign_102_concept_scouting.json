@@ -1,0 +1,116 @@
+{
+  "schema_version": 1,
+  "kind": "a_share_three_day_walkforward_campaign102_concept_scouting",
+  "status": "completed_before_campaign102_design_matrix_model_fit_validation_or_lockbox_return_values",
+  "recorded_at": "2026-08-07T14:59:00Z",
+  "purpose": "Select one genuinely new complete-library supervised combination family for Campaign102 without reading Campaign102 design-matrix values, fitting coefficients, or reading any new validation or 2024-2025 return values.",
+  "authoritative_inputs": {
+    "iteration_state": {
+      "path": "docs/a_share_three_day_iteration_status_20260807_campaign101_terminal_v3.json",
+      "sha256": "cb28828a60f88a76df4ea3b171efe138a9320b34c76b0e0842f5f5234ff83233"
+    },
+    "historical_walkforward_policy": {
+      "path": "docs/a_share_three_day_historical_walkforward_research_policy_20260727.json",
+      "sha256": "38426d6161b9bfed323c58caba18feca668b8c9d53e294951a8ba90c01a798bb"
+    },
+    "numeric_policy_v58": {
+      "path": "docs/a_share_three_day_walkforward_future_numeric_comparison_eligibility_policy_v58_20260807.json",
+      "sha256": "45571a0d525d3c7132f6392914dd80b51ec179b51d21e548102292ec70674edc",
+      "complete_definition_count": 133,
+      "complete_definition_order_sha256": "25cd0159c803bf69b0fce61449843db96a34ae4c56628deda9500433c97b45a1",
+      "numeric_source_factor_count": 130,
+      "numeric_source_factor_order_sha256": "c80d9b929536dd509d6c1a904f790831050e68200393de381f92ad9293ef69e7"
+    },
+    "campaign101_concept_scouting": {
+      "path": "docs/a_share_three_day_walkforward_campaign_101_concept_scouting.json",
+      "sha256": "f1f0a43c8965084a33026bda055a4a963a71ef1c2b7a02f3988626552f9d28b5",
+      "relevant_prevalue_decision": "ic_weighted_return_weighted_ridge_tree_or_neural_model was explicitly deferred for a later separately frozen campaign"
+    },
+    "campaign101_terminal_result": {
+      "path": "docs/a_share_three_day_walkforward_campaign_101_terminal_result_binding_v4_20260807.json",
+      "sha256": "1de051b943c775fe09b3e44d2203d1922d76c1f282f9cddca9062c09362506fc",
+      "result": "terminal_zero_survivors",
+      "may_be_reweighted_retried_or_rescued_inside_campaign101": false
+    }
+  },
+  "candidate_queue_review": [
+    {
+      "concept": "campaign101_quantile_retry_inverse_residual_or_posthoc_filter",
+      "decision": "rejected_before_values",
+      "reason": "Policy v58 explicitly forbids a same-campaign rescue or retry of Campaign101."
+    },
+    {
+      "concept": "best_k_or_return_screened_subset_of_130",
+      "decision": "rejected_before_values",
+      "reason": "A performance-selected subset would violate the complete prevalue-frozen library boundary and create hidden multiplicity."
+    },
+    {
+      "concept": "unconstrained_linear_ridge_or_signed_ic_weights",
+      "decision": "rejected_before_values",
+      "reason": "Negative coefficients could silently invert frozen terminal directions and zero coefficients could silently discard definitions."
+    },
+    {
+      "concept": "tree_neural_or_interaction_model",
+      "decision": "deferred_before_values",
+      "reason": "It adds avoidable architecture and tuning multiplicity before a bounded convex supervised complete-library blend has been isolated."
+    },
+    {
+      "concept": "complete_130_numeric_library_bounded_simplex_ridge",
+      "decision": "selected",
+      "reason": "It is a new supervised mechanism explicitly left open by Campaign101, keeps every frozen-direction component materially present, limits component dominance, fits only inside each expanding training partition, and exposes a finite three-value regularization catalog."
+    }
+  ],
+  "selected_family": {
+    "name": "full_numeric_library_bounded_simplex_ridge_130f",
+    "direction": "higher",
+    "information_domain": "complete_frozen_historical_numeric_library_supervised_cross_sectional_rank_blend",
+    "economic_hypothesis": "The relative usefulness of frozen microstructure, path, activity, market-relative, disclosure, and quality signals may vary, but a training-only bounded positive blend can emphasize persistent complements while retaining every direction and limiting single-factor dominance over a three-session horizon.",
+    "source_factor_count": 130,
+    "source_factor_order_sha256": "c80d9b929536dd509d6c1a904f790831050e68200393de381f92ad9293ef69e7",
+    "component_score": "For each source independently on each session, use its v58 frozen direction, average ties, and percentile ranks in (0,1].",
+    "missing_component_state": 0.0,
+    "minimum_finite_component_count": 98,
+    "support_equivalence": "The 130th source is Campaign101 and is finite exactly when at least 97 of its 129 inputs are finite; requiring at least 98 finite values in the 130-vector is therefore exactly the already-observed Campaign101 support predicate, not a narrower predicate.",
+    "training_target": "Within every contained training signal session, average-tie percentile rank the finite t+1-open to t+3-close gross return ascending so higher realized return has a higher target in (0,1].",
+    "objective": "For each fold and lambda, minimize the session-equal mean squared error between target rank and Xw plus lambda times the squared Euclidean distance from uniform weights.",
+    "constraints": {
+      "sum_weights": 1.0,
+      "minimum_each_weight": "0.25/130",
+      "maximum_each_weight": "4/130",
+      "all_weights_strictly_positive": true,
+      "direction_inversion_allowed": false,
+      "component_drop_allowed": false
+    },
+    "regularization_grid": [0.0, 0.1, 1.0],
+    "finite_development_trial_count": 3,
+    "optimizer": "deterministic scipy SLSQP on frozen sufficient statistics, uniform initialization, ftol=1e-12, maxiter=2000, fail closed on non-convergence or constraint violation",
+    "fold_specific_fitting": true,
+    "intercept": false,
+    "alternate_target_support_bounds_imputation_subset_direction_model_optimizer_or_grid_search": false
+  },
+  "sequential_information_protocol": {
+    "step_1": "Build and bind the 2019-2025 130-component directional-rank design matrix without daily prices or returns.",
+    "step_2": "For a fold, read only its contained and purged training returns and fit all three frozen lambda trials.",
+    "step_3": "Score every daily row in that fold's validation year and compare each score with all 130 numeric components before reading that fold's validation returns.",
+    "step_4": "Only trials passing all 130 strict uniqueness comparisons may read and evaluate that fold's validation returns; process folds chronologically so an earlier validation year becomes later training only after its audit and evaluation.",
+    "step_5": "Select at most one survivor using the frozen development gates. Refit on 2019-2023, audit 2024-2025 scores against all 130 components, then and only then consume the historically exposed 2024-2025 lockbox once."
+  },
+  "research_boundary": {
+    "prior_campaign_metadata_and_terminal_results_read": true,
+    "campaign102_design_matrix_values_read": false,
+    "campaign102_model_fit_performed": false,
+    "new_historical_daily_price_or_return_values_read": false,
+    "provider_request_issued": false,
+    "candidate49_historical_backfill_performed": false,
+    "candidate49_ledgers_changed": false,
+    "second_prospective_candidate_created": false,
+    "current_scoring_selection_sizing_or_orders_performed": false,
+    "investment_advice": false
+  },
+  "decision": {
+    "selected_family_count": 1,
+    "finite_trial_count": 3,
+    "predictive_value_established": false,
+    "next_action": "Complete the mandatory prevalue mechanism/support audit and freeze the exact fingerprint-bound no-return and sequential walk-forward protocol before building the design matrix or fitting any model."
+  }
+}

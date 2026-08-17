@@ -1,0 +1,58 @@
+{
+  "schema_version": 1,
+  "kind": "a_share_three_day_walkforward_campaign140_terminal_result_additive_correction",
+  "status": "terminal_prevalue_zero_candidates_final_accounting",
+  "recorded_at": "2026-08-14T14:00:20+0800",
+  "supersedes_without_rewriting": {
+    "path": "docs/a_share_three_day_walkforward_campaign_140_terminal_result_20260814.json",
+    "sha256": "05b145c38cc8540f46771ab0b780993c7306cbed135195489102301a9d003b3c",
+    "preserved": true,
+    "reason": "Append the initial terminal-validation failure and independently replayable mechanism-audit binding without changing the zero-candidate scientific result."
+  },
+  "effective_inputs": {
+    "mechanism_source_frontier_audit_v2": {
+      "path": "docs/a_share_three_day_walkforward_campaign_140_mechanism_source_frontier_audit_v2_20260814.json",
+      "sha256": "3bfcc43e4d2ccf1844e1da9bac1370b1b2e4850f881c090735fb40d73a3bbfb7"
+    },
+    "attempt_ledger_v2": {
+      "path": "data/experiments/short_horizon/historical_walkforward/campaign_140/research_attempt_ledger_v2.json",
+      "sha256": "e2a44aaafdb1a04c78c68f0642cb8a481cfed8d8b6dcc933749a2141431fb465",
+      "effective_entry_count": 7,
+      "chain_tip_sha256": "85eb730dd68634ba77253bb79d322fba1db807b4f7209905a48114ddb997a467"
+    }
+  },
+  "unchanged_scientific_result": {
+    "terminal_phase": "prevalue_semantic_independence_gate",
+    "finite_concepts_reviewed": 6,
+    "selected_candidate_count": 0,
+    "complete_factor_definition_created": false,
+    "numeric_comparator_appended": false,
+    "source_candidate_comparator_daily_price_or_forward_return_values_read": false,
+    "stress_2024_2025_opened": false,
+    "complete_definition_count": 153,
+    "complete_definition_order_sha256": "bf66faef96d7058c7028da52757c65d8e0bf7978cf72d3967cd236e4da30b875",
+    "eligible_numeric_comparator_count": 141,
+    "eligible_numeric_comparator_order_sha256": "ec1aebcb939ad516c58037a36a4aaadd4ad8b2abbd3c884705895c58da85a2ee"
+  },
+  "effective_accounting": {
+    "campaign140_attempt_count": 7,
+    "campaign140_prevalue_concept_attempt_count": 6,
+    "campaign140_infrastructure_failure_count": 1,
+    "campaign140_complete_factor_attempt_count": 0,
+    "campaign140_return_reading_development_trial_count": 0,
+    "campaign140_development_survivor_count": 0,
+    "campaign140_stress_trial_count": 0,
+    "cumulative_historical_research_attempt_count": 1175,
+    "cumulative_return_reading_development_trial_count": 313
+  },
+  "candidate49": {
+    "sole_prospective_candidate": true,
+    "signal_ledger_sha256": "5193f00d7f36da003f53cec387900da4c3d002299f5dfcfc1a95eaa199ed3a79",
+    "signal_entries": 0,
+    "execution_ledger_sha256": "d57a3e61eac969e42cafa418ccd8c0a5ee65dcf69da145bb2c096c2a02a2ea4f",
+    "execution_entries": 0,
+    "historical_backfill_performed": false,
+    "ledgers_changed": false
+  },
+  "next_action": "Keep the goal active and begin Campaign141 offline only from a genuinely new finite prevalue mechanism; preserve all Campaign140 records and Candidate49 unchanged."
+}

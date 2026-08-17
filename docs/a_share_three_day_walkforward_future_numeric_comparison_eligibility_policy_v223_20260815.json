@@ -1,0 +1,104 @@
+{
+  "version": 223,
+  "kind": "a_share_three_day_walkforward_future_numeric_comparison_eligibility_policy",
+  "status": "campaign160_effective_terminal_prevalue_no_credential_source_contract_delta_audit",
+  "recorded_at": "2026-08-15T04:55:40+08:00",
+  "supersedes_without_rewriting": {
+    "path": "docs/a_share_three_day_walkforward_future_numeric_comparison_eligibility_policy_v222_20260815.json",
+    "sha256": "b83702d820920c2ec61c06f944062d80e2c1445d4fcb64e5c17a50b575ff0a61",
+    "preserved": true,
+    "library_order_changed": false,
+    "scientific_result_changed": true,
+    "reason": "Campaign160 records six no-high-point source-contract delta routes and four infrastructure failures without reading source or research values."
+  },
+  "authoritative_inputs": {
+    "campaign160_source_contract_delta_inventory": {
+      "path": "docs/a_share_three_day_walkforward_campaign_160_no_credential_source_contract_delta_inventory_20260815.json",
+      "sha256": "25dc95b6e4ef87068e0f94a8cb257b226b9fe22c0fa390716d1db9d164b60418"
+    },
+    "campaign160_source_contract_delta_audit": {
+      "path": "docs/a_share_three_day_walkforward_campaign_160_no_credential_source_contract_delta_audit_20260815.json",
+      "sha256": "e1c16b7dbd35f15d3c01fe5728529a85449424c45c42555baab667345f56b57d"
+    },
+    "campaign160_attempt_ledger_v2": {
+      "path": "data/experiments/short_horizon/historical_walkforward/campaign_160/research_attempt_ledger_v2.json",
+      "sha256": "b8301cfbe24667020d45e845718c6bb121c9f87b50f433678c8420d419c1bfc1",
+      "effective_entry_count": 10,
+      "chain_tip_sha256": "0fe94283dfe8ab6b0a83897375fc4d3bbfc316116748590bf80d6364e4e87cdf"
+    },
+    "campaign160_effective_terminal_result": {
+      "path": "docs/a_share_three_day_walkforward_campaign_160_terminal_result_v2_20260815.json",
+      "sha256": "8ed86c6e32d57bc05082273c76200d93c0483a8f72ef7931a033fc2957ebd568"
+    },
+    "campaign160_effective_terminal_report": {
+      "path": "docs/a_share_three_day_walkforward_campaign_160_terminal_report_v2.md",
+      "sha256": "0a5d74c4a22ec796df62e4c2b701dae55b91ef33e79eb2449e6376eb4ef59084"
+    }
+  },
+  "complete_historical_feature_library": {
+    "factor_definition_count": 157,
+    "order_sha256": "c39bb6ca969b5f469a9377a5b5ca743405cec9d8511297ed6a1c44188ef40b82",
+    "unchanged_from_v222": true,
+    "campaign160_definition_appended": false
+  },
+  "numerical_comparator_eligibility": {
+    "eligible_numeric_comparator_count": 142,
+    "eligible_numeric_comparator_order_sha256": "5d1b35fb5a0d8ac9293008db9963c4a60a94dc940c237c3ed259e5ce44f14aaf",
+    "unchanged_from_v222": true,
+    "campaign160_numeric_series_appended": false
+  },
+  "effective_accounting": {
+    "campaign160_attempt_count": 10,
+    "campaign160_prevalue_scientific_attempt_count": 6,
+    "campaign160_infrastructure_failure_count": 4,
+    "campaign160_complete_factor_attempt_count": 0,
+    "campaign160_return_reading_development_trial_count": 0,
+    "campaign160_development_survivor_count": 0,
+    "campaign160_stress_trial_count": 0,
+    "cumulative_historical_research_attempt_count": 1396,
+    "cumulative_return_reading_development_trial_count": 314
+  },
+  "campaign160_terminal_classification": {
+    "terminal": true,
+    "terminal_phase": "prevalue_no_credential_source_contract_delta_gate",
+    "source_contract_routes_reviewed": 6,
+    "source_admission_deferrals_not_factor_failures": 2,
+    "terminal_source_field_schema_or_sample_reuse_rejections": 4,
+    "selected_candidate_count": 0,
+    "source_response_candidate_comparator_daily_price_or_forward_return_values_read": false,
+    "stress_2024_2025_opened": false
+  },
+  "candidate49": {
+    "only_active_prospective_candidate": true,
+    "signal_ledger_sha256": "5193f00d7f36da003f53cec387900da4c3d002299f5dfcfc1a95eaa199ed3a79",
+    "signal_entry_count": 0,
+    "execution_ledger_sha256": "d57a3e61eac969e42cafa418ccd8c0a5ee65dcf69da145bb2c096c2a02a2ea4f",
+    "execution_entry_count": 0,
+    "historical_backfill_performed": false,
+    "ledgers_changed": false
+  },
+  "future_campaign_boundary": {
+    "next_campaign": 161,
+    "may_begin_after_this_policy": true,
+    "must_begin_from_genuinely_changed_exact_source_evidence_or_separately_frozen_complete_contract": true,
+    "install_package_or_request_provider_rows_to_discover_and_choose_fields_allowed": false,
+    "terminal_field_schema_date_identity_sample_or_model_recycling_allowed": false,
+    "deferred_hypothesis_revisit_requires_changed_source_evidence": true,
+    "historical_offline_work_may_continue_at_any_local_time": true,
+    "candidate49_remains_separate_confirmation_layer": true
+  },
+  "research_boundary": {
+    "campaign160_source_row_response_or_column_value_read": false,
+    "campaign160_candidate_or_comparator_value_read": false,
+    "historical_daily_price_or_forward_return_value_read": false,
+    "stress_2024_2025_opened": false,
+    "provider_or_web_request_issued": false,
+    "provider_credential_presence_value_or_digest_read": false,
+    "candidate49_historical_backfill_performed": false,
+    "candidate49_ledgers_changed": false,
+    "second_prospective_candidate_created": false,
+    "current_scoring_selection_sizing_positions_or_orders_performed": false,
+    "investment_advice": false
+  },
+  "next_action": "Publish Campaign160 effective v2 state and continue Campaign161 offline only when exact source evidence has genuinely changed or a full contract can be frozen before rows."
+}

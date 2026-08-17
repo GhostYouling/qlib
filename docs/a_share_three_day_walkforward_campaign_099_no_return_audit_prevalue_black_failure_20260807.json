@@ -1,0 +1,35 @@
+{
+  "schema_version": 1,
+  "kind": "a_share_three_day_walkforward_campaign099_no_return_audit_prevalue_black_failure",
+  "status": "recorded_before_mechanical_formatting_or_any_value_read",
+  "recorded_at": "2026-08-07T10:09:30Z",
+  "snapshot_binding": {
+    "path": "docs/a_share_three_day_walkforward_campaign_099_feature_snapshot_binding_20260807.json",
+    "sha256": "e90f88f2fd3f102ecfc20610978e125320d2f51e8d155cb9b82e2759824c59f8"
+  },
+  "pre_format_files": {
+    "audit_runner": {
+      "path": "scripts/a_share_three_day_walkforward_campaign099_no_return_audit.py",
+      "sha256": "e1a14465fec7358ef57de8b8eba685defe0aab5dd8a0ae86d38eea11ed3fe926"
+    },
+    "tests": {
+      "path": "tests/data_collector_tests/test_a_share_three_day_walkforward_campaign099_no_return_audit.py",
+      "sha256": "55b87c5d0870c240d14ef56dfd1218c417a4074db8a2d540f62f5a51eedc2dfd"
+    }
+  },
+  "observed_gates": {
+    "pytest": "4 passed",
+    "ruff": "passed",
+    "black": "would reformat both new audit files",
+    "black_exit_code": 1
+  },
+  "allowed_repair": "run Black on the exact two new audit files and rerun the unchanged four tests, Black check, and Ruff before freezing the audit implementation",
+  "scientific_boundary": {
+    "candidate_values_read": false,
+    "coverage_or_capacity_metrics_computed": false,
+    "comparison_factor_values_read": false,
+    "historical_daily_price_or_forward_return_values_read": false,
+    "provider_request_issued": false,
+    "candidate49_ledgers_changed": false
+  }
+}

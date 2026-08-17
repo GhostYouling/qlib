@@ -1,0 +1,25 @@
+{
+  "schema_version": 1,
+  "kind": "a_share_three_day_walkforward_campaign138_infrastructure_failure",
+  "status": "recorded_failed_patch_no_partial_write_scientific_result_unchanged",
+  "recorded_at": "2026-08-14T12:55:05+0800",
+  "operation": {
+    "operation_class": "apply_patch",
+    "target_scope": "Campaign138 terminal and unified report final accounting paragraphs",
+    "exit_code": 1,
+    "failure_class": "patch_context_mismatch",
+    "partial_write_performed": false
+  },
+  "diagnosis": {
+    "reason": "The expected sentence began mid-paragraph in the actual terminal report, so the line-oriented patch context did not match.",
+    "correct_context_read_after_failure": true,
+    "old_scientific_or_accounting_record_modified": false
+  },
+  "recovery": {
+    "failed_exit_code_bypassed": false,
+    "retry_same_patch_without_context_correction": false,
+    "scientific_result_changed": false,
+    "additional_source_candidate_comparator_daily_price_or_return_values_read": false,
+    "append_to_campaign138_effective_ledger": true
+  }
+}

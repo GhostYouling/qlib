@@ -1,0 +1,79 @@
+{
+  "schema_version": 1,
+  "kind": "a_share_three_day_walkforward_campaign156_terminal_result",
+  "status": "terminal_prevalue_zero_admitted_credit_governance_sources",
+  "recorded_at": "2026-08-15T03:40:35+08:00",
+  "authoritative_inputs": {
+    "campaign155_state": {
+      "path": "docs/a_share_three_day_iteration_status_20260815_campaign155_prevalue_terminal.json",
+      "sha256": "bafe89e29d8c25a0417fe3fc84fc911c76f26a7d59ae579b2f4b6b41c44ee857"
+    },
+    "numeric_policy_v217": {
+      "path": "docs/a_share_three_day_walkforward_future_numeric_comparison_eligibility_policy_v217_20260815.json",
+      "sha256": "3278b03a727ad9e0b5c2e113eee995bf6eb1762a1c1065dd58c19a9ae3d9df62"
+    },
+    "credit_governance_source_scouting": {
+      "path": "docs/a_share_three_day_walkforward_campaign_156_credit_governance_source_scouting_20260815.json",
+      "sha256": "2cdd8c13cdd722b290bfcff16042a23877260240f78cb0b6bc7765ffa1df4c6e"
+    },
+    "credit_governance_source_admission_audit": {
+      "path": "docs/a_share_three_day_walkforward_campaign_156_credit_governance_source_admission_audit_20260815.json",
+      "sha256": "f33135c9032ff7ccb0524096e5668059e4a0fbf9d20f5cab29079ed193b26cd4"
+    },
+    "attempt_ledger": {
+      "path": "data/experiments/short_horizon/historical_walkforward/campaign_156/research_attempt_ledger_v1.json",
+      "sha256": "39518b64227a9cfc6bbea9594720189d003b194c6e2324f8a2b2227b7b761252",
+      "effective_entry_count": 7,
+      "chain_tip_sha256": "06be55e408aa64f650b72467c79bb1b76d702e16ba51f0a8f0ca538582ffc11e"
+    },
+    "ledger_hash_generation_failure": {
+      "path": "docs/a_share_three_day_walkforward_campaign_156_ledger_hash_generation_shell_variable_failure_20260815.json",
+      "sha256": "bd41508d73e67325a02474ec229fe5e9b8ada5bbf210f9e31aea91740a4aca54"
+    }
+  },
+  "effective_accounting": {
+    "campaign156_attempt_count": 7,
+    "campaign156_prevalue_source_admission_attempt_count": 6,
+    "campaign156_source_admission_deferral_count": 4,
+    "campaign156_terminal_source_family_rejection_count": 2,
+    "campaign156_infrastructure_failure_count": 1,
+    "campaign156_complete_factor_attempt_count": 0,
+    "campaign156_return_reading_development_trial_count": 0,
+    "campaign156_development_survivor_count": 0,
+    "campaign156_stress_trial_count": 0,
+    "cumulative_historical_research_attempt_count": 1365,
+    "cumulative_return_reading_development_trial_count": 314
+  },
+  "terminal_classification": {
+    "terminal": true,
+    "terminal_phase": "prevalue_credit_governance_source_admission_gate",
+    "finite_concepts_reviewed": 6,
+    "selected_candidate_count": 0,
+    "source_admission_deferrals_not_factor_failures": 4,
+    "terminal_source_family_overlap_rejections": 2,
+    "formula_feature_adapter_or_model_created": false,
+    "source_row_endpoint_response_candidate_comparator_daily_price_or_forward_return_values_read": false,
+    "stress_2024_2025_opened": false,
+    "unverified_endpoint_field_or_schema_assumed": false,
+    "deferred_concepts_may_be_revisited_only_after_separate_pre_row_source_contract": true,
+    "terminal_overlap_concepts_may_be_retried_or_keyword_migrated": false
+  },
+  "library_accounting": {
+    "complete_factor_definition_count": 157,
+    "complete_factor_definition_order_sha256": "c39bb6ca969b5f469a9377a5b5ca743405cec9d8511297ed6a1c44188ef40b82",
+    "eligible_numeric_comparator_count": 142,
+    "eligible_numeric_comparator_order_sha256": "5d1b35fb5a0d8ac9293008db9963c4a60a94dc940c237c3ed259e5ce44f14aaf",
+    "campaign156_definition_appended": false,
+    "campaign156_numeric_series_appended": false
+  },
+  "research_boundary": {
+    "provider_or_web_request_issued_by_campaign156": false,
+    "provider_credential_presence_value_or_digest_read": false,
+    "candidate49_historical_backfill_performed": false,
+    "candidate49_ledgers_changed": false,
+    "second_prospective_candidate_created": false,
+    "current_scoring_selection_sizing_positions_or_orders_performed": false,
+    "investment_advice": false
+  },
+  "next_action": "Keep the goal active and begin Campaign157 offline only from a genuinely new mechanism or a source whose exact historical point-in-time contract can be frozen before rows; do not treat the four deferred concepts as failed factors."
+}

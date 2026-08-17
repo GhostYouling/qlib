@@ -1,0 +1,227 @@
+{
+  "version": 1,
+  "kind": "a_share_three_day_walkforward_campaign012_research_record",
+  "status": "completed_zero_development_survivors_stress_interval_not_opened",
+  "recorded_at": "2026-07-28T17:50:03Z",
+  "purpose": "Record Campaign012 from concept-only scouting through its single frozen 2019-2023 walk-forward trial, terminal zero-survivor decision, and closed 2024-2025 stress interval.",
+  "prior_state": {
+    "path": "docs/a_share_three_day_iteration_status_20260728_campaign011.json",
+    "sha256": "b474f33b9700713c03f4271a5da8335bf550f75df79eafa39d5e12e073798bd6"
+  },
+  "campaign": {
+    "concept_scouting": {
+      "path": "docs/a_share_three_day_walkforward_campaign_012_concept_scouting.json",
+      "sha256": "8174841542272fb8d6f563032dda98d739f153999e6dbc9cbbdbf4589d100db0"
+    },
+    "mechanism_overlap_audit": {
+      "path": "docs/a_share_three_day_walkforward_campaign_012_mechanism_overlap_audit.json",
+      "sha256": "2311e40efb3d97a913c91fced47eff041490112b72285c60f0e3ff3a9bc25918"
+    },
+    "no_return_preregistration": {
+      "path": "docs/a_share_three_day_walkforward_campaign_012_no_return_preregistration.json",
+      "sha256": "23ffe9f165cf03bdbe3a0fc1ab0119e687c8388040674f5256ccbd1c1a5ffe86"
+    },
+    "walkforward_preregistration": {
+      "path": "docs/a_share_three_day_walkforward_campaign_012_preregistration.json",
+      "sha256": "8c7aac81dd2d3ffeb053d26c19ec140576bc6add00a1bb970f818d99f9e4f4aa"
+    },
+    "runner": {
+      "path": "scripts/a_share_three_day_walkforward_campaign012.py",
+      "sha256": "c42ba2b830107de56b192522e129b5704ecfcc2ba79e1f78ae0dc5286c0f0597",
+      "frozen_orchestration_parent": {
+        "path": "scripts/a_share_three_day_walkforward_campaign011.py",
+        "sha256": "e408344c56532081be1a05f836224ca0c30344a529ee9c8bd00d308f751a37e9",
+        "campaign011_file_changed": false
+      }
+    },
+    "feature_and_no_return_runner": {
+      "path": "scripts/a_share_three_day_walkforward_campaign012_features.py",
+      "post_audit_fingerprint_bound_sha256": "8ff031e7cdfc6e15cd62ef6dc9289b4cd509f1cd93693857d87cc9d2371b0df8"
+    }
+  },
+  "no_return_admission": {
+    "feature_snapshot": {
+      "path": "/Volumes/DIsk/qlib-a-share-tushare-1m/derived/a_share/rich/tushare/minute_walkforward_campaign012_feature_library/tushare_stk_mins_1m_2019_2025_ea0cbb8f_walkforward_campaign012_feature_library_v1/snapshot_manifest.json",
+      "sha256": "58fca32b58be53523daa0fe7a971a1394a35d4f1251c484214d06f5deff6677a",
+      "dataset_sha256": "aaa33541d55f68699e99a4a9d5abc697feafe215dd70ab1ba1c807b7cab3c18f",
+      "partition_count": 33015,
+      "row_count": 7724498,
+      "finite_factor_rows": 7375921,
+      "source_fields_read": [
+        "datetime",
+        "symbol",
+        "provider",
+        "high",
+        "low"
+      ],
+      "minute_open_read": false,
+      "minute_close_read": false,
+      "minute_volume_read": false,
+      "minute_amount_read": false
+    },
+    "audit": {
+      "path": "data/experiments/short_horizon/historical_walkforward/campaign_012/no_return/20260728T174604Z_campaign012_no_return_audit.json",
+      "sha256": "ddce865c259d712fefac213c2db923a292f49aa78f5e8cac8ad16dba3fc570fe",
+      "status": "completed_with_one_admissible_factor_pending_walkforward_preregistration",
+      "historical_daily_price_fields_read": [],
+      "historical_forward_return_fields_read": false
+    },
+    "admission_result": {
+      "name": "intraday_intrabar_range_reversal_238p",
+      "decision": "admitted",
+      "median_coverage": 0.9877793281190662,
+      "p05_coverage": 0.9621365576102419,
+      "p05_eligible_names": 137.0,
+      "potential_non_overlapping_three_session_cohorts": 540,
+      "maximum_absolute_median_daily_rank_correlation": 0.5216407509787344,
+      "closest_comparison_factor": "intraday_volatility_resolution_238m",
+      "closest_comparison_median_daily_rank_correlation": -0.5216407509787344,
+      "second_closest_comparison_factor": "intraday_price_update_share_238m",
+      "second_closest_absolute_median_daily_rank_correlation": 0.4904794118584549,
+      "campaign011_range_entropy_median_daily_rank_correlation": 0.27548411295169745,
+      "campaign010_range_overlap_median_daily_rank_correlation": 0.21675977653631295,
+      "statistical_comparison_factor_count": 34,
+      "campaign008_semantic_only_comparison_completed": true
+    }
+  },
+  "completed_artifacts": {
+    "trial_ledger": {
+      "path": "data/experiments/short_horizon/historical_walkforward/campaign_012/walkforward/trial_ledger.json",
+      "sha256": "06ef9c9e9d1f5090321f5dd8a0cdf56e851a7f5085fc81a102ade5c663614500",
+      "entry_count": 1,
+      "infrastructure_failure_count": 0,
+      "chain_tip_sha256": "718f358dd6002baac6db9403ab4b5573eaf02498a61cf87e69e99f63ac2e51cb"
+    },
+    "development_survivors": {
+      "path": "data/experiments/short_horizon/historical_walkforward/campaign_012/walkforward/development_survivors.json",
+      "sha256": "3032259060689b333d1d3174fe561ede18f430a3abdaace3ebacfcd41679303d",
+      "trial_decision_count": 1,
+      "operationally_admissible_count": 1,
+      "development_gate_passer_count": 0,
+      "selected_survivor_count": 0,
+      "stress_return_fields_read_when_frozen": false
+    },
+    "exposed_stress_consumption_record": {
+      "path": "data/experiments/short_horizon/historical_walkforward/campaign_012/walkforward/exposed_stress_consumption_record.json",
+      "sha256": "fb1d14ea29f94677d34928cf7b2009c38f38be891ac1b3d4b0812f6146dbb1eb",
+      "stress_interval_opened": false,
+      "stress_return_fields_read": false,
+      "reason": "zero_development_survivors"
+    },
+    "campaign_report": {
+      "path": "data/experiments/short_horizon/historical_walkforward/campaign_012/walkforward/campaign_report.json",
+      "sha256": "507c981d688e995cc09b2f708c7521e4147aa4ba626bfafc7b689857027afaa8"
+    }
+  },
+  "development_result": {
+    "period": {
+      "start": "2019-01-01",
+      "end": "2023-12-31"
+    },
+    "validation_years": [
+      2021,
+      2022,
+      2023
+    ],
+    "purge_signal_sessions_each_boundary": 3,
+    "signal_entry_exit": "signal at t close, enter t+1 accepted-session open, exit t+3 accepted-session close",
+    "frozen_trial_count": 1,
+    "trial": {
+      "trial_id": "wf012_single__intraday_intrabar_range_reversal_238p",
+      "actual_trial_kind": "single_factor",
+      "actual_factor_count": 1,
+      "positive_validation_mean_rank_ic_fold_count": 3,
+      "validation_mean_rank_ic_by_year": {
+        "2021": 0.03473704863623796,
+        "2022": 0.03630779947339186,
+        "2023": 0.04993013492952968
+      },
+      "median_validation_mean_rank_ic": 0.03630779947339186,
+      "validation_spreads": [
+        -0.00031518605002831365,
+        0.001136573439795677,
+        0.008664898621547665
+      ],
+      "median_validation_spread": 0.001136573439795677,
+      "positive_validation_normalized_return_fold_count": 2,
+      "validation_normalized_returns": [
+        0.2571109488904175,
+        -0.06749432154321644,
+        0.04765677267446233
+      ],
+      "positive_validation_pilot_10bp_return_fold_count": 1,
+      "validation_pilot_10bp_returns": [
+        0.007896785693110031,
+        -0.03371036820905371,
+        -0.011525296601832546
+      ],
+      "validation_board_lot_affordability_rates": [
+        0.9954954954954955,
+        0.9863013698630136,
+        1.0
+      ],
+      "maximum_validation_daily_amount_participation": 0.0022230234217411994,
+      "worst_validation_normalized_drawdown": -0.1433587344568319,
+      "development_aggregate_mean_rank_ic": 0.024916609090126277,
+      "development_aggregate_spread": 0.0012232340167587002,
+      "development_aggregate_normalized_return": 0.5007388574622973,
+      "development_aggregate_pilot_10bp_return": -0.04507438524854035,
+      "development_aggregate_pilot_20bp_return": -0.13911414952055046,
+      "operational_rejection_reasons": [],
+      "validation_quality_rejection_reasons": [
+        "insufficient_positive_pilot_return_folds",
+        "median_validation_pilot_return",
+        "nonpositive_development_aggregate_20bp_return"
+      ],
+      "development_survivor_gate_passed": false
+    }
+  },
+  "reporting_semantic_note": {
+    "field": "development_survivors.trial_decisions[0].complexity",
+    "stored_value": 2,
+    "correct_semantic_value": 1,
+    "cause": "The inherited survivor-decision helper emits a constant display value of 2 even when the frozen catalog and ledger identify a single-factor trial.",
+    "affected_gate_metric_ranking_or_selection": false,
+    "frozen_artifact_rewritten": false
+  },
+  "interpretation": {
+    "association_supported": true,
+    "operational_feasibility_supported": true,
+    "portfolio_translation_supported": false,
+    "conclusion": "The exact range-reversal factor was adequately covered, passed all 34 no-return comparisons, and showed positive validation mean Rank IC in all three years. However, only one of three 10bp board-lot validation returns was positive, the median 10bp return was -1.15%, and the aggregate 20bp pilot return was -13.91%. The higher-direction construction is terminal without opening 2024-2025.",
+    "permitted_post_result_action": "record and advance only to a genuinely different Campaign013 concept and separate no-value audit",
+    "forbidden_post_result_actions": [
+      "invert the factor after seeing returns",
+      "change lag, estimator, lunch pairing, informative-pair threshold, range transform, degeneracy handling, window, or direction",
+      "use only the favorable 2021 fold, remove costs, or select a favorable slippage assumption",
+      "combine it with Campaign001-Campaign011 or any other terminated factor",
+      "open 2024-2025 despite zero development survivors",
+      "create current scores, selections, sizes, orders, or Candidate50 activation"
+    ]
+  },
+  "candidate49_state_after_campaign": {
+    "signal_ledger": {
+      "path": "data/experiments/short_horizon/candidate49_future_signal_ledger.json",
+      "sha256": "5193f00d7f36da003f53cec387900da4c3d002299f5dfcfc1a95eaa199ed3a79",
+      "entry_count": 0
+    },
+    "execution_ledger": {
+      "path": "data/experiments/short_horizon/candidate49_future_execution_ledger.json",
+      "sha256": "d57a3e61eac969e42cafa418ccd8c0a5ee65dcf69da145bb2c096c2a02a2ea4f",
+      "entry_count": 0
+    },
+    "historical_return_backfill_performed": false,
+    "prospective_registration_changed": false
+  },
+  "next_iteration": {
+    "campaign_id": "a_share_three_day_walkforward_campaign_013",
+    "status": "requires_new_concept_scouting_then_separate_no_value_mechanism_audit",
+    "constraints": [
+      "must use a mechanism economically distinct from all terminal Campaign001-Campaign012 factors",
+      "must not reformulate, invert, threshold, rewindow, or combine the terminal range-reversal mechanism",
+      "must freeze formula, direction, source fields, missing semantics, gates, and finite search before values",
+      "must retain the 2019-2023 expanding walk-forward and conditional 2024-2025 stress split",
+      "must not include Candidate49, any terminal factor, or current scoring and order actions"
+    ]
+  }
+}

@@ -1,0 +1,67 @@
+{
+  "version": 1,
+  "kind": "a_share_three_day_walkforward_campaign064_no_return_audit_factor_range_registration_repair",
+  "status": "audit_context_only_range_registration_authorized_after_candidate_value_load_before_coverage_or_comparison_values",
+  "recorded_at": "2026-08-05T08:44:00+08:00",
+  "purpose": "Preserve the fail-closed first no-return-audit attempt and authorize only registration of the already frozen C64 value range in the reused coverage engine context.",
+  "authoritative_inputs": {
+    "no_return_protocol": {
+      "path": "docs/a_share_three_day_walkforward_campaign_064_no_return_preregistration.json",
+      "sha256": "441cbeef589593c2ef0ae3e58325f5ab0acb506cc54eaa040c79f26c8ca6a887"
+    },
+    "snapshot_binding": {
+      "path": "docs/a_share_three_day_walkforward_campaign_064_feature_snapshot_binding_20260805.json",
+      "sha256": "ece4c6c3899d186a7d23d3408c3d4056ab6c062f754bb45eafa8d72661ed430d"
+    },
+    "original_audit_implementation_freeze": {
+      "path": "docs/a_share_three_day_walkforward_campaign_064_no_return_audit_implementation_freeze_20260805.json",
+      "sha256": "dc47556e0a1f30da9af2ab240bf4b239a0cbda8782579dbe200016b33a8aa5e5"
+    },
+    "pre_repair_audit_runner": {
+      "path": "scripts/a_share_three_day_walkforward_campaign064_no_return_audit.py",
+      "sha256": "34123e88215ecb59c3cdcb0f06e15b94922f5236fc0eff45363857c48b77c36f"
+    },
+    "pre_repair_tests": {
+      "path": "tests/data_collector_tests/test_a_share_three_day_walkforward_campaign064_no_return_audit.py",
+      "sha256": "48b32c18f915cad83c9cefd99c28af45113a478b025ccbd326f90a29bc6f15f6"
+    },
+    "research_attempt_ledger": {
+      "path": "data/experiments/short_horizon/historical_walkforward/campaign_064/research_attempt_ledger_v8.json",
+      "sha256": "bcb47213a99e363418077da41d77ce3de9b143d70d9045d37ba9a9cb4a0d049a",
+      "attempt_count": 9,
+      "complete_factor_attempt_count": 0,
+      "return_reading_trial_count": 0
+    }
+  },
+  "observed_failure": {
+    "quality_and_current_listing_eligibility_keys_read": true,
+    "candidate_snapshot_values_read": true,
+    "candidate_rows_loaded": 7724498,
+    "coverage_merge_or_capacity_metrics_computed": false,
+    "comparison_values_read": false,
+    "historical_daily_price_fields_read": false,
+    "historical_forward_returns_read": false,
+    "exception": "KeyError: intraday_range_weak_order_entropy_236t",
+    "exception_site": "reused Campaign004 load_factor_frame lookup of FACTOR_RANGES[factor]"
+  },
+  "root_cause": {
+    "classification": "audit_adapter_registration_omission_only",
+    "detail": "The C64 feature snapshot and protocol both freeze the factor range as [0,1], but the reused Campaign004 coverage module retains its older factor registry and cannot infer a newly named factor automatically."
+  },
+  "authorized_repair": {
+    "exact_change": "Before calling load_factor_frame, copy the reused engine FACTOR_RANGES mapping, require candidate.FACTOR_RANGES to equal exactly {intraday_range_weak_order_entropy_236t: (0.0,1.0)}, reject any conflicting existing registration, and add only that exact tuple to the engine context.",
+    "existing_engine_factor_ranges_may_change": false,
+    "candidate_range_or_values_may_change": false,
+    "coverage_capacity_comparison_order_threshold_or_cost_may_change": false,
+    "daily_price_or_return_access_allowed": false,
+    "required_test": "A synthetic engine registry preserves old entries and accepts the exact C64 tuple; a conflicting existing tuple fails closed.",
+    "retry_count_allowed": 1
+  },
+  "research_boundary": {
+    "candidate49_ledgers_changed": false,
+    "second_prospective_candidate_created": false,
+    "provider_request_issued": false,
+    "current_scoring_selection_sizing_or_orders_performed": false
+  },
+  "next_action": "Apply only the range registration and regression test, freeze the repaired audit implementation additively, then retry the same audit once."
+}

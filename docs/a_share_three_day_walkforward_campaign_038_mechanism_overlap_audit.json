@@ -1,0 +1,140 @@
+{
+  "version": 1,
+  "kind": "a_share_three_day_walkforward_campaign038_mechanism_overlap_audit",
+  "status": "passed_conceptual_independence_before_minute_candidate_comparison_or_return_values",
+  "recorded_at": "2026-07-31T00:31:30Z",
+  "purpose": "Challenge the selected Campaign038 mechanism against the complete terminal and prospective frontier before freezing a candidate formula or reading any candidate, comparison, daily-price, or return value.",
+  "authoritative_boundary": {
+    "path": "docs/a_share_three_day_iteration_status_20260731_campaign037_verified.json",
+    "sha256": "18c869dfe193e77c2a782648918817b7a263a34d0aa40a232a015a5439b21f28"
+  },
+  "historical_walkforward_policy": {
+    "path": "docs/a_share_three_day_historical_walkforward_research_policy_20260727.json",
+    "sha256": "38426d6161b9bfed323c58caba18feca668b8c9d53e294951a8ba90c01a798bb"
+  },
+  "concept_scouting": {
+    "path": "docs/a_share_three_day_walkforward_campaign_038_concept_scouting.json",
+    "sha256": "0bc35da5172e2e7ce19afccd5c430570026122bb39f59affa5af71ceb8a2668f"
+  },
+  "selected_mechanism": {
+    "name": "intraday_half_session_chord_adherence_240m",
+    "direction": "higher",
+    "information_domain": "within_half_log_close_path_chord_geometry",
+    "formula": "For each 120-close half independently, let p_j=log(close_j) and q_j=p_0+(j/119)*(p_119-p_0) for j=0..119. Let D be the sum across both halves and all 240 positions of abs(p_j-q_j), and let V be the sum across both halves of all 238 within-half absolute adjacent log returns. Return 1-D/(120*V).",
+    "economic_hypothesis": "Higher adherence to each half-session endpoint chord represents steadier and less circuitous price incorporation, with less within-half overshoot or delayed correction, which may remain relevant from the next open through the third close.",
+    "source_fields": [
+      "datetime",
+      "symbol",
+      "provider",
+      "close"
+    ],
+    "selected_bar_grid": "exactly 240 raw unadjusted one-minute closes at 09:31-11:30 and 13:01-15:00 after frozen timestamp normalization; standalone 09:30 is excluded",
+    "half_session_rule": "Treat the morning and afternoon as two independent fixed 120-position paths. Each path uses its own first and last log close to define its deterministic 120-position chord. Never create a lunch, overnight, cross-day, or cross-stock transition.",
+    "chord_rule": "For position j=0..119 in each half, use q_j=p_0+(j/119)*(p_119-p_0). This is endpoint interpolation, not a fitted regression line, smoothing filter, or selected trend.",
+    "deviation_rule": "Retain both zero endpoint residuals and all exact-zero intermediate residuals in fixed support. Sum the absolute log-price deviations from the two deterministic chords across all 240 positions.",
+    "travel_rule": "Sum the absolute values of exactly 119 adjacent log-close returns in each half, for 238 total returns. Exact-zero returns stay in the denominator support.",
+    "adherence_rule": "Divide total chord deviation D by 120 times total within-half travel V and subtract from one. The factor is scale invariant and lies in the closed interval [0,1] when inputs are valid.",
+    "bar_rule": "All 240 selected closes must be finite and strictly positive.",
+    "missing_rule": "Any invalid, nonpositive, or nonfinite selected close; any nonfinite log price, chord, residual, or return; zero total within-half travel across both halves; nonfinite adherence; or adherence outside [0,1] before a 1e-12 endpoint canonicalization makes the stock-day missing.",
+    "valid_range": {
+      "lower": 0.0,
+      "lower_inclusive": true,
+      "upper": 1.0,
+      "upper_inclusive": true
+    }
+  },
+  "overlap_challenges": [
+    {
+      "family": "intraday_signed_path_efficiency_239m",
+      "result": "distinct_pending_statistical_uniqueness_gate",
+      "reason": "Signed path efficiency divides one full-day signed endpoint displacement by total absolute travel and includes the lunch pair. Campaign038 is direction-invariant, resets at lunch, and uses every intermediate price-level deviation from two deterministic endpoint chords; it neither transforms nor rewinds the terminal efficiency factor."
+    },
+    {
+      "family": "intraday_five_minute_variance_ratio_230w_and_absolute_return_serial_persistence_236p",
+      "result": "distinct_pending_statistical_uniqueness_gate",
+      "reason": "Campaign037 and Campaign028 summarize return covariance or magnitude persistence. Campaign038 uses no return lag, window sum, demeaning, covariance, or correlation; adjacent returns enter only as a fixed scale denominator for price-level chord deviation."
+    },
+    {
+      "family": "intraday_return_spectral_entropy_59f",
+      "result": "distinct_pending_statistical_uniqueness_gate",
+      "reason": "Spectral entropy describes normalized return power across frequencies. Campaign038 has no DFT, band, phase, entropy, taper, or frequency selection and measures deterministic time-domain price-level geometry."
+    },
+    {
+      "family": "intraday_return_sign_run_imbalance_238p_return_weak_order_entropy_234t_and_price_update_share_238m",
+      "result": "distinct_pending_statistical_uniqueness_gate",
+      "reason": "Campaign038 contains no sign transition, ordinal state, equality count, zero-return removal, or price-grid classification. Exact-zero returns and chord residuals remain ordinary fixed-support observations."
+    },
+    {
+      "family": "intraday_morning_afternoon_return_profile_persistence_119p",
+      "result": "distinct_pending_statistical_uniqueness_gate",
+      "reason": "Campaign027 correlates ordinal-matched morning and afternoon return vectors. Campaign038 never correlates the halves; it evaluates each half against its own deterministic endpoint chord and pools only the already-computed absolute deviation and travel totals."
+    },
+    {
+      "family": "intraday_extreme_arrival_order_240m_global_price_range_revisit_240m_and_two_sided_range_frontier_balance_238m",
+      "result": "distinct_pending_statistical_uniqueness_gate",
+      "reason": "Those factors depend on high-low extrema, interval unions, or running range frontiers. Campaign038 reads no high or low, identifies no extremum or frontier, and uses only the complete log-close path."
+    },
+    {
+      "family": "intraday_terminal_close_location_240m_and_afternoon_drawdown_recovery_resilience_120m",
+      "result": "distinct_pending_statistical_uniqueness_gate",
+      "reason": "Terminal location uses the full-day close range and drawdown recovery selects a peak-trough episode. Campaign038 selects no extrema or episode and evaluates every fixed position against the half's endpoint chord."
+    },
+    {
+      "family": "candidate49_cumulative_vwap_crossing_rate",
+      "result": "distinct",
+      "reason": "Candidate49 counts close crossings around a causal cumulative amount/volume VWAP and is future-only. Campaign038 reads no amount or volume, constructs no anchor crossing, and remains historical-research-only."
+    },
+    {
+      "family": "amount_volume_transaction_price_market_quarterly_or_event_mechanisms",
+      "result": "distinct",
+      "reason": "Campaign038 contains no activity field, transaction price, peer benchmark, disclosure field, or event timing."
+    },
+    {
+      "family": "terminal_factor_combination_or_rescue",
+      "result": "not_used",
+      "reason": "Campaign038 contains one exact raw-close statistic and no terminal factor value, transform, filter, model, or combination."
+    }
+  ],
+  "design_choices_frozen_before_values": {
+    "formula_family": "within_half_log_close_endpoint_chord_absolute_deviation_adherence",
+    "direction": "higher",
+    "selected_bar_count": 240,
+    "half_session_bar_count": 120,
+    "within_half_return_count": 238,
+    "chord_position_denominator": 119,
+    "deviation_support_count": 240,
+    "travel_normalization_multiplier": 120,
+    "include_0930": false,
+    "include_lunch_transition": false,
+    "separate_half_session_chords": true,
+    "endpoint_interpolation_not_fitted_trend": true,
+    "absolute_not_squared_or_signed_deviation": true,
+    "zero_total_travel_is_missing": true,
+    "endpoint_canonicalization_tolerance": 1e-12,
+    "valid_lower_bound": 0.0,
+    "valid_upper_bound": 1.0,
+    "alternate_full_day_chord_squared_signed_regression_smoothed_subwindow_or_inverse_search_allowed": false,
+    "threshold_filter_year_cost_board_direction_or_model_search_allowed": false,
+    "open_high_low_activity_market_quarterly_or_terminal_factor_input_allowed": false
+  },
+  "research_boundary": {
+    "external_minute_partitions_read": false,
+    "external_daily_partitions_read": false,
+    "candidate_values_read": false,
+    "comparison_values_read": false,
+    "historical_daily_price_fields_read": false,
+    "historical_forward_returns_read": false,
+    "training_or_model_fitting_performed": false,
+    "provider_request_issued": false,
+    "candidate49_historical_return_signal_or_execution_backfill_performed": false,
+    "candidate49_ledgers_changed": false,
+    "candidate50_activation_created": false,
+    "current_scoring_selection_sizing_or_orders_performed": false,
+    "investment_advice": false
+  },
+  "decision": {
+    "conceptual_independence_passed": true,
+    "predictive_value_established": false,
+    "next_action": "Validate the overlap-audit bindings, then freeze a fingerprint-bound no-return protocol with exactly this formula and the complete ordered 59-factor comparison library before implementing or opening any candidate value."
+  }
+}

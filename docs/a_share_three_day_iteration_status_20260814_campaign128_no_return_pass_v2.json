@@ -1,0 +1,129 @@
+{
+  "schema_version": 1,
+  "kind": "a_share_three_day_iteration_status",
+  "status": "campaign128_no_return_gates_passed_v139_development_freeze_next",
+  "recorded_at": "2026-08-14T06:39:00+0800",
+  "active_goal": {
+    "objective": "请持续迭代因子。",
+    "status": "active",
+    "completion_requested_or_recorded": false
+  },
+  "authoritative_workspace": "/Volumes/DIsk/Disk-Coding/qlib",
+  "supersedes_without_rewriting": {
+    "path": "docs/a_share_three_day_iteration_status_20260814_campaign128_no_return_pass.json",
+    "sha256": "255e077f53c0e168d0a70efa11b1cae4355e82f4b90677bb5f441e4bcf73474b",
+    "preserved": true
+  },
+  "authoritative_boundaries": {
+    "historical_walkforward_policy": {
+      "path": "docs/a_share_three_day_historical_walkforward_research_policy_20260727.json",
+      "sha256": "38426d6161b9bfed323c58caba18feca668b8c9d53e294951a8ba90c01a798bb"
+    },
+    "numeric_policy": {
+      "path": "docs/a_share_three_day_walkforward_future_numeric_comparison_eligibility_policy_v141_20260814.json",
+      "sha256": "6d241a02e1ccc63c79f5ad3a7a1faa33c2866fec313c172f19015019416b98af"
+    },
+    "candidate49_workflow": {
+      "path": "docs/a_share_tushare_candidate49_future_session_workflow_protocol.json",
+      "sha256": "6ff5636a3f7ef65e93452098186b3aecf9231d68873ab8a1070afb91d699ef7c"
+    }
+  },
+  "manage_qlib_a_share_data_skill": {
+    "path": "/Users/niyufei/.codex/skills/manage-qlib-a-share-data/SKILL.md",
+    "sha256": "565713a5f3aeb6a1acf23e397fcc21be28d0c3ea4ebf21c7f287a25bb94d78dc"
+  },
+  "active_data_roots": {
+    "minute": "/Volumes/DIsk/qlib-a-share-tushare-1m",
+    "daily_project_root": "/Volumes/DIsk/Disk-Coding/qlib/data",
+    "daily_qlib_provider_uri": "/Volumes/DIsk/Disk-Coding/qlib/data/qlib/cn_a_share",
+    "accepted_daily_calendar_end": "2026-07-13"
+  },
+  "candidate49": {
+    "only_active_prospective_candidate": true,
+    "signal_ledger_sha256": "5193f00d7f36da003f53cec387900da4c3d002299f5dfcfc1a95eaa199ed3a79",
+    "signal_entry_count": 0,
+    "execution_ledger_sha256": "d57a3e61eac969e42cafa418ccd8c0a5ee65dcf69da145bb2c096c2a02a2ea4f",
+    "execution_entry_count": 0,
+    "historical_backfill_performed": false
+  },
+  "candidate49_daily_20260814": {
+    "before_same_day_16_30_gate": true,
+    "candidate49_plan_executed": false,
+    "candidate49_run_executed": false
+  },
+  "campaign128": {
+    "factor": "intraday_transaction_price_dispersion_resolution_2h",
+    "direction": "higher",
+    "snapshot_manifest_sha256": "6ddc6358bffbfd6ae412744e96479b7bc6bc179ee0ae20cff9b3cb3e85b86e2f",
+    "snapshot_dataset_sha256": "4644fdbf8ddbd046def730c9eaf848fdc56874f617ea2aefb50dedcffbc9bb4f",
+    "snapshot_rows": 7724498,
+    "snapshot_eligible_rows": 7580753,
+    "coverage_gate_passed": true,
+    "numeric_comparison_count": 139,
+    "all_numeric_uniqueness_gates_passed": true,
+    "maximum_absolute_median_daily_rank_correlation": 0.4061439818245511,
+    "admissible_factor_count": 1,
+    "development_trial_count": 0
+  },
+  "authoritative_results": {
+    "coverage": {
+      "path": "data/experiments/short_horizon/historical_walkforward/campaign_128/coverage/campaign128_coverage_audit.json",
+      "sha256": "8ccfbc0fb76b5c4187febbf8659fb29c864259efd4e3a8be3bc5d0db8a980605"
+    },
+    "uniqueness": {
+      "path": "data/experiments/short_horizon/historical_walkforward/campaign_128/uniqueness/campaign128_ordered_uniqueness_audit.json",
+      "sha256": "7661112a503f8930cba5fd79c03815b8c830d39f98703746362b85b37fa14cef"
+    },
+    "no_return_admission": {
+      "path": "docs/a_share_three_day_walkforward_campaign_128_no_return_development_admission_20260814.json",
+      "sha256": "07d00d6e6b5107ceaaf0ae330165a8c848e96733805a80ef71485703897fbeb6"
+    },
+    "attempt_ledger": {
+      "path": "data/experiments/short_horizon/historical_walkforward/campaign_128/research_attempt_ledger_v8.json",
+      "sha256": "9cbf65fbc3753f3f014ec85981180c5f213352b9c1fc1dc0fb8da99421c8a4c7"
+    }
+  },
+  "effective_accounting": {
+    "campaign128_attempt_count": 13,
+    "campaign128_infrastructure_failure_count": 7,
+    "campaign128_return_reading_development_trial_count": 0,
+    "campaign128_development_survivor_count": 0,
+    "campaign128_stress_trial_count": 0,
+    "cumulative_historical_research_attempt_count": 1046,
+    "cumulative_return_reading_development_trial_count": 306
+  },
+  "research_boundary": {
+    "historical_daily_price_or_forward_return_values_read": false,
+    "stress_2024_2025_return_values_opened": false,
+    "candidate49_historical_backfill_performed": false,
+    "candidate49_ledgers_changed": false,
+    "second_prospective_candidate_created": false,
+    "current_scoring_selection_sizing_positions_or_orders_performed": false,
+    "investment_advice": false
+  },
+  "validation": {
+    "full_scope_historical_result": "42 passed, 6 obsolete prepublication lifecycle failures",
+    "current_no_return_lifecycle_result": "6 passed in 0.05s",
+    "current_lifecycle_test": {
+      "path": "tests/data_collector_tests/test_a_share_three_day_walkforward_campaign128_no_return_admission.py",
+      "sha256": "0e034803b3865c6c64865e50697cfb0c613bd281e8b7ea7d5f57098e5a8d2229"
+    },
+    "frozen_old_tests_rewritten": false,
+    "failed_exit_codes_recorded_and_not_overridden": true
+  },
+  "reports": {
+    "campaign128": {
+      "path": "docs/a_share_three_day_walkforward_campaign_128_prevalue_report.md",
+      "sha256": "ea21c78d4ee4da3c0df613ab99a57b9c4dc0a5fc4d867728cbb322340159fb53"
+    },
+    "current_research_report": {
+      "path": "data/experiments/short_horizon/current_research_report.md",
+      "sha256": "df85a9397cb5f8a5660fdfea555b4a38a5dfe309566212e7c168c0eb1037afe8"
+    },
+    "three_day_research_report": {
+      "path": "data/experiments/short_horizon/three_day_research_report.md",
+      "sha256": "5604246dbe0703cc9c705bb8a52d5c4f191d456315ac65c72f15873d391477ea"
+    }
+  },
+  "next_action": "The active goal continues. Freeze and test exactly one Campaign128 2019-2023 development preregistration and runner, then publish a single-use activation before any daily price or forward return read. Preserve the inherited three expanding folds, three-session purge, same-partition t+1/t+3 containment, costs, execution policies and survivor rules; keep 2024-2025 returns and Candidate49 unchanged."
+}

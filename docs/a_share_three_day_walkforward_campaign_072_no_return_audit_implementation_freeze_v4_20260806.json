@@ -1,0 +1,64 @@
+{
+  "version": 4,
+  "kind": "a_share_three_day_walkforward_campaign072_no_return_audit_implementation_freeze",
+  "status": "frozen_after_recorded_postcoverage_failure_before_repaired_retry",
+  "recorded_at": "2026-08-06T06:47:00+08:00",
+  "supersedes_failed_v3_without_rewriting": {
+    "implementation_freeze_v3": {
+      "path": "docs/a_share_three_day_walkforward_campaign_072_no_return_audit_implementation_freeze_v3_20260806.json",
+      "sha256": "1fbf4058b946b49af16645f37e52d85ccf6da4a13575343302375ccb15d7aa29"
+    },
+    "activation_binding_v3": {
+      "path": "docs/a_share_three_day_walkforward_campaign_072_no_return_audit_activation_binding_v3_20260806.json",
+      "sha256": "a7541aaee82a96f20b33e4a32acf7f4e2795f2befb0becd2a88e34e5b8167102"
+    }
+  },
+  "prior_postcoverage_failure": {
+    "path": "docs/a_share_three_day_walkforward_campaign_072_postcoverage_comparator_layer_count_failure_20260806.json",
+    "sha256": "a27f0730e49990fac184e85e2204900a9891c2fd407ec09cdf3fa80db54c7c64"
+  },
+  "protocol": {
+    "path": "docs/a_share_three_day_walkforward_campaign_072_no_return_preregistration.json",
+    "sha256": "32f16b1e8e07b0d60aa6646f66c52740e330fa02ef631803fb68b55a7e79cc98"
+  },
+  "snapshot_binding": {
+    "path": "docs/a_share_three_day_walkforward_campaign_072_feature_snapshot_binding_20260806.json",
+    "sha256": "eb36b61ecc800b13e40f8947da5b0fd049542df784baafc8f86a3c38c82b2d1d"
+  },
+  "sequence_record": {
+    "path": "docs/a_share_three_day_walkforward_campaign_072_audit_freeze_sequence_record_20260806.json",
+    "sha256": "cddf3537c70ea033cfc14a5e0b85e798d5d50ae9a4e4fba5228c792bf15f465f"
+  },
+  "audit_runner": {
+    "path": "scripts/a_share_three_day_walkforward_campaign072_no_return_audit.py",
+    "sha256": "0963aa92735de4b5b7dd4c1a515a2c6db39824d5fcd8c2c56b54438be9c7167f"
+  },
+  "tests": {
+    "path": "tests/data_collector_tests/test_a_share_three_day_walkforward_campaign072_no_return_audit.py",
+    "sha256": "2455133e92035b21faf2c1fd0b6c899453f6380c369dc226dddada0adb3f3797",
+    "result": "7 passed",
+    "real_coverage_or_comparison_values_read_by_tests": false,
+    "regressions": [
+      "Campaign072 override map reaches the actual inner runtime",
+      "inherited Campaign070 compatibility fingerprints are exact",
+      "layered comparison counts are 101 before and 102 after the Campaign071 append",
+      "v4 status truthfully preserves prior coverage and comparison reads"
+    ]
+  },
+  "ordered_gate_implementation": {
+    "coverage_first_was_satisfied_in_prior_failed_run": true,
+    "numeric_comparator_count": 102,
+    "numeric_comparator_order_sha256": "b473b8e32852dbbd1ca6beeb567805af55b77ec2e91222ec3e75e4bd64a64226",
+    "Campaign071_loaded_last": true,
+    "all_comparators_must_pass": true,
+    "structural_Campaign063_challenge_retained": true,
+    "no_formula_direction_gate_or_comparator_changed_after_values": true
+  },
+  "coverage_or_capacity_metrics_previously_computed": true,
+  "comparison_values_previously_read": true,
+  "audit_artifact_previously_published": false,
+  "historical_daily_price_fields_read": [],
+  "historical_forward_returns_read": false,
+  "provider_request_issued": false,
+  "candidate49_ledgers_changed": false
+}

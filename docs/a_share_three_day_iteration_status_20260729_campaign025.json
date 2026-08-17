@@ -1,0 +1,100 @@
+{
+  "version": 26,
+  "kind": "a_share_three_day_iteration_status",
+  "status": "candidate49_future_only_preserved_campaign025_terminal_ready_for_campaign026_concept",
+  "recorded_at": "2026-07-29T12:34:37Z",
+  "purpose": "Advance the additive state after completing fingerprint-bound Campaign025 with zero development survivors while preserving Candidate49 as the only prospective candidate.",
+  "previous_authoritative_state": {
+    "path": "docs/a_share_three_day_iteration_status_20260729_campaign024_binding_validator_ready.json",
+    "sha256": "626e1a9264d1b544143c1d5361ed68f103b524cb7f1f48706cbb6f06a870fd34"
+  },
+  "campaign025_terminal_boundary": {
+    "research_record": {
+      "path": "docs/a_share_three_day_walkforward_campaign_025_research_record.json",
+      "sha256": "25264c050d7204f9022b995f1468705747a73a638147789217354f3907610b42"
+    },
+    "development_preregistration": {
+      "path": "docs/a_share_three_day_walkforward_campaign_025_preregistration.json",
+      "sha256": "5920146afef4a726fcd5e843e41e577bbd9cb0533d4386dbe8f0464d15f3b8cb",
+      "binding_validation_exit_code": 0,
+      "binding_count": 18,
+      "failed_binding_count": 0
+    },
+    "factor": "intraday_extreme_arrival_order_240m",
+    "development_trial_count": 1,
+    "development_survivor_count": 0,
+    "stress_2024_2025_opened": false,
+    "stress_2024_2025_return_read": false,
+    "terminal": true,
+    "rerun_repair_invert_rescue_or_combine_allowed": false
+  },
+  "research_counts": {
+    "terminal_historical_walkforward_campaign_mechanism_count": 25,
+    "completed_historical_walkforward_campaign_count": 25,
+    "recorded_historical_development_trial_count": 247,
+    "active_prospective_candidate_count": 1,
+    "current_aggregation_candidate_count": 0
+  },
+  "active_prospective_candidate": {
+    "ordinal": 49,
+    "registration_id": "candidate49_intraday_cumulative_vwap_crossing_rate_240m_v1",
+    "historical_return_diagnostic_allowed": false,
+    "signal_ledger": {
+      "path": "data/experiments/short_horizon/candidate49_future_signal_ledger.json",
+      "sha256": "5193f00d7f36da003f53cec387900da4c3d002299f5dfcfc1a95eaa199ed3a79",
+      "entry_count": 0
+    },
+    "execution_ledger": {
+      "path": "data/experiments/short_horizon/candidate49_future_execution_ledger.json",
+      "sha256": "d57a3e61eac969e42cafa418ccd8c0a5ee65dcf69da145bb2c096c2a02a2ea4f",
+      "entry_count": 0
+    },
+    "session_2026_07_29_plan": {
+      "local_time_after_1630": true,
+      "staging_root": "/Volumes/DIsk/qlib-a-share-tushare-daily-2026-07-29",
+      "ready": false,
+      "exit_code": 2,
+      "failure": "TUSHARE_TOKEN_not_available_to_workflow",
+      "provider_request_issued": false,
+      "filesystem_write_performed": false,
+      "run_executed": false
+    }
+  },
+  "documentation": {
+    "pipeline": {
+      "path": "docs/a_share_data_pipeline.md",
+      "sha256": "cd29016979fb75b37abe1b8824e05679da72117eb654bf80e5ea4e1577ba4f92"
+    },
+    "unified_report": {
+      "path": "data/experiments/short_horizon/three_day_research_report.md",
+      "sha256": "69c0ae1255517c6b76e48205b7bd3084a94bed04852fc7577bc93eedce678cc1",
+      "line_count": 629
+    },
+    "report_generator": {
+      "path": "scripts/a_share_short_horizon_factor_research.py",
+      "sha256": "5c196f09ad7877c4d6d099f5b3fa3b2a923f784446d22ba1d3203a98afe7b032"
+    },
+    "skill": {
+      "path": "/Users/niyufei/.codex/skills/manage-qlib-a-share-data/SKILL.md",
+      "sha256": "bcd110342be225e8d95ad34a829d9a7bc202f57e8026257f72648bf819b0af78"
+    }
+  },
+  "next_research_action": {
+    "objective": "Scout one genuinely independent Campaign026 concept without opening any Campaign026 candidate, comparison, daily-price, or return value.",
+    "concept_status": "not_yet_selected_no_formula_no_direction_no_value",
+    "requires_new_daily_bar": false,
+    "requires_same_day_1630_wait": false,
+    "binding_validation_required_at_each_freeze_boundary": true,
+    "development_interval_if_admitted": ["2019-01-01", "2023-12-31"],
+    "stress_interval_opening_rule": "2024-2025 may open exactly once only for a frozen development survivor"
+  },
+  "decision": {
+    "campaign025_terminal": true,
+    "campaign025_strategy_promotion_allowed": false,
+    "campaign026_concept_scouting_allowed_now": true,
+    "campaign026_candidate_values_allowed_before_binding_validation": false,
+    "candidate49_remains_only_active_prospective_candidate": true,
+    "candidate50_activation_allowed": false,
+    "current_aggregation_scoring_selection_sizing_or_orders_allowed": false
+  }
+}

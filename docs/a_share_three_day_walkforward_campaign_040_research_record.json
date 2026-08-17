@@ -1,0 +1,183 @@
+{
+  "version": 1,
+  "kind": "a_share_three_day_walkforward_campaign040_research_record",
+  "status": "completed_zero_no_return_admissible_factors_stop_before_historical_returns",
+  "recorded_at": "2026-07-31T05:19:40Z",
+  "purpose": "Record Campaign040 from pre-value concept scouting through its immutable high/low-only feature snapshot and terminal 61-factor uniqueness rejection. No daily price, forward return, training, development trial, or 2024-2025 stress return was opened.",
+  "prior_state": {
+    "path": "docs/a_share_three_day_iteration_status_20260731_campaign039_verified.json",
+    "sha256": "8571491a46cefde2b95dfd6a4650a3f96fc9251c751e558d6d96e2278c1ce600"
+  },
+  "historical_walkforward_policy": {
+    "path": "docs/a_share_three_day_historical_walkforward_research_policy_20260727.json",
+    "sha256": "38426d6161b9bfed323c58caba18feca668b8c9d53e294951a8ba90c01a798bb"
+  },
+  "campaign": {
+    "concept_scouting": {
+      "path": "docs/a_share_three_day_walkforward_campaign_040_concept_scouting.json",
+      "sha256": "87f0d6f8dd3d9e1135f763e7eac98f3e977d71f9e9e4ebc8f70df57441b85eab"
+    },
+    "mechanism_overlap_audit": {
+      "path": "docs/a_share_three_day_walkforward_campaign_040_mechanism_overlap_audit.json",
+      "sha256": "f026633ed532216a8d223a7cb8d22a989cd31ab992a21234f5e8adf5572a167d"
+    },
+    "no_return_preregistration": {
+      "path": "docs/a_share_three_day_walkforward_campaign_040_no_return_preregistration.json",
+      "sha256": "7d4a8d3b63e26c1717660dad8e12d65adfa008fb2272cebae8914367c05142d5"
+    },
+    "feature_implementation_freeze": {
+      "path": "docs/a_share_three_day_walkforward_campaign_040_feature_implementation_freeze_20260731.json",
+      "sha256": "f1409616c78c49a7e62151db5c97c4756ad89c4bfe5f969a749f3b3a3f03d7c9"
+    },
+    "feature_snapshot_freeze": {
+      "path": "docs/a_share_three_day_walkforward_campaign_040_feature_snapshot_freeze_20260731.json",
+      "sha256": "59d43e6fe31365d90ee1ceda8cb96cf3d69f54985c89fcd2f236975ce9dae255"
+    },
+    "no_return_audit_freeze": {
+      "path": "docs/a_share_three_day_walkforward_campaign_040_no_return_audit_freeze_20260731.json",
+      "sha256": "7326d847442613f1564ba80ebcd30f3020ea1d827a1305876a09b9b940b09a36"
+    },
+    "feature_and_no_return_runner": {
+      "path": "scripts/a_share_three_day_walkforward_campaign040_features.py",
+      "post_audit_fingerprint_bound_sha256": "dd96f564d60853b6c51a31912f2cc5537e699d5b1a93516748124a06da9e43f0"
+    }
+  },
+  "frozen_candidate": {
+    "name": "intraday_morning_afternoon_range_profile_similarity_120b",
+    "direction": "higher",
+    "formula": "For j=0..119, let x_j=log(morning_high_j/morning_low_j) and y_j=log(afternoon_high_j/afternoon_low_j). Normalize each half to p and q, compute their equal-weight Jensen-Shannon divergence, and return 1-JSD/log(2).",
+    "source_projection": [
+      "datetime",
+      "symbol",
+      "provider",
+      "high",
+      "low"
+    ],
+    "selected_bar_count": 240,
+    "half_session_bin_count": 120,
+    "separate_half_session_normalization": true,
+    "exact_zero_intrabar_ranges_retained": true,
+    "zero_total_range_in_either_half_is_missing": true,
+    "endpoint_canonicalization_tolerance": 1e-12,
+    "post_result_formula_direction_normalization_window_filter_or_missing_rule_changed": false
+  },
+  "no_return_admission": {
+    "feature_snapshot": {
+      "path": "/Volumes/DIsk/qlib-a-share-tushare-1m/derived/a_share/rich/tushare/minute_walkforward_campaign040_feature_library/tushare_stk_mins_1m_2019_2025_ea0cbb8f_walkforward_campaign040_feature_library_v1/snapshot_manifest.json",
+      "sha256": "9830dc3dc4f5ceb86f6983c1353bd52c3b6c87eeb206f433b10c19adc7d82f40",
+      "dataset_sha256": "9b7443611ce0da082aa31fb88d4b001c0d7231639112e15fd9645d7ede46dee8",
+      "partition_count": 33015,
+      "row_count": 7724498,
+      "eligible_factor_rows": 7633953,
+      "zero_morning_total_range_rows": 25726,
+      "zero_afternoon_total_range_rows": 89403,
+      "endpoint_canonicalized_rows": 7624,
+      "invalid_nonpositive_or_misordered_high_low_rows": 0,
+      "all_partition_byte_and_frame_hashes_valid": true,
+      "source_fields_read": [
+        "datetime",
+        "symbol",
+        "provider",
+        "high",
+        "low"
+      ],
+      "source_open_high_low_read": true,
+      "source_close_read": false,
+      "daily_price_fields_read": [],
+      "forward_return_fields_read": false
+    },
+    "audit": {
+      "path": "data/experiments/short_horizon/historical_walkforward/campaign_040/no_return/20260731T051832Z_campaign040_no_return_audit.json",
+      "sha256": "4a17a68aec878c216e70aaabef3500534fcf4f9924cc92f19b61a33849311f5c",
+      "status": "completed_zero_admissible_factors_stop_before_historical_returns",
+      "admissible_factor_count": 0,
+      "comparison_values_loaded_after_coverage_pass": true,
+      "comparison_factor_count": 61,
+      "comparison_pass_count": 60,
+      "comparison_order_matches_preregistration": true,
+      "historical_daily_price_fields_read": [],
+      "historical_forward_return_fields_read": false
+    },
+    "coverage_result": {
+      "quality_listing_eligible_rows": 1331759,
+      "candidate_eligible_rows": 1321152,
+      "median_coverage": 0.9937735840190223,
+      "p05_coverage": 0.9822773210451904,
+      "p05_eligible_names": 138.0,
+      "potential_non_overlapping_three_session_cohorts": 540,
+      "observed_cohort_years": [
+        2019,
+        2020,
+        2021,
+        2022,
+        2023,
+        2024,
+        2025
+      ],
+      "coverage_gate_passed": true
+    },
+    "uniqueness_result": {
+      "all_required_comparisons_passed": false,
+      "maximum_absolute_median_daily_rank_correlation": 0.8843376129920713,
+      "failed_comparison_factor": "intraday_intrabar_range_participation_entropy_240m",
+      "failed_comparison_median_daily_rank_correlation": 0.8843376129920713,
+      "failed_comparison_pairwise_sessions": 1623,
+      "failed_comparison_minimum_pairwise_names_observed": 52,
+      "failed_comparison_daily_rank_correlation_p05": 0.7837451854908563,
+      "failed_comparison_daily_rank_correlation_p95": 0.9472981852546142,
+      "other_60_comparisons_passed": true
+    }
+  },
+  "trial_accounting": {
+    "frozen_trial_count_if_admitted": 1,
+    "development_preregistration_created": false,
+    "development_trial_count": 0,
+    "cumulative_historical_development_trial_count_after_campaign": 259,
+    "training_or_model_fitting_performed": false,
+    "development_return_fields_read": false,
+    "stress_2024_2025_opened": false,
+    "stress_return_fields_read": false
+  },
+  "interpretation": {
+    "association_tested": false,
+    "coverage_supported": true,
+    "uniqueness_supported": false,
+    "operational_feasibility_supported": false,
+    "portfolio_translation_supported": false,
+    "conclusion": "The exact morning/afternoon normalized range-profile similarity is broadly computable but fails the pre-return uniqueness gate. Its median daily rank correlation with intraday_intrabar_range_participation_entropy_240m is 0.884338 across 1,623 eligible sessions, so the frozen absolute threshold of 0.8 is exceeded. This is a redundancy rejection before any predictive association or return test, not evidence that either sign predicts three-session returns.",
+    "mechanism_learning": "Separate-half Jensen-Shannon similarity of clock-time intrabar range allocation is empirically too close to the existing full-session intrabar range participation entropy. Future independent concepts should avoid re-expressing the distributional concentration or repeatability of high-low range mass across minute bins.",
+    "permitted_post_result_action": "record the rejection and advance only to a genuinely different Campaign041 concept with separate pre-value scouting and overlap audit",
+    "forbidden_post_result_actions": [
+      "invert the factor or replace similarity with divergence",
+      "change binning, half-session split, distance, normalization, zero-bin handling, direction, threshold, or filter",
+      "remove intraday_intrabar_range_participation_entropy_240m or any other frozen comparison from the complete library",
+      "read Campaign040 historical returns, create a development trial, or open 2024-2025 stress",
+      "combine the factor with Campaign001-Campaign039 or any other terminal factor",
+      "create current scores, selections, sizes, orders, or Candidate50 activation"
+    ]
+  },
+  "candidate49_state_after_campaign": {
+    "signal_ledger": {
+      "path": "data/experiments/short_horizon/candidate49_future_signal_ledger.json",
+      "sha256": "5193f00d7f36da003f53cec387900da4c3d002299f5dfcfc1a95eaa199ed3a79",
+      "entry_count": 0
+    },
+    "execution_ledger": {
+      "path": "data/experiments/short_horizon/candidate49_future_execution_ledger.json",
+      "sha256": "d57a3e61eac969e42cafa418ccd8c0a5ee65dcf69da145bb2c096c2a02a2ea4f",
+      "entry_count": 0
+    },
+    "historical_return_backfill_performed": false,
+    "prospective_registration_changed": false
+  },
+  "next_iteration": {
+    "campaign_id": "a_share_three_day_walkforward_campaign_041",
+    "status": "requires_genuinely_independent_concept_scouting_then_separate_no_value_mechanism_audit",
+    "constraints": [
+      "must not repair or re-express range-profile similarity, Jensen-Shannon distance, range participation entropy, or minute-bin range-mass concentration",
+      "must freeze formula, direction, source fields, time grid, missing and denominator rules, full 62-factor comparison library, gates, and finite search before values",
+      "must retain the 2019-2023 three-fold expanding walk-forward and conditional one-shot 2024-2025 stress split",
+      "must not backfill Candidate49, activate Candidate50, or produce current scoring or order outputs"
+    ]
+  }
+}

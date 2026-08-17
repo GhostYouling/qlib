@@ -1,0 +1,28 @@
+{
+  "schema_version": 1,
+  "kind": "a_share_three_day_walkforward_campaign143_infrastructure_failure",
+  "status": "recorded_binding_error_report_shape_probe_failure_before_values",
+  "recorded_at": "2026-08-14T15:27:01+0800",
+  "attempt_id": "campaign143_infrastructure_006",
+  "failure": {
+    "phase": "binding_failure_diagnosis",
+    "process_exit_code": 5,
+    "error": "jq attempted to iterate .reports on the validator's top-level binding_validation_error object, where reports is absent.",
+    "partial_or_misleading_summary_published": false,
+    "failed_exit_code_bypassed": false,
+    "later_plain_jq_read_used_to_mask_failure": false
+  },
+  "safe_retry": {
+    "allowed_action": "Read the complete JSON object without assuming success-schema fields, then narrow the validator scope according to its documented record contract.",
+    "binding_validator_weakened_or_modified": false,
+    "scientific_gate_or_result_change_allowed": false
+  },
+  "research_boundary": {
+    "source_rows_or_column_values_read": false,
+    "candidate_or_comparator_values_read": false,
+    "historical_daily_price_or_forward_return_values_read": false,
+    "stress_2024_2025_opened": false,
+    "provider_request_issued": false,
+    "candidate49_ledgers_changed": false
+  }
+}

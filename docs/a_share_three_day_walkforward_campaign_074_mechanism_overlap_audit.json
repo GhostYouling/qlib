@@ -1,0 +1,156 @@
+{
+  "version": 1,
+  "kind": "a_share_three_day_walkforward_campaign074_mechanism_overlap_audit",
+  "status": "passed_semantic_mechanism_review_before_candidate_source_or_comparison_values",
+  "recorded_at": "2026-08-06T07:42:00+08:00",
+  "concept_scouting": {
+    "path": "docs/a_share_three_day_walkforward_campaign_074_concept_scouting.json",
+    "sha256": "0bb586ea91501b005783053341d8d8ed7f21d4e375cb85d31b13b9d41505baf3"
+  },
+  "numeric_comparator_policy": {
+    "path": "docs/a_share_three_day_walkforward_future_numeric_comparison_eligibility_policy_v9_20260806.json",
+    "sha256": "1af4a2432e0186a47a8a69ddefdda25756810cf47b11ff0688d0cbd832438c03",
+    "complete_definition_count": 105,
+    "numeric_comparator_count": 104,
+    "complete_definition_order_sha256": "bdc79e8c91fd43cd088437a47bdd805e0e4181fca2f4a6ff6714e0a033d34b61",
+    "numeric_comparator_order_sha256": "0d36cb313d4ded22343120b3f93c1f066aa3818415cb6ea186f354217eeacd6b"
+  },
+  "candidate": {
+    "name": "intraday_terminal_bar_amount_share_240m",
+    "direction": "higher",
+    "mechanism": "completed-session CNY amount concentration in the exact terminal 15:00 standard one-minute source bucket",
+    "formula": "amount_15:00 divided by the positive sum of exact nonnegative finite amount values over 09:31-11:30 and 13:01-15:00",
+    "no_multi_session_lookback": true,
+    "no_old_factor_value_input": true,
+    "dedicated_closing_auction_feed_claimed": false
+  },
+  "complete_library_review": {
+    "all_105_definitions_reviewed_in_frozen_order": true,
+    "candidate_is_exact_formula_duplicate": false,
+    "candidate_is_direction_only_duplicate": false,
+    "candidate_is_parameter_only_duplicate": false,
+    "candidate_is_an_inversion_of_a_terminal_factor": false,
+    "candidate_combines_terminal_factor_values": false,
+    "candidate49_used_or_modified": false
+  },
+  "semantic_invariance_checks": [
+    {
+      "intervention": "Hold every stock-day's 15:00 amount and 240-bar total amount fixed while permuting the other 239 amount positions.",
+      "campaign074_result": "unchanged",
+      "distinguishes_from": "amount timing center-of-mass, serial persistence, market profile synchronization, morning-afternoon profile similarity, and day-over-day amount-profile similarity"
+    },
+    {
+      "intervention": "Redistribute amount among 14:31-14:59 while holding 15:00 amount and the 240-bar total fixed.",
+      "campaign074_result": "unchanged",
+      "distinguishes_from": "late_amount_share_30m, which aggregates the full final 30-minute window"
+    },
+    {
+      "intervention": "Change only the standalone 09:30 amount while keeping all 240 selected bars fixed.",
+      "campaign074_result": "unchanged",
+      "distinguishes_from": "intraday_opening_auction_amount_share_241m, whose numerator and denominator include 09:30"
+    },
+    {
+      "intervention": "Multiply all 240 selected amount values by the same positive scalar while preserving their proportions.",
+      "campaign074_result": "unchanged",
+      "distinguishes_from": "absolute turnover or capacity measures; Campaign074 measures concentration only"
+    },
+    {
+      "intervention": "Change any close, return, range, volume, quarterly value, announcement date, or nominal price while all selected amounts remain fixed.",
+      "campaign074_result": "unchanged",
+      "distinguishes_from": "price-path, volatility, range, volume, transaction-price, accounting, disclosure, Campaign073, and Candidate49 definitions"
+    }
+  ],
+  "nearest_semantic_challenges": [
+    {
+      "name": "late_amount_share_30m",
+      "relationship": "also measures session-end amount concentration",
+      "distinction": "the prior factor aggregates 30 terminal minutes; Campaign074 assigns the numerator only to the exact 15:00 source bucket and is invariant to redistribution among the preceding 29 minutes",
+      "mandatory_numeric_challenge": true
+    },
+    {
+      "name": "intraday_amount_participation_entropy_240m",
+      "relationship": "also uses the normalized full-day amount distribution",
+      "distinction": "entropy is permutation invariant across all 240 positions and uses every positive mass term; Campaign074 selects one exact clock position",
+      "mandatory_numeric_challenge": true
+    },
+    {
+      "name": "intraday_amount_center_of_mass_240m",
+      "relationship": "also becomes higher when amount moves later in the session",
+      "distinction": "center-of-mass weights all 240 positions continuously; Campaign074 is unchanged by any redistribution among the first 239 positions that preserves their total",
+      "mandatory_numeric_challenge": true
+    },
+    {
+      "name": "intraday_opening_auction_amount_share_241m",
+      "relationship": "is the closest endpoint amount-share formula",
+      "distinction": "the prior factor selects the standalone 09:30 source bucket and includes all 241 rows in its denominator; Campaign074 excludes 09:30 and selects 15:00 from the 240-bar continuous-session denominator",
+      "mandatory_numeric_challenge": true
+    },
+    {
+      "name": "intraday_amount_profile_serial_persistence_240m",
+      "relationship": "uses the ordered amount path",
+      "distinction": "serial persistence uses all 239 lag pairs after log1p; Campaign074 uses no lag or transform",
+      "mandatory_numeric_challenge": true
+    },
+    {
+      "name": "intraday_market_amount_profile_synchronization_240m",
+      "relationship": "uses clock-aligned normalized amount shares",
+      "distinction": "the prior factor correlates the entire stock profile with a leave-one-out market profile; Campaign074 reads no peer value and uses one position",
+      "mandatory_numeric_challenge": true
+    },
+    {
+      "name": "intraday_morning_afternoon_amount_profile_similarity_120b",
+      "relationship": "uses the two half-session amount distributions",
+      "distinction": "the prior factor compares 120-position shapes with JSD; Campaign074 uses no half matching or distance",
+      "mandatory_numeric_challenge": true
+    },
+    {
+      "name": "intraday_day_over_day_amount_profile_similarity_240b",
+      "relationship": "uses the full amount distribution",
+      "distinction": "the prior factor compares two accepted dates and requires a prior session; Campaign074 has no lookback",
+      "mandatory_numeric_challenge": true
+    },
+    {
+      "name": "intraday_amount_price_discovery_alignment_js_238p",
+      "relationship": "normalizes amount by its day total",
+      "distinction": "the prior factor aligns 238 destination amounts with absolute return mass; Campaign074 reads no close or returns",
+      "mandatory_numeric_challenge": true
+    },
+    {
+      "name": "intraday_terminal_nominal_share_price_affordability_rank_240m",
+      "relationship": "also selects a terminal 15:00 source field",
+      "distinction": "Campaign073 ranks the raw terminal CNY close cross-sectionally; Campaign074 uses only within-stock amount share and no price or cross-sectional transform",
+      "mandatory_numeric_challenge": true
+    },
+    {
+      "name": "intraday_cross_sectional_standardized_return_state_stability_236p",
+      "relationship": "structurally nonnumeric prior definition remains in the complete library",
+      "distinction": "standardized return-state mobility versus one stock's terminal amount concentration",
+      "mandatory_semantic_challenge": true,
+      "numeric_status": "undefined_not_pass_not_fail"
+    },
+    {
+      "name": "candidate49_intraday_cumulative_vwap_crossing_rate_240m_v1",
+      "relationship": "active prospective factor also reads amount across the completed session",
+      "distinction": "Candidate49 combines causal cumulative VWAP, volume and close-sign crossings; Campaign074 reads neither price nor volume and never enters the prospective ledger",
+      "candidate49_remains_isolated": true
+    }
+  ],
+  "pre_value_decision": {
+    "economically_independent_enough_to_materialize": true,
+    "numeric_uniqueness_still_required_against_all_104_eligible_comparators": true,
+    "strict_maximum_absolute_median_daily_rank_correlation": 0.8,
+    "minimum_pairwise_names_per_session": 50,
+    "minimum_pairwise_sessions_per_comparison": 100,
+    "drop_residualize_invert_clip_neutralize_or_rescue_after_failed_comparator_allowed": false
+  },
+  "research_boundary": {
+    "candidate_source_rows_read": false,
+    "candidate_values_read": false,
+    "comparison_values_read": false,
+    "historical_daily_price_fields_read": [],
+    "historical_forward_returns_read": false,
+    "provider_request_issued": false,
+    "candidate49_ledgers_changed": false,
+    "current_scoring_selection_sizing_or_orders_performed": false
+  }
+}

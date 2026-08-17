@@ -1,0 +1,99 @@
+{
+  "schema_version": 6,
+  "kind": "a_share_three_day_iteration_status",
+  "status": "campaign102_verified_terminal_zero_survivors_ready_for_campaign103_offline_research",
+  "recorded_at": "2026-08-07T15:45:00Z",
+  "supersedes_without_rewriting": {
+    "path": "docs/a_share_three_day_iteration_status_20260807_campaign101_terminal_v3.json",
+    "sha256": "cb28828a60f88a76df4ea3b171efe138a9320b34c76b0e0842f5f5234ff83233",
+    "preserved": true,
+    "reason": "Append Campaign102's complete no-return design, two preserved infrastructure failures, three chronological development trials, and zero-survivor terminal result."
+  },
+  "terminal_result": {
+    "path": "docs/a_share_three_day_walkforward_campaign_102_terminal_result_binding_20260807.json",
+    "sha256": "d0938cd28d2dd130a8579671249cdeb20fd4bcdfdc9e5c013a527cc00e0ff3ec"
+  },
+  "research_attempt_ledger": {
+    "path": "data/experiments/short_horizon/historical_walkforward/campaign_102/research_attempt_ledger_v1.json",
+    "sha256": "cfe78740aa989a89d748707af48df75ca0e8822c3ac2d9ade1d4085c27da5830",
+    "entry_count": 7,
+    "chain_tip_sha256": "625b75ec3f527fa8aff73154ceca118ffcc2e360bb847130e34080a943faccee"
+  },
+  "effective_future_numeric_policy": {
+    "path": "docs/a_share_three_day_walkforward_future_numeric_comparison_eligibility_policy_v59_20260807.json",
+    "sha256": "4e6c7aea0be521773cda56ceea33d1665a82e9254b1e9198fa13b65e22d826b0",
+    "complete_definition_count": 133,
+    "complete_definition_order_sha256": "25cd0159c803bf69b0fce61449843db96a34ae4c56628deda9500433c97b45a1",
+    "numeric_comparator_count": 130,
+    "numeric_comparator_order_sha256": "c80d9b929536dd509d6c1a904f790831050e68200393de381f92ad9293ef69e7"
+  },
+  "research_mode": {
+    "historical_walkforward_is_primary_iteration_engine": true,
+    "historical_offline_work_may_run_at_any_time": true,
+    "wait_for_1630_or_new_daily_bar_required_for_historical_work": false,
+    "candidate49_future_observation_is_independent_confirmation_layer": true,
+    "historical_results_may_generate_current_scores_selection_sizing_or_orders": false
+  },
+  "campaign102_terminal_result": {
+    "model_family": "full_numeric_library_bounded_simplex_ridge_130f",
+    "design_rows": 1331759,
+    "design_eligible_rows": 1327637,
+    "median_coverage": 0.9981238257410756,
+    "p05_coverage": 0.992066409032738,
+    "finite_trial_count": 3,
+    "trials_passing_all_three_fold_all_130_uniqueness": 3,
+    "best_median_validation_rank_ic": 0.006935829271780046,
+    "best_positive_normalized_return_fold_count": 2,
+    "best_development_aggregate_20bp_return": -0.016144039821868517,
+    "best_worst_validation_normalized_drawdown": -0.28083330766921133,
+    "development_survivor_count": 0,
+    "lockbox_2024_2025_opened": false,
+    "lockbox_2024_2025_return_fields_read": false,
+    "terminal": true
+  },
+  "final_accounting": {
+    "campaign102_attempt_count": 7,
+    "campaign102_infrastructure_failure_count": 2,
+    "campaign102_complete_no_return_design_outcome_count": 1,
+    "campaign102_return_reading_complete_development_trial_count": 3,
+    "campaign102_development_survivor_count": 0,
+    "campaign102_lockbox_trial_count": 0,
+    "cumulative_historical_research_attempt_count": 753,
+    "cumulative_return_reading_development_trial_count": 298
+  },
+  "active_data_roots": {
+    "daily_qlib_root": "/Volumes/DIsk/Disk-Coding/qlib/data/qlib/cn_a_share",
+    "daily_calendar_last_session": "2026-07-13",
+    "accepted_minute_root": "/Volumes/DIsk/qlib-a-share-tushare-1m",
+    "campaign102_design_root": "/Volumes/DIsk/qlib-a-share-tushare-1m/derived/a_share/rich/tushare/minute_walkforward_campaign102_design_matrix/tushare_stk_mins_1m_2019_2025_ea0cbb8f_walkforward_campaign102_design_matrix_v1"
+  },
+  "candidate49": {
+    "registration_id": "candidate49_intraday_cumulative_vwap_crossing_rate_240m_v1",
+    "remains_only_active_prospective_candidate": true,
+    "signal_ledger": {
+      "path": "data/experiments/short_horizon/candidate49_future_signal_ledger.json",
+      "sha256": "5193f00d7f36da003f53cec387900da4c3d002299f5dfcfc1a95eaa199ed3a79",
+      "entry_count": 0
+    },
+    "execution_ledger": {
+      "path": "data/experiments/short_horizon/candidate49_future_execution_ledger.json",
+      "sha256": "d57a3e61eac969e42cafa418ccd8c0a5ee65dcf69da145bb2c096c2a02a2ea4f",
+      "entry_count": 0
+    },
+    "historical_backfill_performed": false,
+    "ledgers_changed_by_campaign102": false,
+    "second_prospective_candidate_created": false
+  },
+  "provider_credential": {
+    "source": ".env",
+    "regular_file_non_symlink": true,
+    "mode": "0600",
+    "git_ignored": true,
+    "recognized_nonempty_token_key_count": 1,
+    "secret_printed_hashed_or_logged": false
+  },
+  "provider_request_issued_by_campaign102": false,
+  "current_scoring_selection_sizing_or_orders_performed": false,
+  "investment_advice": false,
+  "next_safe_action": "Start Campaign103 offline only after freezing a genuinely new mechanism that is not a Campaign101 quantile rescue or Campaign102 bounded-simplex target/lambda/bounds/subset retry; keep the exact v59 133-definition/130-numeric library and all existing gates."
+}

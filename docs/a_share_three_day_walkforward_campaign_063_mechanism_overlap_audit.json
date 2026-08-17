@@ -1,0 +1,170 @@
+{
+  "version": 1,
+  "kind": "a_share_three_day_walkforward_campaign063_mechanism_overlap_audit",
+  "status": "passed_conceptual_independence_before_campaign063_source_benchmark_candidate_comparison_daily_price_or_return_values",
+  "recorded_at": "2026-08-05T05:47:00+08:00",
+  "purpose": "Challenge the selected market-relative state-mobility mechanism against the complete inherited terminal library and freeze exactly one formula, direction, peer rule, time grid, loss, transform, and missing rule before any Campaign063 value is read.",
+  "authoritative_boundary": {
+    "campaign062_verified_state": {
+      "path": "docs/a_share_three_day_iteration_status_20260805_campaign062_verified_v2.json",
+      "sha256": "ba313597d16965f78383956967c619ba9b41b08e175c324d637b2833f79a1fe7"
+    },
+    "historical_walkforward_policy": {
+      "path": "docs/a_share_three_day_historical_walkforward_research_policy_20260727.json",
+      "sha256": "38426d6161b9bfed323c58caba18feca668b8c9d53e294951a8ba90c01a798bb"
+    },
+    "concept_scouting": {
+      "path": "docs/a_share_three_day_walkforward_campaign_063_concept_scouting.json",
+      "sha256": "11eae83ae3987d6234e9c25d4341f41e7bba2757ce940cf835cfaa35cf89d69e"
+    }
+  },
+  "inherited_definition_sources": {
+    "campaign062_protocol": {
+      "path": "docs/a_share_three_day_walkforward_campaign_062_no_return_preregistration.json",
+      "sha256": "3588dbf1d83764d14abad1784fd93d47c844569f6ff25eb5e97dc6df314fc370"
+    },
+    "campaign062_terminal_record": {
+      "path": "docs/a_share_three_day_walkforward_campaign_062_research_record_v3.json",
+      "sha256": "0e7e828833ee5f37aa1daac67c2bb70383e2f2f29d4a131c34a469ef818a4b7d"
+    },
+    "total_required_no_return_comparison_count": 94,
+    "campaign063_source_benchmark_candidate_or_comparison_values_read": false
+  },
+  "selected_mechanism": {
+    "name": "intraday_cross_sectional_standardized_return_state_stability_236p",
+    "direction": "higher",
+    "economic_hypothesis": "Persistent market-relative leadership or laggard state within the signal session may reflect slowly executed or diffusing information and may remain informative from the next open through the third close.",
+    "source_projection": [
+      "datetime",
+      "symbol",
+      "provider",
+      "close"
+    ],
+    "forbidden_source_fields": [
+      "open",
+      "high",
+      "low",
+      "volume",
+      "amount"
+    ],
+    "benchmark_projection": [
+      "trade_date",
+      "return_position",
+      "return_sum",
+      "return_sum_squares",
+      "valid_stock_count"
+    ],
+    "return_grid": "Exactly 238 signed natural-log close returns: 119 adjacent returns inside 09:31--11:30 and 119 inside 13:01--15:00; exclude 09:30 and lunch.",
+    "leave_one_out_rule": "For stock return r at each position, n=valid_stock_count-1, s=return_sum-r, q=return_sum_squares-r^2, mean=s/n, variance=q/n-mean^2. Require n>=50. Canonicalize variance to zero only when it is in [-1e-18,0); otherwise any negative or nonfinite variance is invalid. Require variance strictly positive.",
+    "standardized_state_rule": "z=(r-leave_one_out_mean)/sqrt(leave_one_out_population_variance) at each of the exact 238 positions; require every z finite.",
+    "adjacent_pair_rule": "Form 118 consecutive z pairs inside the morning half and 118 inside the afternoon half, for exactly 236 equally weighted pairs; never form a lunch pair.",
+    "formula": "score = 1 / (1 + mean(abs(z_next-z_current))) across the exact 236 within-half adjacent standardized-state pairs",
+    "zero_semantics": "Exact-zero stock returns, peer means, z states, and z displacements are retained. A zero mean displacement yields score exactly one.",
+    "valid_range": {
+      "lower": 0.0,
+      "lower_inclusive": false,
+      "upper": 1.0,
+      "upper_inclusive": true
+    },
+    "missing_rule": "Missing for any incomplete or invalid fixed close grid, nonfinite return or benchmark input, fewer than 50 leave-one-out peers at any position, variance below -1e-18, nonpositive leave-one-out variance, nonfinite standardized state or displacement, or score outside (0,1]. Never fill, floor, winsorize, clip, threshold, repair, or substitute.",
+    "alternate_field_lag_window_loss_transform_direction_threshold_filter_subset_board_year_cost_regime_fit_combination_or_model_search": false
+  },
+  "overlap_challenges": [
+    {
+      "family": "directional_serial_dependence_20",
+      "result": "distinct_pending_statistical_uniqueness_gate",
+      "reason": "That terminal factor sequences 20 daily close-to-close returns for one stock. Campaign063 uses one minute session and each state changes when same-position peer location or scale changes while the stock path is fixed."
+    },
+    {
+      "family": "intraday_absolute_return_serial_persistence_236p_and_other_single_stock_sequence_factors",
+      "result": "distinct_pending_statistical_uniqueness_gate",
+      "reason": "Single-stock factors depend on raw magnitude, sign, reversal energy, or weak order. Campaign063 sequences signed leave-one-out z states and is invariant to a common positive scale applied to the stock and every peer at one position."
+    },
+    {
+      "family": "intraday_market_dispersion_decoupling_238m",
+      "result": "distinct_pending_statistical_uniqueness_gate",
+      "reason": "Campaign031 correlates absolute stock returns synchronously with the peer dispersion series. Campaign063 uses peer mean and dispersion only to define a signed relative state, then measures adjacent state displacement. Holding absolute stock returns and peer dispersion fixed while changing which side of the peer mean the stock occupies changes Campaign063 but not Campaign031."
+    },
+    {
+      "family": "intraday_market_directional_sign_agreement_238m",
+      "result": "distinct_pending_statistical_uniqueness_gate",
+      "reason": "Campaign059 discards all nonzero magnitudes and counts equal signs versus a leave-one-out market return. Campaign063 retains standardized distance and can change while every stock/market sign agreement remains fixed."
+    },
+    {
+      "family": "intraday_market_correlation_resolution_market_shock_decoupling_and_market_response_delay",
+      "result": "distinct_pending_statistical_uniqueness_gate",
+      "reason": "Those mechanisms correlate or lag a stock series against a market mean, magnitude, or response series. Campaign063 does not correlate with a market series; peer moments only normalize each time-local state before adjacent stock-state displacement."
+    },
+    {
+      "family": "intraday_realized_volatility_price_update_share_and_zero_return_activity",
+      "result": "distinct_pending_statistical_uniqueness_and_confound_gates",
+      "reason": "A quiet stock can remain near the peer center, creating a possible empirical confound. Semantically, Campaign063 is invariant to common position-specific rescaling across stock and peers, while raw volatility/update factors are not; explicit statistical gates remain mandatory."
+    },
+    {
+      "family": "intraday_day_over_day_directional_agreement_absolute_profile_similarity_and_variance_stability",
+      "result": "distinct_pending_statistical_uniqueness_gate",
+      "reason": "Campaign060, Campaign057, and Campaign061 require the immediately prior accepted stock session. Campaign063 has no cross-session input and changes under within-half state reordering of the signal session alone."
+    },
+    {
+      "family": "quarterly_disclosure_timing_crowding_and_accounting_quality",
+      "result": "distinct_pending_statistical_uniqueness_gate",
+      "reason": "Campaign063 reads no report date, announcement date, peer disclosure group, or accounting field and is invariant to those records conditional on the minute return and peer-moment inputs."
+    },
+    {
+      "family": "Candidate49_cumulative_vwap_crossing_rate",
+      "result": "distinct_no_historical_return_comparison",
+      "reason": "Candidate49 uses causal cumulative VWAP crossings with close, volume, and amount and remains future-only. Campaign063 forbids volume and amount, includes Candidate49 only in the no-return comparison library, and never reads Candidate49 historical returns."
+    }
+  ],
+  "counterfactual_independence_tests": [
+    "Holding the stock return vector fixed while changing same-position peer means or variances changes Campaign063 but leaves every single-stock return sequence statistic unchanged.",
+    "Applying the same positive scale to the stock and every peer return independently at each position leaves every z state and Campaign063 unchanged but can change raw-return volatility, magnitude, and path measures.",
+    "Keeping all stock/market sign agreements fixed while changing standardized distances changes Campaign063 but leaves Campaign059 unchanged.",
+    "Permuting z positions inside a half while preserving their unordered values can change Campaign063 but leaves unordered variance, entropy, skewness, and occupancy summaries unchanged.",
+    "Changing all quarterly events and accounting values while holding the minute and peer-moment inputs fixed leaves Campaign063 unchanged."
+  ],
+  "rejected_variants_before_values": [
+    "cross-sectional percentile ranks, ranks of z, clipping z, variance floors, robust scale, Bessel correction, pooled-including-self moments, or a different peer minimum",
+    "squared, signed, Huber, maximum, quantile, thresholded, bucketed, or weighted displacement",
+    "Pearson, Spearman, Kendall, regression, autocovariance, mutual information, sign agreement, run length, or higher/multiple lag alternatives",
+    "morning-only, afternoon-only, opening, late, lunch-spanning, cross-day, prior-day, board, year, liquidity, volatility, or event-conditioned subsets",
+    "exponential, logarithmic, affine, rank, inverse-direction, or post-value transform choices",
+    "combining, residualizing, fitting, weighting, or rescuing with any terminal factor"
+  ],
+  "design_choices_frozen_before_values": {
+    "candidate_count": 1,
+    "factor_name": "intraday_cross_sectional_standardized_return_state_stability_236p",
+    "direction": "higher",
+    "selected_closes": 240,
+    "signed_return_positions": 238,
+    "adjacent_pairs": 236,
+    "leave_one_out_minimum_peers_each_position": 50,
+    "population_variance_denominator": "n",
+    "tiny_negative_variance_tolerance": 1e-18,
+    "displacement_loss": "absolute",
+    "equal_pair_weights": true,
+    "score_transform": "1/(1+mean_absolute_displacement)",
+    "valid_range": "(0,1]",
+    "parameter_filter_subset_model_or_combination_search": false
+  },
+  "research_boundary": {
+    "campaign063_external_minute_rows_read": false,
+    "campaign063_cross_sectional_benchmark_values_read": false,
+    "campaign063_candidate_or_comparison_values_read": false,
+    "historical_daily_price_fields_read": false,
+    "historical_forward_return_fields_read": false,
+    "provider_request_issued": false,
+    "candidate49_historical_return_signal_execution_or_milestone_backfill_performed": false,
+    "candidate49_ledgers_changed": false,
+    "second_prospective_candidate_created": false,
+    "current_scoring_selection_sizing_or_orders_performed": false,
+    "investment_advice": false,
+    "current_listing_snapshot_survivorship_limitation": true
+  },
+  "decision": {
+    "conceptual_independence_passed": true,
+    "statistical_independence_pending_all_94_comparisons": true,
+    "predictive_value_established": false,
+    "next_action": "Bind the concept hash; then freeze exact source and benchmark fingerprints, 94-factor comparison order, coverage/novelty/confound gates, one development trial, code, and synthetic tests before opening Campaign063 values."
+  }
+}

@@ -1,0 +1,214 @@
+{
+  "schema_version": 1,
+  "kind": "a_share_three_day_walkforward_campaign197_loyalty_rewards_points_miles_issuance_outstanding_redemption_expiration_breakage_partner_settlement_lifecycle_source_frontier",
+  "status": "checkpoint_prevalue_three_source_admission_deferrals_four_relabeling_overlap_operator_or_combination_rejections_zero_selected",
+  "recorded_at": "2026-08-15T17:07:00+08:00",
+  "timestamp_semantics": "monotonic logical append time after the Campaign196 terminal authority and the Campaign197 regulated-utility overlap rejection",
+  "purpose": "Freeze a finite loyalty-points and miles issuance, outstanding obligation, redemption, expiration, breakage, fulfillment and partner-settlement lifecycle before source rows, program values, formulas, directions, comparators, security prices or returns.",
+  "authoritative_inputs": {
+    "campaign196_state": {
+      "path": "docs/a_share_three_day_iteration_status_20260815_campaign196_prevalue_terminal.json",
+      "sha256": "ced91440557e97dd5c16bc0b4ff108cbbf004d4e405033423db31e729b56d2ea"
+    },
+    "policy_v289": {
+      "path": "docs/a_share_three_day_walkforward_future_numeric_comparison_eligibility_policy_v289_20260815.json",
+      "sha256": "fb992fcf15f548b6bf0d4713efcda9876ea549d666c7c549d559522c1da530cc"
+    },
+    "campaign160_source_delta_inventory": {
+      "path": "docs/a_share_three_day_walkforward_campaign_160_no_credential_source_contract_delta_inventory_20260815.json",
+      "sha256": "25dc95b6e4ef87068e0f94a8cb257b226b9fe22c0fa390716d1db9d164b60418"
+    },
+    "campaign168_operating_kpi_frontier": {
+      "path": "docs/a_share_three_day_walkforward_campaign_168_operating_scale_adoption_kpi_source_frontier_20260815.json",
+      "sha256": "c5dc98f92266e2b7ef7349cb5260a8cde15ccd9c78442e661e4170b1ba47d18a"
+    },
+    "campaign169_commercial_pricing_frontier": {
+      "path": "docs/a_share_three_day_walkforward_campaign_169_commercial_pricing_terms_source_frontier_20260815.json",
+      "sha256": "a571bcc5bcbfc158da551e59d2984a907fd44b419d115619043a9b28ee3ab288"
+    },
+    "campaign170_customer_quality_frontier": {
+      "path": "docs/a_share_three_day_walkforward_campaign_170_customer_experience_quality_kpi_source_frontier_20260815.json",
+      "sha256": "b3ec42d8c8872ae9be913ffd64b24ba449e4c4f0e1f91af31b98f0e0e7158379"
+    },
+    "campaign192_bank_deposit_frontier": {
+      "path": "docs/a_share_three_day_walkforward_campaign_192_bank_deposit_funding_franchise_lifecycle_source_frontier_20260815.json",
+      "sha256": "8d62229370b8a5ef55868727c9edfacbbacd639f33cdb43ec10705dfa5668e2c"
+    },
+    "campaign193_asset_management_frontier": {
+      "path": "docs/a_share_three_day_walkforward_campaign_193_asset_management_fiduciary_aum_subscription_redemption_lifecycle_source_frontier_20260815.json",
+      "sha256": "0cfe399f564fc798956cf56955ff965d19fa72558cdadca83b7fda6bc2f6453e"
+    },
+    "campaign195_payment_processing_frontier": {
+      "path": "docs/a_share_three_day_walkforward_campaign_195_payment_processing_merchant_acquiring_authorization_clearing_settlement_dispute_reserve_lifecycle_source_frontier_20260815.json",
+      "sha256": "8ba6a15deefa0cf492cec5373e12f56db64fc14e5a97672313f228aa8a984d7e"
+    },
+    "campaign196_inventory_frontier": {
+      "path": "docs/a_share_three_day_walkforward_campaign_196_inventory_production_conversion_aging_obsolescence_consignment_channel_sellthrough_custody_lifecycle_source_frontier_20260815.json",
+      "sha256": "940fbf7b754a459ddf2f4ab1b4a88451ba27f3cba39843e7a024ca6fe1e2f290"
+    },
+    "campaign197_regulated_utility_overlap_rejection": {
+      "path": "docs/a_share_three_day_walkforward_campaign_197_regulated_utility_rate_case_cost_recovery_domain_overlap_rejection_20260815.json",
+      "sha256": "db744ba035d3dd854a36f32b6d49f7c73f624d0ce6e9b7879e9c5f2c10312a3c"
+    }
+  },
+  "repository_evidence": {
+    "bounded_search_scope": "Existing Campaign145-196 source-frontier, mechanism-audit and terminal metadata only",
+    "bounded_search_terms": [
+      "loyalty program",
+      "loyalty point",
+      "reward point",
+      "rewards program",
+      "airline miles",
+      "frequent flyer",
+      "points outstanding",
+      "point redemption",
+      "breakage",
+      "membership tier",
+      "积分",
+      "里程",
+      "会员权益",
+      "兑换率"
+    ],
+    "dedicated_loyalty_rewards_obligation_lifecycle_frontier_found": false,
+    "complete_loyalty_rewards_lifecycle_source_contract_present": false,
+    "only_direct_breakage_match": "Campaign192 uses breakage solely for early withdrawal of bank deposits; it does not identify loyalty units, program liabilities, redemption or partner fulfillment.",
+    "campaign160_boundary": "Campaign160 closes another generic accounting-field sweep. Deferred revenue, contract liability, selling expense or a points-liability balance without program, currency, cohort and stock-flow identities cannot be reopened here.",
+    "campaign168_boundary": "Campaign168 freezes customer and active-user scale. Member count, enrolled accounts and transaction volume do not identify loyalty-unit issuance, outstanding obligation, redemption, expiration or partner settlement.",
+    "campaign169_boundary": "Campaign169 freezes discounts, rebates, promotions, fees and commercial prices. Earning value, cashback or redemption price alone is a pricing state and cannot substitute for a loyalty obligation lifecycle.",
+    "campaign170_boundary": "Campaign170 freezes retention, churn, renewal and repeat-purchase outcomes. Member activity or tier retention does not establish point-lot ownership, expiry, redemption, breakage or fulfillment liability.",
+    "campaign192_boundary": "Deposit maturity, rollover and early-withdrawal breakage are bank funding states. They are not reward-currency expiration or unredeemed-loyalty-unit breakage.",
+    "campaign193_boundary": "Fiduciary AUM and investment-product subscriptions or redemptions are client-asset states. Loyalty units are contractual rewards or obligations, not beneficially owned investment assets.",
+    "campaign195_boundary": "Payment authorization, clearing, chargeback and merchant settlement are transaction-payment states. A payment rail may fund an award, but it does not identify reward issuance, expiry, redemption, partner fulfillment or breakage.",
+    "campaign196_boundary": "Physical inventory custody and sell-through cannot be relabelled as a digital reward-unit obligation or reward-catalog fulfillment state.",
+    "sector_scope_boundary": "Point-in-time airline, hotel, retailer, platform, bank-card or coalition-program operator, listed parent and material-program applicability must be frozen. Structurally non-loyalty issuers may not be filled with zero or cross-sector ranked.",
+    "point_in_time_boundary": "A current member dashboard, outstanding-points balance or reward catalog cannot be projected backward without issuance, transfer, redemption, expiry, forfeiture, reinstatement, partner settlement, assumption revision, correction and first-public histories."
+  },
+  "finite_prevalue_catalog": [
+    {
+      "catalog_id": "c197_01",
+      "name": "loyalty_currency_issuance_transfer_outstanding_redemption_expiration_and_forfeiture_stock_flow_state",
+      "economic_state": "A close-known loyalty-unit stock-flow state reconciling opening outstanding points or miles with earned, purchased, transferred, reinstated, adjusted, redeemed, expired and forfeited units by program and currency.",
+      "formula": null,
+      "direction": null,
+      "parameters_filters_subsets_combinations_models": [],
+      "new_issuer_state": true,
+      "complete_local_source_contract": false,
+      "decision": "deferred_source_admission_not_factor_failure",
+      "reason": "No admitted point-in-time source freezes listed parent, program, reward currency and cohort identities, opening and closing outstanding units, every issuance and extinction flow, corrections, first-public timing and the complete 2019-2023 applicable denominator."
+    },
+    {
+      "catalog_id": "c197_02",
+      "name": "reward_redemption_fulfillment_partner_transfer_settlement_and_liability_allocation_state",
+      "economic_state": "A close-known fulfillment state linking a redemption request to reward inventory or service, program operator, co-brand or coalition partner, merchant or fulfiller, transfer, acceptance, cancellation, settlement and final liability allocation.",
+      "formula": null,
+      "direction": null,
+      "parameters_filters_subsets_combinations_models": [],
+      "new_issuer_state": true,
+      "complete_local_source_contract": false,
+      "decision": "deferred_source_admission_not_factor_failure",
+      "reason": "The repository lacks a privacy-safe complete history of redemption identity, reward type, units and value, requester eligibility, partner and fulfiller roles, inventory or capacity availability, cancellation, transfer, settlement, liability allocation, correction and trading-session availability."
+    },
+    {
+      "catalog_id": "c197_03",
+      "name": "loyalty_unit_vintage_breakage_estimation_obligation_remeasurement_release_and_trueup_state",
+      "economic_state": "A close-known reward-obligation state linking issuance vintages and expiry terms to expected redemption, breakage assumptions, deferred obligation, fulfillment cost, partner reimbursement, remeasurement, release and retrospective true-up.",
+      "formula": null,
+      "direction": null,
+      "parameters_filters_subsets_combinations_models": [],
+      "new_issuer_state": true,
+      "complete_local_source_contract": false,
+      "decision": "deferred_source_admission_not_factor_failure",
+      "reason": "No admitted source preserves program and vintage identity, contractual expiry, observed redemption curve, breakage method and assumption version, customer- versus partner-funded basis, obligation and fulfillment-cost reconciliation, revision, correction and first-public history across 2019-2023."
+    },
+    {
+      "catalog_id": "c197_04",
+      "name": "member_count_active_user_tier_retention_churn_renewal_or_repeat_purchase_relabeling",
+      "economic_state": "A member or active-account count, membership tier, retention, churn, renewal or repeat-purchase KPI relabelled as loyalty obligation quality.",
+      "formula": null,
+      "direction": null,
+      "parameters_filters_subsets_combinations_models": [],
+      "new_issuer_state": false,
+      "complete_local_source_contract": false,
+      "decision": "rejected_campaign168_operating_scale_and_campaign170_customer_retention_source_relabeling",
+      "reason": "Campaign168 and Campaign170 already govern member scale, activity, retention, churn, renewal and repeat behavior. Those KPIs do not identify loyalty-unit stock flow, redemption fulfillment or breakage estimation."
+    },
+    {
+      "catalog_id": "c197_05",
+      "name": "discount_rebate_promotion_cashback_fee_award_value_or_payment_transaction_relabeling",
+      "economic_state": "A discount, rebate, promotion, cashback, membership fee, award value, redemption price or payment-transaction metric relabelled as loyalty lifecycle quality.",
+      "formula": null,
+      "direction": null,
+      "parameters_filters_subsets_combinations_models": [],
+      "new_issuer_state": false,
+      "complete_local_source_contract": false,
+      "decision": "rejected_campaign169_commercial_pricing_and_campaign195_payment_processing_source_relabeling",
+      "reason": "Campaign169 freezes prices, discounts, rebates and promotions, while Campaign195 freezes payment transaction and settlement states. Neither identifies reward-unit issuance, outstanding obligation, redemption, expiry or breakage."
+    },
+    {
+      "catalog_id": "c197_06",
+      "name": "deferred_revenue_contract_liability_customer_deposit_fiduciary_asset_inventory_or_security_price_relabeling",
+      "economic_state": "A generic deferred-revenue, contract-liability, customer-deposit, fiduciary-asset, inventory, selling-expense or security-price value relabelled as a loyalty obligation lifecycle.",
+      "formula": null,
+      "direction": null,
+      "parameters_filters_subsets_combinations_models": [],
+      "new_issuer_state": false,
+      "complete_local_source_contract": false,
+      "decision": "rejected_terminal_accounting_deposit_fiduciary_inventory_and_security_price_source_relabeling",
+      "reason": "Generic balances and prices lack program, currency, unit-vintage, participant, partner, redemption, expiration, fulfillment and stock-flow identities. Reopening adjacent accounting fields would violate Campaign160."
+    },
+    {
+      "catalog_id": "c197_07",
+      "name": "point_mile_currency_tier_partner_reward_category_region_channel_direction_threshold_age_window_subset_or_combined_model_variant",
+      "economic_state": "A selected loyalty currency, tier, partner, reward type, region, channel, direction, threshold, age, expiry window, subset, normalization, interaction, combined score or fitted model from unadmitted reward histories.",
+      "formula": null,
+      "direction": null,
+      "parameters_filters_subsets_combinations_models": [],
+      "new_issuer_state": false,
+      "complete_local_source_contract": false,
+      "decision": "rejected_operator_currency_tier_partner_category_region_channel_direction_threshold_window_subset_combination_and_model_search_before_base_source_admission",
+      "reason": "Choosing favorable currencies, tiers, partners, redemption categories, geographies, channels, directions, thresholds, ages, expiry windows, subsets, weights, interactions or models before every base history is admitted would multiply hypotheses and exploit program survivorship."
+    }
+  ],
+  "mandatory_source_admission_gate": {
+    "must_freeze_before_any_formula_or_direction": [
+      "exact issuer filing, audited loyalty note, program terms history, regulator record or licensed structured source with immutable bytes and stable issuer, program, reward-currency, cohort, partner, document and observation identifiers",
+      "listed security, listed parent, program operator, co-brand or coalition sponsor, merchant, fulfiller and settlement partner mapping with ownership, consolidation and materiality history without current-state leakage",
+      "reference, issuance, earning, purchase, transfer, redemption request, fulfillment, cancellation, expiry, forfeiture, reinstatement, settlement, first-public, correction and supersession timestamps with trading-session availability",
+      "reward-currency taxonomy separating points, miles, stamps, credits, cashback, vouchers, coupons, status credits and partner currencies with conversion and redenomination history",
+      "member and account eligibility, enrollment, household or corporate pooling, tier, suspension, closure, fraud, transfer and privacy-safe cohort semantics without personally identifying data",
+      "issuance and earning rules covering purchase, travel or stay, co-brand spend, bonus, partner-funded award, purchased points, transfer, reinstatement, retroactive credit and duplicate correction",
+      "opening plus issued, purchased, transferred in, reinstated and adjusted units reconciled to redeemed, transferred out, expired, forfeited, cancelled and closing outstanding units without favorable omission",
+      "redemption request, reward inventory or service, capacity, units, customer copay, acceptance, cancellation, fulfillment, merchant or partner settlement and final liability-allocation semantics",
+      "issuance-vintage redemption curve, contractual expiry, expected breakage, estimation method and assumption version, remeasurement, release, true-up and retrospective-validation history",
+      "reward-unit value, standalone selling price, currency, tax, gross or net presentation, customer- versus partner-funded basis, obligation, fulfillment cost, reimbursement and settlement reconciliation",
+      "missing, confidential, suppressed, pending, disputed, fraudulent, cancelled, expired, forfeited, reinstated, not-applicable, structural non-program issuer, true-zero issuance, redemption and breakage semantics",
+      "complete bounded 2019-2023 partition manifest, full applicable issuer and program denominator, delisting and corporate-action coverage, pagination and parser, identity, timing, privacy, unit, stock-flow, settlement, assumption-version, applicability and source-acceptance tests using no factor, comparator, security-price or return values"
+    ],
+    "formula_direction_parameter_filter_subset_combination_or_model_choice_allowed_before_gate": false
+  },
+  "gate_summary": {
+    "routes_reviewed": 7,
+    "genuinely_new_issuer_state_routes": 3,
+    "source_admission_deferrals_not_factor_failures": 3,
+    "relabeling_overlap_operator_or_combination_route_rejections": 4,
+    "selected_candidate_count": 0,
+    "complete_factor_definition_created": false,
+    "numeric_comparator_created": false
+  },
+  "scientific_interpretation": {
+    "loyalty_rewards_obligation_lifecycle_state_declared_ineffective": false,
+    "absence_of_an_admitted_historical_source_is_evidence_of_no_predictive_power": false,
+    "safe_conclusion": "Three distinct reward-unit stock-flow, redemption and partner-fulfillment, and vintage breakage-obligation states remain deferred at source admission; operating-scale, customer-retention, commercial-pricing, payment-processing, generic-accounting, deposit, fiduciary, inventory and security-price relabeling plus premature category and model search are closed before values."
+  },
+  "research_boundary": {
+    "finite_catalog_frozen_before_source_or_value_read": true,
+    "source_row_loyalty_points_miles_redemption_breakage_partner_settlement_factor_comparator_security_price_or_return_value_read": false,
+    "repository_policy_and_prior_records_only": true,
+    "provider_or_web_request_issued": false,
+    "provider_credential_presence_value_or_digest_read": false,
+    "stress_2024_2025_opened": false,
+    "candidate49_ledgers_changed": false,
+    "second_prospective_candidate_created": false
+  },
+  "next_action": "Bind the utility-overlap rejection, all seven loyalty-lifecycle routes and every observed infrastructure failure into the Campaign197 append-only attempt ledger, then publish prevalue terminal authority."
+}

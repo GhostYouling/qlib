@@ -1,0 +1,66 @@
+{
+  "version": 1,
+  "kind": "a_share_three_day_walkforward_campaign014_feature_build_infrastructure_repair",
+  "status": "validation_only_phase_aware_source_volume_flag_repair_before_snapshot_publication",
+  "recorded_at": "2026-07-28T19:04:00Z",
+  "purpose": "Record two fail-closed build attempts and the sole validation-only repair without changing the frozen Campaign014 factor, source fields, union algorithm, direction, support, gates, or any computed checkpoint.",
+  "authoritative_bindings": {
+    "concept_scouting": {
+      "path": "docs/a_share_three_day_walkforward_campaign_014_concept_scouting.json",
+      "sha256": "0ccf17baa24347e2ad8fb83298bf7fd37a30c7fc916d407dc78c492e1c700f55"
+    },
+    "mechanism_overlap_audit": {
+      "path": "docs/a_share_three_day_walkforward_campaign_014_mechanism_overlap_audit.json",
+      "sha256": "2c5db4acd886d57649e7ac7cc0ce2232ae8efe957412d1fdc4804fcb7bb96890"
+    },
+    "no_return_preregistration": {
+      "path": "docs/a_share_three_day_walkforward_campaign_014_no_return_preregistration.json",
+      "sha256": "82e5cf3e26b6f2edc34e37651bf49026bb90d0409b97fd19bc853d71778cd16c"
+    }
+  },
+  "failed_attempts": [
+    {
+      "stage": "pre_build_free_space_gate",
+      "data_root_argument": "/Users/niyufei/Coding/qlib/data",
+      "exit_code": 1,
+      "reason": "The repository daily-data root had less than the inherited 10 GiB free-space minimum.",
+      "minute_partition_opened": false,
+      "checkpoint_written": false,
+      "corrective_action": "Use the already accepted external minute-data root /Volumes/DIsk/qlib-a-share-tushare-1m."
+    },
+    {
+      "stage": "prepublication_manifest_validation_after_all_checkpoints",
+      "data_root_argument": "/Volumes/DIsk/qlib-a-share-tushare-1m",
+      "exit_code": 1,
+      "reason": "The inherited Campaign006 manifest initially records source_volume_read=true because its base builder reads volume. Campaign014's atomic publication wrapper changes the final evidence to false, but the inherited prepublication validator had been changed to require false before that wrapper ran.",
+      "computed_partitions": 33015,
+      "resumed_partitions": 0,
+      "snapshot_published": false,
+      "candidate_values_compared": false,
+      "daily_price_fields_read": [],
+      "historical_forward_return_fields_read": false
+    }
+  ],
+  "repair": {
+    "scope": "Make source_volume_read phase-aware: require the inherited true value during validation before atomic publication, then require false in the final fingerprint-bound Campaign014 manifest after the wrapper has recorded the actual high/low-only source boundary.",
+    "source_amount_read_semantics": "Allow absent or false before publication and require false after publication; unchanged from the initial Campaign014 implementation.",
+    "formula_changed": false,
+    "factor_direction_changed": false,
+    "source_formula_fields_changed": false,
+    "interval_union_algorithm_changed": false,
+    "minimum_positive_range_bars_changed": false,
+    "endpoint_or_union_tolerance_changed": false,
+    "coverage_or_uniqueness_gate_changed": false,
+    "comparison_catalog_changed": false,
+    "checkpoint_bytes_rewritten": false,
+    "historical_daily_prices_or_returns_read": false
+  },
+  "verification_before_retry": {
+    "focused_test_command": "PYTHONPATH=/opt/anaconda3/lib/python3.12/site-packages /opt/anaconda3/bin/python3 -S -m pytest -q tests/data_collector_tests/test_a_share_three_day_walkforward_campaign014_features.py",
+    "passed": 11,
+    "failed": 0,
+    "runner_sha256_after_repair": "db640317e472b9b49526d8b9e191ac2d77743a76e913d2b9c55a9579d6804f09",
+    "test_sha256_after_repair": "cb24a33acf569fc080b9ed997c67fc175b6ee406cb14a121e7d0d8f804305e39"
+  },
+  "retry_policy": "Retry the identical build command against the external minute root. Every one of the 33,015 checkpoints must be hash-resumed; any checkpoint mismatch or recomputation requires fail-closed investigation before publication."
+}

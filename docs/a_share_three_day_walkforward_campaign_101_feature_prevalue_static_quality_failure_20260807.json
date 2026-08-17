@@ -1,0 +1,32 @@
+{
+  "schema_version": 1,
+  "kind": "a_share_three_day_walkforward_campaign101_prevalue_infrastructure_failure",
+  "status": "recorded_pending_mechanical_format_and_mode_repair_before_source_values",
+  "recorded_at": "2026-08-07T13:35:00Z",
+  "stage": "feature_builder_pre_freeze_static_quality_gate",
+  "successful_checks_before_failure": [
+    "five synthetic Campaign101 feature tests passed",
+    "all frozen protocol and source-catalog semantic bindings passed",
+    "the exact 129-source order and digest passed"
+  ],
+  "failure": {
+    "black_check": "Builder requires mechanical formatting; Black's normal safety parser also warned that the Python 3.12 runner cannot parse the repository's Python 3.15 target, so the repair must use the repository-compatible fast formatting mode.",
+    "ruff_check": [
+      "EXE001: shebang runner was not yet executable",
+      "I001: import block required mechanical organization"
+    ]
+  },
+  "repair": "Run Black in fast Python-3.12 target mode, run Ruff's import-only mechanical fix, set the runner executable bit, then rerun tests, frozen bindings, Black, Ruff, and bytecode compilation before freezing the implementation hash.",
+  "research_boundary": {
+    "source_factor_values_read": false,
+    "candidate_values_read": false,
+    "comparison_values_read": false,
+    "coverage_or_capacity_metrics_computed": false,
+    "historical_daily_price_fields_read": [],
+    "historical_forward_returns_read": false,
+    "training_or_model_fitting_performed": false,
+    "provider_request_issued": false,
+    "candidate49_ledgers_changed": false,
+    "current_scoring_selection_sizing_or_orders_performed": false
+  }
+}

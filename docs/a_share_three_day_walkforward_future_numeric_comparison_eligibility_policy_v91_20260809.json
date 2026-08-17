@@ -1,0 +1,105 @@
+{
+  "version": 91,
+  "kind": "a_share_three_day_walkforward_future_numeric_comparison_eligibility_policy",
+  "status": "campaign115_development_source_runner_frozen_and_verified_zero_network",
+  "recorded_at": "2026-08-09T05:26:00+08:00",
+  "recorded_at_semantics": "monotonic_logical_append_time_after_v90_recorded_at_04_48_and_verification_recorded_at_05_22_not_host_wall_clock_measurement",
+  "supersedes_without_rewriting": {
+    "path": "docs/a_share_three_day_walkforward_future_numeric_comparison_eligibility_policy_v90_20260809.json",
+    "sha256": "6ee127cbbe86631397ddafba2942412b69a8ab051b2a7b244fcafa89a5c9a42c",
+    "preserved": true,
+    "complete_definition_order_changed": false,
+    "numeric_comparator_order_changed": false,
+    "accounting_changed": true,
+    "reason": "A zero-network, fingerprint-bound 2019-2023 development-source runner is now frozen and verified. Additive ledgers v8 and v9 record four infrastructure failures. No provider row, candidate/comparison value, daily price, or return was opened."
+  },
+  "authoritative_inputs": {
+    "development_source_protocol": {
+      "path": "docs/a_share_three_day_walkforward_campaign_115_development_source_protocol_20260809.json",
+      "sha256": "836f10c9465c8cff03cf44233adf284f6e003d144c169ae003dd450a78c486e2"
+    },
+    "development_source_runner_freeze_v1": {
+      "path": "docs/a_share_three_day_walkforward_campaign_115_development_source_runner_freeze_v1_20260809.json",
+      "sha256": "7991e43b7737a6de8e65cdf6c8675ff6a3d6db194f69772a053959f1665aa909"
+    },
+    "development_source_runner_verification_v1": {
+      "path": "docs/a_share_three_day_walkforward_campaign_115_development_source_runner_verification_v1_20260809.json",
+      "sha256": "126e66d2be28047d776e2d6a07c39efc91ca6089d2f57d2259983012cbf8ec90"
+    },
+    "attempt_ledger_v9": {
+      "path": "data/experiments/short_horizon/historical_walkforward/campaign_115/research_attempt_ledger_v9.json",
+      "sha256": "a9ea1be0385be5ff608f554d382b0f81ce8aa059f058d683e1030ccbff6b67f6"
+    }
+  },
+  "campaign115_prevalue_classification": {
+    "terminal": false,
+    "stage": "development_source_runner_ready_waiting_for_acceptance_success_and_manual_entitlement_confirmation",
+    "acceptance_inspection_status": "no_attempt_journal",
+    "acceptance_success_committed": false,
+    "development_plan_ready": false,
+    "development_plan_exit_code": 2,
+    "development_plan_exact_session_count": 1214,
+    "development_plan_completed_session_prefix": 0,
+    "development_plan_remaining_provider_calls": 1214,
+    "development_plan_blockers": [
+      "manual_5000_point_entitlement_confirmation",
+      "acceptance_success_committed"
+    ],
+    "provider_request_issued": false,
+    "complete_factor_definition_count": 0,
+    "numeric_snapshot_count": 0,
+    "development_trial_count": 0,
+    "stress_2024_2025_opened": false
+  },
+  "complete_historical_feature_library": {
+    "exact_v90_order_preserved": true,
+    "factor_definition_count": 141,
+    "order_sha256": "ccab6e3d9d81b0a02d4ff178fdd442b26a1e68e3655e1c6f5b2fcb28cd4a4559"
+  },
+  "numerical_comparator_eligibility": {
+    "exact_v90_order_preserved": true,
+    "eligible_numeric_comparator_count": 134,
+    "eligible_numeric_comparator_order_sha256": "31d788db467f558a0ac538315343090f1b3ad4cb27a26136a49ebaa88b2fdbf2",
+    "campaign115_numeric_comparator_appended": false
+  },
+  "development_source_freeze": {
+    "provider": "tushare",
+    "api": "limit_list_d",
+    "fields": [
+      "ts_code",
+      "trade_date",
+      "limit",
+      "last_time",
+      "open_times"
+    ],
+    "development_start": "2019-01-01",
+    "development_end": "2023-12-31",
+    "exact_session_count": 1214,
+    "exact_session_order_sha256": "63559370c9abfe3b8e24d133d1cc102658e9f3a144c507a1c12928d93ad95059",
+    "point_in_time_active_universe": true,
+    "sequential_provider_calls_only": true,
+    "prefix_checkpoint_resume_only": true,
+    "request_intent_without_checkpoint_is_terminal_no_retry": true,
+    "minimum_sessions_with_valid_upper_limit_names": 200,
+    "stress_2024_2025_accessed_by_source_runner": false
+  },
+  "current_accounting": {
+    "campaign115_attempt_count": 11,
+    "campaign115_infrastructure_failure_count": 9,
+    "campaign115_prevalue_scientific_attempt_count": 2,
+    "campaign115_complete_factor_attempt_count": 0,
+    "campaign115_return_reading_development_trial_count": 0,
+    "cumulative_historical_research_attempt_count": 864,
+    "cumulative_return_reading_development_trial_count": 302
+  },
+  "research_boundary": {
+    "provider_request_issued": false,
+    "provider_rows_candidate_or_comparison_values_read": false,
+    "historical_daily_price_or_forward_return_values_read": false,
+    "stress_2024_2025_opened": false,
+    "candidate49_ledgers_changed": false,
+    "second_prospective_candidate_created": false,
+    "current_scoring_selection_sizing_or_orders_performed": false,
+    "investment_advice": false
+  }
+}

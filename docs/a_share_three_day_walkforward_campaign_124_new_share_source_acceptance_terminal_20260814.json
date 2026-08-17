@@ -1,0 +1,110 @@
+{
+  "schema_version": 1,
+  "kind": "a_share_three_day_walkforward_campaign124_new_share_source_acceptance_terminal",
+  "status": "terminal_source_schema_or_canonicalization_contract_failure_after_seven_calls_no_retry",
+  "recorded_at": "2026-08-14T04:19:00+08:00",
+  "authoritative_inputs": {
+    "numeric_policy_v126": {
+      "path": "docs/a_share_three_day_walkforward_future_numeric_comparison_eligibility_policy_v126_20260814.json",
+      "sha256": "878b5cc8902eaf5d8a54b7d35cc172b378b28fdd839ae5b9fbe558c770bf9c59"
+    },
+    "workflow_freeze": {
+      "path": "docs/a_share_three_day_walkforward_campaign_124_new_share_acceptance_workflow_freeze_20260814.json",
+      "sha256": "153e0e5dbea0d15ae101130b2b7c2b7ccb81325fa6ff9fba16fe79a324cf352c"
+    },
+    "intent": {
+      "path": "data/metadata/rich_data/runs/campaign124_new_share_acceptance_intent_v1.json",
+      "sha256": "2713f259aa4dae7a6ae6e1d9bf30da2e65341d4da42cd98a23e840fe076c0946",
+      "mode": "0600"
+    },
+    "failure_record": {
+      "path": "data/metadata/rich_data/runs/campaign124_new_share_acceptance_failure_v1.json",
+      "sha256": "be855dec59146a6a7f1010e83c7748c17b8e038cf26c0e2135fb45aa0cc65386",
+      "mode": "0600"
+    },
+    "post_failure_infrastructure_failure": {
+      "path": "docs/a_share_three_day_walkforward_campaign_124_post_failure_report_search_failure_20260814.json",
+      "sha256": "be5451af49c660e561f5f6d277a506e60536d1431409f0e660532e9294b357f4",
+      "scientific_result_changed": false
+    }
+  },
+  "plan_evidence": {
+    "command": "/Volumes/DIsk/Coding/anaconda3/bin/python scripts/a_share_three_day_walkforward_campaign124_new_share_acceptance.py plan",
+    "exit_code": 0,
+    "ready": true,
+    "all_28_checks_passed": true,
+    "blockers": [],
+    "provider_request_issued": false,
+    "credential_value_printed_hashed_or_persisted": false
+  },
+  "run_evidence": {
+    "command_role": "exact frozen workflow run with both confirmation flags",
+    "exit_code": 2,
+    "failure_code": "source_schema_or_canonicalization_contract_failure",
+    "provider_calls_issued": 7,
+    "request_years": [
+      2019,
+      2020,
+      2021,
+      2022,
+      2023,
+      2024,
+      2025
+    ],
+    "request_fields": [
+      "ts_code",
+      "ipo_date",
+      "issue_date",
+      "ballot"
+    ],
+    "retry_performed": false,
+    "provider_response_re_requested_for_detail": false,
+    "exception_message_persisted": false,
+    "credential_loaded_in_memory_for_run": true,
+    "credential_value_printed_hashed_or_persisted": false,
+    "provider_responses_read_in_memory": true,
+    "provider_row_counts_or_values_persisted": false,
+    "raw_provider_rows_persisted": false
+  },
+  "publication_evidence": {
+    "accepted_snapshot_exists": false,
+    "accepted_manifest_exists": false,
+    "normalized_event_published_count": 0,
+    "historical_factor_snapshot_exists": false
+  },
+  "scientific_decision": {
+    "candidate": "ipo_retail_ballot_scarcity_20to79s",
+    "source_accepted": false,
+    "historical_predictive_value_established": false,
+    "numeric_comparator_eligible": false,
+    "development_trial_allowed": false,
+    "terminal": true,
+    "terminal_phase": "source_schema_or_canonicalization_acceptance",
+    "retry_field_window_direction_threshold_source_substitution_or_rescue_allowed": false,
+    "reason": "The exact frozen four-field provider projection could not pass the exact schema/canonicalization contract after all seven one-shot annual calls. Raw rows, row counts and exception detail were intentionally not retained, so the failure cannot be repaired by inspecting or re-requesting the response."
+  },
+  "library_treatment": {
+    "complete_logical_definition_remains_for_future_duplicate_detection": true,
+    "complete_definition_count": 149,
+    "complete_definition_order_sha256": "be9c6085af2202e8fa5b4c6d89608b712b27740b16b5e78d7d88ca0c4d9bc5e3",
+    "eligible_numeric_comparator_count": 139,
+    "eligible_numeric_comparator_order_sha256": "9c4de054ca1b83eced67eece256b024ebec3a6e1925de17a4cedfa7d36265161"
+  },
+  "research_boundary": {
+    "programmatic_provider_requests_issued": true,
+    "provider_calls_issued": 7,
+    "credential_loaded_for_source_acceptance": true,
+    "secret_printed_hashed_or_persisted": false,
+    "provider_responses_read_in_memory": true,
+    "provider_rows_persisted_or_retrieved_again": false,
+    "campaign124_candidate_or_comparison_values_read": false,
+    "historical_daily_price_or_forward_return_values_read": false,
+    "stress_2024_2025_candidate_or_return_values_opened": false,
+    "candidate49_historical_backfill_performed": false,
+    "candidate49_ledgers_changed": false,
+    "second_prospective_candidate_created": false,
+    "current_scoring_selection_sizing_positions_or_orders_performed": false,
+    "investment_advice": false
+  },
+  "next_action": "Preserve Campaign124 terminal and continue Campaign125 offline only from a genuinely new prevalue mechanism or a separately pre-accepted point-in-time source. Do not retry new_share or inspect/re-request failed responses."
+}

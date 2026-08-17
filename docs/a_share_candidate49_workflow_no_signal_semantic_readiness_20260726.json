@@ -1,0 +1,160 @@
+{
+  "version": 1,
+  "kind": "a_share_candidate49_workflow_no_signal_semantic_readiness",
+  "status": "offline_workflow_no_signal_semantics_passed_real_future_session_pending",
+  "recorded_at": "2026-07-25T20:04:58Z",
+  "purpose": "Advance Candidate49 by proving that a completed future session with fewer than 50 formula, quality, listing, and source-eligible names freezes an immutable no-signal outcome, preserves incomplete raw evidence, appends no signal, and remains revalidatable after the signal date without Token or provider access.",
+  "advances": {
+    "path": "docs/a_share_candidate49_workflow_phase_receipt_semantic_replay_readiness_20260726.json",
+    "sha256": "60ba17cbe9fb2bb797afff3c5f917d8d67c9f6ba52c5f782b256ba758394c5e7"
+  },
+  "authoritative_research_state": {
+    "path": "docs/a_share_three_day_iteration_status_20260725_future_only.json",
+    "sha256": "d44e1cb3707cce194eed37e99cc90f865396b1de8c35e02a393a2a243d973466",
+    "future_only_policy_path": "docs/a_share_three_day_future_only_minute_research_policy_20260725.json",
+    "future_only_policy_sha256": "52ca8bfa7201509fe891d0af3d1c87aeebd64e47e6ec6641e897849411df408c",
+    "active_future_only_candidate": "candidate49_intraday_cumulative_vwap_crossing_rate_240m_v1",
+    "minimum_signal_names": 50,
+    "aggregation_allowed": false,
+    "candidate50_activation_allowed": false
+  },
+  "candidate_contract": {
+    "factor_changed_by_this_work": false,
+    "factor_direction": "higher_intraday_cumulative_vwap_crossing_rate_240m",
+    "ranking_rule_changed_by_this_work": false,
+    "minimum_signal_names_changed_by_this_work": false,
+    "signal_timing_changed_by_this_work": false,
+    "execution_protocol_changed_by_this_work": false,
+    "three_session_holding_definition_changed_by_this_work": false,
+    "historical_return_backfill_allowed": false
+  },
+  "implementation_fingerprints": {
+    "session_workflow": {
+      "path": "scripts/a_share_tushare_candidate49_future_session_workflow.py",
+      "sha256": "096751eb3692409d6a7f7f2e0eb21828832d2bb27dbb25bfb4b67473d779cacb"
+    },
+    "source_to_signal": {
+      "path": "scripts/a_share_tushare_candidate49_future_observation.py",
+      "sha256": "8514e5aca9a06f374c8c9677e41681c4432a93a3bd9546dbb60480605c016a45"
+    },
+    "paper_execution_and_reporting_validator": {
+      "path": "scripts/a_share_tushare_candidate49_future_execution.py",
+      "sha256": "046a70bbd860ebaf46744e161c690d1275ab0327c8a42213bf955ec66e39a98b"
+    },
+    "session_workflow_tests": {
+      "path": "tests/data_collector_tests/test_a_share_tushare_candidate49_future_session_workflow.py",
+      "sha256": "433ac3aeefaf8e7db8c731b0ec6106fac0f353e5de33d6569b2bd113ea0c52a7"
+    },
+    "source_to_signal_tests": {
+      "path": "tests/data_collector_tests/test_a_share_tushare_candidate49_future_observation.py",
+      "sha256": "d5aaea60110d824af8e0fe7f280b15dad5ecbb6b7f8af9b78c7a6569616d5d2b"
+    },
+    "execution_tests": {
+      "path": "tests/data_collector_tests/test_a_share_tushare_candidate49_future_execution.py",
+      "sha256": "dfe838ddba0e03f2902bf5eb0cc3c792adeb0423c52ac335cad1e1075f365f34"
+    },
+    "runbook": {
+      "path": "docs/a_share_data_pipeline.md",
+      "sha256": "9b775bbc60ceddf909d227b19353482ca2fba86b87cdfc1d133ac9cc649040f3"
+    }
+  },
+  "offline_no_signal_fixture": {
+    "active_buyable_symbols": 50,
+    "complete_source_symbols": 49,
+    "incomplete_symbol": "SZ000001",
+    "incomplete_source_rows_preserved": 240,
+    "incomplete_symbol_exact_241_source_grid": false,
+    "incomplete_symbol_ineligibility_reason": "not_exact_241_source_grid",
+    "eligible_names": 49,
+    "signal_entry_sha256": null,
+    "selections": [],
+    "stable_outcome": "future_session_frozen_without_signal_fewer_than_50_names",
+    "source_to_signal_phase_receipt_matches_stable_outcome": true,
+    "raw_and_factor_snapshots_published": true,
+    "signal_ledger_entries_after_completion": 0,
+    "provider_calls_bound_to_preserved_raw_partitions": 50,
+    "minimum_lowered_to_49": false,
+    "replacement_name_selected": false,
+    "missing_bar_filled": false
+  },
+  "later_replay_proof": {
+    "replay_time": "next local calendar date after the signal session",
+    "token_loaded": false,
+    "child_command_executed": false,
+    "provider_check_performed": false,
+    "provider_request_issued": false,
+    "filesystem_write_performed": false,
+    "record_sha256_unchanged": true,
+    "stable_no_signal_outcome_unchanged": true,
+    "no_signal_session_counts_toward_60_or_200_completed_signals": false
+  },
+  "offline_proofs": {
+    "session_workflow_tests": {
+      "passed": 22,
+      "failed": 0,
+      "elapsed_seconds": 0.7
+    },
+    "source_to_signal_tests": {
+      "passed": 35,
+      "failed": 0,
+      "elapsed_seconds": 9.9
+    },
+    "execution_tests": {
+      "passed": 23,
+      "failed": 0
+    },
+    "focused_candidate49_observation_execution_workflow_tests": {
+      "passed": 80,
+      "failed": 0,
+      "elapsed_seconds": 14.92
+    },
+    "new_full_workflow_no_signal_cases": 1,
+    "real_artifact_summary_no_signal_path_covered": true,
+    "full_data_collector_tests": {
+      "passed": 1120,
+      "failed": 0,
+      "warnings": 9,
+      "elapsed_seconds": 37.42
+    },
+    "ruff": "passed",
+    "python_compile": "passed"
+  },
+  "real_state_after_offline_tests": {
+    "signal": {
+      "path": "data/experiments/short_horizon/candidate49_future_signal_ledger.json",
+      "sha256": "5193f00d7f36da003f53cec387900da4c3d002299f5dfcfc1a95eaa199ed3a79",
+      "entries": 0,
+      "chain_tip_sha256": "ab47c70a18fc84b6d347fe906c404504faa126d3ec581bf077beffb215788bbb"
+    },
+    "execution": {
+      "path": "data/experiments/short_horizon/candidate49_future_execution_ledger.json",
+      "sha256": "d57a3e61eac969e42cafa418ccd8c0a5ee65dcf69da145bb2c096c2a02a2ea4f",
+      "entries": 0,
+      "chain_tip_sha256": "f302b4b93c9fcc1478e2f917279d589190b79069e6638efc41cb7aa6cf3691e0"
+    },
+    "evaluation_records": 0,
+    "target_session_workflow_record_present": false,
+    "target_session": "2026-07-27",
+    "first_allowed_source_to_signal_time": "2026-07-27T16:30:00+08:00"
+  },
+  "side_effect_audit": {
+    "real_provider_check_performed": false,
+    "real_provider_request_issued": false,
+    "real_minute_rows_read": false,
+    "real_daily_rows_read_by_this_audit": false,
+    "real_signal_or_execution_entry_written": false,
+    "historical_candidate49_return_diagnostic_run": false,
+    "paper_execution_or_live_order_performed": false,
+    "active_data_root_mutated": false
+  },
+  "decision": {
+    "workflow_no_signal_semantics_ready": true,
+    "real_candidate49_signal_ready": false,
+    "current_real_signal_count": 0,
+    "current_real_execution_entry_count": 0,
+    "current_real_evaluation_milestone_count": 0,
+    "profitability_claim_allowed": false,
+    "selection_sizing_or_order_allowed": false,
+    "next_action": "On or after 2026-07-27 16:30 Asia/Shanghai, run the fail-closed Candidate49 source-to-signal workflow. If fewer than 50 names remain, freeze the no-signal record exactly as tested and move to the next future session without backfill or threshold relaxation."
+  }
+}

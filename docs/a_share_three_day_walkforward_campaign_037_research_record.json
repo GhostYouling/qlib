@@ -1,0 +1,268 @@
+{
+  "version": 1,
+  "kind": "a_share_three_day_walkforward_campaign037_research_record",
+  "status": "completed_zero_development_survivors_stress_interval_not_opened",
+  "recorded_at": "2026-07-31T00:15:47Z",
+  "purpose": "Record every frozen Campaign037 concept, no-return result, infrastructure transition, and sole 2019-2023 expanding-walk-forward trial; preserve the zero-survivor decision and keep 2024-2025, Candidate49 history, and current trading outputs closed.",
+  "authoritative_inputs": {
+    "prior_iteration_state": {
+      "path": "docs/a_share_three_day_iteration_status_20260731_campaign036_verified.json",
+      "sha256": "be1f9c071382f90a1329ce90738f02144c8bd5d210bc321892ed00e61fbff53b"
+    },
+    "historical_walkforward_policy": {
+      "path": "docs/a_share_three_day_historical_walkforward_research_policy_20260727.json",
+      "sha256": "38426d6161b9bfed323c58caba18feca668b8c9d53e294951a8ba90c01a798bb"
+    },
+    "prior_campaign_terminal_record": {
+      "path": "docs/a_share_three_day_walkforward_campaign_036_research_record.json",
+      "sha256": "c51c2b8200db2e39c3da53ca9e57f9f13fd793afe6a5ddd098028ccce5b73d26"
+    }
+  },
+  "pre_value_evidence": {
+    "concept_scouting": {
+      "path": "docs/a_share_three_day_walkforward_campaign_037_concept_scouting.json",
+      "sha256": "1db88f0fe3400396b38ffe4bbe8f57a2af4cf7388e89efcc731c79477bcc6a2c"
+    },
+    "mechanism_overlap_audit": {
+      "path": "docs/a_share_three_day_walkforward_campaign_037_mechanism_overlap_audit.json",
+      "sha256": "73809f655efcfb48582971cb695869d323ad01be337d1814eead79942315b23a"
+    },
+    "no_return_preregistration": {
+      "path": "docs/a_share_three_day_walkforward_campaign_037_no_return_preregistration.json",
+      "sha256": "c452eecbe445dca6affbbef5ede038277dbc85b6eaa4ec806f4f05d7f66dbd05"
+    },
+    "feature_implementation_freeze": {
+      "path": "docs/a_share_three_day_walkforward_campaign_037_feature_implementation_freeze_20260731.json",
+      "sha256": "27e5dc4cf9d62aa3e39b7b2a370706868dbb76d0ceae315c161b7df5f130de72"
+    },
+    "feature_build_infrastructure_repair": {
+      "path": "docs/a_share_three_day_walkforward_campaign_037_feature_build_infrastructure_repair_20260731.json",
+      "sha256": "f52a42f7e1c6ad3aec1d0015f851130d072f48f26cc8f12265405f3b7c1ea9c7"
+    },
+    "feature_snapshot_freeze": {
+      "path": "docs/a_share_three_day_walkforward_campaign_037_feature_snapshot_freeze_20260731.json",
+      "sha256": "3e9d90b528e35dbbf3a328985868d95aaf32f9a5c28879a3c1e16ab7fa4c0e77"
+    },
+    "no_return_audit_freeze": {
+      "path": "docs/a_share_three_day_walkforward_campaign_037_no_return_audit_freeze_20260731.json",
+      "sha256": "a99152cbf5f0b5a7f059b11645ea7bada2b570f7e35070c1419a1f60c7aef21b"
+    },
+    "development_preregistration": {
+      "path": "docs/a_share_three_day_walkforward_campaign_037_preregistration.json",
+      "sha256": "cfbab2597e1f64e83d3dd4e57600def08137bc299c167951a2cbe9796817a7f5"
+    },
+    "development_implementation_freeze": {
+      "path": "docs/a_share_three_day_walkforward_campaign_037_development_implementation_freeze_20260731.json",
+      "sha256": "96aabab73c9516b5006fa75e7395ed4c0b2bf39e417df068821ac5c562aa3972"
+    }
+  },
+  "factor_definition": {
+    "name": "intraday_five_minute_variance_ratio_230w",
+    "direction": "higher",
+    "formula": "For each 120-close half independently, form 119 adjacent log returns r_t, demean them within that half as e_t=r_t-mean(r), and form 115 overlapping five-return sums s_t=sum_{j=0}^4 e_{t+j}. Pool both halves and return mean(s_t^2)/(5*mean(e_t^2)), using 230 five-return sums and 238 demeaned one-minute returns.",
+    "selected_bars": "09:31-11:30 and 13:01-15:00, exactly 240 raw unadjusted one-minute closes",
+    "one_minute_return_count": 238,
+    "overlapping_five_return_window_count": 230,
+    "demean_reset_at_lunch": true,
+    "exact_zero_returns_retained": true,
+    "zero_one_minute_variance_is_missing": true,
+    "economic_hypothesis": "A higher fixed five-return variance ratio means signed one-minute innovations reinforce at a short multiscale horizon rather than cancel.",
+    "transform_filter_threshold_combination_or_model": "none"
+  },
+  "feature_snapshot": {
+    "path": "/Volumes/DIsk/qlib-a-share-tushare-1m/derived/a_share/rich/tushare/minute_walkforward_campaign037_feature_library/tushare_stk_mins_1m_2019_2025_ea0cbb8f_walkforward_campaign037_feature_library_v1/snapshot_manifest.json",
+    "sha256": "7bc83097d8dbe013c224d58cf9718ffa671edd70d873f91d741798186bb26f93",
+    "dataset_sha256": "61eeb96cc827b480efde5688ba63c656306e25361f77d08f73d19b9a929ee03e",
+    "partitions": 33015,
+    "rows": 7724498,
+    "eligible_rows": 7695088,
+    "zero_one_minute_variance_rows": 29410,
+    "invalid_nonpositive_nonfinite_component_or_range_rows": 0,
+    "all_partition_byte_and_frame_hashes_valid": true,
+    "source_fields_read": [
+      "datetime",
+      "symbol",
+      "provider",
+      "close"
+    ]
+  },
+  "no_return_result": {
+    "path": "data/experiments/short_horizon/historical_walkforward/campaign_037/no_return/20260731T000547Z_campaign037_no_return_audit.json",
+    "sha256": "aa4980bca0606b24df5f20bb3ee213e96a9852cc257866b4b682b9a3c1af39c4",
+    "status": "completed_with_one_admissible_factor_pending_walkforward_preregistration",
+    "median_coverage": 0.9983183851218558,
+    "p05_coverage": 0.9933708902303229,
+    "p05_eligible_names": 138.0,
+    "potential_three_session_cohorts": 540,
+    "comparison_count": 58,
+    "comparison_order_matches_preregistration": true,
+    "all_comparisons_passed": true,
+    "maximum_absolute_median_daily_rank_correlation": 0.5164292904395714,
+    "nearest_comparison_factor": "intraday_global_price_range_revisit_240m",
+    "nearest_median_daily_rank_correlation": -0.5164292904395714,
+    "historical_daily_price_fields_read": [],
+    "historical_forward_return_fields_read": false
+  },
+  "development_artifacts": {
+    "runner": {
+      "path": "scripts/a_share_three_day_walkforward_campaign037.py",
+      "sha256": "cdcd7be7a5c071be4f1c9d6276d39d52a2c328b59808191c50d8cb5eb12273d6"
+    },
+    "tests_pre_result_sha256": "c86df6dc141cc802c025706054e1e55adfd882702e4ef1822aeb848a4e0ee9fc",
+    "trial_ledger": {
+      "path": "data/experiments/short_horizon/historical_walkforward/campaign_037/walkforward/trial_ledger.json",
+      "sha256": "48bf0bf897361d4a440304e02fbe44e636b2bc48f1c288ed6dafb74e51022baf",
+      "entry_count": 1,
+      "chain_tip_sha256": "83bc14116f8c368856b2e5dd915f5d4ce358c76d5e0f0a1fac249bb4cdeb71a2",
+      "entries_sha256": "e660ce89b55d5181312a6a5f620f773c4f6d964ab805263803f428bafa033022"
+    },
+    "development_survivors": {
+      "path": "data/experiments/short_horizon/historical_walkforward/campaign_037/walkforward/development_survivors.json",
+      "sha256": "821e57446ebb1df3902e5f421dfff23e04cf911f9609a8532f5f154fdcdcbe95",
+      "selected_survivor_count": 0,
+      "canonical_value_sha256": "99ed45f641830d07de77dd480f54e1fa087ee8e2974afc3d53b8d7ced4643091"
+    },
+    "exposed_stress_consumption_record": {
+      "path": "data/experiments/short_horizon/historical_walkforward/campaign_037/walkforward/exposed_stress_consumption_record.json",
+      "sha256": "f3c018c9c38360f202adef2372e0c34cb356699dfe2368ee672e13f1deeea4b2",
+      "status": "not_opened_zero_development_survivors",
+      "stress_interval_opened": false,
+      "stress_return_fields_read": false
+    },
+    "campaign_report": {
+      "path": "data/experiments/short_horizon/historical_walkforward/campaign_037/walkforward/campaign_report.json",
+      "sha256": "dbf918669190e4242b408f24c6ec664f17c5be3c46ac36e65495f589384115c9"
+    },
+    "unified_research_report": {
+      "path": "data/experiments/short_horizon/three_day_research_report.md",
+      "sha256": "5f198e8125034b2d1e1a3a8ff8aa72e2d2fcb0e524e373f0a79ede01ed6af37d"
+    }
+  },
+  "validation_fold_results": [
+    {
+      "fold": 1,
+      "validation_year": 2021,
+      "cohorts": 74,
+      "mean_rank_ic": -0.04151404515519894,
+      "mean_top3_minus_bottom3_gross_return": -0.00962971052708658,
+      "normalized_return": -0.25829507359469295,
+      "normalized_maximum_drawdown": -0.338069217780965,
+      "pilot_10bp_return": -0.009964497328213584,
+      "pilot_10bp_maximum_drawdown": -0.04422253404210574,
+      "board_lot_affordability_rate": 0.8959276018099548,
+      "maximum_daily_amount_participation": 0.0007579852260088506,
+      "terminal_unresolved_positions": 0
+    },
+    {
+      "fold": 2,
+      "validation_year": 2022,
+      "cohorts": 73,
+      "mean_rank_ic": -0.032246415847626546,
+      "mean_top3_minus_bottom3_gross_return": 0.0009768696371083186,
+      "normalized_return": -0.12534100126455283,
+      "normalized_maximum_drawdown": -0.30036402666557094,
+      "pilot_10bp_return": -0.020747333394975143,
+      "pilot_10bp_maximum_drawdown": -0.05486231489105686,
+      "board_lot_affordability_rate": 0.8837209302325582,
+      "maximum_daily_amount_participation": 0.0006637844317291972,
+      "terminal_unresolved_positions": 0
+    },
+    {
+      "fold": 3,
+      "validation_year": 2023,
+      "cohorts": 74,
+      "mean_rank_ic": -0.05072973176250852,
+      "mean_top3_minus_bottom3_gross_return": -0.005436854389798199,
+      "normalized_return": -0.47725652495058335,
+      "normalized_maximum_drawdown": -0.5038671693138312,
+      "pilot_10bp_return": -0.08003859706881133,
+      "pilot_10bp_maximum_drawdown": -0.0856810877549572,
+      "board_lot_affordability_rate": 0.8767123287671232,
+      "maximum_daily_amount_participation": 0.0005062048710425455,
+      "terminal_unresolved_positions": 0
+    }
+  ],
+  "development_aggregate_result": {
+    "cohorts": 375,
+    "mean_rank_ic": -0.02733653611933348,
+    "mean_top3_minus_bottom3_gross_return": -0.002501450887881219,
+    "normalized_return": -0.5454315990660483,
+    "normalized_maximum_drawdown": -0.7059783804494402,
+    "pilot_0bp_return": -0.03826081563790229,
+    "pilot_5bp_return": -0.09597687432749791,
+    "pilot_10bp_return": -0.12041505349526738,
+    "pilot_20bp_return": -0.18808576426978374,
+    "pilot_10bp_maximum_drawdown": -0.1542669690220737,
+    "association_top3_return": -0.4148904891791392,
+    "association_top3_maximum_drawdown": -0.6626603142316789,
+    "three_session_p01_net_return": -0.10902943161190883,
+    "three_session_p05_net_return": -0.06872612719758057,
+    "three_session_worst_net_return": -0.17074578372226967,
+    "three_session_negative_return_rate": 0.5146666666666667
+  },
+  "survivor_decision": {
+    "development_survivor_gate_passed": false,
+    "selected_survivor_count": 0,
+    "operationally_admissible": false,
+    "operational_rejection_reasons": [
+      "fold_1_board_lot_affordability",
+      "fold_2_board_lot_affordability",
+      "fold_3_board_lot_affordability"
+    ],
+    "validation_quality_gate_passed": false,
+    "validation_quality_rejection_reasons": [
+      "insufficient_positive_ic_folds",
+      "median_validation_mean_rank_ic",
+      "median_validation_spread",
+      "insufficient_positive_normalized_return_folds",
+      "insufficient_positive_pilot_return_folds",
+      "median_validation_pilot_return",
+      "worst_validation_normalized_drawdown",
+      "nonpositive_development_aggregate_20bp_return"
+    ],
+    "positive_mean_rank_ic_fold_count": 0,
+    "positive_normalized_return_fold_count": 0,
+    "positive_pilot_return_fold_count": 0,
+    "median_validation_mean_rank_ic": -0.04151404515519894,
+    "median_validation_spread": -0.005436854389798199,
+    "median_validation_normalized_return": -0.25829507359469295,
+    "median_validation_pilot_return": -0.020747333394975143,
+    "worst_validation_normalized_drawdown": -0.5038671693138312,
+    "development_aggregate_20bp_return": -0.18808576426978374
+  },
+  "infrastructure_and_semantic_record": {
+    "pre_value_feature_build_failure_count": 1,
+    "pre_value_feature_build_failure": "The first real build exited before partition enumeration because the cloned private builder retained the Campaign033 protocol validator. The repair bound the frozen Campaign037 callables into the private namespace; no candidate, comparison, price, or return value was read before the repair.",
+    "display_only_inherited_progress_label_count": 1,
+    "display_only_inherited_progress_label": "Campaign006",
+    "development_infrastructure_failure_count": 0,
+    "formula_direction_cost_fold_purge_or_gate_changed_after_values": false,
+    "every_trial_and_failure_preserved": true
+  },
+  "prospective_boundary": {
+    "candidate49_signal_ledger": {
+      "path": "data/experiments/short_horizon/candidate49_future_signal_ledger.json",
+      "sha256": "5193f00d7f36da003f53cec387900da4c3d002299f5dfcfc1a95eaa199ed3a79",
+      "entry_count": 0
+    },
+    "candidate49_execution_ledger": {
+      "path": "data/experiments/short_horizon/candidate49_future_execution_ledger.json",
+      "sha256": "d57a3e61eac969e42cafa418ccd8c0a5ee65dcf69da145bb2c096c2a02a2ea4f",
+      "entry_count": 0
+    },
+    "candidate49_historical_return_signal_or_execution_backfill_performed": false,
+    "candidate50_activation_created": false,
+    "current_scoring_selection_sizing_or_orders_performed": false
+  },
+  "decision": {
+    "factor_terminal": true,
+    "reason": "The sole frozen trial had negative mean Rank IC, normalized return, and 10bp pilot return in all three validation folds; all three affordability rates also failed 90%, worst validation normalized drawdown was excessive, and aggregate 20bp return was negative.",
+    "2024_2025_stress_opened": false,
+    "2024_2025_returns_read": false,
+    "invert_repair_rewindow_rescale_filter_threshold_rerun_rescue_or_combine_allowed": false,
+    "historical_development_trial_count_after_campaign": 257,
+    "current_aggregation_candidate_count": 0,
+    "next_action": "Begin Campaign038 concept scouting only from a genuinely independent mechanism with a separate pre-value overlap audit and finite fingerprint-bound no-return protocol.",
+    "investment_advice_or_current_selection_claim_allowed": false
+  }
+}

@@ -1,0 +1,30 @@
+{
+  "schema_version": 1,
+  "kind": "a_share_three_day_walkforward_campaign230_infrastructure_failure",
+  "recorded_at": "2026-08-16T04:08:00+08:00",
+  "timestamp_semantics": "monotonic_logical_append_time_not_host_wall_clock_measurement",
+  "status": "failed_jq_empty_filter_returned_nonzero_without_json_parse_failure",
+  "command": "jq -e empty docs/a_share_three_day_walkforward_campaign_230_deathcare_preneed_atneed_funeral_cremation_interment_cemetery_inventory_perpetual_care_lifecycle_source_frontier_20260816.json && echo CAMPAIGN230_FRONTIER_JSON_OK",
+  "working_directory": "/Volumes/DIsk/Disk-Coding/qlib",
+  "observed_process_exit_code": 4,
+  "failure_reason": "jq_empty_emits_no_result_and_with_e_returns_status_4_even_for_valid_json_so_the_success_marker_was_not_reached",
+  "evidence_treatment": {
+    "output_discarded": true,
+    "used_as_scientific_evidence": false,
+    "used_as_validation_evidence": false,
+    "used_to_assert_json_validity": false
+  },
+  "recovery_rule": "use_jq_e_true_to_parse_the_file_and_emit_only_a_bounded_success_marker",
+  "research_boundary": {
+    "candidate_or_comparator_value_read": false,
+    "daily_price_or_forward_return_read": false,
+    "provider_or_web_request_issued": false,
+    "provider_credential_presence_value_or_digest_read": false,
+    "candidate49_plan_or_run_executed": false,
+    "candidate49_ledgers_changed": false,
+    "second_prospective_candidate_created": false,
+    "stress_2024_2025_opened": false,
+    "current_scoring_selection_sizing_positions_or_orders_performed": false,
+    "investment_advice": false
+  }
+}

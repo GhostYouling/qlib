@@ -1,0 +1,38 @@
+{
+  "schema_version": 1,
+  "kind": "a_share_three_day_walkforward_campaign087_no_return_audit_activation_binding",
+  "status": "frozen_before_campaign087_coverage_or_comparison_values",
+  "frozen_at": "2026-08-07T03:17:00+08:00",
+  "implementation_freeze": {
+    "path": "docs/a_share_three_day_walkforward_campaign_087_no_return_audit_implementation_freeze_20260807.json",
+    "sha256": "f4d4b9cfb4835fdef2c67839f3cabb96a752d1c226210b181a731cea28d6276d"
+  },
+  "snapshot_binding": {
+    "path": "docs/a_share_three_day_walkforward_campaign_087_feature_snapshot_binding_20260807.json",
+    "sha256": "acaf2df7105b594e22f0daf697cb3e34db8d9233f32e585e26952c4678c188b0"
+  },
+  "candidate_snapshot": {
+    "path": "/Volumes/DIsk/qlib-a-share-tushare-1m/derived/a_share/rich/tushare/minute_walkforward_campaign087_feature_library/tushare_stk_mins_1m_2019_2025_ea0cbb8f_walkforward_campaign087_feature_library_v1/snapshot_manifest_v5.json",
+    "sha256": "3a44a828a5c95712471e2757fc24225607759860f236f10de674fc93927b7bfe",
+    "dataset_sha256": "9f92cede97522203ace1dc3879a862cc55e58e4877f91fc407f275d418ba6428",
+    "rows": 1331759,
+    "eligible_rows": 1328449,
+    "partitions": 7
+  },
+  "audit_invocation": {
+    "module": "scripts.a_share_three_day_walkforward_campaign087_no_return_audit",
+    "command": "run",
+    "data_root": "/Volumes/DIsk/qlib-a-share-tushare-1m",
+    "experiment_root": "data/experiments/short_horizon/historical_walkforward/campaign_087/no_return",
+    "workers": 4,
+    "confirm_run_required": true,
+    "single_audit_only": true
+  },
+  "coverage_or_capacity_metrics_computed_before_activation": false,
+  "comparison_values_read_before_activation": false,
+  "historical_daily_price_fields_read_before_activation": [],
+  "historical_forward_returns_read_before_activation": false,
+  "provider_request_issued_before_activation": false,
+  "candidate49_historical_backfill_or_ledger_change_before_activation": false,
+  "current_scoring_selection_sizing_or_orders_performed_before_activation": false
+}

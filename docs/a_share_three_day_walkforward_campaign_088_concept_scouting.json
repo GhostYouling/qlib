@@ -1,0 +1,131 @@
+{
+  "schema_version": 1,
+  "kind": "a_share_three_day_walkforward_campaign088_concept_scouting",
+  "status": "selected_before_campaign088_minute_source_candidate_comparison_daily_price_or_return_values",
+  "recorded_at": "2026-08-07T03:32:00+08:00",
+  "purpose": "Select exactly one economically distinct offline three-session factor after terminal Campaign087, before opening any Campaign088 minute source row, candidate value, comparison value, daily price, or forward return.",
+  "authoritative_bindings": {
+    "campaign087_verified_state": {
+      "path": "docs/a_share_three_day_iteration_status_20260807_campaign087_verified.json",
+      "sha256": "4309f34fd2f5168c4b27701d9a15011e24886c25c62cdc3ad9a4c9e7caee175c"
+    },
+    "campaign087_terminal_completion_freeze": {
+      "path": "docs/a_share_three_day_walkforward_campaign_087_terminal_completion_freeze_20260807.json",
+      "sha256": "627dd02cff6401ead944729965d8f7c4a6af067ee18f57bfecfa96f40b631fe0"
+    },
+    "historical_walkforward_policy": {
+      "path": "docs/a_share_three_day_historical_walkforward_research_policy_20260727.json",
+      "sha256": "38426d6161b9bfed323c58caba18feca668b8c9d53e294951a8ba90c01a798bb"
+    },
+    "numeric_comparator_policy_v26": {
+      "path": "docs/a_share_three_day_walkforward_future_numeric_comparison_eligibility_policy_v26_20260807.json",
+      "sha256": "f3f896ba4609699d1fa7bca5f613004b7e1dcc5eb4145268fc68f93f17479bc3",
+      "complete_definition_count": 119,
+      "complete_definition_order_sha256": "0de791d223395722a74dfec4e4b2e469550c9a34e6f5ff64af4087287da0abb5",
+      "eligible_numeric_comparator_count": 117,
+      "eligible_numeric_comparator_order_sha256": "cc176eda08a1dc587a44fe9130dea4bd72db64b3d93a3646b53da593adb8cc1c"
+    },
+    "manage_qlib_a_share_data_skill": {
+      "path": "/Users/niyufei/.codex/skills/manage-qlib-a-share-data/SKILL.md",
+      "sha256": "90a99c54dd00f0c737e85c4c6dd48d906edbd0f591c61278885728eaf7806431"
+    }
+  },
+  "definition_only_source_boundary": {
+    "source": "immutable accepted local Tushare 2019-2025 one-minute source and joint-clean stock-day identity",
+    "minute_source_projection_if_later_admitted": [
+      "datetime",
+      "symbol",
+      "provider",
+      "close"
+    ],
+    "stock_day_identity_projection_if_later_admitted": [
+      "trade_date",
+      "symbol",
+      "provider"
+    ],
+    "candidate_source_rows_read": false,
+    "candidate_or_comparison_values_read": false,
+    "daily_price_or_forward_return_values_read": false,
+    "provider_request_allowed": false
+  },
+  "candidate_design_catalog": [
+    {
+      "design": "intraday_bipower_jump_variation_share_238m",
+      "decision": "selected_for_separate_complete_mechanism_overlap_audit",
+      "reason": "It estimates the nonnegative share of minute return quadratic variation not explained by adjacent absolute-return bipower variation, targeting discontinuous completed-session repricing rather than volatility level, direction, clock concentration, or coarse-scale variance."
+    },
+    {
+      "design": "intraday_realized_volatility_or_jump_magnitude_level",
+      "decision": "rejected_before_values_as_terminal_family",
+      "reason": "Raw realized volatility is already terminal; using a level, log level, rank, cap, or threshold would be a nearby rescue rather than a new mechanism."
+    },
+    {
+      "design": "signed_positive_or_negative_jump_share",
+      "decision": "rejected_before_values",
+      "reason": "Choosing a sign, semivariance split, threshold, or direction after inspecting values would introduce a family search and overlap with terminal upside semivariance and directional mechanisms."
+    },
+    {
+      "design": "five_minute_or_multiscale_jump_ratio",
+      "decision": "rejected_before_values_as_terminal_family",
+      "reason": "Changing sampling scale or combining grids would overlap the terminal five-minute variance ratio and volatility-resolution families."
+    },
+    {
+      "design": "windowed_smoothed_thresholded_winsorized_or_market_neutral_jump_share",
+      "decision": "rejected_before_values",
+      "reason": "Subwindows, smoothing, thresholds, clipping beyond the mathematical nonnegative part, filters, market residualization, regimes, fits, models, and combinations are outside the one-factor finite catalog."
+    }
+  ],
+  "selected_candidate": {
+    "name": "intraday_bipower_jump_variation_share_238m",
+    "direction": "higher",
+    "economic_hypothesis": "A larger completed-session discontinuous repricing component relative to total minute quadratic variation can indicate concentrated information incorporation whose attention and price discovery continue over the next three sessions.",
+    "formula": "Form 119 adjacent log-close returns separately inside each 120-close half, yielding 238 returns and 236 within-half adjacent return pairs. Let RV=sum_{i=1}^{238} r_i^2 and BV=(pi/2)*(238/236)*sum over the 236 allowed pairs of |r_i|*|r_{i+1}|. Return max(RV-BV,0)/RV.",
+    "time_grid": "Exactly 09:31-11:30 and 13:01-15:00. The raw 09:30 row remains required by source identity but is excluded. No lunch, overnight, cross-day, or cross-stock return or bipower pair is formed.",
+    "input_rule": "Every selected close must be finite and strictly positive. Exact zero returns remain valid. Require all 238 returns and all 236 within-half adjacent pairs; no return or pair may be dropped.",
+    "support_rule": "Require RV to be strictly positive and finite and BV to be finite. The mathematical positive part max(RV-BV,0) is part of the sole frozen estimator, not a searched clip or threshold.",
+    "floating_point_rule": "Use natural-log float64 arithmetic and the platform pi constant. Require the final score to be finite in [0,1]; canonicalize only values within 1e-12 of zero or one.",
+    "valid_range": {
+      "lower": 0,
+      "lower_inclusive": true,
+      "upper": 1,
+      "upper_inclusive": true
+    },
+    "availability": "Known at the signal-session close after the exact 240 selected closes; no later session, daily return, comparison value, or Candidate49 observation is used.",
+    "parameter_direction_window_transform_filter_subset_regime_fit_model_or_combination_search": false
+  },
+  "mandatory_pre_value_challenges": [
+    "all_119_frozen_historical_factor_definitions_in_exact_order",
+    "all_117_numeric_comparators_in_exact_order",
+    "intraday_realized_volatility",
+    "intraday_diffusive_variation_ratio_238m",
+    "intraday_volatility_resolution_238m",
+    "intraday_five_minute_variance_ratio_230w",
+    "intraday_absolute_return_serial_persistence_236p",
+    "intraday_return_reversal_energy_share_236p",
+    "intraday_return_spectral_entropy_59f",
+    "intraday_return_variance_entropy_238m",
+    "intraday_upside_semivariance_share_239m",
+    "intraday_market_shock_magnitude_decoupling_238m",
+    "intraday_range_amount_profile_alignment_js_240m",
+    "candidate49_intraday_cumulative_vwap_crossing_rate_240m_v1"
+  ],
+  "research_boundary": {
+    "campaign088_minute_source_rows_read": false,
+    "campaign088_candidate_values_read": false,
+    "comparison_values_read": false,
+    "historical_daily_price_fields_read": [],
+    "historical_forward_returns_read": false,
+    "provider_request_issued": false,
+    "candidate49_historical_backfill_performed": false,
+    "candidate49_ledgers_changed": false,
+    "second_prospective_candidate_created": false,
+    "current_scoring_selection_sizing_or_orders_performed": false,
+    "investment_advice": false
+  },
+  "decision": {
+    "selected_concept_count": 1,
+    "may_advance_directly_to_values": false,
+    "required_next_step": "Complete and bind one exhaustive no-value mechanism-overlap audit; then freeze the no-return protocol, implementation, tests, and fingerprints before any candidate value.",
+    "candidate49_remains_only_active_prospective_candidate": true
+  }
+}

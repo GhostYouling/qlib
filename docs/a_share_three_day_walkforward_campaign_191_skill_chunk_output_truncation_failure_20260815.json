@@ -1,0 +1,31 @@
+{
+  "schema_version": 1,
+  "kind": "a_share_three_day_walkforward_campaign191_infrastructure_failure",
+  "status": "recorded_recovered_no_scientific_evidence_consumed",
+  "recorded_at": "2026-08-15T14:41:23+08:00",
+  "attempt_id": "campaign191_infrastructure_001",
+  "phase": "campaign191_authority_and_skill_boundary_verification",
+  "operation": "Read manage-qlib-a-share-data/SKILL.md lines 151-300 as one output chunk.",
+  "observed_failure": {
+    "failure_class": "tool_output_truncation",
+    "reported_original_token_count": 17380,
+    "exit_code_available": false,
+    "scientific_evidence_consumed_from_failed_output": false
+  },
+  "recovery": {
+    "method": "Re-read lines 151-200, 201-250 and 251-300 as complete 50-line pages, then continue complete 50-line pagination through line 1336.",
+    "skill_path": "/Users/niyufei/.codex/skills/manage-qlib-a-share-data/SKILL.md",
+    "skill_sha256": "565713a5f3aeb6a1acf23e397fcc21be28d0c3ea4ebf21c7f287a25bb94d78dc",
+    "verified_line_count": 1336,
+    "recovered": true
+  },
+  "research_boundary": {
+    "source_factor_comparator_security_price_or_return_value_read": false,
+    "provider_or_web_request_issued": false,
+    "provider_credential_presence_value_or_digest_read": false,
+    "stress_2024_2025_opened": false,
+    "candidate49_ledgers_changed": false,
+    "second_prospective_candidate_created": false
+  },
+  "next_action": "Bind this failure into the Campaign191 append-only attempt ledger after the finite prevalue scientific catalog is frozen."
+}

@@ -1,0 +1,146 @@
+{
+  "version": 1,
+  "kind": "a_share_three_day_walkforward_campaign050_development_implementation_freeze",
+  "status": "single_exact_trial_runner_and_all_bindings_frozen_before_2019_2023_return_read",
+  "frozen_at": "2026-08-01T11:06:10Z",
+  "purpose": "Bind the admitted factor, exact pre-value trial identifier, development runner, inherited three-fold protocol, execution assumptions, closed search space, and conditional stress rule before historical daily prices or returns are read.",
+  "bindings": {
+    "development_preregistration": {
+      "path": "docs/a_share_three_day_walkforward_campaign_050_preregistration_v3.json",
+      "sha256": "4188d30f59cdac6dc002fe59b61373786a5f4c64ce089bcdc0a2a86c2efc7660"
+    },
+    "development_runner": {
+      "path": "scripts/a_share_three_day_walkforward_campaign050_v3.py",
+      "sha256": "e12fd36aa1a41dc5ee9a39c7ea8c47e1da63fc4cf6ce41cf576eca906a4b3f5d"
+    },
+    "byte_bound_parent_runner": {
+      "path": "scripts/a_share_three_day_walkforward_campaign048_v2.py",
+      "sha256": "6150deed1f514c2874ae66fba6631a020f1dc8d97a6274127b3db1906f1c2bc0"
+    },
+    "pre_return_top_level_schema_failure": {
+      "path": "docs/a_share_three_day_walkforward_campaign_050_development_preregistration_semantic_failure_20260801.json",
+      "sha256": "88432c5a374f0bb696ad8f5bf9f297b6cd45e2125f193102d20bd6c6b650b838"
+    },
+    "pre_return_template_identity_failure": {
+      "path": "docs/a_share_three_day_walkforward_campaign_050_development_preregistration_template_failure_20260801.json",
+      "sha256": "2ee56195de5ce96fdf4f197e51bb03beb934f662d0621cdd397ea8e3fe83f07c"
+    },
+    "no_return_audit_freeze": {
+      "path": "docs/a_share_three_day_walkforward_campaign_050_no_return_audit_freeze_20260801.json",
+      "sha256": "b0eb9b4c0bfdc001a485c5140f390309fe35fe0cf6f4535a0ab6dd5f4de5ff35"
+    },
+    "feature_and_no_return_runner": {
+      "path": "scripts/a_share_three_day_walkforward_campaign050_features_v8.py",
+      "sha256": "79bba06d0d621d2a415271b8096548706ecd871cc380f233c8ea2f3f1596a5d9"
+    },
+    "development_boundary_tests": {
+      "path": "tests/data_collector_tests/test_a_share_three_day_walkforward_campaign050.py",
+      "sha256": "298c18f59808b8b8078afd7be3b2cca9a2ba11965013b59e13c7747336210d74"
+    },
+    "post_audit_test_transition": {
+      "path": "docs/a_share_three_day_walkforward_campaign_050_post_audit_test_transition_20260801.json",
+      "sha256": "82b2d9ce2d190e45f9d1a0fac83245f3a7867fb2a067759ee42ec0423b399e3c"
+    }
+  },
+  "frozen_trial_catalog": [
+    {
+      "trial_id": "wf050_intraday_half_session_extreme_shock_reversal_completion_2h_single_higher",
+      "parent_trial_id": null,
+      "kind": "single_factor",
+      "feature_set": [
+        "intraday_half_session_extreme_shock_reversal_completion_2h"
+      ],
+      "weights": [
+        1.0
+      ],
+      "complexity": 1,
+      "direction": "higher"
+    }
+  ],
+  "walkforward_protocol": {
+    "fold_count": 3,
+    "folds": [
+      {
+        "fold": 1,
+        "training": "2019-01-01..2020-12-31",
+        "validation": "2021-01-01..2021-12-31"
+      },
+      {
+        "fold": 2,
+        "training": "2019-01-01..2021-12-31",
+        "validation": "2022-01-01..2022-12-31"
+      },
+      {
+        "fold": 3,
+        "training": "2019-01-01..2022-12-31",
+        "validation": "2023-01-01..2023-12-31"
+      }
+    ],
+    "purge_signal_sessions_each_boundary": 3,
+    "label_containment_required": true,
+    "entry": "next accepted local session open t+1",
+    "exit": "third accepted local session close t+3",
+    "topk": 3
+  },
+  "execution_and_cost_protocol": {
+    "normalized_buy_cost": 0.00012,
+    "normalized_sell_cost": 0.00062,
+    "pilot_capital_cny": 200000,
+    "pilot_slot_fraction": 0.05,
+    "pilot_max_entry_exposure_fraction": 0.15,
+    "pilot_board_lot_shares": 100,
+    "pilot_commission_rate": 0.0001,
+    "pilot_transfer_fee_rate_each_side": 0.00002,
+    "pilot_sell_stamp_duty_rate": 0.0005,
+    "pilot_slippage_bps_per_side_grid": [
+      0,
+      5,
+      10,
+      20
+    ],
+    "pilot_gate_slippage_bps_per_side": 10,
+    "invalid_or_nonpositive_volume_entry_stays_cash": true,
+    "invalid_or_limit_like_exit_retries_up_to_sessions": 20,
+    "same_day_amount_used_only_after_outcome_for_capacity": true
+  },
+  "search_and_stress_boundary": {
+    "expected_development_trial_count": 1,
+    "alternate_direction_horizon_weight_filter_threshold_model_combination_or_year_subset_search": false,
+    "every_trial_and_infrastructure_failure_must_be_retained": true,
+    "stress_2024_2025_open_before_frozen_nonzero_development_survivor": false,
+    "stress_2024_2025_may_open_once_only_for_entire_frozen_campaign": true,
+    "stress_pass_can_activate_candidate50_or_current_output": false
+  },
+  "validation": {
+    "preregistration_binding_count": 21,
+    "preregistration_bindings_passed": 21,
+    "preregistration_bindings_failed": 0,
+    "trial_identifier_matches_no_return_preregistration": true,
+    "trial_catalog_assertion_passed": true,
+    "runner_status_before_execution": {
+      "campaign_id": "a_share_three_day_walkforward_campaign_050",
+      "campaign_sha256": "4188d30f59cdac6dc002fe59b61373786a5f4c64ce089bcdc0a2a86c2efc7660",
+      "expected_trial_count": 1,
+      "candidate49_historical_return_read": false,
+      "current_scoring_selection_sizing_or_orders_allowed": false,
+      "ledger_entry_count": 0,
+      "stress_intent_exists": false,
+      "stress_record_exists": false
+    },
+    "development_boundary_tests_passed": 4,
+    "development_boundary_tests_failed": 0,
+    "combined_campaign050_focused_tests_passed": 20,
+    "combined_campaign050_focused_tests_failed": 0
+  },
+  "research_boundary_at_freeze": {
+    "historical_daily_price_fields_read": [],
+    "historical_forward_returns_read": false,
+    "training_or_model_fitting_performed": false,
+    "provider_request_issued": false,
+    "candidate49_historical_return_signal_execution_or_milestone_backfill_performed": false,
+    "candidate49_prospective_ledgers_changed": false,
+    "candidate50_activation_created": false,
+    "current_scoring_selection_sizing_or_orders_performed": false
+  },
+  "next_action": "Execute PYTHONPATH=. python scripts/a_share_three_day_walkforward_campaign050_v3.py run-development exactly once; retain every result and stop before 2024-2025 unless a frozen survivor exists."
+}

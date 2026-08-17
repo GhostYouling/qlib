@@ -1,0 +1,144 @@
+{
+  "version": 1,
+  "kind": "a_share_three_day_walkforward_campaign033_verification",
+  "status": "terminal_result_reports_ledgers_and_boundaries_verified",
+  "recorded_at": "2026-07-30T17:39:07Z",
+  "purpose": "Bind the effective C33 terminal evidence after full-suite verification and prove the failed first full-suite run was resolved by a one-field non-decision status repair without changing research outputs.",
+  "bindings": {
+    "concept_scouting": {
+      "path": "docs/a_share_three_day_walkforward_campaign_033_concept_scouting.json",
+      "sha256": "3b6314768a34828b57bc0bd71459b259a85b32d5061ceb851625a9b8e5c21eea"
+    },
+    "mechanism_overlap_audit": {
+      "path": "docs/a_share_three_day_walkforward_campaign_033_mechanism_overlap_audit.json",
+      "sha256": "fc932c2f9172d81bccb503f94d03e6407e2b807044eaab13d167f4a817289c1c"
+    },
+    "no_return_preregistration": {
+      "path": "docs/a_share_three_day_walkforward_campaign_033_no_return_preregistration.json",
+      "sha256": "3e5546941b5954f96fc5a2d7dc7fbcf03b48d063ea1414133c2c17ae191fad4f"
+    },
+    "feature_implementation_freeze": {
+      "path": "docs/a_share_three_day_walkforward_campaign_033_feature_implementation_freeze_20260730.json",
+      "sha256": "c26f257af8ebb0c82bf0c9f43957689a993d5c9f781be7c98493499e4cd5e986"
+    },
+    "feature_snapshot_freeze": {
+      "path": "docs/a_share_three_day_walkforward_campaign_033_feature_snapshot_freeze_20260730.json",
+      "sha256": "a5dfcd5efda7bd0d924994052caa3270387bc2c76b4043b1723fb1c232f2dd69"
+    },
+    "no_return_audit_freeze": {
+      "path": "docs/a_share_three_day_walkforward_campaign_033_no_return_audit_freeze_20260730.json",
+      "sha256": "c49f5630a3692aacfae96285f277504c07f3fb15a267a9a5c57f5fcfd2b15351"
+    },
+    "development_preregistration": {
+      "path": "docs/a_share_three_day_walkforward_campaign_033_preregistration.json",
+      "sha256": "1c15aec7e148e4d9e039654fe090e85629c85d57e8e8ca9d5844a9e067eb49b3"
+    },
+    "development_implementation_freeze": {
+      "path": "docs/a_share_three_day_walkforward_campaign_033_development_implementation_freeze_20260730.json",
+      "sha256": "56d11ced08afa077b1fb8f58798a053956cd0935ae76f5af21d0ef92aca192c1"
+    },
+    "research_record_status_semantic_repair": {
+      "path": "docs/a_share_three_day_walkforward_campaign_033_research_record_status_semantic_repair_20260730.json",
+      "sha256": "d45fb9e5ed996002b43c7a4ad58f623df43537dc694ce89f7fee3f0cb3be9e5e"
+    },
+    "effective_research_record": {
+      "path": "docs/a_share_three_day_walkforward_campaign_033_research_record.json",
+      "sha256": "cf4f7d3ea7ef074cf13288001047675e60a237eeae66cb628f79a6c48e849a28"
+    },
+    "effective_post_result_test_transition": {
+      "path": "docs/a_share_three_day_walkforward_campaign_033_post_result_test_transition_20260730_v3.json",
+      "sha256": "dbf6958bb53ae21b7c6ebd49fef8f8f825eea830e1011b01572426ba6bed6c7c"
+    },
+    "feature_runner": {
+      "path": "scripts/a_share_three_day_walkforward_campaign033_features.py",
+      "sha256": "ae3a523b3fdf0de128a878346b4b0368744ddc61e32e89bc94c0abe3426f70d1"
+    },
+    "development_runner": {
+      "path": "scripts/a_share_three_day_walkforward_campaign033.py",
+      "sha256": "2e27892205b626b5d7a5e804cb17f4385d29d6a544c5c3670e6f1ed0d42d957d"
+    },
+    "feature_tests": {
+      "path": "tests/data_collector_tests/test_a_share_three_day_walkforward_campaign033_features.py",
+      "sha256": "65651bc768290e01ee134bb1a3f0b9767300c6aea2b47cc70d8102ced64eca81"
+    },
+    "campaign_tests": {
+      "path": "tests/data_collector_tests/test_a_share_three_day_walkforward_campaign033.py",
+      "sha256": "906f00845dc8013d8d4a27c701cc3696097a445b8b4bc3e6a5a7053b7ee97c90"
+    },
+    "unified_research_report": {
+      "path": "data/experiments/short_horizon/three_day_research_report.md",
+      "sha256": "cbaf6f25a4a659762d18ef835cacc00dabba07cb8bb296f8efbb10fecb5fe6fe",
+      "line_count": 704
+    },
+    "data_pipeline_document": {
+      "path": "docs/a_share_data_pipeline.md",
+      "sha256": "65fc09c9a0280998fb86fb936719affd3e045ebdf76867ce065a8e5b0ee45083",
+      "line_count": 3133
+    },
+    "data_management_skill": {
+      "path": "/Users/niyufei/.codex/skills/manage-qlib-a-share-data/SKILL.md",
+      "sha256": "ce91bf993b0e10e6623132adcb974344c386a43709f533b370a712ad4994abd1",
+      "line_count": 918
+    },
+    "candidate49_signal_ledger": {
+      "path": "data/experiments/short_horizon/candidate49_future_signal_ledger.json",
+      "sha256": "5193f00d7f36da003f53cec387900da4c3d002299f5dfcfc1a95eaa199ed3a79",
+      "entry_count": 0
+    },
+    "candidate49_execution_ledger": {
+      "path": "data/experiments/short_horizon/candidate49_future_execution_ledger.json",
+      "sha256": "d57a3e61eac969e42cafa418ccd8c0a5ee65dcf69da145bb2c096c2a02a2ea4f",
+      "entry_count": 0
+    }
+  },
+  "test_evidence": {
+    "focused_tests": {
+      "passed": 19,
+      "failed": 0
+    },
+    "first_full_suite": {
+      "passed": 1477,
+      "failed": 16,
+      "warnings": 13,
+      "common_root_cause_recorded": true
+    },
+    "post_repair_chain_sample": {
+      "passed": 15,
+      "failed": 0
+    },
+    "post_repair_full_suite_without_report_assertion": {
+      "passed": 1493,
+      "failed": 0,
+      "warnings": 13
+    },
+    "final_full_suite_with_report_assertion": {
+      "passed": 1494,
+      "failed": 0,
+      "warnings": 13,
+      "elapsed_seconds": 47.99
+    }
+  },
+  "verified_semantics": {
+    "no_return_comparison_count": 54,
+    "no_return_comparison_pass_count": 54,
+    "development_trial_count": 1,
+    "trial_ledger_entry_count": 1,
+    "canonical_complexity": 1,
+    "development_survivor_count": 0,
+    "validation_quality_rejection_reason_count": 8,
+    "stress_interval_opened": false,
+    "stress_return_fields_read": false,
+    "candidate49_historical_return_read": false,
+    "candidate49_ledgers_changed": false,
+    "candidate50_activated": false,
+    "current_scoring_selection_sizing_or_orders_performed": false,
+    "result_or_terminal_decision_changed_by_status_semantic_repair": false
+  },
+  "decision": {
+    "campaign033_terminal": true,
+    "campaign033_rescue_inversion_rewindow_retune_or_combination_allowed": false,
+    "campaign034_independent_offline_concept_scouting_allowed": true,
+    "new_daily_bar_or_16_30_wait_required_for_campaign034": false,
+    "candidate49_remains_only_active_prospective_candidate": true
+  }
+}

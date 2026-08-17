@@ -1,0 +1,45 @@
+{
+  "schema_version": 1,
+  "kind": "a_share_three_day_walkforward_campaign121_development_activation_binding",
+  "status": "single_use_frozen_before_campaign121_2019_2023_daily_price_or_return_values",
+  "recorded_at": "2026-08-14T03:46:00+08:00",
+  "filename_date_note": "The inherited runner contract names this immutable file with the 20260813 suffix; content was created on 2026-08-14 and the filename is not a claim about creation time.",
+  "purpose": "Authorize exactly one frozen Campaign121 development trial on 2019-2023 only after no-return coverage and all 138 ordered uniqueness gates passed.",
+  "development_preregistration": {
+    "path": "docs/a_share_three_day_walkforward_campaign_121_preregistration.json",
+    "sha256": "2c6d9b049a7d554cb1f89232563b08f6186da2c3bea4b63f75865ede0bea56d4"
+  },
+  "runner": {
+    "path": "scripts/a_share_three_day_walkforward_campaign121.py",
+    "sha256": "e36e99eafa188b150d68dba49dab75a88626c3e516af5b58c9b7821a01ef7c5d"
+  },
+  "implementation_freeze": {
+    "path": "docs/a_share_three_day_walkforward_campaign_121_development_implementation_freeze_20260813.json",
+    "sha256": "a24038e91627f2115800285b52f04ed2750214e39b39f0855a4dbc49040ec9b1"
+  },
+  "no_return_admission": {
+    "path": "data/experiments/short_horizon/historical_walkforward/campaign_121/uniqueness/campaign121_ordered_uniqueness_audit.json",
+    "sha256": "5dde9c750cc792e74c1e1750703f9c17426acb9e211ae8fdd0d0376365029dcd",
+    "admissible_factor_count": 1,
+    "numeric_comparisons_passed": 138,
+    "maximum_observed_absolute_median_daily_rank_correlation": 0.3087784147680083
+  },
+  "candidate_snapshot": {
+    "path": "/Volumes/DIsk/qlib-a-share-tushare-1m/derived/a_share/rich/tushare/minute_walkforward_campaign121_feature_library/tushare_stk_mins_1m_2019_2025_ea0cbb8f_walkforward_campaign121_feature_library_v1/snapshot_manifest.json",
+    "sha256": "e5789da9896535d8d67e0f0f3a7b2704f41292e4694b127a27999224abfad724",
+    "dataset_sha256": "cb476bcc93e7c88df6e2666af9d60d470c90f8a7670ea4553d2e9b877ab8a5b2"
+  },
+  "trial_count": 1,
+  "trial_id": "wf121_intraday_terminal_close_direction_first_attainment_240m_single_higher",
+  "trial_scope": "2019-2023 expanding walk-forward development only",
+  "single_use": true,
+  "research_boundary": {
+    "historical_daily_price_or_forward_return_values_read_before_activation": false,
+    "stress_2024_2025_opened_before_activation": false,
+    "candidate49_ledgers_changed_before_activation": false,
+    "provider_request_issued_before_activation": false
+  },
+  "stress_opening_rule": "Remain closed unless this sole frozen development trial survives every inherited gate and the nonzero survivor record is frozen before any 2024-2025 return read.",
+  "current_scoring_selection_sizing_positions_or_orders_allowed": false,
+  "investment_advice": false
+}

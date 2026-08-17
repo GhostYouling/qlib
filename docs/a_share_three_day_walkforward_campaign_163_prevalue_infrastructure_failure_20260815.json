@@ -1,0 +1,38 @@
+{
+  "schema_version": 1,
+  "kind": "a_share_three_day_walkforward_campaign163_prevalue_infrastructure_failure",
+  "status": "one_path_resolution_failure_recorded_and_recovered_before_catalog_publication",
+  "recorded_at": "2026-08-15T06:25:30+08:00",
+  "authoritative_inputs": {
+    "campaign162_effective_state": {
+      "path": "docs/a_share_three_day_iteration_status_20260815_campaign162_prevalue_terminal.json",
+      "sha256": "84f390908e30f27f4e0150c6488ac525867dca0a8bc331de5e4c71e9471f7406"
+    },
+    "eligibility_policy_v229": {
+      "path": "docs/a_share_three_day_walkforward_future_numeric_comparison_eligibility_policy_v229_20260815.json",
+      "sha256": "5e4f356aca49deba2d98bc85506dde0ba41c55b107fe475e69efec52138ae504"
+    }
+  },
+  "failure": {
+    "attempt_id": "campaign163_infrastructure_001",
+    "phase": "campaign158_159_schema_evidence_path_resolution",
+    "status": "failed_three_guessed_nonexistent_evidence_paths_shasum_exit_1_before_jq",
+    "exit_code": 1,
+    "failure": "The first bounded evidence command guessed three Campaign158/159 filenames that do not exist. shasum returned nonzero and the chained jq inspections did not run.",
+    "recovery": "Used rg --files with an exact Campaign158/159 suffix filter, then inspected and hashed only the four resolved authoritative records.",
+    "failed_exit_code_bypassed_or_masked": false,
+    "target_file_written": false,
+    "source_row_candidate_comparator_price_or_return_value_read": false
+  },
+  "research_boundary": {
+    "provider_or_web_request_issued": false,
+    "provider_credential_presence_value_or_digest_read": false,
+    "annual_report_pdf_or_table_value_read": false,
+    "candidate_or_comparator_value_read": false,
+    "historical_daily_price_or_forward_return_value_read": false,
+    "stress_2024_2025_opened": false,
+    "candidate49_historical_backfill_performed": false,
+    "candidate49_ledgers_changed": false,
+    "second_prospective_candidate_created": false
+  }
+}

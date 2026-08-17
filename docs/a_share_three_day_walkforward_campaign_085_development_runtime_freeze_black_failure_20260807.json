@@ -1,0 +1,33 @@
+{
+  "schema_version": 1,
+  "kind": "a_share_three_day_walkforward_campaign085_development_runtime_freeze_black_failure",
+  "status": "recorded_without_market_value_or_return_read",
+  "recorded_at": "2026-08-06T23:56:00+08:00",
+  "failed_check": {
+    "interpreter": "/Volumes/DIsk/Coding/anaconda3/bin/python3.12",
+    "tool": "black --check",
+    "target": "tests/data_collector_tests/test_a_share_three_day_walkforward_campaign085_development.py",
+    "result": "one test file would be reformatted",
+    "root_cause": "The post-failure ledger assertions used mechanically noncanonical line wrapping.",
+    "correction": "Apply Black's deterministic formatting only; do not change assertion semantics, runner, preregistration, trial, folds, costs, gates, or data bindings."
+  },
+  "pre_format_test_file_sha256": "a76787f9b354dd4dfc6aa65e2550d5f66acbff850c7cdb6fb828e22edd53fcff",
+  "research_attempt_ledger_before_append": {
+    "path": "data/experiments/short_horizon/historical_walkforward/campaign_085/research_attempt_ledger_v21.json",
+    "sha256": "2488af09070a1fc88d638fe4f9812d9ce5ea31e9535084fba934d4d5e6b28347"
+  },
+  "preserved_internal_trial_ledger": {
+    "path": "data/experiments/short_horizon/historical_walkforward/campaign_085/walkforward/trial_ledger.json",
+    "sha256": "d1aa8d4d570a30eab29bddb62f625149c9bb6e3759153f8329020ee9738882b9",
+    "entry_count": 1,
+    "complete_development_trial_count": 0
+  },
+  "research_boundary": {
+    "candidate_factor_values_read_by_development": false,
+    "historical_daily_price_or_forward_return_values_read": false,
+    "stress_2024_2025_opened": false,
+    "provider_request_issued": false,
+    "candidate49_ledgers_changed": false,
+    "current_scoring_selection_sizing_or_orders_performed": false
+  }
+}

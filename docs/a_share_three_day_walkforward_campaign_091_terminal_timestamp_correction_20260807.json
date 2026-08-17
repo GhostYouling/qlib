@@ -1,0 +1,42 @@
+{
+  "schema_version": 1,
+  "kind": "a_share_three_day_walkforward_campaign091_terminal_timestamp_correction",
+  "status": "append_only_logical_timestamp_correction",
+  "recorded_at": "2026-08-06T23:49:51Z",
+  "common_root_cause": "Several hand-authored terminal artifacts used planned local completion minutes 07:50-07:54 even though the system clock was 07:49; their scientific values and file bindings are unchanged, but their displayed logical times must not be treated as observed event times.",
+  "affected_artifacts_preserved": [
+    {
+      "path": "docs/a_share_three_day_walkforward_future_numeric_comparison_eligibility_policy_v34_20260807.json",
+      "sha256": "b5c3099ed3821573a9fde46a1ec2d47ec42ebe2f260bd55d65d3502b428e948c",
+      "displayed_recorded_at": "2026-08-07T07:50:00+08:00"
+    },
+    {
+      "path": "docs/a_share_three_day_iteration_status_20260807_campaign091_verified_v2.json",
+      "sha256": "099d743ea2c315a1198d1d8fedbc82346970a69a31845ff8e29a98e9c4a2b540",
+      "displayed_recorded_at": "2026-08-07T07:51:00+08:00"
+    },
+    {
+      "path": "docs/a_share_three_day_walkforward_campaign_091_terminal_verification_20260807.json",
+      "sha256": "6e2871c96ee522b2fed91bcfded7e602c0dd683033cce0df5ce90dc5bc9a455c",
+      "displayed_recorded_at": "2026-08-07T07:53:00+08:00"
+    },
+    {
+      "path": "docs/a_share_three_day_iteration_status_20260807_campaign091_verified_v3.json",
+      "sha256": "9c45855692e2814081185b29a64a5da35a805a0ac9ef7ef040707853b84e5711",
+      "displayed_recorded_at": "2026-08-07T07:54:00+08:00"
+    }
+  ],
+  "corrected_semantics": {
+    "authoritative_correction_time_utc": "2026-08-06T23:49:51Z",
+    "scientific_result_changed": false,
+    "research_values_or_returns_recomputed": false,
+    "future_duplicate_definition_or_numeric_order_changed": false,
+    "candidate49_ledgers_changed": false,
+    "provider_request_issued": false
+  },
+  "governance": {
+    "affected_files_rewritten": false,
+    "count_as_one_infrastructure_failure_for_common_root_cause": true,
+    "all_later_authoritative_artifacts_must_bind_this_correction": true
+  }
+}

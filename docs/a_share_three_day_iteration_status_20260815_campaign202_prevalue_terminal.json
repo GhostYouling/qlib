@@ -1,0 +1,106 @@
+{
+  "schema_version": 1,
+  "kind": "a_share_three_day_iteration_status",
+  "status": "campaign202_validation_passed_goal_active_campaign203_offline_prevalue_authorized",
+  "recorded_at": "2026-08-15T19:04:55+08:00",
+  "timestamp_semantics": "monotonic logical append time after Campaign202 terminal validation",
+  "supersedes_without_rewriting": {
+    "path": "docs/a_share_three_day_iteration_status_20260815_campaign201_prevalue_terminal.json",
+    "sha256": "024af61cf173ebde7d142a4a01b3981cc8742ae951ea4a402b173b514ecd73b0",
+    "preserved": true
+  },
+  "authoritative_inputs": {
+    "education_provider_student_course_and_tuition_source_frontier": {
+      "path": "docs/a_share_three_day_walkforward_campaign_202_education_provider_student_application_admission_enrollment_course_delivery_progression_completion_tuition_aid_refund_collection_lifecycle_source_frontier_20260815.json",
+      "sha256": "19f765aff46249b9dec804cdbc91c4ac7d3598a24e69af0b34b00dbd2657680e"
+    },
+    "attempt_ledger_v1": {
+      "path": "data/experiments/short_horizon/historical_walkforward/campaign_202/research_attempt_ledger_v1.json",
+      "sha256": "e9fe48cb6c607878100d4c66184babcac3719b331dc4134dfca1ad6427b4edb7"
+    },
+    "terminal_result": {
+      "path": "docs/a_share_three_day_walkforward_campaign_202_terminal_result_20260815.json",
+      "sha256": "aec9d126c4eef162faafe4d22b90faf627aed6745e9b1f96a9a0a58a82e16b44"
+    },
+    "policy_v300": {
+      "path": "docs/a_share_three_day_walkforward_future_numeric_comparison_eligibility_policy_v300_20260815.json",
+      "sha256": "b16788a14319332c06849d5b60f3652887987bee5446749839297315b4378d9f"
+    },
+    "terminal_validation": {
+      "path": "docs/a_share_three_day_walkforward_campaign_202_terminal_validation_20260815.json",
+      "sha256": "fb02b4724622d5060433146eb7034b506a4d10b6668508e73ccd52140bc3fd17"
+    }
+  },
+  "campaign202": {
+    "domains_reviewed": [
+      "education_provider_student_application_admission_enrollment_course_delivery_progression_completion_tuition_aid_refund_collection_lifecycle"
+    ],
+    "terminal_phase": "finite_prevalue_education_provider_student_course_and_tuition_lifecycle_source_admission",
+    "education_provider_lifecycle_routes_reviewed": 7,
+    "genuinely_new_issuer_state_routes": 3,
+    "source_admission_deferrals_not_factor_failures": 3,
+    "relabeling_overlap_operator_or_combination_route_rejections": 4,
+    "selected_candidate_count": 0,
+    "complete_factor_definition_created": false,
+    "numeric_comparator_created": false
+  },
+  "effective_accounting": {
+    "campaign202_attempt_count": 11,
+    "campaign202_scientific_attempt_count": 7,
+    "campaign202_infrastructure_failure_count": 4,
+    "cumulative_historical_research_attempt_count": 1844,
+    "cumulative_return_reading_development_trial_count": 314,
+    "chain_tip_sha256": "7e210cb2fca3c996121012e3a48e0b449e0d6fe4bd0f2cd16d7d00a858017c9d"
+  },
+  "library_state": {
+    "complete_factor_definition_count": 158,
+    "complete_factor_definition_order_sha256": "4819c7fd7c0795d7598a52f3c615e3f117d5f4ecd9332974bc8e3dfa57c96667",
+    "eligible_numeric_comparator_count": 142,
+    "eligible_numeric_comparator_order_sha256": "5d1b35fb5a0d8ac9293008db9963c4a60a94dc940c237c3ed259e5ce44f14aaf",
+    "changed_by_campaign202": false
+  },
+  "candidate49": {
+    "sole_prospective_candidate": true,
+    "signal_ledger_sha256": "5193f00d7f36da003f53cec387900da4c3d002299f5dfcfc1a95eaa199ed3a79",
+    "signal_entry_count": 0,
+    "execution_ledger_sha256": "d57a3e61eac969e42cafa418ccd8c0a5ee65dcf69da145bb2c096c2a02a2ea4f",
+    "execution_entry_count": 0,
+    "ledgers_changed": false
+  },
+  "candidate49_daily_20260815": {
+    "local_day": "Saturday",
+    "accepted_local_trading_day": false,
+    "future_session_plan_or_run_executed": false,
+    "provider_credential_presence_value_or_digest_read": false,
+    "network_request_issued": false
+  },
+  "validation_results": {
+    "focused_tests_passed": 2,
+    "cumulative_tests_passed": 473,
+    "cumulative_tests_skipped": 1,
+    "cumulative_nodes_deselected": 17,
+    "independent_validation_passed": true,
+    "bounded_git_diff_check_passed": true
+  },
+  "research_boundary": {
+    "historical_offline_prevalue_work_may_continue_at_any_local_time": true,
+    "failed_or_truncated_output_used_as_scientific_or_validation_evidence": false,
+    "source_student_course_tuition_factor_comparator_security_price_or_return_value_read": false,
+    "directly_identifiable_or_protected_education_student_record_read": false,
+    "stress_2024_2025_opened": false,
+    "provider_or_web_request_issued": false,
+    "provider_credential_presence_value_or_digest_read": false,
+    "candidate49_plan_or_run_executed": false,
+    "candidate49_ledgers_changed": false,
+    "second_prospective_candidate_created": false,
+    "current_scoring_selection_sizing_positions_or_orders_performed": false,
+    "investment_advice": false
+  },
+  "goal": {
+    "objective": "请持续迭代因子。",
+    "status": "active",
+    "campaign202_terminal_does_not_complete_goal": true,
+    "campaign203_offline_prevalue_work_authorized": true
+  },
+  "next_action": "Begin Campaign203 finite offline prevalue research in a genuinely different mechanism domain; keep Candidate49 as the sole prospective confirmation layer and keep 2024-2025 closed."
+}

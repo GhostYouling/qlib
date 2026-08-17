@@ -1,0 +1,51 @@
+{
+  "schema_version": 1,
+  "kind": "a_share_three_day_walkforward_campaign171_prevalue_infrastructure_failures",
+  "status": "three_read_only_schema_or_path_assumption_failures_recorded_zero_write_recovered",
+  "recorded_at": "2026-08-15T08:52:03+08:00",
+  "purpose": "Preserve every Campaign171 domain-overlap audit failure before scientific publication; none opened a source row, candidate value, comparator, price or return.",
+  "failures": [
+    {
+      "attempt_id": "campaign171_infrastructure_001",
+      "phase": "prevalue_domain_overlap_audit",
+      "status": "failed_nonexistent_campaign163_frontier_path_lookup_masked_by_non_fail_fast_wrapper",
+      "attempted_path": "docs/a_share_three_day_walkforward_campaign_163_supply_chain_source_frontier_20260815.json",
+      "actual_path": "docs/a_share_three_day_walkforward_campaign_163_supply_chain_disclosure_source_frontier_20260815.json",
+      "observed": "jq reported that the guessed path did not exist; later read-only search output caused the outer sequential shell command to exit zero.",
+      "root_cause": "The audit guessed a shortened filename instead of resolving the exact repository path first.",
+      "recovery": "Resolve the exact existing path, preserve the failure here, and use fail-fast commands for later audits.",
+      "write_result": "zero_write"
+    },
+    {
+      "attempt_id": "campaign171_infrastructure_002",
+      "phase": "campaign170_template_inspection",
+      "status": "failed_nonexistent_campaign170_frontier_path_lookup_masked_by_sequential_commands",
+      "attempted_path": "docs/a_share_three_day_walkforward_campaign_170_financing_constraint_liquidity_source_frontier_20260815.json",
+      "actual_path": "docs/a_share_three_day_walkforward_campaign_170_customer_experience_quality_kpi_source_frontier_20260815.json",
+      "observed": "The first jq failed on the guessed frontier name while later jq commands succeeded, leaving the outer sequential command with exit code zero.",
+      "root_cause": "A prior campaign domain name was incorrectly inferred rather than read from the authoritative state binding.",
+      "recovery": "Use the exact state-bound customer-experience frontier path and record the masked subcommand failure.",
+      "write_result": "zero_write"
+    },
+    {
+      "attempt_id": "campaign171_infrastructure_003",
+      "phase": "local_source_inventory_schema_audit",
+      "status": "failed_nonexistent_json_collection_key_fail_fast",
+      "attempted_json_key": "source_contract_delta_inventory",
+      "actual_json_key": "finite_source_contract_delta_catalog",
+      "observed": "jq exited 5 because the guessed null member could not be iterated; fail-fast prevented the remaining command sequence.",
+      "root_cause": "The audit assumed the collection key before reading the record's actual top-level keys.",
+      "recovery": "Read only top-level keys first, then query the exact finite_source_contract_delta_catalog member.",
+      "write_result": "zero_write"
+    }
+  ],
+  "recovery_assertions": {
+    "all_failures_recorded": true,
+    "failed_exit_or_subcommand_masking_ignored": false,
+    "repository_or_data_bytes_changed_by_failed_commands": false,
+    "source_row_or_research_value_read": false,
+    "provider_or_web_request_issued": false,
+    "provider_credential_presence_value_or_digest_read": false,
+    "candidate49_ledgers_changed": false
+  }
+}

@@ -1,0 +1,153 @@
+{
+  "version": 1,
+  "kind": "a_share_three_day_walkforward_campaign073_mechanism_overlap_audit",
+  "status": "passed_semantic_mechanism_review_before_candidate_source_or_comparison_values",
+  "recorded_at": "2026-08-06T06:45:00+08:00",
+  "concept_scouting": {
+    "path": "docs/a_share_three_day_walkforward_campaign_073_concept_scouting.json",
+    "sha256": "73ce8192b6c22ddcc06a0d9d85c23af9784cde30f09ffb3f6375d4cfba540bf0"
+  },
+  "numeric_comparator_policy": {
+    "path": "docs/a_share_three_day_walkforward_future_numeric_comparison_eligibility_policy_v8_20260806.json",
+    "sha256": "c936e9df4bd8ac8cdb23ee27d16796a612341c84577ee60f727e8a3cf72cb1db",
+    "complete_definition_count": 104,
+    "numeric_comparator_count": 103,
+    "complete_definition_order_sha256": "45686a0e92d16896d3c1702938f73aa173cb44252d9b76b482623c617d2bda5d",
+    "numeric_comparator_order_sha256": "28dd90482da7c263873f829e0268fbf4d4fffa53561a9e628797ced4c54991cc"
+  },
+  "economic_anchor_verification": {
+    "checked_before_candidate_values": true,
+    "shanghai_stock_exchange_rule": {
+      "url": "https://www.sse.com.cn/lawandrules/sselawsrules2025/stocks/exchange/c/c_20260424_10816482.shtml",
+      "relevant_rule": "Competitive-trading buy orders for securities must be 100 shares/units or an integer multiple under rule 3.3.8."
+    },
+    "shenzhen_stock_exchange_investor_rule": {
+      "url": "https://investor.szse.cn/institute/rules/t20230706_601604.html",
+      "relevant_rule": "Competitive-trading buy orders for Main Board or ChiNext stocks must be 100 shares or an integer multiple."
+    },
+    "scope_limit": "The factor is an affordability proxy for ordinary exchange competitive-trading buy orders, not a claim about every security type, block trade, odd-lot disposal, broker fee, investor wealth, or executable portfolio capacity."
+  },
+  "candidate": {
+    "name": "intraday_terminal_nominal_share_price_affordability_rank_240m",
+    "direction": "higher",
+    "mechanism": "same-day cross-sectional affordability of one ordinary 100-share board lot from the unadjusted terminal CNY share price",
+    "formula": "1-rank_pct(raw positive finite 15:00 close) on the exact accepted same-day candidate identity universe after validating the exact 240-bar continuous-session grid",
+    "no_multi_session_lookback": true,
+    "no_old_factor_value_input": true
+  },
+  "complete_library_review": {
+    "all_104_definitions_reviewed_in_frozen_order": true,
+    "candidate_is_exact_formula_duplicate": false,
+    "candidate_is_direction_only_duplicate": false,
+    "candidate_is_parameter_only_duplicate": false,
+    "candidate_is_an_inversion_of_a_terminal_factor": false,
+    "candidate_combines_terminal_factor_values": false,
+    "candidate_uses_raw_point_in_time_close_and_same_day_identity_only": true,
+    "candidate49_used_or_modified": false
+  },
+  "semantic_invariance_checks": [
+    {
+      "intervention": "Hold the same-day terminal close cross-section fixed while permuting every stock's earlier 239 closes and all amount, volume, open, high, and low values.",
+      "campaign073_result": "unchanged",
+      "distinguishes_from": "return-path, volatility, range, body, wick, gap, activity-profile, transaction-price, VWAP, and market-response definitions"
+    },
+    {
+      "intervention": "Multiply one stock-day's entire positive OHLC path by a positive scalar while keeping every relative return, normalized range location, transaction-price ratio, and update time unchanged.",
+      "campaign073_result": "can change because nominal lot notional changes",
+      "distinguishes_from": "scale-invariant path, normalized-range, entropy, correlation, ratio, and profile definitions"
+    },
+    {
+      "intervention": "Change an already-public quarterly value or disclosure date while leaving the terminal close cross-section fixed.",
+      "campaign073_result": "unchanged",
+      "distinguishes_from": "accounting-quality, scale, growth-transition, announcement-timing, and peer-crowding definitions"
+    }
+  ],
+  "nearest_semantic_challenges": [
+    {
+      "name": "intraday_round_tenth_close_avoidance_240m",
+      "relationship": "also uses raw CNY close values and can carry nominal-price exposure",
+      "distinction": "the prior factor counts how 240 closes align with the CNY 0.10 grid; Campaign073 discards all digit identities and path counts after grid validation and measures the single terminal CNY level's same-day affordability rank",
+      "mandatory_numeric_challenge": true
+    },
+    {
+      "name": "intraday_price_update_share_238m",
+      "relationship": "tick granularity and nominal price can affect close updates",
+      "distinction": "the prior factor counts equality changes over 238 within-half return positions; Campaign073 ignores update incidence and uses one terminal level",
+      "mandatory_numeric_challenge": true
+    },
+    {
+      "name": "intraday_price_update_clock_entropy_10b_238m",
+      "relationship": "also derives from the close series",
+      "distinction": "the prior factor measures the clock dispersion of update events and is invariant to many level shifts; Campaign073 uses no event clock or entropy",
+      "mandatory_numeric_challenge": true
+    },
+    {
+      "name": "intraday_close_range_occupancy_entropy_10b",
+      "relationship": "uses all completed-session close levels",
+      "distinction": "the prior factor normalizes each stock-day by its own min/max and measures dwell-state entropy; Campaign073 discards within-day occupancy and preserves cross-stock nominal CNY scale",
+      "mandatory_numeric_challenge": true
+    },
+    {
+      "name": "intraday_terminal_close_location_240m",
+      "relationship": "also depends on the completed-session terminal close",
+      "distinction": "the prior factor locates the close inside its own daily high-low range; Campaign073 ignores high/low and ranks the absolute terminal CNY price across stocks",
+      "mandatory_numeric_challenge": true
+    },
+    {
+      "name": "intraday_transaction_vwap_consensus_240m",
+      "relationship": "uses transaction price levels",
+      "distinction": "the prior geometric-to-arithmetic ratio is scale invariant and measures within-day dispersion; Campaign073 reads neither amount nor volume and preserves absolute nominal scale",
+      "mandatory_numeric_challenge": true
+    },
+    {
+      "name": "intraday_volume_weighted_transaction_price_bowley_skew_240m",
+      "relationship": "uses the distribution of executed price levels",
+      "distinction": "the prior factor measures volume-weighted within-day distribution asymmetry; Campaign073 uses one unweighted terminal close and no distribution shape",
+      "mandatory_numeric_challenge": true
+    },
+    {
+      "name": "quarterly_net_profit_scale_rank",
+      "relationship": "absolute accounting scale can correlate with nominal price",
+      "distinction": "net-profit scale is a point-in-time financial-statement field; Campaign073 uses no financial value, shares outstanding, or market capitalization and directly measures board-lot affordability",
+      "mandatory_numeric_challenge": true
+    },
+    {
+      "name": "quarterly_joint_profit_revenue_growth_floor_rank",
+      "relationship": "latest terminal same-day cross-sectional rank",
+      "distinction": "joint accounting growth versus raw terminal nominal CNY price",
+      "mandatory_numeric_challenge": true
+    },
+    {
+      "name": "intraday_cross_sectional_standardized_return_state_stability_236p",
+      "relationship": "structurally nonnumeric prior cross-sectional minute definition",
+      "distinction": "adjacent standardized return-state mobility versus a single same-day nominal price-level rank",
+      "mandatory_semantic_challenge": true,
+      "numeric_status": "undefined_not_pass_not_fail"
+    },
+    {
+      "name": "candidate49_intraday_cumulative_vwap_crossing_rate_240m_v1",
+      "relationship": "active prospective factor uses cumulative VWAP and close",
+      "distinction": "Candidate49 measures within-session causal path crossings and is scale invariant; Campaign073 reads no amount or volume and never enters the prospective ledger",
+      "candidate49_remains_isolated": true
+    }
+  ],
+  "pre_value_decision": {
+    "economically_independent_enough_to_materialize": true,
+    "numeric_uniqueness_still_required_against_all_103_eligible_comparators": true,
+    "strict_maximum_absolute_median_daily_rank_correlation": 0.8,
+    "minimum_pairwise_names_per_session": 50,
+    "minimum_pairwise_sessions_per_comparison": 100,
+    "drop_residualize_invert_clip_neutralize_or_rescue_after_failed_comparator_allowed": false
+  },
+  "research_boundary": {
+    "candidate_source_rows_read": false,
+    "candidate_values_read": false,
+    "comparison_values_read": false,
+    "historical_daily_price_fields_read": [],
+    "historical_forward_returns_read": false,
+    "public_exchange_rule_lookup_issued": true,
+    "market_data_provider_request_issued": false,
+    "candidate49_ledgers_changed": false,
+    "current_scoring_selection_sizing_or_orders_performed": false
+  }
+}

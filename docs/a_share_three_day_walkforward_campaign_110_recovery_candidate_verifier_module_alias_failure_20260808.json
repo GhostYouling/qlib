@@ -1,0 +1,19 @@
+{
+  "schema_version": 1,
+  "kind": "a_share_three_day_walkforward_campaign110_infrastructure_failure",
+  "status": "preserved_recovery_status_failure_before_comparator133_or_recovery_values",
+  "recorded_at": "2026-08-08T15:43:48Z",
+  "failure_ordinal": 9,
+  "stage": "comparator133_recovery_status_validation",
+  "failed_exit_code": 1,
+  "exception": "AttributeError: original Campaign110 audit module has no attribute verifier",
+  "cause": "The recovery chain validated the C110 candidate verifier from the original audit namespace rather than the v2 wrapper that imports it.",
+  "narrow_repair": "Alias the already imported frozen C110 verifier from v2 onto the original audit namespace expected by the frozen v5 entry point.",
+  "research_boundary": {
+    "coverage_or_comparator_values_read_by_status": false,
+    "comparator_133_values_read": false,
+    "historical_daily_price_or_forward_return_values_read": false,
+    "provider_request_issued": false,
+    "candidate49_ledgers_changed": false
+  }
+}

@@ -1,0 +1,64 @@
+{
+  "version": 1,
+  "kind": "a_share_three_day_walkforward_campaign077_no_return_runtime_compatibility_failure",
+  "status": "recorded_after_v1_failure_before_any_retry",
+  "recorded_at": "2026-08-06T13:05:00+08:00",
+  "failed_command_stage": "sole_no_return_audit_after_coverage_pass_during_frozen_comparator_chain_verification",
+  "exit_code": 1,
+  "exception": "Campaign075NoReturnAuditV3Error: frozen pandas/pyarrow runtime changed",
+  "observed_runtime": {
+    "interpreter": "/Volumes/DIsk/Coding/anaconda3/bin/python",
+    "pandas": "2.2.2",
+    "pyarrow": "16.1.0"
+  },
+  "legacy_verifier_frozen_runtime": {
+    "pandas": "2.2.3",
+    "pyarrow": "25.0.0"
+  },
+  "bindings": {
+    "v1_audit_runner": {
+      "path": "scripts/a_share_three_day_walkforward_campaign077_no_return_audit.py",
+      "sha256": "2247df82f8282919707d36597ea0d97959caa21ef4831d1bd5b92d65a9a8e9dc"
+    },
+    "v1_implementation_freeze": {
+      "path": "docs/a_share_three_day_walkforward_campaign_077_no_return_audit_implementation_freeze_20260806.json",
+      "sha256": "82d128108f41737ed38f208acc2b9005d2f7d75fba850120dad1b245f206fdf5"
+    },
+    "v1_activation_binding": {
+      "path": "docs/a_share_three_day_walkforward_campaign_077_no_return_audit_activation_binding_20260806.json",
+      "sha256": "47728a1d6adccaf7ded503775f9e1a7e1491fbebe54c6a4c56e5755e7c31e25d"
+    },
+    "candidate_snapshot": {
+      "path": "/Volumes/DIsk/qlib-a-share-tushare-1m/derived/a_share/rich/tushare/minute_walkforward_campaign077_feature_library/tushare_stk_mins_1m_2019_2025_ea0cbb8f_walkforward_campaign077_feature_library_v1/snapshot_manifest.json",
+      "sha256": "2449976e3bc95b66668496cee513277da21eff301677969f17053baf36fa18c8",
+      "dataset_sha256": "2b40ea3cb07a75b8dbddae124da86d32578120b74e616ff4ada5446d77010fc9"
+    }
+  },
+  "execution_boundary": {
+    "candidate_snapshot_reverified": true,
+    "coverage_gate_passed_in_memory": true,
+    "coverage_metrics_persisted": false,
+    "comparison_stage_entered": true,
+    "comparison_values_may_have_been_partially_read": true,
+    "exact_partial_comparison_count_not_persisted": true,
+    "audit_artifact_written": false,
+    "audit_count_after_failure": 0,
+    "historical_daily_price_fields_read": [],
+    "historical_forward_returns_read": false,
+    "development_preregistration_created": false,
+    "development_trial_run": false,
+    "stress_2024_2025_opened": false,
+    "provider_request_issued": false,
+    "candidate49_historical_backfill_performed": false,
+    "candidate49_ledgers_changed": false,
+    "second_prospective_candidate_created": false,
+    "current_scoring_selection_sizing_or_orders_performed": false,
+    "investment_advice": false
+  },
+  "retry_rule": {
+    "partial_coverage_or_comparison_statistics_may_be_reused": false,
+    "candidate_snapshot_may_be_rewritten": false,
+    "formula_direction_gates_comparison_order_or_threshold_may_change": false,
+    "required_next_step": "Freeze a same-semantic runtime-compatibility-only v2 wrapper, then restart from candidate snapshot verification and coverage with the exact same parameters."
+  }
+}

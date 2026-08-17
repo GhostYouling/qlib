@@ -1,0 +1,59 @@
+{
+  "schema_version": 1,
+  "kind": "a_share_three_day_walkforward_campaign128_development_implementation_freeze",
+  "status": "frozen_before_campaign128_2019_2023_development_return_read",
+  "recorded_at": "2026-08-14T06:52:00+08:00",
+  "filename_date_note": "The inherited runner contract names this immutable file with the 20260813 suffix; content was created on 2026-08-14 and the filename is not a claim about creation time.",
+  "purpose": "Byte-freeze the Campaign128 exact-one-trial runner, preregistration and tests before the first historical daily-price or forward-return value can be loaded.",
+  "development_preregistration": {
+    "path": "docs/a_share_three_day_walkforward_campaign_128_preregistration.json",
+    "sha256": "e2b884d9286f48420dcc9d42077ab374425b90f4bbdca8873c0347c8acabfe36"
+  },
+  "development_runner": {
+    "path": "scripts/a_share_three_day_walkforward_campaign128.py",
+    "sha256": "10a4b1da7e2f5d62f9ea785a4d918e6db3662225c2d66d0b74fcc2bf56d276dc",
+    "frozen_template_runner": {
+      "path": "scripts/a_share_three_day_walkforward_campaign119.py",
+      "sha256": "8277eac7daec2e478aa4b170401ac9a02bb69736f5c92cab77f5629750210c3b"
+    },
+    "frozen_base_runner": {
+      "path": "scripts/a_share_three_day_walkforward_campaign080.py",
+      "sha256": "b4c4b781392c87f01b9542c2317611a936d431b0328cea9d21ea90b8f68a324b"
+    }
+  },
+  "tests": {
+    "path": "tests/data_collector_tests/test_a_share_three_day_walkforward_campaign128_development.py",
+    "sha256": "92526c38da55ab2e1e318205c720cec3929db009f652bcec52851b01138217d8",
+    "passed": 7,
+    "black_formatted": true,
+    "ruff_check_passed": true
+  },
+  "no_return_admission": {
+    "path": "data/experiments/short_horizon/historical_walkforward/campaign_128/uniqueness/campaign128_ordered_uniqueness_audit.json",
+    "sha256": "7661112a503f8930cba5fd79c03815b8c830d39f98703746362b85b37fa14cef",
+    "admissible_factor_count": 1,
+    "numeric_comparisons_passed": 139,
+    "maximum_observed_absolute_median_daily_rank_correlation": 0.4061439818245511
+  },
+  "trial_catalog": [
+    {
+      "trial_id": "wf128_intraday_transaction_price_dispersion_resolution_2h_single_higher",
+      "feature_set": [
+        "intraday_transaction_price_dispersion_resolution_2h"
+      ],
+      "weights": [
+        1.0
+      ],
+      "direction": "higher",
+      "complexity": 1
+    }
+  ],
+  "trial_count": 1,
+  "historical_daily_price_fields_read_before_freeze": [],
+  "historical_forward_returns_read_before_freeze": false,
+  "stress_2024_2025_opened_before_freeze": false,
+  "candidate49_ledgers_changed_before_freeze": false,
+  "provider_request_issued_before_freeze": false,
+  "current_scoring_selection_sizing_positions_or_orders_performed": false,
+  "post_result_code_preregistration_parameter_filter_subset_direction_or_gate_change_allowed": false
+}

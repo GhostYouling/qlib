@@ -1,0 +1,91 @@
+{
+  "version": 1,
+  "kind": "a_share_three_day_walkforward_campaign053_no_return_audit_freeze",
+  "status": "terminal_zero_admissible_factors_after_uniqueness_before_historical_returns",
+  "recorded_at": "2026-08-03T12:56:00Z",
+  "purpose": "Bind the sole completed Campaign053 no-return audit and forbid post-correlation rescue.",
+  "authoritative_inputs": {
+    "no_return_preregistration": {
+      "path": "docs/a_share_three_day_walkforward_campaign_053_no_return_preregistration.json",
+      "sha256": "829f9781ed6d7bbf2d6c5d318abf03838c5916bdf944fc46f28da13cf2a8b02c"
+    },
+    "snapshot_publication_binding": {
+      "path": "docs/a_share_three_day_walkforward_campaign_053_snapshot_publication_binding_20260803.json",
+      "sha256": "0bef2d554baad10c90a1be00e126ba92a76e7bc7625cbd88501d60d386a2350a"
+    },
+    "snapshot_manifest": {
+      "path": "/Volumes/DIsk/qlib-a-share-tushare-1m/derived/a_share/rich/tushare/minute_walkforward_campaign053_feature_library/tushare_stk_mins_1m_2019_2025_ea0cbb8f_walkforward_campaign053_feature_library_v1/snapshot_manifest.json",
+      "sha256": "e0f0e9176580e9e6216049d026ab360aea0904e5d1db57d61311fe6da7d3c402",
+      "dataset_sha256": "d56d8628608faf32c97fb374cb05d06bfa0182d87f2d0467f5a08bca8c3f0f87"
+    },
+    "audit_infrastructure_failure_and_authorized_repair": {
+      "path": "docs/a_share_three_day_walkforward_campaign_053_no_return_audit_campaign051_verifier_failure_repair_20260803.json",
+      "sha256": "f70412a025886ef117eac7b9568a438c7edfdb3a4bf0ec5021f4017b300da20a"
+    },
+    "repair_implementation_freeze": {
+      "path": "docs/a_share_three_day_walkforward_campaign_053_campaign051_verifier_repair_implementation_freeze_20260803.json",
+      "sha256": "2a86d8f6bd2791d823c661bebec16f21664ddfadee1b9a362eea5bcbc3dbec16"
+    },
+    "no_return_audit": {
+      "path": "data/experiments/short_horizon/historical_walkforward/campaign_053/no_return/20260803T125238Z_campaign053_no_return_audit.json",
+      "sha256": "8228e32422686d020bdf7c6b00e54469d025884c23c234b48088428280bfd3ba"
+    },
+    "effective_successful_audit_runner": {
+      "path": "scripts/a_share_three_day_walkforward_campaign053_features_v5.py",
+      "sha256": "83c3816baa58917ce31a142fcb2dca82a20550de0209ccda8756c6865a007dcb"
+    },
+    "audit_hash_bound_terminal_runner": {
+      "path": "scripts/a_share_three_day_walkforward_campaign053_features_v6.py",
+      "sha256": "605625b8cfc9dcc8f73601840154e57e4d72212992c42d36cf7e6bb79ac59dad"
+    }
+  },
+  "result": {
+    "candidate": "intraday_amount_price_discovery_alignment_js_238p",
+    "direction": "higher",
+    "candidate_eligible_rows": 1328065,
+    "quality_listing_eligible_rows": 1331759,
+    "calendar_sessions": 1632,
+    "median_coverage": 0.9983183851218558,
+    "minimum_median_coverage": 0.95,
+    "p05_coverage": 0.9933708902303229,
+    "minimum_p05_coverage": 0.9,
+    "eligible_names_p05": 138.0,
+    "minimum_p05_eligible_names": 50,
+    "potential_non_overlapping_three_session_cohorts": 540,
+    "observed_calendar_year_count": 7,
+    "coverage_gate_passed": true,
+    "comparison_factor_count": 76,
+    "comparison_order_matches_preregistration": true,
+    "failed_comparison_factor": "intraday_price_update_share_238m",
+    "failed_comparison_median_daily_rank_correlation": 0.8528583420588608,
+    "maximum_absolute_median_daily_rank_correlation": 0.8528583420588608,
+    "uniqueness_gate_passed": false,
+    "admissible_factor_count": 0
+  },
+  "semantic_boundary": {
+    "all_candidate_and_comparison_snapshot_partition_hashes_verified": true,
+    "source_fields_read": [
+      "datetime",
+      "symbol",
+      "provider",
+      "close",
+      "amount"
+    ],
+    "historical_daily_price_fields_read": [],
+    "historical_forward_return_fields_read": false,
+    "candidate49_historical_return_read": false,
+    "candidate49_prospective_ledgers_changed": false,
+    "training_or_model_fitting_performed": false,
+    "current_scoring_selection_sizing_or_orders_performed": false,
+    "predictive_value_established": false
+  },
+  "decision": {
+    "factor_terminal": true,
+    "terminal_stage": "uniqueness_after_coverage_before_historical_returns",
+    "terminal_reason": "absolute_median_daily_rank_correlation_0.8528583420588608_with_intraday_price_update_share_238m_exceeded_frozen_0.8_limit",
+    "historical_walkforward_allowed": false,
+    "2024_2025_stress_allowed": false,
+    "inversion_rewindow_rescale_threshold_filter_subset_model_combination_rerun_or_rescue_allowed": false,
+    "next_action": "Record the terminal attempt and start only an independently preregistered Campaign054 mechanism."
+  }
+}

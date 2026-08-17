@@ -1,0 +1,32 @@
+{
+  "schema_version": 1,
+  "kind": "a_share_three_day_walkforward_infrastructure_failure_record",
+  "recorded_at": "2026-08-14T09:10:24+08:00",
+  "campaign": 132,
+  "attempt_id": "campaign132_infrastructure_005",
+  "phase": "infrastructure_failure",
+  "stage": "prevalue_design_synthetic_test_collection",
+  "status": "failed_pytest_repository_import_path",
+  "failed_command_exit_code": 2,
+  "failure": {
+    "exception": "ModuleNotFoundError",
+    "missing_module": "scripts",
+    "cause": "The standalone pytest executable did not place the repository root on the test subprocess import path.",
+    "test_body_executed": false,
+    "component_factor_values_read": false,
+    "historical_daily_price_or_forward_return_values_read": false,
+    "scientific_result_changed": false
+  },
+  "predecessor_failure": {
+    "path": "docs/a_share_three_day_walkforward_campaign_132_nonexistent_campaign044_key_search_failure_20260814.json",
+    "sha256": "bd30aa047d1831058527f94d02fcac2b5b11c391593afdc614a28715422b4189"
+  },
+  "recovery_boundary": {
+    "append_failure_to_campaign132_ledger": true,
+    "rerun_same_test_with_explicit_repository_pythonpath": true,
+    "test_or_research_definition_change_allowed": false,
+    "override_or_mask_failed_exit_code": false,
+    "provider_request_or_credential_load_allowed": false,
+    "candidate49_change_allowed": false
+  }
+}

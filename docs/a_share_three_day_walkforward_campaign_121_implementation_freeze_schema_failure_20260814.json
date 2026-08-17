@@ -1,0 +1,26 @@
+{
+  "schema_version": 1,
+  "kind": "a_share_three_day_walkforward_campaign121_infrastructure_failure",
+  "status": "recorded_before_any_source_or_research_value",
+  "recorded_at": "2026-08-14T01:49:00+08:00",
+  "attempt_id": "campaign121_infrastructure_006",
+  "phase": "implementation_freeze_static_validation",
+  "failure": {
+    "class": "inherited_freeze_schema_mismatch",
+    "message": "The inherited Campaign105 validator expected its legacy top-level freeze schema and rejected Campaign121's explicit nested frozen_implementation schema.",
+    "failed_freeze": {
+      "path": "docs/a_share_three_day_walkforward_campaign_121_no_return_implementation_freeze_20260814.json",
+      "sha256": "de142a6b47f9fba49947a077bd141e3a5b8a108b1ad8b5ccf42ec103af66ca8f"
+    }
+  },
+  "safe_recovery": "Preserve the rejected freeze, bind a Campaign121-specific fail-closed validator, and publish an append-only v2 freeze against the repaired immutable code before source access.",
+  "research_boundary": {
+    "source_rows_read": false,
+    "candidate_values_computed_or_read": false,
+    "comparator_values_read": false,
+    "historical_daily_price_or_forward_return_values_read": false,
+    "provider_request_issued": false,
+    "candidate49_ledgers_changed": false,
+    "scientific_result_changed": false
+  }
+}

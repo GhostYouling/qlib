@@ -1,0 +1,89 @@
+{
+  "schema_version": 1,
+  "kind": "a_share_three_day_walkforward_campaign096_terminal_completion_freeze",
+  "status": "terminal_coverage_rejection_verified_without_comparison_or_return_values",
+  "recorded_at": "2026-08-07T04:42:01Z",
+  "research_record": {
+    "path": "docs/a_share_three_day_walkforward_campaign_096_research_record.json",
+    "sha256": "c41e34d78cc5c5da39f5e97ea8e15f6e5fcf40aa6f930ae83eb49135ae9e65aa"
+  },
+  "attempt_ledger": {
+    "path": "data/experiments/short_horizon/historical_walkforward/campaign_096/research_attempt_ledger_v1.json",
+    "sha256": "b3fe17e20cfe4cf8d07e1d41f99a1c786191188d32b53f34a800f5998ead4063"
+  },
+  "future_numeric_policy_v40": {
+    "path": "docs/a_share_three_day_walkforward_future_numeric_comparison_eligibility_policy_v40_20260807.json",
+    "sha256": "e8fc39da2d29ac91e094c239186d8e9a561ef53a8ee44e3f7f2b176e9103e8ba"
+  },
+  "snapshot_binding": {
+    "path": "docs/a_share_three_day_walkforward_campaign_096_feature_snapshot_binding_20260807.json",
+    "sha256": "c5a96fbcc3c9c2927aedc0b855c0eddf1633c1ea1cae1a9fd65de87a9389a68c"
+  },
+  "no_return_audit": {
+    "path": "data/experiments/short_horizon/historical_walkforward/campaign_096/no_return/20260807T043442Z_campaign096_no_return_audit.json",
+    "sha256": "ce5715ae81d7252e7bc3d7549fd1c069c3d1e19156c1a5c25f4802790ce2fea1"
+  },
+  "support_efficiency_audit": {
+    "path": "docs/a_share_three_day_walkforward_campaign_096_postresult_support_equivalence_efficiency_audit_20260807.json",
+    "sha256": "57ce0abd33b1fe9535ae16395d27a7ea5f23b064922feba34fee438c6a7e4e68"
+  },
+  "recording_semantics_correction": {
+    "path": "docs/a_share_three_day_walkforward_campaign_096_recording_semantics_correction_20260807.json",
+    "sha256": "81768930059787c65016c961579848ecabb6026380c3087890aec6c5914a8b8a"
+  },
+  "campaign_report": {
+    "path": "docs/a_share_three_day_walkforward_campaign_096_report.md",
+    "sha256": "bbcc924a0af2f66fdd0da0ce4998b75e7c40fba6a527dc27c497b1e26d7aafce"
+  },
+  "unified_report": {
+    "path": "data/experiments/short_horizon/three_day_research_report.md",
+    "sha256": "fb32fa00d4dec50ec39ae77a0f3438d96268fb6c626e891bb1f9c0a541e86af8"
+  },
+  "current_report": {
+    "path": "data/experiments/short_horizon/current_research_report.md",
+    "sha256": "a2575a5fab5c1395f1e95d38cc251e2beda0802baa221b849e5e8691f24d0668"
+  },
+  "data_pipeline_documentation": {
+    "path": "docs/a_share_data_pipeline.md",
+    "sha256": "0fa26b69d7eaff6d6814729e0b13b67f1fbb0a28debb4d452619de303e45268c"
+  },
+  "terminal_scientific_result": {
+    "factor": "intraday_intrabar_close_location_total_variation_238p",
+    "direction": "higher",
+    "coverage_gate_passed": false,
+    "median_coverage": 0.9231861259965655,
+    "p05_coverage": 0.8075504413619168,
+    "comparison_values_read": false,
+    "historical_forward_returns_read": false,
+    "development_trial_count": 0,
+    "development_survivor_count": 0,
+    "stress_2024_2025_opened": false,
+    "terminal": true,
+    "same_campaign_rescue_allowed": false
+  },
+  "final_accounting": {
+    "campaign096_attempt_count": 6,
+    "campaign096_ledger_entry_count": 6,
+    "campaign096_infrastructure_or_implementation_failure_count": 5,
+    "campaign096_complete_factor_attempt_count": 1,
+    "campaign096_return_reading_development_trial_count": 0,
+    "cumulative_historical_research_attempt_count": 665,
+    "cumulative_return_reading_development_trial_count": 291
+  },
+  "next_campaign_boundary": {
+    "campaign": 97,
+    "historical_offline_work_may_run_at_any_time": true,
+    "must_bind_policy_v40": true,
+    "complete_definition_count": 128,
+    "complete_definition_order_sha256": "9380287d8339113cb01fa99670c77078f9be82b7463c06c1e7debb92b1add48b",
+    "numeric_comparator_count": 125,
+    "numeric_comparator_order_sha256": "50a737e640cac8e063aab8be0b483a6d9be87d0e5ddd1e1395e625ab371a4cae",
+    "must_reject_known_failed_support_predicates_before_values": true
+  },
+  "candidate49_signal_ledger_sha256": "5193f00d7f36da003f53cec387900da4c3d002299f5dfcfc1a95eaa199ed3a79",
+  "candidate49_execution_ledger_sha256": "d57a3e61eac969e42cafa418ccd8c0a5ee65dcf69da145bb2c096c2a02a2ea4f",
+  "candidate49_ledgers_changed": false,
+  "provider_request_issued": false,
+  "current_scoring_selection_sizing_or_orders_performed": false,
+  "investment_advice": false
+}

@@ -1,0 +1,50 @@
+{
+  "version": 1,
+  "kind": "a_share_three_day_walkforward_campaign075_infrastructure_failure",
+  "status": "recorded_after_v2_failed_retry_no_audit_artifact_published",
+  "recorded_at": "2026-08-06T09:45:00+08:00",
+  "attempt_ordinal_within_campaign": 3,
+  "stage": "full_retry_coverage_passed_then_campaign069_snapshot_frame_replay",
+  "v2_implementation_freeze": {
+    "path": "docs/a_share_three_day_walkforward_campaign_075_no_return_audit_implementation_freeze_v2_20260806.json",
+    "sha256": "21551cc88d65c680df1d7a0b9588acd11e44fa403d42c1abf8314de03e3dfec0"
+  },
+  "exit_code": 1,
+  "failure": {
+    "exception": "Campaign069FeatureError",
+    "message": "partition frame changed: Campaign069 sh600000/2019.parquet",
+    "campaign068_compatibility_verification_completed": true,
+    "candidate_coverage_gate_reached_and_passed": true,
+    "comparison_phase_entered": true,
+    "audit_artifact_published": false,
+    "daily_price_or_forward_return_values_read": false
+  },
+  "bounded_compatibility_scout": {
+    "scope": "First immutable partition only for each already-required appended Campaign068-Campaign074 snapshot; no correlation or return result.",
+    "all_first_partition_byte_hashes_matched": true,
+    "all_first_partition_current_runtime_frame_hashes_differed": true,
+    "affected_campaigns": [
+      68,
+      69,
+      70,
+      71,
+      72,
+      73,
+      74
+    ],
+    "pandas_version": "2.2.3",
+    "pyarrow_version": "25.0.0"
+  },
+  "research_boundary": {
+    "factor_formula_direction_age_clock_or_values_changed": false,
+    "comparison_order_or_threshold_changed": false,
+    "any_snapshot_file_changed": false,
+    "candidate_or_comparison_result_observed_from_failed_retry": false,
+    "partial_statistics_may_be_reused": false,
+    "historical_daily_price_fields_read": [],
+    "historical_forward_returns_read": false,
+    "provider_request_issued": false,
+    "candidate49_ledgers_changed": false
+  },
+  "authorized_next_repair": "Supersede the single-Campaign068 compatibility adapter with one finite Campaign068-Campaign074 adapter list. Preserve the exact same byte/schema/row/value/dataset checks for every snapshot, omit only current-runtime IPC frame-hash recomputation, and restart the full audit from coverage."
+}

@@ -1,0 +1,168 @@
+{
+  "schema_version": 1,
+  "version": 1,
+  "kind": "a_share_three_day_walkforward_campaign151_no_return_preregistration",
+  "status": "frozen_before_campaign151_source_peer_benchmark_candidate_comparator_daily_price_or_return_values",
+  "recorded_at": "2026-08-15T00:06:02+08:00",
+  "purpose": "Freeze exactly one relative-activity clock-center definition, accepted immutable source, complete comparison boundary, ordered no-return gates, single walk-forward trial, costs and stop rules before opening any Campaign151 historical value.",
+  "authoritative_inputs": {
+    "campaign150_terminal_state": {
+      "path": "docs/a_share_three_day_iteration_status_20260814_campaign150_prevalue_terminal.json",
+      "sha256": "c75b64b5403e804e903b1da597c702db2dbe433cfba6bb97bc48d5481db7874b"
+    },
+    "historical_walkforward_policy": {
+      "path": "docs/a_share_three_day_historical_walkforward_research_policy_20260727.json",
+      "sha256": "38426d6161b9bfed323c58caba18feca668b8c9d53e294951a8ba90c01a798bb"
+    },
+    "numeric_policy_v203": {
+      "path": "docs/a_share_three_day_walkforward_future_numeric_comparison_eligibility_policy_v203_20260814.json",
+      "sha256": "081d1f7ab63cfbf5242dda4fe755315aae25b5dd3a1f97a39e4fd99ad2c4215d",
+      "complete_definition_count": 155,
+      "complete_definition_order_sha256": "2e4114edb26fa3aaebd145ef07fe4e2ac9c5d9dc4586cf70ff61c20e39b954ba",
+      "numeric_comparator_count": 142,
+      "numeric_comparator_order_sha256": "5d1b35fb5a0d8ac9293008db9963c4a60a94dc940c237c3ed259e5ce44f14aaf"
+    },
+    "concept_scouting": {
+      "path": "docs/a_share_three_day_walkforward_campaign_151_concept_scouting_20260815.json",
+      "sha256": "35a6cef7a56f5b1d629082bb5cd1565217acc66271d4311689b70d23903f6520"
+    },
+    "mechanism_overlap_audit": {
+      "path": "docs/a_share_three_day_walkforward_campaign_151_mechanism_overlap_audit_20260815.json",
+      "sha256": "f8b32dd0d22cf01b35ec81c18011573b100bc449f91c77abf2a359d7f7e11455"
+    }
+  },
+  "source_snapshot_contract": {
+    "data_root": "/Volumes/DIsk/qlib-a-share-tushare-1m",
+    "immutable_source_run": "tushare_stk_mins_1m_2019_2025_ea0cbb8f",
+    "raw_manifest_path": "/Volumes/DIsk/qlib-a-share-tushare-1m/raw/a_share/rich/tushare/minutes/1m/snapshots/tushare_stk_mins_1m_2019_2025_ea0cbb8f/snapshot_manifest.json",
+    "raw_manifest_sha256": "9b3d959563c9d182f38981c6a36bdb3bc9b415de08487a9e1f9e850825c0839f",
+    "joint_clean_manifest_path": "/Volumes/DIsk/qlib-a-share-tushare-1m/derived/a_share/rich/tushare/minute_sentiment_clean/tushare_stk_mins_1m_2019_2025_ea0cbb8f_sentiment_clean_v1/snapshot_manifest.json",
+    "joint_clean_manifest_sha256": "453c6719cb3c7da42fed8807b28a2bfe988700283e9625a6db97912534f368de",
+    "joint_clean_dataset_sha256": "0e4fe7c05536cdfcecc2936bc880726902f5560061188ffff82ef7ee6f346983",
+    "expected_partitions": 33015,
+    "expected_rows": 7724498,
+    "output_run_id": "tushare_stk_mins_1m_2019_2025_ea0cbb8f_walkforward_campaign151_feature_library_v1",
+    "output_manifest_path_below_data_root": "derived/a_share/rich/tushare/minute_walkforward_campaign151_feature_library/tushare_stk_mins_1m_2019_2025_ea0cbb8f_walkforward_campaign151_feature_library_v1/snapshot_manifest.json",
+    "provider_request_allowed": false,
+    "credential_required": false
+  },
+  "candidate": {
+    "name": "intraday_relative_amount_share_clock_center_240m",
+    "direction": "higher",
+    "economic_hypothesis": "A stock whose share of contemporaneous market trading activity migrates toward the close may reflect strengthening late-session attention that can persist from the next open through the third close.",
+    "source_projection": ["datetime", "symbol", "provider", "amount"],
+    "source_fields_forbidden": ["open", "high", "low", "close", "volume", "daily_price", "forward_return"],
+    "source_grid": {
+      "accepted_rows_required": 241,
+      "selected_rows": 240,
+      "selected_minutes": "09:31-11:30 and 13:01-15:00",
+      "standalone_09_30_required_for_identity_but_excluded": true,
+      "lunch_overnight_cross_date_and_cross_stock_transitions_excluded": true
+    },
+    "peer_benchmark_contract": {
+      "complete_profile_requirement": "Every peer stock-day must have the exact accepted source identity and all 240 selected amounts finite and nonnegative.",
+      "leave_one_out": true,
+      "minimum_other_peers_at_every_clock": 50,
+      "peer_aggregator": "arithmetic mean amount at each exact clock over the complete other-peer set",
+      "every_peer_mean_finite_and_strictly_positive": true,
+      "own_stock_excluded_from_every_denominator": true,
+      "point_in_time_quality_or_listing_filter_not_used_to_construct_source_benchmark": true,
+      "benchmark_values_may_be_read_only_after_source_bound_implementation_freeze": true
+    },
+    "exact_formula": {
+      "own_amount": "Require all a_i finite and nonnegative; exact zeros remain zero.",
+      "relative_activity": "z_i=a_i/b_i where b_i is the exact same-clock leave-one-out peer mean amount.",
+      "normalization": "Require Z=sum_i(z_i) finite and strictly positive; q_i=z_i/Z.",
+      "clock": "x_i=i/239 for zero-based i=0,...,239.",
+      "score": "sum_i(q_i*x_i).",
+      "endpoint_rule": "Canonicalize only values within 1e-12 of 0 or 1 to the exact endpoint; otherwise require the inclusive [0,1] range.",
+      "valid_range_inclusive": [0.0, 1.0],
+      "exact_peer_shape_match_score": 0.5
+    },
+    "search_space": {
+      "candidate_count": 1,
+      "direction_count": 1,
+      "source_projection_count": 1,
+      "bar_grid_count": 1,
+      "peer_aggregator_count": 1,
+      "peer_minimum_count": 1,
+      "ratio_operator_count": 1,
+      "normalization_count": 1,
+      "clock_operator_count": 1,
+      "thresholds": [],
+      "filters": [],
+      "subsets": [],
+      "models": [],
+      "alternate_direction_field_grid_peer_set_peer_aggregator_peer_minimum_ratio_transform_clock_window_threshold_filter_subset_fit_model_residualization_or_combination_search": false
+    }
+  },
+  "comparison_contract": {
+    "complete_semantic_definition_count_reviewed_before_values": 155,
+    "prior_complete_definition_order_sha256": "2e4114edb26fa3aaebd145ef07fe4e2ac9c5d9dc4586cf70ff61c20e39b954ba",
+    "candidate_appended_complete_definition_count": 156,
+    "candidate_appended_complete_definition_order_sha256": "928e7eff198f44fa3112d7e8ff94571c1ad18b85a1ee50a38f3896baf555847c",
+    "numeric_comparator_count": 142,
+    "numeric_comparator_order_sha256": "5d1b35fb5a0d8ac9293008db9963c4a60a94dc940c237c3ed259e5ce44f14aaf",
+    "direction_normalization": "use every comparator's frozen score direction",
+    "candidate_specific_comparator_drop_fill_residualization_neutralization_or_subset_allowed": false,
+    "candidate49_historical_factor_return_signal_execution_or_milestone_read_allowed": false
+  },
+  "ordered_no_return_gates": [
+    {
+      "gate": 1,
+      "name": "binding_source_formula_peer_benchmark_implementation_and_verification",
+      "rule": "Before source values, bind this protocol, pure formula, tests, raw and joint-clean source identity, source-bound benchmark/builder, verifier, audit and output paths. After publication verify every partition byte/frame hash, exact amount-only projection, grid, peer exclusion/count/mean, formula, support, range, counts and aggregate digest."
+    },
+    {
+      "gate": 2,
+      "name": "structural_coverage_variation_and_capacity_before_comparator_values",
+      "rule": "On the immutable quality/current-listing base require median daily coverage >=0.95, P05 daily coverage >=0.90, P05 eligible names >=50, at least 200 non-overlapping three-signal-session cohorts, at least five observed years, all finite values in [0,1], and at least 200 nonconstant cross-sectional sessions. Failure stops before comparator, daily-price or forward-return values."
+    },
+    {
+      "gate": 3,
+      "name": "all_142_numeric_uniqueness_after_coverage_only",
+      "rule": "Compare in exact v203 numeric order with all 142 eligible comparators. Each comparison requires at least 50 paired names per session and at least 100 qualifying sessions. Every absolute median daily average-tie Spearman correlation must be strictly below 0.8; insufficient overlap fails closed and no comparator may be removed."
+    }
+  ],
+  "finite_development_catalog_if_admitted": {
+    "trial_count": 1,
+    "trial_id": "wf151_intraday_relative_amount_share_clock_center_240m_single_higher",
+    "factor": "intraday_relative_amount_share_clock_center_240m",
+    "direction": "higher",
+    "weight": 1.0,
+    "training_or_fit": "none",
+    "folds": [
+      {"fold": 1, "train": [2019, 2020], "validation": 2021},
+      {"fold": 2, "train": [2019, 2020, 2021], "validation": 2022},
+      {"fold": 3, "train": [2019, 2020, 2021, 2022], "validation": 2023}
+    ],
+    "purge": "Purge three signal sessions at every train/validation boundary; t+1 entry and t+3 exit must remain inside the same partition.",
+    "execution": "Reuse the frozen one-factor next-open to third-close Top-3 engine, CNY 200000 board-lot pilot, quality/listing gates, amount-participation checks, 0/5/10/20bp cost grid and survivor gates without override.",
+    "stress_2024_2025": "Open once for the whole campaign only if the sole trial survives every 2019-2023 gate and a nonzero survivor record freezes the campaign; label it historically exposed quasi-out-of-sample. Otherwise keep it closed and unread."
+  },
+  "prohibitions": {
+    "candidate_inversion_refield_regrid_repeer_reaggregate_renormalize_reclock_rewindow_threshold_filter_subset_regime_fit_model_combination_or_rescue": true,
+    "terminal_factor_repair_or_combination": true,
+    "raw_comparator_missing_value_fill_or_drop": true,
+    "candidate49_historical_backfill": true,
+    "second_prospective_candidate": true,
+    "provider_request": true,
+    "current_score_selection_sizing_position_order_or_investment_advice": true
+  },
+  "research_boundary": {
+    "campaign151_source_rows_read_before_freeze": false,
+    "campaign151_peer_benchmark_values_read_before_freeze": false,
+    "campaign151_candidate_values_computed_or_read_before_freeze": false,
+    "campaign151_comparator_values_read_before_freeze": false,
+    "historical_daily_price_or_forward_return_values_read_before_freeze": false,
+    "stress_2024_2025_opened": false,
+    "provider_request_issued": false,
+    "credential_loaded": false,
+    "candidate49_historical_backfill_performed": false,
+    "candidate49_ledgers_changed": false,
+    "second_prospective_candidate_created": false,
+    "current_scoring_selection_sizing_positions_or_orders_performed": false,
+    "investment_advice": false
+  },
+  "next_action": "Implement and synthetically test only the exact pure formula, fingerprint-freeze code and tests, then freeze a separate source-bound peer benchmark and snapshot builder before reading historical minute values."
+}

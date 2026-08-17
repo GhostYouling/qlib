@@ -1,0 +1,97 @@
+{
+  "version": 1,
+  "kind": "a_share_three_day_walkforward_campaign035_concept_scouting",
+  "status": "one_independent_intraday_return_ordinal_state_diversity_concept_selected_before_candidate_comparison_or_return_values",
+  "recorded_at": "2026-07-30T19:41:07Z",
+  "purpose": "Select one economically interpretable Campaign035 mechanism after Campaign034's terminal development rejection, without opening a Campaign035 minute partition, candidate value, comparison value, daily price, or forward return.",
+  "authoritative_boundary": {
+    "path": "docs/a_share_three_day_iteration_status_20260731_campaign034_verified.json",
+    "sha256": "c304581a049ed921e1f6f112ea781ac2d3c35bac9951a1053a4e90640d947ea7"
+  },
+  "selected_concept": {
+    "concept_name": "intraday_return_ordinal_state_diversity",
+    "mechanism_family": "within_half_weak_ordinal_pattern_distribution",
+    "economic_question": "Is the completed signal session dominated by a small set of repeated three-return ordinal states, or does its local price path visit a broad mix of rising, falling, turning, and exact-tie states?",
+    "economic_hypothesis": "A broader mix of local ordinal return states can represent less mechanically persistent or one-sided price formation, less concentrated short-horizon herding, and more distributed liquidity. A higher fixed state-diversity score may therefore be associated with greater resilience from the next open through the third close.",
+    "provisional_direction": "higher",
+    "allowed_source_fields": [
+      "datetime",
+      "symbol",
+      "provider",
+      "close"
+    ],
+    "forbidden_source_fields": [
+      "open",
+      "high",
+      "low",
+      "volume",
+      "amount",
+      "market or industry benchmark",
+      "quarterly or event field",
+      "daily price",
+      "forward return",
+      "Level-2"
+    ],
+    "fixed_temporal_question": "Use exactly the 240 raw unadjusted one-minute closes at 09:31-11:30 and 13:01-15:00. Form returns only inside each 120-close half, classify every overlapping consecutive return triple by its exact weak ordinal ordering including ties, and measure diversity over the complete finite state alphabet.",
+    "mandatory_overlap_challenges_before_any_value": [
+      "intraday_return_spectral_entropy_59f",
+      "intraday_return_sign_run_imbalance_238p",
+      "intraday_return_skewness_238m",
+      "intraday_upside_semivariance_share_239m",
+      "intraday_absolute_return_serial_persistence_236p",
+      "intraday_morning_afternoon_return_profile_persistence_119p",
+      "intraday_price_update_share_238m",
+      "intraday_round_tenth_close_avoidance_240m",
+      "candidate49_intraday_cumulative_vwap_crossing_rate_240m_v1"
+    ],
+    "known_design_risks": [
+      "Exact equal-return states can be influenced by tick size and nominal share price; the factor must retain ties as explicit states and may not neutralize, filter, or rescale this exposure after values.",
+      "Choosing strict permutations only, dropping ties, adding an epsilon, changing tuple length, skipping overlapping tuples, or pooling across lunch would create researcher degrees of freedom unless one exact alphabet and support are frozen before values.",
+      "Ordinal states discard return magnitudes and may overlap statistically with spectral entropy, sign runs, skewness, price-update share, or volatility-path factors even though their formulas differ.",
+      "Overlapping return triples are dependent observations. They are used only as one completed-session descriptive distribution, not as an independent-sample estimator.",
+      "A high diversity score can indicate healthy two-sided price discovery or noisy microstructure. The higher direction must remain fixed and ordinary walk-forward gates must decide the hypothesis without post-result inversion."
+    ]
+  },
+  "rejected_concepts": [
+    {
+      "concept": "spectral_band_phase_wavelet_or_frequency_entropy_variant",
+      "reason": "Campaign033 is terminal, and changing its transform, band, phase, taper, or frequency weighting would be a prohibited rescue."
+    },
+    {
+      "concept": "signed_run_count_transition_matrix_or_markov_persistence_variant",
+      "reason": "The signed-run family is terminal. Campaign035 may describe the complete weak ordering of three consecutive returns but may not tune sign-transition counts, lags, or persistence thresholds."
+    },
+    {
+      "concept": "return_skewness_kurtosis_semivariance_or_tail_variant",
+      "reason": "Moment, semivariance, and tail-shape branches are terminal. The selected concept is magnitude-invariant ordinal-state diversity rather than another moment or tail statistic."
+    },
+    {
+      "concept": "amount_volume_transaction_price_or_vwap_variant",
+      "reason": "Activity, price-impact, transaction-price, and cumulative-VWAP mechanisms are terminal or reserved for Candidate49."
+    },
+    {
+      "concept": "round_price_grid_rescale_or_price_update_rescue",
+      "reason": "Campaign034 and price-update share are terminal; Campaign035 uses return ordering and may not change the currency grid, tolerance, or equality definition of either prior factor."
+    },
+    {
+      "concept": "market_benchmark_quarterly_event_or_terminal_factor_combination",
+      "reason": "Campaign035 must be one own-close path statistic and may not introduce a benchmark, event field, terminal factor value, model, or combination."
+    }
+  ],
+  "decision": {
+    "advance_to_separate_no_value_mechanism_overlap_audit": true,
+    "exact_formula_or_direction_fixed_here": false,
+    "new_daily_bar_required": false,
+    "same_day_1630_wait_required": false,
+    "candidate49_ledgers_changed": false
+  },
+  "research_boundary": {
+    "external_campaign035_minute_partitions_read": false,
+    "candidate_values_read": false,
+    "comparison_values_read": false,
+    "daily_price_fields_read": false,
+    "forward_returns_read": false,
+    "provider_request_issued": false,
+    "current_scoring_selection_sizing_or_orders_performed": false
+  }
+}

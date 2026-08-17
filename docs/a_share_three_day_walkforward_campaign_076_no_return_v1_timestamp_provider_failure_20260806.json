@@ -1,0 +1,40 @@
+{
+  "version": 1,
+  "kind": "a_share_three_day_walkforward_campaign076_no_return_infrastructure_failure",
+  "status": "failed_after_coverage_and_comparison_work_before_audit_record_publication",
+  "recorded_at": "2026-08-06T11:36:00+08:00",
+  "failed_command": "python -m scripts.a_share_three_day_walkforward_campaign076_no_return_audit run --workers 8",
+  "exit_code": 1,
+  "error_type": "AttributeError",
+  "error_summary": "The frozen v1 runner tried to call prior_engine.research._timestamp(), but prior_engine was the Campaign044 feature module and has no research attribute.",
+  "failed_line": "timestamp = prior_engine.research._timestamp()",
+  "frozen_inputs": {
+    "runner": {
+      "path": "scripts/a_share_three_day_walkforward_campaign076_no_return_audit.py",
+      "sha256": "a9371fbfeaf48163a41768c8300fec6f944e8a4e14ef04f20eb58853ad2a2d9d"
+    },
+    "implementation_freeze": {
+      "path": "docs/a_share_three_day_walkforward_campaign_076_no_return_audit_implementation_freeze_20260806.json",
+      "sha256": "23d625f8dde94e84a2d1d88aa51ef51532b2466acf44d84d1b7825a90aab51bc"
+    },
+    "activation_binding": {
+      "path": "docs/a_share_three_day_walkforward_campaign_076_no_return_audit_activation_binding_20260806.json",
+      "sha256": "eb000e3a190f9b8006e3f2e2a45ac855a06b788926eddbf7596a92a1b7d48351"
+    }
+  },
+  "stage_semantics": {
+    "candidate_snapshot_reverified": true,
+    "coverage_metrics_computed": true,
+    "comparison_values_may_have_been_read": true,
+    "comparison_results_published": false,
+    "audit_record_published": false,
+    "partial_statistics_available_for_reuse": false,
+    "historical_daily_price_fields_read": [],
+    "historical_forward_returns_read": false,
+    "training_or_model_fitting_performed": false,
+    "provider_request_issued": false,
+    "candidate49_ledgers_changed": false
+  },
+  "classification": "infrastructure_failure_separate_from_the_single_complete_factor_attempt",
+  "next_action": "Freeze an additive wrapper that changes only the timestamp provider, then restart the complete no-return audit from candidate snapshot verification and coverage without reusing partial statistics."
+}

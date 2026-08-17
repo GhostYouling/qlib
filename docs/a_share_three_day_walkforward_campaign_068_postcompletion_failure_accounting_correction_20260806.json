@@ -1,0 +1,54 @@
+{
+  "version": 1,
+  "kind": "a_share_three_day_walkforward_campaign068_postcompletion_failure_accounting_correction",
+  "status": "appenditive_command_level_attempt_accounting_correction",
+  "recorded_at": "2026-08-06T03:18:00+08:00",
+  "purpose": "Correct only the attempt-count interpretation in three already recorded postcompletion pytest failure records without changing their observed failures, hashes, research boundaries, or the Campaign068 terminal result.",
+  "source_failure_records": [
+    {
+      "path": "docs/a_share_three_day_walkforward_campaign_068_postcompletion_test_failure_20260806.json",
+      "sha256": "e437a884fdcaaf0be058949e2e36e98f57a1c477a239c98b0d9b9bcff4ec5c9c",
+      "failed_node_count": 3,
+      "failed_command_count": 1
+    },
+    {
+      "path": "docs/a_share_three_day_walkforward_campaign_068_postcompletion_test_failure_2_20260806.json",
+      "sha256": "00fa7ad70fc90c1cb2b14d213e73e043fedc678f0f053b43c26f944ce76a38f1",
+      "failed_node_count": 2,
+      "failed_command_count": 1
+    },
+    {
+      "path": "docs/a_share_three_day_walkforward_campaign_068_postcompletion_test_failure_3_20260806.json",
+      "sha256": "1aaa70f45a292a7b017fd660cb6445afcc065457218342ecb639f5ee82d455a1",
+      "failed_node_count": 2,
+      "failed_command_count": 1
+    }
+  ],
+  "authoritative_counting_rule": "A historical infrastructure attempt is one executed command or one explicit synthetic attempt, not one failed assertion within a single command. Multiple failed nodes from the same pytest invocation share one attempt increment.",
+  "corrected_accounting": {
+    "postcompletion_failed_command_count_increment": 3,
+    "postcompletion_failed_node_count": 7,
+    "campaign068_pre_postcompletion_attempt_count": 2,
+    "campaign068_corrected_attempt_count": 5,
+    "campaign068_corrected_infrastructure_failure_count": 4,
+    "cumulative_historical_research_attempt_count_before_postcompletion": 404,
+    "corrected_cumulative_historical_research_attempt_count": 407,
+    "cumulative_return_reading_development_trial_count": 274
+  },
+  "superseded_non_authoritative_fields": [
+    "/source_failure_record_1/research_effect/historical_research_attempt_count_increment",
+    "/source_failure_record_1/research_effect/cumulative_historical_research_attempt_count",
+    "/source_failure_record_2/research_effect/historical_research_attempt_count_increment",
+    "/source_failure_record_2/research_effect/cumulative_historical_research_attempt_count",
+    "/source_failure_record_3/research_effect/historical_research_attempt_count_increment",
+    "/source_failure_record_3/research_effect/cumulative_historical_research_attempt_count"
+  ],
+  "research_boundary": {
+    "candidate_or_comparison_values_read": false,
+    "historical_daily_price_fields_read": [],
+    "historical_forward_returns_read": false,
+    "provider_request_issued": false,
+    "candidate49_ledgers_changed": false,
+    "Campaign068_terminal_decision_changed": false
+  }
+}

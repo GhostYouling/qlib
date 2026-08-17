@@ -1,0 +1,84 @@
+{
+  "version": 1,
+  "kind": "a_share_three_day_walkforward_campaign039_feature_implementation_freeze",
+  "status": "feature_implementation_frozen_before_candidate_snapshot_values",
+  "recorded_at": "2026-07-31T02:17:37Z",
+  "purpose": "Bind the exact Campaign039 close-only feature implementation and synthetic tests before opening any external candidate partition.",
+  "authoritative_inputs": {
+    "authoritative_state": {
+      "path": "docs/a_share_three_day_iteration_status_20260731_campaign038_verified.json",
+      "sha256": "4bc921c541f6044b9756d6843e576c3282e2011f9952de1800dd335c2d9a16e5"
+    },
+    "mechanism_overlap_audit": {
+      "path": "docs/a_share_three_day_walkforward_campaign_039_mechanism_overlap_audit.json",
+      "sha256": "a2a01837c74fa1ede9e7e3b143b3dbe8fdb11708552358aba5fa804113c4a5c6"
+    },
+    "no_return_preregistration": {
+      "path": "docs/a_share_three_day_walkforward_campaign_039_no_return_preregistration.json",
+      "sha256": "0cc9067d86ea2b1312d9b66bb884f9ffaee6d3b9b0b5a72d086d7962728ac105"
+    },
+    "frozen_close_only_base": {
+      "path": "scripts/a_share_three_day_walkforward_campaign033_features.py",
+      "sha256": "ae3a523b3fdf0de128a878346b4b0368744ddc61e32e89bc94c0abe3426f70d1"
+    },
+    "effective_campaign038_feature_runner": {
+      "path": "scripts/a_share_three_day_walkforward_campaign038_features.py",
+      "sha256": "7980db02fb6aba2766689cbd94d7b93a41268397dc116976e47b76cbeabb4664"
+    }
+  },
+  "implementation": {
+    "feature_runner": {
+      "path": "scripts/a_share_three_day_walkforward_campaign039_features.py",
+      "sha256": "19a1483e9b93c126150f0279e4b443827bbc4b8e1f76150ef007f839eb65d253"
+    },
+    "synthetic_tests": {
+      "path": "tests/data_collector_tests/test_a_share_three_day_walkforward_campaign039_features.py",
+      "sha256": "90e052780cbea3dd9894f53b491d211dadda57325706c166e2fa671d7727cdc0"
+    },
+    "factor_name": "intraday_return_time_reversal_asymmetry_236p",
+    "direction": "higher",
+    "source_projection": [
+      "datetime",
+      "symbol",
+      "provider",
+      "close"
+    ],
+    "selected_bar_count": 240,
+    "half_session_bar_count": 120,
+    "within_half_return_count": 238,
+    "within_half_adjacent_return_pair_count": 236,
+    "cubic_contrast": "a^2*b-a*b^2",
+    "normalization": "sum(abs(a*b)*(abs(a)+abs(b)))",
+    "absolute_value_after_pooling_both_halves": true,
+    "include_0930_or_lunch_transition": false,
+    "daily_price_or_forward_return_access": false
+  },
+  "verification": {
+    "command": "PYTHONPATH=. pytest -q tests/data_collector_tests/test_a_share_three_day_walkforward_campaign039_features.py",
+    "passed": 7,
+    "failed": 0,
+    "collection_or_skip_count": 0,
+    "formula_cases": [
+      "constant nonzero returns produce zero time-reversal asymmetry",
+      "ordered nonzero-pair sequence produces the exact normalized cubic contrast",
+      "reversing the return order changes the signed contrast but preserves its frozen magnitude",
+      "independent afternoon price-scale and cross-lunch jump invariance",
+      "zero-normalization missing semantics",
+      "one uninformative half remains allowed when the other half is informative",
+      "invalid and nonpositive close rejection",
+      "exact ordered 60-factor comparison materialization",
+      "close-only 241-row source projection"
+    ],
+    "external_minute_partition_read": false,
+    "candidate_value_read": false,
+    "comparison_value_read": false,
+    "daily_price_or_forward_return_read": false,
+    "provider_request_issued": false
+  },
+  "authorization": {
+    "next_action": "Validate this freeze and all predecessor bindings, then build exactly one immutable Campaign039 snapshot from the frozen historical minute root.",
+    "formula_direction_cubic_normalization_window_missing_or_gate_change_allowed": false,
+    "historical_return_read_allowed_before_no_return_admission": false,
+    "candidate49_backfill_candidate50_activation_or_current_output_allowed": false
+  }
+}

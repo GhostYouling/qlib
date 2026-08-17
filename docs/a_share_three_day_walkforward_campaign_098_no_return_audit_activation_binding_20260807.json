@@ -1,0 +1,37 @@
+{
+  "schema_version": 1,
+  "kind": "a_share_three_day_walkforward_campaign098_no_return_audit_activation_binding",
+  "status": "frozen_before_campaign098_coverage_capacity_or_comparator_values",
+  "recorded_at": "2026-08-07T08:42:00Z",
+  "implementation_freeze": {
+    "path": "docs/a_share_three_day_walkforward_campaign_098_no_return_audit_implementation_freeze_20260807.json",
+    "sha256": "5d6fdb0cdd459a93a2d5c945e4c9dd18c68cf087a76517af536a33de5a378a87"
+  },
+  "snapshot_binding": {
+    "path": "docs/a_share_three_day_walkforward_campaign_098_feature_snapshot_binding_20260807.json",
+    "sha256": "c5ab80fcae4f247005314d4c08ba28940472a332776483ec242a14eea9376275"
+  },
+  "candidate_snapshot": {
+    "path": "/Volumes/DIsk/qlib-a-share-tushare-1m/derived/a_share/rich/tushare/minute_walkforward_campaign098_feature_library/tushare_stk_mins_1m_2019_2025_ea0cbb8f_walkforward_campaign098_feature_library_v1/snapshot_manifest.json",
+    "sha256": "371429a81292a91ef2bfa1292f467c81bf73e176fbfbc9888084f74eaaac1dc5",
+    "dataset_sha256": "921f06fad98aed942550d86b1475c888aea6d2025c37d53ec55917401bd34b33",
+    "rows": 1331759,
+    "eligible_rows": 1328449
+  },
+  "eligibility_identity_source": {
+    "path": "/Volumes/DIsk/qlib-a-share-tushare-1m/derived/a_share/rich/tushare/compact_comparator_cache/campaign067_terminal_numeric98_v4/snapshot_manifest.json",
+    "sha256": "3d81068f07ac61fe4cd04bd1a893e58759c06d88213263135fec5244e309b57b"
+  },
+  "protocol": {
+    "path": "docs/a_share_three_day_walkforward_campaign_098_no_return_preregistration.json",
+    "sha256": "31dcecebeea81adab163acd76e21616e6b35726a2798bb4ca72cee4252ca78bd"
+  },
+  "single_audit_authorized": true,
+  "coverage_or_capacity_metrics_computed_before_activation": false,
+  "comparator_values_read_before_activation": false,
+  "historical_daily_price_or_forward_return_values_read_before_activation": false,
+  "provider_request_issued_before_activation": false,
+  "candidate49_ledgers_changed": false,
+  "formula_direction_support_window_universe_cost_gate_or_search_space_changed": false,
+  "next_action": "Run exactly one Campaign098 audit; coverage must pass before the comparator loader can open the exact 126-factor order."
+}

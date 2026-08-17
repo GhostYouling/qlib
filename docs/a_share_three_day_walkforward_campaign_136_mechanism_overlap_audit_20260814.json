@@ -1,0 +1,113 @@
+{
+  "schema_version": 1,
+  "kind": "a_share_three_day_walkforward_campaign136_mechanism_overlap_audit",
+  "status": "conditionally_distinct_pending_fixed_source_coverage_and_all_140_ordered_numeric_comparisons",
+  "recorded_at": "2026-08-14T11:03:00+08:00",
+  "purpose": "Freeze and challenge the day-over-day point-in-time price-basis adjustment magnitude before reading any daily source value, candidate value, comparator value, historical OHLCV value or forward return.",
+  "concept_scouting": {
+    "path": "docs/a_share_three_day_walkforward_campaign_136_concept_scouting_20260814.json",
+    "sha256": "f300a27e6084f6bc16d98eb027524dcbaff3f3ebb3a1bdc525bafe5f1f1b8793"
+  },
+  "candidate": {
+    "name": "daily_realized_price_basis_adjustment_magnitude_1d",
+    "direction": "higher",
+    "information_domain": "same_close_point_in_time_reference_price_continuity_adjustment",
+    "source_projection": [
+      "date",
+      "symbol",
+      "factor",
+      "price_basis",
+      "daily_source"
+    ],
+    "calendar_predecessor_rule": "For signal session t, p must be the immediately preceding accepted local trading session. The same symbol must have a source row on both p and t; a suspension gap, missing predecessor or cross-symbol predecessor makes t missing.",
+    "source_identity_rule": "Both rows must have price_basis exactly close_known_raw_pct_chg_chain_v1 and the single manifest-accepted daily_source baostock.",
+    "validity": "factor_p and factor_t must be finite and strictly positive. No imputation, forward fill, clipping, tolerance, tick rounding or event classification is allowed.",
+    "formula": "score_t = abs(log(factor_t / factor_p))",
+    "exact_zero_rule": "Exact factor equality is a valid zero and remains in the cross-section; source rounding is not thresholded away.",
+    "valid_range": "finite [0,+infinity)",
+    "availability": "Known only after the signal-session close when the accepted same-close pct_chg chain and raw close have produced factor_t; no later factor or future-adjusted history is used.",
+    "interpretation_limit": "The derived source state may reflect an ex-right or other reference-price adjustment, but it is not an official corporate-action classification and must not be labelled as a dividend, split or rights event.",
+    "economic_hypothesis": "A larger realized reference-price continuity adjustment may create short-lived attention and mechanical portfolio rebalancing that persists from the next open through the third close."
+  },
+  "construction_identity": {
+    "accepted_builder_relation": "The upstream point-in-time chain sets adjusted_close_t = adjusted_close_p * (1+pct_chg_t/100) and factor_t = adjusted_close_t/raw_close_t.",
+    "ratio_relation": "factor_t/factor_p = (1+pct_chg_t/100)/(raw_close_t/raw_close_p) when p is the calendar-adjacent accepted predecessor.",
+    "arbitrary_chain_level_cancelled": true,
+    "future_corporate_action_revisions_used": false,
+    "historical_qfq_or_hfq_used": false,
+    "raw_ohlcv_or_pct_chg_loaded_by_campaign136_formula": false
+  },
+  "overlap_challenges": [
+    {
+      "family": "daily_raw_or_adjusted_return_momentum_reversal_amplitude_and_gap",
+      "result": "distinct_pending_numeric_gate",
+      "reason": "Holding factor_t/factor_p fixed while changing the raw close return leaves Campaign136 unchanged. Holding the raw return fixed while changing the close-known pct_chg reference reconciliation changes Campaign136. The factor loads neither raw nor adjusted OHLCV and contains no return sign."
+    },
+    {
+      "family": "dividend_plan_cash_bonus_count_and_freshness",
+      "result": "distinct_source_state_pending_capacity_gate",
+      "reason": "The terminal dividend-plan family uses announcement-dated plan fields and has frozen sparse-capacity outcomes. Campaign136 uses no announcement, plan cash, bonus ratio, event count or freshness; it observes only a realized price-basis reconciliation on the signal date and does not rescue or combine the plan family."
+    },
+    {
+      "family": "accepted_instrument_session_youth_listing_and_suspension_resumption",
+      "result": "distinct_pending_numeric_gate",
+      "reason": "Campaign136 contains no listing date or age, and it requires a calendar-adjacent same-symbol predecessor, which excludes suspension-gap resumptions instead of proxying them."
+    },
+    {
+      "family": "intraday_terminal_nominal_share_price_affordability_rank_240m",
+      "result": "distinct_pending_numeric_gate",
+      "reason": "Multiplying both factor levels by any common positive per-symbol chain constant leaves Campaign136 unchanged, and changing nominal share price with the factor ratio fixed also leaves it unchanged."
+    },
+    {
+      "family": "daily_price_basis_infrastructure",
+      "result": "admissible_derived_source_state_pending_no_return_gates",
+      "reason": "The accepted manifest already requires one point-in-time basis, zero nonpositive factor rows, zero pct_chg-chain errors and zero raw-close reconstruction errors. Campaign136 uses the adjacent ratio only after that acceptance and binds the manifest and builder code; it never substitutes future qfq/hfq data."
+    },
+    {
+      "family": "candidate49_intraday_cumulative_vwap_crossing_rate_240m_v1",
+      "result": "distinct_and_isolated",
+      "reason": "Candidate49 counts prospective within-session close crossings around causal cumulative VWAP from minute close, volume and amount. Campaign136 is an offline daily price-basis ratio, reads no minute value and never enters or backfills the prospective ledgers."
+    }
+  ],
+  "frozen_counterfactuals": [
+    "Multiplying every historical factor level for one symbol by one positive constant leaves every Campaign136 value unchanged.",
+    "Changing current raw or adjusted OHLCV while preserving the accepted adjacent factor ratio leaves Campaign136 unchanged.",
+    "Changing an announcement-dated dividend plan without changing the realized adjacent factor ratio leaves Campaign136 unchanged.",
+    "Deleting the calendar-adjacent predecessor row makes the signal date missing; Campaign136 never bridges a suspension or listing gap.",
+    "Changing the factor ratio from one to a nonunit positive value changes Campaign136 even if the raw close return is held fixed through a corresponding pct_chg reference change."
+  ],
+  "rejected_variants_before_values": [
+    "signed ratio, inverse ratio, upside/downside split or direction search",
+    "event threshold, tolerance, tick rounding, percentile cut or exact-zero deletion",
+    "3/5/20/60-session recency, decay, rolling sum, count, maximum or carry-forward",
+    "bridging suspensions, using previous source row instead of previous accepted calendar session, or filling missing predecessors",
+    "loading raw OHLCV or pct_chg to reconstruct an algebraic duplicate",
+    "combining with dividend plans, listing age, price momentum, minute factors or the complete terminal library",
+    "filters, subsets, board/year regimes, neutralization, residualization, fitting, models or current scoring"
+  ],
+  "decision": {
+    "semantic_gate_passed": true,
+    "candidate_count": 1,
+    "implementation_allowed_only_after_no_return_preregistration": true,
+    "source_rows_or_candidate_values_allowed_now": false,
+    "coverage_and_capacity_must_pass_before_comparator_values": true,
+    "all_140_numeric_comparators_must_pass_in_frozen_order": true,
+    "strict_absolute_median_daily_rank_correlation_lt": 0.8,
+    "post_value_formula_direction_predecessor_source_projection_threshold_support_or_normalization_change_allowed": false
+  },
+  "research_boundary": {
+    "campaign136_source_rows_read": false,
+    "campaign136_factor_values_read": false,
+    "campaign136_candidate_values_read_or_computed": false,
+    "campaign136_comparator_values_read": false,
+    "historical_daily_ohlcv_fields_read": [],
+    "historical_forward_returns_read": false,
+    "stress_2024_2025_opened": false,
+    "provider_request_issued": false,
+    "credential_loaded": false,
+    "candidate49_historical_backfill_performed": false,
+    "candidate49_ledgers_changed": false,
+    "current_scoring_selection_sizing_positions_or_orders_performed": false,
+    "investment_advice": false
+  }
+}

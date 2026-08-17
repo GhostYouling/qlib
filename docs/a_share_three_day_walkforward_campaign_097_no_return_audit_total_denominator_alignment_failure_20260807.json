@@ -1,0 +1,36 @@
+{
+  "schema_version": 1,
+  "kind": "a_share_three_day_walkforward_campaign097_no_return_audit_total_denominator_alignment_failure",
+  "status": "preserved_fail_closed_infrastructure_attempt_after_2019_identity_and_candidate_decode_before_coverage_comparison_or_return_values",
+  "recorded_at": "2026-08-07T06:16:00Z",
+  "campaign": 97,
+  "attempt_class": "infrastructure_failure",
+  "attempt_count_increment": 1,
+  "command_scope": "single activated Campaign097 v3 no-return audit",
+  "exit_code": 1,
+  "failure": {
+    "exception": "Campaign097NoReturnAuditError",
+    "message": "Campaign097 candidate misses frozen eligible keys in 2019",
+    "location": "v1 align_candidate_year before any coverage metric",
+    "root_cause": "The v1 alignment incorrectly required the minute candidate snapshot to contain every quality-listing denominator key. The preregistered coverage definition instead requires all frozen denominator keys to remain present and any absent candidate observation to be represented as missing before coverage is measured."
+  },
+  "failed_runner": {
+    "path": "scripts/a_share_three_day_walkforward_campaign097_no_return_audit_v3.py",
+    "sha256": "0e22daebbab70fc9aaa5cd1dcc1fb051a30f011e5a35e6f054c18ecfe9f804b4"
+  },
+  "failed_activation": {
+    "path": "docs/a_share_three_day_walkforward_campaign_097_no_return_audit_activation_binding_v3_20260807.json",
+    "sha256": "d25f59a838726bc8aa0824e76be1b55ae4ca93e99a4529a8ecc6fde4fdbcc11c"
+  },
+  "repair_boundary": "An additive v4 wrapper may replace only the per-year exact-subset assertion with a frozen left alignment from all quality-listing stock_day_key denominator rows to candidate observations, retaining NaN for unmatched keys. Duplicate candidate keys, invalid identities, nonmonotone denominator keys, range violations, and every later gate remain fail-closed.",
+  "candidate_snapshot_and_source_bytes_verified": true,
+  "candidate_2019_identity_and_factor_columns_decoded": true,
+  "eligibility_2019_stock_day_keys_read": true,
+  "identity_missing_count_computed": false,
+  "coverage_or_capacity_metrics_computed": false,
+  "comparison_values_read": false,
+  "historical_daily_price_or_forward_return_values_read": false,
+  "provider_request_issued": false,
+  "candidate49_ledgers_changed": false,
+  "current_scoring_selection_sizing_or_orders_performed": false
+}

@@ -1,0 +1,32 @@
+{
+  "schema_version": 1,
+  "kind": "a_share_three_day_walkforward_campaign099_snapshot_verify_cli_usage_failure",
+  "status": "recorded_before_corrected_verify_invocation",
+  "recorded_at": "2026-08-07T10:02:53Z",
+  "failed_invocation": {
+    "command": "verify",
+    "incorrect_argument": "--data-root",
+    "required_argument": "--manifest",
+    "exit_code": 2,
+    "failure_stage": "argparse_before_snapshot_content_read"
+  },
+  "published_snapshot_before_verification": {
+    "manifest_path": "/Volumes/DIsk/qlib-a-share-tushare-1m/derived/a_share/rich/tushare/minute_walkforward_campaign099_feature_library/tushare_stk_mins_1m_2019_2025_ea0cbb8f_walkforward_campaign099_feature_library_v1/snapshot_manifest.json",
+    "manifest_sha256": "90c495594de88e183ec920a09be7a1ef66c89d9967f59d2aa27fdd49650b4651",
+    "dataset_sha256_claim": "52f904b975a7b79f383d39ef94ce04c724a234a9a53a2e924402d17a3f7c4972",
+    "partitions_claim": 33015,
+    "rows_claim": 7724498,
+    "eligible_rows_claim": 7699914,
+    "resumed_partitions_claim": 33015,
+    "independently_verified": false
+  },
+  "next_allowed_action": "invoke the unchanged verifier with the exact published snapshot_manifest.json path via --manifest and workers=4",
+  "scientific_boundary": {
+    "snapshot_content_read_by_failed_invocation": false,
+    "coverage_or_capacity_metrics_computed": false,
+    "comparison_factor_values_read": false,
+    "historical_daily_price_or_forward_return_values_read": false,
+    "provider_request_issued": false,
+    "candidate49_ledgers_changed": false
+  }
+}

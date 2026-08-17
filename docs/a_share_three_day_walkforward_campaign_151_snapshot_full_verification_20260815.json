@@ -1,0 +1,57 @@
+{
+  "schema_version": 1,
+  "kind": "a_share_three_day_walkforward_campaign151_snapshot_full_verification",
+  "status": "passed_zero_eligible_coverage_campaign151_must_terminate_before_returns",
+  "recorded_at": "2026-08-15T01:25:47+08:00",
+  "authorization": {
+    "plan_receipt_path": "docs/a_share_three_day_walkforward_campaign_151_snapshot_verification_plan_ready_v2_20260815.json",
+    "plan_receipt_sha256": "a61b52c76aef28befca195542bd8948964591ad5382eb26f92c71b1d64d5d9f0",
+    "plan_ready": true,
+    "plan_exit_code": 0,
+    "workers": 4,
+    "confirmed_snapshot_verification": true
+  },
+  "snapshot_manifest_path": "/Volumes/DIsk/qlib-a-share-tushare-1m/derived/a_share/rich/tushare/minute_walkforward_campaign151_feature_library/tushare_stk_mins_1m_2019_2025_ea0cbb8f_walkforward_campaign151_feature_library_v1/snapshot_manifest.json",
+  "snapshot_manifest_sha256": "fdc23323e2ddc9e070f3c2a48fb5d05ebf9673b8c0c613ac88ecd0ea15054f83",
+  "dataset_sha256": "ef60fd141ab02a6b1add10de6193d47d8baad83a407a2a11488a50ce5e5f9029",
+  "partitions": 33015,
+  "rows": 7724498,
+  "eligible_rows": 0,
+  "peer_benchmark": {
+    "rows": 407760,
+    "trade_dates": 1699,
+    "positions_per_date": 240,
+    "position_238_zero_dates": 1699,
+    "output_byte_sha256": "2f8c309f9a02715b749fb961f40218650967674435e8bae1ef09024877293903",
+    "output_frame_sha256": "f9b7d4c35de39fec7ed7ba6ebb1501ee39b489651e71e41fa5739605082e95ee"
+  },
+  "verified": {
+    "all_partition_byte_hashes_match": true,
+    "all_partition_frame_hashes_match": true,
+    "all_sidecars_match_manifest_records": true,
+    "all_keys_ordered_and_unique": true,
+    "all_eligible_flags_false": true,
+    "all_factor_values_nan": true,
+    "aggregate_dataset_digest_matches": true
+  },
+  "terminal_decision": {
+    "campaign151_return_read_allowed": false,
+    "numeric_comparator_library_append_allowed": false,
+    "formula_or_gate_rescue_allowed": false,
+    "terminal_reason": "the frozen strict-positive peer-clock gate rejects every row because the leave-one-out 14:59 peer mean is zero on every date",
+    "historical_development_survivor": false,
+    "stress_2024_2025_opened": false,
+    "promotion_allowed": false
+  },
+  "research_boundary": {
+    "campaign151_candidate_partition_values_read": true,
+    "peer_benchmark_values_read": true,
+    "comparator_values_read": false,
+    "historical_daily_price_or_forward_return_values_read": false,
+    "credential_loaded": false,
+    "provider_request_issued": false,
+    "candidate49_historical_backfill_performed": false,
+    "candidate49_ledgers_changed": false,
+    "current_scoring_selection_sizing_positions_or_orders_performed": false
+  }
+}

@@ -1,0 +1,163 @@
+{
+  "schema_version": 1,
+  "kind": "a_share_three_day_walkforward_campaign195_payment_processing_merchant_acquiring_authorization_clearing_settlement_dispute_reserve_lifecycle_source_frontier",
+  "status": "checkpoint_prevalue_three_source_admission_deferrals_four_relabeling_overlap_operator_or_combination_rejections_zero_selected",
+  "recorded_at": "2026-08-15T16:10:00+08:00",
+  "timestamp_semantics": "monotonic logical append time after the Campaign194 terminal authority",
+  "purpose": "Freeze a finite payment-processing, merchant-acquiring, authorization, clearing, settlement, dispute and reserve lifecycle before source rows, event values, formulas, directions, comparators, security prices or returns.",
+  "authoritative_inputs": {
+    "campaign194_state": {"path": "docs/a_share_three_day_iteration_status_20260815_campaign194_prevalue_terminal.json", "sha256": "29abd6d92d74fa598d4bee88ae1ae505a011cba0bbca9baf4093ef4f9b8584fd"},
+    "policy_v283": {"path": "docs/a_share_three_day_walkforward_future_numeric_comparison_eligibility_policy_v283_20260815.json", "sha256": "02f25db9e78b414bfb07dd9981a736e4fc15fb47239469aad0a29bf62afb3316"},
+    "campaign163_supply_chain_frontier": {"path": "docs/a_share_three_day_walkforward_campaign_163_supply_chain_disclosure_source_frontier_20260815.json", "sha256": "3002f25ffc4ff1938933f0b4f3b998cacdb775ca0e27702c65cdc7afec0e80a3"},
+    "campaign168_operating_scale_frontier": {"path": "docs/a_share_three_day_walkforward_campaign_168_operating_scale_adoption_kpi_source_frontier_20260815.json", "sha256": "c5dc98f92266e2b7ef7349cb5260a8cde15ccd9c78442e661e4170b1ba47d18a"},
+    "campaign169_commercial_pricing_frontier": {"path": "docs/a_share_three_day_walkforward_campaign_169_commercial_pricing_terms_source_frontier_20260815.json", "sha256": "a571bcc5bcbfc158da551e59d2984a907fd44b419d115619043a9b28ee3ab288"},
+    "campaign170_customer_quality_frontier": {"path": "docs/a_share_three_day_walkforward_campaign_170_customer_experience_quality_kpi_source_frontier_20260815.json", "sha256": "b3ec42d8c8872ae9be913ffd64b24ba449e4c4f0e1f91af31b98f0e0e7158379"},
+    "campaign181_regulated_capital_frontier": {"path": "docs/a_share_three_day_walkforward_campaign_181_regulated_financial_capital_solvency_source_frontier_20260815.json", "sha256": "526ae0a7cdefd64f9c0b4890924f74a6130e553de0d7642672511ccbe3c5f448"},
+    "campaign192_bank_deposit_frontier": {"path": "docs/a_share_three_day_walkforward_campaign_192_bank_deposit_funding_franchise_lifecycle_source_frontier_20260815.json", "sha256": "8d62229370b8a5ef55868727c9edfacbbacd639f33cdb43ec10705dfa5668e2c"},
+    "campaign193_asset_management_frontier": {"path": "docs/a_share_three_day_walkforward_campaign_193_asset_management_fiduciary_aum_subscription_redemption_lifecycle_source_frontier_20260815.json", "sha256": "0cfe399f564fc798956cf56955ff965d19fa72558cdadca83b7fda6bc2f6453e"}
+  },
+  "repository_evidence": {
+    "bounded_search_scope": "Existing Campaign145-194 source-frontier and source-scouting JSON records only",
+    "bounded_search_terms": ["payment processing", "merchant acquiring", "authorization", "capture", "clearing", "settlement", "reversal", "chargeback", "representment", "merchant reserve", "支付", "收单", "清算", "结算", "拒付"],
+    "dedicated_payment_processing_merchant_acquiring_lifecycle_frontier_found": false,
+    "complete_payment_processing_merchant_acquiring_source_contract_present": false,
+    "campaign163_boundary": "Campaign163 freezes customer and supplier concentration from annual operating disclosures. Merchant, issuer-bank, network, sponsor-bank and settlement-counterparty identities require payment-role, transaction-state and legal-funds semantics rather than ordinary revenue or procurement concentration.",
+    "campaign168_boundary": "Campaign168 freezes customer or active-user counts, service footprint, utilization and realized service volume. Merchant counts, acceptance points and payment volume are therefore generic operating-scale states; Campaign195 is limited to transaction-state progression, payment dispute resolution and legally identified settlement-funds lifecycle.",
+    "campaign169_boundary": "Campaign169 freezes commercial prices, fees, rebates and realized unit prices. Merchant discount rates, take rates, interchange, scheme fees and acquiring margins are pricing states and cannot be searched here.",
+    "campaign170_boundary": "Campaign170 freezes customer returns, refunds, complaints and quality outcomes. A product refund or service complaint is not a payment-network reversal, chargeback reason, representment, arbitration or liability-allocation state unless an admitted source preserves both legal processes separately.",
+    "campaign181_boundary": "Campaign181 freezes regulated capital, solvency and prudential liquidity. Own-funds or regulatory liquidity ratios do not reconstruct client settlement payables, merchant reserves, safeguarded funds, chargeback exposure or sponsor-bank and network settlement dependencies.",
+    "campaign192_boundary": "Campaign192 observes bank deposit liabilities and depositor cohorts. Merchant settlement funds or reserves may not be relabelled as deposits unless a complete legal source identifies ownership, safeguarding, restriction, settlement purpose and transfer lifecycle.",
+    "campaign193_boundary": "Campaign193 observes fiduciary AUM and subscriptions or redemptions. Payment client funds awaiting settlement are not investment AUM, and product redemptions are not merchant refunds or chargebacks.",
+    "accounting_boundary": "Aggregate cash, restricted cash, receivables, payables, deposits or provisions cannot be renamed as a payment-clearing state without transaction batch, merchant, network, sponsor-bank, ownership, reserve and settlement reconciliation identities.",
+    "sector_scope_boundary": "Point-in-time licensed payment institution, bank acquirer, card or QR network, processor, gateway, clearing institution and listed-parent mapping must be frozen. Non-payment issuers are structurally not applicable and may not be filled with zero or cross-sector ranked.",
+    "point_in_time_boundary": "A latest merchant roster, current transaction dashboard or closing settlement balance cannot be projected backward without authorization, capture, clearing, settlement, reversal, refund, chargeback, representment, arbitration, reserve, release, correction and first-public histories."
+  },
+  "finite_prevalue_catalog": [
+    {
+      "catalog_id": "c195_01",
+      "name": "payment_authorization_capture_clearing_settlement_and_reversal_funnel_state",
+      "economic_state": "A close-known payment-intermediary transaction state linking authorization, decline, capture, presentment, clearing, settlement, timeout, reversal and reconciliation across merchant, acquirer, issuer bank, network and processor roles.",
+      "formula": null,
+      "direction": null,
+      "parameters_filters_subsets_combinations_models": [],
+      "new_issuer_state": true,
+      "complete_local_source_contract": false,
+      "decision": "deferred_source_admission_not_factor_failure",
+      "reason": "No admitted point-in-time source freezes licensed entity and listed parent, merchant and transaction identifiers, payment roles, rail and message type, authorization through settlement states, counts and amounts, retries and duplicates, reversal and correction chains, first-public timing and the complete 2019-2023 eligible denominator."
+    },
+    {
+      "catalog_id": "c195_02",
+      "name": "payment_refund_chargeback_dispute_representment_arbitration_and_loss_allocation_state",
+      "economic_state": "A close-known payment-dispute lifecycle linking refund or reversal, chargeback reason and stage, representment, pre-arbitration, arbitration, fraud or merchant liability, recovery, write-off and final resolution.",
+      "formula": null,
+      "direction": null,
+      "parameters_filters_subsets_combinations_models": [],
+      "new_issuer_state": true,
+      "complete_local_source_contract": false,
+      "decision": "deferred_source_admission_not_factor_failure",
+      "reason": "The repository lacks a privacy-safe complete history linking original transaction, merchant, cardholder or payer, network reason code, refund versus chargeback, stage transitions, deadlines, representment evidence, arbitration, provisional and final liability, recovery, correction and session availability."
+    },
+    {
+      "catalog_id": "c195_03",
+      "name": "merchant_client_funds_settlement_payable_receivable_rolling_reserve_and_counterparty_dependency_state",
+      "economic_state": "A close-known payment-funds state reconciling gross processed value to network receivables, merchant settlement payables, safeguarded or segregated client funds, rolling reserves, chargeback holds, release, sponsor-bank and network settlement dependence.",
+      "formula": null,
+      "direction": null,
+      "parameters_filters_subsets_combinations_models": [],
+      "new_issuer_state": true,
+      "complete_local_source_contract": false,
+      "decision": "deferred_source_admission_not_factor_failure",
+      "reason": "No complete source preserves legal ownership and safeguarding status, transaction and batch identity, gross-to-net reconciliation, settlement clock, merchant payable and network receivable, reserve and hold reason, release, shortfall, sponsor-bank or network concentration, correction and first-public history across 2019-2023."
+    },
+    {
+      "catalog_id": "c195_04",
+      "name": "merchant_count_transaction_volume_customer_refund_working_capital_deposit_fiduciary_asset_regulatory_capital_or_security_price_relabeling",
+      "economic_state": "A generic merchant or user count, payment volume, product refund, accounting cash or working-capital balance, bank deposit, fiduciary asset, regulatory capital or security-price state relabelled as payment-processing lifecycle quality.",
+      "formula": null,
+      "direction": null,
+      "parameters_filters_subsets_combinations_models": [],
+      "new_issuer_state": false,
+      "complete_local_source_contract": false,
+      "decision": "rejected_terminal_operating_scale_customer_quality_accounting_deposit_fiduciary_capital_and_security_price_source_relabeling",
+      "reason": "Campaign168, 170, 181, 192 and 193 already govern adjacent operating, customer, prudential, deposit and fiduciary states. None identifies authorization-to-settlement progression, payment-dispute resolution or legal client-funds reconciliation."
+    },
+    {
+      "catalog_id": "c195_05",
+      "name": "merchant_discount_take_rate_interchange_network_fee_pricing_or_margin_variant",
+      "economic_state": "A merchant discount rate, take rate, interchange, scheme or network fee, rebate, surcharge, cross-border spread, net revenue yield or margin transform applied to an unadmitted payment state.",
+      "formula": null,
+      "direction": null,
+      "parameters_filters_subsets_combinations_models": [],
+      "new_issuer_state": false,
+      "complete_local_source_contract": false,
+      "decision": "rejected_campaign169_commercial_pricing_overlap_and_operator_search_before_base_source_admission",
+      "reason": "Campaign169 already freezes commercial pricing and fee changes. Selecting a merchant rate, take rate, interchange, network fee, margin, direction or interaction would overlap that frontier and multiply operators before a payment lifecycle source is admitted."
+    },
+    {
+      "catalog_id": "c195_06",
+      "name": "card_qr_wallet_crossborder_merchant_region_channel_stage_reason_direction_threshold_window_or_subset_variant",
+      "economic_state": "A selected rail, tender, merchant class, geography, channel, transaction stage, failure or chargeback reason, reserve type, direction, threshold or event window from an unadmitted payment base.",
+      "formula": null,
+      "direction": null,
+      "parameters_filters_subsets_combinations_models": [],
+      "new_issuer_state": false,
+      "complete_local_source_contract": false,
+      "decision": "rejected_operator_rail_merchant_region_channel_stage_reason_direction_threshold_window_and_subset_search_before_base_source_admission",
+      "reason": "Selecting favorable cards, QR, wallets, cross-border flows, merchant categories, regions, channels, failure codes, dispute reasons, reserve classes, directions, thresholds or windows before source admission would multiply hypotheses and create incident and reporting survivorship."
+    },
+    {
+      "catalog_id": "c195_07",
+      "name": "combined_payment_funnel_dispute_resolution_settlement_reserve_and_counterparty_score_or_model",
+      "economic_state": "A joint payment-intermediary franchise score across authorization-to-settlement progression, refund and chargeback resolution, client-funds reconciliation, reserve release and counterparty dependency.",
+      "formula": null,
+      "direction": null,
+      "parameters_filters_subsets_combinations_models": [],
+      "new_issuer_state": false,
+      "complete_local_source_contract": false,
+      "decision": "rejected_unadmitted_component_normalization_weight_interaction_and_model_search",
+      "reason": "Combining three unadmitted source families or selecting normalization, ranks, weights, interactions, filters, subsets or models is closed before every base history passes the same source gate."
+    }
+  ],
+  "mandatory_source_admission_gate": {
+    "must_freeze_before_any_formula_or_direction": [
+      "exact PBOC, clearing-association, card or QR network, licensed acquirer or processor filing, issuer disclosure, audit or licensed structured source with immutable bytes and stable institution, merchant, transaction, batch, dispute, reserve, document and observation identifiers",
+      "reference date, processing date, authorization, capture, presentment, clearing, settlement, reversal, refund, chargeback, representment, arbitration, reserve, release, first-public, correction and supersession timestamps with trading-session availability",
+      "listed security, listed parent, licensed payment subsidiary, branch, merchant, acquirer, processor, gateway, issuer bank, clearing institution, card or QR network, sponsor or safeguarding bank and settlement counterparty mapping without current-state leakage",
+      "payment-rail and tender taxonomy separating debit, credit, prepaid, account-to-account, QR, wallet, bank transfer, domestic, cross-border, online, offline and card-present or card-not-present states with regime-version crosswalks",
+      "transaction state machine covering authorization, decline, timeout, capture, void, presentment, clearing, settlement, retry, duplicate, partial completion, reversal and final reconciliation with stable reason codes",
+      "transaction counts and amounts with currency, unit, gross or net presentation, processed versus authorized versus captured versus settled denominator, FX conversion, fee exclusion and no duplicate or retry double counting",
+      "authorization, capture, clearing and settlement success, failure, latency, aging and reconciliation definitions with complete eligible denominators and no favorable omission of declined or reversed transactions",
+      "refund, reversal, chargeback, fraud, representment, pre-arbitration, arbitration, provisional credit, merchant or issuer liability, recovery, write-off, reopened and final-resolution semantics",
+      "merchant settlement payable, network and issuer receivable, safeguarded or segregated client funds, rolling reserve, chargeback hold, release, shortfall and gross-to-net stock-flow reconciliation semantics",
+      "merchant, sponsor-bank, issuer-bank, processor, network, geography, rail and settlement-counterparty concentration numerator and denominator, transfer, outage, replacement, failure and resolution histories",
+      "missing, confidential, suppressed, pending, failed, reversed, disputed, expired, not-applicable, structural non-payment issuer, true zero dispute, zero reserve and zero settlement amount semantics without favorable absence coding",
+      "complete bounded 2019-2023 partition manifest, full eligible licensed-payment-intermediary denominator, delisting and corporate-action coverage, pagination and parser, identity, chronology, state-machine, amount, reconciliation, no-double-count, applicability and source-acceptance tests using no factor, comparator, security-price or return values"
+    ],
+    "formula_direction_parameter_filter_subset_combination_or_model_choice_allowed_before_gate": false
+  },
+  "gate_summary": {
+    "routes_reviewed": 7,
+    "genuinely_new_issuer_state_routes": 3,
+    "source_admission_deferrals_not_factor_failures": 3,
+    "relabeling_overlap_operator_or_combination_route_rejections": 4,
+    "selected_candidate_count": 0,
+    "complete_factor_definition_created": false,
+    "numeric_comparator_created": false
+  },
+  "scientific_interpretation": {
+    "payment_processing_merchant_acquiring_lifecycle_state_declared_ineffective": false,
+    "absence_of_an_admitted_historical_source_is_evidence_of_no_predictive_power": false,
+    "safe_conclusion": "Three distinct authorization-to-settlement, payment-dispute and client-funds reserve states remain deferred at source admission; operating-scale, customer-refund, accounting, deposit, fiduciary, prudential and security-price relabeling, Campaign169 pricing overlap, premature subset search and unadmitted combinations are closed before values."
+  },
+  "research_boundary": {
+    "finite_catalog_frozen_before_source_or_value_read": true,
+    "source_row_payment_transaction_dispute_reserve_factor_comparator_security_price_or_return_value_read": false,
+    "repository_policy_and_prior_records_only": true,
+    "provider_or_web_request_issued": false,
+    "provider_credential_presence_value_or_digest_read": false,
+    "stress_2024_2025_opened": false,
+    "candidate49_ledgers_changed": false,
+    "second_prospective_candidate_created": false
+  },
+  "next_action": "Create the Campaign195 append-only attempt ledger including all seven scientific routes and every observed infrastructure failure, then publish prevalue terminal authority."
+}

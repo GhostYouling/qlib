@@ -1,0 +1,34 @@
+{
+  "version": 5,
+  "kind": "a_share_three_day_walkforward_campaign075_no_return_audit_implementation_freeze",
+  "status": "frozen_before_full_retry_with_captured_original_snapshot_config_callable",
+  "recorded_at": "2026-08-06T10:04:00+08:00",
+  "repair_protocol": {
+    "path": "docs/a_share_three_day_walkforward_campaign_075_no_return_runtime_compatibility_recursion_repair_protocol_v5_20260806.json",
+    "sha256": "4c89f9b06542e2b215a225b381c2dfd8de68aa2bc1e960d854a0cd888304fb99"
+  },
+  "failure_record": {
+    "path": "docs/a_share_three_day_walkforward_campaign_075_no_return_v4_recursive_config_failure_20260806.json",
+    "sha256": "dc07150b58077016d55365598a18298fbfac40a91e2723c1575ac0501e18f1ef"
+  },
+  "v5_runner": {
+    "path": "scripts/a_share_three_day_walkforward_campaign075_no_return_audit_v5.py",
+    "sha256": "30d604ce872c006de53e0e1ff4f95a42646866ecf884b6c7dbc2393f7feebd79"
+  },
+  "tests": {
+    "path": "tests/data_collector_tests/test_a_share_three_day_walkforward_campaign075_no_return_audit_v5.py",
+    "sha256": "a89726b56cfd2e9ce0f3afc314c8b60df2aee5bcb335e4608a2ddb67efb4dc0b",
+    "passed": 3,
+    "failed": 0
+  },
+  "captured_original_v3_snapshot_config_callable_before_monkeypatch": true,
+  "corrected_research_fields": [],
+  "additional_snapshot_hash_corrections": [],
+  "partial_statistics_reused": false,
+  "snapshot_or_manifest_files_rewritten": false,
+  "historical_daily_price_fields_read_before_retry": [],
+  "historical_forward_returns_read_before_retry": false,
+  "provider_request_issued_before_retry": false,
+  "candidate49_ledgers_changed": false,
+  "next_action": "Restart the complete Campaign075 no-return audit from candidate snapshot verification and coverage."
+}

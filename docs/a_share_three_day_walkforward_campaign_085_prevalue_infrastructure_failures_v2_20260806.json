@@ -1,0 +1,51 @@
+{
+  "version": 2,
+  "kind": "a_share_three_day_walkforward_campaign085_prevalue_infrastructure_failures",
+  "status": "three_prevalue_infrastructure_failures_preserved_v2_feature_suite_passed",
+  "recorded_at": "2026-08-06T23:44:00+08:00",
+  "campaign_id": "085",
+  "supersedes_without_rewriting": {
+    "path": "docs/a_share_three_day_walkforward_campaign_085_prevalue_infrastructure_failures_20260806.json",
+    "sha256": "d6d053a4b032d715293d522b4b0cf38b0f5f4733a907771e2b8a4168ba78aad9",
+    "preserved": true,
+    "failure_count": 1
+  },
+  "appended_failures": [
+    {
+      "ordinal": 2,
+      "stage": "prevalue_feature_output_root_executability",
+      "outcome": "v1_builder_missing_parent_directory_creation_before_temporary_root",
+      "formal_build_attempted": false,
+      "compact_cache_rows_read": false,
+      "candidate_values_computed": false,
+      "comparison_values_read": false,
+      "historical_daily_price_or_return_values_read": false,
+      "provider_request_issued": false
+    },
+    {
+      "ordinal": 3,
+      "stage": "prevalue_v2_repair_patch",
+      "outcome": "first_atomic_patch_rejected_because_black_had_collapsed_the_expected_mkdtemp_context",
+      "any_file_changed_by_failed_patch": false,
+      "compact_cache_rows_read": false,
+      "candidate_values_computed": false,
+      "comparison_values_read": false,
+      "historical_daily_price_or_return_values_read": false,
+      "provider_request_issued": false
+    }
+  ],
+  "successful_continuation": {
+    "repair_protocol_sha256": "92f873d020d0103f980501ec46b4b80c3a378dfd4c3908da17d2e65c9fbede1c",
+    "v2_feature_runner_sha256": "309239597b52ae364771112f9d1de9bc4231662226ed11b1d69f2d4770e569c8",
+    "v2_tests_sha256": "e8325db91dc6f7e80130dee46036d4a8c086d302e9a363f44586df37317a071c",
+    "black_check_passed": true,
+    "ruff_check_passed": true,
+    "feature_tests_passed": 7,
+    "feature_tests_failed": 0,
+    "compact_cache_rows_read": false,
+    "candidate_values_computed": false,
+    "comparison_values_read": false,
+    "historical_daily_price_or_return_values_read": false,
+    "provider_request_issued": false
+  }
+}

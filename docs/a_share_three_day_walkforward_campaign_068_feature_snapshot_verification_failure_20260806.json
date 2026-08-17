@@ -1,0 +1,78 @@
+{
+  "version": 1,
+  "kind": "a_share_three_day_walkforward_campaign068_feature_snapshot_verification_failure",
+  "status": "recorded_before_additive_v2_verifier_and_new_snapshot_root",
+  "recorded_at": "2026-08-06T02:44:42+08:00",
+  "failed_command": "PYTHONPATH=/Volumes/DIsk/Disk-Coding/qlib /Volumes/DIsk/Coding/anaconda3/bin/python -m scripts.a_share_three_day_walkforward_campaign068_features verify --manifest /Volumes/DIsk/qlib-a-share-tushare-1m/derived/a_share/rich/tushare/minute_walkforward_campaign068_feature_library/tushare_stk_mins_1m_2019_2025_ea0cbb8f_walkforward_campaign068_feature_library_v1/snapshot_manifest.json --workers 4",
+  "exit_code": 1,
+  "error": {
+    "class": "Campaign068FeatureError",
+    "message": "partition value semantics changed",
+    "first_reported_partition": "partitions/sh600000/2022.parquet"
+  },
+  "failed_snapshot": {
+    "root": "/Volumes/DIsk/qlib-a-share-tushare-1m/derived/a_share/rich/tushare/minute_walkforward_campaign068_feature_library/tushare_stk_mins_1m_2019_2025_ea0cbb8f_walkforward_campaign068_feature_library_v1",
+    "manifest_sha256": "7f1fde764d0a0bdc83852a8ffc074c459a94fbb89e497b7eafd22f7e5eaac3fa",
+    "dataset_sha256": "bcd03a5e2122b64b072985b3a9a9ada880cad337dae4766a00cf52bf51f4f449",
+    "partitions": 33015,
+    "rows": 7724498,
+    "eligible_rows": 6317276,
+    "accepted_for_no_return_audit": false,
+    "may_be_reused_for_v2_publication": false
+  },
+  "root_cause": {
+    "classification": "inherited_verifier_range_contract_not_updated_for_signed_factor",
+    "candidate_frozen_range": [
+      -1.0,
+      1.0
+    ],
+    "inherited_verifier_range": [
+      0.0,
+      1.0
+    ],
+    "diagnostic_partition": {
+      "symbol": "SH600000",
+      "year": 2022,
+      "eligible_rows": 242,
+      "finite_rows": 242,
+      "minimum": -0.11715990381368291,
+      "maximum": 0.2427485847963211,
+      "negative_eligible_rows": 166,
+      "rows_outside_frozen_minus1_plus1_range": 0
+    },
+    "candidate_formula_or_values_changed": false,
+    "evidence": "The inherited Campaign066 verifier rejects every negative eligible value even though the signed Campaign068 rank gap is frozen on [-1,1]. The sampled failed partition contains no nonfinite eligible value and no value outside [-1,1]."
+  },
+  "frozen_v1_implementation": {
+    "runner_path": "scripts/a_share_three_day_walkforward_campaign068_features.py",
+    "runner_sha256": "1ebfbfd5709132d49f5d34276176df26a5ca53cfa492700a69c7ba64422d0b22",
+    "implementation_freeze_path": "docs/a_share_three_day_walkforward_campaign_068_feature_implementation_freeze_20260806.json",
+    "implementation_freeze_sha256": "fbc5991e61ae427e9a752c2525a702a54d930eef2cd55c434c78d4ae33c841cf",
+    "may_be_edited_in_place": false
+  },
+  "repair_requirement": {
+    "new_v2_runner_or_verifier_required": true,
+    "new_v2_output_root_required": true,
+    "v1_snapshot_files_may_be_reused_or_republished": false,
+    "candidate_formula_direction_availability_acceleration_rank_or_missing_semantics_may_change": false,
+    "v2_verifier_must_require_finite_eligible_values_within_minus1_plus1": true,
+    "v2_verifier_must_require_noneligible_values_nonfinite": true,
+    "all_33015_partition_byte_and_frame_hashes_must_pass": true
+  },
+  "candidate49_integrity": {
+    "signal_ledger_sha256": "5193f00d7f36da003f53cec387900da4c3d002299f5dfcfc1a95eaa199ed3a79",
+    "execution_ledger_sha256": "d57a3e61eac969e42cafa418ccd8c0a5ee65dcf69da145bb2c096c2a02a2ea4f"
+  },
+  "research_effect": {
+    "campaign068_candidate_source_rows_and_values_read": true,
+    "comparison_values_read": false,
+    "historical_daily_price_fields_read": [],
+    "historical_forward_return_fields_read": false,
+    "provider_request_issued": false,
+    "historical_research_attempt_count_increment": 1,
+    "cumulative_historical_research_attempt_count": 403,
+    "return_reading_development_trial_count_increment": 0,
+    "cumulative_return_reading_development_trial_count": 274,
+    "current_scoring_selection_sizing_or_orders_performed": false
+  }
+}

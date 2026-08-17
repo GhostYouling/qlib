@@ -1,0 +1,45 @@
+{
+  "version": 1,
+  "kind": "a_share_three_day_walkforward_campaign063_status_import_path_failure",
+  "status": "recorded_infrastructure_failure_before_any_campaign063_value_read",
+  "recorded_at": "2026-08-05T06:08:00+08:00",
+  "stage": "first_read_only_feature_status_invocation_after_implementation_freeze",
+  "command_shape": "PYTHONPATH=<third-party-site-packages-only> python -S scripts/a_share_three_day_walkforward_campaign063_features.py status --data-root <active-data-root>",
+  "exit_code": 1,
+  "failure": {
+    "exception": "ModuleNotFoundError",
+    "message": "No module named 'scripts'",
+    "root_cause": "With -S and the script executed by filename, sys.path contained the scripts directory and the explicitly supplied third-party path but not the repository root required for absolute imports from the scripts package.",
+    "code_or_formula_defect": false,
+    "credential_defect": false,
+    "source_or_benchmark_defect": false
+  },
+  "recovery_contract": {
+    "allowed": true,
+    "change": "Add the already known repository root to PYTHONPATH for process import resolution only.",
+    "feature_code_change": false,
+    "protocol_change": false,
+    "implementation_freeze_change": false,
+    "formula_direction_peer_grid_loss_transform_missing_rule_change": false,
+    "build_or_return_trial_consumed": false
+  },
+  "research_boundary": {
+    "raw_minute_partition_values_read": false,
+    "cross_sectional_moment_values_read": false,
+    "candidate_values_computed_or_read": false,
+    "comparison_values_read": false,
+    "historical_daily_price_fields_read": false,
+    "historical_forward_returns_read": false,
+    "provider_request_issued": false,
+    "candidate49_historical_return_signal_execution_or_milestone_backfill_performed": false,
+    "candidate49_ledgers_changed": false,
+    "second_prospective_candidate_created": false,
+    "current_scoring_selection_sizing_or_orders_performed": false
+  },
+  "counting": {
+    "campaign063_research_attempt_increment": 1,
+    "campaign063_infrastructure_only_failure_increment": 1,
+    "campaign063_complete_factor_attempt_increment": 0,
+    "return_reading_development_trial_increment": 0
+  }
+}

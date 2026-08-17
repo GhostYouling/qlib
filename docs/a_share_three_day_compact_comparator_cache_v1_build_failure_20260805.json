@@ -1,0 +1,59 @@
+{
+  "version": 1,
+  "kind": "a_share_three_day_compact_comparator_cache_build_failure",
+  "status": "recorded_before_additive_v2_repair",
+  "recorded_at": "2026-08-05T21:07:44+08:00",
+  "failed_command": "PYTHONPATH=/Volumes/DIsk/Disk-Coding/qlib /Volumes/DIsk/Coding/anaconda3/bin/python -m scripts.a_share_three_day_compact_comparator_cache build --data-root /Volumes/DIsk/qlib-a-share-tushare-1m --output-root /Volumes/DIsk/qlib-a-share-tushare-1m/derived/a_share/rich/tushare/compact_comparator_cache/campaign067_terminal_numeric98_v1 --workers 4 --confirm-build",
+  "exit_code": 1,
+  "observed": {
+    "error_class": "a_share_three_day_walkforward_campaign004_features.Campaign004FeatureError",
+    "error_message": "explicit comparison snapshot does not cover every candidate key",
+    "failing_source": "/Volumes/DIsk/qlib-a-share-tushare-1m/derived/a_share/rich/tushare/minute_sentiment_clean/tushare_stk_mins_1m_2019_2025_ea0cbb8f_sentiment_clean_v1",
+    "failing_call": "terminal.campaign044._load_aligned_source_values(source, keys)",
+    "formal_output_root_existed_after_failure": false,
+    "preserved_temporary_root": "/Volumes/DIsk/qlib-a-share-tushare-1m/derived/a_share/rich/tushare/compact_comparator_cache/.campaign067_terminal_numeric98_v1.kj11xh9o",
+    "preserved_working_matrix_bytes": 1044099184
+  },
+  "root_cause": "The v1 builder asked every inherited explicit snapshot loader to cover the complete candidate-independent eligibility key set. Campaign067 itself requested each comparator only on the valid keys of the Campaign067 candidate, so at least the sentiment-clean snapshot legitimately lacks some global eligibility keys that Campaign067 never requested. The strict inherited loader therefore rejected the broader v1 cache request before Parquet publication.",
+  "semantic_requirement_for_repair": {
+    "global_cache_key_set_must_remain_frozen": true,
+    "missing_source_keys_must_be_materialized_as_nonfinite_not_imputed": true,
+    "values_on_source_keys_must_remain_bitwise_canonical_equal": true,
+    "pairwise_complete_daily_spearman_must_be_recomputed_on_each_future_candidate_intersection": true,
+    "campaign067_97_result_objects_must_remain_exactly_equal": true,
+    "v1_protocol_or_builder_edit_allowed": false,
+    "v1_failed_temporary_root_may_be_reused": false,
+    "repair_must_use_a_new_absolute_output_root": true
+  },
+  "frozen_v1_bindings": {
+    "protocol": {
+      "path": "docs/a_share_three_day_compact_comparator_cache_protocol_v1_20260805.json",
+      "sha256": "bf5247378056851ea004c08aad071c7a1ccf552cb1feaf6937251a26234c3273"
+    },
+    "implementation_freeze": {
+      "path": "docs/a_share_three_day_compact_comparator_cache_implementation_freeze_v1_20260805.json",
+      "sha256": "c679d045ed553f43f314ebb488a120054168ee51dc6953047fffccf887a03d99"
+    },
+    "builder": {
+      "path": "scripts/a_share_three_day_compact_comparator_cache.py",
+      "sha256": "9d78ac449c74cf0709bcd5a479eabc39eed487dc6c09fed1dd71c8127911f6a5"
+    }
+  },
+  "candidate49_integrity_after_failure": {
+    "signal_ledger_sha256": "5193f00d7f36da003f53cec387900da4c3d002299f5dfcfc1a95eaa199ed3a79",
+    "execution_ledger_sha256": "d57a3e61eac969e42cafa418ccd8c0a5ee65dcf69da145bb2c096c2a02a2ea4f",
+    "daily_source_failure_record_sha256": "b2b6b07e1f0fca128ba9935dac6331319b2a7147e3d73e52b624853a2259bbbf"
+  },
+  "research_effect": {
+    "comparison_factor_values_partially_read": true,
+    "candidate_factor_values_read": false,
+    "historical_daily_price_or_forward_return_values_read": false,
+    "provider_request_issued": false,
+    "current_scoring_selection_sizing_or_orders_performed": false,
+    "research_attempt_count_increment": 0,
+    "return_reading_development_trial_count_increment": 0,
+    "cache_infrastructure_failure_count_increment": 1,
+    "cumulative_cache_infrastructure_failure_count": 2
+  },
+  "next_action": "Diagnose the inherited loader contract without reading returns, add a v2 protocol/builder/test/output root that represents absent source keys as nonfinite values, freeze it before the first v2 comparator-value read, and never rerun or publish the failed v1 output."
+}

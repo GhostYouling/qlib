@@ -1,0 +1,42 @@
+{
+  "schema_version": 1,
+  "kind": "a_share_three_day_walkforward_campaign097_no_return_audit_verification_contract_failure",
+  "status": "preserved_fail_closed_infrastructure_attempt_after_full_byte_verification_before_candidate_column_alignment_coverage_comparison_or_return_values",
+  "recorded_at": "2026-08-07T06:10:00Z",
+  "campaign": 97,
+  "attempt_class": "infrastructure_failure",
+  "attempt_count_increment": 1,
+  "command_scope": "single activated Campaign097 v2 no-return audit",
+  "exit_code": 1,
+  "failure": {
+    "exception": "Campaign097NoReturnAuditV2Error",
+    "message": "candidate snapshot verification changed",
+    "location": "v2 verification result assertion after verified candidate partitions 33015/33015",
+    "root_cause": "The inherited verifier returns verified aggregate field names ending in _verified and has no synthetic status, dataset_sha256, or comparison_values_read fields; the v2 wrapper asserted the older seven-partition verification contract."
+  },
+  "failed_runner": {
+    "path": "scripts/a_share_three_day_walkforward_campaign097_no_return_audit_v2.py",
+    "sha256": "4e89b3e002f6a42b84fe41f0e4c09cb411e19307c4224867782ed1df141e20d2"
+  },
+  "failed_activation": {
+    "path": "docs/a_share_three_day_walkforward_campaign_097_no_return_audit_activation_binding_v2_20260807.json",
+    "sha256": "31237866d1e200390567e6b99fc146dfc1f0444803f642fbd2efab198e11da2d"
+  },
+  "observed_verified_aggregate_contract": {
+    "partitions_verified": 33015,
+    "rows_verified": 7724498,
+    "eligible_rows_verified": 7699914,
+    "partition_bytes_verified": 290653280,
+    "market_benchmark_bytes_verified": 3607113
+  },
+  "repair_boundary": "An additive v3 wrapper may assert the exact observed aggregate verification contract only; the v1 and v2 runners, frozen factor, eligibility alignment, gates, comparators, thresholds, and output semantics remain immutable.",
+  "candidate_partition_and_source_bytes_verified": true,
+  "candidate_parquet_columns_decoded": false,
+  "eligibility_stock_day_keys_read": false,
+  "coverage_or_capacity_metrics_computed": false,
+  "comparison_values_read": false,
+  "historical_daily_price_or_forward_return_values_read": false,
+  "provider_request_issued": false,
+  "candidate49_ledgers_changed": false,
+  "current_scoring_selection_sizing_or_orders_performed": false
+}

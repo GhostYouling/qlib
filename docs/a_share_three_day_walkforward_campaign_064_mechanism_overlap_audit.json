@@ -1,0 +1,158 @@
+{
+  "version": 1,
+  "kind": "a_share_three_day_walkforward_campaign064_mechanism_overlap_audit",
+  "status": "passed_conceptual_independence_before_campaign064_source_candidate_comparison_daily_price_or_return_values",
+  "recorded_at": "2026-08-05T07:12:00+08:00",
+  "purpose": "Challenge the selected local range-order-complexity mechanism against the complete inherited terminal library and freeze exactly one formula, direction, range transform, tuple alphabet, time grid, pooling rule, entropy normalization, and missing rule before any Campaign064 value is read.",
+  "authoritative_boundary": {
+    "campaign063_verified_state": {
+      "path": "docs/a_share_three_day_iteration_status_20260805_campaign063_verified.json",
+      "sha256": "38be5bb594016391a1faaa4c2340720070fa830c9adac0c64355fb608ee12755"
+    },
+    "historical_walkforward_policy": {
+      "path": "docs/a_share_three_day_historical_walkforward_research_policy_20260727.json",
+      "sha256": "38426d6161b9bfed323c58caba18feca668b8c9d53e294951a8ba90c01a798bb"
+    },
+    "concept_scouting": {
+      "path": "docs/a_share_three_day_walkforward_campaign_064_concept_scouting.json",
+      "sha256": "1f84e3ee16b6e4ca0b2e6d7d8054fb0cb5822b5dd9c639c0e527f4e333a9f893"
+    }
+  },
+  "inherited_definition_sources": {
+    "campaign063_protocol": {
+      "path": "docs/a_share_three_day_walkforward_campaign_063_no_return_preregistration.json",
+      "sha256": "2effcee4ccbbba8d55f450c7add3eb6064968a60c9d856ac769aebd20e542dfb"
+    },
+    "campaign063_terminal_record": {
+      "path": "docs/a_share_three_day_walkforward_campaign_063_research_record_v4.json",
+      "sha256": "1ae2c0aad4316331feccdccca57eb5e136908ab17a6df620a3fa0e8d1bfffc4f"
+    },
+    "total_required_no_return_comparison_count": 95,
+    "comparison_order_definition": "Take all 94 reconstructed comparison factors from the bound Campaign063 protocol in exact order, then append terminal Campaign063 exactly once.",
+    "campaign064_source_candidate_or_comparison_values_read": false
+  },
+  "selected_mechanism": {
+    "name": "intraday_range_weak_order_entropy_236t",
+    "direction": "higher",
+    "economic_hypothesis": "Greater diversity in the local ordering of intrabar volatility states may indicate distributed information processing rather than persistent clustered stress and may remain informative from the next open through the third close.",
+    "source_projection": [
+      "datetime",
+      "symbol",
+      "provider",
+      "high",
+      "low"
+    ],
+    "forbidden_source_fields": [
+      "open",
+      "close",
+      "volume",
+      "amount"
+    ],
+    "bar_grid": "Exactly 120 high/low bars in 09:31--11:30 and exactly 120 in 13:01--15:00; exclude 09:30 and never cross lunch.",
+    "range_rule": "For every selected bar require finite low>0 and finite high>=low, then x=ln(high/low). Exact high=low produces x=0 and is retained.",
+    "triple_rule": "Within each half form every overlapping consecutive triple (x_i,x_{i+1},x_{i+2}) for i=0..117, giving exactly 118 morning and 118 afternoon triples, pooled with equal triple weight.",
+    "weak_order_rule": "For each triple compute the exact zero-tolerance key (cmp(x0,x1),cmp(x0,x2),cmp(x1,x2)), with cmp in {-1,0,+1}. Require the key to be one of the 13 transitive weak-order states; retain all exact ties and never jitter, rank-average, or drop a triple.",
+    "formula": "For the 13 pooled state counts let p_k=count_k/236 and score=-sum_{p_k>0}(p_k*ln(p_k))/ln(13).",
+    "zero_semantics": "A zero range and every tied pair are retained. If all 236 triples occupy one state, score zero is valid.",
+    "valid_range": {
+      "lower": 0.0,
+      "lower_inclusive": true,
+      "upper": 1.0,
+      "upper_inclusive": true
+    },
+    "missing_rule": "Missing for an incomplete fixed grid, invalid/nonfinite high or low, high<low, nonfinite range, a non-transitive/unrecognized state key, a triple count other than 236, a nonfinite entropy, or a score outside [0,1]. Never fill, jitter, clip, winsorize, threshold, filter, or substitute.",
+    "alternate_field_tuple_length_alphabet_tie_window_pooling_entropy_direction_threshold_filter_subset_board_year_cost_regime_fit_combination_or_model_search": false
+  },
+  "overlap_challenges": [
+    {
+      "family": "intraday_return_weak_order_entropy_234t",
+      "result": "distinct_pending_statistical_uniqueness_gate",
+      "reason": "Campaign035 sequences signed adjacent close returns and has 234 return triples. Campaign064 sequences 240 contemporaneous high/low ranges into 236 range triples. Holding high/low ranges fixed while changing admissible closes changes Campaign035 but leaves Campaign064 unchanged; holding closes fixed while expanding selected highs/lows changes Campaign064 but not Campaign035."
+    },
+    {
+      "family": "intraday_intrabar_range_participation_entropy_240m",
+      "result": "distinct_pending_statistical_uniqueness_gate",
+      "reason": "Range participation entropy is an order-invariant distribution of magnitude shares across 240 clock positions. Campaign064 is invariant to every strictly increasing transform of all range values but changes when their local ordering is permuted, and it discards magnitude shares and absolute clock labels."
+    },
+    {
+      "family": "intraday_adjacent_range_overlap_continuity_and_global_range_revisit",
+      "result": "distinct_pending_statistical_uniqueness_gate",
+      "reason": "Those mechanisms depend on price-interval levels and overlap/revisit geometry. Translating or widening bar intervals while preserving the weak ordering of log ranges can change their scores while Campaign064 remains unchanged."
+    },
+    {
+      "family": "intraday_midrange_width_change_coupling_and_range_boundary_translation_coherence",
+      "result": "distinct_pending_statistical_uniqueness_gate",
+      "reason": "Those factors use signed or linear coupling of midrange/boundary movements and range-width changes. Campaign064 uses no midrange, boundary translation, covariance, sign of price movement, or magnitude of width change."
+    },
+    {
+      "family": "intraday_morning_afternoon_range_profile_similarity_120b",
+      "result": "distinct_pending_statistical_uniqueness_gate",
+      "reason": "Campaign040 compares two normalized 120-clock range distributions position by position. Campaign064 pools local ordinal triples across halves, ignores matching morning/afternoon clocks, and can change under a within-half permutation that leaves each half's unordered range mass unchanged."
+    },
+    {
+      "family": "intraday_return_spectral_entropy_absolute_return_persistence_and_range_reversal",
+      "result": "distinct_pending_statistical_uniqueness_gate",
+      "reason": "Spectral entropy and return persistence depend on close returns, while range reversal uses directional price response. Campaign064 uses only the ordinal sequence of unsigned high/low widths and no Fourier power, return magnitude, price direction, or reversal payoff."
+    },
+    {
+      "family": "intraday_cross_sectional_standardized_return_state_stability_236p",
+      "result": "distinct_pending_statistical_uniqueness_gate",
+      "reason": "Campaign063 requires synchronous cross-sectional close-return moments and measures adjacent leave-one-out z-state displacement. Campaign064 has no close, peer population, cross-sectional moment, standardization, or displacement loss and is unaffected by Campaign063's structural position236 zero peer variance."
+    },
+    {
+      "family": "quarterly_disclosure_accounting_and_Candidate49",
+      "result": "distinct_no_historical_return_comparison",
+      "reason": "Campaign064 reads no quarterly field, close, volume, amount, or cumulative VWAP. Candidate49 remains future-only and is present solely in the no-return comparison catalog; no Candidate49 historical return is read."
+    }
+  ],
+  "counterfactual_independence_tests": [
+    "Holding all high/low ranges fixed while changing admissible closes, volume, amount, and quarterly records leaves Campaign064 unchanged.",
+    "Applying any common strictly increasing transform to all 240 range values preserves every weak-order state and Campaign064 but generally changes range magnitude entropy, variance, and correlation factors.",
+    "Permuting range positions within a half while preserving the unordered multiset can change Campaign064 but leaves order-invariant range participation entropy unchanged.",
+    "Changing interval midpoints and overlap geometry while preserving every log-range weak-order relation leaves Campaign064 unchanged but can change interval overlap, boundary, and revisit factors.",
+    "Changing the cross-sectional peer return population while holding high/low ranges fixed changes Campaign063 and market-relative factors but leaves Campaign064 unchanged."
+  ],
+  "rejected_variants_before_values": [
+    "strict six-state permutation entropy, tie dropping, jitter, tolerance bands, rank averaging, or a different weak-order alphabet",
+    "tuple lengths two, four, five, higher lag, nonoverlapping triples, Markov transitions, conditional entropy, mutual information, spectral entropy, or compression measures",
+    "raw high-low difference, true range, close-to-close return, Parkinson variance, squared range, normalized range, or volume/amount weighting",
+    "morning-only, afternoon-only, lunch-spanning, cross-day, board, year, liquidity, volatility, event, or price-level subsets",
+    "lower direction, inverse entropy, exponential/logistic transforms, thresholds, filters, residualization, combinations, fitting, or models"
+  ],
+  "design_choices_frozen_before_values": {
+    "candidate_count": 1,
+    "factor_name": "intraday_range_weak_order_entropy_236t",
+    "direction": "higher",
+    "selected_bars": 240,
+    "range_transform": "ln(high/low)",
+    "tuple_length": 3,
+    "overlapping_triples_per_half": 118,
+    "pooled_triple_count": 236,
+    "weak_order_state_count": 13,
+    "comparison_tolerance": 0.0,
+    "exact_ties_retained": true,
+    "equal_triple_weights": true,
+    "score": "normalized_Shannon_entropy_divided_by_ln13",
+    "valid_range": "[0,1]",
+    "parameter_filter_subset_model_or_combination_search": false
+  },
+  "research_boundary": {
+    "campaign064_external_minute_rows_read": false,
+    "campaign064_candidate_or_comparison_values_read": false,
+    "historical_daily_price_fields_read": false,
+    "historical_forward_return_fields_read": false,
+    "provider_request_issued": false,
+    "candidate49_historical_return_signal_execution_or_milestone_backfill_performed": false,
+    "candidate49_ledgers_changed": false,
+    "second_prospective_candidate_created": false,
+    "current_scoring_selection_sizing_or_orders_performed": false,
+    "investment_advice": false,
+    "current_listing_snapshot_survivorship_limitation": true
+  },
+  "decision": {
+    "conceptual_independence_passed": true,
+    "statistical_independence_pending_all_95_comparisons": true,
+    "predictive_value_established": false,
+    "next_action": "Bind the concept hash; then freeze exact source fingerprints, 95-factor comparison order, coverage/novelty gates, one development trial, code, and synthetic tests before opening Campaign064 values."
+  }
+}

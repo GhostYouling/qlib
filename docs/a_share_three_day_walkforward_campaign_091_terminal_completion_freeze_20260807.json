@@ -1,0 +1,58 @@
+{
+  "schema_version": 1,
+  "kind": "a_share_three_day_walkforward_campaign091_terminal_completion_freeze",
+  "status": "terminal_zero_survivors_stress_closed_and_future_duplicate_detector_frozen",
+  "frozen_at": "2026-08-07T07:40:00+08:00",
+  "research_record": {
+    "path": "docs/a_share_three_day_walkforward_campaign_091_research_record.json",
+    "sha256": "c716d3f6658dae80a242f2aa74b7c7167a641bc18a715036d13519d981cf051e"
+  },
+  "final_attempt_ledger": {
+    "path": "data/experiments/short_horizon/historical_walkforward/campaign_091/research_attempt_ledger_v4.json",
+    "sha256": "c5b02a98d296a64b20065931938b9f1c645157adb4d006335a161864ecde187b",
+    "attempt_count": 4,
+    "ledger_entry_count": 7,
+    "return_reading_development_trial_count": 1
+  },
+  "terminal_result": {
+    "factor": "intraday_directional_range_mass_imbalance_240m",
+    "direction": "higher",
+    "coverage_gate_passed": true,
+    "numeric_comparisons_passed": 120,
+    "maximum_absolute_median_daily_rank_correlation": 0.6231360247675952,
+    "development_survivor_count": 0,
+    "development_aggregate_20bp_return": -0.2924050460372013,
+    "worst_validation_normalized_drawdown": -0.5750826066544359,
+    "stress_2024_2025_opened": false,
+    "stress_return_fields_read": false
+  },
+  "final_accounting": {
+    "cumulative_historical_research_attempt_count": 636,
+    "cumulative_return_reading_development_trial_count": 289
+  },
+  "future_duplicate_detection": {
+    "complete_definition_count": 123,
+    "complete_definition_order_sha256": "c83a044523c018cd3bc52bd3f0a4aacea66123ca2a53b5066371594ad7a053e3",
+    "numeric_comparator_count": 121,
+    "numeric_comparator_order_sha256": "23e370e5e18baa7069948012b6999e60253a0502f0733cde7d20b3462149d649",
+    "campaign091_numeric_snapshot": {
+      "path": "/Volumes/DIsk/qlib-a-share-tushare-1m/derived/a_share/rich/tushare/minute_walkforward_campaign091_feature_library/tushare_stk_mins_1m_2019_2025_ea0cbb8f_walkforward_campaign091_feature_library_v1/snapshot_manifest.json",
+      "sha256": "1caf67c6b65947e4407f3064f732bf33a7595b9df977c8d62236c321c91e4541",
+      "dataset_sha256": "e179abf89f0ef956e22508c00ca198a6cf612b25700c5b8612f1d3d6d383e6fa"
+    }
+  },
+  "immutability": {
+    "campaign091_formula_direction_gates_or_result_may_change": false,
+    "campaign091_rescue_retest_combination_or_stress_return_read_allowed": false,
+    "old_artifacts_or_failure_entries_rewritten": false,
+    "future_duplicate_detection_may_reference_numeric_snapshot": true
+  },
+  "research_boundary": {
+    "provider_request_issued": false,
+    "candidate49_historical_backfill_performed": false,
+    "candidate49_ledgers_changed": false,
+    "second_prospective_candidate_created": false,
+    "current_scoring_selection_sizing_or_orders_performed": false,
+    "investment_advice": false
+  }
+}

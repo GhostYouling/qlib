@@ -1,0 +1,129 @@
+{
+  "version": 1,
+  "kind": "a_share_three_day_walkforward_campaign058_concept_scouting",
+  "status": "selected_one_economically_independent_candidate_before_campaign058_source_candidate_comparison_daily_price_or_return_values",
+  "recorded_at": "2026-08-04T07:57:21Z",
+  "purpose": "Select one finite historical-only Campaign058 mechanism after Campaign057 using frozen definitions, source schema, and point-in-time semantics only, before reading any Campaign058 source row, candidate value, comparison value, daily price, or forward return.",
+  "authoritative_inputs": {
+    "campaign057_verified_state": {
+      "path": "docs/a_share_three_day_iteration_status_20260804_campaign057_verified.json",
+      "sha256": "a83247eaa08b1276c2f538f5286e1b6e622fe8e93453145453c3eae6e1816ba4"
+    },
+    "campaign057_research_record": {
+      "path": "docs/a_share_three_day_walkforward_campaign_057_research_record.json",
+      "sha256": "f1c9683172483509a78b7fd5d10cfc4c9739ef80d3b6023f2ec1ee0e2c3a004a"
+    },
+    "campaign057_no_return_protocol": {
+      "path": "docs/a_share_three_day_walkforward_campaign_057_no_return_preregistration.json",
+      "sha256": "9eb8607e91e952b9e22e436374d68de0a90df251065720bed8a6285f2e3b7ff1"
+    },
+    "historical_walkforward_policy": {
+      "path": "docs/a_share_three_day_historical_walkforward_research_policy_20260727.json",
+      "sha256": "38426d6161b9bfed323c58caba18feca668b8c9d53e294951a8ba90c01a798bb"
+    },
+    "quarterly_quality_metadata": {
+      "path": "data/metadata/quarterly_quality_manifest.json",
+      "sha256": "e3cf654babe37a82393c5530696bc1cc242b736cb88e1947b8444b638125ba8c",
+      "data_path": "data/raw/a_share/fundamentals/quarterly_quality.parquet",
+      "data_sha256": "3ac901a97928d2ed81ac72e3eaac9bdc148d36cf67b6abe70223699235ef059f"
+    }
+  },
+  "definition_only_inventory": {
+    "inherited_campaign057_comparison_definition_count": 80,
+    "campaign057_terminal_definition_appended_for_campaign058": "intraday_day_over_day_absolute_return_profile_similarity_238b",
+    "minute_and_disclosure_timing_definition_count_after_append": 81,
+    "older_quality_semantic_definitions_requiring_explicit_challenge": [
+      "quality_roe",
+      "quality_profit",
+      "quality_revenue",
+      "quality_growth",
+      "quality_score",
+      "roe_change",
+      "revenue_yoy_acceleration",
+      "profit_yoy_acceleration"
+    ],
+    "campaign058_quarterly_rows_read": false,
+    "campaign058_candidate_values_read": false,
+    "comparison_values_read_for_campaign058_selection": false,
+    "daily_price_or_forward_return_read_for_campaign058_selection": false
+  },
+  "candidate_design_catalog": [
+    {
+      "design": "quarterly_profit_revenue_growth_spread_pp",
+      "decision": "selected",
+      "reason": "The percentage-point spread between already-effective profit YoY and revenue YoY states measures operating leverage or margin-direction pressure. None of the 81 current minute/disclosure-timing definitions measures this joint accounting relation, and it is not the average-rank quality-growth or quality-score composite."
+    },
+    {
+      "design": "profit_yoy_level_revenue_yoy_level_or_roe_level",
+      "decision": "rejected_before_values",
+      "reason": "Each is an older direct quality comparison definition and would simply rerun an exposed level factor."
+    },
+    {
+      "design": "quality_growth_or_quality_score",
+      "decision": "rejected_before_values",
+      "reason": "Those older composites reward jointly high percentile levels. Campaign058 instead freezes a raw percentage-point contrast whose sign distinguishes profit growth outrunning revenue growth from the reverse."
+    },
+    {
+      "design": "profit_to_revenue_growth_ratio_log_ratio_or_rank_spread",
+      "decision": "rejected_before_values",
+      "reason": "Ratios become unstable near zero and rank/log alternatives would create a transform search. Raw percentage-point subtraction is the sole scale and transform."
+    },
+    {
+      "design": "profit_or_revenue_acceleration_spread",
+      "decision": "rejected_before_values",
+      "reason": "Acceleration reopens two older exposed direct comparison factors and adds a sparse prior-year-quarter dependency. Campaign058 uses the latest already-effective levels only."
+    },
+    {
+      "design": "fresh_announcement_filter_quality_threshold_change_or_minute_regime",
+      "decision": "rejected_before_values",
+      "reason": "No announcement window, value threshold, selected report type, minute-price regime, board, year, filter, fit, model, or terminal-factor combination is searched."
+    }
+  ],
+  "selected_candidate": {
+    "name": "quarterly_profit_revenue_growth_spread_pp",
+    "direction": "higher",
+    "economic_hypothesis": "When already-public profit growth exceeds already-public revenue growth, operating leverage or margin expansion may indicate resilient earnings quality that remains relevant from the next open through the third close.",
+    "formula": "At signal close t, after accepted effective-date ordering, same-effective-date deduplication, and independent point-in-time forward fill of revenue_yoy and profit_yoy, return profit_yoy_state_t - revenue_yoy_state_t in percentage points.",
+    "stock_day_identity_projection": [
+      "datetime",
+      "symbol",
+      "provider"
+    ],
+    "quarterly_source_projection": [
+      "instrument",
+      "report_date",
+      "announcement_date",
+      "revenue_yoy",
+      "profit_yoy"
+    ],
+    "forbidden_quarterly_value_fields": [
+      "roe",
+      "net_profit"
+    ],
+    "availability_rule": "Each disclosure becomes usable only on the first accepted local session strictly after announcement_date.",
+    "same_effective_date_rule": "Sort by instrument, effective date, report_date, and announcement_date, then keep the last row per instrument and effective date before state propagation.",
+    "state_rule": "Forward-fill revenue_yoy and profit_yoy independently inside each instrument exactly as the accepted quality-state semantics require; never backfill from a later disclosure.",
+    "missing_rule": "Missing unless both already-effective states are finite. Never impute, clip, winsorize, rescale, rank inside the formula, substitute another field, or select a favorable report.",
+    "unit": "percentage_points",
+    "parameter_window_transform_threshold_filter_subset_combination_fit_or_model_search": false
+  },
+  "research_boundary": {
+    "external_campaign058_minute_or_quarterly_rows_read": false,
+    "campaign058_candidate_or_comparison_values_read": false,
+    "historical_daily_price_fields_read": [],
+    "historical_forward_return_fields_read": false,
+    "provider_request_issued": false,
+    "candidate49_historical_return_signal_execution_or_milestone_backfill_performed": false,
+    "candidate49_ledgers_changed": false,
+    "second_prospective_candidate_created": false,
+    "current_scoring_selection_sizing_or_orders_performed": false,
+    "investment_advice": false
+  },
+  "decision": {
+    "selected_candidate_count": 1,
+    "finite_candidate_library": true,
+    "conceptual_independence_pending_separate_overlap_audit": true,
+    "predictive_value_established": false,
+    "next_action": "Challenge the raw operating-leverage spread against all 81 current definitions and all eight older quality semantic definitions, then freeze one exact coverage-first no-return protocol before any Campaign058 source row or value is read."
+  }
+}

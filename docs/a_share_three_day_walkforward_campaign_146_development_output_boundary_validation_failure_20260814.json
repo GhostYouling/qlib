@@ -1,0 +1,30 @@
+{
+  "schema_version": 1,
+  "kind": "a_share_three_day_walkforward_campaign146_infrastructure_failure",
+  "status": "recorded_development_output_boundary_validation_failure_before_price_or_return_values",
+  "recorded_at": "2026-08-14T22:12:43+08:00",
+  "attempt_id": "campaign146_infrastructure_011",
+  "stage": "development_runner_and_preregistration_synthetic_validation_after_admission_status_recovery",
+  "failures": [
+    {
+      "check": "pytest",
+      "exit_code": 1,
+      "result": "4 passed, 3 failed",
+      "failure": "The preregistration omitted the inherited explicit research-output prohibition campaign004_rescue_or_reweight_allowed=false."
+    }
+  ],
+  "successful_checks": {
+    "binding_validator_passed": true,
+    "exact_one_factor_admission_semantics_passed": true,
+    "adapter_test_passed": true,
+    "activation_fail_closed_test_passed": true
+  },
+  "resolution": "Add only the stricter inherited campaign004_rescue_or_reweight_allowed=false output boundary and rerun all seven tests plus Black and Ruff before freezing any return-reading implementation.",
+  "scientific_effect": {
+    "development_price_or_return_values_read": false,
+    "stress_2024_2025_opened": false,
+    "formula_direction_trial_catalog_or_gate_changed": false,
+    "provider_request_issued": false,
+    "candidate49_ledgers_changed": false
+  }
+}

@@ -1,0 +1,150 @@
+{
+  "schema_version": 1,
+  "kind": "a_share_three_day_walkforward_campaign256_commercial_medical_imaging_radiation_therapy_equipment_service_lifecycle_source_frontier",
+  "recorded_at": "2026-08-16T13:06:00+08:00",
+  "timestamp_semantics": "monotonic_logical_append_time_not_host_wall_clock_measurement",
+  "status": "checkpoint_prevalue_three_source_admission_deferrals_four_relabeling_overlap_or_hypothesis_rejections_zero_selected",
+  "authoritative_inputs": {
+    "campaign190_clinical_trial_frontier": {
+      "path": "docs/a_share_three_day_walkforward_campaign_190_clinical_trial_evidence_lifecycle_source_frontier_20260815.json",
+      "sha256": "0703511d04d413c9ca0578b46cf8809de48780add3a6f8503796b2aa973b85fd"
+    },
+    "campaign198_software_product_frontier": {
+      "path": "docs/a_share_three_day_walkforward_campaign_198_software_product_release_installed_base_migration_support_patch_deprecation_compatibility_lifecycle_source_frontier_20260815.json",
+      "sha256": "b2a9c769d394f9cf258b6539c0dfc6bff7ce0ec132920c06b7f07222756a849d"
+    },
+    "campaign201_healthcare_provider_frontier": {
+      "path": "docs/a_share_three_day_walkforward_campaign_201_healthcare_provider_patient_referral_appointment_admission_care_episode_discharge_readmission_payer_claim_reimbursement_lifecycle_source_frontier_20260815.json",
+      "sha256": "4a90578ce9a73e37a6db8f6fcf9f610e01b0ef9e6606dcd77d825e7e4d573d4d"
+    },
+    "campaign221_testing_inspection_calibration_frontier": {
+      "path": "docs/a_share_three_day_walkforward_campaign_221_testing_inspection_certification_sample_test_calibration_certificate_lifecycle_source_frontier_20260816.json",
+      "sha256": "eb48e8539d1d77090d6cae937701cc28e3f3ffda4442b9d4f0b591d5e4af8c3a"
+    },
+    "campaign225_equipment_rental_frontier": {
+      "path": "docs/a_share_three_day_walkforward_campaign_225_equipment_rental_reservation_dispatch_handover_utilization_return_maintenance_damage_billing_lifecycle_source_frontier_20260816.json",
+      "sha256": "010c7880193f44323c8e80a3d24ac652d21f393401d53e86f2ce73c3c3058a71"
+    },
+    "campaign237_commercial_hvac_frontier": {
+      "path": "docs/a_share_three_day_walkforward_campaign_237_commercial_hvac_building_mechanical_service_contract_asset_registry_preventive_maintenance_work_order_fault_repair_parts_refrigerant_compliance_billing_lifecycle_source_frontier_20260816.json",
+      "sha256": "43fae08234210454e2ec1ed2255e3e12a815c77a97431bd54166895a67d0c967"
+    },
+    "campaign243_commercial_electrical_frontier": {
+      "path": "docs/a_share_three_day_walkforward_campaign_243_commercial_electrical_power_system_service_lifecycle_source_frontier_20260816.json",
+      "sha256": "59ed94c81eb7b229cccc7e8dc2bb4f8cddb15deabca8a1d29f9d99d429a404a2"
+    },
+    "campaign255_commercial_laboratory_equipment_frontier": {
+      "path": "docs/a_share_three_day_walkforward_campaign_255_commercial_laboratory_analytical_equipment_service_lifecycle_source_frontier_20260816.json",
+      "sha256": "2e32ba3dcc8689cf7307de871d39e7893e53dade604ae9636cc494e31df37585"
+    },
+    "campaign255_state": {
+      "path": "docs/a_share_three_day_iteration_status_20260816_campaign255_prevalue_terminal.json",
+      "sha256": "be765bc3178563ab0ff3698710fa206205584df4a431c9cf5e70f19c24ef8580"
+    },
+    "historical_walkforward_policy": {
+      "path": "docs/a_share_three_day_historical_walkforward_research_policy_20260727.json",
+      "sha256": "38426d6161b9bfed323c58caba18feca668b8c9d53e294951a8ba90c01a798bb"
+    },
+    "numeric_policy_v388": {
+      "path": "docs/a_share_three_day_walkforward_future_numeric_comparison_eligibility_policy_v388_20260816.json",
+      "sha256": "212df4f651ef91589609d31826aad5b8bab09217f6d03379f1960538741cedff"
+    }
+  },
+  "repository_evidence": {
+    "source_frontier_files_reviewed": 115,
+    "complete_definition_count": 158,
+    "complete_definition_order_sha256": "4819c7fd7c0795d7598a52f3c615e3f117d5f4ecd9332974bc8e3dfa57c96667",
+    "eligible_numeric_comparator_count": 142,
+    "eligible_numeric_comparator_order_sha256": "5d1b35fb5a0d8ac9293008db9963c4a60a94dc940c237c3ed259e5ce44f14aaf",
+    "dedicated_commercial_medical_imaging_radiation_therapy_equipment_service_definition_present": false,
+    "commercial_medical_imaging_equipment_medical_imaging_equipment_service_diagnostic_imaging_equipment_service_radiology_equipment_service_radiotherapy_equipment_service_radiation_therapy_equipment_service_mri_service_ct_scanner_service_x_ray_equipment_service_ultrasound_equipment_service_linear_accelerator_service_pet_scanner_service_or_gamma_camera_service_exact_phrase_line_match_count_in_prior_source_frontiers": 0,
+    "adjacent_generic_healthcare_clinical_trial_software_testing_calibration_rental_hvac_electrical_laboratory_or_equipment_service_mentions_present": true,
+    "adjacent_mentions_only": [
+      "Campaign190 preserves clinical-trial evidence and outcomes rather than installed medical-imaging or radiation-therapy equipment service contracts",
+      "Campaign198 preserves software releases, patches and support rather than physical imaging and radiation-therapy equipment installation, maintenance, fault repair, parts and acceptance",
+      "Campaign201 preserves referral, care, discharge and payer-claim lifecycles rather than equipment assets and service work",
+      "Campaign221 preserves third-party testing, inspection, calibration and certificates rather than the end-to-end installed equipment contract, maintenance, fault, repair, parts, entitlement and billing lifecycle",
+      "Campaign225 preserves reservation, handover, return and damage rather than recurring installed-equipment coverage",
+      "Campaign237 and Campaign243 preserve building HVAC and electrical systems rather than clinical imaging modalities and radiation-therapy treatment equipment",
+      "Campaign255 preserves laboratory analytical instruments and sample-preparation equipment rather than medical-imaging and radiation-therapy modalities"
+    ]
+  },
+  "finite_prevalue_catalog": [
+    {
+      "route_id": "c256_01",
+      "name": "privacy_safe_contract_site_department_modality_mri_ct_x_ray_ultrasound_pet_spect_gamma_camera_mammography_fluoroscopy_angiography_linear_accelerator_brachytherapy_asset_registry_installation_commissioning_acceptance_qualification_calibration_preventive_maintenance_sla_renewal_termination_state",
+      "decision": "defer_source_not_admitted",
+      "reason": "No admitted lawful point-in-time source links commercial medical-imaging and radiation-therapy equipment service operators to privacy-safe contracts, site and department classes, modality and asset coverage, installation, commissioning, acceptance, qualification, calibration, preventive maintenance, SLA credits, renewal and termination with first-available and correction clocks."
+    },
+    {
+      "route_id": "c256_02",
+      "name": "equipment_alarm_fault_dispatch_radiation_safe_isolation_deenergization_diagnosis_repair_restoration_quality_assurance_performance_verification_acceptance_rework_and_closure_state",
+      "decision": "defer_source_not_admitted",
+      "reason": "The repository lacks a lawful non-live history conserving privacy-safe equipment alarms and faults, dispatch, radiation-safe isolation or de-energization, diagnosis, repair, restoration, quality-assurance and performance verification, acceptance, rework and closure without exposing patients, images, reports, exact facilities, live availability, configurations, endpoints or proprietary procedures."
+    },
+    {
+      "route_id": "c256_03",
+      "name": "x_ray_tube_detector_magnet_gradient_rf_coil_gantry_table_collimator_transducer_probe_cryogen_cooling_vacuum_accelerator_waveguide_multileaf_collimator_imaging_panel_part_software_entitlement_warranty_radiation_electrical_emc_pressure_cryogen_compliance_billing_state",
+      "decision": "defer_source_not_admitted",
+      "reason": "No admitted source preserves privacy-safe component and part classes, issue, replacement and recovery, software entitlement, warranty, radiation, electrical, electromagnetic-compatibility, pressure and cryogen compliance, service credit, invoice, dispute and settlement histories with complete applicable denominators and revision history."
+    },
+    {
+      "route_id": "c256_04",
+      "name": "healthcare_care_delivery_clinical_trial_software_testing_inspection_calibration_rental_hvac_electrical_laboratory_equipment_or_generic_equipment_service_relabeling",
+      "decision": "reject_terminal_overlap",
+      "reason": "Campaign190, Campaign198, Campaign201, Campaign221, Campaign225, Campaign237, Campaign243 and Campaign255 govern clinical evidence, software, care delivery, third-party testing and calibration, rental, building systems and laboratory instruments. None can be relabelled as the complete recurring service lifecycle for installed medical-imaging and radiation-therapy equipment."
+    },
+    {
+      "route_id": "c256_05",
+      "name": "patient_imaging_order_study_dicom_image_radiology_report_diagnosis_treatment_plan_dose_session_scheduling_or_payer_claim_relabeling",
+      "decision": "reject_terminal_overlap",
+      "reason": "Imaging orders and studies, DICOM objects, medical images, radiology reports, diagnoses, treatment plans, prescribed or delivered dose, treatment sessions, patient scheduling and payer claims govern clinical care rather than the equipment contract, asset, installation, qualification, calibration, maintenance, fault, repair, acceptance, parts, entitlement, compliance and billing lifecycle."
+    },
+    {
+      "route_id": "c256_06",
+      "name": "current_annual_report_installed_base_scanner_count_service_revenue_utilization_uptime_fault_repair_part_warranty_license_map_or_status_snapshot_relabeling",
+      "decision": "reject_terminal_overlap",
+      "reason": "Current annual-report installed-base, scanner-count, service-revenue, utilization, uptime, fault, repair, part, warranty, license, map or status snapshots cannot reconstruct complete historical first-available contract, asset, installation, qualification, calibration, maintenance, fault, repair, acceptance, part, entitlement, compliance and billing states."
+    },
+    {
+      "route_id": "c256_07",
+      "name": "issuer_region_customer_hospital_department_modality_equipment_component_fault_direction_threshold_subset_weight_interaction_combination_or_model_variant",
+      "decision": "reject_hypothesis_multiplication_before_source_admission",
+      "reason": "Selecting an issuer, region, customer, hospital, department, modality, equipment, component, fault, direction, threshold, subset, weight, interaction, combination or model before complete lawful base histories are admitted would multiply hypotheses and exploit issuer scarcity, customer mix, disclosure intensity, survivorship and coverage differences."
+    }
+  ],
+  "mandatory_source_admission_gate": {
+    "required": true,
+    "admitted_source_present": false,
+    "requirements": [
+      "lawful public or licensed point-in-time source with first-available, correction and supersession timestamps for commercial medical-imaging and radiation-therapy equipment service contracts, privacy-safe site and department-class tokens, modality, equipment and component classes, installation, commissioning, acceptance, qualification, calibration, preventive maintenance, faults, dispatch, safe isolation, diagnosis, repair, restoration, verification, parts, warranty, software entitlement, compliance, service credits, billing, renewal and termination mapped to accepted sessions",
+      "stable listed-parent, subsidiary, customer-sector cohort, privacy-safe site and department-class token, contract, coverage class, modality, equipment and component class, qualification and calibration schedule, maintenance schedule, work order, fault class, repair class, part class, warranty, invoice and dispute identities without patient, participant or person identity, medical image, report, diagnosis, treatment plan, dose, exact facility or room, device serial, configuration, endpoint or proprietary procedure",
+      "complete 2019-2023 applicable denominators across a cross-section capable of meeting frozen coverage gates, including contracted, covered, installed, commissioned, accepted, qualified, calibrated, maintained, faulted, dispatched, isolated, repaired, restored, verified, reworked, supplied, warranted, compliant, credited, billed, disputed, renewed and terminated equipment cohorts",
+      "conservation of contract starts and ends, coverage and asset-registry changes, installation, commissioning, acceptance and qualification, calibration and maintenance due or completed, faults and alarms, dispatch, safe isolation, repairs, restoration, verification, rework, parts issued or replaced or recovered, warranties, software entitlement, radiation, electrical, electromagnetic-compatibility, pressure and cryogen compliance, service credits, invoices, payments, disputes and settlements with explicit missing, delayed, corrected, cancelled, duplicate and genuine-zero semantics",
+      "no patient, research participant or person identity, medical image, radiology or nuclear-medicine report, diagnosis, clinical or treatment plan, prescription or dose distribution, exact facility, department, room, address or map, device serial, credential, live occupancy, device availability or configuration, camera feed, network endpoint, vulnerability, proprietary calibration, diagnostic or repair procedure, private incident narrative, legal communication or confidential contract price"
+    ]
+  },
+  "gate_summary": {
+    "finite_route_count": 7,
+    "source_admission_deferral_count": 3,
+    "overlap_or_hypothesis_rejection_count": 4,
+    "selected_factor_count": 0,
+    "formula_or_direction_frozen": false,
+    "candidate_or_comparator_value_read": false,
+    "daily_price_or_forward_return_read": false
+  },
+  "research_boundary": {
+    "finite_catalog_frozen_before_source_or_value_read": true,
+    "source_or_commercial_medical_imaging_radiation_therapy_equipment_contract_asset_registry_installation_qualification_calibration_maintenance_fault_repair_parts_entitlement_compliance_billing_factor_value_read": false,
+    "patient_participant_person_medical_image_radiology_nuclear_medicine_report_diagnosis_clinical_treatment_plan_prescription_dose_distribution_exact_facility_department_room_address_map_device_serial_credential_live_occupancy_availability_configuration_camera_feed_network_endpoint_vulnerability_proprietary_procedure_private_incident_legal_communication_or_confidential_contract_price_read": false,
+    "provider_or_web_request_issued": false,
+    "provider_credential_presence_value_or_digest_read": false,
+    "candidate49_plan_or_run_executed": false,
+    "candidate49_ledgers_changed": false,
+    "second_prospective_candidate_created": false,
+    "stress_2024_2025_opened": false,
+    "current_scoring_selection_sizing_positions_or_orders_performed": false,
+    "failed_or_truncated_output_used_as_scientific_or_validation_evidence": false,
+    "investment_advice": false
+  }
+}

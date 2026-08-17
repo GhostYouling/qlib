@@ -1,0 +1,105 @@
+{
+  "version": 97,
+  "kind": "a_share_three_day_walkforward_future_numeric_comparison_eligibility_policy",
+  "status": "campaign115_zero_network_gate_chain_verified_no_scientific_gate_opened",
+  "recorded_at": "2026-08-09T10:08:00+08:00",
+  "recorded_at_semantics": "monotonic_logical_append_time_after_gate_chain_verification_ledger_v16_report_v13_and_unified_report_not_host_wall_clock_measurement",
+  "supersedes_without_rewriting": {
+    "path": "docs/a_share_three_day_walkforward_future_numeric_comparison_eligibility_policy_v96_20260809.json",
+    "sha256": "87b623f53e069c617e9099d030ccba73f0fef3cced18bc7bf1e822a7d4bf555a",
+    "preserved": true,
+    "complete_definition_order_changed": false,
+    "numeric_comparator_order_changed": false,
+    "scientific_protocol_or_gate_changed": false,
+    "accounting_changed": true,
+    "reason": "A read-only status entry now preserves and semantically validates every child plan/inspection exit instead of relying on shell composition. One missing bare-python alias failure was recorded before the successful absolute-runtime verification."
+  },
+  "authoritative_inputs": {
+    "iteration_state_v11": {
+      "path": "docs/a_share_three_day_iteration_status_20260809_campaign115_ordered_no_return_direct_entry_ready_v11.json",
+      "sha256": "7246d2d0d864a75bfa82781883d17023048637a659bfc13944f61b602fb1ad17"
+    },
+    "gate_chain_implementation_freeze_v1": {
+      "path": "docs/a_share_three_day_walkforward_campaign_115_zero_network_gate_chain_implementation_freeze_v1_20260809.json",
+      "sha256": "2be3193587e0d0fb027d9f4d532d10636d45efa6add41ca584bf0470d876579c"
+    },
+    "gate_chain_verification_v1": {
+      "path": "docs/a_share_three_day_walkforward_campaign_115_zero_network_gate_chain_verification_v1_20260809.json",
+      "sha256": "23e4e38f480df7310d6a6f355b4b4377818d8f360208c3f485205cc2068984be"
+    },
+    "attempt_ledger_v16": {
+      "path": "data/experiments/short_horizon/historical_walkforward/campaign_115/research_attempt_ledger_v16.json",
+      "sha256": "a02dbf7ca815e2d42b00ec09f69fbcac850b7c96c3b276d585395eac615c4229"
+    },
+    "report_v13": {
+      "path": "docs/a_share_three_day_walkforward_campaign_115_prevalue_report_v13.md",
+      "sha256": "b3bc6688802dea3b61d8726aa9de6a30c292e79d7781c094008cbf7a8718e824"
+    },
+    "unified_report": {
+      "path": "data/experiments/short_horizon/current_research_report.md",
+      "sha256": "859016543d46f75a6d918f9ccb1d40f633a2aaba5690e78ee02a7421c740726f"
+    }
+  },
+  "campaign115_prevalue_classification": {
+    "terminal": false,
+    "active_historical_campaign": true,
+    "stage": "zero_network_gate_chain_verified_waiting_for_explicit_entitlement_and_source",
+    "candidate_factor": "tushare_official_limit_up_queue_persistence",
+    "candidate_direction": "higher",
+    "gate_chain_status_command_valid": true,
+    "all_scientific_plans_ready": false,
+    "plan_process_exit_codes_in_order": [
+      2,
+      2,
+      2,
+      2,
+      2
+    ],
+    "inspection_process_exit_codes_in_order": [
+      0,
+      0,
+      0,
+      0
+    ],
+    "first_external_blocker": "manual_5000_point_entitlement_confirmation",
+    "development_source_final_root_present": false,
+    "semantic_verification_receipt_status": "no_semantic_verification_receipt",
+    "ordered_no_return_audit_status": "no_ordered_no_return_audit",
+    "development_trial_status": "no_campaign115_development_trial",
+    "complete_factor_attempt_count": 0,
+    "return_reading_development_trial_count": 0,
+    "stress_2024_2025_opened": false
+  },
+  "complete_historical_feature_library": {
+    "exact_v96_order_preserved": true,
+    "factor_definition_count": 141,
+    "order_sha256": "ccab6e3d9d81b0a02d4ff178fdd442b26a1e68e3655e1c6f5b2fcb28cd4a4559"
+  },
+  "numerical_comparator_eligibility": {
+    "exact_v96_order_preserved": true,
+    "eligible_numeric_comparator_count": 134,
+    "eligible_numeric_comparator_order_sha256": "31d788db467f558a0ac538315343090f1b3ad4cb27a26136a49ebaa88b2fdbf2",
+    "campaign115_numeric_comparator_appended": false
+  },
+  "current_accounting": {
+    "campaign115_attempt_count": 25,
+    "campaign115_infrastructure_failure_count": 23,
+    "campaign115_prevalue_scientific_attempt_count": 2,
+    "campaign115_complete_factor_attempt_count": 0,
+    "campaign115_return_reading_development_trial_count": 0,
+    "cumulative_historical_research_attempt_count": 878,
+    "cumulative_return_reading_development_trial_count": 302
+  },
+  "research_boundary": {
+    "provider_action_authorized_by_gate_chain_status": false,
+    "provider_request_issued": false,
+    "credential_value_printed_hashed_or_persisted": false,
+    "provider_rows_candidate_or_comparison_values_read": false,
+    "historical_daily_price_or_forward_return_values_read": false,
+    "stress_2024_2025_opened": false,
+    "candidate49_ledgers_changed": false,
+    "second_prospective_candidate_created": false,
+    "current_scoring_selection_sizing_or_orders_performed": false,
+    "investment_advice": false
+  }
+}

@@ -1,0 +1,46 @@
+{
+  "schema_version": 1,
+  "kind": "a_share_three_day_walkforward_campaign096_feature_snapshot_binding",
+  "status": "immutable_no_return_feature_snapshot_verified_before_comparison_values",
+  "recorded_at": "2026-08-07T04:45:00Z",
+  "protocol": {
+    "path": "docs/a_share_three_day_walkforward_campaign_096_no_return_preregistration.json",
+    "sha256": "97d8cdd6cc3731de8e8d4db101db1b4b0ee62353c9c39ac71a8753fea4501924"
+  },
+  "effective_implementation_freeze": {
+    "path": "docs/a_share_three_day_walkforward_campaign_096_feature_implementation_freeze_v2_20260807.json",
+    "sha256": "357c5aea5bec20c622ed602ca1569db45a8f17be813a08d7d15d0c42ae78635d"
+  },
+  "effective_feature_runner": {
+    "path": "scripts/a_share_three_day_walkforward_campaign096_features_v2.py",
+    "sha256": "404698e6417e73eba8157a97740536243b3e68a870955a05833bf3e3e57bce0e"
+  },
+  "preserved_v1_build_failure": {
+    "path": "docs/a_share_three_day_walkforward_campaign_096_feature_build_quality_alias_failure_20260807.json",
+    "sha256": "65b620588d0eb844de50cd610c1c1e7c9c95fce56ab59b0a45fdb0077ad3c6d1"
+  },
+  "snapshot": {
+    "path": "/Volumes/DIsk/qlib-a-share-tushare-1m/derived/a_share/rich/tushare/minute_walkforward_campaign096_feature_library/tushare_stk_mins_1m_2019_2025_ea0cbb8f_walkforward_campaign096_feature_library_v1/snapshot_manifest.json",
+    "sha256": "1b205f1b6d3b28248b765860b8cf0e4aecee07f960fa535402e316ba13c39a3a",
+    "dataset_sha256": "67106bd4f5d4382b770cb79355c27ea4d8ca179296841b7bd9fa2963a46e09f3",
+    "partitions": 7,
+    "rows": 1331759,
+    "eligible_rows": 1193690,
+    "missing_rows": 138069,
+    "calendar_sessions": 1632,
+    "factor_range": [
+      0.0,
+      1.0
+    ]
+  },
+  "factor": "intraday_intrabar_close_location_total_variation_238p",
+  "direction": "higher",
+  "source_rows_read": true,
+  "candidate_values_computed": true,
+  "coverage_counts_read": true,
+  "comparison_values_read": false,
+  "historical_daily_price_or_forward_return_values_read": false,
+  "provider_request_issued": false,
+  "candidate49_ledgers_changed": false,
+  "independent_verify_status": "verified"
+}

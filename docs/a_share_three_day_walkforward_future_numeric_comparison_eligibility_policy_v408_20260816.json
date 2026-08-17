@@ -1,0 +1,42 @@
+{
+  "schema_version": 1,
+  "kind": "a_share_three_day_walkforward_future_numeric_comparison_eligibility_policy",
+  "version": 408,
+  "status": "campaign263_prevalue_definition_appended_numeric_comparators_unchanged",
+  "recorded_at": "2026-08-16T11:18:00Z",
+  "timestamp_semantics": "monotonic logical append time before Campaign263 candidate or comparator values",
+  "supersedes_without_rewriting": {
+    "path": "docs/a_share_three_day_walkforward_future_numeric_comparison_eligibility_policy_v407_20260816.json",
+    "sha256": "62dd56694334338481c5341c00464f76ce166859db3e48d1c73fc2f3c8e431fa"
+  },
+  "complete_historical_feature_library": {
+    "factor_definition_count": 162,
+    "order_sha256": "974f2c1f16a85eb43a0bd1e8db768dbe120cd8826c1754d5f220bf9f1d4a3ea0",
+    "prior_factor_definition_count": 161,
+    "prior_order_sha256": "e387d2865b8957a933c522c2cd9ae890612ab45993307f97693ec73fa5288144",
+    "last_definition": {
+      "name": "intraday_amount_profile_spectral_entropy_60f",
+      "score_direction": "higher",
+      "status": "prevalue_frozen_definition"
+    }
+  },
+  "numerical_comparator_eligibility": {
+    "eligible_numeric_comparator_count": 142,
+    "order_sha256": "5d1b35fb5a0d8ac9293008db9963c4a60a94dc940c237c3ed259e5ce44f14aaf",
+    "campaign263_appended_before_result": false,
+    "reason": "A new definition becomes a future numeric comparator only after the frozen all-142 uniqueness gate; no result exists at this prevalue boundary."
+  },
+  "campaign263_boundary": {
+    "candidate_count": 1,
+    "direction_count": 1,
+    "coverage_before_comparison_values": true,
+    "strict_absolute_median_daily_spearman_limit": 0.8,
+    "development_returns_before_no_return_admission": false,
+    "stress_2024_2025_opened": false
+  },
+  "candidate49": {
+    "sole_prospective_candidate": true,
+    "historical_backfill_allowed": false,
+    "second_prospective_candidate_allowed": false
+  }
+}

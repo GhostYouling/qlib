@@ -1,0 +1,125 @@
+{
+  "version": 1,
+  "kind": "a_share_candidate49_source_signal_daily_root_provenance_readiness",
+  "status": "offline_source_to_signal_same_active_root_binding_passed_real_future_signal_pending",
+  "recorded_at": "2026-07-25T18:19:53Z",
+  "purpose": "Advance the Candidate49 future source-to-signal path by proving that its accepted Qlib price-basis context and raw daily reconciliation rows must come from the same immutable active data root before any state or provider side effect.",
+  "advances": {
+    "path": "docs/a_share_candidate49_daily_root_provenance_readiness_20260726.json",
+    "sha256": "857db3ef7362c18594d435140035d30655de5f3d465d21edc92b96db77271b90"
+  },
+  "authoritative_research_state": {
+    "path": "docs/a_share_three_day_iteration_status_20260725_future_only.json",
+    "sha256": "d44e1cb3707cce194eed37e99cc90f865396b1de8c35e02a393a2a243d973466",
+    "active_future_only_candidate": "candidate49_intraday_cumulative_vwap_crossing_rate_240m_v1",
+    "aggregation_allowed": false,
+    "candidate50_activation_allowed": false
+  },
+  "candidate_contract": {
+    "factor_changed_by_this_work": false,
+    "factor_direction": "higher_intraday_cumulative_vwap_crossing_rate_240m",
+    "signal_timing_changed_by_this_work": false,
+    "eligibility_gate_changed_by_this_work": false,
+    "historical_return_backfill_allowed": false
+  },
+  "implementation_fingerprints": {
+    "source_to_signal": {
+      "path": "scripts/a_share_tushare_candidate49_future_observation.py",
+      "sha256": "877a64413a3b5534e532bf991fe073217448c275fd4d78b811ef3c0654b1051d"
+    },
+    "source_to_signal_tests": {
+      "path": "tests/data_collector_tests/test_a_share_tushare_candidate49_future_observation.py",
+      "sha256": "5d61a22f6f5bd5391beade20651e455c868b2f651cb8c5fcd8b19279cb59bb56"
+    },
+    "runbook": {
+      "path": "docs/a_share_data_pipeline.md",
+      "sha256": "d3efd7b5c210aedc3ed0143e804761aabe39e2c0faf5f85f386d0d4e3da53bbe"
+    }
+  },
+  "threat_model": {
+    "gap": "The source-to-signal collector independently accepted provider_uri and daily_raw_root, and its combined preflight did not inspect daily_raw_root. A Tushare-declared Qlib price basis could therefore reconcile minutes against daily Parquet copied from another provider or versioned root.",
+    "red_test_result": "Before the fix, the new cross-root collection test did not raise and reached provider request attempts.",
+    "cross_root_daily_reconciliation_allowed": false
+  },
+  "enforced_binding": {
+    "provider_uri_layout": "<active-root>/qlib/cn_a_share",
+    "daily_raw_root_layout": "<the-same-active-root>/raw/a_share/daily",
+    "daily_file_layout": "lowercase_symbol_parquet",
+    "failure_code": "daily_raw_root_not_bound_to_accepted_provider_root",
+    "combined_preflight_reports_binding": true,
+    "checked_before_ledger_initialization": true,
+    "checked_before_external_session_root_creation": true,
+    "checked_before_provider_permission_check": true,
+    "checked_before_first_provider_request": true,
+    "different_active_roots_in_one_signal_session_allowed": false
+  },
+  "immutable_raw_context_provenance": {
+    "frozen_binding_fields": [
+      "active_root",
+      "provider_uri",
+      "daily_raw_root",
+      "daily_file_layout"
+    ],
+    "per_symbol_daily_source_path_stored": true,
+    "per_symbol_daily_source_sha256_stored": true,
+    "same_date_partial_resume_revalidates_binding": true,
+    "complete_publication_revalidates_original_frozen_binding": true,
+    "later_active_root_rollover_requires_rewriting_old_publication": false
+  },
+  "offline_proofs": {
+    "focused_observation_tests": {
+      "passed": 24,
+      "failed": 0
+    },
+    "focused_candidate49_observation_execution_workflow_tests": {
+      "passed": 59,
+      "failed": 0,
+      "elapsed_seconds": 7.87
+    },
+    "cross_root_collection_proof": "A byte-identical daily directory outside the accepted active root is rejected before provider checks, requests, external data-root creation, or ledger initialization.",
+    "cross_root_combined_preflight_proof": "The zero-write preflight returns ready=false, exit code 2, the exact root-binding failure, and no active-root binding.",
+    "full_data_collector_tests": {
+      "passed": 1098,
+      "failed": 0,
+      "warnings": 9,
+      "elapsed_seconds": 29.99
+    },
+    "ruff": "passed",
+    "python_compile": "passed"
+  },
+  "append_only_ledgers_after_offline_tests": {
+    "signal": {
+      "path": "data/experiments/short_horizon/candidate49_future_signal_ledger.json",
+      "sha256": "5193f00d7f36da003f53cec387900da4c3d002299f5dfcfc1a95eaa199ed3a79",
+      "entries": 0
+    },
+    "execution": {
+      "path": "data/experiments/short_horizon/candidate49_future_execution_ledger.json",
+      "sha256": "d57a3e61eac969e42cafa418ccd8c0a5ee65dcf69da145bb2c096c2a02a2ea4f",
+      "entries": 0
+    }
+  },
+  "side_effect_audit": {
+    "provider_check_performed": false,
+    "provider_request_issued": false,
+    "real_minute_rows_read": false,
+    "real_daily_rows_read": false,
+    "external_candidate49_session_root_created": false,
+    "signal_or_execution_entry_written": false,
+    "live_order_performed": false,
+    "active_data_root_mutated": false
+  },
+  "decision": {
+    "accepted_tushare_daily_data_remains_usable": true,
+    "daily_data_roles": [
+      "same-session minute reconciliation",
+      "daily quality and universe context",
+      "future t_plus_1 entry and t_plus_3 exit settlement"
+    ],
+    "daily_data_can_replace_candidate49_minute_path": false,
+    "cross_root_daily_substitution_allowed": false,
+    "current_signal_exists": false,
+    "selection_sizing_or_order_allowed": false,
+    "next_action": "On or after 2026-07-27 16:30 Asia/Shanghai, run the fail-closed Candidate49 session workflow so the newly accepted Tushare daily root and the minute signal are bound in one same-session publication."
+  }
+}

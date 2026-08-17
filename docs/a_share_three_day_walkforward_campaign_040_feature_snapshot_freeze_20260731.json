@@ -1,0 +1,109 @@
+{
+  "version": 1,
+  "kind": "a_share_three_day_walkforward_campaign040_feature_snapshot_freeze",
+  "status": "immutable_candidate_snapshot_frozen_before_comparison_or_return_values",
+  "recorded_at": "2026-07-31T04:24:42Z",
+  "purpose": "Bind the complete Campaign040 candidate snapshot and its post-publication read-only validator before coverage, comparison, daily-price, or return gates are opened.",
+  "authoritative_inputs": {
+    "no_return_preregistration": {
+      "path": "docs/a_share_three_day_walkforward_campaign_040_no_return_preregistration.json",
+      "sha256": "7d4a8d3b63e26c1717660dad8e12d65adfa008fb2272cebae8914367c05142d5"
+    },
+    "mechanism_overlap_audit": {
+      "path": "docs/a_share_three_day_walkforward_campaign_040_mechanism_overlap_audit.json",
+      "sha256": "f026633ed532216a8d223a7cb8d22a989cd31ab992a21234f5e8adf5572a167d"
+    },
+    "pre_value_feature_implementation_freeze": {
+      "path": "docs/a_share_three_day_walkforward_campaign_040_feature_implementation_freeze_20260731.json",
+      "sha256": "f1409616c78c49a7e62151db5c97c4756ad89c4bfe5f969a749f3b3a3f03d7c9"
+    }
+  },
+  "snapshot": {
+    "path": "/Volumes/DIsk/qlib-a-share-tushare-1m/derived/a_share/rich/tushare/minute_walkforward_campaign040_feature_library/tushare_stk_mins_1m_2019_2025_ea0cbb8f_walkforward_campaign040_feature_library_v1/snapshot_manifest.json",
+    "sha256": "9830dc3dc4f5ceb86f6983c1353bd52c3b6c87eeb206f433b10c19adc7d82f40",
+    "dataset_sha256": "9b7443611ce0da082aa31fb88d4b001c0d7231639112e15fd9645d7ede46dee8",
+    "partitions": 33015,
+    "rows": 7724498,
+    "eligible_rows": 7633953,
+    "zero_morning_total_range_rows": 25726,
+    "zero_afternoon_total_range_rows": 89403,
+    "nonfinite_range_probability_or_divergence_rows": 90545,
+    "endpoint_canonicalized_rows": 7624,
+    "invalid_nonpositive_or_misordered_high_low_rows": 0,
+    "resumed_partitions": 0,
+    "factor_name": "intraday_morning_afternoon_range_profile_similarity_120b",
+    "direction": "higher",
+    "source_fields_read": [
+      "datetime",
+      "symbol",
+      "provider",
+      "high",
+      "low"
+    ],
+    "source_open_high_low_read": true,
+    "source_close_read": false,
+    "source_volume_read": false,
+    "source_amount_read": false,
+    "daily_price_fields_read": [],
+    "comparison_factor_values_read": false,
+    "forward_return_fields_read": false
+  },
+  "pre_freeze_metadata_correction": {
+    "applied": true,
+    "reason": "Post-build validation found two inherited compatibility booleans that contradicted the already-correct explicit source_fields_read projection.",
+    "changed_manifest_fields_only": {
+      "source_open_high_low_read": {
+        "from": false,
+        "to": true
+      },
+      "source_close_read": {
+        "from": true,
+        "to": false
+      }
+    },
+    "candidate_partition_files_changed": false,
+    "candidate_values_changed": false,
+    "dataset_sha256_before_and_after": "9b7443611ce0da082aa31fb88d4b001c0d7231639112e15fd9645d7ede46dee8",
+    "formula_direction_source_projection_missing_or_gate_semantics_changed": false,
+    "correction_completed_before_this_snapshot_freeze": true
+  },
+  "post_publication_validation": {
+    "feature_runner": {
+      "path": "scripts/a_share_three_day_walkforward_campaign040_features.py",
+      "sha256": "1fe9b11cf9d5fbdf4308067169e4afef267a1a91cb34d7dcc92bb7a72901c251"
+    },
+    "feature_tests": {
+      "path": "tests/data_collector_tests/test_a_share_three_day_walkforward_campaign040_features.py",
+      "sha256": "a4c1668bbe79f0a1cee8970205770f34293d06f4e3ea01e4c8adf8a01e4d65b9"
+    },
+    "command": "PYTHONPATH=. pytest -q tests/data_collector_tests/test_a_share_three_day_walkforward_campaign040_features.py",
+    "passed": 9,
+    "failed": 0,
+    "all_partition_byte_and_frame_hashes_valid": true,
+    "verified_partitions": 33015,
+    "verified_rows": 7724498,
+    "idempotent_build_revalidation_passed": true,
+    "formula_or_gate_changed_after_values": false,
+    "only_runner_transitions_after_snapshot": [
+      "Bind the immutable snapshot manifest and dataset SHA-256 constants for read-only validation.",
+      "Require truthful high/low-without-close source booleans while adapting them only inside the inherited legacy validator."
+    ]
+  },
+  "research_boundary": {
+    "candidate_values_read": true,
+    "comparison_values_read": false,
+    "historical_daily_price_fields_read": false,
+    "historical_forward_returns_read": false,
+    "training_or_model_fitting_performed": false,
+    "provider_request_issued": false,
+    "candidate49_historical_return_signal_or_execution_backfill_performed": false,
+    "candidate49_prospective_ledgers_changed": false,
+    "candidate50_activation_created": false,
+    "current_scoring_selection_sizing_or_orders_performed": false
+  },
+  "authorization": {
+    "next_action": "Validate this snapshot freeze, then run coverage and capacity first; load the exact ordered 61 comparison factors only if coverage passes.",
+    "snapshot_rebuild_repair_formula_direction_normalization_or_gate_change_allowed": false,
+    "historical_return_read_allowed_before_no_return_admission": false
+  }
+}

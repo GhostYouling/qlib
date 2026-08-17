@@ -1,0 +1,62 @@
+{
+  "schema_version": 1,
+  "kind": "a_share_three_day_walkforward_campaign100_feature_implementation_freeze",
+  "status": "frozen_before_campaign100_minute_source_rows_or_candidate_values",
+  "recorded_at": "2026-08-07T11:59:22Z",
+  "purpose": "Bind the sole Campaign100 feature implementation and its synthetic boundary tests before any Campaign100 source row or candidate value is read.",
+  "protocol": {
+    "path": "docs/a_share_three_day_walkforward_campaign_100_no_return_preregistration.json",
+    "sha256": "0bd9dbe069895b8e7c82accbf9834fa6b90adbbd7673c5e42b914107903ddb15"
+  },
+  "feature_runner": {
+    "path": "scripts/a_share_three_day_walkforward_campaign100_features.py",
+    "sha256": "f8d5fe7e5795819bd446afe5d7fad7ac1c2239e70206d70594df0d8af51efdec"
+  },
+  "tests": {
+    "path": "tests/data_collector_tests/test_a_share_three_day_walkforward_campaign100_features.py",
+    "sha256": "24b3c192921f29886a0651b00f168173c67696da9c8d1f6557fcdfb6b91f8116",
+    "passed": 7
+  },
+  "factor": {
+    "name": "intraday_unchanged_close_range_absorption_share_238p",
+    "direction": "higher",
+    "source_fields": [
+      "datetime",
+      "symbol",
+      "provider",
+      "high",
+      "low",
+      "close"
+    ],
+    "selected_bar_count": 240,
+    "within_half_transition_count": 238,
+    "valid_range": [
+      0.0,
+      1.0
+    ],
+    "exact_equality_without_tolerance": true,
+    "lunch_transition_excluded": true,
+    "zero_range_retained": true,
+    "strictly_positive_total_destination_range_required": true,
+    "endpoint_canonicalization_tolerance": 1e-12
+  },
+  "frozen_invariants": {
+    "v52_complete_definition_count": 131,
+    "v52_complete_definition_order_sha256": "065077dfa5df9331906141f938204efedb3274e252d3b94c8fa1e9beebb5fc2e",
+    "v52_numeric_comparator_count": 128,
+    "v52_numeric_comparator_order_sha256": "12ebf65ee86e23e606875a9a78165f0410bfdb320bdc99d159097ec669583756",
+    "all_128_comparators_required_after_coverage": true,
+    "candidate_specific_comparator_drop_allowed": false,
+    "build_requires_explicit_confirm_build": true,
+    "build_refuses_missing_or_changed_implementation_freeze": true
+  },
+  "candidate_source_rows_read_before_freeze": false,
+  "candidate_values_computed_before_freeze": false,
+  "comparison_values_read_before_freeze": false,
+  "historical_daily_price_or_forward_return_values_read_before_freeze": false,
+  "provider_request_issued_before_freeze": false,
+  "candidate49_historical_backfill_performed": false,
+  "candidate49_ledgers_changed": false,
+  "second_prospective_candidate_created": false,
+  "current_scoring_selection_sizing_or_orders_performed": false
+}

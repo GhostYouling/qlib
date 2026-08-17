@@ -1,0 +1,133 @@
+{
+  "schema_version": 1,
+  "kind": "a_share_three_day_walkforward_campaign159_remaining_local_source_residual_audit",
+  "status": "terminal_prevalue_zero_contract_permitted_independent_candidates_after_remaining_local_source_review",
+  "recorded_at": "2026-08-15T04:31:00+08:00",
+  "purpose": "Apply source completeness, original contract scope, point-in-time, semantic independence and raw-state gates to every remaining local data-family route before formula or numeric access.",
+  "authoritative_inputs": {
+    "remaining_local_source_inventory": {
+      "path": "docs/a_share_three_day_walkforward_campaign_159_remaining_local_source_schema_inventory_20260815.json",
+      "sha256": "d561a9707b6004cbec0685108ea3fa4453b21f587a7632a739b46b69e818e578"
+    },
+    "campaign143_contract_scope_audit": {
+      "path": "docs/a_share_three_day_walkforward_campaign_143_mechanism_contract_source_frontier_audit_v2_20260814.json",
+      "sha256": "ed9892cf137d03f2e5043c6ef3ebe063ed9e32960b1399d957e8cd6dff174f52"
+    },
+    "campaign158_field_residual_audit": {
+      "path": "docs/a_share_three_day_walkforward_campaign_158_local_schema_residual_audit_20260815.json",
+      "sha256": "0fbe75c7031e9787f9ce7787ce7cdcc06eafc4d9257bdd875fb678488b088f68"
+    }
+  },
+  "admission_gate": {
+    "gate_1_accepted_full_2019_2023_history": "A four-symbol, one-session or acceptance-only sample cannot enter historical research, and a terminal full-source failure cannot be shortened or filled.",
+    "gate_2_original_contract_permits_new_factor": "Local bytes remain bound by the collection contract; a one-factor contract cannot be reused for an entropy, category, denominator or raw-operand alternative after results.",
+    "gate_3_new_economic_state": "The proposal must observe an independent economic state rather than invert, rescale, lag, threshold or recombine a terminal factor and its operands.",
+    "gate_4_point_in_time_rankability": "Identity, provider, retrieval time, report keys, group mappings and error flags are not issuer alpha values.",
+    "gate_5_raw_not_derived_or_failure_artifact": "Stored feature values, failed-session tables, reconciliation status and historical scores cannot be recycled as a new raw source.",
+    "pass_rule": "All five gates must pass before formula, direction, support, source rows, comparator values or returns."
+  },
+  "finite_residual_catalog": [
+    {
+      "catalog_id": "c159_01",
+      "name": "classified_moneyflow_bucket_entropy_small_order_share_or_alternate_imbalance",
+      "candidate_source": "tushare classified moneyflow full history",
+      "formula": null,
+      "direction": null,
+      "parameters_filters_subsets_combinations_models": [],
+      "decision": "rejected_original_collection_contract_one_factor_scope_and_terminal_category_denominator_branch",
+      "classification": "terminal_contract_scope_reuse",
+      "reason": "The immutable contract authorizes exactly one large-order net-inflow share. Campaign143 already rejected four-bucket entropy and forbids category or denominator changes even though the raw bucket amounts are local."
+    },
+    {
+      "catalog_id": "c159_02",
+      "name": "raw_pb_share_supply_or_industry_membership_alternative_state",
+      "candidate_source": "daily PB, free-float shares and SW2021 membership",
+      "formula": null,
+      "direction": null,
+      "parameters_filters_subsets_combinations_models": [],
+      "decision": "rejected_terminal_valuation_supply_and_peer_mapping_transform_or_retiming",
+      "classification": "terminal_semantic_transform",
+      "reason": "PB and inverse book-to-market are the same valuation state; total/free shares are the operands of the terminal scarcity ratio; membership intervals are a point-in-time grouping taxonomy whose tenure and transition reinterpretations are closed."
+    },
+    {
+      "catalog_id": "c159_03",
+      "name": "raw_accounting_operand_scale_transition_or_cross_ratio",
+      "candidate_source": "balance-sheet resilience, core-profit consistency, monetary-funds intensity and related-party sparsity",
+      "formula": null,
+      "direction": null,
+      "parameters_filters_subsets_combinations_models": [],
+      "decision": "rejected_terminal_formula_operands_unscaled_magnitudes_and_post_result_cross_ratio",
+      "classification": "terminal_formula_operand_reuse",
+      "reason": "Assets, liabilities, operating/total profit and monetary funds are frozen operands of terminal ratios; raw magnitudes need a denominator, while choosing a new denominator, lag or cross-ratio after results changes the closed formula state. Related-party count and its inverse are identical ordering."
+    },
+    {
+      "catalog_id": "c159_04",
+      "name": "context_count_identity_provider_retrieval_or_report_key_signal",
+      "candidate_source": "audit counts, provider strings, identifiers, retrieval timestamps and report keys",
+      "formula": null,
+      "direction": null,
+      "parameters_filters_subsets_combinations_models": [],
+      "decision": "rejected_context_mapping_quality_or_clock_metadata_not_independent_alpha",
+      "classification": "nonalpha_metadata_or_context",
+      "reason": "These fields establish source provenance, mapping, availability or diagnostics. Audit report count is contract context; provider/retrieval/file identity and report keys cannot be ranked as issuer information."
+    },
+    {
+      "catalog_id": "c159_05",
+      "name": "acceptance_only_cash_conversion_gross_margin_contract_liability_or_cninfo_event_factor",
+      "candidate_source": "acceptance samples whose full-history contracts failed or terminalized",
+      "formula": null,
+      "direction": null,
+      "parameters_filters_subsets_combinations_models": [],
+      "decision": "rejected_no_accepted_complete_2019_2023_source_under_frozen_contract",
+      "classification": "source_admission_failure_not_factor_failure",
+      "reason": "Cash conversion, gross margin and contract-liability full histories failed their frozen source gates; the two CNINFO full-source branches failed title-markup or pagination stability. Acceptance rows cannot be extrapolated, and these failures do not establish predictive ineffectiveness."
+    },
+    {
+      "catalog_id": "c159_06",
+      "name": "minute_or_daily_operator_refresh_failure_missingness_or_stored_feature_signal",
+      "candidate_source": "accepted OHLCVA/daily basis plus derived features, failure exports and historical experiment outputs",
+      "formula": null,
+      "direction": null,
+      "parameters_filters_subsets_combinations_models": [],
+      "decision": "rejected_terminal_raw_primitive_neighborhood_and_derived_failure_artifact_recycling",
+      "classification": "terminal_or_nonraw_artifact_reuse",
+      "reason": "Daily OHLCV/turnover/price-basis and minute OHLCVA already support the frozen terminal libraries. Another operator without a new observed state is a statistic refresh; reconciliation failures, missingness, derived feature values and stored scores are research diagnostics, not raw alpha."
+    }
+  ],
+  "gate_results": [
+    {"catalog_id": "c159_01", "accepted_full_history": true, "original_contract_permits_new_factor": false, "new_economic_state": false, "point_in_time_rankable": true, "raw_not_derived_or_failure_artifact": true, "passed": false},
+    {"catalog_id": "c159_02", "accepted_full_history": true, "original_contract_permits_new_factor": false, "new_economic_state": false, "point_in_time_rankable": true, "raw_not_derived_or_failure_artifact": true, "passed": false},
+    {"catalog_id": "c159_03", "accepted_full_history": true, "original_contract_permits_new_factor": false, "new_economic_state": false, "point_in_time_rankable": true, "raw_not_derived_or_failure_artifact": true, "passed": false},
+    {"catalog_id": "c159_04", "accepted_full_history": true, "original_contract_permits_new_factor": false, "new_economic_state": false, "point_in_time_rankable": false, "raw_not_derived_or_failure_artifact": true, "passed": false},
+    {"catalog_id": "c159_05", "accepted_full_history": false, "original_contract_permits_new_factor": false, "new_economic_state": true, "point_in_time_rankable": true, "raw_not_derived_or_failure_artifact": true, "passed": false},
+    {"catalog_id": "c159_06", "accepted_full_history": true, "original_contract_permits_new_factor": false, "new_economic_state": false, "point_in_time_rankable": false, "raw_not_derived_or_failure_artifact": false, "passed": false}
+  ],
+  "decision": {
+    "residual_routes_reviewed": 6,
+    "all_gate_passers": 0,
+    "selected_candidate_count": 0,
+    "source_admission_failures_not_factor_failures": 1,
+    "terminal_contract_transform_or_artifact_rejections": 5,
+    "complete_factor_definition_created": false,
+    "numeric_comparator_appended": false,
+    "formula_feature_snapshot_adapter_or_model_created": false,
+    "source_acceptance_coverage_uniqueness_development_or_stress_stage_run": false,
+    "terminalize_campaign159_prevalue": true,
+    "reason": "No remaining local family simultaneously supplies accepted complete history, contract permission, a new rankable economic state and raw point-in-time values."
+  },
+  "research_boundary": {
+    "parquet_schema_and_manifest_metadata_read": true,
+    "parquet_rows_or_column_values_read": false,
+    "candidate_or_comparator_values_read": false,
+    "historical_daily_price_or_forward_return_values_read": false,
+    "stress_2024_2025_opened": false,
+    "provider_or_web_request_issued": false,
+    "provider_credential_presence_value_or_digest_read": false,
+    "candidate49_historical_backfill_performed": false,
+    "candidate49_ledgers_changed": false,
+    "second_prospective_candidate_created": false,
+    "current_scoring_selection_sizing_positions_or_orders_performed": false,
+    "investment_advice": false
+  },
+  "next_action": "Record the six residual-route decisions, preserve the 157/142 library, and authorize Campaign160 only from a genuinely new raw state or a separately frozen complete source contract."
+}

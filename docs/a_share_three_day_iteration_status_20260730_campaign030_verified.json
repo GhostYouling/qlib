@@ -1,0 +1,102 @@
+{
+  "version": 32,
+  "kind": "a_share_three_day_iteration_status",
+  "status": "candidate49_future_only_preserved_campaign030_terminal_verified_ready_for_campaign031_concept",
+  "recorded_at": "2026-07-30T11:38:00Z",
+  "purpose": "Advance the additive state after binding, documentation, Candidate49-isolation, and full-suite verification of terminal Campaign030.",
+  "previous_authoritative_state": {
+    "path": "docs/a_share_three_day_iteration_status_20260730_campaign029_verified.json",
+    "sha256": "ba1d7e7e9f96274ed2e735123af6c6ac71b0278e03faadcd4ef65d5bdaa4d1ef"
+  },
+  "historical_walkforward_policy": {
+    "path": "docs/a_share_three_day_historical_walkforward_research_policy_20260727.json",
+    "sha256": "38426d6161b9bfed323c58caba18feca668b8c9d53e294951a8ba90c01a798bb"
+  },
+  "campaign030_verification": {
+    "path": "docs/a_share_three_day_walkforward_campaign_030_verification_20260730.json",
+    "sha256": "3473b8276f4306ceffaea68dd2d010485785554a5f1c6e5eb99c58bf188c9fd7",
+    "binding_validation_exit_code": 0,
+    "binding_count": 20,
+    "failed_binding_count": 0,
+    "focused_tests_passed": 9,
+    "full_data_collector_tests_passed": 1450
+  },
+  "campaign030_terminal_boundary": {
+    "factor": "intraday_market_correlation_resolution_119p",
+    "direction": "higher",
+    "formula": "morning population PearsonCorr(stock_return, leave_one_out_market_return) over 119 synchronous within-half positions minus the same afternoon correlation",
+    "research_record": {
+      "path": "docs/a_share_three_day_walkforward_campaign_030_research_record.json",
+      "sha256": "6bb3142809c2034445ad4f5a11cdd8326dbc890dcec4f61321c6560af6af8e0b"
+    },
+    "development_trial_count": 1,
+    "development_survivor_count": 0,
+    "validation_quality_rejection_reasons": [
+      "median_validation_spread",
+      "insufficient_positive_normalized_return_folds",
+      "insufficient_positive_pilot_return_folds",
+      "median_validation_pilot_return",
+      "worst_validation_normalized_drawdown",
+      "nonpositive_development_aggregate_20bp_return"
+    ],
+    "development_aggregate_mean_rank_ic": 0.0048053021306769025,
+    "development_aggregate_normalized_return": -0.5099320811146758,
+    "development_aggregate_return_10bp": -0.1778734471050385,
+    "development_aggregate_return_20bp": -0.2452844057710275,
+    "stress_2024_2025_opened": false,
+    "stress_2024_2025_return_read": false,
+    "terminal": true,
+    "strategy_promotion_allowed": false,
+    "rerun_repair_invert_rescue_or_combine_allowed": false
+  },
+  "research_counts": {
+    "terminal_historical_walkforward_campaign_mechanism_count": 30,
+    "completed_historical_walkforward_campaign_count": 30,
+    "recorded_historical_development_trial_count": 252,
+    "active_prospective_candidate_count": 1,
+    "current_aggregation_candidate_count": 0
+  },
+  "active_prospective_candidate": {
+    "ordinal": 49,
+    "registration_id": "candidate49_intraday_cumulative_vwap_crossing_rate_240m_v1",
+    "historical_return_diagnostic_allowed": false,
+    "signal_ledger": {
+      "path": "data/experiments/short_horizon/candidate49_future_signal_ledger.json",
+      "sha256": "5193f00d7f36da003f53cec387900da4c3d002299f5dfcfc1a95eaa199ed3a79",
+      "entry_count": 0
+    },
+    "execution_ledger": {
+      "path": "data/experiments/short_horizon/candidate49_future_execution_ledger.json",
+      "sha256": "d57a3e61eac969e42cafa418ccd8c0a5ee65dcf69da145bb2c096c2a02a2ea4f",
+      "entry_count": 0
+    }
+  },
+  "credential_presence": {
+    "repository_dotenv_exists": true,
+    "repository_dotenv_mode": "0600",
+    "TUSHARE_TOKEN_nonempty": true,
+    "workflow_reads_repository_dotenv_token": true,
+    "secret_value_read_into_record": false,
+    "secret_value_printed": false,
+    "credential_readiness_does_not_authorize_provider_requests": true
+  },
+  "next_research_action": {
+    "objective": "Scout one genuinely independent Campaign031 concept without opening candidate, comparison, daily-price, or return values before its own freeze boundaries.",
+    "requires_new_daily_bar": false,
+    "requires_same_day_1630_wait": false,
+    "binding_validation_required_at_each_freeze_boundary": true,
+    "development_interval_if_admitted": [
+      "2019-01-01",
+      "2023-12-31"
+    ],
+    "stress_interval_opening_rule": "2024-2025 may open exactly once only for a frozen development survivor"
+  },
+  "decision": {
+    "campaign030_terminal_verified": true,
+    "campaign031_concept_scouting_allowed_now": true,
+    "campaign031_candidate_values_allowed_before_binding_validation": false,
+    "candidate49_remains_only_active_prospective_candidate": true,
+    "candidate50_activation_allowed": false,
+    "current_aggregation_scoring_selection_sizing_or_orders_allowed": false
+  }
+}

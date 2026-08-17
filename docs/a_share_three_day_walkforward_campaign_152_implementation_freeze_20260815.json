@@ -1,0 +1,61 @@
+{
+  "schema_version": 1,
+  "kind": "a_share_three_day_walkforward_campaign152_implementation_freeze",
+  "status": "formula_builder_and_synthetic_tests_frozen_before_historical_values",
+  "recorded_at": "2026-08-15T02:05:00+08:00",
+  "protocol_path": "docs/a_share_three_day_walkforward_campaign_152_no_return_preregistration_20260815.json",
+  "protocol_sha256": "026344726b68729336ce68a4b039c91c5faeecec6586929a804f9fb3eb465250",
+  "code": {
+    "formula_path": "scripts/a_share_three_day_walkforward_campaign152_formula.py",
+    "formula_sha256": "1fc133726ce8846621d2469fb9ff26f1456e1ca216794455e44bf5621682b4b9",
+    "feature_builder_path": "scripts/a_share_three_day_walkforward_campaign152_features.py",
+    "feature_builder_sha256": "a0be7076cef3fcb6b775b7c034a3ec7ccec49e6f250a45fd1b021945a531747d",
+    "base_builder_path": "scripts/a_share_three_day_walkforward_campaign105_features.py",
+    "base_builder_sha256": "cf151f6f8af55bc219f9ed06512eb138d833352316a958b4a9b1dac05079e4ba"
+  },
+  "tests": {
+    "formula_test_path": "tests/data_collector_tests/test_a_share_three_day_walkforward_campaign152_formula.py",
+    "formula_test_sha256": "4ab76d3dc40070688f354237d54c840cde2b6c731825a53c1f73dcc1522711a7",
+    "feature_test_path": "tests/data_collector_tests/test_a_share_three_day_walkforward_campaign152_features.py",
+    "feature_test_sha256": "a8407d5574afc975df964173879b793767be6b9d0ad6649d2af82903f128e4d3",
+    "command": "python -m black --check <four Campaign152 files> && python -m ruff check <four Campaign152 files> && python -m pytest -q <two Campaign152 test files>",
+    "exit_code": 0,
+    "passed": 15
+  },
+  "complete_definition_count": 157,
+  "complete_definition_order_sha256": "c39bb6ca969b5f469a9377a5b5ca743405cec9d8511297ed6a1c44188ef40b82",
+  "numeric_comparator_count": 142,
+  "numeric_comparator_order_sha256": "5d1b35fb5a0d8ac9293008db9963c4a60a94dc940c237c3ed259e5ce44f14aaf",
+  "formula": {
+    "name": "intraday_session_total_amount_magnitude_240m",
+    "direction": "higher",
+    "exact_score": "log1p(sum_i(amount_i)) over the exact 240 continuous-auction bars",
+    "support": "all amount values finite and nonnegative; total finite and strictly positive",
+    "source_projection": ["datetime", "symbol", "provider", "amount"]
+  },
+  "failed_prevalue_validation_attempts_preserved": [
+    {
+      "attempt": 1,
+      "exit_code": 1,
+      "failure": "Black check reported that all four new files would be reformatted; Ruff and pytest did not run."
+    },
+    {
+      "attempt": 2,
+      "exit_code": 1,
+      "failure": "After mechanical formatting Black passed, but Ruff reported two E402 late-import findings in the generated-base wrapper; pytest did not run."
+    }
+  ],
+  "research_boundary": {
+    "historical_source_rows_read": false,
+    "candidate_or_comparator_values_read": false,
+    "historical_daily_price_or_forward_return_values_read": false,
+    "stress_2024_2025_opened": false,
+    "provider_request_issued": false,
+    "credential_loaded": false,
+    "candidate49_historical_backfill_performed": false,
+    "candidate49_ledgers_changed": false,
+    "second_prospective_candidate_created": false,
+    "current_scoring_selection_sizing_positions_or_orders_performed": false,
+    "investment_advice": false
+  }
+}

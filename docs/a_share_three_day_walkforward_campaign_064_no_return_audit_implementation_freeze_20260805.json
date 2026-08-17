@@ -1,0 +1,77 @@
+{
+  "version": 1,
+  "kind": "a_share_three_day_walkforward_campaign064_no_return_audit_implementation_freeze",
+  "status": "frozen_before_campaign064_quality_listing_coverage_comparison_daily_price_or_return_values",
+  "recorded_at": "2026-08-05T08:36:00+08:00",
+  "purpose": "Bind the sole Campaign064 coverage-first no-return audit before quality/listing eligibility keys, any of the 95 comparison values, historical daily prices, or forward returns are opened.",
+  "research_policy": {
+    "path": "docs/a_share_three_day_historical_walkforward_research_policy_20260727.json",
+    "sha256": "38426d6161b9bfed323c58caba18feca668b8c9d53e294951a8ba90c01a798bb"
+  },
+  "no_return_protocol": {
+    "path": "docs/a_share_three_day_walkforward_campaign_064_no_return_preregistration.json",
+    "sha256": "441cbeef589593c2ef0ae3e58325f5ab0acb506cc54eaa040c79f26c8ca6a887"
+  },
+  "snapshot_binding": {
+    "path": "docs/a_share_three_day_walkforward_campaign_064_feature_snapshot_binding_20260805.json",
+    "sha256": "ece4c6c3899d186a7d23d3408c3d4056ab6c062f754bb45eafa8d72661ed430d"
+  },
+  "audit_runner": {
+    "path": "scripts/a_share_three_day_walkforward_campaign064_no_return_audit.py",
+    "sha256": "34123e88215ecb59c3cdcb0f06e15b94922f5236fc0eff45363857c48b77c36f",
+    "candidate_factor": "intraday_range_weak_order_entropy_236t",
+    "coverage_first": true,
+    "expected_candidate_snapshot_eligible_rows": 7724498,
+    "comparison_count": 95,
+    "comparison_order_sha256": "d471615fc35bc482efcfe0fea1e8f7b79dce8826b649d3a3e43c3ba784c2ed6b"
+  },
+  "tests": {
+    "path": "tests/data_collector_tests/test_a_share_three_day_walkforward_campaign064_no_return_audit.py",
+    "sha256": "48b32c18f915cad83c9cefd99c28af45113a478b025ccbd326f90a29bc6f15f6",
+    "focused_command": "PYTHONPATH=<repository-root>:<third-party-site-packages> python -S -m pytest -q tests/data_collector_tests/test_a_share_three_day_walkforward_campaign064_no_return_audit.py",
+    "focused_passed": 3,
+    "focused_failed": 0
+  },
+  "latest_attempt_ledger_before_audit": {
+    "path": "data/experiments/short_horizon/historical_walkforward/campaign_064/research_attempt_ledger_v7.json",
+    "sha256": "f59bca47ae7b04776a6d1dbf672008ff9f0e2d07eabce5d4ef49616a0a29f21a",
+    "attempt_count": 8,
+    "complete_factor_attempt_count": 0,
+    "return_reading_trial_count": 0
+  },
+  "appended_comparison_snapshots": {
+    "campaign062": {
+      "path": "/Volumes/DIsk/qlib-a-share-tushare-1m/derived/a_share/rich/tushare/minute_walkforward_campaign062_feature_library/tushare_stk_mins_1m_2019_2025_ea0cbb8f_walkforward_campaign062_feature_library_v1/snapshot_manifest.json",
+      "sha256": "518131c1ecac2820a426d2d7de46552daf9009b476ed7efbf3d69ba555f1ac45",
+      "dataset_sha256": "5012eebb056fff75b6931390acaa5272629e70267ee5a32f46377c60994571a0",
+      "factor": "quarterly_announcement_peer_crowding_sparsity"
+    },
+    "campaign063_terminal": {
+      "path": "/Volumes/DIsk/qlib-a-share-tushare-1m/derived/a_share/rich/tushare/minute_walkforward_campaign063_feature_library/tushare_stk_mins_1m_2019_2025_ea0cbb8f_walkforward_campaign063_feature_library_v1/snapshot_manifest.json",
+      "sha256": "12fc8d8bf7df432608f4cb63b7c5337f2cd46d2a029c34d8b3e60c0f8906a098",
+      "dataset_sha256": "fd040477f3af2948976fda9a71f6d04a0bd9b9713a1b9b5a6dedf2f06f0c76df",
+      "factor": "intraday_cross_sectional_standardized_return_state_stability_236p"
+    }
+  },
+  "ordered_semantics": {
+    "verify_all_33015_candidate_partitions_before_coverage": true,
+    "load_quality_and_current_listing_keys_before_coverage": true,
+    "comparison_values_read_only_if_all_coverage_capacity_gates_pass": true,
+    "comparison_order_is_exactly_95_and_all_must_pass": true,
+    "minimum_pairwise_names_per_session": 50,
+    "minimum_pairwise_sessions_per_comparison": 100,
+    "maximum_allowed_absolute_median_daily_rank_correlation": 0.8,
+    "terminal_campaign063_is_appended_exactly_once_and_not_special_cased": true,
+    "daily_price_or_forward_return_read": false,
+    "same_campaign_formula_grid_tie_or_comparison_rescue": false
+  },
+  "quality_listing_keys_read_before_freeze": false,
+  "comparison_values_read_before_freeze": false,
+  "historical_daily_price_fields_read_before_freeze": [],
+  "historical_forward_returns_read_before_freeze": false,
+  "candidate49_historical_return_read_before_freeze": false,
+  "candidate49_ledgers_changed_before_freeze": false,
+  "provider_request_issued_before_freeze": false,
+  "current_scoring_selection_sizing_or_orders_performed_before_freeze": false,
+  "next_action": "Run the sole Campaign064 no-return audit once; if any ordered gate fails, stop before historical daily prices or returns without rescue."
+}

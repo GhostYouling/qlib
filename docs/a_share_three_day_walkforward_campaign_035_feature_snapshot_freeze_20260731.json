@@ -1,0 +1,90 @@
+{
+  "version": 1,
+  "kind": "a_share_three_day_walkforward_campaign035_feature_snapshot_freeze",
+  "status": "snapshot_bound_before_comparison_values_daily_prices_or_returns",
+  "recorded_at": "2026-07-30T20:10:50Z",
+  "purpose": "Bind the Campaign035 exact weak-order entropy snapshot, all partition hashes, and the post-snapshot runner before any comparison factor value, daily price, or historical forward return is opened.",
+  "source_chain": {
+    "no_return_preregistration": {
+      "path": "docs/a_share_three_day_walkforward_campaign_035_no_return_preregistration.json",
+      "sha256": "22ffd5a21b4104a8c1e0d110cc335a1a758649560ab2d10e9a9c16258f70d7c9"
+    },
+    "feature_implementation_freeze": {
+      "path": "docs/a_share_three_day_walkforward_campaign_035_feature_implementation_freeze_20260731.json",
+      "sha256": "d2a72189ae4e6f5de15ea466387f4ae201393f86e1b09a2e8110e2859c450715"
+    },
+    "feature_runner_pre_snapshot_binding_sha256": "09924228c6d8feaf19865078a6514dff7aa8d55edadd17072d3909708f7123e1",
+    "feature_runner_after_snapshot_binding": {
+      "path": "scripts/a_share_three_day_walkforward_campaign035_features.py",
+      "sha256": "9fd15a4259b0267c36a856b9ffd93a4ac28afe1d2de08f80767445098ea03bce"
+    },
+    "feature_tests_pre_snapshot_assertion_sha256": "4563d3eba96237690901c09d2607d399308c056295b633e4b5347e45ce128bd2",
+    "feature_tests_after_snapshot_assertion_transition": {
+      "path": "tests/data_collector_tests/test_a_share_three_day_walkforward_campaign035_features.py",
+      "sha256": "47d9db8d02e4d05bc483c04116fe35dbdcbe09d5f545dfc69a027be1677d289d",
+      "focused_with_campaign034_regression_tests_passed": 15,
+      "failed": 0
+    },
+    "candidate49_signal_ledger": {
+      "path": "data/experiments/short_horizon/candidate49_future_signal_ledger.json",
+      "sha256": "5193f00d7f36da003f53cec387900da4c3d002299f5dfcfc1a95eaa199ed3a79",
+      "entry_count": 0
+    },
+    "candidate49_execution_ledger": {
+      "path": "data/experiments/short_horizon/candidate49_future_execution_ledger.json",
+      "sha256": "d57a3e61eac969e42cafa418ccd8c0a5ee65dcf69da145bb2c096c2a02a2ea4f",
+      "entry_count": 0
+    }
+  },
+  "feature_snapshot": {
+    "path": "/Volumes/DIsk/qlib-a-share-tushare-1m/derived/a_share/rich/tushare/minute_walkforward_campaign035_feature_library/tushare_stk_mins_1m_2019_2025_ea0cbb8f_walkforward_campaign035_feature_library_v1/snapshot_manifest.json",
+    "sha256": "33de221a37e0a19d3c1fffba3c8f0e64c20571581a7c72296b1a593c0acc91f4",
+    "dataset_sha256": "b557148b91a16dad9f028190723b2485f9eadd231c0aaded6b499d9dc1c68606",
+    "kind": "a_share_three_day_walkforward_campaign035_feature_snapshot",
+    "partitions": 33015,
+    "rows": 7724498,
+    "factor": "intraday_return_weak_order_entropy_234t",
+    "direction": "higher",
+    "eligible_rows": 7724498,
+    "exact_tie_tuple_observations": 630100770,
+    "invalid_required_close_rows": 0,
+    "nonpositive_close_rows": 0,
+    "nonfinite_return_rows": 0,
+    "inadmissible_weak_order_rows": 0,
+    "state_count_mismatch_rows": 0,
+    "range_or_nonfinite_rows": 0,
+    "resumed_partitions": 0,
+    "all_partition_byte_and_frame_hashes_valid": true,
+    "verified_partitions": 33015,
+    "verified_rows": 7724498
+  },
+  "source_and_output_boundary": {
+    "source_fields_read": [
+      "datetime",
+      "symbol",
+      "provider",
+      "close"
+    ],
+    "source_open_high_low_read": false,
+    "source_volume_read": false,
+    "source_amount_read": false,
+    "comparison_factor_values_read": false,
+    "daily_price_fields_read": [],
+    "forward_return_fields_read": false,
+    "candidate49_historical_return_read": false,
+    "training_or_model_fitting_performed": false,
+    "current_scoring_selection_sizing_or_orders_performed": false
+  },
+  "lifecycle_assertion_transition": {
+    "reason": "The pre-build test required the isolated Campaign035 snapshot to be absent and unbound. After immutable publication and runner binding, status must require snapshot_exists=true and snapshot_sha256_bound=true while audit_count remains zero and returns remain unread.",
+    "formula_direction_source_projection_tie_rule_snapshot_or_gate_changed": false,
+    "prebuild_record_rewritten": false
+  },
+  "decision": {
+    "snapshot_manifest_validation_passed": true,
+    "snapshot_partition_verification_passed": true,
+    "snapshot_binding_validation_required_before_no_return_audit": true,
+    "no_return_audit_allowed_after_binding_validation": true,
+    "historical_return_read_allowed_before_no_return_admission": false
+  }
+}

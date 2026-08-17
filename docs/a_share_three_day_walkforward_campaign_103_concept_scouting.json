@@ -1,0 +1,71 @@
+{
+  "version": 1,
+  "kind": "a_share_three_day_walkforward_campaign103_concept_scouting",
+  "status": "selected_one_genuinely_new_temporal_complete_library_mechanism_before_campaign103_values",
+  "recorded_at": "2026-08-07T16:25:00+08:00",
+  "purpose": "Select exactly one finite offline Campaign103 mechanism after Campaign102 without reading a Campaign103 candidate value, paired-support result, comparison value, daily price, or forward return.",
+  "authoritative_inputs": {
+    "iteration_state": {
+      "path": "docs/a_share_three_day_iteration_status_20260807_campaign102_terminal_v3.json",
+      "sha256": "a6350716feb03e0bdc9af8f6bf3c7f332fe49f6713df022c45543feb8d8e3ced"
+    },
+    "historical_walkforward_policy": {
+      "path": "docs/a_share_three_day_historical_walkforward_research_policy_20260727.json",
+      "sha256": "38426d6161b9bfed323c58caba18feca668b8c9d53e294951a8ba90c01a798bb"
+    },
+    "numeric_policy_v59": {
+      "path": "docs/a_share_three_day_walkforward_future_numeric_comparison_eligibility_policy_v59_20260807.json",
+      "sha256": "4e6c7aea0be521773cda56ceea33d1665a82e9254b1e9198fa13b65e22d826b0",
+      "complete_definition_count": 133,
+      "numeric_comparator_count": 130
+    },
+    "campaign102_terminal_completion": {
+      "path": "docs/a_share_three_day_walkforward_campaign_102_terminal_completion_freeze_20260807.json",
+      "sha256": "b2dd1c30b7d0fcb87dca9ecf8aa1c3efd5c9803924b6baa9aacacc80fdb64d7e"
+    }
+  },
+  "candidate_design_catalog": [
+    {
+      "concept": "retry_campaign101_static_order_statistic_or_other_static_vote_mean_median_geometric_aggregator",
+      "selected": false,
+      "reason": "A new static aggregator over the same current-session library would be a prohibited Campaign101 rescue or an unbounded post-result aggregator search."
+    },
+    {
+      "concept": "retry_campaign102_supervised_or_unsupervised_reweighting_regularization_target_bound_or_subset",
+      "selected": false,
+      "reason": "Changing fitting target, lambda, coefficient bound, component subset, missing-score treatment, or weighting rule would be a prohibited Campaign102 model retry."
+    },
+    {
+      "concept": "full_numeric_library_directional_rank_improvement_breadth_130f",
+      "selected": true,
+      "reason": "This asks a new temporal question: whether a stock improves relative to the cross-section across many independently frozen mechanisms between consecutive accepted sessions. It uses no return, fit, learned weight, selected subset, current-level order statistic, or Candidate49 state."
+    }
+  ],
+  "selected_candidate": {
+    "name": "full_numeric_library_directional_rank_improvement_breadth_130f",
+    "direction": "higher",
+    "economic_hypothesis": "Broad one-session improvement in a stock's relative standing across heterogeneous close-known mechanisms may identify coordinated information assimilation rather than a high static level in only a few factors, and may persist from the next open through the third close.",
+    "source": "The immutable Campaign102 130-column directional-rank design snapshot only.",
+    "current_session": "accepted local session t",
+    "prior_session": "the immediately preceding accepted local session t-1 from the snapshot's complete 1,632-session calendar; never the previous observed stock row",
+    "formula": "Require the current and exact-prior stock-day rows both to have model_support_eligible=true. For each of the exact 130 ordered components, retain the pair only when both directional ranks are finite. Give vote 1 when current>prior, 0.5 on exact float32 equality, and 0 when current<prior. Return the arithmetic mean of all retained votes.",
+    "paired_component_floor": 66,
+    "paired_component_floor_derivation": "Each eligible row has at least 98 finite components. For two subsets of a 130-component library, inclusion-exclusion gives an intersection of at least 98+98-130=66. The floor adds no candidate-specific support restriction beyond requiring both frozen support flags.",
+    "missing_rule": "Missing when there is no exact-prior accepted session, no matching instrument row on that session, either row fails the frozen Campaign102 98-of-130 support, fewer than 66 finite pairs are observed, or the result is not finite in [0,1]. Never bridge a suspension or absent row, fill a component, carry a rank, or replace a missing pair with a vote.",
+    "alternate_lag_window_vote_tie_rule_pair_floor_direction_threshold_filter_subset_weight_fit_model_or_rescue_search": false
+  },
+  "research_boundary": {
+    "campaign102_values_are_prior_immutable_evidence_already_consumed_by_campaign102": true,
+    "campaign103_candidate_values_read_before_this_record": false,
+    "campaign103_paired_support_or_comparison_values_read_before_this_record": false,
+    "historical_daily_price_fields_read_before_this_record": [],
+    "historical_forward_return_fields_read_before_this_record": false,
+    "provider_request_issued": false,
+    "candidate49_historical_backfill_performed": false,
+    "candidate49_ledgers_changed": false,
+    "second_prospective_candidate_created": false,
+    "current_scoring_selection_sizing_or_orders_performed": false,
+    "investment_advice": false
+  },
+  "decision": "Proceed only after a complete semantic/support overlap audit and a fingerprint-bound no-return preregistration are frozen."
+}

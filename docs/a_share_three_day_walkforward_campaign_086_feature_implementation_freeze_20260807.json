@@ -1,0 +1,72 @@
+{
+  "schema_version": 1,
+  "kind": "a_share_three_day_walkforward_campaign086_feature_implementation_freeze",
+  "status": "frozen_before_campaign086_minute_source_rows_or_candidate_values",
+  "frozen_at": "2026-08-07T00:56:00+08:00",
+  "protocol": {
+    "path": "docs/a_share_three_day_walkforward_campaign_086_no_return_preregistration.json",
+    "sha256": "033cd34013770b5b19ccb8579100c7ab920946de22b3936bc34a0898f4d2acb3",
+    "binding_validator_passed": true,
+    "binding_count": 14
+  },
+  "feature_runner": {
+    "path": "scripts/a_share_three_day_walkforward_campaign086_features.py",
+    "sha256": "ed59f42461a89cc58738c922e87ac821b548dabd8ac1ce0f99eca68cef3b9f8a"
+  },
+  "tests": {
+    "path": "tests/data_collector_tests/test_a_share_three_day_walkforward_campaign086_features.py",
+    "sha256": "24370e7a23d156d81a9ce5dbf74de86cbae489c7e94da5b1d1bf4cff87750607",
+    "ruff_passed": true,
+    "pytest_passed": 9,
+    "pytest_failed": 0
+  },
+  "prevalue_failures_preserved": [
+    {
+      "path": "docs/a_share_three_day_walkforward_campaign_086_prevalue_numeric_order_binding_failure_20260807.json",
+      "sha256": "1aa8419a10ce987ef3744cf09ab97cc6c3f8fe6a8316be7ba6a7f4106ce4b255"
+    },
+    {
+      "path": "docs/a_share_three_day_walkforward_campaign_086_prevalue_feature_test_failure_20260807.json",
+      "sha256": "fda9af27bc5c595f7bb741124e9d1f676f50675bf7af0f96ee93ddc2e8257bef"
+    },
+    {
+      "path": "docs/a_share_three_day_walkforward_campaign_086_prevalue_feature_test_failure_v2_20260807.json",
+      "sha256": "875a225b5d078aa5e0b203522265ac04d2fc8ab81257821141f1fa13ba988708"
+    }
+  ],
+  "attempt_ledger_before_source_read": {
+    "path": "data/experiments/short_horizon/historical_walkforward/campaign_086/research_attempt_ledger_v3.json",
+    "sha256": "2fddc25c7c8229e1a51efaf14f71d9d0d9f684735ad063e1e33c59715828771c",
+    "campaign_attempt_count": 3,
+    "infrastructure_failure_count": 3,
+    "complete_factor_attempt_count": 0
+  },
+  "frozen_implementation_semantics": {
+    "candidate": "intraday_intrabar_close_location_serial_persistence_238p",
+    "direction": "higher",
+    "raw_source_fields": [
+      "datetime",
+      "symbol",
+      "provider",
+      "high",
+      "low",
+      "close"
+    ],
+    "selected_grid": "09:31-11:30 and 13:01-15:00; raw 09:30 required but excluded",
+    "selected_bar_count": 240,
+    "within_half_pair_opportunities": 238,
+    "minimum_informative_pairs": 120,
+    "state": "(log(close)-log(low))/(log(high)-log(low)) for finite positive ordered positive-range bars",
+    "zero_range_rule": "no state; remove only directly incident within-half pairs; never bridge",
+    "moment_rule": "population Pearson correlation from anchored-centered retained lag and lead vectors",
+    "endpoint_rule": "canonicalize only rho within 1e-12 of -1 or +1; map to (1+rho)/2",
+    "output_layout": "seven annual compact partitions over the exact frozen 1,331,759 quality-listing eligible stock-day keys"
+  },
+  "candidate_source_rows_read_before_freeze": false,
+  "candidate_values_computed_before_freeze": false,
+  "comparison_values_read_before_freeze": false,
+  "historical_daily_price_or_forward_return_values_read_before_freeze": false,
+  "provider_request_issued_before_freeze": false,
+  "candidate49_ledgers_changed_before_freeze": false,
+  "current_scoring_selection_sizing_or_orders_performed_before_freeze": false
+}

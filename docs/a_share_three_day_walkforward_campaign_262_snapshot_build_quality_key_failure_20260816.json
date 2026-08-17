@@ -1,0 +1,41 @@
+{
+  "schema_version": 1,
+  "kind": "a_share_three_day_walkforward_campaign262_snapshot_build_quality_key_failure",
+  "status": "failed_closed_without_snapshot_publication_comparator_or_return_reads",
+  "recorded_at": "2026-08-16T18:02:00+08:00",
+  "timestamp_semantics": "monotonic_logical_append_time_not_host_wall_clock_measurement",
+  "attempt_id": "campaign262_infrastructure_006",
+  "failed_command": "PYTHONPATH=. /Volumes/DIsk/Coding/anaconda3/bin/python3.12 scripts/a_share_three_day_walkforward_campaign262_features.py build --workers 8 --confirm-build",
+  "exit_code": 1,
+  "failure": {
+    "exception": "KeyError",
+    "missing_quality_key": "positive_amount_bars",
+    "root_cause": "The inherited Campaign152 aggregate writer requires positive_amount_bars and zero_amount_bars as diagnostic totals, while the frozen Campaign262 extractor initially returned all scientific eligibility keys but omitted these two non-scientific diagnostics.",
+    "formula_direction_source_projection_grid_support_and_output_schema_changed": false
+  },
+  "atomicity_verification": {
+    "final_snapshot_root_present_after_failure": false,
+    "partial_root_present_after_failure": false,
+    "snapshot_manifest_published": false,
+    "comparator_value_read": false,
+    "historical_daily_price_or_forward_return_value_read": false,
+    "stress_2024_2025_opened": false
+  },
+  "recovery_scope": {
+    "allowed_change": "Add exact counts of positive and zero amount bars among already eligible stock-days and point the builder to an additive v2 implementation freeze.",
+    "formula_or_candidate_value_change_allowed": false,
+    "rerun_allowed_only_after_synthetic_tests_and_v2_freeze": true
+  },
+  "research_boundary": {
+    "campaign262_minute_source_rows_read": true,
+    "campaign262_candidate_values_computed_in_unpublished_partial_build": true,
+    "campaign262_candidate_values_published_or_inspected": false,
+    "campaign262_comparator_values_read": false,
+    "historical_daily_price_or_forward_return_values_read": false,
+    "provider_or_web_request_issued": false,
+    "credential_value_presence_or_digest_read": false,
+    "candidate49_ledgers_changed": false,
+    "current_scoring_selection_sizing_positions_or_orders_performed": false,
+    "investment_advice": false
+  }
+}

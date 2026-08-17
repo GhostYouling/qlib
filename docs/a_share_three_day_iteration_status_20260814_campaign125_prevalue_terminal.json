@@ -1,0 +1,139 @@
+{
+  "schema_version": 1,
+  "kind": "a_share_three_day_iteration_status",
+  "status": "campaign125_prevalue_zero_candidates_v129_finalized_campaign126_scouting_ready",
+  "recorded_at": "2026-08-14T04:23:17+0800",
+  "authoritative_workspace": "/Volumes/DIsk/Disk-Coding/qlib",
+  "active_goal": {
+    "objective": "请持续迭代因子。",
+    "status": "active",
+    "completion_requested_or_recorded": false
+  },
+  "supersedes_without_rewriting": {
+    "path": "docs/a_share_three_day_iteration_status_20260814_campaign124_new_share_terminal.json",
+    "sha256": "4be45cc8817c0fb2b4f20a19f07ca12048b85853639376d3dfdc7dafe8c20609",
+    "preserved": true
+  },
+  "active_data_roots": {
+    "minute": "/Volumes/DIsk/qlib-a-share-tushare-1m",
+    "daily": "/Volumes/DIsk/Disk-Coding/qlib/data/qlib/cn_a_share",
+    "accepted_daily_calendar_end": "2026-07-13",
+    "campaign125_minute_or_daily_values_read": false
+  },
+  "manage_qlib_a_share_data_skill": {
+    "path": "/Users/niyufei/.codex/skills/manage-qlib-a-share-data/SKILL.md",
+    "sha256": "565713a5f3aeb6a1acf23e397fcc21be28d0c3ea4ebf21c7f287a25bb94d78dc"
+  },
+  "provider_credential": {
+    "env_path": "/Volumes/DIsk/Disk-Coding/qlib/.env",
+    "regular_non_symlink": true,
+    "mode": "0600",
+    "tushare_token_present_nonempty": true,
+    "loaded_for_campaign125": false,
+    "secret_printed_hashed_or_persisted": false
+  },
+  "campaign125_authoritative_artifacts": {
+    "concept_scouting": {
+      "path": "docs/a_share_three_day_walkforward_campaign_125_concept_scouting_20260814.json",
+      "sha256": "d21c9279998644ce9de0eb86564211835626f860f194b5b21055c94595e6712f"
+    },
+    "mechanism_source_frontier_audit": {
+      "path": "docs/a_share_three_day_walkforward_campaign_125_mechanism_source_frontier_audit_20260814.json",
+      "sha256": "9157c0f703792596f71d46a61b8064dca694778a1bbe8bf87d4612b690a4b058"
+    },
+    "numeric_policy_v129": {
+      "path": "docs/a_share_three_day_walkforward_future_numeric_comparison_eligibility_policy_v129_20260814.json",
+      "sha256": "f5049889eb641067937f9f194b62c73a93854c9b6b3f766545e73df4859f81e6"
+    },
+    "attempt_ledger_v1": {
+      "path": "data/experiments/short_horizon/historical_walkforward/campaign_125/research_attempt_ledger_v1.json",
+      "sha256": "23a9b6f428785de879b123aa9975d050ad2fc6d47e36f8068eae6d41d5d972a0"
+    }
+  },
+  "campaign125_terminal": {
+    "concepts_reviewed": 6,
+    "selected_candidate_count": 0,
+    "complete_factor_definition_created": false,
+    "provider_request_issued": false,
+    "historical_candidate_values_materialized": false,
+    "numeric_comparator_eligible": false,
+    "historical_predictive_value_established": false,
+    "prospective_candidate_registered": false,
+    "terminal": true,
+    "rejected_concept_repair_relabel_combination_or_run_allowed": false
+  },
+  "frozen_library": {
+    "complete_definition_count": 149,
+    "complete_definition_order_sha256": "be9c6085af2202e8fa5b4c6d89608b712b27740b16b5e78d7d88ca0c4d9bc5e3",
+    "eligible_numeric_comparator_count": 139,
+    "eligible_numeric_comparator_order_sha256": "9c4de054ca1b83eced67eece256b024ebec3a6e1925de17a4cedfa7d36265161"
+  },
+  "effective_accounting": {
+    "campaign125_attempt_count": 2,
+    "campaign125_ledger_entry_count": 2,
+    "campaign125_infrastructure_failure_count": 1,
+    "campaign125_prevalue_scientific_attempt_count": 1,
+    "campaign125_complete_factor_attempt_count": 0,
+    "campaign125_source_acceptance_attempt_count": 0,
+    "campaign125_return_reading_development_trial_count": 0,
+    "campaign125_development_survivor_count": 0,
+    "campaign125_stress_trial_count": 0,
+    "cumulative_historical_research_attempt_count": 1022,
+    "cumulative_return_reading_development_trial_count": 306
+  },
+  "candidate49": {
+    "only_active_prospective_candidate": true,
+    "signal_ledger_sha256": "5193f00d7f36da003f53cec387900da4c3d002299f5dfcfc1a95eaa199ed3a79",
+    "signal_entry_count": 0,
+    "execution_ledger_sha256": "d57a3e61eac969e42cafa418ccd8c0a5ee65dcf69da145bb2c096c2a02a2ea4f",
+    "execution_entry_count": 0,
+    "historical_backfill_performed": false,
+    "prospective_registration_changed": false
+  },
+  "candidate49_daily_20260814": {
+    "local_day": "Friday",
+    "observed_local_time": "2026-08-14T04:23:17+0800",
+    "before_same_day_16_30_gate": true,
+    "plan_executed": false,
+    "run_executed": false,
+    "staging_root_created_or_reused": false
+  },
+  "reports": {
+    "campaign125_terminal_report": {
+      "path": "docs/a_share_three_day_walkforward_campaign_125_terminal_report.md",
+      "sha256": "525f72fa6ec7a8090b1966fdec94dc18ba1e85303f74b0f6dc6696735f8e7ce8"
+    },
+    "current_research_report": {
+      "path": "data/experiments/short_horizon/current_research_report.md",
+      "sha256": "a36d1824084645e43c6a262e55b889034bb8c2fdd3da33f28b43d1d450028aa7"
+    },
+    "three_day_research_report": {
+      "path": "data/experiments/short_horizon/three_day_research_report.md",
+      "sha256": "7dc88158c9f3f615e396fbe393b4e7f2c303a7e62e34bce0dcec2553a98bb111"
+    }
+  },
+  "validation": {
+    "campaign124_and_campaign125_terminal_tests": "8 passed in 0.09s",
+    "black": "passed",
+    "ruff": "passed",
+    "terminal_test": {
+      "path": "tests/data_collector_tests/test_a_share_three_day_walkforward_campaign125_terminal.py",
+      "sha256": "2b7c1b5e1c016a96f579790deefe5a549c05e28f5dd40e25eae929373fd7de1e"
+    },
+    "failed_exit_codes_recorded_and_not_overridden": true
+  },
+  "research_boundary": {
+    "campaign125_provider_request_issued": false,
+    "campaign125_credential_loaded": false,
+    "campaign125_source_rows_read": false,
+    "campaign125_candidate_or_comparison_values_read": false,
+    "historical_daily_price_or_forward_return_values_read": false,
+    "stress_2024_2025_opened": false,
+    "candidate49_historical_backfill_performed": false,
+    "candidate49_ledgers_changed": false,
+    "second_prospective_candidate_created": false,
+    "current_scoring_selection_sizing_positions_or_orders_performed": false,
+    "investment_advice": false
+  },
+  "next_action": "The active goal continues. Begin Campaign126 offline from a genuinely new historically versioned point-in-time source state; preserve all Campaign124-125 terminal decisions and Candidate49 as the sole prospective ledger."
+}

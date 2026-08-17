@@ -1,0 +1,47 @@
+{
+  "version": 1,
+  "kind": "a_share_three_day_walkforward_campaign075_postcompletion_failure_accounting_correction",
+  "status": "additive_effective_accounting_without_rewriting_engine_artifacts",
+  "recorded_at": "2026-08-06T10:21:00+08:00",
+  "research_attempt_ledger_before_development": {
+    "path": "data/experiments/short_horizon/historical_walkforward/campaign_075/research_attempt_ledger_v1.json",
+    "sha256": "52bdc199e08ae3977cb5c77e5dbbffd6e3a7646cce76445b17db30eb986b0b11",
+    "infrastructure_failure_count": 5,
+    "complete_factor_attempt_count": 1
+  },
+  "development_runtime_failure": {
+    "path": "docs/a_share_three_day_walkforward_campaign_075_development_runtime_dependency_failure_20260806.json",
+    "sha256": "e1e01f04935a2ec3d11cb9637d15cbe6cfdf527be4e4e4e34aa352df2f848b12"
+  },
+  "engine_artifacts": {
+    "trial_ledger": {
+      "path": "data/experiments/short_horizon/historical_walkforward/campaign_075/walkforward/trial_ledger.json",
+      "sha256": "14079e97e5f2b421c525f6534026634cbc7abdc0eab3cc488b4e69c7ae76fe4f",
+      "entry_count": 2,
+      "infrastructure_failure_entry_count": 1,
+      "completed_development_trial_entry_count": 1
+    },
+    "campaign_report": {
+      "path": "data/experiments/short_horizon/historical_walkforward/campaign_075/walkforward/campaign_report.json",
+      "sha256": "de90de001d3ebd6128cdc9f5ceadfa9611b161af434a44de20dd834c9255740b",
+      "emitted_infrastructure_failure_count": 0,
+      "effective_infrastructure_failure_count_from_trial_ledger": 1,
+      "preserved_without_rewrite": true
+    }
+  },
+  "corrected_accounting": {
+    "campaign075_infrastructure_failure_count": 6,
+    "campaign075_complete_factor_attempt_count": 1,
+    "campaign075_attempt_count": 7,
+    "campaign075_ledger_entry_count": 8,
+    "campaign075_return_reading_development_trial_count": 1,
+    "cumulative_historical_research_attempt_count": 454,
+    "cumulative_return_reading_development_trial_count": 277
+  },
+  "unchanged_research_result": {
+    "numeric_comparisons_passed": 105,
+    "development_survivor_count": 0,
+    "stress_2024_2025_opened": false,
+    "stress_returns_read": false
+  }
+}

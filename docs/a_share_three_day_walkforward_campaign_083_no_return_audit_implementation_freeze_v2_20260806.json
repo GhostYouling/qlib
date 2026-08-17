@@ -1,0 +1,53 @@
+{
+  "schema_version": 1,
+  "version": 2,
+  "kind": "a_share_three_day_walkforward_campaign083_no_return_audit_implementation_freeze",
+  "status": "frozen_before_full_retry_with_exact_runtime_install_only_repair",
+  "frozen_at": "2026-08-06T20:21:00+08:00",
+  "repair_protocol": {
+    "path": "docs/a_share_three_day_walkforward_campaign_083_no_return_runtime_compatibility_repair_protocol_v2_20260806.json",
+    "sha256": "730bcba595cced9640998e7e56453aaf0f828ce9dde39fafb2455054a426ae93"
+  },
+  "failure_record": {
+    "path": "docs/a_share_three_day_walkforward_campaign_083_no_return_runtime_compatibility_failure_20260806.json",
+    "sha256": "b5f021315a76bae6a606983d3b3c5c643b444bc8847a63807c4161ced4f39a0f"
+  },
+  "original_v1_runner": {
+    "path": "scripts/a_share_three_day_walkforward_campaign083_no_return_audit.py",
+    "sha256": "ff9859120319a52c75aabcbd9d7f5b46c88166af0ca3fc460df981bf2fe71cf1"
+  },
+  "v2_runner": {
+    "path": "scripts/a_share_three_day_walkforward_campaign083_no_return_audit_v2.py",
+    "sha256": "6cc05dd63a16d4f5449fcca31e2efbb3c6d60803e5cb21640fbef1faa90b43a7"
+  },
+  "tests": {
+    "path": "tests/data_collector_tests/test_a_share_three_day_walkforward_campaign083_no_return_audit_v2.py",
+    "sha256": "07cffe17c4c293d2aabdd47a7f0a837db081a19f92c76cfb83c46f0bf6ecf79c",
+    "pre_retry_tests_passed": 4,
+    "pre_retry_tests_failed": 0,
+    "black_py312_check_passed": true,
+    "ruff_check_passed": true,
+    "py_compile_passed": true
+  },
+  "runtime_only_repair": {
+    "failed_runtime_pandas": "2.2.3",
+    "failed_runtime_pyarrow": "25.0.0",
+    "required_runtime_pandas": "2.2.2",
+    "required_runtime_pyarrow": "16.1.0",
+    "exact_versions_must_be_installed_before_retry": true,
+    "original_runtime_gate_must_pass_without_code_rebinding": true
+  },
+  "partial_statistics_reused": false,
+  "candidate_snapshot_or_manifest_rewritten": false,
+  "runtime_gate_suppressed_or_monkey_patched": false,
+  "candidate_formula_direction_gate_comparator_order_or_threshold_changed": false,
+  "coverage_or_capacity_metrics_computed_before_retry": false,
+  "comparison_values_read_before_retry": false,
+  "historical_daily_price_fields_read_before_retry": [],
+  "historical_forward_returns_read_before_retry": false,
+  "provider_request_issued_before_retry": false,
+  "candidate49_historical_backfill_performed": false,
+  "candidate49_ledgers_changed": false,
+  "current_scoring_selection_sizing_or_orders_performed": false,
+  "authorization": "Install only the exact isolated-runtime pair pandas==2.2.2 and pyarrow==16.1.0, rerun all v1 and v2 static tests, then make at most one full v2 retry from candidate snapshot verification and coverage."
+}

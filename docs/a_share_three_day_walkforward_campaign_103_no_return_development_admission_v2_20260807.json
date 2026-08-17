@@ -1,0 +1,26 @@
+{
+  "schema_version": 1,
+  "kind": "a_share_three_day_walkforward_campaign103_no_return_audit",
+  "status": "completed_with_one_admissible_factor_pending_walkforward_preregistration",
+  "recorded_at": "2026-08-07T17:26:00+08:00",
+  "purpose": "Exact inherited one-factor compatibility admission bridge; no new candidate, comparison, price, or return evidence is added.",
+  "supersedes_without_rewriting": {
+    "v1_bridge": "docs/a_share_three_day_walkforward_campaign_103_no_return_development_admission_20260807.json"
+  },
+  "authoritative_audit": {
+    "path": "data/experiments/short_horizon/historical_walkforward/campaign_103/no_return/no_return_audit.json",
+    "sha256": "2fd8837ee22a98c52f90c76abd043f7ae793dd8fe0d98e67fd2ab5e20e9e85d5",
+    "status": "completed_one_admissible_factor_ready_for_frozen_development_trial"
+  },
+  "admissible_factor_count": 1,
+  "admissible_factor_names": [
+    "full_numeric_library_directional_rank_improvement_breadth_130f"
+  ],
+  "failed_factor_names": [],
+  "historical_daily_price_fields_read": [],
+  "historical_forward_return_fields_read": false,
+  "candidate49_historical_return_read": false,
+  "candidate49_ledgers_changed": false,
+  "provider_request_issued": false,
+  "current_scoring_selection_sizing_or_orders_performed": false
+}

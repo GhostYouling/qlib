@@ -1,0 +1,98 @@
+{
+  "version": 1,
+  "kind": "a_share_three_day_walkforward_campaign063_structural_peer_variance_diagnosis",
+  "status": "confirmed_frozen_position236_zero_peer_variance_before_comparison_values_daily_prices_or_returns",
+  "recorded_at": "2026-08-05T07:05:00+08:00",
+  "purpose": "Explain the published snapshot's zero eligible rows using only the already authorized frozen cross-sectional moment frame and aggregate candidate-manifest quality counters, without opening any comparison factor, daily price, or forward return.",
+  "frozen_inputs": {
+    "cross_sectional_moment_manifest": {
+      "path": "/Volumes/DIsk/qlib-a-share-tushare-1m/derived/a_share/rich/tushare/minute_walkforward_campaign031_dispersion_benchmark/tushare_stk_mins_1m_2019_2025_ea0cbb8f_walkforward_campaign031_dispersion_benchmark_v1/snapshot_manifest.json",
+      "sha256": "bbb82784b4daa21080045a17239868b1063d233607f125d03acab2aefb4fee50"
+    },
+    "cross_sectional_moment_frame": {
+      "path": "/Volumes/DIsk/qlib-a-share-tushare-1m/derived/a_share/rich/tushare/minute_walkforward_campaign031_dispersion_benchmark/tushare_stk_mins_1m_2019_2025_ea0cbb8f_walkforward_campaign031_dispersion_benchmark_v1/market_dispersion_benchmark_238m.parquet",
+      "sha256": "317aa3cb1793498bbce03018b692e6252939e689f0b9982e7c991a0da82d8827",
+      "frame_sha256": "c4933078610a4a14597a35d54ac98f9089a90522b73d8d428cde9e5eec79201f"
+    },
+    "candidate_snapshot_manifest": {
+      "path": "/Volumes/DIsk/qlib-a-share-tushare-1m/derived/a_share/rich/tushare/minute_walkforward_campaign063_feature_library/tushare_stk_mins_1m_2019_2025_ea0cbb8f_walkforward_campaign063_feature_library_v1/snapshot_manifest.json",
+      "sha256": "12fc8d8bf7df432608f4cb63b7c5337f2cd46d2a029c34d8b3e60c0f8906a098",
+      "dataset_sha256": "fd040477f3af2948976fda9a71f6d04a0bd9b9713a1b9b5a6dedf2f06f0c76df"
+    },
+    "no_return_protocol": {
+      "path": "docs/a_share_three_day_walkforward_campaign_063_no_return_preregistration.json",
+      "sha256": "2effcee4ccbbba8d55f450c7add3eb6064968a60c9d856ac769aebd20e542dfb"
+    }
+  },
+  "frozen_variance_replay": {
+    "formula": "return_sum_squares/valid_stock_count - (return_sum/valid_stock_count)^2",
+    "rows": 404362,
+    "trade_dates": 1699,
+    "return_positions_per_date": 238,
+    "nonpositive_variance_rows": 1701,
+    "position236": {
+      "rows": 1699,
+      "zero_variance_rows": 1699,
+      "nonpositive_variance_rows": 1699,
+      "minimum": 0.0,
+      "median": 0.0
+    },
+    "position29": {
+      "rows": 1699,
+      "zero_variance_rows": 1,
+      "nonpositive_variance_rows": 1
+    },
+    "position30": {
+      "rows": 1699,
+      "zero_variance_rows": 1,
+      "nonpositive_variance_rows": 1
+    },
+    "all_other_positions_have_strictly_positive_full_population_variance_on_all_dates": true
+  },
+  "candidate_manifest_consequence": {
+    "rows": 7724498,
+    "complete_stock_return_rows": 7724498,
+    "insufficient_peer_rows": 0,
+    "material_negative_variance_rows": 0,
+    "nonfinite_input_rows": 0,
+    "nonpositive_variance_rows": 7724498,
+    "eligible_rows": 0,
+    "causal_gate": "The frozen candidate requires strictly positive leave-one-out peer variance at every one of 238 positions. Structural zero variance at position236 makes every stock-day ineligible."
+  },
+  "interpretation": {
+    "data_corruption_detected": false,
+    "hash_or_frame_mismatch_detected": false,
+    "formula_implementation_mismatch_detected": false,
+    "structural_market_grid_degeneracy_detected": true,
+    "economic_return_evidence_read": false,
+    "predictive_value_inference_allowed": false
+  },
+  "prohibited_rescues": [
+    "drop return_position236",
+    "replace 238 positions with 237 or another window",
+    "add epsilon or a variance floor",
+    "treat zero variance as z=0",
+    "change strict-positive to nonnegative",
+    "invert or transform the score",
+    "filter boards, dates, years, liquidity, volatility, or zero-return names",
+    "combine with any terminal factor or open historical returns"
+  ],
+  "research_boundary": {
+    "comparison_factor_values_read": false,
+    "historical_daily_price_fields_read": [],
+    "historical_forward_returns_read": false,
+    "development_folds_opened": false,
+    "stress_2024_2025_opened": false,
+    "candidate49_historical_return_signal_execution_or_milestone_backfill_performed": false,
+    "candidate49_ledgers_changed": false,
+    "provider_request_issued": false,
+    "current_scoring_selection_sizing_or_orders_performed": false
+  },
+  "decision": {
+    "coverage_gate_must_fail": true,
+    "comparison_library_must_remain_unopened": true,
+    "daily_prices_and_forward_returns_must_remain_unopened": true,
+    "campaign063_factor_definition_terminal": true,
+    "same_campaign_repair_or_rescue_allowed": false
+  }
+}

@@ -1,0 +1,89 @@
+{
+  "schema_version": 1,
+  "kind": "a_share_three_day_walkforward_campaign128_formula_implementation_freeze",
+  "status": "pure_formula_frozen_after_synthetic_tests_before_historical_minute_or_factor_values",
+  "recorded_at": "2026-08-14T05:30:03+0800",
+  "authoritative_inputs": {
+    "concept_scouting": {
+      "path": "docs/a_share_three_day_walkforward_campaign_128_concept_scouting_20260814.json",
+      "sha256": "0db296964519781145c98699ede30bbf88a35bd5f2da69ada903b5ced0bf6480"
+    },
+    "mechanism_overlap_audit": {
+      "path": "docs/a_share_three_day_walkforward_campaign_128_mechanism_overlap_audit_20260814.json",
+      "sha256": "133c83dfc761cbeea20a6fc967cb20273b7a6fd300e4e60656d90c2a113120cf"
+    },
+    "no_return_preregistration": {
+      "path": "docs/a_share_three_day_walkforward_campaign_128_no_return_preregistration_20260814.json",
+      "sha256": "c3529b84f2785bb3cd0d9afe1594be8de6b784fae0850c461bd7300f56eeb8a1"
+    }
+  },
+  "frozen_formula": {
+    "name": "intraday_transaction_price_dispersion_resolution_2h",
+    "score_direction": "higher",
+    "implementation": {
+      "path": "scripts/a_share_three_day_walkforward_campaign128_formula.py",
+      "sha256": "6d3285060a656f75ab184a303b0c0dca0006de78d78bf2c0294284a64a96f57f"
+    },
+    "synthetic_tests": {
+      "path": "tests/data_collector_tests/test_a_share_three_day_walkforward_campaign128_formula.py",
+      "sha256": "bb235e7873938391195642703c69c5a1bdc18e7eecc0624f5b844526452aadea"
+    },
+    "source_projection": [
+      "datetime",
+      "symbol",
+      "provider",
+      "volume",
+      "amount"
+    ],
+    "selected_bars": 240,
+    "half_bars": 120,
+    "minimum_active_bars_per_half": 60,
+    "weighted_quantiles": [
+      0.25,
+      0.75
+    ],
+    "weighted_quantile_estimator": "stable ascending order and left-continuous inclusive cumulative-volume threshold",
+    "score": "(morning_iqr-afternoon_iqr)/(morning_iqr+afternoon_iqr)",
+    "valid_range_inclusive": [
+      -1.0,
+      1.0
+    ],
+    "joint_zero_volume_amount_policy": "inactive",
+    "one_sided_zero_policy": "stock_day_invalid",
+    "nonpositive_half_iqr_policy": "missing_without_epsilon_or_fallback"
+  },
+  "complete_library_treatment": {
+    "prior_complete_definition_count": 150,
+    "prior_complete_definition_order_sha256": "c3713559f968c7f79b070398742ef625733e9c178d4e0c0010805fa12c5d5142",
+    "complete_definition_count_after_append": 151,
+    "complete_definition_order_sha256_after_append": "91c2da3018330edbaddbb60b86370dcd9732425590f0565c70790b990002e0b5",
+    "numeric_comparator_count_reserved_without_values": 139,
+    "numeric_comparator_order_sha256": "9c4de054ca1b83eced67eece256b024ebec3a6e1925de17a4cedfa7d36265161",
+    "numeric_comparator_appended_now": false,
+    "old_terminal_definition_or_result_rewritten": false,
+    "old_terminal_factor_combined": false
+  },
+  "verification": {
+    "synthetic_pytest": "8 passed in 0.19s",
+    "black": "passed; 2 files left unchanged",
+    "ruff": "passed",
+    "historical_source_or_factor_values_used_by_tests": false
+  },
+  "next_gate": {
+    "allowed": "Implement and freeze one source-bound historical snapshot builder using exactly this formula and the immutable accepted minute source, then plan before any build.",
+    "not_allowed": "Do not read historical minute partitions, candidate/comparator values, daily prices, forward returns or 2024-2025 stress values until the builder and its verification path are separately frozen."
+  },
+  "research_boundary": {
+    "minute_source_rows_read": false,
+    "candidate_or_comparison_values_read": false,
+    "historical_daily_price_or_forward_return_values_read": false,
+    "stress_2024_2025_opened": false,
+    "provider_request_issued": false,
+    "credential_loaded": false,
+    "candidate49_historical_backfill_performed": false,
+    "candidate49_ledgers_changed": false,
+    "second_prospective_candidate_created": false,
+    "current_scoring_selection_sizing_positions_or_orders_performed": false,
+    "investment_advice": false
+  }
+}

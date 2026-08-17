@@ -1,0 +1,93 @@
+{
+  "schema_version": 1,
+  "version": 2,
+  "kind": "a_share_three_day_walkforward_campaign085_development_implementation_freeze",
+  "status": "frozen_before_campaign085_conda_compatible_full_development_retry",
+  "frozen_at": "2026-08-06T16:00:00Z",
+  "binary_runtime_repair_protocol": {
+    "path": "docs/a_share_three_day_walkforward_campaign_085_development_binary_runtime_repair_protocol_v3_20260807.json",
+    "sha256": "1053b3e9e2ff81ce828ec27a579ebbc73c7f516fbb5c6837d5e8832d46ad1a7e"
+  },
+  "previous_implementation_freeze": {
+    "path": "docs/a_share_three_day_walkforward_campaign_085_development_implementation_freeze_20260807.json",
+    "sha256": "1aba5772dd4fb04a68324cfb411202143dc160fa716d73283f3f9d56549b9bc6",
+    "preserved": true
+  },
+  "development_preregistration": {
+    "path": "docs/a_share_three_day_walkforward_campaign_085_preregistration_v2.json",
+    "sha256": "fd2bf11241f1051c5c676271393d1df6b1a61359d626f4bc5d1e02853c99c908"
+  },
+  "unchanged_development_runner": {
+    "path": "scripts/a_share_three_day_walkforward_campaign085.py",
+    "sha256": "21ec216fd30b25723778898a4dd4fe844f128e578d11f736e57bd9def91f5d5d"
+  },
+  "authorized_interpreter": {
+    "path": "/Volumes/DIsk/Coding/anaconda3/bin/python3.12",
+    "sha256": "b21ee43bcb627125a1b54b1fceb97bad564afbab38235cb9d72cf1f278d5751c"
+  },
+  "required_libcxx": {
+    "path": "/Volumes/DIsk/Coding/anaconda3/lib/libc++.1.0.dylib",
+    "sha256": "1b9318492353b7b7b3b48b9fa458d2b07b356a5eb8c0931952247fc17bf95c21"
+  },
+  "tests": {
+    "path": "tests/data_collector_tests/test_a_share_three_day_walkforward_campaign085_development.py",
+    "sha256": "a3282913252ce3db8f063e73c83dfee9e185baa9dcc44874612b1649caa025ea",
+    "result": "5 passed",
+    "black_check_passed": true,
+    "ruff_check_passed": true,
+    "test_interpreter": "/Volumes/DIsk/Coding/anaconda3/bin/python3.12"
+  },
+  "research_attempt_ledger_before_retry": {
+    "path": "data/experiments/short_horizon/historical_walkforward/campaign_085/research_attempt_ledger_v22.json",
+    "sha256": "a45513ec49cd761a110dc2d35e53aeb91f18a688097a62da96ff781cc8e499c0",
+    "campaign_attempt_count": 22,
+    "campaign_infrastructure_failure_count": 21,
+    "campaign_complete_factor_attempt_count": 1,
+    "campaign_return_reading_development_trial_count": 0
+  },
+  "preserved_internal_trial_ledger": {
+    "path": "data/experiments/short_horizon/historical_walkforward/campaign_085/walkforward/trial_ledger.json",
+    "sha256": "d1aa8d4d570a30eab29bddb62f625149c9bb6e3759153f8329020ee9738882b9",
+    "entry_count": 1,
+    "entry_phases": [
+      "infrastructure_failure"
+    ],
+    "complete_development_trial_count": 0,
+    "chain_tip_sha256": "852a4625c5735f91cc3b3f22b408dc602dc0327615ea28f7a38723ee3d55fb93"
+  },
+  "compatible_runtime_receipt": {
+    "python": "3.12.7",
+    "qlib_data_import_passed": true,
+    "qlib_version": "0.9.8.dev30",
+    "numpy": "1.26.4",
+    "pandas": "2.2.2",
+    "pyarrow": "16.1.0",
+    "scipy": "1.13.1",
+    "pytest": "9.0.3",
+    "dynamic_library_environment_override_used": false,
+    "known_unrelated_global_pip_conflicts_disclosed": true
+  },
+  "frozen_trial_unchanged": {
+    "trial_id": "wf085_quarterly_freshness_market_neutral_late_drift_confirmation_product_2r_single_higher",
+    "feature_set": [
+      "quarterly_freshness_market_neutral_late_drift_confirmation_product_2r"
+    ],
+    "weights": [
+      1.0
+    ],
+    "direction": "higher",
+    "expected_trial_count": 1,
+    "purge_signal_sessions": 3,
+    "t_plus_1_and_t_plus_3_must_share_partition": true
+  },
+  "partial_market_data_or_statistics_reused": false,
+  "market_execution_data_loaded_before_retry": false,
+  "historical_daily_price_fields_read_before_retry": [],
+  "historical_forward_returns_read_before_retry": false,
+  "stress_2024_2025_opened_before_retry": false,
+  "provider_request_issued_before_retry": false,
+  "candidate49_historical_backfill_performed": false,
+  "candidate49_ledgers_changed": false,
+  "current_scoring_selection_sizing_or_orders_performed": false,
+  "authorization": "Under the exact authorized interpreter and without any DYLD override, run the unchanged development command at most once and append either one complete development trial or one additional infrastructure failure after the preserved entry."
+}

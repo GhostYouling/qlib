@@ -1,0 +1,145 @@
+{
+  "schema_version": 1,
+  "kind": "a_share_three_day_walkforward_campaign150_finite_prevalue_concept_scouting",
+  "status": "terminal_prevalue_zero_candidates_after_complete_library_and_residual_mechanism_review",
+  "recorded_at": "2026-08-14T23:47:00+08:00",
+  "purpose": "Review a finite catalog of six residual algorithmic, event-process, nonlinear-dependence, distribution-distance, relative-state and quarterly-model mechanisms against the frozen 155-definition library and 142 numerical comparators before reading any protected value.",
+  "authoritative_inputs": {
+    "iteration_state": {
+      "path": "docs/a_share_three_day_iteration_status_20260814_campaign149_prevalue_terminal.json",
+      "sha256": "f1675d97e4e30976d6a9941d06552c2f78997667f3ca25c5f7bce9e496f4f580"
+    },
+    "numeric_policy_v202": {
+      "path": "docs/a_share_three_day_walkforward_future_numeric_comparison_eligibility_policy_v202_20260814.json",
+      "sha256": "3072b79820817d1551785c3ad5354ea4e4c6ea0ec6be961067dd775f5073c95e",
+      "complete_definition_count": 155,
+      "complete_definition_order_sha256": "2e4114edb26fa3aaebd145ef07fe4e2ac9c5d9dc4586cf70ff61c20e39b954ba",
+      "numeric_comparator_count": 142,
+      "numeric_comparator_order_sha256": "5d1b35fb5a0d8ac9293008db9963c4a60a94dc940c237c3ed259e5ce44f14aaf"
+    },
+    "historical_walkforward_policy": {
+      "path": "docs/a_share_three_day_historical_walkforward_research_policy_20260727.json",
+      "sha256": "38426d6161b9bfed323c58caba18feca668b8c9d53e294951a8ba90c01a798bb"
+    },
+    "campaign149_scouting": {
+      "path": "docs/a_share_three_day_walkforward_campaign_149_concept_scouting_20260814.json",
+      "sha256": "f9e8398edbf4e5a9989f6f2679d44beed262cdb24e92ce3c5b0813925760c39a"
+    },
+    "campaign149_frontier_audit": {
+      "path": "docs/a_share_three_day_walkforward_campaign_149_mechanism_frontier_audit_20260814.json",
+      "sha256": "14acd220fb23f30143533065bc425f990998ee61c86d8310dbafeacc0ba9bfac"
+    }
+  },
+  "finite_prevalue_concept_catalog": [
+    {
+      "catalog_id": "c150_01",
+      "name": "intraday_return_direction_lz76_complexity_238s",
+      "hypothetical_formula": "Encode within-half return directions and summarize incremental Lempel-Ziv dictionary growth over the fixed sequence.",
+      "direction": "higher",
+      "parameters": "proposed sign alphabet, phrase parsing rule and length normalization",
+      "filters": ["accepted_240_bar_session_only"],
+      "subsets": [],
+      "combinations": [],
+      "models": ["lz76_dictionary_parser"],
+      "prevalue_decision": "rejected_as_terminal_direction_dictionary_weak_order_and_price_update_compressibility_refresh",
+      "reason": "The complete library already contains return-direction dictionary phrase count, weak-order entropy, price-update share and weak-order time-reversal states. Changing the parser and normalization estimates the same symbolic compressibility state rather than introducing a new observation."
+    },
+    {
+      "catalog_id": "c150_02",
+      "name": "intraday_high_amount_event_hawkes_branching_ratio_240m",
+      "hypothetical_formula": "Threshold high-amount minutes and fit a self-exciting point-process branching ratio to their event times.",
+      "direction": "higher",
+      "parameters": "proposed amount threshold, kernel family, decay and likelihood fit",
+      "filters": ["accepted_240_bar_session_only"],
+      "subsets": ["high_amount_minutes"],
+      "combinations": [],
+      "models": ["univariate_hawkes_process"],
+      "prevalue_decision": "rejected_as_terminal_amount_event_spacing_run_peak_density_and_threshold_model_refresh",
+      "reason": "Top-decile event-spacing entropy, above-median longest run, amount local-peak density and peak recency already consume event timing and clustering. Threshold, kernel and likelihood choices add a point-process fit to that terminal family."
+    },
+    {
+      "catalog_id": "c150_03",
+      "name": "intraday_return_amount_distance_covariance_238p",
+      "hypothetical_formula": "Measure nonlinear dependence between within-half signed returns and aligned endpoint log amount using distance covariance.",
+      "direction": "higher",
+      "parameters": "proposed distance-covariance normalization and finite-sample correction",
+      "filters": ["accepted_240_bar_session_only"],
+      "subsets": [],
+      "combinations": [],
+      "models": ["distance_covariance"],
+      "prevalue_decision": "rejected_as_terminal_return_amount_coupling_mutual_information_copula_and_path_dependence_estimator_refresh",
+      "reason": "Return-amount correlation, amount conditioning, mutual-information review, tail-copula review, signed cumulative path area and cross-spectral phase already consume synchronous and lagged nonlinear dependence. Distance covariance changes only the dependence estimator."
+    },
+    {
+      "catalog_id": "c150_04",
+      "name": "intraday_morning_afternoon_transaction_price_wasserstein_distance_120b",
+      "hypothetical_formula": "Compare volume-weighted morning and afternoon log transaction-price distributions with a Wasserstein distance.",
+      "direction": "higher",
+      "parameters": "proposed transport order, weights and scale normalization",
+      "filters": ["accepted_240_bar_session_only", "at_least_120_active_transaction_price_bars"],
+      "subsets": ["morning", "afternoon"],
+      "combinations": [],
+      "models": ["optimal_transport_distance"],
+      "prevalue_decision": "rejected_as_terminal_transaction_price_dispersion_resolution_distribution_overlap_and_distance_refresh",
+      "reason": "Transaction-price consensus, weighted skew, two-half dispersion resolution and rejected morning-afternoon distribution-overlap proposals already terminate this information state. Wasserstein order and normalization are alternate distribution-distance choices."
+    },
+    {
+      "catalog_id": "c150_05",
+      "name": "intraday_cross_sectional_return_rank_mobility_entropy_238p",
+      "hypothetical_formula": "Rank each stock's synchronous minute return cross-sectionally and summarize within-stock rank-state mobility over the fixed session.",
+      "direction": "higher",
+      "parameters": "proposed rank bins, transition support and entropy normalization",
+      "filters": ["accepted_240_bar_session_only", "at_least_50_peers_per_position"],
+      "subsets": [],
+      "combinations": [],
+      "models": ["rank_state_transition_entropy"],
+      "prevalue_decision": "rejected_as_terminal_cross_sectional_relative_state_stability_market_synchronization_and_rank_occupancy_refresh",
+      "reason": "The library contains cross-sectional standardized-return state stability and several leave-one-out market synchronization factors, while a prior cross-sectional cumulative-rank occupancy proposal was rejected before values. Rank binning and transition entropy reopen that same relative-state path family."
+    },
+    {
+      "catalog_id": "c150_06",
+      "name": "quarterly_quality_state_hidden_markov_persistence_4q",
+      "hypothetical_formula": "Discretize the four accepted quarterly quality fields and fit a finite hidden-state transition model to recent disclosures.",
+      "direction": "higher",
+      "parameters": "proposed state alphabet, hidden-state count, transition fit and persistence score",
+      "filters": ["four_consecutive_effective_quarters"],
+      "subsets": [],
+      "combinations": ["roe_net_profit_revenue_yoy_profit_yoy"],
+      "models": ["hidden_markov_model"],
+      "prevalue_decision": "rejected_as_terminal_quarterly_quality_acceleration_rank_gap_state_transition_and_fitted_model_refresh",
+      "reason": "Quarterly quality levels, accelerations, rank gaps, growth floors, timing consistency and complete-library fitted models already consume the available state and transition information. State discretization and hidden-state count add post-exposure fitting freedom without a new source field."
+    }
+  ],
+  "selection": {
+    "concepts_reviewed": 6,
+    "selected_candidate_count": 0,
+    "selected_candidate": null,
+    "genuinely_new_contract_permitted_mechanism_found": false,
+    "reason": "All six proposals replace a symbolic parser, event threshold/model, dependence estimator, distribution metric, relative-state operator or fitted quarterly-state model inside already terminal information families."
+  },
+  "decision": {
+    "create_campaign150_formula_feature_snapshot_model_or_adapter": false,
+    "run_source_acceptance_coverage_uniqueness_or_return_trial": false,
+    "append_all_six_concepts": true,
+    "keep_complete_definition_count": 155,
+    "keep_numeric_comparator_count": 142,
+    "keep_2024_2025_lockbox_closed": true,
+    "next_campaign_requirement": "Continue only from a genuinely new finite prevalue mechanism or a separately accepted historically versioned point-in-time source whose original collection contract permits the proposed use."
+  },
+  "research_boundary": {
+    "source_contract_schema_formula_manifest_and_terminal_metadata_read": true,
+    "source_rows_or_column_values_read": false,
+    "campaign150_candidate_values_computed_or_read": false,
+    "campaign150_comparator_values_read": false,
+    "historical_daily_price_or_forward_return_values_read": false,
+    "stress_2024_2025_opened": false,
+    "provider_request_issued": false,
+    "provider_credential_value_or_digest_read": false,
+    "candidate49_historical_backfill_performed": false,
+    "candidate49_ledgers_changed": false,
+    "second_prospective_candidate_created": false,
+    "current_scoring_selection_sizing_positions_or_orders_performed": false,
+    "investment_advice": false,
+    "inherited_current_listing_survivorship_limitation_remains": true
+  }
+}

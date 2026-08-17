@@ -1,0 +1,76 @@
+{
+  "version": 1,
+  "kind": "a_share_three_day_walkforward_campaign063_feature_snapshot_binding",
+  "status": "published_snapshot_fingerprint_frozen_before_coverage_audit_comparison_values_daily_prices_or_returns",
+  "recorded_at": "2026-08-05T07:08:00+08:00",
+  "factor": "intraday_cross_sectional_standardized_return_state_stability_236p",
+  "direction": "higher",
+  "formula": "For each of the exact 238 within-half signed log-close return positions, compute the stock's leave-one-out cross-sectional population z state from the frozen return sum, squared sum, and count; return 1/(1+mean absolute adjacent z-state displacement) across the exact 236 within-half adjacent pairs.",
+  "no_return_protocol": {
+    "path": "docs/a_share_three_day_walkforward_campaign_063_no_return_preregistration.json",
+    "sha256": "2effcee4ccbbba8d55f450c7add3eb6064968a60c9d856ac769aebd20e542dfb"
+  },
+  "original_implementation_freeze": {
+    "path": "docs/a_share_three_day_walkforward_campaign_063_feature_implementation_freeze_20260805.json",
+    "sha256": "1cc8ce929ec540eb23fac617fe8fe426824fb82ec144b863a972b78a6af5918a"
+  },
+  "empty_partition_repair_freeze": {
+    "path": "docs/a_share_three_day_walkforward_campaign_063_empty_partition_repair_freeze_20260805.json",
+    "sha256": "030397749f6a4fd44bd814430fd4f7afb3304762103bd0893b4b0e78f6444e51"
+  },
+  "manifest_namespace_repair_freeze": {
+    "path": "docs/a_share_three_day_walkforward_campaign_063_manifest_namespace_repair_freeze_20260805.json",
+    "sha256": "951cada4a8e362ff4428b32ec16966d52593631123776d26fbee4b422e2e50e4"
+  },
+  "snapshot_manifest": {
+    "path": "/Volumes/DIsk/qlib-a-share-tushare-1m/derived/a_share/rich/tushare/minute_walkforward_campaign063_feature_library/tushare_stk_mins_1m_2019_2025_ea0cbb8f_walkforward_campaign063_feature_library_v1/snapshot_manifest.json",
+    "sha256": "12fc8d8bf7df432608f4cb63b7c5337f2cd46d2a029c34d8b3e60c0f8906a098",
+    "dataset_sha256": "fd040477f3af2948976fda9a71f6d04a0bd9b9713a1b9b5a6dedf2f06f0c76df",
+    "partitions": 33015,
+    "rows": 7724498,
+    "eligible_rows": 0
+  },
+  "independent_snapshot_verification": {
+    "all_partition_byte_and_frame_hashes_passed": true,
+    "partitions_verified": 33015,
+    "rows_verified": 7724498,
+    "eligible_rows_verified": 0,
+    "exit_code": 0
+  },
+  "structural_variance_diagnosis": {
+    "path": "docs/a_share_three_day_walkforward_campaign_063_structural_peer_variance_diagnosis_20260805.json",
+    "sha256": "4795d140af58aecfb638eaf5abdd97fe513f18bffead731ec93fe16c72fd0171"
+  },
+  "snapshot_semantics": {
+    "source_fields_read": [
+      "datetime",
+      "symbol",
+      "provider",
+      "close"
+    ],
+    "cross_sectional_moment_fields_read": [
+      "trade_date",
+      "return_position",
+      "return_sum",
+      "return_sum_squares",
+      "valid_stock_count"
+    ],
+    "minimum_leave_one_out_peers_per_position": 50,
+    "tiny_negative_variance_tolerance": 1e-18,
+    "strictly_positive_peer_variance_each_position": true,
+    "adjacent_state_pair_count": 236,
+    "daily_price_fields_read": [],
+    "historical_forward_return_fields_read": false,
+    "comparison_factor_values_read": false,
+    "candidate49_historical_return_read": false,
+    "candidate49_ledgers_changed": false,
+    "provider_request_issued": false
+  },
+  "decision": {
+    "snapshot_is_immutable": true,
+    "coverage_first_no_return_audit_allowed": true,
+    "comparison_values_may_be_read_only_if_all_coverage_gates_pass": true,
+    "known_zero_eligible_rows_requires_coverage_rejection_before_comparisons": true,
+    "daily_prices_or_forward_returns_may_be_read_before_admission": false
+  }
+}

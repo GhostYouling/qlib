@@ -1,0 +1,20 @@
+{
+  "schema_version": 1,
+  "kind": "a_share_three_day_walkforward_campaign188_infrastructure_failure",
+  "status": "recorded_recovered_by_unchanged_prior_fully_read_fingerprint_no_scientific_evidence_consumed",
+  "recorded_at": "2026-08-15T13:51:37+08:00",
+  "failure_id": "campaign188_infrastructure_002",
+  "operation": "Retry the manage-qlib-a-share-data skill read using lines 121 through 300.",
+  "observed_failure": "The selected range contained unusually long instruction lines and again exceeded the orchestration output limit; the partial chunk was not treated as a complete instruction read.",
+  "failure_class": "tool_output_truncation_incomplete_instruction_chunk_read",
+  "failed_or_incomplete_output_used_as_new_scientific_evidence": false,
+  "recovery": {
+    "method": "Stopped repeated output-heavy reads, verified the exact skill fingerprint against the previously complete and independently validated Campaign187 binding, and applied only the already bound source-first, no-network, no-credential, no-backfill and no-selection boundaries.",
+    "current_skill_sha256": "565713a5f3aeb6a1acf23e397fcc21be28d0c3ea4ebf21c7f287a25bb94d78dc",
+    "campaign187_bound_skill_sha256": "565713a5f3aeb6a1acf23e397fcc21be28d0c3ea4ebf21c7f287a25bb94d78dc",
+    "fingerprint_unchanged": true,
+    "skill_line_count_observed": 1336,
+    "prior_complete_read_evidence": {"path": "docs/a_share_three_day_iteration_status_20260815_campaign187_prevalue_terminal.json", "sha256": "4c62fdd7cbebe6550276f038b555a911165f2511d4cfed0be40ccc09ec3a92c9"}
+  },
+  "research_boundary": {"scientific_attempt": false, "source_factor_comparator_security_price_or_return_value_read": false, "provider_or_web_request_issued": false, "provider_credential_presence_value_or_digest_read": false, "stress_2024_2025_opened": false, "candidate49_ledgers_changed": false}
+}

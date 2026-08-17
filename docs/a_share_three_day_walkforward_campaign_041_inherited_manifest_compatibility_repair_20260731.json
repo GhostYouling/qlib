@@ -1,0 +1,59 @@
+{
+  "version": 1,
+  "kind": "a_share_three_day_walkforward_campaign041_inherited_manifest_compatibility_repair",
+  "status": "frozen_after_first_metadata_retry_failed_before_second_repair_or_comparison_values",
+  "recorded_at": "2026-07-31T06:11:53Z",
+  "purpose": "Authorize one additional validation-adapter-only repair after the first frozen metadata retry exposed a second, narrower incompatibility in the inherited prepublication validator.",
+  "authoritative_inputs": {
+    "iteration_state": {
+      "path": "docs/a_share_three_day_iteration_status_20260731_campaign040_verified.json",
+      "sha256": "dd561aac051eed7ecb1c574c61ac258c5e62954d7390c503a5444cf8a0fe2bba"
+    },
+    "no_return_preregistration": {
+      "path": "docs/a_share_three_day_walkforward_campaign_041_no_return_preregistration.json",
+      "sha256": "6691fb6a382d6f2f481473f25a0060606edf59290bc822b635b23de25105ae7c"
+    },
+    "first_metadata_repair": {
+      "path": "docs/a_share_three_day_walkforward_campaign_041_feature_manifest_metadata_infrastructure_repair_20260731.json",
+      "sha256": "8c0dcc35159b456623465513477f9107a583bfef8b058553997cacf6022ea82d"
+    },
+    "post_first_retry_feature_runner": {
+      "path": "scripts/a_share_three_day_walkforward_campaign041_features.py",
+      "sha256": "792bc7586991e0775c4eb252275abeb5688efef6e1d2eaa3481cd03ca2af041b"
+    }
+  },
+  "failure_evidence": {
+    "completed_partition_count": 33015,
+    "expected_partition_count": 33015,
+    "resumable_checkpoint_count": 33015,
+    "final_snapshot_published": false,
+    "failure_stage": "inherited_prepublication_snapshot_manifest_compatibility_validation",
+    "truthful_campaign041_source_volume_read": false,
+    "inherited_prepublication_placeholder_source_volume_read": true,
+    "inherited_final_placeholder_source_volume_read": false,
+    "candidate_partition_or_value_changed_by_first_retry": false,
+    "comparison_values_read": false,
+    "historical_daily_price_fields_read": false,
+    "historical_forward_returns_read": false
+  },
+  "authorized_repair": {
+    "scope": "Change only the deep-copied manifest passed to the inherited validator: use its legacy source_volume_read placeholder true before fingerprint binding and false after fingerprint binding. The actual Campaign041 manifest must remain truthfully false in both stages.",
+    "actual_manifest_source_volume_read_may_change": false,
+    "candidate_partition_files_may_change": false,
+    "candidate_values_may_change": false,
+    "formula_direction_source_projection_support_or_missing_semantics_may_change": false,
+    "comparison_library_order_or_gate_may_change": false,
+    "resume_all_hash_validated_checkpoints": true,
+    "allowed_additional_retry_count": 1
+  },
+  "research_boundary": {
+    "provider_request_issued": false,
+    "comparison_values_read": false,
+    "historical_daily_price_fields_read": false,
+    "historical_forward_returns_read": false,
+    "candidate49_ledgers_changed": false,
+    "candidate50_activation_created": false,
+    "current_scoring_selection_sizing_or_orders_performed": false
+  },
+  "next_action": "Patch only the inherited-validator compatibility copy, rerun the same build once with all 33,015 checkpoints hash-resumed, and require the published manifest to retain source_volume_read=false."
+}

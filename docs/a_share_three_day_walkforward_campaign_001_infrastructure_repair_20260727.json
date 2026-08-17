@@ -1,0 +1,42 @@
+{
+  "version": 1,
+  "kind": "a_share_three_day_walkforward_campaign_infrastructure_repair",
+  "status": "frozen_after_infrastructure_failure_before_any_trial_or_forward_return_read_and_before_repair_execution",
+  "recorded_at": "2026-07-27T11:50:00Z",
+  "failed_campaign": {
+    "path": "docs/a_share_three_day_walkforward_campaign_001_preregistration.json",
+    "sha256": "b4dafbbf5372bb124dc391edb381043a985f49d7663d310bb79ed6b50a22dab2",
+    "runner_sha256": "980138b582749c4064401790b11b00113dc6b5cf475eeb98919256dc594ab6a9",
+    "trial_ledger_path": "data/experiments/short_horizon/historical_walkforward/campaign_001/trial_ledger.json",
+    "trial_ledger_sha256_after_failure_entry": "295eb6facded0ea7bb7f55d84205d5c0192ce9bc3cdf109a145d43c447ecc2ae",
+    "trial_ledger_entry_count": 1,
+    "trial_ledger_chain_tip_sha256": "f9f7e5404116e438f9437f5eb2057e21b2493d199bd4cabdb41a2e4bb5451d58"
+  },
+  "failure": {
+    "phase": "development_factor_panel_loading",
+    "exception": "KeyError",
+    "cause": "The 325-row fieldwise cleaning overlay contains valid supplement stock-session keys that are absent from the joint-clean base. The first implementation treated every overlay row as an overwrite-only key and failed when assigning the supplement keys.",
+    "forward_return_frame_constructed": false,
+    "development_trial_evaluated": false,
+    "development_or_validation_metric_observed": false,
+    "lockbox_2024_2025_read": false,
+    "candidate49_historical_return_read": false
+  },
+  "authorized_repair": {
+    "scope": "Replace overwrite-only assignment with a deterministic outer union on trade_date and instrument, using overlay non-missing factor values for overlapping keys and retaining supplement keys.",
+    "factor_library_changed": false,
+    "factor_formula_or_direction_changed": false,
+    "search_space_changed": false,
+    "fold_or_purge_changed": false,
+    "survivor_rule_changed": false,
+    "execution_or_lockbox_gate_changed": false,
+    "new_campaign_preregistration_required_before_retry": true,
+    "new_output_root_required": true
+  },
+  "forbidden": [
+    "delete or rewrite the failed ledger entry",
+    "reuse the failed campaign ledger as if no failure occurred",
+    "change a factor, direction, weight grid, fold, survivor rule, or lockbox gate in the repair",
+    "read 2024-2025 before the repaired development survivors are frozen"
+  ]
+}

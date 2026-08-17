@@ -1,0 +1,22 @@
+{
+  "schema_version": 1,
+  "kind": "a_share_three_day_walkforward_campaign098_prevalue_test_failure",
+  "status": "preserved_before_feature_implementation_freeze_and_before_source_values",
+  "recorded_at": "2026-08-07T07:43:00Z",
+  "stage": "synthetic_feature_test_fixture",
+  "command_scope": "Campaign098 feature tests only",
+  "failure": "The synthetic fixture referenced c86.SOURCE_MINUTE_CODES, but the frozen dependency exposes SOURCE_MINUTE_CODE_SET instead.",
+  "observed_result": {
+    "passed": 6,
+    "failed": 2,
+    "exception": "AttributeError",
+    "real_minute_partition_opened": false
+  },
+  "authorized_repair": "Change only the synthetic fixture to sort the existing frozen SOURCE_MINUTE_CODE_SET into chronological integer order.",
+  "formula_direction_support_window_universe_cost_gate_or_search_space_changed": false,
+  "campaign098_source_rows_read": false,
+  "campaign098_candidate_or_comparator_values_read": false,
+  "historical_daily_price_or_forward_return_values_read": false,
+  "candidate49_ledgers_changed": false,
+  "provider_request_issued": false
+}

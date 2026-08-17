@@ -1,0 +1,135 @@
+{
+  "version": 1,
+  "kind": "a_share_three_day_compact_comparator_cache_equivalence_diagnosis",
+  "status": "root_cause_confirmed_before_additive_v4_protocol_freeze",
+  "recorded_at": "2026-08-06T00:35:52+08:00",
+  "failed_build": {
+    "path": "docs/a_share_three_day_compact_comparator_cache_v3_build_failure_20260806.json",
+    "sha256": "00e7c051cf70518195d9d9ce23d234fe7673b46f1a145d1b96c0dd0175b9294c",
+    "formal_output_published": false,
+    "temporary_values_used_only_as_read_only_diagnostic_evidence": true,
+    "temporary_values_reusable_for_v4_publication": false
+  },
+  "frozen_evidence": {
+    "campaign067_completed_no_return_audit": {
+      "path": "data/experiments/short_horizon/historical_walkforward/campaign_067/no_return/20260805T115907Z_campaign067_no_return_audit.json",
+      "sha256": "daeac2c2364d00c09247d0e721435b81f587c0f215a5a93cba30b7661f205d54"
+    },
+    "campaign058_quality_semantics_source": {
+      "path": "scripts/a_share_three_day_walkforward_campaign058_no_return_audit.py",
+      "sha256": "84bf18ce4ccda2292235bd86cbc7be707560e04622ede15d0dfd2747ef79f8a0"
+    },
+    "v3_protocol_sha256": "44b5274de5684ca29e7ee9b290072412b1d97428b70e64711b979cac154d0841",
+    "v3_implementation_freeze_sha256": "5c20d65a332cd6aebfe155e15f8c7f0bd8a094b65ea3d63356bd5f080a91131f",
+    "v3_builder_sha256": "cf39aa8293990ef00c1d429a96157cbd33c6fb41c5a630ddb8c9c9420a2fd200"
+  },
+  "localization": {
+    "campaign067_comparison_count": 97,
+    "exactly_equal_comparison_count": 95,
+    "mismatch_indices_zero_based": [
+      84,
+      85
+    ],
+    "mismatch_names": [
+      "quality_growth",
+      "quality_score"
+    ],
+    "all_other_comparison_result_objects_exactly_equal": true,
+    "quality_growth": {
+      "differing_fields": {
+        "absolute_median_daily_rank_correlation": {
+          "expected": 0.21293978848889794,
+          "observed": 0.2129001006935352
+        },
+        "daily_correlation_frame_sha256": {
+          "expected": "b5ad02d5de0e096e76f1ff296a07c9c2e8020cb06096727febb1b3cba96a80d9",
+          "observed": "aaf566db8d3ed007ca70b29a2e1e0870e1a49618de89c35bcd7613fa0716308f"
+        },
+        "median_daily_rank_correlation": {
+          "expected": 0.21293978848889794,
+          "observed": 0.2129001006935352
+        }
+      },
+      "unchanged_fields": {
+        "comparison_factor": "quality_growth",
+        "daily_rank_correlation_p05": 0.05494687024412225,
+        "daily_rank_correlation_p95": 0.30447393846108256,
+        "gate_passed": true,
+        "minimum_pairwise_names_observed": 52,
+        "pairwise_sessions": 1623,
+        "score_direction": "higher"
+      }
+    },
+    "quality_score": {
+      "differing_fields": {
+        "absolute_median_daily_rank_correlation": {
+          "expected": 0.28091977442276517,
+          "observed": 0.2808969474076017
+        },
+        "daily_correlation_frame_sha256": {
+          "expected": "8e827961b02a28dd2e20f84555e53184b90976ff16921d0b55e9de3b86693c66",
+          "observed": "d72a10b62854dedd96636d44b32430fad386bbbf91542fe8bb1e8fd8f2e30b6f"
+        },
+        "daily_rank_correlation_p95": {
+          "expected": 0.36246149626899965,
+          "observed": 0.3624610988458383
+        },
+        "median_daily_rank_correlation": {
+          "expected": 0.28091977442276517,
+          "observed": 0.2808969474076017
+        }
+      },
+      "unchanged_fields": {
+        "comparison_factor": "quality_score",
+        "daily_rank_correlation_p05": 0.011988419671655183,
+        "gate_passed": true,
+        "minimum_pairwise_names_observed": 52,
+        "pairwise_sessions": 1623,
+        "score_direction": "higher"
+      }
+    }
+  },
+  "root_cause": {
+    "classification": "candidate_universe_dependent_composite_rank_materialization",
+    "quality_roe_formula": "daily percentile rank(method=average) of raw roe on the candidate key universe",
+    "quality_profit_formula": "daily percentile rank(method=average) of raw profit_yoy on the candidate key universe",
+    "quality_revenue_formula": "daily percentile rank(method=average) of raw revenue_yoy on the candidate key universe",
+    "quality_growth_formula": "row mean(skipna=false) of quality_profit and quality_revenue",
+    "quality_score_formula": "row mean(skipna=false) of quality_roe, quality_profit, and quality_revenue",
+    "v3_materialization_error": "v3 evaluated the two composite formulas on all 1331759 global eligibility keys and only then restricted the results to Campaign067 keys; the frozen audit first restricted to Campaign067 keys and then ranked and averaged.",
+    "why_simple_rank_columns_survived": "A single percentile-rank column preserves raw-value ordering after restriction and is re-ranked by the Spearman comparison engine. An average of several percentile-rank columns can change ordering when the ranking universe changes.",
+    "evidence_strength": "confirmed by source formula inspection plus exact localization to the only two multi-rank composite factors"
+  },
+  "required_v4_semantics": {
+    "logical_numeric_comparator_count": 98,
+    "fixed_materialized_comparator_count": 96,
+    "dynamic_recipe_comparators": [
+      "quality_growth",
+      "quality_score"
+    ],
+    "required_raw_auxiliary_columns": [
+      "quality_raw_roe",
+      "quality_raw_profit_yoy",
+      "quality_raw_revenue_yoy"
+    ],
+    "dynamic_values_must_be_reconstructed_after_candidate_key_intersection": true,
+    "rank_method": "average",
+    "rank_pct": true,
+    "grouping": "trade session decoded from stock_day_key",
+    "composite_mean_skipna": false,
+    "campaign067_exact_result_object_gate_may_be_weakened": false,
+    "failed_v3_values_may_be_reused_for_publication": false,
+    "new_output_root_required": true
+  },
+  "research_boundary": {
+    "historical_daily_price_fields_read": [],
+    "historical_forward_returns_read": false,
+    "candidate49_history_signal_or_execution_backfilled": false,
+    "provider_request_issued": false,
+    "current_scoring_selection_sizing_or_orders_performed": false,
+    "research_attempt_count_increment": 0,
+    "return_reading_development_trial_count_increment": 0,
+    "cache_infrastructure_failure_count_increment": 0,
+    "cumulative_cache_infrastructure_failure_count": 6
+  }
+}

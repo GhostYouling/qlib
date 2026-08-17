@@ -1,0 +1,71 @@
+{
+  "version": 1,
+  "kind": "a_share_three_day_walkforward_campaign057_infrastructure_failure_record",
+  "status": "failed_closed_without_audit_artifact_after_process_disappeared_under_memory_pressure",
+  "recorded_at": "2026-08-04T05:46:16Z",
+  "campaign_id": "057",
+  "stage": "frozen_ordered_no_return_audit",
+  "factor": "intraday_day_over_day_absolute_return_profile_similarity_238b",
+  "direction": "higher",
+  "bindings": {
+    "no_return_protocol": {
+      "path": "docs/a_share_three_day_walkforward_campaign_057_no_return_preregistration.json",
+      "sha256": "9eb8607e91e952b9e22e436374d68de0a90df251065720bed8a6285f2e3b7ff1"
+    },
+    "feature_snapshot_binding": {
+      "path": "docs/a_share_three_day_walkforward_campaign_057_feature_snapshot_binding_20260804.json",
+      "sha256": "a48d754e8b64201e35fd324e5f894957f0347932915ba3aaca85b7c873903e62"
+    },
+    "audit_implementation_freeze": {
+      "path": "docs/a_share_three_day_walkforward_campaign_057_no_return_audit_implementation_freeze_20260804.json",
+      "sha256": "73fba06d890fd5d52810a97f46a81779727682e7661eefa25649d67e77dc3fac"
+    },
+    "audit_runner": {
+      "path": "scripts/a_share_three_day_walkforward_campaign057_no_return_audit.py",
+      "sha256": "d60f8bb19e953a75e6dcc47745399a08cab71deb61134783fc3a043613e6ed59"
+    }
+  },
+  "failed_command": "PYTHONPATH=/Volumes/DIsk/Disk-Coding/qlib /opt/anaconda3/bin/python3 scripts/a_share_three_day_walkforward_campaign057_no_return_audit.py no-return-audit --data-root /Volumes/DIsk/qlib-a-share-tushare-1m --experiment-root /Volumes/DIsk/Disk-Coding/qlib/data/experiments/short_horizon/historical_walkforward/campaign_057 --workers 16",
+  "completion_evidence": {
+    "audit_artifact_created": false,
+    "audit_artifact_count_after_process_disappeared": 0,
+    "process_pid": 52146,
+    "process_or_unified_session_still_exists": false,
+    "captured_exit_code": null,
+    "missing_exit_code_is_not_treated_as_success": true,
+    "result_or_gate_decision_available": false
+  },
+  "observed_resource_evidence": {
+    "maximum_observed_resident_bytes_approx": 1817100288,
+    "macos_swap_total_mib_at_stall": 7424,
+    "macos_swap_used_mib_at_stall": 7424,
+    "macos_swap_free_mib_at_stall": 0,
+    "process_state_at_stall": "U (uninterruptible kernel wait)",
+    "process_rss_after_full_swap_bytes_approx": 2304,
+    "process_virtual_bytes_approx": 422871104000,
+    "diagnostic_report_found": false
+  },
+  "research_semantics": {
+    "infrastructure_only_attempt": true,
+    "candidate_snapshot_may_have_been_loaded": true,
+    "some_comparison_values_may_have_been_loaded_in_memory": true,
+    "candidate_or_comparison_values_printed_persisted_or_used_for_selection": false,
+    "coverage_or_uniqueness_decision_recorded": false,
+    "historical_daily_price_fields_read": [],
+    "historical_forward_return_fields_read": false,
+    "development_folds_opened": false,
+    "stress_2024_2025_opened": false,
+    "candidate49_historical_return_read": false,
+    "candidate49_ledgers_changed": false,
+    "provider_request_issued": false,
+    "current_scoring_selection_sizing_or_orders_performed": false
+  },
+  "authorized_same_semantic_retry": {
+    "allowed": true,
+    "reason": "No audit artifact or gate result exists, and no value was exposed for parameter choice.",
+    "only_change": "Reduce file-verification concurrency from workers=16 to workers=4 to lower infrastructure pressure.",
+    "formula_direction_lag_grid_sample_coverage_gate_uniqueness_gate_comparison_order_or_threshold_changed": false,
+    "partial_in_memory_result_reuse_allowed": false
+  },
+  "next_action": "Append this infrastructure failure, freeze the workers=4 same-semantic retry, then rerun from immutable files and require a new complete audit artifact plus exit code zero."
+}

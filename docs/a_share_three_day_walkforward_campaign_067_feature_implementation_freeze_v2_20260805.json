@@ -1,0 +1,52 @@
+{
+  "version": 2,
+  "kind": "a_share_three_day_walkforward_campaign067_feature_implementation_freeze",
+  "status": "frozen_before_campaign067_quarterly_source_rows_candidate_values_or_comparison_values",
+  "recorded_at": "2026-08-05T18:24:00+08:00",
+  "purpose": "Bind the exact Campaign067 feature implementation and its inherited publication engine before reading real quarterly rows or constructing candidate values.",
+  "protocol": {
+    "path": "docs/a_share_three_day_walkforward_campaign_067_no_return_preregistration.json",
+    "sha256": "94073ae194468b2aa95d40dd63b29c80332d8e1e5fa47c61ca94c640060d1d07"
+  },
+  "feature_runner": {
+    "path": "scripts/a_share_three_day_walkforward_campaign067_features.py",
+    "sha256": "f197a97ec223153689da902cc894e64193b7675174ca64494898c96c338a36f7"
+  },
+  "inherited_publication_engine": {
+    "path": "scripts/a_share_three_day_walkforward_campaign066_features.py",
+    "sha256": "ff8bd4aef61f7eec00299d1b38e21c30e15a4e7b010d157b0ea60d0576adf614"
+  },
+  "frozen_semantics": {
+    "factor": "quarterly_roe_profit_scale_efficiency_gap_2r",
+    "direction": "higher",
+    "formula": "r_roe-r_net_profit",
+    "event_fields": ["instrument", "report_date", "announcement_date", "roe", "net_profit"],
+    "state_fields": ["roe", "net_profit"],
+    "rank_method": "average_tie_percentile_per_stock_day_per_field",
+    "availability": "strict_next_accepted_session",
+    "state_propagation": "independent_per_field_forward_fill_after_effective_ordering",
+    "valid_range": [-1.0, 1.0],
+    "expected_partitions": 33015,
+    "expected_rows": 7724498,
+    "numeric_comparator_count": 97,
+    "numeric_comparator_order_sha256": "e860581f2b2022a189259db7bf32e105960ca655fe2793d114e38315a251fbca",
+    "campaign066_is_final_numeric_comparator": true
+  },
+  "pre_value_checks": {
+    "binding_validator_exit_code": 0,
+    "binding_count": 13,
+    "synthetic_formula_check_passed": true,
+    "comparison_order_reconstruction_passed": true,
+    "candidate_source_rows_read": false,
+    "candidate_values_read": false,
+    "comparison_values_read": false,
+    "historical_daily_price_fields_read": [],
+    "historical_forward_return_fields_read": false,
+    "provider_request_issued": false,
+    "candidate49_ledgers_changed": false
+  },
+  "decision": {
+    "implementation_frozen_before_values": true,
+    "next_action": "Build one immutable Campaign067 feature snapshot, verify every partition byte/frame hash, and bind that publication before computing coverage."
+  }
+}

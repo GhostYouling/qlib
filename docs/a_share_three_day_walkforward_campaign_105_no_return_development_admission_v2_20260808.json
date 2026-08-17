@@ -1,0 +1,29 @@
+{
+  "schema_version": 1,
+  "kind": "a_share_three_day_walkforward_campaign105_no_return_audit",
+  "status": "completed_with_admissible_factors_pending_walkforward_preregistration",
+  "recorded_at": "2026-08-07T18:31:09Z",
+  "supersedes_without_rewriting": {
+    "path": "docs/a_share_three_day_walkforward_campaign_105_no_return_development_admission_20260808.json",
+    "sha256": "717a9ea729f08925f9cec72d2c9b162ec20aa27a6be687e572fc6e7ced55e46e",
+    "reason": "Correct the planned logical timestamp before any preregistration or development binding; scientific and admission semantics are unchanged."
+  },
+  "purpose": "Provide the inherited exact one-trial development loader's frozen admission interface without changing or recomputing the authoritative Campaign105 no-return result.",
+  "authoritative_no_return_audit": {
+    "path": "data/experiments/short_horizon/historical_walkforward/campaign_105/no_return/20260807T182638Z_campaign105_no_return_audit.json",
+    "sha256": "b310912ecd43e2012907bd33b465e584aee9201c1560224ef44d9966917bcc54"
+  },
+  "authoritative_result_status": "completed_one_admissible_factor_ready_for_exact_frozen_development_trial",
+  "admissible_factor_names": ["intraday_active_trading_bar_share_240m"],
+  "admissible_factor_count": 1,
+  "failed_factor_names": [],
+  "coverage_gate_passed": true,
+  "all_131_numeric_comparisons_passed": true,
+  "historical_daily_price_fields_read": [],
+  "historical_forward_return_fields_read": false,
+  "candidate49_historical_return_read": false,
+  "candidate49_prospective_ledgers_changed": false,
+  "provider_request_issued": false,
+  "current_scoring_selection_sizing_or_orders_performed": false,
+  "interface_only_no_recomputation": true
+}

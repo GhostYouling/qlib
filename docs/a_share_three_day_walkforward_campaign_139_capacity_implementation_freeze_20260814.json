@@ -1,0 +1,55 @@
+{
+  "schema_version": 1,
+  "kind": "a_share_three_day_walkforward_campaign139_capacity_implementation_freeze",
+  "status": "capacity_only_runner_frozen_before_quality_listing_keys_or_candidate_signal_values",
+  "recorded_at": "2026-08-14T13:29:35+0800",
+  "frozen_implementation": {
+    "runner_path": "scripts/a_share_three_day_walkforward_campaign139_capacity.py",
+    "runner_sha256": "cb32f5a2d90773b33d6110545c55b7055a480c97912011cc932d93d47ca49497",
+    "test_path": "tests/data_collector_tests/test_a_share_three_day_walkforward_campaign139_capacity.py",
+    "test_sha256": "2c745e0296894f66b2b11b87ac2e46dd721e08ae88c3a791aa8fe415eca23801",
+    "source_manifest_sha256": "82eac4501fb72dd5fe1972dd0f42c3fa2cd16f8975a0b5f55e2b4018401a38a5",
+    "source_data_sha256": "ce8de0d0a4e8c59746ba06c917399c75515d6e486f159ee6ab7b85df2c272a1a",
+    "quality_key_helper_sha256": "8ea3a1b2e0cc369ea6a1192304af101b54fecdfebc5334fa199dbe53807331a5",
+    "expected_gate": {
+      "development_signal_start": "2019-01-01",
+      "development_signal_end": "2023-12-31",
+      "holding_period_signal_sessions": 3,
+      "minimum_quality_listing_eligible_names": 6,
+      "minimum_distinct_raw_surprise_values": 2,
+      "minimum_non_overlapping_three_signal_session_cohorts": 200,
+      "minimum_observed_cohort_years": 5,
+      "grid_origin": "first accepted local session on or after 2019-01-01",
+      "grid_step_sessions": 3,
+      "t_plus_3_must_exist_inside_development_interval": true
+    },
+    "output_columns": [
+      "trade_date",
+      "symbol",
+      "provider",
+      "raw_surprise",
+      "quarterly_realized_profit_growth_forecast_surprise_rank"
+    ],
+    "output_root": "data/experiments/short_horizon/historical_walkforward/campaign_139/capacity"
+  },
+  "pre_freeze_validation": {
+    "focused_formula_source_and_capacity_tests": "15 passed in 3.45s",
+    "black_check": "6 files would be left unchanged",
+    "ruff": "All checks passed",
+    "exit_code": 0
+  },
+  "research_boundary": {
+    "quality_listing_key_values_read_before_freeze": false,
+    "candidate_signal_values_read_before_freeze": false,
+    "comparator_values_read": false,
+    "historical_price_or_return_values_read": false,
+    "stress_2024_2025_opened": false,
+    "provider_request_issued": false,
+    "provider_credential_value_or_digest_read": false,
+    "candidate49_historical_backfill_performed": false,
+    "candidate49_ledgers_changed": false,
+    "current_scoring_selection_sizing_positions_or_orders_performed": false,
+    "investment_advice": false
+  },
+  "next_action": "Run the exact capacity plan in a standalone process. Only ready=true with exit code zero permits the same frozen runner's run --confirm-capacity-audit."
+}

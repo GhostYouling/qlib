@@ -1,0 +1,141 @@
+{
+  "schema_version": 1,
+  "kind": "a_share_three_day_walkforward_campaign146_mechanism_overlap_audit",
+  "status": "one_genuinely_new_cross_spectral_phase_contract_permitted_before_source_candidate_or_comparator_values",
+  "recorded_at": "2026-08-14T21:09:20+08:00",
+  "authoritative_inputs": {
+    "concept_scouting": {
+      "path": "docs/a_share_three_day_walkforward_campaign_146_concept_scouting_20260814.json",
+      "sha256": "5a0a969d8812b5d64171998dbbc9a1365604d08f4f293567b8fddf4a4cb2b491"
+    },
+    "campaign145_terminal_state": {
+      "path": "docs/a_share_three_day_iteration_status_20260814_campaign145_coverage_terminal.json",
+      "sha256": "aca56008f7edbc43d62caa27979d324afa9d5fcf6066a0d90c692e105737e81e"
+    },
+    "numeric_policy_v194": {
+      "path": "docs/a_share_three_day_walkforward_future_numeric_comparison_eligibility_policy_v194_20260814.json",
+      "sha256": "b9835d1d3ab888f50060707e22fdb5784bd8a433b1c16aba6473162b96be288b",
+      "complete_definition_count": 154,
+      "complete_definition_order_sha256": "dcea4c75bb9194ea2e522d803409e4005cf0185fe87c84f6f9810dbe51de2f75",
+      "numeric_comparator_count": 141,
+      "numeric_comparator_order_sha256": "ec1aebcb939ad516c58037a36a4aaadd4ad8b2abbd3c884705895c58da85a2ee"
+    },
+    "raw_minute_manifest": {
+      "path": "/Volumes/DIsk/qlib-a-share-tushare-1m/raw/a_share/rich/tushare/minutes/1m/snapshots/tushare_stk_mins_1m_2019_2025_ea0cbb8f/snapshot_manifest.json",
+      "sha256": "9b3d959563c9d182f38981c6a36bdb3bc9b415de08487a9e1f9e850825c0839f"
+    }
+  },
+  "candidate": {
+    "name": "intraday_return_amount_cross_spectral_phase_lead_59f",
+    "direction": "higher",
+    "economic_hypothesis": "When transaction-amount innovations systematically lead favorable signed price discovery across the complete within-half frequency support, liquidity arrival is more likely information-led than a lagging reaction and may persist from the next open through the third close.",
+    "source_projection": [
+      "datetime",
+      "symbol",
+      "provider",
+      "close",
+      "amount"
+    ],
+    "exact_formula": "For each 120-bar half separately, form 119 adjacent log-close returns r_t and destination-bar activity x_t=log1p(amount_{t+1}); demean both length-119 vectors. With the unnormalized DFT convention Z_k=sum_{t=0}^{118} z_t*exp(-2*pi*i*k*t/119), use all positive frequencies k=1..59. Let N=-sum_k Im(conj(X_k)*R_k), D=sum_k abs(X_k)*abs(R_k), and half_score=N/D when D>0. The stock-day score is the arithmetic mean of the morning and afternoon half scores.",
+    "valid_range_inclusive": [
+      -1.0,
+      1.0
+    ],
+    "point_in_time_known": "after the complete signal-session close"
+  },
+  "source_and_contract_gate": {
+    "accepted_full_historical_source_exists": true,
+    "historically_versioned_snapshot_exists": true,
+    "public_availability_clock_identified": true,
+    "original_collection_contract_permits_projected_minute_fields": true,
+    "new_provider_or_source_admission_required": false,
+    "provider_request_allowed": false,
+    "source_rows_read_for_this_audit": false
+  },
+  "complete_library_review": {
+    "definition_count": 154,
+    "definition_order_sha256": "dcea4c75bb9194ea2e522d803409e4005cf0185fe87c84f6f9810dbe51de2f75",
+    "all_definitions_reviewed_in_frozen_order": true,
+    "candidate_name_absent": true,
+    "cross_spectral_phase_operator_absent": true,
+    "terminal_records_reclassified_or_rewritten": false
+  },
+  "nearest_complete_definition_review": [
+    {
+      "name": "intraday_amount_lead_return_correlation_238p",
+      "overlap": "Both use signed within-half close returns and transaction amount with temporal order.",
+      "distinction": "The terminal factor is one fixed one-step Pearson coefficient between earlier log amount and the next return. Campaign146 uses the antisymmetric phase of the full two-series paths over all 59 positive frequencies, normalizes cross-spectral magnitude rather than covariance, and contains no selected time lag."
+    },
+    {
+      "name": "intraday_volatility_activity_lead_lag_asymmetry_236p",
+      "overlap": "Both distinguish activity-leading from price-leading behavior.",
+      "distinction": "The terminal factor contrasts two lag-one Pearson correlations and discards return sign through absolute returns. Campaign146 retains signed returns and measures full-path multiscale phase orientation without a one-lag difference."
+    },
+    {
+      "name": "intraday_return_amount_cumulative_path_signed_area_238p",
+      "overlap": "Both retain order and orientation in signed return and amount paths.",
+      "distinction": "Campaign145 integrates normalized cumulative level paths in the time domain and requires positive amount mass and absolute-return closure. Campaign146 demeans log-amount levels and signed returns, discards the zero-frequency level, and aggregates normalized Fourier phase over all positive frequencies. Either statistic can be zero while the other is nonzero."
+    },
+    {
+      "name": "intraday_amount_price_discovery_alignment_js_238p",
+      "overlap": "Both compare transaction amount with close-return-derived information.",
+      "distinction": "The terminal JSD factor is simultaneous, unsigned, and order-insensitive after endpoint alignment. Campaign146 retains return sign and the temporal phase relation and cannot be reconstructed from the two marginal distributions."
+    },
+    {
+      "name": "intraday_amount_conditioned_directional_persistence_spread_236p",
+      "overlap": "Both use activity and signed return dynamics.",
+      "distinction": "Campaign116 uses a strict all-day median split and adjacent return-sign persistence with 30 observations per group. Campaign146 has no activity threshold, group split, sign-pair state, or support selection and uses all continuous activity magnitudes and signed returns."
+    },
+    {
+      "name": "intraday_return_spectral_entropy_59f",
+      "overlap": "Both use the same 59 positive Fourier frequencies within each half.",
+      "distinction": "The terminal factor is an unsigned univariate distribution of return power. Campaign146 is a signed bivariate cross-spectrum; holding return power fixed while shifting the amount path changes Campaign146 but cannot change return spectral entropy."
+    },
+    {
+      "name": "intraday_cumulative_vwap_crossing_rate_240m_candidate49",
+      "overlap": "Both use close and amount-derived intraday state.",
+      "distinction": "Candidate49 requires volume to form causal cumulative VWAP and counts reference crossings. Campaign146 reads no volume, forms no VWAP or crossing, remains historical-research-only, and cannot enter either Candidate49 ledger."
+    }
+  ],
+  "semantic_decision": {
+    "all_154_complete_definitions_reviewed_in_frozen_order": true,
+    "candidate_is_exact_direction_parameter_operator_or_field_duplicate": false,
+    "candidate_combines_terminal_factor_values": false,
+    "candidate_uses_only_raw_accepted_point_in_time_fields": true,
+    "mechanism_independent_enough_for_one_exact_formula_freeze": true,
+    "numeric_distinctness_established": false,
+    "predictive_value_established": false,
+    "selected_candidate_count": 1
+  },
+  "frozen_exclusions": {
+    "absolute_squared_or_unsigned_phase": true,
+    "opposite_phase_orientation_or_direction": true,
+    "frequency_band_selection_or_weight_search": true,
+    "full_day_concatenation_or_lunch_bridge": true,
+    "volume_substitution_or_amount_volume_blend": true,
+    "return_absolute_value_sign_only_or_power_substitution": true,
+    "alternate_demeaning_dft_normalization_half_weight_lag_window_threshold_filter_subset_fit_model_or_combination": true,
+    "market_or_industry_benchmark_residualization": true
+  },
+  "next_gate": {
+    "freeze_formula_source_support_coverage_uniqueness_and_development_protocol_before_candidate_values": true,
+    "candidate_appended_complete_definition_count_if_frozen": 155,
+    "numeric_comparator_count_reserved_but_not_read": 141,
+    "maximum_allowed_absolute_median_daily_rank_correlation": 0.8,
+    "daily_prices_and_returns_closed_until_all_no_return_gates_pass": true
+  },
+  "research_boundary": {
+    "candidate_source_rows_read": false,
+    "candidate_values_computed_or_read": false,
+    "comparator_values_read": false,
+    "historical_daily_price_or_forward_return_values_read": false,
+    "stress_2024_2025_opened": false,
+    "provider_request_issued": false,
+    "credential_loaded_or_value_or_digest_read": false,
+    "candidate49_historical_backfill_performed": false,
+    "candidate49_ledgers_changed": false,
+    "second_prospective_candidate_created": false,
+    "current_scoring_selection_sizing_positions_or_orders_performed": false,
+    "investment_advice": false
+  }
+}

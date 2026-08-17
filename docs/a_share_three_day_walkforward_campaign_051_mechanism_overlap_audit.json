@@ -1,0 +1,127 @@
+{
+  "version": 1,
+  "kind": "a_share_three_day_walkforward_campaign051_mechanism_overlap_audit",
+  "status": "passed_conceptual_independence_before_campaign051_candidate_comparison_daily_price_or_return_values",
+  "recorded_at": "2026-08-01T11:55:00Z",
+  "purpose": "Challenge the selected close-range occupancy mechanism against every nearby frozen family before any Campaign051 value is computed.",
+  "numbering_disambiguation": "Historical Campaign051 is separate from any prospective Candidate51; it neither activates a second prospective candidate nor changes Candidate49.",
+  "authoritative_boundary": {
+    "path": "docs/a_share_three_day_iteration_status_20260801_campaign050_verified.json",
+    "sha256": "df758b530a7af5d811bb5ec59a97761d6ed0fe5ebb5a81e94b59cca455c0e0b7"
+  },
+  "historical_walkforward_policy": {
+    "path": "docs/a_share_three_day_historical_walkforward_research_policy_20260727.json",
+    "sha256": "38426d6161b9bfed323c58caba18feca668b8c9d53e294951a8ba90c01a798bb"
+  },
+  "concept_scouting": {
+    "path": "docs/a_share_three_day_walkforward_campaign_051_concept_scouting.json",
+    "sha256": "68c6cb507859b46f241d128d8de0d5fc84f05c5b9744ff14f13f0316dbda1f9c"
+  },
+  "selected_mechanism": {
+    "name": "intraday_close_range_occupancy_entropy_10b",
+    "direction": "higher",
+    "economic_hypothesis": "Broad occupation of the completed-session relative close-price range is consistent with distributed two-sided price discovery rather than a fleeting excursion or terminal congestion, potentially leaving a more resilient close-known state for the next-open-to-third-close horizon.",
+    "formula": "Across the 240 selected closes, let x_i=log(close_i), x_min=min(x), x_max=max(x), and z_i=(x_i-x_min)/(x_max-x_min). Assign b_i=min(floor(10*z_i),9), let p_j=count(b_i=j)/240 for j=0..9, and return -sum_{j:p_j>0}(p_j*log(p_j))/log(10).",
+    "source_projection": [
+      "datetime",
+      "symbol",
+      "provider",
+      "close"
+    ],
+    "selected_grid": [
+      "09:31-11:30",
+      "13:01-15:00"
+    ],
+    "selected_bar_count": 240,
+    "bin_count": 10,
+    "bin_boundary_rule": "left-closed right-open equal-width bins except the exact global maximum is assigned to bin 9",
+    "exact_repeated_close_observations_retained": true,
+    "order_invariant": true,
+    "valid_range": [
+      0.0,
+      1.0
+    ],
+    "transform_threshold_filter_combination_or_model": "none"
+  },
+  "design_choices_frozen_before_values": {
+    "formula_family": "full_session_relative_log_close_state_occupancy_entropy",
+    "direction": "higher",
+    "selected_bar_count": 240,
+    "bin_count": 10,
+    "bin_scale": "equal width in normalized log-close location",
+    "global_max_boundary": "bin 9",
+    "include_0930": false,
+    "include_lunch_transition": false,
+    "source_close_read": true,
+    "source_open_high_low_volume_amount_read": false,
+    "parameter_filter_subset_model_or_combination_count": 0
+  },
+  "overlap_challenges": [
+    {
+      "family": "intraday_return_spectral_entropy_59f_and_intraday_return_variance_entropy_238m",
+      "result": "distinct_pending_statistical_uniqueness_gate",
+      "reason": "Those mechanisms distribute return power across frequencies or observations. Campaign051 ignores return magnitude and frequency, and distributes close dwell counts across relative price states."
+    },
+    {
+      "family": "intraday_amount_participation_entropy_240m_and_intraday_intrabar_range_participation_entropy_240m",
+      "result": "distinct_pending_statistical_uniqueness_gate",
+      "reason": "Those mechanisms normalize amount or high-low range mass across clock positions. Campaign051 reads neither amount nor high/low and counts close observations in price-location bins."
+    },
+    {
+      "family": "intraday_terminal_close_location_240m",
+      "result": "distinct_pending_statistical_uniqueness_gate",
+      "reason": "Terminal close location uses one final coordinate inside the close range. Campaign051 uses all 240 observations and is invariant to which observation is terminal."
+    },
+    {
+      "family": "intraday_global_price_range_revisit_240m_and_adjacent_range_overlap",
+      "result": "distinct_pending_statistical_uniqueness_gate",
+      "reason": "Range-revisit mechanisms merge or overlap OHLC intervals. Campaign051 reads close only and measures dwell allocation rather than interval geometry."
+    },
+    {
+      "family": "intraday_half_session_chord_adherence_240m_and_signed_path_efficiency",
+      "result": "distinct_pending_statistical_uniqueness_gate",
+      "reason": "Those mechanisms preserve temporal order relative to a chord or path travel. Campaign051 is deliberately order-invariant and retains only normalized price-state occupancy."
+    },
+    {
+      "family": "intraday_price_update_share_238m_and_intraday_return_weak_order_entropy_234t",
+      "result": "distinct_pending_statistical_uniqueness_gate",
+      "reason": "Price-update share and weak-order entropy use exact adjacent equality or local return ordering. Campaign051 retains repeated closes but bins absolute relative close locations with no adjacency or tuple state."
+    },
+    {
+      "family": "intraday_round_tenth_close_avoidance_240m",
+      "result": "distinct_pending_statistical_uniqueness_gate",
+      "reason": "Round-price avoidance is expressed in absolute CNY tick space. Campaign051 normalizes natural-log closes by each stock-day's own min/max and is invariant to multiplicative price level."
+    },
+    {
+      "family": "campaign050_extreme_shock_reversal_and_other_event_conditioned_path_factors",
+      "result": "distinct_pending_statistical_uniqueness_gate",
+      "reason": "Campaign050 selects two endogenous return shocks and terminal retracements. Campaign051 selects no event, direction, return, or time index and summarizes the full close-location distribution."
+    },
+    {
+      "family": "amount_volume_vwap_market_benchmark_OHLC_range_quarterly_and_candidate49_families",
+      "result": "distinct",
+      "reason": "Campaign051 reads only close and contains no activity field, transaction price, market peer, OHLC range, quarterly data, Candidate49 value, or prospective ledger field."
+    },
+    {
+      "family": "alternate_bin_scale_direction_threshold_filter_subset_combination_or_model",
+      "result": "distinct",
+      "reason": "Campaign051 freezes one ten-bin raw statistic and no fitted weight, alternate bins, filter, threshold, regime, subset, combination, or model."
+    }
+  ],
+  "research_boundary": {
+    "external_campaign051_minute_partitions_read": false,
+    "candidate_or_comparison_values_read": false,
+    "historical_daily_price_or_forward_return_read": false,
+    "provider_request_issued": false,
+    "candidate49_historical_return_signal_execution_or_milestone_backfill_performed": false,
+    "candidate49_ledgers_changed": false,
+    "second_prospective_candidate_created": false,
+    "current_scoring_selection_sizing_or_orders_performed": false
+  },
+  "decision": {
+    "conceptual_independence_passed": true,
+    "statistical_independence_pending_all_74_comparisons": true,
+    "predictive_value_established": false,
+    "next_action": "Bind this record, inherit the exact 73-factor Campaign050 comparison order, append terminal Campaign050 as comparison 74, freeze one exact conditional development trial, and run the binding validator before implementation."
+  }
+}

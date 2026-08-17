@@ -1,0 +1,26 @@
+{
+  "schema_version": 1,
+  "kind": "a_share_three_day_walkforward_campaign148_publication_binding_failure",
+  "status": "terminal_v4_invalid_predecessor_sha256_binding_preserved",
+  "recorded_at": "2026-08-14T23:16:00+08:00",
+  "invalid_record": {
+    "path": "docs/a_share_three_day_walkforward_campaign_148_terminal_result_v4_20260814.json",
+    "sha256": "286477ec984cce8491b11f5a209f9c63e98f3ef7507728c1a3f66a98e1db39fb"
+  },
+  "binding_failure": {
+    "json_pointer": "/supersedes_without_rewriting",
+    "bound_predecessor_path": "docs/a_share_three_day_walkforward_campaign_148_terminal_result_v3_20260814.json",
+    "declared_sha256": "35355c76c49db2618ba049e851423b08d734a16d416e4e4d06e5d4509914906e",
+    "actual_sha256": "e4fdc906bade138458bc7e1fcb07d99a8c654ec5c9cd3bd50b652da029a735bf",
+    "binding_validator_exit_would_be_nonzero": true
+  },
+  "handling": {
+    "invalid_record_rewritten_or_deleted": false,
+    "failed_binding_bypassed_or_masked": false,
+    "corrected_additive_successor_required": true,
+    "scientific_result_changed": false,
+    "candidate_comparator_price_or_return_value_read": false,
+    "provider_request_issued": false,
+    "candidate49_ledgers_changed": false
+  }
+}

@@ -1,0 +1,281 @@
+{
+  "version": 1,
+  "kind": "a_share_three_day_walkforward_campaign003_research_record",
+  "status": "completed_zero_development_survivors_stress_interval_not_opened",
+  "recorded_at": "2026-07-28T03:08:17Z",
+  "purpose": "Record every result and boundary from the third finite historical walk-forward campaign, which tested a uniform low-realized-volatility eligibility gate across all seven non-volatility primary signals in the complete Campaign001 feature library.",
+  "campaign": {
+    "path": "docs/a_share_three_day_walkforward_campaign_003_preregistration.json",
+    "sha256": "7c2f9339aabe093bd40acde3f352ac147f30f119aa5a341252df992788be05c0",
+    "runner": {
+      "path": "scripts/a_share_three_day_walkforward_campaign003.py",
+      "sha256": "22ea63ae47b3146a9d9f988bb98e15b3a169cb70b55007edc317d6b6e2a97c57"
+    },
+    "completion_audit_implementation": {
+      "path": "scripts/a_share_three_day_walkforward_campaign003_completion_audit.py",
+      "sha256": "fd54d6146762130bc1a2621b7d2b04dea4756614b12d0fe7f5d252ae418a8825"
+    }
+  },
+  "completed_artifacts": {
+    "trial_ledger": {
+      "path": "data/experiments/short_horizon/historical_walkforward/campaign_003/trial_ledger.json",
+      "sha256": "1e2fc4c179f227a26911c069885fbecfb6e978a19b764080c32a48525cff20d3",
+      "entry_count": 42,
+      "development_entry_count": 42,
+      "exposed_stress_entry_count": 0,
+      "infrastructure_failure_count": 0,
+      "chain_tip_sha256": "978350aaa09c70f8d6e180814ebb1dce180c54c7e4cbb6e7b342d326697cc1cd"
+    },
+    "development_survivors": {
+      "path": "data/experiments/short_horizon/historical_walkforward/campaign_003/development_survivors.json",
+      "sha256": "91e10dfb82fbb72473bdffbd584ac2d800f5656e74102c32075f87cf3a02e7fa",
+      "trial_decision_count": 42,
+      "operationally_admissible_count": 21,
+      "validation_quality_gate_passer_count": 0,
+      "selected_survivor_count": 0,
+      "exposed_stress_return_fields_read_when_frozen": false
+    },
+    "exposed_stress_consumption_record": {
+      "path": "data/experiments/short_horizon/historical_walkforward/campaign_003/exposed_stress_consumption_record.json",
+      "sha256": "aeff7fdf833424dce01079899fb2e975ff907be0188add8c9ff186cb09660c9e",
+      "stress_interval_opened": false,
+      "reason": "zero_development_survivors"
+    },
+    "campaign_report": {
+      "path": "data/experiments/short_horizon/historical_walkforward/campaign_003/campaign_report.json",
+      "sha256": "6cfd1d7a5129649355ab0c3ae8069411b9685c688c185d6d3d63d2a80b3abeac"
+    },
+    "fresh_price_basis_audit": {
+      "path": "data/metadata/price_basis_audit_20260728T025824Z.json",
+      "sha256": "799a8f87c969ba815fe1fea8472e92654994f617b04ca48bed2f6753eefc4c3f",
+      "status": "passed",
+      "raw_file_count": 5451,
+      "row_count": 11425582,
+      "daily_sources": [
+        "baostock"
+      ],
+      "forward_return_fields_read": false
+    }
+  },
+  "development_result": {
+    "period": {
+      "start": "2019-01-01",
+      "end": "2023-12-31"
+    },
+    "expanding_validation_years": [
+      2021,
+      2022,
+      2023
+    ],
+    "frozen_trial_count": 42,
+    "trial_shape": {
+      "primary_signal_count": 7,
+      "low_volatility_gate_threshold_count": 3,
+      "within_gate_score_mode_count": 2,
+      "primary_only_trial_count": 21,
+      "primary_low_volatility_blend_trial_count": 21
+    },
+    "infrastructure_failure_count": 0,
+    "operationally_admissible_count": 21,
+    "validation_quality_gate_passer_count": 0,
+    "selected_exposed_stress_survivor_count": 0,
+    "quality_failure_counts": {
+      "nonpositive_development_aggregate_20bp_return": 42,
+      "worst_validation_normalized_drawdown": 37,
+      "median_validation_pilot_return": 39,
+      "insufficient_positive_pilot_return_folds": 39,
+      "insufficient_positive_normalized_return_folds": 35,
+      "median_validation_spread": 25,
+      "median_validation_mean_rank_ic": 16,
+      "insufficient_positive_ic_folds": 16
+    },
+    "operational_failure_counts": {
+      "fold_1_board_lot_affordability": 5,
+      "fold_2_board_lot_affordability": 8,
+      "fold_3_board_lot_affordability": 21
+    },
+    "score_mode_average_views": {
+      "primary_within_gate_rank": {
+        "trial_count": 21,
+        "mean_development_aggregate_20bp_return": -0.18658932038764237,
+        "mean_worst_validation_normalized_drawdown": -0.35866209756192147,
+        "mean_median_validation_rank_ic": -0.0008314751022579913
+      },
+      "primary_75_low_vol_25_within_gate_rank": {
+        "trial_count": 21,
+        "mean_development_aggregate_20bp_return": -0.21310326140745434,
+        "mean_worst_validation_normalized_drawdown": -0.3435212741244021,
+        "mean_median_validation_rank_ic": 0.004554031451715134
+      }
+    },
+    "gate_threshold_average_views": {
+      "retain_75pct": {
+        "trial_count": 14,
+        "mean_development_aggregate_20bp_return": -0.19595807518567834,
+        "mean_worst_validation_normalized_drawdown": -0.36233673129348853,
+        "mean_median_validation_rank_ic": 0.004523534480852754
+      },
+      "retain_60pct": {
+        "trial_count": 14,
+        "mean_development_aggregate_20bp_return": -0.19282370571861748,
+        "mean_worst_validation_normalized_drawdown": -0.3486110146450433,
+        "mean_median_validation_rank_ic": 0.0019081905726358503
+      },
+      "retain_45pct": {
+        "trial_count": 14,
+        "mean_development_aggregate_20bp_return": -0.21075709178834923,
+        "mean_worst_validation_normalized_drawdown": -0.3423273115909535,
+        "mean_median_validation_rank_ic": -0.00084789052930289
+      }
+    },
+    "closest_validation_consistency_trials": [
+      {
+        "trial_id": "wf003_gate__intraday_return_variance_entropy_238m__retain_60pct__primary_within_gate_rank",
+        "positive_mean_rank_ic_fold_count": 3,
+        "positive_normalized_return_fold_count": 3,
+        "positive_pilot_return_fold_count": 2,
+        "median_validation_mean_rank_ic": 0.024893524537183288,
+        "median_validation_spread": 0.003939372303304137,
+        "median_validation_pilot_return": 0.00309989269209221,
+        "worst_validation_normalized_drawdown": -0.20029485992993468,
+        "development_aggregate_normalized_return": 0.8322936740823965,
+        "development_aggregate_zero_slippage_pilot_return": 0.0992426658118537,
+        "development_aggregate_5bp_pilot_return": 0.04267950156839295,
+        "development_aggregate_10bp_pilot_return": -0.010404821382895446,
+        "development_aggregate_20bp_return": -0.10509424439964465,
+        "failed_frozen_gates": [
+          "nonpositive_development_aggregate_20bp_return"
+        ]
+      },
+      {
+        "trial_id": "wf003_gate__intraday_return_variance_entropy_238m__retain_45pct__primary_within_gate_rank",
+        "positive_mean_rank_ic_fold_count": 3,
+        "positive_normalized_return_fold_count": 3,
+        "positive_pilot_return_fold_count": 2,
+        "median_validation_mean_rank_ic": 0.02412606075318933,
+        "median_validation_spread": 0.003697287093067693,
+        "median_validation_pilot_return": 0.005793537831415785,
+        "worst_validation_normalized_drawdown": -0.22759229668115122,
+        "development_aggregate_normalized_return": 0.34037999803446395,
+        "development_aggregate_zero_slippage_pilot_return": 0.05745275270544359,
+        "development_aggregate_5bp_pilot_return": 0.007664319185037849,
+        "development_aggregate_10bp_pilot_return": -0.04320047292083906,
+        "development_aggregate_20bp_return": -0.13671048023262933,
+        "failed_frozen_gates": [
+          "nonpositive_development_aggregate_20bp_return"
+        ]
+      }
+    ],
+    "best_development_aggregate_20bp_trial": {
+      "trial_id": "wf003_gate__intraday_amount_participation_entropy_240m__retain_75pct__primary_within_gate_rank",
+      "development_aggregate_20bp_return": -0.0726120300399331,
+      "median_validation_mean_rank_ic": -0.040047243251657726,
+      "worst_validation_normalized_drawdown": -0.38223820404092423,
+      "operationally_admissible": false,
+      "conclusion": "The least-negative 20bp result still failed the association, drawdown, affordability, and cost gates; it is not a research lead."
+    }
+  },
+  "exposed_stress_result": {
+    "period": {
+      "start": "2024-01-01",
+      "end": "2025-12-31"
+    },
+    "classification": "historically_exposed_stress_replay_not_unseen_or_pristine",
+    "interval_opened": false,
+    "return_fields_read": false,
+    "reason": "The frozen development survivor gate selected zero trials, so the runner closed the campaign without loading 2024-2025 market or factor panels.",
+    "stress_trial_count": 0,
+    "frozen_gate_passer_count": 0
+  },
+  "interpretation": {
+    "uniform_low_volatility_gate_supported_under_frozen_gates": false,
+    "risk_control_signal": "The gate materially improved the closest return-variance-entropy constructions' validation drawdowns relative to Campaign002's closest nonlinear pairs, but the improvement did not survive the frozen 20bp aggregate cost requirement.",
+    "score_blend_signal": "Adding a 25% low-volatility score improved average validation drawdown slightly but worsened average 20bp return relative to using the primary rank alone inside the gate.",
+    "threshold_signal": "The middle 60% retention threshold had the least-negative average 20bp result; the strictest 45% gate had the best average drawdown but the worst average cost return. This is descriptive only and does not authorize selecting a threshold after the fact.",
+    "post_result_gate_relaxation_performed": false,
+    "prior_terminal_factor_conclusions_changed": false,
+    "historical_pass_or_current_selection_claim": false
+  },
+  "next_iteration": {
+    "campaign_id": "a_share_three_day_walkforward_campaign_004",
+    "status": "concept_selected_pending_separate_preregistration_before_values",
+    "economic_question": "Can a complete library of genuinely new one-minute path mechanisms provide stronger three-session association and cost resilience than repeatedly filtering the exhausted eight-factor library?",
+    "proposed_complete_feature_library": [
+      {
+        "concept_name": "intraday_market_neutral_late_residual_drift",
+        "queue_priority": 1,
+        "proposed_direction": "higher"
+      },
+      {
+        "concept_name": "intraday_negative_return_absorption_rate",
+        "queue_priority": 2,
+        "proposed_direction": "higher"
+      },
+      {
+        "concept_name": "intraday_signed_path_efficiency",
+        "queue_priority": 3,
+        "proposed_direction": "higher"
+      }
+    ],
+    "proposed_campaign_shape": "Freeze all three exact formulas and directions together before values, build them from the accepted one-minute close/amount schema without source open/high/low or returns, apply coverage and all-terminal-factor uniqueness gates first, then run a finite single-and-pair walk-forward grid only for no-return-admissible branches while retaining every failure.",
+    "reason": "Campaign003 showed that risk filtering can improve drawdown but cannot create enough cost-adjusted edge from the reused library. The next iteration should expand economic information rather than relax cost or drawdown gates or target-rescue the closest historical trial.",
+    "required_before_any_campaign004_value_or_return_read": [
+      "freeze exact formula, denominator, window, missing-value, market-peer, and direction semantics for all three queued mechanisms",
+      "freeze the complete single-and-pair search and every coverage, uniqueness, development, and exposed-stress gate",
+      "implement and synthetically test a no-return factor builder and ordered uniqueness audit",
+      "bind the accepted minute source and cleaning snapshots, current historical policy, and separate Campaign004 runner fingerprints",
+      "keep Candidate49 excluded and 2024-2025 unopened until development survivors are frozen"
+    ]
+  },
+  "candidate49_state_after_campaign": {
+    "signal_ledger": {
+      "path": "data/experiments/short_horizon/candidate49_future_signal_ledger.json",
+      "sha256": "5193f00d7f36da003f53cec387900da4c3d002299f5dfcfc1a95eaa199ed3a79",
+      "entry_count": 0
+    },
+    "execution_ledger": {
+      "path": "data/experiments/short_horizon/candidate49_future_execution_ledger.json",
+      "sha256": "d57a3e61eac969e42cafa418ccd8c0a5ee65dcf69da145bb2c096c2a02a2ea4f",
+      "entry_count": 0
+    },
+    "historical_return_backfill_performed": false,
+    "prospective_registration_changed": false
+  },
+  "verification": {
+    "campaign003_focused_tests": {
+      "command": "python -m pytest -q tests/data_collector_tests/test_a_share_three_day_walkforward_campaign003.py",
+      "passed": 7,
+      "failed": 0
+    },
+    "campaign003_and_prior_walkforward_focused_regression": {
+      "command": "python -m pytest -q tests/data_collector_tests/test_a_share_three_day_walkforward_campaign003.py tests/data_collector_tests/test_a_share_three_day_walkforward_campaign003_completion_audit.py tests/data_collector_tests/test_a_share_three_day_walkforward_campaign002.py tests/data_collector_tests/test_a_share_three_day_walkforward_campaign002_completion_audit.py tests/data_collector_tests/test_a_share_three_day_walkforward_campaign.py tests/data_collector_tests/test_a_share_three_day_walkforward_completion_audit.py tests/data_collector_tests/test_a_share_three_day_walkforward_policy.py",
+      "passed": 33,
+      "failed": 0
+    },
+    "full_data_collector_regression": {
+      "command": "python -m pytest -q tests/data_collector_tests",
+      "passed": 1163,
+      "failed": 0,
+      "warnings": 9,
+      "warning_classification": "existing pandas PerformanceWarning and FutureWarning only"
+    },
+    "completion_audit_command": "python scripts/a_share_three_day_walkforward_campaign003_completion_audit.py --compact"
+  },
+  "research_boundary": {
+    "candidate49_historical_return_read": false,
+    "candidate49_ledgers_changed": false,
+    "candidate50_prospective_activation_created": false,
+    "stress_2024_2025_return_fields_read": false,
+    "current_scoring_performed": false,
+    "selection_sizing_or_orders_performed": false,
+    "provider_request_issued": false,
+    "investment_advice": false
+  },
+  "limitations": [
+    "All 2019-2025 market outcomes and reused factor definitions are historically exposed; the development result is exploratory rather than pristine.",
+    "The holding universe derives from a current listing snapshot and may contain survivorship bias.",
+    "Twenty basis points per side is a deliberately severe robustness view, not a forecast that every future fill will incur exactly that slippage.",
+    "The two closest trials were still negative at the primary 10bp pilot view over 2019-2023; their positive zero/5bp sensitivity does not authorize lowering the frozen gate after observing results.",
+    "A zero-survivor result rejects this frozen construction family under its gates; it does not prove that every possible factor or portfolio design is ineffective."
+  ]
+}

@@ -1,0 +1,131 @@
+{
+  "schema_version": 1,
+  "kind": "a_share_three_day_walkforward_campaign100_concept_scouting",
+  "status": "selected_before_campaign100_minute_source_candidate_comparator_daily_price_or_return_values",
+  "recorded_at": "2026-08-07T11:46:57Z",
+  "purpose": "Select exactly one genuinely independent historical-only three-session factor after terminal Campaign099, before reading any Campaign100 source row, candidate value, comparator value, daily price, or forward return.",
+  "authoritative_boundary": {
+    "iteration_state": {
+      "path": "docs/a_share_three_day_iteration_status_20260807_campaign099_verified_v2.json",
+      "sha256": "bf9ab5ff6481713742360675247bb9d3cb25865b1882887cfce72c7df9435092"
+    },
+    "campaign099_terminal_completion_freeze": {
+      "path": "docs/a_share_three_day_walkforward_campaign_099_terminal_completion_freeze_v2_20260807.json",
+      "sha256": "30ccb7bc0426eeafdfe416c7aa81b809a04687b72c4f305722023b155ceed37d"
+    },
+    "numeric_policy_v52": {
+      "path": "docs/a_share_three_day_walkforward_future_numeric_comparison_eligibility_policy_v52_20260807.json",
+      "sha256": "90df8d97e248f1293bb76dfdfdba2d16dfd0791aeb02a43067b98a9d5995851c"
+    },
+    "historical_walkforward_policy": {
+      "path": "docs/a_share_three_day_historical_walkforward_research_policy_20260727.json",
+      "sha256": "38426d6161b9bfed323c58caba18feca668b8c9d53e294951a8ba90c01a798bb"
+    },
+    "complete_definition_count": 131,
+    "complete_definition_order_sha256": "065077dfa5df9331906141f938204efedb3274e252d3b94c8fa1e9beebb5fc2e",
+    "numeric_comparator_count": 128,
+    "numeric_comparator_order_sha256": "12ebf65ee86e23e606875a9a78165f0410bfdb320bdc99d159097ec669583756"
+  },
+  "prevalue_evidence": {
+    "materials_read": [
+      "all 131 frozen definition names, directions, terminal histories, support predicates, and mechanism audits through Campaign099",
+      "all known terminal coverage failures through Campaign099",
+      "the explicit rejected-variant records for center autocorrelation, day-over-day range-profile similarity, and wick serial statistics",
+      "Candidate49 registration and empty signal/execution ledger metadata",
+      "filesystem paths, manifest metadata, and policy fingerprints only"
+    ],
+    "campaign100_minute_source_rows_read": false,
+    "campaign100_candidate_values_computed_or_read": false,
+    "comparator_values_read": false,
+    "historical_daily_price_fields_read": [],
+    "historical_forward_returns_read": false,
+    "provider_request_issued": false
+  },
+  "finite_candidate_design_catalog": [
+    {
+      "name": "intraday_midrange_translation_reversal_236p",
+      "formula": "Negative population Pearson correlation of adjacent within-half log-midrange translations over 236 fixed pairs, higher as better.",
+      "decision": "rejected_before_candidate_source_rows_or_values",
+      "reason": "Campaign017's immutable prevalue audit explicitly rejected center autocorrelation and center serial variants around intraday_midrange_width_change_coupling_238p. Reopening one with a shifted lag and a leading negative sign would be prohibited terminal-family rescue rather than a genuinely new mechanism."
+    },
+    {
+      "name": "intraday_day_over_day_high_low_range_profile_similarity_240b",
+      "decision": "rejected_before_candidate_source_rows_or_values",
+      "reason": "Campaign057 already rejected day-over-day high-low range-profile similarity before values because morning-afternoon range-profile similarity and range-distribution mechanisms had consumed the family."
+    },
+    {
+      "name": "intraday_wick_serial_persistence_238p",
+      "decision": "rejected_before_candidate_source_rows_or_values",
+      "reason": "Campaign048's frozen family search rejected wick serial, entropy, and subwindow variants around the terminal wick/body/range geometry branch."
+    },
+    {
+      "name": "intraday_unchanged_close_range_absorption_share_238p",
+      "decision": "selected_for_complete_prevalue_mechanism_and_support_audit",
+      "reason": "It allocates observed destination-bar intraday high-low exploration according to whether the adjacent closing level changed at all. The exact-equality state and linear range-mass allocation are not an own-bar body statistic, a continuous close-transition efficiency ratio, a price-update count, an amount-intensity statistic, an old-factor combination, or a Candidate49 observation."
+    },
+    {
+      "name": "intraday_changed_close_range_discovery_share_238p",
+      "decision": "rejected_before_formula_freeze",
+      "reason": "It is exactly one minus the selected score and would create a direction-only duplicate."
+    },
+    {
+      "name": "intraday_unchanged_close_range_absorption_intensity_238p",
+      "decision": "rejected_before_formula_freeze",
+      "reason": "Normalizing the conditional mean range by the ordinary mean would add a count-control transform search around the selected fixed range-mass share."
+    },
+    {
+      "name": "intraday_unchanged_close_range_absorption_share_weighted_238p",
+      "decision": "rejected_before_formula_freeze",
+      "reason": "Amount, volume, clock, market, volatility, quality, or old-factor weights would combine terminal mechanisms."
+    }
+  ],
+  "selected_candidate": {
+    "name": "intraday_unchanged_close_range_absorption_share_238p",
+    "direction": "higher",
+    "economic_hypothesis": "When a larger share of completed-session intrabar high-low exploration resolves back to an exactly unchanged adjacent closing level, transient auction pressure may have been absorbed rather than carried into a durable close update; that liquidity resilience may support performance from the next open through the third close.",
+    "minute_source_projection": [
+      "datetime",
+      "symbol",
+      "provider",
+      "high",
+      "low",
+      "close"
+    ],
+    "source_grid": "Require the immutable raw 241-row stock-day identity, select exactly 09:31-11:30 and 13:01-15:00, exclude standalone 09:30, form 119 adjacent close transitions independently inside each half, and preserve all 238 destination bars.",
+    "destination_range_formula": "For each allowed destination bar j, set h_j=log(high_j/low_j), retaining exact zero ranges.",
+    "unchanged_close_rule": "Set z_j=1 only when the raw float64 destination close equals the immediately preceding selected close exactly inside the same half; otherwise z_j=0. Do not round, use a tick tolerance, compare logs, or bridge lunch.",
+    "factor_formula": "Let Z=sum_j(h_j*z_j) and H=sum_j(h_j) over the fixed 238 within-half destinations. Return Z/H.",
+    "support_rule": "Require all 240 selected high, low, and close values finite and strictly positive with low<=close<=high; require every h_j finite and nonnegative and total destination range H finite and strictly positive. Exact zero ranges and exact unchanged closes remain in fixed support. There is no positive-range-count, nonzero-return-count, adjacent-informative-pair, activity, peer, prior-day, event-history, or subwindow minimum.",
+    "valid_range": {
+      "lower": 0,
+      "lower_inclusive": true,
+      "upper": 1,
+      "upper_inclusive": true
+    },
+    "endpoint_canonicalization_tolerance": 1e-12,
+    "availability": "Known only after the signal-session 15:00 bar; no later session, daily return, quarterly value, Candidate49 observation, or provider request enters the factor.",
+    "parameter_window_norm_weight_transform_direction_threshold_filter_subset_regime_fit_model_or_combination_search": false
+  },
+  "finite_campaign_catalog": {
+    "selected_factor_count": 1,
+    "formula_count": 1,
+    "direction_count": 1,
+    "parameter_configuration_count": 1,
+    "filter_or_subset_count": 0,
+    "combination_or_model_count": 0,
+    "conditional_development_trial_count_if_both_no_return_gates_pass": 1,
+    "stress_2024_2025_trial_count_if_development_survives": 1
+  },
+  "research_boundary": {
+    "historical_offline_work_may_run_at_any_time": true,
+    "campaign100_candidate_values_may_be_read_before_mechanism_and_support_audit": false,
+    "comparator_values_may_be_read_before_coverage_pass": false,
+    "daily_price_or_forward_return_values_may_be_read_before_both_no_return_gates_pass": false,
+    "candidate49_historical_backfill_allowed": false,
+    "candidate49_ledgers_may_change": false,
+    "second_prospective_candidate_allowed": false,
+    "current_scoring_selection_sizing_or_orders_allowed": false,
+    "investment_advice": false
+  },
+  "next_action": "Complete and bind the all-131-definition mechanism challenge and known-failure support-predicate gate, then freeze the exact v52-bound no-return protocol before any Campaign100 source row or value."
+}

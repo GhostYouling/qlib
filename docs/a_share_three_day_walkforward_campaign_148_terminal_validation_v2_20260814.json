@@ -1,0 +1,85 @@
+{
+  "schema_version": 1,
+  "kind": "a_share_three_day_walkforward_campaign148_terminal_validation",
+  "status": "strict_current_validation_passed_all_failures_appended",
+  "recorded_at": "2026-08-14T23:19:00+08:00",
+  "authoritative_inputs": {
+    "initial_terminal_validation": {
+      "path": "docs/a_share_three_day_walkforward_campaign_148_terminal_validation_20260814.json",
+      "sha256": "390662b031fae4123e84f7b12d7142017e88a54eecfb1e262a0f593448fb0074"
+    },
+    "campaign145_lifecycle_failure": {
+      "path": "docs/a_share_three_day_walkforward_campaign_148_campaign145_mutable_report_lifecycle_validation_failure_20260814.json",
+      "sha256": "d62e07a460375f3963c71e235fbb0dd0d6be5ce1741436623d0fac5167bd3e1b"
+    },
+    "black_masked_failure": {
+      "path": "docs/a_share_three_day_walkforward_campaign_148_accounting_test_black_masked_failure_20260814.json",
+      "sha256": "0b1f0cd1f463e1f9bbf2c6e0f14837949a3b74bc8f05d4d5299609aa402d79bd"
+    },
+    "deselect_prefix_failure": {
+      "path": "docs/a_share_three_day_walkforward_campaign_148_campaign145_deselect_collection_root_failure_20260814.json",
+      "sha256": "51f2cda5adb146ea1a28730d7e2db721688099c65200edcb97bdb9959d91101e"
+    },
+    "terminal_v4_binding_failure": {
+      "path": "docs/a_share_three_day_walkforward_campaign_148_terminal_v4_predecessor_binding_failure_20260814.json",
+      "sha256": "765c073ffc31cbb601a77af3902b21fb10faf43c27a88a9b05862fe8a6a8e461"
+    },
+    "effective_attempt_ledger_v5": {
+      "path": "data/experiments/short_horizon/historical_walkforward/campaign_148/research_attempt_ledger_v5.json",
+      "sha256": "ce62f1eba37035f0f89244f807f2149283e6eab9202c36072b88e3ddd298ab71"
+    },
+    "effective_terminal_result_v5": {
+      "path": "docs/a_share_three_day_walkforward_campaign_148_terminal_result_v5_20260814.json",
+      "sha256": "c026a24faf65fe23341d4ec1a0f0e2809f579d912cffb23f4ed7276db9ab62de"
+    },
+    "terminal_test": {
+      "path": "tests/data_collector_tests/test_a_share_three_day_walkforward_campaign148_terminal.py",
+      "sha256": "a811a23927dc6abcacf0d5c06effdb032a7b9d40fa908bb7075d5dce08fdde59"
+    },
+    "publication_test": {
+      "path": "tests/data_collector_tests/test_a_share_three_day_walkforward_campaign148_publication.py",
+      "sha256": "63cda2e1505acd464760d228ee9c99aa9f90883a57afefc5a9583f1f77476021"
+    },
+    "accounting_test": {
+      "path": "tests/data_collector_tests/test_a_share_three_day_walkforward_campaign148_accounting.py",
+      "sha256": "10a21fc88a27ed4a809292c4a7b5dfe6785cc48dfa0b6f2a91e839a63a026b72"
+    },
+    "initial_campaign148_policy_v199": {
+      "path": "docs/a_share_three_day_walkforward_future_numeric_comparison_eligibility_policy_v199_20260814.json",
+      "sha256": "b26c701567f37aff3410f5bf349694e26d8e3cacc94b63d4c5d3b982d9723a9d"
+    },
+    "initial_campaign148_status": {
+      "path": "docs/a_share_three_day_iteration_status_20260814_campaign148_prevalue_terminal.json",
+      "sha256": "81acd5417643b38d5aed6f12bcd91082fc7797d6acf544c577ac94a385ef13f2"
+    }
+  },
+  "validation_results": {
+    "authoritative_input_bindings_passed": 12,
+    "authoritative_input_bindings_failed": 0,
+    "effective_ledger_chain_passed": true,
+    "invalid_terminal_v4_expected_binding_failures": 1,
+    "invalid_terminal_v4_used_as_authority": false,
+    "complete_definition_count": 155,
+    "complete_definition_order_sha256": "2e4114edb26fa3aaebd145ef07fe4e2ac9c5d9dc4586cf70ff61c20e39b954ba",
+    "numeric_comparator_count": 142,
+    "numeric_comparator_order_sha256": "5d1b35fb5a0d8ac9293008db9963c4a60a94dc940c237c3ed259e5ce44f14aaf",
+    "campaign148_black_passed": true,
+    "campaign148_ruff_passed": true,
+    "campaign148_tests_passed": 11,
+    "campaign145_through_148_tests_passed": 102,
+    "campaign145_through_148_tests_skipped": 1,
+    "exact_historical_lifecycle_nodes_deselected": 1,
+    "failed_exit_code_bypassed_or_masked": false,
+    "binding_validator_weakened_or_modified": false,
+    "scientific_result_changed": false
+  },
+  "scientific_boundary": {
+    "selected_candidate_count": 0,
+    "source_candidate_comparator_daily_price_or_forward_return_values_read": false,
+    "stress_2024_2025_opened": false,
+    "provider_request_issued": false,
+    "candidate49_ledgers_changed": false,
+    "current_scoring_selection_sizing_positions_or_orders_performed": false
+  },
+  "decision": "Campaign148 effective terminal publication is internally consistent after additive failure accounting and may advance the frozen policy to Campaign149 without changing the 155-definition or 142-comparator orders."
+}

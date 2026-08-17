@@ -1,0 +1,65 @@
+{
+  "schema_version": 3,
+  "kind": "a_share_three_day_walkforward_campaign103_development_implementation_freeze",
+  "status": "frozen_before_campaign103_development_daily_price_or_forward_return_read",
+  "recorded_at": "2026-08-08T00:35:00+08:00",
+  "supersedes_without_rewriting": {
+    "v2_freeze": {
+      "path": "docs/a_share_three_day_walkforward_campaign_103_development_implementation_freeze_v2_20260807.json",
+      "sha256": "5618ea9dfd48034c37b23a344a4475fec1cbfa24cae3a0fb19e15cea5348d487"
+    },
+    "v2_activation": {
+      "path": "docs/a_share_three_day_walkforward_campaign_103_development_activation_binding_v2_20260807.json",
+      "sha256": "939dfabd32b025a333dfab0cdc70a0b7cf292f35647eaa261ecc0ac305259d27"
+    },
+    "recorded_ledger_header_failure": {
+      "path": "docs/a_share_three_day_walkforward_campaign_103_development_ledger_header_continuity_failure_20260808.json",
+      "sha256": "b25b1fadd159cedd412286967a17eb9e0bbf0988832de768509fe781ba4faba5"
+    }
+  },
+  "runner": {
+    "path": "scripts/a_share_three_day_walkforward_campaign103.py",
+    "sha256": "c1e88f11dad07ab4a9b685f1a12aa98c3c7c2ae0a2cb03d20a62d5401fc23a8e"
+  },
+  "tests": {
+    "path": "tests/data_collector_tests/test_a_share_three_day_walkforward_campaign103_development.py",
+    "sha256": "4c03d415b8d6755c5e782c001f33ccc4085f259bb835b79055b1caeb8bf4ecd7",
+    "result": "8_development_tests_passed;_16_combined_campaign103_tests_passed_before_activation_v3"
+  },
+  "development_preregistration": {
+    "path": "docs/a_share_three_day_walkforward_campaign_103_preregistration_v10.json",
+    "sha256": "37f1ee200c616fafbc91ba01a0d440f6ed7565571cdede9e7fabf10d88a0f1b4"
+  },
+  "candidate_snapshot": {
+    "path": "/Volumes/DIsk/qlib-a-share-tushare-1m/derived/a_share/rich/tushare/minute_walkforward_campaign103_feature_library/tushare_stk_mins_1m_2019_2025_ea0cbb8f_walkforward_campaign103_feature_library_v1/snapshot_manifest.json",
+    "sha256": "8a939feb53edfb31be8f133c2683920ed13424e716a4f4b5ed0d1a300588603b",
+    "dataset_sha256": "57afdd9f8a246fb9f513f85b3b631f70cf734655bd226ff211201bf7e084ea13",
+    "eligible_rows": 1315573
+  },
+  "repair_scope": {
+    "changed": "Bind a Campaign103-only validator that preserves and validates the exact v8 append-only ledger header while the exact active v10 preregistration continues the unchanged trial.",
+    "existing_ledger_header_or_entries_rewritten": false,
+    "factor_formula_or_values_changed": false,
+    "trial_catalog_or_direction_changed": false,
+    "fold_purge_execution_cost_or_gate_changed": false,
+    "2024_2025_authorization_changed": false
+  },
+  "append_only_internal_ledger": {
+    "path": "data/experiments/short_horizon/historical_walkforward/campaign_103/walkforward/trial_ledger.json",
+    "sha256": "68234e44b7ed20ca6f228d75886288596df2fce9ad5de262f7b3279b70019d44",
+    "header_preregistration_path": "/Volumes/DIsk/Disk-Coding/qlib/docs/a_share_three_day_walkforward_campaign_103_preregistration_v8.json",
+    "header_preregistration_sha256": "9485fd9e7773c6d489ead653ae66536445079425c7135dc7f4849d5733f66bbe",
+    "entries": 1,
+    "chain_tip_sha256": "b8665ecdb95895ece8f22d9b914d16321d4e3d95c733a15cc859351a12f7942b",
+    "complete_development_trials": 0
+  },
+  "complete_development_trial_count_before_freeze": 0,
+  "development_daily_price_fields_read_before_freeze": [
+    "2019_2023_execution_quotes_during_recorded_failed_load"
+  ],
+  "development_forward_returns_read_before_freeze": false,
+  "stress_2024_2025_read_before_freeze": false,
+  "provider_request_issued_before_freeze": false,
+  "candidate49_ledgers_changed_before_freeze": false,
+  "current_scoring_selection_sizing_or_orders_performed": false
+}

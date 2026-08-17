@@ -1,0 +1,51 @@
+{
+  "schema_version": 9,
+  "kind": "a_share_three_day_walkforward_campaign262_infrastructure_failures",
+  "status": "thirteen_failures_recorded_campaign262_terminal_before_returns",
+  "recorded_at": "2026-08-16T18:19:00+08:00",
+  "timestamp_semantics": "monotonic_logical_append_time_not_host_wall_clock_measurement",
+  "supersedes_without_rewriting": {
+    "infrastructure_failures_v8": {
+      "path": "docs/a_share_three_day_walkforward_campaign_262_infrastructure_failures_v8_20260816.json",
+      "sha256": "597876a830f0b83d8a6662940f0512bde9d579db0c57b761544a611f2bf463e6",
+      "attempt_count": 11
+    }
+  },
+  "additive_failures": [
+    {
+      "attempt_id": "campaign262_infrastructure_012",
+      "phase": "attempt_ledger_chain_generation",
+      "status": "failed_read_only_python_chain_output_exceeded_model_context_and_was_truncated",
+      "scientific_attempt": false,
+      "result_consumed": false,
+      "new_scientific_values_read": false,
+      "files_written": false
+    },
+    {
+      "attempt_id": "campaign262_infrastructure_013",
+      "phase": "terminal_artifact_inventory",
+      "status": "failed_batch_read_output_truncated_due_to_oversized_git_status_and_combined_output",
+      "scientific_attempt": false,
+      "result_consumed": false,
+      "new_scientific_values_read": false,
+      "files_written": false
+    }
+  ],
+  "effective_accounting": {
+    "infrastructure_failure_count": 13,
+    "prevalue_scientific_attempt_count": 7,
+    "complete_factor_attempt_count": 1,
+    "return_reading_development_trial_count": 0
+  },
+  "research_boundary": {
+    "campaign262_candidate_snapshot_values_read": true,
+    "campaign262_comparator_values_read": true,
+    "historical_daily_price_or_forward_return_values_read": false,
+    "stress_2024_2025_opened": false,
+    "provider_or_web_request_issued": false,
+    "credential_value_presence_or_digest_read": false,
+    "candidate49_ledgers_changed": false,
+    "current_scoring_selection_sizing_positions_or_orders_performed": false,
+    "investment_advice": false
+  }
+}

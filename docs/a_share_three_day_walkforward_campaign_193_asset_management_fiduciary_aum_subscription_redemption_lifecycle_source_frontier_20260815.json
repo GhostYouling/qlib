@@ -1,0 +1,160 @@
+{
+  "schema_version": 1,
+  "kind": "a_share_three_day_walkforward_campaign193_asset_management_fiduciary_aum_subscription_redemption_lifecycle_source_frontier",
+  "status": "checkpoint_prevalue_three_source_admission_deferrals_four_relabeling_overlap_operator_or_combination_rejections_zero_selected",
+  "recorded_at": "2026-08-15T15:31:00+08:00",
+  "timestamp_semantics": "monotonic logical append time after the Campaign192 terminal authority",
+  "purpose": "Freeze a finite asset-management fiduciary AUM, subscription, redemption and product-or-mandate lifecycle before source rows, balances, flows, formulas, directions, comparators, security prices or returns.",
+  "authoritative_inputs": {
+    "campaign192_state": {"path": "docs/a_share_three_day_iteration_status_20260815_campaign192_prevalue_terminal.json", "sha256": "765e5aed7fbf34f8b69acf46f8f7e5a540ab49b337603e98a5e01971d0c0d97c"},
+    "policy_v281": {"path": "docs/a_share_three_day_walkforward_future_numeric_comparison_eligibility_policy_v281_20260815.json", "sha256": "e86a5bd8553a0b59f9aa30c28b61f1a45e363f63b136dc308d764821ca34e8a2"},
+    "campaign157_cross_asset_scouting": {"path": "docs/a_share_three_day_walkforward_campaign_157_cross_asset_source_scouting_20260815.json", "sha256": "b14d28d45144c3fde60379161df4ff618bf71222f52dfc8b8e44dd3dc113af2e"},
+    "campaign168_operating_scale_frontier": {"path": "docs/a_share_three_day_walkforward_campaign_168_operating_scale_adoption_kpi_source_frontier_20260815.json", "sha256": "c5dc98f92266e2b7ef7349cb5260a8cde15ccd9c78442e661e4170b1ba47d18a"},
+    "campaign169_commercial_pricing_frontier": {"path": "docs/a_share_three_day_walkforward_campaign_169_commercial_pricing_terms_source_frontier_20260815.json", "sha256": "a571bcc5bcbfc158da551e59d2984a907fd44b419d115619043a9b28ee3ab288"},
+    "campaign170_customer_quality_frontier": {"path": "docs/a_share_three_day_walkforward_campaign_170_customer_experience_quality_kpi_source_frontier_20260815.json", "sha256": "b3ec42d8c8872ae9be913ffd64b24ba449e4c4f0e1f91af31b98f0e0e7158379"},
+    "campaign181_regulated_capital_frontier": {"path": "docs/a_share_three_day_walkforward_campaign_181_regulated_financial_capital_solvency_source_frontier_20260815.json", "sha256": "526ae0a7cdefd64f9c0b4890924f74a6130e553de0d7642672511ccbe3c5f448"},
+    "campaign192_bank_deposit_frontier": {"path": "docs/a_share_three_day_walkforward_campaign_192_bank_deposit_funding_franchise_lifecycle_source_frontier_20260815.json", "sha256": "8d62229370b8a5ef55868727c9edfacbbacd639f33cdb43ec10705dfa5668e2c"}
+  },
+  "repository_evidence": {
+    "bounded_search_scope": "Existing Campaign145-192 source-frontier and source-scouting JSON records only",
+    "bounded_search_terms": ["asset under management", "assets under management", "AUM", "subscription", "redemption", "fundraising", "mandate", "fiduciary", "side pocket", "申购", "赎回", "资产管理", "受托资产"],
+    "dedicated_asset_management_fiduciary_aum_lifecycle_frontier_found": false,
+    "complete_asset_management_fiduciary_aum_source_contract_present": false,
+    "cross_asset_boundary": "Campaign157 freezes ETF primary-market creation and redemption as a cross-asset source idea. ETF basket activity is not an issuer-level asset manager's complete fiduciary AUM, client flow, mandate, liquidity-control or product lifecycle and may not be substituted.",
+    "operating_scale_boundary": "Campaign168 freezes generic customer, subscriber, installed-base and utilization KPIs. A reported AUM total is a monetary fiduciary stock requiring valuation and client-flow reconciliation, not a generic count or utilization KPI.",
+    "commercial_pricing_boundary": "Campaign169 freezes price, tariff, fee and selling-term changes. Management-fee or performance-fee rates are therefore pricing states; Campaign193 is limited to client-asset stocks, flows, product or mandate identity and redemption-control lifecycle.",
+    "customer_quality_boundary": "Campaign170 freezes retention, churn, renewal and customer-experience KPIs. Client counts or retention rates do not reconstruct monetary subscriptions, redemptions, transfers, valuation effects, mandates, gates or side pockets.",
+    "regulated_capital_boundary": "Campaign181 freezes bank, insurer, securities and futures firm capital, solvency and regulatory liquidity. Regulatory own-funds and liquidity ratios are not segregated or fiduciary client assets and do not reconstruct AUM stock-flow histories.",
+    "bank_deposit_boundary": "Campaign192 observes bank funding liabilities and depositor flows. A client investment subscription or redemption changes fiduciary assets and is not a bank deposit inflow or withdrawal unless an admitted source explicitly preserves both legal states without relabeling.",
+    "sector_scope_boundary": "Point-in-time licensed asset manager, fund manager, securities firm, trust, insurer asset manager, bank wealth manager or other fiduciary-manager scope must be frozen. Nonmanagers are structurally not applicable and may not be filled with zero or cross-sector ranked.",
+    "point_in_time_boundary": "Latest AUM, current product rosters or surviving mandates cannot be projected backward without opening stock, gross subscription, redemption, transfer, distribution, valuation, FX, launch, closure, merger, liquidation, correction and first-public histories."
+  },
+  "finite_prevalue_catalog": [
+    {
+      "catalog_id": "c193_01",
+      "name": "fiduciary_aum_product_mandate_asset_class_client_stock_flow_and_valuation_reconciliation_state",
+      "economic_state": "A close-known fiduciary client-asset stock and flow state by product, mandate, asset class, client class and management perimeter, reconciling opening AUM, gross subscriptions, redemptions, transfers, distributions, market or FX effects and closing AUM.",
+      "formula": null,
+      "direction": null,
+      "parameters_filters_subsets_combinations_models": [],
+      "new_issuer_state": true,
+      "complete_local_source_contract": false,
+      "decision": "deferred_source_admission_not_factor_failure",
+      "reason": "No admitted point-in-time source freezes licensed manager and listed-parent identity, product or mandate perimeter, opening and closing AUM, gross client flows, transfers, distributions, valuation and FX effects, mergers, corrections and first-public history across 2019-2023."
+    },
+    {
+      "catalog_id": "c193_02",
+      "name": "fund_product_and_segregated_mandate_fundraising_launch_activation_merger_closure_and_liquidation_state",
+      "economic_state": "A close-known product or segregated-mandate lifecycle from authorization and fundraising through first funding, activation, additions, merger, soft or hard closure, termination, liquidation and final distribution.",
+      "formula": null,
+      "direction": null,
+      "parameters_filters_subsets_combinations_models": [],
+      "new_issuer_state": true,
+      "complete_local_source_contract": false,
+      "decision": "deferred_source_admission_not_factor_failure",
+      "reason": "No complete source preserves stable product and mandate identity, legal vehicle, manager and subadviser, fundraising target and close, commitment versus funded amount, activation, merger, closure, liquidation, distribution, failure or withdrawal, correction and session availability."
+    },
+    {
+      "catalog_id": "c193_03",
+      "name": "investor_client_concentration_lockup_gate_side_pocket_suspension_and_redemption_dependency_state",
+      "economic_state": "A close-known fiduciary-liquidity and client-dependence state covering largest investor or connected-client concentration, lockups and notice periods, redemption gates, side pockets, suspensions, queued redemptions and their release or resolution.",
+      "formula": null,
+      "direction": null,
+      "parameters_filters_subsets_combinations_models": [],
+      "new_issuer_state": true,
+      "complete_local_source_contract": false,
+      "decision": "deferred_source_admission_not_factor_failure",
+      "reason": "The repository lacks a privacy-safe complete source linking stable investor or connected-client identity, denominator and ownership class, lockup and notice terms, redemption request and settlement, gate or suspension decision, side-pocket amount, release, correction and first-public timing."
+    },
+    {
+      "catalog_id": "c193_04",
+      "name": "customer_count_retention_operating_scale_accounting_asset_regulatory_capital_bank_deposit_etf_flow_or_security_price_relabeling",
+      "economic_state": "An existing customer KPI, accounting asset, own regulatory capital, bank deposit, ETF creation or redemption, market price or security-return state relabelled as fiduciary AUM quality or client-flow resilience.",
+      "formula": null,
+      "direction": null,
+      "parameters_filters_subsets_combinations_models": [],
+      "new_issuer_state": false,
+      "complete_local_source_contract": false,
+      "decision": "rejected_terminal_customer_operating_accounting_capital_deposit_cross_asset_and_security_price_source_relabeling",
+      "reason": "Adjacent aggregate states do not identify fiduciary ownership, licensed manager perimeter, product or mandate identity, gross subscription and redemption, valuation reconciliation, investor dependence, gate, suspension or lifecycle events."
+    },
+    {
+      "catalog_id": "c193_05",
+      "name": "management_fee_performance_fee_crystallization_take_rate_margin_or_pricing_variant",
+      "economic_state": "A management, advisory, administration, incentive or performance-fee price, take rate, margin, hurdle, high-water mark or crystallization transform applied to unadmitted AUM or product states.",
+      "formula": null,
+      "direction": null,
+      "parameters_filters_subsets_combinations_models": [],
+      "new_issuer_state": false,
+      "complete_local_source_contract": false,
+      "decision": "rejected_campaign169_commercial_pricing_overlap_and_operator_search_before_base_source_admission",
+      "reason": "Campaign169 already freezes commercial fee and pricing changes. Choosing a fee rate, margin, hurdle, crystallization period, spread, direction or interaction here would overlap that frontier and multiply operators before the fiduciary stock-flow source is admitted."
+    },
+    {
+      "catalog_id": "c193_06",
+      "name": "public_private_retail_institutional_product_asset_class_region_channel_direction_threshold_window_or_subset_variant",
+      "economic_state": "A selected manager, client, product, mandate, strategy, asset class, domicile, region, channel, flow direction, concentration threshold or event-window subset of an unadmitted fiduciary base.",
+      "formula": null,
+      "direction": null,
+      "parameters_filters_subsets_combinations_models": [],
+      "new_issuer_state": false,
+      "complete_local_source_contract": false,
+      "decision": "rejected_operator_sector_client_product_asset_class_region_channel_direction_threshold_window_and_subset_search_before_base_source_admission",
+      "reason": "Selecting favorable manager classes, client segments, products, strategies, asset classes, regions, channels, directions, thresholds or windows before source admission would multiply hypotheses and create reporting-survivorship bias."
+    },
+    {
+      "catalog_id": "c193_07",
+      "name": "combined_aum_flow_product_lifecycle_client_concentration_and_redemption_control_score_or_model",
+      "economic_state": "A joint asset-management franchise score across fiduciary AUM stock-flow, product or mandate lifecycle, client concentration, lockups, gates, side pockets and redemption resolution.",
+      "formula": null,
+      "direction": null,
+      "parameters_filters_subsets_combinations_models": [],
+      "new_issuer_state": false,
+      "complete_local_source_contract": false,
+      "decision": "rejected_unadmitted_component_normalization_weight_interaction_and_model_search",
+      "reason": "Combining three unadmitted source families or selecting normalization, ranks, weights, interactions, filters, subsets or models is closed before every base history passes the same source gate."
+    }
+  ],
+  "mandatory_source_admission_gate": {
+    "must_freeze_before_any_formula_or_direction": [
+      "exact regulator, exchange filing, fund prospectus and report, audited manager disclosure or licensed structured source with immutable bytes and stable manager, vehicle, product, share-class, mandate, client-cohort and observation identifiers",
+      "reference date, reporting period, subscription or redemption date, valuation date, filing, first-public and exchange-publication timestamps, trading-session availability, correction, restatement and supersession history",
+      "listed security, parent, licensed asset manager, fund manager, adviser, subadviser, trustee, custodian, distributor, legal vehicle, product, mandate and consolidated group mapping without current-state leakage",
+      "point-in-time licensed-manager and fiduciary-perimeter taxonomy with structural not-applicability for issuers that do not manage third-party or fiduciary assets",
+      "AUM taxonomy separating managed, advised, administered and custody-only assets; discretionary and nondiscretionary mandates; public and private products; gross and net, double-counted and look-through presentation",
+      "product, mandate, strategy, asset class, currency, domicile, investor or client class, retail or institutional, related-party, seeded and proprietary-capital taxonomy with regime-version crosswalks",
+      "opening and closing AUM, gross subscription, redemption, transfer, distribution, acquisition, disposal, merger, market-performance, FX, reclassification and other-change stock-flow reconciliation",
+      "authorization, fundraising, commitment, funded amount, first close, launch, activation, soft or hard closure, merger, termination, liquidation, final distribution, failure and withdrawal lifecycle semantics",
+      "investor or connected-client concentration numerator and denominator, lockup, notice, queue, gate, side-pocket, suspension, redemption settlement, release and resolution semantics",
+      "valuation policy, NAV or estimated-value basis, stale or suspended assets, leverage and derivatives exposure, performance versus external flow separation, currency and unit semantics",
+      "missing, confidential, suppressed, undisclosed, not-applicable, true zero, correction, manager transfer, product merger, share-class conversion and perimeter-change semantics without favorable absence coding",
+      "complete bounded 2019-2023 partition manifest, full eligible-manager denominator, manager and security history, delisting and corporate-action coverage, identity, chronology, taxonomy, unit, reconciliation and source-acceptance tests using no factor, comparator, security-price or return values"
+    ],
+    "formula_direction_parameter_filter_subset_combination_or_model_choice_allowed_before_gate": false
+  },
+  "gate_summary": {
+    "routes_reviewed": 7,
+    "genuinely_new_issuer_state_routes": 3,
+    "source_admission_deferrals_not_factor_failures": 3,
+    "relabeling_overlap_operator_or_combination_route_rejections": 4,
+    "selected_candidate_count": 0,
+    "complete_factor_definition_created": false,
+    "numeric_comparator_created": false
+  },
+  "scientific_interpretation": {
+    "asset_management_fiduciary_aum_state_declared_ineffective": false,
+    "absence_of_an_admitted_historical_source_is_evidence_of_no_predictive_power": false,
+    "safe_conclusion": "Three distinct fiduciary AUM stock-flow, product-or-mandate lifecycle and investor-liquidity dependency states remain deferred at source admission; adjacent-domain relabeling, Campaign169 pricing overlap, premature operator search and unadmitted combinations are closed before values."
+  },
+  "research_boundary": {
+    "finite_catalog_frozen_before_source_or_value_read": true,
+    "source_row_aum_subscription_redemption_product_mandate_client_factor_comparator_security_price_or_return_value_read": false,
+    "repository_policy_and_prior_records_only": true,
+    "provider_or_web_request_issued": false,
+    "provider_credential_presence_value_or_digest_read": false,
+    "stress_2024_2025_opened": false,
+    "candidate49_ledgers_changed": false,
+    "second_prospective_candidate_created": false
+  },
+  "next_action": "Create the Campaign193 append-only attempt ledger including all seven scientific routes and every observed infrastructure failure, then publish prevalue terminal authority."
+}

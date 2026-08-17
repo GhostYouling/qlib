@@ -1,0 +1,114 @@
+{
+  "version": 1,
+  "kind": "a_share_three_day_walkforward_campaign032_concept_scouting",
+  "status": "one_independent_corporate_reporting_timeliness_concept_selected_before_candidate_comparison_or_return_values",
+  "recorded_at": "2026-07-30T14:40:00Z",
+  "purpose": "Select one economically interpretable Campaign032 mechanism after Campaign031 terminated, without opening a Campaign032 stock-day identity partition, candidate value, comparison value, daily price, or forward return.",
+  "authoritative_boundary": {
+    "path": "docs/a_share_three_day_iteration_status_20260730_campaign031_verified.json",
+    "sha256": "026e2905aa2de7287435f2f7276ef2e5f8f257dccd57779506acf2fcea7c3564",
+    "campaign032_concept_scouting_allowed": true,
+    "binding_validation_required_at_each_freeze_boundary": true,
+    "candidate49_remains_only_prospective_candidate": true,
+    "candidate50_activation_allowed": false
+  },
+  "reporting_semantics_activation": {
+    "path": "docs/a_share_three_day_walkforward_campaign_032_reporting_semantics_activation_20260730.json",
+    "sha256": "07ca7a3589671cabc96c736058a2bf6068e8daca402a96c78037913bdfb88b89"
+  },
+  "historical_walkforward_policy": {
+    "path": "docs/a_share_three_day_historical_walkforward_research_policy_20260727.json",
+    "sha256": "38426d6161b9bfed323c58caba18feca668b8c9d53e294951a8ba90c01a798bb"
+  },
+  "selected_concept": {
+    "concept_name": "quarterly_announcement_timeliness",
+    "mechanism_family": "issuer_specific_quarterly_reporting_delay",
+    "economic_question": "Does an issuer that completes its latest point-in-time quarterly disclosure sooner after the report-period end carry lower information uncertainty into the next three sessions?",
+    "economic_hypothesis": "Shorter report-to-announcement delay can indicate stronger reporting processes and faster uncertainty resolution. Among otherwise eligible names, more timely latest disclosures may therefore rank better from the next open through the third close.",
+    "provisional_direction": "higher_negative_calendar_day_reporting_delay",
+    "allowed_stock_day_identity_fields": [
+      "datetime",
+      "symbol",
+      "provider"
+    ],
+    "allowed_event_fields": [
+      "instrument",
+      "report_date",
+      "announcement_date"
+    ],
+    "forbidden_event_value_fields": [
+      "roe",
+      "net_profit",
+      "revenue_yoy",
+      "profit_yoy"
+    ],
+    "forbidden_market_fields": [
+      "minute open",
+      "minute high",
+      "minute low",
+      "minute close",
+      "minute volume",
+      "minute amount",
+      "daily open",
+      "daily high",
+      "daily low",
+      "daily close",
+      "daily volume",
+      "daily amount",
+      "forward return",
+      "Level-2"
+    ],
+    "fixed_temporal_question": "At signal session t, use the latest quarterly disclosure whose announcement becomes effective on the first accepted local session strictly after announcement_date and whose effective session is no later than t. Measure only that report's calendar-day delay from report_date to announcement_date.",
+    "mandatory_overlap_challenges_before_any_value": [
+      "quarterly_announcement_freshness_60s",
+      "quality_and_listing_eligibility_state",
+      "fundamental_quality_growth_profitability_values",
+      "sparse_corporate_event_counts_or_surprises",
+      "all_intraday_and_daily_price_activity_families",
+      "candidate49_intraday_cumulative_vwap_crossing_rate_240m_v1"
+    ],
+    "known_design_risks": [
+      "calendar days versus accepted sessions, sign, clipping, transform, report-type selection, and maximum-delay thresholds are researcher degrees of freedom unless frozen before values",
+      "the same quarterly event source is used by Campaign020, so freshness must be challenged both conceptually and in the complete statistical library",
+      "reporting delay can proxy issuer size, board, audit complexity, or survivorship rather than a causal short-horizon effect",
+      "the current public disclosure snapshot may include later corrections and the current-listing universe has survivorship bias"
+    ]
+  },
+  "rejected_concepts": [
+    {
+      "concept": "quarterly_announcement_freshness_rescale_or_threshold",
+      "reason": "Campaign020's accepted-session freshness decay is terminal; changing its scale or threshold would be a prohibited rescue."
+    },
+    {
+      "concept": "quarterly_value_surprise_growth_or_quality",
+      "reason": "This would open report contents and a much larger formula/direction search rather than isolate issuer reporting timeliness."
+    },
+    {
+      "concept": "market_breadth_or_dispersion_variant",
+      "reason": "Campaign029-Campaign031 already exhausted several same-minute market dependence states; Campaign032 moves to a separate corporate-reporting domain."
+    },
+    {
+      "concept": "terminal_factor_combination_or_campaign031_rescue",
+      "reason": "Campaign032 must be one raw disclosure-timing statistic and may not combine, invert, filter, or repair a terminal factor."
+    }
+  ],
+  "decision": {
+    "advance_to_separate_no_value_mechanism_overlap_audit": true,
+    "exact_formula_fixed_here": false,
+    "economic_direction_fixed_here": true,
+    "new_daily_bar_required": false,
+    "same_day_1630_wait_required": false,
+    "candidate49_ledgers_changed": false
+  },
+  "research_boundary": {
+    "campaign032_stock_day_partitions_read": false,
+    "quarterly_event_rows_read": false,
+    "candidate_values_read": false,
+    "comparison_values_read": false,
+    "daily_price_fields_read": false,
+    "forward_returns_read": false,
+    "provider_request_issued_for_campaign032": false,
+    "candidate49_historical_return_signal_or_execution_backfill_performed": false,
+    "current_scoring_selection_sizing_or_orders_performed": false
+  }
+}

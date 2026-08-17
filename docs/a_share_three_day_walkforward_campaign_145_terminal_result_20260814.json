@@ -1,0 +1,202 @@
+{
+  "schema_version": 1,
+  "kind": "a_share_three_day_walkforward_campaign145_terminal_result",
+  "status": "terminal_coverage_failure_before_all_comparator_and_return_values",
+  "recorded_at": "2026-08-14T20:42:28+08:00",
+  "purpose": "Record Campaign145's immutable minute-factor snapshot and terminal PIT coverage rejection without opening any numeric comparator, daily price, forward return, development fold or 2024-2025 stress return.",
+  "authoritative_inputs": {
+    "prior_status": {
+      "path": "docs/a_share_three_day_iteration_status_20260814_campaign144_prevalue_terminal_v2.json",
+      "sha256": "c757c227f3f7b981fe3c3650ce07e57019d0fefa6bc205d221d78fedae7f183b"
+    },
+    "numeric_policy_v190": {
+      "path": "docs/a_share_three_day_walkforward_future_numeric_comparison_eligibility_policy_v190_20260814.json",
+      "sha256": "d6e8b359bd7b8af6678b91b0b8c10bbee40af0b06d2373c0897c5e3f159034ac"
+    },
+    "concept_scouting": {
+      "path": "docs/a_share_three_day_walkforward_campaign_145_concept_scouting_20260814.json",
+      "sha256": "bc1d0f6d4f4e57dad395a498dee83375f0a11e35b99e01cbc11cf0b68c46f1bf"
+    },
+    "mechanism_overlap_audit": {
+      "path": "docs/a_share_three_day_walkforward_campaign_145_mechanism_overlap_audit_20260814.json",
+      "sha256": "bc45603ced25c8717dd8d3289e16b7be177859295501096e70c2d4dc57e74680"
+    },
+    "no_return_preregistration": {
+      "path": "docs/a_share_three_day_walkforward_campaign_145_no_return_preregistration_20260814.json",
+      "sha256": "0c422531fc1d5ceffb4193d4bcd6b42227555d3cff0ec58f04c81a3aab19edd2"
+    },
+    "no_return_implementation_freeze": {
+      "path": "docs/a_share_three_day_walkforward_campaign_145_no_return_implementation_freeze_20260814.json",
+      "sha256": "cf4de349f6ef40b8cd4a6bfcc9fb2f6c484632dea84bb34da3287ca1dc01ae44"
+    },
+    "snapshot_recovery_verification": {
+      "path": "docs/a_share_three_day_walkforward_campaign_145_snapshot_recovery_verification_20260814.json",
+      "sha256": "6c953d3dd989e919fd82a65a21a1942fc2adc4afc63de459dfb8c6f9dd3dd263"
+    },
+    "coverage_activation": {
+      "path": "docs/a_share_three_day_walkforward_campaign_145_coverage_activation_binding_v2_20260814.json",
+      "sha256": "cfe6c74fe67177f3dfcbff960adf350dc2f0a1cdb5365fa788078afb74324393"
+    },
+    "research_attempt_ledger": {
+      "path": "data/experiments/short_horizon/historical_walkforward/campaign_145/research_attempt_ledger_v1.json",
+      "sha256": "523b4bedb94f2f619008c880e1eeb8dc28cff55ba03a81a6b1d92cbd03d52167",
+      "effective_attempt_count": 8,
+      "effective_entry_count": 9,
+      "chain_tip_sha256": "4a6a871630a533c6874fbaa704a5807a5d32f9553031a1afccd477da32591f9d"
+    }
+  },
+  "candidate_definition": {
+    "name": "intraday_return_amount_cumulative_path_signed_area_238p",
+    "direction": "higher",
+    "formula": "For each exact 120-bar morning and afternoon half, form 119 adjacent signed log-close-return increments normalized by the half's sum of absolute returns and 119 destination-amount increments normalized by their positive sum; take one-half of the open cumulative-path oriented area sum and average the two half areas.",
+    "source_fields": [
+      "datetime",
+      "symbol",
+      "provider",
+      "close",
+      "amount"
+    ],
+    "source_selected_bars": 240,
+    "within_half_pairs": 119,
+    "total_pairs": 238,
+    "value_range": [
+      -1.0,
+      1.0
+    ],
+    "missing_rule": "Each half requires finite positive closes, finite nonnegative amounts, positive absolute-return total and positive destination-amount total; otherwise the stock-day is missing. There is no lunch bridge and 09:30 is excluded from the formula.",
+    "complete_definition_remains_in_frozen_semantic_library": true,
+    "numeric_comparator_eligible_after_terminal_coverage_failure": false,
+    "formula_direction_support_lag_window_filter_or_model_changed_after_values": false
+  },
+  "snapshot_evidence": {
+    "manifest_path": "/Volumes/DIsk/qlib-a-share-tushare-1m/derived/a_share/rich/tushare/minute_walkforward_campaign145_feature_library/tushare_stk_mins_1m_2019_2025_ea0cbb8f_walkforward_campaign145_feature_library_v1/snapshot_manifest.json",
+    "manifest_sha256": "58d3686906d71da431397576c883e8c4b727225e98cc6791ae5923e5ff5f965f",
+    "dataset_sha256": "d7cde236c58871314718febfb72f4e72d2cb6bab6729ee0f979b335e92a2acc0",
+    "partitions": 33015,
+    "rows": 7724498,
+    "formula_eligible_rows": 3954911,
+    "observed_eligible_value_minimum": 1.3079881373313784e-08,
+    "observed_eligible_value_maximum": 0.3201948195987666,
+    "all_partition_byte_and_frame_hashes_reverified": true,
+    "original_manifest_or_partition_rewritten": false,
+    "stored_manifest_range_metadata": [
+      0.0,
+      1.0
+    ],
+    "effective_frozen_formula_range": [
+      -1.0,
+      1.0
+    ]
+  },
+  "coverage_evidence": {
+    "audit": {
+      "path": "data/experiments/short_horizon/historical_walkforward/campaign_145/coverage/campaign145_coverage_audit.json",
+      "sha256": "5a5377452d2961aa7baad9780c2e16545830f7c9b69e213822ac29593dcc6630",
+      "status": "coverage_failed_terminal_before_all_comparator_values"
+    },
+    "quality_listing_eligible_rows": 1331759,
+    "candidate_eligible_rows": 685849,
+    "calendar_sessions": 1632,
+    "median_daily_coverage": 0.5246269205322356,
+    "minimum_median_daily_coverage": 0.95,
+    "median_daily_coverage_passed": false,
+    "p05_daily_coverage": 0.20608206686930092,
+    "minimum_p05_daily_coverage": 0.9,
+    "p05_daily_coverage_passed": false,
+    "eligible_names_p05": 49.0,
+    "minimum_p05_eligible_names": 50,
+    "eligible_names_p05_passed": false,
+    "potential_non_overlapping_three_signal_session_cohorts": 509,
+    "minimum_non_overlapping_three_signal_session_cohorts": 200,
+    "cohort_capacity_passed": true,
+    "observed_cohort_years": [
+      2019,
+      2020,
+      2021,
+      2022,
+      2023,
+      2024,
+      2025
+    ],
+    "minimum_observed_cohort_years": 5,
+    "observed_years_passed": true,
+    "nonconstant_cross_sectional_sessions": 1631,
+    "minimum_nonconstant_cross_sectional_sessions": 200,
+    "cross_sectional_variation_passed": true,
+    "maximum_distinct_candidate_values_in_one_session": 1678,
+    "overall_coverage_gate_passed": false,
+    "terminal_reasons": [
+      "median_daily_coverage_below_0.95",
+      "p05_daily_coverage_below_0.90",
+      "p05_eligible_names_below_50"
+    ]
+  },
+  "scientific_interpretation": {
+    "predictive_direction_tested": false,
+    "numeric_uniqueness_tested": false,
+    "historical_return_tested": false,
+    "operational_translation_tested": false,
+    "conclusion": "The exact two-half return/amount cumulative path-area factor lacks sufficiently broad stock-day availability on the frozen PIT quality/listing base. This is a structural coverage rejection, not evidence that the higher direction predicts negative or positive three-session returns.",
+    "post_result_rescue_allowed": false
+  },
+  "unopened_stages": {
+    "numeric_comparator_values_read": false,
+    "numeric_comparator_count_read": 0,
+    "historical_daily_price_fields_read": [],
+    "historical_forward_return_fields_read": false,
+    "development_trial_count": 0,
+    "development_survivor_count": 0,
+    "stress_2024_2025_returns_opened": false,
+    "stress_trial_count": 0
+  },
+  "library_after_terminal_result": {
+    "complete_definition_count": 154,
+    "complete_definition_order_sha256": "dcea4c75bb9194ea2e522d803409e4005cf0185fe87c84f6f9810dbe51de2f75",
+    "eligible_numeric_comparator_count": 141,
+    "eligible_numeric_comparator_order_sha256": "ec1aebcb939ad516c58037a36a4aaadd4ad8b2abbd3c884705895c58da85a2ee",
+    "campaign145_definition_appended": true,
+    "campaign145_appended_to_numeric_comparators": false
+  },
+  "accounting": {
+    "campaign145_attempt_count": 8,
+    "campaign145_ledger_entry_count": 9,
+    "campaign145_infrastructure_failure_count": 7,
+    "campaign145_prevalue_scientific_attempt_count": 1,
+    "campaign145_complete_factor_attempt_count": 1,
+    "campaign145_scientifically_decided_factor_attempt_count": 1,
+    "campaign145_return_reading_development_trial_count": 0,
+    "campaign145_development_survivor_count": 0,
+    "campaign145_stress_trial_count": 0,
+    "cumulative_historical_research_attempt_count": 1248,
+    "cumulative_return_reading_development_trial_count": 313
+  },
+  "candidate49_state": {
+    "sole_active_prospective_candidate": true,
+    "signal_ledger": {
+      "path": "data/experiments/short_horizon/candidate49_future_signal_ledger.json",
+      "sha256": "5193f00d7f36da003f53cec387900da4c3d002299f5dfcfc1a95eaa199ed3a79",
+      "entry_count": 0
+    },
+    "execution_ledger": {
+      "path": "data/experiments/short_horizon/candidate49_future_execution_ledger.json",
+      "sha256": "d57a3e61eac969e42cafa418ccd8c0a5ee65dcf69da145bb2c096c2a02a2ea4f",
+      "entry_count": 0
+    },
+    "same_day_retry_after_2026_08_14_source_failure_performed": false,
+    "historical_backfill_performed": false,
+    "prospective_registration_changed": false
+  },
+  "prohibitions": [
+    "do not relax either half-session denominator or missing-value rule",
+    "do not invert, rethreshold, relag, rewindow, filter, subset, fit, model, combine or otherwise rescue Campaign145",
+    "do not read Campaign145 comparator values, historical daily prices, forward returns or 2024-2025 stress returns",
+    "do not backfill Candidate49 or start a second prospective candidate",
+    "do not create current scores, selections, sizing, positions, orders or investment advice"
+  ],
+  "next_iteration": {
+    "campaign_id": "a_share_three_day_walkforward_campaign_146",
+    "allowed_at_any_local_time": true,
+    "required_start": "genuinely new finite concept-only scouting and mechanism-overlap review followed by exact prevalue formula, direction, source, support and gate freeze",
+    "campaign145_reuse_or_rescue_allowed": false
+  }
+}

@@ -1,0 +1,168 @@
+{
+  "version": 1,
+  "kind": "a_share_candidate49_unified_report_semantic_replay_readiness",
+  "status": "offline_unified_report_semantic_replay_passed_real_future_report_state_pending",
+  "recorded_at": "2026-07-25T19:19:25Z",
+  "purpose": "Advance Candidate49 by requiring the unified research report to derive live signal counts, execution state, portfolio return, milestone status, and next action from the same read-only semantic replay used by collection and paper execution rather than from a generic hash chain.",
+  "advances": {
+    "path": "docs/a_share_candidate49_evaluation_milestone_semantic_replay_readiness_20260726.json",
+    "sha256": "3275dbb8c0e4ee892a6244bf9b0b3fa31aa15a882c4fbfddab9368395a059423"
+  },
+  "authoritative_research_state": {
+    "path": "docs/a_share_three_day_iteration_status_20260725_future_only.json",
+    "sha256": "d44e1cb3707cce194eed37e99cc90f865396b1de8c35e02a393a2a243d973466",
+    "future_only_policy_path": "docs/a_share_three_day_future_only_minute_research_policy_20260725.json",
+    "future_only_policy_sha256": "52ca8bfa7201509fe891d0af3d1c87aeebd64e47e6ec6641e897849411df408c",
+    "active_future_only_candidate": "candidate49_intraday_cumulative_vwap_crossing_rate_240m_v1",
+    "aggregation_allowed": false,
+    "candidate50_activation_allowed": false
+  },
+  "candidate_contract": {
+    "factor_changed_by_this_work": false,
+    "factor_direction": "higher_intraday_cumulative_vwap_crossing_rate_240m",
+    "ranking_rule_changed_by_this_work": false,
+    "signal_timing_changed_by_this_work": false,
+    "execution_protocol_changed_by_this_work": false,
+    "cost_or_slippage_assumption_changed_by_this_work": false,
+    "milestone_gate_changed_by_this_work": false,
+    "three_session_holding_definition_changed_by_this_work": false,
+    "historical_return_backfill_allowed": false
+  },
+  "implementation_fingerprints": {
+    "paper_execution_and_reporting_validator": {
+      "path": "scripts/a_share_tushare_candidate49_future_execution.py",
+      "sha256": "046a70bbd860ebaf46744e161c690d1275ab0327c8a42213bf955ec66e39a98b"
+    },
+    "unified_research_report": {
+      "path": "scripts/a_share_short_horizon_factor_research.py",
+      "sha256": "27d3e8746c1e2098ee73e7070fd458bcfbaaa34a1c64a899a0fa8ec45e18a2de"
+    },
+    "source_to_signal": {
+      "path": "scripts/a_share_tushare_candidate49_future_observation.py",
+      "sha256": "2e67ea31424c18cc2e9fd8cebb93b8d5da7197679b17d416405831e8952ee8a4"
+    },
+    "session_workflow": {
+      "path": "scripts/a_share_tushare_candidate49_future_session_workflow.py",
+      "sha256": "7cb68ef9b9a6a3fc5308f8b4b88bfc618e6f228fea812ae7ec6fdb06d0db9ddb"
+    },
+    "paper_execution_tests": {
+      "path": "tests/data_collector_tests/test_a_share_tushare_candidate49_future_execution.py",
+      "sha256": "dfe838ddba0e03f2902bf5eb0cc3c792adeb0423c52ac335cad1e1075f365f34"
+    },
+    "unified_research_report_tests": {
+      "path": "tests/data_collector_tests/test_a_share_short_horizon_factor_research.py",
+      "sha256": "130aafc90b1b287b74a7c2e381fb80a615eca7af700650d5a5097d379695bf91"
+    },
+    "source_to_signal_tests": {
+      "path": "tests/data_collector_tests/test_a_share_tushare_candidate49_future_observation.py",
+      "sha256": "e9da265594cc6ebfd8c4cd89d3e7e7946f21e167ea2900674eb65bcaee70ceaa"
+    },
+    "session_workflow_tests": {
+      "path": "tests/data_collector_tests/test_a_share_tushare_candidate49_future_session_workflow.py",
+      "sha256": "7fe8aabce1b91a1477babb25579f8ab2c84093e6953a77a553d483148daca4f0"
+    },
+    "runbook": {
+      "path": "docs/a_share_data_pipeline.md",
+      "sha256": "724ed7a22e6a508d3a40efdc73340caf388e343c9cc5fcb43cb9132465faa031"
+    }
+  },
+  "threat_model": {
+    "gap": "The former unified-report overlay validated only the generic signal and execution ledger hash chains plus evaluation progression. It did not rebuild signal rankings from raw/factor evidence or execution state from daily snapshots, so a coordinated rehash could change displayed live counts, cumulative return, milestone route, or next action.",
+    "red_test": "test_candidate49_report_rejects_hash_valid_but_semantically_false_signal",
+    "red_test_mutation": "Appended a signal entry with a valid ordinal, previous-entry hash, entry hash, and chain tip but without any raw snapshot, factor snapshot, ranking, or frozen signal semantics.",
+    "red_test_before_fix": "The former report overlay returned successfully and counted the semantically false entry as one real future signal.",
+    "hash_valid_but_semantically_false_signal_reported_after_fix": false
+  },
+  "read_only_reporting_replay": {
+    "entry_point": "a_share_tushare_candidate49_future_execution.validate_reporting_state",
+    "all_signal_entries_rebuilt_from_raw_and_factor_evidence": true,
+    "generic_execution_ledger_revalidated": true,
+    "execution_replayed_from_empty_cny_200000_state_when_entries_exist": true,
+    "current_accepted_local_calendar_used": true,
+    "external_data_root_inferred_only_from_exact_latest_snapshot_suffix": "prospective/a_share/rich/tushare/execution_daily/candidate49/<session>/snapshot_manifest.json",
+    "all_daily_snapshots_and_source_contexts_revalidated": true,
+    "all_fills_costs_positions_equity_rank_ic_and_evaluation_recomputed": true,
+    "complete_signal_entry_and_outcome_links_cross_checked": true,
+    "milestones_validated_with_write_missing_records_false": true,
+    "report_uses_recomputed_ending_state_instead_of_latest_stored_state": true,
+    "provider_request_issued": false,
+    "filesystem_write_performed": false,
+    "live_order_performed": false
+  },
+  "pending_signal_semantics": {
+    "accepted_signal_session_must_exist_in_current_calendar": true,
+    "missing_not_yet_accepted_t_plus_1_or_t_plus_3_returns_pending": true,
+    "future_session_fabrication_allowed": false,
+    "pending_signal_treated_as_missing_execution": false,
+    "offline_fixture_proved_two_valid_signals_with_one_processed_and_one_calendar_tail_pending": true
+  },
+  "enforcement_points": {
+    "before_live_signal_count_overlay": true,
+    "before_portfolio_return_overlay": true,
+    "before_completed_rank_ic_count_overlay": true,
+    "before_milestone_status_overlay": true,
+    "before_candidate50_activation_route": true,
+    "before_report_rendering": true
+  },
+  "offline_proofs": {
+    "focused_execution_tests": {
+      "passed": 23,
+      "failed": 0,
+      "elapsed_seconds": 4.03
+    },
+    "unified_research_report_tests": {
+      "passed": 300,
+      "failed": 0,
+      "warnings": 9,
+      "elapsed_seconds": 13.93
+    },
+    "focused_candidate49_observation_execution_workflow_tests": {
+      "passed": 71,
+      "failed": 0,
+      "elapsed_seconds": 11.89
+    },
+    "new_red_cases": 1,
+    "new_red_case_passes_after_fix": true,
+    "full_data_collector_tests": {
+      "passed": 1111,
+      "failed": 0,
+      "warnings": 9,
+      "elapsed_seconds": 34.31
+    },
+    "ruff": "passed",
+    "python_compile": "passed"
+  },
+  "append_only_state_after_offline_tests": {
+    "signal": {
+      "path": "data/experiments/short_horizon/candidate49_future_signal_ledger.json",
+      "sha256": "5193f00d7f36da003f53cec387900da4c3d002299f5dfcfc1a95eaa199ed3a79",
+      "entries": 0
+    },
+    "execution": {
+      "path": "data/experiments/short_horizon/candidate49_future_execution_ledger.json",
+      "sha256": "d57a3e61eac969e42cafa418ccd8c0a5ee65dcf69da145bb2c096c2a02a2ea4f",
+      "entries": 0
+    },
+    "evaluation_records": 0
+  },
+  "side_effect_audit": {
+    "real_provider_check_performed": false,
+    "real_provider_request_issued": false,
+    "real_minute_rows_read": false,
+    "real_daily_rows_read": false,
+    "real_report_with_future_return_rendered": false,
+    "signal_or_execution_entry_written": false,
+    "historical_candidate49_return_diagnostic_run": false,
+    "live_order_performed": false,
+    "active_data_root_mutated": false
+  },
+  "decision": {
+    "unified_report_semantic_chain_ready": true,
+    "current_real_signal_count": 0,
+    "current_real_execution_entry_count": 0,
+    "current_real_evaluation_milestone_count": 0,
+    "profitability_claim_allowed": false,
+    "selection_sizing_or_order_allowed": false,
+    "next_action": "On or after 2026-07-27 16:30 Asia/Shanghai, run the fail-closed Candidate49 source-to-signal workflow. Future unified reports must pass this read-only semantic replay before presenting any live count, return, milestone, or next action."
+  }
+}

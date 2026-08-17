@@ -1,0 +1,47 @@
+{
+  "schema_version": 1,
+  "kind": "a_share_three_day_walkforward_campaign116_snapshot_verification_recovery_protocol",
+  "status": "frozen_after_manifest_metadata_only_failure_diagnosis_before_partition_or_comparator_values",
+  "recorded_at": "2026-08-12T16:23:15+08:00",
+  "authoritative_inputs": {
+    "verification_failure": {
+      "path": "docs/a_share_three_day_walkforward_campaign_116_snapshot_verification_failure_20260812.json",
+      "sha256": "57f9f181163f36b83dc2a3e669ba42c9ec78295ebb4c26fdb30f8a73be7b2736"
+    },
+    "attempt_ledger_v3": {
+      "path": "data/experiments/short_horizon/historical_walkforward/campaign_116/research_attempt_ledger_v3.json",
+      "sha256": "779b14d36b656b1c158db3f160df6c807a08ea8dc0c1e7c3e1a0d65fdf378434"
+    },
+    "snapshot_builder": {
+      "path": "scripts/a_share_three_day_walkforward_campaign116_features.py",
+      "sha256": "84e6dcc40ea50c51a15f04c32c71e086376f2a8c2b3736492a44f219be062286"
+    },
+    "implementation_freeze_v2": {
+      "path": "docs/a_share_three_day_walkforward_campaign_116_no_return_implementation_freeze_v2_20260812.json",
+      "sha256": "16fd027efe6a3869d408bc4904ca0de983dd989a8950d729c5b5552b2982eb91"
+    },
+    "published_snapshot_manifest": {
+      "path": "/Volumes/DIsk/qlib-a-share-tushare-1m/derived/a_share/rich/tushare/minute_walkforward_campaign116_feature_library/tushare_stk_mins_1m_2019_2025_ea0cbb8f_walkforward_campaign116_feature_library_v1/snapshot_manifest.json",
+      "byte_sha256": "d1036a44495206b2329910d71915a7cd861fdc3baf8344a466d66f1cb1787163",
+      "dataset_sha256": "28e9b79514fe905749a3a182d0b3651331c4afb5330e03276c117d58f3b1082a",
+      "partitions": 33015,
+      "rows": 7724498
+    }
+  },
+  "allowed_recovery": {
+    "separate_verifier_only": true,
+    "original_builder_or_snapshot_modification_allowed": false,
+    "corrected_manifest_expectations": {
+      "minimum_group_support": 30,
+      "positive_total_activity_required": true,
+      "endpoint_amount_used": true
+    },
+    "all_other_manifest_expectations": "identical to the frozen original verifier",
+    "partition_verification": "Verify every file remains under the frozen partition root, byte SHA256 equals its record, projected frame SHA256 equals its record, row and eligible totals equal the manifest, and reconstructed dataset digest equals the frozen manifest digest.",
+    "candidate_value_use": "Only exact snapshot integrity and factor range/eligible semantics; no performance, direction, threshold or correlation judgment.",
+    "comparator_value_use": false,
+    "daily_price_or_forward_return_use": false
+  },
+  "failure_policy": "Any other mismatch fails closed. Do not rebuild, overwrite, drop a partition, change the formula or advance to coverage/comparator gates.",
+  "next_action": "Implement and synthetically test the separate fingerprint-bound verifier, freeze its code/test hashes, then run it exactly once against the published manifest."
+}

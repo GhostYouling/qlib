@@ -1,0 +1,122 @@
+{
+  "schema_version": 1,
+  "kind": "a_share_three_day_walkforward_campaign099_concept_scouting",
+  "status": "selected_before_campaign099_minute_source_candidate_comparator_daily_price_or_return_values",
+  "recorded_at": "2026-08-07T09:08:00Z",
+  "purpose": "Select exactly one genuinely independent historical-only three-session factor after terminal Campaign098, before reading any Campaign099 source row, candidate value, comparator value, daily price, or forward return.",
+  "authoritative_boundary": {
+    "iteration_state": {
+      "path": "docs/a_share_three_day_iteration_status_20260807_campaign098_verified_v2.json",
+      "sha256": "9c2b064fc32bb0db03c2bc8e91c20783101a41102c1cee705a1cd919028bd133"
+    },
+    "numeric_policy_v47": {
+      "path": "docs/a_share_three_day_walkforward_future_numeric_comparison_eligibility_policy_v47_20260807.json",
+      "sha256": "1f528805f5b6518acd96f2427544bf7448e109390d1ab37da39098bbb9661981"
+    },
+    "historical_walkforward_policy": {
+      "path": "docs/a_share_three_day_historical_walkforward_research_policy_20260727.json",
+      "sha256": "38426d6161b9bfed323c58caba18feca668b8c9d53e294951a8ba90c01a798bb"
+    },
+    "complete_definition_count": 130,
+    "complete_definition_order_sha256": "5146b99fc3c70723b0b62c541ba560b8456199d08546b81d2520fa69eb8a4b57",
+    "numeric_comparator_count": 127,
+    "numeric_comparator_order_sha256": "5777fbeab91e603c45d271dfe018388129bc7fab83cc9a77b7776529ba9d0990"
+  },
+  "prevalue_evidence": {
+    "materials_read": [
+      "all 130 names, directions, frozen formulas, terminal histories, support predicates, and mechanism audits through Campaign098",
+      "all known terminal coverage failures through Campaign098",
+      "Candidate49 registration and empty signal/execution ledger metadata",
+      "filesystem paths, manifest metadata, and policy fingerprints only"
+    ],
+    "campaign099_minute_source_rows_read": false,
+    "campaign099_candidate_values_computed_or_read": false,
+    "comparator_values_read": false,
+    "historical_daily_price_fields_read": [],
+    "historical_forward_returns_read": false,
+    "provider_request_issued": false
+  },
+  "finite_candidate_design_catalog": [
+    {
+      "name": "intraday_range_clustering_autocorrelation_238p",
+      "formula": "Population Pearson correlation of adjacent within-half log(high/low) magnitudes across 238 fixed pairs, higher as better.",
+      "decision": "rejected_before_candidate_source_rows_or_values",
+      "reason": "Campaign012 already froze the identical correlation with a leading negative sign as intraday_intrabar_range_reversal_238p. This proposal is only the terminal factor's direction reversal and is forbidden before values."
+    },
+    {
+      "name": "intraday_market_close_location_profile_synchronization_240m",
+      "decision": "selected_for_complete_prevalue_mechanism_and_support_audit",
+      "reason": "It measures cross-stock synchronization of continuous own-bar close acceptance states at fixed clock positions. It is not an own-stock marginal moment, entropy, serial operator, total variation, return synchronization, high-low range synchronization, old-factor combination, or Candidate49 observation."
+    },
+    {
+      "name": "intraday_market_close_location_profile_decoupling_240m",
+      "decision": "rejected_before_formula_freeze",
+      "reason": "Negating or mapping one minus correlation would create a direction search around the selected statistic."
+    },
+    {
+      "name": "intraday_market_close_location_profile_synchronization_rank_240m",
+      "decision": "rejected_before_formula_freeze",
+      "reason": "Rank correlation would add an estimator search and discard the frozen continuous geometry."
+    },
+    {
+      "name": "intraday_market_close_location_profile_synchronization_weighted_240m",
+      "decision": "rejected_before_formula_freeze",
+      "reason": "Range, amount, volume, return, capitalization, quality, or old-factor weights would combine terminal mechanisms."
+    },
+    {
+      "name": "intraday_industry_close_location_profile_synchronization_240m",
+      "decision": "rejected_before_formula_freeze",
+      "reason": "Industry membership and peer-threshold choices would introduce a new sparse point-in-time source and a benchmark search."
+    }
+  ],
+  "selected_candidate": {
+    "name": "intraday_market_close_location_profile_synchronization_240m",
+    "direction": "higher",
+    "economic_hypothesis": "A completed session whose intrabar closing acceptance pressure follows the broad leave-one-out market clock profile may reflect market-wide rather than idiosyncratic price discovery, and that common information state may persist from the next open through the third close.",
+    "minute_source_projection": [
+      "datetime",
+      "symbol",
+      "provider",
+      "high",
+      "low",
+      "close"
+    ],
+    "source_grid": "Require the immutable raw 241-row stock-day identity, select exactly 09:31-11:30 and 13:01-15:00, exclude standalone 09:30, and preserve all 240 fixed clock positions.",
+    "own_profile_formula": "For d_i=log(high_i/low_i), set s_i=0 when d_i=0; otherwise set s_i=(log(close_i/low_i)-log(high_i/close_i))/d_i, exactly in [-1,1].",
+    "market_profile_formula": "For every date and clock position, subtract the candidate stock's complete s_i profile from the deterministic same-date sum and divide by the remaining complete-profile count. Require at least 50 other profiles at every clock.",
+    "factor_formula": "Return the equal-clock-weight population Pearson correlation across all 240 positions between the stock s vector and its leave-one-out market-mean s vector.",
+    "zero_range_rule": "A valid zero-range bar necessarily has high=low=close and contributes exact neutral state zero. It remains in the 240-position support; no bar is dropped or bridged.",
+    "support_rule": "Require all 240 selected high, low, and close values finite and strictly positive with low<=close<=high; every own state finite in [-1,1]; at least 50 leave-one-out complete profiles at every clock; and strictly positive population variance in both the own and leave-one-out market vectors. There is no positive-range-count, adjacent-pair, activity, return, or event-history minimum.",
+    "valid_range": {
+      "lower": -1,
+      "lower_inclusive": true,
+      "upper": 1,
+      "upper_inclusive": true
+    },
+    "endpoint_canonicalization_tolerance": 1e-12,
+    "availability": "Known only after the signal-session 15:00 bar; no later session, daily return, quarterly value, Candidate49 observation, or provider request enters the factor.",
+    "parameter_window_norm_weight_transform_direction_threshold_filter_subset_regime_fit_model_or_combination_search": false
+  },
+  "finite_campaign_catalog": {
+    "selected_factor_count": 1,
+    "formula_count": 1,
+    "direction_count": 1,
+    "parameter_configuration_count": 1,
+    "filter_or_subset_count": 0,
+    "combination_or_model_count": 0,
+    "conditional_development_trial_count_if_both_no_return_gates_pass": 1,
+    "stress_2024_2025_trial_count_if_development_survives": 1
+  },
+  "research_boundary": {
+    "historical_offline_work_may_run_at_any_time": true,
+    "campaign099_candidate_values_may_be_read_before_mechanism_and_support_audit": false,
+    "comparator_values_may_be_read_before_coverage_pass": false,
+    "daily_price_or_forward_return_values_may_be_read_before_both_no_return_gates_pass": false,
+    "candidate49_historical_backfill_allowed": false,
+    "candidate49_ledgers_may_change": false,
+    "second_prospective_candidate_allowed": false,
+    "current_scoring_selection_sizing_or_orders_allowed": false,
+    "investment_advice": false
+  },
+  "next_action": "Complete and bind the all-130-definition mechanism challenge and known-failure support-predicate gate, then freeze the exact v47-bound no-return protocol before any Campaign099 source row or value."
+}

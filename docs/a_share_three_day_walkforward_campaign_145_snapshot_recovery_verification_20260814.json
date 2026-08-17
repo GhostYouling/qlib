@@ -1,0 +1,56 @@
+{
+  "schema_version": 1,
+  "kind": "a_share_three_day_walkforward_campaign145_snapshot_recovery_verification",
+  "status": "verified_immutable_snapshot_with_effective_formula_range",
+  "recorded_at": "2026-08-14T20:34:51+08:00",
+  "snapshot_manifest": {
+    "path": "/Volumes/DIsk/qlib-a-share-tushare-1m/derived/a_share/rich/tushare/minute_walkforward_campaign145_feature_library/tushare_stk_mins_1m_2019_2025_ea0cbb8f_walkforward_campaign145_feature_library_v1/snapshot_manifest.json",
+    "sha256": "58d3686906d71da431397576c883e8c4b727225e98cc6791ae5923e5ff5f965f",
+    "dataset_sha256": "d7cde236c58871314718febfb72f4e72d2cb6bab6729ee0f979b335e92a2acc0",
+    "partitions": 33015,
+    "rows": 7724498,
+    "eligible_rows": 3954911
+  },
+  "known_header_correction": {
+    "stored_manifest_range": {
+      "intraday_return_amount_cumulative_path_signed_area_238p": [
+        0.0,
+        1.0
+      ]
+    },
+    "effective_verified_range": {
+      "intraday_return_amount_cumulative_path_signed_area_238p": [
+        -1.0,
+        1.0
+      ]
+    },
+    "scope": "The stored range metadata is superseded only for effective formula semantics. Every original manifest and partition byte remains authoritative and unchanged.",
+    "snapshot_manifest_or_partition_rewritten": false
+  },
+  "observed_eligible_value_range": {
+    "minimum": 1.3079881373313784e-08,
+    "maximum": 0.3201948195987666
+  },
+  "verification": {
+    "all_partition_paths_contained": true,
+    "all_partition_byte_sha256_verified": true,
+    "all_partition_frame_sha256_verified": true,
+    "all_partition_rows_and_output_schema_verified": true,
+    "all_effective_value_semantics_verified": true,
+    "ordered_dataset_digest_recomputed": true,
+    "snapshot_manifest_sha256_rechecked_after_partitions": true,
+    "exit_code": 0
+  },
+  "recovery_protocol_sha256": "4105cca80458487f8961fc426ba069e45105d5d0c8f6d36157df8ffbe7b0da36",
+  "recovery_implementation_freeze_sha256": "0999f8fa646abfa0ebc045df557c9b0f0a33f1aff6cad8ef0619f82d79f0412f",
+  "research_boundary": {
+    "candidate_partition_values_read_only_for_integrity_and_semantic_verification": true,
+    "candidate_coverage_statistics_read": false,
+    "comparator_values_read": false,
+    "historical_daily_price_or_forward_return_values_read": false,
+    "stress_2024_2025_returns_opened": false,
+    "provider_request_issued": false,
+    "credential_loaded": false,
+    "candidate49_ledgers_changed": false
+  }
+}

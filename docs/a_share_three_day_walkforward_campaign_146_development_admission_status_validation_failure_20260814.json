@@ -1,0 +1,29 @@
+{
+  "schema_version": 1,
+  "kind": "a_share_three_day_walkforward_campaign146_infrastructure_failure",
+  "status": "recorded_development_admission_status_validation_failure_before_price_or_return_values",
+  "recorded_at": "2026-08-14T22:12:06+08:00",
+  "attempt_id": "campaign146_infrastructure_010",
+  "stage": "development_runner_and_preregistration_synthetic_validation_after_interface_recovery",
+  "failures": [
+    {
+      "check": "pytest",
+      "exit_code": 1,
+      "result": "4 passed, 3 failed",
+      "failure": "The interface document used the generic status completed_with_admissible_factors_pending_walkforward_preregistration, while the frozen inherited exact-one-trial engine requires completed_with_one_admissible_factor_pending_walkforward_preregistration."
+    }
+  ],
+  "successful_checks": {
+    "binding_validator_passed_before_engine_semantics_check": true,
+    "adapter_test_passed": true,
+    "activation_fail_closed_test_passed": true
+  },
+  "resolution": "Change only the interface status to the exact inherited one-factor admission status, update the preregistration binding hash for that interface, and rerun all seven tests plus Black and Ruff before freezing any return-reading implementation.",
+  "scientific_effect": {
+    "development_price_or_return_values_read": false,
+    "stress_2024_2025_opened": false,
+    "formula_direction_trial_catalog_or_gate_changed": false,
+    "provider_request_issued": false,
+    "candidate49_ledgers_changed": false
+  }
+}

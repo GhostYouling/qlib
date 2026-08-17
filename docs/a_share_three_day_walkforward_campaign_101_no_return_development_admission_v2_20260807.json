@@ -1,0 +1,33 @@
+{
+  "schema_version": 2,
+  "kind": "a_share_three_day_walkforward_campaign101_no_return_audit",
+  "status": "completed_with_one_admissible_factor_pending_walkforward_preregistration",
+  "recorded_at": "2026-08-07T13:59:31Z",
+  "supersedes_ineffective_v1_without_rewriting": {
+    "path": "docs/a_share_three_day_walkforward_campaign_101_no_return_development_admission_20260807.json",
+    "sha256": "e5ee9969528bfbf49a3d2168c5a5900eb43da2efcae50c1bb745fb0992dd8b07",
+    "failure_record": {
+      "path": "docs/a_share_three_day_walkforward_campaign_101_development_preregistration_v1_admission_status_failure_20260807.json",
+      "sha256": "a3c8c498288e827a3b1f43363029cb8ded8c5c23c6e69517cb405b0f2a0c3da2"
+    }
+  },
+  "authoritative_audit": {
+    "path": "data/experiments/short_horizon/historical_walkforward/campaign_101/no_return/20260807T135252Z_campaign101_no_return_audit.json",
+    "sha256": "a8e0fb244c61442b5d02a82b4a6300356bb134f9dfabe224deb91cbf0c7f8fea"
+  },
+  "result_binding": {
+    "path": "docs/a_share_three_day_walkforward_campaign_101_no_return_result_binding_20260807.json",
+    "sha256": "d4989d5b759af8b84d844ba09b6fc3bf36e44a16571989a6e1163562263b9f6d"
+  },
+  "admissible_factor_count": 1,
+  "admissible_factor_names": [
+    "full_numeric_library_directional_lower_quartile_consensus_129f"
+  ],
+  "failed_factor_names": [],
+  "historical_daily_price_fields_read": [],
+  "historical_forward_return_fields_read": false,
+  "candidate49_historical_return_read": false,
+  "candidate49_ledgers_changed": false,
+  "provider_request_issued": false,
+  "current_scoring_selection_sizing_or_orders_performed": false
+}

@@ -1,0 +1,20 @@
+{
+  "schema_version": 1,
+  "kind": "a_share_three_day_walkforward_campaign085_terminal_reporting_patch_failure",
+  "status": "atomic_patch_rejected_before_any_target_write",
+  "recorded_at": "2026-08-07T00:18:00+08:00",
+  "failure": {
+    "stage": "campaign_report_unified_report_current_report_and_pipeline_append",
+    "observed": "The multi-file apply_patch could not find the Campaign084 tail context in current_research_report.md and rejected the whole patch.",
+    "root_cause": "The four documents have different terminal text even when they describe the same Campaign084 result.",
+    "correction": "Apply one file patch at a time against each file's exact current tail; do not reuse a cross-file context anchor."
+  },
+  "targets_written": [],
+  "research_boundary": {
+    "additional_candidate_comparator_market_or_return_values_read": false,
+    "stress_2024_2025_opened": false,
+    "provider_request_issued": false,
+    "candidate49_ledgers_changed": false,
+    "current_scoring_selection_sizing_or_orders_performed": false
+  }
+}

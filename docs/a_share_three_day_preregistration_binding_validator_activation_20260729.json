@@ -1,0 +1,65 @@
+{
+  "version": 1,
+  "kind": "a_share_three_day_preregistration_binding_validator_activation",
+  "status": "active_fail_closed_before_future_candidate_values",
+  "recorded_at": "2026-07-29T11:07:17Z",
+  "purpose": "Activate a reusable complete existing-file fingerprint validator before any Campaign025 concept can advance to candidate values.",
+  "implementation": {
+    "path": "scripts/a_share_three_day_preregistration_binding_validator.py",
+    "sha256": "a6ab81a645fb25be2594937356e873c62737167dc88569d9b4b46bba6b7dcc4f",
+    "recognized_binding_forms": [
+      "path plus sha256",
+      "path_below_data_root plus sha256",
+      "manifest_path plus manifest_sha256"
+    ],
+    "missing_file_policy": "fail",
+    "hash_mismatch_policy": "fail",
+    "no_recognized_bindings_policy": "fail",
+    "success_exit_code": 0,
+    "failure_exit_code": 2
+  },
+  "campaign024_negative_control": {
+    "record": {
+      "path": "docs/a_share_three_day_walkforward_campaign_024_no_return_preregistration.json",
+      "sha256": "70d8e8f1fc6b0b74f3f19e41bc6a148e999eb57239ed5a156d75a3315edecb02"
+    },
+    "binding_count": 14,
+    "passed_binding_count": 13,
+    "failed_binding_count": 1,
+    "all_bindings_passed": false,
+    "exit_code": 2,
+    "failed_json_pointer": "/source_chain/campaign023_statistical_snapshot",
+    "expected_behavior_verified": true
+  },
+  "campaign024_positive_control": {
+    "record": {
+      "path": "docs/a_share_three_day_walkforward_campaign_024_preregistration.json",
+      "sha256": "07494e3490166325bd2cf48291eff557a4034c6ba0b32a0d27732d7d3fee13e1"
+    },
+    "binding_count": 15,
+    "passed_binding_count": 15,
+    "failed_binding_count": 0,
+    "all_bindings_passed": true,
+    "expected_behavior_verified": true
+  },
+  "future_campaign_rule": {
+    "required_records_before_candidate_values": [
+      "concept scouting",
+      "mechanism overlap audit",
+      "no-return preregistration"
+    ],
+    "required_record_before_development_returns": [
+      "development preregistration"
+    ],
+    "every_record_must_exit_zero": true,
+    "failure_action": "stop before the protected value boundary and create a corrected new campaign version without editing the failed frozen record",
+    "bypass_or_ignore_failure_allowed": false
+  },
+  "research_boundary": {
+    "candidate_or_comparison_values_read_by_activation": false,
+    "daily_price_or_forward_return_fields_read_by_activation": false,
+    "candidate49_historical_return_read": false,
+    "candidate49_signal_or_execution_ledger_changed": false,
+    "provider_request_issued": false
+  }
+}

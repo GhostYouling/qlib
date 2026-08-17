@@ -1,0 +1,25 @@
+{
+  "schema_version": 1,
+  "kind": "a_share_three_day_walkforward_campaign203_infrastructure_failure",
+  "status": "failed_line_number_only_eof_patch_context_unsupported_zero_write",
+  "recorded_at": "2026-08-15T19:13:08+08:00",
+  "timestamp_semantics": "monotonic logical append time after Campaign203 ledger v2 and before the successful explicit end-of-file report append",
+  "phase": "campaign203_current_report_line_bounded_eof_append",
+  "failure": {
+    "observed_condition": "A line-number-only unified hunk intended to append after line 1751 was not a supported apply_patch context form and was rejected before writing the report.",
+    "process_exit_code": null,
+    "atomic_patch_rejected": true,
+    "target_file_written": false,
+    "entire_failed_invocation_discarded": true,
+    "recovery": "Used the apply_patch explicit End of File anchor, which appended the report section successfully."
+  },
+  "research_boundary": {
+    "source_row_candidate_comparator_security_price_or_return_value_read": false,
+    "failed_or_truncated_output_used_as_scientific_or_validation_evidence": false,
+    "provider_or_web_request_issued": false,
+    "provider_credential_presence_value_or_digest_read": false,
+    "stress_2024_2025_opened": false,
+    "candidate49_plan_or_run_executed": false,
+    "candidate49_ledgers_changed": false
+  }
+}

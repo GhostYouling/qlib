@@ -1,0 +1,158 @@
+{
+  "schema_version": 1,
+  "kind": "a_share_three_day_walkforward_campaign255_commercial_laboratory_analytical_equipment_service_lifecycle_source_frontier",
+  "recorded_at": "2026-08-16T12:50:00+08:00",
+  "timestamp_semantics": "monotonic_logical_append_time_not_host_wall_clock_measurement",
+  "status": "checkpoint_prevalue_three_source_admission_deferrals_four_relabeling_overlap_or_hypothesis_rejections_zero_selected",
+  "authoritative_inputs": {
+    "campaign190_clinical_trial_frontier": {
+      "path": "docs/a_share_three_day_walkforward_campaign_190_clinical_trial_evidence_lifecycle_source_frontier_20260815.json",
+      "sha256": "0703511d04d413c9ca0578b46cf8809de48780add3a6f8503796b2aa973b85fd"
+    },
+    "campaign198_software_product_frontier": {
+      "path": "docs/a_share_three_day_walkforward_campaign_198_software_product_release_installed_base_migration_support_patch_deprecation_compatibility_lifecycle_source_frontier_20260815.json",
+      "sha256": "b2a9c769d394f9cf258b6539c0dfc6bff7ce0ec132920c06b7f07222756a849d"
+    },
+    "campaign212_manufacturing_execution_frontier": {
+      "path": "docs/a_share_three_day_walkforward_campaign_212_manufacturing_execution_shop_floor_work_order_bom_routing_material_lot_genealogy_quality_inspection_nonconformance_quarantine_rework_scrap_finished_goods_release_lifecycle_source_frontier_20260815.json",
+      "sha256": "4300ef4183098a6c2368c701c13f057f1175c43c2e40811092e72d63b7477ade"
+    },
+    "campaign219_pharmaceutical_batch_quality_frontier": {
+      "path": "docs/a_share_three_day_walkforward_campaign_219_pharmaceutical_batch_release_quality_lifecycle_source_frontier_20260816.json",
+      "sha256": "b31217aec95ddf303caa8db2dfa7f6e336b7cd2ac2059534126059f25a9f22ee"
+    },
+    "campaign221_testing_inspection_calibration_frontier": {
+      "path": "docs/a_share_three_day_walkforward_campaign_221_testing_inspection_certification_sample_test_calibration_certificate_lifecycle_source_frontier_20260816.json",
+      "sha256": "eb48e8539d1d77090d6cae937701cc28e3f3ffda4442b9d4f0b591d5e4af8c3a"
+    },
+    "campaign225_equipment_rental_frontier": {
+      "path": "docs/a_share_three_day_walkforward_campaign_225_equipment_rental_reservation_dispatch_handover_utilization_return_maintenance_damage_billing_lifecycle_source_frontier_20260816.json",
+      "sha256": "010c7880193f44323c8e80a3d24ac652d21f393401d53e86f2ce73c3c3058a71"
+    },
+    "campaign237_commercial_hvac_frontier": {
+      "path": "docs/a_share_three_day_walkforward_campaign_237_commercial_hvac_building_mechanical_service_contract_asset_registry_preventive_maintenance_work_order_fault_repair_parts_refrigerant_compliance_billing_lifecycle_source_frontier_20260816.json",
+      "sha256": "43fae08234210454e2ec1ed2255e3e12a815c77a97431bd54166895a67d0c967"
+    },
+    "campaign242_commercial_water_treatment_frontier": {
+      "path": "docs/a_share_three_day_walkforward_campaign_242_commercial_water_treatment_water_hygiene_service_lifecycle_source_frontier_20260816.json",
+      "sha256": "34b546883ddd5979ec060a872bf39deb6130e586b2220074dfaaad27fac72214"
+    },
+    "campaign243_commercial_electrical_frontier": {
+      "path": "docs/a_share_three_day_walkforward_campaign_243_commercial_electrical_power_system_service_lifecycle_source_frontier_20260816.json",
+      "sha256": "59ed94c81eb7b229cccc7e8dc2bb4f8cddb15deabca8a1d29f9d99d429a404a2"
+    },
+    "campaign254_commercial_audiovisual_frontier": {
+      "path": "docs/a_share_three_day_walkforward_campaign_254_commercial_audiovisual_conference_room_equipment_service_lifecycle_source_frontier_20260816.json",
+      "sha256": "59775e826579032adc5ec8cbb93f1c317040959e5617e8651d3ed94f7c320258"
+    },
+    "campaign254_state": {
+      "path": "docs/a_share_three_day_iteration_status_20260816_campaign254_prevalue_terminal.json",
+      "sha256": "f7dc821b2d91be84dde17a0b7458ee69bea813076e2d53ece9cf6c2283b49e3b"
+    },
+    "historical_walkforward_policy": {
+      "path": "docs/a_share_three_day_historical_walkforward_research_policy_20260727.json",
+      "sha256": "38426d6161b9bfed323c58caba18feca668b8c9d53e294951a8ba90c01a798bb"
+    },
+    "numeric_policy_v386": {
+      "path": "docs/a_share_three_day_walkforward_future_numeric_comparison_eligibility_policy_v386_20260816.json",
+      "sha256": "aa92c3c79464daa410c462f2dc9469fc659ebc23339a50bc9877b6ef999b20dc"
+    }
+  },
+  "repository_evidence": {
+    "source_frontier_files_reviewed": 114,
+    "complete_definition_count": 158,
+    "complete_definition_order_sha256": "4819c7fd7c0795d7598a52f3c615e3f117d5f4ecd9332974bc8e3dfa57c96667",
+    "eligible_numeric_comparator_count": 142,
+    "eligible_numeric_comparator_order_sha256": "5d1b35fb5a0d8ac9293008db9963c4a60a94dc940c237c3ed259e5ce44f14aaf",
+    "dedicated_commercial_laboratory_analytical_equipment_service_definition_present": false,
+    "commercial_laboratory_equipment_laboratory_equipment_service_laboratory_instrument_service_analytical_instrument_service_chromatograph_spectrometer_centrifuge_biosafety_cabinet_laboratory_freezer_autoclave_service_or_incubator_service_exact_phrase_line_match_count_in_prior_source_frontiers": 0,
+    "adjacent_generic_clinical_software_manufacturing_pharmaceutical_testing_calibration_rental_hvac_water_treatment_electrical_or_equipment_service_mentions_present": true,
+    "adjacent_mentions_only": [
+      "Campaign190 preserves clinical-trial evidence, protocols and study outcomes rather than installed laboratory instruments and their service contracts",
+      "Campaign198 preserves software releases, migrations, patches and support rather than instruments, qualification, calibration and physical repair",
+      "Campaign212 preserves manufacturing work orders, genealogy and production quality rather than a laboratory-equipment service operator lifecycle",
+      "Campaign219 preserves pharmaceutical batch release and quality states rather than laboratory instrument assets and service work",
+      "Campaign221 preserves third-party testing, inspection, calibration and certificates rather than the end-to-end installed instrument contract, maintenance, fault, repair, parts and billing lifecycle",
+      "Campaign225 preserves equipment reservation, handover, return and damage rather than recurring installed laboratory-equipment coverage",
+      "Campaign237, Campaign242 and Campaign243 preserve building HVAC, water treatment and electrical systems rather than analytical instruments, sample-preparation equipment and controlled laboratory equipment"
+    ]
+  },
+  "finite_prevalue_catalog": [
+    {
+      "route_id": "c255_01",
+      "name": "contract_privacy_safe_site_laboratory_class_chromatography_spectroscopy_mass_spectrometry_balance_centrifuge_incubator_freezer_biosafety_cabinet_autoclave_water_purification_asset_registry_installation_qualification_commissioning_calibration_maintenance_sla_renewal_termination_state",
+      "decision": "defer_source_not_admitted",
+      "reason": "No admitted lawful point-in-time source links commercial laboratory-equipment service operators to privacy-safe contracts, site and laboratory classes, analytical and sample-preparation instrument classes, asset coverage, installation, commissioning, installation or operational or performance qualification, calibration, preventive maintenance, SLA credits, renewal and termination with first-available and correction clocks."
+    },
+    {
+      "route_id": "c255_02",
+      "name": "instrument_fault_alarm_dispatch_diagnosis_decontamination_isolation_repair_restoration_verification_acceptance_rework_and_closure_state",
+      "decision": "defer_source_not_admitted",
+      "reason": "The repository lacks a lawful non-live history conserving privacy-safe instrument faults and alarms, dispatch, safe decontamination and isolation, diagnosis, repair, restoration, metrological or functional verification, acceptance, rework and closure without exposing samples, test results, methods, exact laboratories, live availability, configurations, endpoints or proprietary procedures."
+    },
+    {
+      "route_id": "c255_03",
+      "name": "column_detector_source_lamp_pump_valve_seal_tubing_rotor_bucket_filter_probe_sensor_heater_refrigeration_vacuum_water_module_part_consumable_software_entitlement_warranty_compliance_billing_state",
+      "decision": "defer_source_not_admitted",
+      "reason": "No admitted source preserves privacy-safe component, module, part and non-sample consumable classes, issue, replacement and recovery, firmware and software entitlement, warranty, metrology, biosafety, electrical, pressure, temperature, environmental and data-integrity compliance, service credit, invoice, dispute and settlement histories with complete applicable denominators and revision history."
+    },
+    {
+      "route_id": "c255_04",
+      "name": "clinical_trial_pharmaceutical_batch_manufacturing_testing_inspection_calibration_software_rental_hvac_water_treatment_electrical_or_generic_equipment_service_relabeling",
+      "decision": "reject_terminal_overlap",
+      "reason": "Campaign190, Campaign198, Campaign212, Campaign219, Campaign221, Campaign225, Campaign237, Campaign242 and Campaign243 govern clinical evidence, software, manufacturing execution, pharmaceutical batches, third-party testing and calibration, rental, HVAC, water treatment and electrical systems. None can be relabelled as the complete recurring service lifecycle for installed commercial laboratory and analytical equipment."
+    },
+    {
+      "route_id": "c255_05",
+      "name": "laboratory_information_management_sample_chain_assay_result_reagent_inventory_research_workflow_facility_service_or_instrument_sales_relabeling",
+      "decision": "reject_terminal_overlap",
+      "reason": "Laboratory information management, sample chain of custody, assay or test results, reagent inventory, research workflow, facility utilities and one-time instrument sales govern data, samples, methods, consumables, research activity, buildings or transactions rather than the installed equipment contract, asset, qualification, calibration, maintenance, fault, repair, acceptance, parts, entitlement, compliance and billing lifecycle."
+    },
+    {
+      "route_id": "c255_06",
+      "name": "current_annual_report_installed_instrument_lab_revenue_utilization_uptime_calibration_fault_repair_part_warranty_license_map_or_status_snapshot_relabeling",
+      "decision": "reject_terminal_overlap",
+      "reason": "Current annual-report installed-instrument, laboratory, revenue, utilization, uptime, calibration, fault, repair, part, warranty, license, map or status snapshots cannot reconstruct complete historical first-available contract, asset, installation, qualification, calibration, maintenance, fault, repair, acceptance, part, entitlement, compliance and billing states."
+    },
+    {
+      "route_id": "c255_07",
+      "name": "issuer_region_customer_sector_site_laboratory_instrument_technique_sample_fault_part_direction_threshold_subset_weight_interaction_combination_or_model_variant",
+      "decision": "reject_hypothesis_multiplication_before_source_admission",
+      "reason": "Selecting an issuer, region, customer sector, site, laboratory, instrument, analytical technique, sample class, fault, part, direction, threshold, subset, weight, interaction, combination or model before complete lawful base histories are admitted would multiply hypotheses and exploit issuer scarcity, customer mix, disclosure intensity, survivorship and coverage differences."
+    }
+  ],
+  "mandatory_source_admission_gate": {
+    "required": true,
+    "admitted_source_present": false,
+    "requirements": [
+      "lawful public or licensed point-in-time source with first-available, correction and supersession timestamps for commercial laboratory-equipment service contracts, privacy-safe site and laboratory-class tokens, instrument and component classes, installation, commissioning, qualification, calibration, preventive maintenance, faults, dispatch, safe isolation, diagnosis, repair, restoration, verification, acceptance, parts, warranty, software entitlement, compliance, service credits, billing, renewal and termination mapped to accepted sessions",
+      "stable listed-parent, subsidiary, customer-sector cohort, privacy-safe site and laboratory-class token, contract, coverage class, instrument and component class, qualification and calibration schedule, inspection and maintenance schedule, work order, fault class, repair class, part class, warranty, invoice and dispute identities without patient, participant, employee, operator, sample, assay, exact laboratory, method, result, instrument serial, configuration, endpoint or proprietary procedure",
+      "complete 2019-2023 applicable denominators across a cross-section capable of meeting frozen coverage gates, including contracted, covered, installed, commissioned, qualified, calibrated, inspected, maintained, faulted, dispatched, isolated, repaired, restored, verified, accepted, reworked, supplied, warranted, compliant, credited, billed, disputed, renewed and terminated equipment cohorts",
+      "conservation of contract starts and ends, coverage and asset-registry changes, installation and qualification, calibration and maintenance due or completed, faults and alarms, dispatch, safe isolation, repairs, restoration, verification, acceptance, rework, parts issued or replaced or recovered, warranties, software entitlement, metrology, biosafety, electrical, pressure, temperature, environmental and data-integrity compliance, service credits, invoices, payments, disputes and settlements with explicit missing, delayed, corrected, cancelled, duplicate and genuine-zero semantics",
+      "no patient, research participant, employee or operator identity, sample identity or chain, specimen, assay, sequence, formula, test result, method or recipe, exact facility, laboratory, room, address or map, instrument serial, credential, live occupancy, live instrument availability, configuration, camera feed, network endpoint, vulnerability, proprietary calibration, validation, diagnostic or repair procedure, private incident narrative, legal communication or confidential contract price"
+    ]
+  },
+  "gate_summary": {
+    "finite_route_count": 7,
+    "source_admission_deferral_count": 3,
+    "overlap_or_hypothesis_rejection_count": 4,
+    "selected_factor_count": 0,
+    "formula_or_direction_frozen": false,
+    "candidate_or_comparator_value_read": false,
+    "daily_price_or_forward_return_read": false
+  },
+  "research_boundary": {
+    "finite_catalog_frozen_before_source_or_value_read": true,
+    "source_or_commercial_laboratory_contract_asset_registry_installation_qualification_calibration_maintenance_fault_repair_parts_entitlement_compliance_billing_factor_value_read": false,
+    "patient_participant_employee_operator_sample_assay_sequence_formula_test_result_method_recipe_exact_facility_laboratory_room_address_map_instrument_serial_credential_live_occupancy_availability_configuration_camera_feed_network_endpoint_vulnerability_proprietary_procedure_private_incident_legal_communication_or_confidential_contract_price_read": false,
+    "provider_or_web_request_issued": false,
+    "provider_credential_presence_value_or_digest_read": false,
+    "candidate49_plan_or_run_executed": false,
+    "candidate49_ledgers_changed": false,
+    "second_prospective_candidate_created": false,
+    "stress_2024_2025_opened": false,
+    "current_scoring_selection_sizing_positions_or_orders_performed": false,
+    "failed_or_truncated_output_used_as_scientific_or_validation_evidence": false,
+    "investment_advice": false
+  }
+}

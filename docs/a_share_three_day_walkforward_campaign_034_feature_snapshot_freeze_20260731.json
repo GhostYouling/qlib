@@ -1,0 +1,100 @@
+{
+  "version": 1,
+  "kind": "a_share_three_day_walkforward_campaign034_feature_snapshot_freeze",
+  "status": "corrected_v2_snapshot_bound_before_comparison_values_daily_prices_or_returns",
+  "recorded_at": "2026-07-30T18:35:27Z",
+  "purpose": "Bind the corrected Campaign034 round-price-grid snapshot, all partition hashes, post-snapshot runner, and invalid-v1 evidence before any comparison factor value, daily price, or historical forward return is opened.",
+  "source_chain": {
+    "no_return_preregistration": {
+      "path": "docs/a_share_three_day_walkforward_campaign_034_no_return_preregistration.json",
+      "sha256": "de5d6a4795cbe31bbb5b4cb74c4f663503c72c6301d144672916c22eaaab737c"
+    },
+    "invalid_v1_snapshot_repair": {
+      "path": "docs/a_share_three_day_walkforward_campaign_034_invalid_v1_snapshot_repair_20260731.json",
+      "sha256": "56a3a0c7d85394bfb97681b3fc68514810aa2bbf7220eb32851a1598dc484efe"
+    },
+    "v2_feature_implementation_freeze": {
+      "path": "docs/a_share_three_day_walkforward_campaign_034_v2_feature_implementation_freeze_20260731.json",
+      "sha256": "047727f57f2ecff7eae39de61b2396102c5b17ce950c46be0eeac559e79a1737"
+    },
+    "feature_runner_pre_snapshot_binding_sha256": "9c0cc98c6d9bc9599ca51b428b07b33d0c1e5c80312b715492046994fe7dbda4",
+    "feature_runner_after_snapshot_binding": {
+      "path": "scripts/a_share_three_day_walkforward_campaign034_features.py",
+      "sha256": "24088f76e348f52255a97401f63331eba8e4fc34a225800c100a4c8dfbb9e603"
+    },
+    "feature_tests_pre_snapshot_assertion_sha256": "ad83af2b29c94e534deee0e22866ebdadeab0aa6c4c5af8f945f0e1b695eea67",
+    "feature_tests_after_snapshot_assertion_transition": {
+      "path": "tests/data_collector_tests/test_a_share_three_day_walkforward_campaign034_features.py",
+      "sha256": "504732b49e872464cc686c66638950e8b5f754cd33bb4e03d7390d7cf816682a",
+      "focused_with_campaign033_regression_tests_passed": 19,
+      "failed": 0
+    },
+    "candidate49_signal_ledger": {
+      "path": "data/experiments/short_horizon/candidate49_future_signal_ledger.json",
+      "sha256": "5193f00d7f36da003f53cec387900da4c3d002299f5dfcfc1a95eaa199ed3a79",
+      "entry_count": 0
+    },
+    "candidate49_execution_ledger": {
+      "path": "data/experiments/short_horizon/candidate49_future_execution_ledger.json",
+      "sha256": "d57a3e61eac969e42cafa418ccd8c0a5ee65dcf69da145bb2c096c2a02a2ea4f",
+      "entry_count": 0
+    }
+  },
+  "feature_snapshot": {
+    "path": "/Volumes/DIsk/qlib-a-share-tushare-1m/derived/a_share/rich/tushare/minute_walkforward_campaign034_feature_library/tushare_stk_mins_1m_2019_2025_ea0cbb8f_walkforward_campaign034_feature_library_v2/snapshot_manifest.json",
+    "sha256": "f9423db29dbe66856d79545dabb084f8b91f1409dc1835e3c0271bae8f25e3f2",
+    "dataset_sha256": "a828c1732cfd5149e3d54a9acfe8421251aadddce2b96f2be6bd9595d2de73d6",
+    "kind": "a_share_three_day_walkforward_campaign034_feature_snapshot",
+    "partitions": 33015,
+    "rows": 7724498,
+    "factor": "intraday_round_tenth_close_avoidance_240m",
+    "direction": "higher",
+    "eligible_rows": 7724498,
+    "non_tick_grid_close_rows": 0,
+    "round_tenth_close_observations": 224814071,
+    "invalid_required_close_rows": 0,
+    "nonpositive_close_rows": 0,
+    "range_or_nonfinite_rows": 0,
+    "spectral_quality_key_count": 0,
+    "resumed_partitions": 0,
+    "all_partition_byte_and_frame_hashes_valid": true,
+    "verified_partitions": 33015,
+    "verified_rows": 7724498
+  },
+  "invalid_v1_preservation": {
+    "path": "/Volumes/DIsk/qlib-a-share-tushare-1m/derived/a_share/rich/tushare/minute_walkforward_campaign034_feature_library/tushare_stk_mins_1m_2019_2025_ea0cbb8f_walkforward_campaign034_feature_library_v1/snapshot_manifest.json",
+    "sha256": "2dbf954af8e6b229fbbc8258457353ac74aac54993e004ef59e90e6444de6f71",
+    "dataset_sha256": "59d02be1a65c2e171bec28c8ca5173618df0b3e2afa76d71712be46003a964e4",
+    "usable": false,
+    "rewritten_or_deleted": false
+  },
+  "source_and_output_boundary": {
+    "source_fields_read": [
+      "datetime",
+      "symbol",
+      "provider",
+      "close"
+    ],
+    "source_open_high_low_read": false,
+    "source_volume_read": false,
+    "source_amount_read": false,
+    "comparison_factor_values_read": false,
+    "daily_price_fields_read": [],
+    "forward_return_fields_read": false,
+    "candidate49_historical_return_read": false,
+    "training_or_model_fitting_performed": false,
+    "current_scoring_selection_sizing_or_orders_performed": false
+  },
+  "lifecycle_assertion_transition": {
+    "reason": "The pre-build test correctly required the new v2 snapshot to be absent and unbound. After immutable publication and runner binding, status must require snapshot_exists=true and snapshot_sha256_bound=true while audit_count remains zero and returns remain unread.",
+    "formula_direction_source_projection_tick_rule_snapshot_or_gate_changed": false,
+    "pre_build_or_invalid_v1_record_rewritten": false
+  },
+  "decision": {
+    "snapshot_manifest_validation_passed": true,
+    "snapshot_partition_verification_passed": true,
+    "snapshot_binding_validation_required_before_no_return_audit": true,
+    "no_return_audit_allowed_after_binding_validation": true,
+    "historical_return_read_allowed_before_no_return_admission": false
+  }
+}

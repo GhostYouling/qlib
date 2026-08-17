@@ -1,0 +1,65 @@
+{
+  "version": 1,
+  "kind": "a_share_three_day_walkforward_campaign033_development_runner_injection_repair",
+  "status": "pre_return_namespace_only_repair_frozen",
+  "recorded_at": "2026-07-30T17:21:30Z",
+  "purpose": "Preserve the failed pre-execution namespace check and the sole repair that injects canonical complexity reporting into the actual inherited Campaign004 survivor-decision call path without mutating a shared module.",
+  "bindings": {
+    "no_return_audit_freeze": {
+      "path": "docs/a_share_three_day_walkforward_campaign_033_no_return_audit_freeze_20260730.json",
+      "sha256": "c49f5630a3692aacfae96285f277504c07f3fb15a267a9a5c57f5fcfd2b15351"
+    },
+    "inherited_campaign031_runner": {
+      "path": "scripts/a_share_three_day_walkforward_campaign031.py",
+      "sha256": "888bb4e29cef275fa8b55dd354610596d5cc9f1312d7757d8a378741055f7758"
+    },
+    "reporting_helper": {
+      "path": "scripts/a_share_three_day_walkforward_reporting.py",
+      "sha256": "6291a8bfd11bd90dbef42edd6252368f67498bdc2be39661ebf4b7d08f0ac969"
+    }
+  },
+  "failed_pre_execution_check": {
+    "runner_path": "scripts/a_share_three_day_walkforward_campaign033.py",
+    "runner_sha256": "ede90207109bc7bb1d776eff2621d7d3f912b1cc176f02660e9591502a4989b8",
+    "python_compile_exit_code": 0,
+    "module_import_exit_code": 1,
+    "failure_type": "KeyError",
+    "failure_key": "survivor_decision",
+    "cause": "The first wrapper assumed survivor_decision was a direct generated-engine global. The inherited Campaign004 builder actually calls campaign002.survivor_decision.",
+    "campaign_preregistration_loaded": false,
+    "factor_snapshot_opened": false,
+    "historical_daily_prices_or_returns_opened": false,
+    "ledger_or_stress_artifact_written": false
+  },
+  "repair": {
+    "runner_path": "scripts/a_share_three_day_walkforward_campaign033.py",
+    "runner_sha256": "5ca4efcf24e33bace410c97c2e7a62e32de0d392d173ed32d6d75f3a2dfdbd38",
+    "change": "Capture the inherited campaign002.survivor_decision, wrap only its returned mapping with reporting.with_canonical_complexity, and replace the generated engine namespace's campaign002 reference with a local SimpleNamespace proxy exposing only that wrapper.",
+    "shared_campaign002_module_mutated": false,
+    "inherited_survivor_gate_logic_changed": false,
+    "complexity_field_source": "number of distinct preregistered feature_set entries",
+    "factor_formula_direction_or_values_changed": false,
+    "folds_costs_execution_or_survivor_thresholds_changed": false,
+    "development_or_stress_values_read": false
+  },
+  "post_repair_verification": {
+    "python_compile_exit_code": 0,
+    "module_import_exit_code": 0,
+    "default_campaign_path": "/Users/niyufei/Coding/qlib/docs/a_share_three_day_walkforward_campaign_033_preregistration.json",
+    "default_output_root": "/Users/niyufei/Coding/qlib/data/experiments/short_horizon/historical_walkforward/campaign_033/walkforward",
+    "admitted_factor": "intraday_return_spectral_entropy_59f",
+    "local_survivor_wrapper_active": true
+  },
+  "research_boundary": {
+    "historical_daily_price_fields_read": [],
+    "historical_forward_return_fields_read": false,
+    "candidate49_historical_return_signal_or_execution_backfill_performed": false,
+    "current_scoring_selection_sizing_or_orders_performed": false,
+    "provider_request_issued": false
+  },
+  "authorization": {
+    "development_preregistration_may_bind_repaired_runner": true,
+    "development_returns_may_be_read_before_preregistration_and_implementation_freeze": false,
+    "stress_2024_2025_may_be_opened": false
+  }
+}

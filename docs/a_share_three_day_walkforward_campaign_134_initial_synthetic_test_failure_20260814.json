@@ -1,0 +1,19 @@
+{
+  "schema_version": 1,
+  "kind": "a_share_three_day_walkforward_campaign134_infrastructure_failure",
+  "attempt_id": "campaign134_infrastructure_002",
+  "status": "recorded_prevalue_initial_synthetic_test_failure",
+  "recorded_at": "2026-08-14T10:31:00+08:00",
+  "stage": "campaign134_runner_synthetic_verification",
+  "error_type": "AttributeErrorAndFloatAssertion",
+  "error_summary": "The graph test reached the frozen algorithm but the shared design component-name interface had not been initialized, and a separate exact 0.5 assertion observed a harmless floating-point summation tail.",
+  "repair_boundary": "Initialize the already audited shared design runtime before requesting component names and use numerical closeness for the synthetic scalar assertion. Preserve the graph, threshold, weights, folds and gates unchanged, include this failure in the future append-only ledger, and rerun synthetic tests before any real value or return is read.",
+  "scientific_result_changed": false,
+  "campaign134_component_values_read": false,
+  "campaign134_graph_fit_or_score_on_real_values": false,
+  "historical_daily_price_or_forward_return_values_read": false,
+  "stress_2024_2025_opened": false,
+  "provider_request_issued": false,
+  "candidate49_ledgers_changed": false,
+  "current_scoring_selection_sizing_positions_or_orders_performed": false
+}

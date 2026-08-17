@@ -1,0 +1,42 @@
+{
+  "version": 1,
+  "kind": "a_share_three_day_walkforward_campaign069_postbuild_test_failure",
+  "status": "immutable_prebuild_assertion_superseded_by_successful_snapshot_publication",
+  "recorded_at": "2026-08-06T03:51:32+08:00",
+  "test": {
+    "path": "tests/data_collector_tests/test_a_share_three_day_walkforward_campaign069_features.py",
+    "sha256": "269a616e8edb3b9a6033af449b381a0fa92abbe9d99b12e8820143e95b41e28a",
+    "node": "test_campaign069_status_is_read_only_before_build",
+    "command": "PYTHONPATH=/Volumes/DIsk/Disk-Coding/qlib /Volumes/DIsk/Coding/anaconda3/bin/python -m pytest -q tests/data_collector_tests/test_a_share_three_day_walkforward_campaign069_features.py::test_campaign069_status_is_read_only_before_build",
+    "passed": 0,
+    "failed": 1,
+    "observed_status": "snapshot_present",
+    "historical_expected_status": "snapshot_absent_pre_build"
+  },
+  "cause": "The test was correctly frozen before the feature snapshot existed. It became a historical lifecycle assertion after the immutable snapshot was successfully published; the implementation status is now correctly snapshot_present.",
+  "immutability": {
+    "historical_test_edited": false,
+    "feature_implementation_freeze": {
+      "path": "docs/a_share_three_day_walkforward_campaign_069_feature_implementation_freeze_20260806.json",
+      "sha256": "c46767b49273b1cd7a1fa028f4f76dec88511e70d6f37280dbeb6c404d0d5183"
+    },
+    "feature_snapshot_binding": {
+      "path": "docs/a_share_three_day_walkforward_campaign_069_feature_snapshot_binding_20260806.json",
+      "sha256": "b98b14a2ad5b0c95a5a69b48b46fc751df0e877f8daf4cc495ff447193e6eec0"
+    }
+  },
+  "accounting": {
+    "attempt_type": "infrastructure_failure",
+    "research_attempt_count_increment": 1,
+    "development_return_trial_count_increment": 0
+  },
+  "research_boundary": {
+    "historical_daily_price_fields_read": [],
+    "historical_forward_returns_read": false,
+    "provider_request_issued": false,
+    "candidate49_historical_return_read": false,
+    "candidate49_ledgers_changed": false,
+    "current_scoring_selection_sizing_or_orders_performed": false
+  },
+  "repair": "Keep the frozen historical test unchanged, add a postbuild lifecycle test, and deselect only this exact historical node in current aggregate validation."
+}

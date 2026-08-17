@@ -1,0 +1,24 @@
+{
+  "schema_version": 1,
+  "kind": "a_share_three_day_walkforward_campaign211_infrastructure_failure",
+  "recorded_at": "2026-08-15T22:22:00+08:00",
+  "timestamp_semantics": "monotonic_logical_append_time_not_host_wall_clock_measurement",
+  "status": "failed_combined_skill_read_output_truncated_discarded",
+  "phase": "skill_instruction_read",
+  "failure": {
+    "scope": "manage-qlib-a-share-data SKILL.md lines 301-450 requested as multiple bounded notifications in one orchestration result",
+    "observed": "lines through 390 were visible, but the outer wait result reported output truncation before the complete requested range could be established",
+    "recovery": "discard the uncertain remainder as authority and reread lines 391-450 in independently bounded sections before any Campaign211 research action"
+  },
+  "research_boundary": {
+    "failed_output_used_as_scientific_or_validation_evidence": false,
+    "candidate_or_comparator_value_read": false,
+    "daily_price_or_forward_return_read": false,
+    "provider_or_web_request_issued": false,
+    "provider_credential_presence_value_or_digest_read": false,
+    "candidate49_plan_or_run_executed": false,
+    "candidate49_ledgers_changed": false,
+    "stress_2024_2025_opened": false,
+    "current_use_or_investment_advice": false
+  }
+}

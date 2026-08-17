@@ -1,0 +1,20 @@
+{
+  "schema_version": 1,
+  "kind": "a_share_three_day_walkforward_campaign092_infrastructure_failure",
+  "status": "recorded_before_coverage_comparison_price_or_return_values",
+  "recorded_at": "2026-08-07T00:31:22Z",
+  "command_stage": "v2_no_return_status_probe",
+  "runner": {
+    "path": "scripts/a_share_three_day_walkforward_campaign092_no_return_audit_v2.py",
+    "sha256": "f05c0726dcdec58bcb4b891a72e8c3767be99141292dedd911ca8a8facf225eb"
+  },
+  "failure": "ModuleNotFoundError: direct script execution did not inherit the repository root in PYTHONPATH",
+  "exit_code": 1,
+  "audit_artifact_created": false,
+  "coverage_or_capacity_metrics_computed": false,
+  "comparison_values_read": false,
+  "historical_daily_price_or_forward_return_values_read": false,
+  "provider_request_issued": false,
+  "candidate49_ledgers_changed": false,
+  "authorized_retry": "Use the identical frozen v2 runner with absolute repository root in PYTHONPATH; change no code, formula, snapshot, gate, order, or parameter."
+}

@@ -1,0 +1,98 @@
+{
+  "schema_version": 1,
+  "kind": "a_share_three_day_walkforward_campaign108_mechanism_support_audit",
+  "status": "passed_before_campaign108_source_candidate_or_comparator_values",
+  "recorded_at": "2026-08-07T20:43:00Z",
+  "authoritative_inputs": {
+    "concept_scouting": {
+      "path": "docs/a_share_three_day_walkforward_campaign_108_concept_scouting_20260808.json",
+      "sha256": "11c5c80ae42abae672b69f9c802a610092cb2108ff74c02cf8d28d13a24a130e"
+    },
+    "iteration_state": {
+      "path": "docs/a_share_three_day_iteration_status_20260808_campaign107_terminal.json",
+      "sha256": "2f544c3ea3f27b1661a8f6e4efeba6d8e70a49fac87583887bd5e7df414be2b1"
+    },
+    "numeric_policy_v67": {
+      "path": "docs/a_share_three_day_walkforward_future_numeric_comparison_eligibility_policy_v67_20260808.json",
+      "sha256": "4740555b0647540e99396682705a1e77745c53badc9a4bbb671e1607550b9435"
+    }
+  },
+  "candidate": {
+    "name": "intraday_continuous_session_net_return_reversal_240m",
+    "direction": "higher",
+    "formula": "-tanh(log(close_15_00 / close_09_31))",
+    "source_grid": "validate exact 241 rows; select exact 09:31 and 15:00 continuous-auction closes; 09:30 excluded",
+    "finite_strictly_positive_selected_closes_required": true,
+    "clock_order_or_intermediate_path_values_used_after_grid_validation": false,
+    "bounded_transform_is_strictly_monotone_in_negative_net_return": true,
+    "valid_range": [
+      -1.0,
+      1.0
+    ]
+  },
+  "complete_library_review": {
+    "definition_count": 137,
+    "order_sha256": "26233fd1fe697b08268910286fb077fbda894e8e572af020959b1997e4285baa",
+    "all_definitions_reviewed_before_values": true,
+    "mechanism_distinctions": [
+      {
+        "against": "late_return_30m",
+        "distinction": "Candidate uses the complete 09:31-to-15:00 endpoint displacement, not a frozen terminal 30-minute window."
+      },
+      {
+        "against": "intraday_signed_path_efficiency_239m",
+        "distinction": "Candidate does not divide by total absolute path variation; it preserves endpoint return magnitude through a monotone bounded map."
+      },
+      {
+        "against": "intraday_terminal_close_location_240m and close-location families",
+        "distinction": "Candidate uses only the two endpoint closes and no high/low range or own-bar close location."
+      },
+      {
+        "against": "intraday_terminal_nominal_share_price_affordability_rank_240m",
+        "distinction": "Candidate is a within-stock return, not a cross-sectional nominal price-level rank."
+      },
+      {
+        "against": "intraday_exact_close_level_diversity_240m",
+        "distinction": "Candidate ignores exact-level counts and all intermediate close identities; it is not a collision/diversity reexpression."
+      },
+      {
+        "against": "intraday_transaction_price_path_confirmation_238p and frontier/path families",
+        "distinction": "Candidate ignores intermediate updates, transaction path shape, frontier events and order after exact grid validation."
+      }
+    ],
+    "semantic_duplicate_found": false
+  },
+  "support_review": {
+    "support_predicate": "exact accepted 241-row grid and finite strictly positive closes at 09:31 and 15:00",
+    "uses_only_two_selected_values_after_grid_validation": true,
+    "minimum_nonzero_return_range_variance_update_or_amount_required": false,
+    "identical_or_provably_narrower_than_known_terminal_coverage_failure": false,
+    "support_gate_passed": true
+  },
+  "uniqueness_risk_acknowledgement": {
+    "likely_neighbors": [
+      "late_return_30m",
+      "intraday_signed_path_efficiency_239m",
+      "intraday_terminal_close_location_240m",
+      "intraday_transaction_price_path_confirmation_238p"
+    ],
+    "all_132_numeric_comparisons_required_after_coverage": true,
+    "candidate_specific_neighbor_drop_allowed": false,
+    "absolute_correlation_direction_invariant": true
+  },
+  "decision": {
+    "mechanism_gate_passed": true,
+    "support_gate_passed": true,
+    "allowed_to_preregister_one_candidate": true,
+    "scientific_or_numeric_admissibility_claimed": false
+  },
+  "research_boundary": {
+    "campaign108_source_rows_read": false,
+    "campaign108_candidate_or_comparator_values_read": false,
+    "historical_daily_price_or_forward_return_values_read": false,
+    "provider_request_issued": false,
+    "candidate49_ledgers_changed": false,
+    "current_scoring_selection_sizing_or_orders_performed": false
+  },
+  "next_action": "Freeze one exact protocol with the existing comparator adapter and no alternate direction, window, transform, threshold, filter, model, combination or rescue."
+}

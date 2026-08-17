@@ -1,0 +1,30 @@
+{
+  "version": 1,
+  "kind": "a_share_three_day_walkforward_campaign078_iso8601_timestamp_format_failure",
+  "status": "recorded_invalid_bsd_date_format_preserved_and_corrected_additively",
+  "recorded_at": "2026-08-06T07:02:29Z",
+  "root_cause": "macOS BSD date does not implement the GNU %:z directive; the command emitted the literal suffix :z instead of a valid UTC offset.",
+  "affected_artifacts": [
+    "docs/a_share_three_day_walkforward_future_numeric_comparison_eligibility_policy_v14_20260806.json",
+    "data/experiments/short_horizon/historical_walkforward/campaign_078/research_attempt_ledger_v2.json",
+    "data/experiments/short_horizon/historical_walkforward/campaign_078/research_attempt_ledger_v3.json",
+    "data/experiments/short_horizon/historical_walkforward/campaign_078/research_attempt_ledger_v4.json",
+    "docs/a_share_three_day_walkforward_campaign_078_research_record.json",
+    "docs/a_share_three_day_walkforward_campaign_078_research_record_v2.json",
+    "docs/a_share_three_day_walkforward_campaign_078_research_record_v3.json",
+    "docs/a_share_three_day_walkforward_campaign_078_terminal_report_patch_format_failure_20260806.json",
+    "docs/a_share_three_day_walkforward_campaign_078_terminal_suite_deselect_prefix_failure_20260806.json"
+  ],
+  "scope": {
+    "invalid_field": "recorded_at",
+    "research_formula_direction_parameters_or_values_changed": false,
+    "comparator_order_or_gate_changed": false,
+    "historical_price_or_forward_return_recomputed": false,
+    "development_recomputed": false,
+    "stress_2024_2025_opened": false,
+    "provider_request_issued": false,
+    "candidate49_ledgers_changed": false
+  },
+  "correction_rule": "Do not rewrite affected artifacts. Publish a timestamp-corrected v14 policy bound to the original v14, then append a new research-attempt ledger and research record with valid UTC timestamps. Treat older malformed recorded_at strings only as preserved provenance, not authoritative event timestamps.",
+  "failure_accounting": "Count this discovered integrity defect once, not once per affected artifact, because all affected strings share one command-format root cause."
+}

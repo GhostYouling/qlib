@@ -1,0 +1,35 @@
+{
+  "schema_version": 1,
+  "kind": "a_share_three_day_walkforward_campaign238_infrastructure_failure",
+  "recorded_at": "2026-08-16T06:48:00+08:00",
+  "timestamp_semantics": "monotonic_logical_append_time_not_host_wall_clock_measurement",
+  "status": "failed_atomic_authority_probe_assumed_flat_attempts_key_for_additive_ledger",
+  "command": "read and assert Campaign237 authority and Candidate49 semantics, then access research_attempt_ledger_v2.json through an assumed attempts key",
+  "working_directory": "/Volumes/DIsk/Disk-Coding/qlib",
+  "observed_process_exit_code": 1,
+  "failure_reason": "Campaign237 ledger v2 is an additive delta over v1 and exposes effective counts plus delta_entries, not a flat attempts key; the partial output was discarded",
+  "evidence_treatment": {
+    "output_discarded": true,
+    "used_as_scientific_evidence": false,
+    "used_as_validation_evidence": false,
+    "candidate_comparator_price_or_return_value_read": false,
+    "target_file_changed_by_failed_command": false
+  },
+  "recovery": {
+    "status": "completed",
+    "method": "inspect only the ledger's structural keys and effective counters, then rerun one complete atomic hash, effective-accounting and Candidate49 semantic check using the real additive schema",
+    "scientific_result_changed": false
+  },
+  "research_boundary": {
+    "candidate_or_comparator_value_read": false,
+    "daily_price_or_forward_return_read": false,
+    "provider_or_web_request_issued": false,
+    "provider_credential_presence_value_or_digest_read": false,
+    "candidate49_plan_or_run_executed": false,
+    "candidate49_ledgers_changed": false,
+    "second_prospective_candidate_created": false,
+    "stress_2024_2025_opened": false,
+    "current_scoring_selection_sizing_positions_or_orders_performed": false,
+    "investment_advice": false
+  }
+}

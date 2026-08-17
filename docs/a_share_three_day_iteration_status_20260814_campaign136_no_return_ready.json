@@ -1,0 +1,90 @@
+{
+  "schema_version": 1,
+  "kind": "a_share_three_day_iteration_status",
+  "status": "campaign136_all_no_return_gates_passed_one_development_trial_freeze_next",
+  "recorded_at": "2026-08-14T11:44:57+0800",
+  "goal": {
+    "objective": "请持续迭代因子。",
+    "status": "active",
+    "completion_or_blocked_requested": false
+  },
+  "authoritative_policy": {
+    "path": "docs/a_share_three_day_walkforward_future_numeric_comparison_eligibility_policy_v163_20260814.json",
+    "sha256": "0beb9b25ff7de06292be4ad7e4f6dbdf104088cb222fc82745cab2ad67edc8ea"
+  },
+  "campaign136": {
+    "candidate": "daily_realized_price_basis_adjustment_magnitude_1d",
+    "direction": "higher",
+    "formula": "abs(log(factor_t/factor_p))",
+    "source_snapshot": {
+      "publication_path": "docs/a_share_three_day_walkforward_campaign_136_source_snapshot_publication_20260814.json",
+      "publication_sha256": "27bfda432f405248021068ebc275b2cca679c8e8bd49bed0e388f73c3b32b232",
+      "manifest_sha256": "9a5c9ff824de22af6595d312b76230a3e4cf283c6e1d42e882aae96d11367b93",
+      "dataset_sha256": "c84b1f85eec3731736a4da411691c144a70a81e38b5013e5aeea5370f3c417ec",
+      "partitions": 5396,
+      "rows": 7751950,
+      "eligible_rows": 7750120
+    },
+    "coverage": {
+      "path": "data/experiments/short_horizon/historical_walkforward/campaign_136/coverage/campaign136_coverage_audit.json",
+      "sha256": "f79402a136db11d0186c93cf5347174d1427879a0823f6be071c87e476ad66ac",
+      "passed": true,
+      "median_daily_coverage": 1.0,
+      "p05_daily_coverage": 1.0,
+      "eligible_names_p05": 138.0,
+      "non_overlapping_three_session_cohorts": 540,
+      "nonconstant_sessions": 1632
+    },
+    "ordered_uniqueness": {
+      "path": "data/experiments/short_horizon/historical_walkforward/campaign_136/uniqueness/campaign136_ordered_uniqueness_audit.json",
+      "sha256": "7fe07ccabc3162e232806e542d104d4df2b8d480a79b9eee7d22cce904af1983",
+      "comparison_count": 140,
+      "comparison_order_sha256": "c71bfe27486c9567afd3aca21e4b04053658c23ac651e7f4df7fd014b0c31efd",
+      "all_passed": true,
+      "maximum_absolute_median_daily_rank_correlation": 0.03709644736183112
+    },
+    "attempt_ledger": {
+      "path": "data/experiments/short_horizon/historical_walkforward/campaign_136/research_attempt_ledger.json",
+      "sha256": "798914fe61e98b043c69da7963f6ef66c20159bcbbb19c1e7585e1c57eeba59e",
+      "entry_count": 11,
+      "chain_tip_sha256": "f44c2d480a16f6e18980324336c109dd9cdc470e8a9d385c75a99cb0cb6ac872"
+    },
+    "historical_daily_ohlcv_fields_read": [],
+    "historical_forward_returns_read": false,
+    "stress_2024_2025_return_values_opened": false,
+    "performance_conclusion_available": false
+  },
+  "next_gate": {
+    "required": "Freeze, test and single-use activate exactly one inherited three-fold 2019-2023 development trial before any daily OHLCV or return read.",
+    "trial_id": "wf136_daily_realized_price_basis_adjustment_magnitude_1d_single_higher",
+    "additional_trial_or_campaign137_start_allowed": false
+  },
+  "candidate49": {
+    "sole_prospective_candidate": true,
+    "signal_ledger_path": "data/experiments/short_horizon/candidate49_future_signal_ledger.json",
+    "signal_ledger_sha256": "5193f00d7f36da003f53cec387900da4c3d002299f5dfcfc1a95eaa199ed3a79",
+    "signal_entries": 0,
+    "execution_ledger_path": "data/experiments/short_horizon/candidate49_future_execution_ledger.json",
+    "execution_ledger_sha256": "d57a3e61eac969e42cafa418ccd8c0a5ee65dcf69da145bb2c096c2a02a2ea4f",
+    "execution_entries": 0,
+    "historical_backfill_performed": false,
+    "ledgers_changed": false
+  },
+  "local_daily_boundary": {
+    "local_time": "2026-08-14T11:44:57+0800",
+    "accepted_local_trading_day": true,
+    "after_16_30_asia_singapore": false,
+    "provider_credential_present_without_value_or_digest_read": true,
+    "candidate49_plan_run_or_source_request_performed": false,
+    "historical_offline_research_allowed_and_performed": true
+  },
+  "research_boundary": {
+    "provider_request_issued": false,
+    "credential_value_or_digest_read": false,
+    "candidate49_historical_backfill_performed": false,
+    "candidate49_ledgers_changed": false,
+    "second_prospective_candidate_created": false,
+    "current_scoring_selection_sizing_positions_or_orders_performed": false,
+    "investment_advice": false
+  }
+}

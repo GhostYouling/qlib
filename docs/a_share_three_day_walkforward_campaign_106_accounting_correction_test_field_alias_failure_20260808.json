@@ -1,0 +1,42 @@
+{
+  "schema_version": 1,
+  "kind": "a_share_three_day_walkforward_campaign106_accounting_correction_test_field_alias_failure",
+  "status": "preserved_postpublication_test_failure_before_completion_freeze",
+  "recorded_at": "2026-08-07T19:59:35Z",
+  "failed_test": {
+    "path": "tests/data_collector_tests/test_a_share_three_day_walkforward_campaign106_accounting_correction.py",
+    "sha256": "c85dae7b3aa894a24d4170d7d15a574c51a88cacf56782dce5da58897494ae49",
+    "command_scope": [
+      "tests/data_collector_tests/test_a_share_three_day_walkforward_campaign106_accounting_correction.py",
+      "tests/data_collector_tests/test_a_share_three_day_walkforward_campaign106_terminal.py"
+    ],
+    "result": "8 passed, 1 failed",
+    "failure": "KeyError on campaign106_return_reading_complete_development_trial_count in policy v65"
+  },
+  "preserved_published_nodes": {
+    "attempt_ledger_v4": {
+      "path": "data/experiments/short_horizon/historical_walkforward/campaign_106/research_attempt_ledger_v4.json",
+      "sha256": "f44a6117896b7e674519b552937d4ddfbef841260c924a5dcf0ccacf66837581"
+    },
+    "terminal_result_v2": {
+      "path": "docs/a_share_three_day_walkforward_campaign_106_terminal_result_binding_v2_20260808.json",
+      "sha256": "12aeef0018589bcf26815ff6f0a512a2a8fd307ad799cf5fe20dbcd737d80145"
+    },
+    "policy_v65": {
+      "path": "docs/a_share_three_day_walkforward_future_numeric_comparison_eligibility_policy_v65_20260808.json",
+      "sha256": "25aabbe43c6be59e1cc3e36ce8ce6eac712ace1e8cece94c7527400896ceb830"
+    },
+    "iteration_state_v2": {
+      "path": "docs/a_share_three_day_iteration_status_20260808_campaign106_terminal_v2.json",
+      "sha256": "dca9da08f7adb96feae1545343388df1fa078dfe8808693cfaaab7bc1b9e1dfc"
+    }
+  },
+  "root_cause": "The first correction test assumed one shared JSON key. The terminal v2 retained campaign106_return_reading_complete_development_trial_count, while policy v65 retained the v64 key campaign106_return_reading_development_trial_count and state v2 retained return_reading_development_trial_count. All three values were zero and semantically consistent.",
+  "scientific_or_accounting_value_mismatch_detected": false,
+  "historical_daily_prices_or_forward_returns_read": false,
+  "development_or_stress_recomputed": false,
+  "provider_request_issued": false,
+  "candidate49_ledgers_changed": false,
+  "current_scoring_selection_sizing_or_orders_performed": false,
+  "repair_rule": "Preserve the failed test and all 790-count nodes; append one infrastructure attempt, publish 791-count nodes, and validate explicit per-artifact field aliases in a new test file."
+}

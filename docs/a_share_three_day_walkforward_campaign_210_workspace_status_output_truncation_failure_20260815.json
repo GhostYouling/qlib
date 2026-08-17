@@ -1,0 +1,25 @@
+{
+  "schema_version": 1,
+  "kind": "a_share_three_day_walkforward_campaign210_infrastructure_failure",
+  "recorded_at": "2026-08-15T22:14:00+08:00",
+  "timestamp_semantics": "monotonic_logical_append_time_not_host_wall_clock_measurement",
+  "status": "failed_overbroad_git_status_output_truncated_discarded",
+  "phase": "workspace_authority_inspection",
+  "failure": {
+    "scope": "repository-wide git status --short in the authoritative worktree",
+    "observed": "the dirty worktree inventory was too large and the combined tool output was truncated",
+    "recovery": "discard the repository-wide inventory as complete evidence and use bounded Campaign209/Campaign210 path-specific probes while preserving all unrelated user changes"
+  },
+  "research_boundary": {
+    "failed_output_used_as_scientific_or_validation_evidence": false,
+    "workspace_file_changed_by_failed_command": false,
+    "candidate_or_comparator_value_read": false,
+    "daily_price_or_forward_return_read": false,
+    "provider_or_web_request_issued": false,
+    "provider_credential_presence_value_or_digest_read": false,
+    "candidate49_plan_or_run_executed": false,
+    "candidate49_ledgers_changed": false,
+    "stress_2024_2025_opened": false,
+    "current_use_or_investment_advice": false
+  }
+}

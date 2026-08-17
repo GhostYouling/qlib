@@ -1,0 +1,79 @@
+{
+  "version": 1,
+  "kind": "a_share_three_day_walkforward_campaign057_feature_implementation_freeze",
+  "status": "frozen_before_campaign057_source_values",
+  "recorded_at": "2026-08-04T04:08:00Z",
+  "purpose": "Bind the only Campaign057 feature implementation and its synthetic tests before any raw minute partition value, candidate value, comparison value, daily price, or forward return is read.",
+  "authoritative_boundary": {
+    "path": "docs/a_share_three_day_iteration_status_20260804_campaign056_verified.json",
+    "sha256": "0e51c9273071bebf270b81ab11a2551235338798419f05b58519f396cc099b3e"
+  },
+  "mechanism_overlap_audit": {
+    "path": "docs/a_share_three_day_walkforward_campaign_057_mechanism_overlap_audit.json",
+    "sha256": "c4d81c004de89e9a94bfbea344bd92b5fd56e5fcaa74aa8f9bdcde40a4093e9f"
+  },
+  "no_return_protocol": {
+    "path": "docs/a_share_three_day_walkforward_campaign_057_no_return_preregistration.json",
+    "sha256": "9eb8607e91e952b9e22e436374d68de0a90df251065720bed8a6285f2e3b7ff1",
+    "binding_validator_passed": true,
+    "binding_count_passed": 15,
+    "binding_count_failed": 0
+  },
+  "base_feature_engine": {
+    "path": "scripts/a_share_three_day_walkforward_campaign056_features.py",
+    "sha256": "3667567ea96260b314f2832f175913314c31bd091abfb6023a5e0c2d1f172169",
+    "use": "immutable publication and checkpoint engine only; Campaign057 overrides the candidate protocol, source projection, extractor, formula, quality names, and manifest semantics"
+  },
+  "feature_runner": {
+    "path": "scripts/a_share_three_day_walkforward_campaign057_features.py",
+    "sha256": "3706ac11c551dd02c8d6d8cf30c95a6f076d6a6e6c5dbba4beb07dde10aca66a",
+    "factor": "intraday_day_over_day_absolute_return_profile_similarity_238b",
+    "direction": "higher",
+    "source_projection": [
+      "datetime",
+      "symbol",
+      "provider",
+      "close"
+    ],
+    "current_and_prior_close_count": 240,
+    "current_and_prior_absolute_return_bin_count": 238,
+    "prior_session_rule": "immediately_preceding_accepted_local_market_session_without_suspension_bridge",
+    "distance": "equal_mixture_natural_log_jensen_shannon_similarity",
+    "output_run_id": "tushare_stk_mins_1m_2019_2025_ea0cbb8f_walkforward_campaign057_feature_library_v1"
+  },
+  "synthetic_tests": {
+    "path": "tests/data_collector_tests/test_a_share_three_day_walkforward_campaign057_features.py",
+    "sha256": "61c1a22d175223bd67dc3e46725ed5db50a96709d2bb71cc10aec2ed80a522a4",
+    "command": "PYTHONPATH=/Volumes/DIsk/Disk-Coding/qlib /opt/anaconda3/bin/python3 -m pytest -q tests/data_collector_tests/test_a_share_three_day_walkforward_campaign057_features.py",
+    "passed": 8,
+    "failed": 0,
+    "formula_identity_scale_invariance_disjoint_support_zero_invalid_close_grid_lunch_exclusion_prior_session_and_no_bridge_semantics_tested": true
+  },
+  "implementation_semantics": {
+    "process_each_symbol_in_year_order": true,
+    "carry_only_observed_raw_profiles_across_year_boundaries": true,
+    "look_up_only_the_exact_calendar_predecessor": true,
+    "missing_or_suspended_previous_stock_session_is_missing": true,
+    "construct_returns_separately_inside_each_half": true,
+    "lunch_transition_excluded": true,
+    "normalize_each_session_independently": true,
+    "exact_zero_absolute_return_bins_retained": true,
+    "nonfinite_nonpositive_close_or_nonpositive_total_absolute_return_is_missing": true,
+    "atomic_partial_root_publication": true,
+    "per_partition_byte_and_frame_hashes": true,
+    "source_raw_and_joint_clean_partition_byte_hashes_verified": true,
+    "provider_calls": 0
+  },
+  "source_partition_values_read_before_freeze": false,
+  "candidate_values_read_before_freeze": false,
+  "comparison_values_read_before_freeze": false,
+  "historical_daily_price_fields_read_before_freeze": [],
+  "historical_forward_return_fields_read_before_freeze": false,
+  "training_or_model_fitting_performed_before_freeze": false,
+  "candidate49_historical_return_signal_execution_or_milestone_backfill_performed": false,
+  "candidate49_ledgers_changed": false,
+  "second_prospective_candidate_created": false,
+  "current_scoring_selection_sizing_or_orders_performed": false,
+  "provider_request_issued_before_freeze": false,
+  "next_action": "Run only the bound Campaign057 build against /Volumes/DIsk/qlib-a-share-tushare-1m, verify every output partition, then publish a separate snapshot binding before the ordered no-return audit."
+}

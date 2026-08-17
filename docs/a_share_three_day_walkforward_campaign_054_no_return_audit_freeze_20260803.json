@@ -1,0 +1,96 @@
+{
+  "version": 1,
+  "kind": "a_share_three_day_walkforward_campaign054_no_return_audit_freeze",
+  "status": "completed_one_admissible_factor_before_historical_daily_price_or_return_read",
+  "recorded_at": "2026-08-03T15:32:00Z",
+  "purpose": "Bind the complete Campaign054 no-return audit, including every infrastructure failure and the single admissible factor, before any 2019-2023 daily-price or forward-return value is read.",
+  "authoritative_inputs": {
+    "no_return_protocol": {
+      "path": "docs/a_share_three_day_walkforward_campaign_054_no_return_preregistration.json",
+      "sha256": "938d4e5b73356c949ca298e6850aa4bea02a8204b333f793128f97aaf04fd176"
+    },
+    "snapshot_publication_binding": {
+      "path": "docs/a_share_three_day_walkforward_campaign_054_snapshot_publication_binding_20260803.json",
+      "sha256": "bdce301c66e2426e3acfa51f1e46c2330d9c4dc65703fb41b491c592386edd13"
+    },
+    "audit_implementation_freeze": {
+      "path": "docs/a_share_three_day_walkforward_campaign_054_no_return_audit_implementation_freeze_20260803.json",
+      "sha256": "0d1653100e6eb4390a960a1c4f8a14a5e9dbc46aef440a6613c3c80bddf88ad9"
+    },
+    "candidate_loader_failure_repair": {
+      "path": "docs/a_share_three_day_walkforward_campaign_054_no_return_audit_candidate_loader_failure_repair_20260803.json",
+      "sha256": "52b9de36ae5d8c547afc0811d8e18162c5d1eb6862e30f68cfed69a628f2b0d9"
+    },
+    "candidate_loader_repair_freeze": {
+      "path": "docs/a_share_three_day_walkforward_campaign_054_candidate_loader_repair_implementation_freeze_20260803.json",
+      "sha256": "c156b70ff11b11dc53b4556bad6a0f4b3f5997744166ec714b694c3bc1de3c3b"
+    },
+    "completed_entrypoint": {
+      "path": "scripts/a_share_three_day_walkforward_campaign054_features_v8.py",
+      "sha256": "2487183025bdadfd1ef3f95431d06d491ade960f0aa89b2b88199c9526899699"
+    },
+    "completed_audit": {
+      "path": "data/experiments/short_horizon/historical_walkforward/campaign_054/no_return/20260803T153026Z_campaign054_no_return_audit.json",
+      "sha256": "866006cbe319afeca3b055bef2a1754b954e4511b953a3e8a2337d3aa575ee87"
+    }
+  },
+  "candidate": {
+    "name": "intraday_volume_weighted_transaction_price_bowley_skew_240m",
+    "direction": "higher",
+    "admissible_after_no_return_gates": true
+  },
+  "coverage_and_capacity": {
+    "gate_passed_before_comparison_values": true,
+    "calendar_sessions": 1632,
+    "quality_listing_eligible_rows": 1331759,
+    "candidate_eligible_rows": 1328240,
+    "median_coverage": 0.9983855777993815,
+    "p05_coverage": 0.992613184425025,
+    "eligible_names_p05": 138.0,
+    "potential_non_overlapping_three_session_cohorts": 540,
+    "observed_years": [
+      2019,
+      2020,
+      2021,
+      2022,
+      2023,
+      2024,
+      2025
+    ],
+    "daily_coverage_frame_sha256": "7adea9f3b7523d7589caeb10a2c333888bd0c52494c147fc597741892f740312"
+  },
+  "uniqueness": {
+    "comparison_values_loaded_only_after_coverage_pass": true,
+    "comparison_factor_count": 77,
+    "comparison_order_sha256": "f6ec66bf87ae76240e1ad890699cb2a82856f32a327a2f9be52d3d1f0b753de2",
+    "comparison_order_matches_preregistration": true,
+    "maximum_observed_absolute_median_daily_rank_correlation": 0.2673548831122923,
+    "maximum_allowed": 0.8,
+    "failed_comparison_count": 0,
+    "all_required_comparisons_passed": true
+  },
+  "decision": {
+    "admissible_factor_count": 1,
+    "admissible_factor_names": [
+      "intraday_volume_weighted_transaction_price_bowley_skew_240m"
+    ],
+    "development_trial_count_allowed": 1,
+    "daily_price_or_forward_returns_may_open_before_development_preregistration": false,
+    "next_action": "Freeze the exact one-trial 2019-2023 expanding walk-forward campaign before reading daily prices or returns."
+  },
+  "research_boundary": {
+    "source_minute_fields_read": [
+      "volume",
+      "amount"
+    ],
+    "comparison_factor_values_read": true,
+    "historical_daily_price_fields_read": [],
+    "historical_forward_return_fields_read": false,
+    "training_or_model_fitting_performed": false,
+    "candidate49_historical_return_read": false,
+    "candidate49_ledgers_changed": false,
+    "provider_request_issued": false,
+    "second_prospective_candidate_created": false,
+    "current_scoring_selection_sizing_or_orders_performed": false
+  }
+}

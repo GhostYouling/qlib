@@ -1,0 +1,41 @@
+{
+  "bindings": {
+    "candidate49_source_failure_20260806": {
+      "path": "docs/a_share_candidate49_20260806_daily_source_failure_record.json",
+      "sha256": "b866b406fa9b0e7c3b8af0827ec84daa8cdd8bc46906556e275712bc769817f9"
+    },
+    "current_iteration_state": {
+      "path": "docs/a_share_three_day_iteration_status_20260806_campaign083_verified_v5.json",
+      "sha256": "3702683aeab45a7917fdedd918fe0ccc3076e36dc98c613e09fe383b6932405d"
+    },
+    "current_research_record": {
+      "path": "docs/a_share_three_day_walkforward_campaign_083_research_record_v5.json",
+      "sha256": "5bd0b8534c09637d5b2affbf8ecc903f810011763c54de4f612768d7f6b54401"
+    },
+    "data_pipeline_documentation": {
+      "path": "docs/a_share_data_pipeline.md",
+      "sha256": "08543959e868f8e38aaec60bc43d7b1a74b246ac6a986b44791a977592dfdbab"
+    },
+    "manage_qlib_a_share_data_skill": {
+      "path": "/Users/niyufei/.codex/skills/manage-qlib-a-share-data/SKILL.md",
+      "sha256": "90a99c54dd00f0c737e85c4c6dd48d906edbd0f591c61278885728eaf7806431"
+    },
+    "unified_report_supersession": {
+      "path": "docs/a_share_three_day_walkforward_campaign_083_unified_report_supersession_v4_20260806.json",
+      "sha256": "30d34e347af389b00e68bd616803efc5846643a4221be40a940fb0d0f9608546"
+    }
+  },
+  "kind": "a_share_three_day_walkforward_campaign083_pipeline_documentation_sync",
+  "recorded_at": "2026-08-06T22:00:00+08:00",
+  "status": "campaign080_through_campaign083_and_candidate49_20260806_source_failure_documented",
+  "synchronized_semantics": {
+    "campaign084_offline_scouting_authorized": true,
+    "candidate49_execution_ledger_entries": 0,
+    "candidate49_signal_ledger_entries": 0,
+    "current_listing_snapshot_survivorship_limitation": true,
+    "historical_result_may_generate_current_scores_selection_sizing_orders_or_advice": false,
+    "provider_continuation_allowed_for_20260806": false,
+    "stress_2024_2025_opened_by_campaign083": false
+  },
+  "version": 1
+}

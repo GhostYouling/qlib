@@ -1,0 +1,119 @@
+{
+  "version": 1,
+  "kind": "a_share_three_day_walkforward_campaign066_mechanism_overlap_audit",
+  "status": "passed_conceptual_independence_against_all_97_frozen_definitions_before_campaign066_source_candidate_comparison_daily_price_or_return_values",
+  "recorded_at": "2026-08-05T15:23:00+08:00",
+  "purpose": "Challenge the exact three-quality-rank balance combination against every frozen historical definition before reading any Campaign066 source row or value.",
+  "authoritative_boundary": {
+    "campaign065_verified_state": {"path": "docs/a_share_three_day_iteration_status_20260805_campaign065_verified.json", "sha256": "5b6a5f11c10bbeb233068f1bbac582b2b0ae5a1d3da8e9c36701531b82f10c26"},
+    "campaign066_pre_value_policy": {"path": "docs/a_share_three_day_walkforward_future_numeric_comparison_eligibility_policy_v2_20260805.json", "sha256": "bad778474b4119f3a8f617283e2b4719f076fe060f11275aed7e7c469d6d4bf2"},
+    "concept_scouting": {"path": "docs/a_share_three_day_walkforward_campaign_066_concept_scouting.json", "sha256": "50fc99be8938e02a8b5a613db5489b2b959abc076c4a7af164ee3288cbb7297e"},
+    "older_quality_semantic_contract": {"path": "docs/a_share_tushare_audit_opinion_no_return_preregistration.json", "sha256": "5fb77e7060cbd1a03824d015cc33b75ffcf23b3afb5817e60b783e8bcaea3d69"}
+  },
+  "selected_mechanism": {
+    "name": "quarterly_quality_rank_balance_3f",
+    "direction": "higher",
+    "formula": "1 - (max(r_roe,r_profit,r_revenue) - min(r_roe,r_profit,r_revenue)) using exact point-in-time average-tie cross-sectional percentile ranks on the common quality-eligible stock-day universe.",
+    "economic_hypothesis": "High balance rewards agreement across profitability and two growth dimensions rather than a high average driven by one component.",
+    "old_definition_inputs": ["quality_roe", "quality_profit", "quality_revenue"],
+    "combination_is_allowed_only_under_complete_frozen_library": true,
+    "weights_thresholds_filters_fit_or_model": "none"
+  },
+  "complete_historical_library_evaluation": {
+    "definition_count": 97,
+    "definition_order_sha256": "bc66abb94f62bef5fe9912059ade232c6c86b16b82f162df577fa8d74afeca7d",
+    "assignment_count": 97,
+    "unique_assignment_count": 97,
+    "duplicate_assignment_count": 0,
+    "unassigned_definition_count": 0,
+    "assignment_order_reconstructed_from_bound_policy": true
+  },
+  "overlap_challenges": [
+    {
+      "family": "recent_range_weak_order_entropy_and_reversal_divergence",
+      "definitions": ["intraday_range_weak_order_entropy_236t", "intraday_range_weak_order_time_reversal_divergence_236t"],
+      "result": "distinct_pending_statistical_uniqueness",
+      "reason": "The candidate reads only quarterly accounting states and their same-day cross-sectional ranks. It contains no minute high/low range, weak-order triple, entropy, time reversal, or Jensen-Shannon divergence."
+    },
+    {
+      "family": "return_distribution_order_frequency_and_variance",
+      "definitions": ["intraday_return_time_reversal_asymmetry_236p", "intraday_return_weak_order_entropy_234t", "intraday_return_spectral_entropy_59f", "intraday_return_sign_run_imbalance_238p", "intraday_absolute_return_serial_persistence_236p", "intraday_return_reversal_energy_share_236p", "intraday_return_variance_entropy_238m", "intraday_return_skewness_238m", "intraday_upside_semivariance_share_239m", "intraday_diffusive_variation_ratio_238m", "intraday_five_minute_variance_ratio_230w"],
+      "result": "distinct_pending_statistical_uniqueness",
+      "reason": "No minute close, signed return, absolute return, variance, Fourier power, run, weak order, or aggregation window enters the accounting rank balance."
+    },
+    {
+      "family": "range_body_wick_gap_frontier_and_occupancy_geometry",
+      "definitions": ["intraday_intrabar_range_participation_entropy_240m", "intraday_adjacent_range_overlap_continuity_238p", "intraday_intrabar_range_reversal_238p", "intraday_global_price_range_revisit_240m", "intraday_prior_range_breakout_pressure_238p", "intraday_midrange_width_change_coupling_238p", "intraday_range_boundary_translation_coherence_238p", "intraday_directional_range_response_coupling_238p", "intraday_two_sided_range_frontier_balance_238m", "intraday_morning_afternoon_range_profile_similarity_120b", "intraday_intrabar_body_range_efficiency_240m", "intraday_intrabar_close_location_pressure_240m", "intraday_close_range_occupancy_entropy_10b", "intraday_two_sided_wick_absorption_balance_240m"],
+      "result": "distinct_pending_statistical_uniqueness",
+      "reason": "The candidate reads no minute open, high, low, close, interval overlap, body, wick, gap, frontier, occupancy bin, or half-session range profile."
+    },
+    {
+      "family": "amount_volume_activity_and_activity_price_coupling",
+      "definitions": ["intraday_amount_participation_entropy_240m", "intraday_amount_profile_serial_persistence_240m", "intraday_amount_lead_return_correlation_238p", "intraday_amount_center_of_mass_240m", "intraday_amount_volatility_coupling_238p", "intraday_range_share_volume_confirmation_240m", "intraday_share_volume_transaction_price_coupling_238p", "intraday_amount_price_discovery_alignment_js_238p", "intraday_morning_afternoon_amount_profile_similarity_120b", "intraday_day_over_day_amount_profile_similarity_240b", "intraday_opening_auction_amount_share_241m", "intraday_zero_return_amount_intensity_238m", "late_amount_share_30m", "afternoon_signed_amount_efficiency_120m", "intraday_up_move_amount_share_238m", "intraday_volatility_activity_lead_lag_asymmetry_236p"],
+      "result": "distinct_pending_statistical_uniqueness",
+      "reason": "No minute amount, volume, participation profile, activity clock, lead-lag, coupling, or weighted price enters the quarterly combination."
+    },
+    {
+      "family": "transaction_price_vwap_and_price_impact",
+      "definitions": ["late_vwap_to_day_vwap_30m", "intraday_bar_vwap_close_pressure_240m", "intraday_transaction_price_path_confirmation_238p", "intraday_transaction_vwap_consensus_240m", "intraday_volume_weighted_transaction_price_bowley_skew_240m", "intraday_cumulative_vwap_crossing_rate_240m", "intraday_directional_price_impact_asymmetry_238m"],
+      "result": "distinct_pending_statistical_uniqueness_or_future_only_challenge",
+      "reason": "The candidate contains no transaction price, VWAP, close crossing, volume weight, or impact statistic. Candidate49 remains a future-only challenge and its historical returns or ledgers are not read."
+    },
+    {
+      "family": "market_peer_response_correlation_dispersion_and_standardized_state",
+      "definitions": ["intraday_market_idiosyncratic_share_238m", "intraday_market_amount_profile_synchronization_240m", "intraday_market_neutral_late_residual_drift_238m", "intraday_market_response_delay_asymmetry_236p", "intraday_market_up_down_correlation_asymmetry_238m", "intraday_market_shock_magnitude_decoupling_238m", "intraday_market_correlation_resolution_119p", "intraday_market_dispersion_decoupling_238m", "intraday_market_directional_sign_agreement_238m", "intraday_cross_sectional_standardized_return_state_stability_236p"],
+      "result": "distinct_pending_statistical_uniqueness_with_campaign063_explicitly_nonnumeric",
+      "reason": "Although the candidate uses a stock-day cross-section, it ranks three issuer accounting states independently and contains no synchronous minute market benchmark, residual, correlation, dispersion, or standardized return state. Campaign063 remains an explicit nonnumeric challenge."
+    },
+    {
+      "family": "cross_day_cross_half_and_lunch_alignment",
+      "definitions": ["intraday_day_over_day_absolute_return_profile_similarity_238b", "intraday_day_over_day_directional_return_agreement_238b", "intraday_day_over_day_realized_variance_stability_238b", "intraday_morning_afternoon_return_profile_persistence_119p", "intraday_lunch_repricing_persistence_119m", "intraday_lunch_repricing_persistence_2r"],
+      "result": "distinct_pending_statistical_uniqueness",
+      "reason": "The candidate has no minute alignment across days, halves, or lunch; it changes only when point-in-time issuer states or the eligible cross-section change."
+    },
+    {
+      "family": "other_intraday_price_path_level_update_gap_shock_and_extreme_statistics",
+      "definitions": ["late_return_30m", "intraday_realized_volatility", "afternoon_drawdown_recovery_resilience_120m", "intraday_terminal_close_location_240m", "intraday_volatility_resolution_238m", "intraday_price_update_share_238m", "intraday_price_update_clock_entropy_10b_238m", "intraday_negative_return_absorption_rate_236p", "intraday_signed_path_efficiency_239m", "intraday_bar_direction_continuity_238p", "intraday_extreme_arrival_order_240m", "intraday_round_tenth_close_avoidance_240m", "intraday_half_session_chord_adherence_240m", "intraday_microgap_absorption_share_238p", "intraday_body_next_microgap_reversal_238p", "intraday_half_session_extreme_shock_reversal_completion_2h", "intraday_interbar_gap_body_confirmation_238p"],
+      "result": "distinct_pending_statistical_uniqueness",
+      "reason": "No minute price path, endpoint, update clock, drawdown, gap, shock, extreme arrival, chord, or direction statistic enters the factor."
+    },
+    {
+      "family": "disclosure_timing_peer_crowding_quality_levels_composites_changes_and_acceleration",
+      "definitions": ["quarterly_announcement_freshness_60s", "quarterly_announcement_timeliness_days", "quarterly_announcement_delay_consistency_4q", "quarterly_announcement_peer_crowding_sparsity", "quality_roe", "quality_profit", "quality_revenue", "quality_growth", "quality_score", "roe_change", "revenue_yoy_acceleration", "profit_yoy_acceleration", "quarterly_profit_revenue_growth_spread_pp"],
+      "result": "specific_combination_independence_pending_mandatory_statistical_uniqueness",
+      "reason": "The three direct quality ranks are frozen inputs, so they are mandatory confounds rather than claimed unrelated sources. The candidate is translation-invariant across the three ranks and measures only their range complement: adding the same rank shift to all components changes quality_score but not balance, while widening one component away from the other two lowers balance even if the mean is unchanged. It contains no prior-quarter acceleration, raw profit-minus-revenue spread, announcement age, timing, or peer count."
+    },
+    {
+      "family": "full_terminal_library_directional_percentile_consensus",
+      "definitions": ["full_terminal_library_directional_percentile_consensus_66f"],
+      "result": "distinct_finite_three_input_dispersion_combination_pending_statistical_uniqueness",
+      "reason": "The old consensus averages 66 directional percentiles across heterogeneous mechanisms. Campaign066 uses exactly three named accounting ranks and a max-minus-min balance operator; it loads no other terminal factor and has no fitted or selected weight."
+    }
+  ],
+  "counterfactual_independence_tests": [
+    {"test": "common_rank_translation", "result": "balance_unchanged_quality_score_changes", "meaning": "The candidate is not the exposed mean-level quality_score."},
+    {"test": "mean_preserving_component_spread", "result": "balance_changes_quality_score_unchanged", "meaning": "The candidate identifies cross-dimension disagreement rather than average level."},
+    {"test": "fixed_accounting_states_vary_minute_paths", "result": "candidate_unchanged_minute_factors_can_change", "meaning": "The candidate cannot reproduce intraday path mechanisms."},
+    {"test": "fixed_values_vary_announcement_age_after_effective_state", "result": "candidate_unchanged_timing_factors_can_change", "meaning": "The candidate is not a disclosure-age statistic."}
+  ],
+  "research_boundary": {
+    "quarterly_or_minute_source_rows_read": false,
+    "candidate_or_comparison_values_read": false,
+    "historical_daily_price_fields_read": [],
+    "historical_forward_return_fields_read": false,
+    "provider_request_issued": false,
+    "candidate49_historical_return_signal_execution_or_milestone_backfill_performed": false,
+    "candidate49_ledgers_changed": false,
+    "second_prospective_candidate_created": false,
+    "current_scoring_selection_sizing_or_orders_performed": false,
+    "investment_advice": false
+  },
+  "decision": {
+    "conceptual_independence_passed": true,
+    "complete_old_factor_library_was_bound_before_combination": true,
+    "statistical_independence_pending_all_96_numeric_comparisons": true,
+    "Campaign063_nonnumeric_challenge_retained": true,
+    "predictive_value_established": false,
+    "next_action": "Freeze one exact coverage-first 96-comparison no-return protocol before implementing or reading any Campaign066 source row or value."
+  }
+}

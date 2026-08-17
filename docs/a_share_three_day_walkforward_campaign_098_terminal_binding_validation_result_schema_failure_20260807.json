@@ -1,0 +1,22 @@
+{
+  "schema_version": 1,
+  "kind": "a_share_three_day_walkforward_campaign098_terminal_binding_validation_result_schema_failure",
+  "status": "recorded_append_only_before_corrected_validation_summary",
+  "recorded_at": "2026-08-07T08:54:00Z",
+  "stage": "terminal_binding_chain_validation_summary",
+  "failure": "The first terminal binding-validation summary accessed nonexistent result keys named bindings and failures after validating the first record. The validator actually exposes binding_count and failed_binding_count, so the command raised KeyError before completing the four-record summary.",
+  "first_record_validation_completed_before_summary_error": {
+    "path": "docs/a_share_three_day_walkforward_campaign_098_terminal_verification_20260807.json",
+    "sha256": "9de53bf11f3c6974971fe3b33170d61dbac38eb4263e3fd3a2264f12f984ac01",
+    "binding_count": 11,
+    "failed_binding_count": 0,
+    "all_bindings_passed": true
+  },
+  "research_values_recomputed": false,
+  "new_historical_daily_price_or_forward_return_values_read": false,
+  "stress_2024_2025_return_fields_read": false,
+  "candidate49_historical_return_read": false,
+  "candidate49_ledgers_changed": false,
+  "provider_request_issued": false,
+  "authorized_repair": "Rerun the same read-only four-record validation using binding_count and failed_binding_count, then publish additive final accounting without changing the scientific result."
+}

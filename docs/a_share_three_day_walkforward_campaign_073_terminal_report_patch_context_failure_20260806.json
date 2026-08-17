@@ -1,0 +1,22 @@
+{
+  "version": 1,
+  "kind": "a_share_three_day_walkforward_campaign073_terminal_report_patch_context_failure",
+  "status": "recorded_before_successful_report_retry",
+  "recorded_at": "2026-08-06T07:44:00+08:00",
+  "failed_command_stage": "combined_campaign_report_creation_and_unified_report_append",
+  "failure": "apply_patch expected tail context was not present in the unified report; apply_patch rejected the entire patch and created or modified no file",
+  "impact": {
+    "campaign_report_created_by_failed_command": false,
+    "unified_report_modified_by_failed_command": false,
+    "candidate_or_comparison_values_recomputed": false,
+    "historical_daily_price_or_forward_return_values_read": false,
+    "provider_request_issued": false,
+    "candidate49_ledgers_changed": false
+  },
+  "attempt_accounting": {
+    "campaign073_infrastructure_failure_increment": 1,
+    "campaign073_complete_factor_attempt_increment": 0,
+    "campaign073_return_reading_trial_increment": 0
+  },
+  "repair": "Create the campaign report and append the unified report in separate additive patches using the actual current file tail."
+}

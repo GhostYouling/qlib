@@ -1,0 +1,75 @@
+{
+  "schema_version": 1,
+  "kind": "a_share_three_day_walkforward_campaign098_final_verification",
+  "status": "verified_terminal_current_node_suite_passed_ready_for_campaign099_offline_scouting",
+  "recorded_at": "2026-08-07T09:05:00Z",
+  "campaign": 98,
+  "authoritative_state": {
+    "path": "docs/a_share_three_day_iteration_status_20260807_campaign098_verified_v2.json",
+    "sha256": "9c2b064fc32bb0db03c2bc8e91c20783101a41102c1cee705a1cd919028bd133"
+  },
+  "terminal_completion_freeze": {
+    "path": "docs/a_share_three_day_walkforward_campaign_098_terminal_completion_freeze_v2_20260807.json",
+    "sha256": "6bccb2d3c1540fe1228696a45875d8a0382b2a04e15d3838922e47f31c9095da"
+  },
+  "effective_policy": {
+    "path": "docs/a_share_three_day_walkforward_future_numeric_comparison_eligibility_policy_v47_20260807.json",
+    "sha256": "1f528805f5b6518acd96f2427544bf7448e109390d1ab37da39098bbb9661981"
+  },
+  "effective_attempt_ledger": {
+    "path": "data/experiments/short_horizon/historical_walkforward/campaign_098/research_attempt_ledger_v6.json",
+    "sha256": "f9f1ed8da63290be37fac8b6c43a76b7e703a8b8bb934792ea3d57decab37d24"
+  },
+  "current_node_tests": [
+    {
+      "path": "tests/data_collector_tests/test_a_share_three_day_walkforward_campaign098_features.py",
+      "sha256": "b4eb3b5da38d114ae89d5417b2bc1550d5136508108bc12ce2b2a3c315158045"
+    },
+    {
+      "path": "tests/data_collector_tests/test_a_share_three_day_walkforward_campaign098_no_return_audit.py",
+      "sha256": "943d6d21e28eadfec755a6fee165b1566e6ef89d313f7c762b56554387cff798"
+    },
+    {
+      "path": "tests/data_collector_tests/test_a_share_three_day_walkforward_campaign098_development.py",
+      "sha256": "69d16dab011d4e0f5b4e8f20b1dc3d175e643a00bcec0d4e829e46401ca84f46"
+    },
+    {
+      "path": "tests/data_collector_tests/test_a_share_three_day_walkforward_campaign098_terminal.py",
+      "sha256": "37ecf61ea71740c58536b64e90f3e827b981b61536d3e25df3589b453b8685d6"
+    }
+  ],
+  "verification_summary": {
+    "pytest_passed": 29,
+    "pytest_failed": 0,
+    "black_files_checked": 7,
+    "black_passed": true,
+    "ruff_files_checked": 7,
+    "ruff_passed": true,
+    "effective_policy_binding_count": 5,
+    "effective_policy_binding_failures": 0,
+    "terminal_completion_binding_count": 11,
+    "terminal_completion_binding_failures": 0,
+    "authoritative_state_binding_count": 6,
+    "authoritative_state_binding_failures": 0
+  },
+  "verified_terminal_result": {
+    "coverage_and_126_numeric_uniqueness_gates_passed": true,
+    "development_trial_count": 1,
+    "development_survivor_count": 0,
+    "stress_2024_2025_opened": false,
+    "stress_2024_2025_return_fields_read": false,
+    "campaign098_attempt_count": 13,
+    "campaign098_infrastructure_implementation_or_recording_failure_count": 12,
+    "cumulative_historical_research_attempt_count": 692,
+    "cumulative_return_reading_development_trial_count": 293
+  },
+  "research_boundary": {
+    "campaign098_rerun_rescue_reweight_or_combination_allowed": false,
+    "campaign099_may_start_only_with_genuinely_new_prevalue_frozen_mechanism": true,
+    "candidate49_historical_backfill_performed": false,
+    "candidate49_ledgers_changed": false,
+    "provider_request_issued": false,
+    "current_scoring_selection_sizing_or_orders_performed": false,
+    "investment_advice": false
+  }
+}

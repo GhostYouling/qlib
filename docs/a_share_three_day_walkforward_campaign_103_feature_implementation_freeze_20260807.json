@@ -1,0 +1,62 @@
+{
+  "version": 1,
+  "kind": "a_share_three_day_walkforward_campaign103_feature_implementation_freeze",
+  "status": "frozen_before_campaign103_values",
+  "recorded_at": "2026-08-07T16:36:00+08:00",
+  "purpose": "Bind the exact Campaign103 source, temporal breadth implementation, and synthetic tests before reading any Campaign103 candidate, paired-support, or comparator value.",
+  "concept_scouting": {
+    "path": "docs/a_share_three_day_walkforward_campaign_103_concept_scouting.json",
+    "sha256": "e6c23541f2717668b88c4a1566725becf6bb40577df81aebf58829e33dd42d70"
+  },
+  "mechanism_overlap_audit": {
+    "path": "docs/a_share_three_day_walkforward_campaign_103_mechanism_overlap_audit.json",
+    "sha256": "be6565dc9f5c8c6b87c6bad9bccf3163c288ed9e48ba75c4e97ee3327a019d3a"
+  },
+  "protocol": {
+    "path": "docs/a_share_three_day_walkforward_campaign_103_no_return_preregistration.json",
+    "sha256": "ea7aae7dcae02629cb00e39e6bff903b7ce2afe14aeb1e29b3b612d381297245"
+  },
+  "source_catalog": {
+    "path": "docs/a_share_three_day_walkforward_campaign_103_source_catalog.json",
+    "sha256": "6cfa9e7a1a050037fac15a6822a06fc2fab3ac4b6959a41433f81213b6532a76"
+  },
+  "source_manifest": {
+    "path": "/Volumes/DIsk/qlib-a-share-tushare-1m/derived/a_share/rich/tushare/minute_walkforward_campaign102_design_matrix/tushare_stk_mins_1m_2019_2025_ea0cbb8f_walkforward_campaign102_design_matrix_v1/snapshot_manifest.json",
+    "sha256": "fc9ab498462439731785a0eabbde370c1fd883c8d771eba312c85aa912d3cebe",
+    "dataset_sha256": "cceec2b790d134a89914e83e0697c1e6abff605a85fd85be74de68067faddb92"
+  },
+  "feature_builder": {
+    "path": "scripts/a_share_three_day_walkforward_campaign103_features.py",
+    "sha256": "36b34b9697cc2cfec66974475e39a52a40ed8daf2f7b862cb92541d7b55c4da6"
+  },
+  "synthetic_tests": {
+    "path": "tests/data_collector_tests/test_a_share_three_day_walkforward_campaign103_features.py",
+    "sha256": "5e013e7391763d648c368f1c485ad2cc7a64aa94fd25148de29b513809cfc171",
+    "result": "8_passed"
+  },
+  "exact_semantics": {
+    "factor": "full_numeric_library_directional_rank_improvement_breadth_130f",
+    "direction": "higher",
+    "component_count": 130,
+    "component_order_sha256": "c80d9b929536dd509d6c1a904f790831050e68200393de381f92ad9293ef69e7",
+    "current_and_prior_minimum_finite_components": 98,
+    "minimum_paired_components": 66,
+    "paired_floor_derivation": "98+98-130",
+    "vote": {"improved": 1.0, "exact_tie": 0.5, "deteriorated": 0.0},
+    "prior_session": "exact immediately previous accepted session; no previous-observed-row bridge",
+    "missing_pair": "omitted from numerator and denominator",
+    "formula_lag_vote_tie_pair_floor_direction_threshold_filter_subset_weight_fit_model_or_rescue_may_change": false
+  },
+  "research_boundary": {
+    "campaign102_values_are_prior_immutable_evidence": true,
+    "campaign103_candidate_or_paired_support_values_read_before_freeze": false,
+    "campaign103_comparison_values_read_before_freeze": false,
+    "historical_daily_price_or_forward_return_values_read_before_freeze": false,
+    "provider_request_issued_before_freeze": false,
+    "candidate49_historical_backfill_performed_before_freeze": false,
+    "candidate49_ledgers_changed_before_freeze": false,
+    "second_prospective_candidate_created_before_freeze": false,
+    "current_scoring_selection_sizing_or_orders_performed_before_freeze": false
+  },
+  "decision": "The exact immutable feature snapshot may now be built once; coverage must pass before any of the 130 comparator values are opened for Campaign103."
+}

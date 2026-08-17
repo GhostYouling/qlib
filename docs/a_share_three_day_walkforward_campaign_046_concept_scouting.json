@@ -1,0 +1,115 @@
+{
+  "version": 1,
+  "kind": "a_share_three_day_walkforward_campaign046_concept_scouting",
+  "status": "completed_before_campaign046_candidate_comparison_daily_price_or_return_values",
+  "recorded_at": "2026-07-31T22:02:04Z",
+  "purpose": "Select exactly one genuinely new Campaign046 mechanism after Campaign045 terminated, without opening any Campaign046 minute candidate value, comparison value, daily price, forward return, training fold, or 2024-2025 stress value.",
+  "authoritative_inputs": {
+    "iteration_state": {
+      "path": "docs/a_share_three_day_iteration_status_20260801_campaign045_verified.json",
+      "sha256": "3c5ea3ce7bf2b67683c201cca2b36c1683e430a66902c0b75ff573913625a8b6"
+    },
+    "historical_walkforward_policy": {
+      "path": "docs/a_share_three_day_historical_walkforward_research_policy_20260727.json",
+      "sha256": "38426d6161b9bfed323c58caba18feca668b8c9d53e294951a8ba90c01a798bb"
+    },
+    "campaign045_terminal_record": {
+      "path": "docs/a_share_three_day_walkforward_campaign_045_research_record.json",
+      "sha256": "1fea52800552ed3823c5b3803af37b2e373a194dc1915beec4334270ec374e81"
+    },
+    "complete_pre_campaign046_comparison_library": {
+      "path": "docs/a_share_three_day_walkforward_campaign_045_no_return_preregistration.json",
+      "sha256": "886fab70da8584fdf43cec921064b2891e5477b7118be979313e1950260b145e",
+      "factor_count_before_adding_campaign045": 68,
+      "factor_order_sha256": "86bf315f3e7cf1fa7cc4a70118830807a4e7a311efbab34c2b0df02e0c617a1f"
+    }
+  },
+  "candidate_design_catalog": [
+    {
+      "design": "return_reversal_energy_share",
+      "decision": "selected",
+      "reason": "It measures how much adjacent within-half return-product energy belongs to opposite-sign pairs. No frozen factor uses a sign-symmetric magnitude-weighted reversal-energy share over the exact 236 adjacent-return pairs."
+    },
+    {
+      "design": "negative_return_absorption_or_one_sided_recovery",
+      "decision": "rejected_before_values",
+      "reason": "The terminal negative-return-absorption mechanism is directionally one-sided, amount-weighted, and conditions only on a negative return followed by a positive return."
+    },
+    {
+      "design": "same_sign_or_opposite_sign_pair_count",
+      "decision": "rejected_before_values",
+      "reason": "Pure counts reopen terminal sign-run, bar-direction-continuity, and weak-order mechanisms and discard the return magnitudes that define the selected energy allocation."
+    },
+    {
+      "design": "signed_lag_one_autocorrelation_or_variance_ratio",
+      "decision": "rejected_before_values",
+      "reason": "Signed covariance and multi-minute variance aggregation reopen terminal diffusive-variation, five-minute-variance-ratio, and persistence families; the selected factor uses no centering, covariance, or return-sum aggregation."
+    },
+    {
+      "design": "magnitude_serial_persistence",
+      "decision": "rejected_before_values",
+      "reason": "Correlation of adjacent absolute returns is the terminal Campaign028 definition. The selected factor instead allocates absolute return-product energy by sign reversal versus continuation."
+    },
+    {
+      "design": "alternate_lags_windows_thresholds_or_sign_tolerances",
+      "decision": "rejected_before_values",
+      "reason": "Lag one, both complete half sessions, exact zero, and the fixed 236-pair support are frozen once; no lag, subwindow, threshold, epsilon-sign, or parameter family is searched."
+    },
+    {
+      "design": "terminal_factor_combination_filter_or_model",
+      "decision": "rejected_before_values",
+      "reason": "Campaign046 contains one raw close-return mechanism and no terminal value, fitted weight, filter, threshold, regime, or model."
+    }
+  ],
+  "selected_candidate": {
+    "name": "intraday_return_reversal_energy_share_236p",
+    "direction": "higher",
+    "economic_hypothesis": "A larger share of adjacent one-minute return-product energy reversing sign indicates stronger two-sided liquidity absorption and less propagation of one-minute inventory shocks, which may leave a more resilient price-discovery state from the next open through the third close.",
+    "formula": "Within each 120-close half, form 119 adjacent log returns and 118 adjacent return pairs (a,b). Pool both halves to 236 pairs. Let W=sum(abs(a*b)) over all pairs and O=sum(abs(a*b)) only where a*b<0. Return O/W.",
+    "source_projection": [
+      "datetime",
+      "symbol",
+      "provider",
+      "close"
+    ],
+    "selected_grid": [
+      "09:31-11:30",
+      "13:01-15:00"
+    ],
+    "selected_bar_count": 240,
+    "within_half_return_count": 238,
+    "adjacent_pair_count": 236,
+    "include_0930": false,
+    "include_lunch_transition": false,
+    "pair_weight": "abs(a*b)",
+    "opposite_sign_rule": "a*b<0 exactly",
+    "zero_semantics": "retain every exact-zero return in fixed support; a zero product contributes zero to numerator and denominator and is never bridged",
+    "denominator_semantics": "W must be finite and strictly positive",
+    "valid_range": [
+      0.0,
+      1.0
+    ],
+    "endpoint_canonicalization_tolerance": 1e-12,
+    "transform_threshold_filter_combination_or_model": "none"
+  },
+  "research_boundary": {
+    "comparison_factor_names_and_directions_read_from_frozen_protocol": true,
+    "external_minute_partitions_read": false,
+    "candidate_values_read": false,
+    "comparison_values_read": false,
+    "historical_daily_price_fields_read": false,
+    "historical_forward_returns_read": false,
+    "training_or_model_fitting_performed": false,
+    "provider_request_issued": false,
+    "candidate49_historical_return_signal_or_execution_backfill_performed": false,
+    "candidate49_ledgers_changed": false,
+    "candidate50_activation_created": false,
+    "current_scoring_selection_sizing_or_orders_performed": false,
+    "investment_advice": false
+  },
+  "decision": {
+    "selected_candidate_count": 1,
+    "predictive_value_established": false,
+    "next_action": "Complete a separate pre-value overlap audit against all 68 inherited comparisons plus terminal Campaign045, then freeze the exact 69-comparison no-return protocol."
+  }
+}

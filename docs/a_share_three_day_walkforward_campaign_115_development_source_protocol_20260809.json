@@ -1,0 +1,114 @@
+{
+  "schema_version": 1,
+  "kind": "a_share_three_day_walkforward_campaign115_development_source_protocol",
+  "status": "frozen_before_development_runner_implementation_provider_rows_or_candidate_values",
+  "recorded_at": "2026-08-09T05:00:00+08:00",
+  "recorded_at_semantics": "monotonic_logical_append_time_after_acceptance_state_v5_not_host_wall_clock_measurement",
+  "purpose": "After the one fixed-date acceptance succeeds, acquire exactly the complete 2019-2023 limit_list_d development source once, with prefix-only crash resume, immutable per-session checkpoints, atomic final publication, and no daily-price, return, comparator, or 2024-2025 access.",
+  "authoritative_inputs": {
+    "iteration_state_v5": {
+      "path": "docs/a_share_three_day_iteration_status_20260809_campaign115_acceptance_wait_v5.json",
+      "sha256": "a17a3b1a06d2c2341e8fc2edf027cd6287ceb38ba0848e6b4553fda6ac8699c3"
+    },
+    "numeric_policy_v90": {
+      "path": "docs/a_share_three_day_walkforward_future_numeric_comparison_eligibility_policy_v90_20260809.json",
+      "sha256": "6ee127cbbe86631397ddafba2942412b69a8ab051b2a7b244fcafa89a5c9a42c"
+    },
+    "source_contract": {
+      "path": "docs/a_share_tushare_limit_up_queue_persistence_data_contract_20260809.json",
+      "sha256": "41627b182e3d5f6d5de663f589abc06b204bd425971afe1de4a7c20d237caa42"
+    },
+    "acceptance_runner_freeze_v5": {
+      "path": "docs/a_share_three_day_walkforward_campaign_115_source_acceptance_runner_freeze_v5_20260809.json",
+      "sha256": "b7cf4b1ac4f4196359884d5aa50409ee79685abf8affa59b37a7e154dbeb28d7"
+    },
+    "adapter": {
+      "path": "scripts/a_share_tushare_limit_up_queue_persistence.py",
+      "sha256": "807d06f7dec4ca0a94beb28912b686e8cb01fbf36c7f473e69564de16af5f5dd"
+    }
+  },
+  "development_calendar": {
+    "start": "2019-01-01",
+    "end": "2023-12-31",
+    "calendar_path": "data/qlib/cn_a_share/calendars/day.txt",
+    "calendar_file_sha256": "fda506597d26bcec953cdc0882042a5046ec1587db60490e16a01627fd43f53a",
+    "accepted_session_count": 1214,
+    "accepted_session_order_sha256": "63559370c9abfe3b8e24d133d1cc102658e9f3a144c507a1c12928d93ad95059",
+    "purge_or_fold_logic_applied_during_source_sync": false
+  },
+  "point_in_time_universe": {
+    "path": "data/qlib/cn_a_share/instruments/buyable_main_chinext.txt",
+    "sha256": "77ccf8de2ed1e447e73b5d5ff1703fc2a8656d6adab34ef44017481730249db1",
+    "derive_active_names_from_recorded_start_and_end_for_each_session": true,
+    "current_listing_snapshot_survivorship_limitation_preserved": true,
+    "unsupported_board_or_outside_active_universe_source_rows_excluded_and_counted": true
+  },
+  "provider_request": {
+    "provider": "tushare",
+    "api": "limit_list_d",
+    "fields_in_exact_order": [
+      "ts_code",
+      "trade_date",
+      "limit",
+      "last_time",
+      "open_times"
+    ],
+    "one_completed_session_per_call": true,
+    "maximum_lifetime_provider_calls": 1214,
+    "maximum_calls_in_one_resumed_run": "remaining_exact_prefix_sessions_only",
+    "parallel_provider_calls": 1,
+    "minimum_local_interval_seconds": 1.05,
+    "interval_is_a_conservative_local_cap_not_an_endpoint_entitlement_claim": true,
+    "alternate_date_range_symbol_batch_field_set_endpoint_or_token_retry_allowed": false,
+    "provider_none_response_is_failure_not_empty_roster": true,
+    "exact_schema_empty_dataframe_may_be_canonicalized_but_full_source_gate_still_requires_at_least_200_sessions_with_valid_u_rows": true,
+    "row_count_at_or_above_5000": "terminal_possible_truncation_failure"
+  },
+  "authorization_and_plan": {
+    "acceptance_success_manifest_and_factor_frame_must_validate_first": true,
+    "acceptance_attempt_forensics_must_report_success_committed": true,
+    "current_account_5000_point_confirmation_required_again_for_development_sync": true,
+    "network_flags": [
+      "--allow-network",
+      "--confirm-current-account-has-5000-points",
+      "--confirm-development-sync"
+    ],
+    "plan_is_zero_credential_zero_provider_and_read_only": true,
+    "run_may_load_credential_only_after_plan_ready_and_durable_development_intent": true,
+    "credential_value_print_hash_log_or_persist_allowed": false
+  },
+  "checkpoint_and_resume": {
+    "partial_root": "data/raw/a_share/rich/tushare/limit_up_queue_persistence/development/.campaign115_2019_2023.partial",
+    "intent_created_and_fsynced_before_credential_loading": true,
+    "session_partition": "sessions/YYYY-MM-DD/factor.parquet plus checkpoint.json",
+    "session_directory_published_by_atomic_replace_after_file_and_directory_fsync": true,
+    "checkpoint_binds_session_active_universe_source_quality_factor_bytes_protocol_and_adapter": true,
+    "resume_requires_one_exact_completed_prefix_with_every_checkpoint_byte_hash_revalidated": true,
+    "gap_changed_checkpoint_unknown_file_or_nonprefix_partition": "terminal_local_binding_failure_before_provider_access",
+    "orphan_temporary_session_directory_cleanup_allowed_only_after_exclusive_advisory_lock": true,
+    "caught_provider_schema_formula_or_checkpoint_failure": "delete_partial_root_publish_credential_safe_terminal_failure_and_never_retry",
+    "uncaught_process_or_host_interruption": "preserve_exact_completed_prefix_for_hash_verified_resume"
+  },
+  "atomic_success": {
+    "final_root": "data/raw/a_share/rich/tushare/limit_up_queue_persistence/development/campaign115_2019_2023",
+    "internal_source_manifest": "source_manifest.json",
+    "repository_run_manifest": "data/metadata/rich_data/runs/campaign115_tushare_limit_queue_development_2019_2023.json",
+    "partial_root_contains_complete_internal_manifest_before_atomic_root_replace": true,
+    "final_root_parent_fsynced_after_replace": true,
+    "repository_manifest_is_private_atomic_and_fsynced": true,
+    "post_root_pre_repository_manifest_crash_can_only_finalize_locally_without_provider_access": true,
+    "success_requires_all_1214_sessions_and_at_least_200_sessions_with_valid_u_rows": true,
+    "raw_provider_responses_persisted": false
+  },
+  "research_boundary": {
+    "provider_request_issued_during_protocol_freeze": false,
+    "provider_rows_or_candidate_values_read_during_protocol_freeze": false,
+    "comparison_values_read": false,
+    "historical_daily_price_or_forward_return_values_read": false,
+    "stress_2024_2025_opened": false,
+    "candidate49_ledgers_changed": false,
+    "second_prospective_candidate_created": false,
+    "current_scoring_selection_sizing_or_orders_performed": false,
+    "investment_advice": false
+  }
+}

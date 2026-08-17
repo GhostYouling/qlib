@@ -1,0 +1,19 @@
+{
+  "schema_version": 1,
+  "kind": "a_share_three_day_walkforward_campaign146_infrastructure_failure",
+  "status": "recorded_ordered_uniqueness_plan_failure_before_comparator_values",
+  "recorded_at": "2026-08-14T21:55:00+08:00",
+  "attempt_id": "campaign146_infrastructure_007",
+  "stage": "all_141_ordered_uniqueness_plan",
+  "command": "python scripts/a_share_three_day_walkforward_campaign146_ordered_uniqueness.py plan",
+  "exit_code": 1,
+  "failure": "After all static semantics and fingerprints passed, static receipt construction raised KeyError('files') because the immutable Campaign136 manifest stores partition records under 'partitions'.",
+  "required_recovery_boundary": "Do not edit the frozen runner or implementation freeze. Freeze a wrapper that changes only the static receipt partition-count lookup from files to partitions, then rerun plan before comparator values.",
+  "scientific_effect": {
+    "candidate_values_read_beyond_prior_coverage": false,
+    "comparator_partition_values_read": false,
+    "daily_price_or_forward_return_read": false,
+    "provider_request_issued": false,
+    "candidate49_ledgers_changed": false
+  }
+}

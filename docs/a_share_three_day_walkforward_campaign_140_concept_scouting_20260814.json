@@ -1,0 +1,203 @@
+{
+  "schema_version": 1,
+  "kind": "a_share_three_day_walkforward_campaign140_concept_scouting",
+  "status": "terminal_zero_selected_candidates_after_complete_definition_and_accepted_schema_review",
+  "recorded_at": "2026-08-14T13:51:36+0800",
+  "purpose": "Review one finite Campaign140 catalog against all 153 complete logical definitions, the historical terminal registry and accepted local point-in-time schemas without opening any Campaign140 source row, candidate value, comparator value, daily price or forward return.",
+  "authoritative_inputs": {
+    "campaign139_terminal_state": {
+      "path": "docs/a_share_three_day_iteration_status_20260814_campaign139_capacity_terminal_v2.json",
+      "sha256": "57d2a10a5d2a474b9e782e6b37260a370eec9c147d99f6f1f78268482bcef074",
+      "cumulative_historical_research_attempt_count": 1168,
+      "cumulative_return_reading_development_trial_count": 313
+    },
+    "numeric_policy_v176": {
+      "path": "docs/a_share_three_day_walkforward_future_numeric_comparison_eligibility_policy_v176_20260814.json",
+      "sha256": "2ea7906065afb30cd8f72789bcb39c656f3dc57ac919719365a2186f1db43c86",
+      "complete_definition_count_reviewed": 153,
+      "complete_definition_order_sha256": "bf66faef96d7058c7028da52757c65d8e0bf7978cf72d3967cd236e4da30b875",
+      "eligible_numeric_comparator_count_reserved_but_not_loaded": 141,
+      "eligible_numeric_comparator_order_sha256": "ec1aebcb939ad516c58037a36a4aaadd4ad8b2abbd3c884705895c58da85a2ee"
+    },
+    "historical_walkforward_policy": {
+      "path": "docs/a_share_three_day_historical_walkforward_research_policy_20260727.json",
+      "sha256": "38426d6161b9bfed323c58caba18feca668b8c9d53e294951a8ba90c01a798bb"
+    },
+    "historical_terminal_registry": {
+      "path": "docs/a_share_three_day_research_frontier_contract.json",
+      "sha256": "36ac39c68fedebf2fdf999475e10452278bbeff4f42b1c41963539867539eeaf"
+    }
+  },
+  "accepted_local_schema_audit": {
+    "active_data_root": "/Volumes/DIsk/Disk-Coding/qlib/data",
+    "inspection_method": "pyarrow Parquet schema and manifest metadata only; no row group or column value opened",
+    "schema_families": [
+      {
+        "path": "data/raw/a_share/fundamentals/annual_quality.parquet",
+        "manifest_path": "data/metadata/annual_quality_manifest.json",
+        "manifest_sha256": "6447720d7199fe8e979bb667c13e5f5ba40f7669025acc9af5cc75696e622731",
+        "field_names": ["instrument", "report_date", "announcement_date", "roe", "net_profit", "revenue_yoy", "profit_yoy"],
+        "field_name_order_sha256": "163968446ac6dc81cdfeca3eebceeba69468b07df072be854aaddce62f3a707a"
+      },
+      {
+        "path": "data/raw/a_share/fundamentals/quarterly_quality.parquet",
+        "manifest_path": "data/metadata/quarterly_quality_manifest.json",
+        "manifest_sha256": "e3cf654babe37a82393c5530696bc1cc242b736cb88e1947b8444b638125ba8c",
+        "field_names": ["instrument", "report_date", "announcement_date", "roe", "net_profit", "revenue_yoy", "profit_yoy"],
+        "field_name_order_sha256": "163968446ac6dc81cdfeca3eebceeba69468b07df072be854aaddce62f3a707a"
+      },
+      {
+        "path": "data/raw/a_share/fundamentals/performance_forecasts.parquet",
+        "manifest_path": "data/metadata/performance_forecasts_manifest.json",
+        "manifest_sha256": "d824bf8194b871fc21ce66cab80f1f9158814fff0e9a5d77a2cfbaec967e562c",
+        "field_names": ["instrument", "report_date", "announcement_date", "forecast_type", "forecast_turnaround", "forecast_profit_yoy", "forecast_profit_yoy_width"],
+        "field_name_order_sha256": "259f013152c52e73cf529055b26c8183185a9f2036a28fdb831bcc96a60d3abd"
+      },
+      {
+        "path": "data/raw/a_share/events/repurchase_plans.parquet",
+        "manifest_path": "data/metadata/repurchase_plans_manifest.json",
+        "manifest_sha256": "833a0c78edb1e98fa478b94938db507f3759305b7587ee422b2990b3b090b4e1",
+        "field_names": ["instrument", "announcement_date", "repurchase_planned_share_ratio", "repurchase_planned_amount"],
+        "field_name_order_sha256": "ff65d44ea9af26e07d6ba9de246e1fd9f485d5f4550c76e077e4b6a428b5ed3f"
+      },
+      {
+        "path": "data/raw/a_share/events/holder_count_changes.parquet",
+        "manifest_path": "data/metadata/holder_count_changes_manifest.json",
+        "manifest_sha256": "1d38b782968786f274ab57429f19bc967054a0e9f0a97459f21e9ac07ee2a988",
+        "field_names": ["instrument", "announcement_date", "holder_count_change_ratio", "holder_count_change_absolute"],
+        "field_name_order_sha256": "4be65ba3ef09fd7a6d279336cf66b46f05b5b58a007779a5e5220555d99c4a01"
+      },
+      {
+        "path": "data/raw/a_share/events/share_pledges.parquet",
+        "manifest_path": "data/metadata/share_pledges_manifest.json",
+        "manifest_sha256": "3b278f54e30aa397993bfb7fc6b836e36bd2e93c508629ac1fad2da2846d395d",
+        "field_names": ["instrument", "announcement_date", "pledge_share_count", "pledge_total_share_ratio", "pledge_event_count"],
+        "field_name_order_sha256": "b48d44104619679d49f9c9ac0d53ee17e87e56c940d5d861f5f0a2a2ceb41d8e"
+      },
+      {
+        "path": "data/raw/a_share/events/margin_financing_top_flows.parquet",
+        "manifest_path": "data/metadata/margin_financing_top_flows_manifest.json",
+        "manifest_sha256": "8710f7faefbb04ef2f8f318955d922ac5c8e5fdaf1d7aa3dc25824a64eb9b377",
+        "field_names": ["instrument", "trade_date", "margin_net_buy_to_market_cap", "margin_buy_to_market_cap", "margin_balance_to_market_cap", "margin_financing_balance_growth"],
+        "field_name_order_sha256": "6dca44ffa10e8af1cc2f994c952355144ac6e338fea0062df51a7f70016470cb"
+      },
+      {
+        "path": "data/raw/a_share/events/analyst_rating_changes.parquet",
+        "manifest_path": "data/metadata/analyst_rating_changes_manifest.json",
+        "manifest_sha256": "483d7ec7fa5c44b3b0639bd5516d2b6fd34c75c749cdf12b1f71e71202759f54",
+        "field_names": ["instrument", "announcement_date", "analyst_rating_upgrade_share", "analyst_valid_rating_report_count"],
+        "field_name_order_sha256": "7b71ad9039022f3a8effc71585817d4f4dbcf5828cfee8dbefb284b8f6e3adb6"
+      }
+    ]
+  },
+  "finite_prevalue_concept_catalog": [
+    {
+      "catalog_id": "c140_01",
+      "name": "quarterly_forecast_surprise_persistence",
+      "hypothetical_formula": "current realized-minus-forecast profit-growth surprise minus the prior same-instrument surprise",
+      "direction": "higher",
+      "parameters": "one prior matched report period",
+      "filters": "two finite exact report-period surprises",
+      "subset_or_combination": "Campaign139 surprise plus its lag",
+      "model": null,
+      "prevalue_decision": "rejected_as_campaign139_post_result_lag_operator_and_capacity_rescue",
+      "reason": "Campaign139 fixed one signed same-period surprise and terminalized at only 123 non-overlapping cohorts. Requiring a second surprise can only reduce support, while differencing the terminal series after its result is an exposed lag/operator rescue."
+    },
+    {
+      "catalog_id": "c140_02",
+      "name": "annual_q4_vs_q3_profit_growth_seasonality_gap",
+      "hypothetical_formula": "annual profit_yoy minus the latest preceding Q3 profit_yoy for the same instrument and fiscal year",
+      "direction": "higher",
+      "parameters": "fixed Q4-versus-Q3 pair",
+      "filters": "both announcements effective and both values finite",
+      "subset_or_combination": "quarterly realized growth states",
+      "model": null,
+      "prevalue_decision": "rejected_as_realized_growth_acceleration_subset_and_annual_duplicate_source",
+      "reason": "Annual quality is the annual subset of the same seven-field quarterly history. A fixed Q4-versus-Q3 difference is a report-month subset of the terminal realized-growth level/acceleration family, not a new information state."
+    },
+    {
+      "catalog_id": "c140_03",
+      "name": "repurchase_plan_amount_to_last_profit_coverage",
+      "hypothetical_formula": "positive repurchase_planned_amount divided by the latest positive effective net_profit",
+      "direction": "higher",
+      "parameters": null,
+      "filters": "finite positive amount and net profit",
+      "subset_or_combination": "sparse repurchase event plus terminal profit scale",
+      "model": null,
+      "prevalue_decision": "rejected_as_sparse_repurchase_family_normalization_and_terminal_cross_source_combination",
+      "reason": "Repurchase amount and share-ratio states have only 23 and 17 frozen potential cohorts versus the 200 minimum. A profit denominator does not create event dates and combines a capacity-terminal event with an exposed accounting scale."
+    },
+    {
+      "catalog_id": "c140_04",
+      "name": "pledge_stress_confirmed_by_holder_concentration_change",
+      "hypothetical_formula": "pledge_total_share_ratio multiplied by negative holder_count_change_ratio after both disclosures are effective",
+      "direction": "higher",
+      "parameters": "latest effective states only",
+      "filters": "both finite",
+      "subset_or_combination": "share-pledge and holder-count terminal ownership branches",
+      "model": null,
+      "prevalue_decision": "rejected_as_post_exposure_ownership_event_combination_and_capacity_bypass",
+      "reason": "Pledge fields completed their frozen branch, while holder-count ratio/absolute states stopped at 194 potential cohorts below 200. Multiplication after those outcomes is a post-exposure confirmation combination and cannot bypass the failed component capacity."
+    },
+    {
+      "catalog_id": "c140_05",
+      "name": "quarterly_disclosure_margin_financing_reaction",
+      "hypothetical_formula": "three-session change in margin_net_buy_to_market_cap after a quarterly announcement",
+      "direction": "higher",
+      "parameters": "three accepted sessions",
+      "filters": "quarterly announcement and finite margin states",
+      "subset_or_combination": "announcement timing plus terminal margin-financing flow",
+      "model": null,
+      "prevalue_decision": "rejected_as_event_window_search_and_terminal_margin_announcement_combination",
+      "reason": "All four margin-financing states and quarterly timing states are already in the terminal registry. Selecting a post-disclosure window and differencing them now is a fitted event-window refresh of two exposed domains, not a new source relation."
+    },
+    {
+      "catalog_id": "c140_06",
+      "name": "analyst_attention_and_management_forecast_uncertainty_consensus",
+      "hypothetical_formula": "rank(analyst_valid_rating_report_count) minus rank(forecast_profit_yoy_width)",
+      "direction": "higher",
+      "parameters": null,
+      "filters": "both finite and effective",
+      "subset_or_combination": "terminal analyst-attention and forecast-precision branches",
+      "model": null,
+      "prevalue_decision": "rejected_as_post_exposure_cross_source_consensus_of_terminal_families",
+      "reason": "Analyst coverage/upgrade and forecast width/freshness/type alternatives are explicitly terminal. Their rank gap is a new arithmetic wrapper around exposed states and cannot be admitted merely because both schemas remain local."
+    }
+  ],
+  "selection": {
+    "concepts_reviewed": 6,
+    "rejected_concept_count": 6,
+    "selected_candidate_count": 0,
+    "selected_candidate": null,
+    "finite_candidate_library": true,
+    "genuinely_new_independent_mechanism_found": false,
+    "reason": "Every proposal is a lag, subset, normalization, window or cross-source combination of capacity- or return-terminal mechanisms; accepted schema availability alone does not restore semantic independence."
+  },
+  "research_boundary": {
+    "schema_and_terminal_history_metadata_read": true,
+    "parquet_schema_only_inspection_performed": true,
+    "parquet_rows_or_column_values_read": false,
+    "programmatic_provider_request_issued": false,
+    "provider_credential_present_without_value_or_digest_read": true,
+    "provider_credential_loaded": false,
+    "campaign140_candidate_values_computed_or_read": false,
+    "campaign140_comparator_values_read": false,
+    "historical_daily_price_fields_read": [],
+    "historical_forward_returns_read": false,
+    "stress_2024_2025_opened": false,
+    "candidate49_historical_backfill_performed": false,
+    "candidate49_ledgers_changed": false,
+    "second_prospective_candidate_created": false,
+    "current_scoring_selection_sizing_positions_or_orders_performed": false,
+    "investment_advice": false,
+    "inherited_current_listing_survivorship_limitation_remains": true
+  },
+  "decision": {
+    "create_campaign140_formula_feature_or_model_implementation": false,
+    "run_source_acceptance_coverage_uniqueness_or_return_trial": false,
+    "request_new_provider_history": false,
+    "append_complete_definition_or_numeric_comparator": false,
+    "terminalize_campaign140_prevalue": true,
+    "next_campaign_requirement": "Begin Campaign141 only from a genuinely new finite prevalue mechanism supported by accepted historically versioned point-in-time data; preserve all Campaign140 rejections and Candidate49 as the sole prospective ledger."
+  }
+}

@@ -1,0 +1,36 @@
+{
+  "schema_version": 1,
+  "kind": "a_share_three_day_walkforward_campaign260_initial_snapshot_build_failure",
+  "status": "infrastructure_failure_excluded_from_scientific_evidence",
+  "recorded_at": "2026-08-16T15:18:00+08:00",
+  "frozen_implementation": {
+    "path": "docs/a_share_three_day_walkforward_campaign_260_implementation_freeze_20260816.json",
+    "sha256": "4a31ed0b8b3f983617970c4e04d0ba36ec4c14dcf7a7d2de98b00c9861887bd3"
+  },
+  "command": "/Volumes/DIsk/Coding/anaconda3/bin/python3.12 scripts/a_share_three_day_walkforward_campaign260_features.py build --workers 8 --confirm-build",
+  "exit_code": 1,
+  "error_type": "KeyError",
+  "error_key": "positive_amount_bars",
+  "root_cause": "The inherited Campaign152 snapshot accumulator freezes two manifest-only amount support counters. Campaign260's extractor returned the scientific quality counters but omitted those two accumulator keys.",
+  "scientific_semantics_affected": false,
+  "candidate_formula_direction_grid_or_value_rule_changed": false,
+  "source_rows_were_read_before_failure": true,
+  "published_snapshot_manifest_created": false,
+  "published_partition_created": false,
+  "final_output_root_present_but_empty": true,
+  "partial_output_used_as_evidence": false,
+  "allowed_recovery": "Append a source-compatible wrapper that adds exact positive_amount_bars and zero_amount_bars counters for candidate-eligible sessions; preserve the frozen formula, candidate values, source projection, output path and all gates.",
+  "forbidden_recovery": "Do not change the formula, direction, range, window, eligibility, source fields, candidate values, comparator order, thresholds or return policy.",
+  "research_boundary": {
+    "campaign260_comparator_values_read": false,
+    "historical_daily_price_or_forward_return_values_read": false,
+    "stress_2024_2025_opened": false,
+    "provider_or_web_request_issued": false,
+    "provider_credential_presence_value_or_digest_read": false,
+    "candidate49_historical_backfill_performed": false,
+    "candidate49_ledgers_changed": false,
+    "second_prospective_candidate_created": false,
+    "current_scoring_selection_sizing_positions_or_orders_performed": false,
+    "investment_advice": false
+  }
+}

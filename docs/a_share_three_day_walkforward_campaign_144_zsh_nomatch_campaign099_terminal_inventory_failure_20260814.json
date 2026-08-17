@@ -1,0 +1,34 @@
+{
+  "schema_version": 1,
+  "kind": "a_share_three_day_walkforward_campaign144_infrastructure_failure",
+  "status": "recorded_before_campaign144_values_or_returns",
+  "recorded_at": "2026-08-14T19:14:36+08:00",
+  "attempt_id": "campaign144_infrastructure_006",
+  "failure": {
+    "phase": "campaign099_terminal_metadata_inventory",
+    "process_exit_code": 1,
+    "cause": "zsh expanded a nonexistent terminal-result glob before jq could run.",
+    "target_file_written": false,
+    "failed_exit_code_bypassed": false,
+    "later_success_used_to_mask_failure": false
+  },
+  "safe_recovery": {
+    "preserve_this_record": true,
+    "allowed_action": "Resolve Campaign099 terminal artifacts with rg --files and literal filtering.",
+    "scientific_catalog_or_search_space_change_allowed": false
+  },
+  "research_boundary": {
+    "source_rows_or_column_values_read": false,
+    "component_factor_values_read": false,
+    "candidate_or_model_scores_computed_or_read": false,
+    "historical_daily_price_or_forward_return_values_read": false,
+    "stress_2024_2025_opened": false,
+    "provider_request_issued": false,
+    "provider_credential_value_or_digest_read": false,
+    "candidate49_historical_backfill_performed": false,
+    "candidate49_ledgers_changed": false,
+    "second_prospective_candidate_created": false,
+    "current_scoring_selection_sizing_positions_or_orders_performed": false,
+    "investment_advice": false
+  }
+}

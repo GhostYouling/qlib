@@ -1,0 +1,132 @@
+{
+  "schema_version": 1,
+  "kind": "a_share_three_day_walkforward_campaign083_concept_scouting",
+  "status": "selected_before_campaign083_minute_source_candidate_or_comparison_values",
+  "recorded_at": "2026-08-06T19:35:06+08:00",
+  "purpose": "Select exactly one economically distinct offline three-session factor after terminal Campaign082, before opening any Campaign083 minute source row, candidate value, comparison value, daily price, or forward return.",
+  "authoritative_bindings": {
+    "campaign082_verified_state": {
+      "path": "docs/a_share_three_day_iteration_status_20260806_campaign082_verified.json",
+      "sha256": "6c3ce9276b1d3d9530868e766d96a855bb625f00910baf585339e519f5e401fb"
+    },
+    "historical_walkforward_policy": {
+      "path": "docs/a_share_three_day_historical_walkforward_research_policy_20260727.json",
+      "sha256": "38426d6161b9bfed323c58caba18feca668b8c9d53e294951a8ba90c01a798bb"
+    },
+    "numeric_comparator_policy_v18": {
+      "path": "docs/a_share_three_day_walkforward_future_numeric_comparison_eligibility_policy_v18_20260806.json",
+      "sha256": "05258e51c1e0a7c9805c1b68c1f936504c390f43646f3e71c67f1d5e4fc8db9c",
+      "complete_definition_count": 114,
+      "complete_definition_order_sha256": "bc8ecccee5fa8278342253908e34167313041a23ae153bb3d64d3f60c285e04f",
+      "eligible_numeric_comparator_count": 112,
+      "eligible_numeric_comparator_order_sha256": "78656b7dcd0df95703ccf663d261c61cb5f596ca368c3523907464fe25ed1f2b"
+    },
+    "manage_qlib_a_share_data_skill": {
+      "path": "/Users/niyufei/.codex/skills/manage-qlib-a-share-data/SKILL.md",
+      "sha256": "90a99c54dd00f0c737e85c4c6dd48d906edbd0f591c61278885728eaf7806431"
+    }
+  },
+  "definition_only_source_boundary": {
+    "source": "immutable accepted local Tushare 2019-2025 one-minute source and joint-clean stock-day identity",
+    "minute_source_projection_if_later_admitted": [
+      "datetime",
+      "symbol",
+      "provider",
+      "close"
+    ],
+    "stock_day_identity_projection_if_later_admitted": [
+      "trade_date",
+      "symbol",
+      "provider"
+    ],
+    "candidate_source_rows_read": false,
+    "candidate_or_comparison_values_read": false,
+    "daily_price_or_forward_return_values_read": false,
+    "provider_request_allowed": false
+  },
+  "candidate_design_catalog": [
+    {
+      "design": "intraday_close_frontier_innovation_share_238p",
+      "decision": "selected_for_separate_complete_mechanism_overlap_audit",
+      "reason": "The share of within-half minutes that strictly establish a new running close high or low measures repeated price-frontier discovery. It discards innovation magnitude and direction, resets at lunch, and is not an ordinary price-update rate, extreme-arrival clock, terminal location, path-efficiency statistic, high-low interval frontier, or fitted trend."
+    },
+    {
+      "design": "intraday_close_frontier_signed_imbalance_238p",
+      "decision": "rejected_before_values",
+      "reason": "Subtracting new-low from new-high counts would reopen signed trend and direction-search families already represented by terminal close location, signed path efficiency, breakout pressure, and extreme-arrival order."
+    },
+    {
+      "design": "intraday_close_frontier_last_innovation_recency_240m",
+      "decision": "rejected_before_values",
+      "reason": "Last record time is another absolute extreme-timing or recency statistic after terminal extreme-arrival and peak-recency mechanisms."
+    },
+    {
+      "design": "intraday_high_low_frontier_innovation_count",
+      "decision": "rejected_before_values_as_terminal_family",
+      "reason": "High/low boundary expansion is already represented by the terminal two-sided range-frontier factor; changing expansion magnitude to counts would be a same-family rescue."
+    },
+    {
+      "design": "magnitude_weighted_close_frontier_innovation",
+      "decision": "rejected_before_values",
+      "reason": "Weighting record events by breakout size would mix the selected topology with path efficiency, range expansion, or breakout pressure and introduce an avoidable transform choice."
+    },
+    {
+      "design": "cross_day_close_frontier_persistence_or_filtered_frontier_share",
+      "decision": "rejected_before_values",
+      "reason": "Cross-day lags, thresholds, filters, subsets, regime splits, residualization, fitting, models, and combinations are outside this one-factor campaign."
+    }
+  ],
+  "selected_candidate": {
+    "name": "intraday_close_frontier_innovation_share_238p",
+    "direction": "higher",
+    "economic_hypothesis": "Repeated strict expansion of the within-half-session close frontier indicates continuing information incorporation rather than price revisitation; a session with broader sequential price discovery may retain directional attention over the next three sessions even though the factor deliberately discards whether discovery was upward or downward.",
+    "formula": "For each independent 120-close half, initialize running_min=running_max at its first close. For each of the next 119 positions, record one innovation exactly when close_t is strictly greater than the preceding running_max or strictly less than the preceding running_min, then update both frontiers. Sum innovations across the two halves and divide by exactly 238.",
+    "time_grid": "Exactly 09:31-11:30 and 13:01-15:00. The raw 09:30 row remains part of source identity but is excluded. The afternoon frontier restarts at 13:01; no lunch, overnight, cross-day, or cross-stock transition exists.",
+    "tie_rule": "Equality to either preceding running frontier is not an innovation. Comparisons are exact float64 comparisons with no epsilon, tick rounding, jitter, or stochastic tie handling.",
+    "source_semantics": "All 240 selected closes must be finite and strictly positive. A constant half or constant full day is valid and contributes zero innovations rather than missing.",
+    "valid_range": {
+      "lower": 0.0,
+      "lower_inclusive": true,
+      "upper": 1.0,
+      "upper_inclusive": true
+    },
+    "availability": "Known at the signal-session close after the exact 240 close bars; no future session, daily return, comparison value, or Candidate49 observation is used.",
+    "parameter_direction_window_transform_filter_subset_regime_fit_model_or_combination_search": false
+  },
+  "mandatory_pre_value_challenges": [
+    "all_114_frozen_historical_factor_definitions_in_exact_order",
+    "all_112_numeric_comparators_in_exact_order",
+    "intraday_price_update_share_238m",
+    "intraday_signed_path_efficiency_239m",
+    "intraday_terminal_close_location_240m",
+    "intraday_prior_range_breakout_pressure_238p",
+    "intraday_two_sided_range_frontier_balance_238m",
+    "intraday_extreme_arrival_order_240m",
+    "intraday_half_session_chord_adherence_240m",
+    "intraday_close_range_occupancy_entropy_10b",
+    "intraday_global_price_range_revisit_240m",
+    "intraday_bar_direction_continuity_238p",
+    "intraday_cross_sectional_standardized_return_state_stability_236p",
+    "signal_day_turnover_rate_pct",
+    "candidate49_intraday_cumulative_vwap_crossing_rate_240m_v1"
+  ],
+  "research_boundary": {
+    "campaign083_minute_source_rows_read": false,
+    "campaign083_candidate_values_read": false,
+    "comparison_values_read": false,
+    "historical_daily_price_fields_read": [],
+    "historical_forward_returns_read": false,
+    "provider_request_issued": false,
+    "candidate49_historical_backfill_performed": false,
+    "candidate49_ledgers_changed": false,
+    "second_prospective_candidate_created": false,
+    "current_scoring_selection_sizing_or_orders_performed": false,
+    "investment_advice": false
+  },
+  "decision": {
+    "selected_concept_count": 1,
+    "may_advance_directly_to_values": false,
+    "required_next_step": "Complete and bind one exhaustive no-value mechanism-overlap audit; then freeze the no-return protocol, implementation, tests, and fingerprints before any candidate value.",
+    "candidate49_remains_only_active_prospective_candidate": true
+  }
+}

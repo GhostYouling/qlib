@@ -1,0 +1,65 @@
+{
+  "version": 1,
+  "kind": "a_share_three_day_walkforward_campaign034_effective_research_record",
+  "status": "completed_zero_development_survivors_stress_interval_not_opened",
+  "recorded_at": "2026-07-30T19:31:11Z",
+  "purpose": "Establish the effective terminal Campaign034 record by preserving the original result record and applying only the additive post-result test lifecycle transition.",
+  "original_research_record": {
+    "path": "docs/a_share_three_day_walkforward_campaign_034_research_record.json",
+    "sha256": "df24869d6869cee20a2e44ff23a71d372f116a38c5e10bf110c6425a2aa05779"
+  },
+  "post_result_test_transition": {
+    "path": "docs/a_share_three_day_walkforward_campaign_034_post_result_test_transition_20260731.json",
+    "sha256": "dad84b1d515b6cae4bdb71356554b1fe1f40d4b7b96b8ff058487bd131121050"
+  },
+  "terminal_artifacts": {
+    "trial_ledger": {
+      "path": "data/experiments/short_horizon/historical_walkforward/campaign_034/walkforward/trial_ledger.json",
+      "sha256": "cb7b84cb71abcb55abc22a7ccd04fde8d29f15ebdf81ce0b5be1836dfeb7a703",
+      "entry_count": 1
+    },
+    "development_survivors": {
+      "path": "data/experiments/short_horizon/historical_walkforward/campaign_034/walkforward/development_survivors.json",
+      "sha256": "37fb7f055e5c2840d704231fb64d38811c63ebc81539eece3d92885efac749f6",
+      "selected_survivor_count": 0
+    },
+    "unopened_stress_record": {
+      "path": "data/experiments/short_horizon/historical_walkforward/campaign_034/walkforward/exposed_stress_consumption_record.json",
+      "sha256": "e6803d797a1699046bda1139f392cda9a559847349be5bce7e4c7c23e9828bd4",
+      "status": "not_opened_zero_development_survivors",
+      "stress_return_fields_read": false
+    },
+    "campaign_report": {
+      "path": "data/experiments/short_horizon/historical_walkforward/campaign_034/walkforward/campaign_report.json",
+      "sha256": "8682a052fcab28ea6bd001a0651f1c0b1f54957206f3442422e583f6ca971dc5"
+    }
+  },
+  "effective_conclusion": {
+    "factor": "intraday_round_tenth_close_avoidance_240m",
+    "direction": "higher",
+    "factor_terminal": true,
+    "development_trial_count": 1,
+    "development_survivor_count": 0,
+    "2024_2025_opened": false,
+    "2024_2025_returns_read": false,
+    "historical_development_trial_count_after_campaign": 255,
+    "current_historical_aggregation_candidate_count": 0,
+    "invert_repair_rewindow_rescale_neutralize_filter_threshold_rerun_rescue_or_combine_allowed": false
+  },
+  "prospective_boundary": {
+    "candidate49_signal_ledger": {
+      "path": "data/experiments/short_horizon/candidate49_future_signal_ledger.json",
+      "sha256": "5193f00d7f36da003f53cec387900da4c3d002299f5dfcfc1a95eaa199ed3a79",
+      "entry_count": 0
+    },
+    "candidate49_execution_ledger": {
+      "path": "data/experiments/short_horizon/candidate49_future_execution_ledger.json",
+      "sha256": "d57a3e61eac969e42cafa418ccd8c0a5ee65dcf69da145bb2c096c2a02a2ea4f",
+      "entry_count": 0
+    },
+    "candidate49_historical_backfill_performed": false,
+    "candidate50_activation_created": false,
+    "current_scoring_selection_sizing_or_orders_performed": false
+  },
+  "next_action": "Campaign035 may begin only from a genuinely independent mechanism with separate pre-value scouting and overlap audit and a finite fingerprint-bound no-return protocol."
+}

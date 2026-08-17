@@ -1,0 +1,72 @@
+{
+  "version": 1,
+  "kind": "a_share_three_day_walkforward_campaign080_development_implementation_freeze",
+  "status": "frozen_before_campaign080_2019_2023_development_return_read",
+  "frozen_at": "2026-08-06T08:20:00Z",
+  "development_preregistration": {
+    "path": "docs/a_share_three_day_walkforward_campaign_080_preregistration.json",
+    "sha256": "6ccc49c13dc2e7ba2b0955720efa7a24f94d23d19f13414b2fefc3ceebcd0b10"
+  },
+  "development_runner": {
+    "path": "scripts/a_share_three_day_walkforward_campaign080.py",
+    "sha256": "b4c4b781392c87f01b9542c2317611a936d431b0328cea9d21ea90b8f68a324b",
+    "base_runner_path": "scripts/a_share_three_day_walkforward_campaign074.py",
+    "base_runner_sha256": "8677b23a3cc64150a8e0136bdc7f81f22a1c121cda0e2912771e7c588746afc0"
+  },
+  "tests": {
+    "path": "tests/data_collector_tests/test_a_share_three_day_walkforward_campaign080_development.py",
+    "sha256": "d62b331b8da3df96d8498e31ea1648d69deb2afe6dfab77b684c7ca79e26eef1",
+    "pre_freeze_result": "3 passed, 1 implementation-freeze test deselected"
+  },
+  "research_attempt_ledger_before_return_read": {
+    "path": "data/experiments/short_horizon/historical_walkforward/campaign_080/research_attempt_ledger_v1.json",
+    "sha256": "8ac3787a8cdbce9c37da76801a04316b98ae4511680c8979d27ecd4f287c3d5f",
+    "campaign_attempt_count": 2,
+    "campaign_infrastructure_failure_count": 1,
+    "campaign_complete_factor_attempt_count": 1,
+    "campaign_return_reading_development_trial_count": 0
+  },
+  "frozen_trial": {
+    "trial_id": "wf080_intraday_above_median_amount_longest_run_240m_single_higher",
+    "feature_set": [
+      "intraday_above_median_amount_longest_run_240m"
+    ],
+    "weights": [
+      1
+    ],
+    "direction": "higher",
+    "complexity": 1,
+    "expected_trial_count": 1,
+    "training_and_validation_folds": [
+      "train_2019_2020_validate_2021",
+      "train_2019_2021_validate_2022",
+      "train_2019_2022_validate_2023"
+    ],
+    "purge_signal_sessions": 3,
+    "t_plus_1_and_t_plus_3_must_share_partition": true,
+    "alternate_trial_or_variant_authorized": false
+  },
+  "fixed_execution_assumptions": {
+    "holding_period_sessions": 3,
+    "topk": 3,
+    "initial_capital_cny": 200000,
+    "target_entry_exposure_fraction_per_slot": 0.05,
+    "maximum_entry_exposure_fraction_per_signal": 0.15,
+    "buy_lot_size_shares": 100,
+    "commission_rate_each_side": 0.0001,
+    "transfer_fee_rate_each_side": 0.00002,
+    "sell_stamp_duty_rate": 0.0005,
+    "primary_adverse_slippage_rate_each_side": 0.001,
+    "maximum_daily_amount_participation": 0.01
+  },
+  "historical_daily_price_fields_read_before_freeze": [],
+  "historical_forward_returns_read_before_freeze": false,
+  "development_trial_run_before_freeze": false,
+  "stress_2024_2025_opened_before_freeze": false,
+  "provider_request_issued_before_freeze": false,
+  "candidate49_historical_backfill_performed": false,
+  "candidate49_ledgers_changed": false,
+  "current_scoring_selection_sizing_or_orders_performed": false,
+  "investment_advice": false,
+  "next_action": "Run exactly one run-development command; if zero survivors, publish the unopened stress record and stop."
+}

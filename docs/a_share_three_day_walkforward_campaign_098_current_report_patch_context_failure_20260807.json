@@ -1,0 +1,17 @@
+{
+  "schema_version": 1,
+  "kind": "a_share_three_day_walkforward_campaign098_current_report_patch_context_failure",
+  "status": "recorded_append_only_before_exact_tail_retry",
+  "recorded_at": "2026-08-07T08:46:00Z",
+  "stage": "current_research_report_synchronization",
+  "failure": "The retry used the data-pipeline Campaign097 tail sentence as the current_research_report anchor. The target actually ended with a different Campaign097 summary, so apply_patch rejected the change before writing.",
+  "target": "data/experiments/short_horizon/current_research_report.md",
+  "target_changed_by_failed_patch": false,
+  "research_values_recomputed": false,
+  "new_historical_daily_price_or_forward_return_values_read": false,
+  "stress_2024_2025_return_fields_read": false,
+  "candidate49_historical_return_read": false,
+  "candidate49_ledgers_changed": false,
+  "provider_request_issued": false,
+  "authorized_repair": "Append the frozen Campaign098 terminal summary after the exact current final paragraph; do not alter existing report text or scientific metrics."
+}

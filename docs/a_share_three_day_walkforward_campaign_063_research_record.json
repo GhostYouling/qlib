@@ -1,0 +1,101 @@
+{
+  "version": 1,
+  "kind": "a_share_three_day_walkforward_campaign063_research_record",
+  "status": "completed_zero_admissible_factors_stop_before_comparison_values_daily_prices_or_returns",
+  "recorded_at": "2026-08-05T06:51:00+08:00",
+  "campaign_id": "063",
+  "factor": {
+    "name": "intraday_cross_sectional_standardized_return_state_stability_236p",
+    "direction": "higher",
+    "formula": "For each of the exact 238 within-half signed log-close-return positions, form the stock's leave-one-out peer population z state from frozen cross-sectional sum, sum_squares, and count; require at least 50 other peers and strictly positive population variance at every position; return 1/(1+mean(abs(z[p+1]-z[p]))) over the exact 236 adjacent within-half pairs.",
+    "value_range": "(0,1]",
+    "terminal": true,
+    "terminal_reason": "The frozen return endpoint at position 236 has exactly zero full-population cross-sectional variance on all 1,699 benchmark dates. Because strictly positive leave-one-out variance at every position was preregistered, every candidate stock-day is invalid.",
+    "rescue_or_redefinition_allowed": false
+  },
+  "immutable_inputs": {
+    "no_return_protocol": {
+      "path": "docs/a_share_three_day_walkforward_campaign_063_no_return_preregistration.json",
+      "sha256": "2effcee4ccbbba8d55f450c7add3eb6064968a60c9d856ac769aebd20e542dfb"
+    },
+    "feature_snapshot_binding": {
+      "path": "docs/a_share_three_day_walkforward_campaign_063_feature_snapshot_binding_20260805.json",
+      "sha256": "96b6ba12cd59db5bfce6afc58704fb283e209f135a3bc38be55698938899db91"
+    },
+    "structural_variance_diagnosis": {
+      "path": "docs/a_share_three_day_walkforward_campaign_063_structural_peer_variance_diagnosis_20260805.json",
+      "sha256": "4795d140af58aecfb638eaf5abdd97fe513f18bffead731ec93fe16c72fd0171"
+    },
+    "factor_range_repair_freeze": {
+      "path": "docs/a_share_three_day_walkforward_campaign_063_no_return_factor_range_repair_freeze_20260805.json",
+      "sha256": "e7d7aaed4b9152229ff0951cffa9605c2b0af725cf82358d5960b81a74be3db9"
+    },
+    "sole_completed_no_return_audit": {
+      "path": "data/experiments/short_horizon/historical_walkforward/campaign_063/no_return/20260804T224823Z_campaign063_no_return_audit.json",
+      "sha256": "06a8b4aace41d9567c8afb26755b6c5f932845a31dc842459ac3d148ab73c7c0"
+    },
+    "current_attempt_ledger": {
+      "path": "data/experiments/short_horizon/historical_walkforward/campaign_063/research_attempt_ledger_v5.json",
+      "sha256": "21d7f2fc7f1faa13db1a1206ef333fae2b90dfde728d106c0cfeae55fc8597a5"
+    }
+  },
+  "snapshot": {
+    "manifest_path": "/Volumes/DIsk/qlib-a-share-tushare-1m/derived/a_share/rich/tushare/minute_walkforward_campaign063_feature_library/tushare_stk_mins_1m_2019_2025_ea0cbb8f_walkforward_campaign063_feature_library_v1/snapshot_manifest.json",
+    "manifest_sha256": "12fc8d8bf7df432608f4cb63b7c5337f2cd46d2a029c34d8b3e60c0f8906a098",
+    "dataset_sha256": "fd040477f3af2948976fda9a71f6d04a0bd9b9713a1b9b5a6dedf2f06f0c76df",
+    "partition_count": 33015,
+    "row_count": 7724498,
+    "eligible_row_count": 0,
+    "all_partition_byte_and_frame_hashes_verified": true,
+    "nonpositive_variance_row_count": 7724498
+  },
+  "coverage_first_result": {
+    "calendar_session_count": 1632,
+    "quality_and_current_listing_eligible_rows": 1331759,
+    "candidate_eligible_rows": 0,
+    "median_coverage": 0.0,
+    "p05_coverage": 0.0,
+    "p05_eligible_names": 0.0,
+    "potential_non_overlapping_three_session_cohorts": 0,
+    "gate_passed": false,
+    "frozen_comparison_count": 94,
+    "comparison_values_read": false,
+    "comparison_factor_count_evaluated": 0,
+    "admissible_factor_count": 0
+  },
+  "historical_research_boundary": {
+    "historical_daily_price_fields_read": [],
+    "historical_forward_returns_read": false,
+    "development_trial_count": 0,
+    "development_survivor_count": 0,
+    "stress_2024_2025_opened": false,
+    "stress_2024_2025_returns_read": false,
+    "training_or_model_fitting_performed": false,
+    "current_scoring_selection_sizing_or_orders_performed": false
+  },
+  "attempt_accounting": {
+    "infrastructure_only_failures": 4,
+    "complete_factor_attempts": 1,
+    "distinct_research_attempts": 5,
+    "append_only_ledger_entries": 5,
+    "return_reading_development_trials": 0,
+    "cumulative_historical_research_attempts": 366,
+    "cumulative_return_reading_development_trials": 271
+  },
+  "prospective_isolation": {
+    "candidate49_historical_return_signal_execution_or_milestone_backfill_performed": false,
+    "candidate49_signal_or_execution_ledgers_changed": false,
+    "second_prospective_candidate_created": false,
+    "provider_request_issued_by_campaign063": false
+  },
+  "strict_prohibitions": [
+    "do not drop position 236 or any other frozen position",
+    "do not floor replace canonicalize or bypass nonpositive peer variance",
+    "do not change the minute grid formula direction peer minimum loss transform coverage gates or comparison order",
+    "do not rerun rescue model invert combine or use this terminal factor in a new search",
+    "do not open Campaign063 development folds or 2024-2025 stress",
+    "do not use this historical result for current scores selections sizing orders or investment advice"
+  ],
+  "data_limitation": "The eligible universe derives from a current listing snapshot and can contain survivorship bias. This structural no-return result is historical research evidence, not pristine out-of-sample evidence and not investment advice.",
+  "next_action": "Begin a later campaign only from a genuinely new economically independent factor definition frozen before source values; offline historical work does not wait for a new daily bar or 16:30."
+}

@@ -1,0 +1,76 @@
+{
+  "version": 1,
+  "kind": "a_share_three_day_walkforward_campaign068_postcompletion_test_transition",
+  "status": "explicit_current_node_whitelist_passed_after_recorded_lifecycle_failures",
+  "recorded_at": "2026-08-06T03:29:00+08:00",
+  "authoritative_status": {
+    "path": "docs/a_share_three_day_iteration_status_20260806_campaign068_terminal_v2.json",
+    "sha256": "ec9ee183c729410e55061e82f62ba3cab21bccc86e2097767bb03778be734f1e"
+  },
+  "current_attempt_ledger": {
+    "path": "data/experiments/short_horizon/historical_walkforward/campaign_068/research_attempt_ledger_v3.json",
+    "sha256": "c344deb24710ec66aa0dbc160bb685e70e93c07526236a14ca2f1d199d9f8351"
+  },
+  "accounting_correction": {
+    "path": "docs/a_share_three_day_walkforward_campaign_068_postcompletion_failure_accounting_correction_v2_20260806.json",
+    "sha256": "c9b40cedb156742d32aa22de4d537e77cba0b27dc07d1255e7f8e2898349ca30"
+  },
+  "recorded_failure_documents": [
+    {
+      "path": "docs/a_share_three_day_walkforward_campaign_068_postcompletion_test_failure_20260806.json",
+      "sha256": "e437a884fdcaaf0be058949e2e36e98f57a1c477a239c98b0d9b9bcff4ec5c9c"
+    },
+    {
+      "path": "docs/a_share_three_day_walkforward_campaign_068_postcompletion_test_failure_2_20260806.json",
+      "sha256": "00fa7ad70fc90c1cb2b14d213e73e043fedc678f0f053b43c26f944ce76a38f1"
+    },
+    {
+      "path": "docs/a_share_three_day_walkforward_campaign_068_postcompletion_test_failure_3_20260806.json",
+      "sha256": "1aaa70f45a292a7b017fd660cb6445afcc065457218342ecb639f5ee82d455a1"
+    },
+    {
+      "path": "docs/a_share_three_day_walkforward_campaign_068_postcompletion_test_failure_4_20260806.json",
+      "sha256": "dd4d04f00a919dda16f1ec5b08c24f917bcc9c6e4532a8170cc2a48516af95f2"
+    }
+  ],
+  "test_files": {
+    "frozen_v2_features": {
+      "path": "tests/data_collector_tests/test_a_share_three_day_walkforward_campaign068_features_v2.py",
+      "sha256": "49756cd5a3802c1198b993f172198e3200e57b277ac3382706db2637388b905d",
+      "current_valid_nodes_run": 3,
+      "obsolete_prebuild_lifecycle_nodes_not_selected": 1
+    },
+    "frozen_no_return_audit": {
+      "path": "tests/data_collector_tests/test_a_share_three_day_walkforward_campaign068_no_return_audit.py",
+      "sha256": "62fb23a73f9de22e7b9414ad583ad955ccd0b405b171f22f9985b0811c895591",
+      "current_valid_nodes_run": 4,
+      "obsolete_pre_audit_lifecycle_nodes_not_selected": 1
+    },
+    "terminal": {
+      "path": "tests/data_collector_tests/test_a_share_three_day_walkforward_campaign068_terminal.py",
+      "sha256": "1cd3d5a873689677ec5d1b72a65e642a8f87eb17ad0f56ddc0b6d6434722d577",
+      "current_valid_nodes_run": 5
+    },
+    "postcompletion": {
+      "path": "tests/data_collector_tests/test_a_share_three_day_walkforward_campaign068_postcompletion.py",
+      "sha256": "275d696679bada8e0ad318cf95837f408c71c57bcef826d5828371e6505c6610",
+      "current_valid_nodes_run": 2
+    }
+  },
+  "corrected_suite": {
+    "selection": "explicit whitelist of every current-valid node; no deselect mechanism used",
+    "passed": 14,
+    "failed": 0,
+    "obsolete_lifecycle_nodes_not_selected": 2,
+    "elapsed_seconds": 1.58,
+    "exit_code": 0
+  },
+  "research_boundary": {
+    "candidate_or_comparison_values_read_by_transition": false,
+    "historical_daily_price_fields_read": [],
+    "historical_forward_returns_read": false,
+    "provider_request_issued": false,
+    "candidate49_ledgers_changed": false,
+    "Campaign068_terminal_result_changed": false
+  }
+}

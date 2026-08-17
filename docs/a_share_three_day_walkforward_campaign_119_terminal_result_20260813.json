@@ -1,0 +1,89 @@
+{
+  "schema_version": 1,
+  "kind": "a_share_three_day_walkforward_campaign119_terminal_result",
+  "status": "terminal_zero_development_survivors_stress_not_opened",
+  "recorded_at": "2026-08-13T23:58:00+08:00",
+  "factor": "intraday_range_boundary_direction_state_entropy_238p",
+  "direction": "higher",
+  "development_preregistration": {
+    "path": "docs/a_share_three_day_walkforward_campaign_119_preregistration.json",
+    "sha256": "ea8be7af38ef4d49c71b1afce7be1151c46fcdb2281cf3c875b90ed3b2fd8c05"
+  },
+  "development_activation": {
+    "path": "docs/a_share_three_day_walkforward_campaign_119_development_activation_binding_20260813.json",
+    "sha256": "5207a25287580bb105a782278910ef061a012e042948f1ec9deefcec95e8491f"
+  },
+  "attempt_ledger": {
+    "path": "data/experiments/short_horizon/historical_walkforward/campaign_119/research_attempt_ledger_v3.json",
+    "sha256": "aa43e68061c30df7a04139aa0d785f5beeb3fc8b28f14baa18b3d829159f16fd"
+  },
+  "development_outputs": {
+    "trial_ledger": {
+      "path": "data/experiments/short_horizon/historical_walkforward/campaign_119/walkforward/trial_ledger.json",
+      "sha256": "c0c16b83ef1a3630d56e1e07276dcba0de7ec15ead0801f1b9663edde70d92ef",
+      "entry_count": 1,
+      "chain_tip_sha256": "76cee9f5d8b663b0ef667a1b18d03a1f02d16c3abb872d385320c3ea98720506"
+    },
+    "development_survivors": {
+      "path": "data/experiments/short_horizon/historical_walkforward/campaign_119/walkforward/development_survivors.json",
+      "sha256": "2a71c9f2ea19084e5e054de28258d0baca91cd0a4aa5579b1c9226665b25a55c",
+      "selected_survivor_count": 0
+    },
+    "exposed_stress_consumption_record": {
+      "path": "data/experiments/short_horizon/historical_walkforward/campaign_119/walkforward/exposed_stress_consumption_record.json",
+      "sha256": "47d3b7949cca8a92495e466290a3fb6a7a347ff18485da58a1f8bd5320622309",
+      "status": "not_opened_zero_development_survivors"
+    },
+    "campaign_report": {
+      "path": "data/experiments/short_horizon/historical_walkforward/campaign_119/walkforward/campaign_report.json",
+      "sha256": "658a708975fe9203041e5eba47860e300a35744905fec2f5236a557a00bda52d"
+    }
+  },
+  "development_decision": {
+    "trial_id": "wf119_intraday_range_boundary_direction_state_entropy_238p_single_higher",
+    "trial_count": 1,
+    "survivor_count": 0,
+    "positive_mean_rank_ic_fold_count": 1,
+    "positive_normalized_return_fold_count": 1,
+    "positive_pilot_return_fold_count": 1,
+    "median_validation_mean_rank_ic": -0.0001898071667207921,
+    "median_validation_spread": 0.0020952708515766505,
+    "median_validation_normalized_return": -0.037687269674745894,
+    "median_validation_pilot_return_10bp": -0.021191505182363013,
+    "development_aggregate_pilot_return_0bp": 0.15287505678928537,
+    "development_aggregate_pilot_return_5bp": 0.08827152801723548,
+    "development_aggregate_pilot_return_10bp": 0.03195040305788566,
+    "development_aggregate_pilot_return_20bp": -0.05363866029691433,
+    "worst_validation_normalized_drawdown": -0.3070319184125526,
+    "operationally_admissible": true,
+    "operational_rejection_reasons": [],
+    "validation_quality_gate_passed": false,
+    "validation_quality_rejection_reasons": [
+      "insufficient_positive_ic_folds",
+      "median_validation_mean_rank_ic",
+      "insufficient_positive_normalized_return_folds",
+      "insufficient_positive_pilot_return_folds",
+      "median_validation_pilot_return",
+      "worst_validation_normalized_drawdown",
+      "nonpositive_development_aggregate_20bp_return"
+    ]
+  },
+  "scientific_interpretation": "The factor was operationally admissible and profitable in the aggregate at 0bp, 5bp and 10bp, but it generalized poorly across the three frozen validation folds: only one fold had positive mean Rank-IC, normalized return and 10bp board-lot pilot return. Median validation mean Rank-IC was -0.01898%, median validation pilot return was -2.1192%, worst validation normalized drawdown was -30.7032%, and the 2019-2023 aggregate 20bp pilot return was -5.3639%. The frozen consistency, median association, cost and drawdown gates therefore reject it.",
+  "terminal_boundary": {
+    "retry_reverse_redefine_recount_retie_regap_transform_filter_subset_year_select_reweight_combine_or_rescue_allowed": false,
+    "stress_2024_2025_opened": false,
+    "stress_2024_2025_return_values_read": false,
+    "candidate49_historical_backfill_performed": false,
+    "candidate49_ledgers_changed": false,
+    "second_prospective_candidate_created": false,
+    "current_scoring_selection_sizing_positions_or_orders_performed": false,
+    "investment_advice": false
+  },
+  "candidate49": {
+    "signal_ledger_sha256": "5193f00d7f36da003f53cec387900da4c3d002299f5dfcfc1a95eaa199ed3a79",
+    "execution_ledger_sha256": "d57a3e61eac969e42cafa418ccd8c0a5ee65dcf69da145bb2c096c2a02a2ea4f",
+    "signal_entry_count": 0,
+    "execution_entry_count": 0
+  },
+  "next_action": "Append Campaign119 once to the future complete-definition and numeric-comparator libraries because it passed coverage and all 136 uniqueness gates, preserve its development rejection, and begin Campaign120 only from a genuinely new prevalue-frozen mechanism."
+}

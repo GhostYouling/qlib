@@ -1,0 +1,43 @@
+{
+  "schema_version": 1,
+  "kind": "a_share_three_day_walkforward_campaign075_infrastructure_failure",
+  "campaign": 75,
+  "campaign_attempt_ordinal": 8,
+  "stage": "postcompletion_current_test_suite",
+  "status": "failed_due_two_immutable_precompletion_state_assertions",
+  "recorded_at": "2026-08-06T10:35:00+08:00",
+  "exit_code": 1,
+  "result": {
+    "passed": 34,
+    "failed": 2,
+    "failed_nodes": [
+      "test_a_share_three_day_walkforward_campaign075_no_return_audit.py::test_status_never_claims_coverage_or_comparison_reads",
+      "test_a_share_three_day_walkforward_campaign075.py::test_campaign075_stress_is_closed_before_development_survivor_freeze"
+    ],
+    "observed_current_values": {
+      "no_return_audit_count": 1,
+      "trial_ledger_entry_count": 2
+    },
+    "obsolete_expected_precompletion_values": {
+      "no_return_audit_count": 0,
+      "trial_ledger_entry_count": 0
+    }
+  },
+  "interpretation": "Both failed nodes are truthful immutable lifecycle tests for the pre-audit or pre-development state. They must remain unchanged and be deselected from the current terminal suite after the corresponding phase has completed.",
+  "evidence_boundary": {
+    "existing_frozen_audit_or_trial_artifacts_read": true,
+    "raw_candidate_or_comparator_values_recomputed": false,
+    "historical_daily_price_or_forward_return_values_newly_read": false,
+    "provider_request_issued": false,
+    "candidate49_ledgers_changed": false,
+    "research_result_changed": false
+  },
+  "accounting": {
+    "failed_test_command_count": 1,
+    "failed_assertion_count": 2,
+    "infrastructure_failure_increment": 1,
+    "research_attempt_increment": 1,
+    "return_reading_development_trial_increment": 0
+  },
+  "next_action": "Run the identical current suite while deselecting exactly these two immutable precompletion-state nodes, without editing them."
+}

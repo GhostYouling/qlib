@@ -1,0 +1,131 @@
+{
+  "version": 1,
+  "kind": "a_share_three_day_walkforward_campaign007_concept_scouting",
+  "status": "concept_only_one_new_mechanism_selected_no_formula_no_direction_no_values_no_returns",
+  "recorded_at": "2026-07-28T11:45:00Z",
+  "purpose": "Continue the three-session offline research program after Campaign006 ended with zero development survivors. This record scouts only mechanism meaning and source-schema feasibility, rejects near-synonyms and invalid opening-price ideas before values, and selects at most one concept for a separate exact no-value overlap audit.",
+  "authoritative_bindings": {
+    "iteration_state": {
+      "path": "docs/a_share_three_day_iteration_status_20260728_campaign006.json",
+      "sha256": "bb2aa86c67cf6d5ef50c7c898d1a4c8ad6ffc15e19dff59a707de6a76dde8657",
+      "campaign007_concept_scouting_allowed": true,
+      "candidate50_prospective_activation_allowed": false
+    },
+    "campaign006_research_record": {
+      "path": "docs/a_share_three_day_walkforward_campaign_006_research_record.json",
+      "sha256": "c8124405072a6bbc61a135444765ec05bfdaade813fa325357dabef8e081812e",
+      "terminal": true,
+      "development_survivors": 0,
+      "stress_2024_2025_opened": false
+    },
+    "historical_walkforward_policy": {
+      "path": "docs/a_share_three_day_historical_walkforward_research_policy_20260727.json",
+      "sha256": "38426d6161b9bfed323c58caba18feca668b8c9d53e294951a8ba90c01a798bb"
+    },
+    "campaign006_mechanism_overlap_audit": {
+      "path": "docs/a_share_three_day_walkforward_campaign_006_mechanism_overlap_audit.json",
+      "sha256": "6178638773f4ababdcbd91e93c925a6c2c768fe692e02ed029f5f8174a0d9e7d",
+      "comparison_mechanisms": 29
+    }
+  },
+  "source_schema_boundary": {
+    "provider": "tushare",
+    "frequency": "1m",
+    "accepted_source_grid_rows": 241,
+    "joint_clean_manifest": {
+      "path_below_data_root": "derived/a_share/rich/tushare/minute_sentiment_clean/tushare_stk_mins_1m_2019_2025_ea0cbb8f_sentiment_clean_v1/snapshot_manifest.json",
+      "sha256": "453c6719cb3c7da42fed8807b28a2bfe988700283e9625a6db97912534f368de",
+      "dataset_sha256": "0e4fe7c05536cdfcecc2936bc880726902f5560061188ffff82ef7ee6f346983",
+      "partitions": 33015,
+      "rows": 7724498
+    },
+    "allowed_source_fields": [
+      "datetime",
+      "symbol",
+      "provider",
+      "volume",
+      "amount"
+    ],
+    "source_open_high_low_close_must_not_be_loaded": true,
+    "daily_price_or_return_substitution_allowed": false,
+    "provider_request_allowed": false
+  },
+  "concepts_rejected_before_formula_or_values": [
+    {
+      "concept": "opening_auction_to_first_continuous_price_displacement",
+      "reason": "The historical standalone 09:30 price is not uniformly an executed auction price: some positive-price rows have zero volume and amount and behave as reference placeholders. The original opening-gap protocol is terminally invalid, so no 09:30 price displacement may be revived."
+    },
+    {
+      "concept": "transaction_price_path_efficiency_or_lead_lag",
+      "reason": "Standalone efficiency, reversal, sign, lead, or lag transforms of the transaction-price path would be a prohibited repair of terminal Campaign006 rather than a new economic mechanism."
+    },
+    {
+      "concept": "share_volume_profile_entropy_center_or_market_synchronization",
+      "reason": "Direct activity-profile concentration, timing, persistence, and peer synchronization are already exhausted by the terminal amount-profile family; swapping amount for volume is not economic independence."
+    },
+    {
+      "concept": "transaction_price_variance_skewness_or_tail_shape",
+      "reason": "Changing the price proxy would not create a new mechanism relative to the terminal volatility, variance-entropy, skewness, diffusive-variation, and terminal-position families."
+    },
+    {
+      "concept": "close_transaction_price_gap_or_disagreement",
+      "reason": "Level gaps, sign agreement, disagreement rates, and weighted variants were explicitly rejected before Campaign006 values and cannot be reopened after that campaign failed."
+    }
+  ],
+  "selected_concept": {
+    "concept_name": "intraday_share_volume_transaction_price_coupling",
+    "candidate_ordinal": null,
+    "prospective_active": false,
+    "concept_status": "mechanism_only_not_yet_exactly_preregistered",
+    "direction": null,
+    "formula": null,
+    "allowed_source_fields": [
+      "datetime",
+      "symbol",
+      "provider",
+      "volume",
+      "amount"
+    ],
+    "mechanism": "Measure whether changes in executed share quantity and changes in executed CNY value per share move together within the continuous session. This asks whether repricing is accompanied by expanding or contracting traded quantity, without using the minute close path.",
+    "economic_question": "Does demand-confirmed transaction-price repricing, expressed through synchronous share-volume and executed-price changes, remain informative from the next open through the third close?",
+    "mandatory_overlap_challenges_before_any_value": [
+      "intraday_transaction_price_path_confirmation_238p",
+      "intraday_amount_volatility_coupling_238p",
+      "intraday_directional_price_impact_asymmetry_238m",
+      "intraday_up_move_amount_share_238m",
+      "intraday_amount_lead_return_correlation_238p",
+      "intraday_bar_vwap_close_pressure_240m",
+      "intraday_zero_return_amount_intensity_238m"
+    ],
+    "known_design_risks": [
+      "amount equals volume times an executed-price proxy, so an algebraically careless construction can create mechanical correlation rather than economic evidence",
+      "inactive bars can break the adjacent path and require a frozen missing-data rule",
+      "correlation can be undefined when either change vector has no variation",
+      "level, change, lead-lag, regression, rank-correlation, weighting, and window choices would create formula search",
+      "the concept may still prove empirically redundant with Campaign006 or the terminal price-impact and activity-coupling mechanisms"
+    ]
+  },
+  "research_boundary": {
+    "external_minute_partitions_read": false,
+    "external_daily_partitions_read": false,
+    "candidate_values_computed_or_read": false,
+    "comparison_values_read": false,
+    "historical_daily_prices_read": false,
+    "historical_forward_returns_read": false,
+    "formula_or_direction_frozen": false,
+    "training_or_model_fitting_performed": false,
+    "prospective_candidate_created": false,
+    "candidate49_historical_return_read": false,
+    "candidate49_ledgers_changed": false,
+    "current_scoring_selection_sizing_or_order_performed": false,
+    "provider_request_issued": false,
+    "investment_advice": false
+  },
+  "decision": {
+    "selected_concept_count": 1,
+    "selected_concept_may_advance_directly_to_values": false,
+    "required_next_step": "Perform a separate no-value audit against every frozen comparison mechanism. Only if the concept remains economically distinct may that audit freeze one exact formula, one direction, missing semantics, gates, and a finite trial catalog before any candidate or comparison value or return is read.",
+    "candidate49_remains_only_prospective_candidate": true,
+    "candidate50_activation_allowed": false
+  }
+}

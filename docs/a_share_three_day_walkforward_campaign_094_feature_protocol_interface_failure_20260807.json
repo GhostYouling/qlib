@@ -1,0 +1,23 @@
+{
+  "schema_version": 1,
+  "kind": "a_share_three_day_walkforward_campaign094_prevalue_feature_protocol_interface_failure",
+  "status": "retrospectively_preserved_before_development_return_read",
+  "recorded_at": "2026-08-07T03:06:17Z",
+  "occurrence_stage": "initial Campaign094 feature-runner synthetic pytest before v1 implementation freeze",
+  "result": "3 passed, 1 failed",
+  "cause": "The inherited generated protocol checker still expected Campaign093 destination-range and endpoint fields instead of the frozen Campaign094 local-peak clock-dispersion fields.",
+  "repair": "Install the exact Campaign094 protocol-semantic validator before feature freeze; candidate formula, source projection, values, gates and trial catalog were unchanged.",
+  "post_repair_result": "4 passed before v1 implementation freeze",
+  "research_boundary_at_occurrence": {
+    "minute_source_or_candidate_values_read": false,
+    "comparison_values_read": false,
+    "historical_daily_price_or_forward_return_values_read": false,
+    "provider_request_issued": false,
+    "candidate49_ledgers_changed": false
+  },
+  "attempt_accounting": {
+    "campaign094_attempt_ordinal": 1,
+    "kind": "prevalue_implementation_interface_failure",
+    "counts_as_return_reading_development_trial": false
+  }
+}

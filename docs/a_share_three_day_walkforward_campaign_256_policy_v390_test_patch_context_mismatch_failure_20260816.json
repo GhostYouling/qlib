@@ -1,0 +1,22 @@
+{
+  "schema_version": 1,
+  "kind": "a_share_three_day_walkforward_campaign256_infrastructure_failure",
+  "recorded_at": "2026-08-16T13:13:30+08:00",
+  "timestamp_semantics": "monotonic_logical_append_time_not_host_wall_clock_measurement",
+  "status": "failed_policy_v390_and_test_patch_context_mismatch_before_write",
+  "attempt_id": "campaign256_infrastructure_006",
+  "phase": "terminal_artifact_patch",
+  "command_semantics": "A combined apply_patch intended to add policy v390 and update the Campaign256 test used pre-Black line wrapping as test context. Patch verification failed before any hunk was written, so policy v390 was not created and the test was unchanged.",
+  "disposition": "Record the rejected patch, inspect only the current bounded test sections, then apply separate exact-context patches. Do not treat the rejected patch output as validation or scientific evidence.",
+  "research_boundary": {
+    "repository_file_written_by_failed_command": false,
+    "candidate_or_comparator_value_read": false,
+    "daily_price_or_forward_return_read": false,
+    "provider_or_web_request_issued": false,
+    "provider_credential_presence_value_or_digest_read": false,
+    "candidate49_plan_or_run_executed": false,
+    "candidate49_ledgers_changed": false,
+    "stress_2024_2025_opened": false,
+    "failed_or_truncated_output_used_as_scientific_or_validation_evidence": false
+  }
+}

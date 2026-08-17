@@ -1,0 +1,33 @@
+{
+  "version": 1,
+  "kind": "a_share_three_day_walkforward_campaign068_postcompletion_test_failure",
+  "status": "recorded_before_additive_authoritative_status_v2",
+  "recorded_at": "2026-08-06T03:22:00+08:00",
+  "exit_code": 1,
+  "summary": {
+    "passed": 13,
+    "failed": 1,
+    "elapsed_seconds": 1.59
+  },
+  "failed_node": "tests/data_collector_tests/test_a_share_three_day_walkforward_campaign068_terminal.py::test_campaign068_terminal_artifact_bindings_are_current",
+  "root_cause": "The superseded Campaign068 terminal status v1 bound the pre-transition unified report hash. The append-only report update correctly changed that hash, so validating v1 as the current status failed.",
+  "repair_policy": {
+    "edit_status_v1": false,
+    "edit_unified_report_back_to_old_content": false,
+    "publish_additive_authoritative_status_v2": true,
+    "update_unfrozen_terminal_test_to_validate_status_v2": true,
+    "change_research_values_or_decisions": false
+  },
+  "research_effect": {
+    "infrastructure_failure_count_increment": 1,
+    "historical_research_attempt_count_increment": 1,
+    "cumulative_historical_research_attempt_count": 408,
+    "return_reading_development_trial_count_increment": 0,
+    "cumulative_return_reading_development_trial_count": 274,
+    "candidate_or_comparison_values_read": false,
+    "historical_daily_price_fields_read": [],
+    "historical_forward_returns_read": false,
+    "provider_request_issued": false,
+    "candidate49_ledgers_changed": false
+  }
+}

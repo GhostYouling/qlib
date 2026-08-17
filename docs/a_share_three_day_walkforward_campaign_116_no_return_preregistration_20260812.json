@@ -1,0 +1,150 @@
+{
+  "schema_version": 1,
+  "kind": "a_share_three_day_walkforward_campaign116_no_return_preregistration",
+  "status": "frozen_before_campaign116_source_candidate_comparator_daily_price_or_return_values",
+  "recorded_at": "2026-08-12T15:47:40+08:00",
+  "purpose": "Evaluate exactly one existing-local-data nonlinear activity-conditioned direction-persistence factor through coverage-first all-134 duplicate control and, only if admitted, one frozen 2019-2023 development trial.",
+  "authoritative_inputs": {
+    "iteration_state": {
+      "path": "docs/a_share_three_day_iteration_status_20260812_campaign115_terminal.json",
+      "sha256": "c68630055fd5953274a97a54311d8b76cec8720a5d9f4e0afe72010a69538e64"
+    },
+    "numeric_policy_v98": {
+      "path": "docs/a_share_three_day_walkforward_future_numeric_comparison_eligibility_policy_v98_20260812.json",
+      "sha256": "2b183bd2aaaa04e8fe9e0c56b7139f8e4e2b2f8ceed79865d14c58c864676bff",
+      "complete_definition_count": 141,
+      "complete_definition_order_sha256": "ccab6e3d9d81b0a02d4ff178fdd442b26a1e68e3655e1c6f5b2fcb28cd4a4559",
+      "numeric_comparator_count": 134,
+      "numeric_comparator_order_sha256": "31d788db467f558a0ac538315343090f1b3ad4cb27a26136a49ebaa88b2fdbf2"
+    },
+    "historical_walkforward_policy": {
+      "path": "docs/a_share_three_day_historical_walkforward_research_policy_20260727.json",
+      "sha256": "38426d6161b9bfed323c58caba18feca668b8c9d53e294951a8ba90c01a798bb"
+    },
+    "concept_scouting": {
+      "path": "docs/a_share_three_day_walkforward_campaign_116_concept_scouting_20260812.json",
+      "sha256": "38028997eb595a58f28976f387cd5489d3bafc07c58a923a3f61bac1da306b68"
+    },
+    "mechanism_support_audit": {
+      "path": "docs/a_share_three_day_walkforward_campaign_116_mechanism_support_audit_20260812.json",
+      "sha256": "fbebbb18226c36d45f97ae896e1a53e274c2cddccdbe5ed3cf50ef9b48009843"
+    }
+  },
+  "candidate": {
+    "name": "intraday_amount_conditioned_directional_persistence_spread_236p",
+    "direction": "higher",
+    "economic_hypothesis": "Persistent upward transitions concentrated in high-activity minutes relative to the same stock-day's ordinary-activity minutes may reflect informed demand continuation into the next-open to third-close horizon.",
+    "source_projection": ["datetime", "symbol", "provider", "close", "amount"],
+    "source_fields_forbidden": ["open", "high", "low", "volume", "daily_price", "forward_return"],
+    "source_grid": {
+      "selected_rows": 240,
+      "selected_minutes": "09:31-11:30 and 13:01-15:00",
+      "returns_per_half": 119,
+      "adjacent_return_pairs_per_half": 118,
+      "total_return_pairs": 236,
+      "standalone_09_30_loaded_for_formula": false,
+      "lunch_transition_excluded": true,
+      "overnight_cross_day_and_cross_stock_transitions_excluded": true
+    },
+    "exact_formula": {
+      "returns": "Within each 120-close half independently, r_i=log(close_i/close_(i-1)) for i=1..119; pool neither a lunch nor an overnight transition.",
+      "amount_threshold": "m is the ordinary median of all 240 selected finite nonnegative amount values, defined as the arithmetic mean of the 120th and 121st one-indexed order statistics.",
+      "pair_state": "For each of the 118 adjacent return pairs per half, use the amount at the endpoint bar of the second return. The pair is high-amount iff that amount is strictly greater than m; equality and below are ordinary-amount. Exact-zero in either return makes the pair noninformative. For an informative pair q=+1 when both returns are positive, q=-1 when both are negative, and q=0 when signs differ.",
+      "score": "0.5 * (mean(q over informative high-amount pairs) - mean(q over informative ordinary-amount pairs))",
+      "support": "Require exactly 240 positive finite closes, 240 finite nonnegative amounts with positive total amount, at least 30 informative high-amount pairs, and at least 30 informative ordinary-amount pairs; otherwise missing.",
+      "valid_range_inclusive": [-1.0, 1.0]
+    },
+    "search_space": {
+      "candidate_count": 1,
+      "direction_count": 1,
+      "amount_thresholds": ["ordinary_median_strict_above"],
+      "minimum_group_support_values": [30],
+      "lags": [1],
+      "windows": ["two_fixed_120_bar_halves"],
+      "weights": [1.0],
+      "filters": [],
+      "subsets": [],
+      "models": [],
+      "alternate_direction_threshold_support_lag_window_formula_filter_subset_fit_model_or_combination_search": false
+    }
+  },
+  "source_snapshot_contract": {
+    "data_root": "/Volumes/DIsk/qlib-a-share-tushare-1m",
+    "immutable_source_run": "tushare_stk_mins_1m_2019_2025_ea0cbb8f",
+    "raw_manifest_path": "/Volumes/DIsk/qlib-a-share-tushare-1m/metadata/rich_data/runs/tushare_stk_mins_1m_2019_2025_ea0cbb8f.json",
+    "raw_manifest_sha256": "9b3d959563c9d182f38981c6a36bdb3bc9b415de08487a9e1f9e850825c0839f",
+    "joint_clean_manifest_path": "/Volumes/DIsk/qlib-a-share-tushare-1m/derived/a_share/rich/tushare/minute_sentiment_clean/tushare_stk_mins_1m_2019_2025_ea0cbb8f_sentiment_clean_v1/snapshot_manifest.json",
+    "joint_clean_manifest_sha256": "453c6719cb3c7da42fed8807b28a2bfe988700283e9625a6db97912534f368de",
+    "joint_clean_dataset_sha256": "0e4fe7c05536cdfcecc2936bc880726902f5560061188ffff82ef7ee6f346983",
+    "expected_partitions": 33015,
+    "expected_rows": 7724498,
+    "output_run_id": "tushare_stk_mins_1m_2019_2025_ea0cbb8f_walkforward_campaign116_feature_library_v1",
+    "output_manifest_path_below_data_root": "derived/a_share/rich/tushare/minute_walkforward_campaign116_feature_library/tushare_stk_mins_1m_2019_2025_ea0cbb8f_walkforward_campaign116_feature_library_v1/snapshot_manifest.json",
+    "provider_request_allowed": false
+  },
+  "comparison_contract": {
+    "complete_semantic_definition_count_reviewed_before_values": 141,
+    "complete_definition_order_sha256": "ccab6e3d9d81b0a02d4ff178fdd442b26a1e68e3655e1c6f5b2fcb28cd4a4559",
+    "numeric_comparator_count": 134,
+    "numeric_comparator_order_sha256": "31d788db467f558a0ac538315343090f1b3ad4cb27a26136a49ebaa88b2fdbf2",
+    "direction_normalization": "use every comparator's frozen score direction",
+    "candidate_specific_comparator_drop_fill_residualization_neutralization_or_subset_allowed": false,
+    "candidate49_historical_return_signal_execution_or_milestone_read_allowed": false
+  },
+  "ordered_no_return_gates": [
+    {
+      "gate": 1,
+      "name": "binding_source_snapshot_and_implementation_verification",
+      "rule": "Before source values, bind this protocol, a pure formula implementation, tests, raw source, joint-clean source, and output paths. After publication verify every partition byte/frame hash, exact projection/grid/formula/support/range/count and aggregate dataset digest."
+    },
+    {
+      "gate": 2,
+      "name": "structural_coverage_variation_and_capacity_before_comparator_values",
+      "rule": "On the immutable quality/current-listing base require median daily coverage >=0.95, P05 daily coverage >=0.90, P05 eligible names >=50, at least 200 non-overlapping three-signal-session cohorts, at least five observed years, finite values in [-1,1], and nonconstant cross-sectional variation. Failure stops before comparator value, daily price, or forward return."
+    },
+    {
+      "gate": 3,
+      "name": "all_134_numeric_uniqueness_after_coverage_only",
+      "rule": "Compare in exact v98 numeric order with all 134 eligible numeric comparators. Each comparison requires at least 50 paired names per session and at least 100 qualifying sessions. Every absolute median daily average-tie Spearman rank correlation must be strictly below 0.8; insufficient overlap fails closed and no comparator may be removed."
+    }
+  ],
+  "finite_development_catalog_if_admitted": {
+    "trial_count": 1,
+    "trial_id": "wf116_intraday_amount_conditioned_directional_persistence_spread_236p_single_higher",
+    "factor": "intraday_amount_conditioned_directional_persistence_spread_236p",
+    "direction": "higher",
+    "training_or_fit": "none",
+    "folds": [
+      {"fold": 1, "train": [2019, 2020], "validation": 2021},
+      {"fold": 2, "train": [2019, 2020, 2021], "validation": 2022},
+      {"fold": 3, "train": [2019, 2020, 2021, 2022], "validation": 2023}
+    ],
+    "purge": "Purge three signal sessions at every train/validation boundary; t+1 entry and t+3 exit must remain in the same partition.",
+    "execution": "Reuse the frozen one-factor next-open to third-close Top-3 engine, CNY 200000 board-lot pilot, quality/listing gates, amount-participation checks, 0/5/10/20bp stress grid, and survivor gates without override.",
+    "stress_2024_2025": "Open once for the whole campaign only if the sole trial survives every 2019-2023 development gate and a nonzero survivor record freezes the entire campaign; label it historically exposed quasi-out-of-sample. Otherwise leave it closed and unread."
+  },
+  "research_boundary": {
+    "campaign116_source_rows_read_before_freeze": false,
+    "campaign116_candidate_values_computed_or_read_before_freeze": false,
+    "campaign116_comparator_values_read_before_freeze": false,
+    "historical_daily_price_or_forward_return_values_read_before_freeze": false,
+    "stress_2024_2025_opened": false,
+    "provider_request_issued": false,
+    "credential_loaded": false,
+    "candidate49_historical_backfill_performed": false,
+    "candidate49_ledgers_changed": false,
+    "second_prospective_candidate_created": false,
+    "current_scoring_selection_sizing_positions_or_orders_performed": false,
+    "investment_advice": false
+  },
+  "prohibitions": {
+    "candidate_inversion_rethreshold_resupport_relag_rewindow_retransform_filter_subset_regime_fit_model_combination_or_rescue": true,
+    "campaign115_or_other_terminal_factor_repair_or_combination": true,
+    "raw_comparator_missing_value_fill_or_drop": true,
+    "candidate49_historical_backfill": true,
+    "second_prospective_candidate": true,
+    "provider_request": true,
+    "current_score_selection_sizing_order_or_investment_advice": true
+  },
+  "next_action": "Implement and synthetically test the exact formula without opening historical source values, then fingerprint-freeze code and tests before the one no-return snapshot build."
+}

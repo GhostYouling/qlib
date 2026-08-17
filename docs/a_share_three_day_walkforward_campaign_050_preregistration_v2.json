@@ -1,0 +1,173 @@
+{
+  "version": 1,
+  "kind": "a_share_three_day_walkforward_campaign050_preregistration",
+  "campaign_id": "a_share_three_day_walkforward_campaign_050",
+  "status": "frozen_before_campaign050_2019_2023_development_return_read",
+  "frozen_at": "2026-08-01T10:52:40Z",
+  "purpose": "Freeze the only Campaign050 factor admitted by the ordered no-return gates and the exact pre-value trial identifier before any 2019-2023 daily price or forward-return field is opened; preserve v1's rejected explanatory fields only in the additive semantic-failure record.",
+  "evidence_classification": {
+    "development_2019_2023": "historically exposed expanding walk-forward research, not unseen or pristine",
+    "stress_2024_2025": "historically exposed stress replay; remains closed until a frozen nonzero development-survivor record exists",
+    "point_in_time_limitation": "The local holding universe derives from a current listing snapshot and can contain survivorship bias.",
+    "investment_or_current_selection_claim_allowed": false
+  },
+  "template_binding": {
+    "path": "docs/a_share_three_day_walkforward_campaign_050_preregistration.json",
+    "sha256": "d46e5f816dc4234062ec24a899ec6bbf83ba541e111a3e553c6d564dcf5f8b6a"
+  },
+  "governance_bindings": {
+    "authoritative_iteration_state": {
+      "path": "docs/a_share_three_day_iteration_status_20260801_campaign049_verified.json",
+      "sha256": "a82a795584c4c4243465f5175a243984467b06d16f659178c62781bb963dbe3e"
+    },
+    "historical_walkforward_policy": {
+      "path": "docs/a_share_three_day_historical_walkforward_research_policy_20260727.json",
+      "sha256": "38426d6161b9bfed323c58caba18feca668b8c9d53e294951a8ba90c01a798bb"
+    },
+    "future_only_policy": {
+      "path": "docs/a_share_three_day_iteration_status_20260725_future_only.json",
+      "sha256": "d44e1cb3707cce194eed37e99cc90f865396b1de8c35e02a393a2a243d973466"
+    },
+    "concept_scouting": {
+      "path": "docs/a_share_three_day_walkforward_campaign_050_concept_scouting.json",
+      "sha256": "9a874841edcdd751c7b7e544f14c5c29068b6f7c41482497e0365e7dfee78adb"
+    },
+    "mechanism_overlap_audit": {
+      "path": "docs/a_share_three_day_walkforward_campaign_050_mechanism_overlap_audit.json",
+      "sha256": "26679fc013e1606857f5c8b608c132058b6be410d3b04854435022af7986c33a"
+    },
+    "campaign049_terminal_record": {
+      "path": "docs/a_share_three_day_walkforward_campaign_049_research_record.json",
+      "sha256": "f6c2fe3b79f6072c0c9274552e84d0689bec38483ad6609ad8187b69fda6a32c"
+    },
+    "feature_build_infrastructure_repair": {
+      "path": "docs/a_share_three_day_walkforward_campaign_050_feature_build_infrastructure_repair_20260801.json",
+      "sha256": "4e514d9283ffd2e3878aa0b9d7bf0625ca45f3b13b8f08ab006f934667ea5443"
+    },
+    "no_return_audit_infrastructure_failure_repair": {
+      "path": "docs/a_share_three_day_walkforward_campaign_050_no_return_audit_infrastructure_failure_repair_20260801.json",
+      "sha256": "97b21132e090aacaf5821833d35a50a4813dc0e67b5061359a978a936b94ea9f"
+    },
+    "pre_return_preregistration_semantic_failure": {
+      "path": "docs/a_share_three_day_walkforward_campaign_050_development_preregistration_semantic_failure_20260801.json",
+      "sha256": "88432c5a374f0bb696ad8f5bf9f297b6cd45e2125f193102d20bd6c6b650b838"
+    }
+  },
+  "no_return_bindings": {
+    "protocol": {
+      "path": "docs/a_share_three_day_walkforward_campaign_050_no_return_preregistration.json",
+      "sha256": "32c3e889e736e050fb0326f2bceb6ddd820ae7a0b9c5f6bac09c90a5afebb10e"
+    },
+    "audit": {
+      "path": "data/experiments/short_horizon/historical_walkforward/campaign_050/no_return/20260801T104432Z_campaign050_no_return_audit.json",
+      "sha256": "a94baef7df73a98e35e52907bfa07fe43f8e471a4ebcb8738f7d75c88292039f"
+    },
+    "audit_freeze": {
+      "path": "docs/a_share_three_day_walkforward_campaign_050_no_return_audit_freeze_20260801.json",
+      "sha256": "b0eb9b4c0bfdc001a485c5140f390309fe35fe0cf6f4535a0ab6dd5f4de5ff35"
+    },
+    "feature_snapshot": {
+      "path": "/Volumes/DIsk/qlib-a-share-tushare-1m/derived/a_share/rich/tushare/minute_walkforward_campaign050_feature_library/tushare_stk_mins_1m_2019_2025_ea0cbb8f_walkforward_campaign050_feature_library_v1/snapshot_manifest.json",
+      "sha256": "8e95728fd9e1ba3d3ab820dbf5d92812bd18f9076ee901ee80cd76cf989300ef",
+      "dataset_sha256": "d758c059ff6fb602106c240c369d5d3db60eb245ec7cccf23d5a32b9f69dec8a"
+    },
+    "feature_and_no_return_runner": {
+      "path": "scripts/a_share_three_day_walkforward_campaign050_features_v8.py",
+      "sha256": "79bba06d0d621d2a415271b8096548706ecd871cc380f233c8ea2f3f1596a5d9"
+    }
+  },
+  "implementation": {
+    "script": {
+      "path": "scripts/a_share_three_day_walkforward_campaign050_v2.py",
+      "sha256": "5624d24cffdc23d62f06ca6046d10a26f2f3108ec5b6d3fc58e387ac7d53f56d"
+    },
+    "byte_bound_parent_runner": {
+      "path": "scripts/a_share_three_day_walkforward_campaign050.py",
+      "sha256": "1840d5723e215522e9f92c3e08642a4b0f52e23112f429d772821ca054271a49"
+    },
+    "development_command": "PYTHONPATH=. python scripts/a_share_three_day_walkforward_campaign050_v2.py run-development",
+    "exposed_stress_command": "PYTHONPATH=. python scripts/a_share_three_day_walkforward_campaign050_v2.py run-exposed-stress --confirm-exposed-stress",
+    "output_root": "/Users/niyufei/Coding/qlib/data/experiments/short_horizon/historical_walkforward/campaign_050/walkforward"
+  },
+  "factor_library": [
+    {
+      "feature_id": "wf050_f01",
+      "name": "intraday_half_session_extreme_shock_reversal_completion_2h",
+      "direction": "higher",
+      "formula": "Within each independent 120-close half-session form 119 adjacent log returns. Choose the earliest index k attaining the maximum absolute return, let s be that return, and let R=log(last_close_in_half/close_immediately_after_s). Define h=-2*s*R/(s^2+R^2). Return the arithmetic mean of the morning and afternoon h values.",
+      "economic_hypothesis": "Prompt directional retracement of the largest one-minute shock in both continuous half sessions is consistent with liquidity replenishment and completed price discovery rather than persistent inventory pressure, potentially leaving a more resilient close-known state for the next-open-to-third-close horizon.",
+      "dataset_group": "campaign050_new_factors",
+      "partition_root": "/Volumes/DIsk/qlib-a-share-tushare-1m/derived/a_share/rich/tushare/minute_walkforward_campaign050_feature_library/tushare_stk_mins_1m_2019_2025_ea0cbb8f_walkforward_campaign050_feature_library_v1/partitions",
+      "bindings": [
+        {
+          "path": "/Volumes/DIsk/qlib-a-share-tushare-1m/derived/a_share/rich/tushare/minute_walkforward_campaign050_feature_library/tushare_stk_mins_1m_2019_2025_ea0cbb8f_walkforward_campaign050_feature_library_v1/snapshot_manifest.json",
+          "sha256": "8e95728fd9e1ba3d3ab820dbf5d92812bd18f9076ee901ee80cd76cf989300ef"
+        },
+        {
+          "path": "docs/a_share_three_day_walkforward_campaign_050_no_return_preregistration.json",
+          "sha256": "32c3e889e736e050fb0326f2bceb6ddd820ae7a0b9c5f6bac09c90a5afebb10e"
+        },
+        {
+          "path": "data/experiments/short_horizon/historical_walkforward/campaign_050/no_return/20260801T104432Z_campaign050_no_return_audit.json",
+          "sha256": "a94baef7df73a98e35e52907bfa07fe43f8e471a4ebcb8738f7d75c88292039f"
+        },
+        {
+          "path": "docs/a_share_three_day_walkforward_campaign_050_no_return_audit_freeze_20260801.json",
+          "sha256": "b0eb9b4c0bfdc001a485c5140f390309fe35fe0cf6f4535a0ab6dd5f4de5ff35"
+        }
+      ]
+    }
+  ],
+  "search_space": {
+    "admissible_factor_names_canonical": [
+      "intraday_half_session_extreme_shock_reversal_completion_2h"
+    ],
+    "single_factor_rule": "Evaluate the only admissible factor exactly once at weight 1.0 using trial_id wf050_intraday_half_session_extreme_shock_reversal_completion_2h_single_higher.",
+    "pair_rule": "No pair exists because exactly one factor passed both no-return gates.",
+    "all_components_required": true,
+    "directional_rank_method": "same-day average percentile rank using the frozen higher direction",
+    "weight_fitting": false,
+    "threshold_search": false,
+    "year_subset_search": false,
+    "filter_search": false,
+    "triple_or_higher_order_combinations": false,
+    "old_terminal_factor_rescue_combinations": false,
+    "pair_weight_grid_for_canonical_factor_order": [
+      [
+        0.25,
+        0.75
+      ],
+      [
+        0.5,
+        0.5
+      ],
+      [
+        0.75,
+        0.25
+      ]
+    ],
+    "expected_single_trial_count": 1,
+    "expected_pair_trial_count": 0,
+    "expected_trial_count": 1,
+    "record_every_trial_and_infrastructure_failure": true,
+    "post_result_change_requires_new_campaign_version": true
+  },
+  "candidate49_boundary": {
+    "registration_id": "candidate49_intraday_cumulative_vwap_crossing_rate_240m_v1",
+    "included_in_feature_library": false,
+    "historical_return_read_allowed": false,
+    "historical_signal_execution_or_milestone_backfill_allowed": false,
+    "prospective_ledgers_changed_by_campaign": false
+  },
+  "research_output_boundary": {
+    "current_scoring_allowed": false,
+    "selection_allowed": false,
+    "sizing_allowed": false,
+    "orders_allowed": false,
+    "prospective_candidate_activation_allowed": false,
+    "campaign004_rescue_or_reweight_allowed": false,
+    "terminated_factor_rescue_or_combination_allowed": false,
+    "investment_advice": false,
+    "campaign004_through_campaign049_rescue_or_reweight_allowed": false
+  }
+}

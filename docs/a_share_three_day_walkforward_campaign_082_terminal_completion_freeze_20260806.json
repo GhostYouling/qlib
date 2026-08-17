@@ -1,0 +1,56 @@
+{
+  "schema_version": 1,
+  "kind": "a_share_three_day_walkforward_campaign082_terminal_completion_freeze",
+  "version": 1,
+  "status": "terminal_zero_survivors_stress_closed_all_known_invocations_accounted",
+  "frozen_at": "2026-08-06T19:20:15+08:00",
+  "research_record": {
+    "path": "docs/a_share_three_day_walkforward_campaign_082_research_record.json",
+    "sha256": "ebf6f548296922d96a1e971f2550669f415b303f5ee53de101158a580ad362a6"
+  },
+  "future_numeric_comparator_policy_v18": {
+    "path": "docs/a_share_three_day_walkforward_future_numeric_comparison_eligibility_policy_v18_20260806.json",
+    "sha256": "05258e51c1e0a7c9805c1b68c1f936504c390f43646f3e71c67f1d5e4fc8db9c"
+  },
+  "current_research_attempt_ledger": {
+    "path": "data/experiments/short_horizon/historical_walkforward/campaign_082/research_attempt_ledger_v4.json",
+    "sha256": "0714f83dd60193def41eec0c3b7277d5720f3f5f7b427f4472b340a2917abcbd"
+  },
+  "terminal_test": {
+    "path": "tests/data_collector_tests/test_a_share_three_day_walkforward_campaign082_terminal.py",
+    "sha256": "ad7d0b1a3425652e4244e70381c5d2630a4c1d031dd698de406ac19fe39ab888"
+  },
+  "manage_qlib_a_share_data_skill": {
+    "path": "/Users/niyufei/.codex/skills/manage-qlib-a-share-data/SKILL.md",
+    "sha256": "90a99c54dd00f0c737e85c4c6dd48d906edbd0f591c61278885728eaf7806431"
+  },
+  "terminal_result": {
+    "factor": "intraday_range_amount_peak_timing_alignment_240m",
+    "direction": "higher",
+    "numeric_comparisons_passed": 111,
+    "development_trial_count": 1,
+    "development_survivor_count": 0,
+    "stress_2024_2025_opened": false,
+    "stress_return_fields_read": false,
+    "aggregate_20bp_pilot_return": -0.11395294069859907
+  },
+  "attempt_accounting": {
+    "campaign082_infrastructure_failures": 5,
+    "campaign082_complete_factor_attempts": 1,
+    "campaign082_historical_attempts": 6,
+    "campaign082_ledger_entries": 7,
+    "campaign082_return_reading_development_trials": 1,
+    "cumulative_historical_attempts": 506,
+    "cumulative_return_reading_development_trials": 283
+  },
+  "future_duplicate_detection_library": {
+    "complete_definition_count": 114,
+    "complete_definition_order_sha256": "bc8ecccee5fa8278342253908e34167313041a23ae153bb3d64d3f60c285e04f",
+    "numeric_comparator_count": 112,
+    "numeric_comparator_order_sha256": "78656b7dcd0df95703ccf663d261c61cb5f596ca368c3523907464fe25ed1f2b"
+  },
+  "provider_request_issued": false,
+  "candidate49_ledgers_changed": false,
+  "current_scoring_selection_sizing_or_orders_performed": false,
+  "investment_advice": false
+}

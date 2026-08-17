@@ -1,0 +1,179 @@
+{
+  "version": 3,
+  "kind": "a_share_candidate49_future_session_workflow_readiness",
+  "status": "offline_ready_waiting_for_first_eligible_session_and_runtime_token",
+  "recorded_at": "2026-07-25T17:50:39Z",
+  "purpose": "Bind the fail-closed single-operation workflow, its explicit accepted-Tushare-daily-reference reuse evidence, and its offline-proven same-session resume boundaries for Candidate49's first eligible future session without requesting provider data, reading historical Candidate49 returns, or mutating active data and append-only ledgers.",
+  "authoritative_research_state": {
+    "path": "docs/a_share_three_day_iteration_status_20260725_future_only.json",
+    "sha256": "d44e1cb3707cce194eed37e99cc90f865396b1de8c35e02a393a2a243d973466",
+    "terminal_mechanism_count": 48,
+    "active_future_only_candidate_count": 1,
+    "candidate49_is_only_active_mechanism": true,
+    "candidate50_started": false,
+    "aggregation_scoring_selection_sizing_or_orders_allowed": false
+  },
+  "frozen_workflow": {
+    "protocol": {
+      "path": "docs/a_share_tushare_candidate49_future_session_workflow_protocol.json",
+      "sha256": "6ff5636a3f7ef65e93452098186b3aecf9231d68873ab8a1070afb91d699ef7c"
+    },
+    "implementation": {
+      "path": "scripts/a_share_tushare_candidate49_future_session_workflow.py",
+      "sha256": "7cb68ef9b9a6a3fc5308f8b4b88bfc618e6f228fea812ae7ec6fdb06d0db9ddb"
+    },
+    "daily_migration_implementation": {
+      "path": "scripts/a_share_tushare_daily_migration.py",
+      "sha256": "4c612f7674286bf31ee2e5883bd9518e432913eeadbfb8af71175923bb6a4e3a"
+    },
+    "tests": {
+      "path": "tests/data_collector_tests/test_a_share_tushare_candidate49_future_session_workflow.py",
+      "sha256": "7fe8aabce1b91a1477babb25579f8ab2c84093e6953a77a553d483148daca4f0"
+    },
+    "earliest_eligible_signal_session": "2026-07-27",
+    "not_before_local_time": "16:30:00 Asia/Shanghai",
+    "same_local_signal_date_required": true,
+    "delayed_backfill_allowed": false,
+    "historical_candidate49_return_diagnostic_allowed": false,
+    "next_candidate_activation_allowed": false
+  },
+  "single_operation_contract": {
+    "plan_command": "python scripts/a_share_tushare_candidate49_future_session_workflow.py plan --session 2026-07-27 --staging-root /Volumes/DIsk/qlib-a-share-tushare-daily-2026-07-27 --minute-data-root /Volumes/DIsk/qlib-a-share-tushare-1m",
+    "run_command": "python scripts/a_share_tushare_candidate49_future_session_workflow.py run --confirm-run --session 2026-07-27 --staging-root /Volumes/DIsk/qlib-a-share-tushare-daily-2026-07-27 --minute-data-root /Volumes/DIsk/qlib-a-share-tushare-1m",
+    "first_migration_mode": "initial_full_tushare_daily_migration_from_active_baostock_root",
+    "later_refresh_mode": "seed_refresh_from_last_accepted_active_tushare_root",
+    "accepted_historical_daily_reuse": {
+      "path": "/Volumes/DIsk/qlib-a-share-tushare-1m/raw/a_share/rich/tushare/daily/snapshots/tushare_daily_2019_2025_acf72e28/snapshot_manifest.json",
+      "sha256": "87feded06b6726d282abf52c8fd1c30340728ae37c2de201a3a8f30e1a556e2d",
+      "range": [
+        "2019-01-01",
+        "2025-12-31"
+      ],
+      "rows": 7989350,
+      "annual_partitions": 7,
+      "sessions": 1699,
+      "covered_daily_sessions_requested_again": false,
+      "daily_basic_reuse_available": false
+    },
+    "phase_order": [
+      "validate_static_evidence_and_active_state",
+      "build_accept_and_atomically_activate_isolated_tushare_daily_root",
+      "verify_fresh_tushare_daily_status_and_price_basis",
+      "resolve_activated_data_root",
+      "reuse_accepted_future_quarterly_quality_or_refresh_only_when_it_is_the_sole_candidate49_preflight_failure",
+      "pass_combined_candidate49_preflight",
+      "collect_same_session_source_to_signal_once",
+      "write_one_immutable_external_workflow_record"
+    ],
+    "credential_policy": "Load TUSHARE_TOKEN only from the current process or launchctl and inject it only into provider-relevant child processes; never put the credential on a command line, in a log, or in an audit record.",
+    "failure_policy": "Stop at the first failed boundary or invalid child JSON result; do not continue to later phases.",
+    "excluded_actions": [
+      "historical_or_forward_return_settlement",
+      "paper_execution",
+      "portfolio_selection_or_order_generation",
+      "candidate50_activation"
+    ]
+  },
+  "offline_acceptance": {
+    "focused_workflow_tests_passed": 15,
+    "daily_migration_tests_passed": 18,
+    "complete_data_collector_tests_passed": 1092,
+    "complete_data_collector_warning_count": 9,
+    "ruff_status": "passed",
+    "python_compile_status": "passed",
+    "protocol_json_status": "passed",
+    "verified_behaviors": [
+      "plan_mode_performs_no filesystem write or provider request",
+      "date_and_token_fail before provider-relevant child processes",
+      "initial BaoStock migration has no seed phase",
+      "later accepted Tushare refresh seeds before sync",
+      "a completed initial daily source resumes at local build without another daily provider preflight or sync",
+      "a completed incremental daily source reuses its validated seed and resumes at local build without another provider request",
+      "a completed daily acceptance resumes at activation without source sync or canonical rebuild",
+      "an already active accepted Tushare root at the exact session skips the migration workflow entirely",
+      "an already accepted same-session quarterly-quality snapshot skips both refresh and a redundant second preflight",
+      "a Candidate49 collection failure after daily activation and quality refresh resumes on the same session without re-fetching daily data, rebuilding Qlib, reactivating, or refreshing quality",
+      "the accepted 2019-2025 Tushare daily reference is validated before token or provider access",
+      "a source manifest with any reference-covered daily re-request stops before quarterly quality or minute collection",
+      "the final workflow record preserves reference reuse, new daily and daily_basic session counts, and daily-provider call counts",
+      "TUSHARE_TOKEN is absent from local-only and seed child environments",
+      "a child failure stops every later phase",
+      "an accepted final workflow record revalidates without token or child execution"
+    ]
+  },
+  "real_plan_probe": {
+    "observed_at": "2026-07-25T17:41:25Z",
+    "session": "2026-07-27",
+    "status": "not_ready_no_write",
+    "recommended_cli_exit_code": 2,
+    "active_data_root": "/Users/niyufei/Coding/qlib/data",
+    "active_daily_source": "baostock",
+    "active_calendar_end": "2026-07-13",
+    "next_phase": "initial_tushare_daily_migration_from_baostock",
+    "failures": [
+      "signal_session_has_not_arrived",
+      "TUSHARE_TOKEN_not_available_to_workflow"
+    ],
+    "provider_request_issued": false,
+    "filesystem_write_performed": false,
+    "forward_return_fields_read": false,
+    "historical_candidate49_return_diagnostic_run": false
+  },
+  "unchanged_runtime_state": {
+    "repository_data_root_pointer_present": false,
+    "tushare_daily_staging_present": false,
+    "active_latest_run": {
+      "path": "data/metadata/latest_run.json",
+      "sha256": "1d141c6133e3a1fec2b645c0d67bc0c083655fa912f8a015ea80668f433c127b"
+    },
+    "active_price_basis": {
+      "path": "data/qlib/cn_a_share/price_basis.json",
+      "sha256": "68e9dbb83749779b34d5cf3b116195074c154ff74cb6de95ba67695bedc1f14f"
+    },
+    "accepted_historical_tushare_daily_reference": {
+      "path": "/Volumes/DIsk/qlib-a-share-tushare-1m/raw/a_share/rich/tushare/daily/snapshots/tushare_daily_2019_2025_acf72e28/snapshot_manifest.json",
+      "sha256": "87feded06b6726d282abf52c8fd1c30340728ae37c2de201a3a8f30e1a556e2d",
+      "rows": 7989350,
+      "sessions": 1699,
+      "valid": true,
+      "provider_request_issued_by_validation": false
+    },
+    "historical_minute_source": {
+      "data_root": "/Volumes/DIsk/qlib-a-share-tushare-1m",
+      "manifest_path": "/Volumes/DIsk/qlib-a-share-tushare-1m/metadata/rich_data/runs/tushare_stk_mins_1m_2019_2025_ea0cbb8f.json",
+      "manifest_sha256": "9b3d959563c9d182f38981c6a36bdb3bc9b415de08487a9e1f9e850825c0839f",
+      "historical_snapshot_immutable": true,
+      "download_lock_held": false,
+      "candidate49_factor_lock_held": false
+    },
+    "candidate49_signal_ledger": {
+      "path": "data/experiments/short_horizon/candidate49_future_signal_ledger.json",
+      "sha256": "5193f00d7f36da003f53cec387900da4c3d002299f5dfcfc1a95eaa199ed3a79",
+      "entries": 0
+    },
+    "candidate49_execution_ledger": {
+      "path": "data/experiments/short_horizon/candidate49_future_execution_ledger.json",
+      "sha256": "d57a3e61eac969e42cafa418ccd8c0a5ee65dcf69da145bb2c096c2a02a2ea4f",
+      "entries": 0
+    },
+    "final_external_workflow_record_present": false
+  },
+  "documentation": {
+    "pipeline": {
+      "path": "docs/a_share_data_pipeline.md",
+      "sha256": "61b35aa2ee1f1cd422407e2fa4c21404fd9121f6578c49acda698fe655fb7024"
+    },
+    "token_setup": {
+      "path": "docs/a_share_tushare_token_setup.md",
+      "sha256": "d92fbe3899577e8b7231e11bb6c685df9d56e761e489c97aa30848b9b05e23d4"
+    },
+    "skill_path": "/Users/niyufei/.codex/skills/manage-qlib-a-share-data/SKILL.md"
+  },
+  "decision": {
+    "workflow_ready_offline": true,
+    "provider_request_authorized_before_eligible_session": false,
+    "current_signal_exists": false,
+    "current_selection_or_order_allowed": false,
+    "next_action": "On 2026-07-27 after 16:30 Asia/Shanghai, expose TUSHARE_TOKEN to the workflow process and execute the single confirmed run command; do not run the manual phases in parallel."
+  }
+}

@@ -1,0 +1,29 @@
+{
+  "schema_version": 1,
+  "kind": "a_share_three_day_walkforward_campaign171_independent_validation_syntax_failure",
+  "status": "failed_python_parse_before_validation_reads_zero_write_recovery_authorized",
+  "recorded_at": "2026-08-15T09:10:28+08:00",
+  "attempt": {
+    "attempt_id": "campaign171_infrastructure_007",
+    "phase": "independent_final_binding_and_timestamp_validation",
+    "status": "failed_validation_summary_parenthesis_syntax_error_before_execution",
+    "exit_code": 1,
+    "observed": "Python reported a closing-parenthesis SyntaxError in the final JSON summary expression.",
+    "execution_reached": false,
+    "repository_or_research_value_read": false,
+    "target_file_written_by_failure": false,
+    "candidate_comparator_security_price_or_return_value_read": false
+  },
+  "recovery": {
+    "allowed_change": "Replace the compound final summary expression with separately computed path and count variables; keep all validation assertions unchanged.",
+    "scientific_or_policy_semantics_may_change": false,
+    "failed_exit_code_ignored_or_bypassed": false
+  },
+  "research_boundary": {
+    "stress_2024_2025_opened": false,
+    "provider_or_web_request_issued": false,
+    "provider_credential_presence_value_or_digest_read": false,
+    "candidate49_ledgers_changed": false,
+    "current_scoring_selection_sizing_positions_or_orders_performed": false
+  }
+}

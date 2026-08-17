@@ -300,6 +300,7 @@ def validate_repository_chain(spec: dict[str, Any]) -> dict[str, Any]:
     # shared validator checks the current ledger and PIT bindings.
     current_spec = dict(spec)
     current_link = dict(spec["current_research_state"])
+    current_link["path"] = str(research.DEFAULT_THREE_DAY_ITERATION_STATUS)
     current_link["sha256"] = research.THREE_DAY_ITERATION_STATUS_SHA256
     current_spec["current_research_state"] = current_link
     evidence = foundation.validate_repository_chain(current_spec)

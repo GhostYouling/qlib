@@ -1,0 +1,92 @@
+{
+  "version": 1,
+  "kind": "a_share_three_day_walkforward_campaign054_feature_implementation_freeze",
+  "status": "frozen_before_campaign054_candidate_values",
+  "frozen_at": "2026-08-03T13:22:00Z",
+  "purpose": "Bind the exact Campaign054 formula implementation and every pre-value test attempt before reading any external Campaign054 minute candidate value.",
+  "no_return_protocol": {
+    "path": "docs/a_share_three_day_walkforward_campaign_054_no_return_preregistration.json",
+    "sha256": "938d4e5b73356c949ca298e6850aa4bea02a8204b333f793128f97aaf04fd176"
+  },
+  "mechanism_overlap_audit": {
+    "path": "docs/a_share_three_day_walkforward_campaign_054_mechanism_overlap_audit.json",
+    "sha256": "4c530f8b6ceea2d4e719b00eb9ab6b0cabc13a15058391b99636ed856ac770ea"
+  },
+  "feature_runner": {
+    "path": "scripts/a_share_three_day_walkforward_campaign054_features.py",
+    "sha256": "4530bd70360d40e8ee72950f1936041482401a5e07240ac42050836d60d6ad27"
+  },
+  "feature_tests": {
+    "path": "tests/data_collector_tests/test_a_share_three_day_walkforward_campaign054_features.py",
+    "sha256": "62440ca9d6e4f41f9f7be21e5e6724f2dd7ce8f765605d35707c743e8d8d934d",
+    "current_module_cases": 8,
+    "current_combined_cases": 16,
+    "current_combined_passed": 16,
+    "current_combined_failed": 0
+  },
+  "pre_freeze_test_attempts": [
+    {
+      "attempt": 1,
+      "scope": "Campaign054 synthetic pre-value module",
+      "result": "7_passed_1_failed",
+      "failure": "The test incorrectly expected a reflected discrete distribution to produce exactly -0.8 under the frozen left-continuous empirical inverse; the exact Q25/Q50/Q75 values imply -7/9.",
+      "classification": "test_expectation_infrastructure_only",
+      "resolution": "Freeze the exact discrete quantile expectation -7/9; formula, direction, and quantile estimator unchanged.",
+      "external_candidate_or_comparison_values_read": false,
+      "daily_price_or_forward_return_values_read": false
+    },
+    {
+      "attempt": 2,
+      "scope": "Campaign054 plus Campaign053 regression modules",
+      "result": "15_passed_1_failed",
+      "failure": "Importing the terminal Campaign053 v6 entrypoint mutated Campaign053 base freeze constants and invalidated its intentional pre-freeze blocking test.",
+      "classification": "shared_module_state_test_infrastructure_only",
+      "resolution": "Import the immutable Campaign053 base definition module for inheritance; the future audit layer may bind terminal snapshots separately without mutating base import state.",
+      "external_candidate_or_comparison_values_read": false,
+      "daily_price_or_forward_return_values_read": false
+    },
+    {
+      "attempt": 3,
+      "scope": "Campaign054 plus Campaign053 feature and verifier-repair regression modules",
+      "result": "16_passed_0_failed",
+      "external_candidate_or_comparison_values_read": false,
+      "daily_price_or_forward_return_values_read": false
+    }
+  ],
+  "frozen_semantics": {
+    "candidate": "intraday_volume_weighted_transaction_price_bowley_skew_240m",
+    "direction": "higher",
+    "source_projection": [
+      "datetime",
+      "symbol",
+      "provider",
+      "volume",
+      "amount"
+    ],
+    "continuous_bar_count": 240,
+    "minimum_active_bars": 120,
+    "active_rule": "volume>0 and amount>0; joint-zero inactive; any one-sided zero invalidates the stock-day",
+    "transaction_price": "natural-log(amount/volume)",
+    "weight": "share volume",
+    "weighted_quantile_estimator": "left-continuous inverse of the inclusive weighted empirical CDF",
+    "quantile_probabilities": [
+      0.25,
+      0.5,
+      0.75
+    ],
+    "formula": "(Q75+Q25-2*Q50)/(Q75-Q25)",
+    "valid_range": [
+      -1.0,
+      1.0
+    ],
+    "alternate_quantile_weight_window_field_direction_transform_threshold_filter_subset_model_or_combination": "none"
+  },
+  "candidate_values_read_before_freeze": false,
+  "comparison_values_read_before_freeze": false,
+  "historical_daily_price_or_forward_returns_read_before_freeze": false,
+  "candidate49_historical_return_read": false,
+  "candidate49_ledgers_changed": false,
+  "second_prospective_candidate_created": false,
+  "provider_request_issued": false,
+  "current_scoring_selection_sizing_or_orders_performed": false
+}

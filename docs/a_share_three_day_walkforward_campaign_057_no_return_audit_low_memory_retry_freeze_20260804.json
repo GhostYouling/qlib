@@ -1,0 +1,53 @@
+{
+  "version": 1,
+  "kind": "a_share_three_day_walkforward_campaign057_no_return_audit_low_memory_retry_freeze",
+  "status": "frozen_after_memory_pressure_failure_and_before_same_semantic_retry",
+  "recorded_at": "2026-08-04T05:49:00Z",
+  "purpose": "Authorize one clean Campaign057 no-return audit retry with lower file-verification concurrency after the prior process disappeared without an artifact or gate result.",
+  "bindings": {
+    "original_audit_implementation_freeze": {
+      "path": "docs/a_share_three_day_walkforward_campaign_057_no_return_audit_implementation_freeze_20260804.json",
+      "sha256": "73fba06d890fd5d52810a97f46a81779727682e7661eefa25649d67e77dc3fac"
+    },
+    "memory_pressure_failure": {
+      "path": "docs/a_share_three_day_walkforward_campaign_057_no_return_audit_memory_pressure_failure_20260804.json",
+      "sha256": "955d4ab2c394d63df38a60f3f8648ecd5762ab18163b38bcbe644032fa41c955"
+    },
+    "research_attempt_ledger_v2": {
+      "path": "data/experiments/short_horizon/historical_walkforward/campaign_057/research_attempt_ledger_v2.json",
+      "sha256": "af9e3ad929c5f18474591cff71651d53c5121ed3900213ec0e71fffb2689f900"
+    },
+    "audit_runner": {
+      "path": "scripts/a_share_three_day_walkforward_campaign057_no_return_audit.py",
+      "sha256": "d60f8bb19e953a75e6dcc47745399a08cab71deb61134783fc3a043613e6ed59"
+    },
+    "feature_snapshot": {
+      "path": "/Volumes/DIsk/qlib-a-share-tushare-1m/derived/a_share/rich/tushare/minute_walkforward_campaign057_feature_library/tushare_stk_mins_1m_2019_2025_ea0cbb8f_walkforward_campaign057_feature_library_v1/snapshot_manifest.json",
+      "sha256": "7aba63621b2c6bd2b9d511d11ab56fc5331ae1dcf7a3c6055dbe6455d437d0ed"
+    }
+  },
+  "retry_command": "PYTHONPATH=/Volumes/DIsk/Disk-Coding/qlib /opt/anaconda3/bin/python3 scripts/a_share_three_day_walkforward_campaign057_no_return_audit.py no-return-audit --data-root /Volumes/DIsk/qlib-a-share-tushare-1m --experiment-root /Volumes/DIsk/Disk-Coding/qlib/data/experiments/short_horizon/historical_walkforward/campaign_057 --workers 4",
+  "infrastructure_change": {
+    "prior_workers": 16,
+    "retry_workers": 4,
+    "affects_only_partition_file_verification_concurrency": true,
+    "candidate_or_comparison_value_formula_changed": false,
+    "candidate_or_comparison_order_changed": false,
+    "sample_or_quality_listing_universe_changed": false,
+    "coverage_capacity_or_uniqueness_gate_changed": false,
+    "partial_in_memory_result_reused": false
+  },
+  "research_boundary": {
+    "existing_audit_artifact_count": 0,
+    "existing_gate_result_count": 0,
+    "historical_daily_price_fields_read": [],
+    "historical_forward_return_fields_read": false,
+    "development_folds_opened": false,
+    "stress_2024_2025_opened": false,
+    "candidate49_historical_return_read": false,
+    "candidate49_ledgers_changed": false,
+    "provider_request_issued": false,
+    "current_scoring_selection_sizing_or_orders_performed": false
+  },
+  "success_requirement": "Accept only a newly written complete Campaign057 audit artifact from immutable files with process exit code zero. Any missing or nonzero exit remains a failure and cannot be bypassed."
+}

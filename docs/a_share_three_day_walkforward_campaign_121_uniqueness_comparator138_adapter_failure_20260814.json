@@ -1,0 +1,29 @@
+{
+  "schema_version": 1,
+  "kind": "a_share_three_day_walkforward_campaign121_infrastructure_failure",
+  "status": "recorded_after_comparator_source_values_before_any_return_value",
+  "recorded_at": "2026-08-14T03:02:00+08:00",
+  "attempt_id": "campaign121_infrastructure_029",
+  "phase": "confirmed_all_138_ordered_uniqueness_execution",
+  "failure": {
+    "exit_code": 1,
+    "class": "comparator138_adapter_chain_missing_c119_base",
+    "message": "The run completed the prior 137 comparisons and loaded/verified the Campaign120 comparator source, then failed before comparator 138 alignment because c120_base has c119_base rather than a direct c118_base attribute.",
+    "output_created": false
+  },
+  "exposure_accounting": {
+    "candidate_values_read": true,
+    "prior_137_comparison_values_read_and_compared": true,
+    "comparator_138_source_snapshot_verified_and_factor_frame_loaded": true,
+    "comparator_138_alignment_or_rank_correlation_completed": false,
+    "historical_daily_price_or_forward_return_values_read": false
+  },
+  "safe_recovery": "Repair only the frozen adapter path to c120_base.c119_base.c118_base.c117_base.c110_v1.adapter, add a synthetic assertion, publish v4, rerun plan, then make one complete confirmed recovery run. Do not change the candidate, order, direction, gate or threshold and do not discard the exposure record.",
+  "research_boundary": {
+    "daily_price_or_return_values_read": false,
+    "stress_2024_2025_opened": false,
+    "provider_request_issued": false,
+    "candidate49_ledgers_changed": false,
+    "scientific_result_changed": false
+  }
+}

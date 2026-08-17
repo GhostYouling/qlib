@@ -1,0 +1,46 @@
+{
+  "schema_version": 1,
+  "kind": "a_share_three_day_walkforward_campaign080_prevalue_test_failure",
+  "status": "recorded_and_corrected_before_implementation_freeze_or_source_values",
+  "recorded_at": "2026-08-06T15:34:00+08:00",
+  "stage": "synthetic_feature_semantics_test_before_implementation_freeze",
+  "failure": {
+    "test": "test_grid_identity_and_output_semantics_fail_closed",
+    "observed": "The test expected score 0.1 to fail the frozen 1/120 discrete grid, but 0.1*120 equals the valid integer run length 12, so the expected exception was not raised.",
+    "root_cause": "invalid synthetic fixture selection; production factor code was not implicated",
+    "source_rows_read": false,
+    "candidate_values_from_historical_source_computed": false,
+    "comparison_values_read": false,
+    "historical_daily_price_fields_read": [],
+    "historical_forward_returns_read": false
+  },
+  "correction": {
+    "scope": "test fixture only",
+    "old_synthetic_value": 0.1,
+    "new_synthetic_value": 0.101,
+    "reason": "0.101*120 is not an integer and therefore must fail the exact discrete run-length grid.",
+    "candidate_formula_changed": false,
+    "protocol_changed": false,
+    "feature_runner_changed": false,
+    "gate_or_threshold_changed": false,
+    "post_correction_nonfreeze_tests_passed": 5,
+    "post_correction_nonfreeze_tests_failed": 0
+  },
+  "bindings_after_correction": {
+    "protocol": {
+      "path": "docs/a_share_three_day_walkforward_campaign_080_no_return_preregistration.json",
+      "sha256": "4f1061d0daaec767d926cda79762c3c70806b84e55c28c4d198918547df3c0f5"
+    },
+    "feature_runner": {
+      "path": "scripts/a_share_three_day_walkforward_campaign080_features.py",
+      "sha256": "84e3e41111b3a20d12fa07d5643881d8f527c5ace9b0872089affb9a0d6d86c7"
+    },
+    "tests": {
+      "path": "tests/data_collector_tests/test_a_share_three_day_walkforward_campaign080_features.py",
+      "sha256": "bdb18d80471f9d02b5a1247f12d58eda07aa5cccf00224ec93d075fe60f1e776"
+    }
+  },
+  "provider_request_issued": false,
+  "candidate49_ledgers_changed": false,
+  "current_scoring_selection_sizing_or_orders_performed": false
+}

@@ -1,0 +1,52 @@
+{
+  "schema_version": 1,
+  "kind": "a_share_three_day_iteration_status",
+  "status": "campaign187_final_terminal_validation_passed_goal_active_campaign188_offline_prevalue_authorized",
+  "recorded_at": "2026-08-15T13:48:07+08:00",
+  "supersedes_without_rewriting": {"path": "docs/a_share_three_day_iteration_status_20260815_campaign186_prevalue_terminal.json", "sha256": "fc0aac22b58488d717bbf5e8c5a8892ea6820f5f93d3d152ef3ae1d980e9bf5c", "preserved": true, "historical_scientific_result_changed": false, "reason": "Advance from the validated Campaign186 state through Campaign187 domain-overlap audit, bank loan asset-quality source-frontier review, complete failure accounting and independent validation without rewriting any prior record."},
+  "authoritative_inputs": {
+    "campaign187_hotel_overlap_rejection": {"path": "docs/a_share_three_day_walkforward_campaign_187_hotel_operating_kpi_domain_overlap_rejection_20260815.json", "sha256": "fe7b1863480cf264bb70cbd46d9a97c34e74ea890430104417c3320e469b6eb9"},
+    "campaign187_semiconductor_overlap_rejection": {"path": "docs/a_share_three_day_walkforward_campaign_187_semiconductor_milestone_kpi_domain_overlap_rejection_20260815.json", "sha256": "43a34271a9423096fb64c3517cfe5a88f908886458711a59a8a66ef9362537d1"},
+    "campaign187_semiconductor_search_failure": {"path": "docs/a_share_three_day_walkforward_campaign_187_semiconductor_overlap_search_output_truncation_failure_20260815.json", "sha256": "08a1a6eec0a7d7ec93990cf72a499be3a0706cb658949ae7b20b5faf71073798"},
+    "campaign187_combined_diagnostic_failure": {"path": "docs/a_share_three_day_walkforward_campaign_187_combined_diagnostic_output_truncation_failure_20260815.json", "sha256": "90d6997d9ce2374cd39d2ea330d087b0f0e1ce260317de0712d5bcaae526d42e"},
+    "campaign187_cumulative_regression_failure": {"path": "docs/a_share_three_day_walkforward_campaign_187_cumulative_regression_deselect_path_failure_20260815.json", "sha256": "efdafe6658e9c33932476c14a130fdc474b59a86759ed0ca55d46908f993ade5"},
+    "campaign187_bank_loan_asset_quality_frontier": {"path": "docs/a_share_three_day_walkforward_campaign_187_bank_loan_asset_quality_migration_source_frontier_20260815.json", "sha256": "4c1c7207b40ab356cf9002f9f7e4ba5a8bb382db5de74fc5444725b6640dd83c"},
+    "campaign187_terminal_result": {"path": "docs/a_share_three_day_walkforward_campaign_187_terminal_result_20260815.json", "sha256": "88c188199f80714550f62e2aa4f8c2769aefcb42fc2d951f64dc11724fc4fb1d"},
+    "campaign187_terminal_report": {"path": "docs/a_share_three_day_walkforward_campaign_187_terminal_report_20260815.md", "sha256": "a667af998254483f80777278004bcf9a4a30ff23d795146f4861c00f28520b2a"},
+    "campaign187_attempt_ledger": {"path": "data/experiments/short_horizon/historical_walkforward/campaign_187/research_attempt_ledger_v1.json", "sha256": "6b0d912439e825284efda551a4fd800fe5d632af66c6500bdcfe5cbd81a9b505"},
+    "eligibility_policy_v276": {"path": "docs/a_share_three_day_walkforward_future_numeric_comparison_eligibility_policy_v276_20260815.json", "sha256": "c7ec31d8131520135bd8006da3798faa887eab4b0515ee78b8a396467637ba6c"},
+    "terminal_tests": {"path": "tests/data_collector_tests/test_a_share_three_day_walkforward_campaign187_terminal.py", "sha256": "d3701f81d7a954a3df1353a8675637809e52ce61746f64da371746293a2da2c1"},
+    "manage_qlib_a_share_data_skill": {"path": "/Users/niyufei/.codex/skills/manage-qlib-a-share-data/SKILL.md", "sha256": "565713a5f3aeb6a1acf23e397fcc21be28d0c3ea4ebf21c7f287a25bb94d78dc"},
+    "campaign187_terminal_validation": {"path": "docs/a_share_three_day_walkforward_campaign_187_terminal_validation_20260815.json", "sha256": "beaee0f64974bae2936966e4ac0db34fca6ec9b206490018133e918ee1acba07"}
+  },
+  "authoritative_policy": {"path": "docs/a_share_three_day_walkforward_future_numeric_comparison_eligibility_policy_v276_20260815.json", "sha256": "c7ec31d8131520135bd8006da3798faa887eab4b0515ee78b8a396467637ba6c", "factor_definition_count": 158, "factor_definition_order_sha256": "4819c7fd7c0795d7598a52f3c615e3f117d5f4ecd9332974bc8e3dfa57c96667", "eligible_numeric_comparator_count": 142, "eligible_numeric_comparator_order_sha256": "5d1b35fb5a0d8ac9293008db9963c4a60a94dc940c237c3ed259e5ce44f14aaf"},
+  "goal": {"objective": "请持续迭代因子。", "status": "active", "campaign187_scientific_decision_completed": true, "campaign187_focused_and_cumulative_tests_passed": true, "campaign188_offline_scouting_authorized": true, "campaign188_started": false, "second_prospective_candidate_authorized": false, "campaign187_independent_validation_passed": true},
+  "campaign187": {
+    "terminal": true,
+    "terminal_phase": "finite_prevalue_bank_loan_asset_quality_migration_source_admission",
+    "domain_overlap_rejections": 2,
+    "finite_bank_concept_count": 7,
+    "source_admission_deferrals_not_factor_failures": 4,
+    "relabeling_operator_or_combination_route_rejections": 3,
+    "selected_candidate_count": 0,
+    "bank_loan_asset_quality_migration_state_declared_ineffective": false,
+    "anti_survivorship_boundary_preserved": true,
+    "source_row_hotel_semiconductor_or_bank_loan_asset_quality_factor_comparator_security_price_or_return_value_read": false,
+    "return_reading_development_trial_count": 0,
+    "stress_2024_2025_returns_opened": false,
+    "terminal_result": {"path": "docs/a_share_three_day_walkforward_campaign_187_terminal_result_20260815.json", "sha256": "88c188199f80714550f62e2aa4f8c2769aefcb42fc2d951f64dc11724fc4fb1d"},
+    "attempt_ledger": {"path": "data/experiments/short_horizon/historical_walkforward/campaign_187/research_attempt_ledger_v1.json", "sha256": "6b0d912439e825284efda551a4fd800fe5d632af66c6500bdcfe5cbd81a9b505", "campaign_effective_entry_count": 12, "chain_tip_sha256": "a642ec2e8f5137bd7067998dbb5c0e34b4662507e52671eec3638656a87e867a"}
+  },
+  "effective_accounting": {"campaign187_attempt_count": 12, "campaign187_prevalue_scientific_attempt_count": 9, "campaign187_infrastructure_failure_count": 3, "campaign187_complete_factor_attempt_count": 0, "campaign187_return_reading_development_trial_count": 0, "campaign187_stress_trial_count": 0, "cumulative_historical_research_attempt_count": 1654, "cumulative_return_reading_development_trial_count": 314},
+  "active_daily_data_root": {"path": "/Volumes/DIsk/Disk-Coding/qlib/data", "source": "baostock", "calendar_end": "2026-07-13", "mutated_by_campaign187": false},
+  "reports": {
+    "campaign187_terminal_report": {"path": "docs/a_share_three_day_walkforward_campaign_187_terminal_report_20260815.md", "sha256": "a667af998254483f80777278004bcf9a4a30ff23d795146f4861c00f28520b2a"},
+    "current_research_report": {"path": "data/experiments/short_horizon/current_research_report.md", "sha256_at_publication": "d0fd843be06f115c36f4f63ae9ee50ce62eadcdfc7e93d57769d783e9f669846", "accounting_scope": "through_campaign187_infrastructure_003", "mutable_append_only_report_not_an_immutable_binding": true},
+    "three_day_research_report": {"path": "data/experiments/short_horizon/three_day_research_report.md", "sha256_at_publication": "48f8a87f9023aa021626ee1ea4505a8bcfc246d9af3494288fa61002b3a730e5", "accounting_scope": "through_campaign187_infrastructure_003", "mutable_append_only_report_not_an_immutable_binding": true}
+  },
+  "candidate49": {"sole_prospective_candidate": true, "signal_ledger": {"path": "data/experiments/short_horizon/candidate49_future_signal_ledger.json", "sha256_at_validation": "5193f00d7f36da003f53cec387900da4c3d002299f5dfcfc1a95eaa199ed3a79", "entries_at_validation": 0}, "execution_ledger": {"path": "data/experiments/short_horizon/candidate49_future_execution_ledger.json", "sha256_at_validation": "d57a3e61eac969e42cafa418ccd8c0a5ee65dcf69da145bb2c096c2a02a2ea4f", "entries_at_validation": 0}, "historical_backfill_performed": false, "ledgers_changed_by_campaign187": false},
+  "candidate49_daily_20260815": {"local_timezone": "Asia/Singapore", "local_weekday": "Saturday", "accepted_local_trading_day": false, "credential_presence_checked": false, "plan_run": false, "run_run": false},
+  "research_boundary": {"unrecovered_or_unrecorded_failed_exit_codes_bypassed_or_masked": false, "all_observed_infrastructure_failures_recorded_and_recovered": true, "failed_or_truncated_output_used_as_scientific_evidence": false, "source_row_hotel_semiconductor_or_bank_loan_asset_quality_factor_comparator_security_price_or_return_value_read": false, "stress_2024_2025_opened": false, "provider_credential_presence_value_or_digest_read": false, "candidate49_ledgers_changed": false, "second_prospective_candidate_created": false, "current_scoring_selection_sizing_positions_or_orders_performed": false, "investment_advice": false},
+  "validation_results": {"black_passed": true, "ruff_passed": true, "focused_campaign187_tests_passed": 5, "focused_campaign187_duration_seconds": 1.33, "campaign145_through_campaign187_test_file_count": 75, "campaign145_through_campaign187_tests_passed": 449, "campaign145_through_campaign187_tests_skipped": 1, "campaign145_through_campaign187_exact_historical_lifecycle_nodes_deselected": 5, "campaign145_through_campaign187_duration_seconds": 12.21, "recorded_infrastructure_failure_count": 3, "positive_json_records_parsed": 9, "direct_bindings_verified": 34, "timestamp_records_checked": 9, "campaign187_attempt_entries_verified": 12, "campaign187_attempt_hash_chain_passed": true, "finite_routes_verified": 7, "source_gate_items_verified": 12, "candidate49_ledgers_verified": 2, "unified_reports_checked": 2},
+  "next_action": "Begin Campaign188 finite offline prevalue research in a genuinely different mechanism domain; do not wait for 16:30 and keep Candidate49 as the sole prospective confirmation layer."
+}

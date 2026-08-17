@@ -1,0 +1,121 @@
+{
+  "schema_version": 1,
+  "kind": "a_share_three_day_walkforward_campaign155_mechanism_source_frontier_audit",
+  "status": "terminal_prevalue_zero_candidates_after_point_in_time_economic_state_gate",
+  "recorded_at": "2026-08-15T03:24:20+08:00",
+  "authoritative_inputs": {
+    "concept_scouting": {
+      "path": "docs/a_share_three_day_walkforward_campaign_155_concept_scouting_20260815.json",
+      "sha256": "19bc14c4253e75cca4d6dc42e3659d357f856b2ff96644b1e72b2c0dcbc1ad40"
+    },
+    "current_universe_snapshot": {
+      "path": "data/metadata/universe_latest.json",
+      "sha256": "67db68461c59776d88004b6f25d36ef8257933056e87ff7d243c6bb8b71e3dc1"
+    },
+    "current_price_basis_audit": {
+      "path": "data/metadata/price_basis_audit_20260728T025824Z.json",
+      "sha256": "799a8f87c969ba815fe1fea8472e92654994f617b04ca48bed2f6753eefc4c3f"
+    },
+    "campaign075_listing_youth_terminal": {
+      "path": "docs/a_share_three_day_walkforward_campaign_075_terminal_completion_freeze_20260806.json",
+      "sha256": "a75925989aa3aaed015f1f49a063132907393f37e85732e835676e00b5ce6078"
+    },
+    "campaign138_valuation_source_terminal": {
+      "path": "docs/a_share_three_day_walkforward_campaign_138_terminal_result_20260814.json",
+      "sha256": "98bc2097328a2b2f0c5b4f1877d6f810404c173f51c55522584740b1093c2a78"
+    },
+    "st_recovery_terminal": {
+      "path": "docs/a_share_tushare_st_recovery_research_record.json",
+      "sha256": "bbed853556c603a154501d59196ab353299b1ce4199a6bbd978197b01d37e067"
+    }
+  },
+  "gate_definition": {
+    "gate_1_historical_point_in_time_source": "Every proposed cross-sectional input must be historically versioned and close-known for each signal session; a latest snapshot cannot stand in for historical state.",
+    "gate_2_economic_information_state": "The mechanism must be an economic state rather than identity, board membership, file layout, provider label, missingness, quarantine or validation outcome.",
+    "gate_3_terminal_family_independence": "The mechanism cannot reopen Campaign075 listing youth, Campaign138 valuation/free-float, terminal ST recovery or another exposed source family.",
+    "gate_4_cross_sectional_rankability": "A common calendar or transport state with no same-session cross-sectional variation cannot define a Top-3 factor.",
+    "pass_rule": "All four gates must pass before formula, direction, parameters, adapter, values, comparisons or returns."
+  },
+  "proposal_gate_results": [
+    {
+      "catalog_id": "c155_01",
+      "historical_point_in_time_source": false,
+      "economic_information_state": true,
+      "terminal_family_independent": false,
+      "cross_sectionally_rankable_without_current_snapshot": false,
+      "passed": false
+    },
+    {
+      "catalog_id": "c155_02",
+      "historical_point_in_time_source": false,
+      "economic_information_state": true,
+      "terminal_family_independent": false,
+      "cross_sectionally_rankable_without_current_snapshot": false,
+      "passed": false
+    },
+    {
+      "catalog_id": "c155_03",
+      "historical_point_in_time_source": false,
+      "economic_information_state": false,
+      "terminal_family_independent": false,
+      "cross_sectionally_rankable_without_current_snapshot": false,
+      "passed": false
+    },
+    {
+      "catalog_id": "c155_04",
+      "historical_point_in_time_source": true,
+      "economic_information_state": false,
+      "terminal_family_independent": true,
+      "cross_sectionally_rankable_without_current_snapshot": true,
+      "passed": false
+    },
+    {
+      "catalog_id": "c155_05",
+      "historical_point_in_time_source": false,
+      "economic_information_state": true,
+      "terminal_family_independent": false,
+      "cross_sectionally_rankable_without_current_snapshot": false,
+      "passed": false
+    },
+    {
+      "catalog_id": "c155_06",
+      "historical_point_in_time_source": true,
+      "economic_information_state": false,
+      "terminal_family_independent": true,
+      "cross_sectionally_rankable_without_current_snapshot": true,
+      "passed": false
+    }
+  ],
+  "gate_summary": {
+    "concepts_reviewed": 6,
+    "historical_point_in_time_source_passers": 2,
+    "economic_information_state_passers": 3,
+    "terminal_family_independence_passers": 2,
+    "all_gate_passers": 0,
+    "selected_candidate_count": 0
+  },
+  "terminal_decision": {
+    "terminal": true,
+    "terminal_phase": "prevalue_point_in_time_economic_state_and_terminal_family_gate",
+    "formula_feature_adapter_or_model_created": false,
+    "source_row_or_candidate_value_read": false,
+    "comparison_or_return_value_read": false,
+    "campaign155_source_acceptance_coverage_uniqueness_or_return_audit_run": false,
+    "current_universe_snapshot_reuse_for_historical_scoring_allowed": false,
+    "rejected_proposal_retry_proxy_reconstruction_reparameterization_or_combination_allowed": false
+  },
+  "research_boundary": {
+    "current_universe_row_values_read": false,
+    "candidate_or_comparator_values_read": false,
+    "historical_daily_price_or_forward_return_values_read": false,
+    "stress_2024_2025_opened": false,
+    "provider_request_issued": false,
+    "provider_credential_value_or_digest_read": false,
+    "candidate49_historical_backfill_performed": false,
+    "candidate49_ledgers_changed": false,
+    "second_prospective_candidate_created": false,
+    "current_scoring_selection_sizing_positions_or_orders_performed": false,
+    "investment_advice": false
+  },
+  "next_action": "Record all six decisions and the one schema-inspection failure, keep the 157/142 library unchanged, and authorize Campaign156 only from a genuinely new point-in-time economic source or a separately frozen pre-row source-admission protocol."
+}

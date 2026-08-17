@@ -1,0 +1,43 @@
+{
+  "version": 1,
+  "kind": "a_share_three_day_compact_comparator_cache_postpublication_test_failure",
+  "status": "recorded_before_corrected_pytest_selection",
+  "recorded_at": "2026-08-06T02:29:49+08:00",
+  "predecessor_failure": {
+    "path": "docs/a_share_three_day_compact_comparator_cache_v4_postpublication_test_failure_20260806.json",
+    "sha256": "bae41cadc59f96f1eca6036913a2880e9b5fd6400deb9301887fe40c2bd42225"
+  },
+  "failed_command": "PYTHONPATH=/Volumes/DIsk/Disk-Coding/qlib /Volumes/DIsk/Coding/anaconda3/bin/python -m pytest -q [v2,v3,v4,v4_publication,Campaign067 terminal files] --deselect <v4 prepublication node> --deselect <Campaign067 pre-report-addition node>",
+  "exit_code": 1,
+  "test_result": {
+    "passed": 28,
+    "failed": 2,
+    "failed_nodes": [
+      "tests/data_collector_tests/test_a_share_three_day_compact_comparator_cache_v4.py::test_status_and_unconfirmed_v4_build_read_no_values",
+      "tests/data_collector_tests/test_a_share_three_day_walkforward_campaign067_terminal.py::test_unified_report_has_one_campaign067_and_one_candidate49_daily_section"
+    ],
+    "new_postpublication_tests_passed": 4
+  },
+  "root_cause": "The two supplied --deselect arguments did not remove the intended collected nodes in this pytest invocation; both known state-specific assertions ran again. This did not reveal a new cache, manifest, report, or Campaign067 semantic mismatch.",
+  "frozen_postpublication_test": {
+    "path": "tests/data_collector_tests/test_a_share_three_day_compact_comparator_cache_v4_publication.py",
+    "sha256": "b46a07705a397afb515b77b1a1af21b4bcd103b4c6508c890d5780a5a7bf7034",
+    "passed_in_failed_run": true
+  },
+  "repair_requirement": {
+    "edit_any_frozen_test_in_place": false,
+    "rerun_with_explicit_negative_k_expression": true,
+    "both_known_state_specific_nodes_must_be_excluded": true,
+    "new_postpublication_tests_and_all_remaining_tests_must_pass": true
+  },
+  "research_effect": {
+    "historical_daily_price_or_forward_return_values_read": false,
+    "provider_request_issued": false,
+    "research_attempt_count_increment": 0,
+    "return_reading_development_trial_count_increment": 0,
+    "cache_infrastructure_failure_count_increment": 1,
+    "cumulative_cache_infrastructure_failure_count": 8,
+    "candidate49_ledgers_changed": false,
+    "current_scoring_selection_sizing_or_orders_performed": false
+  }
+}

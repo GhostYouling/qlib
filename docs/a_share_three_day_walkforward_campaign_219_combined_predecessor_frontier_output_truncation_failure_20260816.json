@@ -1,0 +1,31 @@
+{
+  "schema_version": 1,
+  "kind": "a_share_three_day_walkforward_campaign219_combined_predecessor_frontier_output_truncation_failure",
+  "recorded_at": "2026-08-16T00:50:00+08:00",
+  "timestamp_semantics": "monotonic_logical_append_time_not_host_wall_clock_measurement",
+  "status": "infrastructure_failure_discarded_before_campaign219_scientific_frontier",
+  "phase": "adjacent_domain_frontier_review",
+  "failure": {
+    "combined_paths": [
+      "docs/a_share_three_day_walkforward_campaign_190_clinical_trial_evidence_lifecycle_source_frontier_20260815.json",
+      "docs/a_share_three_day_walkforward_campaign_212_manufacturing_execution_shop_floor_work_order_bom_routing_material_lot_genealogy_quality_inspection_nonconformance_quarantine_rework_scrap_finished_goods_release_lifecycle_source_frontier_20260815.json",
+      "docs/a_share_three_day_walkforward_campaign_170_customer_experience_quality_kpi_source_frontier_20260815.json",
+      "docs/a_share_three_day_walkforward_campaign_166_operational_incident_disclosure_source_frontier_20260815.json"
+    ],
+    "observed": "The combined four-file display exceeded the bounded output and was truncated.",
+    "scientific_or_validation_evidence_consumed": false,
+    "target_file_written": false
+  },
+  "recovery": {
+    "method": "Discard the combined display and use one bounded structured extraction of route identifiers, decisions and names plus independently verified file hashes.",
+    "formula_direction_candidate_comparator_price_or_return_changed_or_read": false
+  },
+  "research_boundary": {
+    "provider_or_web_request_issued": false,
+    "provider_credential_presence_value_or_digest_read": false,
+    "candidate49_plan_or_run_executed": false,
+    "candidate49_ledgers_changed": false,
+    "stress_2024_2025_opened": false,
+    "current_use_or_investment_advice": false
+  }
+}

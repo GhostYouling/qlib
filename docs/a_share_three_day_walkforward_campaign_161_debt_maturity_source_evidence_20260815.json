@@ -1,0 +1,104 @@
+{
+  "schema_version": 1,
+  "kind": "a_share_three_day_walkforward_campaign161_debt_maturity_source_evidence",
+  "status": "changed_exact_public_source_evidence_observed_without_provider_data_rows",
+  "recorded_at": "2026-08-15T05:18:27+08:00",
+  "purpose": "Resolve Campaign160's source-admission deferral for debt-maturity structure by pinning exact public adapter transport and Eastmoney field-caption mappings before any financial response row, candidate value, comparator value, price, or return is requested.",
+  "authoritative_predecessors": {
+    "campaign160_source_delta_inventory": {
+      "path": "docs/a_share_three_day_walkforward_campaign_160_no_credential_source_contract_delta_inventory_20260815.json",
+      "sha256": "25dc95b6e4ef87068e0f94a8cb257b226b9fe22c0fa390716d1db9d164b60418"
+    },
+    "campaign160_source_delta_audit": {
+      "path": "docs/a_share_three_day_walkforward_campaign_160_no_credential_source_contract_delta_audit_20260815.json",
+      "sha256": "e1c16b7dbd35f15d3c01fe5728529a85449424c45c42555baab667345f56b57d"
+    },
+    "campaign161_initial_state": {
+      "path": "docs/a_share_three_day_iteration_status_20260815_campaign161_initial_verification.json",
+      "sha256": "f132cd1a499f8f04f279cc9b022456af964d5309ba63b728f6098b34c7ba8fcb"
+    }
+  },
+  "official_akshare_evidence": {
+    "repository": "https://github.com/akfamily/akshare",
+    "main_commit": "1248fdd05a2dda92937d4cd39c0957825f2f7f6e",
+    "commit_time_utc": "2026-08-13T17:56:14Z",
+    "tree_sha": "b622a1ad87491ad9980635ac1d74f160763822b1",
+    "source_path": "akshare/stock_feature/stock_three_report_em.py",
+    "source_url": "https://github.com/akfamily/akshare/blob/1248fdd05a2dda92937d4cd39c0957825f2f7f6e/akshare/stock_feature/stock_three_report_em.py",
+    "source_file_sha256": "e9cb438a5e033e9ba2d14c0341528b1aeec3f162fb2c0e5cbff41a6bc293348e",
+    "balance_sheet_function_lines": "18-81",
+    "balance_sheet_function_block_sha256": "e7cbb4c42123ef3a28e1b004380b6d710e9b31c72145877afd77578ed5e95735",
+    "transport": {
+      "date_endpoint": "https://emweb.securities.eastmoney.com/PC_HSF10/NewFinanceAnalysis/zcfzbDateAjaxNew",
+      "data_endpoint": "https://emweb.securities.eastmoney.com/PC_HSF10/NewFinanceAnalysis/zcfzbAjaxNew",
+      "report_date_type": "0",
+      "report_type": "1",
+      "date_batch_size": 5,
+      "raw_provider_object_keys_preserved": true
+    },
+    "documentation_path": "docs/data/stock/stock.md",
+    "documentation_url": "https://github.com/akfamily/akshare/blob/1248fdd05a2dda92937d4cd39c0957825f2f7f6e/docs/data/stock/stock.md",
+    "documentation_file_sha256": "56ea557496209712940d3403eb705e28a16530c194ce117df098913f4b56a9ed",
+    "documentation_section_lines": "11571-11612",
+    "documentation_section_sha256": "a0576bf77ce82ed62b6a57f91ae70c2bd8961cfa58fc27fcd9ad20a4697485ba",
+    "documented_return_shape": "319 raw columns for one requested symbol; names are not enumerated in the table."
+  },
+  "eastmoney_public_template_evidence": {
+    "url": "https://emweb.securities.eastmoney.com/PC_HSF10/NewFinanceAnalysis/Index?type=web&code=sh600519",
+    "retrieved_at": "2026-08-15T05:16:00+08:00",
+    "html_sha256": "80af34b89edf579f1501eb4dbcd044c2f9a983c85eb0141ee13faceb55817be1",
+    "field_snippet_ranges": [
+      "2948-2972",
+      "3244-3285",
+      "3328-3372"
+    ],
+    "field_snippets_sha256": "168ede48e8bafe7bf15875beaf2cba793554606f8a42989e06c372f417d42909",
+    "exact_caption_to_raw_key": {
+      "短期借款": "SHORT_LOAN",
+      "应付短期债券": "SHORT_BOND_PAYABLE",
+      "一年内到期的非流动负债": "NONCURRENT_LIAB_1YEAR",
+      "长期借款": "LONG_LOAN",
+      "应付债券": "BOND_PAYABLE"
+    }
+  },
+  "eastmoney_full_market_report_evidence": {
+    "url": "https://data.eastmoney.com/bbsj/202003/zcfz.html",
+    "retrieved_at": "2026-08-15T05:17:00+08:00",
+    "html_sha256": "9053c289588731384fb753ccac27d04e25823ee2a22c8ae913b9157b21d6db50",
+    "explicit_fields_observed": [
+      "SECURITY_CODE",
+      "NOTICE_DATE",
+      "SHORT_LOAN",
+      "TOTAL_LIABILITIES"
+    ],
+    "existing_repository_transport": {
+      "endpoint": "https://datacenter-web.eastmoney.com/api/data/v1/get",
+      "report_name": "RPT_DMSK_FN_BALANCE",
+      "pinned_adapter_commit": "fcdbf25aa864a218c54864c3f6ab6a2ed19cce28",
+      "source_path": "akshare/stock_feature/stock_report_em.py"
+    }
+  },
+  "admission_interpretation": {
+    "changed_source_evidence_since_campaign160": true,
+    "exact_raw_semantic_field_keys_now_verifiable": true,
+    "public_no_credential_transport_now_verifiable": true,
+    "provider_response_row_or_value_observed": false,
+    "field_presence_in_the_full_market_report_must_still_pass_a_frozen_one_shot_acceptance": true,
+    "predictive_value_inferred": false,
+    "source_coverage_inferred": false,
+    "reason": "The official adapter and Eastmoney template establish the field identity before data access. They do not prove that every requested key is present or sufficiently populated in RPT_DMSK_FN_BALANCE; the future acceptance must fail closed rather than substitute fields."
+  },
+  "research_boundary": {
+    "github_source_and_documentation_requests_issued": true,
+    "eastmoney_html_template_requests_issued": true,
+    "eastmoney_financial_data_api_request_issued": false,
+    "provider_response_row_or_column_value_read": false,
+    "candidate_or_comparator_value_read": false,
+    "historical_daily_price_or_forward_return_value_read": false,
+    "stress_2024_2025_opened": false,
+    "provider_credential_presence_value_or_digest_read": false,
+    "candidate49_historical_backfill_performed": false,
+    "candidate49_ledgers_changed": false,
+    "current_scoring_selection_sizing_positions_or_orders_performed": false
+  }
+}

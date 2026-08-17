@@ -1,0 +1,240 @@
+{
+  "accounting": {
+    "attempt_count": 20,
+    "infrastructure_failure_count": 11,
+    "model_trial_count": 3,
+    "model_trials_with_all_three_validation_folds_read": 0,
+    "model_trials_with_at_least_one_validation_return_read": 3,
+    "prevalue_concept_attempt_count": 6,
+    "total_model_fold_validation_return_reads": 5
+  },
+  "authoritative_inputs": {
+    "corrected_append_only_ledger": {
+      "path": "/Volumes/DIsk/Disk-Coding/qlib/data/experiments/short_horizon/historical_walkforward/campaign_132/walkforward_v3/trial_ledger_v2.json",
+      "sha256": "7d78ab1d89d550578037769c301c6982b3104be69f5ad7822530540ffbe54bd8"
+    },
+    "original_ledger": {
+      "path": "/Volumes/DIsk/Disk-Coding/qlib/data/experiments/short_horizon/historical_walkforward/campaign_132/walkforward_v3/trial_ledger.json",
+      "sha256": "7fb54d2e8a66187b2cef48150b7fb4f8ec7a5da98c8f0bdd4e5a635b7cf30a99"
+    },
+    "original_report": {
+      "path": "/Volumes/DIsk/Disk-Coding/qlib/data/experiments/short_horizon/historical_walkforward/campaign_132/walkforward_v3/development_report.json",
+      "sha256": "7a06c835eda37199496440a4eb12da87e75b10e81d5d1895dc803803b7798dbe"
+    },
+    "semantic_failure_correction": {
+      "path": "docs/a_share_three_day_walkforward_campaign_132_validation_return_count_label_failure_20260814.json",
+      "sha256": "dc63dbd6e0a914549a36820cb17ef017ce7b5d675edcc1857af876a36f0459d6"
+    }
+  },
+  "campaign": 132,
+  "candidate49": {
+    "execution_entry_count": 0,
+    "execution_ledger_sha256": "d57a3e61eac969e42cafa418ccd8c0a5ee65dcf69da145bb2c096c2a02a2ea4f",
+    "historical_backfill_performed": false,
+    "ledgers_changed": false,
+    "only_active_prospective_candidate": true,
+    "signal_entry_count": 0,
+    "signal_ledger_sha256": "5193f00d7f36da003f53cec387900da4c3d002299f5dfcfc1a95eaa199ed3a79"
+  },
+  "design": {
+    "component_values_read": true,
+    "dataset_sha256": "12ce3a64b5e13581392ded9890e2064db4ccca3945da3eb8ad7752c95366a9fc",
+    "eligible_rows": 1327644,
+    "feature_count": 140,
+    "historical_daily_price_or_forward_return_values_read": false,
+    "manifest_path": "/Volumes/DIsk/qlib-a-share-tushare-1m/derived/a_share/rich/tushare/minute_walkforward_campaign132_design_matrix/tushare_stk_mins_1m_2019_2025_ea0cbb8f_walkforward_campaign132_numeric140_design_v1/snapshot_manifest.json",
+    "manifest_sha256": "043c17fea89f3b0956d643a7c6e3f4d73a11403b967213d2d57539a6a8316a49",
+    "rows": 1331759,
+    "status": "verified"
+  },
+  "kind": "a_share_three_day_walkforward_campaign132_terminal_result",
+  "models": [
+    {
+      "decision": {
+        "operationally_admissible": false,
+        "passed": false,
+        "rejection_reasons": [
+          "incomplete_validation_fold_count",
+          "fold_1_board_lot_affordability"
+        ]
+      },
+      "folds": [
+        {
+          "board_lot_affordability_rate": 0.7330316742081447,
+          "failed_comparison_count": 0,
+          "fold": 1,
+          "mean_rank_ic": 0.0007131973518906111,
+          "nearest_absolute_median_daily_rank_correlation": 0.5192769692965316,
+          "nearest_factor": "intraday_terminal_nominal_share_price_affordability_rank_240m",
+          "normalized_net_cumulative_return": 0.4284734130538195,
+          "pilot_10bp_net_cumulative_return": 0.02853712728636637,
+          "pilot_20bp_net_cumulative_return": 0.0181663402673109,
+          "top3_minus_bottom3_gross_return": -0.0036847639696773243,
+          "uniqueness_passed": true,
+          "validation_return_read": true
+        },
+        {
+          "board_lot_affordability_rate": null,
+          "failed_comparison_count": 1,
+          "fold": 2,
+          "mean_rank_ic": null,
+          "nearest_absolute_median_daily_rank_correlation": 0.82281017999084,
+          "nearest_factor": "intraday_top_decile_amount_event_spacing_entropy_25g",
+          "normalized_net_cumulative_return": null,
+          "pilot_10bp_net_cumulative_return": null,
+          "pilot_20bp_net_cumulative_return": null,
+          "top3_minus_bottom3_gross_return": null,
+          "uniqueness_passed": false,
+          "validation_return_read": false
+        }
+      ],
+      "interaction_cst": "no_interactions",
+      "status": "development_rejected",
+      "terminal_before_validation_return_reason": "fold_2_uniqueness_failed",
+      "trial_id": "wf132_monotone_hgb_no_interactions_140f",
+      "validation_return_fold_count": 1
+    },
+    {
+      "decision": {
+        "operationally_admissible": false,
+        "passed": false,
+        "rejection_reasons": [
+          "incomplete_validation_fold_count",
+          "fold_1_board_lot_affordability",
+          "fold_2_board_lot_affordability"
+        ]
+      },
+      "folds": [
+        {
+          "board_lot_affordability_rate": 0.6711711711711712,
+          "failed_comparison_count": 0,
+          "fold": 1,
+          "mean_rank_ic": 0.0024672502940209875,
+          "nearest_absolute_median_daily_rank_correlation": 0.5369632371113688,
+          "nearest_factor": "intraday_terminal_nominal_share_price_affordability_rank_240m",
+          "normalized_net_cumulative_return": -0.12879682149750382,
+          "pilot_10bp_net_cumulative_return": -0.01428837785171111,
+          "pilot_20bp_net_cumulative_return": -0.026940530925325334,
+          "top3_minus_bottom3_gross_return": -0.004185624351422931,
+          "uniqueness_passed": true,
+          "validation_return_read": true
+        },
+        {
+          "board_lot_affordability_rate": 0.6301369863013698,
+          "failed_comparison_count": 0,
+          "fold": 2,
+          "mean_rank_ic": 0.0434800917130631,
+          "nearest_absolute_median_daily_rank_correlation": 0.7649071402123117,
+          "nearest_factor": "intraday_top_decile_amount_event_spacing_entropy_25g",
+          "normalized_net_cumulative_return": -0.16968320433687079,
+          "pilot_10bp_net_cumulative_return": -0.03676214975770786,
+          "pilot_20bp_net_cumulative_return": -0.047331774239155355,
+          "top3_minus_bottom3_gross_return": -0.0015548507631947732,
+          "uniqueness_passed": true,
+          "validation_return_read": true
+        },
+        {
+          "board_lot_affordability_rate": null,
+          "failed_comparison_count": 1,
+          "fold": 3,
+          "mean_rank_ic": null,
+          "nearest_absolute_median_daily_rank_correlation": 0.8214407322746594,
+          "nearest_factor": "intraday_top_decile_amount_event_spacing_entropy_25g",
+          "normalized_net_cumulative_return": null,
+          "pilot_10bp_net_cumulative_return": null,
+          "pilot_20bp_net_cumulative_return": null,
+          "top3_minus_bottom3_gross_return": null,
+          "uniqueness_passed": false,
+          "validation_return_read": false
+        }
+      ],
+      "interaction_cst": "pairwise",
+      "status": "development_rejected",
+      "terminal_before_validation_return_reason": "fold_3_uniqueness_failed",
+      "trial_id": "wf132_monotone_hgb_pairwise_interactions_140f",
+      "validation_return_fold_count": 2
+    },
+    {
+      "decision": {
+        "operationally_admissible": false,
+        "passed": false,
+        "rejection_reasons": [
+          "incomplete_validation_fold_count",
+          "fold_1_board_lot_affordability",
+          "fold_2_board_lot_affordability"
+        ]
+      },
+      "folds": [
+        {
+          "board_lot_affordability_rate": 0.6846846846846847,
+          "failed_comparison_count": 0,
+          "fold": 1,
+          "mean_rank_ic": 0.0037352624623336658,
+          "nearest_absolute_median_daily_rank_correlation": 0.5112245934655569,
+          "nearest_factor": "intraday_terminal_nominal_share_price_affordability_rank_240m",
+          "normalized_net_cumulative_return": 0.1908365572212456,
+          "pilot_10bp_net_cumulative_return": 0.03429281338956702,
+          "pilot_20bp_net_cumulative_return": 0.01927344942994047,
+          "top3_minus_bottom3_gross_return": -0.004547049961606595,
+          "uniqueness_passed": true,
+          "validation_return_read": true
+        },
+        {
+          "board_lot_affordability_rate": 0.726027397260274,
+          "failed_comparison_count": 0,
+          "fold": 2,
+          "mean_rank_ic": 0.04280171375382626,
+          "nearest_absolute_median_daily_rank_correlation": 0.7272751482838791,
+          "nearest_factor": "intraday_top_decile_amount_event_spacing_entropy_25g",
+          "normalized_net_cumulative_return": -0.03639888103264233,
+          "pilot_10bp_net_cumulative_return": -0.011190947798079276,
+          "pilot_20bp_net_cumulative_return": -0.026774703748821627,
+          "top3_minus_bottom3_gross_return": 0.0004773931960537009,
+          "uniqueness_passed": true,
+          "validation_return_read": true
+        },
+        {
+          "board_lot_affordability_rate": null,
+          "failed_comparison_count": 1,
+          "fold": 3,
+          "mean_rank_ic": null,
+          "nearest_absolute_median_daily_rank_correlation": 0.8074972065300683,
+          "nearest_factor": "intraday_top_decile_amount_event_spacing_entropy_25g",
+          "normalized_net_cumulative_return": null,
+          "pilot_10bp_net_cumulative_return": null,
+          "pilot_20bp_net_cumulative_return": null,
+          "top3_minus_bottom3_gross_return": null,
+          "uniqueness_passed": false,
+          "validation_return_read": false
+        }
+      ],
+      "interaction_cst": null,
+      "status": "development_rejected",
+      "terminal_before_validation_return_reason": "fold_3_uniqueness_failed",
+      "trial_id": "wf132_monotone_hgb_unrestricted_interactions_140f",
+      "validation_return_fold_count": 2
+    }
+  ],
+  "recorded_at": "2026-08-14T01:50:02.076363+00:00",
+  "research_boundary": {
+    "credential_loaded": false,
+    "current_scoring_selection_sizing_positions_or_orders_performed": false,
+    "investment_advice": false,
+    "provider_request_issued": false
+  },
+  "schema_version": 1,
+  "status": "terminal_no_development_survivor_lockbox_closed",
+  "structural_coverage": {
+    "eligible_names_p05": 138.0,
+    "median_coverage": 0.9981273391821838,
+    "p05_coverage": 0.992066409032738,
+    "potential_non_overlapping_three_session_cohorts": 540
+  },
+  "terminal_decision": {
+    "2023_validation_returns_read_for_any_trial": false,
+    "2024_2025_lockbox_opened": false,
+    "campaign132_retry_repair_or_threshold_relaxation_allowed": false,
+    "development_survivor_count": 0,
+    "selected_survivor_trial_ids": []
+  }
+}

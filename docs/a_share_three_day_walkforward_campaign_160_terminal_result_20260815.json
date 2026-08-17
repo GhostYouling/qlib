@@ -1,0 +1,82 @@
+{
+  "schema_version": 1,
+  "kind": "a_share_three_day_walkforward_campaign160_terminal_result",
+  "status": "terminal_prevalue_zero_complete_new_no_credential_source_contracts",
+  "recorded_at": "2026-08-15T04:51:40+08:00",
+  "authoritative_inputs": {
+    "campaign159_state": {
+      "path": "docs/a_share_three_day_iteration_status_20260815_campaign159_prevalue_terminal.json",
+      "sha256": "35d379d7c9e9da38d7029db3b37e68128259db7f05b26e00616e8b513ace22b2"
+    },
+    "numeric_policy_v222": {
+      "path": "docs/a_share_three_day_walkforward_future_numeric_comparison_eligibility_policy_v222_20260815.json",
+      "sha256": "b83702d820920c2ec61c06f944062d80e2c1445d4fcb64e5c17a50b575ff0a61"
+    },
+    "infrastructure_failures": {
+      "path": "docs/a_share_three_day_walkforward_campaign_160_prevalue_infrastructure_failures_20260815.json",
+      "sha256": "a0bdb7c86dcec74851d6564a70bba5fdd77411ec196258db8372dd8384267ee6"
+    },
+    "source_contract_delta_inventory": {
+      "path": "docs/a_share_three_day_walkforward_campaign_160_no_credential_source_contract_delta_inventory_20260815.json",
+      "sha256": "25dc95b6e4ef87068e0f94a8cb257b226b9fe22c0fa390716d1db9d164b60418"
+    },
+    "source_contract_delta_audit": {
+      "path": "docs/a_share_three_day_walkforward_campaign_160_no_credential_source_contract_delta_audit_20260815.json",
+      "sha256": "e1c16b7dbd35f15d3c01fe5728529a85449424c45c42555baab667345f56b57d"
+    },
+    "attempt_ledger": {
+      "path": "data/experiments/short_horizon/historical_walkforward/campaign_160/research_attempt_ledger_v1.json",
+      "sha256": "4ff506eb6a3fd2e6cb866dcca1eb59dc524cc1044ff7b070fb2f644fc6476479",
+      "effective_entry_count": 9,
+      "chain_tip_sha256": "d688d71d2106c2913c346417b5f345a9e291b0d2acacadcfefd82d7cf84154ad"
+    }
+  },
+  "effective_accounting": {
+    "campaign160_attempt_count": 9,
+    "campaign160_prevalue_scientific_attempt_count": 6,
+    "campaign160_infrastructure_failure_count": 3,
+    "campaign160_complete_factor_attempt_count": 0,
+    "campaign160_return_reading_development_trial_count": 0,
+    "campaign160_development_survivor_count": 0,
+    "campaign160_stress_trial_count": 0,
+    "cumulative_historical_research_attempt_count": 1395,
+    "cumulative_return_reading_development_trial_count": 314
+  },
+  "terminal_classification": {
+    "terminal": true,
+    "terminal_phase": "prevalue_no_credential_source_contract_delta_gate",
+    "source_contract_routes_reviewed": 6,
+    "source_admission_deferrals_not_factor_failures": 2,
+    "terminal_source_field_schema_or_sample_reuse_rejections": 4,
+    "selected_candidate_count": 0,
+    "complete_source_contract_or_factor_definition_created": false,
+    "source_row_response_candidate_comparator_daily_price_or_forward_return_values_read": false,
+    "stress_2024_2025_opened": false,
+    "deferred_hypotheses_declared_predictively_ineffective": false
+  },
+  "local_adapter_result": {
+    "akshare_import_spec_present": false,
+    "fixed_package_cache_matches": 0,
+    "pinned_adapter_source_locally_inspected": false,
+    "unverified_raw_field_position_guessed": false,
+    "interpretation": "The missing local adapter source prevents an exact new Eastmoney field contract in this campaign; it does not establish source or factor ineffectiveness."
+  },
+  "library_accounting": {
+    "complete_factor_definition_count": 157,
+    "complete_factor_definition_order_sha256": "c39bb6ca969b5f469a9377a5b5ca743405cec9d8511297ed6a1c44188ef40b82",
+    "eligible_numeric_comparator_count": 142,
+    "eligible_numeric_comparator_order_sha256": "5d1b35fb5a0d8ac9293008db9963c4a60a94dc940c237c3ed259e5ce44f14aaf",
+    "campaign160_definition_appended": false,
+    "campaign160_numeric_series_appended": false
+  },
+  "research_boundary": {
+    "provider_or_web_request_issued_by_campaign160": false,
+    "provider_credential_presence_value_or_digest_read": false,
+    "candidate49_historical_backfill_performed": false,
+    "candidate49_ledgers_changed": false,
+    "second_prospective_candidate_created": false,
+    "current_scoring_selection_sizing_positions_or_orders_performed": false,
+    "investment_advice": false
+  },
+  "next_action": "Keep the goal active and begin Campaign161 offline only from genuinely changed exact source evidence or a separately frozen complete contract; do not install packages, guess raw positions, request provider rows or recycle terminal fields merely to force a trial."
+}

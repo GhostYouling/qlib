@@ -1,0 +1,116 @@
+{
+  "schema_version": 1,
+  "kind": "a_share_three_day_walkforward_campaign127_concept_scouting",
+  "status": "one_genuinely_new_low_entitlement_primary_market_demand_state_selected_before_provider_rows_or_values",
+  "recorded_at": "2026-08-14T04:48:44+0800",
+  "purpose": "Continue the active three-session historical research goal after Campaign126 by reviewing a finite point-in-time source catalog against all 149 complete definitions before any Campaign127 provider row, factor value, comparator value, price or return is opened.",
+  "authoritative_inputs": {
+    "campaign126_terminal_state": {
+      "path": "docs/a_share_three_day_iteration_status_20260814_campaign126_prevalue_terminal.json",
+      "sha256": "f53549305c6948e0c5463475cc76ee72268bad7a3316dec254e377d473429892"
+    },
+    "numeric_policy_v131": {
+      "path": "docs/a_share_three_day_walkforward_future_numeric_comparison_eligibility_policy_v131_20260814.json",
+      "sha256": "5d27732656ceeb7053c289548211cb6941c4c0effa7ca805b269ecc45c19bf49",
+      "complete_definition_count": 149,
+      "complete_definition_order_sha256": "be9c6085af2202e8fa5b4c6d89608b712b27740b16b5e78d7d88ca0c4d9bc5e3",
+      "eligible_numeric_comparator_count_reserved_but_not_loaded": 139,
+      "eligible_numeric_comparator_order_sha256": "9c4de054ca1b83eced67eece256b024ebec3a6e1925de17a4cedfa7d36265161"
+    },
+    "historical_walkforward_policy": {
+      "path": "docs/a_share_three_day_historical_walkforward_research_policy_20260727.json",
+      "sha256": "38426d6161b9bfed323c58caba18feca668b8c9d53e294951a8ba90c01a798bb"
+    }
+  },
+  "public_documentation_observed": {
+    "provider": "Tushare Pro",
+    "cb_issue": {
+      "official_url": "https://tushare.pro/document/2?doc_id=186",
+      "api_name": "cb_issue",
+      "documented_minimum_points": 2000,
+      "documented_maximum_rows_per_call": 2000,
+      "point_in_time_field": "res_ann_date",
+      "candidate_measure_field": "onl_pch_excess"
+    },
+    "cb_basic": {
+      "official_url": "https://tushare.pro/document/2?doc_id=185",
+      "api_name": "cb_basic",
+      "documented_minimum_points": 2000,
+      "documented_maximum_rows_per_call": 2000,
+      "stable_relation_fields": [
+        "ts_code",
+        "stk_code",
+        "cb_type"
+      ]
+    },
+    "provider_rows_requested_or_read": false,
+    "credential_loaded": false,
+    "entitlement_success_assumed": false
+  },
+  "finite_prevalue_concept_catalog": [
+    {
+      "catalog_id": "c127_01",
+      "name": "convertible_issue_online_demand_180d",
+      "source_state": "convertible_bond_primary_market_online_subscription_demand",
+      "decision": "selected_for_separate_mechanism_overlap_audit_and_zero_row_contract",
+      "reason": "The documented issuance-result announcement date supplies a conservative information clock, online excess subscription is a primary-market demand measure rather than a stock-price transform, and cb_basic supplies a bond-to-underlying-stock relation without requiring a 5000-point source."
+    },
+    {
+      "catalog_id": "c127_02",
+      "name": "convertible_issue_dilution_or_absolute_financing_size",
+      "decision": "rejected_before_values",
+      "reason": "Issue amount, plan amount and completion ratio mix financing scale, firm size and dilution. Selecting among those fields after seeing coverage would be a same-source field sweep; only online demand may proceed."
+    },
+    {
+      "catalog_id": "c127_03",
+      "name": "convertible_bond_rating_change",
+      "decision": "rejected_before_values",
+      "reason": "Rating changes are sparse credit-review events with a separate ordinal text mapping and are adjacent to the terminal audit/reliability event family. They are not admitted as a fallback if issuance demand fails."
+    },
+    {
+      "catalog_id": "c127_04",
+      "name": "index_membership_or_weight_change",
+      "decision": "rejected_at_point_in_time_clock_gate",
+      "reason": "Effective constituent dates and weights do not by themselves establish when a historical rebalance announcement became public. No stable 2019-2025 publication clock is frozen."
+    },
+    {
+      "catalog_id": "c127_05",
+      "name": "public_fund_disclosed_ownership_change",
+      "decision": "rejected_at_entitlement_boundary",
+      "reason": "The official fund portfolio source requires 5000 points and the user explicitly authorized continuing without such premium data. It is not a dependency or fallback."
+    },
+    {
+      "catalog_id": "c127_06",
+      "name": "company_announcement_or_investor_interaction_text_model",
+      "decision": "rejected_before_text_or_rows",
+      "reason": "A text-model search would introduce an unbounded label, prompt and fitting space after extensive event-source exposure. No finite ex-ante vocabulary, historical transport contract or leakage-safe publication archive is frozen."
+    }
+  ],
+  "selected_candidate": {
+    "name": "convertible_issue_online_demand_180d",
+    "selected_candidate_count": 1,
+    "score_direction": "higher",
+    "candidate_measure": "log1p of online excess subscription multiple",
+    "economic_hypothesis": "Strong online demand for a completed convertible-bond issue reveals broad primary-market attention to the issuer; among issuers with a result announced in the preceding 180 calendar days, stronger demand may persist into near-term stock price discovery.",
+    "conservative_information_date": "res_ann_date",
+    "same_day_availability_allowed": false,
+    "maximum_event_age_calendar_days": 180,
+    "event_age_rank_weight_or_tiebreaker": false,
+    "historical_candidate_created": false,
+    "prospective_candidate_created": false
+  },
+  "research_boundary": {
+    "public_documentation_metadata_read": true,
+    "programmatic_provider_request_issued": false,
+    "provider_credential_loaded": false,
+    "provider_rows_read_persisted_or_counted": false,
+    "candidate_or_comparison_values_read": false,
+    "historical_daily_price_or_forward_return_values_read": false,
+    "stress_2024_2025_opened": false,
+    "candidate49_historical_backfill_performed": false,
+    "candidate49_ledgers_changed": false,
+    "second_prospective_candidate_created": false,
+    "current_scoring_selection_sizing_positions_or_orders_performed": false,
+    "investment_advice": false
+  }
+}

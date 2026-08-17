@@ -1,0 +1,29 @@
+{
+  "schema_version": 1,
+  "kind": "a_share_three_day_walkforward_campaign143_infrastructure_failure",
+  "status": "recorded_preledger_binding_validator_scope_failure_before_values",
+  "recorded_at": "2026-08-14T15:27:00+0800",
+  "attempt_id": "campaign143_infrastructure_005",
+  "failure": {
+    "phase": "preledger_binding_validation",
+    "process_exit_code": 2,
+    "error": "A standalone infrastructure failure record had no recognized path+sha256 binding, so the generic binding validator rejected that record shape.",
+    "failed_record": "docs/a_share_three_day_walkforward_campaign_143_zsh_nomatch_metadata_inventory_failure_20260814.json",
+    "binding_validator_weakened_or_modified": false,
+    "failed_exit_code_bypassed": false,
+    "ledger_or_terminal_stage_started": false
+  },
+  "safe_retry": {
+    "allowed_scope": "Validate the binding-bearing effective scouting and v2 frontier records; parse and assert standalone failure-record semantics separately.",
+    "standalone_failure_record_rewrite_allowed": false,
+    "scientific_gate_or_result_change_allowed": false
+  },
+  "research_boundary": {
+    "source_rows_or_column_values_read": false,
+    "candidate_or_comparator_values_read": false,
+    "historical_daily_price_or_forward_return_values_read": false,
+    "stress_2024_2025_opened": false,
+    "provider_request_issued": false,
+    "candidate49_ledgers_changed": false
+  }
+}

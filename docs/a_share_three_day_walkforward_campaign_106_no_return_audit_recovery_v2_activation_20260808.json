@@ -1,0 +1,48 @@
+{
+  "schema_version": 1,
+  "kind": "a_share_three_day_walkforward_campaign106_no_return_audit_recovery_v2_activation",
+  "status": "frozen_after_infrastructure_failure_before_recovery_value_reread",
+  "recorded_at": "2026-08-07T19:26:58Z",
+  "failed_attempt": {
+    "path": "docs/a_share_three_day_walkforward_campaign_106_no_return_audit_failure_20260808.json",
+    "sha256": "e07e26303427f6f9eaa90b8fb77553685f99aee8ec5b9f1f9dfc9db00a9f03ee"
+  },
+  "original_runner": {
+    "path": "scripts/a_share_three_day_walkforward_campaign106_no_return_audit.py",
+    "sha256": "4326a206cf1f67e7d4bf8375ea190404918d744650d794df6b48acf09a2f801a"
+  },
+  "recovery_runner": {
+    "path": "scripts/a_share_three_day_walkforward_campaign106_no_return_audit_recovery_v2.py",
+    "sha256": "8f89bb08bcbe3a5b85534bf9e2a51a5349a5a818eb9cbf95c435b15c569eb105"
+  },
+  "synthetic_test": {
+    "path": "tests/data_collector_tests/test_a_share_three_day_walkforward_campaign106_no_return_audit_recovery_v2.py",
+    "sha256": "5194fc25b4c956f9e904c9ca430d22e846635427495e01d101c01ce38b1dc9f2"
+  },
+  "preactivation_verification": {
+    "py_compile": "passed",
+    "synthetic_tests": "4 passed, 1 live-activation check intentionally deselected",
+    "recovery_output_exists": false,
+    "historical_daily_price_or_forward_return_values_read_during_repair": false,
+    "provider_request_issued_during_repair": false
+  },
+  "semantic_diff": {
+    "only_change": "register frozen Campaign105 comparator range [0,1] before load_factor_frame",
+    "candidate_formula_changed": false,
+    "candidate_direction_changed": false,
+    "source_projection_changed": false,
+    "coverage_gate_changed": false,
+    "comparator_order_changed": false,
+    "comparator_subset_changed": false,
+    "uniqueness_threshold_changed": false,
+    "minimum_overlap_changed": false,
+    "daily_price_or_return_access_added": false,
+    "development_or_stress_access_added": false
+  },
+  "provider_request_issued_before_recovery": false,
+  "candidate49_historical_backfill_performed": false,
+  "candidate49_ledgers_changed": false,
+  "current_scoring_selection_sizing_or_orders_performed": false,
+  "single_recovery_attempt": true,
+  "next_action": "Run the additive recovery once with explicit confirmation and preserve the original infrastructure failure in every terminal record."
+}

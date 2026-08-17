@@ -1,0 +1,39 @@
+{
+  "schema_version": 1,
+  "kind": "a_share_candidate49_postfailure_readonly_verification_failure",
+  "status": "recorded_not_bypassed_no_provider_retry",
+  "recorded_at": "2026-08-14T19:05:00+0800",
+  "session_date": "2026-08-14",
+  "failure": {
+    "operation": "read-only active daily-root status check after the fail-closed Candidate49 source run",
+    "attempted_command_shape": "a_share_data_pipeline.py status --data-root PATH",
+    "process_exit_code": 2,
+    "error": "The status subcommand does not accept --data-root in that position.",
+    "source_provider_request_issued_by_this_verification": false,
+    "candidate49_ledger_hash_steps_reached": false,
+    "failed_exit_code_bypassed": false,
+    "later_success_used_to_mask_failure": false
+  },
+  "completed_before_verification_failure": {
+    "authoritative_source_failure_path": "/Volumes/DIsk/qlib-a-share-tushare-daily-2026-08-14/raw/a_share/rich/tushare/daily_provider_migration_v1/latest_failure.json",
+    "authoritative_source_failure_sha256": "261892e87f9c7c1caa875e983901a19d28aa809aeb1507b497d3c08ab084a3c8",
+    "authoritative_source_failure_mode": "0600",
+    "failure_stage": "stock_basic",
+    "active_root_mutated": false,
+    "credential_value_persisted": false,
+    "forward_return_fields_read": false
+  },
+  "safe_recovery": {
+    "preserve_this_record": true,
+    "provider_or_workflow_retry_allowed_same_day": false,
+    "failed_response_may_be_requested_again_for_detail": false,
+    "allowed_action": "Inspect the local status subcommand help, run only the corrected read-only active-root check, and hash the two existing Candidate49 ledgers without provider access."
+  },
+  "research_boundary": {
+    "historical_candidate49_return_read": false,
+    "candidate49_signal_execution_or_evaluation_backfill_performed": false,
+    "paper_execution_or_order_performed": false,
+    "current_scoring_selection_sizing_or_orders_performed": false,
+    "investment_advice": false
+  }
+}

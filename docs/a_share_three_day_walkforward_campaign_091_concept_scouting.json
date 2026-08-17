@@ -1,0 +1,137 @@
+{
+  "schema_version": 1,
+  "kind": "a_share_three_day_walkforward_campaign091_concept_scouting",
+  "status": "selected_before_campaign091_minute_source_candidate_comparison_daily_price_or_return_values",
+  "recorded_at": "2026-08-07T06:58:00+08:00",
+  "purpose": "Select exactly one economically distinct offline three-session factor after terminal Campaign090, before opening any Campaign091 minute source row, candidate value, comparison value, daily price, or forward return.",
+  "authoritative_bindings": {
+    "campaign090_verified_state_v2": {
+      "path": "docs/a_share_three_day_iteration_status_20260807_campaign090_verified_v2.json",
+      "sha256": "46e1856a031b5e8ae1c805eb0e52076e3d16de60ac07d6f073730b21579a9a69"
+    },
+    "campaign090_terminal_completion_freeze_v2": {
+      "path": "docs/a_share_three_day_walkforward_campaign_090_terminal_completion_freeze_v2_20260807.json",
+      "sha256": "a88f2e69f07c5b1028c577b6499ab39a55dde9391dd757dff8150f4084c8647e"
+    },
+    "historical_walkforward_policy": {
+      "path": "docs/a_share_three_day_historical_walkforward_research_policy_20260727.json",
+      "sha256": "38426d6161b9bfed323c58caba18feca668b8c9d53e294951a8ba90c01a798bb"
+    },
+    "numeric_comparator_policy_v32": {
+      "path": "docs/a_share_three_day_walkforward_future_numeric_comparison_eligibility_policy_v32_20260807.json",
+      "sha256": "cb5db190487c4af6060e5b6b9fd5d4c109f1fc439d815b87cf8d0c43448b5b97",
+      "complete_definition_count": 122,
+      "complete_definition_order_sha256": "1ed99d450143370e1b810e8fbb03e6e84882256c53fc035a9fef4e234a956d7f",
+      "eligible_numeric_comparator_count": 120,
+      "eligible_numeric_comparator_order_sha256": "5354d5ca8d26f890239e07ddc0eca1242723644af0fdd06ec7a76a15cb5b01f7"
+    },
+    "manage_qlib_a_share_data_skill": {
+      "path": "/Users/niyufei/.codex/skills/manage-qlib-a-share-data/SKILL.md",
+      "sha256": "90a99c54dd00f0c737e85c4c6dd48d906edbd0f591c61278885728eaf7806431"
+    }
+  },
+  "definition_only_source_boundary": {
+    "source": "immutable accepted local Tushare 2019-2025 one-minute source and joint-clean stock-day identity",
+    "minute_source_projection_if_later_admitted": [
+      "datetime",
+      "symbol",
+      "provider",
+      "open",
+      "high",
+      "low",
+      "close"
+    ],
+    "stock_day_identity_projection_if_later_admitted": [
+      "trade_date",
+      "symbol",
+      "provider"
+    ],
+    "candidate_source_rows_read": false,
+    "candidate_or_comparison_values_read": false,
+    "daily_price_or_forward_return_values_read": false,
+    "provider_request_allowed": false
+  },
+  "candidate_design_catalog": [
+    {
+      "design": "intraday_directional_range_mass_imbalance_240m",
+      "decision": "selected_for_separate_complete_mechanism_overlap_audit",
+      "reason": "It measures whether the completed session's scale-free intrabar high-low range mass is expressed disproportionately in up-bodied rather than down-bodied one-minute candles. It is contemporaneous, range-magnitude weighted, amount invariant, and distinct from unsigned body efficiency, close-location pressure, adjacent return direction, later range response, and range-clock timing."
+    },
+    {
+      "design": "intraday_absolute_directional_range_balance_or_two_sided_minimum",
+      "decision": "rejected_before_values",
+      "reason": "Removing the sign or taking a two-sided balance would create a second directionless interpretation after selecting the economically directional continuation hypothesis."
+    },
+    {
+      "design": "intraday_body_range_efficiency_or_close_location_mean",
+      "decision": "rejected_before_values_as_exact_terminal_families",
+      "reason": "Unsigned body-to-range efficiency and directional close-location pressure already exist and cannot be reformulated as Campaign091 rescues."
+    },
+    {
+      "design": "intraday_directional_range_mass_with_amount_volume_or_return_weights",
+      "decision": "rejected_before_values",
+      "reason": "Additional activity or return weights would combine terminal mechanisms and open an avoidable weighting family."
+    },
+    {
+      "design": "morning_only_afternoon_only_late_window_thresholded_or_sign_run_range_imbalance",
+      "decision": "rejected_before_values",
+      "reason": "Subwindows, clock cutoffs, minimum body sizes, run statistics, filters, regimes, fitted weights, models, and combinations are outside the exact one-factor catalog."
+    }
+  ],
+  "selected_candidate": {
+    "name": "intraday_directional_range_mass_imbalance_240m",
+    "direction": "higher",
+    "economic_hypothesis": "When a larger share of the completed session's scale-free intrabar price-discovery range occurs in up-bodied rather than down-bodied bars, one-sided buy-side information incorporation may continue from the next open through the third close.",
+    "formula": "For each exact standard bar set r_i=log(high_i/low_i) and b_i=log(close_i/open_i). Let U=sum r_i over b_i>0 and D=sum r_i over b_i<0. Return (U-D)/(U+D).",
+    "time_grid": "Require the complete raw 241-row source identity, select exactly 09:31-11:30 and 13:01-15:00, and exclude 09:30. No adjacent return, lunch, overnight, cross-day, or cross-stock transition is formed.",
+    "input_rule": "Every selected open, high, low, and close must be finite and strictly positive with low<=open<=high and low<=close<=high. Exact zero-range and exact zero-body bars remain valid source observations.",
+    "support_rule": "Require all 240 selected bars and finite strictly positive directional range mass U+D. Exact zero-body bars contribute to neither U nor D even when their high-low range is positive. Use no epsilon, pseudocount, minimum directional-bar count, threshold, dropped bar, or replacement.",
+    "floating_point_rule": "Use float64 natural-log arithmetic. Require a finite score in [-1,1]; canonicalize only values within 1e-12 of minus one, zero, or one.",
+    "valid_range": {
+      "lower": -1,
+      "lower_inclusive": true,
+      "upper": 1,
+      "upper_inclusive": true
+    },
+    "availability": "Known only after the signal-session 15:00 bar; no later session, daily return, comparison value, Candidate49 observation, or provider request is used.",
+    "parameter_direction_window_transform_filter_subset_regime_fit_model_or_combination_search": false
+  },
+  "mandatory_pre_value_challenges": [
+    "all_122_frozen_historical_factor_definitions_in_exact_order",
+    "all_120_numeric_comparators_in_exact_order",
+    "intraday_intrabar_body_range_efficiency_240m",
+    "intraday_intrabar_close_location_pressure_240m",
+    "intraday_two_sided_wick_absorption_balance_240m",
+    "intraday_directional_range_response_coupling_238p",
+    "intraday_prior_range_breakout_pressure_238p",
+    "intraday_upside_semivariance_share_239m",
+    "intraday_up_move_amount_share_238m",
+    "intraday_signed_path_efficiency_239m",
+    "intraday_bar_direction_continuity_238p",
+    "intraday_directional_price_impact_asymmetry_238m",
+    "intraday_range_share_volume_confirmation_240m",
+    "intraday_intrabar_close_location_serial_persistence_238p",
+    "intraday_range_amount_profile_alignment_js_240m",
+    "intraday_range_clock_center_240m",
+    "candidate49_intraday_cumulative_vwap_crossing_rate_240m_v1"
+  ],
+  "research_boundary": {
+    "campaign091_minute_source_rows_read": false,
+    "campaign091_candidate_values_read": false,
+    "comparison_values_read": false,
+    "historical_daily_price_fields_read": [],
+    "historical_forward_returns_read": false,
+    "provider_request_issued": false,
+    "candidate49_historical_backfill_performed": false,
+    "candidate49_ledgers_changed": false,
+    "second_prospective_candidate_created": false,
+    "current_scoring_selection_sizing_or_orders_performed": false,
+    "investment_advice": false
+  },
+  "decision": {
+    "selected_concept_count": 1,
+    "may_advance_directly_to_values": false,
+    "required_next_step": "Complete and bind one exhaustive no-value mechanism-overlap audit; then freeze the no-return protocol, implementation, tests, and fingerprints before any candidate value.",
+    "candidate49_remains_only_active_prospective_candidate": true
+  }
+}

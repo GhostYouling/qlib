@@ -1,0 +1,52 @@
+{
+  "version": 1,
+  "kind": "a_share_three_day_walkforward_campaign033_cli_import_repair",
+  "status": "pre_return_cli_entrypoint_repair_frozen",
+  "recorded_at": "2026-07-30T17:25:14Z",
+  "purpose": "Preserve the failed direct-CLI status check and freeze the local script-directory import repair before any development return read.",
+  "stable_bindings": {
+    "no_return_audit_freeze": {
+      "path": "docs/a_share_three_day_walkforward_campaign_033_no_return_audit_freeze_20260730.json",
+      "sha256": "c49f5630a3692aacfae96285f277504c07f3fb15a267a9a5c57f5fcfd2b15351"
+    },
+    "single_trial_stress_semantics_repair": {
+      "path": "docs/a_share_three_day_walkforward_campaign_033_single_trial_stress_semantics_repair_20260730.json",
+      "sha256": "d4b6c2a66dd7ae0a1e72b5ce2f4d7e2765c181e6bb9e6a4eb12c730eefecc2b5"
+    },
+    "repaired_runner": {
+      "path": "scripts/a_share_three_day_walkforward_campaign033.py",
+      "sha256": "2e27892205b626b5d7a5e804cb17f4385d29d6a544c5c3670e6f1ed0d42d957d"
+    }
+  },
+  "failed_check": {
+    "command": "python scripts/a_share_three_day_walkforward_campaign033.py status",
+    "exit_code": 1,
+    "failure_type": "ModuleNotFoundError",
+    "missing_module": "scripts",
+    "pre_repair_runner_sha256": "24e04434b2468490be09f482a3c129ce3b5130bfa3d4817d30691b33fd95d7ec",
+    "pre_repair_preregistration_sha256": "de105197e5505847b54039dc0645c3b179ff400eca8d8780157f4f5a7ede51d6",
+    "campaign_preregistration_loaded": false,
+    "factor_snapshot_opened": false,
+    "historical_daily_price_or_return_fields_read": false,
+    "walkforward_artifact_written": false
+  },
+  "repair": {
+    "change": "Insert the resolved scripts directory into sys.path and import the byte-bound reporting helper by its local module name, matching the repository runner convention.",
+    "reporting_helper_logic_changed": false,
+    "runner_namespace_transformation_changed": false,
+    "factor_formula_direction_weight_or_values_changed": false,
+    "fold_cost_execution_survivor_or_stress_rules_changed": false
+  },
+  "research_boundary": {
+    "historical_daily_price_fields_read": [],
+    "historical_forward_return_fields_read": false,
+    "candidate49_historical_return_signal_or_execution_backfill_performed": false,
+    "current_scoring_selection_sizing_or_orders_performed": false,
+    "provider_request_issued": false
+  },
+  "authorization": {
+    "preregistration_may_rebind_repaired_runner_and_this_record": true,
+    "development_returns_may_be_read_before_rebinding_and_validation": false,
+    "stress_2024_2025_may_be_opened": false
+  }
+}

@@ -1,0 +1,32 @@
+{
+  "schema_version": 1,
+  "kind": "a_share_three_day_walkforward_infrastructure_failure_record",
+  "recorded_at": "2026-08-14T09:33:20+08:00",
+  "campaign": 132,
+  "attempt_id": "campaign132_infrastructure_008",
+  "phase": "infrastructure_failure",
+  "stage": "pre_return_model_runner_synthetic_test_rerun",
+  "status": "failed_second_overstrict_float_assertion",
+  "failed_command_exit_code": 1,
+  "failure": {
+    "result": "1 failed, 4 passed",
+    "cause": "The uniqueness test compared a computed absolute Spearman correlation of 0.9999999999999999 to 1.0 using strict binary-float equality.",
+    "algorithmic_gate_result": "correctly_rejected_identical_component",
+    "real_design_values_read": false,
+    "model_fit_on_real_data": false,
+    "historical_daily_price_or_forward_return_values_read": false,
+    "scientific_result_changed": false
+  },
+  "predecessor_failure": {
+    "path": "docs/a_share_three_day_walkforward_campaign_132_initial_model_runner_synthetic_test_failure_20260814.json",
+    "sha256": "694dcea757b2b6f9f162b947de56412662b8a1f1cdf6ce880883f8d869fac8c2"
+  },
+  "recovery_boundary": {
+    "append_failure_to_campaign132_ledger": true,
+    "replace_only_the_strict_float_assertion_with_a_numeric_closeness_assertion": true,
+    "model_or_research_definition_change_allowed": false,
+    "override_or_mask_failed_exit_code": false,
+    "provider_request_or_credential_load_allowed": false,
+    "candidate49_change_allowed": false
+  }
+}

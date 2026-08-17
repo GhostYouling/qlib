@@ -1,0 +1,50 @@
+{
+  "version": 1,
+  "kind": "a_share_three_day_walkforward_campaign054_candidate_loader_repair_implementation_freeze",
+  "status": "frozen_before_authorized_same_snapshot_audit_continuation",
+  "frozen_at": "2026-08-03T14:10:00Z",
+  "purpose": "Bind the isolated Campaign054 candidate loader and its tests before the single authorized audit continuation.",
+  "repair_authorization": {
+    "path": "docs/a_share_three_day_walkforward_campaign_054_no_return_audit_candidate_loader_failure_repair_20260803.json",
+    "sha256": "52b9de36ae5d8c547afc0811d8e18162c5d1eb6862e30f68cfed69a628f2b0d9"
+  },
+  "repair_entrypoint": {
+    "path": "scripts/a_share_three_day_walkforward_campaign054_features_v7.py",
+    "sha256": "329436a275023554223efb692de895da9615241b0b3cc9bc0181ede8b36936e3"
+  },
+  "repair_tests": {
+    "path": "tests/data_collector_tests/test_a_share_three_day_walkforward_campaign054_candidate_loader_repair.py",
+    "sha256": "4a23dd77c26dc7903a4eecbf397b23d396b9c9aa9f87f4af7cdade984a9f9f11",
+    "repair_cases_passed": 3,
+    "combined_cases_passed": 26,
+    "failed": 0
+  },
+  "observed_loader_summary": {
+    "rows": 7724498,
+    "eligible_rows": 7675743,
+    "minimum_eligible_value": -1.0,
+    "maximum_eligible_value": 1.0,
+    "duplicate_stock_day_keys": 0
+  },
+  "frozen_repair_semantics": {
+    "candidate_snapshot_changed": false,
+    "candidate_values_recomputed_or_changed": false,
+    "explicit_columns": [
+      "trade_date",
+      "symbol",
+      "intraday_volume_weighted_transaction_price_bowley_skew_240m",
+      "intraday_volume_weighted_transaction_price_bowley_skew_240m_eligible"
+    ],
+    "eligible_range": [
+      -1.0,
+      1.0
+    ],
+    "generic_function_global_mutation": false,
+    "coverage_uniqueness_or_return_semantics_changed": false
+  },
+  "comparison_values_read_before_repair_freeze": false,
+  "historical_daily_price_or_forward_return_values_read_before_repair_freeze": false,
+  "candidate49_ledgers_changed": false,
+  "provider_request_issued": false,
+  "current_scoring_selection_sizing_or_orders_performed": false
+}

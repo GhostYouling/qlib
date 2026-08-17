@@ -1,0 +1,43 @@
+{
+  "schema_version": 1,
+  "kind": "a_share_three_day_walkforward_campaign117_infrastructure_failure",
+  "status": "ordered_uniqueness_failed_before_comparator_values_on_historical_skill_fingerprint_drift",
+  "recorded_at": "2026-08-13T21:12:50+08:00",
+  "attempt_id": "campaign117_infrastructure_004",
+  "stage": "all_134_loader_prevalue_adapter_contract_validation",
+  "command_exit_code": 1,
+  "error_class": "Campaign107ComparatorAdapterError",
+  "error": "Campaign107 adapter binding failed",
+  "binding_diagnosis": {
+    "contract_path": "docs/a_share_three_day_walkforward_campaign_107_raw_comparator_adapter_contract_20260808.json",
+    "contract_sha256": "6b8ac9484b3e46ebd7bd0857eb99e24bba4ede3c8781891d0b150de0cae19962",
+    "binding_count": 6,
+    "passed_binding_count": 5,
+    "failed_binding_count": 1,
+    "sole_failed_json_pointer": "/authoritative_inputs/manage_qlib_a_share_data_skill",
+    "expected_historical_skill_sha256": "8e541bf7c5d77f27a0b0562bd1235878b46c1074c53d79f64a21c417a68ad470",
+    "observed_current_skill_sha256": "5f05f0986c78355b75fa397545aed7fc7d474892849c475e3869dbddf09fdcad",
+    "all_non_skill_bindings_passed": true,
+    "adapter_semantics_or_source_snapshot_changed": false
+  },
+  "recovery_boundary": {
+    "allowed": "Pre-freeze a Campaign117 adapter-contract verifier that accepts the exact original contract and semantics only when the sole failed binding is append-only drift of the current manage-qlib-a-share-data skill at the exact frozen current hash; reuse the unchanged all-134 order and gate.",
+    "comparator_drop_reorder_fill_or_substitution_allowed": false,
+    "threshold_or_gate_change_allowed": false,
+    "candidate_or_comparator_value_change_allowed": false,
+    "daily_price_or_return_read_allowed_before_recovery_pass": false
+  },
+  "research_boundary": {
+    "candidate_values_reopened_for_key_alignment": true,
+    "candidate_aligned_rows": 1330171,
+    "comparator_values_read": false,
+    "numeric_comparator_count_read": 0,
+    "historical_daily_price_or_forward_return_values_read": false,
+    "stress_2024_2025_opened_for_returns": false,
+    "provider_request_issued": false,
+    "candidate49_historical_backfill_performed": false,
+    "candidate49_ledgers_changed": false,
+    "current_scoring_selection_sizing_positions_or_orders_performed": false,
+    "investment_advice": false
+  }
+}

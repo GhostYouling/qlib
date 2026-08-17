@@ -1,0 +1,84 @@
+{
+  "schema_version": 1,
+  "kind": "a_share_three_day_walkforward_campaign140_terminal_validation",
+  "status": "effective_artifact_bindings_static_checks_and_focused_tests_passed",
+  "recorded_at": "2026-08-14T14:04:19+0800",
+  "authoritative_artifacts": {
+    "status_v2": {
+      "path": "docs/a_share_three_day_iteration_status_20260814_campaign140_prevalue_terminal_v2.json",
+      "sha256": "699667efe72e00c18a9b104b6706d858ba14bbe4fb529aefaadba57643e74450"
+    },
+    "numeric_policy_v178": {
+      "path": "docs/a_share_three_day_walkforward_future_numeric_comparison_eligibility_policy_v178_20260814.json",
+      "sha256": "5d8d9d58452ea3ef2e7a0e13dfc01a43bcf6d26f93aa68d9fac44922699fd4de"
+    },
+    "terminal_result_v2": {
+      "path": "docs/a_share_three_day_walkforward_campaign_140_terminal_result_v2_20260814.json",
+      "sha256": "e5a3b747fbf74bb81e1364f3386dec4921c337bdaffd2a9ca4db4e255fd92b92"
+    },
+    "attempt_ledger_v2": {
+      "path": "data/experiments/short_horizon/historical_walkforward/campaign_140/research_attempt_ledger_v2.json",
+      "sha256": "e2a44aaafdb1a04c78c68f0642cb8a481cfed8d8b6dcc933749a2141431fb465"
+    },
+    "terminal_report": {
+      "path": "docs/a_share_three_day_walkforward_campaign_140_terminal_report.md",
+      "sha256": "efb888535c917bb52f49ea21cc3d235595361abe4123ccdcc5401340029d1fc9"
+    },
+    "current_research_report": {
+      "path": "data/experiments/short_horizon/current_research_report.md",
+      "sha256": "536d7030f74a9ffeb0a768a454d2b3c72c69e0739dde982723c8f3f83f7ea6e0"
+    },
+    "three_day_research_report": {
+      "path": "data/experiments/short_horizon/three_day_research_report.md",
+      "sha256": "d578dda196cf1e34f9c5161dcccb9e4505bf58efe824a2a54a45da3fd047dfdd"
+    },
+    "focused_test": {
+      "path": "tests/data_collector_tests/test_a_share_three_day_walkforward_campaign140_terminal.py",
+      "sha256": "b29d4a380ea55d846dca6f906458025dd556fd06e814420537c29aa5dd0e7655"
+    }
+  },
+  "validation_results": {
+    "json_parse": {
+      "passed": true,
+      "file_count": 12
+    },
+    "black_check": {
+      "passed": true,
+      "file_count": 1
+    },
+    "ruff_check": {
+      "passed": true,
+      "file_count": 1
+    },
+    "focused_pytest": {
+      "passed": true,
+      "passed_count": 5,
+      "failed_count": 0,
+      "duration_seconds": 2.94
+    },
+    "effective_binding_validator": {
+      "passed": true,
+      "records_checked_by_test": [
+        "mechanism_source_frontier_audit_v2",
+        "terminal_result_v2",
+        "numeric_policy_v178",
+        "status_v2"
+      ]
+    },
+    "candidate49_signal_entries": 0,
+    "candidate49_execution_entries": 0,
+    "candidate49_ledgers_changed": false
+  },
+  "research_boundary": {
+    "campaign140_source_candidate_or_comparator_values_read": false,
+    "historical_daily_price_or_forward_return_values_read": false,
+    "stress_2024_2025_opened": false,
+    "provider_request_issued": false,
+    "provider_credential_value_or_digest_read": false,
+    "candidate49_historical_backfill_performed": false,
+    "second_prospective_candidate_created": false,
+    "current_scoring_selection_sizing_positions_or_orders_performed": false,
+    "investment_advice": false
+  },
+  "next_action": "Keep the goal active and begin Campaign141 offline only from a genuinely new finite prevalue mechanism."
+}

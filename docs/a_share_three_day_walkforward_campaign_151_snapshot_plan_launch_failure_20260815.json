@@ -1,0 +1,53 @@
+{
+  "schema_version": 1,
+  "kind": "a_share_three_day_walkforward_campaign151_snapshot_plan_launch_failure",
+  "status": "failed_exit_preserved_runner_corrected_pending_v2_activation",
+  "recorded_at": "2026-08-15T00:37:53+08:00",
+  "failed_activation": {
+    "path": "docs/a_share_three_day_walkforward_campaign_151_snapshot_runner_activation_20260815.json",
+    "sha256": "bbbe1cacc6041fe73e703e90bb1d5b4efc6bd077968b489246ea16ad13fed605"
+  },
+  "attempts": [
+    {
+      "attempt_id": "campaign151_infrastructure_003",
+      "command": "/Volumes/DIsk/Coding/anaconda3/bin/python3.12 scripts/a_share_three_day_walkforward_campaign151_snapshot.py plan --workers 4",
+      "exit_code": 1,
+      "failure_class": "direct_script_repository_import_path",
+      "safe_error": "ModuleNotFoundError: No module named 'scripts'",
+      "plan_json_emitted": false,
+      "historical_value_gate_entered": false,
+      "failed_exit_code_bypassed_or_masked": false
+    },
+    {
+      "attempt_id": "campaign151_infrastructure_004",
+      "command": "/Volumes/DIsk/Coding/anaconda3/bin/python3.12 -m ruff check scripts/a_share_three_day_walkforward_campaign151_snapshot.py tests/data_collector_tests/test_a_share_three_day_walkforward_campaign151_snapshot.py",
+      "exit_code": 1,
+      "failure_class": "post_import_path_fix_lint",
+      "safe_error": "E402 module level import not at top of file",
+      "historical_value_gate_entered": false,
+      "failed_exit_code_bypassed_or_masked": false
+    }
+  ],
+  "correction": {
+    "repository_root_inserted_before_scripts_import": true,
+    "intentional_late_import_marked_for_ruff": true,
+    "corrected_runner_path": "scripts/a_share_three_day_walkforward_campaign151_snapshot.py",
+    "corrected_runner_sha256": "1a7de625916bb7f40ee968004a818b44af81edb7a049e633e9eac83626df1a42",
+    "runner_test_path": "tests/data_collector_tests/test_a_share_three_day_walkforward_campaign151_snapshot.py",
+    "runner_test_sha256": "ea78dc83e4e3223d4d3b820d1d338cf8b60852d24b29442d904824a89c0f2c73",
+    "black": "passed; 2 files left unchanged",
+    "ruff": "passed",
+    "pytest": "6 passed in 5.36s"
+  },
+  "research_boundary": {
+    "historical_minute_source_rows_or_values_read": false,
+    "peer_benchmark_values_read": false,
+    "candidate_or_comparator_values_read": false,
+    "historical_daily_price_or_forward_return_values_read": false,
+    "credential_loaded": false,
+    "provider_request_issued": false,
+    "candidate49_ledgers_changed": false,
+    "current_scoring_selection_sizing_positions_or_orders_performed": false
+  },
+  "next_action": "Publish an additive v2 activation that binds the corrected runner and this failure record, then rerun the real metadata-only plan from scratch."
+}

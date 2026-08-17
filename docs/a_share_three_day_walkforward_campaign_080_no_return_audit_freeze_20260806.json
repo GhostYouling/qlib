@@ -1,0 +1,65 @@
+{
+  "schema_version": 1,
+  "kind": "a_share_three_day_walkforward_campaign080_no_return_audit_freeze",
+  "status": "one_factor_admitted_before_historical_daily_price_or_return_read",
+  "recorded_at": "2026-08-06T16:15:00+08:00",
+  "protocol": {
+    "path": "docs/a_share_three_day_walkforward_campaign_080_no_return_preregistration.json",
+    "sha256": "4f1061d0daaec767d926cda79762c3c70806b84e55c28c4d198918547df3c0f5"
+  },
+  "audit_implementation_freeze": {
+    "path": "docs/a_share_three_day_walkforward_campaign_080_no_return_audit_implementation_freeze_20260806.json",
+    "sha256": "86a0d2ccfeacc76ff83c85992df72602f69a57558c8db3e5b2278c1e1a9fe21c"
+  },
+  "audit_activation_binding": {
+    "path": "docs/a_share_three_day_walkforward_campaign_080_no_return_audit_activation_binding_20260806.json",
+    "sha256": "761bcd126b143a74235763648cd1fcbf6d63a541973e1f9f7558e58ea5fef595"
+  },
+  "audit": {
+    "path": "data/experiments/short_horizon/historical_walkforward/campaign_080/no_return/20260806T081344Z_campaign080_no_return_audit.json",
+    "sha256": "f0b4f08139a2c0fcf87c22ab3ce7bb4a366f5e3c6f824f660c50211c31d9d5e3"
+  },
+  "candidate_snapshot": {
+    "path": "/Volumes/DIsk/qlib-a-share-tushare-1m/derived/a_share/rich/tushare/minute_walkforward_campaign080_feature_library/tushare_stk_mins_1m_2019_2025_ea0cbb8f_walkforward_campaign080_feature_library_v1/snapshot_manifest.json",
+    "sha256": "64c883cc669425f9b8ab49ad2885de7c4239d7dc49f9944dab0ee3241f2c84b7",
+    "dataset_sha256": "53c89fa15b46e21269c8956284707fe6bde09e77ca308d3506a3336d40e6ef62"
+  },
+  "result": {
+    "factor": "intraday_above_median_amount_longest_run_240m",
+    "direction": "higher",
+    "coverage_gate_passed": true,
+    "median_coverage": 0.9994517542211769,
+    "p05_coverage": 0.9956886515772271,
+    "eligible_names_median": 943.0,
+    "eligible_names_p05": 138.0,
+    "potential_non_overlapping_three_session_cohorts": 540,
+    "observed_calendar_years": 7,
+    "numeric_comparison_count": 109,
+    "comparison_order_matches_preregistration": true,
+    "all_required_numeric_comparisons_passed": true,
+    "maximum_observed_absolute_median_daily_rank_correlation": 0.5120572125572724,
+    "maximum_correlation_comparator": "intraday_amount_center_of_mass_240m",
+    "strict_maximum_allowed": 0.8,
+    "admissible_factor_count": 1,
+    "admissible_factor_names": [
+      "intraday_above_median_amount_longest_run_240m"
+    ]
+  },
+  "research_boundary": {
+    "candidate_source_fields_read": [
+      "datetime",
+      "symbol",
+      "provider",
+      "amount"
+    ],
+    "comparison_values_read_after_coverage_pass": true,
+    "historical_daily_price_fields_read": [],
+    "historical_forward_returns_read": false,
+    "candidate49_historical_backfill_performed": false,
+    "candidate49_ledgers_changed": false,
+    "second_prospective_candidate_created": false,
+    "provider_request_issued": false,
+    "current_scoring_selection_sizing_or_orders_performed": false
+  },
+  "next_action": "Freeze exactly one 2019-2023 higher-direction development trial. Keep 2024-2025 stress closed unless that frozen trial produces a nonzero development survivor."
+}

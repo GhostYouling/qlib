@@ -1,0 +1,30 @@
+{
+  "schema_version": 2,
+  "kind": "a_share_three_day_walkforward_campaign119_temporal_metadata_correction",
+  "status": "authoritative_append_only_correction_manual_clock_labels_only",
+  "recorded_on_local_date": "2026-08-13",
+  "supersedes_without_rewriting": {
+    "path": "docs/a_share_three_day_walkforward_campaign_119_temporal_metadata_correction_20260813.json",
+    "sha256": "5b62b3a72c6c23a1c1f626e3fcef4cf54a465734445b69e1ec7daed5bc4acc95",
+    "preserved": true
+  },
+  "additional_immutable_record_not_rewritten": {
+    "path": "data/experiments/short_horizon/historical_walkforward/campaign_119/research_attempt_ledger_v4.json",
+    "sha256": "5e3570c23ef44fb2cd2689886e287f5c222f1840368c1b77ab1eade500a80c3f",
+    "incorrect_embedded_time": "2026-08-13T23:50:00+08:00",
+    "observed_filesystem_birth_time": "2026-08-13T23:49:35+08:00"
+  },
+  "authoritative_order": [
+    "preregistration filesystem birth 2026-08-13T23:40:24+08:00",
+    "implementation freeze filesystem birth 2026-08-13T23:41:12+08:00",
+    "development activation filesystem birth 2026-08-13T23:41:36+08:00",
+    "trial ledger embedded creation 2026-08-13T23:43:11.889557+08:00 and filesystem birth 2026-08-13T23:43:17+08:00",
+    "terminal records and append-only temporal correction"
+  ],
+  "scientific_result_or_gate_changed": false,
+  "additional_research_attempt_increment": 0,
+  "additional_infrastructure_failure_increment": 0,
+  "development_trial_rerun": false,
+  "stress_2024_2025_opened": false,
+  "candidate49_ledgers_changed": false
+}

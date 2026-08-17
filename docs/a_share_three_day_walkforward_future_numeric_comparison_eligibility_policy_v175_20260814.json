@@ -1,0 +1,102 @@
+{
+  "version": 175,
+  "kind": "a_share_three_day_walkforward_future_numeric_comparison_eligibility_policy",
+  "status": "campaign139_terminal_capacity_failure_definition_appended_numeric_order_unchanged_campaign140_allowed",
+  "recorded_at": "2026-08-14T13:31:45+0800",
+  "authoritative_inputs": {
+    "policy_v174": {
+      "path": "docs/a_share_three_day_walkforward_future_numeric_comparison_eligibility_policy_v174_20260814.json",
+      "sha256": "a3e23a2f2744359973b18b22c370f8f6cb3ded22c5b7e3e00f32c9c31179e103"
+    },
+    "campaign139_terminal_result": {
+      "path": "docs/a_share_three_day_walkforward_campaign_139_terminal_result_20260814.json",
+      "sha256": "f6c018c859191e34e87409cf97b0792867ba79130cd7d1869d795e68c71e8ab6"
+    },
+    "campaign139_effective_attempt_ledger": {
+      "path": "data/experiments/short_horizon/historical_walkforward/campaign_139/research_attempt_ledger_v3.json",
+      "sha256": "4fe3557c7fb3fb20ac7516331f4817ad8ff53cc145679eaa75e98bfc22b2d72c",
+      "effective_entry_count": 12,
+      "effective_attempt_count": 10,
+      "chain_tip_sha256": "90e8bce4ad10f2c111c72b21033e32d9e5ce0885f262d6aa89d140f4634a3f70"
+    }
+  },
+  "supersedes_without_rewriting": {
+    "path": "docs/a_share_three_day_walkforward_future_numeric_comparison_eligibility_policy_v174_20260814.json",
+    "sha256": "a3e23a2f2744359973b18b22c370f8f6cb3ded22c5b7e3e00f32c9c31179e103",
+    "preserved": true,
+    "scientific_result_changed": true,
+    "complete_definition_order_changed": true,
+    "numeric_comparator_order_changed": false,
+    "reason": "Append Campaign139's complete frozen semantic definition and terminal capacity failure; its sparse numeric snapshot is not eligible for ordered duplicate comparison."
+  },
+  "effective_accounting": {
+    "campaign139_attempt_count": 10,
+    "campaign139_ledger_entry_count": 12,
+    "campaign139_prevalue_concept_attempt_count": 6,
+    "campaign139_infrastructure_failure_count": 4,
+    "campaign139_complete_factor_attempt_count": 1,
+    "campaign139_scientifically_decided_factor_attempt_count": 1,
+    "campaign139_return_reading_development_trial_count": 0,
+    "campaign139_development_survivor_count": 0,
+    "campaign139_stress_trial_count": 0,
+    "cumulative_historical_research_attempt_count": 1165,
+    "cumulative_return_reading_development_trial_count": 313
+  },
+  "complete_historical_feature_library": {
+    "factor_definition_count": 153,
+    "order_sha256": "bf66faef96d7058c7028da52757c65d8e0bf7978cf72d3967cd236e4da30b875",
+    "prior_factor_definition_count": 152,
+    "prior_order_sha256": "60c465a3e2043efae6b92b8c5f3e007cd397a1cd0ec3094b4fa005665bbe5736",
+    "appended_definition": {
+      "name": "quarterly_realized_profit_growth_forecast_surprise_rank",
+      "score_direction": "higher",
+      "logical_definition_complete": true,
+      "accepted_local_source_snapshot_published": true,
+      "capacity_gate_passed": false,
+      "numeric_comparator_eligible": false
+    },
+    "order_digest_rule": "SHA-256 of compact sorted-key JSON encoding of the ordered [name, score_direction] pairs, preserving Unicode code points."
+  },
+  "numerical_comparator_eligibility": {
+    "eligible_numeric_comparator_count": 141,
+    "eligible_numeric_comparator_order_sha256": "ec1aebcb939ad516c58037a36a4aaadd4ad8b2abbd3c884705895c58da85a2ee",
+    "unchanged_from_v174": true,
+    "campaign139_numeric_series_appended": false,
+    "reason": "The candidate produced only 123 frozen non-overlapping complete cohorts versus the required 200, so all 141 comparator values remained unopened and the series is not eligible."
+  },
+  "campaign139_terminal_classification": {
+    "terminal": true,
+    "terminal_phase": "quality_listing_event_capacity_gate",
+    "source_event_rows": 37185,
+    "candidate_signal_rows": 18340,
+    "observed_development_years": 5,
+    "required_nonoverlapping_complete_cohorts": 200,
+    "observed_nonoverlapping_complete_cohorts": 123,
+    "numeric_comparator_count_read": 0,
+    "historical_daily_price_or_forward_return_values_read": false,
+    "2024_2025_stress_opened": false,
+    "retry_reparameterization_threshold_liveness_grid_filter_combination_or_rescue_allowed": false
+  },
+  "future_campaign_boundary": {
+    "next_campaign": 140,
+    "must_begin_from_genuinely_new_finite_prevalue_mechanism_backed_by_accepted_historically_versioned_point_in_time_source": true,
+    "campaign139_retry_reparameterization_proxy_combination_or_rescue_allowed": false,
+    "complete_library_historical_combinations_remain_allowed_only_when_genuinely_new_and_prevalue_frozen": true,
+    "historical_offline_work_may_continue_at_any_local_time": true,
+    "candidate49_remains_separate_confirmation_layer": true
+  },
+  "research_boundary": {
+    "campaign139_accepted_source_and_candidate_values_read": true,
+    "campaign139_comparator_values_read": false,
+    "historical_daily_price_or_forward_return_values_read": false,
+    "stress_2024_2025_opened": false,
+    "provider_request_issued": false,
+    "provider_credential_value_or_digest_read": false,
+    "candidate49_historical_backfill_performed": false,
+    "candidate49_ledgers_changed": false,
+    "second_prospective_candidate_created": false,
+    "current_scoring_selection_sizing_positions_or_orders_performed": false,
+    "investment_advice": false
+  },
+  "next_action": "Continue Campaign140 offline at any local time from a genuinely new finite prevalue mechanism; preserve Campaign139 as terminal and Candidate49 as the sole prospective ledger."
+}

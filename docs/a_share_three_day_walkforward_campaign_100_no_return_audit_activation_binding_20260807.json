@@ -1,0 +1,42 @@
+{
+  "schema_version": 1,
+  "kind": "a_share_three_day_walkforward_campaign100_no_return_audit_activation_binding",
+  "status": "single_use_frozen_before_coverage_or_comparator_values",
+  "activated_at": "2026-08-07T12:21:44Z",
+  "implementation_freeze": {
+    "path": "docs/a_share_three_day_walkforward_campaign_100_no_return_audit_implementation_freeze_20260807.json",
+    "sha256": "cd1ed95400275c3358d6dd3adb72b97b5286871a6d9a1dd2faa0765ff27705b0"
+  },
+  "snapshot_binding": {
+    "path": "docs/a_share_three_day_walkforward_campaign_100_feature_snapshot_binding_20260807.json",
+    "sha256": "b68b9500dcebe02e3d224a94b52ab61cdfc6607dd4486fb5c2c7a46f3dbc6d9e"
+  },
+  "candidate_snapshot": {
+    "path": "/Volumes/DIsk/qlib-a-share-tushare-1m/derived/a_share/rich/tushare/minute_walkforward_campaign100_feature_library/tushare_stk_mins_1m_2019_2025_ea0cbb8f_walkforward_campaign100_feature_library_v1/snapshot_manifest.json",
+    "sha256": "31fa90e958d400aad250d369f4776f139664da869e9f152f8d4610e3351c20f4",
+    "dataset_sha256": "b6a2ea043502b1c7c97726befffa0fe872d693a0cfa1f477fc2da8eab81d106d"
+  },
+  "eligibility_identity_source": {
+    "path": "/Volumes/DIsk/qlib-a-share-tushare-1m/derived/a_share/rich/tushare/compact_comparator_cache/campaign067_terminal_numeric98_v4/snapshot_manifest.json",
+    "sha256": "3d81068f07ac61fe4cd04bd1a893e58759c06d88213263135fec5244e309b57b"
+  },
+  "final_comparator_source": {
+    "path": "/Volumes/DIsk/qlib-a-share-tushare-1m/derived/a_share/rich/tushare/minute_walkforward_campaign099_compact_feature_library/tushare_stk_mins_1m_2019_2025_ea0cbb8f_walkforward_campaign099_compact_feature_library_v1/snapshot_manifest.json",
+    "sha256": "a973f7d71a871e56294f50a0c39267006f9b859f1b9490599c89c51cbab5fe90",
+    "dataset_sha256": "1ac5ddd9c59401a48876df69e409ba86b6fd71923c5be61936efb30a56c3de9b"
+  },
+  "execution_contract": {
+    "ordered_gate_1": "candidate coverage and capacity on the frozen quality-listing denominator",
+    "ordered_gate_2": "only after gate 1 passes load all 128 comparator values in the frozen order",
+    "write_once": true,
+    "development_return_permission": "absent_until_one_admissible_no_return_result_is_bound"
+  },
+  "coverage_or_capacity_metrics_computed_before_activation": false,
+  "comparison_values_read_before_activation": false,
+  "historical_daily_price_or_forward_return_values_read_before_activation": false,
+  "provider_request_issued_before_activation": false,
+  "candidate49_historical_return_read": false,
+  "candidate49_ledgers_changed": false,
+  "current_scoring_selection_sizing_or_orders_performed": false,
+  "single_use": true
+}

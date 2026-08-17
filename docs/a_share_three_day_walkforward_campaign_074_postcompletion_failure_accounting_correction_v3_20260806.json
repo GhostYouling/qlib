@@ -1,0 +1,45 @@
+{
+  "version": 3,
+  "kind": "a_share_three_day_walkforward_campaign074_postcompletion_failure_accounting_correction",
+  "status": "additive_current_accounting_supersedes_v2_without_rewriting",
+  "recorded_at": "2026-08-06T08:42:00+08:00",
+  "supersedes_without_rewriting": {
+    "path": "docs/a_share_three_day_walkforward_campaign_074_postcompletion_failure_accounting_correction_v2_20260806.json",
+    "sha256": "f8de8d484ad1bcdaffdaec32933e8ae044efed574c2234308459b20c4bf28abc",
+    "preserved": true
+  },
+  "previous_current_attempt_ledger": {
+    "path": "data/experiments/short_horizon/historical_walkforward/campaign_074/research_attempt_ledger_v4.json",
+    "sha256": "69e2d4138d84f8681cb5185d79cdd2eee60bb15e14cdca06370a4af678118a17",
+    "preserved": true
+  },
+  "previous_current_research_record": {
+    "path": "docs/a_share_three_day_walkforward_campaign_074_research_record_v3.json",
+    "sha256": "e86f64258ab956d1142847e8e0057fde97a764089424197601d4f9ba354ab35c",
+    "preserved": true
+  },
+  "new_failure": {
+    "path": "docs/a_share_three_day_walkforward_campaign_074_terminal_test_collection_dependency_failure_20260806.json",
+    "sha256": "094d4b7963e388fe6663d899b10c646683c7374bf76b8ed38b127f7ba4d86ca4",
+    "failed_command_count": 1,
+    "collection_error_count": 4,
+    "counted_attempt_increment": 1,
+    "candidate_or_comparison_values_recomputed": false,
+    "historical_daily_price_or_forward_return_values_read": false
+  },
+  "corrected_accounting": {
+    "campaign074_infrastructure_failure_count": 8,
+    "campaign074_complete_factor_attempt_count": 1,
+    "campaign074_attempt_count": 9,
+    "campaign074_ledger_entry_count": 10,
+    "campaign074_return_reading_development_trial_count": 1,
+    "cumulative_historical_research_attempt_count": 451,
+    "cumulative_return_reading_development_trial_count": 276
+  },
+  "unchanged_research_result": {
+    "numeric_comparisons_passed": 104,
+    "development_survivor_count": 0,
+    "stress_2024_2025_opened": false,
+    "stress_returns_read": false
+  }
+}

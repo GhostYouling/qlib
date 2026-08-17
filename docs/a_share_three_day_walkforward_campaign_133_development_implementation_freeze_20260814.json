@@ -1,0 +1,86 @@
+{
+  "schema_version": 1,
+  "version": 1,
+  "kind": "a_share_three_day_walkforward_campaign133_development_implementation_freeze",
+  "status": "frozen_before_first_campaign133_model_fit_or_training_return_read",
+  "recorded_at": "2026-08-14T10:08:36+08:00",
+  "purpose": "Bind the one-trial Campaign133 implementation and tests after synthetic verification but before any Campaign133 design value, model fit, training return or validation return is opened.",
+  "protocol": {
+    "path": "docs/a_share_three_day_walkforward_campaign_133_preregistration_20260814.json",
+    "sha256": "533cb1cc7738bf91afd0d08bd97757638fc07cc85edf8af35ff57c69031b7371"
+  },
+  "concept_scouting": {
+    "path": "docs/a_share_three_day_walkforward_campaign_133_concept_scouting_20260814.json",
+    "sha256": "3cd3e99ccc3fecca997b0d618e46591395376a0b35742ed540ea704312518e12"
+  },
+  "model_overlap_audit": {
+    "path": "docs/a_share_three_day_walkforward_campaign_133_model_overlap_audit_20260814.json",
+    "sha256": "28890b1f0abd00c3936fc4817769ae0fa75abc90ab05217efe844466d9ef63b9"
+  },
+  "design_manifest": {
+    "path": "/Volumes/DIsk/qlib-a-share-tushare-1m/derived/a_share/rich/tushare/minute_walkforward_campaign132_design_matrix/tushare_stk_mins_1m_2019_2025_ea0cbb8f_walkforward_campaign132_numeric140_design_v1/snapshot_manifest.json",
+    "sha256": "043c17fea89f3b0956d643a7c6e3f4d73a11403b967213d2d57539a6a8316a49",
+    "dataset_sha256": "12ce3a64b5e13581392ded9890e2064db4ccca3945da3eb8ad7752c95366a9fc"
+  },
+  "design_audit": {
+    "path": "data/experiments/short_horizon/historical_walkforward/campaign_132/no_return/design_structural_audit.json",
+    "sha256": "86bb53552caf6f6d8f1fad688d2f3a7e39c75827f968bb1ee1510fff2394deec"
+  },
+  "frozen_campaign132_v3_runner": {
+    "path": "scripts/a_share_three_day_walkforward_campaign132_v3.py",
+    "sha256": "d2c22b1a9ca49768023c58f2bdf3118a8de53fa5f385476c8dcb8ee035e51ba2",
+    "reuse_boundary": "Only its audited 140-feature design interface, target construction, chronological schedules, uniqueness implementation and fixed evaluation engine are reused. Campaign132 model configurations, fits and scores are not reused."
+  },
+  "runner": {
+    "path": "scripts/a_share_three_day_walkforward_campaign133.py",
+    "sha256": "cd9fb1122bc5b3f6811171c5e41ee1e59d5b6a3df15a1f7529d8ff82afd83496"
+  },
+  "tests": {
+    "path": "tests/data_collector_tests/test_a_share_three_day_walkforward_campaign133.py",
+    "sha256": "a0d42ff1f562469ae6bd5e1ce1b4439ed5a15036a91169d41f0acc46d00f1672",
+    "result_before_freeze": "6 passed",
+    "runtime": "/Volumes/DIsk/Coding/anaconda3/bin/python3.12"
+  },
+  "frozen_trial": {
+    "trial_id": "wf133_complete140_anchor50_decile_pava_additive",
+    "source_feature_count": 140,
+    "source_feature_order_sha256": "c71bfe27486c9567afd3aca21e4b04053658c23ac651e7f4df7fd014b0c31efd",
+    "minimum_finite_components": 105,
+    "missing_fill": 0.5,
+    "bin_count": 10,
+    "pava_direction": "nondecreasing",
+    "empty_interior_bins": "linear_interpolation",
+    "empty_edge_bins": "nearest_fitted_endpoint",
+    "pava_anchor_weight": 0.5,
+    "original_percentile_anchor_weight": 0.5,
+    "final_aggregation": "equal_mean_all_140_components",
+    "configuration_count": 1
+  },
+  "chronology": {
+    "training_return_open_requires_plan_ready_and_confirm_run": true,
+    "validation_return_open_requires_bound_fold_score_snapshot_and_all_140_uniqueness_pass": true,
+    "purge_signal_sessions": 3,
+    "lockbox_2024_2025_requires_nonzero_development_survivor_and_separate_freeze": true
+  },
+  "synthetic_checks_before_freeze": {
+    "weighted_pava_pooling": true,
+    "empty_bin_interpolation": true,
+    "all_fitted_levels_nondecreasing": true,
+    "identity_anchor_strict_component_contribution": true,
+    "neutral_missing_fill": true,
+    "ineligible_row_nan": true,
+    "lockbox_command_absent": true
+  },
+  "campaign133_component_values_read_before_freeze": false,
+  "campaign133_model_scores_computed_before_freeze": false,
+  "campaign133_model_fit_before_freeze": false,
+  "campaign133_training_or_validation_return_read_before_freeze": false,
+  "lockbox_2024_2025_return_read_before_freeze": false,
+  "provider_request_issued_before_freeze": false,
+  "credential_value_or_digest_read_before_freeze": false,
+  "candidate49_historical_backfill_before_freeze": false,
+  "candidate49_ledgers_changed_before_freeze": false,
+  "second_prospective_candidate_created_before_freeze": false,
+  "current_scoring_selection_sizing_positions_or_orders_before_freeze": false,
+  "investment_advice": false
+}

@@ -1,0 +1,60 @@
+{
+  "schema_version": 1,
+  "kind": "a_share_three_day_walkforward_campaign099_feature_implementation_freeze",
+  "status": "frozen_after_synthetic_tests_before_campaign099_minute_source_market_benchmark_candidate_or_comparator_values",
+  "recorded_at": "2026-08-07T09:27:00Z",
+  "no_return_preregistration": {
+    "path": "docs/a_share_three_day_walkforward_campaign_099_no_return_preregistration.json",
+    "sha256": "a10f8cf03a1acda3a3632fd7a648f3ec22697ca4074e31d85e539788b37720fc"
+  },
+  "feature_runner": {
+    "path": "scripts/a_share_three_day_walkforward_campaign099_features.py",
+    "sha256": "f4e57c9f40b181d62aa337fd133662d379eac92138690fbfd8cdfe25968df1fe"
+  },
+  "synthetic_tests": {
+    "path": "tests/data_collector_tests/test_a_share_three_day_walkforward_campaign099_features.py",
+    "sha256": "f63b811175eb3fee07e9a37a13f7eff2fa9501c085da0e938214797ca6bb34bb",
+    "passed": 6
+  },
+  "prevalue_black_format_failure": {
+    "path": "docs/a_share_three_day_walkforward_campaign_099_prevalue_black_format_failure_20260807.json",
+    "sha256": "cc300402bf446f0b09d4727030ad8b5f880920a0b52bf85263bec2cbcf619586",
+    "mechanical_repair_completed": true
+  },
+  "frozen_implementation": {
+    "factor": "intraday_market_close_location_profile_synchronization_240m",
+    "direction": "higher",
+    "raw_columns": [
+      "datetime",
+      "symbol",
+      "provider",
+      "high",
+      "low",
+      "close"
+    ],
+    "profile_positions": 240,
+    "zero_range_state": 0,
+    "minimum_leave_one_out_peers_per_position": 50,
+    "correlation_estimator": "equal-clock-weight population Pearson correlation",
+    "endpoint_tolerance": 1e-12,
+    "complete_definition_count": 130,
+    "complete_definition_order_sha256": "5146b99fc3c70723b0b62c541ba560b8456199d08546b81d2520fa69eb8a4b57",
+    "numeric_comparator_count": 127,
+    "numeric_comparator_order_sha256": "5777fbeab91e603c45d271dfe018388129bc7fab83cc9a77b7776529ba9d0990"
+  },
+  "verification_before_freeze": {
+    "protocol_binding_count": 16,
+    "protocol_all_bindings_passed": true,
+    "synthetic_tests_passed": true,
+    "black_check_passed": true,
+    "ruff_check_passed": true
+  },
+  "campaign099_source_rows_read_before_freeze": false,
+  "market_benchmark_values_read_before_freeze": false,
+  "candidate_values_read_before_freeze": false,
+  "comparator_values_read_before_freeze": false,
+  "historical_daily_price_or_forward_return_values_read_before_freeze": false,
+  "provider_request_issued_before_freeze": false,
+  "candidate49_ledgers_changed_before_freeze": false,
+  "allowed_next_action": "Build exactly one immutable Campaign099 feature snapshot from the bound local minute source with zero provider requests and no comparison, daily-price, or return reads."
+}

@@ -1,0 +1,42 @@
+{
+  "schema_version": 1,
+  "kind": "a_share_three_day_walkforward_campaign096_prevalue_definition_append_order_failure",
+  "status": "recorded_before_third_narrow_implementation_repair_and_before_any_campaign096_source_or_value",
+  "recorded_at": "2026-08-07T04:22:00Z",
+  "protocol": {
+    "path": "docs/a_share_three_day_walkforward_campaign_096_no_return_preregistration.json",
+    "sha256": "97d8cdd6cc3731de8e8d4db101db1b4b0ee62353c9c39ac71a8753fea4501924"
+  },
+  "prior_failure": {
+    "path": "docs/a_share_three_day_walkforward_campaign_096_prevalue_nested_source_anchor_failure_20260807.json",
+    "sha256": "21b72fc4e4fa26f671fa0fd23889d34c48fd32a387b075cd160e219d98d03e56"
+  },
+  "attempted_implementation": {
+    "path": "scripts/a_share_three_day_walkforward_campaign096_features.py",
+    "observed_sha256_before_repair": "e28d63b24c7935ad645668d1360c94a60418d5c16e5a69fdd435f6c1b56517a2"
+  },
+  "attempted_tests": {
+    "path": "tests/data_collector_tests/test_a_share_three_day_walkforward_campaign096_features.py",
+    "observed_sha256": "24b3a45f33c9accfd610641eab7c8e90c151f30f88b1a4ce65098ac4b8d7b289"
+  },
+  "command": "python3.12 -m pytest -q tests/data_collector_tests/test_a_share_three_day_walkforward_campaign096_features.py",
+  "exit_code": 2,
+  "failure_stage": "pytest_collection_generated_complete_definition_order_assertion",
+  "observed_error": "Campaign096 v39 frozen order changed",
+  "root_cause": "Temporarily appending Campaign095 inside Campaign094's reconstruction placed Campaign095 before the generated layer appended Campaign094, yielding the wrong C93-C95-C94 tail instead of the frozen C93-C94-C95 tail.",
+  "classification": "prevalue_implementation_failure_not_factor_result",
+  "narrow_repair_boundary": "Let the generated base validate the already-frozen v38 126-definition order through Campaign094, materialize that immutable list once, then expose a wrapper that appends Campaign095 and switches only the public complete-definition count and digest to v39. Numeric comparators remain the unchanged 124-order.",
+  "research_boundary": {
+    "campaign096_minute_source_rows_read": false,
+    "campaign096_candidate_values_computed_or_read": false,
+    "comparison_values_read": false,
+    "historical_daily_price_fields_read": [],
+    "historical_forward_returns_read": false,
+    "provider_request_issued": false,
+    "candidate49_ledgers_changed": false,
+    "development_trial_count_increment": 0,
+    "research_attempt_count_increment": 0,
+    "infrastructure_or_implementation_failure_count_increment": 1
+  },
+  "same_campaign_formula_or_result_rescue": false
+}

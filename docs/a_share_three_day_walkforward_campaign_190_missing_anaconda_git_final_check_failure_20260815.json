@@ -1,0 +1,25 @@
+{
+  "schema_version": 1,
+  "kind": "a_share_three_day_walkforward_campaign190_infrastructure_failure",
+  "status": "recorded_recovered_no_scientific_evidence_consumed",
+  "recorded_at": "2026-08-15T14:31:50+08:00",
+  "failure_id": "campaign190_infrastructure_008",
+  "operation": "Validate the Campaign190 final-state bindings and run git diff --check in one command.",
+  "observed_failure": "The final-state binding assertions passed, but the command then exited 127 because /Volumes/DIsk/Coding/anaconda3/bin/git does not exist; git diff --check did not run.",
+  "failure_class": "missing_assumed_anaconda_git_exit_127",
+  "repair": {
+    "scope": "Preserve the first validation and final-state records, append this failure to the research ledger, synchronize accounting, and rerun validation with /usr/bin/git before publishing v2 records.",
+    "scientific_semantics_changed": false
+  },
+  "recovery": {
+    "final_state_binding_assertions_passed_before_failure": true,
+    "git_diff_check_completed": false,
+    "resolved_git_path": "/usr/bin/git"
+  },
+  "research_boundary": {
+    "scientific_attempt": false,
+    "source_factor_comparator_security_price_or_return_value_read": false,
+    "stress_2024_2025_opened": false,
+    "candidate49_ledgers_changed": false
+  }
+}

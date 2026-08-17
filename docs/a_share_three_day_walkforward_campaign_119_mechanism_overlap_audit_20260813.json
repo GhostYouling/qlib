@@ -1,0 +1,190 @@
+{
+  "schema_version": 1,
+  "kind": "a_share_three_day_walkforward_campaign119_mechanism_overlap_audit",
+  "status": "one_genuinely_distinct_joint_range_boundary_direction_state_distribution_and_exact_formula_frozen_before_values",
+  "recorded_at": "2026-08-13T22:51:00+08:00",
+  "purpose": "Challenge the selected Campaign119 auction-boundary state mechanism against the complete 144-definition frontier and freeze exactly one formula, state alphabet, direction, source projection, pair support and missing semantics before any Campaign119 source or candidate value is read.",
+  "authoritative_inputs": {
+    "concept_scouting": {
+      "path": "docs/a_share_three_day_walkforward_campaign_119_concept_scouting_20260813.json",
+      "sha256": "4ac18775e6d388bae1d3f99383862ec90f1f3a7f55ca60140358505cf333a4e5"
+    },
+    "campaign118_terminal_state": {
+      "path": "docs/a_share_three_day_iteration_status_20260813_campaign118_terminal.json",
+      "sha256": "1e49c58e8c7a4db55b1c1a4fbdda303550d01417a084d2666f0c79dd4ed85ffc"
+    },
+    "historical_walkforward_policy": {
+      "path": "docs/a_share_three_day_historical_walkforward_research_policy_20260727.json",
+      "sha256": "38426d6161b9bfed323c58caba18feca668b8c9d53e294951a8ba90c01a798bb"
+    },
+    "numeric_policy_v107": {
+      "path": "docs/a_share_three_day_walkforward_future_numeric_comparison_eligibility_policy_v107_20260813.json",
+      "sha256": "9fdf7df6ccf9fab631a7b56f0e4769b8d684f93a3c3cc0455e504cf2299b473a"
+    },
+    "complete_definition_count": 144,
+    "complete_definition_order_sha256": "077e6c79356fe70193df4d424a004de5734ea395ef06df52e11e3804915d56f7",
+    "numeric_comparator_count": 136,
+    "numeric_comparator_order_sha256": "bb1b850f4277919eb1866e9bfb014577efca6d0f81b184a31b3c202f50eb0282"
+  },
+  "frozen_candidate": {
+    "name": "intraday_range_boundary_direction_state_entropy_238p",
+    "direction": "higher",
+    "information_domain": "within_half_joint_lower_upper_auction_boundary_direction_state_diversity",
+    "economic_hypothesis": "A broader distribution of joint lower/upper intraday auction-boundary direction states may represent adaptive two-sided price discovery and replenishment rather than a repetitive one-sided or nested range regime, which may support resilience from the next open through the third close.",
+    "source_projection": [
+      "datetime",
+      "symbol",
+      "provider",
+      "high",
+      "low"
+    ],
+    "forbidden_source_fields": [
+      "open",
+      "close",
+      "volume",
+      "amount",
+      "daily_price",
+      "forward_return"
+    ],
+    "grid": {
+      "selected_rows": 240,
+      "selected_minutes": "09:31-11:30 and 13:01-15:00",
+      "morning_rows": 120,
+      "afternoon_rows": 120,
+      "morning_adjacent_pairs": 119,
+      "afternoon_adjacent_pairs": 119,
+      "total_adjacent_pairs": 238,
+      "standalone_09_30_loaded_for_formula": false,
+      "lunch_transition_pair_included": false,
+      "overnight_cross_day_and_cross_stock_pairs": 0
+    },
+    "exact_formula": {
+      "source_validity": "Require exactly 240 finite positive raw high values and 240 finite positive raw low values with high greater than or equal to low at every selected minute. A zero-width high-equals-low bar is valid.",
+      "pair_rule": "Within morning and afternoon separately, for each adjacent pair t-1,t compute the ordered state (sign(low_t-low_(t-1)), sign(high_t-high_(t-1))). Never construct the 11:30-to-13:01 lunch pair.",
+      "comparison_rule": "Use exact floating-point comparisons with zero tolerance: negative maps to -1, exact equality maps to 0, and positive maps to +1. Do not round, scale, normalize, threshold or apply an epsilon.",
+      "ordered_state_alphabet": [
+        "(-1,-1)",
+        "(-1,0)",
+        "(-1,+1)",
+        "(0,-1)",
+        "(0,0)",
+        "(0,+1)",
+        "(+1,-1)",
+        "(+1,0)",
+        "(+1,+1)"
+      ],
+      "probabilities": "Pool the 119 morning and 119 afternoon states. For each of the nine fixed states k, define p_k=count_k/238, retaining zero-count states.",
+      "score": "-sum over p_k>0 of p_k*ln(p_k), divided by ln(9).",
+      "valid_range_inclusive": [
+        0.0,
+        1.0
+      ],
+      "support": "Require exactly 238 recognized states, nine nonnegative integer counts summing to 238, a finite score and an in-range score; otherwise missing. Exact boundary ties remain valid states. Range magnitudes are discarded after state encoding."
+    },
+    "search_space": {
+      "candidate_count": 1,
+      "direction_count": 1,
+      "fields": [
+        "high",
+        "low"
+      ],
+      "state_alphabets": [
+        "nine_exact_joint_low_high_direction_states"
+      ],
+      "pair_supports": [
+        "119_morning_plus_119_afternoon_adjacent_pairs"
+      ],
+      "comparison_tolerances": [
+        0.0
+      ],
+      "operators": [
+        "normalized_Shannon_entropy"
+      ],
+      "windows": [
+        "one_fixed_240_bar_two_half_grid"
+      ],
+      "thresholds": [],
+      "filters": [],
+      "subsets": [],
+      "models": [],
+      "alternate_field_direction_alphabet_pair_support_tolerance_operator_window_threshold_filter_subset_fit_model_transition_or_combination_search": false
+    }
+  },
+  "overlap_challenges": [
+    {
+      "family": "range_boundary_translation_and_coupling_summaries",
+      "definitions": [
+        "intraday_range_boundary_translation_coherence_238p",
+        "intraday_midrange_width_change_coupling_238p",
+        "intraday_adjacent_range_overlap_continuity_238p"
+      ],
+      "distinction": "Those definitions retain cardinal boundary changes, correlations, signs of derived midrange/width changes, or overlap magnitudes. Campaign119 discards every change magnitude after exact joint low/high direction encoding and retains the full nine-state marginal distribution. Equal correlation, coupling or average overlap can coexist with different state counts."
+    },
+    {
+      "family": "range_magnitude_order_and_reversal_complexity",
+      "definitions": [
+        "intraday_range_weak_order_entropy_236t",
+        "intraday_range_reversal_divergence_236p"
+      ],
+      "distinction": "These definitions encode local weak orders or reversals of scalar range magnitudes high-low. Campaign119 jointly encodes the two auction boundaries themselves. Translating both boundaries can change Campaign119 while leaving every range magnitude unchanged."
+    },
+    {
+      "family": "range_clock_moments_and_close_location",
+      "definitions": [
+        "intraday_range_clock_dispersion_240m",
+        "intraday_range_center_of_mass_240m",
+        "intraday_close_location_value_240m"
+      ],
+      "distinction": "Clock moments weight absolute range magnitudes and close location requires close. Campaign119 has no clock weight, magnitude weight or close field and is invariant to any positive rescaling that preserves exact boundary direction states."
+    },
+    {
+      "family": "single_boundary_or_price_return_direction_patterns",
+      "definitions": [
+        "intraday_range_path_efficiency_238p",
+        "intraday_range_directional_persistence_238p",
+        "intraday_return_sign_entropy_238m"
+      ],
+      "distinction": "Campaign119 represents the joint motion of lower and upper auction boundaries. A common close or scalar range path cannot identify whether translation, widening, narrowing or mixed boundary motion generated it. Campaign119 reads no close or return."
+    },
+    {
+      "family": "full_library_models_and_exposed_terminal_combinations",
+      "definitions": [
+        "full_numeric_library_bounded_simplex_ridge_130f",
+        "full_numeric_library_directional_rank_improvement_breadth_130f",
+        "full_numeric_library_directional_lower_quartile_consensus_129f"
+      ],
+      "distinction": "Campaign119 is one raw high/low state-distribution definition frozen without component values, return-fitted weights, subsets or rescue logic; it is not a model or ensemble of exposed terminal scores."
+    }
+  ],
+  "independence_interventions": [
+    "Translate each bar's high and low together by a time-varying positive amount while retaining high greater than or equal to low: scalar range magnitudes can stay unchanged while Campaign119 joint boundary states change.",
+    "Change boundary-change magnitudes without changing their exact signs: Campaign119 is unchanged while cardinal translation, overlap and coupling summaries may change.",
+    "Change every close, amount and volume value while preserving high and low: Campaign119 is unchanged while return, close-location and price-activity factors may change.",
+    "Permute the 238 encoded states within their respective halves while preserving the nine pooled counts: Campaign119 is unchanged while transition, conditional-entropy and local-run candidates would change; those alternatives are outside the frozen search space.",
+    "Apply one common strictly positive multiplicative scale to all high and low values: Campaign119 is unchanged while cardinal range magnitude summaries generally change."
+  ],
+  "decision": {
+    "genuinely_new_mechanism": true,
+    "semantic_duplicate_of_any_complete_definition": false,
+    "terminal_factor_rescue_or_recombination": false,
+    "exact_formula_direction_state_alphabet_pair_support_and_tie_rule_frozen": true,
+    "candidate_values_may_be_read_now": false,
+    "next_stage": "Freeze the full ordered coverage-capacity-uniqueness-development protocol and bind the pure implementation before opening source values."
+  },
+  "research_boundary": {
+    "campaign119_source_partition_values_read": false,
+    "campaign119_candidate_values_computed_or_read": false,
+    "campaign119_comparator_values_read": false,
+    "historical_daily_price_or_forward_return_values_read": false,
+    "stress_2024_2025_opened": false,
+    "provider_request_issued": false,
+    "credential_value_read_or_printed": false,
+    "candidate49_same_day_retry_performed": false,
+    "candidate49_failed_response_rerequested": false,
+    "candidate49_historical_backfill_performed": false,
+    "candidate49_ledgers_changed": false,
+    "second_prospective_candidate_created": false,
+    "current_scoring_selection_sizing_positions_or_orders_performed": false,
+    "investment_advice": false
+  }
+}

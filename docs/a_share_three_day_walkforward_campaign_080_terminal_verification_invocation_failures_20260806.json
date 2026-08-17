@@ -1,0 +1,62 @@
+{
+  "schema_version": 1,
+  "kind": "a_share_three_day_walkforward_campaign080_terminal_verification_invocation_failures",
+  "status": "three_postterminal_infrastructure_invocations_recorded_then_current_suite_passed_without_research_recomputation",
+  "recorded_at": "2026-08-06T16:39:00+08:00",
+  "failed_invocations": [
+    {
+      "ordinal_within_record": 1,
+      "stage": "postterminal_current_suite_nonexistent_development_test_path",
+      "result": {
+        "passed": 0,
+        "failed": 0,
+        "tests_ran": false,
+        "exit_status_nonzero": true
+      },
+      "failure_reason": "The suite command named test_a_share_three_day_walkforward_campaign080.py, but the frozen development test file is test_a_share_three_day_walkforward_campaign080_development.py. Pytest stopped with file not found before running tests.",
+      "research_attempt_count_increment": 1
+    },
+    {
+      "ordinal_within_record": 2,
+      "stage": "postterminal_current_suite_nonexistent_deselect_function_names",
+      "result": {
+        "passed": 22,
+        "failed": 4,
+        "observed_deselections": 0,
+        "exit_status_nonzero": true
+      },
+      "failure_reason": "The command used four function names that do not exist in the frozen files, so the immutable pre-audit, predevelopment, v1-live-binding, and v2-live-binding assertions ran after their stages had advanced.",
+      "research_attempt_count_increment": 1
+    },
+    {
+      "ordinal_within_record": 3,
+      "stage": "postterminal_current_suite_collection_root_prefix_mismatch",
+      "result": {
+        "passed": 22,
+        "failed": 4,
+        "observed_deselections": 0,
+        "exit_status_nonzero": true
+      },
+      "failure_reason": "The corrected function names were still prefixed with tests/data_collector_tests, while the configured collection root exposes node IDs beginning data_collector_tests. The same four immutable or stale lifecycle assertions therefore remained selected.",
+      "research_attempt_count_increment": 1
+    }
+  ],
+  "corrected_current_suite": {
+    "passed": 22,
+    "failed": 0,
+    "deselected_immutable_or_stale_lifecycle_nodes": 4,
+    "correction": "Use the existing development filename, the exact four frozen test function names, and collected node IDs beginning data_collector_tests. No source or historical test file changed."
+  },
+  "terminal_v3_test": {
+    "path": "tests/data_collector_tests/test_a_share_three_day_walkforward_campaign080_terminal_v3.py",
+    "sha256": "3f3fb34f8103373f08407d1668ca09c7a388540d0127380bf9d058e07147a048"
+  },
+  "research_boundary": {
+    "candidate_source_or_comparison_values_recomputed": false,
+    "historical_daily_price_or_return_values_recomputed": false,
+    "stress_2024_2025_opened": false,
+    "provider_request_issued": false,
+    "candidate49_ledgers_changed": false,
+    "research_result_changed": false
+  }
+}

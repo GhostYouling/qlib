@@ -1,0 +1,43 @@
+{
+  "schema_version": 1,
+  "kind": "a_share_three_day_walkforward_campaign109_snapshot_verifier_implementation_freeze",
+  "status": "frozen_before_partition_values_coverage_or_comparator_values",
+  "recorded_at": "2026-08-07T22:17:29Z",
+  "protocol": {
+    "path": "docs/a_share_three_day_walkforward_campaign_109_snapshot_verifier_protocol_20260808.json",
+    "sha256": "cbc4962ad833d1d099d98b7687290de3521037f60cdc568d19978d0424fb81e2"
+  },
+  "verifier": {
+    "path": "scripts/a_share_three_day_walkforward_campaign109_snapshot_verifier.py",
+    "sha256": "05fe9efe6b5cb1a802224b8ddf6aef319d519d2eb6febd295a279451cf935084"
+  },
+  "synthetic_test": {
+    "path": "tests/data_collector_tests/test_a_share_three_day_walkforward_campaign109_snapshot_verifier.py",
+    "sha256": "33da189a2906b94b15ecbe6d830747ca160a2e6798ee27f345c196544b22f30e",
+    "pre_freeze_result": "5 passed"
+  },
+  "candidate_snapshot": {
+    "path": "/Volumes/DIsk/qlib-a-share-tushare-1m/derived/a_share/rich/tushare/minute_walkforward_campaign109_feature_library/tushare_stk_mins_1m_2019_2025_ea0cbb8f_walkforward_campaign109_feature_library_v1/snapshot_manifest.json",
+    "sha256": "b212eac0921bbca2c3a84c6eceb7f6741939c52ccb96a21e3897d1533c8b6aba",
+    "dataset_sha256": "f222c80e80acb9872cc7e29a0fc89ab37e51bc1ee02f40f19f683c3757fcdb90",
+    "partitions": 33015,
+    "rows": 7724498,
+    "eligible_rows": 7694849
+  },
+  "scope": {
+    "verify_only": true,
+    "build_entry_point_exposed": false,
+    "snapshot_or_manifest_write_path_exposed": false,
+    "corrected_manifest_expectation_count": 3,
+    "all_partition_and_aggregate_verification_logic_reused": true
+  },
+  "research_boundary": {
+    "partition_values_read_before_implementation_freeze": false,
+    "coverage_or_comparator_values_read_before_implementation_freeze": false,
+    "historical_daily_price_or_forward_return_values_read_before_implementation_freeze": false,
+    "snapshot_modified_after_publication": false,
+    "provider_request_issued": false,
+    "candidate49_ledgers_changed": false
+  },
+  "next_action": "Validate this freeze and the five synthetic tests, then run exactly one verify-only pass over the immutable published snapshot."
+}

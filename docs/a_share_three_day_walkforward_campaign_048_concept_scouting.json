@@ -1,0 +1,97 @@
+{
+  "version": 1,
+  "kind": "a_share_three_day_walkforward_campaign048_concept_scouting",
+  "status": "completed_before_campaign048_candidate_comparison_daily_price_or_return_values",
+  "recorded_at": "2026-08-01T03:42:00Z",
+  "purpose": "Select one genuinely new historical-only minute mechanism after Campaign047 without using any candidate, comparison, price, or return value.",
+  "authoritative_inputs": {
+    "campaign047_verified_state": {
+      "path": "docs/a_share_three_day_iteration_status_20260801_campaign047_verified.json",
+      "sha256": "74fceafcd407fa8972e68231be51c73757278ea770bf0f543ee9faa0e8c254ca"
+    },
+    "historical_walkforward_policy": {
+      "path": "docs/a_share_three_day_historical_walkforward_research_policy_20260727.json",
+      "sha256": "38426d6161b9bfed323c58caba18feca668b8c9d53e294951a8ba90c01a798bb"
+    },
+    "campaign047_terminal_record": {
+      "path": "docs/a_share_three_day_walkforward_campaign_047_research_record.json",
+      "sha256": "a92d65886e943c4ef043bb0baeb01e08e9cc02253bd97cbd776dd66195f4feb9"
+    }
+  },
+  "candidate_design_catalog": [
+    {
+      "design": "two_sided_wick_absorption_balance",
+      "decision": "selected",
+      "reason": "It measures whether completed one-minute bars reject both upper and lower extremes in balance. No frozen factor pools only upper and lower wick distances and scores their two-sided balance."
+    },
+    {
+      "design": "lower_wick_share_or_upper_wick_share",
+      "decision": "rejected_before_values",
+      "reason": "Choosing one side would create a direction search and reopen terminal close-location and body-direction pressure families."
+    },
+    {
+      "design": "total_wick_share",
+      "decision": "rejected_before_values",
+      "reason": "Total wick share is the algebraic complement of terminal intrabar body-range efficiency and is not a new mechanism."
+    },
+    {
+      "design": "wick_serial_persistence_entropy_or_subwindow_variants",
+      "decision": "rejected_before_values",
+      "reason": "Those variants create a family search around terminal range entropy, reversal, profile, and persistence definitions."
+    },
+    {
+      "design": "range_frontier_overlap_or_revisit_variants",
+      "decision": "rejected_before_values",
+      "reason": "Record-frontier balance, adjacent overlap, and global revisit are already terminal mechanisms and use different range geometry."
+    },
+    {
+      "design": "terminal_factor_combination_filter_threshold_or_model",
+      "decision": "rejected_before_values",
+      "reason": "Campaign048 contains one raw OHLC statistic and no historical terminal value, fitted weight, filter, threshold, regime, subset, combination, or model."
+    }
+  ],
+  "selected_candidate": {
+    "name": "intraday_two_sided_wick_absorption_balance_240m",
+    "direction": "higher",
+    "economic_hypothesis": "Balanced rejection of both intraminute extremes is consistent with continuous two-sided liquidity absorption rather than one-sided pressure, potentially leaving a more resilient completed-session state for the next-open-to-third-close horizon.",
+    "formula": "Across exactly 240 bars at 09:31-11:30 and 13:01-15:00, define lower wick l_i=log(min(open_i,close_i)/low_i) and upper wick u_i=log(high_i/max(open_i,close_i)). Pool L=sum(l_i) and U=sum(u_i) and return 2*min(L,U)/(L+U).",
+    "source_projection": [
+      "datetime",
+      "symbol",
+      "provider",
+      "open",
+      "high",
+      "low",
+      "close"
+    ],
+    "selected_grid": [
+      "09:31-11:30",
+      "13:01-15:00"
+    ],
+    "selected_bar_count": 240,
+    "include_0930": false,
+    "include_lunch_transition": false,
+    "support_rule": "All 240 bars must be finite, positive, and exactly ordered low<=min(open,close)<=max(open,close)<=high; require at least 120 bars with high>low.",
+    "zero_semantics": "Retain exact-zero upper and lower wicks; require finite L+U>0.",
+    "valid_range": [
+      0.0,
+      1.0
+    ],
+    "endpoint_canonicalization_tolerance": 1e-12,
+    "transform_threshold_filter_combination_or_model": "none"
+  },
+  "research_boundary": {
+    "external_minute_partitions_read": false,
+    "candidate_or_comparison_values_read": false,
+    "historical_daily_price_or_forward_return_read": false,
+    "provider_request_issued": false,
+    "candidate49_ledgers_changed": false,
+    "candidate50_activation_created": false,
+    "current_scoring_selection_sizing_or_orders_performed": false
+  },
+  "decision": {
+    "selected_candidate_count": 1,
+    "predictive_value_established": false,
+    "next_action": "Complete a separate pre-value overlap audit against all 70 inherited comparisons plus terminal Campaign047, then freeze the exact 71-comparison no-return protocol."
+  }
+}

@@ -1,0 +1,86 @@
+{
+  "version": 1,
+  "kind": "a_share_three_day_walkforward_campaign054_development_implementation_freeze",
+  "status": "frozen_before_campaign054_2019_2023_daily_price_or_return_read",
+  "frozen_at": "2026-08-03T15:43:00Z",
+  "purpose": "Bind the only Campaign054 development trial, inherited execution engine, terminal no-return evidence, and all pre-return test attempts before opening 2019-2023 daily prices or labels.",
+  "preregistration": {
+    "path": "docs/a_share_three_day_walkforward_campaign_054_preregistration.json",
+    "sha256": "4841579f32e889de783a9a665df346c45b6c7955b32d5315d443efc5de174330"
+  },
+  "development_runner": {
+    "path": "scripts/a_share_three_day_walkforward_campaign054.py",
+    "sha256": "1a8ac0d9e562ef5e749b7570e197b0ded22142f26a592c87517d7e6140da836c"
+  },
+  "development_tests": {
+    "path": "tests/data_collector_tests/test_a_share_three_day_walkforward_campaign054.py",
+    "sha256": "ff75b3e57633854e4f3b2b0af988e5e472dd74bbc5ccd19b4670cdec883636f0",
+    "current_cases": 4
+  },
+  "terminal_no_return_tests": {
+    "path": "tests/data_collector_tests/test_a_share_three_day_walkforward_campaign054_no_return_terminal.py",
+    "sha256": "ebcb36c3dc1935a3856c9ebbc6c16bd85be0ddd93559ca3c8d425a49d3231126",
+    "current_cases": 3
+  },
+  "pre_return_test_attempts": [
+    {
+      "attempt": 1,
+      "result": "20_passed_2_failed",
+      "failures": [
+        "The current development test called status with a Path although the inherited engine requires an argparse Namespace.",
+        "A historically frozen pre-comparison status test expected audit_count=0 after the completed audit had correctly advanced it to 1."
+      ],
+      "classification": "test_harness_and_expected_state_progression_only",
+      "resolution": "Use the public CLI for current status; preserve the immutable pre-comparison test file and replace it in current suites with a new terminal audit test.",
+      "historical_daily_price_or_forward_return_values_read": false
+    },
+    {
+      "attempt": 2,
+      "result": "20_passed_1_failed",
+      "failure": "The manually constructed argparse Namespace still omitted inherited output_root.",
+      "classification": "test_harness_only",
+      "resolution": "Use the public CLI, which supplies all frozen defaults.",
+      "historical_daily_price_or_forward_return_values_read": false
+    },
+    {
+      "attempt": 3,
+      "result": "21_passed_0_failed",
+      "historical_daily_price_or_forward_return_values_read": false
+    }
+  ],
+  "frozen_trial": {
+    "trial_id": "wf054_intraday_volume_weighted_transaction_price_bowley_skew_240m_single_higher",
+    "feature_set": [
+      "intraday_volume_weighted_transaction_price_bowley_skew_240m"
+    ],
+    "weights": [
+      1.0
+    ],
+    "direction": "higher",
+    "trial_count": 1,
+    "alternate_weight_threshold_filter_year_subset_model_or_combination_search": false
+  },
+  "frozen_walkforward": {
+    "development_years": "2019-2023",
+    "folds": [
+      "train 2019-2020 validate 2021",
+      "train 2019-2021 validate 2022",
+      "train 2019-2022 validate 2023"
+    ],
+    "purge_signal_sessions_each_boundary": 3,
+    "t_t_plus_1_t_plus_3_partition_containment_required": true,
+    "signal": "close t",
+    "entry": "open t+1",
+    "exit": "close t+3",
+    "topk": 3,
+    "stress_2024_2025_open_before_frozen_nonzero_survivor_record": false
+  },
+  "research_boundary": {
+    "historical_daily_price_fields_read_before_freeze": [],
+    "historical_forward_return_fields_read_before_freeze": false,
+    "candidate49_historical_return_read": false,
+    "candidate49_ledgers_changed": false,
+    "provider_request_issued": false,
+    "current_scoring_selection_sizing_or_orders_performed": false
+  }
+}

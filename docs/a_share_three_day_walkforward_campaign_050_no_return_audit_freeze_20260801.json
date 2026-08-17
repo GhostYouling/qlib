@@ -1,0 +1,102 @@
+{
+  "version": 1,
+  "kind": "a_share_three_day_walkforward_campaign050_no_return_audit_freeze",
+  "status": "one_factor_admitted_before_any_campaign050_historical_return_read",
+  "frozen_at": "2026-08-01T10:47:24Z",
+  "purpose": "Bind the sole completed Campaign050 no-return audit, its exact infrastructure-failure history, repaired entrypoint, and one-factor admission before opening 2019-2023 daily prices or returns.",
+  "bindings": {
+    "protocol": {
+      "path": "docs/a_share_three_day_walkforward_campaign_050_no_return_preregistration.json",
+      "sha256": "32c3e889e736e050fb0326f2bceb6ddd820ae7a0b9c5f6bac09c90a5afebb10e"
+    },
+    "snapshot_publication_binding": {
+      "path": "docs/a_share_three_day_walkforward_campaign_050_snapshot_publication_binding_20260801.json",
+      "sha256": "f6e1ea181f52a0137ba0f2d03718e9f393cc98a2ecb322dd7c4d89c5f4d651d6"
+    },
+    "audit_entrypoint_freeze": {
+      "path": "docs/a_share_three_day_walkforward_campaign_050_no_return_audit_entrypoint_freeze_20260801.json",
+      "sha256": "ba77a6ed20cd6bfdf21ab708e3763b6e42922357a2d3d3c506e49a45f44851dd"
+    },
+    "infrastructure_failure_and_repair": {
+      "path": "docs/a_share_three_day_walkforward_campaign_050_no_return_audit_infrastructure_failure_repair_20260801.json",
+      "sha256": "97b21132e090aacaf5821833d35a50a4813dc0e67b5061359a978a936b94ea9f"
+    },
+    "repair_implementation_freeze": {
+      "path": "docs/a_share_three_day_walkforward_campaign_050_no_return_audit_repair_implementation_freeze_20260801.json",
+      "sha256": "06a301cf51c0b939a62251016c60466be6f129834ec0f2306dafdbaddb2f8f96"
+    },
+    "successful_audit_entrypoint": {
+      "path": "scripts/a_share_three_day_walkforward_campaign050_features_v8.py",
+      "sha256": "79bba06d0d621d2a415271b8096548706ecd871cc380f233c8ea2f3f1596a5d9"
+    },
+    "completed_audit": {
+      "path": "data/experiments/short_horizon/historical_walkforward/campaign_050/no_return/20260801T104432Z_campaign050_no_return_audit.json",
+      "sha256": "a94baef7df73a98e35e52907bfa07fe43f8e471a4ebcb8738f7d75c88292039f"
+    }
+  },
+  "admission": {
+    "factor": "intraday_half_session_extreme_shock_reversal_completion_2h",
+    "direction": "higher",
+    "admissible_factor_count": 1,
+    "coverage_gate_passed_before_comparison_values": true,
+    "median_coverage": 0.9935888543513072,
+    "p05_coverage": 0.9815616797900263,
+    "p05_eligible_names": 138.0,
+    "potential_non_overlapping_three_session_cohorts": 540,
+    "observed_cohort_years": [
+      2019,
+      2020,
+      2021,
+      2022,
+      2023,
+      2024,
+      2025
+    ],
+    "comparison_factor_count": 73,
+    "comparison_order_sha256": "eae7db172c0e54a47f5ea41570cb585dceb6f70cb25ee0088064908aed118a3c",
+    "comparison_order_matches_preregistration": true,
+    "unique_comparison_names": true,
+    "all_required_comparisons_passed": true,
+    "maximum_observed_absolute_median_daily_rank_correlation": 0.14951072905283694,
+    "nearest_comparison_factor": "intraday_global_price_range_revisit_240m",
+    "maximum_allowed_absolute_median_daily_rank_correlation": 0.8
+  },
+  "file_verification": {
+    "candidate_partitions": 33015,
+    "candidate_rows": 7724498,
+    "candidate_all_partition_byte_and_frame_hashes_valid": true,
+    "campaign044_through_campaign049_each_verified_partitions": 33015,
+    "campaign044_through_campaign049_each_verified_rows": 7724498,
+    "candidate49_partitions_verified": 33015,
+    "candidate49_rows_verified": 7724498
+  },
+  "finite_development_catalog": [
+    {
+      "trial_id": "wf050_intraday_half_session_extreme_shock_reversal_completion_2h_single_higher",
+      "kind": "single_factor",
+      "feature_set": [
+        "intraday_half_session_extreme_shock_reversal_completion_2h"
+      ],
+      "weights": [
+        1.0
+      ],
+      "complexity": 1,
+      "direction": "higher"
+    }
+  ],
+  "research_boundary": {
+    "historical_daily_price_fields_read": [],
+    "historical_forward_return_fields_read": false,
+    "training_or_model_fitting_performed": false,
+    "provider_request_issued": false,
+    "candidate49_historical_return_read": false,
+    "candidate49_ledgers_changed": false,
+    "candidate50_prospective_activation_created": false,
+    "current_scoring_selection_sizing_or_orders_performed": false
+  },
+  "decision": {
+    "development_preregistration_allowed": true,
+    "development_return_read_allowed_before_separate_preregistration_and_runner_freeze": false,
+    "stress_2024_2025_open": false
+  }
+}

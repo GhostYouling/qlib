@@ -1,0 +1,49 @@
+{
+  "version": 1,
+  "kind": "a_share_three_day_walkforward_campaign050_post_audit_test_transition",
+  "status": "pre_audit_test_fingerprint_preserved_post_audit_count_assertion_current",
+  "recorded_at": "2026-08-01T11:04:38Z",
+  "purpose": "Preserve the exact pre-audit snapshot-bound test fingerprint while updating only its append-only audit-count assertion after the sole completed no-return audit.",
+  "bindings": {
+    "audit_entrypoint_freeze_with_pre_audit_test_hash": {
+      "path": "docs/a_share_three_day_walkforward_campaign_050_no_return_audit_entrypoint_freeze_20260801.json",
+      "sha256": "ba77a6ed20cd6bfdf21ab708e3763b6e42922357a2d3d3c506e49a45f44851dd"
+    },
+    "completed_no_return_audit": {
+      "path": "data/experiments/short_horizon/historical_walkforward/campaign_050/no_return/20260801T104432Z_campaign050_no_return_audit.json",
+      "sha256": "a94baef7df73a98e35e52907bfa07fe43f8e471a4ebcb8738f7d75c88292039f"
+    },
+    "no_return_audit_freeze": {
+      "path": "docs/a_share_three_day_walkforward_campaign_050_no_return_audit_freeze_20260801.json",
+      "sha256": "b0eb9b4c0bfdc001a485c5140f390309fe35fe0cf6f4535a0ab6dd5f4de5ff35"
+    },
+    "current_snapshot_binding_test": {
+      "path": "tests/data_collector_tests/test_a_share_three_day_walkforward_campaign050_snapshot_binding.py",
+      "sha256": "276a447164eb9d66dfcae727830a324a3cb26f4908c1f8c293caa6ba6721da68"
+    }
+  },
+  "historical_test_binding": {
+    "path": "tests/data_collector_tests/test_a_share_three_day_walkforward_campaign050_snapshot_binding.py",
+    "expected_pre_audit_sha256": "d5037c04abbd09a6e6e79243282d86155758b35338f879c3c3db28b7df74e9b7",
+    "current_post_audit_sha256": "276a447164eb9d66dfcae727830a324a3cb26f4908c1f8c293caa6ba6721da68",
+    "audit_entrypoint_freeze_rewritten": false
+  },
+  "observed_transition": {
+    "combined_pre_transition_result": {
+      "passed": 19,
+      "failed": 1
+    },
+    "sole_failure": "The pre-audit test expected audit_count=0 after the sole audit had correctly published one immutable result.",
+    "current_test_result": {
+      "passed": 1,
+      "failed": 0
+    }
+  },
+  "semantic_boundary": {
+    "test_change": "change only the expected append-only no-return audit count from zero to one",
+    "formula_direction_snapshot_comparison_order_threshold_or_gate_changed": false,
+    "additional_historical_daily_price_or_forward_return_read": false,
+    "candidate49_ledgers_changed": false,
+    "candidate50_prospective_activation_created": false
+  }
+}

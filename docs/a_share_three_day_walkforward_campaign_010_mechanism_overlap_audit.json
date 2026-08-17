@@ -1,0 +1,179 @@
+{
+  "version": 1,
+  "kind": "a_share_three_day_walkforward_campaign010_mechanism_overlap_audit",
+  "status": "one_exact_mechanism_frozen_before_campaign010_candidate_or_comparison_values_or_returns",
+  "recorded_at": "2026-07-28T14:45:44Z",
+  "purpose": "Resolve the one Campaign010 concept into one exact and finite no-value mechanism. This audit freezes formula, direction, timestamp grid, high-low ordering and zero-width semantics, rejects alternative definitions, and challenges the mechanism against all 33 prior terminal mechanisms before any external minute partition, candidate value, comparison value, daily price, or forward return is opened.",
+  "authoritative_bindings": {
+    "concept_scouting": {
+      "path": "docs/a_share_three_day_walkforward_campaign_010_concept_scouting.json",
+      "sha256": "c21f5487bbbfcf608557a004d76d8f7032f7488dff76e23c44c9756593b504e3"
+    },
+    "iteration_state": {
+      "path": "docs/a_share_three_day_iteration_status_20260728_campaign009.json",
+      "sha256": "ab9072891b5b903cd02cf05830213f8909287dccdb833a182843f7cb030ecf76"
+    },
+    "historical_walkforward_policy": {
+      "path": "docs/a_share_three_day_historical_walkforward_research_policy_20260727.json",
+      "sha256": "38426d6161b9bfed323c58caba18feca668b8c9d53e294951a8ba90c01a798bb"
+    },
+    "campaign009_research_record": {
+      "path": "docs/a_share_three_day_walkforward_campaign_009_research_record.json",
+      "sha256": "4590efb674e78a82eca080cf042db76e6f73ded22ec56cad8714da4cc8c08769",
+      "terminal": true,
+      "usable_factor_values": true
+    }
+  },
+  "source_schema_boundary": {
+    "provider": "tushare",
+    "frequency": "1m",
+    "accepted_source_grid_rows": 241,
+    "standalone_0930_row_preserved_but_excluded_from_formula": true,
+    "continuous_session_rows": "09:31-11:30 and 13:01-15:00",
+    "joint_clean_manifest": {
+      "path_below_data_root": "derived/a_share/rich/tushare/minute_sentiment_clean/tushare_stk_mins_1m_2019_2025_ea0cbb8f_sentiment_clean_v1/snapshot_manifest.json",
+      "sha256": "453c6719cb3c7da42fed8807b28a2bfe988700283e9625a6db97912534f368de",
+      "dataset_sha256": "0e4fe7c05536cdfcecc2936bc880726902f5560061188ffff82ef7ee6f346983",
+      "partitions": 33015,
+      "rows": 7724498
+    },
+    "allowed_transport_fields": [
+      "datetime",
+      "symbol",
+      "provider",
+      "high",
+      "low"
+    ],
+    "forbidden_source_fields": [
+      "open",
+      "close",
+      "volume",
+      "amount"
+    ],
+    "daily_price_or_return_substitution_allowed": false,
+    "provider_request_allowed": false
+  },
+  "comparison_catalog": {
+    "semantic_terminal_mechanism_count": 33,
+    "statistical_comparison_factor_count": 32,
+    "base_statistical_comparison_catalog_binding": {
+      "path": "docs/a_share_three_day_walkforward_campaign_009_no_return_preregistration.json",
+      "sha256": "7080dae932fa3b35869ea39de1b4e3759ff968629ee20f422e368eb2e0799e19",
+      "json_pointer": "/ordered_no_return_gates/uniqueness_after_coverage_only/comparison_factors",
+      "bound_factor_count": 31
+    },
+    "campaign009_statistical_comparison": {
+      "name": "intraday_intrabar_body_range_efficiency_240m",
+      "score_direction": "higher",
+      "snapshot_manifest": {
+        "path": "/Volumes/DIsk/qlib-a-share-tushare-1m/derived/a_share/rich/tushare/minute_walkforward_campaign009_feature_library/tushare_stk_mins_1m_2019_2025_ea0cbb8f_walkforward_campaign009_feature_library_v1/snapshot_manifest.json",
+        "sha256": "1857176ced53c5515688b4c4b8e0e6e1b5b8332212841e529608169f77496aa7",
+        "dataset_sha256": "14fac16f960b84be9ec89c01eea286267bed079c1c17600e94ae2156deac357d"
+      }
+    },
+    "semantic_only_terminal_mechanism": {
+      "name": "intraday_post_shock_share_volume_replenishment_236p",
+      "campaign": 8,
+      "reason_not_statistically_compared": "Its immutable snapshot contains zero finite factor values because the frozen coverage gate failed."
+    },
+    "maximum_allowed_absolute_median_daily_rank_correlation": 0.8,
+    "minimum_pairwise_names_per_session": 50,
+    "minimum_pairwise_sessions_per_comparison": 100,
+    "score_direction_normalization": "Multiply lower-is-better comparison values by minus one before each daily rank correlation; retain the candidate's frozen higher direction."
+  },
+  "candidate": {
+    "name": "intraday_adjacent_range_overlap_continuity_238p",
+    "direction": "higher",
+    "economic_hypothesis": "When adjacent one-minute high-low intervals share more of their combined log-price territory, locally explored prices persist into the next tradable minute rather than disappearing as fleeting excursions. Higher direction-neutral price-range continuity may indicate more resilient price acceptance from the next open through the third close.",
+    "formula": "sum(overlap_i) / sum(union_span_i) across 238 within-half adjacent high-low interval pairs",
+    "formula_steps": [
+      "Require the exact accepted 241-row source grid, preserve but exclude the standalone 09:30 row, and select exactly the 240 bars at 09:31-11:30 and 13:01-15:00.",
+      "Require every selected high and low to be finite and strictly positive with exact raw ordering low_i <= high_i. Do not round, clamp, sort, repair, or apply a tolerance.",
+      "Form exactly 119 adjacent pairs inside the morning half and 119 adjacent pairs inside the afternoon half. Never form the 11:30-to-13:01 lunch pair.",
+      "For each pair map both high-low intervals to log-price space. Compute overlap_i = max(0, min(log(high_i), log(high_j)) - max(log(low_i), log(low_j))) and union_span_i = max(log(high_i), log(high_j)) - min(log(low_i), log(low_j)).",
+      "A pair with zero union span contains two identical point intervals. It contributes zero to both sums and is inactive for the minimum-pair count. Do not add an epsilon or treat it as full overlap.",
+      "Require at least 120 pairs with strictly positive finite union span. This threshold is frozen before coverage observation and does not vary by stock, date, year, board, range size, or liquidity.",
+      "Require the summed union span to be finite and strictly positive and the summed overlap to be finite and nonnegative.",
+      "Return the unweighted ratio sum(overlap_i)/sum(union_span_i). Canonicalize only floating-point endpoints within 1e-12 of 0 or 1; do not otherwise clip, rank, smooth, impute, sign, range-weight beyond the frozen union denominator, threshold, residualize, or transform the value."
+    ],
+    "source_fields_used_by_formula": [
+      "datetime",
+      "symbol",
+      "provider",
+      "high",
+      "low"
+    ],
+    "timestamp_semantics": "Use only adjacent one-minute high-low intervals within each continuous trading half. Exclude the standalone 09:30 row, the lunch transition, overnight values, and all lead or lag beyond one immediately adjacent tradable minute.",
+    "zero_missing_denominator_semantics": "An identical zero-width pair contributes zero and is inactive. Fewer than 120 positive-union pairs, any invalid/nonpositive/nonfinite high or low, any low-above-high ordering violation, or a nonpositive/nonfinite aggregate union span makes the stock-day missing.",
+    "valid_range": {
+      "lower": 0.0,
+      "lower_inclusive": true,
+      "upper": 1.0,
+      "upper_inclusive": true
+    },
+    "selected_bar_count": 240,
+    "maximum_within_half_adjacent_pairs": 238,
+    "minimum_positive_union_pairs": 120,
+    "mechanism_distinction_before_values": [
+      "Campaign009 compares each bar's own open-close body with its own high-low range. This candidate forbids open and close and measures only persistence of high-low price territory across two consecutive bars.",
+      "Price-update share, signed path efficiency, diffusive variation ratio, return moments, and volatility timing use successive closes. This candidate reads no close and is invariant to the direction or magnitude of close-to-close returns conditional on the frozen high-low intervals.",
+      "Terminal close location privileges the final close and whole-day extrema. This candidate reads no close, does not privilege the terminal bar, and aggregates local interval intersections.",
+      "VWAP pressure, absorption, price impact, transaction-price, volume, and amount-profile mechanisms require activity fields. This candidate forbids open, close, volume, and amount.",
+      "Campaign008 models a lagged price-shock-to-volume response. This candidate has no activity field, shock, response, correlation, or one-sided-zero rule."
+    ],
+    "rejected_variants_before_values": [
+      "containment share, intersection-over-minimum-width, intersection-over-maximum-width, Jaccard mean, median pair ratio, count-above-threshold, regression, correlation, rank, winsorized, clipped, squared, signed, candle-direction, body, or wick alternatives",
+      "arithmetic-price lengths instead of log-price lengths, duration weighting, time weighting, volatility weighting, amount weighting, volume weighting, market weighting, or stock-specific normalization",
+      "including 09:30, the lunch transition, overnight gaps, morning-only, afternoon-only, late-only, nonadjacent lags, or another timestamp window",
+      "changing the 120 positive-union minimum, treating an ordering violation as repairable, adding epsilon to zero spans, filling values, filtering years or stocks, or combining with terminal factors",
+      "lower-is-better inversion or any post-value direction choice"
+    ]
+  },
+  "frozen_no_return_and_search_bounds": {
+    "coverage_basis": "finite candidate rows divided by quality-and-listing eligible buyable rows within 2019-2025",
+    "minimum_median_coverage": 0.95,
+    "minimum_p05_coverage": 0.9,
+    "minimum_p05_eligible_names": 50,
+    "minimum_non_overlapping_three_session_cohorts": 200,
+    "minimum_observed_calendar_years": 5,
+    "uniqueness_maximum_absolute_median_daily_rank_correlation": 0.8,
+    "uniqueness_minimum_pairwise_names_per_session": 50,
+    "uniqueness_minimum_pairwise_sessions_per_comparison": 100,
+    "finite_trial_catalog_if_admitted": [
+      {
+        "trial_id": "campaign010_single_adjacent_range_overlap_continuity",
+        "components": [
+          "intraday_adjacent_range_overlap_continuity_238p"
+        ],
+        "weights": [
+          1.0
+        ]
+      }
+    ],
+    "expected_trial_count_if_admitted": 1,
+    "pair_or_higher_order_trials": false,
+    "weight_threshold_filter_or_year_subset_search": false,
+    "old_terminal_factor_rescue_combinations": false
+  },
+  "research_boundary": {
+    "external_minute_partitions_read": false,
+    "external_daily_partitions_read": false,
+    "candidate_values_computed_or_read": false,
+    "comparison_values_read": false,
+    "historical_daily_prices_read": false,
+    "historical_forward_returns_read": false,
+    "prospective_candidate_created": false,
+    "candidate49_historical_return_read": false,
+    "candidate49_ledgers_changed": false,
+    "current_scoring_selection_sizing_or_order_performed": false,
+    "provider_request_issued": false,
+    "investment_advice": false
+  },
+  "decision": {
+    "mechanism_distinct_enough_for_no_return_materialization": true,
+    "candidate_may_advance_directly_to_return_read": false,
+    "required_next_step": "Implement and synthetically test only this exact formula, then freeze a hash-bound no-return protocol before external candidate or comparison values. Apply coverage and capacity first; read the 32 usable comparison snapshots only if those gates pass; read no daily price or forward return until the exact one-trial walk-forward preregistration is frozen.",
+    "candidate49_remains_only_prospective_candidate": true,
+    "candidate50_activation_allowed": false
+  }
+}

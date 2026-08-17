@@ -1,0 +1,210 @@
+{
+  "schema_version": 1,
+  "kind": "a_share_three_day_walkforward_campaign139_concept_scouting",
+  "status": "selected_one_finite_cross_source_surprise_candidate_before_source_rows_candidate_comparator_price_or_return_values",
+  "recorded_at": "2026-08-14T13:07:14+0800",
+  "purpose": "Select at most one genuinely new Campaign139 mechanism from already accepted historically dated local sources, after reviewing all 152 complete definitions and terminal histories, without reading a Campaign139 source row, candidate value, comparator value, daily price or forward return.",
+  "authoritative_inputs": {
+    "campaign138_terminal_state": {
+      "path": "docs/a_share_three_day_iteration_status_20260814_campaign138_prevalue_terminal_v2.json",
+      "sha256": "17989d6c5297cfd33a1379ad15caf68a2d8088f06a33ce8deaf44cbfcd85ded3",
+      "cumulative_historical_research_attempt_count": 1155,
+      "cumulative_return_reading_development_trial_count": 313
+    },
+    "numeric_policy_v174": {
+      "path": "docs/a_share_three_day_walkforward_future_numeric_comparison_eligibility_policy_v174_20260814.json",
+      "sha256": "a3e23a2f2744359973b18b22c370f8f6cb3ded22c5b7e3e00f32c9c31179e103",
+      "complete_definition_count_reviewed": 152,
+      "complete_definition_order_sha256": "60c465a3e2043efae6b92b8c5f3e007cd397a1cd0ec3094b4fa005665bbe5736",
+      "eligible_numeric_comparator_count_reserved_but_not_loaded": 141,
+      "eligible_numeric_comparator_order_sha256": "ec1aebcb939ad516c58037a36a4aaadd4ad8b2abbd3c884705895c58da85a2ee"
+    },
+    "historical_walkforward_policy": {
+      "path": "docs/a_share_three_day_historical_walkforward_research_policy_20260727.json",
+      "sha256": "38426d6161b9bfed323c58caba18feca668b8c9d53e294951a8ba90c01a798bb"
+    }
+  },
+  "accepted_source_metadata": {
+    "performance_forecast_snapshot": {
+      "path": "data/raw/a_share/fundamentals/performance_forecasts.parquet",
+      "sha256": "48bc11ea6749a590fcc260f6a5728e853f59f228f6cef7c5b0183f206895d734",
+      "manifest_path": "data/metadata/performance_forecasts_manifest.json",
+      "manifest_sha256": "d824bf8194b871fc21ce66cab80f1f9158814fff0e9a5d77a2cfbaec967e562c",
+      "schema_only_fields": [
+        "instrument",
+        "report_date",
+        "announcement_date",
+        "forecast_type",
+        "forecast_turnaround",
+        "forecast_profit_yoy",
+        "forecast_profit_yoy_width"
+      ],
+      "rows_declared_by_manifest": 42206,
+      "provider": "Eastmoney public datacenter",
+      "point_in_time_limit": "The file is a current public historical-event snapshot and may contain later revisions or omissions; it is not an exchange-grade immutable point-in-time archive."
+    },
+    "quarterly_quality_snapshot": {
+      "path": "data/raw/a_share/fundamentals/quarterly_quality.parquet",
+      "sha256": "3ac901a97928d2ed81ac72e3eaac9bdc148d36cf67b6abe70223699235ef059f",
+      "manifest_path": "data/metadata/quarterly_quality_manifest.json",
+      "manifest_sha256": "e3cf654babe37a82393c5530696bc1cc242b736cb88e1947b8444b638125ba8c",
+      "schema_only_fields": [
+        "instrument",
+        "report_date",
+        "announcement_date",
+        "roe",
+        "net_profit",
+        "revenue_yoy",
+        "profit_yoy"
+      ],
+      "rows_declared_by_manifest": 143776,
+      "provider": "Eastmoney public datacenter",
+      "point_in_time_limit": "The file retains the earliest visible notice per instrument and report period from a current public snapshot; later corrections may not reproduce the original disclosed value."
+    },
+    "metadata_inspection_only": true,
+    "parquet_rows_or_column_values_read": false,
+    "new_source_or_provider_request_required": false
+  },
+  "finite_prevalue_candidate_catalog": [
+    {
+      "catalog_id": "c139_01",
+      "name": "quarterly_realized_profit_growth_forecast_surprise_rank",
+      "definition": "For the same instrument and report_date, take the latest finite forecast_profit_yoy whose forecast announcement_date is strictly earlier than the realized quarterly announcement_date; compute profit_yoy minus forecast_profit_yoy at the realized announcement and rank the finite surprise cross-section with average ties.",
+      "direction": "higher",
+      "parameters": null,
+      "filters": "Exact same instrument/report_date; forecast announcement strictly before realized announcement; both percentage-point values finite; actual signal available only on the first accepted session strictly after the realized announcement; no forecast-type, board, year, regime or sign subset.",
+      "subset_or_combination": "One fixed cross-source expectation-versus-realization difference; no old factor score is averaged, gated or fitted.",
+      "model": null,
+      "prevalue_decision": "selected_for_complete_mechanism_audit_and_fingerprint_bound_no_return_protocol",
+      "reason": "The difference isolates information revealed when realized profit growth departs from the latest already-public management expectation. A common shift in both forecast and realized growth leaves it unchanged, distinguishing it from exposed forecast and realized-growth levels."
+    },
+    {
+      "catalog_id": "c139_02",
+      "name": "quarterly_absolute_forecast_accuracy",
+      "definition": "Negative absolute realized-minus-forecast growth error.",
+      "direction": "higher",
+      "parameters": null,
+      "filters": "Same potential join as c139_01.",
+      "subset_or_combination": null,
+      "model": null,
+      "prevalue_decision": "rejected_before_values_as_alternate_directional_loss_transform",
+      "reason": "Accuracy discards the economically preselected sign of the realization news and creates an alternate operator search against the selected signed surprise."
+    },
+    {
+      "catalog_id": "c139_03",
+      "name": "quarterly_forecast_width_scaled_surprise",
+      "definition": "Realized-minus-forecast growth divided by forecast_profit_yoy_width.",
+      "direction": "higher",
+      "parameters": "One denominator and a zero-width rule would be required.",
+      "filters": "Would require positive forecast width.",
+      "subset_or_combination": null,
+      "model": null,
+      "prevalue_decision": "rejected_before_values_as_precision_conditioned_rescue_and_unnecessary_denominator_search",
+      "reason": "Forecast precision is already terminal and width scaling would add support, zero-denominator and tail choices while combining that exposed branch with surprise."
+    },
+    {
+      "catalog_id": "c139_04",
+      "name": "quarterly_forecast_revision_before_realization",
+      "definition": "Difference between the last two forecasts for one report period.",
+      "direction": "higher",
+      "parameters": "Revision count and lag would be required.",
+      "filters": "Would require two prior forecasts.",
+      "subset_or_combination": null,
+      "model": null,
+      "prevalue_decision": "rejected_before_values_as_forecast_branch_reparameterization",
+      "reason": "This remains inside the terminal forecast-magnitude source family and would sweep a new lag/support rule after its exposed outcome."
+    },
+    {
+      "catalog_id": "c139_05",
+      "name": "quarterly_forecast_actual_sign_confirmation",
+      "definition": "Binary agreement between forecast and realized profit-growth signs.",
+      "direction": "higher",
+      "parameters": "A zero and tolerance rule would be required.",
+      "filters": null,
+      "subset_or_combination": "Forecast and realized sign states.",
+      "model": null,
+      "prevalue_decision": "rejected_before_values_as_thresholded_information_loss_and_confirmation_variant",
+      "reason": "Sign binning discards the percentage-point news magnitude and introduces a threshold family whose only purpose would be to refresh exposed forecast and growth mechanisms."
+    },
+    {
+      "catalog_id": "c139_06",
+      "name": "quarterly_forecast_type_or_turnaround_conditioned_surprise",
+      "definition": "Compute surprise only within selected forecast_type or forecast_turnaround states.",
+      "direction": "higher",
+      "parameters": "A type mapping or subset would be required.",
+      "filters": "Forecast-type or turnaround subset.",
+      "subset_or_combination": "Surprise gated by terminal forecast categories.",
+      "model": null,
+      "prevalue_decision": "rejected_before_values_as_post_exposure_type_subset_and_terminal_factor_confirmation",
+      "reason": "Forecast type and turnaround are already exposed; conditioning on them would search favorable subgroups and rescue the old event family."
+    }
+  ],
+  "selected_candidate": {
+    "name": "quarterly_realized_profit_growth_forecast_surprise_rank",
+    "direction": "higher",
+    "economic_hypothesis": "When the newly disclosed realized parent-profit year-on-year growth exceeds the issuer's latest earlier forecast midpoint for the same reporting period, the positive expectation error may be incorporated over the following three sessions.",
+    "forecast_projection": [
+      "instrument",
+      "report_date",
+      "announcement_date",
+      "forecast_profit_yoy"
+    ],
+    "realized_projection": [
+      "instrument",
+      "report_date",
+      "announcement_date",
+      "profit_yoy"
+    ],
+    "join_rule": "Match exact instrument and report_date. Retain only finite forecasts announced strictly before the realized announcement, then choose the row with the latest forecast announcement_date. Conflicting duplicates at that exact latest key fail closed; no later forecast or other period may substitute.",
+    "raw_formula": "realized_profit_yoy - latest_prior_forecast_profit_yoy",
+    "score_formula": "same-event-session average-tie cross-sectional percentile rank of the finite raw surprise",
+    "availability_rule": "The candidate becomes usable only on the first accepted local trading session strictly after the realized quarterly announcement_date.",
+    "event_age_rule": "Three calendar days from the candidate effective session; no forward fill beyond that event window.",
+    "missing_rule": "Missing unless both same-period percentage-point values are finite and the forecast strictly predates the realized announcement. Never impute, clip, winsorize, backfill, use a later revision, or treat absence as zero.",
+    "search_space": {
+      "candidate_count": 1,
+      "direction_count": 1,
+      "formula_count": 1,
+      "forecast_lag_choice_count": 1,
+      "event_age_choice_count": 1,
+      "thresholds": [],
+      "filters": [],
+      "subsets": [],
+      "models": [],
+      "fitted_weights": [],
+      "alternate_absolute_scaled_sign_revision_type_or_turnaround_variants_allowed": false
+    },
+    "predictive_value_established": false
+  },
+  "selection": {
+    "concepts_reviewed": 6,
+    "rejected_concept_count": 5,
+    "selected_candidate_count": 1,
+    "finite_candidate_library": true,
+    "complete_152_definition_library_reviewed_before_values": true,
+    "all_141_numeric_comparators_reserved_but_not_loaded": true,
+    "reason": "Only signed same-period expectation-versus-realization news introduces a fixed cross-source relation invariant to the exposed level factors. Every accuracy, scaling, revision, sign and type-conditioned alternative is frozen rejected before values."
+  },
+  "research_boundary": {
+    "repository_definitions_terminal_records_schema_and_manifest_metadata_read": true,
+    "performance_forecast_or_quarterly_parquet_rows_read": false,
+    "campaign139_source_column_values_read": false,
+    "campaign139_candidate_values_computed_or_read": false,
+    "campaign139_comparator_values_read": false,
+    "historical_daily_price_or_forward_return_values_read": false,
+    "stress_2024_2025_opened": false,
+    "provider_request_issued": false,
+    "provider_credential_value_or_digest_read": false,
+    "candidate49_historical_backfill_performed": false,
+    "candidate49_ledgers_changed": false,
+    "second_prospective_candidate_created": false,
+    "current_scoring_selection_sizing_positions_or_orders_performed": false,
+    "investment_advice": false,
+    "inherited_current_listing_survivorship_limitation_remains": true,
+    "accepted_source_revision_history_limitation_remains": true
+  },
+  "decision": {
+    "freeze_formula_or_read_source_values_now": false,
+    "next_action": "Complete and bind the all-152-definition mechanism audit. Only if semantic independence passes may an exact no-return source/join/capacity/uniqueness protocol and pure formula implementation be frozen before any Campaign139 source row or candidate value is read."
+  }
+}

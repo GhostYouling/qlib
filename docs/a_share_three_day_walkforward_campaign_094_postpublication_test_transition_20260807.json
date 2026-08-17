@@ -1,0 +1,29 @@
+{
+  "schema_version": 1,
+  "kind": "a_share_three_day_walkforward_campaign094_postpublication_test_transition",
+  "status": "prepublication_v2_assertion_preserved_current_v3_tests_pass",
+  "recorded_at": "2026-08-07T02:47:22Z",
+  "combined_prestate_test_attempt": {
+    "scope": "Campaign094 v1, v2 and v3 feature tests",
+    "result": "12 passed, 1 failed",
+    "sole_failure": "test_v2_status_is_read_only_and_snapshot_absent",
+    "cause": "The v2 test correctly froze the pre-retry absence state; the seven-partition v1 snapshot is now present after the authorized build.",
+    "research_or_feature_implementation_failure": false
+  },
+  "preserved_v2_test": {
+    "path": "tests/data_collector_tests/test_a_share_three_day_walkforward_campaign094_features_v2.py",
+    "sha256": "951dd3a3f2dd233ebbb5e22c93019a4f425a518046bcc7c467cdc4d6fb30ebb6",
+    "modified_after_publication": false
+  },
+  "current_v3_test": {
+    "path": "tests/data_collector_tests/test_a_share_three_day_walkforward_campaign094_features_v3.py",
+    "sha256": "7fe1f9d8cbb0304db6c536491cfb5960142543c20cc89b43f7f4740c8440b52e",
+    "combined_with_v1_result": "9 passed"
+  },
+  "boundary": {
+    "comparison_values_read": false,
+    "historical_daily_price_or_forward_return_values_read": false,
+    "provider_request_issued": false,
+    "candidate49_ledgers_changed": false
+  }
+}

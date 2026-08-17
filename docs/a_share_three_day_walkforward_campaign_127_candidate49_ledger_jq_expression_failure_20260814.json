@@ -1,0 +1,20 @@
+{
+  "schema_version": 1,
+  "kind": "a_share_three_day_walkforward_infrastructure_failure_record",
+  "campaign": 127,
+  "attempt_id": "campaign127_infrastructure_001",
+  "recorded_at": "2026-08-14T04:44:33+0800",
+  "phase": "authoritative_boundary_read_only_verification",
+  "status": "failed_exit_code_preserved",
+  "failure_class": "jq_expression_precedence_error",
+  "command_scope": "Hash authoritative status, policies, workflow protocol and Candidate49 ledgers, then read only the two ledger entry counts before credential and data-root checks.",
+  "observed_failure": "jq attempted to apply .entries to the already piped entries array because the array expression did not bind .entries before the comma branch; both files reported Cannot index array with string entries and the shell stopped with a nonzero exit code.",
+  "state_change_before_failure": false,
+  "provider_request_issued": false,
+  "provider_credential_loaded": false,
+  "candidate_or_comparator_values_read": false,
+  "daily_price_or_forward_return_values_read": false,
+  "candidate49_ledgers_changed": false,
+  "corrective_boundary": "Preserve this record and repeat only the read-only entry-count check with .entries bound to a local jq variable before continuing Campaign127.",
+  "failed_exit_code_overridden_or_treated_as_success": false
+}

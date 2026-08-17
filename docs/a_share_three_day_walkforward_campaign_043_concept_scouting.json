@@ -1,0 +1,124 @@
+{
+  "version": 1,
+  "kind": "a_share_three_day_walkforward_campaign043_concept_scouting",
+  "status": "completed_before_campaign043_candidate_or_comparison_values",
+  "recorded_at": "2026-07-31T09:45:00Z",
+  "purpose": "Select one genuinely independent Campaign043 mechanism without reading minute candidate values, comparison values, daily prices, or historical returns.",
+  "authoritative_inputs": {
+    "iteration_state": {
+      "path": "docs/a_share_three_day_iteration_status_20260731_campaign042_verified.json",
+      "sha256": "07048d0f0d16a6847f9be0bada8b257d46a06156bec8058a3fbced855548f334"
+    },
+    "historical_walkforward_policy": {
+      "path": "docs/a_share_three_day_historical_walkforward_research_policy_20260727.json",
+      "sha256": "38426d6161b9bfed323c58caba18feca668b8c9d53e294951a8ba90c01a798bb"
+    },
+    "campaign042_terminal_record": {
+      "path": "docs/a_share_three_day_walkforward_campaign_042_research_record.json",
+      "sha256": "95ed818100ce2529e6eea442702a09d0bf0ae2ffd35a0604927826f3431328fd"
+    },
+    "complete_prior_factor_library": {
+      "path": "docs/a_share_three_day_walkforward_campaign_042_no_return_preregistration.json",
+      "sha256": "69a554576358c6f2330b4caa3c91d7bbfc67b576259a5f342a89912587d9e826",
+      "comparison_count_before_appending_campaign042": 63,
+      "comparison_order_sha256_before_appending_campaign042": "2318bc5774032e9a41519936dde4943a9d5f577b5c05999d2fe0f8bef617fa77",
+      "campaign042_factor_to_append": {
+        "name": "intraday_lunch_repricing_persistence_2r",
+        "score_direction": "higher"
+      }
+    }
+  },
+  "candidate_queue_review": [
+    {
+      "concept": "transaction_vwap_consensus",
+      "decision": "selected",
+      "reason": "It measures the scale-free agreement of active-bar transaction prices through a volume-weighted geometric-to-arithmetic mean ratio. It uses only amount and share volume, not close-return paths, high-low ranges, endpoint drift, market peers, disclosures, or any prior factor value."
+    },
+    {
+      "concept": "transaction_vwap_return_autocorrelation_or_variance_ratio",
+      "decision": "rejected_before_values",
+      "reason": "Serial return constructions would re-express the terminal return autocorrelation, five-minute variance-ratio, transaction-price-path-confirmation, or spectral families."
+    },
+    {
+      "concept": "amount_volume_profile_divergence",
+      "decision": "rejected_before_values",
+      "reason": "A time-bin divergence would mix transaction-price dispersion with the already terminal amount entropy, amount center-of-mass, and market amount-profile mechanisms."
+    },
+    {
+      "concept": "bar_vwap_to_close_high_low_or_midpoint_distance",
+      "decision": "rejected_before_values",
+      "reason": "Adding close or high-low geometry would reopen terminal bar-VWAP pressure, transaction-VWAP envelope, intrabar close-location, or range mechanisms."
+    },
+    {
+      "concept": "unweighted_vwap_dispersion_or_selected_active_subwindows",
+      "decision": "rejected_before_values",
+      "reason": "Unweighted moments, alternative centers, selected morning or afternoon windows, and fitted activity cutoffs would add an unfrozen family or parameter search."
+    },
+    {
+      "concept": "inverse_dispersion_rescale_threshold_filter_or_direction_split",
+      "decision": "rejected_before_values",
+      "reason": "The weighted geometric-to-arithmetic ratio already supplies an exact scale-free bounded statistic. Alternative transforms, thresholds, filters, or inverse directions would create immediate rescue paths."
+    },
+    {
+      "concept": "prior_terminal_factor_combination_or_model",
+      "decision": "rejected_before_values",
+      "reason": "Campaign043 is restricted to one raw mechanism with one fixed direction and no prior factor input, combination, fitted coefficient, regime, or model."
+    }
+  ],
+  "selected_candidate": {
+    "name": "intraday_transaction_vwap_consensus_240m",
+    "direction": "higher",
+    "economic_hypothesis": "When completed-session trading volume clears near a common transaction-price level, the volume-weighted geometric and arithmetic mean transaction prices converge. Higher consensus may reflect orderly price discovery and lower unresolved inventory disagreement, potentially supporting stronger next-open-to-third-close performance.",
+    "formula": "For each active continuous-session bar i, let p_i=amount_i/volume_i and w_i=volume_i/sum_j(volume_j). Return exp(sum_i(w_i*log(p_i))) / sum_i(w_i*p_i).",
+    "selected_grid": [
+      "09:31-11:30",
+      "13:01-15:00"
+    ],
+    "selected_bar_count": 240,
+    "source_projection": [
+      "datetime",
+      "symbol",
+      "provider",
+      "volume",
+      "amount"
+    ],
+    "forbidden_source_columns": [
+      "open",
+      "high",
+      "low",
+      "close"
+    ],
+    "include_0930": false,
+    "joint_zero_volume_amount_bar": "inactive_and_excluded_from_weighted_means",
+    "one_sided_zero_volume_or_amount": "whole_stock_day_missing",
+    "active_bar_transaction_price": "amount/volume",
+    "weight": "share_volume/sum_active_share_volume",
+    "minimum_active_bars": 120,
+    "constant_transaction_price_day": "valid_score_one",
+    "valid_range": [
+      0.0,
+      1.0
+    ],
+    "endpoint_canonicalization_tolerance": 1e-12,
+    "transform_filter_threshold_combination_or_model": "none"
+  },
+  "research_boundary": {
+    "comparison_factor_names_and_directions_read_from_frozen_protocol": true,
+    "external_minute_partitions_read": false,
+    "candidate_values_read": false,
+    "comparison_values_read": false,
+    "historical_daily_price_fields_read": false,
+    "historical_forward_returns_read": false,
+    "training_or_model_fitting_performed": false,
+    "provider_request_issued": false,
+    "candidate49_historical_return_signal_or_execution_backfill_performed": false,
+    "candidate49_ledgers_changed": false,
+    "candidate50_activation_created": false,
+    "current_scoring_selection_sizing_or_orders_performed": false
+  },
+  "decision": {
+    "selected_candidate_count": 1,
+    "predictive_value_established": false,
+    "next_action": "Complete a separate pre-value mechanism-overlap audit and bind the exact active-bar, zero, weighting, geometric/arithmetic mean, support, direction, endpoint, and forbidden-variant semantics before any candidate value is computed."
+  }
+}

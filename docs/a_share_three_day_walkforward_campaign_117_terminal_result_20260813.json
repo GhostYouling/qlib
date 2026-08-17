@@ -1,0 +1,79 @@
+{
+  "schema_version": 1,
+  "kind": "a_share_three_day_walkforward_campaign117_terminal_result",
+  "status": "terminal_zero_development_survivors_stress_not_opened",
+  "recorded_at": "2026-08-13T13:31:08Z",
+  "factor": "intraday_amount_weak_order_entropy_236t",
+  "direction": "higher",
+  "development_preregistration": {
+    "path": "docs/a_share_three_day_walkforward_campaign_117_preregistration.json",
+    "sha256": "593e1b3cd8edb6859d98ad53197bee383191842ae970d94aa1ceb691285c7c70"
+  },
+  "development_activation": {
+    "path": "docs/a_share_three_day_walkforward_campaign_117_development_activation_binding_20260813.json",
+    "sha256": "e4710f423a317521062978e6205a284d325972c4fd7a9d49110d9f8a13a1cd03"
+  },
+  "development_outputs": {
+    "trial_ledger": {
+      "path": "data/experiments/short_horizon/historical_walkforward/campaign_117/walkforward/trial_ledger.json",
+      "sha256": "c1dfac7586da1bac92e993c0b2379e3805f89bfdfd09900bfdb3c45d4d0b53d2",
+      "entry_count": 1,
+      "chain_tip_sha256": "aba14cad2d533893c8589f76350e6a73e8964269a6f71fe744aae33ddefe82da"
+    },
+    "development_survivors": {
+      "path": "data/experiments/short_horizon/historical_walkforward/campaign_117/walkforward/development_survivors.json",
+      "sha256": "a593e65882452668fbf345776ef1f3b0131a7372412045d0ed15a8e8734639cf",
+      "selected_survivor_count": 0
+    },
+    "exposed_stress_consumption_record": {
+      "path": "data/experiments/short_horizon/historical_walkforward/campaign_117/walkforward/exposed_stress_consumption_record.json",
+      "sha256": "109b9e6bb1b927028593169a08b3deb4dc68ef058921259bd035fb0f638a1380",
+      "status": "not_opened_zero_development_survivors"
+    },
+    "campaign_report": {
+      "path": "data/experiments/short_horizon/historical_walkforward/campaign_117/walkforward/campaign_report.json",
+      "sha256": "73a34da4a410b611902a6d6c4453b73c346b85c379eb80a778cd6a6f2a683f87"
+    }
+  },
+  "development_decision": {
+    "trial_id": "wf117_intraday_amount_weak_order_entropy_236t_single_higher",
+    "trial_count": 1,
+    "survivor_count": 0,
+    "positive_mean_rank_ic_fold_count": 3,
+    "positive_normalized_return_fold_count": 2,
+    "positive_pilot_return_fold_count": 2,
+    "median_validation_mean_rank_ic": 0.028311362805263807,
+    "median_validation_spread": 0.0039002088357834785,
+    "median_validation_normalized_return": 0.22386213832874713,
+    "median_validation_pilot_return_10bp": 0.009130785751876314,
+    "development_aggregate_pilot_return_20bp": -0.10224930033360202,
+    "worst_validation_normalized_drawdown": -0.32845010193624835,
+    "operationally_admissible": false,
+    "operational_rejection_reasons": [
+      "fold_2_board_lot_affordability"
+    ],
+    "validation_quality_gate_passed": false,
+    "validation_quality_rejection_reasons": [
+      "worst_validation_normalized_drawdown",
+      "nonpositive_development_aggregate_20bp_return"
+    ]
+  },
+  "scientific_interpretation": "The factor showed positive Rank-IC in all three validation folds and two positive normalized and 10bp pilot-return folds, but failed the frozen operational and robustness gates: fold-2 board-lot affordability was below 0.90, worst validation normalized drawdown was below -0.25, and aggregate 20bp pilot return was -10.2249%.",
+  "terminal_boundary": {
+    "retry_reverse_redefine_transform_filter_subset_year_select_reweight_combine_or_rescue_allowed": false,
+    "stress_2024_2025_opened": false,
+    "stress_2024_2025_return_values_read": false,
+    "candidate49_historical_backfill_performed": false,
+    "candidate49_ledgers_changed": false,
+    "second_prospective_candidate_created": false,
+    "current_scoring_selection_sizing_positions_or_orders_performed": false,
+    "investment_advice": false
+  },
+  "candidate49": {
+    "signal_ledger_sha256": "5193f00d7f36da003f53cec387900da4c3d002299f5dfcfc1a95eaa199ed3a79",
+    "execution_ledger_sha256": "d57a3e61eac969e42cafa418ccd8c0a5ee65dcf69da145bb2c096c2a02a2ea4f",
+    "signal_entry_count": 0,
+    "execution_entry_count": 0
+  },
+  "next_action": "Append Campaign117 once to the future complete-definition and numeric-comparator libraries because it passed coverage and all 134 uniqueness gates, preserve its development rejection, and begin Campaign118 only from a genuinely new prevalue-frozen mechanism."
+}

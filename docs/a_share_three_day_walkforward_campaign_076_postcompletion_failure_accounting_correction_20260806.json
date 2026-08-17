@@ -1,0 +1,42 @@
+{
+  "version": 1,
+  "kind": "a_share_three_day_walkforward_campaign076_postcompletion_failure_accounting_correction",
+  "status": "additive_current_accounting_supersedes_v3_ledger_without_rewriting",
+  "recorded_at": "2026-08-06T11:47:00+08:00",
+  "previous_current_attempt_ledger": {
+    "path": "data/experiments/short_horizon/historical_walkforward/campaign_076/research_attempt_ledger_v3.json",
+    "sha256": "ac26fa86290a48bc8313dfd2441f592c001dd11ea323101a273e0930dc89c815",
+    "preserved": true
+  },
+  "previous_current_research_record": {
+    "path": "docs/a_share_three_day_walkforward_campaign_076_research_record.json",
+    "sha256": "bd7aaef3d8b05e2d9c47214b42aa95ad4e09ef0835cb0d2849fab0d7cbdb8f39",
+    "preserved": true
+  },
+  "new_failure": {
+    "path": "docs/a_share_three_day_walkforward_campaign_076_postcompletion_lifecycle_test_failure_20260806.json",
+    "sha256": "3a9791162a4ec80a285470eb363afce6d94fd6d9cad3998b22b9a70e7e8300aa",
+    "failed_command_count": 1,
+    "failed_assertion_count": 2,
+    "new_research_or_return_values_read": false
+  },
+  "current_attempt_ledger": {
+    "path": "data/experiments/short_horizon/historical_walkforward/campaign_076/research_attempt_ledger_v4.json",
+    "sha256": "16f100cded5754eb469d60ad9874e1d747f6736c5e0d5b00f69290a353c758fe"
+  },
+  "corrected_accounting": {
+    "campaign076_infrastructure_failure_count": 9,
+    "campaign076_complete_factor_attempt_count": 1,
+    "campaign076_attempt_count": 10,
+    "campaign076_ledger_entry_count": 11,
+    "campaign076_return_reading_development_trial_count": 1,
+    "cumulative_historical_research_attempt_count": 466,
+    "cumulative_return_reading_development_trial_count": 278
+  },
+  "unchanged_research_result": {
+    "numeric_comparisons_passed": 106,
+    "development_survivor_count": 0,
+    "stress_2024_2025_opened": false,
+    "stress_returns_read": false
+  }
+}

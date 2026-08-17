@@ -1,0 +1,66 @@
+{
+  "version": 1,
+  "kind": "a_share_three_day_walkforward_campaign034_post_result_test_transition",
+  "status": "pre_result_test_binding_preserved_and_terminal_assertions_activated_without_result_change",
+  "recorded_at": "2026-07-30T19:31:11Z",
+  "purpose": "Preserve the pre-return test fingerprint bound by the original Campaign034 research record while documenting the required post-result lifecycle assertion transition and separate immutable terminal-evidence tests.",
+  "original_research_record": {
+    "path": "docs/a_share_three_day_walkforward_campaign_034_research_record.json",
+    "sha256": "df24869d6869cee20a2e44ff23a71d372f116a38c5e10bf110c6425a2aa05779",
+    "status": "completed_zero_development_survivors_stress_interval_not_opened"
+  },
+  "test_lifecycle": {
+    "campaign_test_path": "tests/data_collector_tests/test_a_share_three_day_walkforward_campaign034.py",
+    "pre_result_sha256": "4e6fe60ffb208ce13725dd4ad3c3b32d76df0e4a2dbb24c217e44a26ee9df04e",
+    "post_result": {
+      "path": "tests/data_collector_tests/test_a_share_three_day_walkforward_campaign034.py",
+      "sha256": "44cb935c1144c1ce4e4157539cff8635ec8aede3cafe1113b531027cffecab6c"
+    },
+    "change": "Replace only the pre-run empty-ledger and absent-stress assertions with the observed immutable terminal state: one ledger entry, zero survivors, and a not-opened zero-survivor stress record.",
+    "separate_terminal_tests": {
+      "path": "tests/data_collector_tests/test_a_share_three_day_walkforward_campaign034_terminal.py",
+      "sha256": "f94916d8314b50076b75a62a6c196ce122388354b44ee044015e72af58d350e4"
+    }
+  },
+  "original_record_binding_transition": {
+    "validator_exit_code_after_test_transition": 2,
+    "binding_count": 23,
+    "passed_binding_count": 22,
+    "failed_binding_count": 1,
+    "sole_failed_json_pointer": "/development_artifacts/tests",
+    "sole_failed_expected_sha256": "4e6fe60ffb208ce13725dd4ad3c3b32d76df0e4a2dbb24c217e44a26ee9df04e",
+    "sole_failed_observed_sha256": "44cb935c1144c1ce4e4157539cff8635ec8aede3cafe1113b531027cffecab6c",
+    "all_research_data_and_result_bindings_still_passed": true
+  },
+  "terminal_test_execution": {
+    "initial_terminal_test_sha256": "897919804aecb9c213c896cd7426798e31015a84b96872259dbb6196c525e8a8",
+    "initial_exit_code": 1,
+    "initial_failure": "The report assertion expected a standalone 20bp phrase, while the report correctly presented the complete 0/5/10/20bp sequence.",
+    "research_value_or_document_changed_to_satisfy_test": false,
+    "assertion_only_repair": "Match the exact already-recorded complete cost sequence.",
+    "final_focused_test_count": 26,
+    "final_focused_tests_passed": 26,
+    "final_focused_tests_failed": 0
+  },
+  "documentation": {
+    "unified_research_report": {
+      "path": "data/experiments/short_horizon/three_day_research_report.md",
+      "sha256": "7ab737c9bee394a221bb53265b440d68de751197619edf82265348f3c34eedc8"
+    }
+  },
+  "semantic_boundary": {
+    "factor_formula_changed": false,
+    "direction_changed": false,
+    "snapshot_or_candidate_values_changed": false,
+    "comparison_values_or_no_return_decision_changed": false,
+    "trial_ledger_survivor_stress_or_campaign_report_changed": false,
+    "fold_purge_cost_execution_or_survivor_gate_changed": false,
+    "2024_2025_opened": false,
+    "candidate49_ledger_changed": false,
+    "current_scoring_selection_sizing_or_orders_performed": false
+  },
+  "decision": {
+    "original_research_record_must_not_be_rewritten": true,
+    "an_additive_effective_research_record_must_bind_this_transition": true
+  }
+}

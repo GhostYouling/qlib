@@ -1,0 +1,206 @@
+{
+  "schema_version": 1,
+  "kind": "a_share_three_day_walkforward_campaign089_mechanism_overlap_audit",
+  "status": "passed_semantic_mechanism_review_before_campaign089_minute_source_or_comparison_values",
+  "recorded_at": "2026-08-07T04:23:51+08:00",
+  "concept_scouting": {
+    "path": "docs/a_share_three_day_walkforward_campaign_089_concept_scouting.json",
+    "sha256": "30aa5db45a8988313f1f06a279bfae94deb259b8a75685acc471aa1f6524e612"
+  },
+  "authoritative_state": {
+    "path": "docs/a_share_three_day_iteration_status_20260807_campaign088_verified_v2.json",
+    "sha256": "985f80fb46c1abdc4dc29f49e3525d292ca5632d67e7448d3f7ff00996ac4a37"
+  },
+  "historical_walkforward_policy": {
+    "path": "docs/a_share_three_day_historical_walkforward_research_policy_20260727.json",
+    "sha256": "38426d6161b9bfed323c58caba18feca668b8c9d53e294951a8ba90c01a798bb"
+  },
+  "numeric_comparator_policy": {
+    "path": "docs/a_share_three_day_walkforward_future_numeric_comparison_eligibility_policy_v28_20260807.json",
+    "sha256": "5a8f14e6740fa6fabb72b0ef455d173502cfa4c0e1542f808852665afbb2fc35",
+    "complete_definition_count": 120,
+    "numeric_comparator_count": 118,
+    "complete_definition_order_sha256": "9f0d70e832e7a1e5a62a312d79441621eda5822ff3de9155edc108409dcdb276",
+    "numeric_comparator_order_sha256": "a83d4485182d4dc6a2173af4c3158a3290939740c5465991a69521fdc65607c2"
+  },
+  "candidate": {
+    "name": "intraday_directional_amount_timing_spread_238m",
+    "direction": "higher",
+    "mechanism": "Difference between the fixed-session clock centers of transaction amount attached to positive and negative within-half one-minute close returns",
+    "formula": "For 238 within-half returns with destination amount A_k and fixed chronological coordinate u_k=k/237, compute U=sum A_k*1[r_k>0], D=sum A_k*1[r_k<0], T_up=sum u_k*A_k*1[r_k>0]/U, T_down=sum u_k*A_k*1[r_k<0]/D, and score=T_up-T_down.",
+    "zero_rule": "Exact zero returns contribute to neither directional mass; zero destination amounts remain exact zeros. Require every return and destination amount, finite positive U and D, and use no epsilon, pseudocount, minimum directional count, threshold, or dropped source row.",
+    "fixed_grid": "Exactly 240 closes at 09:31-11:30 and 13:01-15:00, producing 119 returns per half and 238 pooled chronological positions; exclude required raw 09:30 and never form a lunch pair.",
+    "no_open_high_low_volume_market_benchmark_daily_financial_event_peer_or_future_input": true,
+    "no_old_factor_value_input": true,
+    "candidate49_used_or_modified": false
+  },
+  "complete_library_review": {
+    "all_120_definitions_reviewed_in_frozen_order": true,
+    "all_pre_walkforward_terminal_return_volatility_path_sign_frequency_range_amount_market_peer_event_quality_structural_and_composite_families_reviewed": true,
+    "candidate_is_exact_formula_duplicate": false,
+    "candidate_is_direction_only_duplicate": false,
+    "candidate_is_parameter_only_duplicate": false,
+    "candidate_is_an_inversion_of_a_terminal_factor": false,
+    "candidate_combines_terminal_factor_values": false,
+    "candidate_changes_any_quality_listing_or_buyability_gate": false,
+    "amount_timing_direction_allocation_activity_dependence_sign_path_late_window_and_directional_impact_families_explicitly_challenged": true,
+    "cash_conversion_and_nearby_cash_flow_quality_terminal_family_explicitly_rejected_before_values": true,
+    "campaign088_terminal_factor_not_reused_or_rescued": true,
+    "candidate49_remains_semantic_isolation_only": true
+  },
+  "semantic_invariance_checks": [
+    {
+      "intervention": "Multiply every selected close by one common strictly positive constant.",
+      "campaign089_result": "unchanged because the 238 direction labels come from log-close ratios",
+      "distinguishes_from": "nominal-price affordability and price-level factors"
+    },
+    {
+      "intervention": "Multiply every destination amount by one common strictly positive constant.",
+      "campaign089_result": "unchanged because both directional clock centers are separately normalized",
+      "distinguishes_from": "amount level, liquidity level, and capacity measures"
+    },
+    {
+      "intervention": "Multiply all positive-return amounts by one positive constant while leaving their clock allocation fixed, and independently do the same to all negative-return amounts.",
+      "campaign089_result": "unchanged because each directional clock center is conditionally normalized",
+      "distinguishes_from": "intraday_up_move_amount_share_238m, whose positive-versus-negative mass allocation generally changes"
+    },
+    {
+      "intervention": "Move an equal directional amount mass later for positive returns and earlier for negative returns while preserving the combined unsigned amount center of mass.",
+      "campaign089_result": "increases",
+      "distinguishes_from": "intraday_amount_center_of_mass_240m and unsigned clock summaries"
+    },
+    {
+      "intervention": "Rescale every nonzero return magnitude by an arbitrary strictly positive position-specific factor without changing its sign.",
+      "campaign089_result": "unchanged",
+      "distinguishes_from": "signed amount efficiency, realized variation, semivariance, volatility coupling, and directional price-impact magnitude"
+    },
+    {
+      "intervention": "Swap positive and negative return signs at every position while preserving close feasibility and the complete amount profile.",
+      "campaign089_result": "changes sign",
+      "distinguishes_from": "every direction-blind amount entropy, serial, dispersion, peak, run, path-efficiency, and range/amount alignment factor"
+    },
+    {
+      "intervention": "Reverse the order of all 238 return/amount pairs on the fixed ordinal grid.",
+      "campaign089_result": "changes sign because each conditional center maps from T to 1-T",
+      "distinguishes_from": "order-free directional amount allocation and session-wide marginal summaries"
+    },
+    {
+      "intervention": "Change amount attached only to exact zero returns while keeping all positive-return and negative-return pairs fixed.",
+      "campaign089_result": "unchanged",
+      "distinguishes_from": "intraday_zero_return_amount_intensity_238m"
+    },
+    {
+      "intervention": "Change high, low, open, volume, market/peer paths, or quarterly disclosures while selected closes and destination amounts stay fixed.",
+      "campaign089_result": "unchanged",
+      "distinguishes_from": "range, candle, share-volume, transaction-price, market-residual, peer, event, and quality mechanisms"
+    }
+  ],
+  "nearest_semantic_challenges": [
+    {
+      "name": "intraday_up_move_amount_share_238m",
+      "relationship": "both split destination-bar transaction amount by the sign of the same 238 within-half returns",
+      "distinction": "The terminal factor measures the positive-direction share of total nonzero-return amount and discards clock position. Campaign089 separately normalizes positive and negative amount and retains only their clock-center difference; independent scaling of either directional mass changes the share but not Campaign089.",
+      "mandatory_numeric_challenge": true
+    },
+    {
+      "name": "intraday_amount_center_of_mass_240m, intraday_amount_clock_dispersion_240m, intraday_amount_profile_serial_persistence_240m, intraday_amount_local_peak_density_238p, intraday_above_median_amount_longest_run_240m, and intraday_amount_path_efficiency_238p",
+      "relationship": "all use the intraday ordering of transaction amount",
+      "distinction": "Those factors are direction-blind univariate summaries of the complete amount path. Campaign089 conditions the destination amount path on positive versus negative close-return signs and takes a signed difference of two conditional centers. Direction-label swaps preserve every listed amount-only value but negate or otherwise change Campaign089.",
+      "mandatory_numeric_challenge": true
+    },
+    {
+      "name": "late_return_30m and late_amount_share_30m",
+      "relationship": "all can respond to activity or returns near the session end",
+      "distinction": "The late-window factors select one fixed 30-minute subwindow and measure its marginal return or amount share. Campaign089 uses every one of the 238 return positions, chooses no late threshold, and compares positive-versus-negative conditional timing centers.",
+      "mandatory_numeric_challenge": true
+    },
+    {
+      "name": "afternoon_signed_amount_efficiency_120m",
+      "relationship": "both are directional transaction-amount mechanisms with higher interpreted as buy-side pressure",
+      "distinction": "Afternoon efficiency selects only the afternoon and weights amount by signed return magnitude relative to absolute-return-weighted amount. Campaign089 uses both halves, ignores every nonzero return magnitude, and measures when directional amount arrives rather than its signed efficiency.",
+      "mandatory_numeric_challenge": true
+    },
+    {
+      "name": "intraday_amount_lead_return_correlation_238p and intraday_volatility_activity_lead_lag_asymmetry_236p",
+      "relationship": "all connect activity with returns on an ordered grid",
+      "distinction": "The lead-lag factors ask whether earlier activity predicts a later signed or absolute return using adjacent pairs and correlations. Campaign089 is contemporaneous at each destination bar, estimates no correlation, and uses the full-session clock only as a conditional timing coordinate.",
+      "mandatory_numeric_challenge": true
+    },
+    {
+      "name": "intraday_amount_volatility_coupling_238p and intraday_amount_price_discovery_alignment_js_238p",
+      "relationship": "all connect destination activity to close-return observations",
+      "distinction": "Those factors use absolute return magnitude through Pearson co-movement or a Jensen-Shannon participation profile. Campaign089 is invariant to every magnitude change preserving return signs and compares two signed conditional clock centers rather than magnitude alignment.",
+      "mandatory_numeric_challenge": true
+    },
+    {
+      "name": "intraday_return_sign_run_imbalance_238p, intraday_bar_direction_continuity_238p, and intraday_day_over_day_directional_return_agreement_238b",
+      "relationship": "all use price direction labels",
+      "distinction": "The sign factors ignore amount and measure runs, adjacent body continuity, or cross-day agreement. Campaign089 ignores sign adjacency and prior days; identical sign paths with different within-sign amount timing have identical prior values but different Campaign089 values.",
+      "mandatory_numeric_challenge": true
+    },
+    {
+      "name": "intraday_directional_price_impact_asymmetry_238m",
+      "relationship": "both distinguish positive from negative return bars and read amount",
+      "distinction": "Directional impact compares return displacement per unit activity and therefore depends on magnitude. Campaign089 contains no return magnitude or reciprocal activity term and measures only the relative clock arrival of separately normalized directional amount.",
+      "mandatory_numeric_challenge": true
+    },
+    {
+      "name": "intraday_zero_return_amount_intensity_238m",
+      "relationship": "both specify exact-zero return amount semantics",
+      "distinction": "Zero-return intensity makes unchanged-price activity the signal. Campaign089 leaves zero-return amount outside both directional centers; changing only that amount leaves Campaign089 unchanged.",
+      "mandatory_numeric_challenge": true
+    },
+    {
+      "name": "intraday_range_amount_profile_alignment_js_240m",
+      "relationship": "the preceding terminal numeric factor compares amount allocation over the fixed clock",
+      "distinction": "Campaign087 aligns a 240-bar amount distribution with same-bar high-low range mass and reads no close. Campaign089 reads no high or low, uses 238 destination amounts, and compares clock centers conditional on close-return sign without Jensen-Shannon divergence.",
+      "mandatory_numeric_challenge": true
+    },
+    {
+      "name": "intraday_bipower_jump_variation_share_238m",
+      "relationship": "the latest terminal numeric factor uses the same 238 within-half close returns",
+      "distinction": "Campaign088 is direction- and amount-invariant and decomposes quadratic variation with adjacent bipower products. Campaign089 ignores all return magnitudes, reads destination amount, uses no adjacent return pair, and is sign-antisymmetric.",
+      "mandatory_numeric_challenge": true
+    },
+    {
+      "name": "intraday_cross_sectional_standardized_return_state_stability_236p",
+      "relationship": "the structurally nonnumeric definition remains in the complete semantic library",
+      "distinction": "Peer-standardized signed state mobility versus standalone own-stock directional amount timing",
+      "mandatory_semantic_challenge": true,
+      "numeric_status": "undefined_not_pass_not_fail"
+    },
+    {
+      "name": "signal_day_turnover_rate_pct",
+      "relationship": "the pre-value terminal definition remains a semantic challenge",
+      "distinction": "Raw daily turnover supplies neither the intraday direction labels nor their conditional amount clock centers.",
+      "numeric_status": "ineligible_terminal_definition_semantic_challenge_only"
+    },
+    {
+      "name": "candidate49_intraday_cumulative_vwap_crossing_rate_240m_v1",
+      "relationship": "the sole prospective candidate remains an isolation challenge",
+      "distinction": "Candidate49 counts genuinely future causal cumulative-VWAP sign crossings. Campaign089 is historical-only, has no cumulative VWAP, crossing count, or prospective ledger write, and cannot enter Candidate49 evidence.",
+      "candidate49_remains_isolated": true
+    }
+  ],
+  "pre_value_decision": {
+    "economically_independent_enough_to_preregister": true,
+    "numeric_uniqueness_still_required_against_all_118_eligible_comparators": true,
+    "strict_maximum_absolute_median_daily_rank_correlation": 0.8,
+    "minimum_pairwise_names_per_session": 50,
+    "minimum_pairwise_sessions_per_comparison": 100,
+    "drop_residualize_invert_clip_bucket_rank_neutralize_filter_or_rescue_after_failed_gate_allowed": false
+  },
+  "research_boundary": {
+    "campaign089_minute_source_rows_read": false,
+    "campaign089_candidate_values_read": false,
+    "comparison_values_read": false,
+    "historical_daily_price_fields_read": [],
+    "historical_forward_returns_read": false,
+    "provider_request_issued": false,
+    "candidate49_historical_backfill_performed": false,
+    "candidate49_ledgers_changed": false,
+    "second_prospective_candidate_created": false,
+    "current_scoring_selection_sizing_or_orders_performed": false,
+    "investment_advice": false
+  }
+}

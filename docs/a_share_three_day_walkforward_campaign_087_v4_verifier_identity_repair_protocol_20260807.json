@@ -1,0 +1,48 @@
+{
+  "schema_version": 1,
+  "kind": "a_share_three_day_walkforward_campaign087_v4_verifier_identity_repair_protocol",
+  "status": "frozen_after_v3_snapshot_publication_and_verifier_failure_before_repaired_verification_or_coverage",
+  "frozen_at": "2026-08-07T02:37:00+08:00",
+  "published_snapshot": {
+    "path": "/Volumes/DIsk/qlib-a-share-tushare-1m/derived/a_share/rich/tushare/minute_walkforward_campaign087_feature_library/tushare_stk_mins_1m_2019_2025_ea0cbb8f_walkforward_campaign087_feature_library_v1/snapshot_manifest.json",
+    "sha256": "6abe71a2402dc7b34124c1cc2abee8c54730ce978e6057b7b02beb4a4bcce5bd",
+    "dataset_sha256": "acc712042d582fbcbb87d23e7e7e47e71c6cbeb9b8a33678c75bb0ea58070777",
+    "rows": 1331759,
+    "partitions": 7,
+    "finite_candidate_rows": 1328449,
+    "may_be_rewritten_by_v4": false
+  },
+  "v3_runner": {
+    "path": "scripts/a_share_three_day_walkforward_campaign087_features_v3.py",
+    "sha256": "be6f174ef880ab562424f457328b33539372a9426c850b032915cac62b995964"
+  },
+  "v3_implementation_freeze": {
+    "path": "docs/a_share_three_day_walkforward_campaign_087_feature_implementation_freeze_v3_20260807.json",
+    "sha256": "1fff6cb9dd04ef65641be5f000102da3e48fa73e3445620c9a675a044145d774"
+  },
+  "failure_record": {
+    "path": "data/experiments/short_horizon/historical_walkforward/campaign_087/research_attempt_ledger_v7.json",
+    "sha256": "fed2606a6f4e198cd22ce9a9218d4d70ece1200a6bb9e3fcc617c65abb8d395d",
+    "ordinal": 7
+  },
+  "allowed_v4_change": {
+    "scope": "Read-only verification only. While validating the v3 implementation freeze, expose the immutable v1 runner path to the nested freeze checker; after that check returns, expose the v3 runner path to the inherited manifest-provenance verifier. Restore every module global afterward.",
+    "snapshot_rewrite_allowed": false,
+    "candidate_value_recomputation_allowed": false,
+    "coverage_or_comparison_computation_allowed": false
+  },
+  "required_verification": [
+    "v3 freeze and runner fingerprints",
+    "manifest hash and dataset identity",
+    "all seven partition byte hashes and DataFrame hashes",
+    "all seven canonical value hashes and eligible-flag equivalence",
+    "1,331,759 unique strictly increasing compact stock-day keys",
+    "runtime repair chain and no-return/provider/Candidate49 boundaries"
+  ],
+  "forbidden_v4_changes": [
+    "snapshot manifest or partition bytes",
+    "candidate formula, direction, source projection, grid, support, zero semantics, or endpoint tolerance",
+    "118-definition or 116-comparator order or any research gate",
+    "Candidate49 ledgers, historical backfill, a second prospective candidate, provider requests, daily prices, forward returns, current scores, selections, sizing, or orders"
+  ]
+}

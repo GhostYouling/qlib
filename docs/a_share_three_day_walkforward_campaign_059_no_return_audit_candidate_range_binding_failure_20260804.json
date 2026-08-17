@@ -1,0 +1,55 @@
+{
+  "version": 1,
+  "kind": "a_share_three_day_walkforward_campaign059_no_return_audit_infrastructure_failure",
+  "status": "failed_closed_before_coverage_result_and_before_comparison_values",
+  "recorded_at": "2026-08-04T20:19:41+08:00",
+  "attempt_id": "campaign059_infrastructure_003_candidate_range_alias_binding",
+  "campaign_id": "059",
+  "factor": "intraday_market_directional_sign_agreement_238m",
+  "direction": "higher",
+  "failed_command": "PYTHONPATH=/Volumes/DIsk/Disk-Coding/qlib python scripts/a_share_three_day_walkforward_campaign059_no_return_audit.py no-return-audit --data-root /Volumes/DIsk/qlib-a-share-tushare-1m --experiment-root /Volumes/DIsk/Disk-Coding/qlib/data/experiments/short_horizon/historical_walkforward/campaign_059 --workers 4",
+  "actual_exit_code": 1,
+  "failure": {
+    "error_class": "AttributeError",
+    "error_message": "module 'scripts.a_share_three_day_walkforward_campaign059_features' has no attribute 'LOWER_BOUND'",
+    "failure_location": "generic candidate frame loader after the bound factor and eligibility columns were read, before coverage_and_capacity",
+    "root_cause": "The frozen Campaign059 wrapper binds the exact [0,1] range inside its generated feature engine but does not expose legacy module-level LOWER_BOUND and UPPER_BOUND aliases expected by the inherited generic candidate loader."
+  },
+  "frozen_inputs": {
+    "audit_implementation_path": "scripts/a_share_three_day_walkforward_campaign059_no_return_audit.py",
+    "audit_implementation_sha256": "8c24d2e973b00d9a13f98435795703d79be1eb8279565976a57d540d6ee6953b",
+    "audit_implementation_freeze_path": "docs/a_share_three_day_walkforward_campaign_059_no_return_audit_implementation_freeze_20260804.json",
+    "audit_implementation_freeze_sha256": "7c7f696f02e5c0ca8a3aebefaa6a5b8f6d59535e9aee318d253e94127238b11b",
+    "snapshot_binding_path": "docs/a_share_three_day_walkforward_campaign_059_feature_snapshot_binding_20260804.json",
+    "snapshot_binding_sha256": "9d8c277c68531ea2b2155e983c633d36c197ecb47109bb9043f3e162ad445d9a",
+    "snapshot_manifest_sha256": "478597c0b06fe6d777dac906b6b70dc95f9b6e0a498c5f0e5eabf271dc2de9e6",
+    "snapshot_dataset_sha256": "53f0c782633885f150ff1625e2b75ebb3b27e9f6e53e58c2e133718ebebf5293"
+  },
+  "value_exposure": {
+    "campaign059_candidate_snapshot_factor_and_eligibility_values_read": true,
+    "coverage_result_computed_or_persisted": false,
+    "comparison_factor_values_read": false,
+    "quality_comparison_source_values_read_by_audit": false,
+    "historical_daily_price_fields_read": [],
+    "historical_forward_return_fields_read": false,
+    "candidate49_historical_return_read": false,
+    "training_or_model_fitting_performed": false,
+    "stress_2024_2025_opened": false,
+    "provider_request_issued": false
+  },
+  "output_state": {
+    "experiment_root": "/Volumes/DIsk/Disk-Coding/qlib/data/experiments/short_horizon/historical_walkforward/campaign_059",
+    "audit_record_count_after_failure": 0,
+    "partial_audit_record_published": false
+  },
+  "authorized_repair_boundary": {
+    "module_aliases_only": {
+      "LOWER_BOUND": 0.0,
+      "UPPER_BOUND": 1.0
+    },
+    "aliases_must_equal_frozen_factor_range": true,
+    "candidate_loader_factor_values_partition_bytes_formula_direction_coverage_gates_uniqueness_gates_comparison_order_or_return_boundary_may_change": false,
+    "maximum_same_parameter_repaired_continuation": 1
+  },
+  "next_action": "Freeze and test an additive launcher that injects only LOWER_BOUND=0.0 and UPPER_BOUND=1.0 into the frozen candidate module, then continue the same audit parameters once."
+}

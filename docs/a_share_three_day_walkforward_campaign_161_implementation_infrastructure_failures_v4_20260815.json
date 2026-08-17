@@ -1,0 +1,38 @@
+{
+  "version": 4,
+  "kind": "a_share_three_day_walkforward_campaign161_implementation_infrastructure_failures",
+  "status": "regression_deselect_failure_recorded_and_recovered_without_scientific_change",
+  "recorded_at": "2026-08-15T06:06:20+08:00",
+  "campaign": 161,
+  "authoritative_predecessor": {
+    "path": "docs/a_share_three_day_walkforward_campaign_161_implementation_infrastructure_failures_v3_20260815.json",
+    "sha256": "fec1081c3666fa8a25bcef2628afaab6daaa232f9105ce208fe0171d1bb0a2dc",
+    "effective_failure_count": 10
+  },
+  "delta_failures": [
+    {
+      "attempt_id": "campaign161_infrastructure_011",
+      "phase": "campaign145_161_regression_validation",
+      "exit_code": 1,
+      "failure": "The first regression command used a tests/ prefix that did not match collected deselection node ids and omitted the known Campaign145 historical report-binding lifecycle node; both historical lifecycle assertions ran and failed while 304 passed and 1 skipped.",
+      "recovery": "Used the collected data_collector_tests/ node ids and deselected exactly the Campaign145 historical binding node plus the Campaign161 initial-state mutable-report byte node; the rerun passed 304 with 1 skipped and 2 deselected.",
+      "scientific_result_changed": false,
+      "provider_request_issued": false
+    }
+  ],
+  "effective_infrastructure_failure_count": 11,
+  "recovery_verification": {
+    "campaign145_through_campaign161_tests_passed": 304,
+    "tests_skipped": 1,
+    "exact_historical_lifecycle_nodes_deselected": 2,
+    "duration_seconds": 10.74
+  },
+  "research_boundary": {
+    "candidate_or_comparator_value_read": false,
+    "historical_daily_price_or_forward_return_value_read": false,
+    "provider_request_issued_by_delta_failure": false,
+    "provider_credential_presence_value_or_digest_read": false,
+    "stress_2024_2025_opened": false,
+    "candidate49_ledgers_changed": false
+  }
+}

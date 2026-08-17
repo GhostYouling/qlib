@@ -1,0 +1,74 @@
+{
+  "version": 1,
+  "kind": "a_share_three_day_walkforward_campaign043_prepublication_manifest_metadata_repair",
+  "status": "single_metadata_only_repair_authorized_after_all_partition_checkpoints_completed",
+  "recorded_at": "2026-07-31T10:18:00Z",
+  "purpose": "Preserve the fail-closed Campaign043 prepublication validation and authorize only inherited aggregate-manifest label and source-flag normalization before atomic publication.",
+  "authoritative_inputs": {
+    "effective_feature_implementation_freeze": {
+      "path": "docs/a_share_three_day_walkforward_campaign_043_feature_implementation_freeze_v2_20260731.json",
+      "sha256": "019c969122bb390db305bd2acf812754c491c05dc126fdd4521d875d270b657d"
+    },
+    "pre_repair_feature_runner": {
+      "path_at_failure": "scripts/a_share_three_day_walkforward_campaign043_features.py",
+      "observed_sha256": "f15fe9b0856a4848a3283e7220b7cb4e5bfcde866f7f670741b7ebb56924bb08"
+    },
+    "no_return_preregistration": {
+      "path": "docs/a_share_three_day_walkforward_campaign_043_no_return_preregistration.json",
+      "sha256": "2fde47ae05bfef5f99d230c6835b559b72bbd0e20bfcfb994d36cd4487e831f9"
+    }
+  },
+  "observed_failure": {
+    "command": "python scripts/a_share_three_day_walkforward_campaign043_features.py build --workers 8",
+    "exit_code": 1,
+    "failure_stage": "aggregate_manifest_validation_before_manifest_write_or_atomic_publication",
+    "completed_partition_checkpoints": 33015,
+    "resumable_partition_checkpoints": 33015,
+    "final_snapshot_manifest_published": false,
+    "observed_inherited_kind": "a_share_three_day_walkforward_campaign006_feature_snapshot",
+    "expected_kind": "a_share_three_day_walkforward_campaign043_feature_snapshot",
+    "observed_protocol_evidence_prefix": "campaign006",
+    "expected_protocol_evidence_prefix": "campaign043",
+    "observed_source_close_read": null,
+    "observed_source_amount_read": null,
+    "expected_source_close_read": false,
+    "expected_source_amount_read": true,
+    "rows": 7724498,
+    "eligible_rows": 7682604,
+    "dataset_or_partition_bytes_changed_by_failure": false,
+    "comparison_values_read": false,
+    "historical_daily_price_fields_read": false,
+    "historical_forward_returns_read": false
+  },
+  "root_cause": {
+    "classification": "inherited_aggregate_manifest_label_compatibility_only",
+    "detail": "The deeply reused Campaign006 partition engine emits its original aggregate kind and protocol-evidence key prefix and omits two newer source-field booleans. Candidate computation, output columns, factor formula, source projection, partition files, quality counters, and dataset construction already use Campaign043 semantics."
+  },
+  "authorized_repair": {
+    "exact_changes_before_local_manifest_validation": [
+      "replace aggregate kind a_share_three_day_walkforward_campaign006_feature_snapshot with a_share_three_day_walkforward_campaign043_feature_snapshot",
+      "rename protocol-evidence keys campaign006_mechanism_overlap_audit_sha256 and campaign006_no_return_preregistration_sha256 to the corresponding campaign043 keys without changing their values",
+      "set source_close_read=false and source_amount_read=true alongside the already observed source_open_high_low_read=false and source_volume_read=true"
+    ],
+    "formula_change_allowed": false,
+    "direction_change_allowed": false,
+    "source_projection_change_allowed": false,
+    "partition_byte_or_frame_change_allowed": false,
+    "quality_counter_or_dataset_hash_change_allowed": false,
+    "comparison_library_or_order_change_allowed": false,
+    "gate_or_search_change_allowed": false,
+    "daily_price_or_return_access_allowed": false,
+    "resume_rule": "Revalidate and reuse every one of the 33,015 hash-bound checkpoints; recompute no partition unless its existing checkpoint fails byte/frame validation."
+  },
+  "research_boundary": {
+    "candidate_partition_values_exist_only_in_hidden_unpublished_checkpoints": true,
+    "comparison_values_read": false,
+    "historical_daily_price_fields_read": false,
+    "historical_forward_returns_read": false,
+    "provider_request_issued": false,
+    "candidate49_ledgers_changed": false,
+    "candidate50_activation_created": false,
+    "current_scoring_selection_sizing_or_orders_performed": false
+  },
+  "next_action": "Apply only the authorized prepublication metadata normalization, rerun synthetic tests and binding validation, then resume and atomically publish only if all 33,015 checkpoints and the corrected manifest pass."
+}

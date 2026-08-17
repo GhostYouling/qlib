@@ -1,0 +1,124 @@
+{
+  "version": 1,
+  "kind": "a_share_three_day_walkforward_campaign050_mechanism_overlap_audit",
+  "status": "passed_conceptual_independence_before_campaign050_candidate_comparison_daily_price_or_return_values",
+  "recorded_at": "2026-08-01T07:45:00Z",
+  "purpose": "Challenge the selected endogenous extreme-shock terminal-retracement mechanism against every nearby frozen family before any Campaign050 value is computed.",
+  "numbering_disambiguation": "Historical Campaign050 is separate from any prospective Candidate50; it neither activates a second prospective candidate nor changes Candidate49.",
+  "authoritative_boundary": {
+    "path": "docs/a_share_three_day_iteration_status_20260801_campaign049_verified.json",
+    "sha256": "a82a795584c4c4243465f5175a243984467b06d16f659178c62781bb963dbe3e"
+  },
+  "historical_walkforward_policy": {
+    "path": "docs/a_share_three_day_historical_walkforward_research_policy_20260727.json",
+    "sha256": "38426d6161b9bfed323c58caba18feca668b8c9d53e294951a8ba90c01a798bb"
+  },
+  "concept_scouting": {
+    "path": "docs/a_share_three_day_walkforward_campaign_050_concept_scouting.json",
+    "sha256": "9a874841edcdd751c7b7e544f14c5c29068b6f7c41482497e0365e7dfee78adb"
+  },
+  "selected_mechanism": {
+    "name": "intraday_half_session_extreme_shock_reversal_completion_2h",
+    "direction": "higher",
+    "economic_hypothesis": "Prompt directional retracement of the largest one-minute shock in both continuous half sessions is consistent with liquidity replenishment and completed price discovery rather than persistent inventory pressure, potentially leaving a more resilient close-known state for the next-open-to-third-close horizon.",
+    "formula": "Within each independent 120-close half-session form 119 adjacent log returns. Choose the earliest index k attaining the maximum absolute return, let s be that return, and let R=log(last_close_in_half/close_immediately_after_s). Define h=-2*s*R/(s^2+R^2). Return the arithmetic mean of the morning and afternoon h values.",
+    "source_projection": [
+      "datetime",
+      "symbol",
+      "provider",
+      "close"
+    ],
+    "selected_grid": [
+      "09:31-11:30",
+      "13:01-15:00"
+    ],
+    "selected_bar_count": 240,
+    "closes_per_half": 120,
+    "returns_per_half": 119,
+    "selected_extreme_count": 2,
+    "absolute_shock_tie_rule": "earliest index within each half-session",
+    "exact_zero_nonselected_returns_retained": true,
+    "valid_range": [
+      -1.0,
+      1.0
+    ],
+    "transform_threshold_filter_combination_or_model": "none"
+  },
+  "design_choices_frozen_before_values": {
+    "formula_family": "within_half_endogenous_largest_close_shock_terminal_directional_retracement",
+    "direction": "higher",
+    "selected_bar_count": 240,
+    "closes_per_half": 120,
+    "returns_per_half": 119,
+    "selected_extreme_count": 2,
+    "tie_rule": "earliest absolute-return maximum separately in each half",
+    "include_0930": false,
+    "include_lunch_transition": false,
+    "source_close_read": true,
+    "source_open_high_low_volume_amount_read": false,
+    "parameter_filter_subset_model_or_combination_count": 0
+  },
+  "overlap_challenges": [
+    {
+      "family": "intraday_return_reversal_energy_share_236p",
+      "result": "distinct_pending_statistical_uniqueness_gate",
+      "reason": "Reversal energy pools all 236 adjacent return pairs and measures local sign alternation. Campaign050 selects one largest return per half and compares each with the aggregate remaining path to that half's terminal close."
+    },
+    {
+      "family": "intraday_negative_return_absorption_rate_236p",
+      "result": "distinct_pending_statistical_uniqueness_gate",
+      "reason": "Negative-return absorption is one-sided and evaluates all negative local moves. Campaign050 treats positive and negative extremes symmetrically, selects exactly two events, and uses terminal rather than next-bar recovery."
+    },
+    {
+      "family": "afternoon_drawdown_recovery_resilience_120m",
+      "result": "distinct_pending_statistical_uniqueness_gate",
+      "reason": "Drawdown resilience selects a running-peak-to-trough event only in the afternoon and ignores upside shocks. Campaign050 resets both halves, selects largest one-minute absolute shocks of either sign, and scores directional terminal retracement."
+    },
+    {
+      "family": "intraday_return_time_reversal_asymmetry_236p_and_weak_order_entropy",
+      "result": "distinct_pending_statistical_uniqueness_gate",
+      "reason": "Those definitions summarize full-path higher-order ordering or entropy. Campaign050 is a two-event extreme-conditioned statistic with no third moment, permutation count, or all-path average."
+    },
+    {
+      "family": "intraday_extreme_arrival_order_240m",
+      "result": "distinct_pending_statistical_uniqueness_gate",
+      "reason": "Extreme-arrival order compares when session high and low occur in OHLC space. Campaign050 reads close only and uses shock direction plus magnitude-normalized retracement, not clock order."
+    },
+    {
+      "family": "intraday_body_next_microgap_reversal_238p",
+      "result": "distinct_pending_statistical_uniqueness_gate",
+      "reason": "Body-to-next-gap reversal reads open and close and measures a population correlation over 238 immediate pairs. Campaign050 reads no open, selects two close-return extremes, and spans each event to its same-half close."
+    },
+    {
+      "family": "intraday_lunch_repricing_persistence_2r_and_lunch_repricing_persistence_119m",
+      "result": "distinct",
+      "reason": "Campaign050 explicitly excludes the lunch transition and never anchors 11:30 to 13:01; both halves are independent."
+    },
+    {
+      "family": "amount_volume_vwap_market_benchmark_OHLC_range_and_candidate49_families",
+      "result": "distinct",
+      "reason": "Campaign050 reads only close, contains no activity field, transaction price, market peer, open/high/low, Candidate49 value, or prospective ledger field."
+    },
+    {
+      "family": "terminal_factor_combination_filter_threshold_or_model",
+      "result": "distinct",
+      "reason": "Campaign050 contains one raw close-path statistic and no terminal factor value, fitted weight, filter, threshold, regime, subset, combination, or model."
+    }
+  ],
+  "research_boundary": {
+    "external_campaign050_minute_partitions_read": false,
+    "candidate_or_comparison_values_read": false,
+    "historical_daily_price_or_forward_return_read": false,
+    "provider_request_issued": false,
+    "candidate49_historical_return_signal_execution_or_milestone_backfill_performed": false,
+    "candidate49_ledgers_changed": false,
+    "candidate50_prospective_activation_created": false,
+    "current_scoring_selection_sizing_or_orders_performed": false
+  },
+  "decision": {
+    "conceptual_independence_passed": true,
+    "statistical_independence_pending_all_73_comparisons": true,
+    "predictive_value_established": false,
+    "next_action": "Bind this record, inherit the exact 72-factor Campaign049 comparison order, append terminal Campaign049 as comparison 73, freeze one exact conditional development trial, and run the binding validator before implementation."
+  }
+}

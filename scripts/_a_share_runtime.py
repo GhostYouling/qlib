@@ -8,6 +8,7 @@ from collections.abc import Iterable, Mapping
 from pathlib import Path
 
 DATA_ROOT_ENV = "QLIB_A_SHARE_DATA_ROOT"
+DATA_ROOT_POINTER_NAME = ".qlib_a_share_data_root"
 CHINA_STANDARD_TIME = dt.timezone(dt.timedelta(hours=8), name="Asia/Shanghai")
 
 
@@ -17,14 +18,25 @@ def resolve_data_root(
 ) -> Path:
     """Resolve the portable A-share data root.
 
-    An absolute environment value is used as-is. A relative value is anchored
-    to the repository rather than the process working directory so scheduled
-    jobs behave consistently. The historical ``<repository>/data`` location
-    remains the default.
+    An environment value has first priority. If it is absent, one nonempty
+    line in ``<repository>/.qlib_a_share_data_root`` selects an atomically
+    activated provider root. Relative values are anchored to the repository
+    rather than the process working directory so scheduled jobs behave
+    consistently. The historical ``<repository>/data`` location remains the
+    default when neither configuration exists.
     """
 
     environment = os.environ if environ is None else environ
     configured = environment.get(DATA_ROOT_ENV, "").strip()
+    if not configured:
+        pointer = Path(repository_root) / DATA_ROOT_POINTER_NAME
+        if pointer.is_file():
+            values = pointer.read_text(encoding="utf-8").splitlines()
+            if len(values) != 1 or not values[0].strip():
+                raise RuntimeError(
+                    f"invalid A-share data-root pointer: {pointer}"
+                )
+            configured = values[0].strip()
     candidate = Path(configured).expanduser() if configured else Path("data")
     if not candidate.is_absolute():
         candidate = repository_root / candidate

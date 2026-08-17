@@ -1,0 +1,21 @@
+{
+  "schema_version": 1,
+  "kind": "a_share_three_day_walkforward_campaign129_infrastructure_failure",
+  "status": "recorded_terminal_test_black_check_failure",
+  "recorded_at": "2026-08-14T07:27:00+08:00",
+  "stage": "campaign129_terminal_validation",
+  "failed_command_summary": "The first Black --check invocation reported that the new Campaign129 terminal test would be reformatted and exited nonzero.",
+  "successful_recovery": {
+    "scope": "Only the new, unfrozen Campaign129 terminal test was formatted.",
+    "black_check": "passed",
+    "ruff": "passed",
+    "pytest": "5 passed in 0.06s"
+  },
+  "failure_handling": {
+    "failed_exit_treated_as_success": false,
+    "frozen_test_or_scientific_artifact_rewritten": false,
+    "source_candidate_comparator_price_or_return_value_read": false,
+    "candidate49_ledger_changed": false,
+    "scientific_result_changed": false
+  }
+}

@@ -1,0 +1,52 @@
+{
+  "schema_version": 1,
+  "kind": "a_share_three_day_walkforward_campaign086_feature_implementation_freeze_v2",
+  "status": "empty_identity_repair_frozen_before_campaign086_feature_build_retry",
+  "frozen_at": "2026-08-07T01:12:00+08:00",
+  "protocol": {
+    "path": "docs/a_share_three_day_walkforward_campaign_086_no_return_preregistration.json",
+    "sha256": "033cd34013770b5b19ccb8579100c7ab920946de22b3936bc34a0898f4d2acb3"
+  },
+  "repair_protocol": {
+    "path": "docs/a_share_three_day_walkforward_campaign_086_empty_identity_repair_protocol_20260807.json",
+    "sha256": "c90796e994bc81325e0c06c66cc68c1245e7f52376b362d9b2d2154295cca277"
+  },
+  "v1_implementation_freeze": {
+    "path": "docs/a_share_three_day_walkforward_campaign_086_feature_implementation_freeze_20260807.json",
+    "sha256": "9ea63a23935619537137376e464297bbc302bed26feff0ae719ad00656c47ebd"
+  },
+  "v1_feature_runner": {
+    "path": "scripts/a_share_three_day_walkforward_campaign086_features.py",
+    "sha256": "ed59f42461a89cc58738c922e87ac821b548dabd8ac1ce0f99eca68cef3b9f8a"
+  },
+  "v2_feature_runner": {
+    "path": "scripts/a_share_three_day_walkforward_campaign086_features_v2.py",
+    "sha256": "5d5047d8d13963ac5e2aa2b6629c3d6e34ac5c0cc6b4e268bc943d96d57ad57e"
+  },
+  "v2_tests": {
+    "path": "tests/data_collector_tests/test_a_share_three_day_walkforward_campaign086_features_v2.py",
+    "sha256": "b024035dce9a84c8e9a16de7bb4ee8ecded7aa9667393a52ba89fa455e9d5558",
+    "combined_campaign086_pytest_passed": 12,
+    "combined_campaign086_pytest_failed": 0,
+    "ruff_passed": true
+  },
+  "attempt_ledger_before_retry": {
+    "path": "data/experiments/short_horizon/historical_walkforward/campaign_086/research_attempt_ledger_v5.json",
+    "sha256": "27f329683d02de54d753ec7b574a9174cbfabcee29217c12b2b790eb2075913e",
+    "campaign_attempt_count": 5,
+    "infrastructure_failure_count": 5
+  },
+  "allowed_delta_implemented": {
+    "empty_accepted_joint_clean_identity_returns_exact_empty_attached_schema": true,
+    "nonempty_identity_delegates_to_byte_frozen_v1": true,
+    "v1_runner_and_v1_freeze_preserved": true,
+    "factor_formula_direction_state_support_pair_and_endpoint_semantics_changed": false,
+    "eligible_universe_comparator_gate_or_development_semantics_changed": false
+  },
+  "candidate_snapshot_published_before_v2_freeze": false,
+  "comparison_values_read_before_v2_freeze": false,
+  "historical_daily_price_or_forward_return_values_read_before_v2_freeze": false,
+  "provider_request_issued_before_v2_freeze": false,
+  "candidate49_ledgers_changed_before_v2_freeze": false,
+  "current_scoring_selection_sizing_or_orders_performed_before_v2_freeze": false
+}

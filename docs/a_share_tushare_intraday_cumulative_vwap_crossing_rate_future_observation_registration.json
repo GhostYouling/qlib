@@ -1,0 +1,138 @@
+{
+  "version": 1,
+  "kind": "a_share_tushare_intraday_cumulative_vwap_crossing_rate_future_observation_registration",
+  "status": "prospective_observation_registered_pending_first_future_source_session",
+  "registered_at": "2026-07-25T06:26:19Z",
+  "registration_id": "candidate49_intraday_cumulative_vwap_crossing_rate_240m_v1",
+  "purpose": "Register the exact candidate 49 direction and three-session execution protocol before any eligible future minute session, daily outcome, score, selection, or order is observed.",
+  "source_evidence": {
+    "future_only_policy": {
+      "path": "docs/a_share_three_day_future_only_minute_research_policy_20260725.json",
+      "sha256": "52ca8bfa7201509fe891d0af3d1c87aeebd64e47e6ec6641e897849411df408c"
+    },
+    "mechanism_overlap_reaudit": {
+      "path": "docs/a_share_tushare_intraday_cumulative_vwap_crossing_rate_mechanism_overlap_reaudit_20260725.json",
+      "sha256": "f86ba3cdfd7ead04963519e1c86e0d022467896a68ac3422fb5d742f716dcdcd"
+    },
+    "no_return_preregistration": {
+      "path": "docs/a_share_tushare_intraday_cumulative_vwap_crossing_rate_no_return_preregistration.json",
+      "sha256": "cefa5f23b5214e123d0bdea1511a398cb4a70c0ee4cc8da7d1f69f52bdbe4aeb"
+    },
+    "historical_candidate_snapshot": {
+      "path": "/Volumes/DIsk/qlib-a-share-tushare-1m/derived/a_share/rich/tushare/minute_intraday_cumulative_vwap_crossing_rate/tushare_stk_mins_1m_2019_2025_ea0cbb8f_intraday_cumulative_vwap_crossing_rate_v1/snapshot_manifest.json",
+      "sha256": "f3dd3417bd6adcaa06d8927865ea3f464ebc02df302b8f488e43450f7c620196",
+      "dataset_sha256": "67bda6df74747a0f39fe6eb252aada84ea7850fff2c05bdae4951aa41fcc7037",
+      "rows": 7724498,
+      "eligible_rows": 7714026,
+      "historical_daily_price_fields_read": [],
+      "historical_forward_return_fields_read": false
+    },
+    "ordered_no_return_audit": {
+      "path": "data/experiments/short_horizon/20260725T062547Z_intraday_cumulative_vwap_crossing_rate_no_return_audit.json",
+      "sha256": "51bb248b1071983cf9a05fca94c6cc08770a2d10fbef1d6d087f2d5a875fdf7d",
+      "coverage_passed": true,
+      "capacity_passed": true,
+      "uniqueness_comparisons": 24,
+      "all_uniqueness_comparisons_passed": true,
+      "maximum_absolute_median_daily_rank_correlation": 0.19764445307465522,
+      "historical_daily_price_fields_read": [],
+      "historical_forward_return_fields_read": false
+    }
+  },
+  "factor": {
+    "name": "intraday_cumulative_vwap_crossing_rate_240m",
+    "direction": "higher",
+    "formula": "adjacent sign-change count divided by adjacent-pair count after removing exact-zero signs from sign(log(close_t/(cumulative_amount_t/cumulative_volume_t))) over the exact 240-position continuous-session path",
+    "source_fields": [
+      "datetime",
+      "symbol",
+      "provider",
+      "close",
+      "volume",
+      "amount"
+    ],
+    "source_grid": "exact 241-row accepted Tushare session with 09:30 retained in raw evidence but excluded from the 240-position factor",
+    "one_sided_zero_volume_or_amount_policy": "whole_stock_day_missing",
+    "joint_zero_volume_amount_policy": "inactive_bar_retained",
+    "exact_zero_deviation_sign_policy": "remove_without_fill",
+    "minimum_nonzero_deviation_signs": 2,
+    "endpoint_canonicalization_tolerance": 1e-12,
+    "direction_formula_window_transform_threshold_filter_subset_or_weight_change_allowed": false
+  },
+  "future_data_boundary": {
+    "provider": "tushare",
+    "interface": "pro.stk_mins",
+    "frequency_argument": "1min",
+    "earliest_eligible_signal_session": "the first accepted local provider-calendar session on or after 2026-07-27",
+    "session_is_eligible_only_if": [
+      "the session was unavailable to this research process at registration time",
+      "the raw full-market minute snapshot was atomically published after registration",
+      "every used stock-day has the accepted exact 241-row timestamp grid",
+      "the local daily point-in-time price basis and buyable universe passed their gates",
+      "the factor value was computed only after the signal-session close",
+      "at least 50 quality/listing-eligible buyable names have finite factor values"
+    ],
+    "backfill_before_registration_allowed": false,
+    "use_2026_07_14_through_registration_as_holdout_allowed": false,
+    "provider_request_before_the_first_completed_session_allowed": false,
+    "retrospective_replacement_or_repair_after_outcome_observation_allowed": false
+  },
+  "signal_and_execution": {
+    "signal_frequency": "every accepted eligible local session",
+    "ranking": "descending factor value with deterministic stock-code tie break",
+    "topk": 3,
+    "entry": "next accepted local session open",
+    "exit": "third accepted local session close after entry",
+    "initial_capital_cny": 200000,
+    "target_entry_exposure_fraction_per_slot": 0.05,
+    "maximum_entry_exposure_fraction_per_signal": 0.15,
+    "buy_lot_size_shares": 100,
+    "commission_rate_each_side": 0.0001,
+    "transfer_fee_rate_each_side": 0.00002,
+    "sell_stamp_duty_rate": 0.0005,
+    "primary_adverse_slippage_rate_each_side": 0.001,
+    "maximum_daily_amount_participation": 0.01,
+    "unfilled_entry_policy": "keep slot in cash without replacement",
+    "blocked_exit_policy": "retain position and retry at later accepted closes for at most twenty local sessions",
+    "shared_cash_constrained_portfolio": true,
+    "same_session_amount_use": "after-outcome capacity audit only"
+  },
+  "evaluation": {
+    "early_rejection": {
+      "minimum_completed_signal_sessions": 60,
+      "retire_if": "mean Rank IC is nonpositive and primary-cost shared-portfolio net return is nonpositive",
+      "promotion_allowed": false
+    },
+    "full_gate": {
+      "minimum_completed_signal_sessions": 200,
+      "minimum_mean_rank_ic": 0,
+      "minimum_positive_rank_ic_rate": 0.5,
+      "minimum_shared_portfolio_net_cumulative_return": 0,
+      "maximum_allowed_drawdown": -0.2,
+      "minimum_board_lot_affordability": 0.9,
+      "maximum_daily_amount_participation": 0.01,
+      "terminal_unresolved_positions": 0
+    },
+    "passing_result": "continued paper observation only; no live order and no aggregation until at least two economically independent future-only factors pass",
+    "candidate_50_activation_allowed_before_candidate_49_terminal_or_full_gate": false
+  },
+  "storage": {
+    "future_raw_root_below_data_root": "prospective/a_share/rich/tushare/minutes/1m/candidate49",
+    "future_factor_root_below_data_root": "prospective/a_share/rich/tushare/factors/intraday_cumulative_vwap_crossing_rate_240m",
+    "signal_ledger_below_repository": "data/experiments/short_horizon/candidate49_future_signal_ledger.json",
+    "execution_ledger_below_repository": "data/experiments/short_horizon/candidate49_future_execution_ledger.json",
+    "append_only": true,
+    "raw_or_ledger_overwrite_allowed": false,
+    "credential_persistence_allowed": false
+  },
+  "decision": {
+    "historical_return_diagnostic_allowed": false,
+    "future_observation_registered": true,
+    "current_signal_exists": false,
+    "current_score_or_selection_exists": false,
+    "current_sizing_or_order_exists": false,
+    "aggregation_allowed": false,
+    "level2_intake_justified": false,
+    "investment_advice": false
+  }
+}

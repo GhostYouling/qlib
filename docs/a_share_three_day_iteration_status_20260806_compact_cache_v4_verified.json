@@ -1,0 +1,82 @@
+{
+  "version": 1,
+  "kind": "a_share_three_day_iteration_status",
+  "status": "campaign067_terminal_preserved_compact_comparator_cache_v4_verified_campaign068_offline_scouting_authorized",
+  "recorded_at": "2026-08-06T02:26:28+08:00",
+  "authoritative_predecessor": {
+    "path": "docs/a_share_three_day_iteration_status_20260805_campaign067_verified.json",
+    "sha256": "c3816f67eee7b045c7812842cc20dc30224f90cd41209b6ea39827635acfd8f5"
+  },
+  "campaign067_state": {
+    "factor": "quarterly_roe_profit_scale_efficiency_gap_2r",
+    "terminal": true,
+    "development_survivor_count": 0,
+    "stress_2024_2025_opened": false,
+    "historical_evidence_rewritten_or_substituted": false,
+    "completed_no_return_audit_sha256": "daeac2c2364d00c09247d0e721435b81f587c0f215a5a93cba30b7661f205d54"
+  },
+  "compact_comparator_cache_v4": {
+    "publication_binding": {
+      "path": "docs/a_share_three_day_compact_comparator_cache_v4_publication_binding_20260806.json",
+      "sha256": "244f70b88be0396f7473c6664835cbb3cdad9135b6692b77c74018b1d53c925b"
+    },
+    "manifest": {
+      "path": "/Volumes/DIsk/qlib-a-share-tushare-1m/derived/a_share/rich/tushare/compact_comparator_cache/campaign067_terminal_numeric98_v4/snapshot_manifest.json",
+      "sha256": "3d81068f07ac61fe4cd04bd1a893e58759c06d88213263135fec5244e309b57b",
+      "dataset_sha256": "4a56dac48c14b667b6ee431519266f27bb8ff7cc25c51d8dce3bbc7aebe0376f"
+    },
+    "eligibility_rows": 1331759,
+    "logical_numeric_comparator_count": 98,
+    "fixed_materialized_comparator_count": 96,
+    "dynamic_recipe_comparator_count": 2,
+    "physical_float64_column_count": 99,
+    "year_partition_count": 7,
+    "campaign067_comparison_count": 97,
+    "campaign067_all_comparison_result_objects_exactly_equal": true,
+    "independent_full_equivalence_exit_code": 0,
+    "future_historical_no_return_use_authorized": true,
+    "retroactive_campaign067_substitution_allowed": false
+  },
+  "attempt_accounting": {
+    "cumulative_historical_research_attempt_count": 402,
+    "cumulative_return_reading_development_trial_count": 274,
+    "cumulative_cache_infrastructure_failure_count": 6,
+    "v4_publication_attempt_increment": 0,
+    "v4_publication_return_reading_trial_increment": 0,
+    "v4_publication_failure_increment": 0
+  },
+  "candidate49_future_only_layer": {
+    "active_candidate": "candidate49_intraday_cumulative_vwap_crossing_rate_240m_v1",
+    "last_closed_daily_failure": {
+      "path": "docs/a_share_candidate49_20260805_daily_source_failure_record.json",
+      "sha256": "b2b6b07e1f0fca128ba9935dac6331319b2a7147e3d73e52b624853a2259bbbf"
+    },
+    "signal_ledger": {
+      "path": "data/experiments/short_horizon/candidate49_future_signal_ledger.json",
+      "sha256": "5193f00d7f36da003f53cec387900da4c3d002299f5dfcfc1a95eaa199ed3a79",
+      "entries": 0
+    },
+    "execution_ledger": {
+      "path": "data/experiments/short_horizon/candidate49_future_execution_ledger.json",
+      "sha256": "d57a3e61eac969e42cafa418ccd8c0a5ee65dcf69da145bb2c096c2a02a2ea4f",
+      "entries": 0
+    },
+    "2026_08_06_same_day_workflow_run_before_16_30_allowed": false,
+    "provider_request_issued_by_cache_work": false,
+    "historical_signal_return_or_execution_backfill_allowed": false,
+    "candidate50_activation_allowed": false
+  },
+  "unified_report": {
+    "path": "data/experiments/short_horizon/three_day_research_report.md",
+    "sha256": "7023760adb54fbcb5a58a73c504f6f6eb0d969983bac6d54d2405875f63e73dc"
+  },
+  "next_offline_research": {
+    "campaign068_definition_scouting_allowed": true,
+    "candidate068_values_or_returns_may_be_read_before_preregistration_and_implementation_freeze": false,
+    "campaign067_must_be_appended_to_complete_logical_definition_order": true,
+    "compact_cache_manifest_must_be_bound_before_candidate068_no_return_use": true,
+    "dynamic_quality_recipes_must_be_reconstructed_after_candidate068_key_intersection": true,
+    "all_failed_and_successful_trials_must_be_appended": true,
+    "historical_results_may_generate_current_scores_selection_sizing_or_orders": false
+  }
+}

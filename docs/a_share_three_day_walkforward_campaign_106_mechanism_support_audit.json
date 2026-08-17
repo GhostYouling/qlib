@@ -1,0 +1,171 @@
+{
+  "schema_version": 1,
+  "kind": "a_share_three_day_walkforward_campaign106_mechanism_support_audit",
+  "status": "passed_semantic_independence_and_support_predicate_review_before_campaign106_source_candidate_or_comparison_values",
+  "recorded_at": "2026-08-07T18:54:51Z",
+  "purpose": "Challenge Campaign106's exact intrabar price-variation clock-occupancy mechanism against all 135 v63 logical definitions and every known failed support predicate before reading any Campaign106 minute source row, candidate value, comparator value, daily price, or forward return.",
+  "authoritative_inputs": {
+    "concept_scouting": {
+      "path": "docs/a_share_three_day_walkforward_campaign_106_concept_scouting.json",
+      "sha256": "dca7a6a390178264c60cbd2aa327f6f2b0e3904b4da2e36ac5af5966d2615de6"
+    },
+    "iteration_state": {
+      "path": "docs/a_share_three_day_iteration_status_20260808_campaign105_terminal.json",
+      "sha256": "b84143a49e14f40ef2151ec03e7c774e42ab01389f68acacef4297de1b81e8ae"
+    },
+    "numeric_policy_v63": {
+      "path": "docs/a_share_three_day_walkforward_future_numeric_comparison_eligibility_policy_v63_20260808.json",
+      "sha256": "2ec29422ce2938c22307095879acfd60397f03c0c70355d68466fd4179ec4ce8",
+      "complete_definition_count": 135,
+      "complete_definition_order_sha256": "f77f069f07f05bca7b3d478d0e411945a27f6ecf9e8437c02f73900975eb89b3",
+      "numeric_comparator_count_reserved_after_coverage": 132,
+      "numeric_comparator_order_sha256": "7ed69afd1408e84dcc856583344166ffc9bcbb0add1aed63163b1d12a1be9a25"
+    },
+    "campaign105_terminal_result": {
+      "path": "docs/a_share_three_day_walkforward_campaign_105_terminal_result_binding_20260808.json",
+      "sha256": "118820900341dc3a3d540abfab5676dabee439280469a33475a1953bbe6cecf9"
+    },
+    "support_equivalence_efficiency_audit": {
+      "path": "docs/a_share_three_day_walkforward_campaign_096_postresult_support_equivalence_efficiency_audit_20260807.json",
+      "sha256": "57ce0abd33b1fe9535ae16395d27a7ea5f23b064922feba34fee438c6a7e4e68"
+    }
+  },
+  "candidate": {
+    "name": "intraday_nonzero_range_bar_share_240m",
+    "direction": "higher",
+    "mechanism": "fraction of the fixed continuous-auction clock grid whose within-minute observed transaction-price range is strictly positive",
+    "formula": "sum_i 1[high_i>low_i] / 240 over exactly 09:31-11:30 and 13:01-15:00 after finite strictly positive high/low and low_i<=high_i validation",
+    "source_projection": [
+      "datetime",
+      "symbol",
+      "provider",
+      "high",
+      "low"
+    ],
+    "zero_range_rule": "valid non-varying bar",
+    "minimum_nonzero_range_bars": 0,
+    "positive_total_range_required": false,
+    "valid_range": [0.0, 1.0],
+    "candidate49_used_or_modified": false
+  },
+  "complete_library_review": {
+    "all_135_frozen_logical_definitions_reviewed_in_exact_v63_order": true,
+    "three_semantic_only_definitions_reviewed_without_numeric_coercion": [
+      "intraday_cross_sectional_standardized_return_state_stability_236p",
+      "signal_day_turnover_rate_pct",
+      "intraday_own_bar_close_location_entropy_10b_240m"
+    ],
+    "candidate49_reviewed_only_as_an_isolation_boundary": true,
+    "old_terminal_definition_formula_direction_failure_history_or_numeric_eligibility_changed": false,
+    "candidate_is_exact_formula_duplicate": false,
+    "candidate_is_direction_only_duplicate": false,
+    "candidate_is_parameter_or_window_only_duplicate": false,
+    "candidate_combines_old_factor_values": false,
+    "candidate_changes_quality_listing_buyability_cost_fold_purge_or_survivor_gates": false
+  },
+  "semantic_invariance_checks": [
+    {
+      "intervention": "Change every strictly positive high-low width while preserving exactly which bars have high>low versus high=low.",
+      "candidate_result": "unchanged",
+      "distinguishes_from": "range magnitude, entropy, concentration, timing center, variance, profile similarity, frontier, spectral, overlap, and quadratic range mechanisms"
+    },
+    {
+      "intervention": "Change open and close arbitrarily inside each already-valid high-low interval while preserving high and low.",
+      "candidate_result": "unchanged",
+      "distinguishes_from": "price-update, return, body, wick, close-location, gap, candle-direction, unchanged-close, and VWAP-crossing mechanisms"
+    },
+    {
+      "intervention": "Turn one valid high=low bar into a valid high>low bar while preserving the other 239 binary states.",
+      "candidate_result": "increases by exactly 1/240",
+      "distinguishes_from": "range-profile statistics that depend on magnitude allocation and may change by an arbitrary amount"
+    },
+    {
+      "intervention": "Change volume and amount, including the positive-versus-joint-zero activity mask, while preserving every high-low pair.",
+      "candidate_result": "unchanged",
+      "distinguishes_from": "Campaign105 activity occupancy, amount/volume profiles, transaction price, turnover, price-impact, and Candidate49 mechanisms"
+    },
+    {
+      "intervention": "Permute the 240 valid bars while preserving the count of high>low states.",
+      "candidate_result": "unchanged",
+      "distinguishes_from": "clock ordering, run, serial, lead-lag, half-session, peak, frontier-arrival, and day-over-day mechanisms"
+    }
+  ],
+  "nearest_terminal_family_challenges": [
+    {
+      "family": "intraday_price_update_share_238m",
+      "result": "semantically_distinct_pending_all_132_numeric_comparisons",
+      "reason": "The terminal factor compares adjacent closes and has 238 within-half transitions. Campaign106 never reads close or adjacency: a bar can have high>low while its close is unchanged, and closes can change between two high=low bars."
+    },
+    {
+      "family": "intraday_active_trading_bar_share_240m",
+      "result": "semantically_distinct_pending_all_132_numeric_comparisons",
+      "reason": "Campaign105 observes positive volume/amount clock occupancy and reads no price. Campaign106 observes within-minute high-low variation and reads no activity; active one-price bars and inactive source states separate the mechanisms."
+    },
+    {
+      "family": "intraday_intrabar_range_participation_entropy_240m",
+      "result": "semantically_distinct_pending_all_132_numeric_comparisons",
+      "reason": "The entropy factor normalizes positive log-range magnitudes and used a 120-positive-range support gate. Campaign106 discards every positive magnitude, uses a fixed denominator 240, retains any zero-to-240 varying-bar count, and has no positive-total or support minimum."
+    },
+    {
+      "family": "range clock center variance profile similarity and local-peak families",
+      "result": "semantically_distinct_pending_all_132_numeric_comparisons",
+      "reason": "Those factors retain range magnitude and/or clock order. Campaign106 is invariant to both once the binary zero-versus-positive mask count is fixed."
+    },
+    {
+      "family": "intrabar body wick close-location and unchanged-close range-absorption families",
+      "result": "semantically_distinct_pending_all_132_numeric_comparisons",
+      "reason": "Those mechanisms require open and/or close or partition range mass by candle state. Campaign106 reads only high and low and does not condition on another state."
+    },
+    {
+      "family": "Candidate49 intraday cumulative VWAP crossing rate",
+      "result": "semantically_distinct_and_isolated",
+      "reason": "Candidate49 combines cumulative amount/volume transaction price with close and remains prospective-only. Campaign106 uses no close, amount, volume, cumulative path, or crossing."
+    }
+  ],
+  "mandatory_prevalue_support_predicate_gate": {
+    "required_by_policy_v63": true,
+    "all_known_terminal_coverage_failures_through_campaign105_reviewed": true,
+    "known_failed_support_inventory": [
+      {"campaign": 5, "failed_support_class": "sparse lunch repricing plus retained post-lunch return support", "relationship": "not inherited; no close, return, lunch event, adjacency, or event minimum"},
+      {"campaign": 8, "failed_support_class": "one-sided-zero share-volume response rule", "relationship": "not inherited; no volume, amount, response pair, or active-pair minimum"},
+      {"campaigns": [9, 11], "failed_support_class": "at least 120 positive-range bars plus positive aggregate range", "relationship": "strictly broader: every valid zero-range bar remains a finite state, zero through 240 nonzero-range bars are allowed, and no positive-total or count threshold exists"},
+      {"campaign": 13, "failed_support_class": "amount/volume transaction-price containment and at least 120 informative active ranges", "relationship": "strictly broader: no transaction price, activity, containment, or informative-count minimum"},
+      {"campaign": 19, "failed_support_class": "at least 120 informative nonzero body-sign pairs", "relationship": "not inherited; no open, close, sign, pair, or positive-count requirement"},
+      {"campaign": 44, "failed_support_class": "all-terminal-factor common finite intersection", "relationship": "not inherited; one raw high-low mask only"},
+      {"campaigns": [52, 68, 70, 84], "failed_support_class": "multi-quarter or prior-year event cold start", "relationship": "not inherited; no event history or lookback"},
+      {"campaign": 60, "failed_support_class": "exact prior stock session plus jointly nonzero return floor", "relationship": "not inherited; same-session only and zero range is valid"},
+      {"campaign": 63, "failed_support_class": "positive leave-one-out variance at every return position", "relationship": "not inherited; no peer benchmark or variance"},
+      {"campaigns": [86, 96], "failed_support_class": "at least 120 adjacent positive-range close-location pairs", "relationship": "strictly broader: zero-range bars are retained directly, no close location, adjacency, variance, or pair minimum exists"},
+      {"campaign": 95, "failed_support_class": "prevalue fixed-bin semantic contradiction", "relationship": "not inherited; exact high>low is a binary predicate with no bin edge or state-alphabet ambiguity"}
+    ],
+    "candidate_exact_support_predicate": "Require the exact 240-row selected grid and finite strictly positive high and low on every bar with low<=high. High=low remains valid; there is no positive-range count, positive aggregate range, pair, variance, activity, event, lookback, peer, or subwindow threshold.",
+    "candidate_support_identical_to_known_failed_predicate": false,
+    "candidate_support_provably_narrower_than_known_failed_predicate": false,
+    "threshold_selected_from_candidate_values_or_results": false,
+    "decision": "pass_before_campaign106_source_rows_or_values"
+  },
+  "prevalue_decision": {
+    "economically_independent_enough_to_preregister": true,
+    "support_predicate_passed_before_values": true,
+    "numeric_uniqueness_still_required_against_all_132_eligible_comparators": true,
+    "strict_maximum_absolute_median_daily_rank_correlation": 0.8,
+    "minimum_pairwise_names_per_session": 50,
+    "minimum_pairwise_sessions_per_comparison": 100,
+    "drop_invert_rescale_residualize_filter_threshold_rewindow_or_rescue_after_failure_allowed": false
+  },
+  "research_boundary": {
+    "prior_metadata_and_terminal_results_read": true,
+    "campaign106_minute_source_rows_read": false,
+    "campaign106_candidate_values_computed_or_read": false,
+    "campaign106_comparison_values_read": false,
+    "historical_daily_price_fields_read": [],
+    "historical_forward_returns_read": false,
+    "provider_request_issued": false,
+    "candidate49_historical_backfill_performed": false,
+    "candidate49_ledgers_changed": false,
+    "second_prospective_candidate_created": false,
+    "current_scoring_selection_sizing_or_orders_performed": false,
+    "investment_advice": false
+  },
+  "next_action": "Hash-bind this audit, then freeze one exact coverage-first 132-comparator no-return protocol and one conditional single-factor 2019-2023 trial before implementing or reading Campaign106 values."
+}

@@ -1,0 +1,101 @@
+{
+  "schema_version": 1,
+  "kind": "a_share_three_day_walkforward_campaign115_concept_scouting",
+  "status": "one_independent_point_in_time_source_candidate_selected_before_provider_rows_or_values",
+  "recorded_at": "2026-08-09T02:52:55+08:00",
+  "purpose": "Review one finite Campaign115 catalog against the complete v84 mechanism frontier and select at most one point-in-time source mechanism before any Campaign115 provider row, candidate value, comparator value, daily price, or forward return is read.",
+  "authoritative_inputs": {
+    "iteration_state": {
+      "path": "docs/a_share_three_day_iteration_status_20260809_campaign114_terminal.json",
+      "sha256": "3923410e670f93ee345a5fecef0116737e548e960e51f73182f73f4684cb9f41"
+    },
+    "numeric_policy_v84": {
+      "path": "docs/a_share_three_day_walkforward_future_numeric_comparison_eligibility_policy_v84_20260809.json",
+      "sha256": "83a9b83bc2a8056623b7248fc61a70cf86d8a994b7bd9a08c7d0e13f744f5d8f",
+      "complete_definition_count": 141,
+      "complete_definition_order_sha256": "ccab6e3d9d81b0a02d4ff178fdd442b26a1e68e3655e1c6f5b2fcb28cd4a4559",
+      "numeric_comparator_count": 134,
+      "numeric_comparator_order_sha256": "31d788db467f558a0ac538315343090f1b3ad4cb27a26136a49ebaa88b2fdbf2"
+    },
+    "historical_walkforward_policy": {
+      "path": "docs/a_share_three_day_historical_walkforward_research_policy_20260727.json",
+      "sha256": "38426d6161b9bfed323c58caba18feca668b8c9d53e294951a8ba90c01a798bb"
+    },
+    "research_frontier_contract": {
+      "path": "docs/a_share_three_day_research_frontier_contract.json",
+      "sha256": "36ac39c68fedebf2fdf999475e10452278bbeff4f42b1c41963539867539eeaf"
+    },
+    "research_frontier_audit": {
+      "path": "docs/a_share_three_day_research_frontier_audit.json",
+      "sha256": "0ab41e940afff20cdd5ce46849820ffd56a3072aa859c30d4caa6dd71c10d846"
+    }
+  },
+  "finite_prevalue_concept_catalog": [
+    {
+      "name": "tushare_official_limit_up_queue_persistence",
+      "proposed_state": "For each completed signal session, use the official limit-event roster to distinguish a still-closed upper-limit event and measure how early its final seal occurred after penalizing repeated board openings.",
+      "prospective_direction": "higher",
+      "decision": "selected_for_exact_source_contract_and_zero_row_adapter",
+      "reason": "The official event state, final seal time, and board-opening count are unavailable in aggregate minute or daily OHLCV and cannot be reconstructed from the old limit-like close proxy. The mechanism is a point-in-time queue-persistence state, not another price-path transform or terminal-source repair. Selection does not establish entitlement, historical coverage, uniqueness, tradability, or predictive value."
+    },
+    {
+      "name": "tushare_limit_up_seal_amount_ratio",
+      "proposed_state": "Normalize the closing seal-order amount by a float or turnover denominator.",
+      "decision": "rejected_before_provider_rows_or_values",
+      "reason": "Choosing among seal amount, float market value, turnover, transaction amount, and provider ratios creates a denominator sweep. Campaign115 freezes the lower-dimensional time-and-reopening state instead."
+    },
+    {
+      "name": "tushare_limit_event_signed_up_down_state",
+      "proposed_state": "Assign positive values to upper-limit rows and negative values to lower-limit or broken-board rows.",
+      "decision": "rejected_before_provider_rows_or_values",
+      "reason": "Mixing continuation, distress, and failed-breakout mechanisms would introduce an arbitrary signed category mapping and would largely restate the exposed daily limit-like event branch."
+    },
+    {
+      "name": "tushare_limit_up_first_seal_earliness",
+      "proposed_state": "Use only the first seal time.",
+      "decision": "rejected_before_provider_rows_or_values",
+      "reason": "First seal time ignores subsequent breaks and can rate a repeatedly opened queue as durable. It is an alternate formula inside the selected queue-persistence mechanism and is frozen out before values."
+    },
+    {
+      "name": "official_exchange_information_disclosure_grade_local_retry",
+      "proposed_state": "Retry Campaign114 discovery with a different local scraper or page parser.",
+      "decision": "rejected_before_source_rows_or_values",
+      "reason": "Campaign114 is permanently terminal after premature source-row exposure. Changing discovery transport or parser would be a forbidden repair."
+    },
+    {
+      "name": "full_numeric_library_regularized_or_nonlinear_model",
+      "proposed_state": "Fit another regularized, tree, or nonlinear model over the 134 numeric comparators.",
+      "decision": "rejected_before_component_or_return_values",
+      "reason": "Campaign102, Campaign103, Campaign111, Campaign112, and Campaign114 already close complete-library refit and architecture substitutions. Another model is not a new information channel."
+    }
+  ],
+  "prevalue_decision": {
+    "complete_logical_definitions_reviewed": 141,
+    "complete_definition_order_sha256": "ccab6e3d9d81b0a02d4ff178fdd442b26a1e68e3655e1c6f5b2fcb28cd4a4559",
+    "concepts_reviewed": 6,
+    "rejected_concept_count": 5,
+    "selected_candidate_count": 1,
+    "selected_candidate": "tushare_official_limit_up_queue_persistence",
+    "selection_scope": "exact_source_contract_and_zero_row_adapter_only",
+    "campaign115_complete_factor_definition_count": 0,
+    "campaign115_numeric_comparator_count": 0,
+    "provider_source_rows_may_be_read_now": false,
+    "candidate_or_comparison_values_may_be_read": false,
+    "historical_daily_price_or_forward_return_values_may_be_read": false
+  },
+  "research_boundary": {
+    "prior_definition_names_directions_protocols_schema_metadata_and_terminal_results_read": true,
+    "campaign115_provider_rows_read": false,
+    "campaign115_candidate_values_computed_or_read": false,
+    "campaign115_comparator_values_read": false,
+    "historical_daily_price_fields_read": [],
+    "historical_forward_returns_read": false,
+    "provider_request_issued": false,
+    "candidate49_historical_backfill_performed": false,
+    "candidate49_ledgers_changed": false,
+    "second_prospective_candidate_created": false,
+    "current_scoring_selection_sizing_or_orders_performed": false,
+    "investment_advice": false
+  },
+  "next_stage": "Freeze a complete semantic-overlap audit and an exact Tushare limit_list_d source contract, including one formula, direction, event/non-event semantics, accepted time grid, row-ceiling rule, one-shot entitlement probe, 2019-2023 development-only source boundary, and fail-closed stop rules before any provider call."
+}

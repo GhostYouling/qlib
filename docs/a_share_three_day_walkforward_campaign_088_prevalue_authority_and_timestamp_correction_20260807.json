@@ -1,0 +1,73 @@
+{
+  "schema_version": 1,
+  "kind": "a_share_three_day_walkforward_campaign088_prevalue_authority_and_timestamp_correction",
+  "status": "append_only_correction_preserving_original_prevalue_artifacts",
+  "recorded_at": "2026-08-07T03:22:13+08:00",
+  "purpose": "Correct two manually declared future timestamps and bind Campaign088's subsequent protocol to the final Campaign087 v2 authority without rewriting the already published concept or mechanism audit.",
+  "preserved_original_artifacts": [
+    {
+      "path": "docs/a_share_three_day_walkforward_campaign_088_concept_scouting.json",
+      "sha256": "93e7ef7980f200641c314c7927a2c95753078bbd354017e06fc0aedd49c62ccf",
+      "declared_recorded_at": "2026-08-07T03:32:00+08:00",
+      "filesystem_birth_time": "2026-08-07T03:12:31+08:00",
+      "filesystem_modify_time": "2026-08-07T03:12:31+08:00",
+      "bytes": 7872,
+      "preserved": true
+    },
+    {
+      "path": "docs/a_share_three_day_walkforward_campaign_088_mechanism_overlap_audit.json",
+      "sha256": "9323461759c80b92148dbbe728014efcf08edf07ed0b1ce872bb65afd776e3cd",
+      "declared_recorded_at": "2026-08-07T03:34:00+08:00",
+      "filesystem_birth_time": "2026-08-07T03:13:35+08:00",
+      "filesystem_modify_time": "2026-08-07T03:13:35+08:00",
+      "bytes": 11138,
+      "preserved": true
+    }
+  ],
+  "timestamp_correction": {
+    "finding": "The declared recorded_at fields are ahead of the actual publication times and of this correction time.",
+    "correct_publication_order": [
+      "docs/a_share_three_day_walkforward_campaign_088_concept_scouting.json",
+      "docs/a_share_three_day_walkforward_campaign_088_mechanism_overlap_audit.json",
+      "docs/a_share_three_day_walkforward_future_numeric_comparison_eligibility_policy_v26_20260807.json",
+      "docs/a_share_three_day_walkforward_campaign_088_prevalue_authority_and_timestamp_correction_20260807.json"
+    ],
+    "scientific_content_changed": false,
+    "candidate_comparator_daily_price_or_forward_return_values_read_for_correction": false
+  },
+  "final_authority_for_all_subsequent_campaign088_artifacts": {
+    "campaign087_verified_state_v2": {
+      "path": "docs/a_share_three_day_iteration_status_20260807_campaign087_verified_v2.json",
+      "sha256": "2268bf9e6c90ac5ac2cdc2098d883d0e80b6b2287836af985dbacc0374797a29"
+    },
+    "campaign087_terminal_completion_freeze_v2": {
+      "path": "docs/a_share_three_day_walkforward_campaign_087_terminal_completion_freeze_v2_20260807.json",
+      "sha256": "4ac2a3d7b41ea0e0dcc09ab2bb899a2df9af317a9016cd4e24e04742f3114e65"
+    },
+    "numeric_comparator_policy_v26": {
+      "path": "docs/a_share_three_day_walkforward_future_numeric_comparison_eligibility_policy_v26_20260807.json",
+      "sha256": "f3f896ba4609699d1fa7bca5f613004b7e1dcc5eb4145268fc68f93f17479bc3",
+      "complete_definition_count": 119,
+      "complete_definition_order_sha256": "0de791d223395722a74dfec4e4b2e469550c9a34e6f5ff64af4087287da0abb5",
+      "eligible_numeric_comparator_count": 117,
+      "eligible_numeric_comparator_order_sha256": "cc176eda08a1dc587a44fe9130dea4bd72db64b3d93a3646b53da593adb8cc1c"
+    }
+  },
+  "authority_reconciliation": {
+    "original_concept_and_audit_remain_valid_semantic_prevalue_evidence": true,
+    "their_campaign087_v1_authority_references_are_superseded_without_rewriting": true,
+    "subsequent_campaign088_protocol_must_bind_this_correction_and_final_v2_authority": true,
+    "candidate_definition_direction_or_mandatory_comparators_changed": false
+  },
+  "research_boundary": {
+    "campaign088_minute_source_rows_read": false,
+    "campaign088_candidate_values_read": false,
+    "comparison_values_read": false,
+    "historical_daily_price_fields_read": [],
+    "historical_forward_returns_read": false,
+    "provider_request_issued": false,
+    "candidate49_historical_backfill_performed": false,
+    "candidate49_ledgers_changed": false,
+    "current_scoring_selection_sizing_or_orders_performed": false
+  }
+}

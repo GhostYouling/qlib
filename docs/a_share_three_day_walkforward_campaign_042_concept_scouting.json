@@ -1,0 +1,123 @@
+{
+  "version": 1,
+  "kind": "a_share_three_day_walkforward_campaign042_concept_scouting",
+  "status": "completed_before_campaign042_candidate_or_comparison_values",
+  "recorded_at": "2026-07-31T07:45:00Z",
+  "purpose": "Select one genuinely independent Campaign042 mechanism without reading minute candidate values, comparison values, daily prices, or historical returns.",
+  "authoritative_inputs": {
+    "iteration_state": {
+      "path": "docs/a_share_three_day_iteration_status_20260731_campaign041_verified.json",
+      "sha256": "4d16ebaa02f2029ba4913b9f5c65ae44e291c27036abce0497bca4abd3f515ba"
+    },
+    "historical_walkforward_policy": {
+      "path": "docs/a_share_three_day_historical_walkforward_research_policy_20260727.json",
+      "sha256": "38426d6161b9bfed323c58caba18feca668b8c9d53e294951a8ba90c01a798bb"
+    },
+    "campaign041_terminal_record": {
+      "path": "docs/a_share_three_day_walkforward_campaign_041_research_record.json",
+      "sha256": "0a21f4d189509aa0c0efbf4cb05ab688374104adfe3d52114467da83e0606844"
+    },
+    "inactive_queue_delta": {
+      "path": "docs/a_share_three_day_inactive_mechanism_scouting_queue_delta_20260726.json",
+      "sha256": "60f280cfecbd390a4fb6388eb3c5a63a507506b542aeba937f60d583cc717835",
+      "concept_used": "lunch repricing persistence"
+    }
+  },
+  "candidate_queue_review": [
+    {
+      "concept": "lunch_repricing_persistence",
+      "decision": "selected",
+      "reason": "It measures whether the completed 11:30-to-13:01 lunch-boundary repricing and the subsequent 13:01-to-15:00 close path agree in sign and relative magnitude. It is an explicit session-boundary information-assimilation mechanism, not a high-low range, containment, absorption, range-mass, activity-profile, market-benchmark, or terminal-factor combination."
+    },
+    {
+      "concept": "lunch_to_close_return_only",
+      "decision": "rejected_before_values",
+      "reason": "Using only the afternoon endpoint return would collapse the mechanism into an afternoon or late-return drift already represented in the terminal library."
+    },
+    {
+      "concept": "sign_only_lunch_afternoon_agreement",
+      "decision": "rejected_before_values",
+      "reason": "A sign-only count would discard magnitude compatibility and create a coarse two-state variant whose support could be changed after observing coverage."
+    },
+    {
+      "concept": "raw_product_or_gap_weighted_persistence",
+      "decision": "rejected_before_values",
+      "reason": "An unnormalized product would mix persistence with arbitrary return scale and outlier magnitude, while extra gap weights would add an unfrozen volatility exposure."
+    },
+    {
+      "concept": "lunch_repricing_reversal_or_direction_split",
+      "decision": "rejected_before_values",
+      "reason": "Inversion or separate positive/negative lunch branches would create an immediate post-result rescue path and more than one candidate."
+    },
+    {
+      "concept": "lunch_range_overlap_containment_absorption_or_range_mass",
+      "decision": "rejected_before_values",
+      "reason": "Adjacent range overlap, range containment, absorption, intrabar range participation, and range-mass concentration are terminal and explicitly prohibited for Campaign042."
+    },
+    {
+      "concept": "lunch_activity_vwap_market_or_quarterly_conditioning",
+      "decision": "rejected_before_values",
+      "reason": "Volume, amount, VWAP, peer, disclosure, event, regime, threshold, filter, and fitted conditioning would change the one-mechanism question and expand the finite search space."
+    }
+  ],
+  "selected_candidate": {
+    "name": "intraday_lunch_repricing_persistence_2r",
+    "direction": "higher",
+    "economic_hypothesis": "A lunch-boundary price change that is confirmed through the completed afternoon with compatible magnitude may indicate orderly assimilation of information rather than a transient discontinuity. Higher normalized persistence may therefore be associated with stronger next-open-to-third-close performance.",
+    "formula": "Let g=log(close_13:01/close_11:30) and a=log(close_15:00/close_13:01). Return 2*g*a/(g^2+a^2). If g=a=0, return missing.",
+    "selected_grid": [
+      "09:31-11:30",
+      "13:01-15:00"
+    ],
+    "selected_bar_count": 240,
+    "formula_anchor_times": [
+      "11:30",
+      "13:01",
+      "15:00"
+    ],
+    "source_projection": [
+      "datetime",
+      "symbol",
+      "provider",
+      "close"
+    ],
+    "forbidden_source_columns": [
+      "open",
+      "high",
+      "low",
+      "volume",
+      "amount"
+    ],
+    "include_0930": false,
+    "include_lunch_transition": true,
+    "lunch_return_definition": "log(close_13:01/close_11:30)",
+    "afternoon_follow_through_definition": "log(close_15:00/close_13:01)",
+    "exact_zero_component_retained": true,
+    "both_components_zero_is_missing": true,
+    "all_240_closes_must_be_finite_and_positive": true,
+    "valid_range": [
+      -1.0,
+      1.0
+    ],
+    "transform_filter_threshold_combination_or_model": "none"
+  },
+  "research_boundary": {
+    "comparison_factor_names_and_directions_read_from_frozen_protocol": true,
+    "external_minute_partitions_read": false,
+    "candidate_values_read": false,
+    "comparison_values_read": false,
+    "historical_daily_price_fields_read": false,
+    "historical_forward_returns_read": false,
+    "training_or_model_fitting_performed": false,
+    "provider_request_issued": false,
+    "candidate49_historical_return_signal_or_execution_backfill_performed": false,
+    "candidate49_ledgers_changed": false,
+    "candidate50_activation_created": false,
+    "current_scoring_selection_sizing_or_orders_performed": false
+  },
+  "decision": {
+    "selected_candidate_count": 1,
+    "predictive_value_established": false,
+    "next_action": "Complete a separate pre-value mechanism-overlap audit and bind the exact three anchors, two return definitions, normalized interaction, direction, zero semantics, source projection, and forbidden variants before any candidate value is computed."
+  }
+}

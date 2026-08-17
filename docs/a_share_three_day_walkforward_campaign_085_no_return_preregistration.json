@@ -1,0 +1,195 @@
+{
+  "schema_version": 1,
+  "kind": "a_share_three_day_walkforward_campaign085_no_return_preregistration",
+  "status": "frozen_before_campaign085_compact_cache_candidate_comparison_daily_price_or_return_values",
+  "frozen_at": "2026-08-06T23:25:00+08:00",
+  "purpose": "Freeze one disclosure-freshness and market-neutral late-drift confirmation product, the complete 116-definition library, all 114 eligible numeric comparisons, ordered no-return gates, and exactly one conditional 2019-2023 development trial before opening Campaign085 compact-cache rows or values.",
+  "candidate": {
+    "name": "quarterly_freshness_market_neutral_late_drift_confirmation_product_2r",
+    "direction": "higher",
+    "formula": "On each exact common finite stock-day cross-section, compute average-tie percentile ranks r_freshness of quarterly_announcement_freshness_60s and r_late_residual of intraday_market_neutral_late_residual_drift_238m, then return r_freshness * r_late_residual.",
+    "economic_hypothesis": "A recently disclosed report accompanied by positive idiosyncratic late-session confirmation may diffuse over the next three sessions; the product prevents either stale news or market-explained price movement from receiving a high score alone.",
+    "source_identity_projection": [
+      "trade_date",
+      "symbol",
+      "provider"
+    ],
+    "source_value_projection": [
+      "quarterly_announcement_freshness_60s",
+      "intraday_market_neutral_late_residual_drift_238m"
+    ],
+    "source_rule": "Read only the atomically published and independently verified candidate-independent compact comparator cache v4 after implementation freeze; preserve its exact stock-day identities and the two frozen old-definition values.",
+    "cross_section_rule": "For every trade_date, require both source values finite and compute pandas-compatible average-tie percentile ranks separately over exactly that common finite two-value identity cross-section.",
+    "combination_rule": "Exactly r_freshness * r_late_residual; no minimum, mean, maximum, geometric mean, threshold, sign filter, alternate identity universe, fitted exponent, or third component.",
+    "frozen_old_definition_inputs": [
+      "quarterly_announcement_freshness_60s",
+      "intraday_market_neutral_late_residual_drift_238m"
+    ],
+    "complete_reused_feature_library_frozen": true,
+    "campaign084_factor_used_or_combined": false,
+    "valid_range": {
+      "lower": 0.0,
+      "lower_inclusive": false,
+      "upper": 1.0,
+      "upper_inclusive": true
+    },
+    "missing_semantics": "Missing for duplicate source identity, either absent or nonfinite frozen input value, either nonfinite rank, or a result outside (0,1]. Never impute, clip, winsorize, substitute, backfill, threshold, or rank on a different universe.",
+    "floating_point_rule": "Use float64 source values, pandas average-tie pct ranks, and float64 multiplication. Reject rather than clip a nonfinite or out-of-range score.",
+    "alternate_operator_raw_scale_lag_window_direction_threshold_filter_subset_year_cost_regime_neutralization_fit_model_or_additional_combination_search": false
+  },
+  "source_chain": {
+    "concept_scouting": {
+      "path": "docs/a_share_three_day_walkforward_campaign_085_concept_scouting.json",
+      "sha256": "e8152877ce5434000696d85be127a1b8b306228e3aad3b0efcd54ef324c3f07b"
+    },
+    "mechanism_overlap_audit": {
+      "path": "docs/a_share_three_day_walkforward_campaign_085_mechanism_overlap_audit.json",
+      "sha256": "fea50eab003c24c6c893a7c169744988219f88b9ba866d16c8ed960349d7518f"
+    },
+    "authoritative_iteration_state": {
+      "path": "docs/a_share_three_day_iteration_status_20260806_campaign084_verified_v3.json",
+      "sha256": "48b59866a0cf777ad05ee8a5f7b7652b460e30db097b1eb3525f2a55b8ac317e"
+    },
+    "historical_walkforward_policy": {
+      "path": "docs/a_share_three_day_historical_walkforward_research_policy_20260727.json",
+      "sha256": "38426d6161b9bfed323c58caba18feca668b8c9d53e294951a8ba90c01a798bb"
+    },
+    "numeric_comparator_policy_v20": {
+      "path": "docs/a_share_three_day_walkforward_future_numeric_comparison_eligibility_policy_v20_20260806.json",
+      "sha256": "4dda0043a129dd6d986dfec75bb032b4df81c3648e01e7109c10cd97cf5d294d",
+      "complete_definition_count": 116,
+      "complete_definition_order_sha256": "d30cad0f1e422e3e4ba80392f42316a968511f53593e1826c1c1bb7171d04253",
+      "eligible_numeric_comparator_count": 114,
+      "eligible_numeric_comparator_order_sha256": "03a0c534f3bc321d5bc452415e6207026030978c4ac5d433305b04a21db6cea9"
+    },
+    "manage_qlib_a_share_data_skill": {
+      "path": "/Users/niyufei/.codex/skills/manage-qlib-a-share-data/SKILL.md",
+      "sha256": "90a99c54dd00f0c737e85c4c6dd48d906edbd0f591c61278885728eaf7806431"
+    },
+    "compact_comparator_cache_v4_publication_binding": {
+      "path": "docs/a_share_three_day_compact_comparator_cache_v4_publication_binding_20260806.json",
+      "sha256": "244f70b88be0396f7473c6664835cbb3cdad9135b6692b77c74018b1d53c925b"
+    },
+    "compact_comparator_cache_v4_manifest": {
+      "path": "/Volumes/DIsk/qlib-a-share-tushare-1m/derived/a_share/rich/tushare/compact_comparator_cache/campaign067_terminal_numeric98_v4/snapshot_manifest.json",
+      "sha256": "3d81068f07ac61fe4cd04bd1a893e58759c06d88213263135fec5244e309b57b",
+      "dataset_sha256": "4a56dac48c14b667b6ee431519266f27bb8ff7cc25c51d8dce3bbc7aebe0376f",
+      "eligibility_rows": 1331759,
+      "eligibility_sessions": 1632,
+      "year_partition_count": 7,
+      "logical_numeric_comparator_count": 98,
+      "values_may_read_only_after_protocol_and_implementation_freeze": true
+    },
+    "accepted_local_calendar": {
+      "path": "data/qlib/cn_a_share/calendars/day.txt",
+      "sha256": "fda506597d26bcec953cdc0882042a5046ec1587db60490e16a01627fd43f53a",
+      "line_count": 2799
+    },
+    "campaign084_terminal_numeric_comparator": {
+      "factor": "quarterly_profit_growth_level_acceleration_floor_2r",
+      "score_direction": "higher",
+      "snapshot_binding_path": "docs/a_share_three_day_walkforward_campaign_084_feature_snapshot_binding_v2_20260806.json",
+      "snapshot_binding_sha256": "45e4dde42acb65ed25993f0f83f18b8430fc93fd424b5d3eb53aecd296dc48b0",
+      "snapshot_manifest_path": "/Volumes/DIsk/qlib-a-share-tushare-1m/derived/a_share/rich/tushare/minute_walkforward_campaign084_feature_library/tushare_stk_mins_1m_2019_2025_ea0cbb8f_walkforward_campaign084_feature_library_v1/snapshot_manifest.json",
+      "snapshot_manifest_sha256": "68a547c9d85f6437382a16704f601074264c8206dd5fe4d23adaff20079f5994",
+      "dataset_sha256": "eaae6e206284f605e6d673a89166ab996e4f246d59955f4d8f427ff7d8aecc5a",
+      "supported_sessions_with_at_least_50_names": 1378,
+      "values_may_read_only_after_campaign085_coverage_pass": true
+    },
+    "campaign063_structurally_nonnumeric_definition": {
+      "factor": "intraday_cross_sectional_standardized_return_state_stability_236p",
+      "numeric_comparator_eligible": false,
+      "reason": "undefined numeric output retained only for semantic challenge"
+    },
+    "campaign079_semantic_only_terminal_definition": {
+      "factor": "signal_day_turnover_rate_pct",
+      "score_direction": "higher",
+      "numeric_comparator_eligible": false,
+      "reason": "terminated before values as semantic duplicate of the prior turnover family"
+    },
+    "candidate49_signal_ledger": {
+      "path": "data/experiments/short_horizon/candidate49_future_signal_ledger.json",
+      "sha256": "5193f00d7f36da003f53cec387900da4c3d002299f5dfcfc1a95eaa199ed3a79",
+      "entry_count": 0
+    },
+    "candidate49_execution_ledger": {
+      "path": "data/experiments/short_horizon/candidate49_future_execution_ledger.json",
+      "sha256": "d57a3e61eac969e42cafa418ccd8c0a5ee65dcf69da145bb2c096c2a02a2ea4f",
+      "entry_count": 0
+    }
+  },
+  "ordered_no_return_gates": {
+    "coverage_and_capacity_before_comparison_values": {
+      "coverage_basis": "candidate finite rows divided by the identical compact-cache v4 frozen quality-and-current-listing eligible rows over 2019-2025",
+      "minimum_median_coverage": 0.95,
+      "minimum_p05_coverage": 0.9,
+      "minimum_p05_eligible_names": 50,
+      "minimum_non_overlapping_three_session_cohorts": 200,
+      "minimum_observed_calendar_years": 5,
+      "holding_period_sessions": 3,
+      "comparison_values_read_before_coverage_pass": false,
+      "failed_gate_policy": "Record Campaign085 terminally and stop before all comparator values, daily price fields, or forward returns."
+    },
+    "uniqueness_after_coverage_only": {
+      "screen_start": "2019-01-01",
+      "screen_end": "2025-12-31",
+      "method": "Within each identical quality-listing-candidate-and-comparison-eligible stock-day cross-section, compute pairwise-complete Spearman correlation between directional percentile scores, then take each comparator's median daily correlation.",
+      "complete_definition_count": 116,
+      "complete_definition_order_sha256": "d30cad0f1e422e3e4ba80392f42316a968511f53593e1826c1c1bb7171d04253",
+      "numeric_comparator_count": 114,
+      "numeric_comparator_order_sha256": "03a0c534f3bc321d5bc452415e6207026030978c4ac5d433305b04a21db6cea9",
+      "numeric_comparator_order_definition": "Use the exact v20 114-comparator order; Campaign084 is final, while Campaign063 and Campaign079 remain semantic-only.",
+      "complete_definition_order_definition": "Use the exact v20 complete 116-definition order, including structurally nonnumeric Campaign063 and pre-value terminal Campaign079 for semantic challenge only.",
+      "maximum_allowed_absolute_median_daily_rank_correlation": 0.8,
+      "minimum_pairwise_names_per_session": 50,
+      "minimum_pairwise_sessions_per_comparison": 100,
+      "all_114_numeric_comparators_must_pass": true,
+      "candidate_specific_comparator_drop_allowed": false,
+      "insufficient_pairwise_overlap_fails_closed": true,
+      "candidate49_is_semantic_isolation_only": true,
+      "failed_gate_policy": "Stop before daily prices or forward returns; do not change either old input definition, product operator, direction, rank universe, remove a comparator, residualize, filter, subset, reweight, refit, or rescue."
+    }
+  },
+  "finite_development_catalog_if_admitted": {
+    "trial_id": "wf085_quarterly_freshness_market_neutral_late_drift_confirmation_product_2r_single_higher",
+    "feature_set": [
+      "quarterly_freshness_market_neutral_late_drift_confirmation_product_2r"
+    ],
+    "weights": [
+      1.0
+    ],
+    "direction": "higher",
+    "complexity": 1,
+    "expected_trial_count": 1,
+    "training_and_validation_folds": [
+      "train_2019_2020_validate_2021",
+      "train_2019_2021_validate_2022",
+      "train_2019_2022_validate_2023"
+    ],
+    "purge_signal_sessions": 3,
+    "label_partition_rule": "Both t+1 entry and t+3 exit must lie inside the same train or validation partition as the signal; purge the final three signal sessions at every boundary.",
+    "stress_2024_2025_rule": "Open once for the whole frozen campaign only after a nonzero 2019-2023 development-survivor record; classify as historically exposed stress replay, never pristine holdout.",
+    "alternate_operator_raw_scale_lag_window_direction_threshold_filter_subset_year_cost_regime_neutralization_fit_model_or_additional_combination_search": false
+  },
+  "research_boundary": {
+    "compact_cache_rows_may_read_after_protocol_and_implementation_freeze": true,
+    "candidate_values_may_compute_after_protocol_and_implementation_freeze": true,
+    "comparison_values_read_before_coverage_pass": false,
+    "daily_price_fields_read_before_admissibility": false,
+    "forward_return_fields_read_before_admissibility": false,
+    "candidate49_historical_return_read": false,
+    "candidate49_signal_execution_or_milestone_backfill_allowed": false,
+    "candidate49_ledgers_may_change": false,
+    "second_prospective_candidate_created": false,
+    "provider_request_issued": false,
+    "current_scoring_selection_sizing_or_orders_allowed": false,
+    "investment_advice": false
+  },
+  "decision": {
+    "candidate_count": 1,
+    "numeric_comparison_library_size": 114,
+    "development_trial_count_if_and_only_if_admitted": 1,
+    "stress_2024_2025_may_open_only_if_development_survivor_exists": true,
+    "current_scores_selections_sizing_orders_or_investment_advice_authorized": false
+  }
+}

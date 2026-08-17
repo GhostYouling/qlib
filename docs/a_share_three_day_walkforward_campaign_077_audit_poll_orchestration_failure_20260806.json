@@ -1,0 +1,17 @@
+{
+  "version": 1,
+  "kind": "a_share_three_day_walkforward_campaign077_audit_poll_orchestration_failure",
+  "status": "recorded_after_tool_layer_failure_without_audit_process_interruption",
+  "recorded_at": "2026-08-06T13:15:00+08:00",
+  "stage": "v2_no_return_audit_process_poll",
+  "outcome": "tool_wrapper_javascript_syntax_error_before_write_stdin_execution",
+  "audit_process_input_sent": false,
+  "audit_process_interrupted": false,
+  "audit_process_parameter_or_state_changed": false,
+  "research_values_recomputed_by_failed_poll": false,
+  "historical_daily_price_fields_read_by_failed_poll": [],
+  "historical_forward_returns_read_by_failed_poll": false,
+  "provider_request_issued": false,
+  "candidate49_ledgers_changed": false,
+  "recovery": "A later valid empty-input poll observed the same process, which completed successfully without restart."
+}

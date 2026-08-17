@@ -1,0 +1,76 @@
+{
+  "schema_version": 1,
+  "kind": "a_share_three_day_walkforward_campaign105_prevalue_infrastructure_failures",
+  "status": "three_prevalue_infrastructure_failures_recorded_before_campaign105_values",
+  "recorded_at": "2026-08-07T17:42:24Z",
+  "supersedes_without_rewriting": {
+    "path": "docs/a_share_three_day_walkforward_campaign_105_prevalue_infrastructure_failures_20260808.json",
+    "sha256": "afb35fc0ae7898c2946ab98f2d82a362772d8dfcef53dfbd03fec652d418933e"
+  },
+  "authoritative_campaign_records": {
+    "concept_scouting": {
+      "path": "docs/a_share_three_day_walkforward_campaign_105_concept_scouting.json",
+      "sha256": "dc9116c62fef98f9aea0029cd24bf88d6be4c914cd7ba42d8b8604664f564d93"
+    },
+    "mechanism_support_audit": {
+      "path": "docs/a_share_three_day_walkforward_campaign_105_mechanism_support_audit.json",
+      "sha256": "8e1069159f2f807a1f783aba2ad173e0a167b5c67441d76e5604116c88415d45"
+    },
+    "no_return_preregistration": {
+      "path": "docs/a_share_three_day_walkforward_campaign_105_no_return_preregistration.json",
+      "sha256": "73d7c65b2e531ec613d4baed38bab0b4b507294c2a889db318fc9eec9bb5f126"
+    },
+    "formatted_prevalue_test": {
+      "path": "tests/data_collector_tests/test_a_share_three_day_walkforward_campaign105_prevalue.py",
+      "sha256": "21b6890c7e409f73a4f047d9957000eeb953077b96c852bb892e662d00e07d38"
+    }
+  },
+  "common_boundary": {
+    "metadata_import_or_test_harness_only": true,
+    "campaign105_minute_source_rows_read": false,
+    "campaign105_candidate_or_comparison_values_read": false,
+    "historical_daily_price_or_forward_return_values_read": false,
+    "provider_request_issued": false,
+    "credential_value_printed_hashed_logged_or_persisted": false,
+    "candidate49_ledgers_changed": false
+  },
+  "failures": [
+    {
+      "failure_id": "campaign105_infrastructure_001",
+      "stage": "workflow_token_loader_import_probe",
+      "failure": "A read-only importlib probe executed the Candidate49 workflow module without first registering the temporary module name in sys.modules; dataclass initialization raised AttributeError. The corrected probe registered the module and confirmed only a nonempty token presence boolean.",
+      "observed_exit_code": 1,
+      "files_changed_by_failed_command": false,
+      "secret_disclosed": false,
+      "common_root_cause_count": 1
+    },
+    {
+      "failure_id": "campaign105_infrastructure_002",
+      "stage": "concept_logical_timestamp_freeze",
+      "failure": "The initial concept record used a planned logical time 29 seconds after its first file write. Before any downstream hash binding or protected value, recorded_at was corrected to an already-observed UTC time; formula, direction, catalog, support, and research boundaries were unchanged.",
+      "observed_exit_code": null,
+      "files_changed_by_failed_command": true,
+      "changed_file": "docs/a_share_three_day_walkforward_campaign_105_concept_scouting.json",
+      "candidate_or_comparison_value_changed": false,
+      "common_root_cause_count": 1
+    },
+    {
+      "failure_id": "campaign105_infrastructure_004",
+      "stage": "prevalue_test_black_check",
+      "failure": "Black --check reported that the newly added Campaign105 prevalue test required formatting, so the chained pytest command did not start. The test was then mechanically formatted and the unchanged four-file whitelist completed with 25 passed.",
+      "observed_exit_code": 1,
+      "files_changed_by_failed_command": false,
+      "research_test_started_by_failed_command": false,
+      "candidate_or_comparison_value_changed": false,
+      "common_root_cause_count": 1
+    }
+  ],
+  "accounting": {
+    "failed_command_or_prebinding_correction_root_cause_count": 3,
+    "infrastructure_failure_count": 3,
+    "complete_factor_attempt_count": 1,
+    "return_reading_development_trial_count": 0,
+    "cumulative_historical_research_attempt_count": 779,
+    "cumulative_return_reading_development_trial_count": 299
+  }
+}

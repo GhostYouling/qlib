@@ -1,0 +1,176 @@
+{
+  "schema_version": 1,
+  "kind": "a_share_three_day_walkforward_campaign082_mechanism_overlap_audit",
+  "status": "passed_semantic_mechanism_review_before_campaign082_minute_source_or_comparison_values",
+  "recorded_at": "2026-08-06T18:20:00+08:00",
+  "concept_scouting": {
+    "path": "docs/a_share_three_day_walkforward_campaign_082_concept_scouting.json",
+    "sha256": "6529c930faa4b2bd2d48d247298a83b46692efc55795b6571c5f9d4c9f9c3322"
+  },
+  "authoritative_state": {
+    "path": "docs/a_share_three_day_iteration_status_20260806_campaign081_verified_v2.json",
+    "sha256": "43969f9d6e4610b54f947904cdbc4672af6451973ccf37affc0d358970dbed8d"
+  },
+  "historical_walkforward_policy": {
+    "path": "docs/a_share_three_day_historical_walkforward_research_policy_20260727.json",
+    "sha256": "38426d6161b9bfed323c58caba18feca668b8c9d53e294951a8ba90c01a798bb"
+  },
+  "numeric_comparator_policy": {
+    "path": "docs/a_share_three_day_walkforward_future_numeric_comparison_eligibility_policy_v17_20260806.json",
+    "sha256": "32b863a9e10ff26c665a9854f0863bb38e6b91dda25115cb44a57b452f97db36",
+    "complete_definition_count": 113,
+    "numeric_comparator_count": 111,
+    "complete_definition_order_sha256": "0938f041bcdd591bc8977204d78df502514aa1230942199b006e8fd72bdb68a2",
+    "numeric_comparator_order_sha256": "591432918754f7da24f468d152bbbc1b337127dd5fdc30f0f214ea776ca757aa"
+  },
+  "candidate": {
+    "name": "intraday_range_amount_peak_timing_alignment_240m",
+    "direction": "higher",
+    "mechanism": "normalized temporal alignment between the session's last maximum intrabar log-range occurrence and last maximum amount occurrence",
+    "formula": "r_i=log(high_i/low_i); i_range=last_argmax(r_i); i_amount=last_argmax(amount_i); score=1-abs(i_range-i_amount)/239 on the exact 240 standard bars",
+    "tie_rule": "last exact maximum independently for range and amount",
+    "no_open_close_volume_return_daily_financial_event_peer_or_future_input": true,
+    "no_old_factor_value_input": true,
+    "candidate49_used_or_modified": false
+  },
+  "complete_library_review": {
+    "all_113_definitions_reviewed_in_frozen_order": true,
+    "all_pre_walkforward_terminal_price_volume_event_structural_and_composite_families_reviewed": true,
+    "candidate_is_exact_formula_duplicate": false,
+    "candidate_is_direction_only_duplicate": false,
+    "candidate_is_parameter_only_duplicate": false,
+    "candidate_is_an_inversion_of_a_terminal_factor": false,
+    "candidate_combines_terminal_factor_values": false,
+    "candidate_changes_any_quality_listing_or_buyability_gate": false,
+    "extreme_timing_amount_range_and_distributional_families_explicitly_challenged": true,
+    "campaign079_invalid_turnover_mechanism_not_reused": true,
+    "campaign081_terminal_amount_path_efficiency_not_reused": true
+  },
+  "semantic_invariance_checks": [
+    {
+      "intervention": "Reverse the complete 240-position standard-bar order while preserving paired high, low, and amount values.",
+      "campaign082_result": "unchanged because both selected last-maximum indices map to 239-i and their absolute distance is preserved",
+      "distinguishes_from": "peak recency, center of mass, late-window share, terminal-bar share, volatility resolution, and extreme arrival order"
+    },
+    {
+      "intervention": "Translate both selected peak indices by the same number of positions without crossing a boundary and preserve all other maximum identities.",
+      "campaign082_result": "unchanged because only the distance between the two peak times is scored",
+      "distinguishes_from": "absolute clock-location and peak-recency factors"
+    },
+    {
+      "intervention": "Permute every nonmaximum amount and range value while keeping the last maximum of each series at the same index and avoiding new tied maxima.",
+      "campaign082_result": "unchanged",
+      "distinguishes_from": "full-profile Pearson coupling, Jensen-Shannon alignment, entropy, local peak density, path efficiency, and threshold-run statistics"
+    },
+    {
+      "intervention": "Hold the amount profile fixed and move only the unique largest range bar to a different position.",
+      "campaign082_result": "changes exactly through the new peak-time distance",
+      "distinguishes_from": "amount-only peak recency, amount clock moments, amount entropy, and amount path geometry"
+    },
+    {
+      "intervention": "Multiply all amount values by one common positive constant and multiply all high and low prices by another common positive constant.",
+      "campaign082_result": "unchanged because amount argmax and log(high/low) are scale invariant",
+      "distinguishes_from": "amount levels, turnover, nominal price, and price-scale factors"
+    },
+    {
+      "intervention": "Change close, open, volume, daily prices, returns, quarterly values, issuer events, peer paths, and Candidate49 evidence while holding the 240 high/low/amount triples fixed.",
+      "campaign082_result": "unchanged",
+      "distinguishes_from": "close-return, body, gap, transaction-price, volume, daily, fundamental, event, market-peer, and prospective mechanisms"
+    },
+    {
+      "intervention": "Change the magnitude and distribution of nonmaximum ranges and amounts without moving either last maximum.",
+      "campaign082_result": "unchanged",
+      "distinguishes_from": "range participation entropy, amount participation entropy, Bowley skewness, VWAP consensus, range-volume correlation, and amount-volatility coupling"
+    }
+  ],
+  "nearest_semantic_challenges": [
+    {
+      "name": "intraday_range_share_volume_confirmation_240m",
+      "relationship": "both relate intrabar range to trading participation",
+      "distinction": "the prior factor is a full-support Pearson association between every range and log share-volume level; Campaign082 uses amount rather than share volume and only the relative timing of two global maxima, ignoring all nonmaximum magnitudes once maxima are identified.",
+      "mandatory_numeric_challenge": true
+    },
+    {
+      "name": "intraday_amount_volatility_coupling_238p",
+      "relationship": "both ask whether stronger price movement co-occurs with more trading amount",
+      "distinction": "the prior factor correlates destination-bar amount with absolute adjacent close return across 238 transitions; Campaign082 uses high-low intrabar range and the distance between the two session-wide maximum times, with no close return.",
+      "mandatory_numeric_challenge": true
+    },
+    {
+      "name": "intraday_amount_price_discovery_alignment_js_238p",
+      "relationship": "both express alignment between participation and price discovery",
+      "distinction": "Campaign053 compares complete normalized amount and absolute-return distributions through Jensen-Shannon similarity; Campaign082 is a two-extreme timing statistic, uses high-low range, and is invariant to all nonmaximum distribution changes that preserve the maxima.",
+      "mandatory_numeric_challenge": true
+    },
+    {
+      "name": "intraday_peak_amount_bar_recency_240m",
+      "relationship": "both use the last maximum amount occurrence",
+      "distinction": "the prior factor ranks its absolute clock index; Campaign082 discards absolute recency and scores only its distance from the last maximum range occurrence. Moving both peaks together changes recency but not Campaign082.",
+      "mandatory_numeric_challenge": true
+    },
+    {
+      "name": "intraday_extreme_arrival_order_240m",
+      "relationship": "both use timing of session-wide extremes",
+      "distinction": "the prior factor uses first global high and low occurrences to measure directional price-path ordering; Campaign082 uses last maxima of intrabar range and amount and takes their unsigned timing proximity.",
+      "mandatory_numeric_challenge": true
+    },
+    {
+      "name": "intraday_volatility_resolution_238m and intraday_morning_afternoon_range_profile_similarity_120b",
+      "relationship": "both can react to the clock allocation of volatility or range",
+      "distinction": "those factors use half-session variance mass or a complete 120-bin range distribution; Campaign082 ignores half totals and distribution shape once the single range maximum time is known.",
+      "mandatory_numeric_challenge": true
+    },
+    {
+      "name": "intraday_intrabar_range_participation_entropy_240m and intraday_amount_local_peak_density_238p",
+      "relationship": "range or amount concentration can affect which maximum is observed",
+      "distinction": "entropy uses every range share and peak density counts every strict amount local maximum; Campaign082 uses exactly one last global maximum from each field and is invariant to nonmaximum rearrangements that preserve them.",
+      "mandatory_numeric_challenge": true
+    },
+    {
+      "name": "intraday_amount_path_efficiency_238p",
+      "relationship": "both use the amount path under Campaign081/082 adjacency",
+      "distinction": "Campaign081 uses every log-amount transition and endpoint displacement separately by half; Campaign082 uses no amount transform or transition and retains only the last global amount-maximum time relative to the range maximum.",
+      "mandatory_numeric_challenge": true
+    },
+    {
+      "name": "signal_day_turnover_rate_pct",
+      "relationship": "both concern trading activity",
+      "distinction": "Campaign079 is a terminal daily turnover-level semantic duplicate; Campaign082 uses minute high/low/amount peak co-arrival and never reads daily_basic.",
+      "numeric_status": "ineligible_terminal_definition_semantic_challenge_only"
+    },
+    {
+      "name": "intraday_cross_sectional_standardized_return_state_stability_236p",
+      "relationship": "the structurally nonnumeric definition remains in the complete semantic library",
+      "distinction": "peer-standardized return-state mobility versus single-stock range/amount extreme timing alignment",
+      "mandatory_semantic_challenge": true,
+      "numeric_status": "undefined_not_pass_not_fail"
+    },
+    {
+      "name": "candidate49_intraday_cumulative_vwap_crossing_rate_240m_v1",
+      "relationship": "the sole active prospective candidate remains an isolation challenge",
+      "distinction": "Candidate49 measures future-session close crossings of causal cumulative VWAP; Campaign082 is an offline historical range/amount extreme-timing feature and never enters Candidate49 ledgers.",
+      "candidate49_remains_isolated": true
+    }
+  ],
+  "pre_value_decision": {
+    "economically_independent_enough_to_preregister": true,
+    "numeric_uniqueness_still_required_against_all_111_eligible_comparators": true,
+    "strict_maximum_absolute_median_daily_rank_correlation": 0.8,
+    "minimum_pairwise_names_per_session": 50,
+    "minimum_pairwise_sessions_per_comparison": 100,
+    "drop_residualize_invert_clip_bucket_rank_neutralize_filter_or_rescue_after_failed_gate_allowed": false
+  },
+  "research_boundary": {
+    "campaign082_minute_source_rows_read": false,
+    "campaign082_candidate_values_read": false,
+    "comparison_values_read": false,
+    "historical_daily_price_fields_read": [],
+    "historical_forward_returns_read": false,
+    "provider_request_issued": false,
+    "candidate49_historical_backfill_performed": false,
+    "candidate49_ledgers_changed": false,
+    "second_prospective_candidate_created": false,
+    "current_scoring_selection_sizing_or_orders_performed": false,
+    "investment_advice": false
+  }
+}

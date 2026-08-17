@@ -1,0 +1,95 @@
+{
+  "schema_version": 1,
+  "kind": "a_share_three_day_walkforward_campaign260_concept_scouting",
+  "status": "one_local_zero_network_candidate_selected_before_source_candidate_comparator_price_or_return_values",
+  "recorded_at": "2026-08-16T15:02:00+08:00",
+  "purpose": "Review a finite local-data catalog after Campaign259 and select at most one genuinely independent three-session mechanism before reading any Campaign260 source row or scientific value.",
+  "authoritative_inputs": {
+    "campaign259_terminal_state": {
+      "path": "docs/a_share_three_day_iteration_status_20260816_campaign259_prevalue_terminal.json",
+      "sha256": "f61433ae54254e382803c8b27f0c002cd3f3ab11a3e4fc49e9fe29809b704ac8"
+    },
+    "numeric_policy_v398": {
+      "path": "docs/a_share_three_day_walkforward_future_numeric_comparison_eligibility_policy_v398_20260816.json",
+      "sha256": "9425ab1384d882a74c62994027d221ef9b67d2378676582b35c40636d313971b",
+      "complete_definition_count": 158,
+      "complete_definition_order_sha256": "4819c7fd7c0795d7598a52f3c615e3f117d5f4ecd9332974bc8e3dfa57c96667",
+      "eligible_numeric_comparator_count": 142,
+      "eligible_numeric_comparator_order_sha256": "5d1b35fb5a0d8ac9293008db9963c4a60a94dc940c237c3ed259e5ce44f14aaf"
+    },
+    "historical_walkforward_policy": {
+      "path": "docs/a_share_three_day_historical_walkforward_research_policy_20260727.json",
+      "sha256": "38426d6161b9bfed323c58caba18feca668b8c9d53e294951a8ba90c01a798bb"
+    }
+  },
+  "finite_prevalue_concept_catalog": [
+    {
+      "catalog_id": "c260_01",
+      "name": "intraday_half_session_chord_residual_crossing_rate_236p",
+      "proposed_definition": "Count sign changes of close residuals around each half-session endpoint chord.",
+      "prevalue_decision": "rejected_as_exposed_crossing_and_passage_count_reference_refresh",
+      "reason": "Campaign121 froze out passage and recross counts around alternate price references, Campaign135 preserved that rejection, and Candidate49 owns the sole prospective causal-VWAP crossing ledger. Replacing the reference by a completed-half endpoint chord is not a new observed state."
+    },
+    {
+      "catalog_id": "c260_02",
+      "name": "intraday_amount_clock_third_central_moment_240m",
+      "proposed_definition": "Use the signed third central moment of the full-session amount-weighted normalized clock distribution, mapped by its exact sharp support bound into [0,1].",
+      "prevalue_decision": "selected_for_complete_mechanism_overlap_audit",
+      "reason": "The first moment measures timing center and the second central moment measures dispersion; the signed third central moment instead measures temporal mass asymmetry. Equal center and dispersion do not determine it, and it uses no new window, threshold, fit, old-factor value or return."
+    },
+    {
+      "catalog_id": "c260_03",
+      "name": "intraday_amount_clock_excess_kurtosis_240m",
+      "proposed_definition": "Use a fourth standardized clock moment of amount mass.",
+      "prevalue_decision": "rejected_before_values_as_unbounded_standardization_and_moment_family_sweep",
+      "reason": "It requires a low-dispersion denominator policy and would create a fourth-moment sibling after selecting exactly one finite third-moment mechanism."
+    },
+    {
+      "catalog_id": "c260_04",
+      "name": "intraday_amount_clock_quantile_bowley_skew_240m",
+      "proposed_definition": "Use amount-weighted clock quantiles to form Bowley skewness.",
+      "prevalue_decision": "rejected_before_values_as_quantile_and_tie_rule_search",
+      "reason": "Quantile levels and exact boundary interpolation introduce an avoidable threshold/tie search when a parameter-free bounded central moment is available."
+    },
+    {
+      "catalog_id": "c260_05",
+      "name": "intraday_amount_clock_third_moment_by_half_or_subwindow",
+      "proposed_definition": "Split the selected skew mechanism by half-session or late window.",
+      "prevalue_decision": "rejected_before_values_as_window_and_subset_multiplicity",
+      "reason": "Half-session and subwindow variants would be rescue routes rather than independent mechanisms."
+    },
+    {
+      "catalog_id": "c260_06",
+      "name": "terminal_amount_timing_factor_combination_or_model",
+      "proposed_definition": "Combine the candidate with center, dispersion, entropy, peak recency or return factors.",
+      "prevalue_decision": "rejected_before_component_or_return_values_as_terminal_factor_recombination",
+      "reason": "Campaign260 is a single-definition test. Old terminal factors remain available only inside a separately complete prevalue-frozen library campaign, not as post-result rescue ingredients."
+    }
+  ],
+  "selected_candidate": {
+    "name": "intraday_amount_clock_third_central_moment_240m",
+    "direction": "higher",
+    "source_projection_if_admitted": ["datetime", "symbol", "provider", "amount"],
+    "economic_hypothesis": "An amount clock with an early participation core but a persistent late tail has positive temporal skew and may represent attention that remains unresolved into the next three accepted sessions.",
+    "formula_summary": "For x_i=i/239 and w_i=a_i/sum(a), compute mu=sum(w_i*x_i), m3=sum(w_i*(x_i-mu)^3), and score=0.5+3*sqrt(3)*m3.",
+    "exact_range": [0.0, 1.0],
+    "candidate_count": 1,
+    "direction_count": 1,
+    "window_count": 1,
+    "threshold_filter_subset_model_or_combination_count": 0
+  },
+  "research_boundary": {
+    "repository_metadata_and_terminal_history_read": true,
+    "campaign260_source_rows_read": false,
+    "campaign260_candidate_or_comparator_values_read": false,
+    "historical_daily_price_or_forward_return_values_read": false,
+    "stress_2024_2025_opened": false,
+    "provider_or_web_request_issued": false,
+    "provider_credential_presence_value_or_digest_read": false,
+    "candidate49_historical_backfill_performed": false,
+    "candidate49_ledgers_changed": false,
+    "second_prospective_candidate_created": false,
+    "current_scoring_selection_sizing_positions_or_orders_performed": false,
+    "investment_advice": false
+  }
+}

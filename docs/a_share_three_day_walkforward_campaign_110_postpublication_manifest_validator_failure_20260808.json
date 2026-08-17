@@ -1,0 +1,53 @@
+{
+  "schema_version": 1,
+  "kind": "a_share_three_day_walkforward_campaign110_infrastructure_failure",
+  "status": "preserved_failed_postpublication_verification_before_partition_verification_coverage_or_comparator_values",
+  "recorded_at": "2026-08-07T22:48:05Z",
+  "failure_ordinal": 3,
+  "stage": "published_candidate_snapshot_manifest_verification",
+  "failed_exit_code": 1,
+  "exception": "Campaign110FeatureError: Campaign110 manifest semantics changed",
+  "cause": "The inherited validator expected fixed_denominator equal to 0, fixed_anchor_and_close_support_required false, and exact_reference_ties_retained false. The published manifest correctly records the preregistered Campaign110 semantics 240, true, and true. Every other inspected manifest condition passed.",
+  "preceding_invocation_error": {
+    "failure_ordinal": 2,
+    "failed_exit_code": 2,
+    "cause": "The first verify invocation supplied --data-root instead of the required --manifest argument.",
+    "candidate_or_comparator_values_read": false,
+    "historical_daily_price_or_forward_return_values_read": false
+  },
+  "failed_inherited_conditions": [
+    "fixed_denominator == 0",
+    "fixed_anchor_and_close_support_required is false",
+    "exact_reference_ties_retained is false"
+  ],
+  "published_frozen_values": {
+    "fixed_denominator": 240,
+    "fixed_anchor_and_close_support_required": true,
+    "exact_reference_ties_retained": true
+  },
+  "publication_state": {
+    "snapshot_manifest_published": true,
+    "snapshot_manifest_sha256": "e3ae3c01e0a6eadd8dfce0362520e13bc4c047ff8357cdc7be2d1f9b31e93b72",
+    "partitions": 33015,
+    "rows": 7724498,
+    "eligible_rows": 7724498,
+    "dataset_sha256": "9082b74891ea2e1c107309637941e42acdc9afeec0b44748e2242506c1a68c4b",
+    "snapshot_modified_after_failure": false,
+    "snapshot_rebuild_allowed": false
+  },
+  "narrow_verifier_contract": {
+    "allowed_change": "Create a verify-only entry point that changes exactly the three inherited expectations to the preregistered manifest values, cannot build or rewrite the snapshot, and otherwise reuses the frozen partition/hash/range verifier.",
+    "second_snapshot_build_or_recovery_allowed": false,
+    "formula_direction_source_projection_grid_anchor_support_gate_comparator_order_or_finite_catalog_change_allowed": false
+  },
+  "scientific_boundary": {
+    "manifest_metadata_read": true,
+    "partition_values_read_by_failed_verification": false,
+    "coverage_values_read": false,
+    "comparator_values_read": false,
+    "historical_daily_price_or_forward_return_values_read": false,
+    "provider_request_issued": false,
+    "candidate49_ledgers_changed": false
+  },
+  "next_action": "Freeze and test a verify-only three-field expectation correction, then verify the immutable published snapshot once without rebuilding it."
+}

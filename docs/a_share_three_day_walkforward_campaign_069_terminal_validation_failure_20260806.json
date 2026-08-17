@@ -1,0 +1,43 @@
+{
+  "version": 1,
+  "kind": "a_share_three_day_walkforward_campaign069_terminal_validation_failure",
+  "status": "historical_pre_return_status_assertion_failed_after_authorized_single_trial",
+  "recorded_at": "2026-08-06T04:03:06+08:00",
+  "failed_command": "PYTHONPATH=/Volumes/DIsk/Disk-Coding/qlib /Volumes/DIsk/Coding/anaconda3/bin/python -m pytest -q tests/data_collector_tests/test_a_share_three_day_walkforward_campaign069.py tests/data_collector_tests/test_a_share_three_day_walkforward_campaign069_no_return_audit_v3.py tests/data_collector_tests/test_a_share_three_day_walkforward_campaign069_terminal.py",
+  "result": {
+    "exit_code": 1,
+    "passed": 16,
+    "failed": 1,
+    "failed_node": "tests/data_collector_tests/test_a_share_three_day_walkforward_campaign069.py::test_campaign069_stress_is_closed_before_development_survivor_freeze",
+    "historical_expected_ledger_entry_count": 0,
+    "current_observed_ledger_entry_count": 1
+  },
+  "cause": "The test was frozen before the only authorized return-reading development trial. After that trial completed, the append-only development ledger correctly contains one entry and the zero-survivor stress-closed record exists.",
+  "immutability": {
+    "historical_test": {
+      "path": "tests/data_collector_tests/test_a_share_three_day_walkforward_campaign069.py",
+      "sha256": "58719b880995e9a67e25ca035d0f7bdaa0fbd45feabd2bf3edd801ac14d5fe6c"
+    },
+    "historical_test_edited": false,
+    "terminal_freeze_v1": {
+      "path": "docs/a_share_three_day_walkforward_campaign_069_terminal_completion_freeze_20260806.json",
+      "sha256": "66a58159041ee462c1e6f4df25e78afa3b57e9dcfc3525a766230e80d49f7989"
+    }
+  },
+  "accounting": {
+    "attempt_type": "infrastructure_failure",
+    "research_attempt_count_increment": 1,
+    "development_trial_count_increment": 0,
+    "cumulative_historical_research_attempt_count_after_record": 413,
+    "cumulative_return_reading_development_trial_count": 275
+  },
+  "research_boundary": {
+    "new_factor_or_return_values_read_by_failed_validation": false,
+    "stress_2024_2025_opened": false,
+    "provider_request_issued": false,
+    "candidate49_historical_return_read": false,
+    "candidate49_ledgers_changed": false,
+    "current_scoring_selection_sizing_or_orders_performed": false
+  },
+  "repair": "Preserve the old pre-return test, add a postcompletion status test, deselect only the exact historical node in current aggregate validation, and publish append-only v3 accounting plus v2 terminal records."
+}

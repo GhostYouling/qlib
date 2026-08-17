@@ -1,0 +1,61 @@
+{
+  "version": 1,
+  "kind": "a_share_three_day_walkforward_campaign038_post_result_test_transition",
+  "status": "pre_result_test_fingerprint_preserved_and_terminal_assertions_activated_without_result_change",
+  "recorded_at": "2026-07-31T02:00:05Z",
+  "purpose": "Preserve the pre-return test fingerprint while documenting the required post-result lifecycle assertion transition and separate immutable terminal-evidence tests.",
+  "research_record": {
+    "path": "docs/a_share_three_day_walkforward_campaign_038_research_record.json",
+    "sha256": "8ce34322f63ff24eb3d439d85045bae01eac3a22883e62df6c96f1949f6ae902",
+    "status": "completed_zero_development_survivors_stress_interval_not_opened"
+  },
+  "test_lifecycle": {
+    "campaign_test_path": "tests/data_collector_tests/test_a_share_three_day_walkforward_campaign038.py",
+    "pre_result_sha256": "74289d1f9c2121555b1eb027b38d80b0be52e7de5b350c227aeca0cd77799950",
+    "post_result": {
+      "path": "tests/data_collector_tests/test_a_share_three_day_walkforward_campaign038.py",
+      "sha256": "74fb9ee450f98a20dfda04d1e6f1e15853ca7ebb8330f1c2a049171dd866b728"
+    },
+    "change": "Add only the observed immutable terminal-state assertion: one ledger entry, zero survivors, and a not-opened zero-survivor stress record.",
+    "separate_terminal_tests": {
+      "path": "tests/data_collector_tests/test_a_share_three_day_walkforward_campaign038_terminal.py",
+      "sha256": "629d63448d63dbf6016b819ec21d8190e36c98e9ea18aa6ce3041279553b0941"
+    },
+    "feature_tests": {
+      "path": "tests/data_collector_tests/test_a_share_three_day_walkforward_campaign038_features.py",
+      "sha256": "5c6d5082466dde30dc079708331fff1dc87a1237bf227cf729eb4826b84f3ca4"
+    }
+  },
+  "test_execution": {
+    "focused_test_count": 14,
+    "focused_tests_passed": 14,
+    "focused_tests_failed": 0,
+    "full_data_collector_test_count": 1561,
+    "full_data_collector_tests_passed": 1561,
+    "full_data_collector_tests_failed": 0,
+    "full_data_collector_test_warnings": 13,
+    "idempotent_development_rerun_status": "development_already_complete_idempotent",
+    "idempotent_artifact_hashes_unchanged": true
+  },
+  "documentation": {
+    "unified_research_report": {
+      "path": "data/experiments/short_horizon/three_day_research_report.md",
+      "sha256": "720b2c0a8531f75a54a8500bc78febd1ac26fe1a7522fe45d9eaae18f235fd5e"
+    },
+    "manage_qlib_a_share_data_skill": {
+      "path": "/Users/niyufei/.codex/skills/manage-qlib-a-share-data/SKILL.md",
+      "sha256": "687d1626d04b90cae9c1f59745486983a49cd3338dd721f34609ba47cccff16c"
+    }
+  },
+  "semantic_boundary": {
+    "factor_formula_changed": false,
+    "direction_changed": false,
+    "snapshot_or_candidate_values_changed": false,
+    "comparison_values_or_no_return_decision_changed": false,
+    "trial_ledger_survivor_stress_or_campaign_report_changed": false,
+    "fold_purge_cost_execution_or_survivor_gate_changed": false,
+    "2024_2025_opened": false,
+    "candidate49_ledger_changed": false,
+    "current_scoring_selection_sizing_or_orders_performed": false
+  }
+}

@@ -1,0 +1,166 @@
+{
+  "version": 1,
+  "kind": "a_share_three_day_walkforward_campaign044_mechanism_overlap_audit",
+  "status": "completed_before_campaign044_source_factor_candidate_daily_price_or_return_values",
+  "recorded_at": "2026-07-31T16:45:00Z",
+  "purpose": "Challenge the exact Campaign044 complete-terminal-library equal-weight directional-percentile aggregation before implementation or any source-factor value read.",
+  "authoritative_inputs": {
+    "iteration_state": {
+      "path": "docs/a_share_three_day_iteration_status_20260731_campaign043_verified.json",
+      "sha256": "24d677feded294b1690791a55280795d8210c9cc91b54886bcdcf93743142fc1"
+    },
+    "historical_walkforward_policy": {
+      "path": "docs/a_share_three_day_historical_walkforward_research_policy_20260727.json",
+      "sha256": "38426d6161b9bfed323c58caba18feca668b8c9d53e294951a8ba90c01a798bb"
+    },
+    "concept_scouting": {
+      "path": "docs/a_share_three_day_walkforward_campaign_044_concept_scouting.json",
+      "sha256": "d9fc4cf06d53e584b40f847706f281db80ac034bfe1288ccccd0dd69516910cb"
+    },
+    "campaign043_terminal_record": {
+      "path": "docs/a_share_three_day_walkforward_campaign_043_research_record.json",
+      "sha256": "44bd70909c20106ed920f5a77b5f9d54b28d3317b19c7392314a235cdd8939ba"
+    },
+    "complete_comparison_library": {
+      "path": "docs/a_share_three_day_walkforward_campaign_043_no_return_preregistration.json",
+      "sha256": "2fde47ae05bfef5f99d230c6835b559b72bbd0e20bfcfb994d36cd4487e831f9",
+      "comparison_count_before_campaign043_append": 64,
+      "comparison_order_sha256_before_campaign043_append": "c2a81a12274ab6b485c5f42577edc30320ef1292c4af1e33ed6b53127d1ba350",
+      "campaign043_terminal_factor_appended": {
+        "name": "intraday_transaction_vwap_consensus_240m",
+        "score_direction": "higher"
+      },
+      "comparison_count_after_append": 65,
+      "comparison_order_sha256_after_append": "69dd2a8d892a011f5350380f654e2f42ed2b47aea164a23f64bf6603dcf58f22"
+    },
+    "supplemental_legacy_terminal_definitions": {
+      "path": "docs/a_share_three_day_walkforward_campaign_005_no_return_preregistration.json",
+      "sha256": "01b0c48e2a3e1b0741dee62d4e9d4858e202410ea266a00faa1b5d5ccc21ffa3",
+      "restored_factor_names": [
+        "intraday_lunch_repricing_persistence_119m",
+        "intraday_directional_price_impact_asymmetry_238m"
+      ]
+    },
+    "candidate49_no_return_protocol": {
+      "path": "docs/a_share_tushare_intraday_cumulative_vwap_crossing_rate_no_return_preregistration.json",
+      "sha256": "cefa5f23b5214e123d0bdea1511a398cb4a70c0ee4cc8da7d1f69f52bdbe4aeb",
+      "active_factor_name": "intraday_cumulative_vwap_crossing_rate_240m"
+    },
+    "earlier_conditional_minute_combination_protocol": {
+      "path": "docs/a_share_minute_factor_preregistration.json",
+      "sha256": "0e1ca9f041a0eb659b97c2c52bf1af5873717eec2c2705716f662d56b98eceae"
+    }
+  },
+  "candidate": {
+    "name": "full_terminal_library_directional_percentile_consensus_66f",
+    "direction": "higher",
+    "source_terminal_factor_count": 66,
+    "source_terminal_factor_order_sha256": "71a34e7decf7ba4a456cff4e08b0ea034a3919ee62edf5eb3bec603eb50a5bed",
+    "formula": "On each signal session t, restrict to common support C_t with all 66 terminal factors valid and at least 50 names; average the 66 frozen-direction average-tie empirical percentile ranks with weight 1/66."
+  },
+  "mechanism_family_review": [
+    {
+      "family": "complete_terminal_library_cross_mechanism_confirmation",
+      "result": "distinct_meta_mechanism_pending_coverage_and_single_component_dominance_gates",
+      "reason": "The candidate deliberately depends on every terminal research feature; it is not claimed to be raw-field-independent. Its new question is whether broad agreement across the complete frozen terminal library is more robust than any one noisy mechanism. Holding one component fixed while changing any other component rank can change the composite, so no algebraic identity forces equality with a single source factor."
+    },
+    {
+      "family": "terminal_factor_subset_selection_or_rescue",
+      "result": "not_used",
+      "reason": "No terminal factor is selected by prior IC, return, cost, drawdown, or gate outcome. All 66 terminal definitions and original directions are retained. Prior terminal records remain terminal regardless of the composite result."
+    },
+    {
+      "family": "active_candidate49_historical_backfill",
+      "result": "excluded_before_values",
+      "reason": "The 65-factor comparison list includes active prospective intraday_cumulative_vwap_crossing_rate_240m. That factor is removed solely because Candidate49 historical return, signal, and execution backfill is forbidden. Candidate49 values, returns, signals, and ledgers may not be read or changed by Campaign044."
+    },
+    {
+      "family": "comparison_derived_64_factor_subset",
+      "result": "rejected_before_values_as_incomplete_terminal_library",
+      "reason": "Removing Candidate49 from the later comparison list yields 64 factors but omits two frozen terminal definitions retained in the Campaign005/Campaign004 snapshot chain. Both are restored before values, producing the complete 66-factor terminal library."
+    },
+    {
+      "family": "earlier_minute_dual_gate_equal_weight_combination",
+      "result": "different_library_admission_rule_and_evidence_class",
+      "reason": "The earlier protocol could combine only two to five factors passing two full audits and had no eligible combination when fewer than two passed. Campaign044 instead tests one newly authorized historical-policy baseline over every terminal definition, including failures, with no dual-gate selection. It does not reinterpret the earlier no-eligible result or use its returns."
+    },
+    {
+      "family": "learned_model_weight_or_hyperparameter_search",
+      "result": "not_used",
+      "reason": "Weights are exactly 1/66. There is no fit, intercept, normalization beyond frozen directional percentiles, regularization, subset, threshold, interaction, tree, neural model, regime, or alternative aggregator."
+    },
+    {
+      "family": "common_support_selection_effect",
+      "result": "explicit_risk_gated_before_returns",
+      "reason": "Requiring all 66 components can reduce coverage and change the investable cross-section. Coverage, P5 eligible names, calendar-year span, and non-overlapping three-session capacity must pass before comparison values or returns; no missing-value repair is allowed."
+    },
+    {
+      "family": "single_component_dominance_or_near_synonym",
+      "result": "pending_complete_66_component_statistical_gate",
+      "reason": "After coverage only, the composite must be compared with every one of its 66 source components on identical pairwise-complete daily common support. Absolute median daily rank correlation above the frozen limit for any component rejects the composite before returns."
+    },
+    {
+      "family": "current_scoring_candidate_activation_or_orders",
+      "result": "forbidden",
+      "reason": "The composite is historical research only. A pass cannot create a current score, stock list, allocation, order, Candidate49 milestone, second prospective candidate, or investment recommendation."
+    }
+  ],
+  "design_choices_frozen_before_values": {
+    "complete_terminal_library_construction": "Enumerate all immutable terminal snapshot factors in source order, exclude only active Candidate49, restore intraday_lunch_repricing_persistence_119m and intraday_directional_price_impact_asymmetry_238m omitted from the later comparison-only order, and append terminal Campaign043.",
+    "complete_terminal_factor_count": 66,
+    "complete_terminal_factor_order_sha256": "71a34e7decf7ba4a456cff4e08b0ea034a3919ee62edf5eb3bec603eb50a5bed",
+    "active_candidate49_excluded": "intraday_cumulative_vwap_crossing_rate_240m",
+    "common_support_rule": "quality/listing eligible and finite eligible values for every terminal factor on the same signal session",
+    "minimum_common_support_names": 50,
+    "rank_method": "average_tie_empirical_percentile_on_same_session_common_support",
+    "higher_direction_ranking": "ascending raw values so larger receives larger percentile",
+    "lower_direction_ranking": "descending raw values so smaller receives larger percentile",
+    "component_weight": "1/66",
+    "aggregation": "arithmetic_mean",
+    "all_components_required": true,
+    "valid_range": [
+      0.0,
+      1.0
+    ],
+    "finite_trial_catalog": [
+      {
+        "trial_id": "campaign044_single_full_terminal_library_equal_weight_consensus",
+        "factor": "full_terminal_library_directional_percentile_consensus_66f",
+        "direction": "higher"
+      }
+    ],
+    "alternate_subset_weight_rank_tie_aggregator_transform_imputation_filter_threshold_model_or_regime_search_allowed": false,
+    "terminal_definition_or_direction_change_allowed": false,
+    "candidate49_value_return_signal_execution_or_ledger_read_allowed": false
+  },
+  "algebraic_and_counterfactual_checks_before_values": [
+    "If all 66 directional ranks for one stock increase weakly and at least one increases strictly while common support is fixed, the composite increases.",
+    "Holding one source factor fixed while changing another source factor's cross-sectional order can change the composite, so the score is not identical to any single component.",
+    "A constant source factor gives every common-support name the same average percentile contribution and remains in the complete library; it is never silently dropped or reweighted.",
+    "Changing any source eligibility can change common support and all component percentiles; therefore all-components coverage is an explicit gate, not a hidden imputation.",
+    "Excluding Candidate49 is a governance constraint fixed before values, not performance-based feature selection."
+  ],
+  "research_boundary": {
+    "source_factor_names_definitions_directions_and_manifest_metadata_read": true,
+    "source_factor_values_read": false,
+    "candidate_values_read": false,
+    "historical_daily_price_fields_read": false,
+    "historical_forward_returns_read": false,
+    "training_or_model_fitting_performed": false,
+    "provider_request_issued": false,
+    "candidate49_historical_return_signal_or_execution_backfill_performed": false,
+    "candidate49_factor_values_read_for_campaign044": false,
+    "candidate49_ledgers_changed": false,
+    "candidate50_activation_created": false,
+    "current_scoring_selection_sizing_or_orders_performed": false,
+    "investment_advice": false
+  },
+  "decision": {
+    "conceptual_meta_mechanism_passed": true,
+    "dependency_on_complete_terminal_input_library_acknowledged": true,
+    "candidate49_exclusion_passed": true,
+    "statistical_single_component_dominance_pending_all_66_components": true,
+    "predictive_value_established": false,
+    "next_action": "Validate all bindings, then freeze a fingerprint-bound no-return protocol with the exact 66-factor library, common-support composite, coverage-first gate, complete component-dominance gate, and one finite historical trial before implementation."
+  }
+}

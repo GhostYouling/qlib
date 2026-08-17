@@ -1,0 +1,146 @@
+{
+  "version": 1,
+  "kind": "a_share_three_day_walkforward_campaign012_concept_scouting",
+  "status": "concept_only_one_new_mechanism_selected_no_formula_no_direction_no_values_no_returns",
+  "recorded_at": "2026-07-28T16:58:40Z",
+  "purpose": "Continue the three-session offline research program after Campaign011 produced zero development survivors. This record considers only economic meaning and accepted source-schema feasibility, rejects terminal or near-synonym mechanisms before values, and selects at most one concept for a separate exact no-value overlap audit.",
+  "authoritative_bindings": {
+    "iteration_state": {
+      "path": "docs/a_share_three_day_iteration_status_20260728_campaign011.json",
+      "sha256": "b474f33b9700713c03f4271a5da8335bf550f75df79eafa39d5e12e073798bd6",
+      "campaign012_concept_scouting_allowed": true,
+      "candidate50_prospective_activation_allowed": false
+    },
+    "campaign011_research_record": {
+      "path": "docs/a_share_three_day_walkforward_campaign_011_research_record.json",
+      "sha256": "e2b06cd44de18a179beddecac5f869a09c0cdbb6417595671a1e9510ff5a88c3",
+      "completed": true,
+      "development_trial_count": 1,
+      "development_survivor_count": 0,
+      "stress_interval_opened": false
+    },
+    "campaign011_verification": {
+      "path": "docs/a_share_three_day_walkforward_campaign_011_verification_20260728.json",
+      "sha256": "da52a2ef8e504e856925ff2a859bb36b373ab149cc16c0464a26ddb96d03b388",
+      "focused_and_cross_tests_passed": 518
+    },
+    "historical_walkforward_policy": {
+      "path": "docs/a_share_three_day_historical_walkforward_research_policy_20260727.json",
+      "sha256": "38426d6161b9bfed323c58caba18feca668b8c9d53e294951a8ba90c01a798bb"
+    }
+  },
+  "source_schema_boundary": {
+    "provider": "tushare",
+    "frequency": "1m",
+    "accepted_source_grid_rows": 241,
+    "joint_clean_manifest": {
+      "path_below_data_root": "derived/a_share/rich/tushare/minute_sentiment_clean/tushare_stk_mins_1m_2019_2025_ea0cbb8f_sentiment_clean_v1/snapshot_manifest.json",
+      "sha256": "453c6719cb3c7da42fed8807b28a2bfe988700283e9625a6db97912534f368de",
+      "dataset_sha256": "0e4fe7c05536cdfcecc2936bc880726902f5560061188ffff82ef7ee6f346983",
+      "partitions": 33015,
+      "rows": 7724498
+    },
+    "allowed_source_fields": [
+      "datetime",
+      "symbol",
+      "provider",
+      "high",
+      "low"
+    ],
+    "source_open_close_volume_and_amount_must_not_be_loaded": true,
+    "daily_price_or_return_substitution_allowed": false,
+    "provider_request_allowed": false
+  },
+  "concepts_rejected_before_formula_or_values": [
+    {
+      "concept": "campaign011_range_entropy_rescue",
+      "reason": "Campaign011 is terminal. Changing entropy family, support, normalization, positive-range threshold, zero-range treatment, weights, direction, years, or combining its values would be prohibited rescue."
+    },
+    {
+      "concept": "range_concentration_or_effective_support",
+      "reason": "Herfindahl, Gini, top-share, effective-count, perplexity, quantile concentration, or another unordered dispersion statistic is a direct Campaign011 near-synonym."
+    },
+    {
+      "concept": "adjacent_range_overlap_or_containment",
+      "reason": "Intersection, union, containment, Jaccard, midpoint distance, or interval-level adjacency would reopen terminal Campaign010."
+    },
+    {
+      "concept": "body_wick_or_candle_direction",
+      "reason": "Open-close body efficiency and wick or candle-direction variants would reopen terminal Campaign009 and require forbidden open/close fields."
+    },
+    {
+      "concept": "between_close_volatility_clustering",
+      "reason": "Close-return realized volatility, return variance entropy, semivariance, diffusive variation, sign runs, and close-path mechanisms are terminal. The selected concept may not load close."
+    },
+    {
+      "concept": "amount_or_volume_profile_memory",
+      "reason": "Amount-profile serial persistence, activity entropy, amount timing, volume activity, and price-impact mechanisms are terminal. The selected concept may not load amount or volume."
+    },
+    {
+      "concept": "time_of_day_range_allocation",
+      "reason": "Opening, lunch, afternoon, late, and terminal allocation would add a time-location choice and overlap terminal volatility-timing or terminal-position families."
+    },
+    {
+      "concept": "market_relative_range_regime",
+      "reason": "Market-relative, residual, and cross-stock synchronization mechanisms are terminal and would add a peer-estimation layer unrelated to the selected single-stock sequence question."
+    }
+  ],
+  "selected_concept": {
+    "concept_name": "intraday_intrabar_range_sequence_memory",
+    "candidate_ordinal": null,
+    "prospective_active": false,
+    "concept_status": "mechanism_only_not_yet_exactly_preregistered",
+    "direction": null,
+    "formula": null,
+    "allowed_source_fields": [
+      "datetime",
+      "symbol",
+      "provider",
+      "high",
+      "low"
+    ],
+    "mechanism": "Measure the short-memory ordering of direction-neutral one-minute high-low range magnitudes within each continuous trading half: whether a large exploratory range tends to be followed immediately by another large range or by compression. This is a sequence-dependence question, not Campaign011's unordered range distribution, Campaign010's interval-price overlap, Campaign009's body efficiency, close-return volatility, or activity-profile persistence.",
+    "economic_question": "Does rapid within-day dissipation of direction-neutral range shocks, rather than persistent range clustering, identify stock-days whose transient price uncertainty is less likely to carry from the next open through the third close?",
+    "mandatory_overlap_challenges_before_any_value": [
+      "intraday_intrabar_range_participation_entropy_240m",
+      "intraday_adjacent_range_overlap_continuity_238p",
+      "intraday_intrabar_body_range_efficiency_240m",
+      "intraday_return_variance_entropy_238m",
+      "intraday_amount_profile_serial_persistence_240m",
+      "intraday_volatility_resolution_238m",
+      "intraday_realized_volatility",
+      "intraday_diffusive_variation_ratio_238m"
+    ],
+    "known_design_risks": [
+      "lag definition, lunch treatment, zero-range inclusion, minimum informative-pair count, correlation estimator, degeneracy handling, and direction create researcher degrees of freedom unless frozen before values",
+      "raw high-low ordering must be validated fail-closed rather than repaired",
+      "using close-to-close returns would duplicate terminal return-volatility mechanisms",
+      "using amount or volume would duplicate terminal activity-profile persistence",
+      "an unordered dispersion or concentration statistic would duplicate Campaign011",
+      "the candidate may still be statistically redundant with Campaign010, Campaign011, amount-profile persistence, volatility resolution, realized volatility, or return variance entropy even if its measurement is semantically distinct"
+    ]
+  },
+  "research_boundary": {
+    "external_minute_partitions_read": false,
+    "external_daily_partitions_read": false,
+    "candidate_values_computed_or_read": false,
+    "comparison_values_read": false,
+    "historical_daily_prices_read": false,
+    "historical_forward_returns_read": false,
+    "formula_or_direction_frozen": false,
+    "training_or_model_fitting_performed": false,
+    "prospective_candidate_created": false,
+    "candidate49_historical_return_read": false,
+    "candidate49_ledgers_changed": false,
+    "current_scoring_selection_sizing_or_order_performed": false,
+    "provider_request_issued": false,
+    "investment_advice": false
+  },
+  "decision": {
+    "selected_concept_count": 1,
+    "selected_concept_may_advance_directly_to_values": false,
+    "required_next_step": "Perform a separate no-value audit against all 35 prior terminal mechanisms. Only if the concept remains economically distinct may that audit freeze one exact formula, direction, lag and lunch semantics, zero-range and degeneracy handling, no-return gates, and one finite trial before candidate or comparison values or returns are read.",
+    "candidate49_remains_only_prospective_candidate": true,
+    "candidate50_activation_allowed": false
+  }
+}

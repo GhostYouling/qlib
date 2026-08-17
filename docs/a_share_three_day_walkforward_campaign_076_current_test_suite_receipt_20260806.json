@@ -1,0 +1,33 @@
+{
+  "version": 1,
+  "kind": "a_share_three_day_walkforward_campaign076_current_test_suite_receipt",
+  "status": "passed_with_exact_two_immutable_precompletion_nodes_deselected",
+  "recorded_at": "2026-08-06T11:49:00+08:00",
+  "runtime": "/Volumes/DIsk/Coding/anaconda3/bin/python",
+  "result": {
+    "passed": 22,
+    "failed": 0,
+    "deselected": 2,
+    "duration_seconds": 4.25
+  },
+  "deselected_nodes": [
+    {
+      "node_id": "data_collector_tests/test_a_share_three_day_walkforward_campaign076_no_return_audit.py::test_status_does_not_compute_gates_or_read_values",
+      "reason": "Immutable pre-audit status assertion expects audit_count=0; the completed terminal state truthfully has one audit."
+    },
+    {
+      "node_id": "data_collector_tests/test_a_share_three_day_walkforward_campaign076_no_return_audit_v2.py::test_v1_frozen_runner_and_empty_audit_state_preserved",
+      "reason": "Immutable v1 precompletion assertion expects audit_count=0; the v2-authorized sole audit now exists while the v1 implementation bytes remain frozen."
+    }
+  ],
+  "test_bindings": [
+    {"path": "tests/data_collector_tests/test_a_share_three_day_walkforward_campaign076_features.py", "sha256": "45d89011745ed505c9b3ea49743f10adc46683375dd5ad0836218f35bb803d1b"},
+    {"path": "tests/data_collector_tests/test_a_share_three_day_walkforward_campaign076_no_return_audit.py", "sha256": "8592c49586a11c6e9bfe7c6a0b23d2b70c4883868d41fe50859dc54fc33c190b"},
+    {"path": "tests/data_collector_tests/test_a_share_three_day_walkforward_campaign076_no_return_audit_v2.py", "sha256": "121a95fcd7e9c344297e5bf48e1c022676a5ac9649ab4f67b58a2cade49ba7be"},
+    {"path": "tests/data_collector_tests/test_a_share_three_day_walkforward_campaign076_terminal.py", "sha256": "7ebc2701c7f40f2ef17ebea68805be1c842edeb62908770657695975d682eef8"}
+  ],
+  "research_result_recomputed_by_suite": false,
+  "historical_daily_price_or_forward_return_values_newly_read": false,
+  "provider_request_issued": false,
+  "candidate49_ledgers_changed": false
+}

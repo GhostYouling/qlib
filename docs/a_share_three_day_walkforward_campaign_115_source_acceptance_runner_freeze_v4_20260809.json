@@ -1,0 +1,73 @@
+{
+  "schema_version": 4,
+  "kind": "a_share_three_day_walkforward_campaign115_source_acceptance_runner_freeze",
+  "status": "runner_v4_durable_attempt_journal_and_atomic_publication_frozen",
+  "recorded_at": "2026-08-09T04:20:00+08:00",
+  "recorded_at_semantics": "monotonic_logical_append_time_after_v3_recorded_at_04_00_not_host_wall_clock_measurement",
+  "supersedes_without_rewriting": {
+    "path": "docs/a_share_three_day_walkforward_campaign_115_source_acceptance_runner_freeze_v3_20260809.json",
+    "sha256": "95466d848518a03f080a7b6241f455d7affeab04bdfd6883821cac648cfbcd54",
+    "preserved": true,
+    "reason": "V3 durably consumed the one allowed attempt before credential loading but its marker recorded only creation. V4 keeps the same one-shot request and appends credential-safe, fsynced phase events before the possible provider call and around terminal publication; success and failure JSON publication is also file-and-directory durable."
+  },
+  "protocol": {
+    "path": "docs/a_share_three_day_walkforward_campaign_115_source_acceptance_protocol_20260809.json",
+    "sha256": "ad9b789fccada781e77662f95d7d3edaffc5371d605a85a9304a178e3ad4cc6c"
+  },
+  "implementation": {
+    "runner_path": "scripts/a_share_tushare_limit_up_queue_acceptance.py",
+    "runner_sha256": "54f75a211ca0124d913673a1c249699ccdb3e2ccfc3c9855af1c762be3e4118d",
+    "test_path": "tests/data_collector_tests/test_a_share_tushare_limit_up_queue_acceptance.py",
+    "test_sha256": "9b073f926bec45bbdfe62924e16c3adc326b44fd003789b28eab992dcf573135",
+    "adapter_path": "scripts/a_share_tushare_limit_up_queue_persistence.py",
+    "adapter_sha256": "807d06f7dec4ca0a94beb28912b686e8cb01fbf36c7f473e69564de16af5f5dd",
+    "runtime_reads_this_freeze_before_credential_access": true,
+    "runtime_recomputes_runner_test_protocol_and_adapter_sha256": true,
+    "missing_malformed_or_mismatched_freeze_makes_plan_ready_false": true,
+    "provider_call_only_exists_in_confirmed_run_path": true,
+    "maximum_provider_calls": 1,
+    "request_formula_source_direction_date_or_gate_changed_from_v3": false
+  },
+  "durable_attempt_journal": {
+    "path": "data/.campaign115_tushare_limit_queue_acceptance.lock",
+    "format": "credential_safe_json_lines",
+    "created_exclusively_before_credential_loading": true,
+    "mode": "0600",
+    "regular_unique_inode_and_same_run_identity_required": true,
+    "creation_content_and_parent_directory_fsynced": true,
+    "provider_call_authorized_event_fsynced_before_possible_request": true,
+    "provider_response_row_count_event_contains_no_raw_rows": true,
+    "terminal_failure_event_contains_only_normalized_failure_code": true,
+    "success_or_failure_publication_started_event_fsynced_before_terminal_json": true,
+    "plaintext_provider_error_token_or_token_hash_persisted": false,
+    "marker_never_removed_by_runner": true,
+    "duplicate_provider_call_after_crash_allowed": false
+  },
+  "durable_atomic_publication": {
+    "factor_parquet_file_and_staging_directory_fsynced_before_publish": true,
+    "final_root_parent_fsynced_after_atomic_replace": true,
+    "success_and_failure_json_use_exclusive_nofollow_private_temporary_files": true,
+    "success_and_failure_json_file_fsynced_before_atomic_replace": true,
+    "success_and_failure_json_parent_fsynced_after_atomic_replace": true,
+    "raw_provider_response_persisted": false
+  },
+  "synthetic_verification_contract": {
+    "journal_exists_before_credential_loading": true,
+    "provider_call_authorized_event_exists_before_provider_function_entry": true,
+    "simulated_provider_failure_records_normalized_terminal_journal_events": true,
+    "persistent_journal_rejects_second_provider_call_even_if_failure_record_removed": true,
+    "atomic_json_private_mode_and_parent_fsync_tested": true,
+    "manual_5000_point_entitlement_confirmation_still_required": true,
+    "plan_without_manual_confirmation_expected_exit_code": 2,
+    "plan_without_manual_confirmation_expected_provider_calls": 0
+  },
+  "research_boundary": {
+    "provider_request_issued": false,
+    "provider_rows_candidate_or_comparison_values_read": false,
+    "daily_price_or_forward_return_values_read": false,
+    "candidate49_ledgers_changed": false,
+    "second_prospective_candidate_created": false,
+    "current_scoring_selection_sizing_or_orders_performed": false,
+    "investment_advice": false
+  }
+}

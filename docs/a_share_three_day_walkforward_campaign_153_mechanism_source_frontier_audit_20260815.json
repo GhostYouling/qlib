@@ -1,0 +1,131 @@
+{
+  "schema_version": 1,
+  "kind": "a_share_three_day_walkforward_campaign153_mechanism_source_frontier_audit",
+  "status": "terminal_prevalue_zero_candidates_after_source_contract_and_terminal_mechanism_review",
+  "recorded_at": "2026-08-15T02:38:00+08:00",
+  "purpose": "Apply the accepted historical source, original collection contract, terminal-history and semantic-independence gates to all six Campaign153 proposals before any value stage.",
+  "authoritative_inputs": {
+    "concept_scouting": {
+      "path": "docs/a_share_three_day_walkforward_campaign_153_concept_scouting_20260815.json",
+      "sha256": "2031cd0477312e9f53e6067486ec578775c59fcb6adcba26bf36739069b6c3f9"
+    },
+    "numeric_policy_v210": {
+      "path": "docs/a_share_three_day_walkforward_future_numeric_comparison_eligibility_policy_v210_20260815.json",
+      "sha256": "510872b4d5f34b16677ec3fef9e253b12ee6bdc9dd5afabb35ca5b7b262c7153",
+      "complete_definition_count_reviewed": 157,
+      "complete_definition_order_sha256": "c39bb6ca969b5f469a9377a5b5ca743405cec9d8511297ed6a1c44188ef40b82",
+      "eligible_numeric_comparator_count_reserved_but_not_loaded": 142,
+      "eligible_numeric_comparator_order_sha256": "5d1b35fb5a0d8ac9293008db9963c4a60a94dc940c237c3ed259e5ce44f14aaf"
+    },
+    "campaign138_source_frontier_audit": {
+      "path": "docs/a_share_three_day_walkforward_campaign_138_mechanism_source_frontier_audit_20260814.json",
+      "sha256": "24dad986c24eb4c88df3e2ca03244f36bfb0960de64d1d59bac6a234de75f366"
+    },
+    "campaign115_entitlement_independent_terminal": {
+      "path": "docs/a_share_three_day_walkforward_campaign_115_entitlement_independent_terminal_20260812.json",
+      "sha256": "7eb6f7a49a0235b85ee752f01a357986da4366a37d9d8cf7b9dd9dcc2f6306cf"
+    }
+  },
+  "complete_mechanism_review": {
+    "all_157_complete_logical_definitions_and_terminal_histories_reviewed": true,
+    "all_142_numeric_comparators_reserved_but_not_loaded": true,
+    "candidate49_reviewed_semantically_but_excluded_from_historical_backfill": true,
+    "selected_candidate_count": 0,
+    "family_review": {
+      "quoted_liquidity_cost": "Economically independent, but no accepted local source supplies point-in-time bid and ask quotes; OHLC range is not a valid spread substitute.",
+      "aggressor_signed_order_flow": "Economically independent only when side is directly observed. The accepted bars contain no aggressor side, while tick-rule inference reopens terminal return-sign and price-impact states.",
+      "transaction_count_and_mean_trade_size": "Economically independent, but no accepted source supplies trade count or print identity. Amount divided by volume is transaction price, not average trade size.",
+      "order_cancellation_and_queue_replenishment": "Economically independent, but requires event-time order add/cancel and displayed-quantity state absent from bar data.",
+      "capitalization_normalized_activity": "Historical point-in-time capitalization/share counts remain outside the accepted contract; the formula is also a same-day turnover sibling already represented by signal_day_turnover_rate_pct.",
+      "limit_queue_persistence": "Campaign115 is terminal by explicit continuing-scope decision, and daily OHLC cannot recover seal time, reopen count or queue amount. A board-rule price proxy is not an independent replacement."
+    },
+    "old_terminal_formula_direction_support_failure_or_result_changed": false,
+    "old_terminal_record_rewritten_or_reclassified": false
+  },
+  "proposal_gate_results": [
+    {
+      "catalog_id": "c153_01",
+      "name": "intraday_time_weighted_relative_quoted_spread_240m",
+      "accepted_historical_source_and_original_contract_permits_inputs": false,
+      "semantically_independent_from_terminal_library": true,
+      "passed": false,
+      "terminal_reason": "Best bid and best ask are absent from every accepted local historical contract; OHLC range substitution is forbidden."
+    },
+    {
+      "catalog_id": "c153_02",
+      "name": "intraday_aggressor_signed_amount_imbalance_240m",
+      "accepted_historical_source_and_original_contract_permits_inputs": false,
+      "semantically_independent_from_terminal_library": true,
+      "passed": false,
+      "terminal_reason": "Provider-observed aggressor side is absent; price-tick side inference would be a terminal family proxy."
+    },
+    {
+      "catalog_id": "c153_03",
+      "name": "intraday_mean_transaction_notional_240m",
+      "accepted_historical_source_and_original_contract_permits_inputs": false,
+      "semantically_independent_from_terminal_library": true,
+      "passed": false,
+      "terminal_reason": "Executed trade count and trade identity are absent from the accepted minute and daily schemas."
+    },
+    {
+      "catalog_id": "c153_04",
+      "name": "intraday_queue_replenishment_after_cancellation_240m",
+      "accepted_historical_source_and_original_contract_permits_inputs": false,
+      "semantically_independent_from_terminal_library": true,
+      "passed": false,
+      "terminal_reason": "Order add/cancel event type, queue price and displayed quantity are absent from bar sources."
+    },
+    {
+      "catalog_id": "c153_05",
+      "name": "daily_absolute_amount_to_free_float_market_cap_1d",
+      "accepted_historical_source_and_original_contract_permits_inputs": false,
+      "semantically_independent_from_terminal_library": false,
+      "passed": false,
+      "terminal_reason": "Point-in-time circ_mv is absent, current listing state cannot be projected backward, and the ratio reopens terminal turnover."
+    },
+    {
+      "catalog_id": "c153_06",
+      "name": "daily_ohlc_inferred_limit_queue_persistence_1d",
+      "accepted_historical_source_and_original_contract_permits_inputs": false,
+      "semantically_independent_from_terminal_library": false,
+      "passed": false,
+      "terminal_reason": "Point-in-time board/ST limit rules are absent and an OHLC proxy cannot reopen terminal Campaign115 queue or old limit-like price mechanisms."
+    }
+  ],
+  "gate_summary": {
+    "finite_proposals_reviewed": 6,
+    "proposals_passing_accepted_source_and_original_contract_gate": 0,
+    "proposals_semantically_independent_if_required_state_were_directly_observed": 4,
+    "proposals_passing_all_gates": 0,
+    "selected_candidate_count": 0,
+    "formula_direction_parameter_filter_subset_combination_model_or_development_catalog_frozen": false
+  },
+  "terminal_decision": {
+    "campaign153_complete_factor_definition_created": false,
+    "campaign153_numeric_comparator_eligibility": false,
+    "campaign153_feature_snapshot_created": false,
+    "campaign153_source_acceptance_coverage_uniqueness_or_return_audit_run": false,
+    "campaign153_development_or_stress_trial_run": false,
+    "campaign153_may_repair_relabel_reparameterize_proxy_combine_or_run_any_rejected_concept": false,
+    "campaign153_may_request_new_provider_history": false,
+    "historical_predictive_value_established": false,
+    "next_policy_must_preserve_exact_157_definition_and_142_comparator_orders": true
+  },
+  "research_boundary": {
+    "source_contract_schema_formula_manifest_and_terminal_metadata_read": true,
+    "source_rows_or_column_values_read": false,
+    "campaign153_candidate_values_computed_or_read": false,
+    "campaign153_comparator_values_read": false,
+    "historical_daily_price_or_forward_return_values_read": false,
+    "stress_2024_2025_opened": false,
+    "provider_request_issued": false,
+    "provider_credential_value_or_digest_read": false,
+    "candidate49_historical_backfill_performed": false,
+    "candidate49_ledgers_changed": false,
+    "second_prospective_candidate_created": false,
+    "current_scoring_selection_sizing_positions_or_orders_performed": false,
+    "investment_advice": false,
+    "inherited_current_listing_survivorship_limitation_remains": true
+  },
+  "next_action": "Record all six Campaign153 concept decisions append-only, preserve the 157/142 orders, terminalize Campaign153 before values, and allow Campaign154 only from a genuinely new finite prevalue mechanism backed by an already accepted point-in-time source or a separately authorized source-admission campaign."
+}

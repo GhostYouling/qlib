@@ -1,0 +1,41 @@
+{
+  "schema_version": 1,
+  "kind": "a_share_three_day_walkforward_campaign084_prevalue_format_failure_record",
+  "status": "mechanically_corrected_before_implementation_freeze_or_source_values",
+  "recorded_at": "2026-08-06T22:15:00+08:00",
+  "immutable_protocol": {
+    "path": "docs/a_share_three_day_walkforward_campaign_084_no_return_preregistration.json",
+    "sha256": "c396f141c811978004c04b62f09caceef343a9860e43f48de1fe44419c9bcf70"
+  },
+  "failure": {
+    "stage": "feature_runner_and_synthetic_test_format_validation",
+    "observed": "The first Black check reported that the new Campaign084 runner and synthetic test file required formatting. Ruff passed and all seven synthetic tests passed in the same pre-source invocation.",
+    "root_cause": "The mechanically copied and patched versioned files had not yet been normalized by the repository formatter.",
+    "correction": "Run Black once on exactly the two new files, then rerun Ruff and the full seven-test Campaign084 synthetic suite successfully. No formula, rank universe, direction, source field, gate, threshold, comparator, or trial catalog changed."
+  },
+  "corrected_artifacts": {
+    "feature_runner": {
+      "path": "scripts/a_share_three_day_walkforward_campaign084_features.py",
+      "sha256": "d80970ce7c46722db1a6475a4ee6853c1620e0fbe6396612797cea14ae42eed2"
+    },
+    "synthetic_tests": {
+      "path": "tests/data_collector_tests/test_a_share_three_day_walkforward_campaign084_features.py",
+      "sha256": "e4ee5e4ee4ae62282232ff433ba660dba45a60c214e5324afb68ead197464c9f",
+      "passed": 7,
+      "failed": 0
+    }
+  },
+  "research_boundary": {
+    "campaign084_quarterly_or_minute_source_rows_read": false,
+    "campaign084_candidate_values_read": false,
+    "comparison_values_read": false,
+    "historical_daily_price_fields_read": [],
+    "historical_forward_returns_read": false,
+    "provider_request_issued": false,
+    "candidate49_historical_backfill_performed": false,
+    "candidate49_ledgers_changed": false,
+    "second_prospective_candidate_created": false,
+    "current_scoring_selection_sizing_or_orders_performed": false,
+    "investment_advice": false
+  }
+}

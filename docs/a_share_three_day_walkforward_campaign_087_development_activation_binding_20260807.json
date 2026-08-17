@@ -1,0 +1,32 @@
+{
+  "schema_version": 1,
+  "kind": "a_share_three_day_walkforward_campaign087_development_activation_binding",
+  "status": "ready_for_exactly_one_2019_2023_development_trial",
+  "recorded_at": "2026-08-07T03:05:00+08:00",
+  "implementation_freeze": {
+    "path": "docs/a_share_three_day_walkforward_campaign_087_development_implementation_freeze_20260807.json",
+    "sha256": "27112e27100992032a1d2a2ced4eb5f8a4ad3cce8840398ed9b59e72f71f73e8"
+  },
+  "development_preregistration": {
+    "path": "docs/a_share_three_day_walkforward_campaign_087_preregistration_v2.json",
+    "sha256": "865d0992f0f7e25d6048b7ea26439dca56ba86b76fa14bb0e83ea7e425c47fed"
+  },
+  "development_status": {
+    "expected_trial_count": 1,
+    "ledger_entry_count": 0,
+    "stress_intent_exists": false,
+    "stress_record_exists": false
+  },
+  "authorized_interpreter": {
+    "path": "/Volumes/DIsk/Coding/anaconda3/bin/python3.12",
+    "sha256": "b21ee43bcb627125a1b54b1fceb97bad564afbab38235cb9d72cf1f278d5751c",
+    "dynamic_library_environment_override_allowed": false
+  },
+  "development_years_authorized": [2019, 2020, 2021, 2022, 2023],
+  "stress_2024_2025_authorized_now": false,
+  "maximum_development_run_count": 1,
+  "candidate49_historical_return_read": false,
+  "candidate49_ledgers_changed": false,
+  "provider_request_issued": false,
+  "current_scoring_selection_sizing_or_orders_allowed": false
+}

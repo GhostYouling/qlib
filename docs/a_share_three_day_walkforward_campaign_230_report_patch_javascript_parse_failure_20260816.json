@@ -1,0 +1,31 @@
+{
+  "schema_version": 1,
+  "kind": "a_share_three_day_walkforward_campaign230_infrastructure_failure",
+  "recorded_at": "2026-08-16T04:12:00+08:00",
+  "timestamp_semantics": "monotonic_logical_append_time_not_host_wall_clock_measurement",
+  "status": "failed_javascript_template_literal_parse_before_report_patch_tool_invocation",
+  "command": "functions.exec JavaScript orchestration intended to call apply_patch for both unified reports",
+  "working_directory": "/Volumes/DIsk/Disk-Coding/qlib",
+  "observed_process_exit_code": null,
+  "observed_tool_status": "script_failed_syntax_error_invalid_or_unexpected_token",
+  "failure_reason": "unicode_backtick_escape_was_interpreted_inside_a_javascript_template_literal_before_apply_patch_was_invoked",
+  "evidence_treatment": {
+    "target_write_occurred": false,
+    "output_discarded": true,
+    "used_as_scientific_evidence": false,
+    "used_as_validation_evidence": false
+  },
+  "recovery_rule": "apply_each_report_patch_with_a_plain_patch_string_and_literal_markdown_backticks_outside_javascript_template_literals",
+  "research_boundary": {
+    "candidate_or_comparator_value_read": false,
+    "daily_price_or_forward_return_read": false,
+    "provider_or_web_request_issued": false,
+    "provider_credential_presence_value_or_digest_read": false,
+    "candidate49_plan_or_run_executed": false,
+    "candidate49_ledgers_changed": false,
+    "second_prospective_candidate_created": false,
+    "stress_2024_2025_opened": false,
+    "current_scoring_selection_sizing_positions_or_orders_performed": false,
+    "investment_advice": false
+  }
+}

@@ -1,0 +1,110 @@
+{
+  "accounting": {
+    "campaign103_attempt_count": 15,
+    "campaign103_complete_factor_attempt_count": 1,
+    "campaign103_infrastructure_failure_count": 14,
+    "campaign103_return_reading_complete_development_trial_count": 1,
+    "cumulative_historical_research_attempt_count": 768,
+    "cumulative_return_reading_development_trial_count": 299
+  },
+  "campaign103_terminal": {
+    "attempt_ledger": {
+      "entry_count": 15,
+      "infrastructure_failure_count": 14,
+      "path": "data/experiments/short_horizon/historical_walkforward/campaign_103/research_attempt_ledger_v2.json",
+      "sha256": "03a6b9789421d6503f63d917b033d046613a0a34d3609376d248391674157174"
+    },
+    "development_survivor_count": 0,
+    "development_trial_count": 1,
+    "factor_name": "full_numeric_library_directional_rank_improvement_breadth_130f",
+    "numeric_comparison_count": 130,
+    "numeric_comparison_pass_count": 130,
+    "result": {
+      "path": "docs/a_share_three_day_walkforward_campaign_103_terminal_result_binding_v2_20260808.json",
+      "sha256": "f533467879a962068e24d1c1b07d814f3458f6e20c83221a240ba2dfbd55ab38"
+    },
+    "stress_2024_2025_opened": false,
+    "stress_2024_2025_return_fields_read": false,
+    "terminal_no_retry_or_rescue": true,
+    "timestamp_correction": {
+      "affected_artifact_count": 11,
+      "path": "docs/a_share_three_day_walkforward_campaign_103_postterminal_logical_timestamp_failure_20260808.json",
+      "sha256": "cb9ad7fe1d477ee93ca7a6d02c84a1333d5679cefb86744baab7bdb00a1bbd47"
+    }
+  },
+  "candidate49": {
+    "execution_entry_count": 0,
+    "execution_ledger_sha256": "d57a3e61eac969e42cafa418ccd8c0a5ee65dcf69da145bb2c096c2a02a2ea4f",
+    "historical_backfill_performed": false,
+    "ledgers_changed": false,
+    "remains_only_active_prospective_candidate": true,
+    "second_prospective_candidate_created": false,
+    "signal_entry_count": 0,
+    "signal_ledger_sha256": "5193f00d7f36da003f53cec387900da4c3d002299f5dfcfc1a95eaa199ed3a79"
+  },
+  "candidate49_20260807_source_failure": {
+    "failure_record_preserved": true,
+    "failure_stage": "stock_basic",
+    "path": "docs/a_share_candidate49_20260807_daily_source_failure_record.json",
+    "provider_calls_this_invocation": 4,
+    "same_day_retry_allowed": false,
+    "sha256": "8b8eec87a1f20c424703cf70ea9eae87f09c7b1e5c9a5754c0bde9cc2f9c839f"
+  },
+  "current_scoring_selection_sizing_or_orders_performed": false,
+  "effective_future_numeric_policy": {
+    "complete_definition_count": 134,
+    "complete_definition_order_sha256": "db734b25fed4046ff80a276448daf20918d410125ebae941373c5617816cf8dc",
+    "numeric_comparator_count": 131,
+    "numeric_comparator_order_sha256": "ab56a1791ae9a74b75d0a32cfb2346aa4bb6bfe266589be65825f8f51422f646",
+    "path": "docs/a_share_three_day_walkforward_future_numeric_comparison_eligibility_policy_v61_20260808.json",
+    "sha256": "bfced9733feba5975bc46b96f2596a9227a160849dbf50b41c958053edcc59a0"
+  },
+  "investment_advice": false,
+  "kind": "a_share_three_day_iteration_status",
+  "next_safe_action": "Do not retry or rescue Campaign103. Campaign104 offline concept scouting may begin under v61 before any candidate or comparison values; Candidate49 remains governed by its separate future-session workflow and the preserved 2026-08-07 failure.",
+  "provider_credential": {
+    "git_ignored": true,
+    "mode": "0600",
+    "recognized_nonempty_token_key_count": 1,
+    "regular_file_non_symlink": true,
+    "secret_printed_hashed_logged_or_persisted": false,
+    "source": ".env",
+    "workflow_loader_observed_nonempty_token": true
+  },
+  "provider_request_accounting": {
+    "campaign103_historical_research_provider_calls": 0,
+    "candidate49_20260807_provider_calls": 4,
+    "candidate49_same_day_retry_performed": false
+  },
+  "recorded_at": "2026-08-08T00:55:20+08:00",
+  "research_mode": {
+    "candidate49_future_observation_is_independent_confirmation_layer": true,
+    "historical_offline_work_may_run_at_any_time": true,
+    "historical_walkforward_is_primary_iteration_engine": true,
+    "next_campaign_must_freeze_genuinely_new_mechanism_before_values": true,
+    "wait_for_1630_or_new_daily_bar_required_for_historical_work": false
+  },
+  "research_reports": {
+    "campaign103": {
+      "path": "docs/a_share_three_day_walkforward_campaign_103_report.md",
+      "sha256": "903376672b9b3b2559ab30f404fe1e6a227b8af2408485956c24b141435a32f2"
+    },
+    "current": {
+      "path": "data/experiments/short_horizon/current_research_report.md",
+      "sha256": "4620f8234c81687331bc003f5b1b1373f2db53130afbf5a3e933a5a69d104ac5"
+    },
+    "three_day": {
+      "path": "data/experiments/short_horizon/three_day_research_report.md",
+      "sha256": "87fc1a2448737f4d20ea60ec9cfa308e422afd355d1e1eff4e3b408705dcfc4f"
+    }
+  },
+  "schema_version": 10,
+  "status": "campaign103_terminal_zero_survivors_timestamp_accounting_corrected_candidate49_closed_offline_campaign104_ready",
+  "supersedes_without_rewriting": {
+    "campaign103_scientific_result_changed": false,
+    "path": "docs/a_share_three_day_iteration_status_20260808_campaign103_terminal.json",
+    "preserved": true,
+    "reason": "Correct the postterminal planned-time recording defect and append one common-root infrastructure failure through v2/v61 successors.",
+    "sha256": "88fb026b740d64062dee54ad8ac9166307f364ba5653c058b35a296bcf082137"
+  }
+}

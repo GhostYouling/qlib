@@ -1,0 +1,141 @@
+{
+  "version": 1,
+  "kind": "a_share_three_day_walkforward_campaign014_concept_scouting",
+  "status": "concept_only_one_new_mechanism_selected_no_formula_no_direction_no_values_no_returns",
+  "recorded_at": "2026-07-28T18:43:07Z",
+  "purpose": "Continue the three-session offline historical research program after Campaign013 stopped before returns on inadequate joint-field coverage. Consider only economic meaning and accepted source-schema feasibility, explicitly reject any Campaign013 unit or containment rescue, and select at most one concept for a separate exact no-value mechanism audit.",
+  "authoritative_bindings": {
+    "iteration_state": {
+      "path": "docs/a_share_three_day_iteration_status_20260729_campaign013.json",
+      "sha256": "7032456e2b73303d13d3502fc0e577c58b6e7ba27bcdf93453895fe24e798b03",
+      "campaign014_concept_scouting_allowed": true,
+      "candidate50_prospective_activation_allowed": false
+    },
+    "campaign013_research_record": {
+      "path": "docs/a_share_three_day_walkforward_campaign_013_research_record.json",
+      "sha256": "26f92825d28930500977cc4c78c661494841df18449759d13d8a601c31bf6d0f",
+      "completed": true,
+      "admissible_factor_count": 0,
+      "development_trial_count": 0,
+      "stress_interval_opened": false
+    },
+    "campaign013_verification": {
+      "path": "docs/a_share_three_day_walkforward_campaign_013_verification_20260729.json",
+      "sha256": "dd1b3ef3cf9f4682cabed5538898536476158a3eb4a402ccdcfffc2ffd6f5268",
+      "focused_tests_passed": 13
+    },
+    "historical_walkforward_policy": {
+      "path": "docs/a_share_three_day_historical_walkforward_research_policy_20260727.json",
+      "sha256": "38426d6161b9bfed323c58caba18feca668b8c9d53e294951a8ba90c01a798bb"
+    }
+  },
+  "source_schema_boundary": {
+    "provider": "tushare",
+    "frequency": "1m",
+    "accepted_source_grid_rows": 241,
+    "joint_clean_manifest": {
+      "path_below_data_root": "derived/a_share/rich/tushare/minute_sentiment_clean/tushare_stk_mins_1m_2019_2025_ea0cbb8f_sentiment_clean_v1/snapshot_manifest.json",
+      "sha256": "453c6719cb3c7da42fed8807b28a2bfe988700283e9625a6db97912534f368de",
+      "dataset_sha256": "0e4fe7c05536cdfcecc2936bc880726902f5560061188ffff82ef7ee6f346983",
+      "partitions": 33015,
+      "rows": 7724498
+    },
+    "allowed_source_fields": [
+      "datetime",
+      "symbol",
+      "provider",
+      "high",
+      "low"
+    ],
+    "source_open_close_volume_and_amount_must_not_be_loaded": true,
+    "daily_price_or_return_substitution_allowed": false,
+    "provider_request_allowed": false
+  },
+  "concepts_rejected_before_formula_or_values": [
+    {
+      "concept": "campaign013_transaction_vwap_envelope_rescue",
+      "reason": "Campaign013 is terminal. Unit changes, bar-VWAP clamping or tolerance, alternative centers, lower support, selected years, direction changes, and combinations are prohibited."
+    },
+    {
+      "concept": "same_bar_transaction_center_or_activity_weighted_range",
+      "reason": "Any amount/volume transaction center would reopen Campaign013, bar-VWAP close pressure, transaction-price path, or amount-volatility mechanisms."
+    },
+    {
+      "concept": "adjacent_interval_overlap_containment_or_lag_variant",
+      "reason": "Adjacent overlap, containment, Jaccard, higher lags, and per-pair denominator changes reopen terminal Campaign010."
+    },
+    {
+      "concept": "range_entropy_concentration_or_sequence_memory",
+      "reason": "Functions only of unordered range magnitudes reopen Campaign011; autocorrelation, runs, transitions, or compression after a range shock reopen Campaign012."
+    },
+    {
+      "concept": "open_close_body_wick_or_close_location",
+      "reason": "Bodies, wick asymmetry, signed candle placement, and terminal close location reopen Campaign009 or prior close-pressure mechanisms."
+    },
+    {
+      "concept": "close_return_path_jump_moment_or_extreme_order",
+      "reason": "Close-path efficiency, diffusive variation, return entropy, skewness, semivariance, sign runs, update frequency, and directional extreme order are terminal path or moment mechanisms."
+    },
+    {
+      "concept": "time_window_market_relative_or_cross_stock_range",
+      "reason": "Morning/afternoon/late allocation reopens volatility-resolution mechanisms; peer residualization and synchronization reopen terminal market-relative mechanisms."
+    }
+  ],
+  "selected_concept": {
+    "concept_name": "intraday_global_price_range_revisit",
+    "candidate_ordinal": null,
+    "prospective_active": false,
+    "concept_status": "mechanism_only_not_yet_exactly_preregistered",
+    "direction": null,
+    "formula": null,
+    "allowed_source_fields": [
+      "datetime",
+      "symbol",
+      "provider",
+      "high",
+      "low"
+    ],
+    "mechanism": "Measure how much one-minute high-low price territory is revisited anywhere else during the continuous session, irrespective of whether the revisiting bars are adjacent. This is a session-wide spatial coverage question: repeated auctioning of already explored price levels versus expansion into new price territory.",
+    "economic_question": "Does broad repeated acceptance of the same intraday price territory reveal resilient liquidity and support that carries from the next open through the third close, or does mostly non-overlapping exploration indicate unresolved repricing?",
+    "mandatory_overlap_challenges_before_any_value": [
+      "intraday_adjacent_range_overlap_continuity_238p",
+      "intraday_intrabar_range_participation_entropy_240m",
+      "intraday_intrabar_range_reversal_238p",
+      "intraday_intrabar_body_range_efficiency_240m",
+      "intraday_signed_path_efficiency_239m",
+      "intraday_diffusive_variation_ratio_238m",
+      "intraday_terminal_close_location_240m",
+      "intraday_transaction_vwap_envelope_asymmetry_240m",
+      "candidate49_intraday_cumulative_vwap_crossing_rate_240m_v1"
+    ],
+    "known_design_risks": [
+      "global interval union, denominator, point-interval treatment, minimum positive-range support, log versus arithmetic price space, session support, endpoint handling, and direction create researcher degrees of freedom unless frozen before values",
+      "the mechanism can be highly correlated with adjacent overlap or range entropy even though it is invariant to bar order and depends on price-level placement",
+      "using daily high-low span as an informal shortcut can hide disconnected interval components and is forbidden unless exact interval union is the preregistered construction",
+      "any use of open, close, volume, amount, transaction VWAP, market peers, or selected subwindows would change the mechanism"
+    ]
+  },
+  "research_boundary": {
+    "external_minute_partitions_read": false,
+    "external_daily_partitions_read": false,
+    "candidate_values_computed_or_read": false,
+    "comparison_values_read": false,
+    "historical_daily_prices_read": false,
+    "historical_forward_returns_read": false,
+    "formula_or_direction_frozen": false,
+    "training_or_model_fitting_performed": false,
+    "prospective_candidate_created": false,
+    "candidate49_historical_return_read": false,
+    "candidate49_ledgers_changed": false,
+    "current_scoring_selection_sizing_or_order_performed": false,
+    "provider_request_issued": false,
+    "investment_advice": false
+  },
+  "decision": {
+    "selected_concept_count": 1,
+    "selected_concept_may_advance_directly_to_values": false,
+    "required_next_step": "Perform a separate no-value audit against all 37 prior terminal or prospective mechanisms. Only if the session-wide spatial revisit question remains economically distinct may that audit freeze one exact formula, direction, union algorithm, support and missing rules, ordered no-return gates, and one finite development trial before any candidate or comparison values or returns are read.",
+    "candidate49_remains_only_prospective_candidate": true,
+    "candidate50_activation_allowed": false
+  }
+}

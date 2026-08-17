@@ -1,0 +1,32 @@
+{
+  "version": 1,
+  "kind": "a_share_three_day_walkforward_campaign072_audit_freeze_sequence_record",
+  "status": "snapshot_verified_audit_not_yet_activated_no_coverage_or_comparison_values_computed",
+  "recorded_at": "2026-08-06T06:10:00+08:00",
+  "protocol": {
+    "path": "docs/a_share_three_day_walkforward_campaign_072_no_return_preregistration.json",
+    "sha256": "32f16b1e8e07b0d60aa6646f66c52740e330fa02ef631803fb68b55a7e79cc98"
+  },
+  "feature_implementation_freeze": {
+    "path": "docs/a_share_three_day_walkforward_campaign_072_feature_implementation_freeze_20260806.json",
+    "sha256": "5be2e0c4b286aee80c67267818b45f2176d339415f986f31c1625613f796f214"
+  },
+  "snapshot_binding": {
+    "path": "docs/a_share_three_day_walkforward_campaign_072_feature_snapshot_binding_20260806.json",
+    "sha256": "eb36b61ecc800b13e40f8947da5b0fd049542df784baafc8f86a3c38c82b2d1d"
+  },
+  "sequence": [
+    "candidate definition, complete library, comparator order, gates, and one-trial catalog frozen",
+    "feature implementation and synthetic tests frozen",
+    "candidate snapshot built and fully verified without comparison, daily-price, or return reads",
+    "audit implementation and tests must now be frozen",
+    "audit activation must bind the immutable snapshot and audit implementation",
+    "only then may coverage be computed; comparison values remain conditional on coverage pass"
+  ],
+  "coverage_or_capacity_metrics_computed": false,
+  "comparison_values_read": false,
+  "historical_daily_price_fields_read": [],
+  "historical_forward_returns_read": false,
+  "provider_request_issued": false,
+  "candidate49_ledgers_changed": false
+}

@@ -1,0 +1,158 @@
+{
+  "version": 1,
+  "kind": "a_share_candidate49_workflow_record_fd_pinned_read_readiness",
+  "status": "offline_workflow_record_fd_pinned_read_and_digest_passed_real_future_session_pending",
+  "recorded_at": "2026-07-25T20:30:36Z",
+  "purpose": "Advance Candidate49 by proving that a completed workflow record cannot be replaced with a byte-identical different inode between its initial identity check and content read, and by binding JSON parsing plus the returned SHA-256 to one no-follow file descriptor.",
+  "advances": {
+    "path": "docs/a_share_candidate49_workflow_record_file_identity_readiness_20260726.json",
+    "sha256": "dd6a2d8892f375f605f2d4733fba5e92d0988f154440e500abb5f04939b37a02"
+  },
+  "authoritative_research_state": {
+    "path": "docs/a_share_three_day_iteration_status_20260725_future_only.json",
+    "sha256": "d44e1cb3707cce194eed37e99cc90f865396b1de8c35e02a393a2a243d973466",
+    "future_only_policy_path": "docs/a_share_three_day_future_only_minute_research_policy_20260725.json",
+    "future_only_policy_sha256": "52ca8bfa7201509fe891d0af3d1c87aeebd64e47e6ec6641e897849411df408c",
+    "active_future_only_candidate": "candidate49_intraday_cumulative_vwap_crossing_rate_240m_v1",
+    "aggregation_allowed": false,
+    "candidate50_activation_allowed": false
+  },
+  "candidate_contract": {
+    "factor_changed_by_this_work": false,
+    "factor_direction": "higher_intraday_cumulative_vwap_crossing_rate_240m",
+    "ranking_rule_changed_by_this_work": false,
+    "minimum_signal_names_changed_by_this_work": false,
+    "signal_timing_changed_by_this_work": false,
+    "execution_protocol_changed_by_this_work": false,
+    "three_session_holding_definition_changed_by_this_work": false,
+    "historical_return_backfill_allowed": false
+  },
+  "red_test_evidence": {
+    "byte_identical_inode_replacement": {
+      "setup": "Create a byte-identical unique regular replacement file, let the original deterministic record path pass its unique-file lstat check, and then atomically replace that path before the former path-based JSON read.",
+      "former_behavior": "The former validator opened the path again, read the byte-identical replacement inode, and returned completed_workflow_record_validated_no_provider_request.",
+      "red_result": "failed_did_not_raise_before_fix",
+      "expected_final_error": "Candidate49 workflow record file identity changed during read"
+    }
+  },
+  "implemented_fd_pinned_read_contract": {
+    "pre_open_identity": "Require the deterministic path to be a link-count-one regular file under a real non-symbolic-link parent chain and retain its device and inode.",
+    "open": "Open the deterministic path read-only with O_CLOEXEC and O_NOFOLLOW when supported.",
+    "opened_descriptor_gate": "Immediately require fstat to report a link-count-one regular file with the exact pre-open device and inode.",
+    "single_source_bytes_and_digest": "Read all JSON bytes and calculate SHA-256 from the same open descriptor; no later path-based digest is allowed for the completed record.",
+    "post_read_descriptor_gate": "Require device, inode, link count, regular-file type, size, mtime_ns, and ctime_ns to remain unchanged across the descriptor read.",
+    "post_parse_path_gate": "After JSON decoding, revalidate the deterministic path as a unique regular file and require its device, inode, size, mtime_ns, and ctime_ns to equal the opened descriptor.",
+    "reuse_paths": "Plan inspection, pre-lock idempotent workflow reuse, within-lock idempotent reuse, and newly published record verification all return the descriptor-bound digest.",
+    "new_publication_verification": "After durable atomic publication, reread the record through the same descriptor-bound contract and require the persisted JSON object to equal the object submitted to the writer."
+  },
+  "implementation_fingerprints": {
+    "session_workflow": {
+      "path": "scripts/a_share_tushare_candidate49_future_session_workflow.py",
+      "sha256": "6fc50c9e126d20093897d00dc8dacb711550be725d7388f56897bf53953adf5f"
+    },
+    "source_to_signal": {
+      "path": "scripts/a_share_tushare_candidate49_future_observation.py",
+      "sha256": "8514e5aca9a06f374c8c9677e41681c4432a93a3bd9546dbb60480605c016a45"
+    },
+    "paper_execution_and_reporting_validator": {
+      "path": "scripts/a_share_tushare_candidate49_future_execution.py",
+      "sha256": "046a70bbd860ebaf46744e161c690d1275ab0327c8a42213bf955ec66e39a98b"
+    },
+    "session_workflow_tests": {
+      "path": "tests/data_collector_tests/test_a_share_tushare_candidate49_future_session_workflow.py",
+      "sha256": "0f73f9debf39f667d6a4535155e32b3cfeaecd6670f4801dec8548b5f9d9643c"
+    },
+    "source_to_signal_tests": {
+      "path": "tests/data_collector_tests/test_a_share_tushare_candidate49_future_observation.py",
+      "sha256": "d5aaea60110d824af8e0fe7f280b15dad5ecbb6b7f8af9b78c7a6569616d5d2b"
+    },
+    "execution_tests": {
+      "path": "tests/data_collector_tests/test_a_share_tushare_candidate49_future_execution.py",
+      "sha256": "dfe838ddba0e03f2902bf5eb0cc3c792adeb0423c52ac335cad1e1075f365f34"
+    },
+    "runbook": {
+      "path": "docs/a_share_data_pipeline.md",
+      "sha256": "b432a9c1467673309a4cc6899c8a5d710d71305b21d2df782eb29d185970d96d"
+    }
+  },
+  "offline_proofs": {
+    "red_test_before_fix": {
+      "passed": 0,
+      "failed": 1,
+      "failure": "DID NOT RAISE Candidate49FutureSessionWorkflowError"
+    },
+    "red_test_after_fix": {
+      "passed": 1,
+      "failed": 0,
+      "elapsed_seconds": 0.46
+    },
+    "session_workflow_tests": {
+      "passed": 27,
+      "failed": 0,
+      "elapsed_seconds": 0.64
+    },
+    "focused_candidate49_observation_execution_workflow_tests": {
+      "passed": 85,
+      "failed": 0,
+      "elapsed_seconds": 13.39
+    },
+    "full_data_collector_tests": {
+      "passed": 1125,
+      "failed": 0,
+      "warnings": 9,
+      "elapsed_seconds": 35.70
+    },
+    "ruff": "passed",
+    "python_compile": "passed"
+  },
+  "real_state_after_offline_tests": {
+    "active_daily": {
+      "data_root": "/Users/niyufei/Coding/qlib/data",
+      "daily_source": "baostock",
+      "calendar_end": "2026-07-13",
+      "price_basis_status": "passed"
+    },
+    "credential_presence_only": {
+      "current_process_tushare_token_present": false,
+      "launchctl_tushare_token_present": false,
+      "credential_value_read_printed_or_persisted": false
+    },
+    "signal": {
+      "path": "data/experiments/short_horizon/candidate49_future_signal_ledger.json",
+      "sha256": "5193f00d7f36da003f53cec387900da4c3d002299f5dfcfc1a95eaa199ed3a79",
+      "entries": 0,
+      "chain_tip_sha256": "ab47c70a18fc84b6d347fe906c404504faa126d3ec581bf077beffb215788bbb"
+    },
+    "execution": {
+      "path": "data/experiments/short_horizon/candidate49_future_execution_ledger.json",
+      "sha256": "d57a3e61eac969e42cafa418ccd8c0a5ee65dcf69da145bb2c096c2a02a2ea4f",
+      "entries": 0,
+      "chain_tip_sha256": "f302b4b93c9fcc1478e2f917279d589190b79069e6638efc41cb7aa6cf3691e0"
+    },
+    "evaluation_records": 0,
+    "target_session_workflow_record_present": false,
+    "target_session": "2026-07-27",
+    "first_allowed_source_to_signal_time": "2026-07-27T16:30:00+08:00"
+  },
+  "side_effect_audit": {
+    "real_provider_check_performed": false,
+    "real_provider_request_issued": false,
+    "real_minute_rows_read": false,
+    "real_daily_rows_read_by_this_audit": false,
+    "real_signal_or_execution_entry_written": false,
+    "historical_candidate49_return_diagnostic_run": false,
+    "paper_execution_or_live_order_performed": false,
+    "active_data_root_mutated": false
+  },
+  "decision": {
+    "workflow_record_fd_pinned_read_ready": true,
+    "workflow_record_descriptor_bound_digest_ready": true,
+    "real_candidate49_signal_ready": false,
+    "current_real_signal_count": 0,
+    "current_real_execution_entry_count": 0,
+    "current_real_evaluation_milestone_count": 0,
+    "profitability_claim_allowed": false,
+    "selection_sizing_or_order_allowed": false,
+    "next_action": "On or after 2026-07-27 16:30 Asia/Shanghai, run the fail-closed Candidate49 source-to-signal workflow. Any completed record reuse must pass descriptor-bound content and digest verification before it is treated as zero-request validated; then wait for lawful t+1 and t+3 daily evidence before paper settlement."
+  }
+}

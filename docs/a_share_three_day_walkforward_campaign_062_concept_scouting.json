@@ -1,0 +1,114 @@
+{
+  "version": 1,
+  "kind": "a_share_three_day_walkforward_campaign062_concept_scouting",
+  "status": "selected_one_economically_independent_candidate_before_campaign062_source_candidate_comparison_daily_price_or_return_values",
+  "recorded_at": "2026-08-05T03:16:00+08:00",
+  "purpose": "Select one finite historical-only Campaign062 mechanism from frozen definitions and source schemas before reading any Campaign062 quarterly row, candidate value, comparison value, daily price, or forward return.",
+  "authoritative_inputs": {
+    "campaign061_verified_state": {
+      "path": "docs/a_share_three_day_iteration_status_20260805_campaign061_verified.json",
+      "sha256": "537f7c1b45ddb20b9b02da2c44380eebc9ae88c608eda729eb282d53ef770419"
+    },
+    "campaign061_research_record": {
+      "path": "docs/a_share_three_day_walkforward_campaign_061_research_record.json",
+      "sha256": "e644f6612f65dbde37ce1174c9e6e9c6ff30ea9f43f79b40ac003723374748d3"
+    },
+    "campaign061_no_return_protocol": {
+      "path": "docs/a_share_three_day_walkforward_campaign_061_no_return_preregistration.json",
+      "sha256": "8bb79b587a64dab98a3a32d6a04ad6be8985979519ed436bc4062bbe64ff8dab"
+    },
+    "historical_walkforward_policy": {
+      "path": "docs/a_share_three_day_historical_walkforward_research_policy_20260727.json",
+      "sha256": "38426d6161b9bfed323c58caba18feca668b8c9d53e294951a8ba90c01a798bb"
+    }
+  },
+  "definition_only_inventory": {
+    "campaign061_required_comparison_definition_count": 92,
+    "campaign061_terminal_definition_appended_for_campaign062": "intraday_day_over_day_realized_variance_stability_238b",
+    "campaign062_required_comparison_definition_count": 93,
+    "nearest_disclosure_timing_and_event_count_families": [
+      "quarterly_announcement_freshness_60s",
+      "quarterly_announcement_timeliness_days",
+      "quarterly_announcement_delay_consistency_4q",
+      "generic_same_issuer_event_count_and_freshness_factors"
+    ],
+    "candidate_source_rows_read": false,
+    "campaign062_candidate_values_read": false,
+    "comparison_values_read_for_campaign062_selection": false,
+    "daily_price_or_forward_return_read_for_campaign062_selection": false
+  },
+  "candidate_design_catalog": [
+    {
+      "design": "quarterly_announcement_peer_crowding_sparsity",
+      "decision": "selected",
+      "reason": "The statistic isolates cross-issuer attention competition for one standardized quarterly report event. It is not the issuer's announcement age, announcement delay, multi-quarter delay consistency, accounting value, or same-issuer event multiplicity."
+    },
+    {
+      "design": "signed_or_log_peer_count",
+      "decision": "rejected_before_values",
+      "reason": "All monotone transforms would preserve daily ranks. The exact reciprocal count is frozen for interpretability and bounded validation."
+    },
+    {
+      "design": "announcement_day_count_without_report_period_matching",
+      "decision": "rejected_before_values",
+      "reason": "Mixing different report periods would turn the mechanism into generic disclosure traffic. Peers must share both exact report_date and exact announcement_date."
+    },
+    {
+      "design": "industry_board_market_cap_or_quality_conditioned_peer_count",
+      "decision": "rejected_before_values",
+      "reason": "No industry, board, size, accounting-value, or quality-conditioned peer subsets are admitted."
+    },
+    {
+      "design": "announcement_freshness_delay_or_four_quarter_consistency_variant",
+      "decision": "rejected_before_values",
+      "reason": "Campaign020, Campaign032, and Campaign052 already terminalized the issuer-time families. Campaign062 changes only when the number of same-event-date peer issuers changes."
+    },
+    {
+      "design": "terminal_factor_combination_filter_or_model",
+      "decision": "rejected_before_values",
+      "reason": "Campaign062 contains one direct disclosure-identity statistic and loads no terminal score into its formula."
+    }
+  ],
+  "selected_candidate": {
+    "name": "quarterly_announcement_peer_crowding_sparsity",
+    "direction": "higher",
+    "economic_hypothesis": "A quarterly report disclosed on a less crowded same-report-period announcement date faces less cross-issuer attention competition, so its firm-specific information may diffuse more persistently from the next open through the third close.",
+    "formula": "For every unique instrument-report_date event, count distinct instruments sharing its exact report_date and announcement_date in the frozen source. For each stock-day, select the latest event effective on the first accepted session strictly after announcement_date, breaking simultaneous effective events by later report_date, and return 1/peer_count.",
+    "stock_day_identity_projection": [
+      "datetime",
+      "symbol",
+      "provider"
+    ],
+    "quarterly_source_projection": [
+      "instrument",
+      "report_date",
+      "announcement_date"
+    ],
+    "peer_group": "exact report_date and exact announcement_date across distinct instruments in the immutable quarterly source",
+    "availability_rule": "announcement_date must be strictly earlier than the stock-day; effectiveness begins on the first accepted local session after announcement_date",
+    "simultaneous_effective_event_rule": "choose the event with the greatest report_date, then greatest announcement_date",
+    "score_rule": "one divided by the positive integer peer count including the issuer itself",
+    "valid_range": "(0,1]",
+    "parameter_window_transform_direction_threshold_filter_subset_combination_fit_or_model_search": false
+  },
+  "research_boundary": {
+    "external_campaign062_minute_or_quarterly_rows_read": false,
+    "campaign062_candidate_or_comparison_values_read": false,
+    "historical_daily_price_fields_read": [],
+    "historical_forward_return_fields_read": false,
+    "provider_request_issued": false,
+    "candidate49_historical_return_signal_execution_or_milestone_backfill_performed": false,
+    "candidate49_ledgers_changed": false,
+    "second_prospective_candidate_created": false,
+    "current_scoring_selection_sizing_or_orders_performed": false,
+    "investment_advice": false,
+    "current_listing_snapshot_survivorship_limitation": true
+  },
+  "decision": {
+    "selected_candidate_count": 1,
+    "finite_candidate_library": true,
+    "conceptual_independence_pending_separate_overlap_audit": true,
+    "predictive_value_established": false,
+    "next_action": "Complete a separate mechanism-overlap audit before freezing the exact no-return protocol or reading source values."
+  }
+}

@@ -1,0 +1,24 @@
+{
+  "schema_version": 1,
+  "kind": "a_share_three_day_walkforward_campaign121_infrastructure_failure",
+  "status": "recorded_before_any_comparator_value",
+  "recorded_at": "2026-08-14T02:50:00+08:00",
+  "attempt_id": "campaign121_infrastructure_026",
+  "phase": "ordered_uniqueness_implementation_freeze_validation",
+  "failure": {
+    "class": "inherited_lowercase_base119_key_not_transformed",
+    "failed_freeze": {
+      "path": "docs/a_share_three_day_walkforward_campaign_121_ordered_uniqueness_implementation_freeze_20260814.json",
+      "sha256": "817b55dca03839de43f3f59be93f76cec235f9e9e2fa88fa6d9b355a1b584634"
+    }
+  },
+  "repair": "Transform the inherited lowercase key to base120_runner_sha256, preserve the failed freeze, and bind a v2 freeze to the repaired runner bytes.",
+  "research_boundary": {
+    "candidate_values_reopened_for_uniqueness": false,
+    "comparator_values_read": false,
+    "historical_daily_price_or_forward_return_values_read": false,
+    "provider_request_issued": false,
+    "candidate49_ledgers_changed": false,
+    "scientific_result_changed": false
+  }
+}

@@ -1,0 +1,32 @@
+{
+  "schema_version": 1,
+  "kind": "a_share_three_day_walkforward_campaign221_infrastructure_failure",
+  "recorded_at": "2026-08-16T01:30:00+08:00",
+  "timestamp_semantics": "monotonic_logical_append_time_not_host_wall_clock_measurement",
+  "attempt_id": "campaign221_infrastructure_001",
+  "phase": "campaign220_template_and_report_tail_inspection",
+  "status": "failed_after_read_only_template_output_before_any_write_invalid_bsd_sed_address",
+  "failure": {
+    "command_purpose": "Display the Campaign220 ledger/result templates and the final bounded report section before drafting Campaign221.",
+    "observed_error": "sed: invalid command code (",
+    "cause": "A shell arithmetic expression was placed inside a single-quoted sed address and was therefore passed literally to BSD sed.",
+    "output_before_failure_discarded_as_validation_or_scientific_evidence": true,
+    "repair": "Use structured JSON reads and exact rg line matches; do not derive a dynamic sed address inside single quotes."
+  },
+  "side_effects": {
+    "file_written_or_changed": false,
+    "candidate_or_comparator_value_read": false,
+    "daily_price_or_forward_return_read": false,
+    "provider_or_web_request_issued": false,
+    "provider_credential_presence_value_or_digest_read": false,
+    "candidate49_plan_or_run_executed": false,
+    "candidate49_ledgers_changed": false,
+    "stress_2024_2025_opened": false,
+    "current_scoring_selection_sizing_positions_or_orders_performed": false
+  },
+  "accounting": {
+    "counts_as_one_infrastructure_failure": true,
+    "counts_as_scientific_attempt": false,
+    "counts_as_return_reading_trial": false
+  }
+}

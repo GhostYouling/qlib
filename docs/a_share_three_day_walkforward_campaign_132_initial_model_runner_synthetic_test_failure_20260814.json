@@ -1,0 +1,46 @@
+{
+  "schema_version": 1,
+  "kind": "a_share_three_day_walkforward_infrastructure_failure_record",
+  "recorded_at": "2026-08-14T09:31:29+08:00",
+  "campaign": 132,
+  "attempt_id": "campaign132_infrastructure_007",
+  "phase": "infrastructure_failure",
+  "stage": "pre_return_model_runner_synthetic_tests_and_static_analysis",
+  "status": "failed_old_design_constant_names_and_overstrict_float_assertion",
+  "failed_commands": [
+    {
+      "check": "ruff",
+      "exit_code": 1,
+      "failure": "unused statistics import"
+    },
+    {
+      "check": "pytest",
+      "exit_code": 1,
+      "result": "4 failed, 1 passed",
+      "failures": [
+        "runner referenced absent design.NUMERIC_COUNT instead of frozen design.FEATURE_COUNT",
+        "runner referenced absent design.NUMERIC_ORDER_SHA256 instead of frozen design.FEATURE_ORDER_SHA256",
+        "synthetic session-weight assertion used strict binary-float equality"
+      ]
+    }
+  ],
+  "failure_boundary": {
+    "test_body_executed": true,
+    "real_design_values_read": false,
+    "model_fit_on_real_data": false,
+    "historical_daily_price_or_forward_return_values_read": false,
+    "scientific_result_changed": false
+  },
+  "predecessor_failure": {
+    "path": "docs/a_share_three_day_walkforward_campaign_132_verify_manifest_argument_failure_20260814.json",
+    "sha256": "288664f32f27f73e614745bd3d9fc9e13b902e5a9de87756641c36d96f38ec2e"
+  },
+  "recovery_boundary": {
+    "append_failure_to_campaign132_ledger": true,
+    "replace_only_the_incorrect_constant_references_and_test_float_comparison": true,
+    "model_or_research_definition_change_allowed": false,
+    "override_or_mask_failed_exit_code": false,
+    "provider_request_or_credential_load_allowed": false,
+    "candidate49_change_allowed": false
+  }
+}

@@ -1,0 +1,106 @@
+{
+  "schema_version": 1,
+  "kind": "a_share_three_day_walkforward_campaign121_concept_scouting",
+  "status": "one_candidate_selected_before_any_campaign121_source_candidate_comparator_daily_price_or_return_value",
+  "recorded_at": "2026-08-14T01:22:00+08:00",
+  "purpose": "Review a finite Campaign121 catalog against the complete 146-definition library and select at most one genuinely new fixed-support mechanism without reading any Campaign121 source row, candidate value, comparator value, daily price or forward return.",
+  "authoritative_inputs": {
+    "campaign120_final_state": {
+      "path": "docs/a_share_three_day_iteration_status_20260814_campaign120_terminal_v3.json",
+      "sha256": "883fedede437c65f221d6ee4beaee4f1166b20618c44cb0c8ccc257c67cd4c86"
+    },
+    "numeric_policy_v113": {
+      "path": "docs/a_share_three_day_walkforward_future_numeric_comparison_eligibility_policy_v113_20260814.json",
+      "sha256": "deeea64d88987f3c99c87228a7be9d78e57c8bae45d08e4d85d5f709c1bffb73",
+      "complete_definition_count": 146,
+      "complete_definition_order_sha256": "a5d850195b0aab697dc60b1331816ca7e557e4389d17290eafee5a036fb8950f",
+      "numeric_comparator_count": 138,
+      "numeric_comparator_order_sha256": "e917d9f832bda02f87c0a7e02a26127629146318de826684e8dfd6432fc20a3b"
+    },
+    "historical_walkforward_policy": {
+      "path": "docs/a_share_three_day_historical_walkforward_research_policy_20260727.json",
+      "sha256": "38426d6161b9bfed323c58caba18feca668b8c9d53e294951a8ba90c01a798bb"
+    },
+    "accepted_minute_manifest_metadata_only": {
+      "path": "/Volumes/DIsk/qlib-a-share-tushare-1m/metadata/rich_data/runs/tushare_stk_mins_1m_2019_2025_ea0cbb8f.json",
+      "sha256": "9b3d959563c9d182f38981c6a36bdb3bc9b415de08487a9e1f9e850825c0839f"
+    }
+  },
+  "finite_prevalue_concept_catalog": [
+    {
+      "name": "intraday_terminal_close_direction_first_attainment_240m",
+      "decision": "selected_for_mechanism_overlap_audit",
+      "direction": "higher",
+      "source_projection": [
+        "datetime",
+        "symbol",
+        "provider",
+        "open",
+        "close"
+      ],
+      "design": "Use the 09:31 opening price to identify the direction of the 15:00 terminal close, find the first selected minute close that reaches or passes that exact terminal-close level in the identified direction, and map its frozen 1-based arrival index tau to (240-tau)/239. Exact neutral terminal displacement maps to zero.",
+      "economic_hypothesis": "Earlier attainment of the level ultimately accepted at the close indicates that the completed session incorporated its terminal directional information before the last print rather than through a late shock; that earlier acceptance may persist from the next open through the third close.",
+      "prevalue_support_case": "Every valid 240-bar session has a finite 09:31 open and 15:00 close; the terminal bar itself always satisfies a non-neutral directional crossing, so tau is deterministically in [1,240] without a fitted threshold, event-count cutoff, alternate window or return magnitude."
+    },
+    {
+      "name": "intraday_open_reference_crossing_rate_240m",
+      "decision": "rejected_before_values",
+      "reason": "It would reopen the already terminal fixed-open occupancy family while imitating Candidate49's still-isolated cumulative-VWAP crossing mechanism."
+    },
+    {
+      "name": "intraday_bar_vwap_body_containment_share_240m",
+      "decision": "rejected_before_values",
+      "reason": "It is a new predicate over the already terminal bar-VWAP pressure, intrabar body/range efficiency, close-location and transaction-price consensus families rather than an independent information domain."
+    },
+    {
+      "name": "intraday_inside_bar_breakout_completion_238p",
+      "decision": "rejected_before_values",
+      "reason": "It would continue the terminal adjacent-range-overlap, prior-range-breakout, boundary translation and range-state families after their results."
+    },
+    {
+      "name": "intraday_terminal_direction_ngram_or_dictionary_complexity",
+      "decision": "rejected_before_values",
+      "reason": "Any new alphabet, word length, parser or endpoint-conditioned variant would rescue Campaign120's terminal direction-parser family."
+    }
+  ],
+  "selected_candidate_boundary": {
+    "name": "intraday_terminal_close_direction_first_attainment_240m",
+    "direction": "higher",
+    "candidate_count": 1,
+    "alternate_reference_arrival_operator_normalization_window_direction_threshold_filter_subset_model_or_combination_count": 0,
+    "candidate_values_opened": false,
+    "comparison_values_opened": false,
+    "historical_daily_price_or_forward_return_values_opened": false,
+    "mechanism_overlap_audit_required_before_formula_implementation": true
+  },
+  "complete_library_review": {
+    "all_146_definitions_reviewed_by_name_direction_and_terminal_family": true,
+    "candidate_appended_definition_count_if_preregistered": 147,
+    "candidate_appended_definition_order_sha256": "3f3756a4128011d9cd718e97d23ee3b1c78022433b269c75bd715f304a055bf0",
+    "closest_required_challenges": [
+      "intraday_open_reference_directional_occupancy_240m",
+      "intraday_extreme_arrival_order_240m",
+      "intraday_terminal_close_location_240m",
+      "intraday_close_frontier_innovation_share_238p",
+      "intraday_half_session_chord_adherence_240m",
+      "intraday_continuous_session_net_return_reversal_240m",
+      "intraday_return_direction_dictionary_phrase_count_238s"
+    ],
+    "old_terminal_definition_formula_direction_failure_history_or_gate_changed": false
+  },
+  "research_boundary": {
+    "campaign121_source_rows_read": false,
+    "campaign121_candidate_values_computed_or_read": false,
+    "campaign121_comparator_values_read": false,
+    "historical_daily_price_fields_read": [],
+    "historical_forward_returns_read": false,
+    "stress_2024_2025_opened": false,
+    "provider_request_issued": false,
+    "credential_loaded": false,
+    "candidate49_historical_backfill_performed": false,
+    "candidate49_ledgers_changed": false,
+    "second_prospective_candidate_created": false,
+    "current_scoring_selection_sizing_positions_or_orders_performed": false,
+    "investment_advice": false
+  }
+}

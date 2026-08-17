@@ -1,0 +1,139 @@
+{
+  "version": 1,
+  "kind": "a_share_three_day_walkforward_campaign077_mechanism_overlap_audit",
+  "status": "passed_semantic_mechanism_review_before_campaign077_minute_source_or_comparison_values",
+  "recorded_at": "2026-08-06T12:09:00+08:00",
+  "concept_scouting": {
+    "path": "docs/a_share_three_day_walkforward_campaign_077_concept_scouting.json",
+    "sha256": "16c579228d6474a1db8d6418a9227f5eec484c2784f697f5fb4c53598ece45b9"
+  },
+  "authoritative_state": {
+    "path": "docs/a_share_three_day_iteration_status_20260806_campaign076_verified_v2.json",
+    "sha256": "0452344929fa4bab746aaa37aa0f19c758c626951a2e98c2c04bfbafe26397dc"
+  },
+  "numeric_comparator_policy": {
+    "path": "docs/a_share_three_day_walkforward_future_numeric_comparison_eligibility_policy_v12_20260806.json",
+    "sha256": "8bf3f6a261816bcf0e71c86cada1224b91c8a75042040ae50dbc371076447484",
+    "complete_definition_count": 108,
+    "numeric_comparator_count": 107,
+    "complete_definition_order_sha256": "0b6758e579e190e35e0ac2e5bda666194369f0c71be4dc2a35b5ec744f419b94",
+    "numeric_comparator_order_sha256": "b219b4879057a48600ba3e6d3d3a1a35ee6575d70b1476a71cf463ff8b63acc2"
+  },
+  "candidate": {
+    "name": "intraday_amount_clock_dispersion_240m",
+    "direction": "higher",
+    "mechanism": "normalized amount-weighted second central moment of the complete continuous-session minute clock",
+    "formula": "with x_i=i/239 and w_i=amount_i/sum(amount), return 4*sum_i w_i*(x_i-sum_j w_j*x_j)^2 over exactly 240 standard bars",
+    "no_price_return_daily_financial_event_or_future_input": true,
+    "no_old_factor_value_input": true,
+    "candidate49_used_or_modified": false
+  },
+  "complete_library_review": {
+    "all_108_definitions_reviewed_in_frozen_order": true,
+    "all_pre_walkforward_terminal_price_volume_event_structural_and_composite_families_reviewed": true,
+    "candidate_is_exact_formula_duplicate": false,
+    "candidate_is_direction_only_duplicate": false,
+    "candidate_is_parameter_only_duplicate": false,
+    "candidate_is_an_inversion_of_a_terminal_factor": false,
+    "candidate_combines_terminal_factor_values": false,
+    "candidate_changes_any_quality_listing_or_buyability_gate": false
+  },
+  "semantic_invariance_checks": [
+    {
+      "intervention": "Multiply every one of the 240 amount values by the same finite positive constant.",
+      "campaign077_result": "unchanged",
+      "distinguishes_from": "amount-level, liquidity-size, and nominal-activity statistics"
+    },
+    {
+      "intervention": "Reverse the complete 240-position amount vector in time.",
+      "campaign077_result": "unchanged",
+      "distinguishes_from": "amount center of mass, peak recency, late-window share, terminal-bar share, and signed temporal allocation"
+    },
+    {
+      "intervention": "Move two equal amount masses symmetrically farther apart while retaining their probabilities and entropy.",
+      "campaign077_result": "strictly increases",
+      "distinguishes_from": "amount participation entropy and maximum amount share, which ignore clock distance"
+    },
+    {
+      "intervention": "Translate all nonzero amount masses by the same feasible number of clock bins without changing their relative distances.",
+      "campaign077_result": "unchanged",
+      "distinguishes_from": "amount center of mass and fixed opening, late, or terminal window shares"
+    },
+    {
+      "intervention": "Permute the same amount multiset so that pairwise clock distances change while amount probabilities remain identical.",
+      "campaign077_result": "generally changes",
+      "distinguishes_from": "permutation-invariant amount entropy, peak magnitude, and concentration statistics"
+    },
+    {
+      "intervention": "Hold the complete amount path fixed while changing every minute and daily OHLC, return, range, transaction price, financial statement value, issuer event, and market-peer path.",
+      "campaign077_result": "unchanged",
+      "distinguishes_from": "all price-path, volatility, return-state, event, quarterly, market-coupling, and Candidate49 mechanisms"
+    }
+  ],
+  "nearest_semantic_challenges": [
+    {
+      "name": "intraday_amount_center_of_mass_240m",
+      "relationship": "both treat amount as probability weights on minute clock time",
+      "distinction": "center of mass is the first moment and changes under time translation or reversal; Campaign077 is the second central moment and depends only on dispersion around its own weighted mean",
+      "mandatory_numeric_challenge": true
+    },
+    {
+      "name": "intraday_amount_participation_entropy_240m",
+      "relationship": "both summarize the full normalized amount distribution",
+      "distinction": "entropy is invariant to every time permutation; Campaign077 uses normalized squared clock distance and changes when the same probabilities are rearranged",
+      "mandatory_numeric_challenge": true
+    },
+    {
+      "name": "intraday_peak_amount_bar_recency_240m",
+      "relationship": "both read the same exact 240 amount bars",
+      "distinction": "Campaign076 retains only the latest exact maximum position; Campaign077 uses every amount as a weight and is invariant to time reversal",
+      "mandatory_numeric_challenge": true
+    },
+    {
+      "name": "late_amount_share_30m, intraday_terminal_bar_amount_share_240m, and intraday_opening_auction_amount_share_241m",
+      "relationship": "all respond to temporal allocation of amount",
+      "distinction": "fixed-window shares depend on chosen bucket membership and absolute clock location; Campaign077 uses no selected subwindow and is centered on its own weighted mean",
+      "mandatory_numeric_challenge": true
+    },
+    {
+      "name": "intraday_amount_profile_serial_persistence_240m, intraday_morning_afternoon_amount_profile_similarity_120b, intraday_day_over_day_amount_profile_similarity_240b, and intraday_market_amount_profile_synchronization_240m",
+      "relationship": "all use an amount profile",
+      "distinction": "the prior factors compare the profile to adjacent bins, another half, another day, or the market; Campaign077 is a single-session scalar geometric moment with no reference profile",
+      "mandatory_numeric_challenge": true
+    },
+    {
+      "name": "intraday_cross_sectional_standardized_return_state_stability_236p",
+      "relationship": "the structurally nonnumeric definition remains in the complete semantic library",
+      "distinction": "peer-standardized return-state mobility versus single-stock amount-clock dispersion",
+      "mandatory_semantic_challenge": true,
+      "numeric_status": "undefined_not_pass_not_fail"
+    },
+    {
+      "name": "candidate49_intraday_cumulative_vwap_crossing_rate_240m_v1",
+      "relationship": "the sole active prospective candidate remains an isolation challenge",
+      "distinction": "Candidate49 measures future-session price crossings of cumulative VWAP; Campaign077 is historical amount-clock geometry and never enters Candidate49 ledgers",
+      "candidate49_remains_isolated": true
+    }
+  ],
+  "pre_value_decision": {
+    "economically_independent_enough_to_preregister": true,
+    "numeric_uniqueness_still_required_against_all_107_eligible_comparators": true,
+    "strict_maximum_absolute_median_daily_rank_correlation": 0.8,
+    "minimum_pairwise_names_per_session": 50,
+    "minimum_pairwise_sessions_per_comparison": 100,
+    "drop_residualize_invert_clip_bucket_rank_neutralize_filter_or_rescue_after_failed_gate_allowed": false
+  },
+  "research_boundary": {
+    "campaign077_minute_source_rows_read": false,
+    "campaign077_candidate_values_read": false,
+    "comparison_values_read": false,
+    "historical_daily_price_fields_read": [],
+    "historical_forward_returns_read": false,
+    "provider_request_issued": false,
+    "candidate49_historical_backfill_performed": false,
+    "candidate49_ledgers_changed": false,
+    "second_prospective_candidate_created": false,
+    "current_scoring_selection_sizing_or_orders_performed": false,
+    "investment_advice": false
+  }
+}

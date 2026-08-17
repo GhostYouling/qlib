@@ -1,0 +1,140 @@
+{
+  "schema_version": 1,
+  "kind": "a_share_three_day_walkforward_campaign191_agricultural_biological_asset_production_cycle_source_frontier",
+  "status": "checkpoint_prevalue_four_source_admission_deferrals_three_relabeling_operator_or_combination_rejections_zero_selected",
+  "recorded_at": "2026-08-15T14:49:00+08:00",
+  "purpose": "Freeze a finite crop, livestock, aquaculture and plantation biological-production lifecycle before source rows, values, formulas, comparators, prices or returns.",
+  "authoritative_inputs": {
+    "campaign190_state": {"path": "docs/a_share_three_day_iteration_status_20260815_campaign190_prevalue_terminal_v2.json", "sha256": "9a3f27e9ddc9a3ed03085a37a0a93a596dbd06e755d028501a1e74806bfbc5cc"},
+    "policy_v279": {"path": "docs/a_share_three_day_walkforward_future_numeric_comparison_eligibility_policy_v279_20260815.json", "sha256": "86767fd6762c305ac4e89cfe366fd42b397dd7c06ee2358e3b718394d4d6f52d"},
+    "campaign165_environmental_frontier": {"path": "docs/a_share_three_day_walkforward_campaign_165_environmental_operating_externality_source_frontier_20260815.json", "sha256": "45d28dfd51a71f45c684dd418286275c34b1d076cc495856270bd0cb9cb962b4"},
+    "campaign166_incident_frontier": {"path": "docs/a_share_three_day_walkforward_campaign_166_operational_incident_disclosure_source_frontier_20260815.json", "sha256": "96ecd0259613a6649674804a676b3d82205fe11ba3b01986db6b675d00ea78d1"},
+    "campaign168_scale_kpi_frontier": {"path": "docs/a_share_three_day_walkforward_campaign_168_operating_scale_adoption_kpi_source_frontier_20260815.json", "sha256": "c5dc98f92266e2b7ef7349cb5260a8cde15ccd9c78442e661e4170b1ba47d18a"},
+    "campaign178_capex_frontier": {"path": "docs/a_share_three_day_walkforward_campaign_178_owned_productive_asset_capex_source_frontier_20260815.json", "sha256": "1d5aeedc08ab1f45fda17e9f939f387408d53e9e2934211aec5ad494c60a41a2"},
+    "campaign188_mineral_frontier": {"path": "docs/a_share_three_day_walkforward_campaign_188_mineral_resource_reserve_conversion_source_frontier_20260815.json", "sha256": "7541ccbe668e39a9c90b9004f0988456e1faa8ebb47622ef9cc59d9a2269a13e"}
+  },
+  "repository_evidence": {
+    "bounded_search_scope": "Campaign source-frontier JSON files through Campaign190",
+    "bounded_search_terms": ["agriculture", "farming", "planting", "breeding", "broiler", "livestock", "aquaculture", "harvest", "biological asset"],
+    "matching_path_count": 0,
+    "dedicated_agricultural_biological_production_frontier_found": false,
+    "complete_source_contract_present": false,
+    "domain_distinction": "A living cohort changes through planting or stocking, biological growth, mortality, maturation, harvest and replacement. Generic installed capacity, fixed-asset construction, commodity price, environmental externality, incident or mineral-reserve states do not reconstruct that cohort path.",
+    "point_in_time_boundary": "A latest acreage, herd, biomass or harvest figure cannot be projected backward without cohort, biological-stage, scope, unit, restatement, correction and first-public histories."
+  },
+  "finite_prevalue_catalog": [
+    {
+      "catalog_id": "c191_01",
+      "name": "crop_plot_sowing_emergence_growth_maturity_harvest_yield_and_quality_state",
+      "formula": null,
+      "direction": null,
+      "parameters_filters_subsets_combinations_models": [],
+      "new_issuer_state": true,
+      "complete_local_source_contract": false,
+      "decision": "deferred_source_admission_not_factor_failure",
+      "reason": "No admitted point-in-time plot or base history freezes planted and harvested area, crop and variety, sowing, emergence, maturity and harvest stages, yield and quality denominators, losses, scope revisions and first-public timing."
+    },
+    {
+      "catalog_id": "c191_02",
+      "name": "livestock_breeding_herd_birth_growth_mortality_cull_slaughter_and_replacement_state",
+      "formula": null,
+      "direction": null,
+      "parameters_filters_subsets_combinations_models": [],
+      "new_issuer_state": true,
+      "complete_local_source_contract": false,
+      "decision": "deferred_source_admission_not_factor_failure",
+      "reason": "No complete herd and cohort history preserves breeding stock, births, purchases, age and weight progression, mortality, culling, sales, slaughter, replacement and unit reconciliation with close-known availability."
+    },
+    {
+      "catalog_id": "c191_03",
+      "name": "aquaculture_pond_stocking_biomass_survival_feed_conversion_harvest_and_restocking_state",
+      "formula": null,
+      "direction": null,
+      "parameters_filters_subsets_combinations_models": [],
+      "new_issuer_state": true,
+      "complete_local_source_contract": false,
+      "decision": "deferred_source_admission_not_factor_failure",
+      "reason": "No admitted pond, cage or site history connects stocking counts and biomass, species and batch, survival, feed conversion, growth, harvest, fallow and restocking with complete denominator and revision semantics."
+    },
+    {
+      "catalog_id": "c191_04",
+      "name": "orchard_plantation_forestry_planting_immaturity_bearing_maturity_harvest_and_replanting_state",
+      "formula": null,
+      "direction": null,
+      "parameters_filters_subsets_combinations_models": [],
+      "new_issuer_state": true,
+      "complete_local_source_contract": false,
+      "decision": "deferred_source_admission_not_factor_failure",
+      "reason": "No complete point-in-time stand or block history freezes planted area, age class, immature-to-bearing transfer, expected productive life, harvest, damage, retirement and replanting across issuer and subsidiary boundaries."
+    },
+    {
+      "catalog_id": "c191_05",
+      "name": "inventory_fair_value_commodity_price_weather_incident_environmental_capex_scale_or_mineral_relabeling",
+      "formula": null,
+      "direction": null,
+      "parameters_filters_subsets_combinations_models": [],
+      "new_issuer_state": false,
+      "complete_local_source_contract": false,
+      "decision": "rejected_terminal_accounting_price_weather_incident_environmental_capex_scale_and_mineral_source_relabeling",
+      "reason": "Accounting balances, market prices, weather observations, incidents, externalities, constructed assets, generic capacity and mineral reserves do not identify a living cohort and its biological conversion history."
+    },
+    {
+      "catalog_id": "c191_06",
+      "name": "species_breed_variety_region_season_stage_direction_threshold_window_or_subset_variant",
+      "formula": null,
+      "direction": null,
+      "parameters_filters_subsets_combinations_models": [],
+      "new_issuer_state": false,
+      "complete_local_source_contract": false,
+      "decision": "rejected_operator_species_breed_variety_region_season_stage_direction_threshold_window_and_subset_search_before_base_source_admission",
+      "reason": "Choosing species, varieties, regions, seasons, stages, directions, thresholds or windows before source admission multiplies hypotheses and selects around reporting survivorship."
+    },
+    {
+      "catalog_id": "c191_07",
+      "name": "combined_crop_livestock_aquaculture_and_plantation_biological_cycle_score_or_model",
+      "formula": null,
+      "direction": null,
+      "parameters_filters_subsets_combinations_models": [],
+      "new_issuer_state": false,
+      "complete_local_source_contract": false,
+      "decision": "rejected_unadmitted_component_normalization_weight_interaction_and_model_search",
+      "reason": "Combining unadmitted components or choosing normalization, weights, interactions and models is closed before each base history passes the same source gate."
+    }
+  ],
+  "mandatory_source_admission_gate": {
+    "must_freeze_before_any_formula_or_direction": [
+      "immutable official agricultural registry, issuer filing, operating report or audited source identifiers and bytes",
+      "reference-period, observation, filing, exchange-publication, correction and first-public timestamps with trading-session availability",
+      "issuer, listed security, subsidiary, farm, base, plot, herd, pond, cage, stand and product mapping",
+      "point-in-time agricultural issuer scope and structural not-applicability without current-universe survivorship",
+      "crop, variety, species, breed, biological-asset class and production-system taxonomy",
+      "cohort, batch, plot, farm, geography and ownership or operating-right identity and continuity",
+      "sowing, stocking, birth, growth, immaturity, bearing, maturity, harvest, slaughter, retirement and replanting stage semantics",
+      "area, headcount, weight, biomass, volume, yield, quality, mortality, survival and feed-conversion units and denominators",
+      "opening, addition, transfer, loss, sale, harvest, slaughter, closing and reconciliation semantics for every cohort",
+      "disease, weather damage, abnormal mortality, culling, crop failure and resolution identity without relabeling Campaign166 incidents",
+      "scope change, acquisition, disposal, reclassification, restatement, correction, supersession, true-zero, missing and not-applicable semantics",
+      "complete 2019-2023 manifest, issuer-cohort history, mapping, coverage and chronology tests without factor, comparator, price or return values"
+    ],
+    "formula_direction_parameter_filter_subset_combination_or_model_choice_allowed_before_gate": false
+  },
+  "gate_summary": {
+    "routes_reviewed": 7,
+    "genuinely_new_issuer_state_routes": 4,
+    "source_admission_deferrals_not_factor_failures": 4,
+    "relabeling_operator_or_combination_route_rejections": 3,
+    "selected_candidate_count": 0,
+    "complete_factor_definition_created": false,
+    "numeric_comparator_created": false
+  },
+  "research_boundary": {
+    "finite_catalog_frozen_before_source_or_value_read": true,
+    "source_row_biological_asset_factor_comparator_security_price_or_return_value_read": false,
+    "provider_or_web_request_issued": false,
+    "provider_credential_presence_value_or_digest_read": false,
+    "stress_2024_2025_opened": false,
+    "candidate49_ledgers_changed": false,
+    "second_prospective_candidate_created": false
+  },
+  "next_action": "Create the Campaign191 append-only attempt ledger including every scientific route and both recovered infrastructure failures, then publish prevalue terminal authority."
+}

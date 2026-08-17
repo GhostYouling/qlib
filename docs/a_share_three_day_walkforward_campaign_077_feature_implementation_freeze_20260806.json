@@ -1,0 +1,70 @@
+{
+  "version": 1,
+  "kind": "a_share_three_day_walkforward_campaign077_feature_implementation_freeze",
+  "status": "frozen_before_campaign077_minute_source_values",
+  "frozen_at": "2026-08-06T12:13:00+08:00",
+  "purpose": "Bind the exact Campaign077 feature implementation and synthetic tests before any Campaign077 minute source row or candidate value is opened.",
+  "protocol": {
+    "path": "docs/a_share_three_day_walkforward_campaign_077_no_return_preregistration.json",
+    "sha256": "25a2076ca62467ef0917674bf692c3daf8ed2f02434085ac46c969a2197bcd10"
+  },
+  "mechanism_overlap_audit": {
+    "path": "docs/a_share_three_day_walkforward_campaign_077_mechanism_overlap_audit.json",
+    "sha256": "aec4330f90ce37a9904c37db30cc1a71b70e5a08e6096371c6953135fd44fcb3"
+  },
+  "feature_runner": {
+    "path": "scripts/a_share_three_day_walkforward_campaign077_features.py",
+    "sha256": "4af86e77459e7ee8e5a2991e81e3176bc56ee8b2ad8eb0858912ee7aef19cf1d"
+  },
+  "tests": {
+    "path": "tests/data_collector_tests/test_a_share_three_day_walkforward_campaign077_features.py",
+    "sha256": "e8e69643455785e22c5ec63531eb79138a0a6146acf85b8c04dd4a84e66f1174",
+    "pre_freeze_execution": "4 passed, 1 implementation-freeze test deselected",
+    "synthetic_source_only": true,
+    "historical_candidate_or_comparison_values_read": false
+  },
+  "candidate": {
+    "name": "intraday_amount_clock_dispersion_240m",
+    "direction": "higher",
+    "formula": "x_i=i/239; w_i=amount_i/sum(amount); mu=sum(w_i*x_i); score=4*sum(w_i*(x_i-mu)^2)",
+    "source_fields": [
+      "datetime",
+      "symbol",
+      "provider",
+      "amount"
+    ],
+    "selected_bar_count": 240,
+    "valid_range": [
+      0.0,
+      1.0
+    ],
+    "alternate_parameter_or_variant_count": 0
+  },
+  "frozen_inputs": {
+    "raw_snapshot_manifest_sha256": "9b3d959563c9d182f38981c6a36bdb3bc9b415de08487a9e1f9e850825c0839f",
+    "joint_clean_manifest_sha256": "453c6719cb3c7da42fed8807b28a2bfe988700283e9625a6db97912534f368de",
+    "joint_clean_dataset_sha256": "0e4fe7c05536cdfcecc2936bc880726902f5560061188ffff82ef7ee6f346983",
+    "calendar_sha256": "fda506597d26bcec953cdc0882042a5046ec1587db60490e16a01627fd43f53a",
+    "numeric_comparator_policy_v12_sha256": "8bf3f6a261816bcf0e71c86cada1224b91c8a75042040ae50dbc371076447484",
+    "numeric_comparator_count": 107,
+    "numeric_comparator_order_sha256": "b219b4879057a48600ba3e6d3d3a1a35ee6575d70b1476a71cf463ff8b63acc2"
+  },
+  "research_boundary": {
+    "candidate_source_rows_read_before_freeze": false,
+    "candidate_values_read_before_freeze": false,
+    "comparison_values_read_before_freeze": false,
+    "historical_daily_price_fields_read_before_freeze": [],
+    "historical_forward_returns_read_before_freeze": false,
+    "provider_request_issued_before_freeze": false,
+    "candidate49_historical_backfill_performed": false,
+    "candidate49_ledgers_changed": false,
+    "second_prospective_candidate_created": false,
+    "current_scoring_selection_sizing_or_orders_performed": false,
+    "investment_advice": false
+  },
+  "activation": {
+    "feature_build_may_start": true,
+    "comparison_values_may_load_before_coverage_pass": false,
+    "daily_price_or_forward_return_may_load_before_uniqueness_pass": false
+  }
+}

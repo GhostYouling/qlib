@@ -1,0 +1,74 @@
+{
+  "version": 1,
+  "kind": "a_share_three_day_walkforward_campaign041_feature_manifest_metadata_infrastructure_repair",
+  "status": "frozen_after_prepublication_failure_before_repair_or_comparison_values",
+  "recorded_at": "2026-07-31T06:08:00Z",
+  "purpose": "Authorize one metadata-only prepublication repair after all Campaign041 partitions completed but the inherited manifest compatibility booleans contradicted the explicit frozen OHLC source projection.",
+  "authoritative_inputs": {
+    "iteration_state": {
+      "path": "docs/a_share_three_day_iteration_status_20260731_campaign040_verified.json",
+      "sha256": "dd561aac051eed7ecb1c574c61ac258c5e62954d7390c503a5444cf8a0fe2bba"
+    },
+    "no_return_preregistration": {
+      "path": "docs/a_share_three_day_walkforward_campaign_041_no_return_preregistration.json",
+      "sha256": "6691fb6a382d6f2f481473f25a0060606edf59290bc822b635b23de25105ae7c"
+    },
+    "pre_repair_implementation_freeze": {
+      "path": "docs/a_share_three_day_walkforward_campaign_041_feature_implementation_freeze.json",
+      "sha256": "5ef368825e4afbce94064a4edb9e80ed0fae23b11cb79838cdd2ea8f29badf6e"
+    },
+    "pre_repair_feature_runner": {
+      "path": "scripts/a_share_three_day_walkforward_campaign041_features.py",
+      "sha256": "60c2ef5b7156985277d69c713312712e020c6b29993a22fc986ddcc5fe800e98"
+    }
+  },
+  "failure_evidence": {
+    "completed_partition_count": 33015,
+    "expected_partition_count": 33015,
+    "resumable_checkpoint_count": 33015,
+    "final_snapshot_published": false,
+    "failure_stage": "prepublication_snapshot_manifest_validation",
+    "explicit_source_fields_read": [
+      "datetime",
+      "symbol",
+      "provider",
+      "open",
+      "high",
+      "low",
+      "close"
+    ],
+    "inherited_prepublication_flags_observed": {
+      "source_open_high_low_read": false,
+      "source_close_read": "missing",
+      "source_volume_read": true
+    },
+    "truthful_flags_required": {
+      "source_open_high_low_read": true,
+      "source_close_read": true,
+      "source_volume_read": false
+    },
+    "candidate_partition_or_value_inspected": false,
+    "comparison_values_read": false,
+    "historical_daily_price_fields_read": false,
+    "historical_forward_returns_read": false
+  },
+  "authorized_repair": {
+    "scope": "When require_fingerprint_constants is false at the prepublication boundary only, set the three manifest compatibility booleans to the truthful values implied by the already-frozen explicit source_fields_read projection before validation and publication.",
+    "candidate_partition_files_may_change": false,
+    "candidate_values_may_change": false,
+    "formula_direction_source_projection_support_or_missing_semantics_may_change": false,
+    "comparison_library_order_or_gate_may_change": false,
+    "resume_all_hash_validated_checkpoints": true,
+    "allowed_retry_count": 1
+  },
+  "research_boundary": {
+    "provider_request_issued": false,
+    "comparison_values_read": false,
+    "historical_daily_price_fields_read": false,
+    "historical_forward_returns_read": false,
+    "candidate49_ledgers_changed": false,
+    "candidate50_activation_created": false,
+    "current_scoring_selection_sizing_or_orders_performed": false
+  },
+  "next_action": "Apply only the frozen prepublication metadata correction, rerun the same build once with all 33,015 checkpoints hash-resumed, and verify that no partition byte or frame changes."
+}

@@ -1,0 +1,107 @@
+{
+  "version": 1,
+  "kind": "a_share_three_day_walkforward_campaign033_coverage_context_repair",
+  "status": "failed_audit_recorded_and_context_only_repair_frozen_before_comparison_values",
+  "recorded_at": "2026-07-30T16:34:45Z",
+  "purpose": "Preserve the first Campaign033 audit failure and freeze the sole context-only repair required to calculate the preregistered non-overlapping three-session capacity without changing candidate, comparison, or return semantics.",
+  "source_chain": {
+    "no_return_preregistration": {
+      "path": "docs/a_share_three_day_walkforward_campaign_033_no_return_preregistration.json",
+      "sha256": "3e5546941b5954f96fc5a2d7dc7fbcf03b48d063ea1414133c2c17ae191fad4f"
+    },
+    "feature_implementation_freeze": {
+      "path": "docs/a_share_three_day_walkforward_campaign_033_feature_implementation_freeze_20260730.json",
+      "sha256": "c26f257af8ebb0c82bf0c9f43957689a993d5c9f781be7c98493499e4cd5e986"
+    },
+    "feature_snapshot_freeze": {
+      "path": "docs/a_share_three_day_walkforward_campaign_033_feature_snapshot_freeze_20260730.json",
+      "sha256": "a5dfcd5efda7bd0d924994052caa3270387bc2c76b4043b1723fb1c232f2dd69"
+    },
+    "prior_scheduling_repair": {
+      "path": "docs/a_share_three_day_walkforward_campaign_033_no_return_audit_infrastructure_repair_20260730.json",
+      "sha256": "fc19823f4df9672b0ecf9b90a37c11d25d4e2824b26c3e4ba65f37015aa50e16"
+    },
+    "feature_snapshot": {
+      "path": "/Volumes/DIsk/qlib-a-share-tushare-1m/derived/a_share/rich/tushare/minute_walkforward_campaign033_feature_library/tushare_stk_mins_1m_2019_2025_ea0cbb8f_walkforward_campaign033_feature_library_v1/snapshot_manifest.json",
+      "sha256": "bbd2b064885e90576712610a5b11426c3f3048fd10ff1d0590ea02861e423bd6",
+      "dataset_sha256": "ef76f920ab1b88dcbec40b640de240db308e60fc9711f42bb9cffbfe002e27cf"
+    }
+  },
+  "failed_attempt": {
+    "command": "python scripts/a_share_three_day_walkforward_campaign033_features.py audit --data-root /Volumes/DIsk/qlib-a-share-tushare-1m --experiment-root data/experiments/short_horizon/historical_walkforward/campaign_033/no_return --workers 8",
+    "exit_code": 1,
+    "failure_type": "KeyError",
+    "failure_key": "holding_period_sessions",
+    "failure_location": "coverage_and_capacity before non-overlapping cohort indices are calculated",
+    "audit_artifact_written": false,
+    "failure_exit_code_bypassed": false,
+    "same_process_continued_after_failure": false
+  },
+  "observed_boundary_at_failure": {
+    "candidate_snapshot_integrity_verified": true,
+    "candidate_feature_values_opened": true,
+    "quality_and_listing_eligibility_opened": true,
+    "coverage_numerators_and_denominators_constructed_in_memory": true,
+    "coverage_gate_decision_written_or_retained": false,
+    "comparison_factor_values_opened": false,
+    "daily_price_fields_read": [],
+    "historical_forward_return_fields_read": false,
+    "development_fold_values_read": false,
+    "stress_2024_2025_values_read": false,
+    "candidate49_historical_return_signal_or_execution_backfill_performed": false,
+    "provider_request_issued": false,
+    "current_scoring_selection_sizing_or_orders_performed": false
+  },
+  "root_cause": {
+    "description": "The Campaign033 delta preregistration froze the minimum cohort count and the three-session development purge but intentionally omitted duplicated inherited operational context. load_protocol replaced the complete inherited coverage gate with the delta gate, so the shared coverage function could not read the inherited three-session holding-period stride.",
+    "inherited_complete_protocol_holding_period_sessions": 3,
+    "campaign033_delta_explicit_holding_period_sessions": null,
+    "research_parameter_was_ambiguous": false
+  },
+  "repair": {
+    "runner_path": "scripts/a_share_three_day_walkforward_campaign033_features.py",
+    "pre_repair_sha256": "71dda8df5a594e01b916b4073246c59d1e2fe89fe8cd2569ad8a47d41b25e09b",
+    "post_repair_sha256": "f6ef5575008914dcbde9af3f83b9ca1ce0d8eeb0aab647fb7ea09b64bfeb3acb",
+    "change": "Validate that the Campaign033 delta does not override holding_period_sessions, validate the inherited complete Campaign032 value is exactly 3, and materialize that value into the runtime coverage gate.",
+    "formula_changed": false,
+    "score_direction_changed": false,
+    "candidate_snapshot_changed": false,
+    "candidate_values_changed": false,
+    "coverage_thresholds_changed": false,
+    "holding_period_sessions_changed_from_inherited_complete_spec": false,
+    "comparison_library_changed": false,
+    "comparison_order_changed": false,
+    "uniqueness_threshold_changed": false,
+    "minimum_pairwise_names_or_sessions_changed": false,
+    "development_or_stress_gate_changed": false
+  },
+  "verification": {
+    "test_path": "tests/data_collector_tests/test_a_share_three_day_walkforward_campaign033_features.py",
+    "test_sha256": "e8a9ab17775b92c0ce76b0a976dd8e8be37167a153a63f200e217f6f4c32c322",
+    "focused_test_count": 13,
+    "focused_tests_passed": 13,
+    "focused_tests_failed": 0,
+    "python_compile_exit_code": 0,
+    "new_assertion": "The materialized Campaign033 coverage gate has holding_period_sessions equal to 3."
+  },
+  "prospective_boundary": {
+    "candidate49_signal_ledger": {
+      "path": "data/experiments/short_horizon/candidate49_future_signal_ledger.json",
+      "sha256": "5193f00d7f36da003f53cec387900da4c3d002299f5dfcfc1a95eaa199ed3a79",
+      "entry_count": 0
+    },
+    "candidate49_execution_ledger": {
+      "path": "data/experiments/short_horizon/candidate49_future_execution_ledger.json",
+      "sha256": "d57a3e61eac969e42cafa418ccd8c0a5ee65dcf69da145bb2c096c2a02a2ea4f",
+      "entry_count": 0
+    },
+    "candidate49_remains_only_active_prospective_candidate": true,
+    "candidate50_activation_allowed": false
+  },
+  "authorization": {
+    "same_frozen_no_return_audit_may_restart_from_a_new_process": true,
+    "historical_return_research_may_begin": false,
+    "development_preregistration_may_be_created_before_audit_admission": false,
+    "stress_2024_2025_may_be_opened": false
+  }
+}

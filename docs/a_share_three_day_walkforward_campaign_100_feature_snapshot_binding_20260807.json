@@ -1,0 +1,75 @@
+{
+  "schema_version": 1,
+  "kind": "a_share_three_day_walkforward_campaign100_feature_snapshot_binding",
+  "status": "immutable_candidate_snapshot_verified_before_coverage_or_comparator_values",
+  "recorded_at": "2026-08-07T12:15:15Z",
+  "protocol": {
+    "path": "docs/a_share_three_day_walkforward_campaign_100_no_return_preregistration.json",
+    "sha256": "0bd9dbe069895b8e7c82accbf9834fa6b90adbbd7673c5e42b914107903ddb15"
+  },
+  "feature_implementation_freeze": {
+    "path": "docs/a_share_three_day_walkforward_campaign_100_feature_implementation_freeze_20260807.json",
+    "sha256": "703b4411968fc08f9c59ae4b3bd53dd9ad34ae33c46ec40833cd690162c568e6"
+  },
+  "feature_runner": {
+    "path": "scripts/a_share_three_day_walkforward_campaign100_features.py",
+    "sha256": "f8d5fe7e5795819bd446afe5d7fad7ac1c2239e70206d70594df0d8af51efdec"
+  },
+  "snapshot": {
+    "path": "/Volumes/DIsk/qlib-a-share-tushare-1m/derived/a_share/rich/tushare/minute_walkforward_campaign100_feature_library/tushare_stk_mins_1m_2019_2025_ea0cbb8f_walkforward_campaign100_feature_library_v1/snapshot_manifest.json",
+    "sha256": "31fa90e958d400aad250d369f4776f139664da869e9f152f8d4610e3351c20f4",
+    "dataset_sha256": "b6a2ea043502b1c7c97726befffa0fe872d693a0cfa1f477fc2da8eab81d106d",
+    "partitions": 7,
+    "rows": 1331759,
+    "eligible_rows": 1328142,
+    "missing_rows": 3617,
+    "calendar_sessions": 1632
+  },
+  "factor": {
+    "name": "intraday_unchanged_close_range_absorption_share_238p",
+    "direction": "higher",
+    "range": [
+      0,
+      1
+    ],
+    "finite_rows": 1328142
+  },
+  "quality_totals": {
+    "source_rows": 1866461373,
+    "source_sessions": 7744653,
+    "valid_range_absorption_sessions": 7696209,
+    "invalid_selected_source_sessions": 0,
+    "nonpositive_destination_range_mass_sessions": 48444,
+    "invalid_ordered_hlc_sessions": 0,
+    "unchanged_close_pairs": 665936248,
+    "changed_close_pairs": 1177291166,
+    "zero_destination_range_pairs": 367075901,
+    "unchanged_positive_range_pairs": 399294857,
+    "endpoint_canonicalized_sessions": 18606
+  },
+  "independent_verification": {
+    "status": "verified",
+    "dataset_sha256": "b6a2ea043502b1c7c97726befffa0fe872d693a0cfa1f477fc2da8eab81d106d",
+    "partitions": 7,
+    "rows": 1331759,
+    "eligible_rows": 1328142
+  },
+  "source_fields_read": [
+    "datetime",
+    "symbol",
+    "provider",
+    "high",
+    "low",
+    "close"
+  ],
+  "candidate_values_computed": true,
+  "coverage_or_capacity_metrics_computed_before_binding": false,
+  "comparator_values_read_before_binding": false,
+  "historical_daily_price_or_forward_return_values_read": false,
+  "training_or_model_fitting_performed": false,
+  "candidate49_historical_backfill_performed": false,
+  "candidate49_ledgers_changed": false,
+  "provider_request_issued": false,
+  "current_scoring_selection_sizing_or_orders_performed": false,
+  "next_action": "Freeze the coverage-first no-return audit implementation and activation against this exact snapshot; load all 128 comparator values only if coverage passes."
+}

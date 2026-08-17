@@ -1,0 +1,71 @@
+{
+  "schema_version": 2,
+  "kind": "a_share_three_day_walkforward_campaign110_no_return_implementation_freeze",
+  "status": "frozen_before_campaign110_minute_source_candidate_coverage_or_comparator_values",
+  "recorded_at": "2026-08-07T22:48:05Z",
+  "supersedes_without_rewriting": {
+    "path": "docs/a_share_three_day_walkforward_campaign_110_no_return_implementation_freeze_20260808.json",
+    "sha256": "89f73a314468906ec5b89cd2962dea2b81c8d114a8e0f2de3cb4458ee9d7cead",
+    "reason": "Correct inherited CLI description before source values; scientific semantics are unchanged."
+  },
+  "failure_record": {
+    "path": "docs/a_share_three_day_walkforward_campaign_110_prevalue_cli_description_failure_20260808.json",
+    "sha256": "d59e45407fca35783f0e73d69d2398b858705af0a32a02a091748857c0f9c41a"
+  },
+  "protocol": {
+    "path": "docs/a_share_three_day_walkforward_campaign_110_no_return_preregistration_20260808.json",
+    "sha256": "75999c8aad35d7197b233c578990bb95c0a8d87ca25821cdd2859ef56f210f56"
+  },
+  "feature_builder": {
+    "path": "scripts/a_share_three_day_walkforward_campaign110_features.py",
+    "sha256": "319b1b350caee4fceb11fe7893f99c9c659abaca29bdbf043474a11790287319"
+  },
+  "ordered_audit_runner": {
+    "path": "scripts/a_share_three_day_walkforward_campaign110_no_return_audit.py",
+    "sha256": "4db69716c489ad0c2404a42fa083f6e4cf3514af1c13f055b9e40ec377ffc220"
+  },
+  "synthetic_tests": [
+    {
+      "path": "tests/data_collector_tests/test_a_share_three_day_walkforward_campaign110_features.py",
+      "sha256": "73c149eac7c97dac8c66360be762df9a2a9f0eba36f7880dea94de86daa50f1d"
+    },
+    {
+      "path": "tests/data_collector_tests/test_a_share_three_day_walkforward_campaign110_no_return_audit.py",
+      "sha256": "cb466290ba5a42b2592cafce508d5dd4d3b2c67dc6291073eb1778af66e9fe8f"
+    }
+  ],
+  "synthetic_test_result": "10 passed",
+  "candidate": {
+    "name": "intraday_open_reference_directional_occupancy_240m",
+    "direction": "higher",
+    "valid_range": [
+      -1.0,
+      1.0
+    ],
+    "fixed_denominator": 240,
+    "fixed_anchor": "raw open of selected 09:31 bar",
+    "exact_reference_ties_retained_as_zero": true,
+    "non_anchor_open_values_affect_value_or_support": false
+  },
+  "numeric_comparator_count": 133,
+  "numeric_comparator_order_sha256": "b6fbcaffbc83699155d4291ebaa6a1b0066e4801b82b634cf27dfa6cee89eefc",
+  "complete_definition_count": 139,
+  "complete_definition_order_sha256": "eb505226fcf171151c5a4ead04c08369136be1af88d64c1710f4ab34d83d83e0",
+  "frozen_ordered_execution": [
+    "revalidate protocol, implementation, source and adapter fingerprints",
+    "build and byte/frame verify the immutable candidate snapshot",
+    "compute structural coverage and capacity before comparator values",
+    "only after coverage passes load all 133 comparators in frozen order with raw NaN preserved",
+    "read no daily price or forward return in this stage"
+  ],
+  "research_boundary": {
+    "candidate_source_rows_read_before_freeze": false,
+    "candidate_or_comparator_values_read_before_freeze": false,
+    "historical_daily_price_or_forward_return_values_read_before_freeze": false,
+    "provider_request_issued_before_freeze": false,
+    "candidate49_historical_backfill_performed": false,
+    "candidate49_ledgers_changed": false,
+    "second_prospective_candidate_created": false,
+    "current_scoring_selection_sizing_or_orders_performed": false
+  }
+}

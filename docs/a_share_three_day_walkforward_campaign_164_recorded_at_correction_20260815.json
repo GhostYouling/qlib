@@ -1,0 +1,63 @@
+{
+  "schema_version": 1,
+  "kind": "a_share_three_day_walkforward_campaign164_recorded_at_correction",
+  "status": "effective_additive_timestamp_correction_old_files_preserved",
+  "recorded_at": "2026-08-15T07:00:30+08:00",
+  "reason": "Seven Campaign164 files were created before their manually prefilled recorded_at timestamps. The scientific contents and byte hashes remain valid, but the original recorded_at fields are not valid file-creation evidence and are superseded by this additive correction.",
+  "corrections": [
+    {
+      "path": "docs/a_share_three_day_walkforward_campaign_164_human_capital_source_frontier_20260815.json",
+      "sha256": "c31878523b4391ef46305c724cd59f8c12b1d3fd1f0eefaaadb181d8bc47698f",
+      "invalid_declared_recorded_at": "2026-08-15T06:55:00+08:00",
+      "effective_recorded_at_from_original_file_mtime": "2026-08-15T06:53:02+08:00"
+    },
+    {
+      "path": "docs/a_share_three_day_walkforward_campaign_164_prevalue_infrastructure_failure_20260815.json",
+      "sha256": "115fd95ae1d022675d833d1a6c29adef2203c64920f062e20d2b482c7e6a269c",
+      "invalid_declared_recorded_at": "2026-08-15T06:55:10+08:00",
+      "effective_recorded_at_from_original_file_mtime": "2026-08-15T06:53:02+08:00"
+    },
+    {
+      "path": "docs/a_share_three_day_walkforward_campaign_164_prevalue_infrastructure_failure_v2_20260815.json",
+      "sha256": "992a037bdf1b568675c5d5df985fa6f7e6e02ea6a4ab580a6d1bf9d2af97459a",
+      "invalid_declared_recorded_at": "2026-08-15T06:57:00+08:00",
+      "effective_recorded_at_from_original_file_mtime": "2026-08-15T06:54:01+08:00"
+    },
+    {
+      "path": "data/experiments/short_horizon/historical_walkforward/campaign_164/research_attempt_ledger.json",
+      "sha256": "bcac83551d699be8d010529ea5b188f3424d98a1163ec53d1d8d0185a2482266",
+      "invalid_declared_recorded_at": "2026-08-15T06:58:00+08:00",
+      "effective_recorded_at_from_original_file_mtime": "2026-08-15T06:55:07+08:00"
+    },
+    {
+      "path": "docs/a_share_three_day_walkforward_campaign_164_terminal_result_20260815.json",
+      "sha256": "75b6d295f632000183473bdad919dc6f94663493c508e0ce7d4ea088c1770f5b",
+      "invalid_declared_recorded_at": "2026-08-15T07:00:00+08:00",
+      "effective_recorded_at_from_original_file_mtime": "2026-08-15T06:56:30+08:00"
+    },
+    {
+      "path": "docs/a_share_three_day_walkforward_future_numeric_comparison_eligibility_policy_v234_20260815.json",
+      "sha256": "28eb6cdfe090b5a7b10afcd0cc79b5b6498a15622610266dd7af9633c2524b74",
+      "invalid_declared_recorded_at": "2026-08-15T07:01:00+08:00",
+      "effective_recorded_at_from_original_file_mtime": "2026-08-15T06:57:09+08:00"
+    },
+    {
+      "path": "docs/a_share_three_day_iteration_status_20260815_campaign164_prevalue_terminal.json",
+      "sha256": "e4b4fdf2c64a26d484fbb1d9f2d0038958711c4f49d88a7246f58e2911a14d2d",
+      "invalid_declared_recorded_at": "2026-08-15T07:03:00+08:00",
+      "effective_recorded_at_from_original_file_mtime": "2026-08-15T06:59:51+08:00"
+    }
+  ],
+  "correction_rules": {
+    "old_files_rewritten": false,
+    "scientific_decision_changed": false,
+    "byte_hashes_changed": false,
+    "future_publications_must_bind_this_correction": true,
+    "future_records_must_not_prefill_a_future_wall_clock_timestamp": true
+  },
+  "research_boundary": {
+    "candidate_comparator_price_or_return_value_read": false,
+    "stress_2024_2025_opened": false,
+    "candidate49_ledgers_changed": false
+  }
+}

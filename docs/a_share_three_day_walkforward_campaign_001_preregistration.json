@@ -1,0 +1,388 @@
+{
+  "version": 1,
+  "kind": "a_share_three_day_historical_walkforward_campaign_preregistration",
+  "campaign_id": "a_share_three_day_walkforward_campaign_001",
+  "status": "frozen_before_campaign_development_or_lockbox_return_read",
+  "frozen_at": "2026-07-27T12:08:00Z",
+  "purpose": "Evaluate one finite, fully enumerated library of existing minute-factor definitions and simple pairwise rank blends through purged 2019-2023 expanding walk-forward folds, then open 2024-2025 once for the frozen validation survivors.",
+  "evidence_classification": "historically_exposed_quasi_out_of_sample_not_pristine",
+  "candidate49_boundary": {
+    "registration_id": "candidate49_intraday_cumulative_vwap_crossing_rate_240m_v1",
+    "included_in_factor_library": false,
+    "historical_return_read_allowed": false,
+    "historical_signal_execution_or_milestone_backfill_allowed": false,
+    "prospective_ledgers_changed_by_this_campaign": false
+  },
+  "implementation": {
+    "script": {
+      "path": "scripts/a_share_three_day_walkforward_campaign.py",
+      "sha256": "980138b582749c4064401790b11b00113dc6b5cf475eeb98919256dc594ab6a9"
+    },
+    "development_command": "python scripts/a_share_three_day_walkforward_campaign.py run-development",
+    "lockbox_command": "python scripts/a_share_three_day_walkforward_campaign.py run-lockbox --confirm-open-lockbox",
+    "output_root": "data/experiments/short_horizon/historical_walkforward/campaign_001"
+  },
+  "governance_bindings": {
+    "historical_walkforward_policy": {
+      "path": "docs/a_share_three_day_historical_walkforward_research_policy_20260727.json",
+      "sha256": "38426d6161b9bfed323c58caba18feca668b8c9d53e294951a8ba90c01a798bb"
+    },
+    "authoritative_iteration_state": {
+      "path": "docs/a_share_three_day_iteration_status_20260727_walkforward.json",
+      "sha256": "75e639c4b8579983bfcda8da19c221d018b7b62cd68fac9e94822f6c3ed73267"
+    },
+    "candidate49_future_only_policy": {
+      "path": "docs/a_share_three_day_future_only_minute_research_policy_20260725.json",
+      "sha256": "52ca8bfa7201509fe891d0af3d1c87aeebd64e47e6ec6641e897849411df408c"
+    },
+    "candidate49_registration": {
+      "path": "docs/a_share_tushare_intraday_cumulative_vwap_crossing_rate_future_observation_registration.json",
+      "sha256": "431cb0b3b078823f08b888bf4c499bcc5088309a2e58e9de5cb9a9aaa849ffa9"
+    }
+  },
+  "daily_data_bindings": {
+    "provider_uri": {
+      "kind": "directory",
+      "path": "data/qlib/cn_a_share"
+    },
+    "price_basis": {
+      "path": "data/qlib/cn_a_share/price_basis.json",
+      "sha256": "68e9dbb83749779b34d5cf3b116195074c154ff74cb6de95ba67695bedc1f14f"
+    },
+    "quarterly_quality": {
+      "path": "data/raw/a_share/fundamentals/quarterly_quality.parquet",
+      "sha256": "3ac901a97928d2ed81ac72e3eaac9bdc148d36cf67b6abe70223699235ef059f"
+    },
+    "quarterly_quality_manifest": {
+      "path": "data/metadata/quarterly_quality_manifest.json",
+      "sha256": "e3cf654babe37a82393c5530696bc1cc242b736cb88e1947b8444b638125ba8c"
+    },
+    "calendar": {
+      "path": "data/qlib/cn_a_share/calendars/day.txt",
+      "sha256": "fda506597d26bcec953cdc0882042a5046ec1587db60490e16a01627fd43f53a"
+    },
+    "buyable_universe": {
+      "path": "data/qlib/cn_a_share/instruments/buyable_main_chinext.txt",
+      "sha256": "77ccf8de2ed1e447e73b5d5ff1703fc2a8656d6adab34ef44017481730249db1"
+    }
+  },
+  "execution_policy_bindings": {
+    "normalized_execution": {
+      "path": "docs/a_share_three_day_prospective_execution_policy.json",
+      "sha256": "72c3c3871e153372ed9e7691c9d89ba1aeb2f6d02cc839761fefa5fee085e1bc"
+    },
+    "cny_200000_board_lot_pilot": {
+      "path": "docs/a_share_three_day_pilot_execution_policy.json",
+      "sha256": "72235cd29fc14d43538238150bb2823dae1dd05b027b2c86a9872de89cc0d3f9"
+    }
+  },
+  "feature_overlays": {
+    "cleaned_four_fieldwise": {
+      "path": "/Volumes/DIsk/qlib-a-share-tushare-1m/derived/a_share/rich/tushare/minute_fieldwise_clean/tushare_stk_mins_1m_2019_2025_ea0cbb8f_fieldwise_clean_v2/exceptions.parquet",
+      "sha256": "046a5902c5fe3d6040df3a57185d445268cd025f6c922275363318123bc210c6"
+    }
+  },
+  "factor_library": [
+    {
+      "feature_id": "wf001_f01",
+      "name": "late_return_30m",
+      "direction": "higher",
+      "formula": "close_at_15_00 / close_at_14_30 - 1 after bar-end normalization",
+      "economic_hypothesis": "A price move supported through the final thirty minutes may persist over the next three sessions.",
+      "dataset_group": "cleaned_four",
+      "partition_root": "/Volumes/DIsk/qlib-a-share-tushare-1m/derived/a_share/rich/tushare/minute_sentiment_clean/tushare_stk_mins_1m_2019_2025_ea0cbb8f_sentiment_clean_v1/partitions",
+      "prior_terminal_conclusion_unchanged": true,
+      "bindings": [
+        {
+          "path": "/Volumes/DIsk/qlib-a-share-tushare-1m/derived/a_share/rich/tushare/minute_sentiment_clean/tushare_stk_mins_1m_2019_2025_ea0cbb8f_sentiment_clean_v1/snapshot_manifest.json",
+          "sha256": "453c6719cb3c7da42fed8807b28a2bfe988700283e9625a6db97912534f368de"
+        },
+        {
+          "path": "/Volumes/DIsk/qlib-a-share-tushare-1m/derived/a_share/rich/tushare/minute_fieldwise_clean/tushare_stk_mins_1m_2019_2025_ea0cbb8f_fieldwise_clean_v2/snapshot_manifest.json",
+          "sha256": "06b5ffc2dac16f608d92e9eb7d93729800a2fa99e5727817caead3d698e19bd3"
+        },
+        {
+          "path": "docs/a_share_tushare_cleaned_four_factor_research_record.json",
+          "sha256": "f3f2e7436667e746cfe20a9f594981a6f53d10efec2c498d8b08b115d46726c2"
+        }
+      ]
+    },
+    {
+      "feature_id": "wf001_f02",
+      "name": "late_amount_share_30m",
+      "direction": "higher",
+      "formula": "amount_over_bar_ends_14_31_through_15_00 / full_session_amount",
+      "economic_hypothesis": "Late trading participation may identify demand that is not fully resolved by the close.",
+      "dataset_group": "cleaned_four",
+      "partition_root": "/Volumes/DIsk/qlib-a-share-tushare-1m/derived/a_share/rich/tushare/minute_sentiment_clean/tushare_stk_mins_1m_2019_2025_ea0cbb8f_sentiment_clean_v1/partitions",
+      "prior_terminal_conclusion_unchanged": true,
+      "bindings": [
+        {
+          "path": "/Volumes/DIsk/qlib-a-share-tushare-1m/derived/a_share/rich/tushare/minute_sentiment_clean/tushare_stk_mins_1m_2019_2025_ea0cbb8f_sentiment_clean_v1/snapshot_manifest.json",
+          "sha256": "453c6719cb3c7da42fed8807b28a2bfe988700283e9625a6db97912534f368de"
+        },
+        {
+          "path": "docs/a_share_tushare_cleaned_four_factor_research_record.json",
+          "sha256": "f3f2e7436667e746cfe20a9f594981a6f53d10efec2c498d8b08b115d46726c2"
+        }
+      ]
+    },
+    {
+      "feature_id": "wf001_f03",
+      "name": "late_vwap_to_day_vwap_30m",
+      "direction": "higher",
+      "formula": "late_30m_vwap / full_session_vwap - 1",
+      "economic_hypothesis": "Late trading above the full-session paid-price center may indicate persistent closing demand.",
+      "dataset_group": "cleaned_four",
+      "partition_root": "/Volumes/DIsk/qlib-a-share-tushare-1m/derived/a_share/rich/tushare/minute_sentiment_clean/tushare_stk_mins_1m_2019_2025_ea0cbb8f_sentiment_clean_v1/partitions",
+      "prior_terminal_conclusion_unchanged": true,
+      "bindings": [
+        {
+          "path": "/Volumes/DIsk/qlib-a-share-tushare-1m/derived/a_share/rich/tushare/minute_sentiment_clean/tushare_stk_mins_1m_2019_2025_ea0cbb8f_sentiment_clean_v1/snapshot_manifest.json",
+          "sha256": "453c6719cb3c7da42fed8807b28a2bfe988700283e9625a6db97912534f368de"
+        },
+        {
+          "path": "docs/a_share_tushare_cleaned_four_factor_research_record.json",
+          "sha256": "f3f2e7436667e746cfe20a9f594981a6f53d10efec2c498d8b08b115d46726c2"
+        }
+      ]
+    },
+    {
+      "feature_id": "wf001_f04",
+      "name": "intraday_realized_volatility",
+      "direction": "lower",
+      "formula": "sqrt(sum(square(diff(log(minute_close))))) over the complete regular session",
+      "economic_hypothesis": "Lower intraday path volatility may reduce short-horizon tail risk for otherwise eligible stocks.",
+      "dataset_group": "cleaned_four",
+      "partition_root": "/Volumes/DIsk/qlib-a-share-tushare-1m/derived/a_share/rich/tushare/minute_sentiment_clean/tushare_stk_mins_1m_2019_2025_ea0cbb8f_sentiment_clean_v1/partitions",
+      "prior_terminal_conclusion_unchanged": true,
+      "bindings": [
+        {
+          "path": "/Volumes/DIsk/qlib-a-share-tushare-1m/derived/a_share/rich/tushare/minute_sentiment_clean/tushare_stk_mins_1m_2019_2025_ea0cbb8f_sentiment_clean_v1/snapshot_manifest.json",
+          "sha256": "453c6719cb3c7da42fed8807b28a2bfe988700283e9625a6db97912534f368de"
+        },
+        {
+          "path": "/Volumes/DIsk/qlib-a-share-tushare-1m/derived/a_share/rich/tushare/minute_fieldwise_clean/tushare_stk_mins_1m_2019_2025_ea0cbb8f_fieldwise_clean_v2/snapshot_manifest.json",
+          "sha256": "06b5ffc2dac16f608d92e9eb7d93729800a2fa99e5727817caead3d698e19bd3"
+        },
+        {
+          "path": "docs/a_share_tushare_cleaned_four_factor_research_record.json",
+          "sha256": "f3f2e7436667e746cfe20a9f594981a6f53d10efec2c498d8b08b115d46726c2"
+        }
+      ]
+    },
+    {
+      "feature_id": "wf001_f05",
+      "name": "intraday_return_variance_entropy_238m",
+      "direction": "higher",
+      "formula": "-sum(q_i*log(q_i))/log(238), where q_i is each within-half squared log return divided by total within-half realized variance",
+      "economic_hypothesis": "Broadly distributed price discovery rather than a few jumps may be more persistent over three sessions.",
+      "dataset_group": "return_variance_entropy",
+      "partition_root": "/Volumes/DIsk/qlib-a-share-tushare-1m/derived/a_share/rich/tushare/minute_intraday_return_variance_entropy/tushare_stk_mins_1m_2019_2025_ea0cbb8f_intraday_return_variance_entropy_v1/partitions",
+      "prior_terminal_conclusion_unchanged": true,
+      "bindings": [
+        {
+          "path": "/Volumes/DIsk/qlib-a-share-tushare-1m/derived/a_share/rich/tushare/minute_intraday_return_variance_entropy/tushare_stk_mins_1m_2019_2025_ea0cbb8f_intraday_return_variance_entropy_v1/snapshot_manifest.json",
+          "sha256": "f1905de2c51540d55369b8c84117f63bfd509db31dad79c933c90559d880556c"
+        },
+        {
+          "path": "docs/a_share_tushare_intraday_return_variance_entropy_research_record.json",
+          "sha256": "7f79ff0b09a132bcd6af0e1a4c6401de58105cf0c778c6625dada71ba11b07f1"
+        }
+      ]
+    },
+    {
+      "feature_id": "wf001_f06",
+      "name": "intraday_amount_participation_entropy_240m",
+      "direction": "higher",
+      "formula": "-sum(p_t*log(p_t))/log(240), where p_t is each continuous-session minute amount divided by total amount",
+      "economic_hypothesis": "Persistent all-session transaction participation may be more durable than isolated amount bursts.",
+      "dataset_group": "amount_participation_entropy",
+      "partition_root": "/Volumes/DIsk/qlib-a-share-tushare-1m/derived/a_share/rich/tushare/minute_intraday_amount_participation_entropy/tushare_stk_mins_1m_2019_2025_ea0cbb8f_intraday_amount_participation_entropy_v1/partitions",
+      "prior_terminal_conclusion_unchanged": true,
+      "bindings": [
+        {
+          "path": "/Volumes/DIsk/qlib-a-share-tushare-1m/derived/a_share/rich/tushare/minute_intraday_amount_participation_entropy/tushare_stk_mins_1m_2019_2025_ea0cbb8f_intraday_amount_participation_entropy_v1/snapshot_manifest.json",
+          "sha256": "58c9a9c8f3991fa94a3e5289ed0a72333dfc037dae1e7f318de29eca4f207631"
+        },
+        {
+          "path": "docs/a_share_tushare_intraday_amount_participation_entropy_research_record.json",
+          "sha256": "6268a51a5210624e3b75283fc0a21e79f7572b9e82a31d670afa50dcf6a8f036"
+        }
+      ]
+    },
+    {
+      "feature_id": "wf001_f07",
+      "name": "intraday_market_idiosyncratic_share_238m",
+      "direction": "higher",
+      "formula": "1 - Corr(stock within-half minute returns, equal-weight leave-one-out same-date market minute returns)^2",
+      "economic_hypothesis": "Firm-specific intraday price discovery may carry information beyond the common market path.",
+      "dataset_group": "market_idiosyncratic_share",
+      "partition_root": "/Volumes/DIsk/qlib-a-share-tushare-1m/derived/a_share/rich/tushare/minute_intraday_market_idiosyncratic_share/tushare_stk_mins_1m_2019_2025_ea0cbb8f_intraday_market_idiosyncratic_share_v1/partitions",
+      "prior_terminal_conclusion_unchanged": true,
+      "bindings": [
+        {
+          "path": "/Volumes/DIsk/qlib-a-share-tushare-1m/derived/a_share/rich/tushare/minute_intraday_market_idiosyncratic_share/tushare_stk_mins_1m_2019_2025_ea0cbb8f_intraday_market_idiosyncratic_share_v1/snapshot_manifest.json",
+          "sha256": "954b71d571bcd89cbf4eae4eedad014091a9b40e6b2b083e0071cbf870634ef0"
+        },
+        {
+          "path": "docs/a_share_tushare_intraday_market_idiosyncratic_share_research_record.json",
+          "sha256": "cb6829903b5cc4254bb1965e9308fdff5902ce420467a3a552a5484091a22b61"
+        }
+      ]
+    },
+    {
+      "feature_id": "wf001_f08",
+      "name": "intraday_bar_vwap_close_pressure_240m",
+      "direction": "higher",
+      "formula": "amount-weighted mean log(close_t/(amount_t/volume_t)) over active continuous-session minute bars",
+      "economic_hypothesis": "Repeated active-minute closes above their same-minute transaction VWAP may reflect unresolved buyer urgency.",
+      "dataset_group": "bar_vwap_close_pressure",
+      "partition_root": "/Volumes/DIsk/qlib-a-share-tushare-1m/derived/a_share/rich/tushare/minute_intraday_bar_vwap_close_pressure/tushare_stk_mins_1m_2019_2025_ea0cbb8f_intraday_bar_vwap_close_pressure_v1/partitions",
+      "prior_terminal_conclusion_unchanged": true,
+      "bindings": [
+        {
+          "path": "/Volumes/DIsk/qlib-a-share-tushare-1m/derived/a_share/rich/tushare/minute_intraday_bar_vwap_close_pressure/tushare_stk_mins_1m_2019_2025_ea0cbb8f_intraday_bar_vwap_close_pressure_v1/snapshot_manifest.json",
+          "sha256": "dd5d541fb0ab99a5663ba00431eb0bac45f2975480bd681719fbb0d3eb799259"
+        },
+        {
+          "path": "docs/a_share_tushare_intraday_bar_vwap_close_pressure_research_record.json",
+          "sha256": "135e56d0b2389f17f262bdbe39ef125de98eb3feffba69ea1e7aadc9bc8bbe26"
+        }
+      ]
+    }
+  ],
+  "search_space": {
+    "single_factor_trials": "all eight frozen factors",
+    "pair_trials": "every unordered pair in lexicographic factor-name order",
+    "pair_weight_grid_for_canonical_factor_order": [
+      [
+        0.25,
+        0.75
+      ],
+      [
+        0.5,
+        0.5
+      ],
+      [
+        0.75,
+        0.25
+      ]
+    ],
+    "combination_method": "weighted arithmetic mean of same-day directional average percentile ranks",
+    "all_components_required": true,
+    "threshold_filter_or_year_subset_search": false,
+    "model_fitting": false,
+    "expected_single_trial_count": 8,
+    "expected_pair_trial_count": 84,
+    "expected_trial_count": 92
+  },
+  "walkforward_folds": [
+    {
+      "fold": 1,
+      "training": {
+        "start": "2019-01-01",
+        "end": "2020-12-31"
+      },
+      "validation": {
+        "start": "2021-01-01",
+        "end": "2021-12-31"
+      }
+    },
+    {
+      "fold": 2,
+      "training": {
+        "start": "2019-01-01",
+        "end": "2021-12-31"
+      },
+      "validation": {
+        "start": "2022-01-01",
+        "end": "2022-12-31"
+      }
+    },
+    {
+      "fold": 3,
+      "training": {
+        "start": "2019-01-01",
+        "end": "2022-12-31"
+      },
+      "validation": {
+        "start": "2023-01-01",
+        "end": "2023-12-31"
+      }
+    }
+  ],
+  "split_protocol": {
+    "global_signal_grid": "start at the first accepted local 2019 session and take every third local session",
+    "signal": "close t",
+    "entry": "next accepted local session open t+1",
+    "exit": "third accepted local session close t+3",
+    "purge_signal_sessions_each_boundary": 3,
+    "label_containment_required": true,
+    "quality_maximum_age_days": 550,
+    "minimum_listing_sessions": 20,
+    "minimum_signal_names": 50,
+    "topk": 3
+  },
+  "survivor_rule": {
+    "purpose": "Freeze a bounded validation-ranked lockbox set without relaxing data integrity, execution resolution, board-lot, or amount-cap requirements after results.",
+    "minimum_validation_association_cohorts_per_fold": 60,
+    "minimum_board_lot_affordability_rate_each_fold": 0.9,
+    "maximum_daily_amount_participation_each_fold": 0.01,
+    "terminal_unresolved_positions_each_fold": 0,
+    "quality_view_positive_ic_fold_count_gte": 2,
+    "quality_view_positive_normalized_return_fold_count_gte": 2,
+    "quality_view_worst_drawdown_gte": -0.3,
+    "operational_admissibility_is_required": true,
+    "validation_quality_view_is_reported_but_not_a_hard_top_n_admission_gate": true,
+    "ranking_order": [
+      "positive validation mean-Rank-IC fold count descending",
+      "positive validation normalized-return fold count descending",
+      "median validation mean Rank IC descending",
+      "median validation 10bp pilot return descending",
+      "worst validation normalized drawdown descending",
+      "simpler single factor before pair",
+      "trial_id ascending"
+    ],
+    "maximum_lockbox_survivors": 8,
+    "post_result_rule_change_allowed": false
+  },
+  "lockbox": {
+    "start": "2024-01-01",
+    "end": "2025-12-31",
+    "opening": "one immutable intent is written before the first lockbox factor or return read",
+    "resume": "only the identical campaign, runner, survivor record, and existing intent may resume an interrupted opening",
+    "consumption": "all selected survivors are recorded, then one immutable consumption record closes the campaign",
+    "final_gate": {
+      "combined_mean_rank_ic_gt": 0,
+      "combined_positive_rank_ic_rate_gt": 0.5,
+      "combined_top3_minus_bottom3_spread_gt": 0,
+      "each_2024_and_2025_mean_rank_ic_gt": 0,
+      "normalized_net_return_gt": 0,
+      "normalized_maximum_drawdown_gte": -0.2,
+      "each_2024_and_2025_normalized_return_gt": 0,
+      "normalized_terminal_unresolved_positions": 0,
+      "pilot_10bp_net_return_gt": 0,
+      "each_2024_and_2025_pilot_10bp_return_gt": 0,
+      "pilot_board_lot_affordability_rate_gte": 0.9,
+      "pilot_maximum_daily_amount_participation_lte": 0.01,
+      "pilot_terminal_unresolved_positions": 0
+    },
+    "pass_is_research_only": true,
+    "current_scoring_selection_sizing_or_orders_allowed": false
+  },
+  "trial_ledger": {
+    "format": "atomic append-only JSON object with immutable header, ordered entries, previous-entry hashes, payload hashes, and a validated chain tip",
+    "record_every_development_trial": true,
+    "record_every_selected_lockbox_trial": true,
+    "record_infrastructure_failures": true,
+    "omit_failed_trials": false,
+    "candidate49_ledger_reuse": false
+  },
+  "limitations": [
+    "The 2019-2025 returns were exposed by prior research and are not pristine.",
+    "The local holding universe is derived from a current listing snapshot and can introduce survivorship bias.",
+    "Daily bars cannot prove queue priority, partial fills, or realized market impact.",
+    "A historical pass cannot directly create a current score, stock list, position size, paper order, or live order."
+  ]
+}

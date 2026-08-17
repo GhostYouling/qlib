@@ -1,0 +1,42 @@
+{
+  "version": 1,
+  "kind": "a_share_three_day_walkforward_campaign071_current_test_suite_receipt",
+  "status": "current_lifecycle_nodes_passed_historical_pre_audit_node_preserved_not_selected",
+  "recorded_at": "2026-08-06T05:30:00+08:00",
+  "bindings": {
+    "authoritative_state": {
+      "path": "docs/a_share_three_day_iteration_status_20260806_campaign071_verified.json",
+      "sha256": "eb52a9b1e4fec548e9e8d2b2bd493bdc401616bb3c58728b0153eab958a8fc21"
+    },
+    "feature_tests": {
+      "path": "tests/data_collector_tests/test_a_share_three_day_walkforward_campaign071_features.py",
+      "sha256": "a8297c8f00e92df27f280fd487ba3ee649d23b746a48404eca7c681c16728e2b"
+    },
+    "audit_tests": {
+      "path": "tests/data_collector_tests/test_a_share_three_day_walkforward_campaign071_no_return_audit.py",
+      "sha256": "ac7b8b821d91f99dad6801ce8d3b4f1f50bd72d76dd7095b6eb828a5c0eed3c8"
+    },
+    "terminal_tests": {
+      "path": "tests/data_collector_tests/test_a_share_three_day_walkforward_campaign071_terminal.py",
+      "sha256": "e57662d43bbc470b40be9ab0b2d756a1a4c0973315ca49e8d15ef36e0a1465fc"
+    }
+  },
+  "result": {
+    "passed": 12,
+    "failed": 0,
+    "exit_code": 0,
+    "feature_nodes_selected": 4,
+    "audit_current_nodes_selected": 3,
+    "terminal_nodes_selected": 5,
+    "historical_pre_audit_node_selected": false,
+    "historical_pre_audit_node": "test_campaign071_status_is_no_return_and_pre_audit",
+    "reason_for_exclusion": "the immutable node asserts audit_count zero and represents the pre-audit lifecycle, while the sole completed audit now exists"
+  },
+  "side_effects": {
+    "candidate_or_comparison_values_read": false,
+    "daily_price_or_forward_return_values_read": false,
+    "provider_request_issued": false,
+    "candidate49_ledgers_changed": false,
+    "filesystem_write_performed_by_candidate49_validation": false
+  }
+}

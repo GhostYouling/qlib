@@ -1,0 +1,92 @@
+{
+  "version": 1,
+  "kind": "a_share_three_day_walkforward_campaign020_mechanism_overlap_audit",
+  "status": "passed_conceptual_independence_before_formula_values_comparisons_or_returns",
+  "recorded_at": "2026-07-29T02:22:00Z",
+  "purpose": "Challenge the selected disclosure-freshness mechanism against all relevant terminal families before freezing its exact formula or reading values.",
+  "concept_scouting": {
+    "path": "docs/a_share_three_day_walkforward_campaign_020_concept_scouting.json",
+    "sha256": "e1f6db2ef25d05bd4a2503091004ee812f1783d7c2618940b2f640ce95a1b94f"
+  },
+  "selected_mechanism": {
+    "name": "quarterly_announcement_freshness_60s",
+    "direction": "higher",
+    "economic_hypothesis": "A more recently effective quarterly disclosure represents fresher firm-specific information and attention, which may persist from the next open through the third close.",
+    "information_domain": "corporate_disclosure_event_time",
+    "source_identity": "accepted stock-day datetime/symbol/provider identity plus frozen quarterly-quality announcement metadata only"
+  },
+  "overlap_challenges": [
+    {
+      "family": "daily price trend_reversal_gap_range_and_volume",
+      "result": "distinct",
+      "reason": "The candidate reads no daily price, return, volume, amount, gap, range, trend, reversal, or liquidity field."
+    },
+    {
+      "family": "intraday price_path_range_candle_and_activity",
+      "result": "distinct",
+      "reason": "The candidate reads no minute row or minute OHLCV/amount field and cannot be changed by holding announcement history fixed while changing the entire intraday path."
+    },
+    {
+      "family": "fundamental_value_growth_profitability_and_cash_conversion",
+      "result": "distinct",
+      "reason": "The candidate deliberately forbids roe, net_profit, revenue_yoy, profit_yoy, valuation, margin, balance-sheet, and cash-flow values. It measures only when a disclosure first became available."
+    },
+    {
+      "family": "sparse corporate events and announcement intensity",
+      "result": "distinct_with_explicit_scope",
+      "reason": "The candidate is not an event count, amount, sign, surprise, or filing-content factor. It is a deterministic monotone clock since the most recent quarterly disclosure became usable."
+    },
+    {
+      "family": "quality_listing_gate",
+      "result": "not_a_synonym",
+      "reason": "The existing gate uses point-in-time quality values and a maximum calendar-day age only to determine eligibility. Campaign020 ranks eligible names continuously by accepted-session age and never reads those quality values."
+    },
+    {
+      "family": "candidate49 cumulative_vwap_crossing_rate",
+      "result": "distinct",
+      "reason": "Candidate49 uses same-session minute close/volume/amount geometry. Campaign020 uses only historical disclosure timing and cannot backfill, modify, or statistically evaluate Candidate49."
+    },
+    {
+      "family": "Campaign019 bar_direction_continuity",
+      "result": "distinct",
+      "reason": "Campaign019 uses 240 minute opens/closes and a 120-informative-pair gate. Campaign020 uses no minute body, zero-body rule, pair threshold, or continuity statistic."
+    }
+  ],
+  "counterfactual_independence_tests": [
+    "Holding instrument, report_date, and announcement_date fixed while changing every historical price, return, range, volume, amount, transaction-price, and market-peer path leaves Campaign020 unchanged.",
+    "Holding all terminal factor values fixed while moving the first usable quarterly disclosure session changes Campaign020.",
+    "Holding the disclosure session fixed while changing roe, net_profit, revenue_yoy, and profit_yoy leaves Campaign020 unchanged."
+  ],
+  "prohibited_variants": [
+    "change the 60-session decay scale after values",
+    "use calendar-day age instead of accepted-session age",
+    "use a thresholded freshness window",
+    "use report content, surprise, sign, magnitude, quality, valuation, or growth values",
+    "use event counts, filing intensity, or selected report types",
+    "select years, boards, industries, or subuniverses after values",
+    "invert the direction after returns",
+    "combine this factor with a terminal factor as a rescue",
+    "backfill or compare Candidate49 historical returns"
+  ],
+  "required_no_return_challenges": {
+    "coverage_and_capacity_before_comparison_values": true,
+    "statistical_uniqueness_against_all_40_prior_statistical_factors_plus_campaign019": true,
+    "semantic_only_challenges_for_campaign008_and_campaign013": true,
+    "maximum_allowed_absolute_median_daily_rank_correlation": 0.8
+  },
+  "research_boundary": {
+    "campaign020_candidate_values_read": false,
+    "comparison_factor_values_read": false,
+    "historical_daily_price_fields_read": [],
+    "historical_forward_return_fields_read": false,
+    "candidate49_historical_return_read": false,
+    "candidate49_signal_or_execution_ledger_changed": false,
+    "candidate50_prospective_activation_created": false,
+    "provider_request_issued": false
+  },
+  "decision": {
+    "conceptually_independent": true,
+    "advance_to_exact_finite_no_return_preregistration": true,
+    "predictive_value_established": false
+  }
+}

@@ -1,0 +1,144 @@
+{
+  "version": 1,
+  "kind": "a_share_three_day_walkforward_campaign062_mechanism_overlap_audit",
+  "status": "passed_conceptual_independence_before_campaign062_source_candidate_comparison_daily_price_or_return_values",
+  "recorded_at": "2026-08-05T03:20:00+08:00",
+  "purpose": "Challenge the sole Campaign062 quarterly disclosure-attention mechanism against all nearest terminal families and freeze one exact definition before any Campaign062 source value is read.",
+  "authoritative_boundary": {
+    "campaign061_verified_state": {
+      "path": "docs/a_share_three_day_iteration_status_20260805_campaign061_verified.json",
+      "sha256": "537f7c1b45ddb20b9b02da2c44380eebc9ae88c608eda729eb282d53ef770419"
+    },
+    "historical_walkforward_policy": {
+      "path": "docs/a_share_three_day_historical_walkforward_research_policy_20260727.json",
+      "sha256": "38426d6161b9bfed323c58caba18feca668b8c9d53e294951a8ba90c01a798bb"
+    },
+    "concept_scouting": {
+      "path": "docs/a_share_three_day_walkforward_campaign_062_concept_scouting.json",
+      "sha256": "5f0c54f992ca4aeab2a72c2f8f0b277b408913f3be8a5f240373be62347ddf24"
+    }
+  },
+  "inherited_definition_sources": {
+    "campaign061_protocol": {
+      "path": "docs/a_share_three_day_walkforward_campaign_061_no_return_preregistration.json",
+      "sha256": "8bb79b587a64dab98a3a32d6a04ad6be8985979519ed436bc4062bbe64ff8dab"
+    },
+    "campaign061_terminal_record": {
+      "path": "docs/a_share_three_day_walkforward_campaign_061_research_record.json",
+      "sha256": "e644f6612f65dbde37ce1174c9e6e9c6ff30ea9f43f79b40ac003723374748d3"
+    },
+    "total_required_no_return_comparison_count": 93,
+    "campaign062_source_candidate_or_comparison_values_read": false
+  },
+  "selected_mechanism": {
+    "name": "quarterly_announcement_peer_crowding_sparsity",
+    "direction": "higher",
+    "economic_hypothesis": "Lower same-report-period disclosure crowding reduces cross-issuer competition for investor attention and may permit slower firm-specific information diffusion over the next three sessions.",
+    "formula": "For each unique instrument-report_date event, peer_count is the number of distinct instruments sharing exact report_date and exact announcement_date. On each stock-day use the latest strictly-prior-announced effective event, resolving simultaneous effective events by later report_date, and return 1/peer_count.",
+    "stock_day_identity_projection": [
+      "datetime",
+      "symbol",
+      "provider"
+    ],
+    "quarterly_source_projection": [
+      "instrument",
+      "report_date",
+      "announcement_date"
+    ],
+    "quarterly_value_fields": [],
+    "peer_definition": "all distinct instruments in the immutable source sharing both exact report_date and exact announcement_date; include the issuer itself",
+    "point_in_time_rule": "the event becomes usable on the first accepted session strictly after announcement_date",
+    "transform_threshold_filter_combination_or_model": "none"
+  },
+  "overlap_challenges": [
+    {
+      "family": "quarterly_announcement_freshness_60s",
+      "result": "distinct_pending_statistical_uniqueness_gate",
+      "reason": "Freshness changes with accepted-session age after one issuer's disclosure. Campaign062 remains constant with age and changes only when the same report-period/date peer count changes."
+    },
+    {
+      "family": "quarterly_announcement_timeliness_days",
+      "result": "distinct_pending_statistical_uniqueness_gate",
+      "reason": "Timeliness is the issuer's calendar-day delay from report date to announcement date. Holding those issuer dates fixed while changing peer issuers on the same pair changes Campaign062 but leaves timeliness unchanged."
+    },
+    {
+      "family": "quarterly_announcement_delay_consistency_4q",
+      "result": "distinct_pending_statistical_uniqueness_gate",
+      "reason": "Delay consistency requires four consecutive issuer reports and measures within-issuer delay dispersion. Campaign062 needs only the latest effective event and measures cross-issuer attention competition."
+    },
+    {
+      "family": "quality_roe_profit_revenue_growth_change_acceleration_and_score",
+      "result": "distinct_pending_statistical_uniqueness_gate",
+      "reason": "Campaign062 projects no accounting value and is invariant to every quarterly value field while event identities and dates remain fixed."
+    },
+    {
+      "family": "generic_same_issuer_event_count_or_freshness",
+      "result": "distinct",
+      "reason": "Generic event intensity counts multiple notices for one issuer or decays their age. Campaign062 counts other issuers only after exact standardized report-period and announcement-date alignment, and has no same-issuer multiplicity term."
+    },
+    {
+      "family": "minute_price_range_activity_market_and_cross_session_factors",
+      "result": "distinct_pending_statistical_uniqueness_gate",
+      "reason": "Campaign062 reads no minute OHLCV/amount, transaction price, market peer return, or cross-session price path. Holding the quarterly event table fixed makes it invariant to every minute path."
+    },
+    {
+      "family": "Candidate49_cumulative_vwap_crossing_rate",
+      "result": "distinct_no_historical_return_comparison",
+      "reason": "Candidate49 is a future-only causal minute close/volume/amount crossing statistic. Campaign062 uses disclosure identities only, includes Candidate49 solely in the no-return uniqueness library, and never reads its historical return."
+    },
+    {
+      "family": "Campaign061_day_over_day_realized_variance_stability",
+      "result": "distinct_pending_statistical_uniqueness_gate",
+      "reason": "Campaign061 compares squared minute close-return scale across two adjacent stock sessions. Campaign062 has no price, return, lagged stock session, or volatility input."
+    }
+  ],
+  "counterfactual_independence_tests": [
+    "Holding one issuer's report_date and announcement_date fixed while adding or removing a different issuer with the same pair changes Campaign062 and leaves issuer freshness, timeliness, and delay consistency unchanged.",
+    "Advancing the stock-day while keeping the latest effective event unchanged changes freshness but leaves Campaign062 unchanged.",
+    "Changing quarterly accounting values while keeping event identities and dates fixed leaves Campaign062 unchanged.",
+    "Changing every minute price, range, volume, amount, market-peer, and prior-session path while keeping quarterly event identities fixed leaves Campaign062 unchanged."
+  ],
+  "design_choices_frozen_before_values": {
+    "candidate_count": 1,
+    "factor_name": "quarterly_announcement_peer_crowding_sparsity",
+    "direction": "higher",
+    "peer_group_keys": [
+      "report_date",
+      "announcement_date"
+    ],
+    "peer_identity": "distinct instrument",
+    "issuer_included_in_count": true,
+    "event_identity": [
+      "instrument",
+      "report_date"
+    ],
+    "event_identity_must_be_unique": true,
+    "announcement_availability": "strict_next_accepted_session",
+    "simultaneous_effective_event_tie_break": [
+      "later_report_date",
+      "later_announcement_date"
+    ],
+    "score": "1/peer_count",
+    "valid_range": "(0,1]",
+    "parameter_filter_subset_model_or_combination_search": false
+  },
+  "research_boundary": {
+    "external_campaign062_minute_or_quarterly_rows_read": false,
+    "campaign062_candidate_or_comparison_values_read": false,
+    "historical_daily_price_fields_read": false,
+    "historical_forward_return_fields_read": false,
+    "provider_request_issued": false,
+    "candidate49_historical_return_signal_execution_or_milestone_backfill_performed": false,
+    "candidate49_ledgers_changed": false,
+    "second_prospective_candidate_created": false,
+    "current_scoring_selection_sizing_or_orders_performed": false,
+    "investment_advice": false,
+    "current_listing_snapshot_survivorship_limitation": true
+  },
+  "decision": {
+    "conceptual_independence_passed": true,
+    "statistical_independence_pending_all_93_comparisons": true,
+    "predictive_value_established": false,
+    "next_action": "Freeze the exact source fingerprints, coverage-first gates, 93-factor comparison order, and single development trial before reading Campaign062 source values."
+  }
+}

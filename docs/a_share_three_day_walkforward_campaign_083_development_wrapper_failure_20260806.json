@@ -1,0 +1,30 @@
+{
+  "schema_version": 1,
+  "kind": "a_share_three_day_walkforward_campaign083_development_wrapper_failure",
+  "status": "one_lint_failure_corrected_before_development_preregistration_or_return_read",
+  "recorded_at": "2026-08-06T20:41:00+08:00",
+  "failure": {
+    "stage": "development_wrapper_lint_validation",
+    "observed": "The first Ruff check reported S102 for the inherited exec call that loads the exact hash-bound Campaign074 base runner; the command exited nonzero after Black formatted the wrapper and before py_compile.",
+    "root_cause": "The Campaign083 wrapper inherited the established dynamic base-runner loading pattern but lacked a line-scoped Ruff suppression.",
+    "correction": "Add only # noqa: S102 to the already hash-gated exec line, then require Black py312 check, Ruff, and py_compile to pass. The base-runner hash check, generated source, trial, factor, and research gates were unchanged."
+  },
+  "corrected_result": {
+    "base_runner_sha256": "8677b23a3cc64150a8e0136bdc7f81f22a1c121cda0e2912771e7c588746afc0",
+    "development_wrapper_sha256": "0a527a67fb4674eefec816f13442f07fa740f90c08a91a33d97db79fd5727640",
+    "black_py312_check_passed": true,
+    "ruff_check_passed": true,
+    "py_compile_passed": true
+  },
+  "research_boundary": {
+    "development_preregistration_frozen": false,
+    "development_trial_run": false,
+    "historical_daily_price_fields_read": [],
+    "historical_forward_returns_read": false,
+    "stress_2024_2025_opened": false,
+    "provider_request_issued": false,
+    "candidate49_historical_backfill_performed": false,
+    "candidate49_ledgers_changed": false,
+    "current_scoring_selection_sizing_or_orders_performed": false
+  }
+}

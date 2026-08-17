@@ -1,0 +1,106 @@
+{
+  "schema_version": 1,
+  "kind": "a_share_three_day_walkforward_campaign101_concept_scouting",
+  "status": "completed_before_campaign101_source_factor_candidate_comparator_daily_price_or_return_values",
+  "recorded_at": "2026-08-07T13:00:24Z",
+  "purpose": "Select one finite complete-library factor-combination mechanism for Campaign101 without reading any of the 129 source-factor values, candidate values, comparison values, daily prices, or historical returns.",
+  "authoritative_inputs": {
+    "iteration_state": {
+      "path": "docs/a_share_three_day_iteration_status_20260807_campaign100_verified_v2.json",
+      "sha256": "5a5465269ceab1e957e75226a21a8071a3b58a574fa9054501337010d61c4e41"
+    },
+    "historical_walkforward_policy": {
+      "path": "docs/a_share_three_day_historical_walkforward_research_policy_20260727.json",
+      "sha256": "38426d6161b9bfed323c58caba18feca668b8c9d53e294951a8ba90c01a798bb",
+      "complete_terminal_library_combination_allowed": true,
+      "factor_combinations_inside_development_folds_allowed": true,
+      "all_formulas_parameters_subsets_combinations_models_and_failures_must_be_recorded": true
+    },
+    "numeric_policy_v54": {
+      "path": "docs/a_share_three_day_walkforward_future_numeric_comparison_eligibility_policy_v54_20260807.json",
+      "sha256": "517193a12ad592015a4af7579041abf79c508dbbdaf3e2a7d5f1d752f391458f",
+      "complete_definition_count": 132,
+      "complete_definition_order_sha256": "2d0c342fe9644092e562832fe928473c230cbf982c1fb32f9d5c41c0a3594a42",
+      "numeric_source_factor_count": 129,
+      "numeric_source_factor_order_sha256": "a029c53fb237cc1d34aec0a9f7b67856ffa1a67ffe0fc9620fb230680353263b",
+      "semantic_only_definitions": [
+        "intraday_cross_sectional_standardized_return_state_stability_236p",
+        "signal_day_turnover_rate_pct",
+        "intraday_own_bar_close_location_entropy_10b_240m"
+      ]
+    },
+    "campaign044_terminal_complete_library_baseline": {
+      "path": "docs/a_share_three_day_walkforward_campaign_044_research_record.json",
+      "sha256": "3e343e8387fd16db75f7e8a5c87025e712082ea50aa9e360083af7f0d3f2b615",
+      "result": "terminal_66_factor_all_finite_equal_weight_consensus_failed_coverage_before_returns",
+      "may_be_rewritten_retried_or_rescued": false
+    }
+  },
+  "candidate_queue_review": [
+    {
+      "concept": "repeat_campaign044_equal_weight_mean_with_129_factors",
+      "decision": "rejected_before_values",
+      "reason": "This would repeat the terminal equal-weight consensus family and would inherit or relax its failed common-finite support rather than test a new aggregation mechanism."
+    },
+    {
+      "concept": "selected_best_k_or_prior_return_screened_subset",
+      "decision": "rejected_before_values",
+      "reason": "Selecting source factors by prior IC, return, cost, or gate outcomes would violate the complete frozen library rule and create unrecorded multiplicity."
+    },
+    {
+      "concept": "ic_weighted_return_weighted_ridge_tree_or_neural_model",
+      "decision": "deferred_before_values",
+      "reason": "A fitted model remains policy-permitted for a later separately frozen campaign, but Campaign101 first isolates one deterministic nonlinear complete-library breadth mechanism so its value and failure are attributable without a model or hyperparameter search."
+    },
+    {
+      "concept": "median_mad_trimmed_mean_vote_or_multiple_quantile_catalog",
+      "decision": "rejected_before_values",
+      "reason": "Testing several related aggregators together would add avoidable formula multiplicity. Campaign101 freezes exactly one lower-quartile breadth statistic and no rescue alternative."
+    },
+    {
+      "concept": "complete_129_numeric_library_directional_lower_quartile_consensus",
+      "decision": "selected",
+      "reason": "The 25th percentile of all frozen-direction component ranks asks whether at least a broad three-quarters of the complete numeric library jointly rank a stock favorably. It is nonlinear, resists a small number of extreme components, penalizes unavailable components as the worst state, and is not the terminal arithmetic-mean consensus."
+    }
+  ],
+  "selected_candidate": {
+    "name": "full_numeric_library_directional_lower_quartile_consensus_129f",
+    "direction": "higher",
+    "information_domain": "complete_frozen_historical_numeric_library_breadth_floor",
+    "economic_hypothesis": "A stock whose lower quartile of frozen-direction ranks is high has broad confirmation across at least roughly three quarters of the complete microstructure, path, activity, market-relative, disclosure, and quality library, reducing dependence on a few extreme signals and potentially improving three-session execution robustness.",
+    "source_factor_count": 129,
+    "source_factor_order_sha256": "a029c53fb237cc1d34aec0a9f7b67856ffa1a67ffe0fc9620fb230680353263b",
+    "source_factor_library_rule": "Use every v54 numeric comparator in exact frozen order. Candidate49 and the three semantic-only definitions are absent because v54 classifies them outside the 129 numeric library, not because of observed performance.",
+    "component_score": "For every factor independently on each signal session, rank all finite quality/listing-base values by the factor's frozen direction using average ties and percentile ranks in (0,1]. A higher factor ranks ascending; a lower factor ranks descending.",
+    "missing_component_state": 0.0,
+    "missing_semantics": "After each component's independent finite-base ranking, map a missing component for that stock-day to exact directional score zero only inside this frozen aggregator. Do not fill or alter the immutable source snapshot.",
+    "minimum_finite_component_count": 97,
+    "minimum_support_derivation": "97 = 129 - floor(0.25*129). At most 32 components may be missing, so the nearest-rank 25th-percentile order statistic at one-indexed position 33 is always a finite observed directional percentile rather than an imputed zero.",
+    "formula": "Let d_1..d_129 be the frozen-direction same-session percentile ranks with unavailable components replaced by 0. Require at least 97 originally finite components. Sort all 129 d values ascending and return d_(33), the one-indexed 33rd order statistic, equivalently the nearest-rank empirical 25th percentile ceil(0.25*129).",
+    "valid_range": [0.0, 1.0],
+    "tie_method": "average within each source-factor cross-section; deterministic 33rd order statistic across components",
+    "factor_subset_weight_threshold_filter_fit_model_or_regime_search": "none",
+    "finite_candidate_count": 1,
+    "finite_development_trial_count_if_admitted": 1
+  },
+  "research_boundary": {
+    "source_factor_names_directions_manifest_paths_and_hash_metadata_read": true,
+    "source_factor_values_read": false,
+    "candidate_values_read": false,
+    "comparison_values_read": false,
+    "historical_daily_price_fields_read": [],
+    "historical_forward_returns_read": false,
+    "training_or_model_fitting_performed": false,
+    "provider_request_issued": false,
+    "candidate49_historical_return_signal_or_execution_backfill_performed": false,
+    "candidate49_ledgers_changed": false,
+    "second_prospective_candidate_created": false,
+    "current_scoring_selection_sizing_or_orders_performed": false,
+    "investment_advice": false
+  },
+  "decision": {
+    "selected_candidate_count": 1,
+    "predictive_value_established": false,
+    "next_action": "Complete a separate pre-value mechanism and mandatory support-predicate audit, then freeze the exact v54-bound no-return protocol and conditional one-trial 2019-2023 walk-forward catalog before reading any source-factor value."
+  }
+}

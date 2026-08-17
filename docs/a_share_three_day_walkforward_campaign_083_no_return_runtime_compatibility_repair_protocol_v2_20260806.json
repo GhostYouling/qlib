@@ -1,0 +1,67 @@
+{
+  "schema_version": 1,
+  "version": 2,
+  "kind": "a_share_three_day_walkforward_campaign083_no_return_runtime_compatibility_repair_protocol",
+  "status": "frozen_after_v1_runtime_failure_before_full_retry",
+  "frozen_at": "2026-08-06T20:19:00+08:00",
+  "failure_record": {
+    "path": "docs/a_share_three_day_walkforward_campaign_083_no_return_runtime_compatibility_failure_20260806.json",
+    "sha256": "b5f021315a76bae6a606983d3b3c5c643b444bc8847a63807c4161ced4f39a0f"
+  },
+  "original_frozen_runner": {
+    "path": "scripts/a_share_three_day_walkforward_campaign083_no_return_audit.py",
+    "sha256": "ff9859120319a52c75aabcbd9d7f5b46c88166af0ca3fc460df981bf2fe71cf1"
+  },
+  "original_activation_binding": {
+    "path": "docs/a_share_three_day_walkforward_campaign_083_no_return_audit_activation_binding_20260806.json",
+    "sha256": "1bf6eba732c620e13f15ecf586b95b88239854703a901982c7df50010eed0e9d"
+  },
+  "research_attempt_ledger_after_failure": {
+    "path": "data/experiments/short_horizon/historical_walkforward/campaign_083/research_attempt_ledger_v2.json",
+    "sha256": "f045ecf4f3c2998444b33b2709e9572add3e7ccdfb6c2729e1f96c12b617f71e"
+  },
+  "runtime_transition": {
+    "failed_runtime": {
+      "pandas": "2.2.3",
+      "pyarrow": "25.0.0"
+    },
+    "required_runtime": {
+      "pandas": "2.2.2",
+      "pyarrow": "16.1.0"
+    },
+    "operation": "Install exactly pandas==2.2.2 and pyarrow==16.1.0 into the isolated Codex runtime, then require the unchanged original runner's existing runtime gate to pass naturally.",
+    "runtime_gate_suppression_monkey_patch_or_constant_rebinding_allowed": false
+  },
+  "sole_repair": {
+    "original_runner_hash_still_required": true,
+    "original_activation_binding_hash_still_required": true,
+    "candidate_snapshot_manifest_and_dataset_hashes_still_required": true,
+    "candidate_partition_byte_and_frame_hashes_still_required": true,
+    "coverage_gate_still_runs_from_scratch": true,
+    "all_112_comparators_still_required_in_frozen_order_after_coverage_pass": true,
+    "candidate_formula_or_direction_changed": false,
+    "candidate_snapshot_or_manifest_changed": false,
+    "coverage_or_capacity_gate_changed": false,
+    "comparison_library_order_or_threshold_changed": false,
+    "historical_daily_price_or_return_field_changed": false,
+    "development_or_stress_rule_changed": false,
+    "provider_or_candidate49_workflow_changed": false
+  },
+  "retry": {
+    "partial_statistics_reused": false,
+    "restart_from_static_binding_candidate_snapshot_verification_and_coverage": true,
+    "expected_published_audit_count_before_retry": 0,
+    "maximum_authorized_v2_retries": 1,
+    "failed_runtime_entry_attempt_does_not_authorize_any_additional_candidate_or_gate_change": true
+  },
+  "research_boundary": {
+    "coverage_or_capacity_metrics_computed_before_protocol": false,
+    "comparison_values_read_before_protocol": false,
+    "historical_daily_price_fields_read": [],
+    "historical_forward_returns_read": false,
+    "provider_request_issued": false,
+    "candidate49_historical_backfill_performed": false,
+    "candidate49_ledgers_changed": false,
+    "current_scoring_selection_sizing_or_orders_performed": false
+  }
+}

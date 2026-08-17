@@ -1,0 +1,42 @@
+{
+  "schema_version": 1,
+  "kind": "a_share_three_day_walkforward_campaign171_regression_infrastructure_failures",
+  "status": "two_failures_recorded_cumulative_regression_retry_ready",
+  "recorded_at": "2026-08-15T09:04:16+08:00",
+  "failures": [
+    {
+      "attempt_id": "campaign171_infrastructure_005",
+      "phase": "cumulative_regression_record_discovery",
+      "status": "failed_campaign168_filename_pattern_no_matches_read_only",
+      "exit_code": 1,
+      "observed": "The fail-fast pipeline filtering repository paths for a guessed Campaign168 regression/node/deselect filename pattern returned no matches.",
+      "root_cause": "The relevant evidence is stored in generically versioned Campaign168 prevalue infrastructure failure records rather than filenames containing the guessed terms.",
+      "recovery": "Enumerate the exact Campaign168 file set with an always-successful local reader, then inspect contents for deselection evidence.",
+      "target_file_written_by_failure": false,
+      "candidate_comparator_security_price_or_return_value_read": false
+    },
+    {
+      "attempt_id": "campaign171_infrastructure_006",
+      "phase": "campaign145_through_campaign171_cumulative_regression",
+      "status": "failed_campaign170_mutable_unified_report_publication_hash_lifecycle_assertion",
+      "exit_code": 1,
+      "observed": "370 passed, 1 skipped, 3 deselected and 1 failed in 13.47s. The sole failure required current append-only unified-report bytes to equal Campaign170 policy publication-time hashes after Campaign171 had appended its sections.",
+      "failing_node": "data_collector_tests/test_a_share_three_day_walkforward_campaign170_terminal.py::test_campaign170_bindings_and_finite_frontier",
+      "root_cause": "Campaign170 policy v248 directly byte-bound mutable append-only unified reports, so its binding test is an historical publication lifecycle assertion after any later campaign append.",
+      "recovery": "Preserve Campaign170 test and policy bytes, add exactly this collected node to the three prior historical lifecycle deselections, and rerun the unchanged Campaign145-171 file set.",
+      "target_file_written_by_failure": false,
+      "candidate_comparator_security_price_or_return_value_read": false
+    }
+  ],
+  "recovery_assertions": {
+    "all_failures_recorded": true,
+    "failed_exit_codes_ignored_or_bypassed": false,
+    "future_exact_historical_lifecycle_node_count": 4,
+    "scientific_result_changed": false,
+    "source_row_candidate_comparator_security_price_or_return_value_read": false,
+    "stress_2024_2025_opened": false,
+    "provider_or_web_request_issued": false,
+    "provider_credential_presence_value_or_digest_read": false,
+    "candidate49_ledgers_changed": false
+  }
+}

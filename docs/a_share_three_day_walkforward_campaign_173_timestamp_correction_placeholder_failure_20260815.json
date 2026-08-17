@@ -1,0 +1,24 @@
+{
+  "schema_version": 1,
+  "kind": "a_share_three_day_walkforward_campaign173_timestamp_correction_placeholder_failure",
+  "status": "recorded_invalid_unresolved_hash_placeholder_zero_scientific_effect",
+  "recorded_at": "2026-08-15T09:49:59+08:00",
+  "attempt": {
+    "artifact": {
+      "path": "docs/a_share_three_day_walkforward_campaign_173_recorded_at_correction_20260815.json",
+      "sha256": "4e7244bf06de43e495b5d00e8fa7e49b10497fcb9112e0268acb0c2db4cfdd75"
+    },
+    "failure_reason": "The first additive correction was published before the focused-failure record SHA was substituted and therefore contains the literal unresolved placeholder TO_BE_BOUND_AFTER_FAILURE_PUBLICATION.",
+    "effective_as_authoritative_correction": false,
+    "write_result": "invalid_artifact_preserved_not_rewritten",
+    "failure_exit_bypassed_or_masked": false,
+    "candidate_comparator_security_price_or_return_value_read": false
+  },
+  "scientific_effect": {
+    "formula_direction_catalog_or_decision_changed": false,
+    "candidate_or_comparator_value_read": false,
+    "security_price_or_return_read": false,
+    "candidate49_ledgers_changed": false
+  },
+  "recovery": "Publish a distinct v2 correction that binds the actual focused-failure and placeholder-failure hashes; append both infrastructure failures to the Campaign173 chain."
+}

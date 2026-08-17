@@ -1,0 +1,55 @@
+{
+  "version": 1,
+  "kind": "a_share_three_day_walkforward_campaign051_feature_implementation_freeze",
+  "status": "frozen_before_campaign051_candidate_values",
+  "recorded_at": "2026-08-01T12:11:33Z",
+  "purpose": "Bind the exact Campaign051 close-only range-occupancy entropy implementation and focused synthetic tests before any external Campaign051 minute partition or candidate value is read.",
+  "no_return_protocol": {
+    "path": "docs/a_share_three_day_walkforward_campaign_051_no_return_preregistration_v2.json",
+    "sha256": "16636bb5196a362ca55b21696d88bc78b92d7ce10fbf70d252575f47b31c9e40"
+  },
+  "feature_runner": {
+    "path": "scripts/a_share_three_day_walkforward_campaign051_features.py",
+    "sha256": "091642ad8e678b6d9e99bc227045ca89d63f7b6b7317ab239e4a55401507a6f2"
+  },
+  "focused_tests": {
+    "path": "tests/data_collector_tests/test_a_share_three_day_walkforward_campaign051_features.py",
+    "sha256": "fd662cec2ba195b74cf89dc4d89f7cfeefb48703f37547e81b0878fc227eb594",
+    "passed": 12,
+    "failed": 0
+  },
+  "pre_freeze_failures": {
+    "path": "docs/a_share_three_day_walkforward_campaign_051_preregistration_semantic_failure_20260801.json",
+    "sha256": "2ac684d7c09bc1523a17399f7563ced7e922e147bce3f8054dee71e60f4a0e4c",
+    "preserved_append_only": true
+  },
+  "implementation_semantics": {
+    "factor": "intraday_close_range_occupancy_entropy_10b",
+    "direction": "higher",
+    "source_fields_read": ["datetime", "symbol", "provider", "close"],
+    "selected_bar_count": 240,
+    "transform": "natural_log_close",
+    "normalization": "per_stock_day_global_log_close_min_max",
+    "bin_count": 10,
+    "bin_boundary_rule": "ten equal-width bins over [0,1], with exact maximum in bin 9",
+    "probability_denominator": 240,
+    "score": "natural-log Shannon entropy divided by log(10)",
+    "valid_range": [0.0, 1.0],
+    "order_invariant": true,
+    "exact_repeated_closes_retained": true,
+    "formula_direction_field_bin_boundary_window_transform_scale_threshold_filter_combination_or_model_changed_after_preregistration": false
+  },
+  "candidate_values_read_before_freeze": false,
+  "comparison_values_read_before_freeze": false,
+  "historical_daily_price_fields_read_before_freeze": false,
+  "historical_forward_returns_read_before_freeze": false,
+  "provider_request_issued": false,
+  "candidate49_historical_backfill_performed": false,
+  "candidate49_ledgers_changed": false,
+  "second_prospective_candidate_created": false,
+  "current_scoring_selection_sizing_or_orders_performed": false,
+  "decision": {
+    "implementation_frozen": true,
+    "next_action": "Use an additive immutable wrapper to bind this freeze, rerun focused tests, then and only then build the Campaign051 feature snapshot."
+  }
+}

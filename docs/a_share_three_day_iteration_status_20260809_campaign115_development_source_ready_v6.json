@@ -1,0 +1,139 @@
+{
+  "schema_version": 1,
+  "kind": "a_share_three_day_iteration_status",
+  "status": "campaign115_development_source_runner_verified_waiting_for_acceptance_and_manual_entitlement_confirmation",
+  "recorded_at": "2026-08-09T05:30:00+08:00",
+  "recorded_at_semantics": "monotonic_logical_append_time_after_v5_recorded_at_04_52_and_policy_v91_recorded_at_05_26_not_host_wall_clock_measurement",
+  "supersedes_without_rewriting": {
+    "path": "docs/a_share_three_day_iteration_status_20260809_campaign115_acceptance_wait_v5.json",
+    "sha256": "a17a3b1a06d2c2341e8fc2edf027cd6287ceb38ba0848e6b4553fda6ac8699c3",
+    "preserved": true
+  },
+  "authoritative_artifacts": {
+    "numeric_policy_v91": {
+      "path": "docs/a_share_three_day_walkforward_future_numeric_comparison_eligibility_policy_v91_20260809.json",
+      "sha256": "1f75947738f3e8e889ffae1014f80a9f488765354cd74c73e19e32ce9706f321"
+    },
+    "development_source_protocol": {
+      "path": "docs/a_share_three_day_walkforward_campaign_115_development_source_protocol_20260809.json",
+      "sha256": "836f10c9465c8cff03cf44233adf284f6e003d144c169ae003dd450a78c486e2"
+    },
+    "development_source_runner_freeze_v1": {
+      "path": "docs/a_share_three_day_walkforward_campaign_115_development_source_runner_freeze_v1_20260809.json",
+      "sha256": "7991e43b7737a6de8e65cdf6c8675ff6a3d6db194f69772a053959f1665aa909"
+    },
+    "development_source_runner_verification_v1": {
+      "path": "docs/a_share_three_day_walkforward_campaign_115_development_source_runner_verification_v1_20260809.json",
+      "sha256": "126e66d2be28047d776e2d6a07c39efc91ca6089d2f57d2259983012cbf8ec90"
+    },
+    "attempt_ledger_v9": {
+      "path": "data/experiments/short_horizon/historical_walkforward/campaign_115/research_attempt_ledger_v9.json",
+      "sha256": "a9ea1be0385be5ff608f554d382b0f81ce8aa059f058d683e1030ccbff6b67f6"
+    },
+    "report_v7": {
+      "path": "docs/a_share_three_day_walkforward_campaign_115_prevalue_report_v7.md",
+      "sha256": "f1cf1ad441bfc9ef20cd9625a512b52d440644b537eea1155900b2d94f09979b"
+    }
+  },
+  "operational_snapshot": {
+    "host_local_time_observed": "2026-08-09T04:16:14+08:00",
+    "host_local_time_zone": "Asia/Singapore",
+    "host_date_is_accepted_local_trading_session": false,
+    "active_data_root": "/Volumes/DIsk/Disk-Coding/qlib/data",
+    "active_daily_source": "baostock",
+    "active_calendar_end": "2026-07-13",
+    "repository_dotenv_exists": true,
+    "repository_dotenv_mode": "0600",
+    "repository_dotenv_nonempty_supported_token_assignments": 1,
+    "credential_value_printed_hashed_logged_or_persisted": false,
+    "candidate49_latest_source_failure_record": {
+      "path": "docs/a_share_candidate49_20260807_daily_source_failure_record.json",
+      "sha256": "8b8eec87a1f20c424703cf70ea9eae87f09c7b1e5c9a5754c0bde9cc2f9c839f",
+      "status": "stock_basic_failed_closed_no_same_day_retry"
+    }
+  },
+  "campaign115": {
+    "active_historical_campaign": true,
+    "selected_source_mechanism": "tushare_official_limit_up_queue_persistence",
+    "current_stage": "development_source_runner_ready_before_any_provider_or_research_value_access",
+    "acceptance_attempt_inspection_status": "no_attempt_journal",
+    "acceptance_attempt_inspection_exit_code": 0,
+    "acceptance_success_committed": false,
+    "development_runner_runtime_binding": true,
+    "development_plan_ready": false,
+    "development_plan_exit_code": 2,
+    "development_plan_session_count": 1214,
+    "development_plan_completed_session_prefix": 0,
+    "development_plan_remaining_provider_calls": 1214,
+    "development_plan_blockers": [
+      "manual_5000_point_entitlement_confirmation",
+      "acceptance_success_committed"
+    ],
+    "development_plan_loaded_credential": false,
+    "development_plan_issued_provider_request": false,
+    "development_partial_or_final_output_created": false,
+    "provider_rows_or_candidate_values_read": false,
+    "complete_factor_definition_count": 0,
+    "numeric_comparator_appended": false,
+    "development_return_trial_count": 0,
+    "stress_2024_2025_opened": false,
+    "next_allowed_action": "Wait for explicit user confirmation that the currently configured account already has at least 5000 points. Then run the frozen one-shot acceptance plan with that assertion and perform its single confirmed request only if ready=true and exit code zero. A committed acceptance success may then unlock a freshly checked development-source plan; only its ready=true exit-zero result plus all explicit network flags may start the sequential 1214-session sync."
+  },
+  "development_source_protocol": {
+    "interval": "2019-01-01_to_2023-12-31",
+    "exact_session_count": 1214,
+    "exact_session_order_sha256": "63559370c9abfe3b8e24d133d1cc102658e9f3a144c507a1c12928d93ad95059",
+    "provider_parallelism": 1,
+    "minimum_request_interval_seconds": 1.05,
+    "durable_overall_intent_before_credential_load": true,
+    "durable_per_session_request_intent_before_provider_call": true,
+    "exact_checkpoint_prefix_resume_only": true,
+    "inflight_request_without_checkpoint_retry_allowed": false,
+    "atomic_session_and_final_publication": true,
+    "local_only_post_final_root_manifest_repair": true,
+    "minimum_sessions_with_valid_upper_limit_names": 200,
+    "raw_provider_response_persisted": false
+  },
+  "frozen_library": {
+    "complete_definition_count": 141,
+    "complete_definition_order_sha256": "ccab6e3d9d81b0a02d4ff178fdd442b26a1e68e3655e1c6f5b2fcb28cd4a4559",
+    "eligible_numeric_comparator_count": 134,
+    "eligible_numeric_comparator_order_sha256": "31d788db467f558a0ac538315343090f1b3ad4cb27a26136a49ebaa88b2fdbf2"
+  },
+  "candidate49": {
+    "only_active_prospective_candidate": true,
+    "signal_ledger_sha256": "5193f00d7f36da003f53cec387900da4c3d002299f5dfcfc1a95eaa199ed3a79",
+    "execution_ledger_sha256": "d57a3e61eac969e42cafa418ccd8c0a5ee65dcf69da145bb2c096c2a02a2ea4f",
+    "historical_backfill_performed": false
+  },
+  "accounting": {
+    "campaign115_attempt_count": 11,
+    "campaign115_infrastructure_failure_count": 9,
+    "campaign115_prevalue_scientific_attempt_count": 2,
+    "campaign115_complete_factor_attempt_count": 0,
+    "campaign115_return_reading_development_trial_count": 0,
+    "cumulative_historical_research_attempt_count": 864,
+    "cumulative_return_reading_development_trial_count": 302,
+    "latest_additive_entry": "campaign115_infrastructure_011",
+    "latest_additive_entry_read_research_values_or_issued_provider_request": false
+  },
+  "verification": {
+    "focused_development_runner_tests": "9 passed in 0.47s",
+    "campaign113_to_campaign115_including_development_joint_regression": "86 passed in 1.17s",
+    "black_check": "2 files would be left unchanged",
+    "ruff_required_rules": "E4,E7,E9,F,I passed",
+    "development_runner_runtime_binding": true,
+    "real_development_plan_exit_code": 2,
+    "real_development_plan_provider_request_issued": false,
+    "real_acceptance_attempt_journal_count": 0,
+    "real_development_output_count": 0
+  },
+  "research_boundary": {
+    "candidate_or_comparator_values_read": false,
+    "historical_daily_price_or_forward_return_values_read": false,
+    "stress_2024_2025_opened": false,
+    "second_prospective_candidate_created": false,
+    "current_scoring_selection_sizing_or_orders_performed": false,
+    "investment_advice": false
+  }
+}

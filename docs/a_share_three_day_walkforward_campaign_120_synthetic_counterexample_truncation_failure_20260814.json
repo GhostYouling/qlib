@@ -1,0 +1,18 @@
+{
+  "schema_version": 1,
+  "kind": "a_share_three_day_walkforward_campaign120_synthetic_counterexample_truncation_failure",
+  "status": "recorded_before_historical_source_or_candidate_values",
+  "recorded_at": "2026-08-14T00:05:00+08:00",
+  "failed_stage": "synthetic_formula_counterfactual_test",
+  "failure": "The eight-symbol counterexample had equal marginal and adjacent-pair counts, but repeating it fifteen times and truncating to 119 symbols selected different partial suffixes and broke the intended equal-pair-count premise. Four other formula tests passed.",
+  "repair": "Use fourteen complete eight-symbol blocks followed by the same seven-symbol suffix for both sequences, preserving exact length 119, identical marginals, identical adjacent-pair counts and different longer phrase order.",
+  "scientific_formula_parser_direction_support_or_gate_changed": false,
+  "research_boundary": {
+    "historical_source_rows_read": false,
+    "candidate_values_computed_or_read": false,
+    "comparator_values_read": false,
+    "daily_price_or_forward_return_values_read": false,
+    "provider_request_issued": false,
+    "candidate49_ledgers_changed": false
+  }
+}

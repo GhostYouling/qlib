@@ -1,0 +1,101 @@
+{
+  "version": 279,
+  "kind": "a_share_three_day_walkforward_future_numeric_comparison_eligibility_policy",
+  "status": "campaign190_terminal_prevalue_accounting_complete_campaign191_ready_after_validation",
+  "recorded_at": "2026-08-15T14:14:47+08:00",
+  "supersedes_without_rewriting": {
+    "path": "docs/a_share_three_day_walkforward_future_numeric_comparison_eligibility_policy_v278_20260815.json",
+    "sha256": "5f3835df282b5961875178c534c79ade46e7d7b989500680f87728ae4a169aac",
+    "preserved": true,
+    "library_order_changed": false
+  },
+  "authoritative_inputs": {
+    "checkpoint": {
+      "path": "docs/a_share_three_day_iteration_status_20260815_campaign190_prevalue_in_progress.json",
+      "sha256": "13d2f4f79d17200ac492649b397fc2d833efe81b8c4f34c1a110a5b1adfd6022"
+    },
+    "terminal_result": {
+      "path": "docs/a_share_three_day_walkforward_campaign_190_terminal_result_20260815.json",
+        "sha256": "1a1d1f3ca034966a4f91026a768b5c54e3e12f9e4bef8969401ccfadf1157a5c"
+    },
+    "terminal_report": {
+      "path": "docs/a_share_three_day_walkforward_campaign_190_terminal_report_20260815.md",
+        "sha256": "2601c67f8e3fa5eeac718c38f26bc29f06883b8632ef51af525074215ab96ceb"
+    },
+    "source_frontier": {
+      "path": "docs/a_share_three_day_walkforward_campaign_190_clinical_trial_evidence_lifecycle_source_frontier_20260815.json",
+      "sha256": "0703511d04d413c9ca0578b46cf8809de48780add3a6f8503796b2aa973b85fd"
+    },
+    "attempt_ledger": {
+      "path": "data/experiments/short_horizon/historical_walkforward/campaign_190/research_attempt_ledger_v1.json",
+        "sha256": "6ed136cfc0cf207a80e7214a815b4b9740a26ebe67ea23333ec1b11a94fe0a72",
+        "campaign_entry_count": 15,
+        "chain_tip_sha256": "bcc73ca149e3043365081be2ac6c1ed6450425f943c7ec3b8a78ec313ad7e6e7"
+    }
+  },
+  "mutable_unified_reports": {
+    "current": {
+      "path": "data/experiments/short_horizon/current_research_report.md",
+      "sha256_at_publication": "087e6e631f1abb8316755d6e15da395f998bcf5d47b8b93e99fd1fd623e1aab9",
+      "mutable_append_only_report_not_an_immutable_binding": true
+    },
+    "three_day": {
+      "path": "data/experiments/short_horizon/three_day_research_report.md",
+      "sha256_at_publication": "c778bcc570404ca72c996d5d429ad819c4bf17485999ee30c12d858e60fe4fc4",
+      "mutable_append_only_report_not_an_immutable_binding": true
+    }
+  },
+  "campaign190_terminal_classification": {
+    "routes_reviewed": 7,
+    "source_admission_deferrals_not_factor_failures": 4,
+    "relabeling_operator_or_combination_route_rejections": 3,
+    "selected_candidate_count": 0,
+    "infrastructure_failure_count": 8
+  },
+  "complete_historical_feature_library": {
+    "factor_definition_count": 158,
+    "order_sha256": "4819c7fd7c0795d7598a52f3c615e3f117d5f4ecd9332974bc8e3dfa57c96667",
+    "unchanged_from_v278": true
+  },
+  "numerical_comparator_eligibility": {
+    "eligible_numeric_comparator_count": 142,
+    "order_sha256": "5d1b35fb5a0d8ac9293008db9963c4a60a94dc940c237c3ed259e5ce44f14aaf",
+    "unchanged_from_v278": true
+  },
+  "effective_accounting": {
+    "campaign190_attempt_count": 15,
+    "campaign190_scientific_attempt_count": 7,
+    "campaign190_infrastructure_failure_count": 8,
+    "cumulative_historical_research_attempt_count": 1685,
+    "cumulative_return_reading_development_trial_count": 314
+  },
+  "deferred_source_boundary": {
+    "clinical_trial_evidence_state_declared_ineffective": false,
+    "current_registry_or_publication_may_be_historically_backfilled": false,
+    "successful_trials_may_be_selected_without_failed_terminated_or_harmed_trials": false,
+    "phase_endpoint_indication_population_threshold_window_subset_combination_or_model_search_may_precede_source_admission": false
+  },
+  "future_campaign_boundary": {
+    "next_campaign": 191,
+    "may_begin_after_campaign190_independent_validation": true,
+    "historical_offline_prevalue_work_may_continue_at_any_local_time": true,
+    "2024_2025_source_or_returns_remain_closed": true,
+    "candidate49_remains_separate_confirmation_layer": true
+  },
+  "research_boundary": {
+    "source_factor_comparator_security_price_or_return_value_read": false,
+    "stress_2024_2025_opened": false,
+    "provider_or_web_request_issued": false,
+    "provider_credential_presence_value_or_digest_read": false,
+    "candidate49_ledgers_changed": false,
+    "second_prospective_candidate_created": false
+  },
+  "candidate49": {
+    "only_active_prospective_candidate": true,
+    "signal_ledger_sha256": "5193f00d7f36da003f53cec387900da4c3d002299f5dfcfc1a95eaa199ed3a79",
+    "signal_entry_count": 0,
+    "execution_ledger_sha256": "d57a3e61eac969e42cafa418ccd8c0a5ee65dcf69da145bb2c096c2a02a2ea4f",
+    "execution_entry_count": 0
+  },
+  "next_action": "Add focused tests and run corrected cumulative and independent validation before authorizing Campaign191."
+}

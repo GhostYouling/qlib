@@ -1,0 +1,23 @@
+{
+  "artifact_type": "campaign_infrastructure_failure_record",
+  "campaign_id": 207,
+  "recorded_at": "2026-08-15T21:05:00+08:00",
+  "phase": "campaign207_focused_test_latest_binding_update",
+  "requested_scope": "update_test_from_ledger_v3_policy_v309_to_latest_versioned_artifacts",
+  "status": "failed_test_latest_binding_patch_context_mismatch_zero_write",
+  "failure_class": "atomic_patch_context_mismatch",
+  "scientific_trial": false,
+  "result_consumed": false,
+  "write_performed": false,
+  "recovery": {
+    "action": "use_small_exact_local_context_patches_against_the_black_formatted_test"
+  },
+  "safety": {
+    "credentials_read": false,
+    "network_accessed": false,
+    "candidate49_plan_or_run_executed": false,
+    "candidate_or_comparator_values_read": false,
+    "historical_returns_read": false,
+    "research_thresholds_modified": false
+  }
+}

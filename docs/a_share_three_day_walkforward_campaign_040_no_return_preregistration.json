@@ -1,0 +1,177 @@
+{
+  "version": 1,
+  "kind": "a_share_three_day_walkforward_campaign040_no_return_preregistration",
+  "status": "frozen_before_campaign040_minute_candidate_comparison_daily_price_or_return_values",
+  "frozen_at": "2026-07-31T03:51:54Z",
+  "purpose": "Freeze exactly one Campaign040 factor, the complete ordered no-return admission process, and the finite post-admission development catalog before candidate, comparison, daily-price, or return values are opened.",
+  "source_chain": {
+    "authoritative_state": {
+      "path": "docs/a_share_three_day_iteration_status_20260731_campaign039_verified.json",
+      "sha256": "8571491a46cefde2b95dfd6a4650a3f96fc9251c751e558d6d96e2278c1ce600"
+    },
+    "historical_walkforward_policy": {
+      "path": "docs/a_share_three_day_historical_walkforward_research_policy_20260727.json",
+      "sha256": "38426d6161b9bfed323c58caba18feca668b8c9d53e294951a8ba90c01a798bb"
+    },
+    "concept_scouting": {
+      "path": "docs/a_share_three_day_walkforward_campaign_040_concept_scouting.json",
+      "sha256": "87f0d6f8dd3d9e1135f763e7eac98f3e977d71f9e9e4ebc8f70df57441b85eab"
+    },
+    "mechanism_overlap_audit": {
+      "path": "docs/a_share_three_day_walkforward_campaign_040_mechanism_overlap_audit.json",
+      "sha256": "f026633ed532216a8d223a7cb8d22a989cd31ab992a21234f5e8adf5572a167d"
+    },
+    "effective_campaign039_protocol_base": {
+      "path": "docs/a_share_three_day_walkforward_campaign_039_no_return_preregistration.json",
+      "sha256": "0cc9067d86ea2b1312d9b66bb884f9ffaee6d3b9b0b5a72d086d7962728ac105",
+      "inherited_semantics": "All source-root identity, 2019-2025 session range, quality/listing eligibility, coverage gates, uniqueness estimator and thresholds, the complete ordered 60-factor comparison library, walk-forward folds, purge, execution costs, survivor gates, append-only accounting, stress opening rule, Candidate49 isolation, and current-output prohibitions remain unchanged unless an exact Campaign040 delta is stated below."
+    },
+    "campaign039_terminal_snapshot": {
+      "path": "/Volumes/DIsk/qlib-a-share-tushare-1m/derived/a_share/rich/tushare/minute_walkforward_campaign039_feature_library/tushare_stk_mins_1m_2019_2025_ea0cbb8f_walkforward_campaign039_feature_library_v1/snapshot_manifest.json",
+      "sha256": "cda070af6d700a32f5dba1c003a3a38c9921b1c75b29ac9b8a9aa4d39d169d17",
+      "dataset_sha256": "4d61fc2b98d2a1fc3f884668b23fcc763857926ba34abb08fab4f8ae6a3a4948"
+    },
+    "campaign039_no_return_audit": {
+      "path": "data/experiments/short_horizon/historical_walkforward/campaign_039/no_return/20260731T033003Z_campaign039_no_return_audit.json",
+      "sha256": "9afe7310fbcf3bd8f062ddbeb5dac7f65708d60a3e376b96ffa3b1d265226db2"
+    },
+    "campaign039_research_record": {
+      "path": "docs/a_share_three_day_walkforward_campaign_039_research_record.json",
+      "sha256": "d45fcbd75e918e72d3b84ae41c40578ac993cc3c334feeb566c1914f8aa2db8d"
+    },
+    "candidate49_signal_ledger": {
+      "path": "data/experiments/short_horizon/candidate49_future_signal_ledger.json",
+      "sha256": "5193f00d7f36da003f53cec387900da4c3d002299f5dfcfc1a95eaa199ed3a79",
+      "entry_count": 0
+    },
+    "candidate49_execution_ledger": {
+      "path": "data/experiments/short_horizon/candidate49_future_execution_ledger.json",
+      "sha256": "d57a3e61eac969e42cafa418ccd8c0a5ee65dcf69da145bb2c096c2a02a2ea4f",
+      "entry_count": 0
+    }
+  },
+  "campaign040_delta_from_effective_campaign039_protocol": {
+    "campaign_id": "a_share_three_day_walkforward_campaign_040",
+    "candidate_factor_count": 1,
+    "comparison_factor_count": 61,
+    "development_trial_count_if_admitted": 1,
+    "candidate_replaces_campaign039_candidate": true,
+    "campaign039_candidate_appended_as_final_terminal_comparison": true,
+    "complete_comparison_library_construction": "Take the exact ordered 60 comparison factors materialized by effective_campaign039_protocol_base, then append exactly {name: intraday_return_time_reversal_asymmetry_236p, score_direction: higher}. No deletion, reorder, substitution, sparse omission, or extra comparison is allowed.",
+    "inherited_comparison_count": 60,
+    "inherited_comparison_order_sha256": "bfd0905b6fa58e30fc30d5618120e37b9a7edc341b947e111bb6edaab6824049",
+    "appended_comparison": {
+      "name": "intraday_return_time_reversal_asymmetry_236p",
+      "score_direction": "higher"
+    },
+    "comparison_order_sha256": "1a4adb3be52af565306ddbb08dade8643c6c63e926772ada6ab8c6c3f9817a9e",
+    "other_inherited_semantics_changed": false
+  },
+  "candidate": {
+    "name": "intraday_morning_afternoon_range_profile_similarity_120b",
+    "direction": "higher",
+    "formula": "For j=0..119, let x_j=log(morning_high_j/morning_low_j) and y_j=log(afternoon_high_j/afternoon_low_j). Let X=sum(x), Y=sum(y), p_j=x_j/X, q_j=y_j/Y, and m_j=(p_j+q_j)/2. Let JSD=0.5*sum_{p_j>0}(p_j*log(p_j/m_j))+0.5*sum_{q_j>0}(q_j*log(q_j/m_j)), using 0*log(0)=0. Return 1-JSD/log(2).",
+    "source_projection": [
+      "datetime",
+      "symbol",
+      "provider",
+      "high",
+      "low"
+    ],
+    "forbidden_source_columns": [
+      "open",
+      "close",
+      "volume",
+      "amount"
+    ],
+    "selected_bar_count": 240,
+    "selected_grid": [
+      "09:31-11:30",
+      "13:01-15:00"
+    ],
+    "half_session_bin_count": 120,
+    "include_0930": false,
+    "separate_half_session_normalization": true,
+    "exact_zero_intrabar_ranges_retained": true,
+    "zero_morning_or_afternoon_total_range_is_missing": true,
+    "jensen_shannon_equal_mixture_weight": 0.5,
+    "jensen_shannon_log_base": "natural_log_normalized_by_log_2",
+    "zero_probability_term_convention": "0_log_0_is_zero",
+    "endpoint_canonicalization_tolerance": 1e-12,
+    "valid_range": {
+      "lower": 0.0,
+      "lower_inclusive": true,
+      "upper": 1.0,
+      "upper_inclusive": true
+    },
+    "missing_rule": "Any invalid, nonpositive, nonfinite, or misordered selected high/low; nonfinite log range, probability, mixture, divergence term, JSD, or score; zero morning or afternoon total range; or score outside [0,1] before a 1e-12 endpoint canonicalization makes the stock-day missing.",
+    "transform_scale_clip_threshold_filter": "none",
+    "range_entropy_pearson_correlation_total_ratio_subwindow_inverse_board_year_cost_or_model_search": false
+  },
+  "ordered_no_return_gates": {
+    "coverage_and_capacity_before_comparison_values": {
+      "minimum_median_coverage": 0.95,
+      "minimum_p05_coverage": 0.9,
+      "minimum_p05_eligible_names": 50,
+      "minimum_non_overlapping_three_session_cohorts": 200,
+      "minimum_observed_calendar_years": 5,
+      "comparison_values_read_before_coverage_pass": false
+    },
+    "uniqueness_after_coverage_only": {
+      "maximum_allowed_absolute_median_daily_rank_correlation": 0.8,
+      "minimum_pairwise_names_per_session": 50,
+      "minimum_pairwise_sessions_per_comparison": 100,
+      "complete_library_inherited_from_path": "docs/a_share_three_day_walkforward_campaign_039_no_return_preregistration.json",
+      "inherited_comparison_count": 60,
+      "inherited_comparison_order_sha256": "bfd0905b6fa58e30fc30d5618120e37b9a7edc341b947e111bb6edaab6824049",
+      "appended_comparison": {
+        "name": "intraday_return_time_reversal_asymmetry_236p",
+        "score_direction": "higher"
+      },
+      "comparison_factor_count": 61,
+      "comparison_factor_order_sha256": "1a4adb3be52af565306ddbb08dade8643c6c63e926772ada6ab8c6c3f9817a9e",
+      "all_61_must_pass": true
+    }
+  },
+  "finite_development_catalog_if_admitted": {
+    "trial_id": "wf040_intraday_morning_afternoon_range_profile_similarity_120b_single_higher",
+    "kind": "single_factor",
+    "feature_set": [
+      "intraday_morning_afternoon_range_profile_similarity_120b"
+    ],
+    "weights": [
+      1.0
+    ],
+    "complexity": 1,
+    "expected_trial_count": 1,
+    "weight_threshold_filter_window_year_or_model_search": false,
+    "development_interval": [
+      "2019-01-01",
+      "2023-12-31"
+    ],
+    "fold_count": 3,
+    "purge_local_signal_sessions": 3,
+    "t_plus_1_and_t_plus_3_must_remain_inside_partition": true,
+    "stress_opening_rule": "2024-2025 may open exactly once only for the frozen development survivor"
+  },
+  "research_boundary": {
+    "external_campaign040_minute_partitions_read": false,
+    "candidate_values_read": false,
+    "comparison_values_read": false,
+    "historical_daily_price_fields_read": false,
+    "historical_forward_returns_read": false,
+    "training_or_model_fitting_performed": false,
+    "provider_request_issued": false,
+    "candidate49_historical_return_signal_or_execution_backfill_performed": false,
+    "candidate49_ledgers_changed": false,
+    "candidate50_activation_created": false,
+    "current_scoring_selection_sizing_or_orders_performed": false,
+    "investment_advice": false
+  },
+  "decision": {
+    "candidate_count": 1,
+    "comparison_count": 61,
+    "development_trial_count_if_admitted": 1,
+    "next_action": "Validate every binding, implement and synthetically test the exact factor, freeze implementation fingerprints, then build the immutable candidate snapshot before the ordered no-return audit."
+  }
+}

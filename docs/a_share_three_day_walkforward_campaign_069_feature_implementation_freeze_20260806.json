@@ -1,0 +1,76 @@
+{
+  "version": 1,
+  "kind": "a_share_three_day_walkforward_campaign069_feature_implementation_freeze",
+  "status": "frozen_before_campaign069_source_rows_candidate_values_or_snapshot_files",
+  "recorded_at": "2026-08-06T03:28:00+08:00",
+  "no_return_protocol": {
+    "path": "docs/a_share_three_day_walkforward_campaign_069_no_return_preregistration.json",
+    "sha256": "c044776cff0031ac3e65a4a3de51c06b90e1c1c0c1ba94895f79e900628dffe1",
+    "binding_validation_passed": 12,
+    "binding_validation_failed": 0
+  },
+  "mechanism_overlap_audit": {
+    "path": "docs/a_share_three_day_walkforward_campaign_069_mechanism_overlap_audit.json",
+    "sha256": "c3856cc3d89632cc502747ef44602247e2afe1bd526a62a53995aff91df782db"
+  },
+  "feature_runner": {
+    "path": "scripts/a_share_three_day_walkforward_campaign069_features.py",
+    "sha256": "f72cbd4b88aca872d7255fee60151e5344ae72b25b41c0e808c1a2e1698e0b75"
+  },
+  "tests": {
+    "path": "tests/data_collector_tests/test_a_share_three_day_walkforward_campaign069_features.py",
+    "sha256": "269a616e8edb3b9a6033af449b381a0fa92abbe9d99b12e8820143e95b41e28a",
+    "command": "PYTHONPATH=/Volumes/DIsk/Disk-Coding/qlib /Volumes/DIsk/Coding/anaconda3/bin/python -m pytest -q tests/data_collector_tests/test_a_share_three_day_walkforward_campaign069_features.py",
+    "passed": 6,
+    "failed": 0
+  },
+  "frozen_implementation_semantics": {
+    "factor": "quarterly_profit_growth_roe_transition_gap_2r",
+    "direction": "higher",
+    "formula": "r_profit_yoy-r_roe",
+    "quarterly_projection": [
+      "instrument",
+      "report_date",
+      "announcement_date",
+      "roe",
+      "profit_yoy"
+    ],
+    "state_order": [
+      "profit_yoy",
+      "roe"
+    ],
+    "availability": "strict_next_accepted_session",
+    "state_update": "independent_per_field_forward_fill_without_backfill",
+    "rank_cross_section": "exact_common_finite_two_field_stock_day_cross_section_average_tie_percentile",
+    "eligible_value_range": [
+      -1.0,
+      1.0
+    ],
+    "signed_verification_present_before_first_build": true,
+    "numeric_comparator_count": 99,
+    "numeric_comparator_order_sha256": "7f1ed85abfeb4688c0b07f892b497942a202f09ac8806ea095b6c9050f670538",
+    "comparison_source_split": {
+      "first_98": "compact_comparator_cache_v4 logical definitions",
+      "last": "quarterly_profit_revenue_acceleration_rank_gap_2r/higher from Campaign068 immutable v2 snapshot"
+    }
+  },
+  "frozen_output": {
+    "root": "/Volumes/DIsk/qlib-a-share-tushare-1m/derived/a_share/rich/tushare/minute_walkforward_campaign069_feature_library/tushare_stk_mins_1m_2019_2025_ea0cbb8f_walkforward_campaign069_feature_library_v1",
+    "existed_before_freeze": false,
+    "expected_partitions": 33015,
+    "expected_rows": 7724498
+  },
+  "research_boundary": {
+    "campaign069_source_rows_read_before_freeze": false,
+    "campaign069_candidate_values_read_before_freeze": false,
+    "comparison_values_read_before_freeze": false,
+    "historical_daily_price_fields_read": [],
+    "historical_forward_return_fields_read": false,
+    "provider_request_issued": false,
+    "candidate49_historical_return_read": false,
+    "candidate49_prospective_ledgers_changed": false,
+    "second_prospective_candidate_created": false,
+    "current_scoring_selection_sizing_or_orders_performed": false
+  },
+  "next_action": "Freeze the Campaign069 coverage-first no-return audit implementation and tests before building this snapshot."
+}

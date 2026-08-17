@@ -1,0 +1,196 @@
+{
+  "schema_version": 1,
+  "kind": "a_share_three_day_walkforward_campaign101_mechanism_overlap_audit",
+  "status": "passed_semantic_and_support_predicate_review_before_campaign101_source_factor_candidate_or_comparator_values",
+  "recorded_at": "2026-08-07T13:04:00Z",
+  "purpose": "Challenge Campaign101's exact complete-129-library lower-quartile breadth mechanism and its support predicate before any historical source-factor value is read.",
+  "authoritative_inputs": {
+    "iteration_state": {
+      "path": "docs/a_share_three_day_iteration_status_20260807_campaign100_verified_v2.json",
+      "sha256": "5a5465269ceab1e957e75226a21a8071a3b58a574fa9054501337010d61c4e41"
+    },
+    "historical_walkforward_policy": {
+      "path": "docs/a_share_three_day_historical_walkforward_research_policy_20260727.json",
+      "sha256": "38426d6161b9bfed323c58caba18feca668b8c9d53e294951a8ba90c01a798bb"
+    },
+    "numeric_policy_v54": {
+      "path": "docs/a_share_three_day_walkforward_future_numeric_comparison_eligibility_policy_v54_20260807.json",
+      "sha256": "517193a12ad592015a4af7579041abf79c508dbbdaf3e2a7d5f1d752f391458f"
+    },
+    "concept_scouting": {
+      "path": "docs/a_share_three_day_walkforward_campaign_101_concept_scouting.json",
+      "sha256": "f1f0a43c8965084a33026bda055a4a963a71ef1c2b7a02f3988626552f9d28b5"
+    },
+    "campaign044_terminal_record": {
+      "path": "docs/a_share_three_day_walkforward_campaign_044_research_record.json",
+      "sha256": "3e343e8387fd16db75f7e8a5c87025e712082ea50aa9e360083af7f0d3f2b615"
+    }
+  },
+  "candidate": {
+    "name": "full_numeric_library_directional_lower_quartile_consensus_129f",
+    "direction": "higher",
+    "source_factor_count": 129,
+    "source_factor_order_sha256": "a029c53fb237cc1d34aec0a9f7b67856ffa1a67ffe0fc9620fb230680353263b",
+    "formula": "Independently convert every finite source factor to its frozen-direction same-session average-tie percentile on the quality/listing base. Replace a stock-day's unavailable component with exact zero, require at least 97 originally finite components, and return the one-indexed 33rd order statistic of all 129 directional component scores.",
+    "exact_support_predicate": "The stock-day belongs to the immutable 1,331,759-row quality/current-listing identity and has finite source values for at least 97 of the exact 129 v54 numeric definitions. Every finite source value must yield a finite directional percentile in (0,1]; each missing source contributes exact zero only to the aggregator; the 33rd order statistic must therefore come from an originally finite component.",
+    "candidate49_used_or_modified": false
+  },
+  "complete_library_review": {
+    "reconstruction_method": "Reconstruct Campaign100's exact 128-comparator order, append Campaign100/higher exactly once, and verify v54's 129-numeric order digest without drop or reorder.",
+    "all_132_logical_definitions_reviewed_in_frozen_order": true,
+    "complete_definition_order_sha256": "2d0c342fe9644092e562832fe928473c230cbf982c1fb32f9d5c41c0a3594a42",
+    "all_129_numeric_source_factors_reviewed_in_frozen_order": true,
+    "numeric_source_factor_order_sha256": "a029c53fb237cc1d34aec0a9f7b67856ffa1a67ffe0fc9620fb230680353263b",
+    "semantic_only_definitions_reviewed_but_not_coerced_to_numeric": [
+      "intraday_cross_sectional_standardized_return_state_stability_236p",
+      "signal_day_turnover_rate_pct",
+      "intraday_own_bar_close_location_entropy_10b_240m"
+    ],
+    "active_candidate49_excluded_by_existing_policy_not_performance": true,
+    "old_terminal_definition_formula_direction_or_failure_history_changed": false,
+    "source_subset_selected_from_historical_results": false,
+    "candidate_is_a_single_source_formula_duplicate": false,
+    "candidate_is_an_inversion_of_a_terminal_factor": false,
+    "candidate_changes_quality_listing_cost_or_walkforward_gates": false
+  },
+  "mandatory_prevalue_support_predicate_gate": {
+    "required_by_policy_v54": true,
+    "all_known_terminal_coverage_failures_through_campaign100_reviewed": true,
+    "inventory": [
+      {
+        "campaign": 5,
+        "failed_support_class": "sparse lunch repricing plus retained post-lunch return support",
+        "relationship_to_campaign101": "not inherited directly; a missing component is a frozen zero state and does not by itself reject the stock-day"
+      },
+      {
+        "campaign": 8,
+        "failed_support_class": "one-sided-zero share-volume response rule",
+        "relationship_to_campaign101": "not inherited as a mandatory stock-day predicate; only the affected component can be missing"
+      },
+      {
+        "campaign": 13,
+        "failed_support_class": "amount/volume transaction-price containment",
+        "relationship_to_campaign101": "not inherited as an all-components intersection"
+      },
+      {
+        "campaign": 19,
+        "failed_support_class": "at least 120 informative nonzero body-sign pairs",
+        "relationship_to_campaign101": "not inherited as an all-components intersection"
+      },
+      {
+        "campaign": 44,
+        "factor": "full_terminal_library_directional_percentile_consensus_66f",
+        "failed_support_class": "all 66 terminal components finite on one common stock-day",
+        "relationship_to_campaign101": "Campaign101 is strictly broader in support but is not a Campaign044 retry: it uses the later complete 129 numeric library, independent per-factor ranking, fixed worst-state missing semantics, a 97-component admission floor, and a nonlinear lower-quartile order statistic. Campaign044's formula, result, and prohibition on rerunning its exact mean/common-support definition remain unchanged."
+      },
+      {
+        "campaigns": [52, 68, 70, 84],
+        "failed_support_class": "multi-quarter or prior-year event cold start",
+        "relationship_to_campaign101": "cold-start event components contribute exact zero; no single event component is mandatory, while at least 97 total finite components remain required"
+      },
+      {
+        "campaign": 60,
+        "failed_support_class": "exact prior stock session plus 60 jointly nonzero returns",
+        "relationship_to_campaign101": "a missing cross-day component is not an all-score rejection"
+      },
+      {
+        "campaign": 63,
+        "failed_support_class": "positive leave-one-out variance at a structurally degenerate close position",
+        "relationship_to_campaign101": "the semantic-only zero-coverage definition is not in v54's numeric 129 and is never imputed into the numeric vector"
+      },
+      {
+        "campaigns": [86, 96],
+        "failed_support_class": "at least 120 adjacent positive-range close-location pairs",
+        "relationship_to_campaign101": "either missing component contributes zero without forcing stock-day rejection when at least 97 other components are finite"
+      },
+      {
+        "campaign": 95,
+        "failed_support_class": "prevalue semantic contradiction in fixed-bin reflection claim",
+        "relationship_to_campaign101": "the semantic-only definition is excluded by v54 and is not numerically repaired or reused"
+      }
+    ],
+    "minimum_finite_component_count": 97,
+    "maximum_missing_component_count": 32,
+    "order_statistic_one_indexed": 33,
+    "mathematical_support_check": "Because every finite directional percentile is strictly positive and at most 32 exact-zero missing states are allowed, the 33rd order statistic is necessarily an observed finite component score.",
+    "candidate_support_identical_to_known_failed_predicate": false,
+    "candidate_support_provably_no_broader_than_known_failed_predicate": false,
+    "threshold_selected_from_candidate_values_or_coverage_results": false,
+    "decision": "pass_support_predicate_gate_before_source_factor_or_candidate_values"
+  },
+  "mechanism_family_review": [
+    {
+      "family": "campaign044_equal_weight_complete_library_mean",
+      "result": "distinct_new_aggregation_not_a_rerun",
+      "reason": "Campaign044 averaged 66 ranks only on their all-finite common cross-section. Campaign101 uses the complete current 129 numeric library, independent finite-base ranks, worst-state missing scores, and the 33rd order statistic. Holding the arithmetic mean fixed while moving mass across the lower quartile can change Campaign101, and holding the lower quartile fixed while changing upper ranks can change the mean."
+    },
+    {
+      "family": "source_factor_subset_selection_or_terminal_rescue",
+      "result": "not_used",
+      "reason": "All 129 v54 numeric sources remain in exact order, including failed terminal factors and Campaign100. No source is selected or weighted by return evidence, and no old terminal record is reclassified."
+    },
+    {
+      "family": "missingness_or_coverage_as_alpha",
+      "result": "explicitly_penalized_and_gated",
+      "reason": "Missing components receive the worst directional state zero, never a favorable or neutral fill. The 97-component floor is checked before comparison values or returns, and the no-return coverage gates may still reject the candidate."
+    },
+    {
+      "family": "single_component_dominance_or_near_synonym",
+      "result": "pending_all_129_numeric_comparisons",
+      "reason": "After coverage only, the candidate must pass the strict absolute median daily rank-correlation ceiling against every one of the 129 frozen numeric source factors in exact order."
+    },
+    {
+      "family": "fitted_weight_subset_model_or_hyperparameter_search",
+      "result": "not_used",
+      "reason": "Campaign101 has one fixed order statistic, no coefficient, intercept, alternate quantile, subset, regularization, interaction, tree, neural model, regime, or parameter grid."
+    },
+    {
+      "family": "current_scoring_candidate_activation_or_orders",
+      "result": "forbidden",
+      "reason": "The combination is historical research only and cannot create current scores, a stock list, allocation, order, Candidate49 mutation, or second prospective ledger."
+    }
+  ],
+  "algebraic_and_counterfactual_checks_before_values": [
+    "If every one of the 129 directional component scores weakly increases for a stock-day with fixed availability, the candidate cannot decrease.",
+    "Changing only one of the 97 highest component scores usually leaves the 33rd order statistic unchanged, distinguishing the candidate from an arithmetic mean and from any one upper-tail source.",
+    "Changing a component across the 33rd order boundary can change the candidate while keeping the complete-library arithmetic mean fixed through an offsetting upper-tail change.",
+    "With exactly 32 unavailable components, all 32 exact zeros sort below the strictly positive finite percentiles and the 33rd value is the smallest finite component; with fewer missing components it is a higher finite order statistic.",
+    "A constant finite source gives equal average-tie percentile contributions within its session and remains in the 129-vector; it is never silently dropped.",
+    "Changing Candidate49, a semantic-only definition, a forward return, daily execution price, or provider state cannot change the frozen historical candidate."
+  ],
+  "finite_design_choices_frozen_before_values": {
+    "candidate_count": 1,
+    "source_factor_count": 129,
+    "source_factor_order_sha256": "a029c53fb237cc1d34aec0a9f7b67856ffa1a67ffe0fc9620fb230680353263b",
+    "component_rank_method": "average_tie_same_session_percentile_over_each_factor's_finite_quality_listing_base",
+    "missing_component_score": 0.0,
+    "minimum_finite_components": 97,
+    "aggregation": "nearest_rank_empirical_25th_percentile_equal_to_one_indexed_33rd_order_statistic",
+    "direction": "higher",
+    "alternate_quantile_support_threshold_rank_tie_imputation_subset_weight_filter_model_or_regime_search_allowed": false,
+    "terminal_definition_or_direction_change_allowed": false
+  },
+  "research_boundary": {
+    "source_factor_names_directions_manifest_paths_and_hash_metadata_read": true,
+    "source_factor_values_read": false,
+    "candidate_values_read": false,
+    "comparison_values_read": false,
+    "historical_daily_price_fields_read": [],
+    "historical_forward_returns_read": false,
+    "training_or_model_fitting_performed": false,
+    "provider_request_issued": false,
+    "candidate49_historical_backfill_performed": false,
+    "candidate49_ledgers_changed": false,
+    "second_prospective_candidate_created": false,
+    "current_scoring_selection_sizing_or_orders_performed": false,
+    "investment_advice": false
+  },
+  "decision": {
+    "conceptual_meta_mechanism_passed": true,
+    "mandatory_support_predicate_passed_before_values": true,
+    "dependency_on_complete_frozen_numeric_library_acknowledged": true,
+    "statistical_single_component_dominance_pending_all_129_sources": true,
+    "predictive_value_established": false,
+    "next_action": "Freeze a fingerprint-bound coverage-first no-return protocol and its sole conditional 2019-2023 development trial before implementing or reading any source-factor value."
+  }
+}

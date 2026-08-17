@@ -1,0 +1,14 @@
+{
+  "schema_version": 1,
+  "kind": "a_share_three_day_walkforward_campaign222_infrastructure_failure",
+  "recorded_at": "2026-08-16T01:51:00+08:00",
+  "timestamp_semantics": "monotonic_logical_append_time_not_host_wall_clock_measurement",
+  "attempt_id": "campaign222_infrastructure_005",
+  "phase": "authoritative_worktree_status_inspection",
+  "status": "failed_untracked_worktree_status_output_truncated_and_discarded",
+  "failure": "A full status including thousands of historical untracked artifacts exceeded the output allowance and was truncated.",
+  "writes_before_failure": false,
+  "scientific_value_read": false,
+  "result_consumed": false,
+  "recovery": "A tracked-files-only status was read with bounded output; all pre-existing user and research changes remain untouched."
+}

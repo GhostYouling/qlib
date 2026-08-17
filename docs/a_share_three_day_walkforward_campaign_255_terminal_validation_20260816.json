@@ -1,0 +1,78 @@
+{
+  "schema_version": 1,
+  "kind": "a_share_three_day_walkforward_campaign255_terminal_validation",
+  "recorded_at": "2026-08-16T12:59:00+08:00",
+  "timestamp_semantics": "monotonic_logical_append_time_not_host_wall_clock_measurement",
+  "status": "passed_campaign255_terminal_evidence_and_cumulative_regression",
+  "authoritative_inputs": {
+    "frozen_source_frontier": {
+      "path": "docs/a_share_three_day_walkforward_campaign_255_commercial_laboratory_analytical_equipment_service_lifecycle_source_frontier_20260816.json",
+      "sha256": "2e32ba3dcc8689cf7307de871d39e7893e53dade604ae9636cc494e31df37585"
+    },
+    "attempt_ledger_v1": {
+      "path": "data/experiments/short_horizon/historical_walkforward/campaign_255/research_attempt_ledger_v1.json",
+      "sha256": "dc92dc1b8071309b624590be0c6e0b3a2087e562627c630bee7c09e6f76dca63"
+    },
+    "attempt_ledger_v2": {
+      "path": "data/experiments/short_horizon/historical_walkforward/campaign_255/research_attempt_ledger_v2.json",
+      "sha256": "8653803e40363415923eee19fb03677235341b3a3fc4e0f829fedeb6193fd02b"
+    },
+    "terminal_result_v2": {
+      "path": "docs/a_share_three_day_walkforward_campaign_255_terminal_result_v2_20260816.json",
+      "sha256": "8bbbd32abb6dc311c22fefb4dfedc72b857c20458f423780f4a89ee9f85aef1a"
+    },
+    "numeric_policy_v388": {
+      "path": "docs/a_share_three_day_walkforward_future_numeric_comparison_eligibility_policy_v388_20260816.json",
+      "sha256": "212df4f651ef91589609d31826aad5b8bab09217f6d03379f1960538741cedff"
+    },
+    "terminal_test": {
+      "path": "tests/data_collector_tests/test_a_share_three_day_walkforward_campaign255_terminal.py",
+      "sha256": "83abb1f728ccf463c797dee1c5e7feb774f14ea275e006093b7d3d82f5db76bd"
+    }
+  },
+  "validation_results": {
+    "black": "passed; 1 file would be left unchanged",
+    "ruff": "passed",
+    "json_parse": "10 Campaign255 failure, frontier, append-only accounting, result and policy JSON files passed before terminal publication",
+    "scoped_report_whitespace_and_unique_heading": "passed",
+    "focused_pytest": "2 passed",
+    "campaign145_through_campaign255_test_file_count": 143,
+    "deselection_node_count": 70,
+    "cumulative_pytest": "526 passed, 1 skipped, 70 deselected",
+    "cumulative_runner_repeated_deselect_option_per_node": "passed",
+    "independent_reference_binding_and_all_twelve_ledger_chain_entries": "passed",
+    "prior_source_frontier_exact_phrase_scan": "117 files scanned; zero exact phrase matches",
+    "candidate49_empty_ledger_semantics": "passed"
+  },
+  "candidate49": {
+    "only_active_prospective_candidate": true,
+    "signal_entry_count": 0,
+    "execution_entry_count": 0,
+    "signal_ledger_sha256": "5193f00d7f36da003f53cec387900da4c3d002299f5dfcfc1a95eaa199ed3a79",
+    "execution_ledger_sha256": "d57a3e61eac969e42cafa418ccd8c0a5ee65dcf69da145bb2c096c2a02a2ea4f"
+  },
+  "publication_state": {
+    "campaign_effective_attempt_count": 12,
+    "campaign_infrastructure_failure_count": 5,
+    "campaign_scientific_attempt_count": 7,
+    "cumulative_historical_research_attempt_count": 2443,
+    "cumulative_return_reading_development_trial_count": 314,
+    "attempt_chain_tip_sha256": "13d71870aaefdb41bc1a29022a3139fb63334e311c4dfee825c06ac28f8d41c5",
+    "complete_factor_definition_count": 158,
+    "eligible_numeric_comparator_count": 142,
+    "current_report_sha256": "4733cbddf49b9dfbc464e6f91400448705eebcbd687c275d9779969eaae69c29",
+    "three_day_report_sha256": "af065b09c30281c4d2e6aefed417c5f93fb16b1e06f28528602a4c1e5ec49202"
+  },
+  "research_boundary": {
+    "provider_or_web_request_issued": false,
+    "provider_credential_presence_value_or_digest_read": false,
+    "candidate49_plan_or_run_executed": false,
+    "candidate49_ledgers_changed": false,
+    "second_prospective_candidate_created": false,
+    "stress_2024_2025_opened": false,
+    "current_scoring_selection_sizing_positions_or_orders_performed": false,
+    "failed_or_truncated_output_used_as_scientific_or_validation_evidence": false,
+    "investment_advice": false
+  },
+  "next_action": "Publish the advancing Campaign255 state and keep the active goal authorized for Campaign256 zero-network offline prevalue research."
+}

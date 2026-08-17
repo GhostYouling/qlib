@@ -1,0 +1,53 @@
+{
+  "schema_version": 1,
+  "kind": "a_share_three_day_walkforward_campaign087_feature_implementation_freeze_v2",
+  "status": "predecessor_identity_repair_frozen_before_campaign087_feature_build_retry",
+  "frozen_at": "2026-08-07T02:09:00+08:00",
+  "protocol": {
+    "path": "docs/a_share_three_day_walkforward_campaign_087_no_return_preregistration.json",
+    "sha256": "9adc09b52ec1b9844f3dd99b2cf815046c4143d9ae584fcf135552b32c17114c"
+  },
+  "repair_protocol": {
+    "path": "docs/a_share_three_day_walkforward_campaign_087_v2_predecessor_identity_repair_protocol_20260807.json",
+    "sha256": "b7358cd87d5259ea02d64463548f1f9c50bfcd4c13c318f9530fc30d31779650"
+  },
+  "v1_implementation_freeze": {
+    "path": "docs/a_share_three_day_walkforward_campaign_087_feature_implementation_freeze_20260807.json",
+    "sha256": "6dc5636fdde912c61ba35afd88f91a05b455236838be6866b66178115bc547d6"
+  },
+  "v2_feature_runner": {
+    "path": "scripts/a_share_three_day_walkforward_campaign087_features_v2.py",
+    "sha256": "8ae28bcf6f8b4eb45388df9a2588e22531481a59c0b5f5776d7a907d1460bc2f"
+  },
+  "v2_tests": {
+    "path": "tests/data_collector_tests/test_a_share_three_day_walkforward_campaign087_features_v2.py",
+    "sha256": "678c497ff3fa6e7631480a12c750594f794e12bd2becc072c204f3312446e967",
+    "combined_v1_v2_result_before_freeze": "11 passed and ruff passed",
+    "candidate_source_rows_read_by_tests": false
+  },
+  "append_only_attempt_ledger_at_v2_freeze": {
+    "path": "data/experiments/short_horizon/historical_walkforward/campaign_087/research_attempt_ledger_v5.json",
+    "sha256": "f28d0f9e2a97db0f3b5132523702c9edea61c12b8673db95d7b5c85ae4188219",
+    "recorded_failures": 5,
+    "complete_factor_attempts": 0
+  },
+  "repair_semantics": {
+    "only_changed_behavior": "restore the exact Campaign086 terminal factor name while validating the bound predecessor snapshot, then restore the Campaign087 build identity",
+    "campaign086_factor": "intraday_intrabar_close_location_serial_persistence_238p",
+    "campaign087_factor": "intraday_range_amount_profile_alignment_js_240m",
+    "formula_changed": false,
+    "direction_changed": false,
+    "source_projection_or_grid_changed": false,
+    "support_or_zero_semantics_changed": false,
+    "coverage_uniqueness_development_cost_or_stress_gate_changed": false,
+    "data_or_eligible_universe_changed": false
+  },
+  "candidate_source_rows_read_before_v2_freeze": false,
+  "candidate_values_computed_before_v2_freeze": false,
+  "coverage_or_capacity_metrics_computed_before_v2_freeze": false,
+  "comparison_values_read_before_v2_freeze": false,
+  "historical_daily_price_or_forward_return_values_read_before_v2_freeze": false,
+  "provider_request_issued_before_v2_freeze": false,
+  "candidate49_historical_backfill_or_ledger_change_before_v2_freeze": false,
+  "current_scoring_selection_sizing_or_orders_performed_before_v2_freeze": false
+}

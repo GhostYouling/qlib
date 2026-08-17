@@ -1,0 +1,12 @@
+{
+  "schema_version": 1,
+  "kind": "a_share_three_day_walkforward_campaign263_infrastructure_failure",
+  "status": "implementation_freeze_v2_not_activated_due_to_truthful_boundary_mismatch",
+  "recorded_at": "2026-08-16T11:35:00Z",
+  "attempt_id": "campaign263_infrastructure_007",
+  "invalid_freeze_path": "docs/a_share_three_day_walkforward_campaign_263_implementation_freeze_v2_20260816.json",
+  "invalid_freeze_sha256": "55adc701ca58c4df5c33bc6f539a23320592cb8d5fb066fb9e16814dc60e2a63",
+  "root_cause": "The v2 record truthfully says the failed build read source rows, while its bound validator still expected the original prebuild false state.",
+  "protected_value_effect": "No retry was launched under v2 and no new candidate, comparator, price or return value was read.",
+  "authorized_narrow_repair": "Create additive v3 binding with historical_source_rows_read=true; preserve formula and every scientific boundary."
+}

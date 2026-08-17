@@ -1,0 +1,42 @@
+{
+  "version": 2,
+  "kind": "a_share_three_day_walkforward_campaign075_no_return_audit_implementation_freeze",
+  "status": "frozen_before_full_retry_after_runtime_compatibility_failure",
+  "recorded_at": "2026-08-06T09:40:00+08:00",
+  "repair_protocol": {
+    "path": "docs/a_share_three_day_walkforward_campaign_075_no_return_runtime_compatibility_repair_protocol_v2_20260806.json",
+    "sha256": "f23b997e6cccfc8a45b84afba82a9e5ce75c0242e34808c24206fd434ed50286"
+  },
+  "failure_record": {
+    "path": "docs/a_share_three_day_walkforward_campaign_075_no_return_campaign068_frame_replay_failure_20260806.json",
+    "sha256": "8faab72c855df13c9472bf173936b6f03e910607335dc54b161ecde4f7ccec04"
+  },
+  "immutable_v1_runner": {
+    "path": "scripts/a_share_three_day_walkforward_campaign075_no_return_audit.py",
+    "sha256": "477053429b81aaffb1d454984ad2163936c4546e9c5b5fc9b05f011b84ef5295"
+  },
+  "v2_runner": {
+    "path": "scripts/a_share_three_day_walkforward_campaign075_no_return_audit_v2.py",
+    "sha256": "6b168e66a3a2d6a482c415c63460ede6c73c0b5d293a24d8c898f36d0c9c3d42"
+  },
+  "tests": {
+    "path": "tests/data_collector_tests/test_a_share_three_day_walkforward_campaign075_no_return_audit_v2.py",
+    "sha256": "1b81399e344464e7cd9edfc14abfe71fa48af1d16f87477806df228ec776dba0",
+    "passed": 4,
+    "failed": 0,
+    "scope": "Byte tamper, row/schema/value failure, sole frame-hash omission, and unchanged-gate protocol tests."
+  },
+  "runtime": {
+    "pandas": "2.2.3",
+    "pyarrow": "25.0.0"
+  },
+  "partial_coverage_or_comparison_statistics_reused": false,
+  "campaign068_snapshot_files_rewritten": false,
+  "campaign075_factor_formula_direction_age_clock_or_missing_rule_changed": false,
+  "comparison_order_or_threshold_changed": false,
+  "historical_daily_price_fields_read_before_retry": [],
+  "historical_forward_returns_read_before_retry": false,
+  "provider_request_issued_before_retry": false,
+  "candidate49_ledgers_changed": false,
+  "next_action": "Restart the full immutable Campaign075 audit from coverage under the single frozen Campaign068 verifier compatibility adapter."
+}

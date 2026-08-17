@@ -1,0 +1,30 @@
+{
+  "schema_version": 1,
+  "kind": "a_share_three_day_walkforward_infrastructure_failure_record",
+  "recorded_at": "2026-08-14T08:58:22+08:00",
+  "campaign": 132,
+  "attempt_id": "campaign132_infrastructure_002",
+  "phase": "infrastructure_failure",
+  "stage": "prevalue_existing_loader_inventory",
+  "status": "failed_nonexistent_brace_expanded_search_path",
+  "failed_command_exit_code": 2,
+  "failure": {
+    "tool": "rg",
+    "missing_path": "scripts/a_share_three_day_walkforward_campaign110_ordered_uniqueness.py",
+    "cause": "A brace-expanded read-only search assumed every listed campaign had a dedicated ordered-uniqueness module.",
+    "partial_match_output_treated_as_success": false,
+    "source_candidate_comparator_price_or_return_values_read": false,
+    "scientific_result_changed": false
+  },
+  "predecessor_failure": {
+    "path": "docs/a_share_three_day_walkforward_campaign_132_relative_manifest_partition_path_failure_20260814.json",
+    "sha256": "835c841d7f8abb8ad2a7c627323c049e1d1e3970e40ee0776bff5dbc9eb649ae"
+  },
+  "recovery_boundary": {
+    "append_failure_to_campaign132_ledger": true,
+    "enumerate_existing_files_before_content_search": true,
+    "override_or_mask_failed_exit_code": false,
+    "provider_request_or_credential_load_allowed": false,
+    "candidate49_change_allowed": false
+  }
+}

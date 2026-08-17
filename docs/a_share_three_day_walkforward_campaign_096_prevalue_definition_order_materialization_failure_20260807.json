@@ -1,0 +1,38 @@
+{
+  "schema_version": 1,
+  "kind": "a_share_three_day_walkforward_campaign096_prevalue_definition_order_materialization_failure",
+  "status": "recorded_before_narrow_implementation_repair_and_before_any_campaign096_source_or_value",
+  "recorded_at": "2026-08-07T04:16:00Z",
+  "protocol": {
+    "path": "docs/a_share_three_day_walkforward_campaign_096_no_return_preregistration.json",
+    "sha256": "97d8cdd6cc3731de8e8d4db101db1b4b0ee62353c9c39ac71a8753fea4501924"
+  },
+  "attempted_implementation": {
+    "path": "scripts/a_share_three_day_walkforward_campaign096_features.py",
+    "observed_sha256_before_repair": "d8bc40533ca90e25d08359a9f1205c2ef1bfc6b2ce69f8f42f533e35d785a972"
+  },
+  "attempted_tests": {
+    "path": "tests/data_collector_tests/test_a_share_three_day_walkforward_campaign096_features.py",
+    "observed_sha256": "24b3a45f33c9accfd610641eab7c8e90c151f30f88b1a4ce65098ac4b8d7b289"
+  },
+  "command": "python3.12 -m pytest -q tests/data_collector_tests/test_a_share_three_day_walkforward_campaign096_features.py",
+  "exit_code": 2,
+  "failure_stage": "pytest_collection_dynamic_complete_definition_materialization",
+  "observed_error": "Campaign096 v39 frozen order changed",
+  "root_cause": "The generated base validates the complete definition order during exec. Campaign095's semantic-only definition was appended only after exec, so the base saw 126 definitions while v39 requires 127.",
+  "classification": "prevalue_implementation_failure_not_factor_result",
+  "narrow_repair_boundary": "Insert the already-frozen Campaign095 semantic-only definition into the generated complete-definition list before its import-time order assertion; do not change the Campaign096 formula, direction, support, fields, gates, comparison order, or tests.",
+  "research_boundary": {
+    "campaign096_minute_source_rows_read": false,
+    "campaign096_candidate_values_computed_or_read": false,
+    "comparison_values_read": false,
+    "historical_daily_price_fields_read": [],
+    "historical_forward_returns_read": false,
+    "provider_request_issued": false,
+    "candidate49_ledgers_changed": false,
+    "development_trial_count_increment": 0,
+    "research_attempt_count_increment": 0,
+    "infrastructure_or_implementation_failure_count_increment": 1
+  },
+  "same_campaign_formula_or_result_rescue": false
+}

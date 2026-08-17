@@ -1,0 +1,75 @@
+{
+  "schema_version": 1,
+  "kind": "a_share_three_day_walkforward_campaign261_ordered_numeric_uniqueness_protocol",
+  "status": "all_142_ordered_comparators_frozen_after_coverage_pass_before_any_comparator_value",
+  "recorded_at": "2026-08-16T16:43:00+08:00",
+  "timestamp_semantics": "monotonic_logical_append_time_not_host_wall_clock_measurement",
+  "purpose": "Freeze the complete 142-comparator order, source mapping, alignment and strict numeric-distinctness gate after Campaign261 coverage passed and before opening any comparator value.",
+  "authoritative_inputs": {
+    "campaign261_preregistration": {
+      "path": "docs/a_share_three_day_walkforward_campaign_261_no_return_preregistration_20260816.json",
+      "sha256": "25d0304b770c3c11fd5697e49996c250c9d9316692a9b5aa498bb5591fe9ccc6"
+    },
+    "campaign261_coverage": {
+      "path": "data/experiments/short_horizon/historical_walkforward/campaign_261/coverage/campaign261_coverage_audit.json",
+      "sha256": "cdb7c764d36c04d2643379e52fef79fff8fdc5b144f14be25724652cec385916",
+      "gate_passed_before_comparator_values": true,
+      "candidate_eligible_rows": 1330171,
+      "comparator_values_read": false
+    },
+    "numeric_policy_v401": {
+      "path": "docs/a_share_three_day_walkforward_future_numeric_comparison_eligibility_policy_v401_20260816.json",
+      "sha256": "cb800d63dbb577b8bc2c5ca28bff8b0b923f490ded3e9e88d5a47bab53183542"
+    }
+  },
+  "comparison_order": {
+    "count": 142,
+    "order_sha256": "5d1b35fb5a0d8ac9293008db9963c4a60a94dc940c237c3ed259e5ce44f14aaf",
+    "first_140_source": "immutable compact numeric design in its exact frozen order",
+    "first_140_design_order_sha256": "c71bfe27486c9567afd3aca21e4b04053658c23ac651e7f4df7fd014b0c31efd",
+    "comparator_141": "intraday_return_amount_cumulative_path_signed_area_238p from the verified Campaign136 snapshot",
+    "comparator_142": "intraday_return_amount_cross_spectral_phase_lead_59f from the recovery-verified Campaign146 snapshot",
+    "removal_reorder_subset_early_stop_or_candidate_specific_fill_allowed": false
+  },
+  "candidate_alignment": {
+    "quality_listing_candidate_rows_expected": 1330171,
+    "candidate_value_range": "finite in [0,1] inclusive",
+    "candidate_missing_fill_allowed": false,
+    "numeric140_design_is_a_superset_of_candidate_keys": true,
+    "campaign136_and_campaign146_comparators_use_exact_key_intersection_without_fill": true,
+    "average_tie_rank_method": true
+  },
+  "exact_gate": {
+    "minimum_pairwise_names_per_session": 50,
+    "minimum_pairwise_sessions_per_comparison": 100,
+    "maximum_allowed_absolute_median_daily_rank_correlation": 0.8,
+    "strict_inequality": true,
+    "all_142_must_pass": true,
+    "insufficient_overlap_fails_closed": true,
+    "all_results_recorded_without_early_stop": true
+  },
+  "source_access_order": [
+    "validate every static binding without comparator values",
+    "load the frozen Campaign261 quality/listing candidate panel",
+    "read all first-140 design comparator values in exact order",
+    "read the Campaign136 comparator",
+    "read the Campaign146 comparator",
+    "write all 142 results even when an earlier comparison fails"
+  ],
+  "next_action": "Implement and synthetically verify the exact ordered runner, fingerprint-freeze it, run plan, and only when ready=true with exit code zero run the single confirmed uniqueness audit.",
+  "research_boundary": {
+    "comparator_values_read_before_protocol": false,
+    "numeric140_design_partition_values_read_before_protocol": false,
+    "campaign136_snapshot_partition_values_read_before_protocol": false,
+    "campaign146_snapshot_partition_values_read_before_protocol": false,
+    "historical_daily_price_or_forward_return_values_read": false,
+    "stress_2024_2025_opened_for_returns": false,
+    "provider_request_issued": false,
+    "credential_loaded": false,
+    "candidate49_historical_backfill_performed": false,
+    "candidate49_ledgers_changed": false,
+    "second_prospective_candidate_created": false,
+    "current_scoring_selection_sizing_positions_or_orders_performed": false,
+    "investment_advice": false
+  }
+}

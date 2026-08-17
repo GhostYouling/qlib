@@ -1,0 +1,35 @@
+{
+  "additional_failure_count": 1,
+  "additional_failures": [
+    {
+      "failure_record_ordinal": 3,
+      "historical_daily_price_or_forward_return_fields_read": false,
+      "outcome": "A read-only unified-report discovery command used an unmatched zsh file glob and exited nonzero before the intended report search completed.",
+      "repair": "Repeat discovery with rg --files and explicit existing paths, without shell globs.",
+      "repair_result": "The authoritative unified report and its missing Campaign080-Campaign083 sections were identified successfully.",
+      "stage": "unified_report_discovery_shell_glob"
+    }
+  ],
+  "campaign_id": "a_share_three_day_walkforward_campaign_083",
+  "candidate49_historical_return_read": false,
+  "candidate49_ledgers_changed": false,
+  "cumulative_failure_count": 3,
+  "current_scoring_selection_sizing_or_orders_performed": false,
+  "historical_forward_returns_read_by_failures": false,
+  "kind": "a_share_three_day_walkforward_campaign083_terminal_regression_failures",
+  "provider_request_issued": false,
+  "recorded_at": "2026-08-06T21:24:00+08:00",
+  "research_semantics": {
+    "campaign083_development_result_changed": false,
+    "campaign083_formula_direction_or_gate_changed": false,
+    "stress_2024_2025_opened": false,
+    "stress_return_fields_read": false
+  },
+  "schema_version": 1,
+  "status": "third_terminal_verification_infrastructure_failure_recorded_then_repaired",
+  "supersedes_without_rewriting": {
+    "path": "docs/a_share_three_day_walkforward_campaign_083_terminal_regression_failures_v5_20260806.json",
+    "preserved": true,
+    "sha256": "3775e5dcbac1d94912c4d11b397ba2ba43afa775815772982105166ed7188e7c"
+  }
+}

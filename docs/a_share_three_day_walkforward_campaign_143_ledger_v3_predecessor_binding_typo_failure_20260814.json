@@ -1,0 +1,37 @@
+{
+  "schema_version": 1,
+  "kind": "a_share_three_day_walkforward_campaign143_infrastructure_failure",
+  "status": "recorded_prepublication_ledger_binding_typo_no_values_read",
+  "recorded_at": "2026-08-14T15:50:00+0800",
+  "attempt_id": "campaign143_infrastructure_011",
+  "phase": "append_only_failure_accounting",
+  "failure": {
+    "operation": "publish the first delta ledger for the Black formatting failure",
+    "invalid_ledger_v3_path": "data/experiments/short_horizon/historical_walkforward/campaign_143/research_attempt_ledger_v3.json",
+    "invalid_ledger_v3_sha256": "fa68990a8e61d326ac08ce13e7846df92c1fa74b5c5ac60336b350e930c63b2f",
+    "recorded_predecessor_sha256": "a12f805847736577de1446acb77b7a20870adfa305f3bab4b84d90965b3627fa",
+    "actual_predecessor_sha256": "4f71a4ae3c339e59a75277aa8f1fb402fda4b60ba4689edeb1d2bf3b6983e064",
+    "binding_validation_started": false,
+    "invalid_ledger_modified_after_detection": false,
+    "failed_exit_code_bypassed": false,
+    "later_success_used_to_mask_failure": false
+  },
+  "safe_recovery": {
+    "preserve_invalid_ledger_v3": true,
+    "publish_additive_v4_correction_from_valid_v2": true,
+    "carry_forward_infrastructure_010_then_append_infrastructure_011": true,
+    "scientific_result_change_allowed": false,
+    "entry_hash_rule_change_allowed": false
+  },
+  "research_boundary": {
+    "source_rows_or_column_values_read": false,
+    "candidate_or_comparator_values_read": false,
+    "historical_daily_price_or_forward_return_values_read": false,
+    "stress_2024_2025_opened": false,
+    "provider_request_issued": false,
+    "provider_credential_value_or_digest_read": false,
+    "candidate49_historical_backfill_performed": false,
+    "candidate49_ledgers_changed": false,
+    "current_scoring_selection_sizing_positions_or_orders_performed": false
+  }
+}

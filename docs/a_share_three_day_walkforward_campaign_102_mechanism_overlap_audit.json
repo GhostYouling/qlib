@@ -1,0 +1,152 @@
+{
+  "schema_version": 1,
+  "kind": "a_share_three_day_walkforward_campaign102_mechanism_overlap_audit",
+  "status": "passed_semantic_mechanism_and_support_review_before_campaign102_design_matrix_or_model_values",
+  "recorded_at": "2026-08-07T15:00:00Z",
+  "purpose": "Challenge the exact Campaign102 bounded-simplex supervised mechanism and support predicate before Campaign102 design-matrix construction, coefficient fitting, or new return reads.",
+  "authoritative_inputs": {
+    "iteration_state": {
+      "path": "docs/a_share_three_day_iteration_status_20260807_campaign101_terminal_v3.json",
+      "sha256": "cb28828a60f88a76df4ea3b171efe138a9320b34c76b0e0842f5f5234ff83233"
+    },
+    "historical_walkforward_policy": {
+      "path": "docs/a_share_three_day_historical_walkforward_research_policy_20260727.json",
+      "sha256": "38426d6161b9bfed323c58caba18feca668b8c9d53e294951a8ba90c01a798bb"
+    },
+    "numeric_policy_v58": {
+      "path": "docs/a_share_three_day_walkforward_future_numeric_comparison_eligibility_policy_v58_20260807.json",
+      "sha256": "45571a0d525d3c7132f6392914dd80b51ec179b51d21e548102292ec70674edc"
+    },
+    "concept_scouting": {
+      "path": "docs/a_share_three_day_walkforward_campaign_102_concept_scouting.json",
+      "sha256": "a22a15eeb79957771457adb602dc64bcb81b9626964c43614027140504948fb1"
+    },
+    "campaign101_prevalue_support_inventory": {
+      "path": "docs/a_share_three_day_walkforward_campaign_101_mechanism_overlap_audit.json",
+      "sha256": "28e117ac069b9682b17de58c785f8636a7d10d9b6eb69f930fbf0b6970a43e9b"
+    },
+    "campaign101_snapshot_binding": {
+      "path": "docs/a_share_three_day_walkforward_campaign_101_feature_snapshot_binding_20260807.json",
+      "sha256": "f82e4288a6626eb71d3c040a65f4a88c4d306706c1c4812283008af43d6d817e"
+    }
+  },
+  "candidate_family": {
+    "name": "full_numeric_library_bounded_simplex_ridge_130f",
+    "direction": "higher",
+    "source_factor_count": 130,
+    "source_factor_order_sha256": "c80d9b929536dd509d6c1a904f790831050e68200393de381f92ad9293ef69e7",
+    "exact_support_predicate": "The stock-day belongs to the immutable 1,331,759-row quality/current-listing identity; every available source yields its frozen-direction same-session average-tie percentile; unavailable sources receive exact zero only inside X; at least 98 of 130 source scores must be originally finite.",
+    "model_constraints": "sum(w)=1 and 0.25/130 <= w_j <= 4/130 for every one of 130 sources",
+    "candidate49_used_or_modified": false
+  },
+  "complete_library_review": {
+    "all_133_logical_definitions_reviewed_in_frozen_order": true,
+    "complete_definition_order_sha256": "25cd0159c803bf69b0fce61449843db96a34ae4c56628deda9500433c97b45a1",
+    "all_130_numeric_sources_reviewed_in_frozen_order": true,
+    "numeric_source_order_sha256": "c80d9b929536dd509d6c1a904f790831050e68200393de381f92ad9293ef69e7",
+    "semantic_only_definitions_reviewed_but_not_coerced_to_numeric": [
+      "intraday_cross_sectional_standardized_return_state_stability_236p",
+      "signal_day_turnover_rate_pct",
+      "intraday_own_bar_close_location_entropy_10b_240m"
+    ],
+    "active_candidate49_excluded_by_existing_policy_not_performance": true,
+    "old_terminal_definition_formula_direction_or_failure_history_changed": false,
+    "source_subset_selected_from_historical_results": false,
+    "negative_or_zero_component_weights_allowed": false,
+    "single_component_dominance_bounded": true,
+    "quality_listing_cost_fold_purge_or_gate_changed": false
+  },
+  "mandatory_prevalue_support_predicate_gate": {
+    "required_by_policy_v58": true,
+    "all_known_terminal_coverage_failures_through_campaign101_reviewed": true,
+    "inventory_source": "Campaign101's immutable prevalue inventory covering Campaigns 5, 8, 13, 19, 44, 52, 60, 63, 68, 70, 84, 86, 95, and 96",
+    "relationship_to_sparse_single_factor_failures": "No individual source's sparse predicate is mandatory; its unavailable value becomes exact zero while all 130 sources remain represented by a strictly positive fitted coefficient.",
+    "relationship_to_campaign044_common_finite_failure": "Campaign102 does not require a 130-way all-finite intersection and does not rerun Campaign044's arithmetic mean. Its support is governed by the separately frozen finite-count predicate and its model is training-only bounded convex regression.",
+    "relationship_to_campaign101_support": "Let k be the finite count among Campaign101's 129 inputs. Campaign101 is finite iff k>=97. The Campaign102 130-vector then has k+1 finite values iff k>=97 and k otherwise. Therefore Campaign102 finite_count>=98 iff k>=97, exactly Campaign101's support.",
+    "prior_immutable_evidence_not_used_to_tune_threshold": {
+      "campaign101_support_rows": 1327637,
+      "quality_listing_base_rows": 1331759,
+      "median_coverage": 0.9981238257410756,
+      "p05_coverage": 0.992066409032738,
+      "source": "immutable Campaign101 terminal artifacts created before Campaign102"
+    },
+    "candidate_support_identical_to_known_failed_predicate": false,
+    "candidate_support_provably_narrower_than_known_failed_predicate": false,
+    "candidate_support_identical_to_known_high_coverage_passed_predicate": true,
+    "threshold_selected_from_campaign102_values_or_results": false,
+    "decision": "pass_support_predicate_gate_before_campaign102_design_matrix_values"
+  },
+  "mechanism_family_review": [
+    {
+      "family": "campaign044_complete_library_equal_weight_mean",
+      "result": "distinct",
+      "reason": "Campaign044 used fixed equal weights and all-finite common support. Campaign102 learns bounded positive weights from contained training labels and uses broader fixed support."
+    },
+    {
+      "family": "campaign101_lower_quartile_consensus_retry_or_reweight",
+      "result": "not_a_same_campaign_rescue",
+      "reason": "Campaign101 remains one terminal source inside the exact complete v58 library. Campaign102 is a separately preregistered supervised model family already deferred before Campaign101 values; it does not alter Campaign101's formula, result, or direction."
+    },
+    {
+      "family": "signed_linear_model_or_factor_inversion",
+      "result": "excluded",
+      "reason": "Every coefficient is strictly positive and every input is oriented by its frozen v58 direction."
+    },
+    {
+      "family": "subset_selection_or_hidden_sparsity",
+      "result": "excluded",
+      "reason": "Every coefficient is at least 25 percent of uniform weight, so all 130 definitions remain materially active."
+    },
+    {
+      "family": "one_factor_dominance_or_numeric_near_synonym",
+      "result": "bounded_and_must_be_tested",
+      "reason": "No component can exceed four times uniform weight. Each fitted validation-year score must still pass all 130 pairwise daily rank-correlation gates before that validation year's returns are read."
+    },
+    {
+      "family": "hyperparameter_or_model_multiplicity",
+      "result": "finite_and_frozen",
+      "reason": "Exactly three lambda values, one target, one optimizer, one initialization, one support rule, one bounds box, and one fold sequence are permitted. Every outcome is appended."
+    }
+  ],
+  "algebraic_and_counterfactual_checks_before_values": [
+    "All admissible weights sum to one, are strictly positive, and preserve component directions.",
+    "Holding X fixed, changing a training target can change a fitted weight; changing a validation return cannot change a precomputed validation score or its uniqueness audit.",
+    "No one component can contribute more than 4/130 of an all-one score or less than 0.25/130 of an all-one score.",
+    "The feasible uniform vector exists, so the constrained optimization problem is never infeasible because of the bounds.",
+    "For lambda zero the bounded empirical loss is still a frozen catalog item; for positive lambda the penalty shrinks toward, but cannot replace, uniform weights.",
+    "Changing Candidate49, a semantic-only definition, a provider token, or current market state cannot change the frozen historical design."
+  ],
+  "finite_design_choices_frozen_before_values": {
+    "model_family_count": 1,
+    "trial_count": 3,
+    "lambda_grid": [0.0, 0.1, 1.0],
+    "target": "contained_training_session_cross_sectional_forward_gross_return_average_tie_percentile",
+    "session_weighting": "each training signal session has equal total loss weight",
+    "minimum_finite_components": 98,
+    "missing_score": 0.0,
+    "minimum_weight": "0.25/130",
+    "maximum_weight": "4/130",
+    "optimizer": "SLSQP_uniform_start_ftol_1e-12_maxiter_2000",
+    "alternate_target_support_bounds_imputation_subset_direction_optimizer_model_or_grid_allowed": false
+  },
+  "research_boundary": {
+    "prior_immutable_metadata_and_results_read": true,
+    "campaign102_component_or_design_matrix_values_read": false,
+    "campaign102_model_fitting_performed": false,
+    "new_historical_daily_price_or_return_values_read": false,
+    "provider_request_issued": false,
+    "candidate49_historical_backfill_performed": false,
+    "candidate49_ledgers_changed": false,
+    "second_prospective_candidate_created": false,
+    "current_scoring_selection_sizing_or_orders_performed": false,
+    "investment_advice": false
+  },
+  "decision": {
+    "conceptual_mechanism_passed": true,
+    "mandatory_support_predicate_passed_before_campaign102_values": true,
+    "dependency_on_complete_frozen_numeric_library_acknowledged": true,
+    "statistical_uniqueness_pending_each_fitted_fold_score": true,
+    "predictive_value_established": false,
+    "next_action": "Freeze the complete source catalog and exact no-return/sequential-return protocol, implement fingerprint-bound code and tests, then build the design matrix without returns."
+  }
+}

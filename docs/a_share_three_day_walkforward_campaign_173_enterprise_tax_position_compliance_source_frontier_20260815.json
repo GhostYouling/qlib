@@ -1,0 +1,177 @@
+{
+  "schema_version": 1,
+  "kind": "a_share_three_day_walkforward_campaign173_enterprise_tax_position_compliance_source_frontier",
+  "status": "terminal_prevalue_four_source_admission_deferrals_three_relabeling_or_operator_rejections_zero_selected",
+  "recorded_at": "2026-08-15T09:46:00+08:00",
+  "purpose": "Review a finite issuer tax-position, tax-incentive, tax-compliance and jurisdictional-exposure disclosure domain before opening source rows, filing text, tax values, candidate values, comparators, security prices or returns.",
+  "authoritative_inputs": {
+    "campaign172_effective_state": {
+      "path": "docs/a_share_three_day_iteration_status_20260815_campaign172_prevalue_terminal_v2.json",
+      "sha256": "a0e05e3dd332a49a350a27ae5bbae80db3a36cc9e28ccf71f45070483bb0e7df"
+    },
+    "campaign172_validation": {
+      "path": "docs/a_share_three_day_walkforward_campaign_172_terminal_validation_20260815.json",
+      "sha256": "7faaae978f9fd7bbee348f2881438d1c030c061bb083678c3980d65c2bd6038b"
+    },
+    "eligibility_policy_v254": {
+      "path": "docs/a_share_three_day_walkforward_future_numeric_comparison_eligibility_policy_v254_20260815.json",
+      "sha256": "e9dd2fc9e799e463740d252de34156e6c086a1381047ec4a2623b979d4ca0387"
+    },
+    "campaign113_exchange_enforcement_contract_result": {
+      "path": "docs/a_share_three_day_walkforward_campaign_113_source_contract_freeze_result_20260809.json",
+      "sha256": "a95bf2f1393ddda3c61316ebff400d8b532327d72b355b0a6342d5824a28acc4"
+    },
+    "campaign159_remaining_source_inventory": {
+      "path": "docs/a_share_three_day_walkforward_campaign_159_remaining_local_source_schema_inventory_20260815.json",
+      "sha256": "d561a9707b6004cbec0685108ea3fa4453b21f587a7632a739b46b69e818e578"
+    },
+    "campaign169_commercial_terms_frontier": {
+      "path": "docs/a_share_three_day_walkforward_campaign_169_commercial_pricing_terms_source_frontier_20260815.json",
+      "sha256": "a571bcc5bcbfc158da551e59d2984a907fd44b419d115619043a9b28ee3ab288"
+    },
+    "campaign172_insurance_frontier": {
+      "path": "docs/a_share_three_day_walkforward_campaign_172_enterprise_insurance_risk_transfer_source_frontier_20260815.json",
+      "sha256": "bf451b52aa778a6fe2a0d9e2a2fd9f99bc9c724bf9275a74574d2e68051ba2a5"
+    }
+  },
+  "research_boundary": {
+    "finite_catalog_frozen_before_source_or_value_read": true,
+    "source_row_filing_document_tax_value_candidate_comparator_security_price_or_return_value_read": false,
+    "local_schema_names_and_prior_records_only": true,
+    "provider_or_web_request_issued": false,
+    "provider_credential_presence_value_or_digest_read": false,
+    "stress_2024_2025_opened": false,
+    "candidate49_ledgers_changed": false,
+    "second_prospective_candidate_created": false
+  },
+  "repository_evidence": {
+    "complete_definition_count_reviewed": 158,
+    "eligible_numeric_comparator_count_reviewed": 142,
+    "existing_tax_mechanism_in_complete_definitions": false,
+    "existing_tax_mechanism_in_numeric_comparators": false,
+    "accepted_historical_issuer_tax_state_primitive_present": false,
+    "complete_enterprise_tax_source_contract_present": false,
+    "exchange_enforcement_boundary": "Campaign113 freezes exchange supervisory actions; it does not establish tax-authority audits, assessments, objections, settlements or jurisdictional tax exposure.",
+    "commercial_terms_boundary": "Campaign169 freezes customer and regulated commercial pricing states. Transaction prices inclusive or exclusive of tax do not establish issuer tax qualification, liability or compliance state.",
+    "insurance_boundary": "Campaign172 freezes risk-transfer source admission. Insurance premium or recovery tax treatment is not a substitute for a complete issuer tax-position history.",
+    "point_in_time_boundary": "A current annual-report tax note cannot be projected backward without first-public timestamps, report-period identity, entity and jurisdiction mapping, correction chains and effective law or qualification dates."
+  },
+  "mandatory_source_admission_gate": {
+    "must_freeze_before_any_formula_or_direction": [
+      "exact issuer filing, tax-authority notice, statutory registry or licensed structured source with immutable bytes and stable observation identifier",
+      "first-public timestamp, trading-session availability, report period, legal effective date, qualification start and expiry, correction, withdrawal and supersession chain",
+      "issuer, listed security, subsidiary, permanent establishment, branch, project and tax-jurisdiction mapping without current-state leakage",
+      "tax type taxonomy separating corporate income tax, VAT, sales tax, withholding, customs, resource, property, payroll and other levies",
+      "statutory, preferential and effective rate identity; tax base, deductible item, tax credit, holiday, exemption, subsidy and qualification semantics",
+      "current and deferred tax asset or liability, loss and credit carryforward, expiry, valuation allowance, recognition, derecognition and offsetting semantics",
+      "audit, inquiry, assessment, uncertain position, objection, appeal, litigation, settlement, payment, refund, interest and penalty identity with outcome timing",
+      "currency, gross versus net, cash versus accrual, consolidation, intercompany, transfer-pricing, repatriation and withholding semantics",
+      "law change, transition, retrospective application, administrative guidance and issuer-specific approval timing without future leakage",
+      "missing, undisclosed, confidential, not-applicable, unresolved, true zero tax and zero benefit semantics without favorable absence coding",
+      "complete bounded 2019-2023 partition manifest, full-market denominator, issuer and entity identifier history, delisting coverage, pagination and one-shot acceptance gates",
+      "parser, identity, timing, unit, jurisdiction, tax-type, qualification, dispute-linkage and source-acceptance tests using no candidate, comparator, security-price or return values"
+    ],
+    "formula_direction_parameter_filter_subset_combination_or_model_choice_allowed_before_gate": false
+  },
+  "finite_prevalue_catalog": [
+    {
+      "catalog_id": "c173_01",
+      "name": "statutory_preferential_tax_rate_incentive_holiday_or_qualification_state",
+      "economic_state": "A close-known issuer or subsidiary qualification for a statutory rate, preferential rate, tax holiday, credit, exemption or other tax incentive.",
+      "formula": null,
+      "direction": null,
+      "parameters_filters_subsets_combinations_models": [],
+      "new_issuer_state": true,
+      "complete_local_source_contract": false,
+      "decision": "deferred_source_admission_not_factor_failure",
+      "reason": "No accepted history freezes tax type and jurisdiction, legal basis, qualifying entity or activity, application versus approval, start and expiry, renewal, revocation, first availability and comparable 2019-2023 full-market disclosure."
+    },
+    {
+      "catalog_id": "c173_02",
+      "name": "current_deferred_tax_loss_carryforward_credit_and_valuation_state",
+      "economic_state": "A close-known issuer tax asset or liability state including carryforwards, expiry and recognition or valuation allowance.",
+      "formula": null,
+      "direction": null,
+      "parameters_filters_subsets_combinations_models": [],
+      "new_issuer_state": true,
+      "complete_local_source_contract": false,
+      "decision": "deferred_source_admission_not_factor_failure",
+      "reason": "The repository lacks a complete point-in-time tax-note contract for current versus deferred items, temporary differences, loss or credit vintages, expiry, recognition, derecognition, valuation allowance, jurisdiction and restatement chains."
+    },
+    {
+      "catalog_id": "c173_03",
+      "name": "tax_audit_uncertain_position_assessment_dispute_or_settlement_state",
+      "economic_state": "A close-known tax-authority examination, uncertain tax position, assessment, objection, appeal, settlement or payment state.",
+      "formula": null,
+      "direction": null,
+      "parameters_filters_subsets_combinations_models": [],
+      "new_issuer_state": true,
+      "complete_local_source_contract": false,
+      "decision": "deferred_source_admission_not_factor_failure",
+      "reason": "No accepted source links authority, tax type, period, entity, claimed amount, assessment, interest, penalty, objection, appeal, settlement, cash payment and correction timing without using later dispute outcomes."
+    },
+    {
+      "catalog_id": "c173_04",
+      "name": "cross_jurisdiction_withholding_vat_customs_transfer_pricing_or_repatriation_state",
+      "economic_state": "A close-known issuer exposure to cross-border, indirect-tax, customs, transfer-pricing or repatriation rules and obligations.",
+      "formula": null,
+      "direction": null,
+      "parameters_filters_subsets_combinations_models": [],
+      "new_issuer_state": true,
+      "complete_local_source_contract": false,
+      "decision": "deferred_source_admission_not_factor_failure",
+      "reason": "Entity and jurisdiction maps, taxable flows, treaty status, customs classification, transfer-pricing method, withholding basis, blocked cash, law changes, currency and first-public histories are not frozen in a complete accepted contract."
+    },
+    {
+      "catalog_id": "c173_05",
+      "name": "income_statement_cashflow_subsidy_enforcement_or_company_type_tax_relabeling",
+      "economic_state": "An existing accounting line, cash flow, government grant, company classification or exchange enforcement event relabeled as issuer tax position or tax compliance.",
+      "formula": null,
+      "direction": null,
+      "parameters_filters_subsets_combinations_models": [],
+      "new_issuer_state": false,
+      "complete_local_source_contract": false,
+      "decision": "rejected_terminal_accounting_cashflow_subsidy_classification_and_enforcement_source_relabeling",
+      "reason": "Generic income-tax expense, tax payments, subsidy income, company type and exchange enforcement do not identify tax jurisdiction, qualification, disputed position, rate basis or carryforward state; renaming them would not create a new primitive."
+    },
+    {
+      "catalog_id": "c173_06",
+      "name": "effective_tax_rate_cash_tax_burden_benefit_expiry_direction_or_window_variant",
+      "economic_state": "A transform of an issuer tax value, benefit, qualification, dispute or jurisdictional exposure against earnings, cash flow, assets, revenue or time.",
+      "formula": null,
+      "direction": null,
+      "parameters_filters_subsets_combinations_models": [],
+      "new_issuer_state": false,
+      "complete_local_source_contract": false,
+      "decision": "rejected_operator_direction_and_target_search_before_base_source_admission",
+      "reason": "Choosing higher or lower effective rate, cash-tax denominator, benefit expiry, dispute severity, jurisdiction subset, recency, law-change window or peer benchmark before source admission would multiply hypotheses; low tax can reflect efficiency, incentive, loss, avoidance or distress."
+    },
+    {
+      "catalog_id": "c173_07",
+      "name": "combined_tax_benefit_burden_compliance_jurisdiction_gap_or_model",
+      "economic_state": "Joint issuer exposure across tax qualification, balance-sheet tax state, dispute realization and cross-jurisdiction obligations.",
+      "formula": null,
+      "direction": null,
+      "parameters_filters_subsets_combinations_models": [],
+      "new_issuer_state": false,
+      "complete_local_source_contract": false,
+      "decision": "rejected_unadmitted_component_combination_weight_and_model_search",
+      "reason": "Combining four unadmitted heterogeneous source families or selecting weights, gaps, ranks, severity proxies, interactions, filters or models would expand the search before any component has a complete source contract."
+    }
+  ],
+  "gate_summary": {
+    "routes_reviewed": 7,
+    "genuinely_new_issuer_state_routes": 4,
+    "source_admission_deferrals_not_factor_failures": 4,
+    "relabeling_or_operator_route_rejections": 3,
+    "selected_candidate_count": 0,
+    "complete_factor_definition_created": false,
+    "numeric_comparator_created": false
+  },
+  "scientific_interpretation": {
+    "enterprise_tax_position_or_compliance_declared_ineffective": false,
+    "absence_of_an_admitted_historical_source_is_evidence_of_no_predictive_power": false,
+    "safe_conclusion": "Four distinct enterprise tax states remain deferred at source admission; accounting, subsidy or enforcement relabeling, premature operator search and unadmitted combinations are closed before values."
+  },
+  "next_action": "Record all seven decisions in the Campaign173 hash chain, publish terminal accounting, and continue a different finite offline prevalue domain."
+}

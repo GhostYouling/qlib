@@ -1,0 +1,93 @@
+{
+  "version": 1,
+  "kind": "a_share_three_day_walkforward_campaign022_concept_scouting",
+  "status": "one_independent_intrabar_close_location_concept_selected_before_candidate_values_comparison_values_or_returns",
+  "recorded_at": "2026-07-29T05:41:00Z",
+  "purpose": "Select one economically interpretable Campaign022 mechanism without opening a Campaign022 minute partition, candidate value, comparison value, daily price, or forward return.",
+  "authoritative_boundary": {
+    "path": "docs/a_share_three_day_iteration_status_20260729_campaign021.json",
+    "sha256": "794688a8081252665ce8be06948a380cf477052c1721259525b0b1e10b8ce2a3",
+    "campaign022_concept_scouting_allowed": true,
+    "candidate49_remains_only_prospective_candidate": true,
+    "candidate50_activation_allowed": false
+  },
+  "selected_concept": {
+    "concept_name": "intraday_intrabar_close_location_pressure",
+    "mechanism_family": "one_minute_own_bar_price_acceptance_location",
+    "economic_question": "Do one-minute bars repeatedly finish nearer their own highs than their own lows, indicating persistent within-bar demand acceptance that may continue from the next open through the third close?",
+    "economic_hypothesis": "A larger range-normalized excess of close-to-low distance over high-to-close distance means that transactions repeatedly finish near the upper part of their own minute ranges. Persistent within-bar demand acceptance may carry into the next three sessions.",
+    "provisional_direction": "higher",
+    "allowed_source_fields": [
+      "datetime",
+      "symbol",
+      "provider",
+      "high",
+      "low",
+      "close"
+    ],
+    "forbidden_source_fields": [
+      "open",
+      "volume",
+      "amount",
+      "daily open",
+      "daily high",
+      "daily low",
+      "daily close",
+      "daily volume",
+      "daily amount",
+      "forward return",
+      "Level-2"
+    ],
+    "fixed_temporal_question": "Aggregate own-bar close location over all 240 continuous-session one-minute bars at 09:31-11:30 and 13:01-15:00; never select a subwindow or use adjacent-bar, lunch, overnight, or cross-stock transitions.",
+    "mandatory_overlap_challenges_before_any_value": [
+      "intraday_intrabar_body_range_efficiency_240m",
+      "intraday_transaction_vwap_envelope_asymmetry_240m",
+      "intraday_prior_range_breakout_pressure_238p",
+      "intraday_signed_path_efficiency_239m",
+      "intraday_terminal_close_location_240m",
+      "intraday_global_price_range_revisit_240m",
+      "intraday_intrabar_range_participation_entropy_240m",
+      "intraday_market_response_delay_asymmetry_236p",
+      "candidate49_intraday_cumulative_vwap_crossing_rate_240m_v1"
+    ],
+    "known_design_risks": [
+      "arithmetic versus logarithmic distance, ratio-of-sums versus mean per-bar location, bar support, zero-range handling, minimum informative support, containment tolerance, direction, and weighting are researcher degrees of freedom unless frozen before values",
+      "the candidate may be statistically redundant with signed path efficiency, terminal close location, body-range efficiency, prior-range breakout pressure, or the low-coverage transaction-VWAP envelope factor even though it asks an own-bar acceptance question",
+      "near-high minute closes may represent continuation or short-lived exhaustion, so the predictive direction must be frozen and tested rather than inferred after returns",
+      "using open, transaction VWAP, volume, amount, adjacent ranges, path endpoints, subwindows, market residuals, or a terminal factor would change the mechanism"
+    ]
+  },
+  "rejected_concepts": [
+    {
+      "concept": "intraday_return_or_range_timing_variant",
+      "reason": "Volatility resolution, amount center of mass, late participation, range entropy, and other time-allocation mechanisms are terminal; changing their partitions or weights would be a prohibited variant."
+    },
+    {
+      "concept": "multi_lag_market_response_variant",
+      "reason": "Adding lags, beta, residuals, or market activity would repair or extend terminal Campaign021 rather than create an independent Campaign022 family."
+    },
+    {
+      "concept": "binned_close_location_entropy_or_threshold_count",
+      "reason": "Bin edges, top-half thresholds, and concentration transforms add unnecessary search freedom before the simpler continuous own-bar location question is tested."
+    },
+    {
+      "concept": "terminal_factor_combination",
+      "reason": "Combining or transforming Campaign001-Campaign021 terminal definitions is prohibited."
+    }
+  ],
+  "decision": {
+    "advance_to_separate_no_value_mechanism_overlap_audit": true,
+    "exact_formula_or_direction_fixed_here": false,
+    "new_daily_bar_required": false,
+    "same_day_1630_wait_required": false,
+    "candidate49_ledgers_changed": false
+  },
+  "research_boundary": {
+    "external_campaign022_minute_partitions_read": false,
+    "candidate_values_read": false,
+    "comparison_values_read": false,
+    "daily_price_fields_read": false,
+    "forward_returns_read": false,
+    "provider_request_issued": false
+  }
+}

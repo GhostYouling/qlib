@@ -1,0 +1,56 @@
+{
+  "schema_version": 1,
+  "kind": "a_share_three_day_walkforward_campaign081_terminal_completion_freeze",
+  "version": 2,
+  "status": "terminal_zero_survivors_stress_closed_all_verification_invocations_accounted",
+  "frozen_at": "2026-08-06T18:13:00+08:00",
+  "supersedes_without_rewriting": {
+    "path": "docs/a_share_three_day_walkforward_campaign_081_terminal_completion_freeze_20260806.json",
+    "sha256": "c554888418c2fbe2a8bf404317f161c46510c836b2959087e5811fff1c61e56f",
+    "preserved": true
+  },
+  "postterminal_verification_failure_record": {
+    "path": "docs/a_share_three_day_walkforward_campaign_081_terminal_suite_lifecycle_deselect_failure_20260806.json",
+    "sha256": "8b2659ce9a4bcad95c6b284ca2c6e5894ecbffc508782978bbdda55d49470d53"
+  },
+  "current_research_attempt_ledger": {
+    "path": "data/experiments/short_horizon/historical_walkforward/campaign_081/research_attempt_ledger_v4.json",
+    "sha256": "24525c24085d41a9cf41f83d401ed97b6f99e8aa372b70fb70199a2f0763e6e0"
+  },
+  "current_v2_terminal_test": {
+    "path": "tests/data_collector_tests/test_a_share_three_day_walkforward_campaign081_terminal_v2.py",
+    "sha256": "77c4c55ddc27e39a474949186972688afbff9faa04a1b161f1cb61ba06fee63b"
+  },
+  "manage_qlib_a_share_data_skill": {
+    "path": "/Users/niyufei/.codex/skills/manage-qlib-a-share-data/SKILL.md",
+    "sha256": "90a99c54dd00f0c737e85c4c6dd48d906edbd0f591c61278885728eaf7806431"
+  },
+  "corrected_suite_result": {
+    "passed": 21,
+    "failed": 0,
+    "deselected_immutable_pre_run_lifecycle_nodes": 2
+  },
+  "terminal_result_unchanged": {
+    "factor": "intraday_amount_path_efficiency_238p",
+    "direction": "higher",
+    "numeric_comparisons_passed": 110,
+    "development_trial_count": 1,
+    "development_survivor_count": 0,
+    "stress_2024_2025_opened": false,
+    "stress_return_fields_read": false,
+    "aggregate_20bp_pilot_return": -0.23074432960855773
+  },
+  "attempt_accounting": {
+    "campaign081_infrastructure_failures": 8,
+    "campaign081_complete_factor_attempts": 1,
+    "campaign081_historical_attempts": 9,
+    "campaign081_ledger_entries": 10,
+    "campaign081_return_reading_development_trials": 1,
+    "cumulative_historical_attempts": 500,
+    "cumulative_return_reading_development_trials": 282
+  },
+  "provider_request_issued": false,
+  "candidate49_ledgers_changed": false,
+  "current_scoring_selection_sizing_or_orders_performed": false,
+  "investment_advice": false
+}

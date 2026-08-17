@@ -1,0 +1,47 @@
+{
+  "schema_version": 2,
+  "kind": "a_share_three_day_walkforward_campaign261_ordered_uniqueness_implementation_freeze",
+  "status": "all_142_source_loaders_alignment_and_gate_runner_frozen_before_comparator_values",
+  "recorded_at": "2026-08-16T16:44:00+08:00",
+  "timestamp_semantics": "monotonic_logical_append_time_not_host_wall_clock_measurement",
+  "frozen_implementation": {
+    "runner_path": "scripts/a_share_three_day_walkforward_campaign261_ordered_uniqueness.py",
+    "runner_sha256": "a9867fe90c19957427f22b4b00be38fa8712f15ab32a76a3982c2703452cc2aa",
+    "test_path": "tests/data_collector_tests/test_a_share_three_day_walkforward_campaign261_ordered_uniqueness.py",
+    "test_sha256": "a02fa5b54c11bad82cf231eeb0ea0f515f7dd43b7c6bc32d86569814dd035070",
+    "protocol_sha256": "3076716c638735db0b5c39d11593680d5ea74199c0960b7c3c1c8a6bce111501",
+    "coverage_sha256": "cdb7c764d36c04d2643379e52fef79fff8fdc5b144f14be25724652cec385916",
+    "candidate_manifest_sha256": "7d9c6de6fe3b93cd7f66ee3ac1b5b8a835543aa277ef8d37f4f7f866e52cce4d",
+    "candidate_dataset_sha256": "8e5b64004652fbee8daa0605739698a0a7675f2a29cb8c32c537641965bc8bc5",
+    "design_manifest_sha256": "043c17fea89f3b0956d643a7c6e3f4d73a11403b967213d2d57539a6a8316a49",
+    "design_dataset_sha256": "12ce3a64b5e13581392ded9890e2064db4ccca3945da3eb8ad7752c95366a9fc",
+    "campaign136_manifest_sha256": "9a5c9ff824de22af6595d312b76230a3e4cf283c6e1d42e882aae96d11367b93",
+    "campaign136_dataset_sha256": "c84b1f85eec3731736a4da411691c144a70a81e38b5013e5aeea5370f3c417ec",
+    "campaign146_manifest_sha256": "951872dbdcfa2b00e9603d3be44b059c7d24204fba5757551afbcd46ee8a3f74",
+    "campaign146_dataset_sha256": "7278ae76407215eab75e9ff0119d8c6a073e4d7ac9df5b7d349bc09e6cf889c4",
+    "comparison_count": 142,
+    "comparison_order_sha256": "5d1b35fb5a0d8ac9293008db9963c4a60a94dc940c237c3ed259e5ce44f14aaf",
+    "candidate_quality_listing_rows": 1330171,
+    "campaign136_partition_count_key": "partitions",
+    "output_path": "data/experiments/short_horizon/historical_walkforward/campaign_261/uniqueness/campaign261_ordered_uniqueness_audit.json"
+  },
+  "synthetic_verification": {
+    "command": "/Volumes/DIsk/Coding/anaconda3/bin/python3.12 -m pytest -q tests/data_collector_tests/test_a_share_three_day_walkforward_campaign261_ordered_uniqueness.py",
+    "exit_code": 0,
+    "passed": 7,
+    "ruff": "passed",
+    "black": "passed"
+  },
+  "research_boundary": {
+    "comparator_values_read_before_freeze": false,
+    "historical_daily_price_or_forward_return_values_read": false,
+    "stress_2024_2025_opened_for_returns": false,
+    "provider_request_issued": false,
+    "credential_loaded": false,
+    "candidate49_historical_backfill_performed": false,
+    "candidate49_ledgers_changed": false,
+    "second_prospective_candidate_created": false,
+    "current_scoring_selection_sizing_positions_or_orders_performed": false,
+    "investment_advice": false
+  }
+}

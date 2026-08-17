@@ -1,0 +1,14 @@
+{
+  "schema_version": 1,
+  "kind": "a_share_three_day_walkforward_campaign222_infrastructure_failure",
+  "recorded_at": "2026-08-16T01:50:00+08:00",
+  "timestamp_semantics": "monotonic_logical_append_time_not_host_wall_clock_measurement",
+  "attempt_id": "campaign222_infrastructure_004",
+  "phase": "local_time_and_weekday_verification",
+  "status": "failed_bsd_date_format_argument_split_exit_1",
+  "failure": "A generated date command split the format string at the weekday field and BSD date exited 1 without a valid time result.",
+  "writes_before_failure": false,
+  "scientific_value_read": false,
+  "result_consumed": false,
+  "recovery": "A directly quoted Asia/Singapore command returned 2026-08-16 and weekday 7 with exit code zero."
+}

@@ -1,0 +1,52 @@
+{
+  "schema_version": 1,
+  "kind": "a_share_three_day_walkforward_campaign116_snapshot_verification_failure",
+  "status": "postbuild_manifest_validator_template_semantics_mismatch_before_partition_verification_or_comparator_values",
+  "recorded_at": "2026-08-12T16:23:15+08:00",
+  "snapshot": {
+    "manifest_path": "/Volumes/DIsk/qlib-a-share-tushare-1m/derived/a_share/rich/tushare/minute_walkforward_campaign116_feature_library/tushare_stk_mins_1m_2019_2025_ea0cbb8f_walkforward_campaign116_feature_library_v1/snapshot_manifest.json",
+    "manifest_byte_sha256": "d1036a44495206b2329910d71915a7cd861fdc3baf8344a466d66f1cb1787163",
+    "dataset_sha256": "28e9b79514fe905749a3a182d0b3651331c4afb5330e03276c117d58f3b1082a",
+    "partitions": 33015,
+    "rows": 7724498,
+    "eligible_rows": 5177430,
+    "immutable_after_publication": true,
+    "overwrite_or_rebuild_allowed": false
+  },
+  "frozen_inputs": {
+    "snapshot_builder": {
+      "path": "scripts/a_share_three_day_walkforward_campaign116_features.py",
+      "sha256": "84e6dcc40ea50c51a15f04c32c71e086376f2a8c2b3736492a44f219be062286"
+    },
+    "implementation_freeze": {
+      "path": "docs/a_share_three_day_walkforward_campaign_116_no_return_implementation_freeze_v2_20260812.json",
+      "sha256": "16fd027efe6a3869d408bc4904ca0de983dd989a8950d729c5b5552b2982eb91"
+    }
+  },
+  "failed_command": "/Volumes/DIsk/Coding/anaconda3/bin/python3.12 scripts/a_share_three_day_walkforward_campaign116_features.py verify --manifest <frozen-manifest> --workers 4",
+  "exit_code": 1,
+  "failure": {
+    "exception": "Campaign116FeatureError",
+    "message": "Campaign116 manifest semantics changed",
+    "classification": "verification_adapter_template_mismatch_not_scientific_gate_result",
+    "root_cause": "The generated manifest correctly published minimum_group_support=30, positive_total_activity_required=true and endpoint_amount_used=true, while the inherited Campaign105 manifest validator still expected 0/false/false because only JSON-construction literals, not validator get-expressions, were transformed.",
+    "factor_formula_changed": false,
+    "snapshot_bytes_changed": false,
+    "candidate_coverage_gate_decided": false,
+    "numeric_uniqueness_gate_started": false
+  },
+  "research_boundary": {
+    "campaign116_candidate_values_created": true,
+    "campaign116_candidate_values_read_for_failure_diagnosis": false,
+    "manifest_metadata_read_for_failure_diagnosis": true,
+    "campaign116_comparator_values_read": false,
+    "historical_daily_price_or_forward_return_values_read": false,
+    "stress_2024_2025_opened": false,
+    "provider_request_issued": false,
+    "candidate49_historical_backfill_performed": false,
+    "candidate49_ledgers_changed": false,
+    "current_scoring_selection_sizing_positions_or_orders_performed": false,
+    "investment_advice": false
+  },
+  "recovery_boundary": "Do not modify or rebuild the published snapshot or frozen builder. Freeze a separate verifier that changes only the three stale manifest expectations, binds every existing byte hash, then run exact partition and aggregate verification."
+}

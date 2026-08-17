@@ -1,0 +1,71 @@
+{
+  "schema_version": 1,
+  "kind": "a_share_three_day_walkforward_campaign186_shipping_fleet_charter_offhire_disposal_source_frontier",
+  "status": "terminal_prevalue_four_source_admission_deferrals_three_relabeling_operator_or_combination_rejections_zero_selected",
+  "recorded_at": "2026-08-15T13:21:40+08:00",
+  "purpose": "Review a finite issuer shipping-fleet, vessel-orderbook, charter-coverage, off-hire, dry-dock, maintenance, sale and demolition lifecycle domain before source rows, values, factor values, comparators, security prices or returns.",
+  "authoritative_inputs": {
+    "campaign185_effective_state": {"path": "docs/a_share_three_day_iteration_status_20260815_campaign185_prevalue_terminal.json", "sha256": "f2fbcaa85e201d7a26a661243cf23425f1ef6ca7a771d884c776840a076c98c4"},
+    "eligibility_policy_v274": {"path": "docs/a_share_three_day_walkforward_future_numeric_comparison_eligibility_policy_v274_20260815.json", "sha256": "8c0616602ee9d546a2d2e1d574b72f2fe3562ae4cf74614d238c389db7c0acf8"},
+    "campaign163_supply_chain_frontier": {"path": "docs/a_share_three_day_walkforward_campaign_163_supply_chain_disclosure_source_frontier_20260815.json", "sha256": "3002f25ffc4ff1938933f0b4f3b998cacdb775ca0e27702c65cdc7afec0e80a3"},
+    "campaign168_operating_kpi_frontier": {"path": "docs/a_share_three_day_walkforward_campaign_168_operating_scale_adoption_kpi_source_frontier_20260815.json", "sha256": "c5dc98f92266e2b7ef7349cb5260a8cde15ccd9c78442e661e4170b1ba47d18a"},
+    "campaign169_pricing_frontier": {"path": "docs/a_share_three_day_walkforward_campaign_169_commercial_pricing_terms_source_frontier_20260815.json", "sha256": "a571bcc5bcbfc158da551e59d2984a907fd44b419d115619043a9b28ee3ab288"},
+    "campaign175_lease_frontier": {"path": "docs/a_share_three_day_walkforward_campaign_175_enterprise_lease_commitment_source_frontier_20260815.json", "sha256": "a5adac06bd4dd8a86289a93cdc63ffd63f0a5a825579ca280aebff5f600d542c"},
+    "campaign178_owned_asset_frontier": {"path": "docs/a_share_three_day_walkforward_campaign_178_owned_productive_asset_capex_source_frontier_20260815.json", "sha256": "1d5aeedc08ab1f45fda17e9f939f387408d53e9e2934211aec5ad494c60a41a2"}
+  },
+  "research_boundary": {
+    "finite_catalog_frozen_before_source_or_value_read": true,
+    "source_row_vessel_fleet_orderbook_charter_offhire_drydock_disposal_factor_comparator_security_price_or_return_value_read": false,
+    "repository_policy_and_prior_records_only": true,
+    "provider_or_web_request_issued": false,
+    "provider_credential_presence_value_or_digest_read": false,
+    "stress_2024_2025_opened": false,
+    "candidate49_ledgers_changed": false,
+    "second_prospective_candidate_created": false
+  },
+  "repository_evidence": {
+    "complete_definition_count_reviewed": 158,
+    "eligible_numeric_comparator_count_reviewed": 142,
+    "exact_shipping_fleet_vessel_orderbook_newbuild_delivery_charter_coverage_offhire_drydock_demolition_or_chinese_equivalent_match_found": false,
+    "matching_existing_campaign_or_complete_source_contract_records_from_exact_bounded_search": 0,
+    "existing_shipping_fleet_lifecycle_mechanism_in_complete_definitions": false,
+    "existing_shipping_fleet_lifecycle_mechanism_in_numeric_comparators": false,
+    "complete_shipping_fleet_lifecycle_source_contract_present": false,
+    "supply_chain_boundary": "Campaign163 freezes customers, suppliers, orders and procurement. Cargo customers or shipyards do not establish vessel identity, charter terms, utilization, off-hire, maintenance or disposal.",
+    "operating_kpi_boundary": "Campaign168 freezes generic scale and utilization KPIs. Fleet capacity and utilization require vessel-level ownership, availability, employment and downtime histories rather than aggregate scale alone.",
+    "pricing_boundary": "Campaign169 freezes commercial prices and sales terms. Freight or charter rates alone do not establish covered days, vessel class, counterparty, optionality, off-hire or contract performance.",
+    "lease_boundary": "Campaign175 freezes general lease commitments. Maritime time, voyage and bareboat charters have vessel employment, hire, bunker, port, off-hire and redelivery semantics not recoverable from accounting lease balances.",
+    "owned_asset_boundary": "Campaign178 freezes generic productive assets and capital expenditure. Vessel fleet identity, newbuild orderbook, delivery, class, flag, charter employment, dry-dock and demolition require a distinct lifecycle contract.",
+    "sector_boundary": "Point-in-time shipping sector and vessel-owning or operating scope must be frozen; non-shipping issuers remain structurally not applicable and cannot be filled with zero.",
+    "point_in_time_boundary": "A current fleet list or latest orderbook cannot be projected backward without acquisition, newbuild, delivery, charter, off-hire, dry-dock, sale, demolition, correction and first-public histories."
+  },
+  "mandatory_source_admission_gate": {
+    "must_freeze_before_any_formula_or_direction": [
+      "exact exchange filing, fleet table, ship registry, charter disclosure, shipyard delivery record or licensed structured source with immutable bytes and stable issuer, vessel, contract, document and observation identifiers",
+      "contract, acquisition, keel, launch, delivery, charter start, rate reset, option, off-hire, dry-dock, redelivery, sale, demolition, correction, first-public and supersession timestamps with trading-session availability",
+      "issuer, listed security, parent, subsidiary, vessel owner, beneficial owner, operator, charterer, manager, shipyard, lender and counterparty mapping without current-state leakage",
+      "point-in-time sector taxonomy separating vessel owner, operator, lessor, port, shipbuilder, logistics provider and non-shipping business with structural not-applicability",
+      "vessel identity, IMO number, name history, class, type, capacity, age, flag, registry, ownership, control, pooling and consolidation semantics",
+      "newbuild and second-hand order, price, deposit, financing, construction stage, cancellation, delay, delivery, warranty and refund semantics",
+      "time, voyage, bareboat, pool and contract-of-affreight taxonomy with vessel, cargo, route, rate, duration, option, redelivery and counterparty terms",
+      "available, employed, ballast, idle, laid-up, off-hire, dry-dock, repair, casualty, detention and regulatory-restriction semantics with complete downtime",
+      "hire, freight, bunker, port, commission, operating cost, maintenance, class survey and emission-compliance allocation and unit semantics",
+      "purchase, sale, impairment, mortgage, repossession, recycling, demolition, residual value and gain or loss outcome semantics",
+      "gross and net presentation, owned and chartered-in capacity, spot and fixed coverage, unit, currency, double counting, missing, undisclosed, not-applicable and true-zero semantics",
+      "complete bounded 2019-2023 partition manifest, full eligible-shipping denominator, issuer and vessel identifier history, delisting and merger coverage, identity, timing, sector, contract, downtime, disposal and source-acceptance tests using no factor, comparator, security-price or return values"
+    ],
+    "formula_direction_parameter_filter_subset_combination_or_model_choice_allowed_before_gate": false
+  },
+  "finite_prevalue_catalog": [
+    {"catalog_id": "c186_01", "name": "owned_controlled_fleet_newbuild_orderbook_delivery_and_financing_state", "economic_state": "A close-known fleet state linking owned or controlled vessels and newbuilds to identity, class, capacity, age, construction, financing, cancellation, delay and delivery.", "formula": null, "direction": null, "parameters_filters_subsets_combinations_models": [], "new_issuer_state": true, "complete_local_source_contract": false, "decision": "deferred_source_admission_not_factor_failure", "reason": "No admitted point-in-time history freezes vessel and issuer identity, ownership and control, order and financing terms, construction stages, cancellation, delay, delivery, corrections and first-public timing across 2019-2023."},
+    {"catalog_id": "c186_02", "name": "charter_in_out_contract_coverage_rate_option_and_counterparty_state", "economic_state": "A close-known vessel employment state covering time, voyage, bareboat, pool and affreightment contracts, fixed or spot coverage, rate, term, option, counterparty and redelivery.", "formula": null, "direction": null, "parameters_filters_subsets_combinations_models": [], "new_issuer_state": true, "complete_local_source_contract": false, "decision": "deferred_source_admission_not_factor_failure", "reason": "The repository lacks a complete vessel-contract history connecting employment, rate and duration, options, counterparty, amendment, default, termination, redelivery, correction and trading-session availability."},
+    {"catalog_id": "c186_03", "name": "vessel_utilization_offhire_drydock_repair_and_regulatory_availability_state", "economic_state": "A close-known operational availability state covering employment, idle and ballast days, off-hire, casualty, detention, dry-dock, repair, class survey and emission compliance.", "formula": null, "direction": null, "parameters_filters_subsets_combinations_models": [], "new_issuer_state": true, "complete_local_source_contract": false, "decision": "deferred_source_admission_not_factor_failure", "reason": "No complete point-in-time source preserves vessel-day availability, downtime cause and start or end, maintenance scope, class and regulatory status, recovery, corrections and complete failed-operation coverage."},
+    {"catalog_id": "c186_04", "name": "vessel_purchase_sale_impairment_repossession_recycling_and_demolition_state", "economic_state": "A close-known fleet-exit state covering purchase and sale, mortgage and repossession, impairment, recycling or demolition, residual proceeds, delivery and gain or loss outcomes.", "formula": null, "direction": null, "parameters_filters_subsets_combinations_models": [], "new_issuer_state": true, "complete_local_source_contract": false, "decision": "deferred_source_admission_not_factor_failure", "reason": "No admitted source connects vessel identity to transaction, mortgage, possession, impairment, sale or demolition terms, completion, failure, revisions and complete first-public history."},
+    {"catalog_id": "c186_05", "name": "lease_fixed_asset_capex_freight_rate_utilization_contract_or_security_price_relabeling", "economic_state": "An existing lease, fixed asset, capital expenditure, freight rate, utilization KPI, commercial contract or security-price state relabelled as fleet quality or charter resilience.", "formula": null, "direction": null, "parameters_filters_subsets_combinations_models": [], "new_issuer_state": false, "complete_local_source_contract": false, "decision": "rejected_terminal_lease_asset_capex_pricing_kpi_contract_and_security_price_source_relabeling", "reason": "Adjacent aggregate states do not identify vessels, employment contracts, covered days, off-hire, maintenance, delivery, sale or demolition chains."},
+    {"catalog_id": "c186_06", "name": "fleet_capacity_age_charter_rate_coverage_utilization_direction_denominator_window_or_vessel_subset_variant", "economic_state": "A direction, transform or subset of vessel count, capacity, age, orderbook, charter rate or coverage, utilization, off-hire, class, route, fuel, term or event window.", "formula": null, "direction": null, "parameters_filters_subsets_combinations_models": [], "new_issuer_state": false, "complete_local_source_contract": false, "decision": "rejected_operator_direction_capacity_age_rate_coverage_denominator_window_and_vessel_subset_search_before_base_source_admission", "reason": "Choosing young or old fleets, high or low coverage, successful deliveries only, vessel class, route, denominator, lag or window before source admission would multiply hypotheses and introduce survivorship."},
+    {"catalog_id": "c186_07", "name": "combined_fleet_orderbook_charter_availability_and_disposal_score_or_model", "economic_state": "A joint issuer shipping-fleet score across fleet and orderbook, charter coverage, operational availability and vessel exit outcomes.", "formula": null, "direction": null, "parameters_filters_subsets_combinations_models": [], "new_issuer_state": false, "complete_local_source_contract": false, "decision": "rejected_unadmitted_component_combination_weight_and_model_search", "reason": "Combining four unadmitted source families or choosing normalization, weights, interactions, filters, subsets or models would expand the search before sector scope and every base source contract are complete."}
+  ],
+  "gate_summary": {"routes_reviewed": 7, "genuinely_new_issuer_state_routes": 4, "source_admission_deferrals_not_factor_failures": 4, "relabeling_operator_or_combination_route_rejections": 3, "selected_candidate_count": 0, "complete_factor_definition_created": false, "numeric_comparator_created": false},
+  "scientific_interpretation": {"shipping_fleet_lifecycle_state_declared_ineffective": false, "absence_of_an_admitted_historical_source_is_evidence_of_no_predictive_power": false, "safe_conclusion": "Four fleet, charter, availability and disposal lifecycle states remain deferred at source admission; adjacent-domain relabeling, premature operator search and unadmitted combinations are closed before values."},
+  "next_action": "Record all seven scientific decisions in the Campaign186 hash chain, publish terminal accounting, and continue a different finite offline prevalue domain."
+}

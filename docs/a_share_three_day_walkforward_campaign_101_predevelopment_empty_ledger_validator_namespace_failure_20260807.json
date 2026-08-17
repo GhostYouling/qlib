@@ -1,0 +1,22 @@
+{
+  "schema_version": 1,
+  "kind": "a_share_three_day_walkforward_campaign101_predevelopment_infrastructure_failure",
+  "status": "recorded_before_development_freeze_or_return_read",
+  "recorded_at": "2026-08-07T14:02:52Z",
+  "stage": "empty_internal_trial_ledger_read_only_validation",
+  "failure": "A diagnostic looked for DEFAULT_OUTPUT_ROOT and _validate_ledger in the outer compact-loader wrapper's globals instead of following the inherited run_development chain to the base Campaign004 namespace, causing KeyError before validation.",
+  "empty_ledger": {
+    "path": "data/experiments/short_horizon/historical_walkforward/campaign_101/walkforward/trial_ledger.json",
+    "sha256": "e55891b443344f47f98616d8707cb4fe9abc5c907443ac6a44f7efe268287713",
+    "changed_by_failed_diagnostic": false
+  },
+  "repair": "Follow inherited run_development callables until the base namespace exposes _validate_ledger, then validate the same unchanged empty ledger against the exact v2 preregistration and SHA.",
+  "research_boundary": {
+    "development_daily_price_fields_read": [],
+    "development_forward_returns_read": false,
+    "complete_development_trial_count": 0,
+    "stress_2024_2025_read": false,
+    "provider_request_issued": false,
+    "candidate49_ledgers_changed": false
+  }
+}

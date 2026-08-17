@@ -1,0 +1,189 @@
+{
+  "schema_version": 1,
+  "kind": "a_share_three_day_walkforward_campaign109_no_return_preregistration",
+  "status": "frozen_before_campaign109_minute_source_candidate_comparator_daily_price_or_return_values",
+  "recorded_at": "2026-08-07T21:50:00Z",
+  "purpose": "Evaluate one bounded within-bar body-magnitude serial-persistence factor through coverage-first all-132 duplicate control and, only if admitted, one frozen 2019-2023 development trial.",
+  "authoritative_inputs": {
+    "iteration_state": {
+      "path": "docs/a_share_three_day_iteration_status_20260808_campaign108_terminal_v2.json",
+      "sha256": "ba4a421795e02159bcd5f64683fcd3d3238e375e882a702c13622db77381d1c7"
+    },
+    "numeric_policy_v69": {
+      "path": "docs/a_share_three_day_walkforward_future_numeric_comparison_eligibility_policy_v69_20260808.json",
+      "sha256": "36ec8d963d733e5d6b44df7a3654b8e40444468e470b44b11cc19f6989a527b8",
+      "complete_definition_count": 138,
+      "complete_definition_order_sha256": "6b0deb2e6d3f610e9fb18cc31636b92ac8a6f644a08b3e461c3f301966738b68",
+      "numeric_comparator_count": 132,
+      "numeric_comparator_order_sha256": "7ed69afd1408e84dcc856583344166ffc9bcbb0add1aed63163b1d12a1be9a25"
+    },
+    "historical_walkforward_policy": {
+      "path": "docs/a_share_three_day_historical_walkforward_research_policy_20260727.json",
+      "sha256": "38426d6161b9bfed323c58caba18feca668b8c9d53e294951a8ba90c01a798bb"
+    },
+    "concept_scouting": {
+      "path": "docs/a_share_three_day_walkforward_campaign_109_concept_scouting_20260808.json",
+      "sha256": "bd6c2ae38b0670fc3bad93fdfdb3b20b9ab3263a0064909585b9c24660a34ca3"
+    },
+    "mechanism_support_audit": {
+      "path": "docs/a_share_three_day_walkforward_campaign_109_mechanism_support_audit_20260808.json",
+      "sha256": "cce214f9cc67bc4245c14adc981ec077ed14e7f406db594fdb9c8428d92479cf"
+    },
+    "raw_comparator_adapter_freeze": {
+      "path": "docs/a_share_three_day_walkforward_campaign_107_raw_comparator_adapter_implementation_freeze_20260808.json",
+      "sha256": "07de45590082fcf98350a4b4f0b615ffd994a97fe3cec431ae476c058a95cc2b"
+    },
+    "accepted_minute_alignment": {
+      "path": "data/metadata/rich_data/alignments/20260721T140521Z_tushare_1m_alignment_89ec2deb.json",
+      "sha256": "2c8c85ba1155289d03c3ebc1175a4a2504bf8022b849087840777ee41586e2a0"
+    }
+  },
+  "candidate": {
+    "name": "intraday_intrabar_body_magnitude_serial_persistence_238p",
+    "direction": "higher",
+    "economic_hypothesis": "Persistent one-minute open-to-close body magnitude may reflect sustained execution imbalance or liquidity disturbance that carries into the next few sessions.",
+    "formula": "Corr(abs(log(close_t/open_t)), abs(log(close_t_plus_1/open_t_plus_1))) over the fixed 119 morning plus 119 afternoon within-half adjacent pairs",
+    "source_projection": [
+      "datetime",
+      "symbol",
+      "provider",
+      "open",
+      "close"
+    ],
+    "source_fields_forbidden": [
+      "high",
+      "low",
+      "volume",
+      "amount",
+      "daily_price",
+      "forward_return"
+    ],
+    "source_grid": {
+      "accepted_rows_required": 241,
+      "selected_rows_for_formula": 240,
+      "selected_adjacent_pairs": 238,
+      "morning_pairs": 119,
+      "afternoon_pairs": 119,
+      "standalone_09_30_preserved_but_not_loaded_for_formula": true,
+      "selected_minutes": "09:31-11:30 and 13:01-15:00",
+      "lunch_transition_excluded": true,
+      "overnight_cross_day_and_cross_stock_transitions_excluded": true
+    },
+    "body_and_correlation_semantics": {
+      "all_selected_open_and_close_values_finite_and_strictly_positive": true,
+      "body_magnitude": "abs(log(close/open))",
+      "exact_zero_bodies_retained_in_fixed_support": true,
+      "population_pearson_correlation": true,
+      "positive_population_variance_required_in_both_fixed_vectors": true,
+      "degenerate_vector_result": "missing",
+      "pair_drop_or_zero_bridge_allowed": false
+    },
+    "valid_range": [
+      -1.0,
+      1.0
+    ],
+    "alternate_direction_window_lag_body_transform_correlation_estimator_threshold_filter_subset_regime_weight_fit_model_or_combination_search": false
+  },
+  "source_snapshot_contract": {
+    "data_root": "/Volumes/DIsk/qlib-a-share-tushare-1m",
+    "immutable_source_run": "tushare_stk_mins_1m_2019_2025_ea0cbb8f",
+    "raw_manifest_sha256": "9b3d959563c9d182f38981c6a36bdb3bc9b415de08487a9e1f9e850825c0839f",
+    "joint_clean_manifest_path_below_data_root": "derived/a_share/rich/tushare/minute_sentiment_clean/tushare_stk_mins_1m_2019_2025_ea0cbb8f_sentiment_clean_v1/snapshot_manifest.json",
+    "joint_clean_manifest_sha256": "453c6719cb3c7da42fed8807b28a2bfe988700283e9625a6db97912534f368de",
+    "joint_clean_dataset_sha256": "0e4fe7c05536cdfcecc2936bc880726902f5560061188ffff82ef7ee6f346983",
+    "expected_partitions": 33015,
+    "expected_rows": 7724498,
+    "output_run_id": "tushare_stk_mins_1m_2019_2025_ea0cbb8f_walkforward_campaign109_feature_library_v1",
+    "output_manifest_path_below_data_root": "derived/a_share/rich/tushare/minute_walkforward_campaign109_feature_library/tushare_stk_mins_1m_2019_2025_ea0cbb8f_walkforward_campaign109_feature_library_v1/snapshot_manifest.json",
+    "provider_request_allowed": false
+  },
+  "comparison_contract": {
+    "complete_v69_semantic_definition_count_reviewed_before_values": 138,
+    "complete_definition_order_sha256": "6b0deb2e6d3f610e9fb18cc31636b92ac8a6f644a08b3e461c3f301966738b68",
+    "numeric_comparator_count": 132,
+    "numeric_comparator_order_sha256": "7ed69afd1408e84dcc856583344166ffc9bcbb0add1aed63163b1d12a1be9a25",
+    "direction_normalization": "use every comparator's frozen score direction",
+    "raw_comparator_range_and_nan_adapter_required": true,
+    "candidate_specific_drop_residualization_neutralization_or_subset_allowed": false,
+    "Candidate49_historical_return_signal_execution_or_milestone_read_allowed": false
+  },
+  "ordered_no_return_gates": [
+    {
+      "gate": 1,
+      "name": "binding_source_snapshot_and_adapter_verification",
+      "rule": "Before source rows, revalidate protocol, implementation, source and raw-comparator adapter fingerprints. After publication verify every partition byte/frame hash, projection, formula, counts and dataset digest."
+    },
+    {
+      "gate": 2,
+      "name": "structural_coverage_and_capacity_before_comparison_values",
+      "rule": "On the immutable quality/current-listing base require median daily coverage >=0.95, P05 daily coverage >=0.90, P05 eligible names >=50, at least 200 non-overlapping three-signal-session cohorts, and at least five observed years. Failure stops before comparator value, daily price or forward return."
+    },
+    {
+      "gate": 3,
+      "name": "all_132_numeric_uniqueness_after_coverage_only",
+      "rule": "Compare in exact v69 numeric order with all 132 eligible numeric comparators. Each comparison requires at least 50 paired names per session and at least 100 qualifying sessions. Every absolute median daily Spearman rank correlation must be strictly below 0.8; insufficient overlap fails closed and no comparator may be removed. Raw comparator NaN values remain missing until pairwise overlap."
+    }
+  ],
+  "finite_development_catalog_if_admitted": {
+    "trial_count": 1,
+    "trial_id": "wf109_intraday_intrabar_body_magnitude_serial_persistence_238p_single_higher",
+    "factor": "intraday_intrabar_body_magnitude_serial_persistence_238p",
+    "direction": "higher",
+    "training_or_fit": "none",
+    "folds": [
+      {
+        "fold": 1,
+        "train": [
+          2019,
+          2020
+        ],
+        "validation": 2021
+      },
+      {
+        "fold": 2,
+        "train": [
+          2019,
+          2020,
+          2021
+        ],
+        "validation": 2022
+      },
+      {
+        "fold": 3,
+        "train": [
+          2019,
+          2020,
+          2021,
+          2022
+        ],
+        "validation": 2023
+      }
+    ],
+    "purge": "Purge three signal sessions at every train/validation boundary; t+1 entry and t+3 exit must remain in the same partition.",
+    "execution": "Reuse the frozen one-factor next-open to third-close Top-3 execution engine, quality/listing gates, board-lot checks, amount-participation checks, cost grid and survivor gates without override.",
+    "stress_2024_2025": "Open once for the whole campaign only if this sole trial survives every 2019-2023 development gate; label it historically exposed quasi-out-of-sample. Otherwise leave it closed and unread."
+  },
+  "research_boundary": {
+    "campaign109_source_rows_read_before_freeze": false,
+    "campaign109_candidate_values_computed_or_read_before_freeze": false,
+    "campaign109_comparison_values_read_before_freeze": false,
+    "historical_daily_price_fields_read_before_freeze": [],
+    "historical_forward_returns_read_before_freeze": false,
+    "provider_request_issued": false,
+    "candidate49_historical_backfill_performed": false,
+    "candidate49_ledgers_changed": false,
+    "second_prospective_candidate_created": false,
+    "current_scoring_selection_sizing_or_orders_performed": false,
+    "investment_advice": false
+  },
+  "prohibitions": {
+    "candidate_inversion_rewindow_relag_retransform_recorrelate_threshold_filter_subset_regime_fit_model_combination_or_rescue": true,
+    "terminal_factor_repair_or_combination": true,
+    "raw_comparator_nan_fill_or_drop": true,
+    "Candidate49_historical_return_signal_execution_or_milestone_backfill": true,
+    "second_prospective_candidate": true,
+    "provider_request": true,
+    "current_score_selection_sizing_order_or_investment_advice": true
+  },
+  "next_action": "Freeze feature and ordered-audit implementation hashes with exact-grid, zero-body, nondegenerate-correlation, range and raw-comparator-NaN tests before any Campaign109 source value."
+}

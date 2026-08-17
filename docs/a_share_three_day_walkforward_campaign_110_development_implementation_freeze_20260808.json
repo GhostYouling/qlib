@@ -1,0 +1,93 @@
+{
+  "version": 1,
+  "kind": "a_share_three_day_walkforward_campaign110_development_implementation_freeze",
+  "status": "frozen_before_campaign110_2019_2023_development_return_read",
+  "frozen_at": "2026-08-08T16:02:32Z",
+  "development_preregistration": {
+    "path": "docs/a_share_three_day_walkforward_campaign_110_preregistration.json",
+    "sha256": "57e15edd9c3d921d557013dba8811931250995ae328a8df158d670f108c0ce48",
+    "binding_count": 16,
+    "all_bindings_passed": true
+  },
+  "development_runner": {
+    "path": "scripts/a_share_three_day_walkforward_campaign110.py",
+    "sha256": "a72aea1d09a0aadf6f0c23e0d4574ea824b803f8052b3ba684df7cb01ba82825",
+    "base_runner_path": "scripts/a_share_three_day_walkforward_campaign080.py",
+    "base_runner_sha256": "b4c4b781392c87f01b9542c2317611a936d431b0328cea9d21ea90b8f68a324b"
+  },
+  "tests": {
+    "path": "tests/data_collector_tests/test_a_share_three_day_walkforward_campaign110_development.py",
+    "sha256": "92b38b71f9c9d07b96a2af6c885080b4416866700f59fd337851bae6eaeab824",
+    "pre_freeze_result": "7 passed"
+  },
+  "research_attempt_ledger_before_return_read": {
+    "path": "data/experiments/short_horizon/historical_walkforward/campaign_110/research_attempt_ledger_v2.json",
+    "sha256": "3bcd5e117c6b0c49f96438d406dcdb7485d744789cb9561befb72608a7ad0e4f",
+    "campaign_attempt_count": 12,
+    "campaign_infrastructure_failure_count": 11,
+    "campaign_complete_factor_attempt_count": 1,
+    "campaign_return_reading_development_trial_count": 0,
+    "cumulative_historical_research_attempt_count": 821,
+    "cumulative_return_reading_development_trial_count": 301
+  },
+  "no_return_evidence": {
+    "admission_interface": {
+      "path": "docs/a_share_three_day_walkforward_campaign_110_no_return_development_admission_20260808.json",
+      "sha256": "4f0aa878c3d3ec4cf7afcb21fd6c86e03ca6c68eda590943f9beb073612d4450"
+    },
+    "authoritative_audit": {
+      "path": "data/experiments/short_horizon/historical_walkforward/campaign_110/no_return_recovery_v1/20260808T155731Z_campaign110_no_return_audit.json",
+      "sha256": "4b6dc87f01e3ad2645a44c1556d138d9d3efcb8fb4a809a439f47371bd7143ae",
+      "coverage_gate_passed": true,
+      "numeric_comparisons_passed": 133,
+      "maximum_observed_absolute_median_daily_rank_correlation": 0.719725962987115,
+      "admissible_factor_count": 1
+    },
+    "candidate_snapshot": {
+      "path": "/Volumes/DIsk/qlib-a-share-tushare-1m/derived/a_share/rich/tushare/minute_walkforward_campaign110_feature_library/tushare_stk_mins_1m_2019_2025_ea0cbb8f_walkforward_campaign110_feature_library_v1/snapshot_manifest.json",
+      "sha256": "e3ae3c01e0a6eadd8dfce0362520e13bc4c047ff8357cdc7be2d1f9b31e93b72",
+      "dataset_sha256": "9082b74891ea2e1c107309637941e42acdc9afeec0b44748e2242506c1a68c4b"
+    }
+  },
+  "frozen_trial": {
+    "trial_id": "wf110_intraday_open_reference_directional_occupancy_240m_single_higher",
+    "feature_set": [
+      "intraday_open_reference_directional_occupancy_240m"
+    ],
+    "weights": [1],
+    "direction": "higher",
+    "complexity": 1,
+    "expected_trial_count": 1,
+    "training_and_validation_folds": [
+      "train_2019_2020_validate_2021",
+      "train_2019_2021_validate_2022",
+      "train_2019_2022_validate_2023"
+    ],
+    "purge_signal_sessions": 3,
+    "t_plus_1_and_t_plus_3_must_share_partition": true,
+    "alternate_trial_or_variant_authorized": false
+  },
+  "fixed_execution_assumptions": {
+    "holding_period_sessions": 3,
+    "topk": 3,
+    "initial_capital_cny": 200000,
+    "target_entry_exposure_fraction_per_slot": 0.05,
+    "maximum_entry_exposure_fraction_per_signal": 0.15,
+    "buy_lot_size_shares": 100,
+    "commission_rate_each_side": 0.0001,
+    "transfer_fee_rate_each_side": 0.00002,
+    "sell_stamp_duty_rate": 0.0005,
+    "primary_adverse_slippage_rate_each_side": 0.001,
+    "maximum_daily_amount_participation": 0.01
+  },
+  "historical_daily_price_fields_read_before_freeze": [],
+  "historical_forward_returns_read_before_freeze": false,
+  "development_trial_run_before_freeze": false,
+  "stress_2024_2025_opened_before_freeze": false,
+  "provider_request_issued_before_freeze": false,
+  "candidate49_historical_backfill_performed": false,
+  "candidate49_ledgers_changed": false,
+  "current_scoring_selection_sizing_or_orders_performed": false,
+  "investment_advice": false,
+  "next_action": "Create the single-use development activation, validate every live fingerprint and run exactly one 2019-2023 development trial; keep 2024-2025 closed unless that trial survives every frozen gate."
+}

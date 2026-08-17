@@ -1,0 +1,104 @@
+{
+  "schema_version": 1,
+  "kind": "a_share_three_day_walkforward_campaign083_prevalue_infrastructure_failures",
+  "status": "eight_failures_recorded_and_corrected_before_implementation_freeze_or_candidate_source_values",
+  "recorded_at": "2026-08-06T19:52:00+08:00",
+  "failures": [
+    {
+      "ordinal": 1,
+      "stage": "authoritative_state_and_credential_probe_interpreter_resolution",
+      "observed": "Three first read-only probe commands invoked the unavailable bare python alias and exited before reading state, credential values, or source values.",
+      "root_cause": "The desktop shell exposes the bundled interpreter only through its absolute python3 path.",
+      "correction": "Use /Users/niyufei/.cache/codex-runtimes/codex-primary-runtime/dependencies/python/bin/python3 for every Campaign083 command; the state and credential-existence probes were then rerun without printing the secret. The three commands share one interpreter-resolution root cause and are one infrastructure-failure entry."
+    },
+    {
+      "ordinal": 2,
+      "stage": "local_data_root_probe_dependency_import",
+      "observed": "The first bundled-runtime invocation of scripts/a_share_data_pipeline.py data-root exited with ModuleNotFoundError: requests before resolving the local data root.",
+      "root_cause": "The isolated bundled runtime initially lacked the repository runtime dependency requests.",
+      "correction": "Install requests into the isolated runtime and rerun the same local-only data-root command successfully; it resolved /Volumes/DIsk/Disk-Coding/qlib/data and issued no provider request."
+    },
+    {
+      "ordinal": 3,
+      "stage": "frozen_definition_library_static_reconstruction_first_stub",
+      "observed": "The first no-value static reconstruction import stubbed pyarrow itself but not pyarrow.dataset and exited before reconstructing the prior factor library.",
+      "root_cause": "The temporary import stub was incomplete.",
+      "correction": "Extend the temporary import surface and continue the static reconstruction without reading candidate, comparator, daily-price, or forward-return values."
+    },
+    {
+      "ordinal": 4,
+      "stage": "frozen_definition_library_static_reconstruction_second_stub",
+      "observed": "The second no-value static reconstruction import reached the data module and exited because requests was still absent.",
+      "root_cause": "The temporary import environment had not stubbed or installed requests.",
+      "correction": "Complete the no-value import and later install the declared runtime dependencies; Campaign083 synthetic protocol tests then reconstructed all 114 complete definitions and all 112 numeric comparators."
+    },
+    {
+      "ordinal": 5,
+      "stage": "repository_dependency_declaration_search",
+      "observed": "A zsh search command used an unmatched requirements*.txt glob and exited nonzero after reporting the new file hashes.",
+      "root_cause": "zsh nomatch expanded a file pattern that has no matching repository file.",
+      "correction": "Search only explicit existing dependency files; pyproject.toml confirmed pyarrow, pytest, and scipy<=1.15.3."
+    },
+    {
+      "ordinal": 6,
+      "stage": "feature_synthetic_test_first_run",
+      "observed": "The first synthetic suite produced 10 passes and one failure: the strict-count fixture expected four innovations but its afternoon tail reverted from 200 to 100, creating an unintentional fifth strict new low.",
+      "root_cause": "The test fixture initialized both halves at 100 and changed only four afternoon elements; the implementation correctly counted the later 200-to-100 frontier break.",
+      "correction": "Initialize the entire afternoon half at 200 before injecting its intended strict low, strict high, and ties. The formula and implementation were unchanged; all 11 tests then passed."
+    },
+    {
+      "ordinal": 7,
+      "stage": "feature_runner_format_validation",
+      "observed": "The first Black check reported both new files needed formatting and warned that the repository target version exceeded the Python 3.12 runtime parser.",
+      "root_cause": "The copied prevalue implementation had not yet been mechanically formatted and Black inherited a newer target-version setting.",
+      "correction": "Run Black with the explicit prevalue-safe --target-version py312 option, then require its check to leave both files unchanged. No factor semantics changed."
+    },
+    {
+      "ordinal": 8,
+      "stage": "feature_runner_lint_validation",
+      "observed": "The first Ruff check reported a non-executable shebang, two equivalent running-bound update forms, and five redundant int(len(...)) casts.",
+      "root_cause": "The newly copied runner had not yet received its executable bit or Campaign083-specific lint cleanup.",
+      "correction": "Set the runner executable bit, express the running bounds with max/min, remove only redundant len casts, and rerun Ruff, Black, py_compile, and all 11 synthetic tests successfully. The factor formula and gates were unchanged."
+    }
+  ],
+  "corrected_prevalue_result": {
+    "protocol_binding_count": 11,
+    "protocol_bindings_passed": 11,
+    "synthetic_tests_passed": 11,
+    "synthetic_tests_failed_after_correction": 0,
+    "feature_runner_py_compile_passed": true,
+    "black_py312_check_passed": true,
+    "ruff_check_passed": true,
+    "local_data_root_probe_passed": true,
+    "factor_formula_changed_after_candidate_or_comparison_values": false,
+    "protocol_changed_after_candidate_or_comparison_values": false,
+    "gate_or_threshold_changed": false
+  },
+  "bindings_after_correction": {
+    "protocol": {
+      "path": "docs/a_share_three_day_walkforward_campaign_083_no_return_preregistration.json",
+      "sha256": "31271774531c1bd761d3963740be959fe329974b2bb1c8d6b6038fd62ede35af"
+    },
+    "feature_runner": {
+      "path": "scripts/a_share_three_day_walkforward_campaign083_features.py",
+      "sha256": "6d5d1c15bc146ccb6f86bb63e7183ca3b99ead49a1f748dcd8d954c760dca697"
+    },
+    "tests": {
+      "path": "tests/data_collector_tests/test_a_share_three_day_walkforward_campaign083_features.py",
+      "sha256": "8e9d47a1665b4b32e8eb2fb81565f9ea39a1b32b88d87f8d95cd04692d63b497"
+    }
+  },
+  "research_boundary": {
+    "candidate_source_rows_read": false,
+    "candidate_historical_values_computed": false,
+    "comparison_values_read": false,
+    "historical_daily_price_fields_read": [],
+    "historical_forward_returns_read": false,
+    "provider_request_issued": false,
+    "credential_secret_printed_hashed_or_logged": false,
+    "candidate49_historical_backfill_performed": false,
+    "candidate49_ledgers_changed": false,
+    "second_prospective_candidate_created": false,
+    "current_scoring_selection_sizing_or_orders_performed": false
+  }
+}

@@ -1,0 +1,22 @@
+{
+  "schema_version": 1,
+  "kind": "a_share_three_day_walkforward_campaign214_infrastructure_failure",
+  "recorded_at": "2026-08-15T23:18:00+08:00",
+  "timestamp_semantics": "monotonic_logical_append_time_not_host_wall_clock_measurement",
+  "status": "failed_skill_read_output_truncated_discarded",
+  "phase": "mandatory_manage_qlib_a_share_data_skill_read",
+  "attempt_id": "campaign214_infrastructure_001",
+  "attempt": "Read SKILL.md lines 191-380 in one combined bounded shell request.",
+  "failure": "The returned output was truncated, so the request did not prove a complete read of the requested range.",
+  "recovery": "Discard the truncated output completely and reread the skill in smaller bounded chunks through EOF before any Campaign214 scientific action.",
+  "scientific_attempt": false,
+  "result_consumed": false,
+  "research_boundary": {
+    "truncated_output_used_as_instruction_scientific_or_validation_evidence": false,
+    "source_candidate_comparator_price_or_return_value_read": false,
+    "provider_or_web_request_issued": false,
+    "provider_credential_presence_value_or_digest_read": false,
+    "candidate49_plan_or_run_executed": false,
+    "candidate49_ledgers_changed": false
+  }
+}

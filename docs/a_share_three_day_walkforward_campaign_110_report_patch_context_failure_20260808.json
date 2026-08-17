@@ -1,0 +1,14 @@
+{
+  "schema_version": 1,
+  "kind": "a_share_three_day_walkforward_campaign110_infrastructure_failure",
+  "status": "recorded_non_destructive_report_patch_context_mismatch",
+  "recorded_at": "2026-08-08T16:09:46Z",
+  "phase": "terminal_unified_report_update",
+  "failure": "One multi-file apply_patch used the three_day report's final Campaign109 sentence as context for current_research_report.md, whose equivalent sentence begins with a different phrase; patch verification failed before changing any file.",
+  "recovery": "Apply independent append-only report patches using each file's exact final paragraph.",
+  "files_changed_by_failed_patch": [],
+  "historical_daily_price_or_forward_return_values_read_by_failure": false,
+  "provider_request_issued": false,
+  "candidate49_ledgers_changed": false,
+  "formula_direction_search_space_gate_execution_or_scientific_result_changed": false
+}

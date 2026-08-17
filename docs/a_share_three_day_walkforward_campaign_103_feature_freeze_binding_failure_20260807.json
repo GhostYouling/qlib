@@ -1,0 +1,36 @@
+{
+  "version": 1,
+  "kind": "a_share_three_day_walkforward_campaign103_infrastructure_failure",
+  "status": "failed_before_source_snapshot_or_campaign103_values",
+  "recorded_at": "2026-08-07T16:40:00+08:00",
+  "stage": "feature_build_implementation_freeze_binding",
+  "command": "scripts/a_share_three_day_walkforward_campaign103_features.py build",
+  "exit_code": 1,
+  "exception": "Campaign103FeatureError: Campaign103 implementation freeze changed",
+  "root_cause": "The v1 implementation validator looked for research-boundary booleans at the JSON top level although the frozen v1 document correctly stored them under research_boundary.",
+  "v1_implementation_freeze": {
+    "path": "docs/a_share_three_day_walkforward_campaign_103_feature_implementation_freeze_20260807.json",
+    "sha256": "785550c4cdfe41f684f5eb142a442e4214fafae22f7e92877654e7994bd2dc82"
+  },
+  "failed_builder": {
+    "path": "scripts/a_share_three_day_walkforward_campaign103_features.py",
+    "sha256": "36b34b9697cc2cfec66974475e39a52a40ed8daf2f7b862cb92541d7b55c4da6"
+  },
+  "allowed_repair": "Read the same immutable booleans from research_boundary and point the repaired builder to an additive v2 implementation freeze. No formula, source, calendar, support, vote, threshold, gate, comparison, or development rule may change.",
+  "research_boundary": {
+    "source_partition_or_component_values_read": false,
+    "campaign103_candidate_or_paired_support_values_read": false,
+    "campaign103_comparison_values_read": false,
+    "historical_daily_price_fields_read": [],
+    "historical_forward_return_fields_read": false,
+    "output_root_created": false,
+    "provider_request_issued": false,
+    "candidate49_ledgers_changed": false,
+    "current_scoring_selection_sizing_or_orders_performed": false
+  },
+  "attempt_accounting": {
+    "campaign103_infrastructure_failure_increment": 1,
+    "campaign103_complete_factor_attempt_increment": 0,
+    "return_reading_development_trial_increment": 0
+  }
+}

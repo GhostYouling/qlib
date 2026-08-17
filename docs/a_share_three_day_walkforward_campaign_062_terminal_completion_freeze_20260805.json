@@ -1,0 +1,47 @@
+{
+  "version": 1,
+  "kind": "a_share_three_day_walkforward_campaign062_terminal_completion_freeze",
+  "status": "frozen_zero_development_survivors_stress_closed",
+  "recorded_at": "2026-08-05T05:13:00+08:00",
+  "bindings": {
+    "research_record": {
+      "path": "docs/a_share_three_day_walkforward_campaign_062_research_record.json",
+      "sha256": "19f787359b5524f07fa713b4882b44bcd828636be9d7a9429b54737c99596d1f"
+    },
+    "research_attempt_ledger": {
+      "path": "data/experiments/short_horizon/historical_walkforward/campaign_062/research_attempt_ledger_v2.json",
+      "sha256": "dd41ac8f7563f3d29976458d1b953365653c340e19b84b03c5309b14ea641863"
+    },
+    "development_survivors": {
+      "path": "data/experiments/short_horizon/historical_walkforward/campaign_062/walkforward/development_survivors.json",
+      "sha256": "ad303693b3e13f1a067221ea58f4d59b0a191d6f036c8312ff8dcf3f4043b3d9"
+    },
+    "exposed_stress_consumption_record": {
+      "path": "data/experiments/short_horizon/historical_walkforward/campaign_062/walkforward/exposed_stress_consumption_record.json",
+      "sha256": "718ea7ec92832263882b326e61fe6d05802d9c3f8dcf7ddc4edca4ef8d3b1859"
+    },
+    "campaign_report": {
+      "path": "data/experiments/short_horizon/historical_walkforward/campaign_062/walkforward/campaign_report.json",
+      "sha256": "7f50f4a3a171f076984bd6157b40d63b77633952f44ca1f71349b11949c8479c"
+    }
+  },
+  "frozen_semantics": {
+    "factor": "quarterly_announcement_peer_crowding_sparsity",
+    "direction": "higher",
+    "factor_terminal": true,
+    "development_trial_count": 1,
+    "development_survivor_count": 0,
+    "stress_2024_2025_opened": false,
+    "stress_2024_2025_returns_read": false,
+    "campaign062_infrastructure_only_failure_count": 3,
+    "campaign062_complete_factor_attempt_count": 1,
+    "campaign062_distinct_attempt_count": 4,
+    "campaign062_ledger_entry_count": 5,
+    "cumulative_historical_research_attempt_count": 359,
+    "cumulative_return_reading_development_trial_count": 271,
+    "candidate49_ledgers_changed": false,
+    "provider_request_issued": false,
+    "current_scoring_selection_sizing_or_orders_performed": false
+  },
+  "next_boundary": "Publish only report, tests, verification, documentation and an advancing authoritative state. Any next historical campaign requires an independent pre-value-frozen mechanism."
+}

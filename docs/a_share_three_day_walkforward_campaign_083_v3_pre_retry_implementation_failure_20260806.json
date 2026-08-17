@@ -1,0 +1,41 @@
+{
+  "schema_version": 1,
+  "kind": "a_share_three_day_walkforward_campaign083_v3_pre_retry_implementation_failure",
+  "status": "one_mechanical_failure_corrected_before_v3_implementation_freeze_or_full_retry",
+  "recorded_at": "2026-08-06T20:27:00+08:00",
+  "failure": {
+    "stage": "v3_runner_lint_validation",
+    "observed": "The first Ruff check reported I001 because contextlib was placed before hashlib/json in the new v3 runner import block; the command exited nonzero before py_compile or pytest in that chain.",
+    "root_cause": "The newly written import block was not in Ruff's canonical standard-library order.",
+    "correction": "Reorder only the standard-library imports, then require Black py312 check, Ruff, py_compile, and all five v3 tests to pass. No factor, verifier, gate, or snapshot semantics changed."
+  },
+  "corrected_result": {
+    "black_py312_check_passed": true,
+    "ruff_check_passed": true,
+    "py_compile_passed": true,
+    "v3_tests_passed": 5,
+    "v3_tests_failed": 0
+  },
+  "research_boundary": {
+    "full_v3_retry_entered": false,
+    "published_audit_count": 0,
+    "coverage_or_capacity_metrics_computed": false,
+    "comparison_values_read": false,
+    "historical_daily_price_fields_read": [],
+    "historical_forward_returns_read": false,
+    "provider_request_issued": false,
+    "candidate49_historical_backfill_performed": false,
+    "candidate49_ledgers_changed": false,
+    "current_scoring_selection_sizing_or_orders_performed": false
+  },
+  "corrected_bindings": {
+    "v3_runner": {
+      "path": "scripts/a_share_three_day_walkforward_campaign083_no_return_audit_v3.py",
+      "sha256": "83cd01eaa7cf3a1cac281a4a10ee9da93dd67feae7643006b430ce3b51947217"
+    },
+    "tests": {
+      "path": "tests/data_collector_tests/test_a_share_three_day_walkforward_campaign083_no_return_audit_v3.py",
+      "sha256": "012884ade7704dfeaf37ec9352f3fcf8d88dc9b5d6a6ada2af7d751053115fda"
+    }
+  }
+}

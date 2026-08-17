@@ -1,0 +1,26 @@
+{
+  "schema_version": 1,
+  "kind": "a_share_three_day_walkforward_campaign122_infrastructure_failure",
+  "status": "failed_read_only_boundary_probe_before_any_campaign122_value",
+  "recorded_at": "2026-08-14T03:04:37+08:00",
+  "attempt_id": "campaign122_infrastructure_001",
+  "phase": "authority_and_candidate49_boundary_probe",
+  "failure": {
+    "failure_class": "shell_quotation_error",
+    "observed_stderr": "zsh:1: unmatched quote",
+    "exit_success": false,
+    "cause": "A combined read-only shell probe contained an unmatched quote and was rejected by zsh before its intended checks ran."
+  },
+  "effect": {
+    "file_written_by_failed_command": false,
+    "source_value_read": false,
+    "candidate_value_read_or_computed": false,
+    "comparator_value_read": false,
+    "daily_price_or_forward_return_read": false,
+    "provider_request_issued": false,
+    "credential_secret_printed_or_hashed": false,
+    "candidate49_ledger_changed": false,
+    "scientific_result_changed": false
+  },
+  "recovery": "The authority and Candidate49 boundary checks were rerun as smaller read-only commands and passed; this failed command remains counted."
+}

@@ -1,0 +1,90 @@
+{
+  "version": 1,
+  "kind": "a_share_three_day_walkforward_campaign036_feature_implementation_freeze",
+  "status": "feature_implementation_frozen_before_candidate_snapshot_values",
+  "recorded_at": "2026-07-30T21:19:02Z",
+  "purpose": "Fingerprint-bind the Campaign036 exact two-sided range-frontier-balance implementation, its isolated destination, and synthetic regression evidence before any Campaign036 candidate snapshot value is built.",
+  "authoritative_inputs": {
+    "iteration_status": {
+      "path": "docs/a_share_three_day_iteration_status_20260731_campaign035_verified.json",
+      "sha256": "39a838d3bcb15364ec4d78e51ece958a6ba5db5f0d953af2e8a4b9554f16e4fe"
+    },
+    "no_return_preregistration": {
+      "path": "docs/a_share_three_day_walkforward_campaign_036_no_return_preregistration.json",
+      "sha256": "112fd9ad88a25622a77591e46393c340dddbdc2ff0478b9af60979702e0d88e7"
+    },
+    "feature_runner": {
+      "path": "scripts/a_share_three_day_walkforward_campaign036_features.py",
+      "sha256": "dd200c415faf3312b36efaad28100f4570e1d7cc3fe6a0c0edc782d1b7cda2ab"
+    },
+    "feature_tests": {
+      "path": "tests/data_collector_tests/test_a_share_three_day_walkforward_campaign036_features.py",
+      "sha256": "473c1a67af48493681c3a29febb02717e939ac0befe5425cbb64582715adf813"
+    },
+    "frozen_high_low_base_runner": {
+      "path": "scripts/a_share_three_day_walkforward_campaign025_features.py",
+      "sha256": "27f79dbf8e86ae17f71a8cc1e4626b8517d8dde62aa74901a1f9447dd6c0e03d"
+    },
+    "candidate49_signal_ledger": {
+      "path": "data/experiments/short_horizon/candidate49_future_signal_ledger.json",
+      "sha256": "5193f00d7f36da003f53cec387900da4c3d002299f5dfcfc1a95eaa199ed3a79",
+      "entry_count": 0
+    },
+    "candidate49_execution_ledger": {
+      "path": "data/experiments/short_horizon/candidate49_future_execution_ledger.json",
+      "sha256": "d57a3e61eac969e42cafa418ccd8c0a5ee65dcf69da145bb2c096c2a02a2ea4f",
+      "entry_count": 0
+    }
+  },
+  "implementation": {
+    "factor": "intraday_two_sided_range_frontier_balance_238m",
+    "direction": "higher",
+    "source_projection": [
+      "datetime",
+      "symbol",
+      "provider",
+      "high",
+      "low"
+    ],
+    "selected_high_low_bar_count": 240,
+    "running_frontier_reset_each_half": true,
+    "expansion_opportunity_count": 238,
+    "upward_expansion": "max(ln(current_high/previous_running_high),0)",
+    "downward_expansion": "max(ln(previous_running_low/current_low),0)",
+    "pooling": "sum morning and afternoon upward expansions into U and downward expansions into D",
+    "balance_transform": "1-abs(U-D)/(U+D)",
+    "algebraic_identity": "2*min(U,D)/(U+D)",
+    "identity_check_tolerance": 1e-12,
+    "zero_total_expansion_is_missing": true,
+    "lunch_transition_included": false,
+    "transform_scale_clip_threshold_filter": "none",
+    "partition_compute_injection_verified": true,
+    "output_root": "/Volumes/DIsk/qlib-a-share-tushare-1m/derived/a_share/rich/tushare/minute_walkforward_campaign036_feature_library/tushare_stk_mins_1m_2019_2025_ea0cbb8f_walkforward_campaign036_feature_library_v1",
+    "output_root_existed_at_freeze": false
+  },
+  "verification": {
+    "preregistration_binding_validator_exit_code": 0,
+    "preregistration_bindings_passed": 10,
+    "preregistration_bindings_failed": 0,
+    "python_compile_exit_code": 0,
+    "focused_test_count": 15,
+    "focused_tests_passed": 15,
+    "focused_tests_failed": 0,
+    "campaign035_regression_included": true,
+    "balanced_expansion_score": 1.0,
+    "one_sided_expansion_score": 0.0,
+    "zero_total_expansion_missing_verified": true,
+    "separate_half_scale_invariance_verified": true,
+    "prebuild_status_snapshot_exists": false,
+    "prebuild_status_audit_count": 0
+  },
+  "authorization": {
+    "candidate_snapshot_build_allowed_after_this_record_binding_validation_exit_zero": true,
+    "comparison_values_may_be_read_before_coverage_gate_passes": false,
+    "historical_daily_prices_or_returns_may_be_read_before_no_return_admission": false,
+    "provider_request_allowed": false,
+    "candidate49_historical_backfill_allowed": false,
+    "candidate50_activation_allowed": false,
+    "current_scoring_selection_sizing_or_orders_allowed": false
+  }
+}

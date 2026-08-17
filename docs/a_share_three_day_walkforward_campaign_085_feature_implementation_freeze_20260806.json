@@ -1,0 +1,66 @@
+{
+  "version": 1,
+  "kind": "a_share_three_day_walkforward_campaign085_feature_implementation_freeze",
+  "status": "frozen_before_compact_cache_rows_candidate_or_comparison_values",
+  "recorded_at": "2026-08-06T23:35:00+08:00",
+  "protocol": {
+    "path": "docs/a_share_three_day_walkforward_campaign_085_no_return_preregistration.json",
+    "sha256": "c08bf9ec921e97ceafa44b143ef6da0bee8223b65841f09093a01358f61936e6"
+  },
+  "feature_runner": {
+    "path": "scripts/a_share_three_day_walkforward_campaign085_features.py",
+    "sha256": "e4cafa22cec0a2f27c6055933ea37b553a388ed65f6a56601d45f39545a46400"
+  },
+  "tests": {
+    "path": "tests/data_collector_tests/test_a_share_three_day_walkforward_campaign085_features.py",
+    "sha256": "667b12cccdab387ffb5b0bae20b2ba604cf763d928888cfbdab4a0e1ac318970",
+    "passed": 6,
+    "failed": 0,
+    "black_and_ruff_passed": true
+  },
+  "compact_cache_publication_binding": {
+    "path": "docs/a_share_three_day_compact_comparator_cache_v4_publication_binding_20260806.json",
+    "sha256": "244f70b88be0396f7473c6664835cbb3cdad9135b6692b77c74018b1d53c925b"
+  },
+  "compact_cache_manifest": {
+    "path": "/Volumes/DIsk/qlib-a-share-tushare-1m/derived/a_share/rich/tushare/compact_comparator_cache/campaign067_terminal_numeric98_v4/snapshot_manifest.json",
+    "sha256": "3d81068f07ac61fe4cd04bd1a893e58759c06d88213263135fec5244e309b57b",
+    "dataset_sha256": "4a56dac48c14b667b6ee431519266f27bb8ff7cc25c51d8dce3bbc7aebe0376f"
+  },
+  "prevalue_infrastructure_failure_record": {
+    "path": "docs/a_share_three_day_walkforward_campaign_085_prevalue_infrastructure_failures_20260806.json",
+    "sha256": "d6d053a4b032d715293d522b4b0cf38b0f5f4733a907771e2b8a4168ba78aad9"
+  },
+  "research_attempt_ledger": {
+    "path": "data/experiments/short_horizon/historical_walkforward/campaign_085/research_attempt_ledger_v1.json",
+    "sha256": "29184b7b10d7361aeed230f39fe478ed64ede7a1eb93c0d77dde3a1b2131c258"
+  },
+  "frozen_semantics": {
+    "factor": "quarterly_freshness_market_neutral_late_drift_confirmation_product_2r",
+    "direction": "higher",
+    "input_factors": [
+      "quarterly_announcement_freshness_60s",
+      "intraday_market_neutral_late_residual_drift_238m"
+    ],
+    "formula": "r_freshness * r_late_residual on the exact common finite stock-day cross-section",
+    "source_projection": [
+      "stock_day_key",
+      "quarterly_announcement_freshness_60s",
+      "intraday_market_neutral_late_residual_drift_238m"
+    ],
+    "rank_method": "average",
+    "rank_pct": true,
+    "complete_definition_count": 116,
+    "complete_definition_order_sha256": "d30cad0f1e422e3e4ba80392f42316a968511f53593e1826c1c1bb7171d04253",
+    "numeric_comparator_count": 114,
+    "numeric_comparator_order_sha256": "03a0c534f3bc321d5bc452415e6207026030978c4ac5d433305b04a21db6cea9"
+  },
+  "compact_cache_rows_read_before_freeze": false,
+  "candidate_values_computed_before_freeze": false,
+  "comparison_values_read_before_freeze": false,
+  "historical_daily_price_or_forward_return_values_read_before_freeze": false,
+  "provider_request_issued_before_freeze": false,
+  "candidate49_ledgers_changed_before_freeze": false,
+  "second_prospective_candidate_created": false,
+  "current_scoring_selection_sizing_or_orders_performed": false
+}

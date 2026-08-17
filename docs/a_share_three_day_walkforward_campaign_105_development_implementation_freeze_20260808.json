@@ -1,0 +1,96 @@
+{
+  "version": 1,
+  "kind": "a_share_three_day_walkforward_campaign105_development_implementation_freeze",
+  "status": "frozen_before_campaign105_2019_2023_development_return_read",
+  "frozen_at": "2026-08-07T18:35:38Z",
+  "development_preregistration": {
+    "path": "docs/a_share_three_day_walkforward_campaign_105_preregistration_v3.json",
+    "sha256": "05d98404e46d00ff92c8d2b0c2ca024375ae575e6a49c603e30deafc739e78d3"
+  },
+  "development_runner": {
+    "path": "scripts/a_share_three_day_walkforward_campaign105.py",
+    "sha256": "69a468e47133b384fb195d431f130047c9c186c0736d5cd6d01da1e9ab1747d7",
+    "base_runner_path": "scripts/a_share_three_day_walkforward_campaign080.py",
+    "base_runner_sha256": "b4c4b781392c87f01b9542c2317611a936d431b0328cea9d21ea90b8f68a324b"
+  },
+  "tests": {
+    "path": "tests/data_collector_tests/test_a_share_three_day_walkforward_campaign105_development.py",
+    "sha256": "3cd6c9c6798a26a659590e1d7b856e2545b3b3d1507dd6e4f627bd90bd80aedc",
+    "pre_freeze_result": "20 Campaign105 tests passed after one separately recorded mechanical Black failure"
+  },
+  "research_attempt_ledger_before_return_read": {
+    "path": "data/experiments/short_horizon/historical_walkforward/campaign_105/research_attempt_ledger_v6.json",
+    "sha256": "2a0154bf7ef679df9c4bf4d8bf275af6fe11f2beea7cb836fada784f2c0a4514",
+    "campaign_attempt_count": 11,
+    "campaign_infrastructure_failure_count": 10,
+    "campaign_complete_factor_attempt_count": 1,
+    "campaign_return_reading_development_trial_count": 0,
+    "cumulative_historical_research_attempt_count": 786,
+    "cumulative_return_reading_development_trial_count": 299
+  },
+  "pre_return_infrastructure_failure_record": {
+    "path": "docs/a_share_three_day_walkforward_campaign_105_prevalue_infrastructure_failures_v6_20260808.json",
+    "sha256": "02cd2f9075fe3bdef9fdd90c9a38d44b048003eaf08f644c6f4afcc4a4d4c974"
+  },
+  "no_return_evidence": {
+    "admission_interface": {
+      "path": "docs/a_share_three_day_walkforward_campaign_105_no_return_development_admission_v3_20260808.json",
+      "sha256": "5709229be05d5434c5911c33c9e2d59519e84ec62aca1b6515a4f5aa4f73f278"
+    },
+    "authoritative_audit": {
+      "path": "data/experiments/short_horizon/historical_walkforward/campaign_105/no_return/20260807T182638Z_campaign105_no_return_audit.json",
+      "sha256": "b310912ecd43e2012907bd33b465e584aee9201c1560224ef44d9966917bcc54",
+      "coverage_gate_passed": true,
+      "numeric_comparisons_passed": 131,
+      "admissible_factor_count": 1
+    },
+    "candidate_snapshot": {
+      "path": "/Volumes/DIsk/qlib-a-share-tushare-1m/derived/a_share/rich/tushare/minute_walkforward_campaign105_feature_library/tushare_stk_mins_1m_2019_2025_ea0cbb8f_walkforward_campaign105_feature_library_v1/snapshot_manifest.json",
+      "sha256": "56e2d016087ff09643ef98dd00cad0ac9c771e815d19ec9941cea9f5904824a5",
+      "dataset_sha256": "912625c3763fe3868adb4c4f410b6a6ab72c9272f78b8b57db620daaf970018c"
+    }
+  },
+  "frozen_trial": {
+    "trial_id": "wf105_intraday_active_trading_bar_share_240m_single_higher",
+    "feature_set": [
+      "intraday_active_trading_bar_share_240m"
+    ],
+    "weights": [
+      1
+    ],
+    "direction": "higher",
+    "complexity": 1,
+    "expected_trial_count": 1,
+    "training_and_validation_folds": [
+      "train_2019_2020_validate_2021",
+      "train_2019_2021_validate_2022",
+      "train_2019_2022_validate_2023"
+    ],
+    "purge_signal_sessions": 3,
+    "t_plus_1_and_t_plus_3_must_share_partition": true,
+    "alternate_trial_or_variant_authorized": false
+  },
+  "fixed_execution_assumptions": {
+    "holding_period_sessions": 3,
+    "topk": 3,
+    "initial_capital_cny": 200000,
+    "target_entry_exposure_fraction_per_slot": 0.05,
+    "maximum_entry_exposure_fraction_per_signal": 0.15,
+    "buy_lot_size_shares": 100,
+    "commission_rate_each_side": 0.0001,
+    "transfer_fee_rate_each_side": 0.00002,
+    "sell_stamp_duty_rate": 0.0005,
+    "primary_adverse_slippage_rate_each_side": 0.001,
+    "maximum_daily_amount_participation": 0.01
+  },
+  "historical_daily_price_fields_read_before_freeze": [],
+  "historical_forward_returns_read_before_freeze": false,
+  "development_trial_run_before_freeze": false,
+  "stress_2024_2025_opened_before_freeze": false,
+  "provider_request_issued_before_freeze": false,
+  "candidate49_historical_backfill_performed": false,
+  "candidate49_ledgers_changed": false,
+  "current_scoring_selection_sizing_or_orders_performed": false,
+  "investment_advice": false,
+  "next_action": "Create the single-use development activation, validate every live fingerprint, and run exactly one 2019-2023 development trial; keep 2024-2025 closed unless that trial survives every frozen gate."
+}

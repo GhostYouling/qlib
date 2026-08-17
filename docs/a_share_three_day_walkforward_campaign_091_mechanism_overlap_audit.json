@@ -1,0 +1,171 @@
+{
+  "schema_version": 1,
+  "kind": "a_share_three_day_walkforward_campaign091_mechanism_overlap_audit",
+  "status": "passed_semantic_mechanism_review_before_campaign091_minute_source_or_comparison_values",
+  "recorded_at": "2026-08-07T07:01:00+08:00",
+  "concept_scouting": {
+    "path": "docs/a_share_three_day_walkforward_campaign_091_concept_scouting.json",
+    "sha256": "b3165f347f079fed6409d04dae08afb0696d4fba94712d665254016891a1cb1e"
+  },
+  "authoritative_state": {
+    "path": "docs/a_share_three_day_iteration_status_20260807_campaign090_verified_v2.json",
+    "sha256": "46e1856a031b5e8ae1c805eb0e52076e3d16de60ac07d6f073730b21579a9a69"
+  },
+  "historical_walkforward_policy": {
+    "path": "docs/a_share_three_day_historical_walkforward_research_policy_20260727.json",
+    "sha256": "38426d6161b9bfed323c58caba18feca668b8c9d53e294951a8ba90c01a798bb"
+  },
+  "numeric_comparator_policy": {
+    "path": "docs/a_share_three_day_walkforward_future_numeric_comparison_eligibility_policy_v32_20260807.json",
+    "sha256": "cb5db190487c4af6060e5b6b9fd5d4c109f1fc439d815b87cf8d0c43448b5b97",
+    "complete_definition_count": 122,
+    "numeric_comparator_count": 120,
+    "complete_definition_order_sha256": "1ed99d450143370e1b810e8fbb03e6e84882256c53fc035a9fef4e234a956d7f",
+    "numeric_comparator_order_sha256": "5354d5ca8d26f890239e07ddc0eca1242723644af0fdd06ec7a76a15cb5b01f7"
+  },
+  "candidate": {
+    "name": "intraday_directional_range_mass_imbalance_240m",
+    "direction": "higher",
+    "mechanism": "Signed imbalance of scale-free contemporaneous intrabar high-low range mass between up-bodied and down-bodied one-minute candles",
+    "formula": "For r_i=log(high_i/low_i) and b_i=log(close_i/open_i), compute U=sum r_i 1[b_i>0], D=sum r_i 1[b_i<0], and score=(U-D)/(U+D).",
+    "zero_rule": "Exact zero-body bars contribute to neither direction; exact zero-range bars remain valid zero masses. Require finite positive ordered OHLC on all 240 bars and finite strictly positive U+D; use no tolerance, dropped bar, pseudocount, threshold, or substituted observation.",
+    "fixed_grid": "Require the raw 09:30 row for source identity, use exactly 09:31-11:30 and 13:01-15:00, and exclude 09:30. No adjacent return or cross-lunch price change is formed.",
+    "no_volume_amount_market_benchmark_daily_financial_event_peer_old_factor_or_future_input": true,
+    "candidate49_used_or_modified": false
+  },
+  "complete_library_review": {
+    "all_122_definitions_reviewed_in_frozen_order": true,
+    "all_120_numeric_comparators_reviewed_in_frozen_order": true,
+    "all_return_volatility_path_sign_frequency_range_amount_market_peer_event_quality_structural_composite_and_semantic_only_families_reviewed": true,
+    "candidate_is_exact_formula_duplicate": false,
+    "candidate_is_direction_only_duplicate": false,
+    "candidate_is_parameter_only_duplicate": false,
+    "candidate_is_an_inversion_of_a_terminal_factor": false,
+    "candidate_combines_terminal_factor_values": false,
+    "candidate_changes_any_quality_listing_or_buyability_gate": false,
+    "body_range_close_location_wick_breakout_direction_activity_and_range_clock_families_explicitly_challenged": true,
+    "campaign090_terminal_factor_not_reused_or_rescued": true,
+    "candidate49_remains_semantic_isolation_only": true
+  },
+  "semantic_invariance_checks": [
+    {
+      "intervention": "Multiply every selected OHLC value by one common strictly positive constant.",
+      "campaign091_result": "unchanged because both candle direction and log high-low range mass are scale free",
+      "distinguishes_from": "nominal-price affordability and price-level factors"
+    },
+    {
+      "intervention": "Multiply all nonzero intrabar range masses by one common positive constant while preserving body signs.",
+      "campaign091_result": "unchanged because U and D scale together",
+      "distinguishes_from": "range-level and realized-volatility magnitude factors"
+    },
+    {
+      "intervention": "Swap one fixed positive range mass from an up-bodied bar to a down-bodied bar without changing the multiset or clock positions of all range masses.",
+      "campaign091_result": "strictly decreases",
+      "distinguishes_from": "range entropy, range-clock center, range revisit, and other sign-invariant range summaries"
+    },
+    {
+      "intervention": "Change body magnitudes while preserving every exact body sign and every high-low range.",
+      "campaign091_result": "unchanged",
+      "distinguishes_from": "intrabar body-range efficiency and close-path magnitude mechanisms"
+    },
+    {
+      "intervention": "Move unchanged signed candles to different clock positions.",
+      "campaign091_result": "unchanged",
+      "distinguishes_from": "range-clock center, late-window, peak-timing, and direction-timing mechanisms"
+    },
+    {
+      "intervention": "Change amount and volume paths while preserving OHLC.",
+      "campaign091_result": "unchanged",
+      "distinguishes_from": "amount-weighted direction, price impact, range-activity confirmation, transaction-price, and VWAP families"
+    },
+    {
+      "intervention": "Permute the candle sequence while preserving each contemporaneous OHLC tuple.",
+      "campaign091_result": "unchanged",
+      "distinguishes_from": "bar-direction continuity, serial persistence, lead-response, breakout, and frontier mechanisms"
+    }
+  ],
+  "nearest_semantic_challenges": [
+    {
+      "name": "intraday_intrabar_body_range_efficiency_240m",
+      "relationship": "both use contemporaneous candle bodies and high-low ranges",
+      "distinction": "The terminal factor sums absolute body magnitude relative to total range and discards body direction. Campaign091 discards body magnitude after exact sign classification and allocates range mass between the two directions.",
+      "mandatory_numeric_challenge": true
+    },
+    {
+      "name": "intraday_intrabar_close_location_pressure_240m and intraday_two_sided_wick_absorption_balance_240m",
+      "relationship": "all use within-bar OHLC geometry",
+      "distinction": "Close-location pressure uses the close's logarithmic distances to both range endpoints and wick balance uses upper/lower wick absorption. Campaign091 uses only open-close sign plus total high-low range mass and is invariant to close or open movement that preserves that sign and envelope.",
+      "mandatory_numeric_challenge": true
+    },
+    {
+      "name": "intraday_directional_range_response_coupling_238p and intraday_prior_range_breakout_pressure_238p",
+      "relationship": "all connect direction with range information",
+      "distinction": "The terminal mechanisms use next-bar response or prior-interval breakout across adjacent pairs. Campaign091 has no lead, lag, breakout, or transition and uses each bar only contemporaneously.",
+      "mandatory_numeric_challenge": true
+    },
+    {
+      "name": "intraday_upside_semivariance_share_239m, intraday_up_move_amount_share_238m, and intraday_signed_path_efficiency_239m",
+      "relationship": "all contain a positive-versus-negative price direction state",
+      "distinction": "Those factors use adjacent close returns and weight direction by squared return, amount, or path displacement. Campaign091 uses own-bar open-close sign and high-low range mass, never an adjacent close return or amount.",
+      "mandatory_numeric_challenge": true
+    },
+    {
+      "name": "intraday_bar_direction_continuity_238p and intraday_intrabar_close_location_serial_persistence_238p",
+      "relationship": "all read intrabar direction or location states",
+      "distinction": "The terminal factors are ordered adjacent-pair statistics. Campaign091 is order invariant and uses total signed range allocation across all bars.",
+      "mandatory_numeric_challenge": true
+    },
+    {
+      "name": "intraday_directional_price_impact_asymmetry_238m and intraday_range_share_volume_confirmation_240m",
+      "relationship": "all may reflect directional price discovery or range support",
+      "distinction": "The terminal factors require amount or share volume and adjacent returns. Campaign091 is activity invariant and uses only contemporaneous OHLC geometry.",
+      "mandatory_numeric_challenge": true
+    },
+    {
+      "name": "intraday_range_amount_profile_alignment_js_240m and intraday_range_clock_center_240m",
+      "relationship": "all normalize or allocate intrabar range mass",
+      "distinction": "The terminal factors allocate range by amount-profile similarity or clock time. Campaign091 allocates the same scale-free mass by exact own-bar body sign and is invariant to amount and clock permutation.",
+      "mandatory_numeric_challenge": true
+    },
+    {
+      "name": "candidate49_intraday_cumulative_vwap_crossing_rate_240m_v1",
+      "relationship": "both use a completed intraday grid and directional price information",
+      "distinction": "Candidate49 counts causal close-versus-cumulative-VWAP sign crossings and requires volume/amount. Campaign091 never constructs VWAP, reads no volume/amount, and does not touch the prospective ledger.",
+      "mandatory_numeric_challenge": false
+    }
+  ],
+  "prevalue_semantic_decision": {
+    "passed": true,
+    "selected_factor_count": 1,
+    "complete_frozen_definition_count_reviewed": 122,
+    "numeric_comparator_count_reserved_for_postcoverage_test": 120,
+    "candidate_or_comparison_values_read": false,
+    "daily_price_or_forward_return_values_read": false,
+    "provider_request_issued": false,
+    "required_next_step": "Freeze the exact coverage-first no-return protocol and one-factor catalog against this audit and policy v32 before source rows or candidate values."
+  },
+  "prohibited_rescues": [
+    "invert_to_down_range_dominance_after_results",
+    "replace_body_sign_with_adjacent_close_return_sign_or_close_location",
+    "change_range_mass_to_body_wick_true_range_amount_or_volume_weight",
+    "change_zero_body_or_ohlc_ordering_semantics",
+    "select_subwindows_clock_cutoffs_or_minimum_body_thresholds",
+    "switch_to_absolute_balance_two_sided_minimum_runs_or_serial_statistics",
+    "add_filters_regimes_subsets_neutralization_fitting_models_or_combinations",
+    "remove_failed_numeric_comparators",
+    "select_favorable_years_costs_or_gates"
+  ],
+  "research_boundary": {
+    "campaign091_source_rows_read": false,
+    "campaign091_candidate_values_read": false,
+    "comparison_values_read": false,
+    "historical_daily_price_fields_read": [],
+    "historical_forward_returns_read": false,
+    "candidate49_historical_return_or_signal_backfill": false,
+    "candidate49_ledgers_changed": false,
+    "second_prospective_candidate_created": false,
+    "provider_request_issued": false,
+    "current_scoring_selection_sizing_or_orders_performed": false,
+    "investment_advice": false
+  }
+}

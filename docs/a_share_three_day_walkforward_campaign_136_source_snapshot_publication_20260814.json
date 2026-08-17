@@ -1,0 +1,98 @@
+{
+  "schema_version": 1,
+  "kind": "a_share_three_day_walkforward_campaign136_source_snapshot_publication",
+  "status": "immutable_candidate_snapshot_published_and_read_only_verified_before_coverage",
+  "recorded_at": "2026-08-14T11:27:00+0800",
+  "attempt_id": "campaign136_source_build_002_recovery_v3",
+  "authoritative_inputs": {
+    "source_bound_implementation_freeze_v3": {
+      "path": "docs/a_share_three_day_walkforward_campaign_136_source_bound_implementation_freeze_v3_20260814.json",
+      "sha256": "0d5264d22984738a3e2fb8cbc95726fa66f21ba4a47f0474e1880f4e4a8c9fe5"
+    },
+    "source_bound_implementation_verification_v3": {
+      "path": "docs/a_share_three_day_walkforward_campaign_136_source_bound_implementation_verification_v3_20260814.json",
+      "sha256": "e2c4c5f81ea4f5f05c50e40e74be117c83fb1cbf84950ccc43dc254c7aadd3d4"
+    },
+    "failed_first_run": {
+      "path": "docs/a_share_three_day_walkforward_campaign_136_source_build_nullable_identity_failure_20260814.json",
+      "sha256": "1d7697c66bb32efda3b5e5d1ae56f7d5e5b7701df8c11013a47c0fd59fa3a99a"
+    }
+  },
+  "fresh_plan": {
+    "command": "PYTHONPATH=/Volumes/DIsk/Disk-Coding/qlib /Volumes/DIsk/Coding/anaconda3/bin/python3.12 scripts/a_share_three_day_walkforward_campaign136_features.py plan",
+    "exit_code": 0,
+    "ready": true,
+    "source_value_rows_decoded": false,
+    "source_file_count": 5451,
+    "source_total_bytes": 1502484498,
+    "source_file_identity_order_sha256": "d7dca618dbef6620e1c4782cb970178afa5777e3f1101a916df5eb6b8bf37cab",
+    "source_schema_metadata_verified": true,
+    "source_read_start": "2018-12-28",
+    "output_signal_start": "2019-01-01",
+    "output_signal_end": "2025-12-31",
+    "provider_request_issued": false,
+    "credential_loaded": false
+  },
+  "confirmed_run": {
+    "command": "PYTHONPATH=/Volumes/DIsk/Disk-Coding/qlib /Volumes/DIsk/Coding/anaconda3/bin/python3.12 scripts/a_share_three_day_walkforward_campaign136_features.py run --confirm-run --workers 8",
+    "exit_code": 0,
+    "output_manifest_path": "data/experiments/short_horizon/historical_walkforward/campaign_136/source_snapshot_v1/snapshot_manifest.json",
+    "output_manifest_sha256": "9a5c9ff824de22af6595d312b76230a3e4cf283c6e1d42e882aae96d11367b93",
+    "dataset_sha256": "c84b1f85eec3731736a4da411691c144a70a81e38b5013e5aeea5370f3c417ec",
+    "partitions": 5396,
+    "rows": 7751950,
+    "eligible_rows": 7750120,
+    "ineligible_rows": 1830,
+    "exact_zero_score_pairs": 299997,
+    "positive_score_pairs": 7450123,
+    "source_fields_read": [
+      "date",
+      "symbol",
+      "factor",
+      "price_basis",
+      "daily_source"
+    ],
+    "historical_daily_ohlcv_fields_read": []
+  },
+  "read_only_verification": {
+    "command": "PYTHONPATH=/Volumes/DIsk/Disk-Coding/qlib /Volumes/DIsk/Coding/anaconda3/bin/python3.12 scripts/a_share_three_day_walkforward_campaign136_features.py verify",
+    "exit_code": 0,
+    "source_byte_identity_verified": true,
+    "manifest_sha256": "9a5c9ff824de22af6595d312b76230a3e4cf283c6e1d42e882aae96d11367b93",
+    "dataset_sha256": "c84b1f85eec3731736a4da411691c144a70a81e38b5013e5aeea5370f3c417ec",
+    "partitions": 5396,
+    "rows": 7751950,
+    "eligible_rows": 7750120
+  },
+  "interpretation_boundary": {
+    "candidate_snapshot_values_materialized": true,
+    "comparison_values_read": false,
+    "historical_daily_ohlcv_or_forward_return_values_read": false,
+    "2024_2025_candidate_values_materialized_under_single_pre_frozen_2019_2025_snapshot": true,
+    "2024_2025_returns_opened": false,
+    "performance_conclusion_available": false
+  },
+  "next_gate": {
+    "allowed": "Freeze and run the preregistered structural coverage, variation and cohort-capacity audit using only the candidate snapshot plus accepted universe/calendar identity.",
+    "not_allowed": "Do not read any of 140 comparator values, daily OHLCV fields, forward returns or 2024-2025 stress returns before coverage passes."
+  },
+  "candidate49_integrity": {
+    "signal_ledger_sha256": "5193f00d7f36da003f53cec387900da4c3d002299f5dfcfc1a95eaa199ed3a79",
+    "execution_ledger_sha256": "d57a3e61eac969e42cafa418ccd8c0a5ee65dcf69da145bb2c096c2a02a2ea4f",
+    "ledgers_changed": false
+  },
+  "research_boundary": {
+    "provider_request_issued": false,
+    "credential_loaded": false,
+    "candidate_snapshot_values_materialized": true,
+    "comparison_values_read": false,
+    "historical_daily_ohlcv_fields_read": [],
+    "historical_forward_returns_read": false,
+    "stress_2024_2025_return_values_opened": false,
+    "candidate49_historical_backfill_performed": false,
+    "candidate49_ledgers_changed": false,
+    "second_prospective_candidate_created": false,
+    "current_scoring_selection_sizing_positions_or_orders_performed": false,
+    "investment_advice": false
+  }
+}

@@ -1,0 +1,52 @@
+{
+  "schema_version": 1,
+  "kind": "a_share_three_day_walkforward_campaign104_terminal_verification",
+  "status": "verified_terminal_prevalue_zero_candidates",
+  "recorded_at": "2026-08-07T17:22:02Z",
+  "authoritative_state": {
+    "path": "docs/a_share_three_day_iteration_status_20260808_campaign104_prevalue_terminal.json",
+    "sha256": "3ebb8fdc3df361b78488a446adc664ebfec85481cadca82ba88c19d647d6f450"
+  },
+  "future_numeric_policy": {
+    "path": "docs/a_share_three_day_walkforward_future_numeric_comparison_eligibility_policy_v62_20260808.json",
+    "sha256": "3259f771039a2c3eb64c33b548fd9b198e6cd36f154cb8ab33a06ca91d495dfa",
+    "complete_definition_count": 134,
+    "numeric_comparator_count": 131,
+    "orders_unchanged_from_v61": true
+  },
+  "test_module": {
+    "path": "tests/data_collector_tests/test_a_share_three_day_walkforward_campaign104_prevalue_terminal.py",
+    "sha256": "cfb5f11bbcdfc4595e19225762c0fe52ecc29868c6126769a09cb3af47801d37"
+  },
+  "test_receipts": [
+    {
+      "scope": "Campaign104 focused terminal semantics, hashes, chain, policy order, Candidate49 boundary, timestamps, and reports",
+      "result": "8 passed in 2.41s",
+      "exit_code": 0
+    },
+    {
+      "scope": "Campaign100-104 effective terminal chain plus Candidate49 future-session workflow",
+      "result": "60 passed in 2.74s",
+      "exit_code": 0
+    }
+  ],
+  "verified_assertions": {
+    "finite_prevalue_concepts_recorded": 5,
+    "selected_candidate_count": 0,
+    "campaign104_source_candidate_or_comparison_values_read": false,
+    "historical_daily_price_or_forward_return_values_read": false,
+    "development_or_stress_trial_run": false,
+    "attempt_entry_count": 7,
+    "attempt_chain_valid": true,
+    "infrastructure_failure_count": 6,
+    "cumulative_historical_research_attempt_count": 775,
+    "cumulative_return_reading_development_trial_count": 299,
+    "candidate49_signal_entry_count": 0,
+    "candidate49_execution_entry_count": 0,
+    "candidate49_ledgers_unchanged": true,
+    "provider_request_issued": false,
+    "new_logical_timestamps_do_not_postdate_file_writes": true,
+    "current_scoring_selection_sizing_or_orders_performed": false,
+    "investment_advice": false
+  }
+}

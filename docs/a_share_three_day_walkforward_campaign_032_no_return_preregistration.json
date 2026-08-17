@@ -1,0 +1,298 @@
+{
+  "version": 1,
+  "kind": "a_share_three_day_walkforward_campaign032_no_return_preregistration",
+  "status": "frozen_before_campaign032_stock_day_quarterly_candidate_comparison_or_return_values",
+  "frozen_at": "2026-07-30T14:46:00Z",
+  "purpose": "Freeze exactly one Campaign032 factor, direction, source projection, missing rules, complete 53-factor uniqueness library, ordered no-return gates, and one-trial development search before opening protected values.",
+  "candidates": [
+    {
+      "name": "quarterly_announcement_timeliness_days",
+      "direction": "higher",
+      "formula": "-1 * integer calendar days between report_date and announcement_date for the latest quarterly report effective at signal session t",
+      "economic_hypothesis": "A shorter latest report-to-announcement delay can indicate faster uncertainty resolution and stronger reporting processes.",
+      "stock_day_identity_fields": [
+        "datetime",
+        "symbol",
+        "provider"
+      ],
+      "event_fields_allowed": [
+        "instrument",
+        "report_date",
+        "announcement_date"
+      ],
+      "event_fields_used_by_formula": [
+        "instrument",
+        "report_date",
+        "announcement_date"
+      ],
+      "event_value_fields_forbidden": [
+        "roe",
+        "net_profit",
+        "revenue_yoy",
+        "profit_yoy"
+      ],
+      "availability_semantics": "Map announcement_date to the first accepted local session strictly after it. Sort by instrument, effective session, report_date, and announcement_date with a stable sort; when multiple reports share one effective session keep the last. At signal t use the latest effective report with effective_session <= t.",
+      "calendar_day_delay_semantics": "Compute exact normalized announcement_date minus normalized report_date in integer calendar days. A negative delay is invalid and remains missing.",
+      "direction_transform": "multiply the nonnegative delay by exact negative one",
+      "transform_scale_clip_threshold_filter": "none",
+      "valid_range": [
+        null,
+        0
+      ],
+      "valid_range_upper_inclusive": true,
+      "missing_semantics": "No prior effective report, invalid identity/date, report outside the frozen source, event outside the accepted calendar, negative delay, noninteger/nonfinite value, or positive final score remains missing; never fill, clip, winsorize, substitute, or select another report."
+    }
+  ],
+  "point_in_time_context": {
+    "calendar": {
+      "path": "data/qlib/cn_a_share/calendars/day.txt",
+      "sha256": "fda506597d26bcec953cdc0882042a5046ec1587db60490e16a01627fd43f53a",
+      "sessions_2019_2025": 1699
+    },
+    "source_universe": {
+      "path": "data/qlib/cn_a_share/instruments/factor_main_chinext_star.txt",
+      "sha256": "cdded13c831b78045f4cfe80ba5d9a49f82152c615fef4267d00f992e7f53762"
+    },
+    "holding_universe": {
+      "path": "data/qlib/cn_a_share/instruments/buyable_main_chinext.txt",
+      "sha256": "77ccf8de2ed1e447e73b5d5ff1703fc2a8656d6adab34ef44017481730249db1"
+    },
+    "quarterly_quality": {
+      "path": "data/raw/a_share/fundamentals/quarterly_quality.parquet",
+      "sha256": "3ac901a97928d2ed81ac72e3eaac9bdc148d36cf67b6abe70223699235ef059f",
+      "manifest_path": "data/metadata/quarterly_quality_manifest.json",
+      "manifest_sha256": "e3cf654babe37a82393c5530696bc1cc242b736cb88e1947b8444b638125ba8c",
+      "availability": "strictly_next_local_session_after_announcement_date",
+      "maximum_age_days": 550,
+      "quality_state_semantics": "After effective-date ordering and deduplication, forward-fill roe, net_profit, revenue_yoy, and profit_yoy independently for eligibility only; Campaign032 never reads these values into its factor."
+    },
+    "minimum_listing_sessions": 20,
+    "survivorship_limitation": "The current-listing-derived holding universe can introduce survivorship bias, and the public quarterly snapshot can contain later corrections. Campaign032 is research-only and cannot be promoted without point-in-time listing/delisting and exchange-grade disclosure history."
+  },
+  "source_chain": {
+    "concept_scouting": {
+      "path": "docs/a_share_three_day_walkforward_campaign_032_concept_scouting.json",
+      "sha256": "92a2911e6f0839fe7fd1570e6126d68622c0742192f6227336212ff00a29a10e"
+    },
+    "mechanism_overlap_audit": {
+      "path": "docs/a_share_three_day_walkforward_campaign_032_mechanism_overlap_audit.json",
+      "sha256": "3b736aea9d09e4cd3f8ce371f015c73d0fac6f0b261e8426306b403cc0395bca"
+    },
+    "reporting_semantics_activation": {
+      "path": "docs/a_share_three_day_walkforward_campaign_032_reporting_semantics_activation_20260730.json",
+      "sha256": "07ca7a3589671cabc96c736058a2bf6068e8daca402a96c78037913bdfb88b89"
+    },
+    "authoritative_iteration_state": {
+      "path": "docs/a_share_three_day_iteration_status_20260730_campaign031_verified.json",
+      "sha256": "026e2905aa2de7287435f2f7276ef2e5f8f257dccd57779506acf2fcea7c3564"
+    },
+    "binding_validator_activation": {
+      "path": "docs/a_share_three_day_preregistration_binding_validator_activation_20260729.json",
+      "sha256": "ca07f930cb6e617e9f917b2afba3ebd43a0e12e86eddda7ad05006205be50913"
+    },
+    "binding_validator": {
+      "path": "scripts/a_share_three_day_preregistration_binding_validator.py",
+      "sha256": "a6ab81a645fb25be2594937356e873c62737167dc88569d9b4b46bba6b7dcc4f"
+    },
+    "historical_walkforward_policy": {
+      "path": "docs/a_share_three_day_historical_walkforward_research_policy_20260727.json",
+      "sha256": "38426d6161b9bfed323c58caba18feca668b8c9d53e294951a8ba90c01a798bb"
+    },
+    "raw_minute_manifest": {
+      "path_below_data_root": "raw/a_share/rich/tushare/minutes/1m/snapshots/tushare_stk_mins_1m_2019_2025_ea0cbb8f/snapshot_manifest.json",
+      "sha256": "9b3d959563c9d182f38981c6a36bdb3bc9b415de08487a9e1f9e850825c0839f",
+      "projected_columns": [
+        "datetime",
+        "symbol",
+        "provider"
+      ],
+      "price_activity_fields_read": false
+    },
+    "joint_clean_manifest": {
+      "path_below_data_root": "derived/a_share/rich/tushare/minute_sentiment_clean/tushare_stk_mins_1m_2019_2025_ea0cbb8f_sentiment_clean_v1/snapshot_manifest.json",
+      "sha256": "453c6719cb3c7da42fed8807b28a2bfe988700283e9625a6db97912534f368de",
+      "dataset_sha256": "0e4fe7c05536cdfcecc2936bc880726902f5560061188ffff82ef7ee6f346983",
+      "partitions": 33015,
+      "rows": 7724498,
+      "use": "accepted stock-day key grid only"
+    },
+    "quarterly_disclosure_source": {
+      "path": "data/raw/a_share/fundamentals/quarterly_quality.parquet",
+      "sha256": "3ac901a97928d2ed81ac72e3eaac9bdc148d36cf67b6abe70223699235ef059f",
+      "manifest_path": "data/metadata/quarterly_quality_manifest.json",
+      "manifest_sha256": "e3cf654babe37a82393c5530696bc1cc242b736cb88e1947b8444b638125ba8c",
+      "rows": 143776,
+      "projected_columns": [
+        "instrument",
+        "report_date",
+        "announcement_date"
+      ],
+      "forbidden_value_columns": [
+        "roe",
+        "net_profit",
+        "revenue_yoy",
+        "profit_yoy"
+      ]
+    },
+    "prior_comparison_catalog": {
+      "path": "docs/a_share_three_day_walkforward_campaign_031_no_return_preregistration.json",
+      "sha256": "95951a357ffef3eee46f8d220d150fd00223b32f27f6cf93a92c4f6c17452f6d",
+      "json_pointer": "/ordered_no_return_gates/uniqueness_after_coverage_only/comparison_factors",
+      "factor_count": 52
+    },
+    "campaign031_statistical_snapshot": {
+      "path": "/Volumes/DIsk/qlib-a-share-tushare-1m/derived/a_share/rich/tushare/minute_walkforward_campaign031_feature_library/tushare_stk_mins_1m_2019_2025_ea0cbb8f_walkforward_campaign031_feature_library_v1/snapshot_manifest.json",
+      "sha256": "4df07ce452454d742521e835f2b7954fe53c597ba47ec31438cb47fd2abbd086",
+      "dataset_sha256": "9858378a035142b36f19bf00b0b8c7847802e428f6798dc1900b2ae003bcd6b1",
+      "factor": "intraday_market_dispersion_decoupling_238m",
+      "score_direction": "higher"
+    },
+    "campaign031_no_return_audit": {
+      "path": "data/experiments/short_horizon/historical_walkforward/campaign_031/no_return/20260730T140740Z_campaign031_no_return_audit.json",
+      "sha256": "b994169eeecbb3d47cdca32cbbfbb873be5299493209321da5e3895631211334"
+    },
+    "campaign031_terminal_record": {
+      "path": "docs/a_share_three_day_walkforward_campaign_031_research_record.json",
+      "sha256": "e0db3cdad2508672189d5f2599fef26b8a9fff385d13bd8ba669645f640a0aa5"
+    },
+    "candidate49_future_observation_registration": {
+      "path": "docs/a_share_tushare_intraday_cumulative_vwap_crossing_rate_future_observation_registration.json",
+      "sha256": "431cb0b3b078823f08b888bf4c499bcc5088309a2e58e9de5cb9a9aaa849ffa9",
+      "historical_return_comparison_allowed": false
+    },
+    "candidate49_signal_ledger": {
+      "path": "data/experiments/short_horizon/candidate49_future_signal_ledger.json",
+      "sha256": "5193f00d7f36da003f53cec387900da4c3d002299f5dfcfc1a95eaa199ed3a79",
+      "entry_count": 0
+    },
+    "candidate49_execution_ledger": {
+      "path": "data/experiments/short_horizon/candidate49_future_execution_ledger.json",
+      "sha256": "d57a3e61eac969e42cafa418ccd8c0a5ee65dcf69da145bb2c096c2a02a2ea4f",
+      "entry_count": 0
+    }
+  },
+  "ordered_no_return_gates": {
+    "coverage_and_capacity_before_comparison_values": {
+      "coverage_basis": "candidate finite rows divided by quality-and-listing eligible buyable rows within 2019-2025",
+      "minimum_median_coverage": 0.95,
+      "minimum_p05_coverage": 0.9,
+      "minimum_p05_eligible_names": 50,
+      "minimum_non_overlapping_three_session_cohorts": 200,
+      "minimum_observed_calendar_years": 5,
+      "holding_period_sessions": 3,
+      "pilot_capital_cny": 200000,
+      "pilot_buy_lot_size_shares": 100,
+      "failed_gate_policy": "Record this exact factor as inadmissible and stop before comparison values, daily prices, or forward returns."
+    },
+    "uniqueness_after_coverage_only": {
+      "screen_start": "2019-01-01",
+      "screen_end": "2025-12-31",
+      "method": "Within each identical quality-listing-candidate-and-comparison-eligible stock-day cross-section, compute pairwise-complete Spearman correlation between directional percentile scores, then take each comparison factor's median daily correlation.",
+      "maximum_allowed_absolute_median_daily_rank_correlation": 0.8,
+      "minimum_pairwise_names_per_session": 50,
+      "minimum_pairwise_sessions_per_comparison": 100,
+      "candidate49_is_a_no_return_comparison_only": true,
+      "campaign008_is_semantic_only_due_zero_finite_values": true,
+      "campaign013_is_semantic_only_due_low_coverage": true,
+      "comparison_factors": [
+        {"name": "late_return_30m", "score_direction": "higher"},
+        {"name": "late_amount_share_30m", "score_direction": "higher"},
+        {"name": "late_vwap_to_day_vwap_30m", "score_direction": "higher"},
+        {"name": "intraday_realized_volatility", "score_direction": "lower"},
+        {"name": "afternoon_signed_amount_efficiency_120m", "score_direction": "higher"},
+        {"name": "afternoon_drawdown_recovery_resilience_120m", "score_direction": "higher"},
+        {"name": "intraday_amount_participation_entropy_240m", "score_direction": "higher"},
+        {"name": "intraday_amount_profile_serial_persistence_240m", "score_direction": "higher"},
+        {"name": "intraday_upside_semivariance_share_239m", "score_direction": "higher"},
+        {"name": "intraday_terminal_close_location_240m", "score_direction": "higher"},
+        {"name": "intraday_return_sign_run_imbalance_238p", "score_direction": "higher"},
+        {"name": "intraday_volatility_resolution_238m", "score_direction": "higher"},
+        {"name": "intraday_amount_lead_return_correlation_238p", "score_direction": "higher"},
+        {"name": "intraday_amount_center_of_mass_240m", "score_direction": "higher"},
+        {"name": "intraday_up_move_amount_share_238m", "score_direction": "higher"},
+        {"name": "intraday_diffusive_variation_ratio_238m", "score_direction": "higher"},
+        {"name": "intraday_amount_volatility_coupling_238p", "score_direction": "higher"},
+        {"name": "intraday_return_variance_entropy_238m", "score_direction": "higher"},
+        {"name": "intraday_return_skewness_238m", "score_direction": "higher"},
+        {"name": "intraday_bar_vwap_close_pressure_240m", "score_direction": "higher"},
+        {"name": "intraday_price_update_share_238m", "score_direction": "higher"},
+        {"name": "intraday_market_idiosyncratic_share_238m", "score_direction": "higher"},
+        {"name": "intraday_opening_auction_amount_share_241m", "score_direction": "higher"},
+        {"name": "intraday_market_amount_profile_synchronization_240m", "score_direction": "higher"},
+        {"name": "intraday_cumulative_vwap_crossing_rate_240m", "score_direction": "higher"},
+        {"name": "intraday_market_neutral_late_residual_drift_238m", "score_direction": "higher"},
+        {"name": "intraday_negative_return_absorption_rate_236p", "score_direction": "higher"},
+        {"name": "intraday_signed_path_efficiency_239m", "score_direction": "higher"},
+        {"name": "intraday_zero_return_amount_intensity_238m", "score_direction": "higher"},
+        {"name": "intraday_transaction_price_path_confirmation_238p", "score_direction": "higher"},
+        {"name": "intraday_share_volume_transaction_price_coupling_238p", "score_direction": "higher"},
+        {"name": "intraday_intrabar_body_range_efficiency_240m", "score_direction": "higher"},
+        {"name": "intraday_adjacent_range_overlap_continuity_238p", "score_direction": "higher"},
+        {"name": "intraday_intrabar_range_participation_entropy_240m", "score_direction": "higher"},
+        {"name": "intraday_intrabar_range_reversal_238p", "score_direction": "higher"},
+        {"name": "intraday_global_price_range_revisit_240m", "score_direction": "higher"},
+        {"name": "intraday_prior_range_breakout_pressure_238p", "score_direction": "higher"},
+        {"name": "intraday_interbar_gap_body_confirmation_238p", "score_direction": "higher"},
+        {"name": "intraday_midrange_width_change_coupling_238p", "score_direction": "higher"},
+        {"name": "intraday_range_share_volume_confirmation_240m", "score_direction": "higher"},
+        {"name": "intraday_bar_direction_continuity_238p", "score_direction": "higher"},
+        {"name": "quarterly_announcement_freshness_60s", "score_direction": "higher"},
+        {"name": "intraday_market_response_delay_asymmetry_236p", "score_direction": "higher"},
+        {"name": "intraday_intrabar_close_location_pressure_240m", "score_direction": "higher"},
+        {"name": "intraday_range_boundary_translation_coherence_238p", "score_direction": "higher"},
+        {"name": "intraday_directional_range_response_coupling_238p", "score_direction": "higher"},
+        {"name": "intraday_extreme_arrival_order_240m", "score_direction": "higher"},
+        {"name": "intraday_market_up_down_correlation_asymmetry_238m", "score_direction": "higher"},
+        {"name": "intraday_morning_afternoon_return_profile_persistence_119p", "score_direction": "higher"},
+        {"name": "intraday_absolute_return_serial_persistence_236p", "score_direction": "higher"},
+        {"name": "intraday_market_shock_magnitude_decoupling_238m", "score_direction": "higher"},
+        {"name": "intraday_market_correlation_resolution_119p", "score_direction": "higher"},
+        {"name": "intraday_market_dispersion_decoupling_238m", "score_direction": "higher"}
+      ]
+    }
+  },
+  "finite_post_admissibility_search": {
+    "candidate_factor_count": 1,
+    "development_trial_count": 1,
+    "trial": {
+      "trial_id": "wf032_quarterly_announcement_timeliness_days_single_higher",
+      "factor": "quarterly_announcement_timeliness_days",
+      "direction": "higher",
+      "transform": "none",
+      "threshold": "none",
+      "filter": "none",
+      "combination": "none"
+    },
+    "development_interval": {
+      "start": "2019-01-01",
+      "end": "2023-12-31",
+      "folds": [
+        {"train": ["2019-01-01", "2020-12-31"], "validation": ["2021-01-01", "2021-12-31"]},
+        {"train": ["2019-01-01", "2021-12-31"], "validation": ["2022-01-01", "2022-12-31"]},
+        {"train": ["2019-01-01", "2022-12-31"], "validation": ["2023-01-01", "2023-12-31"]}
+      ],
+      "purge_local_signal_sessions": 3,
+      "partition_rule": "signal t, entry t+1, and exit t+3 must remain wholly inside one train or validation partition"
+    },
+    "stress_interval": {
+      "start": "2024-01-01",
+      "end": "2025-12-31",
+      "opening_rule": "Open exactly once only if the frozen single development trial passes every frozen survivor gate; label historically exposed quasi-out-of-sample."
+    }
+  },
+  "research_boundary": {
+    "binding_validation_required_before_stock_day_quarterly_or_candidate_values": true,
+    "stock_day_datetime_symbol_provider_identity_read_before_admissibility": true,
+    "quarterly_instrument_report_announcement_fields_read_before_admissibility": true,
+    "quarterly_value_fields_read_by_candidate_before_admissibility": false,
+    "minute_price_volume_amount_fields_read_before_admissibility": false,
+    "daily_price_fields_read_before_admissibility": false,
+    "forward_return_fields_read_before_admissibility": false,
+    "comparison_values_read_before_coverage_pass": false,
+    "candidate49_historical_return_read": false,
+    "candidate49_signal_or_execution_ledger_changed": false,
+    "candidate50_prospective_activation_allowed": false,
+    "current_scoring_selection_sizing_or_orders_allowed": false,
+    "provider_request_allowed": false
+  }
+}

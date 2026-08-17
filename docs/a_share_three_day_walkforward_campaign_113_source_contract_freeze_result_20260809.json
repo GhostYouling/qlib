@@ -1,0 +1,98 @@
+{
+  "schema_version": 1,
+  "kind": "a_share_three_day_walkforward_campaign113_source_contract_freeze_result",
+  "status": "source_contract_frozen_before_programmatic_rows_formula_candidate_or_values",
+  "recorded_at": "2026-08-09T01:07:09+08:00",
+  "authoritative_predecessor": {
+    "path": "docs/a_share_three_day_iteration_status_20260809_campaign112_prevalue_terminal.json",
+    "sha256": "a8b56171ec20a130a1485aa9316d72e030ad928900eb4b7368c30b79e95c53b8"
+  },
+  "numeric_policy_v74": {
+    "path": "docs/a_share_three_day_walkforward_future_numeric_comparison_eligibility_policy_v74_20260809.json",
+    "sha256": "c5a2ca6f47ed86d95f867648475466a1a3ab5c5c2880f38f6df82ec49ed4aa4c",
+    "complete_definition_count_preserved": 140,
+    "complete_definition_order_sha256": "c06e054bd76a7eb32a88a8a119abf5a0b7da2d017620ce7d870c9bb1c361c3c4",
+    "numeric_comparator_count_preserved": 134,
+    "numeric_comparator_order_sha256": "31d788db467f558a0ac538315343090f1b3ad4cb27a26136a49ebaa88b2fdbf2"
+  },
+  "finite_source_catalog": [
+    {
+      "source_state": "tushare_top_list_recent_event_intensity",
+      "decision": "rejected_as_campaign113_source",
+      "reason": "The top_list table remains a one-session raw reconciliation artifact with two exact duplicates; the terminal top_inst/龙虎榜 branch forbids using it as a rescue factor source."
+    },
+    {
+      "source_state": "tushare_suspend_d_resumption_duration",
+      "decision": "rejected_as_campaign113_source",
+      "reason": "A deliberately optimistic zero-return upper bound previously produced only 181 of the required 200 non-overlapping cohorts and permanently stopped the exact full-day suspension-duration resumption mechanism before provider rows."
+    },
+    {
+      "source_state": "tushare_stk_holdertrade_or_repurchase_state",
+      "decision": "rejected_as_campaign113_source",
+      "reason": "Direct insider/open-market activity and repurchase-plan/progress mechanisms already have frozen terminal histories; changing endpoint or event treatment would be a post-result retry."
+    },
+    {
+      "source_state": "cninfo_lawsuit_disclosure_sparsity",
+      "decision": "rejected_as_campaign113_source",
+      "reason": "The adjacent thematic transport failed its frozen response-shape contract and the terminal guarantee/major-contract records explicitly forbid switching to lawsuit counts as a rescue."
+    },
+    {
+      "source_state": "official_exchange_formal_enforcement_action",
+      "decision": "selected_for_source_contract_only",
+      "reason": "Formal SSE/SZSE enforcement actions are issuer-level realized compliance states and are semantically distinct from inquiry requests, issuer-authored announcements, ST membership, audit opinions, accounting fields and price/volume paths. The official listing pages expose point-in-time code, action family/type, action date and document identity roles without requiring document text."
+    }
+  ],
+  "selected_source_contract": {
+    "path": "docs/a_share_official_exchange_enforcement_source_contract_20260809.json",
+    "sha256": "d4eda5eb2fefd7e2795251bd4926fc7e7157ea264fcabc430904c40d5dfd91e4",
+    "schema_timing_canonicalization_capacity_and_context_fingerprints_frozen": true,
+    "programmatic_network_access_authorized": false,
+    "factor_formula_or_direction_frozen": false,
+    "historical_candidate_created": false,
+    "prospective_candidate_created": false
+  },
+  "scientific_result": {
+    "source_concepts_reviewed": 5,
+    "old_or_blocked_sources_rejected": 4,
+    "genuinely_new_source_contracts_frozen": 1,
+    "complete_factor_definition_count": 0,
+    "numeric_snapshot_count": 0,
+    "coverage_or_uniqueness_audit_count": 0,
+    "development_trial_count": 0,
+    "stress_trial_count": 0,
+    "historical_predictive_value_established": false,
+    "campaign113_terminal": false,
+    "campaign113_stage": "source_contract_frozen_pending_zero_row_adapter_and_formula_freeze"
+  },
+  "mandatory_next_stage": {
+    "implement_pure_schema_role_and_canonicalization_adapter_using_synthetic_fixtures_only": true,
+    "freeze_adapter_and_test_sha256_before_source_request": true,
+    "freeze_endpoint_metadata_mapping_without_inspecting_rows": true,
+    "freeze_one_formula_direction_window_missing_rule_and_raw_range_before_source_request": true,
+    "reserve_all_134_numeric_comparators_without_loading": true,
+    "provider_or_exchange_source_request_allowed_now": false
+  },
+  "accounting": {
+    "campaign113_attempt_count": 6,
+    "campaign113_infrastructure_failure_count": 5,
+    "campaign113_prevalue_scientific_attempt_count": 1,
+    "campaign113_complete_factor_attempt_count": 0,
+    "campaign113_return_reading_development_trial_count": 0,
+    "cumulative_historical_research_attempt_count": 833,
+    "cumulative_return_reading_development_trial_count": 302
+  },
+  "research_boundary": {
+    "official_page_labels_or_search_index_snippets_observed": true,
+    "programmatic_source_requests_issued": false,
+    "programmatic_source_rows_read_persisted_or_counted": false,
+    "candidate_or_comparison_values_read": false,
+    "historical_daily_price_fields_read": [],
+    "historical_forward_returns_read": false,
+    "stress_2024_2025_opened": false,
+    "candidate49_historical_backfill_performed": false,
+    "candidate49_ledgers_changed": false,
+    "second_prospective_candidate_created": false,
+    "current_scoring_selection_sizing_or_orders_performed": false,
+    "investment_advice": false
+  }
+}

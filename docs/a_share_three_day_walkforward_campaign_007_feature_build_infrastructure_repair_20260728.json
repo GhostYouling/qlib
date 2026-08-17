@@ -1,0 +1,76 @@
+{
+  "version": 1,
+  "kind": "a_share_three_day_walkforward_campaign007_feature_build_infrastructure_repair",
+  "status": "infrastructure_only_empty_joint_partition_repair_authorizes_exact_resume",
+  "recorded_at": "2026-07-28T12:10:00Z",
+  "purpose": "Record the first Campaign007 feature-build failure and the only repair needed to resume the exact frozen no-return materialization without changing the factor, direction, fields, gates, or trial catalog.",
+  "frozen_inputs": {
+    "mechanism_overlap_audit": {
+      "path": "docs/a_share_three_day_walkforward_campaign_007_mechanism_overlap_audit.json",
+      "sha256": "7e7ebe2232f379b9659222c878b49730a3a2ab331f6542890906d5880970da57"
+    },
+    "no_return_preregistration": {
+      "path": "docs/a_share_three_day_walkforward_campaign_007_no_return_preregistration.json",
+      "sha256": "308d5898c4a6d04b127c21876039ef7886d28b317951240fc29ba9ab2568a8ef"
+    },
+    "formula": "PearsonCorr(log(volume_t/volume_t-1), log((amount_t/volume_t)/(amount_t-1/volume_t-1))) over retained within-half adjacent active-bar pairs",
+    "direction": "higher",
+    "source_fields": [
+      "datetime",
+      "symbol",
+      "provider",
+      "volume",
+      "amount"
+    ]
+  },
+  "failed_attempt": {
+    "command": "PYTHONPATH=/opt/anaconda3/lib/python3.12/site-packages /opt/anaconda3/bin/python3 -S scripts/a_share_three_day_walkforward_campaign007_features.py build --data-root /Volumes/DIsk/qlib-a-share-tushare-1m --workers 8",
+    "exit_code": 1,
+    "failure_symbol": "SH600145",
+    "failure_partition_year": 2019,
+    "failure_reason": "The joint-clean base partition was valid and intentionally empty, but the new Campaign007 identity check compared its empty symbol set with the expected singleton before returning an empty output partition.",
+    "source_evidence": {
+      "joint_base_rows": 0,
+      "joint_base_partition_sha256": "462e72c134d1d81f2381c36548188a317896097452653ab8105fbe20cd9a8ce2",
+      "joint_base_manifest_declared_eligible_rows": 0,
+      "joint_base_manifest_declared_missing_local_daily_sessions": 244
+    },
+    "partial_checkpoint_state_after_failure": {
+      "parquet_checkpoints": 801,
+      "json_sidecars": 801,
+      "published_final_snapshot": false,
+      "coverage_audit_created": false,
+      "comparison_values_read": false,
+      "daily_price_fields_read": [],
+      "forward_return_fields_read": false
+    }
+  },
+  "repair": {
+    "description": "Return the canonical empty output and base_rows=0 immediately after schema/date normalization when the hash-bound joint-clean partition is empty; retain every existing identity, timestamp, exact-grid, numeric, factor, and checkpoint validation for nonempty partitions.",
+    "formula_changed": false,
+    "direction_changed": false,
+    "source_fields_changed": false,
+    "zero_or_missing_semantics_changed": false,
+    "minimum_retained_pairs_changed": false,
+    "coverage_capacity_or_uniqueness_gate_changed": false,
+    "trial_catalog_changed": false,
+    "existing_checkpoint_reuse_requires_hash_validation": true,
+    "same_command_and_parameters_only": true
+  },
+  "post_repair_tests": {
+    "path": "tests/data_collector_tests/test_a_share_three_day_walkforward_campaign007_features.py",
+    "expected_test_count": 8,
+    "new_regression": "test_empty_joint_base_returns_an_empty_partition"
+  },
+  "research_boundary": {
+    "provider_request_issued": false,
+    "provider_credential_read": false,
+    "minute_close_read": false,
+    "daily_price_fields_read": [],
+    "historical_forward_return_fields_read": false,
+    "candidate49_historical_return_read": false,
+    "candidate49_ledgers_changed": false,
+    "candidate50_prospective_activation_created": false,
+    "current_scoring_selection_sizing_or_orders_performed": false
+  }
+}

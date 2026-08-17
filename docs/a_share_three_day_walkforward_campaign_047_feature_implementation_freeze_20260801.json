@@ -1,0 +1,90 @@
+{
+  "version": 1,
+  "kind": "a_share_three_day_walkforward_campaign047_feature_implementation_freeze",
+  "status": "frozen_before_campaign047_external_minute_candidate_comparison_daily_price_or_return_values",
+  "recorded_at": "2026-08-01T01:28:00Z",
+  "purpose": "Bind the exact Campaign047 feature implementation and synthetic tests after all preregistration bindings passed and before any external Campaign047 candidate or comparison value is read.",
+  "bindings": {
+    "authoritative_state": {
+      "path": "docs/a_share_three_day_iteration_status_20260801_campaign046_verified.json",
+      "sha256": "dd4d80021dc6c90d629e9fba0555a8d6fdece0d4d472bdb6e63e2b1486d9b4a7"
+    },
+    "historical_walkforward_policy": {
+      "path": "docs/a_share_three_day_historical_walkforward_research_policy_20260727.json",
+      "sha256": "38426d6161b9bfed323c58caba18feca668b8c9d53e294951a8ba90c01a798bb"
+    },
+    "concept_scouting": {
+      "path": "docs/a_share_three_day_walkforward_campaign_047_concept_scouting.json",
+      "sha256": "dd8e29a254fd0cc6bb8f7867b34100a873d92a4d49ff115f330b62edc023c821"
+    },
+    "mechanism_overlap_audit": {
+      "path": "docs/a_share_three_day_walkforward_campaign_047_mechanism_overlap_audit.json",
+      "sha256": "da50437c0a53416c6c5b2a8f03bf6834977d59f030b25af72d6c666581681837"
+    },
+    "no_return_preregistration": {
+      "path": "docs/a_share_three_day_walkforward_campaign_047_no_return_preregistration.json",
+      "sha256": "9de50590193575a47382fd16d092e486e84ca565a5f1e23c6b4f2e361403df53"
+    },
+    "feature_runner": {
+      "path": "scripts/a_share_three_day_walkforward_campaign047_features.py",
+      "sha256": "f328d60c194e9af1202f8b54b3aef02de03f2e2c5d6e28dbf95303dd1fe97ec5"
+    },
+    "synthetic_tests": {
+      "path": "tests/data_collector_tests/test_a_share_three_day_walkforward_campaign047_features.py",
+      "sha256": "5412ae213f16caa364207923fc6d047064910d3e988327882d138e2f23900649"
+    }
+  },
+  "frozen_implementation": {
+    "factor": "intraday_body_next_microgap_reversal_238p",
+    "direction": "higher",
+    "source_projection": [
+      "datetime",
+      "symbol",
+      "provider",
+      "open",
+      "close"
+    ],
+    "formula": "Within each 120-bar half, align 119 b_t=log(close_t/open_t) observations with 119 g_(t+1)=log(open_(t+1)/close_t) observations; pool both halves and return the negative equal-weight population Pearson correlation.",
+    "selected_bar_count": 240,
+    "aligned_transition_count": 238,
+    "exact_zero_body_and_gap_retained": true,
+    "positive_population_variance_required_for_both_vectors": true,
+    "valid_range": [
+      -1.0,
+      1.0
+    ],
+    "endpoint_canonicalization_tolerance": 1e-12,
+    "comparison_factor_count": 70,
+    "comparison_factor_order_sha256": "d40b78fbe34941dec83c61f6ddeaed928b7c2e1c641096b893e52f7d272e3b94",
+    "finite_trial_count_if_admitted": 1,
+    "parameter_filter_subset_combination_or_model_search": false
+  },
+  "verification": {
+    "binding_validator_exit_code": 0,
+    "binding_validator_status": "all_preregistration_bindings_valid",
+    "binding_count": 12,
+    "failed_binding_count": 0,
+    "synthetic_test_command": "PYTHONPATH=. pytest -q tests/data_collector_tests/test_a_share_three_day_walkforward_campaign047_features.py",
+    "synthetic_tests_passed": 7,
+    "synthetic_tests_failed": 0
+  },
+  "research_boundary": {
+    "external_campaign047_minute_partitions_read": false,
+    "candidate_values_read": false,
+    "comparison_values_read": false,
+    "historical_daily_price_fields_read": false,
+    "historical_forward_returns_read": false,
+    "candidate49_historical_return_signal_execution_or_milestone_backfill_performed": false,
+    "candidate49_ledgers_changed": false,
+    "candidate50_activation_created": false,
+    "provider_request_issued": false,
+    "current_scoring_selection_sizing_or_orders_performed": false,
+    "investment_advice": false
+  },
+  "decision": {
+    "implementation_frozen": true,
+    "snapshot_build_authorized": true,
+    "comparison_values_authorized_before_coverage_pass": false,
+    "daily_price_or_return_values_authorized_before_all_70_uniqueness_comparisons_pass": false
+  }
+}

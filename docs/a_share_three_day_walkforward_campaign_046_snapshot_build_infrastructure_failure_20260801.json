@@ -1,0 +1,48 @@
+{
+  "version": 1,
+  "kind": "a_share_three_day_walkforward_campaign046_snapshot_build_infrastructure_failure",
+  "status": "recorded_before_infrastructure_only_repair_and_exact_parameter_retry",
+  "recorded_at": "2026-07-31T22:21:00Z",
+  "failed_command": "PYTHONPATH=. python scripts/a_share_three_day_walkforward_campaign046_features.py build --data-root /Volumes/DIsk/qlib-a-share-tushare-1m --workers 4",
+  "exit_code": 1,
+  "failure": {
+    "exception_type": "KeyError",
+    "missing_key": "_inherited_build_snapshot",
+    "stage": "wrapper_lookup_before_external_partition_enumeration",
+    "cause": "The dynamic Campaign045 wrapper was executed into an outer globals mapping, while the inherited build callable remained in the nested generated-engine mapping. The Campaign046 wrapper referenced the outer mapping.",
+    "semantic_change_required": false
+  },
+  "frozen_inputs": {
+    "no_return_preregistration": {
+      "path": "docs/a_share_three_day_walkforward_campaign_046_no_return_preregistration.json",
+      "sha256": "7ca20bdf7d32b78489e3ac5cc4d25c6b6773ee09e9260732778f30e86faa7c52"
+    },
+    "pre_failure_implementation": {
+      "path": "scripts/a_share_three_day_walkforward_campaign046_features.py",
+      "sha256": "4346ae4af4ab181bbcf4f6384f079eecd5578286ae46a5283cc93256aa2d05be"
+    },
+    "implementation_freeze": {
+      "path": "docs/a_share_three_day_walkforward_campaign_046_feature_implementation_freeze_20260801.json",
+      "sha256": "6a1c297a8063bcfbe4a0549a6d4e8dba821730413e8f4ecaa3523ea28e59cec3"
+    }
+  },
+  "research_boundary": {
+    "external_partition_enumeration_started": false,
+    "external_minute_partition_read": false,
+    "candidate_values_computed_or_published": false,
+    "comparison_values_read": false,
+    "historical_daily_price_fields_read": false,
+    "historical_forward_returns_read": false,
+    "provider_request_issued": false,
+    "candidate49_ledgers_changed": false,
+    "candidate49_historical_backfill_performed": false,
+    "candidate50_activation_created": false,
+    "current_scoring_selection_sizing_or_orders_performed": false
+  },
+  "allowed_repair": {
+    "change_only": "retain the outer globals mapping, then point the orchestration handle to its nested generated-engine mapping and bind existing Campaign044 constants explicitly",
+    "formula_direction_fields_pairing_zero_denominator_gate_or_catalog_change_allowed": false,
+    "retry_count_authorized": 1,
+    "retry_parameters_must_match": true
+  }
+}

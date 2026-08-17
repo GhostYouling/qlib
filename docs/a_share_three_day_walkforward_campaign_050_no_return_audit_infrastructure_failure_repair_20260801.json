@@ -1,0 +1,91 @@
+{
+  "version": 1,
+  "kind": "a_share_three_day_walkforward_campaign050_no_return_audit_infrastructure_failure_repair",
+  "status": "infrastructure_only_isolated_campaign049_verifier_repair_authorizes_exact_audit_continuation",
+  "recorded_at": "2026-08-01T09:32:12Z",
+  "purpose": "Preserve the sole failed Campaign050 no-return-audit invocation and authorize only an isolated frozen Campaign049 file-verifier adapter before one exact continuation of the same ordered audit.",
+  "frozen_inputs": {
+    "no_return_preregistration": {
+      "path": "docs/a_share_three_day_walkforward_campaign_050_no_return_preregistration.json",
+      "sha256": "32c3e889e736e050fb0326f2bceb6ddd820ae7a0b9c5f6bac09c90a5afebb10e"
+    },
+    "snapshot_publication_binding": {
+      "path": "docs/a_share_three_day_walkforward_campaign_050_snapshot_publication_binding_20260801.json",
+      "sha256": "f6e1ea181f52a0137ba0f2d03718e9f393cc98a2ecb322dd7c4d89c5f4d651d6"
+    },
+    "no_return_audit_entrypoint_freeze": {
+      "path": "docs/a_share_three_day_walkforward_campaign_050_no_return_audit_entrypoint_freeze_20260801.json",
+      "sha256": "ba77a6ed20cd6bfdf21ab708e3763b6e42922357a2d3d3c506e49a45f44851dd"
+    },
+    "failed_audit_entrypoint": {
+      "path": "scripts/a_share_three_day_walkforward_campaign050_features_v6.py",
+      "sha256": "a55bfcd3f69a45502d87e53f64ababe05d311dfdc17705348d80544c22198171"
+    },
+    "campaign049_snapshot": {
+      "manifest_path": "/Volumes/DIsk/qlib-a-share-tushare-1m/derived/a_share/rich/tushare/minute_walkforward_campaign049_feature_library/tushare_stk_mins_1m_2019_2025_ea0cbb8f_walkforward_campaign049_feature_library_v1/snapshot_manifest.json",
+      "manifest_sha256": "6c27933f232926f33d750f624fc6ad32c394c2e97922043502e997275c1ace1d",
+      "dataset_sha256": "c60c1f245e2bbfdd12acdcfdd8417799684fcda09caf4472270d870ba911164c",
+      "factor": "intraday_morning_afternoon_amount_profile_similarity_120b"
+    },
+    "campaign049_frozen_runner": {
+      "path": "scripts/a_share_three_day_walkforward_campaign049_features.py",
+      "sha256": "981378510744bb53bb5353d1bf99ca9850b4f10c49bd8500d38d29994bdeff83"
+    }
+  },
+  "failed_invocation": {
+    "command": "python scripts/a_share_three_day_walkforward_campaign050_features_v6.py no-return-audit --data-root /Volumes/DIsk/qlib-a-share-tushare-1m --workers 4",
+    "exit_code": 1,
+    "result_artifact_written": false,
+    "failure_stage": "verify the final frozen historical Campaign049 comparison snapshot before loading comparison 73 of 73",
+    "failure_type": "pyarrow.lib.ArrowInvalid caused by inherited module-global OUTPUT_COLUMNS contamination",
+    "observed_expected_column": "intraday_half_session_extreme_shock_reversal_completion_2h",
+    "actual_frozen_campaign049_column": "intraday_morning_afternoon_amount_profile_similarity_120b",
+    "failure_is_snapshot_corruption": false,
+    "failure_is_factor_or_gate_evidence": false,
+    "candidate_snapshot_partitions_verified": 33015,
+    "candidate_snapshot_rows_verified": 7724498,
+    "coverage_gate_passed_inferred_from_reached_code_path": true,
+    "comparison_results_computed_before_failure_count": 72,
+    "comparison_73_value_loaded": false,
+    "comparison_metric_values_printed_or_persisted": false,
+    "completed_audit_record_count_after_failure": 0
+  },
+  "root_cause": {
+    "description": "Campaign050 intentionally reuses the Campaign049 generated engine. Campaign050 installs its own OUTPUT_COLUMNS into that engine. The final extra-verification loop then called the inherited Campaign049 module's verifier through the contaminated shared engine, so the verifier requested the Campaign050 factor column from a valid Campaign049 Parquet file.",
+    "data_dependent_research_choice_involved": false,
+    "snapshot_or_protocol_change_required": false
+  },
+  "authorized_repair": {
+    "description": "Load the exact hash-frozen Campaign049 runner in a fresh isolated module namespace and replace only the final Campaign049 file-verifier callable with that isolated verifier. Keep Campaign050 candidate loading, all 73 comparison values, formulas, directions, ordering, thresholds, source manifests, and result construction byte-identical.",
+    "implementation_form": "additive wrapper; do not modify any frozen runner or prior wrapper",
+    "formula_changed": false,
+    "direction_changed": false,
+    "coverage_or_capacity_gate_changed": false,
+    "comparison_catalog_or_order_changed": false,
+    "uniqueness_threshold_changed": false,
+    "candidate_or_comparison_snapshot_changed": false,
+    "comparison_values_observed_for_repair_choice": false,
+    "same_command_parameters_required": true,
+    "exact_continuation_limit": 1,
+    "failed_infrastructure_invocation_is_not_a_completed_audit": true
+  },
+  "post_repair_implementation": {
+    "wrapper_path": "scripts/a_share_three_day_walkforward_campaign050_features_v7.py",
+    "test_path": "tests/data_collector_tests/test_a_share_three_day_walkforward_campaign050_no_return_audit_repair.py",
+    "expected_test_count": 2,
+    "must_verify_all_campaign049_partitions_and_rows_before_continuation": true,
+    "must_be_fingerprint_bound_before_continuation": true
+  },
+  "research_boundary": {
+    "comparison_values_read": true,
+    "comparison_metric_values_retained": false,
+    "historical_daily_price_fields_read": [],
+    "historical_forward_return_fields_read": false,
+    "training_or_model_fitting_performed": false,
+    "provider_request_issued": false,
+    "candidate49_historical_return_read": false,
+    "candidate49_ledgers_changed": false,
+    "candidate50_prospective_activation_created": false,
+    "current_scoring_selection_sizing_or_orders_performed": false
+  }
+}

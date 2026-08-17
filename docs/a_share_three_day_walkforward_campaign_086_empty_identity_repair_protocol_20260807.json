@@ -1,0 +1,36 @@
+{
+  "schema_version": 1,
+  "kind": "a_share_three_day_walkforward_campaign086_empty_identity_repair_protocol",
+  "status": "frozen_before_v2_runner_edit_or_feature_build_retry",
+  "frozen_at": "2026-08-07T01:07:00+08:00",
+  "failure_record": {
+    "path": "docs/a_share_three_day_walkforward_campaign_086_feature_build_empty_identity_failure_20260807.json",
+    "sha256": "dc88b419a65f142d13676ace772365648015018675174391882c441e4b131453"
+  },
+  "v1_implementation_freeze": {
+    "path": "docs/a_share_three_day_walkforward_campaign_086_feature_implementation_freeze_20260807.json",
+    "sha256": "9ea63a23935619537137376e464297bbc302bed26feff0ae719ad00656c47ebd"
+  },
+  "latest_attempt_ledger": {
+    "path": "data/experiments/short_horizon/historical_walkforward/campaign_086/research_attempt_ledger_v5.json"
+  },
+  "allowed_code_delta": [
+    "Introduce an explicit empty output frame with trade_date, symbol, provider, and the frozen factor column.",
+    "When the accepted joint-clean identity projection is empty, return that empty output before requiring nonempty values or performing attachment.",
+    "Add a unit test proving an empty accepted identity returns the exact empty schema."
+  ],
+  "forbidden_code_delta": [
+    "Any factor formula, direction, state, grid, support, missing, pair, variance, correlation, or endpoint change.",
+    "Any eligible-universe, comparator, coverage, uniqueness, development, stress, cost, or gate change.",
+    "Any read of comparison factors, historical daily prices, forward returns, Candidate49 historical values, or provider network data."
+  ],
+  "retry_conditions": [
+    "Publish and validate a v2 runner rather than rewrite or relabel the v1 freeze.",
+    "Ruff and all Campaign086 synthetic tests must pass before the v2 implementation freeze.",
+    "The final output root must still be absent before retry."
+  ],
+  "candidate_snapshot_published_before_protocol": false,
+  "comparison_values_read_before_protocol": false,
+  "historical_daily_price_or_forward_return_values_read_before_protocol": false,
+  "provider_request_issued_before_protocol": false
+}

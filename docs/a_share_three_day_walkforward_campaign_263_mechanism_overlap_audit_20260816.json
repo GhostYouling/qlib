@@ -1,0 +1,55 @@
+{
+  "schema_version": 1,
+  "kind": "a_share_three_day_walkforward_campaign263_mechanism_overlap_audit",
+  "status": "semantic_independence_passed_before_source_or_candidate_values_numeric_uniqueness_still_required",
+  "recorded_at": "2026-08-16T11:17:00Z",
+  "timestamp_semantics": "monotonic logical append time before Campaign263 values",
+  "candidate": {
+    "name": "intraday_amount_profile_spectral_entropy_60f",
+    "direction": "higher",
+    "information_domain": "within_session_amount_profile_frequency_power_dispersion"
+  },
+  "exact_distinctions": [
+    {
+      "terminal_family": "intraday_amount_participation_entropy_240m and intraday_amount_lorenz_gini_240m",
+      "distinction": "Those are permutation-invariant amount-mass distributions; the candidate changes when the same 240 amounts are reordered on the clock."
+    },
+    {
+      "terminal_family": "intraday_amount_weak_order_entropy_236t and intraday_amount_local_peak_density_238p",
+      "distinction": "Those retain only local ordinal/tie or peak states; the candidate uses the amplitude and phase-insensitive power of every full-half Fourier mode."
+    },
+    {
+      "terminal_family": "intraday_amount_profile_serial_persistence_240m and intraday_amount_path_efficiency_238p",
+      "distinction": "Those are adjacent-step summaries; the candidate is a simultaneous all-frequency distribution and is not determined by lag-one dependence or total variation."
+    },
+    {
+      "terminal_family": "intraday_return_spectral_entropy_59f",
+      "distinction": "The estimator family is analogous but the economic state and source are different: amount-profile shares rather than signed close returns. Historical precedent treats weak-order and spectral entropy as distinct summaries within one source family."
+    },
+    {
+      "terminal_family": "intraday_return_amount_cross_spectral_phase_lead_59f",
+      "distinction": "That factor is bivariate, signed and phase-oriented; this candidate reads no price or return and uses only univariate amount power dispersion."
+    },
+    {
+      "terminal_family": "intraday_amount_center_of_mass_240m, dispersion, third moment and schedule uniformity",
+      "distinction": "Clock moments and a cumulative path distance do not determine how deviation power is distributed over all Fourier modes."
+    }
+  ],
+  "search_control": {
+    "candidate_count": 1,
+    "direction": "higher",
+    "halves": ["09:31-11:30", "13:01-15:00"],
+    "half_length": 120,
+    "frequency_bins": "all rFFT bins k=1..60 inclusive",
+    "frequency_selection_or_weighting": false,
+    "alternate_transform_operator_window_threshold_filter_subset_fit_model_or_combination_search": false
+  },
+  "decision": "pass_semantic_gate_and_require_all_142_frozen_numeric_comparisons_after_coverage",
+  "research_boundary": {
+    "campaign263_minute_source_rows_read": false,
+    "campaign263_candidate_or_comparator_values_read": false,
+    "historical_daily_price_or_forward_return_values_read": false,
+    "provider_or_web_request_issued": false,
+    "candidate49_ledgers_changed": false
+  }
+}

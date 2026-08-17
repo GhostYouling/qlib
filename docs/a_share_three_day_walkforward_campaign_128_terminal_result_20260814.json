@@ -1,0 +1,115 @@
+{
+  "schema_version": 1,
+  "kind": "a_share_three_day_walkforward_campaign128_terminal_result",
+  "status": "terminal_zero_development_survivors_stress_not_opened",
+  "recorded_at": "2026-08-14T06:56:00+08:00",
+  "factor": "intraday_transaction_price_dispersion_resolution_2h",
+  "direction": "higher",
+  "source_snapshot": {
+    "path": "/Volumes/DIsk/qlib-a-share-tushare-1m/derived/a_share/rich/tushare/minute_walkforward_campaign128_feature_library/tushare_stk_mins_1m_2019_2025_ea0cbb8f_walkforward_campaign128_feature_library_v1/snapshot_manifest.json",
+    "sha256": "6ddc6358bffbfd6ae412744e96479b7bc6bc179ee0ae20cff9b3cb3e85b86e2f",
+    "dataset_sha256": "4644fdbf8ddbd046def730c9eaf848fdc56874f617ea2aefb50dedcffbc9bb4f",
+    "partitions": 33015,
+    "rows": 7724498,
+    "eligible_rows": 7580753
+  },
+  "coverage_audit": {
+    "path": "data/experiments/short_horizon/historical_walkforward/campaign_128/coverage/campaign128_coverage_audit.json",
+    "sha256": "8ccfbc0fb76b5c4187febbf8659fb29c864259efd4e3a8be3bc5d0db8a980605",
+    "median_daily_coverage": 0.993201130962011,
+    "p05_daily_coverage": 0.9813084112149533,
+    "eligible_names_p05": 138.0,
+    "potential_non_overlapping_three_signal_session_cohorts": 540,
+    "nonconstant_cross_sectional_sessions": 1632
+  },
+  "no_return_audit": {
+    "path": "data/experiments/short_horizon/historical_walkforward/campaign_128/uniqueness/campaign128_ordered_uniqueness_audit.json",
+    "sha256": "7661112a503f8930cba5fd79c03815b8c830d39f98703746362b85b37fa14cef",
+    "numeric_comparisons_passed": 139,
+    "maximum_observed_absolute_median_daily_rank_correlation": 0.4061439818245511
+  },
+  "development_preregistration": {
+    "path": "docs/a_share_three_day_walkforward_campaign_128_preregistration.json",
+    "sha256": "e2b884d9286f48420dcc9d42077ab374425b90f4bbdca8873c0347c8acabfe36"
+  },
+  "development_activation": {
+    "path": "docs/a_share_three_day_walkforward_campaign_128_development_activation_binding_20260813.json",
+    "sha256": "7fb9783c022a38237ba05a3716e08a18ce7b2c54e8119865ac2a52ebee8c56f1"
+  },
+  "attempt_ledger": {
+    "path": "data/experiments/short_horizon/historical_walkforward/campaign_128/research_attempt_ledger_v9.json",
+    "sha256": "73a5a6be56e83f2b37d15d0ac05a5d32e381db1b05153e87d36b3bd3b0744d23"
+  },
+  "development_outputs": {
+    "trial_ledger": {
+      "path": "data/experiments/short_horizon/historical_walkforward/campaign_128/walkforward/trial_ledger.json",
+      "sha256": "08422320ccfb35bc6e1efc497e1ee89081f2f7e57a9373767f0e973d350434a4",
+      "entry_count": 1,
+      "chain_tip_sha256": "4726d3d0420c9846a52373bf4bc2a96dcbc89b7700e8d5a1b53d18938cb9bed9"
+    },
+    "development_survivors": {
+      "path": "data/experiments/short_horizon/historical_walkforward/campaign_128/walkforward/development_survivors.json",
+      "sha256": "70deb51da67687b9430d88fd445494d40eb1c1564d13a30b6f0453d118f847b8",
+      "selected_survivor_count": 0
+    },
+    "exposed_stress_consumption_record": {
+      "path": "data/experiments/short_horizon/historical_walkforward/campaign_128/walkforward/exposed_stress_consumption_record.json",
+      "sha256": "93cf1bca50c62d61cec1732200aaca0fea89a6b2bd88db629c7c661b956fe8e9",
+      "status": "not_opened_zero_development_survivors"
+    },
+    "campaign_report": {
+      "path": "data/experiments/short_horizon/historical_walkforward/campaign_128/walkforward/campaign_report.json",
+      "sha256": "d628c33a2bd40d5b85c066c1398df7542ff0c977f4fc1c08f2d7597b95ce30ff"
+    }
+  },
+  "development_decision": {
+    "trial_id": "wf128_intraday_transaction_price_dispersion_resolution_2h_single_higher",
+    "trial_count": 1,
+    "survivor_count": 0,
+    "positive_mean_rank_ic_fold_count": 0,
+    "positive_normalized_return_fold_count": 1,
+    "positive_pilot_return_fold_count": 1,
+    "median_validation_mean_rank_ic": -0.008240941914018677,
+    "median_validation_spread": 0.0005692825461291287,
+    "median_validation_normalized_return": -0.2522714767796679,
+    "median_validation_pilot_return_10bp": -0.036573037118165175,
+    "development_aggregate_pilot_return_0bp": 0.014235655005722547,
+    "development_aggregate_pilot_return_5bp": -0.018564602332387548,
+    "development_aggregate_pilot_return_10bp": -0.056524408002949666,
+    "development_aggregate_pilot_return_20bp": -0.12789371817436823,
+    "worst_validation_normalized_drawdown": -0.34339018469461724,
+    "operationally_admissible": false,
+    "operational_rejection_reasons": [
+      "fold_1_board_lot_affordability",
+      "fold_2_board_lot_affordability"
+    ],
+    "validation_quality_gate_passed": false,
+    "validation_quality_rejection_reasons": [
+      "insufficient_positive_ic_folds",
+      "median_validation_mean_rank_ic",
+      "insufficient_positive_normalized_return_folds",
+      "insufficient_positive_pilot_return_folds",
+      "median_validation_pilot_return",
+      "worst_validation_normalized_drawdown",
+      "nonpositive_development_aggregate_20bp_return"
+    ]
+  },
+  "scientific_interpretation": "The factor failed to generalize across the three frozen validation folds: zero folds had positive mean Rank-IC, while only one fold each had positive normalized and 10bp board-lot pilot return. Median validation mean Rank-IC was -0.824094%, median normalized return was -25.227148%, median 10bp pilot return was -3.657304%, and worst validation normalized drawdown was -34.339018%. It was also operationally rejected because board-lot affordability fell below the frozen minimum in folds 1 and 2. The aggregate 2019-2023 board-lot pilot deteriorated from +1.423566% at 0bp to -12.789372% at 20bp, so the frozen fold-consistency, cost, affordability and drawdown gates reject it.",
+  "terminal_boundary": {
+    "retry_reverse_redefine_rereference_rearrival_renormalize_rewindow_transform_filter_subset_year_select_reweight_combine_or_rescue_allowed": false,
+    "stress_2024_2025_opened": false,
+    "stress_2024_2025_return_values_read": false,
+    "candidate49_historical_backfill_performed": false,
+    "candidate49_ledgers_changed": false,
+    "second_prospective_candidate_created": false,
+    "current_scoring_selection_sizing_positions_or_orders_performed": false,
+    "investment_advice": false
+  },
+  "candidate49": {
+    "signal_ledger_sha256": "5193f00d7f36da003f53cec387900da4c3d002299f5dfcfc1a95eaa199ed3a79",
+    "execution_ledger_sha256": "d57a3e61eac969e42cafa418ccd8c0a5ee65dcf69da145bb2c096c2a02a2ea4f",
+    "signal_entry_count": 0,
+    "execution_entry_count": 0
+  },
+  "next_action": "Preserve the Campaign128 development rejection, retain its complete definition exactly once, append its numeric series exactly once for future duplicate control, and begin Campaign129 only from a genuinely new prevalue-frozen mechanism."
+}

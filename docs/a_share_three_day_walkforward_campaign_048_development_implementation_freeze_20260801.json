@@ -1,0 +1,114 @@
+{
+  "version": 1,
+  "kind": "a_share_three_day_walkforward_campaign048_development_implementation_freeze",
+  "status": "single_exact_trial_runner_and_all_bindings_frozen_before_2019_2023_return_read",
+  "frozen_at": "2026-08-01T05:18:00Z",
+  "purpose": "Bind the admitted factor, exact pre-value trial identifier, development runner, inherited three-fold protocol, closed search space, and conditional stress rule before historical daily prices or returns are read.",
+  "bindings": {
+    "development_preregistration": {
+      "path": "docs/a_share_three_day_walkforward_campaign_048_preregistration_v2.json",
+      "sha256": "05d8bb6b45dac88a03583e87baf9bd15fc9cd88340ba7a024333e1ca9772bef1"
+    },
+    "development_runner": {
+      "path": "scripts/a_share_three_day_walkforward_campaign048_v2.py",
+      "sha256": "6150deed1f514c2874ae66fba6631a020f1dc8d97a6274127b3db1906f1c2bc0"
+    },
+    "byte_bound_parent_runner": {
+      "path": "scripts/a_share_three_day_walkforward_campaign047.py",
+      "sha256": "f22728ffe96aae25f039f7179be0b981defb42fd734786236306e9b93389e784"
+    },
+    "pre_return_namespace_semantic_failure": {
+      "path": "docs/a_share_three_day_walkforward_campaign_048_development_namespace_semantic_failure_20260801.json",
+      "sha256": "600f22c272874906126952bfb0911c56e63058d44bfdf131982f1ba0e6eb4e67"
+    },
+    "no_return_audit_freeze": {
+      "path": "docs/a_share_three_day_walkforward_campaign_048_no_return_audit_freeze_20260801.json",
+      "sha256": "2a7a67ece68a1ccb6925c87861a7090d74f034bba5fc5065b08ec22abaa199b6"
+    },
+    "feature_runner": {
+      "path": "scripts/a_share_three_day_walkforward_campaign048_features_v3.py",
+      "sha256": "b1767a4fdd9567aa40550b7c79fc51abc4b9e995141fb68257e9708696bf7367"
+    },
+    "development_boundary_tests": {
+      "path": "tests/data_collector_tests/test_a_share_three_day_walkforward_campaign048.py",
+      "sha256": "4940ece1c399ed7bda688855a2c69211ae16e5a37b1889525fefac00788570e5"
+    }
+  },
+  "frozen_trial_catalog": [
+    {
+      "trial_id": "wf048_intraday_two_sided_wick_absorption_balance_240m_single_higher",
+      "parent_trial_id": null,
+      "kind": "single_factor",
+      "feature_set": [
+        "intraday_two_sided_wick_absorption_balance_240m"
+      ],
+      "weights": [
+        1.0
+      ],
+      "complexity": 1,
+      "direction": "higher"
+    }
+  ],
+  "walkforward_protocol": {
+    "fold_count": 3,
+    "folds": [
+      {
+        "fold": 1,
+        "training": "2019-01-01..2020-12-31",
+        "validation": "2021-01-01..2021-12-31"
+      },
+      {
+        "fold": 2,
+        "training": "2019-01-01..2021-12-31",
+        "validation": "2022-01-01..2022-12-31"
+      },
+      {
+        "fold": 3,
+        "training": "2019-01-01..2022-12-31",
+        "validation": "2023-01-01..2023-12-31"
+      }
+    ],
+    "purge_signal_sessions_each_boundary": 3,
+    "label_containment_required": true,
+    "entry": "next accepted local session open t+1",
+    "exit": "third accepted local session close t+3",
+    "topk": 3
+  },
+  "search_and_stress_boundary": {
+    "expected_development_trial_count": 1,
+    "alternate_direction_horizon_weight_filter_threshold_model_combination_or_year_subset_search": false,
+    "every_trial_and_infrastructure_failure_must_be_retained": true,
+    "stress_2024_2025_open_before_frozen_nonzero_development_survivor": false,
+    "stress_pass_can_activate_candidate50_or_current_output": false
+  },
+  "validation": {
+    "preregistration_binding_count": 18,
+    "preregistration_bindings_passed": 18,
+    "preregistration_bindings_failed": 0,
+    "trial_identifier_matches_no_return_preregistration": true,
+    "trial_catalog_assertion_passed": true,
+    "runner_status_before_execution": {
+      "campaign_id": "a_share_three_day_walkforward_campaign_048",
+      "campaign_sha256": "05d8bb6b45dac88a03583e87baf9bd15fc9cd88340ba7a024333e1ca9772bef1",
+      "expected_trial_count": 1,
+      "candidate49_historical_return_read": false,
+      "current_scoring_selection_sizing_or_orders_allowed": false,
+      "ledger_entry_count": 0,
+      "stress_intent_exists": false,
+      "stress_record_exists": false
+    },
+    "development_boundary_tests_passed": 4,
+    "development_boundary_tests_failed": 0
+  },
+  "research_boundary_at_freeze": {
+    "historical_daily_price_fields_read": [],
+    "historical_forward_returns_read": false,
+    "training_or_model_fitting_performed": false,
+    "provider_request_issued": false,
+    "candidate49_historical_return_signal_execution_or_milestone_backfill_performed": false,
+    "candidate49_prospective_ledgers_changed": false,
+    "candidate50_activation_created": false,
+    "current_scoring_selection_sizing_or_orders_performed": false
+  },
+  "next_action": "Execute PYTHONPATH=. python scripts/a_share_three_day_walkforward_campaign048_v2.py run-development exactly once; retain every result and stop before 2024-2025 unless a frozen survivor exists."
+}

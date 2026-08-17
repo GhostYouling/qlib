@@ -1,0 +1,78 @@
+{
+  "schema_version": 1,
+  "kind": "a_share_three_day_walkforward_campaign104_mechanism_frontier_audit",
+  "status": "terminal_prevalue_zero_independent_candidates_after_complete_semantic_and_support_review",
+  "recorded_at": "2026-08-07T17:14:00Z",
+  "purpose": "Bind Campaign104's zero-candidate decision to v61, challenge every proposed concept against frozen terminal families, and apply the mandatory known-failed-support review before any candidate or comparison values.",
+  "concept_scouting": {
+    "path": "docs/a_share_three_day_walkforward_campaign_104_concept_scouting.json",
+    "sha256": "7494d65bc23b0d6b9f2d158695479c832b6bc7df3ffeea6d2fc095babcd4329a"
+  },
+  "numeric_policy_v61": {
+    "path": "docs/a_share_three_day_walkforward_future_numeric_comparison_eligibility_policy_v61_20260808.json",
+    "sha256": "bfced9733feba5975bc46b96f2596a9227a160849dbf50b41c958053edcc59a0",
+    "complete_definition_count_reviewed": 134,
+    "complete_definition_order_sha256": "db734b25fed4046ff80a276448daf20918d410125ebae941373c5617816cf8dc",
+    "numeric_comparator_count_reserved_only_if_a_candidate_passed": 131,
+    "numeric_comparator_order_sha256": "ab56a1791ae9a74b75d0a32cfb2346aa4bb6bfe266589be65825f8f51422f646"
+  },
+  "complete_mechanism_review": {
+    "all_134_frozen_logical_definitions_and_terminal_histories_reviewed": true,
+    "three_semantic_only_definitions_reviewed_without_numeric_coercion": [
+      "intraday_cross_sectional_standardized_return_state_stability_236p",
+      "signal_day_turnover_rate_pct",
+      "intraday_own_bar_close_location_entropy_10b_240m"
+    ],
+    "candidate49_excluded_from_historical_backfill_or_comparison": true,
+    "old_terminal_definition_formula_direction_or_failure_history_changed": false,
+    "selected_candidate_count": 0
+  },
+  "mandatory_prevalue_support_predicate_gate": {
+    "required_by_policy_v61": true,
+    "all_known_terminal_coverage_failures_through_campaign103_reviewed": true,
+    "known_failed_support_inventory": [
+      {"campaign": 5, "failed_support_class": "sparse lunch repricing plus retained post-lunch return support"},
+      {"campaign": 8, "failed_support_class": "one-sided-zero share-volume response rule"},
+      {"campaign": 13, "failed_support_class": "amount/volume transaction-price containment"},
+      {"campaign": 19, "failed_support_class": "at least 120 informative nonzero body-sign pairs"},
+      {"campaign": 44, "failed_support_class": "all-terminal-factor common finite intersection"},
+      {"campaigns": [52, 68, 70, 84], "failed_support_class": "multi-quarter or prior-year event cold start"},
+      {"campaign": 60, "failed_support_class": "exact prior stock session plus jointly nonzero return floor"},
+      {"campaign": 63, "failed_support_class": "positive leave-one-out variance at every return position"},
+      {"campaigns": [86, 96], "failed_support_class": "at least 120 adjacent positive-range close-location pairs"},
+      {"campaign": 95, "failed_support_class": "prevalue fixed-bin semantic contradiction"}
+    ],
+    "candidate_support_predicate_admitted": false,
+    "reason": "No concept passed the earlier semantic-independence and source-meaning gate, so no support predicate, candidate values, coverage values, or comparison values were opened."
+  },
+  "concept_dispositions": {
+    "transaction_price_path_efficiency": "prohibited Campaign006 repair explicitly recorded by Campaign007",
+    "one_tick_close_update_share": "post-exposure combination of tick-grid and price-update families",
+    "complete_library_profile_persistence": "Campaign103 temporal complete-library aggregator rescue",
+    "prior_close_excursion_imbalance": "post-exposure recombination of range-frontier and gap-containment geometry",
+    "odd_lot_aggregate_volume_residue": "economic state not identified by aggregate minute-volume schema"
+  },
+  "terminal_decision": {
+    "campaign104_complete_numeric_factor_definition_created": false,
+    "campaign104_numeric_comparator_eligibility": false,
+    "campaign104_feature_snapshot_created": false,
+    "campaign104_no_return_coverage_or_uniqueness_audit_run": false,
+    "campaign104_development_or_stress_trial_run": false,
+    "campaign104_may_repair_relabel_or_run_any_rejected_concept": false,
+    "historical_predictive_value_established": false,
+    "next_policy_must_preserve_the_exact_v61_134_definition_and_131_comparator_orders": true
+  },
+  "research_boundary": {
+    "campaign104_source_rows_read": false,
+    "campaign104_candidate_values_computed_or_read": false,
+    "campaign104_comparison_values_read": false,
+    "historical_daily_price_fields_read": [],
+    "historical_forward_returns_read": false,
+    "provider_request_issued": false,
+    "candidate49_historical_backfill_performed": false,
+    "candidate49_ledgers_changed": false,
+    "second_prospective_candidate_created": false,
+    "current_scoring_selection_sizing_or_orders_performed": false,
+    "investment_advice": false
+  }
+}

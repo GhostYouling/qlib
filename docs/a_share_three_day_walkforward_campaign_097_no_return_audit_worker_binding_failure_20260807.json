@@ -1,0 +1,34 @@
+{
+  "schema_version": 1,
+  "kind": "a_share_three_day_walkforward_campaign097_no_return_audit_worker_binding_failure",
+  "status": "preserved_fail_closed_infrastructure_attempt_before_candidate_partition_coverage_comparison_or_return_values",
+  "recorded_at": "2026-08-07T06:06:00Z",
+  "campaign": 97,
+  "attempt_class": "infrastructure_failure",
+  "attempt_count_increment": 1,
+  "command_scope": "single activated Campaign097 no-return audit",
+  "exit_code": 1,
+  "failure": {
+    "exception": "TypeError",
+    "message": "verify_snapshot_files() missing 1 required keyword-only argument: 'workers'",
+    "location": "Campaign097 verify_candidate_snapshot before candidate partition verification",
+    "root_cause": "The new Campaign097 snapshot verifier exposes the inherited parallel verifier's mandatory workers keyword, while the frozen v1 no-return wrapper called it without that keyword."
+  },
+  "failed_runner": {
+    "path": "scripts/a_share_three_day_walkforward_campaign097_no_return_audit.py",
+    "sha256": "c0d79005996420f2b6c84b645f75c427771549def134b01bca5adc710df786f2"
+  },
+  "failed_activation": {
+    "path": "docs/a_share_three_day_walkforward_campaign_097_no_return_audit_activation_binding_20260807.json",
+    "sha256": "21fa50bae72afbd822ec95a3a61c35b0e4ce7cca9ae0b209fab1c1940980060a"
+  },
+  "repair_boundary": "An additive v2 wrapper may bind workers into candidate snapshot verification and delegate every other frozen v1 alignment, gate, comparator, and output semantic unchanged.",
+  "candidate_partition_values_read": false,
+  "eligibility_stock_day_keys_read": false,
+  "coverage_or_capacity_metrics_computed": false,
+  "comparison_values_read": false,
+  "historical_daily_price_or_forward_return_values_read": false,
+  "provider_request_issued": false,
+  "candidate49_ledgers_changed": false,
+  "current_scoring_selection_sizing_or_orders_performed": false
+}

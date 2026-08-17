@@ -1,0 +1,79 @@
+{
+  "version": 1,
+  "kind": "a_share_three_day_walkforward_campaign065_feature_snapshot_binding",
+  "status": "published_snapshot_fingerprint_frozen_before_coverage_audit_comparison_values_daily_prices_or_returns",
+  "recorded_at": "2026-08-05T13:09:03+08:00",
+  "factor": "intraday_range_weak_order_time_reversal_divergence_236t",
+  "direction": "higher",
+  "formula": "For the exact 236 overlapping within-half triples of x_i=ln(high_i/low_i), classify each exact zero-tolerance comparison key into one of 13 transitive weak-order states, let p be their pooled frequency and q_s=p_R(s) under exact triple reversal, and return JSD(p,q)/ln(2).",
+  "no_return_protocol": {
+    "path": "docs/a_share_three_day_walkforward_campaign_065_no_return_preregistration.json",
+    "sha256": "332c233850e1a2ebf6fa87fa725d1933635708d31a447395ab2f83be1538863b"
+  },
+  "implementation_freeze": {
+    "path": "docs/a_share_three_day_walkforward_campaign_065_feature_implementation_freeze_20260805.json",
+    "sha256": "e390ee6a941c191d7983db490e6bfdc2ea368c26e43760a4fa629d6fb8928c62"
+  },
+  "feature_runner": {
+    "path": "scripts/a_share_three_day_walkforward_campaign065_features.py",
+    "sha256": "afa1b5fc37e55a311fdcf12409fbe5358580afb3227eec9486d2dcfe6d24a964"
+  },
+  "feature_tests": {
+    "path": "tests/data_collector_tests/test_a_share_three_day_walkforward_campaign065_features.py",
+    "sha256": "b5f636bacd17f1f54342a741f39b088e1282411a375ea4a150e2ca426b6ce364",
+    "passed": 13,
+    "failed": 0
+  },
+  "snapshot_manifest": {
+    "path": "/Volumes/DIsk/qlib-a-share-tushare-1m/derived/a_share/rich/tushare/minute_walkforward_campaign065_feature_library/tushare_stk_mins_1m_2019_2025_ea0cbb8f_walkforward_campaign065_feature_library_v1/snapshot_manifest.json",
+    "sha256": "d67f6553a0890c2fe63735ba3e3671ba070a7d9cb28a5c92df3be079b17383e8",
+    "dataset_sha256": "c0bce8bd42317fcbd1e946f13ba2873e485ceed196734ee63e59135cd1895ad4",
+    "partitions": 33015,
+    "rows": 7724498,
+    "eligible_rows": 7724498
+  },
+  "independent_snapshot_verification": {
+    "all_partition_byte_and_frame_hashes_passed": true,
+    "partitions_verified": 33015,
+    "rows_verified": 7724498,
+    "eligible_rows_verified": 7724498,
+    "exit_code": 0
+  },
+  "research_attempt_ledger_at_binding": {
+    "path": "data/experiments/short_horizon/historical_walkforward/campaign_065/research_attempt_ledger_v4.json",
+    "sha256": "bb11d556074bfa7f2aee0264fca987d8a315784192fde996b52ef310da479412",
+    "attempt_count": 8,
+    "complete_factor_attempt_count": 0,
+    "return_reading_trial_count": 0
+  },
+  "snapshot_semantics": {
+    "source_fields_read": [
+      "datetime",
+      "symbol",
+      "provider",
+      "high",
+      "low"
+    ],
+    "selected_bars": 240,
+    "within_half_overlapping_triples": 236,
+    "weak_order_state_count": 13,
+    "comparison_tolerance": 0.0,
+    "exact_ties_retained": true,
+    "reversal_map": "fixed_exact_triple_reversal_involution",
+    "divergence": "symmetric_Jensen_Shannon_divided_by_ln2",
+    "cross_session_lookback": 0,
+    "daily_price_fields_read": [],
+    "historical_forward_return_fields_read": false,
+    "comparison_factor_values_read": false,
+    "candidate49_historical_return_read": false,
+    "candidate49_ledgers_changed": false,
+    "provider_request_issued": false
+  },
+  "decision": {
+    "snapshot_is_immutable": true,
+    "coverage_first_no_return_audit_allowed": true,
+    "comparison_values_may_be_read_only_if_all_coverage_gates_pass": true,
+    "daily_prices_or_forward_returns_may_be_read_before_admission": false,
+    "historical_result_may_generate_current_scores_selections_sizing_or_orders": false
+  }
+}

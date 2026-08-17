@@ -1,0 +1,18 @@
+{
+  "schema_version": 1,
+  "kind": "a_share_three_day_walkforward_campaign120_preimplementation_protocol_path_failure",
+  "status": "recorded_before_historical_source_or_candidate_values",
+  "recorded_at": "2026-08-14T00:12:24+08:00",
+  "failed_stage": "unfrozen_formula_feature_audit_synthetic_validation",
+  "failure": "The scoped test run produced 17 passes and three failures because the transformed Campaign117 default protocol path retained the 20260813 date while Campaign120's fingerprint-bound preregistration is dated 20260814.",
+  "repair": "Replace only the transformed Campaign120 preregistration and implementation-freeze path dates, then rerun the same frozen-scope checks. Consolidate parameterized invalid-value cases into their single preregistered semantic tests so the final test count remains exactly 16.",
+  "scientific_formula_parser_direction_support_or_gate_changed": false,
+  "research_boundary": {
+    "historical_source_rows_read": false,
+    "candidate_values_computed_or_read": false,
+    "comparator_values_read": false,
+    "daily_price_or_forward_return_values_read": false,
+    "provider_request_issued": false,
+    "candidate49_ledgers_changed": false
+  }
+}

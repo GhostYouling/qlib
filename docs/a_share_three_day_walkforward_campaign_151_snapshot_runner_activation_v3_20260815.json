@@ -1,0 +1,93 @@
+{
+  "schema_version": 3,
+  "kind": "a_share_three_day_walkforward_campaign151_snapshot_runner_activation",
+  "status": "runner_and_tests_frozen_before_campaign151_historical_values",
+  "recorded_at": "2026-08-15T00:44:26+08:00",
+  "supersedes_without_rewriting": {
+    "path": "docs/a_share_three_day_walkforward_campaign_151_snapshot_runner_activation_v2_20260815.json",
+    "sha256": "911dd0dd6dcf2fd7a015d2971dee219867402169aad5e4a51ad60296b5789485",
+    "reason": "the first authorized amount-only build exposed a legitimate empty joint-clean partition; v3 binds the narrowly corrected builder and resumable checkpoint semantics"
+  },
+  "authoritative_inputs": {
+    "plan_runner": {
+      "path": "scripts/a_share_three_day_walkforward_campaign151_snapshot.py",
+      "sha256": "68cdaba9fe4f64332d50745803b340ee0d0a6381cf2352640ebb802e134f6cf0"
+    },
+    "plan_runner_test": {
+      "path": "tests/data_collector_tests/test_a_share_three_day_walkforward_campaign151_snapshot.py",
+      "sha256": "aabd42b03b7f7353f2ef88eab2acc6dc5a0dd45b0f4e71c34e1b3bd3136c84f0"
+    },
+    "plan_launch_failure": {
+      "path": "docs/a_share_three_day_walkforward_campaign_151_snapshot_plan_launch_failure_20260815.json",
+      "sha256": "3e1b1958d6584311f1c3e45571cf8d183448a8a406e274e7f36a68dd420076ef"
+    },
+    "builder_implementation_freeze": {
+      "path": "docs/a_share_three_day_walkforward_campaign_151_source_bound_builder_implementation_freeze_v2_20260815.json",
+      "sha256": "1574ee3166597a2af44967b5f14239b8febbffb474e799c3d12d95c481927180"
+    },
+    "source_bound_builder": {
+      "path": "scripts/a_share_three_day_walkforward_campaign151_features.py",
+      "sha256": "c808cfc180855a616237be914ade00c45fc217804406fce947d0391c288defdf"
+    },
+    "source_bound_builder_test": {
+      "path": "tests/data_collector_tests/test_a_share_three_day_walkforward_campaign151_features.py",
+      "sha256": "f51e1971c511f2f44dc9c32f2e4ce0ba88a06692dd4ad689f465205e4688b907"
+    },
+    "campaign151_state_v2": {
+      "path": "docs/a_share_three_day_iteration_status_20260815_campaign151_formula_frozen_v2.json",
+      "sha256": "b11c239e9559283b6c44912bbc6afb0e64eb9bde02d3d913b25325e47eb44cc9"
+    },
+    "numeric_policy_v205": {
+      "path": "docs/a_share_three_day_walkforward_future_numeric_comparison_eligibility_policy_v205_20260815.json",
+      "sha256": "e8a45201021392d36cd5af61409719619fbfec8f2c31609490ca231a54974b59"
+    },
+    "formula_frozen_validation": {
+      "path": "docs/a_share_three_day_walkforward_campaign_151_formula_frozen_validation_20260815.json",
+      "sha256": "52ab888a7dfbedd68b7b80ea4c031b931709fcd3b15d96a3f049a527b02a19f6"
+    }
+  },
+  "plan_contract": {
+    "metadata_only": true,
+    "parquet_or_npz_opened": false,
+    "source_manifest_json_and_calendar_text_metadata_may_be_read": true,
+    "provider_or_credential_access_allowed": false,
+    "ready_true_and_exit_zero_required": true,
+    "failed_plan_exit_may_not_be_bypassed": true,
+    "recognized_partial_root_names_only": true,
+    "partial_payload_validation_deferred_to_confirmed_builder": true,
+    "candidate49_immutable_empty_ledgers_checked": true
+  },
+  "build_contract": {
+    "confirmed_build_required": true,
+    "rerun_same_plan_in_process": true,
+    "workers_range_inclusive": [
+      1,
+      8
+    ],
+    "resume_existing_96_symbol_accumulator": true,
+    "builder_revalidates_accumulator_protocol_source_calendar_shapes_and_finiteness": true,
+    "final_root_never_overwritten": true,
+    "at_most_one_successful_publication": true
+  },
+  "verification": {
+    "corrected_builder_and_formula_tests": "16 passed in 0.85s",
+    "runner_tests": "6 passed in 5.82s",
+    "black": "passed",
+    "ruff": "passed",
+    "failed_exit_code_bypassed_or_masked": false
+  },
+  "research_boundary": {
+    "historical_minute_source_rows_or_values_read_by_activation_or_plan": false,
+    "prior_authorized_build_historical_minute_amount_values_read": true,
+    "prior_authorized_build_historical_price_values_read": false,
+    "candidate_or_comparator_values_read": false,
+    "historical_daily_price_or_forward_return_values_read": false,
+    "stress_2024_2025_opened_for_return_evaluation": false,
+    "credential_loaded": false,
+    "provider_request_issued": false,
+    "candidate49_historical_backfill_performed": false,
+    "candidate49_ledgers_changed": false,
+    "current_scoring_selection_sizing_positions_or_orders_performed": false
+  },
+  "next_action": "Run the exact v3 metadata-only plan with workers=4. Only ready=true with exit zero may resume the corrected amount-only build with workers=4 and --confirm-build."
+}

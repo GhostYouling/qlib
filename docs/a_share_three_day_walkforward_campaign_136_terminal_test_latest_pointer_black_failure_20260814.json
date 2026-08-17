@@ -1,0 +1,27 @@
+{
+  "schema_version": 1,
+  "kind": "a_share_three_day_walkforward_campaign136_infrastructure_failure",
+  "recorded_at": "2026-08-14T12:23:00+0800",
+  "attempt_id": "campaign136_infrastructure_009",
+  "phase": "terminal_lifecycle_test_validation",
+  "status": "terminal_test_latest_pointer_black_failure",
+  "failure": {
+    "reason": "The latest longer authority pointers required Black to reflow the terminal lifecycle test.",
+    "black_check_exit_code": 1,
+    "failed_exit_code_bypassed": false
+  },
+  "recovery": {
+    "method": "Mechanically format the new unfrozen test before running the final independent Black, Ruff and pytest checks.",
+    "formatted_test_path": "tests/data_collector_tests/test_a_share_three_day_walkforward_campaign136_terminal.py",
+    "formatted_test_sha256": "ffed9c0cb59db3e4fc587da4135fb1baf03473d91f4a2d478182a7376bd48cf2",
+    "scientific_artifacts_changed": false
+  },
+  "research_boundary": {
+    "additional_historical_return_values_read": false,
+    "stress_2024_2025_opened": false,
+    "provider_request_issued": false,
+    "credential_value_or_digest_read": false,
+    "candidate49_ledgers_changed": false,
+    "current_scoring_selection_sizing_positions_or_orders_performed": false
+  }
+}

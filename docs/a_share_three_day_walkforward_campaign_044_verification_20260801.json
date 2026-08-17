@@ -1,0 +1,119 @@
+{
+  "version": 1,
+  "kind": "a_share_three_day_walkforward_campaign044_verification",
+  "status": "terminal_campaign044_candidate49_isolation_and_env_loading_verified",
+  "recorded_at": "2026-07-31T19:27:00Z",
+  "purpose": "Bind the Campaign044 terminal result, complete attempt accounting, report supersession semantics, safe repository dotenv loading, unchanged Candidate49 ledgers, idempotent no-return status, and final full data-collector regression.",
+  "bindings": {
+    "research_record": {
+      "path": "docs/a_share_three_day_walkforward_campaign_044_research_record.json",
+      "sha256": "3e343e8387fd16db75f7e8a5c87025e712082ea50aa9e360083af7f0d3f2b615"
+    },
+    "no_return_audit_freeze": {
+      "path": "docs/a_share_three_day_walkforward_campaign_044_no_return_audit_freeze_20260801.json",
+      "sha256": "06be474c9c2ecba8aa7c1e9391e78ca0e473d58f16d78e509fa8ecaa9fc6d0d3"
+    },
+    "unified_report_supersession": {
+      "path": "docs/a_share_three_day_walkforward_campaign_044_unified_report_supersession_20260801.json",
+      "sha256": "85991fa0a0e1576fbd0c483b329e08ae80f2680ae36db238b632ce43598ed70e"
+    },
+    "research_attempt_ledger": {
+      "path": "data/experiments/short_horizon/historical_walkforward/campaign_044/research_attempt_ledger.json",
+      "sha256": "891a0dbc359a50c8e6d29edaa63863b255d9d2a7f84b65bb28f9b80e1ac5fb02"
+    },
+    "feature_and_no_return_runner": {
+      "path": "scripts/a_share_three_day_walkforward_campaign044_features.py",
+      "sha256": "7afa540e15d7f711c45df4c55100f47f552a5eeb68b80363c741237b9025a8f6"
+    },
+    "feature_tests": {
+      "path": "tests/data_collector_tests/test_a_share_three_day_walkforward_campaign044_features.py",
+      "sha256": "71bb21661561d9d789493197f13427159130fb9ec6cb3cda14fc1af99c79f639"
+    },
+    "terminal_tests": {
+      "path": "tests/data_collector_tests/test_a_share_three_day_walkforward_campaign044_terminal.py",
+      "sha256": "7f96db32ec50aa7262b6d1dba25fe1e62f271314bac7e7e21fac162e9bb2baba"
+    },
+    "campaign043_historical_binding_test": {
+      "path": "tests/data_collector_tests/test_a_share_three_day_walkforward_campaign043_terminal.py",
+      "sha256": "0882bc1c82ffff13087f6fd0d260e11bf42ae5fa66fdb53b3447745a63b7918d"
+    },
+    "unified_research_report": {
+      "path": "data/experiments/short_horizon/three_day_research_report.md",
+      "sha256": "e3362f18ba0c7d92418345a95e048e9321735ac61b7177c3a2ab02abc547d2fe"
+    },
+    "data_pipeline_documentation": {
+      "path": "docs/a_share_data_pipeline.md",
+      "sha256": "7b866d49ac44cb965dd10b2f2364b3c99b1b6b8b00e696a3caeb0dafe99c372b"
+    },
+    "manage_qlib_a_share_data_skill": {
+      "path": "/Users/niyufei/.codex/skills/manage-qlib-a-share-data/SKILL.md",
+      "sha256": "3ea5587d0ae0f42fd8635a675edc09b452398cb5445ae1060302e8413364bcae"
+    },
+    "candidate49_future_session_workflow": {
+      "path": "scripts/a_share_tushare_candidate49_future_session_workflow.py",
+      "sha256": "0ee21715af9ee276cb4e50c4234ef15ad3d3b730b014712ae4ad19829908b69e"
+    },
+    "candidate49_future_session_workflow_tests": {
+      "path": "tests/data_collector_tests/test_a_share_tushare_candidate49_future_session_workflow.py",
+      "sha256": "41e16ec52813160b141a3dcee53a22ea3ba0fe843e8772ad5304cfeaf2748f80"
+    },
+    "candidate49_signal_ledger": {
+      "path": "data/experiments/short_horizon/candidate49_future_signal_ledger.json",
+      "sha256": "5193f00d7f36da003f53cec387900da4c3d002299f5dfcfc1a95eaa199ed3a79"
+    },
+    "candidate49_execution_ledger": {
+      "path": "data/experiments/short_horizon/candidate49_future_execution_ledger.json",
+      "sha256": "d57a3e61eac969e42cafa418ccd8c0a5ee65dcf69da145bb2c096c2a02a2ea4f"
+    }
+  },
+  "verification_summary": {
+    "research_record_binding_validator_passed": true,
+    "research_record_binding_count": 18,
+    "no_return_freeze_binding_validator_passed": true,
+    "no_return_freeze_binding_count": 4,
+    "report_supersession_binding_validator_passed": true,
+    "report_supersession_binding_count": 3,
+    "campaign044_focused_test_count": 14,
+    "campaign044_focused_tests_passed": 14,
+    "campaign043_campaign044_transition_test_count": 18,
+    "campaign043_campaign044_transition_tests_passed": 18,
+    "first_full_data_collector_test_count": 1648,
+    "first_full_data_collector_test_failures": 1,
+    "first_failure": "Campaign043 immutable report binding correctly became historical after the Campaign044 append-only report update",
+    "historical_record_rewritten_to_fix_test": false,
+    "report_supersession_record_added": true,
+    "final_full_data_collector_test_count": 1648,
+    "final_full_data_collector_tests_passed": 1648,
+    "final_full_data_collector_tests_failed": 0,
+    "final_full_data_collector_test_warnings": 13,
+    "idempotent_no_return_rerun_returned_same_bound_artifact": true,
+    "snapshot_status_hash_matches": true,
+    "candidate49_ledgers_rehashed_unchanged": true
+  },
+  "credential_verification": {
+    "repository_dotenv_exists": true,
+    "repository_dotenv_is_regular_non_symlink_file": true,
+    "repository_dotenv_mode": "0600",
+    "repository_dotenv_is_git_ignored": true,
+    "tushare_token_key_present_and_nonempty": true,
+    "workflow_resolves_token_when_process_environment_variable_is_unset": true,
+    "focused_dotenv_tests_passed": 3,
+    "credential_value_printed_hashed_persisted_or_written_to_record": false,
+    "provider_request_issued_during_verification": false
+  },
+  "terminal_decision": {
+    "campaign044_attempt_count": 4,
+    "cumulative_historical_research_attempt_count": 265,
+    "campaign044_historical_return_trial_count": 0,
+    "cumulative_return_reading_development_trial_count": 261,
+    "admissible_factor_count": 0,
+    "component_correlations_computed": 0,
+    "development_folds_opened": false,
+    "stress_2024_2025_opened": false,
+    "candidate49_historical_return_read": false,
+    "candidate49_ledgers_changed": false,
+    "candidate50_activation_created": false,
+    "current_scoring_selection_sizing_or_orders_performed": false,
+    "campaign044_formula_direction_library_common_support_or_gate_changed_after_values": false
+  }
+}

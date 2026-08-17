@@ -1,0 +1,105 @@
+{
+  "schema_version": 1,
+  "kind": "a_share_three_day_iteration_status",
+  "status": "campaign200_validation_passed_goal_active_campaign201_offline_prevalue_authorized",
+  "recorded_at": "2026-08-15T18:22:00+08:00",
+  "timestamp_semantics": "monotonic logical append time after Campaign200 terminal validation",
+  "supersedes_without_rewriting": {
+    "path": "docs/a_share_three_day_iteration_status_20260815_campaign199_prevalue_terminal.json",
+    "sha256": "4a10467c5c47065a679cfb41dfd24bd1d655dc406041c54387709d86fc145e4b",
+    "preserved": true
+  },
+  "authoritative_inputs": {
+    "construction_engineering_contractor_project_lifecycle_source_frontier": {
+      "path": "docs/a_share_three_day_walkforward_campaign_200_construction_engineering_contractor_project_progress_certification_variation_claim_retention_completion_defect_lifecycle_source_frontier_20260815.json",
+      "sha256": "f29651a5dd28c2dd5f52ce176f2b6a417c96b16f91f7cbf731a6d2f2bbe6bda5"
+    },
+    "attempt_ledger": {
+      "path": "data/experiments/short_horizon/historical_walkforward/campaign_200/research_attempt_ledger_v1.json",
+      "sha256": "42b37a16a2c8daebb9d7ee750f52afbdc2f713ded4f430bb4b9434b6f2713d51"
+    },
+    "terminal_result": {
+      "path": "docs/a_share_three_day_walkforward_campaign_200_terminal_result_20260815.json",
+      "sha256": "211c64c0fdc09c8f4e74ec848666d14b1411ea8243e075b1c0345e70f89228bc"
+    },
+    "policy_v294": {
+      "path": "docs/a_share_three_day_walkforward_future_numeric_comparison_eligibility_policy_v294_20260815.json",
+      "sha256": "36df1ae2130520b460e4908c16de9893a7ae66e5445660b236ffd9dbd15ed176"
+    },
+    "terminal_validation": {
+      "path": "docs/a_share_three_day_walkforward_campaign_200_terminal_validation_20260815.json",
+      "sha256": "0464a85cd03aa8d2fc0ec92a25d2fd3d49cfe519b09895f03b4aac796133ea8e"
+    }
+  },
+  "campaign200": {
+    "domains_reviewed": [
+      "construction_engineering_contractor_project_progress_certification_variation_claim_retention_completion_defect_lifecycle"
+    ],
+    "terminal_phase": "finite_prevalue_construction_engineering_contractor_project_lifecycle_source_admission",
+    "construction_engineering_contractor_project_lifecycle_routes_reviewed": 7,
+    "genuinely_new_issuer_state_routes": 3,
+    "source_admission_deferrals_not_factor_failures": 3,
+    "relabeling_overlap_operator_or_combination_route_rejections": 4,
+    "selected_candidate_count": 0,
+    "complete_factor_definition_created": false,
+    "numeric_comparator_created": false
+  },
+  "effective_accounting": {
+    "campaign200_attempt_count": 13,
+    "campaign200_scientific_attempt_count": 7,
+    "campaign200_infrastructure_failure_count": 6,
+    "cumulative_historical_research_attempt_count": 1819,
+    "cumulative_return_reading_development_trial_count": 314,
+    "chain_tip_sha256": "7226f7a086eb6f9c9b2ef83795b47fb783f68c58e2dfeb33d1c616001185f2a3"
+  },
+  "library_state": {
+    "complete_factor_definition_count": 158,
+    "complete_factor_definition_order_sha256": "4819c7fd7c0795d7598a52f3c615e3f117d5f4ecd9332974bc8e3dfa57c96667",
+    "eligible_numeric_comparator_count": 142,
+    "eligible_numeric_comparator_order_sha256": "5d1b35fb5a0d8ac9293008db9963c4a60a94dc940c237c3ed259e5ce44f14aaf",
+    "changed_by_campaign200": false
+  },
+  "candidate49": {
+    "sole_prospective_candidate": true,
+    "signal_ledger_sha256": "5193f00d7f36da003f53cec387900da4c3d002299f5dfcfc1a95eaa199ed3a79",
+    "signal_entry_count": 0,
+    "execution_ledger_sha256": "d57a3e61eac969e42cafa418ccd8c0a5ee65dcf69da145bb2c096c2a02a2ea4f",
+    "execution_entry_count": 0,
+    "ledgers_changed": false
+  },
+  "candidate49_daily_20260815": {
+    "local_day": "Saturday",
+    "accepted_local_trading_day": false,
+    "future_session_plan_or_run_executed": false,
+    "provider_credential_presence_value_or_digest_read": false,
+    "network_request_issued": false
+  },
+  "validation_results": {
+    "focused_tests_passed": 2,
+    "cumulative_tests_passed": 471,
+    "cumulative_tests_skipped": 1,
+    "cumulative_nodes_deselected": 15,
+    "independent_validation_passed": true,
+    "bounded_git_diff_check_passed": true
+  },
+  "research_boundary": {
+    "historical_offline_prevalue_work_may_continue_at_any_local_time": true,
+    "failed_or_truncated_output_used_as_scientific_or_validation_evidence": false,
+    "source_factor_comparator_security_price_or_return_value_read": false,
+    "stress_2024_2025_opened": false,
+    "provider_or_web_request_issued": false,
+    "provider_credential_presence_value_or_digest_read": false,
+    "candidate49_plan_or_run_executed": false,
+    "candidate49_ledgers_changed": false,
+    "second_prospective_candidate_created": false,
+    "current_scoring_selection_sizing_positions_or_orders_performed": false,
+    "investment_advice": false
+  },
+  "goal": {
+    "objective": "请持续迭代因子。",
+    "status": "active",
+    "campaign200_terminal_does_not_complete_goal": true,
+    "campaign201_offline_prevalue_work_authorized": true
+  },
+  "next_action": "Begin Campaign201 finite offline prevalue research in a genuinely different mechanism domain; keep Candidate49 as the sole prospective confirmation layer and keep 2024-2025 closed."
+}

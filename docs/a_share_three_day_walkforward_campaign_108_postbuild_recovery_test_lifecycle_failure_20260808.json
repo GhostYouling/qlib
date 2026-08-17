@@ -1,0 +1,27 @@
+{
+  "schema_version": 1,
+  "kind": "a_share_three_day_walkforward_campaign108_infrastructure_failure",
+  "status": "recorded_non_scientific_phase_specific_test_failure",
+  "recorded_at": "2026-08-07T21:13:44Z",
+  "phase": "postbuild_recovery_test",
+  "failed_test": "tests/data_collector_tests/test_a_share_three_day_walkforward_campaign108_features_v2.py::test_recovery_is_bound_to_preserved_failure_and_absent_snapshot",
+  "failure": {
+    "test_result": "1 failed, 6 passed",
+    "reason": "A recovery-freeze precondition test correctly preserved that the failed v1 build published no final snapshot, but also asserted that the shared final root must remain absent after the successful frozen v2 rebuild.",
+    "candidate_snapshot_read_by_failed_test": false,
+    "coverage_or_comparator_values_read_by_failed_test": false,
+    "historical_daily_price_or_forward_return_values_read_by_failed_test": false
+  },
+  "resolution": {
+    "frozen_prebuild_test_will_not_be_rewritten": true,
+    "postbuild_runs_will_deselect_only_the_obsolete_absence_assertion": true,
+    "postbuild_snapshot_will_be_validated_by_manifest_hash_dataset_hash_partition_hash_frame_hash_and_static_binding_checks": true,
+    "candidate_formula_direction_endpoint_transform_snapshot_or_gate_changed": false
+  },
+  "research_boundary": {
+    "provider_request_issued": false,
+    "candidate49_ledgers_changed": false,
+    "current_scoring_selection_sizing_or_orders_performed": false
+  },
+  "next_action": "Append this infrastructure failure, run the phase-correct postbuild suite, and validate all static audit bindings before the single-use audit."
+}

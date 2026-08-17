@@ -1,0 +1,87 @@
+{
+  "version": 1,
+  "kind": "a_share_three_day_iteration_status",
+  "status": "campaign068_terminal_coverage_rejection_campaign069_offline_scouting_authorized",
+  "recorded_at": "2026-08-06T03:07:00+08:00",
+  "supersedes": {
+    "path": "docs/a_share_three_day_iteration_status_20260806_compact_cache_v4_verified_v2.json",
+    "sha256": "fa3e2955bb697696a9a7a5d5ce1eade88324c752fb490cd2f98ea8ca3d117b79"
+  },
+  "campaign068_state": {
+    "factor": "quarterly_profit_revenue_acceleration_rank_gap_2r",
+    "direction": "higher",
+    "terminal": true,
+    "terminal_reason": "structural_2019_cold_start_failed_frozen_p05_coverage_and_capacity_gates",
+    "terminal_completion_freeze": {
+      "path": "docs/a_share_three_day_walkforward_campaign_068_terminal_completion_freeze_20260806.json",
+      "sha256": "a0ff4bfd89bfe27b404567a8d1aca9544df4192cdbfacd7d3f7212e5846ca9b0"
+    },
+    "research_record": {
+      "path": "docs/a_share_three_day_walkforward_campaign_068_research_record.json",
+      "sha256": "e8711163c8bce0136dc44b7fe42daa07655b43a37fb325798b75a8c351cafbfc"
+    },
+    "completed_no_return_audit": {
+      "path": "data/experiments/short_horizon/historical_walkforward/campaign_068/no_return/20260805T185838Z_campaign068_no_return_audit.json",
+      "sha256": "897e308897f5adf83361914bc9543b437ed125d1c34839babe86cdd7f8676c16"
+    },
+    "v2_snapshot_manifest_sha256": "9878e6c0249cb9e965dbfade2ce2b3a355bed5e6a46bf68667c82fc568672004",
+    "v2_snapshot_dataset_sha256": "bcd03a5e2122b64b072985b3a9a9ada880cad337dae4766a00cf52bf51f4f449",
+    "quality_listing_eligible_rows": 1331759,
+    "candidate_eligible_rows": 1112691,
+    "median_coverage": 0.9945939627713977,
+    "p05_coverage": 0.0,
+    "p05_eligible_names": 0.0,
+    "coverage_gate_passed": false,
+    "compact_cache_values_read": false,
+    "historical_daily_price_fields_read": [],
+    "historical_forward_returns_read": false,
+    "development_2019_2023_opened": false,
+    "stress_2024_2025_opened": false,
+    "same_campaign_rescue_allowed": false
+  },
+  "attempt_accounting": {
+    "campaign068_infrastructure_failure_count": 1,
+    "campaign068_complete_factor_attempt_count": 1,
+    "campaign068_return_reading_development_trial_count": 0,
+    "cumulative_historical_research_attempt_count": 404,
+    "cumulative_return_reading_development_trial_count": 274,
+    "cumulative_cache_infrastructure_failure_count": 8
+  },
+  "compact_comparator_cache_v4": {
+    "publication_binding": {
+      "path": "docs/a_share_three_day_compact_comparator_cache_v4_publication_binding_20260806.json",
+      "sha256": "244f70b88be0396f7473c6664835cbb3cdad9135b6692b77c74018b1d53c925b"
+    },
+    "manifest_sha256": "3d81068f07ac61fe4cd04bd1a893e58759c06d88213263135fec5244e309b57b",
+    "dataset_sha256": "4a56dac48c14b667b6ee431519266f27bb8ff7cc25c51d8dce3bbc7aebe0376f",
+    "logical_numeric_comparator_count": 98,
+    "campaign068_values_read": false,
+    "future_historical_no_return_use_authorized": true
+  },
+  "candidate49_future_only_layer": {
+    "active_candidate": "candidate49_intraday_cumulative_vwap_crossing_rate_240m_v1",
+    "last_closed_daily_failure_path": "docs/a_share_candidate49_20260805_daily_source_failure_record.json",
+    "last_closed_daily_failure_sha256": "b2b6b07e1f0fca128ba9935dac6331319b2a7147e3d73e52b624853a2259bbbf",
+    "signal_ledger_sha256": "5193f00d7f36da003f53cec387900da4c3d002299f5dfcfc1a95eaa199ed3a79",
+    "execution_ledger_sha256": "d57a3e61eac969e42cafa418ccd8c0a5ee65dcf69da145bb2c096c2a02a2ea4f",
+    "same_day_workflow_run_before_16_30_allowed": false,
+    "provider_request_issued_by_campaign068": false,
+    "historical_signal_return_or_execution_backfill_allowed": false,
+    "second_prospective_candidate_activation_allowed": false
+  },
+  "unified_report": {
+    "path": "data/experiments/short_horizon/three_day_research_report.md",
+    "sha256": "844bce9290cdaf0ab68e864199e57825b69c0a0241d22f5c48e7151ec83a2e11"
+  },
+  "next_offline_research": {
+    "campaign069_definition_scouting_allowed": true,
+    "campaign068_may_be_rescued_redefined_inverted_reweighted_or_filtered": false,
+    "candidate069_values_or_returns_may_be_read_before_preregistration_and_implementation_freeze": false,
+    "campaign068_must_be_appended_to_complete_logical_definition_order": true,
+    "compact_cache_v4_has_only_98_pre_campaign068_numeric_comparators": true,
+    "campaign068_terminal_factor_requires_a_new_candidate_independent_cache_extension_or_explicit_snapshot_loading_before_campaign069_comparison_values": true,
+    "all_failed_and_successful_trials_must_be_appended": true,
+    "historical_results_may_generate_current_scores_selection_sizing_or_orders": false
+  },
+  "data_limitation": "The eligible universe derives from a current listing snapshot and can contain survivorship bias; quarterly data may contain later revisions. Historical research is not investment advice."
+}

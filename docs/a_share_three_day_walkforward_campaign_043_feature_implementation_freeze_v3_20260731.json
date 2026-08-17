@@ -1,0 +1,54 @@
+{
+  "version": 3,
+  "kind": "a_share_three_day_walkforward_campaign043_feature_implementation_freeze",
+  "status": "effective_after_prepublication_manifest_metadata_repair_before_atomic_publication",
+  "frozen_at": "2026-07-31T10:19:03Z",
+  "purpose": "Advance the Campaign043 implementation freeze only for the recorded aggregate-manifest metadata normalization while preserving all partition bytes, factor semantics, gates, and search choices.",
+  "authoritative_inputs": {
+    "prior_effective_feature_implementation_freeze": {
+      "path": "docs/a_share_three_day_walkforward_campaign_043_feature_implementation_freeze_v2_20260731.json",
+      "sha256": "019c969122bb390db305bd2acf812754c491c05dc126fdd4521d875d270b657d"
+    },
+    "prepublication_manifest_metadata_repair": {
+      "path": "docs/a_share_three_day_walkforward_campaign_043_prepublication_manifest_metadata_repair_20260731.json",
+      "sha256": "4001d6f9031c9a6305fdb55238e55dc2d669fdb17cb3334517dc143c1ffd4c5f"
+    },
+    "no_return_preregistration": {
+      "path": "docs/a_share_three_day_walkforward_campaign_043_no_return_preregistration.json",
+      "sha256": "2fde47ae05bfef5f99d230c6835b559b72bbd0e20bfcfb994d36cd4487e831f9"
+    },
+    "effective_feature_runner": {
+      "path": "scripts/a_share_three_day_walkforward_campaign043_features.py",
+      "sha256": "51f6e1d0967c9d70886f4843be54c80b7ff4273c31efdaccde2002d247342102"
+    },
+    "synthetic_tests": {
+      "path": "tests/data_collector_tests/test_a_share_three_day_walkforward_campaign043_features.py",
+      "sha256": "b1027553aea71aeee09c22c57497f7d2b04a2a2a3285f14ba8a7910d230f1bd9"
+    }
+  },
+  "effective_implementation": {
+    "factor_name": "intraday_transaction_vwap_consensus_240m",
+    "direction": "higher",
+    "source_projection": [
+      "datetime",
+      "symbol",
+      "provider",
+      "volume",
+      "amount"
+    ],
+    "formula_support_zero_direction_comparison_and_gate_semantics_unchanged": true,
+    "only_change_from_v2": "normalize the inherited aggregate kind, protocol-evidence key prefix, and explicit source_close/source_amount read flags before Campaign043 manifest validation"
+  },
+  "validation": {
+    "synthetic_test_count": 9,
+    "synthetic_test_failures": 0,
+    "completed_partition_checkpoints_before_effective_freeze": 33015,
+    "partition_recomputation_authorized": false,
+    "partition_byte_or_frame_change_authorized": false,
+    "final_snapshot_manifest_published_before_effective_freeze": false,
+    "comparison_values_read_before_effective_freeze": false,
+    "historical_daily_price_or_forward_return_read_before_effective_freeze": false
+  },
+  "resume_rule": "Hash-validate and reuse all 33,015 checkpoints; fail closed if any checkpoint differs; atomically publish only after the normalized aggregate manifest passes.",
+  "next_action": "Validate all additive Campaign043 freeze and repair bindings, then resume the unique feature build without changing any partition or research choice."
+}

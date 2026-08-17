@@ -1,0 +1,58 @@
+{
+  "schema_version": 1,
+  "kind": "a_share_three_day_walkforward_campaign102_design_implementation_freeze",
+  "status": "frozen_before_campaign102_design_matrix_values",
+  "recorded_at": "2026-08-07T15:07:46Z",
+  "purpose": "Bind the exact return-blind Campaign102 design-matrix builder and synthetic tests before reading or materializing any Campaign102 component values.",
+  "protocol": {
+    "path": "docs/a_share_three_day_walkforward_campaign_102_no_return_preregistration.json",
+    "sha256": "5def1f153c4cca94f2d646598f09b810108688488b8aab0b2be345366364b8f9"
+  },
+  "source_catalog": {
+    "path": "docs/a_share_three_day_walkforward_campaign_102_source_catalog.json",
+    "sha256": "fd7e5f4486fc4cef5a954e279c865ac8718a214c8dd3bd10450b509f8fdfbd5c"
+  },
+  "design_builder": {
+    "path": "scripts/a_share_three_day_walkforward_campaign102_design.py",
+    "sha256": "6c86ba3b198902389355c22ff79b40cac1a7ffa0218d19b59c8397e54b1a5216"
+  },
+  "synthetic_tests": {
+    "path": "tests/data_collector_tests/test_a_share_three_day_walkforward_campaign102_design.py",
+    "sha256": "b7cc6ee0849d70b8175a2e9ffc1b1bc8aba15bb2aa4ea26c450d1d807cef7b43",
+    "test_count": 7,
+    "result": "7_passed"
+  },
+  "frozen_commands": {
+    "status": "python -m scripts.a_share_three_day_walkforward_campaign102_design status",
+    "build": "python -m scripts.a_share_three_day_walkforward_campaign102_design build --workers 8",
+    "verify": "python -m scripts.a_share_three_day_walkforward_campaign102_design verify --manifest /Volumes/DIsk/qlib-a-share-tushare-1m/derived/a_share/rich/tushare/minute_walkforward_campaign102_design_matrix/tushare_stk_mins_1m_2019_2025_ea0cbb8f_walkforward_campaign102_design_matrix_v1/snapshot_manifest.json",
+    "audit": "python -m scripts.a_share_three_day_walkforward_campaign102_design audit --manifest /Volumes/DIsk/qlib-a-share-tushare-1m/derived/a_share/rich/tushare/minute_walkforward_campaign102_design_matrix/tushare_stk_mins_1m_2019_2025_ea0cbb8f_walkforward_campaign102_design_matrix_v1/snapshot_manifest.json --output data/experiments/short_horizon/historical_walkforward/campaign_102/no_return/design_structural_audit.json"
+  },
+  "implementation_invariants": {
+    "source_factor_count": 130,
+    "source_factor_order_sha256": "c80d9b929536dd509d6c1a904f790831050e68200393de381f92ad9293ef69e7",
+    "component_dtype": "float32",
+    "component_missingness_preserved": true,
+    "minimum_finite_components": 98,
+    "missing_components_are_not_materialized_as_zero": true,
+    "model_zero_imputation_occurs_only_after_support": true,
+    "daily_price_or_return_loader_imported_or_called": false,
+    "model_optimizer_imported_or_called": false
+  },
+  "pre_freeze_checks": {
+    "python_compile_passed": true,
+    "ruff_passed": true,
+    "synthetic_tests_passed": true,
+    "status_confirmed_output_absent": true,
+    "status_confirmed_return_read_false": true
+  },
+  "campaign102_design_matrix_values_read_before_freeze": false,
+  "campaign102_model_fitting_performed_before_freeze": false,
+  "historical_daily_price_or_return_values_read_before_freeze": false,
+  "provider_request_issued_before_freeze": false,
+  "candidate49_historical_backfill_performed_before_freeze": false,
+  "candidate49_ledgers_changed_before_freeze": false,
+  "second_prospective_candidate_created_before_freeze": false,
+  "current_scoring_selection_sizing_or_orders_performed_before_freeze": false,
+  "investment_advice": false
+}

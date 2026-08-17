@@ -1,0 +1,48 @@
+{
+  "schema_version": 1,
+  "kind": "a_share_three_day_walkforward_campaign102_development_infrastructure_failure",
+  "status": "preserved_before_any_market_row_model_fit_or_complete_trial",
+  "recorded_at": "2026-08-07T15:29:00Z",
+  "stage": "fold_1_training_market_loader_import_before_qlib_data_provider_initialization",
+  "failed_runtime": "/Users/niyufei/.cache/codex-runtimes/codex-primary-runtime/dependencies/python/bin/python3",
+  "failed_command_exit_code": 1,
+  "failure": "rolling.cpython-312-darwin.so could not load @rpath/libc++.1.dylib because the isolated runtime does not contain the project Conda C++ runtime.",
+  "preserved_artifacts": {
+    "development_intent": {
+      "path": "data/experiments/short_horizon/historical_walkforward/campaign_102/walkforward/development_intent.json",
+      "sha256": "469be0f056407fd1f4d3c5aeb491d222c34241250a59ddfe97a4c880ff6328fb"
+    },
+    "development_failure": {
+      "path": "data/experiments/short_horizon/historical_walkforward/campaign_102/walkforward/development_failure.json",
+      "sha256": "5bf1c93c153bae6b49848ae328d1999cadacc32c22168edc511fee6e703afbd8"
+    }
+  },
+  "verified_recovery_runtime": {
+    "path": "/Volumes/DIsk/Coding/anaconda3/bin/python3.12",
+    "sha256": "b21ee43bcb627125a1b54b1fceb97bad564afbab38235cb9d72cf1f278d5751c",
+    "version": "3.12.7",
+    "numpy": "1.26.4",
+    "pandas": "2.2.2",
+    "scipy": "1.13.1",
+    "qlib_data_import_passed": true,
+    "libcxx_path": "/Volumes/DIsk/Coding/anaconda3/lib/libc++.1.0.dylib",
+    "libcxx_sha256": "1b9318492353b7b7b3b48b9fa458d2b07b356a5eb8c0931952247fc17bf95c21",
+    "dyld_environment_override_allowed": false
+  },
+  "recovery_rule": "Preserve the failed root unchanged; freeze a separate exact-runtime wrapper and a fresh recovery output root; call the unchanged scientific runner once for the same three frozen trials and folds; do not alter the model, support, costs, uniqueness, survivor, or lockbox rules.",
+  "scientific_trial_formula_direction_target_grid_folds_cost_uniqueness_or_survivor_gate_changed": false,
+  "research_boundary": {
+    "market_rows_loaded_by_failed_run": false,
+    "reason": "The traceback terminates while importing qlib.data inside load_market_execution_data, before provider initialization or a returned market frame.",
+    "campaign102_model_fit_performed": false,
+    "development_daily_price_fields_read": [],
+    "development_forward_returns_read": false,
+    "complete_development_trial_count": 0,
+    "validation_year_return_read_count": 0,
+    "lockbox_2024_2025_read": false,
+    "provider_request_issued": false,
+    "candidate49_historical_backfill_performed": false,
+    "candidate49_ledgers_changed": false,
+    "current_scoring_selection_sizing_or_orders_performed": false
+  }
+}

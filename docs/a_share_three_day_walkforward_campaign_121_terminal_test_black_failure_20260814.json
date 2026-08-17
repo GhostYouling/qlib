@@ -1,0 +1,18 @@
+{
+  "schema_version": 1,
+  "kind": "a_share_three_day_walkforward_campaign121_infrastructure_failure",
+  "status": "recorded_append_only_without_scientific_change",
+  "recorded_at": "2026-08-14T04:13:00+08:00",
+  "attempt_id": "campaign121_infrastructure_035",
+  "stage": "terminal_test_static_format_validation",
+  "failure": "After 31 terminal-scope tests passed with one lifecycle skip, Black reported that the newly created, not-yet-frozen terminal test file would be reformatted. Three other checked files were unchanged.",
+  "effects": {
+    "frozen_research_file_rewritten": false,
+    "scientific_result_changed": false,
+    "research_values_read_or_recomputed": false,
+    "development_trial_rerun": false,
+    "stress_2024_2025_opened": false,
+    "candidate49_ledgers_changed": false
+  },
+  "safe_recovery": "Format only the new terminal test, rerun the phase-appropriate terminal suite and static checks, and advance accounting without changing science."
+}

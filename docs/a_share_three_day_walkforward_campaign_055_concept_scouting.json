@@ -1,0 +1,108 @@
+{
+  "version": 1,
+  "kind": "a_share_three_day_walkforward_campaign055_concept_scouting",
+  "status": "completed_before_campaign055_candidate_comparison_daily_price_or_return_values",
+  "recorded_at": "2026-08-03T16:02:00Z",
+  "purpose": "Select one economically distinct historical-only minute mechanism after Campaign054 using definitions and terminal boundaries only, before any Campaign055 value or return read.",
+  "authoritative_inputs": {
+    "campaign054_verified_state": {
+      "path": "docs/a_share_three_day_iteration_status_20260803_campaign054_verified.json",
+      "sha256": "63d0bcb883af148064b01661c2bb743b59be0416c4bcbd9b272a68ec95f4bc88"
+    },
+    "campaign054_research_record": {
+      "path": "docs/a_share_three_day_walkforward_campaign_054_research_record.json",
+      "sha256": "678c52ff5a8899f0cac55605aea00e2ace033f277a6053568a70c1a5884a676a"
+    },
+    "historical_walkforward_policy": {
+      "path": "docs/a_share_three_day_historical_walkforward_research_policy_20260727.json",
+      "sha256": "38426d6161b9bfed323c58caba18feca668b8c9d53e294951a8ba90c01a798bb"
+    }
+  },
+  "definition_only_inventory": {
+    "inherited_usable_comparison_definition_count": 78,
+    "composition": "The 77 definitions reconstructed by the frozen Campaign054 protocol in exact order, followed by terminal Campaign054.",
+    "campaign055_candidate_values_read": false,
+    "comparison_values_read_for_campaign055_selection": false,
+    "minute_partitions_read_for_campaign055_selection": false,
+    "daily_price_or_forward_return_read_for_campaign055_selection": false
+  },
+  "candidate_design_catalog": [
+    {
+      "design": "price_update_clock_entropy_10b",
+      "decision": "selected",
+      "reason": "It measures whether binary close-update events are distributed throughout both continuous-auction halves. No frozen factor measures the clock dispersion of update-event incidence conditional on sufficient updates."
+    },
+    {
+      "design": "price_update_share",
+      "decision": "rejected_before_values",
+      "reason": "The terminal intraday_price_update_share_238m already measures update frequency, not when a fixed number of updates occur."
+    },
+    {
+      "design": "close_level_occupancy_entropy",
+      "decision": "rejected_before_values",
+      "reason": "Campaign051 already measures entropy of occupied close-price levels; Campaign055 must use update-event clock locations and discard price levels after equality tests."
+    },
+    {
+      "design": "return_sign_or_magnitude_entropy",
+      "decision": "rejected_before_values",
+      "reason": "Return-distribution, direction, volatility, and path families are terminal; the selected statistic is binary and ignores update sign and magnitude."
+    },
+    {
+      "design": "amount_or_volume_timing_entropy",
+      "decision": "rejected_before_values",
+      "reason": "Amount/volume profile timing and center-of-mass families already exist; Campaign055 reads neither amount nor volume."
+    },
+    {
+      "design": "bin_count_minimum_event_direction_transform_filter_or_model_search",
+      "decision": "rejected_before_values",
+      "reason": "Campaign055 fixes ten bins, twenty update events, higher direction, raw normalized Shannon entropy, and no alternate window, threshold, transform, filter, combination, fit, or model."
+    }
+  ],
+  "selected_candidate": {
+    "name": "intraday_price_update_clock_entropy_10b_238m",
+    "direction": "higher",
+    "economic_hypothesis": "Price discovery that remains active across both continuous-auction halves, rather than arriving in a few isolated bursts, indicates sustained participation that may persist from the next open through the third close.",
+    "formula": "On the fixed 240-close grid, form 119 adjacent close pairs separately in the morning and afternoon. An update event is exact close_t != close_t-1. Map each half's transition index k=0..118 to one of five bins floor(5*k/119), offset afternoon bins by five. For ten event counts c_b and N=sum(c_b), return -sum_{c_b>0}(c_b/N)*ln(c_b/N)/ln(10).",
+    "source_projection": [
+      "datetime",
+      "symbol",
+      "provider",
+      "close"
+    ],
+    "selected_grid": [
+      "09:31-11:30",
+      "13:01-15:00"
+    ],
+    "selected_bar_count": 240,
+    "within_half_transition_count": 119,
+    "total_transition_count": 238,
+    "include_0930": false,
+    "include_lunch_transition": false,
+    "event_definition": "exact finite close inequality between adjacent bars within the same half; update sign and magnitude are discarded",
+    "clock_bins": 10,
+    "bin_mapping": "morning floor(5*k/119) for k=0..118; afternoon 5+floor(5*k/119) for k=0..118",
+    "minimum_update_events": 20,
+    "missing_rule": "Require exactly the fixed 240 bars, every close finite and strictly positive, and at least 20 update events across the 238 within-half transitions.",
+    "valid_range": [
+      0.0,
+      1.0
+    ],
+    "alternate_bin_count_minimum_event_direction_window_transform_clip_threshold_filter_subset_combination_fit_or_model": "none"
+  },
+  "research_boundary": {
+    "external_campaign055_minute_partitions_read": false,
+    "campaign055_candidate_or_comparison_values_read": false,
+    "historical_daily_price_fields_read": [],
+    "historical_forward_return_fields_read": false,
+    "provider_request_issued": false,
+    "candidate49_historical_return_signal_execution_or_milestone_backfill_performed": false,
+    "candidate49_ledgers_changed": false,
+    "second_prospective_candidate_created": false,
+    "current_scoring_selection_sizing_or_orders_performed": false
+  },
+  "decision": {
+    "selected_candidate_count": 1,
+    "predictive_value_established": false,
+    "next_action": "Complete a separate pre-value overlap audit against all 78 inherited definitions, then freeze the exact 78-comparison no-return protocol before implementation or any Campaign055 value read."
+  }
+}

@@ -1,0 +1,58 @@
+{
+  "schema_version": 2,
+  "kind": "a_share_three_day_walkforward_campaign099_development_repair_implementation_freeze_v2",
+  "status": "frozen_after_one_infrastructure_failure_before_repair_retry",
+  "recorded_at": "2026-08-07T11:19:00Z",
+  "purpose": "Freeze an additive execution wrapper that repairs only the inherited compact loader's nested CANDIDATE_MANIFEST binding before retrying the still-unconsumed single Campaign099 development trial.",
+  "original_runner": {
+    "path": "scripts/a_share_three_day_walkforward_campaign099.py",
+    "sha256": "b251b3049095f05b4aec87d6f6784c12517ac32c1542dbc63eaf6f1511d4bef4"
+  },
+  "repair_runner": {
+    "path": "scripts/a_share_three_day_walkforward_campaign099_development_repair_v2.py",
+    "sha256": "eff2ced3e14758cad6b9aebc7495fc18e08156806098d5bedb553940148962b9"
+  },
+  "tests": {
+    "path": "tests/data_collector_tests/test_a_share_three_day_walkforward_campaign099_development_repair_v2.py",
+    "sha256": "d9d3a2181f30b004af273b5635ad24b8fb4c41ed4979dbfa25e297ff168232f3",
+    "preactivation_result": "3 passed, 1 deselected",
+    "black_check_passed": true,
+    "ruff_check_passed": true
+  },
+  "development_preregistration": {
+    "path": "docs/a_share_three_day_walkforward_campaign_099_preregistration.json",
+    "sha256": "2c8e4d9c3a5c90a58d0f739ed2381cc82a77ed164203e30b30a3d944a33a3974"
+  },
+  "recorded_development_failure": {
+    "path": "docs/a_share_three_day_walkforward_campaign_099_development_compact_loader_namespace_failure_20260807.json",
+    "sha256": "830f4b974ecfe1ba72ac17b693264287312e792592420ff00ce9bab05551ba8b"
+  },
+  "append_only_internal_ledger": {
+    "path": "data/experiments/short_horizon/historical_walkforward/campaign_099/research_attempt_ledger_v17.json",
+    "sha256": "4f8232c16a72a239bb8fc533dc45912c6e5cb56cbe01285eda0c7092b883e33d",
+    "entry_count": 18,
+    "campaign_attempt_count": 14
+  },
+  "compact_snapshot": {
+    "path": "/Volumes/DIsk/qlib-a-share-tushare-1m/derived/a_share/rich/tushare/minute_walkforward_campaign099_compact_feature_library/tushare_stk_mins_1m_2019_2025_ea0cbb8f_walkforward_campaign099_compact_feature_library_v1/snapshot_manifest.json",
+    "sha256": "a973f7d71a871e56294f50a0c39267006f9b859f1b9490599c89c51cbab5fe90",
+    "dataset_sha256": "1ac5ddd9c59401a48876df69e409ba86b6fd71923c5be61936efb30a56c3de9b"
+  },
+  "repair_scope": {
+    "old_inner_manifest": "/Volumes/DIsk/qlib-a-share-tushare-1m/derived/a_share/rich/tushare/minute_walkforward_campaign099_feature_library/tushare_stk_mins_1m_2019_2025_ea0cbb8f_walkforward_campaign099_feature_library_v1/snapshot_manifest.json",
+    "replacement_inner_manifest": "/Volumes/DIsk/qlib-a-share-tushare-1m/derived/a_share/rich/tushare/minute_walkforward_campaign099_compact_feature_library/tushare_stk_mins_1m_2019_2025_ea0cbb8f_walkforward_campaign099_compact_feature_library_v1/snapshot_manifest.json",
+    "nested_manifest_sha256_rebound": true,
+    "nested_dataset_sha256_rebound": true,
+    "factor_formula_direction_window_threshold_filter_subset_cost_model_or_gate_changed": false
+  },
+  "trial_id": "wf099_intraday_market_close_location_profile_synchronization_240m_single_higher",
+  "complete_development_trial_count_before_repair_retry": 0,
+  "prior_infrastructure_failure_count_in_trial_ledger": 1,
+  "historical_daily_execution_quote_fields_already_read": true,
+  "development_forward_return_metrics_computed_before_repair_retry": false,
+  "stress_2024_2025_read_before_repair_retry": false,
+  "candidate49_historical_return_read_before_repair_retry": false,
+  "candidate49_ledgers_changed_before_repair_retry": false,
+  "provider_request_issued_before_repair_retry": false,
+  "current_scoring_selection_sizing_or_orders_performed_before_repair_retry": false
+}

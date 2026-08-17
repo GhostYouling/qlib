@@ -1,0 +1,91 @@
+{
+  "version": 1,
+  "kind": "a_share_three_day_walkforward_campaign051_no_return_audit_candidate49_eintr_failure_repair",
+  "status": "infrastructure_only_candidate49_exact_load_eintr_retry_authorized_before_audit_continuation",
+  "recorded_at": "2026-08-03T06:11:05Z",
+  "purpose": "Preserve the failed-closed Campaign051 no-return-audit invocation that completed Candidate49 file verification but received EINTR while opening the first Candidate49 comparison partition, and authorize one narrow deterministic retry wrapper before continuing the unchanged audit.",
+  "frozen_inputs": {
+    "no_return_preregistration_v2": {
+      "path": "docs/a_share_three_day_walkforward_campaign_051_no_return_preregistration_v2.json",
+      "sha256": "16636bb5196a362ca55b21696d88bc78b92d7ce10fbf70d252575f47b31c9e40"
+    },
+    "snapshot_publication_binding": {
+      "path": "docs/a_share_three_day_walkforward_campaign_051_snapshot_publication_binding_20260801.json",
+      "sha256": "f24916ca77a05ba7c988777b5d85656afae004d0034f1c44c060ad4bfbf81526"
+    },
+    "failed_audit_entrypoint": {
+      "path": "scripts/a_share_three_day_walkforward_campaign051_features_v5.py",
+      "sha256": "0bbea654a68354ab8df3f919037d4deb452b9fe64615467bb2b0076f6a166023"
+    },
+    "campaign050_verifier_repair_implementation_freeze": {
+      "path": "docs/a_share_three_day_walkforward_campaign_051_campaign050_verifier_repair_implementation_freeze_20260803.json",
+      "sha256": "d23e1c78cf07f46ccadacbab4a7b900934550885bc25c17a4662201930035413"
+    },
+    "candidate49_snapshot": {
+      "kind": "a_share_tushare_intraday_cumulative_vwap_crossing_rate_snapshot",
+      "factor": "intraday_cumulative_vwap_crossing_rate_240m",
+      "manifest_sha256": "f3dd3417bd6adcaa06d8927865ea3f464ebc02df302b8f488e43450f7c620196",
+      "dataset_sha256": "67bda6df74747a0f39fe6eb252aada84ea7850fff2c05bdae4951aa41fcc7037",
+      "partitions": 33015,
+      "rows": 7724498
+    }
+  },
+  "failed_invocation": {
+    "command": "python scripts/a_share_three_day_walkforward_campaign051_features_v5.py no-return-audit --data-root /Volumes/DIsk/qlib-a-share-tushare-1m --workers 4",
+    "persistent_session_name": "c51audit_v5_20260803",
+    "runtime_log": {
+      "path": "data/logs/campaign051_no_return_audit_v5_20260803.log",
+      "sha256": "3870bec7063ce796d417ce26cd8c5557afec22c5f1c538f7842cc598732a84ab",
+      "bytes": 1820
+    },
+    "exit_was_nonzero": true,
+    "result_artifact_written": false,
+    "failure_stage": "load Candidate49 aligned comparison values after all 33015 Candidate49 snapshot partitions were verified",
+    "failure_type": "InterruptedError errno 4 from the operating system while PyArrow opened the first explicit Candidate49 comparison partition",
+    "failed_path": "/Volumes/DIsk/qlib-a-share-tushare-1m/derived/a_share/rich/tushare/minute_intraday_cumulative_vwap_crossing_rate/tushare_stk_mins_1m_2019_2025_ea0cbb8f_intraday_cumulative_vwap_crossing_rate_v1/partitions/sh600000/2019.parquet",
+    "candidate49_snapshot_partitions_verified": 33015,
+    "candidate49_value_loaded": false,
+    "terminal_66_comparison_results_computed_in_memory_before_failure": 66,
+    "comparison_metric_values_printed_or_persisted": false,
+    "completed_audit_record_count_after_failure": 0
+  },
+  "root_cause": {
+    "description": "The exact file exists and had just passed the bound Candidate49 byte/source verification. PyArrow received the transient POSIX EINTR signal while reopening the explicit comparison dataset. This is an operating-system interruption, not a missing file, schema mismatch, snapshot mutation, factor outcome, or gate result.",
+    "data_dependent_research_choice_involved": false,
+    "snapshot_protocol_formula_or_gate_change_required": false
+  },
+  "authorized_repair": {
+    "description": "Wrap only the explicit comparison-value loader. If and only if the manifest is the exact frozen Candidate49 snapshot, the requested factor tuple is exactly the Candidate49 factor, and the exception is InterruptedError with errno EINTR, discard the incomplete call and retry the whole deterministic load once. Every other manifest, factor tuple, error type, or second EINTR must propagate unchanged.",
+    "implementation_form": "additive fingerprint-bound wrapper; do not modify frozen runners",
+    "maximum_eintr_retries": 1,
+    "formula_changed": false,
+    "direction_changed": false,
+    "coverage_or_capacity_gate_changed": false,
+    "comparison_catalog_order_or_threshold_changed": false,
+    "candidate_or_comparison_snapshot_changed": false,
+    "comparison_values_observed_for_repair_choice": false,
+    "same_command_parameters_required": true,
+    "failed_infrastructure_invocation_is_not_a_completed_audit": true
+  },
+  "post_repair_requirements": {
+    "repair_wrapper_path": "scripts/a_share_three_day_walkforward_campaign051_features_v6.py",
+    "focused_test_path": "tests/data_collector_tests/test_a_share_three_day_walkforward_campaign051_candidate49_eintr_repair.py",
+    "must_be_fingerprint_bound_by_a_separate_implementation_freeze": true,
+    "final_bound_entrypoint_must_be_additive": true
+  },
+  "research_boundary": {
+    "comparison_values_read": true,
+    "comparison_metric_values_retained": false,
+    "historical_daily_price_fields_read": [],
+    "historical_forward_return_fields_read": false,
+    "training_or_model_fitting_performed": false,
+    "provider_request_issued": false,
+    "candidate49_historical_return_read": false,
+    "candidate49_signal_ledger_sha256": "5193f00d7f36da003f53cec387900da4c3d002299f5dfcfc1a95eaa199ed3a79",
+    "candidate49_execution_ledger_sha256": "d57a3e61eac969e42cafa418ccd8c0a5ee65dcf69da145bb2c096c2a02a2ea4f",
+    "candidate49_ledgers_changed": false,
+    "second_prospective_candidate_created": false,
+    "current_scoring_selection_sizing_or_orders_performed": false
+  },
+  "next_action": "Implement and isolate-test the exact Candidate49 EINTR retry, freeze its bytes, then continue the exact Campaign051 no-return audit in one persistent session."
+}

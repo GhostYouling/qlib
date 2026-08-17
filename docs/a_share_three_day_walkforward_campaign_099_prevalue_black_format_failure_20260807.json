@@ -1,0 +1,31 @@
+{
+  "schema_version": 1,
+  "kind": "a_share_three_day_walkforward_campaign099_prevalue_black_format_failure",
+  "status": "recorded_before_mechanical_formatting_and_before_candidate_source_rows_or_values",
+  "recorded_at": "2026-08-07T09:24:00Z",
+  "stage": "prevalue_feature_implementation_format_gate",
+  "command_outcome": {
+    "synthetic_tests_passed": 6,
+    "black_check_exit_code": 1,
+    "black_files_requiring_format": 2,
+    "ruff_exit_code": 0
+  },
+  "preformat_files": [
+    {
+      "path": "scripts/a_share_three_day_walkforward_campaign099_features.py",
+      "sha256": "8b6dc50cbf08a97f2c89cd068a253c784adc5d609f95bd8967e0a85622c7e543"
+    },
+    {
+      "path": "tests/data_collector_tests/test_a_share_three_day_walkforward_campaign099_features.py",
+      "sha256": "153e7d8548bc9ae34084f53acee7a5391bca48e45ac0062ac664b66a95844ed3"
+    }
+  ],
+  "authorized_repair": "Run Black on exactly the two new Campaign099 files, then rerun the unchanged six synthetic tests plus Black and Ruff before freezing implementation.",
+  "formula_direction_support_comparator_order_or_gate_changed": false,
+  "candidate_source_rows_read": false,
+  "market_benchmark_values_read": false,
+  "candidate_or_comparator_values_read": false,
+  "historical_daily_price_or_forward_return_values_read": false,
+  "provider_request_issued": false,
+  "candidate49_ledgers_changed": false
+}

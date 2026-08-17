@@ -1,0 +1,426 @@
+{
+  "version": 1,
+  "kind": "a_share_three_day_walkforward_campaign005_mechanism_overlap_audit",
+  "status": "three_exact_mechanisms_frozen_before_campaign005_candidate_or_comparison_values_or_returns",
+  "recorded_at": "2026-07-28T08:28:44Z",
+  "purpose": "Resolve the three schema-only inactive-queue concepts into one finite Campaign005 minute-factor library while no candidate value, comparison value, daily price, or forward return has been opened. The audit selects one exact formula and direction per concept, rejects alternative definitions before values, and challenges each mechanism against all 25 pre-Campaign004 minute comparisons plus the three terminal Campaign004 mechanisms.",
+  "authoritative_bindings": {
+    "iteration_state": {
+      "path": "docs/a_share_three_day_iteration_status_20260728_campaign004.json",
+      "sha256": "2037007da4fe750b70715b9f0cf7e8d361cb9d6d18128fdb6c18b05486954749"
+    },
+    "historical_walkforward_policy": {
+      "path": "docs/a_share_three_day_historical_walkforward_research_policy_20260727.json",
+      "sha256": "38426d6161b9bfed323c58caba18feca668b8c9d53e294951a8ba90c01a798bb"
+    },
+    "inactive_queue_delta": {
+      "path": "docs/a_share_three_day_inactive_mechanism_scouting_queue_delta_20260726.json",
+      "sha256": "60f280cfecbd390a4fb6388eb3c5a63a507506b542aeba937f60d583cc717835",
+      "selected_priorities": [
+        4,
+        5,
+        6
+      ]
+    },
+    "campaign004_no_return_protocol": {
+      "path": "docs/a_share_three_day_walkforward_campaign_004_no_return_preregistration.json",
+      "sha256": "39e2147b75bcc3a0fd3cb39dee3932f794331142654f0bfe63679b2c8ecc2a4e"
+    },
+    "campaign004_no_return_audit": {
+      "path": "data/experiments/short_horizon/historical_walkforward/campaign_004/no_return/20260728T064945Z_campaign004_no_return_audit.json",
+      "sha256": "d7cdce80d0ac2923695b866a7cf034f5049ec4da1a5a8dd5fc36d4f41f1cb755"
+    },
+    "campaign004_research_record": {
+      "path": "docs/a_share_three_day_walkforward_campaign_004_research_record.json",
+      "sha256": "6e0dd1295a75c1f3eebe70a5cf327d98490bd76a43b307cf5fb416013d60c88e",
+      "terminal": true,
+      "development_survivors": 0,
+      "stress_2024_2025_opened": false
+    }
+  },
+  "source_schema_boundary": {
+    "provider": "tushare",
+    "frequency": "1m",
+    "accepted_complete_source_grid_rows": 241,
+    "standalone_0930_row_preserved_but_excluded_from_all_three_formulas": true,
+    "continuous_session_close_and_amount_rows": "09:31-11:30 and 13:01-15:00",
+    "joint_clean_manifest": {
+      "path_below_data_root": "derived/a_share/rich/tushare/minute_sentiment_clean/tushare_stk_mins_1m_2019_2025_ea0cbb8f_sentiment_clean_v1/snapshot_manifest.json",
+      "sha256": "453c6719cb3c7da42fed8807b28a2bfe988700283e9625a6db97912534f368de",
+      "dataset_sha256": "0e4fe7c05536cdfcecc2936bc880726902f5560061188ffff82ef7ee6f346983",
+      "partitions": 33015,
+      "rows": 7724498
+    },
+    "allowed_transport_fields": [
+      "datetime",
+      "symbol",
+      "provider",
+      "close",
+      "amount"
+    ],
+    "forbidden_source_fields": [
+      "open",
+      "high",
+      "low",
+      "volume"
+    ],
+    "daily_price_or_return_substitution_allowed": false,
+    "provider_request_allowed": false
+  },
+  "comparison_catalog": {
+    "comparison_count": 28,
+    "maximum_allowed_absolute_median_daily_rank_correlation": 0.8,
+    "minimum_pairwise_names_per_session": 50,
+    "minimum_pairwise_sessions_per_comparison": 100,
+    "score_direction_normalization": "Each comparison is converted to its frozen higher-is-better score direction before same-day average-rank Spearman correlation.",
+    "factors": [
+      {
+        "name": "late_return_30m",
+        "score_direction": "higher"
+      },
+      {
+        "name": "late_amount_share_30m",
+        "score_direction": "higher"
+      },
+      {
+        "name": "late_vwap_to_day_vwap_30m",
+        "score_direction": "higher"
+      },
+      {
+        "name": "intraday_realized_volatility",
+        "score_direction": "lower"
+      },
+      {
+        "name": "afternoon_signed_amount_efficiency_120m",
+        "score_direction": "higher"
+      },
+      {
+        "name": "afternoon_drawdown_recovery_resilience_120m",
+        "score_direction": "higher"
+      },
+      {
+        "name": "intraday_amount_participation_entropy_240m",
+        "score_direction": "higher"
+      },
+      {
+        "name": "intraday_amount_profile_serial_persistence_240m",
+        "score_direction": "higher"
+      },
+      {
+        "name": "intraday_upside_semivariance_share_239m",
+        "score_direction": "higher"
+      },
+      {
+        "name": "intraday_terminal_close_location_240m",
+        "score_direction": "higher"
+      },
+      {
+        "name": "intraday_return_sign_run_imbalance_238p",
+        "score_direction": "higher"
+      },
+      {
+        "name": "intraday_volatility_resolution_238m",
+        "score_direction": "higher"
+      },
+      {
+        "name": "intraday_amount_lead_return_correlation_238p",
+        "score_direction": "higher"
+      },
+      {
+        "name": "intraday_amount_center_of_mass_240m",
+        "score_direction": "higher"
+      },
+      {
+        "name": "intraday_up_move_amount_share_238m",
+        "score_direction": "higher"
+      },
+      {
+        "name": "intraday_diffusive_variation_ratio_238m",
+        "score_direction": "higher"
+      },
+      {
+        "name": "intraday_amount_volatility_coupling_238p",
+        "score_direction": "higher"
+      },
+      {
+        "name": "intraday_return_variance_entropy_238m",
+        "score_direction": "higher"
+      },
+      {
+        "name": "intraday_return_skewness_238m",
+        "score_direction": "higher"
+      },
+      {
+        "name": "intraday_bar_vwap_close_pressure_240m",
+        "score_direction": "higher"
+      },
+      {
+        "name": "intraday_price_update_share_238m",
+        "score_direction": "higher"
+      },
+      {
+        "name": "intraday_market_idiosyncratic_share_238m",
+        "score_direction": "higher"
+      },
+      {
+        "name": "intraday_opening_auction_amount_share_241m",
+        "score_direction": "higher"
+      },
+      {
+        "name": "intraday_market_amount_profile_synchronization_240m",
+        "score_direction": "higher"
+      },
+      {
+        "name": "intraday_cumulative_vwap_crossing_rate_240m",
+        "score_direction": "higher",
+        "comparison_only_no_historical_return_read": true
+      },
+      {
+        "name": "intraday_market_neutral_late_residual_drift_238m",
+        "score_direction": "higher",
+        "campaign004_terminal": true
+      },
+      {
+        "name": "intraday_negative_return_absorption_rate_236p",
+        "score_direction": "higher",
+        "campaign004_terminal": true
+      },
+      {
+        "name": "intraday_signed_path_efficiency_239m",
+        "score_direction": "higher",
+        "campaign004_terminal": true
+      }
+    ]
+  },
+  "candidates": [
+    {
+      "queue_priority": 4,
+      "concept_name": "intraday_zero_return_activity_absorption",
+      "name": "intraday_zero_return_amount_intensity_238m",
+      "direction": "higher",
+      "economic_hypothesis": "When exact unchanged-close transitions attract more CNY amount per transition than the ordinary within-half transition, the market may be absorbing active two-sided flow without an immediate close update; unusually high relative intensity may carry short-horizon information distinct from merely counting price updates.",
+      "formula": "log((sum(A_t for r_t=0)/N_zero) / (sum(A_t for all 238 within-half transitions)/238))",
+      "formula_steps": [
+        "Use only the 240 closes and amounts ending 09:31-11:30 and 13:01-15:00; preserve but exclude the standalone 09:30 row.",
+        "Require every selected close to be finite and strictly positive and every selected amount to be finite and nonnegative.",
+        "Form 119 adjacent log-close returns separately inside each half-session, yielding exactly 238 transitions; exclude the 11:30-to-13:01 lunch transition.",
+        "Pair every transition with the amount on its destination bar.",
+        "Classify a transition as zero-return only when its two source close values are exactly equal; do not round, apply a tick tolerance, or use an epsilon.",
+        "Require at least one zero-return transition, strictly positive summed amount over zero-return destination bars, and strictly positive summed amount over all 238 destination bars.",
+        "Divide mean destination-bar amount on zero-return transitions by mean destination-bar amount on all 238 transitions and take the natural logarithm.",
+        "Do not clip, winsorize, rank, smooth, or impute the result."
+      ],
+      "source_fields_allowed": [
+        "datetime",
+        "symbol",
+        "provider",
+        "close",
+        "amount"
+      ],
+      "source_fields_used_by_formula": [
+        "datetime",
+        "symbol",
+        "provider",
+        "close",
+        "amount"
+      ],
+      "valid_range": {
+        "lower": null,
+        "lower_inclusive": false,
+        "upper": 5.472270673671475,
+        "upper_inclusive": true,
+        "upper_expression": "log(238)"
+      },
+      "mandatory_overlap_challenges": [
+        "intraday_price_update_share_238m",
+        "intraday_amount_participation_entropy_240m",
+        "intraday_up_move_amount_share_238m",
+        "intraday_bar_vwap_close_pressure_240m"
+      ],
+      "mechanism_distinction_before_values": [
+        "Price-update share counts transitions; this factor conditions on exact zero-return transitions and asks whether their mean amount is unusually large relative to the stock-day transition mean.",
+        "Amount entropy measures full-profile dispersion; this factor uses only the amount allocation to exact unchanged-close transitions after controlling for their count.",
+        "Up-move amount share excludes zero-return amounts; this factor is defined entirely by those zero-return destination amounts.",
+        "Bar-VWAP pressure requires volume and an intrabar price proxy; this factor forbids volume and does not use VWAP."
+      ],
+      "rejected_variants_before_values": [
+        "raw zero-return count, unchanged share, one minus price-update share, or any count-only transform",
+        "raw zero-return amount share without controlling for zero-return count",
+        "volume, trade count, VWAP, source open/high/low, daily price, or market-cap normalization",
+        "rounding, tick-size tolerance, epsilon equality, return thresholds, price-limit filters, or halt-adjacent filters",
+        "including 09:30, the lunch transition, morning-only, afternoon-only, or late-only windows",
+        "negative, absolute, squared, inverse, lower-is-better, winsorized, clipped, ranked, or imputed variants"
+      ]
+    },
+    {
+      "queue_priority": 5,
+      "concept_name": "intraday_lunch_repricing_persistence",
+      "name": "intraday_lunch_repricing_persistence_119m",
+      "direction": "higher",
+      "economic_hypothesis": "A nonzero price change between the accepted 11:30 morning close and 13:01 afternoon reopening that is followed by a directionally efficient afternoon path may represent information incorporated over lunch and subsequently confirmed rather than rejected.",
+      "formula": "sign(log(close_13:01/close_11:30)) * log(close_15:00/close_13:01) / sum(abs(adjacent log-close returns from 13:01 through 15:00))",
+      "formula_steps": [
+        "Use only finite strictly positive closes from the exact 11:30, 13:01, and 13:02-15:00 bar-end grid; preserve but exclude standalone 09:30.",
+        "Compute exactly one lunch repricing log return from the 11:30 close to the 13:01 close.",
+        "Require the lunch repricing return to be strictly nonzero; do not threshold or round it.",
+        "Compute the afternoon terminal displacement from 13:01 to 15:00.",
+        "Compute the afternoon path variation as the sum of the absolute values of the 119 adjacent log-close returns from 13:01 through 15:00.",
+        "Require strictly positive afternoon path variation.",
+        "Multiply afternoon terminal displacement divided by afternoon path variation by the exact sign of the lunch repricing return.",
+        "Only a 1e-12 floating-point endpoint canonicalization to the closed interval [-1,1] is allowed."
+      ],
+      "source_fields_allowed": [
+        "datetime",
+        "symbol",
+        "provider",
+        "close",
+        "amount"
+      ],
+      "source_fields_used_by_formula": [
+        "datetime",
+        "symbol",
+        "provider",
+        "close"
+      ],
+      "valid_range": {
+        "lower": -1.0,
+        "lower_inclusive": true,
+        "upper": 1.0,
+        "upper_inclusive": true
+      },
+      "mandatory_overlap_challenges": [
+        "late_return_30m",
+        "intraday_volatility_resolution_238m",
+        "intraday_terminal_close_location_240m",
+        "afternoon_drawdown_recovery_resilience_120m",
+        "intraday_signed_path_efficiency_239m"
+      ],
+      "mechanism_distinction_before_values": [
+        "Late return ignores the lunch direction and uses only the final 30 minutes; this factor scores the whole afternoon path conditional on lunch repricing sign.",
+        "Volatility resolution compares morning and afternoon variance without using lunch direction or terminal confirmation.",
+        "Terminal close location measures full-day range position and does not isolate 11:30-to-13:01 repricing.",
+        "Afternoon drawdown recovery scores trough recovery without conditioning on the lunch jump sign.",
+        "Signed path efficiency covers the collapsed full day; this factor conditions only the afternoon path on the excluded lunch transition's sign."
+      ],
+      "rejected_variants_before_values": [
+        "lunch return alone, afternoon return alone, raw product of lunch and afternoon returns, or unnormalized confirmation",
+        "reversal direction, negative sign, absolute agreement, binary agreement, thresholded lunch moves, or selecting only large lunch moves",
+        "denominators using lunch magnitude, full-day variation, volatility, amount, volume, VWAP, or daily OHLC",
+        "morning continuation, final-30-minute-only, 09:30-inclusive, lunch-inclusive path variation, or alternative reopening labels",
+        "clipping beyond numerical endpoint canonicalization, winsorization, ranks, filters, year subsets, or imputation"
+      ]
+    },
+    {
+      "queue_priority": 6,
+      "concept_name": "intraday_directional_price_impact_asymmetry",
+      "name": "intraday_directional_price_impact_asymmetry_238m",
+      "direction": "higher",
+      "economic_hypothesis": "When positive price displacement per CNY of associated activity exceeds negative displacement per CNY, upside information may move the close more efficiently while sell-side flow is absorbed more deeply; the bounded within-day asymmetry may contain three-session information.",
+      "formula": "(I_up-I_down)/(I_up+I_down), where I_up=sum(r_t for r_t>0)/sum(A_t for r_t>0) and I_down=sum(-r_t for r_t<0)/sum(A_t for r_t<0) over 238 within-half destination-amount pairs",
+      "formula_steps": [
+        "Use only the 240 closes and amounts ending 09:31-11:30 and 13:01-15:00; preserve but exclude standalone 09:30.",
+        "Require every selected close to be finite and strictly positive and every selected amount to be finite and nonnegative.",
+        "Form 119 adjacent log-close returns separately in each half-session, yielding exactly 238 transitions; exclude the lunch transition.",
+        "Pair each return with the amount on its destination bar.",
+        "For strictly positive returns, divide their summed log-return magnitude by their summed destination-bar amount to obtain I_up.",
+        "For strictly negative returns, divide their summed absolute log-return magnitude by their summed destination-bar amount to obtain I_down.",
+        "Zero returns enter neither side. Require strictly positive positive-side amount, negative-side amount, positive-return magnitude, and negative-return magnitude.",
+        "Compute the signed bounded difference over the sum. Only a 1e-12 floating-point endpoint canonicalization to the closed interval [-1,1] is allowed."
+      ],
+      "source_fields_allowed": [
+        "datetime",
+        "symbol",
+        "provider",
+        "close",
+        "amount"
+      ],
+      "source_fields_used_by_formula": [
+        "datetime",
+        "symbol",
+        "provider",
+        "close",
+        "amount"
+      ],
+      "valid_range": {
+        "lower": -1.0,
+        "lower_inclusive": true,
+        "upper": 1.0,
+        "upper_inclusive": true
+      },
+      "mandatory_overlap_challenges": [
+        "intraday_amount_volatility_coupling_238p",
+        "intraday_up_move_amount_share_238m",
+        "intraday_bar_vwap_close_pressure_240m",
+        "intraday_return_skewness_238m",
+        "intraday_negative_return_absorption_rate_236p"
+      ],
+      "mechanism_distinction_before_values": [
+        "Amount-volatility coupling is an unsigned synchronous correlation; this factor separately estimates positive and negative price movement per CNY and compares them.",
+        "Up-move amount share measures where amount occurs, not price displacement per unit amount.",
+        "Bar-VWAP pressure compares close with bar VWAP and requires volume; this factor forbids volume and uses only adjacent close displacement.",
+        "Return skewness ignores amount and measures the centered third moment; this factor is a directional liquidity asymmetry.",
+        "Campaign004 negative-return absorption asks whether a negative move is followed by a positive move; this factor does not use next-return sequencing."
+      ],
+      "rejected_variants_before_values": [
+        "amount per unit return, reciprocal impact, raw impact difference, impact ratio, log impact ratio, absolute asymmetry, or lower-is-better direction",
+        "equal-count, volume, return-squared, VWAP, price-level, market-cap, volatility, or cross-stock normalization",
+        "zero-return allocation, recovery sequencing, multi-bar impact, thresholds, return clipping, price-limit filters, or halt-adjacent filters",
+        "including 09:30, the lunch return, cross-half pairs, morning-only, afternoon-only, or late-only windows",
+        "winsorization, ranks, filters, year subsets, denominator floors, epsilon imputation, or post-value direction choice"
+      ]
+    }
+  ],
+  "finite_search_catalog_frozen_before_values": {
+    "single_factor_trials": "Every no-return-admissible Campaign005 factor exactly once at weight 1.0.",
+    "pair_trials": "Every unordered pair of no-return-admissible Campaign005 factors at directional-rank weights 25/75, 50/50, and 75/25 in canonical factor-name order.",
+    "maximum_trial_count_if_all_three_admissible": 12,
+    "minimum_trial_count_if_one_admissible": 1,
+    "all_components_required": true,
+    "weight_fitting": false,
+    "threshold_search": false,
+    "filter_search": false,
+    "year_subset_search": false,
+    "triple_or_higher_order_combinations": false,
+    "old_terminal_factor_rescue_combinations": false,
+    "candidate49_inclusion": false,
+    "post_result_catalog_change_requires_new_campaign_version": true
+  },
+  "research_boundary": {
+    "external_minute_partition_opened": false,
+    "historical_candidate_value_read": false,
+    "historical_comparison_value_read": false,
+    "historical_daily_price_field_read": false,
+    "historical_forward_return_read": false,
+    "candidate49_historical_return_read": false,
+    "candidate49_signal_ledger_changed": false,
+    "candidate49_execution_ledger_changed": false,
+    "candidate50_created_or_activated": false,
+    "training_or_model_fitting_performed": false,
+    "current_scoring_selection_sizing_or_order_performed": false,
+    "provider_request_issued": false,
+    "credential_value_read_or_persisted": false,
+    "investment_advice": false
+  },
+  "decision": {
+    "candidate_library_names_in_queue_order": [
+      "intraday_zero_return_amount_intensity_238m",
+      "intraday_lunch_repricing_persistence_119m",
+      "intraday_directional_price_impact_asymmetry_238m"
+    ],
+    "candidate_directions": {
+      "intraday_zero_return_amount_intensity_238m": "higher",
+      "intraday_lunch_repricing_persistence_119m": "higher",
+      "intraday_directional_price_impact_asymmetry_238m": "higher"
+    },
+    "concepts_are_mechanistically_distinct_enough_for_no_return_materialization": true,
+    "predictive_value_established": false,
+    "next_action": "Implement and synthetically test exactly these formulas, then freeze a fingerprint-bound ordered no-return protocol before opening the joint-clean minute snapshot or any comparison value."
+  },
+  "limitations": {
+    "minimum_tick_and_stale_close_can_still_affect_zero_return_semantics": true,
+    "one-transition_lunch_signal_can_be_noisy": true,
+    "price_limit_sessions_can_create_mechanical_directional_asymmetry": true,
+    "current_listing_derived_holding_universe_can_introduce_survivorship_bias": true,
+    "no_post_value_filter_or_formula_repair_allowed": true
+  }
+}

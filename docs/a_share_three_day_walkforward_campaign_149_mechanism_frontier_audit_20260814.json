@@ -1,0 +1,106 @@
+{
+  "schema_version": 1,
+  "kind": "a_share_three_day_walkforward_campaign149_mechanism_frontier_audit",
+  "status": "terminal_prevalue_zero_candidates_after_semantic_independence_review",
+  "recorded_at": "2026-08-14T23:33:00+08:00",
+  "purpose": "Apply the complete-library, original-source-contract, consumed-family and semantic-independence gates to all six Campaign149 proposals before any protected value stage.",
+  "authoritative_inputs": {
+    "concept_scouting": {
+      "path": "docs/a_share_three_day_walkforward_campaign_149_concept_scouting_20260814.json",
+      "sha256": "f9e8398edbf4e5a9989f6f2679d44beed262cdb24e92ce3c5b0813925760c39a"
+    },
+    "numeric_policy_v201": {
+      "path": "docs/a_share_three_day_walkforward_future_numeric_comparison_eligibility_policy_v201_20260814.json",
+      "sha256": "28042860a3664e76ad9d4c447254323e484aed5cdecef590d6a1a7a8bb963f9e"
+    },
+    "campaign148_frontier_audit": {
+      "path": "docs/a_share_three_day_walkforward_campaign_148_mechanism_frontier_audit_20260814.json",
+      "sha256": "2192230f557a3548b21fe31cd17a0557558a469596843387e8458d421aec4aa4"
+    },
+    "campaign148_effective_terminal": {
+      "path": "docs/a_share_three_day_walkforward_campaign_148_terminal_result_v6_20260814.json",
+      "sha256": "a89117a8aeb780fffd24137bdc2836539cc3fde96e4118a5fe3e2e170ddce5d1"
+    }
+  },
+  "proposal_gate_results": [
+    {
+      "catalog_id": "c149_01",
+      "name": "intraday_realized_kernel_microstructure_noise_ratio_238m",
+      "accepted_historical_source_and_original_contract_permits_inputs": true,
+      "semantically_independent_from_terminal_library": false,
+      "passed": false,
+      "terminal_reason": "Kernel/bandwidth selection refreshes terminal realized-volatility, variance-ratio, serial-dependence and price-update estimators."
+    },
+    {
+      "catalog_id": "c149_02",
+      "name": "intraday_ohlc_volatility_estimator_disagreement_240m",
+      "accepted_historical_source_and_original_contract_permits_inputs": true,
+      "semantically_independent_from_terminal_library": false,
+      "passed": false,
+      "terminal_reason": "Named OHLC volatility estimators recombine terminal range, body, gap, close-location and volatility operators."
+    },
+    {
+      "catalog_id": "c149_03",
+      "name": "intraday_transaction_price_modality_dip_240m",
+      "accepted_historical_source_and_original_contract_permits_inputs": true,
+      "semantically_independent_from_terminal_library": false,
+      "passed": false,
+      "terminal_reason": "Weighted modality is another estimator over terminal transaction-price consensus, skew and dispersion states."
+    },
+    {
+      "catalog_id": "c149_04",
+      "name": "intraday_return_path_persistent_homology_lifetime_238p",
+      "accepted_historical_source_and_original_contract_permits_inputs": true,
+      "semantically_independent_from_terminal_library": false,
+      "passed": false,
+      "terminal_reason": "Embedding and filtration refresh terminal path geometry, recurrence, roughness, spectral and time-reversal families."
+    },
+    {
+      "catalog_id": "c149_05",
+      "name": "intraday_return_profile_functional_pca_residual_energy_238m",
+      "accepted_historical_source_and_original_contract_permits_inputs": true,
+      "semantically_independent_from_terminal_library": false,
+      "passed": false,
+      "terminal_reason": "Functional PCA reopens terminal return-profile, market-residual and complete-library fitted-model routes."
+    },
+    {
+      "catalog_id": "c149_06",
+      "name": "intraday_high_amount_conditional_return_expected_shortfall_238m",
+      "accepted_historical_source_and_original_contract_permits_inputs": true,
+      "semantically_independent_from_terminal_library": false,
+      "passed": false,
+      "terminal_reason": "Two tail cutoffs refresh terminal amount conditioning, directional impact, return-amount asymmetry and tail routes."
+    }
+  ],
+  "gate_summary": {
+    "finite_proposals_reviewed": 6,
+    "proposals_using_accepted_historical_minute_source": 6,
+    "proposals_passing_original_source_contract_gate": 6,
+    "proposals_passing_consumed_family_and_semantic_independence_gate": 0,
+    "selected_candidate_count": 0,
+    "formula_direction_parameter_filter_subset_combination_model_or_development_catalog_frozen": false
+  },
+  "decision": {
+    "campaign149_terminal_phase": "prevalue_complete_library_consumed_family_and_semantic_independence_gate",
+    "source_acceptance_coverage_uniqueness_or_return_stage_run": false,
+    "complete_definition_count_after_campaign149": 155,
+    "numeric_comparator_count_after_campaign149": 142,
+    "2024_2025_lockbox_opened": false,
+    "rejected_proposal_retry_reparameterization_rebinning_relagging_rethresholding_reweighting_refitting_recombination_or_rescue_allowed": false
+  },
+  "research_boundary": {
+    "source_contract_schema_formula_manifest_and_terminal_metadata_read": true,
+    "source_rows_or_column_values_read": false,
+    "candidate_or_comparator_values_read": false,
+    "historical_daily_price_or_forward_return_values_read": false,
+    "stress_2024_2025_opened": false,
+    "provider_request_issued": false,
+    "provider_credential_value_or_digest_read": false,
+    "candidate49_historical_backfill_performed": false,
+    "candidate49_ledgers_changed": false,
+    "second_prospective_candidate_created": false,
+    "current_scoring_selection_sizing_positions_or_orders_performed": false,
+    "investment_advice": false
+  },
+  "next_action": "Record all six scientific concept attempts append-only, terminalize Campaign149 before values, preserve 155/142, and keep the active goal available for Campaign150 offline scouting."
+}

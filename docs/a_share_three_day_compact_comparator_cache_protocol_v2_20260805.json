@@ -1,0 +1,84 @@
+{
+  "version": 2,
+  "kind": "a_share_three_day_candidate_independent_compact_comparator_cache_protocol",
+  "status": "frozen_repair_before_v2_comparator_values_or_cache_files_are_materialized",
+  "frozen_at": "2026-08-05T21:12:00+08:00",
+  "purpose": "Repair the v1 global-key coverage defect without changing the frozen comparator library, eligibility keys, directions, no-return gates, or pairwise-complete daily Spearman semantics.",
+  "authoritative_base_protocol": {
+    "path": "docs/a_share_three_day_compact_comparator_cache_protocol_v1_20260805.json",
+    "sha256": "bf5247378056851ea004c08aad071c7a1ccf552cb1feaf6937251a26234c3273",
+    "all_v1_contracts_remain_in_force_except_failed_output_identity": true
+  },
+  "recorded_v1_failure": {
+    "path": "docs/a_share_three_day_compact_comparator_cache_v1_build_failure_20260805.json",
+    "sha256": "9221d3b0c98b0ce9efb094a9e2e301d26e1fadd354f333e3ee2467227bdbd177",
+    "v1_formal_output_published": false,
+    "v1_temporary_values_reusable": false
+  },
+  "frozen_output": {
+    "data_root": "/Volumes/DIsk/qlib-a-share-tushare-1m",
+    "output_root": "/Volumes/DIsk/qlib-a-share-tushare-1m/derived/a_share/rich/tushare/compact_comparator_cache/campaign067_terminal_numeric98_v2",
+    "v1_output_root_may_be_published_or_reused": false,
+    "atomic_publication_after_all_checks": true
+  },
+  "eligibility_key_contract": {
+    "row_count": 1331759,
+    "calendar_session_count": 1632,
+    "first_trade_date": "2019-04-15",
+    "last_trade_date": "2025-12-31",
+    "sorted_little_endian_int64_sha256": "afa157a76aec8ef9cc3bdc191c792189d2a512ecf7fd7ebb09d2fe8f2d75841f",
+    "changed_from_v1": false
+  },
+  "numeric_library_contract": {
+    "numeric_comparator_count": 98,
+    "numeric_comparator_order_sha256": "bca0ba26252fcb74afa3a31ee1baf63c9cedfe3db5fc86ef71b3d7d93bf88f81",
+    "complete_definition_count_including_structural_nonnumeric_factor": 99,
+    "complete_definition_order_sha256": "74564d4d2d01a52371ddd6906db38b5d913acb743656a04bbe5c4f229c84ad53",
+    "directions_changed_from_v1": false,
+    "cross_sectional_rank_materialization_allowed": false
+  },
+  "repair_loader_contract": {
+    "read_only_manifest_listed_parquet_files_only": true,
+    "source_rows_are_matched_to_the_frozen_sorted_global_keys": true,
+    "source_key_present": "Copy the parsed float64 value without scaling, ranking, winsorization, imputation, forward fill, or backward fill.",
+    "source_key_absent": "Store a nonfinite float64 NaN at that global key.",
+    "source_key_duplicate": "Fail closed before publication.",
+    "source_manifest_row_or_partition_count_mismatch": "Fail closed before publication.",
+    "alignment_receipt_required_per_explicit_load": true,
+    "alignment_receipt_fields": [
+      "source kind",
+      "dataset sha256",
+      "requested factors",
+      "source rows",
+      "requested global keys",
+      "matched global keys",
+      "absent global keys"
+    ]
+  },
+  "semantic_equivalence_contract": {
+    "candidate_missingness_and_ties_require_reranking_on_each_pairwise_intersection": true,
+    "minimum_names_and_minimum_sessions_changed_from_v1": false,
+    "maximum_absolute_median_daily_rank_correlation_changed_from_v1": false,
+    "campaign067_required_comparison_count": 97,
+    "campaign067_result_objects_must_be_exactly_equal_to_completed_audit": true,
+    "campaign067_coverage_object_must_be_exactly_equal_to_completed_audit": true,
+    "retroactive_campaign067_substitution_allowed": false
+  },
+  "research_boundary": {
+    "v2_comparison_values_read_before_protocol_freeze": false,
+    "historical_daily_price_fields_read": [],
+    "historical_forward_returns_read": false,
+    "candidate49_historical_return_read": false,
+    "candidate49_ledgers_may_change": false,
+    "provider_request_issued": false,
+    "current_scoring_selection_sizing_or_orders_performed": false,
+    "future_campaign_use_only_after_v2_publication_binding": true
+  },
+  "failure_policy": {
+    "edit_v1_protocol_builder_or_freeze_in_place": false,
+    "reuse_v1_failed_temporary_root": false,
+    "publish_partial_v2_output": false,
+    "ignore_nonzero_exit": false,
+    "record_v2_failure_before_additive_repair": true
+  }
+}

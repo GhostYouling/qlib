@@ -1,0 +1,25 @@
+{
+  "version": 1,
+  "kind": "a_share_three_day_walkforward_campaign076_terminal_policy_summary_key_failure",
+  "status": "one_failed_command_after_successful_binding_validation",
+  "recorded_at": "2026-08-06T11:54:00+08:00",
+  "successful_prefix_result": {
+    "record_count": 8,
+    "binding_count": 52,
+    "passed_binding_count": 52,
+    "failed_binding_count": 0,
+    "all_bindings_passed": true
+  },
+  "failure": {
+    "exception": "KeyError",
+    "missing_summary_key": "count",
+    "cause": "The diagnostic summary used generic count/eligible_count keys instead of the frozen v12 factor_definition_count/eligible_numeric_comparator_count keys."
+  },
+  "research_values_or_returns_recomputed": false,
+  "historical_daily_price_or_forward_return_values_read": false,
+  "stress_2024_2025_opened": false,
+  "provider_request_issued": false,
+  "candidate49_ledgers_changed": false,
+  "attempt_accounting_increment": 1,
+  "repair_scope": "Read the actual v12 key names and rerun only the terminal binding and summary verification."
+}

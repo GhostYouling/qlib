@@ -1,0 +1,80 @@
+{
+  "schema_version": 1,
+  "version": 2,
+  "kind": "a_share_three_day_walkforward_campaign084_feature_snapshot_binding",
+  "status": "verified_snapshot_binding_arithmetic_corrected_before_coverage_or_comparison_values",
+  "recorded_at": "2026-08-06T22:27:00+08:00",
+  "supersedes_without_rewriting": {
+    "path": "docs/a_share_three_day_walkforward_campaign_084_feature_snapshot_binding_20260806.json",
+    "sha256": "b947d6a93699a7568ecf3a1db6a4bba87d9f6ddc1c283f4843453a324dd25081",
+    "preserved": true,
+    "correction": "Replace only the displayed raw eligible-row ratio with the exact quotient 6321289/7724498; all counts, hashes, factor values, formulas, gates, and research boundaries remain unchanged."
+  },
+  "protocol": {
+    "path": "docs/a_share_three_day_walkforward_campaign_084_no_return_preregistration.json",
+    "sha256": "c396f141c811978004c04b62f09caceef343a9860e43f48de1fe44419c9bcf70"
+  },
+  "feature_implementation_freeze": {
+    "path": "docs/a_share_three_day_walkforward_campaign_084_feature_implementation_freeze_20260806.json",
+    "sha256": "b0525799bf1c3668d7cce1f2beb5c6b363eb96c2fdad3ca425ab3f8c386534eb"
+  },
+  "feature_runner": {
+    "path": "scripts/a_share_three_day_walkforward_campaign084_features.py",
+    "sha256": "d80970ce7c46722db1a6475a4ee6853c1620e0fbe6396612797cea14ae42eed2"
+  },
+  "candidate_snapshot": {
+    "path": "/Volumes/DIsk/qlib-a-share-tushare-1m/derived/a_share/rich/tushare/minute_walkforward_campaign084_feature_library/tushare_stk_mins_1m_2019_2025_ea0cbb8f_walkforward_campaign084_feature_library_v1/snapshot_manifest.json",
+    "sha256": "68a547c9d85f6437382a16704f601074264c8206dd5fe4d23adaff20079f5994",
+    "dataset_sha256": "eaae6e206284f605e6d673a89166ab996e4f246d59955f4d8f427ff7d8aecc5a",
+    "factor": "quarterly_profit_growth_level_acceleration_floor_2r",
+    "direction": "higher",
+    "partitions": 33015,
+    "rows": 7724498,
+    "eligible_rows": 6321289,
+    "missing_rows": 1403209
+  },
+  "independent_file_verification": {
+    "status": "verified",
+    "verified_partitions": 33015,
+    "verified_rows": 7724498,
+    "verified_eligible_rows": 6321289,
+    "dataset_sha256": "eaae6e206284f605e6d673a89166ab996e4f246d59955f4d8f427ff7d8aecc5a",
+    "strict_score_range_validated": "(0,1]",
+    "comparison_values_read": false,
+    "historical_daily_price_or_forward_return_values_read": false,
+    "provider_request_issued": false
+  },
+  "quality": {
+    "joint_clean_base_rows": 7724498,
+    "candidate_eligible_rows": 6321289,
+    "candidate_missing_rows": 1403209,
+    "candidate_row_coverage_before_quality_listing_gate": 0.8183430172420266,
+    "quarterly_source_manifest_rows": 143776,
+    "interpretation": "The missing rows are the immutable consequence of requiring both an already-effective current profit_yoy state and a same-fiscal-quarter profit_yoy acceleration state. No imputation, backfill, alternate rank universe, field substitution, threshold change, or rescue was applied. Raw row coverage is technical evidence only; the frozen quality/listing coverage gate still has not run."
+  },
+  "research_boundary": {
+    "quarterly_source_fields_read": [
+      "instrument",
+      "report_date",
+      "announcement_date",
+      "profit_yoy"
+    ],
+    "stock_day_identity_fields_read": [
+      "trade_date",
+      "symbol",
+      "provider"
+    ],
+    "comparison_values_read": false,
+    "coverage_or_capacity_metrics_computed": false,
+    "historical_daily_price_fields_read": [],
+    "historical_forward_returns_read": false,
+    "candidate49_historical_backfill_performed": false,
+    "candidate49_ledgers_changed": false,
+    "second_prospective_candidate_created": false,
+    "provider_request_issued": false,
+    "current_scoring_selection_sizing_or_orders_performed": false,
+    "investment_advice": false
+  },
+  "survivorship_limitation": "The accepted buyable universe is filtered by a current listing snapshot, so historical coverage and any later research result retain survivorship bias and are not deployment evidence.",
+  "next_action": "Freeze the no-return audit runner and tests against this exact manifest, then run quality/listing coverage before loading any of the 113 numeric comparator value streams."
+}

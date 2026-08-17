@@ -1,0 +1,48 @@
+{
+  "version": 1,
+  "kind": "a_share_three_day_walkforward_campaign073_feature_snapshot_binding",
+  "status": "immutable_snapshot_verified_before_coverage_or_comparison_values",
+  "recorded_at": "2026-08-06T07:16:00+08:00",
+  "protocol": {
+    "path": "docs/a_share_three_day_walkforward_campaign_073_no_return_preregistration.json",
+    "sha256": "473373e71a97b9daf25f97062682ec4ad1f8b05a778efad161c887aa586d5280"
+  },
+  "implementation_freeze": {
+    "path": "docs/a_share_three_day_walkforward_campaign_073_feature_implementation_freeze_20260806.json",
+    "sha256": "b7c40f917d3c96f127376f1737ce6836ff75203938ed6850184afe93e824ce06"
+  },
+  "feature_runner": {
+    "path": "scripts/a_share_three_day_walkforward_campaign073_features.py",
+    "sha256": "a487f940331c1de255ea2fd0ce0ab94195a5e88444d416938db96e801d83c989"
+  },
+  "snapshot": {
+    "path": "/Volumes/DIsk/qlib-a-share-tushare-1m/derived/a_share/rich/tushare/minute_walkforward_campaign073_feature_library/tushare_stk_mins_1m_2019_2025_ea0cbb8f_walkforward_campaign073_feature_library_v1/snapshot_manifest.json",
+    "sha256": "6b281be298be7df908300db6735e3ed3efc7d7c13b44c2ae679bf5a2073940e4",
+    "dataset_sha256": "2cea2e0502be1c5cc70f93260a96175abac5f36af50482847c35746a80252a5f",
+    "partitions": 33015,
+    "rows": 7724498,
+    "eligible_rows": 7724498,
+    "factor": "intraday_terminal_nominal_share_price_affordability_rank_240m",
+    "direction": "higher"
+  },
+  "verification": {
+    "all_partition_byte_and_frame_hashes_passed": true,
+    "aggregate_dataset_hash_reproduced": true,
+    "factor_value_range": "[0,1)",
+    "source_fields_read": [
+      "datetime",
+      "symbol",
+      "provider",
+      "close"
+    ],
+    "raw_source_rows_read": 1866461373,
+    "raw_source_sessions": 7744653,
+    "invalid_close_grid_sessions": 0,
+    "historical_daily_price_fields_read": [],
+    "comparison_values_read": false,
+    "historical_forward_returns_read": false,
+    "provider_request_issued": false,
+    "candidate49_ledgers_changed": false
+  },
+  "next_gate": "Freeze and activate the coverage-first no-return audit implementation; load all 103 comparator values only after the frozen coverage gate passes."
+}

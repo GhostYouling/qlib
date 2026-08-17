@@ -1,0 +1,40 @@
+{
+  "version": 1,
+  "kind": "a_share_three_day_walkforward_campaign075_infrastructure_failure",
+  "status": "recorded_after_v3_failed_retry_no_audit_artifact_published",
+  "recorded_at": "2026-08-06T09:58:00+08:00",
+  "attempt_ordinal_within_campaign": 4,
+  "stage": "v3_finite_adapter_campaign070_manifest_binding",
+  "v3_repair_protocol": {
+    "path": "docs/a_share_three_day_walkforward_campaign_075_no_return_runtime_compatibility_repair_protocol_v3_20260806.json",
+    "sha256": "927b86a173f2789a20261a101a1fff43605d05cab8d2755a20076e1e0b51bedd"
+  },
+  "v3_implementation_freeze": {
+    "path": "docs/a_share_three_day_walkforward_campaign_075_no_return_audit_implementation_freeze_v3_20260806.json",
+    "sha256": "a142317362c415100d6c992a30d72b5734461a3f47a733806921cce301c9efd6"
+  },
+  "exit_code": 1,
+  "failure": "The v3 protocol transcribed Campaign070 manifest SHA-256 as a 65-character string, adding one extra 'e' before the authoritative suffix c67edcbd7.",
+  "incorrect_sha256": "f828ee06ac609580880eb0bfcd2d1fbcaba590e872f57fe5639a468ec67edcbd7",
+  "correct_sha256": "f828ee06ac609580880eb0bfcd2d1fbcaba590e872f57fe5639a468c67edcbd7",
+  "independent_confirmation": {
+    "current_manifest_sha256": "f828ee06ac609580880eb0bfcd2d1fbcaba590e872f57fe5639a468c67edcbd7",
+    "campaign070_activation_binding_sha256_value_matches": true,
+    "campaign070_feature_snapshot_binding_sha256_value_matches": true,
+    "campaign070_research_record_sha256_value_matches": true,
+    "campaign071_feature_runner_prior_comparator_sha256_value_matches": true,
+    "manifest_file_changed": false
+  },
+  "research_boundary": {
+    "candidate_or_comparison_result_observed": false,
+    "partial_statistics_may_be_reused": false,
+    "factor_formula_direction_age_clock_or_missing_rule_changed": false,
+    "comparison_order_or_threshold_changed": false,
+    "snapshot_file_changed": false,
+    "historical_daily_price_fields_read": [],
+    "historical_forward_returns_read": false,
+    "provider_request_issued": false,
+    "candidate49_ledgers_changed": false
+  },
+  "authorized_repair": "Create an additive v4 correction overlay that changes only the Campaign070 manifest SHA binding from the 65-character transcription to the independently confirmed 64-character authoritative SHA, then restart the full audit from coverage."
+}

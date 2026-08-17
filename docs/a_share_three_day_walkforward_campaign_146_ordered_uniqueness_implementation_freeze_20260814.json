@@ -1,0 +1,71 @@
+{
+  "schema_version": 1,
+  "kind": "a_share_three_day_walkforward_campaign146_ordered_uniqueness_implementation_freeze",
+  "status": "all_141_source_loaders_alignment_and_gate_runner_frozen_before_comparator_values",
+  "recorded_at": "2026-08-14T21:53:00+08:00",
+  "purpose": "Bind the exact Campaign146 candidate subset loader, numeric140 superset alignment, Campaign136 141st comparator loader and all-141 ordered uniqueness gate before opening comparator partition values.",
+  "authoritative_inputs": {
+    "protocol": {
+      "path": "docs/a_share_three_day_walkforward_campaign_146_ordered_numeric_uniqueness_protocol_20260814.json",
+      "sha256": "ec070598c943232adb33643980710120c83030517c186a72bd1d7a0f3ec9fd81"
+    },
+    "coverage_result": {
+      "path": "data/experiments/short_horizon/historical_walkforward/campaign_146/coverage/campaign146_coverage_audit.json",
+      "sha256": "74c74d7cfb9e13d145251f8d266a5f44a62b78c6a45f8581132be7aeed68b83e"
+    },
+    "initial_validation_failure": {
+      "path": "docs/a_share_three_day_walkforward_campaign_146_ordered_uniqueness_initial_validation_failure_20260814.json",
+      "sha256": "909e431bb87b118d760f2c11f133751230a164869f18ac9f976c9d60bed79b4a"
+    }
+  },
+  "frozen_implementation": {
+    "runner_path": "scripts/a_share_three_day_walkforward_campaign146_ordered_uniqueness.py",
+    "runner_sha256": "fe9101c169b00be739b39d9ea4c983a8b0a7ee5f1910158a5ca908fdb2f5afe1",
+    "test_path": "tests/data_collector_tests/test_a_share_three_day_walkforward_campaign146_ordered_uniqueness.py",
+    "test_sha256": "8dbbf485ddda7946c6f7bb891624d1e9345d8520c23c1dea6614ccd73b65980b",
+    "protocol_sha256": "ec070598c943232adb33643980710120c83030517c186a72bd1d7a0f3ec9fd81",
+    "coverage_sha256": "74c74d7cfb9e13d145251f8d266a5f44a62b78c6a45f8581132be7aeed68b83e",
+    "design_manifest_sha256": "043c17fea89f3b0956d643a7c6e3f4d73a11403b967213d2d57539a6a8316a49",
+    "design_dataset_sha256": "12ce3a64b5e13581392ded9890e2064db4ccca3945da3eb8ad7752c95366a9fc",
+    "campaign136_manifest_sha256": "9a5c9ff824de22af6595d312b76230a3e4cf283c6e1d42e882aae96d11367b93",
+    "campaign136_dataset_sha256": "c84b1f85eec3731736a4da411691c144a70a81e38b5013e5aeea5370f3c417ec",
+    "comparison_count": 141,
+    "comparison_order_sha256": "ec1aebcb939ad516c58037a36a4aaadd4ad8b2abbd3c884705895c58da85a2ee",
+    "candidate_quality_listing_rows": 1320628,
+    "candidate_value_range_inclusive": [
+      -1.0,
+      1.0
+    ],
+    "minimum_pairwise_names": 50,
+    "minimum_pairwise_sessions": 100,
+    "strict_maximum_absolute_median_correlation": 0.8,
+    "output_path": "data/experiments/short_horizon/historical_walkforward/campaign_146/uniqueness/campaign146_ordered_uniqueness_audit.json",
+    "single_use": true
+  },
+  "synthetic_verification": {
+    "passed": 6,
+    "exit_code": 0,
+    "black_check_exit_code": 0,
+    "ruff_exit_code": 0,
+    "all_141_order_and_sources_bound": true,
+    "negative_candidate_and_missing_support_semantics_verified": true,
+    "superset_subset_alignment_fail_closed": true,
+    "average_ties_and_constant_session_semantics_verified": true,
+    "strict_boundary_and_reorder_rejected": true,
+    "source_manifest_metadata_bound": true
+  },
+  "research_boundary": {
+    "candidate_values_were_read_for_coverage": true,
+    "comparator_values_read_before_freeze": false,
+    "numeric140_manifest_and_partition_schema_metadata_read_before_freeze": true,
+    "numeric140_partition_values_read_before_freeze": false,
+    "campaign136_manifest_metadata_read_before_freeze": true,
+    "campaign136_partition_values_read_before_freeze": false,
+    "historical_daily_price_or_forward_return_values_read": false,
+    "stress_2024_2025_return_values_opened": false,
+    "provider_request_issued": false,
+    "credential_loaded": false,
+    "candidate49_ledgers_changed": false
+  },
+  "next_action": "Run the ordered uniqueness plan; only if ready=true and exit code is zero execute run --confirm-run and record all 141 results without early stop."
+}

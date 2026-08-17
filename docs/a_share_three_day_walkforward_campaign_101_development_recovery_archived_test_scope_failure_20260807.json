@@ -1,0 +1,36 @@
+{
+  "schema_version": 1,
+  "kind": "a_share_three_day_walkforward_campaign101_development_recovery_archived_test_scope_failure",
+  "status": "terminal_validation_scope_failed_without_research_value_change",
+  "recorded_at": "2026-08-07T14:16:05Z",
+  "failed_command_scope": [
+    "tests/data_collector_tests/test_a_share_three_day_walkforward_campaign101_development_recovery_v2.py",
+    "tests/data_collector_tests/test_a_share_three_day_walkforward_campaign101_development_recovery.py",
+    "tests/data_collector_tests/test_a_share_three_day_walkforward_campaign101_development.py"
+  ],
+  "observed_result": {
+    "passed": 15,
+    "failed": 2,
+    "failed_tests": [
+      "test_failed_ledger_has_one_infrastructure_entry_and_no_complete_trial",
+      "test_original_scientific_runner_and_preregistration_are_unchanged"
+    ],
+    "root_cause": "The immutable first-recovery tests intentionally bind the one-entry failed ledger consumed by the first activation; the append-only live ledger had legally advanced to two failures before the v2 current-state validation."
+  },
+  "correction": {
+    "old_frozen_test_file_modified": false,
+    "current_state_scope": [
+      "tests/data_collector_tests/test_a_share_three_day_walkforward_campaign101_development_recovery_v2.py",
+      "tests/data_collector_tests/test_a_share_three_day_walkforward_campaign101_development.py"
+    ],
+    "current_state_result": "12 passed",
+    "black_or_ruff_source_change_after_freeze": false
+  },
+  "read_boundary": {
+    "additional_candidate_factor_daily_price_or_forward_return_values_read": false,
+    "stress_2024_2025_read": false,
+    "provider_request_issued": false,
+    "candidate49_ledgers_changed": false,
+    "current_scoring_selection_sizing_or_orders_performed": false
+  }
+}

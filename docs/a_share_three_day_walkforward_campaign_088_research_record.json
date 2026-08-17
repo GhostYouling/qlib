@@ -1,0 +1,107 @@
+{
+  "schema_version": 1,
+  "kind": "a_share_three_day_walkforward_campaign088_research_record",
+  "status": "terminal_zero_admissible_numeric_uniqueness_rejection_before_daily_prices_or_returns",
+  "recorded_at": "2026-08-07T04:05:56+08:00",
+  "campaign": 88,
+  "candidate": {
+    "name": "intraday_bipower_jump_variation_share_238m",
+    "direction": "higher",
+    "formula": "Using exactly 238 within-half adjacent natural-log close returns and 236 within-half adjacent return pairs, RV=sum(r_i^2), BV=(pi/2)*(238/236)*sum(|r_i|*|r_{i+1}|), and score=max(RV-BV,0)/RV.",
+    "economic_hypothesis": "A larger discontinuous repricing share may identify concentrated information incorporation whose attention and price discovery continue over the next three sessions.",
+    "formula_direction_window_transform_filter_subset_fit_model_or_combination_search": false
+  },
+  "immutable_chain": {
+    "no_return_preregistration": {
+      "path": "docs/a_share_three_day_walkforward_campaign_088_no_return_preregistration.json",
+      "sha256": "903d8ea131d5e5d9c7d53447c03d715a2ef3eefc96482b6a3521f33a05171eab"
+    },
+    "feature_snapshot_binding": {
+      "path": "docs/a_share_three_day_walkforward_campaign_088_feature_snapshot_binding_20260807.json",
+      "sha256": "15a17b1db513901a3a56ac3e39768971a78e9319937c8ac18eb980d362a33064",
+      "dataset_sha256": "022e0bed5b6dc3ea50e069c44aa4e834aeaa6ec65444e87d75287cbeedf3d756"
+    },
+    "no_return_audit_activation": {
+      "path": "docs/a_share_three_day_walkforward_campaign_088_no_return_audit_activation_binding_20260807.json",
+      "sha256": "f606a05cc3b08338d785e254021fabb56d839ce5871bf34069e4dd17da79adc1"
+    },
+    "no_return_audit_report": {
+      "path": "data/experiments/short_horizon/historical_walkforward/campaign_088/no_return/20260806T200415Z_campaign088_no_return_audit.json",
+      "sha256": "882998acd898a55ee5070568623d39cecf1f058bb082305ca0dc4d1c0e2daef7"
+    },
+    "attempt_ledger_v6": {
+      "path": "data/experiments/short_horizon/historical_walkforward/campaign_088/research_attempt_ledger_v6.json",
+      "sha256": "1069a33bb4500c1ac2d8a6cb5942bae6e5d78ed65795c31afb1b7a386ee90e21"
+    }
+  },
+  "snapshot_result": {
+    "rows": 1331759,
+    "finite_rows": 1328065,
+    "missing_rows": 3694,
+    "partitions": 7,
+    "calendar_sessions": 1632,
+    "source_fields": [
+      "datetime",
+      "symbol",
+      "provider",
+      "close"
+    ],
+    "comparison_values_read_during_snapshot_build": false,
+    "historical_daily_price_or_forward_return_values_read_during_snapshot_build": false
+  },
+  "coverage_result": {
+    "gate_passed": true,
+    "median_coverage": 0.9983183851218558,
+    "p05_coverage": 0.9933708902303229,
+    "eligible_names_p05": 138,
+    "potential_non_overlapping_three_session_cohorts": 539,
+    "observed_years": [
+      2019,
+      2020,
+      2021,
+      2022,
+      2023,
+      2024,
+      2025
+    ]
+  },
+  "numeric_uniqueness_result": {
+    "comparison_count": 117,
+    "comparison_order_matches_preregistration": true,
+    "passed_count": 116,
+    "failed_count": 1,
+    "strict_maximum_absolute_median_daily_rank_correlation": 0.8,
+    "maximum_observed_absolute_median_daily_rank_correlation": 0.9982848969650057,
+    "failed_comparator": "intraday_diffusive_variation_ratio_238m",
+    "all_required_comparisons_passed": false,
+    "candidate_admissible": false
+  },
+  "terminal_decision": {
+    "development_trial_opened": false,
+    "development_return_fields_read": false,
+    "development_survivor_count": 0,
+    "stress_2024_2025_opened": false,
+    "stress_return_fields_read": false,
+    "rescue_or_reparameterization_allowed": false,
+    "reason": "The candidate is numerically indistinguishable from an existing diffusive variation ratio under the frozen strict uniqueness gate."
+  },
+  "accounting": {
+    "campaign_attempt_count": 8,
+    "campaign_ledger_entry_count": 9,
+    "campaign_complete_factor_attempt_count": 1,
+    "campaign_return_reading_development_trial_count": 0,
+    "cumulative_historical_research_attempt_count": 609,
+    "cumulative_return_reading_development_trial_count": 286
+  },
+  "research_boundary": {
+    "historical_daily_price_fields_read": [],
+    "historical_forward_returns_read": false,
+    "provider_request_issued": false,
+    "candidate49_historical_backfill_performed": false,
+    "candidate49_ledgers_changed": false,
+    "second_prospective_candidate_created": false,
+    "current_scoring_selection_sizing_or_orders_performed": false,
+    "investment_advice": false
+  },
+  "next_action": "Preserve Campaign088 as terminal, add its complete numeric definition to the future duplicate-detection library, and begin Campaign089 only with a genuinely distinct pre-value mechanism."
+}

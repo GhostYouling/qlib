@@ -1,0 +1,69 @@
+{
+  "schema_version": 1,
+  "kind": "a_share_three_day_walkforward_campaign102_terminal_completion_freeze",
+  "status": "terminal_zero_survivors_verified_stable_test_scope",
+  "recorded_at": "2026-08-07T15:47:00Z",
+  "authoritative_state": {
+    "path": "docs/a_share_three_day_iteration_status_20260807_campaign102_terminal.json",
+    "sha256": "6b953cc2bac54af73c05a659b18837d301dec6dedfd3964f37f4bf7eeb54019a"
+  },
+  "terminal_result": {
+    "path": "docs/a_share_three_day_walkforward_campaign_102_terminal_result_binding_20260807.json",
+    "sha256": "d0938cd28d2dd130a8579671249cdeb20fd4bcdfdc9e5c013a527cc00e0ff3ec"
+  },
+  "future_numeric_policy": {
+    "path": "docs/a_share_three_day_walkforward_future_numeric_comparison_eligibility_policy_v59_20260807.json",
+    "sha256": "4e6c7aea0be521773cda56ceea33d1665a82e9254b1e9198fa13b65e22d826b0"
+  },
+  "report": {
+    "path": "docs/a_share_three_day_walkforward_campaign_102_report.md",
+    "sha256": "bf8d74c7d2e7b5983597fd0733868193df636353d6b756e2b65cc8aef935378a"
+  },
+  "stable_test_scope": {
+    "result": "38_passed",
+    "files": [
+      {
+        "path": "tests/data_collector_tests/test_a_share_three_day_walkforward_campaign102_design.py",
+        "sha256": "b7cc6ee0849d70b8175a2e9ffc1b1bc8aba15bb2aa4ea26c450d1d807cef7b43"
+      },
+      {
+        "path": "tests/data_collector_tests/test_a_share_three_day_walkforward_campaign102.py",
+        "sha256": "fcd2afd8b6a6fb06ac1ada405a5ddd9e298317b232dc1e68a8dc7cefe81a704d"
+      },
+      {
+        "path": "tests/data_collector_tests/test_a_share_three_day_walkforward_campaign102_development_recovery.py",
+        "sha256": "0879808fadb845d22bf6351301cfe41dbd3ae9cdaa20e1f6390faaa36b64bfe6"
+      },
+      {
+        "path": "tests/data_collector_tests/test_a_share_three_day_walkforward_campaign102_development_recovery_v2.py",
+        "sha256": "90414daf22a2aa98eb470a5459f87f76a0b00960fbffd47268ac9ac2c85daad7"
+      },
+      {
+        "path": "tests/data_collector_tests/test_a_share_three_day_walkforward_campaign102_terminal.py",
+        "sha256": "8cde277b16d30b3d97cdd5b88f01d94e1284a0aa629c9e909e73b790b5e1ab56"
+      },
+      {
+        "path": "tests/data_collector_tests/test_a_share_three_day_walkforward_campaign102_terminal_state.py",
+        "sha256": "8da218f0cc4edc830921b1171eb6f84c3fd9ab4a59b39c6605b5a53427786070"
+      },
+      {
+        "path": "tests/data_collector_tests/test_a_share_three_day_walkforward_campaign101_terminal_v4.py",
+        "sha256": "19b87924af13ee931950b3f508cd07bda9df12a692254caf73a0b4bd395af856"
+      }
+    ]
+  },
+  "terminal_assertions": {
+    "design_structural_gate_passed": true,
+    "complete_development_trial_count": 3,
+    "all_three_trials_passed_all_fold_uniqueness": true,
+    "development_survivor_count": 0,
+    "lockbox_2024_2025_opened": false,
+    "lockbox_2024_2025_return_fields_read": false,
+    "candidate49_signal_and_execution_ledgers_unchanged": true,
+    "provider_request_issued": false,
+    "current_scoring_selection_sizing_or_orders_performed": false
+  },
+  "next_campaign_may_start": true,
+  "next_campaign_id": 103,
+  "next_campaign_values_read_before_new_prevalue_freeze": false
+}

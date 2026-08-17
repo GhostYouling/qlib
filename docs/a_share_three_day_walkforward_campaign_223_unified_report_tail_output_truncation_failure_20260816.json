@@ -1,0 +1,14 @@
+{
+  "schema_version": 1,
+  "kind": "a_share_three_day_walkforward_campaign223_infrastructure_failure",
+  "recorded_at": "2026-08-16T02:08:00+08:00",
+  "timestamp_semantics": "monotonic_logical_append_time_not_host_wall_clock_measurement",
+  "attempt_id": "campaign223_infrastructure_003",
+  "phase": "unified_report_tail_inspection",
+  "status": "failed_combined_dual_report_tail_output_truncated_and_discarded",
+  "failure": "A combined display of the two mutable unified-report tails exceeded the output limit; the truncated display was discarded as research and validation evidence.",
+  "writes_before_failure": false,
+  "scientific_value_read": false,
+  "result_consumed": false,
+  "recovery": "Subsequent report mutation and validation use the exact new heading, bounded searches and complete file hashes without relying on the truncated display."
+}

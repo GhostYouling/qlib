@@ -1,0 +1,95 @@
+{
+  "version": 1,
+  "kind": "a_share_three_day_walkforward_campaign005_no_return_audit_infrastructure_repair",
+  "status": "resolved_before_any_historical_daily_price_or_forward_return_read",
+  "recorded_at": "2026-07-28T09:46:06Z",
+  "purpose": "Record the single infrastructure-only interruption in the frozen Campaign005 no-return audit and the exact non-research repair used for the successful retry.",
+  "frozen_inputs": {
+    "mechanism_overlap_audit": {
+      "path": "docs/a_share_three_day_walkforward_campaign_005_mechanism_overlap_audit.json",
+      "sha256": "c378541156f8e68a2d73bafe44f99f7d1b3fc7ca06c1cf72c093d07a93f7907e"
+    },
+    "no_return_preregistration": {
+      "path": "docs/a_share_three_day_walkforward_campaign_005_no_return_preregistration.json",
+      "sha256": "01b0c48e2a3e1b0741dee62d4e9d4858e202410ea266a00faa1b5d5ccc21ffa3"
+    },
+    "feature_snapshot": {
+      "path": "/Volumes/DIsk/qlib-a-share-tushare-1m/derived/a_share/rich/tushare/minute_walkforward_campaign005_feature_library/tushare_stk_mins_1m_2019_2025_ea0cbb8f_walkforward_campaign005_feature_library_v1/snapshot_manifest.json",
+      "sha256": "7f48bd252d381f85deb416ed282b6f62aacee0ca492c37c99fdb901d2e241675",
+      "dataset_sha256": "5c7f9e7e534cc4e4678c7ea746c69f5809dcc6415d9a652b93ff63899413fd75",
+      "partition_count": 33015,
+      "row_count": 7724498
+    },
+    "authoritative_iteration_state": {
+      "path": "docs/a_share_three_day_iteration_status_20260728_campaign004.json",
+      "sha256": "2037007da4fe750b70715b9f0cf7e8d361cb9d6d18128fdb6c18b05486954749"
+    }
+  },
+  "first_attempt": {
+    "outcome": "failed_closed_during_first_candidate_coverage_loading",
+    "exception_type": "KeyError",
+    "exception_message": "'intraday_zero_return_amount_intensity_238m'",
+    "cause": "The reused immutable Campaign004 partition loader expected a FACTOR_RANGES mapping, but the Campaign005 orchestration module had not injected the already-frozen Campaign005 valid ranges into that loader.",
+    "feature_script_sha256": null,
+    "feature_script_sha256_note": "The failed process did not persist a complete script fingerprint; do not reconstruct or infer one. The preregistered pre-protocol implementation and the exact post-repair implementation are independently bound elsewhere in this record.",
+    "candidate_values_opened": [
+      "intraday_zero_return_amount_intensity_238m for the first coverage gate only"
+    ],
+    "comparison_values_opened": false,
+    "historical_daily_price_fields_read": [],
+    "historical_forward_return_fields_read": false,
+    "audit_artifacts_written": 0,
+    "training_or_model_fitting_performed": false,
+    "current_scoring_selection_sizing_or_orders_performed": false
+  },
+  "repair": {
+    "scope": "infrastructure_only",
+    "changes": [
+      "Define the three valid ranges exactly as already frozen in the mechanism audit and no-return preregistration.",
+      "Inject that FACTOR_RANGES mapping into the reused loader before partition verification and loading.",
+      "Add synthetic assertions that every generated finite feature value obeys its already-frozen range."
+    ],
+    "frozen_factor_formulas_changed": false,
+    "frozen_directions_changed": false,
+    "frozen_timestamp_or_missing_semantics_changed": false,
+    "frozen_gate_values_or_order_changed": false,
+    "frozen_comparison_catalog_changed": false,
+    "frozen_finite_search_changed": false,
+    "post_repair_pre_audit_binding_feature_script_sha256": "71108faad9e83e095ee6f1163e36d52ee0e3526dc94f4f7143ca32566f02baa1",
+    "formula_test_command": "PYTHONPATH=/opt/anaconda3/lib/python3.12/site-packages /opt/anaconda3/bin/python3 -S -m pytest -q tests/data_collector_tests/test_a_share_three_day_walkforward_campaign005_features.py",
+    "formula_tests_passed": 7,
+    "formula_tests_failed": 0
+  },
+  "successful_retry": {
+    "parameters": "identical data root, experiment root, factor order, gates, and worker semantics",
+    "audit": {
+      "path": "data/experiments/short_horizon/historical_walkforward/campaign_005/no_return/20260728T094320Z_campaign005_no_return_audit.json",
+      "sha256": "7a6ae6e1667aeb7a7060550c722431f0e8b88ff6e18bc00c2f3478dc2646b2b1",
+      "status": "completed_with_admissible_factors_pending_walkforward_preregistration",
+      "admissible_factor_names": [
+        "intraday_zero_return_amount_intensity_238m"
+      ],
+      "failed_factor_names": [
+        "intraday_lunch_repricing_persistence_119m",
+        "intraday_directional_price_impact_asymmetry_238m"
+      ]
+    },
+    "historical_daily_price_fields_read": [],
+    "historical_forward_return_fields_read": false,
+    "candidate49_historical_return_read": false,
+    "candidate49_prospective_ledgers_changed": false,
+    "candidate50_prospective_activation_created": false
+  },
+  "post_audit_fingerprint_binding": {
+    "feature_script_path": "scripts/a_share_three_day_walkforward_campaign005_features.py",
+    "feature_script_sha256": "cf06abc4c6f5a6cc11fd0e02e076056b31db50cbc522cf0779c86f05dbc32f27",
+    "bound_audit_sha256": "7a6ae6e1667aeb7a7060550c722431f0e8b88ff6e18bc00c2f3478dc2646b2b1"
+  },
+  "research_boundary": {
+    "candidate49_historical_return_backfill_performed": false,
+    "candidate50_started": false,
+    "campaign004_rescued_reweighted_or_reopened": false,
+    "live_trading_or_orders_performed": false,
+    "historical_result_claim_created_by_the_failed_attempt": false
+  }
+}

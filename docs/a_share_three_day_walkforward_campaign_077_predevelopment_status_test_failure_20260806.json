@@ -1,0 +1,18 @@
+{
+  "version": 1,
+  "kind": "a_share_three_day_walkforward_campaign077_predevelopment_status_test_failure",
+  "status": "recorded_before_development_return_read",
+  "recorded_at": "2026-08-06T13:27:00+08:00",
+  "test_result": "2 passed, 1 failed, 1 deselected",
+  "failed_test": "test_predevelopment_status_has_zero_ledger_and_closed_stress",
+  "exception": "TypeError: status() missing 1 required positional argument: args",
+  "cause": "The test treated the generated CLI status handler as a zero-argument function.",
+  "repair": "Pass an argparse.Namespace with the exact frozen campaign and output-root paths; no production code or research parameter changed.",
+  "corrected_result_before_freeze": "3 passed, 1 implementation-freeze test deselected",
+  "historical_daily_price_fields_read": [],
+  "historical_forward_returns_read": false,
+  "development_trial_run": false,
+  "stress_2024_2025_opened": false,
+  "provider_request_issued": false,
+  "candidate49_ledgers_changed": false
+}

@@ -1,0 +1,59 @@
+{
+  "schema_version": 1,
+  "kind": "a_share_three_day_walkforward_campaign139_formula_implementation_freeze",
+  "status": "pure_formula_and_tests_frozen_before_campaign139_source_rows_or_values",
+  "recorded_at": "2026-08-14T13:15:59+0800",
+  "authoritative_inputs": {
+    "no_return_preregistration": {
+      "path": "docs/a_share_three_day_walkforward_campaign_139_no_return_preregistration_20260814.json",
+      "sha256": "def4153f0fdc112ddb5b6349b83449874be040546ef4a9e2a6527dc07e713a1c"
+    },
+    "mechanism_overlap_audit": {
+      "path": "docs/a_share_three_day_walkforward_campaign_139_mechanism_overlap_audit_20260814.json",
+      "sha256": "bcb05690918bb6a5cbdcf125b53ec86760ad91c7c6f0983000271728c59b7ee7"
+    }
+  },
+  "frozen_implementation": {
+    "formula_path": "scripts/a_share_three_day_walkforward_campaign139_formula.py",
+    "formula_sha256": "8939c7e3b1deca67cd70fba9d100417d0fbadb9188033d90c464349641a81f18",
+    "test_path": "tests/data_collector_tests/test_a_share_three_day_walkforward_campaign139_formula.py",
+    "test_sha256": "0d324738729ae04ebf3ef33d1d82aa85e4778e8c3a480071bb3eb3892e546e4f",
+    "factor_name": "quarterly_realized_profit_growth_forecast_surprise_rank",
+    "score_direction": "higher",
+    "raw_formula": "profit_yoy - forecast_profit_yoy",
+    "rank_semantics": "exact average-tie one-based rank divided by finite eligible cross-sectional count",
+    "join_validity_inputs": [
+      "same_instrument_report_period",
+      "forecast_strictly_precedes_realized_announcement",
+      "duplicate_semantics_valid"
+    ],
+    "exact_zero_surprise_valid": true,
+    "tolerance_or_epsilon_used": false,
+    "clipping_winsorization_imputation_threshold_filter_subset_fit_or_model_used": false
+  },
+  "pre_freeze_validation": {
+    "focused_pytest": "6 passed in 0.58s",
+    "black_check": "2 files would be left unchanged",
+    "ruff": "All checks passed",
+    "exit_code": 0,
+    "predecessor_black_check_failure": {
+      "path": "docs/a_share_three_day_walkforward_campaign_139_formula_black_check_failure_20260814.json",
+      "sha256": "759543cd5d4b8eb4430b8f3f983b42f384105885fc59c1159204755c390371f7",
+      "scientific_semantics_changed_by_recovery": false
+    }
+  },
+  "research_boundary": {
+    "performance_forecast_or_quarterly_parquet_rows_read": false,
+    "campaign139_source_column_values_read": false,
+    "candidate_or_comparator_values_read": false,
+    "historical_daily_price_or_forward_return_values_read": false,
+    "stress_2024_2025_opened": false,
+    "provider_request_issued": false,
+    "provider_credential_value_or_digest_read": false,
+    "candidate49_historical_backfill_performed": false,
+    "candidate49_ledgers_changed": false,
+    "current_scoring_selection_sizing_positions_or_orders_performed": false,
+    "investment_advice": false
+  },
+  "mutation_boundary": "The preregistration, formula and test bytes are frozen. Any semantic or byte change requires a separately recorded infrastructure repair before source access; no value-dependent repair is allowed."
+}

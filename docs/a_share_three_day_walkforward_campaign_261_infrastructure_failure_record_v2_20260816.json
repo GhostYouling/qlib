@@ -1,0 +1,74 @@
+{
+  "schema_version": 2,
+  "kind": "a_share_three_day_walkforward_campaign261_additive_infrastructure_failure_record",
+  "status": "five_additional_failures_preserved_without_changing_terminal_science_or_validation_evidence",
+  "recorded_at": "2026-08-16T16:56:00+08:00",
+  "timestamp_semantics": "monotonic_logical_append_time_not_host_wall_clock_measurement",
+  "authoritative_predecessor": {
+    "path": "data/experiments/short_horizon/historical_walkforward/campaign_261/research_attempt_ledger_v2.json",
+    "sha256": "d5481d3c84aef43337bc3174c07ddddb343ce3f795a28267da04ce7dbd6b5691",
+    "effective_entry_count": 23,
+    "effective_infrastructure_failure_attempt_count": 17
+  },
+  "failures": [
+    {
+      "attempt_id": "campaign261_infrastructure_018",
+      "phase": "cumulative_regression_deselection_catalog_inspection",
+      "status": "failed_combined_policy_catalog_output_truncated",
+      "result_consumed": false,
+      "recovery": "Discard the truncated output and use bounded key/count probes before reconstructing the exact catalog."
+    },
+    {
+      "attempt_id": "campaign261_infrastructure_019",
+      "phase": "cumulative_regression_policy_inventory",
+      "status": "failed_guessed_numeric_policy_paths_file_not_found",
+      "result_consumed": false,
+      "recovery": "Resolve the exact future_numeric_comparison_eligibility_policy paths with repository-scoped rg --files before reading them."
+    },
+    {
+      "attempt_id": "campaign261_infrastructure_020",
+      "phase": "cumulative_regression_deselection_catalog_reconstruction",
+      "status": "generalized_chain_reconstruction_returned_25_of_75_nodes_and_aborted_before_pytest",
+      "result_consumed": false,
+      "recovery": "Read the v394 schema transition explicitly, reconstruct 22 base plus 50 carried plus three later nodes, verify 75 unique nodes, and rerun."
+    },
+    {
+      "attempt_id": "campaign261_infrastructure_021",
+      "phase": "terminal_artifact_inventory",
+      "status": "failed_guessed_dated_terminal_report_path_file_not_found",
+      "result_consumed": false,
+      "recovery": "Resolve the undated Campaign261 terminal report path with rg --files; previously read JSON metadata remains non-scientific inventory only."
+    },
+    {
+      "attempt_id": "campaign261_infrastructure_022",
+      "phase": "infrastructure_failure_record_inventory",
+      "status": "failed_guessed_v1_suffix_for_existing_failure_record_file_not_found",
+      "result_consumed": false,
+      "recovery": "Resolve the exact unsuffixed Campaign261 infrastructure failure record with rg --files before inspection."
+    }
+  ],
+  "additional_infrastructure_failure_count": 5,
+  "effective_infrastructure_failure_count": 22,
+  "successful_validation_evidence": {
+    "cumulative_campaign_range": "145-261",
+    "test_file_count": 159,
+    "passed": 594,
+    "skipped": 1,
+    "deselected": 75,
+    "pytest_exit_code": 0,
+    "failed_or_truncated_invocations_excluded": true
+  },
+  "research_boundary": {
+    "failed_or_truncated_output_used_as_scientific_or_validation_evidence": false,
+    "historical_daily_price_or_forward_return_values_read": false,
+    "stress_2024_2025_opened": false,
+    "provider_or_web_request_issued": false,
+    "provider_credential_presence_value_or_digest_read": false,
+    "candidate49_plan_or_run_executed": false,
+    "candidate49_historical_backfill_performed": false,
+    "candidate49_ledgers_changed": false,
+    "second_prospective_candidate_created": false,
+    "current_scoring_selection_sizing_positions_or_orders_performed": false,
+    "investment_advice": false
+  }
+}

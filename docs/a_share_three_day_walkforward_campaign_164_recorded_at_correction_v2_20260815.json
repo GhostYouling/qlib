@@ -1,0 +1,35 @@
+{
+  "schema_version": 1,
+  "kind": "a_share_three_day_walkforward_campaign164_recorded_at_correction",
+  "status": "effective_v2_state_hash_binding_corrected_old_records_preserved",
+  "recorded_at": "2026-08-15T07:01:25+08:00",
+  "authoritative_predecessor": {
+    "path": "docs/a_share_three_day_walkforward_campaign_164_recorded_at_correction_20260815.json",
+    "sha256": "a5caea8956649e4cbe2c9c8e27d439966ec0d6486fd689aefe5f67dfb1288cfd",
+    "preserved": true
+  },
+  "unchanged_effective_corrections": {
+    "source": "authoritative_predecessor.corrections[0:6]",
+    "count": 6,
+    "scientific_decision_changed": false
+  },
+  "delta_correction": {
+    "path": "docs/a_share_three_day_iteration_status_20260815_campaign164_prevalue_terminal.json",
+    "invalid_sha256_in_v1": "e4b4fdf2c64a26d484fbb1d9f2d0038958711c4f49d88a7246f58e2911a14d2d",
+    "correct_sha256": "5032710f5fc4f9bad2ac2aee0a8eaaba8e4a27ee95eb1604ef8398c6ed4e3a8c",
+    "invalid_declared_recorded_at": "2026-08-15T07:03:00+08:00",
+    "effective_recorded_at_from_original_file_mtime": "2026-08-15T06:59:51+08:00"
+  },
+  "correction_rules": {
+    "old_files_rewritten": false,
+    "v1_correction_rewritten": false,
+    "scientific_decision_changed": false,
+    "future_publications_must_bind_this_v2": true,
+    "future_hashes_must_be_computed_before_reference": true
+  },
+  "research_boundary": {
+    "candidate_comparator_price_or_return_value_read": false,
+    "stress_2024_2025_opened": false,
+    "candidate49_ledgers_changed": false
+  }
+}

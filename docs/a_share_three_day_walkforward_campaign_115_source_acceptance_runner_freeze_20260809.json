@@ -1,0 +1,64 @@
+{
+  "schema_version": 1,
+  "kind": "a_share_three_day_walkforward_campaign115_source_acceptance_runner_freeze",
+  "status": "runner_fingerprint_frozen_plan_fail_closed_on_missing_manual_entitlement_confirmation",
+  "recorded_at": "2026-08-09T03:18:00+08:00",
+  "protocol": {
+    "path": "docs/a_share_three_day_walkforward_campaign_115_source_acceptance_protocol_20260809.json",
+    "sha256": "ad9b789fccada781e77662f95d7d3edaffc5371d605a85a9304a178e3ad4cc6c"
+  },
+  "implementation": {
+    "runner_path": "scripts/a_share_tushare_limit_up_queue_acceptance.py",
+    "runner_sha256": "ec13ab3c4280c16a0a89894241130069ad4b4b2e99a25be52e31fc178606f085",
+    "test_path": "tests/data_collector_tests/test_a_share_tushare_limit_up_queue_acceptance.py",
+    "test_sha256": "d973cfcbfeb76bb9c9f71e6fd03142af0412b2e3d16a75b752aa76866da3c619",
+    "frozen_adapter_sha256": "807d06f7dec4ca0a94beb28912b686e8cb01fbf36c7f473e69564de16af5f5dd",
+    "provider_call_only_exists_in_confirmed_run_path": true,
+    "maximum_provider_calls": 1,
+    "run_requires_confirm_current_account_has_5000_points": true,
+    "run_requires_confirm_run": true,
+    "plan_writes_files_or_issues_provider_request": false,
+    "raw_response_or_plaintext_provider_error_persisted": false
+  },
+  "verification": {
+    "focused_adapter_and_runner_tests": "19 passed in 0.68s",
+    "ruff": "All checks passed!",
+    "black": "2 files would be left unchanged",
+    "real_plan_exit_code": 2,
+    "real_plan_ready": false,
+    "real_plan_passed_local_checks": [
+      "protocol_fingerprint",
+      "contract_fingerprint",
+      "adapter_fingerprint",
+      "universe_fingerprint",
+      "calendar_fingerprint",
+      "fixed_date_is_calendar_session",
+      "no_prior_success",
+      "no_prior_failure",
+      "no_temporary_root",
+      "dotenv_regular_non_symlink",
+      "dotenv_mode_0600",
+      "dotenv_git_ignored",
+      "tushare_token_present",
+      "fixed_active_name_count"
+    ],
+    "real_plan_only_blocker": "manual_5000_point_entitlement_confirmation",
+    "real_plan_provider_request_issued": false,
+    "credential_value_printed_hashed_or_persisted": false
+  },
+  "decision": {
+    "acceptance_run_allowed_now": false,
+    "reason": "The authoritative data skill records that the prior 3000-point account was rejected by limit_list_d. A configured or changed Token does not prove that the current account has the required 5000 points, and the user has not explicitly confirmed that entitlement.",
+    "next_action_if_user_confirms_existing_5000_point_entitlement": "Run plan with --confirm-current-account-has-5000-points; only if ready=true and exit code 0, immediately run the identical frozen request with --confirm-run exactly once.",
+    "next_action_without_confirmation": "Keep Campaign115 at the pre-provider gate and continue only zero-network verification or scout a later independent source after Campaign115 is formally resolved; do not probe limit_list_d to guess entitlement."
+  },
+  "research_boundary": {
+    "provider_request_issued": false,
+    "provider_rows_candidate_or_comparison_values_read": false,
+    "daily_price_or_forward_return_values_read": false,
+    "candidate49_ledgers_changed": false,
+    "second_prospective_candidate_created": false,
+    "current_scoring_selection_sizing_or_orders_performed": false,
+    "investment_advice": false
+  }
+}

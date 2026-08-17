@@ -1,0 +1,52 @@
+{
+  "schema_version": 1,
+  "kind": "a_share_three_day_walkforward_campaign105_prevalue_infrastructure_failures",
+  "status": "nine_prevalue_infrastructure_failures_recorded_before_campaign105_daily_price_or_return_values",
+  "recorded_at": "2026-08-07T18:35:38Z",
+  "supersedes_without_rewriting": {
+    "path": "docs/a_share_three_day_walkforward_campaign_105_prevalue_infrastructure_failures_v4_20260808.json",
+    "sha256": "62dd84492e687f6b7033bfd25ff9710850ac5cda529e12f4a1a93e23dc189a7c"
+  },
+  "preserved_prior_failure_count": 6,
+  "new_failures": [
+    {
+      "failure_id": "campaign105_infrastructure_008",
+      "stage": "development_preregistration_read_only_load_v1",
+      "failure": "The inherited development loader rejected the authoritative no-return audit's terminal status because it requires a narrow historical loader-interface status. No daily-price or forward-return value was read.",
+      "observed_exit_code": 1
+    },
+    {
+      "failure_id": "campaign105_infrastructure_009",
+      "stage": "development_admission_v1_timestamp_binding",
+      "failure": "The first interface admission used a planned logical recorded_at later than the observed file write; an additive v2 corrected the timestamp before downstream use. No scientific field changed.",
+      "observed_exit_code": null
+    },
+    {
+      "failure_id": "campaign105_infrastructure_010",
+      "stage": "development_preregistration_read_only_load_v2",
+      "failure": "The v2 interface admission used the plural status literal completed_with_admissible_factors_pending_walkforward_preregistration, while the inherited one-factor loader requires completed_with_one_admissible_factor_pending_walkforward_preregistration. An additive v3 corrects only that literal.",
+      "observed_exit_code": 1
+    }
+  ],
+  "shared_new_failure_boundaries": {
+    "candidate_source_or_comparator_values_read": false,
+    "coverage_or_capacity_metrics_computed": false,
+    "historical_daily_price_or_forward_return_values_read": false,
+    "provider_request_issued": false,
+    "candidate49_ledgers_changed": false
+  },
+  "accounting": {
+    "infrastructure_failure_count": 9,
+    "complete_factor_attempt_count": 1,
+    "return_reading_development_trial_count": 0,
+    "cumulative_historical_research_attempt_count": 785,
+    "cumulative_return_reading_development_trial_count": 299
+  },
+  "research_boundary": {
+    "campaign105_minute_snapshot_and_no_return_values_already_read_under_prior_freezes": true,
+    "historical_daily_price_or_forward_return_values_read": false,
+    "stress_2024_2025_opened": false,
+    "provider_request_issued": false,
+    "candidate49_ledgers_changed": false
+  }
+}

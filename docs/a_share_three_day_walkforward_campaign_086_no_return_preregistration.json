@@ -1,0 +1,688 @@
+{
+  "schema_version": 1,
+  "kind": "a_share_three_day_walkforward_campaign086_no_return_preregistration",
+  "status": "frozen_before_campaign086_minute_source_candidate_comparison_daily_price_or_return_values",
+  "frozen_at": "2026-08-07T00:42:00+08:00",
+  "purpose": "Freeze one intrabar close-location serial-persistence factor, the complete 117-definition semantic library, all 115 eligible numeric comparisons, ordered no-return gates, and exactly one conditional 2019-2023 development trial before opening Campaign086 source rows or values.",
+  "candidate": {
+    "name": "intraday_intrabar_close_location_serial_persistence_238p",
+    "direction": "higher",
+    "formula": "For each positive-range selected bar set x=(log(close)-log(low))/log(high/low). Pool adjacent (x_t-1,x_t) pairs separately inside the two 120-bar halves, require at least 120 informative pairs and positive population variance in both vectors, compute population Pearson rho, and return (1+rho)/2.",
+    "economic_hypothesis": "Persistent placement of minute closes at similar scale-free locations inside their own high-low intervals can reveal repeated one-sided liquidity pressure or coordinated execution that may carry over the next three sessions.",
+    "minute_source_projection": [
+      "datetime",
+      "symbol",
+      "provider",
+      "high",
+      "low",
+      "close"
+    ],
+    "stock_day_identity_projection": [
+      "trade_date",
+      "symbol",
+      "provider"
+    ],
+    "source_grid": "Require exactly the raw 09:30 row plus all 240 standard bars; select exactly 09:31-11:30 and 13:01-15:00 and exclude 09:30 from the factor.",
+    "selected_bar_count": 240,
+    "half_session_bar_count": 120,
+    "within_half_opportunity_count": 119,
+    "pooled_opportunity_count": 238,
+    "minimum_informative_pair_count": 120,
+    "half_session_rule": "Form adjacent pairs independently inside each 120-bar half; exclude the 11:30-to-13:01 transition and never bridge a missing close-location state.",
+    "state_rule": "For finite positive ordered low<=close<=high with high>low, compute x=(log(close)-log(low))/log(high/low). A zero-range bar has no state and removes only its directly incident pairs.",
+    "correlation_rule": "Use population Pearson correlation on the retained lag and lead close-location vectors. Both population variances must be strictly positive. Canonicalize only a result within 1e-12 of -1 or +1 before mapping (1+rho)/2.",
+    "valid_range": {
+      "lower": 0,
+      "lower_inclusive": true,
+      "upper": 1,
+      "upper_inclusive": true
+    },
+    "missing_semantics": "Missing for invalid or duplicate source identity, source-grid mismatch, any selected nonfinite/nonpositive or unordered high-low-close value, fewer than 120 informative within-half pairs, nonpositive lag or lead population variance, nonfinite correlation, or mapped score outside [0,1]. Never impute, bridge, smooth, clip, bucket, rank, winsorize, neutralize, or substitute another grid.",
+    "mean_entropy_sign_lead_lag_subwindow_direction_filter_subset_year_cost_regime_neutralization_fit_combination_or_model_search": false
+  },
+  "source_chain": {
+    "concept_scouting_v2": {
+      "path": "docs/a_share_three_day_walkforward_campaign_086_concept_scouting_v2.json",
+      "sha256": "76cf7fca133f557482d7379634b66e806b4e07ecd7ca5dbd2559d2c44060845d"
+    },
+    "mechanism_overlap_audit_v2": {
+      "path": "docs/a_share_three_day_walkforward_campaign_086_mechanism_overlap_audit_v2.json",
+      "sha256": "874faeadca0fb0ba4b6e94fbaf9ad61c380914f8dc4a0f076417d76fb283f116"
+    },
+    "prevalue_numeric_order_binding_failure": {
+      "path": "docs/a_share_three_day_walkforward_campaign_086_prevalue_numeric_order_binding_failure_20260807.json",
+      "sha256": "1aa8419a10ce987ef3744cf09ab97cc6c3f8fe6a8316be7ba6a7f4106ce4b255"
+    },
+    "authoritative_iteration_state": {
+      "path": "docs/a_share_three_day_iteration_status_20260807_campaign085_verified.json",
+      "sha256": "99487c88232df6e0fedbd6207c20a6f25bab8bb6e8f66842f2599bbeba2c3024"
+    },
+    "historical_walkforward_policy": {
+      "path": "docs/a_share_three_day_historical_walkforward_research_policy_20260727.json",
+      "sha256": "38426d6161b9bfed323c58caba18feca668b8c9d53e294951a8ba90c01a798bb"
+    },
+    "numeric_comparator_policy_v24": {
+      "path": "docs/a_share_three_day_walkforward_future_numeric_comparison_eligibility_policy_v24_20260807.json",
+      "sha256": "47d582150f3cca9c00f919e397600b388d65505e1f97d62017a693520d2828e1",
+      "complete_definition_count": 117,
+      "complete_definition_order_sha256": "462cd7b3aa1d7cd909e35b050025cf21094954b1f76925833f46f65c4d1317f8",
+      "eligible_numeric_comparator_count": 115,
+      "eligible_numeric_comparator_order_sha256": "f22759b26333f8e1fdb5a8ca942afa96aca88b544311e608fd9ffbd5105c80ab"
+    },
+    "manage_qlib_a_share_data_skill": {
+      "path": "/Users/niyufei/.codex/skills/manage-qlib-a-share-data/SKILL.md",
+      "sha256": "90a99c54dd00f0c737e85c4c6dd48d906edbd0f591c61278885728eaf7806431"
+    },
+    "accepted_raw_minute_snapshot": {
+      "path": "/Volumes/DIsk/qlib-a-share-tushare-1m/raw/a_share/rich/tushare/minutes/1m/snapshots/tushare_stk_mins_1m_2019_2025_ea0cbb8f/snapshot_manifest.json",
+      "sha256": "9b3d959563c9d182f38981c6a36bdb3bc9b415de08487a9e1f9e850825c0839f",
+      "partitions": 33015,
+      "source_bar_count_per_complete_session": 241,
+      "projected_columns_after_freeze": [
+        "datetime",
+        "symbol",
+        "provider",
+        "high",
+        "low",
+        "close"
+      ]
+    },
+    "accepted_joint_clean_identity_snapshot": {
+      "path": "/Volumes/DIsk/qlib-a-share-tushare-1m/derived/a_share/rich/tushare/minute_sentiment_clean/tushare_stk_mins_1m_2019_2025_ea0cbb8f_sentiment_clean_v1/snapshot_manifest.json",
+      "sha256": "453c6719cb3c7da42fed8807b28a2bfe988700283e9625a6db97912534f368de",
+      "dataset_sha256": "0e4fe7c05536cdfcecc2936bc880726902f5560061188ffff82ef7ee6f346983",
+      "partitions": 33015,
+      "rows": 7724498,
+      "identity_projection_after_freeze": [
+        "trade_date",
+        "symbol",
+        "provider"
+      ]
+    },
+    "accepted_local_calendar": {
+      "path": "data/qlib/cn_a_share/calendars/day.txt",
+      "sha256": "fda506597d26bcec953cdc0882042a5046ec1587db60490e16a01627fd43f53a",
+      "line_count": 2799
+    },
+    "compact_comparator_cache_v4_publication_binding": {
+      "path": "docs/a_share_three_day_compact_comparator_cache_v4_publication_binding_20260806.json",
+      "sha256": "244f70b88be0396f7473c6664835cbb3cdad9135b6692b77c74018b1d53c925b"
+    },
+    "compact_comparator_cache_v4_manifest": {
+      "path": "/Volumes/DIsk/qlib-a-share-tushare-1m/derived/a_share/rich/tushare/compact_comparator_cache/campaign067_terminal_numeric98_v4/snapshot_manifest.json",
+      "sha256": "3d81068f07ac61fe4cd04bd1a893e58759c06d88213263135fec5244e309b57b",
+      "dataset_sha256": "4a56dac48c14b667b6ee431519266f27bb8ff7cc25c51d8dce3bbc7aebe0376f"
+    },
+    "campaign085_terminal_numeric_comparator": {
+      "factor": "quarterly_freshness_market_neutral_late_drift_confirmation_product_2r",
+      "score_direction": "higher",
+      "snapshot_binding_path": "docs/a_share_three_day_walkforward_campaign_085_feature_snapshot_binding_20260806.json",
+      "snapshot_binding_sha256": "ce70c107d654b1d6151fde87bd5f177ee458cb2db825080cf1c6206df249ba4f",
+      "snapshot_manifest_path": "/Volumes/DIsk/qlib-a-share-tushare-1m/derived/a_share/rich/tushare/minute_walkforward_campaign085_feature_library/tushare_stk_mins_1m_2019_2025_ea0cbb8f_walkforward_campaign085_feature_library_v1/snapshot_manifest.json",
+      "snapshot_manifest_sha256": "fb8ea4bdb2b2f783a8c1d4e020f1dcdfca1697c779c732e50233fe7b040b4d28",
+      "dataset_sha256": "368f7cb96c15186cd511ccd4120e89b577141aa9687df8b39f9dd17320db8fb9",
+      "partitions": 7,
+      "rows": 1331759,
+      "eligible_rows": 1328065,
+      "values_may_read_only_after_campaign086_coverage_pass": true
+    },
+    "campaign063_structurally_nonnumeric_definition": {
+      "factor": "intraday_cross_sectional_standardized_return_state_stability_236p",
+      "numeric_comparator_eligible": false,
+      "reason": "undefined numeric output retained only for semantic challenge"
+    },
+    "campaign079_semantic_only_terminal_definition": {
+      "factor": "signal_day_turnover_rate_pct",
+      "score_direction": "higher",
+      "numeric_comparator_eligible": false,
+      "reason": "terminated before values as semantic duplicate of the prior turnover family"
+    },
+    "candidate49_signal_ledger": {
+      "path": "data/experiments/short_horizon/candidate49_future_signal_ledger.json",
+      "sha256": "5193f00d7f36da003f53cec387900da4c3d002299f5dfcfc1a95eaa199ed3a79",
+      "entry_count": 0
+    },
+    "candidate49_execution_ledger": {
+      "path": "data/experiments/short_horizon/candidate49_future_execution_ledger.json",
+      "sha256": "d57a3e61eac969e42cafa418ccd8c0a5ee65dcf69da145bb2c096c2a02a2ea4f",
+      "entry_count": 0
+    }
+  },
+  "ordered_no_return_gates": {
+    "coverage_and_capacity_before_comparison_values": {
+      "coverage_basis": "candidate finite rows divided by the identical frozen quality-and-listing eligible buyable rows over 2019-2025",
+      "minimum_median_coverage": 0.95,
+      "minimum_p05_coverage": 0.9,
+      "minimum_p05_eligible_names": 50,
+      "minimum_non_overlapping_three_session_cohorts": 200,
+      "minimum_observed_calendar_years": 5,
+      "holding_period_sessions": 3,
+      "comparison_values_read_before_coverage_pass": false,
+      "failed_gate_policy": "Record the exact Campaign086 factor as terminal and stop before comparator values, daily price fields, or forward returns."
+    },
+    "uniqueness_after_coverage_only": {
+      "screen_start": "2019-01-01",
+      "screen_end": "2025-12-31",
+      "method": "Within each identical quality-listing-candidate-and-comparison-eligible stock-day cross-section, compute pairwise-complete Spearman correlation between directional percentile scores, then take each comparator's median daily correlation.",
+      "complete_definition_count": 117,
+      "complete_definition_order_sha256": "462cd7b3aa1d7cd909e35b050025cf21094954b1f76925833f46f65c4d1317f8",
+      "numeric_comparator_count": 115,
+      "numeric_comparator_order_sha256": "f22759b26333f8e1fdb5a8ca942afa96aca88b544311e608fd9ffbd5105c80ab",
+      "numeric_comparator_order_definition": "Use the exact v24 115-comparator order; Campaign085 is the final numeric comparator, while Campaign063 and Campaign079 remain semantic-only.",
+      "complete_definition_order_definition": "Use the exact v24 complete 117-definition order, including structurally nonnumeric Campaign063 and pre-value terminal Campaign079 for semantic challenge only.",
+      "maximum_allowed_absolute_median_daily_rank_correlation": 0.8,
+      "minimum_pairwise_names_per_session": 50,
+      "minimum_pairwise_sessions_per_comparison": 100,
+      "all_115_numeric_comparators_must_pass": true,
+      "candidate_specific_comparator_drop_allowed": false,
+      "insufficient_pairwise_overlap_fails_closed": true,
+      "candidate49_is_no_return_comparison_only": true,
+      "comparison_factors": [
+        {
+          "name": "late_return_30m",
+          "score_direction": "higher"
+        },
+        {
+          "name": "late_amount_share_30m",
+          "score_direction": "higher"
+        },
+        {
+          "name": "late_vwap_to_day_vwap_30m",
+          "score_direction": "higher"
+        },
+        {
+          "name": "intraday_realized_volatility",
+          "score_direction": "lower"
+        },
+        {
+          "name": "afternoon_signed_amount_efficiency_120m",
+          "score_direction": "higher"
+        },
+        {
+          "name": "afternoon_drawdown_recovery_resilience_120m",
+          "score_direction": "higher"
+        },
+        {
+          "name": "intraday_amount_participation_entropy_240m",
+          "score_direction": "higher"
+        },
+        {
+          "name": "intraday_amount_profile_serial_persistence_240m",
+          "score_direction": "higher"
+        },
+        {
+          "name": "intraday_upside_semivariance_share_239m",
+          "score_direction": "higher"
+        },
+        {
+          "name": "intraday_terminal_close_location_240m",
+          "score_direction": "higher"
+        },
+        {
+          "name": "intraday_return_sign_run_imbalance_238p",
+          "score_direction": "higher"
+        },
+        {
+          "name": "intraday_volatility_resolution_238m",
+          "score_direction": "higher"
+        },
+        {
+          "name": "intraday_amount_lead_return_correlation_238p",
+          "score_direction": "higher"
+        },
+        {
+          "name": "intraday_amount_center_of_mass_240m",
+          "score_direction": "higher"
+        },
+        {
+          "name": "intraday_up_move_amount_share_238m",
+          "score_direction": "higher"
+        },
+        {
+          "name": "intraday_diffusive_variation_ratio_238m",
+          "score_direction": "higher"
+        },
+        {
+          "name": "intraday_amount_volatility_coupling_238p",
+          "score_direction": "higher"
+        },
+        {
+          "name": "intraday_return_variance_entropy_238m",
+          "score_direction": "higher"
+        },
+        {
+          "name": "intraday_return_skewness_238m",
+          "score_direction": "higher"
+        },
+        {
+          "name": "intraday_bar_vwap_close_pressure_240m",
+          "score_direction": "higher"
+        },
+        {
+          "name": "intraday_price_update_share_238m",
+          "score_direction": "higher"
+        },
+        {
+          "name": "intraday_market_idiosyncratic_share_238m",
+          "score_direction": "higher"
+        },
+        {
+          "name": "intraday_opening_auction_amount_share_241m",
+          "score_direction": "higher"
+        },
+        {
+          "name": "intraday_market_amount_profile_synchronization_240m",
+          "score_direction": "higher"
+        },
+        {
+          "name": "intraday_market_neutral_late_residual_drift_238m",
+          "score_direction": "higher"
+        },
+        {
+          "name": "intraday_negative_return_absorption_rate_236p",
+          "score_direction": "higher"
+        },
+        {
+          "name": "intraday_signed_path_efficiency_239m",
+          "score_direction": "higher"
+        },
+        {
+          "name": "intraday_zero_return_amount_intensity_238m",
+          "score_direction": "higher"
+        },
+        {
+          "name": "intraday_lunch_repricing_persistence_119m",
+          "score_direction": "higher"
+        },
+        {
+          "name": "intraday_directional_price_impact_asymmetry_238m",
+          "score_direction": "higher"
+        },
+        {
+          "name": "intraday_transaction_price_path_confirmation_238p",
+          "score_direction": "higher"
+        },
+        {
+          "name": "intraday_share_volume_transaction_price_coupling_238p",
+          "score_direction": "higher"
+        },
+        {
+          "name": "intraday_intrabar_body_range_efficiency_240m",
+          "score_direction": "higher"
+        },
+        {
+          "name": "intraday_adjacent_range_overlap_continuity_238p",
+          "score_direction": "higher"
+        },
+        {
+          "name": "intraday_intrabar_range_participation_entropy_240m",
+          "score_direction": "higher"
+        },
+        {
+          "name": "intraday_intrabar_range_reversal_238p",
+          "score_direction": "higher"
+        },
+        {
+          "name": "intraday_global_price_range_revisit_240m",
+          "score_direction": "higher"
+        },
+        {
+          "name": "intraday_prior_range_breakout_pressure_238p",
+          "score_direction": "higher"
+        },
+        {
+          "name": "intraday_interbar_gap_body_confirmation_238p",
+          "score_direction": "higher"
+        },
+        {
+          "name": "intraday_midrange_width_change_coupling_238p",
+          "score_direction": "higher"
+        },
+        {
+          "name": "intraday_range_share_volume_confirmation_240m",
+          "score_direction": "higher"
+        },
+        {
+          "name": "intraday_bar_direction_continuity_238p",
+          "score_direction": "higher"
+        },
+        {
+          "name": "quarterly_announcement_freshness_60s",
+          "score_direction": "higher"
+        },
+        {
+          "name": "intraday_market_response_delay_asymmetry_236p",
+          "score_direction": "higher"
+        },
+        {
+          "name": "intraday_intrabar_close_location_pressure_240m",
+          "score_direction": "higher"
+        },
+        {
+          "name": "intraday_range_boundary_translation_coherence_238p",
+          "score_direction": "higher"
+        },
+        {
+          "name": "intraday_directional_range_response_coupling_238p",
+          "score_direction": "higher"
+        },
+        {
+          "name": "intraday_extreme_arrival_order_240m",
+          "score_direction": "higher"
+        },
+        {
+          "name": "intraday_market_up_down_correlation_asymmetry_238m",
+          "score_direction": "higher"
+        },
+        {
+          "name": "intraday_morning_afternoon_return_profile_persistence_119p",
+          "score_direction": "higher"
+        },
+        {
+          "name": "intraday_absolute_return_serial_persistence_236p",
+          "score_direction": "higher"
+        },
+        {
+          "name": "intraday_market_shock_magnitude_decoupling_238m",
+          "score_direction": "higher"
+        },
+        {
+          "name": "intraday_market_correlation_resolution_119p",
+          "score_direction": "higher"
+        },
+        {
+          "name": "intraday_market_dispersion_decoupling_238m",
+          "score_direction": "higher"
+        },
+        {
+          "name": "quarterly_announcement_timeliness_days",
+          "score_direction": "higher"
+        },
+        {
+          "name": "intraday_return_spectral_entropy_59f",
+          "score_direction": "higher"
+        },
+        {
+          "name": "intraday_round_tenth_close_avoidance_240m",
+          "score_direction": "higher"
+        },
+        {
+          "name": "intraday_return_weak_order_entropy_234t",
+          "score_direction": "higher"
+        },
+        {
+          "name": "intraday_two_sided_range_frontier_balance_238m",
+          "score_direction": "higher"
+        },
+        {
+          "name": "intraday_five_minute_variance_ratio_230w",
+          "score_direction": "higher"
+        },
+        {
+          "name": "intraday_half_session_chord_adherence_240m",
+          "score_direction": "higher"
+        },
+        {
+          "name": "intraday_return_time_reversal_asymmetry_236p",
+          "score_direction": "higher"
+        },
+        {
+          "name": "intraday_morning_afternoon_range_profile_similarity_120b",
+          "score_direction": "higher"
+        },
+        {
+          "name": "intraday_microgap_absorption_share_238p",
+          "score_direction": "higher"
+        },
+        {
+          "name": "intraday_lunch_repricing_persistence_2r",
+          "score_direction": "higher"
+        },
+        {
+          "name": "intraday_transaction_vwap_consensus_240m",
+          "score_direction": "higher"
+        },
+        {
+          "name": "intraday_cumulative_vwap_crossing_rate_240m",
+          "score_direction": "higher"
+        },
+        {
+          "name": "full_terminal_library_directional_percentile_consensus_66f",
+          "score_direction": "higher"
+        },
+        {
+          "name": "intraday_volatility_activity_lead_lag_asymmetry_236p",
+          "score_direction": "higher"
+        },
+        {
+          "name": "intraday_return_reversal_energy_share_236p",
+          "score_direction": "higher"
+        },
+        {
+          "name": "intraday_body_next_microgap_reversal_238p",
+          "score_direction": "higher"
+        },
+        {
+          "name": "intraday_two_sided_wick_absorption_balance_240m",
+          "score_direction": "higher"
+        },
+        {
+          "name": "intraday_morning_afternoon_amount_profile_similarity_120b",
+          "score_direction": "higher"
+        },
+        {
+          "name": "intraday_half_session_extreme_shock_reversal_completion_2h",
+          "score_direction": "higher"
+        },
+        {
+          "name": "intraday_close_range_occupancy_entropy_10b",
+          "score_direction": "higher"
+        },
+        {
+          "name": "quarterly_announcement_delay_consistency_4q",
+          "score_direction": "higher"
+        },
+        {
+          "name": "intraday_amount_price_discovery_alignment_js_238p",
+          "score_direction": "higher"
+        },
+        {
+          "name": "intraday_volume_weighted_transaction_price_bowley_skew_240m",
+          "score_direction": "higher"
+        },
+        {
+          "name": "intraday_price_update_clock_entropy_10b_238m",
+          "score_direction": "higher"
+        },
+        {
+          "name": "intraday_day_over_day_amount_profile_similarity_240b",
+          "score_direction": "higher"
+        },
+        {
+          "name": "intraday_day_over_day_absolute_return_profile_similarity_238b",
+          "score_direction": "higher"
+        },
+        {
+          "name": "quality_roe",
+          "score_direction": "higher"
+        },
+        {
+          "name": "quality_profit",
+          "score_direction": "higher"
+        },
+        {
+          "name": "quality_revenue",
+          "score_direction": "higher"
+        },
+        {
+          "name": "quality_growth",
+          "score_direction": "higher"
+        },
+        {
+          "name": "quality_score",
+          "score_direction": "higher"
+        },
+        {
+          "name": "roe_change",
+          "score_direction": "higher"
+        },
+        {
+          "name": "revenue_yoy_acceleration",
+          "score_direction": "higher"
+        },
+        {
+          "name": "profit_yoy_acceleration",
+          "score_direction": "higher"
+        },
+        {
+          "name": "quarterly_profit_revenue_growth_spread_pp",
+          "score_direction": "higher"
+        },
+        {
+          "name": "intraday_market_directional_sign_agreement_238m",
+          "score_direction": "higher"
+        },
+        {
+          "name": "intraday_day_over_day_directional_return_agreement_238b",
+          "score_direction": "higher"
+        },
+        {
+          "name": "intraday_day_over_day_realized_variance_stability_238b",
+          "score_direction": "higher"
+        },
+        {
+          "name": "quarterly_announcement_peer_crowding_sparsity",
+          "score_direction": "higher"
+        },
+        {
+          "name": "intraday_range_weak_order_entropy_236t",
+          "score_direction": "higher"
+        },
+        {
+          "name": "intraday_range_weak_order_time_reversal_divergence_236t",
+          "score_direction": "higher"
+        },
+        {
+          "name": "quarterly_quality_rank_balance_3f",
+          "score_direction": "higher"
+        },
+        {
+          "name": "quarterly_roe_profit_scale_efficiency_gap_2r",
+          "score_direction": "higher"
+        },
+        {
+          "name": "quarterly_profit_revenue_acceleration_rank_gap_2r",
+          "score_direction": "higher"
+        },
+        {
+          "name": "quarterly_profit_growth_roe_transition_gap_2r",
+          "score_direction": "higher"
+        },
+        {
+          "name": "quarterly_announcement_delay_improvement_yoy_rank_1y",
+          "score_direction": "higher"
+        },
+        {
+          "name": "quarterly_net_profit_scale_rank",
+          "score_direction": "higher"
+        },
+        {
+          "name": "quarterly_joint_profit_revenue_growth_floor_rank",
+          "score_direction": "higher"
+        },
+        {
+          "name": "intraday_terminal_nominal_share_price_affordability_rank_240m",
+          "score_direction": "higher"
+        },
+        {
+          "name": "intraday_terminal_bar_amount_share_240m",
+          "score_direction": "higher"
+        },
+        {
+          "name": "accepted_instrument_session_youth_20s",
+          "score_direction": "higher"
+        },
+        {
+          "name": "intraday_peak_amount_bar_recency_240m",
+          "score_direction": "higher"
+        },
+        {
+          "name": "intraday_amount_clock_dispersion_240m",
+          "score_direction": "higher"
+        },
+        {
+          "name": "intraday_amount_local_peak_density_238p",
+          "score_direction": "higher"
+        },
+        {
+          "name": "intraday_above_median_amount_longest_run_240m",
+          "score_direction": "higher"
+        },
+        {
+          "name": "intraday_amount_path_efficiency_238p",
+          "score_direction": "higher"
+        },
+        {
+          "name": "intraday_range_amount_peak_timing_alignment_240m",
+          "score_direction": "higher"
+        },
+        {
+          "name": "intraday_close_frontier_innovation_share_238p",
+          "score_direction": "higher"
+        },
+        {
+          "name": "quarterly_profit_growth_level_acceleration_floor_2r",
+          "score_direction": "higher"
+        },
+        {
+          "name": "quarterly_freshness_market_neutral_late_drift_confirmation_product_2r",
+          "score_direction": "higher"
+        }
+      ],
+      "failed_gate_policy": "Stop before daily prices or forward returns; do not change the close-location persistence definition, support, zero-range semantics, fields, direction, remove a comparator, neutralize, filter, subset, or rescue."
+    }
+  },
+  "finite_development_catalog_if_admitted": {
+    "trial_id": "wf086_intraday_intrabar_close_location_serial_persistence_238p_single_higher",
+    "feature_set": [
+      "intraday_intrabar_close_location_serial_persistence_238p"
+    ],
+    "weights": [
+      1
+    ],
+    "direction": "higher",
+    "complexity": 1,
+    "expected_trial_count": 1,
+    "training_and_validation_folds": [
+      "train_2019_2020_validate_2021",
+      "train_2019_2021_validate_2022",
+      "train_2019_2022_validate_2023"
+    ],
+    "purge_signal_sessions": 3,
+    "label_partition_rule": "Both t+1 entry and t+3 exit must lie inside the same train or validation partition as the signal; purge the final three signal sessions at every boundary.",
+    "stress_2024_2025_rule": "Open once for the whole frozen campaign only after a nonzero 2019-2023 development-survivor record; classify as historically exposed stress replay, never pristine holdout.",
+    "alternate_state_formula_operator_lag_window_direction_threshold_filter_subset_year_cost_regime_neutralization_fit_model_or_combination_search": false
+  },
+  "research_boundary": {
+    "minute_source_and_stock_day_identity_rows_may_read_after_protocol_and_implementation_freeze": true,
+    "candidate_values_may_compute_after_protocol_and_implementation_freeze": true,
+    "comparison_values_read_before_coverage_pass": false,
+    "daily_price_fields_read_before_admissibility": false,
+    "forward_return_fields_read_before_admissibility": false,
+    "candidate49_historical_return_read": false,
+    "candidate49_signal_execution_or_milestone_backfill_allowed": false,
+    "candidate49_ledgers_may_change": false,
+    "second_prospective_candidate_created": false,
+    "provider_request_issued": false,
+    "current_scoring_selection_sizing_or_orders_allowed": false,
+    "investment_advice": false
+  },
+  "decision": {
+    "candidate_count": 1,
+    "numeric_comparison_library_size": 115,
+    "development_trial_count_if_and_only_if_admitted": 1,
+    "stress_2024_2025_may_open_only_if_development_survivor_exists": true,
+    "current_scores_selections_sizing_orders_or_investment_advice_authorized": false
+  }
+}
+

@@ -1,0 +1,72 @@
+{
+  "version": 1,
+  "kind": "a_share_three_day_walkforward_campaign053_cross_module_verification",
+  "status": "current_campaign052_campaign053_reporting_policy_and_candidate49_regression_passed",
+  "recorded_at": "2026-08-03T13:07:15Z",
+  "bindings": {
+    "authoritative_campaign053_state": {
+      "path": "docs/a_share_three_day_iteration_status_20260803_campaign053_verified_v2.json",
+      "sha256": "db9a88d848bee8610e6563fc3d56789c66c94c3465aee7024507fb0d9789418c"
+    },
+    "campaign053_verification": {
+      "path": "docs/a_share_three_day_walkforward_campaign_053_verification_20260803_v2.json",
+      "sha256": "4c4bfa400d68ecb87dec88887f4a8a4145276f4a3fa717c01482d00a0bd17c1d"
+    },
+    "campaign053_research_record": {
+      "path": "docs/a_share_three_day_walkforward_campaign_053_research_record_v2.json",
+      "sha256": "ff21cfac8b47ec66f0a797180d97a7f2e4590a3a4e10f7361a314a37bd9503e1"
+    },
+    "campaign053_report_supersession": {
+      "path": "docs/a_share_three_day_walkforward_campaign_053_unified_report_supersession_20260803_v2.json",
+      "sha256": "9f629786667277b89eee7f05955bd3b4c75c81f8e1d6cdcf103f1d3841a138a7"
+    },
+    "unified_research_report": {
+      "path": "data/experiments/short_horizon/three_day_research_report.md",
+      "sha256": "5397b76f0f50ce458a025298cfaff31122d82ed521598bbbb2571f92267029b6"
+    },
+    "data_pipeline_documentation": {
+      "path": "docs/a_share_data_pipeline.md",
+      "sha256": "6cfade88722364a71ccec064369394eeea3b36dd5ae3c05ee07a2d97ec4a44f3"
+    },
+    "manage_qlib_a_share_data_skill": {
+      "path": "/Users/niyufei/.codex/skills/manage-qlib-a-share-data/SKILL.md",
+      "sha256": "257946d783435462a41270adee70052fe63ac9770ed5a30934980ee20d28e426"
+    },
+    "candidate49_signal_ledger": {
+      "path": "data/experiments/short_horizon/candidate49_future_signal_ledger.json",
+      "sha256": "5193f00d7f36da003f53cec387900da4c3d002299f5dfcfc1a95eaa199ed3a79"
+    },
+    "candidate49_execution_ledger": {
+      "path": "data/experiments/short_horizon/candidate49_future_execution_ledger.json",
+      "sha256": "d57a3e61eac969e42cafa418ccd8c0a5ee65dcf69da145bb2c096c2a02a2ea4f"
+    }
+  },
+  "test_run": {
+    "scope": [
+      "Campaign052 feature and terminal semantics",
+      "Campaign053 feature, verifier repair, and current terminal semantics",
+      "historical walk-forward reporting and policy",
+      "Candidate49 future observation, execution, and session workflow"
+    ],
+    "test_module_count": 10,
+    "passed": 131,
+    "failed": 0,
+    "exit_code": 0,
+    "duration_seconds": 22.38
+  },
+  "verified_boundary": {
+    "campaign053_admissible_factor_count": 0,
+    "campaign053_historical_return_trial_count": 0,
+    "campaign053_development_folds_opened": false,
+    "campaign053_stress_2024_2025_opened": false,
+    "cumulative_historical_research_attempt_count": 303,
+    "cumulative_return_reading_development_trial_count": 266,
+    "current_historical_aggregation_candidate_count": 0,
+    "candidate49_active_prospective_candidate_count": 1,
+    "candidate49_historical_backfill_performed": false,
+    "candidate49_ledgers_changed": false,
+    "second_prospective_candidate_created": false,
+    "current_scoring_selection_sizing_or_orders_performed": false,
+    "provider_request_issued": false
+  }
+}

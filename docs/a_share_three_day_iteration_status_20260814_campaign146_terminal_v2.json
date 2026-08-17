@@ -1,0 +1,125 @@
+{
+  "schema_version": 2,
+  "kind": "a_share_three_day_iteration_status",
+  "status": "campaign146_terminal_final_accounting_goal_active_candidate49_daily_failed_closed",
+  "recorded_at": "2026-08-14T22:31:00+08:00",
+  "supersedes_without_rewriting": {
+    "path": "docs/a_share_three_day_iteration_status_20260814_campaign146_terminal.json",
+    "sha256": "6f905a6c792c17088611bc86a52114da76349c1095cba4b9f28a1d46240abca8",
+    "preserved": true,
+    "scientific_result_changed": false,
+    "reason": "Append the terminal-test Black failure and corrected final accounting while preserving Campaign146's zero-survivor science."
+  },
+  "authoritative_policy": {
+    "path": "docs/a_share_three_day_walkforward_future_numeric_comparison_eligibility_policy_v196_20260814.json",
+    "sha256": "eed1ec748171745a694ada9baac9fc4d8bb21be3a7cd0a38951ebe598cabf117",
+    "factor_definition_count": 155,
+    "factor_definition_order_sha256": "2e4114edb26fa3aaebd145ef07fe4e2ac9c5d9dc4586cf70ff61c20e39b954ba",
+    "eligible_numeric_comparator_count": 142,
+    "eligible_numeric_comparator_order_sha256": "5d1b35fb5a0d8ac9293008db9963c4a60a94dc940c237c3ed259e5ce44f14aaf"
+  },
+  "campaign146": {
+    "factor": "intraday_return_amount_cross_spectral_phase_lead_59f",
+    "direction": "higher",
+    "terminal": true,
+    "terminal_phase": "2019_2023_development_walkforward",
+    "coverage_gate_passed": true,
+    "numeric_comparisons_passed": 141,
+    "maximum_absolute_median_daily_rank_correlation": 0.6326668833360676,
+    "development_trial_count": 1,
+    "development_survivor_count": 0,
+    "median_validation_mean_rank_ic": 0.01695367196711484,
+    "median_validation_spread": -0.00026719538775617127,
+    "worst_validation_normalized_drawdown": -0.37616136808041245,
+    "development_aggregate_20bp_return": -0.09481533266368902,
+    "stress_2024_2025_returns_opened": false,
+    "terminal_result": {
+      "path": "docs/a_share_three_day_walkforward_campaign_146_terminal_result_v2_20260814.json",
+      "sha256": "40c89de7d2287a7a1acbe6078ac30163bc6d903d75be860c93129863a78b98d5"
+    },
+    "effective_attempt_ledger": {
+      "path": "data/experiments/short_horizon/historical_walkforward/campaign_146/research_attempt_ledger_v5.json",
+      "sha256": "da45d4bb3592b0b090681db9c9008b377b3728f74ed86a53b89fa1911adabf47",
+      "effective_attempt_count": 20,
+      "effective_entry_count": 20,
+      "chain_tip_sha256": "1fc1ec6ae143be34d0d021075977025c44b66533e306aa9a21b0753422d79df3"
+    }
+  },
+  "effective_accounting": {
+    "campaign146_attempt_count": 20,
+    "campaign146_prevalue_scientific_attempt_count": 6,
+    "campaign146_infrastructure_failure_count": 13,
+    "campaign146_complete_factor_attempt_count": 1,
+    "campaign146_return_reading_development_trial_count": 1,
+    "campaign146_development_survivor_count": 0,
+    "campaign146_stress_trial_count": 0,
+    "cumulative_historical_research_attempt_count": 1271,
+    "cumulative_return_reading_development_trial_count": 314
+  },
+  "candidate49_daily_20260814": {
+    "run_status": "failed_closed",
+    "failure_stage": "stock_basic",
+    "provider_calls_this_invocation": 4,
+    "same_day_retry_allowed": false,
+    "same_day_retry_performed": false,
+    "failure_record": {
+      "path": "docs/a_share_candidate49_20260814_daily_source_failure_record.json",
+      "sha256": "d5d120632a526031eace5424a7940af746569bfb1e9d8e4115a886ede164b408"
+    },
+    "failure_verification": {
+      "path": "docs/a_share_candidate49_20260814_daily_source_failure_verification.json",
+      "sha256": "ea1853aef1cf0a8fdc70bdac61c191d13025d103117c30c2b412692a7094f761"
+    }
+  },
+  "candidate49": {
+    "sole_prospective_candidate": true,
+    "signal_ledger": {
+      "path": "data/experiments/short_horizon/candidate49_future_signal_ledger.json",
+      "sha256": "5193f00d7f36da003f53cec387900da4c3d002299f5dfcfc1a95eaa199ed3a79",
+      "entries": 0
+    },
+    "execution_ledger": {
+      "path": "data/experiments/short_horizon/candidate49_future_execution_ledger.json",
+      "sha256": "d57a3e61eac969e42cafa418ccd8c0a5ee65dcf69da145bb2c096c2a02a2ea4f",
+      "entries": 0
+    },
+    "historical_backfill_performed": false,
+    "ledgers_changed": false
+  },
+  "reports": {
+    "campaign146_terminal_report": {
+      "path": "docs/a_share_three_day_walkforward_campaign_146_terminal_report_v2.md",
+      "sha256": "1ff03d36ec318c9f6842eb355e6f0004a9b8c6abd1f1f3ce7132a5c3acb96cf3"
+    },
+    "current_research_report": {
+      "path": "data/experiments/short_horizon/current_research_report.md",
+      "sha256": "4c9e6f087cf9b14e4adb07bdd94b534064a8ceac4427cfd3e09702e5e8160344",
+      "accounting_scope": "through_campaign146_infrastructure_013"
+    },
+    "three_day_research_report": {
+      "path": "data/experiments/short_horizon/three_day_research_report.md",
+      "sha256": "90f30963178a3bfcb8ff32bdfd244d50f090bd09dd80b80cb22ecff96f5de347",
+      "accounting_scope": "through_campaign146_infrastructure_013"
+    }
+  },
+  "research_boundary": {
+    "historical_2019_2023_daily_price_or_forward_return_values_read": true,
+    "additional_return_values_read_during_final_accounting": false,
+    "stress_2024_2025_returns_opened": false,
+    "provider_request_issued_by_campaign146": false,
+    "provider_credential_value_or_digest_logged_hashed_or_persisted": false,
+    "candidate49_historical_backfill_performed": false,
+    "candidate49_ledgers_changed": false,
+    "second_prospective_candidate_created": false,
+    "current_scoring_selection_sizing_positions_or_orders_performed": false,
+    "investment_advice": false,
+    "inherited_current_listing_survivorship_limitation_remains": true
+  },
+  "goal": {
+    "objective": "请持续迭代因子。",
+    "status": "active",
+    "campaign146_scientific_decision_and_final_accounting_completed": true,
+    "campaign147_offline_scouting_authorized": true
+  },
+  "next_action": "Do not retry Candidate49 on 2026-08-14. Continue Campaign147 zero-network offline prevalue scouting from a genuinely new mechanism; do not rescue Campaign146."
+}

@@ -1,0 +1,40 @@
+{
+  "schema_version": 1,
+  "kind": "a_share_three_day_walkforward_campaign139_infrastructure_failure",
+  "status": "terminal_report_notation_assertion_failed_after_19_passes_exit_not_bypassed",
+  "recorded_at": "2026-08-14T13:38:16+0800",
+  "stage": "campaign139_terminal_regression_validation",
+  "command_scope": {
+    "black_formatted_file_count": 1,
+    "black_unchanged_file_count": 6,
+    "ruff": "All checks passed",
+    "pytest_passed": 19,
+    "pytest_failed": 1,
+    "exit_code": 1
+  },
+  "failure": {
+    "test": "test_campaign139_reports_record_terminal_failure_without_trading_output",
+    "assertion": "all three Campaign139 reports contain the canonical compact library count notation 153/141",
+    "observed_issue": "The standalone terminal report described the same counts as separate prose values instead of the canonical compact notation.",
+    "scientific_metric_or_gate_changed": false,
+    "partial_research_stage_advanced": false
+  },
+  "affected_pre_fix_artifacts": {
+    "terminal_report_path": "docs/a_share_three_day_walkforward_campaign_139_terminal_report.md",
+    "terminal_report_sha256": "f80077b3ea027f00ad6853faa2e386527b83b0bc5c6d7a2dea1c4ad3ca7de8a1",
+    "terminal_test_path": "tests/data_collector_tests/test_a_share_three_day_walkforward_campaign139_terminal.py",
+    "terminal_test_sha256": "44cab8a85a438e44adf3e7224f76ab5cd021774940d909b72d7bbf9976386772",
+    "status_path": "docs/a_share_three_day_iteration_status_20260814_campaign139_capacity_terminal.json",
+    "status_sha256": "3699a2b2ec3e569237498a194c9b4ee55724979d1ac2f16a3ab8de763352af30"
+  },
+  "recovery_boundary": {
+    "allowed": "Append the already truthful compact 153/141 notation to the standalone report, then rerun the exact terminal validation and issue additive accounting/status records.",
+    "formula_direction_matching_liveness_capacity_or_library_membership_change_allowed": false,
+    "failed_exit_code_bypassed": false,
+    "new_source_candidate_or_comparator_values_read": false,
+    "historical_daily_price_or_forward_return_values_read": false,
+    "stress_2024_2025_opened": false,
+    "provider_request_issued": false,
+    "candidate49_ledgers_changed": false
+  }
+}

@@ -1,0 +1,31 @@
+{
+  "schema_version": 1,
+  "kind": "a_share_three_day_walkforward_campaign131_black_check_masked_failure",
+  "status": "recorded_black_exit_1_masked_by_later_pytest_exit_0",
+  "recorded_at": "2026-08-14T08:17:04+08:00",
+  "phase": "terminal_validation",
+  "failure": {
+    "command_scope": "Black check, Ruff check and focused pytest were invoked sequentially in one shell command.",
+    "black_exit_code": 1,
+    "black_result": "one unbound Campaign131 test file would be reformatted",
+    "ruff_result": "passed",
+    "pytest_result": "6 passed",
+    "overall_shell_exit_code": 0,
+    "failure_masked_by_later_command": true,
+    "failed_exit_code_treated_as_validation_success": false
+  },
+  "recovery": {
+    "action": "Format only the new unbound Campaign131 test, then run Black, Ruff and pytest as independently checked commands.",
+    "frozen_historical_file_changed": false,
+    "scientific_result_changed": false,
+    "library_order_changed": false
+  },
+  "research_boundary": {
+    "candidate_comparator_price_or_return_values_read": false,
+    "stress_2024_2025_opened": false,
+    "provider_request_issued": false,
+    "credential_loaded": false,
+    "candidate49_historical_backfill_performed": false,
+    "candidate49_ledgers_changed": false
+  }
+}

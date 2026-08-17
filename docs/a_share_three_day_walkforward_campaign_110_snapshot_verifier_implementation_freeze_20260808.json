@@ -1,0 +1,47 @@
+{
+  "schema_version": 1,
+  "kind": "a_share_three_day_walkforward_campaign110_snapshot_verifier_implementation_freeze",
+  "status": "frozen_before_partition_values_coverage_or_comparator_values",
+  "recorded_at": "2026-08-07T22:48:05Z",
+  "protocol": {
+    "path": "docs/a_share_three_day_walkforward_campaign_110_snapshot_verifier_protocol_20260808.json",
+    "sha256": "23aa30bdc564c3dca42eb4ed7202dd790a5cba425d640527826df73337d738bc"
+  },
+  "pre_freeze_test_failure": {
+    "path": "docs/a_share_three_day_walkforward_campaign_110_snapshot_verifier_pre_freeze_test_failure_20260808.json",
+    "sha256": "2b742e0db036ca6411993b514457ffe7fe46adcac1f90dce943651407066e26f"
+  },
+  "verifier": {
+    "path": "scripts/a_share_three_day_walkforward_campaign110_snapshot_verifier.py",
+    "sha256": "b0de5d38d42a7d8298850b54046e8def450faba1458ef52829b8acab39ff70d0"
+  },
+  "synthetic_test": {
+    "path": "tests/data_collector_tests/test_a_share_three_day_walkforward_campaign110_snapshot_verifier.py",
+    "sha256": "38b8ad430fcd3fdf266e979f7e2981c57c86130074a2c61b44cdf0d34b03a732",
+    "pre_freeze_result": "6 passed"
+  },
+  "candidate_snapshot": {
+    "path": "/Volumes/DIsk/qlib-a-share-tushare-1m/derived/a_share/rich/tushare/minute_walkforward_campaign110_feature_library/tushare_stk_mins_1m_2019_2025_ea0cbb8f_walkforward_campaign110_feature_library_v1/snapshot_manifest.json",
+    "sha256": "e3ae3c01e0a6eadd8dfce0362520e13bc4c047ff8357cdc7be2d1f9b31e93b72",
+    "dataset_sha256": "9082b74891ea2e1c107309637941e42acdc9afeec0b44748e2242506c1a68c4b",
+    "partitions": 33015,
+    "rows": 7724498,
+    "eligible_rows": 7724498
+  },
+  "scope": {
+    "verify_only": true,
+    "build_entry_point_exposed": false,
+    "snapshot_or_manifest_write_path_exposed": false,
+    "corrected_manifest_expectation_count": 3,
+    "all_partition_and_aggregate_verification_logic_reused": true
+  },
+  "research_boundary": {
+    "partition_values_read_before_implementation_freeze": false,
+    "coverage_or_comparator_values_read_before_implementation_freeze": false,
+    "historical_daily_price_or_forward_return_values_read_before_implementation_freeze": false,
+    "snapshot_modified_after_publication": false,
+    "provider_request_issued": false,
+    "candidate49_ledgers_changed": false
+  },
+  "next_action": "Validate this freeze and the six synthetic tests, then run exactly one verify-only pass over the immutable published snapshot."
+}

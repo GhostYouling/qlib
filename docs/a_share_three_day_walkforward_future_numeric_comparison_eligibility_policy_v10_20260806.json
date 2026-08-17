@@ -1,0 +1,113 @@
+{
+  "version": 10,
+  "kind": "a_share_three_day_walkforward_future_numeric_comparison_eligibility_policy",
+  "status": "frozen_before_campaign075_candidate_source_or_comparison_values",
+  "recorded_at": "2026-08-06T09:00:21+08:00",
+  "authoritative_inputs": {
+    "latest_verified_state": {
+      "path": "docs/a_share_three_day_iteration_status_20260806_campaign074_verified.json",
+      "sha256": "b6796f8f6404c38c6f67cb9f7b554689671ae568ef50dbf6c1b2d73925b961b8"
+    },
+    "historical_walkforward_policy": {
+      "path": "docs/a_share_three_day_historical_walkforward_research_policy_20260727.json",
+      "sha256": "38426d6161b9bfed323c58caba18feca668b8c9d53e294951a8ba90c01a798bb"
+    },
+    "campaign074_terminal_freeze": {
+      "path": "docs/a_share_three_day_walkforward_campaign_074_terminal_completion_freeze_v2_20260806.json",
+      "sha256": "b94c61e7ec3414e377a010d2d70a45d3f8e449b931efa0b8a57be7bda8671718"
+    },
+    "campaign074_research_record": {
+      "path": "docs/a_share_three_day_walkforward_campaign_074_research_record_v5.json",
+      "sha256": "fb5ea4bd55ac0a0577288e1a80d810941b88e7083f92f21dab0052ba3f9952f3"
+    },
+    "campaign074_snapshot_binding": {
+      "path": "docs/a_share_three_day_walkforward_campaign_074_feature_snapshot_binding_20260806.json",
+      "sha256": "1c404dde2e3f6856dde88c2ba7c95b45c9bbc5ea34dc6bed130662fa5154eb81",
+      "snapshot_manifest_path": "/Volumes/DIsk/qlib-a-share-tushare-1m/derived/a_share/rich/tushare/minute_walkforward_campaign074_feature_library/tushare_stk_mins_1m_2019_2025_ea0cbb8f_walkforward_campaign074_feature_library_v1/snapshot_manifest.json",
+      "snapshot_manifest_sha256": "5a993ce8b71c541a0b2d2402627d5f2b7f562cf1266bebcafe0606945086a3cd",
+      "dataset_sha256": "d4fbb9eb8135674df16a50c96b5817f63e6461e99ee48df96537cd8ed930a4b5",
+      "eligible_rows": 7724498
+    },
+    "campaign074_no_return_audit": {
+      "path": "data/experiments/short_horizon/historical_walkforward/campaign_074/no_return/20260806T001358Z_campaign074_no_return_audit.json",
+      "sha256": "6256ca2db8ff21dcfb3e101e019957c2d1241fd893f290bd449ed462ace17009",
+      "coverage_passed": true,
+      "calendar_sessions": 1632,
+      "candidate_eligible_rows": 1330171,
+      "median_coverage": 0.9994517542211769,
+      "p05_coverage": 0.9956886515772271,
+      "p05_eligible_names": 138.0,
+      "potential_three_session_cohorts": 540,
+      "observed_years": 7,
+      "numeric_comparisons_completed": 104,
+      "numeric_comparisons_passed": 104,
+      "maximum_absolute_median_daily_rank_correlation": 0.42555644028639117,
+      "nearest_comparison": "late_amount_share_30m",
+      "development_terminal_zero_survivor_preserved": true
+    }
+  },
+  "supersedes_without_rewriting": {
+    "path": "docs/a_share_three_day_walkforward_future_numeric_comparison_eligibility_policy_v9_20260806.json",
+    "sha256": "1af4a2432e0186a47a8a69ddefdda25756810cf47b11ff0688d0cbd832438c03",
+    "preserved": true,
+    "reason": "Campaign074 is terminal, so its exact completed definition must be appended and its future numeric-comparator eligibility frozen before Campaign075 candidate values."
+  },
+  "complete_historical_feature_library": {
+    "definition": "Reconstruct the exact Campaign074 prior 105-definition order, then append intraday_terminal_bar_amount_share_240m/higher exactly once.",
+    "factor_definition_count": 106,
+    "order_sha256": "9e36bbe2532e09294f2c677615c6245609abdb94c44557ee776e040c9f270b0c",
+    "all_terminal_failed_rejected_and_surviving_definitions_retained": true,
+    "structurally_nonnumeric_definition_retained": "intraday_cross_sectional_standardized_return_state_stability_236p",
+    "old_terminal_record_formula_direction_or_failure_history_may_be_rewritten": false
+  },
+  "numerical_comparator_eligibility": {
+    "classification_time": "before_campaign075_candidate_source_or_comparison_values",
+    "eligible_numeric_comparator_count": 105,
+    "eligible_numeric_comparator_order_definition": "Use Campaign074's exact 104 numeric comparators, then append Campaign074/higher exactly once.",
+    "eligible_numeric_comparator_order_sha256": "533f22783f42d7d00b51fcceda879a2881e1a484f4d70fc0f2ecb5a0210e6fcc",
+    "newly_appended_comparator": {
+      "name": "intraday_terminal_bar_amount_share_240m",
+      "score_direction": "higher",
+      "source_campaign": 74,
+      "source_snapshot_eligible_rows": 7724498,
+      "source_quality_listing_candidate_rows": 1330171,
+      "source_supported_pairwise_sessions": 1623,
+      "numeric_comparator_eligible_for_campaign075": true,
+      "eligibility_reason": "The immutable snapshot contains finite numeric scores on all 7,724,498 stock-days, the frozen coverage gate passed, and every one of 104 ordered uniqueness comparisons passed with 1,623 pairwise sessions. Campaign074's terminal development rejection remains binding but does not make its values structurally nonnumeric.",
+      "terminal_at_development_gate_but_numerically_available": true
+    },
+    "minimum_pairwise_names_per_session": 50,
+    "minimum_pairwise_sessions_per_comparison": 100,
+    "strict_maximum_absolute_median_daily_rank_correlation": 0.8,
+    "all_105_eligible_numeric_comparators_must_pass": true,
+    "candidate_specific_comparator_drop_allowed": false,
+    "insufficient_pairwise_overlap_fails_closed": true
+  },
+  "structurally_nonnumeric_mechanism_challenges": [
+    {
+      "name": "intraday_cross_sectional_standardized_return_state_stability_236p",
+      "score_direction": "higher",
+      "source_campaign": 63,
+      "numeric_status": "undefined_not_pass_not_fail",
+      "mechanism_overlap_audit_required": true
+    }
+  ],
+  "anti_gaming_invariants": [
+    "Do not use Campaign075 values, returns, or correlations to choose prior comparators.",
+    "Do not omit Campaign074 because it failed its development survivor gate.",
+    "Do not rewrite Campaign074's terminal development rejection or its historical metrics.",
+    "Do not weaken the 50-name, 100-session, or strict-below-0.8 gates."
+  ],
+  "research_boundary": {
+    "campaign075_source_rows_read_before_freeze": false,
+    "campaign075_candidate_or_comparison_values_read_before_freeze": false,
+    "historical_daily_price_fields_read": [],
+    "historical_forward_returns_read": false,
+    "provider_request_issued": false,
+    "candidate49_historical_backfill_performed": false,
+    "candidate49_ledgers_changed": false,
+    "second_prospective_candidate_created": false,
+    "current_scoring_selection_sizing_or_orders_performed": false,
+    "investment_advice": false
+  }
+}

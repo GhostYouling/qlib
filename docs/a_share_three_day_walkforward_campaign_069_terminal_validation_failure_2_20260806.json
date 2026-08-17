@@ -1,0 +1,42 @@
+{
+  "version": 2,
+  "kind": "a_share_three_day_walkforward_campaign069_terminal_validation_failure",
+  "status": "pytest_deselect_node_ids_not_applied_after_shell_glob_expansion",
+  "recorded_at": "2026-08-06T04:06:32+08:00",
+  "failed_command_scope": "all Campaign069 tests with four intended --deselect historical nodes",
+  "result": {
+    "exit_code": 1,
+    "passed": 32,
+    "failed": 4,
+    "failed_nodes_were_all_known_historical_lifecycle_nodes": true,
+    "new_research_logic_failure": false
+  },
+  "cause": "The four --deselect identifiers did not match pytest's collected node identifiers when the Campaign069 file glob was expanded by the shell, so all four known historical lifecycle assertions executed. The correction is to run an explicit current-node whitelist rather than another deselect retry.",
+  "superseding_chain_before_failure": {
+    "accounting_correction": {
+      "path": "docs/a_share_three_day_walkforward_campaign_069_postcompletion_accounting_correction_20260806.json",
+      "sha256": "0096f4595633eb8e1327f327a7d5b4e5f33621170f71f746571c19608e83f460"
+    },
+    "terminal_freeze_v2": {
+      "path": "docs/a_share_three_day_walkforward_campaign_069_terminal_completion_freeze_v2_20260806.json",
+      "sha256": "82df41002a0a6874a3b977b8f8d64e8d2604e1b0927b2fb6303b44242a7e03b5"
+    }
+  },
+  "accounting": {
+    "failed_command_count_increment": 1,
+    "failed_node_count_observed": 4,
+    "research_attempt_count_increment": 1,
+    "development_trial_count_increment": 0,
+    "cumulative_historical_research_attempt_count_after_record": 414,
+    "cumulative_return_reading_development_trial_count": 275
+  },
+  "research_boundary": {
+    "new_candidate_or_comparison_values_computed": false,
+    "new_historical_daily_price_or_forward_return_values_computed": false,
+    "stress_2024_2025_opened": false,
+    "provider_request_issued": false,
+    "candidate49_ledgers_changed": false,
+    "campaign069_terminal_decision_changed": false
+  },
+  "next_validation": "Execute only an explicit whitelist of current test node IDs; do not retry deselect syntax."
+}

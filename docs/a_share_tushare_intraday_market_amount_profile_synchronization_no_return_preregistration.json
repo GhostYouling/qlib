@@ -1,0 +1,222 @@
+{
+  "version": 1,
+  "kind": "a_share_tushare_intraday_market_amount_profile_synchronization_no_return_preregistration",
+  "status": "frozen_before_candidate_factor_values_comparison_values_or_forward_returns",
+  "preregistered_at": "2026-07-25T00:08:18Z",
+  "purpose": "Evaluate one cross-stock continuous-session amount-profile synchronization mechanism through coverage, capacity, and twenty-three-factor near-synonym gates without reading daily prices or forward returns.",
+  "current_research_state": {
+    "path": "docs/a_share_three_day_iteration_status_20260723.json",
+    "sha256": "08c3a5b2a1039cd46b9be4715bd666d516cc8d4273d03c5b56ddf06969b115c9",
+    "status": "aggregation_blocked_after_intraday_opening_auction_amount_share_terminal_rejection_zero_dual_gate_factors",
+    "terminal_mechanism_count_before_this_candidate": 47,
+    "topk_qualified_factor_count": 0,
+    "dual_gate_qualified_factor_count": 0,
+    "aggregation_allowed": false
+  },
+  "source_chain": {
+    "mechanism_overlap_reaudit": {
+      "path": "docs/a_share_tushare_intraday_market_amount_profile_synchronization_mechanism_overlap_reaudit_20260725.json",
+      "sha256": "24127b8326f29175a88a74ecb5c21cb508b3fc9bb5a68ee5f7e003f29b84d17f"
+    },
+    "prior_no_return_protocol": {
+      "path": "docs/a_share_tushare_intraday_opening_auction_amount_share_no_return_preregistration.json",
+      "sha256": "3aca85681061bedf7dc049f21e6bfcfaa520f9478938bd007b3d6666814db84b"
+    },
+    "prior_terminal_record": {
+      "path": "docs/a_share_tushare_intraday_opening_auction_amount_share_research_record.json",
+      "sha256": "b70a8ec547bdc36db408adc86b809456caac9a774d074de913369b3349899abd"
+    },
+    "raw_minute_manifest": {
+      "path_below_data_root": "raw/a_share/rich/tushare/minutes/1m/snapshots/tushare_stk_mins_1m_2019_2025_ea0cbb8f/snapshot_manifest.json",
+      "sha256": "9b3d959563c9d182f38981c6a36bdb3bc9b415de08487a9e1f9e850825c0839f",
+      "run_id": "tushare_stk_mins_1m_2019_2025_ea0cbb8f",
+      "partitions": 33015,
+      "rows": 1866461373,
+      "provider": "tushare",
+      "frequency": "1m"
+    },
+    "joint_clean_manifest": {
+      "path_below_data_root": "derived/a_share/rich/tushare/minute_sentiment_clean/tushare_stk_mins_1m_2019_2025_ea0cbb8f_sentiment_clean_v1/snapshot_manifest.json",
+      "sha256": "453c6719cb3c7da42fed8807b28a2bfe988700283e9625a6db97912534f368de",
+      "dataset_sha256": "0e4fe7c05536cdfcecc2936bc880726902f5560061188ffff82ef7ee6f346983",
+      "partitions": 33015,
+      "rows": 7724498,
+      "required_status": "cleaned_sentiment_coverage_passed_pending_separate_no_return_research_protocol"
+    },
+    "opening_auction_amount_share_comparison_manifest": {
+      "path_below_data_root": "derived/a_share/rich/tushare/minute_intraday_opening_auction_amount_share/tushare_stk_mins_1m_2019_2025_ea0cbb8f_intraday_opening_auction_amount_share_v1/snapshot_manifest.json",
+      "sha256": "cb6acb3dcbad2ca459ac2f11ea80364593543adc852bf82ea3f177ae58154580",
+      "dataset_sha256": "9e7cd5b724347bc5193970ed2f23fa8ff1ce1e58f0c460ba46891a86538f8e65",
+      "partitions": 33015,
+      "rows": 7724498,
+      "eligible_rows": 7724498,
+      "factor_name": "intraday_opening_auction_amount_share_241m",
+      "required_status": "candidate_feature_complete_pending_ordered_no_return_coverage_capacity_and_uniqueness"
+    }
+  },
+  "candidate": {
+    "name": "intraday_market_amount_profile_synchronization_240m",
+    "diagnostic_direction": "higher",
+    "signal_time": "after_signal_session_close",
+    "eligible_source_stock_days": "exactly_the_stock_days_already_present_in_the_immutable_joint_clean_base",
+    "source_fields_allowed": [
+      "datetime",
+      "symbol",
+      "provider",
+      "amount"
+    ],
+    "source_fields_forbidden": [
+      "open",
+      "high",
+      "low",
+      "close",
+      "volume",
+      "any_daily_price",
+      "any_forward_return"
+    ],
+    "bar_grid": {
+      "morning_continuous_bar_ends": "09:31-11:30",
+      "afternoon_continuous_bar_ends": "13:01-15:00",
+      "continuous_rows": 240,
+      "09_30_included": false,
+      "source_rows_merged": false
+    },
+    "formula_steps": [
+      "Require the exact immutable 240-position continuous-session grid for each stock-day already present in the joint-clean base.",
+      "Read only CNY amount and require all 240 values to be finite and nonnegative with a finite strictly positive sum.",
+      "Normalize each valid stock-day to p_i,t=amount_i,t/sum_t(amount_i,t).",
+      "For every trade date and position, sum p_j,t and count valid complete stock-day profiles across the same immutable source pool.",
+      "For stock i subtract p_i,t and one from those same-date aggregates, then divide to obtain the equal-weight leave-one-out market profile m_-i,t.",
+      "Require at least 50 leave-one-out peers at every one of the 240 positions.",
+      "Compute ordinary intercept-adjusted Pearson correlation between p_i and m_-i across the 240 aligned positions.",
+      "A constant own profile or constant leave-one-out market profile is missing. Otherwise only 1e-12 floating-point endpoint canonicalization to [-1,1] is allowed.",
+      "Do not include 09:30, read prices or returns, change similarity, invert direction, alter peers or weights, transform, threshold, filter, subset, rewindow, clip, impute, winsorize, rank, or substitute a daily value."
+    ],
+    "formula": "corr(amount_i/sum(amount_i), leave_one_out_equal_weight_mean_j(amount_j/sum(amount_j))) across exact aligned 09:31-15:00 positions",
+    "validity": {
+      "all_240_amount_values_finite_and_nonnegative": true,
+      "strictly_positive_continuous_session_amount": true,
+      "minimum_leave_one_out_peers_at_every_position": 50,
+      "constant_own_profile_policy": "missing",
+      "constant_leave_one_out_market_profile_policy": "missing",
+      "allowed_closed_interval": [
+        -1,
+        1
+      ],
+      "endpoint_canonicalization_tolerance": 1e-12,
+      "merge_transform_clip_impute_winsorize_rank_threshold_filter_or_daily_substitution_allowed": false
+    },
+    "hypothesis": "A high value means the stock's intraday liquidity participation follows broad-market liquidity waves rather than isolated bursts, indicating more orderly and broadly sponsored trading that may persist from the next open through the third close.",
+    "economic_distinction": "The factor cannot be computed from a single stock-day: changing other stocks' normalized amount profiles changes its leave-one-out benchmark and value while the stock's own profile remains fixed. It reads no price, return, 09:30 amount, volume, daily market state, index price, industry label, market capitalization, or forward return.",
+    "rejected_before_value_observation": [
+      "The inverse, negative, absolute, squared, residual-share, beta, R-squared, cosine, rank, distance, lagged, or robust-regression forms are rejected.",
+      "Including 09:30 or using morning, afternoon, late, first-N, last-N, high-amount, event, board, industry, year, threshold, subset, filter, or reweighted windows is rejected.",
+      "Index, industry, size, exchange, board, selected-peer, median, trimmed, winsorized, robust, value-weighted, amount-weighted, volume-weighted, and volatility-weighted benchmarks are rejected.",
+      "Volume, trade count, price, return, VWAP, daily, fundamental, event, and Level-2 substitutions are rejected."
+    ]
+  },
+  "derived_snapshot": {
+    "output_run_id": "tushare_stk_mins_1m_2019_2025_ea0cbb8f_intraday_market_amount_profile_synchronization_v1",
+    "path_below_data_root": "derived/a_share/rich/tushare/minute_intraday_market_amount_profile_synchronization/tushare_stk_mins_1m_2019_2025_ea0cbb8f_intraday_market_amount_profile_synchronization_v1",
+    "candidate_partitioning": "one_symbol_year_parquet_matching_the_joint_clean_partition_identity",
+    "benchmark_build": "First stream every bound raw partition to aggregate same-date aligned normalized-profile sums and counts, then stream the same immutable inputs again to compute leave-one-out correlations without persisting an unbound expanded profile table.",
+    "market_benchmark_artifact": "market_amount_profile_benchmark_240m.parquet",
+    "resume_policy": "resume_only_a_partition_whose_protocol_raw_source_joint_base_benchmark_and_output_byte_hashes_all_match",
+    "publish_policy": "write_to_one_hidden_partial_root_and_atomically_publish_only_after_all_33015_candidate_partition_checkpoints_pass",
+    "minimum_free_space_gib": 5,
+    "provider_request_allowed": false,
+    "raw_source_rows_mutated": false,
+    "daily_values_substituted_into_minute_rows": false,
+    "forward_return_fields_read": false
+  },
+  "ordered_no_return_gates": {
+    "coverage_and_capacity_before_comparison_values": {
+      "coverage_basis": "candidate_finite_rows_divided_by_quality_and_listing_eligible_buyable_rows_within_2019_2025",
+      "minimum_median_coverage": 0.95,
+      "minimum_p05_coverage": 0.9,
+      "minimum_p05_eligible_names": 50,
+      "minimum_non_overlapping_three_session_cohorts": 200,
+      "minimum_observed_calendar_years": 5,
+      "holding_period_sessions": 3,
+      "failed_gate_policy": "write_one_terminal_no_return_record_and_stop_before_loading_any_terminal_factor_comparison_value_or_forward_return"
+    },
+    "uniqueness_after_coverage_only": {
+      "comparison_source": "the_same_joint_clean_base_for_the_original_four_values_plus_the_nineteen_immutable_terminal_candidate_snapshots",
+      "comparison_factors": [
+        {"name": "late_return_30m", "score_direction": "higher"},
+        {"name": "late_amount_share_30m", "score_direction": "higher"},
+        {"name": "late_vwap_to_day_vwap_30m", "score_direction": "higher"},
+        {"name": "intraday_realized_volatility", "score_direction": "lower"},
+        {"name": "afternoon_signed_amount_efficiency_120m", "score_direction": "higher"},
+        {"name": "afternoon_drawdown_recovery_resilience_120m", "score_direction": "higher"},
+        {"name": "intraday_amount_participation_entropy_240m", "score_direction": "higher"},
+        {"name": "intraday_amount_profile_serial_persistence_240m", "score_direction": "higher"},
+        {"name": "intraday_upside_semivariance_share_239m", "score_direction": "higher"},
+        {"name": "intraday_terminal_close_location_240m", "score_direction": "higher"},
+        {"name": "intraday_return_sign_run_imbalance_238p", "score_direction": "higher"},
+        {"name": "intraday_volatility_resolution_238m", "score_direction": "higher"},
+        {"name": "intraday_amount_lead_return_correlation_238p", "score_direction": "higher"},
+        {"name": "intraday_amount_center_of_mass_240m", "score_direction": "higher"},
+        {"name": "intraday_up_move_amount_share_238m", "score_direction": "higher"},
+        {"name": "intraday_diffusive_variation_ratio_238m", "score_direction": "higher"},
+        {"name": "intraday_amount_volatility_coupling_238p", "score_direction": "higher"},
+        {"name": "intraday_return_variance_entropy_238m", "score_direction": "higher"},
+        {"name": "intraday_return_skewness_238m", "score_direction": "higher"},
+        {"name": "intraday_bar_vwap_close_pressure_240m", "score_direction": "higher"},
+        {"name": "intraday_price_update_share_238m", "score_direction": "higher"},
+        {"name": "intraday_market_idiosyncratic_share_238m", "score_direction": "higher"},
+        {"name": "intraday_opening_auction_amount_share_241m", "score_direction": "higher"}
+      ],
+      "screen_start": "2019-01-01",
+      "screen_end": "2025-12-31",
+      "method": "Within each identical quality-listing-candidate-and-comparison-eligible stock-day cross-section, compute pairwise-complete Spearman correlation between directional percentile scores, then take each comparison factor's median daily correlation.",
+      "minimum_pairwise_names_per_session": 50,
+      "minimum_pairwise_sessions_per_comparison": 100,
+      "maximum_allowed_absolute_median_daily_rank_correlation": 0.8,
+      "failed_gate_policy": "write_one_terminal_no_return_record_and_retire_this_exact_candidate_without_inversion_formula_window_transform_threshold_subset_filtering_reweighting_or_return_access",
+      "all_twenty_three_comparisons_must_pass": true
+    }
+  },
+  "post_no_return_decision": {
+    "if_coverage_or_capacity_fails": "terminally_reject_without_loading_comparison_values_or_returns",
+    "if_any_uniqueness_comparison_fails": "terminally_reject_without_loading_returns",
+    "if_all_no_return_gates_pass": "freeze_a_separate_single_use_three_session_return_diagnostic_before_loading_any_daily_price_or_forward_return",
+    "same_history_combination_return_evaluation_allowed": false,
+    "current_scoring_selection_sizing_or_orders_allowed": false,
+    "level2_intake_justified": false
+  },
+  "research_boundary": {
+    "candidate_factor_values_observed_before_registration": false,
+    "terminal_factor_comparison_values_observed_for_this_candidate_before_registration": false,
+    "daily_price_fields_read_before_registration": false,
+    "forward_return_fields_read_before_registration": false,
+    "training_or_model_fitting_performed": false,
+    "investment_advice": false
+  },
+  "point_in_time_context": {
+    "source_universe": {
+      "path": "data/qlib/cn_a_share/instruments/factor_main_chinext_star.txt",
+      "sha256": "cdded13c831b78045f4cfe80ba5d9a49f82152c615fef4267d00f992e7f53762"
+    },
+    "holding_universe": {
+      "path": "data/qlib/cn_a_share/instruments/buyable_main_chinext.txt",
+      "sha256": "77ccf8de2ed1e447e73b5d5ff1703fc2a8656d6adab34ef44017481730249db1"
+    },
+    "calendar": {
+      "path": "data/qlib/cn_a_share/calendars/day.txt",
+      "sha256": "fda506597d26bcec953cdc0882042a5046ec1587db60490e16a01627fd43f53a",
+      "development_sessions": 1699
+    },
+    "quarterly_quality": {
+      "path": "data/raw/a_share/fundamentals/quarterly_quality.parquet",
+      "sha256": "3ac901a97928d2ed81ac72e3eaac9bdc148d36cf67b6abe70223699235ef059f",
+      "manifest_path": "data/metadata/quarterly_quality_manifest.json",
+      "manifest_sha256": "e3cf654babe37a82393c5530696bc1cc242b736cb88e1947b8444b638125ba8c",
+      "availability": "strictly_next_local_session_after_announcement_date",
+      "quality_state_semantics": "after_effective_date_sort_and_dedup_forward_fill_roe_net_profit_revenue_yoy_and_profit_yoy_independently",
+      "maximum_age_days": 550
+    },
+    "minimum_listing_sessions": 20,
+    "survivorship_limitation": "The source stock-day pool inherits the repository's current-listing-derived factor universe. This is acceptable only for development diagnostics and must not be described as a survivorship-free historical backtest."
+  }
+}

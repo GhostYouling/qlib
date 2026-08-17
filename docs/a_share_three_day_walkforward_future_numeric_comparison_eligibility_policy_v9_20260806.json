@@ -1,0 +1,118 @@
+{
+  "version": 9,
+  "kind": "a_share_three_day_walkforward_future_numeric_comparison_eligibility_policy",
+  "status": "frozen_before_campaign074_candidate_source_or_comparison_values",
+  "recorded_at": "2026-08-06T07:38:30+08:00",
+  "authoritative_inputs": {
+    "latest_verified_state": {
+      "path": "docs/a_share_three_day_iteration_status_20260806_campaign073_verified.json",
+      "sha256": "e6348f26e3880055a8acb8d714624ae43da50998569fb41a5cb9af7eab51af77"
+    },
+    "historical_walkforward_policy": {
+      "path": "docs/a_share_three_day_historical_walkforward_research_policy_20260727.json",
+      "sha256": "38426d6161b9bfed323c58caba18feca668b8c9d53e294951a8ba90c01a798bb"
+    },
+    "campaign073_terminal_freeze": {
+      "path": "docs/a_share_three_day_walkforward_campaign_073_terminal_completion_freeze_20260806.json",
+      "sha256": "e5ddbd5b816f7fb3a3a3e54488257afb9a3d41d76d81b93690cfbfc3841fdc43"
+    },
+    "campaign073_research_record": {
+      "path": "docs/a_share_three_day_walkforward_campaign_073_research_record_v2.json",
+      "sha256": "dc97df498f35cecbd8b5bb276e949849def5047dff12043f6e2ea6b76770b490"
+    },
+    "campaign073_snapshot_binding": {
+      "path": "docs/a_share_three_day_walkforward_campaign_073_feature_snapshot_binding_20260806.json",
+      "sha256": "0bf34d781cff79f9f8e8262173a78699232cfa5271bd12b2fb897a9173698ae7",
+      "snapshot_manifest_path": "/Volumes/DIsk/qlib-a-share-tushare-1m/derived/a_share/rich/tushare/minute_walkforward_campaign073_feature_library/tushare_stk_mins_1m_2019_2025_ea0cbb8f_walkforward_campaign073_feature_library_v1/snapshot_manifest.json",
+      "snapshot_manifest_sha256": "6b281be298be7df908300db6735e3ed3efc7d7c13b44c2ae679bf5a2073940e4",
+      "dataset_sha256": "2cea2e0502be1c5cc70f93260a96175abac5f36af50482847c35746a80252a5f",
+      "eligible_rows": 7724498
+    },
+    "campaign073_no_return_audit": {
+      "path": "data/experiments/short_horizon/historical_walkforward/campaign_073/no_return/20260805T231452Z_campaign073_no_return_audit.json",
+      "sha256": "82fd04603093b80048e0e874b01ca961a4bb10ab0991052b66e7f42e26cac557",
+      "coverage_passed": true,
+      "calendar_sessions": 1632,
+      "candidate_eligible_rows": 1330171,
+      "median_coverage": 0.9994517542211769,
+      "p05_coverage": 0.9956886515772271,
+      "p05_eligible_names": 138.0,
+      "potential_three_session_cohorts": 540,
+      "observed_years": 7,
+      "numeric_comparisons_completed": 103,
+      "terminal_uniqueness_rejection_preserved": true,
+      "failed_comparisons": [
+        {
+          "name": "intraday_price_update_share_238m",
+          "median_daily_rank_correlation": -0.8607906131941189,
+          "absolute_median_daily_rank_correlation": 0.8607906131941189,
+          "pairwise_sessions": 1623
+        }
+      ]
+    }
+  },
+  "supersedes_without_rewriting": {
+    "path": "docs/a_share_three_day_walkforward_future_numeric_comparison_eligibility_policy_v8_20260806.json",
+    "sha256": "c936e9df4bd8ac8cdb23ee27d16796a612341c84577ee60f727e8a3cf72cb1db",
+    "preserved": true,
+    "reason": "Campaign073 is terminal, so its exact completed definition must be appended and its future numeric-comparator eligibility frozen before Campaign074 candidate values."
+  },
+  "complete_historical_feature_library": {
+    "definition": "Reconstruct the exact Campaign073 prior 104-definition order, then append intraday_terminal_nominal_share_price_affordability_rank_240m/higher exactly once.",
+    "factor_definition_count": 105,
+    "order_sha256": "bdc79e8c91fd43cd088437a47bdd805e0e4181fca2f4a6ff6714e0a033d34b61",
+    "all_terminal_failed_rejected_and_surviving_definitions_retained": true,
+    "structurally_nonnumeric_definition_retained": "intraday_cross_sectional_standardized_return_state_stability_236p",
+    "old_terminal_record_formula_direction_or_failure_history_may_be_rewritten": false
+  },
+  "numerical_comparator_eligibility": {
+    "classification_time": "before_campaign074_candidate_source_or_comparison_values",
+    "eligible_numeric_comparator_count": 104,
+    "eligible_numeric_comparator_order_definition": "Use Campaign073's exact 103 numeric comparators, then append Campaign073/higher exactly once.",
+    "eligible_numeric_comparator_order_sha256": "0d36cb313d4ded22343120b3f93c1f066aa3818415cb6ea186f354217eeacd6b",
+    "newly_appended_comparator": {
+      "name": "intraday_terminal_nominal_share_price_affordability_rank_240m",
+      "score_direction": "higher",
+      "source_campaign": 73,
+      "source_snapshot_eligible_rows": 7724498,
+      "source_quality_listing_candidate_rows": 1330171,
+      "source_supported_pairwise_sessions": 1623,
+      "numeric_comparator_eligible_for_campaign074": true,
+      "eligibility_reason": "The immutable snapshot contains a stable finite directional percentile score on all 7,724,498 stock-days, the frozen coverage gate passed, and the completed no-return audit established 1,623 pairwise sessions. Campaign073's terminal uniqueness rejection remains binding but does not make its values structurally nonnumeric.",
+      "terminal_at_uniqueness_gate_but_numerically_available": true
+    },
+    "minimum_pairwise_names_per_session": 50,
+    "minimum_pairwise_sessions_per_comparison": 100,
+    "strict_maximum_absolute_median_daily_rank_correlation": 0.8,
+    "all_104_eligible_numeric_comparators_must_pass": true,
+    "candidate_specific_comparator_drop_allowed": false,
+    "insufficient_pairwise_overlap_fails_closed": true
+  },
+  "structurally_nonnumeric_mechanism_challenges": [
+    {
+      "name": "intraday_cross_sectional_standardized_return_state_stability_236p",
+      "score_direction": "higher",
+      "source_campaign": 63,
+      "numeric_status": "undefined_not_pass_not_fail",
+      "mechanism_overlap_audit_required": true
+    }
+  ],
+  "anti_gaming_invariants": [
+    "Do not use Campaign074 values, returns, or correlations to choose prior comparators.",
+    "Do not omit Campaign073 because it failed its own uniqueness gate.",
+    "Do not rewrite Campaign073's terminal uniqueness rejection or failed correlation.",
+    "Do not weaken the 50-name, 100-session, or strict-below-0.8 gates."
+  ],
+  "research_boundary": {
+    "campaign074_source_rows_read_before_freeze": false,
+    "campaign074_candidate_or_comparison_values_read_before_freeze": false,
+    "historical_daily_price_fields_read": [],
+    "historical_forward_returns_read": false,
+    "provider_request_issued": false,
+    "candidate49_historical_backfill_performed": false,
+    "candidate49_ledgers_changed": false,
+    "second_prospective_candidate_created": false,
+    "current_scoring_selection_sizing_or_orders_performed": false,
+    "investment_advice": false
+  }
+}

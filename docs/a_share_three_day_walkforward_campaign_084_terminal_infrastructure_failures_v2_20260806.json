@@ -1,0 +1,43 @@
+{
+  "version": 2,
+  "kind": "a_share_three_day_walkforward_campaign084_terminal_infrastructure_failures",
+  "status": "three_read_only_terminal_verification_failures_preserved_after_successful_binding_validation",
+  "recorded_at": "2026-08-06T22:43:00+08:00",
+  "campaign_id": "084",
+  "supersedes_without_rewriting": {
+    "path": "docs/a_share_three_day_walkforward_campaign_084_terminal_infrastructure_failures_20260806.json",
+    "sha256": "22d3d424400f38400dc3e548e949a16978f9ebd1cd1a51ee0d1f8a57fa8076d2",
+    "preserved": true,
+    "failure_count": 2
+  },
+  "appended_failures": [
+    {
+      "ordinal": 7,
+      "stage": "terminal_binding_summary",
+      "outcome": "binding_validator_result_was_successful_but_summary_reader_requested_nonexistent_passed_bindings_key",
+      "exit_code": 1,
+      "binding_validation_completed_before_summary_failure": true,
+      "filesystem_write_performed": false,
+      "candidate_or_comparator_values_changed": false,
+      "historical_daily_price_or_return_values_read": false,
+      "provider_request_issued": false
+    }
+  ],
+  "successful_continuation": {
+    "campaign084_research_record_bindings_passed": 23,
+    "campaign084_research_record_bindings_total": 23,
+    "future_numeric_policy_v20_bindings_passed": 4,
+    "future_numeric_policy_v20_bindings_total": 4,
+    "all_bindings_passed": true,
+    "candidate_or_comparator_values_recomputed": false,
+    "historical_daily_price_or_return_values_read": false,
+    "provider_request_issued": false
+  },
+  "anti_gaming_boundary": {
+    "campaign084_coverage_failure_reclassified_or_removed": false,
+    "coverage_threshold_or_2019_partition_changed": false,
+    "campaign084_rerun_rescue_or_variant_opened": false,
+    "candidate49_ledgers_changed": false,
+    "current_scoring_selection_sizing_orders_or_advice_performed": false
+  }
+}

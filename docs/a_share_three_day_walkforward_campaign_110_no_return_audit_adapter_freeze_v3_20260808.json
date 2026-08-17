@@ -1,0 +1,37 @@
+{
+  "schema_version": 3,
+  "kind": "a_share_three_day_walkforward_campaign110_no_return_audit_adapter_freeze",
+  "status": "cli_comparator_count_recovery_frozen_before_coverage_or_comparator_values",
+  "recorded_at": "2026-08-07T22:48:05Z",
+  "audit_entry_point": {
+    "path": "scripts/a_share_three_day_walkforward_campaign110_no_return_audit_v4.py",
+    "sha256": "7d40f052c6855a4ed30fab810c03c91595f60603e8894f0c293f5dae26465f77"
+  },
+  "synthetic_test": {
+    "path": "tests/data_collector_tests/test_a_share_three_day_walkforward_campaign110_no_return_audit_v4.py",
+    "sha256": "fc026d34ad180361a5e5be892947594696570347cabefa2e3a7646f02e9ad323",
+    "pre_freeze_result": "2 passed"
+  },
+  "prior_adapter_freeze": {
+    "path": "docs/a_share_three_day_walkforward_campaign_110_no_return_audit_adapter_freeze_v2_20260808.json",
+    "sha256": "480746156fa6262abe60f347f497cf1a01d514706385cb49c7cc6c41e7509555"
+  },
+  "failure_record": {
+    "path": "docs/a_share_three_day_walkforward_campaign_110_no_return_cli_comparator_count_failure_20260808.json",
+    "sha256": "6780d05f6116886cbc6ac9dbe2fa51ae0b29034c7efee89c7ef75ccaafe7c985"
+  },
+  "adapter_scope": {
+    "only_runtime_argparse_description_changed_to_all_133": true,
+    "candidate_formula_direction_source_projection_grid_anchor_support_coverage_uniqueness_comparator_order_or_finite_catalog_changed": false,
+    "snapshot_or_data_read_performed_by_adapter": false,
+    "coverage_first_order_preserved": true
+  },
+  "research_boundary": {
+    "coverage_or_capacity_metrics_computed_before_freeze": false,
+    "comparator_values_read_before_freeze": false,
+    "historical_daily_price_or_forward_return_values_read_before_freeze": false,
+    "provider_request_issued_before_freeze": false,
+    "candidate49_ledgers_changed": false
+  },
+  "next_action": "Confirm the corrected help text, then run the one single-use no-return audit."
+}

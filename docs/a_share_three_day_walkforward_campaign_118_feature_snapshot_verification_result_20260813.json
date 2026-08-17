@@ -1,0 +1,73 @@
+{
+  "schema_version": 1,
+  "kind": "a_share_three_day_walkforward_campaign118_feature_snapshot_verification_result",
+  "status": "all_candidate_partition_bytes_frames_and_aggregate_identity_verified",
+  "recorded_at": "2026-08-13T22:15:00+08:00",
+  "candidate": {
+    "name": "intraday_top_decile_amount_event_spacing_entropy_25g",
+    "direction": "higher"
+  },
+  "snapshot": {
+    "path": "/Volumes/DIsk/qlib-a-share-tushare-1m/derived/a_share/rich/tushare/minute_walkforward_campaign118_feature_library/tushare_stk_mins_1m_2019_2025_ea0cbb8f_walkforward_campaign118_feature_library_v1/snapshot_manifest.json",
+    "sha256": "194c2ef2f81c1906c3e94a85e26ce97d7d82dba567b54128cf6e9086e3a027bd",
+    "dataset_sha256": "19495eb562683e1e14fbe5e9a9730e6d614b481f7642c3da824ea36fdb4d5e2b",
+    "partitions": 33015,
+    "rows": 7724498,
+    "eligible_rows": 7724498,
+    "missing_rows": 0,
+    "source_fields_read": [
+      "datetime",
+      "symbol",
+      "provider",
+      "amount"
+    ]
+  },
+  "verification": {
+    "verifier_path": "scripts/a_share_three_day_walkforward_campaign118_snapshot_verify_recovery.py",
+    "verifier_sha256": "4f201547304309d4aa98c0a5a21bc47c2a4cc7297b57a76227709f7d81985672",
+    "recovery_freeze_path": "docs/a_share_three_day_walkforward_campaign_118_snapshot_verifier_recovery_freeze_20260813.json",
+    "recovery_freeze_sha256": "b3c65b707043b9421fa49cad97eb93435a702eac2d28db34092b27c1624a8602",
+    "command": "/Volumes/DIsk/Coding/anaconda3/bin/python -m scripts.a_share_three_day_walkforward_campaign118_snapshot_verify_recovery --workers 8",
+    "exit_code": 0,
+    "partition_byte_hashes_verified": 33015,
+    "partition_frame_hashes_verified": 33015,
+    "aggregate_dataset_digest_verified": true,
+    "eligible_value_range_verified": [
+      0.0,
+      1.0
+    ]
+  },
+  "infrastructure_attempts": [
+    {
+      "attempt_id": "campaign118_infrastructure_001",
+      "exit_code": 1,
+      "stage": "inherited_manifest_semantic_validator",
+      "partition_values_opened": false,
+      "recorded_separately": true
+    },
+    {
+      "attempt_id": "campaign118_infrastructure_002",
+      "exit_code": 0,
+      "stage": "frozen_recovery_verifier_module_entry",
+      "partition_values_opened_for_verification": true
+    }
+  ],
+  "research_boundary": {
+    "candidate_snapshot_values_read_for_verification": true,
+    "coverage_or_capacity_metrics_computed": false,
+    "comparator_values_read": false,
+    "numeric_comparator_count_read": 0,
+    "historical_daily_price_or_forward_return_values_read": false,
+    "stress_2024_2025_opened_for_returns": false,
+    "provider_request_issued": false,
+    "candidate49_same_day_retry_performed": false,
+    "candidate49_failed_response_rerequested": false,
+    "candidate49_historical_backfill_performed": false,
+    "candidate49_signal_ledger_sha256": "5193f00d7f36da003f53cec387900da4c3d002299f5dfcfc1a95eaa199ed3a79",
+    "candidate49_execution_ledger_sha256": "d57a3e61eac969e42cafa418ccd8c0a5ee65dcf69da145bb2c096c2a02a2ea4f",
+    "candidate49_ledgers_changed": false,
+    "current_scoring_selection_sizing_positions_or_orders_performed": false,
+    "investment_advice": false
+  },
+  "next_action": "Freeze a single-use coverage activation binding, then run only the preregistered coverage/capacity/variation gate before any comparator value."
+}

@@ -1,0 +1,27 @@
+{
+  "schema_version": 1,
+  "kind": "a_share_three_day_walkforward_campaign146_infrastructure_failure",
+  "status": "recorded_black_check_failure_before_source_values",
+  "recorded_at": "2026-08-14T21:21:22+08:00",
+  "attempt_id": "campaign146_infrastructure_002",
+  "stage": "snapshot_builder_and_coverage_audit_synthetic_validation",
+  "command": "python -m black --check scripts/a_share_three_day_walkforward_campaign146_formula.py scripts/a_share_three_day_walkforward_campaign146_features.py scripts/a_share_three_day_walkforward_campaign146_no_return_audit.py tests/data_collector_tests/test_a_share_three_day_walkforward_campaign146_formula.py tests/data_collector_tests/test_a_share_three_day_walkforward_campaign146_features.py tests/data_collector_tests/test_a_share_three_day_walkforward_campaign146_no_return_audit.py",
+  "exit_code": 1,
+  "failure": "Black reported that the Campaign146 feature builder, coverage audit runner, and feature test would be reformatted; the other three scoped files were already formatted.",
+  "resolution": "Run Black mechanically on exactly the six Campaign146 implementation and test files, then rerun the unchanged 17-test, Black-check, and Ruff scopes.",
+  "successful_checks_before_failure": {
+    "pytest_exit_code": 0,
+    "pytest_passed": 17,
+    "ruff_exit_code": 0
+  },
+  "scientific_effect": {
+    "formula_changed": false,
+    "direction_changed": false,
+    "source_or_support_changed": false,
+    "gate_or_catalog_changed": false,
+    "candidate_source_or_value_read": false,
+    "comparator_value_read": false,
+    "daily_price_or_forward_return_read": false,
+    "provider_request_issued": false
+  }
+}

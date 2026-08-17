@@ -1,0 +1,41 @@
+{
+  "version": 1,
+  "kind": "a_share_three_day_compact_comparator_cache_v2_prebuild_test_failure",
+  "status": "recorded_before_unfrozen_synthetic_fixture_repair",
+  "recorded_at": "2026-08-05T21:16:33+08:00",
+  "failed_command": "PYTHONPATH=/Volumes/DIsk/Disk-Coding/qlib /Volumes/DIsk/Coding/anaconda3/bin/python -m py_compile scripts/a_share_three_day_compact_comparator_cache_v2.py tests/data_collector_tests/test_a_share_three_day_compact_comparator_cache_v2.py && PYTHONPATH=/Volumes/DIsk/Disk-Coding/qlib /Volumes/DIsk/Coding/anaconda3/bin/python -m pytest -q tests/data_collector_tests/test_a_share_three_day_compact_comparator_cache_v2.py",
+  "exit_code": 1,
+  "observed": {
+    "passed": 4,
+    "failed": 2,
+    "failed_nodes": [
+      "test_explicit_alignment_preserves_values_and_marks_absent_keys_nan",
+      "test_explicit_alignment_fails_closed_on_duplicate_requested_key"
+    ],
+    "error_class": "AttributeError",
+    "error_message": "DatetimeIndex object has no attribute dt"
+  },
+  "root_cause": "The corrected synthetic helper passed NumPy arrays into the frozen compact-key encoder, while the production loader passes pandas Series and the encoder intentionally uses the Series .dt accessor. This is a synthetic fixture mismatch, not a production-loader failure.",
+  "bindings_before_repair": {
+    "protocol_sha256": "98fa0318754c145ce645d647e591d32b89bc1b432db36028899c48220029dec9",
+    "unfrozen_builder_sha256": "eb4a2873bc6120c33860b93288dc19185b2e7afe796a4389c94a5ec6f207ae20",
+    "unfrozen_test_sha256": "829f842b948daa5c2df9a78b19d36531cb4bf04c0ce2c5f9efa3d4a88750d10a",
+    "first_v2_prebuild_failure_record_sha256": "e9d1ad7b22d41f85dc984dcc88d740e70eaee032f8d318c02f299548f447ab1b"
+  },
+  "repair": {
+    "v2_protocol_or_builder_edit_allowed": false,
+    "v2_implementation_freeze_already_created": false,
+    "allowed_unfrozen_test_edit": "Pass pandas Series to the compact-key encoder so the synthetic fixture matches the production call contract."
+  },
+  "research_effect": {
+    "synthetic_temporary_parquet_only": true,
+    "real_comparison_factor_values_read": false,
+    "candidate_factor_values_read": false,
+    "historical_daily_price_or_forward_return_values_read": false,
+    "provider_request_issued": false,
+    "research_attempt_count_increment": 0,
+    "return_reading_development_trial_count_increment": 0,
+    "cache_infrastructure_failure_count_increment": 1,
+    "cumulative_cache_infrastructure_failure_count": 4
+  }
+}

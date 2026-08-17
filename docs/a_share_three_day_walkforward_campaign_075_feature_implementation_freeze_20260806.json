@@ -1,0 +1,62 @@
+{
+  "version": 1,
+  "kind": "a_share_three_day_walkforward_campaign075_feature_implementation_freeze",
+  "status": "frozen_before_campaign075_instrument_source_or_candidate_values",
+  "recorded_at": "2026-08-06T09:23:00+08:00",
+  "protocol": {
+    "path": "docs/a_share_three_day_walkforward_campaign_075_no_return_preregistration.json",
+    "sha256": "fa2100154a66ec2f4037d86c6481a676e7c8fa2839ea5b55eec4c578e21b31b3"
+  },
+  "mechanism_overlap_audit": {
+    "path": "docs/a_share_three_day_walkforward_campaign_075_mechanism_overlap_audit.json",
+    "sha256": "583831e57554ae7fe0c3de434a01b029ceb5ac7df8c70bd4d1ccd0cb90c4b181"
+  },
+  "feature_runner": {
+    "path": "scripts/a_share_three_day_walkforward_campaign075_features.py",
+    "sha256": "584321ccdb00e2494968b2ba2ff986895931f4caa96957d57bd1efa2a19bdfb6"
+  },
+  "tests": {
+    "path": "tests/data_collector_tests/test_a_share_three_day_walkforward_campaign075_features.py",
+    "sha256": "0ed3fb76e70fcdf41ff879069b69e7c1b74042c484825ae8f2f63314e896987c",
+    "passed": 7,
+    "failed": 0,
+    "test_scope": "Synthetic inclusive accepted-session age, unchanged non-session clock, interval and duplicate fail-closed behavior, value range/integer semantics, complete comparator reconstruction, and read-only status."
+  },
+  "prevalue_infrastructure_failure": {
+    "path": "docs/a_share_three_day_walkforward_campaign_075_prevalue_synthetic_test_fixture_failure_20260806.json",
+    "sha256": "2197065faf3fbb105d42888284e7f2fbf886d6cfe9c60da842b417db9ce9585a",
+    "preserved": true
+  },
+  "frozen_implementation": {
+    "factor": "accepted_instrument_session_youth_20s",
+    "direction": "higher",
+    "minimum_age_sessions": 20,
+    "calendar_sha256": "fda506597d26bcec953cdc0882042a5046ec1587db60490e16a01627fd43f53a",
+    "accepted_instrument_intervals_sha256": "cdded13c831b78045f4cfe80ba5d9a49f82152c615fef4267d00f992e7f53762",
+    "campaign074_identity_manifest_sha256": "5a993ce8b71c541a0b2d2402627d5f2b7f562cf1266bebcafe0606945086a3cd",
+    "campaign074_identity_dataset_sha256": "d4fbb9eb8135674df16a50c96b5817f63e6461e99ee48df96537cd8ed930a4b5",
+    "campaign074_identity_projection": [
+      "trade_date",
+      "symbol",
+      "provider"
+    ],
+    "campaign074_factor_values_read_for_candidate_materialization": false,
+    "complete_definition_count": 106,
+    "complete_definition_order_sha256": "9e36bbe2532e09294f2c677615c6245609abdb94c44557ee776e040c9f270b0c",
+    "numeric_comparator_count": 105,
+    "numeric_comparator_order_sha256": "533f22783f42d7d00b51fcceda879a2881e1a484f4d70fc0f2ecb5a0210e6fcc"
+  },
+  "research_boundary": {
+    "accepted_instrument_rows_read_before_freeze": false,
+    "campaign074_identity_partition_rows_read_before_freeze": false,
+    "candidate_values_read_before_freeze": false,
+    "comparison_values_read_before_freeze": false,
+    "historical_daily_price_fields_read_before_freeze": [],
+    "historical_forward_returns_read_before_freeze": false,
+    "provider_request_issued_before_freeze": false,
+    "candidate49_ledgers_changed": false,
+    "second_prospective_candidate_created": false,
+    "current_scoring_selection_sizing_or_orders_performed": false
+  },
+  "next_action": "Validate every binding, then build Campaign075 exactly once from identity-only Campaign074 projections plus the frozen accepted instrument intervals and calendar."
+}

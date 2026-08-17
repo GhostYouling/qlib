@@ -1,0 +1,77 @@
+{
+  "schema_version": 2,
+  "kind": "a_share_three_day_walkforward_campaign113_metadata_terminal_verification",
+  "status": "verified_final_terminal_metadata_schema_gate_policy_v80_and_append_only_chain",
+  "recorded_at": "2026-08-09T02:08:29+08:00",
+  "supersedes_without_rewriting": {
+    "path": "docs/a_share_three_day_walkforward_campaign_113_metadata_terminal_verification_20260809.json",
+    "sha256": "62a40166e5a04691c68d696a8b6084dab3116f4c155c7dfa78e883e8eef56c1b",
+    "preserved": true,
+    "reason": "Adds final append-only accounting and the successful read-only integrity receipt after the rejected deletion-bearing command."
+  },
+  "authoritative_status": {
+    "path": "docs/a_share_three_day_iteration_status_20260809_campaign113_metadata_terminal_v3.json",
+    "sha256": "80d16dc7ada427376fd8eeb65b60acc55629fb44f934c0229f44757667532e77"
+  },
+  "future_numeric_policy": {
+    "path": "docs/a_share_three_day_walkforward_future_numeric_comparison_eligibility_policy_v80_20260809.json",
+    "sha256": "cc56b81b4520fb5aeb2e7add89209c60a305cbfb1142e15d61cfdc9837708eaa",
+    "complete_definition_count": 141,
+    "numeric_comparator_count": 134
+  },
+  "terminal_result": {
+    "path": "docs/a_share_three_day_walkforward_campaign_113_metadata_terminal_result_v4_20260809.json",
+    "sha256": "cc1a1378310b2c66c31e0ae3bc58e7740463ad5b5f983c4a71dfa3e157f4b44e"
+  },
+  "latest_attempt_ledger": {
+    "path": "data/experiments/short_horizon/historical_walkforward/campaign_113/research_attempt_ledger_v7.json",
+    "sha256": "69cbcf83a33d79881c879513c63b2d2bd71a40e2b82a2f917d076ec56477ab1b",
+    "extends_v6_sha256": "de92a8f3e1ef5b3bd4ac03d8f7098dac746500014afdb1e54059ae0fe43f7726",
+    "total_attempt_count": 18,
+    "total_infrastructure_failure_count": 15,
+    "current_chain_tip_sha256": "f8ed754cfb4e1e5b10da2021238778adbeb7e34b2764a96febb00bb4ef18d3ec"
+  },
+  "test_receipts": [
+    {
+      "scope": "Campaign113 adapter, synthetic adapter, source-contract, adapter/formula, metadata-terminal and Campaign112 predecessor semantics",
+      "result": "33 passed in 2.92s",
+      "exit_code": 0
+    },
+    {
+      "scope": "Black and Ruff on current adapter/synthetic/new terminal files",
+      "result": "passed",
+      "exit_code": 0
+    },
+    {
+      "scope": "Final read-only status binding, v7 chain, Candidate49 and source-row boundary plus git diff whitespace checks",
+      "result": "passed",
+      "exit_code": 0
+    }
+  ],
+  "verified_assertions": {
+    "metadata_schema_gate_passed": false,
+    "campaign113_terminal": true,
+    "post_exposure_label_expansion_or_adapter_repair_allowed": false,
+    "source_event_rows_accessed_persisted_or_counted": false,
+    "source_event_row_count": null,
+    "candidate_or_comparison_values_read": false,
+    "historical_daily_price_or_forward_return_values_read": false,
+    "development_trial_count": 0,
+    "stress_2024_2025_opened": false,
+    "cumulative_historical_research_attempt_count": 845,
+    "cumulative_return_reading_development_trial_count": 302,
+    "candidate49_signal_entry_count": 0,
+    "candidate49_execution_entry_count": 0,
+    "candidate49_historical_backfill_performed": false,
+    "second_prospective_candidate_created": false,
+    "current_scoring_selection_sizing_or_orders_performed": false,
+    "investment_advice": false
+  },
+  "ephemeral_probe_directory": {
+    "path": "/tmp/campaign113-static-metadata.GKaqUc",
+    "retained": true,
+    "authoritative_evidence": false,
+    "reason": "Deletion was not retried after the safety-policy rejection; authoritative safe metadata is fully captured in repository records."
+  },
+  "next_safe_action": "Keep Campaign113 terminal. Continue only from a genuinely independent pre-row offline mechanism in a later campaign; Candidate49 remains the sole prospective confirmation layer."
+}

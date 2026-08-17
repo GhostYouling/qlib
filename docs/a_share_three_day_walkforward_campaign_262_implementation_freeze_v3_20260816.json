@@ -1,0 +1,88 @@
+{
+  "schema_version": 3,
+  "kind": "a_share_three_day_walkforward_campaign262_implementation_freeze",
+  "status": "formula_contract_frozen_before_values_and_diagnostic_recovery_frozen_after_failed_unpublished_build",
+  "recorded_at": "2026-08-16T18:09:00+08:00",
+  "timestamp_semantics": "monotonic_logical_append_time_not_host_wall_clock_measurement",
+  "supersedes_without_rewriting": {
+    "implementation_freeze_v2": {
+      "path": "docs/a_share_three_day_walkforward_campaign_262_implementation_freeze_v2_20260816.json",
+      "sha256": "788af0513cd222cca9791c9534a87e7d284443d27660c443939d721f604d2611"
+    },
+    "second_failed_snapshot_build": {
+      "path": "docs/a_share_three_day_walkforward_campaign_262_snapshot_build_empty_partition_quality_failure_20260816.json",
+      "sha256": "1aa337ba629fb73dcf720f60a9f817727c80d65ab2286d620f2654096f8d1474"
+    },
+    "infrastructure_failures_v5": {
+      "path": "docs/a_share_three_day_walkforward_campaign_262_infrastructure_failures_v5_20260816.json",
+      "sha256": "5518033c312e2d8e012506ec243343bf9f7377b1368322307d4f3aafb3ddcac9",
+      "effective_failure_count": 8
+    }
+  },
+  "protocol_path": "docs/a_share_three_day_walkforward_campaign_262_no_return_preregistration_20260816.json",
+  "protocol_sha256": "cf4ea3e0c39f31207e175891321b3eb5cc8a49391cb3022d87cd98e80cc282d0",
+  "code": {
+    "formula_path": "scripts/a_share_three_day_walkforward_campaign262_formula.py",
+    "formula_sha256": "6859a469ed774380ae5d4eca68a8a0df1868ed39c4b6b476747e855db41e26db",
+    "feature_builder_path": "scripts/a_share_three_day_walkforward_campaign262_features.py",
+    "feature_builder_sha256": "b7499a518042a998e269be953084ad939915f4b87a21e0f53ce6fcb17a25e8a7",
+    "frozen_base_builder_path": "scripts/a_share_three_day_walkforward_campaign261_features.py",
+    "frozen_base_builder_sha256": "b21e325d84b1153b4b3f5ad314e19434a8056b2e2f955e751500a6424f3108c2",
+    "v3_change_scope": "Add the same two zero-valued diagnostics to the empty-partition early-return branch and point the builder at this additive v3 freeze. Formula, direction, nonempty candidate values, source projection, grid, support, output schema and search space are unchanged."
+  },
+  "tests": {
+    "formula_test_path": "tests/data_collector_tests/test_a_share_three_day_walkforward_campaign262_formula.py",
+    "formula_test_sha256": "3941de4963c30ab60906fe689d3aeeec3c2b67144fc1943fd983f1ce3608efaa",
+    "feature_test_path": "tests/data_collector_tests/test_a_share_three_day_walkforward_campaign262_features.py",
+    "feature_test_sha256": "3bc9a924e1597bb103ef685729511834f55b0430b4f140e8fa648a0f4d502b7f",
+    "command": "PYTHONPATH=. /Volumes/DIsk/Coding/anaconda3/bin/python3.12 -m pytest -q tests/data_collector_tests/test_a_share_three_day_walkforward_campaign262_formula.py tests/data_collector_tests/test_a_share_three_day_walkforward_campaign262_features.py",
+    "exit_code": 0,
+    "passed": 16,
+    "ruff": "passed_as_independent_process",
+    "black": "passed_as_independent_process"
+  },
+  "source_contract": {
+    "data_root": "/Volumes/DIsk/qlib-a-share-tushare-1m",
+    "raw_manifest_sha256": "9b3d959563c9d182f38981c6a36bdb3bc9b415de08487a9e1f9e850825c0839f",
+    "joint_clean_manifest_sha256": "453c6719cb3c7da42fed8807b28a2bfe988700283e9625a6db97912534f368de",
+    "joint_clean_dataset_sha256": "0e4fe7c05536cdfcecc2936bc880726902f5560061188ffff82ef7ee6f346983",
+    "expected_partitions": 33015,
+    "expected_rows": 7724498,
+    "output_run_id": "tushare_stk_mins_1m_2019_2025_ea0cbb8f_walkforward_campaign262_feature_library_v1"
+  },
+  "factor_contract": {
+    "name": "intraday_amount_schedule_uniformity_240m",
+    "direction": "higher",
+    "source_projection": [
+      "datetime",
+      "symbol",
+      "provider",
+      "amount"
+    ],
+    "formula": "1-sum_{k=0}^{238}|sum_{i=0}^k(a_i/sum_j a_j)-(k+1)/240|/119.5",
+    "valid_range_inclusive": [
+      0.0,
+      1.0
+    ]
+  },
+  "complete_definition_count": 161,
+  "complete_definition_order_sha256": "e387d2865b8957a933c522c2cd9ae890612ab45993307f97693ec73fa5288144",
+  "numeric_comparator_count": 142,
+  "numeric_comparator_order_sha256": "5d1b35fb5a0d8ac9293008db9963c4a60a94dc940c237c3ed259e5ce44f14aaf",
+  "research_boundary": {
+    "historical_source_rows_read": true,
+    "historical_source_rows_read_before_protocol_and_formula_freeze": false,
+    "candidate_values_computed_in_failed_partial_build": true,
+    "candidate_values_published_or_inspected": false,
+    "comparator_values_read": false,
+    "historical_daily_price_or_forward_return_values_read": false,
+    "stress_2024_2025_opened": false,
+    "provider_request_issued": false,
+    "provider_credential_presence_value_or_digest_read": false,
+    "candidate49_historical_backfill_performed": false,
+    "candidate49_ledgers_changed": false,
+    "second_prospective_candidate_created": false,
+    "current_scoring_selection_sizing_positions_or_orders_performed": false,
+    "investment_advice": false
+  }
+}

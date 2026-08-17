@@ -1,0 +1,45 @@
+{
+  "schema_version": 1,
+  "kind": "a_share_three_day_walkforward_campaign084_no_return_audit_activation_binding",
+  "status": "frozen_before_coverage_or_comparison_values",
+  "frozen_at": "2026-08-06T22:38:00+08:00",
+  "implementation_freeze": {
+    "path": "docs/a_share_three_day_walkforward_campaign_084_no_return_audit_implementation_freeze_20260806.json",
+    "sha256": "6119c43190a18bdb6015db03bd37adfc8234fade6355b0786fbc00ae2a92efd6"
+  },
+  "snapshot_binding": {
+    "path": "docs/a_share_three_day_walkforward_campaign_084_feature_snapshot_binding_v2_20260806.json",
+    "sha256": "45e4dde42acb65ed25993f0f83f18b8430fc93fd424b5d3eb53aecd296dc48b0"
+  },
+  "protocol": {
+    "path": "docs/a_share_three_day_walkforward_campaign_084_no_return_preregistration.json",
+    "sha256": "c396f141c811978004c04b62f09caceef343a9860e43f48de1fe44419c9bcf70"
+  },
+  "audit_runner": {
+    "path": "scripts/a_share_three_day_walkforward_campaign084_no_return_audit.py",
+    "sha256": "ab1ebfbb410f0164eb5b4f84f2606763491ca75b5a0d92fed909db458343db2d"
+  },
+  "research_attempt_ledger": {
+    "path": "data/experiments/short_horizon/historical_walkforward/campaign_084/research_attempt_ledger_v3.json",
+    "sha256": "65d97d06b29a33cc6306fb32dfc1ac1a3d788ebb4773e18a0569685bb5612a14"
+  },
+  "candidate_snapshot": {
+    "path": "/Volumes/DIsk/qlib-a-share-tushare-1m/derived/a_share/rich/tushare/minute_walkforward_campaign084_feature_library/tushare_stk_mins_1m_2019_2025_ea0cbb8f_walkforward_campaign084_feature_library_v1/snapshot_manifest.json",
+    "sha256": "68a547c9d85f6437382a16704f601074264c8206dd5fe4d23adaff20079f5994",
+    "dataset_sha256": "eaae6e206284f605e6d673a89166ab996e4f246d59955f4d8f427ff7d8aecc5a",
+    "factor": "quarterly_profit_growth_level_acceleration_floor_2r",
+    "direction": "higher",
+    "rows": 7724498,
+    "eligible_rows": 6321289
+  },
+  "coverage_or_capacity_metrics_computed_before_activation": false,
+  "comparison_values_read_before_activation": false,
+  "historical_daily_price_fields_read_before_activation": [],
+  "historical_forward_returns_read_before_activation": false,
+  "provider_request_issued_before_activation": false,
+  "candidate49_historical_backfill_performed": false,
+  "candidate49_ledgers_changed": false,
+  "second_prospective_candidate_created": false,
+  "current_scoring_selection_sizing_or_orders_performed": false,
+  "authorization": "Run exactly one Campaign084 no-return audit. Compute frozen quality/listing coverage first. Load all 113 comparator streams in v19 order only if coverage passes. Never read daily prices or forward returns in this audit."
+}

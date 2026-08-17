@@ -1,0 +1,42 @@
+{
+  "schema_version": 1,
+  "kind": "a_share_three_day_walkforward_campaign097_numeric_eligibility_verification",
+  "status": "verified_exact_compact_key_decode_and_finite_name_session_count",
+  "recorded_at": "2026-08-07T07:09:30Z",
+  "campaign": 97,
+  "compact_snapshot_manifest": {
+    "path": "/Volumes/DIsk/qlib-a-share-tushare-1m/derived/a_share/rich/tushare/minute_walkforward_campaign097_compact_feature_library/tushare_stk_mins_1m_2019_2025_ea0cbb8f_walkforward_campaign097_compact_feature_library_v1/snapshot_manifest.json",
+    "sha256": "fac652d7097de579c8f3d6c5812ce9573762ec8885d6729706e2ef7e0cd81227"
+  },
+  "preserved_failed_verification": {
+    "path": "docs/a_share_three_day_walkforward_campaign_097_numeric_eligibility_verification_column_failure_20260807.json",
+    "sha256": "c577fd139067a77f2e7ee883bf5b2cc4a9adc73594bbb7a97ab7d594fbf1e0c0"
+  },
+  "method": {
+    "columns_read": [
+      "stock_day_key",
+      "intraday_market_range_profile_synchronization_240m"
+    ],
+    "identity_decode": "frozen Campaign097 inherited _decode_stock_day_keys",
+    "finite_predicate": "numpy.isfinite(candidate_value)",
+    "session_grouping": "decoded trade date",
+    "minimum_finite_names_for_future_numeric_eligibility": 50
+  },
+  "result": {
+    "calendar_sessions": 1632,
+    "sessions_with_any_finite_candidate": 1632,
+    "sessions_with_at_least_50_finite_names": 1623,
+    "minimum_finite_names": 3,
+    "future_numeric_comparator_eligibility_passed": true
+  },
+  "research_boundary": {
+    "candidate_values_recomputed": false,
+    "comparison_values_read": false,
+    "historical_daily_price_values_read": false,
+    "historical_forward_return_values_read": false,
+    "development_or_stress_trial_rerun": false,
+    "candidate49_ledger_changed": false,
+    "provider_request_issued": false,
+    "current_scoring_selection_sizing_or_orders_performed": false
+  }
+}

@@ -1,0 +1,136 @@
+{
+  "schema_version": 1,
+  "kind": "a_share_three_day_walkforward_campaign157_cross_asset_source_admission_audit",
+  "status": "terminal_prevalue_zero_admitted_cross_asset_sources_with_deferrals_separate_from_factor_failures",
+  "recorded_at": "2026-08-15T03:57:20+08:00",
+  "authoritative_inputs": {
+    "source_scouting": {
+      "path": "docs/a_share_three_day_walkforward_campaign_157_cross_asset_source_scouting_20260815.json",
+      "sha256": "b14d28d45144c3fde60379161df4ff618bf71222f52dfc8b8e44dd3dc113af2e"
+    },
+    "convertible_issue_source_terminal": {
+      "path": "docs/a_share_three_day_walkforward_campaign_127_convertible_issue_source_acceptance_terminal_20260814.json",
+      "sha256": "a0ca6e118480fdf765b1834222aa89c602bf4e0b67949e3649e6267862e685f1"
+    },
+    "official_securities_lending_source_terminal": {
+      "path": "docs/a_share_official_securities_lending_source_acceptance_audit.json",
+      "sha256": "e118cb1330722b7d40f5e7de683f81a94d405d605907a1728dd930a634f56ec4"
+    },
+    "campaign150_model_frontier_terminal": {
+      "path": "docs/a_share_three_day_walkforward_campaign_150_mechanism_frontier_audit_20260814.json",
+      "sha256": "778847d1417b23a4e5456ae470b49e65550fa31d706612debbc8535cff8ca469"
+    }
+  },
+  "admission_gate": {
+    "gate_1_independent_cross_asset_state": "The proposal must observe a new cross-asset economic state rather than combine, fit or relabel terminal equity factors or terminal sources.",
+    "gate_2_verified_historical_point_in_time_source": "A local accepted contract must prove first-available timestamps, corrections, instrument history and 2019-2023 availability before rows.",
+    "gate_3_stable_instrument_to_equity_mapping": "Issuer, underlying or constituent mappings and corporate-action adjustments must be point-in-time and deterministic.",
+    "gate_4_full_universe_denominator_and_rankability": "The contract must define observed and unobserved equities, overlapping instruments, stale quotes and missingness without selecting on realized rows.",
+    "gate_5_terminal_family_independence": "The mechanism cannot reopen terminal margin, lending, market-relative, fitted-model or source-recovery branches.",
+    "pass_rule": "All five gates must pass before source rows, endpoint values, formula, direction, parameters, features, comparators or returns."
+  },
+  "proposal_gate_results": [
+    {
+      "catalog_id": "c157_01",
+      "independent_cross_asset_state": true,
+      "verified_historical_point_in_time_source": false,
+      "stable_instrument_to_equity_mapping": false,
+      "full_universe_denominator_and_rankability": false,
+      "terminal_family_independence": true,
+      "passed": false,
+      "classification": "source_admission_deferred_not_factor_failure"
+    },
+    {
+      "catalog_id": "c157_02",
+      "independent_cross_asset_state": true,
+      "verified_historical_point_in_time_source": false,
+      "stable_instrument_to_equity_mapping": false,
+      "full_universe_denominator_and_rankability": false,
+      "terminal_family_independence": true,
+      "passed": false,
+      "classification": "source_admission_deferred_not_factor_failure"
+    },
+    {
+      "catalog_id": "c157_03",
+      "independent_cross_asset_state": true,
+      "verified_historical_point_in_time_source": false,
+      "stable_instrument_to_equity_mapping": false,
+      "full_universe_denominator_and_rankability": false,
+      "terminal_family_independence": true,
+      "passed": false,
+      "classification": "source_admission_deferred_not_factor_failure"
+    },
+    {
+      "catalog_id": "c157_04",
+      "independent_cross_asset_state": true,
+      "verified_historical_point_in_time_source": false,
+      "stable_instrument_to_equity_mapping": false,
+      "full_universe_denominator_and_rankability": false,
+      "terminal_family_independence": true,
+      "passed": false,
+      "classification": "source_admission_deferred_not_factor_failure"
+    },
+    {
+      "catalog_id": "c157_05",
+      "independent_cross_asset_state": false,
+      "verified_historical_point_in_time_source": false,
+      "stable_instrument_to_equity_mapping": true,
+      "full_universe_denominator_and_rankability": false,
+      "terminal_family_independence": false,
+      "passed": false,
+      "classification": "terminal_source_recombination_rejection"
+    },
+    {
+      "catalog_id": "c157_06",
+      "independent_cross_asset_state": false,
+      "verified_historical_point_in_time_source": false,
+      "stable_instrument_to_equity_mapping": true,
+      "full_universe_denominator_and_rankability": false,
+      "terminal_family_independence": false,
+      "passed": false,
+      "classification": "terminal_model_and_market_relative_recombination_rejection"
+    }
+  ],
+  "gate_summary": {
+    "concepts_reviewed": 6,
+    "independent_cross_asset_state_passers": 4,
+    "verified_source_passers": 0,
+    "stable_mapping_passers": 2,
+    "full_universe_and_rankability_passers": 0,
+    "terminal_family_independence_passers": 4,
+    "all_gate_passers": 0,
+    "source_admission_deferrals": 4,
+    "terminal_or_structural_recombination_rejections": 2,
+    "selected_candidate_count": 0
+  },
+  "scientific_interpretation": {
+    "deferred_concepts_tested_for_predictive_value": false,
+    "deferred_concepts_declared_ineffective": false,
+    "terminal_recombination_concepts_may_be_retried_or_refitted": false,
+    "reason": "Four independent cross-asset hypotheses remain untested until a separately preregistered source passes every gate. Two proposals require combining or fitting terminal states and are closed."
+  },
+  "terminal_decision": {
+    "terminal": true,
+    "terminal_phase": "prevalue_cross_asset_source_admission_gate",
+    "formula_feature_adapter_or_model_created": false,
+    "source_row_or_endpoint_response_value_read": false,
+    "comparison_or_return_value_read": false,
+    "campaign157_source_acceptance_coverage_uniqueness_or_return_audit_run": false,
+    "unverified_endpoint_field_mapping_or_schema_frozen": false,
+    "source_rows_may_be_sampled_to_choose_or_rescue_a_concept": false
+  },
+  "research_boundary": {
+    "source_row_or_response_values_read": false,
+    "candidate_or_comparator_values_read": false,
+    "historical_daily_price_or_forward_return_values_read": false,
+    "stress_2024_2025_opened": false,
+    "provider_or_web_request_issued": false,
+    "provider_credential_presence_value_or_digest_read": false,
+    "candidate49_historical_backfill_performed": false,
+    "candidate49_ledgers_changed": false,
+    "second_prospective_candidate_created": false,
+    "current_scoring_selection_sizing_positions_or_orders_performed": false,
+    "investment_advice": false
+  },
+  "next_action": "Record all six decisions, preserve the 157/142 library, and authorize Campaign158 offline only from a new raw state or an exact source contract frozen before rows."
+}

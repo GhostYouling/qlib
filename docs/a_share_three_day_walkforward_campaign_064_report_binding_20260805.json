@@ -1,0 +1,36 @@
+{
+  "version": 1,
+  "kind": "a_share_three_day_walkforward_campaign064_report_binding",
+  "status": "terminal_report_bound_to_verified_campaign064_state",
+  "recorded_at": "2026-08-05T12:26:00+08:00",
+  "report": {
+    "path": "docs/a_share_three_day_walkforward_campaign_064_report.md",
+    "sha256": "97cb280a4361c851846b8688ab62517dc435e97fcaa6b0119535fc831db84003"
+  },
+  "authoritative_iteration_state": {
+    "path": "docs/a_share_three_day_iteration_status_20260805_campaign064_verified.json",
+    "sha256": "05c1a5d1202774a84f8e8f0a25196e4d7d55064551a0b08509d0bffe92d8750f"
+  },
+  "terminal_completion_freeze": {
+    "path": "docs/a_share_three_day_walkforward_campaign_064_terminal_completion_freeze_20260805.json",
+    "sha256": "145e7d8878f2ab14c31da2c9a986300d9fcb9f7e48e2b26b28ab1e7af8c89cab"
+  },
+  "verification": {
+    "path": "docs/a_share_three_day_walkforward_campaign_064_verification_20260805.json",
+    "sha256": "1000b8ef3984ff3e10d854a3667423ec7ba23de0914628370b81d227a6ce75c8"
+  },
+  "future_numeric_comparison_eligibility_policy": {
+    "path": "docs/a_share_three_day_walkforward_future_numeric_comparison_eligibility_policy_20260805.json",
+    "sha256": "ab28928886b1f617a7be094e0afad241e24bacad9646360c35a05acd80e853b8"
+  },
+  "report_semantics": {
+    "Campaign064_terminal_under_original_protocol": true,
+    "coverage_passed": true,
+    "numeric_comparisons_passed": 94,
+    "undefined_zero_value_terminal_comparison_failed": 1,
+    "historical_daily_prices_or_forward_returns_read": false,
+    "Campaign064_retroactively_rescued": false,
+    "future_policy_effective_start_campaign": 65,
+    "current_scoring_selection_sizing_or_orders_performed": false
+  }
+}

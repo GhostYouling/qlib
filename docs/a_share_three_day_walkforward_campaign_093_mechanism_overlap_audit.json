@@ -1,0 +1,149 @@
+{
+  "schema_version": 1,
+  "kind": "a_share_three_day_walkforward_campaign093_mechanism_overlap_audit",
+  "status": "passed_semantic_mechanism_review_before_campaign093_minute_source_or_comparison_values",
+  "recorded_at": "2026-08-07T01:18:15Z",
+  "concept_scouting": {
+    "path": "docs/a_share_three_day_walkforward_campaign_093_concept_scouting.json",
+    "sha256": "bb035b74a5507f5b20bcffc2c2780e158ceb7a253b6d21a6fc2013d4fbf18808"
+  },
+  "authoritative_state": {
+    "path": "docs/a_share_three_day_iteration_status_20260807_campaign092_verified.json",
+    "sha256": "0a6a79e05eb12c0303ba1c186d31adeca0d45abdea48b9de50101cde2523a57b"
+  },
+  "historical_walkforward_policy": {
+    "path": "docs/a_share_three_day_historical_walkforward_research_policy_20260727.json",
+    "sha256": "38426d6161b9bfed323c58caba18feca668b8c9d53e294951a8ba90c01a798bb"
+  },
+  "numeric_comparator_policy": {
+    "path": "docs/a_share_three_day_walkforward_future_numeric_comparison_eligibility_policy_v36_20260807.json",
+    "sha256": "8e2d23139dbe5f423a5b96fb1230a2f5f0f3c04e3bced33753aa38ac5d7554f8",
+    "complete_definition_count": 124,
+    "numeric_comparator_count": 122,
+    "complete_definition_order_sha256": "a77f964349dd9c5d924bb8d6e2000682791cd765ff4b9c5c50576309cf815758",
+    "numeric_comparator_order_sha256": "8e5afb41c25060c7071e713ecc9589a6db8a706da5c441349dc298fca26da390"
+  },
+  "candidate": {
+    "name": "intraday_close_transition_range_quadratic_efficiency_238p",
+    "direction": "higher",
+    "mechanism": "Allocation of completed-session quadratic price variation between within-half adjacent closing-level transitions and the contemporaneous destination bars' intrabar high-low excursions.",
+    "formula": "For 119 pairs in each half set c_j=ln(close_j/close_j-1), h_j=ln(high_j/low_j), Q=sum(c_j^2), H=sum(h_j^2), and score Q/(Q+H).",
+    "fixed_support": "Exactly 238 within-half pairs from the fixed 240 standard bars; exclude 09:30 and the lunch transition; never bridge dates, stocks, or halves.",
+    "zero_and_missing_semantics": "Retain exact-zero transitions and ranges. Require all selected high/low/close values finite and positive with low<=close<=high and finite Q+H>0. Never drop a pair, add epsilon, fill, clip, threshold, or substitute.",
+    "reads_open_amount_volume_market_daily_quarterly_or_future_fields": false,
+    "candidate49_used_or_modified": false
+  },
+  "complete_library_review": {
+    "all_124_definitions_reviewed_in_frozen_order": true,
+    "all_122_numeric_comparators_reviewed_in_frozen_order": true,
+    "all_return_volatility_path_sign_frequency_range_gap_body_wick_amount_volume_transaction_price_market_peer_cross_day_event_quality_structural_composite_and_semantic_only_families_reviewed": true,
+    "candidate_is_exact_formula_duplicate": false,
+    "candidate_is_direction_only_duplicate": false,
+    "candidate_is_parameter_only_duplicate": false,
+    "candidate_is_an_inversion_of_a_terminal_factor": false,
+    "candidate_combines_terminal_factor_values": false,
+    "candidate_changes_quality_listing_buyability_cost_or_walkforward_gates": false,
+    "campaign092_formula_transform_direction_subset_filter_or_fit_reused": false,
+    "candidate49_remains_semantic_isolation_only": true
+  },
+  "nearest_semantic_challenges": [
+    {
+      "name": "intraday_interbar_gap_discovery_share_238p",
+      "relationship": "Both allocate boundary-scale movement against destination high-low range on 238 within-half opportunities.",
+      "distinction": "Campaign092 reads open and prior close, uses absolute first-power open gaps and linear ranges. Campaign093 never reads open, uses adjacent closes, and compares squared transition and squared range variation. Holding every open gap fixed while changing a destination close changes Campaign093 but not Campaign092 when destination ranges are preserved.",
+      "mandatory_numeric_challenge": true
+    },
+    {
+      "name": "intraday_intrabar_body_range_efficiency_240m",
+      "relationship": "Both compare price movement with high-low range.",
+      "distinction": "The terminal factor uses same-bar absolute open-close bodies and linear ratio-of-sums across 240 bars. Campaign093 uses adjacent close transitions, no open, quadratic terms, and 238 matched destination opportunities.",
+      "mandatory_numeric_challenge": true
+    },
+    {
+      "name": "intraday_diffusive_variation_ratio_238m and intraday_bipower_jump_variation_share_238m",
+      "relationship": "All use quadratic close-return variation.",
+      "distinction": "Those terminal factors compare realized close variance with adjacent-return bipower variation to characterize diffusion or jumps. Campaign093 uses no bipower product and compares close-transition quadratic variation with observed intrabar high-low quadratic excursions.",
+      "mandatory_numeric_challenge": true
+    },
+    {
+      "name": "intraday_five_minute_variance_ratio_230w",
+      "relationship": "Both are scale-free variance ratios.",
+      "distinction": "The terminal factor compares overlapping five-return sums with one-minute return variance using close only. Campaign093 keeps the one-minute grid and introduces high-low excursion variation; it performs no aggregation to another sampling horizon.",
+      "mandatory_numeric_challenge": true
+    },
+    {
+      "name": "intraday_realized_volatility",
+      "relationship": "The numerator contains one-minute close-transition realized variation.",
+      "distinction": "Raw realized volatility changes under a common scaling of all return magnitudes, whereas Campaign093 is an allocation share invariant when close-transition and range magnitudes scale together. The high-low denominator is essential and no volatility level is selected.",
+      "mandatory_numeric_challenge": true
+    },
+    {
+      "name": "intraday_intrabar_range_participation_entropy_240m, intraday_range_clock_center_240m, and intraday_range_amount_profile_alignment_js_240m",
+      "relationship": "All read high-low ranges.",
+      "distinction": "Those factors measure range distribution, timing, or amount alignment. Campaign093 discards clock and amount allocation after pooling squared ranges and changes when close-transition quadratic variation changes while the range profile stays fixed.",
+      "mandatory_numeric_challenge": true
+    },
+    {
+      "name": "candidate49_intraday_cumulative_vwap_crossing_rate_240m_v1",
+      "relationship": "Both use the completed standard-minute grid.",
+      "distinction": "Candidate49 counts causal close-versus-cumulative-VWAP sign crossings and requires volume/amount. Campaign093 uses high/low/close variation only, never constructs VWAP, and never touches the prospective ledgers.",
+      "mandatory_numeric_challenge": false
+    }
+  ],
+  "semantic_invariance_checks": [
+    {
+      "intervention": "Multiply all selected high, low, and close prices by one positive constant.",
+      "result": "unchanged because all components are log ratios"
+    },
+    {
+      "intervention": "Multiply every close-transition magnitude and destination-range magnitude by one common positive constant while preserving support.",
+      "result": "unchanged because Q and H scale by the same squared constant"
+    },
+    {
+      "intervention": "Increase one absolute close transition while holding all destination ranges and other transitions fixed.",
+      "result": "strictly increases when H is positive"
+    },
+    {
+      "intervention": "Increase one destination range while holding all close transitions and other ranges fixed.",
+      "result": "strictly decreases when Q is positive"
+    },
+    {
+      "intervention": "Flip the sign of any close transition without changing its magnitude or range.",
+      "result": "unchanged, distinguishing the factor from signed path and directional body mechanisms"
+    },
+    {
+      "intervention": "Change open, amount, volume, market, or quarterly states while preserving high/low/close.",
+      "result": "unchanged"
+    }
+  ],
+  "prevalue_semantic_decision": {
+    "passed": true,
+    "selected_factor_count": 1,
+    "complete_frozen_definition_count_reviewed": 124,
+    "numeric_comparator_count_reserved_for_postcoverage_test": 122,
+    "candidate_or_comparison_values_read": false,
+    "historical_daily_price_or_forward_return_values_read": false,
+    "provider_request_issued": false,
+    "required_next_step": "Freeze the exact v36-bound coverage-first no-return protocol and sole conditional development trial before source rows or candidate values."
+  },
+  "prohibited_rescues": [
+    "replace_squared_terms_with_linear_absolute_terms_after results",
+    "replace_close transitions with open gaps, bodies, wicks, coarser returns, or market residuals",
+    "change direction, support, lunch reset, destination alignment, endpoint semantics, or denominator",
+    "add thresholds, filters, subwindows, regimes, neutralization, fitting, models, or combinations",
+    "remove a failed numeric comparator or select favorable years, costs, folds, or gates"
+  ],
+  "research_boundary": {
+    "campaign093_source_rows_read": false,
+    "campaign093_candidate_values_read": false,
+    "comparison_values_read": false,
+    "historical_daily_price_fields_read": [],
+    "historical_forward_returns_read": false,
+    "candidate49_historical_return_or_signal_backfill": false,
+    "candidate49_ledgers_changed": false,
+    "second_prospective_candidate_created": false,
+    "provider_request_issued": false,
+    "current_scoring_selection_sizing_or_orders_performed": false,
+    "investment_advice": false
+  }
+}

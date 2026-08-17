@@ -1,0 +1,27 @@
+{
+  "version": 1,
+  "kind": "a_share_three_day_walkforward_campaign087_no_return_audit",
+  "status": "completed_with_one_admissible_factor_pending_walkforward_preregistration",
+  "recorded_at": "2026-08-07T02:54:00+08:00",
+  "canonical_development_admission_wrapper": true,
+  "authoritative_audit": {
+    "path": "data/experiments/short_horizon/historical_walkforward/campaign_087/no_return/20260806T184733Z_campaign087_no_return_audit.json",
+    "sha256": "5588fd29c245964f9e324460c0624287f7bf71608f8a336104341c6e2c12b81a"
+  },
+  "admissible_factor_names": [
+    "intraday_range_amount_profile_alignment_js_240m"
+  ],
+  "admissible_factor_count": 1,
+  "failed_factor_names": [],
+  "coverage_gate_passed": true,
+  "comparison_factor_count": 116,
+  "comparison_order_matches_preregistration": true,
+  "all_required_numeric_comparisons_passed": true,
+  "maximum_observed_absolute_median_daily_rank_correlation": 0.7871428314585818,
+  "historical_daily_price_fields_read": [],
+  "historical_forward_return_fields_read": false,
+  "candidate49_historical_return_read": false,
+  "candidate49_prospective_ledgers_changed": false,
+  "provider_request_issued": false,
+  "current_scoring_selection_sizing_or_orders_performed": false
+}

@@ -1,0 +1,200 @@
+{
+  "version": 2,
+  "kind": "a_share_tushare_candidate49_future_session_workflow_protocol",
+  "status": "frozen_before_first_future_session_provider_request",
+  "recorded_at": "2026-07-25T17:34:32Z",
+  "purpose": "Run the accepted Tushare daily-provider refresh, crash-safe activation, same-session quarterly-quality refresh, final Candidate49 preflight, and explicit future minute source-to-signal collection as one fail-closed and auditable operation.",
+  "authoritative_state": {
+    "path": "docs/a_share_three_day_iteration_status_20260725_future_only.json",
+    "sha256": "d44e1cb3707cce194eed37e99cc90f865396b1de8c35e02a393a2a243d973466",
+    "required_status": "aggregation_blocked_candidate49_future_only_registered_pending_first_post_registration_session",
+    "terminal_mechanism_count": 48,
+    "active_future_only_candidate_count": 1,
+    "dual_gate_qualified_factor_count": 0
+  },
+  "candidate": {
+    "ordinal": 49,
+    "registration_id": "candidate49_intraday_cumulative_vwap_crossing_rate_240m_v1",
+    "registration_path": "docs/a_share_tushare_intraday_cumulative_vwap_crossing_rate_future_observation_registration.json",
+    "registration_sha256": "431cb0b3b078823f08b888bf4c499bcc5088309a2e58e9de5cb9a9aaa849ffa9",
+    "future_only_policy_path": "docs/a_share_three_day_future_only_minute_research_policy_20260725.json",
+    "future_only_policy_sha256": "52ca8bfa7201509fe891d0af3d1c87aeebd64e47e6ec6641e897849411df408c",
+    "earliest_signal_session": "2026-07-27",
+    "historical_daily_prices_or_forward_returns_allowed": false,
+    "candidate50_allowed": false
+  },
+  "fixed_paths": {
+    "minute_data_root": "/Volumes/DIsk/qlib-a-share-tushare-1m",
+    "accepted_tushare_daily_reference_manifest": "/Volumes/DIsk/qlib-a-share-tushare-1m/raw/a_share/rich/tushare/daily/snapshots/tushare_daily_2019_2025_acf72e28/snapshot_manifest.json",
+    "accepted_tushare_daily_reference_manifest_sha256": "87feded06b6726d282abf52c8fd1c30340728ae37c2de201a3a8f30e1a556e2d",
+    "daily_staging_root_policy": "explicit_absolute_new_version_root_outside_the_repository_and_distinct_from_the_minute_root",
+    "final_workflow_record_relative_path": "metadata/rich_data/candidate49_future_workflows/YYYY-MM-DD.json"
+  },
+  "time_boundary": {
+    "new_session_run_local_timezone": "Asia/Shanghai",
+    "new_session_run_local_date_must_equal_signal_session": true,
+    "not_before_local_time": "16:30:00",
+    "delayed_source_to_signal_backfill_allowed": false,
+    "already_completed_record_may_be_revalidated_later_without_provider_access": true
+  },
+  "credential_boundary": {
+    "credential_name": "TUSHARE_TOKEN",
+    "sources_in_priority_order": [
+      "current_process_environment",
+      "launchctl_getenv"
+    ],
+    "credential_in_command_line_allowed": false,
+    "credential_logged_hashed_or_persisted": false,
+    "credential_removed_from_local_only_children": true,
+    "credential_injected_only_into_children_that_validate_or_call_Tushare": [
+      "daily_migration_preflight",
+      "daily_migration_sync_source",
+      "candidate49_combined_preflight",
+      "candidate49_source_to_signal_collection"
+    ]
+  },
+  "daily_provider": {
+    "migration_protocol_path": "docs/a_share_tushare_daily_provider_migration_protocol.json",
+    "migration_protocol_sha256": "bf3278511b5b0fe7911e1cca44ac5dae3ce8a2b0633a9928aff727dfcfd25e1c",
+    "initial_active_provider": "baostock",
+    "initial_mode": "reuse_the_accepted_2019_2025_Tushare_daily_reference_then_request_only_contract_missing_daily_and_all_daily_basic_sessions",
+    "accepted_reference_range": [
+      "2019-01-01",
+      "2025-12-31"
+    ],
+    "accepted_reference_rows": 7989350,
+    "accepted_reference_annual_partitions": 7,
+    "accepted_reference_must_validate_before_token_or_provider_access": true,
+    "covered_reference_daily_sessions_may_be_requested_again": false,
+    "later_active_provider": "tushare",
+    "later_mode": "seed_refresh_from_the_current_accepted_active_Tushare_root_then_request_only_post_parent_cutoff_sessions",
+    "mixed_provider_root_allowed": false,
+    "in_place_provider_switch_allowed": false,
+    "required_final_provider": "tushare",
+    "required_final_calendar_cutoff": "the_explicit_signal_session",
+    "activation_environment_override_must_be_absent": "QLIB_A_SHARE_DATA_ROOT"
+  },
+  "ordered_phases": [
+    {
+      "ordinal": 1,
+      "name": "static_evidence_and_same_session_boundary",
+      "network_allowed": false,
+      "writes_allowed": false,
+      "required_result": "all_bound_fingerprints_and_the_accepted_2019_2025_Tushare_daily_reference_match_and_local_date_equals_session_at_or_after_16_30"
+    },
+    {
+      "ordinal": 2,
+      "name": "daily_source_prepare",
+      "network_allowed": false,
+      "writes_allowed": true,
+      "required_result": "initial_BaoStock_parent_uses_no_seed;_accepted_Tushare_parent_uses_verified_seed_refresh"
+    },
+    {
+      "ordinal": 3,
+      "name": "daily_migration_preflight",
+      "network_allowed": false,
+      "writes_allowed": false,
+      "required_result": "ready=true_status=ready_for_explicit_tushare_source_sync_exit_code=0"
+    },
+    {
+      "ordinal": 4,
+      "name": "daily_source_sync",
+      "network_allowed": true,
+      "explicit_acknowledgement": "--allow-network",
+      "required_result": "status=source_snapshot_complete_cutoff_equals_signal_session_and_source_manifest_proves_zero_daily_requests_for_reference_covered_sessions"
+    },
+    {
+      "ordinal": 5,
+      "name": "daily_build_and_acceptance",
+      "network_allowed": false,
+      "required_result": "status=accepted_staging_pending_explicit_crash_safe_activation"
+    },
+    {
+      "ordinal": 6,
+      "name": "daily_activation_preflight_and_activation",
+      "network_allowed": false,
+      "explicit_acknowledgement": "--confirm-activation",
+      "required_result": "new_process_resolves_the_staging_root_with_one_Tushare_source_passed_price_basis_and_calendar_cutoff_equal_to_session"
+    },
+    {
+      "ordinal": 7,
+      "name": "future_quarterly_quality_refresh",
+      "network_allowed": true,
+      "credential_required": false,
+      "required_result": "quarterly_snapshot_written_only_below_the_resolved_active_root_after_16_00_through_the_latest_completed_calendar_quarter"
+    },
+    {
+      "ordinal": 8,
+      "name": "candidate49_combined_preflight",
+      "network_allowed": false,
+      "writes_allowed": false,
+      "required_result": "ready=true_recommended_cli_exit_code=0_status=ready_for_explicit_future_source_to_signal_collection"
+    },
+    {
+      "ordinal": 9,
+      "name": "candidate49_source_to_signal_collection",
+      "network_allowed": true,
+      "explicit_acknowledgement": "--allow-large",
+      "required_result": "one_atomic_future_session_publication_with_a_signal_or_an_explicit_fewer_than_50_names_no_signal_result"
+    },
+    {
+      "ordinal": 10,
+      "name": "immutable_workflow_record",
+      "network_allowed": false,
+      "required_result": "hash_bound_daily_reference_reuse_source_manifest_activation_quality_raw_factor_and_optional_signal_evidence_without_prices_returns_orders_or_credentials"
+    }
+  ],
+  "quarterly_quality": {
+    "command": "sync-quarterly-fundamentals",
+    "start_year": 2019,
+    "end_year_policy": "signal_session_year",
+    "through_report_date_policy": "latest_calendar_quarter_end_not_later_than_signal_session",
+    "data_relative_path": "raw/a_share/fundamentals/quarterly_quality_future.parquet",
+    "manifest_relative_path": "metadata/quarterly_quality_future_manifest.json",
+    "same_session_existing_snapshot_policy": "reuse_only_when_the_combined_candidate49_preflight_validates_it;_otherwise_refresh_only_when_future_quarterly_quality_not_accepted_is_the_sole_failure",
+    "historical_quality_paths_may_be_overwritten_or_supplied": false
+  },
+  "candidate49_collection": {
+    "source_interface": "Tushare_pro_stk_mins",
+    "minute_data_root_must_match_fixed_path": true,
+    "provider_uri_and_daily_raw_root_must_be_explicitly_resolved_below_the_new_active_root": true,
+    "workers": 4,
+    "aggregate_calls_per_minute": 400,
+    "transient_attempts": 3,
+    "preflight_must_run_immediately_before_collection": true,
+    "preflight_exit_code_may_be_ignored": false,
+    "partial_resume_allowed_only_on_same_local_signal_date": true,
+    "cross_midnight_resume_or_backfill_allowed": false
+  },
+  "daily_reference_reuse_evidence": {
+    "reference_manifest_path_and_sha256_required": true,
+    "reference_range_and_row_count_required": true,
+    "source_manifest_path_and_sha256_required": true,
+    "source_manifest_must_bind_reference_manifest": true,
+    "reference_daily_session_count_reused_required": true,
+    "requested_daily_sessions_this_invocation_required": true,
+    "requested_daily_basic_sessions_this_invocation_required": true,
+    "daily_provider_calls_this_invocation_required": true,
+    "covered_reference_daily_request_count_required": 0,
+    "final_workflow_record_must_preserve_summary": true
+  },
+  "failure_policy": {
+    "any_nonzero_child_exit_stops_all_later_phases": true,
+    "any_unparseable_or_unexpected_child_JSON_stops_all_later_phases": true,
+    "any_changed_bound_fingerprint_stops_before_network": true,
+    "provider_error_may_be_bypassed": false,
+    "existing_completed_checkpoint_may_be_deleted_or_changed": false,
+    "active_BaoStock_root_may_be_deleted_or_rewritten": false,
+    "cross_midnight_partial_may_be_deleted_or_resumed": false
+  },
+  "research_boundary": {
+    "historical_candidate49_return_diagnostic_allowed": false,
+    "forward_return_fields_read": false,
+    "paper_execution_settlement_performed_by_this_workflow": false,
+    "aggregation_allowed": false,
+    "current_scoring_allowed": false,
+    "selection_or_sizing_allowed": false,
+    "live_or_paper_order_allowed": false,
+    "Level2_intake_justified": false
+  }
+}

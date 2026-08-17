@@ -1,0 +1,40 @@
+{
+  "schema_version": 1,
+  "kind": "a_share_three_day_walkforward_campaign087_no_return_audit_activation_binding_v2",
+  "status": "compact_append_repair_frozen_before_campaign087_v2_coverage_or_comparison_values",
+  "frozen_at": "2026-08-07T03:44:00+08:00",
+  "implementation_freeze": {
+    "path": "docs/a_share_three_day_walkforward_campaign_087_no_return_audit_implementation_freeze_v2_20260807.json",
+    "sha256": "213c5cb543514c109df820ac129962e0b6f1e4c7c922e93255e4eafd54f56ac3"
+  },
+  "repair_protocol": {
+    "path": "docs/a_share_three_day_walkforward_campaign_087_no_return_audit_v2_compact_append_repair_protocol_20260807.json",
+    "sha256": "8d6fe0a178264c62ef51878e993be8cc6bca3bb76846be3036838e1f680e6aa0"
+  },
+  "v1_failure_record": {
+    "path": "data/experiments/short_horizon/historical_walkforward/campaign_087/research_attempt_ledger_v12.json",
+    "sha256": "3f5ebc5c4e151058176b71b32d2f3f0a47f909364eb93619b3ce4f17bcdce280",
+    "ordinal": 12
+  },
+  "candidate_snapshot": {
+    "path": "/Volumes/DIsk/qlib-a-share-tushare-1m/derived/a_share/rich/tushare/minute_walkforward_campaign087_feature_library/tushare_stk_mins_1m_2019_2025_ea0cbb8f_walkforward_campaign087_feature_library_v1/snapshot_manifest_v5.json",
+    "sha256": "3a44a828a5c95712471e2757fc24225607759860f236f10de674fc93927b7bfe",
+    "dataset_sha256": "9f92cede97522203ace1dc3879a862cc55e58e4877f91fc407f275d418ba6428"
+  },
+  "audit_invocation": {
+    "module": "scripts.a_share_three_day_walkforward_campaign087_no_return_audit_v2",
+    "command": "run",
+    "data_root": "/Volumes/DIsk/qlib-a-share-tushare-1m",
+    "experiment_root": "data/experiments/short_horizon/historical_walkforward/campaign_087/no_return",
+    "workers": 4,
+    "confirm_run_required": true,
+    "single_v2_audit_only": true,
+    "restart_coverage_and_all_116_comparisons_from_scratch": true
+  },
+  "coverage_or_capacity_metrics_computed_before_activation": false,
+  "comparison_values_read_before_activation": false,
+  "historical_daily_price_or_forward_return_values_read_before_activation": false,
+  "provider_request_issued_before_activation": false,
+  "candidate49_historical_backfill_or_ledger_change_before_activation": false,
+  "current_scoring_selection_sizing_or_orders_performed_before_activation": false
+}

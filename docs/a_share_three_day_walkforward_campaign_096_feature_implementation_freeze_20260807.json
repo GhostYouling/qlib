@@ -1,0 +1,58 @@
+{
+  "schema_version": 1,
+  "kind": "a_share_three_day_walkforward_campaign096_feature_implementation_freeze",
+  "status": "frozen_before_campaign096_minute_source_rows_or_candidate_values",
+  "frozen_at": "2026-08-07T04:25:00Z",
+  "protocol": {
+    "path": "docs/a_share_three_day_walkforward_campaign_096_no_return_preregistration.json",
+    "sha256": "97d8cdd6cc3731de8e8d4db101db1b4b0ee62353c9c39ac71a8753fea4501924"
+  },
+  "feature_runner": {
+    "path": "scripts/a_share_three_day_walkforward_campaign096_features.py",
+    "sha256": "0322a843592cb8f3054bc6a1d7b340a0fb3aecd399149307a70842dac2193971"
+  },
+  "tests": {
+    "path": "tests/data_collector_tests/test_a_share_three_day_walkforward_campaign096_features.py",
+    "sha256": "24b3a45f33c9accfd610641eab7c8e90c151f30f88b1a4ce65098ac4b8d7b289",
+    "synthetic_result": "7 passed"
+  },
+  "preserved_prevalue_implementation_failures": [
+    {
+      "path": "docs/a_share_three_day_walkforward_campaign_096_prevalue_definition_order_materialization_failure_20260807.json",
+      "sha256": "8f740ddf861847554db9bf8433f93197b2fdc6d9408bb7c0aa3f592bbddb0494"
+    },
+    {
+      "path": "docs/a_share_three_day_walkforward_campaign_096_prevalue_nested_source_anchor_failure_20260807.json",
+      "sha256": "21b72fc4e4fa26f671fa0fd23889d34c48fd32a387b075cd160e219d98d03e56"
+    },
+    {
+      "path": "docs/a_share_three_day_walkforward_campaign_096_prevalue_definition_append_order_failure_20260807.json",
+      "sha256": "bb789ad59957c59b934e2df2051172863c0b6716f9d19d58abb0e3bf666fc7ea"
+    }
+  ],
+  "factor": "intraday_intrabar_close_location_total_variation_238p",
+  "direction": "higher",
+  "raw_projection": [
+    "datetime",
+    "symbol",
+    "provider",
+    "high",
+    "low",
+    "close"
+  ],
+  "selected_bar_count": 240,
+  "within_half_adjacent_opportunity_count": 238,
+  "minimum_informative_pair_count": 120,
+  "endpoint_tolerance": 1e-12,
+  "lunch_reset": true,
+  "complete_definition_count": 127,
+  "complete_definition_order_sha256": "17ad9beb53d236171155211ea4cc4b9ec05b8edea7ebc51ca7705f84adc9e030",
+  "numeric_comparator_count": 124,
+  "numeric_comparator_order_sha256": "d05f1cb7b68e950d508f2b0d13b7ef1847904edc6eb10453405917e04ed0e698",
+  "candidate_source_rows_read_before_freeze": false,
+  "candidate_values_computed_before_freeze": false,
+  "comparison_values_read_before_freeze": false,
+  "historical_daily_price_or_forward_return_values_read_before_freeze": false,
+  "provider_request_issued_before_freeze": false,
+  "candidate49_ledgers_changed_before_freeze": false
+}

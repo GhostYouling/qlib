@@ -1,0 +1,107 @@
+{
+  "version": 1,
+  "kind": "a_share_three_day_iteration_status",
+  "status": "aggregation_blocked_candidate49_future_only_registered_pending_first_post_registration_session",
+  "recorded_at": "2026-07-25T06:26:19Z",
+  "purpose": "Advance the authoritative three-session state from forty-eight terminal mechanisms to one active future-only candidate without rewriting the terminal ledger or reading another historical return.",
+  "previous_authoritative_state": {
+    "path": "docs/a_share_three_day_iteration_status_20260725.json",
+    "sha256": "355b992452b73607034a182699d4fff337905e484229441e7ae138db1ffdefef",
+    "terminal_mechanism_count": 48,
+    "active_future_only_candidate_count": 0
+  },
+  "fixed_strategy": {
+    "price_basis": "close_known_raw_pct_chg_chain_v1",
+    "holding_period_local_sessions": 3,
+    "topk": 3,
+    "signal_time": "local close",
+    "entry": "next local session open",
+    "exit": "third local session close",
+    "pilot_initial_capital_cny": 200000,
+    "pilot_buy_lot_size_shares": 100,
+    "pilot_primary_slippage_rate_each_side": 0.001,
+    "pilot_maximum_daily_amount_participation": 0.01
+  },
+  "active_future_only_candidate": {
+    "ordinal": 49,
+    "mechanism": "tushare_intraday_cumulative_vwap_crossing_rate_240m",
+    "factor_name": "intraday_cumulative_vwap_crossing_rate_240m",
+    "direction": "higher",
+    "stage": "historical_no_return_gates_passed_future_observation_registered",
+    "future_only_policy": {
+      "path": "docs/a_share_three_day_future_only_minute_research_policy_20260725.json",
+      "sha256": "52ca8bfa7201509fe891d0af3d1c87aeebd64e47e6ec6641e897849411df408c"
+    },
+    "mechanism_overlap_reaudit": {
+      "path": "docs/a_share_tushare_intraday_cumulative_vwap_crossing_rate_mechanism_overlap_reaudit_20260725.json",
+      "sha256": "f86ba3cdfd7ead04963519e1c86e0d022467896a68ac3422fb5d742f716dcdcd"
+    },
+    "no_return_preregistration": {
+      "path": "docs/a_share_tushare_intraday_cumulative_vwap_crossing_rate_no_return_preregistration.json",
+      "sha256": "cefa5f23b5214e123d0bdea1511a398cb4a70c0ee4cc8da7d1f69f52bdbe4aeb"
+    },
+    "historical_candidate_snapshot": {
+      "sha256": "f3dd3417bd6adcaa06d8927865ea3f464ebc02df302b8f488e43450f7c620196",
+      "dataset_sha256": "67bda6df74747a0f39fe6eb252aada84ea7850fff2c05bdae4951aa41fcc7037",
+      "rows": 7724498,
+      "eligible_rows": 7714026
+    },
+    "ordered_no_return_audit": {
+      "sha256": "51bb248b1071983cf9a05fca94c6cc08770a2d10fbef1d6d087f2d5a875fdf7d",
+      "coverage_passed": true,
+      "capacity_passed": true,
+      "uniqueness_comparison_count": 24,
+      "uniqueness_passed": true,
+      "maximum_absolute_median_daily_rank_correlation": 0.19764445307465522,
+      "historical_daily_price_fields_read": [],
+      "historical_forward_return_fields_read": false
+    },
+    "future_observation_registration": {
+      "path": "docs/a_share_tushare_intraday_cumulative_vwap_crossing_rate_future_observation_registration.json",
+      "sha256": "431cb0b3b078823f08b888bf4c499bcc5088309a2e58e9de5cb9a9aaa849ffa9",
+      "registration_id": "candidate49_intraday_cumulative_vwap_crossing_rate_240m_v1",
+      "earliest_eligible_signal_session": "the first accepted local provider-calendar session on or after 2026-07-27"
+    },
+    "historical_return_diagnostic_allowed": false,
+    "historical_forward_returns_read": false,
+    "current_signal_exists": false,
+    "terminal": false
+  },
+  "research_counts": {
+    "terminal_mechanism_count": 48,
+    "active_future_only_candidate_count": 1,
+    "dual_gate_qualified_factor_count": 0,
+    "aggregation_minimum_economically_distinct_future_passing_factors": 2
+  },
+  "decision": {
+    "aggregation_allowed": false,
+    "current_scoring_allowed": false,
+    "selection_allowed": false,
+    "sizing_allowed": false,
+    "orders_allowed": false,
+    "level2_intake_justified": false,
+    "candidate49_historical_return_diagnostic_allowed": false,
+    "candidate50_activation_allowed": false
+  },
+  "next_research_action": {
+    "objective": "Implement the append-only Tushare future-session intake and candidate49 signal/execution ledgers before the first eligible post-registration session.",
+    "required_order": [
+      "validate the immutable future-only registration",
+      "accept one completed post-registration Tushare 241-row session without backfill",
+      "atomically publish full-market future raw minutes and coverage evidence",
+      "compute candidate49 after the accepted close",
+      "freeze Top3 with no replacement",
+      "append next-open and third-close execution outcomes only when they become available",
+      "apply the 60-signal early rejection and 200-signal full gates without changing the factor"
+    ],
+    "forbidden_actions": [
+      "read candidate49 historical daily prices or forward returns",
+      "use 2026-07-14 through registration time as a holdout",
+      "backfill a future ledger",
+      "activate candidate50 before candidate49 is terminal or completes its full gate",
+      "combine terminal factors",
+      "generate a current score or selection before an eligible future session",
+      "purchase or scrape Level-2 to rescue this Level-1 candidate"
+    ]
+  }
+}

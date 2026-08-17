@@ -1,0 +1,71 @@
+{
+  "version": 106,
+  "kind": "a_share_three_day_walkforward_future_numeric_comparison_eligibility_policy",
+  "status": "campaign117_terminal_postpublication_validation_accounting_finalized",
+  "recorded_at": "2026-08-13T13:35:59Z",
+  "authoritative_inputs": {
+    "campaign117_attempt_ledger_v3": {
+      "path": "data/experiments/short_horizon/historical_walkforward/campaign_117/research_attempt_ledger_v3.json",
+      "sha256": "c02adfa0fad39b393be9d3579cf37de739fdc0683169f17d82081a94336698e7"
+    },
+    "campaign117_terminal_result": {
+      "path": "docs/a_share_three_day_walkforward_campaign_117_terminal_result_20260813.json",
+      "sha256": "3fb74fe66e6ce590de31f93c7ea71d9a5c0b7d79aceb73e33ed074f922f667dd"
+    }
+  },
+  "supersedes_without_rewriting": {
+    "path": "docs/a_share_three_day_walkforward_future_numeric_comparison_eligibility_policy_v105_20260813.json",
+    "sha256": "22f3f2c69edd6499ced63f40f44a6e46713c30b1e2fe472efbf2f2cb17302cf5",
+    "preserved": true,
+    "complete_definition_order_changed": false,
+    "numeric_comparator_order_changed": false,
+    "scientific_result_changed": false,
+    "reason": "Three postpublication validation root causes are appended to accounting; all frozen Campaign117 scientific outputs and v105 library semantics remain unchanged."
+  },
+  "effective_accounting": {
+    "campaign117_attempt_count": 13,
+    "campaign117_ledger_entry_count": 13,
+    "campaign117_infrastructure_failure_count": 6,
+    "campaign117_prevalue_scientific_attempt_count": 1,
+    "campaign117_complete_factor_attempt_count": 1,
+    "campaign117_return_reading_development_trial_count": 1,
+    "campaign117_development_survivor_count": 0,
+    "campaign117_stress_trial_count": 0,
+    "cumulative_historical_research_attempt_count": 898,
+    "cumulative_return_reading_development_trial_count": 303
+  },
+  "complete_historical_feature_library": {
+    "exact_v105_order_preserved": true,
+    "factor_definition_count": 143,
+    "order_sha256": "f7612c7dd7d4a0c015146d60a86e244d91b21a8b6638e4f84e7a18d035581d21"
+  },
+  "numerical_comparator_eligibility": {
+    "exact_v105_order_preserved": true,
+    "eligible_numeric_comparator_count": 135,
+    "eligible_numeric_comparator_order_sha256": "50323aed7e13a7f0241677beefda6c847482844eea68cf51cb92c833cd316322",
+    "campaign117_numeric_comparator_remains_appended_once": true
+  },
+  "campaign117_terminal_classification": {
+    "terminal": true,
+    "development_survivor_count": 0,
+    "stress_2024_2025_opened": false,
+    "development_aggregate_20bp_return": -0.10224930033360202,
+    "worst_validation_normalized_drawdown": -0.32845010193624835,
+    "retry_or_rescue_allowed": false
+  },
+  "future_campaign_boundary": {
+    "next_campaign": 118,
+    "must_begin_from_genuinely_new_prevalue_frozen_mechanism": true,
+    "campaign117_rescue_or_return_reopen_allowed": false
+  },
+  "research_boundary": {
+    "postpublication_failures_recomputed_research_values": false,
+    "stress_2024_2025_opened": false,
+    "provider_request_issued": false,
+    "candidate49_historical_backfill_performed": false,
+    "candidate49_ledgers_changed": false,
+    "second_prospective_candidate_created": false,
+    "current_scoring_selection_sizing_positions_or_orders_performed": false,
+    "investment_advice": false
+  }
+}

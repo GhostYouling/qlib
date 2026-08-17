@@ -1,0 +1,122 @@
+{
+  "version": 4,
+  "kind": "a_share_three_day_walkforward_campaign059_research_record",
+  "status": "completed_zero_development_survivors_stress_closed_with_four_terminal_test_failures_preserved",
+  "recorded_at": "2026-08-04T23:05:00+08:00",
+  "purpose": "Advance the immutable Campaign059 terminal record only for append-only accounting of two Python module-search-path verification failures; factor values, gates, development results, and the closed stress decision remain unchanged.",
+  "bindings": {
+    "prior_research_record": {
+      "path": "docs/a_share_three_day_walkforward_campaign_059_research_record_v3.json",
+      "sha256": "f2cd1078b44fc98658de1833fb80c9bcf2a74028944ff502f8e87e72c3342c90"
+    },
+    "current_research_attempt_ledger": {
+      "path": "data/experiments/short_horizon/historical_walkforward/campaign_059/research_attempt_ledger_v5.json",
+      "sha256": "7ca796134904cb03e97d5bd4958c27a06c210c9f85b37df9b592a9aea6e794d0"
+    },
+    "terminal_test_workdir_import_failure": {
+      "path": "docs/a_share_three_day_walkforward_campaign_059_terminal_test_workdir_import_failure_20260804.json",
+      "sha256": "8d6f235586bc7d0aefde1a8caf1aff3f8d4964c5523fc0470aea4ea6ba57ea1b"
+    },
+    "terminal_subprocess_import_path_failure": {
+      "path": "docs/a_share_three_day_walkforward_campaign_059_terminal_subprocess_import_path_failure_20260804.json",
+      "sha256": "75fa621ffd4ee23cb6e52745448b65867c5c2bb162fd74ccc2ffdfeedf469944"
+    },
+    "development_survivors": {
+      "path": "data/experiments/short_horizon/historical_walkforward/campaign_059/walkforward/development_survivors.json",
+      "sha256": "e0be7366f52160a89b73b23eced35c47eda6af99fdc17c1311077229eafcfc0a"
+    },
+    "exposed_stress_consumption_record": {
+      "path": "data/experiments/short_horizon/historical_walkforward/campaign_059/walkforward/exposed_stress_consumption_record.json",
+      "sha256": "6e05f3f02d10e9ce004ef855700e602b84ca9f54c53ac1f6581f770f30a2a41f"
+    }
+  },
+  "canonical_factor_result_unchanged": {
+    "factor": "intraday_market_directional_sign_agreement_238m",
+    "direction": "higher",
+    "coverage_median": 0.9930020520847165,
+    "coverage_p05": 0.9806793901047609,
+    "comparison_factor_count": 90,
+    "all_comparisons_passed": true,
+    "maximum_absolute_median_daily_rank_correlation": 0.7148903759224717,
+    "validation_rank_ic": [
+      -0.010330795383273883,
+      0.013325929435016594,
+      0.01056626775172599
+    ],
+    "validation_normalized_return": [
+      0.2197368198808547,
+      -0.37502953669720074,
+      0.012631469535495654
+    ],
+    "validation_pilot_10bp_return": [
+      0.020980317053472586,
+      -0.07662733787933296,
+      -0.011706923718404427
+    ],
+    "development_aggregate_pilot_20bp_return": -0.13017742332606042,
+    "worst_validation_normalized_drawdown": -0.43623937973281024,
+    "development_survivor_count": 0,
+    "stress_2024_2025_opened": false,
+    "stress_2024_2025_returns_read": false,
+    "factor_terminal": true
+  },
+  "append_only_attempt_accounting": {
+    "historical_research_attempt_count_before_campaign059": 333,
+    "campaign059_infrastructure_only_failure_count": 7,
+    "campaign059_complete_factor_attempt_count": 1,
+    "campaign059_distinct_attempt_count": 8,
+    "campaign059_ledger_entry_count": 9,
+    "cumulative_historical_research_attempt_count": 341,
+    "campaign059_historical_return_trial_count": 1,
+    "cumulative_return_reading_development_trial_count": 269
+  },
+  "post_terminal_failures": [
+    {
+      "class": "deselect_prefix_mismatch",
+      "passed": 33,
+      "failed": 1,
+      "deselected": 0,
+      "collection_errors": 0
+    },
+    {
+      "class": "immutable_test_binding_invalidated_by_in_place_edit",
+      "passed": 32,
+      "failed": 1,
+      "deselected": 1,
+      "collection_errors": 0
+    },
+    {
+      "class": "tests_working_directory_missing_repository_module_path",
+      "passed": 0,
+      "failed": 0,
+      "deselected": 0,
+      "collection_errors": 7
+    },
+    {
+      "class": "child_process_missing_repository_module_path",
+      "passed": 32,
+      "failed": 1,
+      "deselected": 1,
+      "collection_errors": 0
+    }
+  ],
+  "successful_current_suite": {
+    "explicit_pythonpath": "/Volumes/DIsk/Disk-Coding/qlib",
+    "passed": 33,
+    "failed": 0,
+    "deselected": 1
+  },
+  "post_terminal_failures_changed_research_result": false,
+  "prospective_boundary": {
+    "candidate49_signal_ledger_sha256": "5193f00d7f36da003f53cec387900da4c3d002299f5dfcfc1a95eaa199ed3a79",
+    "candidate49_execution_ledger_sha256": "d57a3e61eac969e42cafa418ccd8c0a5ee65dcf69da145bb2c096c2a02a2ea4f",
+    "candidate49_signal_entry_count": 0,
+    "candidate49_execution_entry_count": 0,
+    "candidate49_historical_backfill_performed": false,
+    "second_prospective_candidate_created": false,
+    "provider_request_issued_by_campaign059": false,
+    "current_scoring_selection_sizing_or_orders_performed": false
+  },
+  "data_limitation": "The eligible universe derives from a current listing snapshot and can contain survivorship bias. All 2019-2023 results are historically exposed development research, not pristine out-of-sample evidence and not investment advice.",
+  "next_boundary": "Use only a new versioned current terminal test path for the updated append-only accounting. Campaign060 may begin only from a genuinely independent pre-value-frozen mechanism."
+}

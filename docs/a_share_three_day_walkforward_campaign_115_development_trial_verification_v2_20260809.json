@@ -1,0 +1,52 @@
+{
+  "schema_version": 2,
+  "kind": "a_share_three_day_walkforward_campaign115_development_trial_verification_extension",
+  "status": "verified_after_terminal_validation_path_environment_repair",
+  "recorded_at": "2026-08-09T09:10:00+08:00",
+  "recorded_at_semantics": "monotonic_logical_append_time_after_recorded_zsh_path_shadowing_failure_and_corrected_validation_not_host_wall_clock_measurement",
+  "extends_without_rewriting": {
+    "path": "docs/a_share_three_day_walkforward_campaign_115_development_trial_verification_v1_20260809.json",
+    "sha256": "5c74e8bc1cb16b00b665b22b4813b61145f4256756327a8478fc705f72666d70",
+    "preserved": true
+  },
+  "additional_failure": {
+    "attempt_id": "campaign115_infrastructure_023",
+    "path": "docs/a_share_three_day_walkforward_campaign_115_terminal_validation_zsh_path_shadowing_failure_20260809.json",
+    "sha256": "8b77ea3e8be9063f181e1b778c0a47207598866aa0e025f529234a60c46afca5",
+    "failed_result": "60 passed, 7 failed",
+    "root_cause": "zsh special lowercase path variable replaced PATH before subprocess git",
+    "research_values_read": false
+  },
+  "corrected_validation": {
+    "repair": "Used json_path as the loop variable in a fresh shell; no source or test file changed.",
+    "selected_campaign115_regression": "67 passed in 9.38s",
+    "black_check": "2 files would be left unchanged",
+    "ruff_required_rules": "E4,E7,E9,F,I passed",
+    "json_validation": "all selected Campaign115 v9/v94 development artifacts valid",
+    "attempt_ledger_v13_semantic_chain": "valid",
+    "command_exit_code": 0
+  },
+  "effective_real_plan_and_inspection": {
+    "plan_ready": false,
+    "plan_standalone_process_exit_code": 2,
+    "plan_blockers": [
+      "ordered_no_return_audit_admitted_one_factor"
+    ],
+    "inspection_standalone_process_exit_code": 0,
+    "inspection_status": "no_campaign115_development_trial"
+  },
+  "research_boundary": {
+    "campaign115_candidate_or_comparator_values_read": false,
+    "historical_daily_price_or_forward_return_values_read": false,
+    "development_trial_run": false,
+    "partition_year_2024_or_2025_values_read": false,
+    "stress_2024_2025_opened": false,
+    "credential_value_read_printed_hashed_logged_or_persisted": false,
+    "provider_request_issued": false,
+    "candidate49_historical_backfill_performed": false,
+    "candidate49_ledgers_changed": false,
+    "second_prospective_candidate_created": false,
+    "current_scoring_selection_sizing_or_orders_performed": false,
+    "investment_advice": false
+  }
+}

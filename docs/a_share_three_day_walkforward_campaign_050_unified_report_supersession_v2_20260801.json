@@ -1,0 +1,44 @@
+{
+  "version": 2,
+  "kind": "a_share_three_day_walkforward_campaign050_unified_report_supersession",
+  "status": "campaign050_v1_report_binding_preserved_historically_v2_accounting_current",
+  "recorded_at": "2026-08-01T11:27:00Z",
+  "purpose": "Preserve the first Campaign050 report binding while binding the append-only accounting correction in the current report.",
+  "bindings": {
+    "campaign050_terminal_record_v1": {
+      "path": "docs/a_share_three_day_walkforward_campaign_050_research_record.json",
+      "sha256": "bf73ce57aca02cbd11d3142da375c9ccb564517d080c3ac8b7823b79ae1429b5"
+    },
+    "campaign050_terminal_record_v2": {
+      "path": "docs/a_share_three_day_walkforward_campaign_050_research_record_v2.json",
+      "sha256": "f896771fed934c934a964e7e343371299820b0b8ae03d963f2ae284a98c67a29"
+    },
+    "previous_campaign050_supersession": {
+      "path": "docs/a_share_three_day_walkforward_campaign_050_unified_report_supersession_20260801.json",
+      "sha256": "f139707c0470fd6a147c17a97318b59bd82a6a79587917238257a679a6952f08"
+    },
+    "terminal_binding_cli_failure": {
+      "path": "docs/a_share_three_day_walkforward_campaign_050_terminal_binding_cli_failure_20260801.json",
+      "sha256": "2cb69884400de76832e71e28db742257daa4dde58792955bd1c8a604e860561b"
+    },
+    "current_unified_research_report": {
+      "path": "data/experiments/short_horizon/three_day_research_report.md",
+      "sha256": "36f5e4740d965e983ea35225bbd373208173745beef80dba2753328ee45392c0"
+    }
+  },
+  "historical_binding": {
+    "record": "docs/a_share_three_day_walkforward_campaign_050_unified_report_supersession_20260801.json",
+    "json_pointer": "/bindings/current_unified_research_report",
+    "expected_sha256": "a4397fac01e4138e162d134c9864806de5664a4541324daa1470acf9d0ba0e8b",
+    "current_sha256": "36f5e4740d965e983ea35225bbd373208173745beef80dba2753328ee45392c0",
+    "historical_record_rewritten": false
+  },
+  "semantic_boundary": {
+    "campaign050_factor_result_or_gate_changed": false,
+    "accounting_correction_only": true,
+    "report_update_is_append_only_in_meaning": true,
+    "additional_historical_daily_price_or_forward_return_read": false,
+    "2024_2025_stress_return_read": false,
+    "candidate49_ledgers_changed": false
+  }
+}

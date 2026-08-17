@@ -1,0 +1,169 @@
+{
+  "schema_version": 1,
+  "kind": "a_share_three_day_walkforward_campaign116_terminal_result",
+  "status": "terminal_coverage_failure_before_all_comparator_and_return_values",
+  "recorded_at": "2026-08-12T17:17:53+08:00",
+  "purpose": "Record Campaign116's frozen local snapshot and terminal PIT coverage rejection without opening any numeric comparator, daily price, forward return, development fold, or 2024-2025 stress return.",
+  "authoritative_inputs": {
+    "prior_state": {
+      "path": "docs/a_share_three_day_iteration_status_20260812_campaign116_snapshot_verified_v2.json",
+      "sha256": "3ed3fb0f02d1d4f009743598a6d18ded9cf1a0df4b776f79e4638cab2d9f69f3"
+    },
+    "numeric_policy_v101": {
+      "path": "docs/a_share_three_day_walkforward_future_numeric_comparison_eligibility_policy_v101_20260812.json",
+      "sha256": "27a52a24fd9db6b945fee49a0e55d73dd48a54a62d2a01652ea01d194d05cd46"
+    },
+    "no_return_preregistration": {
+      "path": "docs/a_share_three_day_walkforward_campaign_116_no_return_preregistration_20260812.json",
+      "sha256": "d47d4f1b8d6d7742c17eb82712a85a1dbe8dbb6e8f44e0ff9190e36ef7115c2c"
+    },
+    "coverage_implementation_freeze": {
+      "path": "docs/a_share_three_day_walkforward_campaign_116_coverage_audit_implementation_freeze_20260812.json",
+      "sha256": "8fd52afa097ba2ec70ed9daae6883cc0233618a5e8daaf0a5f8471457a9ef257"
+    },
+    "coverage_activation": {
+      "path": "docs/a_share_three_day_walkforward_campaign_116_coverage_activation_binding_20260812.json",
+      "sha256": "2b3569faccf5b2fa02cfde7139378ad7174e4495e8b56885460c8d4b82147177"
+    },
+    "research_attempt_ledger_v6": {
+      "path": "data/experiments/short_horizon/historical_walkforward/campaign_116/research_attempt_ledger_v6.json",
+      "sha256": "b66171c37d0bfcbdcce99935ea3b1b3d3a54d8fab1ddf2505b93b294f4f82e00",
+      "attempt_count": 5,
+      "ledger_entry_count_through_v6": 6
+    }
+  },
+  "candidate_definition": {
+    "name": "intraday_amount_conditioned_directional_persistence_spread_236p",
+    "direction": "higher",
+    "formula": "Across 118 within-morning and 118 within-afternoon adjacent return pairs, score 0.5 times the difference between mean same-direction persistence states in endpoint-amount-strictly-above-all-240-median pairs and ordinary pairs; exact-zero returns are noninformative and each group requires at least 30 informative pairs.",
+    "source_fields": [
+      "datetime",
+      "symbol",
+      "provider",
+      "close",
+      "amount"
+    ],
+    "value_range": [
+      -1.0,
+      1.0
+    ],
+    "complete_definition_remains_in_frozen_semantic_library": true,
+    "numeric_comparator_eligible_after_terminal_coverage_failure": false,
+    "formula_direction_support_lag_window_filter_or_model_changed_after_values": false
+  },
+  "snapshot_evidence": {
+    "manifest_path": "/Volumes/DIsk/qlib-a-share-tushare-1m/derived/a_share/rich/tushare/minute_walkforward_campaign116_feature_library/tushare_stk_mins_1m_2019_2025_ea0cbb8f_walkforward_campaign116_feature_library_v1/snapshot_manifest.json",
+    "manifest_sha256": "d1036a44495206b2329910d71915a7cd861fdc3baf8344a466d66f1cb1787163",
+    "dataset_sha256": "28e9b79514fe905749a3a182d0b3651331c4afb5330e03276c117d58f3b1082a",
+    "partitions": 33015,
+    "rows": 7724498,
+    "formula_eligible_rows": 5177430,
+    "all_partition_byte_and_frame_hashes_reverified_before_coverage": true
+  },
+  "coverage_evidence": {
+    "audit": {
+      "path": "data/experiments/short_horizon/historical_walkforward/campaign_116/coverage/campaign116_coverage_audit.json",
+      "sha256": "dd423d61211993451a6b96ec318bc0032061557ae7014ca7ca72e9d993c0591c",
+      "status": "coverage_failed_terminal_before_all_comparator_values"
+    },
+    "quality_listing_eligible_rows": 1331759,
+    "candidate_eligible_rows": 1092639,
+    "calendar_sessions": 1632,
+    "median_daily_coverage": 0.8501338090990187,
+    "minimum_median_daily_coverage": 0.95,
+    "median_daily_coverage_passed": false,
+    "p05_daily_coverage": 0.7141794569067297,
+    "minimum_p05_daily_coverage": 0.9,
+    "p05_daily_coverage_passed": false,
+    "eligible_names_p05": 121.0,
+    "minimum_p05_eligible_names": 50,
+    "eligible_names_p05_passed": true,
+    "potential_non_overlapping_three_signal_session_cohorts": 539,
+    "minimum_non_overlapping_three_signal_session_cohorts": 200,
+    "cohort_capacity_passed": true,
+    "observed_cohort_years": [
+      2019,
+      2020,
+      2021,
+      2022,
+      2023,
+      2024,
+      2025
+    ],
+    "minimum_observed_cohort_years": 5,
+    "observed_years_passed": true,
+    "nonconstant_cross_sectional_sessions": 1632,
+    "minimum_nonconstant_cross_sectional_sessions": 100,
+    "cross_sectional_variation_passed": true,
+    "overall_coverage_gate_passed": false,
+    "terminal_reasons": [
+      "median_daily_coverage_below_0.95",
+      "p05_daily_coverage_below_0.90"
+    ]
+  },
+  "scientific_interpretation": {
+    "predictive_direction_tested": false,
+    "numeric_uniqueness_tested": false,
+    "historical_return_tested": false,
+    "operational_translation_tested": false,
+    "conclusion": "The exact minimum-30-by-activity-group factor lacks sufficiently broad stock-day availability on the frozen PIT quality/listing base. This is a structural coverage rejection, not evidence that the higher direction predicts negative or positive three-session returns.",
+    "post_result_rescue_allowed": false
+  },
+  "unopened_stages": {
+    "numeric_comparator_values_read": false,
+    "numeric_comparator_count_read": 0,
+    "historical_daily_price_fields_read": [],
+    "historical_forward_return_fields_read": false,
+    "development_trial_count": 0,
+    "development_survivor_count": 0,
+    "stress_2024_2025_opened": false,
+    "stress_trial_count": 0
+  },
+  "library_after_terminal_result": {
+    "complete_definition_count": 142,
+    "complete_definition_order_sha256": "ed61b10f3acb939c10ae5759f33aafde377cc921dd99c642300603b50a4851c5",
+    "eligible_numeric_comparator_count": 134,
+    "eligible_numeric_comparator_order_sha256": "31d788db467f558a0ac538315343090f1b3ad4cb27a26136a49ebaa88b2fdbf2",
+    "campaign116_appended_to_numeric_comparators": false
+  },
+  "accounting": {
+    "campaign116_attempt_count": 5,
+    "campaign116_ledger_entry_count_through_v6": 6,
+    "campaign116_infrastructure_failure_count": 4,
+    "campaign116_prevalue_scientific_attempt_count": 1,
+    "campaign116_complete_factor_attempt_count": 1,
+    "campaign116_return_reading_development_trial_count": 0,
+    "campaign116_development_survivor_count": 0,
+    "campaign116_stress_trial_count": 0,
+    "cumulative_historical_research_attempt_count": 883,
+    "cumulative_return_reading_development_trial_count": 302
+  },
+  "candidate49_state": {
+    "sole_active_prospective_candidate": true,
+    "signal_ledger": {
+      "path": "data/experiments/short_horizon/candidate49_future_signal_ledger.json",
+      "sha256": "5193f00d7f36da003f53cec387900da4c3d002299f5dfcfc1a95eaa199ed3a79",
+      "entry_count": 0
+    },
+    "execution_ledger": {
+      "path": "data/experiments/short_horizon/candidate49_future_execution_ledger.json",
+      "sha256": "d57a3e61eac969e42cafa418ccd8c0a5ee65dcf69da145bb2c096c2a02a2ea4f",
+      "entry_count": 0
+    },
+    "historical_backfill_performed": false,
+    "prospective_registration_changed": false
+  },
+  "prohibitions": [
+    "do not lower either 30-pair support minimum or change the strict median activity split",
+    "do not invert, rethreshold, relag, rewindow, filter, subset, fit, model, combine, or otherwise rescue Campaign116",
+    "do not read Campaign116 comparator values, historical daily prices, forward returns, or 2024-2025 stress returns",
+    "do not backfill Candidate49 or start a second prospective candidate",
+    "do not create current scores, selections, sizing, positions, orders, or investment advice"
+  ],
+  "next_iteration": {
+    "campaign_id": "a_share_three_day_walkforward_campaign_117",
+    "allowed_at_any_local_time": true,
+    "required_start": "genuinely new concept-only scouting and mechanism-overlap review followed by exact prevalue formula/direction/source/support/gate freeze",
+    "campaign116_reuse_or_rescue_allowed": false
+  }
+}

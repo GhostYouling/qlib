@@ -1,0 +1,35 @@
+{
+  "schema_version": 1,
+  "kind": "a_share_three_day_walkforward_campaign254_prevalue_domain_overlap_rejection",
+  "recorded_at": "2026-08-16T12:31:00+08:00",
+  "timestamp_semantics": "monotonic_logical_append_time_not_host_wall_clock_measurement",
+  "status": "rejected_before_candidate_catalog_freeze_due_to_campaign232_terminal_domain_overlap",
+  "attempt_id": "campaign254_scientific_001",
+  "rejected_domain": "commercial_parking_access_and_revenue_control_equipment_service_lifecycle",
+  "authoritative_inputs": {
+    "campaign232_commercial_parking_frontier": {
+      "path": "docs/a_share_three_day_walkforward_campaign_232_commercial_parking_reservation_access_occupancy_charging_payment_enforcement_incident_maintenance_turnover_lifecycle_source_frontier_20260816.json",
+      "sha256": "1b9c290dd5363bea4224854ac016e3ff82d1aa1851e86756466d867e2e4c62b0"
+    },
+    "campaign245_building_access_frontier": {
+      "path": "docs/a_share_three_day_walkforward_campaign_245_commercial_building_access_door_loading_dock_equipment_service_lifecycle_source_frontier_20260816.json",
+      "sha256": "a4d203fe6607aa762542e042cf3cc1f76f2d7fb02750e0ef6921791104ad519c"
+    }
+  },
+  "overlap_finding": "Campaign232 already freezes the complete issuer-as-commercial-parking-operator lifecycle spanning reservations, gates and access, vehicle and privacy-safe site tokens, occupancy, charging, tickets, payment, enforcement, incidents, equipment maintenance, billing and turnover. Splitting barrier gates, ticket dispensers, pay stations, LPR cameras, loop detectors, occupancy sensors, intercoms, controllers and payment terminals into a nominal equipment-service domain would remove an existing lifecycle boundary rather than introduce an economically independent mechanism.",
+  "decision": "reject_terminal_overlap",
+  "next_domain": "Audit a genuinely different commercial audiovisual and conference-room equipment service lifecycle before any source or value read.",
+  "research_boundary": {
+    "source_or_candidate_or_comparator_value_read": false,
+    "daily_price_or_forward_return_read": false,
+    "provider_or_web_request_issued": false,
+    "provider_credential_presence_value_or_digest_read": false,
+    "candidate49_plan_or_run_executed": false,
+    "candidate49_ledgers_changed": false,
+    "second_prospective_candidate_created": false,
+    "stress_2024_2025_opened": false,
+    "current_scoring_selection_sizing_positions_or_orders_performed": false,
+    "failed_or_truncated_output_used_as_scientific_or_validation_evidence": false,
+    "investment_advice": false
+  }
+}

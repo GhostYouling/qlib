@@ -1,0 +1,131 @@
+{
+  "schema_version": 1,
+  "kind": "a_share_three_day_walkforward_campaign079_concept_scouting",
+  "status": "selected_before_campaign079_daily_source_candidate_or_comparison_values",
+  "recorded_at": "2026-08-06T07:12:16Z",
+  "purpose": "Select exactly one economically distinct offline three-session factor after terminal Campaign078, before opening any Campaign079 daily source row, candidate value, comparison value, daily price, or forward return.",
+  "authoritative_bindings": {
+    "campaign078_verified_state": {
+      "path": "docs/a_share_three_day_iteration_status_20260806_campaign078_verified.json",
+      "sha256": "0bd360d4c653340f6f37a4ae010278b8d599f6ee6964cff8b3b946b762e52a58"
+    },
+    "campaign078_verification": {
+      "path": "docs/a_share_three_day_walkforward_campaign_078_verification_20260806.json",
+      "sha256": "2ac74af5c89efd2dd42993f901a904115a8ce34e47bb208686f912d54581a6bf"
+    },
+    "historical_walkforward_policy": {
+      "path": "docs/a_share_three_day_historical_walkforward_research_policy_20260727.json",
+      "sha256": "38426d6161b9bfed323c58caba18feca668b8c9d53e294951a8ba90c01a798bb"
+    },
+    "numeric_comparator_policy_v14_timestamp_corrected": {
+      "path": "docs/a_share_three_day_walkforward_future_numeric_comparison_eligibility_policy_v14_timestamp_corrected_20260806.json",
+      "sha256": "8f518f6db27a7026f59c0332e38972a3752022ee9b11134d4257ca08f238407b",
+      "complete_definition_count": 110,
+      "complete_definition_order_sha256": "4d3003f8580945a66dac7426f535a58f8725d1d880bb4cb552d87b477e826463",
+      "eligible_numeric_comparator_count": 109,
+      "eligible_numeric_comparator_order_sha256": "0893e0ff54c0094e48e67def84f0038a453fd11230629631e3e54120480a3529"
+    },
+    "manage_qlib_a_share_data_skill": {
+      "path": "/Users/niyufei/.codex/skills/manage-qlib-a-share-data/SKILL.md",
+      "sha256": "2fb2ebfe8117f39d619b22e6d156d45ecbca14b7e57f2e753fe3ee7ace275143"
+    }
+  },
+  "definition_only_source_boundary": {
+    "source": "accepted local point-in-time daily provider field daily_basic.turnover_rate or its canonical raw equivalent",
+    "daily_source_projection_if_later_admitted": [
+      "date",
+      "symbol",
+      "daily_source",
+      "turnover_rate"
+    ],
+    "stock_day_identity_projection_if_later_admitted": [
+      "trade_date",
+      "symbol",
+      "provider"
+    ],
+    "forbidden_before_protocol_and_implementation_freeze": [
+      "daily source rows",
+      "candidate values",
+      "comparison values",
+      "daily price fields",
+      "historical or forward returns",
+      "Candidate49 historical values or ledger additions"
+    ],
+    "candidate_source_rows_read": false,
+    "provider_request_allowed": false
+  },
+  "candidate_design_catalog": [
+    {
+      "design": "signal_day_turnover_rate_pct",
+      "decision": "selected_for_separate_complete_mechanism_overlap_audit",
+      "reason": "The provider's raw signal-day turnover-rate percentage measures how much of the tradable share base changed hands, a whole-session attention/intensity mechanism not represented by normalized intraday profile shapes."
+    },
+    {
+      "design": "log_winsorized_or_ranked_turnover_rate",
+      "decision": "rejected_before_values",
+      "reason": "Log, winsorization, clipping, or embedded ranking would create transform choices; the audit and development engine already apply the frozen directional cross-sectional rank."
+    },
+    {
+      "design": "multi_day_turnover_sum_change_or_acceleration",
+      "decision": "rejected_before_values",
+      "reason": "Lag windows and change operators create a parameter family and a same-campaign rescue path."
+    },
+    {
+      "design": "absolute_amount_or_volume_liquidity",
+      "decision": "rejected_before_values",
+      "reason": "Absolute activity mixes firm size and nominal price; provider turnover_rate is selected as the direct tradable-share intensity field."
+    },
+    {
+      "design": "size_price_industry_or_market_residualized_turnover",
+      "decision": "rejected_before_values",
+      "reason": "Neutralization, peer residualization, filters, thresholds, subsets, fitting, models, and combinations are outside this one-factor campaign."
+    }
+  ],
+  "selected_candidate": {
+    "name": "signal_day_turnover_rate_pct",
+    "direction": "higher",
+    "economic_hypothesis": "A larger fraction of the tradable share base changing hands on the signal day can reflect broad attention and ownership transfer that persists into the next three sessions.",
+    "formula": "Use the accepted provider's raw signal-session turnover_rate percentage exactly once for the same symbol and accepted trade date; no reconstruction, lag, transform, clipping, neutralization, or embedded rank.",
+    "availability": "Known after the signal-session close from the accepted daily_basic-equivalent field; entry remains the next accepted session open t+1.",
+    "valid_domain": {
+      "lower": 0,
+      "lower_inclusive": true,
+      "upper": null
+    },
+    "missing_rule": "Missing when the canonical symbol-date-provider identity is absent or duplicated, the provider/source identity is not accepted, or turnover_rate is nonfinite or negative. Never fill suspended/missing rows with zero and never infer the denominator from volume.",
+    "parameter_window_transform_direction_threshold_filter_subset_regime_fit_model_or_combination_search": false
+  },
+  "mandatory_pre_value_challenges": [
+    "all_110_frozen_historical_factor_definitions_in_exact_order",
+    "all_109_numeric_comparators_in_exact_order",
+    "late_amount_share_30m",
+    "intraday_opening_auction_amount_share_241m",
+    "intraday_terminal_bar_amount_share_240m",
+    "intraday_amount_participation_entropy_240m",
+    "intraday_amount_center_of_mass_240m",
+    "intraday_amount_clock_dispersion_240m",
+    "intraday_amount_local_peak_density_238p",
+    "accepted_instrument_session_youth_20s",
+    "intraday_terminal_nominal_share_price_affordability_rank_240m",
+    "candidate49_intraday_cumulative_vwap_crossing_rate_240m_v1"
+  ],
+  "research_boundary": {
+    "campaign079_daily_source_rows_read": false,
+    "campaign079_candidate_values_read": false,
+    "comparison_values_read": false,
+    "historical_daily_price_fields_read": [],
+    "historical_forward_returns_read": false,
+    "provider_request_issued": false,
+    "candidate49_historical_backfill_performed": false,
+    "candidate49_ledgers_changed": false,
+    "second_prospective_candidate_created": false,
+    "current_scoring_selection_sizing_or_orders_performed": false,
+    "investment_advice": false
+  },
+  "decision": {
+    "selected_concept_count": 1,
+    "may_advance_directly_to_values": false,
+    "required_next_step": "Complete and bind one exhaustive no-value mechanism-overlap audit; only then freeze the exact no-return protocol, code, tests, and implementation fingerprints before any daily source or candidate value.",
+    "candidate49_remains_only_active_prospective_candidate": true
+  }
+}

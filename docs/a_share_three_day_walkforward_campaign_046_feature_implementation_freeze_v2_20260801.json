@@ -1,0 +1,65 @@
+{
+  "version": 2,
+  "kind": "a_share_three_day_walkforward_campaign046_feature_implementation_freeze",
+  "status": "effective_infrastructure_only_repair_frozen_before_external_partition_enumeration_or_candidate_values",
+  "recorded_at": "2026-07-31T22:24:00Z",
+  "purpose": "Advance the original implementation freeze only by correcting the dynamic-wrapper mapping after the recorded pre-partition KeyError.",
+  "source_chain": {
+    "original_implementation_freeze": {
+      "path": "docs/a_share_three_day_walkforward_campaign_046_feature_implementation_freeze_20260801.json",
+      "sha256": "6a1c297a8063bcfbe4a0549a6d4e8dba821730413e8f4ecaa3523ea28e59cec3"
+    },
+    "recorded_infrastructure_failure": {
+      "path": "docs/a_share_three_day_walkforward_campaign_046_snapshot_build_infrastructure_failure_20260801.json",
+      "sha256": "36050da83211da9e59a054618051e7c8a87ac05cfff4e6d8d02346d11f9e2af3"
+    },
+    "effective_feature_implementation": {
+      "path": "scripts/a_share_three_day_walkforward_campaign046_features.py",
+      "sha256": "0b75acc48bb99065eec634420a2ce215885b0d20f66bd9faa9503c94c7eb0d6e"
+    },
+    "unchanged_synthetic_tests": {
+      "path": "tests/data_collector_tests/test_a_share_three_day_walkforward_campaign046_features.py",
+      "sha256": "af47778b610ade29c19bd2c0f97a55a6e716cc4106146c1d01c390adb875af01"
+    },
+    "no_return_preregistration": {
+      "path": "docs/a_share_three_day_walkforward_campaign_046_no_return_preregistration.json",
+      "sha256": "7ca20bdf7d32b78489e3ac5cc4d25c6b6773ee09e9260732778f30e86faa7c52"
+    }
+  },
+  "repair_scope": {
+    "outer_exec_globals_retained": true,
+    "nested_generated_engine_mapping_selected_for_inherited_build": true,
+    "campaign043_module_and_campaign044_constants_bound_from_outer_globals": true,
+    "formula_changed": false,
+    "direction_changed": false,
+    "source_projection_changed": false,
+    "pair_weight_or_sign_rule_changed": false,
+    "zero_or_denominator_semantics_changed": false,
+    "coverage_uniqueness_or_development_gate_changed": false,
+    "comparison_order_changed": false
+  },
+  "test_evidence": {
+    "command": "PYTHONPATH=. pytest -q tests/data_collector_tests/test_a_share_three_day_walkforward_campaign046_features.py",
+    "passed": 7,
+    "failed": 0,
+    "binding_validator_exit_code": 0
+  },
+  "research_boundary": {
+    "external_partition_enumeration_started_before_repair": false,
+    "external_minute_partition_read_before_repair": false,
+    "candidate_values_read_or_published_before_repair": false,
+    "comparison_values_read": false,
+    "historical_daily_price_fields_read": false,
+    "historical_forward_returns_read": false,
+    "provider_request_issued": false,
+    "candidate49_ledgers_changed": false,
+    "candidate49_historical_backfill_performed": false,
+    "candidate50_activation_created": false,
+    "current_scoring_selection_sizing_or_orders_performed": false
+  },
+  "decision": {
+    "effective_implementation_frozen": true,
+    "exact_parameter_snapshot_retry_authorized": true,
+    "additional_semantic_repair_or_retry_authorized": false
+  }
+}

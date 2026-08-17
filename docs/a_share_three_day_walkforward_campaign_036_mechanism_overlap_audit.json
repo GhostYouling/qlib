@@ -1,0 +1,132 @@
+{
+  "version": 1,
+  "kind": "a_share_three_day_walkforward_campaign036_mechanism_overlap_audit",
+  "status": "passed_conceptual_independence_before_minute_candidate_comparison_or_return_values",
+  "recorded_at": "2026-07-30T21:08:31Z",
+  "purpose": "Resolve the selected two-sided range-frontier concept into one exact finite no-value mechanism and challenge it against terminal and prospective families before any Campaign036 source partition, candidate value, comparison value, daily price, or forward return is opened.",
+  "concept_scouting": {
+    "path": "docs/a_share_three_day_walkforward_campaign_036_concept_scouting.json",
+    "sha256": "31ef75791133bcda18e9a4cf16cd35abb59fda7d484a38432ce5d3e50c07a95a"
+  },
+  "authoritative_boundary": {
+    "path": "docs/a_share_three_day_iteration_status_20260731_campaign035_verified.json",
+    "sha256": "39a838d3bcb15364ec4d78e51ece958a6ba5db5f0d953af2e8a4b9554f16e4fe"
+  },
+  "historical_walkforward_policy": {
+    "path": "docs/a_share_three_day_historical_walkforward_research_policy_20260727.json",
+    "sha256": "38426d6161b9bfed323c58caba18feca668b8c9d53e294951a8ba90c01a798bb"
+  },
+  "selected_mechanism": {
+    "name": "intraday_two_sided_range_frontier_balance_238m",
+    "direction": "higher",
+    "information_domain": "within_half_running_high_low_frontier_expansion_magnitude_balance",
+    "formula": "For each 120-bar half independently and each t=1..119, let H_prev=max(high_0..high_(t-1)), L_prev=min(low_0..low_(t-1)), u_t=max(ln(high_t/H_prev),0), and d_t=max(ln(L_prev/low_t),0). Pool both halves, set U=sum(u_t), D=sum(d_t), and return 1-abs(U-D)/(U+D)=2*min(U,D)/(U+D).",
+    "economic_hypothesis": "A higher value means that the completed session expanded its observed price frontier more evenly upward and downward, representing more two-sided price discovery and less one-directional crowding, which may be associated with greater resilience from the next open through the third close.",
+    "source_fields": [
+      "datetime",
+      "symbol",
+      "provider",
+      "high",
+      "low"
+    ],
+    "selected_bar_grid": "exactly 240 raw unadjusted one-minute high-low intervals at 09:31-11:30 and 13:01-15:00 after frozen timestamp normalization; standalone 09:30 is excluded",
+    "half_reset_rule": "Treat the morning and afternoon as two independent 120-bar paths. The first bar of each half initializes that half's running high and running low and contributes no expansion. Never carry a running frontier across lunch.",
+    "upward_expansion_rule": "For each later bar in a half, upward expansion is max(ln(current_high/previous_running_high),0). Equality or a lower high contributes exact zero. Update the running high only after measuring the current bar.",
+    "downward_expansion_rule": "For each later bar in a half, downward expansion is max(ln(previous_running_low/current_low),0). Equality or a higher low contributes exact zero. Update the running low only after measuring the current bar.",
+    "pooling_rule": "Pool exactly 119 morning and 119 afternoon expansion opportunities. Sum log expansion magnitudes separately into U and D; never count events, average per half, weight by time or activity, or use a lunch, overnight, cross-day, or cross-stock transition.",
+    "balance_rule": "Require U+D>0 and compute 1-abs(U-D)/(U+D), algebraically equal to 2*min(U,D)/(U+D). Use the direct first expression in implementation and require agreement with the algebraic identity within deterministic floating-point tolerance 1e-12.",
+    "bar_rule": "All 240 selected highs and lows must be finite and strictly positive with low<=high. Exact equal highs, equal lows, and zero-width bars are valid and contribute zero unless a different boundary expands.",
+    "missing_rule": "Any invalid, nonpositive, nonfinite, or unordered selected high-low pair; nonfinite expansion; U+D<=0; identity disagreement above 1e-12; or score outside [0,1] makes the stock-day missing.",
+    "valid_range": [
+      0.0,
+      1.0
+    ]
+  },
+  "overlap_challenges": [
+    {
+      "family": "intraday_extreme_arrival_order_240m",
+      "result": "distinct_pending_statistical_uniqueness_gate",
+      "reason": "Campaign025 retains only the first ordinal positions of the final global high and low. Campaign036 accumulates every genuinely new running-boundary log expansion, resets at lunch, discards final-extreme arrival order, and measures two-sided expansion balance."
+    },
+    {
+      "family": "intraday_global_price_range_revisit_240m",
+      "result": "distinct_pending_statistical_uniqueness_gate",
+      "reason": "Campaign014 is invariant to bar order and compares the sum of intrabar interval widths with the merged global union. Campaign036 is explicitly path-dependent, uses only changes to running outer boundaries, and ignores revisits that do not expand a frontier."
+    },
+    {
+      "family": "intraday_prior_range_breakout_pressure_238p",
+      "result": "distinct_pending_statistical_uniqueness_gate",
+      "reason": "Campaign015 compares the current close with the immediately prior bar's high-low interval. Campaign036 reads no close, uses the entire prior running frontier within each half, and balances high and low expansion magnitudes rather than signed close breakouts."
+    },
+    {
+      "family": "intraday_range_boundary_translation_coherence_238p_and_midrange_width_change_coupling",
+      "result": "distinct_pending_statistical_uniqueness_gate",
+      "reason": "Those mechanisms correlate adjacent high/low or midpoint/width changes and retain non-frontier movements. Campaign036 uses no covariance or correlation, discards every movement inside the running frontier, and retains only new outer-boundary expansion."
+    },
+    {
+      "family": "intraday_adjacent_range_overlap_continuity_intrabar_range_reversal_and_range_entropy",
+      "result": "distinct_pending_statistical_uniqueness_gate",
+      "reason": "Overlap, reversal, and entropy mechanisms use adjacent interval geometry, range serial dependence, or the distribution of bar widths. Campaign036 neither compares adjacent interval overlap nor summarizes width levels; it measures cumulative running-frontier expansion balance."
+    },
+    {
+      "family": "intraday_signed_path_efficiency_terminal_close_location_and_intrabar_close_pressure",
+      "result": "distinct_pending_statistical_uniqueness_gate",
+      "reason": "These mechanisms depend on close paths or own-bar close location. Campaign036 reads no close and is unchanged by any close path consistent with the same high-low frontier sequence."
+    },
+    {
+      "family": "intraday_return_weak_order_entropy_234t_price_update_share_round_price_grid_and_sign_runs",
+      "result": "distinct",
+      "reason": "Campaign036 reads no close or derived return, has no equality-based price-update count, ordinal state, sign run, currency grid, or entropy. It cannot re-express sparse price updating through local ordinal-pattern diversity."
+    },
+    {
+      "family": "candidate49_cumulative_vwap_crossing_rate",
+      "result": "distinct",
+      "reason": "Candidate49 counts close crossings around a causal cumulative amount/volume anchor and is future-only. Campaign036 reads only own-stock high and low, forms no VWAP or crossing, and remains historical-research-only."
+    },
+    {
+      "family": "amount_volume_market_quarterly_or_event_mechanisms",
+      "result": "distinct",
+      "reason": "Campaign036 contains no activity field, transaction price, market benchmark, peer state, quarterly field, or event timing."
+    },
+    {
+      "family": "terminal_factor_combination_or_rescue",
+      "result": "not_used",
+      "reason": "Campaign036 contains one exact high-low running-frontier statistic and no terminal factor value, transform, filter, model, or combination."
+    }
+  ],
+  "design_choices_frozen_before_values": {
+    "formula_family": "within_half_running_high_low_log_frontier_expansion_balance",
+    "direction": "higher",
+    "selected_bar_count": 240,
+    "within_half_expansion_opportunity_count": 238,
+    "include_0930": false,
+    "carry_frontier_across_lunch": false,
+    "running_frontier_reset_each_half": true,
+    "expansion_distance": "natural_log_boundary_ratio",
+    "inside_or_equal_boundary_contribution": 0.0,
+    "pool_before_balance": true,
+    "balance_transform": "1-abs(U-D)/(U+D)",
+    "zero_total_expansion_is_missing": true,
+    "identity_check_tolerance": 1e-12,
+    "event_count_arithmetic_distance_per_half_average_or_activity_weight_search_allowed": false,
+    "subwindow_year_filter_threshold_or_board_selection_allowed": false,
+    "close_open_activity_market_quarterly_or_terminal_factor_input_allowed": false
+  },
+  "decision": {
+    "conceptually_independent": true,
+    "advance_to_exact_no_return_preregistration": true,
+    "candidate_or_comparison_values_may_be_read_now": false,
+    "binding_validator_exit_zero_required_before_next_stage": true,
+    "candidate49_remains_only_active_prospective_candidate": true,
+    "candidate50_activation_allowed": false,
+    "current_aggregation_scoring_selection_sizing_or_orders_allowed": false
+  },
+  "research_boundary": {
+    "external_campaign036_minute_partitions_read": false,
+    "candidate_values_read": false,
+    "comparison_values_read": false,
+    "daily_price_fields_read": false,
+    "forward_returns_read": false,
+    "provider_request_issued": false
+  }
+}

@@ -1,0 +1,36 @@
+{
+  "schema_version": 1,
+  "kind": "a_share_three_day_walkforward_campaign143_infrastructure_failure",
+  "status": "recorded_not_bypassed_no_values_read",
+  "recorded_at": "2026-08-14T15:41:00+0800",
+  "attempt_id": "campaign143_infrastructure_009",
+  "phase": "strict_publication_validation",
+  "failure": {
+    "operation": "validate the provisional Campaign143 iteration-status bindings through an assumed standalone validator CLI",
+    "attempted_path": "scripts/validate_a_share_research_record_bindings.py",
+    "process_exit_code": 2,
+    "stderr_summary": "The assumed standalone validator path does not exist in this repository.",
+    "provisional_status_sha256_computed_before_failure": "20429aff1a9c1846b655e52a50f7e41c310e4293e718600c3a2e200bb1ebe579",
+    "binding_validation_completed": false,
+    "failed_exit_code_bypassed": false,
+    "later_success_used_to_mask_failure": false
+  },
+  "safe_recovery": {
+    "preserve_this_failure_record": true,
+    "append_a_new_ledger_delta_before_retry": true,
+    "use_repository_module": "scripts.a_share_three_day_preregistration_binding_validator.validate_record",
+    "weaken_or_modify_binding_validator": false,
+    "retry_may_proceed_only_after_failure_is_accounted": true
+  },
+  "research_boundary": {
+    "source_rows_or_column_values_read": false,
+    "candidate_or_comparator_values_read": false,
+    "historical_daily_price_or_forward_return_values_read": false,
+    "stress_2024_2025_opened": false,
+    "provider_request_issued": false,
+    "provider_credential_value_or_digest_read": false,
+    "candidate49_historical_backfill_performed": false,
+    "candidate49_ledgers_changed": false,
+    "current_scoring_selection_sizing_positions_or_orders_performed": false
+  }
+}

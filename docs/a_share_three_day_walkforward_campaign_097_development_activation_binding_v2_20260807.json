@@ -1,0 +1,32 @@
+{
+  "schema_version": 1,
+  "kind": "a_share_three_day_walkforward_campaign097_development_activation_binding_v2",
+  "status": "compact_namespace_repair_frozen_after_one_append_only_failure_before_complete_development_trial",
+  "activated_at": "2026-08-07T06:51:20Z",
+  "purpose": "Authorize one remaining complete Campaign097 2019-2023 development trial through the compact namespace repair while preserving the first failure entry.",
+  "implementation_freeze_v2": {
+    "path": "docs/a_share_three_day_walkforward_campaign_097_development_implementation_freeze_v2_20260807.json",
+    "sha256": "7ec30b2cf9728102c1adcc4d7064d37a0616e4fcb98a1f49a91157951120b5dd"
+  },
+  "v1_failure_record": {
+    "path": "docs/a_share_three_day_walkforward_campaign_097_development_compact_namespace_failure_20260807.json",
+    "sha256": "9637fbca52c4b3e8125cce799b2c105cdf2e3833cfbbbe7977afd364b3e1215c"
+  },
+  "v1_status_test_failure": {
+    "path": "docs/a_share_three_day_walkforward_campaign_097_development_v1_prevalue_status_test_failure_20260807.json",
+    "sha256": "b6a8e8dbdb1e01a45dad85f1a4b6fbdcf38a520ad9a4a9e157e98456e452aece"
+  },
+  "append_only_internal_ledger": {
+    "path": "data/experiments/short_horizon/historical_walkforward/campaign_097/walkforward/trial_ledger.json",
+    "sha256": "1c93bf410fd1f384313552d804275325aef9579bc8c5b8cf5edb49deab0cf7f6",
+    "entry_count": 1,
+    "chain_tip_sha256": "7818333c6d68a2f1679861b0923221502d2b9235c775fb7845bf8933b3cc2e83"
+  },
+  "remaining_complete_development_trials_authorized": 1,
+  "append_only_failure_entries_may_be_deleted_or_rewritten": false,
+  "trial_factor_fold_cost_gate_or_threshold_changed": false,
+  "stress_2024_2025_authorized": false,
+  "provider_request_issued": false,
+  "candidate49_ledgers_changed": false,
+  "current_scoring_selection_sizing_or_orders_performed": false
+}

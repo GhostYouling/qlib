@@ -1,0 +1,88 @@
+{
+  "schema_version": 1,
+  "kind": "a_share_three_day_walkforward_campaign222_terminal_validation",
+  "recorded_at": "2026-08-16T02:00:00+08:00",
+  "timestamp_semantics": "monotonic_logical_append_time_not_host_wall_clock_measurement",
+  "status": "passed_campaign222_terminal_bindings_reports_chain_boundaries_and_cumulative_regression",
+  "authoritative_inputs": {
+    "terminal_result": {
+      "path": "docs/a_share_three_day_walkforward_campaign_222_terminal_result_20260816.json",
+      "sha256": "081efead04cc4fd04521eb611eda5cc3f08f8ff1daebd921902031ac9cd86adc"
+    },
+    "policy_v336": {
+      "path": "docs/a_share_three_day_walkforward_future_numeric_comparison_eligibility_policy_v336_20260816.json",
+      "sha256": "0dccd8d8ba727db8ecca876b4295316c6d4bd1f51891565686b26f5c661c44d3"
+    },
+    "source_frontier": {
+      "path": "docs/a_share_three_day_walkforward_campaign_222_port_terminal_vessel_berth_cargo_yard_gate_customs_billing_lifecycle_source_frontier_20260816.json",
+      "sha256": "7389ac6a789bccac617b0e3955eb55941e715372ab9858949e96739f8c9b0e1f"
+    },
+    "attempt_ledger_v2": {
+      "path": "data/experiments/short_horizon/historical_walkforward/campaign_222/research_attempt_ledger_v2.json",
+      "sha256": "16fff769051ef8a875cfc1b5eba33a93fce6780489aa6c3fcd803d543fd427ea",
+      "chain_tip_sha256": "63c968d084c829505bd86c63233e03abed1fe3515375534db946664fb3cfe1a9"
+    },
+    "terminal_test": {
+      "path": "tests/data_collector_tests/test_a_share_three_day_walkforward_campaign222_terminal.py",
+      "sha256": "1a2a7b8dc801ea733fea46387c3d01be2503d2b0fb276b4a44568cb6f5f8a923"
+    }
+  },
+  "validation_results": {
+    "focused_pytest": {
+      "status": "passed",
+      "result": "2 passed in 0.07s"
+    },
+    "cumulative_pytest": {
+      "status": "passed",
+      "scope": "Campaign145 through Campaign222 inclusive",
+      "test_file_count": 110,
+      "exact_deselected_node_count": 37,
+      "result": "493 passed, 1 skipped, 37 deselected in 13.31s"
+    },
+    "black": {
+      "status": "passed",
+      "scope": "Campaign222 terminal test",
+      "result": "1 file would be left unchanged"
+    },
+    "ruff": {
+      "status": "passed",
+      "scope": "Campaign222 terminal test",
+      "result": "All checks passed"
+    },
+    "independent_semantic_validation": {
+      "status": "passed",
+      "references": "passed",
+      "append_only_chain_tip_sha256": "63c968d084c829505bd86c63233e03abed1fe3515375534db946664fb3cfe1a9",
+      "candidate49_entry_counts": [0, 0],
+      "campaign_test_file_count": 110,
+      "new_text_file_count_checked_for_terminal_newline_and_trailing_whitespace": 14
+    }
+  },
+  "validated_semantics": {
+    "finite_route_count": 7,
+    "source_admission_deferral_count": 3,
+    "overlap_or_hypothesis_rejection_count": 4,
+    "selected_factor_count": 0,
+    "campaign_attempt_count": 15,
+    "campaign_infrastructure_failure_count": 8,
+    "campaign_scientific_attempt_count": 7,
+    "cumulative_historical_research_attempt_count": 2077,
+    "cumulative_return_reading_development_trial_count": 314,
+    "complete_factor_definition_count": 158,
+    "eligible_numeric_comparator_count": 142,
+    "candidate49_signal_execution_entry_counts": [0, 0]
+  },
+  "research_boundary": {
+    "failed_or_truncated_output_used_as_scientific_or_validation_evidence": false,
+    "source_factor_comparator_security_price_or_return_value_read": false,
+    "stress_2024_2025_opened": false,
+    "provider_or_web_request_issued": false,
+    "provider_credential_presence_value_or_digest_read": false,
+    "candidate49_plan_or_run_executed": false,
+    "candidate49_ledgers_changed": false,
+    "second_prospective_candidate_created": false,
+    "current_scoring_selection_sizing_positions_or_orders_performed": false,
+    "investment_advice": false
+  },
+  "next_action": "Publish the advancing Campaign222 state and authorize Campaign223 offline prevalue scouting in a genuinely different domain."
+}

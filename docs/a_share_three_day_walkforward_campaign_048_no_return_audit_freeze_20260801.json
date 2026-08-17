@@ -1,0 +1,26 @@
+{
+  "version": 1,
+  "kind": "a_share_three_day_walkforward_campaign048_no_return_audit_freeze",
+  "status": "immutable_ordered_no_return_audit_bound_before_historical_returns",
+  "recorded_at": "2026-08-01T04:08:00Z",
+  "snapshot_publication_binding": {
+    "path": "docs/a_share_three_day_walkforward_campaign_048_snapshot_publication_binding_20260801.json",
+    "sha256": "e09fa6fde19013a52925244d20961dc035b97ffb238e55e710df2384c4f65b4a"
+  },
+  "bound_no_return_runner": {
+    "path": "scripts/a_share_three_day_walkforward_campaign048_features_v3.py",
+    "sha256": "b1767a4fdd9567aa40550b7c79fc51abc4b9e995141fb68257e9708696bf7367"
+  },
+  "no_return_audit": {
+    "path": "data/experiments/short_horizon/historical_walkforward/campaign_048/no_return/20260801T050642Z_campaign048_no_return_audit.json",
+    "sha256": "33d16864a3b641e3d1c4b5fc6b96f995add3cfd4d104a6aad7bb686d4fd8534c"
+  },
+  "admissible_factor_count": 1,
+  "comparison_factor_count": 71,
+  "historical_daily_price_fields_read": [],
+  "historical_forward_returns_read": false,
+  "provider_request_issued": false,
+  "candidate49_ledgers_changed": false,
+  "candidate50_activation_created": false,
+  "current_scoring_selection_sizing_or_orders_performed": false
+}

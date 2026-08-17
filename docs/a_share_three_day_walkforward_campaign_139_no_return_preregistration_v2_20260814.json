@@ -1,0 +1,80 @@
+{
+  "schema_version": 1,
+  "kind": "a_share_three_day_walkforward_campaign139_no_return_preregistration_additive_correction",
+  "status": "effective_v2_frozen_before_source_values_for_single_rowgroup_decode_and_date_filter_semantics",
+  "recorded_at": "2026-08-14T13:15:59+0800",
+  "supersedes_without_rewriting": {
+    "path": "docs/a_share_three_day_walkforward_campaign_139_no_return_preregistration_20260814.json",
+    "sha256": "def4153f0fdc112ddb5b6349b83449874be040546ef4a9e2a6527dc07e713a1c"
+  },
+  "failure_evidence": {
+    "path": "docs/a_share_three_day_walkforward_campaign_139_single_rowgroup_source_range_failure_20260814.json",
+    "sha256_pending_at_preregistration_creation": true
+  },
+  "unchanged_contract": {
+    "factor": "quarterly_realized_profit_growth_forecast_surprise_rank",
+    "direction": "higher",
+    "raw_formula": "profit_yoy - forecast_profit_yoy",
+    "same_instrument_report_period": true,
+    "latest_strictly_prior_forecast": true,
+    "availability": "first accepted local session strictly after realized announcement",
+    "event_age_calendar_days": 3,
+    "candidate_count": 1,
+    "formula_direction_threshold_filter_subset_model_or_weight_search": false,
+    "ordered_no_return_gates": "exactly the three v1 gates in the same order",
+    "numeric_comparator_count": 141,
+    "numeric_comparator_order_sha256": "ec1aebcb939ad516c58037a36a4aaadd4ad8b2abbd3c884705895c58da85a2ee",
+    "development_folds_costs_survivor_rule_and_candidate49_boundary": "exactly v1",
+    "locked_2024_2025_price_and_return_values": "closed_and_unread"
+  },
+  "effective_source_decode_contract": {
+    "reason": "Both accepted sources contain one immutable row group spanning multiple years, so date filtering necessarily follows decoding the selected bound column chunks.",
+    "allowed_parquet_files": [
+      {
+        "path": "data/raw/a_share/fundamentals/performance_forecasts.parquet",
+        "sha256": "48bc11ea6749a590fcc260f6a5728e853f59f228f6cef7c5b0183f206895d734",
+        "exact_projection": [
+          "instrument",
+          "report_date",
+          "announcement_date",
+          "forecast_profit_yoy"
+        ]
+      },
+      {
+        "path": "data/raw/a_share/fundamentals/quarterly_quality.parquet",
+        "sha256": "3ac901a97928d2ed81ac72e3eaac9bdc148d36cf67b6abe70223699235ef059f",
+        "exact_projection": [
+          "instrument",
+          "report_date",
+          "announcement_date",
+          "profit_yoy"
+        ]
+      }
+    ],
+    "decode_scope": "Only the exact eight projected source columns may be decoded after a ready plan and confirmed run. No other fundamental, event, daily, minute, price, return or credential field may be loaded.",
+    "candidate_output_signal_range": [
+      "2019-01-01",
+      "2025-12-31"
+    ],
+    "realized_event_filter_before_join": "Keep only standard quarter report_date values from 2019-03-31 through 2025-12-31 and realized announcement_date no later than 2025-12-31.",
+    "forecast_filter_before_join": "Keep only matching standard quarter report_date values through 2025-12-31 and forecast announcement_date strictly earlier than the matched realized announcement_date.",
+    "post_2025_source_rows": "May be mechanically decoded from the immutable single row group but must be excluded before key matching, candidate formula evaluation, ranking, output, capacity or uniqueness.",
+    "feature_values_2024_2025": "May be materialized because the candidate library, formula, direction, join, event age, no-return gates, development folds, costs and survivor rule are already frozen. They may not be joined to price or return values unless the separate once-only stress gate later opens.",
+    "historical_price_or_forward_return_fields_allowed": [],
+    "provider_request_allowed": false,
+    "credential_required": false
+  },
+  "research_boundary": {
+    "source_schema_and_rowgroup_metadata_read": true,
+    "parquet_source_column_values_read_before_v2": false,
+    "candidate_or_comparator_values_read_before_v2": false,
+    "historical_price_or_return_values_read": false,
+    "stress_2024_2025_opened": false,
+    "provider_request_issued": false,
+    "candidate49_historical_backfill_performed": false,
+    "candidate49_ledgers_changed": false,
+    "current_scoring_selection_sizing_positions_or_orders_performed": false,
+    "investment_advice": false
+  },
+  "next_action": "Freeze a source builder against v1 plus this additive v2 and its failure evidence. Run its zero-value plan first; only ready=true with exit code zero may authorize the confirmed local source build."
+}

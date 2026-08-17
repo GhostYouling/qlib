@@ -1,0 +1,95 @@
+{
+  "version": 281,
+  "kind": "a_share_three_day_walkforward_future_numeric_comparison_eligibility_policy",
+  "status": "campaign192_terminal_prevalue_accounting_complete_campaign193_ready_after_validation",
+  "recorded_at": "2026-08-15T15:22:00+08:00",
+  "supersedes_without_rewriting": {
+    "path": "docs/a_share_three_day_walkforward_future_numeric_comparison_eligibility_policy_v280_20260815.json",
+    "sha256": "1680d51dfba80937798b53e9ae85295afa9130e59b97c836addcfecd78ef72b5",
+    "preserved": true,
+    "library_order_changed": false
+  },
+  "authoritative_inputs": {
+    "terminal_result": {"path": "docs/a_share_three_day_walkforward_campaign_192_terminal_result_20260815.json", "sha256": "cbb854652879c3185ebe0c4828b2c9da0f9ae1301aea1a2bd2e2d44a04e8e1fe"},
+    "source_frontier": {"path": "docs/a_share_three_day_walkforward_campaign_192_bank_deposit_funding_franchise_lifecycle_source_frontier_20260815.json", "sha256": "8d62229370b8a5ef55868727c9edfacbbacd639f33cdb43ec10705dfa5668e2c"},
+    "attempt_ledger": {"path": "data/experiments/short_horizon/historical_walkforward/campaign_192/research_attempt_ledger_v1.json", "sha256": "b9ac70e1a937109917735b0dd65c574118cc3378da19a506d67341828188f40b", "campaign_entry_count": 13, "chain_tip_sha256": "dcc27582f4e96acb550bee4c1c8af8bd05217a935d3e81fb10004fe8c6fc7f4e"}
+  },
+  "mutable_unified_reports": {
+    "current": {"path": "data/experiments/short_horizon/current_research_report.md", "sha256_at_publication": "68f11eb36484805156ea2f718bd5cab4f6e99f32f6ccd9f083acdd09e56ab249", "mutable_append_only_report_not_an_immutable_binding": true},
+    "three_day": {"path": "data/experiments/short_horizon/three_day_research_report.md", "sha256_at_publication": "148389586f3c04a9b13c6984532a1becbfe72babdaeebadcead27afa4f6f43e4", "mutable_append_only_report_not_an_immutable_binding": true}
+  },
+  "campaign192_terminal_classification": {
+    "routes_reviewed": 7,
+    "genuinely_new_issuer_state_routes": 3,
+    "source_admission_deferrals_not_factor_failures": 3,
+    "relabeling_overlap_operator_or_combination_route_rejections": 4,
+    "selected_candidate_count": 0,
+    "infrastructure_failure_count": 6
+  },
+  "complete_historical_feature_library": {
+    "factor_definition_count": 158,
+    "order_sha256": "4819c7fd7c0795d7598a52f3c615e3f117d5f4ecd9332974bc8e3dfa57c96667",
+    "unchanged_from_v280": true
+  },
+  "numerical_comparator_eligibility": {
+    "eligible_numeric_comparator_count": 142,
+    "order_sha256": "5d1b35fb5a0d8ac9293008db9963c4a60a94dc940c237c3ed259e5ce44f14aaf",
+    "unchanged_from_v280": true
+  },
+  "effective_accounting": {
+    "campaign192_attempt_count": 13,
+    "campaign192_scientific_attempt_count": 7,
+    "campaign192_infrastructure_failure_count": 6,
+    "cumulative_historical_research_attempt_count": 1711,
+    "cumulative_return_reading_development_trial_count": 314
+  },
+  "deferred_source_boundary": {
+    "bank_deposit_funding_franchise_state_declared_ineffective": false,
+    "latest_deposit_balance_funding_mix_or_depositor_concentration_may_be_historically_backfilled": false,
+    "nonbank_or_nondeposit_taking_issuers_may_be_filled_with_zero_or_cross_sector_ranked": false,
+    "deposit_rate_beta_duration_or_hedge_search_may_reopen_campaign174": false,
+    "bank_product_holder_region_channel_direction_threshold_window_subset_combination_or_model_search_may_precede_source_admission": false
+  },
+  "future_campaign_boundary": {
+    "next_campaign": 193,
+    "may_begin_after_campaign192_independent_validation": true,
+    "historical_offline_prevalue_work_may_continue_at_any_local_time": true,
+    "2024_2025_source_or_returns_remain_closed": true,
+    "candidate49_remains_separate_confirmation_layer": true
+  },
+  "cumulative_regression_boundary": {
+    "campaign145_through_campaign192_test_file_count": 80,
+    "required_exact_historical_lifecycle_nodes": [
+      "data_collector_tests/test_a_share_three_day_walkforward_campaign145_terminal.py::test_campaign145_terminal_bindings_reports_and_candidate49_boundary",
+      "data_collector_tests/test_a_share_three_day_walkforward_campaign161_initial_verification.py::test_campaign161_reports_and_candidate49_hashes",
+      "data_collector_tests/test_a_share_three_day_walkforward_campaign164_terminal.py::test_campaign164_reports_are_appended_exactly_once",
+      "data_collector_tests/test_a_share_three_day_walkforward_campaign170_terminal.py::test_campaign170_bindings_and_finite_frontier",
+      "data_collector_tests/test_a_share_three_day_walkforward_campaign171_terminal.py::test_campaign171_bindings_and_finite_frontier"
+    ],
+    "prior_mutable_report_nodes": [
+      "data_collector_tests/test_a_share_three_day_walkforward_campaign190_terminal.py::test_campaign190_reports_candidate49_and_boundaries",
+      "data_collector_tests/test_a_share_three_day_walkforward_campaign191_terminal.py::test_campaign191_reports_candidate49_and_research_boundaries"
+    ],
+    "final_tests_passed": 463,
+    "final_tests_skipped": 1,
+    "final_nodes_deselected": 7,
+    "final_duration_seconds": 13.33,
+    "failed_invocations_recorded_and_excluded_from_validation": 0
+  },
+  "research_boundary": {
+    "source_factor_comparator_security_price_or_return_value_read": false,
+    "stress_2024_2025_opened": false,
+    "provider_or_web_request_issued": false,
+    "provider_credential_presence_value_or_digest_read": false,
+    "candidate49_ledgers_changed": false,
+    "second_prospective_candidate_created": false
+  },
+  "candidate49": {
+    "only_active_prospective_candidate": true,
+    "signal_ledger_sha256": "5193f00d7f36da003f53cec387900da4c3d002299f5dfcfc1a95eaa199ed3a79",
+    "signal_entry_count": 0,
+    "execution_ledger_sha256": "d57a3e61eac969e42cafa418ccd8c0a5ee65dcf69da145bb2c096c2a02a2ea4f",
+    "execution_entry_count": 0
+  },
+  "next_action": "Add focused tests and run focused, corrected cumulative, independent JSON-binding and diff validation before authorizing Campaign193."
+}

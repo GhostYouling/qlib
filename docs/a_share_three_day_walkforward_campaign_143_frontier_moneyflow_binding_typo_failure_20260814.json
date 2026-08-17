@@ -1,0 +1,37 @@
+{
+  "schema_version": 1,
+  "kind": "a_share_three_day_walkforward_campaign143_infrastructure_failure",
+  "status": "recorded_prepublication_frontier_moneyflow_contract_binding_typo",
+  "recorded_at": "2026-08-14T15:25:00+0800",
+  "attempt_id": "campaign143_infrastructure_004",
+  "failure": {
+    "phase": "mechanism_contract_source_frontier_audit_prepublication_self_check",
+    "invalid_frontier_v1": {
+      "path": "docs/a_share_three_day_walkforward_campaign_143_mechanism_contract_source_frontier_audit_20260814.json",
+      "sha256": "e43782cdc957868f3bc72f7d234255254df0455e20097743cbd3ff4692e8d46b"
+    },
+    "actual_moneyflow_contract": {
+      "path": "docs/a_share_tushare_moneyflow_data_contract.json",
+      "sha256": "a38f8113d948a179e6cc38eb388f13fcd691fe793209703009762db6cfa81b12"
+    },
+    "observed_invalid_expected_sha256": "a38f8113d948a179e6cc38eb388f13fcd691fe793209703009762db6f4bffe4fc",
+    "binding_validator_invoked_on_invalid_v1": false,
+    "target_v1_modified_after_failure": false,
+    "failed_exit_code_bypassed": false,
+    "scientific_result_changed": false
+  },
+  "repair_boundary": {
+    "allowed": "Publish one additive v2 frontier correction that binds v1, this failure and the actual unchanged contract fingerprint.",
+    "formula_candidate_catalog_gate_or_decision_change_allowed": false,
+    "invalid_v1_deletion_or_rewrite_allowed": false
+  },
+  "research_boundary": {
+    "source_rows_or_column_values_read": false,
+    "candidate_or_comparator_values_read": false,
+    "historical_daily_price_or_forward_return_values_read": false,
+    "stress_2024_2025_opened": false,
+    "provider_request_issued": false,
+    "provider_credential_value_or_digest_read": false,
+    "candidate49_ledgers_changed": false
+  }
+}

@@ -1,0 +1,86 @@
+{
+  "version": 1,
+  "kind": "a_share_three_day_walkforward_campaign034_feature_implementation_freeze",
+  "status": "frozen_and_synthetic_tested_before_campaign034_historical_minute_partition_or_candidate_values",
+  "recorded_at": "2026-07-30T18:25:00Z",
+  "purpose": "Bind the exact Campaign034 close-only round-tenth-avoidance implementation, inherited publication/comparison machinery, protocol, and synthetic tests before opening any historical minute partition or candidate value.",
+  "authoritative_state": {
+    "path": "docs/a_share_three_day_iteration_status_20260730_campaign033_verified.json",
+    "sha256": "b77415e771ac1096f8422574bcbd0ce5db81e235734f6b3fbda4dcd147d41496"
+  },
+  "concept_scouting": {
+    "path": "docs/a_share_three_day_walkforward_campaign_034_concept_scouting.json",
+    "sha256": "d68ac83ed93869579cff065b915432168e1d958dc7651dc826e42e4d98f3b76d"
+  },
+  "mechanism_overlap_audit": {
+    "path": "docs/a_share_three_day_walkforward_campaign_034_mechanism_overlap_audit.json",
+    "sha256": "19ab4e57d2ddaf3890374c4c2c50df718203f2de32c86f60ba44010d564b6d80"
+  },
+  "no_return_preregistration": {
+    "path": "docs/a_share_three_day_walkforward_campaign_034_no_return_preregistration.json",
+    "sha256": "de5d6a4795cbe31bbb5b4cb74c4f663503c72c6301d144672916c22eaaab737c"
+  },
+  "feature_runner": {
+    "path": "scripts/a_share_three_day_walkforward_campaign034_features.py",
+    "sha256": "f735b6335855da4e4aa938c01d1452af27345266f374b07cfd1c1412eba8c545"
+  },
+  "frozen_base_feature_runner": {
+    "path": "scripts/a_share_three_day_walkforward_campaign033_features.py",
+    "sha256": "ae3a523b3fdf0de128a878346b4b0368744ddc61e32e89bc94c0abe3426f70d1"
+  },
+  "feature_tests": {
+    "path": "tests/data_collector_tests/test_a_share_three_day_walkforward_campaign034_features.py",
+    "sha256": "23f9fee5b962e1fe0fda1fd5f317a0f6d53753fc738d8a71e92ee5faa8a9b352",
+    "focused_with_campaign033_regression_tests_passed": 18,
+    "failed": 0
+  },
+  "candidate49_signal_ledger": {
+    "path": "data/experiments/short_horizon/candidate49_future_signal_ledger.json",
+    "sha256": "5193f00d7f36da003f53cec387900da4c3d002299f5dfcfc1a95eaa199ed3a79",
+    "entry_count": 0
+  },
+  "candidate49_execution_ledger": {
+    "path": "data/experiments/short_horizon/candidate49_future_execution_ledger.json",
+    "sha256": "d57a3e61eac969e42cafa418ccd8c0a5ee65dcf69da145bb2c096c2a02a2ea4f",
+    "entry_count": 0
+  },
+  "implementation_semantics": {
+    "factor": "intraday_round_tenth_close_avoidance_240m",
+    "source_projection": [
+      "datetime",
+      "symbol",
+      "provider",
+      "close"
+    ],
+    "selected_closes": 240,
+    "raw_unadjusted_price_required": true,
+    "base_tick_cny": 0.01,
+    "round_price_grid_cny": 0.1,
+    "tick_integer_tolerance_fen": 1e-06,
+    "support_denominator": 240,
+    "valid_range": [
+      0.0,
+      1.0
+    ],
+    "synthetic_all_round_tenths_score": 0.0,
+    "synthetic_all_non_round_fen_score": 1.0,
+    "synthetic_sixty_of_240_round_tenths_score": 0.75,
+    "synthetic_non_tick_price_missing": true,
+    "deduplication_time_weighting_activity_weighting_or_price_change_conditioning_added": false
+  },
+  "research_boundary": {
+    "external_campaign034_minute_partitions_read": false,
+    "candidate_values_read": false,
+    "comparison_values_read": false,
+    "daily_price_fields_read": false,
+    "forward_returns_read": false,
+    "provider_request_issued": false,
+    "candidate49_historical_return_signal_or_execution_backfill_performed": false,
+    "current_scoring_selection_sizing_or_orders_performed": false
+  },
+  "decision": {
+    "binding_validator_exit_zero_required_before_snapshot_build": true,
+    "snapshot_build_allowed_after_validation": true,
+    "comparison_or_return_values_allowed_before_snapshot_binding": false
+  }
+}

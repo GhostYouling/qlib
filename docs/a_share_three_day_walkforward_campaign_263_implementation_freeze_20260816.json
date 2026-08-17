@@ -1,0 +1,43 @@
+{
+  "schema_version": 1,
+  "kind": "a_share_three_day_walkforward_campaign263_implementation_freeze",
+  "status": "formula_builder_and_tests_frozen_before_real_build",
+  "recorded_at": "2026-08-16T11:27:00Z",
+  "timestamp_semantics": "monotonic logical append time after synthetic tests and before the first real source row",
+  "protocol_path": "docs/a_share_three_day_walkforward_campaign_263_no_return_preregistration_20260816.json",
+  "protocol_sha256": "07c5875034f3e26e6a98f01e3329b3cf1d3d287d119c9358e32e5a2e76b5b924",
+  "code": {
+    "formula_path": "scripts/a_share_three_day_walkforward_campaign263_formula.py",
+    "formula_sha256": "29b952bb36e9dbb123b740977b4e778bec3ed547e3c8701e97f6fa92e3123401",
+    "feature_builder_path": "scripts/a_share_three_day_walkforward_campaign263_features.py",
+    "feature_builder_sha256": "84fbe68b8e2c3e7f23501f295924dbe9ad60fe6e93755fb63ebee0d521867bee"
+  },
+  "tests": {
+    "formula_test_path": "tests/data_collector_tests/test_a_share_three_day_walkforward_campaign263_formula.py",
+    "formula_test_sha256": "e401101b145151619ed96e780632b89a0ddab3327e9c009b17df4435efb3de71",
+    "feature_test_path": "tests/data_collector_tests/test_a_share_three_day_walkforward_campaign263_features.py",
+    "feature_test_sha256": "d3bb4ab551133ff6a06f5feaebf508c55a17af7b926f4b1a51f1c46acfc24bfc",
+    "command": "PYTHONPATH=/Volumes/DIsk/Disk-Coding/qlib /Volumes/DIsk/Coding/anaconda3/bin/python3.12 -m pytest -q tests/data_collector_tests/test_a_share_three_day_walkforward_campaign263_formula.py tests/data_collector_tests/test_a_share_three_day_walkforward_campaign263_features.py",
+    "exit_code": 0,
+    "passed": 19,
+    "failed": 0
+  },
+  "factor": {
+    "name": "intraday_amount_profile_spectral_entropy_60f",
+    "direction": "higher",
+    "valid_range_inclusive": [0.0, 1.0],
+    "selected_frequency_bins": 60
+  },
+  "complete_definition_count": 162,
+  "complete_definition_order_sha256": "974f2c1f16a85eb43a0bd1e8db768dbe120cd8826c1754d5f220bf9f1d4a3ea0",
+  "numeric_comparator_count": 142,
+  "numeric_comparator_order_sha256": "5d1b35fb5a0d8ac9293008db9963c4a60a94dc940c237c3ed259e5ce44f14aaf",
+  "research_boundary": {
+    "historical_source_rows_read": false,
+    "candidate_or_comparator_values_read": false,
+    "historical_daily_price_or_forward_return_values_read": false,
+    "provider_request_issued": false,
+    "provider_credential_presence_value_or_digest_read": false,
+    "candidate49_ledgers_changed": false
+  }
+}

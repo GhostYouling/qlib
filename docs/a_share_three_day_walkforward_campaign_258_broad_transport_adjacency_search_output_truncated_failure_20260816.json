@@ -1,0 +1,22 @@
+{
+  "schema_version": 1,
+  "kind": "a_share_three_day_walkforward_campaign258_infrastructure_failure",
+  "recorded_at": "2026-08-16T14:04:00+08:00",
+  "timestamp_semantics": "monotonic_logical_append_time_not_host_wall_clock_measurement",
+  "status": "failed_broad_transport_adjacency_search_output_truncated",
+  "attempt_id": "campaign258_infrastructure_002",
+  "phase": "prevalue_source_frontier_overlap_audit",
+  "command_semantics": "A read-only case-insensitive search for broad transport, fleet, vehicle, traffic, infrastructure, signal, telecommunications and safety-critical adjacency terms across source-frontier JSON files exceeded the output budget and was explicitly truncated.",
+  "disposition": "Discard the full broad-search output. Use a separate bounded exact railway-domain phrase search, enumerate source-frontier filenames in two bounded windows, and inspect only the independently identified adjacent passenger-transport, telecommunications, automotive, aerospace, testing, rental, elevator, electrical, material-handling and audiovisual frontiers.",
+  "research_boundary": {
+    "repository_file_written_by_failed_command": false,
+    "candidate_or_comparator_value_read": false,
+    "daily_price_or_forward_return_read": false,
+    "provider_or_web_request_issued": false,
+    "provider_credential_presence_value_or_digest_read": false,
+    "candidate49_plan_or_run_executed": false,
+    "candidate49_ledgers_changed": false,
+    "stress_2024_2025_opened": false,
+    "failed_or_truncated_output_used_as_scientific_or_validation_evidence": false
+  }
+}

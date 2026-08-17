@@ -1,0 +1,52 @@
+{
+  "schema_version": 1,
+  "kind": "a_share_three_day_walkforward_campaign085_development_binary_runtime_failure",
+  "status": "recorded_before_any_market_value_or_return_read",
+  "recorded_at": "2026-08-06T23:50:00+08:00",
+  "failed_invocation": {
+    "interpreter": "/Users/niyufei/.cache/codex-runtimes/codex-primary-runtime/dependencies/python/bin/python3",
+    "module": "scripts.a_share_three_day_walkforward_campaign085",
+    "command": "run-development",
+    "exit_status": "caught_by_campaign_runner_and_appended_as_infrastructure_failure"
+  },
+  "observed": {
+    "stage": "qlib_data_binary_extension_import",
+    "exception_type": "ImportError",
+    "extension": "/Volumes/DIsk/Disk-Coding/qlib/qlib/data/_libs/rolling.cpython-312-darwin.so",
+    "missing_dependency": "@rpath/libc++.1.dylib",
+    "market_execution_data_loaded": false,
+    "historical_daily_price_values_read": false,
+    "historical_forward_return_values_read": false,
+    "candidate_factor_values_read_by_development": false,
+    "partial_market_data_or_statistics_reusable": false
+  },
+  "preserved_internal_trial_ledger": {
+    "path": "data/experiments/short_horizon/historical_walkforward/campaign_085/walkforward/trial_ledger.json",
+    "sha256": "d1aa8d4d570a30eab29bddb62f625149c9bb6e3759153f8329020ee9738882b9",
+    "entry_count": 1,
+    "chain_tip_sha256": "852a4625c5735f91cc3b3f22b408dc602dc0327615ea28f7a38723ee3d55fb93",
+    "trial_id": "wf085_infrastructure__development_load_001",
+    "phase": "infrastructure_failure",
+    "status": "infrastructure_failed",
+    "complete_development_trial_count": 0
+  },
+  "unchanged_bindings": {
+    "development_preregistration": {
+      "path": "docs/a_share_three_day_walkforward_campaign_085_preregistration_v2.json",
+      "sha256": "fd2bf11241f1051c5c676271393d1df6b1a61359d626f4bc5d1e02853c99c908"
+    },
+    "development_runner": {
+      "path": "scripts/a_share_three_day_walkforward_campaign085.py",
+      "sha256": "21ec216fd30b25723778898a4dd4fe844f128e578d11f736e57bd9def91f5d5d"
+    },
+    "successful_no_return_audit_sha256": "eb68a783b4719103c678b69c388ceb9c1828ef4f8a16999360c993db45c560fd"
+  },
+  "research_boundary": {
+    "stress_2024_2025_opened": false,
+    "provider_request_issued": false,
+    "candidate49_historical_backfill_performed": false,
+    "candidate49_ledgers_changed": false,
+    "current_scoring_selection_sizing_or_orders_performed": false
+  },
+  "disposition": "Preserve the failed internal entry and external attempt; permit no retry until a hash-bound Campaign083-compatible interpreter-only repair is frozen."
+}

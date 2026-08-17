@@ -1,0 +1,80 @@
+{
+  "schema_version": 1,
+  "kind": "a_share_three_day_walkforward_campaign203_terminal_validation",
+  "status": "focused_cumulative_independent_and_bounded_diff_validation_passed",
+  "recorded_at": "2026-08-15T19:40:10+08:00",
+  "timestamp_semantics": "monotonic logical append time after effective Campaign203 policy v304 and all completed fresh validation commands",
+  "authoritative_inputs": {
+    "policy_v304": {
+      "path": "docs/a_share_three_day_walkforward_future_numeric_comparison_eligibility_policy_v304_20260815.json",
+      "sha256": "4721525d498e00e05c45a739b281395af7c78e23be841aa3a68d0180b94a6536"
+    },
+    "terminal_result_v7": {
+      "path": "docs/a_share_three_day_walkforward_campaign_203_terminal_result_v7_20260815.json",
+      "sha256": "81ef804207834378ea29607b76d0d5724468ca68a79b0a1d477f648004dc98a8"
+    },
+    "attempt_ledger_v7": {
+      "path": "data/experiments/short_horizon/historical_walkforward/campaign_203/research_attempt_ledger_v7.json",
+      "sha256": "d5f919699887eb325518afd6e6bb371bb5b879e41c91143e0d0d0cffd3452903"
+    },
+    "focused_test": {
+      "path": "tests/data_collector_tests/test_a_share_three_day_walkforward_campaign203_terminal.py",
+      "sha256": "3e82ea388b2bcfdaecdcc4db1ad40b6daaea7c6f088378910c647f7bf5e9dccf"
+    }
+  },
+  "validation_results": {
+    "json_parse_passed": true,
+    "campaign203_final_json_files_parsed": 27,
+    "black_passed": true,
+    "focused_campaign203_tests_passed": 2,
+    "focused_campaign203_duration_seconds": 0.08,
+    "campaign145_through_campaign203_test_file_count": 91,
+    "campaign145_through_campaign203_tests_passed": 474,
+    "campaign145_through_campaign203_tests_skipped": 1,
+    "campaign145_through_campaign203_nodes_deselected": 18,
+    "campaign145_through_campaign203_duration_seconds": 14.48,
+    "independent_validation_passed": true,
+    "bounded_git_diff_check_passed": true,
+    "direct_authoritative_reference_hashes_verified": 82,
+    "campaign203_attempt_entries_verified": 15,
+    "campaign203_evidence_hashes_verified": 15,
+    "campaign203_predecessor_ledger_hashes_verified": 7,
+    "campaign203_attempt_hash_chain_passed": true,
+    "finite_routes_verified": 7,
+    "source_gate_items_verified": 12,
+    "candidate49_ledgers_verified": 2,
+    "unified_reports_checked": 2,
+    "trailing_whitespace_check_passed": true,
+    "trailing_whitespace_files_checked": 30,
+    "failed_or_truncated_invocations_recorded_and_excluded": 8
+  },
+  "effective_accounting_verified": {
+    "campaign203_attempt_count": 15,
+    "campaign203_scientific_attempt_count": 7,
+    "campaign203_infrastructure_failure_count": 8,
+    "cumulative_historical_research_attempt_count": 1859,
+    "cumulative_return_reading_development_trial_count": 314
+  },
+  "candidate49": {
+    "only_active_prospective_candidate": true,
+    "signal_ledger_sha256": "5193f00d7f36da003f53cec387900da4c3d002299f5dfcfc1a95eaa199ed3a79",
+    "signal_entry_count": 0,
+    "execution_ledger_sha256": "d57a3e61eac969e42cafa418ccd8c0a5ee65dcf69da145bb2c096c2a02a2ea4f",
+    "execution_entry_count": 0,
+    "ledgers_changed": false
+  },
+  "research_boundary": {
+    "failed_or_truncated_output_used_as_scientific_or_validation_evidence": false,
+    "source_passenger_booking_ticket_trip_baggage_disruption_compensation_factor_comparator_security_price_or_return_value_read": false,
+    "directly_identifiable_or_precise_passenger_travel_record_read": false,
+    "stress_2024_2025_opened": false,
+    "provider_or_web_request_issued": false,
+    "provider_credential_presence_value_or_digest_read": false,
+    "candidate49_plan_or_run_executed": false,
+    "candidate49_ledgers_changed": false,
+    "second_prospective_candidate_created": false,
+    "current_scoring_selection_sizing_positions_or_orders_performed": false,
+    "investment_advice": false
+  },
+  "next_action": "Publish the final Campaign203 active-goal state and authorize Campaign204 to scout a genuinely different finite offline prevalue mechanism while preserving all frozen boundaries."
+}

@@ -1,0 +1,43 @@
+{
+  "version": 1,
+  "kind": "a_share_three_day_walkforward_campaign051_terminal_status_test_failure",
+  "status": "infrastructure_only_assertion_semantics_corrected_without_research_read",
+  "recorded_at": "2026-08-03T07:57:30Z",
+  "purpose": "Preserve the failed terminal status assertion and the exact no-survivor stress semantics before publishing additive corrected evidence.",
+  "failed_test_run": {
+    "passed": 26,
+    "failed": 1,
+    "failed_test": "test_campaign051_status_has_exactly_one_trial_and_terminal_closed_stress",
+    "observed": {
+      "stress_intent_exists": false,
+      "stress_record_exists": true
+    },
+    "incorrect_expected_stress_intent_exists": true,
+    "test_file_sha256_at_failure": "1258a118610cacbe05dcce7e8aab8328888406f6e354ecb03735810c592ae950"
+  },
+  "correction": {
+    "description": "A zero-survivor campaign publishes the immutable not-opened stress record but creates no intent to execute stress replay.",
+    "current_campaign_tests": {
+      "path": "tests/data_collector_tests/test_a_share_three_day_walkforward_campaign051.py",
+      "sha256": "122e4aed14dac776895ccaa525b3b3bd6b1bb19b5612571fa0ae355971c148f7"
+    },
+    "current_terminal_tests": {
+      "path": "tests/data_collector_tests/test_a_share_three_day_walkforward_campaign051_terminal.py",
+      "sha256": "0edab36b1bfdd36f410970e7c84bb979bfc1df602ff2c58b800529235c865bb4"
+    },
+    "previous_post_result_transition": {
+      "path": "docs/a_share_three_day_walkforward_campaign_051_post_result_test_transition_20260803.json",
+      "sha256": "34cac6696f61a0fd578ab4c852a7d06d814723cdf7b6d5ee4632a3601663649a"
+    },
+    "runner_formula_gate_or_result_changed": false
+  },
+  "research_boundary": {
+    "historical_daily_price_fields_read": [],
+    "historical_forward_return_fields_read": false,
+    "2024_2025_stress_return_read": false,
+    "candidate49_historical_return_read": false,
+    "candidate49_ledgers_changed": false,
+    "provider_request_issued": false,
+    "current_scoring_selection_sizing_or_orders_performed": false
+  }
+}

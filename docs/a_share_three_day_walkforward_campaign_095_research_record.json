@@ -1,0 +1,78 @@
+{
+  "schema_version": 1,
+  "kind": "a_share_three_day_walkforward_campaign095_research_record",
+  "status": "terminal_prevalue_semantic_inconsistency_no_numeric_audit_or_returns",
+  "recorded_at": "2026-08-07T04:00:03Z",
+  "campaign_id": "a_share_three_day_walkforward_campaign_095",
+  "factor_definition": {
+    "name": "intraday_own_bar_close_location_entropy_10b_240m",
+    "direction": "higher",
+    "formula": "Normalized ten-bin Shannon entropy of positive-range own-bar log close locations using floor(10*x) with exact x=1 in bin 9 and at least 120 informative bars.",
+    "original_hypothesis": "Broad local close acceptance may indicate resilient two-sided auction liquidity that persists for three sessions.",
+    "terminal_rejection": "The frozen half-open internal-bin rule is not unconditionally reflection invariant at exact internal bin edges, contradicting a required semantic claim in the frozen mechanism audit.",
+    "same_campaign_redefinition_rebinning_transform_inversion_filter_model_or_combination_allowed": false
+  },
+  "prevalue_evidence": {
+    "concept_scouting": {
+      "path": "docs/a_share_three_day_walkforward_campaign_095_concept_scouting.json",
+      "sha256": "3a869f9a07a1ed3b740b1931bbbb598cb537146ac048771b81bde2a33d5c357d"
+    },
+    "mechanism_overlap_audit": {
+      "path": "docs/a_share_three_day_walkforward_campaign_095_mechanism_overlap_audit.json",
+      "sha256": "9cb39096e7f4ba1b1f82b24c55541faf90fdc3d9cfa0c5348b0040c4645be0fc",
+      "preserved_with_false_reflection_claim": true
+    },
+    "no_return_preregistration": {
+      "path": "docs/a_share_three_day_walkforward_campaign_095_no_return_preregistration.json",
+      "sha256": "195500baf00a6acde553939280cef53ea4303db915cb29746fa3f382001dd9b3"
+    },
+    "semantic_failure": {
+      "path": "docs/a_share_three_day_walkforward_campaign_095_prevalue_reflection_semantic_failure_20260807.json",
+      "sha256": "6c047dfcc4e2e0fa46c30c29a0828d37f31516671679e65912c6228b4ff45684"
+    },
+    "attempt_ledger": {
+      "path": "data/experiments/short_horizon/historical_walkforward/campaign_095/research_attempt_ledger_v1.json",
+      "sha256": "e9794d62abf3a752aa3142e7316456487ad4d688d101f6b54c713da481320797"
+    },
+    "numeric_policy_v39": {
+      "path": "docs/a_share_three_day_walkforward_future_numeric_comparison_eligibility_policy_v39_20260807.json",
+      "sha256": "26af71f841cf9d1880821b61853a347dfff9bc42652b2af09220aebf72de9bb6"
+    }
+  },
+  "value_and_return_boundary": {
+    "candidate_minute_source_rows_read": false,
+    "candidate_values_computed": false,
+    "comparison_values_read": false,
+    "historical_daily_price_fields_read": [],
+    "historical_forward_returns_read": false,
+    "feature_snapshot_created": false,
+    "development_trial_count": 0,
+    "stress_2024_2025_opened": false,
+    "provider_request_issued": false
+  },
+  "attempt_accounting": {
+    "campaign095_infrastructure_or_implementation_failures": 0,
+    "campaign095_complete_factor_attempts": 1,
+    "campaign095_attempts": 1,
+    "campaign095_ledger_entries": 1,
+    "campaign095_return_reading_development_trials": 0,
+    "cumulative_historical_attempts": 659,
+    "cumulative_return_reading_development_trials": 291
+  },
+  "candidate49_future_only_layer": {
+    "remains_only_active_prospective_candidate": true,
+    "signal_ledger_sha256": "5193f00d7f36da003f53cec387900da4c3d002299f5dfcfc1a95eaa199ed3a79",
+    "signal_ledger_entries": 0,
+    "execution_ledger_sha256": "d57a3e61eac969e42cafa418ccd8c0a5ee65dcf69da145bb2c096c2a02a2ea4f",
+    "execution_ledger_entries": 0,
+    "historical_backfill_performed": false,
+    "provider_request_issued": false,
+    "second_prospective_candidate_created": false
+  },
+  "limitations_and_prohibitions": {
+    "current_listing_snapshot_survivorship_bias": true,
+    "historical_result_may_generate_current_scores_selection_sizing_orders_or_investment_advice": false,
+    "campaign095_may_be_reopened_or_rescued": false
+  },
+  "next_action": "Use v39 with 127 complete definitions and the unchanged 124 numeric comparators; Campaign096 may begin offline only from a genuinely independent pre-value-frozen mechanism."
+}

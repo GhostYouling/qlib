@@ -1,0 +1,49 @@
+{
+  "version": 4,
+  "kind": "a_share_three_day_walkforward_campaign074_postcompletion_failure_accounting_correction",
+  "status": "additive_current_accounting_supersedes_v3_without_rewriting",
+  "recorded_at": "2026-08-06T08:47:00+08:00",
+  "supersedes_without_rewriting": {
+    "path": "docs/a_share_three_day_walkforward_campaign_074_postcompletion_failure_accounting_correction_v3_20260806.json",
+    "sha256": "0acfce210c5a9e0f275ec4bd98eed91cbbee42b8083f70e4286a7dfe6d769a41",
+    "preserved": true
+  },
+  "previous_current_attempt_ledger": {
+    "path": "data/experiments/short_horizon/historical_walkforward/campaign_074/research_attempt_ledger_v5.json",
+    "sha256": "926fabf28f7be4302c5e884fb05dba1023d78d82b639736c5bdf094cb2e37295",
+    "preserved": true
+  },
+  "previous_current_research_record": {
+    "path": "docs/a_share_three_day_walkforward_campaign_074_research_record_v4.json",
+    "sha256": "60b2aefc62c43279f492209bc30bd2bdbf04cd3ab36138a89ba287a98f8808bf",
+    "preserved": true
+  },
+  "noncurrent_terminal_freeze": {
+    "path": "docs/a_share_three_day_walkforward_campaign_074_terminal_completion_freeze_20260806.json",
+    "sha256": "b07c74dc80ab44e50e6f3773f2ddcdca6b234030ece1b94dc3b61a8ce4caface",
+    "preserved": true,
+    "reason_not_current": "published before the validator CLI failure was appended"
+  },
+  "new_failure": {
+    "path": "docs/a_share_three_day_walkforward_campaign_074_terminal_binding_validator_cli_failure_20260806.json",
+    "sha256": "b5bfa3d2aeb5980789d76db2249c26299e5949282c63a4ff3ec260bdd06b1ea1",
+    "failed_command_count": 1,
+    "binding_targets_read": false,
+    "historical_daily_price_or_forward_return_values_read": false
+  },
+  "corrected_accounting": {
+    "campaign074_infrastructure_failure_count": 9,
+    "campaign074_complete_factor_attempt_count": 1,
+    "campaign074_attempt_count": 10,
+    "campaign074_ledger_entry_count": 11,
+    "campaign074_return_reading_development_trial_count": 1,
+    "cumulative_historical_research_attempt_count": 452,
+    "cumulative_return_reading_development_trial_count": 276
+  },
+  "unchanged_research_result": {
+    "numeric_comparisons_passed": 104,
+    "development_survivor_count": 0,
+    "stress_2024_2025_opened": false,
+    "stress_returns_read": false
+  }
+}

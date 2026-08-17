@@ -1,0 +1,52 @@
+{
+  "schema_version": 1,
+  "kind": "a_share_three_day_walkforward_campaign092_terminal_completion_freeze",
+  "status": "terminal_zero_survivors_stress_closed_and_reporting_frozen",
+  "recorded_at": "2026-08-07T00:55:00Z",
+  "research_record": {
+    "path": "docs/a_share_three_day_walkforward_campaign_092_research_record.json",
+    "sha256": "9cd9feb1a4c7a6fbc2bca126d08481813c8577a4b2a55f52166c1c18fed6b766"
+  },
+  "final_attempt_ledger": {
+    "path": "data/experiments/short_horizon/historical_walkforward/campaign_092/research_attempt_ledger_v3.json",
+    "sha256": "fb93b805deb342001e3b0b7fded584b707caa0f8cda2607c85033cae22ed5686",
+    "attempt_count": 6,
+    "ledger_entry_count": 9,
+    "return_reading_development_trial_count": 1
+  },
+  "terminal_result": {
+    "factor": "intraday_interbar_gap_discovery_share_238p",
+    "coverage_gate_passed": true,
+    "numeric_comparisons_passed": 121,
+    "maximum_absolute_median_daily_rank_correlation": 0.7651913418374151,
+    "development_survivor_count": 0,
+    "development_aggregate_20bp_return": -0.13979600061445785,
+    "worst_validation_normalized_drawdown": -0.2466809286106948,
+    "stress_2024_2025_opened": false,
+    "stress_return_fields_read": false
+  },
+  "final_accounting": {
+    "cumulative_historical_research_attempt_count": 646,
+    "cumulative_return_reading_development_trial_count": 290
+  },
+  "future_duplicate_detection": {
+    "complete_definition_count": 124,
+    "complete_definition_order_sha256": "a77f964349dd9c5d924bb8d6e2000682791cd765ff4b9c5c50576309cf815758",
+    "numeric_comparator_count": 122,
+    "numeric_comparator_order_sha256": "8e5afb41c25060c7071e713ecc9589a6db8a706da5c441349dc298fca26da390"
+  },
+  "immutability": {
+    "campaign092_formula_direction_gates_or_result_may_change": false,
+    "campaign092_rescue_retest_combination_or_stress_return_read_allowed": false,
+    "old_artifacts_or_failure_entries_rewritten": false
+  },
+  "research_boundary": {
+    "research_values_or_returns_recomputed_for_sync": false,
+    "provider_request_issued": false,
+    "candidate49_historical_backfill_performed": false,
+    "candidate49_ledgers_changed": false,
+    "second_prospective_candidate_created": false,
+    "current_scoring_selection_sizing_or_orders_performed": false,
+    "investment_advice": false
+  }
+}

@@ -1,0 +1,73 @@
+{
+  "schema_version": 1,
+  "kind": "a_share_three_day_walkforward_campaign095_prevalue_semantic_failure",
+  "status": "terminal_before_minute_source_or_candidate_values_due_to_false_reflection_invariance_claim",
+  "recorded_at": "2026-08-07T03:55:40Z",
+  "factor": {
+    "name": "intraday_own_bar_close_location_entropy_10b_240m",
+    "direction": "higher",
+    "frozen_formula": "For every positive-range selected bar compute x=(log(close)-log(low))/(log(high)-log(low)), assign floor(10*x) with exact x=1 in bin 9, require at least 120 informative bars, and compute normalized ten-bin Shannon entropy."
+  },
+  "frozen_records": {
+    "concept_scouting": {
+      "path": "docs/a_share_three_day_walkforward_campaign_095_concept_scouting.json",
+      "sha256": "3a869f9a07a1ed3b740b1931bbbb598cb537146ac048771b81bde2a33d5c357d"
+    },
+    "mechanism_overlap_audit": {
+      "path": "docs/a_share_three_day_walkforward_campaign_095_mechanism_overlap_audit.json",
+      "sha256": "9cb39096e7f4ba1b1f82b24c55541faf90fdc3d9cfa0c5348b0040c4645be0fc"
+    },
+    "no_return_preregistration": {
+      "path": "docs/a_share_three_day_walkforward_campaign_095_no_return_preregistration.json",
+      "sha256": "195500baf00a6acde553939280cef53ea4303db915cb29746fa3f382001dd9b3"
+    },
+    "unfrozen_feature_prototype": {
+      "path": "scripts/a_share_three_day_walkforward_campaign095_features.py",
+      "sha256": "f91793dff56c9d9840464ea14e646e75034519aafb35d7c74398606eb2a09d9c"
+    },
+    "synthetic_test_module": {
+      "path": "tests/data_collector_tests/test_a_share_three_day_walkforward_campaign095_features.py",
+      "sha256": "f7abd9b6590c73fb0aa596da05eb54c4fdc89557d8a604e878cc7a22eff90541"
+    }
+  },
+  "failed_command": "PYTHONPATH=/Volumes/DIsk/Disk-Coding/qlib /Volumes/DIsk/Coding/anaconda3/bin/python3.12 -m pytest -q tests/data_collector_tests/test_a_share_three_day_walkforward_campaign095_features.py",
+  "test_receipt": {
+    "passed": 5,
+    "failed": 1,
+    "failed_node": "test_reflection_and_permutation_are_invariant",
+    "observed_base_entropy": 0.99608762,
+    "observed_reflected_entropy": 0.99462907
+  },
+  "root_cause": "For exact internal boundary states, floor(10*x) and floor(10*(1-x)) do not produce a pure reversal of the ten count vector under the frozen half-open-bin rule. Exact x=1 receives a special terminal-bin rule, while internal exact edges enter the upper bin. The mechanism audit's unconditional reflection-invariance claim is therefore false for a nonempty valid input set.",
+  "classification": {
+    "scientific_semantic_failure": true,
+    "infrastructure_or_implementation_failure": false,
+    "complete_factor_attempt": true,
+    "return_reading_development_trial": false
+  },
+  "research_boundary": {
+    "campaign095_minute_source_rows_read": false,
+    "campaign095_candidate_values_computed": false,
+    "comparison_values_read": false,
+    "historical_daily_price_fields_read": [],
+    "historical_forward_returns_read": false,
+    "feature_snapshot_created": false,
+    "development_preregistration_created": false,
+    "development_trial_run": false,
+    "stress_2024_2025_opened": false,
+    "provider_request_issued": false,
+    "candidate49_ledgers_changed": false,
+    "candidate49_historical_backfill_performed": false,
+    "second_prospective_candidate_created": false,
+    "current_scoring_selection_sizing_or_orders_performed": false,
+    "investment_advice": false
+  },
+  "terminal_decision": {
+    "campaign095_may_be_repaired_rerun_or_rescued": false,
+    "frozen_records_or_failed_test_may_be_rewritten": false,
+    "alternate_symmetric_bin_rule_may_be_tested_as_campaign095": false,
+    "numeric_comparator_eligibility": false,
+    "historical_predictive_value_established": false,
+    "next_action": "Append the exact failed definition as semantic-only terminal evidence, freeze the next policy, and select a genuinely independent Campaign096 mechanism rather than a bin-boundary repair."
+  }
+}

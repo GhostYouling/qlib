@@ -1,0 +1,94 @@
+{
+  "schema_version": 1,
+  "kind": "a_share_three_day_iteration_status",
+  "status": "campaign263_validation_passed_goal_active_campaign264_offline_prevalue_authorized",
+  "recorded_at": "2026-08-16T22:49:00+08:00",
+  "timestamp_semantics": "Asia/Singapore wall time after Campaign263 focused terminal validation; Sunday session boundary remains closed for Candidate49 daily work",
+  "supersedes_without_rewriting": {
+    "path": "docs/a_share_three_day_iteration_status_20260816_campaign262_terminal.json",
+    "sha256": "e98a1c3bb24d40bcf50e0dc8a040700777c2b328fd9ec3e33bda392bd5e0f30f"
+  },
+  "authoritative_policy": {
+    "path": "docs/a_share_three_day_walkforward_future_numeric_comparison_eligibility_policy_v414_20260816.json",
+    "sha256": "a41c4a3849d5a14c448e76d9c7f6cc5bf0603da2b8db57cadc85d1534349dac0"
+  },
+  "campaign263": {
+    "terminal_result": {
+      "path": "docs/a_share_three_day_walkforward_campaign_263_terminal_result_v6_20260816.json",
+      "sha256": "e4b11b5d857d2e1377d174d9b1c9c16c5910d5f6f72b446940a2119df49f2cff"
+    },
+    "terminal_validation": {
+      "path": "docs/a_share_three_day_walkforward_campaign_263_terminal_validation_20260816.json",
+      "sha256": "70b193b3664148025e6218cb7dfedd160d7f0aaaeb14862722966fadebf185c3"
+    },
+    "attempt_ledger": {
+      "path": "data/experiments/short_horizon/historical_walkforward/campaign_263/research_attempt_ledger_v13.json",
+      "sha256": "e6075d529195cf87364b8b873d273eea57e23450cfb248f77ceead7782ca2af2",
+      "effective_entry_count": 34,
+      "chain_tip_sha256": "b84d7f5ef4d9c9c0f138612805d52392220f23745ff44fed0e1437132520abb2"
+    },
+    "factor": "intraday_amount_profile_spectral_entropy_60f",
+    "coverage_gate_passed": true,
+    "all_142_numeric_uniqueness_gates_passed": true,
+    "development_trial_count": 1,
+    "development_survivor_count": 0,
+    "stress_2024_2025_opened": false,
+    "terminal": true
+  },
+  "dual_track": {
+    "historical_walkforward": {
+      "role": "primary_iteration_engine",
+      "latest_terminal_campaign": 263,
+      "next_campaign": 264,
+      "complete_factor_definition_count": 162,
+      "numeric_comparator_count": 143,
+      "cumulative_historical_research_attempt_count": 2597,
+      "cumulative_return_reading_development_trial_count": 315,
+      "may_continue_at_any_local_time": true
+    },
+    "candidate49_future_observation": {
+      "role": "independent_confirmation_layer",
+      "sole_prospective_candidate": true,
+      "signal_ledger_entry_count": 0,
+      "execution_ledger_entry_count": 0,
+      "historical_backfill_allowed": false,
+      "second_prospective_candidate_allowed": false
+    }
+  },
+  "session_boundary": {
+    "local_date": "2026-08-16",
+    "timezone": "Asia/Singapore",
+    "accepted_local_trading_day": false,
+    "candidate49_plan_or_run_required": false,
+    "candidate49_plan_or_run_executed": false,
+    "credential_presence_value_or_digest_read": false,
+    "provider_or_web_request_issued": false
+  },
+  "validation_summary": {
+    "focused_campaign263_tests_passed": 45,
+    "focused_campaign263_tests_failed": 0,
+    "preactivation_stage_test_deselected": 1,
+    "ruff_campaign263_python_files_passed": 24,
+    "black_non_exempt_files_passed": 19,
+    "black_frozen_files_exempt": 5,
+    "candidate49_ledgers_unchanged_and_empty": true,
+    "unified_reports_updated": true
+  },
+  "research_boundary": {
+    "historical_2019_2023_daily_price_or_forward_return_values_read": true,
+    "stress_2024_2025_opened": false,
+    "candidate49_historical_backfill_performed": false,
+    "candidate49_ledgers_changed": false,
+    "second_prospective_candidate_created": false,
+    "provider_or_web_request_issued": false,
+    "current_scoring_selection_sizing_positions_or_orders_performed": false,
+    "investment_advice": false
+  },
+  "goal": {
+    "objective": "请持续迭代因子。",
+    "status": "active",
+    "terminal_condition_reached": false,
+    "next_campaign": 264
+  },
+  "next_action": "Begin Campaign264 only with a new finite independent zero-network prevalue mechanism, compare against all 143 frozen numeric comparators after coverage, and keep Candidate49 as the sole independent prospective ledger."
+}

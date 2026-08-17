@@ -1,0 +1,21 @@
+{
+  "schema_version": 1,
+  "kind": "a_share_three_day_walkforward_campaign127_infrastructure_failure",
+  "status": "failed_before_any_write_due_to_terminal_report_append_patch_context_mismatch",
+  "recorded_at": "2026-08-14T05:10:11+0800",
+  "stage": "terminal_report_creation_and_unified_report_append",
+  "failure": {
+    "operation": "apply_patch",
+    "reason": "The patch expected the final Campaign126 sentence as a standalone context line, while both unified reports contain it inside a longer paragraph.",
+    "patch_rejected_before_any_write": true,
+    "campaign127_terminal_report_created_by_failed_patch": false,
+    "unified_reports_changed_by_failed_patch": false
+  },
+  "scientific_effect": {
+    "provider_request_issued": false,
+    "candidate_comparator_price_or_return_values_read": false,
+    "candidate49_ledgers_changed": false,
+    "campaign127_source_terminal_conclusion_changed": false
+  },
+  "recovery": "Use exact whole-paragraph context for the two append operations and create the standalone report in a separate successful patch; preserve this failure in a new append-only ledger version."
+}

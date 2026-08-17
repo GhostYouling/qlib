@@ -1,0 +1,55 @@
+{
+  "version": 1,
+  "kind": "a_share_three_day_walkforward_campaign050_no_return_audit_entrypoint_freeze",
+  "status": "frozen_before_first_and_only_campaign050_no_return_audit",
+  "recorded_at": "2026-08-01T08:23:10Z",
+  "purpose": "Bind the snapshot-aware Campaign050 audit entrypoint and its regression coverage before the first comparison-library value is loaded.",
+  "no_return_preregistration": {
+    "path": "docs/a_share_three_day_walkforward_campaign_050_no_return_preregistration.json",
+    "sha256": "32c3e889e736e050fb0326f2bceb6ddd820ae7a0b9c5f6bac09c90a5afebb10e"
+  },
+  "snapshot_publication_binding": {
+    "path": "docs/a_share_three_day_walkforward_campaign_050_snapshot_publication_binding_20260801.json",
+    "sha256": "f6e1ea181f52a0137ba0f2d03718e9f393cc98a2ecb322dd7c4d89c5f4d651d6"
+  },
+  "snapshot_bound_entrypoint": {
+    "path": "scripts/a_share_three_day_walkforward_campaign050_features_v5.py",
+    "sha256": "49829302753addf02efe66caaf5e9bf391ffd605da9a1f056705c6dca034b35b"
+  },
+  "snapshot_binding_test": {
+    "path": "tests/data_collector_tests/test_a_share_three_day_walkforward_campaign050_snapshot_binding.py",
+    "sha256": "d5037c04abbd09a6e6e79243282d86155758b35338f879c3c3db28b7df74e9b7",
+    "passed": 1,
+    "failed": 0
+  },
+  "combined_focused_tests": {
+    "passed": 14,
+    "failed": 0
+  },
+  "ordered_audit_semantics": {
+    "coverage_capacity_before_comparison_values": true,
+    "minimum_median_coverage": 0.95,
+    "minimum_p05_coverage": 0.9,
+    "minimum_p05_eligible_names": 50,
+    "minimum_non_overlapping_three_session_cohorts": 200,
+    "comparison_count_only_after_coverage_pass": 73,
+    "maximum_allowed_absolute_median_daily_rank_correlation": 0.8,
+    "audit_attempt_limit": 1,
+    "formula_direction_threshold_comparison_order_or_catalog_changed": false
+  },
+  "research_boundary": {
+    "comparison_factor_values_read_before_freeze": false,
+    "historical_daily_price_fields_read": [],
+    "historical_forward_return_fields_read": false,
+    "training_or_model_fitting_performed": false,
+    "provider_request_issued": false,
+    "candidate49_historical_return_read": false,
+    "candidate49_ledgers_changed": false,
+    "candidate50_prospective_activation_created": false,
+    "current_scoring_selection_sizing_or_orders_performed": false
+  },
+  "decision": {
+    "audit_entrypoint_frozen": true,
+    "next_action": "Use one final additive fingerprint-bound wrapper to run exactly one Campaign050 no-return audit."
+  }
+}

@@ -1,0 +1,20 @@
+{
+  "schema_version": 1,
+  "kind": "a_share_three_day_walkforward_campaign227_infrastructure_failure",
+  "recorded_at": "2026-08-16T03:29:00+08:00",
+  "timestamp_semantics": "monotonic_logical_append_time_not_host_wall_clock_measurement",
+  "status": "failed_combined_dual_report_tail_output_truncated_and_discarded",
+  "phase": "campaign226_dual_report_tail_read",
+  "command_scope": "read-only parallel tail display of both mutable unified research reports",
+  "failure": "The merged output from two 100-line report tails exceeded the tool output budget and was truncated.",
+  "recovery": "The combined output was discarded. Each report was reread independently with a bounded 30-line tail before the Campaign227 section was appended.",
+  "research_boundary": {
+    "truncated_output_used_as_scientific_or_validation_evidence": false,
+    "repository_file_written_by_failed_command": false,
+    "candidate_or_comparator_value_read": false,
+    "daily_price_or_forward_return_read": false,
+    "provider_or_web_request_issued": false,
+    "provider_credential_presence_value_or_digest_read": false,
+    "candidate49_plan_or_run_executed": false
+  }
+}

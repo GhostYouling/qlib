@@ -1,0 +1,77 @@
+{
+  "schema_version": 1,
+  "kind": "a_share_three_day_walkforward_campaign146_development_implementation_freeze",
+  "status": "frozen_before_campaign146_2019_2023_development_return_read",
+  "recorded_at": "2026-08-14T22:16:30+08:00",
+  "filename_date_note": "The inherited runner contract names this immutable file with the 20260813 suffix; content was created on 2026-08-14 and the filename is not a claim about creation time.",
+  "purpose": "Byte-freeze the Campaign146 exact-one-trial runner, immutable minute-snapshot adapter, preregistration, complete pre-return attempt ledger and tests before the first historical daily-price or forward-return value can be loaded.",
+  "development_preregistration": {
+    "path": "docs/a_share_three_day_walkforward_campaign_146_preregistration.json",
+    "sha256": "95d342ba6524af2cd66da5501165d8a2c8fee3e15f7e2c4cab466b476e6eb292"
+  },
+  "development_runner": {
+    "path": "scripts/a_share_three_day_walkforward_campaign146.py",
+    "sha256": "51eedd507f24b07a9970e505fb995fa01cbaa43cda4e850c6072e3d1804e7af3",
+    "frozen_template_runner": {
+      "path": "scripts/a_share_three_day_walkforward_campaign128.py",
+      "sha256": "10a4b1da7e2f5d62f9ea785a4d918e6db3662225c2d66d0b74fcc2bf56d276dc"
+    },
+    "frozen_base_runner": {
+      "path": "scripts/a_share_three_day_walkforward_campaign.py",
+      "sha256": "301f5fe665422b94c9fa110e67995ff0999584a5f323ecdd5f56151a3529f5a7"
+    },
+    "adapter_scope": "Replace only the inherited partition-layout reader with the immutable per-symbol-year Campaign146 minute-derived snapshot reader; preserve every execution, fold, purge, ranking, cost and survivor function."
+  },
+  "tests": {
+    "path": "tests/data_collector_tests/test_a_share_three_day_walkforward_campaign146_development.py",
+    "sha256": "c4dfa161ae18c481ff2919f23d4b5cef04dd24594d4e023baf830ac92f969a79",
+    "passed": 7,
+    "black_formatted": true,
+    "ruff_check_passed": true,
+    "preregistration_binding_count_passed": 18,
+    "real_daily_price_or_return_values_read": false
+  },
+  "research_attempt_ledger_before_return_read": {
+    "path": "data/experiments/short_horizon/historical_walkforward/campaign_146/research_attempt_ledger_v3.json",
+    "sha256": "5e8fe369790f5265de8caf91f42361dd083dcb67dcee47b8bf6d7dbe1e3446e4",
+    "effective_entry_count": 18,
+    "chain_tip_sha256": "cdc1d91a1e46d3d7786bbce033fc9ecdb14edf9c3e961a5a72ffd3a745023685",
+    "cumulative_historical_research_attempt_count": 1269,
+    "cumulative_return_reading_development_trial_count": 313
+  },
+  "no_return_admission": {
+    "path": "data/experiments/short_horizon/historical_walkforward/campaign_146/uniqueness/campaign146_ordered_uniqueness_audit.json",
+    "sha256": "22a81e2be318669f3a673f7deb4228e06fe8f87da55d069d9cd9dcfc97216d6b",
+    "admissible_factor_count": 1,
+    "numeric_comparisons_passed": 141,
+    "maximum_observed_absolute_median_daily_rank_correlation": 0.6326668833360676
+  },
+  "candidate_snapshot": {
+    "path": "/Volumes/DIsk/qlib-a-share-tushare-1m/derived/a_share/rich/tushare/minute_walkforward_campaign146_feature_library/tushare_stk_mins_1m_2019_2025_ea0cbb8f_walkforward_campaign146_feature_library_v1/snapshot_manifest.json",
+    "sha256": "951872dbdcfa2b00e9603d3be44b059c7d24204fba5757551afbcd46ee8a3f74",
+    "dataset_sha256": "7278ae76407215eab75e9ff0119d8c6a073e4d7ac9df5b7d349bc09e6cf889c4",
+    "recovery_verification_path": "docs/a_share_three_day_walkforward_campaign_146_snapshot_recovery_verification_20260814.json",
+    "recovery_verification_sha256": "0098f33fb5759aafcfd39a97be086e849caa179e5d825f5d06d90bc0481dc44b"
+  },
+  "trial_catalog": [
+    {
+      "trial_id": "wf146_intraday_return_amount_cross_spectral_phase_lead_59f_single_higher",
+      "feature_set": [
+        "intraday_return_amount_cross_spectral_phase_lead_59f"
+      ],
+      "weights": [
+        1.0
+      ],
+      "direction": "higher",
+      "complexity": 1
+    }
+  ],
+  "trial_count": 1,
+  "historical_daily_price_fields_read_before_freeze": [],
+  "historical_forward_returns_read_before_freeze": false,
+  "stress_2024_2025_opened_before_freeze": false,
+  "candidate49_ledgers_changed_before_freeze": false,
+  "provider_request_issued_before_freeze": false,
+  "current_scoring_selection_sizing_positions_or_orders_performed": false,
+  "post_result_code_preregistration_parameter_filter_subset_direction_or_gate_change_allowed": false
+}

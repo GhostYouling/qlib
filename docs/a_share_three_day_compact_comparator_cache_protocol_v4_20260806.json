@@ -1,0 +1,130 @@
+{
+  "version": 4,
+  "kind": "a_share_three_day_candidate_independent_compact_comparator_cache_protocol",
+  "status": "frozen_dynamic_quality_composite_repair_before_v4_values",
+  "frozen_at": "2026-08-06T00:38:00+08:00",
+  "purpose": "Preserve the 98-factor logical library while representing the two candidate-universe-dependent quality composites as frozen recipes over three raw point-in-time quality auxiliaries instead of invalid globally materialized values.",
+  "authoritative_protocol_chain": [
+    {
+      "path": "docs/a_share_three_day_compact_comparator_cache_protocol_v1_20260805.json",
+      "sha256": "bf5247378056851ea004c08aad071c7a1ccf552cb1feaf6937251a26234c3273"
+    },
+    {
+      "path": "docs/a_share_three_day_compact_comparator_cache_protocol_v2_20260805.json",
+      "sha256": "98fa0318754c145ce645d647e591d32b89bc1b432db36028899c48220029dec9"
+    },
+    {
+      "path": "docs/a_share_three_day_compact_comparator_cache_protocol_v3_20260805.json",
+      "sha256": "44b5274de5684ca29e7ee9b290072412b1d97428b70e64711b979cac154d0841"
+    }
+  ],
+  "recorded_v3_failure": {
+    "path": "docs/a_share_three_day_compact_comparator_cache_v3_build_failure_20260806.json",
+    "sha256": "00e7c051cf70518195d9d9ce23d234fe7673b46f1a145d1b96c0dd0175b9294c",
+    "v3_formal_output_published": false,
+    "v3_temporary_values_reusable_for_v4_publication": false
+  },
+  "bound_v3_diagnosis": {
+    "path": "docs/a_share_three_day_compact_comparator_cache_v3_equivalence_diagnosis_20260806.json",
+    "sha256": "7f90fe174da2bf7f5fb6b347d6c296a8bc399d2723039617e2dde9062e2a99da",
+    "root_cause": "candidate_universe_dependent_composite_rank_materialization",
+    "mismatch_indices_zero_based": [
+      84,
+      85
+    ],
+    "mismatch_names": [
+      "quality_growth",
+      "quality_score"
+    ]
+  },
+  "frozen_output": {
+    "data_root": "/Volumes/DIsk/qlib-a-share-tushare-1m",
+    "output_root": "/Volumes/DIsk/qlib-a-share-tushare-1m/derived/a_share/rich/tushare/compact_comparator_cache/campaign067_terminal_numeric98_v4",
+    "failed_v1_v2_or_v3_formal_output_may_be_published_or_reused": false,
+    "failed_v1_v2_or_v3_temporary_values_may_be_reused_for_publication": false,
+    "atomic_publication_after_all_checks": true
+  },
+  "frozen_library_and_keys": {
+    "eligibility_rows": 1331759,
+    "eligibility_sessions": 1632,
+    "eligibility_keys_sha256": "afa157a76aec8ef9cc3bdc191c792189d2a512ecf7fd7ebb09d2fe8f2d75841f",
+    "logical_numeric_comparator_count": 98,
+    "logical_numeric_order_sha256": "bca0ba26252fcb74afa3a31ee1baf63c9cedfe3db5fc86ef71b3d7d93bf88f81",
+    "logical_name_list_json_sha256": "7e53d979ab48191118ba75e4255ee0fabc3dadb72797b19e06490595022a1a76",
+    "complete_definition_count": 99,
+    "complete_definition_order_sha256": "74564d4d2d01a52371ddd6906db38b5d913acb743656a04bbe5c4f229c84ad53",
+    "fixed_materialized_comparator_count": 96,
+    "fixed_materialized_name_list_json_sha256": "8db0a2f5631840812d3d31bc3466b9a379177c39fe9a2763fde8bcc8a9314a3d",
+    "dynamic_recipe_comparator_count": 2,
+    "dynamic_recipe_name_list_json_sha256": "f6bf55b0a0710a719bacf11b72dd591f03fb8b4336856294038d6a387eb730fc",
+    "raw_auxiliary_count": 3,
+    "raw_auxiliary_name_list_json_sha256": "812bd69eb9c2cbce6ba24cf973fdbab7f6f03f89acfafdd95e28fe2924962f00",
+    "physical_float64_column_count": 99,
+    "physical_name_list_json_sha256": "e21409c868bdea2d4941ccc4c8e3681625693cae3850307bb17cfa9955781848",
+    "physical_order_rule": "The 96 logical names in original order after removing quality_growth and quality_score, followed by quality_raw_roe, quality_raw_profit_yoy, and quality_raw_revenue_yoy in that order."
+  },
+  "dynamic_quality_recipe_contract": {
+    "dynamic_comparators": [
+      "quality_growth",
+      "quality_score"
+    ],
+    "raw_auxiliary_columns": [
+      "quality_raw_roe",
+      "quality_raw_profit_yoy",
+      "quality_raw_revenue_yoy"
+    ],
+    "raw_source_fields": {
+      "quality_raw_roe": "roe",
+      "quality_raw_profit_yoy": "profit_yoy",
+      "quality_raw_revenue_yoy": "revenue_yoy"
+    },
+    "raw_values_attached_with": "The unchanged Campaign058 strict point-in-time attach_quality_asof path, max_age_days=550, the accepted local calendar, and the frozen quality/listing eligible key mask.",
+    "candidate_intersection_precedes_ranking": true,
+    "session_grouping": "stock_day_key // 4000000",
+    "rank_method": "average",
+    "rank_pct": true,
+    "quality_growth_formula": "mean(skipna=false) of candidate-session percentile ranks of quality_raw_profit_yoy and quality_raw_revenue_yoy",
+    "quality_score_formula": "mean(skipna=false) of candidate-session percentile ranks of quality_raw_roe, quality_raw_profit_yoy, and quality_raw_revenue_yoy",
+    "global_materialized_quality_growth_or_quality_score_may_be_stored": false,
+    "imputation_scaling_forward_or_backward_fill": false,
+    "consumer_must_fail_closed_if_dynamic_recipe_or_auxiliaries_are_missing": true
+  },
+  "capture_and_alignment_contract": {
+    "v3_delegating_capture_proxy_inherited": true,
+    "source_key_present_copied_without_transform": true,
+    "source_key_absent_stored_as_nan": true,
+    "duplicate_requested_source_key_fails_closed": true,
+    "alignment_receipt_required_per_explicit_snapshot_load": true,
+    "v3_global_values_for_quality_growth_and_quality_score_must_be_discarded_before_physical_partition_write": true,
+    "raw_auxiliaries_must_round_trip_as_float64_exactly": true,
+    "fixed_materialized_columns_must_round_trip_as_float64_exactly": true
+  },
+  "semantic_equivalence_contract": {
+    "campaign067_comparison_count": 97,
+    "campaign067_coverage_object_exact_equality_required": true,
+    "campaign067_comparison_result_objects_exact_equality_required": true,
+    "dynamic_quality_values_reconstructed_only_after_campaign067_key_intersection": true,
+    "pairwise_complete_daily_spearman_changed": false,
+    "minimum_names_sessions_or_correlation_gate_changed": false,
+    "retroactive_campaign067_substitution_allowed": false,
+    "all_97_results_must_pass_before_atomic_publication": true
+  },
+  "research_boundary": {
+    "v4_comparator_or_raw_auxiliary_values_read_before_protocol_freeze": false,
+    "historical_daily_price_fields_read": [],
+    "historical_forward_returns_read": false,
+    "candidate49_historical_return_signal_or_execution_backfill": false,
+    "candidate49_ledgers_may_change": false,
+    "provider_request_issued": false,
+    "current_scoring_selection_sizing_or_orders_performed": false,
+    "future_campaign_use_only_after_v4_publication_binding": true
+  },
+  "failure_policy": {
+    "edit_v1_v2_or_v3_artifacts_in_place": false,
+    "reuse_failed_v1_v2_or_v3_temporary_roots_for_publication": false,
+    "publish_partial_v4_output": false,
+    "ignore_nonzero_exit": false,
+    "relax_exact_equivalence_gate": false,
+    "record_failure_before_any_additive_v5_repair": true
+  }
+}

@@ -1,0 +1,32 @@
+{
+  "version": 1,
+  "kind": "a_share_three_day_walkforward_campaign075_infrastructure_failure",
+  "status": "recorded_resolved_before_candidate_source_or_values",
+  "recorded_at": "2026-08-06T09:22:00+08:00",
+  "attempt_ordinal_within_campaign": 1,
+  "stage": "prevalue_synthetic_feature_test",
+  "command_semantics": "Compile the Campaign075 feature runner and run its seven synthetic feature tests in the isolated bundled runtime.",
+  "result": {
+    "exit_code": 1,
+    "passed": 5,
+    "failed": 2,
+    "failure": "Two tests indexed a pandas DatetimeIndex with .iloc, which that index type does not expose."
+  },
+  "repair": "Replace only the two synthetic fixture selections with DatetimeIndex integer-array indexing and rerun the unchanged seven tests.",
+  "repair_boundary": {
+    "factor_name_formula_direction_or_age_clock_changed": false,
+    "source_projection_or_missing_semantics_changed": false,
+    "coverage_uniqueness_or_development_gate_changed": false,
+    "campaign075_source_rows_read": false,
+    "campaign075_candidate_or_comparison_values_read": false,
+    "daily_price_or_forward_return_fields_read": false,
+    "provider_request_issued": false,
+    "candidate49_ledgers_changed": false
+  },
+  "resolved_replay": {
+    "exit_code": 0,
+    "passed": 7,
+    "failed": 0,
+    "duration_seconds": 0.99
+  }
+}

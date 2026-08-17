@@ -1,0 +1,36 @@
+{
+  "version": 2,
+  "kind": "a_share_three_day_walkforward_campaign068_postcompletion_failure_accounting_correction",
+  "status": "appenditive_command_level_attempt_accounting_current",
+  "recorded_at": "2026-08-06T03:23:00+08:00",
+  "supersedes_without_rewriting": {
+    "path": "docs/a_share_three_day_walkforward_campaign_068_postcompletion_failure_accounting_correction_20260806.json",
+    "sha256": "4f4d667a7dd370b8dc49687b1487516b6818c95b3590818c24fd4033a8aff024",
+    "covered_failed_commands": 3,
+    "covered_failed_nodes": 7
+  },
+  "additional_failure_record": {
+    "path": "docs/a_share_three_day_walkforward_campaign_068_postcompletion_test_failure_4_20260806.json",
+    "sha256": "dd4d04f00a919dda16f1ec5b08c24f917bcc9c6e4532a8170cc2a48516af95f2",
+    "failed_command_count": 1,
+    "failed_node_count": 1
+  },
+  "authoritative_counting_rule": "A historical infrastructure attempt is one executed command or one explicit synthetic attempt, not one failed assertion within a single command.",
+  "corrected_accounting": {
+    "postcompletion_failed_command_count_increment": 4,
+    "postcompletion_failed_node_count": 8,
+    "campaign068_pre_postcompletion_attempt_count": 2,
+    "campaign068_corrected_attempt_count": 6,
+    "campaign068_corrected_infrastructure_failure_count": 5,
+    "corrected_cumulative_historical_research_attempt_count": 408,
+    "cumulative_return_reading_development_trial_count": 274
+  },
+  "research_boundary": {
+    "candidate_or_comparison_values_read": false,
+    "historical_daily_price_fields_read": [],
+    "historical_forward_returns_read": false,
+    "provider_request_issued": false,
+    "candidate49_ledgers_changed": false,
+    "Campaign068_terminal_decision_changed": false
+  }
+}

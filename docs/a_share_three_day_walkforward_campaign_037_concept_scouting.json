@@ -1,0 +1,96 @@
+{
+  "version": 1,
+  "kind": "a_share_three_day_walkforward_campaign037_concept_scouting",
+  "status": "one_independent_five_minute_variance_ratio_concept_selected_before_candidate_comparison_or_return_values",
+  "recorded_at": "2026-07-30T22:50:01Z",
+  "purpose": "Select exactly one economically interpretable Campaign037 mechanism without reading a new candidate value, comparison value, daily price, or forward return.",
+  "authoritative_boundary": {
+    "path": "docs/a_share_three_day_iteration_status_20260731_campaign036_verified.json",
+    "sha256": "be1f9c071382f90a1329ce90738f02144c8bd5d210bc321892ed00e61fbff53b"
+  },
+  "selected_concept": {
+    "concept_name": "intraday_five_minute_variance_ratio",
+    "mechanism_family": "within_half_signed_return_multi_scale_variance_ratio",
+    "economic_question": "Does the completed session's signed one-minute return path reinforce over a fixed five-return horizon, or cancel through short-horizon reversal?",
+    "economic_hypothesis": "A higher fixed five-return variance ratio means that signed one-minute innovations reinforce at a short multiscale horizon rather than cancel. This can represent persistent information incorporation that may remain relevant from the next open through the third close.",
+    "provisional_direction": "higher",
+    "allowed_source_fields": [
+      "datetime",
+      "symbol",
+      "provider",
+      "close"
+    ],
+    "forbidden_source_fields": [
+      "open",
+      "high",
+      "low",
+      "volume",
+      "amount",
+      "market or industry benchmark",
+      "quarterly or event field",
+      "daily price",
+      "forward return",
+      "Level-2"
+    ],
+    "fixed_temporal_question": "Use exactly the 240 raw unadjusted one-minute closes at 09:31-11:30 and 13:01-15:00. Form returns and demean separately inside each half, use exactly five consecutive within-half returns in every overlapping aggregate, and never cross lunch.",
+    "mandatory_overlap_challenges_before_any_value": [
+      "intraday_diffusive_variation_ratio_238m",
+      "intraday_absolute_return_serial_persistence_236p",
+      "intraday_return_spectral_entropy_59f",
+      "intraday_return_sign_run_imbalance_238p",
+      "intraday_signed_path_efficiency_239m",
+      "intraday_price_update_share_238m",
+      "intraday_return_weak_order_entropy_234t",
+      "intraday_realized_volatility",
+      "intraday_two_sided_range_frontier_balance_238m",
+      "candidate49_intraday_cumulative_vwap_crossing_rate_240m_v1"
+    ],
+    "known_design_risks": [
+      "Choosing the aggregation horizon after values would create a lag search, so the horizon is fixed at exactly five consecutive returns before values.",
+      "Overlapping five-return sums can correlate with sign runs, spectral concentration, path efficiency, or serial persistence even though the statistic retains signed covariance at a fixed scale.",
+      "Demeaning globally rather than separately by half would introduce the lunch boundary indirectly, so per-half demeaning is fixed before values.",
+      "A high ratio may reflect persistent information or transient crowding. The higher direction must remain fixed and the ordinary no-return and walk-forward gates must decide the hypothesis without inversion."
+    ]
+  },
+  "rejected_concepts": [
+    {
+      "concept": "alternative_two_three_ten_or_adaptive_return_horizon",
+      "reason": "Searching the aggregation horizon would add a parameter sweep after 36 completed campaigns. Campaign037 freezes exactly five consecutive returns and no alternate lag."
+    },
+    {
+      "concept": "absolute_return_or_range_serial_dependence_variant",
+      "reason": "Absolute-return persistence and high-low range reversal are terminal. Campaign037 retains signed returns and measures multiscale variance rather than magnitude autocorrelation."
+    },
+    {
+      "concept": "spectral_band_entropy_or_frequency_selection_variant",
+      "reason": "Campaign033 is terminal. Campaign037 uses no DFT, band, phase, taper, padding, or entropy and cannot rescue spectral entropy."
+    },
+    {
+      "concept": "price_update_sign_run_weak_order_or_round_grid_variant",
+      "reason": "Sparse-update, sign-run, weak-order, and price-grid mechanisms are terminal. Campaign037 uses squared sums of continuous signed returns without equality counts or ordinal states."
+    },
+    {
+      "concept": "amount_volume_vwap_market_quarterly_event_or_terminal_factor_combination",
+      "reason": "Campaign037 is one own-stock close-only statistic and introduces no activity field, benchmark, event field, terminal factor value, model, or combination."
+    }
+  ],
+  "research_boundary": {
+    "external_minute_partitions_read": false,
+    "external_daily_partitions_read": false,
+    "candidate_values_read": false,
+    "comparison_values_read": false,
+    "historical_daily_price_fields_read": false,
+    "historical_forward_returns_read": false,
+    "training_or_model_fitting_performed": false,
+    "provider_request_issued": false,
+    "candidate49_historical_return_signal_or_execution_backfill_performed": false,
+    "candidate50_activation_created": false,
+    "current_scoring_selection_sizing_or_orders_performed": false,
+    "investment_advice": false
+  },
+  "decision": {
+    "selected_concept_count": 1,
+    "selected_concept": "intraday_five_minute_variance_ratio",
+    "next_action": "Perform a separate mechanism-overlap audit and freeze the one exact formula, direction, support, missing semantics, and complete 58-factor comparison library before opening candidate or comparison values."
+  }
+}

@@ -1,0 +1,108 @@
+{
+  "version": 1,
+  "kind": "a_share_three_day_walkforward_campaign040_mechanism_overlap_audit",
+  "status": "completed_before_campaign040_candidate_comparison_daily_price_or_return_values",
+  "recorded_at": "2026-07-31T03:50:31Z",
+  "purpose": "Determine conceptual independence of the exact Campaign040 high/low distribution mechanism before implementing it or reading any protected value.",
+  "authoritative_inputs": {
+    "iteration_state": {
+      "path": "docs/a_share_three_day_iteration_status_20260731_campaign039_verified.json",
+      "sha256": "8571491a46cefde2b95dfd6a4650a3f96fc9251c751e558d6d96e2278c1ce600"
+    },
+    "concept_scouting": {
+      "path": "docs/a_share_three_day_walkforward_campaign_040_concept_scouting.json",
+      "sha256": "87f0d6f8dd3d9e1135f763e7eac98f3e977d71f9e9e4ebc8f70df57441b85eab"
+    },
+    "campaign039_terminal_record": {
+      "path": "docs/a_share_three_day_walkforward_campaign_039_research_record.json",
+      "sha256": "d45fcbd75e918e72d3b84ae41c40578ac993cc3c334feeb566c1914f8aa2db8d"
+    }
+  },
+  "candidate": {
+    "name": "intraday_morning_afternoon_range_profile_similarity_120b",
+    "direction": "higher",
+    "formula": "For j=0..119, let x_j=log(morning_high_j/morning_low_j) and y_j=log(afternoon_high_j/afternoon_low_j). Let X=sum(x), Y=sum(y), p_j=x_j/X, q_j=y_j/Y, and m_j=(p_j+q_j)/2. Let JSD=0.5*sum_{p_j>0}(p_j*log(p_j/m_j))+0.5*sum_{q_j>0}(q_j*log(q_j/m_j)), using 0*log(0)=0. Return 1-JSD/log(2).",
+    "source_projection": [
+      "datetime",
+      "symbol",
+      "provider",
+      "high",
+      "low"
+    ]
+  },
+  "mechanism_family_review": [
+    {
+      "family": "range_volume_or_amount_confirmation",
+      "result": "distinct",
+      "reason": "Campaign018 correlates range magnitude with share volume and earlier amount-volatility factors use activity. Campaign040 reads no activity and compares two normalized clock-time range distributions."
+    },
+    {
+      "family": "range_boundary_translation_reversal_frontier_or_extreme_timing",
+      "result": "distinct_pending_statistical_uniqueness_gate",
+      "reason": "Campaign023 uses adjacent high/low boundary changes, Campaign025 uses first global extreme order, Campaign036 uses new frontier expansions, and range-reversal families use boundary revisit. Campaign040 uses only per-bar high/low width mass after separate half-session normalization."
+    },
+    {
+      "family": "morning_afternoon_return_profile_persistence",
+      "result": "distinct_pending_statistical_uniqueness_gate",
+      "reason": "Campaign027 uses population Pearson correlation of signed close-return vectors. Campaign040 uses Jensen-Shannon similarity of nonnegative high/low range probability distributions and no close."
+    },
+    {
+      "family": "intraday_entropy_or_sparse_price_update",
+      "result": "distinct_pending_statistical_uniqueness_gate",
+      "reason": "Campaign040 does not compute a pooled entropy or count zero ranges. Jensen-Shannon divergence compares two separately normalized half-session profiles; exact zero ranges remain fixed support and all statistical comparisons remain mandatory."
+    },
+    {
+      "family": "return_variance_spectral_time_irreversibility_or_chord_path",
+      "result": "distinct",
+      "reason": "Campaign040 reads no close, forms no return, frequency power, cubic contrast, chord, trend, or path travel."
+    },
+    {
+      "family": "candidate49_cumulative_vwap_crossing_rate",
+      "result": "distinct",
+      "reason": "Candidate49 uses causal cumulative amount/volume VWAP crossings and is future-only. Campaign040 reads no close, amount, volume, crossing, or anchor."
+    },
+    {
+      "family": "terminal_factor_combination_or_rescue",
+      "result": "not_used",
+      "reason": "Campaign040 contains one raw high/low statistic and no prior factor value, learned weight, filter, transform, model, or combination."
+    }
+  ],
+  "design_choices_frozen_before_values": {
+    "formula_family": "morning_afternoon_intrabar_range_probability_profile_jensen_shannon_similarity",
+    "direction": "higher",
+    "selected_bar_count": 240,
+    "half_session_bin_count": 120,
+    "include_0930": false,
+    "separate_half_session_normalization": true,
+    "exact_zero_intrabar_ranges_retained": true,
+    "zero_morning_or_afternoon_total_range_is_missing": true,
+    "jensen_shannon_equal_mixture_weight": 0.5,
+    "jensen_shannon_log_base": "natural_log_normalized_by_log_2",
+    "zero_probability_term_convention": "0_log_0_is_zero",
+    "endpoint_canonicalization_tolerance": 1e-12,
+    "valid_lower_bound": 0.0,
+    "valid_upper_bound": 1.0,
+    "range_entropy_pearson_correlation_total_ratio_subwindow_inverse_or_direction_search_allowed": false,
+    "threshold_filter_year_cost_board_or_model_search_allowed": false,
+    "open_close_activity_market_quarterly_event_or_terminal_factor_input_allowed": false
+  },
+  "research_boundary": {
+    "external_minute_partitions_read": false,
+    "candidate_values_read": false,
+    "comparison_values_read": false,
+    "historical_daily_price_fields_read": false,
+    "historical_forward_returns_read": false,
+    "training_or_model_fitting_performed": false,
+    "provider_request_issued": false,
+    "candidate49_historical_return_signal_or_execution_backfill_performed": false,
+    "candidate49_ledgers_changed": false,
+    "candidate50_activation_created": false,
+    "current_scoring_selection_sizing_or_orders_performed": false,
+    "investment_advice": false
+  },
+  "decision": {
+    "conceptual_independence_passed": true,
+    "predictive_value_established": false,
+    "next_action": "Validate all bindings, then freeze a fingerprint-bound no-return protocol with this exact candidate and the complete ordered 61-factor comparison library before implementation."
+  }
+}

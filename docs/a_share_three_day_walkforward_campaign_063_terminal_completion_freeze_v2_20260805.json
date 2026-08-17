@@ -1,0 +1,42 @@
+{
+  "version": 2,
+  "kind": "a_share_three_day_walkforward_campaign063_terminal_completion_freeze",
+  "status": "frozen_zero_admissible_factors_before_comparisons_or_returns_terminal_documentation_failure_recorded",
+  "recorded_at": "2026-08-05T06:58:00+08:00",
+  "supersedes_without_rewriting": {
+    "path": "docs/a_share_three_day_walkforward_campaign_063_terminal_completion_freeze_20260805.json",
+    "sha256": "567cb27bd09fb251106812b6834b7d8f1521e6e1e9a4da186790311147a71de1"
+  },
+  "bindings": {
+    "current_research_record": {
+      "path": "docs/a_share_three_day_walkforward_campaign_063_research_record_v2.json",
+      "sha256": "8850128549324d79bb45b01f4c818d22bc91e3c324f8bb937a335198ca21f5eb"
+    },
+    "current_research_attempt_ledger": {
+      "path": "data/experiments/short_horizon/historical_walkforward/campaign_063/research_attempt_ledger_v6.json",
+      "sha256": "03ecdcfd225de12a6c81f861f0746a2c00363d50845a11a83439bde781b8155c"
+    },
+    "terminal_documentation_patch_failure": {
+      "path": "docs/a_share_three_day_walkforward_campaign_063_terminal_documentation_patch_context_failure_20260805.json",
+      "sha256": "d6f60b427696aeef5593c5b083973dd180bdebabada909615ff583e7af50218d"
+    }
+  },
+  "frozen_semantics": {
+    "factor_terminal": true,
+    "candidate_eligible_rows": 0,
+    "comparison_values_read": false,
+    "historical_daily_prices_or_forward_returns_read": false,
+    "development_trial_count": 0,
+    "stress_2024_2025_opened": false,
+    "campaign063_infrastructure_only_failure_count": 5,
+    "campaign063_complete_factor_attempt_count": 1,
+    "campaign063_distinct_attempt_count": 6,
+    "campaign063_ledger_entry_count": 6,
+    "cumulative_historical_research_attempt_count": 367,
+    "cumulative_return_reading_development_trial_count": 271,
+    "research_result_or_gate_decision_changed_since_v1": false,
+    "candidate49_ledgers_changed": false,
+    "provider_request_issued": false,
+    "current_scoring_selection_sizing_or_orders_performed": false
+  }
+}

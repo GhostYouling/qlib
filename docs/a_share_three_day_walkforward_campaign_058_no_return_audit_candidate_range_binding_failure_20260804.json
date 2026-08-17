@@ -1,0 +1,45 @@
+{
+  "version": 1,
+  "kind": "a_share_three_day_walkforward_campaign058_no_return_audit_infrastructure_failure",
+  "status": "failed_closed_before_coverage_result_and_before_comparison_values",
+  "recorded_at": "2026-08-04T17:00:50+08:00",
+  "campaign_id": "058",
+  "factor": "quarterly_profit_revenue_growth_spread_pp",
+  "direction": "higher",
+  "failed_command": "PYTHONPATH=/Volumes/DIsk/Disk-Coding/qlib python scripts/a_share_three_day_walkforward_campaign058_no_return_audit.py no-return-audit --data-root /Volumes/DIsk/qlib-a-share-tushare-1m --experiment-root /Volumes/DIsk/Disk-Coding/qlib/data/experiments/short_horizon/historical_walkforward/campaign_058 --workers 4",
+  "actual_exit_code": 1,
+  "failure": {
+    "error_class": "AttributeError",
+    "error_message": "module 'scripts.a_share_three_day_walkforward_campaign058_features' has no attribute 'LOWER_BOUND'",
+    "failure_location": "generic candidate frame loader after the bound factor and eligibility columns were read, before coverage_and_capacity",
+    "root_cause": "The frozen Campaign058 feature wrapper binds its finite-float range inside the generated feature engine but does not export the legacy module-level LOWER_BOUND and UPPER_BOUND attributes expected by the inherited generic no-return candidate loader."
+  },
+  "frozen_inputs": {
+    "audit_implementation_path": "scripts/a_share_three_day_walkforward_campaign058_no_return_audit.py",
+    "audit_implementation_sha256": "84bf18ce4ccda2292235bd86cbc7be707560e04622ede15d0dfd2747ef79f8a0",
+    "audit_implementation_freeze_path": "docs/a_share_three_day_walkforward_campaign_058_no_return_audit_implementation_freeze_20260804.json",
+    "audit_implementation_freeze_sha256": "ad4510111185aa37c43a12256f2b9801f4044a7c0e608369fb6ced87846fcccf",
+    "snapshot_binding_path": "docs/a_share_three_day_walkforward_campaign_058_feature_snapshot_binding_20260804.json",
+    "snapshot_binding_sha256": "0cf92fd4c788a2250eb6b9359062e92908b7c17663b47732445d28c56cb9cf65",
+    "snapshot_manifest_sha256": "c5bf57a70a2af71f30be87eec254710db65550f5dd7e041f219e862b4d97c00f",
+    "snapshot_dataset_sha256": "59fb5ed46c76a4737bbc60de9707f7f3b10223b692de4f4a88fec4143891cd4c"
+  },
+  "value_exposure": {
+    "campaign058_candidate_snapshot_factor_and_eligibility_values_read": true,
+    "coverage_result_computed_or_persisted": false,
+    "comparison_factor_values_read": false,
+    "quality_comparison_source_values_read_by_audit": false,
+    "historical_daily_price_fields_read": [],
+    "historical_forward_return_fields_read": false,
+    "candidate49_historical_return_read": false,
+    "training_or_model_fitting_performed": false,
+    "stress_2024_2025_opened": false
+  },
+  "output_state": {
+    "experiment_root": "/Volumes/DIsk/Disk-Coding/qlib/data/experiments/short_horizon/historical_walkforward/campaign_058",
+    "audit_record_count_after_failure": 0,
+    "partial_audit_record_published": false
+  },
+  "authorized_repair_boundary": "Add an external compatibility launcher that replaces only the inherited candidate loader with the exact same key, eligibility, row-count, root and finite-value checks while using the already-frozen Campaign058 valid range of all finite float64 values. Do not mutate the frozen feature or audit implementation, alter factor values, formula, direction, coverage gates, uniqueness gates, comparison order, or open comparison, daily-price or return values before the repaired coverage gate passes.",
+  "next_action": "Freeze and synthetically test the additive candidate-loader compatibility launcher before one repaired audit retry with workers=4."
+}

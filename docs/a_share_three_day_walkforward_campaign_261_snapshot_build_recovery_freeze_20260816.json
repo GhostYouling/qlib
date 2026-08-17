@@ -1,0 +1,51 @@
+{
+  "schema_version": 1,
+  "kind": "a_share_three_day_walkforward_campaign261_snapshot_build_recovery_freeze",
+  "status": "counter_schema_only_recovery_frozen_before_retry",
+  "recorded_at": "2026-08-16T16:40:00+08:00",
+  "timestamp_semantics": "monotonic_logical_append_time_not_host_wall_clock_measurement",
+  "authoritative_inputs": {
+    "implementation_freeze_v2": {
+      "path": "docs/a_share_three_day_walkforward_campaign_261_implementation_freeze_v2_20260816.json",
+      "sha256": "0af8f138c53a6a1ab99b27cdf368177c682e9e84e3fdb58ec70e4629df32118f"
+    },
+    "initial_snapshot_build_failure": {
+      "path": "docs/a_share_three_day_walkforward_campaign_261_initial_snapshot_build_failure_20260816.json",
+      "sha256": "4bc44c1c3e0da83f4a2412305a8888d874f1b425dae4317e5e0be7e2762f6ca3"
+    }
+  },
+  "code": {
+    "base_builder_path": "scripts/a_share_three_day_walkforward_campaign261_features.py",
+    "base_builder_sha256": "b21e325d84b1153b4b3f5ad314e19434a8056b2e2f955e751500a6424f3108c2",
+    "recovery_runner_path": "scripts/a_share_three_day_walkforward_campaign261_features_recovery.py",
+    "recovery_runner_sha256": "a12a1382e43d296eeca7ae67e83e6cc428d4704a3f2dc106b625908b348022f0",
+    "failure_record_sha256": "4bc44c1c3e0da83f4a2412305a8888d874f1b425dae4317e5e0be7e2762f6ca3"
+  },
+  "tests": {
+    "recovery_test_path": "tests/data_collector_tests/test_a_share_three_day_walkforward_campaign261_features_recovery.py",
+    "recovery_test_sha256": "51d138e0b0ec706b3ef64df7f067dd05178205e6fa9f04f866ab87ec5358557b",
+    "command": "/Volumes/DIsk/Coding/anaconda3/bin/python3.12 -m pytest -q tests/data_collector_tests/test_a_share_three_day_walkforward_campaign261_features_recovery.py",
+    "exit_code": 0,
+    "passed": 3,
+    "candidate_frame_exact_equality": "passed",
+    "counter_semantics": "passed",
+    "ruff": "passed",
+    "black": "passed"
+  },
+  "candidate_formula_or_value_semantics_changed": false,
+  "output_run_id": "tushare_stk_mins_1m_2019_2025_ea0cbb8f_walkforward_campaign261_feature_library_v1",
+  "retry_rule": "Restart the full build once through the frozen recovery module. The absent final root may be published only atomically after every partition completes.",
+  "research_boundary": {
+    "failed_build_candidate_values_were_unpublished": true,
+    "comparator_values_read_before_retry": false,
+    "historical_daily_price_or_forward_return_values_read": false,
+    "stress_2024_2025_opened": false,
+    "provider_request_issued": false,
+    "credential_loaded": false,
+    "candidate49_historical_backfill_performed": false,
+    "candidate49_ledgers_changed": false,
+    "second_prospective_candidate_created": false,
+    "current_scoring_selection_sizing_positions_or_orders_performed": false,
+    "investment_advice": false
+  }
+}

@@ -1,0 +1,216 @@
+{
+  "schema_version": 1,
+  "kind": "a_share_three_day_walkforward_campaign159_remaining_local_source_schema_inventory",
+  "status": "finite_remaining_local_source_inventory_frozen_before_row_or_research_value_read",
+  "recorded_at": "2026-08-15T04:29:10+08:00",
+  "purpose": "Inventory accepted full-history, acceptance-only, derived and failure-only local data families that were outside Campaign158's canonical event/fundamental matrix, so a new mechanism cannot be chosen from row values or an unaccepted sample.",
+  "authoritative_inputs": {
+    "campaign158_state": {
+      "path": "docs/a_share_three_day_iteration_status_20260815_campaign158_prevalue_terminal.json",
+      "sha256": "02a642d38dc025be12ab2da19ad55e561b9cde6f5d11b7262a48f35377cce236"
+    },
+    "numeric_policy_v221": {
+      "path": "docs/a_share_three_day_walkforward_future_numeric_comparison_eligibility_policy_v221_20260815.json",
+      "sha256": "603b9cda335d245ab93df46143a31bde10f66a510f7c384f6154a113fe1e8af9"
+    },
+    "campaign158_validation": {
+      "path": "docs/a_share_three_day_walkforward_campaign_158_terminal_validation_20260815.json",
+      "sha256": "a23214aa1de627f561860fcd1689a47a3d6dfc95b5ac131455303876a1dd5197"
+    },
+    "historical_walkforward_policy": {
+      "path": "docs/a_share_three_day_historical_walkforward_research_policy_20260727.json",
+      "sha256": "38426d6161b9bfed323c58caba18feca668b8c9d53e294951a8ba90c01a798bb"
+    },
+    "historical_43_factor_frontier_audit": {
+      "path": "docs/a_share_three_day_research_frontier_audit.json",
+      "sha256": "0ab41e940afff20cdd5ce46849820ffd56a3072aa859c30d4caa6dd71c10d846"
+    },
+    "campaign143_contract_scope_audit": {
+      "path": "docs/a_share_three_day_walkforward_campaign_143_mechanism_contract_source_frontier_audit_v2_20260814.json",
+      "sha256": "ed9892cf137d03f2e5043c6ef3ebe063ed9e32960b1399d957e8cd6dff174f52"
+    }
+  },
+  "inspection_contract": {
+    "authoritative_worktree": "/Volumes/DIsk/Disk-Coding/qlib",
+    "repository_data_root": "/Volumes/DIsk/Disk-Coding/qlib/data",
+    "accepted_full_minute_root": "/Volumes/DIsk/qlib-a-share-tushare-1m",
+    "method": "filesystem counts, JSON manifests/contracts/terminal records and pyarrow.parquet.read_schema only",
+    "repository_daily_parquet_file_count": 5451,
+    "repository_rich_parquet_file_count": 226,
+    "accepted_full_minute_partition_count": 33015,
+    "parquet_row_group_or_column_value_read": false,
+    "source_file_bytes_hashed_during_campaign159": false,
+    "candidate_comparator_price_or_return_value_read": false
+  },
+  "source_families": [
+    {
+      "family": "canonical_daily_price_volume_basis",
+      "scope": "5451 repository daily Parquet files",
+      "schema": ["date", "symbol", "open", "high", "low", "close", "volume", "amount", "vwap", "change", "pct_chg", "turnover", "raw_open", "raw_high", "raw_low", "raw_close", "raw_volume", "raw_vwap", "price_basis", "daily_source", "factor"],
+      "source_status": "accepted_active_baostock_daily_root",
+      "research_disposition": "terminal_daily_ohlcv_turnover_price_basis_adjustment_and_metadata_families"
+    },
+    {
+      "family": "accepted_full_tushare_one_minute_ohlcva",
+      "scope": "33015 immutable 2019-2025 partitions",
+      "schema": ["datetime", "symbol", "source_symbol", "provider", "open", "high", "low", "close", "volume", "amount"],
+      "source_status": "accepted_full_history",
+      "research_disposition": "raw_primitives_support_the_frozen_157_definition_library_and_terminal_minute_mechanism_neighborhoods"
+    },
+    {
+      "family": "repository_baostock_5m_and_tushare_1m_acceptance_samples",
+      "scope": "four symbols per acceptance snapshot",
+      "schema": ["datetime", "symbol", "source_symbol", "provider", "open", "high", "low", "close", "volume", "amount"],
+      "source_status": "acceptance_only_not_a_market_cross_section",
+      "research_disposition": "cannot_select_or_validate_a_new_factor_from_four_symbols"
+    },
+    {
+      "family": "tushare_classified_moneyflow_full_history",
+      "scope": "seven annual 2019-2025 partitions",
+      "schema": ["trade_date", "instrument", "buy_sm_amount", "sell_sm_amount", "buy_md_amount", "sell_md_amount", "buy_lg_amount", "sell_lg_amount", "buy_elg_amount", "sell_elg_amount", "tushare_large_order_net_inflow_share", "provider"],
+      "source_status": "accepted_full_history_terminal_factor",
+      "research_disposition": "original_contract_authorizes_exactly_one_factor_and_forbids_second_factor_or_category_denominator_change"
+    },
+    {
+      "family": "tushare_daily_pb_full_history",
+      "scope": "seven annual 2019-2025 partitions",
+      "schema": ["trade_date", "instrument", "pb", "tushare_positive_book_to_market", "provider"],
+      "source_status": "accepted_full_history_terminal_factor",
+      "research_disposition": "pb_and_inverse_book_to_market_are_the_same_terminal_valuation_state"
+    },
+    {
+      "family": "tushare_free_float_scarcity_full_history",
+      "scope": "seven annual 2019-2025 partitions",
+      "schema": ["trade_date", "instrument", "total_share", "free_share", "tushare_free_float_scarcity", "provider"],
+      "source_status": "accepted_full_history_terminal_no_return_gate",
+      "research_disposition": "raw_share_levels_are_scale_fields_and_the_frozen_ratio_branch_forbids_formula_change_or_combination"
+    },
+    {
+      "family": "tushare_sw2021_l1_membership",
+      "scope": "accepted full membership interval snapshot",
+      "schema": ["l1_code", "l1_name", "l2_code", "l2_name", "l3_code", "l3_name", "instrument", "in_date", "out_date", "is_new", "provider"],
+      "source_status": "accepted_point_in_time_grouping_taxonomy_terminal_factor",
+      "research_disposition": "membership_fields_are_peer_mapping_not_new_issuer_alpha_and_retiming_or_tenure_use_is_closed"
+    },
+    {
+      "family": "tushare_audit_opinion_full_history",
+      "scope": "seven annual 2019-2025 partitions",
+      "schema": ["announcement_date", "instrument", "tushare_is_standard_unqualified_audit_opinion", "audit_report_count", "provider"],
+      "source_status": "accepted_full_history_terminal_capacity_gate",
+      "research_disposition": "opinion_binary_is_terminal_and_report_count_is_context_only"
+    },
+    {
+      "family": "eastmoney_balance_sheet_resilience_full_history",
+      "scope": "28 report-period partitions plus acceptance sample",
+      "schema": ["instrument", "report_date", "announcement_date", "total_assets", "total_liabilities", "eastmoney_balance_sheet_resilience", "provider"],
+      "source_status": "accepted_full_history_terminal_return_execution_gates",
+      "research_disposition": "raw_operands_and_derived_ratio_are_one_contract_frozen_terminal_state"
+    },
+    {
+      "family": "eastmoney_core_profit_consistency_full_history",
+      "scope": "28 report-period partitions plus acceptance sample",
+      "schema": ["instrument", "report_date", "announcement_date", "operating_profit", "total_profit", "eastmoney_core_profit_consistency", "provider"],
+      "source_status": "accepted_full_history_terminal_return_execution_gates",
+      "research_disposition": "raw_operands_and_derived_ratio_are_one_contract_frozen_terminal_state"
+    },
+    {
+      "family": "eastmoney_monetary_funds_asset_intensity_full_history",
+      "scope": "28 report-period partitions plus acceptance sample",
+      "schema": ["instrument", "report_date", "announcement_date", "monetary_funds", "total_assets", "eastmoney_monetary_funds_asset_intensity", "provider"],
+      "source_status": "accepted_full_history_terminal_capacity_gate",
+      "research_disposition": "raw_operands_are_unscaled_magnitudes_and_the_frozen_ratio_branch_is_closed"
+    },
+    {
+      "family": "eastmoney_related_party_transaction_sparsity_full_history",
+      "scope": "84 monthly partitions plus acceptance sample",
+      "schema": ["announcement_date", "instrument", "related_party_transaction_count", "eastmoney_related_party_transaction_sparsity", "provider"],
+      "source_status": "accepted_full_history_terminal_return_execution_gates",
+      "research_disposition": "count_and_its_inverse_are_the_same_terminal_event_intensity_state"
+    },
+    {
+      "family": "tushare_cash_conversion_acceptance_only",
+      "scope": "one acceptance sample",
+      "schema": ["announcement_date", "income_actual_announcement_date", "cashflow_actual_announcement_date", "report_period", "instrument", "n_income_attr_p", "n_cashflow_act", "tushare_operating_cash_conversion", "provider"],
+      "source_status": "full_history_terminal_source_failure",
+      "research_disposition": "acceptance_rows_cannot_substitute_for_2019_2023_history_or_support_statement_delay_factor"
+    },
+    {
+      "family": "tushare_gross_margin_acceptance_only",
+      "scope": "one acceptance sample",
+      "schema": ["announcement_date", "report_period", "instrument", "tushare_q_gross_margin_yoy_change_pp", "provider"],
+      "source_status": "full_history_terminal_identity_date_or_version_failure",
+      "research_disposition": "acceptance_sample_not_admitted_for_factor_or_rescue"
+    },
+    {
+      "family": "tushare_contract_liability_backlog_acceptance_only",
+      "scope": "one acceptance sample",
+      "schema": ["announcement_date", "report_date", "instrument", "tushare_contract_liability_backlog_delta", "provider"],
+      "source_status": "full_history_terminal_p05_coverage_failure",
+      "research_disposition": "acceptance_sample_and_early_period_drop_are_forbidden"
+    },
+    {
+      "family": "cninfo_equity_incentive_and_supplement_correction_acceptance_artifacts",
+      "scope": "two acceptance Parquet files; their full-source branches are terminal",
+      "schemas": [["announcement_date", "instrument", "initial_equity_incentive_plan_disclosure_count", "provider"], ["announcement_date", "instrument", "supplement_correction_notice_count", "provider"]],
+      "source_status": "terminal_full_source_title_markup_or_pagination_instability",
+      "research_disposition": "no_keyword_reclassification_partial_history_or_acceptance_only_factor"
+    },
+    {
+      "family": "tushare_single_session_event_bundle",
+      "scope": "2026-07-13 acceptance snapshots only",
+      "schemas": {
+        "moneyflow": ["ts_code", "trade_date", "buy_sm_vol", "buy_sm_amount", "sell_sm_vol", "sell_sm_amount", "buy_md_vol", "buy_md_amount", "sell_md_vol", "sell_md_amount", "buy_lg_vol", "buy_lg_amount", "sell_lg_vol", "sell_lg_amount", "buy_elg_vol", "buy_elg_amount", "sell_elg_vol", "sell_elg_amount", "net_mf_vol", "net_mf_amount", "provider", "dataset", "retrieved_at"],
+        "limit_price": ["trade_date", "ts_code", "up_limit", "down_limit", "provider", "dataset", "retrieved_at"],
+        "stock_st": ["ts_code", "name", "trade_date", "type", "type_name", "provider", "dataset", "retrieved_at"],
+        "top_list": ["trade_date", "ts_code", "name", "close", "pct_change", "turnover_rate", "amount", "l_sell", "l_buy", "l_amount", "net_amount", "net_rate", "amount_rate", "float_values", "reason", "provider", "dataset", "retrieved_at"]
+      },
+      "source_status": "one_completed_session_acceptance_not_2019_2023_history",
+      "research_disposition": "cannot_choose_or_test_a_historical_factor_from_one_session; top_list_canonicalization_remains_pending"
+    },
+    {
+      "family": "derived_features_reconciliation_failures_and_experiment_outputs",
+      "scope": "derived minute features, failed-session exports and historical campaign result Parquet files",
+      "source_status": "derived_or_failure_evidence_not_new_raw_source",
+      "research_disposition": "no_error_missingness_reconciliation_status_stored_score_or_failed_artifact_may_be_ranked_as_alpha"
+    }
+  ],
+  "terminal_evidence_registry": [
+    {"path": "docs/a_share_tushare_moneyflow_research_record.json", "sha256": "3e9d4cb001dfef2589fa32f5b6a69ae69ca6e8e122007c3bc10cf7200202336a"},
+    {"path": "docs/a_share_tushare_daily_pb_research_record.json", "sha256": "2bcf42171babc96043053c2669351d5ce2b84541f5da91ff1e568136cec9eae3"},
+    {"path": "docs/a_share_tushare_free_float_scarcity_research_record.json", "sha256": "9804ef63da08be5beec4a13460dc8ac0e36fdff3e203dd3f00dc9d148b88a24a"},
+    {"path": "docs/a_share_tushare_audit_opinion_research_record.json", "sha256": "48db650abbd108014eed55f0829f308d9ceb854e113b33d29aa489549fa91d65"},
+    {"path": "docs/a_share_tushare_sw_industry_breadth_research_record.json", "sha256": "14089c6854060f69d69eafb712ed4f29f1861ec993b5cff9a48b53fae325bfa3"},
+    {"path": "docs/a_share_eastmoney_balance_sheet_resilience_diagnostic_record.json", "sha256": "b7c2888e14fab0dfa4b3f65806ac8dac6e1c46e8390df144c631869ed6da2fcf"},
+    {"path": "docs/a_share_eastmoney_core_profit_consistency_diagnostic_record.json", "sha256": "970c76e87ee664df2085e305472fc49ea92c5652af8da246f359450ff641907f"},
+    {"path": "docs/a_share_eastmoney_monetary_funds_asset_intensity_research_record.json", "sha256": "d2a21996cb3e622a307c80e7218036f082ff320b7b79367631595ea6956b588a"},
+    {"path": "docs/a_share_eastmoney_related_party_transaction_sparsity_diagnostic_record.json", "sha256": "b8bda6862349a0ff9082109a3e176b4ecc195dc9be5bfb07043e91c6e7460dba"},
+    {"path": "docs/a_share_tushare_cash_conversion_research_record.json", "sha256": "c1678755db519ae6645b7f1dd3ba61e768e36dc3976c8cef7d5b2e44ff45a819"},
+    {"path": "docs/a_share_tushare_gross_margin_research_record.json", "sha256": "83b9c930f1456ef748aa54765123d247dc330635f33c33ae8f675395c8cd3d18"},
+    {"path": "docs/a_share_tushare_contract_liability_backlog_research_record.json", "sha256": "982d3014b82b13ef85017e68ed8e4a2fa2e23336b752d3d488169b1a2daf2519"},
+    {"path": "docs/a_share_cninfo_equity_incentive_plan_disclosure_intensity_full_source_record.json", "sha256": "6ec4d753c4646a7f0fc7aa4a888645df429adb20fc07c14016ee2575f9bbe375"},
+    {"path": "docs/a_share_cninfo_supplement_correction_disclosure_burden_full_source_record.json", "sha256": "c331ef49010cc3481b0449326855cc8e0d879e0fd9607e9c27139af29449535a"}
+  ],
+  "inventory_summary": {
+    "source_families_reviewed": 18,
+    "accepted_full_history_families_with_unconsumed_contract_permitted_independent_primitive": 0,
+    "acceptance_only_or_terminal_full_source_failure_families": 4,
+    "derived_failure_or_sample_only_families": 3,
+    "new_source_contract_or_formula_frozen": false,
+    "selected_candidate_count": 0
+  },
+  "research_boundary": {
+    "parquet_schema_only_inspection_performed": true,
+    "parquet_rows_or_column_values_read": false,
+    "source_response_values_read": false,
+    "candidate_or_comparator_values_read": false,
+    "historical_daily_price_or_forward_return_values_read": false,
+    "stress_2024_2025_opened": false,
+    "provider_or_web_request_issued": false,
+    "provider_credential_presence_value_or_digest_read": false,
+    "candidate49_historical_backfill_performed": false,
+    "candidate49_ledgers_changed": false,
+    "second_prospective_candidate_created": false,
+    "current_scoring_selection_sizing_positions_or_orders_performed": false,
+    "investment_advice": false
+  }
+}

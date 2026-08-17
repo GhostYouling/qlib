@@ -1,0 +1,189 @@
+{
+  "version": 2,
+  "kind": "a_share_three_day_iteration_status",
+  "status": "campaign053_terminal_verified_post_test_failure_recorded_ready_for_independent_campaign054",
+  "recorded_at": "2026-08-03T13:10:00Z",
+  "authoritative_predecessor": {
+    "path": "docs/a_share_three_day_iteration_status_20260803_campaign053_verified.json",
+    "sha256": "7a537ef94f7018272c7459c6d450008361e8f5facc2fdd93e4e4c01bf6e308f8"
+  },
+  "research_policy": {
+    "historical_walkforward_policy": {
+      "path": "docs/a_share_three_day_historical_walkforward_research_policy_20260727.json",
+      "sha256": "38426d6161b9bfed323c58caba18feca668b8c9d53e294951a8ba90c01a798bb"
+    },
+    "historical_research_may_run_without_new_daily_bar_or_16_30_wait": true,
+    "historical_results_may_generate_current_scores_selections_sizes_or_orders": false,
+    "historical_results_may_backfill_candidate49": false
+  },
+  "campaign053": {
+    "factor": "intraday_amount_price_discovery_alignment_js_238p",
+    "direction": "higher",
+    "formula": "On the exact 240-bar grid, form 119 adjacent log-close returns within each half, excluding 09:30 and the lunch transition. For each of the 238 return endpoints use its nonnegative amount a_i. Let p_i=a_i/sum(a), q_i=abs(r_i)/sum(abs(r)), and m_i=(p_i+q_i)/2. Let JSD=0.5*sum(p_i*ln(p_i/m_i))+0.5*sum(q_i*ln(q_i/m_i)), with every zero contribution defined as zero. Return 1-JSD/ln(2).",
+    "snapshot": {
+      "path": "/Volumes/DIsk/qlib-a-share-tushare-1m/derived/a_share/rich/tushare/minute_walkforward_campaign053_feature_library/tushare_stk_mins_1m_2019_2025_ea0cbb8f_walkforward_campaign053_feature_library_v1/snapshot_manifest.json",
+      "sha256": "e0f0e9176580e9e6216049d026ab360aea0904e5d1db57d61311fe6da7d3c402",
+      "dataset_sha256": "d56d8628608faf32c97fb374cb05d06bfa0182d87f2d0467f5a08bca8c3f0f87",
+      "partitions": 33015,
+      "rows": 7724498,
+      "eligible_rows": 7695088,
+      "all_partition_byte_and_frame_hashes_valid": true,
+      "source_fields_read": [
+        "datetime",
+        "symbol",
+        "provider",
+        "close",
+        "amount"
+      ],
+      "daily_price_fields_read": [],
+      "forward_return_fields_read": false
+    },
+    "no_return": {
+      "path": "data/experiments/short_horizon/historical_walkforward/campaign_053/no_return/20260803T125238Z_campaign053_no_return_audit.json",
+      "sha256": "8228e32422686d020bdf7c6b00e54469d025884c23c234b48088428280bfd3ba",
+      "status": "completed_zero_admissible_factors_stop_before_historical_returns",
+      "calendar_sessions": 1632,
+      "quality_listing_eligible_rows": 1331759,
+      "candidate_eligible_rows": 1328065,
+      "median_coverage": 0.9983183851218558,
+      "minimum_median_coverage": 0.95,
+      "p05_coverage": 0.9933708902303229,
+      "minimum_p05_coverage": 0.9,
+      "median_eligible_names": 941.0,
+      "p05_eligible_names": 138.0,
+      "minimum_p05_eligible_names": 50,
+      "potential_three_session_cohorts": 540,
+      "observed_calendar_years": [
+        2019,
+        2020,
+        2021,
+        2022,
+        2023,
+        2024,
+        2025
+      ],
+      "coverage_gate_passed": true,
+      "comparison_factor_count": 76,
+      "comparison_order_matches_preregistration": true,
+      "failed_comparison_count": 1,
+      "failed_comparison_factor": "intraday_price_update_share_238m",
+      "failed_comparison_median_daily_rank_correlation": 0.8528583420588608,
+      "maximum_absolute_median_daily_rank_correlation": 0.8528583420588608,
+      "uniqueness_gate_passed": false,
+      "admissible_factor_count": 0,
+      "historical_daily_price_fields_read": [],
+      "historical_forward_return_fields_read": false
+    },
+    "attempt_accounting": {
+      "prior_historical_research_attempt_count": 300,
+      "campaign053_pre_terminal_infrastructure_failure_count": 1,
+      "campaign053_complete_factor_attempt_count": 1,
+      "campaign053_post_terminal_infrastructure_failure_count": 1,
+      "campaign053_total_attempt_count": 3,
+      "cumulative_historical_research_attempt_count": 303,
+      "campaign053_historical_return_trial_count": 0,
+      "cumulative_return_reading_development_trial_count": 266
+    },
+    "development": {
+      "folds_opened": false,
+      "return_fields_read": false,
+      "trial_count": 0,
+      "selected_survivor_count": 0
+    },
+    "stress_2024_2025": {
+      "status": "not_opened_no_no_return_admissible_factor",
+      "opened": false,
+      "return_fields_read": false
+    },
+    "terminal": {
+      "factor_terminal": true,
+      "terminal_stage": "no_return_uniqueness_gate_before_historical_returns",
+      "terminal_reason": "absolute_median_daily_rank_correlation_exceeded_0.8_against_intraday_price_update_share_238m",
+      "development_folds_opened": false,
+      "development_return_fields_read": false,
+      "2024_2025_stress_opened": false,
+      "2024_2025_returns_read": false,
+      "inversion_rewindow_rescale_threshold_filter_subset_model_combination_rerun_or_rescue_allowed": false,
+      "next_campaign_must_be_independently_preregistered": true,
+      "new_daily_bar_or_16_30_wait_required_for_next_offline_campaign": false
+    },
+    "authoritative_records": {
+      "research_record_v2": {
+        "path": "docs/a_share_three_day_walkforward_campaign_053_research_record_v2.json",
+        "sha256": "ff21cfac8b47ec66f0a797180d97a7f2e4590a3a4e10f7361a314a37bd9503e1"
+      },
+      "verification_v2": {
+        "path": "docs/a_share_three_day_walkforward_campaign_053_verification_20260803_v2.json",
+        "sha256": "4c4bfa400d68ecb87dec88887f4a8a4145276f4a3fa717c01482d00a0bd17c1d"
+      },
+      "unified_report_supersession_v2": {
+        "path": "docs/a_share_three_day_walkforward_campaign_053_unified_report_supersession_20260803_v2.json",
+        "sha256": "9f629786667277b89eee7f05955bd3b4c75c81f8e1d6cdcf103f1d3841a138a7"
+      },
+      "terminal_assertion_failure": {
+        "path": "docs/a_share_three_day_walkforward_campaign_053_terminal_report_assertion_failure_20260803.json",
+        "sha256": "c2ac59eb8ac4842ddaf75d11371ac96180633826a4b30513527fbf4633809ca5"
+      }
+    }
+  },
+  "cumulative_state": {
+    "cumulative_historical_research_attempt_count_after_campaign053": 303,
+    "cumulative_return_reading_development_trial_count_after_campaign053": 266,
+    "current_historical_aggregation_candidate_count": 0
+  },
+  "local_data_context": {
+    "active_repository_root": "/Volumes/DIsk/Disk-Coding/qlib",
+    "configured_compatibility_root": "/Users/niyufei/Coding/qlib",
+    "configured_compatibility_root_exists": false,
+    "active_daily_data_root": "/Volumes/DIsk/Disk-Coding/qlib/data",
+    "historical_minute_data_root": "/Volumes/DIsk/qlib-a-share-tushare-1m",
+    "local_date": "2026-08-03",
+    "local_weekday": "Monday",
+    "dotenv_path": "/Volumes/DIsk/Disk-Coding/qlib/.env",
+    "dotenv_is_regular_non_symlink_file": true,
+    "dotenv_is_git_ignored": true,
+    "dotenv_mode": "0600",
+    "tushare_token_present": true,
+    "credential_value_printed_hashed_or_persisted_in_records": false,
+    "provider_request_issued_by_campaign053_or_credential_verification": false
+  },
+  "prospective_boundary": {
+    "active_candidate_count": 1,
+    "active_candidate": "Candidate49 intraday_cumulative_vwap_crossing_rate_240m",
+    "candidate49_signal_ledger": {
+      "path": "data/experiments/short_horizon/candidate49_future_signal_ledger.json",
+      "sha256": "5193f00d7f36da003f53cec387900da4c3d002299f5dfcfc1a95eaa199ed3a79",
+      "entry_count": 0
+    },
+    "candidate49_execution_ledger": {
+      "path": "data/experiments/short_horizon/candidate49_future_execution_ledger.json",
+      "sha256": "d57a3e61eac969e42cafa418ccd8c0a5ee65dcf69da145bb2c096c2a02a2ea4f",
+      "entry_count": 0
+    },
+    "candidate49_20260803_source_failure_state_preserved": {
+      "path": "docs/a_share_three_day_iteration_status_20260803_campaign052_candidate49_source_failure_verified.json",
+      "sha256": "a14c0259453052ba4ef051199ad4c200a7d5ea1919610dc7ca66bebfbc7c194f"
+    },
+    "candidate49_historical_return_signal_execution_or_milestone_backfill_performed": false,
+    "second_prospective_candidate_activation_allowed": false
+  },
+  "verification_summary": {
+    "historical_focused_run_passed": 15,
+    "historical_focused_run_failed": 1,
+    "current_focused_campaign053_tests_passed": 16,
+    "current_focused_campaign053_tests_failed": 0,
+    "all_current_bindings_passed": true,
+    "candidate49_ledgers_rehashed_unchanged": true
+  },
+  "next_action": {
+    "historical": "Begin Campaign054 only from a genuinely independent, pre-value-frozen mechanism; offline work may run at any time.",
+    "prospective": "Do not retry Candidate49 on 2026-08-03; use only a later accepted local trading session's same-day post-16:30 ready=true workflow.",
+    "strict_prohibitions": [
+      "do not backfill Candidate49 historical returns signals executions or milestones",
+      "do not start a second prospective candidate",
+      "do not invert rewindow rescale threshold filter rerun rescue or combine Campaign053",
+      "do not open Campaign053 development folds or 2024-2025 stress",
+      "do not generate current scores selections position sizes orders or investment advice"
+    ]
+  }
+}

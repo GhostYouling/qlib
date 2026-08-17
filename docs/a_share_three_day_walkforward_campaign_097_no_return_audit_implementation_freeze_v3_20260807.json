@@ -1,0 +1,58 @@
+{
+  "schema_version": 1,
+  "kind": "a_share_three_day_walkforward_campaign097_no_return_audit_implementation_freeze_v3",
+  "status": "verification_contract_repair_frozen_before_campaign097_candidate_column_alignment_coverage_comparison_or_return_values",
+  "frozen_at": "2026-08-07T06:13:20Z",
+  "purpose": "Bind the exact five-field full snapshot verification result after all 33,015 partitions passed byte verification, without changing the frozen audit's value semantics.",
+  "v2_audit_runner": {
+    "path": "scripts/a_share_three_day_walkforward_campaign097_no_return_audit_v2.py",
+    "sha256": "4e89b3e002f6a42b84fe41f0e4c09cb411e19307c4224867782ed1df141e20d2"
+  },
+  "v2_implementation_freeze": {
+    "path": "docs/a_share_three_day_walkforward_campaign_097_no_return_audit_implementation_freeze_v2_20260807.json",
+    "sha256": "3773142cca7e86f135caadfcb448588eb613031eaa56a1b9ccc39b2e94e6faf4"
+  },
+  "v2_activation_binding": {
+    "path": "docs/a_share_three_day_walkforward_campaign_097_no_return_audit_activation_binding_v2_20260807.json",
+    "sha256": "31237866d1e200390567e6b99fc146dfc1f0444803f642fbd2efab198e11da2d"
+  },
+  "v2_failure_record": {
+    "path": "docs/a_share_three_day_walkforward_campaign_097_no_return_audit_verification_contract_failure_20260807.json",
+    "sha256": "5211b89c8bc0a7334cab5b33adfcfce4417043140c7b265a276a8d8985b26f0c"
+  },
+  "v3_audit_runner": {
+    "path": "scripts/a_share_three_day_walkforward_campaign097_no_return_audit_v3.py",
+    "sha256": "0e22daebbab70fc9aaa5cd1dcc1fb051a30f011e5a35e6f054c18ecfe9f804b4"
+  },
+  "v3_tests": {
+    "path": "tests/data_collector_tests/test_a_share_three_day_walkforward_campaign097_no_return_audit_v3.py",
+    "sha256": "f26b252d8586b261dd4d980309acd166a25a44a25837be281b4138a7832166a2",
+    "result_with_v1_and_v2_tests": "15 passed"
+  },
+  "repair_scope": "assert the exact five-field Campaign097 full snapshot verification result only",
+  "exact_verification_result": {
+    "partitions_verified": 33015,
+    "rows_verified": 7724498,
+    "eligible_rows_verified": 7699914,
+    "partition_bytes_verified": 290653280,
+    "market_benchmark_bytes_verified": 3607113
+  },
+  "unchanged_semantics": [
+    "worker binding from v2",
+    "factor formula and candidate values",
+    "quality-listing stock_day_key alignment",
+    "coverage and capacity thresholds",
+    "125-comparator order and uniqueness thresholds",
+    "historical daily price and return embargo",
+    "Candidate49 isolation"
+  ],
+  "candidate_snapshot_and_source_bytes_verified_before_v3_freeze": true,
+  "candidate_parquet_columns_decoded_before_v3_freeze": false,
+  "eligibility_stock_day_keys_read_before_v3_freeze": false,
+  "coverage_or_capacity_metrics_computed_before_v3_freeze": false,
+  "comparison_values_read_before_v3_freeze": false,
+  "historical_daily_price_or_forward_return_values_read_before_v3_freeze": false,
+  "provider_request_issued_before_v3_freeze": false,
+  "candidate49_ledgers_changed_before_v3_freeze": false,
+  "current_scoring_selection_sizing_or_orders_performed_before_v3_freeze": false
+}

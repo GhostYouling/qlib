@@ -1,0 +1,33 @@
+{
+  "schema_version": 1,
+  "kind": "a_share_three_day_walkforward_campaign111_prevalue_infrastructure_failures",
+  "status": "two_read_only_path_assumption_failures_preserved_before_campaign111_values",
+  "recorded_at": "2026-08-08T16:33:35Z",
+  "failures": [
+    {
+      "ordinal": 1,
+      "stage": "complete_library_model_history_inspection",
+      "failure": "A read-only jq probe guessed docs/a_share_three_day_walkforward_campaign_102_preregistration.json, but the frozen file is named docs/a_share_three_day_walkforward_campaign_102_no_return_preregistration.json.",
+      "exit_code": 2,
+      "filesystem_write_before_failure": false,
+      "source_candidate_comparator_price_or_return_value_read": false,
+      "repair": "List the versioned Campaign102 files first, then read the exact no-return preregistration and terminal binding without changing any historical artifact."
+    },
+    {
+      "ordinal": 2,
+      "stage": "prevalue_terminal_template_inspection",
+      "failure": "A read-only jq probe guessed a Campaign104 research-record filename that never existed; Campaign104 uses a prevalue terminal result record.",
+      "exit_code": 2,
+      "filesystem_write_before_failure": false,
+      "source_candidate_comparator_price_or_return_value_read": false,
+      "repair": "Use rg --files before opening the exact Campaign104 terminal result, policy, ledger, report, state, and tests."
+    }
+  ],
+  "common_safety_boundary": {
+    "provider_request_issued": false,
+    "campaign111_source_candidate_or_comparator_values_read": false,
+    "historical_daily_price_or_forward_return_values_read": false,
+    "candidate49_ledgers_changed": false,
+    "secret_printed_hashed_logged_or_persisted": false
+  }
+}

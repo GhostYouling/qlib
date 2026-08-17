@@ -1,0 +1,45 @@
+{
+  "schema_version": 1,
+  "kind": "a_share_three_day_walkforward_campaign115_source_acceptance_runner_verification",
+  "status": "crash_safe_one_shot_intent_verified_plan_fail_closed_before_provider_request",
+  "recorded_at": "2026-08-09T04:00:00+08:00",
+  "supersedes_without_rewriting": {
+    "path": "docs/a_share_three_day_walkforward_campaign_115_source_acceptance_runner_verification_v2_20260809.json",
+    "sha256": "2b331cc74a1e67df3f5aa9a4d3a2e47091c71f8726f79054a71b4f617a4c78b3",
+    "preserved": true
+  },
+  "runner_freeze_v3": {
+    "path": "docs/a_share_three_day_walkforward_campaign_115_source_acceptance_runner_freeze_v3_20260809.json",
+    "sha256": "95466d848518a03f080a7b6241f455d7affeab04bdfd6883821cac648cfbcd54"
+  },
+  "verification": {
+    "focused_runner_and_adapter_tests": "24 passed in 0.38s",
+    "campaign113_to_campaign115_joint_regression": "59 passed in 0.72s",
+    "black_check": "4 files unchanged",
+    "ruff_required_rules": "E4,E7,E9,F,I passed",
+    "tampered_freeze_test_passed": true,
+    "preexisting_attempt_intent_rejected": true,
+    "same_run_device_inode_pinned_intent_accepted": true,
+    "simulated_first_provider_call_count": 1,
+    "simulated_failure_record_removed_before_second_plan": true,
+    "second_provider_call_rejected_by_persistent_intent": true,
+    "real_plan_ready": false,
+    "real_plan_exit_code": 2,
+    "runtime_binding_check_passed": true,
+    "attempt_intent_available": true,
+    "real_plan_only_blocker": "manual_5000_point_entitlement_confirmation",
+    "provider_request_issued": false,
+    "real_attempt_intent_created": false,
+    "success_manifest_exists": false,
+    "failure_record_exists": false,
+    "credential_value_printed_hashed_or_persisted": false
+  },
+  "scientific_or_accounting_change": {
+    "formula_source_direction_date_or_gate_changed": false,
+    "complete_definition_count_changed": false,
+    "numeric_comparator_count_changed": false,
+    "research_attempt_count_changed": false,
+    "return_reading_trial_count_changed": false
+  },
+  "next_action": "Wait for explicit confirmation that the current account already has 5000 points; do not supply the assertion flag or probe the provider by inference. When confirmed, a confirmed run will durably consume the one attempt before credential loading or provider access."
+}

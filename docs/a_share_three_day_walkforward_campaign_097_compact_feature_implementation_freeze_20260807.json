@@ -1,0 +1,43 @@
+{
+  "schema_version": 1,
+  "kind": "a_share_three_day_walkforward_campaign097_compact_feature_implementation_freeze",
+  "status": "frozen_after_no_return_admission_before_compact_publication_or_development_return_read",
+  "frozen_at": "2026-08-07T06:37:18Z",
+  "purpose": "Freeze a representation-only publication of the admitted Campaign097 factor on all quality-listing stock_day_key rows before development daily prices or returns are read.",
+  "compact_runner": {
+    "path": "scripts/a_share_three_day_walkforward_campaign097_compact_features.py",
+    "sha256": "b4af5e78ba31585469c67619da6943f91182fcd0494ceca5d89ed756c92f105a"
+  },
+  "tests": {
+    "path": "tests/data_collector_tests/test_a_share_three_day_walkforward_campaign097_compact_features.py",
+    "sha256": "0ff251208f9fd9d165e74a922843c4d7cf425068fe1e6a51c1c57309a3dfedf8",
+    "result": "4 passed"
+  },
+  "authoritative_no_return_audit": {
+    "path": "data/experiments/short_horizon/historical_walkforward/campaign_097/no_return/20260807T063355Z_campaign097_no_return_audit.json",
+    "sha256": "e95544ba9928c416a00aeaea66c187a4620d3955a48c1418fb697379704bd35b",
+    "admissible_factor_count": 1,
+    "numeric_comparisons_passed": 125
+  },
+  "source_snapshot": {
+    "path": "/Volumes/DIsk/qlib-a-share-tushare-1m/derived/a_share/rich/tushare/minute_walkforward_campaign097_feature_library/tushare_stk_mins_1m_2019_2025_ea0cbb8f_walkforward_campaign097_feature_library_v1/snapshot_manifest.json",
+    "sha256": "12e43008b4595a338bdd67ac21dcd543772e0517993623837770bec3bd31e0df",
+    "dataset_sha256": "ab5b0f747600a4040c38e1d6453a0ec4242342803bc7acff257cc88f95ccfdb5"
+  },
+  "eligibility_snapshot": {
+    "path": "/Volumes/DIsk/qlib-a-share-tushare-1m/derived/a_share/rich/tushare/compact_comparator_cache/campaign067_terminal_numeric98_v4/snapshot_manifest.json",
+    "sha256": "3d81068f07ac61fe4cd04bd1a893e58759c06d88213263135fec5244e309b57b",
+    "dataset_sha256": "4a56dac48c14b667b6ee431519266f27bb8ff7cc25c51d8dce3bbc7aebe0376f"
+  },
+  "factor": "intraday_market_range_profile_synchronization_240m",
+  "direction": "higher",
+  "expected_rows": 1331759,
+  "expected_eligible_rows": 1328449,
+  "expected_partitions": 7,
+  "publication_semantics": "Read only trade_date, symbol, and the admitted factor from the immutable source; left-align to every frozen eligibility stock_day_key; write only stock_day_key and the unchanged factor, retaining NaN exactly.",
+  "factor_recalculation_ranking_fitting_filtering_or_thresholding": false,
+  "historical_daily_price_or_forward_return_values_read_before_freeze": false,
+  "provider_request_issued_before_freeze": false,
+  "candidate49_ledgers_changed_before_freeze": false,
+  "current_scoring_selection_sizing_or_orders_performed_before_freeze": false
+}

@@ -1,0 +1,80 @@
+{
+  "version": 1,
+  "kind": "a_share_three_day_walkforward_campaign051_campaign050_verifier_repair_implementation_freeze",
+  "status": "frozen_before_exact_campaign051_no_return_audit_continuation",
+  "recorded_at": "2026-08-03T04:41:05Z",
+  "purpose": "Bind the exact-schema Campaign050 verifier repair, its isolated tests, and its full-file regression before the sole continuation of the incomplete Campaign051 no-return audit.",
+  "repair_authorization": {
+    "path": "docs/a_share_three_day_walkforward_campaign_051_no_return_audit_campaign050_verifier_failure_repair_20260803.json",
+    "sha256": "da97b374f28c8538e515781765ab72923853832840d26d846e12834b2d532648"
+  },
+  "repair_entrypoint": {
+    "path": "scripts/a_share_three_day_walkforward_campaign051_features_v4.py",
+    "sha256": "1360d1f35e3543cb6f0ff4e1219cf7ee66fd5797a6b998b62430e7de729d7169"
+  },
+  "repair_tests": {
+    "path": "tests/data_collector_tests/test_a_share_three_day_walkforward_campaign051_no_return_audit_repair.py",
+    "sha256": "4f26518d8b9b93a1daa0768a18d07d0dd3fb9f2d9fd85952340e9b7265b54ee3",
+    "passed": 2,
+    "failed": 0
+  },
+  "combined_campaign051_focused_tests": {
+    "passed": 14,
+    "failed": 0
+  },
+  "test_attempt_history": [
+    {
+      "attempt": 1,
+      "passed": 13,
+      "failed": 1,
+      "failure": "The repair test imported the v4 binding wrapper in the same pytest interpreter as the immutable v1 negative control. The wrapper correctly bound IMPLEMENTATION_FREEZE_SHA256, so the v1 test no longer observed its original unbound module state. No candidate, comparison, daily-price, or return value was read."
+    },
+    {
+      "attempt": 2,
+      "passed": 14,
+      "failed": 0,
+      "change": "Run both repair assertions in isolated Python subprocesses so importing the additive wrapper cannot mutate the original v1 negative-control module in the parent pytest process. The frozen v1 test and factor runner were not changed."
+    }
+  ],
+  "campaign050_full_file_verification": {
+    "snapshot_manifest_path": "/Volumes/DIsk/qlib-a-share-tushare-1m/derived/a_share/rich/tushare/minute_walkforward_campaign050_feature_library/tushare_stk_mins_1m_2019_2025_ea0cbb8f_walkforward_campaign050_feature_library_v1/snapshot_manifest.json",
+    "manifest_sha256": "8e95728fd9e1ba3d3ab820dbf5d92812bd18f9076ee901ee80cd76cf989300ef",
+    "dataset_sha256": "d758c059ff6fb602106c240c369d5d3db60eb245ec7cccf23d5a32b9f69dec8a",
+    "verified_partitions": 33015,
+    "verified_rows": 7724498,
+    "all_partition_byte_and_frame_hashes_valid": true,
+    "exact_output_columns": [
+      "trade_date",
+      "symbol",
+      "provider",
+      "intraday_half_session_extreme_shock_reversal_completion_2h",
+      "intraday_half_session_extreme_shock_reversal_completion_2h_eligible"
+    ]
+  },
+  "repair_semantics": {
+    "only_replaces_final_campaign050_snapshot_verifier_callable": true,
+    "campaign051_candidate_loading_changed": false,
+    "comparison_value_loading_changed": false,
+    "formula_direction_order_threshold_or_catalog_changed": false,
+    "snapshot_or_dataset_changed": false,
+    "result_schema_changed": false,
+    "runtime_progress_messages_are_non_artifact_context_only": true
+  },
+  "continuation_boundary": {
+    "same_no_return_audit_parameters_required": true,
+    "exact_continuation_remaining": 1,
+    "completed_audit_record_count": 0,
+    "historical_daily_price_fields_read": [],
+    "historical_forward_return_fields_read": false,
+    "training_or_model_fitting_performed": false,
+    "provider_request_issued": false,
+    "candidate49_historical_return_read": false,
+    "candidate49_ledgers_changed": false,
+    "second_prospective_candidate_created": false,
+    "current_scoring_selection_sizing_or_orders_performed": false
+  },
+  "decision": {
+    "repair_implementation_frozen": true,
+    "next_action": "Use one final additive fingerprint-bound wrapper to continue the exact Campaign051 no-return audit once."
+  }
+}

@@ -1,0 +1,25 @@
+{
+  "version": 1,
+  "kind": "a_share_three_day_walkforward_campaign085_no_return_audit_v4_prevalue_validation_failure",
+  "status": "ruff_failed_before_targeted_tests",
+  "recorded_at": "2026-08-07T01:10:00+08:00",
+  "v4_repair_protocol_sha256": "55395871191233404c84707f37361e651de5afefd0c71dde7c12f54557b6d2d2",
+  "black_format_and_check_passed": true,
+  "ruff_exit_code": 1,
+  "ruff_findings": {
+    "SIM117_nested_contexts": 1,
+    "F821_test_variable_out_of_scope": 4
+  },
+  "tests_executed": false,
+  "authorized_recovery": "combine the two frozen comparison contexts in one with statement and restore the prior runtime-adapter assertions to their original test before rerunning all prevalue checks",
+  "candidate_snapshot_values_read": false,
+  "coverage_or_capacity_metrics_computed": false,
+  "comparison_values_read": false,
+  "historical_daily_price_fields_read": [],
+  "historical_forward_returns_read": false,
+  "provider_request_issued": false,
+  "candidate49_ledgers_changed": false,
+  "research_attempt_count_increment": 1,
+  "factor_attempt_count_increment": 0,
+  "development_trial_count_increment": 0
+}

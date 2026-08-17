@@ -1,0 +1,38 @@
+{
+  "version": 1,
+  "kind": "a_share_three_day_walkforward_campaign074_terminal_test_runtime_failures",
+  "status": "recorded_two_failed_commands_before_test_collection",
+  "recorded_at": "2026-08-06T08:35:00+08:00",
+  "stage": "terminal_current_test_suite",
+  "failed_commands": [
+    {
+      "ordinal_within_record": 1,
+      "exit_code": 127,
+      "failure": "zsh command not found: pytest",
+      "test_collection_started": false
+    },
+    {
+      "ordinal_within_record": 2,
+      "exit_code": 1,
+      "failure": "bundled Python reported No module named pytest while probing pytest --version",
+      "test_collection_started": false
+    }
+  ],
+  "failed_command_count": 2,
+  "research_values_read": false,
+  "historical_daily_prices_or_forward_returns_read": false,
+  "stress_2024_2025_opened": false,
+  "provider_request_issued": false,
+  "candidate49_ledgers_changed": false,
+  "remediation": "Install pytest and pyarrow into an isolated mktemp target and invoke the bundled Python with the temporary target plus repository root on PYTHONPATH.",
+  "repository_dependency_files_changed": false,
+  "accounting": {
+    "campaign074_infrastructure_failure_increment": 2,
+    "campaign074_attempt_increment": 2,
+    "development_return_reading_trial_increment": 0,
+    "corrected_campaign074_infrastructure_failure_count": 7,
+    "corrected_campaign074_attempt_count": 8,
+    "corrected_cumulative_historical_research_attempt_count": 450,
+    "corrected_cumulative_return_reading_development_trial_count": 276
+  }
+}

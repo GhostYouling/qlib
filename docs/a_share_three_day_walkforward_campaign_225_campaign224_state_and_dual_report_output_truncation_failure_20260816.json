@@ -1,0 +1,20 @@
+{
+  "schema_version": 1,
+  "kind": "a_share_three_day_walkforward_campaign225_infrastructure_failure",
+  "recorded_at": "2026-08-16T02:39:00+08:00",
+  "timestamp_semantics": "monotonic_logical_append_time_not_host_wall_clock_measurement",
+  "status": "failed_combined_terminal_state_and_dual_report_tail_output_truncated_and_discarded",
+  "phase": "campaign224_state_validation_and_dual_report_tail_combined_read",
+  "command_scope": "read-only Campaign224 terminal-state and mutable-report publication verification",
+  "failure": "One combined display of Campaign224 terminal validation, advancing state, and both mutable report tails exceeded the output budget and was truncated.",
+  "recovery": "The already independent Campaign224 state and policy fingerprint checks were retained; both reports were then revalidated separately by exact heading count, required terminal literals and complete byte SHA-256 without consuming the truncated display.",
+  "research_boundary": {
+    "partial_output_used_as_scientific_or_validation_evidence": false,
+    "repository_file_written_before_recovery": false,
+    "candidate_or_comparator_value_read": false,
+    "daily_price_or_forward_return_read": false,
+    "provider_or_web_request_issued": false,
+    "provider_credential_presence_value_or_digest_read": false,
+    "candidate49_plan_or_run_executed": false
+  }
+}

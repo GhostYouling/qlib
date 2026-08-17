@@ -1,0 +1,50 @@
+{
+  "schema_version": 1,
+  "kind": "a_share_three_day_walkforward_campaign183_infrastructure_failure",
+  "status": "recorded_recovered_no_scientific_result_changed",
+  "recorded_at": "2026-08-15T12:46:29+08:00",
+  "phase": "campaign145_through_campaign183_corrected_cumulative_regression",
+  "failure": {
+    "failure_kind": "pytest_deselect_node_prefix_mismatch",
+    "operation": "Run the 71 Campaign145-183 test files while deselecting the five exact historical mutable-report lifecycle nodes frozen by policy v271.",
+    "observed_result": "The command supplied each deselection as tests/data_collector_tests/... while Pytest emitted node IDs relative to its tests root as data_collector_tests/.... None of the five intended nodes was deselected, so all five known lifecycle assertions ran and failed after mutable reports advanced.",
+    "exit_code": 1,
+    "passed_test_count": 429,
+    "skipped_test_count": 1,
+    "failed_test_count": 5,
+    "deselected_test_count": 0,
+    "failed_nodes": [
+      "data_collector_tests/test_a_share_three_day_walkforward_campaign145_terminal.py::test_campaign145_terminal_bindings_reports_and_candidate49_boundary",
+      "data_collector_tests/test_a_share_three_day_walkforward_campaign161_initial_verification.py::test_campaign161_reports_and_candidate49_hashes",
+      "data_collector_tests/test_a_share_three_day_walkforward_campaign164_terminal.py::test_campaign164_reports_are_appended_exactly_once",
+      "data_collector_tests/test_a_share_three_day_walkforward_campaign170_terminal.py::test_campaign170_bindings_and_finite_frontier",
+      "data_collector_tests/test_a_share_three_day_walkforward_campaign171_terminal.py::test_campaign171_bindings_and_finite_frontier"
+    ],
+    "scientific_result_from_failed_operation_used": false,
+    "failure_masked_or_treated_as_success": false
+  },
+  "bounded_recovery": {
+    "method": "Rerun the same 71 files with the five exact policy-v271 node IDs, beginning at data_collector_tests/ and changing no historical test or policy bytes.",
+    "historical_test_or_policy_bytes_modified": false,
+    "recovery_pending_at_record_time": true
+  },
+  "authoritative_inputs": {
+    "eligibility_policy_v271": {
+      "path": "docs/a_share_three_day_walkforward_future_numeric_comparison_eligibility_policy_v271_20260815.json",
+      "sha256": "3099d750691c08e68a21bfaa1b7f42dfd484a65dbd418ffadf87e1ab96fc9c41"
+    },
+    "campaign183_terminal_result_before_failure_accounting": {
+      "path": "docs/a_share_three_day_walkforward_campaign_183_terminal_result_20260815.json",
+      "sha256": "92e7a90c95e033ecee5640a089b7763d663505abde44bab1a6ed47a1241e0370"
+    }
+  },
+  "research_boundary": {
+    "provider_or_web_request_issued": false,
+    "provider_credential_presence_value_or_digest_read": false,
+    "source_row_factor_comparator_security_price_or_return_value_read": false,
+    "stress_2024_2025_opened": false,
+    "candidate49_ledgers_changed": false,
+    "current_scoring_selection_sizing_positions_or_orders_performed": false
+  },
+  "next_action": "Count this command once as a Campaign183 infrastructure failure, append it to the ledger, synchronize terminal accounting and rerun with the exact five node IDs."
+}

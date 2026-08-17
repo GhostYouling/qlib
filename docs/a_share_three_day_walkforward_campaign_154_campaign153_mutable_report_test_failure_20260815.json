@@ -1,0 +1,24 @@
+{
+  "schema_version": 1,
+  "kind": "a_share_three_day_walkforward_campaign154_infrastructure_failure",
+  "status": "recorded_nonzero_regression_exit_before_repair",
+  "recorded_at": "2026-08-15T03:08:00+08:00",
+  "failed_command_scope": "Campaign145 through Campaign154 terminal regression from repository root with the previously known Campaign145 mutable-report lifecycle node deselected",
+  "exit_code": 1,
+  "observed_result": "71 passed, 1 failed, 1 deselected",
+  "failed_node": "data_collector_tests/test_a_share_three_day_walkforward_campaign153_terminal.py::test_campaign153_publication_bindings_and_candidate49_boundary",
+  "pre_repair_test": {
+    "path": "tests/data_collector_tests/test_a_share_three_day_walkforward_campaign153_terminal.py",
+    "sha256": "f912332b65e9a17a89402960f8569dab39f99bc055c848eb1b1917a8cfb9b1ac"
+  },
+  "root_cause": "The historical Campaign153 test compared each mutable append-only unified report's sha256_at_publication to the report's current bytes. Campaign154 correctly appended a new section, so current bytes no longer equal the historical publication hash.",
+  "repair_boundary": {
+    "test_only": true,
+    "new_semantics": "Treat sha256_at_publication as historical evidence, verify the record explicitly declares the report mutable, and verify the immutable Campaign153 section remains present exactly once.",
+    "scientific_result_changed": false,
+    "candidate_or_comparator_values_read": false,
+    "historical_daily_price_or_forward_return_values_read": false,
+    "candidate49_ledgers_changed": false,
+    "failed_exit_code_bypassed_or_masked": false
+  }
+}

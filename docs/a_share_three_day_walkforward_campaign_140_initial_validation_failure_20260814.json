@@ -1,0 +1,48 @@
+{
+  "schema_version": 1,
+  "kind": "a_share_three_day_walkforward_campaign140_infrastructure_failure",
+  "status": "initial_validation_nonzero_exit_recorded_before_additive_binding_correction",
+  "recorded_at": "2026-08-14T13:59:22+0800",
+  "attempt_id": "campaign140_infrastructure_001",
+  "stage": "initial_terminal_validation",
+  "command_scope": {
+    "json_parse_count": 6,
+    "black_check_path": "tests/data_collector_tests/test_a_share_three_day_walkforward_campaign140_terminal.py",
+    "ruff_check_path": "tests/data_collector_tests/test_a_share_three_day_walkforward_campaign140_terminal.py",
+    "pytest_path": "tests/data_collector_tests/test_a_share_three_day_walkforward_campaign140_terminal.py",
+    "combined_command_exit_code": 1
+  },
+  "observed": {
+    "json_parse": "6 passed",
+    "black": "one new test file would be reformatted",
+    "ruff": "passed",
+    "pytest": "4 passed, 1 failed",
+    "failed_test": "test_campaign140_frontier_and_numeric_orders_remain_frozen",
+    "binding_failure": {
+      "record_path": "docs/a_share_three_day_walkforward_campaign_140_mechanism_source_frontier_audit_20260814.json",
+      "record_sha256": "43d8b1ae0a14e64be8319cfba0465d26316420d2e9d63936961e3969fb39e9cf",
+      "failed_binding_count": 1,
+      "json_pointer": "/evidence_bindings/predecessor_unified_report",
+      "expected_sha256": "e606fe70b332e564dccf879fb06357ebb37b393f62dab76e406865d111b01546",
+      "observed_sha256": "89fa06283287ef8026400eaf0108069982ad3d9cad72c6503e6df75fac38da9b"
+    }
+  },
+  "cause": "The initial mechanism audit bound the mutable unified current report as predecessor evidence. Appending Campaign140 correctly changed that report, so the audit was not independently replayable. The test file also had a mechanical Black formatting difference.",
+  "recovery": {
+    "preserve_initial_audit_terminal_result_policy_status_and_reports": true,
+    "publish_additive_effective_audit_binding_the_immutable_campaign139_terminal_report": true,
+    "publish_additive_ledger_terminal_policy_status_and_report_accounting": true,
+    "mechanically_format_only_the_unfrozen_new_test": true,
+    "do_not_weaken_binding_validator_or_ignore_exit_code": true
+  },
+  "research_boundary": {
+    "source_candidate_or_comparator_values_read": false,
+    "historical_daily_price_or_forward_return_values_read": false,
+    "stress_2024_2025_opened": false,
+    "provider_request_issued": false,
+    "provider_credential_value_or_digest_read": false,
+    "candidate49_historical_backfill_performed": false,
+    "candidate49_ledgers_changed": false,
+    "scientific_result_changed": false
+  }
+}

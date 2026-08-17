@@ -1,0 +1,20 @@
+{
+  "schema_version": 1,
+  "kind": "a_share_three_day_walkforward_campaign199_infrastructure_failure",
+  "status": "failed_authority_status_combined_output_truncated_discarded",
+  "recorded_at": "2026-08-15T18:02:00+08:00",
+  "phase": "campaign199_authority_and_worktree_boundary_verification",
+  "failure_class": "terminal_output_truncation_combined_git_status_and_state",
+  "process_exit_code": 0,
+  "tool_output_truncated": true,
+  "failed_output_used_as_validation_or_scientific_evidence": false,
+  "failure_summary": "A combined authority check included the very large dirty-worktree listing and Campaign198 state JSON, exceeded the output limit, and was discarded in full.",
+  "recovery": "Split local time, state hash and fields, dirty-file count, and Campaign198/199 target-path status into bounded independent read-only commands.",
+  "research_boundary": {
+    "candidate_source_comparator_security_price_or_return_value_read": false,
+    "provider_or_web_request_issued": false,
+    "provider_credential_presence_value_or_digest_read": false,
+    "candidate49_plan_or_run_executed": false,
+    "candidate49_ledgers_changed": false
+  }
+}

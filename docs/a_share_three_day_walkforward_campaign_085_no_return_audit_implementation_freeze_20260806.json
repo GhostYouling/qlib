@@ -1,0 +1,52 @@
+{
+  "version": 1,
+  "kind": "a_share_three_day_walkforward_campaign085_no_return_audit_implementation_freeze",
+  "status": "frozen_after_verified_snapshot_before_coverage_or_comparison_values",
+  "recorded_at": "2026-08-07T00:05:00+08:00",
+  "protocol": {
+    "path": "docs/a_share_three_day_walkforward_campaign_085_no_return_preregistration.json",
+    "sha256": "c08bf9ec921e97ceafa44b143ef6da0bee8223b65841f09093a01358f61936e6"
+  },
+  "snapshot_binding": {
+    "path": "docs/a_share_three_day_walkforward_campaign_085_feature_snapshot_binding_20260806.json",
+    "sha256": "ce70c107d654b1d6151fde87bd5f177ee458cb2db825080cf1c6206df249ba4f"
+  },
+  "audit_runner": {
+    "path": "scripts/a_share_three_day_walkforward_campaign085_no_return_audit.py",
+    "sha256": "617eb8fffe1c657cc0cdbbb32d733897ad7a6bc37a1e0846f4ac2884df84a3dd"
+  },
+  "tests": {
+    "path": "tests/data_collector_tests/test_a_share_three_day_walkforward_campaign085_no_return_audit.py",
+    "sha256": "4738a9d6051761b099356560a4f0bb6218356e1aa767135ff9b48db0997c9c1e",
+    "passed": 4,
+    "failed": 0,
+    "black_and_ruff_passed": true
+  },
+  "prevalue_failure_record": {
+    "path": "docs/a_share_three_day_walkforward_campaign_085_no_return_audit_prevalue_failure_20260806.json",
+    "sha256": "c4c5a30a64aa6152825b4f8c04fede320584f3485bc2dcd1ef42cdf6537c4aa9"
+  },
+  "research_attempt_ledger": {
+    "path": "data/experiments/short_horizon/historical_walkforward/campaign_085/research_attempt_ledger_v5.json",
+    "sha256": "dddd7aed82b6319fc92a6ea5c0c69c7d1198ace342a62834e4ba94357570f182"
+  },
+  "frozen_gate_order": {
+    "coverage_before_comparison_values": true,
+    "minimum_median_coverage": 0.95,
+    "minimum_p05_coverage": 0.9,
+    "minimum_p05_eligible_names": 50,
+    "minimum_non_overlapping_three_session_cohorts": 200,
+    "minimum_observed_calendar_years": 5,
+    "numeric_comparator_count_after_coverage_only": 114,
+    "numeric_comparator_order_sha256": "03a0c534f3bc321d5bc452415e6207026030978c4ac5d433305b04a21db6cea9",
+    "maximum_absolute_median_daily_rank_correlation": 0.8,
+    "all_numeric_comparators_must_pass": true
+  },
+  "coverage_or_capacity_metrics_computed_before_freeze": false,
+  "comparison_values_read_before_freeze": false,
+  "historical_daily_price_fields_read_before_freeze": [],
+  "historical_forward_returns_read_before_freeze": false,
+  "provider_request_issued_before_freeze": false,
+  "candidate49_ledgers_changed_before_freeze": false,
+  "current_scoring_selection_sizing_or_orders_performed": false
+}

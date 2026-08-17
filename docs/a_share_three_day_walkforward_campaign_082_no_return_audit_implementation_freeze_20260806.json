@@ -1,0 +1,64 @@
+{
+  "schema_version": 1,
+  "kind": "a_share_three_day_walkforward_campaign082_no_return_audit_implementation_freeze",
+  "status": "frozen_after_verified_snapshot_before_coverage_or_comparison_values",
+  "frozen_at": "2026-08-06T18:54:00+08:00",
+  "protocol": {
+    "path": "docs/a_share_three_day_walkforward_campaign_082_no_return_preregistration.json",
+    "sha256": "acc55fb8b3a4b79f005ab23033dccb781dca1fd71b162a71dfeb04f7aa91bf88"
+  },
+  "snapshot_binding": {
+    "path": "docs/a_share_three_day_walkforward_campaign_082_feature_snapshot_binding_20260806.json",
+    "sha256": "041faa2e08a0563d792bca119f46fd8378d9132a55497aea24f728d29f3c6933"
+  },
+  "audit_runner": {
+    "path": "scripts/a_share_three_day_walkforward_campaign082_no_return_audit.py",
+    "sha256": "4e058411211e47bb2f18fb64c7a5960f18ec4567c25a6675e0ece0cf311de5a2"
+  },
+  "tests": {
+    "path": "tests/data_collector_tests/test_a_share_three_day_walkforward_campaign082_no_return_audit.py",
+    "sha256": "4e210c134fca04df2fe7a5b9237a247f28f3de3e2dafbd33ce86d621ce5ce907",
+    "preactivation_tests_passed": 4,
+    "preactivation_tests_failed": 0
+  },
+  "legacy_comparator_runtime": {
+    "campaign081_no_return_audit_runner": {
+      "path": "scripts/a_share_three_day_walkforward_campaign081_no_return_audit.py",
+      "sha256": "b66a409df34856d3627d989cb6f4c494a4c2d7fd871534a7c995943f404ab3d3"
+    },
+    "campaign081_no_return_audit_implementation_freeze": {
+      "path": "docs/a_share_three_day_walkforward_campaign_081_no_return_audit_implementation_freeze_20260806.json",
+      "sha256": "7cb2f10fc9de78e532eb422d8429184bda230ce25251c17a068eafc5dffed987"
+    },
+    "campaign081_no_return_audit_activation_binding": {
+      "path": "docs/a_share_three_day_walkforward_campaign_081_no_return_audit_activation_binding_20260806.json",
+      "sha256": "e83358a34cb1d623179e3bde54ed59c82d72c5e996c3205ecca079b2e4d92f36"
+    }
+  },
+  "frozen_gate_semantics": {
+    "coverage_first": true,
+    "minimum_median_coverage": 0.95,
+    "minimum_p05_coverage": 0.9,
+    "minimum_p05_eligible_names": 50,
+    "minimum_non_overlapping_three_session_cohorts": 200,
+    "minimum_observed_calendar_years": 5,
+    "numeric_comparator_count": 111,
+    "numeric_comparator_order_sha256": "591432918754f7da24f468d152bbbc1b337127dd5fdc30f0f214ea776ca757aa",
+    "complete_definition_count": 113,
+    "complete_definition_order_sha256": "0938f041bcdd591bc8977204d78df502514aa1230942199b006e8fd72bdb68a2",
+    "maximum_allowed_absolute_median_daily_rank_correlation": 0.8,
+    "minimum_pairwise_names_per_session": 50,
+    "minimum_pairwise_sessions_per_comparison": 100,
+    "all_111_numeric_comparators_must_pass": true,
+    "campaign063_and_campaign079_remain_semantic_only": true
+  },
+  "coverage_or_capacity_metrics_computed_before_freeze": false,
+  "comparison_values_read_before_freeze": false,
+  "historical_daily_price_fields_read_before_freeze": [],
+  "historical_forward_returns_read_before_freeze": false,
+  "provider_request_issued_before_freeze": false,
+  "candidate49_historical_backfill_performed": false,
+  "candidate49_ledgers_changed": false,
+  "current_scoring_selection_sizing_or_orders_performed": false,
+  "next_action": "Create a separate activation binding to this exact runner, test, snapshot, protocol and legacy runtime; then run the sole no-return audit once."
+}

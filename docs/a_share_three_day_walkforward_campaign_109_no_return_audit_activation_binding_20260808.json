@@ -1,0 +1,68 @@
+{
+  "schema_version": 1,
+  "kind": "a_share_three_day_walkforward_campaign109_no_return_audit_activation_binding",
+  "status": "frozen_after_verified_candidate_snapshot_before_coverage_or_comparator_values",
+  "recorded_at": "2026-08-07T22:21:38Z",
+  "implementation_freeze": {
+    "path": "docs/a_share_three_day_walkforward_campaign_109_no_return_implementation_freeze_v2_20260808.json",
+    "sha256": "911c6d748a11d99ecbace961310acc3bd90a18ada1392d0b6f7e3461ceb37ca0"
+  },
+  "audit_adapter_freeze": {
+    "path": "docs/a_share_three_day_walkforward_campaign_109_no_return_audit_adapter_freeze_20260808.json",
+    "sha256": "e8e84f7d8d579504dea628a9d2fe64600d794393a6099765df44f025f90061bf"
+  },
+  "snapshot_binding": {
+    "path": "docs/a_share_three_day_walkforward_campaign_109_feature_snapshot_binding_20260808.json",
+    "sha256": "eb5df1a26abdcb4252a4299ef16c7aef856032ee271b43407dd3379393cb9a64"
+  },
+  "candidate_snapshot": {
+    "path": "/Volumes/DIsk/qlib-a-share-tushare-1m/derived/a_share/rich/tushare/minute_walkforward_campaign109_feature_library/tushare_stk_mins_1m_2019_2025_ea0cbb8f_walkforward_campaign109_feature_library_v1/snapshot_manifest.json",
+    "sha256": "b212eac0921bbca2c3a84c6eceb7f6741939c52ccb96a21e3897d1533c8b6aba",
+    "dataset_sha256": "f222c80e80acb9872cc7e29a0fc89ab37e51bc1ee02f40f19f683c3757fcdb90",
+    "partitions": 33015,
+    "rows": 7724498,
+    "eligible_rows": 7694849
+  },
+  "first_130_directional_comparators": {
+    "path": "/Volumes/DIsk/qlib-a-share-tushare-1m/derived/a_share/rich/tushare/minute_walkforward_campaign102_design_matrix/tushare_stk_mins_1m_2019_2025_ea0cbb8f_walkforward_campaign102_design_matrix_v1/snapshot_manifest.json",
+    "sha256": "fc9ab498462439731785a0eabbde370c1fd883c8d771eba312c85aa912d3cebe",
+    "dataset_sha256": "cceec2b790d134a89914e83e0697c1e6abff605a85fd85be74de68067faddb92",
+    "factor_count": 130,
+    "value_semantics": "same-session average-tie percentiles already normalized into each factor's frozen higher-is-better direction"
+  },
+  "comparator_131": {
+    "path": "/Volumes/DIsk/qlib-a-share-tushare-1m/derived/a_share/rich/tushare/minute_walkforward_campaign103_feature_library/tushare_stk_mins_1m_2019_2025_ea0cbb8f_walkforward_campaign103_feature_library_v1/snapshot_manifest.json",
+    "sha256": "8a939feb53edfb31be8f133c2683920ed13424e716a4f4b5ed0d1a300588603b",
+    "dataset_sha256": "57afdd9f8a246fb9f513f85b3b631f70cf734655bd226ff211201bf7e084ea13",
+    "factor": "full_numeric_library_directional_rank_improvement_breadth_130f",
+    "direction": "higher",
+    "value_range": [
+      0.0,
+      1.0
+    ]
+  },
+  "comparator_132": {
+    "path": "/Volumes/DIsk/qlib-a-share-tushare-1m/derived/a_share/rich/tushare/minute_walkforward_campaign105_feature_library/tushare_stk_mins_1m_2019_2025_ea0cbb8f_walkforward_campaign105_feature_library_v1/snapshot_manifest.json",
+    "sha256": "56e2d016087ff09643ef98dd00cad0ac9c771e815d19ec9941cea9f5904824a5",
+    "dataset_sha256": "912625c3763fe3868adb4c4f410b6a6ab72c9272f78b8b57db620daaf970018c",
+    "factor": "intraday_active_trading_bar_share_240m",
+    "direction": "higher",
+    "value_range": [
+      0.0,
+      1.0
+    ]
+  },
+  "raw_comparator_adapter_freeze": {
+    "path": "docs/a_share_three_day_walkforward_campaign_107_raw_comparator_adapter_implementation_freeze_20260808.json",
+    "sha256": "07de45590082fcf98350a4b4f0b615ffd994a97fe3cec431ae476c058a95cc2b"
+  },
+  "coverage_or_capacity_metrics_computed_before_activation": false,
+  "comparator_values_read_before_activation": false,
+  "historical_daily_price_or_forward_return_values_read_before_activation": false,
+  "provider_request_issued_before_activation": false,
+  "candidate49_historical_backfill_performed": false,
+  "candidate49_ledgers_changed": false,
+  "current_scoring_selection_sizing_or_orders_performed": false,
+  "single_use": true,
+  "next_action": "Run exactly one ordered no-return audit. Coverage failure stops before all comparator values; uniqueness failure stops before all daily prices and returns."
+}

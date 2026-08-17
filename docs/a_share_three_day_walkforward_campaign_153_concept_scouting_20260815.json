@@ -1,0 +1,229 @@
+{
+  "schema_version": 1,
+  "kind": "a_share_three_day_walkforward_campaign153_concept_scouting",
+  "status": "terminal_zero_selected_candidates_after_accepted_source_state_frontier_review",
+  "recorded_at": "2026-08-15T02:37:30+08:00",
+  "purpose": "Review a finite set of economically independent microstructure and source-state mechanisms against the complete 157-definition library and the fields admitted by existing point-in-time local contracts, before reading any source row, candidate value, comparator value, price or forward return.",
+  "authoritative_inputs": {
+    "campaign152_terminal_state": {
+      "path": "docs/a_share_three_day_iteration_status_20260815_campaign152_terminal_v2.json",
+      "sha256": "4eeb2b8059a8ce70aacc0a2a41942505318363b3f7b9c8fee5f3898b54bead28"
+    },
+    "numeric_policy_v210": {
+      "path": "docs/a_share_three_day_walkforward_future_numeric_comparison_eligibility_policy_v210_20260815.json",
+      "sha256": "510872b4d5f34b16677ec3fef9e253b12ee6bdc9dd5afabb35ca5b7b262c7153",
+      "complete_definition_count": 157,
+      "complete_definition_order_sha256": "c39bb6ca969b5f469a9377a5b5ca743405cec9d8511297ed6a1c44188ef40b82",
+      "eligible_numeric_comparator_count": 142,
+      "eligible_numeric_comparator_order_sha256": "5d1b35fb5a0d8ac9293008db9963c4a60a94dc940c237c3ed259e5ce44f14aaf"
+    },
+    "campaign138_source_frontier_audit": {
+      "path": "docs/a_share_three_day_walkforward_campaign_138_mechanism_source_frontier_audit_20260814.json",
+      "sha256": "24dad986c24eb4c88df3e2ca03244f36bfb0960de64d1d59bac6a234de75f366"
+    },
+    "campaign115_entitlement_independent_terminal": {
+      "path": "docs/a_share_three_day_walkforward_campaign_115_entitlement_independent_terminal_20260812.json",
+      "sha256": "7eb6f7a49a0235b85ee752f01a357986da4366a37d9d8cf7b9dd9dcc2f6306cf"
+    }
+  },
+  "accepted_local_schema_audit": {
+    "minute_snapshot_manifest": {
+      "path": "/Volumes/DIsk/qlib-a-share-tushare-1m/raw/a_share/rich/tushare/minutes/1m/snapshots/tushare_stk_mins_1m_2019_2025_ea0cbb8f/snapshot_manifest.json",
+      "sha256": "9b3d959563c9d182f38981c6a36bdb3bc9b415de08487a9e1f9e850825c0839f",
+      "admitted_trade_observations": [
+        "ts_code",
+        "trade_time",
+        "open",
+        "high",
+        "low",
+        "close",
+        "vol",
+        "amount"
+      ]
+    },
+    "daily_snapshot_manifest": {
+      "path": "/Volumes/DIsk/qlib-a-share-tushare-1m/raw/a_share/rich/tushare/daily/snapshots/tushare_daily_2019_2025_acf72e28/snapshot_manifest.json",
+      "sha256": "87feded06b6726d282abf52c8fd1c30340728ae37c2de201a3a8f30e1a556e2d",
+      "admitted_fields": [
+        "ts_code",
+        "trade_date",
+        "open",
+        "high",
+        "low",
+        "close",
+        "pre_close",
+        "change",
+        "pct_chg",
+        "vol",
+        "amount"
+      ]
+    },
+    "schema_or_parquet_metadata_only": true,
+    "source_rows_or_column_values_read": false,
+    "point_in_time_market_cap_or_share_count_present": false,
+    "bid_ask_quote_depth_present": false,
+    "aggressor_side_or_trade_direction_present": false,
+    "transaction_count_or_trade_identifier_present": false,
+    "order_add_cancel_or_queue_event_present": false
+  },
+  "finite_prevalue_concept_catalog": [
+    {
+      "catalog_id": "c153_01",
+      "name": "intraday_time_weighted_relative_quoted_spread_240m",
+      "hypothetical_formula": "For each exact continuous-auction minute compute (best_ask - best_bid) / midpoint and return the arithmetic mean over 240 valid observations.",
+      "direction": "lower",
+      "required_source_fields": [
+        "best_bid",
+        "best_ask"
+      ],
+      "parameters": "exact 240-minute grid, top-of-book quotes and midpoint normalization",
+      "filters": [
+        "positive_finite_bid_and_ask",
+        "ask_not_below_bid"
+      ],
+      "subsets": [],
+      "combinations": [],
+      "models": [],
+      "prevalue_decision": "rejected_required_quote_state_absent_from_every_accepted_local_contract",
+      "reason": "Quoted transaction cost is economically distinct from OHLC range or price-update proxies, but no accepted local historical source contains bid or ask fields. Reconstructing spread from one-minute high-low would only relabel the terminal range family."
+    },
+    {
+      "catalog_id": "c153_02",
+      "name": "intraday_aggressor_signed_amount_imbalance_240m",
+      "hypothetical_formula": "Sum buyer-initiated CNY amount minus seller-initiated CNY amount and divide by their positive total over the exact session.",
+      "direction": "higher",
+      "required_source_fields": [
+        "trade_amount",
+        "aggressor_side"
+      ],
+      "parameters": "provider-classified aggressor side, exact continuous-auction session and no tick-rule reconstruction",
+      "filters": [
+        "positive_total_classified_amount"
+      ],
+      "subsets": [],
+      "combinations": [],
+      "models": [],
+      "prevalue_decision": "rejected_required_aggressor_side_absent_and_tick_rule_proxy_would_reopen_terminal_directional_price_impact_family",
+      "reason": "The local minute bars contain total volume and amount but no buyer/seller initiation. Inferring side from price changes would reuse exposed return-sign, signed-amount and price-impact mechanisms rather than observe order flow."
+    },
+    {
+      "catalog_id": "c153_03",
+      "name": "intraday_mean_transaction_notional_240m",
+      "hypothetical_formula": "Divide exact-session CNY amount by the exact count of executed trades, requiring both quantities to be positive.",
+      "direction": "higher",
+      "required_source_fields": [
+        "session_amount",
+        "executed_trade_count"
+      ],
+      "parameters": "all continuous-auction prints, provider trade-count semantics and no volume-based count proxy",
+      "filters": [
+        "positive_session_amount",
+        "positive_executed_trade_count"
+      ],
+      "subsets": [],
+      "combinations": [],
+      "models": [],
+      "prevalue_decision": "rejected_required_trade_count_absent_from_every_accepted_local_contract",
+      "reason": "Average trade size would add a participant-size state not contained in total amount magnitude, but neither the minute nor daily snapshot has trade count or trade identifiers. Dividing amount by volume produces transaction price, an already terminal family, not trade size."
+    },
+    {
+      "catalog_id": "c153_04",
+      "name": "intraday_queue_replenishment_after_cancellation_240m",
+      "hypothetical_formula": "For every visible best-bid depletion event, measure same-price displayed-quantity replenishment within the next fixed event and summarize replenished quantity divided by depleted quantity.",
+      "direction": "higher",
+      "required_source_fields": [
+        "order_event_time",
+        "order_event_type",
+        "side",
+        "price",
+        "displayed_quantity"
+      ],
+      "parameters": "event-time top-of-book order stream and one-next-event replenishment horizon",
+      "filters": [
+        "best_bid_depletion_events_only",
+        "positive_depleted_quantity"
+      ],
+      "subsets": [],
+      "combinations": [],
+      "models": [],
+      "prevalue_decision": "rejected_required_order_add_cancel_and_queue_state_absent_from_every_accepted_local_contract",
+      "reason": "Queue resilience is independent microstructure information, but bar OHLCV cannot distinguish execution, cancellation or replenishment. Any range/volume proxy would reopen terminal absorption and activity families."
+    },
+    {
+      "catalog_id": "c153_05",
+      "name": "daily_absolute_amount_to_free_float_market_cap_1d",
+      "hypothetical_formula": "Divide same-day raw CNY amount by the same-day historically versioned free-float market capitalization.",
+      "direction": "higher",
+      "required_source_fields": [
+        "daily_amount",
+        "point_in_time_circ_mv"
+      ],
+      "parameters": "same-date provider fields with no backward projection from a current listing snapshot",
+      "filters": [
+        "positive_daily_amount",
+        "positive_point_in_time_circ_mv"
+      ],
+      "subsets": [],
+      "combinations": [],
+      "models": [],
+      "prevalue_decision": "rejected_point_in_time_capitalization_absent_and_campaign138_source_boundary_remains_terminal",
+      "reason": "The accepted daily and minute contracts contain no historical total_mv, circ_mv, total_share or free_share. The current universe snapshot cannot be projected backward, and volume/turnover reconstruction has unstable denominator semantics plus terminal-domain overlap."
+    },
+    {
+      "catalog_id": "c153_06",
+      "name": "daily_ohlc_inferred_limit_queue_persistence_1d",
+      "hypothetical_formula": "Infer a board-specific limit price from pre_close, classify close-at-limit and use daily high-low-close occupancy as a proxy for queue persistence.",
+      "direction": "higher",
+      "required_source_fields": [
+        "pre_close",
+        "high",
+        "low",
+        "close",
+        "point_in_time_board_and_special_treatment_limit_rule"
+      ],
+      "parameters": "board/ST/date-specific price-limit schedule and provider rounding semantics",
+      "filters": [
+        "known_point_in_time_limit_rule"
+      ],
+      "subsets": [],
+      "combinations": [],
+      "models": [],
+      "prevalue_decision": "rejected_as_terminal_campaign115_queue_mechanism_proxy_and_missing_point_in_time_rule_state",
+      "reason": "Campaign115 terminalized the official limit-up queue mechanism before values under the continuing no-licensed-source scope. Daily OHLC cannot recover seal time, reopen count or queue size, while deriving a limit proxy would revive the old limit-like price path with board/ST rule ambiguity."
+    }
+  ],
+  "selection": {
+    "concepts_reviewed": 6,
+    "rejected_concept_count": 6,
+    "selected_candidate_count": 0,
+    "selected_candidate": null,
+    "genuinely_new_contract_permitted_mechanism_found": false,
+    "reason": "Four genuinely independent microstructure states require quote, aggressor-side, trade-count or order-event fields absent from all accepted local contracts. The remaining capitalization and limit-queue proposals are already closed by Campaign138 and Campaign115 source/terminal boundaries."
+  },
+  "decision": {
+    "create_campaign153_formula_feature_snapshot_model_or_adapter": false,
+    "run_source_acceptance_coverage_uniqueness_or_return_trial": false,
+    "append_all_six_concepts": true,
+    "keep_complete_definition_count": 157,
+    "keep_numeric_comparator_count": 142,
+    "keep_2024_2025_lockbox_closed": true,
+    "next_campaign_requirement": "Continue only from a genuinely new finite prevalue mechanism backed by an already accepted historically versioned point-in-time source or a separately authorized source-admission campaign."
+  },
+  "research_boundary": {
+    "complete_157_definition_names_directions_formulas_and_terminal_histories_reviewed": true,
+    "source_contract_and_schema_metadata_read": true,
+    "source_rows_or_column_values_read": false,
+    "campaign153_candidate_values_computed_or_read": false,
+    "campaign153_comparator_values_read": false,
+    "historical_daily_price_or_forward_return_values_read": false,
+    "stress_2024_2025_opened": false,
+    "provider_request_issued": false,
+    "provider_credential_value_or_digest_read": false,
+    "candidate49_historical_backfill_performed": false,
+    "candidate49_ledgers_changed": false,
+    "second_prospective_candidate_created": false,
+    "current_scoring_selection_sizing_positions_or_orders_performed": false,
+    "investment_advice": false,
+    "inherited_current_listing_survivorship_limitation_remains": true
+  }
+}

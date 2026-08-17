@@ -58,3 +58,12 @@ tags
 # scripts/a_share_data_pipeline.py.  They deliberately live in the repository
 # folder for easy local use, but must not be committed.
 /data/
+
+# Local atomic pointer to an accepted external A-share data root. The path is
+# machine-specific and must never be committed.
+/.qlib_a_share_data_root
+/.qlib_a_share_data_root.lock
+
+# Local desktop and Codex application artifacts are not repository inputs.
+/.DS_Store
+/.codex/

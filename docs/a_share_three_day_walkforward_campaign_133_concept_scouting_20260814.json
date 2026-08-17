@@ -1,0 +1,96 @@
+{
+  "schema_version": 1,
+  "kind": "a_share_three_day_walkforward_campaign133_concept_scouting",
+  "status": "finite_complete_library_anchored_decile_pava_additive_family_selected_before_campaign133_model_scores_or_returns",
+  "recorded_at": "2026-08-14T01:58:30.893594+00:00",
+  "purpose": "Continue the offline historical factor-combination engine with one direction-preserving nonlinear additive calibration family that is distinct from Campaign102 bounded-simplex regression, deterministic consensus aggregators and Campaign132 monotone histogram trees.",
+  "authoritative_inputs": {
+    "campaign132_terminal_state": {
+      "path": "docs/a_share_three_day_iteration_status_20260814_campaign132_terminal.json",
+      "sha256": "02ec46710b18e4a66530cc5820444a5dd9a5c29aa03381a62c69a5cf83c31303"
+    },
+    "numeric_policy_v159": {
+      "path": "docs/a_share_three_day_walkforward_future_numeric_comparison_eligibility_policy_v159_20260814.json",
+      "sha256": "e7665a5699cbb41b1f1a2ace542ce0dca2e43a53a99f66b51960c201991bce01"
+    },
+    "historical_walkforward_policy": {
+      "path": "docs/a_share_three_day_historical_walkforward_research_policy_20260727.json",
+      "sha256": "38426d6161b9bfed323c58caba18feca668b8c9d53e294951a8ba90c01a798bb"
+    }
+  },
+  "finite_prevalue_concept_catalog": [
+    {
+      "catalog_id": "c133_01",
+      "name": "complete_140_numeric_library_anchor50_decile_pava_additive_calibration",
+      "decision": "selected_as_exactly_one_frozen_model_configuration",
+      "reason": "Each frozen-direction component receives its own training-only ten-bin monotone PAVA response map, every contribution is anchored 50 percent to the original favorable percentile, and all 140 contributions are averaged equally. This tests nonlinear marginal calibration without interactions, fitted component weights, subset selection or direction inversion."
+    },
+    {
+      "catalog_id": "c133_02",
+      "name": "complete_library_unanchored_isotonic_additive_calibration",
+      "decision": "rejected_before_values",
+      "reason": "An unanchored calibration can flatten a component completely and create data-dependent hidden feature selection; it also introduces unconstrained knot multiplicity."
+    },
+    {
+      "catalog_id": "c133_03",
+      "name": "complete_library_monotone_spline_or_gam",
+      "decision": "rejected_before_values",
+      "reason": "Spline degree, knot count, penalty and basis choices create an unfrozen hyperparameter family and can reproduce a post-Campaign132 model sweep."
+    },
+    {
+      "catalog_id": "c133_04",
+      "name": "complete_library_naive_bayes_or_forward_up_classification",
+      "decision": "rejected_before_values",
+      "reason": "Changing the target from the frozen cross-sectional return percentile to a direction class introduces target and probability-calibration multiplicity rather than isolating the combination rule."
+    },
+    {
+      "catalog_id": "c133_05",
+      "name": "complete_library_bounded_simplex_or_nonnegative_linear_refit",
+      "decision": "rejected_before_values",
+      "reason": "Campaign102 consumed the bounded-simplex supervised family and later policies forbid refreshing its component count, penalty or bounds after observing results."
+    },
+    {
+      "catalog_id": "c133_06",
+      "name": "campaign132_monotone_histogram_tree_retry_or_stack",
+      "decision": "rejected_before_values",
+      "reason": "Policy v159 makes the Campaign132 HGB family terminal and forbids retry, rescue, reparameterization or stacking it into a new campaign."
+    }
+  ],
+  "selected_family": {
+    "trial_id": "wf133_complete140_anchor50_decile_pava_additive",
+    "feature_library": "all_current_140_numeric_comparators_in_frozen_order",
+    "feature_order_sha256": "c71bfe27486c9567afd3aca21e4b04053658c23ac651e7f4df7fd014b0c31efd",
+    "training_target": "Within each contained training signal session, ascending average-tie percentile of finite gross forward return from t+1 open to t+3 close.",
+    "training_weights": "Each training signal session has equal total weight; rows inside one session split that weight equally.",
+    "missing_input": 0.5,
+    "bin_count": 10,
+    "bin_rule": "For x in [0,1], bin=min(9,floor(10*x)); exact x=1 belongs to bin 9.",
+    "per_component_fit": "Compute the session-equal weighted target mean in every observed bin, apply weighted nondecreasing PAVA across observed bins, then linearly interpolate empty interior bins and carry the nearest fitted endpoint into empty edge bins.",
+    "anchored_component_contribution": "0.5 * fitted_monotone_bin_value + 0.5 * favorable_direction_percentile",
+    "final_score": "Arithmetic mean of all 140 anchored component contributions.",
+    "configuration_count": 1,
+    "feature_subset_count": 1,
+    "target_count": 1,
+    "direction_configuration_count": 1
+  },
+  "prevalue_decision": {
+    "concepts_reviewed": 6,
+    "selected_model_configuration_count": 1,
+    "complete_current_library_required": true,
+    "old_terminal_records_rewritten_or_reclassified": false,
+    "campaign133_model_scores_computed_or_read_before_selection": false,
+    "campaign133_component_values_reopened_before_selection": false,
+    "historical_daily_price_or_forward_return_values_read_before_selection": false,
+    "stress_2024_2025_opened": false
+  },
+  "research_boundary": {
+    "provider_request_issued": false,
+    "credential_loaded": false,
+    "candidate49_historical_backfill_performed": false,
+    "candidate49_ledgers_changed": false,
+    "second_prospective_candidate_created": false,
+    "current_scoring_selection_sizing_positions_or_orders_performed": false,
+    "investment_advice": false,
+    "current_listing_survivorship_limitation_remains": true
+  }
+}

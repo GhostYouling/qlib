@@ -1,0 +1,26 @@
+{
+  "schema_version": 1,
+  "kind": "a_share_three_day_walkforward_campaign154_infrastructure_failure",
+  "status": "recorded_nonzero_validation_command_exit_before_repair",
+  "recorded_at": "2026-08-15T03:13:50+08:00",
+  "failed_command_scope": "Parse 13 Campaign154-related JSON records, then hash final artifacts and read wall-clock time in one zsh command",
+  "exit_code": 127,
+  "observed_result": {
+    "json_records_parsed_before_failure": 13,
+    "json_parse_failures": 0,
+    "stderr": [
+      "zsh:2: command not found: shasum",
+      "zsh:3: command not found: date"
+    ]
+  },
+  "root_cause": "The zsh loop variable was named path. In zsh, path is the tied array for PATH, so the loop overwrote command search directories before the later shasum and date invocations.",
+  "repair_boundary": {
+    "command_only": true,
+    "safe_repair": "Use a non-special loop variable and absolute /usr/bin/shasum and /bin/date paths.",
+    "scientific_result_changed": false,
+    "candidate_or_comparator_values_read": false,
+    "historical_daily_price_or_forward_return_values_read": false,
+    "candidate49_ledgers_changed": false,
+    "failed_exit_code_bypassed_or_masked": false
+  }
+}

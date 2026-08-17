@@ -1,0 +1,106 @@
+{
+  "schema_version": 1,
+  "kind": "a_share_three_day_walkforward_campaign095_concept_scouting",
+  "status": "selected_before_campaign095_minute_source_candidate_comparison_daily_price_or_return_values",
+  "recorded_at": "2026-08-07T03:45:12Z",
+  "purpose": "Select exactly one economically independent offline three-session factor after terminal Campaign094, before opening any Campaign095 minute source row, candidate value, comparator value, daily price, or forward return.",
+  "authoritative_boundary": {
+    "campaign094_verified_state": {
+      "path": "docs/a_share_three_day_iteration_status_20260807_campaign094_verified.json",
+      "sha256": "b51f2a4b365652c760838f93ffb3e4cfea69546edfaf39acab972e231bab0939"
+    },
+    "numeric_comparison_policy_v38": {
+      "path": "docs/a_share_three_day_walkforward_future_numeric_comparison_eligibility_policy_v38_20260807.json",
+      "sha256": "38994cc61f350f40a9a85d75a30a6e36831d968416799284413247e8d2cd4b42",
+      "complete_definition_count": 126,
+      "complete_definition_order_sha256": "332d461e2b00bf6645eeb74cd59d3710d63f88b34add8afaadf4807ea712263d",
+      "numeric_comparator_count": 124,
+      "numeric_comparator_order_sha256": "d05f1cb7b68e950d508f2b0d13b7ef1847904edc6eb10453405917e04ed0e698"
+    },
+    "historical_walkforward_policy": {
+      "path": "docs/a_share_three_day_historical_walkforward_research_policy_20260727.json",
+      "sha256": "38426d6161b9bfed323c58caba18feca668b8c9d53e294951a8ba90c01a798bb"
+    }
+  },
+  "finite_candidate_design_catalog": [
+    {
+      "design": "intraday_own_bar_close_location_entropy_10b_240m",
+      "decision": "selected_for_complete_prevalue_mechanism_audit",
+      "reason": "It measures the order-invariant marginal diversity of scale-free own-bar close locations. Existing close-location definitions measure a directional first moment or adjacent serial persistence, while the existing close occupancy entropy normalizes prices by the whole-session price range rather than by each bar's auction interval."
+    },
+    {
+      "design": "alternate_bin_counts_quantiles_kernel_entropy_or_continuous_entropy",
+      "decision": "rejected_before_values",
+      "reason": "The ten equal-width bins and normalized Shannon operator are imported unchanged from the terminal fixed-bin occupancy definition; no bin-count or entropy-estimator search is allowed."
+    },
+    {
+      "design": "directional_mean_threshold_top_half_share_or_boundary_pressure",
+      "decision": "rejected_before_values",
+      "reason": "These reopen the terminal intrabar close-location pressure mechanism or add arbitrary thresholds rather than measure marginal state diversity."
+    },
+    {
+      "design": "lagged_transition_run_spectral_or_weak_order_close_location_statistics",
+      "decision": "rejected_before_values",
+      "reason": "These reopen terminal close-location serial persistence, return sequence, run, spectral, or ordinal-pattern mechanisms."
+    },
+    {
+      "design": "zero_range_imputation_jitter_weighting_or_selected_subwindows",
+      "decision": "rejected_before_values",
+      "reason": "A zero-range bar has no own-bar location state and is noninformative; it is excluded from the entropy count without bridging time, while at least 120 informative bars are required. Imputation, jitter, activity weights, and subwindows add unsupported choices."
+    },
+    {
+      "design": "open_location_body_wick_amount_volume_market_quarterly_or_return_conditioned_variants",
+      "decision": "rejected_before_values",
+      "reason": "Conditioning or changing the state variable would reopen terminal body, wick, activity, market, event, and return mechanisms and create a combination search."
+    },
+    {
+      "design": "rank_neutralization_residualization_filter_subset_regime_fit_combination_or_model_variants",
+      "decision": "rejected_before_values",
+      "reason": "The campaign contains one raw historical-only factor and no alternative transform, subset, fit, combination, or model."
+    }
+  ],
+  "selected_candidate": {
+    "name": "intraday_own_bar_close_location_entropy_10b_240m",
+    "direction": "higher",
+    "economic_hypothesis": "A broad distribution of minute closes across their own auction ranges indicates two-sided price acceptance and resilient local liquidity rather than systematic pinning to one boundary, and that auction resilience may persist from the next open through the third close.",
+    "formula": "For every positive-range selected bar compute x=(log(close)-log(low))/(log(high)-log(low)) in [0,1]. Map x to one of ten fixed equal-width bins floor(10*x), with exact x=1 assigned to bin 9. Pool all informative bars, require at least 120, compute p_k=count_k/n, and return -sum_{p_k>0}(p_k*log(p_k))/log(10).",
+    "source_projection": [
+      "datetime",
+      "symbol",
+      "provider",
+      "high",
+      "low",
+      "close"
+    ],
+    "source_grid": "Require the raw 09:30 row for immutable source identity; use exactly 09:31-11:30 and 13:01-15:00 and exclude 09:30.",
+    "support": "Require every selected high, low, and close to be finite and strictly positive with low<=close<=high. A high=low bar is noninformative and contributes no bin count. Require at least 120 positive-range bars; never impute, bridge, weight, or replace a state.",
+    "floating_point_rule": "Use float64 natural-log distances. Canonicalize only values within 1e-12 of 0 or 1 to the exact endpoint; any other state outside [0,1] is invalid.",
+    "valid_range": "[0,1] under normalized natural-log Shannon entropy with no clipping other than the stated endpoint canonicalization",
+    "parameter_window_transform_threshold_filter_subset_regime_fit_combination_or_model_search": false
+  },
+  "definition_only_review": {
+    "all_126_complete_definitions_reconstructed_in_frozen_order": true,
+    "all_124_numeric_comparators_reserved_in_frozen_order": true,
+    "candidate_or_comparator_values_read": false,
+    "old_factor_or_cache_values_read_for_selection": false,
+    "earlier_campaign022_binned_close_location_design_was_only_a_nonselected_concept_without_a_frozen_formula_or_value": true
+  },
+  "research_boundary": {
+    "campaign095_minute_source_rows_read": false,
+    "campaign095_candidate_values_read": false,
+    "comparison_values_read": false,
+    "historical_daily_price_fields_read": [],
+    "historical_forward_return_fields_read": false,
+    "provider_request_issued": false,
+    "candidate49_historical_backfill_performed": false,
+    "candidate49_ledgers_changed": false,
+    "second_prospective_candidate_created": false,
+    "current_scoring_selection_sizing_or_orders_performed": false,
+    "investment_advice": false
+  },
+  "decision": {
+    "selected_candidate_count": 1,
+    "predictive_value_established": false,
+    "next_action": "Challenge the exact candidate against all 126 complete definitions, then freeze the v38-bound coverage-first no-return protocol before any Campaign095 source row or value."
+  }
+}

@@ -1,0 +1,30 @@
+{
+  "schema_version": 1,
+  "kind": "a_share_three_day_walkforward_infrastructure_failure_record",
+  "recorded_at": "2026-08-14T09:00:15+08:00",
+  "campaign": 132,
+  "attempt_id": "campaign132_infrastructure_003",
+  "phase": "infrastructure_failure",
+  "stage": "prevalue_model_runtime_capability_probe",
+  "status": "indeterminate_probe_result_due_to_unreported_session_id",
+  "failed_command_exit_code": null,
+  "failure": {
+    "probe": "Import sklearn and inspect HistGradientBoostingRegressor signature.",
+    "observed_tool_result": "No stdout and no exit code were surfaced after the initial ten-second yield.",
+    "followup_process_check_found_live_probe": false,
+    "probe_result_treated_as_success": false,
+    "source_candidate_comparator_price_or_return_values_read": false,
+    "scientific_result_changed": false
+  },
+  "predecessor_failure": {
+    "path": "docs/a_share_three_day_walkforward_campaign_132_nonexistent_ordered_uniqueness_path_search_failure_20260814.json",
+    "sha256": "9a7b247141adebec6f03163e7072b76f4baf3257bfc9bf46972ca9209c2dc963"
+  },
+  "recovery_boundary": {
+    "append_failure_to_campaign132_ledger": true,
+    "rerun_probe_with_longer_initial_yield_and_explicit_session_metadata": true,
+    "override_or_infer_success": false,
+    "provider_request_or_credential_load_allowed": false,
+    "candidate49_change_allowed": false
+  }
+}

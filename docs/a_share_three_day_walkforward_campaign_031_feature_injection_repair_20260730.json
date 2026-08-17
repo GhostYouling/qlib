@@ -1,0 +1,68 @@
+{
+  "version": 1,
+  "kind": "a_share_three_day_walkforward_campaign031_feature_injection_repair",
+  "status": "pre_value_inherited_orchestration_benchmark_injection_repaired_and_refrozen",
+  "recorded_at": "2026-07-30T12:23:00Z",
+  "purpose": "Record and narrowly repair the inherited Campaign006 orchestration contract that passes benchmark=None into partition computation, before any Campaign031 candidate checkpoint, comparison value, daily price, or forward return existed.",
+  "prior_freeze": {
+    "path": "docs/a_share_three_day_walkforward_campaign_031_feature_implementation_freeze_20260730.json",
+    "sha256": "be4045690b6e7889f8139e02826668a90c60915f3d7c3afcdadfd03d221926cc"
+  },
+  "failure_evidence": {
+    "command_stage": "candidate_snapshot_build",
+    "exit_code": 1,
+    "exception": "AttributeError: 'NoneType' object has no attribute 'date_to_index'",
+    "cause": "The inherited Campaign006 builder intentionally passes benchmark=None because later market-aware campaign wrappers load their frozen benchmark inside the partition function. The initial Campaign031 wrapper incorrectly expected the argument to contain the dispersion benchmark.",
+    "published_snapshot_exists": false,
+    "partial_checkpoint_file_count": 0,
+    "candidate_partition_values_persisted": false,
+    "comparison_values_read": false,
+    "daily_price_fields_read": false,
+    "forward_returns_read": false
+  },
+  "repair": {
+    "feature_runner": {
+      "path": "scripts/a_share_three_day_walkforward_campaign031_features.py",
+      "sha256": "73264920d22d91ea9915bb4f0e85b4125b8308c721b24d100d8a5b600b7e75e0"
+    },
+    "dispersion_benchmark_freeze": {
+      "path": "docs/a_share_three_day_walkforward_campaign_031_dispersion_benchmark_freeze_20260730.json",
+      "sha256": "5512e1025b8c833d9356e2a3e93cedeae42611504e956edf32c062a013c3a5ad"
+    },
+    "no_return_preregistration": {
+      "path": "docs/a_share_three_day_walkforward_campaign_031_no_return_preregistration.json",
+      "sha256": "95951a357ffef3eee46f8d220d150fd00223b32f27f6cf93a92c4f6c17452f6d"
+    },
+    "feature_tests": {
+      "path": "tests/data_collector_tests/test_a_share_three_day_walkforward_campaign031_features.py",
+      "sha256": "6e8b9755f196bb93143255231b985356c129295a3035c44fa8d8653b022c24cd"
+    },
+    "benchmark_tests": {
+      "path": "tests/data_collector_tests/test_a_share_three_day_walkforward_campaign031_dispersion_benchmark.py",
+      "sha256": "bd51c5f4f92b16d2c38c98e1fba15a5168c32f5f0f62466010777553a5d22844"
+    },
+    "change": "Ignore the inherited None benchmark argument and lazily load the exact fingerprint-frozen Campaign031 dispersion benchmark once per process.",
+    "formula_changed": false,
+    "direction_changed": false,
+    "candidate_library_changed": false,
+    "comparison_library_changed": false,
+    "coverage_or_uniqueness_gate_changed": false,
+    "missing_or_tolerance_semantics_changed": false,
+    "focused_tests_passed_after_repair": 10
+  },
+  "decision": {
+    "candidate_snapshot_retry_allowed_after_binding_validation_exit_zero": true,
+    "failed_attempt_is_not_a_trial": true,
+    "formula_direction_filter_threshold_or_combination_change_allowed": false,
+    "candidate49_remains_only_active_prospective_candidate": true
+  },
+  "research_boundary": {
+    "candidate_values_persisted_before_repair": false,
+    "comparison_values_read": false,
+    "daily_price_fields_read": false,
+    "forward_returns_read": false,
+    "candidate49_signal_or_execution_ledger_changed": false,
+    "current_scoring_selection_sizing_or_orders_performed": false,
+    "provider_request_issued": false
+  }
+}

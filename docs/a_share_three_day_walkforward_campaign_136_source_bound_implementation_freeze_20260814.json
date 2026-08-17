@@ -1,0 +1,84 @@
+{
+  "schema_version": 1,
+  "kind": "a_share_three_day_walkforward_campaign136_source_bound_implementation_freeze",
+  "status": "frozen_before_campaign136_daily_source_candidate_comparator_ohlcv_or_return_values",
+  "recorded_at": "2026-08-14T11:18:45+0800",
+  "authoritative_inputs": {
+    "no_return_preregistration_v2": {
+      "path": "docs/a_share_three_day_walkforward_campaign_136_no_return_preregistration_v2_20260814.json",
+      "sha256": "f23cc1df5d4ed640c82b75ae1b9575718e75977d51b3ce1c33a846534c71e4f0"
+    },
+    "formula_freeze_v2": {
+      "path": "docs/a_share_three_day_walkforward_campaign_136_formula_implementation_freeze_v2_20260814.json",
+      "sha256": "207cb1771f99f42738cce2c3bbfbf88a454a92daa77a7e099f126ac1e8815ec6"
+    },
+    "pre_freeze_test_expectation_failure": {
+      "path": "docs/a_share_three_day_walkforward_campaign_136_pre_freeze_test_expectation_failure_20260814.json",
+      "sha256": "54eb3190f114da4d3f7dfb13e99a41a70a6b0b96dd421227727018128769ed09"
+    }
+  },
+  "frozen_implementation": {
+    "protocol_sha256": "f23cc1df5d4ed640c82b75ae1b9575718e75977d51b3ce1c33a846534c71e4f0",
+    "formula_path": "scripts/a_share_three_day_walkforward_campaign136_formula.py",
+    "formula_sha256": "4a57b79716269cf3acd21bb7b6909ce80ab5378f89d25fb27d97a02f815e7b66",
+    "formula_freeze_sha256": "207cb1771f99f42738cce2c3bbfbf88a454a92daa77a7e099f126ac1e8815ec6",
+    "feature_builder_path": "scripts/a_share_three_day_walkforward_campaign136_features.py",
+    "feature_builder_sha256": "b36c9c4c9ae6049234bffcd0d9fa899f5b16af7202722fd7a3167e94e9527f5b",
+    "source_file_count": 5451,
+    "source_total_bytes": 1502484498,
+    "source_file_identity_order_sha256": "d7dca618dbef6620e1c4782cb970178afa5777e3f1101a916df5eb6b8bf37cab",
+    "source_projection": [
+      "date",
+      "symbol",
+      "factor",
+      "price_basis",
+      "daily_source"
+    ],
+    "output_columns": [
+      "trade_date",
+      "symbol",
+      "provider",
+      "daily_realized_price_basis_adjustment_magnitude_1d",
+      "daily_realized_price_basis_adjustment_magnitude_1d_eligible"
+    ],
+    "output_signal_start": "2019-01-01",
+    "output_signal_end": "2025-12-31"
+  },
+  "synthetic_tests": [
+    {
+      "path": "tests/data_collector_tests/test_a_share_three_day_walkforward_campaign136_features.py",
+      "sha256": "8a9f69d45ae9175bb7373455303cac25d1c381117d3b003ef3b9e05cb0d4cb59"
+    },
+    {
+      "path": "tests/data_collector_tests/test_a_share_three_day_walkforward_campaign136_formula.py",
+      "sha256": "5fcd47980741e3510b666560e11cf29b7db2cd09b9bd779bed45e3392f927fc3"
+    }
+  ],
+  "build_protocol": {
+    "plan_must_exit_zero_and_return_ready_true_before_run": true,
+    "run_requires_confirm_run": true,
+    "plan_hashes_all_frozen_source_bytes_and_reads_only_parquet_schema_metadata": true,
+    "run_reads_only_the_exact_five_column_projection": true,
+    "run_reads_exactly_one_predecessor_calendar_session_before_2019": true,
+    "run_reads_no_rows_after_2025_12_31": true,
+    "each_output_partition_byte_hash_verified": true,
+    "temporary_output_removed_on_failure": true,
+    "existing_final_output_never_overwritten": true,
+    "provider_request_allowed": false
+  },
+  "research_boundary": {
+    "campaign136_daily_source_values_decoded_or_read": false,
+    "campaign136_candidate_values_computed_or_read": false,
+    "campaign136_comparator_values_read": false,
+    "historical_daily_ohlcv_fields_read": [],
+    "historical_forward_returns_read": false,
+    "stress_2024_2025_opened": false,
+    "provider_request_issued": false,
+    "credential_loaded": false,
+    "candidate49_historical_backfill_performed": false,
+    "candidate49_ledgers_changed": false,
+    "second_prospective_candidate_created": false,
+    "current_scoring_selection_sizing_positions_or_orders_performed": false,
+    "investment_advice": false
+  }
+}

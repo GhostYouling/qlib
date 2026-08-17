@@ -1,0 +1,51 @@
+{
+  "schema_version": 1,
+  "kind": "a_share_three_day_walkforward_campaign263_early_infrastructure_failures",
+  "status": "five_failed_outputs_preserved_and_excluded_from_scientific_or_validation_evidence",
+  "recorded_at": "2026-08-16T11:29:00Z",
+  "timestamp_semantics": "monotonic logical append time; this record was assembled before the first Campaign263 development return read",
+  "failures": [
+    {
+      "failure_id": "campaign263_infrastructure_001",
+      "phase": "mandatory_skill_read",
+      "status": "failed_skill_lines_241_360_output_truncated",
+      "recovery": "The same mandatory skill range was reread in smaller chunks through EOF before task actions."
+    },
+    {
+      "failure_id": "campaign263_infrastructure_002",
+      "phase": "mandatory_skill_read",
+      "status": "failed_skill_lines_361_480_output_truncated",
+      "recovery": "The same mandatory skill range was reread in smaller chunks through EOF before task actions."
+    },
+    {
+      "failure_id": "campaign263_infrastructure_003",
+      "phase": "mandatory_skill_read",
+      "status": "failed_skill_lines_601_660_output_truncated",
+      "recovery": "The same mandatory skill range was reread in smaller chunks through EOF before task actions."
+    },
+    {
+      "failure_id": "campaign263_infrastructure_004",
+      "phase": "mandatory_skill_read",
+      "status": "failed_skill_lines_1081_1110_output_truncated",
+      "recovery": "The same mandatory skill range was reread in smaller chunks through EOF before task actions."
+    },
+    {
+      "failure_id": "campaign263_infrastructure_005",
+      "phase": "feature_builder_unit_test",
+      "status": "first_synthetic_feature_test_run_failed_18_passed_1_failed_due_to_finalizing_an_extra_internal_column",
+      "recovery": "The builder was repaired to finalize only the frozen public output projection; the focused formula and feature suite then passed 20 tests before any real source read."
+    }
+  ],
+  "failure_count": 5,
+  "research_boundary": {
+    "failed_or_truncated_output_used_as_scientific_or_validation_evidence": false,
+    "historical_daily_price_or_forward_return_values_read": false,
+    "stress_2024_2025_opened": false,
+    "provider_or_web_request_issued": false,
+    "provider_credential_presence_value_or_digest_read": false,
+    "candidate49_plan_or_run_executed": false,
+    "candidate49_ledgers_changed": false,
+    "current_scoring_selection_sizing_positions_or_orders_performed": false,
+    "investment_advice": false
+  }
+}

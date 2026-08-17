@@ -1,0 +1,64 @@
+{
+  "version": 1,
+  "kind": "a_share_three_day_walkforward_campaign061_infrastructure_failure",
+  "status": "failed_closed_before_snapshot_publication_preserved_for_narrow_empty_partition_repair",
+  "recorded_at": "2026-08-05T00:49:35+08:00",
+  "stage": "frozen_feature_snapshot_build",
+  "attempt_ordinal_within_campaign061": 2,
+  "command": "PYTHONPATH=/Volumes/DIsk/Disk-Coding/qlib /opt/anaconda3/bin/python3 scripts/a_share_three_day_walkforward_campaign061_features.py build --data-root /Volumes/DIsk/qlib-a-share-tushare-1m --workers 8",
+  "exit_code": 1,
+  "failure": {
+    "exception": "Campaign061FeatureError",
+    "message": "Campaign061 symbol build failed: SH600485: raw identity changed for SH600485",
+    "root_cause": "The frozen extractor rejects a manifest-declared exact-column zero-row raw symbol-year partition before the publication engine can retain its corresponding zero-row joint-clean partition.",
+    "first_observed_empty_partition": "SH600485/2021",
+    "candidate_formula_failure": false
+  },
+  "frozen_inputs": {
+    "no_return_protocol": {
+      "path": "docs/a_share_three_day_walkforward_campaign_061_no_return_preregistration.json",
+      "sha256": "8bb79b587a64dab98a3a32d6a04ad6be8985979519ed436bc4062bbe64ff8dab"
+    },
+    "feature_implementation_freeze": {
+      "path": "docs/a_share_three_day_walkforward_campaign_061_feature_implementation_freeze_20260805.json",
+      "sha256": "59f96ae378153d1231d4a163c9279b1c7a0d9615ce58358970d9bb09876daaa6"
+    },
+    "feature_runner": {
+      "path": "scripts/a_share_three_day_walkforward_campaign061_features.py",
+      "sha256": "a124d6cb08d1a23c322b5756fda14dfcff63fd3d139aeb67f1deb603d8231101"
+    }
+  },
+  "manifest_declared_empty_partitions": [
+    "SH600485/2021",
+    "SH600677/2021",
+    "SH600680/2019",
+    "SZ000670/2021",
+    "SZ002260/2020",
+    "SZ002260/2021"
+  ],
+  "preserved_partial_snapshot": {
+    "root": "/Volumes/DIsk/qlib-a-share-tushare-1m/derived/a_share/rich/tushare/minute_walkforward_campaign061_feature_library/.tushare_stk_mins_1m_2019_2025_ea0cbb8f_walkforward_campaign061_feature_library_v1.partial",
+    "complete_checkpoint_partitions": 33004,
+    "missing_partitions": 11,
+    "formally_published": false,
+    "candidate_values_manually_inspected": false
+  },
+  "boundary": {
+    "raw_close_partition_values_read": true,
+    "candidate_values_computed_and_checkpointed": true,
+    "comparison_values_read": false,
+    "daily_price_or_forward_return_read": false,
+    "development_or_stress_fold_opened": false,
+    "provider_request_issued": false,
+    "candidate49_ledgers_changed": false,
+    "current_scoring_selection_sizing_or_orders_performed": false
+  },
+  "authorized_narrow_repair": "A new byte-bound compatibility launcher may return an empty profile dictionary only for a raw DataFrame whose columns exactly equal the frozen source projection and whose row count is zero; every nonempty or wrong-column frame must delegate to the frozen original extractor.",
+  "accounting": {
+    "counts_as_infrastructure_attempt": true,
+    "counts_as_factor_attempt": false,
+    "counts_as_return_reading_development_trial": false,
+    "cumulative_historical_research_attempt_count_after_record": 353,
+    "cumulative_return_reading_development_trial_count_after_record": 269
+  }
+}

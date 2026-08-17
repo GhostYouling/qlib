@@ -1,0 +1,58 @@
+{
+  "schema_version": 1,
+  "kind": "a_share_three_day_walkforward_campaign088_feature_implementation_freeze",
+  "status": "frozen_before_campaign088_minute_source_rows_or_candidate_values",
+  "frozen_at": "2026-08-07T03:30:18+08:00",
+  "protocol": {
+    "path": "docs/a_share_three_day_walkforward_campaign_088_no_return_preregistration.json",
+    "sha256": "903d8ea131d5e5d9c7d53447c03d715a2ef3eefc96482b6a3521f33a05171eab"
+  },
+  "feature_runner": {
+    "path": "scripts/a_share_three_day_walkforward_campaign088_features.py",
+    "sha256": "33b24f06dfc8e8da10dc20be9ae013d7ce82dfeb0cfd331eb895c8a30c15822e"
+  },
+  "tests": {
+    "path": "tests/data_collector_tests/test_a_share_three_day_walkforward_campaign088_features.py",
+    "sha256": "2843d861a97bc06b92568e18b55c6f26e60e5eb49444adb6b00db424a6a3a5ee",
+    "synthetic_tests_passed": 7,
+    "warnings_treated_as_errors": true,
+    "black_check_passed": true,
+    "ruff_check_passed": true
+  },
+  "implementation_semantics": {
+    "float_dtype": "float64",
+    "selected_close_count": 240,
+    "return_count": 238,
+    "adjacent_pair_count_across_both_halves": 236,
+    "lunch_pair_formed": false,
+    "zero_return_retained": true,
+    "rv_support": "strictly positive and finite",
+    "bv_support": "finite",
+    "positive_part": "max(RV-BV,0)",
+    "endpoint_canonicalization_tolerance": 1E-12,
+    "valid_range": [
+      0,
+      1
+    ],
+    "alternate_formula_direction_window_threshold_transform_filter_subset_fit_model_or_combination": false
+  },
+  "frozen_library": {
+    "complete_definition_count": 119,
+    "complete_definition_order_sha256": "0de791d223395722a74dfec4e4b2e469550c9a34e6f5ff64af4087287da0abb5",
+    "numeric_comparator_count": 117,
+    "numeric_comparator_order_sha256": "cc176eda08a1dc587a44fe9130dea4bd72db64b3d93a3646b53da593adb8cc1c"
+  },
+  "test_receipt": {
+    "command": "/Volumes/DIsk/Coding/anaconda3/bin/python3.12 -m pytest -q -W error tests/data_collector_tests/test_a_share_three_day_walkforward_campaign088_features.py",
+    "exit_code": 0,
+    "result": "7 passed"
+  },
+  "candidate_source_rows_read_before_freeze": false,
+  "candidate_values_computed_before_freeze": false,
+  "comparison_values_read_before_freeze": false,
+  "historical_daily_price_or_forward_return_values_read_before_freeze": false,
+  "provider_request_issued_before_freeze": false,
+  "candidate49_historical_backfill_performed": false,
+  "candidate49_ledgers_changed": false,
+  "current_scoring_selection_sizing_or_orders_performed": false
+}

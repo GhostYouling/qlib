@@ -1,0 +1,32 @@
+{
+  "schema_version": 1,
+  "kind": "a_share_three_day_walkforward_campaign094_no_return_static_interface_failure",
+  "status": "preserved_before_audit_implementation_freeze",
+  "recorded_at": "2026-08-07T02:52:12Z",
+  "failure": {
+    "stage": "preactivation no-return audit unit tests",
+    "result": "3 passed, 1 failed",
+    "failed_test": "test_campaign094_candidate_snapshot_binding_verifies",
+    "cause": "The dynamic inherited audit namespace retained Campaign093's expected eligible-row constant 1328155 instead of the already verified Campaign094 value 1314834.",
+    "repair": "Bind only EXPECTED_ELIGIBLE_ROWS=1314834 in the generated Campaign094 namespace; no factor, snapshot, comparison, gate or value changed.",
+    "post_repair_result": "4 passed"
+  },
+  "bindings": {
+    "snapshot_manifest_sha256": "1f1441e59bcef1cb3d18b0030c640453e2ee762668d05157dec9ca1c0f01c340",
+    "snapshot_dataset_sha256": "37865a7d4c5556ee9a79ba9550f0f05229e3c52bb511d8bd1ac3b1f2525a6b63",
+    "snapshot_verified_eligible_rows": 1314834
+  },
+  "research_boundary": {
+    "coverage_or_capacity_gate_computed": false,
+    "comparison_values_read": false,
+    "historical_daily_price_fields_read": false,
+    "historical_forward_returns_read": false,
+    "provider_request_issued": false,
+    "candidate49_ledgers_changed": false
+  },
+  "attempt_accounting": {
+    "campaign094_attempt_ordinal": 4,
+    "kind": "prevalue_audit_interface_failure",
+    "counts_as_return_reading_development_trial": false
+  }
+}

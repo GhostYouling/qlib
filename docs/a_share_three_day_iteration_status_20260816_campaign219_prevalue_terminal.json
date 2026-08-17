@@ -1,0 +1,96 @@
+{
+  "schema_version": 1,
+  "kind": "a_share_three_day_iteration_status_campaign219_prevalue_terminal",
+  "recorded_at": "2026-08-16T01:05:00+08:00",
+  "timestamp_semantics": "monotonic_logical_append_time_not_host_wall_clock_measurement",
+  "status": "campaign219_validation_passed_goal_active_campaign220_offline_prevalue_authorized",
+  "supersedes_without_rewriting": {
+    "path": "docs/a_share_three_day_iteration_status_20260816_campaign218_prevalue_terminal.json",
+    "sha256": "3108f9f7e227436f1ef91a094f2cb04e7e36e03eaaff6747e933306d51baa6c9"
+  },
+  "authoritative_inputs": {
+    "pharmaceutical_batch_release_quality_lifecycle_source_frontier": {
+      "path": "docs/a_share_three_day_walkforward_campaign_219_pharmaceutical_batch_release_quality_lifecycle_source_frontier_20260816.json",
+      "sha256": "b31217aec95ddf303caa8db2dfa7f6e336b7cd2ac2059534126059f25a9f22ee"
+    },
+    "attempt_ledger_v3": {
+      "path": "data/experiments/short_horizon/historical_walkforward/campaign_219/research_attempt_ledger_v3.json",
+      "sha256": "ac5ad2ffa68c2c78e3a118d08afe090a9cebd03d8d4ddaefea8fae3a7948405e"
+    },
+    "terminal_result_v3": {
+      "path": "docs/a_share_three_day_walkforward_campaign_219_terminal_result_v3_20260816.json",
+      "sha256": "a13a6d98924574c27f41761ee4797f30157a8f7e2e24410087f093168e1cdc39"
+    },
+    "policy_v332": {
+      "path": "docs/a_share_three_day_walkforward_future_numeric_comparison_eligibility_policy_v332_20260816.json",
+      "sha256": "a98effd03d1c027faa8233d5b46215afc084c78c286330aefa23c91bc3a66ece"
+    },
+    "terminal_validation": {
+      "path": "docs/a_share_three_day_walkforward_campaign_219_terminal_validation_20260816.json",
+      "sha256": "010b1f638c714852153747ae72050d7371aea1a732e1af41dc2307627b948804"
+    }
+  },
+  "campaign219": {
+    "terminal": true,
+    "terminal_stage": "prevalue_source_admission_and_overlap_gate",
+    "finite_route_count": 7,
+    "source_admission_deferral_count": 3,
+    "overlap_or_hypothesis_rejection_count": 4,
+    "selected_factor_count": 0,
+    "definition_or_comparator_append": false,
+    "development_trial_count": 0,
+    "stress_trial_count_2024_2025": 0
+  },
+  "effective_accounting": {
+    "campaign219_attempt_count": 12,
+    "campaign219_scientific_attempt_count": 7,
+    "campaign219_infrastructure_failure_count": 5,
+    "cumulative_historical_research_attempt_count": 2044,
+    "cumulative_return_reading_development_trial_count": 314,
+    "chain_tip_sha256": "c5dbe5e92e7bfd5b10bd24f5846d57bb07422436e8cdbd46d3d5ff340315edec"
+  },
+  "library_state": {
+    "complete_factor_definition_count": 158,
+    "complete_factor_definition_order_sha256": "4819c7fd7c0795d7598a52f3c615e3f117d5f4ecd9332974bc8e3dfa57c96667",
+    "eligible_numeric_comparator_count": 142,
+    "eligible_numeric_comparator_order_sha256": "5d1b35fb5a0d8ac9293008db9963c4a60a94dc940c237c3ed259e5ce44f14aaf",
+    "changed_by_campaign219": false
+  },
+  "candidate49": {
+    "sole_prospective_candidate": true,
+    "signal_ledger_sha256": "5193f00d7f36da003f53cec387900da4c3d002299f5dfcfc1a95eaa199ed3a79",
+    "signal_entry_count": 0,
+    "execution_ledger_sha256": "d57a3e61eac969e42cafa418ccd8c0a5ee65dcf69da145bb2c096c2a02a2ea4f",
+    "execution_entry_count": 0,
+    "ledgers_changed": false
+  },
+  "goal": {
+    "continuous_factor_iteration": "active",
+    "completed_by_campaign219": false,
+    "next_historical_campaign": 220,
+    "offline_iteration_may_continue_without_waiting_for_1630_or_new_daily_data": true
+  },
+  "validation_results": {
+    "focused": "2 passed",
+    "cumulative": "490 passed, 1 skipped, 34 deselected",
+    "independent": "passed",
+    "black": "passed",
+    "ruff": "passed",
+    "unmasked_whitespace": "passed"
+  },
+  "research_boundary": {
+    "historical_offline_prevalue_work_may_continue_at_any_local_time": true,
+    "failed_or_truncated_output_used_as_scientific_or_validation_evidence": false,
+    "source_pharmaceutical_batch_lifecycle_factor_comparator_security_price_or_return_value_read": false,
+    "personal_medical_individual_adverse_event_proprietary_recipe_process_security_or_trade_secret_artifact_read": false,
+    "stress_2024_2025_opened": false,
+    "provider_or_web_request_issued": false,
+    "provider_credential_presence_value_or_digest_read": false,
+    "candidate49_plan_or_run_executed": false,
+    "candidate49_ledgers_changed": false,
+    "second_prospective_candidate_created": false,
+    "current_scoring_selection_sizing_positions_or_orders_performed": false,
+    "investment_advice": false
+  },
+  "next_action": "Begin Campaign220 finite offline prevalue research in a genuinely different mechanism domain; keep Candidate49 as the sole prospective confirmation layer and keep 2024-2025 closed."
+}

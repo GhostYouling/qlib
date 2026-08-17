@@ -1,0 +1,33 @@
+{
+  "schema_version": 1,
+  "kind": "a_share_three_day_walkforward_campaign261_infrastructure_failure",
+  "attempt_id": "campaign261_infrastructure_initial_snapshot_build",
+  "status": "failed_missing_inherited_manifest_counter_positive_amount_bars",
+  "recorded_at": "2026-08-16T16:39:00+08:00",
+  "timestamp_semantics": "monotonic_logical_append_time_not_host_wall_clock_measurement",
+  "command": "/Volumes/DIsk/Coding/anaconda3/bin/python3.12 scripts/a_share_three_day_walkforward_campaign261_features.py build --confirm-build",
+  "exit_code": 1,
+  "error_class": "KeyError",
+  "missing_key": "positive_amount_bars",
+  "root_cause": "The inherited Campaign152 manifest accumulator requires positive_amount_bars and zero_amount_bars counters, while the frozen Campaign261 extractor returned all scientific quality keys but omitted those two manifest-only compatibility counters.",
+  "publication_state": {
+    "snapshot_manifest_published": false,
+    "final_snapshot_root_present": false,
+    "temporary_partial_root_preserved": false,
+    "scientific_result_consumed": false
+  },
+  "allowed_recovery": "Add a separately frozen wrapper that preserves the exact candidate frame byte-for-byte and computes only the two inherited support counters over formula-eligible sessions; then restart the whole snapshot build into the same still-absent final run id.",
+  "forbidden_recovery": "Do not change formula, direction, grid, support, output schema, filter, threshold, comparator order, return boundary or output run id.",
+  "research_boundary": {
+    "historical_source_amount_rows_read": true,
+    "candidate_values_computed_in_failed_unpublished_build": true,
+    "candidate_snapshot_published": false,
+    "comparator_values_read": false,
+    "historical_daily_price_or_forward_return_values_read": false,
+    "stress_2024_2025_opened": false,
+    "provider_request_issued": false,
+    "credential_loaded": false,
+    "candidate49_ledgers_changed": false,
+    "scientific_result_changed": false
+  }
+}

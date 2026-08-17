@@ -1,0 +1,54 @@
+{
+  "version": 3,
+  "kind": "a_share_three_day_compact_comparator_cache_implementation_freeze",
+  "status": "frozen_before_v3_comparator_values_or_cache_files_materialized",
+  "frozen_at": "2026-08-05T22:53:08+08:00",
+  "purpose": "Bind the audited two-member capture proxy, inherited v2 absent-key loader, complete synthetic suite, failure evidence, and new v3 root before the first v3 real comparator value is read.",
+  "protocol": {
+    "path": "docs/a_share_three_day_compact_comparator_cache_protocol_v3_20260805.json",
+    "sha256": "44b5274de5684ca29e7ee9b290072412b1d97428b70e64711b979cac154d0841"
+  },
+  "builder": {
+    "path": "scripts/a_share_three_day_compact_comparator_cache_v3.py",
+    "sha256": "cf39aa8293990ef00c1d429a96157cbd33c6fb41c5a630ddb8c9c9420a2fd200",
+    "syntax_validation_passed": true
+  },
+  "tests": {
+    "path": "tests/data_collector_tests/test_a_share_three_day_compact_comparator_cache_v3.py",
+    "sha256": "facca697a456e37a361f71a2e3e8978659d8ace1ba398ff0b8ace3d454711e64",
+    "combined_command": "PYTHONPATH=/Volumes/DIsk/Disk-Coding/qlib /Volumes/DIsk/Coding/anaconda3/bin/python -m pytest -q tests/data_collector_tests/test_a_share_three_day_compact_comparator_cache_v2.py tests/data_collector_tests/test_a_share_three_day_compact_comparator_cache_v3.py",
+    "passed": 12,
+    "failed": 0
+  },
+  "v2_failure_evidence": {
+    "path": "docs/a_share_three_day_compact_comparator_cache_v2_build_failure_20260805.json",
+    "sha256": "89810370270b9718d5e5161462f45483dde58e89f0670a5124ec6aa26560f24c"
+  },
+  "source_member_audit": {
+    "campaigns": "058-067",
+    "observed_members": [
+      "_aligned_comparison_result",
+      "_compact_stock_day_keys"
+    ],
+    "sink_member_inherited_unchanged": true,
+    "read_only_helper_delegated": "_compact_stock_day_keys",
+    "fallback_attributes_allowed": false
+  },
+  "frozen_output": {
+    "data_root": "/Volumes/DIsk/qlib-a-share-tushare-1m",
+    "output_root": "/Volumes/DIsk/qlib-a-share-tushare-1m/derived/a_share/rich/tushare/compact_comparator_cache/campaign067_terminal_numeric98_v3",
+    "numeric_comparator_count": 98,
+    "numeric_order_sha256": "bca0ba26252fcb74afa3a31ee1baf63c9cedfe3db5fc86ef71b3d7d93bf88f81",
+    "eligibility_rows": 1331759,
+    "eligibility_keys_sha256": "afa157a76aec8ef9cc3bdc191c792189d2a512ecf7fd7ebb09d2fe8f2d75841f"
+  },
+  "v1_or_v2_formal_output_existed_before_freeze": false,
+  "v3_cache_output_existed_before_freeze": false,
+  "v3_failed_temporary_output_existed_before_freeze": false,
+  "v3_comparison_factor_values_read_before_freeze": false,
+  "historical_daily_price_or_forward_return_values_read_before_freeze": false,
+  "candidate49_historical_return_read_before_freeze": false,
+  "provider_request_issued_before_freeze": false,
+  "current_scoring_selection_sizing_or_orders_performed_before_freeze": false,
+  "next_action": "Run the exact v3 build once with --confirm-build. Any nonzero exit must be recorded before an additive v4 repair; never edit the frozen v3 artifacts in place."
+}

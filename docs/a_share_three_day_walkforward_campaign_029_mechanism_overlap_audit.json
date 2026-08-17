@@ -1,0 +1,134 @@
+{
+  "version": 1,
+  "kind": "a_share_three_day_walkforward_campaign029_mechanism_overlap_audit",
+  "status": "passed_conceptual_independence_before_formula_values_benchmark_values_comparisons_or_returns",
+  "recorded_at": "2026-07-30T07:58:00Z",
+  "purpose": "Resolve the selected same-minute market-shock magnitude concept into one exact no-value mechanism and challenge it against terminal and prospective families before any Campaign029 source partition, frozen benchmark value, candidate value, comparison value, daily price, or forward return is opened.",
+  "concept_scouting": {
+    "path": "docs/a_share_three_day_walkforward_campaign_029_concept_scouting.json",
+    "sha256": "92a16be11087c243f8ce613c52cf0a9d1a2cd759e035eb2e94f84b03231d66c5"
+  },
+  "authoritative_boundary": {
+    "path": "docs/a_share_three_day_iteration_status_20260730_campaign028_verified.json",
+    "sha256": "ad92b00c2be1ecdd6ab23f0d33107a846d5039ff2dfe1f39fa8ba0d31f21670b"
+  },
+  "historical_walkforward_policy": {
+    "path": "docs/a_share_three_day_historical_walkforward_research_policy_20260727.json",
+    "sha256": "38426d6161b9bfed323c58caba18feca668b8c9d53e294951a8ba90c01a798bb"
+  },
+  "selected_mechanism": {
+    "name": "intraday_market_shock_magnitude_decoupling_238m",
+    "direction": "higher",
+    "information_domain": "same_minute_stock_absolute_return_to_leave_one_out_market_absolute_return_dependence",
+    "formula": "negative population PearsonCorr(abs(stock_return), abs(leave_one_out_market_return)) over exactly 238 synchronous within-half return positions",
+    "economic_hypothesis": "A higher value means lower same-minute synchronization between the stock's price-adjustment magnitude and leave-one-out broad-market shock magnitude, representing less crowded common-shock liquidity demand or fragility that may carry from the next open through the third close.",
+    "source_fields": [
+      "datetime",
+      "symbol",
+      "provider",
+      "close"
+    ],
+    "frozen_benchmark_fields": [
+      "trade_date",
+      "return_position",
+      "return_sum",
+      "valid_stock_count"
+    ],
+    "return_grid": "Form 119 adjacent natural-log close returns inside each 120-close half at 09:31-11:30 and 13:01-15:00, concatenate morning then afternoon into exactly 238 positions, and exclude standalone 09:30 and the lunch transition.",
+    "leave_one_out_rule": "At each return position subtract the stock's own finite return and count from the frozen equal-weight market return sum and valid-stock count, then divide the remaining sum by the remaining count.",
+    "peer_rule": "Require at least 50 other finite stock returns at every one of the 238 positions.",
+    "magnitude_rule": "Apply the exact absolute-value transform separately to all 238 stock returns and all 238 synchronous leave-one-out market returns. Retain exact-zero magnitudes without removal, bridging, replacement, weighting, or tolerance reclassification.",
+    "correlation_rule": "Use equal-position-weight population Pearson correlation across the two complete 238-element magnitude vectors and require strictly positive population variance in both vectors.",
+    "decoupling_rule": "Multiply the frozen correlation by exactly -1 so that higher is the preregistered resilience direction. Do not use one-minus correlation, beta, covariance, residuals, signs, leads, lags, thresholds, quantiles, weights, or subwindows.",
+    "endpoint_rule": "Canonicalize only values within 1e-12 beyond -1 or +1 to that endpoint; otherwise any nonfinite value or value outside [-1,1] is missing.",
+    "missing_rule": "Any invalid close-return grid, insufficient leave-one-out peer position, nonfinite stock or market magnitude, nonpositive variance in either complete vector, nonfinite score, or out-of-range score makes the stock-day missing; never fill, statistically clip, repair, or substitute.",
+    "valid_range": [
+      -1.0,
+      1.0
+    ]
+  },
+  "overlap_challenges": [
+    {
+      "family": "intraday_market_idiosyncratic_share_238m",
+      "result": "distinct_pending_statistical_uniqueness_gate",
+      "reason": "Market-idiosyncratic share fits signed synchronous market exposure and summarizes residual-to-total variance. Campaign029 removes both signs before a single bivariate magnitude correlation and estimates neither beta nor residual variance. Statistical proximity remains explicitly 0.8-gated."
+    },
+    {
+      "family": "intraday_market_response_delay_asymmetry_236p",
+      "result": "distinct",
+      "reason": "Campaign021 subtracts signed one-minute stock-lag and stock-lead cross correlations. Campaign029 is strictly same-position, removes signs, and has no lead, lag, or asymmetry subtraction."
+    },
+    {
+      "family": "intraday_market_up_down_correlation_asymmetry_238m",
+      "result": "distinct_pending_statistical_uniqueness_gate",
+      "reason": "Campaign026 partitions positions by the sign of the market return and subtracts two signed correlations. Campaign029 never reads market sign after the absolute transform, uses all positions once, and measures common shock magnitudes. Statistical proximity remains explicitly 0.8-gated."
+    },
+    {
+      "family": "intraday_market_neutral_late_residual_drift_238m",
+      "result": "distinct",
+      "reason": "The residual-drift factor fits a signed market relation and measures the direction of a late residual window. Campaign029 uses no fitted residual, late window, or return direction."
+    },
+    {
+      "family": "intraday_market_amount_profile_synchronization_240m",
+      "result": "distinct",
+      "reason": "Amount-profile synchronization compares normalized cross-sectional activity shapes without returns. Campaign029 reads no amount or volume and correlates stock and leave-one-out market return magnitudes."
+    },
+    {
+      "family": "intraday_absolute_return_serial_persistence_236p",
+      "result": "distinct_pending_statistical_uniqueness_gate",
+      "reason": "Campaign028 measures adjacent-time dependence within the stock's own absolute-return path and reads no market state. Campaign029 has no temporal adjacency and instead compares same-minute stock and leave-one-out market magnitudes. Statistical proximity remains explicitly 0.8-gated."
+    },
+    {
+      "family": "intraday_return_variance_entropy_volatility_resolution_and_diffusive_variation",
+      "result": "distinct_pending_statistical_uniqueness_gate",
+      "reason": "Those factors summarize the stock's own marginal magnitude concentration, half-session allocation, or path-scale decomposition. Campaign029 is a bivariate same-minute dependence statistic against an external leave-one-out market path."
+    },
+    {
+      "family": "candidate49_cumulative_vwap_crossing_rate",
+      "result": "distinct",
+      "reason": "Candidate49 measures causal cumulative-VWAP crossings from close, volume, and amount. Campaign029 reads no volume or amount and has no cumulative VWAP or crossing count."
+    },
+    {
+      "family": "terminal_factor_combination_or_rescue",
+      "result": "not_used",
+      "reason": "Campaign029 contains one new close-plus-frozen-market statistic and no terminal factor value, fitted transform, filter, model, or combination."
+    }
+  ],
+  "design_choices_frozen_before_values": {
+    "formula_family": "negative same-minute absolute-return population Pearson correlation",
+    "direction": "higher",
+    "absolute_stock_return": true,
+    "absolute_leave_one_out_market_return": true,
+    "same_minute_only": true,
+    "lead_or_lag_allowed": false,
+    "return_sign_conditioning_allowed": false,
+    "exact_zero_magnitudes_retained": true,
+    "minimum_leave_one_out_peers_per_position": 50,
+    "correlation_estimator": "population_pearson_equal_position_weight",
+    "selected_return_count": 238,
+    "include_0930": false,
+    "include_lunch_transition": false,
+    "endpoint_canonicalization_tolerance": 1e-12,
+    "subwindow_or_year_selection_allowed": false,
+    "magnitude_weighting_allowed": false,
+    "terminal_factor_input_allowed": false
+  },
+  "decision": {
+    "conceptually_independent": true,
+    "advance_to_exact_no_return_preregistration": true,
+    "candidate_benchmark_or_comparison_values_may_be_read_now": false,
+    "binding_validator_exit_zero_required_before_next_stage": true,
+    "candidate49_remains_only_active_prospective_candidate": true,
+    "candidate50_activation_allowed": false,
+    "current_aggregation_scoring_selection_sizing_or_orders_allowed": false
+  },
+  "research_boundary": {
+    "external_campaign029_minute_partitions_read": false,
+    "frozen_market_benchmark_values_read": false,
+    "candidate_values_read": false,
+    "comparison_values_read": false,
+    "daily_price_fields_read": false,
+    "forward_returns_read": false,
+    "provider_request_issued": false
+  }
+}

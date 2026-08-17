@@ -1,0 +1,132 @@
+{
+  "version": 1,
+  "kind": "a_share_three_day_walkforward_campaign064_concept_scouting",
+  "status": "concept_only_one_new_mechanism_selected_no_campaign064_source_candidate_comparison_daily_price_or_return_values",
+  "recorded_at": "2026-08-05T07:10:00+08:00",
+  "purpose": "Continue the offline three-session walk-forward program after terminal Campaign063 by selecting at most one economically distinct mechanism from frozen definitions and source schemas before any Campaign064 value is opened.",
+  "authoritative_bindings": {
+    "campaign063_verified_state": {
+      "path": "docs/a_share_three_day_iteration_status_20260805_campaign063_verified.json",
+      "sha256": "38be5bb594016391a1faaa4c2340720070fa830c9adac0c64355fb608ee12755"
+    },
+    "campaign063_terminal_record": {
+      "path": "docs/a_share_three_day_walkforward_campaign_063_research_record_v4.json",
+      "sha256": "1ae2c0aad4316331feccdccca57eb5e136908ab17a6df620a3fa0e8d1bfffc4f",
+      "complete_factor_attempts": 1,
+      "development_survivors": 0,
+      "stress_interval_opened": false
+    },
+    "campaign063_verification": {
+      "path": "docs/a_share_three_day_walkforward_campaign_063_verification_20260805.json",
+      "sha256": "e7c274c8d7e4f03dd5b55d6bbc81840b327859fa8200ca58311068d989e9857c"
+    },
+    "historical_walkforward_policy": {
+      "path": "docs/a_share_three_day_historical_walkforward_research_policy_20260727.json",
+      "sha256": "38426d6161b9bfed323c58caba18feca668b8c9d53e294951a8ba90c01a798bb"
+    }
+  },
+  "schema_only_source_boundary": {
+    "provider": "tushare",
+    "frequency": "1m",
+    "raw_source_projection_if_selected": [
+      "datetime",
+      "symbol",
+      "provider",
+      "high",
+      "low"
+    ],
+    "forbidden_raw_fields": [
+      "open",
+      "close",
+      "volume",
+      "amount"
+    ],
+    "fixed_grid": "09:31--11:30 and 13:01--15:00 exactly 240 high/low bars; exclude standalone 09:30 and never form a lunch-spanning triple",
+    "daily_price_or_forward_return_fields_are_not_source_substitutes": true,
+    "provider_request_allowed": false
+  },
+  "candidate_design_catalog": [
+    {
+      "design": "intraday_range_weak_order_entropy_236t",
+      "decision": "selected_for_separate_exact_no_value_overlap_audit",
+      "reason": "It measures the diversity of local ordinal volatility-regime transitions using intrabar ranges only. No prior definition measures the 13-state weak-order distribution of consecutive high/low range triples."
+    },
+    {
+      "design": "range_level_entropy_or_clock_participation_entropy",
+      "decision": "rejected_terminal_family",
+      "reason": "Unordered range allocation entropy is already terminal. The selected concept discards range shares and clock labels after forming within-half local triples, retaining only weak order."
+    },
+    {
+      "design": "range_serial_correlation_or_width_change_coupling",
+      "decision": "rejected_terminal_family",
+      "reason": "Pearson range persistence, adjacent overlap, and midrange-width change coupling are already terminal or near-terminal families. They use magnitude or paired linear dependence rather than a finite ordinal transition alphabet."
+    },
+    {
+      "design": "range_spectral_entropy_permutation_entropy_or_markov_transition_entropy",
+      "decision": "rejected_before_values",
+      "reason": "Spectral, strict permutation, transition-matrix, higher-lag, or Markov choices would open estimator and alphabet searches. One exact weak-order marginal entropy with ties retained is selected."
+    },
+    {
+      "design": "strict_order_only_with_ties_dropped_or_jittered",
+      "decision": "rejected_before_values",
+      "reason": "Zero intrabar ranges and repeated ranges are economically meaningful. The 13 weak-order states retain exact ties with zero tolerance and avoid arbitrary jitter or deletion."
+    },
+    {
+      "design": "return_weak_order_entropy",
+      "decision": "rejected_terminal_family",
+      "reason": "Campaign035 already sequences signed close returns. The selected concept is invariant to every admissible close path when high/low ranges are fixed and changes when high/low ranges change with closes fixed."
+    },
+    {
+      "design": "morning_only_afternoon_only_cross_lunch_alternate_tuple_length_direction_filter_or_combination",
+      "decision": "rejected_before_values",
+      "reason": "Both complete halves, 118 triples per half, tuple length three, higher direction, no filter, and no combination are fixed once."
+    }
+  ],
+  "selected_concept": {
+    "concept_name": "intraday_range_weak_order_entropy",
+    "candidate_ordinal": null,
+    "prospective_active": false,
+    "concept_status": "mechanism_only_not_yet_allowed_to_open_values",
+    "mechanism": "Transform each fixed minute bar to nonnegative log high-low range, take every overlapping triple separately within each half, classify exact pairwise comparisons into the 13 transitive weak-order states, and measure the normalized entropy of the pooled state distribution.",
+    "economic_question": "Does greater diversity in local volatility-regime ordering indicate distributed information processing rather than persistent clustered stress, with an effect that can persist from the next open through the third close?",
+    "mandatory_overlap_challenges": [
+      "intraday_return_weak_order_entropy_234t",
+      "intraday_intrabar_range_participation_entropy_240m",
+      "intraday_adjacent_range_overlap_continuity_238p",
+      "intraday_midrange_width_change_coupling_238p",
+      "intraday_morning_afternoon_range_profile_similarity_120b",
+      "intraday_return_spectral_entropy_59f",
+      "intraday_absolute_return_serial_persistence_236p",
+      "intraday_cross_sectional_standardized_return_state_stability_236p"
+    ],
+    "known_design_risks": [
+      "Weak-order entropy on range triples may correlate with unordered range participation entropy or range update frequency and must pass all frozen no-return comparisons before returns.",
+      "Exact ties can dominate on illiquid names; ties are retained by definition and coverage/uniqueness gates must fail closed rather than filter names after values.",
+      "Tuple length, tie semantics, pooling, entropy normalization, direction, time grid, and missing rules create researcher degrees of freedom unless frozen before values.",
+      "The current-listing-derived source and holding universes retain the documented survivorship limitation."
+    ]
+  },
+  "research_boundary": {
+    "campaign064_external_minute_rows_read": false,
+    "campaign064_candidate_values_computed_or_read": false,
+    "campaign064_comparison_values_read": false,
+    "historical_daily_price_fields_read": false,
+    "historical_forward_return_fields_read": false,
+    "formula_or_direction_frozen": false,
+    "training_or_model_fitting_performed": false,
+    "provider_request_issued": false,
+    "candidate49_historical_return_signal_execution_or_milestone_backfill_performed": false,
+    "candidate49_ledgers_changed": false,
+    "second_prospective_candidate_created": false,
+    "current_scoring_selection_sizing_or_orders_performed": false,
+    "investment_advice": false,
+    "current_listing_snapshot_survivorship_limitation": true
+  },
+  "decision": {
+    "selected_concept_count": 1,
+    "selected_concept_may_advance_directly_to_values": false,
+    "required_next_step": "Perform and bind one exact no-value mechanism-overlap audit. Only if it passes may Campaign064 freeze source fingerprints, all 95 ordered comparisons, coverage and novelty gates, one finite development trial, code, and synthetic tests before values.",
+    "candidate49_remains_only_active_prospective_candidate": true,
+    "second_prospective_candidate_activation_allowed": false
+  }
+}

@@ -1,0 +1,125 @@
+{
+  "schema_version": 1,
+  "kind": "a_share_three_day_walkforward_campaign144_concept_scouting",
+  "status": "terminal_prevalue_zero_candidates_after_finite_combination_and_source_mechanism_review",
+  "recorded_at": "2026-08-14T19:25:00+08:00",
+  "purpose": "Continue the active three-session research goal by reviewing a finite combination-focused catalog plus two accepted-source mechanism proposals before reading any Campaign144 factor value, comparator value, daily price or forward return.",
+  "authoritative_inputs": {
+    "iteration_state": {
+      "path": "docs/a_share_three_day_iteration_status_20260814_campaign143_prevalue_terminal_v2.json",
+      "sha256": "dbf054a54cbb84658fdadac4dc6c2ba0bf3bfb339738c710b3a49866722f60ad"
+    },
+    "numeric_policy_v188": {
+      "path": "docs/a_share_three_day_walkforward_future_numeric_comparison_eligibility_policy_v188_20260814.json",
+      "sha256": "1193a1b061a80d7d0b6a0af9579a9f13dfa1e20c287a311d8c3b6c7d187288af",
+      "complete_definition_count": 153,
+      "complete_definition_order_sha256": "bf66faef96d7058c7028da52757c65d8e0bf7978cf72d3967cd236e4da30b875",
+      "numeric_comparator_count": 141,
+      "numeric_comparator_order_sha256": "ec1aebcb939ad516c58037a36a4aaadd4ad8b2abbd3c884705895c58da85a2ee"
+    },
+    "historical_walkforward_policy": {
+      "path": "docs/a_share_three_day_historical_walkforward_research_policy_20260727.json",
+      "sha256": "38426d6161b9bfed323c58caba18feca668b8c9d53e294951a8ba90c01a798bb"
+    }
+  },
+  "finite_prevalue_concept_catalog": [
+    {
+      "catalog_id": "c144_01",
+      "name": "complete_141_numeric_library_corr80_component_balanced_consensus",
+      "hypothetical_formula": "Fit training-only positive-correlation connected components at a fixed +0.8 boundary, average favorable percentiles within each component, then average components equally while retaining all 141 factors.",
+      "direction": "higher",
+      "parameters": "+0.8 median daily Spearman edge threshold",
+      "subsets": ["all_141_in_frozen_order"],
+      "models": ["unsupervised_connected_component_balancing"],
+      "prevalue_decision": "rejected_as_exact_campaign134_model_family_and_post_result_component_count_refresh",
+      "reason": "Campaign134 already froze and ran this exact complete-library positive-correlation component-balancing family at +0.8. It failed fold-one prefit uniqueness at absolute median daily rank correlation 0.8180313718344464 to the 66-factor arithmetic consensus before validation returns. Appending the later 141st comparator does not authorize a retry, new threshold, new linkage or refreshed graph."
+    },
+    {
+      "catalog_id": "c144_02",
+      "name": "complete_141_numeric_library_semantic_domain_balanced_consensus",
+      "hypothetical_formula": "Assign every frozen factor to a hand-labelled economic domain, average factors inside domains and then average domains equally.",
+      "direction": "higher",
+      "parameters": "one complete semantic partition of all 141 factors",
+      "subsets": ["all_141_in_frozen_order"],
+      "models": ["deterministic_semantic_group_balancing"],
+      "prevalue_decision": "rejected_as_post_exposure_reclustering_and_complete_library_weighting_refresh",
+      "reason": "Campaign134 consumed unequal family-size correction by grouping complete-library factors, while Campaign135 expressly closed reclustering and robust-vote refreshes. Choosing semantic labels after the factor histories were exposed creates discretionary group and weight multiplicity rather than a new observed information state."
+    },
+    {
+      "catalog_id": "c144_03",
+      "name": "complete_141_numeric_library_consensus_minus_cross_factor_disagreement",
+      "hypothetical_formula": "Combine the complete-library favorable-percentile mean with a fixed penalty based on same-row cross-factor dispersion or median absolute deviation.",
+      "direction": "higher",
+      "parameters": "one proposed fixed disagreement penalty",
+      "subsets": ["all_141_in_frozen_order"],
+      "models": ["deterministic_location_dispersion_aggregator"],
+      "prevalue_decision": "rejected_as_post_exposure_robust_aggregation_and_penalty_refresh",
+      "reason": "Arithmetic consensus, lower-quartile consensus, bounded supervised weights, temporal breadth, nonlinear calibration, interactions and correlation components are terminal complete-library families. Campaign135 explicitly closed trimmed, vote and other robust-aggregation refreshes; adding an outcome-uninformed but newly selected dispersion penalty still reopens that consumed operator frontier after results."
+    },
+    {
+      "catalog_id": "c144_04",
+      "name": "intraday_day_over_day_own_bar_close_location_profile_similarity_240b",
+      "hypothetical_formula": "Compare one stock's 240 scale-free own-bar close-location states with the exact prior accepted session at matching clocks using one fixed profile-similarity statistic.",
+      "direction": "higher",
+      "parameters": "exact prior accepted session and 240 fixed continuous-session clocks",
+      "subsets": [],
+      "models": [],
+      "prevalue_decision": "rejected_as_cross_session_profile_operator_and_terminal_close_location_state_recombination",
+      "reason": "Campaign056 and Campaign057 consumed exact-prior-session amount and return-profile persistence and rejected alternate source profiles; Campaign086 consumed own-bar close-location serial persistence while freezing out cross-day transitions. Combining the exposed prior-session operator with the exposed close-location state is a post-result mechanism recombination, not new source information."
+    },
+    {
+      "catalog_id": "c144_05",
+      "name": "intraday_sw_l1_close_location_profile_synchronization_240m",
+      "hypothetical_formula": "Correlate a stock's 240 own-bar close-location profile with the same-clock leave-one-out average of its point-in-time SW2021 level-one peers.",
+      "direction": "higher",
+      "parameters": "SW2021 L1, fixed peer minimum and 240 clocks",
+      "subsets": ["point_in_time_sw2021_l1"],
+      "models": [],
+      "prevalue_decision": "rejected_original_industry_source_contract_one_factor_and_campaign099_benchmark_refresh",
+      "reason": "Campaign099 explicitly rejected the industry benchmark while selecting the market benchmark. The later SW membership source contract freezes independent_factor_count=1 for the terminal three-session breadth factor and its failure policy forbids industry price momentum or another breadth variant. Local membership bytes do not authorize a second factor or a post-result benchmark substitution."
+    },
+    {
+      "catalog_id": "c144_06",
+      "name": "intraday_volume_weighted_minus_time_weighted_transaction_price_displacement_240m",
+      "hypothetical_formula": "Use active-bar amount/volume transaction prices and compare a full-session share-volume-weighted price center with an equal-active-bar price center.",
+      "direction": "higher",
+      "parameters": "full 240-bar session and one proposed pair of centers",
+      "subsets": [],
+      "models": [],
+      "prevalue_decision": "rejected_as_terminal_transaction_price_level_weighting_and_center_choice_refresh",
+      "reason": "Campaign007 identified level, change, regression, weighting and window choices as one exposed transaction-price/volume coupling family and froze only the change-correlation mechanism. Campaign043 then explicitly rejected unweighted moments and alternate centers while freezing volume-weighted transaction-price consensus. Selecting a weighted-versus-unweighted center after both results is an operator refresh, not a new transaction field."
+    }
+  ],
+  "selection": {
+    "concepts_reviewed": 6,
+    "selected_candidate_count": 0,
+    "selected_candidate": null,
+    "genuinely_new_contract_permitted_mechanism_found": false,
+    "reason": "All three complete-library proposals refresh consumed aggregation families, both temporal or peer proposals recombine terminal operators and one violates a one-factor source contract, and the transaction-price proposal changes a previously exposed weighting or center choice."
+  },
+  "decision": {
+    "create_campaign144_formula_feature_snapshot_model_or_adapter": false,
+    "run_source_acceptance_coverage_uniqueness_or_return_trial": false,
+    "append_all_six_concepts_and_all_infrastructure_failures": true,
+    "keep_complete_definition_count": 153,
+    "keep_numeric_comparator_count": 141,
+    "keep_2024_2025_lockbox_closed": true,
+    "next_campaign_requirement": "Continue only from a genuinely new finite mechanism supported by an accepted historically versioned point-in-time source whose original collection contract permits the use, or obtain explicit authorization for a separately frozen source-admission campaign."
+  },
+  "research_boundary": {
+    "schema_contract_manifest_formula_and_terminal_metadata_read": true,
+    "source_rows_or_column_values_read": false,
+    "campaign144_candidate_values_computed_or_read": false,
+    "campaign144_comparator_values_read": false,
+    "historical_daily_price_or_forward_return_values_read": false,
+    "stress_2024_2025_opened": false,
+    "provider_request_issued": false,
+    "provider_credential_value_or_digest_read": false,
+    "candidate49_historical_backfill_performed": false,
+    "candidate49_ledgers_changed": false,
+    "second_prospective_candidate_created": false,
+    "current_scoring_selection_sizing_positions_or_orders_performed": false,
+    "investment_advice": false,
+    "inherited_current_listing_survivorship_limitation_remains": true
+  }
+}

@@ -1,0 +1,123 @@
+{
+  "version": 1,
+  "kind": "a_share_three_day_walkforward_campaign047_concept_scouting",
+  "status": "completed_before_campaign047_candidate_comparison_daily_price_or_return_values",
+  "recorded_at": "2026-08-01T01:10:00Z",
+  "purpose": "Select exactly one genuinely new Campaign047 mechanism after Campaign046 terminated at its no-return uniqueness gate, without opening any Campaign047 minute candidate value, comparison value, daily price, forward return, training fold, or 2024-2025 stress value.",
+  "authoritative_inputs": {
+    "iteration_state": {
+      "path": "docs/a_share_three_day_iteration_status_20260801_campaign046_verified.json",
+      "sha256": "dd4d80021dc6c90d629e9fba0555a8d6fdece0d4d472bdb6e63e2b1486d9b4a7"
+    },
+    "historical_walkforward_policy": {
+      "path": "docs/a_share_three_day_historical_walkforward_research_policy_20260727.json",
+      "sha256": "38426d6161b9bfed323c58caba18feca668b8c9d53e294951a8ba90c01a798bb"
+    },
+    "campaign046_terminal_record": {
+      "path": "docs/a_share_three_day_walkforward_campaign_046_research_record.json",
+      "sha256": "7def6e0fae47ebc8c834aeb85f54fcbacdd2f35b4c7dbf8fb994903d65888e42"
+    },
+    "complete_pre_campaign047_comparison_library": {
+      "path": "docs/a_share_three_day_walkforward_campaign_046_no_return_preregistration.json",
+      "sha256": "7ca20bdf7d32b78489e3ac5cc4d25c6b6773ee09e9260732778f30e86faa7c52",
+      "factor_count_before_adding_campaign046": 69,
+      "factor_order_sha256": "5fbace24bb791ed6a5cfad1425689a9657a70a09e37ca900941972d23d6602a4"
+    }
+  },
+  "candidate_design_catalog": [
+    {
+      "design": "body_to_next_microgap_reversal",
+      "decision": "selected",
+      "reason": "It measures whether the next one-minute opening print repairs the preceding bar's open-to-close displacement. No frozen factor uses the lagged prior-body to next-gap relation with a fixed reversal sign over all within-half transitions."
+    },
+    {
+      "design": "same_bar_gap_body_confirmation",
+      "decision": "rejected_before_values",
+      "reason": "This is the terminal intraday_interbar_gap_body_confirmation_238p mechanism, which relates the incoming gap to the body of that same destination bar rather than relating a completed body to the following gap."
+    },
+    {
+      "design": "microgap_absorption_count",
+      "decision": "rejected_before_values",
+      "reason": "This is the terminal intraday_microgap_absorption_share_238p mechanism, which counts containment of a prior close inside the destination bar range and discards continuous body and gap magnitudes."
+    },
+    {
+      "design": "adjacent_between_close_return_reversal",
+      "decision": "rejected_before_values",
+      "reason": "This reopens Campaign046 reversal-energy, variance-ratio, sign-run, and return-persistence families; the selected mechanism decomposes each transition into prior intrabar body and next interbar gap instead."
+    },
+    {
+      "design": "next_range_or_next_body_response",
+      "decision": "rejected_before_values",
+      "reason": "Next-range response is terminal Campaign024 and next-body variants would search a family around Campaign016. Campaign047 freezes only the next opening-gap response."
+    },
+    {
+      "design": "gap_sign_counts_thresholds_or_magnitude_filters",
+      "decision": "rejected_before_values",
+      "reason": "Counts and thresholds would reopen terminal absorption and continuity mechanisms and create an unbounded parameter search. Exact zero observations remain in the fixed Pearson vectors."
+    },
+    {
+      "design": "alternate_lags_windows_estimators_or_direction",
+      "decision": "rejected_before_values",
+      "reason": "Lag one, both complete half sessions, population Pearson correlation, and the negative sign are fixed once; no lag, subwindow, rank estimator, regression, sign inversion, or scale family is searched."
+    },
+    {
+      "design": "terminal_factor_combination_filter_or_model",
+      "decision": "rejected_before_values",
+      "reason": "Campaign047 contains one raw open-close mechanism and no terminal value, fitted weight, filter, threshold, regime, combination, or model."
+    }
+  ],
+  "selected_candidate": {
+    "name": "intraday_body_next_microgap_reversal_238p",
+    "direction": "higher",
+    "economic_hypothesis": "A higher score indicates that one-minute open-to-close displacement is more often followed by an opposing next-bar opening discontinuity, consistent with rapid quote or inventory correction after the completed bar rather than propagation into the following print. This may describe a more resilient completed-session microstructure state for the next-open-to-third-close horizon.",
+    "formula": "Within each 120-bar half, form 119 prior-bar bodies b_t=log(close_t/open_t) and 119 following microgaps g_next=log(open_(t+1)/close_t). Pool both halves to 238 aligned transitions and return -Corr(b_t,g_next) using equal-position population Pearson correlation.",
+    "source_projection": [
+      "datetime",
+      "symbol",
+      "provider",
+      "open",
+      "close"
+    ],
+    "selected_grid": [
+      "09:31-11:30",
+      "13:01-15:00"
+    ],
+    "selected_bar_count": 240,
+    "aligned_transition_count": 238,
+    "include_0930": false,
+    "include_lunch_transition": false,
+    "body_definition": "natural_log_current_close_divided_by_current_open",
+    "following_microgap_definition": "natural_log_next_open_divided_by_current_close",
+    "alignment": "prior_body_t_with_following_gap_t_plus_1_inside_the_same_half",
+    "correlation_estimator": "population_pearson_equal_transition_weight",
+    "score": "negative_population_correlation",
+    "zero_semantics": "retain every exact-zero body and exact-zero following gap in the fixed vectors",
+    "variance_semantics": "both complete 238-element vectors must have strictly positive population variance",
+    "valid_range": [
+      -1.0,
+      1.0
+    ],
+    "endpoint_canonicalization_tolerance": 1e-12,
+    "transform_threshold_filter_combination_or_model": "none"
+  },
+  "research_boundary": {
+    "comparison_factor_names_and_directions_read_from_frozen_protocol": true,
+    "external_minute_partitions_read": false,
+    "candidate_values_read": false,
+    "comparison_values_read": false,
+    "historical_daily_price_fields_read": false,
+    "historical_forward_returns_read": false,
+    "training_or_model_fitting_performed": false,
+    "provider_request_issued": false,
+    "candidate49_historical_return_signal_or_execution_backfill_performed": false,
+    "candidate49_ledgers_changed": false,
+    "candidate50_activation_created": false,
+    "current_scoring_selection_sizing_or_orders_performed": false,
+    "investment_advice": false
+  },
+  "decision": {
+    "selected_candidate_count": 1,
+    "predictive_value_established": false,
+    "next_action": "Complete a separate pre-value overlap audit against all 69 inherited comparisons plus terminal Campaign046, then freeze the exact 70-comparison no-return protocol."
+  }
+}

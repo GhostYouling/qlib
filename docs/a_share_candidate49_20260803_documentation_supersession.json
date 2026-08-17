@@ -1,0 +1,35 @@
+{
+  "version": 1,
+  "kind": "a_share_candidate49_20260803_documentation_supersession",
+  "status": "campaign052_historical_bindings_preserved_candidate49_failure_documentation_current",
+  "recorded_at": "2026-08-03T08:58:00Z",
+  "bindings": {
+    "candidate49_failure_record": {
+      "path": "docs/a_share_candidate49_20260803_daily_source_failure_record.json",
+      "sha256": "962afb0952395daa68e092fd7c08d7fd072ec65f04cd6c1616678229c0833a77"
+    },
+    "current_data_pipeline_documentation": {
+      "path": "docs/a_share_data_pipeline.md",
+      "sha256": "6974fef59b52f329aeaaa0dcd08329364059c3eba6de0af353c962db6459d122"
+    },
+    "current_manage_qlib_a_share_data_skill": {
+      "path": "/Users/niyufei/.codex/skills/manage-qlib-a-share-data/SKILL.md",
+      "sha256": "79088e9c2664a1bc6af1af9e5cfca45a068bcec54ebfa10972cbd71cd33dc20e"
+    }
+  },
+  "historical_bindings": {
+    "campaign052_verification": {
+      "path": "docs/a_share_three_day_walkforward_campaign_052_verification_20260803.json",
+      "sha256": "1d43ad954b0396dc00309d33944dd66a5049c7ac799c6ad66bbd379a2d558ed9"
+    },
+    "previous_data_pipeline_documentation_sha256": "45163b3947bc8e744c2f2935c8f9574786ebe2600090fbbfc8729a3b8ec3b297",
+    "previous_manage_skill_sha256": "e03e12f966c1078f8cc37b9340fe222c7d83d682eeaf03975f694ab37ca52a6b",
+    "historical_record_rewritten": false
+  },
+  "semantic_boundary": {
+    "campaign052_result_or_gate_changed": false,
+    "candidate49_signal_or_execution_ledger_changed": false,
+    "same_day_retry_authorized": false,
+    "documentation_update_is_append_only": true
+  }
+}

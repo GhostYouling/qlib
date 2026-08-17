@@ -1,0 +1,59 @@
+{
+  "schema_version": 1,
+  "kind": "a_share_three_day_walkforward_campaign136_development_implementation_freeze",
+  "status": "frozen_before_campaign136_2019_2023_development_return_read",
+  "recorded_at": "2026-08-14T11:53:00+08:00",
+  "filename_date_note": "The inherited runner contract names this immutable file with the 20260813 suffix; content was created on 2026-08-14 and the filename is not a claim about creation time.",
+  "purpose": "Byte-freeze the Campaign136 exact-one-trial runner, daily-snapshot adapter, preregistration and tests before the first historical daily-price or forward-return value can be loaded.",
+  "development_preregistration": {
+    "path": "docs/a_share_three_day_walkforward_campaign_136_preregistration.json",
+    "sha256": "a9bd904cb7ecb717f5ae11a8648942411f89b5023588e410828271f4020f9325"
+  },
+  "development_runner": {
+    "path": "scripts/a_share_three_day_walkforward_campaign136.py",
+    "sha256": "1268edf193a98e8338ad5c681e8615dbae0eeacefec205ba60a300084953fb0d",
+    "frozen_template_runner": {
+      "path": "scripts/a_share_three_day_walkforward_campaign128.py",
+      "sha256": "10a4b1da7e2f5d62f9ea785a4d918e6db3662225c2d66d0b74fcc2bf56d276dc"
+    },
+    "frozen_base_runner": {
+      "path": "scripts/a_share_three_day_walkforward_campaign.py",
+      "sha256": "301f5fe665422b94c9fa110e67995ff0999584a5f323ecdd5f56151a3529f5a7"
+    },
+    "adapter_scope": "Replace only the inherited partition-layout reader with the immutable per-symbol Campaign136 daily snapshot reader; preserve every execution, fold, purge, ranking, cost and survivor function."
+  },
+  "tests": {
+    "path": "tests/data_collector_tests/test_a_share_three_day_walkforward_campaign136_development.py",
+    "sha256": "89602eea3324720f9501daacb6d7d3c9d53317fe3b5d9d97df455c36904bd312",
+    "passed": 7,
+    "black_formatted": true,
+    "ruff_check_passed": true,
+    "real_daily_price_or_return_values_read": false
+  },
+  "no_return_admission": {
+    "path": "data/experiments/short_horizon/historical_walkforward/campaign_136/uniqueness/campaign136_ordered_uniqueness_audit.json",
+    "sha256": "7fe07ccabc3162e232806e542d104d4df2b8d480a79b9eee7d22cce904af1983",
+    "admissible_factor_count": 1,
+    "numeric_comparisons_passed": 140,
+    "maximum_observed_absolute_median_daily_rank_correlation": 0.03709644736183112
+  },
+  "trial_catalog": [
+    {
+      "trial_id": "wf136_daily_realized_price_basis_adjustment_magnitude_1d_single_higher",
+      "feature_set": [
+        "daily_realized_price_basis_adjustment_magnitude_1d"
+      ],
+      "weights": [1.0],
+      "direction": "higher",
+      "complexity": 1
+    }
+  ],
+  "trial_count": 1,
+  "historical_daily_price_fields_read_before_freeze": [],
+  "historical_forward_returns_read_before_freeze": false,
+  "stress_2024_2025_opened_before_freeze": false,
+  "candidate49_ledgers_changed_before_freeze": false,
+  "provider_request_issued_before_freeze": false,
+  "current_scoring_selection_sizing_positions_or_orders_performed": false,
+  "post_result_code_preregistration_parameter_filter_subset_direction_or_gate_change_allowed": false
+}

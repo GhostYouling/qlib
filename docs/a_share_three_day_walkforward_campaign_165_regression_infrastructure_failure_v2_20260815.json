@@ -1,0 +1,38 @@
+{
+  "schema_version": 1,
+  "kind": "a_share_three_day_walkforward_campaign165_infrastructure_failure_record",
+  "status": "two_failures_recorded_and_recovered_without_scientific_change",
+  "recorded_at": "2026-08-15T07:20:03+08:00",
+  "authoritative_predecessor": {
+    "path": "docs/a_share_three_day_walkforward_campaign_165_regression_infrastructure_failure_20260815.json",
+    "sha256": "3a9077cfb37180f7847412dd4c67a9029da1afc3d00545df9fc68310e5ee42d7",
+    "effective_failure_count": 1,
+    "preserved": true
+  },
+  "delta_failure": {
+    "attempt_id": "campaign165_infrastructure_002",
+    "phase": "effective_ledger_chain_validation",
+    "command_exit_code": 0,
+    "internal_comparison_exit_code": 1,
+    "status": "failed_newline_contaminated_hash_check_and_masked_comparison_exit",
+    "cause": "The first validator piped jq -r output, including its trailing newline, into shasum and then placed a later shasum command after a failed conditional comparison. The comparison returned 1 but the shell's final command returned 0, so no ok marker appeared even though the invocation exit was zero.",
+    "target_file_written_by_failure": false,
+    "candidate_comparator_price_or_return_value_read": false,
+    "internal_failure_was_temporarily_masked": true,
+    "recovery": "Enabled set -e, captured the payload into a variable, hashed it with printf without a trailing newline, and used an explicit mismatch exit. The recorded entry hash then matched exactly.",
+    "recovered_entry_sha256": "60e559beaf83999ca20e5ffb2aeaecc918aec5f220c54d3fae733e0dde1d7308"
+  },
+  "effective_failure_count": 2,
+  "recovery_state": {
+    "all_failures_recorded": true,
+    "unrecovered_or_unrecorded_failed_exit_codes_bypassed_or_masked": false,
+    "scientific_result_changed": false
+  },
+  "research_boundary": {
+    "source_row_candidate_comparator_price_or_return_value_read": false,
+    "provider_or_web_request_issued": false,
+    "provider_credential_presence_value_or_digest_read": false,
+    "stress_2024_2025_opened": false,
+    "candidate49_ledgers_changed": false
+  }
+}

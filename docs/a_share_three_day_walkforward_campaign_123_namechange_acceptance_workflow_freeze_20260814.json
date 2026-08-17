@@ -1,0 +1,123 @@
+{
+  "schema_version": 1,
+  "kind": "a_share_three_day_walkforward_campaign123_namechange_acceptance_workflow_freeze",
+  "status": "frozen_after_synthetic_tests_before_authorization_plan_or_provider_request",
+  "recorded_at": "2026-08-14T03:38:00+08:00",
+  "authoritative_inputs": {
+    "prevalue_state": {
+      "path": "docs/a_share_three_day_iteration_status_20260814_campaign123_namechange_prevalue.json",
+      "sha256": "ddd69f5adb81acea6458b170b40ef436993bc0311704dc3cdc3853ec2816e5f4"
+    },
+    "numeric_policy_v122": {
+      "path": "docs/a_share_three_day_walkforward_future_numeric_comparison_eligibility_policy_v122_20260814.json",
+      "sha256": "ad36718b72a9dd1f7c7c007fc31cfa99747fdc5b15a4ee61dab97474c869cc48"
+    },
+    "source_contract": {
+      "path": "docs/a_share_three_day_walkforward_campaign_123_namechange_source_contract_20260814.json",
+      "sha256": "00cae705f293de929c7c9c168500efce1506b1ac0ceb2dd902b3c451039d9d8c"
+    },
+    "adapter_and_formula_freeze": {
+      "path": "docs/a_share_three_day_walkforward_campaign_123_namechange_adapter_formula_freeze_20260814.json",
+      "sha256": "8fdca7bd7e41f9371618e8e36874c84b2ea74a4325db1722295a86ef82adac14"
+    },
+    "attempt_ledger_v2": {
+      "path": "data/experiments/short_horizon/historical_walkforward/campaign_123/research_attempt_ledger_v2.json",
+      "sha256": "038120142d66f633cd3918d29d8158d8d0cf0f696acec6310334348db5a103db"
+    }
+  },
+  "workflow_freeze": {
+    "implementation": {
+      "path": "scripts/a_share_three_day_walkforward_campaign123_namechange_acceptance.py",
+      "sha256": "f457ce98e674540aa5f651a295f7ac60ddc4061f583b713af6533ea84526d62f"
+    },
+    "synthetic_tests": {
+      "path": "tests/data_collector_tests/test_a_share_three_day_walkforward_campaign123_namechange_acceptance.py",
+      "sha256": "7506672c2184c61350fed03585feced132f11b5fda81c1cad38edfb9af75e971"
+    },
+    "direct_cli_import_path_verified": true,
+    "plan_has_no_provider_client_creation": true,
+    "run_requires_confirm_run": true,
+    "run_requires_confirm_provider_request": true,
+    "dotenv_contract": {
+      "path": ".env",
+      "regular_non_symlink_required": true,
+      "mode_required": "0600",
+      "maximum_bytes": 65536,
+      "unique_nonempty_key": "TUSHARE_TOKEN",
+      "value_print_hash_persist_allowed": false
+    }
+  },
+  "frozen_provider_schedule": {
+    "api": "namechange",
+    "request_years": [
+      2019,
+      2020,
+      2021,
+      2022,
+      2023,
+      2024,
+      2025
+    ],
+    "maximum_provider_calls": 7,
+    "requests_per_year": 1,
+    "retry_allowed": false,
+    "request_fields": [
+      "ts_code",
+      "start_date",
+      "end_date",
+      "ann_date",
+      "change_reason"
+    ],
+    "name_requested": false,
+    "response_row_count_at_or_above_5000": "fatal_possible_truncation",
+    "raw_response_persisted": false
+  },
+  "frozen_acceptance_gates": {
+    "canonical_adapter_must_pass": true,
+    "minimum_pure_rename_events_total": 30,
+    "minimum_distinct_supported_instruments": 25,
+    "minimum_distinct_information_dates": 20,
+    "minimum_events_in_2019": 2,
+    "minimum_events_in_2022": 2,
+    "minimum_events_in_2025": 2,
+    "all_seven_annual_receipts_required": true,
+    "all_gates_must_pass": true
+  },
+  "one_shot_publication": {
+    "intent_path": "data/metadata/rich_data/runs/campaign123_namechange_acceptance_intent_v1.json",
+    "failure_path": "data/metadata/rich_data/runs/campaign123_namechange_acceptance_failure_v1.json",
+    "snapshot_path": "data/raw/a_share/rich/tushare/namechange/snapshots/campaign123_2019_2025_v1.json",
+    "manifest_path": "data/metadata/rich_data/runs/campaign123_namechange_acceptance_v1.json",
+    "exclusive_create": true,
+    "snapshot_and_manifest_atomic_pair": true,
+    "normalized_events_only": true,
+    "failure_message_or_raw_rows_persisted": false,
+    "prior_intent_failure_snapshot_or_manifest_blocks_run": true
+  },
+  "verification": {
+    "black": "passed; 2 files left unchanged",
+    "ruff": "passed",
+    "synthetic_tests": "9 passed in 0.45s",
+    "provider_requests_in_tests": false,
+    "real_credential_loaded_in_tests": false,
+    "historical_candidate_comparator_price_or_return_values_in_tests": false
+  },
+  "authorization_boundary": {
+    "provider_request_authorized_by_this_freeze_alone": false,
+    "next_required_artifact": "v123 policy binding the exact workflow, tests and this freeze may authorize one plan and, only if plan returns ready=true with exit 0, one confirmed run.",
+    "formula_reason_projection_window_direction_missing_rule_or_threshold_change_allowed": false
+  },
+  "research_boundary": {
+    "provider_request_issued": false,
+    "credential_loaded": false,
+    "provider_rows_read_persisted_or_counted": false,
+    "candidate_or_comparison_values_read": false,
+    "historical_daily_price_or_forward_return_values_read": false,
+    "stress_2024_2025_opened": false,
+    "candidate49_historical_backfill_performed": false,
+    "candidate49_ledgers_changed": false,
+    "second_prospective_candidate_created": false,
+    "current_scoring_selection_sizing_positions_or_orders_performed": false,
+    "investment_advice": false
+  }
+}

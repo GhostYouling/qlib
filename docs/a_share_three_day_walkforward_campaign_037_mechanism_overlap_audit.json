@@ -1,0 +1,134 @@
+{
+  "version": 1,
+  "kind": "a_share_three_day_walkforward_campaign037_mechanism_overlap_audit",
+  "status": "passed_conceptual_independence_before_minute_candidate_comparison_or_return_values",
+  "recorded_at": "2026-07-30T22:50:01Z",
+  "purpose": "Challenge the selected Campaign037 mechanism against the complete terminal and prospective frontier before freezing a candidate formula or reading any value.",
+  "authoritative_boundary": {
+    "path": "docs/a_share_three_day_iteration_status_20260731_campaign036_verified.json",
+    "sha256": "be1f9c071382f90a1329ce90738f02144c8bd5d210bc321892ed00e61fbff53b"
+  },
+  "historical_walkforward_policy": {
+    "path": "docs/a_share_three_day_historical_walkforward_research_policy_20260727.json",
+    "sha256": "38426d6161b9bfed323c58caba18feca668b8c9d53e294951a8ba90c01a798bb"
+  },
+  "concept_scouting": {
+    "path": "docs/a_share_three_day_walkforward_campaign_037_concept_scouting.json",
+    "sha256": "1db88f0fe3400396b38ffe4bbe8f57a2af4cf7388e89efcc731c79477bcc6a2c"
+  },
+  "selected_mechanism": {
+    "name": "intraday_five_minute_variance_ratio_230w",
+    "direction": "higher",
+    "information_domain": "within_half_signed_return_multi_scale_variance_ratio",
+    "formula": "For each 120-close half independently, form 119 adjacent log returns r_t, demean them within that half as e_t=r_t-mean(r), and form 115 overlapping five-return sums s_t=sum_{j=0}^4 e_{t+j}. Pool both halves and return mean(s_t^2)/(5*mean(e_t^2)), using 230 five-return sums and 238 demeaned one-minute returns.",
+    "economic_hypothesis": "A higher fixed five-return variance ratio means signed one-minute innovations reinforce at a short multiscale horizon rather than cancel, which can represent persistent information incorporation relevant from the next open through the third close.",
+    "source_fields": [
+      "datetime",
+      "symbol",
+      "provider",
+      "close"
+    ],
+    "selected_bar_grid": "exactly 240 raw unadjusted one-minute closes at 09:31-11:30 and 13:01-15:00 after frozen timestamp normalization; standalone 09:30 is excluded",
+    "return_rule": "Form exactly 119 adjacent natural-log close returns independently inside each 120-close half. Never include the lunch, overnight, cross-day, or cross-stock transition.",
+    "demeaning_rule": "Subtract the arithmetic mean of the 119 signed returns separately within each half. Do not pool the half means, annualize, standardize, rank, or winsorize.",
+    "aggregation_rule": "Within each half, form exactly 115 overlapping sums of five consecutive demeaned returns. Pool the two 115-element five-return-sum vectors only after construction.",
+    "variance_ratio_rule": "Divide the population mean square of all 230 five-return sums by five times the population mean square of all 238 demeaned one-minute returns.",
+    "bar_rule": "All 240 selected closes must be finite and strictly positive. Exact equal closes and exact-zero returns remain in the fixed support.",
+    "missing_rule": "Any invalid, nonpositive, or nonfinite selected close; any nonfinite return, demeaned return, or five-return sum; nonpositive one-minute mean-square denominator; nonfinite ratio; or ratio below zero makes the stock-day missing.",
+    "valid_range": {
+      "lower": 0.0,
+      "lower_inclusive": true,
+      "upper": null
+    }
+  },
+  "overlap_challenges": [
+    {
+      "family": "intraday_diffusive_variation_ratio_238m",
+      "result": "distinct_pending_statistical_uniqueness_gate",
+      "reason": "The terminal diffusive-variation factor compares adjacent absolute-return products with realized squared variation to separate continuous and jump-like variation. Campaign037 instead aggregates signed demeaned returns over a fixed five-return horizon and measures reinforcement versus cancellation."
+    },
+    {
+      "family": "intraday_absolute_return_serial_persistence_236p",
+      "result": "distinct_pending_statistical_uniqueness_gate",
+      "reason": "Campaign028 correlates adjacent absolute return magnitudes. Campaign037 retains signs, uses five-return overlapping sums, and has no absolute-return autocorrelation."
+    },
+    {
+      "family": "intraday_return_spectral_entropy_59f",
+      "result": "distinct_pending_statistical_uniqueness_gate",
+      "reason": "Campaign033 summarizes normalized DFT power across 59 frequencies. Campaign037 uses one predeclared time-domain five-return scale, no DFT, band selection, phase, or entropy."
+    },
+    {
+      "family": "intraday_return_sign_run_imbalance_238p_and_signed_path_efficiency_239m",
+      "result": "distinct_pending_statistical_uniqueness_gate",
+      "reason": "Sign-run imbalance counts same-sign transitions and signed-path efficiency uses terminal displacement over total absolute travel. Campaign037 retains every return magnitude, removes each half's mean, has no count or terminal displacement, and measures multiscale variance."
+    },
+    {
+      "family": "intraday_price_update_share_238m_return_weak_order_entropy_234t_and_round_tenth_close_avoidance",
+      "result": "distinct",
+      "reason": "Campaign037 has no equality count, weak-order state, tick-grid classification, or entropy. Exact-zero returns remain ordinary numeric observations."
+    },
+    {
+      "family": "intraday_realized_volatility_and_intraday_volatility_resolution_238m",
+      "result": "distinct_pending_statistical_uniqueness_gate",
+      "reason": "Realized volatility measures return scale and volatility resolution allocates squared variation between halves. Campaign037 is scale-invariant, demeans each half, and compares five-return variance with one-return variance."
+    },
+    {
+      "family": "intraday_two_sided_range_frontier_balance_238m_and_other_high_low_geometry",
+      "result": "distinct",
+      "reason": "Campaign036 and the other range mechanisms read high and low geometry. Campaign037 reads neither high nor low and is determined only by the signed close-return path at a fixed aggregation scale."
+    },
+    {
+      "family": "candidate49_cumulative_vwap_crossing_rate",
+      "result": "distinct",
+      "reason": "Candidate49 counts close crossings around causal cumulative amount/volume VWAP and is future-only. Campaign037 reads no amount or volume, constructs no anchor or crossing, and remains historical-research-only."
+    },
+    {
+      "family": "amount_volume_market_quarterly_or_event_mechanisms",
+      "result": "distinct",
+      "reason": "Campaign037 contains no activity field, transaction price, peer benchmark, quarterly field, or event timing."
+    },
+    {
+      "family": "terminal_factor_combination_or_rescue",
+      "result": "not_used",
+      "reason": "Campaign037 contains one exact close-only statistic and no terminal factor value, transform, filter, model, or combination."
+    }
+  ],
+  "design_choices_frozen_before_values": {
+    "formula_family": "within_half_demeaned_signed_return_five_scale_variance_ratio",
+    "direction": "higher",
+    "selected_bar_count": 240,
+    "one_minute_return_count": 238,
+    "aggregation_horizon_returns": 5,
+    "five_return_overlapping_window_count": 230,
+    "include_0930": false,
+    "include_lunch_transition": false,
+    "demean_each_half_separately": true,
+    "overlapping_windows": true,
+    "population_mean_squares": true,
+    "denominator_multiplier": 5,
+    "zero_one_minute_variance_is_missing": true,
+    "valid_lower_bound": 0.0,
+    "alternate_horizon_nonoverlap_undemeaned_pooled_demean_log_clip_rank_or_inverse_search_allowed": false,
+    "subwindow_year_filter_threshold_board_cost_or_direction_search_allowed": false,
+    "open_high_low_activity_market_quarterly_or_terminal_factor_input_allowed": false
+  },
+  "research_boundary": {
+    "external_minute_partitions_read": false,
+    "external_daily_partitions_read": false,
+    "candidate_values_read": false,
+    "comparison_values_read": false,
+    "historical_daily_price_fields_read": false,
+    "historical_forward_returns_read": false,
+    "training_or_model_fitting_performed": false,
+    "provider_request_issued": false,
+    "candidate49_historical_return_signal_or_execution_backfill_performed": false,
+    "candidate50_activation_created": false,
+    "current_scoring_selection_sizing_or_orders_performed": false,
+    "investment_advice": false
+  },
+  "decision": {
+    "conceptual_independence_passed": true,
+    "predictive_value_established": false,
+    "next_action": "Freeze a fingerprint-bound no-return protocol with exactly this formula and the exact ordered 58-factor comparison library before implementing or opening any candidate value."
+  }
+}

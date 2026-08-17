@@ -1,0 +1,24 @@
+{
+  "schema_version": 1,
+  "kind": "a_share_three_day_walkforward_campaign261_infrastructure_failure",
+  "attempt_id": "campaign261_infrastructure_017",
+  "status": "failed_combined_unified_report_tail_output_truncated",
+  "recorded_at": "2026-08-16T16:49:00+08:00",
+  "timestamp_semantics": "monotonic_logical_append_time_not_host_wall_clock_measurement",
+  "failed_operation": "Read the last 80 lines of current_research_report.md and three_day_research_report.md in one multi-command result before appending Campaign261.",
+  "failure_semantics": "The aggregate tool result emitted an output-truncation warning. The entire failed output was discarded and was not used as patch context or validation evidence.",
+  "recovery": "Read the final 20 lines of each report independently, verify their exact common Campaign260 terminal suffix, then append the same Campaign261 section to each through one atomic apply_patch call.",
+  "report_write_state_at_failure": {
+    "current_research_report_changed": false,
+    "three_day_research_report_changed": false
+  },
+  "research_boundary": {
+    "candidate_or_comparator_values_recomputed": false,
+    "historical_daily_price_or_forward_return_values_read": false,
+    "stress_2024_2025_opened": false,
+    "provider_request_issued": false,
+    "credential_loaded": false,
+    "candidate49_ledgers_changed": false,
+    "scientific_result_changed": false
+  }
+}

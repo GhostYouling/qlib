@@ -1,0 +1,44 @@
+{
+  "schema_version": 1,
+  "kind": "a_share_three_day_walkforward_campaign083_no_return_audit_activation_binding",
+  "status": "frozen_before_coverage_or_comparison_values",
+  "frozen_at": "2026-08-06T20:17:05+08:00",
+  "implementation_freeze": {
+    "path": "docs/a_share_three_day_walkforward_campaign_083_no_return_audit_implementation_freeze_20260806.json",
+    "sha256": "330846628f0365911aaf2162d2831738f6b30846b21e9bb35e579f4555e5780f"
+  },
+  "snapshot_binding": {
+    "path": "docs/a_share_three_day_walkforward_campaign_083_feature_snapshot_binding_20260806.json",
+    "sha256": "6a37b02574f506e4f2043b91788bef9c8a93e3535985867293531bde22be5b2c"
+  },
+  "candidate_snapshot": {
+    "path": "/Volumes/DIsk/qlib-a-share-tushare-1m/derived/a_share/rich/tushare/minute_walkforward_campaign083_feature_library/tushare_stk_mins_1m_2019_2025_ea0cbb8f_walkforward_campaign083_feature_library_v1/snapshot_manifest.json",
+    "sha256": "e462a154f2da5374be671955b04d0e70b2bc02821a397e978e346dca75bf0618",
+    "dataset_sha256": "b9b9a54d1a1a040d22cae0dbabe1cdb556312a97f604efe1da38e437478cde52",
+    "partitions": 33015,
+    "rows": 7724498,
+    "eligible_rows": 7724498
+  },
+  "protocol": {
+    "path": "docs/a_share_three_day_walkforward_campaign_083_no_return_preregistration.json",
+    "sha256": "31271774531c1bd761d3963740be959fe329974b2bb1c8d6b6038fd62ede35af"
+  },
+  "audit_runner": {
+    "path": "scripts/a_share_three_day_walkforward_campaign083_no_return_audit.py",
+    "sha256": "ff9859120319a52c75aabcbd9d7f5b46c88166af0ca3fc460df981bf2fe71cf1"
+  },
+  "tests": {
+    "path": "tests/data_collector_tests/test_a_share_three_day_walkforward_campaign083_no_return_audit.py",
+    "sha256": "a03ee016e9a2f921fefbd593a15e4fd33d01df2711eb4001f738381bef2c4d1f"
+  },
+  "coverage_or_capacity_metrics_computed_before_activation": false,
+  "comparison_values_read_before_activation": false,
+  "historical_daily_price_fields_read_before_activation": [],
+  "historical_forward_returns_read_before_activation": false,
+  "provider_request_issued_before_activation": false,
+  "candidate49_historical_backfill_performed": false,
+  "candidate49_ledgers_changed": false,
+  "second_prospective_candidate_created": false,
+  "current_scoring_selection_sizing_or_orders_performed": false,
+  "authorization": "Exactly one Campaign083 no-return audit may run. It must evaluate coverage before loading all 112 numeric comparator value streams in frozen order and must stop before daily prices or returns if any no-return gate fails."
+}

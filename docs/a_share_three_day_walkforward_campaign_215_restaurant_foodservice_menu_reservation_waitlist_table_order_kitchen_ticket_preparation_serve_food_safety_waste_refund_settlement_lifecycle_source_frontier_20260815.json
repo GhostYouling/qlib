@@ -1,0 +1,163 @@
+{
+  "schema_version": 1,
+  "kind": "a_share_three_day_walkforward_campaign215_restaurant_foodservice_operating_lifecycle_source_frontier",
+  "recorded_at": "2026-08-15T23:48:00+08:00",
+  "timestamp_semantics": "monotonic_logical_append_time_not_host_wall_clock_measurement",
+  "status": "checkpoint_prevalue_three_source_admission_deferrals_four_relabeling_overlap_or_combination_rejections_zero_selected",
+  "purpose": "Freeze a finite seven-route prevalue review of issuer-as-restaurant-or-foodservice-operator menu and recipe versions, reservation, waitlist, table and seat state, guest order and kitchen-ticket execution, preparation and serving, food-safety control, waste, cancellation, refund and settlement before any source row, formula, direction, candidate value, comparator, security price or return is read.",
+  "authoritative_inputs": {
+    "campaign214_state": {
+      "path": "docs/a_share_three_day_iteration_status_20260815_campaign214_prevalue_terminal.json",
+      "sha256": "0bd9e51838f77e0f383f0673631839910987efc67b101374116f65b9b0546912"
+    },
+    "numeric_policy_v325": {
+      "path": "docs/a_share_three_day_walkforward_future_numeric_comparison_eligibility_policy_v325_20260815.json",
+      "sha256": "5045150c28486d94f06bcbdbefd40bbd23ad0d25f4ab15596bd2222abe06041a"
+    },
+    "historical_walkforward_policy": {
+      "path": "docs/a_share_three_day_historical_walkforward_research_policy_20260727.json",
+      "sha256": "38426d6161b9bfed323c58caba18feca668b8c9d53e294951a8ba90c01a798bb"
+    },
+    "campaign163_supply_chain_frontier": {
+      "path": "docs/a_share_three_day_walkforward_campaign_163_supply_chain_disclosure_source_frontier_20260815.json",
+      "sha256": "3002f25ffc4ff1938933f0b4f3b998cacdb775ca0e27702c65cdc7afec0e80a3"
+    },
+    "campaign166_incident_frontier": {
+      "path": "docs/a_share_three_day_walkforward_campaign_166_operational_incident_disclosure_source_frontier_20260815.json",
+      "sha256": "96ecd0259613a6649674804a676b3d82205fe11ba3b01986db6b675d00ea78d1"
+    },
+    "campaign168_operating_kpi_frontier": {
+      "path": "docs/a_share_three_day_walkforward_campaign_168_operating_scale_adoption_kpi_source_frontier_20260815.json",
+      "sha256": "c5dc98f92266e2b7ef7349cb5260a8cde15ccd9c78442e661e4170b1ba47d18a"
+    },
+    "campaign169_pricing_frontier": {
+      "path": "docs/a_share_three_day_walkforward_campaign_169_commercial_pricing_terms_source_frontier_20260815.json",
+      "sha256": "a571bcc5bcbfc158da551e59d2984a907fd44b419d115619043a9b28ee3ab288"
+    },
+    "campaign170_customer_quality_frontier": {
+      "path": "docs/a_share_three_day_walkforward_campaign_170_customer_experience_quality_kpi_source_frontier_20260815.json",
+      "sha256": "b3ec42d8c8872ae9be913ffd64b24ba449e4c4f0e1f91af31b98f0e0e7158379"
+    },
+    "campaign191_agriculture_frontier": {
+      "path": "docs/a_share_three_day_walkforward_campaign_191_agricultural_biological_asset_production_cycle_source_frontier_20260815.json",
+      "sha256": "ac0811f9017ebaf151fd3f5ccd6f14c62313aeafe1992904020bbe3fc1451039"
+    },
+    "campaign195_payment_frontier": {
+      "path": "docs/a_share_three_day_walkforward_campaign_195_payment_processing_merchant_acquiring_authorization_clearing_settlement_dispute_reserve_lifecycle_source_frontier_20260815.json",
+      "sha256": "8ba6a15deefa0cf492cec5373e12f56db64fc14e5a97672313f228aa8a984d7e"
+    },
+    "campaign196_inventory_frontier": {
+      "path": "docs/a_share_three_day_walkforward_campaign_196_inventory_production_conversion_aging_obsolescence_consignment_channel_sellthrough_custody_lifecycle_source_frontier_20260815.json",
+      "sha256": "940fbf7b754a459ddf2f4ab1b4a88451ba27f3cba39843e7a024ca6fe1e2f290"
+    },
+    "campaign197_loyalty_frontier": {
+      "path": "docs/a_share_three_day_walkforward_campaign_197_loyalty_rewards_points_miles_issuance_outstanding_redemption_expiration_breakage_partner_settlement_lifecycle_source_frontier_20260815.json",
+      "sha256": "891fbf0a13d83b1a1d1ab53a6dc683752acaadd1c0795e58796f46f7ec40963d"
+    },
+    "campaign208_hospitality_frontier": {
+      "path": "docs/a_share_three_day_walkforward_campaign_208_hospitality_lodging_reservation_room_inventory_checkin_stay_housekeeping_checkout_folio_refund_dispute_settlement_lifecycle_source_frontier_20260815.json",
+      "sha256": "85ca3a01cf0f5427902263d9ce41f0d09d5ce552c885f14de35942c3dc67d231"
+    },
+    "campaign212_manufacturing_frontier": {
+      "path": "docs/a_share_three_day_walkforward_campaign_212_manufacturing_execution_shop_floor_work_order_bom_routing_material_lot_genealogy_quality_inspection_nonconformance_quarantine_rework_scrap_finished_goods_release_lifecycle_source_frontier_20260815.json",
+      "sha256": "4300ef4183098a6c2368c701c13f057f1175c43c2e40811092e72d63b7477ade"
+    },
+    "campaign213_retail_frontier": {
+      "path": "docs/a_share_three_day_walkforward_campaign_213_retail_merchandising_assortment_planogram_shelf_availability_replenishment_promotion_coupon_markdown_omnichannel_order_return_exchange_restock_lifecycle_source_frontier_20260815.json",
+      "sha256": "ce93bf21740921402f061ad7e688a8ae5d781dd4e4d4b55717e0bb25115e8471"
+    }
+  },
+  "repository_evidence": {
+    "complete_definition_count": 158,
+    "complete_definition_order_sha256": "4819c7fd7c0795d7598a52f3c615e3f117d5f4ecd9332974bc8e3dfa57c96667",
+    "eligible_numeric_comparator_count": 142,
+    "eligible_numeric_comparator_order_sha256": "5d1b35fb5a0d8ac9293008db9963c4a60a94dc940c237c3ed259e5ce44f14aaf",
+    "source_frontier_files_reviewed_campaign163_through_campaign214": 52,
+    "dedicated_restaurant_foodservice_menu_table_kitchen_and_food_safety_lifecycle_definition_present": false,
+    "adjacent_mentions_only": [
+      "supply-chain, agricultural-input and physical-inventory states",
+      "operational incident, operating-scale, customer-quality and pricing KPIs",
+      "payment, loyalty, lodging-reservation and retail-order states",
+      "generic manufacturing execution, inspection and disposition states"
+    ]
+  },
+  "mandatory_source_admission_gate": {
+    "required": true,
+    "requirements": [
+      "lawful public or licensed point-in-time source with first-available, correction, supersession, menu-version, recipe-version, ingredient-lot, reservation-state, table-state, order-state, kitchen-ticket, preparation, serving, food-safety, waste, cancellation, refund and settlement timestamps mapped to accepted trading sessions",
+      "stable listed-parent, legal restaurant operator, brand, venue, service channel, menu, item, recipe, ingredient, allergen, reservation, waitlist, table, seat, guest-order, kitchen-ticket, course, batch, inspection, corrective-action and settlement identities without present-day chain or menu projection",
+      "complete 2019-2023 applicable denominators including open and closed venues and service periods; offered, unavailable, substituted and retired items; requested, waitlisted, seated, no-show and cancelled reservations; submitted, accepted, held, prepared, served, remade, cancelled and refunded orders; passed, failed, quarantined, discarded, recalled and corrected food-safety units",
+      "explicit missing, offline, delayed, unavailable, sold-out, substituted, no-show, void, cancelled, failed, remade, refunded, disputed, quarantined, discarded, recalled, corrected and genuine-zero semantics plus venue, menu, recipe, item, ticket, batch, service-period and settlement conservation without filling uncovered venues, items, orders or periods with zero",
+      "no guest identity, payment credential, precise device or location trace, private reservation or dining history, employee health record, confidential recipe, supplier commercial term, kitchen security control, trade secret or unreleased product detail"
+    ],
+    "admitted_source_present": false
+  },
+  "finite_prevalue_catalog": [
+    {
+      "route_id": "c215_01",
+      "name": "restaurant_menu_recipe_item_ingredient_allergen_price_availability_substitution_soldout_retirement_and_version_state",
+      "decision": "defer_source_not_admitted",
+      "reason": "No admitted point-in-time source preserves listed-parent, venue, menu, item, recipe, ingredient and allergen versions together with price, availability, substitution, sold-out and retirement events and the complete applicable venue-service-item denominator."
+    },
+    {
+      "route_id": "c215_02",
+      "name": "restaurant_reservation_waitlist_table_seat_guest_order_kitchen_ticket_hold_prepare_course_serve_remake_cancel_refund_and_settlement_state",
+      "decision": "defer_source_not_admitted",
+      "reason": "The repository lacks a lawful privacy-safe point-in-time restaurant operating ledger linking reservation, waitlist, table and seat state to anonymous order, kitchen-ticket, hold, preparation, coursing, serving, remake, cancellation, refund and settlement without guest or payment identity."
+    },
+    {
+      "route_id": "c215_03",
+      "name": "restaurant_food_receipt_storage_thaw_preparation_cook_hold_temperature_allergen_inspection_complaint_quarantine_discard_recall_corrective_action_and_waste_state",
+      "decision": "defer_source_not_admitted",
+      "reason": "No admitted source preserves venue-level food receipt, preparation and service batches, temperature and allergen controls, inspection, complaint, quarantine, discard, recall, corrective action and waste with complete passed, failed, pending, corrected and structurally inapplicable denominators."
+    },
+    {
+      "route_id": "c215_04",
+      "name": "same_store_sales_guest_traffic_average_check_table_turn_delivery_mix_menu_popularity_rating_or_margin_kpi_relabeling",
+      "decision": "reject_terminal_overlap",
+      "reason": "Campaign168, 169 and 170 already govern operating-scale, pricing and customer-quality KPI mechanisms; aggregate restaurant sales, traffic, check, turn, channel-mix, popularity, rating and margin levels do not preserve menu, table, kitchen-ticket and food-safety transitions."
+    },
+    {
+      "route_id": "c215_05",
+      "name": "supply_chain_agriculture_inventory_manufacturing_incident_hospitality_retail_payment_loyalty_or_delivery_relabeling",
+      "decision": "reject_terminal_overlap",
+      "reason": "Campaign163, 166, 191, 195-197, 208, 209, 212 and 213 govern adjacent supply, incident, inventory, payment, lodging, logistics, manufacturing and retail identities and clocks. None can be relabelled as a complete restaurant menu-to-table-to-kitchen-to-serve lifecycle."
+    },
+    {
+      "route_id": "c215_06",
+      "name": "accounting_food_inventory_cost_of_sales_current_menu_reservation_availability_review_delivery_app_or_latest_inspection_snapshot_relabeling",
+      "decision": "reject_terminal_overlap",
+      "reason": "Accounting balances and current menus, reservation screens, reviews, delivery-app catalogs or latest inspection snapshots use different availability clocks and cannot reconstruct historical venue, menu-version, anonymous order, kitchen-ticket, serving, food-safety and correction states."
+    },
+    {
+      "route_id": "c215_07",
+      "name": "issuer_brand_venue_city_cuisine_service_channel_meal_period_menu_item_recipe_ingredient_table_order_cohort_direction_threshold_age_subset_weight_interaction_combination_or_model_variant",
+      "decision": "reject_hypothesis_multiplication_before_source_admission",
+      "reason": "Selecting an issuer, brand, venue, city, cuisine, channel, meal period, menu item, recipe, ingredient, table or order cohort, direction, threshold, age, subset, weight, interaction, combination or model before complete lawful base histories are admitted would multiply hypotheses and exploit venue, menu and order survivorship."
+    }
+  ],
+  "gate_summary": {
+    "finite_route_count": 7,
+    "source_admission_deferral_count": 3,
+    "overlap_or_hypothesis_rejection_count": 4,
+    "selected_factor_count": 0,
+    "formula_or_direction_frozen": false,
+    "candidate_or_comparator_value_read": false,
+    "daily_price_or_forward_return_read": false
+  },
+  "scientific_interpretation": "Restaurant menu versioning, table and kitchen-ticket execution, preparation-to-serve flow and food-safety disposition are economically distinct from generic lodging, retail, manufacturing, inventory, payment and KPI records, but distinction alone does not admit a factor. The absent complete lawful point-in-time privacy-safe restaurant operating source is the binding gate.",
+  "research_boundary": {
+    "finite_catalog_frozen_before_source_or_value_read": true,
+    "source_or_restaurant_lifecycle_factor_value_read": false,
+    "privacy_sensitive_guest_employee_or_confidential_recipe_record_read": false,
+    "provider_or_web_request_issued": false,
+    "provider_credential_presence_value_or_digest_read": false,
+    "stress_2024_2025_opened": false,
+    "candidate49_plan_or_run_executed": false,
+    "candidate49_ledgers_changed": false,
+    "second_prospective_candidate_created": false,
+    "current_scoring_selection_sizing_positions_or_orders_performed": false,
+    "investment_advice": false
+  },
+  "next_action": "Bind all seven routes and the three Campaign215 infrastructure failures into one append-only ledger, publish terminal prevalue evidence, and authorize a genuinely different Campaign216 domain."
+}

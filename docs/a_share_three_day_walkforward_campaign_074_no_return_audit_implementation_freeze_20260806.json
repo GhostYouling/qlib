@@ -1,0 +1,42 @@
+{
+  "version": 1,
+  "kind": "a_share_three_day_walkforward_campaign074_no_return_audit_implementation_freeze",
+  "status": "frozen_after_verified_snapshot_before_coverage_or_comparison_values",
+  "recorded_at": "2026-08-06T08:12:00+08:00",
+  "protocol": {
+    "path": "docs/a_share_three_day_walkforward_campaign_074_no_return_preregistration_v3.json",
+    "sha256": "d327fef56cc6561c76f0620e2bcba25e1e07d1e70c681e7ff858eeb396d4c055"
+  },
+  "snapshot_binding": {
+    "path": "docs/a_share_three_day_walkforward_campaign_074_feature_snapshot_binding_20260806.json",
+    "sha256": "1c404dde2e3f6856dde88c2ba7c95b45c9bbc5ea34dc6bed130662fa5154eb81"
+  },
+  "numeric_comparator_policy": {
+    "path": "docs/a_share_three_day_walkforward_future_numeric_comparison_eligibility_policy_v9_20260806.json",
+    "sha256": "1af4a2432e0186a47a8a69ddefdda25756810cf47b11ff0688d0cbd832438c03"
+  },
+  "audit_runner": {
+    "path": "scripts/a_share_three_day_walkforward_campaign074_no_return_audit.py",
+    "sha256": "91f53fd4a80dcbaed28a5ece3dbd25206bf04bd2fa59214743ae04ebcf05c389"
+  },
+  "tests": {
+    "path": "tests/data_collector_tests/test_a_share_three_day_walkforward_campaign074_no_return_audit.py",
+    "sha256": "91fb35405beb5eee98650d0e4e36f371514ed6b72619c0b0f9b88f1e63f9881a",
+    "result": "6 passed",
+    "candidate_values_recomputed": false,
+    "comparison_values_read": false
+  },
+  "ordered_execution": {
+    "first": "verify all static bindings and candidate snapshot byte/frame hashes",
+    "second": "compute coverage and capacity from candidate values plus frozen eligibility identities",
+    "third_only_if_coverage_passes": "load all 104 numeric comparators in frozen order and compute uniqueness",
+    "fourth_only_if_uniqueness_passes": "permit a separate development preregistration",
+    "daily_price_or_forward_return_read_during_this_audit": false
+  },
+  "coverage_or_capacity_metrics_computed_before_freeze": false,
+  "comparison_values_read_before_freeze": false,
+  "historical_daily_price_fields_read_before_freeze": [],
+  "historical_forward_returns_read_before_freeze": false,
+  "provider_request_issued_before_freeze": false,
+  "candidate49_ledgers_changed_before_freeze": false
+}

@@ -1,0 +1,58 @@
+{
+  "schema_version": 1,
+  "kind": "a_share_three_day_walkforward_campaign086_feature_implementation_freeze_v4",
+  "status": "identity_repair_frozen_before_campaign086_feature_build_retry",
+  "frozen_at": "2026-08-07T01:43:00+08:00",
+  "protocol": {
+    "path": "docs/a_share_three_day_walkforward_campaign_086_no_return_preregistration.json",
+    "sha256": "033cd34013770b5b19ccb8579100c7ab920946de22b3936bc34a0898f4d2acb3"
+  },
+  "repair_protocol": {
+    "path": "docs/a_share_three_day_walkforward_campaign_086_v4_identity_repair_protocol_20260807.json",
+    "sha256": "4d9d92e3dbb64f9c4308afb3342ec463ad1cdcd7b3f11223a113312c7182430f"
+  },
+  "v3_implementation_freeze": {
+    "path": "docs/a_share_three_day_walkforward_campaign_086_feature_implementation_freeze_v3_20260807.json",
+    "sha256": "44cb4001eab3b54650a04d3b0f69726ffa2c44ae5cf4f7c8a1c147ee84cf0400"
+  },
+  "v4_feature_runner": {
+    "path": "scripts/a_share_three_day_walkforward_campaign086_features_v4.py",
+    "sha256": "3cb1f884713aa1daadca1edaa4a53e989a728ba4ac6e16a8fd604f90c282e2de"
+  },
+  "v4_tests": {
+    "path": "tests/data_collector_tests/test_a_share_three_day_walkforward_campaign086_features_v4.py",
+    "sha256": "dd839d32914b4d1be3c57417169e73bdded5a3942edc0fc6edfd9494f8a81be3",
+    "combined_campaign086_pytest_passed": 23,
+    "combined_campaign086_pytest_failed": 0,
+    "ruff_passed": true
+  },
+  "pre_freeze_case_failure": {
+    "path": "docs/a_share_three_day_walkforward_campaign_086_v4_pre_freeze_symbol_case_test_failure_20260807.json",
+    "sha256": "98c245f11a184a17da606e3af1714b9516f5dd792570cdd54a984f613bb72301"
+  },
+  "attempt_ledger_before_retry": {
+    "path": "data/experiments/short_horizon/historical_walkforward/campaign_086/research_attempt_ledger_v8.json",
+    "sha256": "df90bbc7c3dedfe3f9d6cab900c656b2d3c86abc674da122648264dcdc33763b",
+    "campaign_attempt_count": 8,
+    "infrastructure_failure_count": 8
+  },
+  "identity_semantics": {
+    "accepted_regex": "^(SH|SZ|BJ)[0-9]{6}$",
+    "input_case_normalization": false,
+    "exchange_ids": {
+      "SH": 1,
+      "SZ": 2,
+      "BJ": 3
+    },
+    "security_number": "exchange_id*1000000+six_digit_code",
+    "stock_day_key": "unix_epoch_day_number*4000000+security_number",
+    "v3_attachment_dispatch_changed": false,
+    "factor_formula_or_gate_changed": false
+  },
+  "candidate_snapshot_published_before_v4_freeze": false,
+  "comparison_values_read_before_v4_freeze": false,
+  "historical_daily_price_or_forward_return_values_read_before_v4_freeze": false,
+  "provider_request_issued_before_v4_freeze": false,
+  "candidate49_ledgers_changed_before_v4_freeze": false,
+  "current_scoring_selection_sizing_or_orders_performed_before_v4_freeze": false
+}

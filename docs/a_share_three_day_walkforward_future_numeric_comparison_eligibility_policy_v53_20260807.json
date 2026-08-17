@@ -1,0 +1,113 @@
+{
+  "version": 53,
+  "kind": "a_share_three_day_walkforward_future_numeric_comparison_eligibility_policy",
+  "status": "frozen_after_campaign100_terminal_numeric_uniqueness_rejection_before_campaign101_values",
+  "recorded_at": "2026-08-07T12:34:55Z",
+  "supersedes_without_rewriting": {
+    "path": "docs/a_share_three_day_walkforward_future_numeric_comparison_eligibility_policy_v52_20260807.json",
+    "sha256": "90df8d97e248f1293bb76dfdfdba2d16dfd0791aeb02a43067b98a9d5995851c",
+    "preserved": true,
+    "definition_and_numeric_orders_changed": true,
+    "reason": "Append Campaign100's exact terminal numeric definition and verified high-coverage snapshot so future campaigns cannot evade its observed duplicate mechanism."
+  },
+  "authoritative_inputs": {
+    "campaign100_no_return_result_binding": {
+      "path": "docs/a_share_three_day_walkforward_campaign_100_no_return_audit_result_binding_20260807.json",
+      "sha256": "3138115f27a705f9e510521e706029a460a03e52ed717a37f0dd63c1d14230fd"
+    },
+    "campaign100_authoritative_no_return_audit": {
+      "path": "data/experiments/short_horizon/historical_walkforward/campaign_100/no_return/20260807T123335Z_campaign100_no_return_audit.json",
+      "sha256": "d9b23ba418a5bfbcc7671ab1162c5ff15cf5aab4817d321f19790a75c6fcf813"
+    },
+    "campaign100_effective_attempt_ledger": {
+      "path": "data/experiments/short_horizon/historical_walkforward/campaign_100/research_attempt_ledger_v7.json",
+      "sha256": "b85495862b147ae795953e5683ebf7cd57d38d538df179a14999b7b615bbb1ad"
+    },
+    "campaign100_candidate_snapshot_binding": {
+      "path": "docs/a_share_three_day_walkforward_campaign_100_feature_snapshot_binding_20260807.json",
+      "sha256": "b68b9500dcebe02e3d224a94b52ab61cdfc6607dd4486fb5c2c7a46f3dbc6d9e"
+    }
+  },
+  "complete_historical_feature_library": {
+    "definition": "Retain the exact v52 131-definition order and append Campaign100 exactly once without drop or reorder.",
+    "factor_definition_count": 132,
+    "order_sha256": "2d0c342fe9644092e562832fe928473c230cbf982c1fb32f9d5c41c0a3594a42",
+    "last_definition": {
+      "name": "intraday_unchanged_close_range_absorption_share_238p",
+      "score_direction": "higher"
+    },
+    "all_v52_definitions_and_terminal_histories_preserved": true,
+    "old_terminal_record_formula_direction_or_failure_history_may_be_rewritten": false
+  },
+  "numerical_comparator_eligibility": {
+    "classification_time": "after Campaign100's complete 128-comparator audit and before Campaign101 candidate or comparison values",
+    "eligible_numeric_comparator_count": 129,
+    "eligible_numeric_comparator_order_definition": "Retain the exact v52 128-comparator order and append Campaign100 exactly once without drop or reorder.",
+    "eligible_numeric_comparator_order_sha256": "a029c53fb237cc1d34aec0a9f7b67856ffa1a67ffe0fc9620fb230680353263b",
+    "last_comparator": {
+      "name": "intraday_unchanged_close_range_absorption_share_238p",
+      "score_direction": "higher",
+      "source_campaign": 100,
+      "source_campaign_coverage_gate_passed": true,
+      "source_campaign_all_128_numeric_comparisons_passed": false,
+      "source_campaign_failed_numeric_comparison_count": 3,
+      "maximum_absolute_median_daily_rank_correlation": 0.9123522089342854,
+      "development_trial_count": 0,
+      "development_survivor_count": 0,
+      "stress_2024_2025_opened": false,
+      "numeric_snapshot_rows": 1331759,
+      "numeric_snapshot_finite_rows": 1328142,
+      "calendar_sessions": 1632,
+      "sessions_with_at_least_50_pairwise_names": 1623,
+      "numeric_comparator_eligible_for_campaign101": true,
+      "eligibility_reason": "A high-coverage terminal numeric snapshot remains mandatory negative-control evidence even when its own candidate uniqueness gate failed."
+    },
+    "minimum_pairwise_names_per_session": 50,
+    "minimum_pairwise_sessions_per_comparison": 100,
+    "strict_maximum_absolute_median_daily_rank_correlation": 0.8,
+    "all_129_eligible_numeric_comparators_must_pass": true,
+    "candidate_specific_comparator_drop_allowed": false,
+    "insufficient_pairwise_overlap_fails_closed": true
+  },
+  "semantic_only_definitions": [
+    "intraday_cross_sectional_standardized_return_state_stability_236p",
+    "signal_day_turnover_rate_pct",
+    "intraday_own_bar_close_location_entropy_10b_240m"
+  ],
+  "mandatory_prevalue_support_predicate_gate_for_campaign101_and_later": {
+    "required": true,
+    "all_known_terminal_coverage_failures_must_be_reviewed": true,
+    "identical_or_provably_narrower_failed_support_is_rejected_before_values": true
+  },
+  "anti_gaming_invariants": {
+    "campaign100_may_be_redefined_inverted_residualized_reweighted_filtered_rerun_rescued_or_combined": false,
+    "campaign100_development_or_stress_may_be_opened": false,
+    "campaign100_terminal_failure_history_may_be_rewritten": false,
+    "comparison_order_may_be_changed_for_campaign101": false,
+    "candidate49_may_be_added_to_historical_library": false,
+    "historical_output_may_generate_current_scores_selection_sizing_orders_or_investment_advice": false
+  },
+  "final_accounting": {
+    "campaign100_attempt_count": 12,
+    "campaign100_ledger_entry_count": 13,
+    "campaign100_infrastructure_implementation_or_recording_failure_count": 4,
+    "campaign100_complete_no_return_factor_outcome_count": 1,
+    "campaign100_return_reading_development_trial_count": 0,
+    "campaign100_development_survivor_count": 0,
+    "campaign100_stress_trial_count": 0,
+    "cumulative_historical_research_attempt_count": 722,
+    "cumulative_return_reading_development_trial_count": 294
+  },
+  "research_boundary": {
+    "campaign101_candidate_or_comparison_values_read_before_v53_freeze": false,
+    "campaign100_terminal_uniqueness_rejection_rewritten": false,
+    "campaign100_historical_daily_price_or_forward_return_values_read": false,
+    "campaign100_stress_2024_2025_opened": false,
+    "candidate49_historical_backfill_performed": false,
+    "candidate49_ledgers_changed": false,
+    "provider_request_issued": false,
+    "second_prospective_candidate_created": false,
+    "current_scoring_selection_sizing_or_orders_performed": false,
+    "investment_advice": false
+  }
+}

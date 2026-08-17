@@ -1,0 +1,129 @@
+{
+  "schema_version": 1,
+  "kind": "a_share_three_day_walkforward_campaign081_concept_scouting",
+  "status": "selected_before_campaign081_minute_source_candidate_or_comparison_values",
+  "recorded_at": "2026-08-06T16:53:00+08:00",
+  "purpose": "Select exactly one economically distinct offline three-session factor after terminal Campaign080, before opening any Campaign081 minute source row, candidate value, comparison value, daily price, or forward return.",
+  "authoritative_bindings": {
+    "campaign080_verified_state_v4": {
+      "path": "docs/a_share_three_day_iteration_status_20260806_campaign080_verified_v4.json",
+      "sha256": "6faab964c6a35ccfba859844b12a5caf7471be37dae910438dd8aa69d76d9309"
+    },
+    "historical_walkforward_policy": {
+      "path": "docs/a_share_three_day_historical_walkforward_research_policy_20260727.json",
+      "sha256": "38426d6161b9bfed323c58caba18feca668b8c9d53e294951a8ba90c01a798bb"
+    },
+    "numeric_comparator_policy_v16": {
+      "path": "docs/a_share_three_day_walkforward_future_numeric_comparison_eligibility_policy_v16_20260806.json",
+      "sha256": "ac8c3a4aa6a0ea62aea0d3294ca522ce47b4fe38c83e059a32db31a4f07085e8",
+      "complete_definition_count": 112,
+      "complete_definition_order_sha256": "a31457db36af9a8ddac4e08890c87f50ef6554bb46918f022749bd9cccbc1c55",
+      "eligible_numeric_comparator_count": 110,
+      "eligible_numeric_comparator_order_sha256": "dc6319ac2f7c9d5811a8bee3f8fd9dbd174d2451739ef201aad31c36a9f25ce3"
+    },
+    "manage_qlib_a_share_data_skill": {
+      "path": "/Users/niyufei/.codex/skills/manage-qlib-a-share-data/SKILL.md",
+      "sha256": "90a99c54dd00f0c737e85c4c6dd48d906edbd0f591c61278885728eaf7806431"
+    }
+  },
+  "definition_only_source_boundary": {
+    "source": "immutable accepted local Tushare 2019-2025 one-minute source and joint-clean stock-day identity",
+    "minute_source_projection_if_later_admitted": [
+      "datetime",
+      "symbol",
+      "provider",
+      "amount"
+    ],
+    "stock_day_identity_projection_if_later_admitted": [
+      "trade_date",
+      "symbol",
+      "provider"
+    ],
+    "candidate_source_rows_read": false,
+    "candidate_or_comparison_values_read": false,
+    "daily_price_or_forward_return_values_read": false,
+    "provider_request_allowed": false
+  },
+  "candidate_design_catalog": [
+    {
+      "design": "intraday_amount_path_efficiency_238p",
+      "decision": "selected_for_separate_complete_mechanism_overlap_audit",
+      "reason": "The ratio of half-session endpoint displacement to the full within-half amount-path variation measures coherent directional migration of participation intensity rather than its level, clock location, concentration, peaks, threshold duration, or cross-day similarity."
+    },
+    {
+      "design": "intraday_amount_path_efficiency_signed_or_half_specific",
+      "decision": "rejected_before_values",
+      "reason": "Signed, morning-only, afternoon-only, and morning-minus-afternoon variants create an avoidable direction and subwindow search family."
+    },
+    {
+      "design": "intraday_amount_path_efficiency_with_range_or_squared_variation_denominator",
+      "decision": "rejected_before_values",
+      "reason": "Changing total absolute variation to a range, squared variation, or volatility normalization would be a same-family rescue."
+    },
+    {
+      "design": "intraday_return_jump_concentration",
+      "decision": "rejected_before_values",
+      "reason": "Return jump concentration is too close to terminal return-variance entropy, diffusive-variation, variance-ratio, and extreme-shock mechanisms."
+    },
+    {
+      "design": "intraday_amount_weak_order_entropy",
+      "decision": "rejected_before_values",
+      "reason": "A weak-order entropy of amount changes would create another entropy/update-clock family after several terminal entropy and price-update definitions."
+    }
+  ],
+  "selected_candidate": {
+    "name": "intraday_amount_path_efficiency_238p",
+    "direction": "higher",
+    "economic_hypothesis": "A smoothly migrating intraday participation schedule can indicate coordinated multi-minute execution and persistent attention, which may support three-session continuation more reliably than a choppy amount path with the same endpoints.",
+    "formula": "Let x_i=log1p(amount_i) for the exact 240 bars. For morning indices 0..119 and afternoon indices 120..239, compute endpoint displacement E_h=abs(x_last-x_first) and total variation V_h=sum(abs(x_i-x_(i-1))) over the 119 within-half transitions. Return (E_morning+E_afternoon)/(V_morning+V_afternoon).",
+    "time_grid": "Exactly 09:31-11:30 and 13:01-15:00. The 09:30 row is source identity only and excluded. The lunch transition is excluded; each half starts a new path.",
+    "amount_semantics": "All 240 amounts must be finite and nonnegative. Exact zero amount is valid through log1p(0)=0. The score is missing only when pooled total variation is nonfinite or exactly zero, or when the source identity/grid is invalid.",
+    "valid_range": {
+      "lower": 0.0,
+      "lower_inclusive": true,
+      "upper": 1.0,
+      "upper_inclusive": true
+    },
+    "availability": "Known at the signal-session close after the exact 240 amount bars; no future session, daily return, comparator, or Candidate49 observation is used.",
+    "parameter_direction_window_transform_filter_subset_regime_fit_model_or_combination_search": false
+  },
+  "mandatory_pre_value_challenges": [
+    "all_112_frozen_historical_factor_definitions_in_exact_order",
+    "all_110_numeric_comparators_in_exact_order",
+    "intraday_signed_path_efficiency_239m",
+    "afternoon_signed_amount_efficiency_120m",
+    "intraday_diffusive_variation_ratio_238m",
+    "intraday_amount_profile_serial_persistence_240m",
+    "intraday_amount_local_peak_density_238p",
+    "intraday_above_median_amount_longest_run_240m",
+    "intraday_amount_participation_entropy_240m",
+    "intraday_amount_center_of_mass_240m",
+    "intraday_amount_clock_dispersion_240m",
+    "intraday_peak_amount_bar_recency_240m",
+    "intraday_morning_afternoon_amount_profile_similarity_120b",
+    "intraday_day_over_day_amount_profile_similarity_240b",
+    "intraday_market_amount_profile_synchronization_240m",
+    "intraday_cross_sectional_standardized_return_state_stability_236p",
+    "signal_day_turnover_rate_pct",
+    "candidate49_intraday_cumulative_vwap_crossing_rate_240m_v1"
+  ],
+  "research_boundary": {
+    "campaign081_minute_source_rows_read": false,
+    "campaign081_candidate_values_read": false,
+    "comparison_values_read": false,
+    "historical_daily_price_fields_read": [],
+    "historical_forward_returns_read": false,
+    "provider_request_issued": false,
+    "candidate49_historical_backfill_performed": false,
+    "candidate49_ledgers_changed": false,
+    "second_prospective_candidate_created": false,
+    "current_scoring_selection_sizing_or_orders_performed": false,
+    "investment_advice": false
+  },
+  "decision": {
+    "selected_concept_count": 1,
+    "may_advance_directly_to_values": false,
+    "required_next_step": "Complete and bind one exhaustive no-value mechanism-overlap audit; then freeze the no-return protocol, implementation, tests, and fingerprints before any candidate value.",
+    "candidate49_remains_only_active_prospective_candidate": true
+  }
+}

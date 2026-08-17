@@ -1,0 +1,60 @@
+{
+  "schema_version": 2,
+  "kind": "a_share_three_day_walkforward_campaign098_no_return_audit_implementation_freeze",
+  "status": "repair_frozen_after_coverage_and_first_125_comparator_values_before_final_comparator_or_audit_publication",
+  "recorded_at": "2026-08-07T09:06:00Z",
+  "supersedes_without_rewriting": {
+    "path": "docs/a_share_three_day_walkforward_campaign_098_no_return_audit_implementation_freeze_20260807.json",
+    "sha256": "5d6fdb0cdd459a93a2d5c945e4c9dd18c68cf087a76517af536a33de5a378a87"
+  },
+  "failure_record": {
+    "path": "docs/a_share_three_day_walkforward_campaign_098_no_return_final_comparator_verifier_signature_failure_20260807.json",
+    "sha256": "34b199db4963bad325f93cff419dd1d95099357339794fb314824fc111158c74"
+  },
+  "repair_protocol": {
+    "path": "docs/a_share_three_day_walkforward_campaign_098_no_return_final_comparator_verifier_repair_protocol_20260807.json",
+    "sha256": "729b26bc9858c312db319bc23a7e86d963e4ffaefc99acdf77669691e954b966"
+  },
+  "protocol": {
+    "path": "docs/a_share_three_day_walkforward_campaign_098_no_return_preregistration.json",
+    "sha256": "31dcecebeea81adab163acd76e21616e6b35726a2798bb4ca72cee4252ca78bd"
+  },
+  "snapshot_binding": {
+    "path": "docs/a_share_three_day_walkforward_campaign_098_feature_snapshot_binding_20260807.json",
+    "sha256": "c5ab80fcae4f247005314d4c08ba28940472a332776483ec242a14eea9376275"
+  },
+  "audit_runner": {
+    "path": "scripts/a_share_three_day_walkforward_campaign098_no_return_audit.py",
+    "sha256": "7a89f4f2f95664c703e6c86d094abc32cde1ecd07addde248718da9910893984"
+  },
+  "tests": {
+    "path": "tests/data_collector_tests/test_a_share_three_day_walkforward_campaign098_no_return_audit.py",
+    "sha256": "943d6d21e28eadfec755a6fee165b1566e6ef89d313f7c762b56554387cff798",
+    "passed": 9,
+    "failed": 0
+  },
+  "eligibility_identity_source": {
+    "path": "/Volumes/DIsk/qlib-a-share-tushare-1m/derived/a_share/rich/tushare/compact_comparator_cache/campaign067_terminal_numeric98_v4/snapshot_manifest.json",
+    "sha256": "3d81068f07ac61fe4cd04bd1a893e58759c06d88213263135fec5244e309b57b"
+  },
+  "campaign097_final_comparator": {
+    "path": "/Volumes/DIsk/qlib-a-share-tushare-1m/derived/a_share/rich/tushare/minute_walkforward_campaign097_compact_feature_library/tushare_stk_mins_1m_2019_2025_ea0cbb8f_walkforward_campaign097_compact_feature_library_v1/snapshot_manifest.json",
+    "sha256": "fac652d7097de579c8f3d6c5812ce9573762ec8885d6729706e2ef7e0cd81227"
+  },
+  "eligibility_source_columns_allowed_before_coverage": [
+    "stock_day_key"
+  ],
+  "repair_scope": "bind the final comparator verifier's required manifest path only",
+  "coverage_or_capacity_metrics_computed_before_freeze": true,
+  "comparator_values_read_before_freeze": true,
+  "first_125_comparator_values_read_before_freeze": true,
+  "campaign097_comparator_values_read_before_freeze": false,
+  "audit_record_published_before_freeze": false,
+  "historical_daily_price_or_forward_return_values_read_before_freeze": false,
+  "provider_request_issued_before_freeze": false,
+  "candidate_snapshot_rebuilt_rewritten_or_recalculated": false,
+  "formula_direction_support_window_universe_cost_gate_or_search_space_changed": false,
+  "black_passed": true,
+  "ruff_passed": true,
+  "next_action": "Freeze additive v2 activation and perform the single permitted identical-order retry."
+}

@@ -1,0 +1,43 @@
+{
+  "version": 1,
+  "kind": "a_share_three_day_walkforward_campaign063_terminal_current_suite_state_transition_failure",
+  "status": "recorded_twenty_seven_passed_two_failed_no_research_value_or_return_read",
+  "recorded_at": "2026-08-05T06:58:00+08:00",
+  "stage": "post_terminal_current_campaign063_combined_suite",
+  "command_semantics": "Run five Campaign063 feature/repair/audit modules plus the first terminal module with explicit repository PYTHONPATH under python -S.",
+  "result": {
+    "passed": 27,
+    "failed": 2,
+    "deselected": 0
+  },
+  "failures": [
+    {
+      "node": "tests/data_collector_tests/test_a_share_three_day_walkforward_campaign063_no_return_audit.py::test_status_is_comparison_and_return_closed_before_audit",
+      "reason": "immutable pre-audit test requires audit_count zero after the sole completed audit makes the current count one"
+    },
+    {
+      "node": "tests/data_collector_tests/test_a_share_three_day_walkforward_campaign063_terminal.py::test_campaign063_reports_are_current_and_generator_is_idempotent",
+      "reason": "first terminal test incorrectly requires the report generator source itself to contain the literal Campaign063 even though its numeric key 63 and factor-name registration are the intended source representation"
+    }
+  ],
+  "immutable_test_bindings": {
+    "pre_audit_test_module": {
+      "path": "tests/data_collector_tests/test_a_share_three_day_walkforward_campaign063_no_return_audit.py",
+      "sha256": "4484dd0b97373d45e417b39eb39c2a19482ae0d7d52b68789ef99fe967fbbb5a"
+    },
+    "first_terminal_test_module": {
+      "path": "tests/data_collector_tests/test_a_share_three_day_walkforward_campaign063_terminal.py",
+      "sha256": "a462a710733e2c4c3b0f67402fecb7a93353e8b3efbe401a0022e41c7be91497"
+    }
+  },
+  "research_boundary": {
+    "candidate_or_comparison_partition_values_read": false,
+    "historical_daily_prices_or_forward_returns_read": false,
+    "development_or_stress_opened": false,
+    "provider_request_issued": false,
+    "candidate49_ledgers_changed": false,
+    "current_scoring_selection_sizing_or_orders_performed": false
+  },
+  "research_result_changed": false,
+  "authorized_current_suite": "Preserve both historical modules byte-for-byte, add a versioned current terminal module, and deselect only the two exact failed nodes when validating the current terminal state."
+}

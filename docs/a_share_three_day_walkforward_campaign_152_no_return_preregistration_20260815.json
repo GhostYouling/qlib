@@ -1,0 +1,155 @@
+{
+  "schema_version": 1,
+  "kind": "a_share_three_day_walkforward_campaign152_no_return_preregistration",
+  "status": "frozen_before_campaign152_minute_source_candidate_comparator_daily_price_or_return_values",
+  "recorded_at": "2026-08-15T01:55:00+08:00",
+  "purpose": "Freeze Campaign152's sole absolute session-amount mechanism, immutable source, complete definition order, no-return gates and one-trial walk-forward catalog before reading historical source or factor values.",
+  "authoritative_inputs": {
+    "concept_scouting": {
+      "path": "docs/a_share_three_day_walkforward_campaign_152_concept_scouting_20260815.json",
+      "sha256": "2f41e9e6909651b225f408114910254f3f90cf0fb4edaa10d8d07b96f0929b2d"
+    },
+    "mechanism_overlap_audit": {
+      "path": "docs/a_share_three_day_walkforward_campaign_152_mechanism_overlap_audit_20260815.json",
+      "sha256": "e51c0c03cd1f43b9cb383e6459491088b459ae36ffe4d6a61e7bfcbdae804fab"
+    },
+    "campaign151_terminal_state_v3": {
+      "path": "docs/a_share_three_day_iteration_status_20260815_campaign151_terminal_v3.json",
+      "sha256": "5a7357e87eb87a3eb76f987e01cab6f816a5fedfd84ebc169933060cdcf863d9"
+    },
+    "numeric_policy_v208": {
+      "path": "docs/a_share_three_day_walkforward_future_numeric_comparison_eligibility_policy_v208_20260815.json",
+      "sha256": "b904387571a5f63636b329050c1ad26d54b21cf4dc9a7dbc79dd548eadcd9ce8",
+      "complete_definition_count": 156,
+      "complete_definition_order_sha256": "928e7eff198f44fa3112d7e8ff94571c1ad18b85a1ee50a38f3896baf555847c",
+      "numeric_comparator_count": 142,
+      "numeric_comparator_order_sha256": "5d1b35fb5a0d8ac9293008db9963c4a60a94dc940c237c3ed259e5ce44f14aaf"
+    },
+    "historical_walkforward_policy": {
+      "path": "docs/a_share_three_day_historical_walkforward_research_policy_20260727.json",
+      "sha256": "38426d6161b9bfed323c58caba18feca668b8c9d53e294951a8ba90c01a798bb"
+    }
+  },
+  "candidate": {
+    "name": "intraday_session_total_amount_magnitude_240m",
+    "direction": "higher",
+    "economic_hypothesis": "Greater full-session monetary trading capacity and attention may reduce next-open execution friction and sustain short-lived demand through the third close.",
+    "source_projection": ["datetime", "symbol", "provider", "amount"],
+    "source_fields_forbidden": ["open", "high", "low", "close", "volume", "daily_price", "forward_return"],
+    "source_grid": {
+      "accepted_rows_required": 241,
+      "selected_rows": 240,
+      "selected_minutes": "09:31-11:30 and 13:01-15:00",
+      "standalone_09_30_preserved_but_not_loaded_for_formula": true,
+      "lunch_overnight_cross_date_and_cross_stock_transitions_formed": false
+    },
+    "exact_formula": {
+      "amount_vector": "Use the raw provider CNY amount a_i at each selected clock i=0,...,239; require all values finite and nonnegative and retain exact zero.",
+      "total": "S=sum_i(a_i); require S finite and strictly positive.",
+      "score": "log1p(S) using the natural logarithm.",
+      "direction": "higher",
+      "support": "The complete stock-day is missing if its exact source grid, provider identity, any amount value or positive finite total rule fails.",
+      "transformation_purpose": "log1p is strictly increasing and only stabilizes finite storage; cross-sectional order is exactly the order of S.",
+      "valid_range": "finite and strictly positive"
+    },
+    "search_space": {
+      "candidate_count": 1,
+      "direction_count": 1,
+      "operators": ["natural_log1p_of_exact_session_amount_sum"],
+      "windows": [240],
+      "thresholds": [],
+      "filters": [],
+      "subsets": [],
+      "normalizations": [],
+      "models": [],
+      "alternate_direction_transform_estimator_window_threshold_filter_subset_peer_normalization_fit_model_or_combination_search": false
+    }
+  },
+  "source_snapshot_contract": {
+    "data_root": "/Volumes/DIsk/qlib-a-share-tushare-1m",
+    "immutable_source_run": "tushare_stk_mins_1m_2019_2025_ea0cbb8f",
+    "raw_manifest_path": "/Volumes/DIsk/qlib-a-share-tushare-1m/raw/a_share/rich/tushare/minutes/1m/snapshots/tushare_stk_mins_1m_2019_2025_ea0cbb8f/snapshot_manifest.json",
+    "raw_manifest_sha256": "9b3d959563c9d182f38981c6a36bdb3bc9b415de08487a9e1f9e850825c0839f",
+    "joint_clean_manifest_path": "/Volumes/DIsk/qlib-a-share-tushare-1m/derived/a_share/rich/tushare/minute_sentiment_clean/tushare_stk_mins_1m_2019_2025_ea0cbb8f_sentiment_clean_v1/snapshot_manifest.json",
+    "joint_clean_manifest_sha256": "453c6719cb3c7da42fed8807b28a2bfe988700283e9625a6db97912534f368de",
+    "joint_clean_dataset_sha256": "0e4fe7c05536cdfcecc2936bc880726902f5560061188ffff82ef7ee6f346983",
+    "calendar_path": "data/qlib/cn_a_share/calendars/day.txt",
+    "calendar_sha256": "fda506597d26bcec953cdc0882042a5046ec1587db60490e16a01627fd43f53a",
+    "expected_partitions": 33015,
+    "expected_rows": 7724498,
+    "expected_symbols": 5396,
+    "output_run_id": "tushare_stk_mins_1m_2019_2025_ea0cbb8f_walkforward_campaign152_feature_library_v1",
+    "output_manifest_path_below_data_root": "derived/a_share/rich/tushare/minute_walkforward_campaign152_feature_library/tushare_stk_mins_1m_2019_2025_ea0cbb8f_walkforward_campaign152_feature_library_v1/snapshot_manifest.json",
+    "published_root_never_overwritten": true,
+    "provider_request_allowed": false,
+    "credential_required": false
+  },
+  "ordered_no_return_gates": [
+    {
+      "gate": 1,
+      "name": "binding_source_snapshot_formula_implementation_and_full_partition_verification",
+      "rule": "Before source values bind this protocol, formula, tests, source manifests, builder, full verifier, ordered audit and output paths. After publication verify every partition byte/frame hash, exact projection/grid/formula/support/count and aggregate dataset digest."
+    },
+    {
+      "gate": 2,
+      "name": "structural_coverage_variation_and_capacity_before_comparator_values",
+      "rule": "On the immutable quality/current-listing base require median daily coverage >=0.95, P05 daily coverage >=0.90, P05 eligible names >=50, at least 200 non-overlapping three-signal-session cohorts, at least five observed years, finite strictly positive values, and at least 200 nonconstant cross-sectional sessions. Failure stops before comparator values, daily prices or forward returns."
+    },
+    {
+      "gate": 3,
+      "name": "all_142_numeric_uniqueness_after_coverage_only",
+      "rule": "Compare in exact v208 numeric order with all 142 eligible numeric comparators. Each comparison requires at least 50 paired names per session and at least 100 qualifying sessions. Every absolute median daily average-tie Spearman rank correlation must be strictly below 0.8; insufficient overlap fails closed and no comparator may be removed."
+    }
+  ],
+  "comparison_contract": {
+    "complete_semantic_definition_count_reviewed_before_values": 156,
+    "prior_complete_definition_order_sha256": "928e7eff198f44fa3112d7e8ff94571c1ad18b85a1ee50a38f3896baf555847c",
+    "candidate_appended_complete_definition_count": 157,
+    "candidate_appended_complete_definition_order_sha256": "c39bb6ca969b5f469a9377a5b5ca743405cec9d8511297ed6a1c44188ef40b82",
+    "numeric_comparator_count": 142,
+    "numeric_comparator_order_sha256": "5d1b35fb5a0d8ac9293008db9963c4a60a94dc940c237c3ed259e5ce44f14aaf",
+    "direction_normalization": "use every comparator's frozen score direction",
+    "candidate_specific_comparator_drop_fill_residualization_neutralization_or_subset_allowed": false,
+    "candidate49_historical_factor_return_signal_execution_or_milestone_read_allowed": false
+  },
+  "finite_development_catalog_if_admitted": {
+    "trial_count": 1,
+    "trial_id": "wf152_intraday_session_total_amount_magnitude_240m_single_higher",
+    "factor": "intraday_session_total_amount_magnitude_240m",
+    "direction": "higher",
+    "weight": 1.0,
+    "training_or_fit": "none",
+    "folds": [
+      {"fold": 1, "train": [2019, 2020], "validation": 2021},
+      {"fold": 2, "train": [2019, 2020, 2021], "validation": 2022},
+      {"fold": 3, "train": [2019, 2020, 2021, 2022], "validation": 2023}
+    ],
+    "purge": "Purge three signal sessions at every train/validation boundary; t+1 entry and t+3 exit must remain in the same partition.",
+    "execution": "Reuse the frozen one-factor next-open to third-close Top-3 engine, CNY 200000 board-lot pilot, quality/listing gates, amount-participation checks, 0/5/10/20bp stress grid and survivor gates without override.",
+    "stress_2024_2025": "Open once for the whole campaign only if the sole trial survives every 2019-2023 development gate and a nonzero survivor record freezes the entire campaign; label it historically exposed quasi-out-of-sample. Otherwise leave it closed and unread."
+  },
+  "prohibitions": {
+    "candidate_inversion_retransform_reestimate_rewindow_threshold_filter_subset_regime_peer_normalization_fit_model_combination_or_rescue": true,
+    "terminal_factor_repair_or_combination": true,
+    "raw_comparator_missing_value_fill_or_drop": true,
+    "candidate49_historical_backfill": true,
+    "second_prospective_candidate": true,
+    "provider_request": true,
+    "current_score_selection_sizing_position_order_or_investment_advice": true
+  },
+  "next_action": "Implement and synthetically test the exact pure formula and source-bound builder without opening historical source values, then fingerprint-freeze code and tests before the single no-return snapshot build.",
+  "research_boundary": {
+    "campaign152_source_rows_read_before_freeze": false,
+    "campaign152_candidate_values_computed_or_read_before_freeze": false,
+    "campaign152_comparator_values_read_before_freeze": false,
+    "historical_daily_price_or_forward_return_values_read_before_freeze": false,
+    "stress_2024_2025_opened": false,
+    "provider_request_issued": false,
+    "credential_loaded": false,
+    "candidate49_historical_backfill_performed": false,
+    "candidate49_ledgers_changed": false,
+    "second_prospective_candidate_created": false,
+    "current_scoring_selection_sizing_positions_or_orders_performed": false,
+    "investment_advice": false
+  }
+}

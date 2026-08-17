@@ -1,0 +1,108 @@
+{
+  "schema_version": 1,
+  "kind": "a_share_three_day_iteration_status",
+  "recorded_at": "2026-08-16T11:52:00+08:00",
+  "timestamp_semantics": "monotonic_logical_append_time_not_host_wall_clock_measurement",
+  "status": "campaign251_validation_passed_goal_active_campaign252_offline_prevalue_authorized",
+  "supersedes_without_rewriting": {
+    "path": "docs/a_share_three_day_iteration_status_20260816_campaign250_prevalue_terminal.json",
+    "sha256": "a357d62714ce437af8ba9760838912c1422d0eddec9d224ee8edfb0adcbccbea"
+  },
+  "authoritative_inputs": {
+    "historical_walkforward_policy": {
+      "path": "docs/a_share_three_day_historical_walkforward_research_policy_20260727.json",
+      "sha256": "38426d6161b9bfed323c58caba18feca668b8c9d53e294951a8ba90c01a798bb"
+    },
+    "frozen_source_frontier": {
+      "path": "docs/a_share_three_day_walkforward_campaign_251_commercial_fitness_equipment_service_lifecycle_source_frontier_20260816.json",
+      "sha256": "ef7bad81fdf420a184ea8675d2da76602cd1ead093575eebedf11b58e9e49c4d"
+    },
+    "attempt_ledger_v1": {
+      "path": "data/experiments/short_horizon/historical_walkforward/campaign_251/research_attempt_ledger_v1.json",
+      "sha256": "49780b05a8952823ef273e02d1f1a39ce97406584199cb19c50ff09b61245443"
+    },
+    "terminal_result": {
+      "path": "docs/a_share_three_day_walkforward_campaign_251_terminal_result_20260816.json",
+      "sha256": "ecb2d6705b9317802627a5370b12e7c824302182664a61df2de1fcbe3340b4aa"
+    },
+    "numeric_policy_v383": {
+      "path": "docs/a_share_three_day_walkforward_future_numeric_comparison_eligibility_policy_v383_20260816.json",
+      "sha256": "79d90e4823b3455d982610312a077c73373dcda53d7255b79a3e1c047ac5ab13"
+    },
+    "terminal_validation": {
+      "path": "docs/a_share_three_day_walkforward_campaign_251_terminal_validation_20260816.json",
+      "sha256": "59237e360f50b19c512da26c9c45e083b5fc6911ea32adffc0255a34c6455ddd"
+    }
+  },
+  "campaign251": {
+    "terminal": true,
+    "terminal_stage": "prevalue_source_admission_and_overlap_gate",
+    "finite_route_count": 7,
+    "source_admission_deferral_count": 3,
+    "overlap_or_hypothesis_rejection_count": 4,
+    "selected_factor_count": 0,
+    "definition_or_comparator_append": false,
+    "development_trial_count": 0,
+    "stress_trial_count_2024_2025": 0
+  },
+  "effective_accounting": {
+    "campaign251_attempt_count": 9,
+    "campaign251_infrastructure_failure_count": 2,
+    "campaign251_scientific_attempt_count": 7,
+    "cumulative_historical_research_attempt_count": 2396,
+    "cumulative_return_reading_development_trial_count": 314,
+    "chain_tip_sha256": "422cff21c13e42c68ea21aba02806ceb4d09b1d0aff72cb1629c7ea23fc3ddd7"
+  },
+  "library_state": {
+    "changed_by_campaign251": false,
+    "complete_factor_definition_count": 158,
+    "complete_factor_definition_order_sha256": "4819c7fd7c0795d7598a52f3c615e3f117d5f4ecd9332974bc8e3dfa57c96667",
+    "eligible_numeric_comparator_count": 142,
+    "eligible_numeric_comparator_order_sha256": "5d1b35fb5a0d8ac9293008db9963c4a60a94dc940c237c3ed259e5ce44f14aaf"
+  },
+  "candidate49": {
+    "sole_prospective_candidate": true,
+    "signal_entry_count": 0,
+    "execution_entry_count": 0,
+    "signal_ledger_sha256": "5193f00d7f36da003f53cec387900da4c3d002299f5dfcfc1a95eaa199ed3a79",
+    "execution_ledger_sha256": "d57a3e61eac969e42cafa418ccd8c0a5ee65dcf69da145bb2c096c2a02a2ea4f",
+    "ledgers_changed": false
+  },
+  "research_boundary": {
+    "candidate_or_comparator_value_read": false,
+    "daily_price_or_forward_return_read": false,
+    "provider_or_web_request_issued": false,
+    "provider_credential_presence_value_or_digest_read": false,
+    "candidate49_plan_or_run_executed": false,
+    "candidate49_ledgers_changed": false,
+    "second_prospective_candidate_created": false,
+    "stress_2024_2025_opened": false,
+    "current_scoring_selection_sizing_positions_or_orders_performed": false,
+    "failed_or_truncated_output_used_as_scientific_or_validation_evidence": false,
+    "investment_advice": false
+  },
+  "future_campaign_boundary": {
+    "next_campaign": 252,
+    "historical_offline_prevalue_work_may_continue_at_any_local_time": true,
+    "candidate49_remains_separate_confirmation_layer": true,
+    "2024_2025_source_or_returns_remain_closed": true
+  },
+  "next_action": "Continue the active goal with a genuinely different Campaign252 finite zero-network offline prevalue domain; do not wait for 16:30 or a new daily bar.",
+  "publication_state": {
+    "numeric_policy_version": 383,
+    "current_report_sha256": "0f2fc66c625cc5c0649c803c10055b7b8ebddb6bee62e51554e8cebbb766fbcc",
+    "three_day_report_sha256": "d0670a71a757bdb72807d016130ccd40b15883058f9c341e5d9de847f695e1d6",
+    "terminal_validation_passed": true
+  },
+  "validation": {
+    "black": "passed; 1 file would be left unchanged",
+    "ruff": "passed",
+    "json_parse": "6 pre-validation JSON files plus terminal validation and advancing state passed",
+    "scoped_report_whitespace_and_unique_heading": "passed",
+    "focused_pytest": "2 passed",
+    "campaign145_through_campaign251_test_file_count": 139,
+    "cumulative_pytest": "522 passed, 1 skipped, 66 deselected",
+    "reference_binding_and_all_nine_ledger_chain_entries": "passed",
+    "candidate49_empty_ledger_semantics": "passed"
+  }
+}

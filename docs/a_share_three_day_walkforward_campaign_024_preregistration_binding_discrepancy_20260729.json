@@ -1,0 +1,70 @@
+{
+  "version": 1,
+  "kind": "a_share_three_day_walkforward_campaign024_preregistration_binding_discrepancy",
+  "status": "recorded_post_development_frozen_protocol_unchanged_campaign_terminal_diagnostic_only",
+  "recorded_at": "2026-07-29T11:00:25Z",
+  "purpose": "Record one post-development source-chain hash transcription defect without rewriting the frozen Campaign024 protocol, rerunning any value or return stage, or weakening the terminal decision.",
+  "frozen_protocol": {
+    "path": "docs/a_share_three_day_walkforward_campaign_024_no_return_preregistration.json",
+    "sha256": "70d8e8f1fc6b0b74f3f19e41bc6a148e999eb57239ed5a156d75a3315edecb02",
+    "unchanged_after_discovery": true
+  },
+  "discrepancy": {
+    "json_pointer": "/source_chain/campaign023_statistical_snapshot/sha256",
+    "declared_sha256": "64732b281052df83606604db50ce8e6c69bd07a26e2b6501cad1326b6997694f",
+    "observed_sha256": "64732b36c84cf95024e615569bd5626f5951282e24a2ea534ea3f09c03fc41c8",
+    "path": "/Volumes/DIsk/qlib-a-share-tushare-1m/derived/a_share/rich/tushare/minute_walkforward_campaign023_feature_library/tushare_stk_mins_1m_2019_2025_ea0cbb8f_walkforward_campaign023_feature_library_v1/snapshot_manifest.json",
+    "classification": "preregistration_source_chain_manifest_hash_transcription_error",
+    "detected_after_campaign024_development_returns_were_read": true
+  },
+  "actual_execution_lineage": {
+    "feature_runner": {
+      "path": "scripts/a_share_three_day_walkforward_campaign024_features.py",
+      "sha256": "61d3e0f9cff0f4be87f3b33d676c68ada65c38ae1b0c47a3858c91bf0740f81e",
+      "campaign023_snapshot_sha256_constant": "64732b36c84cf95024e615569bd5626f5951282e24a2ea534ea3f09c03fc41c8",
+      "campaign023_dataset_sha256_constant": "443aa07644a31721eda4a3791ea24f3726049319aaabd917cb0ad00e5551d0b7"
+    },
+    "no_return_audit": {
+      "path": "data/experiments/short_horizon/historical_walkforward/campaign_024/no_return/20260729T104150Z_campaign024_no_return_audit.json",
+      "sha256": "90587a0029069e1e6a339b9d406cbbd25bb689e748cb6a0d48c4cacffe043d7e",
+      "campaign023_snapshot_manifest_sha256_verified": "64732b36c84cf95024e615569bd5626f5951282e24a2ea534ea3f09c03fc41c8",
+      "campaign023_dataset_sha256_verified": "443aa07644a31721eda4a3791ea24f3726049319aaabd917cb0ad00e5551d0b7",
+      "verified_partitions": 33015,
+      "verified_rows": 7724498,
+      "all_partition_byte_and_frame_hashes_valid": true
+    },
+    "comparison_factor_identity_changed": false,
+    "comparison_values_or_files_substituted": false,
+    "formula_direction_or_gate_changed": false
+  },
+  "impact_assessment": {
+    "actual_comparison_snapshot_is_byte_and_frame_verified": true,
+    "quantitative_outputs_recomputed": false,
+    "development_trial_rerun": false,
+    "stress_interval_opened": false,
+    "campaign024_development_survivor_count": 0,
+    "campaign024_terminal_decision_weakens": false,
+    "protocol_self_consistency_passed": false,
+    "campaign024_outputs_may_support_strategy_promotion": false,
+    "conservative_evidence_classification": "terminal_diagnostic_with_disclosed_preregistration_binding_defect"
+  },
+  "research_boundary": {
+    "candidate49_historical_return_read": false,
+    "candidate49_signal_or_execution_ledger_changed": false,
+    "candidate50_prospective_activation_created": false,
+    "current_scoring_selection_sizing_or_orders_performed": false,
+    "provider_request_issued": false
+  },
+  "prevention_rule": {
+    "future_campaigns_must_validate_every_existing_path_sha256_binding_in_concept_mechanism_no_return_and_development_preregistrations_before_candidate_values": true,
+    "failed_binding_validation_policy": "stop before candidate values and create a corrected new campaign version; never edit the frozen protocol",
+    "campaign025_may_start_only_after_this_validator_is_in_place": true
+  },
+  "decision": {
+    "rewrite_frozen_campaign024_protocol": false,
+    "rerun_campaign024_no_return_or_development": false,
+    "rescue_or_combine_campaign024": false,
+    "campaign024_remains_terminal": true,
+    "candidate49_remains_only_prospective_candidate": true
+  }
+}

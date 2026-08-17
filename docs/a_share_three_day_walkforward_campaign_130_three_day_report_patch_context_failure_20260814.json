@@ -1,0 +1,23 @@
+{
+  "schema_version": 1,
+  "recorded_at": "2026-08-14T07:48:53+08:00",
+  "campaign_id": 130,
+  "phase": "campaign130_unified_report_publication",
+  "status": "failed",
+  "failure_code": "three_day_report_patch_context_failure",
+  "operation": "append Campaign130 terminal section to three_day_research_report.md with apply_patch",
+  "cause": "The patch used the final sentence of the Campaign129 paragraph as though it were a standalone line, but the file stores that paragraph on one physical line, so apply_patch found no exact whole-line context.",
+  "effects": {
+    "target_file_modified": false,
+    "scientific_result_changed": false,
+    "historical_values_opened": false,
+    "candidate49_ledgers_changed": false
+  },
+  "recovery": "Preserve this failure and append using the complete final physical line as context. Do not treat the failed patch as success.",
+  "boundaries": {
+    "candidate49_historical_backfill": false,
+    "second_prospective_candidate": false,
+    "current_scores_or_orders": false,
+    "pressure_2024_2025_opened": false
+  }
+}

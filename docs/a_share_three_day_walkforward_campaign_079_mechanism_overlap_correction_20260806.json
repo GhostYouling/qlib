@@ -1,0 +1,76 @@
+{
+  "schema_version": 1,
+  "kind": "a_share_three_day_walkforward_campaign079_mechanism_overlap_correction",
+  "status": "terminal_rejected_before_daily_source_rows_or_candidate_values_due_prior_turnover_family",
+  "recorded_at": "2026-08-06T07:14:05Z",
+  "concept_scouting": {
+    "path": "docs/a_share_three_day_walkforward_campaign_079_concept_scouting.json",
+    "sha256": "518dccfb1e8e27df1497c437ed27e989bdfb033c5e23351f74ff8a58d470be81"
+  },
+  "invalid_mechanism_overlap_audit": {
+    "path": "docs/a_share_three_day_walkforward_campaign_079_mechanism_overlap_audit.json",
+    "sha256": "d9c8a079a3052589398c32c46a6f057908475ee2bcf60391581e636ac881d741",
+    "preserved": true,
+    "invalid_reason": "It incorrectly marked raw signal-day turnover intensity as economically independent without reconciling the pre-walkforward turnover-level and turnover-change factor family already documented and evaluated."
+  },
+  "authoritative_prior_family_evidence": {
+    "pipeline_document": {
+      "path": "docs/a_share_data_pipeline.md",
+      "sha256": "ed45e935713c73906e5b620be492eadcdbee1b849a1d90fddeeae60e5807c430",
+      "evidence": "The frozen coverage inventory states that single-field turnover level and turnover changes were already tested multiple times, and distinguishes return_turnover_correlation_10 from existing turnover_surge."
+    },
+    "historical_factor_implementation": {
+      "path": "scripts/a_share_short_horizon_factor_research.py",
+      "sha256": "df3d239259d6b3f87204749dd60938ee332fa472e99522f0708fd265fd198a36",
+      "retained_turnover_family": [
+        "turnover_surge",
+        "turnover_surge_1",
+        "turnover_surge_3",
+        "return_turnover_correlation_10"
+      ]
+    },
+    "historical_research_report": {
+      "path": "data/experiments/short_horizon/current_research_report.md",
+      "sha256": "ead92d2765ce9027961486a4764aa2bb93a6a95d46fb8d1e2cab2c6679d7d375",
+      "evidence": "The historical factor gate lists turnover_surge, turnover_surge_1, turnover_surge_3, and return_turnover_correlation_10 among failed prior factors."
+    },
+    "later_no_return_protocol": {
+      "path": "docs/a_share_tushare_audit_opinion_no_return_preregistration.json",
+      "sha256": "5fb77e7060cbd1a03824d015cc33b75ffcf23b3afb5817e60b783e8bcaea3d69",
+      "evidence": "The retained no-return comparison family explicitly includes turnover_surge, turnover_surge_1, turnover_surge_3, and return_turnover_correlation_10."
+    }
+  },
+  "terminal_factor_definition": {
+    "name": "signal_day_turnover_rate_pct",
+    "direction": "higher",
+    "formula": "accepted provider raw signal-session turnover rate percentage",
+    "rejection_reason": "The selected raw level is not genuinely independent from the previously tested turnover-level/surge family; running it would be historical rescue by removing the old normalization/window rather than a new mechanism.",
+    "same_campaign_variant_or_rescue_allowed": false
+  },
+  "boundaries": {
+    "daily_status_and_schema_metadata_read": true,
+    "daily_source_rows_read": false,
+    "candidate_values_computed": false,
+    "comparison_values_read": false,
+    "historical_daily_price_fields_read": [],
+    "historical_forward_returns_read": false,
+    "no_return_protocol_created": false,
+    "feature_implementation_created": false,
+    "feature_snapshot_created": false,
+    "development_preregistration_created": false,
+    "development_trial_run": false,
+    "stress_2024_2025_opened": false,
+    "provider_request_issued": false,
+    "candidate49_historical_backfill_performed": false,
+    "candidate49_ledgers_changed": false,
+    "second_prospective_candidate_created": false,
+    "current_scoring_selection_sizing_or_orders_performed": false
+  },
+  "decision": {
+    "campaign079_terminal": true,
+    "original_mechanism_pass_reclassified_as_invalid": true,
+    "append_definition_to_complete_semantic_library": true,
+    "numeric_comparator_eligible": false,
+    "campaign080_may_begin_only_after_policy_freeze": true
+  }
+}

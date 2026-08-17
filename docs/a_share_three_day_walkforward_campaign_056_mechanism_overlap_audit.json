@@ -1,0 +1,126 @@
+{
+  "version": 1,
+  "kind": "a_share_three_day_walkforward_campaign056_mechanism_overlap_audit",
+  "status": "passed_conceptual_independence_before_campaign056_source_candidate_comparison_daily_price_or_return_values",
+  "recorded_at": "2026-08-03T19:03:00Z",
+  "purpose": "Challenge the selected cross-session amount-clock persistence mechanism against all nearby frozen families before any Campaign056 source partition or value is read.",
+  "authoritative_boundary": {
+    "path": "docs/a_share_three_day_iteration_status_20260804_campaign055_verified.json",
+    "sha256": "47b6a36a95a82047bb499725d068b3545377789c31685fc86040cb8912e5b1db"
+  },
+  "historical_walkforward_policy": {
+    "path": "docs/a_share_three_day_historical_walkforward_research_policy_20260727.json",
+    "sha256": "38426d6161b9bfed323c58caba18feca668b8c9d53e294951a8ba90c01a798bb"
+  },
+  "concept_scouting": {
+    "path": "docs/a_share_three_day_walkforward_campaign_056_concept_scouting.json",
+    "sha256": "d05060ef83eafb0f8be11fb32a8eb95a5f7d7a17421ee19086ca676ff2762717"
+  },
+  "inherited_comparison_definition_source": {
+    "campaign055_protocol": {
+      "path": "docs/a_share_three_day_walkforward_campaign_055_no_return_preregistration.json",
+      "sha256": "f469879dd83a22a15d497d903bc81c772d5d96dae81d4ac7e32edfba1ef0732f"
+    },
+    "campaign055_terminal_record": {
+      "path": "docs/a_share_three_day_walkforward_campaign_055_research_record_v4.json",
+      "sha256": "29365de1b9306de7948b8e7087852b6bd4c9e3e6ba5ee9e6d59218d1b56a914f"
+    },
+    "comparison_count_after_appending_campaign055": 79,
+    "comparison_factor_order_sha256": "669a996cc0b8d2582f8a1c0cd2f7d9a8503fdcfe7fb5f1b79033ac7832bb4e67",
+    "campaign056_comparison_values_read": false
+  },
+  "selected_mechanism": {
+    "name": "intraday_day_over_day_amount_profile_similarity_240b",
+    "direction": "higher",
+    "economic_hypothesis": "High repetition of a stock's normalized 240-bin CNY activity clock on consecutive accepted sessions may indicate a multi-session execution program whose participation persists into a three-session holding horizon.",
+    "formula": "Normalize the exact 240 continuous-auction amounts for the signal session and immediately preceding accepted market session separately, compute their equal-mixture natural-log Jensen-Shannon divergence, and return 1-JSD/ln(2).",
+    "source_projection": [
+      "datetime",
+      "symbol",
+      "provider",
+      "amount"
+    ],
+    "selected_bar_count_per_session": 240,
+    "session_pair_lag": 1,
+    "previous_session_definition": "immediately preceding accepted local market-calendar session; never previous observed stock day across a suspension or missing session",
+    "valid_range": [
+      0.0,
+      1.0
+    ],
+    "transform_threshold_filter_combination_or_model": "none"
+  },
+  "design_choices_frozen_before_values": {
+    "formula_family": "cross_session_full_clock_amount_distribution_similarity",
+    "direction": "higher",
+    "current_session_count": 1,
+    "lookback_session_count": 1,
+    "calendar_lag": 1,
+    "clock_bin_count": 240,
+    "distance": "equal_mixture_jensen_shannon_natural_log",
+    "normalization": "independent_positive_total_amount_per_session",
+    "include_0930": false,
+    "include_lunch": false,
+    "source_open_high_low_close_volume_read": false,
+    "bridge_missing_or_suspended_previous_session": false,
+    "parameter_filter_subset_model_or_combination_count": 0
+  },
+  "overlap_challenges": [
+    {
+      "family": "intraday_morning_afternoon_amount_profile_similarity_120b",
+      "result": "distinct_pending_statistical_uniqueness_gate",
+      "reason": "Campaign049 compares two 120-bin halves inside one date. Campaign056 concatenates the full 240-bin clock and compares consecutive dates; holding either date's morning-versus-afternoon relation fixed while permuting clock mass across the other date can change Campaign056 alone."
+    },
+    {
+      "family": "intraday_amount_participation_entropy_240m",
+      "result": "distinct_pending_statistical_uniqueness_gate",
+      "reason": "Entropy summarizes one date's unordered amount concentration. Two dates may have identical entropy and disjoint clock locations, producing low Campaign056 similarity, or different entropies with partially aligned profiles."
+    },
+    {
+      "family": "intraday_amount_profile_serial_persistence_240m",
+      "result": "distinct_pending_statistical_uniqueness_gate",
+      "reason": "The terminal persistence factor correlates adjacent amount changes within one session. Campaign056 uses no within-day lag and compares matching absolute clock bins across two sessions."
+    },
+    {
+      "family": "late_opening_center_of_mass_and_total_daily_activity",
+      "result": "distinct_pending_statistical_uniqueness_gate",
+      "reason": "Late share, opening share, center of mass, and daily turnover summarize level or coarse timing on one date. Campaign056 requires the complete matched-bin shape and is exactly invariant to multiplying either session's entire amount vector by any positive scalar."
+    },
+    {
+      "family": "intraday_market_amount_profile_synchronization_240m",
+      "result": "distinct_pending_statistical_uniqueness_gate",
+      "reason": "Market synchronization compares one stock with a same-date leave-one-out peer activity profile. Campaign056 uses no peer state and compares the stock only with its own previous accepted session."
+    },
+    {
+      "family": "amount_return_range_transaction_price_and_price_update_coupling",
+      "result": "distinct_pending_statistical_uniqueness_gate",
+      "reason": "Campaign045, Campaign053, price-impact, range-volume, VWAP, and update-clock families require price, return, range, volume, or equality information. Campaign056 reads amount only and is unchanged when every price field changes with both amount profiles fixed."
+    },
+    {
+      "family": "candidate49_cumulative_vwap_crossing_rate_240m",
+      "result": "distinct",
+      "reason": "Candidate49 counts ordered close crossings around a causal same-session cumulative VWAP and requires close plus volume. Campaign056 constructs no price anchor or crossing, reads no close or volume, and remains historical-only without Candidate49 backfill."
+    },
+    {
+      "family": "terminal_factor_combination_filter_threshold_or_model",
+      "result": "distinct",
+      "reason": "Campaign056 computes one raw two-session amount statistic. It loads no terminal factor value and contains no fitted weight, regime, filter, threshold, subset, combination, or model."
+    }
+  ],
+  "research_boundary": {
+    "external_campaign056_minute_partitions_read": false,
+    "campaign056_candidate_or_comparison_values_read": false,
+    "historical_daily_price_fields_read": [],
+    "historical_forward_return_fields_read": false,
+    "provider_request_issued": false,
+    "candidate49_historical_return_signal_execution_or_milestone_backfill_performed": false,
+    "candidate49_ledgers_changed": false,
+    "second_prospective_candidate_created": false,
+    "current_scoring_selection_sizing_or_orders_performed": false
+  },
+  "decision": {
+    "conceptual_independence_passed": true,
+    "statistical_independence_pending_all_79_comparisons": true,
+    "predictive_value_established": false,
+    "next_action": "Freeze one exact coverage-first 79-comparison no-return protocol, with one conditional development trial only if admitted, before implementing or reading Campaign056 source values."
+  }
+}

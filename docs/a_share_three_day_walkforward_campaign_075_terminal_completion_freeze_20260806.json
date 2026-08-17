@@ -1,0 +1,122 @@
+{
+  "version": 1,
+  "kind": "a_share_three_day_walkforward_campaign075_terminal_completion_freeze",
+  "status": "frozen_terminal_zero_development_survivors_stress_closed_current",
+  "recorded_at": "2026-08-06T10:50:00+08:00",
+  "authoritative_predecessor": {
+    "path": "docs/a_share_three_day_iteration_status_20260806_campaign074_verified.json",
+    "sha256": "b6796f8f6404c38c6f67cb9f7b554689671ae568ef50dbf6c1b2d73925b961b8"
+  },
+  "current_terminal_evidence": {
+    "numeric_comparison_policy_v11": {
+      "path": "docs/a_share_three_day_walkforward_future_numeric_comparison_eligibility_policy_v11_20260806.json",
+      "sha256": "5ab04c661040e4f073a0081f421500c758966266a23b60b2ec09c8a501fd6a2d"
+    },
+    "no_return_protocol": {
+      "path": "docs/a_share_three_day_walkforward_campaign_075_no_return_preregistration.json",
+      "sha256": "fa2100154a66ec2f4037d86c6481a676e7c8fa2839ea5b55eec4c578e21b31b3"
+    },
+    "snapshot_binding": {
+      "path": "docs/a_share_three_day_walkforward_campaign_075_feature_snapshot_binding_20260806.json",
+      "sha256": "c57aaeecc579a2cf6ad86e4c8b1c21fe19c0de4e933cd3e4cd3ad9e8863fc146"
+    },
+    "no_return_audit": {
+      "path": "data/experiments/short_horizon/historical_walkforward/campaign_075/no_return/20260806T015958Z_campaign075_no_return_audit.json",
+      "sha256": "83fcd1907e1aaa56bae9bd03e4051025167402bc20bf46a4bfdad800cc57646b"
+    },
+    "development_preregistration": {
+      "path": "docs/a_share_three_day_walkforward_campaign_075_preregistration.json",
+      "sha256": "945c4b3a062cd85342955f72e1fc6f22f5b5d9928177504fab17832a548e5015"
+    },
+    "trial_ledger": {
+      "path": "data/experiments/short_horizon/historical_walkforward/campaign_075/walkforward/trial_ledger.json",
+      "sha256": "14079e97e5f2b421c525f6534026634cbc7abdc0eab3cc488b4e69c7ae76fe4f"
+    },
+    "development_survivors": {
+      "path": "data/experiments/short_horizon/historical_walkforward/campaign_075/walkforward/development_survivors.json",
+      "sha256": "7dd18844a83c7b1799071014e687356c8300ab12962cd8735ab57b7756835e38"
+    },
+    "closed_stress_record": {
+      "path": "data/experiments/short_horizon/historical_walkforward/campaign_075/walkforward/exposed_stress_consumption_record.json",
+      "sha256": "531a9db298d7ec0b35facf080acfcf0dde147d0018700bf21c3690a80eb8706f"
+    },
+    "postcompletion_accounting_correction_v3": {
+      "path": "docs/a_share_three_day_walkforward_campaign_075_postcompletion_failure_accounting_correction_v3_20260806.json",
+      "sha256": "534069658d33512e6b17c88408fec428c9280be3826090458b259d56bd28d94c"
+    },
+    "attempt_ledger_v4": {
+      "path": "data/experiments/short_horizon/historical_walkforward/campaign_075/research_attempt_ledger_v4.json",
+      "sha256": "ab8788d75885f2a1d9aa5d10f3ac4ce3ebad3a9659e5972e0cfb7e224ecf4e0f"
+    },
+    "research_record_v3": {
+      "path": "docs/a_share_three_day_walkforward_campaign_075_research_record_v3.json",
+      "sha256": "36709db098e6abb090c24bfd5aab969346f218657ea3e10638a05c5620fcf32d"
+    },
+    "campaign_report": {
+      "path": "docs/a_share_three_day_walkforward_campaign_075_report.md",
+      "sha256": "c7af20097efd8b493389bbeebe77312683f8a68486a14b90d67b6b8280a5ff49"
+    },
+    "unified_report": {
+      "path": "data/experiments/short_horizon/three_day_research_report.md",
+      "sha256": "7591d7bcb06c4176499c2ef42727ba50329adc5541a641ce207945a9843c6df9"
+    },
+    "pipeline_document": {
+      "path": "docs/a_share_data_pipeline.md",
+      "sha256": "834ac51a6adff8980b999ce8cbdd9cd9a64fb60721725fe6fa1da01e404d3397"
+    },
+    "current_test_suite_receipt": {
+      "path": "docs/a_share_three_day_walkforward_campaign_075_current_test_suite_receipt_20260806.json",
+      "sha256": "e8ca71261f886f3d927ae72afb9f2196e1ed83d8326630667f94a764a9877867"
+    },
+    "manage_qlib_a_share_data_skill": {
+      "path": "/Users/niyufei/.codex/skills/manage-qlib-a-share-data/SKILL.md",
+      "sha256": "0643fe22f2b12e9ecc3b1b6e9f2d0ec09455084ad29a47601299547ef48818d9"
+    }
+  },
+  "terminal_result": {
+    "factor": "accepted_instrument_session_youth_20s",
+    "direction": "higher",
+    "snapshot_manifest_sha256": "d621c73d8f32fa0187c0b8f834a170548eeb8deb04e1fade7a12da08f160aef4",
+    "snapshot_dataset_sha256": "63b3bd548fa3f2d7f88e19542eb6be5e4ee7cc6f9d83f5dc874868efade98936",
+    "snapshot_partitions": 33015,
+    "snapshot_rows": 7724498,
+    "snapshot_eligible_rows": 7689881,
+    "coverage_gate_passed": true,
+    "numeric_comparisons_completed": 105,
+    "numeric_comparisons_passed": 105,
+    "maximum_absolute_median_daily_rank_correlation": 0.5439796276434999,
+    "validation_mean_rank_ic": [-0.002682267538920306, -0.0239290875941235, -0.013780087584814799],
+    "validation_normalized_return": [0.3812837403636511, 0.20854239609787517, -0.44381191194214054],
+    "validation_pilot_10bp_return": [0.03587779486970866, 0.008633444519106304, -0.05960894063778455],
+    "development_aggregate_20bp_return": -0.07074175788052361,
+    "worst_validation_normalized_drawdown": -0.4665853990288593,
+    "development_survivor_count": 0,
+    "stress_2024_2025_opened": false,
+    "stress_returns_read": false
+  },
+  "attempt_accounting": {
+    "campaign075_infrastructure_failures": 8,
+    "campaign075_complete_factor_attempts": 1,
+    "campaign075_attempts": 9,
+    "campaign075_return_reading_trials": 1,
+    "cumulative_historical_attempts": 456,
+    "cumulative_return_reading_development_trials": 277
+  },
+  "candidate49_future_only_layer": {
+    "remains_only_active_prospective_candidate": true,
+    "signal_ledger_sha256": "5193f00d7f36da003f53cec387900da4c3d002299f5dfcfc1a95eaa199ed3a79",
+    "signal_ledger_entries": 0,
+    "execution_ledger_sha256": "d57a3e61eac969e42cafa418ccd8c0a5ee65dcf69da145bb2c096c2a02a2ea4f",
+    "execution_ledger_entries": 0,
+    "historical_backfill_performed": false,
+    "provider_request_issued_by_campaign075": false,
+    "live_order_performed": false
+  },
+  "next_offline_research": {
+    "campaign076_scouting_authorized": true,
+    "wait_for_new_daily_bar_or_16_30_required": false,
+    "complete_definition_count": 107,
+    "numeric_comparator_count": 106,
+    "precondition_before_any_campaign076_candidate_value": "Select and freeze a genuinely independent mechanism using v11 before values."
+  }
+}

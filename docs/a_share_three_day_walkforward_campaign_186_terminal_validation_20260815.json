@@ -1,0 +1,53 @@
+{
+  "schema_version": 1,
+  "kind": "a_share_three_day_walkforward_campaign186_terminal_validation",
+  "status": "strict_validation_passed_zero_infrastructure_failures",
+  "recorded_at": "2026-08-15T13:28:57+08:00",
+  "authoritative_inputs": {
+    "shipping_fleet_source_frontier": {"path": "docs/a_share_three_day_walkforward_campaign_186_shipping_fleet_charter_offhire_disposal_source_frontier_20260815.json", "sha256": "6e1c616cdaf85336c33a1c03221a9b91ddabb8074203db96dc1a240bf734c1e1"},
+    "attempt_ledger": {"path": "data/experiments/short_horizon/historical_walkforward/campaign_186/research_attempt_ledger_v1.json", "sha256": "2cbd5e4791fedce9e1aa3ed86a4a2488b65f0ca990ef9d60f2f8d655c577264d"},
+    "terminal_result": {"path": "docs/a_share_three_day_walkforward_campaign_186_terminal_result_20260815.json", "sha256": "465bfa8a226ebca47359cd775088971e814dca9cda0663f820198a2d4682b72d"},
+    "terminal_report": {"path": "docs/a_share_three_day_walkforward_campaign_186_terminal_report_20260815.md", "sha256": "6c2f9a005bc8b5268a8c66273bdc9513992bd3b060c0455859efc99f5d089800"},
+    "eligibility_policy_v275": {"path": "docs/a_share_three_day_walkforward_future_numeric_comparison_eligibility_policy_v275_20260815.json", "sha256": "2353a563301ad8e4547d523a9ac031b42f53e49d627d86c2778f058bf537ef02"},
+    "terminal_tests": {"path": "tests/data_collector_tests/test_a_share_three_day_walkforward_campaign186_terminal.py", "sha256": "d4d69f1e56f7122ee5aa0b6daadcf12acb1a18167fb2ef19006df8f0c3a227a3"},
+    "manage_qlib_a_share_data_skill": {"path": "/Users/niyufei/.codex/skills/manage-qlib-a-share-data/SKILL.md", "sha256": "565713a5f3aeb6a1acf23e397fcc21be28d0c3ea4ebf21c7f287a25bb94d78dc"}
+  },
+  "mutable_unified_reports": {
+    "current_research_report": {"path": "data/experiments/short_horizon/current_research_report.md", "sha256_at_validation": "32e807abf58c87a7fdfa4674b8c5f431ef454eeee9848e7b1614fb55e7d91e1a", "mutable_append_only_report_not_an_immutable_binding": true},
+    "three_day_research_report": {"path": "data/experiments/short_horizon/three_day_research_report.md", "sha256_at_validation": "47e32e271d337479ff2cd4c14f58f645bdd384b30bdb32d999fe9dc68b9955d8", "mutable_append_only_report_not_an_immutable_binding": true}
+  },
+  "validation_results": {
+    "positive_json_records_parsed": 4,
+    "direct_bindings_verified": 24,
+    "authoritative_bindings_failed": 0,
+    "timestamp_records_checked": 4,
+    "timestamp_failures": 0,
+    "campaign186_attempt_entries_verified": 7,
+    "campaign186_attempt_hash_chain_passed": true,
+    "finite_catalog_concept_count": 7,
+    "source_admission_deferrals_not_factor_failures": 4,
+    "relabeling_operator_or_combination_route_rejections": 3,
+    "selected_candidate_count": 0,
+    "anti_survivorship_boundary_verified": true,
+    "complete_definition_count": 158,
+    "complete_definition_order_sha256": "4819c7fd7c0795d7598a52f3c615e3f117d5f4ecd9332974bc8e3dfa57c96667",
+    "numeric_comparator_count": 142,
+    "numeric_comparator_order_sha256": "5d1b35fb5a0d8ac9293008db9963c4a60a94dc940c237c3ed259e5ce44f14aaf",
+    "unified_reports_checked": 2,
+    "black_passed": true,
+    "ruff_passed": true,
+    "focused_campaign186_tests_passed": 5,
+    "focused_campaign186_duration_seconds": 1.28,
+    "campaign145_through_campaign186_test_file_count": 74,
+    "campaign145_through_campaign186_tests_passed": 444,
+    "campaign145_through_campaign186_tests_skipped": 1,
+    "campaign145_through_campaign186_exact_historical_lifecycle_nodes_deselected": 5,
+    "campaign145_through_campaign186_duration_seconds": 12.01,
+    "candidate49_signal_entries": 0,
+    "candidate49_execution_entries": 0,
+    "unrecovered_or_unrecorded_failed_exit_codes_bypassed_or_masked": false,
+    "recorded_infrastructure_failure_count": 0
+  },
+  "research_boundary": {"source_row_vessel_fleet_orderbook_charter_offhire_drydock_disposal_factor_comparator_security_price_or_return_value_read": false, "stress_2024_2025_opened": false, "provider_or_web_request_issued": false, "provider_credential_presence_value_or_digest_read": false, "candidate49_ledgers_changed": false, "second_prospective_candidate_created": false, "current_scoring_selection_sizing_positions_or_orders_performed": false, "investment_advice": false},
+  "next_action": "Publish a final Campaign186 state binding this validation, then begin Campaign187 finite offline prevalue research without waiting for 16:30."
+}

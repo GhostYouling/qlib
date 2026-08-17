@@ -1,0 +1,19 @@
+{
+  "schema_version": 1,
+  "kind": "a_share_three_day_walkforward_campaign146_infrastructure_failure",
+  "status": "recorded_terminal_test_pointer_patch_context_failure_scientific_result_unchanged",
+  "recorded_at": "2026-08-14T22:31:02+08:00",
+  "attempt_id": "campaign146_infrastructure_014",
+  "stage": "terminal_final_accounting_test_pointer_update",
+  "failure": {
+    "check": "apply_patch",
+    "result": "verification failed because Black had collapsed the STATUS assignment onto one line",
+    "partial_write_performed": false
+  },
+  "scientific_effect": {
+    "development_result_changed": false,
+    "additional_price_or_return_values_read": false,
+    "stress_2024_2025_opened": false,
+    "candidate49_ledgers_changed": false
+  }
+}

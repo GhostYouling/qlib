@@ -1,0 +1,50 @@
+{
+  "version": 1,
+  "kind": "a_share_three_day_walkforward_campaign046_no_return_audit_infrastructure_failure",
+  "status": "failed_closed_before_daily_price_or_forward_return_read",
+  "recorded_at": "2026-07-31T23:37:24Z",
+  "purpose": "Record the first ordered no-return audit execution failure additively without treating it as a factor result or bypassing its nonzero exit code.",
+  "source_chain": {
+    "effective_feature_implementation_freeze": {
+      "path": "docs/a_share_three_day_walkforward_campaign_046_feature_implementation_freeze_v3_20260801.json",
+      "sha256": "291c8e176d52f98d88a32b85112a052933a409ceef4003bf11cba6f24183085a"
+    },
+    "failed_feature_runner": {
+      "path": "scripts/a_share_three_day_walkforward_campaign046_features.py",
+      "sha256": "3c71ae270ed3a68141200a3c9654923403c18441a172b1f8984be5f15ce130cd"
+    },
+    "snapshot_manifest": {
+      "path": "/Volumes/DIsk/qlib-a-share-tushare-1m/derived/a_share/rich/tushare/minute_walkforward_campaign046_feature_library/tushare_stk_mins_1m_2019_2025_ea0cbb8f_walkforward_campaign046_feature_library_v1/snapshot_manifest.json",
+      "sha256": "4103aeee6e45cd54ffcb304283808abb67e6ea6107605f67441df70653e31ccd",
+      "dataset_sha256": "ee089ffd7dc7111ec6a7b620830595805ce998db6ef076f9d3cd516a7784d06f"
+    }
+  },
+  "attempt": {
+    "command": "PYTHONPATH=. python scripts/a_share_three_day_walkforward_campaign046_features.py no-return-audit --data-root /Volumes/DIsk/qlib-a-share-tushare-1m --workers 4",
+    "exit_code": 1,
+    "audit_record_created": false,
+    "failure_stage": "campaign045_terminal_factor_snapshot_file_verification_after_coverage_pass_and_first_68_comparison_factors",
+    "exception_type": "pyarrow.lib.ArrowInvalid",
+    "exception_summary": "Campaign044 verify_snapshot_files was incorrectly used on the Campaign045 snapshot and requested full_terminal_library_directional_percentile_consensus_66f from a snapshot containing intraday_volatility_activity_lead_lag_asymmetry_236p.",
+    "coverage_gate_reached_and_passed": true,
+    "terminal_66_comparison_values_read": true,
+    "candidate49_factor_values_read_for_no_return_comparison": true,
+    "campaign044_factor_values_read": true,
+    "campaign045_factor_values_read": false,
+    "comparison_factors_completed_before_failure": 68
+  },
+  "safety_boundary": {
+    "historical_daily_price_fields_read": [],
+    "historical_forward_return_fields_read": false,
+    "candidate49_historical_return_read": false,
+    "training_or_model_fitting_performed": false,
+    "current_scoring_selection_sizing_or_orders_performed": false,
+    "prospective_candidate_activation_created": false,
+    "failed_exit_code_overridden": false
+  },
+  "repair": {
+    "classification": "infrastructure_only_snapshot_validator_dispatch_error",
+    "allowed_delta": "Import the frozen Campaign045 feature module and dispatch Campaign045 snapshot verification to campaign045.verify_snapshot_files; do not change the factor, direction, source projection, coverage gates, comparison order, correlation method, thresholds, or development catalog.",
+    "retry_policy": "After synthetic tests, binding validation, and an isolated Campaign045 snapshot verification pass, permit one exact-parameter retry of the ordered no-return audit. Preserve this failure record regardless of retry outcome."
+  }
+}

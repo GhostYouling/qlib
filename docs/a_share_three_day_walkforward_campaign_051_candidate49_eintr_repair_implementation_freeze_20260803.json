@@ -1,0 +1,67 @@
+{
+  "version": 1,
+  "kind": "a_share_three_day_walkforward_campaign051_candidate49_eintr_repair_implementation_freeze",
+  "status": "frozen_before_exact_campaign051_no_return_audit_retry",
+  "recorded_at": "2026-08-03T06:14:05Z",
+  "purpose": "Bind the exact Candidate49-only EINTR retry, its isolated tests, and the unchanged Campaign051 audit identity before retrying the failed-closed no-return audit.",
+  "repair_authorization": {
+    "path": "docs/a_share_three_day_walkforward_campaign_051_no_return_audit_candidate49_eintr_failure_repair_20260803.json",
+    "sha256": "f85f187014638ae23260bd0fb8dc342641b6029d25d5e4c5840d271b72885fae"
+  },
+  "repair_entrypoint": {
+    "path": "scripts/a_share_three_day_walkforward_campaign051_features_v6.py",
+    "sha256": "e839223203cdf6114e4adca00f497c9f74b010cdffe6379a9972ccf2ff46ad2e"
+  },
+  "repair_tests": {
+    "path": "tests/data_collector_tests/test_a_share_three_day_walkforward_campaign051_candidate49_eintr_repair.py",
+    "sha256": "5fa483c2b1bb90091a15b4446df7ab029d2d83e47c73efedeb231bc68fa56570",
+    "passed": 3,
+    "failed": 0
+  },
+  "combined_campaign051_focused_tests": {
+    "paths": [
+      "tests/data_collector_tests/test_a_share_three_day_walkforward_campaign051_candidate49_eintr_repair.py",
+      "tests/data_collector_tests/test_a_share_three_day_walkforward_campaign051_no_return_audit_repair.py",
+      "tests/data_collector_tests/test_a_share_three_day_walkforward_campaign051_features.py"
+    ],
+    "passed": 17,
+    "failed": 0
+  },
+  "status_check": {
+    "entrypoint": "scripts/a_share_three_day_walkforward_campaign051_features_v6.py",
+    "exit_code": 0,
+    "audit_count": 0,
+    "snapshot_sha256_bound": true,
+    "protocol_sha256_bound": true,
+    "historical_daily_price_fields_read": false,
+    "historical_forward_return_fields_read": false
+  },
+  "repair_semantics": {
+    "exact_candidate49_kind_required": "a_share_tushare_intraday_cumulative_vwap_crossing_rate_snapshot",
+    "exact_candidate49_factor_required": "intraday_cumulative_vwap_crossing_rate_240m",
+    "exact_candidate49_dataset_sha256_required": "67bda6df74747a0f39fe6eb252aada84ea7850fff2c05bdae4951aa41fcc7037",
+    "exact_partition_and_row_counts_required": true,
+    "only_interrupted_error_errno_eintr_is_retryable": true,
+    "maximum_retry_count": 1,
+    "second_eintr_propagates": true,
+    "non_candidate49_request_propagates": true,
+    "candidate_or_comparison_values_changed": false,
+    "formula_direction_order_threshold_catalog_or_result_schema_changed": false
+  },
+  "retry_boundary": {
+    "same_no_return_audit_parameters_required": true,
+    "completed_audit_record_count": 0,
+    "historical_daily_price_fields_read": [],
+    "historical_forward_return_fields_read": false,
+    "training_or_model_fitting_performed": false,
+    "provider_request_issued": false,
+    "candidate49_historical_return_read": false,
+    "candidate49_ledgers_changed": false,
+    "second_prospective_candidate_created": false,
+    "current_scoring_selection_sizing_or_orders_performed": false
+  },
+  "decision": {
+    "repair_implementation_frozen": true,
+    "next_action": "Use one final additive fingerprint-bound wrapper to retry the exact Campaign051 no-return audit."
+  }
+}

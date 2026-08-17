@@ -1,0 +1,40 @@
+{
+  "schema_version": 1,
+  "kind": "a_share_three_day_walkforward_campaign110_no_return_audit_adapter_freeze",
+  "status": "frozen_after_verified_snapshot_before_coverage_or_comparator_values",
+  "recorded_at": "2026-08-07T22:48:05Z",
+  "audit_entry_point": {
+    "path": "scripts/a_share_three_day_walkforward_campaign110_no_return_audit_v2.py",
+    "sha256": "2c2dcf18e9b4a694ab006314d07345d73bfea2a2e4420335c946a0dea404c96c"
+  },
+  "synthetic_test": {
+    "path": "tests/data_collector_tests/test_a_share_three_day_walkforward_campaign110_no_return_audit_v2.py",
+    "sha256": "c38d7169ba67ad34f07b106c0d51a094a7fd6f79644fdf3a87a86e4ff411aa27",
+    "pre_freeze_result": "2 passed"
+  },
+  "snapshot_binding": {
+    "path": "docs/a_share_three_day_walkforward_campaign_110_feature_snapshot_binding_20260808.json",
+    "sha256": "35315e56abe2f48abd51177d6ff29b3f5dd6854202675af95fb26d71f493aefe"
+  },
+  "snapshot_verifier_implementation_freeze": {
+    "path": "docs/a_share_three_day_walkforward_campaign_110_snapshot_verifier_implementation_freeze_20260808.json",
+    "sha256": "b9337ed49073e6af228790a0e2700218eef193673af15212c0796fd33ad11a3c"
+  },
+  "adapter_scope": {
+    "only_change": "Import the frozen verify-only manifest adapter before invoking the otherwise unchanged Campaign110 no-return audit.",
+    "candidate_formula_direction_source_projection_grid_anchor_support_coverage_uniqueness_comparator_order_or_finite_catalog_changed": false,
+    "snapshot_build_rebuild_or_write_exposed": false,
+    "coverage_first_order_preserved": true,
+    "all_133_comparators_required_only_after_coverage_pass": true,
+    "daily_price_or_forward_return_read_exposed": false
+  },
+  "research_boundary": {
+    "coverage_or_capacity_metrics_computed_before_freeze": false,
+    "comparator_values_read_before_freeze": false,
+    "historical_daily_price_or_forward_return_values_read_before_freeze": false,
+    "provider_request_issued_before_freeze": false,
+    "snapshot_modified_after_verification": false,
+    "candidate49_ledgers_changed": false
+  },
+  "next_action": "Validate this adapter freeze, publish the single-use audit activation, then run exactly one coverage-first no-return audit."
+}

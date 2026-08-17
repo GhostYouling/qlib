@@ -1,0 +1,103 @@
+{
+  "schema_version": 1,
+  "kind": "a_share_three_day_walkforward_campaign146_concept_scouting",
+  "status": "finite_prevalue_catalog_completed_one_candidate_selected_for_exact_mechanism_audit",
+  "recorded_at": "2026-08-14T21:08:34+08:00",
+  "purpose": "Continue the active three-session historical walk-forward goal after Campaign145 without waiting for a new daily bar, while rejecting same-family spectral, lag, field, and model variants before any Campaign146 source or research value is read.",
+  "authoritative_inputs": {
+    "campaign145_terminal_state": {
+      "path": "docs/a_share_three_day_iteration_status_20260814_campaign145_coverage_terminal.json",
+      "sha256": "aca56008f7edbc43d62caa27979d324afa9d5fcf6066a0d90c692e105737e81e"
+    },
+    "numeric_policy_v194": {
+      "path": "docs/a_share_three_day_walkforward_future_numeric_comparison_eligibility_policy_v194_20260814.json",
+      "sha256": "b9835d1d3ab888f50060707e22fdb5784bd8a433b1c16aba6473162b96be288b",
+      "complete_definition_count": 154,
+      "complete_definition_order_sha256": "dcea4c75bb9194ea2e522d803409e4005cf0185fe87c84f6f9810dbe51de2f75",
+      "numeric_comparator_count": 141,
+      "numeric_comparator_order_sha256": "ec1aebcb939ad516c58037a36a4aaadd4ad8b2abbd3c884705895c58da85a2ee"
+    },
+    "raw_minute_manifest": {
+      "path": "/Volumes/DIsk/qlib-a-share-tushare-1m/raw/a_share/rich/tushare/minutes/1m/snapshots/tushare_stk_mins_1m_2019_2025_ea0cbb8f/snapshot_manifest.json",
+      "sha256": "9b3d959563c9d182f38981c6a36bdb3bc9b415de08487a9e1f9e850825c0839f"
+    },
+    "joint_clean_manifest": {
+      "path": "/Volumes/DIsk/qlib-a-share-tushare-1m/derived/a_share/rich/tushare/minute_sentiment_clean/tushare_stk_mins_1m_2019_2025_ea0cbb8f_sentiment_clean_v1/snapshot_manifest.json",
+      "sha256": "453c6719cb3c7da42fed8807b28a2bfe988700283e9625a6db97912534f368de",
+      "dataset_sha256": "0e4fe7c05536cdfcecc2936bc880726902f5560061188ffff82ef7ee6f346983"
+    }
+  },
+  "finite_prevalue_concept_catalog": [
+    {
+      "catalog_id": "c146_01",
+      "name": "intraday_return_amount_cross_spectral_phase_lead_59f",
+      "mechanism": "Within each fixed half-session, measure the power-weighted signed cross-spectral phase by which demeaned transaction-amount innovations lead demeaned signed close returns over all 59 positive Fourier frequencies, then average the two half-session scores.",
+      "decision": "selected_for_exact_mechanism_overlap_audit",
+      "reason": "This is a multiscale phase-order statistic over the complete within-half paths. It is not a one-lag Pearson coefficient, unsigned amount-return distribution alignment, fixed-clock timing summary, path-area integral, crossing count, or terminal-factor combination."
+    },
+    {
+      "catalog_id": "c146_02",
+      "name": "intraday_return_amount_cross_spectral_phase_strength_59f",
+      "mechanism": "Discard phase orientation and retain only absolute or squared phase strength.",
+      "decision": "rejected_before_values",
+      "reason": "Removing orientation is a direction-destroying sibling transform of the selected cross-spectrum and would create a post-selection operator search."
+    },
+    {
+      "catalog_id": "c146_03",
+      "name": "intraday_return_amount_low_frequency_phase_lead_10f",
+      "mechanism": "Restrict the same phase statistic to an arbitrarily selected low-frequency band.",
+      "decision": "rejected_before_values",
+      "reason": "Frequency-band selection is an exposed tuning degree of freedom; the selected definition uses every positive frequency with no band search."
+    },
+    {
+      "catalog_id": "c146_04",
+      "name": "intraday_return_volume_cross_spectral_phase_lead_59f",
+      "mechanism": "Replace transaction amount with share volume in the same cross-spectral construction.",
+      "decision": "rejected_before_values",
+      "reason": "Volume versus amount is an alternate activity-field choice inside one mechanism; transaction amount is selected once before values."
+    },
+    {
+      "catalog_id": "c146_05",
+      "name": "intraday_return_amount_cross_spectral_coherence_59f",
+      "mechanism": "Measure unsigned magnitude-squared spectral coherence rather than signed phase lead.",
+      "decision": "rejected_before_values",
+      "reason": "Unsigned coherence is a spectral restatement of contemporaneous dependence and overlaps terminal correlation, volatility-coupling, and distribution-alignment families."
+    },
+    {
+      "catalog_id": "c146_06",
+      "name": "return_amount_multiband_phase_model",
+      "mechanism": "Fit frequency weights, phase thresholds, or interactions to historical returns.",
+      "decision": "rejected_before_values",
+      "reason": "This would open a model and frequency-selection search before establishing one fixed raw-state mechanism."
+    }
+  ],
+  "selection": {
+    "selected_candidate_count": 1,
+    "selected_catalog_id": "c146_01",
+    "source_projection_reserved_but_not_read": [
+      "datetime",
+      "symbol",
+      "provider",
+      "close",
+      "amount"
+    ],
+    "direction_reserved": "higher",
+    "source_contract_admission_pending_exact_mechanism_audit": true,
+    "candidate_values_read": false,
+    "comparator_values_read": false,
+    "daily_price_or_forward_return_values_read": false
+  },
+  "research_boundary": {
+    "all_154_complete_definitions_reconstructed_in_frozen_order": true,
+    "all_141_numeric_comparators_reconstructed_in_frozen_order": true,
+    "schema_and_manifest_metadata_only": true,
+    "provider_request_issued": false,
+    "credential_loaded_or_value_or_digest_read": false,
+    "candidate49_historical_backfill_performed": false,
+    "candidate49_ledgers_changed": false,
+    "second_prospective_candidate_created": false,
+    "stress_2024_2025_opened": false,
+    "current_scoring_selection_sizing_positions_or_orders_performed": false,
+    "investment_advice": false
+  }
+}

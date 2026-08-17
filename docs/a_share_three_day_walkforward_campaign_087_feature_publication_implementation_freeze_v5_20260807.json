@@ -1,0 +1,51 @@
+{
+  "schema_version": 1,
+  "kind": "a_share_three_day_walkforward_campaign087_feature_publication_implementation_freeze_v5",
+  "status": "additive_protocol_metadata_publication_frozen_before_v5_manifest_or_coverage",
+  "frozen_at": "2026-08-07T03:01:00+08:00",
+  "repair_protocol": {
+    "path": "docs/a_share_three_day_walkforward_campaign_087_v5_protocol_metadata_repair_protocol_20260807.json",
+    "sha256": "6c731c496b71136a003537e4d2b5abe38faa8badeaf3e408e749d1cb2369cf86"
+  },
+  "original_manifest": {
+    "path": "/Volumes/DIsk/qlib-a-share-tushare-1m/derived/a_share/rich/tushare/minute_walkforward_campaign087_feature_library/tushare_stk_mins_1m_2019_2025_ea0cbb8f_walkforward_campaign087_feature_library_v1/snapshot_manifest.json",
+    "sha256": "6abe71a2402dc7b34124c1cc2abee8c54730ce978e6057b7b02beb4a4bcce5bd",
+    "must_remain_immutable": true
+  },
+  "v5_publisher_verifier": {
+    "path": "scripts/a_share_three_day_walkforward_campaign087_features_v5.py",
+    "sha256": "ae4a57649ef446804e2502b3fdbcecad7288706ab21625e0bb2d83b0013f91fc"
+  },
+  "v5_tests": {
+    "path": "tests/data_collector_tests/test_a_share_three_day_walkforward_campaign087_features_v5.py",
+    "sha256": "03b671d4ac340539ed700781cf8d2ceaeac96a4c38cdc81de4dae9f9df715281",
+    "combined_v1_through_v5_result_before_freeze": "23 passed and ruff passed",
+    "candidate_parquet_value_columns_read_by_tests": false
+  },
+  "append_only_attempt_ledger_at_v5_freeze": {
+    "path": "data/experiments/short_horizon/historical_walkforward/campaign_087/research_attempt_ledger_v10.json",
+    "sha256": "f1b7b7721e1d605fecd2d838d58701754ab3921d48199c01c6c97156a5064c43",
+    "recorded_failures": 10,
+    "complete_factor_attempts": 0
+  },
+  "publication_semantics": {
+    "new_sibling_manifest_path": "/Volumes/DIsk/qlib-a-share-tushare-1m/derived/a_share/rich/tushare/minute_walkforward_campaign087_feature_library/tushare_stk_mins_1m_2019_2025_ea0cbb8f_walkforward_campaign087_feature_library_v1/snapshot_manifest_v5.json",
+    "old_manifest_rewrite_allowed": false,
+    "partition_rewrite_allowed": false,
+    "candidate_value_recomputation_allowed": false,
+    "allowed_metadata_delta": [
+      "kind",
+      "protocol.sha256",
+      "dataset_sha256",
+      "publication_metadata_repair"
+    ],
+    "required_campaign087_protocol_sha256": "9adc09b52ec1b9844f3dd99b2cf815046c4143d9ae584fcf135552b32c17114c"
+  },
+  "repaired_manifest_published_before_freeze": false,
+  "coverage_or_capacity_metrics_computed_before_freeze": false,
+  "comparison_values_read_before_freeze": false,
+  "historical_daily_price_or_forward_return_values_read_before_freeze": false,
+  "provider_request_issued_before_freeze": false,
+  "candidate49_historical_backfill_or_ledger_change_before_freeze": false,
+  "current_scoring_selection_sizing_or_orders_performed_before_freeze": false
+}

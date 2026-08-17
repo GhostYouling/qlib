@@ -1,0 +1,78 @@
+{
+  "schema_version": 1,
+  "kind": "a_share_three_day_walkforward_campaign254_terminal_validation",
+  "recorded_at": "2026-08-16T12:40:00+08:00",
+  "timestamp_semantics": "monotonic_logical_append_time_not_host_wall_clock_measurement",
+  "status": "passed_campaign254_terminal_evidence_and_cumulative_regression",
+  "authoritative_inputs": {
+    "parking_domain_overlap_rejection_v2": {
+      "path": "docs/a_share_three_day_walkforward_campaign_254_commercial_parking_access_revenue_control_equipment_domain_overlap_rejection_v2_20260816.json",
+      "sha256": "f104d58fc13450f70ef72bf611ecba71ef0ba1043750ab66c28ac58a660fec6f"
+    },
+    "frozen_source_frontier": {
+      "path": "docs/a_share_three_day_walkforward_campaign_254_commercial_audiovisual_conference_room_equipment_service_lifecycle_source_frontier_20260816.json",
+      "sha256": "59775e826579032adc5ec8cbb93f1c317040959e5617e8651d3ed94f7c320258"
+    },
+    "attempt_ledger_v1": {
+      "path": "data/experiments/short_horizon/historical_walkforward/campaign_254/research_attempt_ledger_v1.json",
+      "sha256": "68c9c9593acb9880351b800e6ebc5eb454c324a99b793bf8985ca6473a82be47"
+    },
+    "terminal_result": {
+      "path": "docs/a_share_three_day_walkforward_campaign_254_terminal_result_20260816.json",
+      "sha256": "9e7f647c4fe82adaf038cec95aa3bc7364ae253de37684e8735883c86bd3f203"
+    },
+    "numeric_policy_v386": {
+      "path": "docs/a_share_three_day_walkforward_future_numeric_comparison_eligibility_policy_v386_20260816.json",
+      "sha256": "aa92c3c79464daa410c462f2dc9469fc659ebc23339a50bc9877b6ef999b20dc"
+    },
+    "terminal_test": {
+      "path": "tests/data_collector_tests/test_a_share_three_day_walkforward_campaign254_terminal.py",
+      "sha256": "f77b0992aae08cdacd6ccfb73378d476ab2726c63390fd7770b3845790256fc1"
+    }
+  },
+  "validation_results": {
+    "black": "passed; 1 file would be left unchanged",
+    "ruff": "passed",
+    "json_parse": "16 Campaign254 failure, correction, frontier, append-only accounting, result and policy JSON files passed",
+    "scoped_report_whitespace_and_unique_heading": "passed",
+    "focused_pytest": "2 passed",
+    "campaign145_through_campaign254_test_file_count": 142,
+    "deselection_node_count": 69,
+    "cumulative_pytest": "525 passed, 1 skipped, 69 deselected",
+    "cumulative_runner_repeated_deselect_option_per_node": "passed",
+    "independent_reference_binding_and_all_eighteen_ledger_chain_entries": "passed",
+    "invalid_parking_overlap_draft_excluded_and_v2_binding_validated": "passed",
+    "candidate49_empty_ledger_semantics": "passed"
+  },
+  "candidate49": {
+    "only_active_prospective_candidate": true,
+    "signal_entry_count": 0,
+    "execution_entry_count": 0,
+    "signal_ledger_sha256": "5193f00d7f36da003f53cec387900da4c3d002299f5dfcfc1a95eaa199ed3a79",
+    "execution_ledger_sha256": "d57a3e61eac969e42cafa418ccd8c0a5ee65dcf69da145bb2c096c2a02a2ea4f"
+  },
+  "publication_state": {
+    "campaign_effective_attempt_count": 18,
+    "campaign_infrastructure_failure_count": 10,
+    "campaign_scientific_attempt_count": 8,
+    "cumulative_historical_research_attempt_count": 2431,
+    "cumulative_return_reading_development_trial_count": 314,
+    "attempt_chain_tip_sha256": "899751a9a56b80a6e30f16b7da844c9a1daa96d70abe50d42a1c55053cd859d6",
+    "complete_factor_definition_count": 158,
+    "eligible_numeric_comparator_count": 142,
+    "current_report_sha256": "b44bc21b6f8294585528d9e9c650378f251509a9ad55d79916eb57c0d5b27c6d",
+    "three_day_report_sha256": "1aee6794998b76d767d02ed0d39e457858a4be7fbe1e811bfa50474f5ed8713d"
+  },
+  "research_boundary": {
+    "provider_or_web_request_issued": false,
+    "provider_credential_presence_value_or_digest_read": false,
+    "candidate49_plan_or_run_executed": false,
+    "candidate49_ledgers_changed": false,
+    "second_prospective_candidate_created": false,
+    "stress_2024_2025_opened": false,
+    "current_scoring_selection_sizing_positions_or_orders_performed": false,
+    "failed_or_truncated_output_used_as_scientific_or_validation_evidence": false,
+    "investment_advice": false
+  },
+  "next_action": "Publish the advancing Campaign254 state and keep the active goal authorized for Campaign255 zero-network offline prevalue research."
+}

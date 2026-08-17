@@ -1,0 +1,26 @@
+{
+  "schema_version": 1,
+  "kind": "a_share_three_day_walkforward_campaign263_frozen_black_exemption",
+  "status": "five_frozen_files_would_reformat_bytes_preserved",
+  "recorded_at": "2026-08-16T14:40:00Z",
+  "phase": "terminal_static_validation",
+  "failure": "Black --check reported five already-consumed Campaign263 scientific files would be reformatted; 17 other Campaign263 Python files were unchanged.",
+  "frozen_files_not_reformatted": [
+    "scripts/a_share_three_day_walkforward_campaign263_no_return_audit.py",
+    "scripts/a_share_three_day_walkforward_campaign263_ordered_uniqueness.py",
+    "tests/data_collector_tests/test_a_share_three_day_walkforward_campaign263_features.py",
+    "scripts/a_share_three_day_walkforward_campaign263_formula.py",
+    "scripts/a_share_three_day_walkforward_campaign263_features.py"
+  ],
+  "reason": "Their byte hashes are already bound by immutable implementation freezes and consumed snapshot, coverage or uniqueness evidence; formatting them after result exposure would invalidate the frozen chain.",
+  "recovery": "Preserve their bytes, require Ruff and focused tests for all Campaign263 files, and require Black success for the 17 non-exempt files.",
+  "research_boundary": {
+    "frozen_scientific_files_rewritten": false,
+    "scientific_result_changed": false,
+    "stress_2024_2025_opened": false,
+    "provider_or_web_request_issued": false,
+    "candidate49_ledgers_changed": false,
+    "current_scoring_selection_sizing_positions_or_orders_performed": false,
+    "investment_advice": false
+  }
+}

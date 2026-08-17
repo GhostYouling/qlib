@@ -1,0 +1,22 @@
+{
+  "artifact_type": "campaign_infrastructure_failure_record",
+  "campaign_id": 207,
+  "recorded_at": "2026-08-15T20:45:00+08:00",
+  "phase": "historical_definition_inventory",
+  "requested_scope": "all_docs_filenames_for_campaign118_through_campaign162",
+  "status": "failed_campaign118_162_inventory_output_truncated_discarded",
+  "failure_class": "tool_output_truncation",
+  "scientific_trial": false,
+  "result_consumed": false,
+  "recovery": {
+    "action": "select_only_highest_version_terminal_result_and_concept_record_per_campaign_then_emit_compact_fields"
+  },
+  "safety": {
+    "credentials_read": false,
+    "network_accessed": false,
+    "candidate49_plan_or_run_executed": false,
+    "candidate_or_comparator_values_read": false,
+    "historical_returns_read": false,
+    "research_thresholds_modified": false
+  }
+}

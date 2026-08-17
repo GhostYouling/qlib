@@ -1,0 +1,51 @@
+{
+  "schema_version": 1,
+  "kind": "a_share_three_day_walkforward_campaign121_snapshot_verifier_recovery_freeze",
+  "status": "dedicated_read_only_verifier_frozen_before_candidate_partition_values_are_reopened",
+  "recorded_at": "2026-08-14T02:18:00+08:00",
+  "frozen_recovery": {
+    "recovery_verifier_path": "scripts/a_share_three_day_walkforward_campaign121_snapshot_verify_recovery.py",
+    "recovery_verifier_sha256": "6c4d0677f417c7abd20e03095cab081f24426c6751c95f269e4d2698b075bb8f",
+    "test_path": "tests/data_collector_tests/test_a_share_three_day_walkforward_campaign121_snapshot_verify_recovery.py",
+    "test_sha256": "0de089d37bb2dd4a93d4391ac522ea8a38e90a5a3c9bfd9738bab59ccbc9c095",
+    "manifest_path": "/Volumes/DIsk/qlib-a-share-tushare-1m/derived/a_share/rich/tushare/minute_walkforward_campaign121_feature_library/tushare_stk_mins_1m_2019_2025_ea0cbb8f_walkforward_campaign121_feature_library_v1/snapshot_manifest.json",
+    "manifest_sha256": "e5789da9896535d8d67e0f0f3a7b2704f41292e4694b127a27999224abfad724",
+    "dataset_sha256": "cb476bcc93e7c88df6e2666af9d60d470c90f8a7670ea4553d2e9b877ab8a5b2",
+    "expected_partitions": 33015,
+    "expected_rows": 7724498,
+    "expected_eligible_rows": 7724498,
+    "observed_stale_factor_range": [-1.0, 1.0],
+    "truthful_frozen_factor_range": [0.0, 1.0],
+    "observed_stale_fixed_denominator": 240,
+    "truthful_frozen_position_span": 239
+  },
+  "bound_inputs": {
+    "implementation_freeze_v2": {
+      "path": "docs/a_share_three_day_walkforward_campaign_121_no_return_implementation_freeze_v2_20260814.json",
+      "sha256": "394a56dddea4cf6648ac9a3b53edd6b02891fcec328d0af038ae07e9cf50a007"
+    },
+    "semantic_failure_record": {
+      "path": "docs/a_share_three_day_walkforward_campaign_121_snapshot_manifest_semantic_failure_20260814.json",
+      "sha256": "c5349c8a0bef8de40b075295b74c515c835158e4179765a2f3e7dda34f7e4431"
+    },
+    "attempt_ledger_v10": {
+      "path": "data/experiments/short_horizon/historical_walkforward/campaign_121/research_attempt_ledger_v10.json",
+      "sha256": "43e8851e2046f2098fbd0d225334b541b67cac4e835532cbcf470864a7d7881c"
+    }
+  },
+  "synthetic_verification": {
+    "passed": 4,
+    "failed": 0,
+    "exit_code": 0,
+    "black": "passed",
+    "ruff": "passed"
+  },
+  "research_boundary": {
+    "candidate_partition_values_reopened_before_freeze": false,
+    "comparator_values_read": false,
+    "historical_daily_price_or_forward_return_values_read": false,
+    "provider_request_issued": false,
+    "candidate49_ledgers_changed": false,
+    "snapshot_or_manifest_rewrite_allowed": false
+  }
+}

@@ -1,0 +1,89 @@
+{
+  "schema_version": 1,
+  "kind": "a_share_three_day_walkforward_campaign107_concept_scouting",
+  "status": "one_candidate_selected_from_finite_catalog_before_campaign107_source_or_factor_values",
+  "recorded_at": "2026-08-07T19:48:11Z",
+  "authoritative_inputs": {
+    "iteration_state": {
+      "path": "docs/a_share_three_day_iteration_status_20260808_campaign106_terminal.json",
+      "sha256": "3d8abfac748b7ae9d90646be602457259674fc1c3eeeaa81c4b82ec43a40e601"
+    },
+    "campaign106_completion_freeze": {
+      "path": "docs/a_share_three_day_walkforward_campaign_106_terminal_completion_freeze_20260808.json",
+      "sha256": "0daf1ad598d38c1e66885316e74caf33a53fb95d330a48cdcb20d470b110d62a"
+    },
+    "numeric_policy_v64": {
+      "path": "docs/a_share_three_day_walkforward_future_numeric_comparison_eligibility_policy_v64_20260808.json",
+      "sha256": "7453bf020364e8b27035e94b7e527d874a271b9aaa51008445610c464803805e"
+    },
+    "raw_comparator_adapter_freeze": {
+      "path": "docs/a_share_three_day_walkforward_campaign_107_raw_comparator_adapter_implementation_freeze_20260808.json",
+      "sha256": "07de45590082fcf98350a4b4f0b615ffd994a97fe3cec431ae476c058a95cc2b"
+    }
+  },
+  "finite_prevalue_concept_catalog": [
+    {
+      "catalog_id": "c107_01",
+      "name": "intraday_exact_close_level_diversity_240m",
+      "concept": "Order-invariant Simpson diversity of exact minute close-price identities over the fixed 240-bar continuous grid.",
+      "prevalue_decision": "selected_pending_complete_mechanism_audit",
+      "reason": "It measures the breadth of distinct transacted close levels across all unordered within-day bar pairs, not adjacent update frequency, coarse price-range occupancy, return order, range mass, volume, or a terminal-factor combination."
+    },
+    {
+      "catalog_id": "c107_02",
+      "name": "opening_auction_range_share_241m",
+      "concept": "Share of total 241-bar high-low range mass occurring in the standalone 09:30 row.",
+      "prevalue_decision": "rejected_before_values",
+      "reason": "Prior source-semantic evidence says 09:30 price fields may be a zero-activity reference placeholder; a price-range interpretation is not accepted even though 09:30 amount has a separate terminal contract."
+    },
+    {
+      "catalog_id": "c107_03",
+      "name": "intraday_bodyless_bar_share_240m",
+      "concept": "Share of bars with exact open equal to close.",
+      "prevalue_decision": "rejected_before_values",
+      "reason": "This is a binary support re-expression of the terminal own-bar body/range-efficiency and wick/body geometry family rather than a new mechanism."
+    },
+    {
+      "catalog_id": "c107_04",
+      "name": "intraday_volume_participation_entropy_240m",
+      "concept": "Fixed-support entropy of minute share-volume weights.",
+      "prevalue_decision": "rejected_before_values",
+      "reason": "It is a single-field substitution of terminal amount-participation entropy and does not add independent timing or economic structure."
+    },
+    {
+      "catalog_id": "c107_05",
+      "name": "intraday_return_sign_transition_entropy_238p",
+      "concept": "Entropy of adjacent ternary return-sign transitions within the two half sessions.",
+      "prevalue_decision": "rejected_before_values",
+      "reason": "Return-sign continuity, run imbalance, weak-order entropy and reversal topology are already terminal; changing the categorical summary would be a family rescue."
+    }
+  ],
+  "selected_candidate": {
+    "name": "intraday_exact_close_level_diversity_240m",
+    "direction": "higher",
+    "economic_hypothesis": "A broader set of exact intraday close-price levels reflects sustained price discovery and usable liquidity rather than repeated anchoring at a small set of ticks, which may persist over the next-open to third-close horizon.",
+    "source_projection": [
+      "datetime",
+      "symbol",
+      "provider",
+      "close"
+    ],
+    "formula": "On exactly 240 selected bars, group exact close values with counts n_j and return 1 - sum_j n_j*(n_j-1)/(240*239), equivalently one minus the fraction of ordered distinct-clock pairs sharing the same exact close.",
+    "fixed_denominator": 57360,
+    "valid_range": [
+      0.0,
+      1.0
+    ],
+    "alternate_direction_formula_equality_tolerance_rounding_binning_window_threshold_filter_subset_model_or_combination_search": false
+  },
+  "research_boundary": {
+    "campaign107_minute_source_rows_read": false,
+    "campaign107_candidate_values_computed_or_read": false,
+    "campaign107_comparator_values_read": false,
+    "historical_daily_price_or_forward_return_values_read": false,
+    "provider_request_issued": false,
+    "candidate49_ledgers_changed": false,
+    "current_scoring_selection_sizing_or_orders_performed": false
+  },
+  "next_action": "Challenge the selected exact-level diversity mechanism against all 136 complete definitions and failed-support predicates before freezing a no-return protocol."
+}

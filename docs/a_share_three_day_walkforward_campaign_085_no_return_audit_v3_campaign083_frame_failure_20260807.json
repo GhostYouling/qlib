@@ -1,0 +1,40 @@
+{
+  "version": 1,
+  "kind": "a_share_three_day_walkforward_campaign085_no_return_audit_v3_campaign083_frame_compatibility_failure",
+  "status": "v3_failed_after_112_comparators_before_campaign083_factor_values",
+  "recorded_at": "2026-08-07T01:00:00+08:00",
+  "v3_bindings": {
+    "repair_protocol_sha256": "b56abe4bf8af489d0fffbe4c9dedd5adf2243b32417adcb6732e3b095ec6bbe9",
+    "implementation_freeze_sha256": "c0f07e080b74a374ad086c0b5d17c722ccb20b1332f96918347ce11250ef4552",
+    "activation_binding_sha256": "baa5f3ade405605f560cf39093257759df4504e1f3ba8503e07151cda7231439"
+  },
+  "failed_invocation": "<bundled-python> -m scripts.a_share_three_day_walkforward_campaign085_no_return_audit run --confirm-run --workers 4",
+  "exit_code": 1,
+  "exception": "Campaign083FeatureError: partition frame changed for Campaign083 partitions/sh600000/2019.parquet",
+  "read_boundary": {
+    "candidate_snapshot_values_reread_from_scratch": true,
+    "repaired_explicit_year_coverage_recomputed_and_passed": true,
+    "numeric_comparator_count_read_and_computed_in_memory": 112,
+    "computed_comparator_results_published_or_reusable": false,
+    "campaign083_manifest_and_partition_verification_started": true,
+    "campaign083_factor_values_read": false,
+    "campaign084_factor_values_read": false,
+    "published_v3_audit_artifact": false
+  },
+  "root_cause": "Campaign083's original feature verifier recomputes output_frame_sha256 using the current pandas/pyarrow serializer even though its already frozen Campaign083 v3 compatibility verifier omits only that runtime-sensitive recomputation while retaining byte, row, schema, value, and dataset checks",
+  "bounded_recovery_candidate": {
+    "reuse_existing_campaign083_v3_temporary_candidate_verifier_binding": true,
+    "campaign083_v3_runner_sha256": "83cd01eaa7cf3a1cac281a4a10ee9da93dd67feae7643006b430ce3b51947217",
+    "campaign083_v3_repair_protocol_sha256": "3f20b8e7fb2625031868c5ddae93ede63fad6950100612b4063d495b11604aa2",
+    "campaign083_v3_implementation_freeze_sha256": "b8cfe3011070722039f7a04620e78790b9f84ba851e8b98136787e6b26238612",
+    "partial_coverage_or_comparator_statistics_may_be_reused": false,
+    "formula_direction_snapshot_gates_comparator_order_or_development_rule_may_change": false
+  },
+  "historical_daily_price_fields_read": [],
+  "historical_forward_returns_read": false,
+  "provider_request_issued": false,
+  "candidate49_ledgers_changed": false,
+  "research_attempt_count_increment": 1,
+  "factor_attempt_count_increment": 0,
+  "development_trial_count_increment": 0
+}

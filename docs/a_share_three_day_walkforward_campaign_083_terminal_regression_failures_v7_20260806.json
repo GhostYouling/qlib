@@ -1,0 +1,35 @@
+{
+  "additional_failure_count": 1,
+  "additional_failures": [
+    {
+      "failure_record_ordinal": 4,
+      "historical_daily_price_or_forward_return_fields_read": false,
+      "outcome": "The first terminal-v3 test patch used pre-formatting single-line context, so apply_patch rejected it atomically without changing the copied file.",
+      "repair": "Read the formatted file and reapply the same intended path and accounting changes against the exact multiline context.",
+      "repair_result": "The terminal-v3 test changes applied successfully; no bound historical artifact was rewritten.",
+      "stage": "terminal_v3_test_patch_context"
+    }
+  ],
+  "campaign_id": "a_share_three_day_walkforward_campaign_083",
+  "candidate49_historical_return_read": false,
+  "candidate49_ledgers_changed": false,
+  "cumulative_failure_count": 4,
+  "current_scoring_selection_sizing_or_orders_performed": false,
+  "historical_forward_returns_read_by_failures": false,
+  "kind": "a_share_three_day_walkforward_campaign083_terminal_regression_failures",
+  "provider_request_issued": false,
+  "recorded_at": "2026-08-06T21:31:00+08:00",
+  "research_semantics": {
+    "campaign083_development_result_changed": false,
+    "campaign083_formula_direction_or_gate_changed": false,
+    "stress_2024_2025_opened": false,
+    "stress_return_fields_read": false
+  },
+  "schema_version": 1,
+  "status": "fourth_terminal_verification_infrastructure_failure_recorded_then_repaired",
+  "supersedes_without_rewriting": {
+    "path": "docs/a_share_three_day_walkforward_campaign_083_terminal_regression_failures_v6_20260806.json",
+    "preserved": true,
+    "sha256": "2365a25cbc0e0c2795a50d9078b0c3fe865dec4244c8cd10e63c7e339104847c"
+  }
+}

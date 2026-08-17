@@ -1,0 +1,110 @@
+{
+  "version": 1,
+  "kind": "a_share_three_day_walkforward_campaign034_invalid_v1_snapshot_repair",
+  "status": "invalid_v1_snapshot_preserved_and_infrastructure_only_v2_repair_frozen_before_candidate_value_retry",
+  "recorded_at": "2026-07-30T18:15:32Z",
+  "purpose": "Preserve the first Campaign034 snapshot as invalid infrastructure evidence and freeze the only allowed repair before any corrected Campaign034 candidate value, comparison value, daily price, or historical forward return is opened.",
+  "authoritative_inputs": {
+    "iteration_status": {
+      "path": "docs/a_share_three_day_iteration_status_20260730_campaign033_verified.json",
+      "sha256": "b77415e771ac1096f8422574bcbd0ce5db81e235734f6b3fbda4dcd147d41496"
+    },
+    "no_return_preregistration": {
+      "path": "docs/a_share_three_day_walkforward_campaign_034_no_return_preregistration.json",
+      "sha256": "de5d6a4795cbe31bbb5b4cb74c4f663503c72c6301d144672916c22eaaab737c"
+    },
+    "pre_build_feature_implementation_freeze": {
+      "path": "docs/a_share_three_day_walkforward_campaign_034_feature_implementation_freeze_20260731.json",
+      "sha256": "ab27b91ba9ba30a342ea1f2be1c8766932765fb7617ee12add222c9fc9c3fdc9"
+    },
+    "pre_repair_runner": {
+      "path": "scripts/a_share_three_day_walkforward_campaign034_features.py",
+      "sha256": "f735b6335855da4e4aa938c01d1452af27345266f374b07cfd1c1412eba8c545"
+    },
+    "pre_repair_tests": {
+      "path": "tests/data_collector_tests/test_a_share_three_day_walkforward_campaign034_features.py",
+      "sha256": "23f9fee5b962e1fe0fda1fd5f317a0f6d53753fc738d8a71e92ee5faa8a9b352"
+    }
+  },
+  "invalid_v1_snapshot": {
+    "path": "/Volumes/DIsk/qlib-a-share-tushare-1m/derived/a_share/rich/tushare/minute_walkforward_campaign034_feature_library/tushare_stk_mins_1m_2019_2025_ea0cbb8f_walkforward_campaign034_feature_library_v1/snapshot_manifest.json",
+    "sha256": "2dbf954af8e6b229fbbc8258457353ac74aac54993e004ef59e90e6444de6f71",
+    "dataset_sha256": "59d02be1a65c2e171bec28c8ca5173618df0b3e2afa76d71712be46003a964e4",
+    "partition_count": 33015,
+    "row_count": 7724498,
+    "mislabeled_eligible_row_count": 7695088,
+    "published": true,
+    "usable_for_campaign034_candidate_values": false,
+    "usable_for_coverage_or_uniqueness_audit": false,
+    "usable_for_historical_return_research": false,
+    "must_be_preserved_without_rewrite_or_deletion": true
+  },
+  "failure_evidence": {
+    "expected_quality_keys": [
+      "intraday_round_tenth_close_avoidance_240m__non_tick_grid_close_rows",
+      "intraday_round_tenth_close_avoidance_240m__round_tenth_close_observations"
+    ],
+    "unexpected_inherited_quality_keys": [
+      "intraday_round_tenth_close_avoidance_240m__endpoint_canonicalized_rows",
+      "intraday_round_tenth_close_avoidance_240m__nonfinite_power_rows",
+      "intraday_round_tenth_close_avoidance_240m__nonfinite_return_rows",
+      "intraday_round_tenth_close_avoidance_240m__nonpositive_total_power_rows"
+    ],
+    "unexpected_inherited_quality_counts": {
+      "intraday_round_tenth_close_avoidance_240m__endpoint_canonicalized_rows": 33,
+      "intraday_round_tenth_close_avoidance_240m__nonfinite_power_rows": 0,
+      "intraday_round_tenth_close_avoidance_240m__nonfinite_return_rows": 0,
+      "intraday_round_tenth_close_avoidance_240m__nonpositive_total_power_rows": 29410
+    },
+    "correct_campaign034_quality_keys_present": false,
+    "candidate_formula_was_actually_evaluated": false,
+    "failure_exit_code_bypassed": false
+  },
+  "root_cause": {
+    "description": "The Campaign034 wrapper replaced compute_factor_values in the outer generated namespace, but the inherited compute_partition_frame function retained a distinct inner global namespace that still referenced the cloned Campaign033 spectral-entropy implementation. The builder called that retained function and published spectral-entropy values under the Campaign034 factor name.",
+    "build_snapshot_global_compute_factor_is_campaign034": true,
+    "compute_partition_frame_global_compute_factor_is_campaign034": false,
+    "research_parameter_was_ambiguous": false
+  },
+  "frozen_repair": {
+    "allowed_runner_change": "Inject the exact already-preregistered Campaign034 compute_factor_values callable into compute_partition_frame.__globals__, change only the generated output run id suffix from campaign034_feature_library_v1 to campaign034_feature_library_v2, and bind the public output_root to that new immutable destination.",
+    "allowed_test_change": "Add regression assertions that the partition helper resolves to the Campaign034 callable, the output root is the new v2 run, the old v1 root remains separate, and partition-level quality uses the round-price-grid keys rather than inherited spectral keys.",
+    "formula_changed": false,
+    "score_direction_changed": false,
+    "bar_grid_changed": false,
+    "source_fields_changed": false,
+    "tick_validation_or_tolerance_changed": false,
+    "coverage_or_uniqueness_gate_changed": false,
+    "comparison_library_or_order_changed": false,
+    "development_catalog_changed": false,
+    "historical_fold_purge_cost_or_survivor_gate_changed": false
+  },
+  "retry_authorization": {
+    "new_v2_output_run_required": true,
+    "v1_output_may_be_overwritten_deleted_or_reused": false,
+    "v2_candidate_snapshot_build_allowed_only_after_post_repair_binding_validation_exit_zero": true,
+    "comparison_values_may_be_read_before_corrected_coverage_gate_passes": false,
+    "historical_returns_may_be_read_before_corrected_no_return_admission": false
+  },
+  "research_boundary": {
+    "comparison_factor_values_read": false,
+    "historical_daily_price_fields_read": [],
+    "historical_forward_return_fields_read": false,
+    "development_fold_values_read": false,
+    "stress_2024_2025_values_read": false,
+    "candidate49_historical_return_signal_or_execution_backfill_performed": false,
+    "candidate49_signal_ledger": {
+      "path": "data/experiments/short_horizon/candidate49_future_signal_ledger.json",
+      "sha256": "5193f00d7f36da003f53cec387900da4c3d002299f5dfcfc1a95eaa199ed3a79",
+      "entry_count": 0
+    },
+    "candidate49_execution_ledger": {
+      "path": "data/experiments/short_horizon/candidate49_future_execution_ledger.json",
+      "sha256": "d57a3e61eac969e42cafa418ccd8c0a5ee65dcf69da145bb2c096c2a02a2ea4f",
+      "entry_count": 0
+    },
+    "candidate50_activation_created": false,
+    "provider_request_issued": false,
+    "current_scoring_selection_sizing_or_orders_performed": false
+  }
+}

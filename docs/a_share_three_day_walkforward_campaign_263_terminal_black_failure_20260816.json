@@ -1,0 +1,17 @@
+{
+  "schema_version": 1,
+  "kind": "a_share_three_day_walkforward_campaign263_terminal_black_failure",
+  "status": "failed_static_check_preserved_and_recovered",
+  "recorded_at": "2026-08-16T14:28:00Z",
+  "phase": "terminal_static_validation",
+  "failure": "Black --check reported that the new Campaign263 terminal test file would be reformatted; the other nine checked files were unchanged.",
+  "recovery": "Format only the unfrozen terminal test, append this failure, then rerun Black, Ruff and the focused terminal scope.",
+  "research_boundary": {
+    "scientific_result_changed": false,
+    "stress_2024_2025_opened": false,
+    "provider_or_web_request_issued": false,
+    "candidate49_ledgers_changed": false,
+    "current_scoring_selection_sizing_positions_or_orders_performed": false,
+    "investment_advice": false
+  }
+}

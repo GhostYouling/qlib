@@ -1,0 +1,182 @@
+{
+  "version": 1,
+  "kind": "a_share_three_day_walkforward_campaign068_mechanism_overlap_audit",
+  "status": "passed_conceptual_independence_before_campaign068_source_candidate_comparison_daily_price_or_return_values",
+  "recorded_at": "2026-08-06T02:36:00+08:00",
+  "purpose": "Challenge the selected point-in-time profit-versus-revenue acceleration rank gap against the complete 99-definition terminal library before any Campaign068 source row, candidate value, comparison value, daily price, or forward return is read.",
+  "authoritative_boundary": {
+    "verified_state": {
+      "path": "docs/a_share_three_day_iteration_status_20260806_compact_cache_v4_verified_v2.json",
+      "sha256": "fa3e2955bb697696a9a7a5d5ce1eade88324c752fb490cd2f98ea8ca3d117b79"
+    },
+    "concept_scouting": {
+      "path": "docs/a_share_three_day_walkforward_campaign_068_concept_scouting.json",
+      "sha256": "070044edf74a4f8932e4ed156129ef18a99f70c3e6d1531edf3db98e047abd8f"
+    },
+    "compact_cache_publication": {
+      "path": "docs/a_share_three_day_compact_comparator_cache_v4_publication_binding_20260806.json",
+      "sha256": "244f70b88be0396f7473c6664835cbb3cdad9135b6692b77c74018b1d53c925b"
+    }
+  },
+  "complete_definition_inventory": {
+    "complete_definition_count": 99,
+    "complete_definition_order_sha256": "74564d4d2d01a52371ddd6906db38b5d913acb743656a04bbe5c4f229c84ad53",
+    "numeric_comparator_count": 98,
+    "numeric_comparator_order_sha256": "bca0ba26252fcb74afa3a31ee1baf63c9cedfe3db5fc86ef71b3d7d93bf88f81",
+    "structurally_nonnumeric_definition": "intraday_cross_sectional_standardized_return_state_stability_236p",
+    "candidate067_appended_exactly_once": true,
+    "all_old_definitions_frozen_before_combination": true,
+    "old_factor_or_cache_values_read": false
+  },
+  "selected_mechanism": {
+    "name": "quarterly_profit_revenue_acceleration_rank_gap_2r",
+    "direction": "higher",
+    "economic_hypothesis": "A positive gap between profit-growth acceleration rank and revenue-growth acceleration rank represents improving operating leverage or margin momentum that may remain under-repriced over three sessions.",
+    "formula": "r_profit_yoy_acceleration-r_revenue_yoy_acceleration after same-fiscal-quarter differencing, strict-next-session availability, independent state propagation, and separate same-session average-tie percentile ranks on the common finite two-field cross-section.",
+    "source_fields": [
+      "instrument",
+      "report_date",
+      "announcement_date",
+      "revenue_yoy",
+      "profit_yoy"
+    ],
+    "old_definition_inputs": [
+      "profit_yoy_acceleration",
+      "revenue_yoy_acceleration"
+    ],
+    "fit_threshold_filter_subset_or_model": "none"
+  },
+  "overlap_challenges": [
+    {
+      "family": "profit_yoy_acceleration_and_revenue_yoy_acceleration",
+      "definitions": [
+        "profit_yoy_acceleration",
+        "revenue_yoy_acceleration"
+      ],
+      "result": "distinct_signed_joint_relation_pending_mandatory_statistical_uniqueness",
+      "reason": "The two direct factors measure each acceleration level separately. Holding their rank difference fixed while shifting both ranks together changes either direct level but not the candidate; reversing their ordering changes the candidate sign. Both exposed inputs remain mandatory numerical confounds."
+    },
+    {
+      "family": "campaign058_current_level_operating_leverage",
+      "definitions": [
+        "quarterly_profit_revenue_growth_spread_pp",
+        "quality_profit",
+        "quality_revenue",
+        "quality_growth",
+        "quality_score"
+      ],
+      "result": "distinct_second_order_state_pending_mandatory_statistical_uniqueness",
+      "reason": "Campaign058 and the quality level factors depend on current already-effective growth levels. Campaign068 differences each growth field against the same fiscal quarter one year earlier before forming the signed cross-sectional contrast; equal current levels can coexist with different accelerations and vice versa."
+    },
+    {
+      "family": "roe_change_and_quality_balance",
+      "definitions": [
+        "roe_change",
+        "quality_roe",
+        "quarterly_quality_rank_balance_3f"
+      ],
+      "result": "distinct_pending_mandatory_statistical_uniqueness",
+      "reason": "Campaign068 reads no ROE and does not reward three-level agreement. Its score is a signed two-growth-acceleration contrast, not profitability change or a rank-range complement."
+    },
+    {
+      "family": "campaign067_profitability_efficiency",
+      "definitions": [
+        "quarterly_roe_profit_scale_efficiency_gap_2r"
+      ],
+      "result": "distinct_pending_mandatory_statistical_uniqueness",
+      "reason": "Campaign067 contrasts current ROE rank with absolute net-profit rank. Campaign068 reads neither ROE nor net_profit and contrasts year-over-year changes in two growth rates. The shared subtraction operator does not make the economic state or inputs identical."
+    },
+    {
+      "family": "quarterly_disclosure_timing_and_peer_crowding",
+      "definitions": [
+        "quarterly_announcement_freshness_60s",
+        "quarterly_announcement_timeliness_days",
+        "quarterly_announcement_delay_consistency_4q",
+        "quarterly_announcement_peer_crowding_sparsity"
+      ],
+      "result": "distinct",
+      "reason": "Dates determine only when the acceleration state becomes available. Holding source growth histories fixed while changing allowed timing leaves the candidate value unchanged once effective; holding timing fixed while changing histories changes it."
+    },
+    {
+      "family": "minute_close_return_path_entropy_reversal_profile_and_range_factors",
+      "result": "distinct",
+      "reason": "Campaign068 reads no minute open, high, low, close, return, range, gap, body, wick, entropy, spectral, profile, reversal, or extreme field. Its state changes only after a new eligible disclosure."
+    },
+    {
+      "family": "minute_volume_amount_transaction_price_vwap_activity_and_price_discovery_factors",
+      "result": "distinct",
+      "reason": "Campaign068 reads no minute volume, amount, transaction price, VWAP, activity clock, or price-discovery path."
+    },
+    {
+      "family": "market_peer_response_correlation_dispersion_and_idiosyncratic_factors",
+      "result": "distinct",
+      "reason": "No market path, leave-one-out benchmark, beta, correlation, return dispersion, or peer price response enters the formula."
+    },
+    {
+      "family": "candidate49_cumulative_vwap_crossing_rate_240m",
+      "result": "distinct",
+      "reason": "Candidate49 remains the sole prospective mechanism and counts causal close-versus-cumulative-VWAP crossings. Campaign068 is historical-only PIT accounting research and never reads or backfills Candidate49 returns, signals, or executions."
+    },
+    {
+      "family": "terminal_factor_search_filter_threshold_regime_or_model",
+      "result": "distinct_frozen_combination",
+      "reason": "Only the two named, pre-existing acceleration definitions are combined with fixed coefficients +1/-1. No other terminal factor value, fitted weight, threshold, subset, regime, year, board, or model is selected."
+    }
+  ],
+  "counterfactual_checks": [
+    {
+      "test": "common_acceleration_rank_translation",
+      "result": "candidate_unchanged_direct_levels_change",
+      "meaning": "The candidate measures a relative acceleration gap rather than common acceleration level."
+    },
+    {
+      "test": "rank_order_reversal",
+      "result": "candidate_sign_reverses",
+      "meaning": "The score distinguishes profit acceleration outrunning revenue acceleration from the reverse."
+    },
+    {
+      "test": "fixed_current_growth_levels_different_prior_same_quarter_levels",
+      "result": "candidate_can_change_campaign058_level_spread_unchanged",
+      "meaning": "The candidate is genuinely second-order rather than a restatement of current operating leverage."
+    },
+    {
+      "test": "fixed_quarterly_histories_vary_minute_paths",
+      "result": "candidate_unchanged_minute_factors_can_change",
+      "meaning": "The candidate cannot reproduce intraday mechanisms."
+    }
+  ],
+  "design_choices_frozen_before_values": {
+    "candidate_count": 1,
+    "factor_name": "quarterly_profit_revenue_acceleration_rank_gap_2r",
+    "direction": "higher",
+    "source_growth_fields": [
+      "profit_yoy",
+      "revenue_yoy"
+    ],
+    "acceleration_rule": "same instrument and report month first difference after stable report-date ordering",
+    "availability": "first accepted session strictly after announcement_date",
+    "state_propagation": "independent per acceleration field inside instrument",
+    "rank_method": "average",
+    "rank_pct": true,
+    "formula_operator": "profit_acceleration_rank_minus_revenue_acceleration_rank",
+    "parameter_filter_subset_model_or_alternate_transform_search": false
+  },
+  "research_boundary": {
+    "campaign068_source_candidate_or_comparison_values_read": false,
+    "historical_daily_price_fields_read": [],
+    "historical_forward_return_fields_read": false,
+    "provider_request_issued": false,
+    "candidate49_historical_return_signal_or_execution_backfill": false,
+    "candidate49_ledgers_changed": false,
+    "second_prospective_candidate_created": false,
+    "current_scoring_selection_sizing_or_orders_performed": false,
+    "investment_advice": false
+  },
+  "decision": {
+    "conceptual_independence_passed": true,
+    "statistical_independence_pending_all_98_numeric_comparisons": true,
+    "complete_library_coverage_required": true,
+    "predictive_value_established": false,
+    "next_action": "Freeze the Campaign068 no-return protocol, compact-cache manifest binding, feature implementation, audit implementation, and tests before reading any Campaign068 value."
+  }
+}

@@ -1,0 +1,60 @@
+{
+  "schema_version": 1,
+  "kind": "a_share_three_day_walkforward_campaign139_source_snapshot_publication",
+  "status": "immutable_local_event_snapshot_published_before_capacity_comparators_prices_or_returns",
+  "recorded_at": "2026-08-14T13:23:45+0800",
+  "plan": {
+    "runner": "scripts/a_share_three_day_walkforward_campaign139_source.py plan",
+    "ready": true,
+    "exit_code": 0,
+    "source_values_read": false,
+    "candidate_values_read": false,
+    "comparator_values_read": false,
+    "historical_price_or_return_values_read": false,
+    "provider_request_issued": false,
+    "credential_loaded": false
+  },
+  "confirmed_run": {
+    "runner": "scripts/a_share_three_day_walkforward_campaign139_source.py run --confirm-source-build",
+    "exit_code": 0,
+    "manifest_path": "data/experiments/short_horizon/historical_walkforward/campaign_139/source_snapshot_v1/snapshot_manifest.json",
+    "manifest_sha256": "82eac4501fb72dd5fe1972dd0f42c3fa2cd16f8975a0b5f55e2b4018401a38a5",
+    "data_path": "data/experiments/short_horizon/historical_walkforward/campaign_139/source_snapshot_v1/campaign139_forecast_realization_events.parquet",
+    "data_sha256": "ce8de0d0a4e8c59746ba06c917399c75515d6e486f159ee6ab7b85df2c272a1a",
+    "rows": 37185,
+    "minimum_effective_date": "2019-04-10",
+    "maximum_effective_date": "2025-12-15",
+    "positive_surprises": 17879,
+    "exact_zero_surprises": 247,
+    "negative_surprises": 19059,
+    "conflicting_duplicate_pairs": 0,
+    "nonprior_forecast_pairs": 0
+  },
+  "source_and_code_bindings": {
+    "source_implementation_freeze_path": "docs/a_share_three_day_walkforward_campaign_139_source_implementation_freeze_20260814.json",
+    "source_implementation_freeze_sha256": "9ae01eb7db7dc696d5150bbcfb9e46851cba1e695da920dac161f50ae9b4e3d4",
+    "runner_sha256": "5ea523eabe6742737678f3236235e2447453201624df4dd23fe5145f0b5b2e19",
+    "formula_sha256": "8939c7e3b1deca67cd70fba9d100417d0fbadb9188033d90c464349641a81f18",
+    "protocol_v1_sha256": "def4153f0fdc112ddb5b6349b83449874be040546ef4a9e2a6527dc07e713a1c",
+    "protocol_v2_sha256": "eaeffa8e446ee8aa683b2eadee8b20a6c9430978d6d31bdd5696c9a6d4e373b3",
+    "protocol_v3_sha256": "33c1fcb340a925bfa11f58700ee58225388f0dd06f1b050cb276d68c80914edf",
+    "forecast_source_sha256": "48bc11ea6749a590fcc260f6a5728e853f59f228f6cef7c5b0183f206895d734",
+    "quality_source_sha256": "3ac901a97928d2ed81ac72e3eaac9bdc148d36cf67b6abe70223699235ef059f",
+    "calendar_sha256": "fda506597d26bcec953cdc0882042a5046ec1587db60490e16a01627fd43f53a"
+  },
+  "research_boundary": {
+    "source_projected_columns_decoded": true,
+    "candidate_event_values_computed": true,
+    "post_2025_rows_excluded_before_candidate_matching": true,
+    "capacity_or_comparator_values_read": false,
+    "historical_daily_price_or_forward_return_values_read": false,
+    "stress_2024_2025_opened": false,
+    "provider_request_issued": false,
+    "credential_loaded": false,
+    "candidate49_historical_backfill_performed": false,
+    "candidate49_ledgers_changed": false,
+    "current_scoring_selection_sizing_positions_or_orders_performed": false,
+    "investment_advice": false
+  },
+  "next_action": "Freeze and run the coverage/capacity-only audit. Comparator values remain closed until that gate passes."
+}

@@ -1,0 +1,18 @@
+{
+  "schema_version": 1,
+  "kind": "a_share_three_day_walkforward_campaign263_preregistration_recovery_patch_failure",
+  "status": "failed_patch_context_preserved_and_recovered_before_return_read",
+  "recorded_at": "2026-08-16T14:02:00Z",
+  "phase": "preregistration_recovery_generator_update",
+  "failure": "A combined apply_patch used the pre-Black one-line hash condition and failed its context check without changing the generator.",
+  "recovery": "The formatted generator was inspected and updated with exact narrow contexts after rebuilding the pre-return ledger.",
+  "research_boundary": {
+    "failed_patch_changed_files": false,
+    "historical_daily_price_or_forward_return_values_read": false,
+    "stress_2024_2025_opened": false,
+    "provider_or_web_request_issued": false,
+    "candidate49_ledgers_changed": false,
+    "current_scoring_selection_sizing_positions_or_orders_performed": false,
+    "investment_advice": false
+  }
+}

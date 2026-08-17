@@ -1,0 +1,171 @@
+{
+  "schema_version": 1,
+  "kind": "a_share_three_day_walkforward_campaign087_mechanism_overlap_audit",
+  "status": "passed_semantic_mechanism_review_before_campaign087_minute_source_or_comparison_values",
+  "recorded_at": "2026-08-07T01:42:00+08:00",
+  "concept_scouting": {
+    "path": "docs/a_share_three_day_walkforward_campaign_087_concept_scouting.json",
+    "sha256": "ca3088e507588f0838f4cfc2dc5244f5add30bc4023fd1ae84ec7a0d2385d0c9"
+  },
+  "authoritative_state": {
+    "path": "docs/a_share_three_day_iteration_status_20260807_campaign086_verified.json",
+    "sha256": "124affacf9b3665589cfc08a72e6886c5d1baa2dd5fc721b7450f066755dc12b"
+  },
+  "historical_walkforward_policy": {
+    "path": "docs/a_share_three_day_historical_walkforward_research_policy_20260727.json",
+    "sha256": "38426d6161b9bfed323c58caba18feca668b8c9d53e294951a8ba90c01a798bb"
+  },
+  "numeric_comparator_policy": {
+    "path": "docs/a_share_three_day_walkforward_future_numeric_comparison_eligibility_policy_v25_20260807.json",
+    "sha256": "945b74a66688c1534a351fe8d8bc0eb2570070ae6379f12838386fabb450283b",
+    "complete_definition_count": 118,
+    "numeric_comparator_count": 116,
+    "complete_definition_order_sha256": "261b5bac3512a91492d91e69fdbe8f6b571738e55a19553b5344f044697115f9",
+    "numeric_comparator_order_sha256": "e84ad824a5b3044c45a541a6650b3e18af801b09a34871c3e6ab8c73c36891b2"
+  },
+  "candidate": {
+    "name": "intraday_range_amount_profile_alignment_js_240m",
+    "direction": "higher",
+    "mechanism": "Jensen-Shannon similarity between the full fixed-clock intrabar log-range participation distribution and transaction-amount participation distribution",
+    "formula": "For 240 selected bars set r_i=ln(high_i/low_i), p_i=r_i/sum(r), q_i=amount_i/sum(amount), m_i=(p_i+q_i)/2, and return 1-[0.5*sum p_i ln(p_i/m_i)+0.5*sum q_i ln(q_i/m_i)]/ln(2), with zero contributions equal to zero.",
+    "zero_rule": "Exact zero range and amount remain valid zero masses. Require positive finite total range and amount; use no pseudocount, smoothing, threshold, or dropped bar.",
+    "fixed_grid": "Exactly 240 bars at 09:31-11:30 and 13:01-15:00; exclude the required raw 09:30 row.",
+    "no_open_close_volume_market_benchmark_daily_financial_event_peer_or_future_input": true,
+    "no_old_factor_value_input": true,
+    "candidate49_used_or_modified": false
+  },
+  "complete_library_review": {
+    "all_118_definitions_reviewed_in_frozen_order": true,
+    "all_pre_walkforward_terminal_price_volume_amount_event_market_peer_structural_and_composite_families_reviewed": true,
+    "candidate_is_exact_formula_duplicate": false,
+    "candidate_is_direction_only_duplicate": false,
+    "candidate_is_parameter_only_duplicate": false,
+    "candidate_is_an_inversion_of_a_terminal_factor": false,
+    "candidate_combines_terminal_factor_values": false,
+    "candidate_changes_any_quality_listing_or_buyability_gate": false,
+    "range_volume_amount_profile_entropy_peak_timing_center_serial_and_js_families_explicitly_challenged": true,
+    "campaign086_terminal_factor_not_reused_or_rescued": true,
+    "candidate49_remains_semantic_isolation_only": true
+  },
+  "semantic_invariance_checks": [
+    {
+      "intervention": "Multiply every selected price by one common strictly positive constant.",
+      "campaign087_result": "unchanged because every r_i is a high/low log ratio",
+      "distinguishes_from": "nominal-price affordability and absolute price-level factors"
+    },
+    {
+      "intervention": "Multiply every selected amount by one common strictly positive constant.",
+      "campaign087_result": "unchanged because q is an amount participation distribution",
+      "distinguishes_from": "amount level, terminal-bar amount share only after clock redistribution, and raw liquidity-level factors"
+    },
+    {
+      "intervention": "Permute range masses across clock positions while holding the amount profile fixed and preserving both marginal multisets.",
+      "campaign087_result": "generally changes because the two 240-position distributions cease to co-locate",
+      "distinguishes_from": "separate range entropy, amount entropy, moments, and order-free univariate summaries"
+    },
+    {
+      "intervention": "Move non-maximum range or amount mass among clock positions without changing either last argmax.",
+      "campaign087_result": "generally changes",
+      "distinguishes_from": "Campaign082 last-maximum peak-timing alignment"
+    },
+    {
+      "intervention": "Change adjacent close returns while high, low, amount, and the exact grid stay fixed.",
+      "campaign087_result": "unchanged",
+      "distinguishes_from": "Campaign053 amount/absolute-return Jensen-Shannon alignment and every close-return mechanism"
+    },
+    {
+      "intervention": "Change share volume while high, low, and amount stay fixed.",
+      "campaign087_result": "unchanged",
+      "distinguishes_from": "Campaign018 range/share-volume Pearson confirmation"
+    },
+    {
+      "intervention": "Apply an arbitrary common monotone nonlinear transform to the two raw 240-vectors.",
+      "campaign087_result": "not invariant because it freezes raw log-range mass and raw amount mass before normalization",
+      "distinguishes_from": "rank association and transform-search variants, which are forbidden"
+    }
+  ],
+  "nearest_semantic_challenges": [
+    {
+      "name": "intraday_range_share_volume_confirmation_240m",
+      "relationship": "both relate same-bar intrabar range to trading activity",
+      "distinction": "Campaign018 computes a signed Pearson association between log range levels and log1p share-volume levels. Campaign087 compares nonnegative full-session participation distributions using bounded Jensen-Shannon similarity, reads amount rather than share volume, and has no signed covariance.",
+      "mandatory_numeric_challenge": true
+    },
+    {
+      "name": "intraday_amount_price_discovery_alignment_js_238p",
+      "relationship": "both use amount participation and the same fixed Jensen-Shannon similarity family",
+      "distinction": "Campaign053 aligns destination-bar amount with absolute adjacent close returns over 238 within-half transitions. Campaign087 reads no close or return, retains all 240 bars, and aligns amount to contemporaneous own-bar high-low range mass. Holding high/low fixed while changing closes changes Campaign053 but not Campaign087.",
+      "mandatory_numeric_challenge": true
+    },
+    {
+      "name": "intraday_range_amount_peak_timing_alignment_240m",
+      "relationship": "both use the same 240 high-low range and amount fields",
+      "distinction": "Campaign082 retains only the distance between two last-maximum indices. Campaign087 uses every mass at every clock position; profiles with identical maxima and peak times can have arbitrarily different Campaign087 values.",
+      "mandatory_numeric_challenge": true
+    },
+    {
+      "name": "intraday_amount_participation_entropy_240m and intraday_intrabar_range_participation_entropy_240m",
+      "relationship": "each univariate factor sees one of Campaign087's two marginal distributions",
+      "distinction": "Separate entropies do not encode clockwise co-location. Jointly permuting only one profile preserves both entropies but generally changes Campaign087.",
+      "mandatory_numeric_challenge": true
+    },
+    {
+      "name": "intraday_amount_center_of_mass_240m, intraday_amount_profile_serial_persistence_240m, intraday_amount_clock_dispersion_240m, intraday_amount_local_peak_density_238p, intraday_amount_path_efficiency_238p",
+      "relationship": "all summarize transaction-amount allocation",
+      "distinction": "Those are univariate clock, sequence, peak, dispersion, or path-shape summaries. Campaign087 is a bivariate co-location score and is invariant to no learned amount transformation.",
+      "mandatory_numeric_challenge": true
+    },
+    {
+      "name": "intraday_morning_afternoon_amount_profile_similarity_120b and intraday_morning_afternoon_range_profile_similarity_120b",
+      "relationship": "all compare distribution shapes",
+      "distinction": "The prior factors compare morning with afternoon within one field. Campaign087 compares range with amount at the same 240 fixed clock positions and never maps morning positions to afternoon positions.",
+      "mandatory_numeric_challenge": true
+    },
+    {
+      "name": "intraday_intrabar_close_location_serial_persistence_238p",
+      "relationship": "the latest terminal numeric comparator must be challenged",
+      "distinction": "Campaign086 uses adjacent Pearson persistence of close position inside positive-range bars and reads no amount. Campaign087 reads no close, has no adjacency, retains zero-range bars as zero mass, and measures range/amount distribution similarity.",
+      "mandatory_numeric_challenge": true
+    },
+    {
+      "name": "intraday_cross_sectional_standardized_return_state_stability_236p",
+      "relationship": "the structurally nonnumeric definition remains in the complete semantic library",
+      "distinction": "Peer-standardized signed return-state mobility versus a standalone stock-day range/amount participation alignment",
+      "mandatory_semantic_challenge": true,
+      "numeric_status": "undefined_not_pass_not_fail"
+    },
+    {
+      "name": "signal_day_turnover_rate_pct",
+      "relationship": "the pre-value terminal definition remains a semantic challenge",
+      "distinction": "A raw daily turnover level neither supplies the minute range profile nor the normalized transaction-amount profile used by Campaign087.",
+      "numeric_status": "ineligible_terminal_definition_semantic_challenge_only"
+    },
+    {
+      "name": "candidate49_intraday_cumulative_vwap_crossing_rate_240m_v1",
+      "relationship": "the sole prospective candidate remains an isolation challenge",
+      "distinction": "Candidate49 counts genuinely future causal cumulative-VWAP sign crossings and cannot be historically backfilled. Campaign087 is historical-only, uses high/low/amount distributions, and never enters Candidate49 ledgers.",
+      "candidate49_remains_isolated": true
+    }
+  ],
+  "pre_value_decision": {
+    "economically_independent_enough_to_preregister": true,
+    "numeric_uniqueness_still_required_against_all_116_eligible_comparators": true,
+    "strict_maximum_absolute_median_daily_rank_correlation": 0.8,
+    "minimum_pairwise_names_per_session": 50,
+    "minimum_pairwise_sessions_per_comparison": 100,
+    "drop_residualize_invert_clip_bucket_rank_neutralize_filter_or_rescue_after_failed_gate_allowed": false
+  },
+  "research_boundary": {
+    "campaign087_minute_source_rows_read": false,
+    "campaign087_candidate_values_read": false,
+    "comparison_values_read": false,
+    "historical_daily_price_fields_read": [],
+    "historical_forward_returns_read": false,
+    "provider_request_issued": false,
+    "candidate49_historical_backfill_performed": false,
+    "candidate49_ledgers_changed": false,
+    "second_prospective_candidate_created": false,
+    "current_scoring_selection_sizing_or_orders_performed": false,
+    "investment_advice": false
+  }
+}

@@ -1,0 +1,164 @@
+{
+  "version": 1,
+  "kind": "a_share_candidate49_execution_ledger_semantic_replay_readiness",
+  "status": "offline_execution_ledger_semantic_replay_passed_real_future_execution_pending",
+  "recorded_at": "2026-07-25T19:01:01Z",
+  "purpose": "Advance Candidate49 by proving that a valid execution-ledger hash chain is not accepted as proof of fill, cost, state, Rank-IC, or evaluation correctness: every historical execution session is rebuilt from its immutable daily snapshot, validated signal evidence, frozen protocol, and prior recomputed state before an idempotent return or append.",
+  "advances": {
+    "path": "docs/a_share_candidate49_signal_ledger_semantic_replay_readiness_20260726.json",
+    "sha256": "c17142b5ef475739ae27008131538c4685219042472cf32d4107f51b32601f3a"
+  },
+  "authoritative_research_state": {
+    "path": "docs/a_share_three_day_iteration_status_20260725_future_only.json",
+    "sha256": "d44e1cb3707cce194eed37e99cc90f865396b1de8c35e02a393a2a243d973466",
+    "future_only_policy_path": "docs/a_share_three_day_future_only_minute_research_policy_20260725.json",
+    "future_only_policy_sha256": "52ca8bfa7201509fe891d0af3d1c87aeebd64e47e6ec6641e897849411df408c",
+    "active_future_only_candidate": "candidate49_intraday_cumulative_vwap_crossing_rate_240m_v1",
+    "aggregation_allowed": false,
+    "candidate50_activation_allowed": false
+  },
+  "candidate_contract": {
+    "factor_changed_by_this_work": false,
+    "factor_direction": "higher_intraday_cumulative_vwap_crossing_rate_240m",
+    "ranking_rule_changed_by_this_work": false,
+    "signal_timing_changed_by_this_work": false,
+    "execution_protocol_changed_by_this_work": false,
+    "cost_or_slippage_assumption_changed_by_this_work": false,
+    "three_session_holding_definition_changed_by_this_work": false,
+    "historical_return_backfill_allowed": false
+  },
+  "implementation_fingerprints": {
+    "paper_execution": {
+      "path": "scripts/a_share_tushare_candidate49_future_execution.py",
+      "sha256": "048bc6b728ff494d7ba77a569a091d97f4308d9fd90f3f571faea17a76f2f2e5"
+    },
+    "source_to_signal": {
+      "path": "scripts/a_share_tushare_candidate49_future_observation.py",
+      "sha256": "2e67ea31424c18cc2e9fd8cebb93b8d5da7197679b17d416405831e8952ee8a4"
+    },
+    "session_workflow": {
+      "path": "scripts/a_share_tushare_candidate49_future_session_workflow.py",
+      "sha256": "7cb68ef9b9a6a3fc5308f8b4b88bfc618e6f228fea812ae7ec6fdb06d0db9ddb"
+    },
+    "paper_execution_tests": {
+      "path": "tests/data_collector_tests/test_a_share_tushare_candidate49_future_execution.py",
+      "sha256": "9e899eeb82435f3b7eb631c41d59a28eca6368f77c7016198696eb20d4eaf36f"
+    },
+    "source_to_signal_tests": {
+      "path": "tests/data_collector_tests/test_a_share_tushare_candidate49_future_observation.py",
+      "sha256": "e9da265594cc6ebfd8c4cd89d3e7e7946f21e167ea2900674eb65bcaee70ceaa"
+    },
+    "session_workflow_tests": {
+      "path": "tests/data_collector_tests/test_a_share_tushare_candidate49_future_session_workflow.py",
+      "sha256": "7fe8aabce1b91a1477babb25579f8ab2c84093e6953a77a553d483148daca4f0"
+    },
+    "runbook": {
+      "path": "docs/a_share_data_pipeline.md",
+      "sha256": "e57eed7725b512129629d24fc5ae5cacf94f7dbb18a36027984d54a8c71cdd00"
+    }
+  },
+  "threat_model": {
+    "gap": "The generic execution-ledger validator checked ordinals, hash links, fixed flags, stored ending-state digests, and daily-snapshot hashes, but did not recompute fills, fees, state, Rank IC, or evaluation from immutable evidence. A false execution price and coordinated downstream fields could therefore be inserted and all affected hashes recomputed.",
+    "red_test": "test_idempotent_rerun_rejects_a_rehashed_but_false_execution_price",
+    "red_test_mutation": "Added CNY 1.0 to the first stored execution_price, recomputed that execution entry SHA-256, and recomputed the ledger chain-tip SHA-256.",
+    "red_test_before_fix": "The idempotent settlement did not raise, proving that the former hash-chain-only validation accepted the semantically false execution payload.",
+    "rehashed_but_semantically_false_execution_allowed_after_fix": false
+  },
+  "semantic_replay": {
+    "initial_state": "frozen_empty_cny_200000_portfolio",
+    "strict_chronological_contiguous_sessions_required": true,
+    "execution_snapshot_path_must_equal_external_root_session_path": true,
+    "execution_snapshot_manifest_rehashed": true,
+    "execution_snapshot_frame_rehashed": true,
+    "execution_snapshot_source_context_revalidated": true,
+    "referenced_signal_identity_must_exist": true,
+    "prior_state_recomputed_instead_of_trusted": true,
+    "recomputed_payload_sections": [
+      "signals_entering",
+      "entry_events",
+      "exit_events",
+      "future_rank_ic_outcomes",
+      "stale_marks",
+      "session_costs",
+      "ending_state",
+      "ending_state_sha256",
+      "evaluation",
+      "forward_outcomes_read_only_for_registered_signals"
+    ],
+    "excluded_from_payload_equality_only": [
+      "ordinal",
+      "previous_entry_sha256",
+      "entry_sha256",
+      "settled_at"
+    ],
+    "settled_at_separate_validation": "Must parse as timezone-aware and must not precede the processed session in Asia/Shanghai.",
+    "complete_current_signal_ledger_cross_checked_after_replay": true,
+    "late_inserted_or_deleted_signal_rejected": true
+  },
+  "clock_provenance": {
+    "production_default": "Current Asia/Shanghai time is normalized to UTC for the stored settled_at value.",
+    "injected_now": "The already-supported settlement now parameter is also normalized to UTC and passed into payload construction, so test and replay evidence does not silently use a different wall clock.",
+    "protocol_or_gate_changed": false
+  },
+  "enforcement_points": {
+    "before_idempotent_return": true,
+    "before_new_daily_snapshot_publication": true,
+    "before_execution_append": true,
+    "before_evaluation_record_synchronization_from_new_entries": true,
+    "provider_request_issued_on_failure": false,
+    "live_order_performed_on_failure": false
+  },
+  "offline_proofs": {
+    "focused_execution_tests": {
+      "passed": 21,
+      "failed": 0,
+      "elapsed_seconds": 3.56
+    },
+    "focused_candidate49_observation_execution_workflow_tests": {
+      "passed": 69,
+      "failed": 0,
+      "elapsed_seconds": 11.44
+    },
+    "new_red_cases": 1,
+    "new_red_case_passes_after_fix": true,
+    "full_data_collector_tests": {
+      "passed": 1108,
+      "failed": 0,
+      "warnings": 9,
+      "elapsed_seconds": 33.94
+    },
+    "ruff": "passed",
+    "python_compile": "passed"
+  },
+  "append_only_ledgers_after_offline_tests": {
+    "signal": {
+      "path": "data/experiments/short_horizon/candidate49_future_signal_ledger.json",
+      "sha256": "5193f00d7f36da003f53cec387900da4c3d002299f5dfcfc1a95eaa199ed3a79",
+      "entries": 0
+    },
+    "execution": {
+      "path": "data/experiments/short_horizon/candidate49_future_execution_ledger.json",
+      "sha256": "d57a3e61eac969e42cafa418ccd8c0a5ee65dcf69da145bb2c096c2a02a2ea4f",
+      "entries": 0
+    }
+  },
+  "side_effect_audit": {
+    "real_provider_check_performed": false,
+    "real_provider_request_issued": false,
+    "real_minute_rows_read": false,
+    "real_daily_rows_read": false,
+    "external_candidate49_session_root_created": false,
+    "signal_or_execution_entry_written": false,
+    "historical_candidate49_return_diagnostic_run": false,
+    "live_order_performed": false,
+    "active_data_root_mutated": false
+  },
+  "decision": {
+    "execution_semantic_chain_ready": true,
+    "current_real_signal_count": 0,
+    "current_real_execution_entry_count": 0,
+    "profitability_claim_allowed": false,
+    "selection_sizing_or_order_allowed": false,
+    "next_action": "On or after 2026-07-27 16:30 Asia/Shanghai, run the fail-closed Candidate49 source-to-signal workflow. Only after registered t+1 and t+3 daily outcomes become lawfully available may the separate paper execution command append entries under this semantic-replay gate."
+  }
+}

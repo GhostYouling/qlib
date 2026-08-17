@@ -1,0 +1,41 @@
+{
+  "version": 1,
+  "kind": "a_share_three_day_walkforward_campaign050_unified_report_supersession",
+  "status": "campaign049_report_binding_preserved_historically_campaign050_report_current",
+  "recorded_at": "2026-08-01T11:24:00Z",
+  "purpose": "Preserve Campaign049's immutable report binding while binding the append-only Campaign050 terminal update.",
+  "bindings": {
+    "campaign049_terminal_record": {
+      "path": "docs/a_share_three_day_walkforward_campaign_049_research_record.json",
+      "sha256": "f6c2fe3b79f6072c0c9274552e84d0689bec38483ad6609ad8187b69fda6a32c"
+    },
+    "campaign050_terminal_record": {
+      "path": "docs/a_share_three_day_walkforward_campaign_050_research_record.json",
+      "sha256": "bf73ce57aca02cbd11d3142da375c9ccb564517d080c3ac8b7823b79ae1429b5"
+    },
+    "previous_campaign049_supersession": {
+      "path": "docs/a_share_three_day_walkforward_campaign_049_unified_report_supersession_20260801.json",
+      "sha256": "cca3fd66d8bc868e1b5333ad885f55d84be7ce4b8fe81e81a74d94b1d2577450"
+    },
+    "current_unified_research_report": {
+      "path": "data/experiments/short_horizon/three_day_research_report.md",
+      "sha256": "a4397fac01e4138e162d134c9864806de5664a4541324daa1470acf9d0ba0e8b"
+    }
+  },
+  "historical_binding": {
+    "record": "docs/a_share_three_day_walkforward_campaign_049_unified_report_supersession_20260801.json",
+    "json_pointer": "/bindings/current_unified_research_report",
+    "expected_sha256": "8b77455dcc538d8305d1f301b28a94e365be21780e2cbfc917ef0ba8a70d9a78",
+    "current_sha256": "a4397fac01e4138e162d134c9864806de5664a4541324daa1470acf9d0ba0e8b",
+    "historical_record_rewritten": false,
+    "previous_supersession_rewritten": false
+  },
+  "semantic_boundary": {
+    "campaign049_result_or_gate_changed": false,
+    "campaign050_result_or_gate_changed_after_values": false,
+    "report_update_is_append_only": true,
+    "additional_historical_daily_price_or_forward_return_read": false,
+    "2024_2025_stress_return_read": false,
+    "candidate49_ledgers_changed": false
+  }
+}

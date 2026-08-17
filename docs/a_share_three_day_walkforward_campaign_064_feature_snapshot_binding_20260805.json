@@ -1,0 +1,89 @@
+{
+  "version": 1,
+  "kind": "a_share_three_day_walkforward_campaign064_feature_snapshot_binding",
+  "status": "published_snapshot_fingerprint_frozen_before_coverage_audit_comparison_values_daily_prices_or_returns",
+  "recorded_at": "2026-08-05T08:25:00+08:00",
+  "factor": "intraday_range_weak_order_entropy_236t",
+  "direction": "higher",
+  "formula": "For the exact 236 overlapping within-half triples of x_i=ln(high_i/low_i), classify each exact zero-tolerance comparison key (cmp(x0,x1),cmp(x0,x2),cmp(x1,x2)) into one of the 13 transitive weak-order states and return -sum(p_k*ln(p_k))/ln(13).",
+  "no_return_protocol": {
+    "path": "docs/a_share_three_day_walkforward_campaign_064_no_return_preregistration.json",
+    "sha256": "441cbeef589593c2ef0ae3e58325f5ab0acb506cc54eaa040c79f26c8ca6a887"
+  },
+  "original_implementation_freeze": {
+    "path": "docs/a_share_three_day_walkforward_campaign_064_feature_implementation_freeze_20260805.json",
+    "sha256": "05b65cb001dfeec100c3ed3bcb105c9d59d26d0c4cdae8415d75ce589f5593b8"
+  },
+  "effective_implementation_freeze": {
+    "path": "docs/a_share_three_day_walkforward_campaign_064_feature_implementation_freeze_v3_20260805.json",
+    "sha256": "aee6549b26300e577cd81c2e358924d5a901e5639b26b278f68d48ff2bf92102"
+  },
+  "manifest_metadata_repair": {
+    "path": "docs/a_share_three_day_walkforward_campaign_064_manifest_metadata_repair_20260805.json",
+    "sha256": "73bb93c63eb52daeaabdc9dafec84cada009a67e0da68ec95799d069ba96fdce"
+  },
+  "checkpoint_identity_lineage_repair": {
+    "path": "docs/a_share_three_day_walkforward_campaign_064_checkpoint_identity_lineage_repair_20260805.json",
+    "sha256": "809eb07249aeddafd75c38b5efa80994ba19a2f723270eff6c12214327e5655f"
+  },
+  "feature_runner": {
+    "path": "scripts/a_share_three_day_walkforward_campaign064_features.py",
+    "sha256": "8087660639444aec35ea256446257de3a242cca9e0a9f7875107e4cf5196e486"
+  },
+  "feature_tests": {
+    "path": "tests/data_collector_tests/test_a_share_three_day_walkforward_campaign064_features.py",
+    "sha256": "7538f0078a014d4a1d3377d1c1e0dea69208501fee541267d0468fc3a08e269c",
+    "passed": 10,
+    "failed": 0
+  },
+  "snapshot_manifest": {
+    "path": "/Volumes/DIsk/qlib-a-share-tushare-1m/derived/a_share/rich/tushare/minute_walkforward_campaign064_feature_library/tushare_stk_mins_1m_2019_2025_ea0cbb8f_walkforward_campaign064_feature_library_v1/snapshot_manifest.json",
+    "sha256": "768ddf9babf07fc759d06b9e5d06bf4203d2e816bb8091e2daeb34f4ea21ea89",
+    "dataset_sha256": "676afa66570844ca8b5484f458801a95452249da0e277c9664eefd087acb152d",
+    "partitions": 33015,
+    "rows": 7724498,
+    "eligible_rows": 7724498
+  },
+  "independent_snapshot_verification": {
+    "all_partition_byte_and_frame_hashes_passed": true,
+    "partitions_verified": 33015,
+    "rows_verified": 7724498,
+    "eligible_rows_verified": 7724498,
+    "exit_code": 0
+  },
+  "snapshot_semantics": {
+    "source_fields_read": [
+      "datetime",
+      "symbol",
+      "provider",
+      "high",
+      "low"
+    ],
+    "selected_bars": 240,
+    "within_half_overlapping_triples": 236,
+    "weak_order_state_count": 13,
+    "comparison_tolerance": 0.0,
+    "exact_ties_retained": true,
+    "cross_session_lookback": 0,
+    "daily_price_fields_read": [],
+    "historical_forward_return_fields_read": false,
+    "comparison_factor_values_read": false,
+    "candidate49_historical_return_read": false,
+    "candidate49_ledgers_changed": false,
+    "provider_request_issued": false
+  },
+  "checkpoint_lineage": {
+    "unpublished_checkpoints_validated": 33015,
+    "old_checkpoint_metadata_rewritten": false,
+    "old_checkpoint_partition_bytes_rewritten": false,
+    "original_runner_and_v1_freeze_pair_preserved_in_reused_checkpoint_records": true,
+    "aggregate_manifest_binds_current_runner_and_v3_freeze": true
+  },
+  "decision": {
+    "snapshot_is_immutable": true,
+    "coverage_first_no_return_audit_allowed": true,
+    "comparison_values_may_be_read_only_if_all_coverage_gates_pass": true,
+    "daily_prices_or_forward_returns_may_be_read_before_admission": false,
+    "historical_result_may_generate_current_scores_selections_sizing_or_orders": false
+  }
+}

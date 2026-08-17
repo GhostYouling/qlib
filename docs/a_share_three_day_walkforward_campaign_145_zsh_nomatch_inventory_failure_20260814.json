@@ -1,0 +1,19 @@
+{
+  "schema_version": 1,
+  "kind": "a_share_three_day_walkforward_campaign145_infrastructure_failure",
+  "status": "recorded_append_only_before_campaign145_values",
+  "recorded_at": "2026-08-14T20:00:15+08:00",
+  "failure_id": "campaign145_infrastructure_001",
+  "stage": "prevalue_read_only_factor_inventory",
+  "command_scope": "rg over brace-expanded Campaign116,117,118,119,120,121,128,132,133,134,136 script globs",
+  "exit_code": 1,
+  "cause": "zsh nomatch stopped the read-only command because Campaign134 has no matching underscore-suffixed script file.",
+  "repair_boundary": "Use rg --files or exact existing paths; never mask this exit code with a later successful inventory.",
+  "research_values_read": false,
+  "candidate_or_comparator_values_read": false,
+  "daily_price_or_forward_return_values_read": false,
+  "provider_request_issued": false,
+  "credential_loaded": false,
+  "candidate49_ledgers_changed": false,
+  "scientific_decision_changed": false
+}

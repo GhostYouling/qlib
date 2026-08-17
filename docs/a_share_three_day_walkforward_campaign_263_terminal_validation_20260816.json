@@ -1,0 +1,80 @@
+{
+  "schema_version": 1,
+  "kind": "a_share_three_day_walkforward_campaign263_terminal_validation",
+  "status": "passed_focused_terminal_chain_static_and_report_validation",
+  "recorded_at": "2026-08-16T14:47:00Z",
+  "authoritative_inputs": {
+    "terminal_result_v6": {
+      "path": "docs/a_share_three_day_walkforward_campaign_263_terminal_result_v6_20260816.json",
+      "sha256": "e4b11b5d857d2e1377d174d9b1c9c16c5910d5f6f72b446940a2119df49f2cff"
+    },
+    "numeric_policy_v414": {
+      "path": "docs/a_share_three_day_walkforward_future_numeric_comparison_eligibility_policy_v414_20260816.json",
+      "sha256": "a41c4a3849d5a14c448e76d9c7f6cc5bf0603da2b8db57cadc85d1534349dac0"
+    },
+    "attempt_ledger_v13": {
+      "path": "data/experiments/short_horizon/historical_walkforward/campaign_263/research_attempt_ledger_v13.json",
+      "sha256": "e6075d529195cf87364b8b873d273eea57e23450cfb248f77ceead7782ca2af2"
+    },
+    "terminal_test": {
+      "path": "tests/data_collector_tests/test_a_share_three_day_walkforward_campaign263_terminal.py",
+      "sha256": "e2c5844d31c36ae1bfe7152f2c02023729f56934c5c0670bc6f97e0292750002"
+    },
+    "terminal_report": {
+      "path": "docs/a_share_three_day_walkforward_campaign_263_terminal_report.md",
+      "sha256": "854123a2c09e069637b1231752a2352fac9d03861b53efd22d47a9c37585ceb3"
+    },
+    "current_research_report": {
+      "path": "data/experiments/short_horizon/current_research_report.md",
+      "sha256": "1a90821114fa0c3f153956d110782033202b05a39fcd12ee36be8a51370998aa"
+    },
+    "three_day_research_report": {
+      "path": "data/experiments/short_horizon/three_day_research_report.md",
+      "sha256": "144655de784a607d6159c8e32a2c05e288822c1e88d7dc88ef6dc8b7292325ef"
+    }
+  },
+  "focused_test_scope": {
+    "campaign263_test_file_count": 6,
+    "passed": 45,
+    "failed": 0,
+    "deselected": 1,
+    "deselected_test": "test_development_activation_fails_before_return_loader_when_absent",
+    "deselection_reason": "The test is an already-passed pre-activation phase gate and intentionally asserts that the now-consumed activation file is absent.",
+    "exit_code": 0
+  },
+  "static_validation": {
+    "campaign263_python_file_count": 24,
+    "black_non_exempt_file_count": 19,
+    "black_non_exempt_passed": true,
+    "black_frozen_exempt_file_count": 5,
+    "black_frozen_exempt_files_rewritten": false,
+    "ruff_all_24_files_passed": true
+  },
+  "semantic_validation": {
+    "coverage_and_all_142_uniqueness_gates_passed": true,
+    "sole_development_trial_recorded": true,
+    "development_survivor_count": 0,
+    "stress_2024_2025_closed": true,
+    "complete_definition_count": 162,
+    "numeric_comparator_count": 143,
+    "effective_attempt_count": 34,
+    "infrastructure_failure_count": 25,
+    "cumulative_historical_research_attempt_count": 2597,
+    "cumulative_return_reading_development_trial_count": 315,
+    "candidate49_signal_ledger_entry_count": 0,
+    "candidate49_execution_ledger_entry_count": 0,
+    "candidate49_signal_ledger_sha256": "5193f00d7f36da003f53cec387900da4c3d002299f5dfcfc1a95eaa199ed3a79",
+    "candidate49_execution_ledger_sha256": "d57a3e61eac969e42cafa418ccd8c0a5ee65dcf69da145bb2c096c2a02a2ea4f",
+    "unified_report_campaign263_section_count_each": 1
+  },
+  "research_boundary": {
+    "scientific_result_changed_by_validation": false,
+    "stress_2024_2025_opened": false,
+    "provider_or_web_request_issued": false,
+    "provider_credential_presence_value_or_digest_read": false,
+    "candidate49_plan_or_run_executed": false,
+    "candidate49_ledgers_changed": false,
+    "current_scoring_selection_sizing_positions_or_orders_performed": false,
+    "investment_advice": false
+  }
+}

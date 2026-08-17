@@ -1,0 +1,80 @@
+{
+  "version": 2,
+  "kind": "a_share_three_day_walkforward_campaign068_feature_snapshot_repair_protocol",
+  "status": "frozen_before_v2_source_rows_candidate_values_or_snapshot_files",
+  "recorded_at": "2026-08-06T02:46:00+08:00",
+  "purpose": "Repair only the signed-range verifier and publish a freshly rebuilt v2 snapshot root while preserving every Campaign068 candidate, source, availability, acceleration, ranking, missingness, and no-return gate semantic.",
+  "base_no_return_protocol": {
+    "path": "docs/a_share_three_day_walkforward_campaign_068_no_return_preregistration.json",
+    "sha256": "64aeee6a3534f00f878259b3406a09bc4f3b5d0ea3157bde86d0050f56b82061"
+  },
+  "recorded_v1_failure": {
+    "path": "docs/a_share_three_day_walkforward_campaign_068_feature_snapshot_verification_failure_20260806.json",
+    "sha256": "89bebd40288eca5f991fffb9e5a9321181c7191fa7a882d0c0b4b380c57af67e",
+    "v1_snapshot_accepted": false,
+    "v1_snapshot_files_reusable_for_v2": false
+  },
+  "frozen_v1_generator": {
+    "path": "scripts/a_share_three_day_walkforward_campaign068_features.py",
+    "sha256": "1ebfbfd5709132d49f5d34276176df26a5ca53cfa492700a69c7ba64422d0b22",
+    "implementation_freeze_path": "docs/a_share_three_day_walkforward_campaign_068_feature_implementation_freeze_20260806.json",
+    "implementation_freeze_sha256": "fbc5991e61ae427e9a752c2525a702a54d930eef2cd55c434c78d4ae33c841cf",
+    "candidate_value_generation_changed": false
+  },
+  "v2_output": {
+    "data_root": "/Volumes/DIsk/qlib-a-share-tushare-1m",
+    "root": "/Volumes/DIsk/qlib-a-share-tushare-1m/derived/a_share/rich/tushare/minute_walkforward_campaign068_feature_library/tushare_stk_mins_1m_2019_2025_ea0cbb8f_walkforward_campaign068_feature_library_v2",
+    "v1_files_may_be_copied_linked_renamed_or_reused": false,
+    "fresh_source_read_and_fresh_partition_build_required": true,
+    "atomic_publication_required": true
+  },
+  "sole_repair": {
+    "old_incorrect_eligible_value_range": [
+      0.0,
+      1.0
+    ],
+    "new_required_eligible_value_range": [
+      -1.0,
+      1.0
+    ],
+    "eligible_values_must_be_finite": true,
+    "noneligible_values_must_be_nonfinite": true,
+    "partition_byte_hash_must_match_manifest": true,
+    "partition_frame_hash_must_match_manifest": true,
+    "aggregate_dataset_hash_must_match_manifest": true,
+    "all_33015_partitions_must_pass": true
+  },
+  "unchanged_semantics": {
+    "factor": "quarterly_profit_revenue_acceleration_rank_gap_2r",
+    "direction": "higher",
+    "formula": "r_profit_yoy_acceleration-r_revenue_yoy_acceleration",
+    "same_fiscal_quarter_acceleration_rule_changed": false,
+    "availability_rule_changed": false,
+    "state_propagation_changed": false,
+    "rank_method_or_universe_changed": false,
+    "missing_rule_changed": false,
+    "expected_rows": 7724498,
+    "expected_partitions": 33015,
+    "numeric_comparator_count": 98,
+    "numeric_comparator_order_sha256": "bca0ba26252fcb74afa3a31ee1baf63c9cedfe3db5fc86ef71b3d7d93bf88f81",
+    "coverage_or_uniqueness_gate_changed": false,
+    "development_catalog_changed": false
+  },
+  "research_boundary": {
+    "v2_source_candidate_or_snapshot_values_read_before_this_freeze": false,
+    "comparison_values_read": false,
+    "historical_daily_price_fields_read": [],
+    "historical_forward_return_fields_read": false,
+    "provider_request_issued": false,
+    "candidate49_ledgers_may_change": false,
+    "second_prospective_candidate_created": false,
+    "current_scoring_selection_sizing_or_orders_performed": false
+  },
+  "failure_policy": {
+    "edit_v1_protocol_runner_freeze_or_snapshot_in_place": false,
+    "reuse_v1_snapshot_values": false,
+    "accept_v2_without_independent_full_partition_verification": false,
+    "ignore_nonzero_exit": false,
+    "record_any_v2_failure_before_further_repair": true
+  }
+}

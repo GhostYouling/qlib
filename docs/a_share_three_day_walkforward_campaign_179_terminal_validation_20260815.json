@@ -1,0 +1,90 @@
+{
+  "schema_version": 1,
+  "kind": "a_share_three_day_walkforward_campaign179_terminal_validation",
+  "status": "strict_validation_passed_zero_infrastructure_failures",
+  "recorded_at": "2026-08-15T12:00:30+08:00",
+  "authoritative_inputs": {
+    "operating_license_concession_right_source_frontier": {
+      "path": "docs/a_share_three_day_walkforward_campaign_179_operating_license_concession_right_source_frontier_20260815.json",
+      "sha256": "54d6580c2db8b8897c6e2e4145b54259f9fd7fa2b7149aa99593a1bd7628de0e"
+    },
+    "attempt_ledger": {
+      "path": "data/experiments/short_horizon/historical_walkforward/campaign_179/research_attempt_ledger_v1.json",
+      "sha256": "5cd52b8bc2e6094452b070f48177e5a5aaed2afcf97afea43d410894f8406698"
+    },
+    "terminal_result": {
+      "path": "docs/a_share_three_day_walkforward_campaign_179_terminal_result_20260815.json",
+      "sha256": "976da0e007907dac9a9b9f1cc3dce2b897b1013b2a9077d1c8bd8a033016a9ae"
+    },
+    "terminal_report": {
+      "path": "docs/a_share_three_day_walkforward_campaign_179_terminal_report_20260815.md",
+      "sha256": "4286031e7f8858e2d823d79789f922222bb7d9c432b2f80aaf1a86cc44b53754"
+    },
+    "eligibility_policy_v267": {
+      "path": "docs/a_share_three_day_walkforward_future_numeric_comparison_eligibility_policy_v267_20260815.json",
+      "sha256": "9bf81dcb95c306331d045e6cb4f19653ac80842ae4c476556643dd51e3b7d816"
+    },
+    "terminal_tests": {
+      "path": "tests/data_collector_tests/test_a_share_three_day_walkforward_campaign179_terminal.py",
+      "sha256": "84cf0dde2f87b8b981c7f3607a2e4f4fe64b8c51bc66aff6ebcefa9422648e5e"
+    },
+    "manage_qlib_a_share_data_skill": {
+      "path": "/Users/niyufei/.codex/skills/manage-qlib-a-share-data/SKILL.md",
+      "sha256": "565713a5f3aeb6a1acf23e397fcc21be28d0c3ea4ebf21c7f287a25bb94d78dc"
+    }
+  },
+  "mutable_unified_reports": {
+    "current_research_report": {
+      "path": "data/experiments/short_horizon/current_research_report.md",
+      "sha256_at_validation": "1af7d28d87b6cde33463f6a9525f1d5775e7f0f244fe2ea2b96a896c26af3c96",
+      "mutable_append_only_report_not_an_immutable_binding": true
+    },
+    "three_day_research_report": {
+      "path": "data/experiments/short_horizon/three_day_research_report.md",
+      "sha256_at_validation": "89af6471a0d2787678797e29e79efa918b24c9ded5b7a7b691408faf999e07ed",
+      "mutable_append_only_report_not_an_immutable_binding": true
+    }
+  },
+  "validation_results": {
+    "positive_json_records_parsed": 4,
+    "direct_bindings_verified": 26,
+    "authoritative_bindings_failed": 0,
+    "timestamp_records_checked": 4,
+    "timestamp_failures": 0,
+    "campaign179_attempt_entries_verified": 7,
+    "campaign179_attempt_hash_chain_passed": true,
+    "finite_catalog_concept_count": 7,
+    "source_admission_deferrals_not_factor_failures": 4,
+    "relabeling_operator_or_combination_route_rejections": 3,
+    "selected_candidate_count": 0,
+    "complete_definition_count": 158,
+    "complete_definition_order_sha256": "4819c7fd7c0795d7598a52f3c615e3f117d5f4ecd9332974bc8e3dfa57c96667",
+    "numeric_comparator_count": 142,
+    "numeric_comparator_order_sha256": "5d1b35fb5a0d8ac9293008db9963c4a60a94dc940c237c3ed259e5ce44f14aaf",
+    "unified_reports_checked": 2,
+    "black_passed": true,
+    "ruff_passed": true,
+    "focused_campaign179_tests_passed": 5,
+    "focused_campaign179_duration_seconds": 1.62,
+    "campaign145_through_campaign179_test_file_count": 67,
+    "campaign145_through_campaign179_tests_passed": 409,
+    "campaign145_through_campaign179_tests_skipped": 1,
+    "campaign145_through_campaign179_exact_historical_lifecycle_nodes_deselected": 5,
+    "campaign145_through_campaign179_duration_seconds": 15.8,
+    "candidate49_signal_entries": 0,
+    "candidate49_execution_entries": 0,
+    "unrecovered_or_unrecorded_failed_exit_codes_bypassed_or_masked": false,
+    "recorded_infrastructure_failure_count": 0
+  },
+  "research_boundary": {
+    "source_row_registry_filing_license_concession_tenure_quota_candidate_comparator_security_price_or_return_value_read": false,
+    "stress_2024_2025_opened": false,
+    "provider_or_web_request_issued": false,
+    "provider_credential_presence_value_or_digest_read": false,
+    "candidate49_ledgers_changed": false,
+    "second_prospective_candidate_created": false,
+    "current_scoring_selection_sizing_positions_or_orders_performed": false,
+    "investment_advice": false
+  },
+  "next_action": "Publish a final Campaign179 state binding this validation, then begin Campaign180 finite offline prevalue research without waiting for 16:30."
+}

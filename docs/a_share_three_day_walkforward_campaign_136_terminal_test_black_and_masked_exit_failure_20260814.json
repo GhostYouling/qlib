@@ -1,0 +1,31 @@
+{
+  "schema_version": 1,
+  "kind": "a_share_three_day_walkforward_campaign136_infrastructure_failure",
+  "recorded_at": "2026-08-14T12:10:00+0800",
+  "attempt_id": "campaign136_infrastructure_007",
+  "phase": "terminal_lifecycle_test_validation",
+  "status": "terminal_test_black_and_masked_exit_failure",
+  "failure": {
+    "pytest_result": "12 passed, 1 skipped",
+    "black_check_exit_code": 1,
+    "black_check_reason": "new terminal lifecycle test required mechanical formatting",
+    "ruff_result": "all checks passed",
+    "combined_shell_exit_code": 0,
+    "combined_shell_exit_was_not_accepted_as_all_checks_passed": true,
+    "failed_exit_code_bypassed": false
+  },
+  "recovery": {
+    "method": "Run Black only on the new unfrozen test, then rerun pytest, Black and Ruff as separately fail-fast checks.",
+    "formatted_test_path": "tests/data_collector_tests/test_a_share_three_day_walkforward_campaign136_terminal.py",
+    "formatted_test_sha256": "de27eea25cd7c36cb8884f0a01eae0bf70b6f596b5cc5574a338137243eb81c8",
+    "scientific_artifacts_changed": false
+  },
+  "research_boundary": {
+    "additional_historical_return_values_read": false,
+    "stress_2024_2025_opened": false,
+    "provider_request_issued": false,
+    "credential_value_or_digest_read": false,
+    "candidate49_ledgers_changed": false,
+    "current_scoring_selection_sizing_positions_or_orders_performed": false
+  }
+}

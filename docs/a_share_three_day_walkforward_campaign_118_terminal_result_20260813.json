@@ -1,0 +1,86 @@
+{
+  "schema_version": 1,
+  "kind": "a_share_three_day_walkforward_campaign118_terminal_result",
+  "status": "terminal_zero_development_survivors_stress_not_opened",
+  "recorded_at": "2026-08-13T22:44:00+08:00",
+  "factor": "intraday_top_decile_amount_event_spacing_entropy_25g",
+  "direction": "higher",
+  "development_preregistration": {
+    "path": "docs/a_share_three_day_walkforward_campaign_118_preregistration.json",
+    "sha256": "b6cae5dcb7676e0beb237c1e29a00d1f240cd6171aa7e67bb4912a7255c52a93"
+  },
+  "development_activation": {
+    "path": "docs/a_share_three_day_walkforward_campaign_118_development_activation_binding_20260813.json",
+    "sha256": "0db2b9434013d23ef0a3dd77646902d776c117a55fd5124eb4149fc00ffb2c69"
+  },
+  "attempt_ledger": {
+    "path": "data/experiments/short_horizon/historical_walkforward/campaign_118/research_attempt_ledger_v2.json",
+    "sha256": "1100be1131016f6514d793ebe05e62d747c01fb663ba8c11eaebeefffefbbe5a"
+  },
+  "development_outputs": {
+    "trial_ledger": {
+      "path": "data/experiments/short_horizon/historical_walkforward/campaign_118/walkforward/trial_ledger.json",
+      "sha256": "91c8aac81f1dc75bdd0cc3b3f8ef8a04bc327e838a464fd141c267488fd933d0",
+      "entry_count": 1,
+      "chain_tip_sha256": "37c34faeabc019080884501a55703b9dafafc0e7007b1d912db4deb0913ba462"
+    },
+    "development_survivors": {
+      "path": "data/experiments/short_horizon/historical_walkforward/campaign_118/walkforward/development_survivors.json",
+      "sha256": "ac118f6d348c5fa809ac2187c8e5557de22d3607f744b6300d76802782c6910d",
+      "selected_survivor_count": 0
+    },
+    "exposed_stress_consumption_record": {
+      "path": "data/experiments/short_horizon/historical_walkforward/campaign_118/walkforward/exposed_stress_consumption_record.json",
+      "sha256": "f2910ebea9811fade37a280df4e361d43e0e401fd328bf18f0263c469274de55",
+      "status": "not_opened_zero_development_survivors"
+    },
+    "campaign_report": {
+      "path": "data/experiments/short_horizon/historical_walkforward/campaign_118/walkforward/campaign_report.json",
+      "sha256": "1a469584cce1678f65219e60058903a19c679c903b1990aec2124747c40052fd"
+    }
+  },
+  "development_decision": {
+    "trial_id": "wf118_intraday_top_decile_amount_event_spacing_entropy_25g_single_higher",
+    "trial_count": 1,
+    "survivor_count": 0,
+    "positive_mean_rank_ic_fold_count": 3,
+    "positive_normalized_return_fold_count": 2,
+    "positive_pilot_return_fold_count": 0,
+    "median_validation_mean_rank_ic": 0.0471549886596063,
+    "median_validation_spread": 0.0017102781960086242,
+    "median_validation_normalized_return": 0.02364079332645197,
+    "median_validation_pilot_return_10bp": -0.02006327685075482,
+    "development_aggregate_pilot_return_0bp": 0.04292525557255766,
+    "development_aggregate_pilot_return_5bp": -0.0072920444779676075,
+    "development_aggregate_pilot_return_10bp": -0.06473970084908443,
+    "development_aggregate_pilot_return_20bp": -0.158867992390459,
+    "worst_validation_normalized_drawdown": -0.25634789928169766,
+    "operationally_admissible": true,
+    "operational_rejection_reasons": [],
+    "validation_quality_gate_passed": false,
+    "validation_quality_rejection_reasons": [
+      "insufficient_positive_pilot_return_folds",
+      "median_validation_pilot_return",
+      "worst_validation_normalized_drawdown",
+      "nonpositive_development_aggregate_20bp_return"
+    ]
+  },
+  "scientific_interpretation": "The factor showed positive mean Rank-IC in all three validation folds and positive normalized return in two folds, but no validation fold had positive 10bp board-lot pilot return. Median validation 10bp pilot return was -2.0063%, worst validation normalized drawdown was -25.6348%, and the 2019-2023 aggregate pilot return turned from +4.2925% at 0bp to -0.7292% at 5bp, -6.4740% at 10bp and -15.8868% at 20bp. The frozen cost, consistency and drawdown gates therefore reject it.",
+  "terminal_boundary": {
+    "retry_reverse_redefine_recount_retie_regap_transform_filter_subset_year_select_reweight_combine_or_rescue_allowed": false,
+    "stress_2024_2025_opened": false,
+    "stress_2024_2025_return_values_read": false,
+    "candidate49_historical_backfill_performed": false,
+    "candidate49_ledgers_changed": false,
+    "second_prospective_candidate_created": false,
+    "current_scoring_selection_sizing_positions_or_orders_performed": false,
+    "investment_advice": false
+  },
+  "candidate49": {
+    "signal_ledger_sha256": "5193f00d7f36da003f53cec387900da4c3d002299f5dfcfc1a95eaa199ed3a79",
+    "execution_ledger_sha256": "d57a3e61eac969e42cafa418ccd8c0a5ee65dcf69da145bb2c096c2a02a2ea4f",
+    "signal_entry_count": 0,
+    "execution_entry_count": 0
+  },
+  "next_action": "Append Campaign118 once to the future complete-definition and numeric-comparator libraries because it passed coverage and all 135 uniqueness gates, preserve its development rejection, and begin Campaign119 only from a genuinely new prevalue-frozen mechanism."
+}

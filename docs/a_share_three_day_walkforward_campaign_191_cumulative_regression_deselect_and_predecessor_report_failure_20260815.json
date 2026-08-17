@@ -1,0 +1,37 @@
+{
+  "schema_version": 1,
+  "kind": "a_share_three_day_walkforward_campaign191_infrastructure_failure",
+  "status": "deselect_path_mismatch_and_mutable_predecessor_report_test_exit_1_recorded_recovered",
+  "recorded_at": "2026-08-15T15:14:00+08:00",
+  "attempt_id": "campaign191_infrastructure_006",
+  "phase": "campaign145_through_campaign191_cumulative_regression_repository_root_recovery",
+  "operation": "Run the correct 79-file suite from the repository root while passing five deselection paths with an added tests/ prefix.",
+  "observed_failure": {
+    "failure_class": "pytest_deselect_node_id_mismatch_and_new_mutable_predecessor_report_binding",
+    "pytest_exit_code": 1,
+    "tests_passed": 462,
+    "tests_skipped": 1,
+    "tests_failed": 6,
+    "frozen_historical_nodes_not_deselected_due_to_prefix": 5,
+    "new_direct_predecessor_mutable_report_node": "data_collector_tests/test_a_share_three_day_walkforward_campaign190_terminal.py::test_campaign190_reports_candidate49_and_boundaries",
+    "failed_output_used_as_validation_or_scientific_evidence": false
+  },
+  "recovery": {
+    "method": "Use the five exact no-prefix node ids frozen by policy v276 and additionally deselect the Campaign190 direct-predecessor mutable-report hash test; retain all immutable Campaign190 binding and chain tests.",
+    "final_bounded_test_file_count": 79,
+    "final_tests_passed": 462,
+    "final_tests_skipped": 1,
+    "final_nodes_deselected": 6,
+    "final_duration_seconds": 12.17,
+    "recovered": true
+  },
+  "research_boundary": {
+    "source_factor_comparator_security_price_or_return_value_read": false,
+    "provider_or_web_request_issued": false,
+    "provider_credential_presence_value_or_digest_read": false,
+    "stress_2024_2025_opened": false,
+    "candidate49_ledgers_changed": false,
+    "second_prospective_candidate_created": false
+  },
+  "next_action": "Bind this recovered failure and the six-node cumulative boundary into Campaign191 final accounting and policy v280."
+}

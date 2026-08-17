@@ -1,0 +1,42 @@
+{
+  "version": 3,
+  "kind": "a_share_three_day_walkforward_campaign063_terminal_completion_freeze",
+  "status": "frozen_zero_admissible_factors_before_comparisons_or_returns_current_suite_transition_failure_recorded",
+  "recorded_at": "2026-08-05T07:01:00+08:00",
+  "supersedes_without_rewriting": {
+    "path": "docs/a_share_three_day_walkforward_campaign_063_terminal_completion_freeze_v2_20260805.json",
+    "sha256": "54df2f8e6f0c712074be51d518081148c53c47964f226964c42404066adaee8c"
+  },
+  "bindings": {
+    "current_research_record": {
+      "path": "docs/a_share_three_day_walkforward_campaign_063_research_record_v3.json",
+      "sha256": "d6add0ad9f274f2071c60b61b1c43b3745475712ac44da3d3570c94b8f753738"
+    },
+    "current_research_attempt_ledger": {
+      "path": "data/experiments/short_horizon/historical_walkforward/campaign_063/research_attempt_ledger_v7.json",
+      "sha256": "7bc00df7dfeca19bfdbd7912365ec70e617452c3244e9102946fa8afe11ae010"
+    },
+    "current_suite_transition_failure": {
+      "path": "docs/a_share_three_day_walkforward_campaign_063_terminal_current_suite_state_transition_failure_20260805.json",
+      "sha256": "e970485f2de781848d2b4744adbb207741ed998018fea3b4c609f2bf55afa1d1"
+    }
+  },
+  "frozen_semantics": {
+    "factor_terminal": true,
+    "candidate_eligible_rows": 0,
+    "comparison_values_read": false,
+    "historical_daily_prices_or_forward_returns_read": false,
+    "development_trial_count": 0,
+    "stress_2024_2025_opened": false,
+    "campaign063_infrastructure_only_failure_count": 6,
+    "campaign063_complete_factor_attempt_count": 1,
+    "campaign063_distinct_attempt_count": 7,
+    "campaign063_ledger_entry_count": 7,
+    "cumulative_historical_research_attempt_count": 368,
+    "cumulative_return_reading_development_trial_count": 271,
+    "research_result_or_gate_decision_changed_since_v2": false,
+    "candidate49_ledgers_changed": false,
+    "provider_request_issued": false,
+    "current_scoring_selection_sizing_or_orders_performed": false
+  }
+}

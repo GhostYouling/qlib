@@ -1,0 +1,20 @@
+{
+  "schema_version": 1,
+  "kind": "a_share_three_day_walkforward_infrastructure_failure_record",
+  "campaign": 127,
+  "attempt_id": "campaign127_infrastructure_003",
+  "recorded_at": "2026-08-14T04:54:01+0800",
+  "phase": "complete_definition_order_digest_calculation",
+  "status": "failed_exit_code_preserved",
+  "failure_class": "python_command_residual_patch_marker_syntax_error",
+  "command_scope": "Hash the already tested pure adapter and synthetic test, reconstruct the 149-definition prefix, append the one Campaign127 definition pair and compute the compact sorted-key JSON order digest.",
+  "observed_failure": "The file hashes printed successfully, then the inline Python parser rejected a stray leading plus before the closing parenthesis. No definition reconstruction or digest computation executed.",
+  "state_change_before_failure": false,
+  "provider_request_issued": false,
+  "provider_credential_loaded": false,
+  "candidate_or_comparator_values_read": false,
+  "daily_price_or_forward_return_values_read": false,
+  "candidate49_ledgers_changed": false,
+  "corrective_boundary": "Preserve this record and rerun only the deterministic no-value order digest without the stray marker.",
+  "failed_exit_code_overridden_or_treated_as_success": false
+}

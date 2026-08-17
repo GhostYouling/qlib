@@ -1,0 +1,31 @@
+{
+  "schema_version": 1,
+  "kind": "a_share_three_day_walkforward_campaign217_infrastructure_failure",
+  "recorded_at": "2026-08-16T00:17:00+08:00",
+  "timestamp_semantics": "monotonic_logical_append_time_not_host_wall_clock_measurement",
+  "attempt_id": "campaign217_infrastructure_002",
+  "phase": "campaign216_authority_and_worktree_inventory",
+  "status": "failed_combined_worktree_and_authority_inventory_output_truncated_discarded",
+  "failure": {
+    "operation": "combined repository path, host time, Git worktree status, authority hash and Campaign216 file inventory read",
+    "cause": "the existing dirty research worktree contains thousands of files and the combined output was truncated",
+    "recovery": "discard the combined inventory as complete evidence and perform bounded state, ledger and hash reads independently"
+  },
+  "recovery_verification": {
+    "authoritative_git_worktree": "/Volumes/DIsk/Disk-Coding/qlib",
+    "host_date": "2026-08-16",
+    "host_day_of_week": "Sunday",
+    "bounded_campaign216_state_hash_verified": true,
+    "bounded_candidate49_signal_and_execution_ledgers_verified": true,
+    "failed_combined_output_used_as_scientific_evidence": false
+  },
+  "research_boundary": {
+    "candidate_or_comparator_security_price_or_return_value_read": false,
+    "stress_2024_2025_opened": false,
+    "provider_or_web_request_issued": false,
+    "provider_credential_presence_value_or_digest_read": false,
+    "candidate49_plan_or_run_executed": false,
+    "candidate49_ledgers_changed": false,
+    "current_use_or_investment_advice": false
+  }
+}

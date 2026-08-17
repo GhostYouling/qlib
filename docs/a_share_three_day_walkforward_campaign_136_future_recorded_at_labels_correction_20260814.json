@@ -1,0 +1,70 @@
+{
+  "schema_version": 1,
+  "kind": "a_share_three_day_walkforward_campaign136_infrastructure_failure",
+  "recorded_at": "2026-08-14T12:19:38+0800",
+  "observed_local_time": "2026-08-14T12:19:21+0800",
+  "attempt_id": "campaign136_infrastructure_011",
+  "phase": "terminal_authority_time_validation",
+  "status": "future_recorded_at_labels_correction",
+  "failure": {
+    "reason": "Several manually assigned recorded_at labels were later than the observed Asia/Singapore wall clock.",
+    "file_bytes_or_scientific_order_inferred_from_invalid_labels": false,
+    "failed_exit_code_bypassed": false
+  },
+  "preserved_invalid_time_label_records": [
+    {
+      "path": "docs/a_share_three_day_walkforward_campaign_136_terminal_test_latest_pointer_black_failure_20260814.json",
+      "sha256": "829d012df9972f25837816607cf40c00032521376100346b08e6729769a5c6ec"
+    },
+    {
+      "path": "data/experiments/short_horizon/historical_walkforward/campaign_136/research_attempt_ledger_terminal_delta_v5.json",
+      "sha256": "4565ef38854693beb15d4ba75d595cfe42a8cd9a8cef53d462ce400e67909568"
+    },
+    {
+      "path": "docs/a_share_three_day_walkforward_campaign_136_terminal_result_v5_20260814.json",
+      "sha256": "667d8469e8204345a6359faeb0e31b9471d6c6f7477e52c91a37d61a4bb60d85"
+    },
+    {
+      "path": "docs/a_share_three_day_walkforward_future_numeric_comparison_eligibility_policy_v167_20260814.json",
+      "sha256": "10bea7f80284edb9fe096fcb55670cfede97c87bba34eb47b8c4b00d6bfdb197"
+    },
+    {
+      "path": "docs/a_share_three_day_iteration_status_20260814_campaign136_terminal_v4.json",
+      "sha256": "8f1bf5a7a962911a3e5b52dbff4c7f9e7efd9431167219d68f04380a1d50b968"
+    },
+    {
+      "path": "docs/a_share_three_day_walkforward_campaign_136_terminal_test_delta_chain_assumption_failure_20260814.json",
+      "sha256": "39393a6b681020d108679d4f4a1a8c24bec9b34ff9db58afda5f378ff41a79a6"
+    },
+    {
+      "path": "data/experiments/short_horizon/historical_walkforward/campaign_136/research_attempt_ledger_terminal_delta_v6.json",
+      "sha256": "fbf7d40d741a7a15455d108ed6bfacbe5c43d419525d0bb367490251b7ccbd55"
+    },
+    {
+      "path": "docs/a_share_three_day_walkforward_campaign_136_terminal_result_v6_20260814.json",
+      "sha256": "3cdc2495bf70328c115497bf17a0a9c176313e931e5b8430c1e2100081000e91"
+    },
+    {
+      "path": "docs/a_share_three_day_walkforward_future_numeric_comparison_eligibility_policy_v168_20260814.json",
+      "sha256": "d0dc337c40911c50410fc3b8653709c4a7c2dd195815b6eb465f503898a38069"
+    },
+    {
+      "path": "docs/a_share_three_day_iteration_status_20260814_campaign136_terminal_v5.json",
+      "sha256": "2b981a12a6ef484fb6141ae8b0c360bb29660576832d850053cf4f1747346f2e"
+    }
+  ],
+  "recovery": {
+    "method": "Preserve every invalid-label record byte-for-byte, bind their hashes, and append new authoritative ledger/result/policy/status records with a non-future observed timestamp.",
+    "scientific_artifacts_changed": false,
+    "scientific_metrics_changed": false,
+    "append_chain_order_source": "explicit authoritative_predecessor hashes, not recorded_at labels"
+  },
+  "research_boundary": {
+    "additional_historical_return_values_read": false,
+    "stress_2024_2025_opened": false,
+    "provider_request_issued": false,
+    "credential_value_or_digest_read": false,
+    "candidate49_ledgers_changed": false,
+    "current_scoring_selection_sizing_positions_or_orders_performed": false
+  }
+}

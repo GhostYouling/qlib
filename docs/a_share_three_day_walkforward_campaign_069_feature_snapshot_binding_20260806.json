@@ -1,0 +1,55 @@
+{
+  "version": 1,
+  "kind": "a_share_three_day_walkforward_campaign069_feature_snapshot_binding",
+  "status": "immutable_snapshot_independently_verified_pending_ordered_no_return_gates",
+  "recorded_at": "2026-08-06T03:35:00+08:00",
+  "protocol": {
+    "path": "docs/a_share_three_day_walkforward_campaign_069_no_return_preregistration.json",
+    "sha256": "c044776cff0031ac3e65a4a3de51c06b90e1c1c0c1ba94895f79e900628dffe1"
+  },
+  "feature_implementation_freeze": {
+    "path": "docs/a_share_three_day_walkforward_campaign_069_feature_implementation_freeze_20260806.json",
+    "sha256": "c46767b49273b1cd7a1fa028f4f76dec88511e70d6f37280dbeb6c404d0d5183"
+  },
+  "feature_runner": {
+    "path": "scripts/a_share_three_day_walkforward_campaign069_features.py",
+    "sha256": "f72cbd4b88aca872d7255fee60151e5344ae72b25b41c0e808c1a2e1698e0b75"
+  },
+  "snapshot_manifest": {
+    "manifest_path": "/Volumes/DIsk/qlib-a-share-tushare-1m/derived/a_share/rich/tushare/minute_walkforward_campaign069_feature_library/tushare_stk_mins_1m_2019_2025_ea0cbb8f_walkforward_campaign069_feature_library_v1/snapshot_manifest.json",
+    "manifest_sha256": "6023becea579d0f6ed6ac27316421294f13fd6759d6d51790a31940526e363b7",
+    "dataset_sha256": "7c4b2e446bf4ebb64b4d3e992510610b1f0059fde868dff0bf02a06b7ce75960",
+    "partitions": 33015,
+    "rows": 7724498,
+    "eligible_rows": 7229697
+  },
+  "independent_verification": {
+    "status": "verified",
+    "partitions": 33015,
+    "rows": 7724498,
+    "eligible_rows": 7229697,
+    "eligible_value_range": [
+      -1.0,
+      1.0
+    ],
+    "all_partition_byte_and_frame_hashes_rechecked": true,
+    "aggregate_dataset_digest_recomputed": true,
+    "candidate_formula_and_missingness_rechecked": true
+  },
+  "research_boundary": {
+    "comparison_values_read": false,
+    "historical_daily_price_fields_read": [],
+    "historical_forward_return_fields_read": false,
+    "provider_request_issued": false,
+    "candidate49_historical_return_read": false,
+    "candidate49_prospective_ledgers_changed": false,
+    "second_prospective_candidate_created": false,
+    "training_or_model_fitting_performed": false,
+    "current_scoring_selection_sizing_or_orders_performed": false
+  },
+  "decision": {
+    "snapshot_accepted_for_coverage_first_no_return_audit": true,
+    "predictive_value_established": false,
+    "next_action": "Bind the already-frozen audit implementation to this exact snapshot, then compute coverage before either comparator source may be loaded."
+  }
+}

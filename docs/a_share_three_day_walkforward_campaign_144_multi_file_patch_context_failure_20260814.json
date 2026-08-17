@@ -1,0 +1,33 @@
+{
+  "schema_version": 1,
+  "kind": "a_share_three_day_walkforward_campaign144_infrastructure_failure",
+  "status": "recorded_before_campaign144_terminal_validation",
+  "recorded_at": "2026-08-14T19:32:25+08:00",
+  "attempt_id": "campaign144_infrastructure_012",
+  "failure": {
+    "phase": "terminal_accounting_report_and_test_pointer_update",
+    "process_exit_code": 1,
+    "cause": "A multi-file apply_patch used a pre-Black test context that no longer matched; apply_patch rejected the whole patch before writing any target file.",
+    "target_files_modified": false,
+    "failed_exit_code_bypassed": false,
+    "later_success_used_to_mask_failure": false
+  },
+  "safe_recovery": {
+    "preserve_this_record": true,
+    "allowed_action": "Apply small exact-context patches to the reports and formatted test separately, then append this failure to a new ledger delta.",
+    "scientific_result_or_frozen_threshold_change_allowed": false
+  },
+  "research_boundary": {
+    "source_rows_or_column_values_read": false,
+    "candidate_or_comparator_values_read": false,
+    "historical_daily_price_or_forward_return_values_read": false,
+    "stress_2024_2025_opened": false,
+    "provider_request_issued": false,
+    "provider_credential_value_or_digest_read": false,
+    "candidate49_historical_backfill_performed": false,
+    "candidate49_ledgers_changed": false,
+    "second_prospective_candidate_created": false,
+    "current_scoring_selection_sizing_positions_or_orders_performed": false,
+    "investment_advice": false
+  }
+}

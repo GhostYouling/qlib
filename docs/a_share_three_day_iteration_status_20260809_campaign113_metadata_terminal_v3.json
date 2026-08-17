@@ -1,0 +1,154 @@
+{
+  "schema_version": 21,
+  "kind": "a_share_three_day_iteration_status",
+  "status": "campaign113_terminal_metadata_schema_gate_final_policy_v80",
+  "recorded_at": "2026-08-09T02:07:17+08:00",
+  "supersedes_without_rewriting": {
+    "path": "docs/a_share_three_day_iteration_status_20260809_campaign113_metadata_terminal_v2.json",
+    "sha256": "82614461c9ded52cfadbc6d9dbecc2faf4815f9f485da46fe36c0f25d360eff9",
+    "preserved": true,
+    "reason": "Append-only accounting for a rejected combined integrity command; scientific state unchanged."
+  },
+  "workspace_resolution": {
+    "heartbeat_declared_workspace": "/Users/niyufei/Coding/qlib",
+    "heartbeat_declared_path_is_repository": false,
+    "authoritative_workspace": "/Volumes/DIsk/Disk-Coding/qlib"
+  },
+  "research_mode": {
+    "historical_walkforward_is_primary_iteration_engine": true,
+    "offline_work_allowed_at_any_local_time": true,
+    "candidate49_future_observation_is_independent_confirmation_layer": true,
+    "historical_results_are_not_current_recommendations": true
+  },
+  "data_roots": {
+    "historical_minute_root": "/Volumes/DIsk/qlib-a-share-tushare-1m",
+    "latest_preserved_candidate49_failed_staging_root": "/Volumes/DIsk/qlib-a-share-tushare-daily-2026-08-07",
+    "new_daily_staging_root_created_today": false,
+    "failed_2026_07_27_root_reused": false
+  },
+  "effective_future_numeric_policy": {
+    "path": "docs/a_share_three_day_walkforward_future_numeric_comparison_eligibility_policy_v80_20260809.json",
+    "sha256": "cc56b81b4520fb5aeb2e7add89209c60a305cbfb1142e15d61cfdc9837708eaa",
+    "complete_definition_count": 141,
+    "complete_definition_order_sha256": "ccab6e3d9d81b0a02d4ff178fdd442b26a1e68e3655e1c6f5b2fcb28cd4a4559",
+    "numeric_comparator_count": 134,
+    "numeric_comparator_order_sha256": "31d788db467f558a0ac538315343090f1b3ad4cb27a26136a49ebaa88b2fdbf2"
+  },
+  "campaign113_terminal_stage": {
+    "metadata_schema_failure": {
+      "path": "docs/a_share_official_exchange_enforcement_metadata_schema_failure_20260809.json",
+      "sha256": "ea44bd881db6f86fa311fe3c92f31aa465a1bdc845545a92bd2981ed917bbb65"
+    },
+    "terminal_result": {
+      "path": "docs/a_share_three_day_walkforward_campaign_113_metadata_terminal_result_v4_20260809.json",
+      "sha256": "cc1a1378310b2c66c31e0ae3bc58e7740463ad5b5f983c4a71dfa3e157f4b44e"
+    },
+    "latest_attempt_ledger": {
+      "path": "data/experiments/short_horizon/historical_walkforward/campaign_113/research_attempt_ledger_v7.json",
+      "sha256": "69cbcf83a33d79881c879513c63b2d2bd71a40e2b82a2f917d076ec56477ab1b",
+      "extends_v6_sha256": "de92a8f3e1ef5b3bd4ac03d8f7098dac746500014afdb1e54059ae0fe43f7726",
+      "extension_entry_count": 1,
+      "current_chain_tip_sha256": "f8ed754cfb4e1e5b10da2021238778adbeb7e34b2764a96febb00bb4ef18d3ec"
+    },
+    "factor_name": "official_exchange_enforcement_recovery_session_age_60sessions",
+    "complete_factor_definition_count": 1,
+    "numeric_snapshot_count": 0,
+    "development_trial_count": 0,
+    "stress_2024_2025_opened": false,
+    "campaign_terminal": true,
+    "terminal_stage": "official_metadata_finite_role_schema_gate",
+    "post_exposure_label_expansion_or_adapter_repair_allowed": false
+  },
+  "accounting": {
+    "campaign113_attempt_count": 18,
+    "campaign113_infrastructure_failure_count": 15,
+    "campaign113_prevalue_scientific_attempt_count": 3,
+    "campaign113_complete_factor_attempt_count": 1,
+    "campaign113_return_reading_development_trial_count": 0,
+    "cumulative_historical_research_attempt_count": 845,
+    "cumulative_return_reading_development_trial_count": 302
+  },
+  "candidate49": {
+    "registration_id": "candidate49_intraday_cumulative_vwap_crossing_rate_240m_v1",
+    "remains_only_active_prospective_candidate": true,
+    "signal_ledger": {
+      "path": "data/experiments/short_horizon/candidate49_future_signal_ledger.json",
+      "sha256": "5193f00d7f36da003f53cec387900da4c3d002299f5dfcfc1a95eaa199ed3a79",
+      "entry_count": 0
+    },
+    "execution_ledger": {
+      "path": "data/experiments/short_horizon/candidate49_future_execution_ledger.json",
+      "sha256": "d57a3e61eac969e42cafa418ccd8c0a5ee65dcf69da145bb2c096c2a02a2ea4f",
+      "entry_count": 0
+    },
+    "latest_preserved_source_failure": {
+      "path": "docs/a_share_candidate49_20260807_daily_source_failure_record.json",
+      "sha256": "8b8eec87a1f20c424703cf70ea9eae87f09c7b1e5c9a5754c0bde9cc2f9c839f",
+      "failure_stage": "stock_basic",
+      "same_day_retry_allowed": false
+    },
+    "historical_backfill_performed": false,
+    "second_prospective_candidate_created": false
+  },
+  "local_session_status": {
+    "local_date": "2026-08-09",
+    "timezone": "Asia/Singapore",
+    "weekday": "Sunday",
+    "accepted_local_trading_day": false,
+    "candidate49_provider_workflow_allowed_today": false,
+    "candidate49_plan_or_run_executed": false,
+    "new_daily_staging_root_created": false
+  },
+  "provider_credential": {
+    "source": ".env",
+    "repository_dotenv_exists": true,
+    "repository_dotenv_is_regular_file": true,
+    "repository_dotenv_is_symlink": false,
+    "repository_dotenv_mode": "0600",
+    "repository_dotenv_git_ignored": true,
+    "tushare_token_entry_count": 1,
+    "tushare_token_nonempty": true,
+    "secret_printed_hashed_logged_or_persisted": false,
+    "candidate49_provider_request_issued": false
+  },
+  "verification": {
+    "prior_semantic_test_receipt": "33 passed in 2.92s",
+    "prior_verification_record": {
+      "path": "docs/a_share_three_day_walkforward_campaign_113_metadata_terminal_verification_20260809.json",
+      "sha256": "62a40166e5a04691c68d696a8b6084dab3116f4c155c7dfa78e883e8eef56c1b"
+    },
+    "latest_integrity_check": "pending_final_read_only_verification_record"
+  },
+  "reports": {
+    "campaign113_report": {
+      "path": "docs/a_share_three_day_walkforward_campaign_113_report.md",
+      "sha256": "56aad568fd55652694271742fdeaafccd30b7066c2f2e303c43ecb084734c6b8"
+    },
+    "current_research_report": {
+      "path": "data/experiments/short_horizon/current_research_report.md",
+      "sha256": "a8fdfe4fcf4693bd2f5f9438e9a4f1dba434fb7f9eee6a6c54f53e1d96109e9d"
+    },
+    "three_day_research_report": {
+      "path": "data/experiments/short_horizon/three_day_research_report.md",
+      "sha256": "ab09a6bf5a600ef1f0e0fa84b5889830799e87f2c461cda1c60a30c1f7d792eb"
+    },
+    "data_pipeline": {
+      "path": "docs/a_share_data_pipeline.md",
+      "sha256": "ade82a6fe52285194c9df1ed8b6a604ba3b1ba5fb2e9455b8a9ec75d2692d443"
+    }
+  },
+  "next_safe_action": "Keep Campaign113 terminal. A later offline campaign may start only from a genuinely independent pre-row mechanism; do not repair Campaign113 or activate a second prospective candidate.",
+  "research_boundary": {
+    "metadata_only_exchange_page_or_schema_requests_issued": true,
+    "source_event_rows_accessed_persisted_or_counted": false,
+    "source_event_row_count": null,
+    "candidate_or_comparison_values_read": false,
+    "historical_daily_price_or_forward_return_values_read": false,
+    "stress_2024_2025_opened": false,
+    "candidate49_historical_backfill_performed": false,
+    "candidate49_ledgers_changed": false,
+    "second_prospective_candidate_created": false,
+    "current_scoring_selection_sizing_or_orders_performed": false,
+    "investment_advice": false
+  }
+}

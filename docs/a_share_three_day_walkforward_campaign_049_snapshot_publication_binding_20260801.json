@@ -1,0 +1,60 @@
+{
+  "version": 1,
+  "kind": "a_share_three_day_walkforward_campaign049_snapshot_publication_binding",
+  "status": "immutable_campaign049_feature_snapshot_verified_before_comparison_or_return_values",
+  "recorded_at": "2026-08-01T06:13:00Z",
+  "purpose": "Bind the complete Campaign049 amount-profile feature snapshot and its field-level research boundary before coverage, comparison, daily-price, or return gates.",
+  "no_return_protocol": {
+    "path": "docs/a_share_three_day_walkforward_campaign_049_no_return_preregistration.json",
+    "sha256": "b1cddf5168229877d57b58f556c52cb2f9799f4e387c4ec8184fb230e30f6588"
+  },
+  "implementation_freeze": {
+    "path": "docs/a_share_three_day_walkforward_campaign_049_feature_implementation_freeze_20260801.json",
+    "sha256": "3f3cb1ff92d3c3d7a50ff285122ba2f77531b89f35a97eb226b078e63810181b"
+  },
+  "bound_build_entrypoint": {
+    "path": "scripts/a_share_three_day_walkforward_campaign049_features_v2.py",
+    "sha256": "01b045c433d52f919c85df72ac74863ec02232b262a35681fe451221e436266a"
+  },
+  "snapshot": {
+    "path": "/Volumes/DIsk/qlib-a-share-tushare-1m/derived/a_share/rich/tushare/minute_walkforward_campaign049_feature_library/tushare_stk_mins_1m_2019_2025_ea0cbb8f_walkforward_campaign049_feature_library_v1/snapshot_manifest.json",
+    "sha256": "6c27933f232926f33d750f624fc6ad32c394c2e97922043502e997275c1ace1d",
+    "dataset_sha256": "c60c1f245e2bbfdd12acdcfdd8417799684fcda09caf4472270d870ba911164c",
+    "partitions": 33015,
+    "rows": 7724498,
+    "eligible_rows": 7652927,
+    "all_partition_byte_and_frame_hashes_valid": true,
+    "verified_partitions": 33015,
+    "verified_rows": 7724498
+  },
+  "source_semantics": {
+    "source_fields_read": [
+      "datetime",
+      "symbol",
+      "provider",
+      "amount"
+    ],
+    "source_open_high_low_close_read": false,
+    "source_volume_read": false,
+    "source_amount_read": true,
+    "negative_amount_rows": 0,
+    "nonfinite_amount_rows": 0,
+    "invalid_probability_or_divergence_rows": 0,
+    "endpoint_canonicalized_rows": 0
+  },
+  "research_boundary": {
+    "candidate_values_read_during_frozen_build": true,
+    "comparison_values_read": false,
+    "historical_daily_price_fields_read": false,
+    "historical_forward_returns_read": false,
+    "provider_request_issued": false,
+    "candidate49_historical_return_signal_execution_or_milestone_backfill_performed": false,
+    "candidate49_ledgers_changed": false,
+    "candidate50_activation_created": false,
+    "current_scoring_selection_sizing_or_orders_performed": false
+  },
+  "decision": {
+    "snapshot_frozen": true,
+    "next_action": "Use a new additive entrypoint that binds this snapshot and run the frozen coverage gate before any comparison value."
+  }
+}

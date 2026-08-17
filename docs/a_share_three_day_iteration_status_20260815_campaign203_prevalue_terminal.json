@@ -1,0 +1,106 @@
+{
+  "schema_version": 1,
+  "kind": "a_share_three_day_iteration_status",
+  "status": "campaign203_validation_passed_goal_active_campaign204_offline_prevalue_authorized",
+  "recorded_at": "2026-08-15T19:40:15+08:00",
+  "timestamp_semantics": "monotonic logical append time after Campaign203 terminal validation",
+  "supersedes_without_rewriting": {
+    "path": "docs/a_share_three_day_iteration_status_20260815_campaign202_prevalue_terminal.json",
+    "sha256": "4bd24c598d49974dd261d3d911cd1d7c3530184f02bbab9392b120be382aa4dd",
+    "preserved": true
+  },
+  "authoritative_inputs": {
+    "passenger_transportation_booking_trip_and_disruption_source_frontier": {
+      "path": "docs/a_share_three_day_walkforward_campaign_203_passenger_transportation_booking_ticketing_checkin_boarding_trip_completion_disruption_reaccommodation_refund_compensation_lifecycle_source_frontier_20260815.json",
+      "sha256": "62dc038a0fd56c04c4332ef82051b3bc83820f6b8d45b7b282dd271ad1927829"
+    },
+    "attempt_ledger_v7": {
+      "path": "data/experiments/short_horizon/historical_walkforward/campaign_203/research_attempt_ledger_v7.json",
+      "sha256": "d5f919699887eb325518afd6e6bb371bb5b879e41c91143e0d0d0cffd3452903"
+    },
+    "terminal_result_v7": {
+      "path": "docs/a_share_three_day_walkforward_campaign_203_terminal_result_v7_20260815.json",
+      "sha256": "81ef804207834378ea29607b76d0d5724468ca68a79b0a1d477f648004dc98a8"
+    },
+    "policy_v304": {
+      "path": "docs/a_share_three_day_walkforward_future_numeric_comparison_eligibility_policy_v304_20260815.json",
+      "sha256": "4721525d498e00e05c45a739b281395af7c78e23be841aa3a68d0180b94a6536"
+    },
+    "terminal_validation": {
+      "path": "docs/a_share_three_day_walkforward_campaign_203_terminal_validation_20260815.json",
+      "sha256": "31d0f16ea91d957e8ecf053a9465ea4489c188338389c22bc61cafed90197e3e"
+    }
+  },
+  "campaign203": {
+    "domains_reviewed": [
+      "issuer_as_passenger_transportation_provider_booking_ticketing_checkin_boarding_trip_completion_baggage_disruption_reaccommodation_refund_compensation_lifecycle"
+    ],
+    "terminal_phase": "finite_prevalue_passenger_transportation_booking_reservation_ticketing_checkin_boarding_trip_completion_disruption_reaccommodation_refund_compensation_lifecycle_source_admission",
+    "passenger_transportation_lifecycle_routes_reviewed": 7,
+    "genuinely_new_issuer_state_routes": 3,
+    "source_admission_deferrals_not_factor_failures": 3,
+    "relabeling_overlap_operator_or_combination_route_rejections": 4,
+    "selected_candidate_count": 0,
+    "complete_factor_definition_created": false,
+    "numeric_comparator_created": false
+  },
+  "effective_accounting": {
+    "campaign203_attempt_count": 15,
+    "campaign203_scientific_attempt_count": 7,
+    "campaign203_infrastructure_failure_count": 8,
+    "cumulative_historical_research_attempt_count": 1859,
+    "cumulative_return_reading_development_trial_count": 314,
+    "chain_tip_sha256": "f023be77196543c68005447b555284f03981c68a291264f2fc7581bcfff0e208"
+  },
+  "library_state": {
+    "complete_factor_definition_count": 158,
+    "complete_factor_definition_order_sha256": "4819c7fd7c0795d7598a52f3c615e3f117d5f4ecd9332974bc8e3dfa57c96667",
+    "eligible_numeric_comparator_count": 142,
+    "eligible_numeric_comparator_order_sha256": "5d1b35fb5a0d8ac9293008db9963c4a60a94dc940c237c3ed259e5ce44f14aaf",
+    "changed_by_campaign203": false
+  },
+  "candidate49": {
+    "sole_prospective_candidate": true,
+    "signal_ledger_sha256": "5193f00d7f36da003f53cec387900da4c3d002299f5dfcfc1a95eaa199ed3a79",
+    "signal_entry_count": 0,
+    "execution_ledger_sha256": "d57a3e61eac969e42cafa418ccd8c0a5ee65dcf69da145bb2c096c2a02a2ea4f",
+    "execution_entry_count": 0,
+    "ledgers_changed": false
+  },
+  "candidate49_daily_20260815": {
+    "local_day": "Saturday",
+    "accepted_local_trading_day": false,
+    "future_session_plan_or_run_executed": false,
+    "provider_credential_presence_value_or_digest_read": false,
+    "network_request_issued": false
+  },
+  "validation_results": {
+    "focused_tests_passed": 2,
+    "cumulative_tests_passed": 474,
+    "cumulative_tests_skipped": 1,
+    "cumulative_nodes_deselected": 18,
+    "independent_validation_passed": true,
+    "bounded_git_diff_check_passed": true
+  },
+  "research_boundary": {
+    "historical_offline_prevalue_work_may_continue_at_any_local_time": true,
+    "failed_or_truncated_output_used_as_scientific_or_validation_evidence": false,
+    "source_passenger_booking_ticket_trip_baggage_disruption_compensation_factor_comparator_security_price_or_return_value_read": false,
+    "directly_identifiable_or_precise_passenger_travel_record_read": false,
+    "stress_2024_2025_opened": false,
+    "provider_or_web_request_issued": false,
+    "provider_credential_presence_value_or_digest_read": false,
+    "candidate49_plan_or_run_executed": false,
+    "candidate49_ledgers_changed": false,
+    "second_prospective_candidate_created": false,
+    "current_scoring_selection_sizing_positions_or_orders_performed": false,
+    "investment_advice": false
+  },
+  "goal": {
+    "objective": "请持续迭代因子。",
+    "status": "active",
+    "campaign203_terminal_does_not_complete_goal": true,
+    "campaign204_offline_prevalue_work_authorized": true
+  },
+  "next_action": "Begin Campaign204 finite offline prevalue research in a genuinely different mechanism domain; keep Candidate49 as the sole prospective confirmation layer and keep 2024-2025 closed."
+}

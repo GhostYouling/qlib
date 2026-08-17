@@ -1,0 +1,127 @@
+{
+  "version": 1,
+  "kind": "a_share_three_day_walkforward_campaign015_concept_scouting",
+  "status": "concept_only_one_new_mechanism_selected_no_formula_no_direction_no_values_no_returns",
+  "recorded_at": "2026-07-28T19:49:45Z",
+  "purpose": "Continue the three-session historical walk-forward program after Campaign014 failed portfolio translation. Select at most one economically distinct minute mechanism without inspecting candidate values, comparison values, daily prices, or forward returns.",
+  "authoritative_bindings": {
+    "iteration_state": {
+      "path": "docs/a_share_three_day_iteration_status_20260729_campaign014.json",
+      "sha256": "c4d1ecf43024588ccd159e6f67141a381d058458d3d97db9d362d819dfea2975",
+      "campaign015_concept_scouting_allowed": true,
+      "candidate50_prospective_activation_allowed": false
+    },
+    "campaign014_research_record": {
+      "path": "docs/a_share_three_day_walkforward_campaign_014_research_record.json",
+      "sha256": "33ba947dcb2abbdfebe896eccd365eb54f51afb1b073c9a61b3de2fec68fb260",
+      "completed": true,
+      "development_survivor_count": 0,
+      "stress_interval_opened": false
+    },
+    "historical_walkforward_policy": {
+      "path": "docs/a_share_three_day_historical_walkforward_research_policy_20260727.json",
+      "sha256": "38426d6161b9bfed323c58caba18feca668b8c9d53e294951a8ba90c01a798bb"
+    }
+  },
+  "source_schema_boundary": {
+    "provider": "tushare",
+    "frequency": "1m",
+    "accepted_source_grid_rows": 241,
+    "continuous_session_rows": "09:31-11:30 and 13:01-15:00",
+    "allowed_source_fields": [
+      "datetime",
+      "symbol",
+      "provider",
+      "high",
+      "low",
+      "close"
+    ],
+    "source_open_volume_and_amount_must_not_be_loaded": true,
+    "daily_price_or_return_substitution_allowed": false,
+    "provider_request_allowed": false
+  },
+  "concepts_rejected_before_formula_or_values": [
+    {
+      "concept": "campaign014_global_union_rescue",
+      "reason": "Component counts, largest components, occupancy bins, convex hulls, arithmetic-price intervals, thresholds, weights, subwindows, and direction changes are prohibited Campaign014 variants."
+    },
+    {
+      "concept": "same_bar_body_wick_or_close_location",
+      "reason": "Same-bar body, wick, close-in-range, and signed candle variants reopen terminal Campaign009 or prior close-pressure mechanisms."
+    },
+    {
+      "concept": "adjacent_interval_overlap_or_gap_variant",
+      "reason": "Interval overlap, containment, Jaccard, gap size, lag, and denominator variants reopen terminal Campaign010."
+    },
+    {
+      "concept": "range_entropy_sequence_or_time_allocation",
+      "reason": "Range concentration, entropy, sequence correlation, reversal, runs, morning/afternoon allocation, and shock conditioning reopen Campaign011, Campaign012, or terminal volatility-resolution mechanisms."
+    },
+    {
+      "concept": "return_moment_sign_run_or_path_rescue",
+      "reason": "Close-return moments, semivariances, sign runs, path efficiency, update frequency, and diffusive variation are terminal."
+    },
+    {
+      "concept": "transaction_price_amount_volume_or_market_peer_variant",
+      "reason": "Transaction-price, amount/volume coupling, price-impact, market-relative, and cumulative-VWAP mechanisms are terminal or prospective Candidate49 mechanisms."
+    }
+  ],
+  "selected_concept": {
+    "concept_name": "intraday_prior_range_breakout_acceptance",
+    "candidate_ordinal": null,
+    "prospective_active": false,
+    "concept_status": "mechanism_only_not_yet_exactly_preregistered",
+    "direction": null,
+    "formula": null,
+    "allowed_source_fields": [
+      "datetime",
+      "symbol",
+      "provider",
+      "high",
+      "low",
+      "close"
+    ],
+    "mechanism": "Measure whether each current one-minute close is accepted beyond the entire high-low auction territory of the immediately preceding minute, and whether accepted escapes are predominantly upward or downward.",
+    "economic_question": "Does repeated upward acceptance outside the previous minute's full traded range indicate directional price discovery that persists from the next open through the third close, beyond ordinary close-to-close noise inside overlapping ranges?",
+    "mandatory_overlap_challenges_before_any_value": [
+      "intraday_adjacent_range_overlap_continuity_238p",
+      "intraday_global_price_range_revisit_240m",
+      "intraday_intrabar_body_range_efficiency_240m",
+      "intraday_signed_path_efficiency_239m",
+      "intraday_upside_semivariance_share_239m",
+      "intraday_return_sign_run_imbalance_238p",
+      "intraday_terminal_close_location_240m",
+      "intraday_transaction_vwap_envelope_asymmetry_240m",
+      "candidate49_intraday_cumulative_vwap_crossing_rate_240m_v1"
+    ],
+    "known_design_risks": [
+      "count versus magnitude weighting, prior versus current range, inclusion of the lunch transition, minimum breakout support, boundary equality, log versus arithmetic distance, direction, and denominator are researcher degrees of freedom that must be frozen before values",
+      "the factor may be a statistical near-synonym of signed path efficiency, upside semivariance, or sign-run imbalance even though only moves beyond a prior full range contribute",
+      "using the current bar's high, low, or open would turn the mechanism into a same-bar candle or adjacent-interval variant and is forbidden",
+      "using cumulative or transaction VWAP would reopen Candidate49 or terminal transaction-price mechanisms"
+    ]
+  },
+  "research_boundary": {
+    "external_minute_partitions_read": false,
+    "external_daily_partitions_read": false,
+    "candidate_values_computed_or_read": false,
+    "comparison_values_read": false,
+    "historical_daily_prices_read": false,
+    "historical_forward_returns_read": false,
+    "formula_or_direction_frozen": false,
+    "training_or_model_fitting_performed": false,
+    "prospective_candidate_created": false,
+    "candidate49_historical_return_read": false,
+    "candidate49_ledgers_changed": false,
+    "current_scoring_selection_sizing_or_order_performed": false,
+    "provider_request_issued": false,
+    "investment_advice": false
+  },
+  "decision": {
+    "selected_concept_count": 1,
+    "selected_concept_may_advance_directly_to_values": false,
+    "required_next_step": "Perform a separate no-value audit against all 38 prior terminal or prospective mechanisms. Only if the economic distinction survives may that audit freeze one exact formula, direction, pair support, equality and missing rules, ordered no-return gates, and one finite development trial before any candidate or comparison value or return is read.",
+    "candidate49_remains_only_prospective_candidate": true,
+    "candidate50_activation_allowed": false
+  }
+}

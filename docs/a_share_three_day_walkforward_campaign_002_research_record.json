@@ -1,0 +1,251 @@
+{
+  "version": 1,
+  "kind": "a_share_three_day_walkforward_campaign002_research_record",
+  "status": "completed_zero_development_survivors_stress_interval_not_opened",
+  "recorded_at": "2026-07-28T02:41:31Z",
+  "purpose": "Record every result and boundary from the second finite historical walk-forward campaign, which tested nonlinear agreement across every pair in the complete eight-factor Campaign001 library.",
+  "campaign": {
+    "path": "docs/a_share_three_day_walkforward_campaign_002_preregistration.json",
+    "sha256": "2f9977f020d4b8bd06b7968e0cfb29287d13e87cf1510881f3acbbe83050d511",
+    "runner": {
+      "path": "scripts/a_share_three_day_walkforward_campaign002.py",
+      "sha256": "71283188f32c602b22aa50df2a055f4f69e657c1e44408b5630535a291374471"
+    },
+    "completion_audit_implementation": {
+      "path": "scripts/a_share_three_day_walkforward_campaign002_completion_audit.py",
+      "sha256": "ec8eb6796fb2b4b7a82de9895179acd6c73af0ae2002716fb24ab8d393ffdb6d"
+    }
+  },
+  "completed_artifacts": {
+    "trial_ledger": {
+      "path": "data/experiments/short_horizon/historical_walkforward/campaign_002/trial_ledger.json",
+      "sha256": "4ad41d59ee0ea2695091e33dd758a93ccb195c5194f488c4a903ffb41f513e99",
+      "entry_count": 84,
+      "development_entry_count": 84,
+      "exposed_stress_entry_count": 0,
+      "infrastructure_failure_count": 0,
+      "chain_tip_sha256": "d65658ccc7c689876cdb9ccc9dd8e3c874a7db545635a9ea5ae9bf1ba5be0936"
+    },
+    "development_survivors": {
+      "path": "data/experiments/short_horizon/historical_walkforward/campaign_002/development_survivors.json",
+      "sha256": "e9af90ee17e5121e826dd08f9d41fc6e57a3d023acecd8387eb6ff8a906f4c54",
+      "trial_decision_count": 84,
+      "operationally_admissible_count": 43,
+      "validation_quality_gate_passer_count": 0,
+      "selected_survivor_count": 0,
+      "exposed_stress_return_fields_read_when_frozen": false
+    },
+    "exposed_stress_consumption_record": {
+      "path": "data/experiments/short_horizon/historical_walkforward/campaign_002/exposed_stress_consumption_record.json",
+      "sha256": "23379775eecfe6da5f36f59e20c31db7943f4bb248caeae3c5c849cb733cd7a3",
+      "stress_interval_opened": false,
+      "reason": "zero_development_survivors"
+    },
+    "campaign_report": {
+      "path": "data/experiments/short_horizon/historical_walkforward/campaign_002/campaign_report.json",
+      "sha256": "247b7b5e46ba16802b3e60e77f312bbe2808c933cc1fb71ae465fef578345c76"
+    },
+    "fresh_price_basis_audit": {
+      "path": "data/metadata/price_basis_audit_20260728T022733Z.json",
+      "sha256": "a5a5a3d673c5a2cc67308d290963671c814c2872f7cd3b23de5e4014b7c7942c",
+      "status": "passed",
+      "raw_file_count": 5451,
+      "row_count": 11425582,
+      "daily_sources": [
+        "baostock"
+      ],
+      "forward_return_fields_read": false
+    }
+  },
+  "development_result": {
+    "period": {
+      "start": "2019-01-01",
+      "end": "2023-12-31"
+    },
+    "expanding_validation_years": [
+      2021,
+      2022,
+      2023
+    ],
+    "frozen_trial_count": 84,
+    "trial_shape": {
+      "unordered_factor_pair_count": 28,
+      "operator_count": 3,
+      "geometric_mean_trial_count": 28,
+      "harmonic_mean_trial_count": 28,
+      "minimum_trial_count": 28
+    },
+    "infrastructure_failure_count": 0,
+    "operationally_admissible_count": 43,
+    "validation_quality_gate_passer_count": 0,
+    "selected_exposed_stress_survivor_count": 0,
+    "quality_failure_counts": {
+      "nonpositive_development_aggregate_20bp_return": 84,
+      "worst_validation_normalized_drawdown": 80,
+      "median_validation_pilot_return": 71,
+      "insufficient_positive_pilot_return_folds": 71,
+      "insufficient_positive_normalized_return_folds": 60,
+      "median_validation_spread": 28,
+      "median_validation_mean_rank_ic": 25,
+      "insufficient_positive_ic_folds": 25
+    },
+    "operational_failure_counts": {
+      "fold_1_board_lot_affordability": 27,
+      "fold_2_board_lot_affordability": 22,
+      "fold_3_board_lot_affordability": 25
+    },
+    "operator_average_views": {
+      "geometric_mean": {
+        "trial_count": 28,
+        "mean_development_aggregate_20bp_return": -0.204246211,
+        "mean_worst_validation_normalized_drawdown": -0.410758669
+      },
+      "harmonic_mean": {
+        "trial_count": 28,
+        "mean_development_aggregate_20bp_return": -0.203867948,
+        "mean_worst_validation_normalized_drawdown": -0.409967867
+      },
+      "minimum": {
+        "trial_count": 28,
+        "mean_development_aggregate_20bp_return": -0.200578851,
+        "mean_worst_validation_normalized_drawdown": -0.399664891
+      }
+    },
+    "closest_validation_consistency_trials": [
+      {
+        "trial_id": "wf002_pair__intraday_return_variance_entropy_238m__late_vwap_to_day_vwap_30m__harmonic_mean",
+        "positive_mean_rank_ic_fold_count": 3,
+        "positive_normalized_return_fold_count": 3,
+        "positive_pilot_return_fold_count": 2,
+        "median_validation_mean_rank_ic": 0.034943253174560526,
+        "median_validation_spread": 0.008842479542992707,
+        "median_validation_pilot_return": 0.006123248626220379,
+        "worst_validation_normalized_drawdown": -0.3049094345143597,
+        "development_aggregate_20bp_return": -0.10632854455259688,
+        "failed_frozen_gates": [
+          "worst_validation_normalized_drawdown",
+          "nonpositive_development_aggregate_20bp_return"
+        ]
+      },
+      {
+        "trial_id": "wf002_pair__intraday_return_variance_entropy_238m__late_vwap_to_day_vwap_30m__geometric_mean",
+        "positive_mean_rank_ic_fold_count": 3,
+        "positive_normalized_return_fold_count": 3,
+        "positive_pilot_return_fold_count": 2,
+        "median_validation_mean_rank_ic": 0.033931816785443956,
+        "median_validation_spread": 0.0075827375671046,
+        "median_validation_pilot_return": 0.008288776343222892,
+        "worst_validation_normalized_drawdown": -0.300434221122849,
+        "development_aggregate_20bp_return": -0.11141170429215508,
+        "failed_frozen_gates": [
+          "worst_validation_normalized_drawdown",
+          "nonpositive_development_aggregate_20bp_return"
+        ]
+      }
+    ],
+    "best_development_aggregate_20bp_trial": {
+      "trial_id": "wf002_pair__intraday_amount_participation_entropy_240m__late_vwap_to_day_vwap_30m__geometric_mean",
+      "development_aggregate_20bp_return": -0.02544411669670732,
+      "development_aggregate_10bp_return": 0.07997923640952176,
+      "development_aggregate_normalized_drawdown": -0.4355362953364108,
+      "development_aggregate_mean_rank_ic": -0.001505136708474021,
+      "conclusion": "Even the least-negative 20bp construction failed cost robustness and had weak association plus excessive drawdown."
+    }
+  },
+  "exposed_stress_result": {
+    "period": {
+      "start": "2024-01-01",
+      "end": "2025-12-31"
+    },
+    "classification": "historically_exposed_stress_replay_not_unseen_or_pristine",
+    "interval_opened": false,
+    "return_fields_read": false,
+    "reason": "The frozen development survivor gate selected zero trials, so the runner closed the campaign without loading 2024-2025 market or factor panels.",
+    "stress_trial_count": 0,
+    "frozen_gate_passer_count": 0
+  },
+  "interpretation": {
+    "nonlinear_consensus_supported": false,
+    "reason": "Requiring two reused mechanisms to agree through geometric, harmonic, or minimum rank aggregation did not overcome costs or drawdown. All 84 combinations lost under the aggregate 20bp pilot view and none satisfied the predeclared validation quality gate.",
+    "post_result_gate_relaxation_performed": false,
+    "prior_terminal_factor_conclusions_changed": false,
+    "historical_pass_or_current_selection_claim": false
+  },
+  "next_iteration": {
+    "campaign_id": "a_share_three_day_walkforward_campaign_003",
+    "status": "concept_selected_pending_separate_preregistration_before_values",
+    "economic_question": "Can a complete low-intraday-volatility eligibility gate reduce drawdown and cost fragility while preserving the predictive content of each of the other seven frozen signal factors?",
+    "proposed_complete_search": {
+      "primary_signal_library": "all seven reused factors except intraday_realized_volatility",
+      "risk_gate": "the original lower-is-better intraday_realized_volatility directional percentile rank",
+      "candidate_gate_thresholds": [
+        0.25,
+        0.4,
+        0.55
+      ],
+      "candidate_scoring_modes": [
+        "primary signal percentile rank within the eligible low-volatility set",
+        "0.75 primary signal percentile rank plus 0.25 low-volatility percentile rank within the eligible set"
+      ],
+      "proposed_trial_count": 42,
+      "reason_for_threshold_bounds": "The least restrictive threshold retains 75% of names and the most restrictive retains 45%, preserving the frozen minimum 50-name gate near the historical P05 cross-section.",
+      "post_result_change_requires_new_campaign_version": true
+    },
+    "required_before_any_campaign003_value_or_return_read": [
+      "implement and test the separate Campaign003 runner",
+      "freeze the complete seven-by-three-by-two search and all data/code fingerprints",
+      "retain the same 2019-2023 folds, three-signal purge, t+1/t+3 containment, execution costs, and append-only ledger",
+      "keep 2024-2025 labelled as historically exposed and unopened until development survivors are frozen"
+    ]
+  },
+  "candidate49_state_after_campaign": {
+    "signal_ledger": {
+      "path": "data/experiments/short_horizon/candidate49_future_signal_ledger.json",
+      "sha256": "5193f00d7f36da003f53cec387900da4c3d002299f5dfcfc1a95eaa199ed3a79",
+      "entry_count": 0
+    },
+    "execution_ledger": {
+      "path": "data/experiments/short_horizon/candidate49_future_execution_ledger.json",
+      "sha256": "d57a3e61eac969e42cafa418ccd8c0a5ee65dcf69da145bb2c096c2a02a2ea4f",
+      "entry_count": 0
+    },
+    "historical_return_backfill_performed": false,
+    "prospective_registration_changed": false
+  },
+  "verification": {
+    "campaign002_focused_tests": {
+      "command": "python -m pytest -q tests/data_collector_tests/test_a_share_three_day_walkforward_campaign002.py",
+      "passed": 8,
+      "failed": 0
+    },
+    "campaign002_and_prior_walkforward_focused_regression": {
+      "command": "python -m pytest -q tests/data_collector_tests/test_a_share_three_day_walkforward_campaign002.py tests/data_collector_tests/test_a_share_three_day_walkforward_campaign002_completion_audit.py tests/data_collector_tests/test_a_share_three_day_walkforward_campaign.py tests/data_collector_tests/test_a_share_three_day_walkforward_completion_audit.py tests/data_collector_tests/test_a_share_three_day_walkforward_policy.py",
+      "passed": 25,
+      "failed": 0
+    },
+    "full_data_collector_regression": {
+      "command": "python -m pytest -q tests/data_collector_tests",
+      "passed": 1155,
+      "failed": 0,
+      "warnings": 9,
+      "warning_classification": "existing pandas PerformanceWarning and FutureWarning only"
+    },
+    "completion_audit_command": "python scripts/a_share_three_day_walkforward_campaign002_completion_audit.py --compact"
+  },
+  "research_boundary": {
+    "candidate49_historical_return_read": false,
+    "candidate49_ledgers_changed": false,
+    "candidate50_prospective_activation_created": false,
+    "stress_2024_2025_return_fields_read": false,
+    "current_scoring_performed": false,
+    "selection_sizing_or_orders_performed": false,
+    "provider_request_issued": false,
+    "investment_advice": false
+  },
+  "limitations": [
+    "All 2019-2025 market outcomes and reused factor definitions are historically exposed; the development result is exploratory rather than pristine.",
+    "The holding universe derives from a current listing snapshot and may contain survivorship bias.",
+    "Twenty basis points per side is a deliberately severe robustness view, not a forecast that every future fill will incur exactly that slippage.",
+    "A zero-survivor result rejects this frozen construction family under its gates; it does not prove that every possible factor or portfolio design is ineffective."
+  ]
+}

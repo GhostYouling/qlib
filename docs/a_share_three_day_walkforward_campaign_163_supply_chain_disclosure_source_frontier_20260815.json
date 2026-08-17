@@ -1,0 +1,163 @@
+{
+  "schema_version": 1,
+  "kind": "a_share_three_day_walkforward_campaign163_supply_chain_disclosure_source_frontier",
+  "status": "terminal_prevalue_three_source_admission_deferrals_three_related_variant_rejections_zero_selected",
+  "recorded_at": "2026-08-15T06:25:31+08:00",
+  "purpose": "Review a genuinely new issuer-level supply-chain disclosure domain without first opening annual-report PDFs, table values, candidate values, comparators or returns, and without confusing missing source admission with factor ineffectiveness.",
+  "authoritative_inputs": {
+    "campaign162_effective_state": {
+      "path": "docs/a_share_three_day_iteration_status_20260815_campaign162_prevalue_terminal.json",
+      "sha256": "84f390908e30f27f4e0150c6488ac525867dca0a8bc331de5e4c71e9471f7406"
+    },
+    "eligibility_policy_v229": {
+      "path": "docs/a_share_three_day_walkforward_future_numeric_comparison_eligibility_policy_v229_20260815.json",
+      "sha256": "5e4f356aca49deba2d98bc85506dde0ba41c55b107fe475e69efec52138ae504"
+    },
+    "campaign158_complete_local_field_matrix": {
+      "path": "docs/a_share_three_day_walkforward_campaign_158_local_schema_field_coverage_matrix_20260815.json",
+      "sha256": "3331d14a063490601507be363a75b22e3590b03494e33e87a131f09a1106a5ab"
+    },
+    "campaign158_residual_audit": {
+      "path": "docs/a_share_three_day_walkforward_campaign_158_local_schema_residual_audit_20260815.json",
+      "sha256": "0fbe75c7031e9787f9ce7787ce7cdcc06eafc4d9257bdd875fb678488b088f68"
+    },
+    "campaign159_remaining_source_inventory": {
+      "path": "docs/a_share_three_day_walkforward_campaign_159_remaining_local_source_schema_inventory_20260815.json",
+      "sha256": "d561a9707b6004cbec0685108ea3fa4453b21f587a7632a739b46b69e818e578"
+    },
+    "campaign159_remaining_source_audit": {
+      "path": "docs/a_share_three_day_walkforward_campaign_159_remaining_local_source_residual_audit_20260815.json",
+      "sha256": "6d4430f1eef33da89fe5eb7018d326c603a051446d16e066ac72c74d9d7a25ae"
+    }
+  },
+  "repository_evidence": {
+    "bounded_text_search_terms": [
+      "customer concentration",
+      "supplier concentration",
+      "top five customer",
+      "top five supplier",
+      "supply-chain",
+      "geographic revenue",
+      "segment revenue",
+      "product concentration"
+    ],
+    "matching_existing_campaign_or_implementation_records": 0,
+    "campaign158_fields_without_disposition": 0,
+    "campaign158_genuinely_unconsumed_rankable_point_in_time_numeric_primitives": 0,
+    "campaign159_accepted_full_history_families_with_unconsumed_contract_permitted_independent_primitive": 0,
+    "interpretation": "The domain is not an old tested factor, but no accepted local point-in-time source contract contains it."
+  },
+  "mandatory_source_admission_gate": {
+    "gate_1_new_issuer_state": "The route must observe issuer-specific business dependency rather than price, identity, missingness or an old factor transform.",
+    "gate_2_exact_document_and_table_identity": "Freeze annual-report document type, consolidated scope, disclosure version, exact table/line identity and units before any PDF or table value.",
+    "gate_3_point_in_time_availability_and_revision": "Freeze first public timestamp, later correction/replacement handling and the first accepted signal session strictly after availability.",
+    "gate_4_denominator_and_missing_semantics": "Freeze reported percentage versus amount reconstruction, revenue or procurement denominator, anonymous/name-redacted rows, not-applicable, withheld and true-zero semantics.",
+    "gate_5_full_2019_2023_coverage_and_mapping": "Freeze issuer mapping, annual-report universe denominator, duplicate/version rules and complete finite partition manifest for the three development folds.",
+    "pass_rule": "All five gates must pass before formula, direction, extraction, PDF/table value, factor value, comparator or return is opened."
+  },
+  "finite_prevalue_catalog": [
+    {
+      "catalog_id": "c163_01",
+      "name": "annual_top_five_customer_revenue_concentration",
+      "economic_state": "Dependence of reported operating revenue on the five largest customers.",
+      "formula": null,
+      "direction": null,
+      "parameters_filters_subsets_combinations_models": [],
+      "new_issuer_state": true,
+      "complete_local_source_contract": false,
+      "decision": "deferred_source_admission_not_factor_failure",
+      "reason": "No accepted local source freezes the point-in-time annual-report table, consolidated scope, percentage/amount denominator, redaction semantics, revisions and full 2019-2023 coverage."
+    },
+    {
+      "catalog_id": "c163_02",
+      "name": "annual_top_five_supplier_purchase_concentration",
+      "economic_state": "Dependence of reported procurement on the five largest suppliers.",
+      "formula": null,
+      "direction": null,
+      "parameters_filters_subsets_combinations_models": [],
+      "new_issuer_state": true,
+      "complete_local_source_contract": false,
+      "decision": "deferred_source_admission_not_factor_failure",
+      "reason": "The same document-version, denominator, redaction, mapping and full-history contract is absent for supplier purchase disclosures."
+    },
+    {
+      "catalog_id": "c163_03",
+      "name": "customer_supplier_dependency_balance_or_joint_floor",
+      "economic_state": "Joint dependence across customer and supplier sides.",
+      "formula": null,
+      "direction": null,
+      "parameters_filters_subsets_combinations_models": [],
+      "new_issuer_state": false,
+      "complete_local_source_contract": false,
+      "decision": "rejected_component_combination_before_source_admission",
+      "reason": "Mean, product, minimum, imbalance or another joint operator would search combinations of two unadmitted components before either base source is frozen."
+    },
+    {
+      "catalog_id": "c163_04",
+      "name": "customer_or_supplier_concentration_yoy_change",
+      "economic_state": "Annual change in business-partner concentration.",
+      "formula": null,
+      "direction": null,
+      "parameters_filters_subsets_combinations_models": [],
+      "new_issuer_state": false,
+      "complete_local_source_contract": false,
+      "decision": "rejected_time_difference_variant_before_base_source_admission",
+      "reason": "A level-versus-change and one-year-versus-multi-year search cannot precede exact versioned base-table admission."
+    },
+    {
+      "catalog_id": "c163_05",
+      "name": "largest_partner_share_or_top_one_to_top_five_shape",
+      "economic_state": "Dominance of the largest disclosed customer or supplier within the top-five bundle.",
+      "formula": null,
+      "direction": null,
+      "parameters_filters_subsets_combinations_models": [],
+      "new_issuer_state": false,
+      "complete_local_source_contract": false,
+      "decision": "rejected_row_subset_and_shape_search_before_base_source_admission",
+      "reason": "Choosing top-one, top-three, top-five, Herfindahl, entropy or dominance ratios is a row-subset/operator family unless a source contract first proves stable per-partner rows and redaction semantics."
+    },
+    {
+      "catalog_id": "c163_06",
+      "name": "annual_product_or_geographic_revenue_concentration",
+      "economic_state": "Dependence of issuer revenue on reported product or geographic segments.",
+      "formula": null,
+      "direction": null,
+      "parameters_filters_subsets_combinations_models": [],
+      "new_issuer_state": true,
+      "complete_local_source_contract": false,
+      "decision": "deferred_source_admission_not_factor_failure",
+      "reason": "Segment labels, reorganizations, consolidated eliminations, restatements, disclosure thresholds and complete historical table coverage are not frozen in any accepted local source."
+    }
+  ],
+  "gate_summary": {
+    "routes_reviewed": 6,
+    "genuinely_new_issuer_state_routes": 3,
+    "complete_local_source_contract_passers": 0,
+    "source_admission_deferrals_not_factor_failures": 3,
+    "related_operator_window_or_subset_rejections": 3,
+    "selected_candidate_count": 0,
+    "complete_factor_definition_created": false
+  },
+  "scientific_interpretation": {
+    "supply_chain_disclosure_factor_predictive_value_tested": false,
+    "deferred_routes_declared_ineffective": false,
+    "why_no_formula_or_direction": "Freezing a ratio before table identity, denominator, revision and missing semantics would let observed document values determine the definition.",
+    "acquisition_priority_if_a_separate_contract_is_later_accepted": "c163_01 then c163_02; c163_06 remains a separate segment-table contract."
+  },
+  "research_boundary": {
+    "annual_report_pdf_table_or_response_value_read": false,
+    "source_row_or_column_value_read": false,
+    "candidate_or_comparator_value_read": false,
+    "historical_daily_price_or_forward_return_value_read": false,
+    "stress_2024_2025_opened": false,
+    "provider_or_web_request_issued": false,
+    "provider_credential_presence_value_or_digest_read": false,
+    "campaign162_route_retried_or_rescued": false,
+    "candidate49_historical_backfill_performed": false,
+    "candidate49_ledgers_changed": false,
+    "second_prospective_candidate_created": false,
+    "current_scoring_selection_sizing_positions_or_orders_performed": false,
+    "investment_advice": false
+  },
+  "next_action": "Record all six routes append-only and preserve 158/142. Campaign164 may continue offline from another genuinely new finite domain; c163_01 may advance only after a separate exact point-in-time annual-report table contract is accepted before values."
+}

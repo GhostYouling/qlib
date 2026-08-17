@@ -1,0 +1,96 @@
+{
+  "version": 2,
+  "kind": "a_share_three_day_walkforward_campaign068_feature_snapshot_binding",
+  "status": "immutable_v2_snapshot_fully_verified_before_no_return_coverage_or_comparison_values",
+  "recorded_at": "2026-08-06T03:00:00+08:00",
+  "factor": "quarterly_profit_revenue_acceleration_rank_gap_2r",
+  "direction": "higher",
+  "formula": "r_profit_yoy_acceleration-r_revenue_yoy_acceleration",
+  "no_return_protocol": {
+    "path": "docs/a_share_three_day_walkforward_campaign_068_no_return_preregistration.json",
+    "sha256": "64aeee6a3534f00f878259b3406a09bc4f3b5d0ea3157bde86d0050f56b82061"
+  },
+  "repair_protocol": {
+    "path": "docs/a_share_three_day_walkforward_campaign_068_feature_snapshot_repair_protocol_v2_20260806.json",
+    "sha256": "fe90acaa8c89ec6c750441ed3c4704249d6415d5e9102c40f82799792d421f7f"
+  },
+  "implementation_freeze": {
+    "path": "docs/a_share_three_day_walkforward_campaign_068_feature_implementation_freeze_v2_20260806.json",
+    "sha256": "9881458a165206720365fb2f8aab10b8dbb513a997f5b48be31595f6b96f733e"
+  },
+  "v2_feature_runner": {
+    "path": "scripts/a_share_three_day_walkforward_campaign068_features_v2.py",
+    "sha256": "c4facbb4c76f99de64f5322ed106736c10f95acd2177cbfc294b82c2710f477d"
+  },
+  "frozen_v1_value_generator": {
+    "path": "scripts/a_share_three_day_walkforward_campaign068_features.py",
+    "sha256": "1ebfbfd5709132d49f5d34276176df26a5ca53cfa492700a69c7ba64422d0b22",
+    "implementation_freeze_sha256": "fbc5991e61ae427e9a752c2525a702a54d930eef2cd55c434c78d4ae33c841cf",
+    "candidate_value_generation_changed_in_v2": false
+  },
+  "feature_tests": {
+    "path": "tests/data_collector_tests/test_a_share_three_day_walkforward_campaign068_features_v2.py",
+    "sha256": "49756cd5a3802c1198b993f172198e3200e57b277ac3382706db2637388b905d",
+    "passed": 4,
+    "failed": 0
+  },
+  "snapshot": {
+    "path": "/Volumes/DIsk/qlib-a-share-tushare-1m/derived/a_share/rich/tushare/minute_walkforward_campaign068_feature_library/tushare_stk_mins_1m_2019_2025_ea0cbb8f_walkforward_campaign068_feature_library_v2/snapshot_manifest.json",
+    "sha256": "9878e6c0249cb9e965dbfade2ce2b3a355bed5e6a46bf68667c82fc568672004",
+    "dataset_sha256": "bcd03a5e2122b64b072985b3a9a9ada880cad337dae4766a00cf52bf51f4f449",
+    "partitions": 33015,
+    "rows": 7724498,
+    "eligible_rows": 6317276,
+    "eligible_value_range": [
+      -1.0,
+      1.0
+    ]
+  },
+  "independent_verification": {
+    "all_partition_byte_hashes_passed": true,
+    "all_partition_frame_hashes_passed": true,
+    "all_value_eligibility_and_signed_range_checks_passed": true,
+    "verified_partitions": 33015,
+    "verified_rows": 7724498,
+    "verified_eligible_rows": 6317276,
+    "aggregate_dataset_sha256_reproduced": true,
+    "exit_code": 0
+  },
+  "attempt_accounting": {
+    "cumulative_historical_attempts": 403,
+    "cumulative_return_reading_trials": 274,
+    "v1_failed_snapshot_was_recorded_as_infrastructure_attempt": true,
+    "v2_success_adds_an_attempt": false
+  },
+  "research_boundary": {
+    "quarterly_fields_read": [
+      "instrument",
+      "report_date",
+      "announcement_date",
+      "revenue_yoy",
+      "profit_yoy"
+    ],
+    "stock_day_identity_fields_read": [
+      "trade_date",
+      "symbol",
+      "provider"
+    ],
+    "comparison_values_read": false,
+    "historical_daily_price_fields_read": [],
+    "historical_forward_return_fields_read": false,
+    "provider_request_issued": false,
+    "candidate49_historical_return_read": false,
+    "candidate49_ledgers_changed": false,
+    "second_prospective_candidate_created": false,
+    "current_scoring_selection_sizing_or_orders_performed": false
+  },
+  "decision": {
+    "v1_snapshot_accepted": false,
+    "v2_snapshot_is_immutable": true,
+    "coverage_first_no_return_audit_allowed": true,
+    "comparison_values_may_be_read_only_if_all_coverage_gates_pass": true,
+    "daily_prices_or_forward_returns_may_be_read_before_admission": false,
+    "predictive_value_established": false,
+    "next_action": "Freeze a coverage-first no-return audit runner against this exact v2 snapshot. Do not open the compact comparator cache unless every frozen coverage gate passes."
+  }
+}

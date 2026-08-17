@@ -1,0 +1,132 @@
+{
+  "schema_version": 1,
+  "kind": "a_share_three_day_iteration_status",
+  "status": "campaign107_terminal_uniqueness_rejection_future_policy_v67_active",
+  "recorded_at": "2026-08-07T20:36:00Z",
+  "supersedes_without_rewriting": {
+    "path": "docs/a_share_three_day_iteration_status_20260808_campaign106_terminal_v3.json",
+    "sha256": "4dd06bbe5165541467fbb9a29215e83f6bd6254003e0919e3d2741efd51ffcf5",
+    "preserved": true
+  },
+  "authoritative_workspace": "/Volumes/DIsk/Disk-Coding/qlib",
+  "active_minute_data_root": "/Volumes/DIsk/qlib-a-share-tushare-1m",
+  "research_mode": {
+    "historical_walkforward_is_primary_iteration_engine": true,
+    "historical_offline_work_allowed_at_any_local_time": true,
+    "new_daily_bar_or_1630_wait_required_for_historical_iteration": false,
+    "candidate49_future_observation_is_independent_confirmation_layer": true
+  },
+  "campaign107_terminal": {
+    "terminal_result": {
+      "path": "docs/a_share_three_day_walkforward_campaign_107_terminal_result_binding_20260808.json",
+      "sha256": "95c49bcb1b0f90ea48364cb129848de55f9daffc62a1fb9c433642f57947c5d7"
+    },
+    "research_attempt_ledger": {
+      "path": "data/experiments/short_horizon/historical_walkforward/campaign_107/research_attempt_ledger_v3.json",
+      "sha256": "b2d15e4ddcd1ec1c910f5669446b3f7e66e2d3751494fc36a1ace2d5cdb54ff3",
+      "chain_tip_sha256": "85e60005f7fd6a491b13ad9c540a20895af2b7452dc8792a5764c213cfc4dcbb"
+    },
+    "no_return_audit": {
+      "path": "data/experiments/short_horizon/historical_walkforward/campaign_107/no_return/20260807T203221Z_campaign107_no_return_audit.json",
+      "sha256": "d6800131f3d0be150ee4edadbc80ef0a51a3d0a4899906d77ee57a2fed3cf606"
+    },
+    "factor": "intraday_exact_close_level_diversity_240m",
+    "direction": "higher",
+    "snapshot_rows": 7724498,
+    "snapshot_eligible_rows": 7724498,
+    "coverage_gate_passed": true,
+    "numeric_comparisons_completed": 132,
+    "failed_numeric_comparisons": 5,
+    "maximum_absolute_median_daily_rank_correlation": 0.9315530906961503,
+    "maximum_comparison_factor": "intraday_price_update_share_238m",
+    "scientific_result": "rejected_as_numerically_redundant",
+    "development_trial_count": 0,
+    "development_survivor_count": 0,
+    "stress_2024_2025_opened": false,
+    "stress_return_fields_read": false,
+    "attempt_count": 3,
+    "ledger_entry_count": 4,
+    "infrastructure_failure_count": 2,
+    "complete_factor_attempt_count": 1,
+    "scientifically_decided_factor_attempt_count": 1,
+    "return_reading_development_trial_count": 0,
+    "cumulative_historical_research_attempt_count": 794,
+    "cumulative_return_reading_development_trial_count": 300
+  },
+  "effective_future_numeric_policy": {
+    "path": "docs/a_share_three_day_walkforward_future_numeric_comparison_eligibility_policy_v67_20260808.json",
+    "sha256": "4740555b0647540e99396682705a1e77745c53badc9a4bbb671e1607550b9435",
+    "complete_definition_count": 137,
+    "complete_definition_order_sha256": "26233fd1fe697b08268910286fb077fbda894e8e572af020959b1997e4285baa",
+    "numeric_comparator_count": 132,
+    "numeric_comparator_order_sha256": "7ed69afd1408e84dcc856583344166ffc9bcbb0add1aed63163b1d12a1be9a25"
+  },
+  "candidate49": {
+    "registration_id": "candidate49_intraday_cumulative_vwap_crossing_rate_240m_v1",
+    "sole_active_prospective_candidate": true,
+    "signal_ledger": {
+      "path": "data/experiments/short_horizon/candidate49_future_signal_ledger.json",
+      "sha256": "5193f00d7f36da003f53cec387900da4c3d002299f5dfcfc1a95eaa199ed3a79",
+      "entry_count": 0
+    },
+    "execution_ledger": {
+      "path": "data/experiments/short_horizon/candidate49_future_execution_ledger.json",
+      "sha256": "d57a3e61eac969e42cafa418ccd8c0a5ee65dcf69da145bb2c096c2a02a2ea4f",
+      "entry_count": 0
+    },
+    "latest_preserved_source_failure": {
+      "path": "docs/a_share_candidate49_20260807_daily_source_failure_record.json",
+      "sha256": "8b8eec87a1f20c424703cf70ea9eae87f09c7b1e5c9a5754c0bde9cc2f9c839f",
+      "same_day_retry_allowed": false
+    },
+    "historical_return_signal_execution_or_milestone_backfill_performed": false,
+    "prospective_ledgers_changed_by_campaign107": false
+  },
+  "provider_credential": {
+    "repository_dotenv_exists": true,
+    "repository_dotenv_is_regular_file": true,
+    "repository_dotenv_is_symlink": false,
+    "repository_dotenv_mode": "0600",
+    "repository_dotenv_git_ignored": true,
+    "tushare_token_entry_count": 1,
+    "tushare_token_nonempty": true,
+    "secret_printed_hashed_logged_or_persisted": false,
+    "provider_request_issued": false
+  },
+  "weekend_boundary": {
+    "local_date": "2026-08-08",
+    "accepted_local_trading_day": false,
+    "candidate49_plan_or_run_executed": false,
+    "new_daily_staging_root_created": false
+  },
+  "reports": {
+    "campaign107_report": {
+      "path": "docs/a_share_three_day_walkforward_campaign_107_report.md",
+      "sha256": "55aedab5137e21b2b2732915469caea1f53148a5656ad7e87c70196cfa2383fc"
+    },
+    "current_research_report": {
+      "path": "data/experiments/short_horizon/current_research_report.md",
+      "sha256": "e651c3a650580c7a9cef23ec464825784577c6b932b959effe166f00d24c8a81"
+    },
+    "three_day_research_report": {
+      "path": "data/experiments/short_horizon/three_day_research_report.md",
+      "sha256": "9f423d4c51fb0388a18ec60e6e8d067c92aed03773cf4c15bdd99a3eaee5c959"
+    }
+  },
+  "verification": {
+    "frozen_prevalue_suite": "25 passed",
+    "snapshot_partitions_verified": 33015,
+    "snapshot_rows_verified": 7724498,
+    "no_return_comparisons_completed": 132,
+    "candidate_or_comparator_nan_fill_or_drop_performed": false
+  },
+  "research_boundary": {
+    "candidate50_or_second_prospective_candidate_created": false,
+    "provider_request_issued": false,
+    "candidate49_historical_backfill_performed": false,
+    "historical_daily_price_or_forward_return_values_read_by_campaign107": false,
+    "current_scoring_selection_sizing_or_orders_performed": false,
+    "investment_advice": false
+  },
+  "next_action": "Begin only a genuinely new prevalue-frozen Campaign108 mechanism under v67; do not retry or reexpress exact close-level diversity."
+}

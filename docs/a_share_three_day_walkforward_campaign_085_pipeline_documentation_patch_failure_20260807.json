@@ -1,0 +1,24 @@
+{
+  "schema_version": 1,
+  "kind": "a_share_three_day_walkforward_campaign085_pipeline_documentation_patch_failure",
+  "status": "single_file_patch_rejected_before_write",
+  "recorded_at": "2026-08-07T00:21:00+08:00",
+  "failure": {
+    "stage": "a_share_data_pipeline_campaign085_append",
+    "observed": "The exact long Campaign084 tail paragraph was not accepted as an apply_patch context anchor.",
+    "correction": "Use the final short sentence only as the append anchor and preserve this failed patch."
+  },
+  "target_written": false,
+  "other_reporting_targets_already_written": [
+    "docs/a_share_three_day_walkforward_campaign_085_report.md",
+    "data/experiments/short_horizon/three_day_research_report.md",
+    "data/experiments/short_horizon/current_research_report.md"
+  ],
+  "research_boundary": {
+    "additional_candidate_comparator_market_or_return_values_read": false,
+    "stress_2024_2025_opened": false,
+    "provider_request_issued": false,
+    "candidate49_ledgers_changed": false,
+    "current_scoring_selection_sizing_or_orders_performed": false
+  }
+}

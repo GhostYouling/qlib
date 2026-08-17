@@ -1,0 +1,64 @@
+{
+  "version": 1,
+  "kind": "a_share_three_day_walkforward_campaign057_unified_report_supersession",
+  "status": "campaign057_terminal_no_return_rejection_synchronized",
+  "recorded_at": "2026-08-04T15:36:53+08:00",
+  "bindings": {
+    "campaign057_research_record": {
+      "path": "docs/a_share_three_day_walkforward_campaign_057_research_record.json",
+      "sha256": "f1c9683172483509a78b7fd5d10cfc4c9739ef80d3b6023f2ec1ee0e2c3a004a"
+    },
+    "campaign057_attempt_ledger_v3": {
+      "path": "data/experiments/short_horizon/historical_walkforward/campaign_057/research_attempt_ledger_v3.json",
+      "sha256": "c1ec04698e678d8618f551cb99f98dec9e719d96a92a190db2b3f02b98a50564"
+    },
+    "terminal_completion_freeze": {
+      "path": "docs/a_share_three_day_walkforward_campaign_057_terminal_completion_freeze_20260804.json",
+      "sha256": "af3da83e5eda1cb072da7b646a7b87da1db6c5e55e19ca9c6ab8f8d98189b1a3"
+    },
+    "unified_report_generator": {
+      "path": "scripts/a_share_short_horizon_factor_research.py",
+      "sha256": "6c8888a3ead8a115c67e3b9282718449696c630fc4fc3cae5dfa30b9b59c91bb"
+    },
+    "unified_research_report": {
+      "path": "data/experiments/short_horizon/three_day_research_report.md",
+      "sha256": "936aadd0fa5fdf433bd26fd2cff5afa2e6fd2acff14f0e3e25f1e98f245528b1"
+    },
+    "data_pipeline_documentation": {
+      "path": "docs/a_share_data_pipeline.md",
+      "sha256": "8c6740ab979623e3dd90ff613d5e1b3f7be2b742f1b5e4c928307d8fbd2d2507"
+    },
+    "manage_qlib_a_share_data_skill": {
+      "path": "/Users/niyufei/.codex/skills/manage-qlib-a-share-data/SKILL.md",
+      "sha256": "b47d6e353ca786e45c60f098021649ac8eaf702578870d1565b672c1d52a6462"
+    },
+    "candidate49_signal_ledger": {
+      "path": "data/experiments/short_horizon/candidate49_future_signal_ledger.json",
+      "sha256": "5193f00d7f36da003f53cec387900da4c3d002299f5dfcfc1a95eaa199ed3a79"
+    },
+    "candidate49_execution_ledger": {
+      "path": "data/experiments/short_horizon/candidate49_future_execution_ledger.json",
+      "sha256": "d57a3e61eac969e42cafa418ccd8c0a5ee65dcf69da145bb2c096c2a02a2ea4f"
+    }
+  },
+  "synchronized_semantics": {
+    "campaign057_factor_terminal": true,
+    "coverage_gate_passed": true,
+    "comparison_factor_count": 80,
+    "uniqueness_gate_passed": false,
+    "admissible_factor_count": 0,
+    "development_trial_count": 0,
+    "stress_2024_2025_opened": false,
+    "stress_2024_2025_returns_read": false,
+    "campaign057_infrastructure_only_failure_count": 2,
+    "campaign057_complete_factor_attempt_count": 1,
+    "campaign057_total_attempt_count": 3,
+    "cumulative_historical_research_attempt_count": 328,
+    "cumulative_return_reading_development_trial_count": 268,
+    "candidate49_signal_entry_count": 0,
+    "candidate49_execution_entry_count": 0,
+    "candidate49_historical_backfill_performed": false,
+    "provider_request_issued_by_campaign057": false,
+    "current_scoring_selection_sizing_or_orders_performed": false
+  }
+}

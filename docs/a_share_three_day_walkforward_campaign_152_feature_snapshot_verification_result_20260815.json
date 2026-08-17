@@ -1,0 +1,46 @@
+{
+  "schema_version": 1,
+  "kind": "a_share_three_day_walkforward_campaign152_feature_snapshot_verification_result",
+  "status": "all_partition_bytes_frames_semantics_and_aggregate_identity_verified",
+  "recorded_at": "2026-08-15T02:18:00+08:00",
+  "snapshot_manifest": {
+    "path": "/Volumes/DIsk/qlib-a-share-tushare-1m/derived/a_share/rich/tushare/minute_walkforward_campaign152_feature_library/tushare_stk_mins_1m_2019_2025_ea0cbb8f_walkforward_campaign152_feature_library_v1/snapshot_manifest.json",
+    "sha256": "36bab509de3b8a012033b4591a5efa942e57b01178f099cd48cbb699267ca267",
+    "dataset_sha256": "9ea1ebe6aad4867ce76d4fbc52fe46c80f5a3fca3096aa6e74a5e9c8292f4931",
+    "partitions": 33015,
+    "rows": 7724498,
+    "eligible_rows": 7724498
+  },
+  "verification_command": "python scripts/a_share_three_day_walkforward_campaign152_features.py verify --manifest <frozen Campaign152 manifest> --workers 8",
+  "exit_code": 0,
+  "verified": {
+    "every_partition_byte_sha256": true,
+    "every_partition_frame_sha256": true,
+    "exact_output_projection": true,
+    "eligible_flag_value_semantics": true,
+    "aggregate_dataset_sha256": true,
+    "aggregate_partition_row_and_eligible_counts": true
+  },
+  "quality": {
+    "raw_source_rows_read": 1866461373,
+    "raw_source_sessions": 7744653,
+    "candidate_output_eligible_rows": 7724498,
+    "invalid_numeric_sessions": 0,
+    "nonpositive_total_amount_sessions_in_raw_source": 19831,
+    "note": "The immutable raw partitions contain source sessions outside the joint-clean output identity; every one of the 7,724,498 exact joint-clean output keys has a valid candidate value."
+  },
+  "research_boundary": {
+    "candidate_values_read_for_integrity_verification": true,
+    "candidate_coverage_or_cross_sectional_statistics_read": false,
+    "comparator_values_read": false,
+    "historical_daily_price_or_forward_return_values_read": false,
+    "stress_2024_2025_opened_for_returns": false,
+    "provider_request_issued": false,
+    "credential_loaded": false,
+    "candidate49_historical_backfill_performed": false,
+    "candidate49_ledgers_changed": false,
+    "second_prospective_candidate_created": false,
+    "current_scoring_selection_sizing_positions_or_orders_performed": false,
+    "investment_advice": false
+  }
+}

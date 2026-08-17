@@ -1,0 +1,18 @@
+{
+  "schema_version": 1,
+  "kind": "a_share_three_day_walkforward_campaign120_report_append_patch_failure",
+  "status": "recorded_after_scientific_terminal_without_research_value_change",
+  "recorded_at": "2026-08-14T01:05:43+08:00",
+  "attempt_id": "campaign120_infrastructure_016",
+  "failed_stage": "unified_report_append",
+  "failure": "The first multi-file report patch used a shared expected tail that apply_patch did not match, so the entire patch was rejected before any file write.",
+  "repair": "Read each report's exact tail and append the same Campaign120 terminal section with separately scoped patches; create an append-only accounting correction rather than rewrite existing terminal records.",
+  "scientific_result_library_order_or_research_values_changed": false,
+  "research_boundary": {
+    "historical_daily_price_or_forward_return_values_read_after_terminal": false,
+    "development_trial_started": false,
+    "stress_2024_2025_opened": false,
+    "provider_request_issued": false,
+    "candidate49_ledgers_changed": false
+  }
+}

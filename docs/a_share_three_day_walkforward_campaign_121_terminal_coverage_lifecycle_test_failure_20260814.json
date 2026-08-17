@@ -1,0 +1,20 @@
+{
+  "schema_version": 1,
+  "kind": "a_share_three_day_walkforward_campaign121_infrastructure_failure",
+  "status": "recorded_append_only_without_scientific_change",
+  "recorded_at": "2026-08-14T04:07:00+08:00",
+  "attempt_id": "campaign121_infrastructure_034",
+  "stage": "combined_terminal_regression",
+  "command_result": "33 passed, 2 failed, 1 skipped",
+  "failure": "Two frozen coverage-recovery tests assert the pre-execution lifecycle state: coverage output absent and plan ready. The accepted coverage output now exists, so the post-execution terminal run correctly violates those obsolete phase assertions.",
+  "effects": {
+    "frozen_test_rewritten": false,
+    "accepted_coverage_output_deleted_or_rewritten": false,
+    "scientific_result_changed": false,
+    "research_values_read_or_recomputed": false,
+    "development_trial_rerun": false,
+    "stress_2024_2025_opened": false,
+    "candidate49_ledgers_changed": false
+  },
+  "safe_recovery": "Run the terminal, development, formula, feature, uniqueness and read-only verifier scopes while preserving the lifecycle-specific failure record."
+}

@@ -1,0 +1,227 @@
+{
+  "version": 1,
+  "kind": "a_share_three_day_historical_walkforward_research_policy",
+  "status": "frozen_by_user_direction_before_new_walkforward_trials_or_historical_return_reads",
+  "recorded_at": "2026-07-27T11:13:36Z",
+  "purpose": "Make historical walk-forward research the primary three-session strategy iteration engine while retaining genuinely future observations as a separate confirmation and drift-monitoring layer.",
+  "user_directive": {
+    "recorded_in_conversation_on": "2026-07-27",
+    "requirement": "Use the existing historical data with explicit training, validation, and backtest partitions instead of waiting for one newly completed daily observation to perform each research iteration.",
+    "reason": "A future-only stream adds roughly one signal session per accepted trading day and is too slow to support factor construction, parameter search, combination research, and efficient strategy iteration."
+  },
+  "governance_scope": {
+    "advances_without_rewriting": {
+      "path": "docs/a_share_three_day_future_only_minute_research_policy_20260725.json",
+      "sha256": "52ca8bfa7201509fe891d0af3d1c87aeebd64e47e6ec6641e897849411df408c"
+    },
+    "future_only_policy_remains_binding_for": [
+      "candidate49_intraday_cumulative_vwap_crossing_rate_240m_v1",
+      "candidate49 signal, execution, and evaluation ledgers",
+      "the prohibition on candidate49 historical return backfill"
+    ],
+    "future_only_policy_no_longer_means": [
+      "all historical factor research must stop while candidate49 is active",
+      "one newly completed session is the primary strategy-development sample",
+      "historical factor construction, parameter search, or combination research must wait for candidate49 to reach 200 completed signals"
+    ],
+    "historical_trials_are_not": [
+      "candidate50 prospective activation",
+      "a second active future signal ledger",
+      "permission for current scoring, stock selection, sizing, orders, or live trading"
+    ]
+  },
+  "historical_evidence_classification": {
+    "available_interval": {
+      "start": "2019-01-01",
+      "end": "2025-12-31"
+    },
+    "known_scale": {
+      "non_overlapping_three_session_cohorts_before_split_purging": 540,
+      "minute_candidate_rows_in_the_accepted_clean_base": 7724498
+    },
+    "classification": "historically_exposed_quasi_out_of_sample_evidence",
+    "not_pristine_reason": "The 2019-2025 market outcomes were already examined across forty-eight terminal mechanisms and many recorded variants. A new split improves discipline and efficiency but cannot retroactively make those market returns unseen.",
+    "allowed_claim": "Historical walk-forward results may rank and reject research candidates and estimate robustness under the fixed execution assumptions.",
+    "forbidden_claim": "No 2019-2025 result may be described as a pristine untouched holdout or sufficient proof of live profitability."
+  },
+  "dataset_roles": {
+    "development_and_inner_walkforward": {
+      "start": "2019-01-01",
+      "end": "2023-12-31",
+      "allowed_uses": [
+        "factor formula and direction development",
+        "window, transform, threshold, and filter search",
+        "feature subset and factor-combination research",
+        "weight or model fitting",
+        "cost, capacity, and robustness diagnostics"
+      ],
+      "expanding_folds": [
+        {
+          "fold": 1,
+          "training": {
+            "start": "2019-01-01",
+            "end": "2020-12-31"
+          },
+          "validation": {
+            "start": "2021-01-01",
+            "end": "2021-12-31"
+          }
+        },
+        {
+          "fold": 2,
+          "training": {
+            "start": "2019-01-01",
+            "end": "2021-12-31"
+          },
+          "validation": {
+            "start": "2022-01-01",
+            "end": "2022-12-31"
+          }
+        },
+        {
+          "fold": 3,
+          "training": {
+            "start": "2019-01-01",
+            "end": "2022-12-31"
+          },
+          "validation": {
+            "start": "2023-01-01",
+            "end": "2023-12-31"
+          }
+        }
+      ]
+    },
+    "locked_historical_backtest": {
+      "start": "2024-01-01",
+      "end": "2025-12-31",
+      "role": "one_shot_quasi_out_of_sample_campaign_backtest",
+      "opening_rule": "Before reading this interval for a campaign, freeze the complete candidate library, parent/version graph, formulas, directions, parameter-search bounds, selection rule, combination method, fitting method, costs, gates, and data/code fingerprints.",
+      "consumption_rule": "Open the interval once for the whole frozen campaign, record every candidate result, and mark the campaign lockbox consumed.",
+      "after_consumption_rule": "Any formula, parameter, subset, filter, weight, or combination proposed after viewing the campaign result is a new exploratory version and may not call the same 2024-2025 interval untouched or pristine."
+    },
+    "prospective_confirmation": {
+      "start": "2026-01-01",
+      "role": "genuinely_future_confirmation_and_drift_monitoring_only_when_registered_before_the_observation",
+      "use": "Confirm portability and monitor decay after a historical candidate survives the frozen campaign; do not make daily accumulation the primary factor-discovery loop."
+    }
+  },
+  "three_session_leakage_controls": {
+    "signal": "local close t",
+    "entry": "next accepted local session open t+1",
+    "exit": "third accepted local session close t+3",
+    "purge_before_every_split_local_signal_sessions": 3,
+    "label_containment": "A signal belongs to a partition only when its t+1 entry and t+3 exit are both inside that partition.",
+    "boundary_rule": "Drop every otherwise valid signal whose label window crosses a training, validation, or backtest boundary.",
+    "overlap_rule": "Use the frozen non-overlapping three-session research grid for association comparisons and use the shared cash-constrained portfolio replay for executable performance.",
+    "future_information_rule": "Features, universe membership, quality fields, and event availability must remain point-in-time at signal close."
+  },
+  "trial_and_multiplicity_ledger": {
+    "required": true,
+    "append_only": true,
+    "minimum_fields": [
+      "trial_id",
+      "parent_trial_id",
+      "campaign_id",
+      "created_at",
+      "economic_hypothesis",
+      "formula",
+      "direction",
+      "feature_set",
+      "window_transform_threshold_filter_and_weight_configuration",
+      "training_and_validation_folds",
+      "data_and_code_fingerprints",
+      "fixed_execution_policy_fingerprints",
+      "training_metrics",
+      "validation_metrics",
+      "locked_backtest_metrics_when_opened",
+      "status_and_rejection_reason"
+    ],
+    "counting_rule": "Record every attempted formula, direction, parameter set, subset, filter, model, and combination, including failures and infrastructure-only failures; never retain only the best result.",
+    "version_rule": "Any change after viewing validation or locked-backtest results creates a new immutable trial version linked to its parent.",
+    "selection_bias_rule": "Report the number of attempted trials with every surviving result and treat increasingly searched performance as exploratory unless it later survives genuinely future evidence."
+  },
+  "historical_search_permissions": {
+    "new_economically_motivated_factors": true,
+    "parameter_and_window_search_inside_development_folds": true,
+    "factor_combinations_inside_development_folds": true,
+    "weight_or_model_fitting_inside_development_folds": true,
+    "reuse_of_terminal_factor_definitions_as_research_features": "allowed only when the complete reused feature library and search space are frozen for the campaign; prior terminal records remain terminal and are not erased or reclassified as passers",
+    "historical_pass_can_directly_generate_current_stock_selection": false,
+    "historical_pass_can_directly_authorize_orders": false
+  },
+  "fixed_execution_assumptions": {
+    "holding_period_local_sessions": 3,
+    "topk": 3,
+    "initial_capital_cny": 200000,
+    "target_entry_exposure_fraction_per_slot": 0.05,
+    "maximum_entry_exposure_fraction_per_signal": 0.15,
+    "buy_lot_size_shares": 100,
+    "commission_rate_each_side": 0.0001,
+    "transfer_fee_rate_each_side": 0.00002,
+    "sell_stamp_duty_rate": 0.0005,
+    "primary_adverse_slippage_rate_each_side": 0.001,
+    "maximum_daily_amount_participation": 0.01,
+    "portfolio": "one shared cash-constrained portfolio with overlapping positions and no use of future sale proceeds at an earlier same-day open",
+    "blocked_entry": "keep cash without replacement",
+    "blocked_exit": "retain the position and retry under the frozen execution policy"
+  },
+  "selection_objective": {
+    "pooled_cumulative_return_alone_is_sufficient": false,
+    "required_views": [
+      "walk-forward Rank IC and positive-IC rate",
+      "Top3-minus-Bottom3 spread",
+      "shared-portfolio net return after fixed costs",
+      "maximum drawdown",
+      "year and fold consistency",
+      "board-lot affordability",
+      "daily amount participation",
+      "cost and slippage sensitivity",
+      "tail losses and unresolved exits"
+    ],
+    "principle": "Prefer simple mechanisms that remain directionally and economically consistent across folds over a single high pooled backtest."
+  },
+  "candidate49_preservation": {
+    "registration_id": "candidate49_intraday_cumulative_vwap_crossing_rate_240m_v1",
+    "historical_return_diagnostic_allowed": false,
+    "historical_signal_or_execution_backfill_allowed": false,
+    "future_ledger_semantics_changed": false,
+    "future_milestones_changed": false,
+    "daily_after_close_collection_still_required_for_candidate49": true,
+    "candidate49_no_longer_blocks_historical_walkforward_research": true
+  },
+  "promotion_and_live_boundary": {
+    "historical_campaign_pass_result": "eligible only for a separately fingerprinted prospective champion registration",
+    "maximum_simultaneously_active_prospective_candidates": 1,
+    "candidate50_historical_trial_research_allowed_while_candidate49_active": true,
+    "candidate50_prospective_activation_while_candidate49_active": false,
+    "current_scoring_allowed": false,
+    "selection_allowed": false,
+    "sizing_allowed": false,
+    "orders_allowed": false,
+    "investment_advice": false
+  },
+  "forbidden_actions": [
+    "backfill candidate49 historical returns, signals, executions, or milestones",
+    "describe 2019-2025 or 2024-2025 as a pristine untouched market holdout",
+    "tune a campaign on 2024-2025 and still report the same interval as its locked test",
+    "omit failed trials or search attempts from the append-only ledger",
+    "use a historical pass as direct permission for a current score, stock list, position size, paper order, or live order",
+    "change the fixed three-session timing or execution costs after opening a locked campaign backtest without creating a new version",
+    "erase or rewrite the forty-eight terminal records",
+    "start a second prospective ledger while candidate49 remains the active prospective candidate"
+  ],
+  "next_implementation_action": {
+    "objective": "Implement an offline, fingerprint-bound historical walk-forward campaign runner and append-only trial ledger before opening a new 2024-2025 campaign backtest.",
+    "required_order": [
+      "inventory and freeze the first finite candidate and combination library",
+      "materialize purged 2019-2023 expanding folds",
+      "record every development and validation trial",
+      "freeze the survivor rule and the whole campaign",
+      "open the 2024-2025 quasi-out-of-sample campaign backtest once",
+      "record all results and mark the lockbox consumed",
+      "register at most one surviving champion for genuinely future confirmation"
+    ],
+    "network_or_new_daily_data_required_for_offline_research": false,
+    "same_day_1630_wait_required_for_offline_research": false
+  }
+}

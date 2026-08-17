@@ -1,0 +1,38 @@
+{
+  "version": 1,
+  "kind": "a_share_three_day_walkforward_campaign054_post_development_frozen_prestate_test_failure",
+  "status": "recorded_without_mutating_frozen_pre_return_test_or_reopening_development",
+  "recorded_at": "2026-08-03T15:45:00Z",
+  "purpose": "Preserve the expected-state failure caused by rerunning an immutable pre-development status test after the one authorized development trial completed.",
+  "development_implementation_freeze": {
+    "path": "docs/a_share_three_day_walkforward_campaign_054_development_implementation_freeze_20260803.json",
+    "sha256": "a34176f0e663ba8f7a7e1ce1ca2507f4895f248ca608c1f49268755ac459c9f9"
+  },
+  "completed_trial_ledger": {
+    "path": "data/experiments/short_horizon/historical_walkforward/campaign_054/walkforward/trial_ledger.json",
+    "sha256": "5ff51038c372cae378e390b886749db68917ec096443e91c27c01e98eb644530"
+  },
+  "failure": {
+    "test": "test_campaign054_stress_is_closed_before_development_survivor_freeze",
+    "frozen_expected_ledger_entry_count": 0,
+    "current_observed_ledger_entry_count": 1,
+    "reason": "The assertion was correct at the pre-return freeze but is not a valid current-state assertion after the sole authorized trial was appended.",
+    "suite_result": "22_passed_1_failed",
+    "classification": "post_result_expected_state_progression_infrastructure_only"
+  },
+  "resolution": {
+    "mutate_frozen_pre_return_test": false,
+    "rerun_development": false,
+    "current_terminal_test": "tests/data_collector_tests/test_a_share_three_day_walkforward_campaign054_terminal.py",
+    "current_suite_rule": "Use terminal tests after the state transition and retain the pre-return test solely as immutable freeze evidence."
+  },
+  "research_boundary": {
+    "additional_development_trial_created": false,
+    "additional_historical_daily_price_or_forward_return_read": false,
+    "stress_interval_opened": false,
+    "candidate49_historical_return_read": false,
+    "candidate49_ledgers_changed": false,
+    "provider_request_issued": false,
+    "current_scoring_selection_sizing_or_orders_performed": false
+  }
+}

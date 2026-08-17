@@ -1,0 +1,81 @@
+{
+  "version": 1,
+  "kind": "a_share_three_day_walkforward_campaign059_no_return_audit_implementation_freeze",
+  "status": "frozen_after_verified_snapshot_and_before_coverage_or_comparison_values",
+  "recorded_at": "2026-08-04T20:17:18+08:00",
+  "purpose": "Bind the sole Campaign059 coverage-first no-return audit before reading coverage candidate rows or any of the 90 comparison values.",
+  "authoritative_boundary": {
+    "path": "docs/a_share_three_day_iteration_status_20260804_campaign058_verified.json",
+    "sha256": "51e449985216b6c752f937ecd712237ffd45c87339f8f19ad11fcbd504f1452b"
+  },
+  "no_return_protocol": {
+    "path": "docs/a_share_three_day_walkforward_campaign_059_no_return_preregistration.json",
+    "sha256": "50cf7b067b1dfd5dc31d6c6ef85090788abdf6a2bbc054eda6e7c3824d5c60d6",
+    "comparison_count": 90,
+    "comparison_order_sha256": "09bc36308ce5d3af7a484fd9b233a02a9f5d3f37cd5169d400ab72737071caee"
+  },
+  "feature_snapshot_binding": {
+    "path": "docs/a_share_three_day_walkforward_campaign_059_feature_snapshot_binding_20260804.json",
+    "sha256": "9d8c277c68531ea2b2155e983c633d36c197ecb47109bb9043f3e162ad445d9a"
+  },
+  "feature_snapshot": {
+    "manifest_path": "/Volumes/DIsk/qlib-a-share-tushare-1m/derived/a_share/rich/tushare/minute_walkforward_campaign059_feature_library/tushare_stk_mins_1m_2019_2025_ea0cbb8f_walkforward_campaign059_feature_library_v1/snapshot_manifest.json",
+    "manifest_sha256": "478597c0b06fe6d777dac906b6b70dc95f9b6e0a498c5f0e5eabf271dc2de9e6",
+    "dataset_sha256": "53f0c782633885f150ff1625e2b75ebb3b27e9f6e53e58c2e133718ebebf5293",
+    "partitions": 33015,
+    "rows": 7724498,
+    "eligible_rows": 7583771,
+    "independent_byte_and_frame_verification_passed": true
+  },
+  "base_audit_engine": {
+    "path": "scripts/a_share_three_day_walkforward_campaign058_no_return_audit.py",
+    "sha256": "84bf18ce4ccda2292235bd86cbc7be707560e04622ede15d0dfd2747ef79f8a0",
+    "use": "immutable coverage, capacity, quality/listing mask, Candidate49 no-return comparison, and prior 89-factor orchestration; Campaign059 overrides the candidate snapshot, exact 90-factor reconstruction, benchmark bindings, and terminal Campaign058 comparison"
+  },
+  "audit_runner": {
+    "path": "scripts/a_share_three_day_walkforward_campaign059_no_return_audit.py",
+    "sha256": "8c24d2e973b00d9a13f98435795703d79be1eb8279565976a57d540d6ee6953b",
+    "factor": "intraday_market_directional_sign_agreement_238m",
+    "coverage_first": true,
+    "comparison_count_if_coverage_passes": 90,
+    "terminal_campaign058_appended_exactly_once": true,
+    "maximum_absolute_median_daily_rank_correlation": 0.8,
+    "minimum_pairwise_names_per_session": 50,
+    "minimum_pairwise_sessions_per_comparison": 100
+  },
+  "tests": {
+    "path": "tests/data_collector_tests/test_a_share_three_day_walkforward_campaign059_no_return_audit.py",
+    "sha256": "487405d7b0e7241dd5b995d0e09a987e528ab3bd47d4c69dae5a51db366cd486",
+    "combined_command": "PYTHONPATH=/Volumes/DIsk/Disk-Coding/qlib python -m pytest -q tests/data_collector_tests/test_a_share_three_day_walkforward_campaign059_features.py tests/data_collector_tests/test_a_share_three_day_walkforward_campaign059_empty_partition_repair.py tests/data_collector_tests/test_a_share_three_day_walkforward_campaign059_manifest_namespace_repair.py tests/data_collector_tests/test_a_share_three_day_walkforward_campaign059_no_return_audit.py",
+    "passed": 21,
+    "failed": 0,
+    "semantics_tested": [
+      "all frozen file and market benchmark identities",
+      "exact 90-factor order with Campaign058 appended once",
+      "Campaign058 terminal snapshot identity",
+      "generated audit engine uses only Campaign059 overrides",
+      "status reads no partition candidate comparison daily-price or return values"
+    ]
+  },
+  "ordered_gate_semantics": {
+    "coverage_values_may_be_read_after_this_freeze": true,
+    "comparison_values_may_be_read_only_after_all_coverage_and_capacity_gates_pass": true,
+    "all_90_comparisons_must_pass": true,
+    "failed_coverage_stops_before_comparison_values": true,
+    "failed_uniqueness_stops_before_daily_prices_or_forward_returns": true,
+    "inversion_failed_comparison_removal_formula_change_or_rescue_allowed": false
+  },
+  "research_boundary": {
+    "comparison_values_read_before_this_freeze": false,
+    "historical_daily_price_fields_read": [],
+    "historical_forward_return_fields_read": false,
+    "training_or_model_fitting_performed": false,
+    "candidate49_historical_return_signal_execution_or_milestone_backfill_performed": false,
+    "candidate49_ledgers_changed": false,
+    "second_prospective_candidate_created": false,
+    "current_scoring_selection_sizing_or_orders_performed": false,
+    "provider_request_issued": false,
+    "investment_advice": false
+  },
+  "next_action": "Run exactly one Campaign059 no-return audit with the frozen data and experiment roots. If coverage or uniqueness fails, terminalize before daily prices and forward returns."
+}

@@ -1,0 +1,31 @@
+{
+  "schema_version": 1,
+  "kind": "a_share_three_day_walkforward_campaign143_infrastructure_failure",
+  "status": "recorded_zsh_readonly_status_chain_hash_failure_before_ledger_publication",
+  "recorded_at": "2026-08-14T15:31:00+0800",
+  "attempt_id": "campaign143_infrastructure_008",
+  "failure": {
+    "phase": "append_only_ledger_chain_hash_precomputation",
+    "failed_component_error": "zsh: read-only variable: status",
+    "failed_component_started_first_entry": false,
+    "outer_shell_exit_code": 0,
+    "outer_zero_exit_treated_as_success": false,
+    "cause": "The read loop reused zsh's special status variable instead of a task-specific variable name.",
+    "ledger_file_written": false,
+    "failed_component_bypassed": false,
+    "later_success_may_mask_failure": false
+  },
+  "safe_retry": {
+    "allowed_action": "Recompute the same deterministic chain with attempt_status as the task-specific variable and append this failure as the final chronological entry.",
+    "entry_hash_rule_change_allowed": false,
+    "scientific_attempt_order_change_allowed": false
+  },
+  "research_boundary": {
+    "source_rows_or_column_values_read": false,
+    "candidate_or_comparator_values_read": false,
+    "historical_daily_price_or_forward_return_values_read": false,
+    "stress_2024_2025_opened": false,
+    "provider_request_issued": false,
+    "candidate49_ledgers_changed": false
+  }
+}

@@ -1,0 +1,96 @@
+{
+  "schema_version": 1,
+  "kind": "a_share_three_day_walkforward_campaign190_terminal_validation",
+  "status": "final_recovery_focused_cumulative_independent_and_diff_validation_passed",
+  "recorded_at": "2026-08-15T14:34:30+08:00",
+  "supersedes_without_rewriting": {
+    "path": "docs/a_share_three_day_walkforward_campaign_190_terminal_validation_20260815.json",
+    "sha256": "ae7acd61cc46374e1f17ba0d90de2e79ac85280e193d13cbca864bf057fc7637",
+    "preserved": true,
+    "reason": "Account for the post-publication missing-Git-path failure and bind the recovered final artifacts without rewriting the first successful validation record."
+  },
+  "authoritative_inputs": {
+    "terminal_result": {
+      "path": "docs/a_share_three_day_walkforward_campaign_190_terminal_result_20260815.json",
+      "sha256": "1a1d1f3ca034966a4f91026a768b5c54e3e12f9e4bef8969401ccfadf1157a5c"
+    },
+    "terminal_report": {
+      "path": "docs/a_share_three_day_walkforward_campaign_190_terminal_report_20260815.md",
+      "sha256": "2601c67f8e3fa5eeac718c38f26bc29f06883b8632ef51af525074215ab96ceb"
+    },
+    "source_frontier": {
+      "path": "docs/a_share_three_day_walkforward_campaign_190_clinical_trial_evidence_lifecycle_source_frontier_20260815.json",
+      "sha256": "0703511d04d413c9ca0578b46cf8809de48780add3a6f8503796b2aa973b85fd"
+    },
+    "attempt_ledger": {
+      "path": "data/experiments/short_horizon/historical_walkforward/campaign_190/research_attempt_ledger_v1.json",
+      "sha256": "6ed136cfc0cf207a80e7214a815b4b9740a26ebe67ea23333ec1b11a94fe0a72"
+    },
+    "eligibility_policy_v279": {
+      "path": "docs/a_share_three_day_walkforward_future_numeric_comparison_eligibility_policy_v279_20260815.json",
+      "sha256": "86767fd6762c305ac4e89cfe366fd42b397dd7c06ee2358e3b718394d4d6f52d"
+    },
+    "terminal_tests": {
+      "path": "tests/data_collector_tests/test_a_share_three_day_walkforward_campaign190_terminal.py",
+      "sha256": "6d4b9e773c66192e20a314297cfd26723a3609f5a5d28636888d24714943f6f5"
+    },
+    "missing_anaconda_git_failure": {
+      "path": "docs/a_share_three_day_walkforward_campaign_190_missing_anaconda_git_final_check_failure_20260815.json",
+      "sha256": "767ab8c6626d88cfae485ce7c379012f38ca1115d1e62509a1cd5693443b38bd"
+    },
+    "manage_qlib_a_share_data_skill": {
+      "path": "/Users/niyufei/.codex/skills/manage-qlib-a-share-data/SKILL.md",
+      "sha256": "565713a5f3aeb6a1acf23e397fcc21be28d0c3ea4ebf21c7f287a25bb94d78dc"
+    }
+  },
+  "validation_results": {
+    "black_passed": true,
+    "ruff_passed": true,
+    "focused_campaign190_tests_passed": 2,
+    "focused_campaign190_duration_seconds": 0.07,
+    "campaign145_through_campaign190_test_file_count": 78,
+    "campaign145_through_campaign190_tests_passed": 461,
+    "campaign145_through_campaign190_tests_skipped": 1,
+    "campaign145_through_campaign190_exact_historical_lifecycle_nodes_deselected": 5,
+    "campaign145_through_campaign190_duration_seconds": 12.65,
+    "independent_validation_passed": true,
+    "git_diff_check_passed": true,
+    "git_executable": "/usr/bin/git",
+    "direct_bindings_verified": 15,
+    "campaign190_attempt_entries_verified": 15,
+    "campaign190_evidence_hashes_verified": 15,
+    "campaign190_attempt_hash_chain_passed": true,
+    "finite_routes_verified": 7,
+    "source_gate_items_verified": 12,
+    "candidate49_ledgers_verified": 2,
+    "unified_reports_checked": 2
+  },
+  "effective_accounting_verified": {
+    "campaign190_attempt_count": 15,
+    "campaign190_prevalue_scientific_attempt_count": 7,
+    "campaign190_infrastructure_failure_count": 8,
+    "cumulative_historical_research_attempt_count": 1685,
+    "cumulative_return_reading_development_trial_count": 314
+  },
+  "candidate49": {
+    "only_active_prospective_candidate": true,
+    "signal_ledger_sha256": "5193f00d7f36da003f53cec387900da4c3d002299f5dfcfc1a95eaa199ed3a79",
+    "signal_entry_count": 0,
+    "execution_ledger_sha256": "d57a3e61eac969e42cafa418ccd8c0a5ee65dcf69da145bb2c096c2a02a2ea4f",
+    "execution_entry_count": 0,
+    "ledgers_changed": false
+  },
+  "research_boundary": {
+    "all_observed_infrastructure_failures_recorded_and_recovered": true,
+    "failed_or_truncated_output_used_as_scientific_evidence": false,
+    "source_factor_comparator_security_price_or_return_value_read": false,
+    "stress_2024_2025_opened": false,
+    "provider_or_web_request_issued": false,
+    "provider_credential_presence_value_or_digest_read": false,
+    "candidate49_ledgers_changed": false,
+    "second_prospective_candidate_created": false,
+    "current_scoring_selection_sizing_positions_or_orders_performed": false,
+    "investment_advice": false
+  },
+  "next_action": "Publish the v2 final Campaign190 state and authorize Campaign191 to continue a genuinely different finite offline prevalue mechanism domain while preserving all prospective and 2024-2025 boundaries."
+}

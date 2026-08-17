@@ -1,0 +1,38 @@
+{
+  "schema_version": 1,
+  "kind": "a_share_three_day_walkforward_campaign262_generated_next_action_carryover_failure",
+  "status": "scientific_result_valid_generated_prose_corrected_additively_without_rerun",
+  "recorded_at": "2026-08-16T18:16:00+08:00",
+  "timestamp_semantics": "monotonic_logical_append_time_not_host_wall_clock_measurement",
+  "attempt_id": "campaign262_infrastructure_011",
+  "affected_artifact": {
+    "path": "data/experiments/short_horizon/historical_walkforward/campaign_262/uniqueness/campaign262_ordered_uniqueness_audit.json",
+    "sha256": "1973f36319045682a87b80de7b4b5be50290ee377194783b0a7555a28186b961"
+  },
+  "failure": "The inherited base runner correctly replaced Campaign152 with Campaign262 but retained a literal prospective Campaign153 in next_action. For Campaign262 the correct additive next action is Campaign263 offline prevalue scouting.",
+  "scientific_fields_unaffected": {
+    "comparison_count": 142,
+    "comparison_order_matches_preregistration": true,
+    "all_results_recorded_without_early_stop": true,
+    "failed_comparator": "intraday_amount_center_of_mass_240m",
+    "maximum_absolute_median_daily_rank_correlation": 0.8906904661969348,
+    "strict_maximum_allowed": 0.8,
+    "numeric_uniqueness_passed": false,
+    "historical_daily_price_or_forward_return_values_read": false
+  },
+  "recovery": {
+    "uniqueness_runner_or_output_rewritten": false,
+    "uniqueness_audit_rerun": false,
+    "corrected_next_action": "Terminalize Campaign262 without returns and authorize Campaign263 offline prevalue scouting under the active goal."
+  },
+  "research_boundary": {
+    "new_candidate_or_comparator_values_read": false,
+    "historical_daily_price_or_forward_return_values_read": false,
+    "stress_2024_2025_opened": false,
+    "provider_or_web_request_issued": false,
+    "credential_value_presence_or_digest_read": false,
+    "candidate49_ledgers_changed": false,
+    "current_scoring_selection_sizing_positions_or_orders_performed": false,
+    "investment_advice": false
+  }
+}

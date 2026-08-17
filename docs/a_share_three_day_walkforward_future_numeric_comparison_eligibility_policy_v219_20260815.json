@@ -1,0 +1,102 @@
+{
+  "version": 219,
+  "kind": "a_share_three_day_walkforward_future_numeric_comparison_eligibility_policy",
+  "status": "campaign156_terminal_prevalue_zero_admitted_sources_validation_setup_accounting_complete",
+  "recorded_at": "2026-08-15T03:49:15+08:00",
+  "supersedes_without_rewriting": {
+    "path": "docs/a_share_three_day_walkforward_future_numeric_comparison_eligibility_policy_v218_20260815.json",
+    "sha256": "7b4f4c42b9bea707f1bd7047a252eeae02400584f43e0da15d0225c06501e9b6",
+    "preserved": true,
+    "library_order_changed": false,
+    "scientific_result_changed": false,
+    "reason": "Campaign156 validation setup added two recorded infrastructure failures and mechanical recoveries without changing source-admission decisions or numeric eligibility."
+  },
+  "authoritative_inputs": {
+    "campaign156_source_scouting": {
+      "path": "docs/a_share_three_day_walkforward_campaign_156_credit_governance_source_scouting_20260815.json",
+      "sha256": "2cdd8c13cdd722b290bfcff16042a23877260240f78cb0b6bc7765ffa1df4c6e"
+    },
+    "campaign156_source_admission_audit": {
+      "path": "docs/a_share_three_day_walkforward_campaign_156_credit_governance_source_admission_audit_20260815.json",
+      "sha256": "f33135c9032ff7ccb0524096e5668059e4a0fbf9d20f5cab29079ed193b26cd4"
+    },
+    "campaign156_effective_attempt_ledger_v2": {
+      "path": "data/experiments/short_horizon/historical_walkforward/campaign_156/research_attempt_ledger_v2.json",
+      "sha256": "22d8b11b353837cfb1d28b5a72900b332fff18e002f87a5c6b3f582a2a79867d",
+      "effective_entry_count": 9,
+      "chain_tip_sha256": "61499d3462de4230e559570a57ccbb09d8b2e2eab4f917571a449f660ff3eb24"
+    },
+    "campaign156_terminal_result_v2": {
+      "path": "docs/a_share_three_day_walkforward_campaign_156_terminal_result_v2_20260815.json",
+      "sha256": "ef201db667243aa46adba80eaf1f79526d992f6b86663cd77323d9b357046307"
+    }
+  },
+  "effective_accounting": {
+    "campaign156_attempt_count": 9,
+    "campaign156_prevalue_source_admission_attempt_count": 6,
+    "campaign156_source_admission_deferral_count": 4,
+    "campaign156_terminal_source_family_rejection_count": 2,
+    "campaign156_infrastructure_failure_count": 3,
+    "campaign156_complete_factor_attempt_count": 0,
+    "campaign156_return_reading_development_trial_count": 0,
+    "campaign156_development_survivor_count": 0,
+    "campaign156_stress_trial_count": 0,
+    "cumulative_historical_research_attempt_count": 1367,
+    "cumulative_return_reading_development_trial_count": 314
+  },
+  "complete_historical_feature_library": {
+    "factor_definition_count": 157,
+    "order_sha256": "c39bb6ca969b5f469a9377a5b5ca743405cec9d8511297ed6a1c44188ef40b82",
+    "unchanged_from_v218": true,
+    "campaign156_definition_appended": false
+  },
+  "numerical_comparator_eligibility": {
+    "eligible_numeric_comparator_count": 142,
+    "eligible_numeric_comparator_order_sha256": "5d1b35fb5a0d8ac9293008db9963c4a60a94dc940c237c3ed259e5ce44f14aaf",
+    "unchanged_from_v218": true,
+    "campaign156_numeric_series_appended": false
+  },
+  "campaign156_terminal_classification": {
+    "terminal": true,
+    "terminal_phase": "prevalue_credit_governance_source_admission_gate",
+    "concepts_reviewed": 6,
+    "selected_candidate_count": 0,
+    "source_admission_deferrals_not_factor_failures": 4,
+    "terminal_source_family_overlap_rejections": 2,
+    "source_row_endpoint_response_candidate_comparator_daily_price_or_forward_return_values_read": false,
+    "stress_2024_2025_opened": false,
+    "unverified_endpoint_field_or_schema_assumed": false
+  },
+  "future_campaign_boundary": {
+    "next_campaign": 157,
+    "may_begin_after_this_policy": true,
+    "must_begin_from_genuinely_new_mechanism_or_exact_source_contract_frozen_before_rows": true,
+    "campaign156_deferred_concept_revisit_requires_separate_preregistered_source_admission": true,
+    "campaign156_terminal_source_family_retry_or_keyword_migration_allowed": false,
+    "historical_offline_work_may_continue_at_any_local_time": true,
+    "candidate49_remains_separate_confirmation_layer": true
+  },
+  "candidate49": {
+    "only_active_prospective_candidate": true,
+    "signal_ledger_sha256": "5193f00d7f36da003f53cec387900da4c3d002299f5dfcfc1a95eaa199ed3a79",
+    "signal_entry_count": 0,
+    "execution_ledger_sha256": "d57a3e61eac969e42cafa418ccd8c0a5ee65dcf69da145bb2c096c2a02a2ea4f",
+    "execution_entry_count": 0,
+    "historical_backfill_performed": false,
+    "ledgers_changed": false
+  },
+  "research_boundary": {
+    "campaign156_source_row_or_response_values_read": false,
+    "campaign156_candidate_or_comparator_values_read": false,
+    "historical_daily_price_or_forward_return_values_read": false,
+    "stress_2024_2025_opened": false,
+    "provider_or_web_request_issued": false,
+    "provider_credential_presence_value_or_digest_read": false,
+    "candidate49_historical_backfill_performed": false,
+    "candidate49_ledgers_changed": false,
+    "second_prospective_candidate_created": false,
+    "current_scoring_selection_sizing_positions_or_orders_performed": false,
+    "investment_advice": false
+  },
+  "next_action": "Publish effective Campaign156 v2 state and continue Campaign157 zero-network prevalue scouting without reading unaccepted event rows or converting source deferrals into factor failures."
+}

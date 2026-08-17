@@ -1,0 +1,21 @@
+{
+  "schema_version": 1,
+  "kind": "a_share_three_day_walkforward_campaign212_infrastructure_failure",
+  "recorded_at": "2026-08-15T22:58:00+08:00",
+  "timestamp_semantics": "monotonic_logical_append_time_not_host_wall_clock_measurement",
+  "attempt_id": "campaign212_infrastructure_005",
+  "phase": "cumulative_validation_file_selection",
+  "status": "failed_terminal_suffix_only_file_glob_count_68_expected_100_before_pytest",
+  "observed_test_file_count": 68,
+  "expected_test_file_count": 100,
+  "pytest_started": false,
+  "failure_semantics": "The validation selector incorrectly included only filenames ending in _terminal.py. Its explicit count gate exited before pytest. Campaign145-212 contains 100 matching campaign-numbered Python test files when every filename variant is included.",
+  "result_consumed": false,
+  "scientific_evidence_changed": false,
+  "candidate_or_comparator_value_read": false,
+  "daily_price_or_forward_return_read": false,
+  "provider_or_web_request_issued": false,
+  "provider_credential_presence_value_or_digest_read": false,
+  "candidate49_plan_or_run_executed": false,
+  "candidate49_ledgers_changed": false
+}

@@ -1,0 +1,59 @@
+{
+  "version": 1,
+  "kind": "a_share_three_day_walkforward_campaign075_feature_snapshot_binding",
+  "status": "verified_before_campaign075_coverage_or_comparison_values",
+  "recorded_at": "2026-08-06T09:27:00+08:00",
+  "protocol": {
+    "path": "docs/a_share_three_day_walkforward_campaign_075_no_return_preregistration.json",
+    "sha256": "fa2100154a66ec2f4037d86c6481a676e7c8fa2839ea5b55eec4c578e21b31b3"
+  },
+  "feature_implementation_freeze": {
+    "path": "docs/a_share_three_day_walkforward_campaign_075_feature_implementation_freeze_20260806.json",
+    "sha256": "2a9b82de6d5fd98296ad4ec18c549c98fbc62d56e7288765796c5a9e6172f784"
+  },
+  "feature_runner": {
+    "path": "scripts/a_share_three_day_walkforward_campaign075_features.py",
+    "sha256": "584321ccdb00e2494968b2ba2ff986895931f4caa96957d57bd1efa2a19bdfb6"
+  },
+  "feature_tests": {
+    "path": "tests/data_collector_tests/test_a_share_three_day_walkforward_campaign075_features.py",
+    "sha256": "0ed3fb76e70fcdf41ff879069b69e7c1b74042c484825ae8f2f63314e896987c",
+    "passed": 7,
+    "failed": 0
+  },
+  "snapshot": {
+    "path": "/Volumes/DIsk/qlib-a-share-tushare-1m/derived/a_share/rich/tushare/minute_walkforward_campaign075_feature_library/tushare_stk_mins_1m_2019_2025_ea0cbb8f_walkforward_campaign075_feature_library_v1/snapshot_manifest.json",
+    "sha256": "d621c73d8f32fa0187c0b8f834a170548eeb8deb04e1fade7a12da08f160aef4",
+    "dataset_sha256": "63b3bd548fa3f2d7f88e19542eb6be5e4ee7cc6f9d83f5dc874868efade98936",
+    "partitions": 33015,
+    "rows": 7724498,
+    "eligible_rows": 7689881,
+    "factor": "accepted_instrument_session_youth_20s",
+    "direction": "higher"
+  },
+  "verification": {
+    "all_partition_byte_hashes_passed": true,
+    "all_partition_frame_hashes_passed": true,
+    "aggregate_dataset_digest_passed": true,
+    "integer_and_upper_bound_semantics_passed": true,
+    "campaign074_identity_projection_only": [
+      "trade_date",
+      "symbol",
+      "provider"
+    ],
+    "campaign074_factor_values_read_for_materialization": false,
+    "comparison_values_read": false,
+    "historical_daily_price_or_forward_return_values_read": false,
+    "provider_request_issued": false
+  },
+  "research_boundary": {
+    "coverage_or_capacity_metrics_computed_before_binding": false,
+    "comparison_values_read_before_binding": false,
+    "historical_daily_price_fields_read_before_binding": [],
+    "historical_forward_returns_read_before_binding": false,
+    "candidate49_ledgers_changed": false,
+    "second_prospective_candidate_created": false,
+    "current_scoring_selection_sizing_or_orders_performed": false
+  },
+  "next_action": "Implement and synthetically test the coverage-first no-return audit, freeze its code and snapshot activation, then compute coverage before any comparator value."
+}

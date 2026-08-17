@@ -1,0 +1,53 @@
+{
+  "schema_version": 1,
+  "kind": "a_share_three_day_walkforward_campaign099_no_return_audit_atomic_writer_repair_preregistration",
+  "status": "frozen_after_no_return_values_before_writer_repair_or_retry",
+  "frozen_at": "2026-08-07T10:34:32Z",
+  "failure_record": {
+    "path": "docs/a_share_three_day_walkforward_campaign_099_no_return_audit_atomic_writer_failure_20260807.json",
+    "sha256": "4b695695cf4fe383e35029cce878c1537cdec4bc5d7bc9f7de41788c2432b154"
+  },
+  "attempt_ledger_before_repair": {
+    "path": "data/experiments/short_horizon/historical_walkforward/campaign_099/research_attempt_ledger_v10.json",
+    "sha256": "61db2b289abe9d641ccd7685d082647b599cd7205c776f998a8efcbf8c1f6292"
+  },
+  "pre_repair_implementation": {
+    "audit_runner": {
+      "path": "scripts/a_share_three_day_walkforward_campaign099_no_return_audit.py",
+      "sha256": "f1cac1f5508cabb11040e25844eea604cbb2413d48025d17c64bbe65ba4cc7d5"
+    },
+    "tests": {
+      "path": "tests/data_collector_tests/test_a_share_three_day_walkforward_campaign099_no_return_audit.py",
+      "sha256": "9ac16ad3943bc0e1156b75f4385166de9475001bb6319a1e4de493094e8d13d0"
+    },
+    "v2_implementation_freeze": {
+      "path": "docs/a_share_three_day_walkforward_campaign_099_no_return_audit_implementation_freeze_v2_20260807.json",
+      "sha256": "d0b90fd26b9bf71c5cec2ca014dd0282987bad29852ba9ef54d74bbb7cd97e8b"
+    }
+  },
+  "only_permitted_repair": {
+    "atomic_writer_reference_before": "definitions.c90.c85._atomic_json",
+    "atomic_writer_reference_after": "definitions.c97.base.foundation.atomic_write_json",
+    "freeze_path_change": "use additive v3 implementation-freeze and v3 activation-binding files while preserving v1 and v2",
+    "tests": "add an isolated atomic-writer test proving one JSON file is created with the requested payload"
+  },
+  "forbidden_changes": {
+    "candidate_or_eligibility_loader": true,
+    "identity_alignment": true,
+    "coverage_or_capacity_computation": true,
+    "comparison_loader_or_order": true,
+    "admissibility_logic": true,
+    "payload_schema_or_fields": true,
+    "historical_daily_price_or_forward_return_read": true,
+    "provider_request": true,
+    "candidate49_ledger_change": true
+  },
+  "scientific_boundary_at_freeze": {
+    "candidate_values_read": true,
+    "coverage_or_capacity_metrics_computed": true,
+    "comparison_factor_values_read_conservative": true,
+    "historical_daily_price_or_forward_return_values_read": false,
+    "training_or_model_fitting_performed": false,
+    "provider_request_issued": false
+  }
+}

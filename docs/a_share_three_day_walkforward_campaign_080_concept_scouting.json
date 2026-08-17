@@ -1,0 +1,143 @@
+{
+  "schema_version": 1,
+  "kind": "a_share_three_day_walkforward_campaign080_concept_scouting",
+  "status": "selected_before_campaign080_minute_source_candidate_or_comparison_values",
+  "recorded_at": "2026-08-06T15:26:39+08:00",
+  "purpose": "Select exactly one economically distinct offline three-session factor after terminal Campaign079, before opening any Campaign080 minute source row, candidate value, comparison value, daily price, or forward return.",
+  "authoritative_bindings": {
+    "campaign079_verified_state": {
+      "path": "docs/a_share_three_day_iteration_status_20260806_campaign079_verified.json",
+      "sha256": "a9898fcded0457b491a82f3678f62c23a27c7c35193c55122156fa322a5d3161"
+    },
+    "campaign079_verification": {
+      "path": "docs/a_share_three_day_walkforward_campaign_079_verification_20260806.json",
+      "sha256": "c384789b7fba4d4fee2aabdad52ea03b8683b4a1bc69364fa1d462dcfd53db10"
+    },
+    "historical_walkforward_policy": {
+      "path": "docs/a_share_three_day_historical_walkforward_research_policy_20260727.json",
+      "sha256": "38426d6161b9bfed323c58caba18feca668b8c9d53e294951a8ba90c01a798bb"
+    },
+    "numeric_comparator_policy_v15": {
+      "path": "docs/a_share_three_day_walkforward_future_numeric_comparison_eligibility_policy_v15_20260806.json",
+      "sha256": "e4df7ab965b003d8f77cbdffa742127e8f118417e6165b52afa6ae30cc5cfb63",
+      "complete_definition_count": 111,
+      "complete_definition_order_sha256": "14479cf55ceab31f6705fc12b1e103d9da41f8b07f27ffdf4b87e63cac36ffdb",
+      "eligible_numeric_comparator_count": 109,
+      "eligible_numeric_comparator_order_sha256": "0893e0ff54c0094e48e67def84f0038a453fd11230629631e3e54120480a3529"
+    },
+    "manage_qlib_a_share_data_skill": {
+      "path": "/Users/niyufei/.codex/skills/manage-qlib-a-share-data/SKILL.md",
+      "sha256": "8acbe278367e0dec11e9432fd56ab2b94e612df27ff2dc810b7b17961b38c25b"
+    }
+  },
+  "definition_only_source_boundary": {
+    "source": "immutable accepted local Tushare 2019-2025 one-minute source definition and exact standard continuous-session grid",
+    "minute_source_projection_if_later_admitted": [
+      "datetime",
+      "symbol",
+      "provider",
+      "amount"
+    ],
+    "stock_day_identity_projection_if_later_admitted": [
+      "trade_date",
+      "symbol",
+      "provider"
+    ],
+    "forbidden_before_protocol_and_implementation_freeze": [
+      "minute source rows",
+      "candidate values",
+      "comparison values",
+      "daily price fields",
+      "historical or forward returns",
+      "Candidate49 historical values or ledger additions"
+    ],
+    "candidate_source_rows_read": false,
+    "provider_request_allowed": false
+  },
+  "candidate_design_catalog": [
+    {
+      "design": "intraday_above_median_amount_longest_run_240m",
+      "decision": "selected_for_separate_complete_mechanism_overlap_audit",
+      "reason": "The longest within-half-session run of minutes strictly above the full-session median amount measures duration and persistence of an elevated participation state, without using amount magnitude, absolute clock weights, or cross-session inputs."
+    },
+    {
+      "design": "intraday_above_median_amount_run_count_or_mean_run_length",
+      "decision": "rejected_before_values",
+      "reason": "Run count and mean duration are same-family variants that would create an avoidable rescue path."
+    },
+    {
+      "design": "intraday_above_quantile_amount_longest_run",
+      "decision": "rejected_before_values",
+      "reason": "Alternate quantiles create a threshold search family; the ordinary full-session median is frozen once."
+    },
+    {
+      "design": "intraday_above_or_equal_median_amount_longest_run",
+      "decision": "rejected_before_values",
+      "reason": "Changing the strict tie rule after seeing values would be a parameter rescue."
+    },
+    {
+      "design": "cross_lunch_longest_run",
+      "decision": "rejected_before_values",
+      "reason": "Treating 11:30 and 13:01 as adjacent would invent continuity across the lunch break; runs are measured separately within the two 120-bar halves."
+    },
+    {
+      "design": "magnitude_weighted_filtered_residualized_or_cross_day_run_duration",
+      "decision": "rejected_before_values",
+      "reason": "Magnitude weights, filters, residualization, peer inputs, lags, cross-day transformations, fitting, models, and combinations are outside this one-factor campaign."
+    }
+  ],
+  "selected_candidate": {
+    "name": "intraday_above_median_amount_longest_run_240m",
+    "direction": "higher",
+    "economic_hypothesis": "A sustained block of unusually active minutes can represent persistent attention and liquidity provision, potentially supporting three-session continuation more reliably than fragmented isolated bursts.",
+    "formula": "Require exact amounts a_0,...,a_239 on 09:31-11:30 and 13:01-15:00. Let m be the ordinary even-sample median, define b_i=1[a_i>m], compute the longest consecutive one-run separately on i=0..119 and i=120..239, let L be their maximum, and return L/120.",
+    "median_rule": "Sort all 240 finite amounts and use the arithmetic mean of the 120th and 121st one-indexed order statistics. For the strict comparison, ties to the median are valid zeros.",
+    "lunch_boundary_rule": "The morning and afternoon halves are separate sequences; a run never crosses from 11:30 to 13:01.",
+    "availability": "Known at signal-session close after all 240 exact amount bars are available; no future session, daily return, comparator, or Candidate49 observation is used.",
+    "valid_range": {
+      "lower": 0.0,
+      "lower_inclusive": true,
+      "upper": 1.0,
+      "upper_inclusive": true
+    },
+    "missing_rule": "Missing when source identity or grid is invalid, any selected amount is nonfinite or negative, the selected amount sum is nonfinite or nonpositive, or the computed value is nonfinite or outside [0,1]. Never impute, smooth, bucket, rank, winsorize, rescale, neutralize, or substitute another bar set.",
+    "parameter_quantile_tie_lunch_boundary_direction_filter_subset_regime_fit_model_or_combination_search": false
+  },
+  "mandatory_pre_value_challenges": [
+    "all_111_frozen_historical_factor_definitions_in_exact_order",
+    "all_109_numeric_comparators_in_exact_order",
+    "intraday_amount_local_peak_density_238p",
+    "intraday_amount_profile_serial_persistence_240m",
+    "intraday_amount_participation_entropy_240m",
+    "intraday_amount_center_of_mass_240m",
+    "intraday_amount_clock_dispersion_240m",
+    "intraday_peak_amount_bar_recency_240m",
+    "late_amount_share_30m",
+    "intraday_terminal_bar_amount_share_240m",
+    "intraday_morning_afternoon_amount_profile_similarity_120b",
+    "intraday_day_over_day_amount_profile_similarity_240b",
+    "intraday_market_amount_profile_synchronization_240m",
+    "intraday_cross_sectional_standardized_return_state_stability_236p",
+    "signal_day_turnover_rate_pct",
+    "candidate49_intraday_cumulative_vwap_crossing_rate_240m_v1"
+  ],
+  "research_boundary": {
+    "campaign080_minute_source_rows_read": false,
+    "campaign080_candidate_values_read": false,
+    "comparison_values_read": false,
+    "historical_daily_price_fields_read": [],
+    "historical_forward_returns_read": false,
+    "provider_request_issued": false,
+    "candidate49_historical_backfill_performed": false,
+    "candidate49_ledgers_changed": false,
+    "second_prospective_candidate_created": false,
+    "current_scoring_selection_sizing_or_orders_performed": false,
+    "investment_advice": false
+  },
+  "decision": {
+    "selected_concept_count": 1,
+    "may_advance_directly_to_values": false,
+    "required_next_step": "Complete and bind one exhaustive no-value mechanism-overlap audit; only then freeze the exact no-return protocol, code, tests, and implementation fingerprints before any source or candidate value.",
+    "candidate49_remains_only_active_prospective_candidate": true
+  }
+}

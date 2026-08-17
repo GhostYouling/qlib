@@ -1,0 +1,22 @@
+{
+  "version": 1,
+  "kind": "a_share_three_day_walkforward_campaign076_postcompletion_lifecycle_test_failure",
+  "status": "one_failed_command_two_expected_precompletion_assertions",
+  "recorded_at": "2026-08-06T12:27:00+08:00",
+  "test_result": {
+    "passed": 22,
+    "failed": 2,
+    "failed_nodes": [
+      "test_a_share_three_day_walkforward_campaign076_no_return_audit.py::test_status_does_not_compute_gates_or_read_values",
+      "test_a_share_three_day_walkforward_campaign076_no_return_audit_v2.py::test_v1_frozen_runner_and_empty_audit_state_preserved"
+    ]
+  },
+  "cause": "Both immutable tests were frozen before the sole no-return audit and correctly asserted audit_count == 0; terminal state correctly has audit_count == 1.",
+  "old_tests_rewritten": false,
+  "research_values_or_returns_recomputed": false,
+  "stress_2024_2025_opened": false,
+  "provider_request_issued": false,
+  "candidate49_ledgers_changed": false,
+  "attempt_accounting_increment": 1,
+  "next_action": "Run the current terminal suite with exactly these two historical lifecycle nodes deselected."
+}

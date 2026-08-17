@@ -1,0 +1,14 @@
+{
+  "schema_version": 1,
+  "kind": "a_share_three_day_walkforward_campaign222_infrastructure_failure",
+  "recorded_at": "2026-08-16T01:47:00+08:00",
+  "timestamp_semantics": "monotonic_logical_append_time_not_host_wall_clock_measurement",
+  "attempt_id": "campaign222_infrastructure_001",
+  "phase": "mandatory_manage_qlib_a_share_data_skill_full_read",
+  "status": "failed_combined_skill_read_output_truncated_and_discarded",
+  "failure": "A combined bounded-range read of the mandatory skill exceeded the display allowance. The incomplete output was discarded and every range was reread independently through end of file before research action.",
+  "writes_before_failure": false,
+  "scientific_value_read": false,
+  "result_consumed": false,
+  "recovery": "Complete independent bounded reads covered the entire 1-1336 line skill; only those complete reads informed Campaign222 boundaries."
+}

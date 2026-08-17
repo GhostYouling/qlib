@@ -1,0 +1,38 @@
+{
+  "version": 1,
+  "kind": "a_share_three_day_walkforward_campaign060_infrastructure_failure",
+  "status": "pre_freeze_manifest_adapter_failure_recorded_and_resolved_before_audit_values",
+  "recorded_at": "2026-08-05T00:09:00+08:00",
+  "stage": "pre_value_no_return_audit_status",
+  "attempt_ordinal_within_campaign060": 7,
+  "failed_command": "PYTHONPATH=/Volumes/DIsk/Disk-Coding/qlib python scripts/a_share_three_day_walkforward_campaign060_no_return_audit.py status --data-root /Volumes/DIsk/qlib-a-share-tushare-1m",
+  "exit_code": 1,
+  "exception": "AttributeError: module scripts.a_share_three_day_walkforward_campaign060_features has no attribute _validate_manifest",
+  "root_cause": "The inherited static verifier expected a public validator attribute while the frozen Campaign060 feature wrapper retained the identical function in its runtime namespace.",
+  "repair": "The audit adapter binds candidate._validate_manifest to the exact frozen candidate runtime function; the feature runner and snapshot remain byte-unchanged.",
+  "successful_status": {
+    "audit_count": 0,
+    "comparison_count": 91,
+    "snapshot_manifest_sha256": "3f328039fb7806c66a260a7fd723a3297e2e0ce5ba23e9bb11f39d963e7250cd",
+    "comparison_order_sha256": "abbf08eef9022adec5dfa0be4d15ae79a2007f4d424b7aa1d29522d8319e9312"
+  },
+  "final_audit_runner": {
+    "path": "scripts/a_share_three_day_walkforward_campaign060_no_return_audit.py",
+    "sha256": "ecedad2aec0cf823c603001e2733411879c87d9b2522c4d09d5b6a212fa19977"
+  },
+  "boundary": {
+    "candidate_snapshot_values_read": false,
+    "comparison_values_read": false,
+    "daily_price_or_forward_return_read": false,
+    "audit_artifact_written": false,
+    "provider_request_issued": false,
+    "candidate49_ledgers_changed": false
+  },
+  "accounting": {
+    "counts_as_infrastructure_attempt": true,
+    "counts_as_factor_attempt": false,
+    "counts_as_return_reading_development_trial": false,
+    "cumulative_historical_research_attempt_count_after_record": 348,
+    "cumulative_return_reading_development_trial_count_after_record": 269
+  }
+}

@@ -1,0 +1,58 @@
+{
+  "schema_version": 1,
+  "kind": "a_share_three_day_walkforward_campaign115_source_acceptance_runner_verification",
+  "status": "read_only_attempt_forensics_and_terminal_content_binding_verified_zero_network",
+  "recorded_at": "2026-08-09T04:48:00+08:00",
+  "recorded_at_semantics": "monotonic_logical_append_time_after_v4_recorded_at_04_30_not_host_wall_clock_measurement",
+  "supersedes_without_rewriting": {
+    "path": "docs/a_share_three_day_walkforward_campaign_115_source_acceptance_runner_verification_v4_20260809.json",
+    "sha256": "434196336291c1b310f2ad2b7da06a6819972e17c529b3a9d3bc9dd0f91e8c30",
+    "preserved": true
+  },
+  "runner_freeze_v5": {
+    "path": "docs/a_share_three_day_walkforward_campaign_115_source_acceptance_runner_freeze_v5_20260809.json",
+    "sha256": "b7cf4b1ac4f4196359884d5aa50409ee79685abf8affa59b37a7e154dbeb28d7"
+  },
+  "attempt_ledger_v7": {
+    "path": "data/experiments/short_horizon/historical_walkforward/campaign_115/research_attempt_ledger_v7.json",
+    "sha256": "494784d8df22c46e8bd5f446e2adebb8e18a92c9a43c0dd1e1e5c06d293a00c4"
+  },
+  "verification": {
+    "focused_runner_and_adapter_tests": "31 passed in 0.67s",
+    "campaign113_to_campaign115_joint_regression": "66 passed in 0.86s",
+    "black_check": "4 files unchanged",
+    "ruff_required_rules": "E4,E7,E9,F,I passed",
+    "no_journal_inspection_loaded_credential": false,
+    "no_journal_inspection_issued_provider_request": false,
+    "symlink_journal_rejected": true,
+    "out_of_order_event_rejected": true,
+    "provider_call_count_and_failure_code_continuity_checked": true,
+    "simulated_failure_committed_state_valid": true,
+    "simulated_failure_record_removed_state_is_interrupted_no_retry": true,
+    "simulated_success_committed_state_valid": true,
+    "tampered_success_manifest_rejected": true,
+    "success_factor_frame_sha256_binding_checked": true,
+    "private_terminal_json_mode_and_identity_checked": true,
+    "real_inspection_status": "no_attempt_journal",
+    "real_inspection_exit_code": 0,
+    "real_inspection_credential_loaded": false,
+    "real_inspection_provider_request_issued": false,
+    "real_plan_ready": false,
+    "real_plan_exit_code": 2,
+    "runtime_binding_check_passed": true,
+    "real_plan_only_blocker": "manual_5000_point_entitlement_confirmation",
+    "real_attempt_journal_created": false,
+    "success_manifest_exists": false,
+    "failure_record_exists": false,
+    "credential_value_printed_hashed_or_persisted": false
+  },
+  "scientific_or_accounting_change": {
+    "formula_source_direction_date_or_gate_changed": false,
+    "complete_definition_count_changed": false,
+    "numeric_comparator_count_changed": false,
+    "research_attempt_count_changed": true,
+    "research_attempt_count_change_reason": "Additive ledger v7 records one atomic apply_patch context mismatch rejected before any target write.",
+    "return_reading_trial_count_changed": false
+  },
+  "next_action": "Wait for explicit confirmation that the current account already has 5000 points. Do not supply the assertion flag or probe the provider by inference. If a future one-shot run leaves a journal, inspect-attempt is the only read-only forensic path and never authorizes retry."
+}

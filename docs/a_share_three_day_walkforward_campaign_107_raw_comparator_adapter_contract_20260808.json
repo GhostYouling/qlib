@@ -1,0 +1,93 @@
+{
+  "schema_version": 1,
+  "kind": "a_share_three_day_walkforward_campaign107_raw_comparator_adapter_contract",
+  "status": "frozen_before_campaign107_candidate_comparator_daily_price_or_return_values",
+  "recorded_at": "2026-08-07T19:44:21Z",
+  "purpose": "Prevent the two Campaign106 raw-comparator adapter failures before any Campaign107 protected value stage.",
+  "authoritative_inputs": {
+    "iteration_state": {
+      "path": "docs/a_share_three_day_iteration_status_20260808_campaign106_terminal.json",
+      "sha256": "3d8abfac748b7ae9d90646be602457259674fc1c3eeeaa81c4b82ec43a40e601"
+    },
+    "campaign106_completion_freeze": {
+      "path": "docs/a_share_three_day_walkforward_campaign_106_terminal_completion_freeze_20260808.json",
+      "sha256": "0daf1ad598d38c1e66885316e74caf33a53fb95d330a48cdcb20d470b110d62a"
+    },
+    "numeric_policy_v64": {
+      "path": "docs/a_share_three_day_walkforward_future_numeric_comparison_eligibility_policy_v64_20260808.json",
+      "sha256": "7453bf020364e8b27035e94b7e527d874a271b9aaa51008445610c464803805e"
+    },
+    "campaign106_missing_range_failure": {
+      "path": "docs/a_share_three_day_walkforward_campaign_106_no_return_audit_failure_20260808.json",
+      "sha256": "e07e26303427f6f9eaa90b8fb77553685f99aee8ec5b9f1f9dfc9db00a9f03ee"
+    },
+    "campaign106_missing_value_adapter_failure": {
+      "path": "docs/a_share_three_day_walkforward_campaign_106_no_return_audit_recovery_v2_failure_20260808.json",
+      "sha256": "5213e48f388ed03185bbdd34c8cd800db6e01b4c8da7da70855f02a7de53de45"
+    },
+    "manage_qlib_a_share_data_skill": {
+      "path": "/Users/niyufei/.codex/skills/manage-qlib-a-share-data/SKILL.md",
+      "sha256": "8e541bf7c5d77f27a0b0562bd1235878b46c1074c53d79f64a21c417a68ad470"
+    }
+  },
+  "frozen_adapter_semantics": {
+    "range_registration": {
+      "every_raw_numeric_comparator_requires_an_explicit_finite_lower_upper_pair": true,
+      "lower_may_equal_upper": false,
+      "existing_identical_registration_is_idempotent": true,
+      "existing_conflicting_registration_fails_closed": true
+    },
+    "source_frame": {
+      "required_columns": [
+        "trade_date",
+        "symbol",
+        "factor_value"
+      ],
+      "stock_day_keys_must_be_unique_after_compaction": true,
+      "stock_day_keys_sorted_stably": true,
+      "finite_values_must_lie_inside_the_registered_closed_range": true,
+      "nan_is_a_valid_missing_comparator_value": true,
+      "positive_or_negative_infinity_is_invalid": true,
+      "nan_may_not_be_filled_ranked_or_dropped_before_alignment": true
+    },
+    "alignment": {
+      "target_candidate_keys_must_be_unique_and_strictly_increasing": true,
+      "source_comparator_keys_must_be_unique_and_strictly_increasing": true,
+      "every_target_key_must_exist_in_the_source_identity": true,
+      "aligned_nan_must_remain_nan": true,
+      "pairwise_overlap_is_handled_only_by_the_frozen_correlation_gate": true
+    }
+  },
+  "mandatory_synthetic_cases_before_implementation_freeze": [
+    "all finite values at lower interior and upper points",
+    "one legal NaN preserved through sort and alignment",
+    "positive infinity rejected",
+    "negative infinity rejected",
+    "finite below-range value rejected",
+    "finite above-range value rejected",
+    "duplicate compact key rejected",
+    "missing target identity rejected",
+    "conflicting preexisting range rejected",
+    "identical preexisting range accepted"
+  ],
+  "prohibitions": {
+    "candidate_only_all_finite_sorter_for_raw_comparators": true,
+    "missing_value_imputation_or_drop": true,
+    "candidate_specific_comparator_subset_or_rescue": true,
+    "comparison_order_or_overlap_gate_change": true,
+    "campaign106_third_retry": true,
+    "provider_request": true,
+    "candidate49_backfill_or_ledger_change": true,
+    "daily_price_or_forward_return_read": true,
+    "current_scoring_selection_sizing_or_orders": true
+  },
+  "research_boundary": {
+    "campaign107_source_rows_read": false,
+    "campaign107_candidate_values_read": false,
+    "campaign107_comparator_values_read": false,
+    "historical_daily_price_or_forward_return_values_read": false,
+    "provider_request_issued": false,
+    "candidate49_ledgers_changed": false
+  },
+  "next_action": "Implement this pure adapter and pass every synthetic case; then freeze runner and test hashes before Campaign107 concept values."
+}

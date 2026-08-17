@@ -1,0 +1,76 @@
+{
+  "version": 1,
+  "kind": "a_share_three_day_walkforward_campaign083_development_implementation_freeze",
+  "status": "frozen_before_campaign083_2019_2023_development_return_read",
+  "frozen_at": "2026-08-06T12:44:00Z",
+  "development_preregistration": {
+    "path": "docs/a_share_three_day_walkforward_campaign_083_preregistration.json",
+    "sha256": "13da1fb31d3849bb792b140847018fe44b8760e8c8d02ae1ba6e082ff467f087"
+  },
+  "development_runner": {
+    "path": "scripts/a_share_three_day_walkforward_campaign083.py",
+    "sha256": "0a527a67fb4674eefec816f13442f07fa740f90c08a91a33d97db79fd5727640",
+    "base_runner_path": "scripts/a_share_three_day_walkforward_campaign074.py",
+    "base_runner_sha256": "8677b23a3cc64150a8e0136bdc7f81f22a1c121cda0e2912771e7c588746afc0"
+  },
+  "tests": {
+    "path": "tests/data_collector_tests/test_a_share_three_day_walkforward_campaign083_development.py",
+    "sha256": "1c25ddb75e40482711e2da90740adc8e45a7b3723e1b0675d229b3320cf79b69",
+    "pre_freeze_result": "3 passed, 1 implementation-freeze test deselected",
+    "black_py312_check_passed": true,
+    "ruff_check_passed": true,
+    "py_compile_passed": true
+  },
+  "research_attempt_ledger_before_return_read": {
+    "path": "data/experiments/short_horizon/historical_walkforward/campaign_083/research_attempt_ledger_v6.json",
+    "sha256": "53d72bdd49865e37b88524a5ca06c66ecebd6447adb5977e4e494f3c11b264ca",
+    "campaign_attempt_count": 14,
+    "campaign_infrastructure_failure_count": 13,
+    "campaign_complete_factor_attempt_count": 1,
+    "campaign_return_reading_development_trial_count": 0
+  },
+  "frozen_trial": {
+    "trial_id": "wf083_intraday_close_frontier_innovation_share_238p_single_higher",
+    "feature_set": [
+      "intraday_close_frontier_innovation_share_238p"
+    ],
+    "weights": [
+      1
+    ],
+    "direction": "higher",
+    "complexity": 1,
+    "expected_trial_count": 1,
+    "training_and_validation_folds": [
+      "train_2019_2020_validate_2021",
+      "train_2019_2021_validate_2022",
+      "train_2019_2022_validate_2023"
+    ],
+    "purge_signal_sessions": 3,
+    "t_plus_1_and_t_plus_3_must_share_partition": true,
+    "alternate_trial_or_variant_authorized": false
+  },
+  "fixed_execution_assumptions": {
+    "holding_period_sessions": 3,
+    "topk": 3,
+    "initial_capital_cny": 200000,
+    "target_entry_exposure_fraction_per_slot": 0.05,
+    "maximum_entry_exposure_fraction_per_signal": 0.15,
+    "buy_lot_size_shares": 100,
+    "commission_rate_each_side": 0.0001,
+    "transfer_fee_rate_each_side": 0.00002,
+    "sell_stamp_duty_rate": 0.0005,
+    "primary_adverse_slippage_rate_each_side": 0.001,
+    "maximum_daily_amount_participation": 0.01
+  },
+  "historical_daily_price_fields_read_before_freeze": [],
+  "historical_forward_returns_read_before_freeze": false,
+  "development_trial_run_before_freeze": false,
+  "stress_2024_2025_opened_before_freeze": false,
+  "provider_request_issued_before_freeze": false,
+  "candidate49_historical_backfill_performed": false,
+  "candidate49_ledgers_changed": false,
+  "current_scoring_selection_sizing_or_orders_performed": false,
+  "investment_advice": false,
+  "current_listing_snapshot_survivorship_limitation": true,
+  "next_action": "Run exactly one run-development command; if zero survivors, publish the unopened stress record and stop."
+}

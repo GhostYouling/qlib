@@ -1,0 +1,85 @@
+{
+  "version": 1,
+  "kind": "a_share_three_day_walkforward_campaign040_feature_implementation_freeze",
+  "status": "feature_implementation_frozen_before_candidate_snapshot_values",
+  "recorded_at": "2026-07-31T03:59:09Z",
+  "purpose": "Bind the exact Campaign040 high/low-only feature implementation and synthetic tests before opening any external candidate partition.",
+  "authoritative_inputs": {
+    "authoritative_state": {
+      "path": "docs/a_share_three_day_iteration_status_20260731_campaign039_verified.json",
+      "sha256": "8571491a46cefde2b95dfd6a4650a3f96fc9251c751e558d6d96e2278c1ce600"
+    },
+    "concept_scouting": {
+      "path": "docs/a_share_three_day_walkforward_campaign_040_concept_scouting.json",
+      "sha256": "87f0d6f8dd3d9e1135f763e7eac98f3e977d71f9e9e4ebc8f70df57441b85eab"
+    },
+    "mechanism_overlap_audit": {
+      "path": "docs/a_share_three_day_walkforward_campaign_040_mechanism_overlap_audit.json",
+      "sha256": "f026633ed532216a8d223a7cb8d22a989cd31ab992a21234f5e8adf5572a167d"
+    },
+    "no_return_preregistration": {
+      "path": "docs/a_share_three_day_walkforward_campaign_040_no_return_preregistration.json",
+      "sha256": "7d4a8d3b63e26c1717660dad8e12d65adfa008fb2272cebae8914367c05142d5"
+    },
+    "effective_campaign039_feature_runner": {
+      "path": "scripts/a_share_three_day_walkforward_campaign039_features.py",
+      "sha256": "f97036f598fb035cec3b1a0e4f4b76a46412dae45afcb4100807bd2695282358"
+    }
+  },
+  "implementation": {
+    "feature_runner": {
+      "path": "scripts/a_share_three_day_walkforward_campaign040_features.py",
+      "sha256": "8b4cce41a4c2f3a428a4a8ab8111b5f0f3ad713457cf48903bdbf7873cc77fe5"
+    },
+    "synthetic_tests": {
+      "path": "tests/data_collector_tests/test_a_share_three_day_walkforward_campaign040_features.py",
+      "sha256": "32b51764cc61f15f5933e70749b2879ba72670c5c6cef4b287ddc6f74a5a63d1"
+    },
+    "factor_name": "intraday_morning_afternoon_range_profile_similarity_120b",
+    "direction": "higher",
+    "source_projection": [
+      "datetime",
+      "symbol",
+      "provider",
+      "high",
+      "low"
+    ],
+    "selected_bar_count": 240,
+    "half_session_bin_count": 120,
+    "range_measure": "natural_log_high_over_low",
+    "separate_half_session_probability_normalization": true,
+    "distribution_distance": "equal_weight_jensen_shannon_divergence",
+    "score": "one_minus_jsd_divided_by_log_2",
+    "exact_zero_bins_retained": true,
+    "zero_total_range_in_either_half_is_missing": true,
+    "include_0930_or_lunch_transition": false,
+    "daily_price_or_forward_return_access": false
+  },
+  "verification": {
+    "command": "PYTHONPATH=. pytest -q tests/data_collector_tests/test_a_share_three_day_walkforward_campaign040_features.py",
+    "passed": 8,
+    "failed": 0,
+    "collection_or_skip_count": 0,
+    "formula_cases": [
+      "identical morning and afternoon normalized range profiles score exactly one",
+      "disjoint profiles score exactly zero while exact zero bins remain in support",
+      "separate morning and afternoon range-scale invariance",
+      "zero morning or afternoon total range is missing",
+      "invalid nonpositive and misordered high/low rejection",
+      "exact ordered 61-factor comparison materialization",
+      "high/low-only 241-row source projection",
+      "status reads no comparison values or returns"
+    ],
+    "external_minute_partition_read": false,
+    "candidate_value_read": false,
+    "comparison_value_read": false,
+    "daily_price_or_forward_return_read": false,
+    "provider_request_issued": false
+  },
+  "authorization": {
+    "next_action": "Validate this freeze and all predecessor bindings, then build exactly one immutable Campaign040 snapshot from the frozen historical minute root.",
+    "formula_direction_normalization_window_missing_or_gate_change_allowed": false,
+    "historical_return_read_allowed_before_no_return_admission": false,
+    "candidate49_backfill_candidate50_activation_or_current_output_allowed": false
+  }
+}

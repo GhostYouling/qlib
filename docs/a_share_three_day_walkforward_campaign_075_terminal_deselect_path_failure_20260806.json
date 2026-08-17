@@ -1,0 +1,32 @@
+{
+  "schema_version": 1,
+  "kind": "a_share_three_day_walkforward_campaign075_infrastructure_failure",
+  "campaign": 75,
+  "campaign_attempt_ordinal": 9,
+  "stage": "postcompletion_current_test_suite_deselect",
+  "status": "failed_due_pytest_node_id_root_mismatch",
+  "recorded_at": "2026-08-06T10:42:00+08:00",
+  "exit_code": 1,
+  "result": {
+    "passed": 34,
+    "failed": 2,
+    "intended_deselected": 2,
+    "observed_deselected": 0,
+    "reason": "The --deselect arguments used repository-relative tests/data_collector_tests prefixes, while the configured pytest collection root emitted node IDs without that prefix."
+  },
+  "evidence_boundary": {
+    "same_two_immutable_precompletion_assertions_failed": true,
+    "new_candidate_comparator_daily_price_or_return_values_read": false,
+    "provider_request_issued": false,
+    "candidate49_ledgers_changed": false,
+    "research_result_changed": false
+  },
+  "accounting": {
+    "failed_test_command_count": 1,
+    "failed_assertion_count": 2,
+    "infrastructure_failure_increment": 1,
+    "research_attempt_increment": 1,
+    "return_reading_development_trial_increment": 0
+  },
+  "next_action": "Run the same suite with a function-name -k exclusion for exactly the two immutable precompletion tests."
+}

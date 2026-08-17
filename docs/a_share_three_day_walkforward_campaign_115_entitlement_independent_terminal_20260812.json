@@ -1,0 +1,93 @@
+{
+  "schema_version": 1,
+  "kind": "a_share_three_day_walkforward_campaign115_entitlement_independent_terminal_decision",
+  "status": "terminal_before_provider_values_by_explicit_user_scope_decision",
+  "recorded_at": "2026-08-12T15:46:53+08:00",
+  "decision": {
+    "user_selected_research_without_limit_list_d": true,
+    "current_account_entitlement_asserted_present": false,
+    "current_account_entitlement_asserted_absent": false,
+    "purchase_or_entitlement_upgrade_required": false,
+    "campaign115_reopen_allowed": false,
+    "reason": "The user explicitly directed the continuing three-session research goal to proceed without the Tushare limit_list_d data dependency. Campaign115 is therefore closed as a source-entitlement-unavailable-for-this-research-scope branch, not as a predictive or return failure."
+  },
+  "authoritative_predecessor": {
+    "iteration_state": {
+      "path": "docs/a_share_three_day_iteration_status_20260809_campaign115_zero_network_gate_chain_ready_v12.json",
+      "sha256": "bbe7ef3e0a40d5a9c2322dad76e29f36de63ac85f8ddb8bebbf39b24add20169"
+    },
+    "numeric_policy": {
+      "path": "docs/a_share_three_day_walkforward_future_numeric_comparison_eligibility_policy_v97_20260809.json",
+      "sha256": "7fafc4980ffd6df9dfb959b3225c9d01126879a83cfa99c1d2e08d816fa03c90"
+    },
+    "attempt_ledger": {
+      "path": "data/experiments/short_horizon/historical_walkforward/campaign_115/research_attempt_ledger_v16.json",
+      "sha256": "a02dbf7ca815e2d42b00ec09f69fbcac850b7c96c3b276d585395eac615c4229",
+      "attempt_count": 25,
+      "infrastructure_failure_count": 23,
+      "prevalue_scientific_attempt_count": 2,
+      "complete_factor_attempt_count": 0,
+      "return_reading_development_trial_count": 0
+    }
+  },
+  "terminal_scientific_classification": {
+    "candidate_factor": "tushare_official_limit_up_queue_persistence",
+    "factor_formula_or_direction_changed": false,
+    "provider_request_issued": false,
+    "provider_rows_read": false,
+    "candidate_values_read_or_computed": false,
+    "comparator_values_read": false,
+    "historical_daily_price_or_forward_return_values_read": false,
+    "development_trial_run": false,
+    "stress_2024_2025_opened": false,
+    "predictive_conclusion": "not_tested",
+    "numeric_comparator_eligible": false,
+    "complete_definition_appended": false,
+    "terminal_reason": "required licensed source not selected for the continuing research scope"
+  },
+  "preservation_and_prohibitions": {
+    "all_campaign115_artifacts_preserved": true,
+    "attempt_ledger_rewritten": false,
+    "manual_5000_point_confirmation_inferred": false,
+    "failed_plan_exit_bypassed": false,
+    "alternative_source_substituted_inside_campaign115": false,
+    "campaign115_formula_reused_under_same_campaign": false,
+    "historical_result_presented_as_investment_advice": false
+  },
+  "continuation_authorization": {
+    "campaign116_offline_prevalue_research_allowed": true,
+    "campaign116_must_use_existing_accepted_local_data": true,
+    "campaign116_must_be_economically_independent": true,
+    "campaign116_formula_direction_support_and_no_return_gates_must_be_frozen_before_values": true,
+    "development_interval": "2019-2023_three_expanding_walkforward_folds_with_three_signal_session_purge_and_same_partition_t_plus_1_t_plus_3",
+    "stress_interval": "2024-2025_closed_until_one_frozen_development_survivor_then_open_once_for_the_whole_campaign",
+    "candidate49_remains_independent": true
+  },
+  "candidate49": {
+    "only_active_prospective_candidate": true,
+    "signal_ledger_path": "data/experiments/short_horizon/candidate49_future_signal_ledger.json",
+    "signal_ledger_sha256": "5193f00d7f36da003f53cec387900da4c3d002299f5dfcfc1a95eaa199ed3a79",
+    "execution_ledger_path": "data/experiments/short_horizon/candidate49_future_execution_ledger.json",
+    "execution_ledger_sha256": "d57a3e61eac969e42cafa418ccd8c0a5ee65dcf69da145bb2c096c2a02a2ea4f",
+    "historical_backfill_performed": false,
+    "second_prospective_candidate_created": false
+  },
+  "accounting": {
+    "terminal_decision_counts_as_new_research_attempt": false,
+    "campaign115_attempt_count": 25,
+    "campaign115_complete_factor_attempt_count": 0,
+    "campaign115_return_reading_development_trial_count": 0,
+    "cumulative_historical_research_attempt_count": 878,
+    "cumulative_return_reading_development_trial_count": 302
+  },
+  "research_boundary": {
+    "credential_loaded": false,
+    "credential_value_printed_hashed_logged_or_persisted": false,
+    "provider_request_issued": false,
+    "candidate_or_comparator_values_read": false,
+    "historical_daily_price_or_forward_return_values_read": false,
+    "stress_2024_2025_opened": false,
+    "current_scoring_selection_sizing_positions_or_orders_performed": false,
+    "investment_advice": false
+  }
+}

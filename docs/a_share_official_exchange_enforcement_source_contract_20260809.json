@@ -1,0 +1,255 @@
+{
+  "schema_version": 1,
+  "kind": "a_share_official_exchange_enforcement_source_contract",
+  "status": "frozen_zero_programmatic_rows_before_transport_implementation_acceptance_factor_or_return_values",
+  "recorded_at": "2026-08-09T01:07:09+08:00",
+  "purpose": "Freeze a point-in-time, two-exchange source contract for formal listed-company regulatory measures and disciplinary actions before any programmatic list response, acceptance sample, historical event row, factor formula, candidate value, price, or return is opened.",
+  "discovery_exposure": {
+    "official_page_labels_and_search_index_snippets_observed": true,
+    "programmatic_exchange_list_or_api_response_requested": false,
+    "source_row_persisted_counted_or_used_for_selection": false,
+    "factor_formula_direction_window_or_weight_selected_from_rows": false,
+    "interpretation": "This is a pre-acceptance and pre-factor contract, not a claim that public documentation was unseen. Search-index snippets and official page labels were used only to identify source families and semantic column roles."
+  },
+  "mechanism_independence": {
+    "source_state": "formal_exchange_enforcement_action",
+    "economic_channel": "A formal exchange enforcement action is a realized governance and disclosure-compliance state, distinct from an inquiry request, issuer-authored announcement frequency, audit opinion, ST membership, price path, turnover, ownership, or financial-statement field.",
+    "existing_official_inquiry_branch_reused": false,
+    "top_list_branch_reused": false,
+    "suspend_d_branch_reused": false,
+    "repurchase_holdertrade_or_other_terminal_event_branch_reused": false,
+    "factor_name": null,
+    "factor_formula": null,
+    "score_direction": null,
+    "prospective_candidate_registration": null
+  },
+  "official_source_pages": {
+    "sse": {
+      "exchange": "SSE",
+      "listing_page": "https://www.sse.com.cn/regulation/supervision/measures/",
+      "observed_page_roles": [
+        "issuer_code",
+        "issuer_name_ignored",
+        "action_type",
+        "reason_or_document_link_ignored_except_href_identity",
+        "involved_party_ignored",
+        "action_date"
+      ],
+      "allowed_action_type_labels": [
+        "监管警示",
+        "通报批评",
+        "公开谴责",
+        "公开认定",
+        "监管工作函"
+      ]
+    },
+    "szse": {
+      "exchange": "SZSE",
+      "regulatory_measure_page": "https://www.szse.cn/disclosure/supervision/measure/measure/index.html",
+      "disciplinary_action_page": "https://www.szse.cn/disclosure/supervision/measure/pushish/index.html",
+      "parent_index": "https://www.szse.cn/disclosure/supervision/supervise/index.html",
+      "observed_page_roles": [
+        "issuer_code",
+        "issuer_name_ignored",
+        "action_family",
+        "document_link_href_identity",
+        "action_date"
+      ],
+      "allowed_action_families": [
+        "监管措施",
+        "纪律处分"
+      ]
+    }
+  },
+  "transport_schema_gate": {
+    "network_allowed_by_this_contract": false,
+    "adapter_implementation_required_before_any_request": true,
+    "adapter_source_and_test_sha256_must_be_frozen_before_any_request": true,
+    "one_metadata_only_schema_probe_per_exchange_page_after_implementation_freeze": true,
+    "schema_probe_rows_may_not_be_inspected_persisted_counted_or_used": true,
+    "finite_role_labels": {
+      "issuer_code": [
+        "证券代码",
+        "公司代码"
+      ],
+      "action_type_or_family": [
+        "监管类型",
+        "措施类型",
+        "处分类型",
+        "监管措施",
+        "纪律处分"
+      ],
+      "action_date": [
+        "处理日期",
+        "发文日期",
+        "发布日期"
+      ],
+      "document_link": [
+        "处理事由",
+        "文件名称",
+        "决定书",
+        "监管函件",
+        "标题"
+      ],
+      "ignored_columns": [
+        "证券简称",
+        "公司简称",
+        "涉及对象"
+      ]
+    },
+    "role_resolution": "NFKC-normalize and trim metadata labels only. Exactly one issuer-code role, one action-type/family role, one action-date role, and one document-link role must resolve. Duplicate, missing, ambiguous, fuzzy, substring, positional, row-derived, or newly invented label mapping is fatal.",
+    "endpoint_and_pagination_parameters": "Must be discovered only from official page static metadata after the zero-row adapter implementation is frozen, then recorded in a separate additive implementation record before any acceptance rows. This contract does not authorize guessing or probing endpoint parameters.",
+    "credential_cookie_proxy_or_browser_session_allowed": false,
+    "document_body_fetch_allowed": false
+  },
+  "canonicalization_contract": {
+    "semantic_input_roles": [
+      "exchange",
+      "issuer_code",
+      "action_type_or_family",
+      "action_date",
+      "document_href"
+    ],
+    "supported_instruments": "Exactly six decimal digits explicitly carried by the source row and mapping to SSE main board or SZSE main board/ChiNext. STAR, BSE, B-share, fund, bond, intermediary-only and other non-holding-universe records are excluded and counted only when their code is complete and classifiable; missing or malformed codes are fatal.",
+    "action_date": "A complete valid Asia/Shanghai calendar date carried by the official listing. Because no publication timestamp is guaranteed, the action becomes signal-eligible only at the first local trading-session close strictly after this date.",
+    "document_href": "Resolve an official relative or protocol-relative href against its official listing page without changing path, query, case, or percent encoding. The resolved href is used only as an opaque identity and is persisted only as SHA-256, never fetched.",
+    "action_family_normalization": {
+      "SSE": "Preserve one exact allowed SSE action label as action_type_token and map 监管警示/监管工作函 to regulatory_measure; map 通报批评/公开谴责/公开认定 to disciplinary_action.",
+      "SZSE": "Map only the official listing family 监管措施 to regulatory_measure and 纪律处分 to disciplinary_action. Do not infer severity from title or body text."
+    },
+    "normalized_event_key": [
+      "exchange",
+      "instrument",
+      "action_date",
+      "action_family",
+      "document_href_sha256"
+    ],
+    "exact_repeat_policy": "Collapse byte-identical normalized event keys to one event and report the collapsed count.",
+    "conflict_policy": "The same exchange, instrument, and document href hash with conflicting dates or action families is fatal; no latest-row selection, majority vote, or text reconciliation is allowed.",
+    "multi_issuer_document_policy": "Create one event per explicitly listed supported issuer. Never infer, copy, or extract an issuer code from a title, body, name, or involved-party field.",
+    "raw_text_policy": "Issuer names, involved parties, reasons, titles, document bodies, personal names and free text are neither read into factor logic nor persisted in the normalized snapshot.",
+    "normalized_columns": [
+      "action_date",
+      "instrument",
+      "exchange",
+      "action_family",
+      "action_type_token",
+      "document_href_sha256",
+      "provider"
+    ],
+    "provider_value": "official_exchange"
+  },
+  "point_in_time_contract": {
+    "timezone": "Asia/Shanghai",
+    "same_day_availability_allowed": false,
+    "effective_session": "first accepted local trading session strictly after action_date",
+    "signal_availability": "effective_session close",
+    "earliest_entry": "next accepted local trading-session open after the signal close",
+    "holding_period_trading_sessions": 3,
+    "document_revision_or_later_outcome_allowed": false,
+    "event_absence_policy": "No matching event remains missing and may not be treated as a favorable zero or resilience score before a factor formula is separately frozen."
+  },
+  "source_acceptance_and_capacity_contract": {
+    "historical_scope_after_all_pre_row_gates": {
+      "start": "2019-01-01",
+      "end": "2025-12-31",
+      "both_exchanges_required": true,
+      "atomic_publication": true
+    },
+    "fixed_zero_return_acceptance_windows": [
+      {
+        "label": "2019_full_year",
+        "start": "2019-01-01",
+        "end": "2019-12-31"
+      },
+      {
+        "label": "2022_full_year",
+        "start": "2022-01-01",
+        "end": "2022-12-31"
+      },
+      {
+        "label": "2025_full_year",
+        "start": "2025-01-01",
+        "end": "2025-12-31"
+      }
+    ],
+    "minimum_supported_normalized_events_per_exchange_window": 5,
+    "minimum_supported_normalized_events_total": 60,
+    "minimum_distinct_action_dates_total": 30,
+    "minimum_distinct_supported_instruments_total": 30,
+    "holding_universe": "buyable_main_chinext",
+    "factor_level_capacity_rule_reserved_before_formula": {
+      "non_overlapping_three_session_cohorts": true,
+      "minimum_names_per_cohort": 6,
+      "minimum_distinct_finite_values_per_cohort": 2,
+      "minimum_complete_cohorts": 200,
+      "minimum_observed_calendar_years": 5,
+      "quality_max_age_calendar_days": 550,
+      "minimum_listing_age_sessions": 20,
+      "capacity_must_pass_before_134_comparison_values": true,
+      "capacity_must_pass_before_daily_price_or_forward_return_values": true
+    },
+    "formula_freeze_order": "A later campaign must freeze exactly one formula, direction, active-event window, missing semantics and comparison registry before any programmatic acceptance row. Acceptance-window counts may only accept or reject the already frozen formula; they may not choose it.",
+    "failure_policy": "Any exchange, schema, count, identity, date, duplicate, coverage, variation, capacity, or fingerprint failure terminates that exact mechanism before prices or returns. No exchange dropping, window substitution, label expansion, text parsing, threshold reduction, direction flip, event-age change, rescue, or combination is allowed."
+  },
+  "frozen_context_fingerprints": {
+    "historical_walkforward_policy": {
+      "path": "docs/a_share_three_day_historical_walkforward_research_policy_20260727.json",
+      "sha256": "38426d6161b9bfed323c58caba18feca668b8c9d53e294951a8ba90c01a798bb"
+    },
+    "numeric_policy_v74": {
+      "path": "docs/a_share_three_day_walkforward_future_numeric_comparison_eligibility_policy_v74_20260809.json",
+      "sha256": "c5a2ca6f47ed86d95f867648475466a1a3ab5c5c2880f38f6df82ec49ed4aa4c",
+      "complete_definition_count": 140,
+      "numeric_comparator_count": 134
+    },
+    "holding_universe": {
+      "path": "data/qlib/cn_a_share/instruments/buyable_main_chinext.txt",
+      "sha256": "77ccf8de2ed1e447e73b5d5ff1703fc2a8656d6adab34ef44017481730249db1"
+    },
+    "source_universe": {
+      "path": "data/qlib/cn_a_share/instruments/factor_main_chinext_star.txt",
+      "sha256": "cdded13c831b78045f4cfe80ba5d9a49f82152c615fef4267d00f992e7f53762"
+    },
+    "local_calendar": {
+      "path": "data/qlib/cn_a_share/calendars/day.txt",
+      "sha256": "fda506597d26bcec953cdc0882042a5046ec1587db60490e16a01627fd43f53a"
+    },
+    "research_frontier_contract": {
+      "path": "docs/a_share_three_day_research_frontier_contract.json",
+      "sha256": "36ac39c68fedebf2fdf999475e10452278bbeff4f42b1c41963539867539eeaf"
+    },
+    "research_frontier_audit": {
+      "path": "docs/a_share_three_day_research_frontier_audit.json",
+      "sha256": "0ab41e940afff20cdd5ce46849820ffd56a3072aa859c30d4caa6dd71c10d846"
+    },
+    "data_management_skill": {
+      "path": "/Users/niyufei/.codex/skills/manage-qlib-a-share-data/SKILL.md",
+      "sha256": "8e541bf7c5d77f27a0b0562bd1235878b46c1074c53d79f64a21c417a68ad470"
+    }
+  },
+  "mandatory_next_gate_before_any_source_request": {
+    "pure_adapter_implementation_and_synthetic_tests_frozen": true,
+    "adapter_and_test_sha256_recorded": true,
+    "endpoint_metadata_mapping_frozen_without_rows": true,
+    "exactly_one_factor_formula_and_direction_frozen": true,
+    "all_140_complete_definitions_semantically_reviewed": true,
+    "all_134_numeric_comparators_reserved_without_loading": true,
+    "raw_factor_range_and_missing_semantics_registered": true,
+    "one_shot_acceptance_workflow_frozen": true
+  },
+  "research_boundary": {
+    "programmatic_source_requests_issued": false,
+    "source_rows_persisted_or_counted": false,
+    "factor_formula_or_candidate_created": false,
+    "candidate_or_comparison_values_read": false,
+    "historical_daily_price_fields_read": [],
+    "historical_forward_returns_read": false,
+    "stress_2024_2025_opened": false,
+    "candidate49_historical_backfill_performed": false,
+    "candidate49_ledgers_changed": false,
+    "second_prospective_candidate_created": false,
+    "current_scoring_selection_sizing_or_orders_performed": false,
+    "investment_advice": false
+  }
+}

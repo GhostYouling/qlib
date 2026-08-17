@@ -1,0 +1,37 @@
+{
+  "version": 5,
+  "kind": "a_share_three_day_walkforward_campaign075_no_return_runtime_compatibility_recursion_repair_protocol",
+  "status": "frozen_after_v4_recursion_failure_before_full_retry",
+  "recorded_at": "2026-08-06T10:03:00+08:00",
+  "failure_record": {
+    "path": "docs/a_share_three_day_walkforward_campaign_075_no_return_v4_recursive_config_failure_20260806.json",
+    "sha256": "dc07150b58077016d55365598a18298fbfac40a91e2723c1575ac0501e18f1ef"
+  },
+  "base_v4_overlay": {
+    "path": "docs/a_share_three_day_walkforward_campaign_075_no_return_runtime_compatibility_correction_overlay_v4_20260806.json",
+    "sha256": "dac49c32040bb94d98c0f29f9ddcd6f733a2ffdf340354d420c0bb8590183581",
+    "preserved": true
+  },
+  "sole_implementation_repair": {
+    "before": "The corrected function dynamically called v3._snapshot_configs, which became self-referential after monkeypatching.",
+    "after": "Capture the original v3._snapshot_configs callable at v5 module import and call that captured reference while the v3 symbol is patched.",
+    "corrected_research_fields": [],
+    "additional_snapshot_hash_corrections": [],
+    "snapshot_or_manifest_files_may_be_rewritten": false
+  },
+  "unchanged": {
+    "campaign070_single_manifest_sha_transcription_correction": true,
+    "adapter_scope_campaign068_through_campaign074": true,
+    "byte_schema_row_value_and_dataset_verification": true,
+    "only_runtime_sensitive_frame_hash_recomputation_omitted": true,
+    "campaign075_factor_formula_direction_age_clock_and_missing_rule": true,
+    "coverage_and_uniqueness_gates": true,
+    "all_105_comparators_and_order": true,
+    "development_trial_if_admitted": true,
+    "daily_price_return_and_candidate49_boundaries": true
+  },
+  "retry": {
+    "partial_statistics_reused": false,
+    "restart_from_candidate_snapshot_and_coverage": true
+  }
+}

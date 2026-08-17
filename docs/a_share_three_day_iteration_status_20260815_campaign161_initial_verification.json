@@ -1,0 +1,129 @@
+{
+  "schema_version": 1,
+  "kind": "a_share_three_day_iteration_status",
+  "status": "campaign161_active_initial_verification_failures_recorded_offline_prevalue_science_authorized",
+  "recorded_at": "2026-08-15T05:07:30+08:00",
+  "supersedes_without_rewriting": {
+    "path": "docs/a_share_three_day_iteration_status_20260815_campaign160_prevalue_terminal.json",
+    "sha256": "82b96a4e4cce67a7ce5979b84911ee42e736fd352f2acfa144c47da2e5e70ef0",
+    "preserved": true
+  },
+  "authoritative_inputs": {
+    "campaign160_terminal_validation": {
+      "path": "docs/a_share_three_day_walkforward_campaign_160_terminal_validation_20260815.json",
+      "sha256": "bbb1bc1bffd5a5af30adcbf933ea33b014e0e6b1ba631352111f8ca2e238ab59"
+    },
+    "campaign161_initial_verification_failures": {
+      "path": "docs/a_share_three_day_walkforward_campaign_161_initial_verification_failures_20260815.json",
+      "sha256": "d5a63215f736c1d920db52f574b77f0414a864b769c634d3b367307db36bd1b3"
+    },
+    "campaign161_attempt_ledger_v1": {
+      "path": "data/experiments/short_horizon/historical_walkforward/campaign_161/research_attempt_ledger_v1.json",
+      "sha256": "7cc1ccd352e5580ddb5507b1babd37eebc96c269f2227a07072e1628ad8f7f77"
+    },
+    "eligibility_policy_v224": {
+      "path": "docs/a_share_three_day_walkforward_future_numeric_comparison_eligibility_policy_v224_20260815.json",
+      "sha256": "1308e5a3ce1a155d867f9f20678b658fb93a4b52885450988b2825ab92544499"
+    },
+    "manage_qlib_a_share_data_skill": {
+      "path": "/Users/niyufei/.codex/skills/manage-qlib-a-share-data/SKILL.md",
+      "sha256": "565713a5f3aeb6a1acf23e397fcc21be28d0c3ea4ebf21c7f287a25bb94d78dc"
+    }
+  },
+  "authoritative_policy": {
+    "path": "docs/a_share_three_day_walkforward_future_numeric_comparison_eligibility_policy_v224_20260815.json",
+    "sha256": "1308e5a3ce1a155d867f9f20678b658fb93a4b52885450988b2825ab92544499"
+  },
+  "active_daily_data_root": {
+    "path": "/Volumes/DIsk/Disk-Coding/qlib/data",
+    "source": "baostock",
+    "calendar_end": "2026-07-13",
+    "mutated_by_campaign161": false
+  },
+  "goal": {
+    "objective": "请持续迭代因子。",
+    "status": "active",
+    "campaign160_terminal_validation_completed": true,
+    "campaign161_started": true,
+    "campaign161_scientific_attempt_started": false,
+    "campaign161_offline_prevalue_research_authorized": true,
+    "second_prospective_candidate_authorized": false
+  },
+  "candidate49": {
+    "sole_prospective_candidate": true,
+    "signal_ledger": {
+      "path": "data/experiments/short_horizon/candidate49_future_signal_ledger.json",
+      "sha256": "5193f00d7f36da003f53cec387900da4c3d002299f5dfcfc1a95eaa199ed3a79",
+      "entries": 0
+    },
+    "execution_ledger": {
+      "path": "data/experiments/short_horizon/candidate49_future_execution_ledger.json",
+      "sha256": "d57a3e61eac969e42cafa418ccd8c0a5ee65dcf69da145bb2c096c2a02a2ea4f",
+      "entries": 0
+    },
+    "historical_backfill_performed": false,
+    "ledgers_changed": false
+  },
+  "candidate49_daily_20260815": {
+    "local_day": "Saturday",
+    "accepted_local_trading_day": false,
+    "plan_run": false,
+    "run_run": false,
+    "provider_or_web_request_issued": false,
+    "credential_presence_or_value_read": false
+  },
+  "campaign161": {
+    "terminal": false,
+    "phase": "offline_prevalue_scouting_not_yet_scientifically_started",
+    "scientific_routes_reviewed": 0,
+    "selected_candidate_count": 0,
+    "complete_source_contract_or_factor_definition_created": false,
+    "return_reading_development_trial_count": 0,
+    "stress_2024_2025_returns_opened": false,
+    "attempt_ledger": {
+      "path": "data/experiments/short_horizon/historical_walkforward/campaign_161/research_attempt_ledger_v1.json",
+      "sha256": "7cc1ccd352e5580ddb5507b1babd37eebc96c269f2227a07072e1628ad8f7f77",
+      "effective_entry_count": 2,
+      "chain_tip_sha256": "49b005c84802d68516bfe70e2498e06dc343695fea412cf8c3beb5d3697d6f1d"
+    }
+  },
+  "effective_accounting": {
+    "campaign161_attempt_count": 2,
+    "campaign161_prevalue_scientific_attempt_count": 0,
+    "campaign161_infrastructure_failure_count": 2,
+    "campaign161_complete_factor_attempt_count": 0,
+    "campaign161_return_reading_development_trial_count": 0,
+    "campaign161_development_survivor_count": 0,
+    "campaign161_stress_trial_count": 0,
+    "cumulative_historical_research_attempt_count": 1398,
+    "cumulative_return_reading_development_trial_count": 314
+  },
+  "reports": {
+    "current_research_report": {
+      "path": "data/experiments/short_horizon/current_research_report.md",
+      "sha256_at_publication": "f6e3f9b8ec373dfde1dacde1fa4bec086422c94ed917ac521cc59a3e9eb6a9e1",
+      "accounting_scope": "through_campaign161_infrastructure_002",
+      "mutable_append_only_report_not_an_immutable_binding": true
+    },
+    "three_day_research_report": {
+      "path": "data/experiments/short_horizon/three_day_research_report.md",
+      "sha256_at_publication": "a599041f140d22eae2622d70def841f7da97dba703fb4822a63e41295922ae79",
+      "accounting_scope": "through_campaign161_infrastructure_002",
+      "mutable_append_only_report_not_an_immutable_binding": true
+    }
+  },
+  "research_boundary": {
+    "campaign161_source_row_response_or_column_value_read": false,
+    "campaign161_candidate_or_comparator_value_read": false,
+    "historical_2019_2023_daily_price_or_forward_return_value_read_by_campaign161": false,
+    "stress_2024_2025_returns_opened": false,
+    "provider_or_web_request_issued_by_campaign161": false,
+    "provider_credential_presence_value_or_digest_logged_hashed_or_persisted": false,
+    "candidate49_historical_backfill_performed": false,
+    "candidate49_ledgers_changed": false,
+    "second_prospective_candidate_created": false,
+    "current_scoring_selection_sizing_positions_or_orders_performed": false,
+    "investment_advice": false
+  },
+  "next_action": "Continue Campaign161 offline only from genuinely changed exact source evidence or a separately frozen complete source contract; preserve Candidate49 as the sole prospective candidate."
+}

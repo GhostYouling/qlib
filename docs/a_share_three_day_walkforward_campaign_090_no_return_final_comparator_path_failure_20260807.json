@@ -1,0 +1,40 @@
+{
+  "schema_version": 1,
+  "kind": "a_share_three_day_walkforward_campaign090_no_return_final_comparator_path_failure",
+  "status": "recorded_same_semantic_retry_authorized_after_no_audit_publication",
+  "recorded_at": "2026-08-07T06:18:00+08:00",
+  "failed_stage": "final_119th_numeric_comparator_loader_after_coverage_and_first_118_comparators",
+  "failure": "The Campaign090 adapter changed the prior audit module from Campaign088 to Campaign089 but retained the old c87_audit attribute depth. Campaign089 exposes the required compact comparator helper through c88_audit.c87_audit, so the final Campaign089 snapshot comparison raised AttributeError before computation or audit publication.",
+  "frozen_v1_audit_implementation": {
+    "path": "docs/a_share_three_day_walkforward_campaign_090_no_return_audit_implementation_freeze_20260807.json",
+    "sha256": "972a7f618e0c6fad8a9d290cdd0122aae564c0e1a68917c53510b55dd9978ca1"
+  },
+  "frozen_v1_activation": {
+    "path": "docs/a_share_three_day_walkforward_campaign_090_no_return_audit_activation_binding_20260807.json",
+    "sha256": "f301e5f13177350417ef2b743b4fd42dcda0698f6c34c39a310b30f339d86463"
+  },
+  "failed_runner": {
+    "path": "scripts/a_share_three_day_walkforward_campaign090_no_return_audit.py",
+    "sha256": "2c9a2b756e27d3f73a900fa79bd7f9ea0163ea7944d99c85c8317723bfcc317b"
+  },
+  "truthful_exposure_state": {
+    "coverage_and_capacity_metrics_computed": true,
+    "coverage_gate_passed_as_proven_by_control_flow_reaching_comparator_loading": true,
+    "first_118_numeric_comparator_values_and_summaries_computed_in_frozen_order": true,
+    "final_campaign089_comparator_value_loaded": false,
+    "completed_audit_artifact_written": false,
+    "historical_daily_price_fields_read": [],
+    "historical_forward_returns_read": false,
+    "training_or_model_fitting_performed": false,
+    "provider_request_issued": false,
+    "candidate49_ledgers_changed": false
+  },
+  "authorized_repair": {
+    "change": "Use c88_audit.c88_audit.c87_audit._compact_snapshot_comparison for the final Campaign089 snapshot, and point the runner to additive v2 freeze/activation records that truthfully state coverage and comparison exposure.",
+    "formula_direction_candidate_snapshot_comparator_order_gates_or_parameters_changed": false,
+    "same_command_and_arguments_required": true,
+    "partial_comparison_results_may_be_reused": false,
+    "complete_recomputation_from_frozen_inputs_required": true,
+    "additional_retry_after_another_failure_allowed_without_new_evidence": false
+  }
+}

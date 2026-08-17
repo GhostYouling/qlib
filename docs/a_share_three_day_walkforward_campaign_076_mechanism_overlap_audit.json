@@ -1,0 +1,134 @@
+{
+  "version": 1,
+  "kind": "a_share_three_day_walkforward_campaign076_mechanism_overlap_audit",
+  "status": "passed_semantic_mechanism_review_before_campaign076_minute_source_or_comparison_values",
+  "recorded_at": "2026-08-06T10:46:00+08:00",
+  "concept_scouting": {
+    "path": "docs/a_share_three_day_walkforward_campaign_076_concept_scouting.json",
+    "sha256": "cab4b551117db3195bc13cb932241e67e5024211a5d05986dc0c3b3b591710d7"
+  },
+  "authoritative_state": {
+    "path": "docs/a_share_three_day_iteration_status_20260806_campaign075_verified.json",
+    "sha256": "43629af8cf661370ca5ef34e3c2821be960027fe6506871558b864b90ff2fda0"
+  },
+  "numeric_comparator_policy": {
+    "path": "docs/a_share_three_day_walkforward_future_numeric_comparison_eligibility_policy_v11_20260806.json",
+    "sha256": "5ab04c661040e4f073a0081f421500c758966266a23b60b2ec09c8a501fd6a2d",
+    "complete_definition_count": 107,
+    "numeric_comparator_count": 106,
+    "complete_definition_order_sha256": "cf1aa9a8d0976b6c442c1283c07814a78f94501e5cae4f9b951fecf403881757",
+    "numeric_comparator_order_sha256": "8a68220072bda50e86448d3f355760ab14f90b6d391b1389e174262f7ca215e1"
+  },
+  "candidate": {
+    "name": "intraday_peak_amount_bar_recency_240m",
+    "direction": "higher",
+    "mechanism": "recency of the single strongest continuous-session trading-attention burst, retaining only the latest exact maximum amount-bar position",
+    "formula": "latest zero-based position of the exact maximum among the 240 standard 09:31-11:30 and 13:01-15:00 nonnegative finite amount bars, divided by 239",
+    "no_price_return_daily_financial_event_or_future_input": true,
+    "no_old_factor_value_input": true,
+    "candidate49_used_or_modified": false
+  },
+  "complete_library_review": {
+    "all_107_definitions_reviewed_in_frozen_order": true,
+    "all_pre_walkforward_terminal_price_volume_event_and_structural_families_reviewed": true,
+    "candidate_is_exact_formula_duplicate": false,
+    "candidate_is_direction_only_duplicate": false,
+    "candidate_is_parameter_only_duplicate": false,
+    "candidate_is_an_inversion_of_a_terminal_factor": false,
+    "candidate_combines_terminal_factor_values": false,
+    "candidate_changes_any_quality_listing_or_buyability_gate": false
+  },
+  "semantic_invariance_checks": [
+    {
+      "intervention": "Hold the maximum amount value and its latest bar position fixed while redistributing every nonmaximum bar amount without creating a new tie or maximum.",
+      "campaign076_result": "unchanged",
+      "distinguishes_from": "intraday_amount_center_of_mass_240m, late_amount_share_30m, intraday_terminal_bar_amount_share_240m, AM/PM allocation, amount-profile similarity, and amount participation entropy"
+    },
+    {
+      "intervention": "Move the unique maximum amount from continuous-session bar i to adjacent bar i+1 while holding the complete multiset of 240 amount values fixed.",
+      "campaign076_result": "increases_by_exactly_1_over_239",
+      "distinguishes_from": "total amount, maximum amount magnitude, concentration/entropy, and any permutation-invariant liquidity statistic"
+    },
+    {
+      "intervention": "Hold the complete minute amount path fixed while changing every minute and daily OHLC, VWAP, return, range, financial statement value, issuer event, and market-peer path.",
+      "campaign076_result": "unchanged",
+      "distinguishes_from": "all price-path, volatility, return-state, transaction-price, accounting, event, peer-coupling, and Candidate49 mechanisms"
+    },
+    {
+      "intervention": "Create an exact maximum tie at an earlier bar while leaving the already-latest maximum unchanged.",
+      "campaign076_result": "unchanged",
+      "distinguishes_from": "earliest-maximum and average-tied-position representations"
+    },
+    {
+      "intervention": "Create a later exact maximum tie without changing the maximum magnitude or any price value.",
+      "campaign076_result": "moves_to_the_later_tied_bar",
+      "distinguishes_from": "amount center of mass, maximum magnitude, price-extreme timing, and first-maximum representations"
+    }
+  ],
+  "nearest_semantic_challenges": [
+    {
+      "name": "intraday_amount_center_of_mass_240m",
+      "relationship": "both encode when continuous-session amount was deployed",
+      "distinction": "center of mass uses every bar amount as a weight; Campaign076 uses only the latest location of the exact maximum and is invariant to all nonmaximum redistribution that preserves the maximum",
+      "mandatory_numeric_challenge": true
+    },
+    {
+      "name": "late_amount_share_30m and intraday_terminal_bar_amount_share_240m",
+      "relationship": "all can rise when attention concentrates late",
+      "distinction": "the prior factors measure aggregate tail mass or exact terminal mass; Campaign076 may be high even when the late peak is small relative to broad earlier participation and may be low despite a large late-window aggregate",
+      "mandatory_numeric_challenge": true
+    },
+    {
+      "name": "intraday_amount_participation_entropy_240m",
+      "relationship": "a dominant peak can reduce distributional entropy",
+      "distinction": "entropy is permutation-invariant and measures concentration; Campaign076 changes under a pure time permutation of the same amount multiset",
+      "mandatory_numeric_challenge": true
+    },
+    {
+      "name": "intraday_extreme_arrival_order_240m",
+      "relationship": "both locate an intraday extreme in time",
+      "distinction": "the prior factor orders price extrema; Campaign076 reads no price and locates the maximum amount only",
+      "mandatory_numeric_challenge": true
+    },
+    {
+      "name": "intraday_opening_auction_amount_share_240m, intraday_am_pm_amount_distribution_similarity_120m, intraday_amount_profile_day_over_day_similarity_240m, and intraday_market_amount_profile_synchronization_240m",
+      "relationship": "all use temporal amount allocation",
+      "distinction": "they measure opening mass, distribution similarity across halves/days, or market synchronization; Campaign076 is a one-session single-bar location statistic and uses no reference profile",
+      "mandatory_numeric_challenge": true
+    },
+    {
+      "name": "intraday_cross_sectional_standardized_return_state_stability_236p",
+      "relationship": "the structurally nonnumeric definition remains in the complete semantic library",
+      "distinction": "peer-standardized return-state mobility versus a single-stock amount-peak time",
+      "mandatory_semantic_challenge": true,
+      "numeric_status": "undefined_not_pass_not_fail"
+    },
+    {
+      "name": "candidate49_intraday_cumulative_vwap_crossing_rate_240m_v1",
+      "relationship": "the sole active prospective candidate remains a mandatory isolation challenge",
+      "distinction": "Candidate49 measures causal price crossings of cumulative VWAP on future sessions; Campaign076 reads historical amount positions only and never enters Candidate49 ledgers",
+      "candidate49_remains_isolated": true
+    }
+  ],
+  "pre_value_decision": {
+    "economically_independent_enough_to_preregister": true,
+    "numeric_uniqueness_still_required_against_all_106_eligible_comparators": true,
+    "strict_maximum_absolute_median_daily_rank_correlation": 0.8,
+    "minimum_pairwise_names_per_session": 50,
+    "minimum_pairwise_sessions_per_comparison": 100,
+    "drop_residualize_invert_clip_bucket_rank_neutralize_filter_or_rescue_after_failed_gate_allowed": false
+  },
+  "research_boundary": {
+    "campaign076_minute_source_rows_read": false,
+    "campaign076_candidate_values_read": false,
+    "comparison_values_read": false,
+    "historical_daily_price_fields_read": [],
+    "historical_forward_returns_read": false,
+    "provider_request_issued": false,
+    "candidate49_historical_backfill_performed": false,
+    "candidate49_ledgers_changed": false,
+    "second_prospective_candidate_created": false,
+    "current_scoring_selection_sizing_or_orders_performed": false,
+    "investment_advice": false
+  }
+}

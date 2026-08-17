@@ -1,0 +1,79 @@
+{
+  "schema_version": 1,
+  "kind": "a_share_three_day_walkforward_campaign105_terminal_completion_freeze",
+  "status": "campaign105_terminal_artifacts_frozen_zero_survivors_stress_closed",
+  "frozen_at": "2026-08-07T18:43:40.986692Z",
+  "terminal_result": {
+    "path": "docs/a_share_three_day_walkforward_campaign_105_terminal_result_binding_20260808.json",
+    "sha256": "118820900341dc3a3d540abfab5676dabee439280469a33475a1953bbe6cecf9"
+  },
+  "iteration_state": {
+    "path": "docs/a_share_three_day_iteration_status_20260808_campaign105_terminal.json",
+    "sha256": "b84143a49e14f40ef2151ec03e7c774e42ab01389f68acacef4297de1b81e8ae"
+  },
+  "effective_future_numeric_policy": {
+    "path": "docs/a_share_three_day_walkforward_future_numeric_comparison_eligibility_policy_v63_20260808.json",
+    "sha256": "2ec29422ce2938c22307095879acfd60397f03c0c70355d68466fd4179ec4ce8"
+  },
+  "research_attempt_ledger": {
+    "path": "data/experiments/short_horizon/historical_walkforward/campaign_105/research_attempt_ledger_v7.json",
+    "sha256": "1a912bbc0c9cb3df436d23c199ce48fee09e51a78936385e636544e30d05eac5"
+  },
+  "development_artifacts": {
+    "trial_ledger": {
+      "path": "data/experiments/short_horizon/historical_walkforward/campaign_105/walkforward/trial_ledger.json",
+      "sha256": "035cda5d098347154603448e5cc4013ac7a0e88fc3743a1bfd2df3b14be16214"
+    },
+    "survivor_record": {
+      "path": "data/experiments/short_horizon/historical_walkforward/campaign_105/walkforward/development_survivors.json",
+      "sha256": "4b49942d4cc190154d8af6f5011197b25cbc85f19b53906ad7c585b1f4b27b01"
+    },
+    "stress_record": {
+      "path": "data/experiments/short_horizon/historical_walkforward/campaign_105/walkforward/exposed_stress_consumption_record.json",
+      "sha256": "e9be4bbf4b514340c53c059233c1e713ea4ba2d3cd6f303ccbb02afad3f6df98"
+    },
+    "generated_report": {
+      "path": "data/experiments/short_horizon/historical_walkforward/campaign_105/walkforward/campaign_report.json",
+      "sha256": "4612304d45b1a09c7fc4d0901532ebcceaa6fc7551153a1676bfbc60d2c1570c"
+    }
+  },
+  "reports": {
+    "campaign105_report": {
+      "path": "docs/a_share_three_day_walkforward_campaign_105_report.md",
+      "sha256": "56eb077216829f332aa215fb877e97bfa4d75168b441e057f4ceda01f8b78d90"
+    },
+    "current_research_report": {
+      "path": "data/experiments/short_horizon/current_research_report.md",
+      "sha256": "f17e7cb570a70ba10f4f94d83b471d377b08061c8099bb767c5b4ac35db76e37"
+    },
+    "three_day_research_report": {
+      "path": "data/experiments/short_horizon/three_day_research_report.md",
+      "sha256": "a16bbe72caa03812c04eac4154e91f35adb6ce26a4894b6a4225862ad2070d02"
+    },
+    "data_pipeline_documentation": {
+      "path": "docs/a_share_data_pipeline.md",
+      "sha256": "ed54f253cf22a00bbc55ba9927790c2f0a76de8f55a761d7385577c3fc30076a"
+    }
+  },
+  "terminal_test": {
+    "path": "tests/data_collector_tests/test_a_share_three_day_walkforward_campaign105_terminal.py",
+    "sha256": "7d74efa0e9813008c44d9d58d4a8fbdcd5906ef7742fa118a3583bc998943f94",
+    "pre_freeze_result": "26 passed, 1 skipped"
+  },
+  "terminal_semantics": {
+    "development_trial_count": 1,
+    "development_survivor_count": 0,
+    "stress_2024_2025_opened": false,
+    "stress_return_fields_read": false,
+    "campaign105_retry_or_rescue_allowed": false,
+    "future_complete_definition_count": 135,
+    "future_numeric_comparator_count": 132,
+    "candidate49_signal_entry_count": 0,
+    "candidate49_execution_entry_count": 0,
+    "provider_request_issued": false,
+    "candidate50_created": false,
+    "current_scoring_selection_sizing_or_orders_performed": false,
+    "investment_advice": false
+  },
+  "next_action": "Keep this Campaign105 terminal chain immutable and continue only with a genuinely new offline historical mechanism under v63."
+}

@@ -1,0 +1,133 @@
+{
+  "version": 68,
+  "kind": "a_share_three_day_walkforward_future_numeric_comparison_eligibility_policy",
+  "status": "frozen_after_campaign108_uniqueness_rejection_before_campaign109_values",
+  "recorded_at": "2026-08-07T21:26:34Z",
+  "supersedes_without_rewriting": {
+    "path": "docs/a_share_three_day_walkforward_future_numeric_comparison_eligibility_policy_v67_20260808.json",
+    "sha256": "4740555b0647540e99396682705a1e77745c53badc9a4bbb671e1607550b9435",
+    "preserved": true,
+    "complete_definition_order_changed": true,
+    "numeric_comparator_order_changed": false,
+    "reason": "Campaign108 produced a complete verified factor definition but failed the frozen uniqueness comparison against intraday_signed_path_efficiency_239m. The definition is retained for semantic duplicate control and excluded from numeric comparator eligibility."
+  },
+  "authoritative_inputs": {
+    "campaign108_terminal_result": {
+      "path": "docs/a_share_three_day_walkforward_campaign_108_terminal_result_binding_20260808.json",
+      "sha256": "81fd6c5d2c1bca72548b08c35efc9f62d8bd75153b7c5b813cb42919029ad763"
+    },
+    "campaign108_attempt_ledger": {
+      "path": "data/experiments/short_horizon/historical_walkforward/campaign_108/research_attempt_ledger_v7.json",
+      "sha256": "cce436c253a6cb54a20a8abf93b531ae6091315c5fab1db15f0291562a42b81f"
+    },
+    "campaign108_no_return_audit": {
+      "path": "data/experiments/short_horizon/historical_walkforward/campaign_108/no_return/20260807T212511Z_campaign108_no_return_audit.json",
+      "sha256": "6f37de04f9c1a69e8bfe574b68614523b1d3d3bb827b757b1de6673a179cda21"
+    }
+  },
+  "campaign108_terminal_classification": {
+    "factor": "intraday_continuous_session_net_return_reversal_240m",
+    "score_direction": "higher",
+    "coverage_gate_passed": true,
+    "numeric_comparisons_completed": 132,
+    "failed_numeric_comparison_count": 1,
+    "maximum_absolute_median_daily_rank_correlation": 0.9734820997581389,
+    "maximum_comparison_factor": "intraday_signed_path_efficiency_239m",
+    "numeric_comparator_eligible": false,
+    "development_trial_count": 0,
+    "development_survivor_count": 0,
+    "stress_2024_2025_opened": false,
+    "retry_reverse_redefine_endpoint_shift_transform_filter_residualize_combine_or_rescue_allowed": false
+  },
+  "complete_historical_feature_library": {
+    "exact_v67_order_preserved_as_prefix": true,
+    "campaign108_definition_appended": true,
+    "factor_definition_count": 138,
+    "order_sha256": "6b0deb2e6d3f610e9fb18cc31636b92ac8a6f644a08b3e461c3f301966738b68",
+    "last_definition": {
+      "name": "intraday_continuous_session_net_return_reversal_240m",
+      "score_direction": "higher"
+    }
+  },
+  "numerical_comparator_eligibility": {
+    "exact_v67_order_preserved": true,
+    "campaign108_numeric_comparator_appended": false,
+    "eligible_numeric_comparator_count": 132,
+    "eligible_numeric_comparator_order_sha256": "7ed69afd1408e84dcc856583344166ffc9bcbb0add1aed63163b1d12a1be9a25",
+    "last_comparator": {
+      "name": "intraday_active_trading_bar_share_240m",
+      "score_direction": "higher"
+    },
+    "minimum_pairwise_names_per_session": 50,
+    "minimum_pairwise_sessions_per_comparison": 100,
+    "strict_maximum_absolute_median_daily_rank_correlation": 0.8,
+    "all_132_eligible_numeric_comparators_must_pass": true,
+    "candidate_specific_comparator_drop_allowed": false,
+    "insufficient_pairwise_overlap_fails_closed": true
+  },
+  "semantic_only_or_non_numeric_eligible_definitions": [
+    {
+      "name": "intraday_cross_sectional_standardized_return_state_stability_236p",
+      "reason": "semantic-only terminal definition"
+    },
+    {
+      "name": "signal_day_turnover_rate_pct",
+      "reason": "semantic-only terminal definition"
+    },
+    {
+      "name": "intraday_own_bar_close_location_entropy_10b_240m",
+      "reason": "semantic-only terminal definition"
+    },
+    {
+      "name": "intraday_nonzero_range_bar_share_240m",
+      "reason": "all-132 uniqueness decision infrastructure-inconclusive"
+    },
+    {
+      "name": "intraday_exact_close_level_diversity_240m",
+      "reason": "failed five frozen numeric uniqueness comparisons"
+    },
+    {
+      "name": "intraday_continuous_session_net_return_reversal_240m",
+      "reason": "failed frozen uniqueness comparison against intraday_signed_path_efficiency_239m"
+    }
+  ],
+  "mandatory_prevalue_support_and_adapter_gates_for_campaign109_and_later": {
+    "all_v67_support_and_missingness_gates_inherited": true,
+    "continuous_session_endpoint_return_reversal_or_monotone_transform_reexpression_requires_prevalue_rejection": true,
+    "signed_path_efficiency_overlap_must_be_audited": true,
+    "exact_close_level_count_collision_or_diversity_reexpression_requires_prevalue_rejection": true,
+    "every_raw_factor_comparator_range_must_be_registered_before_values": true,
+    "comparator_alignment_must_preserve_missing_values_for_pairwise_overlap": true
+  },
+  "final_accounting": {
+    "campaign108_attempt_count": 6,
+    "campaign108_ledger_entry_count": 7,
+    "campaign108_infrastructure_failure_count": 5,
+    "campaign108_prevalue_scientific_attempt_count": 1,
+    "campaign108_complete_factor_attempt_count": 1,
+    "campaign108_scientifically_decided_factor_attempt_count": 1,
+    "campaign108_return_reading_development_trial_count": 0,
+    "campaign108_development_survivor_count": 0,
+    "campaign108_stress_trial_count": 0,
+    "cumulative_historical_research_attempt_count": 800,
+    "cumulative_return_reading_development_trial_count": 300
+  },
+  "future_campaign_boundary": {
+    "campaign107_retry_or_rescue_allowed": false,
+    "campaign108_retry_reverse_redefine_endpoint_shift_transform_filter_residualize_combine_or_rescue_allowed": false,
+    "candidate_specific_subset_rescue_allowed": false,
+    "future_complete_library_mechanism_must_be_genuinely_new_and_prevalue_frozen": true,
+    "old_terminated_rejected_or_inconclusive_definitions_may_be_used_only_as_part_of_the_complete_prevalue_frozen_138_definition_or_132_numeric_library": true
+  },
+  "research_boundary": {
+    "campaign109_source_candidate_or_comparator_values_read_before_v68_freeze": false,
+    "historical_daily_price_fields_read_for_campaign108": [],
+    "historical_forward_returns_read_for_campaign108": false,
+    "provider_request_issued": false,
+    "candidate49_historical_backfill_performed": false,
+    "candidate49_ledgers_changed": false,
+    "second_prospective_candidate_created": false,
+    "current_scoring_selection_sizing_or_orders_performed": false,
+    "investment_advice": false
+  }
+}

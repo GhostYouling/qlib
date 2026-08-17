@@ -1,0 +1,146 @@
+{
+  "version": 1,
+  "kind": "a_share_three_day_iteration_status",
+  "status": "campaign061_terminal_verified_zero_development_survivors_ready_for_independent_campaign062",
+  "recorded_at": "2026-08-05T02:57:00+08:00",
+  "authoritative_predecessor": {
+    "path": "docs/a_share_three_day_iteration_status_20260805_campaign060_verified.json",
+    "sha256": "821c7a5a9c75189e577803a5b1dcd98e30632352ed710ac9c3624139689a065c"
+  },
+  "research_policy": {
+    "historical_walkforward_policy": {
+      "path": "docs/a_share_three_day_historical_walkforward_research_policy_20260727.json",
+      "sha256": "38426d6161b9bfed323c58caba18feca668b8c9d53e294951a8ba90c01a798bb"
+    },
+    "historical_research_may_run_without_new_daily_bar_or_16_30_wait": true,
+    "historical_results_may_generate_current_scores_selections_sizes_or_orders": false,
+    "historical_results_may_backfill_candidate49": false,
+    "development_partition": "2019-2023_three_frozen_expanding_train_validation_folds",
+    "purge_signal_sessions_each_boundary": 3,
+    "t_plus_1_and_t_plus_3_must_remain_in_same_partition": true,
+    "2024_2025_stress_may_open_only_for_a_frozen_full_campaign_with_development_survivors": true,
+    "2024_2025_classification_if_opened": "historically_exposed_quasi_out_of_sample_not_pristine_holdout"
+  },
+  "local_data_context": {
+    "active_repository_root": "/Volumes/DIsk/Disk-Coding/qlib",
+    "configured_compatibility_root": "/Users/niyufei/Coding/qlib",
+    "configured_compatibility_root_is_active_repository": false,
+    "active_daily_data_root": "/Volumes/DIsk/Disk-Coding/qlib/data",
+    "active_daily_source": "baostock",
+    "active_daily_calendar_end": "2026-07-13",
+    "historical_minute_data_root": "/Volumes/DIsk/qlib-a-share-tushare-1m",
+    "local_date": "2026-08-05",
+    "local_weekday": "Wednesday",
+    "candidate49_same_day_16_30_boundary_reached_during_this_run": false,
+    "candidate49_plan_executed_by_campaign061": false,
+    "candidate49_run_executed_by_campaign061": false,
+    "candidate49_provider_request_issued_by_campaign061": false,
+    "dotenv_path": "/Volumes/DIsk/Disk-Coding/qlib/.env",
+    "dotenv_is_regular_non_symlink_file": true,
+    "dotenv_is_git_ignored": true,
+    "dotenv_mode": "0600",
+    "tushare_token_present": true,
+    "credential_value_or_hash_printed_logged_or_persisted": false
+  },
+  "campaign061": {
+    "factor": "intraday_day_over_day_realized_variance_stability_238b",
+    "direction": "higher",
+    "terminal": true,
+    "feature_snapshot_partitions": 33015,
+    "feature_snapshot_rows": 7724498,
+    "feature_snapshot_eligible_rows": 7671540,
+    "candidate_rows_after_quality_and_listing": 1326131,
+    "quality_listing_eligible_rows": 1331759,
+    "coverage_median": 0.9972875203865161,
+    "coverage_p05": 0.9905660377358491,
+    "coverage_gate_passed": true,
+    "frozen_comparison_factor_count": 92,
+    "all_comparisons_passed": true,
+    "maximum_absolute_median_daily_rank_correlation": 0.21260945325520583,
+    "development_trial_count": 1,
+    "validation_rank_ic": [
+      0.009062751775781086,
+      0.009686169693856897,
+      0.023550617175191343
+    ],
+    "validation_normalized_return": [
+      -0.17240066941502474,
+      -0.022935304017539293,
+      -0.24769727537251462
+    ],
+    "validation_pilot_10bp_return": [
+      -0.027808604914117296,
+      -0.021204236251575304,
+      -0.047987314190158226
+    ],
+    "development_aggregate_pilot_20bp_return": -0.17788650103460413,
+    "development_survivor_count": 0,
+    "stress_2024_2025_opened": false,
+    "stress_2024_2025_returns_read": false,
+    "attempt_accounting": {
+      "infrastructure_only_failure_count": 3,
+      "complete_factor_attempt_count": 1,
+      "distinct_research_attempt_count": 4,
+      "append_only_ledger_entry_count": 5,
+      "return_reading_development_trial_count": 1,
+      "cumulative_historical_research_attempt_count": 355,
+      "cumulative_return_reading_development_trial_count": 270
+    },
+    "immutable_terminal_artifacts": {
+      "research_record": {
+        "path": "docs/a_share_three_day_walkforward_campaign_061_research_record.json",
+        "sha256": "e644f6612f65dbde37ce1174c9e6e9c6ff30ea9f43f79b40ac003723374748d3"
+      },
+      "terminal_completion_freeze": {
+        "path": "docs/a_share_three_day_walkforward_campaign_061_terminal_completion_freeze_20260805.json",
+        "sha256": "e56b10d501db27e7b79286a193f80540681961765e56d91d01409cd1f0433d0a"
+      },
+      "current_attempt_ledger": {
+        "path": "data/experiments/short_horizon/historical_walkforward/campaign_061/research_attempt_ledger_v4.json",
+        "sha256": "61a228cdd94ffdbbcd6c9bb9759f37268b59bca7c09775dc1a83f71e2f015136"
+      },
+      "verification": {
+        "path": "docs/a_share_three_day_walkforward_campaign_061_verification_20260805.json",
+        "sha256": "8f504d419a86a4ff2e8f872568e21665663c4d11f8b96712d2c97687c7160783"
+      }
+    }
+  },
+  "prospective_boundary": {
+    "active_candidate_count": 1,
+    "active_candidate": "Candidate49 intraday_cumulative_vwap_crossing_rate_240m",
+    "candidate49_signal_ledger": {
+      "path": "data/experiments/short_horizon/candidate49_future_signal_ledger.json",
+      "sha256": "5193f00d7f36da003f53cec387900da4c3d002299f5dfcfc1a95eaa199ed3a79",
+      "entry_count": 0
+    },
+    "candidate49_execution_ledger": {
+      "path": "data/experiments/short_horizon/candidate49_future_execution_ledger.json",
+      "sha256": "d57a3e61eac969e42cafa418ccd8c0a5ee65dcf69da145bb2c096c2a02a2ea4f",
+      "entry_count": 0
+    },
+    "candidate49_historical_return_signal_execution_or_milestone_backfill_performed": false,
+    "second_prospective_candidate_activation_allowed": false
+  },
+  "verification_summary": {
+    "campaign061_current_tests_passed": 30,
+    "campaign061_current_tests_failed": 0,
+    "campaign061_historical_phase_tests_deselected": 3,
+    "verification_record_binding_checks_passed": 12,
+    "binding_checks_failed": 0,
+    "semantic_gate_and_isolation_checks_passed": true,
+    "report_generator_idempotence_passed": true,
+    "candidate49_ledgers_rehashed_unchanged": true
+  },
+  "data_limitation": "The eligible universe derives from a current listing snapshot and can contain survivorship bias. All 2019-2023 outcomes are historically exposed development research, not pristine out-of-sample evidence and not investment advice.",
+  "next_action": {
+    "historical": "Begin Campaign062 only from a genuinely independent, pre-value-frozen mechanism; offline work may run at any time and does not wait for a new daily bar or 16:30.",
+    "prospective": "Before 16:30 Asia/Singapore on 2026-08-05 do not run the Candidate49 same-day workflow. At or after the boundary, use a new absolute-date staging root, run plan first, and run --confirm-run only if ready=true with exit code 0.",
+    "strict_prohibitions": [
+      "do not backfill Candidate49 historical returns signals executions or milestones",
+      "do not start a second prospective candidate",
+      "do not invert repair add epsilon redefine rewindow relag rescale filter threshold rerun rescue model or combine Campaign061",
+      "do not open Campaign061 2024-2025 stress",
+      "do not generate current scores selections position sizes orders or investment advice"
+    ]
+  }
+}

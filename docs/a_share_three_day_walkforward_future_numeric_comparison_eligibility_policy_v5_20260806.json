@@ -1,0 +1,105 @@
+{
+  "version": 5,
+  "kind": "a_share_three_day_walkforward_future_numeric_comparison_eligibility_policy",
+  "status": "frozen_before_campaign071_candidate_source_or_comparison_values",
+  "recorded_at": "2026-08-06T05:04:00+08:00",
+  "supersedes_invalid_binding_attempt_without_rewriting": {
+    "path": "docs/a_share_three_day_walkforward_future_numeric_comparison_eligibility_policy_v4_20260806.json",
+    "sha256": "4db642da5d7a5f1cfa55cfa11d1228ed758c0a2103494bba4f493db50002183b",
+    "failure": "The first validator invocation used an invalid CLI shape; the corrected invocation then exposed one mistyped Campaign070 audit SHA. No Campaign071 source row, candidate value, comparison value, daily price, or return was read. The invalid v4 file is preserved unchanged."
+  },
+  "authoritative_inputs": {
+    "latest_verified_state": {
+      "path": "docs/a_share_three_day_iteration_status_20260806_campaign070_verified.json",
+      "sha256": "5920e1b85858317880b0d3217539af83d289e7ec0eb4fa292d31c3b35cfc852a"
+    },
+    "historical_walkforward_policy": {
+      "path": "docs/a_share_three_day_historical_walkforward_research_policy_20260727.json",
+      "sha256": "38426d6161b9bfed323c58caba18feca668b8c9d53e294951a8ba90c01a798bb"
+    },
+    "campaign070_terminal_freeze": {
+      "path": "docs/a_share_three_day_walkforward_campaign_070_terminal_completion_freeze_v2_20260806.json",
+      "sha256": "709bca421b054b9329599e4e31525f2807dedecd0785bdd17fe19bd3f853e236"
+    },
+    "campaign070_research_record": {
+      "path": "docs/a_share_three_day_walkforward_campaign_070_research_record.json",
+      "sha256": "9f8450e791c7afafbb6fe971eebe3815c8ab5c9c28b4907a75840058c1402900"
+    },
+    "campaign070_snapshot_binding": {
+      "path": "docs/a_share_three_day_walkforward_campaign_070_feature_snapshot_binding_20260806.json",
+      "sha256": "4c573c47ce247cac96c492ae37f93c39356303db18f05c093f1446a765e8aa34",
+      "snapshot_manifest_path": "/Volumes/DIsk/qlib-a-share-tushare-1m/derived/a_share/rich/tushare/minute_walkforward_campaign070_feature_library/tushare_stk_mins_1m_2019_2025_ea0cbb8f_walkforward_campaign070_feature_library_v1/snapshot_manifest.json",
+      "snapshot_manifest_sha256": "f828ee06ac609580880eb0bfcd2d1fbcaba590e872f57fe5639a468c67edcbd7",
+      "dataset_sha256": "35ea87d9e183b77a382a88789cedf96d79f6a102c5006e156bbde2ff87fd6efe",
+      "eligible_rows": 6353795
+    },
+    "campaign070_no_return_audit": {
+      "path": "data/experiments/short_horizon/historical_walkforward/campaign_070/no_return/20260805T204241Z_campaign070_no_return_audit.json",
+      "sha256": "c5b806e938f0dd04bdb6908c3882c4f403302827ab64d37c3b339f3c0a0023bc",
+      "coverage_passed": false,
+      "calendar_sessions": 1632,
+      "candidate_eligible_rows": 1122656,
+      "potential_three_session_cohorts_with_minimum_name_support": 458,
+      "observed_years": 6,
+      "comparison_values_read": false
+    }
+  },
+  "complete_historical_feature_library": {
+    "definition": "Reconstruct the exact Campaign070 prior 101-definition order, then append quarterly_announcement_delay_improvement_yoy_rank_1y/higher exactly once.",
+    "factor_definition_count": 102,
+    "order_sha256": "5509c7801521a81c259892ad8637bdcdf5440eb11a1e99872091de251d282f08",
+    "all_terminal_failed_rejected_and_surviving_definitions_retained": true,
+    "structurally_nonnumeric_definition_retained": "intraday_cross_sectional_standardized_return_state_stability_236p",
+    "old_terminal_record_formula_direction_or_failure_history_may_be_rewritten": false
+  },
+  "numerical_comparator_eligibility": {
+    "classification_time": "before_campaign071_candidate_source_or_comparison_values",
+    "eligible_numeric_comparator_count": 101,
+    "eligible_numeric_comparator_order_definition": "Use Campaign070's exact 100 numeric comparators, then append Campaign070/higher exactly once.",
+    "eligible_numeric_comparator_order_sha256": "8ab835ebc9a5cc4f1b0e8e80a7db027dc7b64837859b43975d544dcf9294eca3",
+    "newly_appended_comparator": {
+      "name": "quarterly_announcement_delay_improvement_yoy_rank_1y",
+      "score_direction": "higher",
+      "source_campaign": 70,
+      "source_snapshot_eligible_rows": 6353795,
+      "source_quality_listing_candidate_rows": 1122656,
+      "source_supported_three_session_cohorts": 458,
+      "numeric_comparator_eligible_for_campaign071": true,
+      "eligibility_reason": "The immutable snapshot is numeric and the frozen audit establishes more than 100 supported sessions/cohorts with at least 50 candidate names after the cold-start interval. Its terminal all-history P05 coverage failure remains unchanged.",
+      "terminal_at_coverage_gate_but_numerically_available": true
+    },
+    "minimum_pairwise_names_per_session": 50,
+    "minimum_pairwise_sessions_per_comparison": 100,
+    "strict_maximum_absolute_median_daily_rank_correlation": 0.8,
+    "all_101_eligible_numeric_comparators_must_pass": true,
+    "candidate_specific_comparator_drop_allowed": false,
+    "insufficient_pairwise_overlap_fails_closed": true
+  },
+  "structurally_nonnumeric_mechanism_challenges": [
+    {
+      "name": "intraday_cross_sectional_standardized_return_state_stability_236p",
+      "score_direction": "higher",
+      "source_campaign": 63,
+      "numeric_status": "undefined_not_pass_not_fail",
+      "mechanism_overlap_audit_required": true
+    }
+  ],
+  "anti_gaming_invariants": [
+    "Do not use Campaign071 values, returns, or correlations to choose prior comparators.",
+    "Do not omit Campaign070 after it fails a future candidate uniqueness gate.",
+    "Do not delete Campaign070's cold-start interval or rewrite its terminal result.",
+    "Do not weaken the 50-name, 100-session, or strict-below-0.8 gates."
+  ],
+  "research_boundary": {
+    "campaign071_source_rows_read_before_freeze": false,
+    "campaign071_candidate_or_comparison_values_read_before_freeze": false,
+    "historical_daily_price_fields_read": [],
+    "historical_forward_returns_read": false,
+    "provider_request_issued": false,
+    "candidate49_historical_backfill_performed": false,
+    "candidate49_ledgers_changed": false,
+    "second_prospective_candidate_created": false,
+    "current_scoring_selection_sizing_or_orders_performed": false,
+    "investment_advice": false
+  }
+}

@@ -1,0 +1,268 @@
+{
+  "schema_version": 1,
+  "version": 1,
+  "kind": "a_share_three_day_walkforward_campaign132_preregistration",
+  "status": "frozen_complete_numeric140_model_campaign_before_component_values_or_historical_returns",
+  "recorded_at": "2026-08-14T09:05:00+08:00",
+  "purpose": "Freeze the full 140-feature design, three monotone nonlinear combination trials, chronological folds, fitting semantics, execution costs, survivor rule and lockbox boundary before Campaign132 reads component values or any historical return.",
+  "authoritative_inputs": {
+    "concept_scouting": {
+      "path": "docs/a_share_three_day_walkforward_campaign_132_concept_scouting_20260814.json",
+      "sha256": "ad0aa0b674fff6307c8c4f47310becaf1f05e6d4311126c0c004e9c52043a058"
+    },
+    "model_overlap_audit": {
+      "path": "docs/a_share_three_day_walkforward_campaign_132_model_overlap_audit_20260814.json",
+      "sha256": "929b2b38172f68d0838f68e8d22a4ae1abe83b3043fe52cce5044d0f5692fc76"
+    },
+    "historical_walkforward_policy": {
+      "path": "docs/a_share_three_day_historical_walkforward_research_policy_20260727.json",
+      "sha256": "38426d6161b9bfed323c58caba18feca668b8c9d53e294951a8ba90c01a798bb"
+    },
+    "numeric_policy_v158": {
+      "path": "docs/a_share_three_day_walkforward_future_numeric_comparison_eligibility_policy_v158_20260814.json",
+      "sha256": "9e5c84c38aca839877a0723e35fcb7c4925127971da0e9d9789c24e55a239baf"
+    }
+  },
+  "complete_feature_library": {
+    "semantic_definition_count": 151,
+    "semantic_definition_order_sha256": "91c2da3018330edbaddbb60b86370dcd9732425590f0565c70790b990002e0b5",
+    "numeric_feature_count": 140,
+    "numeric_feature_order_sha256": "c71bfe27486c9567afd3aca21e4b04053658c23ac651e7f4df7fd014b0c31efd",
+    "feature_subset_search_allowed": false,
+    "feature_reorder_or_drop_allowed": false,
+    "prior_terminal_records_remain_terminal": true,
+    "base_numeric130_design": {
+      "path": "/Volumes/DIsk/qlib-a-share-tushare-1m/derived/a_share/rich/tushare/minute_walkforward_campaign102_design_matrix/tushare_stk_mins_1m_2019_2025_ea0cbb8f_walkforward_campaign102_design_matrix_v1/snapshot_manifest.json",
+      "sha256": "fc9ab498462439731785a0eabbde370c1fd883c8d771eba312c85aa912d3cebe",
+      "dataset_sha256": "cceec2b790d134a89914e83e0697c1e6abff605a85fd85be74de68067faddb92",
+      "feature_count": 130,
+      "feature_order_sha256": "c80d9b929536dd509d6c1a904f790831050e68200393de381f92ad9293ef69e7",
+      "rows": 1331759,
+      "partitions": 7
+    },
+    "appended_numeric_features_in_order": [
+      {
+        "name": "full_numeric_library_directional_rank_improvement_breadth_130f",
+        "direction": "higher",
+        "manifest_path": "/Volumes/DIsk/qlib-a-share-tushare-1m/derived/a_share/rich/tushare/minute_walkforward_campaign103_feature_library/tushare_stk_mins_1m_2019_2025_ea0cbb8f_walkforward_campaign103_feature_library_v1/snapshot_manifest.json",
+        "manifest_sha256": "8a939feb53edfb31be8f133c2683920ed13424e716a4f4b5ed0d1a300588603b",
+        "dataset_sha256": "57afdd9f8a246fb9f513f85b3b631f70cf734655bd226ff211201bf7e084ea13"
+      },
+      {
+        "name": "intraday_active_trading_bar_share_240m",
+        "direction": "higher",
+        "manifest_path": "/Volumes/DIsk/qlib-a-share-tushare-1m/derived/a_share/rich/tushare/minute_walkforward_campaign105_feature_library/tushare_stk_mins_1m_2019_2025_ea0cbb8f_walkforward_campaign105_feature_library_v1/snapshot_manifest.json",
+        "manifest_sha256": "56e2d016087ff09643ef98dd00cad0ac9c771e815d19ec9941cea9f5904824a5",
+        "dataset_sha256": "912625c3763fe3868adb4c4f410b6a6ab72c9272f78b8b57db620daaf970018c"
+      },
+      {
+        "name": "intraday_intrabar_body_magnitude_serial_persistence_238p",
+        "direction": "higher",
+        "manifest_path": "/Volumes/DIsk/qlib-a-share-tushare-1m/derived/a_share/rich/tushare/minute_walkforward_campaign109_feature_library/tushare_stk_mins_1m_2019_2025_ea0cbb8f_walkforward_campaign109_feature_library_v1/snapshot_manifest.json",
+        "manifest_sha256": "b212eac0921bbca2c3a84c6eceb7f6741939c52ccb96a21e3897d1533c8b6aba",
+        "dataset_sha256": "f222c80e80acb9872cc7e29a0fc89ab37e51bc1ee02f40f19f683c3757fcdb90"
+      },
+      {
+        "name": "intraday_open_reference_directional_occupancy_240m",
+        "direction": "higher",
+        "manifest_path": "/Volumes/DIsk/qlib-a-share-tushare-1m/derived/a_share/rich/tushare/minute_walkforward_campaign110_feature_library/tushare_stk_mins_1m_2019_2025_ea0cbb8f_walkforward_campaign110_feature_library_v1/snapshot_manifest.json",
+        "manifest_sha256": "e3ae3c01e0a6eadd8dfce0362520e13bc4c047ff8357cdc7be2d1f9b31e93b72",
+        "dataset_sha256": "9082b74891ea2e1c107309637941e42acdc9afeec0b44748e2242506c1a68c4b"
+      },
+      {
+        "name": "intraday_amount_weak_order_entropy_236t",
+        "direction": "higher",
+        "manifest_path": "/Volumes/DIsk/qlib-a-share-tushare-1m/derived/a_share/rich/tushare/minute_walkforward_campaign117_feature_library/tushare_stk_mins_1m_2019_2025_ea0cbb8f_walkforward_campaign117_feature_library_v1/snapshot_manifest.json",
+        "manifest_sha256": "114bb5dd2ac28d8e51e6a35c234cfe06f7d3810b4d7c46303e38af33d4566879",
+        "dataset_sha256": "4f5bf6ee2c26f6956178d6954aae92821530c90a6334375e8cf0e9938fa71c18"
+      },
+      {
+        "name": "intraday_top_decile_amount_event_spacing_entropy_25g",
+        "direction": "higher",
+        "manifest_path": "/Volumes/DIsk/qlib-a-share-tushare-1m/derived/a_share/rich/tushare/minute_walkforward_campaign118_feature_library/tushare_stk_mins_1m_2019_2025_ea0cbb8f_walkforward_campaign118_feature_library_v1/snapshot_manifest.json",
+        "manifest_sha256": "194c2ef2f81c1906c3e94a85e26ce97d7d82dba567b54128cf6e9086e3a027bd",
+        "dataset_sha256": "19495eb562683e1e14fbe5e9a9730e6d614b481f7642c3da824ea36fdb4d5e2b"
+      },
+      {
+        "name": "intraday_range_boundary_direction_state_entropy_238p",
+        "direction": "higher",
+        "manifest_path": "/Volumes/DIsk/qlib-a-share-tushare-1m/derived/a_share/rich/tushare/minute_walkforward_campaign119_feature_library/tushare_stk_mins_1m_2019_2025_ea0cbb8f_walkforward_campaign119_feature_library_v1/snapshot_manifest.json",
+        "manifest_sha256": "30aaf36f807011891309c969359db26a342f0d87234fdca38df1d43e27d59188",
+        "dataset_sha256": "66eb5902abf806005c2e938b4506d08c3106637b695ae99b2d4e322f55dfbbf2"
+      },
+      {
+        "name": "intraday_return_direction_dictionary_phrase_count_238s",
+        "direction": "higher",
+        "manifest_path": "/Volumes/DIsk/qlib-a-share-tushare-1m/derived/a_share/rich/tushare/minute_walkforward_campaign120_feature_library/tushare_stk_mins_1m_2019_2025_ea0cbb8f_walkforward_campaign120_feature_library_v1/snapshot_manifest.json",
+        "manifest_sha256": "d5b08574c1b0aff1d8a359bf0409b92ddde2ce5caeb7d99b243c434130e94412",
+        "dataset_sha256": "25958413d6238c70bc0b5b9f3ac8b65dca352f3479f04a1867bc23603032af12"
+      },
+      {
+        "name": "intraday_terminal_close_direction_first_attainment_240m",
+        "direction": "higher",
+        "manifest_path": "/Volumes/DIsk/qlib-a-share-tushare-1m/derived/a_share/rich/tushare/minute_walkforward_campaign121_feature_library/tushare_stk_mins_1m_2019_2025_ea0cbb8f_walkforward_campaign121_feature_library_v1/snapshot_manifest.json",
+        "manifest_sha256": "e5789da9896535d8d67e0f0f3a7b2704f41292e4694b127a27999224abfad724",
+        "dataset_sha256": "cb476bcc93e7c88df6e2666af9d60d470c90f8a7670ea4553d2e9b877ab8a5b2"
+      },
+      {
+        "name": "intraday_transaction_price_dispersion_resolution_2h",
+        "direction": "higher",
+        "manifest_path": "/Volumes/DIsk/qlib-a-share-tushare-1m/derived/a_share/rich/tushare/minute_walkforward_campaign128_feature_library/tushare_stk_mins_1m_2019_2025_ea0cbb8f_walkforward_campaign128_feature_library_v1/snapshot_manifest.json",
+        "manifest_sha256": "6ddc6358bffbfd6ae412744e96479b7bc6bc179ee0ae20cff9b3cb3e85b86e2f",
+        "dataset_sha256": "4644fdbf8ddbd046def730c9eaf848fdc56874f617ea2aefb50dedcffbc9bb4f"
+      }
+    ],
+    "appended_value_transform": "For every source and accepted signal session, align raw finite values to the base stock_day_key universe and compute ascending average-tie percentile ranks among finite aligned names; all ten directions are higher. Missing source values remain NaN.",
+    "design_support": {
+      "minimum_finite_components": 105,
+      "minimum_fraction_interpretation": "exactly_75_percent_of_140",
+      "model_input_missing_fill": 0.5,
+      "missing_indicator_or_missing_split_allowed": false,
+      "output_dtype": "float32",
+      "years": [2019, 2020, 2021, 2022, 2023, 2024, 2025],
+      "output_run_id": "tushare_stk_mins_1m_2019_2025_ea0cbb8f_walkforward_campaign132_numeric140_design_v1"
+    }
+  },
+  "trial_catalog": [
+    {
+      "trial_id": "wf132_monotone_hgb_no_interactions_140f",
+      "interaction_cst": "no_interactions"
+    },
+    {
+      "trial_id": "wf132_monotone_hgb_pairwise_interactions_140f",
+      "interaction_cst": "pairwise"
+    },
+    {
+      "trial_id": "wf132_monotone_hgb_unrestricted_interactions_140f",
+      "interaction_cst": null
+    }
+  ],
+  "shared_model_configuration": {
+    "runtime": "scikit-learn==1.5.1",
+    "class": "sklearn.ensemble.HistGradientBoostingRegressor",
+    "loss": "squared_error",
+    "learning_rate": 0.05,
+    "max_iter": 120,
+    "max_leaf_nodes": 7,
+    "max_depth": null,
+    "min_samples_leaf": 500,
+    "l2_regularization": 1.0,
+    "max_features": 1.0,
+    "max_bins": 63,
+    "categorical_features": null,
+    "monotonic_cst": "array_of_140_positive_ones",
+    "early_stopping": false,
+    "random_state": 132,
+    "warm_start": false,
+    "validation_results_may_not_change_configuration": true
+  },
+  "training_target_and_weights": {
+    "target": "Within each contained training signal session, ascending average-tie percentile rank of finite gross forward return t+3 close / t+1 open - 1.",
+    "row_weight": "Each training session has equal total weight and each finite stock target within that session receives 1/n_session.",
+    "feature_missing_fill": 0.5,
+    "model_fit_only_on_training_partition": true
+  },
+  "walkforward_folds": [
+    {
+      "fold": 1,
+      "training": ["2019-01-01", "2020-12-31"],
+      "validation": ["2021-01-01", "2021-12-31"]
+    },
+    {
+      "fold": 2,
+      "training": ["2019-01-01", "2021-12-31"],
+      "validation": ["2022-01-01", "2022-12-31"]
+    },
+    {
+      "fold": 3,
+      "training": ["2019-01-01", "2022-12-31"],
+      "validation": ["2023-01-01", "2023-12-31"]
+    }
+  ],
+  "leakage_controls": {
+    "signal": "local close t",
+    "entry": "next accepted local session open t+1",
+    "exit": "third accepted local session close t+3",
+    "purge_signal_sessions_before_each_boundary": 3,
+    "entry_and_exit_must_both_be_in_partition": true,
+    "non_overlapping_three_signal_session_grid": true,
+    "point_in_time_features_and_universe": true
+  },
+  "fold_prefit_uniqueness_gate": {
+    "run_after_training_fit_before_validation_returns": true,
+    "comparison_count": 140,
+    "comparison_order_sha256": "c71bfe27486c9567afd3aca21e4b04053658c23ac651e7f4df7fd014b0c31efd",
+    "minimum_pairwise_names_per_session": 50,
+    "minimum_pairwise_sessions_per_component": 100,
+    "maximum_absolute_median_daily_average_tie_spearman": 0.8,
+    "strict_inequality": true,
+    "every_component_must_pass": true,
+    "failure_stops_only_that_trial_for_that_and_later_folds_before_validation_returns": true
+  },
+  "fixed_execution_assumptions": {
+    "holding_period_local_sessions": 3,
+    "topk": 3,
+    "initial_capital_cny": 200000,
+    "target_entry_exposure_fraction_per_slot": 0.05,
+    "maximum_entry_exposure_fraction_per_signal": 0.15,
+    "buy_lot_size_shares": 100,
+    "commission_rate_each_side": 0.0001,
+    "transfer_fee_rate_each_side": 0.00002,
+    "sell_stamp_duty_rate": 0.0005,
+    "primary_adverse_slippage_rate_each_side": 0.001,
+    "maximum_daily_amount_participation": 0.01,
+    "blocked_entry": "keep_cash_without_replacement",
+    "blocked_exit": "retain_and_retry_under_frozen_policy"
+  },
+  "development_survivor_rule": {
+    "complete_validation_fold_count": 3,
+    "minimum_association_cohorts_per_fold": 60,
+    "minimum_positive_mean_rank_ic_folds": 2,
+    "median_validation_mean_rank_ic_strictly_positive": true,
+    "median_validation_top3_minus_bottom3_spread_strictly_positive": true,
+    "minimum_positive_normalized_return_folds": 2,
+    "minimum_positive_primary_10bp_pilot_return_folds": 2,
+    "median_validation_primary_10bp_pilot_return_strictly_positive": true,
+    "worst_validation_normalized_drawdown_minimum": -0.25,
+    "compounded_validation_20bp_pilot_return_strictly_positive": true,
+    "minimum_board_lot_affordability_each_fold": 0.9,
+    "maximum_amount_participation_each_fold": 0.01,
+    "terminal_unresolved_positions_each_fold": 0,
+    "all_conditions_required": true
+  },
+  "survivor_selection_rule": {
+    "maximum_selected_for_lockbox": 1,
+    "order": [
+      "descending_positive_primary_10bp_fold_count",
+      "descending_median_validation_primary_10bp_return",
+      "descending_median_validation_mean_rank_ic",
+      "configuration_order"
+    ],
+    "select_only_from_complete_gate_passers": true
+  },
+  "locked_2024_2025_campaign_backtest": {
+    "initially_closed": true,
+    "classification": "historically_exposed_quasi_out_of_sample_not_pristine",
+    "open_once_for_whole_frozen_campaign_only_if_development_survivor_exists": true,
+    "full_model_refit": "Refit only the selected unchanged configuration on contained 2019-2023 training observations.",
+    "no_post_lockbox_tuning": true
+  },
+  "recordkeeping": {
+    "append_only_trial_ledger_required": true,
+    "record_all_three_models_and_all_failures": true,
+    "selected_only_reporting_forbidden": true,
+    "infrastructure_failures_count_as_attempts": true
+  },
+  "research_boundary": {
+    "component_factor_values_read_before_preregistration": false,
+    "historical_daily_price_or_forward_return_values_read_before_preregistration": false,
+    "stress_2024_2025_opened": false,
+    "provider_request_issued": false,
+    "credential_loaded": false,
+    "candidate49_historical_backfill_performed": false,
+    "candidate49_ledgers_changed": false,
+    "second_prospective_candidate_created": false,
+    "current_scoring_selection_sizing_positions_or_orders_performed": false,
+    "investment_advice": false
+  }
+}

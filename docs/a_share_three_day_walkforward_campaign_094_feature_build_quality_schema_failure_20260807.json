@@ -1,0 +1,55 @@
+{
+  "schema_version": 1,
+  "kind": "a_share_three_day_walkforward_campaign094_feature_build_infrastructure_failure",
+  "status": "preserved_before_additive_quality_schema_repair",
+  "recorded_at": "2026-08-07T02:26:19Z",
+  "purpose": "Preserve the first Campaign094 snapshot-build failure. The frozen factor extractor returned the new zero_range_bars quality field while the inherited generic build aggregator still requested the predecessor name zero_destination_range_pairs.",
+  "source_chain": {
+    "no_return_preregistration": {
+      "path": "docs/a_share_three_day_walkforward_campaign_094_no_return_preregistration.json",
+      "sha256": "c79c7ee277401f140bd075756658bfc5533ddcf191a20c4dc5e63808a50cbe27"
+    },
+    "feature_implementation_freeze_v1": {
+      "path": "docs/a_share_three_day_walkforward_campaign_094_feature_implementation_freeze_20260807.json",
+      "sha256": "d4b5bb63e412c091a4c32c45fcfcc4f431446d6f101e674a062425e6f534c743"
+    },
+    "feature_runner_v1": {
+      "path": "scripts/a_share_three_day_walkforward_campaign094_features.py",
+      "sha256": "d0e51bac3c27cf2d020a7f3df458273f7440554fd6d9e6b1927975492774e1f8"
+    }
+  },
+  "failure": {
+    "command": "PYTHONPATH=. /Users/niyufei/.cache/codex-runtimes/codex-primary-runtime/dependencies/python/bin/python3 scripts/a_share_three_day_walkforward_campaign094_features.py build --data-root /Volumes/DIsk/qlib-a-share-tushare-1m --workers 8 --confirm-build",
+    "exit_code": 1,
+    "exception_type": "KeyError",
+    "exception_message": "zero_destination_range_pairs",
+    "failure_location": "inherited build_snapshot quality-counter aggregation after a completed worker returned the frozen Campaign094 quality mapping",
+    "cause": "The nested generated builder retained one predecessor-only aggregate key even though the Campaign094 extractor and preregistration use zero_range_bars.",
+    "published_snapshot_or_manifest": false,
+    "temporary_build_tree_removed_by_fail_closed_builder": true
+  },
+  "observed_boundary": {
+    "minute_source_partitions_may_have_been_read_by_workers": true,
+    "candidate_values_may_have_been_computed_inside_workers": true,
+    "candidate_values_printed_inspected_or_persisted": false,
+    "coverage_or_capacity_metrics_computed_or_reported": false,
+    "comparison_values_read": false,
+    "historical_daily_price_fields_read": false,
+    "historical_forward_returns_read": false,
+    "provider_request_issued": false,
+    "candidate49_ledgers_changed": false,
+    "current_scoring_selection_sizing_or_orders_performed": false
+  },
+  "attempt_accounting": {
+    "campaign094_attempt_ordinal": 2,
+    "kind": "feature_build_infrastructure_failure",
+    "counts_as_return_reading_development_trial": false
+  },
+  "repair_boundary": {
+    "allowed": "Add an external versioned adapter that supplies the inherited quality-counter alias during the retry, publishes zero_range_bars in the final manifest, and binds the repair additively.",
+    "factor_formula_direction_source_projection_or_values_may_change": false,
+    "coverage_uniqueness_development_or_return_gate_may_change": false,
+    "candidate_values_from_failed_attempt_may_be reused": false,
+    "comparison_price_or_return_values_may_be_opened_before_verified_snapshot": false
+  }
+}

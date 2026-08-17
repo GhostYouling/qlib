@@ -1,0 +1,170 @@
+{
+  "schema_version": 1,
+  "kind": "a_share_three_day_walkforward_campaign092_mechanism_overlap_audit",
+  "status": "passed_semantic_mechanism_review_before_campaign092_minute_source_or_comparison_values",
+  "recorded_at": "2026-08-07T00:07:18Z",
+  "concept_scouting": {
+    "path": "docs/a_share_three_day_walkforward_campaign_092_concept_scouting.json",
+    "sha256": "9b2b6eaeae44114ab7659768d21f4369dee565fd4556dd067c441cf40a5b6cf9"
+  },
+  "authoritative_state": {
+    "path": "docs/a_share_three_day_iteration_status_20260807_campaign091_verified_v5.json",
+    "sha256": "e8dc69caf835dbc31034ab119adfc96b4ebd2c3954081c5d4be1946408298a79"
+  },
+  "historical_walkforward_policy": {
+    "path": "docs/a_share_three_day_historical_walkforward_research_policy_20260727.json",
+    "sha256": "38426d6161b9bfed323c58caba18feca668b8c9d53e294951a8ba90c01a798bb"
+  },
+  "numeric_comparator_policy": {
+    "path": "docs/a_share_three_day_walkforward_future_numeric_comparison_eligibility_policy_v35_20260807.json",
+    "sha256": "734949300e95958b968ce8a9280bbac764ec3be5752d2c3d0f810320574b10c5",
+    "complete_definition_count": 123,
+    "numeric_comparator_count": 121,
+    "complete_definition_order_sha256": "c83a044523c018cd3bc52bd3f0a4aacea66123ca2a53b5066371594ad7a053e3",
+    "numeric_comparator_order_sha256": "23e370e5e18baa7069948012b6999e60253a0502f0733cde7d20b3462149d649"
+  },
+  "candidate": {
+    "name": "intraday_interbar_gap_discovery_share_238p",
+    "direction": "higher",
+    "mechanism": "Scale-free allocation of within-half one-minute price discovery between interbar open-versus-prior-close discontinuities and the same destination bars' intrabar high-low ranges",
+    "formula": "For each of 119 transitions in each half set g_j=abs(ln(open_j/close_j-1)) and r_j=ln(high_j/low_j); pool 238 pairs and score G/(G+R).",
+    "zero_rule": "Exact zero gaps and exact zero destination ranges remain valid zero contributions. Require finite positive ordered OHLC on all 240 selected bars and finite strictly positive G+R; use no tolerance for gap classification, dropped pair, pseudocount, threshold, or substituted observation.",
+    "fixed_grid": "Require the raw 09:30 row for source identity, use exactly 09:31-11:30 and 13:01-15:00, exclude 09:30, and reset the predecessor at lunch. No lunch, overnight, cross-day, or cross-stock transition is formed.",
+    "no_volume_amount_market_benchmark_daily_financial_event_peer_old_factor_or_future_input": true,
+    "candidate49_used_or_modified": false
+  },
+  "complete_library_review": {
+    "all_123_definitions_reviewed_in_frozen_order": true,
+    "all_121_numeric_comparators_reviewed_in_frozen_order": true,
+    "all_return_volatility_path_sign_frequency_range_gap_body_wick_amount_market_peer_event_quality_structural_composite_and_semantic_only_families_reviewed": true,
+    "candidate_is_exact_formula_duplicate": false,
+    "candidate_is_direction_only_duplicate": false,
+    "candidate_is_parameter_only_duplicate": false,
+    "candidate_is_an_inversion_of_a_terminal_factor": false,
+    "candidate_combines_terminal_factor_values": false,
+    "candidate_changes_any_quality_listing_or_buyability_gate": false,
+    "gap_absorption_gap_body_body_next_gap_body_range_range_overlap_range_translation_price_update_and_directional_range_families_explicitly_challenged": true,
+    "campaign091_terminal_factor_not_reused_reweighted_combined_or_rescued": true,
+    "candidate49_remains_semantic_isolation_only": true
+  },
+  "semantic_invariance_checks": [
+    {
+      "intervention": "Multiply every selected OHLC value by one common strictly positive constant.",
+      "campaign092_result": "unchanged because every gap and range is a log ratio",
+      "distinguishes_from": "nominal-price affordability and price-level factors"
+    },
+    {
+      "intervention": "Multiply every interbar gap magnitude and destination range magnitude by one common positive constant while preserving the same 238 supports.",
+      "campaign092_result": "unchanged because G and R scale together",
+      "distinguishes_from": "raw range, volatility, and gap-magnitude level factors"
+    },
+    {
+      "intervention": "Increase one interbar gap magnitude while holding every destination range and other gap fixed.",
+      "campaign092_result": "strictly increases when the score is below one",
+      "distinguishes_from": "gap absorption counts, gap-body sign correlation, and body-next-gap reversal"
+    },
+    {
+      "intervention": "Increase one destination high-low range while holding every gap and other range fixed.",
+      "campaign092_result": "strictly decreases when G is positive",
+      "distinguishes_from": "directional range mass, range clock center, range entropy, and total range families"
+    },
+    {
+      "intervention": "Flip the sign of one gap without changing its absolute log magnitude or any destination range.",
+      "campaign092_result": "unchanged",
+      "distinguishes_from": "gap-body confirmation, body-next-gap reversal, signed path, and directional price-impact factors"
+    },
+    {
+      "intervention": "Change whether a prior close lies inside the destination high-low interval while preserving the exact gap and destination range magnitudes.",
+      "campaign092_result": "unchanged",
+      "distinguishes_from": "microgap absorption share and adjacent interval overlap"
+    },
+    {
+      "intervention": "Change amount and volume paths while preserving OHLC.",
+      "campaign092_result": "unchanged",
+      "distinguishes_from": "amount timing, amount shape, range-amount, transaction-price, and VWAP families"
+    },
+    {
+      "intervention": "Move an otherwise identical transition across the lunch boundary.",
+      "campaign092_result": "the transition is excluded because each half resets independently",
+      "distinguishes_from": "full-day adjacent close paths and lunch repricing mechanisms"
+    }
+  ],
+  "nearest_semantic_challenges": [
+    {
+      "name": "intraday_interbar_gap_body_confirmation_238p",
+      "relationship": "both use within-half open-versus-prior-close gaps",
+      "distinction": "The terminal factor correlates signed gaps with signed own-bar bodies. Campaign092 discards gap sign and body information and measures absolute gap mass relative to destination high-low range mass.",
+      "mandatory_numeric_challenge": true
+    },
+    {
+      "name": "intraday_microgap_absorption_share_238p",
+      "relationship": "both use the same within-half transition support",
+      "distinction": "The terminal factor counts whether a nonzero gap is geometrically re-entered by the destination interval and requires 30 informative gaps. Campaign092 uses continuous magnitude allocation, credits exact-zero gaps as zero mass, and has no absorption predicate or count threshold.",
+      "mandatory_numeric_challenge": true
+    },
+    {
+      "name": "intraday_body_next_microgap_reversal_238p",
+      "relationship": "both reference one-minute bar boundaries",
+      "distinction": "The terminal factor measures signed reversal between a body and the next gap. Campaign092 uses absolute contemporaneous boundary magnitude and the destination bar's high-low range, with no body or reversal sign.",
+      "mandatory_numeric_challenge": true
+    },
+    {
+      "name": "intraday_intrabar_body_range_efficiency_240m and intraday_directional_range_mass_imbalance_240m",
+      "relationship": "all allocate or compare price movement with high-low range",
+      "distinction": "The terminal factors use each bar's own open-close body magnitude or sign. Campaign092 never uses own-bar body and instead compares the destination range with the discontinuity from the prior close to the current open.",
+      "mandatory_numeric_challenge": true
+    },
+    {
+      "name": "intraday_adjacent_range_overlap_continuity_238p and intraday_range_boundary_translation_coherence_238p",
+      "relationship": "all are adjacent-bar OHLC mechanisms",
+      "distinction": "Those terminal factors compare neighboring high-low intervals or high/low changes. Campaign092 uses only prior close-to-current-open gap magnitude plus the current interval width; it never computes interval overlap or high/low co-movement.",
+      "mandatory_numeric_challenge": true
+    },
+    {
+      "name": "intraday_price_update_share_238m",
+      "relationship": "both can respond to sparse price updating",
+      "distinction": "The terminal factor is an exact adjacent-close update count. Campaign092 is continuous, requires OHLC, and can vary while every adjacent close update indicator is unchanged.",
+      "mandatory_numeric_challenge": true
+    },
+    {
+      "name": "candidate49_intraday_cumulative_vwap_crossing_rate_240m_v1",
+      "relationship": "both use a completed intraday grid",
+      "distinction": "Candidate49 counts causal close-versus-cumulative-VWAP sign crossings and requires volume/amount. Campaign092 never constructs VWAP, reads no activity field, and does not touch the prospective ledger.",
+      "mandatory_numeric_challenge": false
+    }
+  ],
+  "prevalue_semantic_decision": {
+    "passed": true,
+    "selected_factor_count": 1,
+    "complete_frozen_definition_count_reviewed": 123,
+    "numeric_comparator_count_reserved_for_postcoverage_test": 121,
+    "candidate_or_comparison_values_read": false,
+    "daily_price_or_forward_return_values_read": false,
+    "provider_request_issued": false,
+    "required_next_step": "Freeze the exact coverage-first no-return protocol and one-factor catalog against this audit and policy v35 before source rows or candidate values."
+  },
+  "prohibited_rescues": [
+    "invert_to_low_gap_share_after_results",
+    "replace_absolute_gap_with_signed_gap_body_or_return_information",
+    "replace_destination_range_with_body_wick_true_range_amount_volume_or_vwap",
+    "change_lunch_reset_or_include_09_30_lunch_overnight_cross_day_pairs",
+    "change_zero_gap_zero_range_or_ohlc_ordering_semantics",
+    "select_subwindows_clock_cutoffs_or_minimum_gap_thresholds",
+    "add_filters_regimes_subsets_neutralization_fitting_models_or_combinations",
+    "remove_failed_numeric_comparators",
+    "select_favorable_years_costs_or_gates"
+  ],
+  "research_boundary": {
+    "campaign092_source_rows_read": false,
+    "campaign092_candidate_values_read": false,
+    "comparison_values_read": false,
+    "historical_daily_price_fields_read": [],
+    "historical_forward_returns_read": false,
+    "candidate49_historical_return_or_signal_backfill": false,
+    "candidate49_ledgers_changed": false,
+    "second_prospective_candidate_created": false,
+    "provider_request_issued": false,
+    "current_scoring_selection_sizing_or_orders_performed": false,
+    "investment_advice": false
+  }
+}

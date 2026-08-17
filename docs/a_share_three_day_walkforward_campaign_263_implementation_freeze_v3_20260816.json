@@ -1,0 +1,44 @@
+{
+  "schema_version": 3,
+  "kind": "a_share_three_day_walkforward_campaign263_implementation_freeze",
+  "status": "quality_key_repair_and_truthful_post_failure_boundary_frozen_before_retry",
+  "recorded_at": "2026-08-16T11:37:00Z",
+  "timestamp_semantics": "monotonic logical append time before the only same-formula build retry",
+  "supersedes_without_rewriting": {
+    "path": "docs/a_share_three_day_walkforward_campaign_263_implementation_freeze_v2_20260816.json",
+    "sha256": "55adc701ca58c4df5c33bc6f539a23320592cb8d5fb066fb9e16814dc60e2a63"
+  },
+  "v2_boundary_failure": {
+    "path": "docs/a_share_three_day_walkforward_campaign_263_implementation_freeze_v2_boundary_failure_20260816.json",
+    "sha256": "bd234307c16968a7f6e9aacab16269d2cc44d7818e8f8c0b0067cbc2b4e904cc"
+  },
+  "protocol_sha256": "07c5875034f3e26e6a98f01e3329b3cf1d3d287d119c9358e32e5a2e76b5b924",
+  "code": {
+    "formula_sha256": "29b952bb36e9dbb123b740977b4e778bec3ed547e3c8701e97f6fa92e3123401",
+    "feature_builder_sha256": "66f7ae9f9c8b433cc3c73d850989ac1257b118983cce380f313b06f56595aee1"
+  },
+  "repair_scope": {
+    "quality_alias": "nonpositive_total_amount_sessions equals nonpositive_half_total_sessions",
+    "historical_source_rows_read_before_v3": true,
+    "published_or_inspected_candidate_values_before_v3": false,
+    "formula_direction_support_output_values_gates_and_path_changed": false
+  },
+  "tests": {
+    "formula_test_sha256": "e401101b145151619ed96e780632b89a0ddab3327e9c009b17df4435efb3de71",
+    "feature_test_sha256": "d3bb4ab551133ff6a06f5feaebf508c55a17af7b926f4b1a51f1c46acfc24bfc",
+    "exit_code": 0,
+    "passed": 19,
+    "failed": 0
+  },
+  "complete_definition_count": 162,
+  "complete_definition_order_sha256": "974f2c1f16a85eb43a0bd1e8db768dbe120cd8826c1754d5f220bf9f1d4a3ea0",
+  "numeric_comparator_count": 142,
+  "numeric_comparator_order_sha256": "5d1b35fb5a0d8ac9293008db9963c4a60a94dc940c237c3ed259e5ce44f14aaf",
+  "research_boundary": {
+    "historical_source_rows_read": true,
+    "candidate_or_comparator_values_read": false,
+    "historical_daily_price_or_forward_return_values_read": false,
+    "provider_request_issued": false,
+    "candidate49_ledgers_changed": false
+  }
+}

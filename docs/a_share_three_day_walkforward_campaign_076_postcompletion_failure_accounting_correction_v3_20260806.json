@@ -1,0 +1,47 @@
+{
+  "version": 3,
+  "kind": "a_share_three_day_walkforward_campaign076_postcompletion_failure_accounting_correction",
+  "status": "additive_current_accounting_supersedes_v2_without_rewriting",
+  "recorded_at": "2026-08-06T11:56:00+08:00",
+  "supersedes_without_rewriting": {
+    "path": "docs/a_share_three_day_walkforward_campaign_076_postcompletion_failure_accounting_correction_v2_20260806.json",
+    "sha256": "83e96262a8f9260f809b70d90988ef1776f7f85ccd7c3ec866cab7d0ff519e1a",
+    "preserved": true
+  },
+  "previous_current_attempt_ledger": {
+    "path": "data/experiments/short_horizon/historical_walkforward/campaign_076/research_attempt_ledger_v5.json",
+    "sha256": "256490f951deae30f2580fd8ca753ad3e098d04856d3dad0bba7d008cd464f1f",
+    "preserved": true
+  },
+  "previous_current_research_record": {
+    "path": "docs/a_share_three_day_walkforward_campaign_076_research_record_v3.json",
+    "sha256": "d02eddc03b8a04e49f8a37d3cca0314ba538826d4676eb688ae4ef7d0771db60",
+    "preserved": true
+  },
+  "new_failure": {
+    "path": "docs/a_share_three_day_walkforward_campaign_076_terminal_policy_summary_key_failure_20260806.json",
+    "sha256": "63347e221b7002538cf6e69f4e148aab1eab876fa4e520d383a96ea53bfd18ae",
+    "failed_command_count": 1,
+    "successful_binding_checks_before_failure": 52,
+    "new_research_or_return_values_read": false
+  },
+  "current_attempt_ledger": {
+    "path": "data/experiments/short_horizon/historical_walkforward/campaign_076/research_attempt_ledger_v6.json",
+    "sha256": "73f127ad2f61636d0db2f38b4b987bdd7e3b7b7012afe1f4cb9d8031a826a33d"
+  },
+  "corrected_accounting": {
+    "campaign076_infrastructure_failure_count": 11,
+    "campaign076_complete_factor_attempt_count": 1,
+    "campaign076_attempt_count": 12,
+    "campaign076_ledger_entry_count": 13,
+    "campaign076_return_reading_development_trial_count": 1,
+    "cumulative_historical_research_attempt_count": 468,
+    "cumulative_return_reading_development_trial_count": 278
+  },
+  "unchanged_research_result": {
+    "numeric_comparisons_passed": 106,
+    "development_survivor_count": 0,
+    "stress_2024_2025_opened": false,
+    "stress_returns_read": false
+  }
+}

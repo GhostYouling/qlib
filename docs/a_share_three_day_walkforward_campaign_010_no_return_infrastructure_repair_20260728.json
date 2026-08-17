@@ -1,0 +1,59 @@
+{
+  "version": 1,
+  "kind": "a_share_three_day_walkforward_campaign010_no_return_infrastructure_repair",
+  "status": "one_validation_only_repair_authorized_before_candidate_or_comparison_values_or_returns",
+  "recorded_at": "2026-07-28T15:13:23Z",
+  "failed_invocation": {
+    "command": "PYTHONPATH=/opt/anaconda3/lib/python3.12/site-packages /opt/anaconda3/bin/python3 -S scripts/a_share_three_day_walkforward_campaign010_features.py audit --data-root /Volumes/DIsk/qlib-a-share-tushare-1m --workers 4",
+    "exit_code": 1,
+    "failure": "Campaign010 snapshot semantics changed",
+    "audit_artifact_written": false,
+    "candidate_factor_values_loaded": false,
+    "comparison_factor_values_loaded": false,
+    "daily_price_fields_read": [],
+    "historical_forward_return_fields_read": false
+  },
+  "root_cause": "The inherited Campaign008 post-publication manifest validator still required source_close_read=true. Campaign010's formula and raw projection correctly forbid close and its immutable manifest correctly records source_close_read=false. The pre-publication inherited checkpoint phase legitimately retains the old unset-or-true close flag until the Campaign010 atomic publication adapter writes the final field evidence.",
+  "repair": {
+    "scope": "manifest_validation_only",
+    "change": "Require source_close_read=false for a fingerprint-bound published Campaign010 manifest while preserving the inherited unset-or-true pre-publication checkpoint expectation.",
+    "formula_changed": false,
+    "direction_changed": false,
+    "timestamp_grid_changed": false,
+    "minimum_positive_union_pairs_changed": false,
+    "coverage_or_uniqueness_gate_changed": false,
+    "snapshot_rebuilt_or_edited": false,
+    "comparison_catalog_changed": false,
+    "return_protocol_changed": false,
+    "candidate49_changed": false
+  },
+  "bindings": {
+    "mechanism_overlap_audit": {
+      "path": "docs/a_share_three_day_walkforward_campaign_010_mechanism_overlap_audit.json",
+      "sha256": "41f4d88ff785ef594c1aec9337a4498de53f08edac532c4237340810f2f57680"
+    },
+    "no_return_protocol": {
+      "path": "docs/a_share_three_day_walkforward_campaign_010_no_return_preregistration.json",
+      "sha256": "0981e5915f0ba5eff8f779b7ad594324bccfd75b0fb76f22916ed734d6443a53"
+    },
+    "immutable_snapshot": {
+      "path": "/Volumes/DIsk/qlib-a-share-tushare-1m/derived/a_share/rich/tushare/minute_walkforward_campaign010_feature_library/tushare_stk_mins_1m_2019_2025_ea0cbb8f_walkforward_campaign010_feature_library_v1/snapshot_manifest.json",
+      "sha256": "e700c23b8c86e412153dd7ebd3bcb4a322f12b8a506cbbf5e4659490da50d69b",
+      "dataset_sha256": "55303f4934044fa2543d459aa378e28ff440b03b8a0a69d6866e14736d6bdcc0"
+    },
+    "repaired_implementation": {
+      "path": "scripts/a_share_three_day_walkforward_campaign010_features.py",
+      "sha256": "beeb7e3e3dd049e28d49155c2392966d654bcfd1256086a8544cb67f810073f6"
+    },
+    "regression_tests": {
+      "path": "tests/data_collector_tests/test_a_share_three_day_walkforward_campaign010_features.py",
+      "sha256": "97d968434ae28864631e2f66262150f42e27e568a13f6f30a5a7fc4ca8fccfdc",
+      "passed": 12
+    }
+  },
+  "decision": {
+    "exact_original_audit_retry_allowed_once": true,
+    "snapshot_rebuild_allowed": false,
+    "formula_or_gate_research_change_allowed": false
+  }
+}

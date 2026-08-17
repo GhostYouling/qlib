@@ -1,0 +1,28 @@
+{
+  "schema_version": 2,
+  "kind": "a_share_three_day_walkforward_campaign103_development_activation_binding",
+  "status": "one_frozen_development_trial_authorized_before_return_read",
+  "recorded_at": "2026-08-07T17:48:00+08:00",
+  "implementation_freeze": {
+    "path": "docs/a_share_three_day_walkforward_campaign_103_development_implementation_freeze_v2_20260807.json",
+    "sha256": "5618ea9dfd48034c37b23a344a4475fec1cbfa24cae3a0fb19e15cea5348d487"
+  },
+  "development_preregistration": {
+    "path": "docs/a_share_three_day_walkforward_campaign_103_preregistration_v9.json",
+    "sha256": "4347265b5da9b8678d78c2169c6cfd4591deeba0b90abdf9026bca40020d989f"
+  },
+  "append_only_internal_ledger": {
+    "path": "data/experiments/short_horizon/historical_walkforward/campaign_103/walkforward/trial_ledger.json",
+    "sha256": "68234e44b7ed20ca6f228d75886288596df2fce9ad5de262f7b3279b70019d44",
+    "entries_before_activation": 1,
+    "complete_development_trials_before_activation": 0
+  },
+  "recorded_failure_preserved": "wf103_infrastructure__development_load_001",
+  "trial_id": "wf103_full_numeric_library_directional_rank_improvement_breadth_130f_single_higher",
+  "remaining_complete_development_trials_authorized": 1,
+  "development_years_authorized": [2019, 2020, 2021, 2022, 2023],
+  "stress_2024_2025_authorized": false,
+  "provider_request_authorized": false,
+  "candidate49_historical_return_read_authorized": false,
+  "current_scoring_selection_sizing_or_orders_authorized": false
+}

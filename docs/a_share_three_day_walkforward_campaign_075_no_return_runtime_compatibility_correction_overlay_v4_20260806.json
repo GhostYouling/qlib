@@ -1,0 +1,46 @@
+{
+  "version": 4,
+  "kind": "a_share_three_day_walkforward_campaign075_no_return_runtime_compatibility_correction_overlay",
+  "status": "frozen_before_full_retry_single_sha_transcription_correction",
+  "recorded_at": "2026-08-06T10:00:00+08:00",
+  "base_v3_protocol": {
+    "path": "docs/a_share_three_day_walkforward_campaign_075_no_return_runtime_compatibility_repair_protocol_v3_20260806.json",
+    "sha256": "927b86a173f2789a20261a101a1fff43605d05cab8d2755a20076e1e0b51bedd",
+    "preserved": true
+  },
+  "recorded_failure": {
+    "path": "docs/a_share_three_day_walkforward_campaign_075_no_return_campaign070_manifest_sha_transcription_failure_20260806.json",
+    "sha256": "4c9705e0b807b385d69eda4273cba70b151aebd56797336a88766cca0f7f3555"
+  },
+  "sole_correction": {
+    "json_pointer": "/finite_compatibility_snapshot_list/2/manifest_sha256",
+    "campaign": 70,
+    "incorrect_65_character_value": "f828ee06ac609580880eb0bfcd2d1fbcaba590e872f57fe5639a468ec67edcbd7",
+    "correct_authoritative_64_character_value": "f828ee06ac609580880eb0bfcd2d1fbcaba590e872f57fe5639a468c67edcbd7",
+    "manifest_path": "/Volumes/DIsk/qlib-a-share-tushare-1m/derived/a_share/rich/tushare/minute_walkforward_campaign070_feature_library/tushare_stk_mins_1m_2019_2025_ea0cbb8f_walkforward_campaign070_feature_library_v1/snapshot_manifest.json",
+    "manifest_file_rewritten": false
+  },
+  "unchanged": {
+    "adapter_campaigns": [
+      68,
+      69,
+      70,
+      71,
+      72,
+      73,
+      74
+    ],
+    "all_other_manifest_dataset_runner_and_eligible_row_bindings": true,
+    "byte_schema_row_value_and_dataset_verification": true,
+    "only_runtime_sensitive_frame_hash_recomputation_omitted": true,
+    "campaign075_factor_formula_direction_age_clock_and_missing_rule": true,
+    "coverage_and_uniqueness_gates": true,
+    "all_105_comparators_and_order": true,
+    "development_trial_if_admitted": true,
+    "daily_price_return_and_candidate49_boundaries": true
+  },
+  "retry": {
+    "partial_statistics_reused": false,
+    "restart_from_candidate_snapshot_and_coverage": true
+  }
+}

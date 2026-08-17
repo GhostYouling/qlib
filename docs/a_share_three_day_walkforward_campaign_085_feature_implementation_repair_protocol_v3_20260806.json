@@ -1,0 +1,36 @@
+{
+  "version": 3,
+  "kind": "a_share_three_day_walkforward_campaign085_feature_implementation_repair_protocol",
+  "status": "frozen_before_v3_handshake_code_or_compact_cache_rows",
+  "recorded_at": "2026-08-06T23:52:00+08:00",
+  "v2_implementation_freeze": {
+    "path": "docs/a_share_three_day_walkforward_campaign_085_feature_implementation_freeze_v2_20260806.json",
+    "sha256": "194e0f9298b3939be5febc250755e85870f1a2f5ea718ec3de22f92271de124c"
+  },
+  "v2_handshake_defect": {
+    "path": "docs/a_share_three_day_walkforward_campaign_085_feature_implementation_v2_handshake_defect_20260806.json",
+    "sha256": "bc27b6d5589af5f62a605022cf8849f53b3743df83ab47e7df286eecf267cec3"
+  },
+  "current_attempt_ledger": {
+    "path": "data/experiments/short_horizon/historical_walkforward/campaign_085/research_attempt_ledger_v4.json",
+    "sha256": "4bdcaa37f5096f04182e508c12b1029febfa21a2f3fc376b3877f8669165b2fb"
+  },
+  "authorized_code_delta": {
+    "default_implementation_freeze_path_from_v1_to_v3": true,
+    "expected_implementation_freeze_status_from_v1_to_v3": true,
+    "all_other_runner_or_test_changes_allowed": false
+  },
+  "future_v3_freeze_contract": {
+    "path": "docs/a_share_three_day_walkforward_campaign_085_feature_implementation_freeze_v3_20260806.json",
+    "status": "frozen_v3_parent_and_handshake_repair_before_compact_cache_rows_candidate_or_comparison_values",
+    "must_bind_post_repair_runner_and_unchanged_tests": true
+  },
+  "research_boundary": {
+    "compact_cache_rows_read": false,
+    "candidate_values_computed": false,
+    "comparison_values_read": false,
+    "historical_daily_price_or_return_values_read": false,
+    "provider_request_issued": false,
+    "candidate49_ledgers_changed": false
+  }
+}

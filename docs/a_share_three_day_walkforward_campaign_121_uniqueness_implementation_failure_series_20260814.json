@@ -1,0 +1,55 @@
+{
+  "schema_version": 1,
+  "kind": "a_share_three_day_walkforward_campaign121_infrastructure_failure_series",
+  "status": "six_prevalue_failures_recorded_before_any_comparator_value",
+  "recorded_at": "2026-08-14T02:43:00+08:00",
+  "attempts": [
+    {
+      "attempt_id": "campaign121_infrastructure_019",
+      "class": "absent_optional_all_137_prose_token",
+      "phase": "uniqueness_wrapper_import"
+    },
+    {
+      "attempt_id": "campaign121_infrastructure_020",
+      "class": "absent_optional_numeric_comparator_count_expression",
+      "phase": "uniqueness_wrapper_import"
+    },
+    {
+      "attempt_id": "campaign121_infrastructure_021",
+      "class": "function_name_already_transformed_by_lowercase_campaign_replacement",
+      "phase": "uniqueness_wrapper_import"
+    },
+    {
+      "attempt_id": "campaign121_infrastructure_022",
+      "class": "candidate_manifest_hash_is_exported_constant_not_literal",
+      "phase": "uniqueness_wrapper_import"
+    },
+    {
+      "attempt_id": "campaign121_infrastructure_023",
+      "class": "expected_tail_slice_length_remained_four_after_five_item_tail",
+      "phase": "uniqueness_protocol_synthetic_test",
+      "test_result": "3 passed, 1 failed"
+    },
+    {
+      "attempt_id": "campaign121_infrastructure_024",
+      "class": "black_format_check_failure",
+      "phase": "uniqueness_static_format_validation",
+      "passed_before_failure": "4 tests"
+    }
+  ],
+  "repairs": [
+    "Removed only absent optional transformation tokens.",
+    "Used the verifier-exported candidate manifest and dataset constants.",
+    "Changed the exact expected-tail slice from four to five entries.",
+    "Apply deterministic Black formatting before freeze."
+  ],
+  "research_boundary": {
+    "candidate_values_reopened_for_uniqueness": false,
+    "comparator_values_read": false,
+    "historical_daily_price_or_forward_return_values_read": false,
+    "provider_request_issued": false,
+    "candidate49_ledgers_changed": false,
+    "formula_gate_order_or_threshold_changed": false,
+    "scientific_result_changed": false
+  }
+}

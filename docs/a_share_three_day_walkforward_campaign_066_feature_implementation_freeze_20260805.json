@@ -1,0 +1,31 @@
+{
+  "version": 1,
+  "kind": "a_share_three_day_walkforward_campaign066_feature_implementation_freeze",
+  "status": "frozen_after_synthetic_tests_before_quarterly_source_or_candidate_values",
+  "recorded_at": "2026-08-05T15:32:00+08:00",
+  "feature_runner": {"path": "scripts/a_share_three_day_walkforward_campaign066_features.py", "sha256": "1d44a6d8b8941a687b521f865fab796d5a31f97edd3a92038f94dedc78c2d731"},
+  "feature_tests": {"path": "tests/data_collector_tests/test_a_share_three_day_walkforward_campaign066_features.py", "sha256": "2dd98af8857f0f5e674f68f24019fd11b0c91860460dde6ca3921e84f9c1b5fc", "passed": 7, "failed": 0},
+  "no_return_preregistration": {"path": "docs/a_share_three_day_walkforward_campaign_066_no_return_preregistration.json", "sha256": "ab850ef8ff194c1172070e2ffd388eff2d7924354abf06a8b32c5bd43584a278"},
+  "concept_scouting": {"path": "docs/a_share_three_day_walkforward_campaign_066_concept_scouting.json", "sha256": "50fc99be8938e02a8b5a613db5489b2b959abc076c4a7af164ee3288cbb7297e"},
+  "mechanism_overlap_audit": {"path": "docs/a_share_three_day_walkforward_campaign_066_mechanism_overlap_audit.json", "sha256": "1e5fe44c0cde5097646cf058ec8149c189cf65e2ce62093e221c0d5022b98b8b"},
+  "current_attempt_ledger": {"path": "data/experiments/short_horizon/historical_walkforward/campaign_066/research_attempt_ledger_v2.json", "sha256": "9cc470b2ecd738e70d1124953527070bbded2ceda130b21addfbe1392d1a5181"},
+  "frozen_implementation_semantics": {
+    "factor": "quarterly_quality_rank_balance_3f",
+    "direction": "higher",
+    "formula": "1-(max(r_roe,r_profit,r_revenue)-min(r_roe,r_profit,r_revenue))",
+    "quarterly_source_fields": ["instrument", "report_date", "announcement_date", "roe", "profit_yoy", "revenue_yoy"],
+    "strict_next_session_availability": true,
+    "independent_per_field_forward_fill": true,
+    "average_tie_cross_sectional_percentile_ranks": true,
+    "component_count": 3,
+    "weight_or_operator_search": false,
+    "valid_range": [0.0, 1.0],
+    "complete_definition_count": 97,
+    "numeric_comparator_count": 96,
+    "daily_price_fields_read": [],
+    "historical_forward_returns_read": false,
+    "provider_request_issued": false,
+    "candidate49_ledgers_changed": false
+  },
+  "next_action": "Build exactly one immutable Campaign066 feature snapshot, then independently verify every partition before opening coverage or comparison values."
+}

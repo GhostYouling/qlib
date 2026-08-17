@@ -1,0 +1,28 @@
+{
+  "schema_version": 1,
+  "kind": "a_share_three_day_walkforward_campaign146_infrastructure_failure",
+  "status": "recorded_binding_validator_invocation_failure_before_price_or_return_values",
+  "recorded_at": "2026-08-14T22:14:26+08:00",
+  "attempt_id": "campaign146_infrastructure_012",
+  "stage": "development_freeze_binding_validation",
+  "failure": {
+    "check": "preregistration_binding_validator_import",
+    "exit_code": 1,
+    "result": "ImportError",
+    "cause": "The validation command referenced scripts.a_share_three_day_walkforward_binding_validator, but the repository module is scripts.a_share_three_day_preregistration_binding_validator."
+  },
+  "successful_checks_before_failure": {
+    "research_attempt_ledger_v2_chain_verified": true,
+    "development_pytest_passed": 7,
+    "black_check_passed": true,
+    "ruff_check_passed": true
+  },
+  "resolution": "Invoke the existing preregistration binding validator by its exact repository module name; do not change any scientific or execution field.",
+  "scientific_effect": {
+    "development_price_or_return_values_read": false,
+    "stress_2024_2025_opened": false,
+    "formula_direction_trial_catalog_or_gate_changed": false,
+    "provider_request_issued": false,
+    "candidate49_ledgers_changed": false
+  }
+}

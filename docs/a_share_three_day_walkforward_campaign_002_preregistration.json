@@ -1,0 +1,210 @@
+{
+  "version": 1,
+  "kind": "a_share_three_day_walkforward_campaign_preregistration",
+  "campaign_id": "a_share_three_day_walkforward_campaign_002",
+  "status": "frozen_before_campaign002_development_or_exposed_stress_return_read",
+  "frozen_at": "2026-07-28T02:26:07Z",
+  "purpose": "Test a complete finite family of nonlinear same-day rank-consensus combinations across the full eight-factor Campaign001 research library. The construction seeks agreement between economically distinct mechanisms rather than a high arithmetic score driven by one component. It preserves all prior terminal conclusions and is research-only.",
+  "evidence_classification": {
+    "development_2019_2023": "historically_exposed_expanding_walkforward_exploration",
+    "stress_replay_2024_2025": "historically_exposed_stress_replay_not_unseen_or_pristine",
+    "reason": "All seven market years and the reused factor definitions were examined before Campaign002. The split and preregistration control multiplicity prospectively for this construction family but cannot restore unseen status.",
+    "survivorship_bias_warning": "The local holding universe derives from a current listing snapshot and may contain survivorship bias."
+  },
+  "governance_bindings": {
+    "authoritative_iteration_state": {
+      "path": "docs/a_share_three_day_iteration_status_20260727_walkforward.json",
+      "sha256": "75e639c4b8579983bfcda8da19c221d018b7b62cd68fac9e94822f6c3ed73267"
+    },
+    "historical_walkforward_policy": {
+      "path": "docs/a_share_three_day_historical_walkforward_research_policy_20260727.json",
+      "sha256": "38426d6161b9bfed323c58caba18feca668b8c9d53e294951a8ba90c01a798bb"
+    }
+  },
+  "campaign001_bindings": {
+    "repaired_preregistration": {
+      "path": "docs/a_share_three_day_walkforward_campaign_001r1_preregistration.json",
+      "sha256": "63966d420288a1e4c6595f60df105dc373fd3240ffd6694a24dd6cdd86193d4a"
+    },
+    "completion_audit": {
+      "path": "docs/a_share_three_day_walkforward_campaign_001r1_completion_audit.json",
+      "sha256": "bbf54c4135db833b048626578374f24b17377799d61a8595a0da1bef058b09d8"
+    },
+    "research_record": {
+      "path": "docs/a_share_three_day_walkforward_campaign_001r1_research_record.json",
+      "sha256": "7cc2096a42157b6df3c37acde2647e10c7b9daa28c33967a533ce10f3324f3a3"
+    }
+  },
+  "implementation": {
+    "script": {
+      "path": "scripts/a_share_three_day_walkforward_campaign002.py",
+      "sha256": "71283188f32c602b22aa50df2a055f4f69e657c1e44408b5630535a291374471"
+    },
+    "development_command": "python scripts/a_share_three_day_walkforward_campaign002.py run-development",
+    "exposed_stress_command": "python scripts/a_share_three_day_walkforward_campaign002.py run-exposed-stress --confirm-exposed-stress",
+    "output_root": "data/experiments/short_horizon/historical_walkforward/campaign_002"
+  },
+  "reused_complete_feature_library": {
+    "source": "the complete eight-factor Campaign001 library without additions, omissions, direction changes, formula changes, or result reclassification",
+    "factor_count": 8,
+    "factor_names": [
+      "intraday_amount_participation_entropy_240m",
+      "intraday_bar_vwap_close_pressure_240m",
+      "intraday_market_idiosyncratic_share_238m",
+      "intraday_realized_volatility",
+      "intraday_return_variance_entropy_238m",
+      "late_amount_share_30m",
+      "late_return_30m",
+      "late_vwap_to_day_vwap_30m"
+    ],
+    "all_prior_terminal_conclusions_unchanged": true,
+    "historical_feature_reuse_is_not_rescue_or_promotion": true
+  },
+  "search_space": {
+    "pair_library": "every unordered pair from the complete eight-factor library in lexicographic factor-name order",
+    "nonlinear_consensus_operators": [
+      {
+        "id": "geometric_mean",
+        "formula": "sqrt(directional_percentile_rank(left) * directional_percentile_rank(right))",
+        "hypothesis": "Multiplicative agreement penalizes a weak component without allowing either component alone to dominate."
+      },
+      {
+        "id": "harmonic_mean",
+        "formula": "2 / (1/directional_percentile_rank(left) + 1/directional_percentile_rank(right))",
+        "hypothesis": "The harmonic mean emphasizes the weaker component more strongly than the arithmetic mean while remaining smooth."
+      },
+      {
+        "id": "minimum",
+        "formula": "min(directional_percentile_rank(left), directional_percentile_rank(right))",
+        "hypothesis": "The strict agreement score admits a stock only to the extent supported by both component mechanisms."
+      }
+    ],
+    "all_components_required": true,
+    "directional_rank_method": "same-day average percentile with the original frozen direction of each factor",
+    "weight_fitting": false,
+    "threshold_filter_search": false,
+    "year_subset_search": false,
+    "single_factor_retests": false,
+    "reason_single_factors_are_not_repeated": "Campaign001 already recorded every single factor under identical timing and execution assumptions.",
+    "expected_unordered_pair_count": 28,
+    "expected_operator_count": 3,
+    "expected_trial_count": 84,
+    "record_every_trial_and_infrastructure_failure": true
+  },
+  "walkforward_folds": [
+    {
+      "fold": 1,
+      "training": {
+        "start": "2019-01-01",
+        "end": "2020-12-31"
+      },
+      "validation": {
+        "start": "2021-01-01",
+        "end": "2021-12-31"
+      }
+    },
+    {
+      "fold": 2,
+      "training": {
+        "start": "2019-01-01",
+        "end": "2021-12-31"
+      },
+      "validation": {
+        "start": "2022-01-01",
+        "end": "2022-12-31"
+      }
+    },
+    {
+      "fold": 3,
+      "training": {
+        "start": "2019-01-01",
+        "end": "2022-12-31"
+      },
+      "validation": {
+        "start": "2023-01-01",
+        "end": "2023-12-31"
+      }
+    }
+  ],
+  "split_protocol": {
+    "global_signal_grid": "start at the first accepted local 2019 session and take every third local session",
+    "signal": "close t",
+    "entry": "next accepted local session open t+1",
+    "exit": "third accepted local session close t+3",
+    "purge_signal_sessions_each_boundary": 3,
+    "label_containment_required": true,
+    "quality_maximum_age_days": 550,
+    "minimum_listing_sessions": 20,
+    "minimum_signal_names": 50,
+    "topk": 3
+  },
+  "survivor_rule": {
+    "purpose": "Admit only operationally valid combinations that pass fold-consistency, drawdown, pilot-cost, and aggregate 20bp robustness gates before the exposed stress interval is read.",
+    "minimum_validation_association_cohorts_per_fold": 60,
+    "minimum_board_lot_affordability_rate_each_fold": 0.9,
+    "maximum_daily_amount_participation_each_fold": 0.01,
+    "terminal_unresolved_positions_each_fold": 0,
+    "positive_ic_fold_count_gte": 2,
+    "median_validation_mean_rank_ic_gt": 0.0,
+    "median_validation_spread_gt": 0.0,
+    "positive_normalized_return_fold_count_gte": 2,
+    "positive_pilot_return_fold_count_gte": 2,
+    "median_validation_pilot_return_gt": 0.0,
+    "worst_normalized_drawdown_gte": -0.25,
+    "development_aggregate_20bp_return_gt": 0.0,
+    "operational_and_validation_quality_gates_are_both_required": true,
+    "ranking_order": [
+      "positive validation mean-Rank-IC fold count descending",
+      "positive validation 10bp pilot-return fold count descending",
+      "positive validation normalized-return fold count descending",
+      "median validation mean Rank IC descending",
+      "median validation 10bp pilot return descending",
+      "2019-2023 aggregate 20bp pilot return descending",
+      "worst validation normalized drawdown descending",
+      "trial_id ascending"
+    ],
+    "maximum_exposed_stress_survivors": 8,
+    "post_result_rule_change_allowed": false
+  },
+  "exposed_stress_replay": {
+    "start": "2024-01-01",
+    "end": "2025-12-31",
+    "classification": "historically_exposed_stress_replay_not_unseen_or_pristine",
+    "opening_rule": "Open only after all 84 development trials are retained and the survivor record is frozen.",
+    "consumption_rule": "Evaluate every frozen survivor exactly once, retain every outcome, and mark the replay consumed.",
+    "frozen_comparison_gates": {
+      "mean_rank_ic_gt": 0.0,
+      "positive_rank_ic_rate_gt": 0.5,
+      "mean_top3_minus_bottom3_spread_gt": 0.0,
+      "each_year_mean_rank_ic_gt": 0.0,
+      "normalized_return_gt": 0.0,
+      "normalized_drawdown_gte": -0.2,
+      "each_year_normalized_return_gt": 0.0,
+      "normalized_terminal_unresolved_positions": 0,
+      "pilot_10bp_return_gt": 0.0,
+      "pilot_20bp_return_gt": 0.0,
+      "each_year_pilot_10bp_return_gt": 0.0,
+      "board_lot_affordability_gte": 0.9,
+      "maximum_daily_amount_participation_lte": 0.01,
+      "pilot_terminal_unresolved_positions": 0
+    },
+    "pass_is_research_only": true,
+    "pass_can_activate_candidate50": false,
+    "pass_can_generate_current_score_selection_size_or_order": false
+  },
+  "candidate49_boundary": {
+    "registration_id": "candidate49_intraday_cumulative_vwap_crossing_rate_240m_v1",
+    "included_in_feature_library": false,
+    "historical_return_read_allowed": false,
+    "historical_signal_execution_or_milestone_backfill_allowed": false,
+    "prospective_ledgers_changed_by_campaign": false
+  },
+  "research_output_boundary": {
+    "current_scoring_allowed": false,
+    "selection_allowed": false,
+    "sizing_allowed": false,
+    "orders_allowed": false,
+    "prospective_candidate_activation_allowed": false,
+    "investment_advice": false
+  }
+}

@@ -1,0 +1,109 @@
+{
+  "version": 1,
+  "kind": "a_share_three_day_walkforward_campaign062_development_implementation_freeze",
+  "status": "frozen_before_campaign062_2019_2023_daily_price_or_return_read",
+  "frozen_at": "2026-08-04T21:08:58Z",
+  "purpose": "Bind the only Campaign062 development trial, inherited execution engine, no-return admission, and append-only attempt accounting before opening 2019-2023 daily prices or labels.",
+  "development_preregistration": {
+    "path": "docs/a_share_three_day_walkforward_campaign_062_preregistration.json",
+    "sha256": "6542def5305cd4c3d88a077105bfeeaf5530186adf75530b768d3f4e522be1de",
+    "binding_validation_passed": true,
+    "binding_count_passed": 21,
+    "binding_count_failed": 0
+  },
+  "development_runner": {
+    "path": "scripts/a_share_three_day_walkforward_campaign062.py",
+    "sha256": "99e142eabaf729041bc0044d9f9e54df9741a2fbf2dc5cb392a586c28fb9be40",
+    "inherited_engine": "Campaign056 -> Campaign051 -> Campaign048 v2 -> Campaign047 -> Campaign045 -> Campaign043 -> Campaign006 -> Campaign005 -> immutable Campaign004 execution engine",
+    "engine_parameter_or_gate_override": false
+  },
+  "development_tests": {
+    "path": "tests/data_collector_tests/test_a_share_three_day_walkforward_campaign062.py",
+    "sha256": "0a9223dd8a3f26e9e8ce51c0da1565e7779a4cbc507385d03bf54352fc97d9b3",
+    "command": "PYTHONPATH=/Volumes/DIsk/Disk-Coding/qlib /opt/anaconda3/bin/python3 -m pytest -q tests/data_collector_tests/test_a_share_three_day_walkforward_campaign062.py",
+    "passed": 5,
+    "failed": 0,
+    "historical_daily_price_or_forward_return_values_read": false
+  },
+  "no_return_audit": {
+    "path": "data/experiments/short_horizon/historical_walkforward/campaign_062/no_return/20260804T210409Z_campaign062_no_return_audit.json",
+    "sha256": "c783f58c5432068b1c5ca724be01d83bb234f17df21fcda64f9e7818b12bd4ea",
+    "coverage_gate_passed": true,
+    "median_coverage": 0.9994517542211769,
+    "p05_coverage": 0.9956886515772271,
+    "potential_non_overlapping_three_session_cohorts": 540,
+    "all_93_uniqueness_comparisons_passed": true,
+    "maximum_absolute_median_daily_rank_correlation": 0.7691435839145652,
+    "historical_forward_return_fields_read": false
+  },
+  "research_attempt_ledger": {
+    "path": "data/experiments/short_horizon/historical_walkforward/campaign_062/research_attempt_ledger_v1.json",
+    "sha256": "deeceee306e615e8955a12ec8943a587fba309ca9fa0f000fde72523cafe94f3",
+    "campaign062_attempt_count": 4,
+    "campaign062_infrastructure_only_failure_count": 3,
+    "campaign062_complete_factor_attempt_count": 1,
+    "cumulative_historical_research_attempt_count": 359,
+    "cumulative_return_reading_development_trial_count": 270
+  },
+  "frozen_trial": {
+    "trial_id": "wf062_quarterly_announcement_peer_crowding_sparsity_single_higher",
+    "feature_set": [
+      "quarterly_announcement_peer_crowding_sparsity"
+    ],
+    "weights": [
+      1.0
+    ],
+    "direction": "higher",
+    "trial_count": 1,
+    "alternate_weight_threshold_filter_year_subset_model_or_combination_search": false
+  },
+  "frozen_walkforward": {
+    "development_years": "2019-2023",
+    "folds": [
+      "train 2019-2020 validate 2021",
+      "train 2019-2021 validate 2022",
+      "train 2019-2022 validate 2023"
+    ],
+    "purge_signal_sessions_each_boundary": 3,
+    "t_t_plus_1_t_plus_3_partition_containment_required": true,
+    "signal": "close t",
+    "entry": "open t+1",
+    "exit": "close t+3",
+    "topk": 3,
+    "normalized_fractional_share_comparison": true,
+    "pilot_capital_cny": 200000,
+    "pilot_slot_fraction": 0.05,
+    "pilot_max_entry_exposure_fraction": 0.15,
+    "pilot_board_lot_shares": 100,
+    "primary_adverse_slippage_bps_each_side": 10,
+    "stress_2024_2025_open_before_frozen_nonzero_survivor_record": false
+  },
+  "survivor_gates_unchanged": {
+    "minimum_association_cohorts_per_fold": 60,
+    "positive_ic_fold_count_gte": 2,
+    "median_validation_ic_gt": 0.0,
+    "median_validation_top3_bottom3_spread_gt": 0.0,
+    "positive_normalized_return_fold_count_gte": 2,
+    "positive_pilot_return_fold_count_gte": 2,
+    "median_pilot_return_gt": 0.0,
+    "development_aggregate_20bp_return_gt": 0.0,
+    "worst_normalized_drawdown_gte": -0.25,
+    "board_lot_affordability_minimum": 0.9,
+    "maximum_daily_amount_participation": 0.01,
+    "unresolved_positions": 0,
+    "all_inherited_gates_must_pass": true
+  },
+  "research_boundary": {
+    "candidate_feature_values_read_before_freeze": true,
+    "comparison_values_read_before_freeze": true,
+    "historical_daily_price_fields_read_before_freeze": [],
+    "historical_forward_returns_read_before_freeze": false,
+    "development_folds_opened_before_freeze": false,
+    "stress_2024_2025_opened_before_freeze": false,
+    "candidate49_historical_return_read": false,
+    "candidate49_ledgers_changed": false,
+    "provider_request_issued": false,
+    "current_scoring_selection_sizing_or_orders_performed": false
+  },
+  "next_action": "Run exactly one Campaign062 development trial. Then freeze a survivor record; open 2024-2025 only if that record contains a nonzero survivor and all inherited gates passed."
+}

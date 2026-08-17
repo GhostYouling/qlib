@@ -1,0 +1,17 @@
+{
+  "schema_version": 1,
+  "kind": "a_share_three_day_walkforward_campaign130_infrastructure_failure",
+  "status": "recorded_read_only_unmatched_glob_search_failure",
+  "recorded_at": "2026-08-14T07:41:17+08:00",
+  "stage": "campaign130_complete_definition_and_source_frontier_discovery",
+  "failed_command_summary": "A read-only rg command included a zsh glob for a nonexistent Campaign129 script, and zsh exited on the unmatched pattern before rg ran.",
+  "recovery_summary": "The search was repeated with rg --files and explicit existing paths; the 151-definition/140-comparator reconstruction and source-frontier metadata were then read successfully.",
+  "failure_handling": {
+    "failed_exit_treated_as_success": false,
+    "provider_request_issued": false,
+    "credential_loaded": false,
+    "source_candidate_comparator_price_or_return_value_read": false,
+    "candidate49_ledger_changed": false,
+    "scientific_result_changed": false
+  }
+}

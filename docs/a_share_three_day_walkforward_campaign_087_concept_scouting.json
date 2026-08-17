@@ -1,0 +1,134 @@
+{
+  "schema_version": 1,
+  "kind": "a_share_three_day_walkforward_campaign087_concept_scouting",
+  "status": "selected_before_campaign087_minute_source_candidate_comparison_daily_price_or_return_values",
+  "recorded_at": "2026-08-07T01:40:00+08:00",
+  "purpose": "Select exactly one economically distinct offline three-session factor after terminal Campaign086, before opening any Campaign087 minute source row, candidate value, comparison value, daily price, or forward return.",
+  "authoritative_bindings": {
+    "campaign086_verified_state": {
+      "path": "docs/a_share_three_day_iteration_status_20260807_campaign086_verified.json",
+      "sha256": "124affacf9b3665589cfc08a72e6886c5d1baa2dd5fc721b7450f066755dc12b"
+    },
+    "campaign086_terminal_completion_freeze": {
+      "path": "docs/a_share_three_day_walkforward_campaign_086_terminal_completion_freeze_20260807.json",
+      "sha256": "886c09f2beb5deaad51f64ff2af0017ccc1b08a0a93387e6e3aad439596f5320"
+    },
+    "historical_walkforward_policy": {
+      "path": "docs/a_share_three_day_historical_walkforward_research_policy_20260727.json",
+      "sha256": "38426d6161b9bfed323c58caba18feca668b8c9d53e294951a8ba90c01a798bb"
+    },
+    "numeric_comparator_policy_v25": {
+      "path": "docs/a_share_three_day_walkforward_future_numeric_comparison_eligibility_policy_v25_20260807.json",
+      "sha256": "945b74a66688c1534a351fe8d8bc0eb2570070ae6379f12838386fabb450283b",
+      "complete_definition_count": 118,
+      "complete_definition_order_sha256": "261b5bac3512a91492d91e69fdbe8f6b571738e55a19553b5344f044697115f9",
+      "eligible_numeric_comparator_count": 116,
+      "eligible_numeric_comparator_order_sha256": "e84ad824a5b3044c45a541a6650b3e18af801b09a34871c3e6ab8c73c36891b2"
+    },
+    "manage_qlib_a_share_data_skill": {
+      "path": "/Users/niyufei/.codex/skills/manage-qlib-a-share-data/SKILL.md",
+      "sha256": "90a99c54dd00f0c737e85c4c6dd48d906edbd0f591c61278885728eaf7806431"
+    }
+  },
+  "definition_only_source_boundary": {
+    "source": "immutable accepted local Tushare 2019-2025 one-minute source and joint-clean stock-day identity",
+    "minute_source_projection_if_later_admitted": [
+      "datetime",
+      "symbol",
+      "provider",
+      "high",
+      "low",
+      "amount"
+    ],
+    "stock_day_identity_projection_if_later_admitted": [
+      "trade_date",
+      "symbol",
+      "provider"
+    ],
+    "candidate_source_rows_read": false,
+    "candidate_or_comparison_values_read": false,
+    "daily_price_or_forward_return_values_read": false,
+    "provider_request_allowed": false
+  },
+  "candidate_design_catalog": [
+    {
+      "design": "intraday_range_amount_profile_alignment_js_240m",
+      "decision": "selected_for_separate_complete_mechanism_overlap_audit",
+      "reason": "It compares the full 240-position participation distributions of contemporaneous intrabar log range and transaction amount. It is not a Pearson level association, a single peak-time match, or amount alignment with adjacent close returns."
+    },
+    {
+      "design": "intraday_range_amount_level_correlation",
+      "decision": "rejected_before_values_as_terminal_family",
+      "reason": "Campaign018 already freezes contemporaneous log-range/log1p-share-volume Pearson confirmation; substituting amount or another monotone transform would be a nearby rescue."
+    },
+    {
+      "design": "intraday_range_amount_peak_or_center_alignment",
+      "decision": "rejected_before_values_as_terminal_family",
+      "reason": "Campaign082 already freezes last-maximum timing alignment and amount center-of-mass is also terminal."
+    },
+    {
+      "design": "intraday_amount_absolute_return_profile_alignment_js",
+      "decision": "rejected_before_values_as_exact_terminal_family",
+      "reason": "Campaign053 already freezes amount versus absolute adjacent close-return Jensen-Shannon alignment."
+    },
+    {
+      "design": "morning_only_afternoon_only_weighted_thresholded_or_ranked_range_amount_alignment",
+      "decision": "rejected_before_values",
+      "reason": "Subwindow, threshold, filter, rank, weighting, transform, subset, regime, fitted, model, and combination searches are outside the one-factor finite catalog."
+    }
+  ],
+  "selected_candidate": {
+    "name": "intraday_range_amount_profile_alignment_js_240m",
+    "direction": "higher",
+    "economic_hypothesis": "When the minute-by-minute distribution of intrabar auction width is supported by the same distribution of transaction value, price discovery is less concentrated in thin prints and may leave a more persistent completed-session information state over the next three sessions.",
+    "formula": "On the exact 240 selected bars let r_i=ln(high_i/low_i), R=sum_i r_i, p_i=r_i/R, A=sum_i amount_i, q_i=amount_i/A, and m_i=(p_i+q_i)/2. Let JSD=0.5*sum_{p_i>0} p_i*ln(p_i/m_i)+0.5*sum_{q_i>0} q_i*ln(q_i/m_i). Return 1-JSD/ln(2).",
+    "time_grid": "Exactly 09:31-11:30 and 13:01-15:00. The raw 09:30 row remains required by source identity but is excluded. No transition, lunch pair, overnight, cross-day, or cross-stock observation is formed.",
+    "input_rule": "Every selected high, low, and amount must be finite; high and low must be strictly positive with low<=high; amount must be nonnegative. Exact zero range and exact zero amount remain valid components.",
+    "support_rule": "Require strictly positive finite total log range R and strictly positive finite total amount A. No minimum nonzero-bar count or activity threshold is allowed.",
+    "zero_rule": "For either distribution define every zero-probability contribution as exactly zero. A positive probability always has positive mixture mass, so no pseudocount, smoothing, jitter, or replacement is used.",
+    "floating_point_rule": "Use natural-log float64 arithmetic. Canonicalize only a final score within 1e-12 of zero or one; otherwise require it to lie in [0,1] without clipping.",
+    "valid_range": {
+      "lower": 0,
+      "lower_inclusive": true,
+      "upper": 1,
+      "upper_inclusive": true
+    },
+    "availability": "Known at the signal-session close after the exact 240 selected bars; no later session, daily return, comparison value, or Candidate49 observation is used.",
+    "parameter_direction_window_transform_filter_subset_regime_fit_model_or_combination_search": false
+  },
+  "mandatory_pre_value_challenges": [
+    "all_118_frozen_historical_factor_definitions_in_exact_order",
+    "all_116_numeric_comparators_in_exact_order",
+    "intraday_range_share_volume_confirmation_240m",
+    "intraday_amount_price_discovery_alignment_js_238p",
+    "intraday_range_amount_peak_timing_alignment_240m",
+    "intraday_amount_participation_entropy_240m",
+    "intraday_intrabar_range_participation_entropy_240m",
+    "intraday_amount_center_of_mass_240m",
+    "intraday_amount_profile_serial_persistence_240m",
+    "intraday_amount_volatility_coupling_238p",
+    "intraday_morning_afternoon_amount_profile_similarity_120b",
+    "intraday_morning_afternoon_range_profile_similarity_120b",
+    "intraday_intrabar_close_location_serial_persistence_238p",
+    "candidate49_intraday_cumulative_vwap_crossing_rate_240m_v1"
+  ],
+  "research_boundary": {
+    "campaign087_minute_source_rows_read": false,
+    "campaign087_candidate_values_read": false,
+    "comparison_values_read": false,
+    "historical_daily_price_fields_read": [],
+    "historical_forward_returns_read": false,
+    "provider_request_issued": false,
+    "candidate49_historical_backfill_performed": false,
+    "candidate49_ledgers_changed": false,
+    "second_prospective_candidate_created": false,
+    "current_scoring_selection_sizing_or_orders_performed": false,
+    "investment_advice": false
+  },
+  "decision": {
+    "selected_concept_count": 1,
+    "may_advance_directly_to_values": false,
+    "required_next_step": "Complete and bind one exhaustive no-value mechanism-overlap audit; then freeze the no-return protocol, implementation, tests, and fingerprints before any candidate value.",
+    "candidate49_remains_only_active_prospective_candidate": true
+  }
+}

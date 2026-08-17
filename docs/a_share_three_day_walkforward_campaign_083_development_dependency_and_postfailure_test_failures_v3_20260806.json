@@ -1,0 +1,45 @@
+{
+  "schema_version": 1,
+  "version": 3,
+  "kind": "a_share_three_day_walkforward_campaign083_development_dependency_and_postfailure_test_failures",
+  "status": "two_failures_recorded_before_market_data_or_return_read",
+  "recorded_at": "2026-08-06T20:49:00+08:00",
+  "failures": [
+    {
+      "ordinal": 1,
+      "stage": "post_setuptools_scm_qlib_import_diagnostic",
+      "observed": "qlib import advanced past setuptools_scm and then exited with ModuleNotFoundError: No module named 'ruamel'.",
+      "root_cause": "The isolated runtime also lacked repository-declared ruamel.yaml; the same Qlib data path statically imports pydantic-settings, python-redis-lock, redis, and joblib.",
+      "correction": "Freeze a broadened dependency-only repair using only repository-declared Qlib runtime packages, require pip check and qlib import to pass, and preserve the exact pandas/pyarrow compatibility pair."
+    },
+    {
+      "ordinal": 2,
+      "stage": "postfailure_development_test_suite",
+      "observed": "Three tests passed and the predevelopment status test failed because it still expected zero ledger entries after the base runner had correctly preserved one infrastructure-failure entry.",
+      "root_cause": "The original predevelopment test encoded the pristine pre-first-command state rather than the frozen repair state.",
+      "correction": "Create a separately bound v2 development test that requires exactly one infrastructure-failure ledger entry, zero complete development trials, the expected frozen trial catalog, and closed stress before retry. Preserve the original test file and implementation freeze."
+    }
+  ],
+  "observed_status_after_failures": {
+    "campaign_id": "a_share_three_day_walkforward_campaign_083",
+    "expected_trial_count": 1,
+    "ledger_entry_count": 1,
+    "ledger_chain_tip_sha256": "ba3e8d334504f7b082e89a3ec4bf146d602c77bc0a4323f2dc697be741fd27a0",
+    "stress_intent_exists": false,
+    "stress_record_exists": false,
+    "candidate49_historical_return_read": false,
+    "current_scoring_selection_sizing_or_orders_allowed": false
+  },
+  "research_boundary": {
+    "complete_development_trial_count": 0,
+    "market_execution_data_loaded": false,
+    "historical_daily_price_fields_read": [],
+    "historical_forward_returns_read": false,
+    "partial_statistics_reused": false,
+    "stress_2024_2025_opened": false,
+    "provider_request_issued": false,
+    "candidate49_historical_backfill_performed": false,
+    "candidate49_ledgers_changed": false,
+    "current_scoring_selection_sizing_or_orders_performed": false
+  }
+}

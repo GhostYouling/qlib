@@ -45,7 +45,7 @@ SCRIPT_DIR = Path(__file__).resolve().parent
 if str(SCRIPT_DIR) not in sys.path:
     sys.path.insert(0, str(SCRIPT_DIR))
 
-from _a_share_runtime import resolve_data_root
+from _a_share_runtime import resolve_data_root  # noqa: E402
 
 REPO_ROOT = Path(__file__).resolve().parents[1]
 DATA_ROOT = resolve_data_root(REPO_ROOT)
@@ -280,11 +280,39 @@ DEFAULT_RESEARCH_FRONTIER_CONTRACT = (
 DEFAULT_RESEARCH_FRONTIER_AUDIT = (
     REPO_ROOT / "docs" / "a_share_three_day_research_frontier_audit.json"
 )
-DEFAULT_THREE_DAY_ITERATION_STATUS = (
+DEFAULT_THREE_DAY_ITERATION_STATUS_20260721 = (
     REPO_ROOT / "docs" / "a_share_three_day_iteration_status_20260721.json"
 )
-THREE_DAY_ITERATION_STATUS_SHA256 = (
+THREE_DAY_ITERATION_STATUS_20260721_SHA256 = (
     "14e8edaf98c7f94a10f0c63e64d8af1d6e3bb1b45dac3c3bb9aabdf2cb83e2b1"
+)
+DEFAULT_THREE_DAY_ITERATION_STATUS_20260723 = (
+    REPO_ROOT / "docs" / "a_share_three_day_iteration_status_20260723.json"
+)
+THREE_DAY_ITERATION_STATUS_20260723_SHA256 = (
+    "08c3a5b2a1039cd46b9be4715bd666d516cc8d4273d03c5b56ddf06969b115c9"
+)
+DEFAULT_THREE_DAY_ITERATION_STATUS_20260725 = (
+    REPO_ROOT / "docs" / "a_share_three_day_iteration_status_20260725.json"
+)
+THREE_DAY_ITERATION_STATUS_20260725_SHA256 = (
+    "355b992452b73607034a182699d4fff337905e484229441e7ae138db1ffdefef"
+)
+DEFAULT_THREE_DAY_ITERATION_STATUS = (
+    REPO_ROOT
+    / "docs"
+    / "a_share_three_day_iteration_status_20260725_future_only.json"
+)
+THREE_DAY_ITERATION_STATUS_SHA256 = (
+    "d44e1cb3707cce194eed37e99cc90f865396b1de8c35e02a393a2a243d973466"
+)
+DEFAULT_CANDIDATE49_FUTURE_EXECUTION_PROTOCOL = (
+    REPO_ROOT
+    / "docs"
+    / "a_share_tushare_candidate49_future_execution_protocol.json"
+)
+CANDIDATE49_FUTURE_EXECUTION_PROTOCOL_SHA256 = (
+    "b9b4ea8906924c8303cb7a434db5f21ed6383ce7d794e50936b675acfa869486"
 )
 RESEARCH_FRONTIER_CONTRACT_SHA256 = (
     "36ac39c68fedebf2fdf999475e10452278bbeff4f42b1c41963539867539eeaf"
@@ -10178,6 +10206,19 @@ def quarterly_report_dates(start_year: int, end_year: int) -> list[str]:
     ]
 
 
+def latest_completed_quarter_end(as_of_date: dt.date | pd.Timestamp) -> pd.Timestamp:
+    """Return the latest calendar-quarter end no later than ``as_of_date``."""
+
+    as_of = pd.Timestamp(as_of_date).normalize()
+    if pd.isna(as_of):
+        raise ValueError("as_of_date must be a valid date")
+    quarter = as_of.to_period("Q")
+    quarter_end = quarter.end_time.normalize()
+    if quarter_end > as_of:
+        quarter_end = (quarter - 1).end_time.normalize()
+    return quarter_end
+
+
 def _eastmoney_request(
     session: requests.Session, report_date: str, page_number: int
 ) -> dict[str, Any]:
@@ -12061,7 +12102,12 @@ def _eastmoney_session() -> requests.Session:
 
 
 def sync_fundamental_reports(
-    report_dates: Iterable[str], output: Path, manifest: Path, *, report_frequency: str
+    report_dates: Iterable[str],
+    output: Path,
+    manifest: Path,
+    *,
+    report_frequency: str,
+    manifest_metadata: dict[str, Any] | None = None,
 ) -> dict[str, Any]:
     """Download dated public financial reports and write an auditable local snapshot."""
 
@@ -12116,6 +12162,14 @@ def sync_fundamental_reports(
             "The research join waits until the trading day after announcement_date, but it is not a substitute for an exchange-grade point-in-time fundamentals vendor.",
         ],
     }
+    if manifest_metadata:
+        overlap = sorted(set(result) & set(manifest_metadata))
+        if overlap:
+            raise ValueError(
+                "fundamental manifest metadata would overwrite core fields: "
+                + ",".join(overlap)
+            )
+        result.update(manifest_metadata)
     _atomic_write_text(
         manifest,
         json.dumps(result, ensure_ascii=False, indent=2, default=_json_default) + "\n",
@@ -12142,21 +12196,45 @@ def sync_quarterly_fundamentals(
     output: Path,
     manifest: Path,
     through_report_date: str | None = None,
+    *,
+    as_of_date: dt.date | None = None,
 ) -> dict[str, Any]:
     """Download quarterly quality inputs for post-announcement short-horizon research."""
 
     dates = quarterly_report_dates(start_year, end_year)
+    local_as_of = as_of_date or dt.date.today()
+    latest_completed = latest_completed_quarter_end(local_as_of)
     if through_report_date is not None:
         through = pd.Timestamp(through_report_date).normalize()
         if pd.isna(through):
             raise ValueError("through_report_date must be a valid ISO date")
+        if through > latest_completed:
+            raise ValueError(
+                "through_report_date must not exceed the latest completed "
+                f"calendar quarter {latest_completed.date().isoformat()}"
+            )
         dates = [date for date in dates if pd.Timestamp(date) <= through]
         if not dates:
             raise ValueError(
                 "through_report_date precedes the requested quarterly range"
             )
+    elif any(pd.Timestamp(date) > latest_completed for date in dates):
+        raise ValueError(
+            "--through-report-date is required when the requested year range "
+            "extends beyond the latest completed calendar quarter "
+            f"{latest_completed.date().isoformat()}"
+        )
     return sync_fundamental_reports(
-        dates, output, manifest, report_frequency="quarterly"
+        dates,
+        output,
+        manifest,
+        report_frequency="quarterly",
+        manifest_metadata={
+            "through_report_date": dates[-1],
+            "latest_completed_quarter_end_at_sync": (
+                latest_completed.date().isoformat()
+            ),
+        },
     )
 
 
@@ -37319,13 +37397,13 @@ def load_research_frontier_audit(
     return audit
 
 
-def load_three_day_iteration_status(
-    path: Path = DEFAULT_THREE_DAY_ITERATION_STATUS,
+def _load_three_day_iteration_status_20260721(
+    path: Path = DEFAULT_THREE_DAY_ITERATION_STATUS_20260721,
 ) -> dict[str, Any]:
-    """Load the fingerprint-bound current decision state for three-day research."""
+    """Load the complete 46-mechanism predecessor decision state."""
 
     path = path.expanduser().resolve()
-    if file_sha256(path) != THREE_DAY_ITERATION_STATUS_SHA256:
+    if file_sha256(path) != THREE_DAY_ITERATION_STATUS_20260721_SHA256:
         raise ValueError("three-day iteration status fingerprint mismatch")
     status = load_json_record(path, kind="a_share_three_day_iteration_status")
     fixed = status.get("fixed_strategy") or {}
@@ -38004,9 +38082,9 @@ def load_three_day_iteration_status(
             "rejected_"
         ):
             discovered_terminal_paths.add(record_path.resolve())
-    if bound_terminal_paths != discovered_terminal_paths:
+    if not bound_terminal_paths.issubset(discovered_terminal_paths):
         raise ValueError(
-            "three-day iteration status does not cover the complete terminal record ledger"
+            "three-day predecessor status lost a bound terminal record"
         )
 
     source_bindings = {
@@ -38744,6 +38822,609 @@ def load_three_day_iteration_status(
     ):
         raise ValueError("three-day iteration status source decision changed")
     return status
+
+
+def _load_three_day_iteration_status_20260723(
+    path: Path = DEFAULT_THREE_DAY_ITERATION_STATUS_20260723,
+) -> dict[str, Any]:
+    """Load candidate 47's append-only state as a historical predecessor."""
+
+    path = path.expanduser().resolve()
+    if file_sha256(path) != THREE_DAY_ITERATION_STATUS_20260723_SHA256:
+        raise ValueError("three-day iteration status fingerprint mismatch")
+    overlay = load_json_record(path, kind="a_share_three_day_iteration_status")
+    previous_binding = overlay.get("previous_authoritative_state") or {}
+    frontier = overlay.get("accepted_price_frontier") or {}
+    latest = overlay.get("latest_terminal_mechanism") or {}
+    latest_record_binding = latest.get("record") or {}
+    counts = overlay.get("research_counts") or {}
+    decision = overlay.get("decision") or {}
+    fixed = overlay.get("fixed_strategy") or {}
+    if (
+        overlay.get("version") != 1
+        or overlay.get("status")
+        != "aggregation_blocked_after_intraday_opening_auction_amount_share_terminal_rejection_zero_dual_gate_factors"
+        or previous_binding.get("path")
+        != "docs/a_share_three_day_iteration_status_20260721.json"
+        or previous_binding.get("sha256")
+        != THREE_DAY_ITERATION_STATUS_20260721_SHA256
+        or previous_binding.get("terminal_mechanism_count") != 46
+        or fixed.get("price_basis") != REQUIRED_PRICE_BASIS
+        or fixed.get("holding_period_local_sessions") != 3
+        or fixed.get("topk") != 3
+        or frontier.get("historical_factor_count") != 43
+        or frontier.get("stability_qualified_factor_count") != 7
+        or frontier.get("topk_qualified_factor_count") != 0
+        or frontier.get("dual_gate_qualified_factor_count") != 0
+        or latest.get("ordinal") != 47
+        or latest.get("mechanism")
+        != "tushare_intraday_opening_auction_amount_share_241m"
+        or latest.get("terminal") is not True
+        or latest.get("no_return_coverage_passed") is not True
+        or latest.get("no_return_uniqueness_passed") is not True
+        or latest.get("association_stability_passed") is not False
+        or latest.get("topk_viability_passed") is not False
+        or latest.get("dual_gate_passed") is not False
+        or counts.get("terminal_mechanism_count") != 47
+        or counts.get("dual_gate_qualified_factor_count") != 0
+        or counts.get(
+            "aggregation_minimum_economically_distinct_dual_gate_factors"
+        )
+        != 2
+        or any(
+            decision.get(field) is not False
+            for field in (
+                "aggregation_allowed",
+                "current_scoring_allowed",
+                "selection_allowed",
+                "sizing_allowed",
+                "orders_allowed",
+                "level2_intake_justified",
+            )
+        )
+    ):
+        raise ValueError("three-day iteration status overlay is inconsistent")
+    previous_path = resolve_repository_record_path(previous_binding["path"])
+    if file_sha256(previous_path) != previous_binding["sha256"]:
+        raise ValueError("three-day predecessor status fingerprint changed")
+    latest_record_path = resolve_repository_record_path(
+        latest_record_binding.get("path", "")
+    )
+    if (
+        file_sha256(latest_record_path) != latest_record_binding.get("sha256")
+        or latest_record_binding.get("sha256")
+        != "b70a8ec547bdc36db408adc86b809456caac9a774d074de913369b3349899abd"
+    ):
+        raise ValueError("latest terminal mechanism fingerprint changed")
+    latest_record = load_json_record(
+        latest_record_path,
+        kind=(
+            "a_share_tushare_intraday_opening_auction_amount_share_"
+            "research_record"
+        ),
+    )
+    latest_result = latest_record.get("return_results") or {}
+    if not (
+        latest_record.get("status")
+        == "terminal_rejected_at_association_stability_and_executable_topk_gates"
+        and latest_result.get("cohorts") == 539
+        and latest_result.get("dual_gate_passed") is False
+        and (latest_record.get("decision") or {}).get(
+            "terminally_reject_exact_factor_direction"
+        )
+        is True
+    ):
+        raise ValueError("latest terminal mechanism record is inconsistent")
+
+    prior = _load_three_day_iteration_status_20260721(previous_path)
+    status = json.loads(json.dumps(prior))
+    status["status"] = overlay["status"]
+    status["recorded_at"] = overlay["recorded_at"]
+    status["previous_authoritative_state"] = previous_binding
+    status["post_frontier_terminal_mechanisms"].append(
+        {
+            "mechanism": latest["mechanism"],
+            "terminal_gate": latest["terminal_gate"],
+            "record": latest_record_binding,
+        }
+    )
+    status["post_frontier_summary"]["terminal_mechanism_count"] = 47
+    bound_terminal_paths = {
+        resolve_repository_record_path((item.get("record") or {}).get("path", ""))
+        for item in status["post_frontier_terminal_mechanisms"]
+    }
+    discovered_terminal_paths = {
+        record_path.resolve()
+        for record_path in sorted((REPO_ROOT / "docs").glob("a_share_*record.json"))
+        if str(load_json_record(record_path).get("status", "")).startswith(
+            ("terminal_", "rejected_")
+        )
+    }
+    if not bound_terminal_paths.issubset(discovered_terminal_paths):
+        raise ValueError(
+            "candidate-47 state refers to an unrecognized terminal record"
+        )
+    selected_source = status["selected_source_path"]
+    selected_source.update(
+        {
+            "intraday_opening_auction_amount_share_candidate_manifest_sha256": (
+                "cb6acb3dcbad2ca459ac2f11ea80364593543adc852bf82ea3f177ae58154580"
+            ),
+            "intraday_opening_auction_amount_share_no_return_coverage_passed": True,
+            "intraday_opening_auction_amount_share_no_return_uniqueness_passed": True,
+            "intraday_opening_auction_amount_share_maximum_absolute_median_daily_rank_correlation": 0.3034674493047393,
+            "intraday_opening_auction_amount_share_forward_returns_read": True,
+            "intraday_opening_auction_amount_share_diagnostic_cohorts": 539,
+            "intraday_opening_auction_amount_share_association_stability_passed": False,
+            "intraday_opening_auction_amount_share_topk_viability_passed": False,
+            "intraday_opening_auction_amount_share_dual_gate_passed": False,
+            "intraday_opening_auction_amount_share_terminal": True,
+            "next_external_action": overlay["next_research_action"]["objective"],
+        }
+    )
+    status["decision"] = decision
+    return status
+
+
+def _load_three_day_iteration_status_20260725(
+    path: Path = DEFAULT_THREE_DAY_ITERATION_STATUS_20260725,
+) -> dict[str, Any]:
+    """Load the current candidate-48 overlay and materialize its full ledger."""
+
+    path = path.expanduser().resolve()
+    if file_sha256(path) != THREE_DAY_ITERATION_STATUS_20260725_SHA256:
+        raise ValueError("three-day iteration status fingerprint mismatch")
+    overlay = load_json_record(path, kind="a_share_three_day_iteration_status")
+    previous_binding = overlay.get("previous_authoritative_state") or {}
+    frontier = overlay.get("accepted_price_frontier") or {}
+    latest = overlay.get("latest_terminal_mechanism") or {}
+    latest_record_binding = latest.get("record") or {}
+    counts = overlay.get("research_counts") or {}
+    decision = overlay.get("decision") or {}
+    fixed = overlay.get("fixed_strategy") or {}
+    if (
+        overlay.get("version") != 1
+        or overlay.get("status")
+        != (
+            "aggregation_blocked_after_intraday_market_amount_profile_"
+            "synchronization_terminal_rejection_zero_dual_gate_factors"
+        )
+        or previous_binding.get("path")
+        != "docs/a_share_three_day_iteration_status_20260723.json"
+        or previous_binding.get("sha256")
+        != THREE_DAY_ITERATION_STATUS_20260723_SHA256
+        or previous_binding.get("terminal_mechanism_count") != 47
+        or fixed.get("price_basis") != REQUIRED_PRICE_BASIS
+        or fixed.get("holding_period_local_sessions") != 3
+        or fixed.get("topk") != 3
+        or frontier.get("historical_factor_count") != 43
+        or frontier.get("stability_qualified_factor_count") != 7
+        or frontier.get("topk_qualified_factor_count") != 0
+        or frontier.get("dual_gate_qualified_factor_count") != 0
+        or latest.get("ordinal") != 48
+        or latest.get("mechanism")
+        != "tushare_intraday_market_amount_profile_synchronization_240m"
+        or latest.get("terminal") is not True
+        or latest.get("no_return_coverage_passed") is not True
+        or latest.get("no_return_uniqueness_passed") is not True
+        or latest.get("association_stability_passed") is not False
+        or latest.get("topk_viability_passed") is not False
+        or latest.get("dual_gate_passed") is not False
+        or counts.get("terminal_mechanism_count") != 48
+        or counts.get("dual_gate_qualified_factor_count") != 0
+        or counts.get(
+            "aggregation_minimum_economically_distinct_dual_gate_factors"
+        )
+        != 2
+        or any(
+            decision.get(field) is not False
+            for field in (
+                "aggregation_allowed",
+                "current_scoring_allowed",
+                "selection_allowed",
+                "sizing_allowed",
+                "orders_allowed",
+                "level2_intake_justified",
+            )
+        )
+    ):
+        raise ValueError("three-day iteration status overlay is inconsistent")
+    previous_path = resolve_repository_record_path(previous_binding["path"])
+    if file_sha256(previous_path) != previous_binding["sha256"]:
+        raise ValueError("three-day predecessor status fingerprint changed")
+    latest_record_path = resolve_repository_record_path(
+        latest_record_binding.get("path", "")
+    )
+    if (
+        file_sha256(latest_record_path) != latest_record_binding.get("sha256")
+        or latest_record_binding.get("sha256")
+        != "75a41875b5133258d483c470d44f1fdd1cdd030573e03ce66c33c22d926874ed"
+    ):
+        raise ValueError("latest terminal mechanism fingerprint changed")
+    latest_record = load_json_record(
+        latest_record_path,
+        kind=(
+            "a_share_tushare_intraday_market_amount_profile_"
+            "synchronization_research_record"
+        ),
+    )
+    latest_result = latest_record.get("return_results") or {}
+    latest_decision = latest_record.get("decision") or {}
+    if not (
+        latest_record.get("status")
+        == "terminal_rejected_at_association_stability_and_executable_topk_gates"
+        and latest_result.get("cohorts") == 539
+        and latest_result.get("mean_rank_ic") == -0.011744812824529938
+        and latest_result.get("association_stability_gate_passed") is False
+        and latest_result.get("topk_viability_gate_passed") is False
+        and latest_result.get("dual_gate_passed") is False
+        and latest_decision.get("terminally_reject_exact_factor_direction")
+        is True
+        and latest_decision.get("aggregation_candidate_added") is False
+    ):
+        raise ValueError("latest terminal mechanism record is inconsistent")
+
+    prior = _load_three_day_iteration_status_20260723(previous_path)
+    status = json.loads(json.dumps(prior))
+    status["status"] = overlay["status"]
+    status["recorded_at"] = overlay["recorded_at"]
+    status["previous_authoritative_state"] = previous_binding
+    status["post_frontier_terminal_mechanisms"].append(
+        {
+            "mechanism": latest["mechanism"],
+            "terminal_gate": latest["terminal_gate"],
+            "record": latest_record_binding,
+        }
+    )
+    status["post_frontier_summary"]["terminal_mechanism_count"] = 48
+    bound_terminal_paths = {
+        resolve_repository_record_path((item.get("record") or {}).get("path", ""))
+        for item in status["post_frontier_terminal_mechanisms"]
+    }
+    discovered_terminal_paths = {
+        record_path.resolve()
+        for record_path in sorted((REPO_ROOT / "docs").glob("a_share_*record.json"))
+        if str(load_json_record(record_path).get("status", "")).startswith(
+            ("terminal_", "rejected_")
+        )
+    }
+    if bound_terminal_paths != discovered_terminal_paths:
+        raise ValueError(
+            "current three-day iteration status does not cover the complete "
+            "terminal record ledger"
+        )
+    selected_source = status["selected_source_path"]
+    selected_source.update(
+        {
+            "intraday_market_amount_profile_synchronization_candidate_manifest_sha256": (
+                "40f9700a919cc22f30bd928133fb20bc6af3476a7952020d180f712d97f063f5"
+            ),
+            "intraday_market_amount_profile_synchronization_no_return_coverage_passed": True,
+            "intraday_market_amount_profile_synchronization_no_return_uniqueness_passed": True,
+            "intraday_market_amount_profile_synchronization_maximum_absolute_median_daily_rank_correlation": 0.5667050400934569,
+            "intraday_market_amount_profile_synchronization_forward_returns_read": True,
+            "intraday_market_amount_profile_synchronization_diagnostic_cohorts": 539,
+            "intraday_market_amount_profile_synchronization_association_stability_passed": False,
+            "intraday_market_amount_profile_synchronization_topk_viability_passed": False,
+            "intraday_market_amount_profile_synchronization_dual_gate_passed": False,
+            "intraday_market_amount_profile_synchronization_terminal": True,
+            "next_external_action": overlay["next_research_action"]["objective"],
+        }
+    )
+    status["decision"] = decision
+    return status
+
+
+def load_three_day_iteration_status(
+    path: Path = DEFAULT_THREE_DAY_ITERATION_STATUS,
+) -> dict[str, Any]:
+    """Load the candidate-49 future-only overlay and preserve 48 terminals."""
+
+    path = path.expanduser().resolve()
+    if file_sha256(path) != THREE_DAY_ITERATION_STATUS_SHA256:
+        raise ValueError("three-day future-only iteration status fingerprint mismatch")
+    overlay = load_json_record(path, kind="a_share_three_day_iteration_status")
+    previous_binding = overlay.get("previous_authoritative_state") or {}
+    fixed = overlay.get("fixed_strategy") or {}
+    active = overlay.get("active_future_only_candidate") or {}
+    policy = active.get("future_only_policy") or {}
+    mechanism_audit = active.get("mechanism_overlap_reaudit") or {}
+    no_return_spec = active.get("no_return_preregistration") or {}
+    snapshot = active.get("historical_candidate_snapshot") or {}
+    no_return_audit = active.get("ordered_no_return_audit") or {}
+    registration = active.get("future_observation_registration") or {}
+    counts = overlay.get("research_counts") or {}
+    decision = overlay.get("decision") or {}
+    if (
+        overlay.get("version") != 1
+        or overlay.get("status")
+        != (
+            "aggregation_blocked_candidate49_future_only_registered_"
+            "pending_first_post_registration_session"
+        )
+        or previous_binding.get("path")
+        != "docs/a_share_three_day_iteration_status_20260725.json"
+        or previous_binding.get("sha256")
+        != THREE_DAY_ITERATION_STATUS_20260725_SHA256
+        or previous_binding.get("terminal_mechanism_count") != 48
+        or previous_binding.get("active_future_only_candidate_count") != 0
+        or fixed.get("price_basis") != REQUIRED_PRICE_BASIS
+        or fixed.get("holding_period_local_sessions") != 3
+        or fixed.get("topk") != 3
+        or fixed.get("pilot_initial_capital_cny") != 200_000
+        or fixed.get("pilot_buy_lot_size_shares") != 100
+        or active.get("ordinal") != 49
+        or active.get("mechanism")
+        != "tushare_intraday_cumulative_vwap_crossing_rate_240m"
+        or active.get("factor_name")
+        != "intraday_cumulative_vwap_crossing_rate_240m"
+        or active.get("direction") != "higher"
+        or active.get("stage")
+        != "historical_no_return_gates_passed_future_observation_registered"
+        or policy.get("sha256")
+        != "52ca8bfa7201509fe891d0af3d1c87aeebd64e47e6ec6641e897849411df408c"
+        or mechanism_audit.get("sha256")
+        != "f86ba3cdfd7ead04963519e1c86e0d022467896a68ac3422fb5d742f716dcdcd"
+        or no_return_spec.get("sha256")
+        != "cefa5f23b5214e123d0bdea1511a398cb4a70c0ee4cc8da7d1f69f52bdbe4aeb"
+        or snapshot.get("sha256")
+        != "f3dd3417bd6adcaa06d8927865ea3f464ebc02df302b8f488e43450f7c620196"
+        or snapshot.get("dataset_sha256")
+        != "67bda6df74747a0f39fe6eb252aada84ea7850fff2c05bdae4951aa41fcc7037"
+        or snapshot.get("rows") != 7_724_498
+        or snapshot.get("eligible_rows") != 7_714_026
+        or no_return_audit.get("sha256")
+        != "51bb248b1071983cf9a05fca94c6cc08770a2d10fbef1d6d087f2d5a875fdf7d"
+        or no_return_audit.get("coverage_passed") is not True
+        or no_return_audit.get("capacity_passed") is not True
+        or no_return_audit.get("uniqueness_comparison_count") != 24
+        or no_return_audit.get("uniqueness_passed") is not True
+        or no_return_audit.get("historical_daily_price_fields_read") != []
+        or no_return_audit.get("historical_forward_return_fields_read") is not False
+        or registration.get("sha256")
+        != "431cb0b3b078823f08b888bf4c499bcc5088309a2e58e9de5cb9a9aaa849ffa9"
+        or registration.get("registration_id")
+        != "candidate49_intraday_cumulative_vwap_crossing_rate_240m_v1"
+        or registration.get("earliest_eligible_signal_session")
+        != "the first accepted local provider-calendar session on or after 2026-07-27"
+        or active.get("historical_return_diagnostic_allowed") is not False
+        or active.get("historical_forward_returns_read") is not False
+        or active.get("current_signal_exists") is not False
+        or active.get("terminal") is not False
+        or counts.get("terminal_mechanism_count") != 48
+        or counts.get("active_future_only_candidate_count") != 1
+        or counts.get("dual_gate_qualified_factor_count") != 0
+        or counts.get(
+            "aggregation_minimum_economically_distinct_future_passing_factors"
+        )
+        != 2
+        or any(
+            decision.get(field) is not False
+            for field in (
+                "aggregation_allowed",
+                "current_scoring_allowed",
+                "selection_allowed",
+                "sizing_allowed",
+                "orders_allowed",
+                "level2_intake_justified",
+                "candidate49_historical_return_diagnostic_allowed",
+                "candidate50_activation_allowed",
+            )
+        )
+    ):
+        raise ValueError("candidate-49 future-only status overlay is inconsistent")
+    previous_path = resolve_repository_record_path(previous_binding["path"])
+    if file_sha256(previous_path) != previous_binding["sha256"]:
+        raise ValueError("candidate-49 predecessor status fingerprint changed")
+    for binding, expected_kind in (
+        (policy, "a_share_three_day_future_only_minute_research_policy"),
+        (
+            mechanism_audit,
+            (
+                "a_share_tushare_intraday_cumulative_vwap_crossing_rate_"
+                "mechanism_overlap_reaudit"
+            ),
+        ),
+        (
+            no_return_spec,
+            (
+                "a_share_tushare_intraday_cumulative_vwap_crossing_rate_"
+                "no_return_preregistration"
+            ),
+        ),
+        (
+            registration,
+            (
+                "a_share_tushare_intraday_cumulative_vwap_crossing_rate_"
+                "future_observation_registration"
+            ),
+        ),
+    ):
+        bound_path = resolve_repository_record_path(binding.get("path", ""))
+        if file_sha256(bound_path) != binding.get("sha256"):
+            raise ValueError("candidate-49 bound record fingerprint changed")
+        load_json_record(bound_path, kind=expected_kind)
+    if (
+        file_sha256(DEFAULT_CANDIDATE49_FUTURE_EXECUTION_PROTOCOL)
+        != CANDIDATE49_FUTURE_EXECUTION_PROTOCOL_SHA256
+    ):
+        raise ValueError("candidate-49 future execution protocol fingerprint changed")
+    execution_protocol = load_json_record(
+        DEFAULT_CANDIDATE49_FUTURE_EXECUTION_PROTOCOL,
+        kind="a_share_tushare_candidate49_future_execution_protocol",
+    )
+    if not (
+        execution_protocol.get("status")
+        == "frozen_before_first_eligible_future_signal_entry_open_or_outcome"
+        and execution_protocol.get("registration_id")
+        == registration.get("registration_id")
+        and (
+            (execution_protocol.get("source_chain") or {}).get(
+                "future_observation_registration"
+            )
+            or {}
+        ).get("sha256")
+        == registration.get("sha256")
+        and (execution_protocol.get("portfolio") or {}).get("paper_only") is True
+        and (execution_protocol.get("current_state") or {}).get(
+            "real_future_signal_count"
+        )
+        == 0
+        and (execution_protocol.get("current_state") or {}).get(
+            "portfolio_return_exists"
+        )
+        is False
+    ):
+        raise ValueError("candidate-49 future execution protocol is inconsistent")
+
+    prior = _load_three_day_iteration_status_20260725(previous_path)
+    status = json.loads(json.dumps(prior))
+    status["status"] = overlay["status"]
+    status["recorded_at"] = overlay["recorded_at"]
+    status["previous_authoritative_state"] = previous_binding
+    status["active_future_only_candidate"] = active
+    status["active_future_only_candidate"]["future_execution_protocol"] = {
+        "path": str(
+            DEFAULT_CANDIDATE49_FUTURE_EXECUTION_PROTOCOL.relative_to(REPO_ROOT)
+        ),
+        "sha256": CANDIDATE49_FUTURE_EXECUTION_PROTOCOL_SHA256,
+        "status": execution_protocol["status"],
+        "paper_only": True,
+        "real_future_signal_count": 0,
+        "portfolio_return_exists": False,
+    }
+    status["post_frontier_summary"]["terminal_mechanism_count"] = 48
+    status["post_frontier_summary"]["active_future_only_candidate_count"] = 1
+    selected_source = status["selected_source_path"]
+    selected_source.update(
+        {
+            "future_only_research_policy_sha256": policy["sha256"],
+            "intraday_cumulative_vwap_crossing_rate_candidate_manifest_sha256": (
+                snapshot["sha256"]
+            ),
+            "intraday_cumulative_vwap_crossing_rate_candidate_dataset_sha256": (
+                snapshot["dataset_sha256"]
+            ),
+            "intraday_cumulative_vwap_crossing_rate_no_return_coverage_passed": True,
+            "intraday_cumulative_vwap_crossing_rate_no_return_capacity_passed": True,
+            "intraday_cumulative_vwap_crossing_rate_no_return_uniqueness_passed": True,
+            "intraday_cumulative_vwap_crossing_rate_maximum_absolute_median_daily_rank_correlation": (
+                no_return_audit[
+                    "maximum_absolute_median_daily_rank_correlation"
+                ]
+            ),
+            "intraday_cumulative_vwap_crossing_rate_historical_forward_returns_read": False,
+            "intraday_cumulative_vwap_crossing_rate_future_only_registered": True,
+            "intraday_cumulative_vwap_crossing_rate_future_registration_sha256": (
+                registration["sha256"]
+            ),
+            "intraday_cumulative_vwap_crossing_rate_current_signal_exists": False,
+            "intraday_cumulative_vwap_crossing_rate_future_execution_protocol_sha256": (
+                CANDIDATE49_FUTURE_EXECUTION_PROTOCOL_SHA256
+            ),
+            "intraday_cumulative_vwap_crossing_rate_source_to_signal_engine_ready": True,
+            "intraday_cumulative_vwap_crossing_rate_paper_execution_engine_ready": True,
+            "intraday_cumulative_vwap_crossing_rate_real_future_signal_count": 0,
+            "intraday_cumulative_vwap_crossing_rate_portfolio_return_exists": False,
+            "active_future_only_candidate_count": 1,
+            "next_external_action": overlay["next_research_action"]["objective"],
+        }
+    )
+    status["decision"] = decision
+    return status
+
+
+def overlay_candidate49_live_ledger_state(
+    status: dict[str, Any],
+) -> dict[str, Any]:
+    """Overlay validated append-only candidate49 counts onto the frozen policy state."""
+
+    import a_share_tushare_candidate49_future_execution as future_execution
+    import a_share_tushare_intraday_cumulative_vwap_crossing_rate as candidate49
+
+    if not (
+        candidate49.FUTURE_SIGNAL_LEDGER.is_file()
+        and candidate49.FUTURE_EXECUTION_LEDGER.is_file()
+    ):
+        return status
+    validated = future_execution.validate_reporting_state(
+        signal_path=candidate49.FUTURE_SIGNAL_LEDGER,
+        execution_path=candidate49.FUTURE_EXECUTION_LEDGER,
+        evaluation_root=(
+            candidate49.FUTURE_EXECUTION_LEDGER.parent
+            / "candidate49_future_evaluations"
+        ),
+    )
+    signal_count = len(validated["signal_entries"])
+    execution_entries = list(validated["execution_entries"])
+    execution_count = len(execution_entries)
+    completed_rank_ic = 0
+    cumulative_return: float | None = None
+    latest_execution_session = validated["latest_execution_session"]
+    if execution_entries:
+        latest = execution_entries[-1]
+        state = validated["ending_state"]
+        if (
+            latest.get("execution_protocol_sha256")
+            != CANDIDATE49_FUTURE_EXECUTION_PROTOCOL_SHA256
+        ):
+            raise ValueError("candidate49 live execution protocol fingerprint changed")
+        completed_rank_ic = int(state["completed_rank_ic_signals"])
+        cumulative_return = float(state["cumulative_net_return"])
+    evaluation_status = validated["evaluation"]
+
+    observed = json.loads(json.dumps(status))
+    active = observed["active_future_only_candidate"]
+    protocol = active["future_execution_protocol"]
+    protocol.update(
+        {
+            "real_future_signal_count": signal_count,
+            "future_execution_entry_count": execution_count,
+            "completed_future_rank_ic_count": completed_rank_ic,
+            "portfolio_return_exists": execution_count > 0,
+            "paper_portfolio_cumulative_net_return": cumulative_return,
+            "latest_execution_session": latest_execution_session,
+            "milestone_evaluation_engine_ready": True,
+            "milestone_evaluation": evaluation_status,
+        }
+    )
+    source = observed["selected_source_path"]
+    source.update(
+        {
+            "intraday_cumulative_vwap_crossing_rate_current_signal_exists": (
+                signal_count > 0
+            ),
+            "intraday_cumulative_vwap_crossing_rate_real_future_signal_count": (
+                signal_count
+            ),
+            "intraday_cumulative_vwap_crossing_rate_future_execution_entry_count": (
+                execution_count
+            ),
+            "intraday_cumulative_vwap_crossing_rate_completed_future_rank_ic_count": (
+                completed_rank_ic
+            ),
+            "intraday_cumulative_vwap_crossing_rate_portfolio_return_exists": (
+                execution_count > 0
+            ),
+            "intraday_cumulative_vwap_crossing_rate_paper_portfolio_cumulative_net_return": (
+                cumulative_return
+            ),
+            "intraday_cumulative_vwap_crossing_rate_latest_execution_session": (
+                latest_execution_session
+            ),
+            "intraday_cumulative_vwap_crossing_rate_milestone_evaluation_engine_ready": True,
+            "intraday_cumulative_vwap_crossing_rate_milestone_evaluation_status": (
+                evaluation_status["status"]
+            ),
+            "intraday_cumulative_vwap_crossing_rate_milestone_evaluation": (
+                evaluation_status
+            ),
+        }
+    )
+    observed["decision"]["candidate50_activation_allowed"] = bool(
+        evaluation_status["candidate50_activation_allowed"]
+    )
+    return observed
 
 
 def terminal_mechanism_is_preserved_in_append_only_status(
@@ -40689,7 +41370,212 @@ def render_three_day_research_report(
         if tushare_minute_selected:
             if source.get("all_fieldwise_factor_coverage_gates_passed"):
                 if source.get("cleaned_feature_forward_returns_read"):
-                    if source.get("intraday_market_idiosyncratic_share_terminal"):
+                    if source.get(
+                        "intraday_cumulative_vwap_crossing_rate_"
+                        "future_only_registered"
+                    ):
+                        real_signal_count = int(
+                            source.get(
+                                "intraday_cumulative_vwap_crossing_rate_"
+                                "real_future_signal_count",
+                                0,
+                            )
+                        )
+                        completed_rank_ic_count = int(
+                            source.get(
+                                "intraday_cumulative_vwap_crossing_rate_"
+                                "completed_future_rank_ic_count",
+                                0,
+                            )
+                        )
+                        portfolio_return_exists = bool(
+                            source.get(
+                                "intraday_cumulative_vwap_crossing_rate_"
+                                "portfolio_return_exists",
+                                False,
+                            )
+                        )
+                        if (
+                            real_signal_count == 0
+                            and completed_rank_ic_count == 0
+                            and not portfolio_return_exists
+                        ):
+                            live_result_summary = (
+                                "真实信号数、未来 Rank IC 数和组合收益仍全部为 0。"
+                            )
+                        else:
+                            cumulative_return = source.get(
+                                "intraday_cumulative_vwap_crossing_rate_"
+                                "paper_portfolio_cumulative_net_return"
+                            )
+                            live_result_summary = (
+                                f"当前真实信号 {real_signal_count} 个、已完成未来 Rank IC "
+                                f"{completed_rank_ic_count} 个、纸面组合累计净收益 "
+                                f"{_percent(cumulative_return) if cumulative_return is not None else '—'}。"
+                            )
+                        milestone_status = str(
+                            source.get(
+                                "intraday_cumulative_vwap_crossing_rate_"
+                                "milestone_evaluation_status"
+                            )
+                            or "awaiting_60_completed_future_rank_ic_signals"
+                        )
+                        if milestone_status == "terminal_early_rejection":
+                            evaluation_summary = (
+                                "精确第 60 个完成样本触发平均 Rank IC 与组合净收益联合"
+                                "非正早停，候选 49 已终止，后续累计结果不得挽救。"
+                            )
+                            next_external_action = (
+                                "候选 49 已按预登记第 60 样本联合非正规则终止；保留全部"
+                                "不可变证据，不反向、不替换同机制。现在只允许在新的无收益"
+                                "协议下登记经济机制独立的候选 50，仍不得聚合或下单。"
+                            )
+                        elif milestone_status == "terminal_full_gate_rejection":
+                            evaluation_summary = (
+                                "精确第 200 个完成样本未通过全部七项门禁，候选 49 已"
+                                "终止，后续累计结果不得挽救。"
+                            )
+                            next_external_action = (
+                                "候选 49 已在精确第 200 样本完整门禁终止；保留全部不可变"
+                                "证据，不改变公式或成本。现在只允许预登记经济机制独立的"
+                                "候选 50，仍不得聚合或下单。"
+                            )
+                        elif milestone_status == (
+                            "full_gate_passed_continue_paper_observation_only"
+                        ):
+                            evaluation_summary = (
+                                "精确第 200 个完成样本通过七项完整门禁，但只获准继续"
+                                "纸面观察；单因子仍不能聚合、评分或下单。"
+                            )
+                            next_external_action = (
+                                "候选 49 已完成并通过精确 200 样本门禁：继续原样纸面"
+                                "观察，同时可在全新无收益协议下登记经济机制独立的候选 "
+                                "50；至少两个独立前瞻通过因子前仍禁止聚合和下单。"
+                            )
+                        elif milestone_status == (
+                            "interim_continue_to_200_without_promotion"
+                        ):
+                            evaluation_summary = (
+                                "精确第 60 个完成样本未触发联合早停，只能按原协议继续"
+                                "积累到 200，不能提前晋级或启动候选 50。"
+                            )
+                            next_external_action = (
+                                "候选 49 的精确 60 样本早停未触发；继续逐日追加同一"
+                                "公式的真实前瞻观察直至精确 200 个完成 Rank IC；每个"
+                                "新会话只在其同一当地日期收盘后采集，不回填、不改门禁、"
+                                "不启动候选 50。"
+                            )
+                        else:
+                            remaining_to_60 = max(
+                                60 - completed_rank_ic_count,
+                                0,
+                            )
+                            evaluation_summary = (
+                                f"尚未到达第 60 个完成 Rank IC，距离第一次预登记判断还差 "
+                                f"{remaining_to_60} 个完成样本。"
+                            )
+                            next_external_action = (
+                                "候选 49 已完成历史无收益覆盖、容量和二十四项唯一性审计，"
+                                "且在任何候选 49 历史收益读取前完成未来观察注册、原子化"
+                                "分钟采集/信号引擎和纸面执行协议。下一步只在 2026-07-27 "
+                                "或之后已收盘且日线验收完成的会话，先自动续用并验证唯一"
+                                "本地日线来源，再于该会话同一当地日期 16:30 后刷新隔离的"
+                                "未来季度质量快照并追加真实前瞻观察；跨日 partial 只保留"
+                                "证据，不回填、不启动候选 50。"
+                            )
+                        if milestone_status in {
+                            "terminal_early_rejection",
+                            "terminal_full_gate_rejection",
+                        }:
+                            quality_snapshot_summary = (
+                                "已经冻结的逐日季度质量快照继续作为原信号证据保留，"
+                                "不得覆盖或补写。"
+                            )
+                        else:
+                            quality_snapshot_summary = (
+                                "未来观察会在每个信号日的同一当地日期 16:30 后刷新并"
+                                "冻结单独的季度质量快照，绝不覆盖历史研究已绑定的质量"
+                                "文件，也不允许跨日补采该会话。"
+                            )
+                        source_status_line = (
+                            "前沿仍有 48 条终止机制、0 个历史双门槛因子，聚合继续禁止。"
+                            "研究目标已转为纯前瞻验证：候选 49 "
+                            "`intraday_cumulative_vwap_crossing_rate_240m` 只在 "
+                            "2019—2025 读取分钟候选值和旧因子比较值，不读取日线价格或"
+                            "未来收益。其 772.45 万股票日中 771.40 万可计算；质量/上市后"
+                            "中位/P05 覆盖 99.916%/99.446%，P05 名称 138，可形成 540 个"
+                            "三日容量 cohort。二十四项唯一性全部通过，最大绝对中位日秩"
+                            "相关仅 0.19764。未来观察已在 2026-07-25 注册，首个合格信号"
+                            "只能来自 2026-07-27 或之后首个验收会话；当前没有信号、评分、"
+                            "选股、仓位或订单，也没有候选 49 历史收益结论。原子化"
+                            "source→factor→Top-3 信号管线和共享 20 万元、100 股整手、"
+                            "t+1 开盘至 t+3 收盘的纸面执行账本已完成离线验收；精确 "
+                            "60/200 个完成未来 Rank IC 的不可变门禁记录器也已完成；"
+                            "新会话同日收盘后采集、跨日禁止补采而已发布会话仍可零请求"
+                            "幂等复核的边界已锁定；日线刷新自动延续唯一来源，并在刷新"
+                            "阶段扫描全根、拒绝混源；候选 49 的日线 Parquet 在读取层只"
+                            "投影冻结字段，观察日限定 `date == t`，执行日限定 `date <= "
+                            "当前处理会话`，不载入未声明列或未来会话行；未来季度质量"
+                            "读取只投影七个冻结字段并限定 `announcement_date < t`，"
+                            "分钟因子读取只投影 `datetime,symbol,provider,close,volume,"
+                            "amount` 且下推 09:31—11:30、13:01—15:00，不载入 "
+                            "09:30 或 open/high/low。季度同步在网络前拒绝尚未结束的"
+                            "报告期，并把最新已结束季度写入清单。纸面执行还要求处理日"
+                            "之后第二个已验收会话本身已经收盘，不能用日历预列未来日期"
+                            "满足两会话滞后；幂等返回前会交叉核对信号/执行账本，后来"
+                            "插入的迟到信号会硬停止；60/200 样本终止记录也会在新建"
+                            "外置会话目录或供应商检查前阻止后续信号采集。低层和组合"
+                            "预检在未就绪时仍打印诊断 JSON，但以退出码 2 结束；只有 "
+                            "`ready=true` 且退出码 0 才可进入 `--allow-large`，避免 "
+                            "shell 只把“命令执行完”误判成“门禁已通过”。"
+                            + live_result_summary
+                            + evaluation_summary
+                            + quality_snapshot_summary
+                        )
+                    elif source.get(
+                        "intraday_market_amount_profile_synchronization_terminal"
+                    ):
+                        next_external_action = (
+                            "四个清洗方向、十八个完成收益诊断的独立分钟方向、终点收盘位置"
+                            "和收益偏度较高方向均已终止；只研究预先登记的全新经济机制，"
+                            "或积累注册后真正未见的分钟样本，不用 Level2 挽救本结果。"
+                        )
+                        source_status_line = (
+                            "Tushare 原五因子来源覆盖门仍未通过；字段级清洗层保留 4 个因子并"
+                            "全部通过覆盖门。前四因子和之后十八个完成收益诊断的独立分钟机制均"
+                            "没有产生双门禁合格因子；终点收盘位置和收益偏度另在无收益近同义门"
+                            "停止。最新的 240 分钟个股归一化成交额轮廓与留一法全市场轮廓同步"
+                            "因子实现 772.45 万股票日全覆盖，并通过容量资格和二十三个因子唯一"
+                            "性门（最大绝对中位日秩相关 0.56671），但唯一一次 539-cohort "
+                            "诊断平均 Rank IC 为 -0.01174，只有 45.08% 的 cohort 为正，"
+                            "2019—2023 年年度 IC 非正。标准化执行感知累计 -53.64%、最大回撤 "
+                            "-80.01%；20 万元整手、双边 10bp 滑点累计 -13.18%、最大回撤 "
+                            "-18.85%，零滑点仍为 -2.90%。最大成交额参与率仅 0.0407%，说明"
+                            "容量不是失败原因；整手机会可负担率 87.99%。稳定性和可执行 TopK "
+                            "均未通过，未训练模型，没有评分或选股；Level2 继续延期。"
+                        )
+                    elif source.get(
+                        "intraday_opening_auction_amount_share_terminal"
+                    ):
+                        next_external_action = (
+                            "四个清洗方向、十七个完成收益诊断的独立分钟方向、终点收盘位置"
+                            "和收益偏度较高方向均已终止；只研究预先登记的全新经济机制，"
+                            "或积累注册后真正未见的分钟样本，不用 Level2 挽救本结果。"
+                        )
+                        source_status_line = (
+                            "Tushare 原五因子来源覆盖门仍未通过；字段级清洗层保留 4 个因子并"
+                            "全部通过覆盖门。前四因子和之后十七个完成收益诊断的独立分钟机制均"
+                            "没有产生双门禁合格因子；终点收盘位置和收益偏度另在无收益近同义门"
+                            "停止。最新的 09:30 集合竞价成交额占全天 241 分钟成交额比例通过"
+                            "覆盖、容量资格和二十二个因子唯一性门（最大绝对中位日秩相关 "
+                            "0.30347），但唯一一次 539-cohort 诊断平均 Rank IC 为 -0.00339，"
+                            "只有 48.98% 的 cohort 为正，七年中六年年度 IC 非正。标准化执行"
+                            "感知累计 -95.38%、最大回撤 -98.06%；20 万元整手、双边 10bp "
+                            "滑点累计 -35.45%，最大成交额参与率 0.3587% 未触发容量上限，"
+                            "但收益门失败。稳定性和可执行 TopK 均未通过，未训练模型，没有"
+                            "评分或选股；Level2 继续延期。"
+                        )
+                    elif source.get("intraday_market_idiosyncratic_share_terminal"):
                         next_external_action = (
                             "四个清洗方向、十六个完成收益诊断的独立分钟方向、终点收盘位置"
                             "和收益偏度较高方向均已终止；只研究预先登记的全新经济机制，"
@@ -41221,6 +42107,215 @@ def render_three_day_research_report(
     return "\n".join(lines)
 
 
+def append_historical_walkforward_terminal_summaries(report: str) -> str:
+    """Append stable terminal summaries that must survive every report rebuild."""
+
+    summaries = {
+        28: "最大绝对中位日秩相关为 0.684913；开发期 20bp 累计收益为 -14.01%。",
+        29: "最大绝对中位日秩相关为 0.607057；冻结的 20bp 压力成本收益为 -2.44%。",
+        30: "最大绝对中位日秩相关为 0.340229；20bp 纸面收益为 -8.851180%/-12.617061%/-17.787345%/-24.528441%。",
+        31: "最大绝对中位日秩相关为 0.690903；20bp 纸面收益为 +6.513813%/-0.223049%/-4.284055%/-12.827843%。",
+        32: "唯一性比较绝对值 0.979325 超过冻结上限 0.80；没有打开开发收益，累计历史开发试验仍为 253。",
+        33: "最大绝对中位日秩相关为 0.245542；20bp 整手收益为 -2.950138%/-7.269095%/-9.331777%/-17.806730%；累计历史开发试验推进到 254。",
+        34: "最大绝对中位日秩相关为 0.474685；零成本、5bp、10bp、20bp 整手收益为 +2.079427%/-3.349734%/-8.363466%/-17.494202%；累计历史开发试验推进到 255。",
+        35: "最近比较的中位日秩相关为 -0.883137；没有读取 2019–2023 日线或 forward return，累计历史开发试验仍为 255。",
+        36: "最大绝对中位日秩相关为 0.217636；零成本、5bp、10bp、20bp 整手收益为 -11.003588%/-15.249809%/-18.502642%/-25.365553%；累计历史开发试验推进到 256。",
+        37: "最大绝对中位日秩相关为 0.516429；零成本、5bp、10bp、20bp 整手收益为 -3.826082%/-9.597687%/-12.041505%/-18.808576%；累计历史开发试验推进到 257。",
+        38: "最大绝对中位日秩相关为 0.506321；零成本、5bp、10bp、20bp 整手收益为 -9.462748%/-13.966825%/-17.888889%/-25.726446%；累计历史开发试验推进到 258。",
+        39: "最大绝对中位日秩相关为 0.308938；零成本、5bp、10bp、20bp 整手收益为 +1.311107%/-3.852654%/-7.934397%/-16.734396%；累计历史开发试验推进到 259。",
+        40: "早晚盘范围轮廓相似度与范围参与熵的绝对中位日秩相关为 0.884338，故在收益前终止；累计历史开发试验仍为 259。",
+        41: "`intraday_microgap_absorption_share_238p` 与两个最近机制的中位日秩相关为 +0.836224/+0.801723；没有读取任何历史 forward return。",
+        42: "最大绝对中位日秩相关为 `0.041753`；0/5/10/20bp 整手收益为 `-2.146893%/-7.421575%/-11.867364%/-18.965983%`；累计历史开发试验推进到 260。",
+        43: "最大绝对中位日秩相关为 `0.667503`；聚合 20bp 收益为 `-29.142929%`；累计历史开发试验推进到 261。",
+        44: "中位/P05 覆盖为 `51.717636%/34.992895%`；累计历史研究尝试由 261 推进到 265，其中读取开发收益的试验累计仍为 261。",
+        45: "最大绝对中位日秩相关为 `0.111220`；开发期 20bp 累计收益为 -11.56%；累计历史研究尝试为 267，累计读取开发收益的试验为 262。",
+        46: "中位/P05 覆盖为 `99.818840%/99.287391%`；累计历史研究尝试由 267 推进到 270，累计读取开发收益的试验仍为 262。",
+        47: "最大绝对中位日秩相关为 `0.590707`；10bp/20bp 整手收益为 `-10.364923%/-19.273975%`；累计历史研究尝试由 270 推进到 274，累计读取开发收益的试验由 262 推进到 263。",
+        48: "最大绝对中位日秩相关为 `0.173857`；10bp/20bp 整手收益为 `-8.699285%/-16.744958%`；累计历史研究尝试由 274 推进到 279，累计读取开发收益的试验由 263 推进到 264。",
+        49: "历史 Campaign049 与前瞻 Candidate49 无关；失败比较的中位日秩相关为 `+0.871597`。累计历史研究尝试由 279 推进到 280，累计读取开发收益的试验仍为 264。",
+        50: (
+            "`intraday_half_session_extreme_shock_reversal_completion_2h` 的无收益覆盖中位/P05为 "
+            "`99.358885%/98.156168%`，73 项比较全部通过，最大绝对中位日秩相关为 `0.149511`。"
+            "唯一冻结开发试验在 2021/2022/2023 的 normalized return 为 "
+            "`+23.210460%/-16.237229%/-23.423742%`，10bp 整手收益为 "
+            "`+0.774438%/-4.699991%/-5.836597%`；survivor 为 0，2024–2025 未打开。"
+            "累计历史研究尝试由 280 推进到 286，累计读取开发收益的试验由 264 推进到 265。"
+        ),
+        51: (
+            "无收益覆盖中位/P05 为 `99.831839%/99.337089%`，74 项比较全部通过，"
+            "最大绝对中位日秩相关为 `0.282850`；唯一开发试验的 20bp 聚合整手收益为 "
+            "`-14.0308%`，survivor 为 0，2024–2025 未打开。累计历史研究尝试推进到 296，"
+            "累计读取开发收益的试验推进到 266。"
+        ),
+        52: (
+            "中位覆盖为 `96.0394%`，但 P05 覆盖与 P05 可用名称数均为 0，故覆盖门失败并在"
+            "比较值和收益前终止。累计历史研究尝试推进到 300，累计读取开发收益的试验仍为 266。"
+        ),
+        53: (
+            "覆盖门通过后，`intraday_price_update_share_238m` 的中位日秩相关为 `+0.852858`，"
+            "超过冻结的绝对 `0.8` 上限；没有读取日线或 forward return。累计历史研究尝试推进到 "
+            "303，累计读取开发收益的试验仍为 266。"
+        ),
+        54: (
+            "77 项无收益比较全部通过，最大绝对中位日秩相关为 `0.267355`；唯一开发试验的 "
+            "20bp 聚合整手收益为 `-22.940812%`，survivor 为 0，2024–2025 未打开。"
+            "累计历史研究尝试推进到 312，累计读取开发收益的试验推进到 267。"
+        ),
+        55: (
+            "中位/P05 覆盖为 `99.633023%/98.850117%`，但 "
+            "`intraday_price_update_share_238m` 的中位日秩相关为 `+0.878059`，超过冻结的绝对 "
+            "`0.8` 上限；没有读取日线或 forward return。累计历史研究尝试推进到 321，"
+            "累计读取开发收益的试验仍为 267。"
+        ),
+        56: (
+            "中位/P05 覆盖为 `99.917184%/99.451102%`，79 项冻结比较全部通过，最大绝对中位"
+            "日秩相关为 `0.747165`。唯一开发试验在 2021/2022/2023 的 Rank IC 为 "
+            "`-0.046879/-0.028355/-0.050668`，normalized return 为 "
+            "`-25.281001%/-41.429928%/-60.285918%`，10bp 整手收益为 "
+            "`-3.054932%/-6.020877%/-9.581920%`；聚合 20bp 收益为 `-19.371125%`，"
+            "survivor 为 0，2024–2025 未打开。收口时误选一条不可变的审计前零计数断言，"
+            "已追加为基础设施失败且未读取研究值或收益。累计历史研究尝试推进到 325，"
+            "累计读取开发收益的试验推进到 268。"
+        ),
+        57: (
+            "中位/P05 覆盖为 `99.728752%/99.056604%`，但与 "
+            "`intraday_price_update_share_238m` / "
+            "`intraday_amount_price_discovery_alignment_js_238p` 的中位日秩相关为 "
+            "`+0.872247/+0.832056`，均超过冻结的绝对 `0.8` 上限；没有读取日线或 "
+            "forward return。两次基础设施失败和一个完整因子尝试使累计历史研究尝试推进到 "
+            "328，累计读取开发收益的试验仍为 268。"
+        ),
+        58: (
+            "季度点时因子 `profit_yoy-revenue_yoy` 的中位/P05 覆盖为 "
+            "`99.945175%/99.568865%`，但与 `quality_profit` 的中位日秩相关为 "
+            "`+0.817009`，超过冻结的绝对 `0.8` 上限；没有读取日线或 forward return。"
+            "四次基础设施失败和一个完整因子尝试使累计历史研究尝试推进到 333，"
+            "累计读取开发收益的试验仍为 268。"
+        ),
+        59: (
+            "`intraday_market_directional_sign_agreement_238m` 的中位/P05 覆盖为 "
+            "`99.300205%/98.067939%`，90 项冻结比较全部通过，最大绝对中位日秩相关为 "
+            "`0.714890`。唯一开发试验在 2021/2022/2023 的 Rank IC 为 "
+            "`-0.010331/+0.013326/+0.010566`，normalized return 为 "
+            "`+21.973682%/-37.502954%/+1.263147%`，10bp 整手收益为 "
+            "`+2.098032%/-7.662734%/-1.170692%`；聚合 20bp 收益为 `-13.017742%`，"
+            "survivor 为 0，2024–2025 未打开。七次基础设施失败和一个完整因子尝试使"
+            "累计历史研究尝试推进到 341，累计读取开发收益的试验推进到 269；四次终端失败"
+            "分别来自 deselect 节点前缀不匹配、原地修改已绑定测试、从 tests 目录启动时缺少"
+            "仓库模块路径，以及子进程未继承仓库模块路径，均未改变研究结果。显式固定绝对"
+            "PYTHONPATH 后当前套件为 33 passed、1 deselected。"
+        ),
+        60: (
+            "`intraday_day_over_day_directional_return_agreement_238b` 的中位/P05 覆盖为 "
+            "`90.332413%/79.901731%`，低于冻结的 `95%/90%` 门槛，故在 91 项比较值、"
+            "日线价格和 forward return 之前终止。九次基础设施失败和一个完整因子尝试使"
+            "累计历史研究尝试推进到 351，累计读取开发收益的试验仍为 269；2019–2023 "
+            "开发折及 2024–2025 压力区间均未打开。"
+        ),
+        61: (
+            "`intraday_day_over_day_realized_variance_stability_238b` 的中位/P05 覆盖为 "
+            "`99.728752%/99.056604%`，92 项冻结比较全部通过，最大绝对中位日秩相关为 "
+            "`0.212609`。唯一开发试验在 2021/2022/2023 的 Rank IC 为 "
+            "`+0.009063/+0.009686/+0.023551`，但 normalized return 为 "
+            "`-17.240067%/-2.293530%/-24.769728%`，10bp 整手收益为 "
+            "`-2.780860%/-2.120424%/-4.798731%`；聚合 20bp 收益为 `-17.788650%`，"
+            "survivor 为 0，2024–2025 未打开。三次基础设施失败和一个完整因子尝试使"
+            "累计历史研究尝试推进到 355，累计读取开发收益的试验推进到 270。"
+        ),
+        62: (
+            "`quarterly_announcement_peer_crowding_sparsity` 的中位/P05 覆盖为 "
+            "`99.945175%/99.568865%`，93 项冻结比较全部通过，最大绝对中位日秩相关为 "
+            "`0.769144`。唯一开发试验在 2021/2022/2023 的 Rank IC 为 "
+            "`-0.004674/-0.015270/-0.006314`，normalized return 为 "
+            "`-18.683720%/+12.604669%/-30.421294%`，10bp 整手收益为 "
+            "`-5.016157%/+0.985748%/-6.362546%`；聚合 20bp 收益为 `-17.680546%`，"
+            "survivor 为 0，2024–2025 未打开。五次基础设施失败和一个完整因子尝试使"
+            "累计历史研究尝试推进到 361，累计读取开发收益的试验推进到 271；后两次分别是"
+            "未发生写入的终局文档补丁上下文失败，以及 Campaign001 不可变旧路径导致的"
+            "通用完成审计跨克隆失败，都没有重算 Campaign062 研究值或收益。"
+        ),
+        63: (
+            "`intraday_cross_sectional_standardized_return_state_stability_236p` 在冻结的第 236 个"
+            "收益位置上，1,699/1,699 个日期的横截面总体方差精确为零；严格正方差定义使"
+            "候选有效行为 0，中位/P05 覆盖均为 `0`。因此在 94 项比较值、日线价格和 "
+            "forward return 之前终止。七次基础设施失败和一个完整因子尝试使累计历史研究"
+            "尝试推进到 369，累计读取开发收益的试验仍为 271；后两次是终态组合测试的"
+            "历史状态断言失败和 deselect 节点前缀不匹配，均未读取研究值或收益。"
+        ),
+        64: (
+            "`intraday_range_weak_order_entropy_236t` 的中位/P05 覆盖为 "
+            "`99.945175%/99.568865%`。前 94 个可数值比较项全部通过，最大绝对中位日秩"
+            "相关为 `0.636896`；但冻结的第 95 项 Campaign063 没有有效值，无法形成共同"
+            "会话，因此按原协议在日线价格和 forward return 前失败关闭。累计历史研究尝试"
+            "推进到 381，累计读取开发收益的试验仍为 271；后续比较资格政策不追溯救援本轮。"
+        ),
+        65: (
+            "`intraday_range_weak_order_time_reversal_divergence_236t` 的中位/P05 覆盖为 "
+            "`99.945175%/99.568865%`，95 个冻结数值比较全部通过，最大绝对中位日秩相关为 "
+            "`0.178064`。唯一开发试验在 2021/2022/2023 的 Rank IC 为 "
+            "`-0.000294/-0.008297/-0.016556`，normalized return 为 "
+            "`+27.286075%/-36.867369%/-10.586468%`，10bp 整手收益为 "
+            "`+2.838227%/-4.741804%/-0.337072%`；聚合 20bp 收益为 `-9.218140%`，"
+            "survivor 为 0，2024–2025 未打开。七次基础设施或合成失败、三次成功准备和"
+            "一个完整因子尝试使累计历史研究尝试推进到 392，累计读取开发收益的试验推进到 272。"
+        ),
+        66: (
+            "`quarterly_quality_rank_balance_3f` 的中位/P05 覆盖为 "
+            "`99.945175%/99.568865%`，96 个冻结数值比较全部通过，最大绝对中位日秩相关为 "
+            "`0.547510`（`quality_growth`）。唯一开发试验在 2021/2022/2023 的 Rank IC 为 "
+            "`+0.002379/-0.000889/-0.026144`，normalized return 为 "
+            "`-32.018214%/-18.648678%/-13.293214%`，10bp 整手收益为 "
+            "`-2.787021%/-3.599290%/-3.332600%`；聚合整手收益在 0/5/10/20bp 下为 "
+            "`+1.766587%/-3.557626%/-7.150711%/-14.696601%`，survivor 为 0，"
+            "2024–2025 未打开。两次基础设施或合成失败、六次成功准备和一个完整因子尝试使"
+            "累计历史研究尝试推进到 401，累计读取开发收益的试验推进到 273。"
+        ),
+    }
+    record_variants = {
+        50: "_v2",
+        51: "_v3",
+        53: "_v2",
+        55: "_v4",
+        59: "_v4",
+        62: "_v3",
+        63: "_v4",
+    }
+    pieces = [report.rstrip()]
+    for campaign, summary in summaries.items():
+        record = REPO_ROOT / "docs" / (
+            f"a_share_three_day_walkforward_campaign_{campaign:03d}_research_record"
+            + record_variants.get(campaign, "")
+            + ".json"
+        )
+        if record.exists():
+            pieces.extend(
+                [
+                    "",
+                    f"## 历史滚动 Campaign{campaign:03d} 权威追加",
+                    "",
+                    summary,
+                    "该段仅重放不可变终止记录；不读取或重算收益，不生成当前评分、选股、仓位或订单。",
+                ]
+            )
+    candidate49_failure = (
+        REPO_ROOT / "docs/a_share_candidate49_20260805_daily_source_failure_record.json"
+    )
+    if candidate49_failure.exists():
+        pieces.extend(
+            [
+                "",
+                "## Candidate49 2026-08-05 前瞻数据源状态",
+                "",
+                "同日 16:30 后的零请求 plan 以退出码 0、`ready=true` 通过；唯一 run 在 "
+                "Tushare `stock_basic` 非法 `ts_code` 门禁以退出码 1 失败关闭，四次 provider "
+                "调用后禁止同日重试。活动日线根未改变，凭据未落盘，信号与执行台账仍各 0 条且"
+                "语义验证通过。该结果只表示当日前瞻数据源不可接受，不是 Candidate49 的收益"
+                "结论，也没有触发历史回填、Candidate50、评分、选股、仓位或订单。",
+            ]
+        )
+    return "\n".join(pieces).rstrip() + "\n"
+
+
 def run_research_report(args: argparse.Namespace) -> dict[str, Any]:
     """Write a human-readable report from the immutable research records."""
 
@@ -41320,7 +42415,9 @@ def run_research_report(args: argparse.Namespace) -> dict[str, Any]:
     prospective_execution_policy = load_prospective_execution_policy()
     pilot_execution_policy = load_pilot_execution_policy()
     baostock_5m_restoration_probe_audit = load_baostock_5m_restoration_probe_audit()
-    three_day_iteration_status = load_three_day_iteration_status()
+    three_day_iteration_status = overlay_candidate49_live_ledger_state(
+        load_three_day_iteration_status()
+    )
     candidate_overlap_audits = load_candidate_overlap_audits(experiment_root)
     regime_audits = load_regime_audits(experiment_root)
     model_audits = load_model_audits(experiment_root)
@@ -41386,6 +42483,154 @@ def run_research_report(args: argparse.Namespace) -> dict[str, Any]:
         baostock_5m_restoration_probe_audit=baostock_5m_restoration_probe_audit,
         three_day_iteration_status=three_day_iteration_status,
     )
+    campaign025_record_path = (
+        REPO_ROOT
+        / "docs"
+        / "a_share_three_day_walkforward_campaign_025_research_record.json"
+    )
+    if campaign025_record_path.exists():
+        campaign025_record = json.loads(
+            campaign025_record_path.read_text(encoding="utf-8")
+        )
+        campaign025_development = campaign025_record.get("development_result") or {}
+        campaign025_trial = campaign025_development.get("trial") or {}
+        campaign025_no_return = campaign025_record.get("no_return_result") or {}
+        campaign025_decision = campaign025_record.get("decision") or {}
+        report = report.rstrip() + "\n\n" + "\n".join(
+            [
+                "## 历史滚动 Campaign025 权威追加",
+                "",
+                (
+                    "Campaign025 在不等待新增日线或 16:30 的离线主线上完成。"
+                    "因子 `intraday_extreme_arrival_order_240m` 先通过无收益覆盖与 "
+                    f"{campaign025_no_return.get('statistical_comparison_count', 0)} 项唯一性比较；"
+                    "随后只运行一条已冻结的 2019–2023 扩展滚动开发试验。"
+                ),
+                (
+                    "验证折平均 Rank IC 为 "
+                    + "/".join(
+                        f"{float(item.get('mean_rank_ic', 0)):+.6f}"
+                        for item in campaign025_trial.get("validation_folds") or []
+                    )
+                    + "；中位验证 10bp 纸面收益为 "
+                    f"{float(campaign025_trial.get('median_validation_pilot_10bp_return', 0)):+.2%}，"
+                    "开发期 20bp 累计收益为 "
+                    f"{float(campaign025_trial.get('development_aggregate_pilot_20bp_return', 0)):+.2%}。"
+                ),
+                (
+                    f"开发 survivor 为 {campaign025_development.get('development_survivor_count', 0)}；"
+                    "因此 2024–2025 压力区间未打开、未读取。"
+                    f"该因子终止={str(campaign025_decision.get('factor_terminal') is True).lower()}，"
+                    "不得反向、修补、组合、生成当前评分、选股、仓位或订单。"
+                ),
+                (
+                    "Candidate49 仍是唯一前瞻候选；历史收益未回填，"
+                    "信号与执行台账均保持为空。"
+                ),
+                "",
+            ]
+        )
+    campaign026_record_path = (
+        REPO_ROOT
+        / "docs"
+        / "a_share_three_day_walkforward_campaign_026_research_record.json"
+    )
+    if campaign026_record_path.exists():
+        campaign026_record = json.loads(
+            campaign026_record_path.read_text(encoding="utf-8")
+        )
+        campaign026_development = campaign026_record.get("development_result") or {}
+        campaign026_no_return = campaign026_record.get("no_return_result") or {}
+        campaign026_decision = campaign026_record.get("decision") or {}
+        report = report.rstrip() + "\n\n" + "\n".join(
+            [
+                "## 历史滚动 Campaign026 权威追加",
+                "",
+                (
+                    "Campaign026 因子 "
+                    "`intraday_market_up_down_correlation_asymmetry_238m` "
+                    "先通过无收益覆盖与 "
+                    f"{campaign026_no_return.get('statistical_comparison_count', 0)} "
+                    "项唯一性比较；最大绝对中位日秩相关为 "
+                    f"{float(campaign026_no_return.get('closest_comparison_median_daily_rank_correlation', 0)):.6f}。"
+                ),
+                (
+                    "三组验证折平均 Rank IC 为 "
+                    + "/".join(
+                        f"{float(item.get('mean_rank_ic', 0)):+.6f}"
+                        for item in campaign026_development.get("validation_folds") or []
+                    )
+                    + "；中位验证 10bp 纸面收益为 "
+                    f"{float(campaign026_development.get('median_validation_pilot_10bp_return', 0)):+.2%}，"
+                    "开发期 20bp 累计收益为 "
+                    f"{float(campaign026_development.get('development_aggregate_pilot_20bp_return', 0)):+.2%}。"
+                ),
+                (
+                    f"开发 survivor 为 {campaign026_development.get('development_survivor_count', 0)}；"
+                    "2024–2025 压力区间未打开、未读取。"
+                    f"该因子终止={str(campaign026_decision.get('factor_terminal') is True).lower()}，"
+                    "不得反向、改窗、修补、组合或生成当前交易动作。"
+                ),
+                (
+                    "Candidate49 仍是唯一前瞻候选；历史收益未回填，"
+                    "信号与执行台账保持为空。"
+                ),
+                "",
+            ]
+        )
+    campaign027_record_path = (
+        REPO_ROOT
+        / "docs"
+        / "a_share_three_day_walkforward_campaign_027_research_record.json"
+    )
+    if campaign027_record_path.exists():
+        campaign027_record = json.loads(
+            campaign027_record_path.read_text(encoding="utf-8")
+        )
+        campaign027_development = campaign027_record.get("development_result") or {}
+        campaign027_no_return = campaign027_record.get("no_return_result") or {}
+        campaign027_decision = campaign027_record.get("decision") or {}
+        report = report.rstrip() + "\n\n" + "\n".join(
+            [
+                "## 历史滚动 Campaign027 权威追加",
+                "",
+                (
+                    "Campaign027 因子 "
+                    "`intraday_morning_afternoon_return_profile_persistence_119p` "
+                    "先通过无收益覆盖与 "
+                    f"{campaign027_no_return.get('statistical_comparison_count', 0)} "
+                    "项唯一性比较；最大绝对中位日秩相关为 "
+                    f"{abs(float(campaign027_no_return.get('closest_comparison_median_daily_rank_correlation', 0))):.6f}。"
+                ),
+                (
+                    "三组验证折平均 Rank IC 为 "
+                    + "/".join(
+                        f"{float(item.get('mean_rank_ic', 0)):+.6f}"
+                        for item in campaign027_development.get("validation_folds") or []
+                    )
+                    + "；中位验证 10bp 纸面收益为 "
+                    f"{float(campaign027_development.get('median_validation_pilot_10bp_return', 0)):+.2%}，"
+                    "开发期 20bp 累计收益为 "
+                    f"{float(campaign027_development.get('development_aggregate_pilot_20bp_return', 0)):+.2%}。"
+                ),
+                (
+                    f"开发 survivor 为 {campaign027_development.get('development_survivor_count', 0)}；"
+                    "2024–2025 压力区间未打开、未读取。"
+                    f"该因子终止={str(campaign027_decision.get('factor_terminal') is True).lower()}，"
+                    "不得反向、改窗、修补、组合或生成当前交易动作。"
+                ),
+                (
+                    "无收益审计中的两个字段访问摘要已通过追加记录纠正为 close-only；"
+                    "原始审计保持不改写，候选值、比较值和门禁结论均未改变。"
+                ),
+                (
+                    "Candidate49 仍是唯一前瞻候选；历史收益未回填，"
+                    "信号与执行台账保持为空。"
+                ),
+                "",
+            ]
+        )
+    report = append_historical_walkforward_terminal_summaries(report)
     output = Path(args.output).expanduser()
     _atomic_write_text(output, report)
     return {

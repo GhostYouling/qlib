@@ -1,0 +1,92 @@
+{
+  "schema_version": 1,
+  "kind": "a_share_three_day_walkforward_campaign151_snapshot_full_verification_protocol",
+  "status": "frozen_after_peer_benchmark_diagnosis_before_candidate_partition_payload_reads",
+  "recorded_at": "2026-08-15T01:18:05+08:00",
+  "authoritative_inputs": {
+    "publication_and_zero_coverage_diagnosis": {
+      "path": "docs/a_share_three_day_walkforward_campaign_151_snapshot_publication_and_zero_coverage_diagnosis_20260815.json",
+      "sha256": "d6bf09ef95e18eaf5277ff7c576c4a414bfa2c259a8ce537f262ccb38d76c03d"
+    },
+    "builder_implementation_freeze_v2": {
+      "path": "docs/a_share_three_day_walkforward_campaign_151_source_bound_builder_implementation_freeze_v2_20260815.json",
+      "sha256": "1574ee3166597a2af44967b5f14239b8febbffb474e799c3d12d95c481927180"
+    },
+    "snapshot_manifest": {
+      "path": "/Volumes/DIsk/qlib-a-share-tushare-1m/derived/a_share/rich/tushare/minute_walkforward_campaign151_feature_library/tushare_stk_mins_1m_2019_2025_ea0cbb8f_walkforward_campaign151_feature_library_v1/snapshot_manifest.json",
+      "sha256": "fdc23323e2ddc9e070f3c2a48fb5d05ebf9673b8c0c613ac88ecd0ea15054f83",
+      "dataset_sha256": "ef60fd141ab02a6b1add10de6193d47d8baad83a407a2a11488a50ce5e5f9029",
+      "partitions": 33015,
+      "rows": 7724498,
+      "eligible_rows": 0
+    },
+    "candidate49_signal_ledger": {
+      "path": "data/experiments/short_horizon/candidate49_future_signal_ledger.json",
+      "sha256": "5193f00d7f36da003f53cec387900da4c3d002299f5dfcfc1a95eaa199ed3a79",
+      "entries": 0
+    },
+    "candidate49_execution_ledger": {
+      "path": "data/experiments/short_horizon/candidate49_future_execution_ledger.json",
+      "sha256": "d57a3e61eac969e42cafa418ccd8c0a5ee65dcf69da145bb2c096c2a02a2ea4f",
+      "entries": 0
+    }
+  },
+  "plan_gate": {
+    "metadata_only": true,
+    "candidate_partition_parquet_opened": false,
+    "exact_protocol_manifest_code_test_and_implementation_freeze_required": true,
+    "verification_receipt_must_be_absent": true,
+    "ready_true_and_exit_zero_required": true,
+    "failed_plan_exit_may_not_be_bypassed": true
+  },
+  "full_verification": {
+    "explicit_confirm_snapshot_verification_required": true,
+    "worker_range_inclusive": [
+      1,
+      8
+    ],
+    "every_partition_byte_sha256_must_match": true,
+    "every_partition_frame_sha256_must_match": true,
+    "every_partition_sidecar_must_equal_manifest_record": true,
+    "path_must_be_contained_under_snapshot_root": true,
+    "exact_output_columns": [
+      "trade_date",
+      "symbol",
+      "provider",
+      "intraday_relative_amount_share_clock_center_240m",
+      "intraday_relative_amount_share_clock_center_240m_eligible"
+    ],
+    "trade_date_must_be_normalized_sorted_and_unique_per_symbol_partition": true,
+    "manifest_symbol_and_year_identity_must_match": true,
+    "provider_must_equal_tushare": true,
+    "eligible_must_be_boolean_and_all_false": true,
+    "factor_value_must_be_nan_when_ineligible": true,
+    "aggregate_partition_count": 33015,
+    "aggregate_row_count": 7724498,
+    "aggregate_eligible_row_count": 0,
+    "dataset_digest_must_recompute_from_benchmark_and_partition_bytes": true,
+    "benchmark_byte_and_frame_hashes_must_match": true,
+    "benchmark_exact_date_position_grid_must_match": true,
+    "benchmark_position_238_sum_must_be_zero_on_all_1699_dates": true
+  },
+  "terminal_decision": {
+    "full_verification_pass": "Campaign151 terminates before any return read because eligible coverage is exactly zero",
+    "full_verification_fail": "record infrastructure failure; do not terminalize on unverified data and do not read returns",
+    "formula_or_gate_rescue_allowed": false,
+    "append_to_numeric_comparator_library_allowed": false,
+    "open_2024_2025_allowed": false,
+    "promotion_allowed": false
+  },
+  "research_boundary": {
+    "candidate_values_read_before_protocol": true,
+    "peer_benchmark_values_read_before_protocol": true,
+    "candidate_partition_values_read_after_publication_before_protocol": false,
+    "comparator_values_read": false,
+    "historical_daily_price_or_forward_return_values_read": false,
+    "credential_loaded": false,
+    "provider_request_issued": false,
+    "candidate49_ledgers_changed": false,
+    "current_scoring_selection_sizing_positions_or_orders_performed": false
+  },
+  "next_action": "Implement and test the independent verifier against synthetic frames without opening published candidate partitions, freeze code and tests, run metadata-only plan, then run one confirmed full verification."
+}

@@ -1,0 +1,55 @@
+{
+  "version": 1,
+  "kind": "a_share_three_day_walkforward_campaign076_feature_implementation_freeze",
+  "status": "frozen_before_campaign076_minute_source_values",
+  "frozen_at": "2026-08-06T10:55:00+08:00",
+  "protocol": {
+    "path": "docs/a_share_three_day_walkforward_campaign_076_no_return_preregistration.json",
+    "sha256": "e1ac80f52e59e7dfff36154a41355ded291511d04c6c1d51eb5106af71167a01"
+  },
+  "mechanism_overlap_audit": {
+    "path": "docs/a_share_three_day_walkforward_campaign_076_mechanism_overlap_audit.json",
+    "sha256": "170a3a892949362a8c3cf70766da9d3bc1db6ebcc0b40da70e34e25344bf86cb"
+  },
+  "feature_runner": {
+    "path": "scripts/a_share_three_day_walkforward_campaign076_features.py",
+    "sha256": "fea05e1bea886616830f849a10a415fae888a19ec06208e814dd7c936a4b7270"
+  },
+  "tests": {
+    "path": "tests/data_collector_tests/test_a_share_three_day_walkforward_campaign076_features.py",
+    "sha256": "45d89011745ed505c9b3ea49743f10adc46683375dd5ad0836218f35bb803d1b",
+    "passed": 9,
+    "failed": 0,
+    "synthetic_only": true
+  },
+  "frozen_algorithm": {
+    "factor": "intraday_peak_amount_bar_recency_240m",
+    "direction": "higher",
+    "source_projection": [
+      "datetime",
+      "symbol",
+      "provider",
+      "amount"
+    ],
+    "selected_grid": "exact 09:31-11:30 and 13:01-15:00 continuous-session bars after validating the 241-row source grid including 09:30",
+    "amount_semantics": "all 240 selected amounts finite and nonnegative with finite positive total",
+    "peak_semantics": "reverse argmax selects the latest exact maximum occurrence",
+    "normalization": "zero-based peak position divided by 239",
+    "valid_range": [
+      0.0,
+      1.0
+    ],
+    "alternate_tie_window_transform_direction_filter_threshold_subset_model_or_rescue": false
+  },
+  "research_boundary": {
+    "candidate_source_rows_read_before_freeze": false,
+    "candidate_values_read_before_freeze": false,
+    "comparison_values_read_before_freeze": false,
+    "historical_daily_price_fields_read_before_freeze": [],
+    "historical_forward_returns_read_before_freeze": false,
+    "provider_request_issued": false,
+    "candidate49_ledgers_changed": false,
+    "current_scoring_selection_sizing_or_orders_performed": false
+  },
+  "next_action": "Build the Campaign076 snapshot exactly once, verify all partition byte/frame and aggregate hashes, publish a binding, then run coverage before any comparator value."
+}

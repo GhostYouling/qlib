@@ -1,0 +1,88 @@
+{
+  "version": 1,
+  "kind": "a_share_candidate49_daily_source_failure_record",
+  "status": "same_day_candidate49_workflow_failed_closed_at_stock_basic_no_retry_allowed",
+  "recorded_at": "2026-08-03T08:56:00Z",
+  "session_date": "2026-08-03",
+  "timezone": "Asia/Singapore",
+  "authoritative_predecessor": {
+    "path": "docs/a_share_three_day_iteration_status_20260803_campaign052_verified.json",
+    "sha256": "3d312605ffe52d777fbda913b6df3478098da90a429bcf1a65497868e0f457f8"
+  },
+  "workflow_protocol": {
+    "path": "docs/a_share_tushare_candidate49_future_session_workflow_protocol.json",
+    "sha256": "6ff5636a3f7ef65e93452098186b3aecf9231d68873ab8a1070afb91d699ef7c"
+  },
+  "readonly_plan": {
+    "session": "2026-08-03",
+    "staging_root": "/Volumes/DIsk/qlib-a-share-tushare-daily-2026-08-03",
+    "minute_data_root": "/Volumes/DIsk/qlib-a-share-tushare-1m",
+    "ready": true,
+    "recommended_cli_exit_code": 0,
+    "actual_exit_code": 0,
+    "token_present": true,
+    "filesystem_write_performed": false,
+    "provider_request_issued": false
+  },
+  "confirmed_run": {
+    "same_parameters_as_plan": true,
+    "confirm_run": true,
+    "status": "failed_closed",
+    "actual_exit_code": 1,
+    "failure_stage": "stock_basic",
+    "error_classification": "Tushare stock_basic contains an invalid ts_code",
+    "provider_continuation_allowed": false,
+    "same_day_retry_allowed": false
+  },
+  "immutable_failure_evidence": {
+    "latest_failure": {
+      "path": "/Volumes/DIsk/qlib-a-share-tushare-daily-2026-08-03/raw/a_share/rich/tushare/daily_provider_migration_v1/latest_failure.json",
+      "sha256": "11249b0e9c13e1818bb500f924300497e56ae4ec6a7cc6fd36630f13c8470f0d"
+    },
+    "trade_calendar_json": {
+      "path": "/Volumes/DIsk/qlib-a-share-tushare-daily-2026-08-03/raw/a_share/rich/tushare/daily_provider_migration_v1/trade_calendar.json",
+      "sha256": "4780d5a9f70f64a96116b584c7566fd397b1441aabb750b05b564f573869e08a"
+    },
+    "trade_calendar_parquet": {
+      "path": "/Volumes/DIsk/qlib-a-share-tushare-daily-2026-08-03/raw/a_share/rich/tushare/daily_provider_migration_v1/trade_calendar.parquet",
+      "sha256": "30942e0cb59a496f7623fe634e20728219035b9be0ca41e9761a336f80aeff9c"
+    },
+    "active_root_mutated": false,
+    "completed_session_checkpoints_preserved": true,
+    "credential_value_persisted": false,
+    "forward_return_fields_read": false,
+    "provider_calls_this_invocation": 4
+  },
+  "post_failure_state": {
+    "active_data_root": "/Volumes/DIsk/Disk-Coding/qlib/data",
+    "active_daily_source": "baostock",
+    "active_calendar_end": "2026-07-13",
+    "source_snapshot_published": false,
+    "candidate49_signal_ledger": {
+      "path": "data/experiments/short_horizon/candidate49_future_signal_ledger.json",
+      "sha256": "5193f00d7f36da003f53cec387900da4c3d002299f5dfcfc1a95eaa199ed3a79",
+      "entry_count": 0
+    },
+    "candidate49_execution_ledger": {
+      "path": "data/experiments/short_horizon/candidate49_future_execution_ledger.json",
+      "sha256": "d57a3e61eac969e42cafa418ccd8c0a5ee65dcf69da145bb2c096c2a02a2ea4f",
+      "entry_count": 0
+    }
+  },
+  "credential_safety": {
+    "repository_dotenv_exists": true,
+    "repository_dotenv_mode": "0600",
+    "TUSHARE_TOKEN_nonempty": true,
+    "token_value_printed_hashed_or_persisted": false,
+    "credential_missing_is_not_the_failure": true
+  },
+  "research_boundary": {
+    "candidate49_historical_return_backfill_performed": false,
+    "candidate49_historical_signal_or_execution_backfill_performed": false,
+    "second_prospective_candidate_started": false,
+    "failure_exit_code_bypassed": false,
+    "failed_response_re_requested_for_more_detail": false,
+    "current_scoring_selection_sizing_or_orders_performed": false
+  },
+  "next_action": "Do not retry the 2026-08-03 provider gate. Preserve staging evidence and continue only zero-network offline Campaign053 research."
+}

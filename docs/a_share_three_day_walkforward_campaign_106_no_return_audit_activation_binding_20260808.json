@@ -1,0 +1,52 @@
+{
+  "schema_version": 1,
+  "kind": "a_share_three_day_walkforward_campaign106_no_return_audit_activation_binding",
+  "status": "frozen_after_verified_candidate_snapshot_before_coverage_or_comparator_values",
+  "recorded_at": "2026-08-07T19:21:18Z",
+  "implementation_freeze": {
+    "path": "docs/a_share_three_day_walkforward_campaign_106_no_return_implementation_freeze_v2_20260808.json",
+    "sha256": "a832b5c3500d7fb7e4aeaa97204689b84ad9f15664424d270d79626824da224f"
+  },
+  "snapshot_binding": {
+    "path": "docs/a_share_three_day_walkforward_campaign_106_feature_snapshot_binding_20260808.json",
+    "sha256": "6d88eb81201bf3cc1663d4ec43733fbc5cadf8e7695f3c1c92bba09b9fbdd859"
+  },
+  "candidate_snapshot": {
+    "path": "/Volumes/DIsk/qlib-a-share-tushare-1m/derived/a_share/rich/tushare/minute_walkforward_campaign106_feature_library/tushare_stk_mins_1m_2019_2025_ea0cbb8f_walkforward_campaign106_feature_library_v1/snapshot_manifest.json",
+    "sha256": "0fa2bb014e0c51e7ad2254c479f21c2d5a1d32bec57be956a111f2ca5da3c572",
+    "dataset_sha256": "f52544dbce026cf9fca9489c85d80bb6fb69e5e880f5b7bf14fb82f09ae8de0c",
+    "partitions": 33015,
+    "rows": 7724498,
+    "eligible_rows": 7724498
+  },
+  "first_130_directional_comparators": {
+    "path": "/Volumes/DIsk/qlib-a-share-tushare-1m/derived/a_share/rich/tushare/minute_walkforward_campaign102_design_matrix/tushare_stk_mins_1m_2019_2025_ea0cbb8f_walkforward_campaign102_design_matrix_v1/snapshot_manifest.json",
+    "sha256": "fc9ab498462439731785a0eabbde370c1fd883c8d771eba312c85aa912d3cebe",
+    "dataset_sha256": "cceec2b790d134a89914e83e0697c1e6abff605a85fd85be74de68067faddb92",
+    "factor_count": 130,
+    "value_semantics": "same-session average-tie percentiles already normalized into each factor's frozen higher-is-better direction"
+  },
+  "comparator_131": {
+    "path": "/Volumes/DIsk/qlib-a-share-tushare-1m/derived/a_share/rich/tushare/minute_walkforward_campaign103_feature_library/tushare_stk_mins_1m_2019_2025_ea0cbb8f_walkforward_campaign103_feature_library_v1/snapshot_manifest.json",
+    "sha256": "8a939feb53edfb31be8f133c2683920ed13424e716a4f4b5ed0d1a300588603b",
+    "dataset_sha256": "57afdd9f8a246fb9f513f85b3b631f70cf734655bd226ff211201bf7e084ea13",
+    "factor": "full_numeric_library_directional_rank_improvement_breadth_130f",
+    "direction": "higher"
+  },
+  "comparator_132": {
+    "path": "/Volumes/DIsk/qlib-a-share-tushare-1m/derived/a_share/rich/tushare/minute_walkforward_campaign105_feature_library/tushare_stk_mins_1m_2019_2025_ea0cbb8f_walkforward_campaign105_feature_library_v1/snapshot_manifest.json",
+    "sha256": "56e2d016087ff09643ef98dd00cad0ac9c771e815d19ec9941cea9f5904824a5",
+    "dataset_sha256": "912625c3763fe3868adb4c4f410b6a6ab72c9272f78b8b57db620daaf970018c",
+    "factor": "intraday_active_trading_bar_share_240m",
+    "direction": "higher"
+  },
+  "coverage_or_capacity_metrics_computed_before_activation": false,
+  "comparator_values_read_before_activation": false,
+  "historical_daily_price_or_forward_return_values_read_before_activation": false,
+  "provider_request_issued_before_activation": false,
+  "candidate49_historical_backfill_performed": false,
+  "candidate49_ledgers_changed": false,
+  "current_scoring_selection_sizing_or_orders_performed": false,
+  "single_use": true,
+  "next_action": "Run exactly one ordered no-return audit. Coverage failure stops before all comparator values; uniqueness failure stops before all daily prices and returns."
+}

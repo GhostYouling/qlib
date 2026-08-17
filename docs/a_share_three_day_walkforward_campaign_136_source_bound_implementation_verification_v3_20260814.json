@@ -1,0 +1,39 @@
+{
+  "schema_version": 1,
+  "kind": "a_share_three_day_walkforward_campaign136_source_bound_implementation_verification",
+  "status": "recovery_v3_verified_before_source_build_retry",
+  "recorded_at": "2026-08-14T11:26:15+0800",
+  "implementation_freeze_v3": {
+    "path": "docs/a_share_three_day_walkforward_campaign_136_source_bound_implementation_freeze_v3_20260814.json",
+    "sha256": "0d5264d22984738a3e2fb8cbc95726fa66f21ba4a47f0474e1880f4e4a8c9fe5"
+  },
+  "verification": {
+    "pytest": "14 passed in 2.15s",
+    "formula_test_count": 6,
+    "feature_builder_test_count": 8,
+    "black": "passed; 4 files unchanged",
+    "ruff": "passed",
+    "python_compile": "passed before v3 freeze",
+    "new_regression": "A symbol whose first source row has no predecessor is ineligible with a missing score and no exception.",
+    "real_historical_daily_source_rows_read_by_verification": false
+  },
+  "recovery_scope": {
+    "nullable_missing_identity_mapped_to_false": true,
+    "missing_factor_imputed": false,
+    "missing_predecessor_bridged": false,
+    "formula_direction_source_projection_date_range_threshold_tolerance_or_filter_changed": false
+  },
+  "next_gate": {
+    "allowed": "Run a fresh exact metadata-only Campaign136 plan; retry run --confirm-run only if exit code is 0 and ready is true.",
+    "not_allowed": "No comparator, OHLCV or forward-return read before immutable source publication and structural coverage admission."
+  },
+  "research_boundary": {
+    "campaign136_candidate_snapshot_published": false,
+    "campaign136_comparator_values_read": false,
+    "historical_daily_ohlcv_fields_read": [],
+    "historical_forward_returns_read": false,
+    "provider_request_issued": false,
+    "candidate49_ledgers_changed": false,
+    "investment_advice": false
+  }
+}

@@ -1,0 +1,96 @@
+{
+  "schema_version": 1,
+  "kind": "a_share_three_day_walkforward_campaign124_mechanism_overlap_audit",
+  "status": "passed_for_one_zero_row_source_contract_before_adapter_or_values",
+  "recorded_at": "2026-08-14T03:55:05+08:00",
+  "purpose": "Challenge IPO online-subscription ballot scarcity against all 148 frozen definitions, the 139 reserved numeric comparators and the nearest listing, size, valuation, attention and financing mechanisms before source or factor values.",
+  "authoritative_inputs": {
+    "concept_scouting": {
+      "path": "docs/a_share_three_day_walkforward_campaign_124_concept_scouting_20260814.json",
+      "sha256": "4c46a5c490cd81459f8482445afbf84dc11dac9bde081476aa76430b40af7f10",
+      "binding_state": "bound"
+    },
+    "campaign075_listing_youth_record": {
+      "path": "docs/a_share_three_day_walkforward_campaign_075_research_record.json",
+      "sha256": "4b83241a0765426f2bb9437c9af83dba6d061b2dad4bfbddde9225bbc4acc22c"
+    },
+    "campaign075_concept_scouting": {
+      "path": "docs/a_share_three_day_walkforward_campaign_075_concept_scouting.json",
+      "sha256": "682378a54f554e669182528db1e3e1a702c93223e5d128e12c952db64b7ac350"
+    },
+    "numeric_policy_v124": {
+      "path": "docs/a_share_three_day_walkforward_future_numeric_comparison_eligibility_policy_v124_20260814.json",
+      "sha256": "8f1a972f98ed98cbde520515a6e341c0a27f6821d7cecf484ab54ef459773d18",
+      "complete_definition_count_reviewed": 148,
+      "eligible_numeric_comparator_count_reserved_but_not_loaded": 139
+    }
+  },
+  "candidate": {
+    "name": "ipo_retail_ballot_scarcity_20to79s",
+    "source_state": "prelisting_online_subscription_success_rate",
+    "formula_ranking_input": "-ballot",
+    "listing_age_used_only_as_frozen_support_predicate": true
+  },
+  "nearest_mechanism_challenges": [
+    {
+      "mechanism": "accepted_instrument_session_youth_20s",
+      "decision": "independent_subject_to_later_numeric_uniqueness_gate",
+      "reason": "Campaign075 ranks the negative accepted-session age for essentially every seasoned instrument. Campaign124 ranks a fixed, issuer-specific prelisting subscription outcome only among age-eligible recent IPOs; age is never a tiebreaker, weight or score. The 139-factor numeric gate must later reject it if support-induced correlation is too high."
+    },
+    {
+      "mechanism": "max_return_20_low_lottery_demand_hypothesis",
+      "decision": "independent",
+      "reason": "The legacy comment used lottery-demand as an interpretation of low maximum secondary-market return. Campaign124 uses the documented primary-market ballot percentage and reads no OHLC return path. A shared English metaphor is not a shared input state."
+    },
+    {
+      "mechanism": "size_small_free_float_scarcity_or_issue_amount",
+      "decision": "independent",
+      "reason": "Ballot is a success probability, not shares issued, online allocation amount, float, market capitalization, funds raised or turnover. All issue-size fields are forbidden."
+    },
+    {
+      "mechanism": "valuation_affordability_or_issue_price",
+      "decision": "independent",
+      "reason": "Price, PE and valuation benchmarks are forbidden; the score is unchanged by offer price or valuation."
+    },
+    {
+      "mechanism": "event_count_attention_or_news_frequency",
+      "decision": "independent",
+      "reason": "One immutable IPO ballot outcome is used per issuer. No announcement count, text, title, popularity list or repeated event frequency enters the score."
+    },
+    {
+      "mechanism": "financing_amount_or_capital_raising",
+      "decision": "independent",
+      "reason": "Funds raised, total issuance and later financing events are excluded. Subscription success rate identifies demand allocation scarcity, not issuer financing magnitude."
+    }
+  ],
+  "complete_library_review": {
+    "all_148_complete_definitions_reviewed_without_values": true,
+    "all_139_numeric_comparators_reserved_but_not_loaded": true,
+    "repository_search_found_prior_new_share_or_ballot_factor": false,
+    "old_terminal_definition_or_result_rewritten": false,
+    "old_terminal_factor_combined": false,
+    "genuinely_new_information_state": true
+  },
+  "audit_decision": {
+    "pass": true,
+    "selected_candidate_count": 1,
+    "may_freeze_zero_row_source_contract": true,
+    "may_implement_pure_synthetic_adapter_after_contract": true,
+    "may_request_provider_rows_now": false,
+    "may_compute_factor_comparator_price_or_return_values_now": false
+  },
+  "research_boundary": {
+    "provider_request_issued": false,
+    "credential_loaded": false,
+    "provider_rows_read_persisted_or_counted": false,
+    "candidate_or_comparison_values_read": false,
+    "historical_daily_price_fields_read": [],
+    "historical_forward_returns_read": false,
+    "stress_2024_2025_opened": false,
+    "candidate49_historical_backfill_performed": false,
+    "candidate49_ledgers_changed": false,
+    "second_prospective_candidate_created": false,
+    "current_scoring_selection_sizing_positions_or_orders_performed": false,
+    "investment_advice": false
+  }
+}

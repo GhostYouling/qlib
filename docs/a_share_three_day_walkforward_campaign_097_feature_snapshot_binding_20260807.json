@@ -1,0 +1,75 @@
+{
+  "schema_version": 1,
+  "kind": "a_share_three_day_walkforward_campaign097_feature_snapshot_binding",
+  "status": "immutable_no_return_feature_snapshot_and_market_benchmark_verified_before_comparison_values",
+  "recorded_at": "2026-08-07T05:55:00Z",
+  "protocol": {
+    "path": "docs/a_share_three_day_walkforward_campaign_097_no_return_preregistration.json",
+    "sha256": "a36a7b4e6153c66c5fa5825ebf20a2a30d6764e040be6e84e4202e66413b1d56"
+  },
+  "effective_implementation_freeze": {
+    "path": "docs/a_share_three_day_walkforward_campaign_097_feature_implementation_freeze_v2_20260807.json",
+    "sha256": "9132fc69af5ced8a4d3c5540d4456601d65c4b000242d15a37fee4961603339a"
+  },
+  "effective_feature_runner": {
+    "path": "scripts/a_share_three_day_walkforward_campaign097_features.py",
+    "sha256": "81473f082130cb490dd9572b9baa8613daaee3ba778cb46d6e3aeea1b417d16f"
+  },
+  "snapshot": {
+    "path": "/Volumes/DIsk/qlib-a-share-tushare-1m/derived/a_share/rich/tushare/minute_walkforward_campaign097_feature_library/tushare_stk_mins_1m_2019_2025_ea0cbb8f_walkforward_campaign097_feature_library_v1/snapshot_manifest.json",
+    "sha256": "12e43008b4595a338bdd67ac21dcd543772e0517993623837770bec3bd31e0df",
+    "dataset_sha256": "ab5b0f747600a4040c38e1d6453a0ec4242342803bc7acff257cc88f95ccfdb5",
+    "partitions": 33015,
+    "rows": 7724498,
+    "eligible_rows": 7699914,
+    "missing_rows": 24584,
+    "invalid_high_low_rows": 0,
+    "nonpositive_total_range_rows": 24584,
+    "insufficient_leave_one_out_peer_rows": 0,
+    "constant_stock_profile_rows": 0,
+    "constant_market_profile_rows": 0,
+    "nonfinite_or_out_of_range_rows": 0,
+    "resumed_partitions": 0
+  },
+  "market_range_profile_benchmark": {
+    "path": "/Volumes/DIsk/qlib-a-share-tushare-1m/derived/a_share/rich/tushare/minute_walkforward_campaign097_feature_library/tushare_stk_mins_1m_2019_2025_ea0cbb8f_walkforward_campaign097_feature_library_v1/market_range_profile_benchmark_240m.parquet",
+    "sha256": "673ba4504145019fbc691c8a61ffcdc5a34079c050c4fbae65512be990ad81be",
+    "frame_sha256": "06186bbaa3dd706cb6e332d87e740ce281cc4a12d8291e2cb91f37d97f0c27fd",
+    "trade_dates": 1699,
+    "profile_positions_per_date": 240,
+    "rows": 407760,
+    "processed_symbols": 5396,
+    "minimum_complete_profile_count": 1560,
+    "p05_complete_profile_count": 3564,
+    "median_complete_profile_count": 4706,
+    "maximum_complete_profile_count": 5161
+  },
+  "independent_verification": {
+    "partitions_verified": 33015,
+    "rows_verified": 7724498,
+    "eligible_rows_verified": 7699914,
+    "partition_bytes_verified": 290653280,
+    "market_benchmark_bytes_verified": 3607113,
+    "all_byte_and_aggregate_checks_passed": true
+  },
+  "factor": "intraday_market_range_profile_synchronization_240m",
+  "direction": "higher",
+  "source_fields_read": [
+    "datetime",
+    "symbol",
+    "provider",
+    "high",
+    "low"
+  ],
+  "zero_ranges_retained_at_fixed_clocks": true,
+  "positive_range_or_adjacent_pair_minimum": null,
+  "source_rows_read": true,
+  "market_benchmark_values_computed": true,
+  "candidate_values_computed": true,
+  "coverage_counts_read": false,
+  "comparison_values_read": false,
+  "historical_daily_price_or_forward_return_values_read": false,
+  "provider_request_issued": false,
+  "candidate49_ledgers_changed": false,
+  "independent_verify_status": "verified"
+}

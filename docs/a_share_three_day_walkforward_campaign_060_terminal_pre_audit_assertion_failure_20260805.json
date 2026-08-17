@@ -1,0 +1,38 @@
+{
+  "version": 1,
+  "kind": "a_share_three_day_walkforward_campaign060_infrastructure_failure",
+  "status": "post_terminal_suite_selected_two_immutable_pre_audit_assertions",
+  "recorded_at": "2026-08-05T00:14:48+08:00",
+  "stage": "post_terminal_combined_test_verification",
+  "attempt_ordinal_within_campaign060": 10,
+  "failed_command": "PYTHONPATH=/Volumes/DIsk/Disk-Coding/qlib /opt/anaconda3/bin/python3 -m pytest -q five Campaign060 current test modules",
+  "exit_code": 1,
+  "test_summary": {
+    "passed": 24,
+    "failed": 2,
+    "failed_nodes": [
+      "data_collector_tests/test_a_share_three_day_walkforward_campaign060_no_return_audit.py::test_status_is_pre_audit_and_no_return",
+      "data_collector_tests/test_a_share_three_day_walkforward_campaign060_no_return_audit_range_repair.py::test_repaired_status_remains_pre_audit"
+    ],
+    "historical_expected_audit_count": 0,
+    "current_correct_audit_count": 1
+  },
+  "root_cause": "Two immutable tests describe the preregistered pre-audit state and were included after the sole completed audit existed. Their zero-count assertion is historical, not a current terminal invariant.",
+  "repair": "Preserve both historical tests unchanged; rerun the same Campaign060 suite while deselecting only the two exact pre-audit node IDs, and assert audit_count=1 through the versioned terminal test.",
+  "prior_terminal_ledger": {
+    "path": "data/experiments/short_horizon/historical_walkforward/campaign_060/research_attempt_ledger_v5.json",
+    "sha256": "4071f8c1e334c0f6d08ef3e46ad40cc7dd465ba0dbc74ed5d5f80d58bf4de341"
+  },
+  "boundary": {
+    "candidate_or_comparison_partition_values_read": false,
+    "daily_price_or_forward_return_read": false,
+    "research_result_changed": false,
+    "provider_request_issued": false,
+    "candidate49_ledgers_changed": false
+  },
+  "accounting": {
+    "counts_as_infrastructure_attempt": true,
+    "counts_as_factor_attempt": false,
+    "counts_as_return_reading_development_trial": false
+  }
+}

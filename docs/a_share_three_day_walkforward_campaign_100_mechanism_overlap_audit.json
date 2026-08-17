@@ -1,0 +1,265 @@
+{
+  "schema_version": 1,
+  "kind": "a_share_three_day_walkforward_campaign100_mechanism_overlap_audit",
+  "status": "passed_semantic_and_support_review_before_campaign100_minute_source_or_candidate_values",
+  "recorded_at": "2026-08-07T11:48:00Z",
+  "concept_scouting": {
+    "path": "docs/a_share_three_day_walkforward_campaign_100_concept_scouting.json",
+    "sha256": "2d671033e933779f426d890b091f572142559a6be4f5e779ee2e976563f8a08c"
+  },
+  "authoritative_state": {
+    "path": "docs/a_share_three_day_iteration_status_20260807_campaign099_verified_v2.json",
+    "sha256": "bf9ab5ff6481713742360675247bb9d3cb25865b1882887cfce72c7df9435092"
+  },
+  "historical_walkforward_policy": {
+    "path": "docs/a_share_three_day_historical_walkforward_research_policy_20260727.json",
+    "sha256": "38426d6161b9bfed323c58caba18feca668b8c9d53e294951a8ba90c01a798bb"
+  },
+  "numeric_comparator_policy": {
+    "path": "docs/a_share_three_day_walkforward_future_numeric_comparison_eligibility_policy_v52_20260807.json",
+    "sha256": "90df8d97e248f1293bb76dfdfdba2d16dfd0791aeb02a43067b98a9d5995851c"
+  },
+  "candidate": {
+    "name": "intraday_unchanged_close_range_absorption_share_238p",
+    "direction": "higher",
+    "mechanism": "Share of fixed-support destination-bar intraday log-range mass attached to an exactly unchanged adjacent closing level.",
+    "formula": "For the 119 within-half destinations in each half, h_j=log(high_j/low_j) and z_j=1[close_j equals close_j-1 exactly]. Return sum(h_j*z_j)/sum(h_j) over all 238 destinations.",
+    "source_projection": [
+      "datetime",
+      "symbol",
+      "provider",
+      "high",
+      "low",
+      "close"
+    ],
+    "exact_support_predicate": "The raw stock-day has the exact immutable 241-row identity; all 240 selected HLC tuples are finite, strictly positive, and ordered low<=close<=high; all 238 destination log ranges are finite and nonnegative; and their pooled total is finite and strictly positive. Exact zero ranges and exact unchanged closes remain in support.",
+    "zero_semantics": "Equality is exact on consecutive raw float64 closes inside each half. Zero destination range contributes zero to numerator and denominator regardless of equality. There is no rounding, tick tolerance, epsilon, positive-range count, nonzero-return count, informative-pair minimum, dropped bar, or bridge.",
+    "candidate49_used_or_modified": false
+  },
+  "complete_library_review": {
+    "reconstruction_method": "Reconstruct Campaign099's exact frozen 130-definition and 127-comparator inputs, append Campaign099/higher exactly once, and verify v52's 131-definition and 128-comparator canonical order digests.",
+    "all_131_definitions_reviewed_in_frozen_order": true,
+    "complete_definition_order_sha256": "065077dfa5df9331906141f938204efedb3274e252d3b94c8fa1e9beebb5fc2e",
+    "all_128_numeric_comparators_reviewed_in_frozen_order": true,
+    "numeric_comparator_order_sha256": "12ebf65ee86e23e606875a9a78165f0410bfdb320bdc99d159097ec669583756",
+    "all_return_volatility_path_sign_frequency_range_gap_body_wick_amount_volume_transaction_price_market_peer_cross_day_event_quality_structural_composite_and_semantic_only_families_reviewed": true,
+    "candidate_is_exact_formula_duplicate": false,
+    "candidate_is_direction_only_duplicate": false,
+    "candidate_is_parameter_only_duplicate": false,
+    "candidate_is_an_inversion_of_a_terminal_factor": false,
+    "candidate_combines_terminal_factor_values": false,
+    "candidate_repairs_a_terminal_support_rule": false,
+    "candidate_changes_quality_listing_buyability_cost_or_walkforward_gates": false,
+    "rejected_midrange_translation_reversal_was_a_prohibited_campaign017_center_serial_variant": true,
+    "rejected_day_over_day_range_profile_was_already_rejected_by_campaign057": true,
+    "rejected_wick_serial_persistence_was_already_rejected_by_campaign048": true
+  },
+  "mandatory_prevalue_support_predicate_gate": {
+    "required_by_policy_v52": true,
+    "all_known_terminal_coverage_failures_through_campaign099_reviewed": true,
+    "inventory": [
+      {
+        "campaign": 5,
+        "factor": "intraday_lunch_repricing_persistence_119m",
+        "failed_support_class": "sparse lunch repricing plus retained post-lunch return support",
+        "relationship_to_campaign100": "not inherited; no lunch return, post-lunch count, or return threshold"
+      },
+      {
+        "campaign": 8,
+        "factor": "intraday_post_shock_share_volume_replenishment_236p",
+        "failed_support_class": "one-sided-zero share-volume response rule",
+        "relationship_to_campaign100": "not inherited; no volume and no response-pair support"
+      },
+      {
+        "campaign": 13,
+        "factor": "intraday_transaction_vwap_envelope_asymmetry_240m",
+        "failed_support_class": "amount/volume transaction-price containment",
+        "relationship_to_campaign100": "not inherited; no amount, volume, or transaction price"
+      },
+      {
+        "campaign": 19,
+        "factor": "intraday_bar_direction_continuity_238p",
+        "failed_support_class": "at least 120 informative nonzero body-sign pairs",
+        "relationship_to_campaign100": "not inherited; no open, body sign, or informative-pair minimum"
+      },
+      {
+        "campaign": 44,
+        "factor": "full_terminal_library_directional_percentile_consensus_66f",
+        "failed_support_class": "common finite intersection of terminal factors",
+        "relationship_to_campaign100": "not inherited; no old factor value is an input"
+      },
+      {
+        "campaigns": [
+          52,
+          68,
+          70,
+          84
+        ],
+        "failed_support_class": "multi-quarter or prior-year event cold start",
+        "relationship_to_campaign100": "not inherited; same-session minute-only"
+      },
+      {
+        "campaign": 60,
+        "factor": "intraday_day_over_day_directional_return_agreement_238b",
+        "failed_support_class": "exact prior stock session plus 60 jointly nonzero returns",
+        "relationship_to_campaign100": "not inherited; no prior-day dependency and exact-zero transitions are valid"
+      },
+      {
+        "campaign": 63,
+        "factor": "intraday_cross_sectional_standardized_return_state_stability_236p",
+        "failed_support_class": "positive leave-one-out return variance at every position including structurally degenerate close",
+        "relationship_to_campaign100": "not inherited; no peer input, cross-sectional variance, or per-position support"
+      },
+      {
+        "campaigns": [
+          86,
+          96
+        ],
+        "factors": [
+          "intraday_intrabar_close_location_serial_persistence_238p",
+          "intraday_intrabar_close_location_total_variation_238p"
+        ],
+        "failed_support_class": "at least 120 adjacent positive-range close-location pairs",
+        "relationship_to_campaign100": "not inherited; all 238 destinations remain fixed, zero ranges contribute zero, and only pooled positive total range is required"
+      },
+      {
+        "campaign": 95,
+        "factor": "intraday_own_bar_close_location_entropy_10b_240m",
+        "failed_support_class": "prevalue semantic contradiction in exact fixed-bin reflection claim",
+        "relationship_to_campaign100": "not repaired or reused; no close-location bins, entropy, or reflection claim"
+      }
+    ],
+    "passed_high_coverage_support_anchors": [
+      {
+        "factor": "intraday_close_transition_range_quadratic_efficiency_238p",
+        "relationship": "same exact 240-bar HLC ordering and 238 destination alignment; its frozen 2019-2025 median coverage was 0.9983584130098127 and p05 coverage was 0.9933774834437086"
+      },
+      {
+        "factor": "intraday_range_clock_center_240m",
+        "relationship": "same positive pooled high-low range requirement without an informative-pair or positive-range-count threshold"
+      },
+      {
+        "factor": "intraday_market_close_location_profile_synchronization_240m",
+        "relationship": "same positive ordered HLC validation with every zero-range bar retained; it retained 1,328,449 of 1,331,759 quality/listing rows"
+      }
+    ],
+    "candidate_support_identical_to_known_failed_predicate": false,
+    "candidate_support_provably_no_broader_than_known_failed_predicate": false,
+    "source_or_support_change_frozen_before_values": true,
+    "decision": "pass_support_predicate_gate_before_source_rows_or_candidate_values"
+  },
+  "nearest_semantic_challenges": [
+    {
+      "name": "intraday_price_update_share_238m",
+      "relationship": "Both use exact equality of adjacent closing levels.",
+      "distinction": "Update share counts each changed transition equally and reads no high or low. Campaign100 allocates continuous destination range mass to unchanged transitions; moving fixed range mass between equality classes changes Campaign100 while leaving the update count unchanged.",
+      "mandatory_numeric_challenge": true
+    },
+    {
+      "name": "intraday_zero_return_amount_intensity_238m",
+      "relationship": "Both condition on exact unchanged-close transitions.",
+      "distinction": "The terminal factor compares mean destination CNY amount on zero returns with the ordinary mean and explicitly controls event count. Campaign100 reads no amount, forms no conditional mean, and measures the fraction of high-low exploration mass that failed to alter the closing level.",
+      "mandatory_numeric_challenge": true
+    },
+    {
+      "name": "intraday_intrabar_body_range_efficiency_240m",
+      "relationship": "Both distinguish durable price displacement from intrabar high-low exploration.",
+      "distinction": "Body efficiency uses each bar's same-bar absolute open-close body and all 240 ranges. Campaign100 reads no open and classifies destination range only by exact equality between consecutive closes over 238 within-half transitions.",
+      "mandatory_numeric_challenge": true
+    },
+    {
+      "name": "intraday_close_transition_range_quadratic_efficiency_238p",
+      "relationship": "Both align adjacent close transitions with destination high-low ranges on the same 238 support.",
+      "distinction": "Campaign093 continuously compares squared close-transition variation with squared range variation. Campaign100 discards every nonzero return magnitude, uses linear range mass only, and applies one exact unchanged-versus-changed state. A nonzero return-magnitude change affects Campaign093 but not Campaign100 when its equality class and range are fixed.",
+      "mandatory_numeric_challenge": true
+    },
+    {
+      "name": "intraday_intrabar_range_participation_entropy_240m and intraday_range_clock_center_240m",
+      "relationship": "All allocate high-low range mass across the session.",
+      "distinction": "Entropy and clock center use the marginal range distribution only. Campaign100 additionally requires adjacent close equality labels and is invariant to redistribution of range mass within the same equality class when total class mass is preserved.",
+      "mandatory_numeric_challenge": true
+    },
+    {
+      "name": "intraday_range_share_volume_confirmation_240m and intraday_range_amount_profile_alignment_js_240m",
+      "relationship": "All distinguish informative from potentially thin intraday range exploration.",
+      "distinction": "The terminal factors relate range to volume or amount. Campaign100 reads neither activity field and conditions range mass only on exact adjacent close settlement.",
+      "mandatory_numeric_challenge": true
+    },
+    {
+      "name": "intraday_intrabar_close_location_pressure_240m, intraday_intrabar_close_location_serial_persistence_238p, intraday_intrabar_close_location_total_variation_238p, and intraday_market_close_location_profile_synchronization_240m",
+      "relationship": "All use HLC geometry and completed closing observations.",
+      "distinction": "Those factors use a close's continuous location inside its own range or a transformation of that state. Campaign100 is invariant to any within-range close movement that preserves exact adjacent equality labels and contains no close-location state, peer profile, serial correlation, or total variation.",
+      "mandatory_numeric_challenge": true
+    },
+    {
+      "name": "intraday_cross_sectional_standardized_return_state_stability_236p, signal_day_turnover_rate_pct, and intraday_own_bar_close_location_entropy_10b_240m",
+      "relationship": "All three semantic-only definitions remain in the complete library.",
+      "distinction": "Peer-standardized return mobility, raw daily turnover, and fixed-bin close-location entropy do not allocate destination range mass by exact adjacent close equality.",
+      "mandatory_semantic_challenge": true,
+      "numeric_status": "undefined_or_ineligible_not_pass_not_fail"
+    },
+    {
+      "name": "candidate49_intraday_cumulative_vwap_crossing_rate_240m_v1",
+      "relationship": "Both use completed continuous-session close observations.",
+      "distinction": "Candidate49 counts causal close-versus-cumulative-VWAP sign crossings and requires volume, amount, and a future-only ledger. Campaign100 uses only HLC equality/range mass in an offline historical campaign and never touches Candidate49 artifacts.",
+      "mandatory_numeric_challenge": false
+    }
+  ],
+  "semantic_invariance_checks": [
+    {
+      "intervention": "Multiply every selected HLC price by any stock-day-specific positive constant.",
+      "result": "unchanged because equality and log high-low ranges are scale invariant"
+    },
+    {
+      "intervention": "Change the magnitude or sign of any already-nonzero adjacent close transition while preserving its changed classification and every destination high-low range.",
+      "result": "unchanged, distinguishing the candidate from return moments, signed paths, and continuous close-transition efficiency"
+    },
+    {
+      "intervention": "Move positive destination range mass from a changed-close transition to an unchanged-close transition while preserving total destination range and the count of each equality class.",
+      "result": "strictly increases, distinguishing the candidate from price-update share and marginal range totals"
+    },
+    {
+      "intervention": "Change amount or volume attached only to unchanged-close transitions while preserving HLC.",
+      "result": "unchanged, distinguishing the candidate from zero-return amount intensity and range-activity confirmation"
+    },
+    {
+      "intervention": "Move a close inside its valid own-bar range without changing whether it equals the preceding close.",
+      "result": "unchanged, distinguishing the candidate from own-bar close-location pressure, persistence, total variation, entropy, and market synchronization"
+    },
+    {
+      "intervention": "Change open, amount, volume, market peers, daily fields, quarterly fields, returns after the signal close, or Candidate49 observations while preserving selected HLC.",
+      "result": "unchanged"
+    }
+  ],
+  "prevalue_decision": {
+    "passed": true,
+    "selected_factor_count": 1,
+    "complete_definition_count_reviewed": 131,
+    "numeric_comparator_count_reserved_after_coverage": 128,
+    "candidate_source_rows_read": false,
+    "candidate_or_comparator_values_read": false,
+    "historical_daily_price_or_forward_return_values_read": false,
+    "provider_request_issued": false,
+    "required_next_step": "Freeze the v52-bound coverage-first protocol and sole conditional development trial, then freeze implementation and synthetic tests before any Campaign100 minute source row."
+  },
+  "prohibited_rescues": [
+    "replace exact equality with a tick, epsilon, rounded, return-sign, or small-return threshold",
+    "replace range-mass share with its complement, conditional mean intensity, squared range, count share, rank, entropy, correlation, subwindow, or another transform",
+    "change source grid, destination alignment, lunch reset, total-range rule, direction, endpoint tolerance, years, folds, purge, costs, gates, or quality/listing universe",
+    "add open, amount, volume, return magnitude, capitalization, market, industry, quarterly, old-factor, threshold, filter, subset, regime, neutralization, residualization, fitted weight, model, or combination",
+    "rerun, invert, rescue, remove a failed comparator, backfill Candidate49, start Candidate50, or create current scores, selections, sizes, or orders"
+  ],
+  "research_boundary": {
+    "campaign100_source_rows_read": false,
+    "campaign100_candidate_values_read": false,
+    "campaign100_comparator_values_read": false,
+    "historical_daily_price_fields_read": [],
+    "historical_forward_returns_read": false,
+    "candidate49_historical_backfill_performed": false,
+    "candidate49_ledgers_changed": false,
+    "provider_request_issued": false,
+    "prospective_candidate_created": false,
+    "current_scoring_selection_sizing_or_orders_performed": false,
+    "investment_advice": false
+  }
+}

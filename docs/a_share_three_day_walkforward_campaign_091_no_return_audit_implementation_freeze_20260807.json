@@ -1,0 +1,25 @@
+{
+  "schema_version": 1,
+  "kind": "a_share_three_day_walkforward_campaign091_no_return_audit_implementation_freeze",
+  "status": "frozen_before_campaign091_coverage_or_comparison_values",
+  "frozen_at": "2026-08-07T07:31:00+08:00",
+  "audit_runner": {
+    "path": "scripts/a_share_three_day_walkforward_campaign091_no_return_audit.py",
+    "sha256": "d4b445a13e6d2084cd5778a3129858acffce866c108efd369ba12b3cad273f22"
+  },
+  "tests": {
+    "path": "tests/data_collector_tests/test_a_share_three_day_walkforward_campaign091_no_return_audit.py",
+    "sha256": "190ced9cfaa62d1a054a258eeba91160dc3a0575f76bebf720b896cb357a451e",
+    "preactivation_result": "2 passed"
+  },
+  "snapshot_binding": {
+    "path": "docs/a_share_three_day_walkforward_campaign_091_feature_snapshot_binding_20260807.json",
+    "sha256": "5f5fbdffeef54d0d648e8a7d36ffbdc12156142a61472720eae161b29f2cdab3"
+  },
+  "coverage_or_capacity_metrics_computed_before_freeze": false,
+  "comparison_values_read_before_freeze": false,
+  "historical_daily_price_fields_read_before_freeze": [],
+  "historical_forward_returns_read_before_freeze": false,
+  "provider_request_issued_before_freeze": false,
+  "candidate49_ledgers_changed_before_freeze": false
+}

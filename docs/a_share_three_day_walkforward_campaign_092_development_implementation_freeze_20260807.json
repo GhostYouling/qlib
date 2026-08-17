@@ -1,0 +1,80 @@
+{
+  "schema_version": 1,
+  "kind": "a_share_three_day_walkforward_campaign092_development_implementation_freeze",
+  "status": "frozen_before_campaign092_2019_2023_development_return_read",
+  "frozen_at": "2026-08-07T08:50:00+08:00",
+  "development_preregistration": {
+    "path": "docs/a_share_three_day_walkforward_campaign_092_preregistration_v2.json",
+    "sha256": "7a357f27278699e5b0c2450cfa1127c3d1c524f28246f6239b5267f74d209dd0",
+    "binding_count": 17,
+    "all_bindings_passed": true
+  },
+  "development_runner": {
+    "path": "scripts/a_share_three_day_walkforward_campaign092.py",
+    "sha256": "cc6f4b8fc8052c349b6e18638c737fd9bb7c30bbe436eb0cee546b43f75cd88d",
+    "base_runner_path": "scripts/a_share_three_day_walkforward_campaign089.py",
+    "base_runner_sha256": "591d89e0d50b88b5664c521ec6473b8acc05b29f700c2e3c8678d4e6535ef6b8"
+  },
+  "authorized_interpreter": {
+    "path": "/Volumes/DIsk/Coding/anaconda3/bin/python3.12",
+    "sha256": "b21ee43bcb627125a1b54b1fceb97bad564afbab38235cb9d72cf1f278d5751c",
+    "dynamic_library_environment_override_allowed": false
+  },
+  "required_libcxx": {
+    "path": "/Volumes/DIsk/Coding/anaconda3/lib/libc++.1.0.dylib",
+    "sha256": "1b9318492353b7b7b3b48b9fa458d2b07b356a5eb8c0931952247fc17bf95c21"
+  },
+  "compatible_runtime_receipt": {
+    "python": "3.12.7",
+    "qlib": "0.9.8.dev30",
+    "numpy": "1.26.4",
+    "pandas": "2.2.2",
+    "pyarrow": "16.1.0",
+    "scipy": "1.13.1",
+    "pytest": "9.0.3",
+    "qlib_compiled_rolling_import_passed": true,
+    "dynamic_library_environment_override_used": false
+  },
+  "tests": {
+    "path": "tests/data_collector_tests/test_a_share_three_day_walkforward_campaign092_development.py",
+    "sha256": "38e1002f48089329f313d6bc59fa52ed71a5dec04c51851f76382731c06767fd",
+    "result": "4 passed",
+    "black_check_passed": true,
+    "ruff_check_passed": true,
+    "test_interpreter": "/Volumes/DIsk/Coding/anaconda3/bin/python3.12"
+  },
+  "frozen_trial": {
+    "trial_id": "wf092_intraday_interbar_gap_discovery_share_238p_single_higher",
+    "feature_set": [
+      "intraday_interbar_gap_discovery_share_238p"
+    ],
+    "weights": [
+      1.0
+    ],
+    "direction": "higher",
+    "expected_trial_count": 1,
+    "purge_signal_sessions_each_boundary": 3,
+    "t_plus_1_and_t_plus_3_must_share_partition": true,
+    "development_years": [2019, 2020, 2021, 2022, 2023]
+  },
+  "prevalue_status": {
+    "internal_ledger_entry_count": 0,
+    "stress_intent_exists": false,
+    "stress_record_exists": false,
+    "historical_daily_price_fields_read": [],
+    "historical_forward_returns_read": false
+  },
+  "research_attempt_ledger_before_return_read": {
+    "path": "data/experiments/short_horizon/historical_walkforward/campaign_092/research_attempt_ledger_v2.json",
+    "sha256": "a2a50e76012290db02e8cee7cf47aed6403c3dab3e3cafa6ea2b39ad7697f4cd",
+    "campaign_attempt_count": 6,
+    "campaign_complete_factor_attempt_count": 1,
+    "campaign_return_reading_development_trial_count": 0
+  },
+  "stress_2024_2025_authorized_now": false,
+  "candidate49_historical_return_read": false,
+  "candidate49_ledgers_changed": false,
+  "provider_request_issued": false,
+  "current_scoring_selection_sizing_or_orders_performed": false,
+  "authorization": "Run the unchanged explicit-v2 development command exactly once under the authorized interpreter; append either one complete 2019-2023 development trial or one infrastructure failure. Do not open 2024-2025 unless a nonzero survivor record is frozen afterward."
+}

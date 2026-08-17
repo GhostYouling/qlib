@@ -1,0 +1,109 @@
+{
+  "version": 1,
+  "kind": "a_share_three_day_walkforward_campaign067_mechanism_overlap_audit",
+  "status": "passed_definition_level_overlap_challenge_pending_frozen_no_return_numeric_audit",
+  "recorded_at": "2026-08-05T18:15:00+08:00",
+  "purpose": "Challenge the sole Campaign067 candidate against the complete 98-definition historical library before any Campaign067 source row, candidate value, comparison value, daily price, or forward return is read.",
+  "authoritative_inputs": {
+    "campaign066_verified_state": {
+      "path": "docs/a_share_three_day_iteration_status_20260805_campaign066_verified.json",
+      "sha256": "5a54cdda40f981f08316953599d3f7156781ebfbd17aa776b7009c986b4ecfce"
+    },
+    "concept_scouting": {
+      "path": "docs/a_share_three_day_walkforward_campaign_067_concept_scouting.json",
+      "sha256": "a12da547a3348fe92865965ff64101a2abc533afe27042c49c3eb4e9de0c6fc7"
+    },
+    "campaign066_completed_numeric_catalog": {
+      "path": "data/experiments/short_horizon/historical_walkforward/campaign_066/no_return/20260805T093555Z_campaign066_no_return_audit.json",
+      "sha256": "4d3b8436bc55eb0066458ccd73daf632daf0afae1a373822f20ddd5723b74bfa"
+    }
+  },
+  "candidate": {
+    "name": "quarterly_roe_profit_scale_efficiency_gap_2r",
+    "direction": "higher",
+    "definition": "Average-tie percentile rank of already-effective ROE minus average-tie percentile rank of already-effective net profit on the common finite two-field stock-day cross-section.",
+    "source_fields": ["instrument", "report_date", "announcement_date", "roe", "net_profit"],
+    "parameter_count": 0,
+    "fitted": false
+  },
+  "complete_library": {
+    "definition_count": 98,
+    "definition_order_sha256": "847e6e3e960da3b18106b91af742395fc44518bc37b91398b6191f853cc3b22c",
+    "numeric_comparator_count": 97,
+    "numeric_comparator_order_sha256": "e860581f2b2022a189259db7bf32e105960ca655fe2793d114e38315a251fbca",
+    "numeric_order_rule": "All 96 Campaign066 comparisons in frozen order, followed by quarterly_quality_rank_balance_3f/higher.",
+    "structurally_nonnumeric_definition": "intraday_cross_sectional_standardized_return_state_stability_236p",
+    "campaign066_present_in_both_required_orders": true
+  },
+  "definition_level_challenges": [
+    {
+      "existing_definition": "quality_roe",
+      "relationship": "shared_component",
+      "decision": "not_a_synonym_pending_numeric_gate",
+      "reason": "The candidate subtracts an independently ranked absolute earnings-scale state and therefore is not the ROE level itself."
+    },
+    {
+      "existing_definition": "quality_profit",
+      "relationship": "different_profit_semantics",
+      "decision": "not_a_synonym_pending_numeric_gate",
+      "reason": "quality_profit is profit-growth quality; the candidate uses the absolute point-in-time net-profit level only as a scale rank."
+    },
+    {
+      "existing_definition": "quality_score",
+      "relationship": "quality_composite_confound",
+      "decision": "mandatory_numeric_challenge",
+      "reason": "The candidate may still inherit a broad quality association and must pass the frozen correlation gate."
+    },
+    {
+      "existing_definition": "free_float_cap_proxy",
+      "relationship": "size_confound",
+      "decision": "mandatory_numeric_challenge",
+      "reason": "Absolute net-profit rank can proxy issuer scale, so the factor must be challenged against the frozen size proxy rather than assumed independent."
+    },
+    {
+      "existing_definition": "quarterly_profit_revenue_growth_spread_pp",
+      "relationship": "accounting_growth_spread",
+      "decision": "not_a_synonym_pending_numeric_gate",
+      "reason": "That factor compares two growth rates in percentage points; Campaign067 compares profitability efficiency rank with absolute earnings-scale rank."
+    },
+    {
+      "existing_definition": "quarterly_quality_rank_balance_3f",
+      "relationship": "immediate_predecessor_and_shared_quarterly_source",
+      "decision": "mandatory_last_numeric_challenge",
+      "reason": "Campaign066 measures three-component rank agreement and does not use net-profit scale; Campaign067 must nevertheless append and pass it as the final frozen comparison."
+    },
+    {
+      "existing_definition": "intraday_cross_sectional_standardized_return_state_stability_236p",
+      "relationship": "structurally_nonnumeric_terminal_definition",
+      "decision": "semantic_challenge_only",
+      "reason": "Its immutable snapshot has zero eligible rows, so it remains in the complete definition library but cannot supply a statistical comparison."
+    }
+  ],
+  "rejected_same_campaign_variants": [
+    "Reverse gap or lower-is-better direction",
+    "Regression residual, beta, z score, log-level difference, or fitted coefficient",
+    "ROE-only or net-profit-only rank",
+    "Board, year, size, liquidity, announcement-age, or market-regime subsets",
+    "Thresholded, clipped, winsorized, weighted, or interaction variants",
+    "Any alternate Campaign066 three-quality dispersion or shape operator"
+  ],
+  "research_boundary": {
+    "source_rows_read": false,
+    "candidate_values_read": false,
+    "comparison_values_read": false,
+    "historical_daily_price_fields_read": [],
+    "historical_forward_return_fields_read": false,
+    "provider_request_issued": false,
+    "candidate49_historical_backfill_performed": false,
+    "candidate49_ledgers_changed": false,
+    "second_prospective_candidate_created": false,
+    "current_scoring_selection_sizing_or_orders_performed": false,
+    "investment_advice": false
+  },
+  "decision": {
+    "definition_level_overlap_gate_passed": true,
+    "numeric_independence_established": false,
+    "candidate_count": 1,
+    "next_action": "Freeze the exact coverage-first 97-comparator protocol and finite one-trial catalog, validate all bindings, then implement the factor before any candidate value is read."
+  }
+}

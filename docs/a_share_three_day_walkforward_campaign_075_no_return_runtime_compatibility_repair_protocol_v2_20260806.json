@@ -1,0 +1,69 @@
+{
+  "version": 2,
+  "kind": "a_share_three_day_walkforward_campaign075_no_return_runtime_compatibility_repair_protocol",
+  "status": "frozen_after_infrastructure_failure_before_full_audit_retry",
+  "recorded_at": "2026-08-06T09:36:00+08:00",
+  "recorded_failure": {
+    "path": "docs/a_share_three_day_walkforward_campaign_075_no_return_campaign068_frame_replay_failure_20260806.json",
+    "sha256": "8faab72c855df13c9472bf173936b6f03e910607335dc54b161ecde4f7ccec04"
+  },
+  "immutable_v1_audit": {
+    "runner_path": "scripts/a_share_three_day_walkforward_campaign075_no_return_audit.py",
+    "runner_sha256": "477053429b81aaffb1d454984ad2163936c4546e9c5b5fc9b05f011b84ef5295",
+    "implementation_freeze_path": "docs/a_share_three_day_walkforward_campaign_075_no_return_audit_implementation_freeze_20260806.json",
+    "implementation_freeze_sha256": "1e7b37cd42b7c2c80b1f11bec531cee402f62fcd7ca67026477519561e1bcd6b",
+    "activation_binding_path": "docs/a_share_three_day_walkforward_campaign_075_no_return_audit_activation_binding_20260806.json",
+    "activation_binding_sha256": "774c7706762aa2459e46d46987913e8446f40da3aa7771cc6359021ecdca2ad4",
+    "may_be_edited": false
+  },
+  "campaign068_snapshot": {
+    "manifest_path": "/Volumes/DIsk/qlib-a-share-tushare-1m/derived/a_share/rich/tushare/minute_walkforward_campaign068_feature_library/tushare_stk_mins_1m_2019_2025_ea0cbb8f_walkforward_campaign068_feature_library_v2/snapshot_manifest.json",
+    "manifest_sha256": "9878e6c0249cb9e965dbfade2ce2b3a355bed5e6a46bf68667c82fc568672004",
+    "dataset_sha256": "bcd03a5e2122b64b072985b3a9a9ada880cad337dae4766a00cf52bf51f4f449",
+    "feature_runner_path": "scripts/a_share_three_day_walkforward_campaign068_features_v2.py",
+    "feature_runner_sha256": "c4facbb4c76f99de64f5322ed106736c10f95acd2177cbfc294b82c2710f477d",
+    "factor": "quarterly_profit_revenue_acceleration_rank_gap_2r",
+    "value_range": [
+      -1.0,
+      1.0
+    ]
+  },
+  "sole_repair": {
+    "reason": "Arrow IPC serialization of the same deserialized frame is runtime-sensitive even when immutable Parquet bytes, schema, rows, and values are unchanged.",
+    "still_required_for_every_campaign068_partition": [
+      "path remains inside the frozen v2 partition root",
+      "stored Parquet byte SHA-256 matches",
+      "Parquet row count matches",
+      "deserialized columns and dtypes satisfy the frozen schema",
+      "eligible values are finite within [-1,1] and ineligible values are missing"
+    ],
+    "still_required_for_the_campaign068_snapshot": [
+      "manifest byte SHA-256 matches",
+      "stored dataset digest reconstructed from immutable manifest entries matches",
+      "33015 partitions and 7724498 rows match",
+      "factor eligible-row total matches",
+      "original Campaign068 repair protocol and implementation freeze pass"
+    ],
+    "only_removed_check": "recompute each stored output_frame_sha256 with the current pandas/pyarrow Arrow IPC serializer",
+    "campaign068_snapshot_files_may_be_rewritten": false,
+    "partial_statistics_may_be_reused": false,
+    "full_campaign075_audit_must_restart_from_coverage": true
+  },
+  "unchanged_research_semantics": {
+    "campaign075_factor_formula_direction_age_clock_and_missing_rule": true,
+    "coverage_gate": true,
+    "all_105_numeric_comparators_and_exact_order": true,
+    "50_name_100_session_strict_below_0_8_uniqueness_gate": true,
+    "development_trial_if_admitted": true,
+    "daily_price_and_return_boundary": true,
+    "candidate49_isolation": true
+  },
+  "research_boundary": {
+    "failed_attempt_audit_artifact_published": false,
+    "historical_daily_price_fields_read": [],
+    "historical_forward_returns_read": false,
+    "provider_request_issued": false,
+    "candidate49_ledgers_changed": false,
+    "current_scoring_selection_sizing_or_orders_performed": false
+  }
+}

@@ -1,0 +1,226 @@
+{
+  "schema_version": 1,
+  "protocol_revision": 1,
+  "kind": "a_share_three_day_walkforward_campaign102_no_return_and_sequential_walkforward_preregistration",
+  "status": "frozen_before_campaign102_design_matrix_model_fit_validation_or_lockbox_return_values",
+  "recorded_at": "2026-08-07T15:02:00Z",
+  "purpose": "Build one complete-130-factor no-return design matrix, evaluate exactly three bounded-simplex ridge configurations using chronological training-fit/uniqueness/validation sequencing, and permit a single historically exposed 2024-2025 opening only for at most one frozen survivor.",
+  "source_chain": {
+    "authoritative_iteration_state": {
+      "path": "docs/a_share_three_day_iteration_status_20260807_campaign101_terminal_v3.json",
+      "sha256": "cb28828a60f88a76df4ea3b171efe138a9320b34c76b0e0842f5f5234ff83233"
+    },
+    "historical_walkforward_policy": {
+      "path": "docs/a_share_three_day_historical_walkforward_research_policy_20260727.json",
+      "sha256": "38426d6161b9bfed323c58caba18feca668b8c9d53e294951a8ba90c01a798bb"
+    },
+    "numeric_policy_v58": {
+      "path": "docs/a_share_three_day_walkforward_future_numeric_comparison_eligibility_policy_v58_20260807.json",
+      "sha256": "45571a0d525d3c7132f6392914dd80b51ec179b51d21e548102292ec70674edc"
+    },
+    "concept_scouting": {
+      "path": "docs/a_share_three_day_walkforward_campaign_102_concept_scouting.json",
+      "sha256": "a22a15eeb79957771457adb602dc64bcb81b9626964c43614027140504948fb1"
+    },
+    "mechanism_and_support_audit": {
+      "path": "docs/a_share_three_day_walkforward_campaign_102_mechanism_overlap_audit.json",
+      "sha256": "386582b44aa3b8c76584d603f5181db19558707b896dc071aa2a29741d1c4b8d"
+    },
+    "complete_numeric_source_catalog": {
+      "path": "docs/a_share_three_day_walkforward_campaign_102_source_catalog.json",
+      "sha256": "fd7e5f4486fc4cef5a954e279c865ac8718a214c8dd3bd10450b509f8fdfbd5c"
+    },
+    "frozen_execution_template": {
+      "path": "docs/a_share_three_day_walkforward_campaign_004_preregistration.json",
+      "sha256": "e67811f265b2b744073391fa65698951b132065109f95fa47991b8254a5756e6"
+    }
+  },
+  "design_matrix": {
+    "source_factor_count": 130,
+    "source_factor_order_sha256": "c80d9b929536dd509d6c1a904f790831050e68200393de381f92ad9293ef69e7",
+    "base_rows": 1331759,
+    "base_sessions": 1632,
+    "years": [2019, 2020, 2021, 2022, 2023, 2024, 2025],
+    "component_transform": "same-session average-tie percentile rank in each source's frozen v58 direction, preserving missingness",
+    "missing_component_score_inside_model": 0.0,
+    "minimum_originally_finite_components": 98,
+    "eligible_score_range": [0.0, 1.0],
+    "historical_daily_price_or_return_fields_permitted_during_build": [],
+    "immutable_partition_format": "stock_day_key plus 130 ordered float32 component ranks, uint8 finite_count, and boolean eligible; zstd parquet; per-file byte and canonical array receipts"
+  },
+  "ordered_admission_and_evaluation_protocol": {
+    "stage_1_design_matrix_structural_audit": {
+      "must_complete_before_any_campaign102_return_read": true,
+      "required_rows": 1331759,
+      "required_sessions": 1632,
+      "required_partitions": 7,
+      "minimum_median_coverage": 0.95,
+      "minimum_p05_coverage": 0.9,
+      "minimum_p05_eligible_names": 50,
+      "minimum_non_overlapping_three_session_cohorts": 200,
+      "minimum_observed_calendar_years": 5,
+      "failed_gate_policy": "Record the complete Campaign102 family as terminal before model fitting or return reads."
+    },
+    "stage_2_fold_sequence": {
+      "order": [1, 2, 3],
+      "for_each_fold": [
+        "Read only the fold's contained and three-signal-session-purged training labels.",
+        "Fit all still-live frozen lambda trials on identical training observations.",
+        "Write and hash coefficients, optimizer diagnostics, daily validation-year scores, and all-130 uniqueness results before reading that validation year's return fields.",
+        "Permanently reject a trial if any comparator fails; never compute its validation-return metrics.",
+        "Only then read that validation year's daily prices and return fields for surviving trials, append all metrics, and advance chronologically."
+      ]
+    },
+    "stage_3_survivor_and_lockbox": {
+      "maximum_survivors": 1,
+      "freeze_survivor_before_2024_2025_return_read": true,
+      "refit_interval": ["2019-01-01", "2023-12-31"],
+      "refit_uses_selected_trial_lambda_only": true,
+      "score_and_all_130_uniqueness_audit_2024_2025_before_lockbox_returns": true,
+      "open_once_only_after_uniqueness_pass": true,
+      "classification": "historically_exposed_quasi_out_of_sample_not_pristine"
+    }
+  },
+  "model_family": {
+    "name": "full_numeric_library_bounded_simplex_ridge_130f",
+    "direction": "higher",
+    "training_target": "Within each contained training signal session, average-tie percentile rank finite forward_gross_return = t+3_close/t+1_open - 1 ascending.",
+    "training_observation_support": "design eligible and finite forward gross return",
+    "session_weighting": "Each session has equal total loss weight; each stock in a session receives 1/n_t before the across-session mean.",
+    "objective": "mean_session(mean_stock((y-Xw)^2)) + lambda*sum_j((w_j-1/130)^2)",
+    "constraints": {
+      "sum_weights": 1.0,
+      "minimum_each_weight": 0.0019230769230769232,
+      "maximum_each_weight": 0.03076923076923077,
+      "minimum_formula": "0.25/130",
+      "maximum_formula": "4/130"
+    },
+    "optimizer": {
+      "library": "scipy.optimize.minimize",
+      "method": "SLSQP",
+      "initialization": "uniform 1/130",
+      "ftol": 1e-12,
+      "maxiter": 2000,
+      "finite_difference_or_random_start": false,
+      "fail_closed": true
+    },
+    "regularization_grid": [0.0, 0.1, 1.0],
+    "alternate_target_support_bounds_imputation_subset_direction_model_optimizer_or_grid_search": false
+  },
+  "finite_development_catalog": [
+    {
+      "trial_id": "wf102_full_numeric_library_bounded_simplex_ridge_130f_lambda_0",
+      "lambda": 0.0
+    },
+    {
+      "trial_id": "wf102_full_numeric_library_bounded_simplex_ridge_130f_lambda_0p1",
+      "lambda": 0.1
+    },
+    {
+      "trial_id": "wf102_full_numeric_library_bounded_simplex_ridge_130f_lambda_1",
+      "lambda": 1.0
+    }
+  ],
+  "walkforward_folds": [
+    {
+      "fold": 1,
+      "training": ["2019-01-01", "2020-12-31"],
+      "validation": ["2021-01-01", "2021-12-31"]
+    },
+    {
+      "fold": 2,
+      "training": ["2019-01-01", "2021-12-31"],
+      "validation": ["2022-01-01", "2022-12-31"]
+    },
+    {
+      "fold": 3,
+      "training": ["2019-01-01", "2022-12-31"],
+      "validation": ["2023-01-01", "2023-12-31"]
+    }
+  ],
+  "split_and_execution_policy": {
+    "global_signal_grid": "start at the first accepted local 2019 session and take every third local session",
+    "signal": "close t",
+    "entry": "next accepted local session open t+1",
+    "exit": "third accepted local session close t+3",
+    "purge_signal_sessions_each_boundary": 3,
+    "t_plus_1_and_t_plus_3_must_remain_inside_partition": true,
+    "quality_maximum_age_days": 550,
+    "minimum_listing_sessions": 20,
+    "minimum_signal_names": 50,
+    "topk": 3,
+    "execution_assumptions": "exact normalized and CNY200000 board-lot pilot policies bound by Campaign004"
+  },
+  "fitted_score_uniqueness_gate": {
+    "daily_screen": "all quality/listing design-matrix sessions inside the validation or lockbox interval, not only every-third-session signal dates",
+    "method": "Within each candidate-and-comparator pairwise-finite stock-day cross-section, compute Spearman correlation, then take the median daily correlation.",
+    "numeric_comparator_count": 130,
+    "numeric_comparator_order_sha256": "c80d9b929536dd509d6c1a904f790831050e68200393de381f92ad9293ef69e7",
+    "strict_maximum_absolute_median_daily_rank_correlation": 0.8,
+    "minimum_pairwise_names_per_session": 50,
+    "minimum_pairwise_sessions_per_comparison": 100,
+    "all_130_comparators_must_pass": true,
+    "candidate_specific_comparator_drop_allowed": false,
+    "insufficient_overlap_fails_closed": true
+  },
+  "development_survivor_rule": {
+    "minimum_validation_association_cohorts_per_fold": 60,
+    "minimum_board_lot_affordability_rate_each_fold": 0.9,
+    "maximum_daily_amount_participation_each_fold": 0.01,
+    "terminal_unresolved_positions_each_fold": 0,
+    "positive_ic_fold_count_gte": 2,
+    "median_validation_mean_rank_ic_gt": 0.0,
+    "median_validation_spread_gt": 0.0,
+    "positive_normalized_return_fold_count_gte": 2,
+    "positive_pilot_return_fold_count_gte": 2,
+    "median_validation_pilot_return_gt": 0.0,
+    "worst_normalized_drawdown_gte": -0.25,
+    "development_aggregate_20bp_return_gt": 0.0,
+    "operational_and_validation_quality_gates_are_both_required": true,
+    "ranking_order": [
+      "positive validation mean-Rank-IC fold count descending",
+      "positive validation 10bp pilot-return fold count descending",
+      "positive validation normalized-return fold count descending",
+      "median validation mean Rank IC descending",
+      "median validation 10bp pilot return descending",
+      "2019-2023 aggregate 20bp pilot return descending",
+      "worst validation normalized drawdown descending",
+      "trial_id ascending"
+    ],
+    "maximum_lockbox_survivors": 1,
+    "post_result_rule_change_allowed": false
+  },
+  "lockbox_final_gates": {
+    "mean_rank_ic_gt": 0.0,
+    "positive_rank_ic_rate_gt": 0.5,
+    "mean_top3_minus_bottom3_spread_gt": 0.0,
+    "each_year_mean_rank_ic_gt": 0.0,
+    "normalized_return_gt": 0.0,
+    "normalized_drawdown_gte": -0.2,
+    "each_year_normalized_return_gt": 0.0,
+    "normalized_terminal_unresolved_positions": 0,
+    "pilot_10bp_return_gt": 0.0,
+    "pilot_20bp_return_gt": 0.0,
+    "each_year_pilot_10bp_return_gt": 0.0,
+    "board_lot_affordability_gte": 0.9,
+    "maximum_daily_amount_participation_lte": 0.01,
+    "pilot_terminal_unresolved_positions": 0
+  },
+  "append_only_ledger_policy": {
+    "record_every_concept_formula_direction_parameter_support_filter_subset_combination_model_optimizer_fit_audit_metric_and_failure": true,
+    "record_only_best_result_allowed": false,
+    "failed_attempts_may_be_deleted_or_rewritten": false,
+    "design_matrix_attempts_training_fit_attempts_validation_return_trials_and_lockbox_trials_counted_separately": true
+  },
+  "research_boundary": {
+    "campaign102_design_matrix_values_read_before_freeze": false,
+    "campaign102_model_fit_before_freeze": false,
+    "new_daily_price_or_return_fields_read_before_freeze": false,
+    "candidate49_historical_backfill_allowed": false,
+    "candidate49_ledgers_may_change": false,
+    "second_prospective_candidate_allowed": false,
+    "provider_request_issued": false,
+    "current_scoring_selection_sizing_or_orders_allowed": false,
+    "investment_advice": false
+  }
+}

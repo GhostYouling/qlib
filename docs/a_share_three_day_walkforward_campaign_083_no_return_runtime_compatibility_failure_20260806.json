@@ -1,0 +1,30 @@
+{
+  "schema_version": 1,
+  "kind": "a_share_three_day_walkforward_campaign083_no_return_runtime_compatibility_failure",
+  "status": "failed_closed_before_coverage_or_comparison_values",
+  "recorded_at": "2026-08-06T20:18:20+08:00",
+  "failed_command_stage": "sole_no_return_audit_runtime_entry_gate",
+  "exit_code": 1,
+  "exception": "Campaign077NoReturnAuditV2Error: current runtime changed",
+  "observed_runtime": {
+    "pandas": "2.2.3",
+    "pyarrow": "25.0.0"
+  },
+  "frozen_legacy_repair_runtime_required_by_unchanged_runner": {
+    "pandas": "2.2.2",
+    "pyarrow": "16.1.0"
+  },
+  "root_cause": "The isolated Codex runtime was populated for Campaign083 feature construction with pandas 2.2.3 and pyarrow 25.0.0, while the unchanged legacy comparator repair context used by the frozen Campaign083 runner accepts only the previously frozen current-runtime pair pandas 2.2.2 and pyarrow 16.1.0 before entering any audit logic.",
+  "published_audit_count_after_failure": 0,
+  "partial_statistics_reused": false,
+  "candidate_snapshot_or_manifest_changed": false,
+  "coverage_or_capacity_metrics_computed": false,
+  "comparison_values_read": false,
+  "historical_daily_price_fields_read": [],
+  "historical_forward_returns_read": false,
+  "provider_request_issued": false,
+  "candidate49_historical_backfill_performed": false,
+  "candidate49_ledgers_changed": false,
+  "current_scoring_selection_sizing_or_orders_performed": false,
+  "required_recovery": "Freeze a runtime-compatibility-only retry protocol and wrapper that preserve the original runner, formula, snapshot, comparator order, thresholds, and zero-audit precondition; install the exact accepted pandas and pyarrow versions in the isolated runtime; rerun from the beginning at most once; never suppress or monkey-patch the existing runtime gate."
+}

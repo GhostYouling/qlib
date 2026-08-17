@@ -1,0 +1,56 @@
+{
+  "version": 4,
+  "kind": "a_share_three_day_walkforward_campaign059_terminal_completion_freeze",
+  "status": "frozen_zero_development_survivors_stress_closed_after_four_test_failures",
+  "recorded_at": "2026-08-04T23:06:00+08:00",
+  "bindings": {
+    "prior_terminal_completion_freeze": {
+      "path": "docs/a_share_three_day_walkforward_campaign_059_terminal_completion_freeze_v3_20260804.json",
+      "sha256": "fb64644e3e4a86b77c0c0edffde227a8818367b41aa79fc962b9a988f5246e66"
+    },
+    "current_research_record": {
+      "path": "docs/a_share_three_day_walkforward_campaign_059_research_record_v4.json",
+      "sha256": "e74ca3ec35d2d7d69c5048b667cf177783ec8cf5d58df3c36b123d214b0f0154"
+    },
+    "current_research_attempt_ledger": {
+      "path": "data/experiments/short_horizon/historical_walkforward/campaign_059/research_attempt_ledger_v5.json",
+      "sha256": "7ca796134904cb03e97d5bd4958c27a06c210c9f85b37df9b592a9aea6e794d0"
+    },
+    "terminal_test_workdir_import_failure": {
+      "path": "docs/a_share_three_day_walkforward_campaign_059_terminal_test_workdir_import_failure_20260804.json",
+      "sha256": "8d6f235586bc7d0aefde1a8caf1aff3f8d4964c5523fc0470aea4ea6ba57ea1b"
+    },
+    "terminal_subprocess_import_path_failure": {
+      "path": "docs/a_share_three_day_walkforward_campaign_059_terminal_subprocess_import_path_failure_20260804.json",
+      "sha256": "75fa621ffd4ee23cb6e52745448b65867c5c2bb162fd74ccc2ffdfeedf469944"
+    },
+    "development_survivors": {
+      "path": "data/experiments/short_horizon/historical_walkforward/campaign_059/walkforward/development_survivors.json",
+      "sha256": "e0be7366f52160a89b73b23eced35c47eda6af99fdc17c1311077229eafcfc0a"
+    },
+    "exposed_stress_consumption_record": {
+      "path": "data/experiments/short_horizon/historical_walkforward/campaign_059/walkforward/exposed_stress_consumption_record.json",
+      "sha256": "6e05f3f02d10e9ce004ef855700e602b84ca9f54c53ac1f6581f770f30a2a41f"
+    }
+  },
+  "frozen_semantics": {
+    "factor_result_changed": false,
+    "development_survivor_count": 0,
+    "stress_2024_2025_opened": false,
+    "stress_2024_2025_returns_read": false,
+    "campaign059_infrastructure_only_failure_count": 7,
+    "campaign059_complete_factor_attempt_count": 1,
+    "campaign059_distinct_attempt_count": 8,
+    "campaign059_ledger_entry_count": 9,
+    "cumulative_historical_research_attempt_count": 341,
+    "cumulative_return_reading_development_trial_count": 269,
+    "successful_terminal_suite_passed": 33,
+    "successful_terminal_suite_failed": 0,
+    "successful_terminal_suite_deselected": 1,
+    "successful_terminal_suite_explicit_pythonpath": "/Volumes/DIsk/Disk-Coding/qlib",
+    "candidate49_ledgers_changed": false,
+    "provider_request_issued": false,
+    "current_scoring_selection_sizing_or_orders_performed": false
+  },
+  "next_boundary": "Publish only versioned report, test, verification, and authoritative-state successors. Campaign060 requires an independent pre-value-frozen mechanism."
+}

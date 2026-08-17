@@ -1,0 +1,229 @@
+{
+  "version": 1,
+  "kind": "a_share_three_day_walkforward_campaign016_mechanism_overlap_audit",
+  "status": "one_exact_mechanism_frozen_before_campaign016_candidate_or_comparison_values_or_returns",
+  "recorded_at": "2026-07-28T21:05:53Z",
+  "purpose": "Resolve the selected Campaign016 concept into one exact finite no-value mechanism. Freeze formula, direction, timestamp support, internal-boundary pairing, zero handling, denominator and variance rules, valid range, no-return gates, and the one-trial search bound before any external minute partition, candidate value, comparison value, daily price, or forward return is opened.",
+  "authoritative_bindings": {
+    "concept_scouting": {
+      "path": "docs/a_share_three_day_walkforward_campaign_016_concept_scouting.json",
+      "sha256": "9cf788aaaa7f69ee020c9bf8716166a26c5553e780722a38bd58fe4c72921083"
+    },
+    "iteration_state": {
+      "path": "docs/a_share_three_day_iteration_status_20260729_campaign015.json",
+      "sha256": "c6092e60fa3934388e5fded6e1669ba173185dacf5fb5ecd39753d50cd27397f"
+    },
+    "historical_walkforward_policy": {
+      "path": "docs/a_share_three_day_historical_walkforward_research_policy_20260727.json",
+      "sha256": "38426d6161b9bfed323c58caba18feca668b8c9d53e294951a8ba90c01a798bb"
+    },
+    "campaign015_research_record": {
+      "path": "docs/a_share_three_day_walkforward_campaign_015_research_record.json",
+      "sha256": "ddaf96c66cb86abb2f7d07950adade7f2a4e5a788004f7b4c6525f0d4ac8449c",
+      "completed": true,
+      "usable_factor_values": true,
+      "development_survivor_count": 0
+    },
+    "accepted_minute_source_record": {
+      "path": "docs/a_share_tushare_one_minute_source_acceptance_record.json",
+      "sha256": "643f2177c80bfb77ba7bdbc84bd8cda3ad5feb222f1fc7309256f66436f75411"
+    }
+  },
+  "source_schema_boundary": {
+    "provider": "tushare",
+    "frequency": "1m",
+    "accepted_source_grid_rows": 241,
+    "standalone_0930_row_preserved_but_excluded_from_formula": true,
+    "continuous_session_rows": "09:31-11:30 and 13:01-15:00",
+    "allowed_transport_fields": [
+      "datetime",
+      "symbol",
+      "provider",
+      "open",
+      "high",
+      "low",
+      "close"
+    ],
+    "fields_used_for_formula": [
+      "datetime",
+      "symbol",
+      "provider",
+      "open",
+      "close"
+    ],
+    "fields_used_only_for_own_bar_ordering_validation": [
+      "high",
+      "low"
+    ],
+    "forbidden_source_fields": [
+      "volume",
+      "amount"
+    ],
+    "daily_price_or_return_substitution_allowed": false,
+    "provider_request_allowed": false
+  },
+  "comparison_catalog": {
+    "semantic_registered_mechanism_count": 39,
+    "statistical_comparison_factor_count": 37,
+    "base_statistical_comparison_catalog_binding": {
+      "path": "docs/a_share_three_day_walkforward_campaign_015_no_return_preregistration.json",
+      "sha256": "ef8cfbf9d7cb1dcc50f65c2d050d9e1931c97d86f74770d4270a5b94da21609e",
+      "json_pointer": "/ordered_no_return_gates/uniqueness_after_coverage_only/comparison_factors",
+      "bound_factor_count": 36
+    },
+    "appended_statistical_comparison": {
+      "name": "intraday_prior_range_breakout_pressure_238p",
+      "direction": "higher",
+      "snapshot_manifest_sha256": "450cefd5b268658997841038fd45156f436b7f3645a8ba5980681370abf42811",
+      "snapshot_dataset_sha256": "681c048babc594bf0b215fada4ff868d70d0a6bf450cf59cb610e22c6002747f"
+    },
+    "semantic_only_terminal_mechanisms": [
+      {
+        "name": "intraday_post_shock_share_volume_replenishment_236p",
+        "campaign": 8,
+        "reason_not_statistically_compared": "Its immutable snapshot contains zero finite factor values."
+      },
+      {
+        "name": "intraday_transaction_vwap_envelope_asymmetry_240m",
+        "campaign": 13,
+        "reason_not_statistically_compared": "Its immutable snapshot stopped at low coverage and cannot satisfy statistical comparison support."
+      }
+    ],
+    "mandatory_mechanism_challenges": [
+      {
+        "name": "opening_gap_digestion",
+        "distinction": "The invalid original opening-gap mechanism uses the session opening against a previous daily close and depends on ambiguous 09:30 semantics. Campaign016 excludes 09:30 and every overnight/session-opening transition, and uses only internal within-half minute boundaries."
+      },
+      {
+        "name": "intraday_intrabar_body_range_efficiency_240m",
+        "distinction": "Campaign009 aggregates absolute same-bar open-to-close bodies relative to high-low ranges. Campaign016 does not normalize by range or aggregate body magnitude; it correlates the signed previous-close-to-current-open boundary move with the signed current-open-to-current-close body."
+      },
+      {
+        "name": "intraday_signed_path_efficiency_239m",
+        "distinction": "Signed path efficiency uses close-to-close moves and net path length. Campaign016 decomposes each internal close-to-close change into a boundary gap and a destination-bar body and tests their same-pair confirmation."
+      },
+      {
+        "name": "intraday_return_sign_run_imbalance_238p",
+        "distinction": "Sign-run imbalance compares signs of successive close-to-close returns. Campaign016 compares two components of the same internal transition; it retains magnitude, uses opens, and forms no adjacent return-sign run."
+      },
+      {
+        "name": "intraday_price_update_share_238m",
+        "distinction": "Price-update share counts whether adjacent closes differ. Campaign016 requires variation in both boundary-gap and body vectors and computes their signed Pearson correlation without counting update indicators."
+      },
+      {
+        "name": "intraday_transaction_price_path_confirmation_238p",
+        "distinction": "Campaign006 correlates close returns with amount/volume transaction-price returns and removes inactive activity pairs. Campaign016 reads no activity or transaction price and correlates only raw open/close boundary and within-bar components on fixed support."
+      },
+      {
+        "name": "intraday_adjacent_range_overlap_continuity_238p",
+        "distinction": "Campaign010 compares adjacent high-low intervals symmetrically. Campaign016 uses high/low only to validate each bar, never computes an interval overlap, containment, union, or gap."
+      },
+      {
+        "name": "intraday_prior_range_breakout_pressure_238p",
+        "distinction": "Campaign015 measures current closes beyond the previous high-low boundary. Campaign016 never compares a close with a prior range; it separates previous-close-to-current-open repricing from the current bar's open-to-close confirmation."
+      },
+      {
+        "name": "intraday_cumulative_vwap_crossing_rate_240m",
+        "distinction": "Candidate49 counts close crossings around causal cumulative VWAP. Campaign016 has no cumulative state, amount, volume, transaction price, crossing count, or Candidate49 return read."
+      }
+    ],
+    "maximum_allowed_absolute_median_daily_rank_correlation": 0.8,
+    "minimum_pairwise_names_per_session": 50,
+    "minimum_pairwise_sessions_per_comparison": 100,
+    "score_direction_normalization": "Multiply lower-is-better comparison values by minus one before each daily rank correlation; retain the candidate's frozen higher direction."
+  },
+  "candidate": {
+    "name": "intraday_interbar_gap_body_confirmation_238p",
+    "direction": "higher",
+    "economic_hypothesis": "Positive correlation between signed internal boundary repricing and the destination minute's signed body may identify informed price discovery that is confirmed rather than immediately reversed and persists over the next three sessions.",
+    "formula": "population Pearson correlation Corr(g_t,b_t), where g_t=log(open_t/close_(t-1)) and b_t=log(close_t/open_t) across exactly 238 within-half internal transitions",
+    "formula_steps": [
+      "Require the exact accepted 241-row source grid, preserve but exclude standalone 09:30, and select exactly the 240 bars at 09:31-11:30 and 13:01-15:00.",
+      "Require every selected open, high, low, and close to be finite and strictly positive, with exact raw ordering low_i <= open_i <= high_i and low_i <= close_i <= high_i. Do not round, clamp, sort within a bar, repair, or use a price-grid tolerance.",
+      "Inside each 120-bar trading half only, form 119 transitions from previous bar i to destination bar t=i+1. Morning and afternoon contribute exactly 238 transitions. Form no 09:30, 11:30-to-13:01 lunch, overnight, cross-day, cross-stock, or higher-lag transition.",
+      "For each transition compute signed boundary repricing g_t=log(open_t/close_i) and signed destination body b_t=log(close_t/open_t). Exact equality yields exact zero and remains in the fixed 238-pair support; do not drop zero-zero, one-zero, or opposite-sign pairs.",
+      "Compute the population means of the 238 g and b values, centered sums Sgg=sum((g-mean(g))^2), Sbb=sum((b-mean(b))^2), and Sgb=sum((g-mean(g))*(b-mean(b))). Require every component finite and require Sgg and Sbb strictly positive. No nonzero-count, magnitude, volatility, or activity threshold is allowed.",
+      "Compute q=Sgb/sqrt(Sgg*Sbb). If q lies within 1e-12 beyond either mathematical endpoint, canonicalize it to that endpoint; otherwise require q finite and within [-1,1]. Return q without clipping inside the range, winsorization, smoothing, ranking, sign conversion, or another normalization."
+    ],
+    "source_fields_used_by_formula": [
+      "datetime",
+      "symbol",
+      "provider",
+      "open",
+      "close"
+    ],
+    "source_fields_used_only_for_validation": [
+      "high",
+      "low"
+    ],
+    "timestamp_semantics": "Use exactly 238 internal previous-close/current-open/current-close transitions: 119 inside the morning half and 119 inside the afternoon half. Exclude 09:30 and the lunch transition.",
+    "zero_missing_denominator_semantics": "All exact-zero gap and body values remain in the fixed support. A stock-day is missing only for an invalid/nonpositive/nonfinite OHLC input, own-bar ordering violation, nonfinite transformed/component value, zero population variance in either the 238-gap or 238-body vector, or a correlation outside the endpoint tolerance.",
+    "valid_range": {
+      "lower": -1.0,
+      "lower_inclusive": true,
+      "upper": 1.0,
+      "upper_inclusive": true
+    },
+    "selected_bar_count": 240,
+    "within_half_pair_count": 238,
+    "minimum_nonzero_pair_count": null,
+    "order_sensitivity": true,
+    "mechanism_distinction_before_values": [
+      "Holding every close fixed while changing internal bar opens can change Campaign016 but leaves close-only return, sign-run, terminal-location, and path-efficiency factors unchanged.",
+      "Holding every open and close fixed while changing high-low ranges within valid ordering leaves Campaign016 unchanged but can change range overlap, range entropy, range reversal, global revisit, body-range efficiency, and prior-range breakout factors.",
+      "A boundary gap followed by same-signed body contributes positive covariance; immediate within-bar reversal contributes negative covariance; a zero gap or zero body stays as an explicit zero observation.",
+      "Campaign016 contains no 09:30 or overnight gap, previous daily close, amount, volume, transaction price, VWAP, prior-range boundary, market peer, or forward return."
+    ],
+    "rejected_variants_before_values": [
+      "sign agreement, continuation counts, reversal counts, positive-only or negative-only pairs, powers, absolute values, ranks, quantiles, regression beta, cosine similarity, or another correlation estimator",
+      "dropping zero-zero, one-zero, opposite-sign, small-magnitude, opening, closing, morning, or afternoon pairs; adding a nonzero-count, price-tick, volatility, or activity threshold",
+      "using 09:30, a previous daily close, the first bar of either half against an external baseline, the lunch boundary, overnight, cross-day, cross-stock, higher-lag, rolling, selected-subwindow, or time-weighted transitions",
+      "using high-low interval gaps, overlap, containment, range normalization, current or prior range breakouts, transaction VWAP, cumulative VWAP, amount, volume, daily substitutes, or market peers",
+      "lower-is-better direction, endpoint clipping beyond the 1e-12 numerical rule, year subsets, filters, thresholds, or combinations with terminal mechanisms"
+    ]
+  },
+  "finite_research_search": {
+    "candidate_count": 1,
+    "exact_trial_catalog_if_admitted": [
+      {
+        "trial_id": "campaign016_single_interbar_gap_body_confirmation",
+        "components": [
+          "intraday_interbar_gap_body_confirmation_238p"
+        ],
+        "weights": [
+          1.0
+        ]
+      }
+    ],
+    "expected_trial_count_if_admitted": 1,
+    "pair_or_higher_order_combinations": false,
+    "weight_fitting": false,
+    "threshold_search": false,
+    "year_subset_search": false,
+    "filter_search": false,
+    "old_terminal_factor_rescue_combinations": false,
+    "candidate49_inclusion": false
+  },
+  "research_boundary": {
+    "external_minute_partitions_read": false,
+    "external_daily_partitions_read": false,
+    "candidate_values_computed_or_read": false,
+    "comparison_values_read": false,
+    "historical_daily_prices_read": false,
+    "historical_forward_returns_read": false,
+    "training_or_model_fitting_performed": false,
+    "provider_request_issued": false,
+    "candidate49_historical_return_read": false,
+    "candidate49_ledgers_changed": false,
+    "candidate50_prospective_activation_allowed": false,
+    "current_scoring_selection_sizing_or_orders_allowed": false,
+    "investment_advice": false
+  },
+  "decision": {
+    "economic_independence_before_values": true,
+    "exact_factor_count": 1,
+    "statistical_uniqueness_still_required": true,
+    "may_advance_directly_to_returns": false,
+    "required_next_step": "Freeze the fingerprint-bound no-return protocol and implementation, pass formula tests, then build the one immutable candidate snapshot and run coverage/capacity before loading the 37 frozen comparison values."
+  }
+}

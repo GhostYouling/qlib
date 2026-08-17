@@ -1,0 +1,66 @@
+{
+  "schema_version": 1,
+  "kind": "a_share_three_day_walkforward_campaign106_no_return_audit_failure",
+  "status": "failed_closed_after_coverage_pass_during_frozen_comparator_132_adapter",
+  "recorded_at": "2026-08-07T19:25:09Z",
+  "protocol": {
+    "path": "docs/a_share_three_day_walkforward_campaign_106_no_return_preregistration.json",
+    "sha256": "933b1f0bea9d092e67ba688d6270983e75e9002f2948f5e01f363d50cc4f2670"
+  },
+  "implementation_freeze": {
+    "path": "docs/a_share_three_day_walkforward_campaign_106_no_return_implementation_freeze_v2_20260808.json",
+    "sha256": "a832b5c3500d7fb7e4aeaa97204689b84ad9f15664424d270d79626824da224f"
+  },
+  "ordered_audit_runner": {
+    "path": "scripts/a_share_three_day_walkforward_campaign106_no_return_audit.py",
+    "sha256": "4326a206cf1f67e7d4bf8375ea190404918d744650d794df6b48acf09a2f801a"
+  },
+  "activation_binding": {
+    "path": "docs/a_share_three_day_walkforward_campaign_106_no_return_audit_activation_binding_20260808.json",
+    "sha256": "040f29462084feedbd97765712755eb6be52accdf448dc6e71b34fdbd91626ca"
+  },
+  "execution": {
+    "exit_code": 1,
+    "failure_type": "KeyError",
+    "failure_value": "intraday_active_trading_bar_share_240m",
+    "failing_operation": "engine.load_factor_frame for frozen comparator 132",
+    "result_record_published": false,
+    "partial_result_record_published": false
+  },
+  "root_cause": {
+    "classification": "implementation_adapter_omission",
+    "detail": "The shared factor loader requires every newly appended raw factor to be registered in FACTOR_RANGES. Campaign106 registered its candidate range in the main audit path but the comparator-132 adapter did not register Campaign105's frozen [0,1] range before calling load_factor_frame.",
+    "candidate_formula_or_values_invalid": false,
+    "coverage_gate_failed": false,
+    "uniqueness_gate_failed": false,
+    "source_or_provider_failed": false
+  },
+  "observed_ordered_stage_semantics": {
+    "candidate_snapshot_verified": true,
+    "coverage_and_capacity_computed": true,
+    "coverage_gate_passed_before_comparator_values": true,
+    "first_130_directional_matrix_comparisons_computed": true,
+    "comparator_131_computed": true,
+    "comparator_132_snapshot_verified_and_values_read": true,
+    "comparator_132_aligned_correlation_computed": false,
+    "all_132_gate_decision_computed": false
+  },
+  "research_boundary": {
+    "historical_daily_price_fields_read": [],
+    "historical_forward_returns_read": false,
+    "development_trial_started": false,
+    "stress_2024_2025_opened": false,
+    "provider_request_issued": false,
+    "candidate49_historical_backfill_performed": false,
+    "candidate49_ledgers_changed": false,
+    "current_scoring_selection_sizing_or_orders_performed": false
+  },
+  "allowed_recovery": {
+    "additive_new_runner_and_activation_required": true,
+    "only_change": "Register intraday_active_trading_bar_share_240m with frozen range [0,1] before the already frozen comparator-132 loader call.",
+    "formula_direction_coverage_gate_uniqueness_threshold_comparator_order_or_subset_may_change": false,
+    "original_runner_or_freeze_may_be_rewritten": false,
+    "failed_attempt_may_be_deleted_or_relabelled": false
+  },
+  "next_action": "Freeze and test an additive recovery runner that makes only the missing Campaign105 range registration, then rerun the exact one-shot audit and preserve both attempts."
+}

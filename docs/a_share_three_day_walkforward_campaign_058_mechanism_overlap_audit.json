@@ -1,0 +1,153 @@
+{
+  "version": 1,
+  "kind": "a_share_three_day_walkforward_campaign058_mechanism_overlap_audit",
+  "status": "passed_conceptual_independence_before_campaign058_source_candidate_comparison_daily_price_or_return_values",
+  "recorded_at": "2026-08-04T07:58:21Z",
+  "purpose": "Challenge the selected point-in-time operating-leverage mechanism against the complete current 81-definition catalog and the eight older quality semantic definitions before any Campaign058 source row or value is read.",
+  "authoritative_boundary": {
+    "campaign057_verified_state": {
+      "path": "docs/a_share_three_day_iteration_status_20260804_campaign057_verified.json",
+      "sha256": "a83247eaa08b1276c2f538f5286e1b6e622fe8e93453145453c3eae6e1816ba4"
+    },
+    "historical_walkforward_policy": {
+      "path": "docs/a_share_three_day_historical_walkforward_research_policy_20260727.json",
+      "sha256": "38426d6161b9bfed323c58caba18feca668b8c9d53e294951a8ba90c01a798bb"
+    },
+    "concept_scouting": {
+      "path": "docs/a_share_three_day_walkforward_campaign_058_concept_scouting.json",
+      "sha256": "95b7369402afe3385c0c12d1deea469c1f096a6d92daeaa037c65fda88f6eb90"
+    }
+  },
+  "inherited_definition_sources": {
+    "campaign057_protocol": {
+      "path": "docs/a_share_three_day_walkforward_campaign_057_no_return_preregistration.json",
+      "sha256": "9eb8607e91e952b9e22e436374d68de0a90df251065720bed8a6285f2e3b7ff1",
+      "comparison_count": 80
+    },
+    "campaign057_terminal_record": {
+      "path": "docs/a_share_three_day_walkforward_campaign_057_research_record.json",
+      "sha256": "f1c9683172483509a78b7fd5d10cfc4c9739ef80d3b6023f2ec1ee0e2c3a004a",
+      "appended_definition": "intraday_day_over_day_absolute_return_profile_similarity_238b"
+    },
+    "older_quality_semantic_contract": {
+      "path": "docs/a_share_tushare_audit_opinion_no_return_preregistration.json",
+      "sha256": "5fb77e7060cbd1a03824d015cc33b75ffcf23b3afb5817e60b783e8bcaea3d69",
+      "definitions": [
+        "quality_roe",
+        "quality_profit",
+        "quality_revenue",
+        "quality_growth",
+        "quality_score",
+        "roe_change",
+        "revenue_yoy_acceleration",
+        "profit_yoy_acceleration"
+      ]
+    },
+    "total_required_no_return_comparison_count": 89,
+    "campaign058_comparison_values_read": false
+  },
+  "selected_mechanism": {
+    "name": "quarterly_profit_revenue_growth_spread_pp",
+    "direction": "higher",
+    "economic_hypothesis": "A positive point-in-time gap between profit growth and revenue growth represents operating leverage or margin expansion that may persist over the next-open-to-third-close horizon.",
+    "formula": "profit_yoy_state_t - revenue_yoy_state_t in percentage points after strict-next-session availability, same-effective-date deduplication, and independent per-field forward fill.",
+    "stock_day_identity_projection": [
+      "datetime",
+      "symbol",
+      "provider"
+    ],
+    "quarterly_source_projection": [
+      "instrument",
+      "report_date",
+      "announcement_date",
+      "revenue_yoy",
+      "profit_yoy"
+    ],
+    "transform_threshold_filter_combination_or_model": "none"
+  },
+  "overlap_challenges": [
+    {
+      "family": "quality_profit_and_quality_revenue",
+      "result": "distinct_joint_relation_pending_mandatory_statistical_uniqueness",
+      "reason": "The two older definitions rank each growth level separately. Campaign058 is unchanged when the two levels move by the same percentage-point amount and changes sign when their ordering reverses; neither level alone determines the spread."
+    },
+    {
+      "family": "quality_growth_and_quality_score",
+      "result": "distinct_noncompensating_contrast_pending_mandatory_statistical_uniqueness",
+      "reason": "Quality growth averages revenue/profit percentile ranks and quality score additionally averages ROE. They reward jointly large levels. Campaign058 subtracts raw same-unit states, reads no ROE, and distinguishes operating leverage from common growth. No terminal percentile value is loaded or combined."
+    },
+    {
+      "family": "roe_change_revenue_yoy_acceleration_and_profit_yoy_acceleration",
+      "result": "distinct_level_relation_pending_mandatory_statistical_uniqueness",
+      "reason": "Those definitions compare the current fiscal quarter with the same fiscal quarter one year earlier and require an acceleration history. Campaign058 uses only the latest already-effective revenue/profit growth states and contains no prior-year-quarter difference or ROE."
+    },
+    {
+      "family": "quarterly_announcement_freshness_timeliness_and_delay_consistency",
+      "result": "distinct",
+      "reason": "The three terminal disclosure factors use report and announcement dates only. Holding availability dates fixed while changing the two growth states changes Campaign058; holding the states fixed while changing disclosure timing leaves its value unchanged once the same state is effective."
+    },
+    {
+      "family": "minute_close_return_path_update_entropy_reversal_and_cross_session_profile_factors",
+      "result": "distinct",
+      "reason": "Campaign058 reads no minute close or return. It is constant between effective accounting-state changes and cannot reproduce any same-day or cross-day price-path statistic."
+    },
+    {
+      "family": "minute_ohlc_range_body_wick_gap_frontier_and_extreme_factors",
+      "result": "distinct",
+      "reason": "Campaign058 reads no minute open, high, low, range, body, wick, gap, frontier, or extreme field."
+    },
+    {
+      "family": "minute_volume_amount_transaction_price_vwap_activity_and_price_discovery_factors",
+      "result": "distinct",
+      "reason": "Campaign058 reads no minute volume, amount, transaction price, or VWAP and has no activity weighting or clock distribution."
+    },
+    {
+      "family": "market_peer_response_correlation_dispersion_and_idiosyncratic_factors",
+      "result": "distinct",
+      "reason": "No market, industry, peer, leave-one-out benchmark, beta, correlation, or dispersion state enters Campaign058."
+    },
+    {
+      "family": "candidate49_cumulative_vwap_crossing_rate_240m",
+      "result": "distinct",
+      "reason": "Candidate49 is a future-only causal close-versus-cumulative-VWAP crossing count. Campaign058 is historical-only accounting-state research, loads no Candidate49 value, and performs no signal or execution backfill."
+    },
+    {
+      "family": "terminal_factor_combination_filter_threshold_or_model",
+      "result": "distinct",
+      "reason": "The score is computed directly from two same-unit source fields. It does not load a terminal factor value, percentile score, fitted weight, regime, threshold, subset, or model."
+    }
+  ],
+  "design_choices_frozen_before_values": {
+    "candidate_count": 1,
+    "factor_name": "quarterly_profit_revenue_growth_spread_pp",
+    "direction": "higher",
+    "value_fields": [
+      "profit_yoy",
+      "revenue_yoy"
+    ],
+    "formula_operator": "raw_percentage_point_subtraction_profit_minus_revenue",
+    "availability": "first accepted session strictly after announcement_date",
+    "same_effective_date_deduplication": "last report_date_then_announcement_date",
+    "state_propagation": "independent_per_field_forward_fill_inside_instrument",
+    "missing_if_either_state_nonfinite": true,
+    "parameter_filter_subset_model_or_combination_search": false
+  },
+  "research_boundary": {
+    "external_campaign058_minute_or_quarterly_rows_read": false,
+    "campaign058_candidate_or_comparison_values_read": false,
+    "historical_daily_price_fields_read": [],
+    "historical_forward_return_fields_read": false,
+    "provider_request_issued": false,
+    "candidate49_historical_return_signal_execution_or_milestone_backfill_performed": false,
+    "candidate49_ledgers_changed": false,
+    "second_prospective_candidate_created": false,
+    "current_scoring_selection_sizing_or_orders_performed": false,
+    "investment_advice": false
+  },
+  "decision": {
+    "conceptual_independence_passed": true,
+    "statistical_independence_pending_all_89_comparisons": true,
+    "predictive_value_established": false,
+    "next_action": "Freeze one exact coverage-first 89-comparison no-return protocol before implementing or reading any Campaign058 source row or value."
+  }
+}

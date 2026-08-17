@@ -1,0 +1,56 @@
+{
+  "schema_version": 1,
+  "version": 2,
+  "kind": "a_share_three_day_walkforward_campaign083_development_dependency_repair_protocol",
+  "status": "frozen_after_preload_dependency_failure_before_full_development_retry",
+  "frozen_at": "2026-08-06T12:47:00Z",
+  "failure_record": {
+    "path": "docs/a_share_three_day_walkforward_campaign_083_development_load_dependency_failure_20260806.json",
+    "sha256": "89901225350d45f3c1f90bad328b5465bed1ffae7a5298f261e3aec88d23a1b9"
+  },
+  "development_preregistration": {
+    "path": "docs/a_share_three_day_walkforward_campaign_083_preregistration.json",
+    "sha256": "13da1fb31d3849bb792b140847018fe44b8760e8c8d02ae1ba6e082ff467f087"
+  },
+  "development_runner": {
+    "path": "scripts/a_share_three_day_walkforward_campaign083.py",
+    "sha256": "0a527a67fb4674eefec816f13442f07fa740f90c08a91a33d97db79fd5727640"
+  },
+  "development_implementation_freeze": {
+    "path": "docs/a_share_three_day_walkforward_campaign_083_development_implementation_freeze_20260806.json",
+    "sha256": "253c1c03d868a1bb7d8d9363a4cac2b599b5f75116395c4b7b243900c8b8da15"
+  },
+  "research_attempt_ledger_after_failure": {
+    "path": "data/experiments/short_horizon/historical_walkforward/campaign_083/research_attempt_ledger_v7.json",
+    "sha256": "c3171818836dab14f4bd21e29910f6a3cb13da6f9a14144eac4d171a6f7a5d93"
+  },
+  "sole_repair": {
+    "operation": "Install the repository-declared setuptools-scm package into the isolated runtime, require qlib import and the frozen development tests to pass, and then restart the unchanged development command from the beginning.",
+    "setuptools_scm_is_declared_by_repository": true,
+    "existing_trial_ledger_infrastructure_failure_entry_must_be_preserved": true,
+    "expected_trial_ledger_entry_count_before_retry": 1,
+    "expected_complete_development_trial_count_before_retry": 0,
+    "partial_market_data_or_statistics_may_be_reused": false,
+    "campaign_preregistration_runner_feature_trial_folds_costs_or_survivor_gates_changed": false,
+    "historical_daily_price_or_return_fields_changed": false,
+    "stress_2024_2025_rule_changed": false,
+    "provider_or_candidate49_workflow_changed": false
+  },
+  "retry": {
+    "maximum_authorized_full_development_retries": 1,
+    "restart_from_market_context_load": true,
+    "append_complete_trial_after_existing_failure_entry": true,
+    "stress_may_open_only_after_nonzero_development_survivor_record": true
+  },
+  "research_boundary": {
+    "market_execution_data_loaded_before_protocol": false,
+    "historical_daily_price_fields_read": [],
+    "historical_forward_returns_read": false,
+    "complete_development_trial_count": 0,
+    "stress_2024_2025_opened": false,
+    "provider_request_issued": false,
+    "candidate49_historical_backfill_performed": false,
+    "candidate49_ledgers_changed": false,
+    "current_scoring_selection_sizing_or_orders_performed": false
+  }
+}

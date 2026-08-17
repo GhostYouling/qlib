@@ -1,0 +1,25 @@
+{
+  "version": 1,
+  "kind": "a_share_three_day_walkforward_campaign065_report_binding",
+  "status": "terminal_reports_bound_to_verified_campaign065_state",
+  "recorded_at": "2026-08-05T15:18:00+08:00",
+  "campaign_report": {"path": "docs/a_share_three_day_walkforward_campaign_065_report.md", "sha256": "d5eadb0c8a796b0998a37f21876a26a8398ee7dda7a70d7ab5c70ccefcf4d4ec"},
+  "unified_research_report": {"path": "data/experiments/short_horizon/three_day_research_report.md", "sha256": "90b90dd1d7fc71e4af06372e693684fb5a107e0ddc5877b323030a9197c490ca"},
+  "unified_report_generator": {"path": "scripts/a_share_short_horizon_factor_research.py", "sha256": "baaaf5d06df68f514d2cac390fc6e93e57773e9f8fe6519cd98e4b893b3048ef"},
+  "authoritative_iteration_state": {"path": "docs/a_share_three_day_iteration_status_20260805_campaign065_verified.json", "sha256": "5b6a5f11c10bbeb233068f1bbac582b2b0ae5a1d3da8e9c36701531b82f10c26"},
+  "terminal_completion_freeze": {"path": "docs/a_share_three_day_walkforward_campaign_065_terminal_completion_freeze_20260805.json", "sha256": "827c75b6c8fa97f88d823913278f926d63d94cba76efabbb52bd416d88dd3946"},
+  "verification": {"path": "docs/a_share_three_day_walkforward_campaign_065_verification_20260805.json", "sha256": "6a1f6b5123f03e44de8a25cce96cae830bf51444b8cf4a312aa010c201a8a3d5"},
+  "campaign066_pre_value_policy": {"path": "docs/a_share_three_day_walkforward_future_numeric_comparison_eligibility_policy_v2_20260805.json", "sha256": "bad778474b4119f3a8f617283e2b4719f076fe060f11275aed7e7c469d6d4bf2"},
+  "report_semantics": {
+    "Campaign065_factor_terminal": true,
+    "coverage_passed": true,
+    "numeric_comparisons_passed": 95,
+    "development_trial_count": 1,
+    "development_survivor_count": 0,
+    "development_aggregate_20bp_return": -0.0921814012939457,
+    "stress_2024_2025_opened": false,
+    "Campaign065_rescued_inverted_reweighted_or_combined": false,
+    "campaign066_policy_effective_start_campaign": 66,
+    "current_scoring_selection_sizing_or_orders_performed": false
+  }
+}

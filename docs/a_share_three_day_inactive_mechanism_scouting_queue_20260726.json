@@ -1,0 +1,211 @@
+{
+  "version": 1,
+  "kind": "a_share_three_day_inactive_mechanism_scouting_queue",
+  "status": "concept_only_inactive_no_candidate_values_no_second_candidate_activation",
+  "recorded_at": "2026-07-25T18:47:15Z",
+  "purpose": "Keep three-session factor research moving during Candidate49 prospective observation by preparing an economically differentiated mechanism-only queue without activating Candidate50, freezing another formula, computing another candidate value, or reading any price or return outcome.",
+  "authoritative_state": {
+    "path": "docs/a_share_three_day_iteration_status_20260725_future_only.json",
+    "sha256": "d44e1cb3707cce194eed37e99cc90f865396b1de8c35e02a393a2a243d973466",
+    "active_candidate_count": 1,
+    "active_candidate": "candidate49_intraday_cumulative_vwap_crossing_rate_240m_v1",
+    "candidate50_activation_allowed": false
+  },
+  "future_only_policy": {
+    "path": "docs/a_share_three_day_future_only_minute_research_policy_20260725.json",
+    "sha256": "52ca8bfa7201509fe891d0af3d1c87aeebd64e47e6ec6641e897849411df408c",
+    "maximum_simultaneously_active_new_candidate_mechanisms": 1,
+    "candidate50_activation_condition": "candidate49 is terminally rejected or completes its full 200-signal evaluation"
+  },
+  "scope_reviewed_without_values": {
+    "candidate49_mechanism_audit": {
+      "path": "docs/a_share_tushare_intraday_cumulative_vwap_crossing_rate_mechanism_overlap_reaudit_20260725.json",
+      "sha256": "f86ba3cdfd7ead04963519e1c86e0d022467896a68ac3422fb5d742f716dcdcd"
+    },
+    "nearest_terminal_mechanism_records": [
+      {
+        "path": "docs/a_share_tushare_intraday_market_idiosyncratic_share_research_record.json",
+        "sha256": "cb6829903b5cc4254bb1965e9308fdff5902ce420467a3a552a5484091a22b61"
+      },
+      {
+        "path": "docs/a_share_tushare_intraday_return_sign_run_imbalance_research_record.json",
+        "sha256": "ef325c59c061109248c360bcd836eea70ac4531dd29c1028bf74d5e599108139"
+      },
+      {
+        "path": "docs/a_share_tushare_afternoon_drawdown_recovery_resilience_research_record.json",
+        "sha256": "b608fd9c8bbe3ba40aa433c39b2c31ff7a0bbff9abb31aa1905acf26ee9f48d5"
+      },
+      {
+        "path": "docs/a_share_tushare_intraday_terminal_close_location_research_record.json",
+        "sha256": "b5c0f740353e35df27d7f0390dbee7e500990fb4d7986550faadd632ab0ef0c9"
+      },
+      {
+        "path": "docs/a_share_tushare_intraday_amount_lead_return_correlation_research_record.json",
+        "sha256": "6d19191b7c4d48b96decba444cc815d052f3f5ae4c1414ea290cf186a3384a01"
+      },
+      {
+        "path": "docs/a_share_tushare_intraday_up_move_amount_share_research_record.json",
+        "sha256": "ae6af77dcb554cba1adffac56462b49a69afad01269d2c7198722052707b5de2"
+      }
+    ],
+    "historical_factor_values_loaded": false,
+    "terminal_comparison_values_loaded": false,
+    "daily_price_fields_loaded": false,
+    "forward_returns_loaded": false
+  },
+  "queue_semantics": {
+    "priority_is_for_future_mechanism_overlap_review_only": true,
+    "candidate_ordinals_assigned": false,
+    "candidate50_registered_or_activated": false,
+    "formula_preregistrations_created": false,
+    "directions_frozen": false,
+    "derived_factor_code_or_snapshot_created": false,
+    "queue_entry_may_advance_directly_to_value_computation": false,
+    "required_next_step_for_one_entry": "After Candidate49 satisfies the activation condition, choose only the first still-distinct entry, perform a fresh mechanism-overlap audit, and freeze one exact formula and direction before any candidate values."
+  },
+  "inactive_priority_queue": [
+    {
+      "scouting_priority": 1,
+      "concept_name": "intraday_market_neutral_late_residual_drift",
+      "candidate_ordinal": null,
+      "active": false,
+      "concept_status": "formula_sketch_only_not_preregistered",
+      "provisional_direction": "higher",
+      "allowed_source_fields": [
+        "datetime",
+        "symbol",
+        "provider",
+        "close"
+      ],
+      "forbidden_source_fields": [
+        "open",
+        "high",
+        "low",
+        "any_daily_price",
+        "any_forward_return",
+        "Level-2"
+      ],
+      "mechanism": "Remove each stock's contemporaneous leave-one-out equal-weight market component from the 238 within-half one-minute log returns, then measure signed firm-specific drift concentrated in the final sixty afternoon return positions relative to total absolute residual movement.",
+      "nonbinding_formula_sketch": "Estimate beta_i from the same completed signal session using r_i,t versus leave-one-out market r_m,t over 238 within-half returns; epsilon_i,t=r_i,t-beta_i*r_m,t; score=sum(epsilon_i,t over the final 60 afternoon return positions)/sum(abs(epsilon_i,t) over all 238 positions).",
+      "economic_hypothesis": "Positive late firm-specific repricing that survives removal of the broad intraday market path may persist from the next open through the third close.",
+      "expected_distinction": "Unlike market idiosyncratic share, this is signed and late-path directional rather than one minus market R-squared; unlike Candidate49, it uses market-neutral residual drift rather than crossings around a cumulative own-stock VWAP.",
+      "mandatory_overlap_challenges_before_activation": [
+        "intraday_market_idiosyncratic_share_238m",
+        "late_return_30m",
+        "intraday_terminal_close_location_240m",
+        "intraday_return_sign_run_imbalance_238p"
+      ],
+      "known_design_risks": [
+        "zero or near-zero leave-one-out market variance",
+        "cross-sectional availability and leave-one-out reproducibility",
+        "late-window overlap with retired late-return mechanisms"
+      ]
+    },
+    {
+      "scouting_priority": 2,
+      "concept_name": "intraday_negative_return_absorption_rate",
+      "candidate_ordinal": null,
+      "active": false,
+      "concept_status": "formula_sketch_only_not_preregistered",
+      "provisional_direction": "higher",
+      "allowed_source_fields": [
+        "datetime",
+        "symbol",
+        "provider",
+        "close",
+        "amount"
+      ],
+      "forbidden_source_fields": [
+        "open",
+        "high",
+        "low",
+        "any_daily_price",
+        "any_forward_return",
+        "Level-2"
+      ],
+      "mechanism": "Measure the CNY-weighted fraction of negative within-half minute returns that are immediately followed by a positive return, using 236 adjacent return pairs and excluding the lunch transition.",
+      "nonbinding_formula_sketch": "For each of the 236 within-half adjacent return pairs (r_t,r_t+1), weight a negative r_t by the amount on its destination bar; score=sum(weight_t*1[r_t<0 and r_t+1>0])/sum(weight_t*1[r_t<0]).",
+      "economic_hypothesis": "Frequent amount-backed recovery immediately after selling pressure may indicate short-horizon liquidity absorption that remains relevant over the next three sessions.",
+      "expected_distinction": "Unlike sign-run imbalance, it isolates negative-to-positive transitions and weights the initiating sell interval by CNY amount; unlike afternoon drawdown recovery, it measures repeated local full-day absorption rather than one maximum afternoon drawdown.",
+      "mandatory_overlap_challenges_before_activation": [
+        "intraday_return_sign_run_imbalance_238p",
+        "afternoon_drawdown_recovery_resilience_120m",
+        "intraday_amount_lead_return_correlation_238p",
+        "intraday_up_move_amount_share_238m"
+      ],
+      "known_design_risks": [
+        "few or no negative-return denominator events",
+        "overlap with generic short-term reversal",
+        "zero-amount destination bars"
+      ]
+    },
+    {
+      "scouting_priority": 3,
+      "concept_name": "intraday_signed_path_efficiency",
+      "candidate_ordinal": null,
+      "active": false,
+      "concept_status": "formula_sketch_only_not_preregistered_high_overlap_risk",
+      "provisional_direction": "higher",
+      "allowed_source_fields": [
+        "datetime",
+        "symbol",
+        "provider",
+        "close"
+      ],
+      "forbidden_source_fields": [
+        "open",
+        "high",
+        "low",
+        "any_daily_price",
+        "any_forward_return",
+        "Level-2"
+      ],
+      "mechanism": "Compare the signed net continuous-session close displacement with the total absolute close-path travel across the exact 240 positions.",
+      "nonbinding_formula_sketch": "score=log(close_240/close_1)/sum(abs(log(close_t/close_t-1)), t=2..240), with the lunch gap collapsed exactly as in the joint-clean sequence.",
+      "economic_hypothesis": "A close path that travels efficiently upward rather than oscillating may reflect persistent demand into a three-session horizon.",
+      "expected_distinction": "It is a signed path-length efficiency ratio rather than a terminal range location, raw return-sign run count, or amount-weighted pressure measure.",
+      "mandatory_overlap_challenges_before_activation": [
+        "late_return_30m",
+        "intraday_terminal_close_location_240m",
+        "intraday_return_sign_run_imbalance_238p",
+        "intraday_upside_semivariance_share_239m"
+      ],
+      "known_design_risks": [
+        "likely high rank overlap with terminal location and return-sign mechanisms",
+        "zero total path length",
+        "lunch-transition sensitivity"
+      ]
+    }
+  ],
+  "tushare_daily_role_during_candidate49": {
+    "accepted_uses": [
+      "daily price-basis and provider context",
+      "same-session close/volume/amount minute reconciliation",
+      "buyable universe and quality context",
+      "future t_plus_1 open and t_plus_3 close paper settlement"
+    ],
+    "daily_factor_candidate_activation_now_allowed": false,
+    "reason": "The active frozen policy permits only one new mechanism and currently assigns that slot to Candidate49; opening a daily candidate now would violate multiplicity control.",
+    "future_daily_track_option": "After Candidate49 satisfies its activation condition, a separately frozen prospective daily-factor policy may be considered without reusing the exhausted historical return history."
+  },
+  "research_boundary": {
+    "files_read_for_this_record": "mechanism descriptions and frozen policy/state only",
+    "external_minute_partitions_read": false,
+    "external_daily_partitions_read": false,
+    "historical_candidate_values_read": false,
+    "historical_comparison_values_read": false,
+    "historical_daily_prices_read": false,
+    "historical_forward_returns_read": false,
+    "future_signal_or_execution_outcome_read": false,
+    "training_or_model_fitting_performed": false,
+    "selection_sizing_or_order_performed": false,
+    "investment_advice": false
+  },
+  "decision": {
+    "candidate49_remains_the_only_active_candidate": true,
+    "candidate50_activation_allowed_now": false,
+    "inactive_mechanism_queue_preserved": true,
+    "next_action_before_candidate49_terminal_or_full_gate": "Continue Candidate49 prospective collection and paper settlement only; maintain this queue without computing its values.",
+    "next_action_after_activation_condition": "Review priority one for exact economic overlap. If it remains distinct, create one new immutable mechanism audit and no-return preregistration before any value computation; otherwise retire it without values and inspect priority two."
+  }
+}

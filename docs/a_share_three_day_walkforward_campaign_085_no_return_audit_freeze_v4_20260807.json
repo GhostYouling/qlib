@@ -1,0 +1,68 @@
+{
+  "version": 4,
+  "kind": "a_share_three_day_walkforward_campaign085_no_return_audit_freeze",
+  "status": "completed_one_admissible_factor_before_any_daily_price_or_forward_return_read",
+  "recorded_at": "2026-08-07T01:36:00+08:00",
+  "audit": {
+    "path": "data/experiments/short_horizon/historical_walkforward/campaign_085/no_return_v4/20260806T153424Z_campaign085_no_return_audit_v4.json",
+    "sha256": "eb68a783b4719103c678b69c388ceb9c1828ef4f8a16999360c993db45c560fd"
+  },
+  "implementation_freeze": {
+    "path": "docs/a_share_three_day_walkforward_campaign_085_no_return_audit_implementation_freeze_v4_20260807.json",
+    "sha256": "d15c8238380ac3185b6a681e9426c6042a7e8f7591124cb65974c191f53aa44a"
+  },
+  "activation_binding": {
+    "path": "docs/a_share_three_day_walkforward_campaign_085_no_return_audit_activation_binding_v4_20260807.json",
+    "sha256": "9bd5ed1258332cf778922988faaa29e9c9071a6c957ef32e136ebf07936c3ab1"
+  },
+  "admitted_factor": {
+    "name": "quarterly_freshness_market_neutral_late_drift_confirmation_product_2r",
+    "direction": "higher",
+    "coverage": {
+      "calendar_sessions": 1632,
+      "candidate_eligible_rows": 1328065,
+      "median_coverage": 0.9983183851218558,
+      "p05_coverage": 0.9933708902303229,
+      "eligible_names_p05": 138.0,
+      "potential_non_overlapping_three_session_cohorts": 539,
+      "observed_cohort_years": [
+        2019,
+        2020,
+        2021,
+        2022,
+        2023,
+        2024,
+        2025
+      ],
+      "gate_passed": true
+    },
+    "uniqueness": {
+      "numeric_comparator_count": 114,
+      "comparison_order_sha256": "03a0c534f3bc321d5bc452415e6207026030978c4ac5d433305b04a21db6cea9",
+      "comparison_order_matches_preregistration": true,
+      "maximum_observed_absolute_median_daily_rank_correlation": 0.6688043380177426,
+      "maximum_allowed": 0.8,
+      "all_required_numeric_comparisons_passed": true
+    }
+  },
+  "development_authorization": {
+    "trial_id": "wf085_quarterly_freshness_market_neutral_late_drift_confirmation_product_2r_single_higher",
+    "maximum_development_trial_count": 1,
+    "development_years": [
+      2019,
+      2020,
+      2021,
+      2022,
+      2023
+    ],
+    "stress_2024_2025_open_before_nonzero_survivor": false
+  },
+  "historical_daily_price_fields_read": [],
+  "historical_forward_returns_read": false,
+  "training_or_model_fitting_performed": false,
+  "candidate49_historical_return_read": false,
+  "candidate49_prospective_ledgers_changed": false,
+  "provider_request_issued": false,
+  "current_scoring_selection_sizing_or_orders_performed": false,
+  "current_listing_snapshot_survivorship_limitation": true
+}

@@ -1,0 +1,334 @@
+{
+  "version": 1,
+  "kind": "a_share_eastmoney_debt_maturity_resilience_data_contract",
+  "status": "frozen_before_eastmoney_financial_data_api_rows_candidate_values_comparators_prices_or_returns",
+  "recorded_at": "2026-08-15T05:20:30+08:00",
+  "purpose": "Acquire and historically walk-forward test exactly one debt-maturity resilience state for the three-session A-share protocol without field sweeping, component substitution, parameter search, current scoring or prospective activation.",
+  "authoritative_inputs": {
+    "historical_walkforward_policy": {
+      "path": "docs/a_share_three_day_historical_walkforward_research_policy_20260727.json",
+      "sha256": "38426d6161b9bfed323c58caba18feca168b8c9d53e294951a8ba90c01a798bb"
+    },
+    "campaign161_concept_scouting": {
+      "path": "docs/a_share_three_day_walkforward_campaign_161_concept_scouting_20260815.json",
+      "sha256": "e9c750f8393354fddf98b92e6b5b0d428475e5dea046393f3e92c7ee248ca605"
+    },
+    "campaign161_source_evidence": {
+      "path": "docs/a_share_three_day_walkforward_campaign_161_debt_maturity_source_evidence_20260815.json",
+      "sha256": "4ae1a1af546265c842e7ef13c107211c2ed75ab4907f3b37f8eb85753a00da65"
+    },
+    "campaign161_initial_state": {
+      "path": "docs/a_share_three_day_iteration_status_20260815_campaign161_initial_verification.json",
+      "sha256": "f132cd1a499f8f04f279cc9b022456af964d5309ba63b728f6098b34c7ba8fcb"
+    }
+  },
+  "source": {
+    "provider": "Eastmoney public datacenter",
+    "endpoint": "https://datacenter-web.eastmoney.com/api/data/v1/get",
+    "report_name": "RPT_DMSK_FN_BALANCE",
+    "frequency": "quarterly_balance_sheet_current_historical_snapshot",
+    "request_partition": "one fixed accounting report date per count-complete paginated request",
+    "request_parameters": {
+      "sortColumns": "NOTICE_DATE,SECURITY_CODE",
+      "sortTypes": "-1,-1",
+      "pageSize": 500,
+      "pageNumber": 1,
+      "reportName": "RPT_DMSK_FN_BALANCE",
+      "columns": "SECUCODE,SECURITY_CODE,REPORT_DATE,NOTICE_DATE,SHORT_LOAN,SHORT_BOND_PAYABLE,NONCURRENT_LIAB_1YEAR,LONG_LOAN,BOND_PAYABLE",
+      "filter_template": "(SECURITY_TYPE_CODE in (\"058001001\",\"058001008\"))(TRADE_MARKET_CODE!=\"069001017\")(REPORT_DATE='YYYY-MM-DD')"
+    },
+    "requested_raw_columns_in_order": [
+      "SECUCODE",
+      "SECURITY_CODE",
+      "REPORT_DATE",
+      "NOTICE_DATE",
+      "SHORT_LOAN",
+      "SHORT_BOND_PAYABLE",
+      "NONCURRENT_LIAB_1YEAR",
+      "LONG_LOAN",
+      "BOND_PAYABLE"
+    ],
+    "maximum_pages_per_partition": 20,
+    "maximum_attempts_per_page": 4,
+    "retry_backoff_seconds": [
+      0.5,
+      1.0,
+      2.0,
+      4.0
+    ],
+    "minimum_seconds_between_requests": 0.25,
+    "schema_policy": {
+      "required_raw_keys": [
+        "SECUCODE",
+        "SECURITY_CODE",
+        "REPORT_DATE",
+        "NOTICE_DATE",
+        "SHORT_LOAN",
+        "SHORT_BOND_PAYABLE",
+        "NONCURRENT_LIAB_1YEAR",
+        "LONG_LOAN",
+        "BOND_PAYABLE"
+      ],
+      "missing_required_key_is_terminal": true,
+      "alternate_raw_key_position_or_balance_sheet_line_scan_allowed": false,
+      "extra_transported_fields_may_enter_formula_or_persistence": false,
+      "report_date_must_equal_the_exact_request_partition": true
+    },
+    "credentials_required": [],
+    "authentication_cookie_proxy_retail_session_or_credential_allowed": false,
+    "price_market_cap_share_count_valuation_or_return_endpoint_allowed": false
+  },
+  "factor": {
+    "name": "eastmoney_debt_maturity_resilience",
+    "direction": "higher_is_better",
+    "near_term_components": [
+      "SHORT_LOAN",
+      "SHORT_BOND_PAYABLE",
+      "NONCURRENT_LIAB_1YEAR"
+    ],
+    "long_term_components": [
+      "LONG_LOAN",
+      "BOND_PAYABLE"
+    ],
+    "near_term_formula": "SHORT_LOAN + SHORT_BOND_PAYABLE + NONCURRENT_LIAB_1YEAR",
+    "long_term_formula": "LONG_LOAN + BOND_PAYABLE",
+    "formula": "long_term / (near_term + long_term)",
+    "economic_interpretation": "Higher means a smaller observed near-term maturity share and therefore greater refinancing-time resilience, conditional on strictly positive observed borrowing.",
+    "valid_row": "Instrument, report date and notice date complete; every one of the five line items present, finite and nonnegative; near_term + long_term finite and strictly positive.",
+    "missing_line_policy": "The entire row is missing. A null line item is never interpreted as zero, inferred from totals, replaced by another liability field or repaired from another provider.",
+    "invalid_row_policy": "Exclude and count without clipping, winsorizing, absolutizing, sign changes, field substitution, aggregation changes or financial-sector exceptions.",
+    "valid_range": [
+      0.0,
+      1.0
+    ],
+    "score_formula_after_no_return_admission": "cross_sectional_average_tie_percentile_rank(eastmoney_debt_maturity_resilience)",
+    "parameters_filters_subsets_combinations_models": []
+  },
+  "point_in_time_policy": {
+    "signal_source_date": "NOTICE_DATE",
+    "conservative_availability": "First accepted local trading session strictly after NOTICE_DATE.",
+    "same_notice_session_trade_allowed": false,
+    "maximum_factor_age_calendar_days": 550,
+    "carry_across_newer_missing_or_invalid_report_allowed": false,
+    "report_period_order": "A later report date supersedes an earlier report only after its own conservative availability session.",
+    "duplicate_event_keys_allowed": false,
+    "revision_policy": "The public report is a current historical snapshot without an immutable row-version stream. Duplicate instrument/report-period rows, malformed dates, changed required keys or inconsistent partition dates reject the partition; no latest-row selection or repair is allowed.",
+    "residual_limitation": "Strict next-session availability reduces but cannot eliminate later accounting-restatement and vendor-snapshot bias. Every result must retain this limitation."
+  },
+  "normalized_snapshot": {
+    "columns": [
+      "instrument",
+      "report_date",
+      "announcement_date",
+      "short_loan",
+      "short_bond_payable",
+      "noncurrent_liability_due_within_one_year",
+      "long_loan",
+      "bond_payable",
+      "near_term_borrowing",
+      "long_term_borrowing",
+      "eastmoney_debt_maturity_resilience",
+      "provider"
+    ],
+    "event_key": [
+      "instrument",
+      "report_date"
+    ],
+    "provider_value": "eastmoney",
+    "security_name_or_unused_balance_sheet_field_persisted": false,
+    "price_market_cap_share_count_valuation_or_return_field_persisted": false
+  },
+  "acceptance_protocol": {
+    "fixed_report_date": "2023-12-31",
+    "one_count_complete_partition_only": true,
+    "minimum_provider_advertised_rows": 1000,
+    "minimum_valid_main_chinext_names": 50,
+    "minimum_distinct_factor_values": 20,
+    "required_checks": [
+      "All bound local and public-source evidence fingerprints match before network access.",
+      "The response advertises positive pages and rows, remains within twenty pages, and every page is fetched exactly once.",
+      "Fetched rows exactly equal the advertised total and no page is omitted or duplicated.",
+      "Every requested raw key is present before any factor computation; missing keys terminate without alternate-field inspection.",
+      "Normalized instruments are mainland main-board or ChiNext codes and duplicate instrument/report-period keys are absent.",
+      "Every retained factor exactly matches the frozen five-line formula and lies in [0,1].",
+      "The valid-name and distinct-value thresholds pass without interpreting missing components as zero.",
+      "The published frame contains only the frozen normalized columns and no name, unused field, price, market cap, share count, credential or return."
+    ],
+    "success_status": "accepted_schema_formula_and_2023q4_coverage_pending_2019_2023_full_source",
+    "failure_policy": "Write one terminal no-return rejection and stop without another date, field, formula, direction, source, threshold, full sync, comparator, price or return.",
+    "one_shot": true
+  },
+  "development_source_contract": {
+    "start": "2019-01-01",
+    "end": "2023-12-31",
+    "report_dates": [
+      "2019-03-31",
+      "2019-06-30",
+      "2019-09-30",
+      "2019-12-31",
+      "2020-03-31",
+      "2020-06-30",
+      "2020-09-30",
+      "2020-12-31",
+      "2021-03-31",
+      "2021-06-30",
+      "2021-09-30",
+      "2021-12-31",
+      "2022-03-31",
+      "2022-06-30",
+      "2022-09-30",
+      "2022-12-31",
+      "2023-03-31",
+      "2023-06-30",
+      "2023-09-30",
+      "2023-12-31"
+    ],
+    "required_report_date_count": 20,
+    "every_partition_required": true,
+    "minimum_valid_names_per_report_date": 50,
+    "minimum_median_valid_names": 200,
+    "one_hidden_temporary_root": true,
+    "partial_snapshot_accepted": false,
+    "immutable_partition_files_and_manifest": true,
+    "one_full_development_snapshot_attempt_after_acceptance": true,
+    "failure_policy": "Delete the temporary snapshot, publish no final partition, record the source failure and stop without retry, substitution, capacity, comparator, price or return."
+  },
+  "no_return_gate_order": {
+    "step_1": "One-shot 2023-12-31 acceptance.",
+    "step_2": "One atomic 2019-2023 development source snapshot.",
+    "step_3": "Coverage and capacity using no comparator or price field.",
+    "step_4": "Only after capacity passes, one ordered uniqueness comparison against all 142 comparators.",
+    "step_5": "Only after every no-return gate passes, one preregistered 2019-2023 development walk-forward trial."
+  },
+  "capacity_contract": {
+    "holding_period_local_sessions": 3,
+    "non_overlapping_three_signal_session_grid": true,
+    "minimum_eligible_names_per_cross_section": 50,
+    "minimum_distinct_factor_values": 2,
+    "minimum_required_cohorts": 200,
+    "minimum_observed_years": 5,
+    "maximum_factor_age_calendar_days": 550,
+    "maximum_quality_age_calendar_days": 550,
+    "minimum_listing_sessions": 20,
+    "quality_gate": "ROE >= 5%, positive net profit, positive revenue YoY and positive profit YoY, effective only after the next local session following its announcement.",
+    "comparison_price_or_return_fields_allowed_before_pass": false
+  },
+  "ordered_uniqueness_contract": {
+    "numeric_comparator_count": 142,
+    "numeric_comparator_order_sha256": "5d1b35fb5a0d8ac9293008db9963c4a60a94dc940c237c3ed259e5ce44f14aaf",
+    "minimum_pairwise_names_per_session": 50,
+    "minimum_pairwise_sessions_per_comparator": 100,
+    "maximum_absolute_median_daily_average_tie_spearman": 0.8,
+    "strict_inequality": true,
+    "every_comparator_must_pass": true,
+    "failure_stops_before_daily_prices_or_returns": true,
+    "comparator_removal_reorder_early_stop_or_candidate_specific_fill_allowed": false
+  },
+  "walkforward_folds": [
+    {
+      "fold": 1,
+      "training": [
+        "2019-01-01",
+        "2020-12-31"
+      ],
+      "validation": [
+        "2021-01-01",
+        "2021-12-31"
+      ]
+    },
+    {
+      "fold": 2,
+      "training": [
+        "2019-01-01",
+        "2021-12-31"
+      ],
+      "validation": [
+        "2022-01-01",
+        "2022-12-31"
+      ]
+    },
+    {
+      "fold": 3,
+      "training": [
+        "2019-01-01",
+        "2022-12-31"
+      ],
+      "validation": [
+        "2023-01-01",
+        "2023-12-31"
+      ]
+    }
+  ],
+  "leakage_controls": {
+    "signal": "local close t",
+    "entry": "next accepted local session open t+1",
+    "exit": "third accepted local session close t+3",
+    "purge_signal_sessions_before_every_boundary": 3,
+    "entry_and_exit_must_both_be_in_the_same_partition": true,
+    "point_in_time_features_universe_and_quality": true
+  },
+  "fixed_execution_assumptions": {
+    "topk": 3,
+    "initial_capital_cny": 200000,
+    "target_entry_exposure_fraction_per_slot": 0.05,
+    "maximum_entry_exposure_fraction_per_signal": 0.15,
+    "buy_lot_size_shares": 100,
+    "commission_rate_each_side": 0.0001,
+    "transfer_fee_rate_each_side": 0.00002,
+    "sell_stamp_duty_rate": 0.0005,
+    "primary_adverse_slippage_rate_each_side": 0.001,
+    "maximum_daily_amount_participation": 0.01,
+    "blocked_entry": "keep_cash_without_replacement",
+    "blocked_exit": "retain_and_retry_under_frozen_policy"
+  },
+  "development_survivor_rule": {
+    "complete_validation_fold_count": 3,
+    "minimum_association_cohorts_per_fold": 60,
+    "minimum_positive_mean_rank_ic_folds": 2,
+    "median_validation_mean_rank_ic_strictly_positive": true,
+    "median_validation_top3_minus_bottom3_spread_strictly_positive": true,
+    "minimum_positive_normalized_return_folds": 2,
+    "minimum_positive_primary_10bp_pilot_return_folds": 2,
+    "median_validation_primary_10bp_pilot_return_strictly_positive": true,
+    "worst_validation_normalized_drawdown_minimum": -0.25,
+    "compounded_validation_20bp_pilot_return_strictly_positive": true,
+    "minimum_board_lot_affordability_each_fold": 0.9,
+    "maximum_amount_participation_each_fold": 0.01,
+    "terminal_unresolved_positions_each_fold": 0,
+    "all_conditions_required": true
+  },
+  "locked_2024_2025_campaign_backtest": {
+    "initially_closed": true,
+    "source_values_initially_closed": true,
+    "returns_initially_closed": true,
+    "classification_if_opened": "historically_exposed_quasi_out_of_sample_not_pristine",
+    "open_once_only_if_the_unchanged_single_development_trial_survives": true,
+    "separate_pre_open_freeze_and_fingerprint_binding_required": true,
+    "no_post_lockbox_tuning": true
+  },
+  "recordkeeping": {
+    "append_only_trial_ledger_required": true,
+    "record_all_six_scouted_concepts_and_all_infrastructure_failures": true,
+    "record_every_source_gate_and_the_single_factor_trial": true,
+    "selected_only_reporting_forbidden": true
+  },
+  "prohibited_actions": [
+    "Request or inspect an alternate balance-sheet line when a required key or value is missing.",
+    "Treat a missing line item as zero or infer maturity buckets from totals.",
+    "Change any component, formula, direction, report date, availability rule, carry age, quality gate, comparator order, fold, cost, survivor gate or source after rows.",
+    "Retry acceptance or the development snapshot after a terminal source failure.",
+    "Open 2024-2025 source values or returns before a development survivor and separate immutable lockbox freeze.",
+    "Backfill Candidate49, create a second prospective candidate, or generate current scores, selections, sizing, positions or orders."
+  ],
+  "research_boundary_at_freeze": {
+    "public_source_code_documentation_and_html_template_requested": true,
+    "eastmoney_financial_data_api_request_issued": false,
+    "provider_response_row_or_column_value_read": false,
+    "candidate_or_comparator_value_read": false,
+    "historical_daily_price_or_forward_return_value_read": false,
+    "stress_2024_2025_opened": false,
+    "provider_credential_presence_value_or_digest_read": false,
+    "candidate49_ledgers_changed": false,
+    "current_scoring_selection_sizing_positions_or_orders_performed": false
+  }
+}

@@ -1,0 +1,80 @@
+{
+  "version": 1,
+  "kind": "a_share_three_day_walkforward_campaign038_feature_snapshot_freeze",
+  "status": "immutable_candidate_snapshot_frozen_before_comparison_or_return_values",
+  "recorded_at": "2026-07-31T00:56:24Z",
+  "purpose": "Bind the complete Campaign038 candidate snapshot and its post-publication read-only validator before coverage, comparison, daily-price, or return gates are opened.",
+  "authoritative_inputs": {
+    "no_return_preregistration": {
+      "path": "docs/a_share_three_day_walkforward_campaign_038_no_return_preregistration.json",
+      "sha256": "824ede814080bc7d9de8b50569571292d257a3b7bff338c3cbf6939a27535651"
+    },
+    "mechanism_overlap_audit": {
+      "path": "docs/a_share_three_day_walkforward_campaign_038_mechanism_overlap_audit.json",
+      "sha256": "5e52025a526b6398eb15b7c9a2dd42c991de34b444f9449766e2b051f6da47a4"
+    },
+    "pre_value_feature_implementation_freeze": {
+      "path": "docs/a_share_three_day_walkforward_campaign_038_feature_implementation_freeze_20260731.json",
+      "sha256": "fbd41c4848acefe7ee6810ce97e594daaa7ba974655e2b84a75b54fb98ebf4ea"
+    }
+  },
+  "snapshot": {
+    "path": "/Volumes/DIsk/qlib-a-share-tushare-1m/derived/a_share/rich/tushare/minute_walkforward_campaign038_feature_library/tushare_stk_mins_1m_2019_2025_ea0cbb8f_walkforward_campaign038_feature_library_v1/snapshot_manifest.json",
+    "sha256": "d8042490037077c68c42bbf24f5b354b2a808894ac0bad79ad0c63c43404519a",
+    "dataset_sha256": "0791779f97992d3c9cd9ee6501a2eacb6df45d534f5c6b0359088221de951904",
+    "partitions": 33015,
+    "rows": 7724498,
+    "eligible_rows": 7695088,
+    "zero_total_travel_rows": 29410,
+    "endpoint_canonicalized_rows": 0,
+    "invalid_nonpositive_nonfinite_component_or_range_rows": 0,
+    "resumed_partitions": 0,
+    "factor_name": "intraday_half_session_chord_adherence_240m",
+    "direction": "higher",
+    "source_fields_read": [
+      "datetime",
+      "symbol",
+      "provider",
+      "close"
+    ],
+    "source_open_high_low_volume_amount_read": [],
+    "daily_price_fields_read": [],
+    "comparison_factor_values_read": false,
+    "forward_return_fields_read": false
+  },
+  "post_publication_validation": {
+    "feature_runner": {
+      "path": "scripts/a_share_three_day_walkforward_campaign038_features.py",
+      "sha256": "92db6c6486559081eebc0a9afb57bc0b75cdf694726d0be57ba523ba2ff6b613"
+    },
+    "feature_tests": {
+      "path": "tests/data_collector_tests/test_a_share_three_day_walkforward_campaign038_features.py",
+      "sha256": "5c6d5082466dde30dc079708331fff1dc87a1237bf227cf729eb4826b84f3ca4"
+    },
+    "command": "python -m pytest -q tests/data_collector_tests/test_a_share_three_day_walkforward_campaign038_features.py",
+    "passed": 7,
+    "failed": 0,
+    "all_partition_byte_and_frame_hashes_valid": true,
+    "verified_partitions": 33015,
+    "verified_rows": 7724498,
+    "formula_or_gate_changed_after_values": false,
+    "only_runner_transition_after_snapshot": "Bind the immutable snapshot manifest and dataset SHA-256 constants for read-only validation; formula, direction, source projection, output values, and gates are unchanged."
+  },
+  "research_boundary": {
+    "candidate_values_read": true,
+    "comparison_values_read": false,
+    "historical_daily_price_fields_read": false,
+    "historical_forward_returns_read": false,
+    "training_or_model_fitting_performed": false,
+    "provider_request_issued": false,
+    "candidate49_historical_return_signal_or_execution_backfill_performed": false,
+    "candidate49_prospective_ledgers_changed": false,
+    "candidate50_activation_created": false,
+    "current_scoring_selection_sizing_or_orders_performed": false
+  },
+  "authorization": {
+    "next_action": "Validate this snapshot freeze, then run coverage and capacity first; load the exact ordered 59 comparison factors only if coverage passes.",
+    "snapshot_rebuild_repair_formula_direction_chord_or_gate_change_allowed": false,
+    "historical_return_read_allowed_before_no_return_admission": false
+  }
+}

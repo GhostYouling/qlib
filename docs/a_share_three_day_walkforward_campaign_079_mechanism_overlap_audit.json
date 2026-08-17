@@ -1,0 +1,133 @@
+{
+  "schema_version": 1,
+  "kind": "a_share_three_day_walkforward_campaign079_mechanism_overlap_audit",
+  "status": "passed_semantic_mechanism_review_before_campaign079_daily_source_or_comparison_values",
+  "recorded_at": "2026-08-06T07:12:55Z",
+  "concept_scouting": {
+    "path": "docs/a_share_three_day_walkforward_campaign_079_concept_scouting.json",
+    "sha256": "518dccfb1e8e27df1497c437ed27e989bdfb033c5e23351f74ff8a58d470be81"
+  },
+  "authoritative_state": {
+    "path": "docs/a_share_three_day_iteration_status_20260806_campaign078_verified.json",
+    "sha256": "0bd360d4c653340f6f37a4ae010278b8d599f6ee6964cff8b3b946b762e52a58"
+  },
+  "numeric_comparator_policy": {
+    "path": "docs/a_share_three_day_walkforward_future_numeric_comparison_eligibility_policy_v14_timestamp_corrected_20260806.json",
+    "sha256": "8f518f6db27a7026f59c0332e38972a3752022ee9b11134d4257ca08f238407b",
+    "complete_definition_count": 110,
+    "numeric_comparator_count": 109,
+    "complete_definition_order_sha256": "4d3003f8580945a66dac7426f535a58f8725d1d880bb4cb552d87b477e826463",
+    "numeric_comparator_order_sha256": "0893e0ff54c0094e48e67def84f0038a453fd11230629631e3e54120480a3529"
+  },
+  "candidate": {
+    "name": "signal_day_turnover_rate_pct",
+    "direction": "higher",
+    "mechanism": "raw same-session percentage of the tradable share base changing hands, as reported by the accepted daily provider",
+    "formula": "exact accepted turnover_rate percentage for the signal symbol-date, without reconstruction or transform",
+    "no_price_return_minute_profile_financial_event_or_future_input": true,
+    "no_old_factor_value_input": true,
+    "candidate49_used_or_modified": false
+  },
+  "complete_library_review": {
+    "all_110_definitions_reviewed_in_frozen_order": true,
+    "all_pre_walkforward_terminal_price_volume_event_structural_and_composite_families_reviewed": true,
+    "candidate_is_exact_formula_duplicate": false,
+    "candidate_is_direction_only_duplicate": false,
+    "candidate_is_parameter_only_duplicate": false,
+    "candidate_is_an_inversion_of_a_terminal_factor": false,
+    "candidate_combines_terminal_factor_values": false,
+    "candidate_changes_any_quality_listing_or_buyability_gate": false
+  },
+  "semantic_invariance_checks": [
+    {
+      "intervention": "Redistribute a fixed signal-day share volume and amount across the 240 minute bars while leaving the provider turnover_rate unchanged.",
+      "campaign079_result": "unchanged",
+      "distinguishes_from": "all intraday amount profile, timing, entropy, dispersion, peak, auction, and terminal-share statistics"
+    },
+    {
+      "intervention": "Scale nominal share price and monetary amount while leaving traded shares and the provider turnover_rate unchanged.",
+      "campaign079_result": "unchanged",
+      "distinguishes_from": "nominal-price affordability, transaction-price, amount-level, VWAP, and price-impact statistics"
+    },
+    {
+      "intervention": "Scale traded shares and the provider's implied tradable-share denominator by the same positive factor.",
+      "campaign079_result": "unchanged",
+      "distinguishes_from": "absolute share-volume and company-scale mechanisms"
+    },
+    {
+      "intervention": "Hold turnover_rate fixed while changing all minute OHLC path ordering, return signs, ranges, wicks, gaps, and market-peer paths.",
+      "campaign079_result": "unchanged",
+      "distinguishes_from": "all price-path, volatility, return-state, range, market-coupling, and Candidate49 mechanisms"
+    },
+    {
+      "intervention": "Hold the intraday normalized amount profile fixed while change the total fraction of the tradable share base exchanged.",
+      "campaign079_result": "changes",
+      "distinguishes_from": "normalized amount shares, entropy, center of mass, dispersion, profile similarity, peak timing, and local peak density"
+    },
+    {
+      "intervention": "Hold turnover_rate fixed while changing accepted-history age, quarterly accounting values, or announcement timing.",
+      "campaign079_result": "unchanged",
+      "distinguishes_from": "listing-youth, quarterly quality, growth, scale, and event-timing mechanisms"
+    }
+  ],
+  "nearest_semantic_challenges": [
+    {
+      "name": "late_amount_share_30m, intraday_opening_auction_amount_share_241m, and intraday_terminal_bar_amount_share_240m",
+      "relationship": "all can rise during intense trading sessions",
+      "distinction": "the prior factors are within-session allocation shares; Campaign079 measures the total traded fraction of the provider-defined tradable share base and is invariant to intraday allocation",
+      "mandatory_numeric_challenge": true
+    },
+    {
+      "name": "intraday_amount_participation_entropy_240m, intraday_amount_center_of_mass_240m, intraday_amount_clock_dispersion_240m, and intraday_amount_local_peak_density_238p",
+      "relationship": "all use trading activity",
+      "distinction": "the prior factors normalize or order the minute amount path; Campaign079 uses one accepted daily turnover percentage and no minute profile",
+      "mandatory_numeric_challenge": true
+    },
+    {
+      "name": "intraday_share_volume_transaction_price_coupling_238p and intraday_range_share_volume_confirmation_240m",
+      "relationship": "all involve share-volume activity",
+      "distinction": "the prior factors couple minute share volume with price or range paths; Campaign079 is the whole-session provider turnover field without path coupling",
+      "mandatory_numeric_challenge": true
+    },
+    {
+      "name": "accepted_instrument_session_youth_20s and intraday_terminal_nominal_share_price_affordability_rank_240m",
+      "relationship": "age and nominal price can affect trading intensity",
+      "distinction": "they measure coverage age and price affordability, not the fraction of tradable shares exchanged",
+      "mandatory_numeric_challenge": true
+    },
+    {
+      "name": "intraday_cross_sectional_standardized_return_state_stability_236p",
+      "relationship": "the structurally nonnumeric definition remains in the complete semantic library",
+      "distinction": "peer-standardized return-state mobility versus raw provider daily turnover intensity",
+      "mandatory_semantic_challenge": true,
+      "numeric_status": "undefined_not_pass_not_fail"
+    },
+    {
+      "name": "candidate49_intraday_cumulative_vwap_crossing_rate_240m_v1",
+      "relationship": "the sole active prospective candidate remains an isolation challenge",
+      "distinction": "Candidate49 measures future-session price crossings of cumulative VWAP; Campaign079 is historical signal-session daily turnover and never enters Candidate49 ledgers",
+      "candidate49_remains_isolated": true
+    }
+  ],
+  "pre_value_decision": {
+    "economically_independent_enough_to_preregister": true,
+    "numeric_uniqueness_still_required_against_all_109_eligible_comparators": true,
+    "strict_maximum_absolute_median_daily_rank_correlation": 0.8,
+    "minimum_pairwise_names_per_session": 50,
+    "minimum_pairwise_sessions_per_comparison": 100,
+    "drop_residualize_invert_clip_bucket_rank_neutralize_filter_or_rescue_after_failed_gate_allowed": false
+  },
+  "research_boundary": {
+    "campaign079_daily_source_rows_read": false,
+    "campaign079_candidate_values_read": false,
+    "comparison_values_read": false,
+    "historical_daily_price_fields_read": [],
+    "historical_forward_returns_read": false,
+    "provider_request_issued": false,
+    "candidate49_historical_backfill_performed": false,
+    "candidate49_ledgers_changed": false,
+    "second_prospective_candidate_created": false,
+    "current_scoring_selection_sizing_or_orders_performed": false,
+    "investment_advice": false
+  }
+}

@@ -1,0 +1,18 @@
+{
+  "schema_version": 1,
+  "kind": "a_share_three_day_walkforward_campaign133_postrun_infrastructure_failure",
+  "attempt_id": "campaign133_infrastructure_005",
+  "status": "recorded_postrun_read_only_metric_path_failure",
+  "recorded_at": "2026-08-14T10:18:00+08:00",
+  "stage": "terminal_result_metric_schema_inspection",
+  "error_type": "JqNullKeysError",
+  "error_summary": "A read-only jq inspection requested keys from a nonexistent execution field after successfully displaying the actual association object.",
+  "repair_boundary": "Preserve every Campaign133 artifact unchanged and query the frozen normalized_execution and pilot_execution_primary_10bp fields by their actual names. Do not rerun the campaign.",
+  "scientific_result_changed": false,
+  "campaign133_development_rerun_allowed": false,
+  "historical_return_values_newly_read_by_failed_command": false,
+  "lockbox_2024_2025_opened": false,
+  "provider_request_issued": false,
+  "candidate49_ledgers_changed": false,
+  "current_scoring_selection_sizing_positions_or_orders_performed": false
+}

@@ -1,0 +1,88 @@
+{
+  "version": 14,
+  "kind": "a_share_three_day_walkforward_future_numeric_comparison_eligibility_policy",
+  "status": "frozen_before_campaign079_candidate_source_or_comparison_values",
+  "recorded_at": "2026-08-06T14:50:34:z",
+  "supersedes_without_rewriting": {
+    "path": "docs/a_share_three_day_walkforward_future_numeric_comparison_eligibility_policy_v13_20260806.json",
+    "sha256": "fa8c48949ba1d57a10003c04003018d72bb9a54030111bc2ce3fbf9e1c042643",
+    "preserved": true
+  },
+  "authoritative_inputs": {
+    "campaign078_no_return_audit": {
+      "path": "data/experiments/short_horizon/historical_walkforward/campaign_078/no_return/20260806T063847Z_campaign078_no_return_audit.json",
+      "sha256": "0f991f013bec5fe06c9e40dea9bce3c720b749f0aad84e53a8bc2c419828e088"
+    },
+    "campaign078_feature_snapshot": {
+      "path": "/Volumes/DIsk/qlib-a-share-tushare-1m/derived/a_share/rich/tushare/minute_walkforward_campaign078_feature_library/tushare_stk_mins_1m_2019_2025_ea0cbb8f_walkforward_campaign078_feature_library_v1/snapshot_manifest.json",
+      "sha256": "a8d2f2a68dba3f7f3a3f34ac8d203f1381e429612ded6daf6c6447e0ed983071",
+      "dataset_sha256": "225c539824978df0cc3e4b34a9520aa919ffa77ba73246c21e1bdb6122a0227d"
+    },
+    "campaign078_trial_ledger": {
+      "path": "data/experiments/short_horizon/historical_walkforward/campaign_078/walkforward/trial_ledger.json",
+      "sha256": "c43bc819506360042702c7852a72f473090eec4f4952fb419720d658ff0c9398"
+    },
+    "campaign078_survivor_record": {
+      "path": "data/experiments/short_horizon/historical_walkforward/campaign_078/walkforward/development_survivors.json",
+      "sha256": "746a7091df5bef7de2a7c5584acc875f769a5e486d5458b1e33c5a3a7469a76a"
+    }
+  },
+  "complete_historical_feature_library": {
+    "definition": "Reconstruct the exact Campaign078 prior 109-definition order, then append intraday_amount_local_peak_density_238p/higher exactly once.",
+    "factor_definition_count": 110,
+    "order_sha256": "4d3003f8580945a66dac7426f535a58f8725d1d880bb4cb552d87b477e826463",
+    "all_terminal_failed_rejected_and_surviving_definitions_retained": true,
+    "structurally_nonnumeric_definition_retained": "intraday_cross_sectional_standardized_return_state_stability_236p",
+    "old_terminal_record_formula_direction_or_failure_history_may_be_rewritten": false
+  },
+  "numerical_comparator_eligibility": {
+    "classification_time": "after_campaign078_terminal_completion_before_campaign079_candidate_source_or_comparison_values",
+    "eligible_numeric_comparator_count": 109,
+    "eligible_numeric_comparator_order_definition": "Use Campaign078's exact 108 numeric comparators, then append Campaign078/higher exactly once.",
+    "eligible_numeric_comparator_order_sha256": "0893e0ff54c0094e48e67def84f0038a453fd11230629631e3e54120480a3529",
+    "newly_appended_comparator": {
+      "name": "intraday_amount_local_peak_density_238p",
+      "score_direction": "higher",
+      "source_campaign": 78,
+      "source_snapshot_eligible_rows": 7724498,
+      "source_quality_listing_candidate_rows": 1330171,
+      "source_supported_pairwise_sessions": 1623,
+      "numeric_comparator_eligible_for_campaign079": true,
+      "eligibility_reason": "The immutable snapshot is fully finite, coverage passed, and all 108 ordered uniqueness comparisons passed. Development rejection remains binding but does not make the factor structurally nonnumeric.",
+      "terminal_at_development_gate_but_numerically_available": true
+    },
+    "minimum_pairwise_names_per_session": 50,
+    "minimum_pairwise_sessions_per_comparison": 100,
+    "strict_maximum_absolute_median_daily_rank_correlation": 0.8,
+    "all_109_eligible_numeric_comparators_must_pass": true,
+    "candidate_specific_comparator_drop_allowed": false,
+    "insufficient_pairwise_overlap_fails_closed": true
+  },
+  "structurally_nonnumeric_mechanism_challenges": [
+    {
+      "name": "intraday_cross_sectional_standardized_return_state_stability_236p",
+      "source_campaign": 63,
+      "numeric_status": "undefined_not_pass_not_fail",
+      "retained_for_semantic_overlap_review": true
+    }
+  ],
+  "anti_gaming_invariants": {
+    "campaign078_may_be_inverted_rescaled_filtered_neutralized_rerun_rescued_or_combined": false,
+    "development_rejection_may_be_reclassified_as_pass": false,
+    "comparison_order_may_be_changed_for_campaign079": false,
+    "candidate49_may_be_added_to_historical_library": false,
+    "historical_output_may_generate_current_scores_selection_sizing_orders_or_investment_advice": false
+  },
+  "research_boundary": {
+    "campaign079_source_rows_read_before_freeze": false,
+    "campaign079_candidate_or_comparison_values_read_before_freeze": false,
+    "historical_daily_price_fields_read_for_campaign079": [],
+    "historical_forward_returns_read_for_campaign079": false,
+    "provider_request_issued": false,
+    "candidate49_historical_backfill_performed": false,
+    "candidate49_ledgers_changed": false,
+    "second_prospective_candidate_created": false,
+    "current_scoring_selection_sizing_or_orders_performed": false,
+    "investment_advice": false
+  }
+}

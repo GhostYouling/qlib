@@ -1,0 +1,124 @@
+{
+  "version": 1,
+  "kind": "a_share_three_day_iteration_status",
+  "status": "campaign074_terminal_verified_zero_survivors_candidate49_future_only_preserved_campaign075_offline_scouting_authorized",
+  "recorded_at": "2026-08-06T08:50:00+08:00",
+  "authoritative_predecessor": {
+    "path": "docs/a_share_three_day_iteration_status_20260806_campaign073_verified.json",
+    "sha256": "e6348f26e3880055a8acb8d714624ae43da50998569fb41a5cb9af7eab51af77"
+  },
+  "active_data_roots": {
+    "historical_minute_root": "/Volumes/DIsk/qlib-a-share-tushare-1m",
+    "daily_root": "/Volumes/DIsk/Disk-Coding/qlib/data",
+    "campaign074_snapshot_manifest": "/Volumes/DIsk/qlib-a-share-tushare-1m/derived/a_share/rich/tushare/minute_walkforward_campaign074_feature_library/tushare_stk_mins_1m_2019_2025_ea0cbb8f_walkforward_campaign074_feature_library_v1/snapshot_manifest.json"
+  },
+  "campaign074_result": {
+    "factor": "intraday_terminal_bar_amount_share_240m",
+    "direction": "higher",
+    "dedicated_closing_auction_feed_claimed": false,
+    "snapshot_manifest_sha256": "5a993ce8b71c541a0b2d2402627d5f2b7f562cf1266bebcafe0606945086a3cd",
+    "snapshot_dataset_sha256": "d4fbb9eb8135674df16a50c96b5817f63e6461e99ee48df96537cd8ed930a4b5",
+    "snapshot_partitions": 33015,
+    "snapshot_rows": 7724498,
+    "snapshot_eligible_rows": 7724498,
+    "coverage_gate_passed": true,
+    "numeric_comparisons_completed": 104,
+    "numeric_comparisons_passed": 104,
+    "maximum_absolute_median_daily_rank_correlation": 0.42555644028639117,
+    "nearest_comparison": "late_amount_share_30m",
+    "development_trial_count": 1,
+    "validation_mean_rank_ic": [-0.015199722591048851, -0.011329858878378488, -0.010665389101273421],
+    "validation_normalized_return": [-0.053381592172832004, -0.09266435900408121, -0.07552817840558701],
+    "validation_pilot_10bp_return": [-0.0031457063312057, -0.047164214923642755, -0.022087699850374065],
+    "development_aggregate_pilot_20bp_return": -0.22994449789349247,
+    "development_survivor_count": 0,
+    "stress_2024_2025_opened": false,
+    "stress_returns_read": false,
+    "terminal": true,
+    "same_campaign_rescue_allowed": false
+  },
+  "campaign074_terminal_evidence": {
+    "numeric_comparison_policy_v9": {
+      "path": "docs/a_share_three_day_walkforward_future_numeric_comparison_eligibility_policy_v9_20260806.json",
+      "sha256": "1af4a2432e0186a47a8a69ddefdda25756810cf47b11ff0688d0cbd832438c03"
+    },
+    "current_attempt_ledger": {
+      "path": "data/experiments/short_horizon/historical_walkforward/campaign_074/research_attempt_ledger_v6.json",
+      "sha256": "ff62c7d62fff13f025466ffa6fe81c3f868165902b2c8f6cd712df50679ebf67"
+    },
+    "current_research_record": {
+      "path": "docs/a_share_three_day_walkforward_campaign_074_research_record_v5.json",
+      "sha256": "fb5ea4bd55ac0a0577288e1a80d810941b88e7083f92f21dab0052ba3f9952f3"
+    },
+    "terminal_completion_freeze_v2": {
+      "path": "docs/a_share_three_day_walkforward_campaign_074_terminal_completion_freeze_v2_20260806.json",
+      "sha256": "b94c61e7ec3414e377a010d2d70a45d3f8e449b931efa0b8a57be7bda8671718"
+    },
+    "current_test_suite_receipt_v2": {
+      "path": "docs/a_share_three_day_walkforward_campaign_074_current_test_suite_receipt_v2_20260806.json",
+      "sha256": "df2a8b6fcc3bcd0ee1425592ceeedebe674176bd99fa4482acdfd412eccfb1c8"
+    },
+    "campaign_report": {
+      "path": "docs/a_share_three_day_walkforward_campaign_074_report.md",
+      "sha256": "d86c3a1e1f14d2ac4bd51303a98fea40086a539cc52c28d490ed8055e7e145c1"
+    },
+    "unified_report": {
+      "path": "data/experiments/short_horizon/three_day_research_report.md",
+      "sha256": "343bcee351b11c1f278eb7e18d374b2ac1845dea396cc117cef76c20f460ebef"
+    },
+    "pipeline_document": {
+      "path": "docs/a_share_data_pipeline.md",
+      "sha256": "f6fb6624b6d0346bd21b03fc1fc9729005f99a9ed0996fffd5ef2dba3a4b9912"
+    },
+    "manage_qlib_a_share_data_skill": {
+      "path": "/Users/niyufei/.codex/skills/manage-qlib-a-share-data/SKILL.md",
+      "sha256": "64b87cf99406522ad3e8962878b71e263473fdcdbfdf48720c96fc8cdab12b4e"
+    }
+  },
+  "attempt_accounting": {
+    "campaign074_infrastructure_failures": 9,
+    "campaign074_complete_factor_attempts": 1,
+    "campaign074_attempts": 10,
+    "campaign074_return_reading_development_trials": 1,
+    "cumulative_historical_research_attempts": 452,
+    "cumulative_return_reading_development_trials": 276
+  },
+  "candidate49_future_only_layer": {
+    "remains_only_active_prospective_candidate": true,
+    "signal_ledger_path": "data/experiments/short_horizon/candidate49_future_signal_ledger.json",
+    "signal_ledger_sha256": "5193f00d7f36da003f53cec387900da4c3d002299f5dfcfc1a95eaa199ed3a79",
+    "signal_ledger_entries": 0,
+    "execution_ledger_path": "data/experiments/short_horizon/candidate49_future_execution_ledger.json",
+    "execution_ledger_sha256": "d57a3e61eac969e42cafa418ccd8c0a5ee65dcf69da145bb2c096c2a02a2ea4f",
+    "execution_ledger_entries": 0,
+    "historical_backfill_performed": false,
+    "provider_request_issued_this_campaign": false,
+    "same_day_plan_or_run_performed": false,
+    "reason_same_day_workflow_not_run": "observed local time was before 16:30 Asia/Singapore",
+    "second_prospective_candidate_created": false,
+    "live_order_performed": false
+  },
+  "credential_state": {
+    "repository_env_regular_file": true,
+    "repository_env_mode": "0600",
+    "tushare_token_nonempty": true,
+    "secret_printed_hashed_logged_or_persisted": false
+  },
+  "next_offline_research": {
+    "campaign075_scouting_authorized": true,
+    "wait_for_new_daily_bar_required": false,
+    "wait_for_16_30_required": false,
+    "mandatory_pre_value_steps": [
+      "append Campaign074 to the complete logical historical factor-definition order",
+      "decide and freeze Campaign074 numeric-comparator eligibility",
+      "freeze a genuinely independent Campaign075 mechanism, formula, direction, inputs, filters, candidate library, comparator order, costs, gates, and code/data fingerprints before reading candidate values"
+    ],
+    "candidate49_prospective_workflow_boundary_unchanged": true
+  },
+  "historical_research_boundary": {
+    "may_generate_current_score_selection_sizing_order_or_advice": false,
+    "campaign074_may_be_inverted_rescaled_residualized_filtered_rerun_rescued_or_combined": false,
+    "current_listing_snapshot_survivorship_bias_flagged": true,
+    "result_is_pristine_out_of_sample_evidence": false
+  }
+}

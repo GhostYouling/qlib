@@ -1,0 +1,29 @@
+{
+  "schema_version": 1,
+  "kind": "a_share_three_day_walkforward_campaign085_terminal_combined_suite_lifecycle_failure",
+  "status": "recorded_without_additional_market_or_return_read",
+  "recorded_at": "2026-08-07T00:27:00+08:00",
+  "failed_command": {
+    "result": "19 passed, 3 failed",
+    "intended_deselect_did_not_match_collection_root": true,
+    "failed_lifecycle_assertions": [
+      "feature snapshot_absent_pre_build after snapshot publication",
+      "no-return audit_count=0 after the single audit",
+      "development ledger_entry_count=1 after the compatible runtime trial appended the second entry"
+    ],
+    "scientific_or_terminal_assertion_failure": false,
+    "correction": "Collect exact node ids and rerun an explicit whitelist of current-state tests; preserve all three immutable lifecycle tests unchanged."
+  },
+  "preceding_terminal_test": {
+    "result": "4 passed",
+    "black_check_passed": true,
+    "ruff_check_passed": true
+  },
+  "research_boundary": {
+    "additional_candidate_comparator_market_or_return_values_read": false,
+    "stress_2024_2025_opened": false,
+    "provider_request_issued": false,
+    "candidate49_ledgers_changed": false,
+    "current_scoring_selection_sizing_or_orders_performed": false
+  }
+}

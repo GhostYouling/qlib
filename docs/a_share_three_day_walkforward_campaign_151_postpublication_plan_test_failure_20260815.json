@@ -1,0 +1,34 @@
+{
+  "schema_version": 1,
+  "kind": "a_share_three_day_walkforward_campaign151_postpublication_test_failure",
+  "status": "failed_exit_preserved_publication_lifecycle_fixture_corrected",
+  "recorded_at": "2026-08-15T01:32:28+08:00",
+  "attempt_id": "campaign151_infrastructure_008",
+  "failed_command_scope": "Campaign151 formula, builder, runner, verifier, terminal and accounting focused tests",
+  "exit_code": 1,
+  "result": "1 failed, 40 passed",
+  "failed_test": "test_campaign151_plan_is_zero_value_and_ready",
+  "root_cause": "the historical prepublication ready-plan test used the real output gate after the immutable final snapshot had been published; the real gate correctly returned not ready to prevent overwrite",
+  "scientific_or_runtime_defect": false,
+  "correction": "the test now explicitly supplies a synthetic prepublication output-gate observation while retaining separate coverage that a real existing final root is rejected",
+  "precorrection_snapshot_test_sha256": "aabd42b03b7f7353f2ef88eab2acc6dc5a0dd45b0f4e71c34e1b3bd3136c84f0",
+  "corrected_snapshot_test_sha256": "7f78c83f5efe21136dcb588bac77443c608e33cf5c14a175fddca8b67a2211cc",
+  "terminal_test_sha256": "f3a32163841ff88ee9d1525d7095160ec4292453b31ca1ba2e4042dbc8a5ef75",
+  "corrected_validation": {
+    "black": "passed; 2 files left unchanged",
+    "ruff": "passed",
+    "pytest": "41 passed in 6.93s"
+  },
+  "failed_exit_code_bypassed_or_masked": false,
+  "research_boundary": {
+    "campaign151_candidate_values_read": true,
+    "comparator_values_read": false,
+    "historical_daily_price_or_forward_return_values_read": false,
+    "stress_2024_2025_opened_for_return_evaluation": false,
+    "provider_request_issued": false,
+    "credential_loaded": false,
+    "candidate49_ledgers_changed": false,
+    "current_scoring_selection_sizing_positions_or_orders_performed": false
+  },
+  "next_action": "Append this lifecycle-only failure to Campaign151 accounting without changing the zero-coverage terminal result, library membership or Campaign152 authorization."
+}

@@ -1,0 +1,134 @@
+{
+  "schema_version": 1,
+  "kind": "a_share_three_day_walkforward_campaign139_terminal_result",
+  "status": "terminal_capacity_failure_before_all_numeric_comparators_daily_prices_or_returns",
+  "recorded_at": "2026-08-14T13:31:45+0800",
+  "purpose": "Record the one frozen Campaign139 forecast-realization surprise definition, its immutable local source snapshot, and its failed five-year capacity gate without opening any comparator, daily price, forward-return, development-fold, or 2024-2025 stress-return values.",
+  "authoritative_inputs": {
+    "preregistration_v1": {
+      "path": "docs/a_share_three_day_walkforward_campaign_139_no_return_preregistration_20260814.json",
+      "sha256": "def4153f0fdc112ddb5b6349b83449874be040546ef4a9e2a6527dc07e713a1c"
+    },
+    "preregistration_v2": {
+      "path": "docs/a_share_three_day_walkforward_campaign_139_no_return_preregistration_v2_20260814.json",
+      "sha256": "eaeffa8e446ee8aa683b2eadee8b20a6c9430978d6d31bdd5696c9a6d4e373b3"
+    },
+    "preregistration_v3": {
+      "path": "docs/a_share_three_day_walkforward_campaign_139_no_return_preregistration_v3_20260814.json",
+      "sha256": "33c1fcb340a925bfa11f58700ee58225388f0dd06f1b050cb276d68c80914edf"
+    },
+    "source_publication": {
+      "path": "docs/a_share_three_day_walkforward_campaign_139_source_snapshot_publication_20260814.json",
+      "sha256": "811c1ba91b9f6e5bb7857028f27648cc20c4b8f7b02c4f955ad97224dd12802f"
+    },
+    "capacity_implementation_freeze": {
+      "path": "docs/a_share_three_day_walkforward_campaign_139_capacity_implementation_freeze_20260814.json",
+      "sha256": "b28f7c0f7e7fd3ec7a27b6b20234dc208a256c720ef4e1f45c841e8b84a7b1aa"
+    },
+    "capacity_result": {
+      "path": "data/experiments/short_horizon/historical_walkforward/campaign_139/capacity/campaign139_capacity_audit.json",
+      "sha256": "631a9a61a02ff2f19b3a2b07ad65cc1134d74cae052009724061d20aca4a49a7"
+    }
+  },
+  "candidate_definition": {
+    "name": "quarterly_realized_profit_growth_forecast_surprise_rank",
+    "direction": "higher",
+    "formula": "After exact instrument/report-date matching, select the latest finite forecast_profit_yoy announced strictly before the actual quarterly announcement; raw_surprise = profit_yoy - forecast_profit_yoy; from the first accepted session strictly after the realized announcement through three calendar days, rank raw_surprise cross-sectionally with average-tie percentile rank after the frozen quality/listing gate.",
+    "filters": [],
+    "subsets": [],
+    "combination": null,
+    "model": null,
+    "weights": null,
+    "logical_definition_complete": true,
+    "complete_definition_remains_in_frozen_semantic_library": true,
+    "numeric_comparator_eligible": false,
+    "formula_direction_match_rule_liveness_gate_or_support_threshold_changed_after_values": false
+  },
+  "source_snapshot_evidence": {
+    "manifest_path": "data/experiments/short_horizon/historical_walkforward/campaign_139/source_snapshot_v1/snapshot_manifest.json",
+    "manifest_sha256": "82eac4501fb72dd5fe1972dd0f42c3fa2cd16f8975a0b5f55e2b4018401a38a5",
+    "data_path": "data/experiments/short_horizon/historical_walkforward/campaign_139/source_snapshot_v1/campaign139_forecast_realization_events.parquet",
+    "data_sha256": "ce8de0d0a4e8c59746ba06c917399c75515d6e486f159ee6ab7b85df2c272a1a",
+    "matched_event_rows": 37185,
+    "effective_date_start": "2019-04-10",
+    "effective_date_end": "2025-12-15",
+    "positive_surprise_rows": 17879,
+    "zero_surprise_rows": 247,
+    "negative_surprise_rows": 19059,
+    "provider_request_issued": false
+  },
+  "capacity_evidence": {
+    "candidate_snapshot_path": "data/experiments/short_horizon/historical_walkforward/campaign_139/capacity/campaign139_development_candidate_signal_snapshot.parquet",
+    "candidate_snapshot_sha256": "3f317253baa3cab737d39df00be9cb22b0512ea8a5d270fb9d77112d7731e186",
+    "quality_listing_candidate_signal_rows": 18340,
+    "calendar_sessions": 1214,
+    "sessions_with_at_least_one_candidate": 479,
+    "maximum_names_in_one_session": 326,
+    "maximum_distinct_values_in_one_session": 326,
+    "non_overlapping_grid_dates": 404,
+    "required_non_overlapping_complete_cohorts": 200,
+    "observed_non_overlapping_complete_cohorts": 123,
+    "required_observed_years": 5,
+    "observed_years": [
+      2019,
+      2020,
+      2021,
+      2022,
+      2023
+    ],
+    "cohorts_by_year": {
+      "2019": 16,
+      "2020": 29,
+      "2021": 28,
+      "2022": 26,
+      "2023": 24
+    },
+    "capacity_gate_passed": false
+  },
+  "scientific_interpretation": {
+    "predictive_association_tested": false,
+    "historical_return_tested": false,
+    "operational_translation_tested": false,
+    "conclusion": "The forecast-realization surprise mechanism is point-in-time computable and spans all five development years, but its three-calendar-day event lifetime yields only 123 frozen non-overlapping cohorts versus the required 200. It is therefore too sparse for the fixed three-session historical campaign and terminates before duplicate or return testing.",
+    "mechanism_learning": "A quarterly realized-versus-prior-forecast event can create broad event-day cross-sections, but the frozen short liveness window does not supply enough independent fixed-grid opportunities for this three-day research design.",
+    "post_result_rescue_allowed": false
+  },
+  "unopened_stages": {
+    "numeric_comparator_count_read": 0,
+    "numeric_uniqueness_gate_run": false,
+    "historical_daily_price_fields_read": [],
+    "historical_forward_return_fields_read": false,
+    "development_trial_count": 0,
+    "development_survivor_count": 0,
+    "stress_2024_2025_opened": false,
+    "stress_trial_count": 0
+  },
+  "library_after_terminal_result": {
+    "complete_definition_count": 153,
+    "complete_definition_order_sha256": "bf66faef96d7058c7028da52757c65d8e0bf7978cf72d3967cd236e4da30b875",
+    "eligible_numeric_comparator_count": 141,
+    "eligible_numeric_comparator_order_sha256": "ec1aebcb939ad516c58037a36a4aaadd4ad8b2abbd3c884705895c58da85a2ee",
+    "reason_numeric_order_unchanged": "The candidate failed the frozen capacity gate before all ordered comparator values and is not numerically eligible. Its complete semantic definition remains available only for future prevalue duplicate prevention."
+  },
+  "candidate49": {
+    "sole_prospective_candidate": true,
+    "signal_ledger_sha256": "5193f00d7f36da003f53cec387900da4c3d002299f5dfcfc1a95eaa199ed3a79",
+    "execution_ledger_sha256": "d57a3e61eac969e42cafa418ccd8c0a5ee65dcf69da145bb2c096c2a02a2ea4f",
+    "signal_entry_count": 0,
+    "execution_entry_count": 0,
+    "historical_backfill_performed": false,
+    "ledgers_changed": false
+  },
+  "prohibitions": [
+    "do not extend the event lifetime, lower the support threshold, change the grid, loosen matching, fill missing values, filter event types, reverse direction, combine, fit, or otherwise rescue Campaign139",
+    "do not open Campaign139 comparator, historical daily price, forward-return, development, or 2024-2025 stress-return stages",
+    "do not backfill Candidate49 or start a second prospective candidate",
+    "do not create current scores, selections, sizing, positions, orders, or investment advice"
+  ],
+  "next_iteration": {
+    "campaign_id": "a_share_three_day_walkforward_campaign_140",
+    "allowed_at_any_local_time": true,
+    "required_start": "a genuinely new finite prevalue mechanism supported by accepted historically versioned point-in-time data",
+    "campaign139_reuse_or_rescue_allowed": false
+  }
+}

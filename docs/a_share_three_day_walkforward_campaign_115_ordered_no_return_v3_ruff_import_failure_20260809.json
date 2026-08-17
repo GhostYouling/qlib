@@ -1,0 +1,32 @@
+{
+  "schema_version": 1,
+  "kind": "a_share_three_day_walkforward_campaign115_ordered_no_return_v3_ruff_import_failure",
+  "status": "recorded_before_mechanical_import_annotation_repair",
+  "recorded_at": "2026-08-09T07:03:00+08:00",
+  "recorded_at_semantics": "monotonic_logical_append_time_after_clean_selected_regression_and_first_v3_lint_command_not_host_wall_clock_measurement",
+  "verification_command": {
+    "selected_regression": "68 passed in 9.95s",
+    "black_check": "2 files would be left unchanged",
+    "ruff_required_rules": "failed with I001 and five E402 reports on multiline late imports",
+    "root_cause": "the_noqa_E402_annotations_were_attached_to_multiline_import_closing_parentheses_instead_of_each_import_statement_start",
+    "runtime_or_scientific_semantics_affected": false
+  },
+  "authorized_mechanical_repair": {
+    "move_noqa_E402_annotations_to_the_multiline_import_statement_start": true,
+    "allow_ruff_to_sort_the_import_block_only": true,
+    "formula_direction_order_years_gates_paths_digest_manifest_semantics_or_value_load_boundaries_may_change": false,
+    "new_implementation_freeze_required": true
+  },
+  "research_boundary": {
+    "candidate_values_read": false,
+    "comparator_values_read": false,
+    "daily_price_or_forward_return_values_read": false,
+    "partition_year_2024_or_2025_values_read": false,
+    "provider_request_issued": false,
+    "credential_loaded": false,
+    "candidate49_ledgers_changed": false,
+    "second_prospective_candidate_created": false,
+    "current_scoring_selection_sizing_or_orders_performed": false,
+    "investment_advice": false
+  }
+}

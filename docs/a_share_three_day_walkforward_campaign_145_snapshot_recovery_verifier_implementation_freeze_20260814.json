@@ -1,0 +1,51 @@
+{
+  "schema_version": 1,
+  "kind": "a_share_three_day_walkforward_campaign145_snapshot_recovery_verifier_implementation_freeze",
+  "status": "recovery_verifier_and_synthetic_semantics_frozen_before_recovery_partition_reads",
+  "recorded_at": "2026-08-14T20:33:37+08:00",
+  "purpose": "Bind the narrow additive verifier before it reads any Campaign145 snapshot partition. The original manifest and partitions remain immutable.",
+  "authoritative_inputs": {
+    "recovery_protocol": {
+      "path": "docs/a_share_three_day_walkforward_campaign_145_snapshot_recovery_verification_protocol_20260814.json",
+      "sha256": "4105cca80458487f8961fc426ba069e45105d5d0c8f6d36157df8ffbe7b0da36"
+    },
+    "original_implementation_freeze": {
+      "path": "docs/a_share_three_day_walkforward_campaign_145_no_return_implementation_freeze_20260814.json",
+      "sha256": "cf4de349f6ef40b8cd4a6bfcc9fb2f6c484632dea84bb34da3287ca1dc01ae44"
+    }
+  },
+  "frozen_implementation": {
+    "recovery_verifier": "scripts/a_share_three_day_walkforward_campaign145_snapshot_verify_recovery.py",
+    "recovery_verifier_sha256": "27144d37acd712a8b356bb237dc8d6f9d4eeee6df16919956e48bf39bdbdc6cf",
+    "recovery_test": "tests/data_collector_tests/test_a_share_three_day_walkforward_campaign145_snapshot_verify_recovery.py",
+    "recovery_test_sha256": "7c58b1e85039d52977bce6dc2921d4f12f0358c7dae7575c06049a4dc9f4a8fe",
+    "stored_manifest_range": [
+      0.0,
+      1.0
+    ],
+    "effective_formula_range": [
+      -1.0,
+      1.0
+    ],
+    "snapshot_rebuild_or_rewrite_allowed": false,
+    "partition_drop_fill_clamp_rescale_or_rewrite_allowed": false
+  },
+  "synthetic_verification": {
+    "formatter": "black",
+    "formatter_exit_code": 0,
+    "linter": "ruff check",
+    "linter_exit_code": 0,
+    "test_command": "PYTHONPATH=. pytest -q tests/data_collector_tests/test_a_share_three_day_walkforward_campaign145_snapshot_verify_recovery.py",
+    "exit_code": 0,
+    "passed": 5
+  },
+  "research_boundary": {
+    "recovery_partition_values_read_before_freeze": false,
+    "comparator_values_read": false,
+    "historical_daily_price_or_forward_return_values_read": false,
+    "stress_2024_2025_returns_opened": false,
+    "provider_request_issued": false,
+    "credential_loaded": false,
+    "candidate49_ledgers_changed": false
+  }
+}

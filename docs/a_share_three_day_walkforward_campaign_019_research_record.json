@@ -1,0 +1,118 @@
+{
+  "version": 1,
+  "kind": "a_share_three_day_walkforward_campaign019_research_record",
+  "campaign_id": "a_share_three_day_walkforward_campaign_019",
+  "status": "completed_no_return_coverage_rejection_stop_before_comparison_values_or_historical_returns",
+  "recorded_at": "2026-07-29T01:49:38Z",
+  "purpose": "Record terminal Campaign019 feature and ordered no-return evidence without reading historical returns, changing Candidate49, or creating another prospective candidate.",
+  "authoritative_bindings": {
+    "inherited_iteration_state": {
+      "path": "docs/a_share_three_day_iteration_status_20260729_campaign018.json",
+      "sha256": "7d054e627d925267f7ee731251154df8a73afeba6d490e3f68aa42494f91e74b"
+    },
+    "concept_scouting": {
+      "path": "docs/a_share_three_day_walkforward_campaign_019_concept_scouting.json",
+      "sha256": "749f63c0acb05622ac8e547933d06d3311a37d9a237f166d9b9b4d2f3e0dd010"
+    },
+    "mechanism_overlap_audit": {
+      "path": "docs/a_share_three_day_walkforward_campaign_019_mechanism_overlap_audit.json",
+      "sha256": "29e7dc24776e458cd471414a076029dfb232fb5299f10fd333b6f9c4e7522606"
+    },
+    "no_return_protocol": {
+      "path": "docs/a_share_three_day_walkforward_campaign_019_no_return_preregistration.json",
+      "sha256": "de68ec246a0b0944ef75edc2594e8909c89b9118de3cd01bdad7cc1b902f011f"
+    },
+    "feature_snapshot": {
+      "path": "/Volumes/DIsk/qlib-a-share-tushare-1m/derived/a_share/rich/tushare/minute_walkforward_campaign019_feature_library/tushare_stk_mins_1m_2019_2025_ea0cbb8f_walkforward_campaign019_feature_library_v1/snapshot_manifest.json",
+      "sha256": "7c4f7268f33af3274a9057241b9bd45df3c2565729a684a07f48105cdf9474cb",
+      "dataset_sha256": "66efe683268dbcc681591ee9918ba2948f3c4420232c4e1f4c57371d0ac24ecc"
+    },
+    "no_return_audit": {
+      "path": "data/experiments/short_horizon/historical_walkforward/campaign_019/no_return/20260729T014807Z_campaign019_no_return_audit.json",
+      "sha256": "ccb7c4582a4944fe6c26423d07d25cefc488f3200fb70e45ec738ea8c716f10e"
+    }
+  },
+  "factor": {
+    "name": "intraday_bar_direction_continuity_238p",
+    "direction": "higher",
+    "formula": "count(s_i*s_(i+1)>0) / count(s_i!=0 and s_(i+1)!=0) across exactly 238 within-half adjacent pairs, where s_i=sign(log(close_i/open_i))",
+    "source_fields_read": [
+      "datetime",
+      "symbol",
+      "provider",
+      "open",
+      "close"
+    ],
+    "selected_bar_count": 240,
+    "within_half_pair_count": 238,
+    "minimum_nonzero_pair_count": 120,
+    "valid_range": [
+      0.0,
+      1.0
+    ]
+  },
+  "snapshot_result": {
+    "partitions": 33015,
+    "rows": 7724498,
+    "eligible_factor_rows": 2623556,
+    "rows_with_zero_body": 7724498,
+    "zero_body_observations": 746337349,
+    "insufficient_informative_pair_rows": 5100942,
+    "zero_denominator_rows": 34816,
+    "invalid_or_nonpositive_open_close_rows": 0,
+    "provider_request_issued": false,
+    "daily_price_or_forward_return_read_during_build": false
+  },
+  "no_return_result": {
+    "quality_listing_eligible_rows": 1331759,
+    "candidate_eligible_rows": 702955,
+    "median_coverage": 0.5629049174432891,
+    "p05_coverage": 0.39160894200061813,
+    "p05_eligible_names": 85.0,
+    "potential_non_overlapping_three_session_cohorts": 539,
+    "observed_calendar_years": 7,
+    "minimum_median_coverage": 0.95,
+    "minimum_p05_coverage": 0.9,
+    "coverage_and_capacity_gate_passed": false,
+    "comparison_values_loaded": false,
+    "statistical_comparison_count_executed": 0,
+    "historical_daily_price_fields_read": [],
+    "historical_forward_return_fields_read": false,
+    "candidate49_historical_return_read": false,
+    "training_or_model_fitting_performed": false
+  },
+  "development_result": {
+    "walkforward_preregistration_created": false,
+    "development_trial_count": 0,
+    "development_return_fields_read": false,
+    "development_survivor_count": 0,
+    "stress_2024_2025_opened": false,
+    "stress_2024_2025_return_read": false
+  },
+  "interpretation": "Exact zero minute bodies are pervasive in every stock-day and leave fewer than 120 informative adjacent pairs for 5,100,942 rows. The frozen threshold cannot be reduced after observing these values; the mechanism is terminal for inadequate coverage, not for negative return evidence.",
+  "known_limitation": "The current-listing-derived holding universe may introduce survivorship bias. Campaign019 stopped before all historical return reads and provides no performance claim.",
+  "research_boundary": {
+    "candidate49_historical_return_read": false,
+    "candidate49_signal_ledger_changed": false,
+    "candidate49_execution_ledger_changed": false,
+    "candidate50_prospective_activation_created": false,
+    "comparison_values_read": false,
+    "historical_daily_price_fields_read": [],
+    "historical_forward_return_fields_read": false,
+    "current_scoring_selection_sizing_or_orders_performed": false,
+    "provider_request_issued": false,
+    "investment_advice": false
+  },
+  "decision": {
+    "factor_terminal": true,
+    "terminal_stage": "coverage_and_capacity_before_comparison_values",
+    "return_direction_tested": false,
+    "repair_inversion_threshold_relaxation_rewindow_filter_or_combination_allowed": false,
+    "current_aggregation_candidate_count": 0,
+    "prospective_candidate_created": false,
+    "candidate49_remains_only_prospective_candidate": true,
+    "candidate50_activation_allowed": false,
+    "campaign020_concept_scouting_and_separate_no_return_research_allowed": true,
+    "campaign020_requires_new_daily_bar": false
+  }
+}

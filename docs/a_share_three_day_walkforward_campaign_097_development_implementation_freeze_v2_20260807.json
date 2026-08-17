@@ -1,0 +1,63 @@
+{
+  "schema_version": 1,
+  "kind": "a_share_three_day_walkforward_campaign097_development_implementation_freeze_v2",
+  "status": "compact_namespace_repair_frozen_after_one_append_only_failure_before_complete_development_trial",
+  "frozen_at": "2026-08-07T06:51:00Z",
+  "purpose": "Freeze the exact Campaign097 compact loader namespace repair while preserving the append-only development-load failure and every preregistered trial, fold, cost, gate, and stress boundary.",
+  "v1_runner": {
+    "path": "scripts/a_share_three_day_walkforward_campaign097.py",
+    "sha256": "e48bc07f5c004558a98cae9e3f12a18b3c79bc62ffb0bae654109bbc78d45e40"
+  },
+  "v1_development_freeze": {
+    "path": "docs/a_share_three_day_walkforward_campaign_097_development_implementation_freeze_20260807.json",
+    "sha256": "b987ee75c8773b0067a59655cc2177f12ff9d598b25bbf801eb155300a7ad0d8"
+  },
+  "v1_failure_record": {
+    "path": "docs/a_share_three_day_walkforward_campaign_097_development_compact_namespace_failure_20260807.json",
+    "sha256": "9637fbca52c4b3e8125cce799b2c105cdf2e3833cfbbbe7977afd364b3e1215c"
+  },
+  "v1_status_test_failure": {
+    "path": "docs/a_share_three_day_walkforward_campaign_097_development_v1_prevalue_status_test_failure_20260807.json",
+    "sha256": "b6a8e8dbdb1e01a45dad85f1a4b6fbdcf38a520ad9a4a9e157e98456e452aece"
+  },
+  "v2_runner": {
+    "path": "scripts/a_share_three_day_walkforward_campaign097_v2.py",
+    "sha256": "3fa9185b13455e0d9d5cfce1aec3a22b0ef9a4ba2c21fa6846070e8aad322df3"
+  },
+  "v2_tests": {
+    "path": "tests/data_collector_tests/test_a_share_three_day_walkforward_campaign097_development_v2.py",
+    "sha256": "f92962617406141fe137ab674d44cfd0db4de31ea1488c77a5de67d665570942",
+    "result": "4 passed",
+    "black_check_passed": true,
+    "ruff_check_passed": true
+  },
+  "append_only_internal_ledger": {
+    "path": "data/experiments/short_horizon/historical_walkforward/campaign_097/walkforward/trial_ledger.json",
+    "sha256": "1c93bf410fd1f384313552d804275325aef9579bc8c5b8cf5edb49deab0cf7f6",
+    "entry_count": 1,
+    "chain_tip_sha256": "7818333c6d68a2f1679861b0923221502d2b9235c775fb7845bf8933b3cc2e83"
+  },
+  "repair_scope": "replace only the inherited compact loader dataset_group and manifest namespace",
+  "repaired_static_values": {
+    "dataset_group": "campaign097_new_factors",
+    "manifest_path": "/Volumes/DIsk/qlib-a-share-tushare-1m/derived/a_share/rich/tushare/minute_walkforward_campaign097_compact_feature_library/tushare_stk_mins_1m_2019_2025_ea0cbb8f_walkforward_campaign097_compact_feature_library_v1/snapshot_manifest.json",
+    "manifest_sha256": "fac652d7097de579c8f3d6c5812ce9573762ec8885d6729706e2ef7e0cd81227",
+    "dataset_sha256": "dfdeda35efb8e443e4f33a6ab217032ec2ba6793270f8eb7fcf36d9494f7bf97"
+  },
+  "unchanged_semantics": [
+    "trial id, factor, direction, and weight",
+    "2019-2023 expanding folds and three-signal-session purge",
+    "t+1 and t+3 same-partition boundary",
+    "execution prices, costs, liquidity, affordability, and unresolved-position gates",
+    "development survivor thresholds",
+    "2024-2025 stress remains closed",
+    "Candidate49 isolation and no current outputs"
+  ],
+  "complete_development_trial_count_before_v2_freeze": 0,
+  "historical_daily_price_values_already_read_by_failed_v1": true,
+  "historical_forward_return_values_may_have_been_read_by_failed_v1": true,
+  "stress_2024_2025_read_before_v2_freeze": false,
+  "provider_request_issued_before_v2_freeze": false,
+  "candidate49_ledgers_changed_before_v2_freeze": false,
+  "current_scoring_selection_sizing_or_orders_performed_before_v2_freeze": false
+}

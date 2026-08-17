@@ -1,0 +1,63 @@
+{
+  "version": 1,
+  "kind": "a_share_three_day_walkforward_campaign053_terminal_report_assertion_failure",
+  "status": "post_result_infrastructure_only_test_failure_preserved_current_verification_must_advance",
+  "recorded_at": "2026-08-03T13:01:33Z",
+  "purpose": "Preserve the Campaign053 terminal-test assertion failure without changing the frozen factor, audit, result, report meaning, or any historical return boundary.",
+  "failed_test_run": {
+    "command": "PYTHONPATH=. pytest -q tests/data_collector_tests/test_a_share_three_day_walkforward_campaign053_features.py tests/data_collector_tests/test_a_share_three_day_walkforward_campaign053_no_return_audit_repair.py tests/data_collector_tests/test_a_share_three_day_walkforward_campaign053_terminal.py",
+    "passed": 15,
+    "failed": 1,
+    "failed_test": "test_unified_report_contains_campaign053_terminal_result",
+    "asserted_literal": "`0.852858`",
+    "actual_report_literal": "`+0.852858`",
+    "failure_type": "exact_string_assertion_omitted_the_reported_positive_direction_sign",
+    "factor_result_or_gate_failure": false
+  },
+  "frozen_historical_artifacts": {
+    "terminal_test_v1": {
+      "path": "tests/data_collector_tests/test_a_share_three_day_walkforward_campaign053_terminal.py",
+      "sha256": "fc371e9ffac4c4c3f1762477c4313ce76b62fe9f26105786cafc9ab1f3b2c815"
+    },
+    "unified_report_before_attempt_count_delta": {
+      "path": "data/experiments/short_horizon/three_day_research_report.md",
+      "sha256": "c079bd54deace36fc56fef2809cfaaa70f6d86d6c1e9d3cb14a5edd4b07654a1"
+    },
+    "verification_v1": {
+      "path": "docs/a_share_three_day_walkforward_campaign_053_verification_20260803.json",
+      "sha256": "d25ad2abf73fae162b233cff7e7160add61d88f27864f285de2faccb680db94d",
+      "historical_issue": "recorded 16/16 before the terminal suite was executed; superseded by current verification v2"
+    },
+    "iteration_state_v1": {
+      "path": "docs/a_share_three_day_iteration_status_20260803_campaign053_verified.json",
+      "sha256": "7a537ef94f7018272c7459c6d450008361e8f5facc2fdd93e4e4c01bf6e308f8"
+    },
+    "report_supersession_v1": {
+      "path": "docs/a_share_three_day_walkforward_campaign_053_unified_report_supersession_20260803.json",
+      "sha256": "a720fae0f81ec8c436492e52985f89257c879ca8c6aaeec6d40245558b69480c"
+    }
+  },
+  "authorized_correction": {
+    "description": "Add a current terminal-test module that replays the seven valid legacy assertions and checks the exact signed report literal; preserve the failed v1 test bytes and advance attempt accounting, research record, report binding, verification, and iteration state additively.",
+    "current_test_path": "tests/data_collector_tests/test_a_share_three_day_walkforward_campaign053_terminal_v2.py",
+    "current_test_sha256": "272a4ee802a5b830baef1f7bc78ffd5823ce05b90c03fdd99447e9b004689b8c",
+    "report_result_text_may_change": false,
+    "report_attempt_count_must_advance_from_302_to_303": true,
+    "historical_research_attempt_count_increment": 1,
+    "development_trial_count_increment": 0
+  },
+  "research_boundary": {
+    "factor_values_read_by_failed_test": false,
+    "comparison_values_read_by_failed_test": false,
+    "historical_daily_price_fields_read": [],
+    "historical_forward_return_fields_read": false,
+    "training_or_model_fitting_performed": false,
+    "provider_request_issued": false,
+    "candidate49_historical_return_read": false,
+    "candidate49_ledgers_changed": false,
+    "formula_direction_window_gate_or_cost_changed": false,
+    "second_prospective_candidate_created": false,
+    "current_scoring_selection_sizing_or_orders_performed": false
+  },
+  "next_action": "Create additive current attempt ledger, research record, report binding, verification, and iteration state; run the corrected 16-test focused suite before claiming current verification."
+}

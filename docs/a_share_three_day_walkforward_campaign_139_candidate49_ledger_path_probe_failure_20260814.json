@@ -1,0 +1,31 @@
+{
+  "schema_version": 1,
+  "kind": "a_share_three_day_walkforward_campaign139_infrastructure_failure",
+  "status": "read_only_candidate49_ledger_path_probe_failed_nonzero_and_not_bypassed",
+  "recorded_at": "2026-08-14T13:07:14+0800",
+  "attempt_id": "campaign139_infrastructure_001",
+  "phase": "initial_authority_verification",
+  "failure": {
+    "operation": "Read Candidate49 signal and execution ledgers using guessed prospective-ledger filenames.",
+    "cause": "The guessed filenames did not exist; the authoritative state uses candidate49_future_signal_ledger.json and candidate49_future_execution_ledger.json.",
+    "observed_nonzero_exit": true,
+    "failed_exit_code_bypassed": false,
+    "write_performed": false
+  },
+  "recovery": {
+    "method": "Read the exact paths from the Campaign138 authoritative state, then verify their bytes and empty-entry semantics.",
+    "signal_ledger_path": "data/experiments/short_horizon/candidate49_future_signal_ledger.json",
+    "signal_ledger_sha256": "5193f00d7f36da003f53cec387900da4c3d002299f5dfcfc1a95eaa199ed3a79",
+    "signal_entries": 0,
+    "execution_ledger_path": "data/experiments/short_horizon/candidate49_future_execution_ledger.json",
+    "execution_ledger_sha256": "d57a3e61eac969e42cafa418ccd8c0a5ee65dcf69da145bb2c096c2a02a2ea4f",
+    "execution_entries": 0
+  },
+  "research_boundary": {
+    "credential_value_or_digest_read": false,
+    "provider_request_issued": false,
+    "candidate_source_comparator_price_or_return_value_read": false,
+    "candidate49_ledgers_changed": false,
+    "scientific_result_changed": false
+  }
+}

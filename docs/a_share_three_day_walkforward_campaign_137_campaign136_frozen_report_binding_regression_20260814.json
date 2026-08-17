@@ -1,0 +1,32 @@
+{
+  "schema_version": 1,
+  "kind": "a_share_three_day_walkforward_campaign137_infrastructure_failure",
+  "recorded_at": "2026-08-14T12:32:13+0800",
+  "attempt_id": "campaign137_infrastructure_002",
+  "phase": "terminal_lifecycle_regression_validation",
+  "status": "campaign136_frozen_report_binding_regression_after_campaign137_append",
+  "failure": {
+    "pytest_result": "10 passed, 1 failed",
+    "reason": "The Campaign136 frozen status correctly retained report hashes from its terminal point, while Campaign137 legitimately appended both unified reports; the old test incorrectly required every historical report binding to equal the current mutable report bytes.",
+    "campaign136_non_report_binding_count": 6,
+    "campaign136_non_report_bindings_passed": 6,
+    "expected_advanced_report_bindings": [
+      "/reports/current_research_report",
+      "/reports/three_day_research_report"
+    ],
+    "failed_exit_code_bypassed": false
+  },
+  "recovery": {
+    "method": "Keep the Campaign136 status immutable; require its six non-report bindings to pass and allow exactly the two unified-report bindings to advance to the Campaign137 append.",
+    "scientific_result_changed": false,
+    "campaign136_artifacts_rewritten": false
+  },
+  "research_boundary": {
+    "additional_historical_return_values_read": false,
+    "stress_2024_2025_opened": false,
+    "provider_request_issued": false,
+    "credential_loaded": false,
+    "candidate49_ledgers_changed": false,
+    "current_scoring_selection_sizing_positions_or_orders_performed": false
+  }
+}

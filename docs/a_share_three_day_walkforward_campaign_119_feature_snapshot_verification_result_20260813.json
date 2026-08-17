@@ -1,0 +1,92 @@
+{
+  "schema_version": 1,
+  "kind": "a_share_three_day_walkforward_campaign119_feature_snapshot_verification_result",
+  "status": "all_candidate_partition_bytes_frames_and_aggregate_identity_verified",
+  "recorded_at": "2026-08-13T23:18:00+08:00",
+  "candidate": {
+    "name": "intraday_range_boundary_direction_state_entropy_238p",
+    "direction": "higher"
+  },
+  "snapshot": {
+    "path": "/Volumes/DIsk/qlib-a-share-tushare-1m/derived/a_share/rich/tushare/minute_walkforward_campaign119_feature_library/tushare_stk_mins_1m_2019_2025_ea0cbb8f_walkforward_campaign119_feature_library_v1/snapshot_manifest.json",
+    "sha256": "30aaf36f807011891309c969359db26a342f0d87234fdca38df1d43e27d59188",
+    "dataset_sha256": "66eb5902abf806005c2e938b4506d08c3106637b695ae99b2d4e322f55dfbbf2",
+    "partitions": 33015,
+    "rows": 7724498,
+    "eligible_rows": 7724498,
+    "missing_rows": 0,
+    "source_fields_read": [
+      "datetime",
+      "symbol",
+      "provider",
+      "high",
+      "low"
+    ]
+  },
+  "verification": {
+    "verifier_path": "scripts/a_share_three_day_walkforward_campaign119_snapshot_verify_recovery.py",
+    "verifier_sha256": "748f83aca4467024e093537a5ad131ab98f39b511ae051e91e2ad38d05cf77ee",
+    "recovery_freeze_path": "docs/a_share_three_day_walkforward_campaign_119_snapshot_verifier_recovery_freeze_20260813.json",
+    "recovery_freeze_sha256": "467a8b67adaac22e95eded9e07690b93e20c9ac571de2fa9e615e301de5d1fab",
+    "command": "python -m scripts.a_share_three_day_walkforward_campaign119_snapshot_verify_recovery --workers 8",
+    "exit_code": 0,
+    "partition_byte_hashes_verified": 33015,
+    "partition_frame_hashes_verified": 33015,
+    "aggregate_dataset_digest_verified": true,
+    "eligible_value_range_verified": [
+      0.0,
+      1.0
+    ]
+  },
+  "infrastructure_attempts": [
+    {
+      "attempt_id": "campaign119_infrastructure_006",
+      "exit_code": 1,
+      "stage": "inherited_manifest_semantic_validator",
+      "partition_values_opened": false,
+      "recorded_separately": true
+    },
+    {
+      "attempt_id": "campaign119_infrastructure_007",
+      "exit_code": 1,
+      "stage": "recovery_wrapper_used_wrapper_instead_of_bottom_level_template",
+      "partition_values_opened": false
+    },
+    {
+      "attempt_id": "campaign119_infrastructure_008",
+      "exit_code": 1,
+      "stage": "recovery_wrapper_missing_candidate_specific_quality_key_mapping",
+      "partition_values_opened": false
+    },
+    {
+      "attempt_id": "campaign119_infrastructure_009",
+      "exit_code": 1,
+      "stage": "frozen_recovery_verifier_direct_entry_module_path",
+      "partition_values_opened": false
+    },
+    {
+      "attempt_id": "campaign119_infrastructure_010",
+      "exit_code": 0,
+      "stage": "frozen_recovery_verifier_module_entry",
+      "partition_values_opened_for_verification": true
+    }
+  ],
+  "research_boundary": {
+    "candidate_snapshot_values_read_for_verification": true,
+    "coverage_or_capacity_metrics_computed": false,
+    "comparator_values_read": false,
+    "numeric_comparator_count_read": 0,
+    "historical_daily_price_or_forward_return_values_read": false,
+    "stress_2024_2025_opened_for_returns": false,
+    "provider_request_issued": false,
+    "candidate49_same_day_retry_performed": false,
+    "candidate49_failed_response_rerequested": false,
+    "candidate49_historical_backfill_performed": false,
+    "candidate49_signal_ledger_sha256": "5193f00d7f36da003f53cec387900da4c3d002299f5dfcfc1a95eaa199ed3a79",
+    "candidate49_execution_ledger_sha256": "d57a3e61eac969e42cafa418ccd8c0a5ee65dcf69da145bb2c096c2a02a2ea4f",
+    "candidate49_ledgers_changed": false,
+    "current_scoring_selection_sizing_positions_or_orders_performed": false,
+    "investment_advice": false
+  },
+  "next_action": "Freeze a single-use coverage activation binding, then run only the preregistered coverage/capacity/variation gate before any comparator value."
+}

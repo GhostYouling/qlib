@@ -1,0 +1,104 @@
+{
+  "schema_version": 1,
+  "kind": "a_share_three_day_iteration_status_campaign227_prevalue_terminal",
+  "recorded_at": "2026-08-16T03:39:00+08:00",
+  "timestamp_semantics": "monotonic_logical_append_time_not_host_wall_clock_measurement",
+  "status": "campaign227_validation_passed_goal_active_campaign228_offline_prevalue_authorized",
+  "supersedes_without_rewriting": {
+    "path": "docs/a_share_three_day_iteration_status_20260816_campaign226_prevalue_terminal.json",
+    "sha256": "8b223d425d15cd78d1f9d292246d3f62447cfc5686159c1f2736daf90f5b7040"
+  },
+  "authoritative_inputs": {
+    "self_storage_inquiry_reservation_lease_access_occupancy_payment_delinquency_lien_auction_vacate_turnover_lifecycle_source_frontier": {
+      "path": "docs/a_share_three_day_walkforward_campaign_227_self_storage_inquiry_reservation_lease_access_occupancy_payment_delinquency_lien_auction_vacate_turnover_lifecycle_source_frontier_20260816.json",
+      "sha256": "eb02f2cfa62a302ea432973cc049b9f78c01f95beeacc48259f3f8651506d9e4",
+      "binding_correction_required": true
+    },
+    "source_frontier_binding_correction": {
+      "path": "docs/a_share_three_day_walkforward_campaign_227_source_frontier_historical_policy_binding_correction_20260816.json",
+      "sha256": "3f47840dd8febab6f249cca8930222b9276bbed855aee6afd01f8cde15c95567"
+    },
+    "attempt_ledger_v3": {
+      "path": "data/experiments/short_horizon/historical_walkforward/campaign_227/research_attempt_ledger_v3.json",
+      "sha256": "99d79c683a0d2304af3629aca78780ef51d9eb998261f171738fb814ede5ce49"
+    },
+    "terminal_result_v3": {
+      "path": "docs/a_share_three_day_walkforward_campaign_227_terminal_result_v3_20260816.json",
+      "sha256": "00eac99adbfd235e53b8cd1bb640fb9c148a7f7d7bbbb4a49f101424b10bf24b"
+    },
+    "policy_v345": {
+      "path": "docs/a_share_three_day_walkforward_future_numeric_comparison_eligibility_policy_v345_20260816.json",
+      "sha256": "ff51e6c9666c21ce1839670992c2322ed7afc83eab1d35f56b9f53df32d4802c"
+    },
+    "terminal_validation": {
+      "path": "docs/a_share_three_day_walkforward_campaign_227_terminal_validation_20260816.json",
+      "sha256": "30f6b998a0be4021299c61a10fc3bc4f68633880e57e2b8a6d150c4b14730bea"
+    }
+  },
+  "campaign227": {
+    "terminal": true,
+    "terminal_stage": "prevalue_source_admission_and_overlap_gate",
+    "finite_route_count": 7,
+    "source_admission_deferral_count": 3,
+    "overlap_or_hypothesis_rejection_count": 4,
+    "selected_factor_count": 0,
+    "definition_or_comparator_append": false,
+    "development_trial_count": 0,
+    "stress_trial_count_2024_2025": 0,
+    "frontier_binding_corrected_additively": true,
+    "scientific_routes_or_decisions_changed_by_correction": false
+  },
+  "effective_accounting": {
+    "campaign227_attempt_count": 12,
+    "campaign227_scientific_attempt_count": 7,
+    "campaign227_infrastructure_failure_count": 5,
+    "cumulative_historical_research_attempt_count": 2134,
+    "cumulative_return_reading_development_trial_count": 314,
+    "chain_tip_sha256": "7a83fa5fb5bb8d05682b038f2ef7c27b7bbf92304b568915618572e0ba08f223"
+  },
+  "library_state": {
+    "complete_factor_definition_count": 158,
+    "complete_factor_definition_order_sha256": "4819c7fd7c0795d7598a52f3c615e3f117d5f4ecd9332974bc8e3dfa57c96667",
+    "eligible_numeric_comparator_count": 142,
+    "eligible_numeric_comparator_order_sha256": "5d1b35fb5a0d8ac9293008db9963c4a60a94dc940c237c3ed259e5ce44f14aaf",
+    "changed_by_campaign227": false
+  },
+  "candidate49": {
+    "sole_prospective_candidate": true,
+    "signal_ledger_sha256": "5193f00d7f36da003f53cec387900da4c3d002299f5dfcfc1a95eaa199ed3a79",
+    "signal_entry_count": 0,
+    "execution_ledger_sha256": "d57a3e61eac969e42cafa418ccd8c0a5ee65dcf69da145bb2c096c2a02a2ea4f",
+    "execution_entry_count": 0,
+    "ledgers_changed": false
+  },
+  "goal": {
+    "continuous_factor_iteration": "active",
+    "completed_by_campaign227": false,
+    "next_historical_campaign": 228,
+    "offline_iteration_may_continue_without_waiting_for_1630_or_new_daily_data": true
+  },
+  "validation_results": {
+    "focused": "2 passed",
+    "cumulative": "498 passed, 1 skipped, 42 deselected",
+    "independent": "passed",
+    "black": "passed",
+    "ruff": "passed",
+    "unmasked_whitespace": "passed"
+  },
+  "research_boundary": {
+    "historical_offline_prevalue_work_may_continue_at_any_local_time": true,
+    "failed_or_truncated_output_used_as_scientific_or_validation_evidence": false,
+    "frozen_source_frontier_rewritten": false,
+    "source_or_self_storage_inquiry_reservation_lease_access_occupancy_payment_delinquency_lien_auction_vacate_turnover_lifecycle_factor_comparator_security_price_or_return_value_read": false,
+    "customer_or_natural_person_identity_precise_facility_topology_unit_location_access_code_surveillance_security_log_live_access_event_property_content_payment_credential_collection_communication_lien_buyer_confidential_price_term_or_trade_secret_artifact_read": false,
+    "stress_2024_2025_opened": false,
+    "provider_or_web_request_issued": false,
+    "provider_credential_presence_value_or_digest_read": false,
+    "candidate49_plan_or_run_executed": false,
+    "candidate49_ledgers_changed": false,
+    "second_prospective_candidate_created": false,
+    "current_scoring_selection_sizing_positions_or_orders_performed": false,
+    "investment_advice": false
+  },
+  "next_action": "Begin Campaign228 finite offline prevalue research in a genuinely different mechanism domain; keep Candidate49 as the sole prospective confirmation layer and keep 2024-2025 closed."
+}

@@ -1,0 +1,29 @@
+{
+  "schema_version": 2,
+  "kind": "a_share_three_day_walkforward_campaign099_development_repair_activation_binding_v2",
+  "status": "one_repaired_development_retry_authorized_before_complete_trial",
+  "recorded_at": "2026-08-07T11:20:00Z",
+  "implementation_freeze": {
+    "path": "docs/a_share_three_day_walkforward_campaign_099_development_repair_implementation_freeze_v2_20260807.json",
+    "sha256": "6fbb25d2fc9b53ce6b7cc43f3ed3e0fed2a6155d7516640f37296d204ea8db0f"
+  },
+  "development_preregistration": {
+    "path": "docs/a_share_three_day_walkforward_campaign_099_preregistration.json",
+    "sha256": "2c8e4d9c3a5c90a58d0f739ed2381cc82a77ed164203e30b30a3d944a33a3974"
+  },
+  "append_only_internal_ledger": {
+    "path": "data/experiments/short_horizon/historical_walkforward/campaign_099/research_attempt_ledger_v17.json",
+    "sha256": "4f8232c16a72a239bb8fc533dc45912c6e5cb56cbe01285eda0c7092b883e33d"
+  },
+  "recorded_development_failure": {
+    "path": "docs/a_share_three_day_walkforward_campaign_099_development_compact_loader_namespace_failure_20260807.json",
+    "sha256": "830f4b974ecfe1ba72ac17b693264287312e792592420ff00ce9bab05551ba8b"
+  },
+  "authorized_command": "/Volumes/DIsk/Coding/anaconda3/bin/python3.12 -m scripts.a_share_three_day_walkforward_campaign099_development_repair_v2 --campaign docs/a_share_three_day_walkforward_campaign_099_preregistration.json run-development",
+  "remaining_complete_development_trials_authorized": 1,
+  "remaining_infrastructure_repair_retries_authorized": 1,
+  "stress_2024_2025_authorized": false,
+  "provider_request_authorized": false,
+  "formula_direction_window_threshold_filter_subset_cost_model_or_gate_change_authorized": false,
+  "current_scoring_selection_sizing_orders_or_investment_advice_authorized": false
+}

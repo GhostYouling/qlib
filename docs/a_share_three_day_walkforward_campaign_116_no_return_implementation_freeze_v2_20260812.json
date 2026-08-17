@@ -1,0 +1,79 @@
+{
+  "schema_version": 2,
+  "kind": "a_share_three_day_walkforward_campaign116_no_return_implementation_freeze",
+  "status": "snapshot_builder_and_synthetic_semantics_frozen_before_historical_source_values",
+  "recorded_at": "2026-08-12T16:05:32+08:00",
+  "supersedes_without_rewriting": {
+    "path": "docs/a_share_three_day_walkforward_campaign_116_no_return_implementation_freeze_20260812.json",
+    "sha256": "d692226080bb0d881545944eefb0a69f5a49e5d7c60e30bc8643960ada5ce6aa",
+    "preserved": true,
+    "reason": "The v1 record froze the pure formula. V2 additionally binds the repaired local snapshot builder and its synthetic integration tests before historical source values."
+  },
+  "authoritative_inputs": {
+    "iteration_state": {
+      "path": "docs/a_share_three_day_iteration_status_20260812_campaign116_prevalue.json",
+      "sha256": "ce4763869d3dd7eadf0c8e8b0329f1acfb008649a0378f409fc339451192b38f"
+    },
+    "numeric_policy_v99": {
+      "path": "docs/a_share_three_day_walkforward_future_numeric_comparison_eligibility_policy_v99_20260812.json",
+      "sha256": "18ab42ee095db886b77e72601d01161ee851cfcf94ccab5efeb715d1cb043787"
+    },
+    "no_return_preregistration": {
+      "path": "docs/a_share_three_day_walkforward_campaign_116_no_return_preregistration_20260812.json",
+      "sha256": "d47d4f1b8d6d7742c17eb82712a85a1dbe8dbb6e8f44e0ff9190e36ef7115c2c"
+    },
+    "attempt_ledger_v2": {
+      "path": "data/experiments/short_horizon/historical_walkforward/campaign_116/research_attempt_ledger_v2.json",
+      "sha256": "9cdef3c6ab95957ad76356e4808df1758c7354a108778947718be2cab64fae89"
+    }
+  },
+  "frozen_implementation": {
+    "pure_formula_path": "scripts/a_share_three_day_walkforward_campaign116_formula.py",
+    "pure_formula_sha256": "85874e279a96576bf6bdf18ac2fa882dae2c248077449faf9ecf7a01f4e7672d",
+    "snapshot_builder_path": "scripts/a_share_three_day_walkforward_campaign116_features.py",
+    "snapshot_builder_sha256": "84e6dcc40ea50c51a15f04c32c71e086376f2a8c2b3736492a44f219be062286",
+    "base_builder_path": "scripts/a_share_three_day_walkforward_campaign105_features.py",
+    "base_builder_sha256": "cf151f6f8af55bc219f9ed06512eb138d833352316a958b4a9b1dac05079e4ba",
+    "raw_projection": ["datetime", "symbol", "provider", "close", "amount"],
+    "joint_clean_projection": ["trade_date", "symbol", "provider"],
+    "output_run_id": "tushare_stk_mins_1m_2019_2025_ea0cbb8f_walkforward_campaign116_feature_library_v1",
+    "output_manifest_below_data_root": "derived/a_share/rich/tushare/minute_walkforward_campaign116_feature_library/tushare_stk_mins_1m_2019_2025_ea0cbb8f_walkforward_campaign116_feature_library_v1/snapshot_manifest.json",
+    "formula_or_threshold_search_allowed": false,
+    "comparator_reader_implemented": false,
+    "daily_price_or_forward_return_reader_implemented": false,
+    "provider_adapter_implemented": false
+  },
+  "synthetic_verification": {
+    "formula_test_path": "tests/data_collector_tests/test_a_share_three_day_walkforward_campaign116_formula.py",
+    "formula_test_sha256": "c1ccf6d9577b82f4cffd0d2225f0af8d29c1634f9d449cf13fb530438feaea4d",
+    "feature_test_path": "tests/data_collector_tests/test_a_share_three_day_walkforward_campaign116_features.py",
+    "feature_test_sha256": "5577f89f0c1f6d4d7ef5d69186992f9c7153e4543792e7676e40188ee6b7bbc0",
+    "command": "/Volumes/DIsk/Coding/anaconda3/bin/python3.12 -m pytest -q tests/data_collector_tests/test_a_share_three_day_walkforward_campaign116_formula.py tests/data_collector_tests/test_a_share_three_day_walkforward_campaign116_features.py",
+    "exit_code": 0,
+    "passed": 10,
+    "failed": 0,
+    "historical_source_fixture_used": false
+  },
+  "library_registration": {
+    "complete_definition_count": 142,
+    "complete_definition_order_sha256": "ed61b10f3acb939c10ae5759f33aafde377cc921dd99c642300603b50a4851c5",
+    "numeric_comparator_count": 134,
+    "numeric_comparator_order_sha256": "31d788db467f558a0ac538315343090f1b3ad4cb27a26136a49ebaa88b2fdbf2",
+    "campaign116_numeric_comparator_appended": false
+  },
+  "research_boundary": {
+    "provider_request_issued": false,
+    "credential_loaded": false,
+    "campaign116_historical_source_rows_read": false,
+    "campaign116_candidate_values_computed_or_read": false,
+    "campaign116_comparator_values_read": false,
+    "historical_daily_price_or_forward_return_values_read": false,
+    "stress_2024_2025_opened": false,
+    "candidate49_historical_backfill_performed": false,
+    "candidate49_ledgers_changed": false,
+    "second_prospective_candidate_created": false,
+    "current_scoring_selection_sizing_positions_or_orders_performed": false,
+    "investment_advice": false
+  },
+  "next_action": "Run the exact local snapshot builder once with --confirm-build, verify every output partition and aggregate digest, and only then apply the frozen coverage gate before comparator values."
+}

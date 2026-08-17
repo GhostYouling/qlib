@@ -1,0 +1,35 @@
+{
+  "schema_version": 1,
+  "kind": "a_share_three_day_walkforward_campaign108_infrastructure_failure",
+  "status": "recorded_non_scientific_recovery_generation_hook_failure",
+  "recorded_at": "2026-08-07T21:19:29Z",
+  "phase": "audit_loader_recovery_test_collection",
+  "failed_recovery": {
+    "script_path": "scripts/a_share_three_day_walkforward_campaign108_no_return_audit_v3.py",
+    "script_sha256": "d96ddee9bbd89eed12a18d6763b17706b3a72f07b0a456633c0eb5e05dd3adc2",
+    "freeze_path": "docs/a_share_three_day_walkforward_campaign_108_no_return_audit_loader_recovery_freeze_v4_20260808.json",
+    "freeze_sha256": "d611f55942f5decca22b71e5bcc78bbda12e890c36d64c784e8e94f295985752",
+    "activation_path": "docs/a_share_three_day_walkforward_campaign_108_no_return_audit_activation_binding_v2_20260808.json",
+    "activation_sha256": "574a1ab55b3d8fa7142ec68121502e026a4cb96b3240659f996b435c35c0efdc"
+  },
+  "failure": {
+    "test_result": "collection error before tests ran",
+    "exception": "RuntimeError: Campaign108 v1 audit recovery hooks changed",
+    "root_cause": "The candidate import exists in the Campaign108 wrapper, but the loader range statement exists one generation deeper in the Campaign105 source dynamically read by that wrapper.",
+    "candidate_snapshot_read": false,
+    "coverage_or_capacity_metrics_computed": false,
+    "comparator_values_read": false,
+    "historical_daily_price_or_forward_return_values_read": false
+  },
+  "permitted_additive_recovery": {
+    "scope": "Inject the same one-line range replacement immediately after the frozen Campaign108 wrapper reads its Campaign105 base source.",
+    "formula_direction_endpoints_transform_snapshot_coverage_uniqueness_comparator_order_cost_fold_or_stress_gate_changed": false,
+    "same_snapshot_and_132_comparators_required": true
+  },
+  "research_boundary": {
+    "provider_request_issued": false,
+    "candidate49_ledgers_changed": false,
+    "current_scoring_selection_sizing_or_orders_performed": false
+  },
+  "next_action": "Preserve this failed recovery and freeze a corrected generation-depth recovery before any audit run."
+}

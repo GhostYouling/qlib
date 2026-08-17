@@ -1,0 +1,45 @@
+{
+  "schema_version": 2,
+  "kind": "a_share_three_day_walkforward_campaign110_no_return_audit_adapter_freeze",
+  "status": "nested_helper_and_comparator_verifier_recovery_frozen_before_coverage_or_comparator_values",
+  "recorded_at": "2026-08-07T22:48:05Z",
+  "audit_entry_point": {
+    "path": "scripts/a_share_three_day_walkforward_campaign110_no_return_audit_v3.py",
+    "sha256": "10f20decfbb241f17f9eadf06041ffe79f0491d7bbfd474dcc8280b061b91962"
+  },
+  "synthetic_test": {
+    "path": "tests/data_collector_tests/test_a_share_three_day_walkforward_campaign110_no_return_audit_v3.py",
+    "sha256": "2d56c1ff145748cd029501b8e2de9598076b0daec992d8fee1a075074d9da605",
+    "pre_freeze_result": "3 passed"
+  },
+  "prior_adapter_freeze": {
+    "path": "docs/a_share_three_day_walkforward_campaign_110_no_return_audit_adapter_freeze_20260808.json",
+    "sha256": "f5649cff5c29b7bb72512557ac0335502aa110ea2a9a3a6389b86de487158a5b"
+  },
+  "failure_record": {
+    "path": "docs/a_share_three_day_walkforward_campaign_110_no_return_static_binding_helper_failure_20260808.json",
+    "sha256": "0e6a36976f047fb694cdbc539cac5db760a2e94ac88401210939b9995f3d8eb4"
+  },
+  "campaign109_snapshot_verifier_freeze": {
+    "path": "docs/a_share_three_day_walkforward_campaign_109_snapshot_verifier_implementation_freeze_20260808.json",
+    "sha256": "2dd4baff3ee84c5ea727a2326818f402b3128a00e18c2deecc3ed736dc504d02"
+  },
+  "adapter_scope": {
+    "existing_nested_require_helper_aliased_without_reimplementation": true,
+    "frozen_campaign109_verify_only_adapter_imported_before_comparator_133": true,
+    "candidate_formula_direction_source_projection_grid_anchor_support_coverage_uniqueness_comparator_order_or_finite_catalog_changed": false,
+    "snapshot_build_rebuild_or_write_exposed": false,
+    "coverage_first_order_preserved": true,
+    "all_133_comparators_required_only_after_coverage_pass": true,
+    "daily_price_or_forward_return_read_exposed": false
+  },
+  "research_boundary": {
+    "coverage_or_capacity_metrics_computed_before_freeze": false,
+    "comparator_values_read_before_freeze": false,
+    "historical_daily_price_or_forward_return_values_read_before_freeze": false,
+    "provider_request_issued_before_freeze": false,
+    "snapshot_modified_after_verification": false,
+    "candidate49_ledgers_changed": false
+  },
+  "next_action": "Validate both adapter freezes and all three tests, then run the single-use coverage-first no-return audit without changing activation semantics."
+}

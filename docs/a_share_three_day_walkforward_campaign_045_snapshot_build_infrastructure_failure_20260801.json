@@ -1,0 +1,51 @@
+{
+  "version": 1,
+  "kind": "a_share_three_day_walkforward_campaign045_snapshot_build_infrastructure_failure",
+  "status": "recorded_before_any_external_candidate_value_was_returned",
+  "recorded_at": "2026-07-31T20:10:00Z",
+  "purpose": "Preserve the first Campaign045 real build attempt, which stopped in wrapper setup before protocol loading, source partition enumeration, or candidate-value computation.",
+  "source_chain": {
+    "implementation_freeze": {
+      "path": "docs/a_share_three_day_walkforward_campaign_045_feature_implementation_freeze_20260801.json",
+      "sha256": "4a6cdf31015342a9bcf5b33a3a8ad788a8667cc151ab031714f996ddb2344646"
+    },
+    "failed_feature_implementation": {
+      "path": "scripts/a_share_three_day_walkforward_campaign045_features.py",
+      "sha256": "c2e9f1ae3f6f76900bc331b28b7c36124d580510dd2a2a3e40436782c4a5f94b"
+    },
+    "no_return_preregistration": {
+      "path": "docs/a_share_three_day_walkforward_campaign_045_no_return_preregistration.json",
+      "sha256": "886fab70da8584fdf43cec921064b2891e5477b7118be979313e1950260b145e"
+    }
+  },
+  "failure": {
+    "command": "python scripts/a_share_three_day_walkforward_campaign045_features.py build --data-root /Volumes/DIsk/qlib-a-share-tushare-1m --workers 4",
+    "exit_code": 1,
+    "exception_type": "KeyError",
+    "exception_message": "foundation",
+    "failure_location": "build_snapshot wrapper attempted inherited.__globals__['foundation'] before calling the inherited builder",
+    "cause": "The Campaign043 compatibility layer stores the actual Campaign042 builder one additional inherited-global level below the Campaign045 wrapper.",
+    "allowed_repair": "Resolve the exact nested inherited builder in the same way as frozen Campaign043, obtain its foundation module, and leave every candidate formula, source projection, partition computation, protocol, gate, path, and output semantic unchanged."
+  },
+  "research_boundary": {
+    "external_source_partition_enumerated": false,
+    "external_minute_partition_read": false,
+    "candidate_value_computed_or_returned": false,
+    "comparison_value_read": false,
+    "historical_daily_price_fields_read": false,
+    "historical_forward_returns_read": false,
+    "provider_request_issued": false,
+    "candidate49_ledgers_changed": false,
+    "current_scoring_selection_sizing_or_orders_performed": false
+  },
+  "attempt_accounting": {
+    "campaign045_attempt_ordinal": 1,
+    "kind": "infrastructure_only_failure",
+    "counts_as_return_reading_development_trial": false
+  },
+  "decision": {
+    "formula_direction_gate_or_candidate_semantics_may_change": false,
+    "additive_implementation_repair_allowed": true,
+    "next_action": "Apply only the nested-builder lookup repair, rerun all synthetic tests, and publish a new implementation freeze before retrying the snapshot."
+  }
+}

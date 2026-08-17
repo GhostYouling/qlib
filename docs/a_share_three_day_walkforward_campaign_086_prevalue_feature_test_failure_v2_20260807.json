@@ -1,0 +1,36 @@
+{
+  "schema_version": 1,
+  "kind": "a_share_three_day_walkforward_campaign086_prevalue_feature_test_failure",
+  "status": "second_failure_failed_closed_before_real_minute_source_rows_or_candidate_values",
+  "recorded_at": "2026-08-07T00:52:00+08:00",
+  "stage": "prevalue_feature_implementation_unit_tests_after_centered_moment_repair",
+  "command_scope": {
+    "ruff": "passed",
+    "pytest": "eight_passed_one_failed"
+  },
+  "failure": {
+    "test": "test_constant_state_and_invalid_source_are_missing",
+    "cause": "Centering every identical retained value on a separately reduced arithmetic mean still left a tiny common floating-point residual, so the squared residual sum remained strictly positive.",
+    "repair": "Anchor each retained vector on its first valid value, center the offsets rather than the original values, and then compute population moments. An exactly constant retained vector consequently has exact zero offsets and exact zero variance."
+  },
+  "failed_artifacts": {
+    "feature_runner": {
+      "path": "scripts/a_share_three_day_walkforward_campaign086_features.py",
+      "sha256": "e099c24c988bc9643853284e2a61ee255efae27db49b24879efed75c0eddb016"
+    },
+    "tests": {
+      "path": "tests/data_collector_tests/test_a_share_three_day_walkforward_campaign086_features.py",
+      "sha256": "24370e7a23d156d81a9ce5dbf74de86cbae489c7e94da5b1d1bf4cff87750607"
+    }
+  },
+  "research_boundary": {
+    "real_minute_source_rows_read": false,
+    "candidate_values_computed": false,
+    "comparison_values_read": false,
+    "historical_daily_price_fields_read": [],
+    "historical_forward_returns_read": false,
+    "provider_request_issued": false,
+    "candidate49_ledgers_changed": false,
+    "current_scoring_selection_sizing_or_orders_performed": false
+  }
+}

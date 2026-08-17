@@ -1,0 +1,14 @@
+{
+  "schema_version": 1,
+  "kind": "a_share_three_day_walkforward_campaign260_infrastructure_failure",
+  "status": "mandatory_skill_read_output_truncated_discarded_and_recovered",
+  "recorded_at": "2026-08-16T14:54:00+08:00",
+  "phase": "mandatory_skill_read",
+  "failed_range": "lines 201-300",
+  "failure": "explicit tool output truncation",
+  "result_consumed": false,
+  "recovery": "Reread the complete range as independent lines 201-250 and 251-300 windows, then continued through EOF.",
+  "scientific_value_read": false,
+  "provider_or_web_request_issued": false,
+  "candidate49_ledgers_changed": false
+}

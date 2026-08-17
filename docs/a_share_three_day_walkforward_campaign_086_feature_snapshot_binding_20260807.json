@@ -1,0 +1,61 @@
+{
+  "schema_version": 1,
+  "kind": "a_share_three_day_walkforward_campaign086_feature_snapshot_binding",
+  "status": "candidate_snapshot_verified_before_coverage_or_comparison_values",
+  "recorded_at": "2026-08-07T01:55:00+08:00",
+  "protocol": {
+    "path": "docs/a_share_three_day_walkforward_campaign_086_no_return_preregistration.json",
+    "sha256": "033cd34013770b5b19ccb8579100c7ab920946de22b3936bc34a0898f4d2acb3"
+  },
+  "feature_runner": {
+    "path": "scripts/a_share_three_day_walkforward_campaign086_features_v4.py",
+    "sha256": "3cb1f884713aa1daadca1edaa4a53e989a728ba4ac6e16a8fd604f90c282e2de"
+  },
+  "implementation_freeze": {
+    "path": "docs/a_share_three_day_walkforward_campaign_086_feature_implementation_freeze_v4_20260807.json",
+    "sha256": "468cdff4c0d17ad77dd81cb5a780b297a39590b80a6ad812f0c169f87ff84bfc"
+  },
+  "snapshot_manifest": {
+    "path": "/Volumes/DIsk/qlib-a-share-tushare-1m/derived/a_share/rich/tushare/minute_walkforward_campaign086_feature_library/tushare_stk_mins_1m_2019_2025_ea0cbb8f_walkforward_campaign086_feature_library_v1/snapshot_manifest.json",
+    "sha256": "848ce713344f1ce805e3180344107d1d4bee5f8350bbcf52f8089e391fae3803",
+    "dataset_sha256": "49cf11b5d69fa38a72f1a977975e290d4ed0bfd2205be6c50ba08dc64844b8e3",
+    "partitions": 7,
+    "rows": 1331759,
+    "eligible_rows": 1193690,
+    "calendar_sessions": 1632,
+    "file_verification_status": "verified"
+  },
+  "factor": {
+    "name": "intraday_intrabar_close_location_serial_persistence_238p",
+    "direction": "higher",
+    "range": [
+      0,
+      1
+    ]
+  },
+  "source_read_receipt": {
+    "raw_fields": [
+      "datetime",
+      "symbol",
+      "provider",
+      "high",
+      "low",
+      "close"
+    ],
+    "raw_source_rows": 1866461373,
+    "raw_source_sessions": 7744653,
+    "valid_source_sessions": 5965232,
+    "zero_range_selected_bars": 367897310,
+    "retained_informative_pairs": 1314149290
+  },
+  "research_boundary": {
+    "coverage_or_capacity_metrics_computed_before_binding": false,
+    "comparison_values_read_before_binding": false,
+    "historical_daily_price_fields_read_before_binding": [],
+    "historical_forward_returns_read_before_binding": false,
+    "provider_request_issued": false,
+    "candidate49_historical_return_read": false,
+    "candidate49_ledgers_changed": false,
+    "current_scoring_selection_sizing_or_orders_performed": false
+  }
+}

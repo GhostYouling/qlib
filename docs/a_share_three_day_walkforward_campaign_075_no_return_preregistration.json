@@ -1,0 +1,191 @@
+{
+  "version": 1,
+  "kind": "a_share_three_day_walkforward_campaign075_no_return_preregistration",
+  "status": "frozen_before_campaign075_instrument_source_candidate_comparison_daily_price_or_return_values",
+  "frozen_at": "2026-08-06T09:20:00+08:00",
+  "purpose": "Freeze one accepted-instrument age factor, the complete 106-definition semantic library, all 105 eligible numeric comparisons, ordered no-return gates, and exactly one conditional 2019-2023 development trial before opening Campaign075 source rows or values.",
+  "source_chain": {
+    "concept_scouting": {
+      "path": "docs/a_share_three_day_walkforward_campaign_075_concept_scouting.json",
+      "sha256": "682378a54f554e669182528db1e3e1a702c93223e5d128e12c952db64b7ac350"
+    },
+    "mechanism_overlap_audit": {
+      "path": "docs/a_share_three_day_walkforward_campaign_075_mechanism_overlap_audit.json",
+      "sha256": "583831e57554ae7fe0c3de434a01b029ceb5ac7df8c70bd4d1ccd0cb90c4b181"
+    },
+    "authoritative_iteration_state": {
+      "path": "docs/a_share_three_day_iteration_status_20260806_campaign074_verified.json",
+      "sha256": "b6796f8f6404c38c6f67cb9f7b554689671ae568ef50dbf6c1b2d73925b961b8"
+    },
+    "historical_walkforward_policy": {
+      "path": "docs/a_share_three_day_historical_walkforward_research_policy_20260727.json",
+      "sha256": "38426d6161b9bfed323c58caba18feca668b8c9d53e294951a8ba90c01a798bb"
+    },
+    "numeric_comparator_policy_v10": {
+      "path": "docs/a_share_three_day_walkforward_future_numeric_comparison_eligibility_policy_v10_20260806.json",
+      "sha256": "2b01d476308a1a286825a2727a26eefb1aef20706a132d7e6cb3ea4664fa0d48",
+      "complete_definition_count": 106,
+      "complete_definition_order_sha256": "9e36bbe2532e09294f2c677615c6245609abdb94c44557ee776e040c9f270b0c",
+      "eligible_numeric_comparator_count": 105,
+      "eligible_numeric_comparator_order_sha256": "533f22783f42d7d00b51fcceda879a2881e1a484f4d70fc0f2ecb5a0210e6fcc"
+    },
+    "accepted_local_calendar": {
+      "path": "data/qlib/cn_a_share/calendars/day.txt",
+      "sha256": "fda506597d26bcec953cdc0882042a5046ec1587db60490e16a01627fd43f53a",
+      "line_count": 2799
+    },
+    "accepted_instrument_intervals": {
+      "path": "data/qlib/cn_a_share/instruments/all.txt",
+      "sha256": "cdded13c831b78045f4cfe80ba5d9a49f82152c615fef4267d00f992e7f53762",
+      "line_count": 5451,
+      "projected_columns_after_freeze": [
+        "instrument",
+        "accepted_instrument_start_date",
+        "accepted_instrument_end_date"
+      ],
+      "left_censoring_semantics": "The accepted start is the local tradable-coverage boundary, not a claim of the legal IPO date for instruments predating the dataset."
+    },
+    "campaign074_identity_and_terminal_comparator_snapshot": {
+      "path": "/Volumes/DIsk/qlib-a-share-tushare-1m/derived/a_share/rich/tushare/minute_walkforward_campaign074_feature_library/tushare_stk_mins_1m_2019_2025_ea0cbb8f_walkforward_campaign074_feature_library_v1/snapshot_manifest.json",
+      "sha256": "5a993ce8b71c541a0b2d2402627d5f2b7f562cf1266bebcafe0606945086a3cd",
+      "dataset_sha256": "d4fbb9eb8135674df16a50c96b5817f63e6461e99ee48df96537cd8ed930a4b5",
+      "partitions": 33015,
+      "rows": 7724498,
+      "identity_projection_after_freeze": [
+        "trade_date",
+        "symbol",
+        "provider"
+      ],
+      "campaign074_factor_values_read_for_candidate_materialization": false,
+      "campaign074_factor_values_may_read_only_after_campaign075_coverage_pass": true
+    },
+    "campaign074_snapshot_binding": {
+      "path": "docs/a_share_three_day_walkforward_campaign_074_feature_snapshot_binding_20260806.json",
+      "sha256": "1c404dde2e3f6856dde88c2ba7c95b45c9bbc5ea34dc6bed130662fa5154eb81"
+    },
+    "campaign074_terminal_research_record": {
+      "path": "docs/a_share_three_day_walkforward_campaign_074_research_record_v5.json",
+      "sha256": "fb5ea4bd55ac0a0577288e1a80d810941b88e7083f92f21dab0052ba3f9952f3",
+      "terminal_development_failure_preserved": true
+    },
+    "candidate49_signal_ledger": {
+      "path": "data/experiments/short_horizon/candidate49_future_signal_ledger.json",
+      "sha256": "5193f00d7f36da003f53cec387900da4c3d002299f5dfcfc1a95eaa199ed3a79",
+      "entry_count": 0
+    },
+    "candidate49_execution_ledger": {
+      "path": "data/experiments/short_horizon/candidate49_future_execution_ledger.json",
+      "sha256": "d57a3e61eac969e42cafa418ccd8c0a5ee65dcf69da145bb2c096c2a02a2ea4f",
+      "entry_count": 0
+    }
+  },
+  "candidate": {
+    "name": "accepted_instrument_session_youth_20s",
+    "direction": "higher",
+    "formula": "-count({accepted local session s: accepted_instrument_start_date <= s <= signal_date})",
+    "economic_hypothesis": "After the unchanged 20-session eligibility gate, more recently admitted tradable instruments can retain stronger new-listing attention and unresolved ownership discovery over a three-session horizon.",
+    "identity_projection": [
+      "trade_date",
+      "symbol",
+      "provider"
+    ],
+    "instrument_projection": [
+      "instrument",
+      "accepted_instrument_start_date",
+      "accepted_instrument_end_date"
+    ],
+    "age_clock": "accepted local market sessions, inclusive of the accepted instrument start and signal date",
+    "minimum_age_sessions": 20,
+    "minimum_age_source": "inherited unchanged quality/listing eligibility gate",
+    "left_censoring_rule": "Use the accepted instrument start exactly. Never infer an earlier legal listing date; older instruments tied at the dataset boundary remain tied.",
+    "end_date_rule": "The stock-day identity must lie within its accepted instrument interval inclusive; do not extend an interval.",
+    "valid_range": "finite integer-valued float64 less than or equal to -20",
+    "missing_semantics": "Missing for absent/invalid/duplicate instrument intervals, identity dates outside the accepted calendar or accepted instrument interval, start dates after signal dates, or ages below 20. Never impute, backfill, clip, bucket, rank, log, invert, rescale, winsorize, infer an earlier start, or substitute calendar days.",
+    "alternate_age_clock_transform_direction_threshold_filter_subset_board_year_regime_neutralization_fit_combination_or_model_search": false
+  },
+  "ordered_no_return_gates": {
+    "coverage_and_capacity_before_comparison_values": {
+      "coverage_basis": "candidate finite rows divided by the identical frozen quality-and-listing eligible buyable rows over 2019-2025",
+      "minimum_median_coverage": 0.95,
+      "minimum_p05_coverage": 0.9,
+      "minimum_p05_eligible_names": 50,
+      "minimum_non_overlapping_three_session_cohorts": 200,
+      "minimum_observed_calendar_years": 5,
+      "holding_period_sessions": 3,
+      "comparison_values_read_before_coverage_pass": false,
+      "failed_gate_policy": "Record the exact Campaign075 factor as terminal and stop before comparator values, daily price fields, or forward returns."
+    },
+    "uniqueness_after_coverage_only": {
+      "screen_start": "2019-01-01",
+      "screen_end": "2025-12-31",
+      "method": "Within each identical quality-listing-candidate-and-comparison-eligible stock-day cross-section, compute pairwise-complete Spearman correlation between directional percentile scores, then take each comparator's median daily correlation.",
+      "complete_definition_count": 106,
+      "complete_definition_order_sha256": "9e36bbe2532e09294f2c677615c6245609abdb94c44557ee776e040c9f270b0c",
+      "numeric_comparator_count": 105,
+      "numeric_comparator_order_sha256": "533f22783f42d7d00b51fcceda879a2881e1a484f4d70fc0f2ecb5a0210e6fcc",
+      "numeric_comparator_order_definition": "Use Campaign074's exact 104 numeric comparisons, then append terminal Campaign074/higher exactly once.",
+      "complete_definition_order_definition": "Use Campaign074's exact 105-definition order, then append terminal Campaign074/higher exactly once; retain structurally nonnumeric Campaign063 for semantic challenge only.",
+      "maximum_allowed_absolute_median_daily_rank_correlation": 0.8,
+      "minimum_pairwise_names_per_session": 50,
+      "minimum_pairwise_sessions_per_comparison": 100,
+      "all_105_numeric_comparators_must_pass": true,
+      "candidate_specific_comparator_drop_allowed": false,
+      "insufficient_pairwise_overlap_fails_closed": true,
+      "candidate49_is_no_return_comparison_only": true,
+      "failed_gate_policy": "Stop before daily prices or forward returns; do not invert, remove a comparator, change the age representation, neutralize, filter, subset, or rescue."
+    }
+  },
+  "finite_development_catalog_if_admitted": {
+    "trial_id": "wf075_accepted_instrument_session_youth_20s_single_higher",
+    "feature_set": [
+      "accepted_instrument_session_youth_20s"
+    ],
+    "weights": [
+      1.0
+    ],
+    "direction": "higher",
+    "complexity": 1,
+    "expected_trial_count": 1,
+    "training_and_validation_folds": [
+      "train_2019_2020_validate_2021",
+      "train_2019_2021_validate_2022",
+      "train_2019_2022_validate_2023"
+    ],
+    "alternate_transform_direction_threshold_filter_subset_year_cost_regime_model_or_combination_search": false
+  },
+  "point_in_time_and_execution_semantics": {
+    "factor_known": "at signal-session close from immutable accepted instrument metadata and the accepted calendar",
+    "entry": "next accepted session open t+1",
+    "exit": "third accepted session close t+3",
+    "holding_period_sessions": 3,
+    "split_purge_signal_sessions": 3,
+    "t_t_plus_1_t_plus_3_must_share_partition": true,
+    "fixed_execution_assumptions_inherited_without_change": true
+  },
+  "research_boundary": {
+    "campaign074_identity_rows_may_read_after_protocol_and_implementation_freeze": true,
+    "accepted_instrument_interval_rows_may_read_after_protocol_and_implementation_freeze": true,
+    "candidate_values_may_compute_after_protocol_and_implementation_freeze": true,
+    "campaign074_factor_values_read_for_candidate_materialization": false,
+    "comparison_values_read_before_coverage_pass": false,
+    "daily_price_fields_read_before_admissibility": false,
+    "forward_return_fields_read_before_admissibility": false,
+    "candidate49_historical_return_read": false,
+    "candidate49_signal_execution_or_milestone_backfill_allowed": false,
+    "candidate49_ledgers_may_change": false,
+    "second_prospective_candidate_created": false,
+    "provider_request_issued": false,
+    "current_scoring_selection_sizing_or_orders_allowed": false,
+    "investment_advice": false,
+    "current_listing_snapshot_survivorship_limitation": true
+  },
+  "decision": {
+    "candidate_library_size": 1,
+    "complete_semantic_library_size": 106,
+    "numeric_comparison_library_size": 105,
+    "development_trial_count_if_admitted": 1,
+    "comparison_values_may_open_only_after_coverage_capacity_pass": true,
+    "daily_price_and_returns_may_open_only_after_all_105_uniqueness_comparisons_pass": true,
+    "next_action": "Implement and synthetically test the fingerprint-bound Campaign075 feature runner, freeze its exact code and tests, and only then open accepted instrument rows to build the snapshot."
+  }
+}

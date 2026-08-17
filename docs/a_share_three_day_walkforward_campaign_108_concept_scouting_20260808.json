@@ -1,0 +1,83 @@
+{
+  "schema_version": 1,
+  "kind": "a_share_three_day_walkforward_campaign108_concept_scouting",
+  "status": "finite_prevalue_catalog_one_genuinely_new_candidate_selected",
+  "recorded_at": "2026-08-07T20:42:00Z",
+  "authoritative_inputs": {
+    "iteration_state": {
+      "path": "docs/a_share_three_day_iteration_status_20260808_campaign107_terminal.json",
+      "sha256": "2f544c3ea3f27b1661a8f6e4efeba6d8e70a49fac87583887bd5e7df414be2b1"
+    },
+    "numeric_policy_v67": {
+      "path": "docs/a_share_three_day_walkforward_future_numeric_comparison_eligibility_policy_v67_20260808.json",
+      "sha256": "4740555b0647540e99396682705a1e77745c53badc9a4bbb671e1607550b9435",
+      "complete_definition_count": 137,
+      "complete_definition_order_sha256": "26233fd1fe697b08268910286fb077fbda894e8e572af020959b1997e4285baa",
+      "numeric_comparator_count": 132,
+      "numeric_comparator_order_sha256": "7ed69afd1408e84dcc856583344166ffc9bcbb0add1aed63163b1d12a1be9a25"
+    },
+    "campaign107_completion": {
+      "path": "docs/a_share_three_day_walkforward_campaign_107_terminal_completion_freeze_20260808.json",
+      "sha256": "df5b5376bf189882b13a06aba1d62967e7b0a90b3d9c898b76ece34683032a46"
+    }
+  },
+  "finite_concept_catalog": [
+    {
+      "ordinal": 1,
+      "concept": "continuous-session endpoint net-return reversal",
+      "decision": "selected",
+      "candidate_name": "intraday_continuous_session_net_return_reversal_240m",
+      "reason": "It measures unnormalized directional endpoint displacement from the first to last continuous-auction close and freezes the contrarian direction. The 137-definition library has late-window return, normalized path efficiency, close location and profile mechanisms, but no full continuous-session endpoint return level."
+    },
+    {
+      "ordinal": 2,
+      "concept": "exact close-level dwell-time Gini",
+      "decision": "rejected_before_values",
+      "reason": "It is a prohibited reexpression of Campaign107 exact close-level counts/collisions/diversity."
+    },
+    {
+      "ordinal": 3,
+      "concept": "return-sign Lempel-Ziv complexity",
+      "decision": "rejected_before_values",
+      "reason": "It recombines terminal sign-run, direction-continuity and weak-order entropy mechanisms without a new source channel."
+    },
+    {
+      "ordinal": 4,
+      "concept": "amount-quantile versus return-sign mutual information",
+      "decision": "rejected_before_values",
+      "reason": "It is a nonlinear rebinned reexpression of amount-volatility coupling, directional price impact asymmetry and up-move amount share."
+    },
+    {
+      "ordinal": 5,
+      "concept": "morning-afternoon endpoint return disagreement",
+      "decision": "rejected_before_values",
+      "reason": "It recombines the frozen morning-afternoon return-profile persistence and lunch repricing families."
+    }
+  ],
+  "selected_candidate": {
+    "name": "intraday_continuous_session_net_return_reversal_240m",
+    "direction": "higher",
+    "formula": "-tanh(log(close_15_00 / close_09_31)) after exact 241-row grid validation",
+    "source_projection": [
+      "datetime",
+      "symbol",
+      "provider",
+      "close"
+    ],
+    "economic_hypothesis": "A large same-day continuous-session endpoint move contains short-horizon overreaction; ranking the negative bounded net return may capture three-session reversal without thresholds or fitted parameters.",
+    "valid_range": [
+      -1.0,
+      1.0
+    ],
+    "alternate_direction_window_endpoint_transform_threshold_filter_subset_regime_model_or_combination_search": false
+  },
+  "research_boundary": {
+    "campaign108_source_rows_read": false,
+    "campaign108_candidate_or_comparator_values_read": false,
+    "historical_daily_price_or_forward_return_values_read": false,
+    "provider_request_issued": false,
+    "candidate49_ledgers_changed": false,
+    "current_scoring_selection_sizing_or_orders_performed": false
+  },
+  "next_action": "Audit the selected endpoint-displacement mechanism against all 137 definitions and known support failures before freezing a protocol or reading values."
+}

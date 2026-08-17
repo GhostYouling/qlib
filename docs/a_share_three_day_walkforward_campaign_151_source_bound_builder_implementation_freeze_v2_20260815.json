@@ -1,0 +1,97 @@
+{
+  "schema_version": 2,
+  "kind": "a_share_three_day_walkforward_campaign151_source_bound_builder_implementation_freeze",
+  "status": "corrected_builder_and_tests_frozen_after_failed_amount_only_build_before_resume",
+  "recorded_at": "2026-08-15T00:42:24+08:00",
+  "supersedes_without_rewriting": {
+    "path": "docs/a_share_three_day_walkforward_campaign_151_source_bound_builder_implementation_freeze_20260815.json",
+    "sha256": "40359d8c77c0afa20e1eedb3c793881b7a910bb2bfe3e25150e401d9bc8f5c24",
+    "reason": "the first authorized build exposed a legitimate zero-row joint-clean partition that the v1 key validator rejected before its intended empty contribution return"
+  },
+  "authoritative_inputs": {
+    "source_bound_builder_preregistration": {
+      "path": "docs/a_share_three_day_walkforward_campaign_151_source_bound_builder_preregistration_20260815.json",
+      "sha256": "a7cd811fda8d925621a4d9e713f32723d01a1023d407943a309a78d8fb3530d7"
+    },
+    "formula_implementation_freeze": {
+      "path": "docs/a_share_three_day_walkforward_campaign_151_formula_implementation_freeze_20260815.json",
+      "sha256": "6ae178b8ef6cb0ec5c72998b9360df42e99392911342442c54b12586264ce080"
+    },
+    "first_build_failure": {
+      "path": "docs/a_share_three_day_walkforward_campaign_151_snapshot_build_empty_partition_failure_20260815.json",
+      "sha256": "918ecedc4fb543250c492468abd1128e53bb1640abbd5f59f847de14fc7d8d63"
+    },
+    "source_bound_builder": {
+      "path": "scripts/a_share_three_day_walkforward_campaign151_features.py",
+      "sha256": "c808cfc180855a616237be914ade00c45fc217804406fce947d0391c288defdf"
+    },
+    "source_bound_builder_test": {
+      "path": "tests/data_collector_tests/test_a_share_three_day_walkforward_campaign151_features.py",
+      "sha256": "f51e1971c511f2f44dc9c32f2e4ce0ba88a06692dd4ad689f465205e4688b907"
+    }
+  },
+  "correction": {
+    "scope": "zero-row joint-clean partitions only",
+    "exact_behavior": "after exact column normalization, an empty joint-key frame returns an empty contribution before singleton symbol validation",
+    "nonempty_partition_behavior_changed": false,
+    "formula_changed": false,
+    "peer_membership_changed": false,
+    "minimum_peer_gate_changed": false,
+    "source_projection_changed": false,
+    "output_schema_changed": false,
+    "existing_96_symbol_accumulator_semantically_reusable": true
+  },
+  "implementation": {
+    "module": "scripts.a_share_three_day_walkforward_campaign151_features",
+    "build_callable": "build_snapshot",
+    "direct_command_line_build_interface_exposed": false,
+    "separate_plan_runner_still_required": true,
+    "confirmed_build_boolean_required_by_callable": true,
+    "worker_range_inclusive": [
+      1,
+      8
+    ],
+    "source_projection": [
+      "datetime",
+      "symbol",
+      "provider",
+      "amount"
+    ],
+    "joint_projection": [
+      "trade_date",
+      "symbol"
+    ],
+    "first_pass": "raw float64 amount sums and scalar complete-profile counts on the frozen 2019-2025 calendar",
+    "second_pass": "subtract exact valid own vector and one count, require at least 50 peers and positive finite peer means, then call the frozen pure formula",
+    "all_zero_complete_profile_peer_membership": true,
+    "invalid_profile_peer_membership": false,
+    "empty_joint_partition_peer_contribution": "none",
+    "benchmark_checkpoint": "private protocol/source/calendar-bound compressed NPZ",
+    "partition_checkpoint": "private source/benchmark/output-byte-bound Parquet plus JSON sidecar",
+    "final_publication": "atomic partial-root rename to a never-overwritten final root"
+  },
+  "verification": {
+    "pytest_command": "/Volumes/DIsk/Coding/anaconda3/bin/python3.12 -m pytest -q tests/data_collector_tests/test_a_share_three_day_walkforward_campaign151_features.py tests/data_collector_tests/test_a_share_three_day_walkforward_campaign151_formula.py",
+    "passed": 16,
+    "failed": 0,
+    "black": "passed; 2 files left unchanged",
+    "ruff": "passed",
+    "empty_joint_partition_regression_added": true,
+    "failed_exit_code_bypassed_or_masked": false
+  },
+  "research_boundary": {
+    "historical_minute_source_rows_or_values_read": true,
+    "historical_minute_amount_values_read_by_failed_build": true,
+    "historical_price_values_read": false,
+    "peer_benchmark_values_published": false,
+    "candidate_or_comparator_values_read": false,
+    "historical_daily_price_or_forward_return_values_read": false,
+    "stress_2024_2025_opened_for_return_evaluation": false,
+    "credential_loaded": false,
+    "provider_request_issued": false,
+    "candidate49_historical_backfill_performed": false,
+    "candidate49_ledgers_changed": false,
+    "current_scoring_selection_sizing_positions_or_orders_performed": false
+  },
+  "next_action": "Freeze a v3 metadata-only runner activation against this corrected implementation. Only its ready=true exit-zero plan may resume the existing 96-symbol accumulator."
+}

@@ -1,0 +1,42 @@
+{
+  "version": 2,
+  "kind": "a_share_three_day_walkforward_campaign053_unified_report_supersession",
+  "status": "post_terminal_test_failure_accounting_current_report_and_boundaries_verified",
+  "recorded_at": "2026-08-03T13:06:00Z",
+  "bindings": {
+    "report_supersession_v1_historical": {
+      "path": "docs/a_share_three_day_walkforward_campaign_053_unified_report_supersession_20260803.json",
+      "sha256": "a720fae0f81ec8c436492e52985f89257c879ca8c6aaeec6d40245558b69480c"
+    },
+    "research_record_v2": {
+      "path": "docs/a_share_three_day_walkforward_campaign_053_research_record_v2.json",
+      "sha256": "ff21cfac8b47ec66f0a797180d97a7f2e4590a3a4e10f7361a314a37bd9503e1"
+    },
+    "terminal_assertion_failure": {
+      "path": "docs/a_share_three_day_walkforward_campaign_053_terminal_report_assertion_failure_20260803.json",
+      "sha256": "c2ac59eb8ac4842ddaf75d11371ac96180633826a4b30513527fbf4633809ca5"
+    },
+    "current_attempt_ledger": {
+      "path": "data/experiments/short_horizon/historical_walkforward/campaign_053/research_attempt_ledger_v2.json",
+      "sha256": "06c1db2f12df25abd997b71c74be27b3b7e74a30565f0094f84f278364307a46"
+    },
+    "current_unified_research_report": {
+      "path": "data/experiments/short_horizon/three_day_research_report.md",
+      "sha256": "5397b76f0f50ce458a025298cfaff31122d82ed521598bbbb2571f92267029b6"
+    },
+    "current_data_pipeline_documentation": {
+      "path": "docs/a_share_data_pipeline.md",
+      "sha256": "6cfade88722364a71ccec064369394eeea3b36dd5ae3c05ee07a2d97ec4a44f3"
+    },
+    "current_manage_qlib_a_share_data_skill": {
+      "path": "/Users/niyufei/.codex/skills/manage-qlib-a-share-data/SKILL.md",
+      "sha256": "257946d783435462a41270adee70052fe63ac9770ed5a30934980ee20d28e426"
+    }
+  },
+  "semantic_boundary": {
+    "campaign053_factor_result_or_gate_changed": false,
+    "historical_daily_price_or_forward_return_read": false,
+    "candidate49_ledgers_changed": false,
+    "attempt_count_advanced_from_302_to_303": true
+  }
+}

@@ -1,0 +1,35 @@
+{
+  "version": 3,
+  "kind": "a_share_three_day_walkforward_campaign051_unified_report_supersession",
+  "status": "campaign051_prior_bindings_preserved_v3_infrastructure_accounting_current",
+  "recorded_at": "2026-08-03T08:19:00Z",
+  "bindings": {
+    "campaign051_terminal_record_v2": {
+      "path": "docs/a_share_three_day_walkforward_campaign_051_research_record_v2.json",
+      "sha256": "1b07b424c4a2c04ffa28ddb486fa056cb4059267adb596de569fd4703d44f057"
+    },
+    "campaign051_terminal_record_v3": {
+      "path": "docs/a_share_three_day_walkforward_campaign_051_research_record_v3.json",
+      "sha256": "3c772a960ffb005f4227391c79a37223187c1bd51bbfec6be43e6a7ed28426d0"
+    },
+    "previous_unified_report_supersession": {
+      "path": "docs/a_share_three_day_walkforward_campaign_051_unified_report_supersession_v2_20260803.json",
+      "sha256": "6bd8febb43150243d40263d38cf624d2efb45ec4bae7b6047bad7f46a668b305"
+    },
+    "full_suite_cross_clone_failure": {
+      "path": "docs/a_share_three_day_walkforward_campaign_051_full_suite_cross_clone_failure_20260803.json",
+      "sha256": "9da32b189c7c4062c0c30ad4550d97711cfc4a6c83e9df52e8424614ddec2950"
+    },
+    "current_unified_research_report": {
+      "path": "data/experiments/short_horizon/three_day_research_report.md",
+      "sha256": "b8f40105cdb5344316e9c4a232d814a93b1b53fad64f131113265c6325b40c71"
+    }
+  },
+  "semantic_boundary": {
+    "factor_result_or_gate_changed": false,
+    "infrastructure_accounting_only": true,
+    "additional_historical_daily_price_or_forward_return_read": false,
+    "2024_2025_stress_return_read": false,
+    "candidate49_ledgers_changed": false
+  }
+}

@@ -1,0 +1,91 @@
+{
+  "schema_version": 1,
+  "kind": "a_share_three_day_walkforward_campaign196_terminal_result_additive_v5",
+  "status": "terminal_prevalue_eight_infrastructure_failures_recorded_recovered_goal_active",
+  "recorded_at": "2026-08-15T16:53:00+08:00",
+  "timestamp_semantics": "monotonic logical append time after Campaign196 terminal result v4 and the zero-write focused-test update patch failure",
+  "supersedes_without_rewriting": {
+    "path": "docs/a_share_three_day_walkforward_campaign_196_terminal_result_v4_20260815.json",
+    "sha256": "da814322619070f11e45d11311fb15bac0e0befec8d52ccbb05401bf21b8d8ec",
+    "preserved": true,
+    "scientific_result_changed": false
+  },
+  "authoritative_inputs": {
+    "campaign195_state": {
+      "path": "docs/a_share_three_day_iteration_status_20260815_campaign195_prevalue_terminal.json",
+      "sha256": "01cc98eb21dc70de3dc31aa1b5b29712b878763730a365090f95e64c92c45127"
+    },
+    "policy_v285": {
+      "path": "docs/a_share_three_day_walkforward_future_numeric_comparison_eligibility_policy_v285_20260815.json",
+      "sha256": "b15473abe73918cf588e10c63e8e3fac5a1f27abcfd73a6830a6b66679285bfe"
+    },
+    "semiconductor_domain_overlap_rejection": {
+      "path": "docs/a_share_three_day_walkforward_campaign_196_semiconductor_fabrication_domain_overlap_rejection_20260815.json",
+      "sha256": "e45cfacbe0d114a4080f27a714bba25d4620127f64de8ecab97e513b83f181cc"
+    },
+    "inventory_lifecycle_source_frontier": {
+      "path": "docs/a_share_three_day_walkforward_campaign_196_inventory_production_conversion_aging_obsolescence_consignment_channel_sellthrough_custody_lifecycle_source_frontier_20260815.json",
+      "sha256": "940fbf7b754a459ddf2f4ab1b4a88451ba27f3cba39843e7a024ca6fe1e2f290"
+    },
+    "attempt_ledger_v6": {
+      "path": "data/experiments/short_horizon/historical_walkforward/campaign_196/research_attempt_ledger_v6.json",
+      "sha256": "1e4082cb60f16ee43926a3e725077e152963702dbe8c0e4f437ea9b507eb01df",
+      "effective_entry_count": 16,
+      "chain_tip_sha256": "aba2407ba1eda7583d9f5cfd725caccc918e732eacf43a2bca7aaadf2a357c0f"
+    },
+    "test_update_patch_failure": {
+      "path": "docs/a_share_three_day_walkforward_campaign_196_test_update_patch_context_failure_20260815.json",
+      "sha256": "ab5970ce123599bf83b3f670eefa3b77138b3a73e786a8f419877b540a0c2b64"
+    }
+  },
+  "scientific_result": {
+    "terminal": true,
+    "terminal_phase": "finite_prevalue_inventory_production_conversion_aging_obsolescence_consignment_channel_sellthrough_custody_lifecycle_source_admission",
+    "mechanism_domains_reviewed": 2,
+    "semiconductor_domain_rejected_as_prior_frozen_overlap": 1,
+    "inventory_lifecycle_routes_reviewed": 7,
+    "genuinely_new_issuer_state_routes": 3,
+    "source_admission_deferrals_not_factor_failures": 3,
+    "relabeling_overlap_operator_or_combination_route_rejections": 4,
+    "selected_candidate_count": 0,
+    "complete_factor_definition_created": false,
+    "numeric_comparator_created": false,
+    "inventory_lifecycle_state_declared_ineffective": false
+  },
+  "effective_accounting": {
+    "campaign196_attempt_count": 16,
+    "campaign196_prevalue_scientific_attempt_count": 8,
+    "campaign196_infrastructure_failure_count": 8,
+    "campaign196_return_reading_development_trial_count": 0,
+    "cumulative_historical_research_attempt_count": 1765,
+    "cumulative_return_reading_development_trial_count": 314
+  },
+  "library_state": {
+    "complete_factor_definition_count": 158,
+    "complete_factor_definition_order_sha256": "4819c7fd7c0795d7598a52f3c615e3f117d5f4ecd9332974bc8e3dfa57c96667",
+    "eligible_numeric_comparator_count": 142,
+    "eligible_numeric_comparator_order_sha256": "5d1b35fb5a0d8ac9293008db9963c4a60a94dc940c237c3ed259e5ce44f14aaf",
+    "changed_by_campaign196": false
+  },
+  "candidate49": {
+    "only_active_prospective_candidate": true,
+    "signal_ledger_sha256": "5193f00d7f36da003f53cec387900da4c3d002299f5dfcfc1a95eaa199ed3a79",
+    "signal_entry_count": 0,
+    "execution_ledger_sha256": "d57a3e61eac969e42cafa418ccd8c0a5ee65dcf69da145bb2c096c2a02a2ea4f",
+    "execution_entry_count": 0,
+    "ledgers_changed": false
+  },
+  "research_boundary": {
+    "failed_or_truncated_output_used_as_scientific_or_validation_evidence": false,
+    "source_factor_comparator_security_price_or_return_value_read": false,
+    "stress_2024_2025_opened": false,
+    "provider_or_web_request_issued": false,
+    "provider_credential_presence_value_or_digest_read": false,
+    "candidate49_plan_or_run_executed": false,
+    "candidate49_ledgers_changed": false,
+    "second_prospective_candidate_created": false,
+    "current_scoring_selection_sizing_positions_or_orders_performed": false,
+    "investment_advice": false
+  },
+  "next_action": "Publish policy v289, then rerun corrected focused, cumulative and independent validation before authorizing Campaign197."
+}

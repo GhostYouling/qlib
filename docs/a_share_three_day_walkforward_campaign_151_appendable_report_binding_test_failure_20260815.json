@@ -1,0 +1,34 @@
+{
+  "schema_version": 1,
+  "kind": "a_share_three_day_walkforward_campaign151_appendable_report_binding_test_failure",
+  "status": "failed_exit_preserved_exact_historical_lifecycle_bindings_exempted",
+  "recorded_at": "2026-08-15T01:36:39+08:00",
+  "attempt_id": "campaign151_infrastructure_009",
+  "failed_command_scope": "Campaign151 formula, builder, runner, verifier, terminal v1/v2 and accounting focused tests",
+  "exit_code": 1,
+  "result": "1 failed, 43 passed",
+  "failed_test": "test_campaign151_terminal_policy_and_state_bind_current_evidence",
+  "root_cause": "the terminal v1 state froze the then-current byte hash of an explicitly appendable Campaign151 report; the later postpublication accounting addendum legitimately changed that report",
+  "scientific_or_data_defect": false,
+  "correction": "only the exact historical appendable report binding and the tests later changed for lifecycle compatibility are exempted from current-byte replay; immutable ledger, policy, verification, manifest and failure records remain exact",
+  "precorrection_terminal_test_sha256": "f3a32163841ff88ee9d1525d7095160ec4292453b31ca1ba2e4042dbc8a5ef75",
+  "corrected_terminal_test_sha256": "22e84d0123a658e637e34076f0b9cfdc0fc32c568282e1d85224c3839382862e",
+  "corrected_terminal_v2_test_sha256": "3e2f9ac8d5fe095ca93575c7485e041050b3321b977bf0e994d4f3d02760ef4d",
+  "corrected_validation": {
+    "black": "passed; 2 files left unchanged",
+    "ruff": "passed",
+    "pytest": "44 passed in 6.32s"
+  },
+  "failed_exit_code_bypassed_or_masked": false,
+  "research_boundary": {
+    "campaign151_candidate_values_read": true,
+    "comparator_values_read": false,
+    "historical_daily_price_or_forward_return_values_read": false,
+    "stress_2024_2025_opened_for_return_evaluation": false,
+    "provider_request_issued": false,
+    "credential_loaded": false,
+    "candidate49_ledgers_changed": false,
+    "current_scoring_selection_sizing_positions_or_orders_performed": false
+  },
+  "next_action": "Append this lifecycle-only failure, publish current authority without mutable report/test byte bindings, and keep the zero-coverage scientific result unchanged."
+}

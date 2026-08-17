@@ -1,0 +1,74 @@
+{
+  "schema_version": 1,
+  "kind": "a_share_three_day_walkforward_campaign111_prevalue_terminal_result",
+  "status": "terminal_zero_independent_candidates_before_source_candidate_comparison_or_return_values",
+  "recorded_at": "2026-08-08T16:33:35Z",
+  "authoritative_predecessor": {
+    "path": "docs/a_share_three_day_iteration_status_20260808_campaign110_terminal.json",
+    "sha256": "51cefc798c363868444af9627e1f714638491efe3e19a577b6df650b64de7fe0"
+  },
+  "campaign111_records": {
+    "concept_scouting": {
+      "path": "docs/a_share_three_day_walkforward_campaign_111_concept_scouting_20260809.json",
+      "sha256": "2f366400dfbf408e92528a434c02f0156731a6503adeb943c0764825d514d7dd"
+    },
+    "mechanism_frontier_audit": {
+      "path": "docs/a_share_three_day_walkforward_campaign_111_mechanism_frontier_audit_20260809.json",
+      "sha256": "8e4dd9f7451e3e5deb05bc9bb0d5f122b8c838027e275022fd92fae762a467d5"
+    },
+    "infrastructure_failures": {
+      "path": "docs/a_share_three_day_walkforward_campaign_111_prevalue_infrastructure_failures_20260809.json",
+      "sha256": "ab85676339d72294eebb8c3100188f0eacc2635ce9714b181bb343ba35f2c66e"
+    },
+    "research_attempt_ledger": {
+      "path": "data/experiments/short_horizon/historical_walkforward/campaign_111/research_attempt_ledger_v1.json",
+      "sha256": "6a87c3a191485fcba6996df84fbc713750345ed4ec40d23ca14bf4b418f0cd4b",
+      "entry_count": 3,
+      "chain_tip_sha256": "430bf574f3f939fcfecef7b0b6f69c17d5892d2f8e71e2324269f50068234bf7"
+    }
+  },
+  "scientific_result": {
+    "complete_logical_definitions_reviewed": 140,
+    "reserved_numeric_comparators_not_loaded": 134,
+    "finite_concepts_reviewed": 6,
+    "genuinely_independent_candidate_count": 0,
+    "frozen_numeric_factor_definition_count": 0,
+    "candidate_source_rows_read": false,
+    "candidate_values_computed_or_read": false,
+    "comparison_values_read": false,
+    "coverage_or_uniqueness_audit_count": 0,
+    "development_trial_count": 0,
+    "stress_trial_count": 0,
+    "development_survivor_count": 0,
+    "historical_predictive_value_established": false,
+    "terminal": true
+  },
+  "accounting": {
+    "campaign111_attempt_count": 3,
+    "campaign111_infrastructure_failure_count": 2,
+    "campaign111_prevalue_scientific_attempt_count": 1,
+    "campaign111_complete_factor_attempt_count": 0,
+    "campaign111_return_reading_development_trial_count": 0,
+    "cumulative_historical_research_attempt_count": 825,
+    "cumulative_return_reading_development_trial_count": 302
+  },
+  "unchanged_library": {
+    "complete_definition_count": 140,
+    "complete_definition_order_sha256": "c06e054bd76a7eb32a88a8a119abf5a0b7da2d017620ce7d870c9bb1c361c3c4",
+    "numeric_comparator_count": 134,
+    "numeric_comparator_order_sha256": "31d788db467f558a0ac538315343090f1b3ad4cb27a26136a49ebaa88b2fdbf2",
+    "reason": "Campaign111 created no complete formula or numeric snapshot; rejected scouting proposals are recorded as failed proposals and are not appended factor definitions."
+  },
+  "research_boundary": {
+    "historical_daily_price_fields_read": [],
+    "historical_forward_returns_read": false,
+    "stress_2024_2025_opened": false,
+    "provider_request_issued": false,
+    "candidate49_historical_backfill_performed": false,
+    "candidate49_ledgers_changed": false,
+    "second_prospective_candidate_created": false,
+    "current_scoring_selection_sizing_or_orders_performed": false,
+    "investment_advice": false
+  },
+  "next_action": "Freeze unchanged-order v73, then begin Campaign112 only from a genuinely independent prevalue-frozen mechanism or separately accepted source semantics; do not retry or relabel the six Campaign111 proposals."
+}

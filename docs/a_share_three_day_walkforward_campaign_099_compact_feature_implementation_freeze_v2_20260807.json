@@ -1,0 +1,39 @@
+{
+  "schema_version": 2,
+  "kind": "a_share_three_day_walkforward_campaign099_compact_feature_implementation_freeze",
+  "status": "frozen_after_no_return_admission_before_compact_publication_or_development_return_read",
+  "recorded_at": "2026-08-07T10:57:00Z",
+  "v1_freeze_preserved": {
+    "path": "docs/a_share_three_day_walkforward_campaign_099_compact_feature_implementation_freeze_20260807.json",
+    "sha256": "296aeb8d3e1ad2b00632727e217d59c8295ff3f40bef498dc5811067490a0842"
+  },
+  "failure_record": {
+    "path": "docs/a_share_three_day_walkforward_campaign_099_compact_feature_identity_helper_failure_20260807.json",
+    "sha256": "2ef2877fc65c62cdb46e0028e2ab39d9942b2846a54ef71d810ffa7320494ce1"
+  },
+  "compact_runner": {
+    "path": "scripts/a_share_three_day_walkforward_campaign099_compact_features.py",
+    "sha256": "512106502569b6e815dc330ba0dc1566c37d58c6256eed0bdb87d79a10bf586d"
+  },
+  "tests": {
+    "path": "tests/data_collector_tests/test_a_share_three_day_walkforward_campaign099_compact_features.py",
+    "sha256": "97c63c3fc611098dbebc5b72c7d1622783f868c9b3de0609aec714e4f24350de",
+    "result": "2 passed; Black and Ruff passed"
+  },
+  "authoritative_no_return_audit": {
+    "path": "data/experiments/short_horizon/historical_walkforward/campaign_099/no_return/20260807T105112Z_campaign099_no_return_audit.json",
+    "sha256": "6df7bfca75a59d00b34a431e2fe5c57d9872587a43b270fa23c5f17ba6411f72"
+  },
+  "attempt_ledger_before_freeze": {
+    "path": "data/experiments/short_horizon/historical_walkforward/campaign_099/research_attempt_ledger_v14.json",
+    "sha256": "49b796a9c949ecd2235fcedb696a6320fb14917c93991578eab05d080504cca2"
+  },
+  "repair": "generated identity compaction now calls audit_v1.c97_audit.compact_stock_day_keys; the empty v1 partial root is preserved under a timestamped failure archive",
+  "expected_rows": 1331759,
+  "expected_eligible_rows": 1328449,
+  "historical_daily_price_or_forward_return_values_read_before_freeze": false,
+  "provider_request_issued_before_freeze": false,
+  "candidate49_historical_return_read_before_freeze": false,
+  "candidate49_ledgers_changed_before_freeze": false,
+  "current_scoring_selection_sizing_or_orders_performed_before_freeze": false
+}

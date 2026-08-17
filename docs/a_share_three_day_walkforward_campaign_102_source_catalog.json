@@ -1,0 +1,66 @@
+{
+  "schema_version": 1,
+  "kind": "a_share_three_day_walkforward_campaign102_complete_numeric_source_catalog",
+  "status": "frozen_before_campaign102_design_matrix_values",
+  "recorded_at": "2026-08-07T15:01:00Z",
+  "numeric_policy": {
+    "path": "docs/a_share_three_day_walkforward_future_numeric_comparison_eligibility_policy_v58_20260807.json",
+    "sha256": "45571a0d525d3c7132f6392914dd80b51ec179b51d21e548102292ec70674edc",
+    "complete_definition_count": 133,
+    "complete_definition_order_sha256": "25cd0159c803bf69b0fce61449843db96a34ae4c56628deda9500433c97b45a1",
+    "numeric_source_factor_count": 130,
+    "numeric_source_factor_order_sha256": "c80d9b929536dd509d6c1a904f790831050e68200393de381f92ad9293ef69e7"
+  },
+  "first_129_numeric_sources": {
+    "ordinal_start": 1,
+    "ordinal_end": 129,
+    "source_catalog": {
+      "path": "docs/a_share_three_day_walkforward_campaign_101_source_catalog.json",
+      "sha256": "e47ce3727bb4fcc68832d1d5f686000734b80d72752c7661d747d5a5ef2b8323"
+    },
+    "order_reconstructor": {
+      "path": "scripts/a_share_three_day_walkforward_campaign101_features.py",
+      "sha256": "61bbb490c862f53548eedffa01265a3b814c29ef9bb489142aed07896d3168f4",
+      "method": "reconstruct_numeric_sources returns the exact 129-factor order",
+      "order_sha256": "a029c53fb237cc1d34aec0a9f7b67856ffa1a67ffe0fc9620fb230680353263b"
+    },
+    "value_sources": "Use the exact compact-cache and post-cache manifests, byte receipts, dynamic quality reconstruction, and frozen directions bound by the Campaign101 source catalog; no factor may be dropped, reordered, inverted, or replaced."
+  },
+  "final_numeric_source": {
+    "ordinal": 130,
+    "source_campaign": 101,
+    "name": "full_numeric_library_directional_lower_quartile_consensus_129f",
+    "score_direction": "higher",
+    "snapshot_binding": {
+      "path": "docs/a_share_three_day_walkforward_campaign_101_feature_snapshot_binding_20260807.json",
+      "sha256": "f82e4288a6626eb71d3c040a65f4a88c4d306706c1c4812283008af43d6d817e"
+    },
+    "manifest": {
+      "path": "/Volumes/DIsk/qlib-a-share-tushare-1m/derived/a_share/rich/tushare/minute_walkforward_campaign101_feature_library/tushare_stk_mins_1m_2019_2025_ea0cbb8f_walkforward_campaign101_feature_library_v1/snapshot_manifest.json",
+      "sha256": "7a2db929fff69f46edbc93d57cdca9cc4427c47dd542291b4f58d879dd91a3b6",
+      "dataset_sha256": "ed024ab2736b9766e1adb122b155189029f30a5d14e11d4d67a403ff9befef24",
+      "rows": 1331759,
+      "partitions": 7,
+      "eligible_rows": 1327637,
+      "calendar_sessions": 1632
+    }
+  },
+  "exact_reconstruction": {
+    "method": "Reconstruct the exact Campaign101 129-source order and append Campaign101/higher exactly once.",
+    "source_factor_count": 130,
+    "source_factor_order_sha256": "c80d9b929536dd509d6c1a904f790831050e68200393de381f92ad9293ef69e7",
+    "expected_rows": 1331759,
+    "expected_sessions": 1632,
+    "expected_years": [2019, 2020, 2021, 2022, 2023, 2024, 2025]
+  },
+  "research_boundary": {
+    "source_names_directions_paths_and_hash_metadata_read": true,
+    "campaign102_design_matrix_values_read": false,
+    "campaign102_model_fit_performed": false,
+    "new_historical_daily_price_or_return_values_read": false,
+    "provider_request_issued": false,
+    "candidate49_historical_backfill_performed": false,
+    "candidate49_ledgers_changed": false,
+    "current_scoring_selection_sizing_or_orders_performed": false
+  }
+}

@@ -1,0 +1,47 @@
+{
+  "schema_version": 1,
+  "kind": "a_share_three_day_walkforward_campaign097_development_v2_outer_namespace_failure",
+  "status": "preserved_append_only_development_load_infrastructure_failure_after_daily_data_load_before_complete_trial_metrics",
+  "recorded_at": "2026-08-07T06:52:30Z",
+  "campaign": 97,
+  "attempt_class": "infrastructure_failure",
+  "attempt_count_increment": 1,
+  "development_trial_count_increment": 0,
+  "exit_code": 1,
+  "failure": {
+    "exception": "Campaign097Error",
+    "message": "development data load failed and was recorded: Campaign097 compact factor request changed",
+    "root_cause": "The v2 repair patched the outer generated module dictionary. The active contextmanager is decorated: its wrapper has a closure over an inner generator whose __wrapped__.__globals__ is the actual namespace used to resolve _load_compact_factor_panel. The v2 patch therefore never reached the active loader lookup."
+  },
+  "failed_v2_runner": {
+    "path": "scripts/a_share_three_day_walkforward_campaign097_v2.py",
+    "sha256": "3fa9185b13455e0d9d5cfce1aec3a22b0ef9a4ba2c21fa6846070e8aad322df3"
+  },
+  "failed_v2_activation": {
+    "path": "docs/a_share_three_day_walkforward_campaign_097_development_activation_binding_v2_20260807.json",
+    "sha256": "88a49b0c3781d12f9609286468ccdfdd87961ff12820e3a2ac94a3970d44fdda"
+  },
+  "append_only_internal_trial_ledger": {
+    "path": "data/experiments/short_horizon/historical_walkforward/campaign_097/walkforward/trial_ledger.json",
+    "sha256": "8b22da7d62c831fd03294ab3b3a60ea7a339cf20ce5d824bb3d09c95de7b4fa2",
+    "entry_count": 2,
+    "chain_tip_sha256": "a85a1e2501710ca08788178c191b1349c42c9cb784878a01ff12f36541b9497d",
+    "new_failure_trial_id": "wf097_infrastructure__development_load_002"
+  },
+  "diagnostic_evidence": {
+    "contextmanager_wrapper_has_wrapped_generator": true,
+    "wrapped_generator_globals_equal_run_development_globals": true,
+    "wrapped_generator_globals_equal_outer_generated_dictionary": false,
+    "v2_patch_reached_wrapped_generator_globals": false
+  },
+  "repair_boundary": "An additive v3 runner may patch only _temporary_compact_factor_loader.__wrapped__.__globals__['_load_compact_factor_panel'] with the already frozen v2 loader, verify that this is the same globals dictionary used by run_development, and restore it afterward.",
+  "historical_daily_price_values_read": true,
+  "historical_forward_return_values_may_have_been_read_during_bundle_load": true,
+  "complete_trial_metrics_computed": false,
+  "development_survivor_decision_computed": false,
+  "stress_2024_2025_read": false,
+  "provider_request_issued": false,
+  "candidate49_historical_return_read": false,
+  "candidate49_ledgers_changed": false,
+  "current_scoring_selection_sizing_or_orders_performed": false
+}

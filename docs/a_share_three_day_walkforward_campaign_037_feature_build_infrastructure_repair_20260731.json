@@ -1,0 +1,57 @@
+{
+  "version": 1,
+  "kind": "a_share_three_day_walkforward_campaign037_feature_build_infrastructure_repair",
+  "status": "private_checkpoint_namespace_binding_repaired_before_first_partition_read",
+  "recorded_at": "2026-07-30T23:00:26Z",
+  "purpose": "Record the sole pre-value implementation repair after the first build stopped before reading a candidate partition because the cloned low-level checkpoint namespace still referenced the Campaign033 protocol validator.",
+  "original_feature_implementation_freeze": {
+    "path": "docs/a_share_three_day_walkforward_campaign_037_feature_implementation_freeze_20260731.json",
+    "sha256": "27e5dc4cf9d62aa3e39b7b2a370706868dbb76d0ceae315c161b7df5f130de72"
+  },
+  "no_return_preregistration": {
+    "path": "docs/a_share_three_day_walkforward_campaign_037_no_return_preregistration.json",
+    "sha256": "c452eecbe445dca6affbbef5ede038277dbc85b6eaa4ec806f4f05d7f66dbd05"
+  },
+  "failure": {
+    "command": "python scripts/a_share_three_day_walkforward_campaign037_features.py build --data-root /Volumes/DIsk/qlib-a-share-tushare-1m --workers 4",
+    "exit_code": 1,
+    "failure_stage": "cloned_protocol_validation_before_partition_enumeration",
+    "reason": "The public Campaign037 wrapper was rebound, but its cloned low-level checkpoint builder retained a private globals dictionary whose load_protocol entry still pointed to the generated Campaign033 validator.",
+    "external_minute_partition_read": false,
+    "candidate_value_read": false,
+    "comparison_value_read": false,
+    "daily_price_or_forward_return_read": false,
+    "checkpoint_or_snapshot_published": false,
+    "provider_request_issued": false
+  },
+  "repair": {
+    "old_feature_runner_sha256": "5c93d64f1262886aee15d0e744dc1fe2c7751693b2c456851390fb1b7b76f79b",
+    "feature_runner": {
+      "path": "scripts/a_share_three_day_walkforward_campaign037_features.py",
+      "sha256": "13408d0843e8583772c6d68b63543b2fc237ab55df3bd6be044266db3cc98cbb"
+    },
+    "change": "Bind the already frozen Campaign037 constants and callables into the cloned builder's private execution namespace in addition to the public wrapper namespace.",
+    "formula_changed": false,
+    "direction_changed": false,
+    "source_projection_changed": false,
+    "five_return_horizon_or_overlap_changed": false,
+    "demeaning_missing_coverage_uniqueness_or_development_gate_changed": false,
+    "comparison_library_changed": false
+  },
+  "verification": {
+    "synthetic_tests": {
+      "path": "tests/data_collector_tests/test_a_share_three_day_walkforward_campaign037_features.py",
+      "sha256": "4d9654b5be7e9a04fda35368fe23b5c915642b66d439444618dd8d3457bf61cd"
+    },
+    "command": "PYTHONPATH=. pytest -q tests/data_collector_tests/test_a_share_three_day_walkforward_campaign037_features.py",
+    "passed": 7,
+    "failed": 0,
+    "private_builder_load_protocol_is_campaign037_callable": true,
+    "candidate_or_comparison_value_read": false
+  },
+  "authorization": {
+    "next_action": "Validate this additive repair and retry the exact frozen build command once.",
+    "semantic_change_or_alternate_build_allowed": false,
+    "historical_return_read_allowed_before_no_return_admission": false
+  }
+}

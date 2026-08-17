@@ -1,0 +1,65 @@
+{
+  "schema_version": 1,
+  "kind": "a_share_three_day_walkforward_campaign121_ordered_uniqueness_implementation_freeze",
+  "status": "all_138_loader_and_gate_runner_recovery_frozen_after_partial_comparator_exposure_before_returns",
+  "recorded_at": "2026-08-14T03:10:00+08:00",
+  "supersedes_without_rewriting": {
+    "path": "docs/a_share_three_day_walkforward_campaign_121_ordered_uniqueness_implementation_freeze_v3_20260814.json",
+    "sha256": "6942a9d8bea63ec419a2ef7bf63fef4fca91c40fac8daa474d90e66ec395f42c",
+    "preserved": true,
+    "scientific_boundary_changed": false,
+    "repair_scope": "Only correct the comparator-138 adapter chain by inserting the missing c119_base hop and acknowledge the failed run's partial numeric exposure. Candidate formula, comparator order, direction, overlap requirements, threshold and all-must-pass rule remain unchanged."
+  },
+  "failed_run_exposure_record": {
+    "path": "docs/a_share_three_day_walkforward_campaign_121_uniqueness_comparator138_adapter_failure_20260814.json",
+    "sha256": "abfa82973ed21f11f915388449665a1338fb13a8b27e1861caea01a5d7f50ea1",
+    "prior_137_comparators_completed": true,
+    "comparator_138_source_frame_loaded": true,
+    "comparator_138_alignment_or_correlation_completed": false,
+    "historical_daily_price_or_forward_return_values_read": false
+  },
+  "frozen_implementation": {
+    "runner_path": "scripts/a_share_three_day_walkforward_campaign121_ordered_uniqueness.py",
+    "runner_sha256": "34a3818b8f582eaa82c10835ec23e11a68e3533ee0238479b769a4d6c1a5193d",
+    "test_path": "tests/data_collector_tests/test_a_share_three_day_walkforward_campaign121_ordered_uniqueness.py",
+    "test_sha256": "ddc7cde574422594c6d4844067253bff1d58ed6b51d4f17202553663b0f8af0c",
+    "protocol_path": "docs/a_share_three_day_walkforward_campaign_121_ordered_numeric_uniqueness_protocol_20260814.json",
+    "protocol_sha256": "3fcb61e401b646cf771d48228406898e1a1091d8375a659ed8cac6abc5964cfd",
+    "coverage_path": "data/experiments/short_horizon/historical_walkforward/campaign_121/coverage/campaign121_coverage_audit.json",
+    "coverage_sha256": "24e9ec8b73ea35dd804489e789892b24bb87b2c15b987de9b485f24cc8aff51a",
+    "base120_runner_path": "scripts/a_share_three_day_walkforward_campaign120_ordered_uniqueness.py",
+    "base120_runner_sha256": "9ddf794394ebd4b26a7eb01f1f6d1499c16ec5baf8786c6e7e45d4298678f7b2",
+    "current_skill_sha256": "565713a5f3aeb6a1acf23e397fcc21be28d0c3ea4ebf21c7f287a25bb94d78dc",
+    "comparison_count": 138,
+    "comparison_order_sha256": "e917d9f832bda02f87c0a7e02a26127629146318de826684e8dfd6432fc20a3b",
+    "minimum_pairwise_names_per_session": 50,
+    "minimum_pairwise_sessions_per_comparison": 100,
+    "maximum_allowed_absolute_median_daily_rank_correlation": 0.8,
+    "strict_inequality": true,
+    "all_138_must_pass": true,
+    "comparator_138": "intraday_return_direction_dictionary_phrase_count_238s",
+    "corrected_adapter": "c120_base.c119_base.c118_base.c117_base.c110_v1.adapter"
+  },
+  "synthetic_verification": {
+    "command": "python -m pytest -q tests/data_collector_tests/test_a_share_three_day_walkforward_campaign121_ordered_uniqueness.py",
+    "passed": 5,
+    "exit_code": 0,
+    "black_formatted": true,
+    "ruff_check_passed": true
+  },
+  "research_boundary": {
+    "candidate_values_reopened_during_failed_run_before_v4": true,
+    "comparator_values_read_during_failed_run_before_v4": true,
+    "numeric_comparators_completed_during_failed_run": 137,
+    "comparator_138_source_values_loaded_but_not_compared": true,
+    "historical_daily_price_or_forward_return_values_read": false,
+    "stress_2024_2025_opened_for_returns": false,
+    "provider_request_issued": false,
+    "credential_loaded": false,
+    "candidate49_historical_backfill_performed": false,
+    "candidate49_ledgers_changed": false,
+    "current_scoring_selection_sizing_positions_or_orders_performed": false,
+    "investment_advice": false
+  },
+  "next_action": "Run the frozen recovery plan; only exit zero and ready=true may be followed by one confirmed all-138 audit using the unchanged scientific protocol."
+}

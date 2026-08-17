@@ -1,0 +1,125 @@
+{
+  "version": 1,
+  "kind": "a_share_three_day_walkforward_campaign047_mechanism_overlap_audit",
+  "status": "passed_conceptual_independence_before_campaign047_candidate_comparison_daily_price_or_return_values",
+  "recorded_at": "2026-08-01T01:14:00Z",
+  "purpose": "Challenge the selected Campaign047 prior-body-to-next-microgap reversal mechanism against the complete terminal and prospective frontier before freezing a formula implementation or reading any Campaign047 candidate, comparison, daily-price, or return value.",
+  "authoritative_boundary": {
+    "path": "docs/a_share_three_day_iteration_status_20260801_campaign046_verified.json",
+    "sha256": "dd4d80021dc6c90d629e9fba0555a8d6fdece0d4d472bdb6e63e2b1486d9b4a7"
+  },
+  "historical_walkforward_policy": {
+    "path": "docs/a_share_three_day_historical_walkforward_research_policy_20260727.json",
+    "sha256": "38426d6161b9bfed323c58caba18feca668b8c9d53e294951a8ba90c01a798bb"
+  },
+  "concept_scouting": {
+    "path": "docs/a_share_three_day_walkforward_campaign_047_concept_scouting.json",
+    "sha256": "dd8e29a254fd0cc6bb8f7867b34100a873d92a4d49ff115f330b62edc023c821"
+  },
+  "selected_mechanism": {
+    "name": "intraday_body_next_microgap_reversal_238p",
+    "direction": "higher",
+    "information_domain": "within_half_prior_intrabar_body_to_following_interbar_microgap_reversal",
+    "formula": "Inside each 120-bar half, align b_t=log(close_t/open_t) with g_(t+1)=log(open_(t+1)/close_t) over 119 transitions. Pool both halves to 238 transitions and return -Corr(b_t,g_(t+1)) using population Pearson correlation.",
+    "economic_hypothesis": "A higher fixed score indicates stronger next-print correction of the preceding one-minute body, potentially distinguishing fast quote or inventory repair from continuation and leaving a more resilient completed-session state for the next-open-to-third-close horizon.",
+    "source_fields": [
+      "datetime",
+      "symbol",
+      "provider",
+      "open",
+      "close"
+    ],
+    "selected_bar_grid": "exactly 240 raw unadjusted one-minute bars at 09:31-11:30 and 13:01-15:00; standalone 09:30 is excluded",
+    "half_session_rule": "Form 119 body/following-gap transitions independently inside each half; never include lunch, overnight, cross-day, or cross-stock transitions.",
+    "body_rule": "b_t=log(close_t/open_t) for the earlier bar of each transition.",
+    "following_gap_rule": "g_(t+1)=log(open_(t+1)/close_t), where the reference close is the same close used in b_t.",
+    "zero_rule": "Retain exact-zero bodies and gaps in fixed support; never drop or bridge them.",
+    "normalization_rule": "Use equal-transition population Pearson correlation, require positive variance in both complete vectors, negate the single correlation once, and apply no other transform.",
+    "bar_rule": "All 240 selected opens and closes must be finite and strictly positive.",
+    "missing_rule": "Any duplicated, missing, or off-grid source row; invalid open or close; nonfinite body, gap, covariance, variance, correlation, or score; zero vector variance; or score outside [-1,1] beyond 1e-12 makes the stock-day missing.",
+    "valid_range": [
+      -1.0,
+      1.0
+    ]
+  },
+  "overlap_challenges": [
+    {
+      "family": "intraday_interbar_gap_body_confirmation_238p",
+      "result": "distinct_pending_statistical_uniqueness_gate",
+      "reason": "Campaign016 correlates the incoming gap g_t with the body b_t of the same destination bar and keeps the raw correlation sign. Campaign047 correlates a completed body b_t with the following gap g_(t+1) and negates the lagged relation; the causal ordering and paired observations differ."
+    },
+    {
+      "family": "intraday_microgap_absorption_share_238p",
+      "result": "distinct_pending_statistical_uniqueness_gate",
+      "reason": "Campaign041 conditions on nonzero incoming gaps and counts whether the prior close lies inside the destination bar high-low range. Campaign047 reads no high/low, retains zero gaps, and uses continuous signed body/gap magnitudes in one population correlation."
+    },
+    {
+      "family": "intraday_directional_range_response_coupling_238p",
+      "result": "distinct_pending_statistical_uniqueness_gate",
+      "reason": "Campaign024 relates a current body to the next bar's unsigned high-low range. Campaign047 relates the body to the signed next opening discontinuity, reads no high/low, and freezes a reversal sign."
+    },
+    {
+      "family": "intraday_return_reversal_energy_share_236p_and_return_persistence_families",
+      "result": "distinct_pending_statistical_uniqueness_gate",
+      "reason": "Campaign046 and the variance/sign families operate on adjacent between-close returns. Campaign047 decomposes a bar move and the next transition at raw opens and closes, uses one lagged cross-component Pearson correlation, and never forms adjacent close-return products or multi-minute sums."
+    },
+    {
+      "family": "intraday_prior_range_breakout_pressure_and_intrabar_body_range_families",
+      "result": "distinct_pending_statistical_uniqueness_gate",
+      "reason": "Those mechanisms use high-low boundaries, body-to-range efficiency, or accumulated breakout distances. Campaign047 uses neither ranges nor extrema and measures only sequential body-to-next-gap correction."
+    },
+    {
+      "family": "intraday_lunch_repricing_persistence_and_opening_auction_families",
+      "result": "distinct",
+      "reason": "Campaign047 explicitly resets at lunch and excludes 09:30. It contains no auction, midday anchor, terminal displacement, or cross-lunch move."
+    },
+    {
+      "family": "activity_transaction_price_market_quarterly_and_candidate49_mechanisms",
+      "result": "distinct",
+      "reason": "Campaign047 contains no volume, amount, VWAP, transaction price, peer benchmark, disclosure field, or prospective ledger input. Candidate49 remains future-only and enters only as a no-return comparison."
+    },
+    {
+      "family": "terminal_factor_combination_filter_or_model",
+      "result": "not_used",
+      "reason": "Campaign047 contains one exact raw open-close statistic and no terminal factor value, fitted weight, filter, threshold, regime, combination, or model."
+    }
+  ],
+  "design_choices_frozen_before_values": {
+    "formula_family": "within_half_prior_body_to_following_microgap_reversal_correlation",
+    "direction": "higher",
+    "selected_bar_count": 240,
+    "half_session_bar_count": 120,
+    "aligned_transition_count": 238,
+    "include_0930": false,
+    "include_lunch_transition": false,
+    "body_to_following_gap_lag": 1,
+    "body_definition": "log(close_t/open_t)",
+    "following_gap_definition": "log(open_(t+1)/close_t)",
+    "correlation_estimator": "population_pearson_equal_transition_weight",
+    "score_transform": "negative_once_after_correlation",
+    "retain_exact_zero_body_and_gap": true,
+    "require_positive_population_variance_in_both_vectors": true,
+    "endpoint_canonicalization_tolerance": 1e-12,
+    "parameter_filter_subset_model_or_combination_count": 0
+  },
+  "research_boundary": {
+    "external_minute_partitions_read": false,
+    "candidate_values_read": false,
+    "comparison_values_read": false,
+    "historical_daily_price_fields_read": false,
+    "historical_forward_returns_read": false,
+    "training_or_model_fitting_performed": false,
+    "provider_request_issued": false,
+    "candidate49_historical_return_signal_execution_or_milestone_backfill_performed": false,
+    "candidate49_ledgers_changed": false,
+    "candidate50_activation_created": false,
+    "current_scoring_selection_sizing_or_orders_performed": false,
+    "investment_advice": false
+  },
+  "decision": {
+    "conceptual_independence_passed": true,
+    "statistical_independence_pending_all_70_comparisons": true,
+    "predictive_value_established": false,
+    "next_action": "Bind this record, append terminal Campaign046 to the inherited 69-factor order, freeze one exact post-admission development trial, and run the binding validator before implementation."
+  }
+}

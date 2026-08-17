@@ -1,0 +1,59 @@
+{
+  "active_volume_uses_observed": [
+    "Astro development server below /Volumes/DIsk/Disk-Coding/ArcloopFrontend",
+    "Next.js development server below /Volumes/DIsk/Disk-Coding/ArcloopFrontend",
+    "agent-loop controller below /Volumes/DIsk/Disk-Coding/agent-loop",
+    "Codex browser kernel below /Volumes/DIsk/Disk-Coding/cicd"
+  ],
+  "blocked_at": "2026-07-28T05:00:35Z",
+  "candidate49_boundary": {
+    "historical_return_read": false,
+    "prospective_execution_ledger_entry_count": 0,
+    "prospective_ledgers_changed": false,
+    "prospective_signal_ledger_entry_count": 0
+  },
+  "completed_before_blocker": {
+    "campaign004_candidate_snapshot_dataset_sha256": "1359e755e669c7b949b26b2086d1c1328ec0cdf53b45ce7e67d117a274c7fc8a",
+    "campaign004_candidate_snapshot_manifest_sha256": "8eefc381d006997f1dcd95edcd9be4db8485e0c4954d6166d94f1981ae3b57fe",
+    "candidate_snapshot_partitions": 33015,
+    "candidate_snapshot_rows": 7724498,
+    "all_three_coverage_gates_completed_in_failed_atomic_audit_attempt": true,
+    "first_factor_all_twenty_five_uniqueness_comparisons_completed_in_failed_atomic_audit_attempt": true,
+    "no_partial_audit_published": true
+  },
+  "filesystem_evidence": {
+    "device_identifier": "disk7s1",
+    "filesystem": "APFS",
+    "mount_path": "/Volumes/DIsk",
+    "mounted": true,
+    "read_only": false,
+    "single_byte_read_probe_completed": false,
+    "single_byte_read_probe_target": "/Volumes/DIsk/qlib-a-share-tushare-1m/derived/a_share/rich/tushare/minute_walkforward_campaign004_feature_library/tushare_stk_mins_1m_2019_2025_ea0cbb8f_walkforward_campaign004_feature_library_v1/snapshot_manifest.json",
+    "volume_free_capacity_observed": "approximately 1.6 TiB"
+  },
+  "kind": "a_share_three_day_walkforward_campaign004_external_volume_read_blocker",
+  "no_return_audit_infrastructure_repair": {
+    "path": "docs/a_share_three_day_walkforward_campaign_004_no_return_audit_infrastructure_repair_20260728.json",
+    "sha256": "41a9734be528c665f06e2b17d3f729048370e756a6e8addc2dcde5a6cafd4985"
+  },
+  "repair_implementation": {
+    "path": "scripts/a_share_three_day_walkforward_campaign004_features.py",
+    "sha256": "b82c15355c0798897ebfc33e5b87ea4ebfd93f9692197e9b6c8b1d0719b1377b"
+  },
+  "research_boundary": {
+    "candidate50_prospective_activation_created": false,
+    "current_scoring_selection_sizing_or_orders_performed": false,
+    "daily_price_fields_read_by_campaign004": [],
+    "forward_return_fields_read_by_campaign004": false,
+    "provider_request_issued": false,
+    "stress_2024_2025_return_fields_read": false
+  },
+  "safe_resume": {
+    "automatic_forced_unmount_allowed": false,
+    "reason_not_unmounted": "The external volume has multiple active user processes outside the qlib data root; remounting it would materially affect work outside the authorized research scope.",
+    "required_condition": "After the active external-volume processes are stopped or the user has safely remounted /Volumes/DIsk and a one-byte read probe succeeds, rerun the frozen explicit-manifest-path audit command.",
+    "retry_command": "PYTHONPATH=/opt/anaconda3/lib/python3.12/site-packages /opt/anaconda3/bin/python3 -S scripts/a_share_three_day_walkforward_campaign004_features.py audit --data-root /Volumes/DIsk/qlib-a-share-tushare-1m --workers 8"
+  },
+  "status": "blocked_before_no_return_audit_retry_by_external_volume_read_stall",
+  "version": 1
+}

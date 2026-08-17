@@ -1,0 +1,19 @@
+{
+  "schema_version": 1,
+  "kind": "a_share_three_day_walkforward_campaign145_infrastructure_failure",
+  "status": "recorded_append_only_after_terminal_result_before_report_publication",
+  "recorded_at": "2026-08-14T20:45:14+08:00",
+  "failure_id": "campaign145_infrastructure_008",
+  "stage": "terminal_report_publication",
+  "exit_code": 1,
+  "observed_failure": "The three-file apply_patch expected the final Campaign144 sentence as a standalone line, but it is part of a longer paragraph. Context verification failed and the patch was rejected.",
+  "partial_write_performed": false,
+  "scientific_result_changed": false,
+  "repair": "Append the independent and unified reports using the exact current final paragraph context, then advance only append-only accounting.",
+  "candidate_formula_snapshot_or_coverage_changed": false,
+  "comparator_values_read": false,
+  "historical_daily_price_or_forward_return_values_read": false,
+  "stress_2024_2025_returns_opened": false,
+  "provider_request_issued": false,
+  "candidate49_ledgers_changed": false
+}

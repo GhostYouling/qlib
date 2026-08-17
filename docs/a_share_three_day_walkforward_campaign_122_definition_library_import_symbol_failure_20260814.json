@@ -1,0 +1,25 @@
+{
+  "schema_version": 1,
+  "kind": "a_share_three_day_walkforward_campaign122_infrastructure_failure",
+  "status": "failed_definition_metadata_probe_before_any_campaign122_value",
+  "recorded_at": "2026-08-14T03:04:37+08:00",
+  "attempt_id": "campaign122_infrastructure_002",
+  "phase": "complete_definition_library_reconstruction",
+  "failure": {
+    "failure_class": "python_import_symbol_error",
+    "observed_exception": "ImportError: cannot import name 'build_complete_factor_definitions' from 'scripts.a_share_three_day_walkforward_campaign121_features'",
+    "exit_success": false,
+    "cause": "The metadata probe guessed an obsolete helper name instead of the frozen reconstruct_complete_definitions helper."
+  },
+  "effect": {
+    "file_written_by_failed_command": false,
+    "source_value_read": false,
+    "candidate_value_read_or_computed": false,
+    "comparator_value_read": false,
+    "daily_price_or_forward_return_read": false,
+    "provider_request_issued": false,
+    "candidate49_ledger_changed": false,
+    "scientific_result_changed": false
+  },
+  "recovery": "The frozen helper name was inspected and reconstruct_complete_definitions later reproduced all 147 definition names in order."
+}

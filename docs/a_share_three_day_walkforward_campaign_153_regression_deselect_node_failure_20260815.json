@@ -1,0 +1,26 @@
+{
+  "schema_version": 1,
+  "kind": "a_share_three_day_walkforward_campaign153_infrastructure_failure",
+  "status": "recorded_nonzero_exit_without_masking_or_scientific_change",
+  "recorded_at": "2026-08-15T02:50:15+08:00",
+  "stage": "campaign145_through_campaign153_regression",
+  "observed_result": {
+    "exit_code": 1,
+    "tests_passed": 63,
+    "tests_failed": 1,
+    "failing_test": "data_collector_tests/test_a_share_three_day_walkforward_campaign145_terminal.py::test_campaign145_terminal_bindings_reports_and_candidate49_boundary"
+  },
+  "root_cause": "The deselect argument used the invocation path with a tests/ prefix, while pytest reported the collected node id without that prefix; the exact historical mutable-report lifecycle node therefore remained selected.",
+  "repair": {
+    "use_exact_collected_node_id": true,
+    "post_repair_result": "63 passed, 1 deselected in 2.22s",
+    "old_test_or_binding_validator_changed": false,
+    "source_candidate_comparator_price_or_forward_return_value_read": false
+  },
+  "research_boundary": {
+    "provider_request_issued": false,
+    "provider_credential_value_or_digest_read": false,
+    "candidate49_ledgers_changed": false,
+    "stress_2024_2025_opened": false
+  }
+}

@@ -1,0 +1,244 @@
+{
+  "version": 1,
+  "kind": "a_share_three_day_historical_walkforward_campaign_research_record",
+  "campaign_id": "a_share_three_day_walkforward_campaign_001",
+  "revision": "r1",
+  "status": "completed_lockbox_consumed_no_final_gate_passer",
+  "recorded_at": "2026-07-27T12:02:00Z",
+  "classification": "historically_exposed_quasi_out_of_sample_not_pristine",
+  "question_answered": "Can a finite library of eight existing minute factors and all pre-registered single or pairwise rank blends produce a three-session strategy that survives expanding 2019-2023 validation and every frozen 2024-2025 association, execution, cost, annual-consistency, drawdown, affordability, participation, and resolution gate?",
+  "answer": "No. All 92 development trials were retained, eight operationally admissible validation survivors were opened once on 2024-2025, and none passed every final gate.",
+  "frozen_inputs": {
+    "repaired_preregistration": {
+      "path": "docs/a_share_three_day_walkforward_campaign_001r1_preregistration.json",
+      "sha256": "63966d420288a1e4c6595f60df105dc373fd3240ffd6694a24dd6cdd86193d4a"
+    },
+    "base_preregistration": {
+      "path": "docs/a_share_three_day_walkforward_campaign_001_preregistration.json",
+      "sha256": "b4dafbbf5372bb124dc391edb381043a985f49d7663d310bb79ed6b50a22dab2"
+    },
+    "infrastructure_repair": {
+      "path": "docs/a_share_three_day_walkforward_campaign_001_infrastructure_repair_20260727.json",
+      "sha256": "f9c42e05c295ddc03e889942cab05da51c5c99f9f42784b8bf3e511b11b51443"
+    },
+    "runner": {
+      "path": "scripts/a_share_three_day_walkforward_campaign.py",
+      "sha256": "301f5fe665422b94c9fa110e67995ff0999584a5f323ecdd5f56151a3529f5a7"
+    }
+  },
+  "first_attempt_infrastructure_failure": {
+    "retained": true,
+    "failed_before_forward_return_frame_or_trial_evaluation": true,
+    "failed_campaign_ledger": {
+      "path": "data/experiments/short_horizon/historical_walkforward/campaign_001/trial_ledger.json",
+      "sha256": "295eb6facded0ea7bb7f55d84205d5c0192ce9bc3cdf109a145d43c447ecc2ae",
+      "entry_count": 1,
+      "chain_tip_sha256": "f9f7e5404116e438f9437f5eb2057e21b2493d199bd4cabdb41a2e4bb5451d58"
+    },
+    "repair_scope": "Deterministic outer union for valid fieldwise-clean supplement keys; no factor, direction, search, fold, survivor, execution, or final-gate change."
+  },
+  "completed_artifacts": {
+    "trial_ledger": {
+      "path": "data/experiments/short_horizon/historical_walkforward/campaign_001r1/trial_ledger.json",
+      "sha256": "3a573c6533d4747d97eb39112fd040c3b6b3c105ac273b45575b6f9f2bb88e6f",
+      "entry_count": 100,
+      "development_entry_count": 92,
+      "lockbox_entry_count": 8,
+      "chain_tip_sha256": "0bc08db37e50976e2364537841b0502a5f7084500f78189950e60d5917ca858d"
+    },
+    "development_survivors": {
+      "path": "data/experiments/short_horizon/historical_walkforward/campaign_001r1/development_survivors.json",
+      "sha256": "461e18b41193b09bb511107e41efce4d16affe1cfe86a1426eb4cc00d48841d4",
+      "selected_survivor_count": 8,
+      "lockbox_return_fields_read_when_frozen": false
+    },
+    "lockbox_open_intent": {
+      "path": "data/experiments/short_horizon/historical_walkforward/campaign_001r1/lockbox_open_intent.json",
+      "sha256": "a535c6311f0ad91481fa384dab6fbb8ebcbc79fbb9b0f027e7c25b582984e38a"
+    },
+    "lockbox_consumption_record": {
+      "path": "data/experiments/short_horizon/historical_walkforward/campaign_001r1/lockbox_consumption_record.json",
+      "sha256": "77a847f4ad015bec99e31143691b3d574763b237a6b760d55b27f9190bf2cab1"
+    },
+    "campaign_report": {
+      "path": "data/experiments/short_horizon/historical_walkforward/campaign_001r1/campaign_report.json",
+      "sha256": "ccfd6c54cfee27aee885d0a4697a847073ea3e5289a1c91fbeb46de0fbbac36d"
+    }
+  },
+  "development_outcome": {
+    "frozen_trial_count": 92,
+    "completed_trial_count": 92,
+    "omitted_trial_count": 0,
+    "selected_lockbox_survivor_count": 8,
+    "dominant_survivor_feature": "intraday_return_variance_entropy_238m",
+    "dominant_survivor_feature_occurrence_count": 7,
+    "candidate49_included": false,
+    "lockbox_2024_2025_read_before_survivors_frozen": false
+  },
+  "lockbox_outcome": {
+    "period": {
+      "start": "2024-01-01",
+      "end": "2025-12-31"
+    },
+    "completed_survivor_count": 8,
+    "final_gate_passer_count": 0,
+    "research_only_champion_trial_id": null,
+    "failure_counts_across_survivors": {
+      "nonpositive_lockbox_pilot_return": 3,
+      "nonpositive_lockbox_annual_pilot_return": 6,
+      "lockbox_normalized_drawdown_below_minus_20pct": 5,
+      "nonpositive_lockbox_mean_rank_ic": 1,
+      "lockbox_positive_rank_ic_rate_not_above_half": 1,
+      "nonpositive_lockbox_top3_minus_bottom3_spread": 1,
+      "nonpositive_lockbox_annual_mean_rank_ic": 1,
+      "nonpositive_lockbox_normalized_return": 1,
+      "nonpositive_lockbox_annual_normalized_return": 1
+    },
+    "survivor_results": [
+      {
+        "trial_id": "wf001_pair__intraday_return_variance_entropy_238m__late_amount_share_30m__w25_75",
+        "combined_mean_rank_ic": 0.008114,
+        "combined_normalized_return": 0.158033,
+        "combined_normalized_drawdown": -0.172523,
+        "combined_pilot_10bp_return": -0.003108,
+        "pilot_10bp_return_2024": -0.001599,
+        "pilot_10bp_return_2025": -0.009647,
+        "final_gate_failures": [
+          "nonpositive_lockbox_pilot_return",
+          "nonpositive_lockbox_annual_pilot_return"
+        ]
+      },
+      {
+        "trial_id": "wf001_single__intraday_return_variance_entropy_238m",
+        "combined_mean_rank_ic": 0.02688,
+        "combined_normalized_return": 0.380351,
+        "combined_normalized_drawdown": -0.200363,
+        "combined_pilot_10bp_return": 0.012846,
+        "pilot_10bp_return_2024": 0.002766,
+        "pilot_10bp_return_2025": 0.017305,
+        "final_gate_failures": [
+          "lockbox_normalized_drawdown_below_minus_20pct"
+        ]
+      },
+      {
+        "trial_id": "wf001_pair__intraday_return_variance_entropy_238m__late_amount_share_30m__w75_25",
+        "combined_mean_rank_ic": 0.024186,
+        "combined_normalized_return": 0.297513,
+        "combined_normalized_drawdown": -0.162092,
+        "combined_pilot_10bp_return": 0.001574,
+        "pilot_10bp_return_2024": -0.00756,
+        "pilot_10bp_return_2025": 0.0117,
+        "final_gate_failures": [
+          "nonpositive_lockbox_annual_pilot_return"
+        ]
+      },
+      {
+        "trial_id": "wf001_pair__intraday_market_idiosyncratic_share_238m__intraday_return_variance_entropy_238m__w25_75",
+        "combined_mean_rank_ic": 0.014646,
+        "combined_normalized_return": 0.085081,
+        "combined_normalized_drawdown": -0.216127,
+        "combined_pilot_10bp_return": -0.02855,
+        "pilot_10bp_return_2024": -0.012491,
+        "pilot_10bp_return_2025": -0.010455,
+        "final_gate_failures": [
+          "lockbox_normalized_drawdown_below_minus_20pct",
+          "nonpositive_lockbox_pilot_return",
+          "nonpositive_lockbox_annual_pilot_return"
+        ]
+      },
+      {
+        "trial_id": "wf001_pair__intraday_return_variance_entropy_238m__late_amount_share_30m__w50_50",
+        "combined_mean_rank_ic": 0.0177,
+        "combined_normalized_return": 0.346767,
+        "combined_normalized_drawdown": -0.124421,
+        "combined_pilot_10bp_return": 0.011857,
+        "pilot_10bp_return_2024": 0.011982,
+        "pilot_10bp_return_2025": -0.010924,
+        "final_gate_failures": [
+          "nonpositive_lockbox_annual_pilot_return"
+        ]
+      },
+      {
+        "trial_id": "wf001_pair__intraday_bar_vwap_close_pressure_240m__intraday_return_variance_entropy_238m__w50_50",
+        "combined_mean_rank_ic": 0.010631,
+        "combined_normalized_return": 1.149118,
+        "combined_normalized_drawdown": -0.221011,
+        "combined_pilot_10bp_return": 0.0484,
+        "pilot_10bp_return_2024": -0.016723,
+        "pilot_10bp_return_2025": 0.065433,
+        "final_gate_failures": [
+          "lockbox_normalized_drawdown_below_minus_20pct",
+          "nonpositive_lockbox_annual_pilot_return"
+        ]
+      },
+      {
+        "trial_id": "wf001_pair__intraday_market_idiosyncratic_share_238m__late_amount_share_30m__w50_50",
+        "combined_mean_rank_ic": -0.025663,
+        "combined_normalized_return": -0.448616,
+        "combined_normalized_drawdown": -0.566204,
+        "combined_pilot_10bp_return": -0.10173,
+        "pilot_10bp_return_2024": -0.090592,
+        "pilot_10bp_return_2025": -0.005566,
+        "final_gate_failures": [
+          "nonpositive_lockbox_mean_rank_ic",
+          "lockbox_positive_rank_ic_rate_not_above_half",
+          "nonpositive_lockbox_top3_minus_bottom3_spread",
+          "nonpositive_lockbox_annual_mean_rank_ic",
+          "nonpositive_lockbox_normalized_return",
+          "lockbox_normalized_drawdown_below_minus_20pct",
+          "nonpositive_lockbox_annual_normalized_return",
+          "nonpositive_lockbox_pilot_return",
+          "nonpositive_lockbox_annual_pilot_return"
+        ]
+      },
+      {
+        "trial_id": "wf001_pair__intraday_realized_volatility__intraday_return_variance_entropy_238m__w50_50",
+        "combined_mean_rank_ic": 0.0326,
+        "combined_normalized_return": 0.59456,
+        "combined_normalized_drawdown": -0.204841,
+        "combined_pilot_10bp_return": 0.04003,
+        "pilot_10bp_return_2024": 0.030915,
+        "pilot_10bp_return_2025": 0.01649,
+        "final_gate_failures": [
+          "lockbox_normalized_drawdown_below_minus_20pct"
+        ]
+      }
+    ]
+  },
+  "interpretation": {
+    "main_evidence": "The return-variance-entropy family showed persistent positive association in several variants, but the frozen full strategy gate rejected all survivors because drawdown, 10bp cost robustness, or annual consistency failed.",
+    "closest_gate_miss": "The single intraday_return_variance_entropy_238m factor passed every final criterion except normalized maximum drawdown: -20.0363% versus the frozen floor of -20.0000%. This is retained as a rejection and the threshold is not relaxed.",
+    "strongest_costed_return_near_miss": "The equal blend of lower realized volatility and return-variance entropy produced +4.0030% at the 20万元/10bp pilot level with positive 2024 and 2025 pilot returns, but normalized maximum drawdown was -20.4841%, so it remains rejected.",
+    "iteration_implication": "A later historical exploration campaign may investigate pre-registered risk-control or cost-robust constructions around return-variance entropy, but 2024-2025 is now exposed and can never again be labelled an unopened lockbox."
+  },
+  "candidate49_boundary": {
+    "historical_return_read": false,
+    "registration_changed": false,
+    "signal_ledger": {
+      "path": "data/experiments/short_horizon/candidate49_future_signal_ledger.json",
+      "sha256_after_campaign": "5193f00d7f36da003f53cec387900da4c3d002299f5dfcfc1a95eaa199ed3a79",
+      "entry_count_after_campaign": 0
+    },
+    "execution_ledger": {
+      "path": "data/experiments/short_horizon/candidate49_future_execution_ledger.json",
+      "sha256_after_campaign": "d57a3e61eac969e42cafa418ccd8c0a5ee65dcf69da145bb2c096c2a02a2ea4f",
+      "entry_count_after_campaign": 0
+    },
+    "candidate50_started": false
+  },
+  "promotion_boundary": {
+    "historical_pass_can_directly_create_current_scores_or_stock_lists": false,
+    "current_scoring_performed": false,
+    "selection_performed": false,
+    "sizing_performed": false,
+    "paper_orders_created": false,
+    "live_orders_created": false
+  },
+  "next_research_boundary": {
+    "campaign_001_closed": true,
+    "reuse_2024_2025_as_unseen_lockbox_forbidden": true,
+    "new_historical_campaign_requires_new_preregistration_and_append_only_ledger": true,
+    "new_candidate49_historical_backfill_forbidden": true,
+    "new_forward_candidate_while_candidate49_active_forbidden": true
+  }
+}

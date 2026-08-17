@@ -1,0 +1,43 @@
+{
+  "schema_version": 1,
+  "kind": "a_share_three_day_walkforward_campaign096_recording_semantics_correction",
+  "status": "append_only_correction_without_rewriting_bound_artifacts",
+  "recorded_at": "2026-08-07T04:36:00Z",
+  "timestamp_correction": {
+    "observed_actual_utc_at_correction": "2026-08-07T04:35:58Z",
+    "issue": "Several manually entered recorded_at or frozen_at labels from the snapshot-binding stage onward were projected ahead of actual UTC while the workflow was still running.",
+    "affected_records_include": [
+      {
+        "path": "docs/a_share_three_day_walkforward_campaign_096_feature_snapshot_binding_20260807.json",
+        "sha256": "c5a96fbcc3c9c2927aedc0b855c0eddf1633c1ea1cae1a9fd65de87a9389a68c"
+      },
+      {
+        "path": "docs/a_share_three_day_walkforward_campaign_096_no_return_audit_implementation_freeze_20260807.json",
+        "sha256": "05123ff42a30fdf6780fb3d3b430d7e4f467ccb067ab00d9cd47d5ca981c463b"
+      },
+      {
+        "path": "docs/a_share_three_day_walkforward_campaign_096_no_return_audit_activation_binding_20260807.json",
+        "sha256": "8133efb81b0ab22719dbaf29985406ac3cb29340bbdb2c7b7e33a26a4a27c7b7"
+      }
+    ],
+    "interpretation": "Those manual time labels are not chronological evidence. File-hash dependencies, successful binding validation, command exit ordering, and the generated audit created_at/run_id remain the authoritative causal sequence.",
+    "bound_files_rewritten": false
+  },
+  "attempt_counter_correction": {
+    "issue": "Five infrastructure failure records used research_attempt_count_increment=0 even though the repository's cumulative attempt convention counts every separately recorded infrastructure or implementation attempt as one campaign attempt.",
+    "authoritative_rule_for_terminal_ledger": "Count each of the five Campaign096 infrastructure or implementation failures as one attempt and the completed factor evaluation as one attempt; all have development_trial_count_increment=0.",
+    "campaign096_infrastructure_or_implementation_failure_count": 5,
+    "campaign096_complete_factor_attempt_count": 1,
+    "campaign096_attempt_count": 6,
+    "cumulative_historical_research_attempt_count_after_campaign096": 665,
+    "cumulative_return_reading_development_trial_count_after_campaign096": 291,
+    "old_failure_records_rewritten": false
+  },
+  "research_boundary": {
+    "comparison_values_read": false,
+    "historical_daily_price_fields_read": [],
+    "historical_forward_returns_read": false,
+    "provider_request_issued": false,
+    "candidate49_ledgers_changed": false
+  }
+}

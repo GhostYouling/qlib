@@ -1,0 +1,39 @@
+{
+  "version": 1,
+  "kind": "a_share_three_day_walkforward_campaign073_postcompletion_failure_accounting_correction",
+  "status": "additive_current_accounting_supersedes_initial_counts_without_rewriting",
+  "recorded_at": "2026-08-06T07:48:00+08:00",
+  "initial_attempt_ledger": {
+    "path": "data/experiments/short_horizon/historical_walkforward/campaign_073/research_attempt_ledger.json",
+    "sha256": "143a4086c86fcba088c4d79eb45c159f44825fab6d09e7a9e62cb006f250364d",
+    "preserved": true
+  },
+  "initial_research_record": {
+    "path": "docs/a_share_three_day_walkforward_campaign_073_research_record.json",
+    "sha256": "8febbfe52547c8fdeabfe694c9836264f3ab43803eb5f29353cd93c6d24bafbf",
+    "preserved": true
+  },
+  "new_failure": {
+    "path": "docs/a_share_three_day_walkforward_campaign_073_terminal_report_patch_context_failure_20260806.json",
+    "sha256": "5a7b60cf484a5cf636e5f04a95b39f4fe91bf3aec835dcac1af578644aefdcd6",
+    "attempt_type": "infrastructure_failure",
+    "candidate_or_comparison_values_recomputed": false,
+    "historical_daily_price_or_forward_return_values_read": false
+  },
+  "corrected_accounting": {
+    "campaign073_infrastructure_failure_count": 4,
+    "campaign073_complete_factor_attempt_count": 1,
+    "campaign073_attempt_count": 5,
+    "campaign073_return_reading_development_trial_count": 0,
+    "cumulative_historical_research_attempt_count": 442,
+    "cumulative_return_reading_development_trial_count": 275
+  },
+  "unchanged_research_result": {
+    "coverage_gate_passed": true,
+    "numeric_comparisons_completed": 103,
+    "failed_comparison": "intraday_price_update_share_238m",
+    "failed_absolute_median_daily_rank_correlation": 0.8607906131941189,
+    "admissible_factor_count": 0,
+    "historical_forward_returns_read": false
+  }
+}

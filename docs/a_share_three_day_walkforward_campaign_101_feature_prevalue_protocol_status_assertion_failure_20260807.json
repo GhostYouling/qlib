@@ -1,0 +1,28 @@
+{
+  "schema_version": 1,
+  "kind": "a_share_three_day_walkforward_campaign101_prevalue_infrastructure_failure",
+  "status": "recorded_and_repaired_before_source_factor_or_candidate_values",
+  "recorded_at": "2026-08-07T13:32:00Z",
+  "stage": "feature_builder_frozen_input_semantic_validation",
+  "failed_command_scope": "Call load_frozen_inputs after five synthetic feature tests passed and before creating the implementation freeze.",
+  "failure": "The builder asserted a shortened protocol status literal that omitted the frozen candidate/comparator terms, while every substantive protocol, source-catalog, policy, order, and binding digest matched.",
+  "diagnosis": {
+    "expected_by_failed_builder": "frozen_before_campaign101_source_factor_values_daily_price_or_forward_return_values",
+    "authoritative_protocol_status": "frozen_before_campaign101_source_factor_candidate_comparator_daily_price_or_return_values",
+    "scientific_formula_direction_support_or_gate_changed": false,
+    "repair": "Change only the builder's status literal to the exact already-frozen authoritative value and rerun the same metadata-only semantic validation and synthetic tests."
+  },
+  "research_boundary": {
+    "source_manifest_and_protocol_metadata_read": true,
+    "source_factor_values_read": false,
+    "candidate_values_read": false,
+    "comparison_values_read": false,
+    "coverage_or_capacity_metrics_computed": false,
+    "historical_daily_price_fields_read": [],
+    "historical_forward_returns_read": false,
+    "training_or_model_fitting_performed": false,
+    "provider_request_issued": false,
+    "candidate49_ledgers_changed": false,
+    "current_scoring_selection_sizing_or_orders_performed": false
+  }
+}

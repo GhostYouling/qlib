@@ -1,0 +1,74 @@
+{
+  "schema_version": 1,
+  "kind": "a_share_three_day_walkforward_campaign211_prevalue_terminal_result_additive_policy_binding_correction",
+  "recorded_at": "2026-08-15T22:36:00+08:00",
+  "timestamp_semantics": "monotonic_logical_append_time_not_host_wall_clock_measurement",
+  "status": "terminal_zero_selected_factors_source_admission_not_satisfied_all_failures_accounted_v3",
+  "authoritative_inputs": {
+    "terminal_result_v2": {
+      "path": "docs/a_share_three_day_walkforward_campaign_211_terminal_result_v2_20260815.json",
+      "sha256": "5eb87a21fa15d6e66e5e0029e29163cb24b0cfd68d6c45ca9fd02a5ebba77111"
+    },
+    "frontier": {
+      "path": "docs/a_share_three_day_walkforward_campaign_211_interactive_entertainment_game_player_session_match_content_liveops_virtual_item_economy_moderation_anticheat_refund_lifecycle_source_frontier_20260815.json",
+      "sha256": "086ed77b989d36784e35777f7bc11f0c4874dd0de90b6acbfe36c68370b9a017"
+    },
+    "attempt_ledger_v3": {
+      "path": "data/experiments/short_horizon/historical_walkforward/campaign_211/research_attempt_ledger_v3.json",
+      "sha256": "4312b7152c3e88440c9837df59850c135e9bc3592893763c940f6633cf557c11"
+    },
+    "policy_v319_binding_failure": {
+      "path": "docs/a_share_three_day_walkforward_campaign_211_policy_v319_supersedes_hash_mismatch_failure_20260815.json",
+      "sha256": "c1df6d23f6c3ef91eb260d30b3278f6f01a6a46266af27128902033775b3d73d"
+    }
+  },
+  "result": {
+    "finite_route_count": 7,
+    "source_admission_deferral_count": 3,
+    "overlap_or_hypothesis_rejection_count": 4,
+    "selected_factor_count": 0,
+    "numeric_formula_or_direction_frozen": false,
+    "candidate_or_comparator_value_read": false,
+    "daily_price_or_forward_return_read": false,
+    "development_trial_count": 0,
+    "stress_trial_count_2024_2025": 0
+  },
+  "effective_accounting": {
+    "campaign_attempt_count": 13,
+    "prevalue_scientific_attempt_count": 7,
+    "infrastructure_failure_count": 6,
+    "return_reading_development_trial_count": 0,
+    "cumulative_historical_research_attempt_count": 1956,
+    "cumulative_return_reading_development_trial_count": 314,
+    "chain_tip_sha256": "068e148d05faa0a0cb8b4c8e7a7b0a62a923d118d3fefbce0f077a7b481c933c"
+  },
+  "library_state": {
+    "complete_factor_definition_count": 158,
+    "complete_factor_definition_order_sha256": "4819c7fd7c0795d7598a52f3c615e3f117d5f4ecd9332974bc8e3dfa57c96667",
+    "eligible_numeric_comparator_count": 142,
+    "eligible_numeric_comparator_order_sha256": "5d1b35fb5a0d8ac9293008db9963c4a60a94dc940c237c3ed259e5ce44f14aaf",
+    "changed_by_campaign211": false
+  },
+  "candidate49": {
+    "sole_prospective_candidate": true,
+    "signal_ledger_sha256": "5193f00d7f36da003f53cec387900da4c3d002299f5dfcfc1a95eaa199ed3a79",
+    "signal_entry_count": 0,
+    "execution_ledger_sha256": "d57a3e61eac969e42cafa418ccd8c0a5ee65dcf69da145bb2c096c2a02a2ea4f",
+    "execution_entry_count": 0,
+    "ledgers_changed": false
+  },
+  "research_boundary": {
+    "failed_or_truncated_output_used": false,
+    "privacy_sensitive_record_read": false,
+    "provider_or_web_request_issued": false,
+    "provider_credential_presence_value_or_digest_read": false,
+    "candidate49_plan_or_run_executed": false,
+    "candidate49_ledgers_changed": false,
+    "second_prospective_candidate_created": false,
+    "stress_2024_2025_opened": false,
+    "current_scoring_selection_sizing_positions_or_orders_performed": false,
+    "investment_advice": false
+  },
+  "scientific_interpretation": "The v319 predecessor-hash mismatch is a binding-only failure and changes no scientific evidence. The game-operations source gate remains unsatisfied, selected factor count remains zero, and no comparator, price or return value was read.",
+  "next_action": "Freeze corrected numeric policy v320 against the actual immutable predecessor and latest additive accounting, then rerun all validation before authorizing Campaign212."
+}

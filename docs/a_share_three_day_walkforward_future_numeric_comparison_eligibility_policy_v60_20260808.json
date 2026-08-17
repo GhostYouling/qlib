@@ -1,0 +1,117 @@
+{
+  "authoritative_inputs": {
+    "campaign103_attempt_ledger": {
+      "path": "data/experiments/short_horizon/historical_walkforward/campaign_103/research_attempt_ledger_v1.json",
+      "sha256": "0ad84fd42d406fd9ab6f288d9a8139cad9af7189f98d7a2fabe929a19af35bdd"
+    },
+    "campaign103_no_return_audit": {
+      "path": "data/experiments/short_horizon/historical_walkforward/campaign_103/no_return/no_return_audit.json",
+      "sha256": "2fd8837ee22a98c52f90c76abd043f7ae793dd8fe0d98e67fd2ab5e20e9e85d5"
+    },
+    "campaign103_terminal_result": {
+      "path": "docs/a_share_three_day_walkforward_campaign_103_terminal_result_binding_20260808.json",
+      "sha256": "a5131ed43186564a4161cdbb0669a25d65aa501379ba722bfb15a0bc23d950f2"
+    }
+  },
+  "campaign102_terminal_model_trial_classification": {
+    "all_trials_terminal": true,
+    "development_survivor_count": 0,
+    "future_same_family_lambda_reweight_bounds_relaxation_target_change_subset_rescue_or_retry_allowed": false,
+    "lockbox_2024_2025_opened": false,
+    "model_family": "full_numeric_library_bounded_simplex_ridge_130f",
+    "old_trial_results_or_weights_may_be_reclassified_as_current_strategy": false,
+    "trial_count": 3
+  },
+  "campaign103_terminal_factor_classification": {
+    "all_numeric_comparisons_passed": true,
+    "development_survivor_count": 0,
+    "development_trial_count": 1,
+    "factor_name": "full_numeric_library_directional_rank_improvement_breadth_130f",
+    "future_same_factor_inversion_rewindow_support_change_vote_change_threshold_filter_subset_reweight_model_combination_rescue_or_retry_allowed": false,
+    "historical_trial_may_be_reclassified_as_current_strategy": false,
+    "maximum_absolute_median_daily_rank_correlation": 0.46933769346432125,
+    "numeric_comparison_count": 130,
+    "stress_2024_2025_opened": false
+  },
+  "complete_historical_feature_library": {
+    "campaign103_definition_appended_exactly_once": true,
+    "campaign103_development_rejection_erases_definition": false,
+    "exact_v59_order_preserved_as_prefix": true,
+    "factor_definition_count": 134,
+    "last_definition": {
+      "name": "full_numeric_library_directional_rank_improvement_breadth_130f",
+      "score_direction": "higher"
+    },
+    "order_sha256": "db734b25fed4046ff80a276448daf20918d410125ebae941373c5617816cf8dc"
+  },
+  "final_accounting": {
+    "campaign103_attempt_count": 14,
+    "campaign103_complete_factor_attempt_count": 1,
+    "campaign103_development_survivor_count": 0,
+    "campaign103_infrastructure_failure_count": 13,
+    "campaign103_return_reading_complete_development_trial_count": 1,
+    "campaign103_stress_trial_count": 0,
+    "cumulative_historical_research_attempt_count": 767,
+    "cumulative_return_reading_development_trial_count": 299
+  },
+  "future_campaign_boundary": {
+    "campaign101_retry_or_rescue_allowed": false,
+    "campaign102_model_retry_or_rescue_allowed": false,
+    "campaign103_retry_or_rescue_allowed": false,
+    "candidate_specific_subset_rescue_allowed": false,
+    "future_complete_library_mechanism_must_be_genuinely_new_and_prevalue_frozen": true,
+    "future_static_factor_may_be_added_only_after_an_independent_formula_support_and_uniqueness_protocol": true,
+    "old_terminated_static_definitions_may_be_used_only_as_part_of_the_complete_prevalue_frozen_134_definition_or_131_numeric_library": true
+  },
+  "kind": "a_share_three_day_walkforward_future_numeric_comparison_eligibility_policy",
+  "mandatory_prevalue_support_predicate_gate_for_campaign104_and_later": {
+    "all_known_terminal_coverage_failures_must_be_reviewed": true,
+    "identical_or_provably_narrower_failed_support_is_rejected_before_values": true,
+    "required": true
+  },
+  "numerical_comparator_eligibility": {
+    "all_131_eligible_numeric_comparators_must_pass": true,
+    "campaign102_lambda_0_numeric_comparator_eligible": false,
+    "campaign102_lambda_0p1_numeric_comparator_eligible": false,
+    "campaign102_lambda_1_numeric_comparator_eligible": false,
+    "campaign103_numeric_comparator_eligible": true,
+    "candidate_specific_comparator_drop_allowed": false,
+    "eligible_numeric_comparator_count": 131,
+    "eligible_numeric_comparator_order_sha256": "ab56a1791ae9a74b75d0a32cfb2346aa4bb6bfe266589be65825f8f51422f646",
+    "insufficient_pairwise_overlap_fails_closed": true,
+    "last_comparator": {
+      "name": "full_numeric_library_directional_rank_improvement_breadth_130f",
+      "numeric_comparator_eligible_for_campaign104": true,
+      "score_direction": "higher"
+    },
+    "minimum_pairwise_names_per_session": 50,
+    "minimum_pairwise_sessions_per_comparison": 100,
+    "strict_maximum_absolute_median_daily_rank_correlation": 0.8
+  },
+  "recorded_at": "2026-08-08T00:49:00+08:00",
+  "research_boundary": {
+    "campaign103_result_or_v59_library_prefix_changed_by_v60": false,
+    "campaign103_stress_2024_2025_opened": false,
+    "campaign104_candidate_or_comparison_values_read_before_v60_freeze": false,
+    "candidate49_historical_backfill_performed": false,
+    "candidate49_ledgers_changed": false,
+    "current_scoring_selection_sizing_or_orders_performed": false,
+    "investment_advice": false,
+    "provider_request_issued": false,
+    "second_prospective_candidate_created": false
+  },
+  "semantic_only_definitions": [
+    "intraday_cross_sectional_standardized_return_state_stability_236p",
+    "signal_day_turnover_rate_pct",
+    "intraday_own_bar_close_location_entropy_10b_240m"
+  ],
+  "status": "frozen_after_campaign103_terminal_zero_survivors_before_campaign104_values",
+  "supersedes_without_rewriting": {
+    "definition_and_numeric_orders_changed": true,
+    "path": "docs/a_share_three_day_walkforward_future_numeric_comparison_eligibility_policy_v59_20260807.json",
+    "preserved": true,
+    "reason": "Campaign103 created one exact no-return-admitted numeric definition. Its development rejection terminates the strategy trial but does not erase the frozen numeric factor from future complete-library uniqueness inventories.",
+    "sha256": "4e6c7aea0be521773cda56ceea33d1665a82e9254b1e9198fa13b65e22d826b0"
+  },
+  "version": 60
+}

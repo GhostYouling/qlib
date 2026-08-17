@@ -1,0 +1,90 @@
+{
+  "version": 1,
+  "kind": "a_share_three_day_walkforward_campaign071_mechanism_overlap_audit",
+  "status": "passed_semantic_mechanism_review_before_candidate_source_or_comparison_values",
+  "recorded_at": "2026-08-06T05:08:00+08:00",
+  "concept_scouting": {
+    "path": "docs/a_share_three_day_walkforward_campaign_071_concept_scouting.json",
+    "sha256": "87e220d1991d8df0db529fa618c6dd0d69da9c5e460e2c79f20c8d8396e784f2"
+  },
+  "numeric_comparator_policy": {
+    "path": "docs/a_share_three_day_walkforward_future_numeric_comparison_eligibility_policy_v5_20260806.json",
+    "sha256": "afe9f33f1b8accdcbb1481604313fcc55e9e84ecbc02098730f0b41adf60c68f",
+    "complete_definition_count": 102,
+    "numeric_comparator_count": 101,
+    "numeric_comparator_order_sha256": "8ab835ebc9a5cc4f1b0e8e80a7db027dc7b64837859b43975d544dcf9294eca3"
+  },
+  "candidate": {
+    "name": "quarterly_net_profit_scale_rank",
+    "direction": "higher",
+    "mechanism": "absolute already-public positive net-profit scale converted to a same-day cross-sectional percentile rank",
+    "formula": "strict-next-session PIT state of net_profit, finite and strictly positive, then average-tie percentile rank",
+    "no_multi_year_cold_start": true
+  },
+  "complete_library_review": {
+    "all_102_definitions_reviewed_in_frozen_order": true,
+    "candidate_is_exact_formula_duplicate": false,
+    "candidate_is_direction_only_duplicate": false,
+    "candidate_is_parameter_only_duplicate": false,
+    "candidate_is_an_inversion_of_a_terminal_factor": false,
+    "candidate_combines_terminal_factors": false,
+    "candidate49_used_or_modified": false
+  },
+  "nearest_semantic_challenges": [
+    {
+      "name": "quarterly_roe_profit_scale_efficiency_gap_2r",
+      "relationship": "uses the same net-profit state as one component but measures ROE rank minus profit-scale rank",
+      "distinction": "Campaign071 uses profit scale alone and makes no ROE efficiency comparison",
+      "mandatory_numeric_challenge": true
+    },
+    {
+      "name": "quality_profit",
+      "relationship": "quarterly profitability-family comparator",
+      "distinction": "quality_profit is profit YoY growth rather than absolute net-profit scale",
+      "mandatory_numeric_challenge": true
+    },
+    {
+      "name": "quarterly_profit_growth_roe_transition_gap_2r",
+      "relationship": "profitability transition comparator",
+      "distinction": "uses profit-growth rank minus ROE rank; Campaign071 uses neither growth nor a gap",
+      "mandatory_numeric_challenge": true
+    },
+    {
+      "name": "quarterly_quality_rank_balance_3f",
+      "relationship": "multi-field accounting-quality balance",
+      "distinction": "Campaign071 is one absolute scale state rather than rank agreement across ROE and growth fields",
+      "mandatory_numeric_challenge": true
+    },
+    {
+      "name": "quarterly_announcement_delay_improvement_yoy_rank_1y",
+      "relationship": "latest terminal quarterly comparator",
+      "distinction": "announcement-process timing versus earnings scale",
+      "mandatory_numeric_challenge": true
+    },
+    {
+      "name": "intraday_cross_sectional_standardized_return_state_stability_236p",
+      "relationship": "structurally nonnumeric prior definition",
+      "distinction": "minute cross-sectional return-state dynamics versus quarterly accounting scale",
+      "mandatory_semantic_challenge": true,
+      "numeric_status": "undefined_not_pass_not_fail"
+    }
+  ],
+  "pre_value_decision": {
+    "economically_independent_enough_to_materialize": true,
+    "numeric_uniqueness_still_required_against_all_101_eligible_comparators": true,
+    "strict_maximum_absolute_median_daily_rank_correlation": 0.8,
+    "minimum_pairwise_names_per_session": 50,
+    "minimum_pairwise_sessions_per_comparison": 100,
+    "drop_or_residualize_a_failed_comparator_allowed": false
+  },
+  "research_boundary": {
+    "candidate_source_rows_read": false,
+    "candidate_values_read": false,
+    "comparison_values_read": false,
+    "historical_daily_price_fields_read": [],
+    "historical_forward_returns_read": false,
+    "provider_request_issued": false,
+    "candidate49_ledgers_changed": false,
+    "current_scoring_selection_sizing_or_orders_performed": false
+  }
+}

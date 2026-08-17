@@ -1,0 +1,19 @@
+{
+  "schema_version": 1,
+  "kind": "a_share_three_day_walkforward_campaign110_infrastructure_failure",
+  "status": "preserved_recovery_status_failure_before_comparator133_or_recovery_values",
+  "recorded_at": "2026-08-08T15:43:48Z",
+  "failure_ordinal": 8,
+  "stage": "comparator133_recovery_status_validation",
+  "failed_exit_code": 1,
+  "exception": "AttributeError: Campaign110 no-return audit v2 has no attribute c109_verifier",
+  "cause": "The recovery chain referenced the C109 verifier one wrapper level too deep during read-only freeze validation.",
+  "narrow_repair": "Alias the already imported frozen C109 verifier from v3 onto the v2 namespace expected by the frozen v5 entry point.",
+  "research_boundary": {
+    "coverage_or_comparator_values_read_by_status": false,
+    "comparator_133_values_read": false,
+    "historical_daily_price_or_forward_return_values_read": false,
+    "provider_request_issued": false,
+    "candidate49_ledgers_changed": false
+  }
+}

@@ -1,0 +1,135 @@
+{
+  "schema_version": 1,
+  "kind": "a_share_three_day_walkforward_campaign082_concept_scouting",
+  "status": "selected_before_campaign082_minute_source_candidate_or_comparison_values",
+  "recorded_at": "2026-08-06T18:12:00+08:00",
+  "purpose": "Select exactly one economically distinct offline three-session factor after terminal Campaign081, before opening any Campaign082 minute source row, candidate value, comparison value, daily price, or forward return.",
+  "authoritative_bindings": {
+    "campaign081_verified_state_v2": {
+      "path": "docs/a_share_three_day_iteration_status_20260806_campaign081_verified_v2.json",
+      "sha256": "43969f9d6e4610b54f947904cdbc4672af6451973ccf37affc0d358970dbed8d"
+    },
+    "historical_walkforward_policy": {
+      "path": "docs/a_share_three_day_historical_walkforward_research_policy_20260727.json",
+      "sha256": "38426d6161b9bfed323c58caba18feca668b8c9d53e294951a8ba90c01a798bb"
+    },
+    "numeric_comparator_policy_v17": {
+      "path": "docs/a_share_three_day_walkforward_future_numeric_comparison_eligibility_policy_v17_20260806.json",
+      "sha256": "32b863a9e10ff26c665a9854f0863bb38e6b91dda25115cb44a57b452f97db36",
+      "complete_definition_count": 113,
+      "complete_definition_order_sha256": "0938f041bcdd591bc8977204d78df502514aa1230942199b006e8fd72bdb68a2",
+      "eligible_numeric_comparator_count": 111,
+      "eligible_numeric_comparator_order_sha256": "591432918754f7da24f468d152bbbc1b337127dd5fdc30f0f214ea776ca757aa"
+    },
+    "manage_qlib_a_share_data_skill": {
+      "path": "/Users/niyufei/.codex/skills/manage-qlib-a-share-data/SKILL.md",
+      "sha256": "90a99c54dd00f0c737e85c4c6dd48d906edbd0f591c61278885728eaf7806431"
+    }
+  },
+  "definition_only_source_boundary": {
+    "source": "immutable accepted local Tushare 2019-2025 one-minute source and joint-clean stock-day identity",
+    "minute_source_projection_if_later_admitted": [
+      "datetime",
+      "symbol",
+      "provider",
+      "high",
+      "low",
+      "amount"
+    ],
+    "stock_day_identity_projection_if_later_admitted": [
+      "trade_date",
+      "symbol",
+      "provider"
+    ],
+    "candidate_source_rows_read": false,
+    "candidate_or_comparison_values_read": false,
+    "daily_price_or_forward_return_values_read": false,
+    "provider_request_allowed": false
+  },
+  "candidate_design_catalog": [
+    {
+      "design": "intraday_range_amount_peak_timing_alignment_240m",
+      "decision": "selected_for_separate_complete_mechanism_overlap_audit",
+      "reason": "The normalized distance between the largest intrabar log-range time and the largest amount time measures whether the day's strongest price-discovery shock and strongest participation shock co-arrive, rather than their levels, recencies, full-profile correlation, distributional similarity, entropy, or path smoothness."
+    },
+    {
+      "design": "intraday_peak_intrabar_range_recency_240m",
+      "decision": "rejected_before_values",
+      "reason": "Range-peak recency alone is too close to volatility resolution, extreme-arrival timing, and the existing peak-amount-recency family."
+    },
+    {
+      "design": "intraday_range_amount_peak_signed_lag_240m",
+      "decision": "rejected_before_values",
+      "reason": "A signed lag creates two post-shock narratives and an avoidable direction search; the selected absolute timing alignment has one frozen higher direction."
+    },
+    {
+      "design": "intraday_range_amount_top_k_overlap",
+      "decision": "rejected_before_values",
+      "reason": "Choosing k, a percentile threshold, or a prominence rule creates an unnecessary parameter family and a rescue path."
+    },
+    {
+      "design": "intraday_range_amount_profile_js_similarity",
+      "decision": "rejected_before_values",
+      "reason": "Distribution-wide amount/price-discovery similarity is already represented by Campaign053 and would be a field variant of that terminal mechanism."
+    },
+    {
+      "design": "intraday_range_amount_level_correlation",
+      "decision": "rejected_before_values",
+      "reason": "A full-grid contemporaneous association would re-express terminal range-volume confirmation and amount-volatility coupling rather than isolate extreme-event co-arrival."
+    }
+  ],
+  "selected_candidate": {
+    "name": "intraday_range_amount_peak_timing_alignment_240m",
+    "direction": "higher",
+    "economic_hypothesis": "When the session's widest one-minute price-discovery interval coincides with its largest participation burst, repricing is supported by concentrated liquidity and attention rather than occurring in a thin isolated interval; that coordinated shock may persist over the next three sessions.",
+    "formula": "For exact standard bars i=0..239, set r_i=log(high_i/low_i). Let i_range be the last index attaining max(r_i) and i_amount the last index attaining max(amount_i). Return 1-abs(i_range-i_amount)/239.",
+    "time_grid": "Exactly 09:31-11:30 and 13:01-15:00 in collapsed observation order 0..239. The 09:30 row is source identity only and excluded. No return or transition is formed across lunch.",
+    "tie_rule": "Use the last exact occurrence of the maximum independently for log range and amount; do not add a tolerance, prominence rule, or first-occurrence alternative.",
+    "source_semantics": "All 240 high and low values must be finite and strictly positive with low<=high. All 240 amounts must be finite and nonnegative. Require max(log(high/low))>0 and max(amount)>0; otherwise the score is missing.",
+    "valid_range": {
+      "lower": 0.0,
+      "lower_inclusive": true,
+      "upper": 1.0,
+      "upper_inclusive": true
+    },
+    "availability": "Known at the signal-session close after the exact 240 high/low/amount bars; no future session, daily return, comparator, or Candidate49 observation is used.",
+    "parameter_direction_window_transform_filter_subset_regime_fit_model_or_combination_search": false
+  },
+  "mandatory_pre_value_challenges": [
+    "all_113_frozen_historical_factor_definitions_in_exact_order",
+    "all_111_numeric_comparators_in_exact_order",
+    "intraday_range_share_volume_confirmation_240m",
+    "intraday_amount_volatility_coupling_238p",
+    "intraday_amount_price_discovery_alignment_js_238p",
+    "intraday_peak_amount_bar_recency_240m",
+    "intraday_extreme_arrival_order_240m",
+    "intraday_volatility_resolution_238m",
+    "intraday_intrabar_range_participation_entropy_240m",
+    "intraday_morning_afternoon_range_profile_similarity_120b",
+    "intraday_amount_local_peak_density_238p",
+    "intraday_terminal_bar_amount_share_240m",
+    "intraday_amount_path_efficiency_238p",
+    "intraday_cross_sectional_standardized_return_state_stability_236p",
+    "signal_day_turnover_rate_pct",
+    "candidate49_intraday_cumulative_vwap_crossing_rate_240m_v1"
+  ],
+  "research_boundary": {
+    "campaign082_minute_source_rows_read": false,
+    "campaign082_candidate_values_read": false,
+    "comparison_values_read": false,
+    "historical_daily_price_fields_read": [],
+    "historical_forward_returns_read": false,
+    "provider_request_issued": false,
+    "candidate49_historical_backfill_performed": false,
+    "candidate49_ledgers_changed": false,
+    "second_prospective_candidate_created": false,
+    "current_scoring_selection_sizing_or_orders_performed": false,
+    "investment_advice": false
+  },
+  "decision": {
+    "selected_concept_count": 1,
+    "may_advance_directly_to_values": false,
+    "required_next_step": "Complete and bind one exhaustive no-value mechanism-overlap audit; then freeze the no-return protocol, implementation, tests, and fingerprints before any candidate value.",
+    "candidate49_remains_only_active_prospective_candidate": true
+  }
+}

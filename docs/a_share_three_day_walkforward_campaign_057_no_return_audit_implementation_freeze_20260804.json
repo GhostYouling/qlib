@@ -1,0 +1,77 @@
+{
+  "version": 1,
+  "kind": "a_share_three_day_walkforward_campaign057_no_return_audit_implementation_freeze",
+  "status": "frozen_after_snapshot_and_before_candidate_coverage_or_comparison_values",
+  "recorded_at": "2026-08-04T04:38:00Z",
+  "purpose": "Bind the sole Campaign057 coverage-first and then 80-comparison uniqueness audit before it loads the candidate column, any comparison column, daily price, or forward return.",
+  "authoritative_boundary": {
+    "path": "docs/a_share_three_day_iteration_status_20260804_campaign056_verified.json",
+    "sha256": "0e51c9273071bebf270b81ab11a2551235338798419f05b58519f396cc099b3e"
+  },
+  "no_return_protocol": {
+    "path": "docs/a_share_three_day_walkforward_campaign_057_no_return_preregistration.json",
+    "sha256": "9eb8607e91e952b9e22e436374d68de0a90df251065720bed8a6285f2e3b7ff1"
+  },
+  "feature_snapshot_binding": {
+    "path": "docs/a_share_three_day_walkforward_campaign_057_feature_snapshot_binding_20260804.json",
+    "sha256": "a48d754e8b64201e35fd324e5f894957f0347932915ba3aaca85b7c873903e62"
+  },
+  "feature_snapshot": {
+    "path": "/Volumes/DIsk/qlib-a-share-tushare-1m/derived/a_share/rich/tushare/minute_walkforward_campaign057_feature_library/tushare_stk_mins_1m_2019_2025_ea0cbb8f_walkforward_campaign057_feature_library_v1/snapshot_manifest.json",
+    "sha256": "7aba63621b2c6bd2b9d511d11ab56fc5331ae1dcf7a3c6055dbe6455d437d0ed",
+    "dataset_sha256": "b24d183b15feb98015d7353160740273ffb5acc14dcf0031a984d9eb3003f19d",
+    "eligible_rows": 7671540
+  },
+  "base_audit_engine": {
+    "path": "scripts/a_share_three_day_walkforward_campaign056_no_return_audit.py",
+    "sha256": "95332e841b643b66818983549613149a2e6ba445fcbfa19138088dd1288786c1",
+    "use": "immutable ordered coverage and comparison engine; Campaign057 appends terminal Campaign056 as comparison 80"
+  },
+  "audit_runner": {
+    "path": "scripts/a_share_three_day_walkforward_campaign057_no_return_audit.py",
+    "sha256": "d60f8bb19e953a75e6dcc47745399a08cab71deb61134783fc3a043613e6ed59",
+    "candidate_factor": "intraday_day_over_day_absolute_return_profile_similarity_238b",
+    "source_fields": [
+      "datetime",
+      "symbol",
+      "provider",
+      "close"
+    ],
+    "comparison_factor_count": 80,
+    "comparison_factor_order_sha256": "67e70655596658de91c8285ff998c17e8d2a7d83d0f571d416182e635e8180ae",
+    "coverage_runs_before_comparison_values": true,
+    "daily_price_or_forward_return_loader_present": false
+  },
+  "audit_tests": {
+    "path": "tests/data_collector_tests/test_a_share_three_day_walkforward_campaign057_no_return_audit.py",
+    "sha256": "8387bdb35ec7fe70a3da60c4f2a02d1717992c0eaebc04a1636cfd86b9ba8e7d",
+    "combined_command": "PYTHONPATH=/Volumes/DIsk/Disk-Coding/qlib /opt/anaconda3/bin/python3 -m pytest -q tests/data_collector_tests/test_a_share_three_day_walkforward_campaign057_features.py tests/data_collector_tests/test_a_share_three_day_walkforward_campaign057_empty_partition_repair.py tests/data_collector_tests/test_a_share_three_day_walkforward_campaign057_no_return_audit.py",
+    "passed": 17,
+    "failed": 0,
+    "status_test_accepts_zero_or_one_immutable_audit_and_does_not_encode_a_historical_zero_count": true
+  },
+  "ordered_gate_semantics": {
+    "minimum_median_coverage": 0.95,
+    "minimum_p05_coverage": 0.9,
+    "minimum_p05_eligible_names": 50,
+    "minimum_non_overlapping_three_session_cohorts": 200,
+    "minimum_observed_years": 5,
+    "maximum_absolute_median_daily_rank_correlation": 0.8,
+    "minimum_pairwise_names_per_session": 50,
+    "minimum_pairwise_sessions_per_comparison": 100,
+    "all_80_comparisons_must_pass": true
+  },
+  "research_boundary": {
+    "candidate_values_read_before_freeze": false,
+    "comparison_values_read_before_freeze": false,
+    "historical_daily_price_fields_read_before_freeze": [],
+    "historical_forward_return_fields_read_before_freeze": false,
+    "development_folds_opened_before_freeze": false,
+    "stress_2024_2025_opened_before_freeze": false,
+    "candidate49_historical_return_read": false,
+    "candidate49_ledgers_changed": false,
+    "provider_request_issued": false,
+    "current_scoring_selection_sizing_or_orders_performed": false
+  },
+  "next_action": "Run exactly one Campaign057 no-return audit. If coverage fails, stop before comparisons. If any uniqueness comparison fails, stop before daily prices and returns. Only a full pass may authorize freezing the sole development trial."
+}

@@ -1,0 +1,43 @@
+{
+  "version": 1,
+  "kind": "a_share_three_day_walkforward_campaign072_postcoverage_inner_append_helper_failure",
+  "status": "recorded_failed_exit_after_coverage_and_101_comparison_reads_before_final_append",
+  "recorded_at": "2026-08-06T06:55:00+08:00",
+  "failed_command_stage": "fourth_activated_no_return_audit_after_inherited_101_comparisons_before_campaign071_append",
+  "exit_code": 1,
+  "frozen_inputs": {
+    "audit_runner_v4": {
+      "path_at_failure": "scripts/a_share_three_day_walkforward_campaign072_no_return_audit.py",
+      "sha256_at_failure": "0963aa92735de4b5b7dd4c1a515a2c6db39824d5fcd8c2c56b54438be9c7167f"
+    },
+    "implementation_freeze_v4": {
+      "path": "docs/a_share_three_day_walkforward_campaign_072_no_return_audit_implementation_freeze_v4_20260806.json",
+      "sha256": "a04977aed4e2c1bd5c35fa18cc2a27b930ca830d155b87d34a59db66ac166b89"
+    },
+    "activation_binding_v4": {
+      "path": "docs/a_share_three_day_walkforward_campaign_072_no_return_audit_activation_binding_v4_20260806.json",
+      "sha256": "7b8c43aa968010c9420a9b3dae3cfcf7d72a8ce183732b853b1e1ab1fd899d98"
+    }
+  },
+  "observed_failure": {
+    "exception": "KeyError",
+    "message": "_append_snapshot_comparison",
+    "stack_stage": "Campaign072 final Campaign071 snapshot append after inherited Campaign071 layer returned 101 results",
+    "root_cause": "The snapshot append helper is defined in the inner generated runtime, but the Campaign072 wrapper addressed the outer generated namespace."
+  },
+  "evidence_boundary": {
+    "static_binding_validation_passed": true,
+    "candidate_snapshot_value_frame_loaded": true,
+    "coverage_or_capacity_metrics_computed": true,
+    "coverage_gate_passed": true,
+    "comparison_values_read": true,
+    "inherited_comparison_results_computed_before_failure": 101,
+    "campaign071_final_comparator_appended": false,
+    "historical_daily_price_fields_read": [],
+    "historical_forward_returns_read": false,
+    "provider_request_issued": false,
+    "candidate49_ledgers_changed": false,
+    "audit_artifact_published": false
+  },
+  "repair_rule": "Preserve v4 records unchanged; call the already-frozen append helper from the inner runtime, update the synthetic regression to patch that exact location, and publish truthful versioned v5 bindings before retrying without changing any research choice."
+}

@@ -1,0 +1,41 @@
+{
+  "version": 2,
+  "kind": "a_share_three_day_walkforward_campaign069_no_return_audit_implementation_freeze",
+  "status": "frozen_before_v2_same_parameter_retry_or_additional_comparator_value_read",
+  "recorded_at": "2026-08-06T03:46:00+08:00",
+  "repair_protocol": {
+    "path": "docs/a_share_three_day_walkforward_campaign_069_no_return_audit_range_registration_repair_protocol_20260806.json",
+    "sha256": "b752a7617e7724eb208f741e5d903e9f4f56e724d1eabb21007d76f4ea36155e"
+  },
+  "failure_record": {
+    "path": "docs/a_share_three_day_walkforward_campaign_069_no_return_audit_execution_failure_20260806.json",
+    "sha256": "9743576d0e5f4fdcbbd5ea8500bfbadfbe928aaae880f2f6c1dfc50faada0de5"
+  },
+  "v1_runner": {
+    "path": "scripts/a_share_three_day_walkforward_campaign069_no_return_audit.py",
+    "sha256": "6b02c861740bb46e47097a6f688be0cf1783d3d7a02e508c906d1e18ca87a478",
+    "unchanged": true
+  },
+  "v2_runner": {
+    "path": "scripts/a_share_three_day_walkforward_campaign069_no_return_audit_v2.py",
+    "sha256": "bc42919451913cded07c35d2a58d0ee9093d3353305b24afe7e72ff63d10d4f4"
+  },
+  "tests": {
+    "path": "tests/data_collector_tests/test_a_share_three_day_walkforward_campaign069_no_return_audit_v2.py",
+    "sha256": "f36ec5ab23234dfd15ed97eba4ede3c34d241cf7d63f0677a187f9b446ddf0d4",
+    "pre_freeze_selected_passed": 3,
+    "pre_freeze_selected_failed": 0,
+    "pre_freeze_deselected_freeze_binding_test": 1
+  },
+  "sole_code_change": "Install the frozen signed [-1,1] ranges for both Campaign069 and the Campaign068 comparator before delegating every other operation to the immutable v1 runner.",
+  "candidate_or_comparator_values_read_after_failure_before_freeze": false,
+  "historical_daily_price_fields_read_before_freeze": [],
+  "historical_forward_returns_read_before_freeze": false,
+  "provider_request_issued_before_freeze": false,
+  "candidate49_ledgers_changed_before_freeze": false,
+  "decision": {
+    "same_parameter_v2_retry_authorized": true,
+    "formula_direction_comparator_order_gates_or_data_changed": false,
+    "daily_price_or_return_access_authorized": false
+  }
+}

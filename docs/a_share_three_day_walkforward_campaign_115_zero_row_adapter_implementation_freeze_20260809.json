@@ -1,0 +1,99 @@
+{
+  "schema_version": 1,
+  "kind": "a_share_three_day_walkforward_campaign115_zero_row_adapter_implementation_freeze",
+  "status": "pure_adapter_fingerprint_frozen_and_synthetic_tests_passed_before_provider_request",
+  "recorded_at": "2026-08-09T02:52:55+08:00",
+  "purpose": "Bind the exact Campaign115 source contract to a network-free pure adapter and synthetic failure tests before any Tushare limit_list_d request or historical value is allowed.",
+  "authoritative_inputs": {
+    "source_contract": {
+      "path": "docs/a_share_tushare_limit_up_queue_persistence_data_contract_20260809.json",
+      "sha256": "41627b182e3d5f6d5de663f589abc06b204bd425971afe1de4a7c20d237caa42"
+    },
+    "attempt_ledger_v2": {
+      "path": "data/experiments/short_horizon/historical_walkforward/campaign_115/research_attempt_ledger_v2.json",
+      "sha256": "fa6e6fda76383676b23f00244ab25dc8c1a9f0eaf24d77d70bab2fa64156fc46"
+    }
+  },
+  "implementation": {
+    "adapter_path": "scripts/a_share_tushare_limit_up_queue_persistence.py",
+    "adapter_sha256": "807d06f7dec4ca0a94beb28912b686e8cb01fbf36c7f473e69564de16af5f5dd",
+    "test_path": "tests/data_collector_tests/test_a_share_tushare_limit_up_queue_persistence.py",
+    "test_sha256": "39a97ccbda6c3e535318c8a0884fb895190fd92298ea0c5f344c515936db701d",
+    "network_command_present": false,
+    "credential_read_present": false,
+    "provider_sdk_import_present": false,
+    "raw_fields": [
+      "ts_code",
+      "trade_date",
+      "limit",
+      "last_time",
+      "open_times"
+    ],
+    "output_factor": "tushare_official_limit_up_queue_persistence",
+    "daily_price_forward_return_comparator_or_old_factor_field_present": false
+  },
+  "verified_semantics": {
+    "contract_fingerprint_and_semantics_fail_closed": true,
+    "exact_response_field_order_required": true,
+    "provider_row_ceiling_fails_closed": true,
+    "trade_date_and_stock_date_uniqueness_fail_closed": true,
+    "allowed_limit_states": [
+      "D",
+      "U",
+      "Z"
+    ],
+    "unknown_limit_state_fails_closed": true,
+    "u_last_time_and_open_times_domains_fail_closed": true,
+    "lunch_break_excluded_from_remaining_session_minutes": true,
+    "valid_d_z_and_absent_active_names_map_to_zero": true,
+    "valid_u_formula": "remaining_session_minutes_after_last_time / (245 * (1 + open_times))",
+    "output_range": [
+      0.0,
+      1.0
+    ],
+    "alternate_formula_direction_or_category_mapping_available": false
+  },
+  "verification_receipts": {
+    "contract_cli": {
+      "command": "/Volumes/DIsk/Coding/anaconda3/bin/python3.12 scripts/a_share_tushare_limit_up_queue_persistence.py validate-contract",
+      "exit_code": 0,
+      "ready": true,
+      "provider_request_issued": false
+    },
+    "focused_tests": {
+      "receipt": "15 passed in 0.51s",
+      "exit_code": 0
+    },
+    "ruff": {
+      "receipt": "All checks passed!",
+      "exit_code": 0
+    },
+    "black_check": {
+      "receipt": "2 files would be left unchanged",
+      "exit_code": 0
+    },
+    "first_black_check_failure_recorded_append_only": true
+  },
+  "next_gate": {
+    "acceptance_request_allowed_by_this_freeze_alone": false,
+    "required_before_acceptance_request": [
+      "freeze an exact one-shot acceptance runner and failure record path",
+      "bind runner and tests by SHA-256",
+      "verify the repository .env is a regular non-symlink file with mode 0600 and exactly one nonempty TUSHARE_TOKEN without printing, hashing, or persisting its value",
+      "verify no prior Campaign115 acceptance success or failure exists",
+      "require an explicit confirmation flag so ordinary validation remains zero-network"
+    ],
+    "provider_rows_candidate_values_comparator_values_daily_prices_or_returns_allowed_now": false
+  },
+  "research_boundary": {
+    "provider_request_issued": false,
+    "provider_rows_read": false,
+    "candidate_or_comparator_values_read": false,
+    "daily_price_or_forward_return_values_read": false,
+    "stress_2024_2025_opened": false,
+    "candidate49_ledgers_changed": false,
+    "second_prospective_candidate_created": false,
+    "current_scoring_selection_sizing_or_orders_performed": false,
+    "investment_advice": false
+  }
+}

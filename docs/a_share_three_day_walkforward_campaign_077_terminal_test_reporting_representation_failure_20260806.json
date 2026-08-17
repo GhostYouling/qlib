@@ -1,0 +1,26 @@
+{
+  "schema_version": 1,
+  "kind": "a_share_three_day_walkforward_campaign077_terminal_test_reporting_representation_failure",
+  "status": "failed_assertion_preserved_before_test_only_repair",
+  "recorded_at": "2026-08-06T13:39:00+08:00",
+  "campaign_id": "a_share_three_day_walkforward_campaign_077",
+  "failure_ordinal": 9,
+  "stage": "terminal_test_suite",
+  "command_result": {
+    "passed": 20,
+    "failed": 1,
+    "deselected_historical_lifecycle_nodes": 3,
+    "exit_code": 1
+  },
+  "cause": "The report test required the percentage string 36.450754 in all three reports, while two reports intentionally render the same frozen aggregate 20bp return as decimal -0.364508.",
+  "production_code_changed_by_failed_command": false,
+  "research_artifacts_changed_by_failed_command": false,
+  "candidate_or_comparator_values_recomputed": false,
+  "underlying_daily_price_or_forward_return_fields_read": false,
+  "existing_frozen_development_artifacts_read_by_tests": true,
+  "development_recomputed": false,
+  "stress_2024_2025_opened": false,
+  "provider_request_issued": false,
+  "candidate49_ledgers_changed": false,
+  "repair": "Change only the terminal test to assert each document's intentional numeric representation; do not modify factor, audit, development, thresholds, or results."
+}

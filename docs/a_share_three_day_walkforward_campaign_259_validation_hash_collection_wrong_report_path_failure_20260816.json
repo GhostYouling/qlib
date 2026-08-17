@@ -1,0 +1,22 @@
+{
+  "schema_version": 1,
+  "kind": "a_share_three_day_walkforward_campaign259_infrastructure_failure",
+  "recorded_at": "2026-08-16T14:43:00+08:00",
+  "timestamp_semantics": "monotonic_logical_append_time_not_host_wall_clock_measurement",
+  "status": "failed_validation_hash_collection_wrong_mutable_report_paths",
+  "attempt_id": "campaign259_infrastructure_002",
+  "phase": "validation_input_hash_collection",
+  "command_semantics": "A read-only hash collection command referenced docs/a_share_current_research_report.md and docs/a_share_three_day_strategy_report.md, but the authoritative mutable reports live under data/experiments/short_horizon. The command emitted some earlier hashes, then raised FileNotFoundError and exited 1.",
+  "disposition": "Discard the complete failed command output as validation evidence. Use the authoritative report paths recorded by Campaign258 and v397, then rerun hash collection, current-reference validation and all final checks independently with an unmasked zero exit code.",
+  "research_boundary": {
+    "repository_file_written_by_failed_command": false,
+    "candidate_or_comparator_value_read": false,
+    "daily_price_or_forward_return_read": false,
+    "provider_or_web_request_issued": false,
+    "provider_credential_presence_value_or_digest_read": false,
+    "candidate49_plan_or_run_executed": false,
+    "candidate49_ledgers_changed": false,
+    "stress_2024_2025_opened": false,
+    "failed_command_partial_output_used_as_scientific_or_validation_evidence": false
+  }
+}

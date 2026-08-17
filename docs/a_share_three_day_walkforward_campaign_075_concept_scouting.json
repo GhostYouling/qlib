@@ -1,0 +1,127 @@
+{
+  "version": 1,
+  "kind": "a_share_three_day_walkforward_campaign075_concept_scouting",
+  "status": "selected_before_campaign075_candidate_source_or_comparison_values",
+  "recorded_at": "2026-08-06T09:14:00+08:00",
+  "purpose": "Continue the offline three-session walk-forward program after terminal Campaign074 by selecting exactly one economically distinct, point-in-time structural mechanism before opening any Campaign075 source row, candidate value, comparison value, daily price, or forward return.",
+  "authoritative_bindings": {
+    "campaign074_verified_state": {
+      "path": "docs/a_share_three_day_iteration_status_20260806_campaign074_verified.json",
+      "sha256": "b6796f8f6404c38c6f67cb9f7b554689671ae568ef50dbf6c1b2d73925b961b8"
+    },
+    "historical_walkforward_policy": {
+      "path": "docs/a_share_three_day_historical_walkforward_research_policy_20260727.json",
+      "sha256": "38426d6161b9bfed323c58caba18feca668b8c9d53e294951a8ba90c01a798bb"
+    },
+    "numeric_comparator_policy_v10": {
+      "path": "docs/a_share_three_day_walkforward_future_numeric_comparison_eligibility_policy_v10_20260806.json",
+      "sha256": "2b01d476308a1a286825a2727a26eefb1aef20706a132d7e6cb3ea4664fa0d48",
+      "complete_definition_count": 106,
+      "complete_definition_order_sha256": "9e36bbe2532e09294f2c677615c6245609abdb94c44557ee776e040c9f270b0c",
+      "eligible_numeric_comparator_count": 105,
+      "eligible_numeric_comparator_order_sha256": "533f22783f42d7d00b51fcceda879a2881e1a484f4d70fc0f2ecb5a0210e6fcc"
+    }
+  },
+  "definition_only_source_boundary": {
+    "source": "the already accepted local A-share trading calendar plus each instrument's accepted tradable-coverage start date used by the existing 20-session listing gate",
+    "stock_day_identity_fields": [
+      "trade_date",
+      "symbol",
+      "provider"
+    ],
+    "instrument_fields": [
+      "instrument",
+      "accepted_instrument_start_date"
+    ],
+    "forbidden_fields": [
+      "minute or daily open/high/low/close",
+      "minute or daily volume/amount/turnover",
+      "VWAP or transaction price",
+      "financial statement values",
+      "event counts, contents, or freshness",
+      "historical or forward returns",
+      "Candidate49 values or ledgers"
+    ],
+    "candidate_source_rows_read": false,
+    "provider_request_allowed": false
+  },
+  "candidate_design_catalog": [
+    {
+      "design": "accepted_instrument_session_youth_20s",
+      "decision": "selected_for_separate_complete_mechanism_overlap_audit",
+      "reason": "Accepted-instrument session age is a pre-existing issuer state: for listings that enter after the dataset start it measures post-listing seasoning and attention decay, while older left-censored instruments tie at the accepted history boundary. It is not any price path, liquidity allocation, accounting state, announcement timing, or terminal-factor value. The exact 20-session lower bound is inherited from the frozen eligibility gate rather than searched for this factor."
+    },
+    {
+      "design": "raw_daily_turnover_or_turnover_surge",
+      "decision": "rejected_before_values_as_terminal_family",
+      "reason": "The accepted historical frontier already tested daily liquidity_5, turnover_surge, turnover_surge_1, turnover_surge_3, return-turnover correlation, and turnover-confirmed strategies. Reopening raw turnover would be a same-family field/window rescue."
+    },
+    {
+      "design": "opening_or_overnight_gap",
+      "decision": "rejected_before_values_as_terminally_invalid_source_semantics",
+      "reason": "The historical standalone 09:30 price can be a placeholder; prior audits permanently forbid reopening the previous-close opening-gap mechanism."
+    },
+    {
+      "design": "board_identity_listing_year_ipo_cohort_or_age_bucket",
+      "decision": "rejected_before_values",
+      "reason": "Board, calendar cohort, threshold, and bucket variants would create categorical filters and parameter searches. Campaign075 uses one unbucketed session count only."
+    },
+    {
+      "design": "calendar_day_age_log_age_inverse_age_or_percentile_rank",
+      "decision": "rejected_before_values",
+      "reason": "Calendar-day, log, inverse, or explicit percentile forms add representation choices without changing the economic ordering. Campaign075 fixes the raw accepted-session count with a negative sign."
+    },
+    {
+      "design": "age_interacted_with_price_volume_amount_quality_board_or_market_regime",
+      "decision": "rejected_before_values",
+      "reason": "Interactions, neutralization, residualization, subsets, weights, and terminal-factor combinations are outside the one-factor Campaign075 library."
+    }
+  ],
+  "selected_candidate": {
+    "name": "accepted_instrument_session_youth_20s",
+    "direction": "higher",
+    "economic_hypothesis": "After the frozen 20-session seasoning gate, instruments with a more recent accepted tradable-coverage start can retain stronger new-listing attention and unresolved ownership discovery, which may persist from the next accepted open through the third accepted close.",
+    "formula": "For an eligible stock-day t, count accepted local market sessions s satisfying accepted_instrument_start_date <= s <= t. Require the count to be at least 20 and return its negative as a finite integer-valued float.",
+    "availability": "The accepted instrument start date is fixed before every historical signal; the accepted calendar is also fixed. Instruments whose actual listing predates the accepted history boundary are deliberately left-censored and tie at that boundary. No later issuer event, price, volume, return, or current score enters the value.",
+    "listing_gate_relation": "The pre-existing minimum of 20 accepted listing sessions remains an eligibility gate. Campaign075 ranks only among names that already pass it; the factor does not change or relax the gate.",
+    "valid_range": {
+      "upper": -20.0,
+      "upper_inclusive": true,
+      "lower": "finite_negative_unbounded_by_formula"
+    },
+    "missing_rule": "Missing when the accepted instrument start date is absent or invalid, the signal date is outside the accepted calendar, the start date is after the signal date, or fewer than 20 accepted sessions have elapsed. Never infer an earlier legal listing date, backfill, clip, bucket, log, rank, winsorize, rescale, or substitute calendar days.",
+    "parameter_window_transform_threshold_filter_subset_regime_fit_model_or_combination_search": false
+  },
+  "mandatory_pre_value_challenges": [
+    "all_106_frozen_historical_factor_definitions_in_exact_order",
+    "all_105_numeric_comparators_in_exact_order",
+    "intraday_cross_sectional_standardized_return_state_stability_236p",
+    "tushare_free_float_scarcity",
+    "size_small and free_float_cap_proxy historical families",
+    "quality_and_listing_eligibility_state",
+    "quarterly_announcement_freshness_60s",
+    "quarterly_announcement_peer_crowding_sparsity",
+    "intraday_terminal_nominal_share_price_affordability_rank_240m",
+    "candidate49_intraday_cumulative_vwap_crossing_rate_240m_v1"
+  ],
+  "research_boundary": {
+    "campaign075_candidate_source_rows_read": false,
+    "campaign075_candidate_values_read": false,
+    "comparison_values_read": false,
+    "historical_daily_price_fields_read": [],
+    "historical_forward_returns_read": false,
+    "provider_request_issued": false,
+    "candidate49_historical_backfill_performed": false,
+    "candidate49_ledgers_changed": false,
+    "second_prospective_candidate_created": false,
+    "current_scoring_selection_sizing_or_orders_performed": false,
+    "investment_advice": false,
+    "current_listing_snapshot_survivorship_limitation": true
+  },
+  "decision": {
+    "selected_concept_count": 1,
+    "may_advance_directly_to_values": false,
+    "required_next_step": "Complete and bind one exhaustive no-value mechanism-overlap audit. Only if it passes may one exact no-return protocol, implementation, snapshot, coverage gate, 105-comparator uniqueness gate, and one finite 2019-2023 development trial be frozen before values.",
+    "candidate49_remains_only_active_prospective_candidate": true
+  }
+}

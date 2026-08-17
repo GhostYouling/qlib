@@ -1,0 +1,86 @@
+{
+  "schema_version": 1,
+  "kind": "a_share_three_day_walkforward_campaign256_terminal_validation",
+  "recorded_at": "2026-08-16T13:16:00+08:00",
+  "timestamp_semantics": "monotonic_logical_append_time_not_host_wall_clock_measurement",
+  "status": "passed_campaign256_terminal_evidence_and_cumulative_regression",
+  "authoritative_inputs": {
+    "frozen_source_frontier": {
+      "path": "docs/a_share_three_day_walkforward_campaign_256_commercial_medical_imaging_radiation_therapy_equipment_service_lifecycle_source_frontier_20260816.json",
+      "sha256": "ebcfaff24cb70400ac40aba4ebd5150a40f1983956322adaa006527fdde54c2d"
+    },
+    "attempt_ledger_v1": {
+      "path": "data/experiments/short_horizon/historical_walkforward/campaign_256/research_attempt_ledger_v1.json",
+      "sha256": "a00e07cc78782a62f3ecb6fc8124fe70b16efd976e3d4bd879b07dc1615a3624"
+    },
+    "attempt_ledger_v2": {
+      "path": "data/experiments/short_horizon/historical_walkforward/campaign_256/research_attempt_ledger_v2.json",
+      "sha256": "668712d6c5383e8d799f579069de53ed0c55310393bcddc015b30b689cdd60c1"
+    },
+    "attempt_ledger_v3": {
+      "path": "data/experiments/short_horizon/historical_walkforward/campaign_256/research_attempt_ledger_v3.json",
+      "sha256": "16972822775d7cfd6085a287a11ede6f2e7fa44a745300ba400d989c4b34d833"
+    },
+    "attempt_ledger_v4": {
+      "path": "data/experiments/short_horizon/historical_walkforward/campaign_256/research_attempt_ledger_v4.json",
+      "sha256": "dc224e465cbe9133b5fb56b3fff9d4b910aeb1873790f3bea68588129a9297d0"
+    },
+    "terminal_result_v3": {
+      "path": "docs/a_share_three_day_walkforward_campaign_256_terminal_result_v3_20260816.json",
+      "sha256": "bb98c371c8f3b3dd121af86ed92da7f57f607eb39d74791ab8934777ecea60c2"
+    },
+    "numeric_policy_v390": {
+      "path": "docs/a_share_three_day_walkforward_future_numeric_comparison_eligibility_policy_v390_20260816.json",
+      "sha256": "3303d09f2a15ac36efaeb6c7c3e3bcac1670edf82b37f91cbd41d5864f37f010"
+    },
+    "terminal_test": {
+      "path": "tests/data_collector_tests/test_a_share_three_day_walkforward_campaign256_terminal.py",
+      "sha256": "1d702acaffe03a2ec180b4a07ba94de19d75f06108a07e6b6a80101415ae26aa"
+    }
+  },
+  "validation_results": {
+    "black": "passed; 1 file would be left unchanged",
+    "ruff": "passed",
+    "json_parse": "16 Campaign256 failure, frontier, append-only accounting, result and policy JSON files passed before terminal publication",
+    "scoped_report_whitespace_and_unique_heading": "passed",
+    "focused_pytest": "2 passed",
+    "campaign145_through_campaign256_test_file_count": 144,
+    "deselection_node_count": 71,
+    "cumulative_pytest": "527 passed, 1 skipped, 71 deselected",
+    "cumulative_runner_repeated_deselect_option_per_node": "passed",
+    "independent_reference_binding_and_all_thirteen_ledger_chain_entries": "passed",
+    "prior_source_frontier_exact_phrase_scan": "118 files scanned before Campaign256 publication; zero exact phrase matches",
+    "candidate49_empty_ledger_semantics": "passed"
+  },
+  "candidate49": {
+    "only_active_prospective_candidate": true,
+    "signal_entry_count": 0,
+    "execution_entry_count": 0,
+    "signal_ledger_sha256": "5193f00d7f36da003f53cec387900da4c3d002299f5dfcfc1a95eaa199ed3a79",
+    "execution_ledger_sha256": "d57a3e61eac969e42cafa418ccd8c0a5ee65dcf69da145bb2c096c2a02a2ea4f"
+  },
+  "publication_state": {
+    "campaign_effective_attempt_count": 13,
+    "campaign_infrastructure_failure_count": 6,
+    "campaign_scientific_attempt_count": 7,
+    "cumulative_historical_research_attempt_count": 2456,
+    "cumulative_return_reading_development_trial_count": 314,
+    "attempt_chain_tip_sha256": "1cd3e24a61dc516c2b9c650bf826e1cf544d04c5946c03267554102794778ccf",
+    "complete_factor_definition_count": 158,
+    "eligible_numeric_comparator_count": 142,
+    "current_report_sha256": "cfd5ff98704c411840f8b952f4b309970ae5702e7b5e168193d4ed5b6d18f18f",
+    "three_day_report_sha256": "f47eb007820928583e7ea67e6ad6c7312f1ff7e97c8696c7d2fe6a44c2d7593b"
+  },
+  "research_boundary": {
+    "provider_or_web_request_issued": false,
+    "provider_credential_presence_value_or_digest_read": false,
+    "candidate49_plan_or_run_executed": false,
+    "candidate49_ledgers_changed": false,
+    "second_prospective_candidate_created": false,
+    "stress_2024_2025_opened": false,
+    "current_scoring_selection_sizing_positions_or_orders_performed": false,
+    "failed_or_truncated_output_used_as_scientific_or_validation_evidence": false,
+    "investment_advice": false
+  },
+  "next_action": "Publish the advancing Campaign256 state and keep the active goal authorized for Campaign257 zero-network offline prevalue research."
+}

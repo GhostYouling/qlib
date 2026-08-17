@@ -1,0 +1,22 @@
+{
+  "schema_version": 1,
+  "kind": "a_share_three_day_walkforward_campaign121_infrastructure_failure",
+  "status": "recorded_before_partition_verification_completed",
+  "recorded_at": "2026-08-14T02:20:00+08:00",
+  "attempt_id": "campaign121_infrastructure_013",
+  "phase": "full_snapshot_read_only_verification_entrypoint",
+  "failure": {
+    "exit_code": 1,
+    "class": "direct_script_package_import_failure",
+    "message": "Direct script execution did not place the repository root on sys.path, so the frozen scripts package import failed before any partition opened."
+  },
+  "safe_recovery": "Invoke the identical frozen verifier as a Python module from the repository root; do not edit the frozen verifier or recovery freeze.",
+  "research_boundary": {
+    "candidate_partition_values_reopened": false,
+    "comparator_values_read": false,
+    "historical_daily_price_or_forward_return_values_read": false,
+    "provider_request_issued": false,
+    "candidate49_ledgers_changed": false,
+    "scientific_result_changed": false
+  }
+}

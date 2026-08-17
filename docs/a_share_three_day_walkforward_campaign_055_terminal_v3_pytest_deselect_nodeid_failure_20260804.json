@@ -1,0 +1,40 @@
+{
+  "schema_version": 1,
+  "kind": "a_share_three_day_walkforward_campaign055_post_terminal_infrastructure_failure",
+  "status": "recorded_pytest_deselect_nodeid_prefix_mismatch",
+  "recorded_at": "2026-08-04T02:33:00+08:00",
+  "campaign": "Campaign055",
+  "attempt_class": "infrastructure_only",
+  "stage": "combined_current_suite_historical_node_deselection",
+  "exit_code": 1,
+  "test_summary": {
+    "passed": 452,
+    "failed": 5,
+    "warnings": 9,
+    "failed_scope": "only immutable v1/v2 or pre-snapshot historical-state assertions"
+  },
+  "failure_classification": "pytest_nodeid_prefix_mismatch_in_deselect_arguments",
+  "explanation": "The command used tests/data_collector_tests/... deselect prefixes, while pytest's collected node IDs use data_collector_tests/.... Therefore none of the intended historical nodes were deselected.",
+  "authorized_repair": "Use the exact node IDs emitted by pytest, beginning with data_collector_tests/, preserve every historical test unchanged, add a separately versioned current-state test, and rerun the otherwise unchanged combined suite on /Volumes/DIsk basetemp.",
+  "bindings": {
+    "research_record_v3": {
+      "path": "docs/a_share_three_day_walkforward_campaign_055_research_record_v3.json",
+      "sha256": "9d13ca0a1ee2b58ede2ea0c2409d76e639efe5e9de55ac9da36da2ff21eee948"
+    },
+    "research_attempt_ledger_v3": {
+      "path": "data/experiments/short_horizon/historical_walkforward/campaign_055/research_attempt_ledger_v3.json",
+      "sha256": "00e9b655c863b13c287804c78421a60df8e25a69d57f256bbff3f6652fd6e455"
+    },
+    "terminal_v3_tests": {
+      "path": "tests/data_collector_tests/test_a_share_three_day_walkforward_campaign055_terminal_v3.py",
+      "sha256": "6a60a90ee250895e6ad2209ed25d940dfc733801878bd751dfd06a920a817e6f"
+    }
+  },
+  "campaign055_factor_formula_direction_snapshot_audit_comparisons_gates_or_terminal_decision_changed": false,
+  "historical_daily_price_fields_read": [],
+  "historical_forward_return_fields_read": false,
+  "candidate49_historical_return_read": false,
+  "candidate49_ledgers_changed": false,
+  "provider_request_issued": false,
+  "current_scoring_selection_sizing_or_orders_performed": false
+}

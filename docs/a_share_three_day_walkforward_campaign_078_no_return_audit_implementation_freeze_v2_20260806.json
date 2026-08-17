@@ -1,0 +1,42 @@
+{
+  "schema_version": 1,
+  "version": 2,
+  "kind": "a_share_three_day_walkforward_campaign078_no_return_audit_implementation_freeze",
+  "status": "frozen_before_full_retry_with_helper_path_only_repair",
+  "frozen_at": "2026-08-06T14:30:00+08:00",
+  "campaign_id": "a_share_three_day_walkforward_campaign_078",
+  "repair_protocol": {
+    "path": "docs/a_share_three_day_walkforward_campaign_078_no_return_helper_path_repair_protocol_v2_20260806.json",
+    "sha256": "3d12ad46d953f8bfd00fe0ce3ff616c2486c17baf17e4043f25ccb41bc4fe9f0"
+  },
+  "v1_failure_record": {
+    "path": "docs/a_share_three_day_walkforward_campaign_078_no_return_v1_helper_path_failure_20260806.json",
+    "sha256": "9b19c97d0b88f458ce8a4d8ec48a2891a21cf5503d16629051ab14bcb3fafba2"
+  },
+  "v1_runner": {
+    "path": "scripts/a_share_three_day_walkforward_campaign078_no_return_audit.py",
+    "sha256": "5f194ab765b7d5e42cd6b2a34abb482c69196a3cf0f3d29b065afcb8e588c7a3"
+  },
+  "v2_runner": {
+    "path": "scripts/a_share_three_day_walkforward_campaign078_no_return_audit_v2.py",
+    "sha256": "4ab0c306d37d9d6da6fedc368dcc9510028c860bd9e6e6ec84548b1ed5b4d5cb"
+  },
+  "tests": {
+    "path": "tests/data_collector_tests/test_a_share_three_day_walkforward_campaign078_no_return_audit_v2.py",
+    "sha256": "5250b4a3a1d4f4cf198e3f4727795286e86c99c768414985f79273d7ffb059cd"
+  },
+  "v1_activation_binding": {
+    "path": "docs/a_share_three_day_walkforward_campaign_078_no_return_audit_activation_binding_20260806.json",
+    "sha256": "187fdcf3333719495b578fcae0de2ac35e25a831127b609eb5a27a525d8ca6f0"
+  },
+  "partial_statistics_reused": false,
+  "restart_from_candidate_snapshot_verification_and_coverage": true,
+  "candidate_snapshot_or_manifest_rewritten": false,
+  "factor_formula_direction_grid_tie_rule_or_range_changed": false,
+  "coverage_gate_or_comparison_library_order_threshold_changed": false,
+  "historical_daily_price_fields_read_before_retry": [],
+  "historical_forward_returns_read_before_retry": false,
+  "provider_request_issued_before_retry": false,
+  "candidate49_ledgers_changed_before_retry": false,
+  "authorized_v2_retry_count": 1
+}

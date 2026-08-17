@@ -1,0 +1,74 @@
+{
+  "schema_version": 1,
+  "kind": "a_share_three_day_walkforward_campaign097_no_return_audit_implementation_freeze",
+  "status": "frozen_before_campaign097_coverage_or_comparison_values",
+  "frozen_at": "2026-08-07T06:04:03Z",
+  "purpose": "Freeze the Campaign097 quality-listing identity alignment, coverage-first gate, and exact 125-comparator append chain before any Campaign097 coverage metric or comparator value is read.",
+  "protocol": {
+    "path": "docs/a_share_three_day_walkforward_campaign_097_no_return_preregistration.json",
+    "sha256": "a36a7b4e6153c66c5fa5825ebf20a2a30d6764e040be6e84e4202e66413b1d56"
+  },
+  "audit_runner": {
+    "path": "scripts/a_share_three_day_walkforward_campaign097_no_return_audit.py",
+    "sha256": "c0d79005996420f2b6c84b645f75c427771549def134b01bca5adc710df786f2"
+  },
+  "tests": {
+    "path": "tests/data_collector_tests/test_a_share_three_day_walkforward_campaign097_no_return_audit.py",
+    "sha256": "651b422748e6b09ab675716b0adbb6dd267ba95f65f3f507a6f1cefed97846a7",
+    "result": "7 passed"
+  },
+  "snapshot_binding": {
+    "path": "docs/a_share_three_day_walkforward_campaign_097_feature_snapshot_binding_20260807.json",
+    "sha256": "fd83658021023e30b1dd4d3ae4c3750dc054ec349f1a4e6839a3796dc0005def"
+  },
+  "candidate_snapshot": {
+    "path": "/Volumes/DIsk/qlib-a-share-tushare-1m/derived/a_share/rich/tushare/minute_walkforward_campaign097_feature_library/tushare_stk_mins_1m_2019_2025_ea0cbb8f_walkforward_campaign097_feature_library_v1/snapshot_manifest.json",
+    "sha256": "12e43008b4595a338bdd67ac21dcd543772e0517993623837770bec3bd31e0df",
+    "dataset_sha256": "ab5b0f747600a4040c38e1d6453a0ec4242342803bc7acff257cc88f95ccfdb5",
+    "partitions": 33015,
+    "rows": 7724498,
+    "eligible_rows_before_quality_listing_alignment": 7699914
+  },
+  "eligibility_identity_source": {
+    "path": "/Volumes/DIsk/qlib-a-share-tushare-1m/derived/a_share/rich/tushare/compact_comparator_cache/campaign067_terminal_numeric98_v4/snapshot_manifest.json",
+    "sha256": "3d81068f07ac61fe4cd04bd1a893e58759c06d88213263135fec5244e309b57b",
+    "dataset_sha256": "4a56dac48c14b667b6ee431519266f27bb8ff7cc25c51d8dce3bbc7aebe0376f",
+    "partitions": 7,
+    "rows": 1331759
+  },
+  "eligibility_source_columns_allowed_before_coverage": [
+    "stock_day_key"
+  ],
+  "candidate_columns_allowed_for_alignment": [
+    "trade_date",
+    "symbol",
+    "intraday_market_range_profile_synchronization_240m"
+  ],
+  "alignment_semantics": "For each calendar year, compact every Campaign097 trade_date and symbol into the frozen stock_day_key encoding, require every sorted quality-listing key to occur exactly once, and retain the candidate value including missingness in frozen key order.",
+  "ordered_gates": [
+    "verify immutable bindings and all candidate snapshot bytes",
+    "read only stock_day_key from the compact eligibility source and align candidate values",
+    "compute frozen coverage and capacity",
+    "only if coverage passes load the exact 124 inherited numeric comparators followed by Campaign096 as comparator 125",
+    "only if all 125 uniqueness gates pass admit the sole frozen development trial"
+  ],
+  "comparison_chain": {
+    "inherited_runner": {
+      "path": "scripts/a_share_three_day_walkforward_campaign096_no_return_audit.py",
+      "sha256": "c9d1ccf7cb5ffde13c5b00185ea47c09c1656058ad9987da979901468043759b"
+    },
+    "terminal_campaign096_manifest": {
+      "path": "/Volumes/DIsk/qlib-a-share-tushare-1m/derived/a_share/rich/tushare/minute_walkforward_campaign096_feature_library/tushare_stk_mins_1m_2019_2025_ea0cbb8f_walkforward_campaign096_feature_library_v1/snapshot_manifest.json",
+      "sha256": "1b205f1b6d3b28248b765860b8cf0e4aecee07f960fa535402e316ba13c39a3a",
+      "dataset_sha256": "67106bd4f5d4382b770cb79355c27ea4d8ca179296841b7bd9fa2963a46e09f3"
+    },
+    "numeric_comparator_count": 125,
+    "numeric_comparator_order_sha256": "50a737e640cac8e063aab8be0b483a6d9be87d0e5ddd1e1395e625ab371a4cae"
+  },
+  "coverage_or_capacity_metrics_computed_before_freeze": false,
+  "comparison_values_read_before_freeze": false,
+  "historical_daily_price_or_forward_return_values_read_before_freeze": false,
+  "provider_request_issued_before_freeze": false,
+  "candidate49_ledgers_changed_before_freeze": false,
+  "current_scoring_selection_sizing_or_orders_performed_before_freeze": false
+}

@@ -1,0 +1,17 @@
+{
+  "schema_version": 1,
+  "kind": "a_share_three_day_walkforward_campaign263_preregistration_version_failure",
+  "status": "failed_header_validation_preserved_and_recovered_before_return_read",
+  "recorded_at": "2026-08-16T14:00:00Z",
+  "phase": "development_preregistration_load",
+  "failure": "The first recovery preregistration used top-level version 2, while the frozen inherited engine requires schema version 1; all 18 path bindings passed before load_campaign failed closed.",
+  "recovery": "Keep top-level schema version 1 and record lifecycle_revision 2 separately; rebuild the pre-return ledger and regenerate the recovery preregistration before activation.",
+  "research_boundary": {
+    "historical_daily_price_or_forward_return_values_read": false,
+    "stress_2024_2025_opened": false,
+    "provider_or_web_request_issued": false,
+    "candidate49_ledgers_changed": false,
+    "current_scoring_selection_sizing_positions_or_orders_performed": false,
+    "investment_advice": false
+  }
+}

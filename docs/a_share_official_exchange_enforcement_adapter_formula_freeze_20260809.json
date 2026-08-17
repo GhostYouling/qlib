@@ -1,0 +1,139 @@
+{
+  "schema_version": 1,
+  "kind": "a_share_official_exchange_enforcement_adapter_and_formula_freeze",
+  "status": "frozen_after_synthetic_tests_before_exchange_metadata_probe_source_rows_candidate_or_comparison_values",
+  "recorded_at": "2026-08-09T01:26:32+08:00",
+  "authoritative_inputs": {
+    "source_contract": {
+      "path": "docs/a_share_official_exchange_enforcement_source_contract_20260809.json",
+      "sha256": "d4eda5eb2fefd7e2795251bd4926fc7e7157ea264fcabc430904c40d5dfd91e4"
+    },
+    "numeric_policy_v75": {
+      "path": "docs/a_share_three_day_walkforward_future_numeric_comparison_eligibility_policy_v75_20260809.json",
+      "sha256": "cdcb577806c6555528fa189fcda5e8da5c4135192eb121c6acbc2d6781cf5407"
+    },
+    "historical_walkforward_policy": {
+      "path": "docs/a_share_three_day_historical_walkforward_research_policy_20260727.json",
+      "sha256": "38426d6161b9bfed323c58caba18feca668b8c9d53e294951a8ba90c01a798bb"
+    }
+  },
+  "pure_adapter_freeze": {
+    "implementation": {
+      "path": "scripts/a_share_official_exchange_enforcement.py",
+      "sha256": "600a1a7f5a25e16e89adacdcd41dfa4af0339038ab7fd612253b973ee094a9e7"
+    },
+    "synthetic_tests": {
+      "path": "tests/data_collector_tests/test_a_share_official_exchange_enforcement.py",
+      "sha256": "69637350adf21ef2e20648cc21acb54212e67dddc60fea4fc187bc33c70e1789"
+    },
+    "contract_sha256_embedded_in_adapter": true,
+    "transport_implementation_present": false,
+    "network_library_or_cli_entrypoint_present": false,
+    "schema_resolution": "NFKC and surrounding trim are applied only to metadata labels. Exactly one frozen label must resolve for issuer code, action type/family, action date and document href; duplicate, missing, ambiguous, fuzzy and unknown labels fail closed.",
+    "canonicalization": {
+      "strict_action_date_format": "YYYY-MM-DD",
+      "supported_instruments": "SSE main board and SZSE main board/ChiNext only",
+      "cross_exchange_code_policy": "fatal",
+      "complete_classifiable_unsupported_code_policy": "exclude and count",
+      "document_href_policy": "resolve only against the frozen official listing page, require HTTPS on the same official host, preserve path/query/case/percent encoding and persist only SHA-256",
+      "exact_repeat_policy": "collapse identical normalized event keys",
+      "document_state_or_action_token_conflict_policy": "fatal",
+      "ignored_free_text_policy": "never enter normalized output or factor logic"
+    }
+  },
+  "page_metadata_mapping": {
+    "status": "frozen_listing_page_role_mapping_without_transport_endpoint_or_source_rows",
+    "sse": {
+      "page_id": "sse",
+      "exchange": "SSE",
+      "listing_page": "https://www.sse.com.cn/regulation/supervision/measures/",
+      "page_action_family": null
+    },
+    "szse_regulatory_measure": {
+      "page_id": "szse_regulatory_measure",
+      "exchange": "SZSE",
+      "listing_page": "https://www.szse.cn/disclosure/supervision/measure/measure/index.html",
+      "page_action_family": "监管措施"
+    },
+    "szse_disciplinary_action": {
+      "page_id": "szse_disciplinary_action",
+      "exchange": "SZSE",
+      "listing_page": "https://www.szse.cn/disclosure/supervision/measure/pushish/index.html",
+      "page_action_family": "纪律处分"
+    },
+    "transport_endpoint": null,
+    "pagination_parameters": null,
+    "row_schema_mapping": null,
+    "reason_unset": "The source contract forbids guessing endpoint or pagination parameters. A later metadata-only official static-page inspection must be separately recorded before any list/API row request.",
+    "programmatic_exchange_list_or_api_request_authorized": false
+  },
+  "complete_library_semantic_review": {
+    "complete_definition_count_reviewed_without_values": 140,
+    "complete_definition_order_sha256": "c06e054bd76a7eb32a88a8a119abf5a0b7da2d017620ce7d870c9bb1c361c3c4",
+    "nearest_prior_event_mechanism": "official_exchange_inquiry_resilience",
+    "independence_decision": "Formal enforcement is a realized exchange compliance action rather than an inquiry request. The new definition does not reuse an inquiry row, count, three-calendar-day formula, title, document body or return result. If the enforcement listings do not explicitly carry a supported issuer code, the new source fails rather than mining text or reviving the earlier rejected regulatory-measure burden route.",
+    "old_terminal_factor_definition_rewritten": false,
+    "old_terminal_factor_combined": false
+  },
+  "single_factor_definition": {
+    "name": "official_exchange_enforcement_recovery_session_age_60sessions",
+    "source_state": "formal_exchange_enforcement_action",
+    "formula": "For signal session s, let each canonical event effective session e be the first accepted local trading session strictly after action_date. Keep events with 0 <= session_index(s) - session_index(e) <= 59, choose the latest e, and return session_index(s) - session_index(e).",
+    "score_direction": "higher",
+    "economic_interpretation": "Among issuers with a formal enforcement action in the active 60-session window, a longer clean accepted-session interval since the latest action is ranked as greater recovery. It does not rank unaffected issuers and does not infer action severity.",
+    "active_event_window": {
+      "unit": "accepted_local_trading_sessions",
+      "length": 60,
+      "inclusive_age_minimum": 0,
+      "inclusive_age_maximum": 59,
+      "latest_event_only": true
+    },
+    "raw_value_type": "integer",
+    "raw_value_range": {
+      "minimum_inclusive": 0,
+      "maximum_inclusive": 59
+    },
+    "missing_semantics": "Missing when no canonical supported event has an effective session within the active 60-session window. Absence is never zero, favorable, imputed or ranked.",
+    "same_effective_session_multiple_events": "The latest effective-session age is unchanged; event family or count is not used as a tie-breaker or weight.",
+    "action_family_weighting": false,
+    "winsorization_clipping_neutralization_or_residualization": false,
+    "availability": "Signal first exists at the effective session close; earliest entry is the next accepted session open and exit is the third accepted session close after entry.",
+    "holding_period_trading_sessions": 3,
+    "complete_definition_appended_now": true,
+    "numeric_comparator_appended_now": false,
+    "historical_candidate_values_materialized": false,
+    "prospective_candidate_registered": false
+  },
+  "reserved_numeric_comparison_gate": {
+    "comparison_values_loaded": false,
+    "eligible_numeric_comparator_count": 134,
+    "eligible_numeric_comparator_order_sha256": "31d788db467f558a0ac538315343090f1b3ad4cb27a26136a49ebaa88b2fdbf2",
+    "minimum_pairwise_names_per_session": 50,
+    "minimum_pairwise_sessions_per_comparison": 100,
+    "strict_maximum_absolute_median_daily_rank_correlation": 0.8,
+    "all_134_must_pass_after_source_and_capacity_gates": true
+  },
+  "verification": {
+    "command": "/Users/niyufei/.cache/codex-runtimes/codex-primary-runtime/dependencies/python/bin/python3 -m pytest -q tests/data_collector_tests/test_a_share_official_exchange_enforcement.py tests/data_collector_tests/test_a_share_three_day_walkforward_campaign113_source_contract.py",
+    "result": "13 passed in 0.07s",
+    "black_check_after_mechanical_format": "passed",
+    "ruff_check_after_import_sort": "passed"
+  },
+  "next_gate": {
+    "allowed": "Freeze official static metadata endpoint/schema/pagination mapping without inspecting list rows, then freeze an atomic one-shot zero-return source acceptance workflow bound to the adapter, tests, formula and all local fingerprints.",
+    "not_allowed": "Do not request a list/API response, inspect/count/persist a source row, load candidate/comparator values, read prices/returns, open 2024-2025 stress, or change the formula after source evidence."
+  },
+  "research_boundary": {
+    "programmatic_exchange_page_or_api_requests_issued": false,
+    "programmatic_source_rows_read_persisted_or_counted": false,
+    "candidate_or_comparison_values_read": false,
+    "historical_daily_price_fields_read": [],
+    "historical_forward_returns_read": false,
+    "stress_2024_2025_opened": false,
+    "candidate49_historical_backfill_performed": false,
+    "candidate49_ledgers_changed": false,
+    "second_prospective_candidate_created": false,
+    "current_scoring_selection_sizing_or_orders_performed": false,
+    "investment_advice": false
+  }
+}

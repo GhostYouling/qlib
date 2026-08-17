@@ -1,0 +1,109 @@
+{
+  "schema_version": 1,
+  "kind": "a_share_three_day_iteration_status_campaign241_prevalue_terminal",
+  "recorded_at": "2026-08-16T08:28:00+08:00",
+  "timestamp_semantics": "monotonic_logical_append_time_not_host_wall_clock_measurement",
+  "status": "campaign241_validation_passed_goal_active_campaign242_offline_prevalue_authorized",
+  "supersedes_without_rewriting": {
+    "path": "docs/a_share_three_day_iteration_status_20260816_campaign240_prevalue_terminal.json",
+    "sha256": "6040fb44c61f67821448de6cdbe08353bb7ba5f9814e6093bf4482bf126a8225"
+  },
+  "authoritative_inputs": {
+    "historical_walkforward_policy": {
+      "path": "docs/a_share_three_day_historical_walkforward_research_policy_20260727.json",
+      "sha256": "38426d6161b9bfed323c58caba18feca668b8c9d53e294951a8ba90c01a798bb"
+    },
+    "frozen_source_frontier": {
+      "path": "docs/a_share_three_day_walkforward_campaign_241_commercial_kitchen_equipment_service_lifecycle_source_frontier_20260816.json",
+      "sha256": "2a774ceaf571482983f876ceda274f1365f292292ce781a46646273462010f79"
+    },
+    "attempt_ledger_v5": {
+      "path": "data/experiments/short_horizon/historical_walkforward/campaign_241/research_attempt_ledger_v5.json",
+      "sha256": "dd5e60301fc828384cbdf4d03d168d7796ebff074d52e60a3c9b19c27a82e93e"
+    },
+    "terminal_result_v5": {
+      "path": "docs/a_share_three_day_walkforward_campaign_241_terminal_result_v5_20260816.json",
+      "sha256": "1624ae0e0cdac79ee46edf36650908e3ba23193e52420bf72ac58625606c4ce2"
+    },
+    "numeric_policy_v372": {
+      "path": "docs/a_share_three_day_walkforward_future_numeric_comparison_eligibility_policy_v372_20260816.json",
+      "sha256": "19a0ccb5037ed194f9e80213a1964ea3cb47c04a9587a4bec78d728e74db1b35"
+    },
+    "terminal_validation": {
+      "path": "docs/a_share_three_day_walkforward_campaign_241_terminal_validation_20260816.json",
+      "sha256": "52aed6b8e5b535fd89e1571f3fe2f91d53b7cfca8dc0c1d2e842d98a7986e6c0"
+    }
+  },
+  "campaign241": {
+    "terminal": true,
+    "terminal_stage": "prevalue_source_admission_and_overlap_gate",
+    "finite_route_count": 7,
+    "source_admission_deferral_count": 3,
+    "overlap_or_hypothesis_rejection_count": 4,
+    "selected_factor_count": 0,
+    "definition_or_comparator_append": false,
+    "development_trial_count": 0,
+    "stress_trial_count_2024_2025": 0
+  },
+  "effective_accounting": {
+    "campaign241_attempt_count": 17,
+    "campaign241_scientific_attempt_count": 7,
+    "campaign241_infrastructure_failure_count": 10,
+    "cumulative_historical_research_attempt_count": 2298,
+    "cumulative_return_reading_development_trial_count": 314,
+    "chain_tip_sha256": "77fae1e4b3852fb2ffd2b180013d27c35c07f75651ac6c095eabf6378882b744"
+  },
+  "library_state": {
+    "complete_factor_definition_count": 158,
+    "complete_factor_definition_order_sha256": "4819c7fd7c0795d7598a52f3c615e3f117d5f4ecd9332974bc8e3dfa57c96667",
+    "eligible_numeric_comparator_count": 142,
+    "eligible_numeric_comparator_order_sha256": "5d1b35fb5a0d8ac9293008db9963c4a60a94dc940c237c3ed259e5ce44f14aaf",
+    "changed_by_campaign241": false
+  },
+  "candidate49": {
+    "sole_prospective_candidate": true,
+    "signal_ledger_sha256": "5193f00d7f36da003f53cec387900da4c3d002299f5dfcfc1a95eaa199ed3a79",
+    "signal_entry_count": 0,
+    "execution_ledger_sha256": "d57a3e61eac969e42cafa418ccd8c0a5ee65dcf69da145bb2c096c2a02a2ea4f",
+    "execution_entry_count": 0,
+    "ledgers_changed": false
+  },
+  "future_campaign_boundary": {
+    "next_campaign": 242,
+    "historical_offline_prevalue_work_may_continue_at_any_local_time": true,
+    "2024_2025_source_or_returns_remain_closed": true,
+    "candidate49_remains_separate_confirmation_layer": true
+  },
+  "validation": {
+    "focused_pytest": "2 passed",
+    "cumulative_pytest": "512 passed, 1 skipped, 56 deselected",
+    "campaign145_through_campaign241_test_file_count": 129,
+    "black": "passed after mechanical formatting of the new unfrozen test",
+    "ruff": "passed",
+    "json_parse": "25 pre-validation JSON files passed",
+    "reference_binding_and_all_five_ledger_chain_segments": "passed",
+    "candidate49_empty_ledger_semantics": "passed",
+    "unmasked_whitespace": "passed"
+  },
+  "publication_state": {
+    "current_report_sha256": "b8faea5979d9c66ed4a13f6c0cdbd0aba98d4d4b8e1fc1cfaebef65af42e5b3d",
+    "three_day_report_sha256": "647916df6e9e69b2e439587a5c37e0c1718aba5f942c13bd2bcb8194338ea60b",
+    "terminal_test_sha256": "58e021a4feb870a192e25adbf24b4f35d0793561c32904a3fbf34274dc341633"
+  },
+  "research_boundary": {
+    "historical_offline_prevalue_work_may_continue_at_any_local_time": true,
+    "failed_or_truncated_output_used_as_scientific_or_validation_evidence": false,
+    "frozen_source_frontier_rewritten": false,
+    "source_or_commercial_kitchen_equipment_service_contract_asset_registry_preventive_maintenance_performance_safety_check_fault_repair_parts_consumables_compliance_billing_factor_comparator_security_price_or_return_value_read": false,
+    "natural_person_employee_identity_exact_customer_premises_address_map_layout_kitchen_equipment_location_access_credential_live_technician_route_schedule_realtime_temperature_food_safety_occupancy_production_incident_readiness_posture_customer_identity_control_configuration_endpoint_vulnerability_proprietary_recipe_equipment_setting_detergent_rinse_agent_deliming_formula_diagnostic_repair_procedure_private_inspection_incident_narrative_legal_communication_payment_instrument_or_confidential_contract_price_read": false,
+    "stress_2024_2025_opened": false,
+    "provider_or_web_request_issued": false,
+    "provider_credential_presence_value_or_digest_read": false,
+    "candidate49_plan_or_run_executed": false,
+    "candidate49_ledgers_changed": false,
+    "second_prospective_candidate_created": false,
+    "current_scoring_selection_sizing_positions_or_orders_performed": false,
+    "investment_advice": false
+  },
+  "next_action": "Continue the active goal with a genuinely different Campaign242 finite zero-network offline prevalue domain; do not wait for 16:30 or a new daily bar."
+}

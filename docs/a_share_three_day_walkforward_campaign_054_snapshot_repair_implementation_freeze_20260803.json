@@ -1,0 +1,37 @@
+{
+  "version": 1,
+  "kind": "a_share_three_day_walkforward_campaign054_snapshot_repair_implementation_freeze",
+  "status": "frozen_before_authorized_campaign054_v2_external_rebuild",
+  "frozen_at": "2026-08-03T13:40:00Z",
+  "purpose": "Bind the additive numerical-stability and publication-evidence repair before the single authorized Campaign054 v2 snapshot rebuild.",
+  "repair_authorization": {
+    "path": "docs/a_share_three_day_walkforward_campaign_054_snapshot_v1_prebinding_failure_repair_20260803.json",
+    "sha256": "e5df12f500470243f232c1ccb3265eb5df517e82199efd2afb7ddb2bbca99e87"
+  },
+  "repair_entrypoint": {
+    "path": "scripts/a_share_three_day_walkforward_campaign054_features_v3.py",
+    "sha256": "c608905ba9e315fe995be1b1e09cf67b9c652e01d1e88679e1bae3a80579c468"
+  },
+  "repair_tests": {
+    "path": "tests/data_collector_tests/test_a_share_three_day_walkforward_campaign054_snapshot_repair.py",
+    "sha256": "c5189339afc910e337b13206ec8b6243dfbd44311408ac091269e0a81673b6fd",
+    "repair_cases_passed": 3,
+    "combined_cases_passed": 19,
+    "failed": 0
+  },
+  "frozen_repair_semantics": {
+    "new_output_run_id": "tushare_stk_mins_1m_2019_2025_ea0cbb8f_walkforward_campaign054_feature_library_v2",
+    "preserve_failed_v1": true,
+    "stable_bowley_form": "((Q75-Q50)-(Q50-Q25))/((Q75-Q50)+(Q50-Q25))",
+    "algebraically_identical_to_protocol_formula": true,
+    "evidence_filter": "drop every campaignNNN_* key except campaign054_*; retain Candidate49 no-return evidence",
+    "candidate_formula_direction_grid_quantiles_weights_filters_and_missing_rules_changed": false
+  },
+  "failed_v1_campaign054_minute_values_already_read": true,
+  "new_v2_campaign054_external_values_read_before_repair_freeze": false,
+  "comparison_values_read_before_repair_freeze": false,
+  "historical_daily_price_or_forward_return_values_read_before_repair_freeze": false,
+  "candidate49_ledgers_changed": false,
+  "provider_request_issued": false,
+  "current_scoring_selection_sizing_or_orders_performed": false
+}

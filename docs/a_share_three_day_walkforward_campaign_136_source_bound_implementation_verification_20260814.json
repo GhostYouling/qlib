@@ -1,0 +1,56 @@
+{
+  "schema_version": 1,
+  "kind": "a_share_three_day_walkforward_campaign136_source_bound_implementation_verification",
+  "status": "source_bound_builder_verified_before_historical_source_values",
+  "recorded_at": "2026-08-14T11:20:30+0800",
+  "implementation_freeze": {
+    "path": "docs/a_share_three_day_walkforward_campaign_136_source_bound_implementation_freeze_20260814.json",
+    "sha256": "13798b1494d34c03582fabfb27457cd47515e54485b662d464516ceb7e49fc98"
+  },
+  "verification": {
+    "pytest": "13 passed in 1.65s",
+    "formula_test_count": 6,
+    "feature_builder_test_count": 7,
+    "black": "passed; 4 files unchanged",
+    "ruff": "passed",
+    "python_compile": "passed",
+    "tested_source_rows": "synthetic_only",
+    "real_historical_daily_source_rows_read": false
+  },
+  "verified_contract": {
+    "exact_source_projection": [
+      "date",
+      "symbol",
+      "factor",
+      "price_basis",
+      "daily_source"
+    ],
+    "calendar_adjacent_same_symbol_predecessor_required": true,
+    "suspension_listing_or_missing_gap_bridge_rejected": true,
+    "finite_strictly_positive_pair_required": true,
+    "exact_equal_factor_pair_is_valid_zero": true,
+    "source_identity_on_both_rows_required": true,
+    "output_range_2019_through_2025_fail_closed": true,
+    "snapshot_hash_schema_and_aggregate_verifier_fail_closed": true,
+    "immutable_final_output_and_temporary_failure_cleanup": true
+  },
+  "next_gate": {
+    "allowed": "Run the exact metadata-only Campaign136 plan. Only exit code 0 and ready=true authorize run --confirm-run with the frozen source and worker bounds.",
+    "not_allowed": "No formula, direction, source, date, threshold or quality-gate change; no comparator, OHLCV or forward-return read before source publication and coverage admission."
+  },
+  "research_boundary": {
+    "campaign136_daily_source_values_decoded_or_read": false,
+    "campaign136_candidate_values_computed_or_read": false,
+    "campaign136_comparator_values_read": false,
+    "historical_daily_ohlcv_fields_read": [],
+    "historical_forward_returns_read": false,
+    "stress_2024_2025_opened": false,
+    "provider_request_issued": false,
+    "credential_loaded": false,
+    "candidate49_historical_backfill_performed": false,
+    "candidate49_ledgers_changed": false,
+    "second_prospective_candidate_created": false,
+    "current_scoring_selection_sizing_positions_or_orders_performed": false,
+    "investment_advice": false
+  }
+}

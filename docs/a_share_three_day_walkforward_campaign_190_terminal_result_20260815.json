@@ -1,0 +1,69 @@
+{
+  "schema_version": 1,
+  "kind": "a_share_three_day_walkforward_campaign190_terminal_result",
+  "status": "terminal_prevalue_eight_infrastructure_failures_recorded_recovered_goal_active",
+  "recorded_at": "2026-08-15T14:13:48+08:00",
+  "authoritative_inputs": {
+    "checkpoint": {
+      "path": "docs/a_share_three_day_iteration_status_20260815_campaign190_prevalue_in_progress.json",
+      "sha256": "13d2f4f79d17200ac492649b397fc2d833efe81b8c4f34c1a110a5b1adfd6022"
+    },
+    "policy_v278": {
+      "path": "docs/a_share_three_day_walkforward_future_numeric_comparison_eligibility_policy_v278_20260815.json",
+      "sha256": "5f3835df282b5961875178c534c79ade46e7d7b989500680f87728ae4a169aac"
+    },
+    "source_frontier": {
+      "path": "docs/a_share_three_day_walkforward_campaign_190_clinical_trial_evidence_lifecycle_source_frontier_20260815.json",
+      "sha256": "0703511d04d413c9ca0578b46cf8809de48780add3a6f8503796b2aa973b85fd"
+    },
+    "attempt_ledger": {
+      "path": "data/experiments/short_horizon/historical_walkforward/campaign_190/research_attempt_ledger_v1.json",
+      "sha256": "6ed136cfc0cf207a80e7214a815b4b9740a26ebe67ea23333ec1b11a94fe0a72",
+      "effective_entry_count": 15,
+      "chain_tip_sha256": "bcc73ca149e3043365081be2ac6c1ed6450425f943c7ec3b8a78ec313ad7e6e7"
+    }
+  },
+  "scientific_result": {
+    "terminal": true,
+    "terminal_phase": "finite_prevalue_clinical_trial_evidence_lifecycle_source_admission",
+    "routes_reviewed": 7,
+    "genuinely_new_issuer_state_routes": 4,
+    "source_admission_deferrals_not_factor_failures": 4,
+    "relabeling_operator_or_combination_route_rejections": 3,
+    "selected_candidate_count": 0,
+    "complete_factor_definition_created": false,
+    "numeric_comparator_created": false,
+    "clinical_trial_evidence_state_declared_ineffective": false
+  },
+  "effective_accounting": {
+    "campaign190_attempt_count": 15,
+    "campaign190_prevalue_scientific_attempt_count": 7,
+    "campaign190_infrastructure_failure_count": 8,
+    "campaign190_return_reading_development_trial_count": 0,
+    "cumulative_historical_research_attempt_count": 1685,
+    "cumulative_return_reading_development_trial_count": 314
+  },
+  "library_state": {
+    "complete_factor_definition_count": 158,
+    "eligible_numeric_comparator_count": 142,
+    "changed_by_campaign190": false
+  },
+  "candidate49": {
+    "only_active_prospective_candidate": true,
+    "signal_ledger_sha256": "5193f00d7f36da003f53cec387900da4c3d002299f5dfcfc1a95eaa199ed3a79",
+    "signal_entry_count": 0,
+    "execution_ledger_sha256": "d57a3e61eac969e42cafa418ccd8c0a5ee65dcf69da145bb2c096c2a02a2ea4f",
+    "execution_entry_count": 0,
+    "ledgers_changed": false
+  },
+  "research_boundary": {
+    "source_factor_comparator_security_price_or_return_value_read": false,
+    "stress_2024_2025_opened": false,
+    "provider_or_web_request_issued": false,
+    "provider_credential_presence_value_or_digest_read": false,
+    "candidate49_ledgers_changed": false,
+    "second_prospective_candidate_created": false,
+    "current_scoring_selection_sizing_positions_or_orders_performed": false
+  },
+  "next_action": "Synchronize the report and policy v279, then run focused, cumulative and independent validation."
+}

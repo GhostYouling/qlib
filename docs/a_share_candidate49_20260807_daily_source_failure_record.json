@@ -1,0 +1,77 @@
+{
+  "schema_version": 1,
+  "kind": "a_share_candidate49_daily_source_failure_record",
+  "status": "stock_basic_failed_closed_no_same_day_retry",
+  "recorded_at": "2026-08-07T15:50:00Z",
+  "session_date": "2026-08-07",
+  "local_time_zone": "Asia/Singapore",
+  "plan": {
+    "status": "ready_for_explicit_run",
+    "ready": true,
+    "exit_code": 0,
+    "filesystem_write_performed": false,
+    "provider_request_issued": false,
+    "token_present": true,
+    "token_value_printed_hashed_or_logged": false
+  },
+  "run": {
+    "same_plan_parameters_used": true,
+    "session": "2026-08-07",
+    "staging_root": "/Volumes/DIsk/qlib-a-share-tushare-daily-2026-08-07",
+    "minute_data_root": "/Volumes/DIsk/qlib-a-share-tushare-1m",
+    "confirm_run": true,
+    "exit_code": 1,
+    "status": "failed_closed",
+    "provider_continuation_allowed": false
+  },
+  "authoritative_failure": {
+    "path": "/Volumes/DIsk/qlib-a-share-tushare-daily-2026-08-07/raw/a_share/rich/tushare/daily_provider_migration_v1/latest_failure.json",
+    "sha256": "47b8b678287f428132be45161387be8db907a2beceec4019326adb9119a57014",
+    "mode": "0600",
+    "kind": "a_share_tushare_daily_provider_migration_source_failure",
+    "status": "failed_preserving_active_root_and_completed_checkpoints",
+    "failure_stage": "stock_basic",
+    "error": "TushareDailyMigrationError: Tushare stock_basic contains an invalid ts_code",
+    "failed_at": "2026-08-07T15:48:20.795926+00:00",
+    "through_date": "2026-08-07",
+    "provider_calls_this_invocation": 4,
+    "active_root_mutated": false,
+    "completed_session_checkpoints_preserved": true,
+    "credential_value_persisted": false,
+    "forward_return_fields_read": false
+  },
+  "partial_checkpoint": {
+    "trade_calendar_path": "/Volumes/DIsk/qlib-a-share-tushare-daily-2026-08-07/raw/a_share/rich/tushare/daily_provider_migration_v1/trade_calendar.json",
+    "trade_calendar_sha256": "62193294a1e5827447fa0d1efb565e2344ea6128aead25839511f98773e58a29",
+    "may_be_reused_only_by_a_future_protocol_authorized_session": true
+  },
+  "active_daily_root": {
+    "path": "/Volumes/DIsk/Disk-Coding/qlib/data",
+    "source": "baostock",
+    "calendar_end": "2026-07-13",
+    "mutated": false
+  },
+  "candidate49": {
+    "signal_ledger_sha256": "5193f00d7f36da003f53cec387900da4c3d002299f5dfcfc1a95eaa199ed3a79",
+    "execution_ledger_sha256": "d57a3e61eac969e42cafa418ccd8c0a5ee65dcf69da145bb2c096c2a02a2ea4f",
+    "signal_entry_count": 0,
+    "execution_entry_count": 0,
+    "historical_backfill_performed": false,
+    "ledgers_changed": false,
+    "source_to_signal_phase_started": false
+  },
+  "same_day_policy": {
+    "provider_retry_allowed": false,
+    "failed_response_may_be_re_requested_for_more_detail": false,
+    "failure_exit_code_may_be_bypassed": false,
+    "new_staging_root_may_be_created_for_same_session_retry": false,
+    "next_action": "Preserve this evidence and wait for a separately authorized future session; continue offline historical factor research meanwhile."
+  },
+  "research_boundary": {
+    "historical_candidate49_return_read": false,
+    "candidate49_signal_execution_or_evaluation_backfill_performed": false,
+    "paper_execution_or_order_performed": false,
+    "current_scoring_selection_sizing_or_orders_performed": false,
+    "investment_advice": false
+  }
+}

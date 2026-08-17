@@ -1,0 +1,22 @@
+{
+  "schema_version": 1,
+  "kind": "a_share_three_day_walkforward_campaign146_infrastructure_failure",
+  "status": "recorded_black_check_failure_before_source_values",
+  "recorded_at": "2026-08-14T21:14:13+08:00",
+  "attempt_id": "campaign146_infrastructure_001",
+  "stage": "pure_formula_synthetic_validation",
+  "command": "/Volumes/DIsk/Coding/anaconda3/bin/python3.12 -m black --check scripts/a_share_three_day_walkforward_campaign146_formula.py tests/data_collector_tests/test_a_share_three_day_walkforward_campaign146_formula.py",
+  "exit_code": 1,
+  "failure": "Black reported that both new Campaign146 files would be reformatted.",
+  "resolution": "Run Black mechanically on exactly the two new files, then rerun the unchanged six-test, Black-check, and Ruff scopes.",
+  "scientific_effect": {
+    "formula_changed": false,
+    "direction_changed": false,
+    "source_or_support_changed": false,
+    "gate_or_catalog_changed": false,
+    "candidate_source_or_value_read": false,
+    "comparator_value_read": false,
+    "daily_price_or_forward_return_read": false,
+    "provider_request_issued": false
+  }
+}

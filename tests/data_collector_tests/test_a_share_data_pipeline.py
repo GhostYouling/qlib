@@ -1,10 +1,14 @@
 """Focused offline tests for the A-share ingestion pipeline."""
 
 import importlib.util
+import os
+import subprocess
 import sys
+from types import SimpleNamespace
 from pathlib import Path
 
 import pandas as pd
+import pytest
 
 
 PIPELINE_PATH = Path(__file__).resolve().parents[2] / "scripts" / "a_share_data_pipeline.py"
@@ -24,6 +28,30 @@ def test_board_classification_and_qlib_symbols():
     assert PIPELINE.classify_board("900901") is None
     assert PIPELINE.qlib_symbol("600519") == "SH600519"
     assert PIPELINE.qlib_symbol("300750") == "SZ300750"
+
+
+def test_data_root_command_prints_resolved_root_without_scanning(capsys):
+    args = PIPELINE.build_parser().parse_args(["data-root"])
+
+    assert args.func(args) == 0
+    assert capsys.readouterr().out.strip() == str(PIPELINE.DATA_ROOT)
+
+
+def test_data_root_command_honors_process_override(tmp_path):
+    configured = tmp_path / "activated-tushare-root"
+    environment = os.environ.copy()
+    environment["QLIB_A_SHARE_DATA_ROOT"] = str(configured)
+
+    completed = subprocess.run(
+        [sys.executable, str(PIPELINE_PATH), "data-root"],
+        check=True,
+        capture_output=True,
+        text=True,
+        env=environment,
+    )
+
+    assert completed.stdout.strip() == str(configured.resolve())
+    assert completed.stderr == ""
 
 
 def test_parse_daily_bars_calculates_vwap_without_network(monkeypatch):
@@ -282,3 +310,132 @@ def test_point_in_time_merge_rejects_legacy_mix_but_force_full_replaces_it(tmp_p
     replaced = PIPELINE.merge_and_save_bars(target, point_in_time, replace_existing=True)
     assert replaced["price_basis"].eq(PIPELINE.POINT_IN_TIME_PRICE_BASIS).all()
     assert replaced["factor"].eq(1.0).all()
+
+
+def test_sync_source_defaults_to_the_single_existing_provider(tmp_path):
+    raw_dir = tmp_path / "daily"
+    raw_dir.mkdir()
+    pd.DataFrame({"daily_source": ["baostock", "baostock"]}).to_parquet(
+        raw_dir / "sh600519.parquet",
+        index=False,
+    )
+    assert (
+        PIPELINE.resolve_sync_daily_source(
+            None,
+            force_full=False,
+            raw_dir=raw_dir,
+        )
+        == "baostock"
+    )
+    assert (
+        PIPELINE.resolve_sync_daily_source(
+            "baostock",
+            force_full=True,
+            raw_dir=raw_dir,
+        )
+        == "baostock"
+    )
+
+
+def test_sync_rejects_an_in_place_provider_switch_even_with_force_full(tmp_path):
+    raw_dir = tmp_path / "daily"
+    raw_dir.mkdir()
+    pd.DataFrame({"daily_source": ["baostock"]}).to_parquet(
+        raw_dir / "sh600519.parquet",
+        index=False,
+    )
+    for force_full in (False, True):
+        with pytest.raises(
+            PIPELINE.PipelineError,
+            match="in-place daily source switch",
+        ):
+            PIPELINE.resolve_sync_daily_source(
+                "eastmoney",
+                force_full=force_full,
+                raw_dir=raw_dir,
+            )
+
+
+def test_incremental_sync_rejects_mixed_or_legacy_source_files(tmp_path):
+    raw_dir = tmp_path / "daily"
+    raw_dir.mkdir()
+    pd.DataFrame({"daily_source": ["baostock"]}).to_parquet(
+        raw_dir / "sh600519.parquet",
+        index=False,
+    )
+    pd.DataFrame({"close": [10.0]}).to_parquet(
+        raw_dir / "sz000001.parquet",
+        index=False,
+    )
+    with pytest.raises(
+        PIPELINE.PipelineError,
+        match="requires one valid existing daily source",
+    ):
+        PIPELINE.resolve_sync_daily_source(
+            None,
+            force_full=False,
+            raw_dir=raw_dir,
+        )
+    with pytest.raises(
+        PIPELINE.PipelineError,
+        match="separate clean staging root",
+    ):
+        PIPELINE.resolve_sync_daily_source(
+            "baostock",
+            force_full=True,
+            raw_dir=raw_dir,
+        )
+
+
+def test_tushare_is_an_accepted_audited_source_but_not_in_place_sync_source(
+    tmp_path,
+    monkeypatch,
+):
+    bars = pd.DataFrame(
+        {
+            "date": pd.to_datetime(["2026-07-24"]),
+            "symbol": ["SH600000"],
+            "open": [10.0],
+            "high": [10.2],
+            "low": [9.8],
+            "close": [10.1],
+            "volume": [1000.0],
+            "amount": [1_000_000.0],
+            "vwap": [10.0],
+            "change": [0.1],
+            "pct_chg": [0.0],
+            "turnover": [1.0],
+            "raw_open": [10.0],
+            "raw_high": [10.2],
+            "raw_low": [9.8],
+            "raw_close": [10.1],
+            "raw_volume": [1000.0],
+            "raw_vwap": [10.0],
+            "price_basis": [PIPELINE.POINT_IN_TIME_PRICE_BASIS],
+            "daily_source": ["tushare"],
+            "factor": [1.0],
+        }
+    )
+    raw_dir = tmp_path / "raw"
+    raw_dir.mkdir()
+    bars.to_parquet(raw_dir / "sh600000.parquet", index=False)
+    audit = PIPELINE.audit_point_in_time_source(raw_dir=raw_dir)
+    assert audit["status"] == "passed"
+    assert audit["daily_sources"] == ["tushare"]
+
+    monkeypatch.setattr(
+        PIPELINE,
+        "resolve_sync_daily_source",
+        lambda *args, **kwargs: "tushare",
+    )
+    monkeypatch.setattr(PIPELINE, "LOCK_PATH", tmp_path / "pipeline.lock")
+    with pytest.raises(
+        PIPELINE.PipelineError,
+        match="active daily root is Tushare",
+    ):
+        PIPELINE.run_sync(
+            SimpleNamespace(
+                source=None,
+                force_full=False,
+            )
+        )

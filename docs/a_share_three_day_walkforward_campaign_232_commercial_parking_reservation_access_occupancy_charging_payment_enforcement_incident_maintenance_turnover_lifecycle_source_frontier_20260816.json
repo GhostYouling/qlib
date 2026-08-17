@@ -1,0 +1,154 @@
+{
+  "schema_version": 1,
+  "kind": "a_share_three_day_walkforward_campaign232_commercial_parking_reservation_access_occupancy_charging_payment_enforcement_incident_maintenance_turnover_lifecycle_source_frontier",
+  "recorded_at": "2026-08-16T04:42:00+08:00",
+  "timestamp_semantics": "monotonic_logical_append_time_not_host_wall_clock_measurement",
+  "status": "checkpoint_prevalue_three_source_admission_deferrals_four_relabeling_overlap_or_hypothesis_rejections_zero_selected",
+  "purpose": "Freeze a finite seven-route prevalue review of issuer-as-commercial-parking-facility-operator space inventory, reservation, allocation, access, entry, occupancy, extension, exit, cancellation, validation, tariff, charging, invoice, payment, refund, dispute, enforcement, incident, equipment outage, maintenance, closure, reopening and turnover states before any source row, formula, direction, candidate value, comparator, security price or return is read.",
+  "authoritative_inputs": {
+    "campaign231_state": {
+      "path": "docs/a_share_three_day_iteration_status_20260816_campaign231_prevalue_terminal.json",
+      "sha256": "0c10f41e354a1509ae5261d5e071bcd63220fbda96d012a109f3f6d8ff40d04f"
+    },
+    "numeric_policy_v352": {
+      "path": "docs/a_share_three_day_walkforward_future_numeric_comparison_eligibility_policy_v352_20260816.json",
+      "sha256": "9827c00617e9b7e4b83ba9bce19db975fa5f5b4238c112803110aef942514985"
+    },
+    "historical_walkforward_policy": {
+      "path": "docs/a_share_three_day_historical_walkforward_research_policy_20260727.json",
+      "sha256": "38426d6161b9bfed323c58caba18feca668b8c9d53e294951a8ba90c01a798bb"
+    },
+    "campaign185_real_estate_presale_frontier": {
+      "path": "docs/a_share_three_day_walkforward_campaign_185_real_estate_presale_sales_delivery_land_bank_source_frontier_20260815.json",
+      "sha256": "8317fdeb741832ec5ff4cd4abf0c558419506b6597c68e9fe05540b92f3cbd31"
+    },
+    "campaign195_payment_processing_frontier": {
+      "path": "docs/a_share_three_day_walkforward_campaign_195_payment_processing_merchant_acquiring_authorization_clearing_settlement_dispute_reserve_lifecycle_source_frontier_20260815.json",
+      "sha256": "8ba6a15deefa0cf492cec5373e12f56db64fc14e5a97672313f228aa8a984d7e"
+    },
+    "campaign200_construction_frontier": {
+      "path": "docs/a_share_three_day_walkforward_campaign_200_construction_engineering_contractor_project_progress_certification_variation_claim_retention_completion_defect_lifecycle_source_frontier_20260815.json",
+      "sha256": "f29651a5dd28c2dd5f52ce176f2b6a417c96b16f91f7cbf731a6d2f2bbe6bda5"
+    },
+    "campaign203_passenger_transport_frontier": {
+      "path": "docs/a_share_three_day_walkforward_campaign_203_passenger_transportation_booking_ticketing_checkin_boarding_trip_completion_disruption_reaccommodation_refund_compensation_lifecycle_source_frontier_20260815.json",
+      "sha256": "62dc038a0fd56c04c4332ef82051b3bc83820f6b8d45b7b282dd271ad1927829"
+    },
+    "campaign204_utility_customer_frontier": {
+      "path": "docs/a_share_three_day_walkforward_campaign_204_utility_customer_connection_metering_consumption_billing_arrears_disconnection_reconnection_outage_restoration_lifecycle_source_frontier_20260815.json",
+      "sha256": "4aa19120d9f18b0ac6303fb6350ae51216c6d7971d51fc41de339dfe5caf46e6"
+    },
+    "campaign205_telecommunications_frontier": {
+      "path": "docs/a_share_three_day_walkforward_campaign_205_telecommunications_subscriber_service_provisioning_network_session_rating_billing_dunning_suspension_reconnection_churn_lifecycle_source_frontier_20260815.json",
+      "sha256": "eddb3a08f590ec6eb797115cf26fa63352e49d096ff82e71ac356bccdcee0a27"
+    },
+    "campaign208_hospitality_frontier": {
+      "path": "docs/a_share_three_day_walkforward_campaign_208_hospitality_lodging_reservation_room_inventory_checkin_stay_housekeeping_checkout_folio_refund_dispute_settlement_lifecycle_source_frontier_20260815.json",
+      "sha256": "85ca3a01cf0f5427902263d9ce41f0d09d5ce552c885f14de35942c3dc67d231"
+    },
+    "campaign225_equipment_rental_frontier": {
+      "path": "docs/a_share_three_day_walkforward_campaign_225_equipment_rental_reservation_dispatch_handover_utilization_return_maintenance_damage_billing_lifecycle_source_frontier_20260816.json",
+      "sha256": "010c7880193f44323c8e80a3d24ac652d21f393401d53e86f2ce73c3c3058a71"
+    },
+    "campaign227_self_storage_frontier": {
+      "path": "docs/a_share_three_day_walkforward_campaign_227_self_storage_inquiry_reservation_lease_access_occupancy_payment_delinquency_lien_auction_vacate_turnover_lifecycle_source_frontier_20260816.json",
+      "sha256": "eb02f2cfa62a302ea432973cc049b9f78c01f95beeacc48259f3f8651506d9e4"
+    }
+  },
+  "repository_evidence": {
+    "complete_definition_count": 158,
+    "complete_definition_order_sha256": "4819c7fd7c0795d7598a52f3c615e3f117d5f4ecd9332974bc8e3dfa57c96667",
+    "eligible_numeric_comparator_count": 142,
+    "eligible_numeric_comparator_order_sha256": "5d1b35fb5a0d8ac9293008db9963c4a60a94dc940c237c3ed259e5ce44f14aaf",
+    "source_frontier_files_reviewed_campaign163_through_campaign231": 69,
+    "dedicated_commercial_parking_reservation_access_occupancy_charging_payment_enforcement_incident_maintenance_turnover_lifecycle_definition_present": false,
+    "dedicated_keyword_match_in_prior_source_frontiers": false,
+    "adjacent_mentions_only": [
+      "passenger transportation governs booked journeys and passenger disruption rather than a parking operator's space inventory, vehicle-stay session and facility turnover",
+      "payment processing governs merchant authorization, clearing and settlement rather than parking-space access, occupancy, overstay, validation and enforcement states",
+      "hospitality and self-storage govern room or storage-unit occupancy rather than short-duration vehicle-space sessions and gate-controlled parking inventory",
+      "real estate, construction and equipment rental govern property delivery, project work and temporary equipment rather than the operating lifecycle of parking spaces, access equipment and facility closures",
+      "utility and telecommunications billing states do not establish a distinct parking reservation, entry, occupancy, exit, violation and reopening history"
+    ]
+  },
+  "mandatory_source_admission_gate": {
+    "required": true,
+    "requirements": [
+      "lawful public or licensed point-in-time source with first-available, correction and supersession timestamps for parking-space inventory, reservation, allocation, entry, exit, occupancy, extension, cancellation, validation, tariff, charge, invoice, payment, refund, dispute, violation, enforcement, incident, equipment outage, maintenance, closure, reopening and turnover events mapped to accepted trading sessions",
+      "stable listed-parent, subsidiary, operating-concession, facility-safe cohort, parking-product, space-class, equipment-class, tariff-plan, reservation, stay-session, maintenance-work-order and closure identities without exact facility or parking-space location",
+      "complete 2019-2023 applicable denominators across a cross-section capable of meeting the frozen coverage gates, including available, reserved, entered, occupied, extended, exited, cancelled, validated, charged, paid, refunded, disputed, violated, enforced, unavailable, maintained, closed, reopened and turned-over spaces or sessions",
+      "conservation of space inventory, reservation starts and cancellations, entry and exit sessions, occupancy duration, overstay, validations, tariffs, charges, refunds, disputes, violations, enforcement actions, equipment availability, maintenance windows, incidents, closures and reopenings with explicit missing, delayed, corrected, waived, estimated and genuine-zero semantics",
+      "no vehicle plate or VIN, driver or passenger identity, exact facility, level or parking-space location, access credential or code, camera or ANPR footage, real-time occupancy or access feed, security or control configuration, payment instrument, private violation or enforcement communication, or nonpublic legal communication"
+    ],
+    "admitted_source_present": false
+  },
+  "finite_prevalue_catalog": [
+    {
+      "route_id": "c232_01",
+      "name": "space_inventory_reservation_allocation_entry_occupancy_extension_exit_cancellation_and_turnover_state",
+      "decision": "defer_source_not_admitted",
+      "reason": "No admitted lawful point-in-time source links listed parking-facility operators to facility-safe space inventories and complete reservation, allocation, entry, occupancy, extension, exit, cancellation and turnover denominators with first-available correction clocks."
+    },
+    {
+      "route_id": "c232_02",
+      "name": "tariff_validation_charging_invoice_payment_refund_dispute_violation_enforcement_and_settlement_state",
+      "decision": "defer_source_not_admitted",
+      "reason": "The repository lacks a lawful privacy-safe history conserving applicable tariffs, validations, charges, invoices, payments, waivers, refunds, disputes, violations, enforcement actions and settlements without exposing payment instruments or private communications."
+    },
+    {
+      "route_id": "c232_03",
+      "name": "facility_space_gate_charger_equipment_availability_incident_closure_maintenance_reopening_and_capacity_state",
+      "decision": "defer_source_not_admitted",
+      "reason": "No admitted source preserves facility-safe space, gate, charger and payment-equipment availability, outage, incident, maintenance, closure and reopening cohorts with complete applicable capacity denominators, revision history and non-live security semantics."
+    },
+    {
+      "route_id": "c232_04",
+      "name": "generic_passenger_transport_payment_processing_hospitality_or_self_storage_relabeling",
+      "decision": "reject_terminal_overlap",
+      "reason": "Campaign195, Campaign203, Campaign208 and Campaign227 already govern generic payments, passenger journeys, lodging stays and storage-unit occupancy. Their states cannot be relabelled as a vehicle-space reservation, gate entry, parking stay, overstay, exit and facility turnover lifecycle."
+    },
+    {
+      "route_id": "c232_05",
+      "name": "generic_real_estate_construction_equipment_rental_utility_or_telecommunications_relabeling",
+      "decision": "reject_terminal_overlap",
+      "reason": "Campaign185, Campaign200, Campaign204, Campaign205 and Campaign225 already govern property, construction, utility, telecom and equipment-rental states. Those mechanisms do not preserve commercial parking space inventory, stay-session conservation, parking validation, enforcement or reopening."
+    },
+    {
+      "route_id": "c232_06",
+      "name": "current_annual_report_space_count_occupancy_revenue_application_tariff_facility_map_permit_or_incident_snapshot_relabeling",
+      "decision": "reject_terminal_overlap",
+      "reason": "Current annual-report aggregates, applications, tariff pages, facility maps, permits, incident notices or current occupancy snapshots cannot reconstruct complete historical first-available parking lifecycle states and can expose location-sensitive or live access information."
+    },
+    {
+      "route_id": "c232_07",
+      "name": "issuer_region_facility_type_space_type_tariff_time_vehicle_category_stay_duration_violation_category_direction_threshold_subset_weight_interaction_combination_or_model_variant",
+      "decision": "reject_hypothesis_multiplication_before_source_admission",
+      "reason": "Selecting an issuer, region, facility type, space type, tariff, time, vehicle category, stay duration, violation category, direction, threshold, subset, weight, interaction, combination or model before complete lawful base histories are admitted would multiply hypotheses and exploit issuer scarcity, disclosure intensity, geography, surveillance, survivorship and coverage differences."
+    }
+  ],
+  "gate_summary": {
+    "finite_route_count": 7,
+    "source_admission_deferral_count": 3,
+    "overlap_or_hypothesis_rejection_count": 4,
+    "selected_factor_count": 0,
+    "formula_or_direction_frozen": false,
+    "candidate_or_comparator_value_read": false,
+    "daily_price_or_forward_return_read": false
+  },
+  "scientific_interpretation": "A linked issuer-as-commercial-parking-facility-operator history from space reservation and gate entry through occupancy, charging, enforcement, equipment maintenance, closure, reopening and turnover is economically distinct from generic passenger travel, payment processing, lodging, storage, property and equipment-rental lifecycles. Distinction alone does not admit a factor: complete lawful point-in-time facility-safe histories, non-live privacy and security semantics, and a cross-section capable of meeting frozen coverage gates are binding.",
+  "research_boundary": {
+    "finite_catalog_frozen_before_source_or_value_read": true,
+    "failed_or_truncated_output_used_as_scientific_or_validation_evidence": false,
+    "source_or_commercial_parking_reservation_access_occupancy_charging_payment_enforcement_incident_maintenance_turnover_factor_value_read": false,
+    "vehicle_plate_or_vin_driver_or_passenger_identity_exact_facility_level_or_space_location_access_credential_or_code_camera_or_anpr_footage_realtime_occupancy_or_access_feed_security_or_control_configuration_payment_instrument_private_violation_or_enforcement_communication_or_nonpublic_legal_communication_read": false,
+    "provider_or_web_request_issued": false,
+    "provider_credential_presence_value_or_digest_read": false,
+    "stress_2024_2025_opened": false,
+    "candidate49_plan_or_run_executed": false,
+    "candidate49_ledgers_changed": false,
+    "second_prospective_candidate_created": false,
+    "current_scoring_selection_sizing_positions_or_orders_performed": false,
+    "investment_advice": false
+  },
+  "next_action": "Bind the one recorded infrastructure failure and seven scientific routes into one append-only Campaign232 ledger, publish terminal prevalue evidence, and authorize a genuinely different Campaign233 domain after validation."
+}

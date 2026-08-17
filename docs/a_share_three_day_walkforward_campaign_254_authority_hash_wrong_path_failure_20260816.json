@@ -1,0 +1,22 @@
+{
+  "schema_version": 1,
+  "kind": "a_share_three_day_walkforward_campaign254_infrastructure_failure",
+  "recorded_at": "2026-08-16T12:27:00+08:00",
+  "timestamp_semantics": "monotonic_logical_append_time_not_host_wall_clock_measurement",
+  "status": "failed_authority_hash_probe_wrong_mutable_report_and_candidate49_paths",
+  "attempt_id": "campaign254_infrastructure_003",
+  "phase": "authoritative_predecessor_verification",
+  "command_semantics": "The predecessor SHA-256 probe used nonexistent docs-level mutable-report paths and nonexistent Candidate49 ledger filenames, then exited one.",
+  "disposition": "Discard the whole failed command output; resolve paths from the frozen Campaign253 test and rerun one complete successful hash probe.",
+  "research_boundary": {
+    "repository_file_written_by_failed_command": false,
+    "candidate_or_comparator_value_read": false,
+    "daily_price_or_forward_return_read": false,
+    "provider_or_web_request_issued": false,
+    "provider_credential_presence_value_or_digest_read": false,
+    "candidate49_plan_or_run_executed": false,
+    "candidate49_ledgers_changed": false,
+    "stress_2024_2025_opened": false,
+    "failed_or_truncated_output_used_as_scientific_or_validation_evidence": false
+  }
+}

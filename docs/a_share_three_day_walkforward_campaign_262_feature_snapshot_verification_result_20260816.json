@@ -1,0 +1,44 @@
+{
+  "schema_version": 1,
+  "kind": "a_share_three_day_walkforward_campaign262_feature_snapshot_verification_result",
+  "status": "all_partitions_and_aggregate_verified_before_coverage_or_comparator_values",
+  "recorded_at": "2026-08-16T18:10:00+08:00",
+  "timestamp_semantics": "monotonic_logical_append_time_not_host_wall_clock_measurement",
+  "authoritative_inputs": {
+    "no_return_preregistration": {
+      "path": "docs/a_share_three_day_walkforward_campaign_262_no_return_preregistration_20260816.json",
+      "sha256": "cf4ea3e0c39f31207e175891321b3eb5cc8a49391cb3022d87cd98e80cc282d0"
+    },
+    "implementation_freeze_v3": {
+      "path": "docs/a_share_three_day_walkforward_campaign_262_implementation_freeze_v3_20260816.json",
+      "sha256": "9683e39b02f3517983abd363216a476e7544c08b2462b2b2280e022a8189ac2c"
+    }
+  },
+  "verification": {
+    "command": "PYTHONPATH=. /Volumes/DIsk/Coding/anaconda3/bin/python3.12 scripts/a_share_three_day_walkforward_campaign262_features.py verify --manifest /Volumes/DIsk/qlib-a-share-tushare-1m/derived/a_share/rich/tushare/minute_walkforward_campaign262_feature_library/tushare_stk_mins_1m_2019_2025_ea0cbb8f_walkforward_campaign262_feature_library_v1/snapshot_manifest.json --workers 8",
+    "exit_code": 0,
+    "manifest_path": "/Volumes/DIsk/qlib-a-share-tushare-1m/derived/a_share/rich/tushare/minute_walkforward_campaign262_feature_library/tushare_stk_mins_1m_2019_2025_ea0cbb8f_walkforward_campaign262_feature_library_v1/snapshot_manifest.json",
+    "manifest_sha256": "9bae791bd718231d6341b6f3a7205b3eae25e96aec7c2db0b2b22209e06d9d32",
+    "dataset_sha256": "704da679bba6f247bfaba243df8cc4ecc3b7ac195565fe9ef7e0ff838c7e710b",
+    "partitions": 33015,
+    "rows": 7724498,
+    "eligible_rows": 7724498,
+    "every_partition_byte_hash_verified": true,
+    "every_partition_frame_hash_verified": true,
+    "aggregate_dataset_digest_verified": true,
+    "exact_output_value_semantics_verified": true
+  },
+  "research_boundary": {
+    "candidate_values_read_for_verification": true,
+    "comparator_values_read": false,
+    "historical_daily_price_or_forward_return_values_read": false,
+    "stress_2024_2025_opened_for_returns": false,
+    "provider_request_issued": false,
+    "credential_loaded": false,
+    "candidate49_historical_backfill_performed": false,
+    "candidate49_ledgers_changed": false,
+    "second_prospective_candidate_created": false,
+    "current_scoring_selection_sizing_positions_or_orders_performed": false,
+    "investment_advice": false
+  }
+}

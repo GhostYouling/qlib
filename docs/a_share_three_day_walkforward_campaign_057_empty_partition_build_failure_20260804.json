@@ -1,0 +1,83 @@
+{
+  "version": 1,
+  "kind": "a_share_three_day_walkforward_campaign057_infrastructure_failure_record",
+  "status": "failed_closed_before_feature_snapshot_publication",
+  "recorded_at": "2026-08-04T04:14:47Z",
+  "campaign_id": "057",
+  "factor": "intraday_day_over_day_absolute_return_profile_similarity_238b",
+  "direction": "higher",
+  "authoritative_boundary": {
+    "path": "docs/a_share_three_day_iteration_status_20260804_campaign056_verified.json",
+    "sha256": "0e51c9273071bebf270b81ab11a2551235338798419f05b58519f396cc099b3e"
+  },
+  "no_return_protocol": {
+    "path": "docs/a_share_three_day_walkforward_campaign_057_no_return_preregistration.json",
+    "sha256": "9eb8607e91e952b9e22e436374d68de0a90df251065720bed8a6285f2e3b7ff1"
+  },
+  "implementation_freeze": {
+    "path": "docs/a_share_three_day_walkforward_campaign_057_feature_implementation_freeze_20260804.json",
+    "sha256": "44b889f9deb49b7fc3bbe1293a42e77dd5844502cba723d32d6eb7d46c118a7e"
+  },
+  "feature_runner": {
+    "path": "scripts/a_share_three_day_walkforward_campaign057_features.py",
+    "sha256": "3706ac11c551dd02c8d6d8cf30c95a6f076d6a6e6c5dbba4beb07dde10aca66a"
+  },
+  "failed_command": "PYTHONPATH=/Volumes/DIsk/Disk-Coding/qlib /opt/anaconda3/bin/python3 scripts/a_share_three_day_walkforward_campaign057_features.py build --data-root /Volumes/DIsk/qlib-a-share-tushare-1m --workers 8",
+  "actual_exit_code": 1,
+  "failure": {
+    "error_class": "Campaign057FeatureError",
+    "error_message": "Campaign057 symbol build failed: SH600485: raw identity changed for SH600485",
+    "root_cause": "The frozen extractor rejected every empty raw symbol-year frame before it could return an empty profile set, although the bound source manifest explicitly records legitimate zero-row partitions.",
+    "first_observed_partition": {
+      "symbol": "SH600485",
+      "year": 2021,
+      "manifest_rows": 0,
+      "byte_sha256": "01321693d59afe3b633ec4736a32acb27474a4e0635101f9d762eac01332e2e3"
+    },
+    "diagnosis_boundary": {
+      "source_manifest_metadata_read": true,
+      "raw_close_values_printed_or_persisted_by_diagnosis": false,
+      "candidate_values_manually_inspected": false,
+      "comparison_values_read": false,
+      "daily_price_or_forward_return_read": false
+    }
+  },
+  "bound_source_empty_partitions": {
+    "count": 6,
+    "symbol_years": [
+      "SH600485/2021",
+      "SH600677/2021",
+      "SH600680/2019",
+      "SZ000670/2021",
+      "SZ002260/2020",
+      "SZ002260/2021"
+    ],
+    "all_share_the_manifest_declared_zero_row_parquet_sha256": "01321693d59afe3b633ec4736a32acb27474a4e0635101f9d762eac01332e2e3"
+  },
+  "preserved_partial_state": {
+    "root": "/Volumes/DIsk/qlib-a-share-tushare-1m/derived/a_share/rich/tushare/minute_walkforward_campaign057_feature_library/.tushare_stk_mins_1m_2019_2025_ea0cbb8f_walkforward_campaign057_feature_library_v1.partial",
+    "complete_parquet_partitions": 33004,
+    "complete_checkpoint_records": 33004,
+    "expected_partitions": 33015,
+    "missing_partitions": 11,
+    "build_lock_present_after_failure": false,
+    "formal_snapshot_manifest_published": false,
+    "partial_files_deleted_or_rewritten_by_diagnosis": false
+  },
+  "research_semantics": {
+    "infrastructure_only_attempt": true,
+    "factor_result_produced": false,
+    "ordered_no_return_audit_opened": false,
+    "comparison_factor_values_read": false,
+    "minute_close_partition_values_read_by_failed_build": true,
+    "historical_daily_price_fields_read": [],
+    "historical_forward_return_fields_read": false,
+    "development_folds_opened": false,
+    "stress_2024_2025_opened": false,
+    "provider_request_issued": false,
+    "candidate49_ledgers_changed": false,
+    "current_scoring_selection_sizing_or_orders_performed": false
+  },
+  "authorized_repair_boundary": "Additively permit a manifest-declared zero-row raw partition with the exact projected columns to yield an empty profile set and source_sessions=0. Do not change any nonempty-frame identity check, factor formula, direction, lag, session grid, range, coverage gate, uniqueness gate, comparison library, development rule, or output value already computed.",
+  "next_action": "Freeze and test an additive compatibility wrapper, resume from verified checkpoints, and publish no formal snapshot unless all 33015 partitions pass the original manifest semantics."
+}

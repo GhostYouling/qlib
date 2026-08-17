@@ -1,0 +1,95 @@
+{
+  "schema_version": 1,
+  "kind": "a_share_three_day_iteration_status_campaign215_prevalue_terminal",
+  "recorded_at": "2026-08-15T23:55:00+08:00",
+  "timestamp_semantics": "monotonic_logical_append_time_not_host_wall_clock_measurement",
+  "status": "campaign215_validation_passed_goal_active_campaign216_offline_prevalue_authorized",
+  "supersedes_without_rewriting": {
+    "path": "docs/a_share_three_day_iteration_status_20260815_campaign214_prevalue_terminal.json",
+    "sha256": "0bd9e51838f77e0f383f0673631839910987efc67b101374116f65b9b0546912"
+  },
+  "authoritative_inputs": {
+    "restaurant_foodservice_lifecycle_source_frontier": {
+      "path": "docs/a_share_three_day_walkforward_campaign_215_restaurant_foodservice_menu_reservation_waitlist_table_order_kitchen_ticket_preparation_serve_food_safety_waste_refund_settlement_lifecycle_source_frontier_20260815.json",
+      "sha256": "31b5d3a61d9c03f9822c94e29007c229d447d895c69f4b423bd750943d40d6bd"
+    },
+    "attempt_ledger_v1": {
+      "path": "data/experiments/short_horizon/historical_walkforward/campaign_215/research_attempt_ledger_v1.json",
+      "sha256": "2c724aac10764534a81e899ffc3a72ea2c0faade0af91a4e57f5f5b475061a56"
+    },
+    "terminal_result": {
+      "path": "docs/a_share_three_day_walkforward_campaign_215_terminal_result_20260815.json",
+      "sha256": "5a640115de4c689373ac88e66fe3f7cc0d8061245f1fde51c5d0cfb9a233cc73"
+    },
+    "policy_v326": {
+      "path": "docs/a_share_three_day_walkforward_future_numeric_comparison_eligibility_policy_v326_20260815.json",
+      "sha256": "5a0ead94f3247cc9b959f8a98b8f34581511798f761524c49dc8243b0e5d00fc"
+    },
+    "terminal_validation": {
+      "path": "docs/a_share_three_day_walkforward_campaign_215_terminal_validation_20260815.json",
+      "sha256": "a810ade0110b256b3853f1e4b042e178173a72069c4d6ad45529e4de1d7611c0"
+    }
+  },
+  "campaign215": {
+    "terminal": true,
+    "terminal_stage": "prevalue_source_admission_and_overlap_gate",
+    "finite_route_count": 7,
+    "source_admission_deferral_count": 3,
+    "overlap_or_hypothesis_rejection_count": 4,
+    "selected_factor_count": 0,
+    "definition_or_comparator_append": false,
+    "development_trial_count": 0,
+    "stress_trial_count_2024_2025": 0
+  },
+  "effective_accounting": {
+    "campaign215_attempt_count": 10,
+    "campaign215_scientific_attempt_count": 7,
+    "campaign215_infrastructure_failure_count": 3,
+    "cumulative_historical_research_attempt_count": 1999,
+    "cumulative_return_reading_development_trial_count": 314,
+    "chain_tip_sha256": "10ca966d7c24da269a0e8df04778e2065212436f2add67f7b0cf7c6d57b480b0"
+  },
+  "library_state": {
+    "complete_factor_definition_count": 158,
+    "complete_factor_definition_order_sha256": "4819c7fd7c0795d7598a52f3c615e3f117d5f4ecd9332974bc8e3dfa57c96667",
+    "eligible_numeric_comparator_count": 142,
+    "eligible_numeric_comparator_order_sha256": "5d1b35fb5a0d8ac9293008db9963c4a60a94dc940c237c3ed259e5ce44f14aaf",
+    "changed_by_campaign215": false
+  },
+  "candidate49": {
+    "sole_prospective_candidate": true,
+    "signal_ledger_sha256": "5193f00d7f36da003f53cec387900da4c3d002299f5dfcfc1a95eaa199ed3a79",
+    "signal_entry_count": 0,
+    "execution_ledger_sha256": "d57a3e61eac969e42cafa418ccd8c0a5ee65dcf69da145bb2c096c2a02a2ea4f",
+    "execution_entry_count": 0,
+    "ledgers_changed": false
+  },
+  "goal": {
+    "continuous_factor_iteration": "active",
+    "completed_by_campaign215": false,
+    "next_historical_campaign": 216,
+    "offline_iteration_may_continue_without_waiting_for_1630_or_new_daily_data": true
+  },
+  "validation_results": {
+    "focused": "2 passed",
+    "cumulative": "486 passed, 1 skipped, 30 deselected",
+    "independent": "passed",
+    "black": "passed",
+    "ruff": "passed"
+  },
+  "research_boundary": {
+    "historical_offline_prevalue_work_may_continue_at_any_local_time": true,
+    "failed_or_truncated_output_used_as_scientific_or_validation_evidence": false,
+    "source_restaurant_lifecycle_factor_comparator_security_price_or_return_value_read": false,
+    "privacy_sensitive_guest_employee_or_confidential_recipe_record_read": false,
+    "stress_2024_2025_opened": false,
+    "provider_or_web_request_issued": false,
+    "provider_credential_presence_value_or_digest_read": false,
+    "candidate49_plan_or_run_executed": false,
+    "candidate49_ledgers_changed": false,
+    "second_prospective_candidate_created": false,
+    "current_scoring_selection_sizing_positions_or_orders_performed": false,
+    "investment_advice": false
+  },
+  "next_action": "Begin Campaign216 finite offline prevalue research in a genuinely different mechanism domain; keep Candidate49 as the sole prospective confirmation layer and keep 2024-2025 closed."
+}

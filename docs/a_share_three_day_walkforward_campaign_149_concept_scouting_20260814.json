@@ -1,0 +1,145 @@
+{
+  "schema_version": 1,
+  "kind": "a_share_three_day_walkforward_campaign149_finite_prevalue_concept_scouting",
+  "status": "terminal_prevalue_zero_candidates_after_complete_library_and_residual_mechanism_review",
+  "recorded_at": "2026-08-14T23:32:00+08:00",
+  "purpose": "Review a finite catalog of six residual minute-data mechanisms against the frozen 155-definition library, 142 numerical comparators, original source contracts and every terminal operator family before reading any protected value.",
+  "authoritative_inputs": {
+    "iteration_state": {
+      "path": "docs/a_share_three_day_iteration_status_20260814_campaign148_prevalue_terminal_v3.json",
+      "sha256": "e6ec822d2b84e042c34e07ff4663d6cfee34e22d9c3de6751fa98f942c833f59"
+    },
+    "numeric_policy_v201": {
+      "path": "docs/a_share_three_day_walkforward_future_numeric_comparison_eligibility_policy_v201_20260814.json",
+      "sha256": "28042860a3664e76ad9d4c447254323e484aed5cdecef590d6a1a7a8bb963f9e",
+      "complete_definition_count": 155,
+      "complete_definition_order_sha256": "2e4114edb26fa3aaebd145ef07fe4e2ac9c5d9dc4586cf70ff61c20e39b954ba",
+      "numeric_comparator_count": 142,
+      "numeric_comparator_order_sha256": "5d1b35fb5a0d8ac9293008db9963c4a60a94dc940c237c3ed259e5ce44f14aaf"
+    },
+    "historical_walkforward_policy": {
+      "path": "docs/a_share_three_day_historical_walkforward_research_policy_20260727.json",
+      "sha256": "38426d6161b9bfed323c58caba18feca668b8c9d53e294951a8ba90c01a798bb"
+    },
+    "campaign148_scouting": {
+      "path": "docs/a_share_three_day_walkforward_campaign_148_concept_scouting_20260814.json",
+      "sha256": "1fb39daf575968b6440f2e95962e40ebb9c9797402149547ebdcf87fc7867405"
+    },
+    "campaign148_frontier_audit": {
+      "path": "docs/a_share_three_day_walkforward_campaign_148_mechanism_frontier_audit_20260814.json",
+      "sha256": "2192230f557a3548b21fe31cd17a0557558a469596843387e8458d421aec4aa4"
+    }
+  },
+  "finite_prevalue_concept_catalog": [
+    {
+      "catalog_id": "c149_01",
+      "name": "intraday_realized_kernel_microstructure_noise_ratio_238m",
+      "hypothetical_formula": "Compare a fixed-bandwidth realized-kernel estimate with ordinary within-half realized variance to score apparent one-minute microstructure-noise share.",
+      "direction": "higher",
+      "parameters": "proposed kernel, bandwidth and variance-ratio normalization",
+      "filters": ["accepted_240_bar_session_only"],
+      "subsets": [],
+      "combinations": [],
+      "models": ["realized_kernel"],
+      "prevalue_decision": "rejected_as_terminal_return_roughness_serial_dependence_and_price_update_estimator_refresh",
+      "reason": "Diffusive variation, five-minute variance ratio, absolute-return serial persistence, price-update share and realized volatility already consume the same high-frequency noise-versus-signal state. Kernel and bandwidth selection add estimator multiplicity rather than a contract-distinct observation."
+    },
+    {
+      "catalog_id": "c149_02",
+      "name": "intraday_ohlc_volatility_estimator_disagreement_240m",
+      "hypothetical_formula": "Contrast proposed Parkinson, Garman-Klass and Rogers-Satchell intrabar volatility estimates over the fixed 240-bar session.",
+      "direction": "higher",
+      "parameters": "proposed estimator set and disagreement normalization",
+      "filters": ["accepted_240_bar_session_only", "finite_positive_ordered_ohlc"],
+      "subsets": [],
+      "combinations": ["fixed_estimator_contrast"],
+      "models": [],
+      "prevalue_decision": "rejected_as_terminal_range_body_gap_volatility_operator_recombination",
+      "reason": "Intrabar body/range efficiency, close-location pressure, gap/body confirmation, range entropy, overlap and volatility families already expose the OHLC components. Contrasting named estimators is a deterministic recombination of those terminal operators."
+    },
+    {
+      "catalog_id": "c149_03",
+      "name": "intraday_transaction_price_modality_dip_240m",
+      "hypothetical_formula": "Apply a weighted modality statistic to active-bar log transaction prices amount/volume over the full session.",
+      "direction": "higher",
+      "parameters": "proposed weighted dip or excess-mass estimator and null normalization",
+      "filters": ["accepted_240_bar_session_only", "at_least_120_active_transaction_price_bars"],
+      "subsets": [],
+      "combinations": [],
+      "models": ["weighted_modality_test"],
+      "prevalue_decision": "rejected_as_terminal_transaction_price_consensus_skew_dispersion_and_distribution_refresh",
+      "reason": "Transaction-price consensus, Bowley skewness, dispersion resolution and VWAP pressure already terminate the level-distribution family and explicitly forbid alternate centers, quantiles and dispersion summaries. Modality testing changes the estimator, not the information state."
+    },
+    {
+      "catalog_id": "c149_04",
+      "name": "intraday_return_path_persistent_homology_lifetime_238p",
+      "hypothetical_formula": "Embed the within-half cumulative return path and summarize persistent topological lifetimes across a proposed filtration.",
+      "direction": "higher",
+      "parameters": "proposed embedding dimension, delay, filtration metric and lifetime aggregation",
+      "filters": ["accepted_240_bar_session_only"],
+      "subsets": [],
+      "combinations": [],
+      "models": ["persistent_homology"],
+      "prevalue_decision": "rejected_as_terminal_path_geometry_recurrence_spectral_and_threshold_refresh",
+      "reason": "Signed path efficiency, chord adherence, time-reversal asymmetry, path-area, recurrence and spectral families already consume ordered return geometry. Embedding, delay and filtration choices create a thresholded topology search over the same path."
+    },
+    {
+      "catalog_id": "c149_05",
+      "name": "intraday_return_profile_functional_pca_residual_energy_238m",
+      "hypothetical_formula": "Fit functional principal components to frozen development return profiles and score each stock-day by residual profile energy.",
+      "direction": "higher",
+      "parameters": "proposed training fold, component count, centering and residual norm",
+      "filters": ["accepted_240_bar_session_only"],
+      "subsets": [],
+      "combinations": [],
+      "models": ["functional_pca"],
+      "prevalue_decision": "rejected_as_terminal_return_profile_market_dependence_and_fitted_model_refresh",
+      "reason": "Morning-afternoon profile persistence, market idiosyncrasy, market synchronization, spectral entropy and complete-library model routes already expose profile shape and residualization. Selecting component count and fit sample reopens a fitted-model family without a new source state."
+    },
+    {
+      "catalog_id": "c149_06",
+      "name": "intraday_high_amount_conditional_return_expected_shortfall_238m",
+      "hypothetical_formula": "Estimate signed expected shortfall of within-half returns conditional on endpoint amount lying above a proposed empirical tail boundary.",
+      "direction": "higher",
+      "parameters": "proposed amount-tail boundary, return-tail probability and signed normalization",
+      "filters": ["accepted_240_bar_session_only"],
+      "subsets": ["high_amount_minutes"],
+      "combinations": [],
+      "models": ["conditional_tail_functional"],
+      "prevalue_decision": "rejected_as_terminal_amount_conditioning_price_impact_and_tail_threshold_refresh",
+      "reason": "Amount-conditioned directional persistence, directional price-impact asymmetry, up-move amount share and return-amount tail-copula review already consume conditional direction and tail response. Choosing two empirical tail cutoffs after those results is threshold rescue."
+    }
+  ],
+  "selection": {
+    "concepts_reviewed": 6,
+    "selected_candidate_count": 0,
+    "selected_candidate": null,
+    "genuinely_new_contract_permitted_mechanism_found": false,
+    "reason": "All six proposals replace an estimator, introduce a tuning family or fit a model on terminal return-noise, OHLC, transaction-price, path-geometry, profile-dependence or amount-conditioned states."
+  },
+  "decision": {
+    "create_campaign149_formula_feature_snapshot_model_or_adapter": false,
+    "run_source_acceptance_coverage_uniqueness_or_return_trial": false,
+    "append_all_six_concepts": true,
+    "keep_complete_definition_count": 155,
+    "keep_numeric_comparator_count": 142,
+    "keep_2024_2025_lockbox_closed": true,
+    "next_campaign_requirement": "Continue only from a genuinely new finite prevalue mechanism or a separately accepted historically versioned point-in-time source whose original collection contract permits the proposed use."
+  },
+  "research_boundary": {
+    "source_contract_schema_formula_manifest_and_terminal_metadata_read": true,
+    "source_rows_or_column_values_read": false,
+    "campaign149_candidate_values_computed_or_read": false,
+    "campaign149_comparator_values_read": false,
+    "historical_daily_price_or_forward_return_values_read": false,
+    "stress_2024_2025_opened": false,
+    "provider_request_issued": false,
+    "provider_credential_value_or_digest_read": false,
+    "candidate49_historical_backfill_performed": false,
+    "candidate49_ledgers_changed": false,
+    "second_prospective_candidate_created": false,
+    "current_scoring_selection_sizing_positions_or_orders_performed": false,
+    "investment_advice": false,
+    "inherited_current_listing_survivorship_limitation_remains": true
+  }
+}

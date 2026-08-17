@@ -1,0 +1,100 @@
+{
+  "version": 125,
+  "kind": "a_share_three_day_walkforward_future_numeric_comparison_eligibility_policy",
+  "status": "campaign124_new_share_prevalue_adapter_formula_frozen_acceptance_workflow_next",
+  "recorded_at": "2026-08-14T04:04:00+08:00",
+  "authoritative_inputs": {
+    "policy_v124": {
+      "path": "docs/a_share_three_day_walkforward_future_numeric_comparison_eligibility_policy_v124_20260814.json",
+      "sha256": "8f1a972f98ed98cbde520515a6e341c0a27f6821d7cecf484ab54ef459773d18"
+    },
+    "campaign124_source_contract": {
+      "path": "docs/a_share_three_day_walkforward_campaign_124_new_share_source_contract_20260814.json",
+      "sha256": "6efcc73fac8f6a24335e869c82c83e15880ada55894569dec098b1eddf5836f1"
+    },
+    "campaign124_adapter_formula_freeze": {
+      "path": "docs/a_share_three_day_walkforward_campaign_124_new_share_adapter_formula_freeze_20260814.json",
+      "sha256": "defa631557c37fe794f81caffca4e1a09a6b481313fb52163298b3b2dad0f272"
+    },
+    "campaign124_attempt_ledger_v1": {
+      "path": "data/experiments/short_horizon/historical_walkforward/campaign_124/research_attempt_ledger_v1.json",
+      "sha256": "f2a4a84ef3758ba8bf926aef25343490ac282d4d78c2bf8dbe74e3b3ea4b8835"
+    }
+  },
+  "supersedes_without_rewriting": {
+    "path": "docs/a_share_three_day_walkforward_future_numeric_comparison_eligibility_policy_v124_20260814.json",
+    "sha256": "8f1a972f98ed98cbde520515a6e341c0a27f6821d7cecf484ab54ef459773d18",
+    "preserved": true,
+    "scientific_result_changed": true,
+    "library_order_changed": true,
+    "reason": "Append one complete prevalue IPO ballot-scarcity definition after its source contract, pure adapter and 14 synthetic tests were frozen without any provider, candidate, comparator, price or return value."
+  },
+  "effective_accounting": {
+    "campaign124_attempt_count": 2,
+    "campaign124_ledger_entry_count": 2,
+    "campaign124_infrastructure_failure_count": 0,
+    "campaign124_prevalue_scientific_attempt_count": 2,
+    "campaign124_complete_factor_attempt_count": 1,
+    "campaign124_source_acceptance_attempt_count": 0,
+    "campaign124_return_reading_development_trial_count": 0,
+    "campaign124_development_survivor_count": 0,
+    "campaign124_stress_trial_count": 0,
+    "cumulative_historical_research_attempt_count": 1016,
+    "cumulative_return_reading_development_trial_count": 306
+  },
+  "complete_historical_feature_library": {
+    "factor_definition_count": 149,
+    "order_sha256": "be9c6085af2202e8fa5b4c6d89608b712b27740b16b5e78d7d88ca0c4d9bc5e3",
+    "prior_definition_count": 148,
+    "prior_order_sha256": "fa9f0254b17d1a2b568e056b2696f24087f3f0668d7842a1bcbfdde1a87192e8",
+    "latest_definition": {
+      "name": "ipo_retail_ballot_scarcity_20to79s",
+      "score_direction": "higher",
+      "provider_source_accepted": false,
+      "historical_values_materialized": false
+    }
+  },
+  "numerical_comparator_eligibility": {
+    "eligible_numeric_comparator_count": 139,
+    "eligible_numeric_comparator_order_sha256": "9c4de054ca1b83eced67eece256b024ebec3a6e1925de17a4cedfa7d36265161",
+    "unchanged_from_v124": true,
+    "campaign124_definition_eligible_now": false,
+    "reason": "Source acceptance, five-year coverage and factor-level capacity have not passed; no candidate or comparator values may be read."
+  },
+  "campaign124_gate_state": {
+    "concept_scouting_passed": true,
+    "mechanism_overlap_and_source_identifiability_passed": true,
+    "zero_row_source_contract_frozen": true,
+    "pure_adapter_and_synthetic_tests_frozen": true,
+    "black_and_ruff_passed": true,
+    "one_shot_provider_acceptance_workflow_frozen": false,
+    "provider_request_issued": false,
+    "provider_source_accepted": false,
+    "capacity_gate_passed": false,
+    "numeric_uniqueness_gate_run": false,
+    "historical_development_trial_run": false,
+    "stress_2024_2025_opened": false,
+    "terminal": false
+  },
+  "future_campaign_boundary": {
+    "next_stage": "freeze_campaign124_entitlement_safe_one_shot_source_acceptance_workflow",
+    "provider_request_allowed_now": false,
+    "formula_window_direction_projection_missing_rule_threshold_or_source_change_allowed": false,
+    "numeric_comparator_append_allowed_now": false,
+    "campaign125_allowed_now": false
+  },
+  "research_boundary": {
+    "programmatic_provider_requests_issued": false,
+    "provider_credential_loaded": false,
+    "provider_rows_read_persisted_or_counted": false,
+    "campaign124_candidate_values_computed_or_read": false,
+    "campaign124_comparator_values_read": false,
+    "historical_daily_price_or_forward_return_values_read": false,
+    "stress_2024_2025_opened": false,
+    "candidate49_historical_backfill_performed": false,
+    "candidate49_ledgers_changed": false,
+    "second_prospective_candidate_created": false,
+    "current_scoring_selection_sizing_positions_or_orders_performed": false,
+    "investment_advice": false
+  }
+}

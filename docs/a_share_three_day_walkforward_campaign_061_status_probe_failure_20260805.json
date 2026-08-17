@@ -1,0 +1,32 @@
+{
+  "version": 1,
+  "kind": "a_share_three_day_walkforward_campaign061_infrastructure_failure",
+  "status": "preserved_non_value_status_invocation_failure",
+  "recorded_at": "2026-08-05T00:49:30+08:00",
+  "stage": "post_freeze_pre_source_status_probe",
+  "attempt_ordinal_within_campaign061": 1,
+  "command": "Import Campaign061, validate the implementation freeze, then call status() without its required data_root argument.",
+  "exit_code": 1,
+  "failure": {
+    "exception": "TypeError",
+    "message": "status() missing 1 required positional argument: 'data_root'",
+    "root_cause": "The diagnostic probe omitted a required positional argument; the frozen implementation and research semantics were not implicated.",
+    "candidate_formula_failure": false
+  },
+  "boundary": {
+    "implementation_freeze_validation_passed_before_failure": true,
+    "raw_minute_partition_values_read": false,
+    "candidate_values_read": false,
+    "comparison_values_read": false,
+    "daily_price_or_forward_return_read": false,
+    "provider_request_issued": false,
+    "candidate49_ledgers_changed": false
+  },
+  "accounting": {
+    "counts_as_infrastructure_attempt": true,
+    "counts_as_factor_attempt": false,
+    "counts_as_return_reading_development_trial": false,
+    "cumulative_historical_research_attempt_count_after_record": 352,
+    "cumulative_return_reading_development_trial_count_after_record": 269
+  }
+}
