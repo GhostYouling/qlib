@@ -1,0 +1,109 @@
+{
+  "schema_version": 1,
+  "kind": "a_share_three_day_walkforward_campaign264_terminal_validation",
+  "status": "passed_campaign264_prevalue_terminal_reference_graph_and_semantics",
+  "validated_at": "2026-08-24T03:35:31Z",
+  "timestamp_semantics": "measured_host_utc_after_final_focused_format_lint_test_json_report_and_hash_checks",
+  "authoritative_inputs": {
+    "campaign264_frontier": {
+      "path": "docs/a_share_three_day_walkforward_campaign_264_local_schema_independent_mechanism_frontier_20260824.json",
+      "sha256": "4ff4834dd6044d6937f1abde82edbe316351b05dca839b5985597de944199c8b"
+    },
+    "campaign264_attempt_ledger_v1": {
+      "path": "data/experiments/short_horizon/historical_walkforward/campaign_264/research_attempt_ledger_v1.json",
+      "sha256": "a97c2cfa64f2d86fb40386479ac301d1ad5dfa04e53d3ff54263dfdabbb85bb6"
+    },
+    "campaign264_terminal_result": {
+      "path": "docs/a_share_three_day_walkforward_campaign_264_terminal_result_20260824.json",
+      "sha256": "c746ac55551bec7eef833ab312d710ee64fa765d7e266397e676bc7a1dec362e"
+    },
+    "campaign264_terminal_report": {
+      "path": "docs/a_share_three_day_walkforward_campaign_264_terminal_report.md",
+      "sha256": "0f7ced26eb814dd5eecd072b73d70739c04fb5392ce4f4c75cfc57ed6974356a"
+    },
+    "numeric_policy_v415": {
+      "path": "docs/a_share_three_day_walkforward_future_numeric_comparison_eligibility_policy_v415_20260824.json",
+      "sha256": "9af0c77afb9a3f9a1e9434914de8178c57a507f680ea17587a128aebd989b77d"
+    },
+    "focused_test": {
+      "path": "tests/data_collector_tests/test_a_share_three_day_walkforward_campaign264_terminal.py",
+      "sha256": "2b85a33857250f6dceba3760ab526fc1999096c581f9124f9bf30d6933fd5a69"
+    }
+  },
+  "validation_results": {
+    "json_parse": {
+      "status": "passed",
+      "artifact_count": 4
+    },
+    "black_final_check": {
+      "status": "passed",
+      "file_count": 1,
+      "mechanical_formatting_correction_count_before_final_check": 1
+    },
+    "ruff_check": {
+      "status": "passed",
+      "file_count": 1
+    },
+    "focused_pytest": {
+      "status": "passed",
+      "passed": 7,
+      "failed": 0,
+      "error": 0,
+      "skipped": 0
+    },
+    "reference_graph": {
+      "status": "passed",
+      "relative_and_absolute_authoritative_hashes_resolved": true,
+      "minute_metadata_and_daily_snapshot_manifest_hashes_matched": true
+    },
+    "complete_library_reconstruction": {
+      "status": "passed",
+      "complete_definition_count": 162,
+      "complete_definition_order_sha256": "974f2c1f16a85eb43a0bd1e8db768dbe120cd8826c1754d5f220bf9f1d4a3ea0",
+      "eligible_numeric_comparator_count": 143,
+      "eligible_numeric_comparator_order_sha256": "f4fbf3d578e2c80c29425716a30d60a3df01d67d04e37f1651236c4dff899588"
+    },
+    "append_only_chain": {
+      "status": "passed",
+      "campaign264_entry_count": 7,
+      "predecessor_chain_tip_sha256": "b84d7f5ef4d9c9c0f138612805d52392220f23745ff44fed0e1437132520abb2",
+      "campaign264_chain_tip_sha256": "19f0cc33cef72207d8e0c62721b86c5fc8d36d56a024503a76ef240b6359e49d",
+      "cumulative_historical_research_attempt_count": 2604,
+      "cumulative_return_reading_development_trial_count": 315
+    },
+    "unified_reports": {
+      "status": "passed",
+      "campaign264_heading_count_each": 1,
+      "current_sha256": "ca2455ac0a40b812711fbad9b51c1af09539ff79310b15493e3e1a88a9e59486",
+      "three_day_sha256": "1c21fc35673a11ddcc75c727a4dc2b822ff4c7cabd2a430cd2d909c8884ec457"
+    },
+    "candidate49": {
+      "status": "passed_unchanged_empty",
+      "signal_entry_count": 0,
+      "execution_entry_count": 0,
+      "signal_ledger_sha256": "5193f00d7f36da003f53cec387900da4c3d002299f5dfcfc1a95eaa199ed3a79",
+      "execution_ledger_sha256": "d57a3e61eac969e42cafa418ccd8c0a5ee65dcf69da145bb2c096c2a02a2ea4f"
+    }
+  },
+  "scientific_semantics_confirmed": {
+    "finite_prevalue_route_count": 7,
+    "selected_factor_count": 0,
+    "candidate_or_comparator_value_read": false,
+    "historical_daily_price_or_forward_return_value_read": false,
+    "development_trial_count": 0,
+    "stress_trial_count_2024_2025": 0,
+    "complete_definition_or_numeric_comparator_changed": false,
+    "campaign264_route_retry_or_rescue_allowed": false,
+    "next_campaign": 265
+  },
+  "research_boundary": {
+    "provider_or_web_request_issued": false,
+    "provider_credential_value_or_digest_read": false,
+    "candidate49_plan_or_run_executed": false,
+    "candidate49_historical_backfill_performed": false,
+    "candidate49_ledgers_changed": false,
+    "second_prospective_candidate_created": false,
+    "current_scoring_selection_sizing_positions_or_orders_performed": false,
+    "investment_advice": false
+  }
+}

@@ -1,0 +1,94 @@
+{
+  "schema_version": 1,
+  "kind": "a_share_three_day_walkforward_campaign264_prevalue_terminal_result",
+  "status": "terminal_prevalue_local_schema_frontier_zero_selected",
+  "recorded_at": "2026-08-23T16:14:00Z",
+  "timestamp_semantics": "measured_host_utc_after_frontier_and_append_only_ledger_publication",
+  "authoritative_inputs": {
+    "campaign263_terminal_state": {
+      "path": "docs/a_share_three_day_iteration_status_20260816_campaign263_terminal.json",
+      "sha256": "63b8ce2a195c3c1d2bbc7a5182ae2c886af36602c3e2ddc34286d882476e0f9d"
+    },
+    "numeric_policy_v414": {
+      "path": "docs/a_share_three_day_walkforward_future_numeric_comparison_eligibility_policy_v414_20260816.json",
+      "sha256": "a41c4a3849d5a14c448e76d9c7f6cc5bf0603da2b8db57cadc85d1534349dac0"
+    },
+    "campaign264_frontier": {
+      "path": "docs/a_share_three_day_walkforward_campaign_264_local_schema_independent_mechanism_frontier_20260824.json",
+      "sha256": "4ff4834dd6044d6937f1abde82edbe316351b05dca839b5985597de944199c8b"
+    },
+    "campaign264_attempt_ledger_v1": {
+      "path": "data/experiments/short_horizon/historical_walkforward/campaign_264/research_attempt_ledger_v1.json",
+      "sha256": "a97c2cfa64f2d86fb40386479ac301d1ad5dfa04e53d3ff54263dfdabbb85bb6"
+    }
+  },
+  "scientific_result": {
+    "finite_route_count": 7,
+    "terminal_overlap_or_post_exposure_rejection_count": 7,
+    "source_admission_deferral_count": 0,
+    "selected_factor_count": 0,
+    "numeric_formula_or_direction_frozen": false,
+    "candidate_snapshot_created": false,
+    "candidate_or_comparator_value_read": false,
+    "historical_daily_price_or_forward_return_read": false,
+    "development_trial_count": 0,
+    "development_survivor_count": 0,
+    "stress_trial_count_2024_2025": 0,
+    "interpretation": "Campaign264 found no mechanism that is both economically independent of the complete frozen history and identifiable from a not-yet-consumed accepted local raw channel. Seven tempting local routes were rejected before values because they are explicit old-family estimator, field, path, window or model rescues. This is evidence against manufacturing a new factor from the same information, not evidence that no future independent data channel can work."
+  },
+  "effective_accounting": {
+    "campaign_attempt_count": 7,
+    "infrastructure_failure_count": 0,
+    "prevalue_scientific_attempt_count": 7,
+    "complete_factor_attempt_count": 0,
+    "return_reading_development_trial_count": 0,
+    "cumulative_historical_research_attempt_count": 2604,
+    "cumulative_return_reading_development_trial_count": 315,
+    "chain_tip_sha256": "19f0cc33cef72207d8e0c62721b86c5fc8d36d56a024503a76ef240b6359e49d"
+  },
+  "library_state": {
+    "changed_by_campaign264": false,
+    "complete_factor_definition_count": 162,
+    "complete_factor_definition_order_sha256": "974f2c1f16a85eb43a0bd1e8db768dbe120cd8826c1754d5f220bf9f1d4a3ea0",
+    "eligible_numeric_comparator_count": 143,
+    "eligible_numeric_comparator_order_sha256": "f4fbf3d578e2c80c29425716a30d60a3df01d67d04e37f1651236c4dff899588"
+  },
+  "candidate49": {
+    "sole_prospective_candidate": true,
+    "signal_entry_count": 0,
+    "execution_entry_count": 0,
+    "signal_ledger_sha256": "5193f00d7f36da003f53cec387900da4c3d002299f5dfcfc1a95eaa199ed3a79",
+    "execution_ledger_sha256": "d57a3e61eac969e42cafa418ccd8c0a5ee65dcf69da145bb2c096c2a02a2ea4f",
+    "ledgers_changed": false,
+    "historical_backfill_allowed": false,
+    "second_prospective_candidate_allowed": false
+  },
+  "session_boundary": {
+    "local_date": "2026-08-24",
+    "timezone": "Asia/Singapore",
+    "observed_local_time_before_16_30": true,
+    "candidate49_plan_or_run_required_at_publication_time": false,
+    "candidate49_plan_or_run_executed": false,
+    "provider_request_issued": false
+  },
+  "research_boundary": {
+    "repository_metadata_terminal_history_and_parquet_schema_metadata_read": true,
+    "campaign264_candidate_or_comparator_value_read": false,
+    "historical_daily_price_or_forward_return_value_read": false,
+    "stress_2024_2025_opened": false,
+    "provider_or_web_request_issued": false,
+    "provider_credential_value_or_digest_read": false,
+    "candidate49_plan_or_run_executed": false,
+    "candidate49_historical_backfill_performed": false,
+    "candidate49_ledgers_changed": false,
+    "second_prospective_candidate_created": false,
+    "current_scoring_selection_sizing_positions_or_orders_performed": false,
+    "investment_advice": false
+  },
+  "prohibited_followups": [
+    "Do not materialize, invert, transform, window, threshold, residualize, fit, combine or rescue any of the seven Campaign264 routes.",
+    "Do not append a complete definition or numeric comparator for Campaign264 because no complete factor was admitted.",
+    "Do not read 2019-2023 returns, open 2024-2025, backfill Candidate49, start Candidate50 or generate current trading actions from this prevalue result."
+  ],
+  "next_action": "Publish policy v415, terminal state, unified reports and focused validation, then authorize Campaign265 only for a genuinely new accepted point-in-time information channel or independently provable prevalue mechanism."
+}

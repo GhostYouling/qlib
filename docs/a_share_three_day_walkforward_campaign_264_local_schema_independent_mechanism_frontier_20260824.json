@@ -1,0 +1,143 @@
+{
+  "schema_version": 1,
+  "kind": "a_share_three_day_walkforward_campaign264_local_schema_independent_mechanism_frontier",
+  "status": "terminal_prevalue_seven_terminal_overlap_routes_zero_selected",
+  "recorded_at": "2026-08-23T16:12:15Z",
+  "timestamp_semantics": "measured_host_utc_after_complete_pipeline_policy_and_local_schema_metadata_review_before_any_campaign264_candidate_comparator_price_or_return_value",
+  "purpose": "Freeze one finite zero-network Campaign264 review of the remaining locally identifiable A-share minute and daily channels after Campaign263, and reject old-family estimator, field-substitution, window, path, interaction and model rescue before any Campaign264 value is opened.",
+  "authoritative_inputs": {
+    "campaign263_terminal_state": {
+      "path": "docs/a_share_three_day_iteration_status_20260816_campaign263_terminal.json",
+      "sha256": "63b8ce2a195c3c1d2bbc7a5182ae2c886af36602c3e2ddc34286d882476e0f9d"
+    },
+    "numeric_policy_v414": {
+      "path": "docs/a_share_three_day_walkforward_future_numeric_comparison_eligibility_policy_v414_20260816.json",
+      "sha256": "a41c4a3849d5a14c448e76d9c7f6cc5bf0603da2b8db57cadc85d1534349dac0"
+    },
+    "historical_walkforward_policy": {
+      "path": "docs/a_share_three_day_historical_walkforward_research_policy_20260727.json",
+      "sha256": "38426d6161b9bfed323c58caba18feca668b8c9d53e294951a8ba90c01a798bb"
+    },
+    "minute_run_metadata": {
+      "path": "/Volumes/DIsk/qlib-a-share-tushare-1m/metadata/rich_data/runs/tushare_stk_mins_1m_2019_2025_ea0cbb8f.json",
+      "sha256": "9b3d959563c9d182f38981c6a36bdb3bc9b415de08487a9e1f9e850825c0839f"
+    },
+    "daily_snapshot_manifest": {
+      "path": "/Volumes/DIsk/qlib-a-share-tushare-1m/raw/a_share/rich/tushare/daily/snapshots/tushare_daily_2019_2025_acf72e28/snapshot_manifest.json",
+      "sha256": "87feded06b6726d282abf52c8fd1c30340728ae37c2de201a3a8f30e1a556e2d"
+    }
+  },
+  "metadata_only_source_evidence": {
+    "minute_provider": "tushare",
+    "minute_frequency": "1m",
+    "minute_schema_columns": [
+      "datetime",
+      "symbol",
+      "source_symbol",
+      "provider",
+      "open",
+      "high",
+      "low",
+      "close",
+      "volume",
+      "amount"
+    ],
+    "daily_schema_columns": [
+      "ts_code",
+      "trade_date",
+      "open",
+      "high",
+      "low",
+      "close",
+      "pre_close",
+      "change",
+      "pct_chg",
+      "vol",
+      "amount"
+    ],
+    "schema_observation_method": "Parquet footer schema and row-count metadata only; no column chunk, candidate value, comparison value, daily price series or forward return was loaded for Campaign264.",
+    "complete_definition_count_reconstructed_from_frozen_code": 162,
+    "complete_definition_order_sha256": "974f2c1f16a85eb43a0bd1e8db768dbe120cd8826c1754d5f220bf9f1d4a3ea0",
+    "eligible_numeric_comparator_count_reconstructed_from_frozen_code": 143,
+    "eligible_numeric_comparator_order_sha256": "f4fbf3d578e2c80c29425716a30d60a3df01d67d04e37f1651236c4dff899588",
+    "unconsumed_raw_local_field_present": false,
+    "interpretation": "The accepted local raw inventory contains only standard daily and aggregate one-minute OHLC, share-volume and CNY-amount channels. A new statistic over those already exposed channels is not automatically a new economic information state."
+  },
+  "finite_prevalue_catalog": [
+    {
+      "route_id": "c264_01",
+      "name": "intraday_realized_return_excess_kurtosis_238m",
+      "decision": "reject_terminal_overlap",
+      "reason": "The frozen return-skewness protocol explicitly closed kurtosis, tail-index, maximum standardized return and tail-count alternatives; Campaign110 again rejected realized excess kurtosis as a restatement of return-variance entropy, bipower jump variation and volatility resolution."
+    },
+    {
+      "route_id": "c264_02",
+      "name": "intraday_range_profile_spectral_entropy_60f",
+      "decision": "reject_terminal_overlap",
+      "reason": "Campaign064 selected one exact range weak-order entropy and rejected range spectral, permutation and transition entropy before values; later range entropy, clock moment, peak, profile and synchronization results make a Fourier operator substitution an exposed estimator rescue."
+    },
+    {
+      "route_id": "c264_03",
+      "name": "intraday_volume_profile_spectral_entropy_60f",
+      "decision": "reject_field_substitution_after_exposure",
+      "reason": "Campaign263 consumed the exact full-profile spectral-entropy operator on CNY amount. Campaign117 previously rejected choosing share volume instead of amount as a field sweep, and Campaign152 documented that raw share volume adds lot and corporate-action denomination exposure rather than a cleaner independent liquidity channel."
+    },
+    {
+      "route_id": "c264_04",
+      "name": "intraday_amount_direction_dictionary_phrase_count_238s",
+      "decision": "reject_terminal_overlap",
+      "reason": "Campaign120 explicitly rejected an amount-direction dictionary after the amount weak-order and top-decile event-state routes. Replacing the already-consumed finite activity alphabet with a dictionary parser is a sequence-complexity estimator refresh, not a new source state."
+    },
+    {
+      "route_id": "c264_05",
+      "name": "intraday_day_over_day_high_low_range_profile_similarity_240b",
+      "decision": "reject_terminal_overlap",
+      "reason": "Campaign057 rejected the same cross-day range-profile similarity before values, and Campaign100 preserved that rejection because range participation entropy and morning-afternoon range-profile similarity had already consumed the family."
+    },
+    {
+      "route_id": "c264_06",
+      "name": "intraday_zero_activity_or_zero_range_longest_run_240m",
+      "decision": "reject_terminal_overlap",
+      "reason": "Campaign105 and Campaign106 selected minimal occupancy shares and rejected longest inactive or zero-range runs because ordering, lunch reset, endpoints and ties add path/window degrees of freedom to already exposed binary support states."
+    },
+    {
+      "route_id": "c264_07",
+      "name": "full_numeric_library_pair_interaction_reweight_or_model_143f",
+      "decision": "reject_post_exposure_model_rescue",
+      "reason": "Complete-library supervised fits, subsets, pair interactions, consensus, lower-quartile, improvement-breadth, redundancy weighting and latent-model refreshes are already terminal. Recombining the 143 observed numeric comparators after their outcomes would violate the frozen no-rescue and no-terminated-factor-combination boundary."
+    }
+  ],
+  "gate_summary": {
+    "finite_route_count": 7,
+    "terminal_overlap_or_post_exposure_rejection_count": 7,
+    "source_admission_deferral_count": 0,
+    "selected_factor_count": 0,
+    "numeric_formula_or_direction_frozen": false,
+    "candidate_or_comparator_value_read": false,
+    "historical_daily_price_or_forward_return_read": false,
+    "development_trial_count": 0,
+    "stress_trial_count_2024_2025": 0,
+    "complete_definition_or_numeric_comparator_append_allowed": false
+  },
+  "research_boundary": {
+    "repository_metadata_terminal_history_and_parquet_schema_metadata_read": true,
+    "campaign264_candidate_or_comparator_value_read": false,
+    "historical_daily_price_or_forward_return_value_read": false,
+    "stress_2024_2025_opened": false,
+    "provider_or_web_request_issued": false,
+    "provider_credential_value_or_digest_read": false,
+    "candidate49_plan_or_run_executed": false,
+    "candidate49_historical_backfill_performed": false,
+    "candidate49_ledgers_changed": false,
+    "second_prospective_candidate_created": false,
+    "current_scoring_selection_sizing_positions_or_orders_performed": false,
+    "investment_advice": false
+  },
+  "decision": {
+    "campaign264_terminal_stage": "prevalue_local_schema_independent_mechanism_gate",
+    "reason": "No route is both economically independent of the complete frozen history and identifiable from a not-yet-consumed accepted local raw channel. Forcing one would manufacture iteration by changing an estimator, field, window or combination after exposure.",
+    "next_campaign": 265,
+    "next_campaign_requirement": "Start only from a genuinely new accepted point-in-time information channel or a mechanism that can prove independence from all seven rejected routes and the complete 162-definition library before values. Historical offline review remains available at any local time.",
+    "candidate49_remains_sole_independent_prospective_confirmation_layer": true
+  }
+}

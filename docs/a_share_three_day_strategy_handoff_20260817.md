@@ -100,3 +100,9 @@ PYTHONPATH=. /Volumes/DIsk/Coding/anaconda3/bin/python3.12 -m pytest \
 恢复持续迭代目标后，Campaign264 只能从一个经济上独立、有限、零网络的值前机制开始，并在读取候选值前冻结公式、方向、输入字段、缺失/零值/时间语义、覆盖门、完整 143 项比较顺序、开发目录、成本和幸存规则。所有成功、失败和基础设施尝试都必须追加记录，不能只保留最佳结果。
 
 在新候选通过覆盖和全部 143 项唯一性门禁前，不得读取其 2019–2023 开发收益；没有开发幸存者时不得打开 2024–2025。任何历史通过仍只属于研究排序，不自动生成当前交易动作。
+
+## 2026-08-24 Campaign264 续跑补充
+
+持续目标已经恢复为 active。Campaign264 完成了一轮严格值前本地原始通道审查：只读重建 162/143 完整库，并检查分钟与日线 Parquet footer schema；七条候选路线全部因冻结旧族重叠或曝光后 estimator/字段/窗口/模型救援而拒绝。没有候选快照、比较值、价格或收益读取，开发与 2024–2025 仍关闭；累计历史尝试为 2,604，收益读取开发试验仍为 315。
+
+Campaign264 的权威结果为 `docs/a_share_three_day_walkforward_campaign_264_terminal_result_20260824.json`，完整路线说明为 `docs/a_share_three_day_walkforward_campaign_264_local_schema_independent_mechanism_frontier_20260824.json`。下一轮 Campaign265 不能重试这七条路线；必须引入真正新的被接受点时信息通道，或在任何值前证明机制相对完整库独立。Candidate49 的唯一前瞻地位与 0/0 空账本不变。
