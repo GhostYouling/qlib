@@ -1,0 +1,109 @@
+{
+  "schema_version": 1,
+  "kind": "a_share_three_day_walkforward_campaign275_terminal_validation",
+  "status": "campaign275_terminal_validation_passed_goal_remains_active",
+  "recorded_at": "2026-08-24T21:21:00+08:00",
+  "timestamp_semantics": "Monotonic publication time after effective v7 accounting, focused validation and Campaign265-275 plus Candidate49 cross-stage validation; not a market-data timestamp.",
+  "validated_artifacts": {
+    "campaign275_catalog": {
+      "path": "docs/a_share_three_day_walkforward_campaign_275_concept_scouting_20260824.json",
+      "sha256": "da8e67fe06026fa3b721dc0c104fa17ba0b9e708fc9320b4ccdfa59c887c81c7"
+    },
+    "campaign275_terminal_result": {
+      "path": "docs/a_share_three_day_walkforward_campaign_275_prevalue_mechanism_frontier_result_20260824.json",
+      "sha256": "0e67d896394155f73c4ebef6c8ea7ea42bb78c37f83a70976b0ee43c3a450244"
+    },
+    "campaign275_initial_terminal_state": {
+      "path": "docs/a_share_three_day_iteration_status_20260824_campaign275_terminal.json",
+      "sha256": "bd6ad7c001b99347b8c4236c27597e64e1f5da3e8cf7c14fe1b3383cbfaa1df4"
+    },
+    "campaign275_effective_ledger_v7": {
+      "path": "data/experiments/short_horizon/historical_walkforward/campaign_275/research_attempt_ledger_v7.json",
+      "sha256": "9a80a5f1227cb4c13a630ed870b73b11ca0207be50e838429e26eeabf3b7a685"
+    },
+    "campaign275_focused_test": {
+      "path": "tests/data_collector_tests/test_a_share_three_day_walkforward_campaign275_terminal.py",
+      "sha256": "af4cda4e7b4aca1a60535f8a0ae74919d27c65d9040590c5029132326f4433cb"
+    },
+    "campaign275_terminal_report": {
+      "path": "docs/a_share_three_day_walkforward_campaign_275_terminal_prevalue_report.md",
+      "sha256": "30db768cf573d4e4fb0a064ea40190829e2adedf449b1ada803e123a48b446d2"
+    },
+    "campaign275_initial_handoff": {
+      "path": "docs/a_share_three_day_strategy_handoff_20260824_campaign275.md",
+      "sha256": "3913abec4f589cbf1a6e37b0b6fa4f36468a06773b72f891f287a8e801156fac"
+    },
+    "current_unified_report": {
+      "path": "data/experiments/short_horizon/current_research_report.md",
+      "sha256": "0e0127396eb6bd8b78452e88133891909076d2a2d9b4693507af39d1af15d426"
+    },
+    "three_day_unified_report": {
+      "path": "data/experiments/short_horizon/three_day_research_report.md",
+      "sha256": "4e898914a2419680dd500e945fbb5670661a33dfead83aa66323f767c3cd3dee"
+    },
+    "candidate49_signal_ledger": {
+      "path": "data/experiments/short_horizon/candidate49_future_signal_ledger.json",
+      "sha256": "5193f00d7f36da003f53cec387900da4c3d002299f5dfcfc1a95eaa199ed3a79"
+    },
+    "candidate49_execution_ledger": {
+      "path": "data/experiments/short_horizon/candidate49_future_execution_ledger.json",
+      "sha256": "d57a3e61eac969e42cafa418ccd8c0a5ee65dcf69da145bb2c096c2a02a2ea4f"
+    }
+  },
+  "validation_lifecycle_failures": [
+    "The initial jq semantic projection used legacy keys and returned null; the output was discarded.",
+    "macOS date did not support the requested percent-colon-z offset format; the malformed timestamp was discarded.",
+    "One combined frontier inventory output was truncated and discarded before scientific use.",
+    "The first unified-report publication patch had an exact-context mismatch and was rejected before any write.",
+    "The first cross-stage command referenced a missing .venv/bin/python and stopped before pytest collection.",
+    "The second cross-stage command collapsed its zsh file list to one invalid path and stopped before pytest collection.",
+    "The first JSON file-list command collapsed its zsh list to one invalid path and validated no JSON.",
+    "The second JSON command omitted jq's dot filter, parsed paths as expressions and validated no JSON.",
+    "The first validation-accounting report patch had a punctuation context mismatch and was rejected before any write."
+  ],
+  "focused_test_result": {
+    "passed": 8,
+    "failed": 0,
+    "duration_seconds": 0.09,
+    "black_passed": true,
+    "ruff_passed": true,
+    "git_diff_check_passed": true
+  },
+  "json_validation": {
+    "deduplicated_pre_final_state_campaign275_json_count": 11,
+    "invalid_count": 0,
+    "scope": "docs/*campaign275*.json union docs/*campaign_275*.json union campaign_275 ledger JSON, including this validation record"
+  },
+  "cross_stage_result": {
+    "scope": "Campaign265 through Campaign275 and Candidate49 semantic tests",
+    "passed": 251,
+    "failed": 0,
+    "deselected": 7,
+    "deselected_historical_mutable_report_hash_nodes": 7,
+    "duration_seconds": 23.66
+  },
+  "effective_accounting": {
+    "campaign275_attempt_count": 16,
+    "campaign275_infrastructure_failure_count": 9,
+    "campaign275_prevalue_scientific_attempt_count": 7,
+    "campaign275_complete_factor_attempt_count": 0,
+    "campaign275_return_reading_development_trial_count": 0,
+    "cumulative_historical_research_attempt_count": 2809,
+    "cumulative_return_reading_development_trial_count": 315
+  },
+  "research_boundary": {
+    "repository_metadata_and_prior_terminal_history_read": true,
+    "provider_or_web_request_issued": false,
+    "provider_response_or_source_row_read": false,
+    "provider_credential_value_or_digest_read": false,
+    "candidate_or_comparator_value_read": false,
+    "historical_daily_price_or_forward_return_value_read": false,
+    "stress_2024_2025_opened": false,
+    "candidate49_plan_or_run_executed_by_campaign275": false,
+    "candidate49_historical_backfill_performed": false,
+    "candidate49_ledgers_changed": false,
+    "second_prospective_candidate_created": false,
+    "current_scoring_selection_sizing_positions_or_orders_performed": false,
+    "investment_advice": false
+  }
+}
