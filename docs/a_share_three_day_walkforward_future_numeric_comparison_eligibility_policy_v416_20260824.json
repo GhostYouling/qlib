@@ -1,0 +1,129 @@
+{
+  "schema_version": 1,
+  "kind": "a_share_three_day_walkforward_future_numeric_comparison_eligibility_policy",
+  "version": 416,
+  "status": "campaign265_prevalue_contract_frozen_library_162_numeric_comparator_143_values_closed",
+  "recorded_at": "2026-08-24T03:53:54Z",
+  "timestamp_semantics": "measured host UTC after Campaign265 prevalue contract result and unified report publication before adapter implementation or provider values",
+  "supersedes_without_rewriting": {
+    "path": "docs/a_share_three_day_walkforward_future_numeric_comparison_eligibility_policy_v415_20260824.json",
+    "sha256": "9af0c77afb9a3f9a1e9434914de8178c57a507f680ea17587a128aebd989b77d"
+  },
+  "authoritative_inputs": {
+    "concept_scouting": {
+      "path": "docs/a_share_three_day_walkforward_campaign_265_convertible_premium_concept_scouting_20260824.json",
+      "sha256": "b6c41973c4d13063804adffacc59d938fdea8a1ee6c9fab2b45b711865386837"
+    },
+    "mechanism_audit": {
+      "path": "docs/a_share_three_day_walkforward_campaign_265_convertible_premium_mechanism_audit_20260824.json",
+      "sha256": "d31c5260f9ba3f28718b44f2a60b772c7a9472ad4c898bcbe4907aff67d48d93"
+    },
+    "source_contract": {
+      "path": "docs/a_share_three_day_walkforward_campaign_265_convertible_premium_source_contract_20260824.json",
+      "sha256": "efe7884d3ea0fd7f974e0d3347432e68e9e01ceefe0e6ebdca7fdd3e6349301c"
+    },
+    "attempt_ledger_v1": {
+      "path": "data/experiments/short_horizon/historical_walkforward/campaign_265/research_attempt_ledger_v1.json",
+      "sha256": "f4be9e7abfe336d5b5eb9c799ebb3acbb54d50a9f1dc73f3677a8743096be8fe"
+    },
+    "prevalue_result": {
+      "path": "docs/a_share_three_day_walkforward_campaign_265_prevalue_contract_result_20260824.json",
+      "sha256": "0f2e3014c56d1d1ef92506166a2c2a9f38c25cf8078bc801cd5b15937d3cd0c8"
+    },
+    "prevalue_report": {
+      "path": "docs/a_share_three_day_walkforward_campaign_265_prevalue_contract_report.md",
+      "sha256": "5f3d56bb2da41184e472d41dca74ce3343ec82487c928d6075d8cc853fb81c62"
+    }
+  },
+  "complete_historical_feature_library": {
+    "factor_definition_count": 162,
+    "order_sha256": "974f2c1f16a85eb43a0bd1e8db768dbe120cd8826c1754d5f220bf9f1d4a3ea0",
+    "unchanged_from_v415": true,
+    "campaign265_definition_appended": false,
+    "reason": "A source contract is not a complete factor attempt. No adapter, accepted source snapshot, coverage result or candidate value exists."
+  },
+  "numerical_comparator_eligibility": {
+    "eligible_numeric_comparator_count": 143,
+    "order_sha256": "f4fbf3d578e2c80c29425716a30d60a3df01d67d04e37f1651236c4dff899588",
+    "unchanged_from_v415": true,
+    "campaign265_numeric_comparator_appended": false,
+    "campaign265_comparator_values_may_open_now": false,
+    "reason": "The source has not been accepted and every coverage gate remains unread."
+  },
+  "campaign265_prevalue_stage": {
+    "finite_route_count": 6,
+    "selected_zero_row_contract_count": 1,
+    "rejected_route_count": 5,
+    "selected_name": "convertible_bond_equity_parity_premium_compression_3s",
+    "selected_direction": "higher",
+    "minimum_provider_points": 2000,
+    "five_thousand_points_required": false,
+    "official_documentation_web_read": true,
+    "provider_request_issued": false,
+    "source_adapter_created": false,
+    "source_acceptance_authorized": false,
+    "candidate_or_comparator_value_read": false,
+    "historical_daily_price_or_forward_return_read": false,
+    "development_trial_count": 0,
+    "stress_trial_count_2024_2025": 0,
+    "formula_direction_projection_clock_lag_filter_aggregation_denominator_and_gates_frozen": true
+  },
+  "effective_accounting": {
+    "campaign265_attempt_count": 7,
+    "campaign265_infrastructure_failure_count": 1,
+    "campaign265_prevalue_scientific_attempt_count": 6,
+    "campaign265_complete_factor_attempt_count": 0,
+    "campaign265_return_reading_development_trial_count": 0,
+    "cumulative_historical_research_attempt_count": 2611,
+    "cumulative_return_reading_development_trial_count": 315,
+    "chain_tip_sha256": "5461f13897fa8caf2384083e20008722a58471104656d2cfb4819320409dbce4"
+  },
+  "mutable_unified_reports": {
+    "current": {
+      "path": "data/experiments/short_horizon/current_research_report.md",
+      "sha256_at_publication": "75e9581d93c5843b17950901992f696d07222597ac2397688388e0ad3f252e77",
+      "mutable_append_only_report_not_an_immutable_binding": true
+    },
+    "three_day": {
+      "path": "data/experiments/short_horizon/three_day_research_report.md",
+      "sha256_at_publication": "f7fd867fe577b77f845ef7631dd487297f0562f18e72feabb62fca82873d49c1",
+      "mutable_append_only_report_not_an_immutable_binding": true
+    }
+  },
+  "candidate49": {
+    "sole_prospective_candidate": true,
+    "historical_backfill_allowed": false,
+    "second_prospective_candidate_allowed": false,
+    "signal_entry_count": 0,
+    "execution_entry_count": 0,
+    "signal_ledger_sha256": "5193f00d7f36da003f53cec387900da4c3d002299f5dfcfc1a95eaa199ed3a79",
+    "execution_ledger_sha256": "d57a3e61eac969e42cafa418ccd8c0a5ee65dcf69da145bb2c096c2a02a2ea4f"
+  },
+  "campaign265_next_stage_boundary": {
+    "historical_offline_work_may_continue_at_any_local_time": true,
+    "allowed_next_work": "Implement a deterministic zero-network adapter and synthetic tests; then freeze a separately confirmed one-shot source-acceptance workflow.",
+    "provider_request_allowed_by_v416": false,
+    "credential_load_allowed_by_v416": false,
+    "source_contract_rewrite_or_formula_rescue_allowed": false,
+    "complete_definition_append_allowed_before_accepted_source_and_complete_factor_snapshot": false,
+    "comparator_values_open_before_all_coverage_gates": false,
+    "development_returns_open_before_all_143_ordered_uniqueness_gates": false,
+    "stress_2024_2025_open_without_development_survivor": false
+  },
+  "research_boundary": {
+    "official_public_documentation_web_read": true,
+    "provider_api_request_issued": false,
+    "provider_credential_value_or_digest_read": false,
+    "provider_response_or_row_value_read": false,
+    "candidate_or_comparator_value_read": false,
+    "historical_daily_price_or_forward_return_value_read": false,
+    "stress_2024_2025_opened": false,
+    "candidate49_plan_or_run_executed": false,
+    "candidate49_historical_backfill_performed": false,
+    "candidate49_ledgers_changed": false,
+    "second_prospective_candidate_created": false,
+    "current_scoring_selection_sizing_positions_or_orders_performed": false,
+    "investment_advice": false
+  },
+  "next_action": "Verify the Campaign265 prevalue reference graph and attempt chain, publish the latest active state and handoff, then continue Campaign265 only with a byte-bound zero-network adapter and synthetic tests."
+}

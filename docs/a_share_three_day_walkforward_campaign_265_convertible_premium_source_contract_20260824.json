@@ -1,0 +1,176 @@
+{
+  "schema_version": 1,
+  "kind": "a_share_three_day_walkforward_campaign265_convertible_premium_source_contract",
+  "status": "frozen_zero_row_contract_before_adapter_provider_candidate_comparator_price_or_return_values",
+  "recorded_at": "2026-08-24T03:49:23Z",
+  "purpose": "Freeze the sole Campaign265 formula, direction, source projection, point-in-time clock, mapping, missingness, aggregation, denominator, capacity, uniqueness and failure semantics before any Tushare response or research value is opened.",
+  "authoritative_inputs": {
+    "campaign264_state": {
+      "path": "docs/a_share_three_day_iteration_status_20260824_campaign264_prevalue_terminal.json",
+      "sha256": "0b9c1cfece47523f6c7ece4190d7059ffe9d2bddb5d1b40ad92c69b32c65a45d"
+    },
+    "numeric_policy_v415": {
+      "path": "docs/a_share_three_day_walkforward_future_numeric_comparison_eligibility_policy_v415_20260824.json",
+      "sha256": "9af0c77afb9a3f9a1e9434914de8178c57a507f680ea17587a128aebd989b77d"
+    },
+    "concept_scouting": {
+      "path": "docs/a_share_three_day_walkforward_campaign_265_convertible_premium_concept_scouting_20260824.json",
+      "sha256": "b6c41973c4d13063804adffacc59d938fdea8a1ee6c9fab2b45b711865386837"
+    },
+    "mechanism_audit": {
+      "path": "docs/a_share_three_day_walkforward_campaign_265_convertible_premium_mechanism_audit_20260824.json",
+      "sha256": "d31c5260f9ba3f28718b44f2a60b772c7a9472ad4c898bcbe4907aff67d48d93"
+    },
+    "historical_walkforward_policy": {
+      "path": "docs/a_share_three_day_historical_walkforward_research_policy_20260727.json",
+      "sha256": "38426d6161b9bfed323c58caba18feca668b8c9d53e294951a8ba90c01a798bb"
+    }
+  },
+  "official_source_contract": {
+    "provider": "Tushare Pro",
+    "credential_source": "repository .env TUSHARE_TOKEN, to be loaded only by a separately frozen confirmed acceptance workflow",
+    "minimum_points_required": 2000,
+    "five_thousand_points_required": false,
+    "cb_basic": {
+      "official_url": "https://tushare.pro/document/2?doc_id=185",
+      "api_name": "cb_basic",
+      "request_mode": "one full projection request only",
+      "input_parameters": {},
+      "exact_fields": [
+        "ts_code",
+        "cb_type",
+        "stk_code",
+        "list_date",
+        "delist_date",
+        "exchange"
+      ],
+      "single_call_limit": 2000
+    },
+    "cb_daily": {
+      "official_url": "https://tushare.pro/document/2?doc_id=187",
+      "api_name": "cb_daily",
+      "request_mode": "exactly one request per frozen accepted A-share trade_date, never code-looped or paginated",
+      "exact_input_parameters": [
+        "trade_date"
+      ],
+      "exact_fields": [
+        "ts_code",
+        "trade_date",
+        "amount",
+        "cb_over_rate"
+      ],
+      "single_call_limit": 2000,
+      "publication_clock": "daily at 17:00 Asia/Shanghai per official documentation"
+    },
+    "historical_scope": {
+      "first_trade_date": "2019-01-02",
+      "last_trade_date": "2025-12-31",
+      "calendar_path": "data/qlib/cn_a_share/calendars/day.txt",
+      "calendar_sha256": "fda506597d26bcec953cdc0882042a5046ec1587db60490e16a01627fd43f53a",
+      "factor_universe_path": "data/qlib/cn_a_share/instruments/factor_main_chinext_star.txt",
+      "factor_universe_sha256": "cdded13c831b78045f4cfe80ba5d9a49f82152c615fef4267d00f992e7f53762",
+      "factor_universe_instrument_count": 5451,
+      "calendar_dates_must_be_frozen_into_acceptance_intent_before_token_load": true
+    },
+    "request_failure_semantics": "Any permission, transport, schema, truncation, pagination, identity, date or persistence failure terminates this exact source acceptance. Preserve intent/failure evidence, issue no same-contract retry and do not add fields or substitute endpoints."
+  },
+  "identity_and_point_in_time_contract": {
+    "accepted_bond_type": "exact cb_type == CB",
+    "rejected_bond_types": [
+      "EB",
+      "missing",
+      "any unrecognized token"
+    ],
+    "accepted_exchanges": [
+      "SSE",
+      "SZSE",
+      "SH",
+      "SZ"
+    ],
+    "bond_identity": "NFKC-trimmed uppercase ts_code with exact one-row uniqueness in cb_basic",
+    "equity_identity": "NFKC-trimmed uppercase stk_code mapped by the frozen repository A-share symbol canonicalizer",
+    "mapping_conflict_semantics": "A bond mapped to zero or multiple equities is fatal; multiple bonds may map to one equity and are aggregated only by the frozen median rule.",
+    "active_interval": "list_date <= trade_date and (delist_date is null or trade_date <= delist_date)",
+    "signal_information_clock": "A cb_daily row for trade_date t is first usable at the next accepted A-share session open because the provider documents a 17:00 daily update.",
+    "corporate_action_semantics": "Use only the provider's trade-date-specific cb_over_rate. Never use mutable cb_basic conv_price/remain_size, never reconstruct a conversion price, and never forward-fill a missing daily premium.",
+    "history_correction_semantics": "The first immutable accepted full-history snapshot is the sole Campaign265 source. Later provider changes cannot rewrite it or rescue a failure."
+  },
+  "single_factor_definition": {
+    "name": "convertible_bond_equity_parity_premium_compression_3s",
+    "score_direction": "higher",
+    "signal_session": "accepted A-share session t",
+    "lag_session": "the accepted A-share session exactly three calendar entries before t",
+    "per_bond_formula": "cb_over_rate(t_minus_3) - cb_over_rate(t), in percentage points",
+    "endpoint_eligibility": "The same bond must be active and have one exact cb_daily row with finite cb_over_rate and finite strictly positive amount at both t_minus_3 and t.",
+    "issuer_aggregation": "Arithmetic median across all eligible exact-CB per-bond compression values mapped to the same equity on t; even-cardinality median is the average of the two central sorted finite values.",
+    "no_active_or_no_eligible_bond_semantics": "missing, never zero and never carried forward",
+    "tie_semantics": "Exact float64 equality is retained; later cross-sectional ranks use average ties.",
+    "forbidden_inputs": [
+      "bond OHLC",
+      "bond return or pct_chg",
+      "bond price level",
+      "bond_value or bond_over_rate",
+      "cb_value",
+      "mutable conv_price or remain_size",
+      "rating, redemption, issue or holder fields",
+      "equity price, return, volume, amount, valuation or fundamental fields",
+      "any historical comparator value"
+    ],
+    "formula_window_direction_filter_subset_interaction_model_or_combination_grid": false
+  },
+  "source_denominator_and_no_return_gates": {
+    "daily_denominator": "Accepted factor-universe equities mapped by frozen cb_basic to at least one exact-CB instrument active on signal session t, regardless of whether cb_daily supplies valid endpoint rows.",
+    "eligible_numerator": "Daily-denominator equities with one finite issuer aggregate under the single factor definition.",
+    "coverage_gates": {
+      "median_daily_coverage_minimum": 0.95,
+      "p05_daily_coverage_minimum": 0.90,
+      "p05_eligible_equity_count_minimum": 50,
+      "nonconstant_cross_sectional_sessions_minimum": 200,
+      "non_overlapping_three_signal_session_cohorts_minimum": 200,
+      "observed_calendar_years_minimum": 5
+    },
+    "ordered_numeric_uniqueness": {
+      "comparator_count": 143,
+      "comparator_order_sha256": "f4fbf3d578e2c80c29425716a30d60a3df01d67d04e37f1651236c4dff899588",
+      "minimum_pair_names_per_session": 50,
+      "minimum_pair_sessions_per_comparator": 100,
+      "statistic": "median daily average-tie Spearman rank correlation",
+      "strict_absolute_maximum": 0.8,
+      "read_order": "exact frozen comparator order after every source and coverage gate passes",
+      "early_stop": "first failing comparator terminalizes the candidate; unread later values remain closed"
+    },
+    "daily_price_or_forward_return_values_may_open_before_all_gates_pass": false
+  },
+  "future_development_contract": {
+    "open_now": false,
+    "open_condition": "Only after immutable source acceptance, full snapshot verification, all coverage gates and all 143 ordered uniqueness gates pass.",
+    "development_period": "2019-2023",
+    "folds": "the three frozen expanding train/validation folds from the historical walk-forward policy",
+    "partition_boundary_purge_signal_sessions": 3,
+    "t_plus_1_and_t_plus_3_must_remain_inside_same_partition": true,
+    "costs_survival_and_execution_gates": "unchanged from the authoritative historical walk-forward policy",
+    "stress_2024_2025_open_condition": "one nonzero 2019-2023 survivor and the complete finite campaign frozen before a once-only quasi-out-of-sample opening"
+  },
+  "mandatory_next_stage": {
+    "allowed": "Implement a zero-network deterministic adapter and synthetic tests, then separately freeze a one-shot source-acceptance planner bound to this contract, code/test hashes, the exact calendar-date list, projection, request count, atomic paths and fail-closed evidence semantics.",
+    "provider_request_authorized_by_this_contract": false,
+    "candidate_or_comparator_value_authorized_by_this_contract": false,
+    "daily_price_or_return_value_authorized_by_this_contract": false,
+    "source_contract_may_be_rewritten_after_any_response": false
+  },
+  "research_boundary": {
+    "official_public_documentation_web_read": true,
+    "provider_api_request_issued": false,
+    "provider_credential_value_or_digest_read": false,
+    "provider_response_or_row_value_read": false,
+    "candidate_or_comparator_value_read": false,
+    "historical_daily_price_or_forward_return_value_read": false,
+    "stress_2024_2025_opened": false,
+    "candidate49_plan_or_run_executed": false,
+    "candidate49_historical_backfill_performed": false,
+    "candidate49_ledgers_changed": false,
+    "second_prospective_candidate_created": false,
+    "current_scoring_selection_sizing_positions_or_orders_performed": false,
+    "investment_advice": false
+  }
+}

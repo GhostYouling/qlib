@@ -1,0 +1,51 @@
+{
+  "schema_version": 1,
+  "kind": "a_share_three_day_walkforward_campaign265_prevalue_validation",
+  "status": "focused_reference_chain_boundary_and_format_validation_passed",
+  "recorded_at": "2026-08-24T03:53:54Z",
+  "scope": "Campaign265 prevalue contract artifacts, frozen 162/143 orders, seven-entry attempt chain, Candidate49 empty ledgers, mutable unified report publication hashes and latest active state semantics",
+  "authoritative_inputs": {
+    "numeric_policy_v416": {
+      "path": "docs/a_share_three_day_walkforward_future_numeric_comparison_eligibility_policy_v416_20260824.json",
+      "sha256": "1c864ecafbe4d338b5480a34ed9d7f539e51f3afa7f51b261697d166726fe616"
+    },
+    "prevalue_result": {
+      "path": "docs/a_share_three_day_walkforward_campaign_265_prevalue_contract_result_20260824.json",
+      "sha256": "0f2e3014c56d1d1ef92506166a2c2a9f38c25cf8078bc801cd5b15937d3cd0c8"
+    },
+    "attempt_ledger_v1": {
+      "path": "data/experiments/short_horizon/historical_walkforward/campaign_265/research_attempt_ledger_v1.json",
+      "sha256": "f4be9e7abfe336d5b5eb9c799ebb3acbb54d50a9f1dc73f3677a8743096be8fe"
+    },
+    "focused_test": {
+      "path": "tests/data_collector_tests/test_a_share_three_day_walkforward_campaign265_prevalue_contract.py",
+      "sha256": "c99e671caaa0f2960fc0589396d7649b43e85cbb9c01646d8a4ff1cd5ede9996"
+    }
+  },
+  "commands": {
+    "black_check": "PYTHONPATH=. /Volumes/DIsk/Coding/anaconda3/bin/python3.12 -m black --check tests/data_collector_tests/test_a_share_three_day_walkforward_campaign265_prevalue_contract.py",
+    "ruff_check": "PYTHONPATH=. /Volumes/DIsk/Coding/anaconda3/bin/python3.12 -m ruff check tests/data_collector_tests/test_a_share_three_day_walkforward_campaign265_prevalue_contract.py",
+    "focused_pytest": "PYTHONPATH=. /Volumes/DIsk/Coding/anaconda3/bin/python3.12 -m pytest tests/data_collector_tests/test_a_share_three_day_walkforward_campaign265_prevalue_contract.py -q"
+  },
+  "results": {
+    "black_final_check_exit_code": 0,
+    "black_final_check_passed": true,
+    "ruff_check_exit_code": 0,
+    "ruff_check_passed": true,
+    "focused_pytest_exit_code": 0,
+    "focused_pytest_passed": 7,
+    "focused_pytest_failed": 0,
+    "json_parse_validation_passed": true
+  },
+  "scientific_boundary_verified": {
+    "provider_request_issued": false,
+    "provider_credential_value_or_digest_read": false,
+    "provider_response_or_row_value_read": false,
+    "candidate_or_comparator_value_read": false,
+    "historical_daily_price_or_forward_return_value_read": false,
+    "development_trial_count": 0,
+    "stress_2024_2025_opened": false,
+    "candidate49_ledgers_changed": false,
+    "current_scoring_selection_sizing_positions_or_orders_performed": false
+  }
+}

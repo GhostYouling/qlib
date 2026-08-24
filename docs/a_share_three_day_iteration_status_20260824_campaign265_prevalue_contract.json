@@ -1,0 +1,159 @@
+{
+  "schema_version": 1,
+  "kind": "a_share_three_day_iteration_status",
+  "status": "campaign265_prevalue_contract_validation_passed_goal_active_adapter_stage_authorized_values_closed",
+  "recorded_at": "2026-08-24T03:53:54Z",
+  "timestamp_semantics": "measured host UTC after Campaign265 prevalue contract publication and before the 2026-08-24 16:30 Asia/Singapore Candidate49 provider boundary",
+  "supersedes_without_rewriting": {
+    "path": "docs/a_share_three_day_iteration_status_20260824_campaign264_prevalue_terminal.json",
+    "sha256": "0b9c1cfece47523f6c7ece4190d7059ffe9d2bddb5d1b40ad92c69b32c65a45d"
+  },
+  "authoritative_policy": {
+    "path": "docs/a_share_three_day_walkforward_future_numeric_comparison_eligibility_policy_v416_20260824.json",
+    "sha256": "1c864ecafbe4d338b5480a34ed9d7f539e51f3afa7f51b261697d166726fe616",
+    "version": 416
+  },
+  "campaign265_prevalue_stage": {
+    "stage": "finite_mechanism_audit_and_zero_row_source_contract",
+    "artifacts": {
+      "concept_scouting": {
+        "path": "docs/a_share_three_day_walkforward_campaign_265_convertible_premium_concept_scouting_20260824.json",
+        "sha256": "b6c41973c4d13063804adffacc59d938fdea8a1ee6c9fab2b45b711865386837"
+      },
+      "mechanism_audit": {
+        "path": "docs/a_share_three_day_walkforward_campaign_265_convertible_premium_mechanism_audit_20260824.json",
+        "sha256": "d31c5260f9ba3f28718b44f2a60b772c7a9472ad4c898bcbe4907aff67d48d93"
+      },
+      "source_contract": {
+        "path": "docs/a_share_three_day_walkforward_campaign_265_convertible_premium_source_contract_20260824.json",
+        "sha256": "efe7884d3ea0fd7f974e0d3347432e68e9e01ceefe0e6ebdca7fdd3e6349301c"
+      },
+      "attempt_ledger": {
+        "path": "data/experiments/short_horizon/historical_walkforward/campaign_265/research_attempt_ledger_v1.json",
+        "sha256": "f4be9e7abfe336d5b5eb9c799ebb3acbb54d50a9f1dc73f3677a8743096be8fe"
+      },
+      "prevalue_result": {
+        "path": "docs/a_share_three_day_walkforward_campaign_265_prevalue_contract_result_20260824.json",
+        "sha256": "0f2e3014c56d1d1ef92506166a2c2a9f38c25cf8078bc801cd5b15937d3cd0c8"
+      },
+      "prevalue_report": {
+        "path": "docs/a_share_three_day_walkforward_campaign_265_prevalue_contract_report.md",
+        "sha256": "5f3d56bb2da41184e472d41dca74ce3343ec82487c928d6075d8cc853fb81c62"
+      }
+    },
+    "validation": {
+      "path": "docs/a_share_three_day_walkforward_campaign_265_prevalue_validation_20260824.json",
+      "sha256": "7729f41e4926e0de3aca92c58462929a5034b418d18e6419a0ba2eb6029209e9",
+      "focused_pytest_passed": 7,
+      "focused_pytest_failed": 0,
+      "black_final_check_passed": true,
+      "ruff_check_passed": true
+    },
+    "finite_route_count": 6,
+    "selected_zero_row_contract_count": 1,
+    "rejected_route_count": 5,
+    "selected_name": "convertible_bond_equity_parity_premium_compression_3s",
+    "selected_direction": "higher",
+    "minimum_provider_points": 2000,
+    "five_thousand_points_required": false,
+    "complete_factor_definition_count": 162,
+    "complete_factor_definition_order_sha256": "974f2c1f16a85eb43a0bd1e8db768dbe120cd8826c1754d5f220bf9f1d4a3ea0",
+    "eligible_numeric_comparator_count": 143,
+    "eligible_numeric_comparator_order_sha256": "f4fbf3d578e2c80c29425716a30d60a3df01d67d04e37f1651236c4dff899588",
+    "complete_definition_appended": false,
+    "numeric_comparator_appended": false,
+    "source_adapter_created": false,
+    "source_acceptance_authorized": false,
+    "provider_response_or_row_value_read": false,
+    "candidate_or_comparator_value_read": false,
+    "historical_daily_price_or_forward_return_value_read": false,
+    "development_trial_count": 0,
+    "development_survivor_count": 0,
+    "stress_trial_count_2024_2025": 0,
+    "campaign_attempt_count": 7,
+    "infrastructure_failure_count": 1,
+    "prevalue_scientific_attempt_count": 6,
+    "cumulative_historical_research_attempt_count": 2611,
+    "cumulative_return_reading_development_trial_count": 315,
+    "chain_tip_sha256": "5461f13897fa8caf2384083e20008722a58471104656d2cfb4819320409dbce4"
+  },
+  "dual_track": {
+    "historical_walkforward": {
+      "role": "primary_iteration_engine",
+      "may_continue_offline_at_any_local_time": true,
+      "current_campaign": 265,
+      "current_allowed_stage": "zero_network_adapter_and_synthetic_tests_only",
+      "provider_source_acceptance_open": false,
+      "development_2019_2023_open": false,
+      "stress_2024_2025_open": false
+    },
+    "candidate49": {
+      "role": "sole_independent_prospective_confirmation_layer",
+      "signal_ledger_path": "data/experiments/short_horizon/candidate49_future_signal_ledger.json",
+      "signal_entry_count": 0,
+      "signal_ledger_sha256": "5193f00d7f36da003f53cec387900da4c3d002299f5dfcfc1a95eaa199ed3a79",
+      "execution_ledger_path": "data/experiments/short_horizon/candidate49_future_execution_ledger.json",
+      "execution_entry_count": 0,
+      "execution_ledger_sha256": "d57a3e61eac969e42cafa418ccd8c0a5ee65dcf69da145bb2c096c2a02a2ea4f",
+      "historical_backfill_allowed": false,
+      "second_prospective_candidate_allowed": false
+    }
+  },
+  "operational_authority": {
+    "daily_data_root": "/Volumes/DIsk/Disk-Coding/qlib/data",
+    "minute_data_root": "/Volumes/DIsk/qlib-a-share-tushare-1m",
+    "candidate49_target_staging_root": "/Volumes/DIsk/qlib-a-share-tushare-daily-2026-08-24",
+    "candidate49_target_staging_root_present_at_recording": false,
+    "workflow_protocol": {
+      "path": "docs/a_share_tushare_candidate49_future_session_workflow_protocol.json",
+      "sha256": "6ff5636a3f7ef65e93452098186b3aecf9231d68873ab8a1070afb91d699ef7c"
+    },
+    "immutable_workflow_readiness": {
+      "path": "docs/a_share_candidate49_workflow_record_fd_pinned_read_readiness_20260726.json",
+      "sha256": "c1750e12c365ceeca0b38af3796a9a00cf4391fc571f89a975b71db30b06caa4"
+    },
+    "workflow_script": {
+      "path": "scripts/a_share_tushare_candidate49_future_session_workflow.py",
+      "sha256": "0ee21715af9ee276cb4e50c4234ef15ad3d3b730b014712ae4ad19829908b69e"
+    },
+    "credential_source": "repository .env",
+    "credential_regular_file_mode_0600": true,
+    "credential_git_ignored": true,
+    "exactly_one_nonempty_tushare_token_assignment_present": true,
+    "credential_value_or_digest_read": false
+  },
+  "session_boundary": {
+    "local_date": "2026-08-24",
+    "timezone": "Asia/Singapore",
+    "observed_local_time": "2026-08-24T11:53:54+0800",
+    "observed_before_16_30": true,
+    "candidate49_plan_or_run_required_at_recording": false,
+    "candidate49_plan_or_run_executed": false,
+    "official_public_documentation_web_request_issued": true,
+    "provider_api_request_issued": false
+  },
+  "goal": {
+    "objective": "请持续迭代因子。",
+    "status": "active",
+    "terminal_condition_reached": false,
+    "current_campaign": 265,
+    "completed_stage": "prevalue_zero_row_source_contract",
+    "next_stage": "zero_network_adapter_and_synthetic_tests"
+  },
+  "research_boundary": {
+    "official_public_documentation_web_read": true,
+    "provider_api_request_issued": false,
+    "provider_credential_value_or_digest_read": false,
+    "provider_response_or_row_value_read": false,
+    "candidate_or_comparator_value_read": false,
+    "historical_daily_price_or_forward_return_value_read": false,
+    "stress_2024_2025_opened": false,
+    "candidate49_plan_or_run_executed": false,
+    "candidate49_historical_backfill_performed": false,
+    "candidate49_ledgers_changed": false,
+    "second_prospective_candidate_created": false,
+    "current_scoring_selection_sizing_positions_or_orders_performed": false,
+    "investment_advice": false
+  },
+  "next_action": "Continue Campaign265 with a byte-bound deterministic zero-network cb_basic/cb_daily adapter and synthetic tests only; then freeze a separate one-shot acceptance plan before any Token load or provider request. Do not change the formula, lag, source projection, denominator or gates, and do not open comparator, price or return values."
+}

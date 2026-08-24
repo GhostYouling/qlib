@@ -1,0 +1,101 @@
+{
+  "schema_version": 1,
+  "kind": "a_share_three_day_walkforward_campaign265_convertible_premium_mechanism_audit",
+  "status": "passed_for_one_zero_row_source_contract_before_adapter_provider_or_research_values",
+  "recorded_at": "2026-08-24T03:49:23Z",
+  "purpose": "Challenge Campaign265's sole selected cross-asset mechanism against the complete 162-definition history and the source-domain requirements preserved by Campaign157 before any source row or research value is opened.",
+  "authoritative_inputs": {
+    "concept_scouting": {
+      "path": "docs/a_share_three_day_walkforward_campaign_265_convertible_premium_concept_scouting_20260824.json",
+      "sha256": "b6c41973c4d13063804adffacc59d938fdea8a1ee6c9fab2b45b711865386837"
+    },
+    "numeric_policy_v415": {
+      "path": "docs/a_share_three_day_walkforward_future_numeric_comparison_eligibility_policy_v415_20260824.json",
+      "sha256": "9af0c77afb9a3f9a1e9434914de8178c57a507f680ea17587a128aebd989b77d"
+    },
+    "campaign157_source_scouting": {
+      "path": "docs/a_share_three_day_walkforward_campaign_157_cross_asset_source_scouting_20260815.json",
+      "sha256": "b14d28d45144c3fde60379161df4ff618bf71222f52dfc8b8e44dd3dc113af2e"
+    },
+    "campaign157_source_admission_audit": {
+      "path": "docs/a_share_three_day_walkforward_campaign_157_cross_asset_source_admission_audit_20260815.json",
+      "sha256": "8ffbb4f0f6f1a1e3720089af0993e462ccda1a3015695b88e6bcf2e81143589a"
+    }
+  },
+  "complete_library_review": {
+    "complete_definition_count_reviewed": 162,
+    "complete_definition_order_sha256": "974f2c1f16a85eb43a0bd1e8db768dbe120cd8826c1754d5f220bf9f1d4a3ea0",
+    "numeric_comparator_count_reserved_but_not_loaded": 143,
+    "numeric_comparator_order_sha256": "f4fbf3d578e2c80c29425716a30d60a3df01d67d04e37f1651236c4dff899588",
+    "candidate_or_comparator_values_loaded": false,
+    "old_terminal_definition_or_result_changed": false
+  },
+  "nearest_mechanism_challenges": [
+    {
+      "mechanism": "convertible_issue_online_demand_180d",
+      "decision": "independent",
+      "reason": "Campaign127 measures one primary issuance result using onl_pch_excess during a 180-calendar-day event window. Campaign265 measures a close-known secondary-market relative valuation change for already listed CB instruments and never uses issuance demand, issue size, issue price or subscription data."
+    },
+    {
+      "mechanism": "equity_or_bond_price_momentum",
+      "decision": "independent_under_exact_field_exclusion",
+      "reason": "The formula uses only the provider's equity-conversion premium rate difference. Bond OHLC, return, pct_chg and equity price fields are not projected or recomputed. Amount is an eligibility predicate only and never enters the score."
+    },
+    {
+      "mechanism": "daily_valuation_and_accounting_quality",
+      "decision": "independent",
+      "reason": "PB, accounting ratios and earnings states are issuer fundamentals. A traded convertible's premium to contemporaneous equity-conversion parity is a cross-asset market price wedge and uses none of those fields."
+    },
+    {
+      "mechanism": "liquidity_activity_capacity_or_free_float",
+      "decision": "independent_under_exact_no_interaction_contract",
+      "reason": "Positive bond amount only proves a non-stale traded close at both endpoints. No amount magnitude, turnover, equity liquidity, capacity, free-float field, threshold search or weighting enters the factor."
+    },
+    {
+      "mechanism": "market_relative_beta_residual_or_complete_library_model",
+      "decision": "independent_under_standalone_formula",
+      "reason": "No beta, market series, residual, fit, comparator, ensemble, industry or cross-sectional model is used. The issuer score is the deterministic median of same-formula bond observations."
+    }
+  ],
+  "source_identifiability": {
+    "exact_provider_apis": [
+      "cb_basic",
+      "cb_daily"
+    ],
+    "minimum_points_each": 2000,
+    "five_thousand_points_required": false,
+    "historical_scope_documented": true,
+    "bond_to_equity_mapping_documented": true,
+    "listing_interval_documented": true,
+    "daily_equity_conversion_premium_documented": true,
+    "daily_update_time_documented": "17:00",
+    "source_state_identifiable_before_values": true,
+    "entitlement_and_full_history_capacity_established_by_provider_rows": false
+  },
+  "audit_decision": {
+    "pass": true,
+    "selected_candidate_count": 1,
+    "genuinely_new_information_state": true,
+    "may_freeze_zero_row_source_contract": true,
+    "may_implement_zero-network_synthetic_adapter_tests_after_contract": true,
+    "may_request_provider_rows_now": false,
+    "may_compute_candidate_or_comparator_values_now": false,
+    "may_read_daily_prices_or_forward_returns_now": false,
+    "reason": "Campaign157 explicitly allowed c157_01 to return only after exact source, mapping, stale-quote, denominator and corporate-action semantics were frozen. Current official docs support that contract without source values; no old terminal route is reopened."
+  },
+  "research_boundary": {
+    "official_public_documentation_web_read": true,
+    "provider_api_request_issued": false,
+    "provider_credential_value_or_digest_read": false,
+    "provider_response_or_row_value_read": false,
+    "candidate_or_comparator_value_read": false,
+    "historical_daily_price_or_forward_return_value_read": false,
+    "stress_2024_2025_opened": false,
+    "candidate49_plan_or_run_executed": false,
+    "candidate49_historical_backfill_performed": false,
+    "candidate49_ledgers_changed": false,
+    "second_prospective_candidate_created": false,
+    "current_scoring_selection_sizing_positions_or_orders_performed": false,
+    "investment_advice": false
+  }
+}

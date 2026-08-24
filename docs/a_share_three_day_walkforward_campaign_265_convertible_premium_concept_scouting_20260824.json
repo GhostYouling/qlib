@@ -1,0 +1,135 @@
+{
+  "schema_version": 1,
+  "kind": "a_share_three_day_walkforward_campaign265_convertible_premium_concept_scouting",
+  "status": "one_deferred_cross_asset_mechanism_selected_for_zero_row_contract_before_provider_or_research_values",
+  "recorded_at": "2026-08-24T03:49:23Z",
+  "purpose": "Continue the three-session historical engine from Campaign264 by revisiting only the explicitly preserved Campaign157 c157_01 source-admission deferral, using current official documentation to select at most one exact secondary-market convertible-bond information state before any provider row, candidate value, comparator value, price or return is read.",
+  "authoritative_inputs": {
+    "campaign264_state": {
+      "path": "docs/a_share_three_day_iteration_status_20260824_campaign264_prevalue_terminal.json",
+      "sha256": "0b9c1cfece47523f6c7ece4190d7059ffe9d2bddb5d1b40ad92c69b32c65a45d"
+    },
+    "numeric_policy_v415": {
+      "path": "docs/a_share_three_day_walkforward_future_numeric_comparison_eligibility_policy_v415_20260824.json",
+      "sha256": "9af0c77afb9a3f9a1e9434914de8178c57a507f680ea17587a128aebd989b77d",
+      "complete_definition_count": 162,
+      "complete_definition_order_sha256": "974f2c1f16a85eb43a0bd1e8db768dbe120cd8826c1754d5f220bf9f1d4a3ea0",
+      "numeric_comparator_count": 143,
+      "numeric_comparator_order_sha256": "f4fbf3d578e2c80c29425716a30d60a3df01d67d04e37f1651236c4dff899588"
+    },
+    "campaign157_source_scouting": {
+      "path": "docs/a_share_three_day_walkforward_campaign_157_cross_asset_source_scouting_20260815.json",
+      "sha256": "b14d28d45144c3fde60379161df4ff618bf71222f52dfc8b8e44dd3dc113af2e"
+    },
+    "campaign157_source_admission_audit": {
+      "path": "docs/a_share_three_day_walkforward_campaign_157_cross_asset_source_admission_audit_20260815.json",
+      "sha256": "8ffbb4f0f6f1a1e3720089af0993e462ccda1a3015695b88e6bcf2e81143589a"
+    },
+    "historical_walkforward_policy": {
+      "path": "docs/a_share_three_day_historical_walkforward_research_policy_20260727.json",
+      "sha256": "38426d6161b9bfed323c58caba18feca668b8c9d53e294951a8ba90c01a798bb"
+    }
+  },
+  "official_documentation_observed": {
+    "observed_at": "2026-08-24T03:49:23Z",
+    "provider": "Tushare Pro",
+    "cb_basic": {
+      "official_url": "https://tushare.pro/document/2?doc_id=185",
+      "api_name": "cb_basic",
+      "documented_scope": "all history, updated daily",
+      "minimum_points": 2000,
+      "single_call_limit": 2000,
+      "documented_required_output_roles": [
+        "ts_code",
+        "cb_type",
+        "stk_code",
+        "list_date",
+        "delist_date",
+        "exchange"
+      ]
+    },
+    "cb_daily": {
+      "official_url": "https://tushare.pro/document/2?doc_id=187",
+      "api_name": "cb_daily",
+      "documented_scope": "all history, updated daily at 17:00",
+      "minimum_points": 2000,
+      "single_call_limit": 2000,
+      "documented_required_output_roles": [
+        "ts_code",
+        "trade_date",
+        "amount",
+        "cb_over_rate"
+      ],
+      "documented_cb_over_rate_meaning": "convertible-bond equity-conversion premium rate in percent"
+    },
+    "permission_table_url": "https://tushare.pro/document/1?doc_id=108",
+    "permission_interpretation": "Both selected interfaces require 2000 points. A 5000-point balance only raises relative call frequency and is not required for either selected field set.",
+    "programmatic_provider_request_issued": false,
+    "provider_credential_loaded": false,
+    "provider_response_or_row_value_read": false
+  },
+  "finite_prevalue_catalog": [
+    {
+      "route_id": "c265_01",
+      "name": "convertible_bond_equity_parity_premium_compression_3s",
+      "decision": "selected_for_zero_row_mechanism_and_source_contract",
+      "reason": "Campaign157 explicitly preserved c157_01 for a later exact contract. Daily equity-conversion premium is a secondary-market cross-asset relative-valuation state, distinct from Campaign127's one-time primary issuance subscription demand and from the complete price/minute, accounting and event library. Official cb_daily now directly documents the point-in-time premium field, while cb_basic supplies the deterministic bond-to-equity mapping and listing interval."
+    },
+    {
+      "route_id": "c265_02",
+      "name": "convertible_bond_equity_parity_premium_level_or_expansion_direction_grid",
+      "decision": "rejected_level_direction_multiplicity",
+      "reason": "Selecting level, compression, expansion or direction after values would create a signed hypothesis grid. Campaign265 fixes one economically directional compression change before rows and closes every alternative."
+    },
+    {
+      "route_id": "c265_03",
+      "name": "convertible_bond_price_return_or_momentum_confirmation",
+      "decision": "rejected_terminal_price_action_overlap",
+      "reason": "Bond price return or momentum is another traded-price path and would duplicate the terminal price-action family instead of using the documented equity-parity relative valuation state."
+    },
+    {
+      "route_id": "c265_04",
+      "name": "convertible_bond_premium_times_volume_amount_or_liquidity",
+      "decision": "rejected_terminal_liquidity_interaction",
+      "reason": "Volume or amount may only establish an observed close. Weighting, filtering or interacting the premium signal by liquidity would combine it with terminal activity and capacity families."
+    },
+    {
+      "route_id": "c265_05",
+      "name": "convertible_exchangeable_rating_redemption_or_issue_subtype_expansion",
+      "decision": "rejected_source_domain_subset_expansion",
+      "reason": "Exchangeable bonds, credit ratings, redemption states, primary issuance terms and subtype searches are separate or previously exposed mechanisms. The selected source domain is exact cb_type=CB secondary-market rows only."
+    },
+    {
+      "route_id": "c265_06",
+      "name": "convertible_premium_multi_horizon_threshold_residual_model_or_equity_factor_combination",
+      "decision": "rejected_post_exposure_horizon_model_rescue",
+      "reason": "Multiple lags, thresholds, residualization, fitted models, issuer subsets and combinations with the 143 numeric comparators are closed before values."
+    }
+  ],
+  "selection": {
+    "selected_candidate_count": 1,
+    "selected_candidate": "convertible_bond_equity_parity_premium_compression_3s",
+    "direction": "higher",
+    "fixed_lag": "three accepted A-share signal sessions",
+    "complete_definition_created": false,
+    "numeric_comparator_eligibility_created": false,
+    "candidate_snapshot_created": false,
+    "source_acceptance_authorized_now": false,
+    "reason": "Only a zero-row contract and a separately verified adapter/acceptance workflow may follow. Source or research values remain closed."
+  },
+  "research_boundary": {
+    "official_public_documentation_web_read": true,
+    "provider_api_request_issued": false,
+    "provider_credential_value_or_digest_read": false,
+    "provider_response_or_row_value_read": false,
+    "candidate_or_comparator_value_read": false,
+    "historical_daily_price_or_forward_return_value_read": false,
+    "stress_2024_2025_opened": false,
+    "candidate49_plan_or_run_executed": false,
+    "candidate49_historical_backfill_performed": false,
+    "candidate49_ledgers_changed": false,
+    "second_prospective_candidate_created": false,
+    "current_scoring_selection_sizing_positions_or_orders_performed": false,
+    "investment_advice": false
+  }
+}
