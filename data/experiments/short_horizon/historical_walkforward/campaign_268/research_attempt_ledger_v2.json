@@ -1,0 +1,53 @@
+{
+  "schema_version": 1,
+  "kind": "a_share_three_day_walkforward_campaign268_research_attempt_ledger_additive_correction",
+  "status": "append_only_terminal_validation_accounting_corrected_values_unchanged",
+  "recorded_at": "2026-08-24T16:24:48+08:00",
+  "authoritative_predecessor": {
+    "path": "data/experiments/short_horizon/historical_walkforward/campaign_268/research_attempt_ledger_v1.json",
+    "sha256": "9c266aade2156383257fda3bee7f518849bb27149f582242a61488e1eb6b0d47",
+    "entry_count": 20,
+    "chain_tip_sha256": "876860a51cb90bb50b52eccc9e7a53704330641364b3acb4a7a549e7ecc8b7db",
+    "cumulative_historical_research_attempt_count": 2701,
+    "cumulative_return_reading_development_trial_count": 315
+  },
+  "entry_hash_rule": "sha256('campaign268' + '|' + attempt_id + '|' + previous_entry_sha256 + '|' + phase + '|' + status)",
+  "appended_entries": [
+    {
+      "ordinal": 21,
+      "attempt_id": "campaign268_infrastructure_014",
+      "route_id": "black_check_campaign268_test",
+      "phase": "terminal_validation",
+      "status": "failed_format_check_reformatted_without_research_values",
+      "scientific_attempt": false,
+      "result_consumed": false,
+      "complete_factor_attempt": false,
+      "candidate_or_comparator_value_read": false,
+      "return_reading_development_trial": false,
+      "previous_entry_sha256": "876860a51cb90bb50b52eccc9e7a53704330641364b3acb4a7a549e7ecc8b7db",
+      "entry_sha256": "92df7a5036d7303158d9df9faf0c3fcd1d124b9b469722e055d701557e4ae177"
+    }
+  ],
+  "effective_entry_count": 21,
+  "effective_infrastructure_failure_attempt_count": 14,
+  "effective_prevalue_scientific_attempt_count": 7,
+  "effective_complete_factor_attempt_count": 0,
+  "return_reading_development_trial_count": 0,
+  "cumulative_historical_research_attempt_count": 2702,
+  "cumulative_return_reading_development_trial_count": 315,
+  "chain_tip_sha256": "92df7a5036d7303158d9df9faf0c3fcd1d124b9b469722e055d701557e4ae177",
+  "research_boundary": {
+    "scientific_result_changed": false,
+    "provider_api_request_issued": false,
+    "provider_credential_value_or_digest_read": false,
+    "provider_response_or_row_value_read": false,
+    "option_price_or_surface_value_read": false,
+    "candidate_or_comparator_value_read": false,
+    "historical_daily_price_or_forward_return_value_read": false,
+    "stress_2024_2025_opened": false,
+    "candidate49_historical_backfill_performed": false,
+    "candidate49_ledgers_changed": false,
+    "second_prospective_candidate_created": false,
+    "current_scoring_selection_sizing_positions_or_orders_performed": false
+  }
+}

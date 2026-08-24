@@ -1,0 +1,106 @@
+{
+  "schema_version": 1,
+  "kind": "a_share_three_day_walkforward_campaign268_prevalue_terminal_result",
+  "status": "terminal_prevalue_option_implied_surface_source_contract_zero_selected",
+  "recorded_at": "2026-08-24T16:17:50+08:00",
+  "timestamp_semantics": "measured_host_local_time_after_frontier_and_append_only_ledger_publication_before_unified_report_state_handoff_or_validation_publication",
+  "authoritative_inputs": {
+    "campaign267_final_state": {
+      "path": "docs/a_share_three_day_iteration_status_20260824_campaign267_credit_spread_source_terminal.json",
+      "sha256": "8af1b81a4433fd71d17900ea4623772e3c948ffce3c389d92fcc0d129b86d9bd"
+    },
+    "campaign268_frontier": {
+      "path": "docs/a_share_three_day_walkforward_campaign_268_option_implied_skew_term_structure_source_frontier_20260824.json",
+      "sha256": "b3552cad165ffec002c0796cd6e6842506e4a554669d73d67949b41678b83dbb"
+    },
+    "campaign268_attempt_ledger_v1": {
+      "path": "data/experiments/short_horizon/historical_walkforward/campaign_268/research_attempt_ledger_v1.json",
+      "sha256": "9c266aade2156383257fda3bee7f518849bb27149f582242a61488e1eb6b0d47",
+      "entry_count": 20,
+      "chain_tip_sha256": "876860a51cb90bb50b52eccc9e7a53704330641364b3acb4a7a549e7ecc8b7db"
+    },
+    "numeric_policy_v419_revision_2_unchanged": {
+      "path": "docs/a_share_three_day_walkforward_future_numeric_comparison_eligibility_policy_v419_20260824_execution_path_hardening_v2.json",
+      "sha256": "c331d3931893ea183a7d0a750be8f5b136b1e95e5a0e1fc65683e6cf64d5cc2a"
+    }
+  },
+  "scientific_result": {
+    "finite_route_count": 7,
+    "source_contract_permission_or_coverage_rejection_count": 4,
+    "semantic_survivorship_underidentification_or_premature_search_rejection_count": 3,
+    "selected_factor_count": 0,
+    "numeric_formula_or_direction_frozen": false,
+    "candidate_snapshot_adapter_or_source_request_created": false,
+    "option_price_or_surface_value_read": false,
+    "candidate_or_comparator_value_read": false,
+    "historical_daily_price_or_forward_return_read": false,
+    "development_trial_count": 0,
+    "development_survivor_count": 0,
+    "stress_trial_count_2024_2025": 0,
+    "interpretation": "The issuer-level option-implied downside-skew or term-structure hypothesis remains economically untested. The reviewed official schemas do not jointly prove direct single-stock option coverage across the A-share denominator, an immutable point-in-time contract and adjustment master, close-known quote quality, identified implied-volatility inputs and complete survivorship-safe 2019-2023 history under current authorization. Rejecting it before rows prevents basket-state substitution, live-roster lookahead and model-dependent inversion bias."
+  },
+  "effective_accounting": {
+    "campaign268_attempt_count": 20,
+    "campaign268_infrastructure_failure_count": 13,
+    "campaign268_prevalue_scientific_attempt_count": 7,
+    "campaign268_complete_factor_attempt_count": 0,
+    "campaign268_return_reading_development_trial_count": 0,
+    "cumulative_historical_research_attempt_count": 2701,
+    "cumulative_return_reading_development_trial_count": 315,
+    "chain_tip_sha256": "876860a51cb90bb50b52eccc9e7a53704330641364b3acb4a7a549e7ecc8b7db"
+  },
+  "library_state": {
+    "changed_by_campaign268": false,
+    "complete_factor_definition_count": 162,
+    "complete_factor_definition_order_sha256": "974f2c1f16a85eb43a0bd1e8db768dbe120cd8826c1754d5f220bf9f1d4a3ea0",
+    "eligible_numeric_comparator_count": 143,
+    "eligible_numeric_comparator_order_sha256": "f4fbf3d578e2c80c29425716a30d60a3df01d67d04e37f1651236c4dff899588"
+  },
+  "campaign265": {
+    "scientific_and_execution_state_changed": false,
+    "factor": "convertible_bond_equity_parity_premium_compression_3s",
+    "v420_policy_present": false,
+    "accepted_source_manifest_present": false,
+    "no_return_plan_ready": false,
+    "no_return_plan_blocker": "source_acceptance_manifest_absent_or_unsafe",
+    "publication_or_provider_request_authorized_by_campaign268": false
+  },
+  "candidate49": {
+    "sole_active_prospective_candidate": true,
+    "signal_ledger_entry_count": 0,
+    "signal_ledger_sha256": "5193f00d7f36da003f53cec387900da4c3d002299f5dfcfc1a95eaa199ed3a79",
+    "execution_ledger_entry_count": 0,
+    "execution_ledger_sha256": "d57a3e61eac969e42cafa418ccd8c0a5ee65dcf69da145bb2c096c2a02a2ea4f",
+    "ledgers_changed": false,
+    "historical_backfill_allowed": false,
+    "second_prospective_candidate_allowed": false
+  },
+  "research_boundary": {
+    "repository_metadata_and_prior_terminal_history_read": true,
+    "official_public_documentation_web_read": true,
+    "provider_api_request_issued": false,
+    "provider_credential_value_or_digest_read": false,
+    "provider_client_imported_or_created": false,
+    "provider_response_or_row_value_read": false,
+    "option_price_or_surface_value_read": false,
+    "candidate_or_comparator_value_read": false,
+    "historical_daily_price_or_forward_return_value_read": false,
+    "stress_2024_2025_opened": false,
+    "v420_policy_created": false,
+    "candidate49_plan_or_run_executed": false,
+    "candidate49_historical_backfill_performed": false,
+    "candidate49_ledgers_changed": false,
+    "second_prospective_candidate_created": false,
+    "current_scoring_selection_sizing_positions_or_orders_performed": false,
+    "investment_advice": false
+  },
+  "prohibited_followups": [
+    "Do not read option bars, contract rows or implied-volatility values and then choose only products, underlyings, issuers, strikes or expiries with favorable realized coverage.",
+    "Do not relabel ETF or index option skew as issuer-level option information or create cross-sectional ranks by fitting stock exposures after outcomes.",
+    "Do not synthesize implied volatility from close or settlement alone without a preaccepted bid/ask, spot, rates, dividends or carry, exercise, settlement, adjustment and solver contract.",
+    "Do not backfill current option products, current surviving contracts or current constituent mappings into 2019-2023.",
+    "Do not rescue Campaign268 by changing moneyness, delta, maturity, liquidity, quote, interpolation, lag, subset, interaction, model or old-factor combination choices.",
+    "Do not alter Campaign265, publish v420, request option rows, read returns, open 2024-2025, backfill Candidate49, start Candidate50 or create current trading actions from this result."
+  ],
+  "next_action": "Keep the goal active. Campaign157's finite cross-asset catalog is exhausted after preserving Campaign265 and terminalizing c157_02/c157_03/c157_04; Campaign269 may perform fresh finite concept-only offline scouting from repository metadata and genuinely new mechanisms, excluding terminal-factor recombination and Candidate49 changes."
+}

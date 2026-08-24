@@ -1,0 +1,37 @@
+{
+  "schema_version": 1,
+  "kind": "a_share_three_day_walkforward_campaign268_terminal_validation_accounting_correction",
+  "status": "terminal_accounting_corrected_scientific_result_unchanged",
+  "recorded_at": "2026-08-24T16:24:48+08:00",
+  "preserved_terminal_state": {
+    "path": "docs/a_share_three_day_iteration_status_20260824_campaign268_option_source_terminal.json",
+    "sha256": "3cd69e7b432465301a0168da8c27a3e3ccfcb8262b830e09a548492b460c992e"
+  },
+  "failure": {
+    "attempt_id": "campaign268_infrastructure_014",
+    "command_scope": "Black check of the new Campaign268 focused test",
+    "observed_result": "The test required mechanical formatting and Black exited 1; JSON parsing, Ruff and all seven focused scientific/boundary tests passed in the same validation round.",
+    "recovery": "Black reformatted only the new test file before any second validation round.",
+    "research_value_read_or_changed": false
+  },
+  "effective_accounting": {
+    "campaign268_attempt_count": 21,
+    "campaign268_infrastructure_failure_count": 14,
+    "campaign268_prevalue_scientific_attempt_count": 7,
+    "campaign268_complete_factor_attempt_count": 0,
+    "campaign268_return_reading_development_trial_count": 0,
+    "cumulative_historical_research_attempt_count": 2702,
+    "cumulative_return_reading_development_trial_count": 315
+  },
+  "unchanged_boundaries": {
+    "scientific_result": "terminal_prevalue_option_implied_surface_source_contract_zero_selected",
+    "complete_factor_definition_count": 162,
+    "eligible_numeric_comparator_count": 143,
+    "candidate49_signal_ledger_entry_count": 0,
+    "candidate49_execution_ledger_entry_count": 0,
+    "campaign265_changed": false,
+    "provider_request_issued": false,
+    "option_candidate_comparator_price_or_return_value_read": false,
+    "stress_2024_2025_opened": false
+  }
+}

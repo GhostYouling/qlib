@@ -1,0 +1,233 @@
+{
+  "schema_version": 1,
+  "kind": "a_share_three_day_walkforward_campaign268_option_implied_skew_term_structure_source_frontier",
+  "status": "terminal_prevalue_option_implied_surface_source_contract_zero_selected",
+  "recorded_at": "2026-08-24T16:10:03+08:00",
+  "timestamp_semantics": "measured_host_local_time_after_bounded_repository_and_official_public_documentation_review_before_any_provider_row_candidate_comparator_option_price_or_return_value",
+  "purpose": "Revisit only Campaign157 route c157_04 and determine whether a close-known issuer-level equity-option implied downside-skew or term-structure factor can be identified under the user's existing 3000-point authorization, point-in-time history rules and three-session horizon before any formula, direction or value is opened.",
+  "authoritative_inputs": {
+    "campaign267_final_state": {
+      "path": "docs/a_share_three_day_iteration_status_20260824_campaign267_credit_spread_source_terminal.json",
+      "sha256": "8af1b81a4433fd71d17900ea4623772e3c948ffce3c389d92fcc0d129b86d9bd"
+    },
+    "campaign157_cross_asset_frontier": {
+      "path": "docs/a_share_three_day_walkforward_campaign_157_cross_asset_source_scouting_20260815.json",
+      "sha256": "b14d28d45144c3fde60379161df4ff618bf71222f52dfc8b8e44dd3dc113af2e"
+    },
+    "campaign159_remaining_local_source_audit": {
+      "path": "docs/a_share_three_day_walkforward_campaign_159_remaining_local_source_residual_audit_20260815.json",
+      "sha256": "6d4430f1eef33da89fe5eb7018d326c603a051446d16e066ac72c74d9d7a25ae"
+    },
+    "campaign160_no_credential_contract_delta_inventory": {
+      "path": "docs/a_share_three_day_walkforward_campaign_160_no_credential_source_contract_delta_inventory_20260815.json",
+      "sha256": "25dc95b6e4ef87068e0f94a8cb257b226b9fe22c0fa390716d1db9d164b60418"
+    },
+    "historical_walkforward_policy": {
+      "path": "docs/a_share_three_day_historical_walkforward_research_policy_20260727.json",
+      "sha256": "38426d6161b9bfed323c58caba18feca668b8c9d53e294951a8ba90c01a798bb"
+    },
+    "numeric_policy_v419_revision_2": {
+      "path": "docs/a_share_three_day_walkforward_future_numeric_comparison_eligibility_policy_v419_20260824_execution_path_hardening_v2.json",
+      "sha256": "c331d3931893ea183a7d0a750be8f5b136b1e95e5a0e1fc65683e6cf64d5cc2a"
+    }
+  },
+  "skill_boundary": {
+    "path": "/Users/niyufei/.codex/skills/manage-qlib-a-share-data/SKILL.md",
+    "sha256": "565713a5f3aeb6a1acf23e397fcc21be28d0c3ea4ebf21c7f287a25bb94d78dc",
+    "credential_safe_public_documentation_review_only": true
+  },
+  "prior_deferred_route": {
+    "catalog_id": "c157_04",
+    "name": "equity_option_implied_skew_or_term_structure_mapped_to_issuer",
+    "economic_hypothesis": "A close-known option-implied downside skew or term slope could supply forward-looking risk information distinct from realized minute volatility.",
+    "prior_disposition": "deferred_missing_full_market_single_equity_option_surface_and_issuer_mapping_contract",
+    "predictive_value_previously_tested": false
+  },
+  "required_contract": {
+    "issuer_level_underlying": "A direct, versioned option-underlying-to-legal-issuer-to-A-share mapping with effective intervals; ETF or index options remain basket states and are not issuer observations.",
+    "point_in_time_contract_master": "Every live and delisted contract with call/put, strike, expiry, exercise style, multiplier, adjustment version, first-public timestamp, correction history and corporate-action lineage as known at each signal close.",
+    "close_known_option_quotes": "A deterministic close-known quote convention with bid, ask, last, settlement, zero-trade and stale-quote semantics, plus volume and open-interest quality fields.",
+    "implied_volatility_inputs": "Underlying spot, risk-free curve, dividends or carry, exercise and settlement convention, calendar and a pricing/inversion model frozen before option rows.",
+    "surface_construction": "Strike or delta buckets, moneyness, expiry buckets, interpolation, minimum support, no-arbitrage and liquidity gates, and skew or term aggregation frozen before values.",
+    "denominator_and_coverage": "A survivorship-safe eligible-A-share denominator including issuers without options, with complete 2019-2023 history sufficient for one frozen prevalue coverage gate."
+  },
+  "authorized_provider_boundary": {
+    "user_authorized_tushare_point_ceiling": 3000,
+    "credential_presence_verified_without_value_or_digest": true,
+    "credential_value_or_digest_inspected": false,
+    "provider_client_created": false,
+    "provider_request_issued": false,
+    "higher_point_interface_request_or_upgrade_recommendation_allowed": false
+  },
+  "local_source_inventory": {
+    "accepted_issuer_level_option_surface_present": false,
+    "accepted_point_in_time_option_contract_master_present": false,
+    "accepted_historical_bid_ask_or_implied_volatility_present": false,
+    "campaign159_economic_state": "option_state_remains_economically_untested_not_predictively_rejected",
+    "source_row_or_value_read": false
+  },
+  "official_public_documentation_evidence": [
+    {
+      "interface": "tushare_opt_basic",
+      "url": "https://tushare.pro/document/2?doc_id=158",
+      "minimum_points": 5000,
+      "documented_frequency_or_semantics": "option identity, underlying contract code, call/put, exercise style, adjusted strike and multiplier, expiry, listing and delisting dates",
+      "admission_effect": "It exceeds the 3000-point authorization and the documented query/output contract does not establish a daily point-in-time revision archive for delisted and adjusted contracts."
+    },
+    {
+      "interface": "tushare_opt_daily",
+      "url": "https://tushare.pro/document/2?doc_id=159",
+      "minimum_points": 2000,
+      "documented_frequency_or_semantics": "contract/date/exchange with previous settlement and close, OHLC, settlement, volume, amount and open interest",
+      "missing_surface_fields": [
+        "bid and ask quotes",
+        "implied volatility and Greeks",
+        "underlying spot and dividend or carry inputs",
+        "contract adjustment version and first-public or correction timestamps"
+      ],
+      "admission_effect": "Affordable daily bars alone cannot uniquely identify a close-known issuer-level implied-volatility surface, and the required contract master is outside current authorization."
+    },
+    {
+      "interface": "tushare_option_catalog",
+      "url": "https://tushare.pro/document/2?doc_id=157",
+      "documented_frequency_or_semantics": "the official option catalog lists contract information and daily market data as its provided option datasets",
+      "admission_effect": "The reviewed official catalog exposes no separate historical implied-volatility, Greeks, bid/ask surface or point-in-time adjustment-history interface that closes the missing contract."
+    },
+    {
+      "interface": "sse_current_etf_option_underlyings",
+      "url": "https://www.sse.com.cn/assortment/options/disclo/update/c/c_20260518_10818842.shtml",
+      "documented_frequency_or_semantics": "the reviewed official notice lists five SSE option products whose underlyings are ETF codes 510050, 510300, 510500, 588000 and 588080",
+      "admission_effect": "These are ETF basket underlyings, not a full-market panel of issuer-level single-stock options."
+    },
+    {
+      "interface": "szse_etf_option_products",
+      "url": "https://www.szse.cn/www/investor/institute/rules/t20230309_599162.html",
+      "documented_frequency_or_semantics": "the reviewed official product guide lists four SZSE option products on ETFs 159919, 159915, 159922 and 159901",
+      "admission_effect": "Mapping ETF option states to constituents would require point-in-time constituents and weights and would create a shared basket state rather than direct issuer-level option information."
+    },
+    {
+      "interface": "cffex_index_option_rules",
+      "url": "https://www.cffex.com.cn/cn/ssxz/20221214/43100.html",
+      "documented_frequency_or_semantics": "the official rules define CSI 300, CSI 1000 and SSE 50 stock-index options as options on their respective equity indexes",
+      "admission_effect": "An index option surface is common to all contemporaneous constituents and cannot be relabeled as issuer-specific skew without a separately frozen exposure interaction."
+    },
+    {
+      "interface": "sse_option_contract_adjustment_rules",
+      "url": "https://www.sse.com.cn/lawandrules/sselawsrules2025/option/c/c_20250610_10781448.shtml",
+      "documented_frequency_or_semantics": "corporate actions can change contract unit and strike, relist adjusted contracts and change trading codes or names",
+      "admission_effect": "A live contract list or unversioned master cannot be backfilled; historical surface construction requires the exact adjustment lineage as known each day."
+    },
+    {
+      "interface": "sse_option_reference_file_specification",
+      "url": "https://big5.sse.com.cn/services/tradingtech/development/c/10811034/files/4672a0a84fe044db9aaf4aad49ae364a.pdf",
+      "documented_frequency_or_semantics": "the current reference-file specification includes underlying type, call/put, exercise style, adjusted strike and multiplier, dates, version and status for all not-yet-delisted contracts",
+      "admission_effect": "A current technical specification for the daily live roster does not itself prove an accepted immutable public 2019-2023 archive, corrections or cross-market issuer-level coverage."
+    }
+  ],
+  "finite_prevalue_catalog": [
+    {
+      "route_id": "c268_01",
+      "name": "exact_full_market_single_stock_option_implied_skew_or_term_slope",
+      "formula": null,
+      "direction": null,
+      "parameters_filters_subsets_combinations_models": [],
+      "decision": "reject_missing_full_market_issuer_level_option_surface_contract",
+      "reason": "The accepted local inventory and reviewed official product sets do not supply direct issuer-level option surfaces across the eligible A-share denominator with complete 2019-2023 history."
+    },
+    {
+      "route_id": "c268_02",
+      "name": "tushare_opt_daily_plus_opt_basic_synthetic_implied_surface",
+      "formula": null,
+      "direction": null,
+      "parameters_filters_subsets_combinations_models": [],
+      "decision": "reject_permission_and_required_quote_input_contract_failure",
+      "reason": "opt_daily is affordable but contains only daily bars, settlement, volume and open interest; opt_basic requires 5000 points and still does not prove a daily immutable revision archive. The pair does not close bid/ask, carry, dividend, correction or historical adjustment semantics."
+    },
+    {
+      "route_id": "c268_03",
+      "name": "etf_option_skew_or_term_slope_mapped_to_point_in_time_constituents",
+      "formula": null,
+      "direction": null,
+      "parameters_filters_subsets_combinations_models": [],
+      "decision": "reject_basket_state_substitution_and_missing_issuer_mapping_contract",
+      "reason": "SSE and SZSE products reviewed are ETF options. Their surface is a shared basket state; mapping it to holdings requires point-in-time constituent weights and overlap rules and does not create direct issuer option information."
+    },
+    {
+      "route_id": "c268_04",
+      "name": "index_option_skew_or_term_slope_assigned_to_index_constituents",
+      "formula": null,
+      "direction": null,
+      "parameters_filters_subsets_combinations_models": [],
+      "decision": "reject_common_market_state_without_independent_cross_sectional_identification",
+      "reason": "CFFEX index-option surfaces are identical within a session for every constituent. Cross-sectional ranking would require a fitted stock exposure or interaction that is not part of c157_04 and cannot be chosen after outcomes."
+    },
+    {
+      "route_id": "c268_05",
+      "name": "close_or_settlement_only_implied_volatility_inversion",
+      "formula": null,
+      "direction": null,
+      "parameters_filters_subsets_combinations_models": [],
+      "decision": "reject_underidentified_model_and_quote_semantics",
+      "reason": "A close or settlement value without bid/ask quality, underlying spot, rate curve, dividends or carry, exercise style, settlement convention and frozen solver does not uniquely identify a comparable implied volatility or surface."
+    },
+    {
+      "route_id": "c268_06",
+      "name": "current_live_option_master_or_product_roster_backfilled_to_2019_2023",
+      "formula": null,
+      "direction": null,
+      "parameters_filters_subsets_combinations_models": [],
+      "decision": "reject_survivorship_lookahead_and_contract_adjustment_loss",
+      "reason": "Current surviving products or not-yet-delisted contract files cannot be projected backward across expiries, adjustments, relistings, delistings, corrections and historical underlying membership."
+    },
+    {
+      "route_id": "c268_07",
+      "name": "strike_delta_maturity_liquidity_subset_lag_interaction_or_model_search",
+      "formula": null,
+      "direction": null,
+      "parameters_filters_subsets_combinations_models": [],
+      "decision": "reject_premature_search_before_base_source_admission",
+      "reason": "Choosing moneyness or delta buckets, expiries, quote filters, open-interest thresholds, interpolation, lags, subsets, constituent exposure interactions or models before a complete source contract would multiply hypotheses and select on realized sparse coverage."
+    }
+  ],
+  "gate_summary": {
+    "finite_route_count": 7,
+    "source_contract_permission_or_coverage_rejection_count": 4,
+    "semantic_survivorship_underidentification_or_premature_search_rejection_count": 3,
+    "selected_factor_count": 0,
+    "numeric_formula_or_direction_frozen": false,
+    "candidate_snapshot_adapter_or_source_request_created": false,
+    "option_price_or_surface_value_read": false,
+    "candidate_or_comparator_value_read": false,
+    "historical_daily_price_or_forward_return_read": false,
+    "development_trial_count": 0,
+    "stress_trial_count_2024_2025": 0,
+    "complete_definition_or_numeric_comparator_append_allowed": false
+  },
+  "decision": {
+    "campaign268_terminal_stage": "prevalue_option_implied_skew_term_structure_source_admission",
+    "reason": "No finite route simultaneously supplies direct issuer-level option observations across the A-share denominator, an immutable point-in-time contract and adjustment master, close-known quote quality, identified implied-volatility inputs, deterministic surface construction and complete survivorship-safe 2019-2023 coverage under current authorization. This is a source-contract rejection, not evidence against the economic hypothesis or its predictive value.",
+    "campaign157_c157_04_may_be_retried_only_if": "A newly authorized and independently accepted immutable source proves complete 2019-2023 direct single-stock option quotes and contract revisions, underlying mapping, bid/ask and liquidity quality, underlying/carry/dividend inputs, corporate-action lineage and a survivorship-safe all-eligible-equity denominator before any option row is read.",
+    "campaign157_cross_asset_catalog_after_campaign268": "c157_01 remains independently frozen as Campaign265; c157_02, c157_03 and c157_04 are source-contract terminal; c157_05 and c157_06 were already terminal combinations. No unreviewed deferred c157 route remains.",
+    "next_safe_route": "Campaign269 may begin a fresh finite concept-only offline scouting pass from repository metadata and genuinely new mechanisms, excluding c157_05, c157_06, Campaign265 alteration and recombination of terminal factors.",
+    "candidate49_remains_sole_prospective_confirmation_layer": true
+  },
+  "research_boundary": {
+    "repository_metadata_and_prior_terminal_history_read": true,
+    "official_public_documentation_web_read": true,
+    "provider_api_request_issued": false,
+    "provider_credential_value_or_digest_read": false,
+    "provider_client_imported_or_created": false,
+    "provider_response_or_row_value_read": false,
+    "option_price_or_surface_value_read": false,
+    "candidate_or_comparator_value_read": false,
+    "historical_daily_price_or_forward_return_value_read": false,
+    "stress_2024_2025_opened": false,
+    "v420_policy_created": false,
+    "candidate49_plan_or_run_executed": false,
+    "candidate49_historical_backfill_performed": false,
+    "candidate49_ledgers_changed": false,
+    "second_prospective_candidate_created": false,
+    "current_scoring_selection_sizing_positions_or_orders_performed": false,
+    "investment_advice": false
+  }
+}

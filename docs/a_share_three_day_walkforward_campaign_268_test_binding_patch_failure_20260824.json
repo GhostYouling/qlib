@@ -1,0 +1,25 @@
+{
+  "schema_version": 1,
+  "kind": "a_share_three_day_walkforward_campaign268_test_binding_patch_failure",
+  "status": "terminal_accounting_corrected_scientific_result_unchanged",
+  "recorded_at": "2026-08-24T16:29:23+08:00",
+  "preserved_state": {
+    "path": "docs/a_share_three_day_iteration_status_20260824_campaign268_final_accounting_corrected.json",
+    "sha256": "daae2df761d53d08b201a02d70026223d62797e046057bd71dfaff7c6d376dea"
+  },
+  "failure": {
+    "attempt_id": "campaign268_infrastructure_015",
+    "observed_result": "The first multi-hunk patch updating the focused test from v1 to v2 bindings failed on a Black-reformatted context before any target write.",
+    "recovery": "Two smaller exact-context patches updated the intended bindings and the corrected focused test passed Black, Ruff and all seven tests.",
+    "research_value_read_or_changed": false
+  },
+  "effective_accounting": {
+    "campaign268_attempt_count": 22,
+    "campaign268_infrastructure_failure_count": 15,
+    "campaign268_prevalue_scientific_attempt_count": 7,
+    "campaign268_complete_factor_attempt_count": 0,
+    "campaign268_return_reading_development_trial_count": 0,
+    "cumulative_historical_research_attempt_count": 2703,
+    "cumulative_return_reading_development_trial_count": 315
+  }
+}
