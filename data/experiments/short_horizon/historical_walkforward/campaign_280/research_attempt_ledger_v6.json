@@ -1,0 +1,56 @@
+{
+  "schema_version": 1,
+  "kind": "a_share_three_day_walkforward_campaign280_research_attempt_ledger_append",
+  "recorded_at": "2026-08-24T23:12:00+08:00",
+  "timestamp_semantics": "Monotonic logical append time after the first staged-secret count check represented no matches as an empty string and failed its numeric zero comparison; not a market-data or host-wall-clock measurement.",
+  "authoritative_predecessor": {
+    "path": "data/experiments/short_horizon/historical_walkforward/campaign_280/research_attempt_ledger_v5.json",
+    "sha256": "e4fc222206ded70e024794b6fd4d3343909f800d15b48fa3e4ebfe77a73829e2",
+    "chain_tip_sha256": "21fceaa6b3f0e84982950cd0b04ad6b6966c48da38b4a3c85533bc1c9a6e7f08",
+    "effective_entry_count": 12,
+    "effective_prevalue_scientific_attempt_count": 7,
+    "effective_infrastructure_failure_attempt_count": 5,
+    "cumulative_historical_research_attempt_count": 2863,
+    "cumulative_return_reading_development_trial_count": 315
+  },
+  "append_reason": "The staged name check confirmed that .env was absent, and the secret scan printed no matching line, but rg -c returned no text for no matches. The empty shell variable then failed test equals zero. Preserve the command as non-evidence and normalize an empty count to zero in the replacement check.",
+  "entries": [
+    {
+      "attempt_id": "campaign280_infrastructure_006",
+      "candidate_or_comparator_value_read": false,
+      "complete_factor_attempt": false,
+      "entry_sha256": "3c91d846ae125a8e5833b42074e89eecfd1fa416e736003d6f7eeb25e158acc1",
+      "ordinal": 13,
+      "phase": "staging_safety_validation",
+      "previous_entry_sha256": "21fceaa6b3f0e84982950cd0b04ad6b6966c48da38b4a3c85533bc1c9a6e7f08",
+      "result_consumed": false,
+      "return_reading_development_trial": false,
+      "route_id": "campaign280_staged_secret_count_normalization",
+      "scientific_attempt": false,
+      "status": "failed_staged_secret_scan_no_match_count_rendered_empty_and_zero_comparison_failed_env_not_staged_no_secret_line_printed_no_research_value_read"
+    }
+  ],
+  "entries_appended_in_this_version": 1,
+  "effective_entry_count": 13,
+  "effective_prevalue_scientific_attempt_count": 7,
+  "effective_infrastructure_failure_attempt_count": 6,
+  "effective_complete_factor_attempt_count": 0,
+  "cumulative_historical_research_attempt_count": 2864,
+  "cumulative_return_reading_development_trial_count": 315,
+  "chain_tip_sha256": "3c91d846ae125a8e5833b42074e89eecfd1fa416e736003d6f7eeb25e158acc1",
+  "research_boundary": {
+    "repository_metadata_and_prior_terminal_history_read": true,
+    "provider_or_web_request_issued": false,
+    "provider_response_or_source_row_read": false,
+    "provider_credential_value_or_digest_read": false,
+    "candidate_or_comparator_value_read": false,
+    "historical_daily_price_or_forward_return_value_read": false,
+    "stress_2024_2025_opened": false,
+    "candidate49_plan_or_run_executed_by_campaign280": false,
+    "candidate49_historical_backfill_performed": false,
+    "candidate49_ledgers_changed": false,
+    "second_prospective_candidate_created": false,
+    "current_scoring_selection_sizing_positions_or_orders_performed": false,
+    "investment_advice": false
+  }
+}

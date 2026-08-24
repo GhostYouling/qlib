@@ -1,0 +1,56 @@
+{
+  "schema_version": 1,
+  "kind": "a_share_three_day_walkforward_campaign280_research_attempt_ledger_append",
+  "recorded_at": "2026-08-24T23:05:00+08:00",
+  "timestamp_semantics": "Monotonic logical append time after the first Campaign280 JSON validation scope collapsed untracked directories and counted zero files; not a market-data or host-wall-clock measurement.",
+  "authoritative_predecessor": {
+    "path": "data/experiments/short_horizon/historical_walkforward/campaign_280/research_attempt_ledger_v4.json",
+    "sha256": "b0fe9a2a078127f61a48890f69d8ad1cbc9e3380c85f9748e52cab68cc0f949e",
+    "chain_tip_sha256": "1dfc3f38ab5f28a75d086bf67cbc098adbace5bf975ecdbf635b9ceb5e2a53d3",
+    "effective_entry_count": 11,
+    "effective_prevalue_scientific_attempt_count": 7,
+    "effective_infrastructure_failure_attempt_count": 4,
+    "cumulative_historical_research_attempt_count": 2862,
+    "cumulative_return_reading_development_trial_count": 315
+  },
+  "append_reason": "The first JSON validation relied on porcelain status paths while all new ledger files were represented by one collapsed untracked directory. Its zero count was semantically invalid despite process exit zero. Preserve the command as non-evidence and validate an explicit finite file list.",
+  "entries": [
+    {
+      "attempt_id": "campaign280_infrastructure_005",
+      "candidate_or_comparator_value_read": false,
+      "complete_factor_attempt": false,
+      "entry_sha256": "21fceaa6b3f0e84982950cd0b04ad6b6966c48da38b4a3c85533bc1c9a6e7f08",
+      "ordinal": 12,
+      "phase": "terminal_validation",
+      "previous_entry_sha256": "1dfc3f38ab5f28a75d086bf67cbc098adbace5bf975ecdbf635b9ceb5e2a53d3",
+      "result_consumed": false,
+      "return_reading_development_trial": false,
+      "route_id": "campaign280_json_validation_scope",
+      "scientific_attempt": false,
+      "status": "failed_campaign280_json_validation_scope_used_collapsed_untracked_directory_status_and_counted_zero_files_no_research_value_read"
+    }
+  ],
+  "entries_appended_in_this_version": 1,
+  "effective_entry_count": 12,
+  "effective_prevalue_scientific_attempt_count": 7,
+  "effective_infrastructure_failure_attempt_count": 5,
+  "effective_complete_factor_attempt_count": 0,
+  "cumulative_historical_research_attempt_count": 2863,
+  "cumulative_return_reading_development_trial_count": 315,
+  "chain_tip_sha256": "21fceaa6b3f0e84982950cd0b04ad6b6966c48da38b4a3c85533bc1c9a6e7f08",
+  "research_boundary": {
+    "repository_metadata_and_prior_terminal_history_read": true,
+    "provider_or_web_request_issued": false,
+    "provider_response_or_source_row_read": false,
+    "provider_credential_value_or_digest_read": false,
+    "candidate_or_comparator_value_read": false,
+    "historical_daily_price_or_forward_return_value_read": false,
+    "stress_2024_2025_opened": false,
+    "candidate49_plan_or_run_executed_by_campaign280": false,
+    "candidate49_historical_backfill_performed": false,
+    "candidate49_ledgers_changed": false,
+    "second_prospective_candidate_created": false,
+    "current_scoring_selection_sizing_positions_or_orders_performed": false,
+    "investment_advice": false
+  }
+}

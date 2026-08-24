@@ -1,0 +1,93 @@
+{
+  "schema_version": 1,
+  "kind": "a_share_three_day_walkforward_campaign280_terminal_validation",
+  "status": "campaign280_terminal_validation_and_staging_safety_passed_goal_remains_active",
+  "recorded_at": "2026-08-24T23:15:00+08:00",
+  "timestamp_semantics": "Monotonic logical append time after the post-validation staging-safety failure and corrected safety check; not a market-data or host-wall-clock measurement.",
+  "authoritative_predecessors": {
+    "validation_v1": {
+      "path": "docs/a_share_three_day_walkforward_campaign_280_terminal_validation_20260824.json",
+      "sha256": "ecd764135a84acb3c57a1028d13fd80ad1322bc6a7df766b592eef3e4ba31f17"
+    },
+    "final_validated_state_v1": {
+      "path": "docs/a_share_three_day_iteration_status_20260824_campaign280_final_validated.json",
+      "sha256": "be8787d3e9153cc07abb6262d218c7e27bcbdc86b1c55f9a513aa995e5ca90b3"
+    }
+  },
+  "validated_artifacts": {
+    "campaign280_effective_ledger_v6": {
+      "path": "data/experiments/short_horizon/historical_walkforward/campaign_280/research_attempt_ledger_v6.json",
+      "sha256": "f6e29f58bd9befeaec42b19e00f0f87559579dcaf065e477e4fbd26abf921052"
+    },
+    "campaign280_staging_safety_correction": {
+      "path": "docs/a_share_three_day_walkforward_campaign_280_staging_safety_correction_20260824.json",
+      "sha256": "1df914d248a2641b981d39ce8f2cfcd9f8067f143bf19c3f168b9b862142be25"
+    },
+    "campaign280_focused_test": {
+      "path": "tests/data_collector_tests/test_a_share_three_day_walkforward_campaign280_terminal.py",
+      "sha256": "b85dc0cc19e1cb59da6099dc66c42a87a16b6a879a43bb05412ef9f7e4cde8d6"
+    },
+    "current_unified_report": {
+      "path": "data/experiments/short_horizon/current_research_report.md",
+      "sha256": "ea7d516ea9996b375e009ea0cf6a8e5bb8fdb1d0f313f229f7b2db7d660bd1f4"
+    },
+    "three_day_unified_report": {
+      "path": "data/experiments/short_horizon/three_day_research_report.md",
+      "sha256": "86b27a94ffc3dea80c3db94138483c22c4d0957ac8fdd1aa82f96741e94f4012"
+    },
+    "candidate49_signal_ledger": {
+      "path": "data/experiments/short_horizon/candidate49_future_signal_ledger.json",
+      "sha256": "5193f00d7f36da003f53cec387900da4c3d002299f5dfcfc1a95eaa199ed3a79"
+    },
+    "candidate49_execution_ledger": {
+      "path": "data/experiments/short_horizon/candidate49_future_execution_ledger.json",
+      "sha256": "d57a3e61eac969e42cafa418ccd8c0a5ee65dcf69da145bb2c096c2a02a2ea4f"
+    }
+  },
+  "additional_validation_lifecycle_failure": {
+    "attempt_id": "campaign280_infrastructure_006",
+    "result": "env absent from staged names, no secret assignment line printed, process exit 1",
+    "reason": "The no-match count was an empty shell string rather than literal zero, so the numeric zero assertion failed. The replacement used awk to normalize no matches to zero."
+  },
+  "replacement_staging_safety_result": {
+    "env_staged": false,
+    "staged_tushare_token_assignment_addition_count": 0,
+    "git_diff_cached_check_passed": true,
+    "secret_value_or_digest_printed": false,
+    "process_exit_code": 0
+  },
+  "retained_validation_result": {
+    "focused_tests_passed": 7,
+    "focused_tests_failed": 0,
+    "black_passed": true,
+    "ruff_passed": true,
+    "explicit_json_validation_passed": true,
+    "git_diff_check_passed": true,
+    "cross_stage_tests_passed": 111,
+    "cross_stage_tests_failed": 0
+  },
+  "effective_accounting": {
+    "campaign280_attempt_count": 13,
+    "campaign280_infrastructure_failure_count": 6,
+    "campaign280_prevalue_scientific_attempt_count": 7,
+    "campaign280_complete_factor_attempt_count": 0,
+    "campaign280_return_reading_development_trial_count": 0,
+    "cumulative_historical_research_attempt_count": 2864,
+    "cumulative_return_reading_development_trial_count": 315
+  },
+  "research_boundary": {
+    "repository_metadata_and_prior_terminal_history_read": true,
+    "provider_or_web_request_issued": false,
+    "provider_response_or_source_row_read": false,
+    "provider_credential_value_or_digest_read": false,
+    "candidate_or_comparator_value_read": false,
+    "historical_daily_price_or_forward_return_value_read": false,
+    "stress_2024_2025_opened": false,
+    "candidate49_plan_or_run_executed_by_campaign280": false,
+    "candidate49_historical_backfill_performed": false,
+    "candidate49_ledgers_changed": false,
+    "second_prospective_candidate_created": false,
+    "current_scoring_selection_sizing_positions_or_orders_performed": false,
+    "investment_advice": false
+  }
+}

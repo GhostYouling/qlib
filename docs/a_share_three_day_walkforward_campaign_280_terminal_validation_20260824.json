@@ -1,0 +1,122 @@
+{
+  "schema_version": 1,
+  "kind": "a_share_three_day_walkforward_campaign280_terminal_validation",
+  "status": "campaign280_terminal_validation_passed_goal_remains_active",
+  "recorded_at": "2026-08-24T23:08:00+08:00",
+  "timestamp_semantics": "Monotonic logical append time after Campaign280 focused and cross-stage validation; not a market-data or host-wall-clock measurement.",
+  "validated_artifacts": {
+    "campaign280_catalog": {
+      "path": "docs/a_share_three_day_walkforward_campaign_280_concept_scouting_20260824.json",
+      "sha256": "a4afab496b6ea5693249bbd70fe33794e853b8ace317714a89c7c32f3bfdfff5"
+    },
+    "campaign280_terminal_result": {
+      "path": "docs/a_share_three_day_walkforward_campaign_280_prevalue_mechanism_frontier_result_20260824.json",
+      "sha256": "6f510ec31704667f76cc1ae43070a49808e6d2e795d223b4b005e292ada3fe3c"
+    },
+    "campaign280_ledger_hash_correction": {
+      "path": "docs/a_share_three_day_walkforward_campaign_280_ledger_hash_correction_20260824.json",
+      "sha256": "d9336ef53013c958114fe0fb68e690d8fdd27ba7a87775c3d3a4fd8c29aa371c"
+    },
+    "campaign280_initial_terminal_state": {
+      "path": "docs/a_share_three_day_iteration_status_20260824_campaign280_terminal.json",
+      "sha256": "df7e404aba8cbd825756fd76a2a0546642be5f9b0191d9cfaf14b40a41e16a5c"
+    },
+    "campaign280_effective_ledger_v5": {
+      "path": "data/experiments/short_horizon/historical_walkforward/campaign_280/research_attempt_ledger_v5.json",
+      "sha256": "e4fc222206ded70e024794b6fd4d3343909f800d15b48fa3e4ebfe77a73829e2"
+    },
+    "campaign280_focused_test": {
+      "path": "tests/data_collector_tests/test_a_share_three_day_walkforward_campaign280_terminal.py",
+      "sha256": "b85dc0cc19e1cb59da6099dc66c42a87a16b6a879a43bb05412ef9f7e4cde8d6"
+    },
+    "campaign280_terminal_report": {
+      "path": "docs/a_share_three_day_walkforward_campaign_280_terminal_prevalue_report.md",
+      "sha256": "a5c246d51bbe6d275a0c965b4ce3b1d836d372fecaea1fbfdb1673300cf48aae"
+    },
+    "campaign280_handoff": {
+      "path": "docs/a_share_three_day_strategy_handoff_20260824_campaign280.md",
+      "sha256": "65bee552e5e3d72c7e2692c6c16fe359ed9b62e418115b73f539a424e9b12a7a"
+    },
+    "current_unified_report": {
+      "path": "data/experiments/short_horizon/current_research_report.md",
+      "sha256": "8860f3e7cd599478c9e9b19d2045d46d3bb7fd2c3fd18ec7f2d23db2acac6559"
+    },
+    "three_day_unified_report": {
+      "path": "data/experiments/short_horizon/three_day_research_report.md",
+      "sha256": "d4e5bdc3ceeb75f1459ca273ea96df0f7edb034098b3ee9893df2a6996c97722"
+    },
+    "candidate49_signal_ledger": {
+      "path": "data/experiments/short_horizon/candidate49_future_signal_ledger.json",
+      "sha256": "5193f00d7f36da003f53cec387900da4c3d002299f5dfcfc1a95eaa199ed3a79"
+    },
+    "candidate49_execution_ledger": {
+      "path": "data/experiments/short_horizon/candidate49_future_execution_ledger.json",
+      "sha256": "d57a3e61eac969e42cafa418ccd8c0a5ee65dcf69da145bb2c096c2a02a2ea4f"
+    }
+  },
+  "validation_lifecycle_failures": [
+    {
+      "attempt_id": "campaign280_infrastructure_002",
+      "result": "6 passed, 1 failed",
+      "reason": "The first focused test detected invalid precomputed entry hashes in immutable ledger v1; effective v2 rebuilt the chain from Campaign279 and appended this failure."
+    },
+    {
+      "attempt_id": "campaign280_infrastructure_003",
+      "result": "Black check exit 1; Ruff passed",
+      "reason": "The passing focused test required Black formatting; the formatter then succeeded and the final Black check passed."
+    },
+    {
+      "attempt_id": "campaign280_infrastructure_004",
+      "result": "first cross-stage final exit unavailable; exact retry 111 passed",
+      "reason": "The first running process exceeded the yield and its session identifier was not retained. The identical test scope was rerun with a retained session and explicit exit code zero."
+    },
+    {
+      "attempt_id": "campaign280_infrastructure_005",
+      "result": "semantic count zero despite process exit zero",
+      "reason": "Porcelain status collapsed the untracked ledger directory, so the first dynamic JSON scope selected zero files. The final validation used nine explicit JSON paths."
+    }
+  ],
+  "focused_test_result": {
+    "passed": 7,
+    "failed": 0,
+    "black_passed": true,
+    "ruff_passed": true,
+    "git_diff_check_passed": true
+  },
+  "json_validation": {
+    "pre_validation_campaign280_json_count": 9,
+    "invalid_count": 0,
+    "scope": "Campaign280 catalog, result, ledger correction, initial state and ledger v1 through v5"
+  },
+  "cross_stage_result": {
+    "scope": "Campaign278 through Campaign280 and Candidate49 execution, observation and session-workflow semantic tests",
+    "passed": 111,
+    "failed": 0,
+    "deselected": 0,
+    "duration_seconds": 34.08
+  },
+  "effective_accounting": {
+    "campaign280_attempt_count": 12,
+    "campaign280_infrastructure_failure_count": 5,
+    "campaign280_prevalue_scientific_attempt_count": 7,
+    "campaign280_complete_factor_attempt_count": 0,
+    "campaign280_return_reading_development_trial_count": 0,
+    "cumulative_historical_research_attempt_count": 2863,
+    "cumulative_return_reading_development_trial_count": 315
+  },
+  "research_boundary": {
+    "repository_metadata_and_prior_terminal_history_read": true,
+    "provider_or_web_request_issued": false,
+    "provider_response_or_source_row_read": false,
+    "provider_credential_value_or_digest_read": false,
+    "candidate_or_comparator_value_read": false,
+    "historical_daily_price_or_forward_return_value_read": false,
+    "stress_2024_2025_opened": false,
+    "candidate49_plan_or_run_executed_by_campaign280": false,
+    "candidate49_historical_backfill_performed": false,
+    "candidate49_ledgers_changed": false,
+    "second_prospective_candidate_created": false,
+    "current_scoring_selection_sizing_positions_or_orders_performed": false,
+    "investment_advice": false
+  }
+}
