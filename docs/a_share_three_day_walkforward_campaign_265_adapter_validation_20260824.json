@@ -1,0 +1,79 @@
+{
+  "schema_version": 1,
+  "kind": "a_share_three_day_walkforward_campaign265_adapter_stage_validation",
+  "status": "passed_zero_network_adapter_policy_chain_reports_and_candidate49_bound",
+  "recorded_at": "2026-08-24T04:20:41Z",
+  "authoritative_inputs": {
+    "numeric_policy_v417": {
+      "path": "docs/a_share_three_day_walkforward_future_numeric_comparison_eligibility_policy_v417_20260824.json",
+      "sha256": "62805389b141904fe6b519bb7ff345410802fb5475f3804615e6f12ff81da39f"
+    },
+    "adapter_implementation_freeze": {
+      "path": "docs/a_share_three_day_walkforward_campaign_265_adapter_implementation_freeze_20260824.json",
+      "sha256": "2429588261bf35e46c3a68daeab85b23405c247a6fd98195e081c2b43c1f638e"
+    },
+    "adapter_result": {
+      "path": "docs/a_share_three_day_walkforward_campaign_265_adapter_result_20260824.json",
+      "sha256": "4a109a2e7e23091da33246654e391d41af0a57515b23d91dfb28f4718c26da48"
+    },
+    "attempt_ledger_v3": {
+      "path": "data/experiments/short_horizon/historical_walkforward/campaign_265/research_attempt_ledger_v3.json",
+      "sha256": "7edd5202c77ed575f84efc6e8ecbc51bb2367f631783b1f3810e2378d094bdf0",
+      "chain_tip_sha256": "182be5c5736620bebe17d9128d356cbbb021a084e2bcb52cbc9e5bc2293da00d"
+    }
+  },
+  "checked_files": {
+    "adapter": {
+      "path": "scripts/a_share_three_day_walkforward_campaign265_convertible_premium.py",
+      "sha256": "58b9fddbbeef97955d4961f9f708028aa63d90fc56f2656db68098de7d3543e8"
+    },
+    "synthetic_test": {
+      "path": "tests/data_collector_tests/test_a_share_three_day_walkforward_campaign265_convertible_premium.py",
+      "sha256": "b681af4d0d6f3d7081adac6207dab438c7166945bfea27c72ac4ea61ea481f4a"
+    },
+    "prevalue_lifecycle_test": {
+      "path": "tests/data_collector_tests/test_a_share_three_day_walkforward_campaign265_prevalue_contract.py",
+      "sha256": "2d038400fbccf94fb895db72242928a178bd97ec0f8d1671b51b77f3df6a4d47"
+    },
+    "adapter_stage_test": {
+      "path": "tests/data_collector_tests/test_a_share_three_day_walkforward_campaign265_adapter_stage.py",
+      "sha256": "c25a1637ba7e5d4e4a2b30d20bef974b3cc57cb1af717a5670d801c272c9bad7"
+    }
+  },
+  "commands": {
+    "black": {
+      "result": "passed",
+      "files_checked": 4
+    },
+    "ruff": {
+      "result": "passed",
+      "files_checked": 4
+    },
+    "pytest": {
+      "result": "passed",
+      "passed": 30,
+      "failed": 0,
+      "test_files": 3
+    }
+  },
+  "validated_semantics": {
+    "adapter_is_pure_zero_network": true,
+    "synthetic_formula_tests_pass": true,
+    "policy_and_artifact_hash_graph_exact": true,
+    "append_only_attempt_chain_exact": true,
+    "mutable_reports_current_publication_hashes_exact": true,
+    "complete_library_162_numeric_comparators_143_unchanged": true,
+    "provider_credential_request_source_candidate_comparator_price_and_return_values_closed": true,
+    "candidate49_sole_and_empty": true
+  },
+  "research_boundary": {
+    "provider_api_request_issued": false,
+    "provider_credential_value_or_digest_read": false,
+    "provider_response_or_row_value_read": false,
+    "candidate_or_comparator_value_read": false,
+    "historical_daily_price_or_forward_return_value_read": false,
+    "candidate49_plan_or_run_executed": false,
+    "candidate49_ledgers_changed": false,
+    "investment_advice": false
+  }
+}

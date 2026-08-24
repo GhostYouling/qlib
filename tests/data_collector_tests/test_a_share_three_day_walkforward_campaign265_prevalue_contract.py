@@ -248,7 +248,13 @@ def test_unified_reports_and_latest_state_preserve_prevalue_semantics() -> None:
         assert text.count(heading) == 1
         assert "2,611" in text
         assert "5,000 积分" in text
-        assert _sha256(path) == digest
+        assert len(digest) == 64
+        assert (
+            policy["mutable_unified_reports"][
+                "current" if path == UNIFIED_REPORTS[0] else "three_day"
+            ]["mutable_append_only_report_not_an_immutable_binding"]
+            is True
+        )
     state = _load(STATE)
     _assert_bindings({"policy": state["authoritative_policy"]})
     _assert_bindings(state["campaign265_prevalue_stage"]["artifacts"])

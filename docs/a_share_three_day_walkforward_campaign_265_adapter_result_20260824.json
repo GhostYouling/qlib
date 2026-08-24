@@ -1,0 +1,106 @@
+{
+  "schema_version": 1,
+  "kind": "a_share_three_day_walkforward_campaign265_adapter_result",
+  "status": "zero_network_adapter_stage_passed_source_acceptance_planner_and_values_still_closed",
+  "recorded_at": "2026-08-24T04:13:12Z",
+  "timestamp_semantics": "measured host UTC after implementation freeze and additive attempt ledger publication",
+  "authoritative_inputs": {
+    "prevalue_state": {
+      "path": "docs/a_share_three_day_iteration_status_20260824_campaign265_prevalue_contract.json",
+      "sha256": "d54dc99346d9b1698c510f7b8f403e968c8104ede90ba4948d8b6367de483d1d"
+    },
+    "numeric_policy_v416": {
+      "path": "docs/a_share_three_day_walkforward_future_numeric_comparison_eligibility_policy_v416_20260824.json",
+      "sha256": "1c864ecafbe4d338b5480a34ed9d7f539e51f3afa7f51b261697d166726fe616"
+    },
+    "source_contract": {
+      "path": "docs/a_share_three_day_walkforward_campaign_265_convertible_premium_source_contract_20260824.json",
+      "sha256": "efe7884d3ea0fd7f974e0d3347432e68e9e01ceefe0e6ebdca7fdd3e6349301c"
+    },
+    "adapter_implementation_freeze": {
+      "path": "docs/a_share_three_day_walkforward_campaign_265_adapter_implementation_freeze_20260824.json",
+      "sha256": "2429588261bf35e46c3a68daeab85b23405c247a6fd98195e081c2b43c1f638e"
+    },
+    "attempt_ledger_v2": {
+      "path": "data/experiments/short_horizon/historical_walkforward/campaign_265/research_attempt_ledger_v2.json",
+      "sha256": "2683112df4233ba43c8ca835bf457029dbc8c347120de66129813302f18cde46",
+      "chain_tip_sha256": "ad3aa93ee93035cbd1f466a5d543d50205ae7ab12ea6588b7ef35ca99bdc4334"
+    }
+  },
+  "adapter_result": {
+    "adapter_created": true,
+    "adapter_is_zero_network": true,
+    "adapter_has_provider_or_credential_interface": false,
+    "adapter_has_real_data_file_loader": false,
+    "synthetic_test_count": 16,
+    "synthetic_test_pass_count": 16,
+    "black_final_check_passed": true,
+    "ruff_check_passed": true,
+    "formula_name": "convertible_bond_equity_parity_premium_compression_3s",
+    "direction": "higher",
+    "formula_or_source_contract_changed": false,
+    "source_acceptance_planner_created": false,
+    "source_acceptance_authorized": false,
+    "provider_response_or_row_value_read": false,
+    "candidate_or_comparator_value_read": false,
+    "historical_daily_price_or_forward_return_read": false,
+    "complete_factor_definition_created": false,
+    "numeric_comparator_appended": false,
+    "development_trial_count": 0,
+    "development_survivor_count": 0,
+    "stress_trial_count_2024_2025": 0,
+    "interpretation": "Campaign265 now has an executable deterministic expression of the frozen source contract, validated only on synthetic frames. This is infrastructure and semantic evidence, not source coverage, uniqueness, return or predictive evidence."
+  },
+  "library_state": {
+    "changed_by_adapter_stage": false,
+    "complete_factor_definition_count": 162,
+    "complete_factor_definition_order_sha256": "974f2c1f16a85eb43a0bd1e8db768dbe120cd8826c1754d5f220bf9f1d4a3ea0",
+    "eligible_numeric_comparator_count": 143,
+    "eligible_numeric_comparator_order_sha256": "f4fbf3d578e2c80c29425716a30d60a3df01d67d04e37f1651236c4dff899588"
+  },
+  "effective_accounting": {
+    "campaign265_attempt_count": 9,
+    "campaign265_infrastructure_failure_count": 2,
+    "campaign265_prevalue_scientific_attempt_count": 7,
+    "campaign265_adapter_implementation_count": 1,
+    "campaign265_complete_factor_attempt_count": 0,
+    "campaign265_return_reading_development_trial_count": 0,
+    "cumulative_historical_research_attempt_count": 2613,
+    "cumulative_return_reading_development_trial_count": 315,
+    "chain_tip_sha256": "ad3aa93ee93035cbd1f466a5d543d50205ae7ab12ea6588b7ef35ca99bdc4334"
+  },
+  "candidate49": {
+    "sole_prospective_candidate": true,
+    "signal_entry_count": 0,
+    "execution_entry_count": 0,
+    "signal_ledger_sha256": "5193f00d7f36da003f53cec387900da4c3d002299f5dfcfc1a95eaa199ed3a79",
+    "execution_ledger_sha256": "d57a3e61eac969e42cafa418ccd8c0a5ee65dcf69da145bb2c096c2a02a2ea4f",
+    "ledgers_changed": false,
+    "historical_backfill_allowed": false,
+    "second_prospective_candidate_allowed": false
+  },
+  "mandatory_next_stage": {
+    "campaign": 265,
+    "allowed": "Freeze and implement a separate zero-network one-shot source-acceptance planner bound to the source contract and adapter bytes; do not load the credential or issue a provider request while planning.",
+    "provider_request_allowed_now": false,
+    "credential_load_allowed_now": false,
+    "source_candidate_or_comparator_value_allowed_now": false,
+    "daily_price_or_return_value_allowed_now": false,
+    "formula_direction_projection_lag_filter_aggregation_denominator_or_gates_may_change": false,
+    "failure_may_be_retried_or_rescued": false
+  },
+  "research_boundary": {
+    "provider_api_request_issued": false,
+    "provider_credential_value_or_digest_read": false,
+    "provider_response_or_row_value_read": false,
+    "candidate_or_comparator_value_read": false,
+    "historical_daily_price_or_forward_return_value_read": false,
+    "stress_2024_2025_opened": false,
+    "candidate49_plan_or_run_executed": false,
+    "candidate49_historical_backfill_performed": false,
+    "candidate49_ledgers_changed": false,
+    "second_prospective_candidate_created": false,
+    "current_scoring_selection_sizing_positions_or_orders_performed": false,
+    "investment_advice": false
+  }
+}
