@@ -1,0 +1,72 @@
+{
+  "schema_version": 1,
+  "kind": "a_share_three_day_walkforward_campaign266_validation_accounting_correction_v2",
+  "status": "public_documentation_boundary_assertion_failure_appended_scientific_state_unchanged",
+  "recorded_at": "2026-08-24T15:22:00+08:00",
+  "timestamp_semantics": "measured_host_local_time_after_failed_cross_stage_suite_v3_ledger_and_unified_report_correction_before_final_rerun",
+  "supersedes_accounting_without_rewriting": {
+    "path": "docs/a_share_three_day_walkforward_campaign_266_validation_accounting_correction_20260824.json",
+    "sha256": "32b54f629db3cc6135c7aa8e453c436a9b3221b6c82257f9ba5b6b21d55dcab0"
+  },
+  "authoritative_attempt_ledger": {
+    "path": "data/experiments/short_horizon/historical_walkforward/campaign_266/research_attempt_ledger_v3.json",
+    "sha256": "bd81edad46e2a3076cd7cae5b0d6e89270d1381e1077d3967c97e6989adea764",
+    "entry_count": 17,
+    "chain_tip_sha256": "85638655a44010d11e319e344a84ad27ab7802020e0b43f021e55496b2847d48"
+  },
+  "failure": {
+    "stage": "first_final_cross_stage_pytest",
+    "actual_exit_code": 1,
+    "passed": 42,
+    "failed": 1,
+    "deselected_historical_mutable_report_node": 1,
+    "reason": "The Campaign266 test incorrectly required every ledger research-boundary value to be false even though ledger v1 correctly declares official_public_documentation_web_read=true.",
+    "provider_or_value_boundary_violation": false,
+    "scientific_or_value_read": false,
+    "recovery": "Allow only the declared public-documentation metadata-read flag while continuing to require provider, credential, source row, candidate, comparator, price, return and current-use fields to be false."
+  },
+  "effective_accounting": {
+    "campaign266_attempt_count": 17,
+    "campaign266_infrastructure_failure_count": 11,
+    "campaign266_prevalue_scientific_attempt_count": 6,
+    "campaign266_complete_factor_attempt_count": 0,
+    "campaign266_return_reading_development_trial_count": 0,
+    "cumulative_historical_research_attempt_count": 2665,
+    "cumulative_return_reading_development_trial_count": 315
+  },
+  "unchanged_scientific_state": {
+    "finite_route_count": 6,
+    "selected_factor_count": 0,
+    "numeric_formula_or_direction_frozen": false,
+    "complete_factor_definition_count": 162,
+    "eligible_numeric_comparator_count": 143,
+    "candidate_or_comparator_value_read": false,
+    "historical_daily_price_or_forward_return_value_read": false,
+    "stress_2024_2025_opened": false,
+    "campaign265_changed": false,
+    "candidate49_ledgers_changed": false
+  },
+  "mutable_unified_reports_after_correction": {
+    "current": {
+      "path": "data/experiments/short_horizon/current_research_report.md",
+      "sha256": "11a761b421a32a0d93ffda34b7fcff65dbb8ea8d40302b46be9c5c71194be670"
+    },
+    "three_day": {
+      "path": "data/experiments/short_horizon/three_day_research_report.md",
+      "sha256": "53c4b0df57544fed23ba9dd5a4a80f61d4c1621383910dc31bdf5ec1aa18b584"
+    }
+  },
+  "research_boundary": {
+    "provider_api_request_issued": false,
+    "provider_credential_value_or_digest_read": false,
+    "provider_response_or_row_value_read": false,
+    "candidate_or_comparator_value_read": false,
+    "historical_daily_price_or_forward_return_value_read": false,
+    "stress_2024_2025_opened": false,
+    "v420_policy_created": false,
+    "candidate49_historical_backfill_performed": false,
+    "candidate49_ledgers_changed": false,
+    "second_prospective_candidate_created": false,
+    "current_scoring_selection_sizing_positions_or_orders_performed": false
+  }
+}

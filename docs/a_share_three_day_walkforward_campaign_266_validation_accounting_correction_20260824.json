@@ -1,0 +1,84 @@
+{
+  "schema_version": 1,
+  "kind": "a_share_three_day_walkforward_campaign266_validation_accounting_correction",
+  "status": "black_format_failure_appended_scientific_state_unchanged",
+  "recorded_at": "2026-08-24T15:16:44+08:00",
+  "timestamp_semantics": "measured_host_local_time_after_black_failure_append_test_formatting_and_unified_report_correction_before_final_validation",
+  "supersedes_accounting_without_rewriting": {
+    "initial_state": {
+      "path": "docs/a_share_three_day_iteration_status_20260824_campaign266_etf_source_terminal.json",
+      "sha256": "c93ab756724ab4964c9eb4b6db14e2d6e41b14b1e84d0a2b6adf4db35f029a68"
+    },
+    "initial_handoff": {
+      "path": "docs/a_share_three_day_strategy_handoff_20260824_campaign266_etf_source_terminal.md",
+      "sha256": "224d2c7b0090bee0ac0e082c65e712ab0eb937ec1c2aec10ddd28ae0df4e02ad"
+    },
+    "initial_attempt_ledger": {
+      "path": "data/experiments/short_horizon/historical_walkforward/campaign_266/research_attempt_ledger_v1.json",
+      "sha256": "5efdb899bb7efd66ff18c6bf0abcfaa05fdda64b35ae0708d8dc0c9e87829011",
+      "entry_count": 15,
+      "chain_tip_sha256": "021add025f3f7c9159ebc1846a99ed929039c57973000a6389f707baac9349f3"
+    }
+  },
+  "authoritative_attempt_ledger": {
+    "path": "data/experiments/short_horizon/historical_walkforward/campaign_266/research_attempt_ledger_v2.json",
+    "sha256": "ed624fa75dbe0ef51b8161b19bd3e048cb1bf5ad470751c98e6c4d3333f1686d",
+    "entry_count": 16,
+    "chain_tip_sha256": "7795c6ad15c37225a1b75eb8714b0144c0f67b768fac3cbf3e00256048b323df"
+  },
+  "failure": {
+    "stage": "first_focused_black_check",
+    "actual_exit_code": 1,
+    "reason": "The new focused test required mechanical Black formatting.",
+    "same_batch_json_checks_passed": 4,
+    "same_batch_ruff_passed": true,
+    "same_batch_focused_pytest_passed": 7,
+    "same_batch_treated_as_final_validation": false,
+    "scientific_or_value_read": false,
+    "recovery": "Black formatted the test file; all final checks must be rerun independently against v2 accounting."
+  },
+  "effective_accounting": {
+    "campaign266_attempt_count": 16,
+    "campaign266_infrastructure_failure_count": 10,
+    "campaign266_prevalue_scientific_attempt_count": 6,
+    "campaign266_complete_factor_attempt_count": 0,
+    "campaign266_return_reading_development_trial_count": 0,
+    "cumulative_historical_research_attempt_count": 2664,
+    "cumulative_return_reading_development_trial_count": 315
+  },
+  "unchanged_scientific_state": {
+    "finite_route_count": 6,
+    "selected_factor_count": 0,
+    "numeric_formula_or_direction_frozen": false,
+    "complete_factor_definition_count": 162,
+    "eligible_numeric_comparator_count": 143,
+    "candidate_or_comparator_value_read": false,
+    "historical_daily_price_or_forward_return_value_read": false,
+    "stress_2024_2025_opened": false,
+    "campaign265_changed": false,
+    "candidate49_ledgers_changed": false
+  },
+  "mutable_unified_reports_after_correction": {
+    "current": {
+      "path": "data/experiments/short_horizon/current_research_report.md",
+      "sha256": "38d078958e770407ddca81283d5040236200e2c472b7f167c301e102e9ecf9e8"
+    },
+    "three_day": {
+      "path": "data/experiments/short_horizon/three_day_research_report.md",
+      "sha256": "9c3e5415c1a8419ff42ebee1d1ed070eff966ed3cd9ef9b8a318f62efdcba7df"
+    }
+  },
+  "research_boundary": {
+    "provider_api_request_issued": false,
+    "provider_credential_value_or_digest_read": false,
+    "provider_response_or_row_value_read": false,
+    "candidate_or_comparator_value_read": false,
+    "historical_daily_price_or_forward_return_value_read": false,
+    "stress_2024_2025_opened": false,
+    "v420_policy_created": false,
+    "candidate49_historical_backfill_performed": false,
+    "candidate49_ledgers_changed": false,
+    "second_prospective_candidate_created": false,
+    "current_scoring_selection_sizing_positions_or_orders_performed": false
+  }
+}

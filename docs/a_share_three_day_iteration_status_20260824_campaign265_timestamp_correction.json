@@ -1,0 +1,72 @@
+{
+  "schema_version": 1,
+  "kind": "a_share_three_day_iteration_status_timestamp_correction",
+  "status": "campaign265_timestamp_and_skill_read_failures_corrected_values_closed",
+  "recorded_at": "2026-08-24T14:47:14+08:00",
+  "supersedes_without_rewriting": {
+    "path": "docs/a_share_three_day_iteration_status_20260824_campaign265_no_return_audit_runner_ready.json",
+    "sha256": "977fe67ef0424848517f814e6a5fc3257715e3ff3927475c6d86e3e83734f862"
+  },
+  "authoritative_attempt_ledger": {
+    "path": "data/experiments/short_horizon/historical_walkforward/campaign_265/research_attempt_ledger_v21.json",
+    "sha256": "3f56612bbe6a931cd1c74694175d5f83a9c287dc34a7cca0804487c772c98c95",
+    "entry_count": 44,
+    "chain_tip_sha256": "b842b1fb2f081de3d46922735ffdc45ea55fa9c363a456efe02a65e80acf6068"
+  },
+  "correction": {
+    "observed_local_time": "2026-08-24T14:47:14+08:00",
+    "future_recorded_at_predecessors": [
+      "data/experiments/short_horizon/historical_walkforward/campaign_265/research_attempt_ledger_v18.json",
+      "data/experiments/short_horizon/historical_walkforward/campaign_265/research_attempt_ledger_v19.json"
+    ],
+    "future_timestamps_are_authoritative": false,
+    "scientific_or_chain_order_changed": false,
+    "additional_infrastructure_failures": [
+      "initial combined skill read was truncated",
+      "skill lines 201-300 read was truncated",
+      "v18 and v19 recorded_at values exceeded the subsequently observed local time",
+      "the first correction-state predecessor SHA-256 was prepopulated before measurement"
+    ]
+  },
+  "effective_accounting": {
+    "campaign265_attempt_count": 44,
+    "campaign265_infrastructure_failure_count": 29,
+    "campaign265_prevalue_scientific_attempt_count": 15,
+    "campaign265_complete_factor_attempt_count": 0,
+    "campaign265_return_reading_development_trial_count": 0,
+    "cumulative_historical_research_attempt_count": 2648,
+    "cumulative_return_reading_development_trial_count": 315
+  },
+  "unchanged_scientific_state": {
+    "factor": "convertible_bond_equity_parity_premium_compression_3s",
+    "direction": "higher",
+    "v420_policy_present": false,
+    "accepted_source_manifest_present": false,
+    "no_return_plan_ready": false,
+    "no_return_plan_blocker": "source_acceptance_manifest_absent_or_unsafe",
+    "complete_factor_definition_count": 162,
+    "eligible_numeric_comparator_count": 143,
+    "candidate_value_read": false,
+    "comparator_value_read": false,
+    "historical_daily_price_or_forward_return_value_read": false
+  },
+  "goal": {
+    "objective": "请持续迭代因子。",
+    "status": "active",
+    "next_safe_work": "Continue zero-network independent historical prevalue research while Campaign265 waits for explicit source authorization."
+  },
+  "research_boundary": {
+    "accepted_source_parquet_value_read": false,
+    "candidate_or_comparator_value_read": false,
+    "historical_daily_price_or_forward_return_value_read": false,
+    "stress_2024_2025_opened": false,
+    "provider_credential_value_or_digest_read": false,
+    "provider_client_imported_or_created": false,
+    "provider_request_issued": false,
+    "candidate49_historical_backfill_performed": false,
+    "candidate49_ledgers_changed": false,
+    "second_prospective_candidate_created": false,
+    "current_scoring_selection_sizing_positions_or_orders_performed": false,
+    "investment_advice": false
+  }
+}

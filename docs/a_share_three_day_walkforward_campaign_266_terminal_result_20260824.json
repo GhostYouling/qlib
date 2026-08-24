@@ -1,0 +1,102 @@
+{
+  "schema_version": 1,
+  "kind": "a_share_three_day_walkforward_campaign266_prevalue_terminal_result",
+  "status": "terminal_prevalue_etf_source_contract_zero_selected",
+  "recorded_at": "2026-08-24T15:07:55+08:00",
+  "timestamp_semantics": "measured_host_local_time_after_frontier_and_append_only_ledger_publication_before_unified_report_state_handoff_or_validation_publication",
+  "authoritative_inputs": {
+    "campaign265_timestamp_correction": {
+      "path": "docs/a_share_three_day_iteration_status_20260824_campaign265_timestamp_correction.json",
+      "sha256": "1e0b7080738e3340fee551878c1f270d606fc85835cf14517f30c5dc655b8178"
+    },
+    "campaign266_frontier": {
+      "path": "docs/a_share_three_day_walkforward_campaign_266_etf_primary_market_source_frontier_20260824.json",
+      "sha256": "c3bd3e8e91627c78b3a4cafe470ef25f50a0fa55a897381894b68279734d731e"
+    },
+    "campaign266_attempt_ledger_v1": {
+      "path": "data/experiments/short_horizon/historical_walkforward/campaign_266/research_attempt_ledger_v1.json",
+      "sha256": "5efdb899bb7efd66ff18c6bf0abcfaa05fdda64b35ae0708d8dc0c9e87829011",
+      "entry_count": 15,
+      "chain_tip_sha256": "021add025f3f7c9159ebc1846a99ed929039c57973000a6389f707baac9349f3"
+    },
+    "numeric_policy_v419_revision_2_unchanged": {
+      "path": "docs/a_share_three_day_walkforward_future_numeric_comparison_eligibility_policy_v419_20260824_execution_path_hardening_v2.json",
+      "sha256": "c331d3931893ea183a7d0a750be8f5b136b1e95e5a0e1fc65683e6cf64d5cc2a"
+    }
+  },
+  "scientific_result": {
+    "finite_route_count": 6,
+    "source_contract_or_permission_rejection_count": 4,
+    "semantic_or_premature_search_rejection_count": 2,
+    "selected_factor_count": 0,
+    "numeric_formula_or_direction_frozen": false,
+    "candidate_snapshot_adapter_or_source_request_created": false,
+    "candidate_or_comparator_value_read": false,
+    "historical_daily_price_or_forward_return_read": false,
+    "development_trial_count": 0,
+    "development_survivor_count": 0,
+    "stress_trial_count_2024_2025": 0,
+    "interpretation": "The ETF primary-market hypothesis remains economically untested. Exact daily ETF identity, share and PCF sources exceed the user's 3000-point authorization, while the affordable fund_share/fund_basic/index_weight combination lacks versioned mapping, first-public timing, corporate-action identity and daily basket semantics. Rejecting it before values prevents a biased proxy backtest."
+  },
+  "effective_accounting": {
+    "campaign266_attempt_count": 15,
+    "campaign266_infrastructure_failure_count": 9,
+    "campaign266_prevalue_scientific_attempt_count": 6,
+    "campaign266_complete_factor_attempt_count": 0,
+    "campaign266_return_reading_development_trial_count": 0,
+    "cumulative_historical_research_attempt_count": 2663,
+    "cumulative_return_reading_development_trial_count": 315,
+    "chain_tip_sha256": "021add025f3f7c9159ebc1846a99ed929039c57973000a6389f707baac9349f3"
+  },
+  "library_state": {
+    "changed_by_campaign266": false,
+    "complete_factor_definition_count": 162,
+    "complete_factor_definition_order_sha256": "974f2c1f16a85eb43a0bd1e8db768dbe120cd8826c1754d5f220bf9f1d4a3ea0",
+    "eligible_numeric_comparator_count": 143,
+    "eligible_numeric_comparator_order_sha256": "f4fbf3d578e2c80c29425716a30d60a3df01d67d04e37f1651236c4dff899588"
+  },
+  "campaign265": {
+    "scientific_and_execution_state_changed": false,
+    "factor": "convertible_bond_equity_parity_premium_compression_3s",
+    "v420_policy_present": false,
+    "accepted_source_manifest_present": false,
+    "no_return_plan_ready": false,
+    "no_return_plan_blocker": "source_acceptance_manifest_absent_or_unsafe",
+    "publication_or_provider_request_authorized_by_campaign266": false
+  },
+  "candidate49": {
+    "sole_active_prospective_candidate": true,
+    "signal_ledger_entry_count": 0,
+    "signal_ledger_sha256": "5193f00d7f36da003f53cec387900da4c3d002299f5dfcfc1a95eaa199ed3a79",
+    "execution_ledger_entry_count": 0,
+    "execution_ledger_sha256": "d57a3e61eac969e42cafa418ccd8c0a5ee65dcf69da145bb2c096c2a02a2ea4f",
+    "ledgers_changed": false,
+    "historical_backfill_allowed": false,
+    "second_prospective_candidate_allowed": false
+  },
+  "research_boundary": {
+    "official_public_documentation_web_read": true,
+    "provider_api_request_issued": false,
+    "provider_credential_value_or_digest_read": false,
+    "provider_client_imported_or_created": false,
+    "provider_response_or_row_value_read": false,
+    "candidate_or_comparator_value_read": false,
+    "historical_daily_price_or_forward_return_value_read": false,
+    "stress_2024_2025_opened": false,
+    "v420_policy_created": false,
+    "candidate49_plan_or_run_executed": false,
+    "candidate49_historical_backfill_performed": false,
+    "candidate49_ledgers_changed": false,
+    "second_prospective_candidate_created": false,
+    "current_scoring_selection_sizing_positions_or_orders_performed": false,
+    "investment_advice": false
+  },
+  "prohibited_followups": [
+    "Do not request etf_basic, etf_share_size, etf_sh_cons or etf_sz_cons under the current 3000-point authorization.",
+    "Do not substitute secondary-market ETF price, turnover or volume for primary-market creation/redemption.",
+    "Do not backfill current ETF mappings or surviving rosters into 2019-2023.",
+    "Do not rescue Campaign266 by changing ETF subsets, lags, windows, denominators, overlap weights, interactions, models or old-factor combinations.",
+    "Do not publish v420, request Campaign265 source rows, read returns, open 2024-2025, backfill Candidate49, start Candidate50 or create current trading actions from this result."
+  ],
+  "next_action": "Keep the goal active. Continue zero-network, official-metadata-only prevalue review with Campaign157 c157_02 issuer bond credit-spread/equity divergence as a separately finite route; leave Campaign265 and Candidate49 unchanged."
+}

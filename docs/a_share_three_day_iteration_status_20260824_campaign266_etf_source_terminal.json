@@ -1,0 +1,109 @@
+{
+  "schema_version": 1,
+  "kind": "a_share_three_day_iteration_status",
+  "status": "campaign266_etf_source_terminal_continuous_goal_active",
+  "recorded_at": "2026-08-24T15:11:26+08:00",
+  "timestamp_semantics": "measured_host_local_time_after_campaign266_frontier_result_report_ledger_and_unified_report_publication_before_focused_validation",
+  "authoritative_inputs": {
+    "campaign265_timestamp_correction": {
+      "path": "docs/a_share_three_day_iteration_status_20260824_campaign265_timestamp_correction.json",
+      "sha256": "1e0b7080738e3340fee551878c1f270d606fc85835cf14517f30c5dc655b8178"
+    },
+    "campaign266_frontier": {
+      "path": "docs/a_share_three_day_walkforward_campaign_266_etf_primary_market_source_frontier_20260824.json",
+      "sha256": "c3bd3e8e91627c78b3a4cafe470ef25f50a0fa55a897381894b68279734d731e"
+    },
+    "campaign266_attempt_ledger_v1": {
+      "path": "data/experiments/short_horizon/historical_walkforward/campaign_266/research_attempt_ledger_v1.json",
+      "sha256": "5efdb899bb7efd66ff18c6bf0abcfaa05fdda64b35ae0708d8dc0c9e87829011",
+      "entry_count": 15,
+      "chain_tip_sha256": "021add025f3f7c9159ebc1846a99ed929039c57973000a6389f707baac9349f3"
+    },
+    "campaign266_terminal_result": {
+      "path": "docs/a_share_three_day_walkforward_campaign_266_terminal_result_20260824.json",
+      "sha256": "664d415e5902b12af24c9fb0623216c3aee8d0490761881beebd76e1debe7c5f"
+    },
+    "campaign266_terminal_report": {
+      "path": "docs/a_share_three_day_walkforward_campaign_266_terminal_report.md",
+      "sha256": "b8583827fdb7175e0028cbc896dc9741788648c60fa6fef506c725e8f815dfba"
+    },
+    "numeric_policy_v419_revision_2_unchanged": {
+      "path": "docs/a_share_three_day_walkforward_future_numeric_comparison_eligibility_policy_v419_20260824_execution_path_hardening_v2.json",
+      "sha256": "c331d3931893ea183a7d0a750be8f5b136b1e95e5a0e1fc65683e6cf64d5cc2a"
+    }
+  },
+  "scientific_state": {
+    "campaign266_route": "Campaign157 c157_03 ETF primary-market creation/redemption constituent pressure",
+    "campaign266_disposition": "terminal_prevalue_source_contract_rejection_not_predictive_failure",
+    "finite_route_count": 6,
+    "selected_factor_count": 0,
+    "numeric_formula_or_direction_frozen": false,
+    "candidate_snapshot_or_adapter_created": false,
+    "complete_factor_definition_count": 162,
+    "eligible_numeric_comparator_count": 143,
+    "candidate_or_comparator_value_read": false,
+    "historical_daily_price_or_forward_return_value_read": false,
+    "development_trial_count": 0,
+    "stress_trial_count_2024_2025": 0
+  },
+  "effective_accounting": {
+    "campaign266_attempt_count": 15,
+    "campaign266_infrastructure_failure_count": 9,
+    "campaign266_prevalue_scientific_attempt_count": 6,
+    "campaign266_complete_factor_attempt_count": 0,
+    "campaign266_return_reading_development_trial_count": 0,
+    "cumulative_historical_research_attempt_count": 2663,
+    "cumulative_return_reading_development_trial_count": 315
+  },
+  "mutable_unified_reports": {
+    "current": {
+      "path": "data/experiments/short_horizon/current_research_report.md",
+      "campaign266_heading_count": 1,
+      "sha256_at_publication": "b011d6b33ce84bdb9cdede8caba6dc18e59c981cf19237bf1c282ceaef3729df"
+    },
+    "three_day": {
+      "path": "data/experiments/short_horizon/three_day_research_report.md",
+      "campaign266_heading_count": 1,
+      "sha256_at_publication": "18b4f4923dfdc90acfe5a7884cf5f1c28da3959247dba4d18b90c44450281fb9"
+    }
+  },
+  "campaign265": {
+    "factor": "convertible_bond_equity_parity_premium_compression_3s",
+    "scientific_or_execution_state_changed_by_campaign266": false,
+    "v420_policy_present": false,
+    "accepted_source_manifest_present": false,
+    "no_return_plan_ready": false,
+    "no_return_plan_blocker": "source_acceptance_manifest_absent_or_unsafe",
+    "provider_request_authorized": false
+  },
+  "candidate49": {
+    "sole_active_prospective_candidate": true,
+    "signal_ledger_entry_count": 0,
+    "signal_ledger_sha256": "5193f00d7f36da003f53cec387900da4c3d002299f5dfcfc1a95eaa199ed3a79",
+    "execution_ledger_entry_count": 0,
+    "execution_ledger_sha256": "d57a3e61eac969e42cafa418ccd8c0a5ee65dcf69da145bb2c096c2a02a2ea4f"
+  },
+  "goal": {
+    "objective": "请持续迭代因子。",
+    "status": "active",
+    "continuous_iteration_confirmed": true,
+    "next_safe_work": "Perform a separately finite, official-metadata-only prevalue source review of Campaign157 c157_02 issuer bond credit-spread/equity divergence; do not alter Campaign265 or Candidate49."
+  },
+  "research_boundary": {
+    "official_public_documentation_web_read": true,
+    "provider_api_request_issued": false,
+    "provider_credential_value_or_digest_read": false,
+    "provider_client_imported_or_created": false,
+    "provider_response_or_row_value_read": false,
+    "candidate_or_comparator_value_read": false,
+    "historical_daily_price_or_forward_return_value_read": false,
+    "stress_2024_2025_opened": false,
+    "v420_policy_created": false,
+    "candidate49_plan_or_run_executed": false,
+    "candidate49_historical_backfill_performed": false,
+    "candidate49_ledgers_changed": false,
+    "second_prospective_candidate_created": false,
+    "current_scoring_selection_sizing_positions_or_orders_performed": false,
+    "investment_advice": false
+  }
+}

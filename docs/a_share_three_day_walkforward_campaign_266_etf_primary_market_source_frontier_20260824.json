@@ -1,0 +1,232 @@
+{
+  "schema_version": 1,
+  "kind": "a_share_three_day_walkforward_campaign266_etf_primary_market_source_frontier",
+  "status": "terminal_prevalue_etf_primary_market_source_contract_zero_selected",
+  "recorded_at": "2026-08-24T15:00:50+08:00",
+  "timestamp_semantics": "measured_host_local_time_after_bounded_repository_and_official_public_documentation_review_before_any_provider_row_candidate_comparator_price_or_return_value",
+  "purpose": "Revisit only Campaign157 route c157_03 and determine whether an ETF primary-market creation/redemption pressure factor can be identified under the user's existing 3000-point authorization, point-in-time history rules and three-session horizon before any formula, direction or value is opened.",
+  "authoritative_inputs": {
+    "campaign265_timestamp_correction": {
+      "path": "docs/a_share_three_day_iteration_status_20260824_campaign265_timestamp_correction.json",
+      "sha256": "1e0b7080738e3340fee551878c1f270d606fc85835cf14517f30c5dc655b8178"
+    },
+    "campaign157_cross_asset_frontier": {
+      "path": "docs/a_share_three_day_walkforward_campaign_157_cross_asset_source_scouting_20260815.json",
+      "sha256": "b14d28d45144c3fde60379161df4ff618bf71222f52dfc8b8e44dd3dc113af2e"
+    },
+    "campaign159_remaining_local_source_audit": {
+      "path": "docs/a_share_three_day_walkforward_campaign_159_remaining_local_source_residual_audit_20260815.json",
+      "sha256": "6d4430f1eef33da89fe5eb7018d326c603a051446d16e066ac72c74d9d7a25ae"
+    },
+    "campaign160_no_credential_contract_delta_inventory": {
+      "path": "docs/a_share_three_day_walkforward_campaign_160_no_credential_source_contract_delta_inventory_20260815.json",
+      "sha256": "25dc95b6e4ef87068e0f94a8cb257b226b9fe22c0fa390716d1db9d164b60418"
+    },
+    "historical_walkforward_policy": {
+      "path": "docs/a_share_three_day_historical_walkforward_research_policy_20260727.json",
+      "sha256": "38426d6161b9bfed323c58caba18feca668b8c9d53e294951a8ba90c01a798bb"
+    },
+    "numeric_policy_v419_revision_2": {
+      "path": "docs/a_share_three_day_walkforward_future_numeric_comparison_eligibility_policy_v419_20260824_execution_path_hardening_v2.json",
+      "sha256": "c331d3931893ea183a7d0a750be8f5b136b1e95e5a0e1fc65683e6cf64d5cc2a"
+    }
+  },
+  "skill_boundary": {
+    "path": "/Users/niyufei/.codex/skills/manage-qlib-a-share-data/SKILL.md",
+    "sha256": "565713a5f3aeb6a1acf23e397fcc21be28d0c3ea4ebf21c7f287a25bb94d78dc",
+    "credential_safe_public_documentation_review_only": true
+  },
+  "prior_deferred_route": {
+    "catalog_id": "c157_03",
+    "name": "etf_primary_market_creation_redemption_constituent_pressure",
+    "economic_hypothesis": "Close-known ETF net creation pressure allocated through point-in-time constituent weights may transmit mechanical demand to constituent equities.",
+    "prior_disposition": "deferred_missing_primary_market_flow_point_in_time_constituent_weight_and_double_count_contract",
+    "predictive_value_previously_tested": false
+  },
+  "authorized_provider_boundary": {
+    "user_authorized_tushare_point_ceiling": 3000,
+    "credential_value_or_digest_inspected": false,
+    "provider_client_created": false,
+    "provider_request_issued": false,
+    "higher_point_interface_request_or_upgrade_recommendation_allowed": false
+  },
+  "official_public_documentation_evidence": [
+    {
+      "interface": "fund_share",
+      "url": "https://tushare.pro/document/2?doc_id=207",
+      "minimum_points": 2000,
+      "documented_frequency_or_semantics": "fund scale rows including Shanghai and Shenzhen ETFs; fields are ts_code, trade_date and fd_share",
+      "documented_row_limit": 2000,
+      "missing_contract_fields": [
+        "announcement_or_first_public_timestamp",
+        "publication_session",
+        "share_split_merge_distribution_or_correction identity",
+        "gross_creation_units",
+        "gross_redemption_units"
+      ],
+      "admission_effect": "The interface is affordable but a change in outstanding shares is not, by schema alone, an exact gross or net primary-market creation/redemption event with a provable close-known clock."
+    },
+    {
+      "interface": "index_weight",
+      "url": "https://tushare.pro/document/2?doc_id=96",
+      "minimum_points": 2000,
+      "documented_frequency_or_semantics": "monthly index constituent weights with index_code, con_code, trade_date and weight",
+      "missing_contract_fields": [
+        "daily ETF basket quantity",
+        "ETF identity",
+        "publication_or_effective timestamp distinct from trade_date",
+        "revision_or_supersession history"
+      ],
+      "admission_effect": "Monthly index weights cannot identify each ETF's daily primary-market basket, cash substitutions or overlap without an additional point-in-time ETF mapping and basket contract."
+    },
+    {
+      "interface": "fund_basic",
+      "url": "https://tushare.pro/document/1?doc_id=19",
+      "minimum_points": 2000,
+      "documented_frequency_or_semantics": "current on-exchange and off-exchange fund list including a free-text benchmark field",
+      "missing_contract_fields": [
+        "exact benchmark index code",
+        "benchmark mapping effective interval",
+        "mapping announcement timestamp",
+        "mapping revision or supersession history"
+      ],
+      "admission_effect": "A current free-text benchmark is not a survivorship-safe historical ETF-to-index mapping for 2019-2023."
+    },
+    {
+      "interface": "etf_basic",
+      "url": "https://tushare.pro/document/2?doc_id=385",
+      "minimum_points": 8000,
+      "documented_frequency_or_semantics": "ETF identity with exact index_code and current listing status",
+      "missing_contract_fields": [
+        "mapping effective interval",
+        "mapping first-public timestamp",
+        "mapping revision history"
+      ],
+      "admission_effect": "The exact mapping interface exceeds the 3000-point boundary and its published schema still does not establish historical mapping versions."
+    },
+    {
+      "interface": "etf_share_size",
+      "url": "https://tushare.pro/document/2?doc_id=408",
+      "minimum_points": 8000,
+      "documented_frequency_or_semantics": "daily ETF shares and size; prior trading-day data are documented as updating around 08:30 next day, with some overseas ETF delay",
+      "missing_contract_fields": [
+        "gross creation units",
+        "gross redemption units",
+        "share corporate-action adjustment identity"
+      ],
+      "admission_effect": "It supplies a documented lagged clock but exceeds authorization and remains an outstanding-share state rather than an exact creation/redemption event stream."
+    },
+    {
+      "interface": "etf_sh_cons_and_etf_sz_cons",
+      "urls": [
+        "https://tushare.pro/document/2?doc_id=471",
+        "https://tushare.pro/document/2?doc_id=472"
+      ],
+      "minimum_points_each": 8000,
+      "documented_frequency_or_semantics": "daily pre-open Shanghai and Shenzhen ETF PCF baskets with constituent quantities and cash-substitution terms",
+      "documented_row_limit_each": 3000,
+      "admission_effect": "These are the closest exact daily basket sources, but both exceed authorization; the public pages also do not prove complete 2019-2023 history before a value request."
+    },
+    {
+      "interface": "fund_portfolio",
+      "url": "https://tushare.pro/document/2?doc_id=121",
+      "minimum_points": 5000,
+      "documented_frequency_or_semantics": "quarterly public-fund holdings with announcement and period fields",
+      "admission_effect": "Quarterly holdings are neither daily PCF baskets nor primary-market flow, and the interface exceeds authorization."
+    }
+  ],
+  "finite_prevalue_catalog": [
+    {
+      "route_id": "c266_01",
+      "name": "exact_daily_pcf_times_daily_etf_creation_redemption",
+      "formula": null,
+      "direction": null,
+      "parameters_filters_subsets_combinations_models": [],
+      "decision": "reject_source_not_authorized_or_historically_proven",
+      "reason": "Exact ETF mapping, daily share-size and Shanghai/Shenzhen PCF interfaces require 8000 points, above the fixed 3000-point boundary. Public metadata does not prove complete 2019-2023 PCF history, so no request or reduced sample is permitted."
+    },
+    {
+      "route_id": "c266_02",
+      "name": "fund_share_change_times_fund_basic_benchmark_times_monthly_index_weight_proxy",
+      "formula": null,
+      "direction": null,
+      "parameters_filters_subsets_combinations_models": [],
+      "decision": "reject_incomplete_point_in_time_and_event_semantics",
+      "reason": "The 2000-point pieces fit the budget but do not jointly preserve an exact versioned ETF-to-index mapping, first-public share clock, share corporate actions, daily basket substitutions or exact primary-market event identity. Adding an arbitrary lag cannot reconstruct missing historical semantics."
+    },
+    {
+      "route_id": "c266_03",
+      "name": "quarterly_fund_portfolio_holding_change_as_daily_etf_pressure",
+      "formula": null,
+      "direction": null,
+      "parameters_filters_subsets_combinations_models": [],
+      "decision": "reject_wrong_frequency_wrong_state_and_permission_barrier",
+      "reason": "Quarterly disclosed holdings cannot identify daily creation/redemption pressure, and the 5000-point interface exceeds the current authorization."
+    },
+    {
+      "route_id": "c266_04",
+      "name": "secondary_market_etf_volume_turnover_or_price_change_as_primary_market_flow",
+      "formula": null,
+      "direction": null,
+      "parameters_filters_subsets_combinations_models": [],
+      "decision": "reject_semantic_substitution_and_terminal_market_data_reuse",
+      "reason": "Secondary-market ETF trades exchange ownership and are not creations or redemptions. Relabeling price, volume or turnover would also reopen the terminal market-data statistic family without a new economic state."
+    },
+    {
+      "route_id": "c266_05",
+      "name": "current_etf_index_mapping_or_surviving_roster_backfilled_to_history",
+      "formula": null,
+      "direction": null,
+      "parameters_filters_subsets_combinations_models": [],
+      "decision": "reject_survivorship_and_lookahead_backfill",
+      "reason": "A current mapping or live roster cannot be projected into 2019-2023 without versioned effective intervals, launches, liquidations, mergers, benchmark changes and first-public timestamps."
+    },
+    {
+      "route_id": "c266_06",
+      "name": "etf_subset_lag_window_weight_normalization_interaction_or_model_search",
+      "formula": null,
+      "direction": null,
+      "parameters_filters_subsets_combinations_models": [],
+      "decision": "reject_premature_search_before_base_source_admission",
+      "reason": "Choosing broad, sector, thematic or enhanced ETFs, lags, windows, denominators, overlap weights, interactions or models before every base history passes the same contract would multiply hypotheses and select on survivorship or realized coverage."
+    }
+  ],
+  "gate_summary": {
+    "finite_route_count": 6,
+    "source_contract_or_permission_rejection_count": 4,
+    "semantic_or_premature_search_rejection_count": 2,
+    "selected_factor_count": 0,
+    "numeric_formula_or_direction_frozen": false,
+    "candidate_snapshot_adapter_or_source_request_created": false,
+    "candidate_or_comparator_value_read": false,
+    "historical_daily_price_or_forward_return_read": false,
+    "development_trial_count": 0,
+    "stress_trial_count_2024_2025": 0,
+    "complete_definition_or_numeric_comparator_append_allowed": false
+  },
+  "decision": {
+    "campaign266_terminal_stage": "prevalue_etf_primary_market_source_admission",
+    "reason": "No finite route simultaneously satisfies the 3000-point boundary, exact primary-market event identity, versioned ETF mapping, point-in-time availability, daily constituent allocation and complete 2019-2023 coverage. This is a source-contract rejection, not evidence against the economic hypothesis or its predictive value.",
+    "campaign157_c157_03_may_be_retried_only_if": "A newly authorized and independently accepted immutable source proves complete 2019-2023 gross or net creation/redemption events, versioned ETF identity and mapping, daily PCF or equivalent constituent allocation, first-public timing, corporate actions, overlap policy and full-universe denominator before any row is read.",
+    "next_safe_route": "Campaign157 c157_02 issuer bond credit-spread/equity divergence may receive a separately bounded official-metadata-only prevalue source review; Campaign265 remains independently frozen and must not be altered.",
+    "candidate49_remains_sole_prospective_confirmation_layer": true
+  },
+  "research_boundary": {
+    "repository_metadata_and_prior_terminal_history_read": true,
+    "official_public_documentation_web_read": true,
+    "provider_api_request_issued": false,
+    "provider_credential_value_or_digest_read": false,
+    "provider_client_imported_or_created": false,
+    "provider_response_or_row_value_read": false,
+    "candidate_or_comparator_value_read": false,
+    "historical_daily_price_or_forward_return_value_read": false,
+    "stress_2024_2025_opened": false,
+    "v420_policy_created": false,
+    "candidate49_plan_or_run_executed": false,
+    "candidate49_historical_backfill_performed": false,
+    "candidate49_ledgers_changed": false,
+    "second_prospective_candidate_created": false,
+    "current_scoring_selection_sizing_positions_or_orders_performed": false,
+    "investment_advice": false
+  }
+}
