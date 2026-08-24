@@ -1,0 +1,109 @@
+{
+  "schema_version": 1,
+  "kind": "a_share_three_day_walkforward_campaign269_concept_only_terminal_result",
+  "status": "terminal_concept_only_frontier_one_future_source_contract_route_preserved_zero_factors",
+  "recorded_at": "2026-08-24T17:13:00+08:00",
+  "timestamp_semantics": "measured host local time after frontier and append-only ledger v1-v6 publication, including terminal, cross-stage validation and publication-stage failures, before final report, state, handoff and successful validation",
+  "authoritative_inputs": {
+    "campaign268_final_validated_state": {
+      "path": "docs/a_share_three_day_iteration_status_20260824_campaign268_final_validated.json",
+      "sha256": "6bdca2e27e9d947078f8e6154434358eefc1134b52e688c18d4fb70ace5229b7"
+    },
+    "campaign269_concept_frontier": {
+      "path": "docs/a_share_three_day_walkforward_campaign_269_exogenous_facility_hazard_concept_scouting_20260824.json",
+      "sha256": "82fa865c99d79e784ba86718f55e3ef18e4dcf2c50737eab0c857c8bba3bac1b"
+    },
+    "campaign269_attempt_ledger": {
+      "path": "data/experiments/short_horizon/historical_walkforward/campaign_269/research_attempt_ledger_v6.json",
+      "sha256": "8dad1656cfdd22a1e8af34112fea1118ae8092790cb1623bd9b042c1177fc41c",
+      "entry_count": 17,
+      "chain_tip_sha256": "5973b1ad6f374f57d8e12df029b0f7f79994ed868f767ea2122cc50acb0fc21d"
+    },
+    "numeric_policy_v419_revision_2_unchanged": {
+      "path": "docs/a_share_three_day_walkforward_future_numeric_comparison_eligibility_policy_v419_20260824_execution_path_hardening_v2.json",
+      "sha256": "c331d3931893ea183a7d0a750be8f5b136b1e95e5a0e1fc65683e6cf64d5cc2a"
+    }
+  },
+  "scientific_result": {
+    "frontier_family": "issuer facility mapped exogenous physical and policy hazards",
+    "finite_route_count": 6,
+    "concept_preserved_for_future_source_contract_count": 1,
+    "source_admission_deferral_count": 2,
+    "premature_family_search_or_underidentification_rejection_count": 3,
+    "preserved_concept_id": "c269_01",
+    "preserved_concept_name": "issuer_facility_extreme_precipitation_or_flood_exposure",
+    "preserved_concept_is_factor": false,
+    "selected_factor_count": 0,
+    "complete_factor_attempt_count": 0,
+    "numeric_formula_or_direction_frozen": false,
+    "source_contract_adapter_or_provider_request_created": false,
+    "source_row_or_candidate_comparator_value_read": false,
+    "historical_daily_price_or_forward_return_read": false,
+    "development_trial_count": 0,
+    "development_survivor_count": 0,
+    "stress_trial_count_2024_2025": 0,
+    "interpretation": "Campaign269 identified one economically new external information channel for later source-contract work: extreme precipitation or inundation observed at a point-in-time issuer facility. The route remains untested and is not yet a factor because the repository has no accepted historical facility master, hazard history, spatial join, zero-exposure denominator or correction clock. Five sibling or lower-priority routes were recorded and closed or deferred before formulas and values, preventing hazard-type, threshold, radius, window and policy-regime search."
+  },
+  "effective_accounting": {
+    "campaign269_attempt_count": 17,
+    "campaign269_infrastructure_failure_count": 11,
+    "campaign269_prevalue_scientific_attempt_count": 6,
+    "campaign269_complete_factor_attempt_count": 0,
+    "campaign269_return_reading_development_trial_count": 0,
+    "cumulative_historical_research_attempt_count": 2720,
+    "cumulative_return_reading_development_trial_count": 315,
+    "chain_tip_sha256": "5973b1ad6f374f57d8e12df029b0f7f79994ed868f767ea2122cc50acb0fc21d"
+  },
+  "library_state": {
+    "changed_by_campaign269": false,
+    "complete_factor_definition_count": 162,
+    "complete_factor_definition_order_sha256": "974f2c1f16a85eb43a0bd1e8db768dbe120cd8826c1754d5f220bf9f1d4a3ea0",
+    "eligible_numeric_comparator_count": 143,
+    "eligible_numeric_comparator_order_sha256": "f4fbf3d578e2c80c29425716a30d60a3df01d67d04e37f1651236c4dff899588"
+  },
+  "campaign265": {
+    "scientific_or_execution_state_changed": false,
+    "v420_policy_present": false,
+    "accepted_source_manifest_present": false,
+    "no_return_plan_blocker": "source_acceptance_manifest_absent_or_unsafe",
+    "provider_request_authorized_by_campaign269": false
+  },
+  "candidate49": {
+    "sole_active_prospective_candidate": true,
+    "session_2026_08_24_already_failed_closed": true,
+    "same_session_retry_allowed": false,
+    "signal_ledger_entry_count": 0,
+    "signal_ledger_sha256": "5193f00d7f36da003f53cec387900da4c3d002299f5dfcfc1a95eaa199ed3a79",
+    "execution_ledger_entry_count": 0,
+    "execution_ledger_sha256": "d57a3e61eac969e42cafa418ccd8c0a5ee65dcf69da145bb2c096c2a02a2ea4f",
+    "ledgers_changed_by_campaign269": false,
+    "historical_backfill_allowed": false,
+    "second_prospective_candidate_allowed": false
+  },
+  "research_boundary": {
+    "repository_metadata_and_prior_terminal_history_read": true,
+    "official_public_documentation_web_read": false,
+    "provider_api_request_issued_by_campaign269": false,
+    "provider_credential_value_or_digest_read": false,
+    "provider_response_or_source_row_read": false,
+    "candidate_or_comparator_value_read": false,
+    "historical_daily_price_or_forward_return_value_read": false,
+    "stress_2024_2025_opened": false,
+    "campaign265_changed": false,
+    "candidate49_plan_or_run_executed_by_campaign269": false,
+    "candidate49_historical_backfill_performed": false,
+    "candidate49_ledgers_changed": false,
+    "second_prospective_candidate_created": false,
+    "current_scoring_selection_sizing_positions_or_orders_performed": false,
+    "investment_advice": false
+  },
+  "prohibited_followups": [
+    "Do not treat c269_01 as a complete factor, predictive result, current score or investment recommendation.",
+    "Do not read facility coordinates, hazard observations or outcome values and then choose precipitation thresholds, flood depth, spatial radius, duration, lag, subset or direction.",
+    "Do not backfill current surviving facilities, subsidiaries or geocodes into 2019-2023 or omit issuers with zero observed exposure from the denominator.",
+    "Do not substitute issuer incident disclosures, environmental penalties, ESG metrics, security prices or terminal weather-sensitive factor combinations for the external facility-hazard primitive.",
+    "Do not revive c269_02 or c269_03 as same-family alternatives if c269_01 cannot close its source contract.",
+    "Do not change Campaign265, retry Candidate49 on 2026-08-24, start Candidate50, open 2024-2025, or create current trading actions."
+  ],
+  "next_action": "Keep the goal active. Campaign270 may perform only a separately finite, zero-row source-contract feasibility review for c269_01; it must freeze the point-in-time issuer/subsidiary/facility master, hazard provenance and revisions, public clock, spatial identity, zero-exposure denominator, complete 2019-2023 coverage, missingness and eventual formula/direction before any source row or research value. If that contract cannot close, terminalize the route without testing sibling hazards."
+}
