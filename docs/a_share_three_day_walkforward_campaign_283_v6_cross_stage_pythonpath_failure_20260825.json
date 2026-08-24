@@ -1,0 +1,38 @@
+{
+  "schema_version": 1,
+  "kind": "a_share_three_day_walkforward_campaign283_v6_cross_stage_pythonpath_failure",
+  "status": "recorded_effective_v6_cross_stage_collection_infrastructure_failure_no_research_value_read",
+  "recorded_at": "2026-08-25T00:49:00+08:00",
+  "failed_command_result": {
+    "process_exit_code": 2,
+    "historical_lifecycle_nodes_deselected": 6,
+    "collection_error_count": 1,
+    "collection_error_summary": "ModuleNotFoundError: No module named scripts",
+    "working_directory": "tests",
+    "repository_root_pythonpath_present": false
+  },
+  "failure_classification": {
+    "root_cause": "The corrected node IDs required the tests working directory, but the command did not add the repository root to PYTHONPATH, so the Candidate49 source-failure test could not import scripts during collection.",
+    "artifact_or_binding_defect_detected": false,
+    "campaign283_scientific_result_changed": false,
+    "research_value_read": false,
+    "result_consumed_as_validation_pass": false
+  },
+  "repair_contract": {
+    "preserve_v6_artifacts_as_historical_failure_evidence": true,
+    "rerun_from_tests_working_directory": true,
+    "set_pythonpath_to_repository_root": true,
+    "retain_exact_authoritative_deselect_node_ids": true,
+    "historical_artifacts_may_be_rewritten": false
+  },
+  "research_boundary": {
+    "candidate_or_comparator_value_read": false,
+    "historical_daily_price_or_forward_return_value_read": false,
+    "provider_or_web_request_issued": false,
+    "credential_value_or_digest_read": false,
+    "candidate49_plan_or_run_executed": false,
+    "candidate49_ledgers_changed": false,
+    "stress_2024_2025_opened": false,
+    "current_scoring_selection_sizing_positions_or_orders_performed": false
+  }
+}

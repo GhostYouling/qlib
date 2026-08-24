@@ -1,0 +1,47 @@
+{
+  "schema_version": 1,
+  "kind": "a_share_three_day_walkforward_campaign283_terminal_validation_plan_v6",
+  "status": "effective_v8_post_failure_validation_pending",
+  "recorded_at": "2026-08-25T00:47:00+08:00",
+  "timestamp_semantics": "Monotonic logical append time after the seventh Campaign283 infrastructure failure and before effective v6 state validation; not a market-data measurement.",
+  "authoritative_inputs": {
+    "campaign283_catalog": {"path": "docs/a_share_three_day_walkforward_campaign_283_concept_scouting_20260825.json", "sha256": "d039872074dcb050345c9bc0a0c7355ef16022de4bc6c89c637946821e223721"},
+    "campaign283_terminal_result": {"path": "docs/a_share_three_day_walkforward_campaign_283_prevalue_mechanism_frontier_result_20260825.json", "sha256": "01df32486258d16c7ef3b5461ebacfd362dd36b627d5bb5767857d1bcbd62321"},
+    "campaign283_effective_ledger_v8": {"path": "data/experiments/short_horizon/historical_walkforward/campaign_283/research_attempt_ledger_v8.json", "sha256": "53ee6056f4263dc459c942c4e51f34836340039dc0fe97303c287f99b4a4fdd9"},
+    "campaign283_v5_cross_stage_failure": {"path": "docs/a_share_three_day_walkforward_campaign_283_v5_cross_stage_deselect_prefix_failure_20260825.json", "sha256": "ada3e1dcd46fadf1a0deb7a29869718608402f855e3e247891badb00335e1692"},
+    "campaign283_terminal_state_v5_historical": {"path": "docs/a_share_three_day_iteration_status_20260825_campaign283_terminal_v5.json", "sha256": "7586cde94b97bf7e95d815cf567eadeb7b5d97d2febf7ac98d616db2aafb819f"},
+    "campaign283_focused_test_v6": {"path": "tests/data_collector_tests/test_a_share_three_day_walkforward_campaign283_terminal_v6.py", "sha256": "47ad59bc37c35288f9ecbd245a68745fdcf1cab8aa34b4adb7518d957e70ed95"},
+    "campaign283_terminal_report_v6": {"path": "docs/a_share_three_day_walkforward_campaign_283_terminal_prevalue_report_v6.md", "sha256": "506cb8f96e4e8dbb68250d4b2cf6108402333d73943a9e8ceb7b30c0ff8887e9"},
+    "campaign283_handoff_v6": {"path": "docs/a_share_three_day_strategy_handoff_20260825_campaign283_v6.md", "sha256": "cc4787cf8d7c53477dd07321574d7967a4dcd0b903b3c4af1343e6b58df9e779"},
+    "current_unified_report": {"path": "data/experiments/short_horizon/current_research_report.md", "sha256": "b04bb26c7fe7d69313549341f1836974ab132fb1d09c54cc2ab121af2cabe599"},
+    "three_day_unified_report": {"path": "data/experiments/short_horizon/three_day_research_report.md", "sha256": "0582405b7ee68a54efbe3dee7a2a3f524ed5d2f88401b37b7d0d47a1993fcd4c"},
+    "candidate49_signal_ledger": {"path": "data/experiments/short_horizon/candidate49_future_signal_ledger.json", "sha256": "5193f00d7f36da003f53cec387900da4c3d002299f5dfcfc1a95eaa199ed3a79"},
+    "candidate49_execution_ledger": {"path": "data/experiments/short_horizon/candidate49_future_execution_ledger.json", "sha256": "d57a3e61eac969e42cafa418ccd8c0a5ee65dcf69da145bb2c096c2a02a2ea4f"}
+  },
+  "validation_contract": {
+    "focused_test_path": "tests/data_collector_tests/test_a_share_three_day_walkforward_campaign283_terminal_v6.py",
+    "required_focused_passed_count": 7,
+    "required_focused_failed_count": 0,
+    "pre_state_black_check_passed": true,
+    "pre_state_ruff_check_passed": true,
+    "required_json_binding_verification_passed": true,
+    "required_effective_ledger_chain_verification_passed": true,
+    "required_git_diff_check_passed": true,
+    "required_cross_stage_current_tests_passed": 91,
+    "required_cross_stage_historical_lifecycle_nodes_deselected": 6,
+    "cross_stage_working_directory": "tests",
+    "cross_stage_deselect_node_ids_relative_to_working_directory": true,
+    "replacement_binding_verifier_shell": "bash",
+    "replacement_binding_verifier_uses_special_path_variable": false,
+    "replacement_binding_verifier_uses_absolute_hash_commands": true,
+    "failure_policy": "Any nonzero or semantically incomplete result must append a new infrastructure failure and ledger version; no existing Campaign283 artifact may be rewritten."
+  },
+  "research_boundary": {
+    "research_values_read_by_validation": false,
+    "provider_or_web_request_issued": false,
+    "credential_value_or_digest_read": false,
+    "candidate49_plan_or_run_executed": false,
+    "candidate49_ledgers_changed": false,
+    "current_scoring_selection_sizing_positions_or_orders_performed": false
+  }
+}

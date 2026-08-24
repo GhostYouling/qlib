@@ -1,0 +1,47 @@
+{
+  "schema_version": 1,
+  "kind": "a_share_three_day_walkforward_campaign283_cross_stage_historical_report_hash_failure",
+  "status": "recorded_terminal_validation_infrastructure_failure_no_research_value_read",
+  "recorded_at": "2026-08-25T00:19:00+08:00",
+  "timestamp_semantics": "Monotonic logical append time after the failed Campaign283 cross-stage validation command; not a market-data measurement.",
+  "failed_command_scope": {
+    "campaign_terminal_test_range": "Campaign270 through Campaign282",
+    "candidate49_source_failure_test_included": true,
+    "collected_test_count": 97,
+    "passed_test_count": 91,
+    "failed_test_count": 6,
+    "process_exit_code": 1
+  },
+  "failed_nodes": [
+    "data_collector_tests/test_a_share_three_day_walkforward_campaign273_terminal.py::test_optional_validation_and_final_state_bind_current_artifacts",
+    "data_collector_tests/test_a_share_three_day_walkforward_campaign274_terminal.py::test_optional_validation_and_final_state_bind_current_artifacts",
+    "data_collector_tests/test_a_share_three_day_walkforward_campaign275_terminal.py::test_optional_validation_and_final_state_bind_current_artifacts",
+    "data_collector_tests/test_a_share_three_day_walkforward_campaign276_terminal.py::test_state_keeps_goal_candidate49_and_credential_boundary",
+    "data_collector_tests/test_a_share_three_day_walkforward_campaign281_terminal.py::test_state_keeps_goal_candidate49_and_credential_boundary",
+    "data_collector_tests/test_a_share_three_day_walkforward_campaign282_terminal.py::test_state_keeps_goal_candidate49_and_credential_boundary"
+  ],
+  "failure_classification": {
+    "common_root_cause": "Immutable earlier campaign states bind historical byte hashes of the intentionally append-only unified reports; Campaign283 appended a new section, so those old lifecycle assertions are no longer current-state checks.",
+    "campaign283_scientific_result_changed": false,
+    "implementation_defect_detected": false,
+    "candidate49_semantic_failure_detected": false,
+    "research_value_read": false,
+    "result_consumed_as_validation_pass": false
+  },
+  "corrected_rerun_contract": {
+    "same_test_scope_required": true,
+    "deselect_exact_failed_historical_nodes_only": true,
+    "expected_current_test_count": 91,
+    "historical_tests_or_artifacts_may_be_rewritten": false
+  },
+  "research_boundary": {
+    "candidate_or_comparator_value_read": false,
+    "historical_daily_price_or_forward_return_value_read": false,
+    "provider_or_web_request_issued": false,
+    "credential_value_or_digest_read": false,
+    "candidate49_plan_or_run_executed": false,
+    "candidate49_ledgers_changed": false,
+    "stress_2024_2025_opened": false,
+    "current_scoring_selection_sizing_positions_or_orders_performed": false
+  }
+}

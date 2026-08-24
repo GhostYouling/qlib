@@ -1,0 +1,37 @@
+{
+  "schema_version": 1,
+  "kind": "a_share_three_day_walkforward_campaign283_v5_cross_stage_deselect_prefix_failure",
+  "status": "recorded_effective_v5_cross_stage_infrastructure_failure_no_research_value_read",
+  "recorded_at": "2026-08-25T00:45:00+08:00",
+  "failed_command_result": {
+    "process_exit_code": 1,
+    "passed_test_count": 91,
+    "failed_test_count": 6,
+    "failed_nodes_match_original_historical_lifecycle_set": true,
+    "deselect_argument_prefix_used": "tests/data_collector_tests/",
+    "pytest_node_prefix_in_authoritative_failure_record": "data_collector_tests/"
+  },
+  "failure_classification": {
+    "root_cause": "The rerun executed from the repository root and supplied deselect node IDs with a tests/ prefix, while the authoritative corrected contract uses node IDs relative to the tests working directory; none of the six historical lifecycle nodes was deselected.",
+    "artifact_or_binding_defect_detected": false,
+    "campaign283_scientific_result_changed": false,
+    "research_value_read": false,
+    "result_consumed_as_validation_pass": false
+  },
+  "repair_contract": {
+    "preserve_v5_artifacts_as_historical_failure_evidence": true,
+    "rerun_from_tests_working_directory": true,
+    "use_exact_authoritative_deselect_node_ids": true,
+    "historical_artifacts_may_be_rewritten": false
+  },
+  "research_boundary": {
+    "candidate_or_comparator_value_read": false,
+    "historical_daily_price_or_forward_return_value_read": false,
+    "provider_or_web_request_issued": false,
+    "credential_value_or_digest_read": false,
+    "candidate49_plan_or_run_executed": false,
+    "candidate49_ledgers_changed": false,
+    "stress_2024_2025_opened": false,
+    "current_scoring_selection_sizing_positions_or_orders_performed": false
+  }
+}

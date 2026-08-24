@@ -1,0 +1,18 @@
+{
+  "schema_version": 1,
+  "kind": "a_share_three_day_walkforward_campaign283_terminal_validation_v8",
+  "status": "campaign283_effective_v10_terminal_validation_passed_goal_remains_active",
+  "recorded_at": "2026-08-25T00:58:00+08:00",
+  "timestamp_semantics": "Monotonic logical append time after successful effective v8 post-state validation; not a market-data measurement.",
+  "authoritative_inputs": {
+    "validation_plan_v8": {"path": "docs/a_share_three_day_walkforward_campaign_283_terminal_validation_plan_v8_20260825.json", "sha256": "be32b6435882baa36860e02e4b138dc50621739c9bba37cccdff6e480f500d0e"},
+    "terminal_state_v8": {"path": "docs/a_share_three_day_iteration_status_20260825_campaign283_terminal_v8.json", "sha256": "ebccde458a881f5a0a9e99f3e21795f344549d8f6f624739928d024fb6fe8445"},
+    "focused_test_v8": {"path": "tests/data_collector_tests/test_a_share_three_day_walkforward_campaign283_terminal_v8.py", "sha256": "57747a02cdf4960f1fc5070e6da4aabf4859133e0025e7670f0993dd75c7c5c1"},
+    "effective_ledger_v10": {"path": "data/experiments/short_horizon/historical_walkforward/campaign_283/research_attempt_ledger_v10.json", "sha256": "7cee17cce3bb9f546222d9619945d11bfd47f01635fe27519e49065cb77c203d"}
+  },
+  "validation": {"post_state_focused_tests_passed":7,"focused_tests_failed":0,"cross_stage_current_tests_passed":91,"cross_stage_current_tests_failed":0,"cross_stage_historical_lifecycle_nodes_deselected":6,"cross_stage_evidence_retained_from_v7_before_publication_only_failure":true,"black_check_passed":true,"ruff_check_passed":true,"campaign283_json_and_binding_valid_count":41,"effective_binding_and_chain_validation_passed":true,"git_diff_check_passed":true,"validation_lifecycle_failure_count_in_effective_ledger":9},
+  "effective_accounting": {"campaign283_attempt_count":16,"campaign283_prevalue_scientific_attempt_count":7,"campaign283_infrastructure_failure_attempt_count":9,"campaign283_complete_factor_attempt_count":0,"cumulative_historical_research_attempt_count":2897,"cumulative_return_reading_development_trial_count":315},
+  "scientific_disposition": {"catalog_route_count":7,"economically_independent_route_count":1,"source_contract_ready_route_count":0,"selected_route_count":0,"formula_or_direction_created":false,"candidate_or_comparator_value_read":false,"historical_price_or_forward_return_read":false,"stress_2024_2025_opened":false,"predictive_claim_created":false},
+  "goal": {"objective":"请持续迭代因子。","status":"active","next_safe_campaign":284},
+  "research_boundary": {"provider_or_web_request_issued":false,"credential_value_or_digest_read":false,"candidate49_plan_or_run_executed":false,"candidate49_historical_backfill_performed":false,"candidate49_ledgers_changed":false,"second_prospective_candidate_created":false,"current_scoring_selection_sizing_positions_or_orders_performed":false,"investment_advice":false}
+}

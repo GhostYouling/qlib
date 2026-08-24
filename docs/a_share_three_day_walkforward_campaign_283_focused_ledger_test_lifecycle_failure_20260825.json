@@ -1,0 +1,35 @@
+{
+  "schema_version": 1,
+  "kind": "a_share_three_day_walkforward_campaign283_focused_ledger_test_lifecycle_failure",
+  "status": "recorded_focused_validation_infrastructure_failure_no_research_value_read",
+  "recorded_at": "2026-08-25T00:21:00+08:00",
+  "failed_command_result": {
+    "passed_test_count": 3,
+    "failed_test_count": 1,
+    "process_exit_code": 1,
+    "failed_node": "data_collector_tests/test_a_share_three_day_walkforward_campaign283_terminal.py::test_effective_attempt_chain_has_exact_accounting"
+  },
+  "failure_classification": {
+    "root_cause": "The test correctly rehashed every v2 entry but then incorrectly required the newly appended infrastructure entry to have scientific_attempt=true.",
+    "ledger_hash_or_chain_failure": false,
+    "campaign283_scientific_result_changed": false,
+    "research_value_read": false,
+    "result_consumed_as_validation_pass": false
+  },
+  "repair_contract": {
+    "first_seven_entries_must_be_scientific": true,
+    "later_validation_entries_must_be_infrastructure": true,
+    "all_entry_hashes_and_previous_links_must_still_replay": true,
+    "historical_ledger_versions_may_be_rewritten": false
+  },
+  "research_boundary": {
+    "candidate_or_comparator_value_read": false,
+    "historical_daily_price_or_forward_return_value_read": false,
+    "provider_or_web_request_issued": false,
+    "credential_value_or_digest_read": false,
+    "candidate49_plan_or_run_executed": false,
+    "candidate49_ledgers_changed": false,
+    "stress_2024_2025_opened": false,
+    "current_scoring_selection_sizing_positions_or_orders_performed": false
+  }
+}

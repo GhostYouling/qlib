@@ -1,0 +1,15 @@
+{
+  "schema_version": 1,
+  "kind": "a_share_three_day_walkforward_campaign283_publication_safety_v8",
+  "status": "pre_final_state_staging_safety_passed_final_recheck_required",
+  "recorded_at": "2026-08-25T00:59:00+08:00",
+  "timestamp_semantics": "Monotonic logical append time after the successful effective Campaign283 v8 staging-safety check; not a market-data measurement.",
+  "authoritative_inputs": {
+    "terminal_validation_v8": {"path": "docs/a_share_three_day_walkforward_campaign_283_terminal_validation_v8_20260825.json", "sha256": "66fc56bb631c1a93d625aca2449914c59689c7581bfbd1e462c4812485c7592d"},
+    "terminal_state_v8": {"path": "docs/a_share_three_day_iteration_status_20260825_campaign283_terminal_v8.json", "sha256": "ebccde458a881f5a0a9e99f3e21795f344549d8f6f624739928d024fb6fe8445"},
+    "effective_ledger_v10": {"path": "data/experiments/short_horizon/historical_walkforward/campaign_283/research_attempt_ledger_v10.json", "sha256": "7cee17cce3bb9f546222d9619945d11bfd47f01635fe27519e49065cb77c203d"}
+  },
+  "first_staging_check": {"staged_file_count":68,"staged_env_file":false,"staged_tushare_token_assignment_addition_count":0,"git_diff_cached_check_passed":true,"git_diff_check_passed":true,"unstaged_file_count":0,"untracked_campaign283_file_count":0,"ignored_campaign283_ledgers_explicitly_force_added":10,"tracked_unified_reports_staged_with_update_mode":true},
+  "final_recheck_contract": {"required_after_adding_this_record_and_final_state":true,"required_staged_env_file":false,"required_staged_tushare_token_assignment_addition_count":0,"required_git_diff_cached_check_passed":true,"required_unstaged_file_count":0,"failure_policy":"Any failure must be appended as Campaign283 infrastructure evidence before publication; no commit or push is allowed from a failed staging state."},
+  "research_boundary": {"credential_value_or_digest_read":false,"provider_or_web_request_issued":false,"candidate49_plan_or_run_executed":false,"candidate49_ledgers_changed":false,"research_value_read_by_staging_check":false}
+}

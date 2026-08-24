@@ -1,0 +1,37 @@
+{
+  "schema_version": 1,
+  "kind": "a_share_three_day_walkforward_campaign283_v7_publication_staging_ignored_data_failure",
+  "status": "recorded_effective_v7_publication_staging_infrastructure_failure_no_research_value_read",
+  "recorded_at": "2026-08-25T00:54:00+08:00",
+  "failed_command_result": {
+    "process_exit_code": 1,
+    "git_summary": "Explicit ordinary git add rejected paths under ignored data tree and advised -f.",
+    "commit_created": false,
+    "push_performed": false,
+    "secret_material_staged": false
+  },
+  "failure_classification": {
+    "root_cause": "The combined staging command used ordinary git add for two already tracked unified reports under an ignored data tree; the safe staging contract requires update mode for tracked reports and force mode only for exact ignored research-ledger paths.",
+    "artifact_or_binding_defect_detected": false,
+    "campaign283_scientific_result_changed": false,
+    "research_value_read": false,
+    "result_consumed_as_validation_pass": false
+  },
+  "repair_contract": {
+    "stage_tracked_unified_reports_with_git_add_update_mode": true,
+    "stage_exact_ignored_research_ledgers_with_git_add_force": true,
+    "stage_nonignored_docs_and_tests_with_exact_paths": true,
+    "repeat_env_and_token_assignment_staging_checks": true,
+    "historical_artifacts_may_be_rewritten": false
+  },
+  "research_boundary": {
+    "candidate_or_comparator_value_read": false,
+    "historical_daily_price_or_forward_return_value_read": false,
+    "provider_or_web_request_issued": false,
+    "credential_value_or_digest_read": false,
+    "candidate49_plan_or_run_executed": false,
+    "candidate49_ledgers_changed": false,
+    "stress_2024_2025_opened": false,
+    "current_scoring_selection_sizing_positions_or_orders_performed": false
+  }
+}

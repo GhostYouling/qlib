@@ -1,0 +1,37 @@
+{
+  "schema_version": 1,
+  "kind": "a_share_three_day_walkforward_campaign283_zsh_path_binding_verifier_failure",
+  "status": "recorded_post_final_state_validation_infrastructure_failure_no_research_value_read",
+  "recorded_at": "2026-08-25T00:33:00+08:00",
+  "failed_command_result": {
+    "process_exit_code": 127,
+    "shell": "zsh",
+    "stderr_summary": "verify_bindings:3: command not found: shasum; verify_bindings:3: command not found: awk",
+    "json_files_parsed_before_failure": 16,
+    "authoritative_binding_validation_completed": false
+  },
+  "failure_classification": {
+    "root_cause": "The ad hoc zsh verifier used the special variable name path for a binding path, which replaced the shell command-search path before shasum and awk were invoked.",
+    "artifact_or_binding_defect_detected": false,
+    "campaign283_scientific_result_changed": false,
+    "research_value_read": false,
+    "result_consumed_as_validation_pass": false
+  },
+  "repair_contract": {
+    "use_bash_for_the_replacement_verifier": true,
+    "use_non_special_variable_name_artifact_path": true,
+    "use_absolute_paths_for_shasum_and_awk": true,
+    "retain_all_json_binding_and_chain_checks": true,
+    "historical_artifacts_may_be_rewritten": false
+  },
+  "research_boundary": {
+    "candidate_or_comparator_value_read": false,
+    "historical_daily_price_or_forward_return_value_read": false,
+    "provider_or_web_request_issued": false,
+    "credential_value_or_digest_read": false,
+    "candidate49_plan_or_run_executed": false,
+    "candidate49_ledgers_changed": false,
+    "stress_2024_2025_opened": false,
+    "current_scoring_selection_sizing_positions_or_orders_performed": false
+  }
+}

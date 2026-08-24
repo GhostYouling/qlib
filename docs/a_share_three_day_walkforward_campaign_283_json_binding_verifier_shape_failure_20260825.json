@@ -1,0 +1,37 @@
+{
+  "schema_version": 1,
+  "kind": "a_share_three_day_walkforward_campaign283_json_binding_verifier_shape_failure",
+  "status": "recorded_post_state_validation_infrastructure_failure_no_research_value_read",
+  "recorded_at": "2026-08-25T00:25:00+08:00",
+  "failed_command_result": {
+    "process_exit_code": 1,
+    "exception_class": "TypeError",
+    "exception_summary": "string indices must be integers, not str",
+    "cross_stage_current_tests_passed_in_parallel": 91,
+    "cross_stage_historical_lifecycle_nodes_deselected": 6,
+    "black_ruff_and_diff_checks_passed_in_parallel": true
+  },
+  "failure_classification": {
+    "root_cause": "The ad hoc verifier passed the catalog's single authoritative_predecessor binding object to a helper that expected a mapping of binding objects.",
+    "artifact_or_binding_defect_detected": false,
+    "campaign283_scientific_result_changed": false,
+    "research_value_read": false,
+    "result_consumed_as_validation_pass": false
+  },
+  "repair_contract": {
+    "validate_single_catalog_predecessor_binding_explicitly": true,
+    "validate_historical_policy_binding_explicitly": true,
+    "retain_all_other_binding_and_chain_checks": true,
+    "historical_artifacts_may_be_rewritten": false
+  },
+  "research_boundary": {
+    "candidate_or_comparator_value_read": false,
+    "historical_daily_price_or_forward_return_value_read": false,
+    "provider_or_web_request_issued": false,
+    "credential_value_or_digest_read": false,
+    "candidate49_plan_or_run_executed": false,
+    "candidate49_ledgers_changed": false,
+    "stress_2024_2025_opened": false,
+    "current_scoring_selection_sizing_positions_or_orders_performed": false
+  }
+}

@@ -1,0 +1,35 @@
+{
+  "schema_version": 1,
+  "kind": "a_share_three_day_walkforward_campaign283_v4_unified_next_campaign_marker_failure",
+  "status": "recorded_effective_v4_focused_validation_infrastructure_failure_no_research_value_read",
+  "recorded_at": "2026-08-25T00:41:00+08:00",
+  "failed_command_result": {
+    "process_exit_code": 1,
+    "focused_tests_passed": 6,
+    "focused_tests_failed": 1,
+    "assertion_summary": "The latest Campaign283 unified-report accounting correction contained 2,893 but omitted the Campaign284 next-work marker."
+  },
+  "failure_classification": {
+    "root_cause": "The additive v3 accounting-correction paragraph ended with the v4 validation-file note and did not restate the frozen Campaign284 continuation boundary required by the focused test.",
+    "artifact_or_binding_defect_detected": true,
+    "campaign283_scientific_result_changed": false,
+    "research_value_read": false,
+    "result_consumed_as_validation_pass": false
+  },
+  "repair_contract": {
+    "preserve_v4_artifacts_as_historical_failure_evidence": true,
+    "append_new_unified_report_correction_with_campaign284_marker": true,
+    "create_additive_v5_publication_chain": true,
+    "historical_artifacts_may_be_rewritten": false
+  },
+  "research_boundary": {
+    "candidate_or_comparator_value_read": false,
+    "historical_daily_price_or_forward_return_value_read": false,
+    "provider_or_web_request_issued": false,
+    "credential_value_or_digest_read": false,
+    "candidate49_plan_or_run_executed": false,
+    "candidate49_ledgers_changed": false,
+    "stress_2024_2025_opened": false,
+    "current_scoring_selection_sizing_positions_or_orders_performed": false
+  }
+}

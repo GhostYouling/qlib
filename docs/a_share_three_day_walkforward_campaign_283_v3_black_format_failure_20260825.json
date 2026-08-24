@@ -1,0 +1,36 @@
+{
+  "schema_version": 1,
+  "kind": "a_share_three_day_walkforward_campaign283_v3_black_format_failure",
+  "status": "recorded_effective_v3_format_infrastructure_failure_no_research_value_read",
+  "recorded_at": "2026-08-25T00:37:00+08:00",
+  "failed_command_result": {
+    "process_exit_code": 1,
+    "focused_tests_passed_before_failure": 7,
+    "focused_tests_failed": 0,
+    "black_summary": "One new v3 focused test file would be reformatted in two assertion blocks.",
+    "ruff_executed_after_black_failure": false
+  },
+  "failure_classification": {
+    "root_cause": "The manually added v3 focused test used two syntactically valid assertion wraps that did not match Black's canonical layout.",
+    "artifact_or_binding_defect_detected": false,
+    "campaign283_scientific_result_changed": false,
+    "research_value_read": false,
+    "result_consumed_as_validation_pass": false
+  },
+  "repair_contract": {
+    "preserve_v3_test_as_historical_failure_evidence": true,
+    "create_additive_black_canonical_v4_test": true,
+    "rerun_focused_black_ruff_and_binding_checks": true,
+    "historical_artifacts_may_be_rewritten": false
+  },
+  "research_boundary": {
+    "candidate_or_comparator_value_read": false,
+    "historical_daily_price_or_forward_return_value_read": false,
+    "provider_or_web_request_issued": false,
+    "credential_value_or_digest_read": false,
+    "candidate49_plan_or_run_executed": false,
+    "candidate49_ledgers_changed": false,
+    "stress_2024_2025_opened": false,
+    "current_scoring_selection_sizing_positions_or_orders_performed": false
+  }
+}

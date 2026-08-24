@@ -1,0 +1,48 @@
+{
+  "schema_version": 1,
+  "kind": "a_share_three_day_walkforward_campaign283_terminal_validation_plan_v7",
+  "status": "effective_v9_post_failure_validation_pending",
+  "recorded_at": "2026-08-25T00:51:00+08:00",
+  "timestamp_semantics": "Monotonic logical append time after the eighth Campaign283 infrastructure failure and before effective v7 state validation; not a market-data measurement.",
+  "authoritative_inputs": {
+    "campaign283_catalog": {"path": "docs/a_share_three_day_walkforward_campaign_283_concept_scouting_20260825.json", "sha256": "d039872074dcb050345c9bc0a0c7355ef16022de4bc6c89c637946821e223721"},
+    "campaign283_terminal_result": {"path": "docs/a_share_three_day_walkforward_campaign_283_prevalue_mechanism_frontier_result_20260825.json", "sha256": "01df32486258d16c7ef3b5461ebacfd362dd36b627d5bb5767857d1bcbd62321"},
+    "campaign283_effective_ledger_v9": {"path": "data/experiments/short_horizon/historical_walkforward/campaign_283/research_attempt_ledger_v9.json", "sha256": "f95638c7e21d0fe7503472ff9d1659d477f6c05f4b96bb998d0d4ddb5aed3e32"},
+    "campaign283_v6_cross_stage_pythonpath_failure": {"path": "docs/a_share_three_day_walkforward_campaign_283_v6_cross_stage_pythonpath_failure_20260825.json", "sha256": "602d025f2ebbd8d56876b25641eaf71f5f41748cde01785ac474b0fd4b1efc5b"},
+    "campaign283_terminal_state_v6_historical": {"path": "docs/a_share_three_day_iteration_status_20260825_campaign283_terminal_v6.json", "sha256": "fde9802fff7749fd294f1e3ef60c4b3b6ef21e8c18b16e3876b5244a1267c527"},
+    "campaign283_focused_test_v7": {"path": "tests/data_collector_tests/test_a_share_three_day_walkforward_campaign283_terminal_v7.py", "sha256": "c27863f5521069317889553c541da50ce6be1fe780cc337f268a2f4ca63de687"},
+    "campaign283_terminal_report_v7": {"path": "docs/a_share_three_day_walkforward_campaign_283_terminal_prevalue_report_v7.md", "sha256": "8314c9d5419dedf1185ac2d7bbc3f84164ea8bc46052809e0d585f41e08a167f"},
+    "campaign283_handoff_v7": {"path": "docs/a_share_three_day_strategy_handoff_20260825_campaign283_v7.md", "sha256": "2f521257854861b5cc288675daf4f7d5ae87093c0182815a8009dbe299d67e1c"},
+    "current_unified_report": {"path": "data/experiments/short_horizon/current_research_report.md", "sha256": "cf11f1f65d7ecddbcad5e3e2f5e5f5e98254393d48b9fed5a2021760b7199621"},
+    "three_day_unified_report": {"path": "data/experiments/short_horizon/three_day_research_report.md", "sha256": "ca978f7593a027ccf8067122df272decf1ab9714efa9ca1563084a2e3bd3956a"},
+    "candidate49_signal_ledger": {"path": "data/experiments/short_horizon/candidate49_future_signal_ledger.json", "sha256": "5193f00d7f36da003f53cec387900da4c3d002299f5dfcfc1a95eaa199ed3a79"},
+    "candidate49_execution_ledger": {"path": "data/experiments/short_horizon/candidate49_future_execution_ledger.json", "sha256": "d57a3e61eac969e42cafa418ccd8c0a5ee65dcf69da145bb2c096c2a02a2ea4f"}
+  },
+  "validation_contract": {
+    "focused_test_path": "tests/data_collector_tests/test_a_share_three_day_walkforward_campaign283_terminal_v7.py",
+    "required_focused_passed_count": 7,
+    "required_focused_failed_count": 0,
+    "pre_state_black_format_applied": true,
+    "pre_state_ruff_check_passed": true,
+    "required_json_binding_verification_passed": true,
+    "required_effective_ledger_chain_verification_passed": true,
+    "required_git_diff_check_passed": true,
+    "required_cross_stage_current_tests_passed": 91,
+    "required_cross_stage_historical_lifecycle_nodes_deselected": 6,
+    "cross_stage_working_directory": "tests",
+    "cross_stage_pythonpath": "..",
+    "cross_stage_deselect_node_ids_relative_to_working_directory": true,
+    "replacement_binding_verifier_shell": "bash",
+    "replacement_binding_verifier_uses_special_path_variable": false,
+    "replacement_binding_verifier_uses_absolute_hash_commands": true,
+    "failure_policy": "Any nonzero or semantically incomplete result must append a new infrastructure failure and ledger version; no existing Campaign283 artifact may be rewritten."
+  },
+  "research_boundary": {
+    "research_values_read_by_validation": false,
+    "provider_or_web_request_issued": false,
+    "credential_value_or_digest_read": false,
+    "candidate49_plan_or_run_executed": false,
+    "candidate49_ledgers_changed": false,
+    "current_scoring_selection_sizing_positions_or_orders_performed": false
+  }
+}

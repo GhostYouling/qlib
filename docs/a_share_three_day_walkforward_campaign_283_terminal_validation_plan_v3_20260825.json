@@ -1,0 +1,81 @@
+{
+  "schema_version": 1,
+  "kind": "a_share_three_day_walkforward_campaign283_terminal_validation_plan_v3",
+  "status": "effective_v5_post_failure_validation_pending",
+  "recorded_at": "2026-08-25T00:35:00+08:00",
+  "timestamp_semantics": "Monotonic logical append time after the fourth Campaign283 infrastructure failure and before effective v3 state validation; not a market-data measurement.",
+  "authoritative_inputs": {
+    "campaign283_catalog": {
+      "path": "docs/a_share_three_day_walkforward_campaign_283_concept_scouting_20260825.json",
+      "sha256": "d039872074dcb050345c9bc0a0c7355ef16022de4bc6c89c637946821e223721"
+    },
+    "campaign283_terminal_result": {
+      "path": "docs/a_share_three_day_walkforward_campaign_283_prevalue_mechanism_frontier_result_20260825.json",
+      "sha256": "01df32486258d16c7ef3b5461ebacfd362dd36b627d5bb5767857d1bcbd62321"
+    },
+    "campaign283_effective_ledger_v5": {
+      "path": "data/experiments/short_horizon/historical_walkforward/campaign_283/research_attempt_ledger_v5.json",
+      "sha256": "bae351c7fdfa36e12ad2e7e16c3c5f61de9451ab0d33d4fb4eb59ed3c010d0b6"
+    },
+    "campaign283_zsh_path_failure": {
+      "path": "docs/a_share_three_day_walkforward_campaign_283_zsh_path_binding_verifier_failure_20260825.json",
+      "sha256": "1fb48003d8154b7d4798259818a162bf422e16438e972c0ce4f6acc4093802b9"
+    },
+    "campaign283_final_validated_v1_historical": {
+      "path": "docs/a_share_three_day_iteration_status_20260825_campaign283_final_validated.json",
+      "sha256": "9217009fcf77bfd65f19e3d4317c6582a0b803ee8ab91338f089d617b1e5602d"
+    },
+    "campaign283_focused_test_v3": {
+      "path": "tests/data_collector_tests/test_a_share_three_day_walkforward_campaign283_terminal_v3.py",
+      "sha256": "9638edecca123c828f0a926c40468a085604b1e92f37adfe3973507447327df9"
+    },
+    "campaign283_terminal_report_v3": {
+      "path": "docs/a_share_three_day_walkforward_campaign_283_terminal_prevalue_report_v3.md",
+      "sha256": "9ba949f1c70c807a32b259e88d51f71f4489a39b6074797e1a6da719dc454545"
+    },
+    "campaign283_handoff_v3": {
+      "path": "docs/a_share_three_day_strategy_handoff_20260825_campaign283_v3.md",
+      "sha256": "a4b0bcc878410eeda2fa09269ac761974161fa574393d247faa716fbda9ca70d"
+    },
+    "current_unified_report": {
+      "path": "data/experiments/short_horizon/current_research_report.md",
+      "sha256": "308c8ddbeaedb4a0cbde0807566560ef3ed52ff655dfc5ca80a8c885e8205a0c"
+    },
+    "three_day_unified_report": {
+      "path": "data/experiments/short_horizon/three_day_research_report.md",
+      "sha256": "f4d3f00ee23af36b073b2b0487e4fdfed14e625bdabd1266309b83b347546a93"
+    },
+    "candidate49_signal_ledger": {
+      "path": "data/experiments/short_horizon/candidate49_future_signal_ledger.json",
+      "sha256": "5193f00d7f36da003f53cec387900da4c3d002299f5dfcfc1a95eaa199ed3a79"
+    },
+    "candidate49_execution_ledger": {
+      "path": "data/experiments/short_horizon/candidate49_future_execution_ledger.json",
+      "sha256": "d57a3e61eac969e42cafa418ccd8c0a5ee65dcf69da145bb2c096c2a02a2ea4f"
+    }
+  },
+  "validation_contract": {
+    "focused_test_path": "tests/data_collector_tests/test_a_share_three_day_walkforward_campaign283_terminal_v3.py",
+    "required_focused_passed_count": 7,
+    "required_focused_failed_count": 0,
+    "required_black_check_passed": true,
+    "required_ruff_check_passed": true,
+    "required_json_binding_verification_passed": true,
+    "required_effective_ledger_chain_verification_passed": true,
+    "required_git_diff_check_passed": true,
+    "required_cross_stage_current_tests_minimum_passed": 91,
+    "required_cross_stage_historical_lifecycle_nodes_deselected": 6,
+    "replacement_binding_verifier_shell": "bash",
+    "replacement_binding_verifier_uses_special_path_variable": false,
+    "replacement_binding_verifier_uses_absolute_hash_commands": true,
+    "failure_policy": "Any nonzero or semantically incomplete result must append a new infrastructure failure and ledger version; no existing Campaign283 artifact may be rewritten."
+  },
+  "research_boundary": {
+    "research_values_read_by_validation": false,
+    "provider_or_web_request_issued": false,
+    "credential_value_or_digest_read": false,
+    "candidate49_plan_or_run_executed": false,
+    "candidate49_ledgers_changed": false,
+    "current_scoring_selection_sizing_positions_or_orders_performed": false
+  }
+}

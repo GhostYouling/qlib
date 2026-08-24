@@ -1,0 +1,73 @@
+{
+  "schema_version": 1,
+  "kind": "a_share_three_day_walkforward_campaign283_terminal_validation_v2",
+  "status": "campaign283_effective_terminal_validation_passed_goal_remains_active",
+  "recorded_at": "2026-08-25T00:29:00+08:00",
+  "timestamp_semantics": "Monotonic logical append time after successful effective v2 post-state validation; not a market-data measurement.",
+  "authoritative_inputs": {
+    "validation_plan_v2": {
+      "path": "docs/a_share_three_day_walkforward_campaign_283_terminal_validation_plan_v2_20260825.json",
+      "sha256": "6100238476917a5ecdb7da56bf7b8f31d32e029c3f767d4519a8997d769d1aac"
+    },
+    "terminal_state_v2": {
+      "path": "docs/a_share_three_day_iteration_status_20260825_campaign283_terminal_v2.json",
+      "sha256": "1b848d7a1bb071ec97ac4fa09b6272c1f4ece3f9057b1530ce9deaf62acc1e48"
+    },
+    "focused_test_v2": {
+      "path": "tests/data_collector_tests/test_a_share_three_day_walkforward_campaign283_terminal_v2.py",
+      "sha256": "db6cd01cec7a8154abec0346c47e5c65b3094156b86c8ac35d201058fbe53e7d"
+    },
+    "effective_ledger_v4": {
+      "path": "data/experiments/short_horizon/historical_walkforward/campaign_283/research_attempt_ledger_v4.json",
+      "sha256": "34fc42c10a22df2e175a1733eee281c479407a80f88a218ccd00b2ca3e350f16"
+    }
+  },
+  "validation": {
+    "pre_state_focused_tests_passed": 4,
+    "post_state_focused_tests_passed": 7,
+    "focused_tests_failed": 0,
+    "cross_stage_current_tests_passed": 91,
+    "cross_stage_current_tests_failed": 0,
+    "cross_stage_historical_lifecycle_nodes_deselected": 6,
+    "black_check_passed": true,
+    "ruff_check_passed": true,
+    "campaign283_json_and_binding_valid_count": 13,
+    "effective_binding_and_chain_validation_passed": true,
+    "git_diff_check_passed": true,
+    "validation_lifecycle_failure_count_in_effective_ledger": 3
+  },
+  "effective_accounting": {
+    "campaign283_attempt_count": 10,
+    "campaign283_prevalue_scientific_attempt_count": 7,
+    "campaign283_infrastructure_failure_attempt_count": 3,
+    "campaign283_complete_factor_attempt_count": 0,
+    "cumulative_historical_research_attempt_count": 2891,
+    "cumulative_return_reading_development_trial_count": 315
+  },
+  "scientific_disposition": {
+    "catalog_route_count": 7,
+    "economically_independent_route_count": 1,
+    "source_contract_ready_route_count": 0,
+    "selected_route_count": 0,
+    "formula_or_direction_created": false,
+    "candidate_or_comparator_value_read": false,
+    "historical_price_or_forward_return_read": false,
+    "stress_2024_2025_opened": false,
+    "predictive_claim_created": false
+  },
+  "goal": {
+    "objective": "请持续迭代因子。",
+    "status": "active",
+    "next_safe_campaign": 284
+  },
+  "research_boundary": {
+    "provider_or_web_request_issued": false,
+    "credential_value_or_digest_read": false,
+    "candidate49_plan_or_run_executed": false,
+    "candidate49_historical_backfill_performed": false,
+    "candidate49_ledgers_changed": false,
+    "second_prospective_candidate_created": false,
+    "current_scoring_selection_sizing_positions_or_orders_performed": false,
+    "investment_advice": false
+  }
+}
