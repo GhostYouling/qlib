@@ -1,0 +1,100 @@
+{
+  "schema_version": 1,
+  "kind": "a_share_three_day_walkforward_campaign276_terminal_validation",
+  "status": "campaign276_terminal_validation_passed_goal_remains_active",
+  "recorded_at": "2026-08-24T21:31:00+08:00",
+  "timestamp_semantics": "Monotonic logical append time after Campaign276 focused and cross-stage validation; not a market-data or host-wall-clock measurement.",
+  "validated_artifacts": {
+    "campaign276_catalog": {
+      "path": "docs/a_share_three_day_walkforward_campaign_276_concept_scouting_20260824.json",
+      "sha256": "ec72c3d249279c005e5953b954e61dcc91d3989f78031ce2debbcab7a6b83085"
+    },
+    "campaign276_terminal_result": {
+      "path": "docs/a_share_three_day_walkforward_campaign_276_prevalue_mechanism_frontier_result_20260824.json",
+      "sha256": "c84a475fda1e4d96c050ba733821f94153e9bf0cdc5c1c84ab47d677b51aed34"
+    },
+    "campaign276_initial_terminal_state": {
+      "path": "docs/a_share_three_day_iteration_status_20260824_campaign276_terminal.json",
+      "sha256": "d6d59d474bbf49751d371c7bacddcaffda0864bcb62b79cafb65e37c5028d752"
+    },
+    "campaign276_effective_ledger_v1": {
+      "path": "data/experiments/short_horizon/historical_walkforward/campaign_276/research_attempt_ledger_v1.json",
+      "sha256": "7e0afc82e35a834af6f3c9333cb89daf723c8570bf3a870dfa47c7b8b672e39b"
+    },
+    "campaign276_focused_test": {
+      "path": "tests/data_collector_tests/test_a_share_three_day_walkforward_campaign276_terminal.py",
+      "sha256": "04afec45ec89d2893c0a360f19171a70f23a1ef55180a4d9683e4058403c75d3"
+    },
+    "campaign276_terminal_report": {
+      "path": "docs/a_share_three_day_walkforward_campaign_276_terminal_prevalue_report.md",
+      "sha256": "c10d9b0015e17710921986c416a6ea2df3d20c39f12ebaf6a98092afb52ceaf2"
+    },
+    "campaign276_handoff": {
+      "path": "docs/a_share_three_day_strategy_handoff_20260824_campaign276.md",
+      "sha256": "859f6386472adb998e4f24a22f6fc4198487739ecc8e17208b2b6618f0f5d6c0"
+    },
+    "current_unified_report": {
+      "path": "data/experiments/short_horizon/current_research_report.md",
+      "sha256": "3e5fd271c51aa1b746b154c6c15387048877e27c7446fdc5a165135178efb454"
+    },
+    "three_day_unified_report": {
+      "path": "data/experiments/short_horizon/three_day_research_report.md",
+      "sha256": "092920adfc5f8de90ecb17bc3e414c21c3c41d6d5c0c0535f27bb35557dafa82"
+    },
+    "candidate49_signal_ledger": {
+      "path": "data/experiments/short_horizon/candidate49_future_signal_ledger.json",
+      "sha256": "5193f00d7f36da003f53cec387900da4c3d002299f5dfcfc1a95eaa199ed3a79"
+    },
+    "candidate49_execution_ledger": {
+      "path": "data/experiments/short_horizon/candidate49_future_execution_ledger.json",
+      "sha256": "d57a3e61eac969e42cafa418ccd8c0a5ee65dcf69da145bb2c096c2a02a2ea4f"
+    }
+  },
+  "validation_lifecycle_failures": [
+    "One combined multi-file frontier rendering exceeded the output budget and was discarded before scientific use; bounded per-frontier projections supplied the final evidence."
+  ],
+  "focused_test_result": {
+    "passed": 7,
+    "failed": 0,
+    "black_passed": true,
+    "ruff_passed": true,
+    "git_diff_check_passed": true
+  },
+  "json_validation": {
+    "pre_validation_campaign276_json_count": 4,
+    "invalid_count": 0,
+    "scope": "Campaign276 catalog, result, terminal state and effective ledger"
+  },
+  "cross_stage_result": {
+    "scope": "Campaign273 through Campaign276 and Candidate49 execution, observation and session-workflow semantic tests",
+    "passed": 117,
+    "failed": 0,
+    "deselected": 3,
+    "deselected_historical_mutable_report_hash_nodes": 3,
+    "duration_seconds": 14.54
+  },
+  "effective_accounting": {
+    "campaign276_attempt_count": 8,
+    "campaign276_infrastructure_failure_count": 1,
+    "campaign276_prevalue_scientific_attempt_count": 7,
+    "campaign276_complete_factor_attempt_count": 0,
+    "campaign276_return_reading_development_trial_count": 0,
+    "cumulative_historical_research_attempt_count": 2817,
+    "cumulative_return_reading_development_trial_count": 315
+  },
+  "research_boundary": {
+    "repository_metadata_and_prior_terminal_history_read": true,
+    "provider_or_web_request_issued": false,
+    "provider_response_or_source_row_read": false,
+    "provider_credential_value_or_digest_read": false,
+    "candidate_or_comparator_value_read": false,
+    "historical_daily_price_or_forward_return_value_read": false,
+    "stress_2024_2025_opened": false,
+    "candidate49_plan_or_run_executed_by_campaign276": false,
+    "candidate49_historical_backfill_performed": false,
+    "candidate49_ledgers_changed": false,
+    "second_prospective_candidate_created": false,
+    "current_scoring_selection_sizing_positions_or_orders_performed": false,
+    "investment_advice": false
+  }
+}

@@ -1,0 +1,123 @@
+{
+  "schema_version": 1,
+  "kind": "a_share_three_day_iteration_status_campaign276_final_validated",
+  "status": "campaign276_terminal_validation_passed_goal_active",
+  "recorded_at": "2026-08-24T21:32:00+08:00",
+  "timestamp_semantics": "Monotonic logical append time after Campaign276 validation publication; not a market-data or host-wall-clock measurement.",
+  "authoritative_inputs": {
+    "campaign275_final_validated_state": {
+      "path": "docs/a_share_three_day_iteration_status_20260824_campaign275_final_validated.json",
+      "sha256": "d486af0db6cf7d8aceb412c831c1705770c06dbe01a612d9a47a87deff91a29a"
+    },
+    "campaign276_catalog": {
+      "path": "docs/a_share_three_day_walkforward_campaign_276_concept_scouting_20260824.json",
+      "sha256": "ec72c3d249279c005e5953b954e61dcc91d3989f78031ce2debbcab7a6b83085"
+    },
+    "campaign276_terminal_result": {
+      "path": "docs/a_share_three_day_walkforward_campaign_276_prevalue_mechanism_frontier_result_20260824.json",
+      "sha256": "c84a475fda1e4d96c050ba733821f94153e9bf0cdc5c1c84ab47d677b51aed34"
+    },
+    "campaign276_initial_terminal_state": {
+      "path": "docs/a_share_three_day_iteration_status_20260824_campaign276_terminal.json",
+      "sha256": "d6d59d474bbf49751d371c7bacddcaffda0864bcb62b79cafb65e37c5028d752"
+    },
+    "campaign276_validation": {
+      "path": "docs/a_share_three_day_walkforward_campaign_276_terminal_validation_20260824.json",
+      "sha256": "e00d9f0be717546288fdb58e20e8f72b5bc04fb14c8d9d8dd71e7e86e5548258"
+    },
+    "campaign276_effective_ledger_v1": {
+      "path": "data/experiments/short_horizon/historical_walkforward/campaign_276/research_attempt_ledger_v1.json",
+      "sha256": "7e0afc82e35a834af6f3c9333cb89daf723c8570bf3a870dfa47c7b8b672e39b"
+    },
+    "campaign276_focused_test": {
+      "path": "tests/data_collector_tests/test_a_share_three_day_walkforward_campaign276_terminal.py",
+      "sha256": "04afec45ec89d2893c0a360f19171a70f23a1ef55180a4d9683e4058403c75d3"
+    },
+    "campaign276_handoff": {
+      "path": "docs/a_share_three_day_strategy_handoff_20260824_campaign276.md",
+      "sha256": "859f6386472adb998e4f24a22f6fc4198487739ecc8e17208b2b6618f0f5d6c0"
+    },
+    "current_unified_report": {
+      "path": "data/experiments/short_horizon/current_research_report.md",
+      "sha256": "3e5fd271c51aa1b746b154c6c15387048877e27c7446fdc5a165135178efb454"
+    },
+    "three_day_unified_report": {
+      "path": "data/experiments/short_horizon/three_day_research_report.md",
+      "sha256": "092920adfc5f8de90ecb17bc3e414c21c3c41d6d5c0c0535f27bb35557dafa82"
+    }
+  },
+  "active_data_root": "/Volumes/DIsk/Disk-Coding/qlib/data",
+  "effective_accounting": {
+    "campaign276_attempt_count": 8,
+    "campaign276_infrastructure_failure_count": 1,
+    "campaign276_prevalue_scientific_attempt_count": 7,
+    "campaign276_complete_factor_attempt_count": 0,
+    "campaign276_return_reading_development_trial_count": 0,
+    "cumulative_historical_research_attempt_count": 2817,
+    "cumulative_return_reading_development_trial_count": 315
+  },
+  "scientific_state": {
+    "catalog_route_count": 7,
+    "economically_independent_route_count": 0,
+    "source_contract_ready_route_count": 0,
+    "selected_route_count": 0,
+    "complete_factor_definition_created": false,
+    "numeric_comparator_created": false,
+    "candidate_or_comparator_value_read": false,
+    "historical_daily_price_or_forward_return_value_read": false,
+    "development_trial_count": 0,
+    "stress_trial_count_2024_2025": 0,
+    "predictive_claim_created": false,
+    "campaign276_disposition": "terminal_before_formula_direction_source_rows_or_values"
+  },
+  "library_state": {
+    "changed_by_campaign276": false,
+    "complete_factor_definition_count": 162,
+    "complete_factor_definition_order_sha256": "974f2c1f16a85eb43a0bd1e8db768dbe120cd8826c1754d5f220bf9f1d4a3ea0",
+    "eligible_numeric_comparator_count": 143,
+    "eligible_numeric_comparator_order_sha256": "f4fbf3d578e2c80c29425716a30d60a3df01d67d04e37f1651236c4dff899588"
+  },
+  "candidate49": {
+    "sole_active_prospective_candidate": true,
+    "session_date": "2026-08-24",
+    "prior_confirmed_run_failure_class": "stock_basic_invalid_ts_code",
+    "same_session_retry_allowed": false,
+    "campaign276_plan_or_run_executed": false,
+    "historical_backfill_performed": false,
+    "signal_ledger_entry_count": 0,
+    "signal_ledger_sha256": "5193f00d7f36da003f53cec387900da4c3d002299f5dfcfc1a95eaa199ed3a79",
+    "execution_ledger_entry_count": 0,
+    "execution_ledger_sha256": "d57a3e61eac969e42cafa418ccd8c0a5ee65dcf69da145bb2c096c2a02a2ea4f"
+  },
+  "validation": {
+    "focused_tests_passed": 7,
+    "black_passed": true,
+    "ruff_passed": true,
+    "pre_validation_campaign276_json_invalid_count": 0,
+    "git_diff_check_passed": true,
+    "cross_stage_tests_passed": 117,
+    "cross_stage_historical_mutable_report_nodes_deselected": 3
+  },
+  "goal": {
+    "objective": "请持续迭代因子。",
+    "status": "active",
+    "continuous_iteration_confirmed": true,
+    "current_campaign": 276,
+    "next_safe_work": "Campaign277 may freeze a new genuinely independent finite concept catalog before targeted inventory or values. It must not rescue any Campaign276 route through a sibling provider, entity role, jurisdiction, field, metric, window, threshold, direction or incomplete source."
+  },
+  "research_boundary": {
+    "repository_metadata_and_prior_terminal_history_read": true,
+    "provider_or_web_request_issued": false,
+    "provider_response_or_source_row_read": false,
+    "provider_credential_value_or_digest_read": false,
+    "candidate_or_comparator_value_read": false,
+    "historical_daily_price_or_forward_return_value_read": false,
+    "stress_2024_2025_opened": false,
+    "candidate49_plan_or_run_executed_by_campaign276": false,
+    "candidate49_historical_backfill_performed": false,
+    "candidate49_ledgers_changed": false,
+    "second_prospective_candidate_created": false,
+    "current_scoring_selection_sizing_positions_or_orders_performed": false,
+    "investment_advice": false
+  }
+}
