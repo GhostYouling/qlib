@@ -1,0 +1,198 @@
+{
+  "accounting": {
+    "campaign272_attempt_count": 10,
+    "campaign272_complete_factor_attempt_count": 0,
+    "campaign272_infrastructure_failure_count": 3,
+    "campaign272_prevalue_scientific_attempt_count": 7,
+    "campaign272_return_reading_development_trial_count": 0,
+    "cumulative_historical_research_attempt_count": 2763,
+    "cumulative_return_reading_development_trial_count": 315
+  },
+  "authoritative_inputs": {
+    "campaign164_human_capital_source_frontier": {
+      "path": "docs/a_share_three_day_walkforward_campaign_164_human_capital_source_frontier_20260815.json",
+      "sha256": "c31878523b4391ef46305c724cd59f8c12b1d3fd1f0eefaaadb181d8bc47698f"
+    },
+    "campaign168_operating_scale_frontier": {
+      "path": "docs/a_share_three_day_walkforward_campaign_168_operating_scale_adoption_kpi_source_frontier_20260815.json",
+      "sha256": "c5dc98f92266e2b7ef7349cb5260a8cde15ccd9c78442e661e4170b1ba47d18a"
+    },
+    "campaign213_retail_frontier": {
+      "path": "docs/a_share_three_day_walkforward_campaign_213_retail_merchandising_assortment_planogram_shelf_availability_replenishment_promotion_coupon_markdown_omnichannel_order_return_exchange_restock_lifecycle_source_frontier_20260815.json",
+      "sha256": "ce93bf21740921402f061ad7e688a8ae5d781dd4e4d4b55717e0bb25115e8471"
+    },
+    "campaign271_final_validated_state": {
+      "path": "docs/a_share_three_day_iteration_status_20260824_campaign271_final_validated.json",
+      "sha256": "b679add70d97c8ca789eb1b9b1d348d6d8fd7b3669f674f0ffd87eb733762366"
+    },
+    "campaign271_scientific_result": {
+      "path": "docs/a_share_three_day_walkforward_campaign_271_external_attention_concept_scouting_result_20260824.json",
+      "sha256": "dadfa6372870b2392d43880adfbb0100973a52ba4c8494276aa32d810230efbd"
+    },
+    "campaign272_attempt_ledger": {
+      "chain_tip_sha256": "20a1b553b9cfbaa190f2f52de62bbce1ddd9e36d6e023480ff941291a2d1d41b",
+      "effective_entry_count": 10,
+      "path": "data/experiments/short_horizon/historical_walkforward/campaign_272/research_attempt_ledger_v2.json",
+      "sha256": "7efa1570f0dc4be04f08eb1effae218c001b4a41fd054c380e84baae6bc58d05"
+    },
+    "campaign272_preregistration": {
+      "path": "docs/a_share_three_day_walkforward_campaign_272_public_search_attention_source_contract_preregistration_20260824.json",
+      "sha256": "aa2d36e7a11a4bccc022f6d58e91848a5ddb772517a6c269b460b4640f75ca8e"
+    },
+    "candidate49_20260824_failure_record": {
+      "path": "docs/a_share_candidate49_20260824_daily_source_failure_record.json",
+      "sha256": "ec99b5af6504b55cac9f0f4b77a32a6052be3e3efec0dbe1bc7a9cd971c354e3"
+    },
+    "historical_walkforward_policy": {
+      "path": "docs/a_share_three_day_historical_walkforward_research_policy_20260727.json",
+      "sha256": "38426d6161b9bfed323c58caba18feca668b8c9d53e294951a8ba90c01a798bb"
+    }
+  },
+  "bounded_repository_inventory": {
+    "accepted_local_public_search_attention_source_contract_present": false,
+    "accepted_local_unconsumed_raw_channel_present": false,
+    "documentation_interpretation": "The only direct public-search-attention and query-basket matches are Campaign271's own concept-only preregistration and result. Other issuer/brand/product, platform/archive and zero-denominator matches are immutable prior lifecycle/source-frontier documents, not an accepted public-search source, point-in-time identity master, query basket, archive, adapter or source manifest.",
+    "method": "Frozen rg query families over tracked file names and repository text/JSON metadata only; Campaign272 files were excluded and no raw or derived source row was opened.",
+    "query_family_file_match_counts": {
+      "pit_issuer_brand_product_identity": 45,
+      "platform_geography_sampling_archive": 24,
+      "public_search_attention": 2,
+      "query_basket_identity_ambiguity": 2,
+      "zero_missing_all_issuer_denominator": 6
+    },
+    "scope": [
+      "docs",
+      "scripts",
+      "tests"
+    ],
+    "targeted_adapter_and_artifact_counts": {
+      "script_brand_product_identity_adapter": 0,
+      "script_search_attention_adapter": 0,
+      "tracked_search_attention_query_basket_or_brand_product_source_manifest_names": 0
+    }
+  },
+  "campaign265": {
+    "accepted_source_manifest_present": false,
+    "changed_by_campaign272": false,
+    "no_return_plan_blocker": "source_acceptance_manifest_absent_or_unsafe",
+    "v420_policy_present": false
+  },
+  "candidate49": {
+    "campaign272_plan_or_run_executed": false,
+    "execution_ledger_entry_count": 0,
+    "execution_ledger_sha256": "d57a3e61eac969e42cafa418ccd8c0a5ee65dcf69da145bb2c096c2a02a2ea4f",
+    "historical_backfill_performed": false,
+    "prior_failure_class": "stock_basic_invalid_ts_code",
+    "same_session_retry_allowed": false,
+    "session_date": "2026-08-24",
+    "signal_ledger_entry_count": 0,
+    "signal_ledger_sha256": "5193f00d7f36da003f53cec387900da4c3d002299f5dfcfc1a95eaa199ed3a79",
+    "sole_active_prospective_candidate": true
+  },
+  "contract_gate_results": [
+    {
+      "gate_id": "c272_g01",
+      "name": "point_in_time_issuer_brand_product_identity",
+      "passed": false,
+      "reason": "No accepted local historical listed-instrument/legal-entity/subsidiary/brand/product/trademark identity master with ownership intervals, corporate actions, public clocks and revision provenance exists."
+    },
+    {
+      "gate_id": "c272_g02",
+      "name": "prevalue_query_basket_identity_and_ambiguity",
+      "passed": false,
+      "reason": "No immutable point-in-time issuer-specific query basket, alias/language map, generic-term ambiguity rule or collision/exclusion contract exists outside Campaign271's null concept placeholder."
+    },
+    {
+      "gate_id": "c272_g03",
+      "name": "fixed_search_platform_geography_and_sampling_population",
+      "passed": false,
+      "reason": "No accepted local contract fixes one search platform, geography, device/population, sampling frame, metric definition and normalization for the entire historical campaign."
+    },
+    {
+      "gate_id": "c272_g04",
+      "name": "immutable_2019_2023_search_observation_archive",
+      "passed": false,
+      "reason": "No repository script, tracked source manifest or accepted artifact implements an immutable reproducible public-search-attention archive covering 2019-2023."
+    },
+    {
+      "gate_id": "c272_g05",
+      "name": "public_availability_sampling_and_revision_clock",
+      "passed": false,
+      "reason": "Without an accepted identity, query and observation source, signal-close availability, release delay, sampling changes, corrections and non-backfilled revision semantics cannot be bound."
+    },
+    {
+      "gate_id": "c272_g06",
+      "name": "complete_all_issuer_zero_missing_denominator",
+      "passed": false,
+      "reason": "True zero search attention cannot be separated from missing, unsupported, suppressed or outage coverage for every point-in-time eligible issuer. Comparable all-issuer support is therefore unproven."
+    },
+    {
+      "gate_id": "c272_g07",
+      "name": "later_formula_direction_support_and_walkforward_protocol",
+      "passed": false,
+      "reason": "Because gates one through six fail, no exact query aggregation, formula, direction, support rule, t+1/t+3 clock or frozen 2019-2023 walk-forward protocol can be bound before rows without post-source search."
+    }
+  ],
+  "decision": {
+    "all_seven_contract_gates_passed": false,
+    "next_safe_work": "Campaign273 may scout one genuinely independent finite concept before values. It must not switch to website traffic, app-store metrics, ecommerce demand, job postings, social discussion, alternative query baskets, search platforms, geographies, sampling windows, thresholds or directions as a rescue of Campaign271/272.",
+    "reason": "The preregistered conjunctive contract requires all seven components. Every component is absent or not bindable in accepted local repository metadata, so public-search-attention concept c271_01 cannot become a factor.",
+    "sibling_channel_or_parameter_rescue_allowed": false,
+    "source_contract_admitted": false,
+    "terminalize_c271_01": true
+  },
+  "kind": "a_share_three_day_walkforward_campaign_272_terminal_zero_row_source_contract_result",
+  "library_state": {
+    "changed_by_campaign272": false,
+    "complete_factor_definition_count": 162,
+    "complete_factor_definition_order_sha256": "974f2c1f16a85eb43a0bd1e8db768dbe120cd8826c1754d5f220bf9f1d4a3ea0",
+    "eligible_numeric_comparator_count": 143,
+    "eligible_numeric_comparator_order_sha256": "f4fbf3d578e2c80c29425716a30d60a3df01d67d04e37f1651236c4dff899588"
+  },
+  "locked_route": {
+    "concept_is_factor": false,
+    "direction": null,
+    "disposition": "terminal_source_contract_rejection",
+    "formula": null,
+    "geography": null,
+    "name": "issuer_brand_product_public_search_attention_state",
+    "platform": null,
+    "predecessor_concept_id": "c271_01",
+    "query_basket": null,
+    "sampling_window": null,
+    "source_contract_or_adapter_created": false,
+    "source_fields": null
+  },
+  "recorded_at": "2026-08-24T21:10:00+08:00",
+  "research_boundary": {
+    "accepted_local_raw_channel_value_read": false,
+    "campaign265_changed": false,
+    "candidate49_historical_backfill_performed": false,
+    "candidate49_ledgers_changed": false,
+    "candidate49_plan_or_run_executed_by_campaign272": false,
+    "candidate_or_comparator_value_read": false,
+    "current_scoring_selection_sizing_positions_or_orders_performed": false,
+    "historical_daily_price_or_forward_return_value_read": false,
+    "investment_advice": false,
+    "provider_credential_value_or_digest_read": false,
+    "provider_or_web_request_issued": false,
+    "provider_response_or_source_row_read": false,
+    "repository_metadata_and_prior_terminal_history_read": true,
+    "second_prospective_candidate_created": false,
+    "stress_2024_2025_opened": false
+  },
+  "schema_version": 1,
+  "scientific_result": {
+    "candidate_or_comparator_value_read": false,
+    "complete_factor_definition_created": false,
+    "development_trial_count": 0,
+    "historical_daily_price_or_forward_return_value_read": false,
+    "numeric_comparator_created": false,
+    "numeric_formula_or_direction_frozen": false,
+    "predictive_claim_created": false,
+    "selected_factor_count": 0,
+    "stress_trial_count_2024_2025": 0
+  },
+  "status": "terminal_source_contract_rejected_before_formula_direction_source_rows_or_values",
+  "timestamp_semantics": "Monotonic logical publication time after the Campaign272 inventory; not a market-data timestamp or host-wall-clock claim."
+}

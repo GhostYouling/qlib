@@ -1,0 +1,143 @@
+{
+  "authoritative_inputs": {
+    "campaign271_effective_ledger": {
+      "chain_tip_sha256": "f238e7533364698e5dd274b15fb19ed661833d870b75ca0ba104988d0ee95da3",
+      "path": "data/experiments/short_horizon/historical_walkforward/campaign_271/research_attempt_ledger_v8.json",
+      "sha256": "c992fd5dd95f29329071ac6b031803bc23df58c554ffbf5839089840c522b2c6"
+    },
+    "campaign271_final_handoff": {
+      "path": "docs/a_share_three_day_strategy_handoff_20260824_campaign271_final.md",
+      "sha256": "86a3a00d2c20d984cabb423c47edb127e8505d8ce163c5553334998d086fb4fb"
+    },
+    "campaign271_final_validated_state": {
+      "path": "docs/a_share_three_day_iteration_status_20260824_campaign271_final_validated.json",
+      "sha256": "b679add70d97c8ca789eb1b9b1d348d6d8fd7b3669f674f0ffd87eb733762366"
+    },
+    "campaign271_scientific_result": {
+      "path": "docs/a_share_three_day_walkforward_campaign_271_external_attention_concept_scouting_result_20260824.json",
+      "sha256": "dadfa6372870b2392d43880adfbb0100973a52ba4c8494276aa32d810230efbd"
+    },
+    "historical_walkforward_policy": {
+      "path": "docs/a_share_three_day_historical_walkforward_research_policy_20260727.json",
+      "sha256": "38426d6161b9bfed323c58caba18feca668b8c9d53e294951a8ba90c01a798bb"
+    }
+  },
+  "bounded_inventory_protocol": {
+    "allowed_evidence": [
+      "tracked file names",
+      "repository text and JSON metadata",
+      "source adapter and schema declarations",
+      "prior immutable terminal records"
+    ],
+    "allowed_scope": [
+      "docs",
+      "scripts",
+      "tests"
+    ],
+    "forbidden_evidence": [
+      "provider or web response",
+      "credential value or digest",
+      "raw or derived source row",
+      "candidate or comparator value",
+      "daily price or forward return",
+      "2024-2025 stress value"
+    ],
+    "query_families": [
+      "search attention search volume search query baidu index google trends",
+      "issuer subsidiary legal entity brand product trademark ownership effective interval",
+      "query basket keyword alias ambiguity taxonomy point in time",
+      "platform geography sampling population normalization revision archive",
+      "zero attention missing unsupported coverage denominator all issuer"
+    ]
+  },
+  "decision_rule": {
+    "adapter_or_download_creation_allowed_by_campaign272": false,
+    "admit_source_contract_only_if": "All seven gates are satisfied by one already accepted local point-in-time source contract whose metadata can be bound without opening a source row or value.",
+    "candidate_or_comparator_value_access_allowed_by_campaign272": false,
+    "daily_price_or_forward_return_access_allowed_by_campaign272": false,
+    "formula_or_direction_freeze_allowed_only_after_all_seven_gates": true,
+    "partial_contract_not_admissible": true,
+    "provider_or_web_access_allowed_by_campaign272": false,
+    "terminalize_if_any_gate_fails": true
+  },
+  "finite_contract_gate_catalog": [
+    {
+      "gate_id": "c272_g01",
+      "name": "point_in_time_issuer_brand_product_identity",
+      "required_contract": "An accepted local source must expose stable listed-instrument, legal-entity, subsidiary, brand, product and trademark identifiers; ownership/association start and end intervals; name and portfolio changes; corporate actions; delistings; publication timestamps; and revision provenance for 2019-2023 without current-brand or current-product backfill."
+    },
+    {
+      "gate_id": "c272_g02",
+      "name": "prevalue_query_basket_identity_and_ambiguity",
+      "required_contract": "The complete issuer-specific query basket must be immutable before observations, map every query to point-in-time issuer/brand/product identities, record aliases, language, spelling, generic-term ambiguity, collision and exclusion rules, and forbid query addition, deletion or reweighting after attention values."
+    },
+    {
+      "gate_id": "c272_g03",
+      "name": "fixed_search_platform_geography_and_sampling_population",
+      "required_contract": "One search platform, geography, device/population scope, sampling frame, metric definition, normalization method and coverage policy must be fixed for the whole campaign. Platform, geography or measurement variants may not be selected after values."
+    },
+    {
+      "gate_id": "c272_g04",
+      "name": "immutable_2019_2023_search_observation_archive",
+      "required_contract": "One accepted local archive must provide stable observation identity, query identity, observation interval, metric/unit, sampling metadata and complete immutable 2019-2023 history. The archive must be reproducible without reconstructing past observations from a current public interface."
+    },
+    {
+      "gate_id": "c272_g05",
+      "name": "public_availability_sampling_and_revision_clock",
+      "required_contract": "Every identity and attention observation must have a signal-close public-availability clock, sampling/release cadence, delay, correction and revision chain proving what was knowable by each signal close; later restatements may not be backfilled."
+    },
+    {
+      "gate_id": "c272_g06",
+      "name": "complete_all_issuer_zero_missing_denominator",
+      "required_contract": "The contract must enumerate every point-in-time eligible issuer, distinguish true zero attention from missing, unsupported or suppressed coverage, bind coverage changes and platform outages, and prove comparable all-issuer support throughout 2019-2023."
+    },
+    {
+      "gate_id": "c272_g07",
+      "name": "later_formula_direction_support_and_walkforward_protocol",
+      "required_contract": "Only after gates one through six pass must the contract permit one exact formula, direction, aggregation across the frozen query basket, support/missing rule, t+1/t+3 clock, no-return gates and three frozen 2019-2023 expanding development folds to be bound before rows. The 2024-2025 interval remains once-only and closed until a frozen development survivor exists."
+    }
+  ],
+  "kind": "a_share_three_day_walkforward_campaign_272_zero_row_source_contract_preregistration",
+  "locked_route": {
+    "classification": "concept_only_not_factor",
+    "direction": null,
+    "formula": null,
+    "geography": null,
+    "name": "issuer_brand_product_public_search_attention_state",
+    "platform": null,
+    "predecessor_concept_id": "c271_01",
+    "query_basket": null,
+    "sampling_window": null,
+    "sibling_channels_closed": [
+      "issuer_public_website_audience_traffic_state",
+      "issuer_mobile_app_store_rank_download_engagement_state",
+      "issuer_product_ecommerce_demand_review_state",
+      "issuer_online_vacancy_job_posting_demand_state",
+      "issuer_public_social_discussion_reputation_state"
+    ],
+    "source_family": "external_public_search_attention_for_point_in_time_issuer_brand_product_query_identities",
+    "source_fields": null
+  },
+  "purpose": "Perform one finite, zero-row, zero-network source-contract feasibility review for Campaign271 concept c271_01. This is not a factor definition, source acceptance, value audit, return trial or prospective activation.",
+  "recorded_at": "2026-08-24T21:00:00+08:00",
+  "research_boundary": {
+    "accepted_local_raw_channel_value_read": false,
+    "campaign265_changed": false,
+    "candidate49_historical_backfill_performed": false,
+    "candidate49_ledgers_changed": false,
+    "candidate49_plan_or_run_executed_by_campaign272": false,
+    "candidate_or_comparator_value_read": false,
+    "current_scoring_selection_sizing_positions_or_orders_performed": false,
+    "historical_daily_price_or_forward_return_value_read": false,
+    "investment_advice": false,
+    "provider_credential_value_or_digest_read": false,
+    "provider_or_web_request_issued": false,
+    "provider_response_or_source_row_read": false,
+    "repository_metadata_and_prior_terminal_history_read": true,
+    "second_prospective_candidate_created": false,
+    "stress_2024_2025_opened": false
+  },
+  "schema_version": 1,
+  "status": "frozen_before_campaign272_repository_source_contract_inventory",
+  "timestamp_semantics": "Monotonic logical publication time after the Campaign271 final validated state; not a market-data timestamp or host-wall-clock claim."
+}

@@ -1,0 +1,82 @@
+{
+  "authoritative_inputs": {
+    "campaign272_effective_ledger_v6": {
+      "chain_tip_sha256": "4541baa46ad21e9d350fd49b46aa1574e805c2d35029511e964b7648d2ae82c2",
+      "effective_entry_count": 14,
+      "path": "data/experiments/short_horizon/historical_walkforward/campaign_272/research_attempt_ledger_v6.json",
+      "sha256": "aeda5b6294adbd17c76e25b28838db689abb38b06cd6d332b373ad4b3707d110"
+    },
+    "campaign272_focused_test": {
+      "path": "tests/data_collector_tests/test_a_share_three_day_walkforward_campaign272_terminal.py",
+      "sha256": "5c585e944890ed57c5b88753bb5cb890393f0f11bf259e0da94a2366f2efcf7a"
+    },
+    "campaign272_first_final_state": {
+      "path": "docs/a_share_three_day_iteration_status_20260824_campaign272_final_validated.json",
+      "sha256": "d11195d677f4b6d3929f779129058b805b509e88fb8ab06df98ec93d69da3dd9"
+    },
+    "campaign272_first_validation": {
+      "path": "docs/a_share_three_day_walkforward_campaign_272_terminal_validation_20260824.json",
+      "sha256": "9f84e1c49b556f6af88e5f41191f1211313e74debffca531864727387dc97382"
+    },
+    "current_unified_report": {
+      "path": "data/experiments/short_horizon/current_research_report.md",
+      "sha256": "28d2c3f088f13e663f2fd2e611341090001981444d620719a3371e45858fd89f"
+    },
+    "three_day_unified_report": {
+      "path": "data/experiments/short_horizon/three_day_research_report.md",
+      "sha256": "ed2f31b382219dd74169369128e327e4a94584385c0191a6f6205eba080dd0a7"
+    }
+  },
+  "correction": {
+    "first_final_claim": "Nine final Campaign272 JSON files parsed.",
+    "first_final_command_actual_scope": "Six files matching campaign272 plus the then-present ledgers; underscore-named campaign_272 documents were omitted.",
+    "first_final_claim_valid": false,
+    "replacement_scope": "Deduplicated union of docs/*campaign272*.json, docs/*campaign_272*.json and every Campaign272 ledger JSON.",
+    "scientific_result_changed": false
+  },
+  "effective_accounting": {
+    "campaign272_attempt_count": 14,
+    "campaign272_complete_factor_attempt_count": 0,
+    "campaign272_infrastructure_failure_count": 7,
+    "campaign272_prevalue_scientific_attempt_count": 7,
+    "campaign272_return_reading_development_trial_count": 0,
+    "cumulative_historical_research_attempt_count": 2767,
+    "cumulative_return_reading_development_trial_count": 315
+  },
+  "kind": "a_share_three_day_walkforward_campaign_272_terminal_validation_v2",
+  "recorded_at": "2026-08-24T22:05:00+08:00",
+  "research_boundary": {
+    "accepted_local_raw_channel_value_read": false,
+    "campaign265_changed": false,
+    "candidate49_historical_backfill_performed": false,
+    "candidate49_ledgers_changed": false,
+    "candidate49_plan_or_run_executed_by_campaign272": false,
+    "candidate_or_comparator_value_read": false,
+    "current_scoring_selection_sizing_positions_or_orders_performed": false,
+    "historical_daily_price_or_forward_return_value_read": false,
+    "investment_advice": false,
+    "provider_credential_value_or_digest_read": false,
+    "provider_or_web_request_issued": false,
+    "provider_response_or_source_row_read": false,
+    "repository_metadata_and_prior_terminal_history_read": true,
+    "second_prospective_candidate_created": false,
+    "stress_2024_2025_opened": false
+  },
+  "schema_version": 1,
+  "status": "campaign272_corrected_terminal_validation_passed_goal_remains_active",
+  "supersedes_without_rewriting": {
+    "path": "docs/a_share_three_day_walkforward_campaign_272_terminal_validation_20260824.json",
+    "sha256": "9f84e1c49b556f6af88e5f41191f1211313e74debffca531864727387dc97382"
+  },
+  "timestamp_semantics": "Monotonic logical publication time after corrected-scope focused and cross-stage validation; not a market-data timestamp or host-wall-clock claim.",
+  "validation": {
+    "black_passed": true,
+    "corrected_scope_pre_v2_publication_json_parse_passed": 11,
+    "cross_stage_campaign265_through_272_and_candidate49_tests_passed": 230,
+    "cross_stage_deselected_historical_mutable_report_nodes": 5,
+    "focused_campaign272_tests_passed": 7,
+    "git_diff_check_passed": true,
+    "ledger_v1_through_v6_predecessor_and_chain_check_passed": true,
+    "ruff_passed": true
+  }
+}
