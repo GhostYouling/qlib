@@ -1,0 +1,92 @@
+{
+  "schema_version": 1,
+  "kind": "a_share_three_day_walkforward_campaign273_terminal_validation",
+  "status": "campaign273_terminal_validation_passed_goal_remains_active",
+  "recorded_at": "2026-08-24T20:06:34+08:00",
+  "timestamp_semantics": "Host wall-clock time after corrected focused and cross-stage validation; not a market-data timestamp.",
+  "validated_artifacts": {
+    "campaign273_catalog": {
+      "path": "docs/a_share_three_day_walkforward_campaign_273_concept_scouting_20260824.json",
+      "sha256": "795096dadb60223a7891210be3eb0a50d3f5697d4355f8420964bb8300038877"
+    },
+    "campaign273_terminal_result": {
+      "path": "docs/a_share_three_day_walkforward_campaign_273_prevalue_mechanism_frontier_result_20260824.json",
+      "sha256": "8ea413ec63956e7ca16207c5d3e8472dcde26e05c0a83784282d61fd391dbaa5"
+    },
+    "campaign273_initial_terminal_state": {
+      "path": "docs/a_share_three_day_iteration_status_20260824_campaign273_terminal.json",
+      "sha256": "77d9719f37a8572e1dbab6975e9716d393428ee00072fff7681076b2448778be"
+    },
+    "campaign273_effective_ledger_v3": {
+      "path": "data/experiments/short_horizon/historical_walkforward/campaign_273/research_attempt_ledger_v3.json",
+      "sha256": "4ab95fa158716f007e615a7de57e7ae853fd63d970f5c224731c49d63a82078c"
+    },
+    "campaign273_focused_test": {
+      "path": "tests/data_collector_tests/test_a_share_three_day_walkforward_campaign273_terminal.py",
+      "sha256": "34598d7fe66ceccab05f303aaa87a6a580b185a54e933b27997a76867e3b464b"
+    },
+    "campaign273_handoff_v2": {
+      "path": "docs/a_share_three_day_strategy_handoff_20260824_campaign273_v2.md",
+      "sha256": "2c5093b13b050e4075bfd0f161c01808de717cc2171fa55cd48a88ce2155aa95"
+    },
+    "current_unified_report": {
+      "path": "data/experiments/short_horizon/current_research_report.md",
+      "sha256": "7d02977f1d285c2a970ba20f6dbc70aa4ce772a33a9908ddc99a67218ac49578"
+    },
+    "three_day_unified_report": {
+      "path": "data/experiments/short_horizon/three_day_research_report.md",
+      "sha256": "d22df07f4ff81d7463e1f7d9c96d9bb12ec943e61c2463e1a01628ee5f9d804c"
+    },
+    "candidate49_signal_ledger": {
+      "path": "data/experiments/short_horizon/candidate49_future_signal_ledger.json",
+      "sha256": "5193f00d7f36da003f53cec387900da4c3d002299f5dfcfc1a95eaa199ed3a79"
+    },
+    "candidate49_execution_ledger": {
+      "path": "data/experiments/short_horizon/candidate49_future_execution_ledger.json",
+      "sha256": "d57a3e61eac969e42cafa418ccd8c0a5ee65dcf69da145bb2c096c2a02a2ea4f"
+    }
+  },
+  "focused_test_result": {
+    "passed": 7,
+    "failed": 0,
+    "duration_seconds": 0.11,
+    "black_passed_after_mechanical_formatting": true,
+    "ruff_passed": true,
+    "git_diff_check_passed": true
+  },
+  "json_validation": {
+    "deduplicated_prepublication_campaign273_json_count": 6,
+    "invalid_count": 0,
+    "scope": "docs/*campaign273*.json union docs/*campaign_273*.json union campaign_273 ledger JSON"
+  },
+  "cross_stage_result": {
+    "scope": "Campaign265 through Campaign273 and Candidate49 semantic tests",
+    "passed": 240,
+    "failed": 0,
+    "deselected_historical_mutable_report_hash_nodes": 5,
+    "duration_seconds": 22.01
+  },
+  "effective_accounting": {
+    "campaign273_attempt_count": 11,
+    "campaign273_infrastructure_failure_count": 4,
+    "campaign273_prevalue_scientific_attempt_count": 7,
+    "campaign273_complete_factor_attempt_count": 0,
+    "campaign273_return_reading_development_trial_count": 0,
+    "cumulative_historical_research_attempt_count": 2778,
+    "cumulative_return_reading_development_trial_count": 315
+  },
+  "research_boundary": {
+    "provider_or_web_request_issued": false,
+    "provider_response_or_source_row_read": false,
+    "provider_credential_value_or_digest_read": false,
+    "candidate_or_comparator_value_read": false,
+    "historical_daily_price_or_forward_return_value_read": false,
+    "stress_2024_2025_opened": false,
+    "candidate49_plan_or_run_executed_by_campaign273": false,
+    "candidate49_historical_backfill_performed": false,
+    "candidate49_ledgers_changed": false,
+    "second_prospective_candidate_created": false,
+    "current_scoring_selection_sizing_positions_or_orders_performed": false,
+    "investment_advice": false
+  }
+}
