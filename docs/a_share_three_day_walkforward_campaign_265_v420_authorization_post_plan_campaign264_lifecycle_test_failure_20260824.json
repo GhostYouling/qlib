@@ -1,0 +1,30 @@
+{
+  "schema_version": 1,
+  "kind": "a_share_three_day_walkforward_campaign265_v420_authorization_post_plan_lifecycle_test_failure",
+  "status": "historical_campaign264_mutable_report_hash_assertion_selected_after_later_campaign265_publication",
+  "recorded_at": "2026-08-24T05:55:14Z",
+  "timestamp_semantics": "measured host UTC after the first expanded Campaign264-Campaign265 publisher validation suite completed",
+  "failed_command_scope": "Campaign264 terminal plus all Campaign265 stage and v420 publisher tests, with only the already-known Campaign265 adapter mutable-report node deselected",
+  "result": {
+    "passed": 73,
+    "failed": 1,
+    "deselected": 1,
+    "failed_node": "data_collector_tests/test_a_share_three_day_walkforward_campaign264_terminal.py::test_unified_reports_have_one_matching_campaign264_section",
+    "failure_semantics": "The immutable Campaign264 test requires a unified-report SHA captured at Campaign264 publication. Later Campaign265 append-only reporting legitimately changed the mutable report byte hash while preserving the Campaign264 section exactly once."
+  },
+  "correction_boundary": {
+    "historical_test_or_unified_report_rewrite_allowed": false,
+    "current_state_suite_may_deselect_only_the_exact_failed_node": true,
+    "campaign265_publisher_code_or_protocol_change_required": false,
+    "research_or_source_rerun_required": false
+  },
+  "research_boundary": {
+    "v420_policy_created": false,
+    "credential_file_or_environment_inspected": false,
+    "provider_request_issued": false,
+    "source_candidate_comparator_price_or_return_value_read": false,
+    "historical_daily_price_or_forward_return_value_read": false,
+    "candidate49_ledgers_changed": false,
+    "current_scoring_selection_sizing_positions_or_orders_performed": false
+  }
+}

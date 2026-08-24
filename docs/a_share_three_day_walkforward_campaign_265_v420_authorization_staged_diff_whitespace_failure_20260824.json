@@ -1,0 +1,30 @@
+{
+  "schema_version": 1,
+  "kind": "a_share_three_day_walkforward_campaign265_v420_authorization_staged_diff_whitespace_failure",
+  "status": "terminal_validation_whitespace_failure_and_exit_mask_recorded_before_commit",
+  "recorded_at": "2026-08-24T06:00:50Z",
+  "timestamp_semantics": "measured host UTC after the first staged diff check and before whitespace repair or commit",
+  "failed_command_scope": "git add followed by git diff --cached --check and git diff --cached --stat without fail-fast shell semantics",
+  "observed_evidence": {
+    "diff_check_failures": [
+      "docs/a_share_three_day_strategy_handoff_20260824_campaign265_v420_publisher_plan_ready.md: new blank line at EOF",
+      "docs/a_share_three_day_walkforward_campaign_265_v420_authorization_publisher_plan_report_20260824.md: new blank line at EOF"
+    ],
+    "overall_shell_exit_was_masked": true,
+    "masking_command": "the later successful git diff --cached --stat"
+  },
+  "repair": {
+    "remove_only_the_two_terminal_blank_lines": true,
+    "rerun_git_diff_cached_check_as_a_standalone_command": true,
+    "documentation_semantics_changed": false
+  },
+  "research_boundary": {
+    "v420_policy_created": false,
+    "credential_file_or_environment_inspected": false,
+    "provider_request_issued": false,
+    "source_candidate_comparator_price_or_return_value_read": false,
+    "historical_daily_price_or_forward_return_value_read": false,
+    "candidate49_ledgers_changed": false,
+    "commit_or_push_performed_before_repair": false
+  }
+}

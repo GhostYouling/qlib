@@ -1,0 +1,130 @@
+{
+  "schema_version": 1,
+  "kind": "a_share_three_day_walkforward_campaign265_v420_authorization_publisher_validation",
+  "status": "validated_zero_network_publisher_plan_ready_v420_still_absent_real_run_not_authorized",
+  "recorded_at": "2026-08-24T06:02:13Z",
+  "timestamp_semantics": "measured host UTC after final plan, isolated static checks, focused and cross-stage tests, staged-diff repair, JSON parsing, ledger validation, credential metadata and Candidate49 checks; before v420 publication or provider access",
+  "authoritative_inputs": {
+    "protocol": {
+      "path": "docs/a_share_three_day_walkforward_campaign_265_v420_authorization_publisher_protocol_20260824.json",
+      "sha256": "ea524208edb471e7a98343640f631f6e3e99c97576ea3004f9861fd2cb738a7a"
+    },
+    "implementation_freeze": {
+      "path": "docs/a_share_three_day_walkforward_campaign_265_v420_authorization_publisher_implementation_freeze_20260824.json",
+      "sha256": "4e6ec0df424aeb300debeac0a392cab6da611d3c245e4f431fe91093e894f930"
+    },
+    "plan_result": {
+      "path": "docs/a_share_three_day_walkforward_campaign_265_v420_authorization_publisher_plan_result_20260824.json",
+      "sha256": "773671e4dfcef8d75925dd80e59b862d8774ff0d5af9ea1626b01c386c696e11"
+    },
+    "publisher": {
+      "path": "scripts/a_share_three_day_walkforward_campaign265_v420_authorization.py",
+      "sha256": "fd89a60cd4fe0eba783e31c5c96559072bb4a53262df60a0e6e2d01b72d9cbb2"
+    },
+    "publisher_tests": {
+      "path": "tests/data_collector_tests/test_a_share_three_day_walkforward_campaign265_v420_authorization.py",
+      "sha256": "425546f2fcf6db66847ab4e6412b2eea0e00d0081ea58f3c277cc117f8a22b7f"
+    },
+    "attempt_ledger_v15": {
+      "path": "data/experiments/short_horizon/historical_walkforward/campaign_265/research_attempt_ledger_v15.json",
+      "sha256": "83100cd057b1cd1219089327d9a5bb25963a407eb06ff59acb4cc3693ebc711a",
+      "entry_count": 36,
+      "chain_tip_sha256": "ce9530315223f3e6a3f4e514002f8087ec3d395658c706467afe72b29ea564dc"
+    }
+  },
+  "plan_validation": {
+    "actual_exit_code": 0,
+    "ready": true,
+    "check_count": 31,
+    "all_checks_passed": true,
+    "blocker_count": 0,
+    "accepted_trade_date_count": 1699,
+    "exact_provider_call_count": 1700,
+    "v420_policy_published": false,
+    "future_run_authorized": false,
+    "run_interface_exposed": false,
+    "filesystem_write_performed": false
+  },
+  "static_and_test_validation": {
+    "black": {
+      "passed": true,
+      "file_count": 2,
+      "executed_as_standalone_command": true
+    },
+    "ruff": {
+      "passed": true,
+      "file_count": 2,
+      "executed_as_standalone_command": true
+    },
+    "publisher_focused_pytest": {
+      "passed": 7,
+      "failed": 0
+    },
+    "original_workflow_plus_publisher_pytest": {
+      "passed": 20,
+      "failed": 0
+    },
+    "campaign264_campaign265_cross_stage_current_suite": {
+      "passed": 73,
+      "failed": 0,
+      "deselected": 2,
+      "deselected_nodes": [
+        "data_collector_tests/test_a_share_three_day_walkforward_campaign264_terminal.py::test_unified_reports_have_one_matching_campaign264_section",
+        "data_collector_tests/test_a_share_three_day_walkforward_campaign265_adapter_stage.py::test_unified_reports_have_one_adapter_stage_and_publication_hashes"
+      ],
+      "deselection_reason": "Both immutable historical lifecycle nodes bind mutable unified-report bytes at their own publication stage. All current semantic assertions remain selected."
+    },
+    "new_json_files_parsed": 11,
+    "git_diff_check_passed": true,
+    "attempt_ledger_chain_passed": true
+  },
+  "failure_accounting": {
+    "new_infrastructure_failure_count": 4,
+    "pre_freeze_failure_record": {
+      "path": "docs/a_share_three_day_walkforward_campaign_265_v420_authorization_publisher_attempt_path_failure_20260824.json",
+      "sha256": "b70772de6362d34d31e6928ff1fe83f621ed8dec78285e90e0ede0a2ac4aa0bf",
+      "failure_count": 2
+    },
+    "post_plan_lifecycle_failure_record": {
+      "path": "docs/a_share_three_day_walkforward_campaign_265_v420_authorization_post_plan_campaign264_lifecycle_test_failure_20260824.json",
+      "sha256": "c935ae78c1ab143d1a81c2d383486bac499a0b8027a6ad530703ad5e9d93d702",
+      "failure_count": 1
+    },
+    "staged_diff_whitespace_failure_record": {
+      "path": "docs/a_share_three_day_walkforward_campaign_265_v420_authorization_staged_diff_whitespace_failure_20260824.json",
+      "sha256": "e97e2c33a0993d33e8ba07e9ab684cc52039376bd417df48ffecc133e976e22c",
+      "failure_count": 1
+    },
+    "all_failures_recorded_without_research_values": true
+  },
+  "credential_and_provider_boundary": {
+    "dotenv_git_ignored": true,
+    "dotenv_regular_non_symlink_mode_0600_nlink_1": true,
+    "exact_nonempty_tushare_token_assignment_count": 1,
+    "credential_value_printed_or_hashed": false,
+    "publisher_inspected_credential_file_environment_or_value": false,
+    "provider_module_imported_or_client_created": false,
+    "provider_request_issued": false,
+    "source_candidate_comparator_price_or_return_value_read": false
+  },
+  "candidate49_validation": {
+    "sole_prospective_candidate": true,
+    "signal_entry_count": 0,
+    "signal_ledger_sha256": "5193f00d7f36da003f53cec387900da4c3d002299f5dfcfc1a95eaa199ed3a79",
+    "execution_entry_count": 0,
+    "execution_ledger_sha256": "d57a3e61eac969e42cafa418ccd8c0a5ee65dcf69da145bb2c096c2a02a2ea4f",
+    "historical_backfill_performed": false,
+    "second_prospective_candidate_created": false
+  },
+  "result_semantics": {
+    "publisher_implementation_complete_for_frozen_protocol": true,
+    "publisher_plan_ready": true,
+    "v420_policy_exists": false,
+    "source_acceptance_attempt_started": false,
+    "real_run_authorized": false,
+    "historical_daily_price_or_forward_return_values_opened": false,
+    "stress_2024_2025_opened": false,
+    "current_scoring_selection_sizing_positions_or_orders_performed": false,
+    "investment_advice": false
+  }
+}

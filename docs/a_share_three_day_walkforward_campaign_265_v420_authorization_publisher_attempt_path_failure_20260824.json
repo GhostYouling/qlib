@@ -1,0 +1,54 @@
+{
+  "schema_version": 1,
+  "kind": "a_share_three_day_walkforward_campaign265_v420_authorization_publisher_infrastructure_failure",
+  "status": "recorded_two_pre_freeze_publisher_infrastructure_failures_corrected_before_v420_or_values",
+  "recorded_at": "2026-08-24T05:48:54Z",
+  "timestamp_semantics": "measured host UTC after static review identified the wrong attempt-artifact paths and after all six true destinations were verified absent",
+  "failed_command": "/Volumes/DIsk/Coding/anaconda3/bin/python3.12 scripts/a_share_three_day_walkforward_campaign265_v420_authorization.py plan",
+  "observed_exit_code": 0,
+  "observed_false_claim": "The initial unpublished implementation reported ready after checking six paths, but four of those path strings did not equal the frozen workflow destinations.",
+  "root_cause": {
+    "staging_and_final_names_used": "campaign265_source_acceptance_v1 instead of campaign265_2019_2025_v1",
+    "terminal_failure_name_used": "campaign265_convertible_premium_acceptance_terminal_failure_v1.json instead of campaign265_convertible_premium_acceptance_failure_v1.json",
+    "repository_manifest_name_used": "data/metadata/rich_data/campaign265_convertible_premium_acceptance_manifest_v1.json instead of data/metadata/rich_data/runs/campaign265_convertible_premium_acceptance_v1.json"
+  },
+  "impact": {
+    "v420_policy_created": false,
+    "real_run_interface_exposed": false,
+    "attempt_intent_or_journal_created": false,
+    "credential_file_or_environment_inspected_by_publisher": false,
+    "credential_value_or_digest_read": false,
+    "provider_module_imported_or_client_created": false,
+    "provider_request_issued": false,
+    "source_candidate_comparator_price_or_return_value_read": false,
+    "historical_daily_price_or_forward_return_read": false,
+    "candidate49_ledgers_changed": false,
+    "tracked_frozen_predecessor_changed": false
+  },
+  "correction": {
+    "implementation_now_uses_exact_six_workflow_destinations": true,
+    "regression_test_requires_tuple_equality_with_workflow_DESTINATIONS": true,
+    "all_six_true_destinations_verified_absent_after_correction": true,
+    "publication_still_requires_explicit_confirm_v420_publication": true,
+    "real_run_still_requires_separate_explicit_confirm_run": true
+  },
+  "additional_failure": {
+    "failure_id": "campaign265_v420_publisher_infrastructure_002",
+    "recorded_at": "2026-08-24T05:49:45Z",
+    "failed_command_scope": "combined Black check, Ruff check and 20-test pytest command without fail-fast shell semantics",
+    "observed_evidence": "Black reported one not-yet-frozen test file would be reformatted; Ruff passed; pytest passed 20/20; the overall shell exit was zero because the last command succeeded.",
+    "root_cause": "The validation commands were combined without set -e, so the later pytest exit masked Black's earlier nonzero exit.",
+    "repair": "Mechanically format only the new unbound test file, then execute Black, Ruff and pytest as separate commands whose individual exit codes are preserved.",
+    "v420_policy_created": false,
+    "credential_or_provider_accessed": false,
+    "candidate_comparator_price_or_return_value_read": false,
+    "candidate49_ledgers_changed": false
+  },
+  "research_boundary": {
+    "campaign265_formula_direction_source_schedule_or_gate_changed": false,
+    "candidate49_historical_backfill_allowed": false,
+    "second_prospective_candidate_allowed": false,
+    "current_scoring_selection_sizing_positions_or_orders_allowed": false,
+    "investment_advice": false
+  }
+}

@@ -1,0 +1,70 @@
+{
+  "schema_version": 1,
+  "kind": "a_share_three_day_walkforward_campaign265_v420_authorization_publisher_implementation_freeze",
+  "status": "zero_network_explicit_v420_publisher_bytes_frozen_before_v420_publication_or_provider_access",
+  "recorded_at": "2026-08-24T05:51:21Z",
+  "timestamp_semantics": "measured host UTC after corrected implementation, synthetic publication compatibility tests and descriptor-pinned destination hardening; before plan-result publication, v420 creation, credential access or provider entry",
+  "protocol": {
+    "path": "docs/a_share_three_day_walkforward_campaign_265_v420_authorization_publisher_protocol_20260824.json",
+    "sha256": "ea524208edb471e7a98343640f631f6e3e99c97576ea3004f9861fd2cb738a7a"
+  },
+  "publisher": {
+    "path": "scripts/a_share_three_day_walkforward_campaign265_v420_authorization.py",
+    "sha256": "fd89a60cd4fe0eba783e31c5c96559072bb4a53262df60a0e6e2d01b72d9cbb2",
+    "commands": [
+      "plan",
+      "publish --confirm-v420-publication"
+    ],
+    "default_or_implicit_publication_allowed": false,
+    "provider_or_credential_interface_present": false
+  },
+  "tests": {
+    "path": "tests/data_collector_tests/test_a_share_three_day_walkforward_campaign265_v420_authorization.py",
+    "sha256": "425546f2fcf6db66847ab4e6412b2eea0e00d0081ea58f3c277cc117f8a22b7f",
+    "focused_publisher_tests_passed": 7,
+    "combined_original_workflow_and_publisher_tests_passed": 20
+  },
+  "recorded_pre_freeze_failures": {
+    "path": "docs/a_share_three_day_walkforward_campaign_265_v420_authorization_publisher_attempt_path_failure_20260824.json",
+    "sha256": "b70772de6362d34d31e6928ff1fe83f621ed8dec78285e90e0ede0a2ac4aa0bf",
+    "failure_count": 2,
+    "all_failures_before_v420_or_values": true
+  },
+  "implementation_contract": {
+    "plan_revalidates_all_nine_authoritative_file_bindings": true,
+    "plan_reuses_the_unchanged_frozen_workflow_build_plan": true,
+    "plan_requires_34_of_34_workflow_checks": true,
+    "plan_requires_exact_1699_dates_and_1700_calls": true,
+    "plan_requires_all_six_exact_attempt_destinations_absent": true,
+    "plan_creates_no_file": true,
+    "publish_requires_explicit_confirm_v420_publication": true,
+    "publication_is_exclusive_and_atomic": true,
+    "publication_parent_is_opened_with_no_follow_and_identity_pinned": true,
+    "target_overwrite_or_repair_allowed": false,
+    "published_policy_is_accepted_by_the_unchanged_frozen_workflow_checks": true,
+    "real_workflow_run_still_requires_separate_confirm_run": true
+  },
+  "unchanged_campaign265_boundary": {
+    "selected_factor": "convertible_bond_equity_parity_premium_compression_3s",
+    "direction": "higher",
+    "accepted_trade_date_count": 1699,
+    "exact_provider_call_count": 1700,
+    "request_sequence_canonical_json_sha256": "3f9cccb3134b7e9e22f5d34fd8bc07f89e1d8047dd775d07c3257443a97b4c58",
+    "minimum_seconds_between_provider_entries": 1.05,
+    "retry_allowed": false,
+    "formula_direction_fields_schedule_paths_row_limits_interval_or_failure_semantics_changed": false
+  },
+  "research_boundary": {
+    "v420_policy_created": false,
+    "run_interface_exposed": false,
+    "attempt_intent_or_journal_created": false,
+    "credential_file_or_environment_inspected_by_publisher": false,
+    "provider_module_imported_or_client_created": false,
+    "provider_request_issued": false,
+    "source_candidate_comparator_price_or_return_value_read": false,
+    "candidate49_ledgers_changed": false,
+    "second_prospective_candidate_created": false,
+    "current_scoring_selection_sizing_positions_or_orders_performed": false,
+    "investment_advice": false
+  }
+}

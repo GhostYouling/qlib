@@ -1,0 +1,125 @@
+{
+  "schema_version": 1,
+  "kind": "a_share_three_day_iteration_status",
+  "status": "campaign265_v420_authorization_publisher_plan_ready_operator_confirmation_pending",
+  "recorded_at": "2026-08-24T06:02:13Z",
+  "timestamp_semantics": "measured host UTC after frozen v420 publisher plan, staged-diff repair, final validation, report and handoff; before v420 publication, credential access, provider entry or source values",
+  "goal": {
+    "objective": "请持续迭代因子。",
+    "status": "active",
+    "completed_by_this_state": false,
+    "continuation_semantics": "This checkpoint makes the next authorization boundary mechanical and testable. It neither publishes v420 nor completes the continuing factor-research objective."
+  },
+  "supersedes_without_rewriting": {
+    "path": "docs/a_share_three_day_iteration_status_20260824_campaign265_execution_workflow_plan_ready_v2.json",
+    "sha256": "1cf226d8d64520cf1801baa6f0bf1ac96a3adb19f85e3d950e7d19d674a79753",
+    "reason": "The predecessor remains the authoritative frozen execution-workflow plan state. This additive state binds the explicit v420 publication mechanism while v420 itself remains absent."
+  },
+  "publisher_stage": {
+    "protocol": {
+      "path": "docs/a_share_three_day_walkforward_campaign_265_v420_authorization_publisher_protocol_20260824.json",
+      "sha256": "ea524208edb471e7a98343640f631f6e3e99c97576ea3004f9861fd2cb738a7a"
+    },
+    "implementation_freeze": {
+      "path": "docs/a_share_three_day_walkforward_campaign_265_v420_authorization_publisher_implementation_freeze_20260824.json",
+      "sha256": "4e6ec0df424aeb300debeac0a392cab6da611d3c245e4f431fe91093e894f930"
+    },
+    "plan_result": {
+      "path": "docs/a_share_three_day_walkforward_campaign_265_v420_authorization_publisher_plan_result_20260824.json",
+      "sha256": "773671e4dfcef8d75925dd80e59b862d8774ff0d5af9ea1626b01c386c696e11",
+      "actual_exit_code": 0,
+      "ready": true,
+      "check_count": 31,
+      "blocker_count": 0
+    },
+    "validation": {
+      "path": "docs/a_share_three_day_walkforward_campaign_265_v420_authorization_publisher_validation_20260824.json",
+      "sha256": "63df7925ec9df6c0115f176f5b2fe5ffd70b29a5a24d27c59e77ebd911b40f2d",
+      "black_passed": true,
+      "ruff_passed": true,
+      "publisher_tests_passed": 7,
+      "original_workflow_plus_publisher_tests_passed": 20,
+      "cross_stage_current_tests_passed": 73,
+      "historical_lifecycle_nodes_deselected": 2,
+      "ledger_chain_passed": true
+    },
+    "report": {
+      "path": "docs/a_share_three_day_walkforward_campaign_265_v420_authorization_publisher_plan_report_20260824.md",
+      "sha256": "55375bc9fb3679573fa28b7c5eefafed7d7a97c23eebfb6db5aff473c115754f"
+    },
+    "handoff": {
+      "path": "docs/a_share_three_day_strategy_handoff_20260824_campaign265_v420_publisher_plan_ready.md",
+      "sha256": "c39bc2fca6d962b3a27bac4fcb78e1c8f71f9f54839a9c3a6d859f1e37bc0706"
+    }
+  },
+  "effective_attempt_ledger": {
+    "path": "data/experiments/short_horizon/historical_walkforward/campaign_265/research_attempt_ledger_v15.json",
+    "sha256": "83100cd057b1cd1219089327d9a5bb25963a407eb06ff59acb4cc3693ebc711a",
+    "entry_count": 36,
+    "chain_tip_sha256": "ce9530315223f3e6a3f4e514002f8087ec3d395658c706467afe72b29ea564dc"
+  },
+  "campaign265_effective_state": {
+    "selected_name": "convertible_bond_equity_parity_premium_compression_3s",
+    "selected_direction": "higher",
+    "source_acceptance_plan_ready": true,
+    "execution_workflow_plan_ready": true,
+    "v420_authorization_publisher_plan_ready": true,
+    "accepted_trade_date_count": 1699,
+    "exact_future_provider_call_count": 1700,
+    "source_acceptance_attempt_started": false,
+    "future_v420_policy_exists": false,
+    "run_interface_exposed": false,
+    "credential_load_authorized": false,
+    "provider_request_authorized": false,
+    "source_candidate_or_comparator_value_authorized": false,
+    "complete_factor_definition_count": 162,
+    "complete_factor_definition_order_sha256": "974f2c1f16a85eb43a0bd1e8db768dbe120cd8826c1754d5f220bf9f1d4a3ea0",
+    "eligible_numeric_comparator_count": 143,
+    "eligible_numeric_comparator_order_sha256": "f4fbf3d578e2c80c29425716a30d60a3df01d67d04e37f1651236c4dff899588",
+    "complete_definition_appended": false,
+    "numeric_comparator_appended": false,
+    "development_trial_count": 0,
+    "development_survivor_count": 0,
+    "stress_trial_count_2024_2025": 0,
+    "campaign_attempt_count": 36,
+    "infrastructure_failure_count": 21,
+    "prevalue_scientific_attempt_count": 15,
+    "complete_factor_attempt_count": 0,
+    "cumulative_historical_research_attempt_count": 2640,
+    "cumulative_return_reading_development_trial_count": 315
+  },
+  "candidate49": {
+    "sole_prospective_candidate": true,
+    "signal_entry_count": 0,
+    "signal_ledger_sha256": "5193f00d7f36da003f53cec387900da4c3d002299f5dfcfc1a95eaa199ed3a79",
+    "execution_entry_count": 0,
+    "execution_ledger_sha256": "d57a3e61eac969e42cafa418ccd8c0a5ee65dcf69da145bb2c096c2a02a2ea4f",
+    "historical_backfill_allowed": false,
+    "second_prospective_candidate_allowed": false
+  },
+  "session_boundary": {
+    "local_timezone": "Asia/Singapore",
+    "observed_local_time": "2026-08-24T13:57:11+0800",
+    "before_candidate49_1630_threshold": true,
+    "candidate49_plan_or_run_executed": false,
+    "campaign265_offline_publisher_plan_depends_on_1630": false
+  },
+  "research_boundary": {
+    "provider_credential_metadata_verified_without_printing_or_hashing_value": true,
+    "provider_credential_value_or_digest_read_by_publisher": false,
+    "provider_client_imported_or_created": false,
+    "provider_request_issued": false,
+    "provider_response_or_row_value_read": false,
+    "v420_policy_created": false,
+    "source_acceptance_files_written": false,
+    "candidate_or_comparator_value_read": false,
+    "historical_daily_price_or_forward_return_value_read": false,
+    "stress_2024_2025_opened": false,
+    "candidate49_historical_backfill_performed": false,
+    "candidate49_ledgers_changed": false,
+    "second_prospective_candidate_created": false,
+    "current_scoring_selection_sizing_positions_or_orders_performed": false,
+    "investment_advice": false
+  },
+  "next_action": "Continue Campaign265 unchanged. Only an operator may execute the frozen publisher with publish --confirm-v420-publication. After publication, rerun the unchanged source workflow plan; only ready=true with exit code zero and a separate explicit run --confirm-run may begin the one-shot 1700-call source acquisition. Without that confirmation, do not publish v420, create intent, load credentials, create a provider client, issue requests or open values."
+}

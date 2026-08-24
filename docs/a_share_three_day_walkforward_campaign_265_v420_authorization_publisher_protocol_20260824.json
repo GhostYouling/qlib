@@ -1,0 +1,91 @@
+{
+  "schema_version": 1,
+  "kind": "a_share_three_day_walkforward_campaign265_v420_authorization_publisher_protocol",
+  "status": "frozen_zero_network_explicit_publication_contract_before_publisher_implementation_or_v420_creation",
+  "recorded_at": "2026-08-24T05:43:16Z",
+  "timestamp_semantics": "measured host UTC before publisher implementation, tests, v420 publication, credential access, provider entry or source values",
+  "purpose": "Freeze a mechanical, credential-free path for an operator to publish the exact Campaign265 v420 one-shot run authorization without changing any already-frozen workflow byte. The default plan remains read-only; this protocol does not itself publish v420 or authorize a provider request.",
+  "authoritative_inputs": {
+    "latest_state": {
+      "path": "docs/a_share_three_day_iteration_status_20260824_campaign265_execution_workflow_plan_ready_v2.json",
+      "sha256": "1cf226d8d64520cf1801baa6f0bf1ac96a3adb19f85e3d950e7d19d674a79753"
+    },
+    "plan_authorization_policy_v419_revision_2": {
+      "path": "docs/a_share_three_day_walkforward_future_numeric_comparison_eligibility_policy_v419_20260824_execution_path_hardening_v2.json",
+      "sha256": "c331d3931893ea183a7d0a750be8f5b136b1e95e5a0e1fc65683e6cf64d5cc2a"
+    },
+    "workflow": {
+      "path": "scripts/a_share_three_day_walkforward_campaign265_source_acceptance_workflow.py",
+      "sha256": "796322ab186c837dc02a5657572a3f936792dc33ffd4c817cfc430c1d7639020"
+    },
+    "workflow_tests": {
+      "path": "tests/data_collector_tests/test_a_share_three_day_walkforward_campaign265_source_acceptance_workflow.py",
+      "sha256": "b160f11d19e5ab85d2b6f3a523ac450a0be8214014165837591c68de0d1faac9"
+    },
+    "execution_protocol": {
+      "path": "docs/a_share_three_day_walkforward_campaign_265_source_acceptance_execution_protocol_20260824.json",
+      "sha256": "766172caa77a9ffa90867e7299e1ac77816934469b8cafd5f63fd27281d9c04c"
+    },
+    "implementation_freeze_v2": {
+      "path": "docs/a_share_three_day_walkforward_campaign_265_source_acceptance_execution_workflow_implementation_freeze_v2_20260824.json",
+      "sha256": "27bcadf74f6dcd0abe47e22f7d62eacf7f2e788bb4b4d0286d0b7e63337a267f"
+    },
+    "workflow_plan_result_v2": {
+      "path": "docs/a_share_three_day_walkforward_campaign_265_source_acceptance_execution_workflow_plan_result_v2_20260824.json",
+      "sha256": "9006c35b51912e48cf3ae03a6c581c87da6249119b3ceaeb54b0a8ba998bcd03"
+    },
+    "workflow_plan_validation_v2": {
+      "path": "docs/a_share_three_day_walkforward_campaign_265_source_acceptance_execution_workflow_plan_validation_v2_20260824.json",
+      "sha256": "1ac037d922474364d3d39ad2c1592e013a288b7f5fb75d51db792be6257882ee"
+    }
+  },
+  "planned_implementation": {
+    "publisher": "scripts/a_share_three_day_walkforward_campaign265_v420_authorization.py",
+    "tests": "tests/data_collector_tests/test_a_share_three_day_walkforward_campaign265_v420_authorization.py",
+    "target_policy": "docs/a_share_three_day_walkforward_future_numeric_comparison_eligibility_policy_v420_20260824.json",
+    "default_command": "plan",
+    "mutation_command": "publish --confirm-v420-publication",
+    "real_source_command_after_publication": "scripts/a_share_three_day_walkforward_campaign265_source_acceptance_workflow.py run --confirm-run"
+  },
+  "plan_contract": {
+    "filesystem_write_allowed": false,
+    "credential_file_or_environment_inspection_allowed": false,
+    "provider_import_or_creation_allowed": false,
+    "provider_request_allowed": false,
+    "candidate_comparator_price_or_return_value_read_allowed": false,
+    "required_checks": [
+      "all authoritative input paths and SHA-256 values match",
+      "the frozen workflow plan is ready with exit code zero and 34 passing checks",
+      "the accepted date count is 1699 and the exact provider-call count is 1700",
+      "the request-sequence SHA-256 is 3f9cccb3134b7e9e22f5d34fd8bc07f89e1d8047dd775d07c3257443a97b4c58",
+      "the active v420 target and every Campaign265 attempt artifact are absent",
+      "the repository and target parent are real non-symlink directories"
+    ],
+    "ready_meaning": "Only exact v420 publication is mechanically ready. It does not create v420, load a credential, expose provider values or authorize the real run by itself."
+  },
+  "publication_contract": {
+    "explicit_confirm_v420_publication_required": true,
+    "target_must_not_exist_or_be_a_symlink": true,
+    "target_parent_must_be_a_real_non_symlink_directory": true,
+    "exclusive_atomic_publication": true,
+    "target_overwrite_or_repair_allowed": false,
+    "v420_version": 420,
+    "one_shot": true,
+    "explicit_confirm_run_still_required": true,
+    "retry_allowed": false,
+    "exact_provider_call_count": 1700,
+    "request_sequence_canonical_json_sha256": "3f9cccb3134b7e9e22f5d34fd8bc07f89e1d8047dd775d07c3257443a97b4c58",
+    "may_change_frozen_schedule_formula_fields_paths_row_limits_interval_or_failure_semantics": false,
+    "post_publication_requirement": "Run the unchanged workflow plan again. Only ready=true with process exit code zero followed by a separate operator-supplied run --confirm-run may begin the one-shot source workflow."
+  },
+  "research_boundary": {
+    "this_protocol_publishes_v420": false,
+    "this_protocol_authorizes_credential_load_or_provider_request": false,
+    "candidate49_historical_backfill_allowed": false,
+    "second_prospective_candidate_allowed": false,
+    "historical_daily_price_or_forward_return_allowed": false,
+    "stress_2024_2025_allowed": false,
+    "current_scoring_selection_sizing_positions_or_orders_allowed": false,
+    "investment_advice": false
+  }
+}

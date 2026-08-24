@@ -1,0 +1,75 @@
+{
+  "schema_version": 1,
+  "kind": "a_share_three_day_walkforward_campaign265_v420_authorization_publication_plan_result",
+  "status": "ready_for_explicit_v420_publication_zero_network_v420_still_absent",
+  "recorded_at": "2026-08-24T05:52:14Z",
+  "timestamp_semantics": "measured host UTC immediately after the corrected frozen publisher plan exited zero and after an unconfirmed publish probe exited two without writing",
+  "command": "/Volumes/DIsk/Coding/anaconda3/bin/python3.12 scripts/a_share_three_day_walkforward_campaign265_v420_authorization.py plan",
+  "actual_exit_code": 0,
+  "ready": true,
+  "check_count": 31,
+  "all_checks_passed": true,
+  "blockers": [],
+  "authoritative_bindings": {
+    "publisher_protocol": {
+      "path": "docs/a_share_three_day_walkforward_campaign_265_v420_authorization_publisher_protocol_20260824.json",
+      "sha256": "ea524208edb471e7a98343640f631f6e3e99c97576ea3004f9861fd2cb738a7a"
+    },
+    "publisher_implementation_freeze": {
+      "path": "docs/a_share_three_day_walkforward_campaign_265_v420_authorization_publisher_implementation_freeze_20260824.json",
+      "sha256": "4e6ec0df424aeb300debeac0a392cab6da611d3c245e4f431fe91093e894f930"
+    },
+    "publisher": {
+      "path": "scripts/a_share_three_day_walkforward_campaign265_v420_authorization.py",
+      "sha256": "fd89a60cd4fe0eba783e31c5c96559072bb4a53262df60a0e6e2d01b72d9cbb2"
+    },
+    "publisher_tests": {
+      "path": "tests/data_collector_tests/test_a_share_three_day_walkforward_campaign265_v420_authorization.py",
+      "sha256": "425546f2fcf6db66847ab4e6412b2eea0e00d0081ea58f3c277cc117f8a22b7f"
+    },
+    "predecessor_state": {
+      "path": "docs/a_share_three_day_iteration_status_20260824_campaign265_execution_workflow_plan_ready_v2.json",
+      "sha256": "1cf226d8d64520cf1801baa6f0bf1ac96a3adb19f85e3d950e7d19d674a79753"
+    }
+  },
+  "observed_plan_summary": {
+    "accepted_trade_date_count": 1699,
+    "exact_provider_call_count": 1700,
+    "request_sequence_canonical_json_sha256": "3f9cccb3134b7e9e22f5d34fd8bc07f89e1d8047dd775d07c3257443a97b4c58",
+    "authoritative_binding_check_count": 9,
+    "destination_and_attempt_absence_check_count": 8,
+    "workflow_semantic_check_count": 14,
+    "frozen_workflow_check_count": 34,
+    "v420_target_absent": true,
+    "future_run_authorized": false,
+    "run_interface_exposed": false
+  },
+  "unconfirmed_publish_probe": {
+    "command": "/Volumes/DIsk/Coding/anaconda3/bin/python3.12 scripts/a_share_three_day_walkforward_campaign265_v420_authorization.py publish",
+    "actual_exit_code": 2,
+    "error_code": "explicit_v420_publication_required",
+    "filesystem_write_performed": false,
+    "provider_request_issued": false
+  },
+  "no_attempt_state": {
+    "staging_root_absent": true,
+    "final_root_absent": true,
+    "intent_absent": true,
+    "attempt_journal_absent": true,
+    "terminal_failure_absent": true,
+    "repository_acceptance_manifest_absent": true,
+    "v420_policy_absent": true
+  },
+  "execution_boundary": {
+    "plan_published_v420": false,
+    "credential_file_or_environment_inspected": false,
+    "credential_value_or_digest_read": false,
+    "provider_module_imported_or_client_created": false,
+    "provider_request_issued": false,
+    "source_candidate_comparator_price_or_return_value_read": false,
+    "historical_daily_price_or_forward_return_value_read": false,
+    "filesystem_write_performed_by_plan": false,
+    "ready_authorizes_real_run": false
+  },
+  "next_action": "Only an operator may run publish --confirm-v420-publication. After successful exclusive publication, rerun the unchanged source workflow plan; only ready=true with exit code zero followed by a separate run --confirm-run may begin the one-shot 1700-call source acquisition."
+}
