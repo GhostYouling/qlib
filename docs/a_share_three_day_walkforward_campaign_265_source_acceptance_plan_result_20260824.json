@@ -1,0 +1,84 @@
+{
+  "schema_version": 1,
+  "kind": "a_share_three_day_walkforward_campaign265_source_acceptance_plan_result",
+  "status": "ready_zero_network_plan_only_no_credential_or_provider_authorization",
+  "recorded_at": "2026-08-24T04:38:47Z",
+  "authoritative_inputs": {
+    "numeric_policy_v418": {
+      "path": "docs/a_share_three_day_walkforward_future_numeric_comparison_eligibility_policy_v418_20260824.json",
+      "sha256": "f1ba460fda8fe9b51388edfb4a2de7c8a7940c0df1650a75e8d142ccef3d36a0"
+    },
+    "preregistration": {
+      "path": "docs/a_share_three_day_walkforward_campaign_265_source_acceptance_preregistration_20260824.json",
+      "sha256": "474e5a995703f46005053268bbbd6c1c20835c99233f82e727a24a6085198ffd"
+    },
+    "planner": {
+      "path": "scripts/a_share_three_day_walkforward_campaign265_source_acceptance_plan.py",
+      "sha256": "1702119cc43c58843cc27575a9681214121b45084ccd0ff84489ea362eac7c05"
+    },
+    "planner_tests": {
+      "path": "tests/data_collector_tests/test_a_share_three_day_walkforward_campaign265_source_acceptance_plan.py",
+      "sha256": "a290d89afbb102c945fb3ffd55ddb41c519abaad4e06117eeeeb4ce2c010e00a"
+    },
+    "implementation_freeze": {
+      "path": "docs/a_share_three_day_walkforward_campaign_265_source_acceptance_planner_implementation_freeze_20260824.json",
+      "sha256": "f6d0083459212661de31623875f280627b3b0dfc4f7868b2dd15198a9aafcd8d"
+    }
+  },
+  "executed_command": {
+    "working_directory": "/Volumes/DIsk/Disk-Coding/qlib",
+    "python": "/Volumes/DIsk/Coding/anaconda3/bin/python3.12",
+    "argv": [
+      "scripts/a_share_three_day_walkforward_campaign265_source_acceptance_plan.py",
+      "plan"
+    ],
+    "actual_exit_code": 0,
+    "json_object_count": 1,
+    "stderr_empty": true,
+    "stdout_bytes": 34642,
+    "stdout_sha256": "294f53ec7e68e3c527bccd2d40809f0e65cb9ffb410a75932b130b870fde9273"
+  },
+  "plan_summary": {
+    "ready": true,
+    "declared_exit_code": 0,
+    "blockers": [],
+    "first_accepted_trade_date": "2019-01-02",
+    "last_accepted_trade_date": "2025-12-31",
+    "accepted_trade_date_count": 1699,
+    "accepted_trade_dates_canonical_newline_sha256": "f9205c3cfdeb51b808d18b66edb8cf66bf57df94f696fb3b6bd5743b9a0bc769",
+    "cb_basic_calls": 1,
+    "cb_daily_calls": 1699,
+    "exact_provider_call_count": 1700,
+    "request_sequence_canonical_json_sha256": "3f9cccb3134b7e9e22f5d34fd8bc07f89e1d8047dd775d07c3257443a97b4c58",
+    "strict_response_rows_less_than": 2000,
+    "minimum_response_rows_per_call": 1,
+    "minimum_seconds_between_provider_entries": 1.05,
+    "all_checks_passed": true,
+    "watched_destination_paths_unchanged": true
+  },
+  "meaning": {
+    "plan_is_complete_and_reproducible": true,
+    "source_acceptance_attempt_started": false,
+    "ready_authorizes_credential_load": false,
+    "ready_authorizes_provider_request": false,
+    "ready_authorizes_source_or_factor_value_read": false,
+    "required_next_stage": "Separately freeze and validate a credential-safe one-shot execution workflow bound to this plan. Do not load a credential or issue a provider request until another policy explicitly authorizes that exact workflow and confirmation interface."
+  },
+  "research_boundary": {
+    "credential_file_or_environment_inspected_by_planner": false,
+    "provider_credential_value_or_digest_read": false,
+    "provider_client_imported_or_created": false,
+    "provider_request_issued": false,
+    "source_response_or_row_value_read": false,
+    "candidate_or_comparator_value_read": false,
+    "historical_daily_price_or_forward_return_value_read": false,
+    "filesystem_write_performed_by_planner": false,
+    "stress_2024_2025_opened": false,
+    "candidate49_plan_or_run_executed": false,
+    "candidate49_historical_backfill_performed": false,
+    "candidate49_ledgers_changed": false,
+    "second_prospective_candidate_created": false,
+    "current_scoring_selection_sizing_positions_or_orders_performed": false,
+    "investment_advice": false
+  }
+}

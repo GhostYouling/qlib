@@ -1,0 +1,77 @@
+{
+  "schema_version": 1,
+  "kind": "a_share_three_day_walkforward_campaign265_source_acceptance_plan_validation_v2",
+  "status": "validated_ready_zero_network_plan_only_with_historical_lifecycle_node_transition_values_closed",
+  "recorded_at": "2026-08-24T04:48:02Z",
+  "supersedes_without_rewriting": {
+    "path": "docs/a_share_three_day_walkforward_campaign_265_source_acceptance_plan_validation_20260824.json",
+    "sha256": "188aed7b9434d601b52f4061acf098c7bda5d22c5ee8f89fd2bff366bba09530"
+  },
+  "additive_failure_evidence": {
+    "mutable_report_hash_test_failure": {
+      "path": "docs/a_share_three_day_walkforward_campaign_265_post_plan_mutable_report_hash_test_failure_20260824.json",
+      "sha256": "def9ae5138f3548ad7a386d734d2ba3c6e6bf793e29e96de366d469cd611e1c9"
+    },
+    "pytest_deselect_prefix_failure": {
+      "path": "docs/a_share_three_day_walkforward_campaign_265_post_plan_pytest_deselect_prefix_failure_20260824.json",
+      "sha256": "5e00cb8e5fbb4ed2d58d2ce5633bb9fcd3fe7fe0bd0db7acaf2977582d555710"
+    },
+    "attempt_ledger_v6": {
+      "path": "data/experiments/short_horizon/historical_walkforward/campaign_265/research_attempt_ledger_v6.json",
+      "sha256": "fd015de31865b048f8f199759b4330dbfd3732167f174c6ab79576b865889c36",
+      "chain_tip_sha256": "5fc45efdf39f4cc61a3460bc295547899bf83e492c1ad77f38d0fd681e29a8cc"
+    }
+  },
+  "current_state_test": {
+    "path": "tests/data_collector_tests/test_a_share_three_day_walkforward_campaign265_source_acceptance_plan_current_state.py",
+    "sha256": "6394b75ab008be6ed38a7f933c8cccc6c3af8bdabdcd6da98457def456d90ee1",
+    "test_count": 6
+  },
+  "historical_lifecycle_transition": {
+    "immutable_node": "data_collector_tests/test_a_share_three_day_walkforward_campaign265_adapter_stage.py::test_unified_reports_have_one_adapter_stage_and_publication_hashes",
+    "reason_for_current_deselect": "The node binds the two explicitly mutable reports to their earlier adapter-publication hashes. The later source-plan append correctly changes those mutable bytes while preserving exactly one adapter-stage section.",
+    "historical_test_rewritten": false,
+    "mutable_report_content_removed_or_rewritten": false,
+    "versioned_current_state_replacement_present": true
+  },
+  "final_validation": {
+    "git_diff_check_passed": true,
+    "black": "7 files would be left unchanged",
+    "ruff": "All checks passed",
+    "pytest_passed": 47,
+    "pytest_failed": 0,
+    "pytest_deselected_historical_lifecycle_nodes": 1,
+    "pytest_duration_seconds": 1.43,
+    "ledger_v4_v5_v6_semantic_chain_passed": true,
+    "plan_remains_ready": true,
+    "plan_blockers": []
+  },
+  "effective_accounting": {
+    "campaign265_attempt_count": 15,
+    "campaign265_infrastructure_failure_count": 7,
+    "campaign265_prevalue_scientific_attempt_count": 8,
+    "campaign265_complete_factor_attempt_count": 0,
+    "campaign265_return_reading_development_trial_count": 0,
+    "cumulative_historical_research_attempt_count": 2619,
+    "cumulative_return_reading_development_trial_count": 315
+  },
+  "scientific_state_unchanged_from_v1": {
+    "plan_ready": true,
+    "plan_actual_exit_code": 0,
+    "accepted_trade_date_count": 1699,
+    "exact_future_provider_call_count": 1700,
+    "complete_factor_definition_count": 162,
+    "eligible_numeric_comparator_count": 143,
+    "development_trial_count": 0,
+    "stress_trial_count_2024_2025": 0
+  },
+  "research_boundary": {
+    "provider_credential_value_or_digest_read": false,
+    "provider_request_issued": false,
+    "provider_response_or_row_value_read": false,
+    "source_acceptance_files_written": false,
+    "candidate_or_comparator_value_read": false,
+    "historical_daily_price_or_forward_return_value_read": false,
+    "candidate49_ledgers_changed": false
+  }
+}

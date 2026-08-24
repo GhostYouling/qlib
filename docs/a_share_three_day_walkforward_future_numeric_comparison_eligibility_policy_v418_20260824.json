@@ -1,0 +1,122 @@
+{
+  "schema_version": 1,
+  "kind": "a_share_three_day_walkforward_future_numeric_comparison_eligibility_policy",
+  "version": 418,
+  "status": "campaign265_zero_network_source_acceptance_plan_only_authorized_library_162_numeric_comparator_143_values_closed",
+  "recorded_at": "2026-08-24T04:37:27Z",
+  "timestamp_semantics": "measured host UTC after source-acceptance preregistration, planner/test implementation freeze and credential-free static validation; before the first plan execution and before any credential or provider access",
+  "supersedes_without_rewriting": {
+    "path": "docs/a_share_three_day_walkforward_future_numeric_comparison_eligibility_policy_v417_20260824.json",
+    "sha256": "62805389b141904fe6b519bb7ff345410802fb5475f3804615e6f12ff81da39f"
+  },
+  "authoritative_inputs": {
+    "adapter_ready_state": {
+      "path": "docs/a_share_three_day_iteration_status_20260824_campaign265_adapter_ready.json",
+      "sha256": "926cb5336c11225106711964ac5cc566289f9dc467edc52d83edba80ea23ce6e"
+    },
+    "source_contract": {
+      "path": "docs/a_share_three_day_walkforward_campaign_265_convertible_premium_source_contract_20260824.json",
+      "sha256": "efe7884d3ea0fd7f974e0d3347432e68e9e01ceefe0e6ebdca7fdd3e6349301c"
+    },
+    "adapter": {
+      "path": "scripts/a_share_three_day_walkforward_campaign265_convertible_premium.py",
+      "sha256": "58b9fddbbeef97955d4961f9f708028aa63d90fc56f2656db68098de7d3543e8"
+    },
+    "preregistration": {
+      "path": "docs/a_share_three_day_walkforward_campaign_265_source_acceptance_preregistration_20260824.json",
+      "sha256": "474e5a995703f46005053268bbbd6c1c20835c99233f82e727a24a6085198ffd"
+    },
+    "implementation_freeze": {
+      "path": "docs/a_share_three_day_walkforward_campaign_265_source_acceptance_planner_implementation_freeze_20260824.json",
+      "sha256": "f6d0083459212661de31623875f280627b3b0dfc4f7868b2dd15198a9aafcd8d"
+    }
+  },
+  "campaign265_source_acceptance_plan_authorization": {
+    "authorized": true,
+    "plan_only": true,
+    "planner": {
+      "path": "scripts/a_share_three_day_walkforward_campaign265_source_acceptance_plan.py",
+      "sha256": "1702119cc43c58843cc27575a9681214121b45084ccd0ff84489ea362eac7c05"
+    },
+    "planner_tests": {
+      "path": "tests/data_collector_tests/test_a_share_three_day_walkforward_campaign265_source_acceptance_plan.py",
+      "sha256": "a290d89afbb102c945fb3ffd55ddb41c519abaad4e06117eeeeb4ce2c010e00a"
+    },
+    "preregistration": {
+      "path": "docs/a_share_three_day_walkforward_campaign_265_source_acceptance_preregistration_20260824.json",
+      "sha256": "474e5a995703f46005053268bbbd6c1c20835c99233f82e727a24a6085198ffd"
+    },
+    "implementation_freeze": {
+      "path": "docs/a_share_three_day_walkforward_campaign_265_source_acceptance_planner_implementation_freeze_20260824.json",
+      "sha256": "f6d0083459212661de31623875f280627b3b0dfc4f7868b2dd15198a9aafcd8d"
+    },
+    "accepted_trade_date_count": 1699,
+    "accepted_trade_dates_canonical_newline_sha256": "f9205c3cfdeb51b808d18b66edb8cf66bf57df94f696fb3b6bd5743b9a0bc769",
+    "exact_provider_call_count": 1700,
+    "request_sequence_canonical_json_sha256": "3f9cccb3134b7e9e22f5d34fd8bc07f89e1d8047dd775d07c3257443a97b4c58",
+    "credential_load_allowed": false,
+    "credential_file_or_environment_inspection_allowed": false,
+    "provider_request_allowed": false,
+    "run_interface_allowed": false,
+    "filesystem_write_allowed_by_plan": false,
+    "source_candidate_comparator_price_or_return_value_read_allowed": false,
+    "ready_true_meaning": "Only the immutable plan bindings, exact offline schedule and destination absence passed. It is not permission to load a credential or enter a provider."
+  },
+  "complete_historical_feature_library": {
+    "factor_definition_count": 162,
+    "order_sha256": "974f2c1f16a85eb43a0bd1e8db768dbe120cd8826c1754d5f220bf9f1d4a3ea0",
+    "unchanged_from_v417": true,
+    "campaign265_definition_appended": false
+  },
+  "numerical_comparator_eligibility": {
+    "eligible_numeric_comparator_count": 143,
+    "order_sha256": "f4fbf3d578e2c80c29425716a30d60a3df01d67d04e37f1651236c4dff899588",
+    "unchanged_from_v417": true,
+    "campaign265_numeric_comparator_appended": false,
+    "campaign265_comparator_values_may_open_now": false
+  },
+  "accounting_through_planner_implementation_freeze": {
+    "campaign265_attempt_count": 12,
+    "campaign265_infrastructure_failure_count": 5,
+    "campaign265_prevalue_scientific_attempt_count": 7,
+    "campaign265_complete_factor_attempt_count": 0,
+    "campaign265_return_reading_development_trial_count": 0,
+    "cumulative_historical_research_attempt_count": 2616,
+    "cumulative_return_reading_development_trial_count": 315,
+    "new_infrastructure_failures": [
+      "candidate49_read_only_hash_probe_used_two_incorrect_guessed_paths_and_stopped before credential metadata checks",
+      "first planner Ruff check found one unused sys import before the narrow byte freeze"
+    ]
+  },
+  "candidate49": {
+    "sole_prospective_candidate": true,
+    "historical_backfill_allowed": false,
+    "second_prospective_candidate_allowed": false,
+    "signal_entry_count": 0,
+    "execution_entry_count": 0,
+    "signal_ledger_sha256": "5193f00d7f36da003f53cec387900da4c3d002299f5dfcfc1a95eaa199ed3a79",
+    "execution_ledger_sha256": "d57a3e61eac969e42cafa418ccd8c0a5ee65dcf69da145bb2c096c2a02a2ea4f"
+  },
+  "next_stage_boundary": {
+    "allowed_now": "Run the exact frozen planner plan command and validate its single JSON output and actual exit code.",
+    "credential_or_provider_workflow_may_be_implemented_or_run_under_v418": false,
+    "required_after_ready_plan": "Publish an additive planner result and state. Any later source-acquisition workflow, credential load, provider request and explicit confirmation must be separately frozen and authorized.",
+    "source_contract_formula_or_gate_rescue_allowed": false,
+    "historical_daily_price_or_return_value_allowed": false,
+    "stress_2024_2025_allowed": false
+  },
+  "research_boundary": {
+    "provider_api_request_issued": false,
+    "provider_credential_value_or_digest_read": false,
+    "provider_response_or_row_value_read": false,
+    "candidate_or_comparator_value_read": false,
+    "historical_daily_price_or_forward_return_value_read": false,
+    "stress_2024_2025_opened": false,
+    "candidate49_plan_or_run_executed": false,
+    "candidate49_historical_backfill_performed": false,
+    "candidate49_ledgers_changed": false,
+    "second_prospective_candidate_created": false,
+    "current_scoring_selection_sizing_positions_or_orders_performed": false,
+    "investment_advice": false
+  }
+}

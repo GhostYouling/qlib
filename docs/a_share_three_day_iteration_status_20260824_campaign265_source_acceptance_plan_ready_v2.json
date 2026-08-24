@@ -1,0 +1,105 @@
+{
+  "schema_version": 1,
+  "kind": "a_share_three_day_iteration_status",
+  "status": "campaign265_source_acceptance_plan_ready_zero_network_post_validation_corrections_execution_not_authorized",
+  "recorded_at": "2026-08-24T04:48:36Z",
+  "timestamp_semantics": "measured host UTC after preserving two post-plan test-lifecycle failures and passing the corrected current-state suite; before credential load, provider entry or source values",
+  "goal": {
+    "objective": "请持续迭代因子。",
+    "status": "active",
+    "completed_by_this_state": false
+  },
+  "supersedes_without_rewriting": {
+    "path": "docs/a_share_three_day_iteration_status_20260824_campaign265_source_acceptance_plan_ready.json",
+    "sha256": "4b6e942d22cebadebd714b8b7eed0fb7be529ac5f482a158c74be1f2b6a23c0a"
+  },
+  "authoritative_policy": {
+    "path": "docs/a_share_three_day_walkforward_future_numeric_comparison_eligibility_policy_v418_20260824.json",
+    "sha256": "f1ba460fda8fe9b51388edfb4a2de7c8a7940c0df1650a75e8d142ccef3d36a0"
+  },
+  "effective_validation": {
+    "path": "docs/a_share_three_day_walkforward_campaign_265_source_acceptance_plan_validation_v2_20260824.json",
+    "sha256": "4925d75621fe0625d9b34a269c2c5867fe15109e1d03a9cbee869b6d344d39bc",
+    "black_passed": true,
+    "ruff_passed": true,
+    "pytest_passed": 47,
+    "pytest_failed": 0,
+    "historical_lifecycle_nodes_deselected": 1,
+    "ledger_chain_passed": true
+  },
+  "effective_attempt_ledger": {
+    "path": "data/experiments/short_horizon/historical_walkforward/campaign_265/research_attempt_ledger_v6.json",
+    "sha256": "fd015de31865b048f8f199759b4330dbfd3732167f174c6ab79576b865889c36",
+    "entry_count": 15,
+    "chain_tip_sha256": "5fc45efdf39f4cc61a3460bc295547899bf83e492c1ad77f38d0fd681e29a8cc"
+  },
+  "post_plan_failure_records": [
+    {
+      "path": "docs/a_share_three_day_walkforward_campaign_265_post_plan_mutable_report_hash_test_failure_20260824.json",
+      "sha256": "def9ae5138f3548ad7a386d734d2ba3c6e6bf793e29e96de366d469cd611e1c9"
+    },
+    {
+      "path": "docs/a_share_three_day_walkforward_campaign_265_post_plan_pytest_deselect_prefix_failure_20260824.json",
+      "sha256": "5e00cb8e5fbb4ed2d58d2ce5633bb9fcd3fe7fe0bd0db7acaf2977582d555710"
+    }
+  ],
+  "campaign265_effective_state": {
+    "selected_name": "convertible_bond_equity_parity_premium_compression_3s",
+    "selected_direction": "higher",
+    "source_acceptance_plan_ready": true,
+    "source_acceptance_plan_actual_exit_code": 0,
+    "accepted_trade_date_count": 1699,
+    "exact_future_provider_call_count": 1700,
+    "source_acceptance_attempt_started": false,
+    "execution_workflow_created": false,
+    "credential_load_authorized": false,
+    "provider_request_authorized": false,
+    "source_candidate_or_comparator_value_authorized": false,
+    "complete_factor_definition_count": 162,
+    "complete_factor_definition_order_sha256": "974f2c1f16a85eb43a0bd1e8db768dbe120cd8826c1754d5f220bf9f1d4a3ea0",
+    "eligible_numeric_comparator_count": 143,
+    "eligible_numeric_comparator_order_sha256": "f4fbf3d578e2c80c29425716a30d60a3df01d67d04e37f1651236c4dff899588",
+    "complete_definition_appended": false,
+    "numeric_comparator_appended": false,
+    "development_trial_count": 0,
+    "development_survivor_count": 0,
+    "stress_trial_count_2024_2025": 0,
+    "campaign_attempt_count": 15,
+    "infrastructure_failure_count": 7,
+    "prevalue_scientific_attempt_count": 8,
+    "complete_factor_attempt_count": 0,
+    "cumulative_historical_research_attempt_count": 2619,
+    "cumulative_return_reading_development_trial_count": 315
+  },
+  "candidate49": {
+    "sole_prospective_candidate": true,
+    "signal_entry_count": 0,
+    "signal_ledger_sha256": "5193f00d7f36da003f53cec387900da4c3d002299f5dfcfc1a95eaa199ed3a79",
+    "execution_entry_count": 0,
+    "execution_ledger_sha256": "d57a3e61eac969e42cafa418ccd8c0a5ee65dcf69da145bb2c096c2a02a2ea4f",
+    "historical_backfill_allowed": false,
+    "second_prospective_candidate_allowed": false
+  },
+  "session_boundary": {
+    "local_timezone": "Asia/Singapore",
+    "observed_local_time": "2026-08-24T12:48:36+0800",
+    "before_candidate49_1630_threshold": true,
+    "candidate49_plan_or_run_executed": false
+  },
+  "research_boundary": {
+    "provider_credential_value_or_digest_read": false,
+    "provider_client_imported_or_created": false,
+    "provider_request_issued": false,
+    "provider_response_or_row_value_read": false,
+    "source_acceptance_files_written": false,
+    "candidate_or_comparator_value_read": false,
+    "historical_daily_price_or_forward_return_value_read": false,
+    "stress_2024_2025_opened": false,
+    "candidate49_historical_backfill_performed": false,
+    "candidate49_ledgers_changed": false,
+    "second_prospective_candidate_created": false,
+    "current_scoring_selection_sizing_positions_or_orders_performed": false,
+    "investment_advice": false
+  },
+  "next_action": "Continue Campaign265 only by separately freezing and implementing a credential-safe one-shot source-acceptance execution workflow bound to the ready plan. Under v418 and this state do not load credentials, issue provider requests, expose a run confirmation interface, or open source/candidate/comparator/price/return values."
+}

@@ -1,0 +1,95 @@
+{
+  "schema_version": 1,
+  "kind": "a_share_three_day_walkforward_campaign265_source_acceptance_plan_validation",
+  "status": "validated_ready_zero_network_plan_only_values_closed",
+  "recorded_at": "2026-08-24T04:41:17Z",
+  "validated_artifacts": {
+    "preregistration": {
+      "path": "docs/a_share_three_day_walkforward_campaign_265_source_acceptance_preregistration_20260824.json",
+      "sha256": "474e5a995703f46005053268bbbd6c1c20835c99233f82e727a24a6085198ffd"
+    },
+    "planner": {
+      "path": "scripts/a_share_three_day_walkforward_campaign265_source_acceptance_plan.py",
+      "sha256": "1702119cc43c58843cc27575a9681214121b45084ccd0ff84489ea362eac7c05"
+    },
+    "planner_tests": {
+      "path": "tests/data_collector_tests/test_a_share_three_day_walkforward_campaign265_source_acceptance_plan.py",
+      "sha256": "a290d89afbb102c945fb3ffd55ddb41c519abaad4e06117eeeeb4ce2c010e00a"
+    },
+    "implementation_freeze": {
+      "path": "docs/a_share_three_day_walkforward_campaign_265_source_acceptance_planner_implementation_freeze_20260824.json",
+      "sha256": "f6d0083459212661de31623875f280627b3b0dfc4f7868b2dd15198a9aafcd8d"
+    },
+    "numeric_policy_v418": {
+      "path": "docs/a_share_three_day_walkforward_future_numeric_comparison_eligibility_policy_v418_20260824.json",
+      "sha256": "f1ba460fda8fe9b51388edfb4a2de7c8a7940c0df1650a75e8d142ccef3d36a0"
+    },
+    "plan_result": {
+      "path": "docs/a_share_three_day_walkforward_campaign_265_source_acceptance_plan_result_20260824.json",
+      "sha256": "03c05e8586d97d2c0e2fccb9978ab858a7f99bd77b49d5266a7706383ef2b3a5"
+    },
+    "attempt_ledger_v4": {
+      "path": "data/experiments/short_horizon/historical_walkforward/campaign_265/research_attempt_ledger_v4.json",
+      "sha256": "706e70dba43e2b236d50ca1edfef35eb7440502a097dba72170551c2c40f999e",
+      "chain_tip_sha256": "472403c6927a6e146fe1922f84ae0d9cb7bb88414a4ba006049620d95495d317"
+    },
+    "planner_report": {
+      "path": "docs/a_share_three_day_walkforward_campaign_265_source_acceptance_plan_report.md",
+      "sha256": "25b3693098ef1c0b4f869e99c325c2a328a8c832df038062da4ee5814c093020"
+    }
+  },
+  "validation_commands": {
+    "black": {
+      "passed": true,
+      "file_count": 6,
+      "result": "6 files would be left unchanged"
+    },
+    "ruff": {
+      "passed": true,
+      "file_count": 6,
+      "result": "All checks passed"
+    },
+    "focused_pytest": {
+      "passed": 42,
+      "failed": 0,
+      "duration_seconds": 3.54,
+      "planner_specific_passed": 12
+    },
+    "exact_plan_wrapper": {
+      "actual_exit_code": 0,
+      "declared_exit_code": 0,
+      "json_object_count": 1,
+      "stderr_empty": true,
+      "ready": true,
+      "blockers": [],
+      "watched_paths_unchanged": true
+    },
+    "semantic_replay": {
+      "json_documents_validated": 5,
+      "appended_ledger_entries_validated": 3,
+      "ledger_chain_valid": true,
+      "candidate49_signal_entries": 0,
+      "candidate49_execution_entries": 0,
+      "source_acceptance_artifacts_present": 0
+    }
+  },
+  "verified_plan": {
+    "accepted_trade_date_count": 1699,
+    "exact_provider_call_count": 1700,
+    "accepted_trade_dates_canonical_newline_sha256": "f9205c3cfdeb51b808d18b66edb8cf66bf57df94f696fb3b6bd5743b9a0bc769",
+    "request_sequence_canonical_json_sha256": "3f9cccb3134b7e9e22f5d34fd8bc07f89e1d8047dd775d07c3257443a97b4c58",
+    "plan_stdout_sha256": "294f53ec7e68e3c527bccd2d40809f0e65cb9ffb410a75932b130b870fde9273"
+  },
+  "research_boundary": {
+    "credential_file_or_environment_inspected_by_planner": false,
+    "provider_credential_value_or_digest_read": false,
+    "provider_client_imported_or_created": false,
+    "provider_request_issued": false,
+    "provider_response_or_row_value_read": false,
+    "candidate_or_comparator_value_read": false,
+    "historical_daily_price_or_forward_return_value_read": false,
+    "source_acceptance_files_written": false,
+    "stress_2024_2025_opened": false,
+    "candidate49_ledgers_changed": false
+  }
+}

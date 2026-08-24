@@ -1,0 +1,71 @@
+{
+  "schema_version": 1,
+  "kind": "a_share_three_day_walkforward_campaign265_source_acceptance_planner_implementation_freeze",
+  "status": "planner_bytes_frozen_zero_network_before_plan_authorization_or_execution",
+  "recorded_at": "2026-08-24T04:36:45Z",
+  "authoritative_inputs": {
+    "adapter_ready_state": {
+      "path": "docs/a_share_three_day_iteration_status_20260824_campaign265_adapter_ready.json",
+      "sha256": "926cb5336c11225106711964ac5cc566289f9dc467edc52d83edba80ea23ce6e"
+    },
+    "numeric_policy_v417": {
+      "path": "docs/a_share_three_day_walkforward_future_numeric_comparison_eligibility_policy_v417_20260824.json",
+      "sha256": "62805389b141904fe6b519bb7ff345410802fb5475f3804615e6f12ff81da39f"
+    },
+    "source_contract": {
+      "path": "docs/a_share_three_day_walkforward_campaign_265_convertible_premium_source_contract_20260824.json",
+      "sha256": "efe7884d3ea0fd7f974e0d3347432e68e9e01ceefe0e6ebdca7fdd3e6349301c"
+    },
+    "adapter": {
+      "path": "scripts/a_share_three_day_walkforward_campaign265_convertible_premium.py",
+      "sha256": "58b9fddbbeef97955d4961f9f708028aa63d90fc56f2656db68098de7d3543e8"
+    },
+    "preregistration": {
+      "path": "docs/a_share_three_day_walkforward_campaign_265_source_acceptance_preregistration_20260824.json",
+      "sha256": "474e5a995703f46005053268bbbd6c1c20835c99233f82e727a24a6085198ffd"
+    }
+  },
+  "planner": {
+    "path": "scripts/a_share_three_day_walkforward_campaign265_source_acceptance_plan.py",
+    "sha256": "1702119cc43c58843cc27575a9681214121b45084ccd0ff84489ea362eac7c05",
+    "only_command": "plan",
+    "credential_or_environment_loader_present": false,
+    "provider_client_or_transport_present": false,
+    "filesystem_write_path_present": false,
+    "run_or_confirmation_interface_present": false
+  },
+  "planner_tests": {
+    "path": "tests/data_collector_tests/test_a_share_three_day_walkforward_campaign265_source_acceptance_plan.py",
+    "sha256": "a290d89afbb102c945fb3ffd55ddb41c519abaad4e06117eeeeb4ce2c010e00a",
+    "test_count": 12,
+    "historical_or_provider_value_fixture_present": false
+  },
+  "frozen_plan_semantics": {
+    "accepted_trade_dates": 1699,
+    "accepted_trade_dates_canonical_newline_sha256": "f9205c3cfdeb51b808d18b66edb8cf66bf57df94f696fb3b6bd5743b9a0bc769",
+    "cb_basic_calls": 1,
+    "cb_daily_calls": 1699,
+    "exact_provider_calls": 1700,
+    "request_sequence_canonical_json_sha256": "3f9cccb3134b7e9e22f5d34fd8bc07f89e1d8047dd775d07c3257443a97b4c58",
+    "strict_rows_per_response_less_than": 2000,
+    "minimum_rows_per_response": 1,
+    "minimum_seconds_between_provider_entries": 1.05,
+    "all_destinations_private_repo_data_paths": true,
+    "intent_and_journal_precede_credential_load": true,
+    "terminal_no_retry_and_exact_committed_prefix_semantics": true
+  },
+  "preauthorization_validation": {
+    "black": "passed",
+    "ruff_after_one_unused_import_repair": "passed",
+    "planner_execution_attempted": false,
+    "provider_request_issued": false,
+    "credential_value_or_digest_read": false,
+    "candidate_comparator_price_or_return_value_read": false
+  },
+  "authorization_boundary": {
+    "this_freeze_authorizes_plan_execution": false,
+    "this_freeze_authorizes_credential_load": false,
+    "this_freeze_authorizes_provider_request": false,
+    "required_next_action": "Publish a new plan-only numeric policy binding this preregistration, planner, tests and freeze; then run only plan. A later credential/provider workflow requires a separate freeze and authorization even when plan is ready."
+  }
+}

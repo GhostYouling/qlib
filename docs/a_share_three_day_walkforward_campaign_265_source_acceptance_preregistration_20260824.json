@@ -1,0 +1,144 @@
+{
+  "schema_version": 1,
+  "kind": "a_share_three_day_walkforward_campaign265_source_acceptance_preregistration",
+  "status": "frozen_zero_network_plan_contract_before_credential_provider_source_candidate_comparator_price_or_return_values",
+  "recorded_at": "2026-08-24T04:32:55Z",
+  "purpose": "Freeze the complete deterministic one-shot source-acquisition intent that a later separately authorized Campaign265 workflow would have to persist before credential loading or any provider entry. This artifact authorizes only a zero-network plan command.",
+  "authoritative_inputs": {
+    "adapter_ready_state": {
+      "path": "docs/a_share_three_day_iteration_status_20260824_campaign265_adapter_ready.json",
+      "sha256": "926cb5336c11225106711964ac5cc566289f9dc467edc52d83edba80ea23ce6e"
+    },
+    "numeric_policy_v417": {
+      "path": "docs/a_share_three_day_walkforward_future_numeric_comparison_eligibility_policy_v417_20260824.json",
+      "sha256": "62805389b141904fe6b519bb7ff345410802fb5475f3804615e6f12ff81da39f"
+    },
+    "source_contract": {
+      "path": "docs/a_share_three_day_walkforward_campaign_265_convertible_premium_source_contract_20260824.json",
+      "sha256": "efe7884d3ea0fd7f974e0d3347432e68e9e01ceefe0e6ebdca7fdd3e6349301c"
+    },
+    "adapter": {
+      "path": "scripts/a_share_three_day_walkforward_campaign265_convertible_premium.py",
+      "sha256": "58b9fddbbeef97955d4961f9f708028aa63d90fc56f2656db68098de7d3543e8"
+    },
+    "adapter_tests": {
+      "path": "tests/data_collector_tests/test_a_share_three_day_walkforward_campaign265_convertible_premium.py",
+      "sha256": "b681af4d0d6f3d7081adac6207dab438c7166945bfea27c72ac4ea61ea481f4a"
+    },
+    "adapter_implementation_freeze": {
+      "path": "docs/a_share_three_day_walkforward_campaign_265_adapter_implementation_freeze_20260824.json",
+      "sha256": "2429588261bf35e46c3a68daeab85b23405c247a6fd98195e081c2b43c1f638e"
+    },
+    "attempt_ledger_v3": {
+      "path": "data/experiments/short_horizon/historical_walkforward/campaign_265/research_attempt_ledger_v3.json",
+      "sha256": "7edd5202c77ed575f84efc6e8ecbc51bb2367f631783b1f3810e2378d094bdf0",
+      "chain_tip_sha256": "182be5c5736620bebe17d9128d356cbbb021a084e2bcb52cbc9e5bc2293da00d"
+    }
+  },
+  "frozen_calendar": {
+    "path": "data/qlib/cn_a_share/calendars/day.txt",
+    "file_sha256": "fda506597d26bcec953cdc0882042a5046ec1587db60490e16a01627fd43f53a",
+    "first_accepted_trade_date": "2019-01-02",
+    "last_accepted_trade_date": "2025-12-31",
+    "accepted_trade_date_count": 1699,
+    "accepted_trade_dates_canonical_newline_sha256": "f9205c3cfdeb51b808d18b66edb8cf66bf57df94f696fb3b6bd5743b9a0bc769",
+    "intent_must_embed_all_dates_before_credential_load": true
+  },
+  "frozen_factor_universe": {
+    "path": "data/qlib/cn_a_share/instruments/factor_main_chinext_star.txt",
+    "file_sha256": "cdded13c831b78045f4cfe80ba5d9a49f82152c615fef4267d00f992e7f53762",
+    "instrument_count": 5451
+  },
+  "frozen_request_schedule": {
+    "provider": "Tushare Pro",
+    "minimum_account_points_documented_by_source_contract": 2000,
+    "five_thousand_points_required": false,
+    "cb_basic": {
+      "calls": 1,
+      "parameters": {},
+      "fields": [
+        "ts_code",
+        "cb_type",
+        "stk_code",
+        "list_date",
+        "delist_date",
+        "exchange"
+      ],
+      "minimum_rows": 1,
+      "strict_rows_less_than": 2000
+    },
+    "cb_daily": {
+      "calls": 1699,
+      "call_order": "the exact frozen accepted_trade_dates order",
+      "parameters_per_call": {
+        "trade_date": "YYYYMMDD rendering of the corresponding accepted trade date"
+      },
+      "fields": [
+        "ts_code",
+        "trade_date",
+        "amount",
+        "cb_over_rate"
+      ],
+      "minimum_rows_per_call": 1,
+      "strict_rows_per_call_less_than": 2000,
+      "pagination_or_code_loop_allowed": false
+    },
+    "exact_provider_call_count": 1700,
+    "maximum_provider_call_count": 1700,
+    "request_sequence_canonical_json_sha256": "3f9cccb3134b7e9e22f5d34fd8bc07f89e1d8047dd775d07c3257443a97b4c58",
+    "minimum_seconds_between_provider_entries": 1.05,
+    "retry_allowed": false,
+    "projection_extension_allowed": false
+  },
+  "frozen_private_atomic_destinations": {
+    "staging_root": "data/raw/a_share/rich/tushare/convertible_premium/campaign265_2019_2025_v1.staging",
+    "final_root": "data/raw/a_share/rich/tushare/convertible_premium/campaign265_2019_2025_v1",
+    "cb_basic_checkpoint": "data/raw/a_share/rich/tushare/convertible_premium/campaign265_2019_2025_v1.staging/cb_basic.parquet",
+    "cb_daily_checkpoint_template": "data/raw/a_share/rich/tushare/convertible_premium/campaign265_2019_2025_v1.staging/cb_daily/{trade_date}.parquet",
+    "internal_manifest": "data/raw/a_share/rich/tushare/convertible_premium/campaign265_2019_2025_v1.staging/source_manifest.json",
+    "intent": "data/metadata/rich_data/runs/campaign265_convertible_premium_acceptance_intent_v1.json",
+    "attempt_journal": "data/metadata/rich_data/runs/campaign265_convertible_premium_acceptance_attempt_v1.jsonl",
+    "terminal_failure": "data/metadata/rich_data/runs/campaign265_convertible_premium_acceptance_failure_v1.json",
+    "repository_acceptance_manifest": "data/metadata/rich_data/runs/campaign265_convertible_premium_acceptance_v1.json",
+    "file_mode": "0600",
+    "same_filesystem_atomic_staging_to_final_rename_required": true,
+    "overwrite_allowed": false
+  },
+  "durable_one_shot_state_machine": {
+    "intent_and_journal_created_exclusively_and_fsynced_before_credential_load": true,
+    "full_date_list_request_digest_projection_paths_limits_and_code_hashes_in_intent": true,
+    "request_authorized_event_fsynced_before_each_provider_entry": true,
+    "response_received_event_contains_no_raw_value_or_plaintext_error": true,
+    "checkpoint_committed_event_only_after_atomic_file_fsync": true,
+    "resume_allowed_only_from_an_exact_verified_committed_prefix_with_no_inflight_request": true,
+    "authorized_request_without_matching_committed_checkpoint_is_terminal_no_retry_evidence": true,
+    "permission_transport_schema_empty_truncation_identity_date_mapping_or_persistence_failure_is_terminal": true,
+    "failed_response_must_not_be_requested_again_for_diagnostics": true,
+    "failure_record_must_not_store_token_token_digest_raw_rows_row_values_or_plaintext_provider_error": true,
+    "success_requires_exactly_1700_committed_requests_and_atomic_final_publication": true
+  },
+  "planner_contract": {
+    "only_cli_command": "plan",
+    "zero_network": true,
+    "credential_file_or_environment_inspection": false,
+    "provider_client_or_transport_interface": false,
+    "writes_files_or_directories": false,
+    "output_contains_full_1699_date_list": true,
+    "ready_true_means_only_plan_bindings_and_destination_absence_are_valid": true,
+    "ready_true_does_not_authorize_credential_load_or_provider_request": true,
+    "run_or_confirmation_interface_allowed": false
+  },
+  "research_boundary": {
+    "provider_credential_value_or_digest_read": false,
+    "provider_request_issued": false,
+    "provider_response_or_row_value_read": false,
+    "candidate_or_comparator_value_read": false,
+    "historical_daily_price_or_forward_return_value_read": false,
+    "stress_2024_2025_opened": false,
+    "candidate49_historical_backfill_performed": false,
+    "candidate49_ledgers_changed": false,
+    "second_prospective_candidate_created": false,
+    "current_scoring_selection_sizing_positions_or_orders_performed": false,
+    "investment_advice": false
+  }
+}

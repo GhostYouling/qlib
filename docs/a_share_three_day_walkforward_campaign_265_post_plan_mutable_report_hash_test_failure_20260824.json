@@ -1,0 +1,31 @@
+{
+  "schema_version": 1,
+  "kind": "a_share_three_day_walkforward_campaign265_post_plan_mutable_report_hash_test_failure",
+  "status": "infrastructure_only_historical_publication_hash_assertion_failed_after_intentional_mutable_report_append",
+  "recorded_at": "2026-08-24T04:44:41Z",
+  "command_scope": "Campaign265 adapter, prevalue-contract, adapter-stage and source-acceptance-plan focused tests after appending the source-plan stage to both mutable unified reports",
+  "result": {
+    "passed": 41,
+    "failed": 1,
+    "failed_node": "tests/data_collector_tests/test_a_share_three_day_walkforward_campaign265_adapter_stage.py::test_unified_reports_have_one_adapter_stage_and_publication_hashes",
+    "failure_reason": "The immutable adapter-stage lifecycle test correctly binds the unified reports' adapter-publication bytes. Those explicitly mutable reports now contain the later source-acceptance-plan section, so their current hashes no longer equal the earlier v417 publication hashes.",
+    "adapter_stage_heading_count_changed": false,
+    "adapter_stage_text_or_scientific_result_changed": false,
+    "source_acceptance_plan_heading_present_once_in_each_report": true
+  },
+  "correction_boundary": {
+    "immutable_historical_test_must_not_be_rewritten": true,
+    "exact_failed_historical_node_may_be_deselected_from_current_state_suite": true,
+    "versioned_current_state_tests_required": true,
+    "scientific_or_source_rerun_required": false
+  },
+  "research_boundary": {
+    "provider_credential_value_or_digest_read": false,
+    "provider_request_issued": false,
+    "provider_response_or_row_value_read": false,
+    "candidate_or_comparator_value_read": false,
+    "historical_daily_price_or_forward_return_value_read": false,
+    "source_acceptance_files_written": false,
+    "candidate49_ledgers_changed": false
+  }
+}
