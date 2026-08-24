@@ -1,0 +1,179 @@
+{
+  "schema_version": 1,
+  "kind": "a_share_three_day_walkforward_campaign_271_external_attention_concept_scouting_result",
+  "status": "terminal_concept_only_frontier_one_zero_row_source_contract_route_preserved_zero_factors",
+  "recorded_at": "2026-08-24T19:20:00+08:00",
+  "timestamp_semantics": "Monotonic logical publication time after the frozen Campaign271 catalog and targeted repository-only metadata review; not a market-data timestamp or host-wall-clock claim.",
+  "authoritative_inputs": {
+    "campaign270_final_validated_state": {
+      "path": "docs/a_share_three_day_iteration_status_20260824_campaign270_final_validated_v3.json",
+      "sha256": "8f5bda9888d967c65c973078a1f162577e0429ac42b9bf04c6b7fd1530dc7af3"
+    },
+    "campaign271_preregistration": {
+      "path": "docs/a_share_three_day_walkforward_campaign_271_external_attention_concept_scouting_preregistration_20260824.json",
+      "sha256": "1f7dd8d354cd0120669a0a226b1f257d9743ebe6a37a26d1559ee7997be77169"
+    },
+    "campaign271_initial_ledger": {
+      "path": "data/experiments/short_horizon/historical_walkforward/campaign_271/research_attempt_ledger_v1.json",
+      "sha256": "e9b8d784a63b66309c7baac1626549282727d773cb79e7ae7c6fc27760b8ace5",
+      "chain_tip_sha256": "8a3160fb1ee3b9a40748c0cb437609bd9daadc0d123a55f2722463d533806c86"
+    },
+    "campaign164_human_capital_frontier": {
+      "path": "docs/a_share_three_day_walkforward_campaign_164_human_capital_source_frontier_20260815.json",
+      "sha256": "c31878523b4391ef46305c724cd59f8c12b1d3fd1f0eefaaadb181d8bc47698f"
+    },
+    "campaign168_operating_scale_frontier": {
+      "path": "docs/a_share_three_day_walkforward_campaign_168_operating_scale_adoption_kpi_source_frontier_20260815.json",
+      "sha256": "c5dc98f92266e2b7ef7349cb5260a8cde15ccd9c78442e661e4170b1ba47d18a"
+    },
+    "campaign170_customer_experience_frontier": {
+      "path": "docs/a_share_three_day_walkforward_campaign_170_customer_experience_quality_kpi_source_frontier_20260815.json",
+      "sha256": "b3ec42d8c8872ae9be913ffd64b24ba449e4c4f0e1f91af31b98f0e0e7158379"
+    },
+    "campaign207_digital_advertising_frontier": {
+      "path": "docs/a_share_three_day_walkforward_campaign_207_digital_advertising_campaign_inventory_delivery_measurement_invalid_traffic_billing_makegood_dispute_settlement_lifecycle_source_frontier_20260815.json",
+      "sha256": "309998d689a315820be4a94304966a23984bffaf43100f1cfb40dbcc976743c0"
+    },
+    "campaign213_retail_frontier": {
+      "path": "docs/a_share_three_day_walkforward_campaign_213_retail_merchandising_assortment_planogram_shelf_availability_replenishment_promotion_coupon_markdown_omnichannel_order_return_exchange_restock_lifecycle_source_frontier_20260815.json",
+      "sha256": "ce93bf21740921402f061ad7e688a8ae5d781dd4e4d4b55717e0bb25115e8471"
+    },
+    "campaign114_metadata_discovery_failure": {
+      "path": "docs/a_share_three_day_walkforward_campaign_114_official_metadata_discovery_failure_20260809.json",
+      "sha256": "3b2da64258cd3e00e648edea8086b3e84bb7543f9656c919e37d800b8f2ab66a"
+    }
+  },
+  "targeted_repository_search_evidence": {
+    "scope": [
+      "docs",
+      "scripts",
+      "tests"
+    ],
+    "method": "Frozen rg query families over tracked filenames and text metadata only; the Campaign271 preregistration itself was excluded from match counts.",
+    "query_family_file_match_counts": {
+      "public_search_attention": 2,
+      "website_audience_traffic": 0,
+      "mobile_app_store_rank_download_engagement": 0,
+      "ecommerce_product_demand_review": 0,
+      "online_vacancy_job_posting_demand": 1,
+      "public_social_discussion_reputation": 1
+    },
+    "public_search_attention_match_interpretation": "Both matches concern Campaign114's own official-metadata discovery search_query_count=9. They are execution metadata for repository research and contain no issuer, brand, product, query-attention observation, source contract or factor.",
+    "vacancy_match_interpretation": "The sole vacancy match is a board-seat vacancy semantic in Campaign171, not external employer vacancy or job-posting data. Campaign164 separately establishes the adjacent human-capital source frontier and its unadmitted point-in-time employer denominators.",
+    "social_match_interpretation": "The sole social-media match appears in Campaign207's sector-scope boundary for advertising operators. It is not public issuer reputation or discussion history, but Campaign207 and Campaign170 remain adjacent lifecycle and customer-quality domains that prohibit relabeling their states.",
+    "accepted_local_external_attention_raw_channel_present": false,
+    "provider_or_web_request_issued": false,
+    "source_row_or_research_value_read": false,
+    "interpretation": "Repository evidence has many issuer-disclosure and market-activity attention proxies, but no admitted external public search-attention primitive with point-in-time historical issuer/brand/query identity. That is an economically distinct information channel, not evidence of source feasibility or predictive merit."
+  },
+  "route_decisions": [
+    {
+      "route_id": "c271_01",
+      "name": "issuer_brand_product_public_search_attention_state",
+      "decision": "preserve_for_separate_zero_row_source_contract",
+      "classification": "concept_selected_not_factor_admitted",
+      "reason": "The observed state is external public demand or awareness behavior rather than issuer disclosure recency, analyst attention, security-market activity, operating KPI, customer-lifecycle or facility-hazard data. No admitted repository source or factor supplies it. A later contract must still prove historical issuer/brand/product/query identity, query-basket construction before values, geography, sampling and revision clocks, zero versus missing, all-issuer support and 2019-2023 reproducibility.",
+      "formula": null,
+      "direction": null,
+      "source_fields": null,
+      "query_basket": null,
+      "window_or_threshold": null,
+      "candidate_or_comparator_value_read": false
+    },
+    {
+      "route_id": "c271_02",
+      "name": "issuer_public_website_audience_traffic_state",
+      "decision": "close_after_priority_selection_same_external_attention_family_source_variant",
+      "classification": "sibling_channel_search_closed",
+      "reason": "Website visits and public search interest both observe external digital attention. Selecting domains, traffic estimators, geographies or metrics after preserving c271_01 would be a same-family platform and measurement search before one base contract is accepted.",
+      "formula": null,
+      "direction": null,
+      "source_fields": null,
+      "candidate_or_comparator_value_read": false
+    },
+    {
+      "route_id": "c271_03",
+      "name": "issuer_mobile_app_store_rank_download_engagement_state",
+      "decision": "close_after_priority_selection_same_external_attention_family_source_variant",
+      "classification": "sibling_channel_search_closed",
+      "reason": "App rank, downloads and engagement would add application ownership, store, country and metric choices inside the same external attention family after c271_01 was preserved. Campaign168 also keeps issuer-reported active-user KPI sources deferred, so those disclosures may not be substituted.",
+      "formula": null,
+      "direction": null,
+      "source_fields": null,
+      "candidate_or_comparator_value_read": false
+    },
+    {
+      "route_id": "c271_04",
+      "name": "issuer_product_ecommerce_demand_review_state",
+      "decision": "reject_terminal_operating_scale_retail_demand_overlap_and_sibling_channel_search",
+      "classification": "adjacent_terminal_lifecycle_overlap_and_platform_metric_search",
+      "reason": "Campaign168 and Campaign213 already govern product, sales, traffic, conversion and omnichannel demand or retail lifecycle semantics. Marketplace ranking, review, sales or SKU choices would both relabel those adjacent states and search another platform-specific external demand measurement after c271_01 selection.",
+      "formula": null,
+      "direction": null,
+      "source_fields": null,
+      "candidate_or_comparator_value_read": false
+    },
+    {
+      "route_id": "c271_05",
+      "name": "issuer_online_vacancy_job_posting_demand_state",
+      "decision": "reject_campaign164_human_capital_overlap_and_employer_identity_underidentification",
+      "classification": "adjacent_human_capital_family_and_unidentified_point_in_time_employer_mapping",
+      "reason": "Vacancy demand is an employer human-capital state adjacent to Campaign164. Historical issuer/subsidiary/employer identities, duplicate postings, reposts, closure, location, role taxonomy, platform coverage and zero-posting denominators are not admitted, so this cannot be used as a fallback external-attention route.",
+      "formula": null,
+      "direction": null,
+      "source_fields": null,
+      "candidate_or_comparator_value_read": false
+    },
+    {
+      "route_id": "c271_06",
+      "name": "issuer_public_social_discussion_reputation_state",
+      "decision": "close_after_priority_selection_text_platform_identity_and_reputation_taxonomy_underidentified",
+      "classification": "sibling_attention_channel_and_text_taxonomy_search_closed",
+      "reason": "Social discussion is another external attention channel after c271_01 was selected. Platform population, account/bot policy, issuer/brand/product entity resolution, text language, topic, sentiment or reputation label, deletion and correction history, privacy and complete zero denominator would introduce many post-concept choices.",
+      "formula": null,
+      "direction": null,
+      "source_fields": null,
+      "candidate_or_comparator_value_read": false
+    }
+  ],
+  "gate_summary": {
+    "finite_route_count": 6,
+    "concept_preserved_for_future_source_contract_count": 1,
+    "sibling_channel_closed_count": 3,
+    "terminal_overlap_or_underidentification_rejection_count": 2,
+    "selected_factor_count": 0,
+    "complete_factor_definition_created": false,
+    "numeric_formula_or_direction_frozen": false,
+    "source_contract_or_adapter_created": false,
+    "complete_factor_definition_count_unchanged": 162,
+    "eligible_numeric_comparator_count_unchanged": 143,
+    "candidate_or_comparator_value_read": false,
+    "historical_daily_price_or_forward_return_read": false,
+    "development_trial_count": 0,
+    "stress_trial_count_2024_2025": 0
+  },
+  "selection": {
+    "selected_concept_id": "c271_01",
+    "selected_concept_is_not_a_factor": true,
+    "selected_concept_does_not_authorize_source_or_value_access": true,
+    "required_next_stage": "Campaign272 may freeze one exact zero-row source-contract feasibility review for public issuer/brand/product search attention. It must bind point-in-time issuer, subsidiary, brand, product and query identities; search platform and geography; public/sampling/revision clock; immutable 2019-2023 archive; all-issuer zero-versus-missing denominator; query basket; and every later formula, direction, support and walk-forward gate before any row or value.",
+    "fallback_if_contract_cannot_close": "Terminalize c271_01 without switching to website, app-store, ecommerce, job-posting, social-media, query-basket, geography, threshold, window or direction alternatives."
+  },
+  "research_boundary": {
+    "repository_metadata_and_prior_terminal_history_read": true,
+    "accepted_local_raw_channel_value_read": false,
+    "provider_or_web_request_issued": false,
+    "provider_credential_value_or_digest_read": false,
+    "provider_response_or_source_row_read": false,
+    "candidate_or_comparator_value_read": false,
+    "historical_daily_price_or_forward_return_value_read": false,
+    "stress_2024_2025_opened": false,
+    "campaign265_changed": false,
+    "candidate49_plan_or_run_executed_by_campaign271": false,
+    "candidate49_historical_backfill_performed": false,
+    "candidate49_ledgers_changed": false,
+    "second_prospective_candidate_created": false,
+    "current_scoring_selection_sizing_positions_or_orders_performed": false,
+    "investment_advice": false
+  }
+}
