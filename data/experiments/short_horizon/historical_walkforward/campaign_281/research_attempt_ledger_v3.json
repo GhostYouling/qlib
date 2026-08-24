@@ -1,0 +1,81 @@
+{
+  "schema_version": 1,
+  "kind": "a_share_three_day_walkforward_campaign281_research_attempt_ledger_recovery",
+  "recorded_at": "2026-08-24T23:23:00+08:00",
+  "timestamp_semantics": "Monotonic logical append time after the invalid Campaign281 v2 entry hash was detected before authority use; not a market-data or host-wall-clock measurement.",
+  "authoritative_predecessor": {
+    "path": "data/experiments/short_horizon/historical_walkforward/campaign_281/research_attempt_ledger_v1.json",
+    "sha256": "da853005d10e21986963b4f7dc6621671506b72ca2bdf7c8485b87c77d6c622c",
+    "chain_tip_sha256": "3d562cc7fcdc7ecbafa97070e4ed69503c7231bcc81d986746a13779676f9b5f",
+    "effective_entry_count": 7,
+    "cumulative_historical_research_attempt_count": 2871,
+    "cumulative_return_reading_development_trial_count": 315
+  },
+  "supersedes_invalid_ledger": {
+    "path": "data/experiments/short_horizon/historical_walkforward/campaign_281/research_attempt_ledger_v2.json",
+    "sha256": "c7ff03309eb4581d5ee0285cbacf82a9b21e8e21034d6d5a83ea28085e300440",
+    "reason": "Its sole appended entry stored 094678... while the frozen Campaign281 entry-hash algorithm yields 1b6177.... It was detected by independent recomputation before any report, state, test, commit or push bound v2 as effective evidence. The invalid file remains preserved and is not part of the effective chain."
+  },
+  "entries": [
+    {
+      "attempt_id": "campaign281_infrastructure_001",
+      "candidate_or_comparator_value_read": false,
+      "complete_factor_attempt": false,
+      "entry_sha256": "1b617798eb3c05f08ba4bf3644c246cc1e51956f4d0f881da4c63b8c9d2a1fdb",
+      "ordinal": 8,
+      "phase": "terminal_artifact_inspection",
+      "previous_entry_sha256": "3d562cc7fcdc7ecbafa97070e4ed69503c7231bcc81d986746a13779676f9b5f",
+      "result_consumed": false,
+      "return_reading_development_trial": false,
+      "scientific_attempt": false,
+      "status": "failed_campaign280_validation_record_filename_components_transposed"
+    },
+    {
+      "attempt_id": "campaign281_infrastructure_002",
+      "candidate_or_comparator_value_read": false,
+      "complete_factor_attempt": false,
+      "entry_sha256": "347985e70fb416b7ca8a39a58724b711eca84ef88434b0b71d8f67fb401e60e8",
+      "ordinal": 9,
+      "phase": "attempt_ledger_validation",
+      "previous_entry_sha256": "1b617798eb3c05f08ba4bf3644c246cc1e51956f4d0f881da4c63b8c9d2a1fdb",
+      "result_consumed": false,
+      "return_reading_development_trial": false,
+      "scientific_attempt": false,
+      "status": "failed_campaign281_ledger_v2_entry_hash_mismatch_detected_before_use"
+    }
+  ],
+  "failure_evidence": [
+    {
+      "attempt_id": "campaign281_infrastructure_001",
+      "failure_class": "read_only_path_transcription_error",
+      "detail": "A read-only inspection requested the nonexistent suffix order terminal_validation_20260824_v2.json instead of terminal_validation_v2_20260824.json and returned nonzero. No research value, source row or secret was read."
+    },
+    {
+      "attempt_id": "campaign281_infrastructure_002",
+      "failure_class": "invalid_unpublished_ledger_entry_hash",
+      "detail": "Independent recomputation found the new v2 entry hash did not match the frozen chain algorithm. v2 had not been consumed, bound, staged, committed or pushed; it is preserved as failed evidence and excluded from the effective chain."
+    }
+  ],
+  "effective_entry_count": 9,
+  "effective_prevalue_scientific_attempt_count": 7,
+  "effective_infrastructure_failure_attempt_count": 2,
+  "effective_complete_factor_attempt_count": 0,
+  "cumulative_historical_research_attempt_count": 2873,
+  "cumulative_return_reading_development_trial_count": 315,
+  "chain_tip_sha256": "347985e70fb416b7ca8a39a58724b711eca84ef88434b0b71d8f67fb401e60e8",
+  "research_boundary": {
+    "repository_metadata_and_prior_terminal_history_read": true,
+    "provider_or_web_request_issued": false,
+    "provider_response_or_source_row_read": false,
+    "provider_credential_value_or_digest_read": false,
+    "candidate_or_comparator_value_read": false,
+    "historical_daily_price_or_forward_return_value_read": false,
+    "stress_2024_2025_opened": false,
+    "candidate49_plan_or_run_executed_by_campaign281": false,
+    "candidate49_historical_backfill_performed": false,
+    "candidate49_ledgers_changed": false,
+    "second_prospective_candidate_created": false,
+    "current_scoring_selection_sizing_positions_or_orders_performed": false,
+    "investment_advice": false
+  }
+}

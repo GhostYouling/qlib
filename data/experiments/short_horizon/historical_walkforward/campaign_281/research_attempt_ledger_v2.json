@@ -1,0 +1,58 @@
+{
+  "schema_version": 1,
+  "kind": "a_share_three_day_walkforward_campaign281_research_attempt_ledger_append",
+  "recorded_at": "2026-08-24T23:22:00+08:00",
+  "timestamp_semantics": "Monotonic logical append time after a read-only Campaign280 validation-record filename transcription failure; not a market-data or host-wall-clock measurement.",
+  "authoritative_predecessor": {
+    "path": "data/experiments/short_horizon/historical_walkforward/campaign_281/research_attempt_ledger_v1.json",
+    "sha256": "da853005d10e21986963b4f7dc6621671506b72ca2bdf7c8485b87c77d6c622c",
+    "chain_tip_sha256": "3d562cc7fcdc7ecbafa97070e4ed69503c7231bcc81d986746a13779676f9b5f",
+    "effective_entry_count": 7,
+    "cumulative_historical_research_attempt_count": 2871,
+    "cumulative_return_reading_development_trial_count": 315
+  },
+  "entries": [
+    {
+      "attempt_id": "campaign281_infrastructure_001",
+      "candidate_or_comparator_value_read": false,
+      "complete_factor_attempt": false,
+      "entry_sha256": "09467831014248888273e906915672fe06140fa1922c60fe2a5e81662ad7459b",
+      "ordinal": 8,
+      "phase": "terminal_artifact_inspection",
+      "previous_entry_sha256": "3d562cc7fcdc7ecbafa97070e4ed69503c7231bcc81d986746a13779676f9b5f",
+      "result_consumed": false,
+      "return_reading_development_trial": false,
+      "scientific_attempt": false,
+      "status": "failed_campaign280_validation_record_filename_components_transposed"
+    }
+  ],
+  "failure_evidence": {
+    "exit_code": 2,
+    "failure_class": "read_only_path_transcription_error",
+    "detail": "A combined read-only inspection command asked jq to open docs/a_share_three_day_walkforward_campaign_280_terminal_validation_20260824_v2.json. The tracked filename is docs/a_share_three_day_walkforward_campaign_280_terminal_validation_v2_20260824.json. The command returned nonzero after unrelated bounded output; no missing file was created and no research value or secret was read.",
+    "failed_output_used_as_scientific_evidence": false,
+    "repository_mutation_caused": false
+  },
+  "effective_entry_count": 8,
+  "effective_prevalue_scientific_attempt_count": 7,
+  "effective_infrastructure_failure_attempt_count": 1,
+  "effective_complete_factor_attempt_count": 0,
+  "cumulative_historical_research_attempt_count": 2872,
+  "cumulative_return_reading_development_trial_count": 315,
+  "chain_tip_sha256": "09467831014248888273e906915672fe06140fa1922c60fe2a5e81662ad7459b",
+  "research_boundary": {
+    "repository_metadata_and_prior_terminal_history_read": true,
+    "provider_or_web_request_issued": false,
+    "provider_response_or_source_row_read": false,
+    "provider_credential_value_or_digest_read": false,
+    "candidate_or_comparator_value_read": false,
+    "historical_daily_price_or_forward_return_value_read": false,
+    "stress_2024_2025_opened": false,
+    "candidate49_plan_or_run_executed_by_campaign281": false,
+    "candidate49_historical_backfill_performed": false,
+    "candidate49_ledgers_changed": false,
+    "second_prospective_candidate_created": false,
+    "current_scoring_selection_sizing_positions_or_orders_performed": false,
+    "investment_advice": false
+  }
+}

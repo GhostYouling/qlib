@@ -1,0 +1,56 @@
+{
+  "schema_version": 1,
+  "kind": "a_share_three_day_walkforward_campaign281_research_attempt_ledger_append",
+  "recorded_at": "2026-08-24T23:24:00+08:00",
+  "timestamp_semantics": "Monotonic logical append time after Black required a mechanical formatting change following the terminal-state path patch; not a market-data or host-wall-clock measurement.",
+  "authoritative_predecessor": {
+    "path": "data/experiments/short_horizon/historical_walkforward/campaign_281/research_attempt_ledger_v3.json",
+    "sha256": "2cb9bf52e86c6cc4023caf1e7983507a0cbb03dd9558893a629e062100399220",
+    "chain_tip_sha256": "347985e70fb416b7ca8a39a58724b711eca84ef88434b0b71d8f67fb401e60e8",
+    "effective_entry_count": 9,
+    "cumulative_historical_research_attempt_count": 2873,
+    "cumulative_return_reading_development_trial_count": 315
+  },
+  "entries": [
+    {
+      "attempt_id": "campaign281_infrastructure_003",
+      "candidate_or_comparator_value_read": false,
+      "complete_factor_attempt": false,
+      "entry_sha256": "19e8be2f603309fd84612d78eb59e65a282856e0e618cfaf8d4692537bb38cf8",
+      "ordinal": 10,
+      "phase": "terminal_test_formatting",
+      "previous_entry_sha256": "347985e70fb416b7ca8a39a58724b711eca84ef88434b0b71d8f67fb401e60e8",
+      "result_consumed": false,
+      "return_reading_development_trial": false,
+      "scientific_attempt": false,
+      "status": "failed_campaign281_terminal_test_black_check_required_reformat_after_state_path_patch"
+    }
+  ],
+  "failure_evidence": {
+    "failure_class": "black_format_check_required_mechanical_change",
+    "detail": "Black --check reported that the focused Campaign281 test would be reformatted after the terminal-state path patch. A later shasum in the same shell invocation masked the aggregate exit code, so that invocation is not final validation evidence. No research value, source row or secret was read.",
+    "failed_output_used_as_validation_or_scientific_evidence": false
+  },
+  "effective_entry_count": 10,
+  "effective_prevalue_scientific_attempt_count": 7,
+  "effective_infrastructure_failure_attempt_count": 3,
+  "effective_complete_factor_attempt_count": 0,
+  "cumulative_historical_research_attempt_count": 2874,
+  "cumulative_return_reading_development_trial_count": 315,
+  "chain_tip_sha256": "19e8be2f603309fd84612d78eb59e65a282856e0e618cfaf8d4692537bb38cf8",
+  "research_boundary": {
+    "repository_metadata_and_prior_terminal_history_read": true,
+    "provider_or_web_request_issued": false,
+    "provider_response_or_source_row_read": false,
+    "provider_credential_value_or_digest_read": false,
+    "candidate_or_comparator_value_read": false,
+    "historical_daily_price_or_forward_return_value_read": false,
+    "stress_2024_2025_opened": false,
+    "candidate49_plan_or_run_executed_by_campaign281": false,
+    "candidate49_historical_backfill_performed": false,
+    "candidate49_ledgers_changed": false,
+    "second_prospective_candidate_created": false,
+    "current_scoring_selection_sizing_positions_or_orders_performed": false,
+    "investment_advice": false
+  }
+}
