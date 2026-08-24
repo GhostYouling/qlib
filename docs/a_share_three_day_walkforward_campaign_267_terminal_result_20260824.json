@@ -1,0 +1,103 @@
+{
+  "schema_version": 1,
+  "kind": "a_share_three_day_walkforward_campaign267_prevalue_terminal_result",
+  "status": "terminal_prevalue_issuer_bond_credit_spread_source_contract_zero_selected",
+  "recorded_at": "2026-08-24T15:46:02+08:00",
+  "timestamp_semantics": "measured_host_local_time_after_frontier_and_append_only_ledger_publication_before_unified_report_state_handoff_or_validation_publication",
+  "authoritative_inputs": {
+    "campaign266_final_state": {
+      "path": "docs/a_share_three_day_iteration_status_20260824_campaign266_final_accounting_corrected.json",
+      "sha256": "381ef07ca82464f1d63812c7b215782757027c2bc654f0db174c639888e6022f"
+    },
+    "campaign267_frontier": {
+      "path": "docs/a_share_three_day_walkforward_campaign_267_issuer_bond_credit_spread_source_frontier_20260824.json",
+      "sha256": "371ae8f8b512e0d9e97cfd7bbe962b69a831ae49c1a6351d37f4c39793cfe93f"
+    },
+    "campaign267_attempt_ledger_v1": {
+      "path": "data/experiments/short_horizon/historical_walkforward/campaign_267/research_attempt_ledger_v1.json",
+      "sha256": "3982c1e26415c8805dcbf71afd007f02b7a4aa8763bdef29b5d05b2a1ab042a7",
+      "entry_count": 16,
+      "chain_tip_sha256": "fe246bd88e2bde789be0238af195a78a04edb4a495b282582dfe7b7f71b2d1b4"
+    },
+    "numeric_policy_v419_revision_2_unchanged": {
+      "path": "docs/a_share_three_day_walkforward_future_numeric_comparison_eligibility_policy_v419_20260824_execution_path_hardening_v2.json",
+      "sha256": "c331d3931893ea183a7d0a750be8f5b136b1e95e5a0e1fc65683e6cf64d5cc2a"
+    }
+  },
+  "scientific_result": {
+    "finite_route_count": 7,
+    "source_contract_permission_or_coverage_rejection_count": 4,
+    "semantic_survivorship_or_premature_search_rejection_count": 3,
+    "selected_factor_count": 0,
+    "numeric_formula_or_direction_frozen": false,
+    "candidate_snapshot_adapter_or_source_request_created": false,
+    "candidate_or_comparator_value_read": false,
+    "historical_daily_price_or_forward_return_read": false,
+    "development_trial_count": 0,
+    "development_survivor_count": 0,
+    "stress_trial_count_2024_2025": 0,
+    "interpretation": "The issuer-bond credit-spread/equity-divergence hypothesis remains economically untested. Current official schemas do not jointly prove generic issuer clean yields, a matched point-in-time curve, versioned legal-issuer/equity mapping, deterministic multi-bond treatment and a complete survivorship-safe 2019-2023 denominator under present authorization. Rejecting it before rows prevents sparse-bond, live-roster and semantic-substitution bias."
+  },
+  "effective_accounting": {
+    "campaign267_attempt_count": 16,
+    "campaign267_infrastructure_failure_count": 9,
+    "campaign267_prevalue_scientific_attempt_count": 7,
+    "campaign267_complete_factor_attempt_count": 0,
+    "campaign267_return_reading_development_trial_count": 0,
+    "cumulative_historical_research_attempt_count": 2681,
+    "cumulative_return_reading_development_trial_count": 315,
+    "chain_tip_sha256": "fe246bd88e2bde789be0238af195a78a04edb4a495b282582dfe7b7f71b2d1b4"
+  },
+  "library_state": {
+    "changed_by_campaign267": false,
+    "complete_factor_definition_count": 162,
+    "complete_factor_definition_order_sha256": "974f2c1f16a85eb43a0bd1e8db768dbe120cd8826c1754d5f220bf9f1d4a3ea0",
+    "eligible_numeric_comparator_count": 143,
+    "eligible_numeric_comparator_order_sha256": "f4fbf3d578e2c80c29425716a30d60a3df01d67d04e37f1651236c4dff899588"
+  },
+  "campaign265": {
+    "scientific_and_execution_state_changed": false,
+    "factor": "convertible_bond_equity_parity_premium_compression_3s",
+    "v420_policy_present": false,
+    "accepted_source_manifest_present": false,
+    "no_return_plan_ready": false,
+    "no_return_plan_blocker": "source_acceptance_manifest_absent_or_unsafe",
+    "publication_or_provider_request_authorized_by_campaign267": false
+  },
+  "candidate49": {
+    "sole_active_prospective_candidate": true,
+    "signal_ledger_entry_count": 0,
+    "signal_ledger_sha256": "5193f00d7f36da003f53cec387900da4c3d002299f5dfcfc1a95eaa199ed3a79",
+    "execution_ledger_entry_count": 0,
+    "execution_ledger_sha256": "d57a3e61eac969e42cafa418ccd8c0a5ee65dcf69da145bb2c096c2a02a2ea4f",
+    "ledgers_changed": false,
+    "historical_backfill_allowed": false,
+    "second_prospective_candidate_allowed": false
+  },
+  "research_boundary": {
+    "repository_metadata_and_prior_terminal_history_read": true,
+    "official_public_documentation_web_read": true,
+    "provider_api_request_issued": false,
+    "provider_credential_value_or_digest_read": false,
+    "provider_client_imported_or_created": false,
+    "provider_response_or_row_value_read": false,
+    "candidate_or_comparator_value_read": false,
+    "historical_daily_price_or_forward_return_value_read": false,
+    "stress_2024_2025_opened": false,
+    "v420_policy_created": false,
+    "candidate49_plan_or_run_executed": false,
+    "candidate49_historical_backfill_performed": false,
+    "candidate49_ledgers_changed": false,
+    "second_prospective_candidate_created": false,
+    "current_scoring_selection_sizing_positions_or_orders_performed": false,
+    "investment_advice": false
+  },
+  "prohibited_followups": [
+    "Do not read OTC, valuation, block-trade, curve or rating rows and then choose only issuers or bonds with favorable realized coverage.",
+    "Do not substitute convertible-bond pure value or premium, rating-category curves, repo rates or block-trade prices for a generic issuer clean-yield credit spread.",
+    "Do not backfill a current bond valuation page, issuer roster, rating or bond-to-equity mapping into 2019-2023.",
+    "Do not rescue Campaign267 by changing maturities, seniorities, guarantees, optionality, stale limits, bond aggregation, lags, windows, subsets, interactions, models or old-factor combinations.",
+    "Do not alter Campaign265, publish v420, request source rows, read returns, open 2024-2025, backfill Candidate49, start Candidate50 or create current trading actions from this result."
+  ],
+  "next_action": "Keep the goal active. Continue with a separately finite official-metadata-only prevalue review of Campaign157 c157_04 option implied skew/term structure; leave Campaign265 and Candidate49 unchanged."
+}

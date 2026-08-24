@@ -1,0 +1,237 @@
+{
+  "schema_version": 1,
+  "kind": "a_share_three_day_walkforward_campaign267_issuer_bond_credit_spread_source_frontier",
+  "status": "terminal_prevalue_issuer_bond_credit_spread_source_contract_zero_selected",
+  "recorded_at": "2026-08-24T15:42:14+08:00",
+  "timestamp_semantics": "measured_host_local_time_after_bounded_repository_and_official_public_documentation_review_before_any_provider_row_candidate_comparator_price_or_return_value",
+  "purpose": "Revisit only Campaign157 route c157_02 and determine whether an issuer-bond credit-spread/equity-divergence factor can be identified under the user's existing 3000-point authorization, point-in-time history rules and three-session horizon before any formula, direction or value is opened.",
+  "authoritative_inputs": {
+    "campaign266_final_state": {
+      "path": "docs/a_share_three_day_iteration_status_20260824_campaign266_final_accounting_corrected.json",
+      "sha256": "381ef07ca82464f1d63812c7b215782757027c2bc654f0db174c639888e6022f"
+    },
+    "campaign157_cross_asset_frontier": {
+      "path": "docs/a_share_three_day_walkforward_campaign_157_cross_asset_source_scouting_20260815.json",
+      "sha256": "b14d28d45144c3fde60379161df4ff618bf71222f52dfc8b8e44dd3dc113af2e"
+    },
+    "campaign159_remaining_local_source_audit": {
+      "path": "docs/a_share_three_day_walkforward_campaign_159_remaining_local_source_residual_audit_20260815.json",
+      "sha256": "6d4430f1eef33da89fe5eb7018d326c603a051446d16e066ac72c74d9d7a25ae"
+    },
+    "campaign160_no_credential_contract_delta_inventory": {
+      "path": "docs/a_share_three_day_walkforward_campaign_160_no_credential_source_contract_delta_inventory_20260815.json",
+      "sha256": "25dc95b6e4ef87068e0f94a8cb257b226b9fe22c0fa390716d1db9d164b60418"
+    },
+    "historical_walkforward_policy": {
+      "path": "docs/a_share_three_day_historical_walkforward_research_policy_20260727.json",
+      "sha256": "38426d6161b9bfed323c58caba18feca668b8c9d53e294951a8ba90c01a798bb"
+    },
+    "numeric_policy_v419_revision_2": {
+      "path": "docs/a_share_three_day_walkforward_future_numeric_comparison_eligibility_policy_v419_20260824_execution_path_hardening_v2.json",
+      "sha256": "c331d3931893ea183a7d0a750be8f5b136b1e95e5a0e1fc65683e6cf64d5cc2a"
+    }
+  },
+  "skill_boundary": {
+    "path": "/Users/niyufei/.codex/skills/manage-qlib-a-share-data/SKILL.md",
+    "sha256": "565713a5f3aeb6a1acf23e397fcc21be28d0c3ea4ebf21c7f287a25bb94d78dc",
+    "credential_safe_public_documentation_review_only": true
+  },
+  "prior_deferred_route": {
+    "catalog_id": "c157_02",
+    "name": "issuer_bond_credit_spread_equity_divergence",
+    "economic_hypothesis": "Close-known widening issuer bond credit spread while equity remains firm may identify unresolved issuer risk divergence over the next three sessions.",
+    "prior_disposition": "deferred_missing_clean_yield_curve_bond_price_issuer_mapping_and_survivorship_safe_coverage_contract",
+    "predictive_value_previously_tested": false
+  },
+  "required_contract": {
+    "issuer_bond_observation": "Executable clean yield or an exact valuation yield for every eligible issuer bond, with bond identity, venue, quote or valuation type, first-public timestamp, correction history, remaining maturity and stale-observation semantics.",
+    "benchmark": "A point-in-time benchmark curve matched by currency, venue, bond type, remaining maturity and session, with interpolation fixed before values.",
+    "issuer_equity_mapping": "Versioned bond-to-legal-issuer-to-A-share mapping including effective intervals, corporate actions, delistings and multiple listed equities.",
+    "multi_bond_aggregation": "A deterministic issuer aggregation, seniority, optionality, guarantee, secured status, embedded-option and default treatment frozen before rows.",
+    "denominator": "A survivorship-safe complete eligible-A-share denominator that preserves issuers with no bonds or no valid quote as missing rather than selecting only observed survivors.",
+    "coverage": "Complete 2019-2023 history and point-in-time availability sufficient to apply one frozen coverage gate before candidate, comparator or return values."
+  },
+  "authorized_provider_boundary": {
+    "user_authorized_tushare_point_ceiling": 3000,
+    "credential_value_or_digest_inspected": false,
+    "provider_client_created": false,
+    "provider_request_issued": false,
+    "higher_point_interface_request_or_upgrade_recommendation_allowed": false
+  },
+  "official_public_documentation_evidence": [
+    {
+      "interface": "tushare_cb_daily",
+      "url": "https://tushare.pro/document/2?doc_id=187",
+      "minimum_points": 2000,
+      "documented_frequency_or_semantics": "convertible-bond daily market rows with OHLC, amount, pure-bond value and conversion-value/premium fields",
+      "admission_effect": "It is a convertible-bond-only market/model-value interface, not a generic issuer corporate-bond clean-yield history. Reusing its premium fields would also reopen the independently frozen Campaign265 source family."
+    },
+    {
+      "interface": "tushare_cb_basic",
+      "url": "https://tushare.pro/document/2?doc_id=185",
+      "minimum_points": 2000,
+      "documented_frequency_or_semantics": "convertible-bond identity, underlying equity, coupon, maturity, listing/delisting and latest published rating fields",
+      "admission_effect": "The schema maps convertible bonds only and does not supply a versioned all-corporate-bond issuer/equity map or the complete issuers-without-bonds denominator."
+    },
+    {
+      "interface": "tushare_cb_rating",
+      "url": "https://tushare.pro/document/2?doc_id=458",
+      "minimum_points": 2000,
+      "documented_frequency_or_semantics": "convertible-bond rating history addressed by convertible-bond code",
+      "admission_effect": "Rating events are not executable bond clean yields and the interface remains limited to convertible bonds."
+    },
+    {
+      "interface": "tushare_bc_otcqt_and_bc_bestotcqt",
+      "urls": [
+        "https://tushare.pro/document/2?doc_id=322",
+        "https://tushare.pro/document/2?doc_id=323"
+      ],
+      "minimum_points": 2000,
+      "documented_frequency_or_semantics": "interbank OTC tradable-bond quotes and best quotes with quote time, bond code/name, remaining maturity, coupon, full price and yield to maturity",
+      "missing_contract_fields": [
+        "legal issuer identity and versioned A-share mapping",
+        "complete 2019-2023 issuer-bond roster and issuers-without-bonds denominator",
+        "immutable correction or supersession history",
+        "frozen stale quote and multi-bank quote treatment"
+      ],
+      "admission_effect": "The affordable quote schema is not enough to prove a survivorship-safe issuer-equity panel or complete historical coverage before rows."
+    },
+    {
+      "interface": "tushare_yc_cb",
+      "url": "https://tushare.pro/document/2?doc_id=201",
+      "minimum_points": null,
+      "permission_semantics": "separate ChinaBond yield-curve permission",
+      "documented_frequency_or_semantics": "government-bond curve terms and yields",
+      "admission_effect": "A government curve may be a benchmark component but does not provide issuer-bond clean yields, issuer mapping or coverage; its separate permission is not established by the 3000-point ceiling."
+    },
+    {
+      "interface": "tushare_bond_blk",
+      "url": "https://tushare.pro/document/2?doc_id=271",
+      "minimum_points": 5000,
+      "documented_frequency_or_semantics": "exchange bond block-trade code/name, trade date, price, volume and amount",
+      "admission_effect": "It exceeds authorization, contains sparse block trades rather than a complete daily bond panel, and does not expose clean yield or issuer/equity mapping."
+    },
+    {
+      "interface": "tushare_repo_daily",
+      "url": "https://tushare.pro/document/2?doc_id=256",
+      "minimum_points": 2000,
+      "documented_frequency_or_semantics": "bond-market repo rates",
+      "admission_effect": "Repo rates are market funding benchmarks, not issuer-specific credit spreads or issuer-equity mappings."
+    },
+    {
+      "interface": "chinamoney_closing_yield_curves",
+      "url": "https://www.chinamoney.com.cn/chinese/bkcurvclosedy/",
+      "documented_frequency_or_semantics": "workday closing government, policy-bank and credit-rating/category yield curves published around 17:15",
+      "admission_effect": "Rating/category curves are benchmark states shared by groups, not issuer-specific executable yields; assigning them to equities still requires point-in-time ratings, issuer mapping and a complete denominator."
+    },
+    {
+      "interface": "chinabond_current_bond_valuation_query",
+      "url": "https://yield.chinabond.com.cn/cbweb-mn/val/val_query_list?locale=zh_CN",
+      "documented_frequency_or_semantics": "current bond valuation query displaying bond code, venue, remaining maturity, clean/full price, yield and implied rating",
+      "admission_effect": "The reviewed current-query schema does not establish an immutable bulk 2019-2023 retrieval contract, first-public/correction history, versioned A-share issuer mapping or a complete historical denominator."
+    }
+  ],
+  "finite_prevalue_catalog": [
+    {
+      "route_id": "c267_01",
+      "name": "exact_generic_issuer_clean_yield_minus_matched_benchmark_curve",
+      "formula": null,
+      "direction": null,
+      "parameters_filters_subsets_combinations_models": [],
+      "decision": "reject_missing_authorized_complete_point_in_time_source_contract",
+      "reason": "None of the reviewed official schemas closes generic issuer-bond clean yields, matched benchmark, versioned bond-to-issuer-to-equity mapping, correction clock, multi-bond semantics and a complete 2019-2023 denominator under current authorization."
+    },
+    {
+      "route_id": "c267_02",
+      "name": "otc_quote_yield_minus_government_curve_proxy",
+      "formula": null,
+      "direction": null,
+      "parameters_filters_subsets_combinations_models": [],
+      "decision": "reject_unproven_historical_coverage_mapping_and_quote_semantics",
+      "reason": "Affordable OTC quote metadata lacks legal issuer/equity mapping, complete historical roster and denominator, immutable corrections, and frozen stale/multi-bank quote treatment. Reading sparse quotes first would select on realized coverage."
+    },
+    {
+      "route_id": "c267_03",
+      "name": "exchange_bond_block_trade_price_minus_curve_proxy",
+      "formula": null,
+      "direction": null,
+      "parameters_filters_subsets_combinations_models": [],
+      "decision": "reject_permission_frequency_yield_and_denominator_failure",
+      "reason": "The block-trade interface requires 5000 points, records sparse trades and prices rather than a complete clean-yield panel, and provides no versioned issuer/equity map or full denominator."
+    },
+    {
+      "route_id": "c267_04",
+      "name": "convertible_bond_pure_bond_value_or_premium_as_generic_credit_spread",
+      "formula": null,
+      "direction": null,
+      "parameters_filters_subsets_combinations_models": [],
+      "decision": "reject_wrong_instrument_semantics_and_campaign265_source_reuse",
+      "reason": "Convertible-bond value and premium embed equity conversion optionality and model assumptions; they are not generic issuer credit spreads. The same cb_daily/cb_basic family is already frozen independently by Campaign265 and cannot be relabeled after exposure."
+    },
+    {
+      "route_id": "c267_05",
+      "name": "rating_category_curve_assigned_to_issuer_equities",
+      "formula": null,
+      "direction": null,
+      "parameters_filters_subsets_combinations_models": [],
+      "decision": "reject_group_benchmark_substitution_and_missing_point_in_time_mapping",
+      "reason": "A rating/category curve is a shared group benchmark, not an issuer-specific observed spread. The reviewed sources do not close point-in-time issuer ratings, legal-issuer/equity mapping or all-issuer coverage."
+    },
+    {
+      "route_id": "c267_06",
+      "name": "current_chinabond_valuation_or_current_issuer_roster_backfilled_to_2019_2023",
+      "formula": null,
+      "direction": null,
+      "parameters_filters_subsets_combinations_models": [],
+      "decision": "reject_survivorship_lookahead_and_unproven_bulk_history",
+      "reason": "A current valuation page or live roster cannot be projected backward without immutable history, first-public and correction timestamps, defaults, delistings, issuer reorganizations and versioned mappings."
+    },
+    {
+      "route_id": "c267_07",
+      "name": "observed_bond_subset_lag_window_aggregation_interaction_or_model_search",
+      "formula": null,
+      "direction": null,
+      "parameters_filters_subsets_combinations_models": [],
+      "decision": "reject_premature_search_before_base_source_admission",
+      "reason": "Selecting only issuers with observed bonds, choosing staleness limits, maturities, seniorities, guarantees, bond aggregation, lags, windows, interactions or models before a complete base contract would multiply hypotheses and select on sparse realized coverage."
+    }
+  ],
+  "gate_summary": {
+    "finite_route_count": 7,
+    "source_contract_permission_or_coverage_rejection_count": 4,
+    "semantic_survivorship_or_premature_search_rejection_count": 3,
+    "selected_factor_count": 0,
+    "numeric_formula_or_direction_frozen": false,
+    "candidate_snapshot_adapter_or_source_request_created": false,
+    "candidate_or_comparator_value_read": false,
+    "historical_daily_price_or_forward_return_read": false,
+    "development_trial_count": 0,
+    "stress_trial_count_2024_2025": 0,
+    "complete_definition_or_numeric_comparator_append_allowed": false
+  },
+  "decision": {
+    "campaign267_terminal_stage": "prevalue_issuer_bond_credit_spread_source_admission",
+    "reason": "No finite route simultaneously satisfies current authorization, issuer-specific executable clean-yield semantics, matched point-in-time benchmark, versioned legal-issuer/equity mapping, deterministic multi-bond treatment and complete survivorship-safe 2019-2023 coverage. This is a source-contract rejection, not evidence against the economic hypothesis or its predictive value.",
+    "campaign157_c157_02_may_be_retried_only_if": "A newly authorized and independently accepted immutable source proves complete 2019-2023 issuer-bond yields or valuations, matched curves, exact point-in-time issuer/equity mapping, corrections, defaults, optionality/seniority/guarantee treatment, multi-bond aggregation and the all-eligible-issuer denominator before any candidate row is read.",
+    "next_safe_route": "Campaign157 c157_04 option implied skew/term structure may receive a separately bounded official-metadata-only prevalue source review; Campaign265 remains independently frozen and must not be altered.",
+    "candidate49_remains_sole_prospective_confirmation_layer": true
+  },
+  "research_boundary": {
+    "repository_metadata_and_prior_terminal_history_read": true,
+    "official_public_documentation_web_read": true,
+    "provider_api_request_issued": false,
+    "provider_credential_value_or_digest_read": false,
+    "provider_client_imported_or_created": false,
+    "provider_response_or_row_value_read": false,
+    "candidate_or_comparator_value_read": false,
+    "historical_daily_price_or_forward_return_value_read": false,
+    "stress_2024_2025_opened": false,
+    "v420_policy_created": false,
+    "candidate49_plan_or_run_executed": false,
+    "candidate49_historical_backfill_performed": false,
+    "candidate49_ledgers_changed": false,
+    "second_prospective_candidate_created": false,
+    "current_scoring_selection_sizing_positions_or_orders_performed": false,
+    "investment_advice": false
+  }
+}
