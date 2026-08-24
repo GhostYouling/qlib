@@ -1,0 +1,42 @@
+{
+  "schema_version": 1,
+  "kind": "a_share_three_day_walkforward_campaign282_publication_safety",
+  "status": "pre_final_state_staging_safety_passed_final_recheck_required",
+  "recorded_at": "2026-08-24T23:37:00+08:00",
+  "timestamp_semantics": "Monotonic logical append time after the first explicit Campaign282 staging-safety check; not a market-data or host-wall-clock measurement.",
+  "authoritative_inputs": {
+    "terminal_validation": {
+      "path": "docs/a_share_three_day_walkforward_campaign_282_terminal_validation_20260824.json",
+      "sha256": "a2cac698e83dc3f619f0ce8de4be58d2f11d347f54a1b0d7d4181d291b2dff25"
+    },
+    "terminal_state": {
+      "path": "docs/a_share_three_day_iteration_status_20260824_campaign282_terminal.json",
+      "sha256": "9a293ba2ca215aae843d48a12e56e3684aee15b43f3602dd59c354d874995d74"
+    },
+    "effective_ledger_v1": {
+      "path": "data/experiments/short_horizon/historical_walkforward/campaign_282/research_attempt_ledger_v1.json",
+      "sha256": "26aaad4bd95a21167805a351313d5a712359b63b0707be0ae511b6d16c9e15cf"
+    }
+  },
+  "first_staging_check": {
+    "staged_file_count": 11,
+    "staged_env_file": false,
+    "staged_tushare_token_assignment_addition_count": 0,
+    "git_diff_cached_check_passed": true,
+    "ignored_campaign282_ledgers_explicitly_force_added": 1
+  },
+  "final_recheck_contract": {
+    "required_after_adding_this_record_and_final_state": true,
+    "required_staged_env_file": false,
+    "required_staged_tushare_token_assignment_addition_count": 0,
+    "required_git_diff_cached_check_passed": true,
+    "failure_policy": "Any failure must be appended as Campaign282 infrastructure evidence before publication; no commit or push is allowed from a failed staging state."
+  },
+  "research_boundary": {
+    "credential_value_or_digest_read": false,
+    "provider_or_web_request_issued": false,
+    "candidate49_plan_or_run_executed": false,
+    "candidate49_ledgers_changed": false,
+    "research_value_read_by_staging_check": false
+  }
+}
