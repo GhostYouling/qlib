@@ -1,0 +1,122 @@
+{
+  "schema_version": 1,
+  "kind": "a_share_three_day_walkforward_campaign265_no_return_audit_protocol",
+  "status": "frozen_before_accepted_source_candidate_comparator_price_or_return_values",
+  "recorded_at": "2026-08-24T14:21:00+08:00",
+  "purpose": "Freeze Campaign265's complete source-verification, candidate construction, coverage-first and ordered-numeric-uniqueness procedure before the first accepted source snapshot or any candidate/comparator value is opened.",
+  "authoritative_inputs": {
+    "source_contract": {
+      "path": "docs/a_share_three_day_walkforward_campaign_265_convertible_premium_source_contract_20260824.json",
+      "sha256": "efe7884d3ea0fd7f974e0d3347432e68e9e01ceefe0e6ebdca7fdd3e6349301c"
+    },
+    "source_acceptance_preregistration": {
+      "path": "docs/a_share_three_day_walkforward_campaign_265_source_acceptance_preregistration_20260824.json",
+      "sha256": "474e5a995703f46005053268bbbd6c1c20835c99233f82e727a24a6085198ffd"
+    },
+    "source_adapter": {
+      "path": "scripts/a_share_three_day_walkforward_campaign265_convertible_premium.py",
+      "sha256": "58b9fddbbeef97955d4961f9f708028aa63d90fc56f2656db68098de7d3543e8"
+    },
+    "source_acceptance_workflow": {
+      "path": "scripts/a_share_three_day_walkforward_campaign265_source_acceptance_workflow.py",
+      "sha256": "796322ab186c837dc02a5657572a3f936792dc33ffd4c817cfc430c1d7639020"
+    },
+    "numeric_policy": {
+      "path": "docs/a_share_three_day_walkforward_future_numeric_comparison_eligibility_policy_v419_20260824_execution_path_hardening_v2.json",
+      "sha256": "c331d3931893ea183a7d0a750be8f5b136b1e95e5a0e1fc65683e6cf64d5cc2a"
+    },
+    "latest_state_before_protocol": {
+      "path": "docs/a_share_three_day_iteration_status_20260824_campaign265_v420_publisher_plan_ready.json",
+      "sha256": "ecb79f89b46ee692caadde71de03e77b528c18944c5a6b0f50a6f4ba06f95780"
+    },
+    "ordered_comparator_loader": {
+      "path": "scripts/a_share_three_day_walkforward_campaign263_ordered_uniqueness.py",
+      "sha256": "1fc494ee0889deb1b3595ece2b64d776f471c6d6b34f68eaa0718cd7ab984845"
+    },
+    "calendar": {
+      "path": "data/qlib/cn_a_share/calendars/day.txt",
+      "sha256": "fda506597d26bcec953cdc0882042a5046ec1587db60490e16a01627fd43f53a"
+    },
+    "factor_universe": {
+      "path": "data/qlib/cn_a_share/instruments/factor_main_chinext_star.txt",
+      "sha256": "cdded13c831b78045f4cfe80ba5d9a49f82152c615fef4267d00f992e7f53762"
+    }
+  },
+  "accepted_source_snapshot": {
+    "repository_manifest": "data/metadata/rich_data/runs/campaign265_convertible_premium_acceptance_v1.json",
+    "final_root": "data/raw/a_share/rich/tushare/convertible_premium/campaign265_2019_2025_v1",
+    "internal_manifest": "data/raw/a_share/rich/tushare/convertible_premium/campaign265_2019_2025_v1/source_manifest.json",
+    "accepted_session_first": "2019-01-02",
+    "accepted_session_last": "2025-12-31",
+    "accepted_session_count": 1699,
+    "exact_checkpoint_count": 1700,
+    "plan_value_boundary": "The plan may read JSON metadata and hash immutable Parquet bytes, but may not decode any Parquet row or import/create a provider client.",
+    "audit_open_condition": "The repository acceptance manifest, internal manifest, exact cb_basic checkpoint, all 1699 exact-date cb_daily checkpoints, sidecars, byte hashes, schemas, request ordinals, request digest and safe non-symlink paths must validate; the immutable output must be absent; and the plan must return ready=true with exit code 0.",
+    "missing_or_invalid_source_semantics": "Return a deterministic blocker and read zero candidate, comparator, daily-price or return values. Do not request or retry the provider."
+  },
+  "candidate_construction": {
+    "factor_name": "convertible_bond_equity_parity_premium_compression_3s",
+    "score_direction": "higher",
+    "lag_accepted_sessions": 3,
+    "formula": "For each exact-CB active at both endpoints with finite positive amount and finite cb_over_rate at both endpoints, compute cb_over_rate(t_minus_3)-cb_over_rate(t); take the arithmetic issuer median on t.",
+    "daily_denominator": "Factor-universe equities mapped to at least one exact-CB active on t, independent of daily endpoint availability.",
+    "missing_semantics": "Missing; never zero, filled or carried forward.",
+    "information_clock": "The value labelled t is first usable at the next accepted A-share session open.",
+    "forbidden_fields": [
+      "bond OHLC, returns, pct_chg or price levels",
+      "bond_value, bond_over_rate or cb_value",
+      "mutable conv_price or remain_size",
+      "equity price, return, volume, amount, valuation or fundamentals",
+      "any comparator before the coverage gate passes"
+    ]
+  },
+  "coverage_first_gate": {
+    "median_daily_coverage_minimum": 0.95,
+    "p05_daily_coverage_minimum": 0.9,
+    "p05_eligible_equity_count_minimum": 50,
+    "nonconstant_cross_sectional_sessions_minimum": 200,
+    "non_overlapping_three_signal_session_cohorts_minimum": 200,
+    "observed_calendar_years_minimum": 5,
+    "cross_sectional_distinctness": "At least two exact finite float64 values without tolerance, rounding or binning.",
+    "failure_semantics": "Publish one immutable aggregate-only terminal result with comparator_values_read=false and numeric_comparator_count_read=0."
+  },
+  "ordered_numeric_uniqueness": {
+    "comparator_count": 143,
+    "comparator_order_sha256": "f4fbf3d578e2c80c29425716a30d60a3df01d67d04e37f1651236c4dff899588",
+    "order_construction": "Use Campaign263's exact 142 comparison definitions, then append Campaign263/higher exactly once.",
+    "source_sequence": [
+      "comparators 1-140: frozen Campaign132 directional numeric design partitions, one comparator column at a time",
+      "comparator 141: verified Campaign136 snapshot",
+      "comparator 142: recovery-verified Campaign146 snapshot",
+      "comparator 143: verified Campaign263 snapshot"
+    ],
+    "pairwise_alignment": "Exact instrument-session intersection only; no fill, imputation, substitution, winsorization or candidate-specific recomputation.",
+    "daily_statistic": "Pearson correlation of average-tie percentile ranks, equivalent to average-tie Spearman rank correlation.",
+    "minimum_pair_names_per_session": 50,
+    "minimum_pair_sessions_per_comparator": 100,
+    "strict_absolute_median_maximum": 0.8,
+    "ordered_early_stop": true,
+    "early_stop_semantics": "Read exactly one comparator at a time in frozen order. The first insufficient-overlap or strict-correlation failure terminalizes Campaign265; no later comparator value may be read.",
+    "pass_semantics": "Only all 143 ordered passes permit a later separately frozen single 2019-2023 development trial."
+  },
+  "output_contract": {
+    "path": "data/experiments/short_horizon/historical_walkforward/campaign_265/no_return/campaign265_no_return_audit.json",
+    "publication": "same-filesystem temporary write, fsync and exclusive hard-link publication; overwrite and rescue are forbidden",
+    "result_content": "Source verification receipts, aggregate coverage metrics and only the ordered comparator aggregate results actually read; no row-level candidate/comparator values.",
+    "implementation_freeze": "docs/a_share_three_day_walkforward_campaign_265_no_return_audit_implementation_freeze_20260824.json"
+  },
+  "research_boundary": {
+    "provider_credential_value_or_digest_read": false,
+    "provider_client_imported_or_created": false,
+    "provider_request_issued": false,
+    "provider_response_or_row_value_read_before_protocol": false,
+    "candidate_or_comparator_value_read_before_protocol": false,
+    "historical_daily_price_or_forward_return_value_read": false,
+    "stress_2024_2025_return_values_opened": false,
+    "candidate49_historical_backfill_performed": false,
+    "candidate49_ledgers_changed": false,
+    "second_prospective_candidate_created": false,
+    "current_scoring_selection_sizing_positions_or_orders_performed": false,
+    "investment_advice": false
+  }
+}

@@ -1,0 +1,127 @@
+{
+  "schema_version": 1,
+  "kind": "a_share_three_day_iteration_status",
+  "status": "campaign265_no_return_audit_runner_frozen_source_snapshot_pending",
+  "recorded_at": "2026-08-24T14:42:00+08:00",
+  "timestamp_semantics": "Asia/Singapore wall clock; this was zero-network offline implementation and plan validation and did not depend on the 16:30 daily-source boundary.",
+  "goal": {
+    "objective": "请持续迭代因子。",
+    "status": "active",
+    "completion_claimed": false,
+    "reason": "Campaign265 has a complete downstream no-return audit path, but its accepted source snapshot is absent and no candidate value, comparator value or return value has been read."
+  },
+  "supersedes_without_rewriting": {
+    "path": "docs/a_share_three_day_iteration_status_20260824_campaign265_v420_publisher_plan_ready.json",
+    "sha256": "ecb79f89b46ee692caadde71de03e77b528c18944c5a6b0f50a6f4ba06f95780"
+  },
+  "new_authoritative_evidence": {
+    "no_return_protocol": {
+      "path": "docs/a_share_three_day_walkforward_campaign_265_no_return_audit_protocol_20260824.json",
+      "sha256": "16a9d7d49fd8b7b3d0211e4ec674c35300260c2671d1b0431e2c3c6dd5fb171f"
+    },
+    "implementation_freeze": {
+      "path": "docs/a_share_three_day_walkforward_campaign_265_no_return_audit_implementation_freeze_20260824.json",
+      "sha256": "93490fdf92e377e999b643ee9d0fcf63376bd41166b931c8c3ae2fc833064634"
+    },
+    "real_plan_result": {
+      "path": "docs/a_share_three_day_walkforward_campaign_265_no_return_audit_plan_result_20260824.json",
+      "sha256": "3064f8958c049c311e44cbe017c75edcfb289ded5dedfe7d5c20690b178ecc33"
+    },
+    "attempt_ledger": {
+      "path": "data/experiments/short_horizon/historical_walkforward/campaign_265/research_attempt_ledger_v19.json",
+      "sha256": "1c3313a031d336bb73a30f71fa7fb0cb6af662bd0d42e7d9ff370afe78932b41",
+      "entry_count": 40,
+      "chain_tip_sha256": "e2c808fb76cfcedda054bc7d747c358e780889feb90ac5bc65007ce49cba7d1f"
+    }
+  },
+  "campaign265_effective_state": {
+    "factor": "convertible_bond_equity_parity_premium_compression_3s",
+    "direction": "higher",
+    "complete_factor_definition_count": 162,
+    "eligible_numeric_comparator_count": 143,
+    "eligible_numeric_comparator_order_sha256": "f4fbf3d578e2c80c29425716a30d60a3df01d67d04e37f1651236c4dff899588",
+    "v420_policy_present": false,
+    "accepted_source_manifest_present": false,
+    "accepted_source_root_present": false,
+    "no_return_protocol_frozen": true,
+    "no_return_implementation_frozen": true,
+    "real_no_return_plan_ready": false,
+    "real_no_return_plan_exit_code": 2,
+    "real_no_return_plan_blockers": [
+      "source_acceptance_manifest_absent_or_unsafe"
+    ],
+    "no_return_output_present": false,
+    "candidate_value_read": false,
+    "comparator_value_read": false,
+    "historical_daily_price_or_forward_return_value_read": false,
+    "development_trial_count": 0,
+    "stress_trial_count_2024_2025": 0
+  },
+  "downstream_runner_semantics": {
+    "accepted_session_count": 1699,
+    "source_checkpoint_count": 1700,
+    "factor_universe_instrument_count": 5451,
+    "source_plan_decodes_parquet_rows": false,
+    "coverage_gate_count": 6,
+    "coverage_failure_comparator_read_count": 0,
+    "numeric_comparator_count": 143,
+    "numeric_read_order": "exact frozen order, one comparator column at a time",
+    "early_stop": "first failure leaves all later comparator values closed",
+    "daily_price_or_return_dependency": false,
+    "output_publication": "atomic, exclusive, private and non-overwriting"
+  },
+  "effective_accounting": {
+    "campaign265_attempt_count": 40,
+    "campaign265_infrastructure_failure_count": 25,
+    "campaign265_prevalue_scientific_attempt_count": 15,
+    "campaign265_complete_factor_attempt_count": 0,
+    "campaign265_return_reading_development_trial_count": 0,
+    "cumulative_historical_research_attempt_count": 2644,
+    "cumulative_return_reading_development_trial_count": 315
+  },
+  "verification": {
+    "new_synthetic_test_count": 11,
+    "focused_and_adjacent_test_count": 47,
+    "focused_and_adjacent_tests_exit_code": 0,
+    "final_state_suite_test_count": 52,
+    "final_state_suite_exit_code": 0,
+    "ruff_exit_code": 0,
+    "real_plan_exit_code": 2,
+    "real_plan_exit_code_was_not_bypassed": true,
+    "staged_diff_first_check_exit_code": 1,
+    "staged_diff_failure_recorded_before_retry": true,
+    "first_secret_scan_exit_one_was_masked": true,
+    "masked_secret_scan_output_discarded": true,
+    "first_accounting_patch_context_failed": true,
+    "failed_accounting_patch_wrote_no_files": true
+  },
+  "candidate49": {
+    "sole_active_prospective_candidate": true,
+    "signal_ledger_entry_count": 0,
+    "signal_ledger_sha256": "5193f00d7f36da003f53cec387900da4c3d002299f5dfcfc1a95eaa199ed3a79",
+    "execution_ledger_entry_count": 0,
+    "execution_ledger_sha256": "d57a3e61eac969e42cafa418ccd8c0a5ee65dcf69da145bb2c096c2a02a2ea4f"
+  },
+  "next_action": {
+    "now": "No audit command is authorized because its plan is not ready. Keep the accepted-source and v420 publication boundaries unchanged.",
+    "after_explicit_v420_and_source_authorization": "After the immutable accepted source exists, rerun the no-return plan. Only ready=true and exit code 0 permit a separate audit --confirm-no-return-audit command.",
+    "after_no_return_pass": "Only all six coverage conditions and all 143 ordered uniqueness passes permit a separately frozen single 2019-2023 development trial.",
+    "continuous_iteration": "Offline historical research remains the primary engine and can continue at any local time; Candidate49 remains a separate prospective confirmation layer."
+  },
+  "research_boundary": {
+    "v420_policy_created": false,
+    "accepted_source_manifest_present": false,
+    "accepted_source_parquet_value_read": false,
+    "candidate_or_comparator_value_read": false,
+    "historical_daily_price_or_forward_return_value_read": false,
+    "stress_2024_2025_opened": false,
+    "provider_credential_value_or_digest_read": false,
+    "provider_client_imported_or_created": false,
+    "provider_request_issued": false,
+    "candidate49_historical_backfill_performed": false,
+    "candidate49_ledgers_changed": false,
+    "second_prospective_candidate_created": false,
+    "current_scoring_selection_sizing_positions_or_orders_performed": false,
+    "investment_advice": false
+  }
+}

@@ -1,0 +1,54 @@
+{
+  "schema_version": 1,
+  "kind": "a_share_three_day_walkforward_campaign265_no_return_audit_implementation_freeze",
+  "status": "source_coverage_ordered_143_early_stop_runner_frozen_before_source_values",
+  "recorded_at": "2026-08-24T14:34:00+08:00",
+  "frozen_implementation": {
+    "protocol_path": "docs/a_share_three_day_walkforward_campaign_265_no_return_audit_protocol_20260824.json",
+    "protocol_sha256": "16a9d7d49fd8b7b3d0211e4ec674c35300260c2671d1b0431e2c3c6dd5fb171f",
+    "runner_path": "scripts/a_share_three_day_walkforward_campaign265_no_return_audit.py",
+    "runner_sha256": "6eef13940aa2e58e9c214a6edc8dd9c16b4a9026c784e9a5b676e87d92313b5f",
+    "test_path": "tests/data_collector_tests/test_a_share_three_day_walkforward_campaign265_no_return_audit.py",
+    "test_sha256": "b1e42bcd2ec688420244dc72d8e5068c03243a1feaf8cff7f141b885bb05faea",
+    "comparator_count": 143,
+    "comparator_order_sha256": "f4fbf3d578e2c80c29425716a30d60a3df01d67d04e37f1651236c4dff899588",
+    "output_path": "data/experiments/short_horizon/historical_walkforward/campaign_265/no_return/campaign265_no_return_audit.json",
+    "plan_decodes_parquet_rows": false,
+    "coverage_precedes_any_comparator_value": true,
+    "one_comparator_column_at_a_time": true,
+    "first_failed_comparator_stops_later_reads": true,
+    "result_publication_is_atomic_exclusive_and_private": true
+  },
+  "synthetic_verification": {
+    "command": "python -m pytest -q tests/data_collector_tests/test_a_share_three_day_walkforward_campaign265_no_return_audit.py",
+    "exit_code": 0,
+    "passed": 11,
+    "coverage": [
+      "protocol and exact 143-comparator order",
+      "1699-session calendar, 5451-name universe and 1700-request digest",
+      "metadata-only source-byte verification without Parquet decoding",
+      "checkpoint tamper fail-closed behavior",
+      "read-only missing-source plan",
+      "same-bond endpoints and issuer median",
+      "numeric YYYYMMDD checkpoint paths",
+      "all six coverage gates",
+      "first-failure ordered comparator stop",
+      "exact intersection without fill",
+      "atomic exclusive private publication"
+    ]
+  },
+  "research_boundary": {
+    "accepted_source_parquet_value_read_before_freeze": false,
+    "candidate_or_comparator_value_read_before_freeze": false,
+    "historical_daily_price_or_forward_return_value_read": false,
+    "stress_2024_2025_return_values_opened": false,
+    "provider_credential_value_or_digest_read": false,
+    "provider_client_imported_or_created": false,
+    "provider_request_issued": false,
+    "candidate49_historical_backfill_performed": false,
+    "candidate49_ledgers_changed": false,
+    "second_prospective_candidate_created": false,
+    "current_scoring_selection_sizing_positions_or_orders_performed": false,
+    "investment_advice": false
+  }
+}
