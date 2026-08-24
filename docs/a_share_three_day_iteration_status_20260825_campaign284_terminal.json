@@ -1,0 +1,17 @@
+{
+  "schema_version": 1,
+  "kind": "a_share_three_day_iteration_status",
+  "status": "campaign284_terminal_prevalue_goal_active",
+  "recorded_at": "2026-08-25T01:36:00+08:00",
+  "authoritative_inputs": {
+    "predecessor": {"path": "docs/a_share_three_day_iteration_status_20260825_campaign283_final_validated_v2.json", "sha256": "b5976acc8cbe98451caab03a524ec71821d45386f369f2801c06c241e840a204"},
+    "catalog": {"path": "docs/a_share_three_day_walkforward_campaign_284_concept_scouting_20260825.json", "sha256": "26d9ed97d9c9bead28b4dcda06e14005f71781bcba053436eb62e2ccd4e80623"},
+    "frontier_result": {"path": "docs/a_share_three_day_walkforward_campaign_284_prevalue_mechanism_frontier_result_20260825.json", "sha256": "2b99738e43ce8051f82853b2494ee3c3dc358eeba5e2e17c4d4b5b392b028df1"},
+    "attempt_ledger": {"path": "data/experiments/short_horizon/historical_walkforward/campaign_284/research_attempt_ledger_v1.json", "sha256": "c9ff95ecbaaf0b42ded00a5d13a57545713ab10d7fe99a1ebce74464edd6b765"}
+  },
+  "scientific_state": {"campaign_id": "campaign_284", "terminal_stage": "prevalue_mechanism_frontier", "catalog_routes": 7, "selected_routes": 0, "complete_factor_attempts": 0, "return_reading_trials": 0, "stress_2024_2025_opened": false},
+  "effective_accounting": {"campaign284_scientific_attempts": 7, "campaign284_infrastructure_failures": 0, "campaign284_total_attempts": 7, "cumulative_historical_research_attempts": 2904, "cumulative_return_reading_development_trials": 315},
+  "library_state": {"complete_factor_definition_count": 162, "complete_factor_definition_order_sha256": "974f2c1f16a85eb43a0bd1e8db768dbe120cd8826c1754d5f220bf9f1d4a3ea0", "eligible_numeric_comparator_count": 143, "eligible_numeric_comparator_order_sha256": "f4fbf3d578e2c80c29425716a30d60a3df01d67d04e37f1651236c4dff899588"},
+  "candidate49": {"sole_active_prospective_candidate": true, "candidate49_plan_or_run_executed": false, "historical_backfill_performed": false, "signal_ledger_entry_count": 0, "signal_ledger_sha256": "5193f00d7f36da003f53cec387900da4c3d002299f5dfcfc1a95eaa199ed3a79", "execution_ledger_entry_count": 0, "execution_ledger_sha256": "d57a3e61eac969e42cafa418ccd8c0a5ee65dcf69da145bb2c096c2a02a2ea4f"},
+  "next_safe_work": "Campaign285 may freeze a new finite concept-only catalog and continue zero-network historical frontier research without waiting for 16:30."
+}
