@@ -1,0 +1,58 @@
+{
+  "schema_version": 1,
+  "kind": "a_share_three_day_walkforward_campaign_270_append_only_research_attempt_ledger_addition",
+  "status": "publication_stage_failure_appended_no_values",
+  "recorded_at": "2026-08-24T18:28:00+08:00",
+  "authoritative_predecessor": {
+    "path": "data/experiments/short_horizon/historical_walkforward/campaign_270/research_attempt_ledger_v2.json",
+    "sha256": "1e310a1dfa9e64387fbbc5688d536762fee99daf40b14c595496789fd907967f",
+    "effective_entry_count": 12,
+    "chain_tip_sha256": "0c0db3c66ac88810b0d678191de7f852d49a55ae6dbb027b5f91e6cfa05ec14e"
+  },
+  "failure_record": {
+    "path": "docs/a_share_three_day_walkforward_campaign_270_publication_stage_failure_record_20260824.json",
+    "sha256": "a9aabbd6e5ada84b9d816020317e22686a281248c993bd66cc40d8c4bcbe0e2d"
+  },
+  "entry_hash_rule": "sha256('campaign270'|'attempt_id'|'previous_entry_sha256'|'phase'|'status')",
+  "entries": [
+    {
+      "ordinal": 13,
+      "attempt_id": "campaign270_infrastructure_007",
+      "route_id": "publication_git_add_combined_tracked_ignored_data_pathspec",
+      "phase": "publication_stage",
+      "status": "failed_git_add_mixed_tracked_ignored_data_pathspec_exit_nonzero_partial_stage_no_values",
+      "scientific_attempt": false,
+      "result_consumed": false,
+      "complete_factor_attempt": false,
+      "candidate_or_comparator_value_read": false,
+      "return_reading_development_trial": false,
+      "previous_entry_sha256": "0c0db3c66ac88810b0d678191de7f852d49a55ae6dbb027b5f91e6cfa05ec14e",
+      "entry_sha256": "b44084f7681149634a7d61278ed088823a611284a8235d6675da402020bc15e8"
+    }
+  ],
+  "effective_entry_count": 13,
+  "effective_infrastructure_failure_attempt_count": 7,
+  "effective_prevalue_scientific_attempt_count": 6,
+  "effective_complete_factor_attempt_count": 0,
+  "return_reading_development_trial_count": 0,
+  "chain_tip_sha256": "b44084f7681149634a7d61278ed088823a611284a8235d6675da402020bc15e8",
+  "cumulative_historical_research_attempt_count": 2733,
+  "cumulative_return_reading_development_trial_count": 315,
+  "research_boundary": {
+    "repository_metadata_and_prior_terminal_history_read": true,
+    "accepted_local_raw_channel_value_read": false,
+    "provider_or_web_request_issued": false,
+    "provider_credential_value_or_digest_read": false,
+    "provider_response_or_source_row_read": false,
+    "candidate_or_comparator_value_read": false,
+    "historical_daily_price_or_forward_return_value_read": false,
+    "stress_2024_2025_opened": false,
+    "campaign265_changed": false,
+    "candidate49_plan_or_run_executed_by_campaign270": false,
+    "candidate49_historical_backfill_performed": false,
+    "candidate49_ledgers_changed": false,
+    "second_prospective_candidate_created": false,
+    "current_scoring_selection_sizing_positions_or_orders_performed": false,
+    "investment_advice": false
+  }
+}

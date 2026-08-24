@@ -1,0 +1,52 @@
+{
+  "schema_version": 1,
+  "kind": "a_share_three_day_walkforward_campaign_270_terminal_validation_failure_record",
+  "status": "two_infrastructure_failures_preserved_before_corrected_validation",
+  "recorded_at": "2026-08-24T18:12:00+08:00",
+  "scientific_result_changed": false,
+  "failures": [
+    {
+      "attempt_id": "campaign270_infrastructure_005",
+      "phase": "focused_terminal_validation",
+      "process_exit_code": 1,
+      "result": "six_passed_one_failed",
+      "cause": "The test required the literal 六项门全部失败 while the immutable terminal report says 因此六项门槛全部失败.",
+      "failed_output_used_as_pass_evidence": false,
+      "candidate_comparator_price_return_or_stress_value_read": false,
+      "pre_repair_test_path": "tests/data_collector_tests/test_a_share_three_day_walkforward_campaign270_terminal.py",
+      "pre_repair_test_sha256": "0b494b2b3b8e313d27d23adbfcc15c08101bce51ec537d86a5b01bf9b199dc4f"
+    },
+    {
+      "attempt_id": "campaign270_infrastructure_006",
+      "phase": "json_validation",
+      "process_exit_code": 0,
+      "result": "tool_output_truncated_entire_output_discarded",
+      "cause": "A combined jq -e . command printed all three JSON documents instead of a bounded boolean result, so the tool output was truncated.",
+      "failed_output_used_as_pass_evidence": false,
+      "candidate_comparator_price_return_or_stress_value_read": false
+    }
+  ],
+  "recovery": {
+    "test_repair_scope": "Change only the report literal assertion to the exact immutable report wording.",
+    "json_validation_scope": "Run one bounded type/status predicate per JSON without printing document bodies.",
+    "formula_direction_source_contract_or_gate_changed": false,
+    "provider_or_web_request_allowed": false
+  },
+  "research_boundary": {
+    "repository_metadata_and_prior_terminal_history_read": true,
+    "accepted_local_raw_channel_value_read": false,
+    "provider_or_web_request_issued": false,
+    "provider_credential_value_or_digest_read": false,
+    "provider_response_or_source_row_read": false,
+    "candidate_or_comparator_value_read": false,
+    "historical_daily_price_or_forward_return_value_read": false,
+    "stress_2024_2025_opened": false,
+    "campaign265_changed": false,
+    "candidate49_plan_or_run_executed_by_campaign270": false,
+    "candidate49_historical_backfill_performed": false,
+    "candidate49_ledgers_changed": false,
+    "second_prospective_candidate_created": false,
+    "current_scoring_selection_sizing_positions_or_orders_performed": false,
+    "investment_advice": false
+  }
+}

@@ -1,0 +1,72 @@
+{
+  "schema_version": 1,
+  "kind": "a_share_three_day_walkforward_campaign_270_append_only_research_attempt_ledger_addition",
+  "status": "postterminal_validation_failures_appended_no_values",
+  "recorded_at": "2026-08-24T18:13:00+08:00",
+  "authoritative_predecessor": {
+    "path": "data/experiments/short_horizon/historical_walkforward/campaign_270/research_attempt_ledger_v1.json",
+    "sha256": "d5d4a76274df2e443321ee0f6c7ab92e964ba379f4c826252658b714b006bb34",
+    "effective_entry_count": 10,
+    "chain_tip_sha256": "e17b0f53767231f6e87f7a2c8b27470a96bf8802213d55cea1c4c18aedef2772"
+  },
+  "failure_record": {
+    "path": "docs/a_share_three_day_walkforward_campaign_270_terminal_validation_failure_record_20260824.json",
+    "sha256": "dc6ba9772d8f0b0c9bfe4acd46512e420af118f784ad1ce927cf43c2e2ce2b1d"
+  },
+  "entry_hash_rule": "sha256('campaign270'|'attempt_id'|'previous_entry_sha256'|'phase'|'status')",
+  "entries": [
+    {
+      "ordinal": 11,
+      "attempt_id": "campaign270_infrastructure_005",
+      "route_id": "focused_terminal_report_literal_assertion",
+      "phase": "focused_terminal_validation",
+      "status": "failed_report_literal_assertion_one_failed_six_passed_no_values",
+      "scientific_attempt": false,
+      "result_consumed": false,
+      "complete_factor_attempt": false,
+      "candidate_or_comparator_value_read": false,
+      "return_reading_development_trial": false,
+      "previous_entry_sha256": "e17b0f53767231f6e87f7a2c8b27470a96bf8802213d55cea1c4c18aedef2772",
+      "entry_sha256": "040dd36755d9d3af948ea0b8e8160c7f84b8f779b5bde67029471edc9e4288f3"
+    },
+    {
+      "ordinal": 12,
+      "attempt_id": "campaign270_infrastructure_006",
+      "route_id": "combined_json_validation_printed_full_documents",
+      "phase": "json_validation",
+      "status": "failed_wide_jq_output_truncated_discarded_no_values",
+      "scientific_attempt": false,
+      "result_consumed": false,
+      "complete_factor_attempt": false,
+      "candidate_or_comparator_value_read": false,
+      "return_reading_development_trial": false,
+      "previous_entry_sha256": "040dd36755d9d3af948ea0b8e8160c7f84b8f779b5bde67029471edc9e4288f3",
+      "entry_sha256": "0c0db3c66ac88810b0d678191de7f852d49a55ae6dbb027b5f91e6cfa05ec14e"
+    }
+  ],
+  "effective_entry_count": 12,
+  "effective_infrastructure_failure_attempt_count": 6,
+  "effective_prevalue_scientific_attempt_count": 6,
+  "effective_complete_factor_attempt_count": 0,
+  "return_reading_development_trial_count": 0,
+  "chain_tip_sha256": "0c0db3c66ac88810b0d678191de7f852d49a55ae6dbb027b5f91e6cfa05ec14e",
+  "cumulative_historical_research_attempt_count": 2732,
+  "cumulative_return_reading_development_trial_count": 315,
+  "research_boundary": {
+    "repository_metadata_and_prior_terminal_history_read": true,
+    "accepted_local_raw_channel_value_read": false,
+    "provider_or_web_request_issued": false,
+    "provider_credential_value_or_digest_read": false,
+    "provider_response_or_source_row_read": false,
+    "candidate_or_comparator_value_read": false,
+    "historical_daily_price_or_forward_return_value_read": false,
+    "stress_2024_2025_opened": false,
+    "campaign265_changed": false,
+    "candidate49_plan_or_run_executed_by_campaign270": false,
+    "candidate49_historical_backfill_performed": false,
+    "candidate49_ledgers_changed": false,
+    "second_prospective_candidate_created": false,
+    "current_scoring_selection_sizing_positions_or_orders_performed": false,
+    "investment_advice": false
+  }
+}

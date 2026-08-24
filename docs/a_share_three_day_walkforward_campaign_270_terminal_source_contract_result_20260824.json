@@ -1,0 +1,184 @@
+{
+  "schema_version": 1,
+  "kind": "a_share_three_day_walkforward_campaign_270_terminal_zero_row_source_contract_result",
+  "status": "terminal_source_contract_rejected_before_formula_direction_source_rows_or_values",
+  "recorded_at": "2026-08-24T18:05:00+08:00",
+  "timestamp_semantics": "Monotonic logical publication time after the Campaign270 inventory; not a market-data timestamp.",
+  "authoritative_inputs": {
+    "historical_walkforward_policy": {
+      "path": "docs/a_share_three_day_historical_walkforward_research_policy_20260727.json",
+      "sha256": "38426d6161b9bfed323c58caba18feca668b8c9d53e294951a8ba90c01a798bb"
+    },
+    "campaign269_final_validated_state": {
+      "path": "docs/a_share_three_day_iteration_status_20260824_campaign269_final_validated.json",
+      "sha256": "f77e4128b40c2efdcfd4a97b0b093b51fcf9f621ce5e057457e826980bbc6654"
+    },
+    "campaign269_frontier": {
+      "path": "docs/a_share_three_day_walkforward_campaign_269_exogenous_facility_hazard_concept_scouting_20260824.json",
+      "sha256": "82fa865c99d79e784ba86718f55e3ef18e4dcf2c50737eab0c857c8bba3bac1b"
+    },
+    "campaign270_preregistration": {
+      "path": "docs/a_share_three_day_walkforward_campaign_270_facility_flood_source_contract_preregistration_20260824.json",
+      "sha256": "f5f7c24ffca6aa9e5c4853ff199439721b1a6faf5be056fb4e0ea88d340c3053"
+    },
+    "campaign270_attempt_ledger": {
+      "path": "data/experiments/short_horizon/historical_walkforward/campaign_270/research_attempt_ledger_v1.json",
+      "sha256": "d5d4a76274df2e443321ee0f6c7ab92e964ba379f4c826252658b714b006bb34",
+      "effective_entry_count": 10,
+      "chain_tip_sha256": "e17b0f53767231f6e87f7a2c8b27470a96bf8802213d55cea1c4c18aedef2772"
+    },
+    "campaign165_environmental_source_frontier": {
+      "path": "docs/a_share_three_day_walkforward_campaign_165_environmental_operating_externality_source_frontier_20260815.json",
+      "sha256": "45d28dfd51a71f45c684dd418286275c34b1d076cc495856270bd0cb9cb962b4"
+    },
+    "campaign166_incident_source_frontier": {
+      "path": "docs/a_share_three_day_walkforward_campaign_166_operational_incident_disclosure_source_frontier_20260815.json",
+      "sha256": "96ecd0259613a6649674804a676b3d82205fe11ba3b01986db6b675d00ea78d1"
+    },
+    "candidate49_20260824_failure_record": {
+      "path": "docs/a_share_candidate49_20260824_daily_source_failure_record.json",
+      "sha256": "ec99b5af6504b55cac9f0f4b77a32a6052be3e3efec0dbe1bc7a9cd971c354e3"
+    }
+  },
+  "locked_route": {
+    "predecessor_concept_id": "c269_01",
+    "name": "issuer_facility_extreme_precipitation_or_flood_exposure",
+    "disposition": "terminal_source_contract_rejection",
+    "concept_is_factor": false,
+    "formula": null,
+    "direction": null,
+    "source_fields": null,
+    "threshold": null,
+    "spatial_radius": null,
+    "event_window": null,
+    "source_contract_or_adapter_created": false
+  },
+  "bounded_repository_inventory": {
+    "scope": [
+      "docs",
+      "scripts",
+      "tests"
+    ],
+    "method": "Tracked file names, exact-word text matches, JSON metadata and immutable prior source-gate records only; no raw or derived source rows were opened.",
+    "script_implementation_match_counts": {
+      "weather_hazard_flood_rainfall_precipitation_meteorological_inundation_complete_words": 0,
+      "latitude_longitude_crs_geospatial_geocode_facility_id_plant_id_factory_id": 0
+    },
+    "documentation_interpretation": "Hazard and facility matches outside Campaign269/270 are immutable prior concept/source rejections or unrelated commercial-service weather clauses. None is an accepted facility master, hazard archive, geospatial adapter or point-in-time source manifest.",
+    "prior_source_gate_evidence": {
+      "campaign165_historically_versioned_environmental_operating_source_contract_present": false,
+      "campaign166_complete_operational_incident_source_contract_present": false,
+      "campaign166_facility_and_subsidiary_scope_frozen_in_complete_local_source": false
+    },
+    "accepted_local_facility_hazard_source_contract_present": false,
+    "accepted_local_unconsumed_raw_channel_present": false
+  },
+  "contract_gate_results": [
+    {
+      "gate_id": "c270_g01",
+      "name": "point_in_time_facility_master",
+      "passed": false,
+      "reason": "No accepted local facility identifier, coordinate, operating/ownership interval, revision or 2019-2023 facility-history contract exists."
+    },
+    {
+      "gate_id": "c270_g02",
+      "name": "point_in_time_entity_facility_mapping",
+      "passed": false,
+      "reason": "No accepted point-in-time listed-instrument to legal-entity, subsidiary and facility mapping with corporate-action and publication semantics exists."
+    },
+    {
+      "gate_id": "c270_g03",
+      "name": "versioned_hazard_observation_archive",
+      "passed": false,
+      "reason": "No repository script or accepted manifest implements a versioned extreme-precipitation or inundation observation archive for 2019-2023."
+    },
+    {
+      "gate_id": "c270_g04",
+      "name": "public_clock_and_revision_semantics",
+      "passed": false,
+      "reason": "Without accepted facility and hazard sources, signal-close public availability and non-backfilled revision semantics cannot be bound."
+    },
+    {
+      "gate_id": "c270_g05",
+      "name": "deterministic_spatial_identity_and_join",
+      "passed": false,
+      "reason": "No adapter or schema binds coordinates, CRS, geometry versions, boundary ties, geocoding provenance or a facility-to-hazard spatial join."
+    },
+    {
+      "gate_id": "c270_g06",
+      "name": "complete_zero_exposure_denominator_and_later_protocol",
+      "passed": false,
+      "reason": "True zero exposure cannot be separated from missing facility or hazard coverage for every point-in-time eligible issuer. Rigorous 2019-2023 coverage and the later formula/direction/walk-forward protocol therefore cannot be frozen."
+    }
+  ],
+  "decision": {
+    "all_six_contract_gates_passed": false,
+    "source_contract_admitted": false,
+    "terminalize_c269_01": true,
+    "reason": "The preregistered conjunctive contract requires all six components. Every component is absent or not bindable in the accepted local repository metadata, so partial facility, hazard or spatial evidence cannot be promoted to a factor.",
+    "sibling_hazard_or_parameter_rescue_allowed": false,
+    "next_safe_work": "Campaign271 may scout one genuinely independent finite concept before values. It must not retry heat, typhoon, earthquake, air-pollution, public-health, precipitation/flood thresholds, spatial radii, directions or event windows as a rescue of Campaign269/270."
+  },
+  "scientific_result": {
+    "selected_factor_count": 0,
+    "complete_factor_definition_created": false,
+    "numeric_comparator_created": false,
+    "numeric_formula_or_direction_frozen": false,
+    "candidate_or_comparator_value_read": false,
+    "historical_daily_price_or_forward_return_value_read": false,
+    "development_trial_count": 0,
+    "stress_trial_count_2024_2025": 0,
+    "predictive_claim_created": false
+  },
+  "library_state": {
+    "changed_by_campaign270": false,
+    "complete_factor_definition_count": 162,
+    "complete_factor_definition_order_sha256": "974f2c1f16a85eb43a0bd1e8db768dbe120cd8826c1754d5f220bf9f1d4a3ea0",
+    "eligible_numeric_comparator_count": 143,
+    "eligible_numeric_comparator_order_sha256": "f4fbf3d578e2c80c29425716a30d60a3df01d67d04e37f1651236c4dff899588"
+  },
+  "accounting": {
+    "campaign270_attempt_count": 10,
+    "campaign270_infrastructure_failure_count": 4,
+    "campaign270_prevalue_scientific_attempt_count": 6,
+    "campaign270_complete_factor_attempt_count": 0,
+    "campaign270_return_reading_development_trial_count": 0,
+    "cumulative_historical_research_attempt_count": 2730,
+    "cumulative_return_reading_development_trial_count": 315
+  },
+  "candidate49": {
+    "sole_active_prospective_candidate": true,
+    "session_date": "2026-08-24",
+    "same_session_retry_allowed": false,
+    "prior_failure_class": "stock_basic_invalid_ts_code",
+    "campaign270_plan_or_run_executed": false,
+    "signal_ledger_entry_count": 0,
+    "signal_ledger_sha256": "5193f00d7f36da003f53cec387900da4c3d002299f5dfcfc1a95eaa199ed3a79",
+    "execution_ledger_entry_count": 0,
+    "execution_ledger_sha256": "d57a3e61eac969e42cafa418ccd8c0a5ee65dcf69da145bb2c096c2a02a2ea4f",
+    "historical_backfill_performed": false
+  },
+  "campaign265": {
+    "changed_by_campaign270": false,
+    "v420_policy_present": false,
+    "accepted_source_manifest_present": false,
+    "no_return_plan_blocker": "source_acceptance_manifest_absent_or_unsafe"
+  },
+  "research_boundary": {
+    "repository_metadata_and_prior_terminal_history_read": true,
+    "accepted_local_raw_channel_value_read": false,
+    "provider_or_web_request_issued": false,
+    "provider_credential_value_or_digest_read": false,
+    "provider_response_or_source_row_read": false,
+    "candidate_or_comparator_value_read": false,
+    "historical_daily_price_or_forward_return_value_read": false,
+    "stress_2024_2025_opened": false,
+    "campaign265_changed": false,
+    "candidate49_plan_or_run_executed_by_campaign270": false,
+    "candidate49_historical_backfill_performed": false,
+    "candidate49_ledgers_changed": false,
+    "second_prospective_candidate_created": false,
+    "current_scoring_selection_sizing_positions_or_orders_performed": false,
+    "investment_advice": false
+  }
+}

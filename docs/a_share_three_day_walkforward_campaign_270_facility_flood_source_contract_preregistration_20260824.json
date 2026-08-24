@@ -1,0 +1,132 @@
+{
+  "schema_version": 1,
+  "kind": "a_share_three_day_walkforward_campaign_270_zero_row_source_contract_preregistration",
+  "status": "frozen_before_campaign270_repository_source_contract_inventory",
+  "recorded_at": "2026-08-24T17:48:00+08:00",
+  "timestamp_semantics": "Monotonic logical publication time after the Campaign269 final validated state; not a market-data timestamp.",
+  "purpose": "Perform one finite, zero-row, zero-network source-contract feasibility review for Campaign269 concept c269_01. This is not a factor definition, source acceptance, value audit, return trial or prospective activation.",
+  "authoritative_inputs": {
+    "historical_walkforward_policy": {
+      "path": "docs/a_share_three_day_historical_walkforward_research_policy_20260727.json",
+      "sha256": "38426d6161b9bfed323c58caba18feca668b8c9d53e294951a8ba90c01a798bb"
+    },
+    "campaign269_final_validated_state": {
+      "path": "docs/a_share_three_day_iteration_status_20260824_campaign269_final_validated.json",
+      "sha256": "f77e4128b40c2efdcfd4a97b0b093b51fcf9f621ce5e057457e826980bbc6654"
+    },
+    "campaign269_frontier": {
+      "path": "docs/a_share_three_day_walkforward_campaign_269_exogenous_facility_hazard_concept_scouting_20260824.json",
+      "sha256": "82fa865c99d79e784ba86718f55e3ef18e4dcf2c50737eab0c857c8bba3bac1b"
+    },
+    "campaign269_attempt_ledger": {
+      "path": "data/experiments/short_horizon/historical_walkforward/campaign_269/research_attempt_ledger_v6.json",
+      "sha256": "8dad1656cfdd22a1e8af34112fea1118ae8092790cb1623bd9b042c1177fc41c",
+      "chain_tip_sha256": "5973b1ad6f374f57d8e12df029b0f7f79994ed868f767ea2122cc50acb0fc21d"
+    }
+  },
+  "locked_route": {
+    "predecessor_concept_id": "c269_01",
+    "name": "issuer_facility_extreme_precipitation_or_flood_exposure",
+    "classification": "concept_only_not_factor",
+    "source_family": "external_observed_extreme_precipitation_or_inundation_at_point_in_time_operating_facilities",
+    "sibling_hazards_closed": [
+      "extreme_heat_or_cold",
+      "typhoon_wind_rain_landfall",
+      "earthquake_ground_motion",
+      "air_pollution_emergency_curtailment",
+      "public_health_mobility_restriction"
+    ],
+    "formula": null,
+    "direction": null,
+    "threshold": null,
+    "spatial_radius": null,
+    "event_window": null,
+    "source_fields": null
+  },
+  "finite_contract_gate_catalog": [
+    {
+      "gate_id": "c270_g01",
+      "name": "point_in_time_facility_master",
+      "required_contract": "An accepted local source must expose stable issuer, legal-entity, subsidiary and facility identifiers; coordinates with CRS and precision; operation/ownership start and end intervals; closure/addition/deletion history; and version/revision provenance for 2019-2023 without current-facility backfill."
+    },
+    {
+      "gate_id": "c270_g02",
+      "name": "point_in_time_entity_facility_mapping",
+      "required_contract": "The source must bind listed instrument to legal entity, subsidiary and facility through time, including corporate actions, ownership changes, name changes and delistings, with deterministic one-to-many semantics and publication timestamps."
+    },
+    {
+      "gate_id": "c270_g03",
+      "name": "versioned_hazard_observation_archive",
+      "required_contract": "One accepted local extreme-precipitation or inundation archive must provide immutable observation identity, spatial support, observation/event time, publication time, revision chain, units and 2019-2023 historical coverage. No choice among hazard subtypes, thresholds or durations may be made after values."
+    },
+    {
+      "gate_id": "c270_g04",
+      "name": "public_clock_and_revision_semantics",
+      "required_contract": "Every facility and hazard fact must have a public availability clock and revision policy that proves what was knowable by the signal close; later corrections may not be backfilled into earlier signals."
+    },
+    {
+      "gate_id": "c270_g05",
+      "name": "deterministic_spatial_identity_and_join",
+      "required_contract": "Coordinate reference systems, geometry identity, geocoding provenance, point/grid/polygon join behavior, boundary ties, offshore/missing coordinates and spatial-version changes must be fixed before any row."
+    },
+    {
+      "gate_id": "c270_g06",
+      "name": "complete_zero_exposure_denominator_and_later_protocol",
+      "required_contract": "The source contract must enumerate the complete eligible issuer denominator including true zero exposure, distinguish zero from missing, prove 2019-2023 coverage and support, and permit one exact formula, direction, support rule, t+1/t+3 clock, no-return gates and three frozen development folds to be bound before rows."
+    }
+  ],
+  "decision_rule": {
+    "admit_source_contract_only_if": "All six gates are satisfied by one already accepted local point-in-time source contract whose metadata can be bound without opening a source row or value.",
+    "terminalize_if_any_gate_fails": true,
+    "partial_contract_not_admissible": true,
+    "formula_or_direction_freeze_allowed_only_after_all_six_gates": true,
+    "candidate_or_comparator_value_access_allowed_by_campaign270": false,
+    "daily_price_or_forward_return_access_allowed_by_campaign270": false,
+    "provider_or_web_access_allowed_by_campaign270": false,
+    "adapter_or_download_creation_allowed_by_campaign270": false
+  },
+  "bounded_inventory_protocol": {
+    "allowed_scope": [
+      "docs",
+      "scripts",
+      "tests"
+    ],
+    "allowed_evidence": [
+      "tracked file names",
+      "repository text and JSON metadata",
+      "source adapter and schema declarations",
+      "prior immutable terminal records"
+    ],
+    "forbidden_evidence": [
+      "provider or web response",
+      "credential value or digest",
+      "raw or derived source row",
+      "candidate or comparator value",
+      "daily price or forward return",
+      "2024-2025 stress value"
+    ],
+    "query_families": [
+      "facility plant factory site coordinate latitude longitude geospatial",
+      "precipitation rainfall flood inundation meteorological weather hazard",
+      "issuer subsidiary legal entity ownership operation interval revision public time",
+      "zero exposure denominator point in time listing delisting corporate action"
+    ]
+  },
+  "research_boundary": {
+    "repository_metadata_and_prior_terminal_history_read": true,
+    "accepted_local_raw_channel_value_read": false,
+    "provider_or_web_request_issued": false,
+    "provider_credential_value_or_digest_read": false,
+    "provider_response_or_source_row_read": false,
+    "candidate_or_comparator_value_read": false,
+    "historical_daily_price_or_forward_return_value_read": false,
+    "stress_2024_2025_opened": false,
+    "campaign265_changed": false,
+    "candidate49_plan_or_run_executed_by_campaign270": false,
+    "candidate49_historical_backfill_performed": false,
+    "candidate49_ledgers_changed": false,
+    "second_prospective_candidate_created": false,
+    "current_scoring_selection_sizing_positions_or_orders_performed": false,
+    "investment_advice": false
+  }
+}

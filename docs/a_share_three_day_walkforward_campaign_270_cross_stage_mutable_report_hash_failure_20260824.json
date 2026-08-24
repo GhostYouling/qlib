@@ -1,0 +1,39 @@
+{
+  "schema_version": 1,
+  "kind": "a_share_three_day_walkforward_campaign_270_cross_stage_mutable_report_hash_failure",
+  "status": "historical_publication_hash_node_failed_after_additive_report_advance",
+  "recorded_at": "2026-08-24T18:40:00+08:00",
+  "attempt_id": "campaign270_infrastructure_009",
+  "phase": "cross_stage_validation",
+  "process_exit_code": 1,
+  "result": {
+    "passed": 214,
+    "failed": 1,
+    "deselected": 5,
+    "duration_seconds": 36.08
+  },
+  "failed_node": "data_collector_tests/test_a_share_three_day_walkforward_campaign270_publication_state.py::test_current_reports_have_one_additive_publication_correction",
+  "cause": "The immutable publication-state test bound unified-report hashes before the later session-handle accounting correction was appended. The report advance is expected mutable history, so the old hash node must be preserved and deselected from current-state suites rather than rewritten.",
+  "failed_output_used_as_pass_evidence": false,
+  "old_test_or_mutable_report_rewrite_allowed": false,
+  "current_recovery": "Add a versioned current-state test that asserts live accounting and section semantics without binding mutable report hashes, then rerun with this exact historical node as the sixth deselection.",
+  "scientific_result_changed": false,
+  "candidate_comparator_price_return_or_stress_value_read": false,
+  "research_boundary": {
+    "repository_metadata_and_prior_terminal_history_read": true,
+    "accepted_local_raw_channel_value_read": false,
+    "provider_or_web_request_issued": false,
+    "provider_credential_value_or_digest_read": false,
+    "provider_response_or_source_row_read": false,
+    "candidate_or_comparator_value_read": false,
+    "historical_daily_price_or_forward_return_value_read": false,
+    "stress_2024_2025_opened": false,
+    "campaign265_changed": false,
+    "candidate49_plan_or_run_executed_by_campaign270": false,
+    "candidate49_historical_backfill_performed": false,
+    "candidate49_ledgers_changed": false,
+    "second_prospective_candidate_created": false,
+    "current_scoring_selection_sizing_positions_or_orders_performed": false,
+    "investment_advice": false
+  }
+}

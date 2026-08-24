@@ -1,0 +1,35 @@
+{
+  "schema_version": 1,
+  "kind": "a_share_three_day_walkforward_campaign_270_cross_stage_session_handle_failure",
+  "status": "incomplete_progress_output_discarded_after_session_handle_projection_error",
+  "recorded_at": "2026-08-24T18:35:00+08:00",
+  "attempt_id": "campaign270_infrastructure_008",
+  "phase": "cross_stage_validation",
+  "cause": "The 30-second exec call returned a still-running pytest session, but the orchestration projection emitted only exit_code and output and omitted the session_id. The visible progress ended at 66 percent plus a partial line and is not a completion receipt.",
+  "visible_output_used_as_pass_evidence": false,
+  "followup_process_check": {
+    "command_class": "read_only_pgrep",
+    "process_found": false,
+    "interpretation": "The child had ended before the follow-up, but its terminal exit code and tail were unavailable; no pass or fail conclusion is inferred."
+  },
+  "recovery": "Rerun the exact cross-stage scope and preserve the complete exec result object; if a session_id is returned, resume it with write_stdin until a terminal exit code is observed.",
+  "scientific_result_changed": false,
+  "candidate_comparator_price_return_or_stress_value_read": false,
+  "research_boundary": {
+    "repository_metadata_and_prior_terminal_history_read": true,
+    "accepted_local_raw_channel_value_read": false,
+    "provider_or_web_request_issued": false,
+    "provider_credential_value_or_digest_read": false,
+    "provider_response_or_source_row_read": false,
+    "candidate_or_comparator_value_read": false,
+    "historical_daily_price_or_forward_return_value_read": false,
+    "stress_2024_2025_opened": false,
+    "campaign265_changed": false,
+    "candidate49_plan_or_run_executed_by_campaign270": false,
+    "candidate49_historical_backfill_performed": false,
+    "candidate49_ledgers_changed": false,
+    "second_prospective_candidate_created": false,
+    "current_scoring_selection_sizing_positions_or_orders_performed": false,
+    "investment_advice": false
+  }
+}

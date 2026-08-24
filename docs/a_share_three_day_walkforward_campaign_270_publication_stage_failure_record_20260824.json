@@ -1,0 +1,47 @@
+{
+  "schema_version": 1,
+  "kind": "a_share_three_day_walkforward_campaign_270_publication_stage_failure_record",
+  "status": "git_add_returned_nonzero_after_partial_stage_no_commit_no_values",
+  "recorded_at": "2026-08-24T18:27:00+08:00",
+  "attempt_id": "campaign270_infrastructure_007",
+  "phase": "publication_stage",
+  "process_exit_code": 1,
+  "cause": "One explicit git add command combined tracked reports below the ignored data path with non-data publication artifacts. Git reported that data is ignored and returned nonzero after staging the tracked reports and the non-data paths.",
+  "partially_staged_before_failure": [
+    "data/experiments/short_horizon/current_research_report.md",
+    "data/experiments/short_horizon/three_day_research_report.md",
+    "docs/a_share_three_day_iteration_status_20260824_campaign270_final_validated.json",
+    "docs/a_share_three_day_strategy_handoff_20260824_campaign270_final.md",
+    "docs/a_share_three_day_walkforward_campaign_270_facility_flood_source_contract_preregistration_20260824.json",
+    "docs/a_share_three_day_walkforward_campaign_270_terminal_source_contract_report.md",
+    "docs/a_share_three_day_walkforward_campaign_270_terminal_source_contract_result_20260824.json",
+    "docs/a_share_three_day_walkforward_campaign_270_terminal_validation_failure_record_20260824.json",
+    "tests/data_collector_tests/test_a_share_three_day_walkforward_campaign270_terminal.py"
+  ],
+  "ignored_ledgers_not_staged_by_failed_command": [
+    "data/experiments/short_horizon/historical_walkforward/campaign_270/research_attempt_ledger_v1.json",
+    "data/experiments/short_horizon/historical_walkforward/campaign_270/research_attempt_ledger_v2.json"
+  ],
+  "commit_created": false,
+  "push_attempted": false,
+  "failed_output_used_as_success_evidence": false,
+  "recovery": "Preserve the partial index, append this failure, then stage new non-data files, tracked data reports and ignored ledgers through separate exact commands. Never combine ignored ledgers with ordinary paths.",
+  "scientific_result_changed": false,
+  "research_boundary": {
+    "repository_metadata_and_prior_terminal_history_read": true,
+    "accepted_local_raw_channel_value_read": false,
+    "provider_or_web_request_issued": false,
+    "provider_credential_value_or_digest_read": false,
+    "provider_response_or_source_row_read": false,
+    "candidate_or_comparator_value_read": false,
+    "historical_daily_price_or_forward_return_value_read": false,
+    "stress_2024_2025_opened": false,
+    "campaign265_changed": false,
+    "candidate49_plan_or_run_executed_by_campaign270": false,
+    "candidate49_historical_backfill_performed": false,
+    "candidate49_ledgers_changed": false,
+    "second_prospective_candidate_created": false,
+    "current_scoring_selection_sizing_positions_or_orders_performed": false,
+    "investment_advice": false
+  }
+}
