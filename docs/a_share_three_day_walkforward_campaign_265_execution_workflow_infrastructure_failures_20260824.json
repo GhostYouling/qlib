@@ -1,0 +1,115 @@
+{
+  "schema_version": 1,
+  "kind": "a_share_three_day_walkforward_campaign265_execution_workflow_infrastructure_failure_record",
+  "status": "ten_command_level_infrastructure_failures_preserved_through_execution_path_hardening_values_closed",
+  "recorded_at": "2026-08-24T05:24:17Z",
+  "timestamp_semantics": "measured host UTC after execution destination-tree hardening and corrected synthetic validation; before credential load, provider entry or source values",
+  "authoritative_predecessor": {
+    "path": "docs/a_share_three_day_iteration_status_20260824_campaign265_source_acceptance_plan_ready_v2.json",
+    "sha256": "38a9e8b3834643db861dedb4b16e9b3d316d117582e166980a27ecf8351cff48"
+  },
+  "failures": [
+    {
+      "attempt_id": "campaign265_infrastructure_016",
+      "phase": "current_state_verification",
+      "status": "current_state_binding_probe_guessed_nonexistent_source_acceptance_plan_contract_filename",
+      "observed": "sha256sum reported that docs/a_share_three_day_walkforward_campaign_265_source_acceptance_plan_contract_20260824.json did not exist; hashes for the explicitly present files were still printed but the command failed",
+      "correction": "Enumerated the exact Campaign265 filenames and used the existing source contract, source-acceptance preregistration and plan result paths; no frozen file was renamed or rewritten"
+    },
+    {
+      "attempt_id": "campaign265_infrastructure_017",
+      "phase": "current_state_verification",
+      "status": "campaign265_test_inventory_probe_used_missing_top_level_data_collector_tests_directory",
+      "observed": "rg --files was given data_collector_tests as a top-level path even though this worktree stores it below tests/data_collector_tests",
+      "correction": "Enumerated tests first and used tests/data_collector_tests for filesystem paths while retaining data_collector_tests prefixes only where pytest reports configured collection-root node IDs"
+    },
+    {
+      "attempt_id": "campaign265_infrastructure_018",
+      "phase": "execution_workflow_implementation",
+      "status": "execution_workflow_first_black_check_required_mechanical_formatting_before_freeze",
+      "observed": "Python compilation and Ruff passed; Black --check exited one because the new unfrozen workflow would be reformatted",
+      "correction": "Ran Black mechanically before any implementation fingerprint was frozen; workflow semantics were unchanged"
+    },
+    {
+      "attempt_id": "campaign265_infrastructure_019",
+      "phase": "execution_workflow_implementation",
+      "status": "post_black_journal_and_manifest_patch_context_mismatch_rejected_before_target_write",
+      "observed": "An apply_patch hunk used the pre-Black journal context and was rejected atomically",
+      "correction": "Read the current formatted lines and applied the same narrow journal-chain and synthetic-root manifest correction against exact context"
+    },
+    {
+      "attempt_id": "campaign265_infrastructure_020",
+      "phase": "execution_workflow_implementation",
+      "status": "attempt_initialization_failure_guard_patch_context_mismatch_rejected_before_target_write",
+      "observed": "A second apply_patch hunk expected a wrapped call that Black had collapsed and was rejected atomically",
+      "correction": "Read the exact current call and added the existing-attempt invalid-or-inflight terminal guard without changing the one-shot schedule"
+    },
+    {
+      "attempt_id": "campaign265_infrastructure_021",
+      "phase": "execution_workflow_testing",
+      "status": "workflow_test_first_black_check_required_mechanical_formatting_before_freeze",
+      "observed": "Ruff passed; Black --check exited one because the new unfrozen workflow test module would be reformatted",
+      "correction": "Ran Black mechanically before freezing the test hash"
+    },
+    {
+      "attempt_id": "campaign265_infrastructure_022",
+      "phase": "execution_workflow_testing",
+      "status": "synthetic_workflow_suite_failed_before_state_machine_on_repo_relative_temp_binding_assumption",
+      "observed": "One pytest command produced eight failures with one common root: synthetic implementation-freeze, v420 and plan-result fixtures lived outside the repository, while intent rendering required every test path to be repository-relative; two non-state-machine tests passed",
+      "correction": "Allow absolute display paths only for injected synthetic bindings; production constants remain exact repository paths. The corrected identical safe scope passed 10 tests with two policy-dependent plan tests deliberately deferred until v419 publication"
+    },
+    {
+      "attempt_id": "campaign265_infrastructure_023",
+      "phase": "execution_workflow_implementation_review",
+      "status": "self_referential_plan_intent_repair_patch_included_a_nonexistent_duplicate_return_context",
+      "observed": "A combined apply_patch correctly identified the plan self-reference lines but also expected a duplicate sanitized-counter return that was only duplicated by overlapping sed display ranges; the whole patch was rejected atomically",
+      "correction": "Applied only the exact plan hunk. The plan no longer constructs or hashes the future v420-bound intent; intent construction remains mandatory only at a separately authorized run"
+    },
+    {
+      "attempt_id": "campaign265_infrastructure_024",
+      "phase": "post_plan_semantic_validation",
+      "status": "candidate49_hash_probe_used_nonexistent_future_observation_subdirectory",
+      "observed": "The first read-only Candidate49 hash probe guessed data/metadata/future_observation/candidate_049 paths and stopped before its chained ledger validator; no file was written",
+      "correction": "Read the exact planner bindings and validated the real data/experiments/short_horizon Candidate49 ledgers, both unchanged at zero entries and their frozen hashes; reran the ledger-chain validator successfully"
+    },
+    {
+      "attempt_id": "campaign265_infrastructure_025",
+      "phase": "execution_workflow_path_hardening",
+      "status": "destination_parent_guard_first_black_check_required_mechanical_formatting_before_v2_freeze",
+      "observed": "Black --check reported only that the newly hardened, not-yet-refrozen workflow would be reformatted; the chained Ruff and pytest commands did not run",
+      "correction": "Ran Black mechanically before the v2 byte freeze, then reran Black, Ruff and the full policy-independent synthetic scope successfully"
+    }
+  ],
+  "command_accounting": {
+    "infrastructure_failure_commands": 10,
+    "individual_pytest_assertion_failures_in_common_root_command": 8,
+    "pytest_failure_commands_counted": 1,
+    "corrected_synthetic_scope_passed": 11,
+    "corrected_synthetic_scope_failed": 0,
+    "policy_dependent_plan_tests_deferred": 2,
+    "black_passed_after_corrections": true,
+    "ruff_passed_after_corrections": true
+  },
+  "post_plan_security_review": {
+    "finding": "The v1 workflow rejected direct destination symlinks/non-regular artifacts but did not explicitly reject a symlink in an existing destination parent directory.",
+    "run_or_provider_authority_existed_when_found": false,
+    "destination_or_source_write_occurred": false,
+    "resolution": "Preserve v1 evidence, harden both plan and execution preflight, add a synthetic no-credential/no-provider/no-outside-write symlink test, and require additive v2 freeze/policy/plan evidence."
+  },
+  "research_boundary": {
+    "credential_metadata_presence_checked_without_value": true,
+    "credential_value_or_digest_read": false,
+    "provider_client_imported_or_created": false,
+    "provider_request_issued": false,
+    "provider_response_or_row_value_read": false,
+    "source_acceptance_output_written": false,
+    "candidate_or_comparator_value_read": false,
+    "historical_daily_price_or_forward_return_value_read": false,
+    "stress_2024_2025_opened": false,
+    "candidate49_historical_backfill_performed": false,
+    "candidate49_ledgers_changed": false,
+    "second_prospective_candidate_created": false,
+    "current_scoring_selection_sizing_positions_or_orders_performed": false,
+    "investment_advice": false
+  }
+}

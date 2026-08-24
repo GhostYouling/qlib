@@ -1,0 +1,215 @@
+{
+  "schema_version": 1,
+  "kind": "a_share_three_day_walkforward_campaign265_source_acceptance_execution_protocol",
+  "status": "frozen_execution_workflow_contract_before_credential_provider_source_candidate_comparator_price_or_return_values",
+  "recorded_at": "2026-08-24T04:58:31Z",
+  "timestamp_semantics": "measured host UTC after authoritative-state and credential-metadata-only verification; before workflow implementation, credential value load, provider entry or source values",
+  "purpose": "Freeze the complete credential-safe, crash-durable and terminal-no-retry Campaign265 source-acquisition execution workflow before its implementation. This protocol authorizes only zero-network implementation, synthetic tests and a plan command; a real run requires a later v420 policy and explicit confirmation.",
+  "authoritative_inputs": {
+    "latest_state": {
+      "path": "docs/a_share_three_day_iteration_status_20260824_campaign265_source_acceptance_plan_ready_v2.json",
+      "sha256": "38a9e8b3834643db861dedb4b16e9b3d316d117582e166980a27ecf8351cff48"
+    },
+    "numeric_policy_v418": {
+      "path": "docs/a_share_three_day_walkforward_future_numeric_comparison_eligibility_policy_v418_20260824.json",
+      "sha256": "f1ba460fda8fe9b51388edfb4a2de7c8a7940c0df1650a75e8d142ccef3d36a0"
+    },
+    "source_contract": {
+      "path": "docs/a_share_three_day_walkforward_campaign_265_convertible_premium_source_contract_20260824.json",
+      "sha256": "efe7884d3ea0fd7f974e0d3347432e68e9e01ceefe0e6ebdca7fdd3e6349301c"
+    },
+    "adapter": {
+      "path": "scripts/a_share_three_day_walkforward_campaign265_convertible_premium.py",
+      "sha256": "58b9fddbbeef97955d4961f9f708028aa63d90fc56f2656db68098de7d3543e8"
+    },
+    "source_acceptance_preregistration": {
+      "path": "docs/a_share_three_day_walkforward_campaign_265_source_acceptance_preregistration_20260824.json",
+      "sha256": "474e5a995703f46005053268bbbd6c1c20835c99233f82e727a24a6085198ffd"
+    },
+    "planner": {
+      "path": "scripts/a_share_three_day_walkforward_campaign265_source_acceptance_plan.py",
+      "sha256": "1702119cc43c58843cc27575a9681214121b45084ccd0ff84489ea362eac7c05"
+    },
+    "planner_result": {
+      "path": "docs/a_share_three_day_walkforward_campaign_265_source_acceptance_plan_result_20260824.json",
+      "sha256": "03c05e8586d97d2c0e2fccb9978ab858a7f99bd77b49d5266a7706383ef2b3a5"
+    },
+    "planner_validation_v2": {
+      "path": "docs/a_share_three_day_walkforward_campaign_265_source_acceptance_plan_validation_v2_20260824.json",
+      "sha256": "4925d75621fe0625d9b34a269c2c5867fe15109e1d03a9cbee869b6d344d39bc"
+    },
+    "attempt_ledger_v6": {
+      "path": "data/experiments/short_horizon/historical_walkforward/campaign_265/research_attempt_ledger_v6.json",
+      "sha256": "fd015de31865b048f8f199759b4330dbfd3732167f174c6ab79576b865889c36",
+      "entry_count": 15,
+      "chain_tip_sha256": "5fc45efdf39f4cc61a3460bc295547899bf83e492c1ad77f38d0fd681e29a8cc"
+    }
+  },
+  "frozen_request_schedule": {
+    "provider": "Tushare Pro",
+    "accepted_trade_dates": {
+      "first": "2019-01-02",
+      "last": "2025-12-31",
+      "count": 1699,
+      "canonical_newline_sha256": "f9205c3cfdeb51b808d18b66edb8cf66bf57df94f696fb3b6bd5743b9a0bc769"
+    },
+    "request_sequence_canonical_json_sha256": "3f9cccb3134b7e9e22f5d34fd8bc07f89e1d8047dd775d07c3257443a97b4c58",
+    "exact_provider_call_count": 1700,
+    "minimum_seconds_between_provider_entries": 1.05,
+    "retry_allowed": false,
+    "requests": [
+      {
+        "ordinal": 1,
+        "api": "cb_basic",
+        "parameters": {},
+        "fields": [
+          "ts_code",
+          "cb_type",
+          "stk_code",
+          "list_date",
+          "delist_date",
+          "exchange"
+        ],
+        "minimum_rows": 1,
+        "strict_rows_less_than": 2000
+      },
+      {
+        "ordinal_range": [
+          2,
+          1700
+        ],
+        "api": "cb_daily",
+        "parameters": {
+          "trade_date": "YYYYMMDD from the corresponding accepted date in exact order"
+        },
+        "fields": [
+          "ts_code",
+          "trade_date",
+          "amount",
+          "cb_over_rate"
+        ],
+        "minimum_rows": 1,
+        "strict_rows_less_than": 2000
+      }
+    ]
+  },
+  "credential_contract": {
+    "source": "repository .env exact TUSHARE_TOKEN assignment",
+    "load_time": "only after exact durable intent and attempt journal exist and are fsynced",
+    "dotenv_regular_non_symlink_required": true,
+    "dotenv_mode_required": "0600",
+    "dotenv_maximum_bytes": 65536,
+    "exactly_one_nonempty_assignment_required": true,
+    "credential_value_may_be_printed_hashed_logged_or_persisted": false,
+    "plan_may_inspect_credential_file_environment_or_value": false
+  },
+  "private_destinations": {
+    "staging_root": "data/raw/a_share/rich/tushare/convertible_premium/campaign265_2019_2025_v1.staging",
+    "final_root": "data/raw/a_share/rich/tushare/convertible_premium/campaign265_2019_2025_v1",
+    "cb_basic_checkpoint": "data/raw/a_share/rich/tushare/convertible_premium/campaign265_2019_2025_v1.staging/cb_basic.parquet",
+    "cb_daily_checkpoint_template": "data/raw/a_share/rich/tushare/convertible_premium/campaign265_2019_2025_v1.staging/cb_daily/{trade_date}.parquet",
+    "internal_manifest": "data/raw/a_share/rich/tushare/convertible_premium/campaign265_2019_2025_v1.staging/source_manifest.json",
+    "intent": "data/metadata/rich_data/runs/campaign265_convertible_premium_acceptance_intent_v1.json",
+    "attempt_journal": "data/metadata/rich_data/runs/campaign265_convertible_premium_acceptance_attempt_v1.jsonl",
+    "terminal_failure": "data/metadata/rich_data/runs/campaign265_convertible_premium_acceptance_failure_v1.json",
+    "repository_acceptance_manifest": "data/metadata/rich_data/runs/campaign265_convertible_premium_acceptance_v1.json",
+    "file_mode": "0600",
+    "overwrite_allowed": false,
+    "symlink_or_non_regular_artifact_allowed": false,
+    "same_filesystem_atomic_staging_to_final_rename_required": true
+  },
+  "durable_state_machine": {
+    "intent_contains": [
+      "all 1699 accepted dates",
+      "all 1700 exact request descriptors",
+      "request-sequence digest",
+      "all destination paths",
+      "source contract, adapter, planner result, execution protocol, workflow, test and authorization bindings",
+      "row ceilings, timing, retry and failure rules"
+    ],
+    "intent_and_journal_created_exclusively_mode_0600_and_fsynced_before_credential_load": true,
+    "journal_append_rule": "append one canonical JSON line, flush and fsync before the next state transition",
+    "per_request_events": [
+      "request_authorized",
+      "response_received",
+      "checkpoint_committed"
+    ],
+    "request_authorized_fsynced_before_provider_entry": true,
+    "response_received_contains_only_request_identity_and_sanitized_success_state": true,
+    "checkpoint_written_to_private_temporary_regular_file_fsynced_atomically_replaced_and_parent_fsynced": true,
+    "checkpoint_committed_event_fsynced_only_after_checkpoint_and_sidecar_validation": true,
+    "resume_allowed_only_for_exact_verified_committed_prefix_with_no_authorized_uncommitted_request": true,
+    "authorized_request_without_matching_committed_checkpoint_is_terminal_no_retry_evidence": true,
+    "permission_transport_schema_empty_truncation_identity_date_mapping_or_persistence_failure_is_terminal": true,
+    "same_request_reissue_for_diagnostics_allowed": false,
+    "failure_record_contains_only_sanitized_stage_code_and_request_ordinal": true,
+    "failure_record_may_store_token_digest_raw_row_row_count_or_plaintext_provider_error": false,
+    "success_requires_exactly_1700_committed_requests": true,
+    "success_publication": "write and fsync internal manifest, atomically rename staging to final, fsync parent, then atomically publish repository acceptance manifest"
+  },
+  "checkpoint_contract": {
+    "cb_basic": "adapter-canonicalized exact ordered normalized basic columns",
+    "cb_daily": "adapter-canonicalized exact ordered normalized daily columns for the requested date",
+    "raw_provider_response_persisted": false,
+    "checkpoint_sidecar_required": true,
+    "sidecar_fields": [
+      "request ordinal and identity",
+      "checkpoint relative path",
+      "checkpoint byte SHA-256",
+      "canonical frame SHA-256",
+      "schema",
+      "sanitized adapter counters"
+    ],
+    "resume_validation": "every prior checkpoint and sidecar must match the exact request prefix, byte hash, frame hash, schema and adapter semantics"
+  },
+  "workflow_cli_and_authorization_boundary": {
+    "current_policy_to_publish": 419,
+    "current_cli_commands": [
+      "plan"
+    ],
+    "plan_zero_network": true,
+    "plan_filesystem_write_allowed": false,
+    "plan_credential_inspection_allowed": false,
+    "plan_provider_import_or_creation_allowed": false,
+    "plan_ready_meaning": "the frozen workflow, tests, schedule, bindings, destinations and no-attempt state are ready for a future separately authorized execution; it is not provider permission",
+    "real_run_policy_required": 420,
+    "run_cli_must_remain_absent_until_a_valid_v420_policy_exists": true,
+    "v420_must_bind_exact_workflow_test_freeze_protocol_and_plan_result_bytes": true,
+    "explicit_confirm_run_required_under_v420": true,
+    "a_valid_v420_policy_may_not_change_schedule_fields_formula_paths_row_limits_interval_retry_or_failure_semantics": true
+  },
+  "synthetic_test_boundary": {
+    "injected_provider_only": true,
+    "temporary_root_only": true,
+    "real_dotenv_or_environment_token_read": false,
+    "real_provider_import_or_request": false,
+    "required_cases": [
+      "plan is zero-write, zero-credential and zero-provider",
+      "CLI exposes no run command without v420",
+      "intent and journal precede credential loader and provider factory",
+      "exact request order, fields and spacing",
+      "atomic checkpoint and terminal success publication",
+      "resume from exact committed prefix",
+      "authorized-without-checkpoint terminal no-retry",
+      "schema, empty, truncation and persistence failures terminalize once",
+      "failure evidence excludes secrets, raw values, row counts and plaintext errors",
+      "tampered journal, intent, checkpoint or sidecar fails closed"
+    ]
+  },
+  "research_boundary": {
+    "credential_metadata_presence_checked_without_value": true,
+    "credential_value_or_digest_read": false,
+    "provider_client_imported_or_created": false,
+    "provider_request_issued": false,
+    "provider_response_or_row_value_read": false,
+    "source_acceptance_output_written": false,
+    "candidate_or_comparator_value_read": false,
+    "historical_daily_price_or_forward_return_value_read": false,
+    "stress_2024_2025_opened": false,
+    "candidate49_historical_backfill_performed": false,
+    "candidate49_ledgers_changed": false,
+    "second_prospective_candidate_created": false,
+    "current_scoring_selection_sizing_positions_or_orders_performed": false,
+    "investment_advice": false
+  }
+}

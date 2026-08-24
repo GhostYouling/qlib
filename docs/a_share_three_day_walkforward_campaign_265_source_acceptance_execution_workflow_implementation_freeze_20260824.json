@@ -1,0 +1,83 @@
+{
+  "schema_version": 1,
+  "kind": "a_share_three_day_walkforward_campaign265_source_acceptance_execution_workflow_implementation_freeze",
+  "status": "credential_safe_execution_workflow_bytes_frozen_before_plan_authorization_credential_or_provider_entry",
+  "recorded_at": "2026-08-24T05:13:08Z",
+  "timestamp_semantics": "measured host UTC after corrected zero-network synthetic validation and before v419 publication, workflow plan execution, credential load, provider entry or source values",
+  "authoritative_inputs": {
+    "latest_state": {
+      "path": "docs/a_share_three_day_iteration_status_20260824_campaign265_source_acceptance_plan_ready_v2.json",
+      "sha256": "38a9e8b3834643db861dedb4b16e9b3d316d117582e166980a27ecf8351cff48"
+    },
+    "numeric_policy_v418": {
+      "path": "docs/a_share_three_day_walkforward_future_numeric_comparison_eligibility_policy_v418_20260824.json",
+      "sha256": "f1ba460fda8fe9b51388edfb4a2de7c8a7940c0df1650a75e8d142ccef3d36a0"
+    },
+    "execution_protocol": {
+      "path": "docs/a_share_three_day_walkforward_campaign_265_source_acceptance_execution_protocol_20260824.json",
+      "sha256": "766172caa77a9ffa90867e7299e1ac77816934469b8cafd5f63fd27281d9c04c"
+    },
+    "source_acceptance_preregistration": {
+      "path": "docs/a_share_three_day_walkforward_campaign_265_source_acceptance_preregistration_20260824.json",
+      "sha256": "474e5a995703f46005053268bbbd6c1c20835c99233f82e727a24a6085198ffd"
+    },
+    "source_acceptance_plan_result": {
+      "path": "docs/a_share_three_day_walkforward_campaign_265_source_acceptance_plan_result_20260824.json",
+      "sha256": "03c05e8586d97d2c0e2fccb9978ab858a7f99bd77b49d5266a7706383ef2b3a5"
+    }
+  },
+  "workflow": {
+    "path": "scripts/a_share_three_day_walkforward_campaign265_source_acceptance_workflow.py",
+    "sha256": "a57586146dffc30ef1d25eb9042cdec3970a050517d86c25d841620fddc2c6c9",
+    "current_public_cli_commands": [
+      "plan"
+    ],
+    "run_command_conditionally_constructed_only_after_exact_v420_acceptance": true,
+    "top_level_provider_import_present": false,
+    "plan_credential_or_environment_read_present": false,
+    "plan_provider_creation_or_request_present": false,
+    "plan_filesystem_write_present": false
+  },
+  "workflow_tests": {
+    "path": "tests/data_collector_tests/test_a_share_three_day_walkforward_campaign265_source_acceptance_workflow.py",
+    "sha256": "fa22e60c6eee5b92f376a32b9bbd8365d3c971b43160550cd9b3a35f9f912760",
+    "test_count": 12,
+    "synthetic_tests_passed_before_v419": 10,
+    "policy_dependent_plan_tests_deferred_until_v419": 2,
+    "real_dotenv_token_or_provider_used": false
+  },
+  "frozen_execution_semantics": {
+    "accepted_trade_date_count": 1699,
+    "accepted_trade_dates_canonical_newline_sha256": "f9205c3cfdeb51b808d18b66edb8cf66bf57df94f696fb3b6bd5743b9a0bc769",
+    "exact_provider_call_count": 1700,
+    "request_sequence_canonical_json_sha256": "3f9cccb3134b7e9e22f5d34fd8bc07f89e1d8047dd775d07c3257443a97b4c58",
+    "minimum_seconds_between_provider_entries": 1.05,
+    "retry_allowed": false,
+    "intent_and_empty_journal_created_exclusively_mode_0600_and_fsynced_before_credential_load": true,
+    "request_authorized_fsynced_before_provider_entry": true,
+    "response_received_event_contains_no_response_values_or_row_count": true,
+    "checkpoint_and_sidecar_fsynced_and_hash_verified_before_checkpoint_committed_event": true,
+    "resume_only_from_exact_verified_committed_prefix": true,
+    "authorized_request_without_checkpoint_terminal_no_retry": true,
+    "terminal_failure_evidence_excludes_secret_digest_raw_values_row_count_and_plaintext_provider_error": true,
+    "success_requires_exactly_1700_committed_requests_and_atomic_final_publication": true
+  },
+  "preauthorization_validation": {
+    "black": "passed",
+    "ruff": "passed",
+    "synthetic_pytest": "10 passed, 2 policy-dependent plan tests deselected",
+    "plan_executed": false,
+    "credential_file_or_environment_inspected_by_workflow": false,
+    "credential_value_or_digest_read": false,
+    "provider_client_imported_or_created": false,
+    "provider_request_issued": false,
+    "source_candidate_comparator_price_or_return_value_read": false
+  },
+  "authorization_boundary": {
+    "this_freeze_authorizes_plan_execution": false,
+    "this_freeze_authorizes_credential_load_or_provider_request": false,
+    "v419_may_authorize_only_the_exact_zero_network_plan": true,
+    "real_run_requires_future_v420_binding_exact_workflow_tests_protocol_freeze_and_plan_result": true,
+    "explicit_confirm_run_required_under_future_v420": true
+  }
+}

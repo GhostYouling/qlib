@@ -1,0 +1,85 @@
+{
+  "schema_version": 1,
+  "kind": "a_share_three_day_walkforward_campaign265_source_acceptance_execution_workflow_implementation_freeze",
+  "version": 2,
+  "status": "credential_safe_execution_workflow_bytes_refrozen_with_destination_parent_symlink_fail_closed_guard_before_plan_v2_or_values",
+  "recorded_at": "2026-08-24T05:24:17Z",
+  "timestamp_semantics": "measured host UTC after a post-plan safety review, destination-tree hardening and corrected zero-network synthetic validation; before v419 hardening authorization, plan v2, credential load, provider entry or source values",
+  "supersedes_without_rewriting": {
+    "path": "docs/a_share_three_day_walkforward_campaign_265_source_acceptance_execution_workflow_implementation_freeze_20260824.json",
+    "sha256": "26c490311dcf63b2956382c1f70f2342ebc580a0464ed2cb0956aefc41d2b9eb",
+    "reason": "The first freeze rejected symlink/non-regular destination artifacts but did not explicitly reject a symlink in an existing destination parent directory. No run interface or provider authorization existed and no destination write occurred."
+  },
+  "authoritative_inputs": {
+    "latest_predecessor_state": {
+      "path": "docs/a_share_three_day_iteration_status_20260824_campaign265_execution_workflow_plan_ready.json",
+      "sha256": "54474199f1d477f1cefa58947bccdac5f4896330526a42260591a621c1d1745e"
+    },
+    "numeric_policy_v419_pre_hardening": {
+      "path": "docs/a_share_three_day_walkforward_future_numeric_comparison_eligibility_policy_v419_20260824.json",
+      "sha256": "cd03a43aacfa18a9f144b6830926a2c6caa113fc6dde6edaee54bb12dfe40353"
+    },
+    "execution_protocol": {
+      "path": "docs/a_share_three_day_walkforward_campaign_265_source_acceptance_execution_protocol_20260824.json",
+      "sha256": "766172caa77a9ffa90867e7299e1ac77816934469b8cafd5f63fd27281d9c04c"
+    },
+    "workflow_plan_result_v1": {
+      "path": "docs/a_share_three_day_walkforward_campaign_265_source_acceptance_execution_workflow_plan_result_20260824.json",
+      "sha256": "c55e0f4ca457c2ad2e2926a6aea8babb980993ef88c390e85fcc9fdd087789e3"
+    }
+  },
+  "workflow": {
+    "path": "scripts/a_share_three_day_walkforward_campaign265_source_acceptance_workflow.py",
+    "sha256": "796322ab186c837dc02a5657572a3f936792dc33ffd4c817cfc430c1d7639020",
+    "current_public_cli_commands": [
+      "plan"
+    ],
+    "run_command_conditionally_constructed_only_after_exact_v420_acceptance": true,
+    "top_level_provider_import_present": false,
+    "plan_credential_or_environment_read_present": false,
+    "plan_provider_creation_or_request_present": false,
+    "plan_filesystem_write_present": false
+  },
+  "workflow_tests": {
+    "path": "tests/data_collector_tests/test_a_share_three_day_walkforward_campaign265_source_acceptance_workflow.py",
+    "sha256": "b160f11d19e5ab85d2b6f3a523ac450a0be8214014165837591c68de0d1faac9",
+    "test_count": 13,
+    "synthetic_tests_passed_before_plan_policy_v2": 11,
+    "policy_dependent_plan_tests_deferred": 2,
+    "real_dotenv_token_or_provider_used": false
+  },
+  "hardening_delta": {
+    "repository_root_must_be_a_real_non_symlink_directory": true,
+    "every_existing_destination_parent_below_repository_root_must_be_a_real_non_symlink_directory": true,
+    "destination_outside_repository_rejected": true,
+    "guard_runs_in_plan_and_again_before_any_execution_artifact_or_credential_access": true,
+    "synthetic_parent_symlink_test_passed": true,
+    "credential_loader_called_in_parent_symlink_case": false,
+    "provider_factory_called_in_parent_symlink_case": false,
+    "outside_directory_written_in_parent_symlink_case": false
+  },
+  "unchanged_execution_semantics": {
+    "accepted_trade_date_count": 1699,
+    "accepted_trade_dates_canonical_newline_sha256": "f9205c3cfdeb51b808d18b66edb8cf66bf57df94f696fb3b6bd5743b9a0bc769",
+    "exact_provider_call_count": 1700,
+    "request_sequence_canonical_json_sha256": "3f9cccb3134b7e9e22f5d34fd8bc07f89e1d8047dd775d07c3257443a97b4c58",
+    "minimum_seconds_between_provider_entries": 1.05,
+    "retry_allowed": false,
+    "formula_direction_fields_dates_row_gates_paths_journal_checkpoint_resume_and_failure_semantics_changed": false
+  },
+  "preauthorization_validation": {
+    "black_after_one_recorded_formatting_failure": "passed",
+    "ruff": "passed",
+    "synthetic_pytest": "11 passed, 2 policy-dependent plan tests deselected",
+    "credential_file_or_environment_inspected_by_workflow": false,
+    "provider_client_imported_or_created": false,
+    "provider_request_issued": false,
+    "source_candidate_comparator_price_or_return_value_read": false
+  },
+  "authorization_boundary": {
+    "this_freeze_authorizes_plan_execution": false,
+    "this_freeze_authorizes_credential_load_or_provider_request": false,
+    "a_new_plan_only_policy_must_bind_this_exact_v2_freeze_and_final_workflow_test_bytes": true,
+    "real_run_still_requires_future_v420_and_explicit_confirm_run": true
+  }
+}

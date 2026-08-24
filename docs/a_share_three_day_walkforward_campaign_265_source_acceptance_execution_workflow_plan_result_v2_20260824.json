@@ -1,0 +1,73 @@
+{
+  "schema_version": 1,
+  "kind": "a_share_three_day_walkforward_campaign265_source_acceptance_execution_workflow_plan_result",
+  "version": 2,
+  "status": "destination_tree_hardened_ready_zero_network_plan_only_future_v420_run_not_authorized",
+  "recorded_at": "2026-08-24T05:27:03Z",
+  "timestamp_semantics": "measured host UTC immediately after the first v419 revision 2 authorized standalone hardened workflow plan exited zero",
+  "supersedes_without_rewriting": {
+    "path": "docs/a_share_three_day_walkforward_campaign_265_source_acceptance_execution_workflow_plan_result_20260824.json",
+    "sha256": "c55e0f4ca457c2ad2e2926a6aea8babb980993ef88c390e85fcc9fdd087789e3",
+    "reason": "The v1 plan remains valid for the v1 zero-network workflow bytes; v2 adds an explicit destination-parent real-directory check before any future execution authority."
+  },
+  "command": "/Volumes/DIsk/Coding/anaconda3/bin/python3.12 scripts/a_share_three_day_walkforward_campaign265_source_acceptance_workflow.py plan",
+  "actual_exit_code": 0,
+  "ready": true,
+  "authoritative_bindings": {
+    "numeric_policy_v419_revision_2": {
+      "path": "docs/a_share_three_day_walkforward_future_numeric_comparison_eligibility_policy_v419_20260824_execution_path_hardening_v2.json",
+      "sha256": "c331d3931893ea183a7d0a750be8f5b136b1e95e5a0e1fc65683e6cf64d5cc2a"
+    },
+    "workflow": {
+      "path": "scripts/a_share_three_day_walkforward_campaign265_source_acceptance_workflow.py",
+      "sha256": "796322ab186c837dc02a5657572a3f936792dc33ffd4c817cfc430c1d7639020"
+    },
+    "workflow_tests": {
+      "path": "tests/data_collector_tests/test_a_share_three_day_walkforward_campaign265_source_acceptance_workflow.py",
+      "sha256": "b160f11d19e5ab85d2b6f3a523ac450a0be8214014165837591c68de0d1faac9"
+    },
+    "execution_protocol": {
+      "path": "docs/a_share_three_day_walkforward_campaign_265_source_acceptance_execution_protocol_20260824.json",
+      "sha256": "766172caa77a9ffa90867e7299e1ac77816934469b8cafd5f63fd27281d9c04c"
+    },
+    "implementation_freeze_v2": {
+      "path": "docs/a_share_three_day_walkforward_campaign_265_source_acceptance_execution_workflow_implementation_freeze_v2_20260824.json",
+      "sha256": "27bcadf74f6dcd0abe47e22f7d62eacf7f2e788bb4b4d0286d0b7e63337a267f"
+    }
+  },
+  "observed_plan_summary": {
+    "accepted_trade_date_count": 1699,
+    "exact_provider_call_count": 1700,
+    "request_sequence_canonical_json_sha256": "3f9cccb3134b7e9e22f5d34fd8bc07f89e1d8047dd775d07c3257443a97b4c58",
+    "check_count": 34,
+    "all_checks_passed": true,
+    "destination_directory_tree_safe": true,
+    "blockers": [],
+    "intent_payload_constructed": false,
+    "intent_payload_deferred_until_valid_v420": true,
+    "future_run_authorized": false,
+    "run_interface_exposed": false
+  },
+  "no_attempt_state": {
+    "staging_root_absent": true,
+    "final_root_absent": true,
+    "intent_absent": true,
+    "attempt_journal_absent": true,
+    "terminal_failure_absent": true,
+    "repository_manifest_absent": true
+  },
+  "execution_boundary": {
+    "credential_file_or_environment_inspected": false,
+    "credential_value_or_digest_read": false,
+    "provider_module_imported_by_default_factory": false,
+    "provider_client_imported_or_created": false,
+    "provider_request_issued": false,
+    "provider_response_or_row_value_read": false,
+    "source_acceptance_output_written": false,
+    "candidate_or_comparator_value_read": false,
+    "historical_daily_price_or_forward_return_value_read": false,
+    "filesystem_write_performed_by_plan": false,
+    "ready_authorizes_real_run": false
+  },
+  "future_v420_requirement": "A later policy must separately bind the exact hardened workflow, 13-test module, protocol, implementation-freeze v2 and this plan-result v2 byte hash and still require explicit --confirm-run. No such policy exists in this result."
+}

@@ -1,0 +1,117 @@
+{
+  "schema_version": 1,
+  "kind": "a_share_three_day_iteration_status",
+  "status": "campaign265_execution_workflow_plan_ready_zero_network_future_v420_run_not_authorized",
+  "recorded_at": "2026-08-24T05:19:19Z",
+  "timestamp_semantics": "measured host UTC after the v419-authorized zero-network workflow plan and corrected final semantic validation; before credential load, provider entry or source values",
+  "goal": {
+    "objective": "请持续迭代因子。",
+    "status": "active",
+    "completed_by_this_state": false,
+    "continuation_semantics": "This checkpoint completes the current Campaign265 credential-safe workflow implementation and plan stage; it does not terminate continued factor iteration."
+  },
+  "supersedes_without_rewriting": {
+    "path": "docs/a_share_three_day_iteration_status_20260824_campaign265_source_acceptance_plan_ready_v2.json",
+    "sha256": "38a9e8b3834643db861dedb4b16e9b3d316d117582e166980a27ecf8351cff48"
+  },
+  "authoritative_policy": {
+    "path": "docs/a_share_three_day_walkforward_future_numeric_comparison_eligibility_policy_v419_20260824.json",
+    "sha256": "cd03a43aacfa18a9f144b6830926a2c6caa113fc6dde6edaee54bb12dfe40353",
+    "authorization": "zero_network_execution_workflow_plan_only"
+  },
+  "workflow_plan_result": {
+    "path": "docs/a_share_three_day_walkforward_campaign_265_source_acceptance_execution_workflow_plan_result_20260824.json",
+    "sha256": "c55e0f4ca457c2ad2e2926a6aea8babb980993ef88c390e85fcc9fdd087789e3",
+    "actual_exit_code": 0,
+    "ready": true,
+    "check_count": 33,
+    "blocker_count": 0
+  },
+  "effective_validation": {
+    "path": "docs/a_share_three_day_walkforward_campaign_265_source_acceptance_execution_workflow_plan_validation_20260824.json",
+    "sha256": "e7d3283166c5f00b4e6d4fc8b3886c469f36838c170f1ee64509e874c55fdaf7",
+    "black_passed": true,
+    "ruff_passed": true,
+    "workflow_pytest_passed": 12,
+    "cross_stage_pytest_passed": 59,
+    "cross_stage_pytest_failed": 0,
+    "historical_lifecycle_nodes_deselected": 1,
+    "ledger_chain_passed": true
+  },
+  "effective_attempt_ledger": {
+    "path": "data/experiments/short_horizon/historical_walkforward/campaign_265/research_attempt_ledger_v10.json",
+    "sha256": "edad9589cd2e7d323ec28a11c24cce26bbd4d4b93abc4ca2989f0b881ac3a032",
+    "entry_count": 27,
+    "chain_tip_sha256": "617151cdbe3988ecf1701a8b559810ec0a0cc53eef2ff6779d540c8a689fe526"
+  },
+  "infrastructure_failure_record": {
+    "path": "docs/a_share_three_day_walkforward_campaign_265_execution_workflow_infrastructure_failures_20260824.json",
+    "sha256": "88536bd43191ed2484498c425acdc3666730bd3941e1cf3ff113141b36ca62d7",
+    "command_failure_count": 9,
+    "all_failures_preserved": true
+  },
+  "campaign265_effective_state": {
+    "selected_name": "convertible_bond_equity_parity_premium_compression_3s",
+    "selected_direction": "higher",
+    "source_acceptance_plan_ready": true,
+    "execution_workflow_created": true,
+    "execution_workflow_implementation_frozen": true,
+    "execution_workflow_plan_ready": true,
+    "execution_workflow_plan_actual_exit_code": 0,
+    "accepted_trade_date_count": 1699,
+    "exact_future_provider_call_count": 1700,
+    "source_acceptance_attempt_started": false,
+    "future_v420_policy_exists": false,
+    "run_interface_exposed": false,
+    "credential_load_authorized": false,
+    "provider_request_authorized": false,
+    "source_candidate_or_comparator_value_authorized": false,
+    "complete_factor_definition_count": 162,
+    "complete_factor_definition_order_sha256": "974f2c1f16a85eb43a0bd1e8db768dbe120cd8826c1754d5f220bf9f1d4a3ea0",
+    "eligible_numeric_comparator_count": 143,
+    "eligible_numeric_comparator_order_sha256": "f4fbf3d578e2c80c29425716a30d60a3df01d67d04e37f1651236c4dff899588",
+    "complete_definition_appended": false,
+    "numeric_comparator_appended": false,
+    "development_trial_count": 0,
+    "development_survivor_count": 0,
+    "stress_trial_count_2024_2025": 0,
+    "campaign_attempt_count": 27,
+    "infrastructure_failure_count": 16,
+    "prevalue_scientific_attempt_count": 11,
+    "complete_factor_attempt_count": 0,
+    "cumulative_historical_research_attempt_count": 2631,
+    "cumulative_return_reading_development_trial_count": 315
+  },
+  "candidate49": {
+    "sole_prospective_candidate": true,
+    "signal_entry_count": 0,
+    "signal_ledger_sha256": "5193f00d7f36da003f53cec387900da4c3d002299f5dfcfc1a95eaa199ed3a79",
+    "execution_entry_count": 0,
+    "execution_ledger_sha256": "d57a3e61eac969e42cafa418ccd8c0a5ee65dcf69da145bb2c096c2a02a2ea4f",
+    "historical_backfill_allowed": false,
+    "second_prospective_candidate_allowed": false
+  },
+  "session_boundary": {
+    "local_timezone": "Asia/Singapore",
+    "observed_local_time": "2026-08-24T13:19:19+0800",
+    "before_candidate49_1630_threshold": true,
+    "candidate49_plan_or_run_executed": false
+  },
+  "research_boundary": {
+    "provider_credential_metadata_verified_without_printing_or_hashing_value": true,
+    "provider_credential_value_or_digest_read_by_workflow": false,
+    "provider_client_imported_or_created": false,
+    "provider_request_issued": false,
+    "provider_response_or_row_value_read": false,
+    "source_acceptance_files_written": false,
+    "candidate_or_comparator_value_read": false,
+    "historical_daily_price_or_forward_return_value_read": false,
+    "stress_2024_2025_opened": false,
+    "candidate49_historical_backfill_performed": false,
+    "candidate49_ledgers_changed": false,
+    "second_prospective_candidate_created": false,
+    "current_scoring_selection_sizing_positions_or_orders_performed": false,
+    "investment_advice": false
+  },
+  "next_action": "Continue Campaign265 without changing its frozen factor or gates. A real one-shot source-acquisition run is possible only after a new v420 policy binds the exact workflow, tests, protocol, implementation-freeze and workflow-plan-result bytes and an operator gives explicit --confirm-run. Until then do not create intent, load credentials, import/create a provider client, issue requests or open source/candidate/comparator/price/return values."
+}

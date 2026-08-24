@@ -1,0 +1,124 @@
+{
+  "schema_version": 1,
+  "kind": "a_share_three_day_walkforward_future_numeric_comparison_eligibility_policy",
+  "version": 419,
+  "revision": 2,
+  "status": "campaign265_destination_tree_hardened_zero_network_execution_workflow_plan_only_authorized_library_162_numeric_comparator_143_values_closed",
+  "recorded_at": "2026-08-24T05:25:57Z",
+  "timestamp_semantics": "measured host UTC after preserving v419 revision 1 and its plan, then refreezing the workflow with destination-parent symlink guards; before plan revision 2, credential load, provider entry or source values",
+  "supersedes_without_rewriting": {
+    "path": "docs/a_share_three_day_walkforward_future_numeric_comparison_eligibility_policy_v419_20260824.json",
+    "sha256": "cd03a43aacfa18a9f144b6830926a2c6caa113fc6dde6edaee54bb12dfe40353",
+    "reason": "Revision 1 remains valid evidence of its zero-network plan, but its workflow bytes were superseded before any run authority or source write to add an explicit real-directory guard for every existing destination parent."
+  },
+  "authoritative_inputs": {
+    "latest_predecessor_state": {
+      "path": "docs/a_share_three_day_iteration_status_20260824_campaign265_execution_workflow_plan_ready.json",
+      "sha256": "54474199f1d477f1cefa58947bccdac5f4896330526a42260591a621c1d1745e"
+    },
+    "execution_protocol": {
+      "path": "docs/a_share_three_day_walkforward_campaign_265_source_acceptance_execution_protocol_20260824.json",
+      "sha256": "766172caa77a9ffa90867e7299e1ac77816934469b8cafd5f63fd27281d9c04c"
+    },
+    "implementation_freeze_v2": {
+      "path": "docs/a_share_three_day_walkforward_campaign_265_source_acceptance_execution_workflow_implementation_freeze_v2_20260824.json",
+      "sha256": "27bcadf74f6dcd0abe47e22f7d62eacf7f2e788bb4b4d0286d0b7e63337a267f"
+    },
+    "attempt_ledger_v11": {
+      "path": "data/experiments/short_horizon/historical_walkforward/campaign_265/research_attempt_ledger_v11.json",
+      "sha256": "26dcc235cdd3e9025e708151b10fdcddf9fc3161afa59eaef153c8b65bcd2e98",
+      "entry_count": 30,
+      "chain_tip_sha256": "13751577b92705286dbda8f86a7a0b896749f792477f49cfb01216ed66ed9209"
+    },
+    "workflow_plan_result_v1_preserved": {
+      "path": "docs/a_share_three_day_walkforward_campaign_265_source_acceptance_execution_workflow_plan_result_20260824.json",
+      "sha256": "c55e0f4ca457c2ad2e2926a6aea8babb980993ef88c390e85fcc9fdd087789e3",
+      "may_authorize_current_workflow_bytes": false
+    }
+  },
+  "campaign265_source_acceptance_execution_workflow_plan_authorization": {
+    "authorized": true,
+    "plan_only": true,
+    "workflow": {
+      "path": "scripts/a_share_three_day_walkforward_campaign265_source_acceptance_workflow.py",
+      "sha256": "796322ab186c837dc02a5657572a3f936792dc33ffd4c817cfc430c1d7639020"
+    },
+    "workflow_tests": {
+      "path": "tests/data_collector_tests/test_a_share_three_day_walkforward_campaign265_source_acceptance_workflow.py",
+      "sha256": "b160f11d19e5ab85d2b6f3a523ac450a0be8214014165837591c68de0d1faac9"
+    },
+    "execution_protocol": {
+      "path": "docs/a_share_three_day_walkforward_campaign_265_source_acceptance_execution_protocol_20260824.json",
+      "sha256": "766172caa77a9ffa90867e7299e1ac77816934469b8cafd5f63fd27281d9c04c"
+    },
+    "implementation_freeze": {
+      "path": "docs/a_share_three_day_walkforward_campaign_265_source_acceptance_execution_workflow_implementation_freeze_v2_20260824.json",
+      "sha256": "27bcadf74f6dcd0abe47e22f7d62eacf7f2e788bb4b4d0286d0b7e63337a267f"
+    },
+    "accepted_trade_date_count": 1699,
+    "accepted_trade_dates_canonical_newline_sha256": "f9205c3cfdeb51b808d18b66edb8cf66bf57df94f696fb3b6bd5743b9a0bc769",
+    "exact_provider_call_count": 1700,
+    "request_sequence_canonical_json_sha256": "3f9cccb3134b7e9e22f5d34fd8bc07f89e1d8047dd775d07c3257443a97b4c58",
+    "destination_parent_real_directory_guard_required": true,
+    "credential_inspection_allowed": false,
+    "provider_request_allowed": false,
+    "run_interface_allowed": false,
+    "filesystem_write_allowed_by_plan": false,
+    "source_candidate_comparator_price_or_return_value_read_allowed": false,
+    "ready_true_meaning": "Only the exact hardened workflow, tests, protocol, schedule, bindings, real destination directory tree and no-attempt state passed. It does not authorize intent creation, credential load, provider import, provider request or source-value access."
+  },
+  "complete_historical_feature_library": {
+    "factor_definition_count": 162,
+    "order_sha256": "974f2c1f16a85eb43a0bd1e8db768dbe120cd8826c1754d5f220bf9f1d4a3ea0",
+    "unchanged_from_v419_revision_1": true,
+    "campaign265_definition_appended": false
+  },
+  "numerical_comparator_eligibility": {
+    "eligible_numeric_comparator_count": 143,
+    "order_sha256": "f4fbf3d578e2c80c29425716a30d60a3df01d67d04e37f1651236c4dff899588",
+    "unchanged_from_v419_revision_1": true,
+    "campaign265_numeric_comparator_appended": false,
+    "campaign265_comparator_values_may_open_now": false
+  },
+  "accounting_through_execution_workflow_implementation_freeze_v2": {
+    "campaign265_attempt_count": 30,
+    "campaign265_infrastructure_failure_count": 17,
+    "campaign265_prevalue_scientific_attempt_count": 13,
+    "campaign265_execution_workflow_plan_count": 1,
+    "campaign265_complete_factor_attempt_count": 0,
+    "campaign265_return_reading_development_trial_count": 0,
+    "cumulative_historical_research_attempt_count": 2634,
+    "cumulative_return_reading_development_trial_count": 315
+  },
+  "candidate49": {
+    "sole_prospective_candidate": true,
+    "historical_backfill_allowed": false,
+    "second_prospective_candidate_allowed": false,
+    "signal_entry_count": 0,
+    "execution_entry_count": 0,
+    "signal_ledger_sha256": "5193f00d7f36da003f53cec387900da4c3d002299f5dfcfc1a95eaa199ed3a79",
+    "execution_ledger_sha256": "d57a3e61eac969e42cafa418ccd8c0a5ee65dcf69da145bb2c096c2a02a2ea4f"
+  },
+  "next_stage_boundary": {
+    "allowed_now": "Run only the exact hardened workflow plan command and validate its single JSON output and actual exit code.",
+    "credential_load_provider_import_or_request_allowed_under_v419_revision_2": false,
+    "run_interface_allowed_under_v419_revision_2": false,
+    "required_after_ready_plan": "Publish additive plan revision 2 evidence and state. A real run still requires future v420 to bind the exact current workflow, tests, protocol, freeze v2 and plan-result v2 bytes plus explicit --confirm-run.",
+    "historical_daily_price_or_return_value_allowed": false,
+    "stress_2024_2025_allowed": false
+  },
+  "research_boundary": {
+    "provider_api_request_issued": false,
+    "provider_credential_value_or_digest_read": false,
+    "provider_response_or_row_value_read": false,
+    "candidate_or_comparator_value_read": false,
+    "historical_daily_price_or_forward_return_value_read": false,
+    "stress_2024_2025_opened": false,
+    "candidate49_plan_or_run_executed": false,
+    "candidate49_historical_backfill_performed": false,
+    "candidate49_ledgers_changed": false,
+    "second_prospective_candidate_created": false,
+    "current_scoring_selection_sizing_positions_or_orders_performed": false,
+    "investment_advice": false
+  }
+}

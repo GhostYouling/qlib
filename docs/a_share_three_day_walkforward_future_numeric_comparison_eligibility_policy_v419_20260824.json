@@ -1,0 +1,129 @@
+{
+  "schema_version": 1,
+  "kind": "a_share_three_day_walkforward_future_numeric_comparison_eligibility_policy",
+  "version": 419,
+  "status": "campaign265_zero_network_execution_workflow_plan_only_authorized_library_162_numeric_comparator_143_values_closed",
+  "recorded_at": "2026-08-24T05:14:37Z",
+  "timestamp_semantics": "measured host UTC after the execution protocol, corrected workflow, tests and implementation freeze were byte-bound and before the first workflow plan execution, credential load, provider entry or source values",
+  "supersedes_without_rewriting": {
+    "path": "docs/a_share_three_day_walkforward_future_numeric_comparison_eligibility_policy_v418_20260824.json",
+    "sha256": "f1ba460fda8fe9b51388edfb4a2de7c8a7940c0df1650a75e8d142ccef3d36a0"
+  },
+  "authoritative_inputs": {
+    "latest_state": {
+      "path": "docs/a_share_three_day_iteration_status_20260824_campaign265_source_acceptance_plan_ready_v2.json",
+      "sha256": "38a9e8b3834643db861dedb4b16e9b3d316d117582e166980a27ecf8351cff48"
+    },
+    "source_contract": {
+      "path": "docs/a_share_three_day_walkforward_campaign_265_convertible_premium_source_contract_20260824.json",
+      "sha256": "efe7884d3ea0fd7f974e0d3347432e68e9e01ceefe0e6ebdca7fdd3e6349301c"
+    },
+    "source_acceptance_preregistration": {
+      "path": "docs/a_share_three_day_walkforward_campaign_265_source_acceptance_preregistration_20260824.json",
+      "sha256": "474e5a995703f46005053268bbbd6c1c20835c99233f82e727a24a6085198ffd"
+    },
+    "source_acceptance_plan_result": {
+      "path": "docs/a_share_three_day_walkforward_campaign_265_source_acceptance_plan_result_20260824.json",
+      "sha256": "03c05e8586d97d2c0e2fccb9978ab858a7f99bd77b49d5266a7706383ef2b3a5"
+    },
+    "execution_protocol": {
+      "path": "docs/a_share_three_day_walkforward_campaign_265_source_acceptance_execution_protocol_20260824.json",
+      "sha256": "766172caa77a9ffa90867e7299e1ac77816934469b8cafd5f63fd27281d9c04c"
+    },
+    "implementation_freeze": {
+      "path": "docs/a_share_three_day_walkforward_campaign_265_source_acceptance_execution_workflow_implementation_freeze_20260824.json",
+      "sha256": "26c490311dcf63b2956382c1f70f2342ebc580a0464ed2cb0956aefc41d2b9eb"
+    },
+    "attempt_ledger_v8": {
+      "path": "data/experiments/short_horizon/historical_walkforward/campaign_265/research_attempt_ledger_v8.json",
+      "sha256": "8a1d2bcb862c05b05a04180deb4d5ca529d6d597c42cdd8d052dd5eedbd0af47",
+      "entry_count": 25,
+      "chain_tip_sha256": "7eab7a08e4dba8f208cccb926b1194a98679fde586d705e09347659fa2d8c8ca"
+    }
+  },
+  "campaign265_source_acceptance_execution_workflow_plan_authorization": {
+    "authorized": true,
+    "plan_only": true,
+    "workflow": {
+      "path": "scripts/a_share_three_day_walkforward_campaign265_source_acceptance_workflow.py",
+      "sha256": "a57586146dffc30ef1d25eb9042cdec3970a050517d86c25d841620fddc2c6c9"
+    },
+    "workflow_tests": {
+      "path": "tests/data_collector_tests/test_a_share_three_day_walkforward_campaign265_source_acceptance_workflow.py",
+      "sha256": "fa22e60c6eee5b92f376a32b9bbd8365d3c971b43160550cd9b3a35f9f912760"
+    },
+    "execution_protocol": {
+      "path": "docs/a_share_three_day_walkforward_campaign_265_source_acceptance_execution_protocol_20260824.json",
+      "sha256": "766172caa77a9ffa90867e7299e1ac77816934469b8cafd5f63fd27281d9c04c"
+    },
+    "implementation_freeze": {
+      "path": "docs/a_share_three_day_walkforward_campaign_265_source_acceptance_execution_workflow_implementation_freeze_20260824.json",
+      "sha256": "26c490311dcf63b2956382c1f70f2342ebc580a0464ed2cb0956aefc41d2b9eb"
+    },
+    "accepted_trade_date_count": 1699,
+    "accepted_trade_dates_canonical_newline_sha256": "f9205c3cfdeb51b808d18b66edb8cf66bf57df94f696fb3b6bd5743b9a0bc769",
+    "exact_provider_call_count": 1700,
+    "request_sequence_canonical_json_sha256": "3f9cccb3134b7e9e22f5d34fd8bc07f89e1d8047dd775d07c3257443a97b4c58",
+    "credential_inspection_allowed": false,
+    "provider_request_allowed": false,
+    "run_interface_allowed": false,
+    "filesystem_write_allowed_by_plan": false,
+    "source_candidate_comparator_price_or_return_value_read_allowed": false,
+    "ready_true_meaning": "Only the exact frozen workflow, tests, protocol, schedule, bindings and no-attempt destination state passed. It does not authorize intent creation, credential load, provider import, provider request or source-value access."
+  },
+  "complete_historical_feature_library": {
+    "factor_definition_count": 162,
+    "order_sha256": "974f2c1f16a85eb43a0bd1e8db768dbe120cd8826c1754d5f220bf9f1d4a3ea0",
+    "unchanged_from_v418": true,
+    "campaign265_definition_appended": false
+  },
+  "numerical_comparator_eligibility": {
+    "eligible_numeric_comparator_count": 143,
+    "order_sha256": "f4fbf3d578e2c80c29425716a30d60a3df01d67d04e37f1651236c4dff899588",
+    "unchanged_from_v418": true,
+    "campaign265_numeric_comparator_appended": false,
+    "campaign265_comparator_values_may_open_now": false
+  },
+  "accounting_through_execution_workflow_implementation_freeze": {
+    "campaign265_attempt_count": 25,
+    "campaign265_infrastructure_failure_count": 15,
+    "campaign265_prevalue_scientific_attempt_count": 10,
+    "campaign265_execution_workflow_plan_count": 0,
+    "campaign265_complete_factor_attempt_count": 0,
+    "campaign265_return_reading_development_trial_count": 0,
+    "cumulative_historical_research_attempt_count": 2629,
+    "cumulative_return_reading_development_trial_count": 315
+  },
+  "candidate49": {
+    "sole_prospective_candidate": true,
+    "historical_backfill_allowed": false,
+    "second_prospective_candidate_allowed": false,
+    "signal_entry_count": 0,
+    "execution_entry_count": 0,
+    "signal_ledger_sha256": "5193f00d7f36da003f53cec387900da4c3d002299f5dfcfc1a95eaa199ed3a79",
+    "execution_ledger_sha256": "d57a3e61eac969e42cafa418ccd8c0a5ee65dcf69da145bb2c096c2a02a2ea4f"
+  },
+  "next_stage_boundary": {
+    "allowed_now": "Run only the exact frozen workflow plan command and validate its single JSON output and actual exit code.",
+    "credential_load_provider_import_or_request_allowed_under_v419": false,
+    "run_interface_allowed_under_v419": false,
+    "required_after_ready_plan": "Publish additive plan evidence and state. Any real one-shot acquisition requires a separately frozen v420 policy binding the exact workflow, tests, protocol, implementation freeze and plan-result bytes, plus explicit --confirm-run.",
+    "source_contract_formula_or_gate_rescue_allowed": false,
+    "historical_daily_price_or_return_value_allowed": false,
+    "stress_2024_2025_allowed": false
+  },
+  "research_boundary": {
+    "provider_api_request_issued": false,
+    "provider_credential_value_or_digest_read": false,
+    "provider_response_or_row_value_read": false,
+    "candidate_or_comparator_value_read": false,
+    "historical_daily_price_or_forward_return_value_read": false,
+    "stress_2024_2025_opened": false,
+    "candidate49_plan_or_run_executed": false,
+    "candidate49_historical_backfill_performed": false,
+    "candidate49_ledgers_changed": false,
+    "second_prospective_candidate_created": false,
+    "current_scoring_selection_sizing_positions_or_orders_performed": false,
+    "investment_advice": false
+  }
+}

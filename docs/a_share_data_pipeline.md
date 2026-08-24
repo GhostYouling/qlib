@@ -3706,3 +3706,13 @@ Campaign265 只重访 Campaign157 明确保留的 `c157_01` 跨资产来源延�
 Campaign265 当前 13 次尝试（8 次值前科学、5 次基础设施失败），累计历史尝试 2,617、收益读取开发试验 315；完整定义/数值比较器仍为 `162/143`。Candidate49 继续是唯一前瞻候选且两本账为 0/0，禁止历史回填、第二候选、当前评分、选股、仓位、订单或投资建议。
 
 来源计划发布后的第一次终态套件因旧 adapter 生命周期测试仍绑定统一报告的早期发布哈希而得到 41 通过、1 失败；第二次命令又因 `tests/data_collector_tests/` 与实际 `data_collector_tests/` collection root 前缀不同，得到 46 通过、同一项失败。两次都只属于测试编排，不读取或重算任何研究值。保留旧测试和两份失败证据后，版本化当前状态测试与精确 node deselect 的最终结果为 47 通过、1 个历史节点 deselected；Black、Ruff 和 v4–v6 台账链均通过。有效会计修正为 Campaign265 15 次尝试（8 科学、7 基础设施）、累计历史尝试 2,619；来源计划、`162/143`、收益试验 315、Candidate49 空账本和全部禁止边界不变。
+
+## Campaign265 凭据安全执行工作流计划就绪（2026-08-24）
+
+事前冻结的执行协议已经实现为一次性、可恢复但终止不重试的工作流。安全复核在任何 run 权限前发现 v1 未显式拒绝目标父目录符号链接；v1 证据原样保留，v2 增加仓库根和每个既有目标父级必须是真实目录的预检，并在 plan 和任何执行写入/凭据前重复检查。当前公开 CLI 仅包含 `plan`；v419 revision 2 只授权零网络计划。未来有效 v420 精确绑定工作流、测试、协议、实现冻结 v2 和 plan-result v2 字节前，`run` 子命令不会暴露。真实执行还必须显式给出 `--confirm-run`。
+
+状态机要求 0600 intent 与空 journal 在凭据加载前独占创建并 fsync；每个请求的 `request_authorized` 事件必须先于 provider entry 持久化，checkpoint 与 sidecar 经过原子写、字节/帧哈希和 schema 验证后才允许提交。只可从完整验证的已提交前缀恢复；任何 authorized-without-checkpoint、凭据、传输、schema、空响应、截断、身份、日期或持久化失败均终止且不得重发。失败证据不得包含 token/摘要、原始值、行数或 provider 明文异常。
+
+v419 revision 2 下的 standalone `plan` v2 实际退出码 0、`ready=true`，34/34 检查通过，目标目录树安全检查通过。它绑定 1,699 个接受日和精确 1,700 个未来调用，但没有构造 intent、检查 `.env`/环境/token、导入或创建 provider、发出请求、读取任何来源/候选/比较/价格/收益值或写来源文件；`future_run_authorized=false`，`run_interface_exposed=false`。
+
+workflow 测试为 13 passed，Campaign265 跨阶段套件为 60 passed、1 个历史可变报告节点 deselected，v7–v12 追加链通过。最终 Campaign265 为 31 次尝试（14 科学、17 基础设施），累计历史尝试 2,635、累计收益读取开发试验 315；完整定义/数值比较器仍为 `162/143`，完整因子和本轮收益试验仍为 0。Candidate49 继续是唯一前瞻候选且账本 0/0；不得回填、启动第二候选、修改冻结门槛、生成当前评分/选股/仓位/订单或作投资建议。
