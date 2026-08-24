@@ -1,0 +1,22 @@
+{
+  "schema_version": 1,
+  "campaign_id": "campaign_285",
+  "recorded_at": "2026-08-25T01:40:00+08:00",
+  "timestamp_semantics": "Monotonic logical append time after Campaign284; not a market-data measurement.",
+  "phase": "concept_only_before_targeted_frontier_inventory",
+  "objective": "Freeze a finite priority-ordered catalog of issuer external-state mechanisms before targeted Campaign285 inventory.",
+  "authoritative_predecessor": {"path": "docs/a_share_three_day_iteration_status_20260825_campaign284_terminal.json", "sha256": "bababa87e49f40c7aceda9bc415150e9d868ae576bfffa5f1efc0da9806a17d4"},
+  "historical_policy": {"path": "docs/a_share_three_day_historical_walkforward_research_policy_20260727.json", "sha256": "38426d6161b9bfed323c58caba18feca668b8c9d53e294951a8ba90c01a798bb"},
+  "sequence_attestation": {"targeted_campaign285_inventory_read_before_this_freeze": false, "candidate_values_read": false, "comparison_values_read": false, "daily_price_fields_read": [], "forward_return_fields_read": false, "provider_request_issued": false},
+  "catalog_selection_rule": {"catalog_is_complete_and_finite": true, "priority_is_frozen": true, "select_at_most_one_route": true, "post_selection_formula_search_allowed": false, "post_selection_direction_search_allowed": false, "selection_method": "Select the first priority route that is economically independent and has a lawful complete 2019-2023 point-in-time issuer identity, revision, availability and denominator contract; otherwise stop before formula, direction, fields, rows or values."},
+  "concept_catalog": [
+    {"priority": 1, "concept_id": "public_collective_bargaining_strike_lockout_settlement_return_to_work_state", "economic_state": "Issuer labor capacity reflected in public collective-bargaining, strike, lockout, settlement, ratification and return-to-work lifecycle records.", "formula": null, "direction": null, "provider": null, "source_fields": null},
+    {"priority": 2, "concept_id": "public_foreign_investment_national_security_review_mitigation_clearance_state", "economic_state": "Issuer transaction and asset-control access reflected in public foreign-investment review, mitigation, prohibition, divestment and clearance states.", "formula": null, "direction": null, "provider": null, "source_fields": null},
+    {"priority": 3, "concept_id": "public_water_abstraction_allocation_drought_curtailment_restoration_state", "economic_state": "Issuer production capacity reflected in public water-right allocation, drought curtailment, emergency restriction, compliance and restoration states.", "formula": null, "direction": null, "provider": null, "source_fields": null},
+    {"priority": 4, "concept_id": "public_nuclear_safeguards_outage_restart_authorization_state", "economic_state": "Issuer generation or fuel-cycle capacity reflected in public safeguards finding, mandated outage, remediation, inspection and restart authorization states.", "formula": null, "direction": null, "provider": null, "source_fields": null},
+    {"priority": 5, "concept_id": "public_satellite_launch_license_range_schedule_scrub_deployment_state", "economic_state": "Issuer space-asset commissioning reflected in public launch authorization, range scheduling, scrub, retry, launch and deployment states.", "formula": null, "direction": null, "provider": null, "source_fields": null},
+    {"priority": 6, "concept_id": "public_patent_validity_injunction_stay_appeal_restoration_state", "economic_state": "Issuer exclusionary operating rights reflected in public patent validity, injunction, stay, appeal, remand and restored-enforcement states.", "formula": null, "direction": null, "provider": null, "source_fields": null},
+    {"priority": 7, "concept_id": "public_government_debarment_suspension_reinstatement_procurement_eligibility_state", "economic_state": "Issuer public-sector market access reflected in public debarment, suspension, remedial agreement, reinstatement and procurement-eligibility states.", "formula": null, "direction": null, "provider": null, "source_fields": null}
+  ],
+  "prohibited_actions": ["rescue_or_recombine_terminal_mechanisms", "read_source_or_factor_values_before_selected_route_contract", "read_prices_or_returns_before_no_return_admission", "open_2024_2025_without_a_frozen_survivor", "backfill_candidate49", "start_candidate50", "run_candidate49_before_16_30_asia_singapore", "create_current_scores_selections_sizing_positions_or_orders"]
+}
