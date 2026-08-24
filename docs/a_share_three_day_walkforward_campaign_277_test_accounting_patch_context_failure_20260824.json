@@ -1,0 +1,19 @@
+{
+  "schema_version": 1,
+  "kind": "a_share_three_day_walkforward_campaign277_test_accounting_patch_context_failure",
+  "status": "infrastructure_failure_rejected_before_any_target_write",
+  "recorded_at": "2026-08-24T21:54:00+08:00",
+  "timestamp_semantics": "Monotonic logical append time after the rejected Campaign277 focused-test accounting patch; not a market-data or host-wall-clock measurement.",
+  "failed_action": "Update the formatted focused test to bind ledger v2 and the additive report/handoff.",
+  "failure_reason": "The patch expected the pre-Black one-line REPORT assignment, but Black had mechanically wrapped it; apply_patch rejected the complete patch before any target write.",
+  "recovery": "Inspect the current formatted test and apply a context-corrected patch without changing any frozen research artifact.",
+  "research_boundary": {
+    "candidate_or_comparator_value_read": false,
+    "daily_price_or_forward_return_read": false,
+    "stress_2024_2025_opened": false,
+    "provider_or_web_request_issued": false,
+    "provider_credential_value_or_digest_read": false,
+    "candidate49_ledgers_changed": false,
+    "scientific_result_changed": false
+  }
+}

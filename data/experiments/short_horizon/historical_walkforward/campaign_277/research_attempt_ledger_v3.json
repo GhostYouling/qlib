@@ -1,0 +1,52 @@
+{
+  "schema_version": 1,
+  "kind": "a_share_three_day_walkforward_campaign277_research_attempt_ledger",
+  "recorded_at": "2026-08-24T21:55:00+08:00",
+  "timestamp_semantics": "Monotonic logical append time after the Campaign277 rejected test-accounting patch; not a market-data or host-wall-clock measurement.",
+  "authoritative_predecessor": {
+    "path": "data/experiments/short_horizon/historical_walkforward/campaign_277/research_attempt_ledger_v2.json",
+    "sha256": "ec442750cd3831001e2cb13ac712f383641475c4dd5544fcf28dbdf00a7b5bfe",
+    "chain_tip_sha256": "d0445e412d1ecb93f85c6047dff57226af51bdace8e869107b75910200e77786",
+    "effective_entry_count": 8,
+    "cumulative_historical_research_attempt_count": 2825,
+    "cumulative_return_reading_development_trial_count": 315
+  },
+  "entries": [
+    {
+      "attempt_id": "campaign277_infrastructure_002",
+      "candidate_or_comparator_value_read": false,
+      "complete_factor_attempt": false,
+      "entry_sha256": "214b5de5016f8873bfcb7d6d876a764d4748192c18d421f9ea8aaddf01c5b256",
+      "ordinal": 9,
+      "phase": "terminal_validation",
+      "previous_entry_sha256": "d0445e412d1ecb93f85c6047dff57226af51bdace8e869107b75910200e77786",
+      "result_consumed": false,
+      "return_reading_development_trial": false,
+      "route_id": "campaign277_focused_test_accounting_patch",
+      "scientific_attempt": false,
+      "status": "failed_test_accounting_patch_context_mismatch_before_any_target_write_no_research_value_read"
+    }
+  ],
+  "effective_entry_count": 9,
+  "effective_prevalue_scientific_attempt_count": 7,
+  "effective_infrastructure_failure_attempt_count": 2,
+  "effective_complete_factor_attempt_count": 0,
+  "cumulative_historical_research_attempt_count": 2826,
+  "cumulative_return_reading_development_trial_count": 315,
+  "chain_tip_sha256": "214b5de5016f8873bfcb7d6d876a764d4748192c18d421f9ea8aaddf01c5b256",
+  "research_boundary": {
+    "repository_metadata_and_prior_terminal_history_read": true,
+    "provider_or_web_request_issued": false,
+    "provider_response_or_source_row_read": false,
+    "provider_credential_value_or_digest_read": false,
+    "candidate_or_comparator_value_read": false,
+    "historical_daily_price_or_forward_return_value_read": false,
+    "stress_2024_2025_opened": false,
+    "candidate49_plan_or_run_executed_by_campaign277": false,
+    "candidate49_historical_backfill_performed": false,
+    "candidate49_ledgers_changed": false,
+    "second_prospective_candidate_created": false,
+    "current_scoring_selection_sizing_positions_or_orders_performed": false,
+    "investment_advice": false
+  }
+}

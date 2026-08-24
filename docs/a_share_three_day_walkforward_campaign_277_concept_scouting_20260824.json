@@ -1,0 +1,124 @@
+{
+  "schema_version": 1,
+  "campaign_id": "campaign_277",
+  "recorded_at": "2026-08-24T21:42:00+08:00",
+  "timestamp_semantics": "Monotonic logical append time after the Campaign276 final validated state; not a market-data or host-wall-clock measurement.",
+  "phase": "concept_only_before_targeted_frontier_inventory",
+  "objective": "Freeze a finite priority-ordered catalog of economically independent issuer external-state mechanisms before any Campaign277 targeted prior-definition or source-frontier search.",
+  "authoritative_predecessor": {
+    "path": "docs/a_share_three_day_iteration_status_20260824_campaign276_final_validated.json",
+    "sha256": "ead007cbfee029fcfa76515d348b11e65c2a22d052e3332711e978dac36ec793"
+  },
+  "historical_policy": {
+    "path": "docs/a_share_three_day_historical_walkforward_research_policy_20260727.json",
+    "sha256": "38426d6161b9bfed323c58caba18feca668b8c9d53e294951a8ba90c01a798bb"
+  },
+  "sequence_attestation": {
+    "targeted_prior_definition_inventory_read_before_this_freeze": false,
+    "targeted_source_frontier_inventory_read_before_this_freeze": false,
+    "candidate_values_read": false,
+    "comparison_values_read": false,
+    "daily_price_fields_read": [],
+    "forward_return_fields_read": false,
+    "provider_request_issued": false
+  },
+  "catalog_selection_rule": {
+    "catalog_is_complete_and_finite": true,
+    "priority_is_frozen": true,
+    "select_at_most_one_route": true,
+    "selection_method": "After this file is immutable, inspect complete local terminal-definition and source-frontier evidence in catalog priority order. Select the first route that is economically independent, has a lawful and auditable 2019-2023 point-in-time issuer identity, availability, revision and complete-market denominator contract, and is not a same-mechanism source, entity-role, jurisdiction, formula, field, window or cohort rescue. Close every sibling and parameter variant. If no route survives, terminalize Campaign277 before formula, direction, provider, fields, source rows, factor values, comparison values, prices or returns.",
+    "post_selection_formula_search_allowed": false,
+    "post_selection_direction_search_allowed": false,
+    "post_selection_sibling_search_allowed": false
+  },
+  "concept_catalog": [
+    {
+      "priority": 1,
+      "concept_id": "public_cybersecurity_vulnerability_incident_remediation_state",
+      "economic_state": "Issuer digital operational resilience reflected in public vulnerability, exploit, breach, containment, patch, recovery and closure lifecycle records.",
+      "formula": null,
+      "direction": null,
+      "provider": null,
+      "source_fields": null,
+      "availability_rule": null,
+      "missing_zero_semantics": null
+    },
+    {
+      "priority": 2,
+      "concept_id": "public_clinical_trial_site_enrollment_completion_state",
+      "economic_state": "Issuer research execution and product-development progress reflected in clinical-trial registration, site activation, enrollment, milestone, suspension, completion and result lifecycle records.",
+      "formula": null,
+      "direction": null,
+      "provider": null,
+      "source_fields": null,
+      "availability_rule": null,
+      "missing_zero_semantics": null
+    },
+    {
+      "priority": 3,
+      "concept_id": "public_adverse_event_inspection_enforcement_remediation_state",
+      "economic_state": "Issuer regulated-product quality and compliance reflected in adverse-event reports, inspection findings, warning, enforcement, remediation and closure lifecycle records.",
+      "formula": null,
+      "direction": null,
+      "provider": null,
+      "source_fields": null,
+      "availability_rule": null,
+      "missing_zero_semantics": null
+    },
+    {
+      "priority": 4,
+      "concept_id": "public_utility_connection_outage_restoration_state",
+      "economic_state": "Issuer operating continuity and facility utilization reflected in public electricity, gas, water or telecom connection, curtailment, outage, restoration and disconnection lifecycle records.",
+      "formula": null,
+      "direction": null,
+      "provider": null,
+      "source_fields": null,
+      "availability_rule": null,
+      "missing_zero_semantics": null
+    },
+    {
+      "priority": 5,
+      "concept_id": "public_public_private_partnership_concession_performance_state",
+      "economic_state": "Issuer contracted infrastructure economics reflected in public-private-partnership award, financing, construction, availability, performance deduction, handback and termination lifecycle records.",
+      "formula": null,
+      "direction": null,
+      "provider": null,
+      "source_fields": null,
+      "availability_rule": null,
+      "missing_zero_semantics": null
+    },
+    {
+      "priority": 6,
+      "concept_id": "public_standard_committee_association_participation_state",
+      "economic_state": "Issuer technology influence and market access reflected in public standards-committee, industry-association, working-group, drafting, voting and withdrawal lifecycle records.",
+      "formula": null,
+      "direction": null,
+      "provider": null,
+      "source_fields": null,
+      "availability_rule": null,
+      "missing_zero_semantics": null
+    },
+    {
+      "priority": 7,
+      "concept_id": "public_physical_store_poi_open_close_operating_state",
+      "economic_state": "Issuer customer-facing operating footprint reflected in public store or service-point opening, relocation, temporary closure, reopening and permanent closure lifecycle records.",
+      "formula": null,
+      "direction": null,
+      "provider": null,
+      "source_fields": null,
+      "availability_rule": null,
+      "missing_zero_semantics": null
+    }
+  ],
+  "prohibited_research_actions": [
+    "rescue_any_campaign276_or_earlier_route_through_a_sibling_source_entity_role_jurisdiction_metric_window_threshold_or_direction",
+    "read_provider_rows_or_factor_values_before_a_separate_selected_route_contract",
+    "read_comparison_values_before_coverage_admission",
+    "read_daily_prices_or_forward_returns_before_no_return_admission",
+    "open_2024_2025_before_a_fully_frozen_campaign_and_nonzero_development_survivor",
+    "historically_backfill_candidate49",
+    "start_candidate50_or_any_second_prospective_candidate",
+    "retry_or_re_request_the_2026_08_24_candidate49_source_failure",
+    "create_current_scores_selections_sizing_positions_or_orders"
+  ]
+}

@@ -1,0 +1,114 @@
+{
+  "schema_version": 1,
+  "kind": "a_share_three_day_walkforward_campaign277_terminal_validation",
+  "status": "campaign277_terminal_validation_passed_goal_remains_active",
+  "recorded_at": "2026-08-24T22:00:00+08:00",
+  "timestamp_semantics": "Monotonic logical append time after Campaign277 focused and cross-stage validation; not a market-data or host-wall-clock measurement.",
+  "validated_artifacts": {
+    "campaign277_catalog": {
+      "path": "docs/a_share_three_day_walkforward_campaign_277_concept_scouting_20260824.json",
+      "sha256": "5a7c95ca49c94b67f2177a8d561ed9321a8d850b48196a1fdbb3f9eb02eb4de5"
+    },
+    "campaign277_terminal_result": {
+      "path": "docs/a_share_three_day_walkforward_campaign_277_prevalue_mechanism_frontier_result_20260824.json",
+      "sha256": "22aee0dde5f2b1de82742986f7772018271932e484afd4c5b1b4fc61e5ada900"
+    },
+    "campaign277_initial_terminal_state": {
+      "path": "docs/a_share_three_day_iteration_status_20260824_campaign277_terminal.json",
+      "sha256": "268f997a850b0d43ff74950654d349817c835ebaf8f77230c059dbb80124c822"
+    },
+    "campaign277_effective_ledger_v4": {
+      "path": "data/experiments/short_horizon/historical_walkforward/campaign_277/research_attempt_ledger_v4.json",
+      "sha256": "863988fc9e98fe575207ad98b089b6d7dfae864c64ff5bfa24ba60643eaf7b47"
+    },
+    "campaign277_focused_test": {
+      "path": "tests/data_collector_tests/test_a_share_three_day_walkforward_campaign277_terminal.py",
+      "sha256": "1f6dfd9771e8817780a66cbd4584833e798b72077aa6c738fe9c709a7b15f693"
+    },
+    "campaign277_terminal_report_v3": {
+      "path": "docs/a_share_three_day_walkforward_campaign_277_terminal_prevalue_report_v3.md",
+      "sha256": "7ca2002b8cc77e8bf61cf478b0d6ce91c6458e2148fc2a5093418dea5247358c"
+    },
+    "campaign277_handoff_v3": {
+      "path": "docs/a_share_three_day_strategy_handoff_20260824_campaign277_v3.md",
+      "sha256": "b16e8b042ef71ef2a2207af94ccb81eee7c331bc073ca3fd97c251b2bc6785c2"
+    },
+    "initial_black_check_failure": {
+      "path": "docs/a_share_three_day_walkforward_campaign_277_initial_black_check_failure_20260824.json",
+      "sha256": "31bb44002e5af533404bb8d4687eb2ce59024ac70e83383f4f91c1362a084898"
+    },
+    "test_accounting_patch_context_failure": {
+      "path": "docs/a_share_three_day_walkforward_campaign_277_test_accounting_patch_context_failure_20260824.json",
+      "sha256": "39bdd96de744bb94cbbee8a1dfb7f22ea57b39027295812ebb4abb0c2f060523"
+    },
+    "cross_stage_deselect_prefix_failure": {
+      "path": "docs/a_share_three_day_walkforward_campaign_277_cross_stage_deselect_prefix_failure_20260824.json",
+      "sha256": "6d2059958d5b72005dde4670af3591eba8bef450b30f7a1a4f1f3457ba1142f1"
+    },
+    "current_unified_report": {
+      "path": "data/experiments/short_horizon/current_research_report.md",
+      "sha256": "b0ee38c4ba9cd49f2b404ffad15b02134a6fc16da1a3fcac62838538990d086a"
+    },
+    "three_day_unified_report": {
+      "path": "data/experiments/short_horizon/three_day_research_report.md",
+      "sha256": "28c98acce1d3bbc3e39c778841924950cf5dc6645d4b2cb0dffa77365cfc61c9"
+    },
+    "candidate49_signal_ledger": {
+      "path": "data/experiments/short_horizon/candidate49_future_signal_ledger.json",
+      "sha256": "5193f00d7f36da003f53cec387900da4c3d002299f5dfcfc1a95eaa199ed3a79"
+    },
+    "candidate49_execution_ledger": {
+      "path": "data/experiments/short_horizon/candidate49_future_execution_ledger.json",
+      "sha256": "d57a3e61eac969e42cafa418ccd8c0a5ee65dcf69da145bb2c096c2a02a2ea4f"
+    }
+  },
+  "validation_lifecycle_failures": [
+    "Initial Black check required a mechanical rewrite of the single new unfrozen focused test; Ruff, JSON and diff checks in the same command passed.",
+    "The first focused-test accounting patch expected pre-Black line wrapping and was rejected before every target write.",
+    "The first cross-stage command used tests/data_collector_tests deselect prefixes while pytest collected data_collector_tests node IDs; four historical mutable-report lifecycle nodes ran and failed while 123 other tests passed."
+  ],
+  "focused_test_result": {
+    "passed": 7,
+    "failed": 0,
+    "black_passed": true,
+    "ruff_passed": true,
+    "git_diff_check_passed": true
+  },
+  "json_validation": {
+    "pre_validation_campaign277_json_count": 10,
+    "invalid_count": 0,
+    "scope": "Campaign277 catalog, result, initial state, four ledgers and three infrastructure-failure records"
+  },
+  "cross_stage_result": {
+    "scope": "Campaign273 through Campaign277 and Candidate49 execution, observation and session-workflow semantic tests",
+    "passed": 123,
+    "failed": 0,
+    "deselected": 4,
+    "deselected_historical_mutable_report_hash_nodes": 4,
+    "duration_seconds": 14.58
+  },
+  "effective_accounting": {
+    "campaign277_attempt_count": 10,
+    "campaign277_infrastructure_failure_count": 3,
+    "campaign277_prevalue_scientific_attempt_count": 7,
+    "campaign277_complete_factor_attempt_count": 0,
+    "campaign277_return_reading_development_trial_count": 0,
+    "cumulative_historical_research_attempt_count": 2827,
+    "cumulative_return_reading_development_trial_count": 315
+  },
+  "research_boundary": {
+    "repository_metadata_and_prior_terminal_history_read": true,
+    "provider_or_web_request_issued": false,
+    "provider_response_or_source_row_read": false,
+    "provider_credential_value_or_digest_read": false,
+    "candidate_or_comparator_value_read": false,
+    "historical_daily_price_or_forward_return_value_read": false,
+    "stress_2024_2025_opened": false,
+    "candidate49_plan_or_run_executed_by_campaign277": false,
+    "candidate49_historical_backfill_performed": false,
+    "candidate49_ledgers_changed": false,
+    "second_prospective_candidate_created": false,
+    "current_scoring_selection_sizing_positions_or_orders_performed": false,
+    "investment_advice": false
+  }
+}
