@@ -42395,6 +42395,45 @@ def append_historical_walkforward_terminal_summaries(report: str) -> str:
                 "该段只重放冻结终态；不得反向救援，也不生成当前评分、选股、仓位或订单。",
             ]
         )
+    campaign301_terminal = (
+        REPO_ROOT
+        / "docs/a_share_three_day_walkforward_campaign_301_terminal_result_20260825.json"
+    )
+    if campaign301_terminal.exists():
+        terminal = load_json_record(
+            campaign301_terminal,
+            kind="a_share_three_day_walkforward_campaign301_prevalue_terminal_result",
+        )
+        scientific = terminal.get("scientific_result") or {}
+        library = terminal.get("library_state") or {}
+        accounting = terminal.get("effective_accounting") or {}
+        pieces.extend(
+            [
+                "",
+                "## 历史滚动 Campaign301 权威追加",
+                "",
+                (
+                    "Alpha158/本地日线残余前沿完成 "
+                    f"{int(scientific.get('finite_prevalue_route_count', 0))} 条值前审计："
+                    f"{int(scientific.get('terminal_or_forbidden_route_count', 0))} 条终止或禁止，"
+                    f"{int(scientific.get('infrastructure_deferred_route_count', 0))} 条资源延期，"
+                    f"选中候选 {int(scientific.get('selected_candidate_count', 0))} 个。"
+                ),
+                (
+                    "完整因子/收益读取开发试验为 "
+                    f"{int(accounting.get('campaign301_complete_factor_attempts', 0))}/"
+                    f"{int(accounting.get('campaign301_return_reading_development_trials', 0))}；"
+                    "2024–2025 未打开。"
+                ),
+                (
+                    "重复控制库保持 "
+                    f"{int(library.get('complete_factor_definition_count', 0))}/"
+                    f"{int(library.get('eligible_numeric_comparator_count', 0))}；"
+                    "Alpha360 只作资源延期，不作预测失败结论。"
+                ),
+                "该段不授权重组终止因子、当前评分、选股、仓位、订单或投资建议。",
+            ]
+        )
     return "\n".join(pieces).rstrip() + "\n"
 
 

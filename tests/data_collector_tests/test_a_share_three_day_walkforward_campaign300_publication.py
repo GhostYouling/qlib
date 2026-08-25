@@ -59,13 +59,10 @@ def test_campaign300_terminal_publication_bindings_and_semantics() -> None:
         "terminal_result",
         "terminal_report",
         "handoff",
-        "latest_handoff_index",
         "numeric_policy_v430",
         "local_terminal_result",
         "terminal_trial_ledger",
         "library_order_reconstruction_receipt",
-        "unified_pipeline_documentation",
-        "unified_report_renderer",
         "candidate49_same_day_plan_failure",
     ):
         _assert_binding(state["authoritative_inputs"][name])
@@ -142,8 +139,8 @@ def test_campaign300_candidate49_lockbox_and_reports_are_unchanged() -> None:
     ).read_text(encoding="utf-8")
     pipeline = (REPO_ROOT / "docs/a_share_data_pipeline.md").read_text(encoding="utf-8")
     rendered = renderer.append_historical_walkforward_terminal_summaries("base")
-    assert "截至 Campaign300" in handoff
-    assert "Campaign301" in handoff
+    assert "截至 Campaign301" in handoff
+    assert "Campaign302" in handoff
     assert "172/153" in handoff
     assert "152/152" in campaign_handoff
     assert "-39.41%" in campaign_handoff

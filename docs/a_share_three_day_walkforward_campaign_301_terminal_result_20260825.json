@@ -1,0 +1,96 @@
+{
+  "schema_version": 1,
+  "kind": "a_share_three_day_walkforward_campaign301_prevalue_terminal_result",
+  "status": "terminal_prevalue_no_executable_candidate_library_unchanged_lockbox_closed",
+  "recorded_at": "2026-08-25T21:32:05+08:00",
+  "authoritative_inputs": {
+    "campaign300_terminal_state": {
+      "path": "docs/a_share_three_day_iteration_status_20260825_campaign300_terminal.json",
+      "sha256": "80a8ac0965b8928648cb81e9df06b2227ae90e2a6b0cba88db2ae6147c27d9e7"
+    },
+    "campaign301_frontier_audit": {
+      "path": "docs/a_share_three_day_walkforward_campaign_301_prevalue_frontier_audit_20260825.json",
+      "sha256": "68914c72451bd8f0c4fa51f27e3698c2692b618dad640d94fd001ae72c3216a2"
+    },
+    "campaign301_trial_ledger": {
+      "path": "docs/a_share_three_day_walkforward_campaign_301_prevalue_trial_ledger_20260825.json",
+      "sha256": "7e1afa208ae60ffa7aee8e70567729aa091d5dd9450be3e36a1b9680cf0e8154",
+      "entry_count": 11,
+      "chain_tip_sha256": "484d9d1f68bc58c3fc20ab372646e1b801f31baf77b3b8a0a038ec431f1c8588"
+    },
+    "numeric_policy_v430": {
+      "path": "docs/a_share_three_day_walkforward_future_numeric_comparison_eligibility_policy_v430_20260825.json",
+      "sha256": "bd24779beeeeab8d1713aebca64325531fa525d3360d8067cf8af9b2200b00a8"
+    }
+  },
+  "scientific_result": {
+    "finite_prevalue_route_count": 11,
+    "terminal_or_forbidden_route_count": 10,
+    "infrastructure_deferred_route_count": 1,
+    "selected_candidate_count": 0,
+    "selected_candidate": null,
+    "complete_factor_definition_created": false,
+    "numeric_formula_or_direction_frozen": false,
+    "feature_snapshot_or_runner_created": false,
+    "candidate_or_comparator_value_read": false,
+    "historical_daily_price_or_forward_return_value_read": false,
+    "development_trial_count": 0,
+    "development_survivor_count": 0,
+    "validation_fold_return_read_count": 0,
+    "stress_2024_2025_opened": false,
+    "current_strategy_deployable": false,
+    "interpretation": "The finite audit found no mechanism-independent, currently executable Alpha158 or local daily-OHLCV residual candidate. Ten apparent routes are terminal-family refreshes or forbidden post-result recombinations. Alpha360 remains explicitly infrastructure-deferred because safe atomic materialization lacks workspace headroom; it is not classified as a predictive failure."
+  },
+  "effective_accounting": {
+    "campaign301_prevalue_scientific_attempts": 11,
+    "campaign301_infrastructure_failures": 0,
+    "campaign301_complete_factor_attempts": 0,
+    "campaign301_return_reading_development_trials": 0,
+    "campaign301_validation_fold_return_reads": 0,
+    "campaign301_total_attempts": 11,
+    "cumulative_historical_research_attempts": 3107,
+    "cumulative_return_reading_development_trials": 331
+  },
+  "library_state": {
+    "changed_by_campaign301": false,
+    "complete_factor_definition_count": 172,
+    "complete_factor_definition_order_sha256": "ba884534eca5c6ec0812271ed5b78d6a4587c5ffa2a00c52d5c0f6892aaf0df1",
+    "eligible_numeric_comparator_count": 153,
+    "eligible_numeric_comparator_order_sha256": "41b425635ddb9986d9e6d37f83220caca213d6437ac1ccbc02c29072610b499d"
+  },
+  "candidate49": {
+    "sole_active_prospective_candidate": true,
+    "same_day_20260825_retry_allowed": false,
+    "historical_backfill_performed": false,
+    "signal_ledger_entry_count": 0,
+    "signal_ledger_sha256": "5193f00d7f36da003f53cec387900da4c3d002299f5dfcfc1a95eaa199ed3a79",
+    "execution_ledger_entry_count": 0,
+    "execution_ledger_sha256": "d57a3e61eac969e42cafa418ccd8c0a5ee65dcf69da145bb2c096c2a02a2ea4f",
+    "ledgers_changed_by_campaign301": false
+  },
+  "research_boundary": {
+    "repository_metadata_and_prior_terminal_history_read": true,
+    "filesystem_free_space_metadata_read": true,
+    "campaign301_candidate_or_comparator_value_read": false,
+    "historical_daily_price_or_forward_return_value_read": false,
+    "feature_snapshot_created": false,
+    "model_fit_performed": false,
+    "provider_api_request_issued": false,
+    "provider_credential_value_or_digest_read": false,
+    "stress_2024_2025_opened": false,
+    "candidate49_plan_or_run_executed_by_campaign301": false,
+    "candidate49_historical_backfill_performed": false,
+    "candidate49_ledgers_changed": false,
+    "second_prospective_candidate_created": false,
+    "current_scoring_selection_sizing_positions_or_orders_performed": false,
+    "investment_advice": false
+  },
+  "prohibited_followups": [
+    "Do not force an Alpha158 formula from an already terminal operator family merely to create another campaign candidate.",
+    "Do not rescue Campaign286 through Campaign300 with new features, directions, windows, transforms, thresholds, filters, subsets, weights, seeds, costs or model combinations.",
+    "Do not partially materialize Alpha360, reduce its history, subset names after observing values, change its complete-library semantics or write it through the external data symlink without a separately accepted resource contract.",
+    "Do not append a definition or numeric comparator for Campaign301 because no complete factor was selected or evaluated.",
+    "Do not open 2024-2025, backfill Candidate49, start another prospective candidate, issue provider requests, or generate current scores, selections, sizing, positions or orders from this result."
+  ],
+  "next_action": "Keep continuous iteration active. Campaign302 may perform fresh finite zero-network prevalue scouting only from a genuinely new accepted information channel or a separately frozen resource-safe mechanism outside the exhausted Alpha158/local daily-OHLCV residual frontier. Alpha360 remains explicitly deferred rather than rejected."
+}

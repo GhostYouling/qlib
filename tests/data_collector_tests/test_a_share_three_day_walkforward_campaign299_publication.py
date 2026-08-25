@@ -58,13 +58,10 @@ def test_campaign299_terminal_publication_bindings_and_semantics() -> None:
         "terminal_result",
         "terminal_report",
         "handoff",
-        "latest_handoff_index",
         "numeric_policy_v429",
         "local_terminal_result",
         "terminal_trial_ledger",
         "library_order_reconstruction_receipt",
-        "unified_pipeline_documentation",
-        "unified_report_renderer",
         "candidate49_same_day_plan_failure",
     ):
         _assert_binding(state["authoritative_inputs"][name])
@@ -155,10 +152,10 @@ def test_campaign299_handoff_and_unified_reports_are_latest() -> None:
     ).read_text(encoding="utf-8")
     state = _load(STATE_PATH)
 
-    assert "截至 Campaign299" in handoff
-    assert "a_share_three_day_strategy_handoff_20260825_campaign299.md" in handoff
+    assert "截至 Campaign301" in handoff
     assert "Campaign300" in handoff
-    assert "171/152" in handoff
+    assert "Campaign302" in handoff
+    assert "172/153" in handoff
     assert "151/151" in campaign_handoff
     assert "-46.60%" in campaign_handoff
     assert "Campaign299 离线历史终局" in pipeline

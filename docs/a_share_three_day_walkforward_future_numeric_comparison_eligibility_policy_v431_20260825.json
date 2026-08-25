@@ -1,0 +1,88 @@
+{
+  "schema_version": 1,
+  "kind": "a_share_three_day_walkforward_future_numeric_comparison_eligibility_policy",
+  "version": 431,
+  "status": "campaign301_prevalue_terminal_no_append_library_unchanged_172_153",
+  "recorded_at": "2026-08-25T21:32:05+08:00",
+  "supersedes_without_rewriting": {
+    "path": "docs/a_share_three_day_walkforward_future_numeric_comparison_eligibility_policy_v430_20260825.json",
+    "sha256": "bd24779beeeeab8d1713aebca64325531fa525d3360d8067cf8af9b2200b00a8"
+  },
+  "authoritative_inputs": {
+    "campaign301_terminal_result": {
+      "path": "docs/a_share_three_day_walkforward_campaign_301_terminal_result_20260825.json",
+      "sha256": "d00fbba1ac4d5323e6ae6fd5d58f0e5d8e61f63d0a316ccf51bae07e9ec20cb2"
+    },
+    "campaign301_frontier_audit": {
+      "path": "docs/a_share_three_day_walkforward_campaign_301_prevalue_frontier_audit_20260825.json",
+      "sha256": "68914c72451bd8f0c4fa51f27e3698c2692b618dad640d94fd001ae72c3216a2"
+    },
+    "campaign301_trial_ledger": {
+      "path": "docs/a_share_three_day_walkforward_campaign_301_prevalue_trial_ledger_20260825.json",
+      "sha256": "7e1afa208ae60ffa7aee8e70567729aa091d5dd9450be3e36a1b9680cf0e8154"
+    }
+  },
+  "complete_historical_feature_library": {
+    "factor_definition_count": 172,
+    "order_sha256": "ba884534eca5c6ec0812271ed5b78d6a4587c5ffa2a00c52d5c0f6892aaf0df1",
+    "campaign301_definition_appended": false,
+    "reason": "Campaign301 selected no complete factor definition and read no candidate values; the library is preserved byte-for-byte from v430."
+  },
+  "numerical_comparator_eligibility": {
+    "eligible_numeric_comparator_count": 153,
+    "order_sha256": "41b425635ddb9986d9e6d37f83220caca213d6437ac1ccbc02c29072610b499d",
+    "order_digest_semantics": "SHA-256 of canonical JSON [[name, score_direction], ...] over the reconstructed complete frozen order.",
+    "campaign301_numeric_comparator_appended": false,
+    "reason": "No Campaign301 numeric candidate, coverage result or uniqueness result exists."
+  },
+  "campaign301_terminal_boundary": {
+    "finite_prevalue_route_count": 11,
+    "terminal_or_forbidden_route_count": 10,
+    "infrastructure_deferred_route_count": 1,
+    "complete_factor_attempt_count": 0,
+    "return_reading_development_trial_count": 0,
+    "validation_fold_return_read_count": 0,
+    "development_survivor_count": 0,
+    "stress_2024_2025_opened": false,
+    "alpha360_predictive_failure_claimed": false,
+    "terminal_factor_recombination_allowed": false
+  },
+  "effective_accounting": {
+    "campaign301_prevalue_scientific_attempts": 11,
+    "campaign301_infrastructure_failures": 0,
+    "campaign301_complete_factor_attempts": 0,
+    "campaign301_total_attempts": 11,
+    "campaign301_return_reading_development_trials": 0,
+    "cumulative_historical_research_attempts": 3107,
+    "cumulative_return_reading_development_trials": 331
+  },
+  "candidate49": {
+    "sole_active_prospective_candidate": true,
+    "same_day_20260825_retry_allowed": false,
+    "historical_backfill_performed": false,
+    "signal_ledger_entry_count": 0,
+    "signal_ledger_sha256": "5193f00d7f36da003f53cec387900da4c3d002299f5dfcfc1a95eaa199ed3a79",
+    "execution_ledger_entry_count": 0,
+    "execution_ledger_sha256": "d57a3e61eac969e42cafa418ccd8c0a5ee65dcf69da145bb2c096c2a02a2ea4f"
+  },
+  "next_stage_boundary": {
+    "campaign301_terminal": true,
+    "campaign302_offline_prevalue_scouting_allowed": true,
+    "campaign302_may_reopen_alpha158_or_daily_ohlcv_terminal_routes": false,
+    "campaign302_may_use_a_new_accepted_information_channel": true,
+    "alpha360_requires_separate_resource_safe_freeze": true,
+    "historical_outputs_may_generate_current_scores_selection_sizing_positions_or_orders": false,
+    "stress_2024_2025_allowed": false
+  },
+  "research_boundary": {
+    "campaign301_candidate_or_comparator_value_read": false,
+    "historical_daily_price_or_forward_return_value_read": false,
+    "provider_api_request_issued": false,
+    "provider_credential_value_or_digest_read": false,
+    "candidate49_historical_backfill_performed": false,
+    "candidate49_ledgers_changed": false,
+    "second_prospective_candidate_created": false,
+    "current_scoring_selection_sizing_positions_or_orders_performed": false,
+    "investment_advice": false
+  }
+}

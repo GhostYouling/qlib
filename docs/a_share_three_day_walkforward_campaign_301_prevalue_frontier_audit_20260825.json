@@ -1,0 +1,184 @@
+{
+  "schema_version": 1,
+  "kind": "a_share_three_day_walkforward_campaign301_prevalue_frontier_audit",
+  "status": "terminal_prevalue_no_executable_alpha158_or_daily_ohlcv_residual_candidate_selected",
+  "recorded_at": "2026-08-25T21:29:58+08:00",
+  "purpose": "Exhaust a finite, zero-network, prevalue catalog of still-apparent Alpha158 and local daily-OHLCV routes against the frozen 172-definition/153-comparator library without reading Campaign301 feature, comparator, price or return values.",
+  "authoritative_inputs": {
+    "campaign300_terminal_state": {
+      "path": "docs/a_share_three_day_iteration_status_20260825_campaign300_terminal.json",
+      "sha256": "80a8ac0965b8928648cb81e9df06b2227ae90e2a6b0cba88db2ae6147c27d9e7"
+    },
+    "numeric_policy_v430": {
+      "path": "docs/a_share_three_day_walkforward_future_numeric_comparison_eligibility_policy_v430_20260825.json",
+      "sha256": "bd24779beeeeab8d1713aebca64325531fa525d3360d8067cf8af9b2200b00a8"
+    },
+    "historical_walkforward_policy": {
+      "path": "docs/a_share_three_day_historical_walkforward_research_policy_20260727.json",
+      "sha256": "38426d6161b9bfed323c58caba18feca668b8c9d53e294951a8ba90c01a798bb"
+    },
+    "daily_ohlcv_residual_catalog": {
+      "path": "docs/a_share_three_day_walkforward_campaign_162_daily_ohlcv_residual_catalog_20260815.json",
+      "sha256": "921f2bde549fad109fd3f4e53daa85a1ed40db18e3c5fa35910b153ca9a80b76"
+    },
+    "alpha158_loader": {
+      "path": "qlib/contrib/data/loader.py",
+      "sha256": "814b7f7ab3d418ae3c87ce352220080b239eba2670eac9e38376b794be4075cb"
+    },
+    "alpha158_lightgbm_catalog": {
+      "path": "docs/a_share_three_day_walkforward_campaign_286_concept_scouting_20260825.json",
+      "sha256": "5214937fdb377d8887179131083428d1f862fd40d87d6a7ea2e9b1a0544dda78"
+    },
+    "alpha158_mlp_catalog": {
+      "path": "docs/a_share_three_day_walkforward_campaign_287_concept_scouting_20260825.json",
+      "sha256": "78c635116df5c5dc381e1357929bdda05bce48e69344da7dd25661b93d94d05e"
+    },
+    "alpha158_kernel_catalog": {
+      "path": "docs/a_share_three_day_walkforward_campaign_288_concept_scouting_20260825.json",
+      "sha256": "7c785fdc2d8c7a085cba2895a8e4a25df922cf4cc85e2d481bdb50f63f24eb12"
+    },
+    "alpha158_hash_catalog": {
+      "path": "docs/a_share_three_day_walkforward_campaign_289_concept_scouting_20260825.json",
+      "sha256": "7894ef5dcf42176b4c2e0775516e4892d4ec7101adb56a489bee356129a22d3f"
+    },
+    "peer_state_catalog": {
+      "path": "docs/a_share_three_day_walkforward_campaign_290_concept_scouting_20260825.json",
+      "sha256": "93ea1e120e89d0a2c2d3d07b58394bfe86009b8dbb7595c30791b9bcdbb2ec83"
+    },
+    "latest_alpha158_catalog": {
+      "path": "docs/a_share_three_day_walkforward_campaign_300_concept_scouting_20260825.json",
+      "sha256": "21fec419b427643c1e8cc484d4770484fa88a96dea7d005bac0a4a9e3c2f1b17"
+    }
+  },
+  "finite_prevalue_catalog": [
+    {
+      "route_id": "c301_01",
+      "name": "alpha158_current_day_kbar_body_wick_or_close_location",
+      "formula": null,
+      "direction": null,
+      "decision": "rejected_terminal_daily_candle_geometry",
+      "reason": "Campaign162 already closes daily bodies, wick asymmetry, signed candle placement and terminal close location as Campaign009/close-pressure refreshes; KUP, KLOW, KMID, KLEN and KSFT recombinations expose no new state."
+    },
+    {
+      "route_id": "c301_02",
+      "name": "alpha158_roc_ma_std_beta_rsqr_residual_refresh",
+      "formula": null,
+      "direction": null,
+      "decision": "rejected_terminal_alpha158_trend_and_residual",
+      "reason": "Daily momentum, volatility and risk-adjusted return routes are terminal; Campaign296 also closes fitted beta/R-squared trend linearity, residual interaction, horizon, power and transform rescue."
+    },
+    {
+      "route_id": "c301_03",
+      "name": "alpha158_quantile_rank_rsv_range_or_extreme_arrival_refresh",
+      "formula": null,
+      "direction": null,
+      "decision": "refresh_rejected_terminal_quantile_rank_extreme_state",
+      "reason": "Campaign297 consumes interquantile envelope occupancy and rejects alternate bands, widths and close-position variants; Campaign299 consumes close-distribution tail asymmetry, while earlier terminal records close extreme-arrival order."
+    },
+    {
+      "route_id": "c301_04",
+      "name": "alpha158_price_volume_corr_cord_or_directional_confirmation",
+      "formula": null,
+      "direction": null,
+      "decision": "rejected_terminal_price_volume_dependence",
+      "reason": "Campaign295 consumes SUMD20 with CORD20 directional confirmation, and Campaign298 explicitly rejects CORR, CORD, WVMA, VSUMP, VSUMN and VSUMD mixtures as terminal price-volume dependence refreshes."
+    },
+    {
+      "route_id": "c301_05",
+      "name": "alpha158_return_sign_count_sum_or_conditional_moment_refresh",
+      "formula": null,
+      "direction": null,
+      "decision": "rejected_terminal_return_sign_moment_state",
+      "reason": "Campaign295 consumes signed return balance and Campaign300 consumes conditional positive-versus-negative first-moment magnitude; raw SUMP, SUMN, SUMD, CNTP, CNTN, CNTD, alternate direction, horizon and transform variants are already rejected."
+    },
+    {
+      "route_id": "c301_06",
+      "name": "alpha158_volume_level_dispersion_weighted_activity_or_signed_sum_refresh",
+      "formula": null,
+      "direction": null,
+      "decision": "rejected_terminal_volume_activity_state",
+      "reason": "Campaign298 consumes VSTD20/VMA20 and rejects inverse, horizon, raw VSTD/VMA, log, epsilon, WVMA and signed-volume-sum routes; older daily activity and liquidity families already consume volume and amount level states."
+    },
+    {
+      "route_id": "c301_07",
+      "name": "peer_state_persistence_consensus_extremity_multi_horizon_or_cross_family_geometry",
+      "formula": null,
+      "direction": null,
+      "decision": "rejected_terminal_peer_and_cross_horizon_geometry",
+      "reason": "Campaign290 through Campaign294 already consume or reject peer-state persistence, consensus, extremity, multi-horizon and cross-family geometry; reopening them against later factors would be a post-result library refresh."
+    },
+    {
+      "route_id": "c301_08",
+      "name": "complete_alpha158_supervised_randomized_kernel_partition_or_combination_model",
+      "formula": null,
+      "direction": null,
+      "decision": "rejected_terminal_complete_library_model_search",
+      "reason": "Campaign286 through Campaign289 terminalize complete-Alpha158 LightGBM, one fixed MLP, one ordinal random-Fourier ridge and one binary random-hyperplane cell estimator. Their catalogs also close tree retries, linear/sparse/subset fits, architecture search, kernel/SVR/neighbor search and hyperparameter rescue."
+    },
+    {
+      "route_id": "c301_09",
+      "name": "daily_gap_intraday_ohlc_named_volatility_or_range_volume_indicator",
+      "formula": null,
+      "direction": null,
+      "decision": "rejected_terminal_daily_gap_intraday_and_named_indicator",
+      "reason": "Campaign162's complete six-route audit closes gap refresh, open-to-close return, gap digestion/disagreement, candle geometry, named OHLC volatility and OBV/MFI/CMF-style range-volume pressure before values."
+    },
+    {
+      "route_id": "c301_10",
+      "name": "terminal_factor_subset_pair_reweight_filter_threshold_or_model_search",
+      "formula": null,
+      "direction": null,
+      "decision": "rejected_forbidden_terminal_factor_recombination",
+      "reason": "The governing policy permits old terminal definitions only as an antecedent complete library. Selecting, pairing, reweighting, filtering, thresholding or fitting them after prior results would rewrite terminal decisions and create unbounded multiplicity."
+    },
+    {
+      "route_id": "c301_11",
+      "name": "complete_alpha360_new_dense_feature_snapshot",
+      "formula": null,
+      "direction": null,
+      "decision": "deferred_alpha360_storage_headroom",
+      "reason": "Campaign287 through Campaign289 consistently defer Alpha360 without values. The authorized worktree filesystem currently has only 11,008,628 KiB free; a new five-year 360-coordinate dense snapshot plus atomic temporary copy and model outputs lacks safe headroom. This is an infrastructure deferral, not a scientific rejection, and no write outside the authorized workspace is allowed."
+    }
+  ],
+  "decision": {
+    "routes_reviewed": 11,
+    "terminal_or_forbidden_route_count": 10,
+    "infrastructure_deferred_route_count": 1,
+    "selected_candidate_count": 0,
+    "selected_candidate": null,
+    "complete_factor_definition_created": false,
+    "numeric_formula_or_direction_frozen": false,
+    "runner_or_feature_snapshot_created": false,
+    "candidate_or_comparator_value_read": false,
+    "historical_daily_price_or_forward_return_value_read": false,
+    "development_trial_count": 0,
+    "stress_trial_count_2024_2025": 0,
+    "interpretation": "The currently executable Alpha158 and local daily-OHLCV residual frontier is exhausted under the frozen library and workspace boundary. Campaign301 does not claim Alpha360 is ineffective; it remains resource-deferred and must not be approximated, partially materialized or silently written to the external data volume."
+  },
+  "library_state": {
+    "changed_by_campaign301": false,
+    "complete_factor_definition_count": 172,
+    "complete_factor_definition_order_sha256": "ba884534eca5c6ec0812271ed5b78d6a4587c5ffa2a00c52d5c0f6892aaf0df1",
+    "eligible_numeric_comparator_count": 153,
+    "eligible_numeric_comparator_order_sha256": "41b425635ddb9986d9e6d37f83220caca213d6437ac1ccbc02c29072610b499d"
+  },
+  "research_boundary": {
+    "repository_metadata_and_prior_terminal_history_read": true,
+    "filesystem_free_space_metadata_read": true,
+    "campaign301_candidate_value_read": false,
+    "comparator_value_read": false,
+    "historical_daily_price_or_forward_return_value_read": false,
+    "feature_snapshot_created": false,
+    "model_fit_performed": false,
+    "provider_api_request_issued": false,
+    "provider_credential_value_or_digest_read": false,
+    "stress_2024_2025_opened": false,
+    "candidate49_plan_or_run_executed_by_campaign301": false,
+    "candidate49_historical_backfill_performed": false,
+    "candidate49_ledgers_changed": false,
+    "second_prospective_candidate_created": false,
+    "current_scoring_selection_sizing_positions_or_orders_performed": false,
+    "investment_advice": false
+  },
+  "next_action": "Publish Campaign301 as a prevalue terminal campaign with no library append. Keep Alpha360 explicitly deferred, keep Candidate49 unchanged, and allow Campaign302 only from a genuinely new accepted information channel or a separately frozen resource-safe mechanism outside the exhausted Alpha158/daily-OHLCV residual search."
+}
