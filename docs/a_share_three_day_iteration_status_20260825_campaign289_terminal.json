@@ -1,0 +1,103 @@
+{
+  "schema_version": 1,
+  "kind": "a_share_three_day_iteration_status",
+  "status": "campaign289_terminal_development_no_survivor_goal_active",
+  "recorded_at": "2026-08-25T13:11:00+08:00",
+  "authoritative_inputs": {
+    "predecessor": {
+      "path": "docs/a_share_three_day_iteration_status_20260825_campaign288_terminal.json",
+      "sha256": "8b8341de25d758c1a9841383c33d3877b5de9c0a4b88277acd8c9e96ccf1b652"
+    },
+    "terminal_result": {
+      "path": "docs/a_share_three_day_walkforward_campaign_289_terminal_result_20260825.json",
+      "sha256": "4826ce392fb24ae9c51f378b2400399d43a438294629011b6fec73521906e3c0"
+    },
+    "terminal_report": {
+      "path": "docs/a_share_three_day_walkforward_campaign_289_terminal_report.md",
+      "sha256": "7974749728bfe708f726aca5059e98a0ea521f936691112a7c2969195baa77b6"
+    },
+    "handoff": {
+      "path": "docs/a_share_three_day_strategy_handoff_20260825_campaign289.md",
+      "sha256": "01341ba4d7683e5709fde15e6034765c62e48dfdced1a892c6d6e83a7e99fb6a"
+    },
+    "trial_ledger": {
+      "path": "data/experiments/short_horizon/historical_walkforward/campaign_289/binary_hash_cell_mean_recovery_v2/terminal_trial_ledger.json",
+      "sha256": "e71f6725de7521e1221ef9cb4269adb594bf8462bc74f9610f1ed9aea75aabac"
+    },
+    "terminal_verifier_freeze": {
+      "path": "docs/a_share_three_day_walkforward_campaign_289_terminal_verifier_implementation_freeze_20260825.json",
+      "sha256": "3c88814c62e64bc5c56413333126bd0a17939976713c3a6b92fa3b27f2085cc7"
+    }
+  },
+  "scientific_state": {
+    "campaign_id": "campaign_289",
+    "terminal_stage": "development_walkforward",
+    "feature_family": "complete Qlib Alpha158 daily library with frozen session-binary random-hyperplane hash partition",
+    "feature_count": 158,
+    "finite_model_trial_count": 1,
+    "return_reading_development_trials": 1,
+    "model_fold_validation_return_reads": 3,
+    "positive_rank_ic_fold_count": 3,
+    "positive_spread_fold_count": 2,
+    "positive_normalized_return_fold_count": 2,
+    "positive_pilot_10bp_return_fold_count": 1,
+    "development_survivor_count": 0,
+    "stress_2024_2025_opened": false,
+    "current_strategy_deployable": false,
+    "rejection_reasons": [
+      "only one validation fold has positive primary 10bp pilot return",
+      "worst validation normalized drawdown is below the frozen -0.25 minimum",
+      "compounded validation 20bp pilot return is negative",
+      "fold 2 board-lot affordability is below the frozen 0.90 minimum"
+    ]
+  },
+  "effective_accounting": {
+    "campaign289_prevalue_concept_attempts": 7,
+    "campaign289_infrastructure_failures": 2,
+    "campaign289_model_trial_attempts": 1,
+    "campaign289_total_attempts": 10,
+    "campaign289_return_reading_development_trials": 1,
+    "campaign289_model_fold_validation_return_reads": 3,
+    "campaign289_fold1_training_return_reads_total": 3,
+    "campaign289_fold1_training_return_recovery_rereads": 2,
+    "cumulative_historical_research_attempts": 2956,
+    "cumulative_return_reading_development_trials": 321
+  },
+  "library_state": {
+    "changed_by_campaign289": false,
+    "complete_factor_definition_count": 162,
+    "complete_factor_definition_order_sha256": "974f2c1f16a85eb43a0bd1e8db768dbe120cd8826c1754d5f220bf9f1d4a3ea0",
+    "eligible_numeric_comparator_count": 143,
+    "eligible_numeric_comparator_order_sha256": "f4fbf3d578e2c80c29425716a30d60a3df01d67d04e37f1651236c4dff899588"
+  },
+  "candidate49": {
+    "sole_active_prospective_candidate": true,
+    "candidate49_plan_or_run_executed": false,
+    "historical_backfill_performed": false,
+    "signal_ledger_entry_count": 0,
+    "signal_ledger_sha256": "5193f00d7f36da003f53cec387900da4c3d002299f5dfcfc1a95eaa199ed3a79",
+    "execution_ledger_entry_count": 0,
+    "execution_ledger_sha256": "d57a3e61eac969e42cafa418ccd8c0a5ee65dcf69da145bb2c096c2a02a2ea4f"
+  },
+  "recovery_note": {
+    "original_peer_set_failure_preserved": true,
+    "recovery_v1_non_support_nan_failure_preserved": true,
+    "failed_attempt_model_fit_count": 0,
+    "failed_attempt_validation_return_read_count": 0,
+    "fold1_training_return_read_count_total": 3,
+    "fold1_training_return_reread_count": 2,
+    "eligible_state_sample_hash_model_target_cost_or_gate_changed_by_recovery": false,
+    "effect_on_decision": "Recovery v2 completed the preregistered model after only peer-set ordering and ignored-row neutral-fill implementation repairs; terminal rejection uses the three bound validation metric sets."
+  },
+  "timestamp_metadata_note": {
+    "some_manual_recorded_at_fields_are_later_than_actual_command_time": true,
+    "recorded_at_is_not_authoritative_for_execution_order": true,
+    "use_intent_failure_created_at_hashes_output_roots_and_ledger_chain": true
+  },
+  "capacity_note": {
+    "alpha360_route_deferred": true,
+    "reason": "insufficient authorized writable local capacity for comfortable materialization",
+    "scientifically_rejected": false
+  },
+  "next_safe_work": "Campaign290 may freeze a new finite zero-network offline historical concept catalog. It must not retune Campaign289's binary state, bit count, seed, hyperplanes, cell support, fallback, costs or gates and must not open Campaign289's 2024-2025 lockbox. Candidate49 remains the independent sole prospective track."
+}

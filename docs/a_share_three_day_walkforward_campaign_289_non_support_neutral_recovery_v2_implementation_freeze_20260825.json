@@ -1,0 +1,46 @@
+{
+  "schema_version": 1,
+  "kind": "a_share_three_day_walkforward_campaign289_non_support_neutral_recovery_v2_implementation_freeze",
+  "status": "frozen_after_recovery_v1_failure_before_third_fold1_training_return_read",
+  "recorded_at": "2026-08-25T13:24:00+08:00",
+  "protocol": {
+    "path": "docs/a_share_three_day_walkforward_campaign_289_preregistration_20260825.json",
+    "sha256": "165736ac98a94f1fa4eabe92e2114864d44282f9c19577a8023222cc21e461a1"
+  },
+  "failure_record": {
+    "path": "docs/a_share_three_day_walkforward_campaign_289_recovery_v1_non_support_nan_failure_20260825.json",
+    "sha256": "d20ae5d23784f656faadfa0fe6f760e2435f49f79d72dad159eb41623e021009"
+  },
+  "runner": {
+    "path": "scripts/a_share_three_day_walkforward_campaign289_recovery_v2.py",
+    "sha256": "b47d897df378506ae1f962a6ee2cca8230b87c306add1fdd32fc71e14658ecbc"
+  },
+  "tests": {
+    "path": "tests/data_collector_tests/test_a_share_three_day_walkforward_campaign289_recovery_v2.py",
+    "sha256": "511c3a42c45f06f7a8557611041bfc3aaabadf853c9dc823013d9ba85a9f1a41",
+    "result": "3 passed"
+  },
+  "bounded_change": {
+    "eligible_joined_rows_must_already_be_finite_binary_states": true,
+    "eligible_joined_values_changed": false,
+    "ineligible_joined_rows_replaced_with_neutral_zero": true,
+    "ineligible_rows_participate_in_fit_or_score": false,
+    "sample_keys_changed": false,
+    "binary_state_rule_changed": false,
+    "hash_bits_or_hyperplanes_changed": false,
+    "cell_mean_model_or_target_changed": false,
+    "fold_cost_or_survivor_gate_changed": false,
+    "third_fold1_training_return_read_disclosed": true
+  },
+  "research_boundary": {
+    "fold1_training_return_reads_before_v2_freeze": 2,
+    "model_fit_or_validation_return_read_before_v2_freeze": false,
+    "recovery_v2_training_return_reread_before_freeze": false,
+    "validation_return_read_before_freeze": false,
+    "lockbox_2024_2025_return_read_before_freeze": false,
+    "provider_request_issued_before_freeze": false,
+    "credential_loaded_before_freeze": false,
+    "candidate49_ledgers_changed_before_freeze": false,
+    "current_use_before_freeze": false
+  }
+}

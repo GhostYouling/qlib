@@ -1,0 +1,57 @@
+{
+  "schema_version": 1,
+  "kind": "a_share_three_day_walkforward_campaign289_recovery_v1_non_support_nan_failure",
+  "status": "preserved_fold1_recovery_infrastructure_failure_after_second_training_return_read_before_model_fit_or_validation_return_read",
+  "recorded_at": "2026-08-25T13:18:00+08:00",
+  "failure": {
+    "error_type": "Campaign289Error",
+    "error": "random hyperplane hash input changed",
+    "stage": "fold_1_after_frozen_peer_state_join_and_target_construction_before_model_fit",
+    "cause": "Market-panel rows outside the model-support design set contain NaN in joined factor columns. They are already ineligible, but the strict full-matrix hash input validator rejects their nonfinite placeholders before the eligible mask is applied.",
+    "scientific_interpretation": "infrastructure_non_support_fill_implementation_mismatch_not_model_result"
+  },
+  "bound_evidence": {
+    "recovery_v1_runner": {
+      "path": "scripts/a_share_three_day_walkforward_campaign289_recovery.py",
+      "sha256": "05e3be7b1194feb0ab5df136780a29eeb9f6b966730222ac234361974ab96e40"
+    },
+    "recovery_v1_intent": {
+      "path": "data/experiments/short_horizon/historical_walkforward/campaign_289/binary_hash_cell_mean_recovery_v1/recovery_intent.json",
+      "sha256": "7b3d50c80ac06ac5f1866b01c3c4ec53ad97b6d321c33c80d2221944e4efa471"
+    },
+    "recovery_v1_development_intent": {
+      "path": "data/experiments/short_horizon/historical_walkforward/campaign_289/binary_hash_cell_mean_recovery_v1/development_intent.json",
+      "sha256": "d9e5696ad6b3597e1857a885081168db10d4d79ed5c64651ace7094006f5e304"
+    },
+    "recovery_v1_failure": {
+      "path": "data/experiments/short_horizon/historical_walkforward/campaign_289/binary_hash_cell_mean_recovery_v1/development_failure.json",
+      "sha256": "ba39bc93f7b81153c0cd3166ed16dcb89f6db8a093118a01c13311a53b800f1d"
+    }
+  },
+  "observed_boundary": {
+    "fold1_training_return_read_total_so_far": 2,
+    "model_fit_completed": false,
+    "model_artifact_created": false,
+    "validation_score_snapshot_created": false,
+    "validation_return_read": false,
+    "fold2_or_fold3_training_return_read": false,
+    "lockbox_2024_2025_opened": false,
+    "provider_request_issued": false,
+    "candidate49_ledgers_changed": false,
+    "current_use": false
+  },
+  "bounded_recovery_v2_rule": {
+    "permitted_change": "After confirming every eligible joined row is finite and in {-1,0,1}, replace the entire already-ineligible joined rows with the preregistered neutral zero state before computing their ignored cell codes.",
+    "eligible_row_binary_state_or_cell_change_allowed": false,
+    "fold1_training_return_reread_required": true,
+    "sample_keys_hash_bits_hyperplanes_bit_rule_cell_estimator_target_costs_folds_and_survivor_gates_unchanged": true,
+    "new_hyperparameter_or_return_driven_change_allowed": false,
+    "recovery_v1_root_must_remain_immutable": true,
+    "recovery_v2_requires_separate_output_root_runner_test_and_fingerprint_freeze": true
+  },
+  "attempt_accounting": {
+    "additional_infrastructure_failure_attempts": 1,
+    "model_trial_attempts_completed": 0,
+    "validation_return_fold_reads": 0
+  }
+}

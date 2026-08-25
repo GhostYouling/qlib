@@ -1,0 +1,44 @@
+{
+  "schema_version": 1,
+  "kind": "a_share_three_day_walkforward_campaign289_finalizer_implementation_freeze",
+  "status": "frozen_after_development_rejection_before_terminal_ledger_reconciliation",
+  "recorded_at": "2026-08-25T13:36:00+08:00",
+  "protocol": {
+    "path": "docs/a_share_three_day_walkforward_campaign_289_preregistration_20260825.json",
+    "sha256": "165736ac98a94f1fa4eabe92e2114864d44282f9c19577a8023222cc21e461a1"
+  },
+  "source_development": {
+    "trial_ledger_sha256": "1fa4523341296cb464ca54382d2be66e6f60a6ca742ee1374a5b186649c9e2cd",
+    "development_report_sha256": "0f9c5b79e65dfe87089b30bda9556ccd52817ab0248c3fcf678fbbeb59c8bf99",
+    "development_survivors_sha256": "74137ce34b4b8a22763e2f2ae2d7941bc3b07579d152d4dab59d6b0a53094846",
+    "survivor_count": 0,
+    "lockbox_2024_2025_opened": false
+  },
+  "runner": {
+    "path": "scripts/a_share_three_day_walkforward_campaign289_finalize.py",
+    "sha256": "25e724e728028286a02c66f7de11d1348df9dd106eef04e6e51fd5636f7dd298"
+  },
+  "tests": {
+    "path": "tests/data_collector_tests/test_a_share_three_day_walkforward_campaign289_finalize.py",
+    "sha256": "3e80ac259e6265918564f9d0b85a79c1a26f45286f88ed7e22ffc6852f6fd420",
+    "result": "2 passed"
+  },
+  "terminal_reconciliation": {
+    "source_entry_count": 8,
+    "source_prevalue_concept_count": 7,
+    "source_model_trial_count": 1,
+    "infrastructure_failure_entries_to_append": 2,
+    "terminal_entry_count": 10,
+    "source_chain_rewrite_allowed": false,
+    "fold1_training_return_read_count_total": 3,
+    "fold1_recovery_reread_count": 2
+  },
+  "research_boundary": {
+    "historical_return_reread_by_finalizer": false,
+    "model_refit_by_finalizer": false,
+    "lockbox_2024_2025_return_read_by_finalizer": false,
+    "provider_request_by_finalizer": false,
+    "candidate49_ledgers_changed_by_finalizer": false,
+    "current_use_by_finalizer": false
+  }
+}

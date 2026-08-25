@@ -1,0 +1,54 @@
+{
+  "schema_version": 1,
+  "kind": "a_share_three_day_walkforward_campaign289_development_execution_freeze",
+  "status": "frozen_after_zero_return_design_before_campaign289_training_or_validation_return_read",
+  "recorded_at": "2026-08-25T13:02:00+08:00",
+  "protocol": {
+    "path": "docs/a_share_three_day_walkforward_campaign_289_preregistration_20260825.json",
+    "sha256": "165736ac98a94f1fa4eabe92e2114864d44282f9c19577a8023222cc21e461a1"
+  },
+  "runner": {
+    "path": "scripts/a_share_three_day_walkforward_campaign289.py",
+    "sha256": "77e9c493847db03579b50fe67fd0eca9b723f2ce402fa8885dbcbada71884cd6"
+  },
+  "tests": {
+    "path": "tests/data_collector_tests/test_a_share_three_day_walkforward_campaign289.py",
+    "sha256": "db80ed8744b08c91b919c6698cbae2b439cf40f783b08f6ad7d1ee66eff82c0a",
+    "synthetic_result": "5 passed"
+  },
+  "design_evidence": {
+    "path": "data/experiments/short_horizon/historical_walkforward/campaign_289/binary_hash_cell_mean_v1/design_evidence.json",
+    "sha256": "68b45e251e19784784a9f93bf02b0a864e020cf158439ee0a62003f68e4e1950",
+    "status": "passed_ready_for_frozen_development_execution",
+    "fold_count": 3,
+    "retained_training_sessions": [133, 214, 294],
+    "sampled_rows": [12768, 20544, 28224],
+    "occupied_cells": [255, 256, 256],
+    "p10_occupied_cell_counts": [7.0, 11.0, 15.0],
+    "maximum_sample_cell_shares": [0.05764411027568922, 0.057535046728971966, 0.05750425170068027],
+    "all_fold_design_gates_passed": true,
+    "historical_label_or_forward_return_values_read": false
+  },
+  "frozen_development_contract": {
+    "trial_id": "wf289_alpha158_binary_hash8_cell_mean",
+    "configuration_count": 1,
+    "fold_count": 3,
+    "training_target": "continuous within-session t+1-open to t+3-close gross-return percentile",
+    "cell_estimator": "session-equal weighted target mean without support threshold or smoothing",
+    "unseen_cell_fallback": "session-equal global training target mean",
+    "validation_score_snapshot_required_before_each_validation_return_read": true,
+    "survivor_gate": "unchanged all-condition Campaign286-288 gate",
+    "lockbox_initially_closed": true
+  },
+  "research_boundary": {
+    "campaign289_design_partition_rows_read_before_freeze": true,
+    "campaign289_binary_state_or_hash_cell_computed_before_freeze": true,
+    "training_or_validation_return_read_before_freeze": false,
+    "model_fit_before_freeze": false,
+    "provider_request_issued_before_freeze": false,
+    "credential_loaded_before_freeze": false,
+    "candidate49_ledgers_changed_before_freeze": false,
+    "lockbox_2024_2025_return_read_before_freeze": false,
+    "current_use_before_freeze": false
+  }
+}

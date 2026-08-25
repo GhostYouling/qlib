@@ -1,0 +1,57 @@
+{
+  "schema_version": 1,
+  "kind": "a_share_three_day_walkforward_campaign289_training_binary_peer_failure",
+  "status": "preserved_fold1_infrastructure_failure_after_training_return_read_before_model_fit_or_validation_return_read",
+  "recorded_at": "2026-08-25T13:05:00+08:00",
+  "failure": {
+    "error_type": "Campaign289Error",
+    "error": "training binary state or hash cells differ from zero-return design",
+    "stage": "fold_1_after_training_panel_and_target_construction_before_model_fit",
+    "cause": "The original runner recomputed session medians after the market quality panel had filtered the frozen design peer set. The preregistration requires medians across all model-support eligible design names before market filtering, so the runner correctly failed its binding check.",
+    "scientific_interpretation": "infrastructure_peer_set_implementation_mismatch_not_model_result"
+  },
+  "bound_evidence": {
+    "original_runner": {
+      "path": "scripts/a_share_three_day_walkforward_campaign289.py",
+      "sha256": "77e9c493847db03579b50fe67fd0eca9b723f2ce402fa8885dbcbada71884cd6"
+    },
+    "original_intent": {
+      "path": "data/experiments/short_horizon/historical_walkforward/campaign_289/binary_hash_cell_mean_v1/development_intent.json",
+      "sha256": "9914945bbbbb8e5892bc124a1ea85a4cbd1b918b7ac1318732e047af64163fd2"
+    },
+    "original_failure": {
+      "path": "data/experiments/short_horizon/historical_walkforward/campaign_289/binary_hash_cell_mean_v1/development_failure.json",
+      "sha256": "33fc6bfe06937227dcaf82fe272c56722efe8127428435de5d8910ee89b1375a"
+    },
+    "zero_return_design": {
+      "path": "data/experiments/short_horizon/historical_walkforward/campaign_289/binary_hash_cell_mean_v1/design_evidence.json",
+      "sha256": "68b45e251e19784784a9f93bf02b0a864e020cf158439ee0a62003f68e4e1950"
+    }
+  },
+  "observed_boundary": {
+    "fold1_training_return_read": true,
+    "fold1_target_percentile_computed_before_failure": true,
+    "model_fit_completed": false,
+    "model_artifact_created": false,
+    "validation_score_snapshot_created": false,
+    "validation_return_read": false,
+    "fold2_or_fold3_training_return_read": false,
+    "lockbox_2024_2025_opened": false,
+    "provider_request_issued": false,
+    "candidate49_ledgers_changed": false,
+    "current_use": false
+  },
+  "bounded_recovery_rule": {
+    "permitted_change": "Compute the already frozen session-binary state across the frozen design peer set before market filtering and join those unchanged states into the market panel.",
+    "fold1_training_return_reread_required": true,
+    "sample_keys_hash_bits_hyperplanes_bit_rule_cell_estimator_target_costs_folds_and_survivor_gates_unchanged": true,
+    "new_hyperparameter_or_return_driven_change_allowed": false,
+    "original_failed_root_must_remain_immutable": true,
+    "recovery_requires_separate_output_root_runner_test_and_fingerprint_freeze": true
+  },
+  "attempt_accounting": {
+    "infrastructure_failure_attempts_added": 1,
+    "model_trial_attempts_completed": 0,
+    "validation_return_fold_reads": 0
+  }
+}

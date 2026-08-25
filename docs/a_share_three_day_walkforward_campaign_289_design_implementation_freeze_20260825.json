@@ -1,0 +1,45 @@
+{
+  "schema_version": 1,
+  "kind": "a_share_three_day_walkforward_campaign289_design_implementation_freeze",
+  "status": "frozen_before_campaign289_design_partition_row_or_return_read",
+  "recorded_at": "2026-08-25T12:58:00+08:00",
+  "protocol": {
+    "path": "docs/a_share_three_day_walkforward_campaign_289_preregistration_20260825.json",
+    "sha256": "165736ac98a94f1fa4eabe92e2114864d44282f9c19577a8023222cc21e461a1"
+  },
+  "runner": {
+    "path": "scripts/a_share_three_day_walkforward_campaign289.py",
+    "sha256": "77e9c493847db03579b50fe67fd0eca9b723f2ce402fa8885dbcbada71884cd6"
+  },
+  "tests": {
+    "path": "tests/data_collector_tests/test_a_share_three_day_walkforward_campaign289.py",
+    "sha256": "db80ed8744b08c91b919c6698cbae2b439cf40f783b08f6ad7d1ee66eff82c0a",
+    "synthetic_result": "5 passed"
+  },
+  "frozen_design_contract": {
+    "complete_feature_count": 158,
+    "sample_size_per_training_session": 96,
+    "sampling_seed_prefix": 289,
+    "session_state_alphabet": [-1, 0, 1],
+    "session_state_rule": "strictly above finite session median +1, strictly below -1, equality or nonfinite zero",
+    "hash_bits": 8,
+    "maximum_cells": 256,
+    "hyperplane_random_state": 289,
+    "hyperplane_weights": "fixed Rademacher",
+    "bit_rule": "strictly positive projection",
+    "minimum_occupied_sample_cells_per_fold": 64,
+    "maximum_sample_cell_share": 0.1,
+    "minimum_p10_occupied_sample_cell_count": 4,
+    "return_values_allowed": false
+  },
+  "research_boundary": {
+    "campaign289_design_partition_row_read_before_freeze": false,
+    "campaign289_binary_state_or_hash_cell_before_freeze": false,
+    "training_or_validation_return_read_before_freeze": false,
+    "provider_request_issued_before_freeze": false,
+    "credential_loaded_before_freeze": false,
+    "candidate49_ledgers_changed_before_freeze": false,
+    "lockbox_2024_2025_return_read_before_freeze": false,
+    "current_use_before_freeze": false
+  }
+}

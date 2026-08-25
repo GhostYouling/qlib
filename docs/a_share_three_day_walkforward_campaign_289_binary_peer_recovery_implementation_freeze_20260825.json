@@ -1,0 +1,44 @@
+{
+  "schema_version": 1,
+  "kind": "a_share_three_day_walkforward_campaign289_binary_peer_recovery_implementation_freeze",
+  "status": "frozen_after_fold1_infrastructure_failure_before_recovery_return_reread",
+  "recorded_at": "2026-08-25T13:12:00+08:00",
+  "protocol": {
+    "path": "docs/a_share_three_day_walkforward_campaign_289_preregistration_20260825.json",
+    "sha256": "165736ac98a94f1fa4eabe92e2114864d44282f9c19577a8023222cc21e461a1"
+  },
+  "failure_record": {
+    "path": "docs/a_share_three_day_walkforward_campaign_289_training_binary_peer_failure_20260825.json",
+    "sha256": "b215bb6d90b42964a4ed161ef34232b47a5a7f26e1d2999c93fdc1cb63a9da66"
+  },
+  "runner": {
+    "path": "scripts/a_share_three_day_walkforward_campaign289_recovery.py",
+    "sha256": "05e3be7b1194feb0ab5df136780a29eeb9f6b966730222ac234361974ab96e40"
+  },
+  "tests": {
+    "path": "tests/data_collector_tests/test_a_share_three_day_walkforward_campaign289_recovery.py",
+    "sha256": "31b82403e11af48fb944eccb5f78b9a1ed5caa3d1544759b51ad58c9ed2c2620",
+    "result": "3 passed"
+  },
+  "bounded_change": {
+    "before": "The original runner built the market-filtered panel and then recomputed per-session feature medians inside that narrower peer set.",
+    "after": "The recovery runner loads the frozen design peer set, computes the unchanged binary median states there, then joins those states into the market panel before fitting the unchanged model.",
+    "sampling_changed": false,
+    "binary_state_rule_changed": false,
+    "hash_bits_or_hyperplanes_changed": false,
+    "cell_mean_model_or_target_changed": false,
+    "fold_cost_or_survivor_gate_changed": false,
+    "fold1_training_return_reread_disclosed": true
+  },
+  "research_boundary": {
+    "original_fold1_training_return_read": true,
+    "original_model_fit_or_validation_return_read": false,
+    "recovery_training_return_reread_before_freeze": false,
+    "validation_return_read_before_freeze": false,
+    "lockbox_2024_2025_return_read_before_freeze": false,
+    "provider_request_issued_before_freeze": false,
+    "credential_loaded_before_freeze": false,
+    "candidate49_ledgers_changed_before_freeze": false,
+    "current_use_before_freeze": false
+  }
+}

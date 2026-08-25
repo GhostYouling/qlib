@@ -1,0 +1,183 @@
+{
+  "schema_version": 1,
+  "kind": "a_share_three_day_walkforward_campaign289_terminal_result",
+  "status": "terminal_development_rejected_no_survivor_lockbox_closed",
+  "recorded_at": "2026-08-25T13:08:00+08:00",
+  "campaign_id": "campaign_289",
+  "trial_id": "wf289_alpha158_binary_hash8_cell_mean",
+  "authoritative_inputs": {
+    "predecessor_state": {
+      "path": "docs/a_share_three_day_iteration_status_20260825_campaign288_terminal.json",
+      "sha256": "8b8341de25d758c1a9841383c33d3877b5de9c0a4b88277acd8c9e96ccf1b652"
+    },
+    "protocol": {
+      "path": "docs/a_share_three_day_walkforward_campaign_289_preregistration_20260825.json",
+      "sha256": "165736ac98a94f1fa4eabe92e2114864d44282f9c19577a8023222cc21e461a1"
+    },
+    "zero_return_design": {
+      "path": "data/experiments/short_horizon/historical_walkforward/campaign_289/binary_hash_cell_mean_v1/design_evidence.json",
+      "sha256": "68b45e251e19784784a9f93bf02b0a864e020cf158439ee0a62003f68e4e1950"
+    },
+    "terminal_trial_ledger": {
+      "path": "data/experiments/short_horizon/historical_walkforward/campaign_289/binary_hash_cell_mean_recovery_v2/terminal_trial_ledger.json",
+      "sha256": "e71f6725de7521e1221ef9cb4269adb594bf8462bc74f9610f1ed9aea75aabac"
+    },
+    "terminal_development_report": {
+      "path": "data/experiments/short_horizon/historical_walkforward/campaign_289/binary_hash_cell_mean_recovery_v2/terminal_development_report.json",
+      "sha256": "61f31ecdcc5c29b30a0f5eba7bdde5b6d7c3663fa3474e142aaef281447afc5c"
+    },
+    "human_report": {
+      "path": "docs/a_share_three_day_walkforward_campaign_289_terminal_report.md",
+      "sha256": "7974749728bfe708f726aca5059e98a0ea521f936691112a7c2969195baa77b6"
+    },
+    "handoff": {
+      "path": "docs/a_share_three_day_strategy_handoff_20260825_campaign289.md",
+      "sha256": "01341ba4d7683e5709fde15e6034765c62e48dfdced1a892c6d6e83a7e99fb6a"
+    },
+    "terminal_verifier_freeze": {
+      "path": "docs/a_share_three_day_walkforward_campaign_289_terminal_verifier_implementation_freeze_20260825.json",
+      "sha256": "3c88814c62e64bc5c56413333126bd0a17939976713c3a6b92fa3b27f2085cc7"
+    }
+  },
+  "frozen_trial": {
+    "feature_library": "complete Qlib Alpha158 daily library",
+    "feature_count": 158,
+    "input_state": "per-session per-feature strict above-median +1, below-median -1, equality or nonfinite zero over all model-support design peers",
+    "sample_size_per_training_session": 96,
+    "sampling_key_prefix": 289,
+    "random_hyperplane_bits": 8,
+    "maximum_cells": 256,
+    "random_state": 289,
+    "bit_rule": "strictly positive projection",
+    "estimator": "session-equal continuous target mean per occupied fixed cell",
+    "unseen_cell_fallback": "session-equal global training target mean",
+    "configuration_count": 1,
+    "feature_subset_search": false,
+    "hyperparameter_search": false
+  },
+  "zero_return_design_result": {
+    "retained_training_sessions_by_fold": [133, 214, 294],
+    "sampled_rows_by_fold": [12768, 20544, 28224],
+    "occupied_cells_by_fold": [255, 256, 256],
+    "p10_occupied_cell_counts_by_fold": [7.0, 11.0, 15.0],
+    "maximum_sample_cell_shares_by_fold": [0.05764411027568922, 0.057535046728971966, 0.05750425170068027],
+    "all_gates_passed": true,
+    "return_values_read": false
+  },
+  "development_fold_results": [
+    {
+      "fold": 1,
+      "validation_year": 2021,
+      "cohorts": 74,
+      "mean_rank_ic": 0.0005714350603315269,
+      "mean_top3_minus_bottom3_gross_return": 0.00496572906755515,
+      "normalized_net_return": 0.04503082350794263,
+      "normalized_maximum_drawdown": -0.19155702519730544,
+      "pilot_10bp_net_return": -0.015611472838193308,
+      "pilot_20bp_net_return": -0.029324700702564876,
+      "board_lot_affordability_rate": 0.9459459459459459
+    },
+    {
+      "fold": 2,
+      "validation_year": 2022,
+      "cohorts": 73,
+      "mean_rank_ic": 0.011220293531749668,
+      "mean_top3_minus_bottom3_gross_return": 0.0006293885326906018,
+      "normalized_net_return": -0.06606589948541886,
+      "normalized_maximum_drawdown": -0.36128117185554043,
+      "pilot_10bp_net_return": -0.024996884722296775,
+      "pilot_20bp_net_return": -0.04257935850617334,
+      "board_lot_affordability_rate": 0.8944954128440367
+    },
+    {
+      "fold": 3,
+      "validation_year": 2023,
+      "cohorts": 74,
+      "mean_rank_ic": 0.008518343977478105,
+      "mean_top3_minus_bottom3_gross_return": -0.001379115057077158,
+      "normalized_net_return": 0.1335263680243619,
+      "normalized_maximum_drawdown": -0.1567381229040442,
+      "pilot_10bp_net_return": 0.00275040353664191,
+      "pilot_20bp_net_return": -0.01726686605090988,
+      "board_lot_affordability_rate": 0.9369369369369369
+    }
+  ],
+  "aggregate_decision": {
+    "passed": false,
+    "operationally_admissible": false,
+    "positive_mean_rank_ic_fold_count": 3,
+    "positive_normalized_return_fold_count": 2,
+    "positive_pilot_10bp_return_fold_count": 1,
+    "median_validation_mean_rank_ic": 0.008518343977478105,
+    "median_validation_spread": 0.0006293885326906018,
+    "median_validation_pilot_10bp_return": -0.015611472838193308,
+    "worst_validation_normalized_drawdown": -0.36128117185554043,
+    "compounded_validation_normalized_return": 0.10631031169769445,
+    "compounded_validation_pilot_10bp_return": -0.03757833189472892,
+    "compounded_validation_pilot_20bp_return": -0.08670230043066818,
+    "rejection_reasons": [
+      "only one of three validation folds has positive primary 10bp pilot return",
+      "worst validation normalized drawdown is below the frozen -0.25 minimum",
+      "compounded validation 20bp pilot return is not strictly positive",
+      "fold 2 board-lot affordability is below the frozen 0.90 minimum"
+    ]
+  },
+  "recovery_accounting": {
+    "original_peer_set_failure_preserved": true,
+    "recovery_v1_non_support_nan_failure_preserved": true,
+    "failed_attempt_model_fit_count": 0,
+    "failed_attempt_validation_return_read_count": 0,
+    "fold1_training_return_read_count_total": 3,
+    "fold1_training_return_recovery_reread_count": 2,
+    "eligible_state_sample_hash_model_target_cost_or_gate_changed_by_recovery": false
+  },
+  "attempt_accounting": {
+    "prevalue_concept_attempts": 7,
+    "infrastructure_failures": 2,
+    "model_trial_attempts": 1,
+    "total_attempts": 10,
+    "return_reading_development_trials": 1,
+    "model_fold_validation_return_reads": 3
+  },
+  "terminal_decision": {
+    "development_survivor_count": 0,
+    "selected_survivor_trial_ids": [],
+    "lockbox_2024_2025_opened": false,
+    "current_strategy_deployable": false,
+    "prior_campaigns_rewritten_or_reclassified": false
+  },
+  "library_state": {
+    "changed_by_campaign289": false,
+    "complete_factor_definition_count": 162,
+    "complete_factor_definition_order_sha256": "974f2c1f16a85eb43a0bd1e8db768dbe120cd8826c1754d5f220bf9f1d4a3ea0",
+    "eligible_numeric_comparator_count": 143,
+    "eligible_numeric_comparator_order_sha256": "f4fbf3d578e2c80c29425716a30d60a3df01d67d04e37f1651236c4dff899588"
+  },
+  "candidate49": {
+    "sole_active_prospective_candidate": true,
+    "historical_backfill_performed": false,
+    "signal_ledger_entry_count": 0,
+    "signal_ledger_sha256": "5193f00d7f36da003f53cec387900da4c3d002299f5dfcfc1a95eaa199ed3a79",
+    "execution_ledger_entry_count": 0,
+    "execution_ledger_sha256": "d57a3e61eac969e42cafa418ccd8c0a5ee65dcf69da145bb2c096c2a02a2ea4f"
+  },
+  "verification": {
+    "status": "verified_terminal_no_survivor_lockbox_closed",
+    "terminal_artifact_count": 19,
+    "candidate49_ledgers_unchanged": true
+  },
+  "timestamp_metadata_note": {
+    "some_manual_recorded_at_fields_are_later_than_actual_command_time": true,
+    "recorded_at_is_not_used_as_execution_order_evidence": true,
+    "authoritative_order_evidence": "immutable intent/failure created_at values, output-root exclusivity, file hashes and append-only ledger chain"
+  },
+  "research_boundary": {
+    "provider_request_issued": false,
+    "credential_loaded": false,
+    "candidate49_historical_backfill_performed": false,
+    "candidate49_ledgers_changed": false,
+    "second_prospective_candidate_created": false,
+    "current_scoring_selection_sizing_positions_or_orders_performed": false,
+    "investment_advice": false
+  }
+}
