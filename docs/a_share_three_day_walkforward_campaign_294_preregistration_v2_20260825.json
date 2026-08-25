@@ -1,0 +1,33 @@
+{
+  "schema_version": 1,
+  "kind": "a_share_three_day_walkforward_campaign294_preregistration_v2_correction",
+  "status": "fully_frozen_exact_single_source_hash_correction_before_campaign294_values",
+  "frozen_at": "2026-08-25T16:28:00+08:00",
+  "base_protocol": {
+    "path": "docs/a_share_three_day_walkforward_campaign_294_preregistration_20260825.json",
+    "sha256": "67bb3a3ba1ac50129898a9a81c55ea5d7eff0da809574f909ccda86b4edd5c4f",
+    "preserved_without_rewriting": true
+  },
+  "failure_record": {
+    "path": "docs/a_share_three_day_walkforward_campaign_294_preregistration_source_hash_failure_20260825.json",
+    "sha256": "21dab11034967cb3a6d15e398391e6b4cf465665d4863bfe8e0af2e1d3aba772"
+  },
+  "exact_override": {
+    "json_pointer": "/source_bindings/campaign292_snapshot/dataset_sha256",
+    "invalid_v1_value": "f5e57256d4b794b6ef899844048a09cc522a085008d0f0370",
+    "correct_value": "f5e57256d4b794b6efeee9a56ea86d4ef399844048a09cc522a085008d0f0370"
+  },
+  "all_other_base_protocol_fields_and_order_preserved": true,
+  "effective_protocol_semantics": "Load the immutable v1 base object, replace exactly source_bindings.campaign292_snapshot.dataset_sha256 with exact_override.correct_value, and reject any other difference.",
+  "research_boundary": {
+    "campaign294_candidate_values_read_before_v2": false,
+    "comparator_values_read_before_v2": false,
+    "historical_daily_price_or_forward_return_values_read_before_v2": false,
+    "provider_request_issued": false,
+    "credential_loaded": false,
+    "candidate49_ledgers_changed": false,
+    "scientific_formula_direction_support_comparators_costs_folds_or_gates_changed": false,
+    "current_scoring_selection_sizing_positions_or_orders_performed": false,
+    "investment_advice": false
+  }
+}

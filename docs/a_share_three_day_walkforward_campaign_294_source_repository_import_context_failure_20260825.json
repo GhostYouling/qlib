@@ -1,0 +1,29 @@
+{
+  "schema_version": 1,
+  "kind": "a_share_three_day_walkforward_campaign294_infrastructure_failure",
+  "attempt_id": "campaign294_infrastructure_001",
+  "status": "recorded_metadata_inventory_import_context_failure_before_campaign294_values",
+  "recorded_at": "2026-08-25T16:25:00+08:00",
+  "failed_action": "Import the recovery-worktree Campaign293 module while the read-only metadata inventory command was intentionally running from the authoritative source repository.",
+  "observed_failure": "ImportError: cannot import name a_share_three_day_walkforward_campaign293 from scripts; the source repository does not contain the newly pushed recovery-worktree module in that local checkout.",
+  "narrow_correction": "Read Alpha158 manifest metadata from the recovery worktree and reconstruct the historical definition order from the source repository in separate working-directory-scoped commands.",
+  "corrected_evidence": {
+    "alpha158_feature_count": 158,
+    "horizon_family_count": 29,
+    "complete_definition_count": 166,
+    "complete_definition_order_sha256": "57662d72c897fc701f40a97e04946ebd9728b113587c7ad4f15c758be6ace06f",
+    "numeric_comparator_count": 147,
+    "numeric_comparator_order_sha256": "5a771c4f9bd028b352194ec4779acb15b38ab6ab23a935458660b2024c7914c1"
+  },
+  "research_boundary": {
+    "campaign294_candidate_values_read": false,
+    "comparator_values_read": false,
+    "historical_daily_price_or_forward_return_values_read": false,
+    "provider_request_issued": false,
+    "credential_value_or_digest_read": false,
+    "candidate49_ledgers_changed": false,
+    "filesystem_side_effect_before_this_record": false,
+    "current_scoring_selection_sizing_positions_or_orders_performed": false,
+    "investment_advice": false
+  }
+}

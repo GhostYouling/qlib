@@ -1,0 +1,44 @@
+{
+  "schema_version": 1,
+  "kind": "a_share_candidate49_same_session_readonly_plan_failure_record",
+  "status": "failed_closed_no_run_no_same_day_retry",
+  "recorded_at": "2026-08-25T16:34:00+08:00",
+  "target_session": "2026-08-25",
+  "timezone": "Asia/Singapore",
+  "workflow_binding": {
+    "script": "scripts/a_share_tushare_candidate49_future_session_workflow.py",
+    "script_sha256": "0ee21715af9ee276cb4e50c4234ef15ad3d3b730b014712ae4ad19829908b69e",
+    "protocol": "docs/a_share_tushare_candidate49_future_session_workflow_protocol.json",
+    "protocol_sha256": "6ff5636a3f7ef65e93452098186b3aecf9231d68873ab8a1070afb91d699ef7c",
+    "immutable_record_readiness": "docs/a_share_candidate49_workflow_record_fd_pinned_read_readiness_20260726.json",
+    "immutable_record_readiness_sha256": "c1750e12c365ceeca0b38af3796a9a00cf4391fc571f89a975b71db30b06caa4"
+  },
+  "exact_parameters": {
+    "command": "plan",
+    "session": "2026-08-25",
+    "staging_root": "/Volumes/DIsk/qlib-a-share-tushare-daily-2026-08-25",
+    "minute_data_root": "/Volumes/DIsk/qlib-a-share-tushare-1m"
+  },
+  "observed_result": {
+    "exit_code": 1,
+    "status": "failed_closed",
+    "error": "active daily status must expose exactly one source",
+    "provider_continuation_allowed": false,
+    "ready": false,
+    "run_executed": false,
+    "same_day_retry_allowed": false
+  },
+  "research_boundary": {
+    "provider_request_issued": false,
+    "provider_response_received": false,
+    "credential_value_or_digest_printed_or_persisted": false,
+    "candidate49_historical_signal_return_execution_or_milestone_backfill_performed": false,
+    "candidate49_signal_ledger_entry_count": 0,
+    "candidate49_signal_ledger_sha256": "5193f00d7f36da003f53cec387900da4c3d002299f5dfcfc1a95eaa199ed3a79",
+    "candidate49_execution_ledger_entry_count": 0,
+    "candidate49_execution_ledger_sha256": "d57a3e61eac969e42cafa418ccd8c0a5ee65dcf69da145bb2c096c2a02a2ea4f",
+    "second_prospective_candidate_created": false,
+    "current_scoring_selection_sizing_positions_or_orders_performed": false,
+    "investment_advice": false
+  }
+}

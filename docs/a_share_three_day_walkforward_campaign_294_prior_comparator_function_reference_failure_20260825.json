@@ -1,0 +1,45 @@
+{
+  "schema_version": 1,
+  "kind": "a_share_three_day_walkforward_campaign294_infrastructure_failure",
+  "attempt_id": "campaign294_infrastructure_003",
+  "status": "recorded_prior_comparator_function_reference_failure_after_143_comparators_before_any_return_read",
+  "recorded_at": "2026-08-25T16:43:00+08:00",
+  "failed_action": "Invoke the frozen ordered prior-campaign comparator helper for comparator 144 after completing the candidate snapshot, coverage gate, and comparators 1 through 143.",
+  "observed_failure": "AttributeError: the Campaign293 module does not export prior_campaign_comparison; that unchanged helper is defined by Campaign292, which Campaign293 exposes as its prior dependency.",
+  "original_implementation_freeze": {
+    "path": "docs/a_share_three_day_walkforward_campaign_294_implementation_freeze_20260825.json",
+    "sha256": "9006016283c22b540a243ef6126180b0cf41ea67235f236313f96bceabfe55a8"
+  },
+  "completed_v1_evidence": {
+    "candidate_manifest": ".local-research/campaign_294/alpha158_same_horizon_cross_family_peer_rank_consensus_v1/candidate_snapshot/snapshot_manifest.json",
+    "candidate_manifest_sha256": "138a68e92d1a893fe27221efe8facb5acd7fc899885f82d096ece03f10cd4952",
+    "candidate_dataset_sha256": "e2d28bcb73c990b1d2b6395b9befc89718808cfd670848af998b0cd12d1b1df8",
+    "quality_listing_rows": 1001781,
+    "eligible_rows": 1001589,
+    "minimum_family_support_minimum_eligible": 22,
+    "minimum_family_support_maximum_eligible": 29,
+    "ordered_numeric_comparators_completed": 143,
+    "ordered_numeric_comparators_passed": 143,
+    "maximum_absolute_median_correlation_through_143": 0.33099615067733534,
+    "maximum_correlation_comparator_through_143": "intraday_realized_volatility"
+  },
+  "narrow_recovery": {
+    "action": "Change only the helper reference from Campaign293.prior_campaign_comparison to Campaign293.prior.prior_campaign_comparison, bind the failure in a v2 implementation freeze, select a fresh v2 output root, and restart the exact campaign from zero.",
+    "v1_partial_output_reused": false,
+    "factor_formula_direction_support_filters_comparators_threshold_costs_folds_purge_gates_or_decision_changed": false,
+    "development_trial_count_changed": false
+  },
+  "research_boundary": {
+    "campaign294_candidate_values_read": true,
+    "comparator_values_read": true,
+    "comparators_read": 143,
+    "historical_daily_price_or_forward_return_values_read": false,
+    "development_trials_consumed": 0,
+    "stress_2024_2025_opened": false,
+    "provider_request_issued": false,
+    "credential_value_or_digest_read": false,
+    "candidate49_ledgers_changed": false,
+    "current_scoring_selection_sizing_positions_or_orders_performed": false,
+    "investment_advice": false
+  }
+}

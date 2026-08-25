@@ -1,0 +1,25 @@
+{
+  "schema_version": 1,
+  "kind": "a_share_three_day_walkforward_campaign294_infrastructure_failure",
+  "attempt_id": "campaign294_infrastructure_002",
+  "status": "recorded_preregistration_source_hash_transcription_failure_before_campaign294_values",
+  "recorded_at": "2026-08-25T16:27:00+08:00",
+  "failed_artifact": {
+    "path": "docs/a_share_three_day_walkforward_campaign_294_preregistration_20260825.json",
+    "sha256": "67bb3a3ba1ac50129898a9a81c55ea5d7eff0da809574f909ccda86b4edd5c4f"
+  },
+  "observed_failure": "The Campaign292 candidate dataset SHA-256 was truncated during manual protocol transcription and therefore did not equal the immutable Campaign292 snapshot manifest's dataset_sha256.",
+  "narrow_correction": "Publish an additive v2 protocol correction that overrides only source_bindings.campaign292_snapshot.dataset_sha256 with the previously frozen exact value. Preserve the invalid v1 bytes and change no scientific semantic or gate.",
+  "correct_campaign292_dataset_sha256": "f5e57256d4b794b6efeee9a56ea86d4ef399844048a09cc522a085008d0f0370",
+  "research_boundary": {
+    "campaign294_candidate_values_read": false,
+    "comparator_values_read": false,
+    "historical_daily_price_or_forward_return_values_read": false,
+    "provider_request_issued": false,
+    "credential_value_or_digest_read": false,
+    "candidate49_ledgers_changed": false,
+    "scientific_formula_direction_support_comparators_costs_folds_or_gates_changed": false,
+    "current_scoring_selection_sizing_positions_or_orders_performed": false,
+    "investment_advice": false
+  }
+}

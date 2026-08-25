@@ -1,0 +1,94 @@
+{
+  "schema_version": 1,
+  "kind": "a_share_three_day_walkforward_campaign294_concept_scouting",
+  "status": "finite_prevalue_catalog_frozen_before_campaign294_candidate_values",
+  "recorded_at": "2026-08-25T16:26:00+08:00",
+  "purpose": "Choose one mechanism-independent deterministic Alpha158 cross-operator agreement factor for Campaign294 without reading Campaign294 candidate values, comparator values, daily prices or forward returns.",
+  "authoritative_prestate": {
+    "path": "docs/a_share_three_day_iteration_status_20260825_campaign293_terminal.json",
+    "sha256": "cadf98e93b229461191732c6d5f790dc8e03657bd4a6f79a72af5a0ccbf0a2f5"
+  },
+  "finite_prevalue_concept_catalog": [
+    {
+      "catalog_id": "campaign294_concept_001",
+      "name": "alpha158_same_horizon_cross_family_peer_rank_consensus_5h",
+      "decision": "selected_exactly_once",
+      "reason": "The Alpha158 horizon grid is a fixed 29-operator by five-horizon matrix. Campaign293 measured along rows, comparing horizons within one operator. The transposed mechanism measures continuous cross-operator agreement within each fixed horizon and removes the common percentile level through population variance.",
+      "parameters": {
+        "family_count": 29,
+        "horizons": [5, 10, 20, 30, 60],
+        "minimum_finite_families_per_horizon": 22,
+        "required_supported_horizons": 5,
+        "peer_percentile": "(ascending average-tie rank - 0.5) / finite model-support peer count",
+        "per_horizon_dispersion": "population variance across finite operator-family peer percentiles",
+        "score": "1 - 4 * equal-weight mean of the five per-horizon population variances",
+        "direction": "higher"
+      }
+    },
+    {
+      "catalog_id": "campaign294_concept_002",
+      "name": "alpha158_same_horizon_cross_family_peer_rank_dispersion_5h",
+      "decision": "rejected_prevalue",
+      "reason": "Raw dispersion is a deterministic affine inversion of the selected consensus score and is not a second independent direction."
+    },
+    {
+      "catalog_id": "campaign294_concept_003",
+      "name": "alpha158_cross_family_iqr_mad_pairwise_gap_or_entropy_grid",
+      "decision": "rejected_prevalue",
+      "reason": "IQR, MAD, pairwise absolute gaps, entropy and trimmed variance would open an avoidable aggregation-family search around the same cross-operator disagreement hypothesis."
+    },
+    {
+      "catalog_id": "campaign294_concept_004",
+      "name": "alpha158_horizon_specific_or_horizon_weighted_cross_family_consensus",
+      "decision": "rejected_prevalue",
+      "reason": "Selecting one horizon or fitting short-versus-long horizon weights would create a five-way subset and weighting search; all five frozen horizons retain equal weight."
+    },
+    {
+      "catalog_id": "campaign294_concept_005",
+      "name": "alpha158_cross_family_common_peer_rank_level",
+      "decision": "rejected_prevalue",
+      "reason": "A common percentile mean would primarily recover technical level or extremity already represented by the Alpha158 coordinate library and Campaign292. Population variance deliberately removes the common level."
+    },
+    {
+      "catalog_id": "campaign294_concept_006",
+      "name": "alpha158_family_subset_or_support_threshold_grid",
+      "decision": "rejected_prevalue",
+      "reason": "Operator subsets and support sweeps would add multiplicity. Every one of the 29 named families is admitted, every horizon must have at least the single frozen 75-percent floor of 22 finite families, and all five horizons must qualify."
+    },
+    {
+      "catalog_id": "campaign294_concept_007",
+      "name": "campaign290_to_campaign293_retune_inversion_or_combination",
+      "decision": "forbidden",
+      "reason": "All four prior Alpha158 directions remain terminal and may appear only as frozen duplicate-control comparators; they may not be inverted, thresholded, reweighted, combined or rescued."
+    },
+    {
+      "catalog_id": "campaign294_concept_008",
+      "name": "alpha158_supervised_tree_mlp_kernel_or_hash_model_refresh",
+      "decision": "forbidden",
+      "reason": "Campaign286-289 already consumed those frozen supervised or randomized model mechanisms. Campaign294 is a single deterministic no-fit factor."
+    }
+  ],
+  "selected_formula": {
+    "name": "alpha158_same_horizon_cross_family_peer_rank_consensus_5h",
+    "direction": "higher",
+    "formula": "For each accepted session t and Alpha158 coordinate j in the 29 frozen five-horizon families, rank finite model-support peers with ascending average ties and set u_tij=(rank-0.5)/finite_peer_count. For each stock i and each horizon h, collect the 29 same-horizon family percentiles and require at least 22 finite values. All five horizons must qualify. Compute the population variance v_tih across finite operator families for each horizon, then score 1-4*mean_h(v_tih). Do not use the 13 non-horizon coordinates; do not fill, clip, sign, threshold, weight, fit, invert, subset or combine the score.",
+    "economic_hypothesis": "When many distinct technical operators place a stock at similar peer-relative positions over the same lookback, its technical state is cross-operator coherent rather than driven by one isolated indicator and may persist from the next open through the third close.",
+    "mechanism_separation": {
+      "campaign290": "No prior session, lag, suspension bridge or state-persistence count is used.",
+      "campaign291": "No below/equal/above-median ternary state or modal-state fraction is used; Campaign294 measures continuous variance separately inside each fixed horizon.",
+      "campaign292": "No mean absolute distance from the peer median is used; common high or low percentile level cancels from population variance.",
+      "campaign293": "Campaign293 compares horizons within each operator family; Campaign294 uses the transposed axis, comparing operator families within each horizon, with no adjacent-horizon difference.",
+      "campaign286_to_campaign289": "No return-supervised fit, tree, neural network, random Fourier feature or hash cell is used."
+    }
+  },
+  "research_boundary": {
+    "campaign294_candidate_values_read": false,
+    "comparator_values_read": false,
+    "historical_daily_price_or_forward_return_values_read": false,
+    "provider_request_issued": false,
+    "credential_loaded": false,
+    "candidate49_ledgers_changed": false,
+    "current_scoring_selection_sizing_positions_or_orders_performed": false,
+    "investment_advice": false
+  }
+}
