@@ -1,0 +1,50 @@
+{
+  "schema_version": 1,
+  "kind": "a_share_three_day_walkforward_campaign292_infrastructure_failure",
+  "status": "metadata_plan_test_binding_failure_recorded_exact_semantic_v3_freeze_authorized",
+  "recorded_at": "2026-08-25T14:55:03+08:00",
+  "attempt_id": "campaign292_infrastructure_002",
+  "phase": "post_v2_freeze_metadata_only_test_validation",
+  "failure": {
+    "exception_type": "Campaign292Error",
+    "message_class": "Campaign292 implementation freeze changed",
+    "scientific_failure": false,
+    "cause": "The metadata-only plan test temporarily replaced OUTPUT_ROOT to prove that plan creates no output, while the implementation-freeze validator incorrectly compared the frozen production output root against that mutable test seam.",
+    "tests_passed": 9,
+    "tests_failed": 1,
+    "historical_candidate_values_read_by_failed_test": false,
+    "historical_comparator_values_read_by_failed_test": false,
+    "historical_daily_price_or_forward_return_values_read_by_failed_test": false
+  },
+  "frozen_inputs": {
+    "protocol_sha256": "dab35c8e133702a79668645d1409cdba0c9296e6615fa58ab5aa88bad18d5310",
+    "implementation_freeze_v2_sha256": "141543c33cd41701dbc25ed369fd482525c55f9c49a54fd5512d251e3d94f5b4",
+    "runner_v2_sha256": "ff15d6266502315811a41b20792e70db1a7a3a95f70cc43ca731b25fbe96b9a4",
+    "test_sha256": "4dde134c4f60a9e93910d4088580173cc73afece0df85a2b2ccfffeb4ecb6331"
+  },
+  "authorized_repair": {
+    "implementation_freeze_version": 3,
+    "production_output_root_changed": false,
+    "production_output_root": "data/experiments/short_horizon/historical_walkforward/campaign_292/alpha158_session_peer_rank_extremity_breadth_v2",
+    "repair": "Bind freeze validation to a separate immutable production-root constant while retaining OUTPUT_ROOT as the metadata-only test seam.",
+    "formula_changed": false,
+    "direction_changed": false,
+    "source_or_comparator_order_changed": false,
+    "coverage_or_uniqueness_gate_changed": false,
+    "fold_purge_entry_exit_cost_operational_or_survivor_gate_changed": false,
+    "batch_size_or_memory_release_changed": false,
+    "exact_full_restart_required": true,
+    "partial_output_reuse_allowed": false,
+    "post_result_rescue_allowed": false
+  },
+  "research_boundary": {
+    "new_candidate_or_comparator_values_read": false,
+    "new_validation_fold_return_values_read": false,
+    "stress_2024_2025_opened": false,
+    "provider_request_issued": false,
+    "provider_credential_loaded": false,
+    "candidate49_ledgers_changed": false,
+    "current_scoring_selection_sizing_positions_or_orders_performed": false,
+    "investment_advice": false
+  }
+}

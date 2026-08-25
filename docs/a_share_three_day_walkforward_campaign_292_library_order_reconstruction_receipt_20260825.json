@@ -1,0 +1,41 @@
+{
+  "schema_version": 1,
+  "kind": "a_share_three_day_walkforward_campaign292_library_order_reconstruction_receipt",
+  "status": "read_only_authoritative_source_reconstruction_verified_and_campaign292_appended_once",
+  "recorded_at": "2026-08-25T15:10:00+08:00",
+  "operation": {
+    "working_directory": "/Volumes/DIsk/Disk-Coding/qlib",
+    "mode": "read_only_metadata_reconstruction_with_PYTHONDONTWRITEBYTECODE",
+    "source_module": "scripts/a_share_three_day_walkforward_campaign263_features.py",
+    "source_module_sha256": "f4882d4c29877b05a2b7ccffe540a1e97f0917e252941d2484b03720b1426124",
+    "digest_semantics": "SHA-256 of canonical JSON [[name, score_direction], ...]",
+    "source_repository_files_changed": false
+  },
+  "predecessor_verification": {
+    "complete_definition_count": 164,
+    "complete_definition_order_sha256": "641331e8a6d95a4b0429dbef4d546c6ce6778d78c1ef6c85461cb8ba6bb1e6b1",
+    "numeric_comparator_count": 145,
+    "numeric_comparator_order_sha256": "d1dbf29b7143f837f7d1589e2f1f4622b1c64699b2b63a3ba940ea0258facf61",
+    "matches_policy_v421": true
+  },
+  "campaign292_append": {
+    "item": {
+      "name": "alpha158_session_peer_rank_extremity_breadth_1d",
+      "score_direction": "higher"
+    },
+    "complete_definition_count": 165,
+    "complete_definition_order_sha256": "bf2f4640dc232a837690717e9be25eb824007cde801df6704756e72dab82c127",
+    "numeric_comparator_count": 146,
+    "numeric_comparator_order_sha256": "f9abd8653a44f923fc03565b4397d9e1434c660ff6647b7b538b0e65091a8344"
+  },
+  "research_boundary": {
+    "candidate_or_comparator_values_read": false,
+    "historical_daily_price_or_forward_return_values_read": false,
+    "stress_2024_2025_opened": false,
+    "provider_request_issued": false,
+    "provider_credential_loaded": false,
+    "candidate49_ledgers_changed": false,
+    "current_scoring_selection_sizing_positions_or_orders_performed": false,
+    "investment_advice": false
+  }
+}

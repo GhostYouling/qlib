@@ -1,0 +1,85 @@
+{
+  "schema_version": 1,
+  "kind": "a_share_three_day_walkforward_campaign292_concept_scouting",
+  "status": "finite_prevalue_catalog_frozen_before_alpha158_candidate_values",
+  "recorded_at": "2026-08-25T14:37:00+08:00",
+  "purpose": "Choose one deterministic Alpha158 cross-sectional peer-rank factor for Campaign292 without reading Campaign292 candidate values, comparator values, daily prices or forward returns.",
+  "authoritative_prestate": {
+    "path": "docs/a_share_three_day_iteration_status_20260825_campaign291_terminal.json",
+    "sha256": "c761224298f3d05aa4a567fdc1d3dff2aca26a736a341de9d24c83c9af407bde"
+  },
+  "finite_prevalue_concept_catalog": [
+    {
+      "catalog_id": "campaign292_concept_001",
+      "name": "alpha158_session_peer_rank_extremity_breadth_1d",
+      "decision": "selected_exactly_once",
+      "reason": "A centered empirical peer-percentile transform measures broad continuous technical displacement without using prior sessions, common coordinate signs, median-state counts, fitting, thresholds or return-selected weights.",
+      "parameters": {
+        "coordinate_count": 158,
+        "peer_domain": "same-session finite model-support rows independently for each coordinate",
+        "percentile": "(average_tie_rank - 0.5) / finite_peer_count",
+        "coordinate_extremity": "2 * abs(percentile - 0.5)",
+        "minimum_finite_coordinates": 119,
+        "aggregation": "equal-weight arithmetic mean over the row's finite coordinates",
+        "direction": "higher"
+      }
+    },
+    {
+      "catalog_id": "campaign292_concept_002",
+      "name": "alpha158_session_peer_rank_centrality_breadth_1d",
+      "decision": "rejected_prevalue",
+      "reason": "One minus the selected score is a deterministic inversion, not an independent mechanism; alternate direction search is forbidden."
+    },
+    {
+      "catalog_id": "campaign292_concept_003",
+      "name": "alpha158_session_peer_rank_signed_displacement_1d",
+      "decision": "rejected_prevalue",
+      "reason": "Signed displacement would again impose a common orientation on heterogeneous Alpha158 coordinates; the selected mechanism is sign agnostic."
+    },
+    {
+      "catalog_id": "campaign292_concept_004",
+      "name": "alpha158_session_peer_rank_extremity_max_or_quantile_grid",
+      "decision": "rejected_prevalue",
+      "reason": "Maximum, top-decile, trimmed-mean and quantile-grid summaries create avoidable aggregation multiplicity; Campaign292 freezes one equal-coordinate mean."
+    },
+    {
+      "catalog_id": "campaign292_concept_005",
+      "name": "alpha158_weighted_peer_rank_extremity",
+      "decision": "rejected_prevalue",
+      "reason": "Coordinate weights would be arbitrary or return fitted; every finite coordinate retains weight one."
+    },
+    {
+      "catalog_id": "campaign292_concept_006",
+      "name": "campaign291_continuous_rescue",
+      "decision": "rejected_as_not_a_rescue_path",
+      "reason": "Campaign291 selected and consumed an exact binary median-state consensus trial. Its concept catalog rejected continuous ranks only for that campaign's one-trial scope; Campaign292 starts a separately frozen continuous empirical-rank mechanism and does not retune, invert, threshold or combine Campaign291."
+    },
+    {
+      "catalog_id": "campaign292_concept_007",
+      "name": "campaign290_or_campaign291_combination",
+      "decision": "forbidden",
+      "reason": "Campaign290 and Campaign291 remain terminal and may appear only as frozen duplicate-control comparators, never as a rescue combination."
+    }
+  ],
+  "selected_formula": {
+    "name": "alpha158_session_peer_rank_extremity_breadth_1d",
+    "direction": "higher",
+    "formula": "For each accepted session t and Alpha158 coordinate j, take only rows with model_support_eligible=true and finite x_tij. Let n_tj be their count and r_tij the ascending average-tie rank. Set u_tij=(r_tij-0.5)/n_tj and e_tij=2*abs(u_tij-0.5). For every quality_listing_eligible row with model_support_eligible=true and at least 119 finite coordinates, score the equal-weight arithmetic mean of e_tij over its finite coordinates. Do not use another session, fill, clip, smooth, sign, threshold, weight, fit, invert or combine the score.",
+    "economic_hypothesis": "Broad peer-relative technical displacement across many Alpha158 coordinates may identify idiosyncratic information or positioning states that remain salient from the next open through the third close.",
+    "mechanism_separation": {
+      "campaign290": "No prior session, transition, suspension bridge, lagged state or persistence count is used.",
+      "campaign291": "No binary below/equal/above median states or above-minus-below count imbalance is used; each coordinate retains continuous centered empirical-rank distance.",
+      "campaign103": "No day-over-day directional improvement vote over the historical numeric library is used; Campaign292 is a same-session continuous displacement score over the frozen 158-coordinate Alpha158 matrix."
+    }
+  },
+  "research_boundary": {
+    "alpha158_candidate_values_read": false,
+    "comparator_values_read": false,
+    "historical_daily_price_or_forward_return_values_read": false,
+    "provider_request_issued": false,
+    "credential_loaded": false,
+    "candidate49_ledgers_changed": false,
+    "current_scoring_selection_sizing_positions_or_orders_performed": false,
+    "investment_advice": false
+  }
+}

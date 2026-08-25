@@ -1,0 +1,41 @@
+{
+  "schema_version": 1,
+  "kind": "a_share_three_day_walkforward_campaign292_infrastructure_failure",
+  "status": "direct_script_import_failure_recorded_module_invocation_only_authorized",
+  "recorded_at": "2026-08-25T14:57:09+08:00",
+  "attempt_id": "campaign292_infrastructure_003",
+  "phase": "metadata_only_plan_invocation_before_source_schema_read",
+  "failure": {
+    "command_form": "python scripts/a_share_three_day_walkforward_campaign292.py plan",
+    "exception_type": "ModuleNotFoundError",
+    "message_class": "No module named scripts",
+    "scientific_failure": false,
+    "cause": "Direct file execution places the scripts directory, rather than the repository root, first on Python's import path.",
+    "historical_candidate_values_read": false,
+    "historical_comparator_values_read": false,
+    "historical_daily_price_or_forward_return_values_read": false,
+    "output_root_created": false
+  },
+  "frozen_inputs": {
+    "protocol_sha256": "dab35c8e133702a79668645d1409cdba0c9296e6615fa58ab5aa88bad18d5310",
+    "implementation_freeze_v3_sha256": "c620123433eeaa2a26a467a1c07272f94c6b0ba3a1afed785adac207cf5122eb",
+    "runner_v3_sha256": "5f519f0146f0cf22b9148c20ad32cdda3faffef46328477f7e42b617ddefeb02"
+  },
+  "authorized_repair": {
+    "command_form": "python -m scripts.a_share_three_day_walkforward_campaign292 plan",
+    "runner_logic_changed": false,
+    "production_output_root_changed": false,
+    "formula_direction_source_comparator_gate_fold_cost_or_survivor_rule_changed": false,
+    "exact_full_restart_required": true,
+    "partial_output_reuse_allowed": false,
+    "post_result_rescue_allowed": false
+  },
+  "research_boundary": {
+    "stress_2024_2025_opened": false,
+    "provider_request_issued": false,
+    "provider_credential_loaded": false,
+    "candidate49_ledgers_changed": false,
+    "current_scoring_selection_sizing_positions_or_orders_performed": false,
+    "investment_advice": false
+  }
+}

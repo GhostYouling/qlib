@@ -1,0 +1,38 @@
+{
+  "schema_version": 1,
+  "kind": "a_share_three_day_walkforward_campaign292_post_terminal_documentation_infrastructure_failure",
+  "status": "full_report_equality_assumption_failed_campaign292_section_comparison_authorized",
+  "recorded_at": "2026-08-25T15:17:00+08:00",
+  "attempt_id": "campaign292_infrastructure_004",
+  "phase": "post_terminal_publication_semantics_test",
+  "failure": {
+    "test": "test_campaign292_reports_are_unified_and_handoff_is_latest",
+    "outcome": "12_passed_1_failed",
+    "assertion": "current_research_report.md equals three_day_research_report.md as a complete file",
+    "cause": "The two tracked reports already had different historical bodies before Campaign292 even though the Campaign292 section was appended to both.",
+    "scientific_failure": false,
+    "campaign292_section_missing_from_either_report": false,
+    "historical_candidate_or_comparator_values_read": false,
+    "historical_daily_price_or_forward_return_values_read": false
+  },
+  "frozen_inputs": {
+    "publication_test_sha256": "a73278cfa84186c1e6a44d3318fc3983edee626c0dc217807347d2bee307c853",
+    "current_research_report_sha256": "445124a67fc99780972e4e24936297800182c343e6ec70de7a8b2bbad1c7673a",
+    "three_day_research_report_sha256": "a8de7051aa9d48823dc1807d7c038c65226bf06cd005b57f4587f15cc8db19eb",
+    "campaign292_state_sha256": "fb1fc45da49a2c4e491921aa3e073574031f795d98db8605b2066e4cac8000a3"
+  },
+  "authorized_repair": {
+    "compare_only_campaign292_suffix_from_exact_section_marker": true,
+    "historical_report_bodies_rewritten": false,
+    "campaign292_research_result_or_evidence_changed": false,
+    "campaign292_runner_freeze_or_terminal_ledger_changed": false
+  },
+  "research_boundary": {
+    "stress_2024_2025_opened": false,
+    "provider_request_issued": false,
+    "provider_credential_loaded": false,
+    "candidate49_ledgers_changed": false,
+    "current_scoring_selection_sizing_positions_or_orders_performed": false,
+    "investment_advice": false
+  }
+}
