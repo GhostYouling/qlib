@@ -1,0 +1,84 @@
+{
+  "schema_version": 1,
+  "kind": "a_share_three_day_walkforward_campaign290_concept_scouting",
+  "status": "finite_prevalue_catalog_frozen_before_alpha158_candidate_values",
+  "recorded_at": "2026-08-25T13:31:00+08:00",
+  "purpose": "Choose one mechanism-independent deterministic Alpha158 state factor for Campaign290 without reading Alpha158 feature values, comparator values, daily prices or forward returns.",
+  "authoritative_prestate": {
+    "path": "docs/a_share_three_day_iteration_status_20260825_campaign289_terminal.json",
+    "sha256": "7bb12d68dbb668473f5f26de63424f71ab2f3470aa7291701a94dbe9d9435292"
+  },
+  "finite_prevalue_concept_catalog": [
+    {
+      "catalog_id": "campaign290_concept_001",
+      "name": "alpha158_session_median_state_persistence_1d",
+      "decision": "selected_exactly_once",
+      "reason": "A deterministic temporal Hamming-persistence score is directly computable from the already frozen Alpha158 development design and is mechanism-distinct from Campaign289's supervised random-hyperplane hash buckets.",
+      "parameters": {
+        "coordinate_count": 158,
+        "state_anchor": "same-session finite model-support-peer median per coordinate",
+        "states": ["below_median", "equal_median", "above_median"],
+        "lag": "exactly one accepted local trading session",
+        "minimum_paired_finite_coordinates": 119,
+        "direction": "higher"
+      }
+    },
+    {
+      "catalog_id": "campaign290_concept_002",
+      "name": "alpha158_session_median_state_transition_breadth_1d",
+      "decision": "rejected_prevalue",
+      "reason": "The complement of the selected persistence score would be a deterministic sign inversion rather than an independent trial; alternate direction search is forbidden."
+    },
+    {
+      "catalog_id": "campaign290_concept_003",
+      "name": "alpha158_session_quantile_state_persistence_1d",
+      "decision": "rejected_prevalue",
+      "reason": "Tercile, quartile and quintile cut grids create an avoidable threshold family; Campaign290 freezes the single median state system."
+    },
+    {
+      "catalog_id": "campaign290_concept_004",
+      "name": "alpha158_multi_lag_state_persistence",
+      "decision": "rejected_prevalue",
+      "reason": "Lag search would multiply trials and blur the exact previous-session hypothesis."
+    },
+    {
+      "catalog_id": "campaign290_concept_005",
+      "name": "alpha158_weighted_state_persistence",
+      "decision": "rejected_prevalue",
+      "reason": "Coordinate weighting would introduce return-fitted or arbitrary weights; all 158 coordinates remain equal weight."
+    },
+    {
+      "catalog_id": "campaign290_concept_006",
+      "name": "alpha158_cosine_similarity_1d",
+      "decision": "rejected_prevalue",
+      "reason": "Raw-scale similarity is sensitive to heterogeneous Alpha158 coordinate units and would require an extra scaling family."
+    },
+    {
+      "catalog_id": "campaign290_concept_007",
+      "name": "campaign289_hash_retune",
+      "decision": "forbidden",
+      "reason": "Campaign289 bit count, seed, hyperplanes, support, fallback, costs and gates are terminal and cannot be rescued or retuned."
+    }
+  ],
+  "selected_formula": {
+    "name": "alpha158_session_median_state_persistence_1d",
+    "direction": "higher",
+    "formula": "For each accepted signal session t and each of the frozen 158 Alpha158 coordinates j, compute the exact finite median m_tj over rows with model_support_eligible=true on t. Encode each finite supported row as -1 when x_tij<m_tj, 0 when x_tij=m_tj and +1 when x_tij>m_tj. For the same stock i on exactly the immediately preceding accepted session p, require model support on both p and t; among coordinates finite on both sessions, require at least 119 and score the number with identical encoded state divided by the paired-finite count. Do not bridge suspensions, missing rows or unsupported sessions; do not fill, clip, smooth, weight, fit or invert.",
+    "economic_hypothesis": "Broad persistence of a stock's relative technical state may proxy for slow information diffusion and continuation from the next open through the third close.",
+    "mechanism_separation": {
+      "campaign289": "No random hyperplanes, hash cells, supervised cell means, seed, bucket support or fallback are used.",
+      "campaign103": "Campaign103 counts directional rank improvement over a 130-factor historical library; Campaign290 compares exact three-state equality across 158 Qlib technical coordinates.",
+      "day_over_day_profile_factors": "Campaign290 compares a broad daily technical state vector rather than raw intraday amount or return-profile shapes."
+    }
+  },
+  "research_boundary": {
+    "alpha158_candidate_values_read": false,
+    "comparator_values_read": false,
+    "historical_daily_price_or_forward_return_values_read": false,
+    "provider_request_issued": false,
+    "credential_loaded": false,
+    "candidate49_ledgers_changed": false,
+    "current_scoring_selection_sizing_positions_or_orders_performed": false,
+    "investment_advice": false
+  }
+}

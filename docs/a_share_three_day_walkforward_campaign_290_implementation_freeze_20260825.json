@@ -1,0 +1,50 @@
+{
+  "schema_version": 1,
+  "kind": "a_share_three_day_walkforward_campaign290_implementation_freeze",
+  "status": "candidate_coverage_ordered_143_and_no_fit_development_runner_frozen_before_candidate_values",
+  "recorded_at": "2026-08-25T13:58:00+08:00",
+  "purpose": "Bind the Campaign290 source adapters, exact state formula, coverage-first gate, ordered early-stop 143-comparator audit, no-fit three-fold development runner and synthetic tests before decoding any Campaign290 candidate value.",
+  "frozen_implementation": {
+    "protocol_path": "docs/a_share_three_day_walkforward_campaign_290_preregistration_20260825.json",
+    "protocol_sha256": "dddbab45ac7933be0b6c9f19460bbbacebecbb7031b1e22a9c032c35e66456cd",
+    "runner_path": "scripts/a_share_three_day_walkforward_campaign290.py",
+    "runner_sha256": "6b079f68646e941c928cccf2567dd279807b50d7e63d9c8e3af70ee50ed650c2",
+    "test_path": "tests/data_collector_tests/test_a_share_three_day_walkforward_campaign290.py",
+    "test_sha256": "fc29c62cedc38451641925398dcaace763f750196a9647bb45804f29dac7bfd2",
+    "factor_name": "alpha158_session_median_state_persistence_1d",
+    "factor_direction": "higher",
+    "coordinate_count": 158,
+    "minimum_paired_finite_coordinates": 119,
+    "lag_accepted_sessions": 1,
+    "comparator_count": 143,
+    "comparator_order_sha256": "f4fbf3d578e2c80c29425716a30d60a3df01d67d04e37f1651236c4dff899588",
+    "trial_count": 1,
+    "model_fit_count": 0,
+    "training_return_read_count": 0,
+    "validation_fold_count": 3,
+    "purge_signal_sessions": 3,
+    "output_root": "data/experiments/short_horizon/historical_walkforward/campaign_290/alpha158_session_median_state_persistence_v1"
+  },
+  "synthetic_verification": {
+    "command": "MPLCONFIGDIR=/private/tmp/campaign290-mpl /Volumes/DIsk/Coding/anaconda3/bin/python3.12 -m pytest -q tests/data_collector_tests/test_a_share_three_day_walkforward_campaign290.py",
+    "exit_code": 0,
+    "passed": 9,
+    "failed": 0,
+    "ruff_command": "/Volumes/DIsk/Coding/anaconda3/bin/python3.12 -m ruff check scripts/a_share_three_day_walkforward_campaign290.py tests/data_collector_tests/test_a_share_three_day_walkforward_campaign290.py",
+    "ruff_exit_code": 0
+  },
+  "recorded_prevalue_failure": {
+    "path": "docs/a_share_three_day_walkforward_campaign_290_legacy_comparator_import_failure_20260825.json",
+    "sha256": "6e1cf344f40ef87558653aa2adf4d35f17863ddcb5e0edd5a11216cc8c443296"
+  },
+  "research_boundary": {
+    "alpha158_candidate_values_read_before_freeze": false,
+    "comparator_values_read_before_freeze": false,
+    "historical_daily_price_or_forward_return_values_read": false,
+    "provider_request_issued": false,
+    "credential_loaded": false,
+    "candidate49_ledgers_changed": false,
+    "current_scoring_selection_sizing_positions_or_orders_performed": false,
+    "investment_advice": false
+  }
+}

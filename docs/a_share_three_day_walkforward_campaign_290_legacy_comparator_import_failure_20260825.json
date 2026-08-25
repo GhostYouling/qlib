@@ -1,0 +1,20 @@
+{
+  "schema_version": 1,
+  "kind": "a_share_three_day_walkforward_campaign290_prevalue_infrastructure_failure",
+  "status": "recorded_before_campaign290_candidate_comparator_or_return_values",
+  "recorded_at": "2026-08-25T13:20:00+08:00",
+  "attempt_id": "campaign290_infrastructure_001",
+  "attempt": "Import Campaign265's legacy real_comparator_loader to reuse the frozen 143-comparator order and source adapters.",
+  "failure_class": "Campaign054FeatureError",
+  "failure_message": "Campaign054 completed no-return audit changed",
+  "interpretation": "The historical generated import chain correctly failed closed against an older frozen Campaign054 artifact. Campaign290 does not modify, bypass or suppress that failure; it uses a new direct adapter bound to the already verified Numeric140, Campaign136, Campaign146 and Campaign263 snapshots.",
+  "research_boundary": {
+    "metadata_only_import_attempt": true,
+    "alpha158_candidate_values_read": false,
+    "comparator_values_read": false,
+    "historical_daily_price_or_forward_return_values_read": false,
+    "provider_request_issued": false,
+    "credential_loaded": false,
+    "candidate49_ledgers_changed": false
+  }
+}
