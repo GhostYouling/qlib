@@ -1,0 +1,116 @@
+{
+  "schema_version": 1,
+  "kind": "a_share_three_day_walkforward_campaign300_concept_scouting",
+  "status": "finite_prevalue_catalog_frozen_before_campaign300_candidate_or_comparator_values",
+  "recorded_at": "2026-08-25T21:03:00+08:00",
+  "purpose": "Choose exactly one deterministic, no-fit Alpha158 conditional return-magnitude mechanism for Campaign300 without reading Campaign300 candidate values, comparator values, daily prices or forward returns.",
+  "authoritative_frontier": {
+    "state_path": "docs/a_share_three_day_iteration_status_20260825_campaign299_terminal.json",
+    "state_sha256": "56471204c0119f9d453d5b5ba943a99774dd594460854339ad761c78d56ced28",
+    "numeric_policy_path": "docs/a_share_three_day_walkforward_future_numeric_comparison_eligibility_policy_v429_20260825.json",
+    "numeric_policy_sha256": "600ac57a16cfcb16d9184a2d1cc3fa011d21f5f40d1d481d658443de30940db8",
+    "complete_definition_count": 171,
+    "complete_definition_order_sha256": "b43cca1423094b1644e66130b6ef1b21680bbb023544ed6c99d73af515e4120e",
+    "numeric_comparator_count": 152,
+    "numeric_comparator_order_sha256": "f7cf9cf460464920a6bdfdafe0cf846fafd54862bb9837db3c7b808df341ae14"
+  },
+  "finite_prevalue_concept_catalog": [
+    {
+      "catalog_id": "campaign300_concept_001",
+      "name": "alpha158_conditional_return_magnitude_asymmetry_20d",
+      "decision": "selected_exactly_once",
+      "reason": "Alpha158 freezes SUMP20 and SUMN20 as positive and negative absolute close-change shares and CNTP20 and CNTN20 as positive and negative session frequencies. Dividing each share by its matching frequency produces scale-equivalent typical up-session and down-session magnitudes; their normalized upside share isolates conditional first-moment payoff asymmetry instead of raw direction frequency or total gain-loss balance.",
+      "parameters": {
+        "positive_share_feature": "SUMP20",
+        "negative_share_feature": "SUMN20",
+        "positive_count_feature": "CNTP20",
+        "negative_count_feature": "CNTN20",
+        "fixed_horizon_sessions": 20,
+        "formula": "(SUMP20 / CNTP20) / ((SUMP20 / CNTP20) + (SUMN20 / CNTN20))",
+        "valid_input_rule": "all four inputs finite; SUMP20 and SUMN20 nonnegative; CNTP20 and CNTN20 strictly positive; both conditional magnitudes finite and nonnegative; their sum strictly positive; resulting score finite in [0,1]; never fill, clip, winsorize, threshold, rank, sign, absolute-value or add an epsilon",
+        "direction": "higher",
+        "economic_hypothesis": "When a stock's typical up-session close change is larger than its typical down-session close change after controlling for their occurrence frequencies, asymmetric upside information assimilation may persist from the next accepted open through the third accepted close.",
+        "fit": "none"
+      }
+    },
+    {
+      "catalog_id": "campaign300_concept_002",
+      "name": "alpha158_conditional_return_magnitude_lower_direction",
+      "decision": "rejected_prevalue",
+      "reason": "Negating the selected score or preferring lower values would create a two-direction search. The higher normalized upside-magnitude share is frozen once."
+    },
+    {
+      "catalog_id": "campaign300_concept_003",
+      "name": "alpha158_conditional_return_magnitude_horizon_grid",
+      "decision": "rejected_prevalue",
+      "reason": "Trying the available 5, 10, 30 or 60 session variants, pooling horizons or selecting a best horizon would create a horizon search. One conventional twenty-session month is frozen."
+    },
+    {
+      "catalog_id": "campaign300_concept_004",
+      "name": "alpha158_conditional_return_magnitude_transform_threshold_or_epsilon_grid",
+      "decision": "rejected_prevalue",
+      "reason": "Logit, ratio-minus-one, signed difference, absolute value, square, clipping, winsorization, thresholds, buckets and epsilon repairs are discretionary variants and are excluded."
+    },
+    {
+      "catalog_id": "campaign300_concept_005",
+      "name": "alpha158_raw_sump_sumn_sumd_or_count_balance_refresh",
+      "decision": "rejected_prevalue_mechanism_overlap",
+      "reason": "Raw SUMP20, SUMN20, SUMD20 or CNTP20-CNTN20 measures aggregate direction balance or frequency rather than conditional magnitude. Campaign295 already uses SUMD20 inside price-volume confirmation, so these raw refreshes are not independent."
+    },
+    {
+      "catalog_id": "campaign300_concept_006",
+      "name": "campaign299_close_distribution_retune_reverse_rehorizon_transform_or_combination",
+      "decision": "forbidden",
+      "reason": "Campaign299 is immutable and terminal. Campaign300 does not use MA, QTLU, QTLD, close-level distribution tails or the Campaign299 output, and does not combine any terminal factor."
+    },
+    {
+      "catalog_id": "campaign300_concept_007",
+      "name": "campaign295_price_volume_confirmation_retune_or_combination",
+      "decision": "forbidden",
+      "reason": "Campaign295 is immutable and terminal. Campaign300 uses no volume or CORD20 and does not read or transform Campaign295's SUMD20*(1+CORD20)/2 output; the frozen raw Alpha158 coordinates remain admissible only as an antecedent complete research library."
+    },
+    {
+      "catalog_id": "campaign300_concept_008",
+      "name": "campaign298_volume_cv_or_campaign296_beta_rsqr_refresh",
+      "decision": "forbidden",
+      "reason": "Campaign300 uses neither volume dispersion nor fitted beta/R-squared trend linearity and does not retune, reverse, transform or combine those terminal factors."
+    },
+    {
+      "catalog_id": "campaign300_concept_009",
+      "name": "alpha158_peer_rank_state_multi_horizon_or_extreme_arrival_refresh",
+      "decision": "forbidden",
+      "reason": "Campaign290-294 already consumed peer-state and cross-horizon geometry, while earlier terminal campaigns consumed extreme-arrival order. Campaign300 applies one within-stock conditional first-moment formula and no peer transform."
+    },
+    {
+      "catalog_id": "campaign300_concept_010",
+      "name": "supervised_model_random_feature_weight_subset_or_terminal_factor_combination_search",
+      "decision": "forbidden",
+      "reason": "Earlier model campaigns consumed fitted and randomized model families. Campaign300 contains exactly one deterministic weight-1 factor, no terminal-factor combination and no training-return read."
+    }
+  ],
+  "prevalue_mechanism_audit": {
+    "complete_171_definition_and_152_comparator_metadata_reviewed": true,
+    "repository_metadata_exact_or_near_formula_search_found_existing_definition": false,
+    "independent_of_campaign299_close_distribution_tail_asymmetry": true,
+    "independent_of_campaign298_volume_cv": true,
+    "independent_of_campaign297_envelope_occupancy": true,
+    "independent_of_campaign296_beta_rsqr_trend_linearity": true,
+    "independent_of_campaign295_price_volume_confirmation_output": true,
+    "daily_conditional_first_moment_not_intraday_price_update_or_semivariance": true,
+    "model_fitting_or_return_selected_parameter": false,
+    "single_formula_single_direction_single_horizon": true,
+    "campaign300_candidate_or_comparator_values_read": false,
+    "historical_daily_price_or_forward_return_values_read": false
+  },
+  "research_boundary": {
+    "zero_network": true,
+    "provider_request_issued": false,
+    "credential_value_or_digest_read": false,
+    "candidate49_historical_backfill_performed": false,
+    "candidate49_same_day_20260825_retry_performed": false,
+    "candidate49_ledgers_changed": false,
+    "second_prospective_candidate_created": false,
+    "current_scoring_selection_sizing_positions_or_orders_performed": false,
+    "investment_advice": false
+  }
+}
