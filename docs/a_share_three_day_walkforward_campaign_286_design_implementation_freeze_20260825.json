@@ -1,0 +1,44 @@
+{
+  "schema_version": 1,
+  "kind": "a_share_three_day_walkforward_campaign286_design_implementation_freeze",
+  "status": "frozen_before_first_alpha158_feature_or_label_value_read",
+  "recorded_at": "2026-08-25T01:47:32+08:00",
+  "protocol": {
+    "path": "docs/a_share_three_day_walkforward_campaign_286_preregistration_20260825.json",
+    "sha256": "62bc6eccb6d1240f5f08ce895c05fca4ca2231cf9deca7fda0cf7f1af6ca91af"
+  },
+  "concept": {
+    "path": "docs/a_share_three_day_walkforward_campaign_286_concept_scouting_20260825.json",
+    "sha256": "5214937fdb377d8887179131083428d1f862fd40d87d6a7ea2e9b1a0544dda78"
+  },
+  "design_runner": {
+    "path": "scripts/a_share_three_day_walkforward_campaign286_design.py",
+    "sha256": "b73dd8bad81ff25572684c4a39de4a57853725a228c745f9164ac60189831e6e"
+  },
+  "tests": {
+    "path": "tests/data_collector_tests/test_a_share_three_day_walkforward_campaign286_design.py",
+    "sha256": "2fbaa062bd0bfff3809da6039056538584bc77e0f2f0da60c55a31504e9ad8e6",
+    "result": "5 passed"
+  },
+  "frozen_design": {
+    "feature_family": "complete Qlib Alpha158",
+    "feature_count": 158,
+    "feature_library_sha256": "b1154a5b310ec5f8ead6ca064c06ae4a1121dc1c9a0d4ff7dcd00efcf20704e5",
+    "minimum_finite_features": 119,
+    "development_years": [2019, 2020, 2021, 2022, 2023],
+    "quality_maximum_age_days": 550,
+    "minimum_listing_sessions": 20,
+    "feature_subset_search": false,
+    "coverage_gate_must_pass_before_label_read": true
+  },
+  "research_boundary": {
+    "alpha158_feature_values_read_before_freeze": false,
+    "historical_label_or_forward_return_values_read_before_freeze": false,
+    "lockbox_2024_2025_feature_or_return_values_read_before_freeze": false,
+    "provider_request_issued_before_freeze": false,
+    "credential_loaded_before_freeze": false,
+    "candidate49_historical_backfill_performed_before_freeze": false,
+    "candidate49_ledgers_changed_before_freeze": false,
+    "current_scoring_selection_sizing_or_orders_performed_before_freeze": false
+  }
+}

@@ -1,0 +1,20 @@
+{
+  "schema_version": 1,
+  "kind": "a_share_three_day_walkforward_campaign286_infrastructure_failure",
+  "attempt_id": "wf286_recovery_legacy_import_chain_failure",
+  "status": "failed_test_collection_before_recovery_feature_or_label_read",
+  "recorded_at": "2026-08-25T10:34:01+08:00",
+  "stage": "recovery_runner_test_collection_after_local_extension_build",
+  "error_type": "Campaign054FeatureError",
+  "error": "Campaign054 completed no-return audit changed",
+  "cause": "Campaign286 imported Campaign132 only for compact stock-day key encoding, which transitively loaded an unrelated historical generated-audit chain whose absolute bindings are not portable to the writable clone.",
+  "recovery": "Replace the over-broad dependency with the byte-equivalent compact key formula inside Campaign286 and bind both the original and corrected runner hashes in the recovery freeze.",
+  "scientific_result_changed": false,
+  "compact_key_formula_changed": false,
+  "threshold_or_model_change": false,
+  "historical_label_or_forward_return_values_read": false,
+  "lockbox_2024_2025_feature_or_return_values_read": false,
+  "provider_request_issued": false,
+  "credential_loaded": false,
+  "candidate49_ledgers_changed": false
+}

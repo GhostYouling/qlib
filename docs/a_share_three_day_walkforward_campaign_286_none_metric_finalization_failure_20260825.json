@@ -1,0 +1,52 @@
+{
+  "schema_version": 1,
+  "kind": "a_share_three_day_walkforward_campaign286_infrastructure_failure",
+  "attempt_id": "wf286_development_none_metric_finalization_failure",
+  "status": "failed_after_all_nine_validation_reads_before_survivor_ledger_finalization",
+  "recorded_at": "2026-08-25T11:07:43+08:00",
+  "stage": "development_survivor_decision_aggregation",
+  "error_type": "TypeError",
+  "error": "float() argument must be a string or a real number, not 'NoneType'",
+  "cause": "The deep frozen LightGBM configuration produced a one-tree constant model in every fold, hence zero valid association cohorts and null Rank-IC/spread metrics. The original finalizer correctly preserved the nulls but did not fail the gate before converting them to float.",
+  "development_failure": {
+    "path": "data/experiments/short_horizon/historical_walkforward/campaign_286/walkforward_v1/development_failure.json",
+    "sha256": "a55abf3dd56f70b446171b657638deaeacb6f57e65334733adae16c53fae8295"
+  },
+  "frozen_runner": {
+    "path": "scripts/a_share_three_day_walkforward_campaign286.py",
+    "sha256": "ef454870c19cf5fa6306251775c3e04dd2e955b5f68fb6aeaedb467433d47f86"
+  },
+  "frozen_implementation": {
+    "path": "docs/a_share_three_day_walkforward_campaign_286_development_implementation_freeze_20260825.json",
+    "sha256": "c33babdf096b8e09668f37bda1a766d5e25abde7af06f5aabd608663f52e55fd"
+  },
+  "return_exposure": {
+    "training_folds_read": 3,
+    "validation_folds_read": 3,
+    "model_trials_per_fold": 3,
+    "total_model_fold_validation_return_reads": 9,
+    "all_frozen_validation_metrics_persisted": true,
+    "lockbox_2024_2025_return_fields_read": false
+  },
+  "deep_trial_diagnostic": {
+    "validation_cohorts_by_fold": [0, 0, 0],
+    "model_tree_count_by_fold": [1, 1, 1],
+    "nonzero_feature_count_by_fold": [0, 0, 0],
+    "validation_score_unique_count_by_fold": [1, 1, 1],
+    "interpretation": "Frozen lambda_l1=1.0 is large relative to the session-equal training weights whose total mass is one; no split clears the regularized gain threshold. This is a scientific rejection, not authorization to rescale weights or refit."
+  },
+  "other_trial_evidence": {
+    "shallow_mean_rank_ic_by_fold": [0.01691202230290909, 0.04124428148246559, 0.026664896775820405],
+    "shallow_pilot_10bp_return_by_fold": [-0.014734172166968595, -0.053996372203841014, -0.011424121616833927],
+    "medium_mean_rank_ic_by_fold": [0.011975806998838929, 0.03185866788550633, 0.028452820722326366],
+    "medium_pilot_10bp_return_by_fold": [-0.01807695881185556, -0.04591712799775016, -0.015708354613629627]
+  },
+  "recovery": "Freeze a read-only finalizer that treats null association metrics as an explicit gate failure, consumes the already-persisted metrics without re-reading returns, records all trials and failures, and keeps the lockbox closed.",
+  "scientific_result_changed": false,
+  "model_refit_allowed": false,
+  "historical_return_reread_required": false,
+  "threshold_or_model_change": false,
+  "provider_request_issued": false,
+  "credential_loaded": false,
+  "candidate49_ledgers_changed": false
+}

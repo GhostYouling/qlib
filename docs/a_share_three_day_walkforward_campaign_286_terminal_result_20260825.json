@@ -1,0 +1,146 @@
+{
+  "schema_version": 1,
+  "kind": "a_share_three_day_walkforward_campaign286_terminal_result",
+  "status": "terminal_no_survivor_lockbox_closed",
+  "recorded_at": "2026-08-25T11:20:00+08:00",
+  "authoritative_inputs": {
+    "predecessor_status": {
+      "path": "docs/a_share_three_day_iteration_status_20260825_campaign285_terminal.json",
+      "sha256": "a53f1edecd1cee0f3d1fad7aef7bebeb112d2a3d63efef0da79ad804603421c4"
+    },
+    "protocol": {
+      "path": "docs/a_share_three_day_walkforward_campaign_286_preregistration_20260825.json",
+      "sha256": "62bc6eccb6d1240f5f08ce895c05fca4ca2231cf9deca7fda0cf7f1af6ca91af"
+    },
+    "concept_catalog": {
+      "path": "docs/a_share_three_day_walkforward_campaign_286_concept_scouting_20260825.json",
+      "sha256": "5214937fdb377d8887179131083428d1f862fd40d87d6a7ea2e9b1a0544dda78"
+    },
+    "design_manifest": {
+      "path": "data/experiments/short_horizon/historical_walkforward/campaign_286/alpha158_development_design_recovery_v3/snapshot_manifest.json",
+      "sha256": "31cba0be801ac1421ef9555b862575089589ec08397c1420be3fc4f43b111d4e"
+    },
+    "design_structural_audit": {
+      "path": "data/experiments/short_horizon/historical_walkforward/campaign_286/alpha158_development_design_recovery_v3/structural_audit.json",
+      "sha256": "af8feacbfd28b505bc2cddf007e6692c16519f74a1a9f195438d39122705ec8b"
+    },
+    "finalizer_freeze": {
+      "path": "docs/a_share_three_day_walkforward_campaign_286_finalizer_implementation_freeze_20260825.json",
+      "sha256": "a9b7ff5deb15a31c000c6d19ef46aece8bba45c66e3ef8efc1e7ebe26ee66244"
+    },
+    "terminal_verifier_freeze": {
+      "path": "docs/a_share_three_day_walkforward_campaign_286_terminal_verifier_implementation_freeze_20260825.json",
+      "sha256": "55154805ddfd23feffbcaa40e9d331cadcb8bb15570dec49eee105ce9abfee2f"
+    },
+    "trial_ledger": {
+      "path": "data/experiments/short_horizon/historical_walkforward/campaign_286/walkforward_v1/trial_ledger.json",
+      "sha256": "1dfceab3ab34e3063f9264096b9dd8c87cd35ffc95dd50215f2e8f76576b69ad"
+    },
+    "development_survivors": {
+      "path": "data/experiments/short_horizon/historical_walkforward/campaign_286/walkforward_v1/development_survivors.json",
+      "sha256": "360a263dc7f34807efbf35e06420fb6697ff153b988dae955ced728210b49e44"
+    },
+    "development_report": {
+      "path": "data/experiments/short_horizon/historical_walkforward/campaign_286/walkforward_v1/development_report.json",
+      "sha256": "448e6165634c85f9a9b0577c9646906cdab3726a4cdb0c902754c35fd71fbd7e"
+    }
+  },
+  "design_state": {
+    "feature_family": "complete Qlib Alpha158 daily library",
+    "feature_count": 158,
+    "minimum_finite_feature_count": 119,
+    "feature_subset_search_performed": false,
+    "dataset_row_count": 4918999,
+    "model_support_eligible_row_count": 1001737,
+    "pit_quality_and_listing_eligible_row_count": 1001781,
+    "observed_session_count": 1214,
+    "coverage_denominator_session_count": 1147,
+    "zero_denominator_session_count": 67,
+    "coverage_ratio_median": 1.0,
+    "coverage_ratio_p05": 1.0,
+    "eligible_name_count_p05": 110.3,
+    "possible_nonoverlapping_three_session_cohort_count": 379,
+    "years": [2019, 2020, 2021, 2022, 2023],
+    "structural_gate_passed": true
+  },
+  "development_protocol": {
+    "fold_count": 3,
+    "folds": [
+      {"fold": 1, "train": "2019-2020", "validation": "2021", "validation_cohorts": 74},
+      {"fold": 2, "train": "2019-2021", "validation": "2022", "validation_cohorts": 73},
+      {"fold": 3, "train": "2019-2022", "validation": "2023", "validation_cohorts": 74}
+    ],
+    "purge_signal_sessions_each_boundary": 3,
+    "target": "within-session percentile rank of contained t+1 open to t+3 close gross return",
+    "session_equal_training_weight": true,
+    "finite_model_configuration_count": 3,
+    "survivor_thresholds_changed_after_returns": false
+  },
+  "trial_results": [
+    {
+      "trial_id": "wf286_lgb_shallow_158f",
+      "status": "development_rejected",
+      "validation_mean_rank_ic": [0.01691202230290909, 0.04124428148246559, 0.026664896775820405],
+      "validation_mean_top3_minus_bottom3_gross_return": [-0.006765529422114628, -0.005018953629450438, 0.005188646782944734],
+      "validation_normalized_net_return": [-0.20348932152580013, -0.3288046466366419, -0.022843334028044504],
+      "validation_pilot_10bp_net_return": [-0.014734172166968595, -0.053996372203841014, -0.011424121616833927],
+      "compounded_normalized_net_return": -0.47759810596498287,
+      "compounded_pilot_10bp_net_return": -0.07858297698350536,
+      "compounded_pilot_20bp_net_return": -0.12659510188975043,
+      "rejection_summary": "negative validation execution economics and fold-1/fold-2 board-lot affordability below 0.90"
+    },
+    {
+      "trial_id": "wf286_lgb_medium_158f",
+      "status": "development_rejected",
+      "validation_mean_rank_ic": [0.011975806998838929, 0.03185866788550633, 0.028452820722326366],
+      "validation_mean_top3_minus_bottom3_gross_return": [-0.0015662431754675265, 0.002276605078057475, 0.005371262932926215],
+      "validation_normalized_net_return": [-0.22137495780040872, -0.22407467445977236, -0.027168380903134448],
+      "validation_pilot_10bp_net_return": [-0.01807695881185556, -0.04591712799775016, -0.015708354613629627],
+      "compounded_normalized_net_return": -0.41225902081565646,
+      "compounded_pilot_10bp_net_return": -0.0778801961774569,
+      "compounded_pilot_20bp_net_return": -0.12517311950982146,
+      "rejection_summary": "negative validation execution economics and fold-1 board-lot affordability below 0.90"
+    },
+    {
+      "trial_id": "wf286_lgb_deep_158f",
+      "status": "development_rejected",
+      "validation_mean_rank_ic": [null, null, null],
+      "validation_mean_top3_minus_bottom3_gross_return": [null, null, null],
+      "validation_association_cohorts": [0, 0, 0],
+      "model_tree_count": [1, 1, 1],
+      "nonzero_feature_count": [0, 0, 0],
+      "unique_score_count": [1, 1, 1],
+      "rejection_summary": "frozen regularization produced a constant model in every fold; undefined association and affordability metrics are explicit failures"
+    }
+  ],
+  "attempt_accounting": {
+    "prevalue_concept_attempt_count": 6,
+    "infrastructure_failure_attempt_count": 7,
+    "model_trial_attempt_count": 3,
+    "campaign286_total_attempt_count": 16,
+    "return_reading_development_trial_count": 3,
+    "model_fold_validation_return_read_count": 9
+  },
+  "decision": {
+    "development_survivor_count": 0,
+    "selected_survivor_trial_ids": [],
+    "stress_2024_2025_opened": false,
+    "current_strategy_deployable": false,
+    "reason": "No preregistered Alpha158 LightGBM configuration passed the frozen development and operational gates."
+  },
+  "known_limitation": {
+    "training_metrics_persisted": false,
+    "reason": "The original runner finalized all nine validation reads but raised on a null deep-trial association metric before persisting in-memory training evaluation metrics.",
+    "recovery_action": "Models, fit statistics, validation scores and validation metrics were retained; historical returns were not reread solely to reconstruct training metrics."
+  },
+  "research_boundary": {
+    "provider_or_web_request_issued": false,
+    "credential_loaded": false,
+    "candidate49_historical_return_read": false,
+    "candidate49_historical_backfill_performed": false,
+    "candidate49_ledgers_changed": false,
+    "second_prospective_candidate_created": false,
+    "current_scoring_selection_sizing_positions_or_orders_performed": false,
+    "investment_advice": false
+  }
+}

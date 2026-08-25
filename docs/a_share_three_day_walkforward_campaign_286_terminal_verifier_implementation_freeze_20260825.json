@@ -1,0 +1,41 @@
+{
+  "schema_version": 1,
+  "kind": "a_share_three_day_walkforward_campaign286_terminal_verifier_implementation_freeze",
+  "status": "frozen_after_terminal_outputs_before_verification",
+  "recorded_at": "2026-08-25T11:18:00+08:00",
+  "verifier": {
+    "path": "scripts/a_share_three_day_walkforward_campaign286_terminal_verify.py",
+    "sha256": "fa2205accabfcef212b6ad6a6833e98e95e4f5c6a783ec99877b98916448fa5b"
+  },
+  "tests": {
+    "path": "tests/data_collector_tests/test_a_share_three_day_walkforward_campaign286_terminal_verify.py",
+    "sha256": "004d23b78f5d1e980529536ea247e5b7199fb0479f9516b41b3205766060638d"
+  },
+  "terminal_artifacts": {
+    "trial_ledger.json": "1dfceab3ab34e3063f9264096b9dd8c87cd35ffc95dd50215f2e8f76576b69ad",
+    "development_survivors.json": "360a263dc7f34807efbf35e06420fb6697ff153b988dae955ced728210b49e44",
+    "development_report.json": "448e6165634c85f9a9b0577c9646906cdab3726a4cdb0c902754c35fd71fbd7e"
+  },
+  "expected_terminal_semantics": {
+    "ledger_entry_count": 16,
+    "prevalue_concept_attempt_count": 6,
+    "infrastructure_failure_attempt_count": 7,
+    "model_trial_attempt_count": 3,
+    "return_reading_development_trial_count": 3,
+    "model_fold_validation_return_read_count": 9,
+    "survivor_count": 0,
+    "lockbox_2024_2025_opened": false
+  },
+  "research_boundary": {
+    "read_only_verification": true,
+    "historical_return_reread_by_verifier": false,
+    "model_refit_by_verifier": false,
+    "threshold_or_model_change": false,
+    "lockbox_2024_2025_return_read": false,
+    "provider_request_issued": false,
+    "credential_loaded": false,
+    "candidate49_historical_backfill_performed": false,
+    "candidate49_ledgers_changed": false,
+    "current_scoring_selection_sizing_or_orders_performed": false
+  }
+}

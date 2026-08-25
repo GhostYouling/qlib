@@ -1,0 +1,30 @@
+{
+  "schema_version": 1,
+  "kind": "a_share_three_day_walkforward_campaign286_concept_scouting",
+  "status": "alpha158_lightgbm_family_selected_before_feature_or_label_values",
+  "recorded_at": "2026-08-25T01:48:00+08:00",
+  "purpose": "Move the three-session strategy engine from exhausted hand-crafted minute operators to the repository's previously unused complete Alpha158 daily feature library with a finite LightGBM walk-forward campaign.",
+  "authoritative_inputs": {
+    "campaign285_state": {"path": "docs/a_share_three_day_iteration_status_20260825_campaign285_terminal.json", "sha256": "a53f1edecd1cee0f3d1fad7aef7bebeb112d2a3d63efef0da79ad804603421c4"},
+    "historical_policy": {"path": "docs/a_share_three_day_historical_walkforward_research_policy_20260727.json", "sha256": "38426d6161b9bfed323c58caba18feca668b8c9d53e294951a8ba90c01a798bb"}
+  },
+  "finite_prevalue_concept_catalog": [
+    {"catalog_id": "c286_01", "name": "complete_alpha158_daily_library_lightgbm", "decision": "selected", "reason": "Alpha158 is a code-defined complete 158-feature daily library that has not appeared in the three-session campaign ledger; fixed finite tree configurations can model nonlinear daily technical interactions without selecting post-result features."},
+    {"catalog_id": "c286_02", "name": "refresh_complete_terminal_143_factor_monotone_hgb", "decision": "rejected_before_values", "reason": "Campaign132 consumed monotone histogram trees and Campaign144 explicitly rejects rerunning a consumed complete-library model after merely appending factors."},
+    {"catalog_id": "c286_03", "name": "refresh_complete_terminal_143_factor_additive_or_cluster_model", "decision": "rejected_before_values", "reason": "Campaign133 and Campaign134 consumed monotone additive calibration and correlation-component balancing; current component-count refresh is not a new mechanism."},
+    {"catalog_id": "c286_04", "name": "new_minute_nonlinear_dependence_operator", "decision": "rejected_before_values", "reason": "Campaign147-150 already close transfer entropy, recurrence, copula, bispectrum, topology, network, mutual-information and distance-dependence refreshes."},
+    {"catalog_id": "c286_05", "name": "alpha158_feature_subset_or_importance_selection", "decision": "rejected_before_values", "reason": "Feature selection would create unbounded post-result multiplicity; the selected campaign must retain all 158 features."},
+    {"catalog_id": "c286_06", "name": "alpha158_neural_architecture_search", "decision": "rejected_before_values", "reason": "Architecture and seed search are unnecessary multiplicity before the simpler finite tree baseline is known."}
+  ],
+  "selected_family": {
+    "feature_library": "Alpha158DL default config with kbar, OPEN/HIGH/LOW/VWAP window 0 and all default rolling operators at windows 5/10/20/30/60",
+    "feature_count": 158,
+    "canonical_name_expression_pairs_sha256": "b1154a5b310ec5f8ead6ca064c06ae4a1121dc1c9a0d4ff7dcd00efcf20704e5",
+    "model_family": "LightGBM regression",
+    "configuration_count": 3,
+    "feature_subset_search_allowed": false,
+    "direction_search_allowed": false
+  },
+  "sequence_attestation": {"alpha158_feature_values_read": false, "training_or_validation_label_values_read": false, "terminal_comparator_values_read": false, "daily_execution_price_values_read": false, "stress_2024_2025_opened": false, "provider_request_issued": false},
+  "research_boundary": {"candidate49_historical_backfill_performed": false, "candidate49_ledgers_changed": false, "second_prospective_candidate_created": false, "current_scoring_selection_sizing_positions_or_orders_performed": false, "investment_advice": false}
+}

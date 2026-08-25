@@ -1,0 +1,22 @@
+{
+  "schema_version": 1,
+  "kind": "a_share_three_day_walkforward_campaign286_infrastructure_failure",
+  "attempt_id": "wf286_infra_direct_script_plan_import_failure",
+  "status": "failed_before_alpha158_feature_or_label_value_read",
+  "recorded_at": "2026-08-25T01:48:05+08:00",
+  "stage": "frozen_design_plan_invocation",
+  "command_shape": "python scripts/a_share_three_day_walkforward_campaign286_design.py plan",
+  "exit_code": 1,
+  "error_type": "ModuleNotFoundError",
+  "error": "No module named 'qlib'",
+  "cause": "Direct script execution places scripts/ rather than the repository root on sys.path.",
+  "recovery": "Preserve the frozen runner and invoke the same module with python -m scripts.a_share_three_day_walkforward_campaign286_design plan.",
+  "scientific_result_changed": false,
+  "alpha158_feature_values_read": false,
+  "historical_label_or_forward_return_values_read": false,
+  "lockbox_2024_2025_feature_or_return_values_read": false,
+  "provider_request_issued": false,
+  "credential_loaded": false,
+  "candidate49_ledgers_changed": false,
+  "current_scoring_selection_sizing_or_orders_performed": false
+}

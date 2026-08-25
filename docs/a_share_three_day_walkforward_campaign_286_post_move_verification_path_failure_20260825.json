@@ -1,0 +1,27 @@
+{
+  "schema_version": 1,
+  "kind": "a_share_three_day_walkforward_campaign286_infrastructure_failure",
+  "attempt_id": "wf286_recovery_v3_post_move_verification_path_failure",
+  "status": "finalized_output_published_verification_failed_on_stale_path",
+  "recorded_at": "2026-08-25T10:51:08+08:00",
+  "stage": "post_atomic_move_self_verification",
+  "error_type": "Campaign286DesignError",
+  "error": "recovery-v2 failure changed",
+  "cause": "The finalize step atomically moved the whole partial directory to the v3 final path, including recovery_failure.json, but the frozen v3 verifier still checked that file at its pre-move partial path.",
+  "published_output": {
+    "root": "data/experiments/short_horizon/historical_walkforward/campaign_286/alpha158_development_design_recovery_v3",
+    "manifest_sha256": "31cba0be801ac1421ef9555b862575089589ec08397c1420be3fc4f43b111d4e",
+    "structural_audit_sha256": "af8feacbfd28b505bc2cddf007e6692c16519f74a1a9f195438d39122705ec8b",
+    "preserved_recovery_failure_sha256": "f2df02c4900fccda5f9a197068744db8b81cc75dbc412c56d2922ec6810d1385"
+  },
+  "published_audit_status": "passed_ready_for_frozen_model_implementation",
+  "scientific_result_changed": false,
+  "feature_partition_recomputation_required": false,
+  "threshold_or_model_change": false,
+  "historical_label_or_forward_return_values_read": false,
+  "lockbox_2024_2025_feature_or_return_values_read": false,
+  "provider_request_issued": false,
+  "credential_loaded": false,
+  "candidate49_ledgers_changed": false,
+  "recovery": "Freeze and run a read-only post-move verifier bound to the final output paths."
+}

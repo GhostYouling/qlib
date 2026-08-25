@@ -1,0 +1,72 @@
+{
+  "schema_version": 1,
+  "kind": "a_share_three_day_walkforward_campaign286_development_implementation_freeze",
+  "status": "frozen_before_first_campaign286_training_or_validation_return_read",
+  "recorded_at": "2026-08-25T11:02:08+08:00",
+  "protocol": {
+    "path": "docs/a_share_three_day_walkforward_campaign_286_preregistration_20260825.json",
+    "sha256": "62bc6eccb6d1240f5f08ce895c05fca4ca2231cf9deca7fda0cf7f1af6ca91af"
+  },
+  "design_manifest": {
+    "path": "data/experiments/short_horizon/historical_walkforward/campaign_286/alpha158_development_design_recovery_v3/snapshot_manifest.json",
+    "sha256": "31cba0be801ac1421ef9555b862575089589ec08397c1420be3fc4f43b111d4e",
+    "dataset_sha256": "714f4ccbdf4bfbaccfd04f543ec8c6a0bc345d3cc567ab621d01905130c46252"
+  },
+  "design_structural_audit": {
+    "path": "data/experiments/short_horizon/historical_walkforward/campaign_286/alpha158_development_design_recovery_v3/structural_audit.json",
+    "sha256": "af8feacbfd28b505bc2cddf007e6692c16519f74a1a9f195438d39122705ec8b",
+    "status": "passed_ready_for_frozen_model_implementation"
+  },
+  "runner": {
+    "path": "scripts/a_share_three_day_walkforward_campaign286.py",
+    "sha256": "ef454870c19cf5fa6306251775c3e04dd2e955b5f68fb6aeaedb467433d47f86"
+  },
+  "tests": {
+    "path": "tests/data_collector_tests/test_a_share_three_day_walkforward_campaign286.py",
+    "sha256": "9b85af3a5cf07af1300694e66de98daf6eed24ef403804650cccd9de810adb2e",
+    "campaign286_combined_result": "22 passed"
+  },
+  "execution_engine": {
+    "path": "scripts/a_share_three_day_walkforward_campaign.py",
+    "sha256": "301f5fe665422b94c9fa110e67995ff0999584a5f323ecdd5f56151a3529f5a7"
+  },
+  "frozen_model_implementation": {
+    "runtime": "lightgbm==4.6.0",
+    "feature_count": 158,
+    "feature_library_sha256": "b1154a5b310ec5f8ead6ca064c06ae4a1121dc1c9a0d4ff7dcd00efcf20704e5",
+    "trial_ids": [
+      "wf286_lgb_shallow_158f",
+      "wf286_lgb_medium_158f",
+      "wf286_lgb_deep_158f"
+    ],
+    "trial_count": 3,
+    "fold_count": 3,
+    "model_fold_fit_count": 9,
+    "native_missing_values": true,
+    "feature_pre_filter": false,
+    "feature_pre_filter_reason": "Keep the complete 158-feature library available across the three frozen min_data_in_leaf values when one LightGBM Dataset is reused; this is an implementation resolution, not feature selection.",
+    "early_stopping": false,
+    "validation_used_for_parameter_updates": false,
+    "all_trials_complete_all_folds_before_survivor_selection": true,
+    "validation_scores_frozen_before_each_validation_return_read": true,
+    "training_target": "within-contained-session ascending average-tie percentile of t+1-open to t+3-close gross return",
+    "training_session_weight": "equal total mass per session"
+  },
+  "candidate49": {
+    "signal_ledger_path": "/Volumes/DIsk/Disk-Coding/qlib/data/experiments/short_horizon/candidate49_future_signal_ledger.json",
+    "signal_ledger_sha256": "5193f00d7f36da003f53cec387900da4c3d002299f5dfcfc1a95eaa199ed3a79",
+    "execution_ledger_path": "/Volumes/DIsk/Disk-Coding/qlib/data/experiments/short_horizon/candidate49_future_execution_ledger.json",
+    "execution_ledger_sha256": "d57a3e61eac969e42cafa418ccd8c0a5ee65dcf69da145bb2c096c2a02a2ea4f"
+  },
+  "research_boundary": {
+    "alpha158_feature_values_read_before_freeze": true,
+    "training_or_validation_return_read_before_freeze": false,
+    "model_fit_before_freeze": false,
+    "lockbox_2024_2025_return_read_before_freeze": false,
+    "provider_request_issued_before_freeze": false,
+    "credential_loaded_before_freeze": false,
+    "candidate49_historical_backfill_performed_before_freeze": false,
+    "candidate49_ledgers_changed_before_freeze": false,
+    "current_scoring_selection_sizing_or_orders_performed_before_freeze": false
+  }
+}

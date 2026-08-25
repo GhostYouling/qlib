@@ -1,0 +1,19 @@
+{
+  "schema_version": 1,
+  "kind": "a_share_three_day_walkforward_campaign286_infrastructure_failure",
+  "attempt_id": "wf286_recovery_missing_compiled_extension",
+  "status": "failed_test_collection_before_recovery_feature_or_label_read",
+  "recorded_at": "2026-08-25T10:34:01+08:00",
+  "stage": "recovery_runner_test_collection",
+  "error_type": "ModuleNotFoundError",
+  "error": "No module named 'qlib.data._libs.rolling'",
+  "cause": "The writable local clone did not contain Git-ignored in-place Cython extension binaries.",
+  "recovery": "Ran the repository's standard setup.py build_ext --inplace command in the writable clone.",
+  "scientific_result_changed": false,
+  "threshold_or_model_change": false,
+  "historical_label_or_forward_return_values_read": false,
+  "lockbox_2024_2025_feature_or_return_values_read": false,
+  "provider_request_issued": false,
+  "credential_loaded": false,
+  "candidate49_ledgers_changed": false
+}

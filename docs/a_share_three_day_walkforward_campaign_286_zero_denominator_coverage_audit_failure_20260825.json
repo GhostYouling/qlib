@@ -1,0 +1,44 @@
+{
+  "schema_version": 1,
+  "kind": "a_share_three_day_walkforward_campaign286_infrastructure_failure",
+  "attempt_id": "wf286_recovery_v2_zero_denominator_coverage_audit_failure",
+  "status": "failed_after_complete_feature_build_before_label_read",
+  "recorded_at": "2026-08-25T10:45:18+08:00",
+  "stage": "development_design_structural_coverage_audit",
+  "error_type": "Campaign286DesignError",
+  "error": "daily coverage identity changed",
+  "failure_record": {
+    "path": "data/experiments/short_horizon/historical_walkforward/campaign_286/.alpha158_development_design_recovery_v2.partial/recovery_failure.json",
+    "sha256": "f2df02c4900fccda5f9a197068744db8b81cc75dbc412c56d2922ec6810d1385"
+  },
+  "cause": "The new audit rejected any calendar session with a zero point-in-time quality/listing denominator. The local quarterly snapshot begins at 2019Q1, so the first 67 accepted 2019 sessions have an empty quality universe and a mathematically undefined 0/0 feature-coverage ratio.",
+  "observed_without_label_read": {
+    "development_calendar_sessions": 1214,
+    "zero_denominator_sessions": 67,
+    "zero_denominator_fraction": 0.05518945634266886,
+    "zero_denominator_first_session": "2019-01-02",
+    "zero_denominator_last_session": "2019-04-12",
+    "first_nonempty_quality_session": "2019-04-15",
+    "nonempty_quality_sessions": 1147,
+    "median_feature_coverage_on_defined_domain": 1.0,
+    "p05_feature_coverage_on_defined_domain": 1.0,
+    "p05_eligible_names_on_defined_domain": 110.3,
+    "potential_non_overlapping_three_session_cohorts_on_defined_domain": 379,
+    "observed_cohort_years_on_defined_domain": [2019, 2020, 2021, 2022, 2023]
+  },
+  "established_semantic_reference": {
+    "path": "scripts/a_share_three_day_walkforward_campaign004_features.py",
+    "sha256": "46b4c8b36698e64612b4b2c98e8cb4e81041100327d93e862722a3c5fb84b33c",
+    "function": "coverage_and_capacity",
+    "semantics": "Construct daily denominators by grouping point-in-time quality/listing eligible keys, so sessions with no denominator rows are outside the defined coverage domain."
+  },
+  "recovery": "Freeze revision 3 that applies the pre-existing nonempty-denominator domain, records all 67 excluded sessions, preserves every threshold, and reuses all five already-built partitions byte-for-byte.",
+  "scientific_result_changed": false,
+  "threshold_or_model_change": false,
+  "feature_partition_recomputation_required": false,
+  "historical_label_or_forward_return_values_read": false,
+  "lockbox_2024_2025_feature_or_return_values_read": false,
+  "provider_request_issued": false,
+  "credential_loaded": false,
+  "candidate49_ledgers_changed": false
+}

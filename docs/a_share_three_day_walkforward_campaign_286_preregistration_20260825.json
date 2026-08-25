@@ -1,0 +1,90 @@
+{
+  "schema_version": 1,
+  "kind": "a_share_three_day_walkforward_campaign286_preregistration",
+  "status": "complete_campaign_frozen_before_alpha158_feature_or_label_values",
+  "recorded_at": "2026-08-25T01:50:00+08:00",
+  "authoritative_inputs": {
+    "concept": {"path": "docs/a_share_three_day_walkforward_campaign_286_concept_scouting_20260825.json", "sha256": "5214937fdb377d8887179131083428d1f862fd40d87d6a7ea2e9b1a0544dda78"},
+    "policy": {"path": "docs/a_share_three_day_historical_walkforward_research_policy_20260727.json", "sha256": "38426d6161b9bfed323c58caba18feca668b8c9d53e294951a8ba90c01a798bb"}
+  },
+  "data_and_code_fingerprints": {
+    "provider_uri": "/Volumes/DIsk/Disk-Coding/qlib/data/qlib/cn_a_share",
+    "price_basis_sha256": "68e9dbb83749779b34d5cf3b116195074c154ff74cb6de95ba67695bedc1f14f",
+    "calendar_sha256": "fda506597d26bcec953cdc0882042a5046ec1587db60490e16a01627fd43f53a",
+    "calendar_start": "2015-01-05",
+    "calendar_end": "2026-07-13",
+    "calendar_session_count": 2799,
+    "instrument_file": "data/qlib/cn_a_share/instruments/buyable_main_chinext.txt",
+    "instrument_file_sha256": "77ccf8de2ed1e447e73b5d5ff1703fc2a8656d6adab34ef44017481730249db1",
+    "current_listing_snapshot_survivorship_bias": true,
+    "alpha158_loader_sha256": "814b7f7ab3d418ae3c87ce352220080b239eba2670eac9e38376b794be4075cb",
+    "alpha158_handler_sha256": "b621481c6009c39066c67c71390fd2bea635f56daf9f2c4e38817eff268e3232",
+    "lgb_wrapper_sha256": "2c1dd86b85af7730595a7657039c35a3a119d1c0af738d58e38a2357af5763a5",
+    "lightgbm_version": "4.6.0",
+    "sklearn_version": "1.5.1",
+    "python": "/Volumes/DIsk/Coding/anaconda3/bin/python3.12"
+  },
+  "daily_data_bindings": {
+    "provider_uri": {"kind": "directory", "path": "data/qlib/cn_a_share"},
+    "price_basis": {"path": "data/qlib/cn_a_share/price_basis.json", "sha256": "68e9dbb83749779b34d5cf3b116195074c154ff74cb6de95ba67695bedc1f14f"},
+    "quarterly_quality": {"path": "data/raw/a_share/fundamentals/quarterly_quality.parquet", "sha256": "3ac901a97928d2ed81ac72e3eaac9bdc148d36cf67b6abe70223699235ef059f"},
+    "quarterly_quality_manifest": {"path": "data/metadata/quarterly_quality_manifest.json", "sha256": "e3cf654babe37a82393c5530696bc1cc242b736cb88e1947b8444b638125ba8c"},
+    "calendar": {"path": "data/qlib/cn_a_share/calendars/day.txt", "sha256": "fda506597d26bcec953cdc0882042a5046ec1587db60490e16a01627fd43f53a"},
+    "buyable_universe": {"path": "data/qlib/cn_a_share/instruments/buyable_main_chinext.txt", "sha256": "77ccf8de2ed1e447e73b5d5ff1703fc2a8656d6adab34ef44017481730249db1"}
+  },
+  "execution_policy_bindings": {
+    "normalized_execution": {"path": "docs/a_share_three_day_prospective_execution_policy.json", "sha256": "72c3c3871e153372ed9e7691c9d89ba1aeb2f6d02cc839761fefa5fee085e1bc"},
+    "cny_200000_board_lot_pilot": {"path": "docs/a_share_three_day_pilot_execution_policy.json", "sha256": "72235cd29fc14d43538238150bb2823dae1dd05b027b2c86a9872de89cc0d3f9"}
+  },
+  "complete_feature_library": {
+    "generator": "Alpha158DL.get_feature_config(default_config)",
+    "feature_count": 158,
+    "canonical_name_expression_pairs_sha256": "b1154a5b310ec5f8ead6ca064c06ae4a1121dc1c9a0d4ff7dcd00efcf20704e5",
+    "all_features_required": true,
+    "feature_selection_or_importance_filtering": false,
+    "source_fields": ["open", "high", "low", "close", "vwap", "volume"],
+    "point_in_time_rule": "Every expression uses signal-session t or prior accepted sessions only.",
+    "design_support": {
+      "minimum_finite_features": 119,
+      "minimum_finite_fraction": 0.75,
+      "selection_reason": "Ceiling of the pre-existing Campaign132 75% component-support rule applied to 158 features; fixed before any Alpha158 value read.",
+      "nonfinite_values": "Replace positive and negative infinity with missing; retain missing for LightGBM native missing-value handling.",
+      "neutral_fill": false,
+      "feature_support_is_not_feature_selection": true
+    }
+  },
+  "research_universe": {
+    "base": "buyable_main_chinext current-listing snapshot with acknowledged survivorship bias",
+    "point_in_time_quality": "roe>=5, net_profit>0, revenue_yoy>0, profit_yoy>0, announced information effective on the following accepted session, maximum age 550 calendar days",
+    "minimum_listing_sessions": 20,
+    "model_support_eligible": "point_in_time_quality AND listing_age_sessions>=20 AND finite Alpha158 feature count>=119",
+    "cross_sectional_ranking_scope": "model_support_eligible names only"
+  },
+  "target": {
+    "gross_expression": "Ref($close,-3)/Ref($open,-1)-1",
+    "meaning": "signal close t to next accepted open t+1 entry and third accepted close t+3 exit",
+    "training_transform": "Within each contained training signal session, ascending average-tie percentile rank of finite gross return.",
+    "row_weight": "Each training session has equal total weight; each finite stock target gets 1/n_session.",
+    "no_entry_or_exit_tradeability_filter_in_training_target": true,
+    "training_rows": "model_support_eligible names with finite contained t+1-open to t+3-close gross return"
+  },
+  "walkforward_folds": [
+    {"fold": 1, "train": ["2019-01-01", "2020-12-31"], "validation": ["2021-01-01", "2021-12-31"]},
+    {"fold": 2, "train": ["2019-01-01", "2021-12-31"], "validation": ["2022-01-01", "2022-12-31"]},
+    {"fold": 3, "train": ["2019-01-01", "2022-12-31"], "validation": ["2023-01-01", "2023-12-31"]}
+  ],
+  "leakage_controls": {"purge_signal_sessions_each_boundary": 3, "require_t_plus_1_and_t_plus_3_inside_same_partition": true, "model_fit_only_on_training_partition": true, "early_stopping": false, "validation_used_for_parameter_updates": false},
+  "coverage_gate_before_labels": {"development_years": [2019, 2020, 2021, 2022, 2023], "denominator": "point_in_time_quality_and_listing_eligible_rows", "numerator": "denominator rows with at least 119 finite Alpha158 features", "median_daily_feature_row_coverage_minimum": 0.95, "p05_daily_feature_row_coverage_minimum": 0.90, "p05_eligible_names_minimum": 50, "non_overlapping_three_session_cohorts_minimum": 200, "cohort_years_minimum": 5, "all_conditions_required": true},
+  "shared_model_parameters": {"objective": "regression", "metric": "l2", "feature_fraction": 0.8, "bagging_fraction": 0.8, "bagging_freq": 1, "verbosity": -1, "num_threads": 8, "deterministic": true, "force_col_wise": true, "random_state": 286},
+  "trial_catalog": [
+    {"trial_id": "wf286_lgb_shallow_158f", "learning_rate": 0.05, "num_boost_round": 200, "max_depth": 4, "num_leaves": 15, "min_data_in_leaf": 200, "lambda_l1": 0.0, "lambda_l2": 1.0},
+    {"trial_id": "wf286_lgb_medium_158f", "learning_rate": 0.03, "num_boost_round": 300, "max_depth": 6, "num_leaves": 31, "min_data_in_leaf": 200, "lambda_l1": 0.0, "lambda_l2": 5.0},
+    {"trial_id": "wf286_lgb_deep_158f", "learning_rate": 0.02, "num_boost_round": 400, "max_depth": 8, "num_leaves": 63, "min_data_in_leaf": 100, "lambda_l1": 1.0, "lambda_l2": 10.0}
+  ],
+  "fixed_execution_assumptions": {"holding_period_local_sessions": 3, "topk": 3, "initial_capital_cny": 200000, "target_entry_exposure_fraction_per_slot": 0.05, "maximum_entry_exposure_fraction_per_signal": 0.15, "buy_lot_size_shares": 100, "commission_rate_each_side": 0.0001, "transfer_fee_rate_each_side": 0.00002, "sell_stamp_duty_rate": 0.0005, "primary_adverse_slippage_rate_each_side": 0.001, "maximum_daily_amount_participation": 0.01},
+  "development_survivor_rule": {"complete_validation_fold_count": 3, "minimum_association_cohorts_per_fold": 60, "minimum_positive_mean_rank_ic_folds": 2, "median_validation_mean_rank_ic_strictly_positive": true, "median_validation_top3_minus_bottom3_spread_strictly_positive": true, "minimum_positive_normalized_return_folds": 2, "minimum_positive_primary_10bp_pilot_return_folds": 2, "median_validation_primary_10bp_pilot_return_strictly_positive": true, "worst_validation_normalized_drawdown_minimum": -0.25, "compounded_validation_20bp_pilot_return_strictly_positive": true, "minimum_board_lot_affordability_each_fold": 0.9, "maximum_amount_participation_each_fold": 0.01, "terminal_unresolved_positions_each_fold": 0, "all_conditions_required": true},
+  "survivor_selection_rule": {"maximum_selected_for_lockbox": 1, "select_only_from_complete_gate_passers": true, "order": ["descending_positive_primary_10bp_fold_count", "descending_median_validation_primary_10bp_return", "descending_median_validation_mean_rank_ic", "trial_catalog_order"]},
+  "locked_2024_2025": {"initially_closed": true, "classification": "historically_exposed_quasi_out_of_sample_not_pristine", "open_once_for_whole_campaign_only_if_development_survivor_exists": true, "refit_selected_unchanged_configuration_on_contained_2019_2023": true, "no_post_lockbox_tuning": true},
+  "recordkeeping": {"append_only_trial_ledger_required": true, "record_all_three_model_trials_and_all_infrastructure_failures": true, "retain_failed_results": true},
+  "prohibited_actions": ["feature_subset_search", "post_validation_hyperparameter_change", "candidate49_backfill", "second_prospective_candidate", "current_score_selection_sizing_position_or_order", "investment_advice"]
+}

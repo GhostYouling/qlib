@@ -1,0 +1,75 @@
+{
+  "schema_version": 1,
+  "kind": "a_share_three_day_walkforward_campaign286_design_recovery_implementation_freeze",
+  "status": "frozen_after_interruption_before_recovery_read_of_2021_2023",
+  "recorded_at": "2026-08-25T10:34:32+08:00",
+  "protocol": {
+    "path": "docs/a_share_three_day_walkforward_campaign_286_preregistration_20260825.json",
+    "sha256": "62bc6eccb6d1240f5f08ce895c05fca4ca2231cf9deca7fda0cf7f1af6ca91af"
+  },
+  "initial_design_freeze": {
+    "path": "docs/a_share_three_day_walkforward_campaign_286_design_implementation_freeze_20260825.json",
+    "sha256": "78db0f692edf5687b0aff9d251d5b623a5448f8af64942ef6dced964ba8776d9"
+  },
+  "initial_runner": {
+    "path": "/Volumes/DIsk/Disk-Coding/qlib/scripts/a_share_three_day_walkforward_campaign286_design.py",
+    "sha256": "b73dd8bad81ff25572684c4a39de4a57853725a228c745f9164ac60189831e6e"
+  },
+  "corrected_base_runner": {
+    "path": "scripts/a_share_three_day_walkforward_campaign286_design.py",
+    "sha256": "1e751f214a31131b49fe6a021d9b7e3429da41b07a7b92c4fa5511962b4631fb",
+    "semantic_change": false,
+    "change": "Inline the unchanged compact stock-day key formula to avoid importing the unrelated historical Campaign132 chain."
+  },
+  "corrected_base_tests": {
+    "path": "tests/data_collector_tests/test_a_share_three_day_walkforward_campaign286_design.py",
+    "sha256": "f7ce23312e6fdbc56ac082df6c988743e2e274bce8d2c71eb6769a825060662d"
+  },
+  "recovery_runner": {
+    "path": "scripts/a_share_three_day_walkforward_campaign286_design_recovery.py",
+    "sha256": "c1514ffba05f9fd93e7d2b85fb9e937e6ef5792f7478668215d112422a133fd0"
+  },
+  "tests": {
+    "path": "tests/data_collector_tests/test_a_share_three_day_walkforward_campaign286_design_recovery.py",
+    "sha256": "67a3146bd63c2fae37acab62bd59184a8714c0b63356f8ebed18a6259880d2d0",
+    "combined_result": "10 passed"
+  },
+  "interruption": {
+    "path": "docs/a_share_three_day_walkforward_campaign_286_permission_transition_interruption_20260825.json",
+    "sha256": "7cec04784b90f747b2eed71364b4970f3df84ed346a54e7beaa6548699fd3b58"
+  },
+  "infrastructure_failures": [
+    {
+      "path": "docs/a_share_three_day_walkforward_campaign_286_recovery_missing_compiled_extension_failure_20260825.json",
+      "sha256": "6ab48c09301213d1fa8cde472ff880e1666a5b7dbc721bbdf90b2f87ba698e02"
+    },
+    {
+      "path": "docs/a_share_three_day_walkforward_campaign_286_recovery_legacy_import_chain_failure_20260825.json",
+      "sha256": "fc3c92284ee09151567a565bbf4fd98aaf95ed61d1769d9b6e5292122d70e72e"
+    }
+  ],
+  "frozen_recovery": {
+    "source_partial_root": "/Volumes/DIsk/Disk-Coding/qlib/data/experiments/short_horizon/historical_walkforward/campaign_286/.alpha158_development_design_v1.partial",
+    "reuse_years": [2019, 2020],
+    "recompute_years": [2021, 2022, 2023],
+    "source_partition_sha256": {
+      "2019": "5860735e85cca233841168ffa4ec49257d122a91348ede4214be4130ccfd2d5a",
+      "2020": "a49c8dc6c564714a8a9755c20619ca7b88de39a51b992240600ca9369ed719cb"
+    },
+    "output_root": "data/experiments/short_horizon/historical_walkforward/campaign_286/alpha158_development_design_recovery_v2",
+    "feature_count": 158,
+    "minimum_finite_features": 119,
+    "threshold_or_model_change": false
+  },
+  "research_boundary": {
+    "alpha158_feature_values_already_read": "2019 and 2020 complete; 2021 transiently through 3968/4661 names before interruption",
+    "historical_label_or_forward_return_values_read": false,
+    "threshold_or_model_change_after_feature_read": false,
+    "lockbox_2024_2025_feature_or_return_values_read": false,
+    "provider_request_issued": false,
+    "credential_loaded": false,
+    "candidate49_historical_backfill_performed": false,
+    "candidate49_ledgers_changed": false,
+    "current_scoring_selection_sizing_or_orders_performed": false
+  }
+}

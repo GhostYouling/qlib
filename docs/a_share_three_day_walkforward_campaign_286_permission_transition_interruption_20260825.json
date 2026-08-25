@@ -1,0 +1,51 @@
+{
+  "schema_version": 1,
+  "kind": "a_share_three_day_walkforward_campaign286_infrastructure_failure",
+  "attempt_id": "wf286_infra_permission_transition_interruption",
+  "status": "interrupted_partial_preserved_before_label_read",
+  "recorded_at": "2026-08-25T10:29:21+08:00",
+  "stage": "frozen_alpha158_development_design_build",
+  "cause": "The execution session was terminated when the workspace permission profile changed and the authoritative /Volumes worktree became read-only.",
+  "process_exit_status": "session_disappeared_without_a_process_exit_code",
+  "source_partial_root": "/Volumes/DIsk/Disk-Coding/qlib/data/experiments/short_horizon/historical_walkforward/campaign_286/.alpha158_development_design_v1.partial",
+  "completed_partitions": [
+    {
+      "year": 2019,
+      "path": "partitions/2019.parquet",
+      "bytes": 403920338,
+      "rows": 885491,
+      "quality_listing_rows": 105761,
+      "model_support_eligible_rows": 105761,
+      "minimum_finite_features": 83,
+      "maximum_finite_features": 158,
+      "sha256": "5860735e85cca233841168ffa4ec49257d122a91348ede4214be4130ccfd2d5a"
+    },
+    {
+      "year": 2020,
+      "path": "partitions/2020.parquet",
+      "bytes": 420870721,
+      "rows": 918981,
+      "quality_listing_rows": 184069,
+      "model_support_eligible_rows": 184069,
+      "minimum_finite_features": 83,
+      "maximum_finite_features": 158,
+      "sha256": "a49c8dc6c564714a8a9755c20619ca7b88de39a51b992240600ca9369ed719cb"
+    }
+  ],
+  "completed_partition_semantic_checks": {
+    "unique_stock_day_keys": true,
+    "model_support_equals_quality_listing_and_feature_support": true,
+    "feature_support_threshold": 119,
+    "quality_listing_rows_all_have_feature_support": true
+  },
+  "transient_2021_progress_before_interruption": "Alpha158 batches through 3968 of 4661 instruments were read in memory; no 2021 partition was published.",
+  "scientific_result_changed": false,
+  "threshold_or_model_change_after_feature_read": false,
+  "historical_label_or_forward_return_values_read": false,
+  "lockbox_2024_2025_feature_or_return_values_read": false,
+  "provider_request_issued": false,
+  "credential_loaded": false,
+  "candidate49_historical_backfill_performed": false,
+  "candidate49_ledgers_changed": false,
+  "current_scoring_selection_sizing_or_orders_performed": false
+}

@@ -1,0 +1,72 @@
+{
+  "schema_version": 1,
+  "kind": "a_share_three_day_walkforward_campaign286_finalizer_implementation_freeze",
+  "status": "frozen_after_nine_validation_reads_before_read_only_finalization",
+  "recorded_at": "2026-08-25T11:11:13+08:00",
+  "protocol": {
+    "path": "docs/a_share_three_day_walkforward_campaign_286_preregistration_20260825.json",
+    "sha256": "62bc6eccb6d1240f5f08ce895c05fca4ca2231cf9deca7fda0cf7f1af6ca91af"
+  },
+  "development_implementation_freeze": {
+    "path": "docs/a_share_three_day_walkforward_campaign_286_development_implementation_freeze_20260825.json",
+    "sha256": "c33babdf096b8e09668f37bda1a766d5e25abde7af06f5aabd608663f52e55fd"
+  },
+  "finalization_failure": {
+    "path": "docs/a_share_three_day_walkforward_campaign_286_none_metric_finalization_failure_20260825.json",
+    "sha256": "0b771ee16dbbdbf06c316e58de5a6a9c5297c87b0d263b03f00ba00885742aac"
+  },
+  "finalizer": {
+    "path": "scripts/a_share_three_day_walkforward_campaign286_finalize.py",
+    "sha256": "8266e671640f879ca5294b8d0bdc9c0a0be9e7227d8009cfd07c8280a41fda82"
+  },
+  "tests": {
+    "path": "tests/data_collector_tests/test_a_share_three_day_walkforward_campaign286_finalize.py",
+    "sha256": "9847eb9a9897be7f53b1655ee23a7b84424737c157dd184d7da1d1cadf9fbf0d",
+    "campaign286_combined_result": "26 passed"
+  },
+  "persisted_development_evidence": {
+    "root": "data/experiments/short_horizon/historical_walkforward/campaign_286/walkforward_v1",
+    "development_intent_sha256": "2cc789f1dd509ce09e544daf2245a384c0780751575125d415b980c84ab59ba3",
+    "development_failure_sha256": "a55abf3dd56f70b446171b657638deaeacb6f57e65334733adae16c53fae8295",
+    "prefit_score_record_sha256": [
+      "2cb136713b479ca9159279cce44380921b729443a204c2daa4b4cb048e5b2f1b",
+      "5f35ba8bbe169080ac9fd9c39789606fa832978d307bdd70c184dda5ec40caf5",
+      "c9b561ec53d3e1d4614088400067eada270292410fceba2a58ba01d4ec77b43d"
+    ],
+    "validation_metrics_sha256": [
+      "23460bcff0f61551f11bcead26aebf8011a4f75bb05714f7fb7a54adbc9ac46c",
+      "771e77511a6810cff596f2d859b3d64faf4b8435d6181292da6abb30b3a87d57",
+      "925561c2031172920d8df3c88a406c30668eff78a91ff4d01177fbec9dca7360"
+    ],
+    "validation_score_snapshot_sha256": [
+      "6feda952e45e344b85590ecf7825ad08bf304a54518e663329ed8921bc395699",
+      "c8c475f97ff8adfdeff7dd2f1474b80e341d72389031d06f5fd49b5b861fa328",
+      "88869d82367464c7571abf4958c30d9c4f30227ec04e980f2d737fb585ebd670"
+    ],
+    "model_file_count": 9,
+    "training_metrics_persisted_before_failure": false,
+    "training_metrics_reconstruction_from_return_reread_allowed": false
+  },
+  "frozen_finalization_semantics": {
+    "null_association_metric": "explicit gate failure",
+    "deep_trial_constant_model_is_scientific_rejection": true,
+    "model_refit_or_weight_rescaling": false,
+    "expected_model_trial_count": 3,
+    "expected_validation_return_fold_count_each_trial": 3,
+    "expected_total_model_fold_validation_return_reads": 9,
+    "expected_survivor_count": 0,
+    "lockbox_action": "keep_closed"
+  },
+  "research_boundary": {
+    "historical_training_and_validation_returns_already_read": true,
+    "historical_return_reread_by_finalizer": false,
+    "model_refit_by_finalizer": false,
+    "threshold_or_model_change": false,
+    "lockbox_2024_2025_return_read": false,
+    "provider_request_issued": false,
+    "credential_loaded": false,
+    "candidate49_historical_backfill_performed": false,
+    "candidate49_ledgers_changed": false,
+    "current_scoring_selection_sizing_or_orders_performed": false
+  }
+}
