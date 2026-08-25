@@ -1,0 +1,92 @@
+{
+  "schema_version": 1,
+  "kind": "a_share_three_day_walkforward_campaign293_concept_scouting",
+  "status": "finite_prevalue_catalog_frozen_before_campaign293_candidate_values",
+  "recorded_at": "2026-08-25T15:33:00+08:00",
+  "purpose": "Choose one mechanism-independent deterministic Alpha158 multi-horizon term-structure factor for Campaign293 without reading Campaign293 candidate values, comparator values, daily prices or forward returns.",
+  "authoritative_prestate": {
+    "path": "docs/a_share_three_day_iteration_status_20260825_campaign292_terminal.json",
+    "sha256": "e296337b06bd0e836921a3d2e9b4ef39ce05671553f17f82d8c0684a1bf6dc57"
+  },
+  "finite_prevalue_concept_catalog": [
+    {
+      "catalog_id": "campaign293_concept_001",
+      "name": "alpha158_multi_horizon_peer_rank_smoothness_29g",
+      "decision": "selected_exactly_once",
+      "reason": "The 29 Alpha158 operator families each expose the same frozen 5/10/20/30/60-session horizon ladder. Continuous peer-rank smoothness along those economically ordered ladders measures term-structure agreement, not prior-session persistence, cross-coordinate median consensus, or absolute peer extremity.",
+      "parameters": {
+        "family_count": 29,
+        "horizons": [5, 10, 20, 30, 60],
+        "adjacent_segments_per_complete_family": 4,
+        "minimum_complete_families": 22,
+        "peer_percentile": "(ascending average-tie rank - 0.5) / finite model-support peer count",
+        "score": "1 - mean absolute adjacent-horizon percentile difference over every segment of every complete family",
+        "direction": "higher"
+      }
+    },
+    {
+      "catalog_id": "campaign293_concept_002",
+      "name": "alpha158_multi_horizon_peer_rank_roughness_29g",
+      "decision": "rejected_prevalue",
+      "reason": "Raw roughness is exactly one minus the selected smoothness score and would be a deterministic inversion rather than an independent mechanism."
+    },
+    {
+      "catalog_id": "campaign293_concept_003",
+      "name": "alpha158_multi_horizon_peer_rank_curvature_or_max_gap_grid",
+      "decision": "rejected_prevalue",
+      "reason": "Second differences, maximum gaps, quantiles and trimmed means create an avoidable aggregation grid around the same horizon-structure hypothesis."
+    },
+    {
+      "catalog_id": "campaign293_concept_004",
+      "name": "alpha158_multi_horizon_smooth_family_breadth_threshold_grid",
+      "decision": "rejected_prevalue",
+      "reason": "Counting families below tuned smoothness thresholds would introduce a threshold-search family after seeing values."
+    },
+    {
+      "catalog_id": "campaign293_concept_005",
+      "name": "alpha158_multi_horizon_weighted_family_smoothness",
+      "decision": "rejected_prevalue",
+      "reason": "Operator-family or horizon-segment weights would be arbitrary or return fitted; every complete family and adjacent segment retains weight one."
+    },
+    {
+      "catalog_id": "campaign293_concept_006",
+      "name": "alpha158_multi_horizon_signed_slope_consensus",
+      "decision": "rejected_prevalue",
+      "reason": "A common signed slope across heterogeneous operators would impose an unjustified shared economic orientation; only unsigned adjacent-horizon coherence is frozen."
+    },
+    {
+      "catalog_id": "campaign293_concept_007",
+      "name": "alpha158_random_family_subset_or_minimum_support_search",
+      "decision": "rejected_prevalue",
+      "reason": "Family subsets and support-grid search would create multiplicity. The complete 29-family inventory and the single 75-percent support floor of 22 families are fixed before values."
+    },
+    {
+      "catalog_id": "campaign293_concept_008",
+      "name": "campaign290_campaign291_or_campaign292_retune_or_combination",
+      "decision": "forbidden",
+      "reason": "The three prior Alpha158 factors remain terminal and may appear only as frozen duplicate-control comparators; they may not be inverted, thresholded, reweighted, combined, or rescued."
+    }
+  ],
+  "selected_formula": {
+    "name": "alpha158_multi_horizon_peer_rank_smoothness_29g",
+    "direction": "higher",
+    "formula": "For each accepted session t and each Alpha158 coordinate j in the 29 frozen five-horizon families, rank finite model-support peers by ascending average ties and set u_tij=(rank-0.5)/finite_peer_count. A family is complete for stock i only when all five horizon percentiles are finite. Require at least 22 complete families. Across the four adjacent horizon segments (5,10), (10,20), (20,30), and (30,60) of every complete family, take the equal-weight mean absolute percentile difference d, then score 1-d. Do not use the 13 non-horizon Alpha158 coordinates; do not fill, clip, smooth, sign, threshold, weight, fit, invert, subset, or combine the score.",
+    "economic_hypothesis": "When a stock occupies similar peer-relative positions across short, medium and longer lookbacks within many technical operator families, its technical state is less horizon-fragmented and may diffuse more persistently from the next open through the third close.",
+    "mechanism_separation": {
+      "campaign290": "No prior session, state equality, suspension bridge, lag or persistence count is used.",
+      "campaign291": "No below/equal/above median-state count or cross-operator majority is used; only continuous within-family horizon geometry is measured.",
+      "campaign292": "No absolute distance from the peer median and no mean coordinate extremity is used; Campaign293 measures adjacent-horizon differences inside predefined same-operator families.",
+      "campaign286_to_campaign289": "No return-supervised fit, tree, neural network, random Fourier map or hash cell is used."
+    }
+  },
+  "research_boundary": {
+    "campaign293_candidate_values_read": false,
+    "comparator_values_read": false,
+    "historical_daily_price_or_forward_return_values_read": false,
+    "provider_request_issued": false,
+    "credential_loaded": false,
+    "candidate49_ledgers_changed": false,
+    "current_scoring_selection_sizing_positions_or_orders_performed": false,
+    "investment_advice": false
+  }
+}

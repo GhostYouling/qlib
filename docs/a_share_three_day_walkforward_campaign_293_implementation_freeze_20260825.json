@@ -1,0 +1,60 @@
+{
+  "schema_version": 1,
+  "kind": "a_share_three_day_walkforward_campaign293_implementation_freeze",
+  "status": "exact_single_factor_implementation_frozen_before_campaign293_values",
+  "frozen_at": "2026-08-25T15:42:00+08:00",
+  "purpose": "Bind the exact Campaign293 formula, runner, tests, prior engine dependency and prevalue failure accounting before candidate or comparator values.",
+  "frozen_implementation": {
+    "protocol": "docs/a_share_three_day_walkforward_campaign_293_preregistration_20260825.json",
+    "protocol_sha256": "1987582b7e493e1c30f470d03b1b9856177a8b4c40a2c0a29bf147a624a9317e",
+    "runner": "scripts/a_share_three_day_walkforward_campaign293.py",
+    "runner_sha256": "8985e1ba63470e50bdd1c7c2ced2f83371760cb90353407a1137b0ed25e2c1a0",
+    "test": "tests/data_collector_tests/test_a_share_three_day_walkforward_campaign293.py",
+    "test_sha256": "182947e40b4ee2f2813620f6c0ea8da68ba2693d229a659c786c8badb83f4d07",
+    "runner_dependency": "scripts/a_share_three_day_walkforward_campaign292.py",
+    "runner_dependency_sha256": "3080c653494a2925280948e6d5b0723bbb43d8a52c94e0738b40e0712882ae5c",
+    "path_probe_failure": "docs/a_share_three_day_walkforward_campaign_293_recovery_worktree_candidate49_path_probe_failure_20260825.json",
+    "path_probe_failure_sha256": "6cdecbf53ba33a0da26613526eb1f075c6d0365f4b29913c539e307d6f9de939",
+    "module_invocation": "python -m scripts.a_share_three_day_walkforward_campaign293",
+    "output_root": "data/experiments/short_horizon/historical_walkforward/campaign_293/alpha158_multi_horizon_peer_rank_smoothness_v1",
+    "factor_name": "alpha158_multi_horizon_peer_rank_smoothness_29g",
+    "direction": "higher",
+    "family_count": 29,
+    "ordered_horizons": [5, 10, 20, 30, 60],
+    "minimum_complete_families": 22,
+    "comparator_count": 146,
+    "comparator_order_sha256": "f9abd8653a44f923fc03565b4397d9e1434c660ff6647b7b538b0e65091a8344",
+    "strict_absolute_median_correlation_maximum": 0.8,
+    "minimum_pair_names_per_session": 50,
+    "minimum_pair_sessions_per_comparator": 100,
+    "ordered_early_stop": true,
+    "development_trial_count_if_no_return_passes": 1,
+    "training_return_reads": 0,
+    "validation_fold_count": 3,
+    "purge_signal_sessions": 3,
+    "batch_size": 8192,
+    "alternate_direction_threshold_filter_subset_weight_fit_model_or_combination_search": false
+  },
+  "pre_freeze_validation": {
+    "python_compile": "passed",
+    "ruff": "passed",
+    "synthetic_and_protocol_tests": {
+      "passed": 6,
+      "deselected_plan_until_freeze_exists": 1
+    }
+  },
+  "research_boundary": {
+    "campaign293_candidate_values_read_before_freeze": false,
+    "comparator_values_read_before_freeze": false,
+    "historical_daily_price_or_forward_return_values_read_before_freeze": false,
+    "stress_2024_2025_opened": false,
+    "provider_request_issued": false,
+    "provider_credential_loaded": false,
+    "candidate49_plan_or_run_executed": false,
+    "candidate49_historical_backfill_performed": false,
+    "candidate49_ledgers_changed": false,
+    "second_prospective_candidate_created": false,
+    "current_scoring_selection_sizing_positions_or_orders_performed": false,
+    "investment_advice": false
+  }
+}

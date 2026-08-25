@@ -59,6 +59,10 @@ tags
 # folder for easy local use, but must not be committed.
 /data/
 
+# Reproducible offline research outputs used when the configured data root is
+# mounted read-only. Scientific inputs and terminal receipts remain tracked.
+/.local-research/
+
 # Local atomic pointer to an accepted external A-share data root. The path is
 # machine-specific and must never be committed.
 /.qlib_a_share_data_root

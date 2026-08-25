@@ -1,0 +1,46 @@
+{
+  "schema_version": 1,
+  "kind": "a_share_three_day_walkforward_campaign293_infrastructure_failure",
+  "attempt_id": "campaign293_infrastructure_002",
+  "status": "recorded_output_path_permission_failure_after_numeric_uniqueness_before_any_return_read",
+  "recorded_at": "2026-08-25T15:52:00+08:00",
+  "failed_action": "Publish the v1 no-return audit atomically after completing the frozen candidate snapshot, coverage gate, and all 146 ordered numeric-uniqueness comparisons.",
+  "observed_failure": {
+    "exception": "PermissionError: [Errno 1] Operation not permitted",
+    "failed_artifact": "data/experiments/short_horizon/historical_walkforward/campaign_293/alpha158_multi_horizon_peer_rank_smoothness_v1/no_return_audit.json",
+    "cause": "During the run, the recovery worktree data directory was externally replaced by a symlink to /Volumes/DIsk/Disk-Coding/qlib-data/recovery-worktree, which is readable but outside the writable sandbox.",
+    "external_workspace_change_preserved": true,
+    "tracked_data_deletions_or_symlink_staged": false
+  },
+  "completed_v1_evidence": {
+    "candidate_manifest": "data/experiments/short_horizon/historical_walkforward/campaign_293/alpha158_multi_horizon_peer_rank_smoothness_v1/candidate_snapshot/snapshot_manifest.json",
+    "candidate_manifest_sha256": "375fbc7238c57fe880ab5a97723b2a5b712c57cb094caa8cffbe2e06ad8a0864",
+    "candidate_dataset_sha256": "4420906797ebfa37c6c450c8ab1cc1a2e2ee1692e6956eec5d050e089c57f85b",
+    "quality_rows": 1001781,
+    "eligible_rows": 1001588,
+    "complete_family_count_minimum": 22,
+    "complete_family_count_maximum": 29,
+    "ordered_numeric_comparators_completed": 146,
+    "ordered_numeric_comparators_passed": 146,
+    "maximum_absolute_median_correlation": 0.2744591759439181,
+    "maximum_correlation_comparator": "alpha158_same_session_peer_rank_absolute_extremity_breadth_158f"
+  },
+  "narrow_recovery": {
+    "action": "Refreeze only the output root under the ignored, writable .local-research directory and restart the exact campaign from zero as v2.",
+    "v1_partial_output_reused": false,
+    "factor_formula_direction_support_filters_comparators_threshold_costs_folds_purge_gates_or_decision_changed": false,
+    "development_trial_count_changed": false
+  },
+  "research_boundary": {
+    "campaign293_candidate_values_read": true,
+    "comparator_values_read": true,
+    "historical_daily_price_or_forward_return_values_read": false,
+    "development_trials_consumed": 0,
+    "stress_2024_2025_opened": false,
+    "provider_request_issued": false,
+    "credential_value_or_digest_read": false,
+    "candidate49_ledgers_changed": false,
+    "current_scoring_selection_sizing_positions_or_orders_performed": false,
+    "investment_advice": false
+  }
+}

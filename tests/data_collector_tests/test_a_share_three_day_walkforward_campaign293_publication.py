@@ -5,21 +5,21 @@ import json
 from pathlib import Path
 from typing import Any
 
-from scripts import a_share_three_day_walkforward_campaign292 as campaign
+from scripts import a_share_three_day_walkforward_campaign293 as campaign
 
 
 REPO_ROOT = Path(__file__).resolve().parents[2]
 STATE_PATH = (
     REPO_ROOT
-    / "docs/a_share_three_day_iteration_status_20260825_campaign292_terminal.json"
+    / "docs/a_share_three_day_iteration_status_20260825_campaign293_terminal.json"
 )
 POLICY_PATH = (
     REPO_ROOT
-    / "docs/a_share_three_day_walkforward_future_numeric_comparison_eligibility_policy_v422_20260825.json"
+    / "docs/a_share_three_day_walkforward_future_numeric_comparison_eligibility_policy_v423_20260825.json"
 )
 DOCUMENTED_TERMINAL_PATH = (
     REPO_ROOT
-    / "docs/a_share_three_day_walkforward_campaign_292_terminal_result_20260825.json"
+    / "docs/a_share_three_day_walkforward_campaign_293_terminal_result_20260825.json"
 )
 
 
@@ -45,7 +45,7 @@ def _assert_binding(binding: dict[str, Any]) -> None:
     assert _sha256(path) == binding["sha256"]
 
 
-def test_campaign292_terminal_publication_bindings_and_semantics() -> None:
+def test_campaign293_terminal_publication_bindings_and_semantics() -> None:
     state = _load(STATE_PATH)
     policy = _load(POLICY_PATH)
     documented = _load(DOCUMENTED_TERMINAL_PATH)
@@ -58,7 +58,7 @@ def test_campaign292_terminal_publication_bindings_and_semantics() -> None:
         "terminal_result",
         "terminal_report",
         "handoff",
-        "numeric_policy_v422",
+        "numeric_policy_v423",
         "local_terminal_result",
         "terminal_trial_ledger",
         "library_order_reconstruction_receipt",
@@ -74,32 +74,26 @@ def test_campaign292_terminal_publication_bindings_and_semantics() -> None:
     assert local_terminal["validation_fold_count"] == 3
     assert local_terminal["lockbox_2024_2025_returns_open"] is False
     assert no_return["coverage"]["gate_passed"] is True
-    assert no_return["ordered_uniqueness"]["all_145_passed"] is True
+    assert no_return["ordered_uniqueness"]["all_146_passed"] is True
     assert no_return["historical_daily_price_or_forward_return_values_read"] is False
-    assert ledger["entry_count"] == 11
-    assert documented["effective_accounting"]["campaign292_total_attempts"] == 12
-    assert (
-        documented["effective_accounting"][
-            "campaign292_terminal_trial_ledger_entries"
-        ]
-        == 11
-    )
+    assert ledger["entry_count"] == 10
+    assert documented["effective_accounting"]["campaign293_total_attempts"] == 13
     assert documented["development_result"]["survivor_count"] == 0
     assert state["scientific_state"]["current_strategy_deployable"] is False
 
     library = policy["complete_historical_feature_library"]
     comparators = policy["numerical_comparator_eligibility"]
-    assert library["factor_definition_count"] == 165
+    assert library["factor_definition_count"] == 166
     assert library["order_sha256"] == (
-        "bf2f4640dc232a837690717e9be25eb824007cde801df6704756e72dab82c127"
+        "57662d72c897fc701f40a97e04946ebd9728b113587c7ad4f15c758be6ace06f"
     )
-    assert comparators["eligible_numeric_comparator_count"] == 146
+    assert comparators["eligible_numeric_comparator_count"] == 147
     assert comparators["order_sha256"] == (
-        "f9abd8653a44f923fc03565b4397d9e1434c660ff6647b7b538b0e65091a8344"
+        "5a771c4f9bd028b352194ec4779acb15b38ab6ab23a935458660b2024c7914c1"
     )
 
 
-def test_campaign292_candidate49_and_production_boundaries_unchanged() -> None:
+def test_campaign293_candidate49_and_production_boundaries_unchanged() -> None:
     state = _load(STATE_PATH)
     policy = _load(POLICY_PATH)
     assert _sha256(campaign.SIGNAL_LEDGER_PATH) == (
@@ -120,20 +114,22 @@ def test_campaign292_candidate49_and_production_boundaries_unchanged() -> None:
     )
 
 
-def test_campaign292_reports_are_unified_and_handoff_is_latest() -> None:
-    current = (
-        REPO_ROOT / "data/experiments/short_horizon/current_research_report.md"
+def test_campaign293_handoff_is_latest_and_external_data_change_is_excluded() -> None:
+    handoff = (
+        REPO_ROOT / "docs/a_share_three_day_strategy_handoff_20260825.md"
     ).read_text(encoding="utf-8")
-    three_day = (
-        REPO_ROOT / "data/experiments/short_horizon/three_day_research_report.md"
+    campaign_handoff = (
+        REPO_ROOT / "docs/a_share_three_day_strategy_handoff_20260825_campaign293.md"
     ).read_text(encoding="utf-8")
-    campaign292_handoff = (
-        REPO_ROOT
-        / "docs/a_share_three_day_strategy_handoff_20260825_campaign292.md"
-    ).read_text(encoding="utf-8")
-    marker = "## Campaign292：Alpha158 同日同行百分位极端度广度终止"
-    assert marker in current
-    assert marker in three_day
-    assert current[current.index(marker) :] == three_day[three_day.index(marker) :]
-    assert "Campaign292" in campaign292_handoff
-    assert "Campaign293" in campaign292_handoff
+    state = _load(STATE_PATH)
+
+    assert "截至 Campaign293" in handoff
+    assert "a_share_three_day_strategy_handoff_20260825_campaign293.md" in handoff
+    assert "Campaign294" in handoff
+    assert "166/147" in handoff
+    assert "data` 被外部切换" in campaign_handoff
+    assert state["workspace_boundary"]["data_path_is_external_symlink"] is True
+    assert (
+        state["workspace_boundary"]["external_data_change_may_be_staged_or_reverted"]
+        is False
+    )

@@ -1,0 +1,23 @@
+{
+  "schema_version": 1,
+  "kind": "a_share_three_day_walkforward_campaign293_infrastructure_failure",
+  "attempt_id": "campaign293_infrastructure_004",
+  "status": "recorded_post_terminal_predecessor_publication_test_latest_handoff_assumption_failure",
+  "recorded_at": "2026-08-25T16:14:00+08:00",
+  "failed_action": "Run the combined Campaign292 and Campaign293 regression/publication suites after updating the dated generic handoff pointer to Campaign293.",
+  "observed_failure": "22 tests passed and one Campaign292 publication test failed because it required the mutable generic handoff to contain the literal title '截至 Campaign292'.",
+  "narrow_correction": "Make the Campaign292 test validate its immutable campaign-specific handoff, while the Campaign293 publication test exclusively validates that the mutable generic pointer now names Campaign293.",
+  "scientific_or_terminal_semantics_changed": false,
+  "research_boundary": {
+    "candidate_or_comparator_values_newly_read": false,
+    "historical_daily_price_or_forward_return_values_newly_read": false,
+    "development_trials_consumed": 0,
+    "terminal_artifacts_changed": false,
+    "stress_2024_2025_opened": false,
+    "provider_request_issued": false,
+    "credential_value_or_digest_read": false,
+    "candidate49_ledgers_changed": false,
+    "current_scoring_selection_sizing_positions_or_orders_performed": false,
+    "investment_advice": false
+  }
+}

@@ -1,0 +1,41 @@
+{
+  "schema_version": 1,
+  "kind": "a_share_three_day_walkforward_campaign293_library_order_reconstruction_receipt",
+  "status": "read_only_authoritative_source_reconstruction_verified_and_campaign293_appended_once",
+  "recorded_at": "2026-08-25T16:04:00+08:00",
+  "operation": {
+    "working_directory": "/Volumes/DIsk/Disk-Coding/qlib",
+    "mode": "read_only_metadata_reconstruction_with_PYTHONDONTWRITEBYTECODE",
+    "source_module": "scripts/a_share_three_day_walkforward_campaign263_features.py",
+    "source_module_sha256": "f4882d4c29877b05a2b7ccffe540a1e97f0917e252941d2484b03720b1426124",
+    "digest_semantics": "SHA-256 of canonical JSON [[name, score_direction], ...]",
+    "source_repository_files_changed": false
+  },
+  "predecessor_verification": {
+    "complete_definition_count": 165,
+    "complete_definition_order_sha256": "bf2f4640dc232a837690717e9be25eb824007cde801df6704756e72dab82c127",
+    "numeric_comparator_count": 146,
+    "numeric_comparator_order_sha256": "f9abd8653a44f923fc03565b4397d9e1434c660ff6647b7b538b0e65091a8344",
+    "matches_policy_v422": true
+  },
+  "campaign293_append": {
+    "item": {
+      "name": "alpha158_multi_horizon_peer_rank_smoothness_29g",
+      "score_direction": "higher"
+    },
+    "complete_definition_count": 166,
+    "complete_definition_order_sha256": "57662d72c897fc701f40a97e04946ebd9728b113587c7ad4f15c758be6ace06f",
+    "numeric_comparator_count": 147,
+    "numeric_comparator_order_sha256": "5a771c4f9bd028b352194ec4779acb15b38ab6ab23a935458660b2024c7914c1"
+  },
+  "research_boundary": {
+    "candidate_or_comparator_values_read": false,
+    "historical_daily_price_or_forward_return_values_read": false,
+    "stress_2024_2025_opened": false,
+    "provider_request_issued": false,
+    "provider_credential_loaded": false,
+    "candidate49_ledgers_changed": false,
+    "current_scoring_selection_sizing_positions_or_orders_performed": false,
+    "investment_advice": false
+  }
+}

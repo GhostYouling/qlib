@@ -1,0 +1,26 @@
+{
+  "schema_version": 1,
+  "kind": "a_share_three_day_walkforward_campaign293_infrastructure_failure",
+  "attempt_id": "campaign293_infrastructure_001",
+  "status": "recorded_read_only_path_assumption_failure_before_campaign293_values",
+  "recorded_at": "2026-08-25T15:29:00+08:00",
+  "failed_action": "A read-only verification command assumed Candidate49 ignored ledgers and two guessed Campaign292 test filenames were present under the recovery worktree.",
+  "observed_failure": "The recovery worktree does not copy the ignored Candidate49 ledgers, and the guessed terminal test filenames do not exist; the authoritative ledgers remain under /Volumes/DIsk/Disk-Coding/qlib and the actual tests are test_a_share_three_day_walkforward_campaign292.py plus its publication test.",
+  "narrow_correction": "Resolve Candidate49 paths from the frozen Campaign290/Campaign292 runner binding, validate their byte hashes and empty-entry semantics in the authoritative source repository, and use the actual tracked test names.",
+  "corrected_evidence": {
+    "candidate49_signal_ledger_sha256": "5193f00d7f36da003f53cec387900da4c3d002299f5dfcfc1a95eaa199ed3a79",
+    "candidate49_execution_ledger_sha256": "d57a3e61eac969e42cafa418ccd8c0a5ee65dcf69da145bb2c096c2a02a2ea4f",
+    "candidate49_signal_entry_count": 0,
+    "candidate49_execution_entry_count": 0,
+    "campaign292_actual_tests": "13 passed"
+  },
+  "research_boundary": {
+    "campaign293_candidate_values_read": false,
+    "comparator_values_read": false,
+    "historical_daily_price_or_forward_return_values_read": false,
+    "provider_request_issued": false,
+    "credential_value_or_digest_read": false,
+    "candidate49_ledgers_changed": false,
+    "filesystem_side_effect_before_this_record": false
+  }
+}
