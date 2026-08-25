@@ -1,0 +1,42 @@
+{
+  "schema_version": 1,
+  "kind": "a_share_three_day_walkforward_campaign296_comparator_direction_reconstruction_receipt",
+  "status": "read_only_authoritative_metadata_reconstruction_verified_before_campaign296_values",
+  "recorded_at": "2026-08-25T18:09:54+08:00",
+  "authoritative_binding": {
+    "campaign295_library_order_reconstruction_receipt_path": "docs/a_share_three_day_walkforward_campaign_295_library_order_reconstruction_receipt_20260825.json",
+    "campaign295_library_order_reconstruction_receipt_sha256": "9c1421e1f17624b3b8f5a7d9aa2d5f27e55ea1bb947406c0546b0804ae0e1811",
+    "working_directory": "/Volumes/DIsk/Disk-Coding/qlib",
+    "mode": "read_only_metadata_reconstruction_with_PYTHONDONTWRITEBYTECODE",
+    "source_module": "scripts/a_share_three_day_walkforward_campaign263_features.py",
+    "source_module_sha256": "f4882d4c29877b05a2b7ccffe540a1e97f0917e252941d2484b03720b1426124",
+    "reconstructed_complete_definition_count_at_campaign263": 162,
+    "missing_requested_comparator_names": []
+  },
+  "campaign296_comparator_metadata": {
+    "name_count": 148,
+    "name_order_source": "frozen numeric140 feature_names followed by the eight preregistered snapshot comparators",
+    "score_direction_source": "Campaign263 reconstructed complete definitions for the first 143 names and the already-frozen higher direction for Campaign290, Campaign291, Campaign292, Campaign293 and Campaign295",
+    "lower_direction_items": [
+      {
+        "ordinal": 4,
+        "name": "intraday_realized_volatility",
+        "score_direction": "lower"
+      }
+    ],
+    "all_other_items_score_direction": "higher",
+    "order_digest_semantics": "SHA-256 of canonical JSON [[name, score_direction], ...]",
+    "numeric_comparator_order_sha256": "b6b8c0e6f786e59c102583eccfb54e5bfaec4ebb0c79267a001db637396123d9",
+    "matches_policy_v425": true
+  },
+  "research_boundary": {
+    "campaign296_candidate_values_read": false,
+    "comparator_values_read": false,
+    "historical_daily_price_or_forward_return_values_read": false,
+    "provider_request_issued": false,
+    "provider_credential_value_or_digest_read": false,
+    "candidate49_ledgers_changed": false,
+    "current_scoring_selection_sizing_positions_or_orders_performed": false,
+    "investment_advice": false
+  }
+}

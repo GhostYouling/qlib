@@ -1,0 +1,106 @@
+{
+  "schema_version": 1,
+  "kind": "a_share_three_day_walkforward_campaign296_concept_scouting",
+  "status": "finite_prevalue_catalog_frozen_before_campaign296_candidate_or_comparator_values",
+  "recorded_at": "2026-08-25T17:57:00+08:00",
+  "purpose": "Choose exactly one deterministic, no-fit Alpha158 trend-linearity mechanism for Campaign296 without reading Campaign296 candidate values, comparator values, daily prices or forward returns.",
+  "authoritative_prestate": {
+    "path": "docs/a_share_three_day_iteration_status_20260825_campaign295_terminal.json",
+    "sha256": "b21c4f3a72c1cd7816a74b24c10ee2177a140fd7247fdc688682021bc455b6e9"
+  },
+  "library_boundary": {
+    "complete_definition_count": 167,
+    "complete_definition_order_sha256": "95ba4f3a305d3144310b56e95f1b873dd7eca66dc5cb99c3355d42154f449841",
+    "eligible_numeric_comparator_count": 148,
+    "eligible_numeric_comparator_order_sha256": "b6b8c0e6f786e59c102583eccfb54e5bfaec4ebb0c79267a001db637396123d9",
+    "campaign295_appended_for_duplicate_control_only": true
+  },
+  "finite_prevalue_concept_catalog": [
+    {
+      "catalog_id": "campaign296_concept_001",
+      "name": "alpha158_linear_trend_quality_10d",
+      "decision": "selected_exactly_once",
+      "reason": "BETA10 is the ten-session close-price regression slope divided by current close, while RSQR10 is the corresponding coefficient of determination. Their product preserves the signed slope and attenuates it when the ten-session path is poorly described by one line. This is an own-stock trend-linearity mechanism with no volume confirmation, gain/loss balance, peer rank, cross-horizon geometry, event state or fitted return model.",
+      "parameters": {
+        "signed_slope_feature": "BETA10",
+        "linearity_feature": "RSQR10",
+        "fixed_horizon_sessions": 10,
+        "score": "BETA10 * RSQR10",
+        "rsquare_valid_interval": "finite and inside [0,1] within 1e-6 numerical tolerance",
+        "beta_rule": "finite with no clipping, winsorization, rank transform or bound",
+        "direction": "higher",
+        "fit": "none"
+      }
+    },
+    {
+      "catalog_id": "campaign296_concept_002",
+      "name": "alpha158_raw_beta10",
+      "decision": "rejected_prevalue",
+      "reason": "BETA10 alone is an existing raw Alpha158 coordinate and omits the selected linear-fit-quality hypothesis."
+    },
+    {
+      "catalog_id": "campaign296_concept_003",
+      "name": "alpha158_raw_rsqr10",
+      "decision": "rejected_prevalue",
+      "reason": "RSQR10 alone is unsigned and would give the same preference to a smooth decline and a smooth advance; it is also an existing raw Alpha158 coordinate."
+    },
+    {
+      "catalog_id": "campaign296_concept_004",
+      "name": "alpha158_linear_trend_quality_affine_or_power_grid",
+      "decision": "rejected_prevalue",
+      "reason": "Using sqrt(RSQR10), RSQR10 squared, an affine floor, a threshold, sign agreement or a fitted exponent would create a postulated transform search. The direct product is frozen."
+    },
+    {
+      "catalog_id": "campaign296_concept_005",
+      "name": "alpha158_linear_trend_quality_horizon_grid",
+      "decision": "rejected_prevalue",
+      "reason": "Trying 5, 20, 30 or 60 sessions, averaging horizons or selecting the best horizon would create a horizon search. Ten sessions is frozen once before values because it is the shortest non-weekly Alpha158 regression horizon and remains distinct from Campaign295's 20-session price-volume mechanism."
+    },
+    {
+      "catalog_id": "campaign296_concept_006",
+      "name": "alpha158_residual_or_slope_residual_interaction",
+      "decision": "rejected_prevalue",
+      "reason": "RESI10 sign, magnitude, absolute value and its possible interaction with BETA10 or RSQR10 introduce a separate terminal-deviation hypothesis and multiple discretionary transforms."
+    },
+    {
+      "catalog_id": "campaign296_concept_007",
+      "name": "campaign295_retune_reverse_rehorizon_threshold_reweight_or_combination",
+      "decision": "forbidden",
+      "reason": "Campaign295 is terminal. Its SUMD20 and CORD20 formula may not be inverted, re-horizoned, thresholded, reweighted, combined or otherwise rescued. Campaign296 uses neither input."
+    },
+    {
+      "catalog_id": "campaign296_concept_008",
+      "name": "alpha158_peer_rank_state_consensus_extremity_persistence_or_horizon_geometry_refresh",
+      "decision": "forbidden",
+      "reason": "Campaign290--294 already consumed that mechanism cluster. Campaign296 uses raw within-stock regression coordinates and no peer or cross-horizon state."
+    },
+    {
+      "catalog_id": "campaign296_concept_009",
+      "name": "alpha158_supervised_tree_mlp_kernel_hash_or_weight_search",
+      "decision": "forbidden",
+      "reason": "Campaign286--289 and later historical model campaigns already consumed fitted or randomized model families. Campaign296 contains exactly one deterministic weight-1 factor and no training return read."
+    }
+  ],
+  "selected_formula": {
+    "name": "alpha158_linear_trend_quality_10d",
+    "direction": "higher",
+    "formula": "For each quality/listing-eligible Alpha158 row with frozen model support, require finite BETA10 and RSQR10 and require RSQR10 inside [0,1] within 1e-6. Set score=BETA10*RSQR10. Do not fill, clip, winsorize, rank, sign, threshold, lag, fit, invert, subset, average across horizons or combine the score.",
+    "economic_hypothesis": "A positive ten-session normalized price slope is more credible when a single linear trend explains more of the path, while a noisy slope should be attenuated. A smooth positive trend may persist from the next accepted open through the third accepted close; a smooth decline remains negative rather than being relabelled as favorable.",
+    "mechanism_separation": {
+      "campaign295": "No SUMD, CORD, volume, gain/loss balance or price-volume confirmation is used.",
+      "campaign290_to_campaign294": "No session median, peer rank, state count, persistence, extremity, cross-horizon difference, dispersion or consensus is used.",
+      "campaign286_to_campaign289": "No return-supervised fit, tree, neural network, random Fourier feature or hash cell is used.",
+      "minute_and_event_library": "No minute bar, market peer, activity profile, quarterly value, disclosure timing or provider event field is used."
+    }
+  },
+  "research_boundary": {
+    "campaign296_candidate_values_read": false,
+    "comparator_values_read": false,
+    "historical_daily_price_or_forward_return_values_read": false,
+    "provider_request_issued": false,
+    "credential_value_or_digest_read": false,
+    "candidate49_ledgers_changed": false,
+    "current_scoring_selection_sizing_positions_or_orders_performed": false,
+    "investment_advice": false
+  }
+}

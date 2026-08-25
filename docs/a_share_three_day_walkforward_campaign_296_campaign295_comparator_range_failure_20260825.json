@@ -1,0 +1,49 @@
+{
+  "schema_version": 1,
+  "kind": "a_share_three_day_walkforward_campaign296_infrastructure_failure",
+  "attempt_id": "campaign296_infrastructure_004",
+  "status": "terminal_infrastructure_failure_preserved_no_return_trial_consumed",
+  "recorded_at": "2026-08-25T18:17:15+08:00",
+  "operation": {
+    "working_directory": "/Users/niyufei/Coding/qlib/recovery-worktree",
+    "argv": ["python", "-m", "scripts.a_share_three_day_walkforward_campaign296", "run", "--confirm-run"],
+    "exit_code": 1,
+    "failure_class": "Campaign292Error",
+    "failure_message": "alpha158_price_volume_directional_confirmation_20d comparator range changed",
+    "failed_comparator_ordinal": 148,
+    "comparators_declared": 148,
+    "comparators_evaluated": 147,
+    "comparators_passed": 147,
+    "coverage_gate_passed": true,
+    "maximum_observed_absolute_median_daily_rank_correlation_through_ordinal_147": 0.26383524457221524,
+    "cause": "The inherited Campaign292 prior-campaign helper hard-codes every prior candidate comparator to [0,1], while the frozen Campaign295 directional-confirmation factor legitimately occupies [-1,1]. The failure occurred after alignment and value loading but before its rank-correlation result was produced.",
+    "safe_continuation": "Preserve the v1 partial output, add a local scientifically identical prior-snapshot comparison helper with an explicit frozen range, retain [0,1] for Campaign290-Campaign293 and use [-1,1] only for Campaign295, bind the v1 candidate snapshot and this failure in a new implementation freeze, and rerun the identical factor in a new v2 output root."
+  },
+  "partial_output": {
+    "path": ".local-research/campaign_296/alpha158_linear_trend_quality_10d_v1",
+    "candidate_snapshot_path": ".local-research/campaign_296/alpha158_linear_trend_quality_10d_v1/candidate_snapshot/snapshot_manifest.json",
+    "candidate_snapshot_sha256": "3739639fe9e986cb0611e4d03bee10a3adce0b227f25676f33093c1da1bf4a2d",
+    "candidate_dataset_sha256": "7568a3ec84db3eb4089809a002382423835e18044b5bedd8017c6671a8266cbb",
+    "candidate_snapshot_complete": true,
+    "candidate_eligible_rows": 1001402,
+    "quality_listing_rows": 1001781,
+    "no_return_audit_written": false,
+    "terminal_result_written": false,
+    "preserve_without_reuse_or_overwrite": true
+  },
+  "scientific_effect": {
+    "factor_formula_direction_horizon_input_features_tolerance_filters_costs_gates_or_folds_changed": false,
+    "campaign296_candidate_values_read": true,
+    "comparator_values_read": true,
+    "historical_daily_price_or_forward_return_values_read": false,
+    "development_trial_consumed": false,
+    "lockbox_2024_2025_opened": false
+  },
+  "research_boundary": {
+    "provider_request_issued": false,
+    "provider_credential_value_or_digest_read": false,
+    "candidate49_ledgers_changed": false,
+    "current_scoring_selection_sizing_positions_or_orders_performed": false,
+    "investment_advice": false
+  }
+}

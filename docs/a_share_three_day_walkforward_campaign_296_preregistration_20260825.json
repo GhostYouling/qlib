@@ -1,0 +1,187 @@
+{
+  "schema_version": 1,
+  "kind": "a_share_three_day_walkforward_campaign296_preregistration",
+  "status": "fully_frozen_before_campaign296_candidate_comparator_daily_price_or_forward_return_values",
+  "frozen_at": "2026-08-25T17:59:00+08:00",
+  "purpose": "Freeze Campaign296's single deterministic Alpha158 ten-session linear-trend-quality factor, source identities, coverage and ordered 148-comparator gates, exact no-fit 2019-2023 development trial, costs and survival gates before any Campaign296 value read.",
+  "authoritative_inputs": {
+    "historical_walkforward_policy": {
+      "path": "docs/a_share_three_day_historical_walkforward_research_policy_20260727.json",
+      "sha256": "38426d6161b9bfed323c58caba18feca668b8c9d53e294951a8ba90c01a798bb"
+    },
+    "campaign295_terminal_state": {
+      "path": "docs/a_share_three_day_iteration_status_20260825_campaign295_terminal.json",
+      "sha256": "b21c4f3a72c1cd7816a74b24c10ee2177a140fd7247fdc688682021bc455b6e9"
+    },
+    "numeric_comparison_policy_v425": {
+      "path": "docs/a_share_three_day_walkforward_future_numeric_comparison_eligibility_policy_v425_20260825.json",
+      "sha256": "bc8fe1f71a8361422630fca3bbdee15787d51b94cb8b08cd0297c0183233de54"
+    },
+    "library_order_reconstruction_receipt": {
+      "path": "docs/a_share_three_day_walkforward_campaign_295_library_order_reconstruction_receipt_20260825.json",
+      "sha256": "9c1421e1f17624b3b8f5a7d9aa2d5f27e55ea1bb947406c0546b0804ae0e1811"
+    },
+    "concept_catalog": {
+      "path": "docs/a_share_three_day_walkforward_campaign_296_concept_scouting_20260825.json",
+      "sha256": "27a43e50306f5a5ab527f383e192baad9d6e2dd6475b1bdef1950e8931dacfe9"
+    }
+  },
+  "source_bindings": {
+    "alpha158_design": {
+      "path": "data/experiments/short_horizon/historical_walkforward/campaign_286/alpha158_development_design_recovery_v3/snapshot_manifest.json",
+      "sha256": "31cba0be801ac1421ef9555b862575089589ec08397c1420be3fc4f43b111d4e",
+      "dataset_sha256": "714f4ccbdf4bfbaccfd04f543ec8c6a0bc345d3cc567ab621d01905130c46252",
+      "years": [2019, 2020, 2021, 2022, 2023],
+      "feature_count": 158,
+      "minimum_finite_features": 119,
+      "required_feature_names": ["BETA10", "RSQR10"]
+    },
+    "numeric140_design": {
+      "path": "/Volumes/DIsk/qlib-a-share-tushare-1m/derived/a_share/rich/tushare/minute_walkforward_campaign132_design_matrix/tushare_stk_mins_1m_2019_2025_ea0cbb8f_walkforward_campaign132_numeric140_design_v1/snapshot_manifest.json",
+      "sha256": "043c17fea89f3b0956d643a7c6e3f4d73a11403b967213d2d57539a6a8316a49",
+      "dataset_sha256": "12ce3a64b5e13581392ded9890e2064db4ccca3945da3eb8ad7752c95366a9fc",
+      "development_years_only": [2019, 2020, 2021, 2022, 2023]
+    },
+    "campaign136_snapshot": {
+      "path": "/Volumes/DIsk/Disk-Coding/qlib/data/experiments/short_horizon/historical_walkforward/campaign_136/source_snapshot_v1/snapshot_manifest.json",
+      "sha256": "9a5c9ff824de22af6595d312b76230a3e4cf283c6e1d42e882aae96d11367b93",
+      "dataset_sha256": "c84b1f85eec3731736a4da411691c144a70a81e38b5013e5aeea5370f3c417ec"
+    },
+    "campaign146_snapshot": {
+      "path": "/Volumes/DIsk/qlib-a-share-tushare-1m/derived/a_share/rich/tushare/minute_walkforward_campaign146_feature_library/tushare_stk_mins_1m_2019_2025_ea0cbb8f_walkforward_campaign146_feature_library_v1/snapshot_manifest.json",
+      "sha256": "951872dbdcfa2b00e9603d3be44b059c7d24204fba5757551afbcd46ee8a3f74",
+      "dataset_sha256": "7278ae76407215eab75e9ff0119d8c6a073e4d7ac9df5b7d349bc09e6cf889c4"
+    },
+    "campaign263_snapshot": {
+      "path": "/Volumes/DIsk/qlib-a-share-tushare-1m/derived/a_share/rich/tushare/minute_walkforward_campaign263_feature_library/tushare_stk_mins_1m_2019_2025_ea0cbb8f_walkforward_campaign263_feature_library_v1/snapshot_manifest.json",
+      "sha256": "fea163cfc8ec9fd2d389597ea33579b7cb1e0becd60a23be74694c7cddcefdc4",
+      "dataset_sha256": "e9ee03f036cedd5a98badd64533ff9605e0d2bab046392a3ccd2afcbc3a225e7"
+    },
+    "campaign290_snapshot": {
+      "path": "data/experiments/short_horizon/historical_walkforward/campaign_290/alpha158_session_median_state_persistence_v1/candidate_snapshot/snapshot_manifest.json",
+      "sha256": "9f0ed747fae4011f5562354b514a3c761980f6a8a2ce99bef291a4b47706be51",
+      "dataset_sha256": "f8085b78808aa4eb673b0ce1421fb8ec579308a772c50b20f424bbc2f6ab70a7",
+      "factor_name": "alpha158_session_median_state_persistence_1d"
+    },
+    "campaign291_snapshot": {
+      "path": "data/experiments/short_horizon/historical_walkforward/campaign_291/alpha158_session_median_state_consensus_strength_v1/candidate_snapshot/snapshot_manifest.json",
+      "sha256": "7bf98297af41de8791ca4cc0fcccf2756a343d2e3e6672bc22fd747137b4a683",
+      "dataset_sha256": "f7c51617d54c5370d39e5bc204babb6c306ff981b7f15282a91cb90fafd3a05d",
+      "factor_name": "alpha158_session_median_state_consensus_strength_1d"
+    },
+    "campaign292_snapshot": {
+      "path": "data/experiments/short_horizon/historical_walkforward/campaign_292/alpha158_session_peer_rank_extremity_breadth_v2/candidate_snapshot/snapshot_manifest.json",
+      "sha256": "28e3887305ad2752869e516c47dd75ac0775b97bcd5095e8d61ff19a728ba364",
+      "dataset_sha256": "f5e57256d4b794b6efeee9a56ea86d4ef399844048a09cc522a085008d0f0370",
+      "factor_name": "alpha158_session_peer_rank_extremity_breadth_1d"
+    },
+    "campaign293_snapshot": {
+      "path": ".local-research/campaign_293/alpha158_multi_horizon_peer_rank_smoothness_v2/candidate_snapshot/snapshot_manifest.json",
+      "sha256": "4e793126027aab62b2ee87a927c182f8635ac761e9c8b2aebfd4c37a4cc26beb",
+      "dataset_sha256": "4420906797ebfa37c6c450c8ab1cc1a2e2ee1692e6956eec5d050e089c57f85b",
+      "factor_name": "alpha158_multi_horizon_peer_rank_smoothness_29g"
+    },
+    "campaign295_snapshot": {
+      "path": ".local-research/campaign_295/alpha158_price_volume_directional_confirmation_20d_v2/candidate_snapshot/snapshot_manifest.json",
+      "sha256": "04051eb8cabd52ded144612dfc87dc1750ac68dbc5e2e0df709611e006dfde61",
+      "dataset_sha256": "1e87cd23894069d0923fb153c3dc81355e50ae9cb5e63ad6cd867fc466f82b98",
+      "factor_name": "alpha158_price_volume_directional_confirmation_20d"
+    }
+  },
+  "factor_library": [
+    {
+      "feature_id": "wf296_f01",
+      "name": "alpha158_linear_trend_quality_10d",
+      "direction": "higher",
+      "formula": "For each frozen Alpha158 model-support row, require finite BETA10 and RSQR10 with RSQR10 inside [0,1] within 1e-6, then set score=BETA10*RSQR10.",
+      "parameters": {
+        "signed_slope_feature": "BETA10",
+        "linearity_feature": "RSQR10",
+        "fixed_horizon_sessions": 10,
+        "score": "BETA10 * RSQR10",
+        "input_numerical_tolerance": 0.000001,
+        "missing_rule": "missing if either input is nonfinite, RSQR10 is outside its theoretical interval beyond tolerance, or frozen Alpha158 model support is false; never fill, clip, winsorize, bound BETA10 or repair",
+        "fit": "none"
+      }
+    }
+  ],
+  "coverage_first_gate": {
+    "domain": "point-in-time quality_listing_eligible rows in the frozen Alpha158 design; candidate eligibility additionally requires frozen model support plus finite BETA10 and valid finite RSQR10",
+    "holding_period_sessions": 3,
+    "median_daily_coverage_minimum": 0.95,
+    "p05_daily_coverage_minimum": 0.90,
+    "p05_eligible_equity_count_minimum": 50,
+    "non_overlapping_three_signal_session_cohorts_minimum": 200,
+    "observed_calendar_years_minimum": 5,
+    "must_pass_before_comparator_values": true
+  },
+  "ordered_numeric_uniqueness": {
+    "comparator_count": 148,
+    "comparator_order_sha256": "b6b8c0e6f786e59c102583eccfb54e5bfaec4ebb0c79267a001db637396123d9",
+    "first_140_name_order_source": "numeric140_design.feature_names",
+    "last_eight": [
+      {"name": "daily_realized_price_basis_adjustment_magnitude_1d", "score_direction": "higher"},
+      {"name": "intraday_return_amount_cross_spectral_phase_lead_59f", "score_direction": "higher"},
+      {"name": "intraday_amount_profile_spectral_entropy_60f", "score_direction": "higher"},
+      {"name": "alpha158_session_median_state_persistence_1d", "score_direction": "higher"},
+      {"name": "alpha158_session_median_state_consensus_strength_1d", "score_direction": "higher"},
+      {"name": "alpha158_session_peer_rank_extremity_breadth_1d", "score_direction": "higher"},
+      {"name": "alpha158_multi_horizon_peer_rank_smoothness_29g", "score_direction": "higher"},
+      {"name": "alpha158_price_volume_directional_confirmation_20d", "score_direction": "higher"}
+    ],
+    "minimum_pair_names_per_session": 50,
+    "minimum_pair_sessions_per_comparator": 100,
+    "strict_absolute_median_maximum": 0.8,
+    "ordered_early_stop": true,
+    "all_148_must_pass": true,
+    "insufficient_overlap_fails_closed": true
+  },
+  "development_trial": {
+    "trial_id": "wf296_alpha158_linear_trend_quality_10d_single_higher",
+    "factor_names": ["alpha158_linear_trend_quality_10d"],
+    "weights": [1.0],
+    "model_fitting": false,
+    "training_return_reads": 0,
+    "alternate_direction_horizon_transform_threshold_filter_weight_fit_model_or_combination_search": false,
+    "walkforward_folds": [
+      {"fold": 1, "training": ["2019-01-02", "2020-12-31"], "validation": ["2021-01-01", "2021-12-31"]},
+      {"fold": 2, "training": ["2019-01-02", "2021-12-31"], "validation": ["2022-01-01", "2022-12-31"]},
+      {"fold": 3, "training": ["2019-01-02", "2022-12-31"], "validation": ["2023-01-01", "2023-12-31"]}
+    ],
+    "purge_signal_sessions": 3,
+    "entry_exit": "signal after session t close, enter next accepted session open, exit third accepted session close",
+    "costs_and_operational_gates": "identical to the frozen Campaign286 survivor_decision and three-session engine; primary pilot 10bp, sensitivity 20bp, board-lot affordability >=0.90, max filled amount participation <=0.01, zero unresolved terminal positions",
+    "survival_quality_gates": "at least 2/3 positive mean Rank IC, positive median Rank IC and top3-bottom3 spread, at least 2/3 positive normalized and 10bp returns, positive median 10bp return, worst normalized drawdown >=-0.25 and positive compounded 20bp return"
+  },
+  "lockbox_2024_2025": {
+    "returns_open": false,
+    "open_only_after_nonzero_frozen_development_survivor": true,
+    "classification_if_opened": "historically exposed quasi-out-of-sample stress replay, never pristine holdout",
+    "alpha158_2024_2025_source_currently_absent": true
+  },
+  "append_rule": {
+    "definition_and_numeric_comparator_append_once_only_if_coverage_and_all_148_uniqueness_gates_pass": true,
+    "development_survival_not_required_for_future_duplicate_control": true,
+    "failed_coverage_or_uniqueness_leaves_library_unchanged": true,
+    "prior_library_counts": {"complete_definitions": 167, "numeric_comparators": 148}
+  },
+  "candidate49_boundary": {
+    "registration_id": "candidate49_intraday_cumulative_vwap_crossing_rate_240m_v1",
+    "sole_active_prospective_candidate": true,
+    "historical_signal_return_execution_or_milestone_backfill_allowed": false,
+    "second_prospective_candidate_allowed": false,
+    "same_day_20260825_retry_allowed": false,
+    "signal_ledger_sha256": "5193f00d7f36da003f53cec387900da4c3d002299f5dfcfc1a95eaa199ed3a79",
+    "execution_ledger_sha256": "d57a3e61eac969e42cafa418ccd8c0a5ee65dcf69da145bb2c096c2a02a2ea4f"
+  },
+  "research_boundary": {
+    "campaign296_candidate_or_comparator_values_read_before_protocol": false,
+    "historical_daily_price_or_forward_return_values_read_before_protocol": false,
+    "provider_request_issued": false,
+    "credential_value_or_digest_read": false,
+    "current_scoring_selection_sizing_positions_or_orders_allowed": false,
+    "investment_advice": false,
+    "record_every_concept_trial_and_infrastructure_failure_append_only": true,
+    "post_result_change_requires_new_campaign": true
+  }
+}

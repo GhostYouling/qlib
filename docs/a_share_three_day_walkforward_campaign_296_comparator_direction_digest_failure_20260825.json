@@ -1,0 +1,36 @@
+{
+  "schema_version": 1,
+  "kind": "a_share_three_day_walkforward_campaign296_infrastructure_failure",
+  "attempt_id": "campaign296_infrastructure_002",
+  "status": "prevalue_metadata_validation_failure_preserved_no_trial_consumed",
+  "recorded_at": "2026-08-25T18:08:55+08:00",
+  "operation": {
+    "working_directory": "/Users/niyufei/Coding/qlib/recovery-worktree",
+    "argv": ["python", "-m", "pytest", "-q", "tests/data_collector_tests/test_a_share_three_day_walkforward_campaign296.py"],
+    "exit_code": 1,
+    "failure_class": "Campaign296Error",
+    "failure_message": "comparator order digest changed",
+    "tests_passed": 7,
+    "tests_failed": 2,
+    "plan_executed": false,
+    "run_executed": false,
+    "cause": "The 148 comparator names were assembled in the frozen order, but the implementation recomputed the canonical digest with a synthetic all-higher direction instead of preserving each inherited factor's frozen score_direction.",
+    "safe_continuation": "Preserve the original implementation freeze, reconstruct only the already-frozen comparator directions from the Campaign295-bound authoritative metadata source, correct the metadata assertion without changing any candidate formula, comparator name order, gate or development method, and issue a new implementation freeze before reading Campaign296 values."
+  },
+  "scientific_effect": {
+    "factor_formula_direction_horizon_input_features_tolerance_filters_costs_gates_or_folds_changed": false,
+    "campaign296_candidate_values_read": false,
+    "comparator_values_read": false,
+    "historical_daily_price_or_forward_return_values_read": false,
+    "development_trial_consumed": false,
+    "lockbox_2024_2025_opened": false,
+    "output_root_created": false
+  },
+  "research_boundary": {
+    "provider_request_issued": false,
+    "provider_credential_value_or_digest_read": false,
+    "candidate49_ledgers_changed": false,
+    "current_scoring_selection_sizing_positions_or_orders_performed": false,
+    "investment_advice": false
+  }
+}
