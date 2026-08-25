@@ -1,0 +1,83 @@
+{
+  "schema_version": 1,
+  "kind": "a_share_three_day_walkforward_campaign288_model_overlap_audit",
+  "status": "passed_for_one_fixed_ordinal_rbf_similarity_trial_with_prior_exposure_disclosed",
+  "recorded_at": "2026-08-25T12:06:00+08:00",
+  "purpose": "Determine before Campaign288 feature access or return reads whether the selected session-ordinal random Fourier ridge trial exactly retries a consumed estimator family.",
+  "audited_prior_families": [
+    {
+      "campaign": "102",
+      "family": "bounded simplex ridge over the complete terminal numeric factor library",
+      "decision": "output_solver_is_related_but_hypothesis_space_is_distinct: Campaign288 is linear only after a frozen nonlinear cosine map of session-ordinal Alpha158 coordinates and cannot express a raw-coordinate ridge score"
+    },
+    {
+      "campaign": "132",
+      "family": "monotone histogram gradient boosting and rejected refreshed signed-linear models over favorable-direction terminal factors",
+      "decision": "distinct_input_library_transform_and_similarity_geometry"
+    },
+    {
+      "campaign": "133",
+      "family": "complete-library monotone additive marginal calibration",
+      "decision": "distinct_joint_radial_similarity_geometry"
+    },
+    {
+      "campaign": "134",
+      "family": "correlation-component balanced deterministic consensus",
+      "decision": "distinct_supervised_fixed_kernel_approximation"
+    },
+    {
+      "campaign": "286",
+      "family": "three LightGBM boosted-tree configurations over complete raw Alpha158",
+      "decision": "same_input_library_but_no_tree_partition_or_tree_retry"
+    },
+    {
+      "campaign": "287",
+      "family": "one jointly trained median-IQR standardized raw-Alpha158 32-unit ReLU MLP",
+      "decision": "same_input_library_but_frozen_ordinal_cosine_representation_and_closed_form_output; no learned hidden representation or MLP retune"
+    }
+  ],
+  "repository_inventory": {
+    "prior_campaign_script_implementing_random_fourier_features_for_three_session_alpha158": false,
+    "prior_campaign_trial_id_equal_to_wf288_alpha158_ordinal_rff128_ridge": false,
+    "prior_model_catalog_search_terms": ["random Fourier", "RBF kernel", "kernel ridge", "support vector regression", "Gaussian process"],
+    "numpy_version_available": "1.26.4",
+    "scipy_version_available": "1.13.1",
+    "new_package_or_network_install_required": false
+  },
+  "frozen_distinguishing_semantics": {
+    "complete_input_feature_count": 158,
+    "session_ordinal_map": "per-session per-feature average-tie percentile minus 0.5; nonfinite values map to zero",
+    "random_fourier_dimension": 128,
+    "rbf_gamma": 0.0379746835443038,
+    "random_weight_distribution": "independent Normal(0, 2*gamma)",
+    "random_phase_distribution": "independent Uniform(0, 2*pi)",
+    "random_state": 288,
+    "feature_amplitude": "sqrt(2/128)",
+    "training_sample": "96 instruments with lowest SHA-256 order of UTF-8 '288|YYYY-MM-DD|instrument' per retained session",
+    "projection_center": "arithmetic mean over the exactly balanced frozen training sample before returns",
+    "output_objective": "sum_i session_equal_weight_i * (centered_target_i - centered_rff_i dot beta)^2 + 0.001 * ||beta||_2^2",
+    "hyperparameter_search": false,
+    "feature_subset_search": false,
+    "seed_search": false,
+    "post_validation_refit_or_repair": false
+  },
+  "decision": {
+    "exact_consumed_model_retry": false,
+    "raw_linear_model_family_reopened": false,
+    "campaign287_mlp_family_reopened": false,
+    "new_historical_attempt_count_required": true,
+    "existing_exposure_makes_result_exploratory": true,
+    "one_fixed_trial_may_be_preregistered": true,
+    "additional_kernel_dimension_bandwidth_seed_or_penalty_may_be_added_after_returns": false
+  },
+  "research_boundary": {
+    "campaign288_alpha158_partition_rows_read": false,
+    "campaign288_ordinal_projection_or_center_computed": false,
+    "campaign288_training_or_validation_return_values_read": false,
+    "stress_2024_2025_opened": false,
+    "provider_request_issued": false,
+    "credential_loaded": false,
+    "candidate49_ledgers_changed": false,
+    "current_scoring_selection_sizing_positions_or_orders_performed": false
+  }
+}

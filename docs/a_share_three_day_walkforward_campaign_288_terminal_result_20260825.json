@@ -1,0 +1,172 @@
+{
+  "schema_version": 1,
+  "kind": "a_share_three_day_walkforward_campaign288_terminal_result",
+  "status": "terminal_no_survivor_lockbox_closed",
+  "recorded_at": "2026-08-25T12:29:00+08:00",
+  "authoritative_inputs": {
+    "predecessor_status": {
+      "path": "docs/a_share_three_day_iteration_status_20260825_campaign287_terminal.json",
+      "sha256": "e00896e50cfd399bc0c442ac67872ede0f62bc1fbf195b69a5ee847b15dabbad"
+    },
+    "concept_scouting": {
+      "path": "docs/a_share_three_day_walkforward_campaign_288_concept_scouting_20260825.json",
+      "sha256": "7c785fdc2d8c7a085cba2895a8e4a25df922cf4cc85e2d481bdb50f63f24eb12"
+    },
+    "model_overlap_audit": {
+      "path": "docs/a_share_three_day_walkforward_campaign_288_model_overlap_audit_20260825.json",
+      "sha256": "cd1fd186a37ab27f29f3a0a0954905c25b1b6a9a9b18fc839a37f152f961d895"
+    },
+    "protocol": {
+      "path": "docs/a_share_three_day_walkforward_campaign_288_preregistration_20260825.json",
+      "sha256": "4ec58ecef2bd4da21ee144c33c27402225aa821f5938f20c564ac3c70934ab76"
+    },
+    "design_evidence": {
+      "path": "data/experiments/short_horizon/historical_walkforward/campaign_288/ordinal_rff_ridge_v1/design_evidence.json",
+      "sha256": "3ea08229b18d13d2ae1ffd2aac58e212c3742ff1a5018fda13807f00385f7ac1"
+    },
+    "original_implementation_failure": {
+      "path": "docs/a_share_three_day_walkforward_campaign_288_training_projection_center_failure_20260825.json",
+      "sha256": "8cbc1980bd80fc50ee924b9e6dc79a0a9a3ae8f5730cb8843d075fb52b985645"
+    },
+    "recovery_freeze": {
+      "path": "docs/a_share_three_day_walkforward_campaign_288_projection_peer_recovery_implementation_freeze_20260825.json",
+      "sha256": "9a551da8986dfe0bcc34742b96f603579d0f3b228f4152897b6fb02654bee253"
+    },
+    "finalizer_freeze": {
+      "path": "docs/a_share_three_day_walkforward_campaign_288_finalizer_implementation_freeze_20260825.json",
+      "sha256": "e44fffd21e0856d46bc70801d4b88267c15c9d43c1939267ca3c68abc63b29c6"
+    },
+    "terminal_verifier_freeze": {
+      "path": "docs/a_share_three_day_walkforward_campaign_288_terminal_verifier_implementation_freeze_20260825.json",
+      "sha256": "3c139d05167d8a22e154cd426b510534c3d1aec9869e7ce0735d2c52b09aed22"
+    },
+    "terminal_trial_ledger": {
+      "path": "data/experiments/short_horizon/historical_walkforward/campaign_288/ordinal_rff_ridge_recovery_v1/terminal_trial_ledger.json",
+      "sha256": "93a46098d4a3358e0477ea5395240e5bc45957f28d20fe4978984c542592b12b"
+    },
+    "terminal_development_report": {
+      "path": "data/experiments/short_horizon/historical_walkforward/campaign_288/ordinal_rff_ridge_recovery_v1/terminal_development_report.json",
+      "sha256": "1ebe48d2a6404725b96009cd6842658cd62a9ee6a3709e593a090139120e0740"
+    }
+  },
+  "model": {
+    "trial_id": "wf288_alpha158_ordinal_rff128_ridge",
+    "feature_family": "complete Qlib Alpha158 daily library",
+    "feature_count": 158,
+    "input_transform": "within-session per-feature average-tie percentile minus 0.5, nonfinite zero",
+    "representation": "128 fixed random Fourier cosine coordinates approximating one RBF kernel",
+    "rbf_gamma": 0.0379746835443038,
+    "random_state": 288,
+    "output_model": "closed-form session-weighted ridge regression",
+    "ridge_penalty": 0.001,
+    "training_sample": "96 deterministic hash-selected names per retained training session",
+    "feature_subset_dimension_bandwidth_seed_or_penalty_search_performed": false
+  },
+  "zero_return_design": {
+    "fold1_retained_training_sessions": 133,
+    "fold2_retained_training_sessions": 214,
+    "fold3_retained_training_sessions": 294,
+    "fold1_sampled_rows": 12768,
+    "fold2_sampled_rows": 20544,
+    "fold3_sampled_rows": 28224,
+    "minimum_total_finite_feature_observations_by_fold": [90724, 172622, 258297],
+    "gate_passed_before_historical_returns": true
+  },
+  "fold_results": [
+    {
+      "fold": 1,
+      "validation_year": 2021,
+      "cohorts": 74,
+      "mean_rank_ic": 0.008902146238201411,
+      "mean_top3_minus_bottom3_gross_return": -0.011561432478924256,
+      "normalized_net_return": -0.41464976145863874,
+      "normalized_maximum_drawdown": -0.5523865356328306,
+      "pilot_10bp_net_return": -0.05227986804294105,
+      "pilot_20bp_net_return": -0.06591077583577232,
+      "board_lot_affordability_rate": 0.832579185520362,
+      "maximum_amount_participation": 0.0016165169364262182
+    },
+    {
+      "fold": 2,
+      "validation_year": 2022,
+      "cohorts": 73,
+      "mean_rank_ic": 0.010013622609836095,
+      "mean_top3_minus_bottom3_gross_return": -0.004565467094772891,
+      "normalized_net_return": -0.13109737620808015,
+      "normalized_maximum_drawdown": -0.28652376008355174,
+      "pilot_10bp_net_return": -0.036684409175103405,
+      "pilot_20bp_net_return": -0.05344184426108933,
+      "board_lot_affordability_rate": 0.8995433789954338,
+      "maximum_amount_participation": 0.0013164604666623682
+    },
+    {
+      "fold": 3,
+      "validation_year": 2023,
+      "cohorts": 74,
+      "mean_rank_ic": 0.013411323489376055,
+      "mean_top3_minus_bottom3_gross_return": -0.011475951731758745,
+      "normalized_net_return": -0.3322475282254921,
+      "normalized_maximum_drawdown": -0.4067691303910347,
+      "pilot_10bp_net_return": -0.061413962061866,
+      "pilot_20bp_net_return": -0.07731195476694364,
+      "board_lot_affordability_rate": 0.9054054054054054,
+      "maximum_amount_participation": 0.002399608348002019
+    }
+  ],
+  "aggregate_decision": {
+    "positive_mean_rank_ic_fold_count": 3,
+    "positive_spread_fold_count": 0,
+    "positive_normalized_return_fold_count": 0,
+    "positive_pilot_10bp_return_fold_count": 0,
+    "median_mean_rank_ic": 0.010013622609836095,
+    "median_spread": -0.011475951731758745,
+    "median_pilot_10bp_return": -0.05227986804294105,
+    "compounded_normalized_return": -0.6603728406997809,
+    "compounded_pilot_10bp_return": -0.14311451760305127,
+    "compounded_pilot_20bp_return": -0.18418712020077055,
+    "worst_normalized_drawdown": -0.5523865356328306,
+    "operationally_admissible": false,
+    "passed": false,
+    "rejection_reasons": [
+      "fold 1 pilot board-lot affordability is below the frozen 0.90 minimum",
+      "fold 2 pilot board-lot affordability is below the frozen 0.90 minimum",
+      "all three validation spreads, normalized returns and 10bp pilot returns are negative",
+      "worst validation normalized drawdown is below the frozen -0.25 minimum",
+      "compounded validation 20bp pilot return is not strictly positive"
+    ]
+  },
+  "attempt_accounting": {
+    "prevalue_concept_attempt_count": 8,
+    "infrastructure_failure_attempt_count": 1,
+    "model_trial_attempt_count": 1,
+    "campaign288_total_attempt_count": 10,
+    "return_reading_development_trial_count": 1,
+    "model_fold_validation_return_read_count": 3
+  },
+  "recovery": {
+    "original_failure_preserved": true,
+    "failure_stage": "fold 1 after training-return load but before model fit",
+    "root_cause": "the first implementation re-ranked after market quality filtering instead of applying the frozen design peer-set ordinal map before the join",
+    "recovery_changed_model_sample_projection_cost_or_gate": false,
+    "fold1_training_return_reread_count": 1,
+    "failed_attempt_validation_return_read": false,
+    "failed_attempt_model_fit": false
+  },
+  "decision": {
+    "development_survivor_count": 0,
+    "selected_survivor_trial_ids": [],
+    "stress_2024_2025_opened": false,
+    "current_strategy_deployable": false,
+    "post_result_kernel_dimension_bandwidth_seed_penalty_or_cost_retuning_allowed": false
+  },
+  "research_boundary": {
+    "provider_or_web_request_issued": false,
+    "credential_loaded": false,
+    "candidate49_historical_return_read": false,
+    "candidate49_historical_backfill_performed": false,
+    "candidate49_ledgers_changed": false,
+    "second_prospective_candidate_created": false,
+    "current_scoring_selection_sizing_positions_or_orders_performed": false,
+    "investment_advice": false
+  }
+}

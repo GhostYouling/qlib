@@ -1,0 +1,48 @@
+{
+  "schema_version": 1,
+  "kind": "a_share_three_day_walkforward_campaign288_finalizer_implementation_freeze",
+  "status": "frozen_after_development_rejection_before_terminal_ledger_reconciliation",
+  "recorded_at": "2026-08-25T12:28:00+08:00",
+  "protocol": {
+    "path": "docs/a_share_three_day_walkforward_campaign_288_preregistration_20260825.json",
+    "sha256": "4ec58ecef2bd4da21ee144c33c27402225aa821f5938f20c564ac3c70934ab76"
+  },
+  "source_outputs": {
+    "trial_ledger_sha256": "cb1cdfd602b3452cf3a4d613730aba763596b94378e89d5f2a18462fd1b5914a",
+    "development_report_sha256": "07fedff926ea0befd503f1ed97860776d81a00f9d1b63b2a258549a969682c2c",
+    "development_survivors_sha256": "dc502a76e035bddfa5ab1242cf56ab935d8d4822d5fd0b5d479b8d1921be2eff",
+    "recovery_intent_sha256": "12aaeb36b91f0d67616a1d004ac4f6668ce4674ffde4fd07248f14b9c0222d53",
+    "failure_record_sha256": "8cbc1980bd80fc50ee924b9e6dc79a0a9a3ae8f5730cb8843d075fb52b985645"
+  },
+  "runner": {
+    "path": "scripts/a_share_three_day_walkforward_campaign288_finalize.py",
+    "sha256": "f833ec900ee9931a3e55fc090b27ef3e8ab19f802c07b6c653c7ab067277f023"
+  },
+  "tests": {
+    "path": "tests/data_collector_tests/test_a_share_three_day_walkforward_campaign288_finalize.py",
+    "sha256": "26a066240ca5c5dd9bc22f07dd179e4d6afa9efd7f28fe77b380702a2685c4f9",
+    "combined_campaign288_result": "10 passed"
+  },
+  "frozen_reconciliation": {
+    "preserve_all_nine_source_ledger_entries_byte_semantically": true,
+    "append_one_infrastructure_failure_entry_to_source_chain_tip": true,
+    "terminal_entry_count": 10,
+    "prevalue_concept_attempt_count": 8,
+    "infrastructure_failure_attempt_count": 1,
+    "model_trial_attempt_count": 1,
+    "model_fold_validation_return_read_count": 3,
+    "survivor_count": 0,
+    "lockbox_2024_2025_opened": false
+  },
+  "research_boundary": {
+    "historical_return_reread_by_finalizer": false,
+    "model_refit_by_finalizer": false,
+    "threshold_or_survivor_decision_change_by_finalizer": false,
+    "lockbox_2024_2025_return_read_by_finalizer": false,
+    "provider_request_issued_by_finalizer": false,
+    "credential_loaded_by_finalizer": false,
+    "candidate49_historical_backfill_by_finalizer": false,
+    "candidate49_ledgers_changed_by_finalizer": false,
+    "current_scoring_selection_sizing_positions_or_orders_by_finalizer": false
+  }
+}

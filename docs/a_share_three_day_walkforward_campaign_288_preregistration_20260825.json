@@ -1,0 +1,207 @@
+{
+  "schema_version": 1,
+  "kind": "a_share_three_day_walkforward_campaign288_preregistration",
+  "status": "frozen_one_trial_complete_alpha158_session_ordinal_rff_ridge_before_campaign288_feature_or_return_read",
+  "recorded_at": "2026-08-25T12:07:00+08:00",
+  "purpose": "Freeze Campaign288's complete reused Alpha158 library, session-ordinal input map, deterministic balanced sampler, fixed random Fourier projection, one weighted ridge output, three expanding folds, execution rules, survivor gate, recordkeeping and lockbox boundary before Campaign288 reads a design partition row, computes an ordinal or projection value, or reads a training or validation return.",
+  "authoritative_inputs": {
+    "concept_scouting": {
+      "path": "docs/a_share_three_day_walkforward_campaign_288_concept_scouting_20260825.json",
+      "sha256": "7c785fdc2d8c7a085cba2895a8e4a25df922cf4cc85e2d481bdb50f63f24eb12"
+    },
+    "model_overlap_audit": {
+      "path": "docs/a_share_three_day_walkforward_campaign_288_model_overlap_audit_20260825.json",
+      "sha256": "cd1fd186a37ab27f29f3a0a0954905c25b1b6a9a9b18fc839a37f152f961d895"
+    },
+    "historical_walkforward_policy": {
+      "path": "docs/a_share_three_day_historical_walkforward_research_policy_20260727.json",
+      "sha256": "38426d6161b9bfed323c58caba18feca668b8c9d53e294951a8ba90c01a798bb"
+    },
+    "prospective_execution_policy": {
+      "path": "docs/a_share_three_day_prospective_execution_policy.json",
+      "sha256": "72c3c3871e153372ed9e7691c9d89ba1aeb2f6d02cc839761fefa5fee085e1bc"
+    },
+    "pilot_execution_policy": {
+      "path": "docs/a_share_three_day_pilot_execution_policy.json",
+      "sha256": "72235cd29fc14d43538238150bb2823dae1dd05b027b2c86a9872de89cc0d3f9"
+    },
+    "campaign287_terminal_result": {
+      "path": "docs/a_share_three_day_walkforward_campaign_287_terminal_result_20260825.json",
+      "sha256": "d3ad876809040fbbbce682ef8bf8f77947aec6244a7bbfd23b1a7d150f90dd58"
+    },
+    "campaign287_terminal_state": {
+      "path": "docs/a_share_three_day_iteration_status_20260825_campaign287_terminal.json",
+      "sha256": "e00896e50cfd399bc0c442ac67872ede0f62bc1fbf195b69a5ee847b15dabbad"
+    }
+  },
+  "complete_feature_library": {
+    "name": "Qlib Alpha158 daily library",
+    "feature_count": 158,
+    "feature_library_sha256": "b1154a5b310ec5f8ead6ca064c06ae4a1121dc1c9a0d4ff7dcd00efcf20704e5",
+    "feature_subset_search_allowed": false,
+    "feature_reorder_drop_or_missing_indicator_addition_allowed": false,
+    "minimum_finite_features_per_row": 119,
+    "reused_design_manifest": {
+      "path": "data/experiments/short_horizon/historical_walkforward/campaign_286/alpha158_development_design_recovery_v3/snapshot_manifest.json",
+      "sha256": "31cba0be801ac1421ef9555b862575089589ec08397c1420be3fc4f43b111d4e",
+      "dataset_sha256": "714f4ccbdf4bfbaccfd04f543ec8c6a0bc345d3cc567ab621d01905130c46252",
+      "model_support_eligible_rows": 1001737,
+      "development_years": [2019, 2020, 2021, 2022, 2023],
+      "partition_sha256_in_year_order": [
+        "5860735e85cca233841168ffa4ec49257d122a91348ede4214be4130ccfd2d5a",
+        "a49c8dc6c564714a8a9755c20619ca7b88de39a51b992240600ca9369ed719cb",
+        "6cc0536673438dae0ba81a9b91e498092d19d7255f6f67e0031f3e3df7baa456",
+        "ca91585aa8010f1395c7371af6df5cd746db19ea55144255e175d1fa95ba018d",
+        "a0476b145987a5698b989880979f28ee1a6be65435787a1df911d531c3a6ec25"
+      ]
+    },
+    "campaign286_and_campaign287_values_and_returns_already_exposed": true,
+    "prior_terminal_records_remain_terminal": true
+  },
+  "zero_return_design_stage": {
+    "required_before_training_return_read": true,
+    "eligible_rows": "Only reused-design rows with model_support_eligible=true.",
+    "training_session_inclusion": "Retain a contained scheduled training signal session only when it has at least 96 model-support eligible names; count and exclude smaller sessions before sampling without consulting Alpha158 values or returns.",
+    "training_sample_size_per_contained_signal_session": 96,
+    "minimum_eligible_names_per_training_session": 96,
+    "minimum_retained_training_sessions_per_fold": 60,
+    "sampling_key": "SHA256 of UTF-8 bytes 288|YYYY-MM-DD|instrument",
+    "selection_rule": "Sort ascending by sampling digest then instrument and retain exactly the first 96 distinct instruments without replacement.",
+    "sample_selection_uses_factor_or_return_values": false,
+    "sample_membership_must_be_frozen_before_training_return_read": true,
+    "session_ordinal_input_map": {
+      "scope": "each contained signal session and each of the 158 features independently across all model-support eligible names",
+      "finite_value": "ascending scipy.stats.rankdata(method='average') divided by the finite count, then minus 0.5",
+      "nonfinite_value": 0.0,
+      "minimum_finite_names_per_eligible_session_feature": 1,
+      "validation_statistics_fit_on_training": false,
+      "uses_returns": false
+    },
+    "random_fourier_map": {
+      "dimension": 128,
+      "rbf_gamma": 0.0379746835443038,
+      "random_state": 288,
+      "weight_distribution": "NumPy default_rng(288) Normal(0, sqrt(2*gamma)) with shape (158,128)",
+      "phase_distribution": "the same generator after weights, Uniform(0,2*pi) with shape (128,)",
+      "coordinate": "sqrt(2/128) * cos(session_ordinal_vector dot weight_matrix + phase)",
+      "projection_center": "arithmetic mean over the exactly 96-name-per-session frozen training sample",
+      "missing_indicator_or_projection_search_allowed": false
+    },
+    "persist": [
+      "sample key-list hash and per-session counts but no Alpha158 values",
+      "sample ordinal matrix hash, projection matrix hash and projection-center hash but no matrices",
+      "fixed random-weight and phase hashes",
+      "design gate status and exact input fingerprints"
+    ]
+  },
+  "model_trial": {
+    "trial_id": "wf288_alpha158_ordinal_rff128_ridge",
+    "runtime": "numpy==1.26.4 and scipy==1.13.1 local deterministic implementation",
+    "class": "scripts.a_share_three_day_walkforward_campaign288.RandomFourierRidgeRegressor",
+    "parameters": {
+      "input_feature_count": 158,
+      "random_fourier_dimension": 128,
+      "rbf_gamma": 0.0379746835443038,
+      "random_state": 288,
+      "ridge_penalty": 0.001,
+      "output_intercept": false,
+      "linear_solver": "numpy.linalg.solve on float64 symmetric normal equation"
+    },
+    "configuration_count": 1,
+    "dimension_bandwidth_seed_penalty_or_solver_search_allowed": false,
+    "post_result_refit_rescale_or_repair_allowed": false
+  },
+  "training_target": {
+    "definition": "Within each contained training signal session, ascending average-tie percentile rank of finite gross forward return t+3 close / t+1 open - 1 across all model-support eligible names, followed by selection of the frozen 96-name sample.",
+    "training_rows_are_session_balanced": true,
+    "minimum_finite_sampled_targets_per_training_session": 80,
+    "effective_row_weight": "1 / (retained_training_session_count * finite_sampled_target_count_for_that_session)",
+    "target_center": "subtract the session-equal weighted mean of finite sampled targets before the no-intercept output fit",
+    "all_retained_training_sessions_have_equal_total_weight": true,
+    "target_values_read_only_after_sample_ordinal_projection_and_center_evidence_is_frozen": true
+  },
+  "walkforward_folds": [
+    {"fold": 1, "training": ["2019-01-01", "2020-12-31"], "validation": ["2021-01-01", "2021-12-31"]},
+    {"fold": 2, "training": ["2019-01-01", "2021-12-31"], "validation": ["2022-01-01", "2022-12-31"]},
+    {"fold": 3, "training": ["2019-01-01", "2022-12-31"], "validation": ["2023-01-01", "2023-12-31"]}
+  ],
+  "leakage_controls": {
+    "signal": "local close t",
+    "entry": "next accepted local session open t+1",
+    "exit": "third accepted local session close t+3",
+    "purge_signal_sessions_before_each_boundary": 3,
+    "entry_and_exit_must_both_be_in_partition": true,
+    "non_overlapping_three_signal_session_grid": true,
+    "point_in_time_features_quality_listing_and_universe": true,
+    "validation_scores_frozen_before_validation_return_read": true
+  },
+  "prefit_and_score_gate": {
+    "model_fit_must_finish_before_validation_return_read": true,
+    "all_158_features_must_be_present_in_input_order": true,
+    "minimum_finite_validation_scores_per_scheduled_signal": 50,
+    "minimum_nonconstant_validation_score_sessions": 60,
+    "minimum_unique_finite_scores_per_eligible_validation_session": 2,
+    "failure_stops_before_validation_return_read": true
+  },
+  "fixed_execution_assumptions": {
+    "holding_period_local_sessions": 3,
+    "topk": 3,
+    "initial_capital_cny": 200000,
+    "target_entry_exposure_fraction_per_slot": 0.05,
+    "maximum_entry_exposure_fraction_per_signal": 0.15,
+    "buy_lot_size_shares": 100,
+    "commission_rate_each_side": 0.0001,
+    "transfer_fee_rate_each_side": 0.00002,
+    "sell_stamp_duty_rate": 0.0005,
+    "primary_adverse_slippage_rate_each_side": 0.001,
+    "slippage_sensitivity_each_side": [0.0, 0.0005, 0.001, 0.002],
+    "maximum_daily_amount_participation": 0.01,
+    "blocked_entry": "keep_cash_without_replacement",
+    "blocked_exit": "retain_and_retry_under_frozen policy"
+  },
+  "development_survivor_rule": {
+    "complete_validation_fold_count": 3,
+    "minimum_association_cohorts_per_fold": 60,
+    "minimum_positive_mean_rank_ic_folds": 2,
+    "median_validation_mean_rank_ic_strictly_positive": true,
+    "median_validation_top3_minus_bottom3_spread_strictly_positive": true,
+    "minimum_positive_normalized_return_folds": 2,
+    "minimum_positive_primary_10bp_pilot_return_folds": 2,
+    "median_validation_primary_10bp_pilot_return_strictly_positive": true,
+    "worst_validation_normalized_drawdown_minimum": -0.25,
+    "compounded_validation_20bp_pilot_return_strictly_positive": true,
+    "minimum_board_lot_affordability_each_fold": 0.9,
+    "maximum_amount_participation_each_fold": 0.01,
+    "terminal_unresolved_positions_each_fold": 0,
+    "all_conditions_required": true
+  },
+  "locked_2024_2025_campaign_backtest": {
+    "initially_closed": true,
+    "classification": "historically_exposed_quasi_out_of_sample_not_pristine",
+    "open_once_only_if_the_single_trial_passes_all_three_development_folds": true,
+    "feature_library_input_map_projection_model_costs_and_gates_must_remain_unchanged": true,
+    "full_model_refit": "Refit the unchanged configuration with unchanged deterministic 96-name sampling over contained 2019-2023 sessions.",
+    "lockbox_feature_snapshot": "Materialize 2024-2025 Alpha158 only after a frozen development survivor and bind it before any lockbox return read.",
+    "no_post_lockbox_tuning": true
+  },
+  "recordkeeping": {
+    "append_only_trial_ledger_required": true,
+    "record_all_eight_prevalue_concepts_all_infrastructure_failures_and_the_model_trial": true,
+    "selected_only_reporting_forbidden": true,
+    "infrastructure_failures_count_as_attempts": true,
+    "training_and_validation_metrics_required": true
+  },
+  "research_boundary": {
+    "campaign288_design_partition_rows_read_before_preregistration": false,
+    "campaign288_ordinal_projection_or_center_computed_before_preregistration": false,
+    "campaign288_training_or_validation_return_values_read_before_preregistration": false,
+    "stress_2024_2025_opened": false,
+    "provider_request_issued": false,
+    "credential_loaded": false,
+    "candidate49_historical_backfill_performed": false,
+    "candidate49_ledgers_changed": false,
+    "second_prospective_candidate_created": false,
+    "current_scoring_selection_sizing_positions_or_orders_performed": false,
+    "investment_advice": false
+  }
+}

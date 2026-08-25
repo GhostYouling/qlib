@@ -1,0 +1,42 @@
+{
+  "schema_version": 1,
+  "kind": "a_share_three_day_walkforward_campaign288_design_implementation_freeze",
+  "status": "frozen_before_campaign288_design_partition_row_or_return_read",
+  "recorded_at": "2026-08-25T12:16:00+08:00",
+  "protocol": {
+    "path": "docs/a_share_three_day_walkforward_campaign_288_preregistration_20260825.json",
+    "sha256": "4ec58ecef2bd4da21ee144c33c27402225aa821f5938f20c564ac3c70934ab76"
+  },
+  "runner": {
+    "path": "scripts/a_share_three_day_walkforward_campaign288.py",
+    "sha256": "6ee0b4125cc6daeedcbc541d7fb575642baf30d4cf17a0baf66754b46ac10f19"
+  },
+  "tests": {
+    "path": "tests/data_collector_tests/test_a_share_three_day_walkforward_campaign288.py",
+    "sha256": "a2bec334da9ffc89609ed9260022cdc96e86c900120aba4baa32e93facc0237c",
+    "result": "6 passed"
+  },
+  "frozen_design_semantics": {
+    "fold_count": 3,
+    "training_sample_size_per_session": 96,
+    "sampling_seed_prefix": "288",
+    "feature_count": 158,
+    "session_ordinal_transform": "average-tie percentile divided by finite session-feature count minus 0.5; nonfinite zero",
+    "random_fourier_dimension": 128,
+    "rbf_gamma": 0.0379746835443038,
+    "random_state": 288,
+    "ridge_penalty": 0.001,
+    "configuration_count": 1
+  },
+  "research_boundary": {
+    "campaign288_design_partition_row_read_before_freeze": false,
+    "campaign288_ordinal_projection_or_center_before_freeze": false,
+    "training_or_validation_return_read_before_freeze": false,
+    "lockbox_2024_2025_return_read_before_freeze": false,
+    "provider_request_issued_before_freeze": false,
+    "credential_loaded_before_freeze": false,
+    "candidate49_historical_backfill_before_freeze": false,
+    "candidate49_ledgers_changed_before_freeze": false,
+    "current_scoring_selection_sizing_positions_or_orders_before_freeze": false
+  }
+}

@@ -1,0 +1,55 @@
+{
+  "schema_version": 1,
+  "kind": "a_share_three_day_walkforward_campaign288_projection_peer_recovery_implementation_freeze",
+  "status": "frozen_after_fold1_infrastructure_failure_before_recovery_return_reread",
+  "recorded_at": "2026-08-25T12:23:00+08:00",
+  "protocol": {
+    "path": "docs/a_share_three_day_walkforward_campaign_288_preregistration_20260825.json",
+    "sha256": "4ec58ecef2bd4da21ee144c33c27402225aa821f5938f20c564ac3c70934ab76"
+  },
+  "failure_record": {
+    "path": "docs/a_share_three_day_walkforward_campaign_288_training_projection_center_failure_20260825.json",
+    "sha256": "8cbc1980bd80fc50ee924b9e6dc79a0a9a3ae8f5730cb8843d075fb52b985645"
+  },
+  "original_failed_outputs": {
+    "root": "data/experiments/short_horizon/historical_walkforward/campaign_288/ordinal_rff_ridge_v1",
+    "development_intent_sha256": "1ae95e3b17cc5ca9e2b642a6e522b4fbc3b647af679baff846fe176b3465733b",
+    "development_failure_sha256": "073491dce2511d7f082ace0f26dc47ea526a101f4e4b754e40f5c87d53810286",
+    "preserve_unchanged": true
+  },
+  "recovery_output_root": "data/experiments/short_horizon/historical_walkforward/campaign_288/ordinal_rff_ridge_recovery_v1",
+  "runner": {
+    "path": "scripts/a_share_three_day_walkforward_campaign288_recovery.py",
+    "sha256": "4df017a515a3d7c1ecbe3142c67178170c0d632d3a57c9277d96d569ec7c3146"
+  },
+  "tests": {
+    "path": "tests/data_collector_tests/test_a_share_three_day_walkforward_campaign288_recovery.py",
+    "sha256": "c739870d2e55f02aaffdec4044a34e0539035ffa412bd8f79f76ba9285bd55ff",
+    "combined_campaign288_result": "8 passed"
+  },
+  "bounded_semantic_correction": {
+    "before": "The original development implementation re-ranked Alpha158 after the market quality filter and therefore changed the frozen design peer set.",
+    "after": "Compute the frozen session-feature ordinal values across every model-support eligible design name, then join those unchanged ordinal values to the quality-filtered market signal panel.",
+    "sample_keys_changed": false,
+    "random_fourier_weights_phases_or_center_changed": false,
+    "model_dimension_bandwidth_seed_penalty_or_solver_changed": false,
+    "target_cost_execution_or_survivor_gate_changed": false,
+    "new_model_configuration_added": false
+  },
+  "attempt_accounting": {
+    "original_failure_counts_as_infrastructure_attempt": true,
+    "fold1_training_return_will_be_reread_once_for_recovery": true,
+    "failed_run_model_trial_count": 0,
+    "failed_run_validation_return_fold_count": 0
+  },
+  "research_boundary": {
+    "recovery_training_return_reread_before_freeze": false,
+    "validation_return_read_before_freeze": false,
+    "lockbox_2024_2025_return_read_before_freeze": false,
+    "provider_request_issued_before_freeze": false,
+    "credential_loaded_before_freeze": false,
+    "candidate49_historical_backfill_before_freeze": false,
+    "candidate49_ledgers_changed_before_freeze": false,
+    "current_scoring_selection_sizing_positions_or_orders_before_freeze": false
+  }
+}

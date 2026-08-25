@@ -1,0 +1,116 @@
+{
+  "schema_version": 1,
+  "kind": "a_share_three_day_walkforward_campaign288_concept_scouting",
+  "status": "one_fixed_alpha158_session_ordinal_random_fourier_ridge_selected_before_campaign288_feature_or_return_read",
+  "recorded_at": "2026-08-25T12:05:00+08:00",
+  "purpose": "Continue the offline three-session iteration engine after terminal Campaign287 with one finite nonlinear similarity trial over the complete already-exposed Alpha158 design. The trial uses a fixed session-ordinal map, a fixed random Fourier approximation to one RBF kernel and one closed-form ridge output; it does not retune Campaign287, reopen tree or raw-linear families, select Alpha158 components, or open the 2024-2025 lockbox.",
+  "authoritative_inputs": {
+    "iteration_state": {
+      "path": "docs/a_share_three_day_iteration_status_20260825_campaign287_terminal.json",
+      "sha256": "e00896e50cfd399bc0c442ac67872ede0f62bc1fbf195b69a5ee847b15dabbad"
+    },
+    "historical_walkforward_policy": {
+      "path": "docs/a_share_three_day_historical_walkforward_research_policy_20260727.json",
+      "sha256": "38426d6161b9bfed323c58caba18feca668b8c9d53e294951a8ba90c01a798bb"
+    },
+    "campaign287_terminal_result": {
+      "path": "docs/a_share_three_day_walkforward_campaign_287_terminal_result_20260825.json",
+      "sha256": "d3ad876809040fbbbce682ef8bf8f77947aec6244a7bbfd23b1a7d150f90dd58"
+    },
+    "alpha158_design_manifest": {
+      "path": "data/experiments/short_horizon/historical_walkforward/campaign_286/alpha158_development_design_recovery_v3/snapshot_manifest.json",
+      "sha256": "31cba0be801ac1421ef9555b862575089589ec08397c1420be3fc4f43b111d4e",
+      "dataset_sha256": "714f4ccbdf4bfbaccfd04f543ec8c6a0bc345d3cc567ab621d01905130c46252",
+      "feature_library_sha256": "b1154a5b310ec5f8ead6ca064c06ae4a1121dc1c9a0d4ff7dcd00efcf20704e5"
+    }
+  },
+  "finite_prevalue_concept_catalog": [
+    {
+      "catalog_id": "c288_01",
+      "name": "complete_alpha158_session_ordinal_fixed_rbf_random_fourier_ridge",
+      "decision": "selected_as_one_configuration_finite_nonlinear_similarity_family",
+      "reason": "The fixed cross-sectional percentile map removes raw scale and outlier dependence, while the fixed cosine map approximates one RBF similarity geometry. Only the output coefficients see returns. This is distinct from Campaign286 tree partitions and Campaign287's jointly trained raw-feature ReLU representation. The result remains exploratory because Alpha158 values and earlier walk-forward returns are already exposed."
+    },
+    {
+      "catalog_id": "c288_02",
+      "name": "random_fourier_dimension_bandwidth_phase_seed_or_penalty_search",
+      "decision": "rejected_before_campaign288_values",
+      "reason": "Searching the kernel approximation or ridge strength after prior results would create a new hyperparameter grid. Campaign288 permits exactly 128 fixed cosine features, one analytical bandwidth, one seed and one penalty."
+    },
+    {
+      "catalog_id": "c288_03",
+      "name": "raw_alpha158_linear_ridge_lasso_elastic_net_or_simplex_refit",
+      "decision": "rejected_before_campaign288_values",
+      "reason": "Campaign102 consumed bounded-simplex ridge and Campaign132 closed refreshed signed-linear and sparse-weight families. Campaign288 does not fit a linear model in the raw Alpha158 coordinates."
+    },
+    {
+      "catalog_id": "c288_04",
+      "name": "campaign287_mlp_width_depth_epoch_seed_preprocessing_or_cost_repair",
+      "decision": "rejected_before_campaign288_values",
+      "reason": "Campaign287 is immutable and terminal. Its positive associations but failed drawdown and 20bp economics cannot be repaired by an architecture, seed, training or threshold refresh."
+    },
+    {
+      "catalog_id": "c288_05",
+      "name": "campaign286_tree_ensemble_or_threshold_retry",
+      "decision": "rejected_before_campaign288_values",
+      "reason": "Campaign286 already terminalized the complete-Alpha158 boosted-tree baseline; forests, boosting variants and split-parameter repairs remain closed."
+    },
+    {
+      "catalog_id": "c288_06",
+      "name": "alpha158_feature_subset_missing_indicator_or_group_selection",
+      "decision": "rejected_before_campaign288_values",
+      "reason": "Result-driven component selection would violate the complete finite feature-library boundary and multiply attempts. Every Alpha158 coordinate remains in the fixed kernel map in frozen order."
+    },
+    {
+      "catalog_id": "c288_07",
+      "name": "nystrom_anchor_selection_exact_kernel_svr_or_gaussian_process",
+      "decision": "rejected_before_campaign288_values",
+      "reason": "Anchor selection, support-vector regularization and exact kernel solvers introduce data-dependent basis or solver choices beyond the one fixed bounded approximation."
+    },
+    {
+      "catalog_id": "c288_08",
+      "name": "alpha360_new_feature_snapshot_on_current_writable_volume",
+      "decision": "deferred_without_value_read_due_storage_preflight",
+      "reason": "The authorized writable system volume still lacks comfortable capacity for another five-year dense feature snapshot. This remains an infrastructure deferral, not a scientific rejection."
+    }
+  ],
+  "selected_family": {
+    "trial_id": "wf288_alpha158_ordinal_rff128_ridge",
+    "feature_library": "all 158 Campaign286 Alpha158 features in frozen order",
+    "feature_subset_search": false,
+    "input_map": "within each signal session and each feature, ascending average-tie percentile among finite model-support names minus 0.5; missing maps to neutral zero",
+    "kernel_approximation": "128 deterministic random Fourier cosine coordinates for one RBF kernel",
+    "analytical_rbf_gamma": "6/158, chosen before values because two independent centered Uniform(-0.5,0.5) ranks have expected squared distance 1/6 per coordinate, making the 158-coordinate expected kernel exponent approximately one",
+    "output_model": "one closed-form session-weighted ridge regression with centered target and no intercept",
+    "configuration_count": 1,
+    "random_fourier_dimension": 128,
+    "random_state": 288,
+    "ridge_penalty": 0.001,
+    "training_session_balance": "deterministically select exactly 96 names per contained training signal session before reading training returns; finite sampled targets receive equal total loss mass per retained session"
+  },
+  "historical_exposure_classification": {
+    "alpha158_feature_values_previously_read_by_campaign286_and_287": true,
+    "campaign286_model_fold_validation_return_reads": 9,
+    "campaign287_model_fold_validation_return_reads": 3,
+    "campaign288_is_pristine": false,
+    "campaign288_allowed_role": "exploratory historical model trial under the user-frozen walk-forward policy",
+    "prior_terminal_records_rewritten_or_reclassified": false
+  },
+  "prevalue_decision": {
+    "concepts_reviewed": 8,
+    "selected_model_configuration_count": 1,
+    "complete_alpha158_library_required": true,
+    "campaign288_feature_rows_rank_map_projection_or_center_computed_before_selection": false,
+    "campaign288_training_or_validation_return_values_read_before_selection": false,
+    "stress_2024_2025_opened": false
+  },
+  "research_boundary": {
+    "provider_or_web_request_issued": false,
+    "credential_loaded": false,
+    "candidate49_historical_backfill_performed": false,
+    "candidate49_ledgers_changed": false,
+    "second_prospective_candidate_created": false,
+    "current_scoring_selection_sizing_positions_or_orders_performed": false,
+    "investment_advice": false
+  }
+}

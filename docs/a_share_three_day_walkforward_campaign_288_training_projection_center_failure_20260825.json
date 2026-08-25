@@ -1,0 +1,65 @@
+{
+  "schema_version": 1,
+  "kind": "a_share_three_day_walkforward_campaign288_training_projection_center_failure",
+  "status": "preserved_implementation_failure_before_model_fit_or_validation_return_read",
+  "recorded_at": "2026-08-25T12:18:00+08:00",
+  "purpose": "Preserve and classify the first Campaign288 development attempt after its fail-closed projection-center check stopped fold 1.",
+  "authoritative_inputs": {
+    "protocol": {
+      "path": "docs/a_share_three_day_walkforward_campaign_288_preregistration_20260825.json",
+      "sha256": "4ec58ecef2bd4da21ee144c33c27402225aa821f5938f20c564ac3c70934ab76"
+    },
+    "design_evidence": {
+      "path": "data/experiments/short_horizon/historical_walkforward/campaign_288/ordinal_rff_ridge_v1/design_evidence.json",
+      "sha256": "3ea08229b18d13d2ae1ffd2aac58e212c3742ff1a5018fda13807f00385f7ac1"
+    },
+    "development_intent": {
+      "path": "data/experiments/short_horizon/historical_walkforward/campaign_288/ordinal_rff_ridge_v1/development_intent.json",
+      "sha256": "1ae95e3b17cc5ca9e2b642a6e522b4fbc3b647af679baff846fe176b3465733b"
+    },
+    "development_failure": {
+      "path": "data/experiments/short_horizon/historical_walkforward/campaign_288/ordinal_rff_ridge_v1/development_failure.json",
+      "sha256": "073491dce2511d7f082ace0f26dc47ea526a101f4e4b754e40f5c87d53810286"
+    },
+    "original_runner": {
+      "path": "scripts/a_share_three_day_walkforward_campaign288.py",
+      "sha256": "6ee0b4125cc6daeedcbc541d7fb575642baf30d4cf17a0baf66754b46ac10f19"
+    }
+  },
+  "failure": {
+    "fold": 1,
+    "exception": "Campaign288Error: training projection center differs from zero-return design",
+    "stage": "after the fold-1 market panel and training return field were loaded, before output-model fit",
+    "model_fit_completed": false,
+    "validation_score_snapshot_written": false,
+    "validation_return_read": false,
+    "development_result_observed": false,
+    "lockbox_2024_2025_opened": false
+  },
+  "diagnosis": {
+    "root_cause": "The frozen zero-return design computed each Alpha158 ordinal coordinate across all design model-support names. The first implementation then rebuilt the ordinal map after build_signal_panel had filtered the peers to the market quality-eligible signal panel. The changed peer set changed ranks and therefore the sample projection center.",
+    "protocol_intent": "The preregistration explicitly fixes the ordinal peer set as all model-support eligible names in the reused design partition. The original post-panel re-ranking was an implementation mismatch, not an admissible alternative model.",
+    "frozen_sample_changed": false,
+    "frozen_projection_center_changed": false,
+    "model_dimension_bandwidth_seed_penalty_or_gate_changed": false
+  },
+  "allowed_recovery": {
+    "new_versioned_output_root_required": true,
+    "preserve_original_intent_and_failure": true,
+    "compute the frozen ordinal map on the design peer set before joining to the market panel": true,
+    "use the original frozen design sample keys and projection center": true,
+    "repeat_fold1_training_return_read_must_be_disclosed": true,
+    "count_this_failure_as_an_infrastructure_attempt": true,
+    "validation_scores_must_still_be_frozen_before_validation_returns": true,
+    "any_model_or_threshold_retuning": false
+  },
+  "research_boundary": {
+    "provider_request_issued": false,
+    "credential_loaded": false,
+    "candidate49_historical_backfill_performed": false,
+    "candidate49_ledgers_changed": false,
+    "second_prospective_candidate_created": false,
+    "current_scoring_selection_sizing_positions_or_orders_performed": false,
+    "investment_advice": false
+  }
+}

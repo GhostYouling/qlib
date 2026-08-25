@@ -1,0 +1,54 @@
+{
+  "schema_version": 1,
+  "kind": "a_share_three_day_walkforward_campaign288_development_execution_freeze",
+  "status": "frozen_after_zero_return_design_before_campaign288_training_or_validation_return_read",
+  "recorded_at": "2026-08-25T12:15:00+08:00",
+  "protocol": {
+    "path": "docs/a_share_three_day_walkforward_campaign_288_preregistration_20260825.json",
+    "sha256": "4ec58ecef2bd4da21ee144c33c27402225aa821f5938f20c564ac3c70934ab76"
+  },
+  "design_evidence": {
+    "path": "data/experiments/short_horizon/historical_walkforward/campaign_288/ordinal_rff_ridge_v1/design_evidence.json",
+    "sha256": "3ea08229b18d13d2ae1ffd2aac58e212c3742ff1a5018fda13807f00385f7ac1",
+    "status": "passed_ready_for_frozen_development_execution",
+    "fold_count": 3,
+    "historical_return_values_read": false
+  },
+  "runner": {
+    "path": "scripts/a_share_three_day_walkforward_campaign288.py",
+    "sha256": "6ee0b4125cc6daeedcbc541d7fb575642baf30d4cf17a0baf66754b46ac10f19"
+  },
+  "tests": {
+    "path": "tests/data_collector_tests/test_a_share_three_day_walkforward_campaign288.py",
+    "sha256": "a2bec334da9ffc89609ed9260022cdc96e86c900120aba4baa32e93facc0237c",
+    "result": "6 passed"
+  },
+  "observed_zero_return_design": {
+    "retained_training_sessions_by_fold": [133, 214, 294],
+    "sampled_rows_by_fold": [12768, 20544, 28224],
+    "minimum_total_finite_observations_per_feature_by_fold": [90724, 172622, 258297],
+    "random_weight_sha256": "bbb7cb71de5949217dc4e5a25cebd27d87c723d6a7b931590e98ea79cd8e211c",
+    "random_phase_sha256": "255fd64b3de0ec00b1660a90fa03c29922d076442883e82a2631d9776a1b4144",
+    "all_design_gates_passed": true
+  },
+  "frozen_development_intent": {
+    "trial_id": "wf288_alpha158_ordinal_rff128_ridge",
+    "trial_count": 1,
+    "fold_count": 3,
+    "validation_scores_frozen_before_each_validation_return_read": true,
+    "survivor_gate_unchanged_from_protocol": true,
+    "2024_2025_lockbox_initially_closed": true
+  },
+  "research_boundary": {
+    "campaign288_design_partition_rows_read_before_freeze": true,
+    "campaign288_ordinal_projection_and_center_computed_before_freeze": true,
+    "training_or_validation_return_read_before_freeze": false,
+    "model_fit_before_freeze": false,
+    "lockbox_2024_2025_return_read_before_freeze": false,
+    "provider_request_issued_before_freeze": false,
+    "credential_loaded_before_freeze": false,
+    "candidate49_historical_backfill_before_freeze": false,
+    "candidate49_ledgers_changed_before_freeze": false,
+    "current_scoring_selection_sizing_positions_or_orders_before_freeze": false
+  }
+}
