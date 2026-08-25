@@ -1,0 +1,159 @@
+{
+  "schema_version": 1,
+  "kind": "a_share_three_day_walkforward_campaign299_preregistration",
+  "status": "fully_frozen_before_campaign299_candidate_comparator_daily_price_or_forward_return_values",
+  "recorded_at": "2026-08-25T20:26:00+08:00",
+  "authoritative_inputs": {
+    "historical_walkforward_policy": {
+      "path": "docs/a_share_three_day_historical_walkforward_research_policy_20260727.json",
+      "sha256": "38426d6161b9bfed323c58caba18feca668b8c9d53e294951a8ba90c01a798bb"
+    },
+    "campaign298_terminal_state": {
+      "path": "docs/a_share_three_day_iteration_status_20260825_campaign298_terminal.json",
+      "sha256": "cc4db06a5d5bd4f89c68735221ba37878a8ab922942fa05b4477bf2d64e25bbd"
+    },
+    "campaign298_terminal_result": {
+      "path": "docs/a_share_three_day_walkforward_campaign_298_terminal_result_20260825.json",
+      "sha256": "2a9943da00e5432b7729b1ad575843243687f78d4afd8e11c05fe5144c668022"
+    },
+    "numeric_comparison_policy_v428": {
+      "path": "docs/a_share_three_day_walkforward_future_numeric_comparison_eligibility_policy_v428_20260825.json",
+      "sha256": "df8c88d614467a1ebba582a973f516f48ef2931d34c8b7fa788108c323942e8b"
+    },
+    "library_order_reconstruction_receipt": {
+      "path": "docs/a_share_three_day_walkforward_campaign_298_library_order_reconstruction_receipt_20260825.json",
+      "sha256": "93c8d9fde703e6fe08056a39933443c9659965778a9330a366239e50ed62c435"
+    },
+    "concept_catalog": {
+      "path": "docs/a_share_three_day_walkforward_campaign_299_concept_scouting_20260825.json",
+      "sha256": "5cc8f0850130da3ad6f54cfa499b4028423271416fefe897cd2ff0b055702967"
+    }
+  },
+  "source_bindings": {
+    "alpha158_design": {
+      "path": "data/experiments/short_horizon/historical_walkforward/campaign_286/alpha158_development_design_recovery_v3/snapshot_manifest.json",
+      "sha256": "31cba0be801ac1421ef9555b862575089589ec08397c1420be3fc4f43b111d4e",
+      "dataset_sha256": "714f4ccbdf4bfbaccfd04f543ec8c6a0bc345d3cc567ab621d01905130c46252",
+      "years": [2019, 2020, 2021, 2022, 2023],
+      "feature_count": 158,
+      "minimum_finite_features": 119,
+      "required_feature_names": ["MA20", "QTLU20", "QTLD20"]
+    },
+    "numeric140_design": {
+      "path": "/Volumes/DIsk/qlib-a-share-tushare-1m/derived/a_share/rich/tushare/minute_walkforward_campaign132_design_matrix/tushare_stk_mins_1m_2019_2025_ea0cbb8f_walkforward_campaign132_numeric140_design_v1/snapshot_manifest.json",
+      "sha256": "043c17fea89f3b0956d643a7c6e3f4d73a11403b967213d2d57539a6a8316a49",
+      "dataset_sha256": "12ce3a64b5e13581392ded9890e2064db4ccca3945da3eb8ad7752c95366a9fc",
+      "development_years_only": [2019, 2020, 2021, 2022, 2023]
+    },
+    "campaign298_snapshot": {
+      "path": ".local-research/campaign_298/alpha158_volume_coefficient_of_variation_20d_v1/candidate_snapshot/snapshot_manifest.json",
+      "sha256": "e182449aa01bcfeba5919113085c307e39aefb59f0c6255f0878bc27b80ccc01",
+      "dataset_sha256": "1b1b2ae9171c5827008d664a9fb86bf9db88eaecd1821882cbf45f37354bcd3b",
+      "factor_name": "alpha158_volume_coefficient_of_variation_20d",
+      "score_direction": "higher",
+      "frozen_value_range": [0.0, null]
+    }
+  },
+  "factor_library": [
+    {
+      "factor_id": "campaign299_factor_001",
+      "name": "alpha158_close_distribution_upper_tail_asymmetry_20d",
+      "direction": "higher",
+      "formula": "For each frozen Alpha158 model-support row, require finite MA20, QTLU20 and QTLD20 with QTLU20-QTLD20 strictly positive, then set score=(2*MA20-QTLU20-QTLD20)/(QTLU20-QTLD20) if the raw ratio is finite. Add no epsilon, fill, clipping, winsorization, threshold, rank, sign or absolute-value transform.",
+      "parameters": {
+        "mean_close_feature": "MA20",
+        "upper_close_quantile_feature": "QTLU20",
+        "lower_close_quantile_feature": "QTLD20",
+        "fixed_horizon_sessions": 20,
+        "score": "(2 * MA20 - QTLU20 - QTLD20) / (QTLU20 - QTLD20)",
+        "source_expression_semantics": "MA20, QTLU20 and QTLD20 share the frozen Alpha158 divisor current_close; the common divisor cancels and the ratio equals (2*Mean(close,20)-Q80(close,20)-Q20(close,20))/(Q80(close,20)-Q20(close,20))",
+        "denominator_rule": "strictly positive raw QTLU20-QTLD20; no epsilon",
+        "missing_rule": "missing if any input is nonfinite, QTLU20-QTLD20 is nonpositive, frozen model support is false, or the raw ratio is nonfinite; never fill, clip, winsorize, threshold or repair",
+        "fit": "none"
+      }
+    }
+  ],
+  "coverage_and_capacity_gates": {
+    "domain": "point-in-time quality_listing_eligible rows in the frozen Alpha158 design; candidate eligibility additionally requires frozen model support and the exact three-input close-distribution asymmetry formula rules",
+    "median_daily_coverage_minimum": 0.95,
+    "p05_daily_coverage_minimum": 0.9,
+    "p05_eligible_names_minimum": 50,
+    "non_overlapping_three_signal_session_cohorts_minimum": 200,
+    "cohort_years_minimum": 5,
+    "nonconstant_cross_section_required": true,
+    "coverage_failure_stops_before_every_comparator_value": true
+  },
+  "ordered_numeric_uniqueness": {
+    "comparator_count": 151,
+    "comparator_order_sha256": "c556febf47c3e36ff13d6c9387209a71141816af22bd5c959e3dfbec77859aad",
+    "order_digest_semantics": "SHA-256 of canonical JSON [[name, score_direction], ...]",
+    "first_150": {
+      "source": "Campaign298 frozen comparison_definitions order",
+      "source_protocol_path": "docs/a_share_three_day_walkforward_campaign_298_preregistration_20260825.json",
+      "source_protocol_sha256": "4b2ac8ae00aa12d2d557b585d4faf615106002f9d2b6ea6ceb334a010eff2604",
+      "order_sha256": "135dec87e00f39a78913e8b678c0c5e809f516c952575a9e406c360086a6508e"
+    },
+    "ordinal_151": {
+      "name": "alpha158_volume_coefficient_of_variation_20d",
+      "score_direction": "higher",
+      "source_manifest_path": ".local-research/campaign_298/alpha158_volume_coefficient_of_variation_20d_v1/candidate_snapshot/snapshot_manifest.json",
+      "source_manifest_sha256": "e182449aa01bcfeba5919113085c307e39aefb59f0c6255f0878bc27b80ccc01",
+      "valid_finite_range": [0.0, null]
+    },
+    "only_lower_direction_comparator": "intraday_realized_volatility",
+    "minimum_pair_names_per_session": 50,
+    "minimum_pair_sessions_per_comparator": 100,
+    "strict_absolute_median_maximum": 0.8,
+    "ordered_early_stop": true,
+    "all_151_must_pass": true,
+    "insufficient_overlap_fails_closed": true
+  },
+  "development_trial": {
+    "trial_id": "wf299_alpha158_close_distribution_upper_tail_asymmetry_20d_single_higher",
+    "factor_names": ["alpha158_close_distribution_upper_tail_asymmetry_20d"],
+    "weights": [1.0],
+    "model_fitting": false,
+    "training_return_reads": 0,
+    "alternate_direction_horizon_transform_threshold_filter_weight_fit_model_or_combination_search": false,
+    "walkforward_folds": [
+      {"fold": 1, "training": ["2019-01-02", "2020-12-31"], "validation": ["2021-01-01", "2021-12-31"]},
+      {"fold": 2, "training": ["2019-01-02", "2021-12-31"], "validation": ["2022-01-01", "2022-12-31"]},
+      {"fold": 3, "training": ["2019-01-02", "2022-12-31"], "validation": ["2023-01-01", "2023-12-31"]}
+    ],
+    "purge_signal_sessions": 3,
+    "entry_exit": "signal after session t close, enter next accepted session open, exit third accepted session close; t+1 and t+3 must remain inside the same validation partition",
+    "costs_and_operational_gates": "identical to frozen Campaign286/Campaign298 three-session engine: Top3, normalized execution, CNY 200000 board-lot pilot, primary 10bp, sensitivity 20bp, affordability >=0.90, maximum filled amount participation <=0.01, zero unresolved terminal positions",
+    "survival_quality_gates": "at least 2/3 positive mean Rank IC, positive median Rank IC and top3-bottom3 spread, at least 2/3 positive normalized and 10bp returns, positive median 10bp return, worst normalized drawdown >=-0.25 and positive compounded 20bp return"
+  },
+  "append_rule": {
+    "definition_and_numeric_comparator_append_once_only_if_coverage_and_all_151_uniqueness_gates_pass": true,
+    "development_survival_not_required_for_future_duplicate_control": true,
+    "failed_coverage_or_uniqueness_leaves_library_unchanged": true,
+    "prior_library_counts": {"complete_definitions": 170, "numeric_comparators": 151}
+  },
+  "lockbox_2024_2025": {
+    "currently_open": false,
+    "may_open_once_only_after_nonzero_frozen_development_survivor_and_complete_campaign_freeze": true,
+    "historically_exposed_quasi_out_of_sample_not_pristine_holdout": true,
+    "campaign299_alpha158_2024_2025_source_currently_absent": true
+  },
+  "candidate49_boundary": {
+    "registration_id": "candidate49_intraday_cumulative_vwap_crossing_rate_240m_v1",
+    "sole_active_prospective_candidate": true,
+    "historical_signal_return_execution_or_milestone_backfill_allowed": false,
+    "second_prospective_candidate_allowed": false,
+    "same_day_20260825_retry_allowed": false,
+    "signal_ledger_sha256": "5193f00d7f36da003f53cec387900da4c3d002299f5dfcfc1a95eaa199ed3a79",
+    "execution_ledger_sha256": "d57a3e61eac969e42cafa418ccd8c0a5ee65dcf69da145bb2c096c2a02a2ea4f"
+  },
+  "research_boundary": {
+    "campaign299_candidate_or_comparator_values_read_before_protocol": false,
+    "historical_daily_price_or_forward_return_values_read_before_protocol": false,
+    "provider_request_issued": false,
+    "credential_value_or_digest_read": false,
+    "current_scoring_selection_sizing_positions_or_orders_allowed": false,
+    "investment_advice": false,
+    "record_every_concept_formula_direction_parameter_filter_subset_model_combination_and_failure_append_only": true,
+    "post_result_change_requires_new_campaign": true
+  }
+}

@@ -1,0 +1,60 @@
+{
+  "schema_version": 1,
+  "kind": "a_share_three_day_walkforward_campaign299_implementation_freeze_v2",
+  "status": "module_entrypoint_repair_frozen_before_campaign299_candidate_comparator_or_return_values",
+  "recorded_at": "2026-08-25T20:39:00+08:00",
+  "frozen_implementation": {
+    "protocol_path": "docs/a_share_three_day_walkforward_campaign_299_preregistration_20260825.json",
+    "protocol_sha256": "5904feb48da01b83f1c9868b2f3cc11bbcfb610462c88f2df0b1f3b52a7edbc8",
+    "concept_path": "docs/a_share_three_day_walkforward_campaign_299_concept_scouting_20260825.json",
+    "concept_sha256": "5cc8f0850130da3ad6f54cfa499b4028423271416fefe897cd2ff0b055702967",
+    "runner_path": "scripts/a_share_three_day_walkforward_campaign299.py",
+    "runner_sha256": "a034e5a6652e6324139d18beb29e40a67ec68f4bafb2fc45c1a82054cb479b21",
+    "test_path": "tests/data_collector_tests/test_a_share_three_day_walkforward_campaign299.py",
+    "test_sha256": "17636336594da5b31c7267290bcb2b2bf48635985389a1a03b99ca6683c1a24a",
+    "runner_dependency_path": "scripts/a_share_three_day_walkforward_campaign298.py",
+    "runner_dependency_sha256": "9ee8d9d2281d7d86524eb67ea630310922ba243bc9918edac1660def4c349c9d",
+    "original_implementation_freeze_path": "docs/a_share_three_day_walkforward_campaign_299_implementation_freeze_20260825.json",
+    "original_implementation_freeze_sha256": "432b0ce270904dad342feb8e3665f22d1e0871d950b273d6f3f9bfe7151c3081",
+    "pytest_entrypoint_failure_path": "docs/a_share_three_day_walkforward_campaign_299_pytest_entrypoint_collection_failure_20260825.json",
+    "pytest_entrypoint_failure_sha256": "f09316fa4c50d4bf4c763e07f45d17438dbc07ad4447483cb69a81730acd423a",
+    "direct_plan_failure_path": "docs/a_share_three_day_walkforward_campaign_299_direct_script_plan_import_failure_20260825.json",
+    "direct_plan_failure_sha256": "7b2e4da7ac3af3c2aa1c60adba146dce98b51fafe3836d152c15c62291df3cef",
+    "factor_name": "alpha158_close_distribution_upper_tail_asymmetry_20d",
+    "formula": "(2 * MA20 - QTLU20 - QTLD20) / (QTLU20 - QTLD20)",
+    "direction": "higher",
+    "required_alpha158_features": ["MA20", "QTLU20", "QTLD20"],
+    "fixed_horizon_sessions": 20,
+    "comparator_count": 151,
+    "comparator_order_sha256": "c556febf47c3e36ff13d6c9387209a71141816af22bd5c959e3dfbec77859aad",
+    "model_fitting": false,
+    "training_return_reads": 0,
+    "batch_size": 8192,
+    "entrypoint": "python -m scripts.a_share_three_day_walkforward_campaign299",
+    "output_root": ".local-research/campaign_299/alpha158_close_distribution_upper_tail_asymmetry_20d_v1"
+  },
+  "execution_sequence": [
+    "Run python -m scripts.a_share_three_day_walkforward_campaign299 plan and require ready=true with exit code 0.",
+    "Only then run once with the identical module entrypoint and run --confirm-run --batch-size 8192.",
+    "Coverage failure stops before every comparator value; uniqueness failure stops before every historical daily price or forward return value.",
+    "Only complete coverage plus all 151 ordered uniqueness gates authorize the exact three frozen 2019-2023 validation folds."
+  ],
+  "repair_scope": {
+    "module_entrypoint_only": true,
+    "factor_formula_direction_or_horizon_changed": false,
+    "comparator_order_or_threshold_changed": false,
+    "fold_cost_execution_or_survival_gate_changed": false
+  },
+  "research_boundary": {
+    "candidate_values_read_before_freeze": false,
+    "comparator_values_read_before_freeze": false,
+    "historical_daily_price_or_forward_return_values_read_before_freeze": false,
+    "provider_request_issued": false,
+    "provider_credential_value_or_digest_read": false,
+    "candidate49_historical_backfill_performed": false,
+    "candidate49_ledgers_changed": false,
+    "second_prospective_candidate_created": false,
+    "current_scoring_selection_sizing_positions_or_orders_performed": false,
+    "investment_advice": false
+  }
+}

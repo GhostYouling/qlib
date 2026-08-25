@@ -1,0 +1,56 @@
+{
+  "schema_version": 1,
+  "kind": "a_share_three_day_walkforward_campaign299_library_order_reconstruction_receipt",
+  "status": "read_only_authoritative_source_reconstruction_verified_and_campaign299_appended_once",
+  "recorded_at": "2026-08-25T20:46:00+08:00",
+  "operation": {
+    "working_directory": "/Volumes/DIsk/Disk-Coding/qlib",
+    "mode": "read_only_metadata_reconstruction_with_PYTHONDONTWRITEBYTECODE",
+    "source_module": "scripts/a_share_three_day_walkforward_campaign263_features.py",
+    "source_module_sha256": "f4882d4c29877b05a2b7ccffe540a1e97f0917e252941d2484b03720b1426124",
+    "predecessor_receipt_path": "docs/a_share_three_day_walkforward_campaign_298_library_order_reconstruction_receipt_20260825.json",
+    "predecessor_receipt_sha256": "93c8d9fde703e6fe08056a39933443c9659965778a9330a366239e50ed62c435",
+    "local_recovery_worktree_failure_path": "docs/a_share_three_day_walkforward_campaign_299_local_library_reconstruction_import_precedence_failure_20260825.json",
+    "local_recovery_worktree_failure_sha256": "b19beaa1e6250f2b4a3f5eb04c264dc674b231d24fae5b1adc7964cead6074f0",
+    "digest_semantics": "SHA-256 of canonical JSON [[name, score_direction], ...]",
+    "source_repository_files_changed": false
+  },
+  "predecessor_verification": {
+    "complete_definition_count": 170,
+    "complete_definition_order_sha256": "2c315c5e92f4c134582deef17f38ab66d482fe5b11a2bc164f308b4822cb7d64",
+    "numeric_comparator_count": 151,
+    "numeric_comparator_order_sha256": "c556febf47c3e36ff13d6c9387209a71141816af22bd5c959e3dfbec77859aad",
+    "matches_policy_v428": true
+  },
+  "campaign299_append": {
+    "item": {
+      "name": "alpha158_close_distribution_upper_tail_asymmetry_20d",
+      "score_direction": "higher"
+    },
+    "append_reason": "Coverage and all 151 ordered numeric uniqueness gates passed; development survival is not required for future duplicate control.",
+    "complete_definition_count": 171,
+    "complete_definition_order_sha256": "b43cca1423094b1644e66130b6ef1b21680bbb023544ed6c99d73af515e4120e",
+    "numeric_comparator_count": 152,
+    "numeric_comparator_order_sha256": "f7cf9cf460464920a6bdfdafe0cf846fafd54862bb9837db3c7b808df341ae14",
+    "append_does_not_imply_survival_or_investment_value": true
+  },
+  "terminal_evidence": {
+    "no_return_audit_path": ".local-research/campaign_299/alpha158_close_distribution_upper_tail_asymmetry_20d_v1/no_return_audit.json",
+    "no_return_audit_sha256": "96aa52f69469ce1a1458aa5a10b220ff8d00d6fe27327ff44a3ef755eb518cac",
+    "terminal_result_path": ".local-research/campaign_299/alpha158_close_distribution_upper_tail_asymmetry_20d_v1/terminal_result.json",
+    "terminal_result_sha256": "8962823864d6282a31ca7623f930823ab861a2c096ed135840e9f21134e14009",
+    "coverage_gate_passed": true,
+    "ordered_comparators_passed": 151,
+    "development_survivor_count": 0
+  },
+  "research_boundary": {
+    "additional_candidate_or_comparator_values_read": false,
+    "additional_historical_daily_price_or_forward_return_values_read": false,
+    "stress_2024_2025_opened": false,
+    "provider_request_issued": false,
+    "provider_credential_value_or_digest_read": false,
+    "candidate49_ledgers_changed": false,
+    "current_scoring_selection_sizing_positions_or_orders_performed": false,
+    "investment_advice": false
+  }
+}

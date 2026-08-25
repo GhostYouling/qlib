@@ -42313,6 +42313,47 @@ def append_historical_walkforward_terminal_summaries(report: str) -> str:
                 "结论，也没有触发历史回填、Candidate50、评分、选股、仓位或订单。",
             ]
         )
+    campaign299_terminal = (
+        REPO_ROOT
+        / "docs/a_share_three_day_walkforward_campaign_299_terminal_result_20260825.json"
+    )
+    if campaign299_terminal.exists():
+        terminal = load_json_record(
+            campaign299_terminal,
+            kind="a_share_three_day_walkforward_campaign299_documented_terminal_result",
+        )
+        development = terminal.get("development_result") or {}
+        aggregate = development.get("aggregate") or {}
+        uniqueness = terminal.get("ordered_numeric_uniqueness_result") or {}
+        library = terminal.get("library_state") or {}
+        pieces.extend(
+            [
+                "",
+                "## 历史滚动 Campaign299 权威追加",
+                "",
+                (
+                    "固定因子 `alpha158_close_distribution_upper_tail_asymmetry_20d` "
+                    f"通过 {int(uniqueness.get('comparators_passed', 0))}/"
+                    f"{int(uniqueness.get('comparators_declared', 0))} 项唯一性；"
+                    "2021–2023 Rank IC、normalized return 与 10bp 收益全部为负。"
+                ),
+                (
+                    "复合 normalized/10bp/20bp 收益为 "
+                    f"{float(aggregate.get('compounded_normalized_return', 0)):+.2%}/"
+                    f"{float(aggregate.get('compounded_pilot_10bp_return', 0)):+.2%}/"
+                    f"{float(aggregate.get('compounded_pilot_20bp_return', 0)):+.2%}；"
+                    "最差 normalized 回撤为 "
+                    f"{float(aggregate.get('worst_validation_normalized_drawdown', 0)):+.2%}。"
+                ),
+                (
+                    f"开发 survivor 为 {int(development.get('survivor_count', 0))}，"
+                    "2024–2025 未打开；重复控制库为 "
+                    f"{int(library.get('complete_factor_definition_count', 0))}/"
+                    f"{int(library.get('eligible_numeric_comparator_count', 0))}。"
+                ),
+                "该段只重放冻结终态；不得反向救援，也不生成当前评分、选股、仓位或订单。",
+            ]
+        )
     return "\n".join(pieces).rstrip() + "\n"
 
 

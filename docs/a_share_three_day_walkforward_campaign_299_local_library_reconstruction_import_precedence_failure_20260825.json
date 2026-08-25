@@ -1,0 +1,20 @@
+{
+  "schema_version": 1,
+  "kind": "a_share_three_day_walkforward_campaign299_infrastructure_failure",
+  "status": "recorded_additively_after_terminal_result",
+  "recorded_at": "2026-08-25T20:44:00+08:00",
+  "attempt_id": "campaign299_infrastructure_failure_003",
+  "phase": "postterminal_library_order_reconstruction",
+  "error_type": "Campaign054FeatureError",
+  "error_summary": "The first read-only reconstruction command was launched from the recovery worktree, so Python import precedence selected the local recursive feature chain and stopped on an older frozen Campaign054 binding mismatch.",
+  "recovery": "Rerun the same metadata-only reconstruction from the authoritative /Volumes/DIsk/Disk-Coding/qlib working directory with PYTHONDONTWRITEBYTECODE=1; verify the reconstructed 170-item predecessor digest before appending Campaign299 once.",
+  "research_boundary": {
+    "candidate_or_comparator_values_read": false,
+    "additional_historical_daily_price_or_forward_return_values_read": false,
+    "terminal_outputs_changed": false,
+    "provider_request_issued": false,
+    "credential_value_or_digest_read": false,
+    "candidate49_ledgers_changed": false,
+    "current_scoring_selection_sizing_positions_or_orders_performed": false
+  }
+}

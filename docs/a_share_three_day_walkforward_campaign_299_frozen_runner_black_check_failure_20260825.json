@@ -1,0 +1,23 @@
+{
+  "schema_version": 1,
+  "kind": "a_share_three_day_walkforward_campaign299_infrastructure_failure",
+  "status": "recorded_additively_after_terminal_result",
+  "recorded_at": "2026-08-25T21:05:00+08:00",
+  "attempt_id": "campaign299_infrastructure_failure_005",
+  "phase": "postterminal_precommit_format_check",
+  "command_semantics": "python -m black --check frozen Campaign299 runner and two Campaign299 test files",
+  "exit_code": 1,
+  "error_type": "BlackCheckFailure",
+  "error_summary": "Black would reformat the already terminal-hash-bound Campaign299 runner and the unbound publication test.",
+  "recovery": "Preserve the frozen runner byte-for-byte because post-value formatting would invalidate the implementation freeze and terminal evidence; format only the unbound publication test and rely on py_compile, Ruff and focused tests for the runner.",
+  "research_boundary": {
+    "frozen_runner_changed": false,
+    "candidate_or_comparator_values_read": false,
+    "additional_historical_daily_price_or_forward_return_values_read": false,
+    "terminal_outputs_changed": false,
+    "provider_request_issued": false,
+    "credential_value_or_digest_read": false,
+    "candidate49_ledgers_changed": false,
+    "current_scoring_selection_sizing_positions_or_orders_performed": false
+  }
+}

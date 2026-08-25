@@ -1,0 +1,22 @@
+{
+  "schema_version": 1,
+  "kind": "a_share_three_day_walkforward_campaign299_infrastructure_failure",
+  "status": "recorded_failed_closed_before_campaign299_candidate_comparator_or_return_values",
+  "recorded_at": "2026-08-25T20:31:00+08:00",
+  "attempt_id": "campaign299_infrastructure_failure_001",
+  "phase": "implementation_prevalue_test_collection",
+  "command_semantics": "pytest -q tests/data_collector_tests/test_a_share_three_day_walkforward_campaign299.py -k not_plan",
+  "exit_code": 2,
+  "error_type": "ModuleNotFoundError",
+  "error_summary": "The standalone pytest launcher did not place the repository root on sys.path, so collection failed while importing scripts.a_share_three_day_walkforward_campaign299.",
+  "recovery": "Use the repository-compatible python -m pytest entrypoint. The factor formula, direction, protocol, comparison order, thresholds and frozen data sources remain unchanged.",
+  "research_boundary": {
+    "campaign299_candidate_values_read": false,
+    "comparator_values_read": false,
+    "historical_daily_price_or_forward_return_values_read": false,
+    "provider_request_issued": false,
+    "credential_value_or_digest_read": false,
+    "candidate49_ledgers_changed": false,
+    "current_scoring_selection_sizing_positions_or_orders_performed": false
+  }
+}

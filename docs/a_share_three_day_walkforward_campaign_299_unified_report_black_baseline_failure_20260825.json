@@ -1,0 +1,22 @@
+{
+  "schema_version": 1,
+  "kind": "a_share_three_day_walkforward_campaign299_infrastructure_failure",
+  "status": "recorded_additively_after_terminal_result",
+  "recorded_at": "2026-08-25T20:55:00+08:00",
+  "attempt_id": "campaign299_infrastructure_failure_004",
+  "phase": "postterminal_unified_report_format_check",
+  "command_semantics": "python -m black --check scripts/a_share_short_horizon_factor_research.py",
+  "exit_code": 1,
+  "error_type": "BlackCheckFailure",
+  "error_summary": "Black reported that the large pre-existing unified research script would be reformatted, including historical blocks outside Campaign299 scope.",
+  "recovery": "Preserve unrelated historical formatting, retain the syntax-valid targeted Campaign299 append, and validate it with py_compile plus focused tests instead of applying a repository-wide mechanical rewrite.",
+  "research_boundary": {
+    "candidate_or_comparator_values_read": false,
+    "additional_historical_daily_price_or_forward_return_values_read": false,
+    "terminal_outputs_changed": false,
+    "provider_request_issued": false,
+    "credential_value_or_digest_read": false,
+    "candidate49_ledgers_changed": false,
+    "current_scoring_selection_sizing_positions_or_orders_performed": false
+  }
+}

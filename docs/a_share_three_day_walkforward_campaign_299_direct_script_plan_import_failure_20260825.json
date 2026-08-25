@@ -1,0 +1,24 @@
+{
+  "schema_version": 1,
+  "kind": "a_share_three_day_walkforward_campaign299_infrastructure_failure",
+  "status": "recorded_failed_closed_before_campaign299_candidate_comparator_or_return_values",
+  "recorded_at": "2026-08-25T20:37:00+08:00",
+  "attempt_id": "campaign299_infrastructure_failure_002",
+  "phase": "metadata_only_plan_entrypoint",
+  "command_semantics": "python scripts/a_share_three_day_walkforward_campaign299.py plan",
+  "exit_code": 1,
+  "error_type": "ModuleNotFoundError",
+  "error_summary": "Direct file execution set sys.path to the scripts directory and could not import the scripts package before plan validation began.",
+  "recovery": "Freeze the repository-compatible module entrypoint python -m scripts.a_share_three_day_walkforward_campaign299 for both plan and run. Do not change the factor, protocol, comparison order, costs, folds or gates.",
+  "research_boundary": {
+    "plan_ready_obtained": false,
+    "campaign299_run_executed": false,
+    "campaign299_candidate_values_read": false,
+    "comparator_values_read": false,
+    "historical_daily_price_or_forward_return_values_read": false,
+    "provider_request_issued": false,
+    "credential_value_or_digest_read": false,
+    "candidate49_ledgers_changed": false,
+    "current_scoring_selection_sizing_positions_or_orders_performed": false
+  }
+}

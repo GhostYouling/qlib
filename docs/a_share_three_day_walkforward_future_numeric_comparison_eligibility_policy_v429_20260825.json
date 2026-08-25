@@ -1,0 +1,103 @@
+{
+  "schema_version": 1,
+  "kind": "a_share_three_day_walkforward_future_numeric_comparison_eligibility_policy",
+  "version": 429,
+  "status": "campaign299_terminal_development_failed_library_advanced_171_152",
+  "recorded_at": "2026-08-25T20:51:00+08:00",
+  "supersedes_without_rewriting": {
+    "path": "docs/a_share_three_day_walkforward_future_numeric_comparison_eligibility_policy_v428_20260825.json",
+    "sha256": "df8c88d614467a1ebba582a973f516f48ef2931d34c8b7fa788108c323942e8b"
+  },
+  "authoritative_inputs": {
+    "campaign299_documented_terminal_result": {
+      "path": "docs/a_share_three_day_walkforward_campaign_299_terminal_result_20260825.json",
+      "sha256": "06ec9c68c8f21d9517a5eabf37458855d939788ba31a914a130d6dfbcebddb15"
+    },
+    "campaign299_library_order_reconstruction_receipt": {
+      "path": "docs/a_share_three_day_walkforward_campaign_299_library_order_reconstruction_receipt_20260825.json",
+      "sha256": "596d0f127c4b47bba62c817006e680b7a4ef7f69296e064e96a2db37c6843bdf"
+    },
+    "campaign299_local_terminal_result": {
+      "path": ".local-research/campaign_299/alpha158_close_distribution_upper_tail_asymmetry_20d_v1/terminal_result.json",
+      "sha256": "8962823864d6282a31ca7623f930823ab861a2c096ed135840e9f21134e14009"
+    }
+  },
+  "complete_historical_feature_library": {
+    "factor_definition_count": 171,
+    "order_sha256": "b43cca1423094b1644e66130b6ef1b21680bbb023544ed6c99d73af515e4120e",
+    "prior_factor_definition_count": 170,
+    "prior_order_sha256": "2c315c5e92f4c134582deef17f38ab66d482fe5b11a2bc164f308b4822cb7d64",
+    "campaign299_definition_appended": true,
+    "appended_factor": {
+      "name": "alpha158_close_distribution_upper_tail_asymmetry_20d",
+      "score_direction": "higher"
+    },
+    "reason": "Campaign299 passed coverage and every frozen numeric uniqueness gate. The append is solely for future duplicate control and does not imply development survival."
+  },
+  "numerical_comparator_eligibility": {
+    "eligible_numeric_comparator_count": 152,
+    "order_sha256": "f7cf9cf460464920a6bdfdafe0cf846fafd54862bb9837db3c7b808df341ae14",
+    "order_digest_semantics": "SHA-256 of canonical JSON [[name, score_direction], ...] over the reconstructed complete frozen order.",
+    "prior_eligible_numeric_comparator_count": 151,
+    "prior_order_sha256": "c556febf47c3e36ff13d6c9387209a71141816af22bd5c959e3dfbec77859aad",
+    "campaign299_numeric_comparator_appended": true,
+    "appended_factor": {
+      "name": "alpha158_close_distribution_upper_tail_asymmetry_20d",
+      "score_direction": "higher"
+    },
+    "campaign299_maximum_absolute_median_daily_rank_correlation": 0.08372414786893397,
+    "strict_maximum": 0.8
+  },
+  "campaign299_terminal_boundary": {
+    "coverage_passed": true,
+    "ordered_comparators_declared": 151,
+    "ordered_comparators_evaluated": 151,
+    "ordered_comparators_passed": 151,
+    "return_reading_development_trial_count": 1,
+    "validation_fold_return_read_count": 3,
+    "positive_mean_rank_ic_fold_count": 0,
+    "positive_normalized_return_fold_count": 0,
+    "positive_pilot_10bp_return_fold_count": 0,
+    "compounded_normalized_return": -0.6449564429458192,
+    "compounded_pilot_10bp_return": -0.14846277924533258,
+    "compounded_pilot_20bp_return": -0.1936157083646347,
+    "worst_validation_normalized_drawdown": -0.46599829042352703,
+    "development_survivor_count": 0,
+    "stress_2024_2025_opened": false,
+    "reverse_horizon_transform_threshold_weight_filter_or_combination_rescue_allowed": false
+  },
+  "effective_accounting": {
+    "campaign299_prevalue_concept_attempts": 10,
+    "campaign299_infrastructure_failures": 5,
+    "campaign299_complete_factor_attempts": 1,
+    "campaign299_total_attempts": 16,
+    "campaign299_return_reading_development_trials": 1,
+    "cumulative_historical_research_attempts": 3084,
+    "cumulative_return_reading_development_trials": 330
+  },
+  "candidate49": {
+    "sole_active_prospective_candidate": true,
+    "same_day_20260825_retry_allowed": false,
+    "historical_backfill_performed": false,
+    "signal_ledger_entry_count": 0,
+    "signal_ledger_sha256": "5193f00d7f36da003f53cec387900da4c3d002299f5dfcfc1a95eaa199ed3a79",
+    "execution_ledger_entry_count": 0,
+    "execution_ledger_sha256": "d57a3e61eac969e42cafa418ccd8c0a5ee65dcf69da145bb2c096c2a02a2ea4f"
+  },
+  "next_stage_boundary": {
+    "campaign299_terminal": true,
+    "campaign300_offline_prevalue_concept_scouting_allowed": true,
+    "campaign299_retune_reverse_horizon_transform_threshold_weight_filter_or_combination_allowed": false,
+    "historical_outputs_may_generate_current_scores_selection_sizing_positions_or_orders": false,
+    "stress_2024_2025_allowed": false
+  },
+  "research_boundary": {
+    "provider_api_request_issued": false,
+    "provider_credential_value_or_digest_read": false,
+    "candidate49_historical_backfill_performed": false,
+    "candidate49_ledgers_changed": false,
+    "second_prospective_candidate_created": false,
+    "current_scoring_selection_sizing_positions_or_orders_performed": false,
+    "investment_advice": false
+  }
+}

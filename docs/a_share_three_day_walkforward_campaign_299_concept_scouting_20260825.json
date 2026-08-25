@@ -1,0 +1,112 @@
+{
+  "schema_version": 1,
+  "kind": "a_share_three_day_walkforward_campaign299_concept_scouting",
+  "status": "finite_prevalue_catalog_frozen_before_campaign299_candidate_or_comparator_values",
+  "recorded_at": "2026-08-25T20:24:00+08:00",
+  "purpose": "Choose exactly one deterministic, no-fit Alpha158 close-distribution asymmetry mechanism for Campaign299 without reading Campaign299 candidate values, comparator values, daily prices or forward returns.",
+  "authoritative_frontier": {
+    "state_path": "docs/a_share_three_day_iteration_status_20260825_campaign298_terminal.json",
+    "state_sha256": "cc4db06a5d5bd4f89c68735221ba37878a8ab922942fa05b4477bf2d64e25bbd",
+    "numeric_policy_path": "docs/a_share_three_day_walkforward_future_numeric_comparison_eligibility_policy_v428_20260825.json",
+    "numeric_policy_sha256": "df8c88d614467a1ebba582a973f516f48ef2931d34c8b7fa788108c323942e8b",
+    "complete_definition_count": 170,
+    "complete_definition_order_sha256": "2c315c5e92f4c134582deef17f38ab66d482fe5b11a2bc164f308b4822cb7d64",
+    "numeric_comparator_count": 151,
+    "numeric_comparator_order_sha256": "c556febf47c3e36ff13d6c9387209a71141816af22bd5c959e3dfbec77859aad"
+  },
+  "finite_prevalue_concept_catalog": [
+    {
+      "catalog_id": "campaign299_concept_001",
+      "name": "alpha158_close_distribution_upper_tail_asymmetry_20d",
+      "decision": "selected_exactly_once",
+      "reason": "The frozen Alpha158 design exposes MA20=Mean(close,20)/current_close, QTLU20=Q80(close,20)/current_close and QTLD20=Q20(close,20)/current_close. The common current-close divisor cancels in (2*MA20-QTLU20-QTLD20)/(QTLU20-QTLD20). The numerator measures whether the full-sample mean is pulled above the central 20%-80% quantile midpoint, while the denominator fixes scale to the central band. This is an own-stock close-distribution tail-asymmetry mechanism, not the Campaign297 central-band occupancy inside the high-low envelope and not the Campaign298 volume coefficient of variation.",
+      "parameters": {
+        "mean_close_feature": "MA20",
+        "upper_close_quantile_feature": "QTLU20",
+        "lower_close_quantile_feature": "QTLD20",
+        "fixed_horizon_sessions": 20,
+        "formula": "(2 * MA20 - QTLU20 - QTLD20) / (QTLU20 - QTLD20)",
+        "valid_input_rule": "all three inputs finite; QTLU20-QTLD20 strictly positive; resulting raw ratio finite; never fill, clip, winsorize, threshold, rank, sign, absolute-value or add an epsilon",
+        "direction": "higher",
+        "economic_hypothesis": "A positive upper-tail displacement means unusually high closes have lifted the twenty-session mean above the central quantile midpoint, consistent with episodic upside demand whose information assimilation may persist from the next accepted open through the third accepted close.",
+        "fit": "none"
+      }
+    },
+    {
+      "catalog_id": "campaign299_concept_002",
+      "name": "alpha158_close_distribution_lower_tail_asymmetry_20d",
+      "decision": "rejected_prevalue",
+      "reason": "Negating the selected score or preferring the lower direction would create a two-direction search rather than an independent mechanism. Higher upper-tail displacement is frozen once before values."
+    },
+    {
+      "catalog_id": "campaign299_concept_003",
+      "name": "alpha158_close_distribution_asymmetry_horizon_grid",
+      "decision": "rejected_prevalue",
+      "reason": "Trying 5, 10, 30 or 60 sessions, pooling horizons or selecting a best horizon would create a horizon search. One conventional twenty-session month is frozen."
+    },
+    {
+      "catalog_id": "campaign299_concept_004",
+      "name": "alpha158_close_distribution_asymmetry_transform_grid",
+      "decision": "rejected_prevalue",
+      "reason": "Absolute value, square, sign, log, clipping, winsorization, thresholds, buckets and epsilon repairs add discretionary variants and are excluded."
+    },
+    {
+      "catalog_id": "campaign299_concept_005",
+      "name": "alpha158_raw_ma_quantile_midpoint_or_interquantile_width",
+      "decision": "rejected_prevalue",
+      "reason": "The unscaled mean-minus-quantile-midpoint mixes asymmetry with dispersion, while raw MA20 or interquantile width does not isolate tail imbalance. The single central-band-normalized form is frozen."
+    },
+    {
+      "catalog_id": "campaign299_concept_006",
+      "name": "campaign297_occupancy_retune_reverse_rehorizon_or_combination",
+      "decision": "forbidden",
+      "reason": "Campaign297 is immutable and terminal. Campaign299 does not read or transform its factor output, does not use MAX20 or MIN20, and does not measure central-band occupancy inside an envelope. QTLU20 and QTLD20 remain admissible only because they were coordinates of the complete Alpha158 feature library frozen before Campaign297."
+    },
+    {
+      "catalog_id": "campaign299_concept_007",
+      "name": "campaign298_volume_cv_retune_reverse_rehorizon_transform_or_combination",
+      "decision": "forbidden",
+      "reason": "Campaign298 is immutable and terminal. Campaign299 uses no volume, VSTD, VMA, coefficient-of-variation output, volume direction or price-volume mixture."
+    },
+    {
+      "catalog_id": "campaign299_concept_008",
+      "name": "alpha158_extreme_arrival_recency_balance_refresh",
+      "decision": "rejected_prevalue_mechanism_overlap",
+      "reason": "An IMAX/IMIN/IMXD daily-window proposal was rejected during metadata audit because it repeats the already terminal extreme-arrival-order mechanism at a different clock scale."
+    },
+    {
+      "catalog_id": "campaign299_concept_009",
+      "name": "alpha158_peer_rank_state_consensus_extremity_persistence_or_horizon_geometry_refresh",
+      "decision": "forbidden",
+      "reason": "Campaign290-294 already consumed peer-state and cross-horizon geometry. Campaign299 applies one within-stock distribution formula and no same-session peer transform."
+    },
+    {
+      "catalog_id": "campaign299_concept_010",
+      "name": "alpha158_supervised_tree_mlp_kernel_hash_weight_subset_or_terminal_factor_combination_search",
+      "decision": "forbidden",
+      "reason": "Campaign286-289 and earlier model campaigns consumed fitted and randomized model families. Campaign299 contains exactly one deterministic weight-1 factor, no terminal-factor combination and no training-return read."
+    }
+  ],
+  "prevalue_mechanism_audit": {
+    "complete_170_definition_and_151_comparator_metadata_reviewed": true,
+    "independent_of_campaign298_volume_cv": true,
+    "independent_of_campaign297_envelope_occupancy_output": true,
+    "independent_of_campaign296_beta_rsqr_trend_linearity": true,
+    "independent_of_campaign295_price_volume_confirmation": true,
+    "rejected_extreme_arrival_operator_refresh_before_values": true,
+    "model_fitting_or_return_selected_parameter": false,
+    "single_formula_single_direction_single_horizon": true,
+    "campaign299_candidate_or_comparator_values_read": false,
+    "historical_daily_price_or_forward_return_values_read": false
+  },
+  "research_boundary": {
+    "zero_network": true,
+    "provider_request_issued": false,
+    "credential_value_or_digest_read": false,
+    "candidate49_historical_backfill_performed": false,
+    "candidate49_ledgers_changed": false,
+    "second_prospective_candidate_created": false,
+    "current_scoring_selection_sizing_positions_or_orders_performed": false,
+    "investment_advice": false
+  }
+}
