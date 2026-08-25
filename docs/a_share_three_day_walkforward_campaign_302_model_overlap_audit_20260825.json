@@ -1,0 +1,53 @@
+{
+  "schema_version": 1,
+  "kind": "a_share_three_day_walkforward_campaign302_model_overlap_audit",
+  "status": "fixed_temporal_sequence_representation_distinguished_before_alpha360_or_return_values",
+  "recorded_at": "2026-08-25T21:51:03+08:00",
+  "authoritative_inputs": {
+    "campaign286_terminal": {
+      "path": "docs/a_share_three_day_walkforward_campaign_286_terminal_result_20260825.json",
+      "sha256": "f06b1e98e96a29a5cbc703ea87b8035d4f4e7086dcefaff0d09535b3a7a073d9"
+    },
+    "campaign287_terminal": {
+      "path": "docs/a_share_three_day_walkforward_campaign_287_terminal_result_20260825.json",
+      "sha256": "d3ad876809040fbbbce682ef8bf8f77947aec6244a7bbfd23b1a7d150f90dd58"
+    },
+    "campaign288_terminal": {
+      "path": "docs/a_share_three_day_walkforward_campaign_288_terminal_result_20260825.json",
+      "sha256": "a178ba2b7eafd3e0a2582111b4ab21d9b11090118aa269df34df745fb0c223bc"
+    },
+    "campaign289_terminal": {
+      "path": "docs/a_share_three_day_walkforward_campaign_289_terminal_result_20260825.json",
+      "sha256": "4826ce392fb24ae9c51f378b2400399d43a438294629011b6fec73521906e3c0"
+    }
+  },
+  "audited_terminal_families": [
+    "Alpha158 LightGBM axis-aligned supervised partitions",
+    "Alpha158 fixed single-hidden-layer raw-feature MLP",
+    "Alpha158 within-session ordinal RBF random-Fourier ridge",
+    "Alpha158 binary-state random-hyperplane cell mean",
+    "prior linear sparse subset neighbor kernel and handcrafted sequence estimators"
+  ],
+  "frozen_distinguishing_semantics": {
+    "new_information_representation": "all 60 ordered observations of close, open, high, low, vwap and volume, preserved as a 60 by 6 sequence",
+    "position_sensitive": true,
+    "self_attention_across_all_ordered_sessions": true,
+    "handcrafted_sequence_statistic": false,
+    "alpha158_feature_or_terminal_factor_input": false,
+    "validation_return_feedback_or_early_stopping": false,
+    "configuration_count": 1
+  },
+  "decision": {
+    "selected_trial_id": "wf302_alpha360_streamed_transformer_8d_1l",
+    "semantically_distinct_from_campaign286_289": true,
+    "alpha158_or_terminal_factor_combination": false,
+    "post_result_architecture_search_allowed": false,
+    "interpretation": "The trial tests the previously deferred ordered raw-sequence library, not a repair of any Alpha158 estimator. A failure terminalizes this exact Alpha360 Transformer configuration and cannot authorize another Alpha360 architecture in Campaign302."
+  },
+  "research_boundary": {
+    "alpha360_feature_value_read": false,
+    "historical_daily_price_or_forward_return_value_read": false,
+    "model_fit_performed": false,
+    "stress_2024_2025_opened": false
+  }
+}

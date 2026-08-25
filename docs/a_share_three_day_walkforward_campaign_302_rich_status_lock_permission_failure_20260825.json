@@ -1,0 +1,24 @@
+{
+  "schema_version": 1,
+  "kind": "a_share_three_day_walkforward_campaign302_infrastructure_failure",
+  "status": "recorded_sandbox_permission_failure_no_lock_mutation",
+  "recorded_at": "2026-08-25T21:41:10+08:00",
+  "attempt_id": "campaign302_infrastructure_002",
+  "command_scope": "local a_share_rich_data status for /Volumes/DIsk/qlib-rich-data",
+  "exit_code": 1,
+  "failure": {
+    "type": "PermissionError",
+    "operation": "status attempted r+ inspection of existing advisory-lock marker",
+    "path": "/Volumes/DIsk/qlib-rich-data/.a_share_baostock_5m.lock",
+    "raw_exception_or_lock_contents_persisted": false
+  },
+  "interpretation": "The sandbox cannot open the external lock marker read-write. Campaign302 does not delete, rewrite, bypass or infer the lock state and does not use this rich-data root.",
+  "research_boundary": {
+    "lock_file_mutated": false,
+    "provider_request_issued": false,
+    "credential_value_or_digest_read": false,
+    "candidate_or_comparator_value_read": false,
+    "historical_daily_price_or_forward_return_value_read": false,
+    "candidate49_changed": false
+  }
+}

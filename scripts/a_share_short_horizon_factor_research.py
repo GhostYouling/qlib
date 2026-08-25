@@ -42434,6 +42434,48 @@ def append_historical_walkforward_terminal_summaries(report: str) -> str:
                 "该段不授权重组终止因子、当前评分、选股、仓位、订单或投资建议。",
             ]
         )
+    campaign302_terminal = (
+        REPO_ROOT
+        / "docs/a_share_three_day_walkforward_campaign_302_terminal_result_20260825.json"
+    )
+    if campaign302_terminal.exists():
+        terminal = load_json_record(
+            campaign302_terminal,
+            kind="a_share_three_day_walkforward_campaign302_terminal_result",
+        )
+        reached = terminal.get("reached_stage") or {}
+        failure = terminal.get("terminal_failure") or {}
+        scientific = terminal.get("scientific_result") or {}
+        library = terminal.get("library_state") or {}
+        accounting = terminal.get("effective_accounting") or {}
+        pieces.extend(
+            [
+                "",
+                "## 历史滚动 Campaign302 权威追加",
+                "",
+                (
+                    "完整 Alpha360 固定时序 Transformer 的零收益设计完成 "
+                    f"{int(reached.get('zero_return_design_fold_count', 0))}/3 折，"
+                    f"持久化 {int(reached.get('persisted_training_feature_bytes', 0)):,} 字节；"
+                    f"第一折训练行数 {int(reached.get('fold1_training_rows', 0)):,}。"
+                ),
+                (
+                    "验证分数门禁前因实现错误 `"
+                    f"{failure.get('error', 'unknown')}` 终止；"
+                    f"验证收益读取 {int(reached.get('validation_fold_return_read_count', 0))} 折，"
+                    f"survivor {int(scientific.get('development_survivor_count', 0))} 个。"
+                ),
+                (
+                    "重复控制库保持 "
+                    f"{int(library.get('complete_factor_definition_count', 0))}/"
+                    f"{int(library.get('eligible_numeric_comparator_count', 0))}；"
+                    "2024–2025 未打开。累计历史/收益读取尝试为 "
+                    f"{int(accounting.get('cumulative_historical_research_attempts', 0))}/"
+                    f"{int(accounting.get('cumulative_return_reading_development_trials', 0))}。"
+                ),
+                "该实现失败不是预测结论；不得同 Campaign 重跑、推断验证表现或生成当前评分、选股、仓位、订单。",
+            ]
+        )
     return "\n".join(pieces).rstrip() + "\n"
 
 

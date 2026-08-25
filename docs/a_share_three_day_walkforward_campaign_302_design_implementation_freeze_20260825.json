@@ -1,0 +1,60 @@
+{
+  "schema_version": 1,
+  "kind": "a_share_three_day_walkforward_campaign302_design_implementation_freeze",
+  "status": "frozen_before_first_alpha360_feature_or_return_value",
+  "recorded_at": "2026-08-25T22:08:35+08:00",
+  "purpose": "Bind the complete Campaign302 zero-return Alpha360 design implementation before the first Alpha360 feature value is queried.",
+  "protocol": {
+    "path": "docs/a_share_three_day_walkforward_campaign_302_preregistration_20260825.json",
+    "sha256": "050d570869ae4588b20de37882fa23ae755a1425287daf4d760c2550e12c1248"
+  },
+  "runner": {
+    "path": "scripts/a_share_three_day_walkforward_campaign302.py",
+    "sha256": "2c50b330165760f432a0393b2ed2d75f696eb09b6e95b6fa41b33fd8d65d9f95"
+  },
+  "worker": {
+    "path": "scripts/a_share_three_day_walkforward_campaign302_torch_worker.py",
+    "sha256": "77a543e58f178418ec9fb07b44ad66f99f6f1ae317061c8c4318b15c79f5dab4",
+    "python_path": "/Volumes/DIsk/Coding/anaconda3/envs/arcloop/bin/python",
+    "python_sha256": "3011a6bcfeaef78d633bb26e93069fe3a531581e4c99ca6fdd9426517e90904a",
+    "torch_init_sha256": "51c90fe34a7cf869517d1bab4cd114498790e169ec668f1a154c35ec64117a5e",
+    "runtime_preflight": "passed_python_3_11_14_torch_2_10_0_cpu_only"
+  },
+  "tests": {
+    "path": "tests/data_collector_tests/test_a_share_three_day_walkforward_campaign302.py",
+    "sha256": "259b631ebde23a6444400883992ac238c3c8f96636bb542ccf1a81a60fb2f4b5",
+    "command": "python -m pytest -q tests/data_collector_tests/test_a_share_three_day_walkforward_campaign302.py",
+    "result": "6_passed"
+  },
+  "dependencies": {
+    "alpha360_loader_path": "qlib/contrib/data/loader.py",
+    "alpha360_loader_sha256": "814b7f7ab3d418ae3c87ce352220080b239eba2670eac9e38376b794be4075cb",
+    "execution_engine_path": "scripts/a_share_three_day_walkforward_campaign.py",
+    "execution_engine_sha256": "301f5fe665422b94c9fa110e67995ff0999584a5f323ecdd5f56151a3529f5a7",
+    "campaign286_engine_path": "scripts/a_share_three_day_walkforward_campaign286.py",
+    "campaign286_engine_sha256": "ef454870c19cf5fa6306251775c3e04dd2e955b5f68fb6aeaedb467433d47f86"
+  },
+  "frozen_data_bindings": {
+    "alpha360_name_expression_pairs_sha256": "3a1cc68c98b24575e210514c43575d3f284868a30aab9b6e12b45a84d0539175",
+    "price_basis_sha256": "68e9dbb83749779b34d5cf3b116195074c154ff74cb6de95ba67695bedc1f14f",
+    "calendar_sha256": "fda506597d26bcec953cdc0882042a5046ec1587db60490e16a01627fd43f53a",
+    "buyable_universe_sha256": "77ccf8de2ed1e447e73b5d5ff1703fc2a8656d6adab34ef44017481730249db1",
+    "campaign286_design_manifest_sha256": "31cba0be801ac1421ef9555b862575089589ec08397c1420be3fc4f43b111d4e",
+    "campaign286_design_dataset_sha256": "714f4ccbdf4bfbaccfd04f543ec8c6a0bc345d3cc567ab621d01905130c46252"
+  },
+  "resource_preflight": {
+    "workspace_free_bytes": 11388596224,
+    "minimum_required_bytes": 8589934592,
+    "passed": true
+  },
+  "research_boundary": {
+    "alpha360_feature_value_read_before_freeze": false,
+    "historical_return_value_read_before_freeze": false,
+    "model_fit_before_freeze": false,
+    "stress_2024_2025_opened": false,
+    "provider_request_issued": false,
+    "credential_loaded": false,
+    "candidate49_changed": false,
+    "current_scoring_selection_sizing_or_orders_performed": false
+  }
+}

@@ -1,0 +1,273 @@
+{
+  "schema_version": 1,
+  "kind": "a_share_three_day_walkforward_campaign302_preregistration",
+  "status": "frozen_one_complete_alpha360_streamed_transformer_before_alpha360_feature_or_return_values",
+  "recorded_at": "2026-08-25T21:53:00+08:00",
+  "purpose": "Freeze Campaign302's complete Alpha360 order, resource-safe streaming contract, deterministic training sampler, preprocessing, one temporal Transformer, three expanding folds, costs, survivor gate, recordkeeping and lockbox before any Alpha360 feature or historical return value is read.",
+  "authoritative_inputs": {
+    "campaign301_state": {
+      "path": "docs/a_share_three_day_iteration_status_20260825_campaign301_prevalue_terminal.json",
+      "sha256": "158a257c2f1f01a613e1818b294a555b49e2d178c53897e57a0e0acffa625c06"
+    },
+    "numeric_policy_v431": {
+      "path": "docs/a_share_three_day_walkforward_future_numeric_comparison_eligibility_policy_v431_20260825.json",
+      "sha256": "3b26042b1d36a45a40762f9c628fcbc301f3325e1ab681c758f5ce044344de12"
+    },
+    "concept_scouting": {
+      "path": "docs/a_share_three_day_walkforward_campaign_302_concept_scouting_20260825.json",
+      "sha256": "730083e266641ce2c331bd9d7dad89d9e8ba496000861df8ca80416cb38a512c"
+    },
+    "model_overlap_audit": {
+      "path": "docs/a_share_three_day_walkforward_campaign_302_model_overlap_audit_20260825.json",
+      "sha256": "5e3ace6cafae813ad9c2440a4e01ba1949279f0e9e9975f21a1957b70b734a12"
+    },
+    "historical_walkforward_policy": {
+      "path": "docs/a_share_three_day_historical_walkforward_research_policy_20260727.json",
+      "sha256": "38426d6161b9bfed323c58caba18feca668b8c9d53e294951a8ba90c01a798bb"
+    },
+    "prospective_execution_policy": {
+      "path": "docs/a_share_three_day_prospective_execution_policy.json",
+      "sha256": "72c3c3871e153372ed9e7691c9d89ba1aeb2f6d02cc839761fefa5fee085e1bc"
+    },
+    "pilot_execution_policy": {
+      "path": "docs/a_share_three_day_pilot_execution_policy.json",
+      "sha256": "72235cd29fc14d43538238150bb2823dae1dd05b027b2c86a9872de89cc0d3f9"
+    },
+    "active_root_failure": {
+      "path": "docs/a_share_three_day_walkforward_campaign_302_active_root_status_failure_20260825.json",
+      "sha256": "cee4ecadf3c793f9b2750128d71ad5bfeb59a5b5eef89accb21176a5f62c9052"
+    },
+    "rich_status_failure": {
+      "path": "docs/a_share_three_day_walkforward_campaign_302_rich_status_lock_permission_failure_20260825.json",
+      "sha256": "ad09e28bf7842fdcc4849dbaf1f42cbc132e9304fa9695c3a037f696cda70bc2"
+    }
+  },
+  "read_only_historical_source": {
+    "active_root_used": false,
+    "provider_uri": "/Volumes/DIsk/Disk-Coding/qlib/data/qlib/cn_a_share",
+    "provider_uri_must_remain_read_only": true,
+    "price_basis": {
+      "path": "/Volumes/DIsk/Disk-Coding/qlib/data/qlib/cn_a_share/price_basis.json",
+      "sha256": "68e9dbb83749779b34d5cf3b116195074c154ff74cb6de95ba67695bedc1f14f",
+      "required_status": "passed",
+      "required_daily_source": "baostock",
+      "required_calendar_end": "2026-07-13"
+    },
+    "calendar": {
+      "path": "/Volumes/DIsk/Disk-Coding/qlib/data/qlib/cn_a_share/calendars/day.txt",
+      "sha256": "fda506597d26bcec953cdc0882042a5046ec1587db60490e16a01627fd43f53a"
+    },
+    "buyable_universe": {
+      "path": "/Volumes/DIsk/Disk-Coding/qlib/data/qlib/cn_a_share/instruments/buyable_main_chinext.txt",
+      "sha256": "77ccf8de2ed1e447e73b5d5ff1703fc2a8656d6adab34ef44017481730249db1"
+    },
+    "provider_request_allowed": false,
+    "pointer_symlink_or_activation_change_allowed": false
+  },
+  "base_identity_and_eligibility": {
+    "source": "Campaign286 immutable Alpha158 design stock_day_key and model_support_eligible columns only; Alpha158 feature columns are not model inputs",
+    "manifest": {
+      "path": "/Volumes/DIsk/Disk-Coding/qlib-data/recovery-worktree/experiments/short_horizon/historical_walkforward/campaign_286/alpha158_development_design_recovery_v3/snapshot_manifest.json",
+      "sha256": "31cba0be801ac1421ef9555b862575089589ec08397c1420be3fc4f43b111d4e",
+      "dataset_sha256": "714f4ccbdf4bfbaccfd04f543ec8c6a0bc345d3cc567ab621d01905130c46252"
+    },
+    "partition_sha256_in_year_order": [
+      "5860735e85cca233841168ffa4ec49257d122a91348ede4214be4130ccfd2d5a",
+      "a49c8dc6c564714a8a9755c20619ca7b88de39a51b992240600ca9369ed719cb",
+      "6cc0536673438dae0ba81a9b91e498092d19d7255f6f67e0031f3e3df7baa456",
+      "ca91585aa8010f1395c7371af6df5cd746db19ea55144255e175d1fa95ba018d",
+      "a0476b145987a5698b989880979f28ee1a6be65435787a1df911d531c3a6ec25"
+    ],
+    "development_years": [2019, 2020, 2021, 2022, 2023],
+    "allowed_columns": ["stock_day_key", "model_support_eligible"],
+    "identity_or_eligibility_change_allowed": false
+  },
+  "complete_feature_library": {
+    "name": "Qlib Alpha360",
+    "loader_path": "qlib/contrib/data/loader.py",
+    "loader_sha256": "814b7f7ab3d418ae3c87ce352220080b239eba2670eac9e38376b794be4075cb",
+    "feature_count": 360,
+    "canonical_name_expression_pairs_sha256": "3a1cc68c98b24575e210514c43575d3f284868a30aab9b6e12b45a84d0539175",
+    "canonical_name_order_sha256": "246380f94530837457cb493a1a37aecd9094cd4d79263fff66b8e9f73e46d497",
+    "order": "CLOSE59..CLOSE0, OPEN59..OPEN0, HIGH59..HIGH0, LOW59..LOW0, VWAP59..VWAP0, VOLUME59..VOLUME0",
+    "sequence_view": "reshape 360 columns to six channels by sixty lags, then transpose to oldest-to-current 60 by 6",
+    "feature_subset_reorder_lag_channel_or_missing_indicator_search_allowed": false,
+    "minimum_finite_features_per_row": 270,
+    "alpha158_or_terminal_factor_input_allowed": false
+  },
+  "resource_safe_streaming_contract": {
+    "dense_five_year_alpha360_snapshot_allowed": false,
+    "training_identity_selection_must_precede_alpha360_values": true,
+    "persisted_feature_values": "only deterministic sampled training rows for each fold after preprocessing",
+    "validation_feature_values": "stream fixed instrument batches, score immediately, delete the temporary batch before the next batch",
+    "validation_instrument_batch_size": 32,
+    "maximum_persisted_training_rows_per_fold": 100000,
+    "maximum_persisted_training_feature_bytes_all_folds": 536870912,
+    "maximum_temporary_validation_feature_bytes": 134217728,
+    "minimum_workspace_free_bytes_before_design": 8589934592,
+    "write_root": ".local-research/campaign_302/alpha360_streamed_transformer_8d_1l_v1",
+    "external_data_symlink_write_allowed": false,
+    "source_qlib_or_campaign286_design_write_allowed": false,
+    "failure_must_preserve_a_sanitized_record_and_forbid_unfrozen_fallback": true
+  },
+  "zero_return_design_stage": {
+    "required_before_training_return_read": true,
+    "training_session_inclusion": "Retain a contained scheduled signal session only when the base immutable design has at least 64 model-support eligible names; choose the sample before Alpha360 values.",
+    "training_sample_size_per_contained_signal_session": 64,
+    "minimum_base_eligible_names_per_training_session": 64,
+    "minimum_alpha360_supported_sampled_rows_per_retained_session": 50,
+    "minimum_retained_training_sessions_per_fold": 60,
+    "sampling_key": "SHA256 of UTF-8 bytes 302|YYYY-MM-DD|instrument",
+    "selection_rule": "Sort ascending by sampling digest then instrument and retain the first 64 distinct names without replacement; never replace a name after Alpha360 support is known.",
+    "sample_selection_uses_alpha360_or_return_values": false,
+    "preprocessing": {
+      "fit_scope": "all predetermined sampled training rows before applying the 270-of-360 row-support gate",
+      "nonfinite": "replace positive and negative infinity with missing",
+      "center": "per-feature finite training-sample median",
+      "scale": "per-feature finite training-sample Q75 minus Q25",
+      "minimum_finite_training_sample_observations_per_feature": 512,
+      "minimum_scale": 0.000001,
+      "missing_fill_after_center_and_scale": 0.0,
+      "fixed_clip": [-8.0, 8.0],
+      "statistics_fit_on_validation": false
+    },
+    "design_evidence_must_bind": [
+      "sample identities and order",
+      "all 360 sampled feature values through a dataset digest",
+      "finite support mask and per-session support counts",
+      "preprocessing statistics and transformed matrices",
+      "source, loader, runtime and code fingerprints"
+    ]
+  },
+  "model_trial": {
+    "trial_id": "wf302_alpha360_streamed_transformer_8d_1l",
+    "configuration_count": 1,
+    "worker_runtime": {
+      "python": "/Volumes/DIsk/Coding/anaconda3/envs/arcloop/bin/python",
+      "python_sha256": "3011a6bcfeaef78d633bb26e93069fe3a531581e4c99ca6fdd9426517e90904a",
+      "python_version": "3.11.14",
+      "torch_version": "2.10.0",
+      "torch_init_path": "/Volumes/DIsk/Coding/anaconda3/envs/arcloop/lib/python3.11/site-packages/torch/__init__.py",
+      "torch_init_sha256": "51c90fe34a7cf869517d1bab4cd114498790e169ec668f1a154c35ec64117a5e",
+      "device": "cpu",
+      "num_threads": 4
+    },
+    "architecture": {
+      "input_channels": 6,
+      "sequence_length": 60,
+      "embedding_dimension": 8,
+      "attention_heads": 2,
+      "encoder_layers": 1,
+      "feedforward_dimension": 16,
+      "dropout": 0.0,
+      "activation": "gelu",
+      "batch_first": true,
+      "norm_first": false,
+      "position_encoding": "fixed sinusoidal",
+      "readout": "layer-normalized final session token followed by one linear scalar"
+    },
+    "optimization": {
+      "optimizer": "AdamW",
+      "learning_rate": 0.001,
+      "weight_decay": 0.0001,
+      "batch_size": 512,
+      "epochs": 5,
+      "shuffle": true,
+      "random_state": 302,
+      "gradient_clip_l2_norm": 5.0,
+      "objective": "session-equal weighted mean squared error",
+      "validation_return_early_stopping": false
+    },
+    "architecture_optimizer_epoch_seed_preprocessing_or_sample_search_allowed": false,
+    "post_result_refit_rescale_or_repair_allowed": false
+  },
+  "training_target": {
+    "definition": "Within each contained training signal session, ascending average-tie percentile of finite gross forward return t+3 close / t+1 open - 1 across all base model-support eligible names; fit only predetermined sampled names that also pass the frozen Alpha360 support gate.",
+    "minimum_finite_supported_sampled_targets_per_training_session": 50,
+    "effective_row_weight": "1 / (retained_training_session_count * finite_supported_sampled_target_count_for_that_session)",
+    "all_retained_training_sessions_have_equal_total_weight": true,
+    "target_values_read_only_after_design_evidence_and_development_execution_freeze": true
+  },
+  "walkforward_folds": [
+    {"fold": 1, "training": ["2019-01-01", "2020-12-31"], "validation": ["2021-01-01", "2021-12-31"]},
+    {"fold": 2, "training": ["2019-01-01", "2021-12-31"], "validation": ["2022-01-01", "2022-12-31"]},
+    {"fold": 3, "training": ["2019-01-01", "2022-12-31"], "validation": ["2023-01-01", "2023-12-31"]}
+  ],
+  "leakage_controls": {
+    "signal": "local close t",
+    "entry": "next accepted local session open t+1",
+    "exit": "third accepted local session close t+3",
+    "purge_signal_sessions_before_each_boundary": 3,
+    "entry_and_exit_must_both_be_in_partition": true,
+    "non_overlapping_three_signal_session_grid": true,
+    "validation_scores_frozen_before_validation_return_read": true,
+    "validation_returns_may_not_select_epoch_or_model_state": true
+  },
+  "prefit_and_score_gate": {
+    "all_360_features_present_in_frozen_order": true,
+    "minimum_finite_validation_scores_per_scheduled_signal": 50,
+    "minimum_nonconstant_validation_score_sessions": 60,
+    "minimum_unique_finite_scores_per_eligible_validation_session": 2,
+    "failure_stops_before_that_fold_validation_return_read": true
+  },
+  "fixed_execution_assumptions": {
+    "holding_period_local_sessions": 3,
+    "topk": 3,
+    "initial_capital_cny": 200000,
+    "target_entry_exposure_fraction_per_slot": 0.05,
+    "maximum_entry_exposure_fraction_per_signal": 0.15,
+    "buy_lot_size_shares": 100,
+    "commission_rate_each_side": 0.0001,
+    "transfer_fee_rate_each_side": 0.00002,
+    "sell_stamp_duty_rate": 0.0005,
+    "primary_adverse_slippage_rate_each_side": 0.001,
+    "slippage_sensitivity_each_side": [0.0, 0.0005, 0.001, 0.002],
+    "maximum_daily_amount_participation": 0.01,
+    "blocked_entry": "keep_cash_without_replacement",
+    "blocked_exit": "retain_and_retry_under_frozen_policy"
+  },
+  "development_survivor_rule": {
+    "complete_validation_fold_count": 3,
+    "minimum_association_cohorts_per_fold": 60,
+    "minimum_positive_mean_rank_ic_folds": 2,
+    "median_validation_mean_rank_ic_strictly_positive": true,
+    "median_validation_top3_minus_bottom3_spread_strictly_positive": true,
+    "minimum_positive_normalized_return_folds": 2,
+    "minimum_positive_primary_10bp_pilot_return_folds": 2,
+    "median_validation_primary_10bp_pilot_return_strictly_positive": true,
+    "worst_validation_normalized_drawdown_minimum": -0.25,
+    "compounded_validation_20bp_pilot_return_strictly_positive": true,
+    "minimum_board_lot_affordability_each_fold": 0.9,
+    "maximum_amount_participation_each_fold": 0.01,
+    "terminal_unresolved_positions_each_fold": 0,
+    "all_conditions_required": true
+  },
+  "locked_2024_2025_campaign_backtest": {
+    "initially_closed": true,
+    "classification": "historically_exposed_quasi_out_of_sample_not_pristine",
+    "open_once_only_if_the_single_trial_passes_all_development_gates": true,
+    "feature_model_sampler_preprocessing_costs_and_gates_must_remain_unchanged": true,
+    "no_post_lockbox_tuning": true
+  },
+  "recordkeeping": {
+    "append_only_trial_ledger_required": true,
+    "record_all_eight_prevalue_concepts_two_preexisting_infrastructure_failures_and_the_model_trial": true,
+    "selected_only_reporting_forbidden": true,
+    "later_infrastructure_failures_count_as_attempts": true,
+    "training_loss_and_validation_metrics_required_when_reached": true
+  },
+  "research_boundary": {
+    "alpha360_feature_value_read_before_preregistration": false,
+    "candidate_or_comparator_value_read_before_preregistration": false,
+    "historical_daily_price_or_forward_return_value_read_before_preregistration": false,
+    "model_fit_before_preregistration": false,
+    "stress_2024_2025_opened": false,
+    "provider_request_issued": false,
+    "credential_loaded": false,
+    "candidate49_historical_backfill_performed": false,
+    "candidate49_ledgers_changed": false,
+    "second_prospective_candidate_created": false,
+    "current_scoring_selection_sizing_positions_or_orders_performed": false,
+    "investment_advice": false
+  }
+}

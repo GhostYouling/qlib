@@ -1,0 +1,125 @@
+{
+  "schema_version": 1,
+  "kind": "a_share_three_day_walkforward_campaign302_terminal_result",
+  "status": "terminal_implementation_failure_no_validation_return_read_no_survivor_library_unchanged",
+  "recorded_at": "2026-08-25T22:35:03+08:00",
+  "authoritative_inputs": {
+    "campaign301_state": {
+      "path": "docs/a_share_three_day_iteration_status_20260825_campaign301_prevalue_terminal.json",
+      "sha256": "158a257c2f1f01a613e1818b294a555b49e2d178c53897e57a0e0acffa625c06"
+    },
+    "campaign302_preregistration": {
+      "path": "docs/a_share_three_day_walkforward_campaign_302_preregistration_20260825.json",
+      "sha256": "050d570869ae4588b20de37882fa23ae755a1425287daf4d760c2550e12c1248"
+    },
+    "campaign302_failure_adjudication": {
+      "path": "docs/a_share_three_day_walkforward_campaign_302_development_failure_adjudication_20260825.json",
+      "sha256": "b9ca34ca32fa39e8a64de0554af115866b06ce1206ab92a2b95afef0e77da6e5"
+    },
+    "campaign302_terminal_trial_ledger": {
+      "path": "docs/a_share_three_day_walkforward_campaign_302_terminal_trial_ledger_20260825.json",
+      "sha256": "356abb2db9cb4453f9d0607ba53b4787e9189936238cfe5d0a6d46fe4dc45143",
+      "entry_count": 12,
+      "chain_tip_sha256": "48830e54c9590285c26c054ecc458aeb575a7f062b0d0ce385dec056069d2822"
+    }
+  },
+  "strategy_definition": {
+    "trial_id": "wf302_alpha360_streamed_transformer_8d_1l",
+    "input": "complete Qlib Alpha360 ordered as sixty sessions by six channels",
+    "model": "fixed eight-dimensional one-layer two-head temporal Transformer",
+    "target": "within-session percentile of gross t+1-open to t+3-close return",
+    "training": "AdamW, five fixed epochs, seed 302, session-equal weights",
+    "walkforward_folds": [
+      "2019-2020 train -> 2021 validation",
+      "2019-2021 train -> 2022 validation",
+      "2019-2022 train -> 2023 validation"
+    ],
+    "holding_period_local_sessions": 3,
+    "topk": 3,
+    "configuration_count": 1
+  },
+  "reached_stage": {
+    "zero_return_design_completed": true,
+    "zero_return_design_fold_count": 3,
+    "persisted_training_feature_bytes": 54197216,
+    "fold1_training_return_read": true,
+    "fold1_model_fit_completed": true,
+    "fold1_training_rows": 8369,
+    "fold1_validation_alpha360_feature_pass_completed": true,
+    "fold1_validation_score_gate_completed": false,
+    "fold1_validation_score_snapshot_persisted": false,
+    "fold1_validation_return_read": false,
+    "fold2_or_fold3_model_fit_started": false,
+    "validation_fold_return_read_count": 0
+  },
+  "terminal_failure": {
+    "classification": "implementation_only_not_predictive_evidence",
+    "error_type": "AttributeError",
+    "error": "'DatetimeIndex' object has no attribute 'eq'",
+    "same_campaign_retry_executed": false,
+    "same_campaign_retry_allowed": false,
+    "frozen_runner_modified_after_failure": false
+  },
+  "scientific_result": {
+    "complete_model_trial_attempt_count": 1,
+    "return_reading_development_trial_count": 1,
+    "completed_validation_fold_count": 0,
+    "development_survivor_count": 0,
+    "selected_survivor_trial_ids": [],
+    "candidate_predictive_quality_assessed": false,
+    "predictive_rejection_claimed": false,
+    "predictive_validation_claimed": false,
+    "stress_2024_2025_opened": false,
+    "current_strategy_deployable": false,
+    "interpretation": "Campaign302 demonstrated that the frozen complete-Alpha360 design and fixed Transformer can be built and fit within the resource contract, but it produced no admissible validation-return evidence because a frozen DatetimeIndex API error stopped the run before score-gate completion and before any validation return read."
+  },
+  "effective_accounting": {
+    "campaign302_prevalue_concept_attempts": 8,
+    "campaign302_infrastructure_failures": 3,
+    "campaign302_complete_model_trial_attempts": 1,
+    "campaign302_total_attempts": 12,
+    "campaign302_return_reading_development_trials": 1,
+    "campaign302_validation_fold_return_reads": 0,
+    "cumulative_historical_research_attempts": 3119,
+    "cumulative_return_reading_development_trials": 332
+  },
+  "library_state": {
+    "changed_by_campaign302": false,
+    "complete_factor_definition_count": 172,
+    "complete_factor_definition_order_sha256": "ba884534eca5c6ec0812271ed5b78d6a4587c5ffa2a00c52d5c0f6892aaf0df1",
+    "eligible_numeric_comparator_count": 153,
+    "eligible_numeric_comparator_order_sha256": "41b425635ddb9986d9e6d37f83220caca213d6437ac1ccbc02c29072610b499d",
+    "reason": "No validation metric, survivor decision, complete factor definition or eligible numeric comparator was produced."
+  },
+  "candidate49": {
+    "sole_active_prospective_candidate": true,
+    "same_day_20260825_retry_allowed": false,
+    "historical_backfill_performed": false,
+    "signal_ledger_entry_count": 0,
+    "signal_ledger_sha256": "5193f00d7f36da003f53cec387900da4c3d002299f5dfcfc1a95eaa199ed3a79",
+    "execution_ledger_entry_count": 0,
+    "execution_ledger_sha256": "d57a3e61eac969e42cafa418ccd8c0a5ee65dcf69da145bb2c096c2a02a2ea4f",
+    "ledgers_changed_by_campaign302": false
+  },
+  "research_boundary": {
+    "alpha360_feature_values_read": true,
+    "fold1_training_return_values_read": true,
+    "validation_forward_return_values_read": false,
+    "stress_2024_2025_opened": false,
+    "provider_api_request_issued": false,
+    "provider_credential_value_or_digest_read": false,
+    "candidate49_historical_backfill_performed": false,
+    "candidate49_ledgers_changed": false,
+    "second_prospective_candidate_created": false,
+    "current_scoring_selection_sizing_positions_or_orders_performed": false,
+    "investment_advice": false
+  },
+  "prohibited_followups": [
+    "Do not modify the frozen Campaign302 runner and rerun under the same campaign identifier.",
+    "Do not call the implementation failure a predictive rejection or validation.",
+    "Do not infer validation performance from the training-loss curve.",
+    "Do not append Campaign302 to the complete factor or eligible numerical-comparator libraries.",
+    "Do not open 2024-2025, backfill Candidate49, start a second prospective candidate, issue provider requests, or generate current scores, selections, sizing, positions or orders from Campaign302."
+  ],
+  "next_action": "Close Campaign302 as immutable. If research resumes, use a new, separately preregistered campaign for an exact implementation-only recovery with all scientific choices unchanged, or introduce genuinely new information; count either path as a new attempt."
+}

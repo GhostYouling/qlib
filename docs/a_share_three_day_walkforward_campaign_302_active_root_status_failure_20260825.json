@@ -1,0 +1,24 @@
+{
+  "schema_version": 1,
+  "kind": "a_share_three_day_walkforward_campaign302_infrastructure_failure",
+  "status": "recorded_no_retry_no_candidate_value_read",
+  "recorded_at": "2026-08-25T21:40:57+08:00",
+  "attempt_id": "campaign302_infrastructure_001",
+  "command_scope": "local a_share_data_pipeline status using the active data-root pointer",
+  "exit_code": 1,
+  "observed_safe_summary": {
+    "resolved_data_root": "/Volumes/DIsk/Disk-Coding/qlib-data/recovery-worktree",
+    "raw_parquet_files": 0,
+    "qlib_features": 0,
+    "price_basis_status": "missing",
+    "research_allowed": false
+  },
+  "interpretation": "The current active pointer cannot authorize historical feature consumption. Campaign302 may only use a separately fingerprint-bound read-only historical root whose existing price-basis acceptance is verified; this record does not authorize pointer mutation or activation.",
+  "research_boundary": {
+    "provider_request_issued": false,
+    "credential_value_or_digest_read": false,
+    "candidate_or_comparator_value_read": false,
+    "historical_daily_price_or_forward_return_value_read": false,
+    "candidate49_changed": false
+  }
+}

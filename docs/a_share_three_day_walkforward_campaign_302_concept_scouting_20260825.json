@@ -1,0 +1,102 @@
+{
+  "schema_version": 1,
+  "kind": "a_share_three_day_walkforward_campaign302_concept_scouting",
+  "status": "one_complete_alpha360_streamed_fixed_transformer_selected_before_alpha360_or_return_values",
+  "recorded_at": "2026-08-25T21:51:03+08:00",
+  "purpose": "Select at most one resource-safe mechanism from the explicitly deferred Alpha360 branch without reading Alpha360 feature values, comparator values, prices or returns and without reopening Alpha158, daily-indicator or prior model searches.",
+  "authoritative_inputs": {
+    "campaign301_state": {
+      "path": "docs/a_share_three_day_iteration_status_20260825_campaign301_prevalue_terminal.json",
+      "sha256": "158a257c2f1f01a613e1818b294a555b49e2d178c53897e57a0e0acffa625c06"
+    },
+    "campaign301_frontier": {
+      "path": "docs/a_share_three_day_walkforward_campaign_301_prevalue_frontier_audit_20260825.json",
+      "sha256": "68914c72451bd8f0c4fa51f27e3698c2692b618dad640d94fd001ae72c3216a2"
+    },
+    "alpha360_loader": {
+      "path": "qlib/contrib/data/loader.py",
+      "sha256": "814b7f7ab3d418ae3c87ce352220080b239eba2670eac9e38376b794be4075cb"
+    }
+  },
+  "finite_prevalue_concept_catalog": [
+    {
+      "catalog_id": "campaign302_concept_001",
+      "name": "complete_alpha360_streamed_fixed_temporal_transformer",
+      "decision": "selected_as_one_resource_safe_sequence_model_configuration",
+      "reason": "Alpha360 is the only Campaign301 route explicitly deferred rather than scientifically rejected. A position-sensitive self-attention model over all 360 code-defined coordinates tests the raw 60-session six-channel sequence that Alpha158 summary operators do not retain. Fixed training samples and streamed validation avoid a dense five-year snapshot without choosing rows from feature values."
+    },
+    {
+      "catalog_id": "campaign302_concept_002",
+      "name": "alpha360_transformer_width_head_layer_epoch_seed_optimizer_or_early_stop_search",
+      "decision": "rejected_before_alpha360_values",
+      "reason": "Architecture or training search would create unbounded multiplicity. Campaign302 permits one frozen small CPU configuration, five fixed epochs and no validation-return feedback or early stopping."
+    },
+    {
+      "catalog_id": "campaign302_concept_003",
+      "name": "alpha360_lightgbm_forest_or_other_tree_ensemble",
+      "decision": "rejected_prior_tree_model_family",
+      "reason": "Campaign286 terminalized complete-library boosted trees and later catalogs close forest/boosting retries. Changing the feature library does not authorize another split-model grid."
+    },
+    {
+      "catalog_id": "campaign302_concept_004",
+      "name": "alpha360_mlp_rff_kernel_hash_knn_linear_or_sparse_model",
+      "decision": "rejected_prior_complete_library_model_families",
+      "reason": "Campaign287-289 and earlier campaigns consume fixed MLP, random-Fourier ridge, random-hyperplane partition, linear/sparse and neighbor/kernel routes. Campaign302 does not retry or combine them."
+    },
+    {
+      "catalog_id": "campaign302_concept_005",
+      "name": "alpha360_channel_lag_feature_subset_or_missingness_indicator_search",
+      "decision": "rejected_complete_library_violation",
+      "reason": "Dropping channels, choosing lags, shortening history or adding result-driven missingness indicators would violate the deferred branch's complete 360-coordinate semantics."
+    },
+    {
+      "catalog_id": "campaign302_concept_006",
+      "name": "alpha360_handcrafted_sequence_entropy_spectral_wavelet_run_or_shape_statistic",
+      "decision": "rejected_terminal_daily_path_estimator_refresh",
+      "reason": "Hand-selecting a path statistic after the daily sequence, entropy, spectral, run, trend and shape families are exposed would reopen terminal estimator search. The selected model receives the complete sequence without a handcrafted candidate formula."
+    },
+    {
+      "catalog_id": "campaign302_concept_007",
+      "name": "complete_alpha360_dense_five_year_snapshot",
+      "decision": "rejected_current_workspace_storage_contract",
+      "reason": "Campaign301 measured insufficient workspace headroom for a dense snapshot plus atomic copy. Campaign302 streams predetermined rows, persists only frozen training samples and validation scores, and never writes feature data through the external data symlink."
+    },
+    {
+      "catalog_id": "campaign302_concept_008",
+      "name": "new_provider_event_or_minute_source_fallback_after_alpha360_failure",
+      "decision": "rejected_same_campaign_fallback",
+      "reason": "A source fallback selected after Alpha360 results would mix mechanisms and multiply attempts. Any future information channel requires its own later finite campaign and cannot rescue Campaign302."
+    }
+  ],
+  "selected_family": {
+    "trial_id": "wf302_alpha360_streamed_transformer_8d_1l",
+    "feature_library": "Qlib Alpha360 complete 360-coordinate oldest-to-current six-channel 60-session sequence",
+    "feature_count": 360,
+    "canonical_name_expression_pairs_sha256": "3a1cc68c98b24575e210514c43575d3f284868a30aab9b6e12b45a84d0539175",
+    "model": "one fixed CPU PyTorch temporal Transformer",
+    "configuration_count": 1,
+    "feature_subset_search_allowed": false,
+    "architecture_or_seed_search_allowed": false,
+    "dense_five_year_snapshot_allowed": false
+  },
+  "prevalue_decision": {
+    "concepts_reviewed": 8,
+    "selected_model_configuration_count": 1,
+    "campaign302_alpha360_values_read_before_selection": false,
+    "candidate_or_comparator_values_read_before_selection": false,
+    "historical_daily_price_or_forward_return_values_read_before_selection": false,
+    "stress_2024_2025_opened": false
+  },
+  "research_boundary": {
+    "repository_code_schema_and_package_presence_read": true,
+    "accepted_price_basis_metadata_read": true,
+    "alpha360_feature_value_read": false,
+    "candidate_or_comparator_value_read": false,
+    "historical_daily_price_or_forward_return_value_read": false,
+    "provider_request_issued": false,
+    "credential_value_or_digest_read": false,
+    "candidate49_changed": false,
+    "current_scoring_selection_sizing_positions_or_orders_performed": false,
+    "investment_advice": false
+  }
+}

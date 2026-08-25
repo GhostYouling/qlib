@@ -1,0 +1,104 @@
+{
+  "schema_version": 1,
+  "kind": "a_share_three_day_walkforward_campaign302_development_failure_adjudication",
+  "status": "terminal_implementation_failure_after_fold1_fit_before_any_validation_return_read",
+  "recorded_at": "2026-08-25T22:35:03+08:00",
+  "purpose": "Publish the exact Campaign302 failure boundary without altering the frozen runner or retrying after Alpha360 and fold-1 training-return values were exposed.",
+  "authoritative_bindings": {
+    "protocol": {
+      "path": "docs/a_share_three_day_walkforward_campaign_302_preregistration_20260825.json",
+      "sha256": "050d570869ae4588b20de37882fa23ae755a1425287daf4d760c2550e12c1248"
+    },
+    "design_implementation_freeze": {
+      "path": "docs/a_share_three_day_walkforward_campaign_302_design_implementation_freeze_20260825.json",
+      "sha256": "d7852044718f719e9fad62239f83242fffa985f1bce1c8f371bd609da7b15a8d"
+    },
+    "development_execution_freeze": {
+      "path": "docs/a_share_three_day_walkforward_campaign_302_development_execution_freeze_20260825.json",
+      "sha256": "71b488207bc11bcd3dd8893b7af57645202b58a5ae9823b98d7aae0bb7928078"
+    },
+    "local_design_evidence": {
+      "path": ".local-research/campaign_302/alpha360_streamed_transformer_8d_1l_v1/design_evidence.json",
+      "sha256": "f6beb50cac2b96fe92a772140c0a246d803f8d30ce844888745bdbd8d8651d34"
+    },
+    "local_development_intent": {
+      "path": ".local-research/campaign_302/alpha360_streamed_transformer_8d_1l_v1/development_intent.json",
+      "sha256": "10ac696e63f5999c4146bec8e6d4a8d2cfb2538cee4c3823e373ff098955a90e"
+    },
+    "local_failure_record": {
+      "path": ".local-research/campaign_302/alpha360_streamed_transformer_8d_1l_v1/development_failure.json",
+      "sha256": "1b510e228bc1495a6a2ba0de1bcf4bf9a48a77bbdde6cf52165c464ac45583ed"
+    },
+    "local_fold1_training_report": {
+      "path": ".local-research/campaign_302/alpha360_streamed_transformer_8d_1l_v1/fold_1_model/training_report.json",
+      "sha256": "bf4a97ef1c2e9bbfec36ab8cae8ba92d276f21dc483996229fed46bcbc1e922f"
+    },
+    "local_fold1_model": {
+      "path": ".local-research/campaign_302/alpha360_streamed_transformer_8d_1l_v1/fold_1_model/wf302_alpha360_streamed_transformer_8d_1l.pt",
+      "sha256": "47a1275b067d7d48677d34d36f57372659b30af70ce92d8de3a0f97ca7968255"
+    }
+  },
+  "chronology": [
+    "The zero-return design completed all three folds and persisted 54,197,216 bytes of sampled transformed Alpha360 features.",
+    "The confirmed development run opened fold-1 training returns and fitted the single frozen five-epoch Transformer on 8,369 rows.",
+    "The runner streamed the complete fold-1 2021 Alpha360 validation feature pass and deleted each temporary batch after scoring.",
+    "Before freezing a score snapshot or calling the validation-return evaluator, score-gate aggregation attempted DatetimeIndex.eq and raised AttributeError.",
+    "The top-level failure handler wrote the sanitized failure record and exited with code 1. No retry was executed."
+  ],
+  "failure": {
+    "error_type": "AttributeError",
+    "error": "'DatetimeIndex' object has no attribute 'eq'",
+    "frozen_source_location": "scripts/a_share_three_day_walkforward_campaign302.py:960",
+    "failed_operation": "compare each scheduled signal timestamp with the validation identity DatetimeIndex while computing pre-return score coverage",
+    "classification": "implementation_only_not_predictive_evidence",
+    "same_campaign_retry_allowed": false,
+    "frozen_runner_modified_after_failure": false,
+    "exit_code": 1
+  },
+  "reached_evidence": {
+    "zero_return_design_fold_count": 3,
+    "zero_return_design_persisted_bytes": 54197216,
+    "fold1_training_rows": 8369,
+    "fold1_fixed_epoch_count": 5,
+    "fold1_training_loss_curve": [
+      0.2086038487467266,
+      0.1299580746012785,
+      0.10295539109855519,
+      0.0965045466843927,
+      0.09222572778552195
+    ],
+    "fold1_validation_alpha360_feature_pass_completed": true,
+    "fold1_validation_score_snapshot_persisted": false,
+    "fold1_validation_score_gate_completed": false,
+    "fold1_validation_metrics_created": false,
+    "fold2_or_fold3_model_fit_started": false
+  },
+  "scientific_interpretation": {
+    "development_survivor_count": 0,
+    "candidate_predictive_quality_assessed": false,
+    "candidate_may_be_called_predictively_rejected": false,
+    "candidate_may_be_called_predictively_validated": false,
+    "current_strategy_deployable": false,
+    "library_definition_or_numeric_comparator_appended": false,
+    "complete_factor_definition_count_after_campaign302": 172,
+    "eligible_numeric_comparator_count_after_campaign302": 153
+  },
+  "research_boundary": {
+    "alpha360_feature_values_read": true,
+    "fold1_training_forward_return_values_read": true,
+    "fold1_model_fit_performed": true,
+    "fold1_validation_alpha360_feature_values_read": true,
+    "fold1_validation_forward_return_values_read": false,
+    "fold2_or_fold3_training_or_validation_return_values_read": false,
+    "validation_fold_return_read_count": 0,
+    "stress_2024_2025_opened": false,
+    "provider_request_issued": false,
+    "credential_loaded": false,
+    "candidate49_historical_backfill_performed": false,
+    "candidate49_ledgers_changed": false,
+    "second_prospective_candidate_created": false,
+    "current_scoring_selection_sizing_positions_or_orders_performed": false,
+    "investment_advice": false
+  },
+  "next_safe_boundary": "Campaign302 is immutable and terminal. A future campaign may only attempt an explicitly preregistered implementation-recovery protocol that keeps every Campaign302 scientific choice unchanged and counts as a new attempt, or start from genuinely new information; it may not inspect Campaign302 validation returns, alter the frozen model, or reuse the campaign identifier."
+}
