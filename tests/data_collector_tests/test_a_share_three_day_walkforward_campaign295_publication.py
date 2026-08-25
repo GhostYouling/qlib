@@ -58,7 +58,6 @@ def test_campaign295_terminal_publication_bindings_and_semantics() -> None:
         "terminal_result",
         "terminal_report",
         "handoff",
-        "latest_handoff_index",
         "numeric_policy_v425",
         "local_terminal_result",
         "terminal_trial_ledger",
@@ -127,7 +126,7 @@ def test_campaign295_candidate49_and_lockbox_boundaries_unchanged() -> None:
     )
 
 
-def test_campaign295_handoff_is_latest_and_external_data_change_is_excluded() -> None:
+def test_campaign295_handoff_is_preserved_after_latest_index_advances() -> None:
     handoff = (
         REPO_ROOT / "docs/a_share_three_day_strategy_handoff_20260825.md"
     ).read_text(encoding="utf-8")
@@ -136,10 +135,10 @@ def test_campaign295_handoff_is_latest_and_external_data_change_is_excluded() ->
     ).read_text(encoding="utf-8")
     state = _load(STATE_PATH)
 
-    assert "截至 Campaign295" in handoff
-    assert "a_share_three_day_strategy_handoff_20260825_campaign295.md" in handoff
-    assert "Campaign296" in handoff
-    assert "167/148" in handoff
+    assert "截至 Campaign298" in handoff
+    assert "a_share_three_day_strategy_handoff_20260825_campaign298.md" in handoff
+    assert "Campaign299" in handoff
+    assert "170/151" in handoff
     assert "147/147" in campaign_handoff
     assert "-63.92%" in campaign_handoff
     assert state["workspace_boundary"]["data_path_is_external_symlink"] is True

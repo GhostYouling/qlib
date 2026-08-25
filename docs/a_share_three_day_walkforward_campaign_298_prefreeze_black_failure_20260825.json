@@ -1,0 +1,24 @@
+{
+  "schema_version": 1,
+  "kind": "a_share_three_day_walkforward_campaign298_infrastructure_failure",
+  "status": "recorded_prefreeze_format_check_failure_no_research_values",
+  "recorded_at": "2026-08-25T19:40:00+08:00",
+  "attempt_id": "campaign298_infrastructure_001",
+  "phase": "prevalue_implementation_validation",
+  "command_scope": [
+    "scripts/a_share_three_day_walkforward_campaign298.py",
+    "tests/data_collector_tests/test_a_share_three_day_walkforward_campaign298.py"
+  ],
+  "error_type": "black_check_formatting_difference",
+  "exit_code": 1,
+  "error_summary": "Black --check reported that both newly created Campaign298 files would be reformatted. This is a byte-formatting issue before implementation freeze, not a scientific or data failure.",
+  "recovery_boundary": "Run Black on only the two new unfrozen files, rerun compile/Ruff/Black/synthetic tests, then freeze the final bytes before any candidate or comparator value.",
+  "research_boundary": {
+    "candidate_values_read": false,
+    "comparator_values_read": false,
+    "historical_daily_price_or_forward_return_values_read": false,
+    "provider_request_issued": false,
+    "credential_value_or_digest_read": false,
+    "candidate49_ledgers_changed": false
+  }
+}

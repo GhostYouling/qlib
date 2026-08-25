@@ -135,10 +135,10 @@ def test_campaign296_handoff_is_preserved_after_latest_index_advances() -> None:
     ).read_text(encoding="utf-8")
     state = _load(STATE_PATH)
 
-    assert "截至 Campaign297" in handoff
-    assert "a_share_three_day_strategy_handoff_20260825_campaign297.md" in handoff
-    assert "Campaign298" in handoff
-    assert "169/150" in handoff
+    assert "截至 Campaign298" in handoff
+    assert "a_share_three_day_strategy_handoff_20260825_campaign298.md" in handoff
+    assert "Campaign299" in handoff
+    assert "170/151" in handoff
     assert "Campaign296" in campaign_handoff
     assert "148/148" in campaign_handoff
     assert "-81.92%" in campaign_handoff

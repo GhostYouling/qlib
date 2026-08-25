@@ -1,0 +1,28 @@
+{
+  "schema_version": 1,
+  "kind": "a_share_three_day_walkforward_campaign298_infrastructure_failure",
+  "status": "recorded_postterminal_wrong_clone_reconstruction_failure_no_research_recomputation",
+  "recorded_at": "2026-08-25T19:58:00+08:00",
+  "attempt_id": "campaign298_infrastructure_003",
+  "phase": "postterminal_library_order_reconstruction",
+  "error_type": "historical_fingerprint_chain_not_live_in_recovery_worktree",
+  "error_summary": "A read-only import of Campaign263's definition reconstruction chain from the recovery worktree stopped at Campaign054 because an old completed no-return audit fingerprint is not live in this clone. The failed command did not compute or modify candidate, comparator, price, return or stress values.",
+  "recovery": {
+    "mode": "read_only_metadata_reconstruction",
+    "authoritative_working_directory": "/Volumes/DIsk/Disk-Coding/qlib",
+    "source_module": "scripts/a_share_three_day_walkforward_campaign263_features.py",
+    "source_module_sha256": "f4882d4c29877b05a2b7ccffe540a1e97f0917e252941d2484b03720b1426124",
+    "prior_count": 169,
+    "prior_order_sha256": "b25aef820170480a3c43ec34096b603c39fa60923565be21040852a6df5b9fea",
+    "recovery_exit_code": 0
+  },
+  "research_boundary": {
+    "candidate_values_recomputed": false,
+    "comparator_values_recomputed": false,
+    "historical_daily_price_or_forward_return_values_recomputed": false,
+    "stress_2024_2025_opened": false,
+    "provider_request_issued": false,
+    "credential_value_or_digest_read": false,
+    "candidate49_ledgers_changed": false
+  }
+}

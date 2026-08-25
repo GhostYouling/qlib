@@ -1,0 +1,103 @@
+{
+  "schema_version": 1,
+  "kind": "a_share_three_day_walkforward_campaign298_concept_scouting",
+  "status": "finite_prevalue_catalog_frozen_before_campaign298_candidate_or_comparator_values",
+  "recorded_at": "2026-08-25T19:30:00+08:00",
+  "authoritative_frontier": {
+    "state_path": "docs/a_share_three_day_iteration_status_20260825_campaign297_terminal.json",
+    "state_sha256": "bc841afe45e2a08e80459e15085fb3ace08e1b98287497827d35cd96213aaf11",
+    "numeric_policy_path": "docs/a_share_three_day_walkforward_future_numeric_comparison_eligibility_policy_v427_20260825.json",
+    "numeric_policy_sha256": "fc98575de5f794298e2ae2dbee620110b75c740fdb3c92c091ef9b7112810731",
+    "complete_definition_count": 169,
+    "complete_definition_order_sha256": "b25aef820170480a3c43ec34096b603c39fa60923565be21040852a6df5b9fea",
+    "numeric_comparator_count": 150,
+    "numeric_comparator_order_sha256": "135dec87e00f39a78913e8b678c0c5e809f516c952575a9e406c360086a6508e"
+  },
+  "finite_prevalue_concept_catalog": [
+    {
+      "catalog_id": "campaign298_concept_001",
+      "name": "alpha158_volume_coefficient_of_variation_20d",
+      "decision": "selected_exactly_once",
+      "reason": "The frozen Alpha158 design exposes VSTD20=Std(volume,20)/(current volume+1e-12) and VMA20=Mean(volume,20)/(current volume+1e-12). Their ratio cancels the shared current-volume normalization and measures the scale-free twenty-session coefficient of variation of daily volume. This is a within-stock multi-session participation-burstiness mechanism; it uses no price, return, peer rank, intraday clock profile, fitted model or return-selected parameter.",
+      "parameters": {
+        "volume_standard_deviation_feature": "VSTD20",
+        "volume_moving_average_feature": "VMA20",
+        "fixed_horizon_sessions": 20,
+        "formula": "VSTD20 / VMA20",
+        "valid_input_rule": "both inputs finite; VSTD20 nonnegative; VMA20 strictly positive; resulting ratio finite and nonnegative; never fill, clip, winsorize, threshold or add a new epsilon",
+        "direction": "higher",
+        "economic_hypothesis": "higher scale-free daily-volume burstiness represents episodic information arrival and attention concentration whose repricing may persist over the next three accepted sessions",
+        "fit": "none"
+      }
+    },
+    {
+      "catalog_id": "campaign298_concept_002",
+      "name": "alpha158_volume_stability_inverse_20d",
+      "decision": "rejected_prevalue",
+      "reason": "One divided by, one minus, or the lower direction of the selected coefficient would create a two-direction search rather than an independent mechanism."
+    },
+    {
+      "catalog_id": "campaign298_concept_003",
+      "name": "alpha158_volume_coefficient_of_variation_horizon_grid",
+      "decision": "rejected_prevalue",
+      "reason": "Trying 5, 10, 30 or 60 sessions, averaging horizons or selecting a best horizon would create a horizon search. One conventional 20-session month is frozen before values."
+    },
+    {
+      "catalog_id": "campaign298_concept_004",
+      "name": "alpha158_raw_vstd_or_vma_level",
+      "decision": "rejected_prevalue",
+      "reason": "Raw VSTD20 or VMA20 retains their shared current-volume normalization and does not isolate scale-free dispersion relative to the same-window mean."
+    },
+    {
+      "catalog_id": "campaign298_concept_005",
+      "name": "alpha158_volume_cv_log_epsilon_clip_winsor_threshold_or_bucket_family",
+      "decision": "rejected_prevalue",
+      "reason": "Log transforms, extra epsilon, clipping, winsorization, thresholds and buckets add discretionary variants. The raw finite ratio is the only selected form."
+    },
+    {
+      "catalog_id": "campaign298_concept_006",
+      "name": "alpha158_price_volume_or_volume_direction_mixture",
+      "decision": "rejected_prevalue",
+      "reason": "Mixing VSTD/VMA with WVMA, CORR, CORD, VSUMP, VSUMN, VSUMD, price momentum or price volatility would reopen price-volume confirmation and introduce component and weight choices already exhausted by Campaign295 and earlier terminal mechanisms."
+    },
+    {
+      "catalog_id": "campaign298_concept_007",
+      "name": "campaign295_296_or_297_retune_reverse_rehorizon_threshold_reweight_or_combination",
+      "decision": "forbidden",
+      "reason": "Campaign295--297 are immutable and terminal. Their SUMD/CORD, BETA/RSQR and QTLU/QTLD/MAX/MIN definitions may not be inverted, re-horizoned, thresholded, reweighted, combined or otherwise rescued. The selected factor uses none of those inputs."
+    },
+    {
+      "catalog_id": "campaign298_concept_008",
+      "name": "alpha158_peer_rank_state_consensus_extremity_persistence_or_horizon_geometry_refresh",
+      "decision": "forbidden",
+      "reason": "Campaign290--294 already consumed the peer-state and cross-horizon geometry cluster. Campaign298 uses a raw within-stock twenty-session volume distribution ratio and no same-session peer transform."
+    },
+    {
+      "catalog_id": "campaign298_concept_009",
+      "name": "alpha158_supervised_tree_mlp_kernel_hash_weight_subset_or_terminal_factor_combination_search",
+      "decision": "forbidden",
+      "reason": "Campaign286--289 and earlier complete-library campaigns already consumed fitted and randomized model families. Campaign298 contains exactly one deterministic weight-1 factor, no terminal-factor combination and no training-return read."
+    }
+  ],
+  "prevalue_mechanism_audit": {
+    "independent_of_campaign297_close_distribution_envelope_occupancy": true,
+    "independent_of_campaign296_beta_rsqr_trend_linearity": true,
+    "independent_of_campaign295_price_volume_confirmation": true,
+    "independent_of_campaign290_to_294_peer_rank_cluster": true,
+    "distinct_from_intraday_volume_clock_profile_mechanisms_by_using_only_daily_twenty_session_scale_free_dispersion": true,
+    "model_fitting_or_return_selected_parameter": false,
+    "single_formula_single_direction_single_horizon": true,
+    "candidate_or_comparator_values_read_for_campaign298": false,
+    "historical_daily_price_or_forward_return_values_read_for_campaign298": false
+  },
+  "research_boundary": {
+    "zero_network": true,
+    "provider_request_issued": false,
+    "credential_value_or_digest_read": false,
+    "candidate49_historical_backfill_performed": false,
+    "candidate49_ledgers_changed": false,
+    "second_prospective_candidate_created": false,
+    "current_scoring_selection_sizing_positions_or_orders_performed": false,
+    "investment_advice": false
+  }
+}

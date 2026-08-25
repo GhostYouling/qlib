@@ -1,0 +1,20 @@
+{
+  "schema_version": 1,
+  "kind": "a_share_three_day_walkforward_campaign298_infrastructure_failure",
+  "status": "recorded_preplan_recursive_value_read_risk_no_campaign298_values_read",
+  "recorded_at": "2026-08-25T19:48:00+08:00",
+  "attempt_id": "campaign298_infrastructure_002",
+  "phase": "prevalue_plan_semantic_audit",
+  "error_type": "inherited_recursive_terminal_verification_would_read_prior_candidate_values",
+  "error_summary": "Before executing Campaign298 plan, code inspection found that validate_protocol called Campaign297 verify_terminal through the inherited chain. That verification loads frozen prior candidate snapshot values, which would make the claimed metadata-only plan and coverage-before-comparator boundary false.",
+  "recovery_boundary": "Preserve implementation freeze v1, remove recursive prior terminal verification from Campaign298 validate_protocol, load only the already-bound Alpha158 and numeric140 JSON manifests, retain explicit authoritative file hashes, and publish a distinct v2 implementation freeze before plan.",
+  "research_boundary": {
+    "campaign298_plan_executed": false,
+    "campaign298_candidate_values_read": false,
+    "campaign298_comparator_values_read": false,
+    "historical_daily_price_or_forward_return_values_read": false,
+    "provider_request_issued": false,
+    "credential_value_or_digest_read": false,
+    "candidate49_ledgers_changed": false
+  }
+}

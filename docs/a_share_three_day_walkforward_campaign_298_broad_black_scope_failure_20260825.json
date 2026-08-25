@@ -1,0 +1,22 @@
+{
+  "schema_version": 1,
+  "kind": "a_share_three_day_walkforward_campaign298_infrastructure_failure",
+  "status": "recorded_postterminal_broad_black_scope_failure_no_historical_mutation",
+  "recorded_at": "2026-08-25T20:19:00+08:00",
+  "attempt_id": "campaign298_infrastructure_006",
+  "phase": "postterminal_extended_validation",
+  "error_type": "black_glob_included_fingerprint_frozen_historical_tests",
+  "exit_code": 1,
+  "error_summary": "The extended validation command used test_a_share_three_day_walkforward_campaign29*.py for Black. It included seven existing Campaign291--294 files that are intentionally not Black-formatted and may be fingerprint-bound. The command stopped before Ruff or pytest.",
+  "recovery_boundary": "Do not format any historical file. Run Black/Ruff only on Campaign298 files and the four current moving-index publication tests modified in this campaign; run the selected Campaign294--298 pytest scope separately.",
+  "research_boundary": {
+    "historical_file_mutated": false,
+    "candidate_values_recomputed": false,
+    "comparator_values_recomputed": false,
+    "historical_daily_price_or_forward_return_values_recomputed": false,
+    "stress_2024_2025_opened": false,
+    "provider_request_issued": false,
+    "credential_value_or_digest_read": false,
+    "candidate49_ledgers_changed": false
+  }
+}

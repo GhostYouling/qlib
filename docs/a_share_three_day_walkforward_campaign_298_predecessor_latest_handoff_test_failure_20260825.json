@@ -1,0 +1,22 @@
+{
+  "schema_version": 1,
+  "kind": "a_share_three_day_walkforward_campaign298_infrastructure_failure",
+  "status": "recorded_postterminal_predecessor_moving_pointer_test_failure_no_research_recomputation",
+  "recorded_at": "2026-08-25T20:15:00+08:00",
+  "attempt_id": "campaign298_infrastructure_005",
+  "phase": "postterminal_publication_validation",
+  "error_type": "historical_publication_test_treated_latest_handoff_index_as_immutable",
+  "exit_code": 1,
+  "test_result": "15 passed, 1 failed",
+  "error_summary": "Campaign297's historical publication test revalidated its saved hash for docs/a_share_three_day_strategy_handoff_20260825.md even though that file is an intentionally advancing latest-handoff pointer now updated for Campaign298. All Campaign298 tests and other Campaign297 bindings passed.",
+  "recovery_boundary": "Preserve the immutable Campaign297 state and its saved historical hash. Update only the current test so the advancing handoff index is excluded from immutable binding replay and is instead checked for the current Campaign298 pointer.",
+  "research_boundary": {
+    "candidate_values_recomputed": false,
+    "comparator_values_recomputed": false,
+    "historical_daily_price_or_forward_return_values_recomputed": false,
+    "stress_2024_2025_opened": false,
+    "provider_request_issued": false,
+    "credential_value_or_digest_read": false,
+    "candidate49_ledgers_changed": false
+  }
+}

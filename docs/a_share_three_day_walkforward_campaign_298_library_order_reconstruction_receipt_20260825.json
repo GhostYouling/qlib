@@ -1,0 +1,56 @@
+{
+  "schema_version": 1,
+  "kind": "a_share_three_day_walkforward_campaign298_library_order_reconstruction_receipt",
+  "status": "read_only_authoritative_source_reconstruction_verified_and_campaign298_appended_once",
+  "recorded_at": "2026-08-25T20:00:00+08:00",
+  "operation": {
+    "working_directory": "/Volumes/DIsk/Disk-Coding/qlib",
+    "mode": "read_only_metadata_reconstruction_with_PYTHONDONTWRITEBYTECODE",
+    "source_module": "scripts/a_share_three_day_walkforward_campaign263_features.py",
+    "source_module_sha256": "f4882d4c29877b05a2b7ccffe540a1e97f0917e252941d2484b03720b1426124",
+    "predecessor_receipt_path": "docs/a_share_three_day_walkforward_campaign_297_library_order_reconstruction_receipt_20260825.json",
+    "predecessor_receipt_sha256": "0eadf19c7cdc9b48a5fae95ff2a676d8c12d2defc66951e252b5a2360bb7d554",
+    "local_recovery_worktree_failure_path": "docs/a_share_three_day_walkforward_campaign_298_local_library_reconstruction_failure_20260825.json",
+    "local_recovery_worktree_failure_sha256": "bec71edcfe1b6d7c2fe7523c573c29eadaa73a83d10dab476dc80d8d32bc95ed",
+    "digest_semantics": "SHA-256 of canonical JSON [[name, score_direction], ...]",
+    "source_repository_files_changed": false
+  },
+  "predecessor_verification": {
+    "complete_definition_count": 169,
+    "complete_definition_order_sha256": "b25aef820170480a3c43ec34096b603c39fa60923565be21040852a6df5b9fea",
+    "numeric_comparator_count": 150,
+    "numeric_comparator_order_sha256": "135dec87e00f39a78913e8b678c0c5e809f516c952575a9e406c360086a6508e",
+    "matches_policy_v427": true
+  },
+  "campaign298_append": {
+    "item": {
+      "name": "alpha158_volume_coefficient_of_variation_20d",
+      "score_direction": "higher"
+    },
+    "append_reason": "Coverage and all 150 ordered numeric uniqueness gates passed; development survival is not required for future duplicate control.",
+    "complete_definition_count": 170,
+    "complete_definition_order_sha256": "2c315c5e92f4c134582deef17f38ab66d482fe5b11a2bc164f308b4822cb7d64",
+    "numeric_comparator_count": 151,
+    "numeric_comparator_order_sha256": "c556febf47c3e36ff13d6c9387209a71141816af22bd5c959e3dfbec77859aad",
+    "append_does_not_imply_survival_or_investment_value": true
+  },
+  "terminal_evidence": {
+    "no_return_audit_path": ".local-research/campaign_298/alpha158_volume_coefficient_of_variation_20d_v1/no_return_audit.json",
+    "no_return_audit_sha256": "43e2e6638ddff0a35e6205612e2cdd94939a390bb9d183037ede604894cef101",
+    "terminal_result_path": ".local-research/campaign_298/alpha158_volume_coefficient_of_variation_20d_v1/terminal_result.json",
+    "terminal_result_sha256": "443ae234ebee446e2a6139536998eeb04d9a80cb18a209f5ded470f44bdcb080",
+    "coverage_gate_passed": true,
+    "ordered_comparators_passed": 150,
+    "development_survivor_count": 0
+  },
+  "research_boundary": {
+    "additional_candidate_or_comparator_values_read": false,
+    "additional_historical_daily_price_or_forward_return_values_read": false,
+    "stress_2024_2025_opened": false,
+    "provider_request_issued": false,
+    "provider_credential_value_or_digest_read": false,
+    "candidate49_ledgers_changed": false,
+    "current_scoring_selection_sizing_positions_or_orders_performed": false,
+    "investment_advice": false
+  }
+}

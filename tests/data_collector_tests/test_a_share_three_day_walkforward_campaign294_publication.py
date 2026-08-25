@@ -121,7 +121,7 @@ def test_campaign294_candidate49_failed_closed_and_boundaries_unchanged() -> Non
     )
 
 
-def test_campaign294_handoff_is_preserved_after_campaign295_publication() -> None:
+def test_campaign294_handoff_is_preserved_after_latest_index_advances() -> None:
     handoff = (
         REPO_ROOT / "docs/a_share_three_day_strategy_handoff_20260825.md"
     ).read_text(encoding="utf-8")
@@ -130,10 +130,10 @@ def test_campaign294_handoff_is_preserved_after_campaign295_publication() -> Non
     ).read_text(encoding="utf-8")
     state = _load(STATE_PATH)
 
-    assert "截至 Campaign295" in handoff
-    assert "a_share_three_day_strategy_handoff_20260825_campaign295.md" in handoff
-    assert "Campaign296" in handoff
-    assert "167/148" in handoff
+    assert "截至 Campaign298" in handoff
+    assert "a_share_three_day_strategy_handoff_20260825_campaign298.md" in handoff
+    assert "Campaign299" in handoff
+    assert "170/151" in handoff
     assert "0.985178" in campaign_handoff
     assert state["workspace_boundary"]["data_path_is_external_symlink"] is True
     assert (

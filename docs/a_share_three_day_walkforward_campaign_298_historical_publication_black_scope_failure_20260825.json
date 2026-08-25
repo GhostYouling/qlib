@@ -1,0 +1,22 @@
+{
+  "schema_version": 1,
+  "kind": "a_share_three_day_walkforward_campaign298_infrastructure_failure",
+  "status": "recorded_postterminal_historical_publication_black_scope_failure_no_mutation",
+  "recorded_at": "2026-08-25T20:22:00+08:00",
+  "attempt_id": "campaign298_infrastructure_007",
+  "phase": "postterminal_extended_validation",
+  "error_type": "black_check_rejected_legacy_campaign294_publication_style",
+  "exit_code": 1,
+  "error_summary": "After the broad glob was removed, Black --check still reported the legacy Campaign294 publication file because its pre-existing whole-file style is not Black-normalized. Only four moving-pointer assertion literals had been updated; the command stopped before Ruff or pytest.",
+  "recovery_boundary": "Do not reformat the legacy Campaign294/295 publication modules. Black-check only new Campaign298 and already-normalized current modules; Ruff and pytest still cover all selected files.",
+  "research_boundary": {
+    "historical_file_reformatted": false,
+    "candidate_values_recomputed": false,
+    "comparator_values_recomputed": false,
+    "historical_daily_price_or_forward_return_values_recomputed": false,
+    "stress_2024_2025_opened": false,
+    "provider_request_issued": false,
+    "credential_value_or_digest_read": false,
+    "candidate49_ledgers_changed": false
+  }
+}

@@ -1,0 +1,22 @@
+{
+  "schema_version": 1,
+  "kind": "a_share_three_day_walkforward_campaign298_infrastructure_failure",
+  "status": "recorded_postterminal_campaign295_moving_pointer_test_failure_no_research_recomputation",
+  "recorded_at": "2026-08-25T20:25:00+08:00",
+  "attempt_id": "campaign298_infrastructure_008",
+  "phase": "postterminal_extended_validation",
+  "error_type": "campaign295_publication_test_treated_latest_handoff_index_as_immutable",
+  "exit_code": 1,
+  "test_result": "50 passed, 1 failed",
+  "error_summary": "The extended Campaign294--298 suite passed 50 tests and failed only because Campaign295's immutable-binding loop included the intentionally advancing latest-handoff index with its old saved hash.",
+  "recovery_boundary": "Preserve Campaign295 state and saved historical hash. Exclude only latest_handoff_index from its immutable binding loop; its current-state handoff test already verifies the advanced Campaign298 pointer.",
+  "research_boundary": {
+    "candidate_values_recomputed": false,
+    "comparator_values_recomputed": false,
+    "historical_daily_price_or_forward_return_values_recomputed": false,
+    "stress_2024_2025_opened": false,
+    "provider_request_issued": false,
+    "credential_value_or_digest_read": false,
+    "candidate49_ledgers_changed": false
+  }
+}
