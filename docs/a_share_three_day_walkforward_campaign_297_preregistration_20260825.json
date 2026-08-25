@@ -1,0 +1,175 @@
+{
+  "schema_version": 1,
+  "kind": "a_share_three_day_walkforward_campaign297_preregistration",
+  "status": "fully_frozen_before_campaign297_candidate_comparator_daily_price_or_forward_return_values",
+  "recorded_at": "2026-08-25T18:50:00+08:00",
+  "authoritative_inputs": {
+    "historical_walkforward_policy": {
+      "path": "docs/a_share_three_day_historical_walkforward_research_policy_20260727.json",
+      "sha256": "38426d6161b9bfed323c58caba18feca668b8c9d53e294951a8ba90c01a798bb"
+    },
+    "campaign296_terminal_state": {
+      "path": "docs/a_share_three_day_iteration_status_20260825_campaign296_terminal.json",
+      "sha256": "47af9d4d8c0bb4fd0d6b158cf68771b1352cb4747ad9491c4dce8c00e4842994"
+    },
+    "campaign296_terminal_result": {
+      "path": "docs/a_share_three_day_walkforward_campaign_296_terminal_result_20260825.json",
+      "sha256": "8181b4d9f6a1941b59257acbb880314a079e34902843dcd138d2749382342740"
+    },
+    "numeric_comparison_policy_v426": {
+      "path": "docs/a_share_three_day_walkforward_future_numeric_comparison_eligibility_policy_v426_20260825.json",
+      "sha256": "4ea40bc70454486c7785c3c4ab2764ecc8aedadb416ca3dfe9cf76fa5415500b"
+    },
+    "library_order_reconstruction_receipt": {
+      "path": "docs/a_share_three_day_walkforward_campaign_296_library_order_reconstruction_receipt_20260825.json",
+      "sha256": "fed1a0f19d9b32ff9fec19b5362734696e3e1a467265f19e92878080457b07dc"
+    },
+    "concept_catalog": {
+      "path": "docs/a_share_three_day_walkforward_campaign_297_concept_scouting_20260825.json",
+      "sha256": "8ab89fbc2b897b011d6ce5a40c848d033dc7e24c5782586eb56a258670fd7ecb"
+    }
+  },
+  "source_bindings": {
+    "alpha158_design": {
+      "path": "data/experiments/short_horizon/historical_walkforward/campaign_286/alpha158_development_design_recovery_v3/snapshot_manifest.json",
+      "sha256": "31cba0be801ac1421ef9555b862575089589ec08397c1420be3fc4f43b111d4e",
+      "dataset_sha256": "714f4ccbdf4bfbaccfd04f543ec8c6a0bc345d3cc567ab621d01905130c46252",
+      "years": [2019, 2020, 2021, 2022, 2023],
+      "feature_count": 158,
+      "minimum_finite_features": 119,
+      "required_feature_names": ["QTLU20", "QTLD20", "MAX20", "MIN20"]
+    },
+    "numeric140_design": {
+      "path": "/Volumes/DIsk/qlib-a-share-tushare-1m/derived/a_share/rich/tushare/minute_walkforward_campaign132_design_matrix/tushare_stk_mins_1m_2019_2025_ea0cbb8f_walkforward_campaign132_numeric140_design_v1/snapshot_manifest.json",
+      "sha256": "043c17fea89f3b0956d643a7c6e3f4d73a11403b967213d2d57539a6a8316a49",
+      "dataset_sha256": "12ce3a64b5e13581392ded9890e2064db4ccca3945da3eb8ad7752c95366a9fc",
+      "development_years_only": [2019, 2020, 2021, 2022, 2023]
+    },
+    "campaign296_snapshot": {
+      "path": ".local-research/campaign_296/alpha158_linear_trend_quality_10d_v2/candidate_snapshot/snapshot_manifest.json",
+      "sha256": "86637729a0c3673a7f9e029bf2c7c84c0cb0de7bcace78ad6b1ba416cc7509ab",
+      "dataset_sha256": "7568a3ec84db3eb4089809a002382423835e18044b5bedd8017c6671a8266cbb",
+      "factor_name": "alpha158_linear_trend_quality_10d",
+      "score_direction": "higher",
+      "frozen_value_range": "finite_unbounded"
+    }
+  },
+  "factor_library": [
+    {
+      "factor_id": "campaign297_factor_001",
+      "name": "alpha158_interquantile_envelope_occupancy_20d",
+      "direction": "higher",
+      "formula": "For each frozen Alpha158 model-support row, let C=QTLU20-QTLD20 and E=MAX20-MIN20. Require four finite inputs, E>0, C>=0 and C<=E within 1e-6, then set score=C/E without clipping or epsilon.",
+      "parameters": {
+        "upper_close_quantile_feature": "QTLU20",
+        "lower_close_quantile_feature": "QTLD20",
+        "rolling_high_feature": "MAX20",
+        "rolling_low_feature": "MIN20",
+        "fixed_horizon_sessions": 20,
+        "score": "(QTLU20 - QTLD20) / (MAX20 - MIN20)",
+        "input_numerical_tolerance": 0.000001,
+        "denominator_rule": "strictly positive raw MAX20-MIN20; no epsilon",
+        "missing_rule": "missing if any input is nonfinite, envelope width is nonpositive, central width is negative beyond tolerance, central width exceeds envelope beyond tolerance, frozen model support is false, or the raw score is nonfinite; never fill, clip, winsorize or repair",
+        "fit": "none"
+      }
+    }
+  ],
+  "coverage_and_capacity_gates": {
+    "domain": "point-in-time quality_listing_eligible rows in the frozen Alpha158 design; candidate eligibility additionally requires frozen model support and the exact four-input formula rules",
+    "median_daily_coverage_minimum": 0.95,
+    "p05_daily_coverage_minimum": 0.9,
+    "p05_eligible_names_minimum": 50,
+    "non_overlapping_three_signal_session_cohorts_minimum": 200,
+    "cohort_years_minimum": 5,
+    "nonconstant_cross_section_required": true,
+    "coverage_failure_stops_before_every_comparator_value": true
+  },
+  "ordered_numeric_uniqueness": {
+    "comparator_count": 149,
+    "comparator_order_sha256": "71bb5c75ca46c01c10d0e636588c33493e23bbc5bd2d2c344d8fd7dbecaffcaf",
+    "order_digest_semantics": "SHA-256 of canonical JSON [[name, score_direction], ...]",
+    "first_148": {
+      "source": "Campaign296 frozen comparison_definitions order",
+      "source_protocol_path": "docs/a_share_three_day_walkforward_campaign_296_preregistration_20260825.json",
+      "source_protocol_sha256": "8ee63c2e94e7e53cb3a4dd98b81c18a204e25ed22fc259340826680b6f1eced9",
+      "order_sha256": "b6b8c0e6f786e59c102583eccfb54e5bfaec4ebb0c79267a001db637396123d9"
+    },
+    "ordinal_149": {
+      "name": "alpha158_linear_trend_quality_10d",
+      "score_direction": "higher",
+      "source_manifest_path": ".local-research/campaign_296/alpha158_linear_trend_quality_10d_v2/candidate_snapshot/snapshot_manifest.json",
+      "source_manifest_sha256": "86637729a0c3673a7f9e029bf2c7c84c0cb0de7bcace78ad6b1ba416cc7509ab",
+      "valid_finite_range": "unbounded"
+    },
+    "only_lower_direction_comparator": "intraday_realized_volatility",
+    "minimum_pair_names_per_session": 50,
+    "minimum_pair_sessions_per_comparator": 100,
+    "strict_absolute_median_maximum": 0.8,
+    "ordered_early_stop": true,
+    "all_149_must_pass": true,
+    "insufficient_overlap_fails_closed": true
+  },
+  "development_trial": {
+    "trial_id": "wf297_alpha158_interquantile_envelope_occupancy_20d_single_higher",
+    "factor_names": ["alpha158_interquantile_envelope_occupancy_20d"],
+    "weights": [1.0],
+    "model_fitting": false,
+    "training_return_reads": 0,
+    "alternate_direction_horizon_transform_threshold_filter_weight_fit_model_or_combination_search": false,
+    "walkforward_folds": [
+      {
+        "fold": 1,
+        "training": ["2019-01-02", "2020-12-31"],
+        "validation": ["2021-01-01", "2021-12-31"]
+      },
+      {
+        "fold": 2,
+        "training": ["2019-01-02", "2021-12-31"],
+        "validation": ["2022-01-01", "2022-12-31"]
+      },
+      {
+        "fold": 3,
+        "training": ["2019-01-02", "2022-12-31"],
+        "validation": ["2023-01-01", "2023-12-31"]
+      }
+    ],
+    "purge_signal_sessions": 3,
+    "entry_exit": "signal after session t close, enter next accepted session open, exit third accepted session close; t+1 and t+3 must remain inside the same validation partition",
+    "costs_and_operational_gates": "identical to frozen Campaign286/Campaign296 three-session engine: Top3, normalized execution, CNY 200000 board-lot pilot, primary 10bp, sensitivity 20bp, affordability >=0.90, maximum filled amount participation <=0.01, zero unresolved terminal positions",
+    "survival_quality_gates": "at least 2/3 positive mean Rank IC, positive median Rank IC and top3-bottom3 spread, at least 2/3 positive normalized and 10bp returns, positive median 10bp return, worst normalized drawdown >=-0.25 and positive compounded 20bp return"
+  },
+  "append_rule": {
+    "definition_and_numeric_comparator_append_once_only_if_coverage_and_all_149_uniqueness_gates_pass": true,
+    "development_survival_not_required_for_future_duplicate_control": true,
+    "failed_coverage_or_uniqueness_leaves_library_unchanged": true,
+    "prior_library_counts": {
+      "complete_definitions": 168,
+      "numeric_comparators": 149
+    }
+  },
+  "lockbox_2024_2025": {
+    "currently_open": false,
+    "may_open_once_only_after_nonzero_frozen_development_survivor_and_complete_campaign_freeze": true,
+    "historically_exposed_quasi_out_of_sample_not_pristine_holdout": true,
+    "campaign297_alpha158_2024_2025_source_currently_absent": true
+  },
+  "candidate49_boundary": {
+    "registration_id": "candidate49_intraday_cumulative_vwap_crossing_rate_240m_v1",
+    "sole_active_prospective_candidate": true,
+    "historical_signal_return_execution_or_milestone_backfill_allowed": false,
+    "second_prospective_candidate_allowed": false,
+    "same_day_20260825_retry_allowed": false,
+    "signal_ledger_sha256": "5193f00d7f36da003f53cec387900da4c3d002299f5dfcfc1a95eaa199ed3a79",
+    "execution_ledger_sha256": "d57a3e61eac969e42cafa418ccd8c0a5ee65dcf69da145bb2c096c2a02a2ea4f"
+  },
+  "research_boundary": {
+    "campaign297_candidate_or_comparator_values_read_before_protocol": false,
+    "historical_daily_price_or_forward_return_values_read_before_protocol": false,
+    "provider_request_issued": false,
+    "credential_value_or_digest_read": false,
+    "current_scoring_selection_sizing_positions_or_orders_allowed": false,
+    "investment_advice": false,
+    "record_every_concept_formula_direction_parameter_filter_subset_model_combination_and_failure_append_only": true,
+    "post_result_change_requires_new_campaign": true
+  }
+}

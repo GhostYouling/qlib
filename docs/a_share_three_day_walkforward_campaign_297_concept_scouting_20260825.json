@@ -1,0 +1,103 @@
+{
+  "schema_version": 1,
+  "kind": "a_share_three_day_walkforward_campaign297_concept_scouting",
+  "status": "finite_prevalue_catalog_frozen_before_campaign297_candidate_or_comparator_values",
+  "recorded_at": "2026-08-25T18:48:00+08:00",
+  "authoritative_frontier": {
+    "state_path": "docs/a_share_three_day_iteration_status_20260825_campaign296_terminal.json",
+    "state_sha256": "47af9d4d8c0bb4fd0d6b158cf68771b1352cb4747ad9491c4dce8c00e4842994",
+    "numeric_policy_path": "docs/a_share_three_day_walkforward_future_numeric_comparison_eligibility_policy_v426_20260825.json",
+    "numeric_policy_sha256": "4ea40bc70454486c7785c3c4ab2764ecc8aedadb416ca3dfe9cf76fa5415500b",
+    "complete_definition_count": 168,
+    "complete_definition_order_sha256": "1d618cac1b89fc9002225f9ee0b285354741c17e50caa3b5fedf9d3f2e1bd76d",
+    "numeric_comparator_count": 149,
+    "numeric_comparator_order_sha256": "71bb5c75ca46c01c10d0e636588c33493e23bbc5bd2d2c344d8fd7dbecaffcaf"
+  },
+  "finite_prevalue_concept_catalog": [
+    {
+      "catalog_id": "campaign297_concept_001",
+      "name": "alpha158_interquantile_envelope_occupancy_20d",
+      "decision": "selected_exactly_once",
+      "reason": "The fixed Alpha158 definitions expose the central 60-percent close-price range through QTLU20-QTLD20 and the full high-low envelope through MAX20-MIN20. Their ratio measures how broadly ordinary closes occupy the available monthly envelope rather than whether that envelope was created by a few isolated extremes. This is an own-stock price-distribution-shape mechanism with no BETA/RSQR trend-linearity weight, volume confirmation, peer rank, cross-horizon geometry, fitted model or return-selected parameter.",
+      "parameters": {
+        "upper_close_quantile_feature": "QTLU20",
+        "lower_close_quantile_feature": "QTLD20",
+        "rolling_high_feature": "MAX20",
+        "rolling_low_feature": "MIN20",
+        "fixed_horizon_sessions": 20,
+        "formula": "(QTLU20 - QTLD20) / (MAX20 - MIN20)",
+        "valid_input_rule": "all four inputs finite; MAX20-MIN20 strictly positive; QTLU20-QTLD20 nonnegative and no larger than MAX20-MIN20 within 1e-6 numerical tolerance; never fill, clip or add epsilon",
+        "direction": "higher",
+        "economic_hypothesis": "higher central occupancy represents sustained traversal of the monthly price envelope and less dependence on isolated extreme prints, which may preserve near-term price discovery better over a three-session holding horizon",
+        "fit": "none"
+      }
+    },
+    {
+      "catalog_id": "campaign297_concept_002",
+      "name": "alpha158_interquantile_envelope_compression_20d",
+      "decision": "rejected_prevalue",
+      "reason": "One minus the selected occupancy score, or the raw inverse direction, is a deterministic inversion and would turn Campaign297 into a two-direction search."
+    },
+    {
+      "catalog_id": "campaign297_concept_003",
+      "name": "alpha158_interquantile_envelope_occupancy_horizon_grid",
+      "decision": "rejected_prevalue",
+      "reason": "Trying 5, 10, 30 or 60 sessions, averaging horizons or selecting the best horizon would create a postulated horizon search. One conventional 20-session month is frozen before values."
+    },
+    {
+      "catalog_id": "campaign297_concept_004",
+      "name": "alpha158_alternate_quantile_band_or_tail_occupancy_grid",
+      "decision": "rejected_prevalue",
+      "reason": "Alpha158 freezes only the 20th and 80th close quantiles. Inventing alternate quantiles, tail weights, IQR powers, logit transforms or clipped ratios would create an avoidable transform family."
+    },
+    {
+      "catalog_id": "campaign297_concept_005",
+      "name": "alpha158_raw_interquantile_width_or_full_range",
+      "decision": "rejected_prevalue",
+      "reason": "Either raw width retains price-scale and volatility exposure instead of testing distribution occupancy; each is also directly represented by existing Alpha158 inputs rather than the selected normalized shape mechanism."
+    },
+    {
+      "catalog_id": "campaign297_concept_006",
+      "name": "alpha158_close_only_envelope_or_current_price_position_variant",
+      "decision": "rejected_prevalue",
+      "reason": "Replacing the frozen high-low envelope with close extrema, adding the current close location, or conditioning on RANK/RSV would change the mechanism and introduce additional component and weighting choices."
+    },
+    {
+      "catalog_id": "campaign297_concept_007",
+      "name": "campaign295_or_campaign296_retune_reverse_rehorizon_threshold_reweight_or_combination",
+      "decision": "forbidden",
+      "reason": "Campaign295 and Campaign296 are immutable and terminal. Their SUMD20/CORD20 and BETA10/RSQR10 definitions may not be inverted, re-horizoned, thresholded, reweighted, combined or otherwise rescued. The selected factor uses none of those inputs."
+    },
+    {
+      "catalog_id": "campaign297_concept_008",
+      "name": "alpha158_peer_rank_state_consensus_extremity_persistence_or_horizon_geometry_refresh",
+      "decision": "forbidden",
+      "reason": "Campaign290--294 already consumed that mechanism cluster. Campaign297 uses raw within-stock rolling distribution geometry and no same-session peer transform."
+    },
+    {
+      "catalog_id": "campaign297_concept_009",
+      "name": "alpha158_supervised_tree_mlp_kernel_hash_weight_or_subset_search",
+      "decision": "forbidden",
+      "reason": "Campaign286--289 and earlier complete-library campaigns already consumed fitted and randomized model families. Campaign297 contains exactly one deterministic weight-1 factor and no training-return read."
+    }
+  ],
+  "prevalue_mechanism_audit": {
+    "independent_of_campaign296_beta_rsqr_trend_linearity": true,
+    "independent_of_campaign295_price_volume_confirmation": true,
+    "independent_of_campaign290_to_294_peer_rank_cluster": true,
+    "model_fitting_or_return_selected_parameter": false,
+    "single_formula_single_direction_single_horizon": true,
+    "candidate_or_comparator_values_read_for_campaign297": false,
+    "historical_daily_price_or_forward_return_values_read_for_campaign297": false
+  },
+  "research_boundary": {
+    "zero_network": true,
+    "provider_request_issued": false,
+    "credential_value_or_digest_read": false,
+    "candidate49_historical_backfill_performed": false,
+    "candidate49_ledgers_changed": false,
+    "second_prospective_candidate_created": false,
+    "current_scoring_selection_sizing_positions_or_orders_performed": false,
+    "investment_advice": false
+  }
+}

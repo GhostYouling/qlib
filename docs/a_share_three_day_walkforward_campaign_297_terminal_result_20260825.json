@@ -1,0 +1,179 @@
+{
+  "schema_version": 1,
+  "kind": "a_share_three_day_walkforward_campaign297_documented_terminal_result",
+  "status": "terminal_development_no_survivor_library_appended_lockbox_closed",
+  "recorded_at": "2026-08-25T19:10:00+08:00",
+  "authoritative_inputs": {
+    "concept_catalog": {
+      "path": "docs/a_share_three_day_walkforward_campaign_297_concept_scouting_20260825.json",
+      "sha256": "8ab89fbc2b897b011d6ce5a40c848d033dc7e24c5782586eb56a258670fd7ecb"
+    },
+    "protocol": {
+      "path": "docs/a_share_three_day_walkforward_campaign_297_preregistration_20260825.json",
+      "sha256": "f36703dd23fb8dc699033ce7718487012c030140074f4451c9abdbc68352f4f9"
+    },
+    "implementation_freeze_v2": {
+      "path": "docs/a_share_three_day_walkforward_campaign_297_implementation_freeze_v2_20260825.json",
+      "sha256": "a5c14951aab362c71f0326b6e0e47881a37812ea9b7b3197ae22ba4f845f3ed0"
+    },
+    "candidate_snapshot": {
+      "path": ".local-research/campaign_297/alpha158_interquantile_envelope_occupancy_20d_v2/candidate_snapshot/snapshot_manifest.json",
+      "sha256": "a949ee60f47b8b70c106dcf7c6f9484d985aa848ec925ebb404348257c53aaf6",
+      "dataset_sha256": "12395b9cbe1013d6fa38560bec087fe34f41b6a6940a5ddd68c04055ba741cb1"
+    },
+    "no_return_audit": {
+      "path": ".local-research/campaign_297/alpha158_interquantile_envelope_occupancy_20d_v2/no_return_audit.json",
+      "sha256": "9135775b1b68936b212cae005ae5430e7e5456cf9f101dc3b9c071ac96f0cc33"
+    },
+    "local_terminal_result": {
+      "path": ".local-research/campaign_297/alpha158_interquantile_envelope_occupancy_20d_v2/terminal_result.json",
+      "sha256": "f9b97a9a4fd7e3adaf30ebee5ede57a02bbcc867f6974c1e759d19150b635d08"
+    },
+    "terminal_trial_ledger": {
+      "path": ".local-research/campaign_297/alpha158_interquantile_envelope_occupancy_20d_v2/terminal_trial_ledger.json",
+      "sha256": "34de493bd042c9d7b94630578e70303f05e365cf47c1425b1b66b309304baefb",
+      "entry_count": 11,
+      "terminal_entry_sha256": "fe66031d7ece3eec4afb7358df082dc00f2ab1302fd90df3d1caaa3921093130"
+    },
+    "library_order_reconstruction_receipt": {
+      "path": "docs/a_share_three_day_walkforward_campaign_297_library_order_reconstruction_receipt_20260825.json",
+      "sha256": "0eadf19c7cdc9b48a5fae95ff2a676d8c12d2defc66951e252b5a2360bb7d554"
+    },
+    "infrastructure_failure": {
+      "path": "docs/a_share_three_day_walkforward_campaign_297_coverage_key_mapping_failure_20260825.json",
+      "sha256": "ad9c368e7076c98f6be741730a984589afff6490dbdd6db5263a4ca7dd05251f",
+      "included_in_terminal_ledger": true
+    }
+  },
+  "factor": {
+    "name": "alpha158_interquantile_envelope_occupancy_20d",
+    "direction": "higher",
+    "formula": "(QTLU20 - QTLD20) / (MAX20 - MIN20)",
+    "formula_summary": "Measure the central 60% close-distribution width as a fraction of the full twenty-session high-low envelope.",
+    "fixed_horizon_sessions": 20,
+    "model_fitting": false,
+    "training_return_reads": 0,
+    "alternate_direction_horizon_quantile_transform_threshold_weight_or_combination_search": false
+  },
+  "coverage_result": {
+    "gate_passed": true,
+    "quality_listing_rows": 1001781,
+    "candidate_eligible_rows": 1001507,
+    "calendar_sessions": 1147,
+    "median_daily_coverage": 1.0,
+    "p05_daily_coverage": 0.9974212223749603,
+    "eligible_names_p05": 110.30000000000001,
+    "potential_non_overlapping_three_session_cohorts": 379,
+    "observed_years": [2019, 2020, 2021, 2022, 2023]
+  },
+  "ordered_numeric_uniqueness_result": {
+    "status": "passed",
+    "comparators_declared": 149,
+    "comparators_evaluated": 149,
+    "comparators_passed": 149,
+    "maximum_absolute_median_daily_rank_correlation": 0.08685419208922868,
+    "maximum_comparator": "intraday_day_over_day_absolute_return_profile_similarity_238b",
+    "strict_absolute_maximum": 0.8,
+    "historical_daily_price_or_forward_return_values_read_during_gate": false
+  },
+  "development_result": {
+    "development_trial_count": 1,
+    "validation_fold_return_reads": 3,
+    "training_return_reads": 0,
+    "survivor_count": 0,
+    "positive_mean_rank_ic_fold_count": 1,
+    "positive_normalized_return_fold_count": 0,
+    "positive_pilot_10bp_return_fold_count": 0,
+    "folds": [
+      {
+        "validation_year": 2021,
+        "cohorts": 74,
+        "mean_rank_ic": 0.015357583383909624,
+        "top3_minus_bottom3_gross_spread": -0.008563734600446312,
+        "normalized_return": -0.14657270307613723,
+        "pilot_10bp_return": -0.03246660568741444,
+        "pilot_20bp_return": -0.049856175410042614,
+        "pilot_10bp_board_lot_affordability": 0.8873873873873874
+      },
+      {
+        "validation_year": 2022,
+        "cohorts": 73,
+        "mean_rank_ic": -0.015923283658699886,
+        "top3_minus_bottom3_gross_spread": -0.005295532915026766,
+        "normalized_return": -0.02911088612214363,
+        "pilot_10bp_return": -0.008870588337438257,
+        "pilot_20bp_return": -0.028092889109115005,
+        "pilot_10bp_board_lot_affordability": 0.8538812785388128
+      },
+      {
+        "validation_year": 2023,
+        "cohorts": 74,
+        "mean_rank_ic": -0.003976918801685062,
+        "top3_minus_bottom3_gross_spread": -0.0018577845106404777,
+        "normalized_return": -0.11895722825489641,
+        "pilot_10bp_return": -0.01060464831924357,
+        "pilot_20bp_return": -0.028550629127952587,
+        "pilot_10bp_board_lot_affordability": 0.9504504504504504
+      }
+    ],
+    "aggregate": {
+      "median_validation_mean_rank_ic": -0.003976918801685062,
+      "median_validation_spread": -0.005295532915026766,
+      "median_validation_pilot_10bp_return": -0.01060464831924357,
+      "compounded_normalized_return": -0.269982697354187,
+      "compounded_pilot_10bp_return": -0.05121853216157146,
+      "compounded_pilot_20bp_return": -0.10291358293351871,
+      "worst_validation_normalized_drawdown": -0.39623458619612184
+    },
+    "rejection_reasons": [
+      "all three top3-minus-bottom3 gross spreads are negative",
+      "all three normalized returns are negative",
+      "all three 10bp and 20bp pilot returns are negative",
+      "fold 1 and fold 2 board-lot affordability are below the frozen 0.90 minimum",
+      "worst validation normalized drawdown is below the frozen -0.25 minimum",
+      "the frozen development quality and aggregate gate failed"
+    ],
+    "stress_2024_2025_opened": false,
+    "current_strategy_deployable": false
+  },
+  "library_state": {
+    "campaign297_definition_appended_once": true,
+    "campaign297_numeric_comparator_appended_once": true,
+    "append_reason": "Coverage and all 149 uniqueness gates passed; append is for duplicate control only and does not imply development survival.",
+    "complete_factor_definition_count": 169,
+    "complete_factor_definition_order_sha256": "b25aef820170480a3c43ec34096b603c39fa60923565be21040852a6df5b9fea",
+    "eligible_numeric_comparator_count": 150,
+    "eligible_numeric_comparator_order_sha256": "135dec87e00f39a78913e8b678c0c5e809f516c952575a9e406c360086a6508e"
+  },
+  "effective_accounting": {
+    "prevalue_concept_attempts": 9,
+    "infrastructure_failures": 1,
+    "infrastructure_failures_in_terminal_ledger": 1,
+    "complete_factor_attempts": 1,
+    "campaign297_terminal_trial_ledger_entries": 11,
+    "campaign297_total_attempts": 11,
+    "return_reading_development_trials": 1,
+    "validation_fold_return_reads": 3,
+    "cumulative_historical_research_attempts": 3050,
+    "cumulative_return_reading_development_trials": 328
+  },
+  "candidate49": {
+    "same_day_plan_executed": true,
+    "same_day_plan_ready": false,
+    "same_day_plan_exit_code": 1,
+    "same_day_run_executed": false,
+    "same_day_retry_allowed": false,
+    "signal_ledger_entry_count": 0,
+    "signal_ledger_sha256": "5193f00d7f36da003f53cec387900da4c3d002299f5dfcfc1a95eaa199ed3a79",
+    "execution_ledger_entry_count": 0,
+    "execution_ledger_sha256": "d57a3e61eac969e42cafa418ccd8c0a5ee65dcf69da145bb2c096c2a02a2ea4f"
+  },
+  "research_boundary": {
+    "candidate49_historical_backfill_performed": false,
+    "second_prospective_candidate_created": false,
+    "provider_request_issued": false,
+    "credential_value_or_digest_read": false,
+    "current_scoring_selection_sizing_positions_or_orders_performed": false,
+    "investment_advice": false
+  }
+}

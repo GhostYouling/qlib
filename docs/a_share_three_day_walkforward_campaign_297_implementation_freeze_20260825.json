@@ -1,0 +1,59 @@
+{
+  "schema_version": 1,
+  "kind": "a_share_three_day_walkforward_campaign297_implementation_freeze",
+  "status": "implementation_frozen_before_campaign297_candidate_or_comparator_values",
+  "recorded_at": "2026-08-25T18:57:00+08:00",
+  "frozen_implementation": {
+    "concept_path": "docs/a_share_three_day_walkforward_campaign_297_concept_scouting_20260825.json",
+    "concept_sha256": "8ab89fbc2b897b011d6ce5a40c848d033dc7e24c5782586eb56a258670fd7ecb",
+    "protocol_path": "docs/a_share_three_day_walkforward_campaign_297_preregistration_20260825.json",
+    "protocol_sha256": "f36703dd23fb8dc699033ce7718487012c030140074f4451c9abdbc68352f4f9",
+    "runner_path": "scripts/a_share_three_day_walkforward_campaign297.py",
+    "runner_sha256": "2311b7ca22d3350dc13100abee3b8d0f3b0eccbea8abc3a1a184c519f0bc08bd",
+    "test_path": "tests/data_collector_tests/test_a_share_three_day_walkforward_campaign297.py",
+    "test_sha256": "88f458ec2f5c991d10a452d07214664df7b92591dd08553b47d898e2a28fcc4e",
+    "runner_dependency_path": "scripts/a_share_three_day_walkforward_campaign296.py",
+    "runner_dependency_sha256": "455e4b684aea73643fcd8ca60974c645e415ab6ff9a8581abb5581646ac44a5f",
+    "factor_name": "alpha158_interquantile_envelope_occupancy_20d",
+    "formula": "(QTLU20 - QTLD20) / (MAX20 - MIN20)",
+    "direction": "higher",
+    "fixed_horizon_sessions": 20,
+    "input_numerical_tolerance": 0.000001,
+    "denominator_epsilon": null,
+    "required_alpha158_features": ["QTLU20", "QTLD20", "MAX20", "MIN20"],
+    "minimum_alpha158_finite_features": 119,
+    "model_fit_count": 0,
+    "training_return_read_count": 0,
+    "comparator_count": 149,
+    "comparator_order_sha256": "71bb5c75ca46c01c10d0e636588c33493e23bbc5bd2d2c344d8fd7dbecaffcaf",
+    "campaign296_comparator_range": {
+      "minimum": null,
+      "maximum": null,
+      "semantics": "finite values accepted without an artificial bound because BETA10 is theoretically unbounded and RSQR10 is in [0,1]"
+    },
+    "batch_size": 8192,
+    "purge_signal_sessions": 3,
+    "output_root": ".local-research/campaign_297/alpha158_interquantile_envelope_occupancy_20d_v1",
+    "overwrite_allowed": false
+  },
+  "prevalue_validation": {
+    "black_passed": true,
+    "ruff_passed": true,
+    "compile_passed": true,
+    "synthetic_tests_passed": 8,
+    "metadata_only_plan_not_run_until_this_freeze_exists": true
+  },
+  "research_boundary": {
+    "candidate_values_read_before_freeze": false,
+    "comparator_values_read_before_freeze": false,
+    "historical_daily_price_or_forward_return_values_read_before_freeze": false,
+    "lockbox_2024_2025_opened": false,
+    "provider_request_issued": false,
+    "provider_credential_value_or_digest_read": false,
+    "candidate49_historical_backfill_performed": false,
+    "candidate49_ledgers_changed": false,
+    "second_prospective_candidate_created": false,
+    "current_scoring_selection_sizing_positions_or_orders_performed": false,
+    "investment_advice": false
+  }
+}

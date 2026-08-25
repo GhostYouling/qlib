@@ -5,21 +5,21 @@ import json
 from pathlib import Path
 from typing import Any
 
-from scripts import a_share_three_day_walkforward_campaign296 as campaign
+from scripts import a_share_three_day_walkforward_campaign297 as campaign
 
 
 REPO_ROOT = Path(__file__).resolve().parents[2]
 STATE_PATH = (
     REPO_ROOT
-    / "docs/a_share_three_day_iteration_status_20260825_campaign296_terminal.json"
+    / "docs/a_share_three_day_iteration_status_20260825_campaign297_terminal.json"
 )
 POLICY_PATH = (
     REPO_ROOT
-    / "docs/a_share_three_day_walkforward_future_numeric_comparison_eligibility_policy_v426_20260825.json"
+    / "docs/a_share_three_day_walkforward_future_numeric_comparison_eligibility_policy_v427_20260825.json"
 )
 DOCUMENTED_TERMINAL_PATH = (
     REPO_ROOT
-    / "docs/a_share_three_day_walkforward_campaign_296_terminal_result_20260825.json"
+    / "docs/a_share_three_day_walkforward_campaign_297_terminal_result_20260825.json"
 )
 
 
@@ -45,7 +45,7 @@ def _assert_binding(binding: dict[str, Any]) -> None:
     assert _sha256(path) == binding["sha256"]
 
 
-def test_campaign296_terminal_publication_bindings_and_semantics() -> None:
+def test_campaign297_terminal_publication_bindings_and_semantics() -> None:
     state = _load(STATE_PATH)
     policy = _load(POLICY_PATH)
     documented = _load(DOCUMENTED_TERMINAL_PATH)
@@ -58,15 +58,15 @@ def test_campaign296_terminal_publication_bindings_and_semantics() -> None:
         "terminal_result",
         "terminal_report",
         "handoff",
-        "numeric_policy_v426",
+        "latest_handoff_index",
+        "numeric_policy_v427",
         "local_terminal_result",
         "terminal_trial_ledger",
         "library_order_reconstruction_receipt",
+        "infrastructure_failure_record",
         "candidate49_same_day_plan_failure",
     ):
         _assert_binding(state["authoritative_inputs"][name])
-    for binding in state["authoritative_inputs"]["infrastructure_failure_records"]:
-        _assert_binding(binding)
 
     uniqueness = no_return["ordered_uniqueness"]
     assert local_terminal["status"] == "terminal_no_survivor_lockbox_closed"
@@ -75,35 +75,40 @@ def test_campaign296_terminal_publication_bindings_and_semantics() -> None:
     assert local_terminal["survivor_count"] == 0
     assert local_terminal["definition_library_append_eligible"] is True
     assert no_return["coverage"]["gate_passed"] is True
-    assert uniqueness["all_148_passed"] is True
-    assert uniqueness["comparators_evaluated"] == 148
+    assert uniqueness["all_149_passed"] is True
+    assert uniqueness["comparators_evaluated"] == 149
     assert uniqueness["maximum_observed_absolute_median_daily_rank_correlation"] == (
-        0.5734639471583276
+        0.08685419208922868
     )
     assert no_return["historical_daily_price_or_forward_return_values_read"] is False
-    assert ledger["entry_count"] == 14
-    assert ledger["infrastructure_failure_count"] == 4
-    assert documented["effective_accounting"]["campaign296_total_attempts"] == 14
+    assert ledger["entry_count"] == 11
+    assert ledger["infrastructure_failure_count"] == 1
+    assert documented["effective_accounting"]["campaign297_total_attempts"] == 11
     assert documented["development_result"]["current_strategy_deployable"] is False
     assert all(
-        item["mean_rank_ic"] < 0 for item in documented["development_result"]["folds"]
+        item["top3_minus_bottom3_gross_spread"] < 0
+        for item in documented["development_result"]["folds"]
+    )
+    assert all(
+        item["normalized_return"] < 0
+        for item in documented["development_result"]["folds"]
     )
 
     library = policy["complete_historical_feature_library"]
     comparators = policy["numerical_comparator_eligibility"]
-    assert library["factor_definition_count"] == 168
-    assert library["campaign296_definition_appended"] is True
+    assert library["factor_definition_count"] == 169
+    assert library["campaign297_definition_appended"] is True
     assert library["order_sha256"] == (
-        "1d618cac1b89fc9002225f9ee0b285354741c17e50caa3b5fedf9d3f2e1bd76d"
+        "b25aef820170480a3c43ec34096b603c39fa60923565be21040852a6df5b9fea"
     )
-    assert comparators["eligible_numeric_comparator_count"] == 149
-    assert comparators["campaign296_numeric_comparator_appended"] is True
+    assert comparators["eligible_numeric_comparator_count"] == 150
+    assert comparators["campaign297_numeric_comparator_appended"] is True
     assert comparators["order_sha256"] == (
-        "71bb5c75ca46c01c10d0e636588c33493e23bbc5bd2d2c344d8fd7dbecaffcaf"
+        "135dec87e00f39a78913e8b678c0c5e809f516c952575a9e406c360086a6508e"
     )
 
 
-def test_campaign296_candidate49_and_lockbox_boundaries_unchanged() -> None:
+def test_campaign297_candidate49_and_lockbox_boundaries_unchanged() -> None:
     state = _load(STATE_PATH)
     policy = _load(POLICY_PATH)
     assert _sha256(campaign.SIGNAL_LEDGER_PATH) == (
@@ -126,12 +131,12 @@ def test_campaign296_candidate49_and_lockbox_boundaries_unchanged() -> None:
     )
 
 
-def test_campaign296_handoff_is_preserved_after_latest_index_advances() -> None:
+def test_campaign297_handoff_is_latest_and_external_data_change_is_excluded() -> None:
     handoff = (
         REPO_ROOT / "docs/a_share_three_day_strategy_handoff_20260825.md"
     ).read_text(encoding="utf-8")
     campaign_handoff = (
-        REPO_ROOT / "docs/a_share_three_day_strategy_handoff_20260825_campaign296.md"
+        REPO_ROOT / "docs/a_share_three_day_strategy_handoff_20260825_campaign297.md"
     ).read_text(encoding="utf-8")
     state = _load(STATE_PATH)
 
@@ -139,9 +144,8 @@ def test_campaign296_handoff_is_preserved_after_latest_index_advances() -> None:
     assert "a_share_three_day_strategy_handoff_20260825_campaign297.md" in handoff
     assert "Campaign298" in handoff
     assert "169/150" in handoff
-    assert "Campaign296" in campaign_handoff
-    assert "148/148" in campaign_handoff
-    assert "-81.92%" in campaign_handoff
+    assert "149/149" in campaign_handoff
+    assert "-27.00%" in campaign_handoff
     assert state["workspace_boundary"]["data_path_is_external_symlink"] is True
     assert (
         state["workspace_boundary"]["external_data_change_may_be_staged_or_reverted"]

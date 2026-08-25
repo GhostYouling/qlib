@@ -1,0 +1,51 @@
+{
+  "schema_version": 1,
+  "kind": "a_share_three_day_walkforward_campaign297_infrastructure_failure",
+  "status": "failed_after_candidate_snapshot_before_coverage_comparator_or_return_values",
+  "recorded_at": "2026-08-25T18:54:00+08:00",
+  "attempt_id": "campaign297_infrastructure_001",
+  "phase": "coverage_entry",
+  "command": "python -m scripts.a_share_three_day_walkforward_campaign297 run --confirm-run --batch-size 8192",
+  "exit_code": 1,
+  "error_type": "KeyError",
+  "error_summary": "The inherited coverage_result helper requires protocol.coverage_first_gate, while the scientifically identical Campaign297 thresholds were frozen under coverage_and_capacity_gates.",
+  "root_cause": "protocol_key_adapter_missing",
+  "failed_output": {
+    "root": ".local-research/campaign_297/alpha158_interquantile_envelope_occupancy_20d_v1",
+    "preserve_without_overwrite_delete_or_downstream_use": true,
+    "candidate_manifest_path": ".local-research/campaign_297/alpha158_interquantile_envelope_occupancy_20d_v1/candidate_snapshot/snapshot_manifest.json",
+    "candidate_manifest_sha256": "a228bb26926ee1047d37398889181a5ea07b94851b2b3d93fd15246cbac35986",
+    "candidate_dataset_sha256": "12395b9cbe1013d6fa38560bec087fe34f41b6a6940a5ddd68c04055ba741cb1",
+    "candidate_eligible_rows": 1001507,
+    "quality_listing_rows": 1001781
+  },
+  "frozen_inputs": {
+    "protocol_path": "docs/a_share_three_day_walkforward_campaign_297_preregistration_20260825.json",
+    "protocol_sha256": "f36703dd23fb8dc699033ce7718487012c030140074f4451c9abdbc68352f4f9",
+    "implementation_freeze_v1_path": "docs/a_share_three_day_walkforward_campaign_297_implementation_freeze_20260825.json",
+    "implementation_freeze_v1_sha256": "7d31123e04136a2a444a0db07be4e57679c7821d0abef8757297c36c01072680",
+    "runner_v1_sha256": "2311b7ca22d3350dc13100abee3b8d0f3b0eccbea8abc3a1a184c519f0bc08bd",
+    "test_v1_sha256": "88f458ec2f5c991d10a452d07214664df7b92591dd08553b47d898e2a28fcc4e"
+  },
+  "authorized_narrow_repair": {
+    "map_only_frozen_threshold_names_to_inherited_helper_names": true,
+    "scientific_threshold_value_changed": false,
+    "formula_direction_horizon_support_filter_subset_fit_model_cost_or_gate_changed": false,
+    "new_output_root_required": true,
+    "new_output_root": ".local-research/campaign_297/alpha158_interquantile_envelope_occupancy_20d_v2"
+  },
+  "research_boundary": {
+    "candidate_feature_values_read": true,
+    "coverage_computed": false,
+    "comparator_values_read": false,
+    "historical_daily_price_or_forward_return_values_read": false,
+    "lockbox_2024_2025_opened": false,
+    "provider_request_issued": false,
+    "provider_credential_value_or_digest_read": false,
+    "candidate49_historical_backfill_performed": false,
+    "candidate49_ledgers_changed": false,
+    "second_prospective_candidate_created": false,
+    "current_scoring_selection_sizing_positions_or_orders_performed": false,
+    "investment_advice": false
+  }
+}

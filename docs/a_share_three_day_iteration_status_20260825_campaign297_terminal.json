@@ -1,0 +1,131 @@
+{
+  "schema_version": 1,
+  "kind": "a_share_three_day_iteration_status",
+  "status": "campaign297_terminal_development_no_survivor_goal_active_campaign298_offline_prevalue_authorized",
+  "recorded_at": "2026-08-25T19:13:00+08:00",
+  "authoritative_inputs": {
+    "predecessor": {
+      "path": "docs/a_share_three_day_iteration_status_20260825_campaign296_terminal.json",
+      "sha256": "47af9d4d8c0bb4fd0d6b158cf68771b1352cb4747ad9491c4dce8c00e4842994"
+    },
+    "terminal_result": {
+      "path": "docs/a_share_three_day_walkforward_campaign_297_terminal_result_20260825.json",
+      "sha256": "3b364fd9a02295be778ce79b238edd38113537fb3ac9b7c1382cd66a16291a81"
+    },
+    "terminal_report": {
+      "path": "docs/a_share_three_day_walkforward_campaign_297_terminal_report.md",
+      "sha256": "f74ac750e05a90a4b8d9b5503014ae6b7386e62bdb0b3195cdb9d4c5e33b6cec"
+    },
+    "handoff": {
+      "path": "docs/a_share_three_day_strategy_handoff_20260825_campaign297.md",
+      "sha256": "5d49ddd7aa0401c60db992aaab584af8db5964e9960a6cf184f522710fcbb68b"
+    },
+    "latest_handoff_index": {
+      "path": "docs/a_share_three_day_strategy_handoff_20260825.md",
+      "sha256": "c7ef3f48df415c1a5063a028d97a1af5c191cbeb9e14f2aecebde386ab3f723b"
+    },
+    "numeric_policy_v427": {
+      "path": "docs/a_share_three_day_walkforward_future_numeric_comparison_eligibility_policy_v427_20260825.json",
+      "sha256": "fc98575de5f794298e2ae2dbee620110b75c740fdb3c92c091ef9b7112810731"
+    },
+    "local_terminal_result": {
+      "path": ".local-research/campaign_297/alpha158_interquantile_envelope_occupancy_20d_v2/terminal_result.json",
+      "sha256": "f9b97a9a4fd7e3adaf30ebee5ede57a02bbcc867f6974c1e759d19150b635d08"
+    },
+    "terminal_trial_ledger": {
+      "path": ".local-research/campaign_297/alpha158_interquantile_envelope_occupancy_20d_v2/terminal_trial_ledger.json",
+      "sha256": "34de493bd042c9d7b94630578e70303f05e365cf47c1425b1b66b309304baefb"
+    },
+    "library_order_reconstruction_receipt": {
+      "path": "docs/a_share_three_day_walkforward_campaign_297_library_order_reconstruction_receipt_20260825.json",
+      "sha256": "0eadf19c7cdc9b48a5fae95ff2a676d8c12d2defc66951e252b5a2360bb7d554"
+    },
+    "infrastructure_failure_record": {
+      "path": "docs/a_share_three_day_walkforward_campaign_297_coverage_key_mapping_failure_20260825.json",
+      "sha256": "ad9c368e7076c98f6be741730a984589afff6490dbdd6db5263a4ca7dd05251f"
+    },
+    "candidate49_same_day_plan_failure": {
+      "path": "docs/a_share_candidate49_20260825_readonly_plan_failure_record.json",
+      "sha256": "7b31fe4ef93b84cf7ad1089e29a31b825f90620cd6a0d58f66d07cac0098f8f1"
+    }
+  },
+  "scientific_state": {
+    "campaign_id": "campaign_297",
+    "terminal_stage": "development_walkforward",
+    "feature_family": "deterministic Alpha158 central close-distribution width relative to the full twenty-session high-low envelope",
+    "finite_factor_trial_count": 1,
+    "model_fit_count": 0,
+    "training_return_read_count": 0,
+    "return_reading_development_trial_count": 1,
+    "validation_fold_return_read_count": 3,
+    "coverage_gate_passed": true,
+    "numeric_uniqueness_comparators_passed": 149,
+    "numeric_uniqueness_comparators_total": 149,
+    "maximum_absolute_median_daily_rank_correlation": 0.08685419208922868,
+    "validation_mean_rank_ic": [0.015357583383909624, -0.015923283658699886, -0.003976918801685062],
+    "validation_normalized_returns": [-0.14657270307613723, -0.02911088612214363, -0.11895722825489641],
+    "validation_pilot_10bp_returns": [-0.03246660568741444, -0.008870588337438257, -0.01060464831924357],
+    "positive_rank_ic_fold_count": 1,
+    "positive_normalized_return_fold_count": 0,
+    "positive_pilot_10bp_return_fold_count": 0,
+    "development_survivor_count": 0,
+    "operationally_admissible": false,
+    "stress_2024_2025_opened": false,
+    "current_strategy_deployable": false,
+    "rejection_reasons": [
+      "all three top3-minus-bottom3 spreads are negative",
+      "all three normalized and 10bp/20bp pilot returns are negative",
+      "compounded normalized and costed returns are negative",
+      "fold 1 and fold 2 board-lot affordability are below 0.90",
+      "worst normalized drawdown is below -0.25"
+    ]
+  },
+  "effective_accounting": {
+    "campaign297_prevalue_concept_attempts": 9,
+    "campaign297_infrastructure_failures": 1,
+    "campaign297_factor_trial_attempts": 1,
+    "campaign297_terminal_trial_ledger_entries": 11,
+    "campaign297_total_attempts": 11,
+    "campaign297_return_reading_development_trials": 1,
+    "campaign297_validation_fold_return_reads": 3,
+    "cumulative_historical_research_attempts": 3050,
+    "cumulative_return_reading_development_trials": 328
+  },
+  "library_state": {
+    "changed_by_campaign297": true,
+    "append_reason": "coverage and all 149 uniqueness gates passed; duplicate-control append does not imply development survival",
+    "complete_factor_definition_count": 169,
+    "complete_factor_definition_order_sha256": "b25aef820170480a3c43ec34096b603c39fa60923565be21040852a6df5b9fea",
+    "eligible_numeric_comparator_count": 150,
+    "eligible_numeric_comparator_order_sha256": "135dec87e00f39a78913e8b678c0c5e809f516c952575a9e406c360086a6508e"
+  },
+  "candidate49": {
+    "sole_active_prospective_candidate": true,
+    "same_day_plan_executed": true,
+    "same_day_plan_ready": false,
+    "same_day_plan_exit_code": 1,
+    "same_day_run_executed": false,
+    "same_day_retry_allowed": false,
+    "historical_backfill_performed": false,
+    "signal_ledger_entry_count": 0,
+    "signal_ledger_sha256": "5193f00d7f36da003f53cec387900da4c3d002299f5dfcfc1a95eaa199ed3a79",
+    "execution_ledger_entry_count": 0,
+    "execution_ledger_sha256": "d57a3e61eac969e42cafa418ccd8c0a5ee65dcf69da145bb2c096c2a02a2ea4f"
+  },
+  "workspace_boundary": {
+    "data_path_is_external_symlink": true,
+    "data_symlink_target": "/Volumes/DIsk/Disk-Coding/qlib-data/recovery-worktree",
+    "external_data_change_may_be_staged_or_reverted": false,
+    "campaign297_final_output_root": ".local-research/campaign_297/alpha158_interquantile_envelope_occupancy_20d_v2",
+    "campaign297_v1_partial_output_preserved": true,
+    "campaign297_v1_partial_output_root": ".local-research/campaign_297/alpha158_interquantile_envelope_occupancy_20d_v1"
+  },
+  "immutable_terminal_boundary": {
+    "campaign297_direction_horizon_quantiles_envelope_tolerance_filter_or_fit_may_change": false,
+    "campaign297_alternate_direction_transform_threshold_or_combination_rescue_allowed": false,
+    "campaign297_2024_2025_lockbox_may_open": false,
+    "campaign297_definition_and_numeric_comparator_appended_once": true,
+    "historical_output_may_generate_current_scores_selection_sizing_positions_or_orders": false
+  },
+  "next_safe_work": "Campaign298 may freeze a new finite zero-network offline prevalue concept against the 169-definition/150-comparator library. It must be mechanism-independent and may not retune, reverse, re-horizon, alter quantiles, threshold, reweight or combine Campaign297. Candidate49 remains the sole prospective track and 2026-08-25 may not be retried."
+}

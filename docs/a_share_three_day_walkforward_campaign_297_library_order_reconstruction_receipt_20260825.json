@@ -1,0 +1,54 @@
+{
+  "schema_version": 1,
+  "kind": "a_share_three_day_walkforward_campaign297_library_order_reconstruction_receipt",
+  "status": "read_only_authoritative_source_reconstruction_verified_and_campaign297_appended_once",
+  "recorded_at": "2026-08-25T19:09:00+08:00",
+  "operation": {
+    "working_directory": "/Volumes/DIsk/Disk-Coding/qlib",
+    "mode": "read_only_metadata_reconstruction_with_PYTHONDONTWRITEBYTECODE",
+    "source_module": "scripts/a_share_three_day_walkforward_campaign263_features.py",
+    "source_module_sha256": "f4882d4c29877b05a2b7ccffe540a1e97f0917e252941d2484b03720b1426124",
+    "predecessor_receipt_path": "docs/a_share_three_day_walkforward_campaign_296_library_order_reconstruction_receipt_20260825.json",
+    "predecessor_receipt_sha256": "fed1a0f19d9b32ff9fec19b5362734696e3e1a467265f19e92878080457b07dc",
+    "digest_semantics": "SHA-256 of canonical JSON [[name, score_direction], ...]",
+    "source_repository_files_changed": false
+  },
+  "predecessor_verification": {
+    "complete_definition_count": 168,
+    "complete_definition_order_sha256": "1d618cac1b89fc9002225f9ee0b285354741c17e50caa3b5fedf9d3f2e1bd76d",
+    "numeric_comparator_count": 149,
+    "numeric_comparator_order_sha256": "71bb5c75ca46c01c10d0e636588c33493e23bbc5bd2d2c344d8fd7dbecaffcaf",
+    "matches_policy_v426": true
+  },
+  "campaign297_append": {
+    "item": {
+      "name": "alpha158_interquantile_envelope_occupancy_20d",
+      "score_direction": "higher"
+    },
+    "append_reason": "Coverage and all 149 ordered numeric uniqueness gates passed; development survival is not required for future duplicate control.",
+    "complete_definition_count": 169,
+    "complete_definition_order_sha256": "b25aef820170480a3c43ec34096b603c39fa60923565be21040852a6df5b9fea",
+    "numeric_comparator_count": 150,
+    "numeric_comparator_order_sha256": "135dec87e00f39a78913e8b678c0c5e809f516c952575a9e406c360086a6508e",
+    "append_does_not_imply_survival_or_investment_value": true
+  },
+  "terminal_evidence": {
+    "no_return_audit_path": ".local-research/campaign_297/alpha158_interquantile_envelope_occupancy_20d_v2/no_return_audit.json",
+    "no_return_audit_sha256": "9135775b1b68936b212cae005ae5430e7e5456cf9f101dc3b9c071ac96f0cc33",
+    "terminal_result_path": ".local-research/campaign_297/alpha158_interquantile_envelope_occupancy_20d_v2/terminal_result.json",
+    "terminal_result_sha256": "f9b97a9a4fd7e3adaf30ebee5ede57a02bbcc867f6974c1e759d19150b635d08",
+    "coverage_gate_passed": true,
+    "ordered_comparators_passed": 149,
+    "development_survivor_count": 0
+  },
+  "research_boundary": {
+    "additional_candidate_or_comparator_values_read": false,
+    "additional_historical_daily_price_or_forward_return_values_read": false,
+    "stress_2024_2025_opened": false,
+    "provider_request_issued": false,
+    "provider_credential_value_or_digest_read": false,
+    "candidate49_ledgers_changed": false,
+    "current_scoring_selection_sizing_positions_or_orders_performed": false,
+    "investment_advice": false
+  }
+}
