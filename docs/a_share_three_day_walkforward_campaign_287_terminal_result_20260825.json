@@ -1,0 +1,164 @@
+{
+  "schema_version": 1,
+  "kind": "a_share_three_day_walkforward_campaign287_terminal_result",
+  "status": "terminal_no_survivor_lockbox_closed",
+  "recorded_at": "2026-08-25T11:52:00+08:00",
+  "authoritative_inputs": {
+    "predecessor_status": {
+      "path": "docs/a_share_three_day_iteration_status_20260825_campaign286_terminal.json",
+      "sha256": "43eaf3acbec78cb8e7014a16e375796af6c0b764638923c9a28ac5eee7f0553c"
+    },
+    "concept_scouting": {
+      "path": "docs/a_share_three_day_walkforward_campaign_287_concept_scouting_20260825.json",
+      "sha256": "78c635116df5c5dc381e1357929bdda05bce48e69344da7dd25661b93d94d05e"
+    },
+    "model_overlap_audit": {
+      "path": "docs/a_share_three_day_walkforward_campaign_287_model_overlap_audit_20260825.json",
+      "sha256": "2b43bbadfa59b1dd2b0550b7e345cacbf8f2a6b8e9175ee68c943cd6a5fed280"
+    },
+    "protocol": {
+      "path": "docs/a_share_three_day_walkforward_campaign_287_preregistration_20260825.json",
+      "sha256": "135e9ff2dad4e9f006dd4cd21d1d37e7f20b165b913b5fc7220d2586847b4d8f"
+    },
+    "design_evidence": {
+      "path": "data/experiments/short_horizon/historical_walkforward/campaign_287/balanced_mlp_v1/design_evidence.json",
+      "sha256": "286a269d238659d91f7abe58e8efd5a7d5ad172a8d70fd9b224c7d8d5473d2e5"
+    },
+    "infrastructure_failure": {
+      "path": "docs/a_share_three_day_walkforward_campaign_287_prefit_datetimeindex_api_failure_20260825.json",
+      "sha256": "cf9d1fc8828415cbdd4ff5c2528e187bd2322c37c1b99c71252aa86e5be704b9"
+    },
+    "recovery_freeze": {
+      "path": "docs/a_share_three_day_walkforward_campaign_287_prefit_api_recovery_implementation_freeze_20260825.json",
+      "sha256": "c0cbf14097316f757ec25088b18671075c03af216b874675f0a0b49fb3486a93"
+    },
+    "terminal_verifier_freeze": {
+      "path": "docs/a_share_three_day_walkforward_campaign_287_terminal_verifier_implementation_freeze_20260825.json",
+      "sha256": "e116e10788ad22e599280d82e8e0eab63a22d05e36bf1de49cc028d45c810c08"
+    },
+    "trial_ledger": {
+      "path": "data/experiments/short_horizon/historical_walkforward/campaign_287/balanced_mlp_v1/trial_ledger.json",
+      "sha256": "9d46cbd7fd55fcab8aaad583042a182a42937665c7aecd2fda83cc6f56dbe8ca"
+    },
+    "development_survivors": {
+      "path": "data/experiments/short_horizon/historical_walkforward/campaign_287/balanced_mlp_v1/development_survivors.json",
+      "sha256": "4253e68503b595d26c0150ff1ee610cc28c1c96c0d3f02ca914fde11590b1bf8"
+    },
+    "development_report": {
+      "path": "data/experiments/short_horizon/historical_walkforward/campaign_287/balanced_mlp_v1/development_report.json",
+      "sha256": "b513668cd79f17f5dacd88257a8cff0bf345d1b4b76cd807707b09ba4dc88a66"
+    }
+  },
+  "model": {
+    "trial_id": "wf287_alpha158_balanced_mlp_32",
+    "feature_family": "complete Qlib Alpha158 daily library",
+    "feature_count": 158,
+    "architecture": "158 inputs, one 32-unit ReLU hidden layer, one linear output",
+    "optimizer": "fixed weighted Adam",
+    "epochs": 20,
+    "training_sample": "96 deterministic hash-selected names per retained training session",
+    "training_weight": "equal total target-loss mass per retained session",
+    "feature_subset_or_architecture_search_performed": false
+  },
+  "zero_return_design": {
+    "fold1_retained_training_sessions": 133,
+    "fold2_retained_training_sessions": 214,
+    "fold3_retained_training_sessions": 294,
+    "fold1_sampled_rows": 12768,
+    "fold2_sampled_rows": 20544,
+    "fold3_sampled_rows": 28224,
+    "minimum_finite_preprocessing_observations_per_feature": [12422, 19945, 27479],
+    "gate_passed_before_historical_returns": true
+  },
+  "fold_results": [
+    {
+      "fold": 1,
+      "validation_year": 2021,
+      "cohorts": 74,
+      "mean_rank_ic": 0.0138881059957977,
+      "mean_top3_minus_bottom3_gross_return": 0.008034026328902188,
+      "normalized_net_return": 0.4404568872966452,
+      "normalized_maximum_drawdown": -0.22406474669964938,
+      "pilot_10bp_net_return": 0.024137631187327147,
+      "pilot_20bp_net_return": 0.004668016251073048,
+      "board_lot_affordability_rate": 0.9144144144144144,
+      "maximum_amount_participation": 0.002328508526695011
+    },
+    {
+      "fold": 2,
+      "validation_year": 2022,
+      "cohorts": 73,
+      "mean_rank_ic": 0.03179840961172445,
+      "mean_top3_minus_bottom3_gross_return": 0.0033275205514406506,
+      "normalized_net_return": -0.18549109390325513,
+      "normalized_maximum_drawdown": -0.35842432847095207,
+      "pilot_10bp_net_return": -0.05034110598280761,
+      "pilot_20bp_net_return": -0.06617817198709552,
+      "board_lot_affordability_rate": 0.9269406392694064,
+      "maximum_amount_participation": 0.001088413263638001
+    },
+    {
+      "fold": 3,
+      "validation_year": 2023,
+      "cohorts": 74,
+      "mean_rank_ic": 0.011296033893263285,
+      "mean_top3_minus_bottom3_gross_return": 0.0037658851423829393,
+      "normalized_net_return": 0.17457710512052937,
+      "normalized_maximum_drawdown": -0.14132451659795586,
+      "pilot_10bp_net_return": 0.018914845321379437,
+      "pilot_20bp_net_return": 0.0011213630078705794,
+      "board_lot_affordability_rate": 0.95,
+      "maximum_amount_participation": 0.0012095556787394557
+    }
+  ],
+  "aggregate_decision": {
+    "positive_mean_rank_ic_fold_count": 3,
+    "positive_spread_fold_count": 3,
+    "positive_normalized_return_fold_count": 2,
+    "positive_pilot_10bp_return_fold_count": 2,
+    "median_mean_rank_ic": 0.0138881059957977,
+    "median_spread": 0.0037658851423829393,
+    "median_pilot_10bp_return": 0.018914845321379437,
+    "compounded_normalized_return": 0.37809016442767907,
+    "compounded_pilot_10bp_return": -0.009022362909729464,
+    "compounded_pilot_20bp_return": -0.06076703513604231,
+    "worst_normalized_drawdown": -0.35842432847095207,
+    "operationally_admissible": true,
+    "passed": false,
+    "rejection_reasons": [
+      "worst validation normalized drawdown is below the frozen -0.25 minimum",
+      "compounded validation 20bp pilot return is not strictly positive"
+    ]
+  },
+  "attempt_accounting": {
+    "prevalue_concept_attempt_count": 7,
+    "infrastructure_failure_attempt_count": 1,
+    "model_trial_attempt_count": 1,
+    "campaign287_total_attempt_count": 9,
+    "return_reading_development_trial_count": 1,
+    "model_fold_validation_return_read_count": 3
+  },
+  "recovery_limitation": {
+    "fold1_training_metrics_persisted": false,
+    "fold1_training_return_reread": false,
+    "fold1_model_refit": false,
+    "effect_on_survivor_decision": "The frozen survivor decision uses the three persisted validation metric sets, so no missing training metric was reconstructed or substituted."
+  },
+  "decision": {
+    "development_survivor_count": 0,
+    "selected_survivor_trial_ids": [],
+    "stress_2024_2025_opened": false,
+    "current_strategy_deployable": false,
+    "post_result_mlp_retuning_allowed": false
+  },
+  "research_boundary": {
+    "provider_or_web_request_issued": false,
+    "credential_loaded": false,
+    "candidate49_historical_return_read": false,
+    "candidate49_historical_backfill_performed": false,
+    "candidate49_ledgers_changed": false,
+    "second_prospective_candidate_created": false,
+    "current_scoring_selection_sizing_positions_or_orders_performed": false,
+    "investment_advice": false
+  }
+}

@@ -1,0 +1,79 @@
+{
+  "schema_version": 1,
+  "kind": "a_share_three_day_walkforward_campaign287_model_overlap_audit",
+  "status": "passed_for_one_fixed_smooth_nonlinear_trial_with_prior_exposure_disclosed",
+  "recorded_at": "2026-08-25T11:27:00+08:00",
+  "purpose": "Determine before Campaign287 feature sampling, preprocessing or return reads whether the selected single-hidden-layer Alpha158 MLP is an exact retry of a consumed model family.",
+  "audited_prior_families": [
+    {
+      "campaign": "102",
+      "family": "bounded simplex ridge over the complete terminal numeric library",
+      "decision": "distinct_estimator_and_distinct_raw_feature_library"
+    },
+    {
+      "campaign": "132",
+      "family": "positively monotone histogram gradient boosting over favorable-direction terminal factors",
+      "decision": "distinct_estimator_input_semantics_and_interaction_geometry"
+    },
+    {
+      "campaign": "133",
+      "family": "complete-library monotone additive calibration",
+      "decision": "distinct_from_joint_hidden_unit_interactions"
+    },
+    {
+      "campaign": "134",
+      "family": "correlation-component balanced deterministic consensus",
+      "decision": "distinct_from_supervised_smooth_nonlinear_fit"
+    },
+    {
+      "campaign": "286",
+      "family": "three LightGBM boosted-tree configurations over complete raw Alpha158",
+      "decision": "same_frozen_input_library_but_distinct_single_fixed_smooth_model; prior_results_fully_disclosed"
+    }
+  ],
+  "campaign286_deferred_neural_entry": {
+    "prior_entry_preserved": "alpha158_neural_architecture_search rejected before values",
+    "prior_reason_preserved": "architecture and seed search created unnecessary multiplicity before the simpler finite tree baseline was known",
+    "campaign287_difference": "exactly one architecture, optimizer, seed, preprocessing rule and training sampler are frozen; no architecture or seed search is reopened",
+    "campaign286_entry_rewritten": false
+  },
+  "repository_inventory": {
+    "prior_campaign_script_implementing_a_weighted_single_hidden_layer_numpy_mlp": false,
+    "prior_campaign_trial_id_equal_to_wf287_alpha158_balanced_mlp_32": false,
+    "numpy_version_available": "1.26.4",
+    "torch_available": false,
+    "new_package_or_network_install_required": false
+  },
+  "frozen_distinguishing_semantics": {
+    "complete_input_feature_count": 158,
+    "hidden_layer_count": 1,
+    "hidden_width": 32,
+    "nonlinearity": "relu",
+    "output": "one linear regression score trained jointly with the hidden layer by fixed weighted Adam",
+    "training_name_count_per_session": 96,
+    "sampling": "lowest SHA-256 order of UTF-8 '287|YYYY-MM-DD|instrument' without replacement",
+    "feature_preprocessing": "training-sample-only median/IQR scaling, missing-to-training-median and fixed [-8,8] clipping",
+    "hyperparameter_search": false,
+    "feature_subset_search": false,
+    "seed_search": false,
+    "post_validation_refit_or_repair": false
+  },
+  "decision": {
+    "exact_consumed_model_retry": false,
+    "new_historical_attempt_count_required": true,
+    "existing_exposure_makes_result_exploratory": true,
+    "one_fixed_trial_may_be_preregistered": true,
+    "additional_mlp_configuration_may_be_added_after_returns": false
+  },
+  "research_boundary": {
+    "campaign287_alpha158_partition_rows_read": false,
+    "campaign287_sample_membership_computed": false,
+    "campaign287_preprocessing_statistics_computed": false,
+    "campaign287_training_or_validation_return_values_read": false,
+    "stress_2024_2025_opened": false,
+    "provider_request_issued": false,
+    "credential_loaded": false,
+    "candidate49_ledgers_changed": false,
+    "current_scoring_selection_sizing_positions_or_orders_performed": false
+  }
+}

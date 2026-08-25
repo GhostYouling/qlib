@@ -1,0 +1,88 @@
+{
+  "schema_version": 1,
+  "kind": "a_share_three_day_iteration_status",
+  "status": "campaign287_terminal_development_no_survivor_goal_active",
+  "recorded_at": "2026-08-25T11:55:00+08:00",
+  "authoritative_inputs": {
+    "predecessor": {
+      "path": "docs/a_share_three_day_iteration_status_20260825_campaign286_terminal.json",
+      "sha256": "43eaf3acbec78cb8e7014a16e375796af6c0b764638923c9a28ac5eee7f0553c"
+    },
+    "terminal_result": {
+      "path": "docs/a_share_three_day_walkforward_campaign_287_terminal_result_20260825.json",
+      "sha256": "d3ad876809040fbbbce682ef8bf8f77947aec6244a7bbfd23b1a7d150f90dd58"
+    },
+    "terminal_report": {
+      "path": "docs/a_share_three_day_walkforward_campaign_287_terminal_report.md",
+      "sha256": "b583052c65082cc9c1523060a35f89a4af9da9dee41b3fb986d31a1aee3c6cef"
+    },
+    "handoff": {
+      "path": "docs/a_share_three_day_strategy_handoff_20260825_campaign287.md",
+      "sha256": "656aeabea33822a4a48206aed0131d604861d84852b773580566098c05e4fe8c"
+    },
+    "trial_ledger": {
+      "path": "data/experiments/short_horizon/historical_walkforward/campaign_287/balanced_mlp_v1/trial_ledger.json",
+      "sha256": "9d46cbd7fd55fcab8aaad583042a182a42937665c7aecd2fda83cc6f56dbe8ca"
+    },
+    "terminal_verifier_freeze": {
+      "path": "docs/a_share_three_day_walkforward_campaign_287_terminal_verifier_implementation_freeze_20260825.json",
+      "sha256": "e116e10788ad22e599280d82e8e0eab63a22d05e36bf1de49cc028d45c810c08"
+    }
+  },
+  "scientific_state": {
+    "campaign_id": "campaign_287",
+    "terminal_stage": "development_walkforward",
+    "feature_family": "complete Qlib Alpha158 daily library",
+    "feature_count": 158,
+    "finite_model_trial_count": 1,
+    "return_reading_development_trials": 1,
+    "model_fold_validation_return_reads": 3,
+    "positive_rank_ic_fold_count": 3,
+    "positive_spread_fold_count": 3,
+    "development_survivor_count": 0,
+    "stress_2024_2025_opened": false,
+    "current_strategy_deployable": false,
+    "rejection_reasons": [
+      "worst validation normalized drawdown is below the frozen -0.25 minimum",
+      "compounded validation 20bp pilot return is not strictly positive"
+    ]
+  },
+  "effective_accounting": {
+    "campaign287_prevalue_concept_attempts": 7,
+    "campaign287_infrastructure_failures": 1,
+    "campaign287_model_trial_attempts": 1,
+    "campaign287_total_attempts": 9,
+    "campaign287_return_reading_development_trials": 1,
+    "campaign287_model_fold_validation_return_reads": 3,
+    "cumulative_historical_research_attempts": 2936,
+    "cumulative_return_reading_development_trials": 319
+  },
+  "library_state": {
+    "changed_by_campaign287": false,
+    "complete_factor_definition_count": 162,
+    "complete_factor_definition_order_sha256": "974f2c1f16a85eb43a0bd1e8db768dbe120cd8826c1754d5f220bf9f1d4a3ea0",
+    "eligible_numeric_comparator_count": 143,
+    "eligible_numeric_comparator_order_sha256": "f4fbf3d578e2c80c29425716a30d60a3df01d67d04e37f1651236c4dff899588"
+  },
+  "candidate49": {
+    "sole_active_prospective_candidate": true,
+    "candidate49_plan_or_run_executed": false,
+    "historical_backfill_performed": false,
+    "signal_ledger_entry_count": 0,
+    "signal_ledger_sha256": "5193f00d7f36da003f53cec387900da4c3d002299f5dfcfc1a95eaa199ed3a79",
+    "execution_ledger_entry_count": 0,
+    "execution_ledger_sha256": "d57a3e61eac969e42cafa418ccd8c0a5ee65dcf69da145bb2c096c2a02a2ea4f"
+  },
+  "known_limitation": {
+    "fold1_training_metrics_persisted": false,
+    "fold1_training_returns_reread": false,
+    "fold1_model_refit": false,
+    "effect_on_decision": "No missing training metric was reconstructed; the terminal rejection uses the three persisted validation metric sets."
+  },
+  "capacity_note": {
+    "alpha360_route_deferred": true,
+    "reason": "insufficient authorized writable local capacity for the estimated materialization",
+    "scientifically_rejected": false
+  },
+  "next_safe_work": "Campaign288 may freeze a new finite zero-network offline historical concept catalog. It must not retune Campaign287 or open the 2024-2025 lockbox; Candidate49 remains the independent sole prospective track. Alpha360 may be reconsidered only when sufficient authorized writable capacity exists."
+}

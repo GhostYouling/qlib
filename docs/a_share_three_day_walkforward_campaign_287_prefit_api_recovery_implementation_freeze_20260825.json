@@ -1,0 +1,48 @@
+{
+  "schema_version": 1,
+  "kind": "a_share_three_day_walkforward_campaign287_prefit_api_recovery_implementation_freeze",
+  "status": "frozen_after_fold1_training_api_failure_before_any_validation_return_read",
+  "recorded_at": "2026-08-25T11:45:44+08:00",
+  "protocol": {
+    "path": "docs/a_share_three_day_walkforward_campaign_287_preregistration_20260825.json",
+    "sha256": "135e9ff2dad4e9f006dd4cd21d1d37e7f20b165b913b5fc7220d2586847b4d8f"
+  },
+  "failure_evidence": {
+    "path": "docs/a_share_three_day_walkforward_campaign_287_prefit_datetimeindex_api_failure_20260825.json",
+    "sha256": "cf9d1fc8828415cbdd4ff5c2528e187bd2322c37c1b99c71252aa86e5be704b9"
+  },
+  "frozen_original_runner": {
+    "path": "scripts/a_share_three_day_walkforward_campaign287.py",
+    "sha256": "672ffcc772f22e43ecc068ebc28c6d86c2f0700157a2753110bb14e209f2e59d"
+  },
+  "runner": {
+    "path": "scripts/a_share_three_day_walkforward_campaign287_recovery.py",
+    "sha256": "a86c83bcf18bee2d32c2313b6f392c0d9510d036b8311dfbc40289c46b166ae2"
+  },
+  "tests": {
+    "path": "tests/data_collector_tests/test_a_share_three_day_walkforward_campaign287_recovery.py",
+    "sha256": "3515b0693ae7d64066bb48a7d78a2aeed63458e8bc9fe1835bac471b04cf283e",
+    "combined_campaign287_result": "9 passed"
+  },
+  "frozen_recovery_change": {
+    "only_code_semantic_change": "dates.eq(session) becomes dates == session",
+    "fold1_persisted_model_reused": true,
+    "fold1_model_refit": false,
+    "fold1_training_return_reread": false,
+    "fold1_training_metrics_limitation": "not persisted before failure and not reconstructed by return reread",
+    "fold2_and_fold3_execution": "unchanged frozen model, sampler, preprocessing, folds, score gate, costs and survivor gates",
+    "validation_scores_frozen_before_each_validation_return_read": true
+  },
+  "research_boundary": {
+    "fold1_training_return_read_before_failure": true,
+    "fold1_training_return_reread_by_recovery": false,
+    "validation_return_read_before_recovery_freeze": false,
+    "model_formula_weights_or_gate_change": false,
+    "lockbox_2024_2025_return_read": false,
+    "provider_request_issued": false,
+    "credential_loaded": false,
+    "candidate49_historical_backfill_performed": false,
+    "candidate49_ledgers_changed": false,
+    "current_scoring_selection_sizing_or_orders_performed": false
+  }
+}

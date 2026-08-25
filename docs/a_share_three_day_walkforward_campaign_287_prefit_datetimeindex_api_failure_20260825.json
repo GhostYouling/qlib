@@ -1,0 +1,51 @@
+{
+  "schema_version": 1,
+  "kind": "a_share_three_day_walkforward_campaign287_infrastructure_failure",
+  "status": "preserved_exact_api_failure_after_fold1_training_before_any_validation_return_read",
+  "recorded_at": "2026-08-25T11:42:30+08:00",
+  "attempt_id": "c287_infra_01",
+  "stage": "fold_1_validation_prefit_score_gate_date_comparison",
+  "cause": "The frozen runner called DatetimeIndex.eq, but pandas 2.2.2 exposes elementwise equality through the == operator rather than an eq method on DatetimeIndex.",
+  "error_type": "AttributeError",
+  "error": "'DatetimeIndex' object has no attribute 'eq'",
+  "frozen_artifacts": {
+    "development_intent": {
+      "path": "data/experiments/short_horizon/historical_walkforward/campaign_287/balanced_mlp_v1/development_intent.json",
+      "sha256": "19c9385f11fe817f7a38f4ebc43420a63aaa82d289616534b6b7dd19250e723c"
+    },
+    "development_failure": {
+      "path": "data/experiments/short_horizon/historical_walkforward/campaign_287/balanced_mlp_v1/development_failure.json",
+      "sha256": "6d4d89fd88ecfb329c7565f2e771e942c4fcdea8e671e64875c1ae3799762930"
+    },
+    "fold1_model": {
+      "path": "data/experiments/short_horizon/historical_walkforward/campaign_287/balanced_mlp_v1/fold_1_model/wf287_alpha158_balanced_mlp_32.npz",
+      "sha256": "8288228b3737b4ebdfd6bbc3d9e279188cbdd7282b599e6f6251aae2efd756cf"
+    }
+  },
+  "evidence_state": {
+    "fold1_training_return_fields_read": true,
+    "fold1_model_fit_completed_and_persisted": true,
+    "fold1_training_metrics_persisted": false,
+    "fold1_validation_scores_persisted": false,
+    "fold1_validation_return_fields_read": false,
+    "fold2_or_fold3_training_or_validation_return_fields_read": false,
+    "lockbox_2024_2025_return_fields_read": false
+  },
+  "only_allowed_recovery": {
+    "replace_datetimeindex_eq_method_call_with_elementwise_equality_operator": true,
+    "reuse_exact_persisted_fold1_model_without_fold1_training_return_reread": true,
+    "record_fold1_training_metrics_as_not_persisted": true,
+    "model_formula_architecture_weights_sampler_preprocessing_folds_costs_or_gates_change_allowed": false,
+    "validation_return_read_before_repaired_prefit_score_record": false
+  },
+  "research_boundary": {
+    "scientific_result_observed": false,
+    "provider_request_issued": false,
+    "credential_loaded": false,
+    "candidate49_historical_backfill_performed": false,
+    "candidate49_ledgers_changed": false,
+    "second_prospective_candidate_created": false,
+    "current_scoring_selection_sizing_positions_or_orders_performed": false,
+    "investment_advice": false
+  }
+}

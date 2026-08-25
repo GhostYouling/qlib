@@ -1,0 +1,50 @@
+{
+  "schema_version": 1,
+  "kind": "a_share_three_day_walkforward_campaign287_development_execution_freeze",
+  "status": "frozen_after_zero_return_design_before_campaign287_training_or_validation_return_read",
+  "recorded_at": "2026-08-25T11:40:46+08:00",
+  "protocol": {
+    "path": "docs/a_share_three_day_walkforward_campaign_287_preregistration_20260825.json",
+    "sha256": "135e9ff2dad4e9f006dd4cd21d1d37e7f20b165b913b5fc7220d2586847b4d8f"
+  },
+  "design_evidence": {
+    "path": "data/experiments/short_horizon/historical_walkforward/campaign_287/balanced_mlp_v1/design_evidence.json",
+    "sha256": "286a269d238659d91f7abe58e8efd5a7d5ad172a8d70fd9b224c7d8d5473d2e5",
+    "status": "passed_ready_for_frozen_development_execution",
+    "fold_count": 3
+  },
+  "runner": {
+    "path": "scripts/a_share_three_day_walkforward_campaign287.py",
+    "sha256": "672ffcc772f22e43ecc068ebc28c6d86c2f0700157a2753110bb14e209f2e59d"
+  },
+  "tests": {
+    "path": "tests/data_collector_tests/test_a_share_three_day_walkforward_campaign287.py",
+    "sha256": "a99dc0b92067676dcd3f474e59e0c5b8c63ea5b91033439f6ac9f43bfa58b500",
+    "result": "5 passed"
+  },
+  "frozen_development_semantics": {
+    "trial_id": "wf287_alpha158_balanced_mlp_32",
+    "model_trial_count": 1,
+    "fold_count": 3,
+    "complete_feature_count": 158,
+    "hidden_width": 32,
+    "epochs": 20,
+    "sample_size_per_training_session": 96,
+    "validation_scores_must_be_frozen_before_each_validation_return_read": true,
+    "undefined_or_constant_score_gate_failure": "reject before validation return read",
+    "lockbox_action_before_survivor_decision": "keep_closed"
+  },
+  "research_boundary": {
+    "campaign287_design_partition_rows_read_before_freeze": true,
+    "campaign287_sample_and_preprocessing_computed_before_freeze": true,
+    "historical_label_or_forward_return_read_by_design": false,
+    "training_or_validation_return_read_before_freeze": false,
+    "model_fit_before_freeze": false,
+    "lockbox_2024_2025_return_read_before_freeze": false,
+    "provider_request_issued_before_freeze": false,
+    "credential_loaded_before_freeze": false,
+    "candidate49_historical_backfill_performed": false,
+    "candidate49_ledgers_changed_before_freeze": false,
+    "current_scoring_selection_sizing_or_orders_performed": false
+  }
+}

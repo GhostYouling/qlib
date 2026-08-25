@@ -1,0 +1,107 @@
+{
+  "schema_version": 1,
+  "kind": "a_share_three_day_walkforward_campaign287_concept_scouting",
+  "status": "one_fixed_alpha158_session_balanced_mlp_selected_before_campaign287_feature_sample_or_return_read",
+  "recorded_at": "2026-08-25T11:26:00+08:00",
+  "purpose": "Continue the offline three-session iteration engine after Campaign286 by freezing one finite smooth nonlinear model trial over the complete already-exposed Alpha158 design, without reopening the LightGBM family, searching architectures, selecting features, or opening the 2024-2025 lockbox.",
+  "authoritative_inputs": {
+    "iteration_state": {
+      "path": "docs/a_share_three_day_iteration_status_20260825_campaign286_terminal.json",
+      "sha256": "43eaf3acbec78cb8e7014a16e375796af6c0b764638923c9a28ac5eee7f0553c"
+    },
+    "historical_walkforward_policy": {
+      "path": "docs/a_share_three_day_historical_walkforward_research_policy_20260727.json",
+      "sha256": "38426d6161b9bfed323c58caba18feca668b8c9d53e294951a8ba90c01a798bb"
+    },
+    "campaign286_terminal_result": {
+      "path": "docs/a_share_three_day_walkforward_campaign_286_terminal_result_20260825.json",
+      "sha256": "f06b1e98e96a29a5cbc703ea87b8035d4f4e7086dcefaff0d09535b3a7a073d9"
+    },
+    "alpha158_design_manifest": {
+      "path": "data/experiments/short_horizon/historical_walkforward/campaign_286/alpha158_development_design_recovery_v3/snapshot_manifest.json",
+      "sha256": "31cba0be801ac1421ef9555b862575089589ec08397c1420be3fc4f43b111d4e",
+      "dataset_sha256": "714f4ccbdf4bfbaccfd04f543ec8c6a0bc345d3cc567ab621d01905130c46252",
+      "feature_library_sha256": "b1154a5b310ec5f8ead6ca064c06ae4a1121dc1c9a0d4ff7dcd00efcf20704e5"
+    }
+  },
+  "finite_prevalue_concept_catalog": [
+    {
+      "catalog_id": "c287_01",
+      "name": "complete_alpha158_fixed_session_balanced_single_hidden_layer_mlp",
+      "decision": "selected_as_one_configuration_finite_model_family",
+      "reason": "Campaign286 closed the simpler boosted-tree baseline. One fixed smooth nonlinear MLP is a distinct estimator over the same complete raw Alpha158 feature family and tests distributed interactions without a feature subset, architecture search, seed search, model ranking, or LightGBM retry. The already-exposed Campaign286 evidence is acknowledged and this trial counts as a new exploratory attempt."
+    },
+    {
+      "catalog_id": "c287_02",
+      "name": "alpha158_mlp_architecture_width_depth_activation_seed_or_optimizer_search",
+      "decision": "rejected_before_campaign287_values",
+      "reason": "This is the architecture-search family rejected in Campaign286 and would create avoidable post-result multiplicity. Campaign287 permits exactly one frozen architecture and seed."
+    },
+    {
+      "catalog_id": "c287_03",
+      "name": "alpha158_feature_subset_importance_screen_or_missingness_indicator_search",
+      "decision": "rejected_before_campaign287_values",
+      "reason": "Selecting raw Alpha158 components or adding result-driven missingness variants would violate the complete-library requirement and reopen feature-search multiplicity."
+    },
+    {
+      "catalog_id": "c287_04",
+      "name": "alpha158_extra_trees_random_forest_catboost_or_xgboost_retry",
+      "decision": "rejected_before_campaign287_values",
+      "reason": "A second tree ensemble after Campaign286 is too close to the terminal boosted-tree mechanism and would mainly refresh split, sampling, and regularization choices."
+    },
+    {
+      "catalog_id": "c287_05",
+      "name": "complete_library_linear_ridge_lasso_elastic_net_or_simplex_refit",
+      "decision": "rejected_before_campaign287_values",
+      "reason": "Campaign102 consumed bounded simplex ridge and Campaign132 explicitly closed signed linear, sparse subset, and refreshed ridge families. Changing the raw feature library does not erase that model-search exposure."
+    },
+    {
+      "catalog_id": "c287_06",
+      "name": "campaign286_lightgbm_threshold_regularization_or_weight_rescale_repair",
+      "decision": "rejected_before_campaign287_values",
+      "reason": "Campaign286 is immutable and terminal. The constant deep configuration and negative shallow/medium economics cannot be repaired through threshold, regularization, weight-scale, feature or cost changes."
+    },
+    {
+      "catalog_id": "c287_07",
+      "name": "alpha360_new_feature_snapshot_on_current_writable_volume",
+      "decision": "deferred_without_value_read_due_storage_preflight",
+      "reason": "Alpha360 is code-defined and previously unused, but the writable system volume has only 7.3 GiB available while the existing five-year Alpha158 snapshot already occupies about 2.1 GiB. Campaign287 will not risk exhausting the volume or write outside the authorized workspace. This is an infrastructure deferral, not scientific rejection."
+    }
+  ],
+  "selected_family": {
+    "trial_id": "wf287_alpha158_balanced_mlp_32",
+    "feature_library": "all 158 Campaign286 Alpha158 features in frozen order",
+    "feature_subset_search": false,
+    "model": "local deterministic NumPy weighted single-hidden-layer MLP",
+    "configuration_count": 1,
+    "hidden_layer_sizes": [32],
+    "activation": "relu",
+    "solver": "adam",
+    "random_state": 287,
+    "training_session_balance": "deterministically select exactly 96 names per contained training signal session before reading training returns, then normalize finite-target row weights so every retained session has equal total loss mass"
+  },
+  "historical_exposure_classification": {
+    "alpha158_feature_values_previously_read_by_campaign286": true,
+    "campaign286_model_fold_validation_return_reads": 9,
+    "campaign287_is_pristine": false,
+    "campaign287_allowed_role": "exploratory historical model trial under the user-frozen walk-forward policy",
+    "campaign286_terminal_record_rewritten_or_reclassified": false
+  },
+  "prevalue_decision": {
+    "concepts_reviewed": 7,
+    "selected_model_configuration_count": 1,
+    "complete_alpha158_library_required": true,
+    "campaign287_feature_sample_or_preprocess_fitted_before_selection": false,
+    "campaign287_training_or_validation_return_values_read_before_selection": false,
+    "stress_2024_2025_opened": false
+  },
+  "research_boundary": {
+    "provider_or_web_request_issued": false,
+    "credential_loaded": false,
+    "candidate49_historical_backfill_performed": false,
+    "candidate49_ledgers_changed": false,
+    "second_prospective_candidate_created": false,
+    "current_scoring_selection_sizing_positions_or_orders_performed": false,
+    "investment_advice": false
+  }
+}
