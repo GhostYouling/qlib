@@ -1,0 +1,37 @@
+{
+  "schema_version": 1,
+  "kind": "a_share_three_day_walkforward_campaign295_infrastructure_failure",
+  "attempt_id": "campaign295_infrastructure_004",
+  "status": "terminal_post_result_publication_infrastructure_failure_preserved",
+  "recorded_at": "2026-08-25T17:40:00+08:00",
+  "operation": {
+    "working_directory": "/Users/niyufei/Coding/qlib/recovery-worktree",
+    "mode": "read_only_library_order_reconstruction",
+    "exit_code": 1,
+    "failure_class": "Campaign054FeatureError",
+    "failure_message": "Campaign054 completed no-return audit changed",
+    "cause": "The recovery worktree's recursive legacy definition reconstruction binds an older Campaign054 audit fingerprint that no longer matches its external evidence view.",
+    "safe_continuation": "Reconstruct the identical frozen order read-only from /Volumes/DIsk/Disk-Coding/qlib with PYTHONDONTWRITEBYTECODE=1, verify it against policy v424, then append Campaign295 exactly once."
+  },
+  "scientific_effect": {
+    "campaign295_terminal_result_already_frozen": true,
+    "formula_direction_horizon_input_features_tolerance_filters_costs_gates_or_folds_changed": false,
+    "additional_candidate_or_comparator_values_read": false,
+    "additional_historical_daily_price_or_forward_return_values_read": false,
+    "additional_development_trial_consumed": false,
+    "lockbox_2024_2025_opened": false
+  },
+  "accounting": {
+    "included_in_campaign295_terminal_trial_ledger": false,
+    "count_as_campaign295_infrastructure_failure": true,
+    "reason": "The append-only terminal ledger was already frozen before this publication-only failure occurred."
+  },
+  "research_boundary": {
+    "source_repository_files_changed": false,
+    "provider_request_issued": false,
+    "credential_loaded": false,
+    "candidate49_ledgers_changed": false,
+    "current_scoring_selection_sizing_positions_or_orders_performed": false,
+    "investment_advice": false
+  }
+}

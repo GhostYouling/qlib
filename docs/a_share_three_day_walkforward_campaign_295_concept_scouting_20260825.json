@@ -1,0 +1,102 @@
+{
+  "schema_version": 1,
+  "kind": "a_share_three_day_walkforward_campaign295_concept_scouting",
+  "status": "finite_prevalue_catalog_frozen_before_campaign295_candidate_values",
+  "recorded_at": "2026-08-25T17:16:00+08:00",
+  "purpose": "Choose exactly one mechanism-independent deterministic Alpha158 price-volume confirmation factor for Campaign295 without reading Campaign295 candidate values, comparator values, daily prices or forward returns.",
+  "authoritative_prestate": {
+    "path": "docs/a_share_three_day_iteration_status_20260825_campaign294_terminal.json",
+    "sha256": "e49e02c2029d5562d5151cef75f60aad0ccd02d7ee3be0713b710f1ebc1891f7"
+  },
+  "finite_prevalue_concept_catalog": [
+    {
+      "catalog_id": "campaign295_concept_001",
+      "name": "alpha158_price_volume_directional_confirmation_20d",
+      "decision": "selected_exactly_once",
+      "reason": "The fixed Alpha158 definitions already expose a 20-session signed price-change balance (SUMD20) and the 20-session correlation of daily price ratios with log volume ratios (CORD20). Multiplying SUMD20 by the bounded confirmation weight (1+CORD20)/2 preserves price direction while continuously strengthening it when price and volume changes co-move. This is a raw within-stock price-volume interaction, not another peer-rank state, persistence, extremity or horizon-geometry statistic.",
+      "parameters": {
+        "price_direction_feature": "SUMD20",
+        "price_volume_confirmation_feature": "CORD20",
+        "fixed_horizon_sessions": 20,
+        "confirmation_weight": "(1 + CORD20) / 2",
+        "score": "SUMD20 * (1 + CORD20) / 2",
+        "valid_input_interval": "both inputs must be finite and lie in [-1,1] within 1e-6 numerical tolerance",
+        "direction": "higher",
+        "fit": "none"
+      }
+    },
+    {
+      "catalog_id": "campaign295_concept_002",
+      "name": "alpha158_raw_sumd20",
+      "decision": "rejected_prevalue",
+      "reason": "SUMD20 alone is an existing raw Alpha158 coordinate rather than a new interaction mechanism and would ignore the selected volume-confirmation hypothesis."
+    },
+    {
+      "catalog_id": "campaign295_concept_003",
+      "name": "alpha158_raw_cord20",
+      "decision": "rejected_prevalue",
+      "reason": "CORD20 alone measures unsigned price-volume coupling and does not preserve an investable price direction; it is also an existing raw Alpha158 coordinate."
+    },
+    {
+      "catalog_id": "campaign295_concept_004",
+      "name": "alpha158_price_volume_confirmation_product_20d",
+      "decision": "rejected_prevalue",
+      "reason": "The unshifted product SUMD20*CORD20 would score a falling price trend with negative price-volume correlation as positive and therefore would not preserve the frozen directional interpretation."
+    },
+    {
+      "catalog_id": "campaign295_concept_005",
+      "name": "alpha158_price_volume_confirmation_horizon_grid",
+      "decision": "rejected_prevalue",
+      "reason": "Trying 5, 10, 20, 30 or 60 sessions, averaging them, or selecting the best horizon would reopen the horizon search prohibited by the Campaign294 handoff. One conventional 20-session trading-month horizon is frozen before values."
+    },
+    {
+      "catalog_id": "campaign295_concept_006",
+      "name": "alpha158_price_volume_confirmation_weight_or_transform_grid",
+      "decision": "rejected_prevalue",
+      "reason": "Exponentiating, thresholding, clipping, signing or fitting CORD20, or changing the price/volume weight, would create an avoidable transform search. The unique affine map from [-1,1] to [0,1] is frozen."
+    },
+    {
+      "catalog_id": "campaign295_concept_007",
+      "name": "campaign290_to_campaign294_retune_inversion_or_combination",
+      "decision": "forbidden",
+      "reason": "All prior Alpha158 candidates remain terminal. Campaign294 failed uniqueness and Campaign290-293 failed development; none may be inverted, thresholded, reweighted, combined or rescued."
+    },
+    {
+      "catalog_id": "campaign295_concept_008",
+      "name": "alpha158_peer_rank_state_consensus_extremity_persistence_or_horizon_geometry_refresh",
+      "decision": "forbidden",
+      "reason": "The Campaign294 handoff explicitly closes this mechanism cluster. Campaign295 uses neither peer ranks nor cross-coordinate states, lags, extremity breadth, family dispersion or adjacent-horizon geometry."
+    },
+    {
+      "catalog_id": "campaign295_concept_009",
+      "name": "alpha158_supervised_tree_mlp_kernel_or_hash_model_refresh",
+      "decision": "forbidden",
+      "reason": "Campaign286-289 already consumed those frozen supervised or randomized model mechanisms. Campaign295 is a single deterministic no-fit factor."
+    }
+  ],
+  "selected_formula": {
+    "name": "alpha158_price_volume_directional_confirmation_20d",
+    "direction": "higher",
+    "formula": "For each quality-listing row with frozen Alpha158 model support, require finite SUMD20 and CORD20, each inside [-1,1] within 1e-6. Set w=(1+CORD20)/2 and score=SUMD20*w. Do not fill, clip, winsorize, rank, sign, threshold, lag, fit, invert, subset, average across horizons or combine this score.",
+    "economic_hypothesis": "A positive 20-session price-change imbalance is more credible when daily price ratios and log volume ratios move together, while an unconfirmed directional imbalance should be attenuated. The resulting volume-confirmed price pressure may persist from the next accepted open through the third accepted close.",
+    "mechanism_separation": {
+      "campaign290": "No prior session, lag, suspension bridge or state-persistence count is used.",
+      "campaign291": "No cross-sectional median or ternary state consensus is used.",
+      "campaign292": "No peer rank, centered extremity or cross-coordinate breadth is used.",
+      "campaign293": "No adjacent-horizon difference, smoothness or multi-horizon aggregation is used.",
+      "campaign294": "No same-horizon cross-family variance or peer-percentile consensus is used.",
+      "campaign286_to_campaign289": "No return-supervised fit, tree, neural network, random Fourier feature or hash cell is used.",
+      "intraday_numeric_library": "The candidate uses two 20-session daily Alpha158 operators and no one-minute bar, intraday amount profile, event or quarterly field."
+    }
+  },
+  "research_boundary": {
+    "campaign295_candidate_values_read": false,
+    "comparator_values_read": false,
+    "historical_daily_price_or_forward_return_values_read": false,
+    "provider_request_issued": false,
+    "credential_loaded": false,
+    "candidate49_ledgers_changed": false,
+    "current_scoring_selection_sizing_positions_or_orders_performed": false,
+    "investment_advice": false
+  }
+}

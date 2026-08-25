@@ -1,0 +1,32 @@
+{
+  "schema_version": 1,
+  "kind": "a_share_three_day_walkforward_campaign295_infrastructure_failure",
+  "attempt_id": "campaign295_infrastructure_002",
+  "status": "terminal_infrastructure_failure_preserved_no_scientific_attempt_consumed",
+  "recorded_at": "2026-08-25T17:29:00+08:00",
+  "operation": {
+    "working_directory": "/Users/niyufei/Coding/qlib/recovery-worktree",
+    "argv": ["pytest", "-q", "tests/data_collector_tests/test_a_share_three_day_walkforward_campaign295.py"],
+    "exit_code": 2,
+    "failure_class": "test_collection_import_error",
+    "failure_message": "ModuleNotFoundError: No module named 'scripts'",
+    "cause": "The global pytest console entry point did not place the repository root on sys.path during collection.",
+    "safe_continuation": "Invoke pytest as a module from the repository root: python -m pytest."
+  },
+  "scientific_effect": {
+    "tests_collected": false,
+    "formula_direction_horizon_input_features_tolerance_filters_costs_gates_or_folds_changed": false,
+    "candidate_values_read": false,
+    "comparator_values_read": false,
+    "historical_daily_price_or_forward_return_values_read": false,
+    "development_trial_consumed": false
+  },
+  "research_boundary": {
+    "provider_request_issued": false,
+    "credential_loaded": false,
+    "credential_value_or_digest_persisted": false,
+    "candidate49_ledgers_changed": false,
+    "current_scoring_selection_sizing_positions_or_orders_performed": false,
+    "investment_advice": false
+  }
+}

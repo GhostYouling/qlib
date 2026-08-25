@@ -1,0 +1,43 @@
+{
+  "schema_version": 1,
+  "kind": "a_share_three_day_walkforward_campaign295_library_order_reconstruction_receipt",
+  "status": "read_only_authoritative_source_reconstruction_verified_and_campaign295_appended_once",
+  "recorded_at": "2026-08-25T17:41:00+08:00",
+  "operation": {
+    "working_directory": "/Volumes/DIsk/Disk-Coding/qlib",
+    "mode": "read_only_metadata_reconstruction_with_PYTHONDONTWRITEBYTECODE",
+    "source_module": "scripts/a_share_three_day_walkforward_campaign263_features.py",
+    "source_module_sha256": "f4882d4c29877b05a2b7ccffe540a1e97f0917e252941d2484b03720b1426124",
+    "digest_semantics": "SHA-256 of canonical JSON [[name, score_direction], ...]",
+    "source_repository_files_changed": false
+  },
+  "predecessor_verification": {
+    "complete_definition_count": 166,
+    "complete_definition_order_sha256": "57662d72c897fc701f40a97e04946ebd9728b113587c7ad4f15c758be6ace06f",
+    "numeric_comparator_count": 147,
+    "numeric_comparator_order_sha256": "5a771c4f9bd028b352194ec4779acb15b38ab6ab23a935458660b2024c7914c1",
+    "matches_policy_v424": true
+  },
+  "campaign295_append": {
+    "item": {
+      "name": "alpha158_price_volume_directional_confirmation_20d",
+      "score_direction": "higher"
+    },
+    "append_reason": "Coverage and all 147 ordered numeric uniqueness gates passed; development survival is not required for future duplicate control.",
+    "complete_definition_count": 167,
+    "complete_definition_order_sha256": "95ba4f3a305d3144310b56e95f1b873dd7eca66dc5cb99c3355d42154f449841",
+    "numeric_comparator_count": 148,
+    "numeric_comparator_order_sha256": "b6b8c0e6f786e59c102583eccfb54e5bfaec4ebb0c79267a001db637396123d9",
+    "append_does_not_imply_survival_or_investment_value": true
+  },
+  "research_boundary": {
+    "additional_candidate_or_comparator_values_read": false,
+    "additional_historical_daily_price_or_forward_return_values_read": false,
+    "stress_2024_2025_opened": false,
+    "provider_request_issued": false,
+    "provider_credential_loaded": false,
+    "candidate49_ledgers_changed": false,
+    "current_scoring_selection_sizing_positions_or_orders_performed": false,
+    "investment_advice": false
+  }
+}

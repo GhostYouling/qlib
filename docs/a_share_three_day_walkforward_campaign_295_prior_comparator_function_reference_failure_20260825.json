@@ -1,0 +1,45 @@
+{
+  "schema_version": 1,
+  "kind": "a_share_three_day_walkforward_campaign295_infrastructure_failure",
+  "attempt_id": "campaign295_infrastructure_003",
+  "status": "terminal_infrastructure_failure_preserved_no_return_trial_consumed",
+  "recorded_at": "2026-08-25T17:33:00+08:00",
+  "operation": {
+    "working_directory": "/Users/niyufei/Coding/qlib/recovery-worktree",
+    "argv": ["python", "-m", "scripts.a_share_three_day_walkforward_campaign295", "run", "--confirm-run"],
+    "exit_code": 1,
+    "failure_class": "AttributeError",
+    "failure_message": "module 'scripts.a_share_three_day_walkforward_campaign293' has no attribute 'prior_campaign_comparison'",
+    "cause": "Campaign295 imported Campaign294 as its predecessor but copied Campaign294's predecessor-relative helper expression without adding the new inheritance level. The existing comparison helper is on Campaign292.",
+    "failed_before_comparator_ordinal": 144,
+    "comparators_declared": 147,
+    "comparators_evaluated": 143,
+    "comparators_passed": 143,
+    "safe_continuation": "Preserve the v1 partial output, bind the existing Campaign292 helper through prior.prior.prior.prior_campaign_comparison, and rerun the identical factor in a new v2 output root."
+  },
+  "partial_output": {
+    "path": ".local-research/campaign_295/alpha158_price_volume_directional_confirmation_20d_v1",
+    "candidate_snapshot_complete": true,
+    "no_return_audit_written": false,
+    "terminal_result_written": false,
+    "preserve_without_reuse_or_overwrite": true
+  },
+  "scientific_effect": {
+    "coverage_gate_passed": true,
+    "maximum_observed_absolute_median_daily_rank_correlation_through_ordinal_143": 0.3301852023527573,
+    "formula_direction_horizon_input_features_tolerance_filters_costs_gates_or_folds_changed": false,
+    "alpha158_candidate_values_read": true,
+    "comparator_values_read": true,
+    "historical_daily_price_or_forward_return_values_read": false,
+    "development_trial_consumed": false,
+    "lockbox_2024_2025_opened": false
+  },
+  "research_boundary": {
+    "provider_request_issued": false,
+    "credential_loaded": false,
+    "credential_value_or_digest_persisted": false,
+    "candidate49_ledgers_changed": false,
+    "current_scoring_selection_sizing_positions_or_orders_performed": false,
+    "investment_advice": false
+  }
+}

@@ -1,0 +1,146 @@
+{
+  "schema_version": 1,
+  "kind": "a_share_three_day_iteration_status",
+  "status": "campaign295_terminal_development_no_survivor_goal_active_campaign296_offline_prevalue_authorized",
+  "recorded_at": "2026-08-25T17:47:00+08:00",
+  "authoritative_inputs": {
+    "predecessor": {
+      "path": "docs/a_share_three_day_iteration_status_20260825_campaign294_terminal.json",
+      "sha256": "e49e02c2029d5562d5151cef75f60aad0ccd02d7ee3be0713b710f1ebc1891f7"
+    },
+    "terminal_result": {
+      "path": "docs/a_share_three_day_walkforward_campaign_295_terminal_result_20260825.json",
+      "sha256": "b5636fdcbf6b2fc995aea20be0930460700e52983400d7ca57328448a8caf872"
+    },
+    "terminal_report": {
+      "path": "docs/a_share_three_day_walkforward_campaign_295_terminal_report.md",
+      "sha256": "4f912ea22533d51118ff328428f6aca71e82ecdc7e1ace92ef6434dc060df1fa"
+    },
+    "handoff": {
+      "path": "docs/a_share_three_day_strategy_handoff_20260825_campaign295.md",
+      "sha256": "25a7e56b96c4b09a8ba76c84072b5542e84e2028e10f67ad53b56288fd8f253e"
+    },
+    "latest_handoff_index": {
+      "path": "docs/a_share_three_day_strategy_handoff_20260825.md",
+      "sha256": "76be42f4cec3f4e1b621302936d30133cebcc6463b9b12fdca4d8976b3d658c3"
+    },
+    "numeric_policy_v425": {
+      "path": "docs/a_share_three_day_walkforward_future_numeric_comparison_eligibility_policy_v425_20260825.json",
+      "sha256": "bc8fe1f71a8361422630fca3bbdee15787d51b94cb8b08cd0297c0183233de54"
+    },
+    "local_terminal_result": {
+      "path": ".local-research/campaign_295/alpha158_price_volume_directional_confirmation_20d_v2/terminal_result.json",
+      "sha256": "ad00f92d74e84f4079e08eef2c46d67adcb98840ce376b3557df3534316ed8ad"
+    },
+    "terminal_trial_ledger": {
+      "path": ".local-research/campaign_295/alpha158_price_volume_directional_confirmation_20d_v2/terminal_trial_ledger.json",
+      "sha256": "c04767b8d5e3f7830ed1c9d417ab973b98fce56335ebcf14a949b1d2f58c2b13"
+    },
+    "library_order_reconstruction_receipt": {
+      "path": "docs/a_share_three_day_walkforward_campaign_295_library_order_reconstruction_receipt_20260825.json",
+      "sha256": "9c1421e1f17624b3b8f5a7d9aa2d5f27e55ea1bb947406c0546b0804ae0e1811"
+    },
+    "infrastructure_failure_records": [
+      {
+        "path": "docs/a_share_three_day_walkforward_campaign_295_direct_script_import_context_failure_20260825.json",
+        "sha256": "1a83cb0151f4610c7c6488d34b47e8bf63da74e005954f8e8a3b80504342041d"
+      },
+      {
+        "path": "docs/a_share_three_day_walkforward_campaign_295_pytest_import_context_failure_20260825.json",
+        "sha256": "88095ed85910ef866ba8c45f13a9e3770dc78f27cf50301105d56187cb04fb79"
+      },
+      {
+        "path": "docs/a_share_three_day_walkforward_campaign_295_prior_comparator_function_reference_failure_20260825.json",
+        "sha256": "a7a52be2cf15c90fa4d979a7c4a7c2323f228ec1dbd522be587e32927c740c16"
+      },
+      {
+        "path": "docs/a_share_three_day_walkforward_campaign_295_local_library_reconstruction_failure_20260825.json",
+        "sha256": "69ace86277a79485844cb9d0da7e695dca877894ea83493f3ecb079d735f2dcf"
+      }
+    ],
+    "candidate49_same_day_plan_failure": {
+      "path": "docs/a_share_candidate49_20260825_readonly_plan_failure_record.json",
+      "sha256": "7b31fe4ef93b84cf7ad1089e29a31b825f90620cd6a0d58f66d07cac0098f8f1"
+    }
+  },
+  "scientific_state": {
+    "campaign_id": "campaign_295",
+    "terminal_stage": "development_walkforward",
+    "feature_family": "deterministic Alpha158 20-session price-direction balance weighted by price-volume confirmation",
+    "finite_factor_trial_count": 1,
+    "model_fit_count": 0,
+    "training_return_read_count": 0,
+    "return_reading_development_trial_count": 1,
+    "validation_fold_return_read_count": 3,
+    "coverage_gate_passed": true,
+    "numeric_uniqueness_comparators_passed": 147,
+    "numeric_uniqueness_comparators_total": 147,
+    "maximum_absolute_median_daily_rank_correlation": 0.3301852023527573,
+    "validation_mean_rank_ic": [-0.0025709834692320753, -0.02110108585648984, -0.01808253589609788],
+    "validation_normalized_returns": [-0.29436424769571046, -0.11040521247238166, -0.42529193259226217],
+    "validation_pilot_10bp_returns": [-0.03656856885449811, -0.029175431096832516, -0.06705901665998837],
+    "positive_rank_ic_fold_count": 0,
+    "positive_normalized_return_fold_count": 0,
+    "positive_pilot_10bp_return_fold_count": 0,
+    "development_survivor_count": 0,
+    "operationally_admissible": false,
+    "stress_2024_2025_opened": false,
+    "current_strategy_deployable": false,
+    "rejection_reasons": [
+      "all three validation mean Rank IC values are negative",
+      "all three normalized and 10bp/20bp pilot returns are negative",
+      "compounded normalized and costed returns are negative",
+      "fold 1 board-lot affordability is below 0.90",
+      "worst normalized drawdown is below -0.25"
+    ]
+  },
+  "effective_accounting": {
+    "campaign295_prevalue_concept_attempts": 9,
+    "campaign295_infrastructure_failures": 4,
+    "campaign295_factor_trial_attempts": 1,
+    "campaign295_terminal_trial_ledger_entries": 13,
+    "campaign295_post_terminal_publication_failures": 1,
+    "campaign295_total_attempts": 14,
+    "campaign295_return_reading_development_trials": 1,
+    "campaign295_validation_fold_return_reads": 3,
+    "cumulative_historical_research_attempts": 3025,
+    "cumulative_return_reading_development_trials": 326
+  },
+  "library_state": {
+    "changed_by_campaign295": true,
+    "append_reason": "coverage and all 147 uniqueness gates passed; duplicate-control append does not imply development survival",
+    "complete_factor_definition_count": 167,
+    "complete_factor_definition_order_sha256": "95ba4f3a305d3144310b56e95f1b873dd7eca66dc5cb99c3355d42154f449841",
+    "eligible_numeric_comparator_count": 148,
+    "eligible_numeric_comparator_order_sha256": "b6b8c0e6f786e59c102583eccfb54e5bfaec4ebb0c79267a001db637396123d9"
+  },
+  "candidate49": {
+    "sole_active_prospective_candidate": true,
+    "same_day_plan_executed": true,
+    "same_day_plan_ready": false,
+    "same_day_plan_exit_code": 1,
+    "same_day_run_executed": false,
+    "same_day_retry_allowed": false,
+    "historical_backfill_performed": false,
+    "signal_ledger_entry_count": 0,
+    "signal_ledger_sha256": "5193f00d7f36da003f53cec387900da4c3d002299f5dfcfc1a95eaa199ed3a79",
+    "execution_ledger_entry_count": 0,
+    "execution_ledger_sha256": "d57a3e61eac969e42cafa418ccd8c0a5ee65dcf69da145bb2c096c2a02a2ea4f"
+  },
+  "workspace_boundary": {
+    "data_path_is_external_symlink": true,
+    "data_symlink_target": "/Volumes/DIsk/Disk-Coding/qlib-data/recovery-worktree",
+    "external_data_change_may_be_staged_or_reverted": false,
+    "campaign295_final_output_root": ".local-research/campaign_295/alpha158_price_volume_directional_confirmation_20d_v2",
+    "campaign295_v1_partial_output_preserved": true,
+    "campaign295_v1_partial_output_root": ".local-research/campaign_295/alpha158_price_volume_directional_confirmation_20d_v1"
+  },
+  "immutable_terminal_boundary": {
+    "campaign295_direction_horizon_confirmation_weight_tolerance_filter_or_fit_may_change": false,
+    "campaign295_alternate_direction_transform_threshold_or_combination_rescue_allowed": false,
+    "campaign295_2024_2025_lockbox_may_open": false,
+    "campaign295_definition_and_numeric_comparator_appended_once": true,
+    "historical_output_may_generate_current_scores_selection_sizing_positions_or_orders": false
+  },
+  "next_safe_work": "Campaign296 may freeze a new finite zero-network offline prevalue concept against the 167-definition/148-comparator library. It must be mechanism-independent and may not retune, reverse, re-horizon, threshold, reweight or combine Campaign295. Candidate49 remains the sole prospective track and 2026-08-25 may not be retried."
+}

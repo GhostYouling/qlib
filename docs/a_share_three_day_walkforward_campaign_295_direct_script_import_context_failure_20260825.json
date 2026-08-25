@@ -1,0 +1,31 @@
+{
+  "schema_version": 1,
+  "kind": "a_share_three_day_walkforward_campaign295_infrastructure_failure",
+  "attempt_id": "campaign295_infrastructure_001",
+  "status": "terminal_infrastructure_failure_preserved_no_scientific_attempt_consumed",
+  "recorded_at": "2026-08-25T17:24:00+08:00",
+  "operation": {
+    "working_directory": "/Users/niyufei/Coding/qlib/recovery-worktree",
+    "argv": ["python", "scripts/a_share_three_day_walkforward_campaign295.py", "plan"],
+    "exit_code": 1,
+    "failure_class": "ModuleNotFoundError",
+    "failure_message": "No module named 'scripts'",
+    "cause": "Direct file execution sets the import root to the scripts directory, so the repository-level scripts package is not importable through the frozen absolute package import.",
+    "safe_continuation": "Use the scientifically identical repository package entry point: python -m scripts.a_share_three_day_walkforward_campaign295 plan."
+  },
+  "scientific_effect": {
+    "formula_direction_horizon_input_features_tolerance_filters_costs_gates_or_folds_changed": false,
+    "candidate_values_read": false,
+    "comparator_values_read": false,
+    "historical_daily_price_or_forward_return_values_read": false,
+    "development_trial_consumed": false
+  },
+  "research_boundary": {
+    "provider_request_issued": false,
+    "credential_loaded": false,
+    "credential_value_or_digest_persisted": false,
+    "candidate49_ledgers_changed": false,
+    "current_scoring_selection_sizing_positions_or_orders_performed": false,
+    "investment_advice": false
+  }
+}
