@@ -1,0 +1,55 @@
+{
+  "schema_version": 1,
+  "kind": "a_share_three_day_walkforward_campaign291_implementation_freeze",
+  "status": "candidate_coverage_ordered_144_and_no_fit_development_runner_frozen_before_candidate_values",
+  "frozen_at": "2026-08-25T14:15:00+08:00",
+  "purpose": "Bind the exact Campaign291 protocol, runner, inherited frozen engine utilities and synthetic tests before reading Alpha158 candidate values, comparator values, daily prices or forward returns.",
+  "frozen_implementation": {
+    "protocol": "docs/a_share_three_day_walkforward_campaign_291_preregistration_20260825.json",
+    "protocol_sha256": "6d93c64fe759c43c1854a5d8a659d875d8f029572f27b0a496c4093a36a6ec77",
+    "runner": "scripts/a_share_three_day_walkforward_campaign291.py",
+    "runner_sha256": "e888c2ea7c16e6015253829ef52cb9df597df472132a2b9fb36371f406e82fe7",
+    "test": "tests/data_collector_tests/test_a_share_three_day_walkforward_campaign291.py",
+    "test_sha256": "bb0b104c794f94d127a79f9accb13cd4230e386daa2fb0a72a4163f37b337ea9",
+    "runner_dependency": "scripts/a_share_three_day_walkforward_campaign290.py",
+    "runner_dependency_sha256": "6b079f68646e941c928cccf2567dd279807b50d7e63d9c8e3af70ee50ed650c2",
+    "factor_name": "alpha158_session_median_state_consensus_strength_1d",
+    "direction": "higher",
+    "coordinate_count": 158,
+    "minimum_finite_coordinates": 119,
+    "comparator_count": 144,
+    "comparator_order_sha256": "c026c008e8eeb9d150754c6179f7de3bfd4dcf3f3ffb0ba52bab418dd94bdeff",
+    "strict_absolute_median_correlation_maximum": 0.8,
+    "minimum_pair_names_per_session": 50,
+    "minimum_pair_sessions_per_comparator": 100,
+    "ordered_early_stop": true,
+    "development_trial_count_if_no_return_passes": 1,
+    "training_return_reads": 0,
+    "validation_fold_count": 3,
+    "purge_signal_sessions": 3,
+    "alternate_direction_threshold_filter_subset_weight_fit_model_or_combination_search": false
+  },
+  "pre_freeze_validation": {
+    "ruff": "passed",
+    "synthetic_tests": {
+      "passed": 8,
+      "deselected_metadata_plan_test": 1,
+      "reason": "The plan test requires this implementation-freeze file and is executed after the byte binding is created."
+    },
+    "real_candidate_or_comparator_values_read": false,
+    "historical_daily_price_or_forward_return_values_read": false
+  },
+  "research_boundary": {
+    "alpha158_candidate_values_read_before_freeze": false,
+    "comparator_values_read_before_freeze": false,
+    "historical_daily_price_or_forward_return_values_read": false,
+    "provider_request_issued": false,
+    "provider_credential_loaded": false,
+    "candidate49_plan_or_run_executed": false,
+    "candidate49_historical_backfill_performed": false,
+    "candidate49_ledgers_changed": false,
+    "second_prospective_candidate_created": false,
+    "current_scoring_selection_sizing_positions_or_orders_performed": false,
+    "investment_advice": false
+  }
+}

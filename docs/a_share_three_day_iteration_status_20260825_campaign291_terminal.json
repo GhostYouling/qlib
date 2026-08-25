@@ -1,0 +1,102 @@
+{
+  "schema_version": 1,
+  "kind": "a_share_three_day_iteration_status",
+  "status": "campaign291_terminal_development_no_survivor_goal_active_campaign292_offline_prevalue_authorized",
+  "recorded_at": "2026-08-25T14:31:00+08:00",
+  "authoritative_inputs": {
+    "predecessor": {
+      "path": "docs/a_share_three_day_iteration_status_20260825_campaign290_terminal.json",
+      "sha256": "598892390555460cdd6d9dfb5ea046f2cd68f80b30b9f352e6fbdbf7c26c1774"
+    },
+    "terminal_result": {
+      "path": "docs/a_share_three_day_walkforward_campaign_291_terminal_result_20260825.json",
+      "sha256": "973c4de4c112be14f6b78492a0bb2926e94b845af1840629b3120905a8b400b8"
+    },
+    "terminal_report": {
+      "path": "docs/a_share_three_day_walkforward_campaign_291_terminal_report.md",
+      "sha256": "db8d21f4967cd9cdc2ebefd5fbe180a61cc8b288e45661ac75de5e176b74504f"
+    },
+    "handoff": {
+      "path": "docs/a_share_three_day_strategy_handoff_20260825_campaign291.md",
+      "sha256": "c3785e6af7f308490e709b07c1a90760cb5e5d1acd46e628b6fb203fdcf19856"
+    },
+    "numeric_policy_v421": {
+      "path": "docs/a_share_three_day_walkforward_future_numeric_comparison_eligibility_policy_v421_20260825.json",
+      "sha256": "b88ab3dca9a571a0993d4ac4dd8c8efa395e0871ab18b0d2ea43bce607f36dc5"
+    },
+    "local_terminal_result": {
+      "path": "data/experiments/short_horizon/historical_walkforward/campaign_291/alpha158_session_median_state_consensus_strength_v1/terminal_result.json",
+      "sha256": "cd79c7825bf1dd210b544f2b3659ac1b2acf364242761507ca2251af4d3b3eae"
+    },
+    "terminal_trial_ledger": {
+      "path": "data/experiments/short_horizon/historical_walkforward/campaign_291/alpha158_session_median_state_consensus_strength_v1/terminal_trial_ledger.json",
+      "sha256": "76b9f0dc3bab2299f6803bfa45cb10c7dfbb11d82ba5dba311a8f86b32f1db78"
+    },
+    "post_terminal_documentation_failure": {
+      "path": "docs/a_share_three_day_walkforward_campaign_291_local_legacy_library_reconstruction_failure_20260825.json",
+      "sha256": "80c349065049cb3f6190c043263356f4cc05a3428674dc00f5576982f587e986"
+    }
+  },
+  "scientific_state": {
+    "campaign_id": "campaign_291",
+    "terminal_stage": "development_walkforward",
+    "feature_family": "deterministic Alpha158 same-session peer-median state consensus strength",
+    "feature_count": 158,
+    "finite_factor_trial_count": 1,
+    "model_fit_count": 0,
+    "training_return_read_count": 0,
+    "return_reading_development_trial_count": 1,
+    "validation_fold_return_read_count": 3,
+    "coverage_gate_passed": true,
+    "numeric_uniqueness_comparators_passed": 144,
+    "numeric_uniqueness_comparators_total": 144,
+    "positive_rank_ic_fold_count": 1,
+    "positive_normalized_return_fold_count": 0,
+    "positive_pilot_10bp_return_fold_count": 0,
+    "development_survivor_count": 0,
+    "stress_2024_2025_opened": false,
+    "current_strategy_deployable": false,
+    "rejection_reasons": [
+      "only one of three validation mean Rank IC values is positive",
+      "all three normalized returns are negative",
+      "all three 10bp and 20bp pilot returns are negative",
+      "compounded normalized, 10bp and 20bp returns are negative",
+      "worst validation normalized drawdown is below the frozen -0.25 minimum"
+    ]
+  },
+  "effective_accounting": {
+    "campaign291_prevalue_concept_attempts": 7,
+    "campaign291_post_terminal_documentation_infrastructure_failures": 1,
+    "campaign291_factor_trial_attempts": 1,
+    "campaign291_total_attempts": 9,
+    "campaign291_return_reading_development_trials": 1,
+    "campaign291_validation_fold_return_reads": 3,
+    "cumulative_historical_research_attempts": 2974,
+    "cumulative_return_reading_development_trials": 323
+  },
+  "library_state": {
+    "changed_by_campaign291": true,
+    "append_reason": "coverage and every one of 144 ordered numeric uniqueness gates passed; append is duplicate control only",
+    "complete_factor_definition_count": 164,
+    "complete_factor_definition_order_sha256": "641331e8a6d95a4b0429dbef4d546c6ce6778d78c1ef6c85461cb8ba6bb1e6b1",
+    "eligible_numeric_comparator_count": 145,
+    "eligible_numeric_comparator_order_sha256": "d1dbf29b7143f837f7d1589e2f1f4622b1c64699b2b63a3ba940ea0258facf61"
+  },
+  "candidate49": {
+    "sole_active_prospective_candidate": true,
+    "candidate49_plan_or_run_executed": false,
+    "historical_backfill_performed": false,
+    "signal_ledger_entry_count": 0,
+    "signal_ledger_sha256": "5193f00d7f36da003f53cec387900da4c3d002299f5dfcfc1a95eaa199ed3a79",
+    "execution_ledger_entry_count": 0,
+    "execution_ledger_sha256": "d57a3e61eac969e42cafa418ccd8c0a5ee65dcf69da145bb2c096c2a02a2ea4f"
+  },
+  "immutable_terminal_boundary": {
+    "campaign291_direction_state_cut_support_weight_threshold_sign_or_fit_may_change": false,
+    "campaign291_alternate_direction_or_combination_rescue_allowed": false,
+    "campaign291_2024_2025_lockbox_may_open": false,
+    "definition_retained_for_future_duplicate_control": true,
+    "historical_output_may_generate_current_scores_selection_sizing_positions_or_orders": false
+  },
+  "next_safe_work": "Campaign292 may freeze a new finite zero-network offline prevalue concept catalog against the 164-definition/145-comparator library. It must not retune, reverse, sign, threshold or combine Campaign291. Candidate49 remains the independent sole prospective track."
+}

@@ -1,0 +1,88 @@
+{
+  "schema_version": 1,
+  "kind": "a_share_three_day_walkforward_campaign291_concept_scouting",
+  "status": "finite_prevalue_catalog_frozen_before_alpha158_candidate_values",
+  "recorded_at": "2026-08-25T14:04:00+08:00",
+  "purpose": "Choose one mechanism-independent deterministic Alpha158 cross-sectional state factor for Campaign291 without reading Alpha158 feature values, comparator values, daily prices or forward returns.",
+  "authoritative_prestate": {
+    "path": "docs/a_share_three_day_iteration_status_20260825_campaign290_terminal.json",
+    "sha256": "598892390555460cdd6d9dfb5ea046f2cd68f80b30b9f352e6fbdbf7c26c1774"
+  },
+  "finite_prevalue_concept_catalog": [
+    {
+      "catalog_id": "campaign291_concept_001",
+      "name": "alpha158_session_median_state_consensus_strength_1d",
+      "decision": "selected_exactly_once",
+      "reason": "A direction-agnostic same-session consensus score is deterministic, uses the already frozen Alpha158 design, and is mechanism-distinct from Campaign290's exact prior-session state persistence.",
+      "parameters": {
+        "coordinate_count": 158,
+        "state_anchor": "same-session finite model-support-peer median per coordinate",
+        "states": [
+          "below_median",
+          "equal_median",
+          "above_median"
+        ],
+        "minimum_finite_coordinates": 119,
+        "formula": "absolute difference between above and below counts divided by all finite coordinate states",
+        "direction": "higher"
+      }
+    },
+    {
+      "catalog_id": "campaign291_concept_002",
+      "name": "alpha158_session_median_state_dispersion_1d",
+      "decision": "rejected_prevalue",
+      "reason": "One minus the selected consensus strength is a deterministic inversion, not an independent mechanism; alternate direction search is forbidden."
+    },
+    {
+      "catalog_id": "campaign291_concept_003",
+      "name": "alpha158_session_median_state_signed_majority_1d",
+      "decision": "rejected_prevalue",
+      "reason": "A signed majority would treat heterogeneous Alpha158 coordinate orientations as a common economic direction; Campaign291 freezes the sign-agnostic magnitude only."
+    },
+    {
+      "catalog_id": "campaign291_concept_004",
+      "name": "alpha158_session_peer_rank_extremity_breadth_1d",
+      "decision": "rejected_prevalue",
+      "reason": "Continuous percentile extremity introduces a separate rank-transform family; Campaign291 freezes the simpler exact median-state consensus mechanism."
+    },
+    {
+      "catalog_id": "campaign291_concept_005",
+      "name": "alpha158_session_quantile_state_consensus_grid",
+      "decision": "rejected_prevalue",
+      "reason": "Tercile, quartile and quintile cut grids would create avoidable threshold multiplicity instead of one median-state trial."
+    },
+    {
+      "catalog_id": "campaign291_concept_006",
+      "name": "alpha158_weighted_session_state_consensus",
+      "decision": "rejected_prevalue",
+      "reason": "Coordinate weighting would add arbitrary or return-fitted weights; all finite coordinates remain equal weight."
+    },
+    {
+      "catalog_id": "campaign291_concept_007",
+      "name": "campaign290_persistence_retune_or_combination",
+      "decision": "forbidden",
+      "reason": "Campaign290's lag, support, formula, direction, costs and gates are terminal and cannot be rescued, inverted, thresholded or combined with Campaign291."
+    }
+  ],
+  "selected_formula": {
+    "name": "alpha158_session_median_state_consensus_strength_1d",
+    "direction": "higher",
+    "formula": "For each accepted signal session t and each of the frozen 158 Alpha158 coordinates j, compute the exact finite median m_tj over rows with model_support_eligible=true on t. For every quality_listing_eligible row i, require model_support_eligible=true and at least 119 finite coordinates. Encode each finite coordinate as -1 when x_tij<m_tj, 0 when x_tij=m_tj and +1 when x_tij>m_tj. Let B, E and A be the below, equal and above counts. Score abs(A-B)/(A+E+B). Do not use another session, fill, clip, smooth, weight, fit, threshold, sign or invert the score.",
+    "economic_hypothesis": "A broad, sign-agnostic displacement of many technical coordinates to the same side of their peer medians may proxy for a coherent idiosyncratic technical state whose information diffuses slowly from the next open through the third close.",
+    "mechanism_separation": {
+      "campaign290": "No prior session, transition, equality persistence, suspension bridge or lagged state is used.",
+      "campaign103": "Campaign103 counts directional day-over-day rank improvement over a 130-factor historical library; Campaign291 measures same-session sign-agnostic consensus over 158 Qlib technical coordinates.",
+      "signed_breadth_factors": "Campaign291 takes the absolute above-minus-below imbalance because Alpha158 coordinate orientations are heterogeneous; no bullish or bearish common sign is asserted."
+    }
+  },
+  "research_boundary": {
+    "alpha158_candidate_values_read": false,
+    "comparator_values_read": false,
+    "historical_daily_price_or_forward_return_values_read": false,
+    "provider_request_issued": false,
+    "credential_loaded": false,
+    "candidate49_ledgers_changed": false,
+    "current_scoring_selection_sizing_positions_or_orders_performed": false,
+    "investment_advice": false
+  }
+}

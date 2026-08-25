@@ -1,0 +1,37 @@
+{
+  "schema_version": 1,
+  "kind": "a_share_three_day_walkforward_campaign291_post_terminal_documentation_infrastructure_failure",
+  "status": "failed_local_legacy_reconstruction_then_recovered_read_only_from_authoritative_source_repo",
+  "recorded_at": "2026-08-25T14:21:00+08:00",
+  "failed_attempt": {
+    "phase": "post_terminal_library_order_digest_reconstruction",
+    "working_directory": "/Users/niyufei/Coding/qlib/recovery-worktree",
+    "operation": "Import Campaign263's frozen definition reconstruction chain to materialize the 163/144 predecessor order before appending Campaign291.",
+    "outcome": "failed_without_file_change",
+    "error_class": "Campaign054FeatureError",
+    "error_summary": "Campaign054 completed no-return audit changed because the ignored legacy evidence file is absent from the recovery worktree.",
+    "scientific_result_consumed": false,
+    "library_digest_consumed": false
+  },
+  "safe_recovery": {
+    "working_directory": "/Volumes/DIsk/Disk-Coding/qlib",
+    "mode": "read_only_metadata_reconstruction",
+    "campaign054_audit_sha256": "866006cbe319afeca3b055bef2a1754b954e4511b953a3e8a2337d3aa575ee87",
+    "verified_predecessor_complete_definition_count": 163,
+    "verified_predecessor_complete_definition_order_sha256": "2d7ae94623f904606d79c6911b80495d563994ec73cb0a629b8a28a7faa6c802",
+    "verified_predecessor_numeric_comparator_count": 144,
+    "verified_predecessor_numeric_comparator_order_sha256": "c026c008e8eeb9d150754c6179f7de3bfd4dcf3f3ffb0ba52bab418dd94bdeff",
+    "matches_policy_v420": true,
+    "campaign291_appended_complete_definition_order_sha256": "641331e8a6d95a4b0429dbef4d546c6ce6778d78c1ef6c85461cb8ba6bb1e6b1",
+    "campaign291_appended_numeric_comparator_order_sha256": "d1dbf29b7143f837f7d1589e2f1f4622b1c64699b2b63a3ba940ea0258facf61"
+  },
+  "research_boundary": {
+    "campaign291_terminal_result_changed": false,
+    "campaign291_trial_ledger_changed": false,
+    "provider_request_issued": false,
+    "provider_credential_loaded": false,
+    "candidate49_ledgers_changed": false,
+    "current_scoring_selection_sizing_positions_or_orders_performed": false,
+    "investment_advice": false
+  }
+}
